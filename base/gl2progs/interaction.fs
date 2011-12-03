@@ -23,7 +23,7 @@ uniform vec4 				u_specularColor;
 // traditional lambertian blinn-phong lighting model 
 vec4 lightingModel( vec4 diffuse, vec4 specular, vec3 L, vec3 V, vec3 N, vec3 H ) { 
 	float NdotL = clamp( dot( N, L ), 0.0, 1.0 );
-	float NdotH = pow( max( dot( N, H ), 0.0001 ), 8 );
+	float NdotH = pow( max( dot( N, H ), 0.0001 ), 2 );
 
 	return ( diffuse * NdotL ) + ( specular * NdotH ); 
 } 
@@ -35,9 +35,10 @@ void main( void ) {
 	// compute light direction in world space   
 	vec3 L = normalize( u_lightOrigin.xyz - var_Vertex );  
    
-	// compute normal in tangent space from normalmap   
-	vec3 N = 2.0 * ( texture2D( u_normalTexture, var_TexNormal.st ).xyz - 0.5 ); 
-	
+	// compute normal in tangent space from normalmap
+	// NOTE: red is swaped with alpha here...
+	vec3 N = normalize( 2.0 * ( texture2D( u_normalTexture, var_TexNormal.st ).wyz - 0.5 ) ); 
+
 	// transform normal, view, and light direction  
 	N = var_TangentToWorldMatrix * N;
 	V = var_TangentToWorldMatrix * V;
