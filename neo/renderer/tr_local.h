@@ -1367,6 +1367,7 @@ typedef struct shaderProgram_s
 } shaderProgram_t;
 
 extern shaderProgram_t  interactionShader;
+extern shaderProgram_t  ambientInteractionShader;
 extern shaderProgram_t	stencilShadowShader;
 
 /*
