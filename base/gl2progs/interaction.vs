@@ -14,6 +14,7 @@ attribute vec3          	attr_Tangent;
 attribute vec3          	attr_Binormal;     
 attribute vec3          	attr_Normal;  
  
+uniform mat4				u_modelMatrix;
 uniform vec4 				u_lightProjectionS; 
 uniform vec4 				u_lightProjectionT; 
 uniform vec4 				u_lightProjectionQ; 
@@ -26,7 +27,7 @@ void main( void ) {
 	gl_Position = ftransform( ); 
 
 	// transform position into world space 
-	var_Vertex = ( gl_ModelViewMatrix * gl_Vertex ).xyz;
+	var_Vertex = ( u_modelMatrix * gl_Vertex ).xyz;
 
 	// diffuse map texgen     
 	var_TexDiffuse.xy = ( gl_TextureMatrix[0] * attr_TexCoord ).st; 
@@ -47,7 +48,7 @@ void main( void ) {
 	var_TexLightFalloff.y = 0.5;
 	
 	// construct tangent-space-to-world-space 3x3 matrix 
-	var_TangentToWorldMatrix = mat3(attr_Tangent, attr_Binormal, attr_Normal); 
+	var_TangentToWorldMatrix = mat3( attr_Tangent, attr_Binormal, attr_Normal ); 
 
 	// primary color 
 	var_Color = gl_Color * u_colorModulate + u_colorAdd; 

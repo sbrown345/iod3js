@@ -1349,6 +1349,8 @@ typedef struct shaderProgram_s
 	GLint			u_diffuseTexture;
 	GLint			u_specularTexture;
 
+	GLint			modelMatrix;
+
 	GLint			localLightOrigin;
 	GLint			localViewOrigin;
 

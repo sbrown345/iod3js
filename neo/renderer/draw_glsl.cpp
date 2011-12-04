@@ -157,6 +157,9 @@ static void RB_GLSL_CreateDrawInteractions( const drawSurf_t *surf ) {
 		qglVertexAttribPointerARB( 8, 2, GL_FLOAT, false, sizeof( idDrawVert ), ac->st.ToFloatPtr() );
 		qglVertexPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ac->xyz.ToFloatPtr() );
 
+		// set model matrix
+		qglUniformMatrix4fvARB( interactionShader.modelMatrix, 1, false, surf->space->modelMatrix );
+
 		// this may cause RB_GLSL_DrawInteraction to be executed multiple
 		// times with different colors and images if the surface or light have multiple layers
 		RB_CreateSingleDrawInteractions( surf, RB_GLSL_DrawInteraction );
@@ -397,6 +400,8 @@ static bool RB_GLSL_InitShaders( ) {
 		interactionShader.u_lightProjectionTexture = qglGetUniformLocationARB( interactionShader.program, "u_lightProjectionTexture" );
 		interactionShader.u_diffuseTexture = qglGetUniformLocationARB( interactionShader.program, "u_diffuseTexture" );
 		interactionShader.u_specularTexture = qglGetUniformLocationARB( interactionShader.program, "u_specularTexture" );
+
+		interactionShader.modelMatrix = qglGetUniformLocationARB( interactionShader.program, "u_modelMatrix" );
 
 		interactionShader.localLightOrigin = qglGetUniformLocationARB( interactionShader.program, "u_lightOrigin" );
 		interactionShader.localViewOrigin = qglGetUniformLocationARB( interactionShader.program, "u_viewOrigin" );
