@@ -29,7 +29,7 @@ vec4 lightingModel( vec4 diffuse, vec4 specular, vec3 L, vec3 V, vec3 N, vec3 H 
 } 
 
 void main( void ) {    
-	// compute view direction, light direction, and half angle in world space   
+	// compute view direction, light direction, and half angle     
 	vec3 V = normalize( u_viewOrigin.xyz - var_Vertex ); 
 	vec3 L = normalize( u_lightOrigin.xyz - var_Vertex );  
    	vec3 H = normalize( L + V );
@@ -38,8 +38,10 @@ void main( void ) {
 	// NOTE: red is swaped with alpha here...
 	vec3 N = normalize( 2.0 * ( texture2D( u_normalTexture, var_TexNormal.st ).wyz - 0.5 ) ); 
 
-	// transform normal, view, and light direction  
+	// transform normal, light direction, and half angle into world space 
 	N = var_TangentToWorldMatrix * N;
+	L = normalize( var_TangentToWorldMatrix * L ); 
+	H = normalize( var_TangentToWorldMatrix * H ); 
  
 	// compute the diffuse term
 	vec4 diffuse = texture2D( u_diffuseTexture, var_TexDiffuse );

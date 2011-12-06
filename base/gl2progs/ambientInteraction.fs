@@ -17,14 +17,15 @@ uniform vec4 				u_lightOrigin;
 uniform vec4 				u_diffuseColor;    
       
 void main( void ) {         
-	// compute light direction in world space        
+	// compute light direction
 	vec3 L = normalize( u_lightOrigin.xyz - var_Vertex ); 
 
 	// compute normal in tangent space from normalmap        
 	vec3 N = normalize( 2.0 * ( texture2D( u_normalTexture, var_TexNormal.st ).xyz - 0.5 ) );      
  
-	// transform normal  into world space 
+	// transform normal and light direction into world space 
 	N = var_TangentToWorldMatrix * N; 
+	L = normalize( var_TangentToWorldMatrix * L );
 	
 	// compute N dot L
 	float NdotL = clamp( dot( N, L ), 0.0, 1.0 ); 
