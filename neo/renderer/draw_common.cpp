@@ -583,9 +583,6 @@ void RB_SetProgramEnvironment( void ) {
 	if ( !glConfig.ARBVertexProgramAvailable ) {
 		return;
 	}
-	if ( !tr.backEndRenderer == BE_ARB2 ) {
-		return;
-	}
 
 #if 0
 	// screen power of two correction factor, one pixel in so we don't get a bilerp
@@ -655,9 +652,6 @@ Sets variables related to the current space that can be used by all vertex progr
 */
 void RB_SetProgramEnvironmentSpace( void ) {
 	if ( !glConfig.ARBVertexProgramAvailable ) {
-		return;
-	}
-	if ( !tr.backEndRenderer == BE_ARB2 ) {
 		return;
 	}
 
