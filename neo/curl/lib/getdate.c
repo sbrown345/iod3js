@@ -1766,6 +1766,7 @@ ToHour (int Hours, MERIDIAN Meridian)
       return Hours + 12;
     default:
       abort ();
+	  return 0;
     }
   /* NOTREACHED */
 }

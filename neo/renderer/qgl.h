@@ -146,6 +146,10 @@ extern	PFNGLACTIVESTENCILFACEEXTPROC	qglActiveStencilFaceEXT;
 extern	PFNGLSTENCILOPSEPARATEATIPROC		qglStencilOpSeparateATI;
 extern	PFNGLSTENCILFUNCSEPARATEATIPROC		qglStencilFuncSeparateATI;
 
+// ARB_separate_stencil
+extern	PFNGLSTENCILOPSEPARATEPROC			qglStencilOpSeparate;
+extern	PFNGLSTENCILFUNCSEPARATEPROC		qglStencilFuncSeparate;
+
 // ARB_texture_compression
 extern	PFNGLCOMPRESSEDTEXIMAGE2DARBPROC	qglCompressedTexImage2DARB;
 extern	PFNGLGETCOMPRESSEDTEXIMAGEARBPROC	qglGetCompressedTexImageARB;

@@ -92,7 +92,7 @@ class idTypeDef {
 private:
 	etype_t						type;
 	idStr 						name;
-	int							size;
+	size_t						size;
 
 	// function types are more complex
 	idTypeDef					*auxType;					// return type
@@ -118,7 +118,7 @@ public:
 	const char			*Name( void ) const;
 
 	etype_t				Type( void ) const;
-	int					Size( void ) const;
+	size_t				Size( void ) const;
 
 	idTypeDef			*SuperClass( void ) const;
 	

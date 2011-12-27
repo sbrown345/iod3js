@@ -355,7 +355,7 @@ etype_t idTypeDef::Type( void ) const {
 idTypeDef::Size
 ================
 */
-int idTypeDef::Size( void ) const {
+size_t idTypeDef::Size( void ) const {
 	return size;
 }
 
