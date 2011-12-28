@@ -26,13 +26,15 @@ uniform vec4 				u_specularMatrixS;
 uniform vec4 				u_specularMatrixT;   
 uniform vec4 				u_colorModulate;  
 uniform vec4				u_colorAdd;  
+uniform vec4 				u_lightOrigin;        
+uniform vec4 				u_viewOrigin;   
       
-void main( void ) {      
+void main( void ) {
     // transform vertex position into homogenous clip-space   
 	gl_Position = ftransform( );  
  
 	// transform vertex position into world space   
-	var_Position = normalize( u_modelMatrix * gl_Vertex ).xyz; 
+	var_Position = gl_Vertex.xyz;//( u_modelMatrix * gl_Vertex ).xyz; 
 
 	// normal map texgen   
 	var_TexNormal.x = dot( u_bumpMatrixS, attr_TexCoord );
@@ -46,15 +48,21 @@ void main( void ) {
 	var_TexSpecular.x = dot( u_specularMatrixS, attr_TexCoord );
 	var_TexSpecular.y = dot( u_specularMatrixT, attr_TexCoord );
  
-	// light texgen
+	// light projection texgen
 	var_TexLight.x = dot( u_lightProjectionS, gl_Vertex );   
 	var_TexLight.y = dot( u_lightProjectionT, gl_Vertex );   
 	var_TexLight.z = dot( u_lightFalloff, gl_Vertex );   
 	var_TexLight.w = dot( u_lightProjectionQ, gl_Vertex );   
+	
+	
+	// Building the matrix Eye Space -> Tangent Space
+	vec3 t = attr_Tangent;
+	vec3 b = attr_Bitangent;
+	vec3 n = attr_Normal;
  
 	// construct tangent-bitangent-normal 3x3 matrix   
-	var_TangentBitangentNormalMatrix = mat3( attr_Tangent, attr_Bitangent, gl_Normal );
+	var_TangentBitangentNormalMatrix = mat3( t, b, n );
  
 	// primary color  
-	var_Color = gl_FrontColor * u_colorModulate + u_colorAdd;   
+	var_Color = (gl_FrontColor * u_colorModulate) + u_colorAdd;   
 }

@@ -263,7 +263,8 @@ void RB_GLSL_DrawInteractions( void ) {
 		}
 
 		// if there are no interactions, get out!
-		if ( !vLight->localInteractions && !vLight->globalInteractions && !vLight->translucentInteractions ) {
+		if ( !vLight->localInteractions && !vLight->globalInteractions && 
+			!vLight->translucentInteractions ) {
 			continue;
 		}
 
@@ -527,6 +528,17 @@ static bool RB_GLSL_InitShaders( ) {
 	}
 
 	return true;
+}
+
+/*
+==================
+R_ReloadGLSLShaders_f
+==================
+*/
+void R_ReloadGLSLShaders_f( const idCmdArgs &args ) {
+	common->Printf( "----- R_ReloadGLSLShaders -----\n" );
+	RB_GLSL_InitShaders();
+	common->Printf( "-------------------------------\n" );
 }
 
 void R_GLSL_Init( void ) {
