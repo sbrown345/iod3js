@@ -25,11 +25,11 @@ uniform vec4 				u_colorModulate;
 uniform vec4				u_colorAdd; 
      
 void main( void ) {     
-    // mvp transform into clip space     
+    // transform vertex position into homogenous clip-space  
 	gl_Position = ftransform( ); 
-
-	// transform position into world space 
-	var_Position = ( u_modelMatrix * gl_Vertex ).xyz; 
+	
+	// transform vertex position into world space  
+	var_Position = gl_Vertex.xyz;//( u_modelMatrix * gl_Vertex ).xyz; 
 
 	// normal map texgen 
 	var_TexNormal.x = dot( u_bumpMatrixS, attr_TexCoord );
@@ -39,6 +39,10 @@ void main( void ) {
 	var_TexDiffuse.x = dot( u_diffuseMatrixS, attr_TexCoord );
 	var_TexDiffuse.y = dot( u_diffuseMatrixT, attr_TexCoord );
 
+
+
+
+
 	// light projection texgen
 	var_TexLight.x = dot( u_lightProjectionS, gl_Vertex ); 
 	var_TexLight.y = dot( u_lightProjectionT, gl_Vertex ); 
@@ -46,8 +50,8 @@ void main( void ) {
 	var_TexLight.w = dot( u_lightProjectionQ, gl_Vertex ); 
 	
 	// construct tangent-binormal-normal 3x3 matrix    
-	var_TangentBinormalNormalMatrix = mat3( attr_Tangent, attr_Binormal, gl_Normal ); 
+	var_TangentBinormalNormalMatrix = mat3( attr_Tangent, attr_Binormal, attr_Normal ); 
 
 	// primary color 
-	var_Color = gl_FrontColor * u_colorModulate + u_colorAdd;  
+	var_Color = (gl_FrontColor * u_colorModulate) + u_colorAdd;  
 }
