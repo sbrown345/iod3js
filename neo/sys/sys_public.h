@@ -50,6 +50,7 @@ If you have questions concerning this license or the applicable additional terms
 #define PACKED
 
 #define _alloca16( x )					((void *)((((int)_alloca( (x)+15 )) + 15) & ~15))
+#define stack_alloc						_alloca
 
 #define PATHSEPERATOR_STR				"\\"
 #define PATHSEPERATOR_CHAR				'\\'
@@ -85,6 +86,7 @@ If you have questions concerning this license or the applicable additional terms
 
 #define _alloca							alloca
 #define _alloca16( x )					((void *)((((int)alloca( (x)+15 )) + 15) & ~15))
+#define stack_alloc						alloca
 
 #define PATHSEPERATOR_STR				"/"
 #define PATHSEPERATOR_CHAR				'/'
@@ -116,6 +118,7 @@ If you have questions concerning this license or the applicable additional terms
 
 #define _alloca							alloca
 #define _alloca16( x )					((void *)((((int)alloca( (x)+15 )) + 15) & ~15))
+#define stack_alloc						alloca
 
 #define ALIGN16( x )					x
 #define PACKED							__attribute__((packed))

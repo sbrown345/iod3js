@@ -2678,7 +2678,7 @@ idGameEdit::AF_CreateMesh
 idRenderModel *idGameEdit::AF_CreateMesh( const idDict &args, idVec3 &meshOrigin, idMat3 &meshAxis, bool &poseIsSet ) {
 	int i, jointNum;
 	const idDeclAF *af;
-	const idDeclAF_Body *fb;
+	const idDeclAF_Body *fb = NULL;
 	renderEntity_t ent;
 	idVec3 origin, *bodyOrigin, *newBodyOrigin, *modifiedOrigin;
 	idMat3 axis, *bodyAxis, *newBodyAxis, *modifiedAxis;

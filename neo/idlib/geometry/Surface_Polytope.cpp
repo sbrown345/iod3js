@@ -42,7 +42,7 @@ void idSurface_Polytope::FromPlanes( const idPlane *planes, const int numPlanes 
 	idFixedWinding w;
 	idDrawVert newVert;
 
-	windingVerts = (int *) _alloca( MAX_POINTS_ON_WINDING * sizeof( int ) );
+	windingVerts = (int *) stack_alloc( MAX_POINTS_ON_WINDING * sizeof( int ) );
 	memset( &newVert, 0, sizeof( newVert ) );
 
 	for ( i = 0; i < numPlanes; i++ ) {
@@ -276,8 +276,8 @@ int idSurface_Polytope::SplitPolytope( const idPlane &plane, const float epsilon
 	idSurface_Polytope *polytopeSurfaces[2], *surf;
 	int *onPlaneEdges[2];
 
-	onPlaneEdges[0] = (int *) _alloca( indexes.Num() / 3 * sizeof( int ) );
-	onPlaneEdges[1] = (int *) _alloca( indexes.Num() / 3 * sizeof( int ) );
+	onPlaneEdges[0] = (int *) stack_alloc( indexes.Num() / 3 * sizeof( int ) );
+	onPlaneEdges[1] = (int *) stack_alloc( indexes.Num() / 3 * sizeof( int ) );
 
 	side = Split( plane, epsilon, &surface[0], &surface[1], onPlaneEdges[0], onPlaneEdges[1] );
 

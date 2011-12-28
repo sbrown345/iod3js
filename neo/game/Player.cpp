@@ -3534,7 +3534,7 @@ void idPlayer::NextWeapon( void ) {
 	}
 	
 	w = idealWeapon;
-	while( 1 ) {
+	while( true ) {
 		w++;
 		if ( w >= MAX_WEAPONS ) {
 			w = 0;
@@ -3584,7 +3584,7 @@ void idPlayer::PrevWeapon( void ) {
 	}
 
 	w = idealWeapon;
-	while( 1 ) {
+	while( true ) {
 		w--;
 		if ( w < 0 ) {
 			w = MAX_WEAPONS - 1;
@@ -6816,7 +6816,7 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 			damage = 1;
 		}
 
-		int oldHealth = health;
+		//int oldHealth = health;
 		health -= damage;
 
 		if ( health <= 0 ) {

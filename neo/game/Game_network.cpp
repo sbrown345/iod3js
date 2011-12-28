@@ -749,8 +749,11 @@ void idGameLocal::ServerProcessEntityNetworkEventQueue( void ) {
 				NetworkEventWarning( event, "unknown event" );
 			}
 		}
-
-		entityNetEvent_t* freedEvent = eventQueue.Dequeue();
+		
+#if !defined(NDEBUG)
+		entityNetEvent_t* freedEvent = 
+#endif
+			eventQueue.Dequeue();
 		assert( freedEvent == event );
 		eventQueue.Free( event );
 	}
@@ -1279,8 +1282,11 @@ void idGameLocal::ClientProcessEntityNetworkEventQueue( void ) {
 				NetworkEventWarning( event, "unknown event" );
 			}
 		}
-
-		entityNetEvent_t* freedEvent = eventQueue.Dequeue();
+		
+#if !defined(NDEBUG)
+		entityNetEvent_t* freedEvent = 
+#endif
+			eventQueue.Dequeue();
 		assert( freedEvent == event );
 		eventQueue.Free( event );
 	}

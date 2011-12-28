@@ -69,8 +69,8 @@ int idSurface::Split( const idPlane &plane, const float epsilon, idSurface **fro
 	idSurface *		surface[2];
 	idDrawVert		v;
 
-	dists = (float *) _alloca( verts.Num() * sizeof( float ) );
-	sides = (byte *) _alloca( verts.Num() * sizeof( byte ) );
+	dists = (float *) stack_alloc( verts.Num() * sizeof( float ) );
+	sides = (byte *) stack_alloc( verts.Num() * sizeof( byte ) );
 
 	counts[0] = counts[1] = counts[2] = 0;
 
@@ -116,7 +116,7 @@ int idSurface::Split( const idPlane &plane, const float epsilon, idSurface **fro
 	*front = surface[0] = new idSurface();
 	*back = surface[1] = new idSurface();
 
-	edgeSplitVertex = (int *) _alloca( edges.Num() * sizeof( int ) );
+	edgeSplitVertex = (int *) stack_alloc( edges.Num() * sizeof( int ) );
 	numEdgeSplitVertexes = 0;
 
 	maxOnPlaneEdges = 4 * counts[SIDE_ON];
@@ -147,13 +147,13 @@ int idSurface::Split( const idPlane &plane, const float epsilon, idSurface **fro
 	surface[1]->indexes.Resize( ( ( counts[SIDE_BACK] + counts[SIDE_ON] ) * 2 ) + ( numEdgeSplitVertexes * 4 ) );
 
 	// allocate indexes to construct the triangle indexes for the front and back surface
-	vertexRemap[0] = (int *) _alloca( verts.Num() * sizeof( int ) );
+	vertexRemap[0] = (int *) stack_alloc( verts.Num() * sizeof( int ) );
 	memset( vertexRemap[0], -1, verts.Num() * sizeof( int ) );
-	vertexRemap[1] = (int *) _alloca( verts.Num() * sizeof( int ) );
+	vertexRemap[1] = (int *) stack_alloc( verts.Num() * sizeof( int ) );
 	memset( vertexRemap[1], -1, verts.Num() * sizeof( int ) );
 
-	vertexCopyIndex[0] = (int *) _alloca( ( numEdgeSplitVertexes + verts.Num() ) * sizeof( int ) );
-	vertexCopyIndex[1] = (int *) _alloca( ( numEdgeSplitVertexes + verts.Num() ) * sizeof( int ) );
+	vertexCopyIndex[0] = (int *) stack_alloc( ( numEdgeSplitVertexes + verts.Num() ) * sizeof( int ) );
+	vertexCopyIndex[1] = (int *) stack_alloc( ( numEdgeSplitVertexes + verts.Num() ) * sizeof( int ) );
 
 	vertexIndexNum[0][0] = vertexIndexNum[1][0] = 0;
 	vertexIndexNum[0][1] = vertexIndexNum[1][1] = numEdgeSplitVertexes;
@@ -165,8 +165,8 @@ int idSurface::Split( const idPlane &plane, const float epsilon, idSurface **fro
 
 	maxOnPlaneEdges += 4 * numEdgeSplitVertexes;
 	// allocate one more in case no triangles are actually split which may happen for a disconnected surface
-	onPlaneEdges[0] = (int *) _alloca( ( maxOnPlaneEdges + 1 ) * sizeof( int ) );
-	onPlaneEdges[1] = (int *) _alloca( ( maxOnPlaneEdges + 1 ) * sizeof( int ) );
+	onPlaneEdges[0] = (int *) stack_alloc( ( maxOnPlaneEdges + 1 ) * sizeof( int ) );
+	onPlaneEdges[1] = (int *) stack_alloc( ( maxOnPlaneEdges + 1 ) * sizeof( int ) );
 	numOnPlaneEdges[0] = numOnPlaneEdges[1] = 0;
 
 	// split surface triangles
@@ -384,8 +384,8 @@ bool idSurface::ClipInPlace( const idPlane &plane, const float epsilon, const bo
 	idList<idDrawVert> newVerts;
 	idList<int>		newIndexes;
 
-	dists = (float *) _alloca( verts.Num() * sizeof( float ) );
-	sides = (byte *) _alloca( verts.Num() * sizeof( byte ) );
+	dists = (float *) stack_alloc( verts.Num() * sizeof( float ) );
+	sides = (byte *) stack_alloc( verts.Num() * sizeof( byte ) );
 
 	counts[0] = counts[1] = counts[2] = 0;
 
@@ -423,7 +423,7 @@ bool idSurface::ClipInPlace( const idPlane &plane, const float epsilon, const bo
 		return true;
 	}
 
-	edgeSplitVertex = (int *) _alloca( edges.Num() * sizeof( int ) );
+	edgeSplitVertex = (int *) stack_alloc( edges.Num() * sizeof( int ) );
 	numEdgeSplitVertexes = 0;
 
 	counts[SIDE_FRONT] = counts[SIDE_BACK] = 0;
@@ -450,10 +450,10 @@ bool idSurface::ClipInPlace( const idPlane &plane, const float epsilon, const bo
 	newIndexes.Resize( ( counts[SIDE_FRONT] << 1 ) + ( numEdgeSplitVertexes << 2 ) );
 
 	// allocate indexes to construct the triangle indexes for the front and back surface
-	vertexRemap = (int *) _alloca( verts.Num() * sizeof( int ) );
+	vertexRemap = (int *) stack_alloc( verts.Num() * sizeof( int ) );
 	memset( vertexRemap, -1, verts.Num() * sizeof( int ) );
 
-	vertexCopyIndex = (int *) _alloca( ( numEdgeSplitVertexes + verts.Num() ) * sizeof( int ) );
+	vertexCopyIndex = (int *) stack_alloc( ( numEdgeSplitVertexes + verts.Num() ) * sizeof( int ) );
 
 	vertexIndexNum[0] = 0;
 	vertexIndexNum[1] = numEdgeSplitVertexes;
@@ -789,7 +789,7 @@ bool idSurface::RayIntersection( const idVec3 &start, const idVec3 &dir, float &
 	idPluecker rayPl, pl;
 	idPlane plane;
 
-	sidedness = (byte *)_alloca( edges.Num() * sizeof(byte) );
+	sidedness = (byte *)stack_alloc( edges.Num() * sizeof(byte) );
 	scale = idMath::INFINITY;
 
 	rayPl.FromRay( start, dir );

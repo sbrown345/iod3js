@@ -774,7 +774,7 @@ idLexer::ReadPunctuation
 */
 int idLexer::ReadPunctuation( idToken *token ) {
 	int l, n, i;
-	char *p;
+	char const* p;
 	const punctuation_t *punc;
 
 #ifdef PUNCTABLE

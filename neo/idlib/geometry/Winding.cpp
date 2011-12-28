@@ -102,8 +102,8 @@ int idWinding::Split( const idPlane &plane, const float epsilon, idWinding **fro
 
 	assert( this );
 
-	dists = (float *) _alloca( (numPoints+4) * sizeof( float ) );
-	sides = (byte *) _alloca( (numPoints+4) * sizeof( byte ) );
+	dists = (float *) stack_alloc( (numPoints+4) * sizeof( float ) );
+	sides = (byte *) stack_alloc( (numPoints+4) * sizeof( byte ) );
 
 	counts[0] = counts[1] = counts[2] = 0;
 
@@ -245,8 +245,8 @@ idWinding *idWinding::Clip( const idPlane &plane, const float epsilon, const boo
 
 	assert( this );
 
-	dists = (float *) _alloca( (numPoints+4) * sizeof( float ) );
-	sides = (byte *) _alloca( (numPoints+4) * sizeof( byte ) );
+	dists = (float *) stack_alloc( (numPoints+4) * sizeof( float ) );
+	sides = (byte *) stack_alloc( (numPoints+4) * sizeof( byte ) );
 
 	counts[SIDE_FRONT] = counts[SIDE_BACK] = counts[SIDE_ON] = 0;
 
@@ -360,8 +360,8 @@ bool idWinding::ClipInPlace( const idPlane &plane, const float epsilon, const bo
 
 	assert( this );
 
-	dists = (float *) _alloca( (numPoints+4) * sizeof( float ) );
-	sides = (byte *) _alloca( (numPoints+4) * sizeof( byte ) );
+	dists = (float *) stack_alloc( (numPoints+4) * sizeof( float ) );
+	sides = (byte *) stack_alloc( (numPoints+4) * sizeof( byte ) );
 
 	counts[SIDE_FRONT] = counts[SIDE_BACK] = counts[SIDE_ON] = 0;
 
@@ -807,9 +807,9 @@ void idWinding::AddToConvexHull( const idWinding *winding, const idVec3 &normal,
 		return;
 	}
 
-	newHullPoints = (idVec5 *) _alloca( maxPts * sizeof( idVec5 ) );
-	hullDirs = (idVec3 *) _alloca( maxPts * sizeof( idVec3 ) );
-	hullSide = (bool *) _alloca( maxPts * sizeof( bool ) );
+	newHullPoints = (idVec5 *) stack_alloc( maxPts * sizeof( idVec5 ) );
+	hullDirs = (idVec3 *) stack_alloc( maxPts * sizeof( idVec3 ) );
+	hullSide = (bool *) stack_alloc( maxPts * sizeof( bool ) );
 
 	for ( i = 0; i < winding->numPoints; i++ ) {
 		const idVec5 &p1 = winding->p[i];
@@ -926,8 +926,8 @@ void idWinding::AddToConvexHull( const idVec3 &point, const idVec3 &normal, cons
 		}
 	}
 
-	hullDirs = (idVec3 *) _alloca( numPoints * sizeof( idVec3 ) );
-	hullSide = (bool *) _alloca( numPoints * sizeof( bool ) );
+	hullDirs = (idVec3 *) stack_alloc( numPoints * sizeof( idVec3 ) );
+	hullSide = (bool *) stack_alloc( numPoints * sizeof( bool ) );
 
 	// calculate hull edge vectors
 	for ( j = 0; j < numPoints; j++ ) {
@@ -965,7 +965,7 @@ void idWinding::AddToConvexHull( const idVec3 &point, const idVec3 &normal, cons
 		return;
 	}
 
-	hullPoints = (idVec5 *) _alloca( (numPoints+1) * sizeof( idVec5 ) );
+	hullPoints = (idVec5 *) stack_alloc( (numPoints+1) * sizeof( idVec5 ) );
 
 	// insert the point here
 	hullPoints[0] = point;

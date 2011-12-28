@@ -2523,7 +2523,7 @@ idEntity::RunPhysics
 */
 bool idEntity::RunPhysics( void ) {
 	int			i, reachedTime, startTime, endTime;
-	idEntity *	part, *blockedPart, *blockingEntity;
+	idEntity *	part, *blockedPart, *blockingEntity = NULL;
 	trace_t		results;
 	bool		moved;
 
@@ -3336,7 +3336,7 @@ bool idEntity::HandleGuiCommands( idEntity *entityGui, const char *cmds ) {
 		idLexer src;
 		idToken token, token2, token3, token4;
 		src.LoadMemory( cmds, strlen( cmds ), "guiCommands" );
-		while( 1 ) {
+		while( true ) {
 
 			if ( !src.ReadToken( &token ) ) {
 				return ret;

@@ -1307,6 +1307,7 @@ void	RB_NV20_DrawInteractions( void );
 void	R_ARB2_Init( void );
 void	RB_ARB2_DrawInteractions( void );
 void	R_ReloadARBPrograms_f( const idCmdArgs &args );
+void	R_ReloadGLSLShaders_f( const idCmdArgs &args );
 int		R_FindARBProgram( GLenum target, const char *program );
 
 void	R_GLSL_Init( void );

@@ -77,14 +77,18 @@ void idWinding2D::ExpandForAxialBox( const idVec2 bounds[2] ) {
 	idVec2 v;
 	idVec3 planes[MAX_POINTS_ON_WINDING_2D], plane, bevel;
 
+	assert(numPoints > 0);
+	if (numPoints <= 0)
+		return;
+
 	// get planes for the edges and add bevels
-	for ( numPlanes = i = 0; i < numPoints; i++ ) {
+	for ( numPlanes = 0, i = 0; i < numPoints; i++ ) {
 		j = (i+1) % numPoints;
 		if ( ( p[j] - p[i] ).LengthSqr() < 0.01f ) {
 			continue;
 		}
 		plane = Plane2DFromPoints( p[i], p[j], true );
-		if ( i ) {
+		if ( i > 0 ) {
 			if ( GetAxialBevel( planes[numPlanes-1], plane, p[i], bevel ) ) {
 				planes[numPlanes++] = bevel;
 			}
@@ -92,6 +96,7 @@ void idWinding2D::ExpandForAxialBox( const idVec2 bounds[2] ) {
 		assert( numPlanes < MAX_POINTS_ON_WINDING_2D );
 		planes[numPlanes++] = plane;
 	}
+	assert(numPlanes > 1);
 	if ( GetAxialBevel( planes[numPlanes-1], planes[0], p[0], bevel ) ) {
 		planes[numPlanes++] = bevel;
 	}

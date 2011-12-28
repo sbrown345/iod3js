@@ -151,7 +151,7 @@ class idException {
 public:
 	char error[MAX_STRING_CHARS];
 
-	idException( const char *text = "" ) { strcpy( error, text ); }
+	idException( const char *text = "" ) { size_t length = strlen(text); if (length > MAX_STRING_CHARS-1) length = MAX_STRING_CHARS-1; strncpy( error, text, length ); }
 };
 
 // move from Math.h to keep gcc happy

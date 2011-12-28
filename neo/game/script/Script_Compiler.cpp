@@ -1023,9 +1023,9 @@ idVarDef *idCompiler::EmitFunctionParms( int op, idVarDef *func, int startarg, i
 			break;
 
 		default :
-			Error( "Invalid return type for function '%s'", func->Name() );
 			// shut up compiler
 			resultOp = OP_STORE_OBJ;
+			Error( "Invalid return type for function '%s'", func->Name() );
 			break;
 		}
 	}
@@ -1313,10 +1313,10 @@ idVarDef *idCompiler::GetTerm( void ) {
 			break;
 
 		default :
-			Error( "type mismatch for ~" );
-
 			// shut up compiler
 			op = OP_COMP_F;
+
+			Error( "type mismatch for ~" );
 			break;
 		}
 
@@ -1347,10 +1347,10 @@ idVarDef *idCompiler::GetTerm( void ) {
 			break;
 
 		case ev_function :
-			Error( "Invalid type for !" );
-
 			// shut up compiler
 			op = OP_NOT_F;
+
+			Error( "Invalid type for !" );
 			break;
 
 		case ev_object :
@@ -1358,10 +1358,10 @@ idVarDef *idCompiler::GetTerm( void ) {
 			break;
 
 		default :
-			Error( "type mismatch for !" );
-
 			// shut up compiler
 			op = OP_NOT_F;
+
+			Error( "type mismatch for !" );
 			break;
 		}
 
@@ -1390,10 +1390,10 @@ idVarDef *idCompiler::GetTerm( void ) {
 				op = OP_NEG_V;
 				break;
 			default :
-				Error( "type mismatch for -" );
-
 				// shut up compiler
 				op = OP_NEG_F;
+
+				Error( "type mismatch for -" );
 				break;
 			}
 			return EmitOpcode( &opcodes[ op ], e, 0 );
@@ -1482,7 +1482,7 @@ idVarDef *idCompiler::GetExpression( int priority ) {
 		return e;
 	}
 
-	while( 1 ) {
+	while( true ) {
 		if ( ( priority == FUNCTION_PRIORITY ) && CheckToken( "(" ) ) {
 			return ParseFunctionCall( e );
 		}

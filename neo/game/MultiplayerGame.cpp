@@ -1768,7 +1768,7 @@ const char* idMultiplayerGame::HandleGuiCommands( const char *_menuCommand ) {
 
 			int i, num;
 			idStr si_map = gameLocal.serverInfo.GetString("si_map");
-			const idDict *dict;
+			const idDict *dict = NULL;
 
 			mapList->Clear();
 			mapList->SetSelection( -1 );
@@ -2801,7 +2801,7 @@ void idMultiplayerGame::ServerCallVote( int clientNum, const idBitMsg &msg ) {
 			}
 			int				num = fileSystem->GetNumMaps();
 			int				i;
-			const idDict	*dict;
+			const idDict	*dict = NULL;
 			bool			haveMap = false;
 			for ( i = 0; i < num; i++ ) {
 				dict = fileSystem->GetMapDecl( i );

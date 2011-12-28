@@ -3729,7 +3729,7 @@ void idGameLocal::RadiusPushClipModel( const idVec3 &origin, const float push, c
 	idVec3 v, localOrigin, center, impulse;
 
 	trm = clipModel->GetTraceModel();
-	if ( !trm || 1 ) {
+	if ( !trm || true ) {
 		impulse = clipModel->GetAbsBounds().GetCenter() - origin;
 		impulse.Normalize();
 		impulse.z += 1.0f;
