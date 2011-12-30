@@ -208,6 +208,10 @@ extern void ( APIENTRY * qglBindAttribLocationARB )( GLhandleARB programObj, GLu
 extern void ( APIENTRY * qglGetActiveAttribARB )( GLhandleARB programObj, GLuint index, GLsizei maxLength, GLsizei *length, GLint *size, GLenum *type, GLcharARB *name );
 extern GLint ( APIENTRY * qglGetAttribLocationARB )( GLhandleARB programObj, const GLcharARB *name );
 
+extern void ( APIENTRY * qglGetShaderiv )(GLuint shader, GLenum pname, GLint* param);
+extern void ( APIENTRY * qglDeleteShader )(GLuint shader);
+extern void ( APIENTRY * qglGetShaderInfoLog )(GLuint shader, GLsizei bufSize, GLsizei* length, GLchar* infoLog);
+
 //===========================================================================
 
 // non-windows systems will just redefine qgl* to gl*

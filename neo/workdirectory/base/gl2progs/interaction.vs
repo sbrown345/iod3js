@@ -54,14 +54,8 @@ void main( void ) {
 	var_TexLight.z = dot( u_lightFalloff, gl_Vertex );   
 	var_TexLight.w = dot( u_lightProjectionQ, gl_Vertex );   
 	
-	
-	// Building the matrix Eye Space -> Tangent Space
-	vec3 t = attr_Tangent;
-	vec3 b = attr_Bitangent;
-	vec3 n = attr_Normal;
- 
 	// construct tangent-bitangent-normal 3x3 matrix   
-	var_TangentBitangentNormalMatrix = mat3( t, b, n );
+	var_TangentBitangentNormalMatrix = mat3( clamp(attr_Tangent,-1,1), clamp(attr_Bitangent,-1,1), clamp(attr_Normal,-1,1) );
  
 	// primary color  
 	var_Color = (gl_FrontColor * u_colorModulate) + u_colorAdd;   

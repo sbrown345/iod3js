@@ -31,9 +31,9 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "tr_local.h"
 
-shaderProgram_t		interactionShader;
-shaderProgram_t		ambientInteractionShader;
-shaderProgram_t		stencilShadowShader;
+shaderProgram_t		interactionShader = {-1};
+shaderProgram_t		ambientInteractionShader = {-1};
+shaderProgram_t		stencilShadowShader = {-1};
 
 /*
 =========================================================================================
@@ -175,9 +175,15 @@ static void RB_GLSL_CreateDrawInteractions( const drawSurf_t *surf ) {
 
 	// bind the vertex and fragment program
 	if ( backEnd.vLight->lightShader->IsAmbientLight() ) {
-		qglUseProgramObjectARB( ambientInteractionShader.program );
+		if (ambientInteractionShader.program == -1)
+			qglUseProgramObjectARB( 0 );
+		else
+			qglUseProgramObjectARB( ambientInteractionShader.program );
 	} else {
-		qglUseProgramObjectARB( interactionShader.program );
+		if (interactionShader.program == -1)
+			qglUseProgramObjectARB( 0 );
+		else
+			qglUseProgramObjectARB( interactionShader.program );
 	}
 
 	// enable the vertex arrays
@@ -332,7 +338,7 @@ R_LoadGLSLShader
 loads GLSL vertex or fragment shaders
 =================
 */
-void R_LoadGLSLShader( const char *name, shaderProgram_t *shaderProgram, GLenum type ) {
+bool R_LoadGLSLShader( const char *name, shaderProgram_t *shaderProgram, GLenum type ) {
 	idStr	fullPath = "gl2progs/";
 	fullPath += name;
 	char	*fileBuffer;
@@ -345,7 +351,7 @@ void R_LoadGLSLShader( const char *name, shaderProgram_t *shaderProgram, GLenum 
 	fileSystem->ReadFile( fullPath.c_str(), (void **)&fileBuffer, NULL );
 	if ( !fileBuffer ) {
 		common->Printf( ": File not found\n" );
-		return;
+		return false;
 	}
 
 	// copy to stack memory and free
@@ -354,28 +360,62 @@ void R_LoadGLSLShader( const char *name, shaderProgram_t *shaderProgram, GLenum 
 	fileSystem->FreeFile( fileBuffer );
 
 	if ( !glConfig.isInitialized ) {
-		return;
+		return false;
 	}
 
+	GLuint shader;
 	switch( type ) {
 		case GL_VERTEX_SHADER_ARB:
+			if (shaderProgram->vertexShader != -1)
+				qglDeleteShader(shaderProgram->vertexShader);
+
+			shaderProgram->vertexShader = -1;
 			// create vertex shader
-			shaderProgram->vertexShader = qglCreateShaderObjectARB( GL_VERTEX_SHADER_ARB );
-			qglShaderSourceARB( shaderProgram->vertexShader, 1, (const GLcharARB **)&buffer, 0 );
-			qglCompileShaderARB( shaderProgram->vertexShader );
+			shader = qglCreateShaderObjectARB( GL_VERTEX_SHADER_ARB );
+			qglShaderSourceARB( shader, 1, (const GLcharARB **)&buffer, 0 );
+			qglCompileShaderARB( shader );
 			break;
 		case GL_FRAGMENT_SHADER_ARB:
+			if (shaderProgram->fragmentShader != -1)
+				qglDeleteShader(shaderProgram->fragmentShader);
+
+			shaderProgram->fragmentShader = -1;
 			// create fragment shader
-			shaderProgram->fragmentShader = qglCreateShaderObjectARB( GL_FRAGMENT_SHADER_ARB );
-			qglShaderSourceARB( shaderProgram->fragmentShader, 1, (const GLcharARB **)&buffer, 0 );
-			qglCompileShaderARB( shaderProgram->fragmentShader );
+			shader = qglCreateShaderObjectARB( GL_FRAGMENT_SHADER_ARB );
+			qglShaderSourceARB( shader, 1, (const GLcharARB **)&buffer, 0 );
+			qglCompileShaderARB( shader );
 			break;
 		default:
 			common->Printf( "R_LoadGLSLShader: no type\n" );
-			return;
+			return false;
+	}
+	
+
+	GLint logLength;
+	qglGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
+	if (logLength > 1)
+	{
+		GLchar *log = (GLchar *)malloc(logLength);
+		qglGetShaderInfoLog(shader, logLength, &logLength, log);
+		common->Printf((const char*)log);
+		free(log);
+	}
+		
+	GLint status;
+	qglGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+	if (status == 0)
+	{
+		qglDeleteShader(shader);
+		return false;
+	}
+		
+	switch( type ) {
+		case GL_VERTEX_SHADER_ARB:		shaderProgram->vertexShader = shader; break;
+		case GL_FRAGMENT_SHADER_ARB:	shaderProgram->fragmentShader = shader; break;
 	}
 
 	common->Printf( "\n" );
+	return true;
 }
 
 /*
@@ -436,7 +476,19 @@ static bool RB_GLSL_InitShaders( ) {
 	// load interation shaders
 	R_LoadGLSLShader( "interaction.vs", &interactionShader, GL_VERTEX_SHADER_ARB );
 	R_LoadGLSLShader( "interaction.fs", &interactionShader, GL_FRAGMENT_SHADER_ARB );
-	if ( !R_LinkGLSLShader( &interactionShader, true ) && !R_ValidateGLSLProgram( &interactionShader ) ) {
+
+	if ( interactionShader.fragmentShader == -1 ||
+		 interactionShader.vertexShader == -1 ||
+		!R_LinkGLSLShader( &interactionShader, true ) && 
+		!R_ValidateGLSLProgram( &interactionShader ) ) 
+	{
+		if (interactionShader.fragmentShader != -1)
+			qglDeleteShader(interactionShader.fragmentShader);
+		if (interactionShader.vertexShader != -1)
+			qglDeleteShader(interactionShader.vertexShader);
+		interactionShader.fragmentShader = -1;
+		interactionShader.vertexShader = -1;
+		common->Printf( "GLSL interactionShader failed to init.\n" );
 		return false;
 	} else {
 		// set uniform locations
@@ -481,7 +533,17 @@ static bool RB_GLSL_InitShaders( ) {
 	// load ambient interation shaders
 	R_LoadGLSLShader( "ambientInteraction.vs", &ambientInteractionShader, GL_VERTEX_SHADER_ARB );
 	R_LoadGLSLShader( "ambientInteraction.fs", &ambientInteractionShader, GL_FRAGMENT_SHADER_ARB );
-	if ( !R_LinkGLSLShader( &ambientInteractionShader, true ) && !R_ValidateGLSLProgram( &ambientInteractionShader ) ) {
+	if ( ambientInteractionShader.fragmentShader == -1 ||
+		 ambientInteractionShader.vertexShader == -1 ||
+		!R_LinkGLSLShader( &ambientInteractionShader, true ) && !R_ValidateGLSLProgram( &ambientInteractionShader ) ) 
+	{
+		if (ambientInteractionShader.fragmentShader != -1)
+			qglDeleteShader(ambientInteractionShader.fragmentShader);
+		if (ambientInteractionShader.vertexShader != -1)
+			qglDeleteShader(ambientInteractionShader.vertexShader);
+		ambientInteractionShader.fragmentShader = -1;
+		ambientInteractionShader.vertexShader = -1;
+		common->Printf( "GLSL ambientInteractionShader failed to init.\n" );
 		return false;
 	} else {
 		// set uniform locations
@@ -520,7 +582,16 @@ static bool RB_GLSL_InitShaders( ) {
 	// load stencil shadow extrusion shaders
 	R_LoadGLSLShader( "stencilshadow.vs", &stencilShadowShader, GL_VERTEX_SHADER_ARB );
 	R_LoadGLSLShader( "stencilshadow.fs", &stencilShadowShader, GL_FRAGMENT_SHADER_ARB );
-	if ( !R_LinkGLSLShader( &stencilShadowShader, false ) && !R_ValidateGLSLProgram( &stencilShadowShader ) ) {
+	if ( stencilShadowShader.fragmentShader == -1 ||
+		 stencilShadowShader.vertexShader == -1 ||
+		 !R_LinkGLSLShader( &stencilShadowShader, false ) && !R_ValidateGLSLProgram( &stencilShadowShader ) ) {
+		if (stencilShadowShader.fragmentShader != -1)
+			qglDeleteShader(stencilShadowShader.fragmentShader);
+		if (stencilShadowShader.vertexShader != -1)
+			qglDeleteShader(stencilShadowShader.vertexShader);
+		stencilShadowShader.fragmentShader = -1;
+		stencilShadowShader.vertexShader = -1;
+		common->Printf( "GLSL stencilShadowShader failed to init.\n" );
 		return false;
 	} else {
 		// set uniform locations
@@ -537,7 +608,14 @@ R_ReloadGLSLShaders_f
 */
 void R_ReloadGLSLShaders_f( const idCmdArgs &args ) {
 	common->Printf( "----- R_ReloadGLSLShaders -----\n" );
-	RB_GLSL_InitShaders();
+	if ( glConfig.GLSLAvailable ) {	
+		if (RB_GLSL_InitShaders())
+		{
+			glConfig.allowGLSLPath = true;
+		} else
+			common->Printf( "GLSL shaders failed to init.\n" );
+	} else		
+		common->Printf( "Not available.\n" );
 	common->Printf( "-------------------------------\n" );
 }
 
