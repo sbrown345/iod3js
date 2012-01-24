@@ -28,8 +28,7 @@ vec3 SchlickFresnel(vec3 H, vec3 V, float power, vec3 k) {
 
 float SchlickFresnel(vec3 H, vec3 V, float power, float k) {   
 	float w = pow(1 - max( dot( H, V ), 0), power);
-	return w + (1.0-w)*k;
-	//mix(k, 1, w);
+	return w + ((1.0 - w)*k);
 }
 
 
@@ -39,7 +38,7 @@ float wardiso( vec3 L, vec3 V, vec3 N, vec3 H, float roughness) {
 	float ndoth = dot( N, H);
 	float ndotl = dot( N, L);
 	float tandelta		= tan( acos(ndoth));
-	float powtandelta	= pow( tandelta, 2.0);
+	float powtandelta	= pow( tandelta, 2);
 	float a				= clamp( (1.0 / sqrt( ndotl * ndotv )), 0, 1 );
 	float powroughness	= pow( roughness, 2 );
 	return max(exp( -( powtandelta / powroughness)) * a / (4 * powroughness), 0);
@@ -62,31 +61,86 @@ float HalfLambertian( vec3 N, vec3 L, float k) {
 	return pow(ndotl, k);
 }
 
-vec4 lightingModel( vec4 diffuseTerm, vec3 specularTerm, vec3 L, vec3 V, vec3 N, vec3 H ) {   
-#if 1  
-	float specularity	= length(specularTerm);
-	float roughness		= (1 - specularity) - 0.25;
-	
-	vec3 R = reflect(-L, N); // same as: 2 * N * max(dot(N, L), 0) - L;	
-	
-	float diffuseIntensity	= HalfLambertian(N, L, 1.5);	
-	float fresnelTerm		= SchlickFresnel(H, V, 4, specularity * 2);
-	float specularIntensity = wardiso(L, V, N, H, roughness);
-							  //pow(max(dot( R, V ), 0), 4);
-							  //pow(max((dot( N, H ) - 0.75) * 4, 0), 2) * 2; // the doom3 approximation
+const float PI = 3.14159265358979323846264;
+const float PI_OVER_4 = (PI / 4.0);
+const float PI_OVER_2 = (PI / 2.0);
 
-	vec4 diffuseReflection  = max( diffuseTerm * diffuseIntensity , 0 );
-	vec3 specularReflection = max( specularTerm * specularIntensity * fresnelTerm, 0 );
- 
-	return diffuseReflection + vec4(specularReflection.rgb, 1); 
+const float max_specular_power = 2000;
+
+vec3 lightingModel( vec3 diffuse_color, vec3 roughness_v, vec3 specular_fresnel, vec3 L, vec3 V, vec3 N, vec3 H ) {   
+#if 1  
+	float n_dot_l = clamp(dot(N, L), 0, 1);
+	float n_dot_v = clamp(dot(N, V), 0, 1);
+	float n_dot_h = dot(N, H);
+	float h_dot_l = dot(H, L);
+	float h_dot_v = dot(H, V);
+
+
+	// fugly hack to give us a 'roughness' from artwork not designed for this ..
+	float roughness	= length(1-specular_fresnel) / 3;
+	specular_fresnel *= roughness_v;
+	
+	
+	// calculate specular power
+		float specular_power = pow(max_specular_power, 1 - roughness);
+
+
+	// calculate specular
+
+		// calculate fresnel term (vector)
+			float base = 1 - h_dot_l;
+			float exponential = pow(base, 5);
+			vec3 fresnel_term = specular_fresnel + ((1 - specular_fresnel) * exponential);
+
+	
+		// calculate distribution term	(scalar, unbounded)
+
+			// Beckmann
+			float m = roughness;
+			float m_sqr = m * m;
+            float n_dot_h_sqr = n_dot_h * n_dot_h;
+            float distribution_term = exp( (n_dot_h_sqr - 1.0) / (m_sqr * n_dot_h_sqr) ) / 
+											(PI * m_sqr * n_dot_h_sqr * n_dot_h_sqr);
+		
+
+		// calculate geometry term (scalar, constrained between 0 and 1)
+
+			// Schlick's approximation to Smith's shadowing function
+			float a = 1 / sqrt(PI_OVER_4 * specular_power + PI_OVER_2);
+			float geometry_term = 1 / ( (h_dot_l * (1 - a) + a) * (h_dot_v * (1 - a) + a) );
+			
+
+		// calculate final specular value			
+			vec3 final_specular_color =	   clamp(geometry_term, 0, 1)
+										 * max(distribution_term, 0)
+										 * max(fresnel_term, 0)
+										 ;
+	
+
+	// calculate diffuse
+		vec3 final_diffuse_color	=	diffuse_color;
+
+	// TODO: properly normalize lighting
+	
+	
+	vec3 finalColor = 
+		(
+			final_diffuse_color
+			+
+			final_specular_color
+		) * n_dot_l
+	;
+	
+	return finalColor;
 #else 
+	specular_fresnel *= roughness_v;
 	float diffuseIntensity  = Lambertian(N, L); 
 	float specularIntensity = pow(max((dot( N, H ) - 0.75) * 4, 0), 2) * 2; // doom3 'adjusted' specular angle
  
-	vec4 diffuseReflection  = max( diffuseTerm  * diffuseIntensity , 0 );
-	vec3 specularReflection = max( specularTerm * specularIntensity, 0 );
+	vec3 diffuseReflection  = max( diffuse_color  * diffuseIntensity , 0 );
+	vec3 specularReflection = max( specular_fresnel * specularIntensity, 0 );
  
-	return diffuseReflection + vec4(specularReflection.rgb, 1); 
+	return diffuseReflection + specularReflection; 
 #endif 
 } 
 
@@ -98,6 +152,8 @@ void main( void ) {
 	vec3 L = normalize( lightDir ); 
 	vec3 V = normalize( viewDir ); 
 	vec3 H = normalize( L + V ); 
+
+	float attenuation = 1;//300/length(lightDir);
  
 	// compute normal from normal map, move from [0, 1] to [-1, 1] range, normalize 
 	vec3 N = normalize( ( 2.0 * texture2D ( u_normalTexture, var_TexNormal.st ).wyz ) - 1.0 ); 
@@ -114,7 +170,7 @@ void main( void ) {
 	vec3 lightProjection	= texture2DProj( u_lightProjectionTexture, var_TexLight.xyw ).rgb; 
 
 	// compute lighting model
-    vec4 color = lightingModel(diffuse, specular, L, V, N, H );  
+    vec4 color = vec4(lightingModel(diffuse.rgb, u_specularColor.rgb, specular, L, V, N, H ) * min(attenuation, 1), diffuse.a);
 	color.rgb *= lightProjection; 
 	color.rgb *= lightFalloff; 
 	color.rgb *= var_Color.rgb; 

@@ -474,8 +474,8 @@ bool R_ValidateGLSLProgram( shaderProgram_t *shaderProgram ) {
 
 static bool RB_GLSL_InitShaders( ) {
 	// load interation shaders
-	R_LoadGLSLShader( "interaction.vs", &interactionShader, GL_VERTEX_SHADER_ARB );
-	R_LoadGLSLShader( "interaction.fs", &interactionShader, GL_FRAGMENT_SHADER_ARB );
+	R_LoadGLSLShader( "interaction.vertex", &interactionShader, GL_VERTEX_SHADER_ARB );
+	R_LoadGLSLShader( "interaction.fragment", &interactionShader, GL_FRAGMENT_SHADER_ARB );
 
 	if ( interactionShader.fragmentShader == -1 ||
 		 interactionShader.vertexShader == -1 ||
@@ -531,8 +531,8 @@ static bool RB_GLSL_InitShaders( ) {
 	}
 
 	// load ambient interation shaders
-	R_LoadGLSLShader( "ambientInteraction.vs", &ambientInteractionShader, GL_VERTEX_SHADER_ARB );
-	R_LoadGLSLShader( "ambientInteraction.fs", &ambientInteractionShader, GL_FRAGMENT_SHADER_ARB );
+	R_LoadGLSLShader( "ambientInteraction.vertex", &ambientInteractionShader, GL_VERTEX_SHADER_ARB );
+	R_LoadGLSLShader( "ambientInteraction.fragment", &ambientInteractionShader, GL_FRAGMENT_SHADER_ARB );
 	if ( ambientInteractionShader.fragmentShader == -1 ||
 		 ambientInteractionShader.vertexShader == -1 ||
 		!R_LinkGLSLShader( &ambientInteractionShader, true ) && !R_ValidateGLSLProgram( &ambientInteractionShader ) ) 
@@ -580,8 +580,8 @@ static bool RB_GLSL_InitShaders( ) {
 	}
 
 	// load stencil shadow extrusion shaders
-	R_LoadGLSLShader( "stencilshadow.vs", &stencilShadowShader, GL_VERTEX_SHADER_ARB );
-	R_LoadGLSLShader( "stencilshadow.fs", &stencilShadowShader, GL_FRAGMENT_SHADER_ARB );
+	R_LoadGLSLShader( "stencilshadow.vertex", &stencilShadowShader, GL_VERTEX_SHADER_ARB );
+	R_LoadGLSLShader( "stencilshadow.fragment", &stencilShadowShader, GL_FRAGMENT_SHADER_ARB );
 	if ( stencilShadowShader.fragmentShader == -1 ||
 		 stencilShadowShader.vertexShader == -1 ||
 		 !R_LinkGLSLShader( &stencilShadowShader, false ) && !R_ValidateGLSLProgram( &stencilShadowShader ) ) {

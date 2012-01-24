@@ -570,9 +570,9 @@ typedef struct st_lwObject {
 
 /* lwo2.c */
 
-lwObject *lwGetObject( const char *filename, unsigned int *failID, int *failpos );
-void lwFreeObject( lwObject *object );
 void lwFreeLayer( lwLayer *layer );
+void lwFreeObject( lwObject *object );
+lwObject *lwGetObject( const char *filename, unsigned int *failID, int *failpos );
 
 /* pntspols.c */
 
