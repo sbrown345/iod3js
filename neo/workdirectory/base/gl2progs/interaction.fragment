@@ -69,6 +69,8 @@ const float max_specular_power = 2000;
 
 vec3 lightingModel( vec3 diffuse_color, vec3 roughness_v, vec3 specular_fresnel, vec3 L, vec3 V, vec3 N, vec3 H ) {   
 #if 1  
+	// WARNING: this is experimental stuff, this is not optimized!
+
 	float n_dot_l = clamp(dot(N, L), 0, 1);
 	float n_dot_v = clamp(dot(N, V), 0, 1);
 	float n_dot_h = dot(N, H);
@@ -77,8 +79,8 @@ vec3 lightingModel( vec3 diffuse_color, vec3 roughness_v, vec3 specular_fresnel,
 
 
 	// fugly hack to give us a 'roughness' from artwork not designed for this ..
-	float roughness	= length(1-specular_fresnel) / 3;
-	specular_fresnel *= roughness_v;
+	float roughness	= (length(1-specular_fresnel) / 3);
+	//specular_fresnel *= roughness_v;
 	
 	
 	// calculate specular power
@@ -106,22 +108,31 @@ vec3 lightingModel( vec3 diffuse_color, vec3 roughness_v, vec3 specular_fresnel,
 		// calculate geometry term (scalar, constrained between 0 and 1)
 
 			// Schlick's approximation to Smith's shadowing function
-			float a = 1 / sqrt(PI_OVER_4 * specular_power + PI_OVER_2);
-			float geometry_term = 1 / ( (h_dot_l * (1 - a) + a) * (h_dot_v * (1 - a) + a) );
-			
+			float a = roughness * sqrt(2 / PI);
+			float one_minus_a = 1 - a;
+			float geometry_term = 1 / ( (h_dot_l * one_minus_a + a) * (h_dot_v * one_minus_a + a) );
+						
 
 		// calculate final specular value			
-			vec3 final_specular_color =	   clamp(geometry_term, 0, 1)
-										 * max(distribution_term, 0)
-										 * max(fresnel_term, 0)
+			float specular_normalization = max((4.0 * n_dot_l * n_dot_v), 0.15); // avoid dividing by 0
+			vec3 final_specular_color =	 max(
+											(
+												   clamp(geometry_term, 0.01, 1)
+													// distribution-term shouldn't be clamped, 
+													//	but couldn't avoid sparkles in doom3 without it
+												 * clamp(distribution_term, 0, 1)	
+												 * max(fresnel_term, 0)
+											 ) / specular_normalization
+											 , 0)
 										 ;
 	
 
 	// calculate diffuse
-		vec3 final_diffuse_color	=	diffuse_color;
-
-	// TODO: properly normalize lighting
-	
+		vec3 final_diffuse_color	=	diffuse_color
+										* max(
+											(1 - specular_fresnel + (1.0-specular_fresnel) * pow(1.0 - n_dot_l, 5.0))
+										, 0);
+			
 	
 	vec3 finalColor = 
 		(
