@@ -453,15 +453,16 @@ all renderSystem functions will still operate properly, notably the material
 and model information functions.
 ==================
 */
-void R_InitOpenGL( void ) {
+void R_InitOpenGL(void)
+{
 	GLint			temp;
 	glimpParms_t	parms;
 	int				i;
 
-	common->Printf( "----- R_InitOpenGL -----\n" );
+	common->Printf("----- R_InitOpenGL -----\n");
 
-	if ( glConfig.isInitialized ) {
-		common->FatalError( "R_InitOpenGL called while active" );
+	if (glConfig.isInitialized) {
+		common->FatalError("R_InitOpenGL called while active");
 	}
 
 	// in case we had an error while doing a tiled rendering
@@ -471,9 +472,9 @@ void R_InitOpenGL( void ) {
 	//
 	// initialize OS specific portions of the renderSystem
 	//
-	for ( i = 0 ; i < 2 ; i++ ) {
+	for (i = 0 ; i < 2 ; i++) {
 		// set the parameters we are trying
-		R_GetModeInfo( &glConfig.vidWidth, &glConfig.vidHeight, r_mode.GetInteger() );
+		R_GetModeInfo(&glConfig.vidWidth, &glConfig.vidHeight, r_mode.GetInteger());
 
 		parms.width = glConfig.vidWidth;
 		parms.height = glConfig.vidHeight;
@@ -482,21 +483,21 @@ void R_InitOpenGL( void ) {
 		parms.multiSamples = r_multiSamples.GetInteger();
 		parms.stereo = false;
 
-		if ( GLimp_Init( parms ) ) {
+		if (GLimp_Init(parms)) {
 			// it worked
 			break;
 		}
 
-		if ( i == 1 ) {
-			common->FatalError( "Unable to initialize OpenGL" );
+		if (i == 1) {
+			common->FatalError("Unable to initialize OpenGL");
 		}
 
 		// if we failed, set everything back to "safe mode"
 		// and try again
-		r_mode.SetInteger( 3 );
-		r_fullscreen.SetInteger( 1 );
-		r_displayRefresh.SetInteger( 0 );
-		r_multiSamples.SetInteger( 0 );
+		r_mode.SetInteger(3);
+		r_fullscreen.SetInteger(1);
+		r_displayRefresh.SetInteger(0);
+		r_multiSamples.SetInteger(0);
 	}
 
 	// input and sound systems need to be tied to the new window
@@ -510,11 +511,11 @@ void R_InitOpenGL( void ) {
 	glConfig.extensions_string = (const char *)glGetString(GL_EXTENSIONS);
 
 	// OpenGL driver constants
-	glGetIntegerv( GL_MAX_TEXTURE_SIZE, &temp );
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &temp);
 	glConfig.maxTextureSize = temp;
 
 	// stubbed or broken drivers may have reported 0...
-	if ( glConfig.maxTextureSize <= 0 ) {
+	if (glConfig.maxTextureSize <= 0) {
 		glConfig.maxTextureSize = 256;
 	}
 
@@ -525,14 +526,18 @@ void R_InitOpenGL( void ) {
 
 	// parse our vertex and fragment programs, possibly disably support for
 	// one of the paths if there was an error
+#if !defined(GL_ES_VERSION_2_0)
 	R_ARB2_Init();
+#endif
 	R_GLSL_Init();
 
 #if !defined(GL_ES_VERSION_2_0)
-	cmdSystem->AddCommand( "reloadARBprograms", R_ReloadARBPrograms_f, CMD_FL_RENDERER, "reloads ARB programs" );
+	cmdSystem->AddCommand("reloadARBprograms", R_ReloadARBPrograms_f, CMD_FL_RENDERER, "reloads ARB programs");
+	R_ReloadARBPrograms_f(idCmdArgs());
 #endif
-	cmdSystem->AddCommand( "reloadGLSLshaders", R_ReloadGLSLShaders_f, CMD_FL_RENDERER, "reloads ARB programs" );
-	R_ReloadARBPrograms_f( idCmdArgs() );
+
+	cmdSystem->AddCommand("reloadGLSLprograms", R_ReloadGLSLPrograms_f, CMD_FL_RENDERER, "reloads GLSL programs");
+	R_ReloadGLSLPrograms_f(idCmdArgs());
 
 	// allocate the vertex array range or vertex objects
 	vertexCache.Init();
@@ -546,28 +551,6 @@ void R_InitOpenGL( void ) {
 
 	// Reset our gamma
 	R_SetColorMappings();
-
-#ifdef _WIN32
-	static bool glCheck = false;
-	if ( !glCheck && win32.osversion.dwMajorVersion == 6 ) {
-		glCheck = true;
-		if ( !idStr::Icmp( glConfig.vendor_string, "Microsoft" ) && idStr::FindText( glConfig.renderer_string, "OpenGL-D3D" ) != -1 ) {
-			if ( cvarSystem->GetCVarBool( "r_fullscreen" ) ) {
-				cmdSystem->BufferCommandText( CMD_EXEC_NOW, "vid_restart partial windowed\n" );
-				Sys_GrabMouseCursor( false );
-			}
-			int ret = MessageBox( NULL, "Please install OpenGL drivers from your graphics hardware vendor to run " GAME_NAME ".\nYour OpenGL functionality is limited.",
-				"Insufficient OpenGL capabilities", MB_OKCANCEL | MB_ICONWARNING | MB_TASKMODAL );
-			if ( ret == IDCANCEL ) {
-				cmdSystem->BufferCommandText( CMD_EXEC_APPEND, "quit\n" );
-				cmdSystem->ExecuteCommandBuffer();
-			}
-			if ( cvarSystem->GetCVarBool( "r_fullscreen" ) ) {
-				cmdSystem->BufferCommandText( CMD_EXEC_APPEND, "vid_restart\n" );
-			}
-		}
-	}
-#endif
 }
 
 /*

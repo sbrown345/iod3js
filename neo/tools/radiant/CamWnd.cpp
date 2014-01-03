@@ -198,7 +198,7 @@ void CCamWnd::OnPaint() {
 	CPaintDC	dc(this);	// device context for painting
 	bool		bPaint = true;
 
-	if (!qwglMakeCurrent(dc.m_hDC, win32.hGLRC)) {
+	if (!wglMakeCurrent(dc.m_hDC, win32.hGLRC)) {
 		common->Printf("ERROR: wglMakeCurrent failed..\n ");
 		common->Printf("Please restart " EDITOR_WINDOWTEXT " if the camera view is not working\n");
 	}
@@ -213,7 +213,7 @@ void CCamWnd::OnPaint() {
 
 		Cam_Draw();
 		QE_CheckOpenGLForErrors();
-		qwglSwapBuffers(dc.m_hDC);
+		SwapBuffers(dc.m_hDC);
 	}
 }
 
@@ -361,15 +361,15 @@ int CCamWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	}
 
 	// create the bitmap display lists we're making images of glyphs 0 thru 255
-	if ( !qwglUseFontBitmaps(hDC, 0, 255, g_qeglobals.d_font_list) ) {
+	if ( !wglUseFontBitmaps(hDC, 0, 255, g_qeglobals.d_font_list) ) {
 		common->Warning( "wglUseFontBitmaps failed (%d).  Trying again.", GetLastError() );
 
 		// FIXME: This is really wacky, sometimes the first call fails, but calling it again makes it work
 		//		This probably indicates there's something wrong somewhere else in the code, but I'm not sure what
-		if ( !qwglUseFontBitmaps(hDC, 0, 255, g_qeglobals.d_font_list) ) {
+		if ( !wglUseFontBitmaps(hDC, 0, 255, g_qeglobals.d_font_list) ) {
 			common->Warning( "wglUseFontBitmaps failed again (%d).  Trying outlines.", GetLastError() );
 
-			if (!qwglUseFontOutlines(hDC, 0, 255, g_qeglobals.d_font_list, 0.0f, 0.1f, WGL_FONT_LINES, NULL)) {
+			if (!wglUseFontOutlines(hDC, 0, 255, g_qeglobals.d_font_list, 0.0f, 0.1f, WGL_FONT_LINES, NULL)) {
 				common->Warning( "wglUseFontOutlines also failed (%d), no coordinate text will be visible.", GetLastError() );
 			}
 		}
@@ -2062,7 +2062,7 @@ void CCamWnd::Cam_Render() {
 		return;					// not valid yet
 	}
 
-	if (!qwglMakeCurrent(dc.m_hDC, win32.hGLRC)) {
+	if (!wglMakeCurrent(dc.m_hDC, win32.hGLRC)) {
 		common->Printf("ERROR: wglMakeCurrent failed..\n ");
 		common->Printf("Please restart " EDITOR_WINDOWTEXT " if the camera view is not working\n");
 		return;
@@ -2074,7 +2074,7 @@ void CCamWnd::Cam_Render() {
 	glScissor( 0, 0, m_Camera.width, m_Camera.height );
 	glClear( GL_COLOR_BUFFER_BIT );
 
-	//	qwglSwapBuffers(dc.m_hDC);
+	//	SwapBuffers(dc.m_hDC);
 
 	// create the model, using explicit normals
 	if ( rebuildMode && worldDirty ) {
@@ -2110,7 +2110,7 @@ void CCamWnd::Cam_Render() {
 	//glPopAttrib();
 	//DrawEntityData();
 
-	//qwglSwapBuffers(dc.m_hDC);
+	//SwapBuffers(dc.m_hDC);
 	// get back to the editor state
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();

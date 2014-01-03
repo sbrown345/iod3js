@@ -38,10 +38,7 @@ If you have questions concerning this license or the applicable additional terms
 */
 
 
-void __builtin_trap() 
-{
-	exit(0);
-}
+
 /*
 ================
 RB_DrawElementsWithCounters
@@ -50,7 +47,8 @@ RB_DrawElementsWithCounters
 void RB_DrawElementsWithCounters( const srfTriangles_t *tri ) {
 	if (!backEnd.glState.currentProgram) {
 		common->Printf("RB_DrawElementsWithCounters: no current program object\n");
-		__builtin_trap();
+		//__builtin_trap();
+		exit(0);
 		return;
 	}
 
@@ -94,7 +92,8 @@ May not use all the indexes in the surface if caps are skipped
 void RB_DrawShadowElementsWithCounters( const srfTriangles_t *tri, int numIndexes ) {
 	if (!backEnd.glState.currentProgram) {
 		common->Printf("RB_DrawShadowElementsWithCounters: no current program object\n");
-		__builtin_trap();
+		//__builtin_trap();
+		exit(0);
 		return;
 	}
 

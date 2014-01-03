@@ -618,9 +618,6 @@
     <ClInclude Include="renderer\esUtil_win.h">
       <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="renderer\gl2.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="renderer\gl2ext.h">
       <Filter>Renderer</Filter>
     </ClInclude>
@@ -1831,6 +1828,9 @@
     </ClCompile>
     <ClCompile Include="renderer\esUtil_win32.c">
       <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="sys\win32\win_qgl.cpp">
+      <Filter>Sys</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

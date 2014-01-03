@@ -253,7 +253,7 @@ void CNewTexWnd::OnPaint() {
 	int nOld = g_qeglobals.d_texturewin.m_nTotalHeight;
 
 	//hdcTexture = GetDC();
-	if (!qwglMakeCurrent(dc.GetSafeHdc(), win32.hGLRC)) {
+	if (!wglMakeCurrent(dc.GetSafeHdc(), win32.hGLRC)) {
 		common->Printf("ERROR: wglMakeCurrent failed..\n ");
 	}
 	else {
@@ -361,7 +361,7 @@ void CNewTexWnd::OnPaint() {
 		// reset the current texture
 		globalImages->BindNull();
 		glFinish();
-		qwglSwapBuffers(dc.GetSafeHdc());
+		SwapBuffers(dc.GetSafeHdc());
 		TRACE("Texture Paint\n");
 	}
 

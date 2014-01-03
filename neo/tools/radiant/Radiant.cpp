@@ -135,8 +135,8 @@ void RadiantInit( void ) {
 		pThread->InitInstance();
 
 		glFinish();
-		//qwglMakeCurrent(0, 0);
-		qwglMakeCurrent(win32.hDC, win32.hGLRC);
+		//wglMakeCurrent(0, 0);
+		wglMakeCurrent(win32.hDC, win32.hGLRC);
 
 		// hide the doom window by default
 		::ShowWindow( win32.hWnd, SW_HIDE );
@@ -174,8 +174,8 @@ void RadiantRun( void ) {
 			glDepthMask(true);
 			theApp.Run();
 			//glPopAttrib();
-			//qwglMakeCurrent(0, 0);
-			qwglMakeCurrent(win32.hDC, win32.hGLRC);
+			//wglMakeCurrent(0, 0);
+			wglMakeCurrent(win32.hDC, win32.hGLRC);
 		}
 	}
 	catch( idException &ex ) {

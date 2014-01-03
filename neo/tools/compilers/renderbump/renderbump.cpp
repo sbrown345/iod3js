@@ -144,7 +144,7 @@ static void ResizeWindow( int width, int height ) {
 	}
 	SetWindowPos( win32.hWnd, HWND_TOP, 0, 0, winWidth, winHeight, SWP_SHOWWINDOW );
 
-	qwglMakeCurrent( win32.hDC, win32.hGLRC );
+	wglMakeCurrent( win32.hDC, win32.hGLRC );
 #endif
 }
 

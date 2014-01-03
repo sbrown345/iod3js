@@ -165,7 +165,7 @@ void idGLWidget::OnPaint()
 	CRect rect;
 	GetClientRect(rect);
 
-	if (!qwglMakeCurrent(dc.m_hDC, win32.hGLRC)) {
+	if (!wglMakeCurrent(dc.m_hDC, win32.hGLRC)) {
 	}
 
 	glViewport(0, 0, rect.Width(), rect.Height());
@@ -191,9 +191,9 @@ void idGLWidget::OnPaint()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	qwglSwapBuffers(dc);
+	SwapBuffers(dc);
 	glFlush();
-	qwglMakeCurrent(win32.hDC, win32.hGLRC);
+	wglMakeCurrent(win32.hDC, win32.hGLRC);
 
 }
 

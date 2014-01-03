@@ -476,7 +476,7 @@ void rvGEViewer::Render	( HDC dc )
 	int	backEnd;
 	
 	// Switch GL contexts to our dc
-	if (!qwglMakeCurrent( dc, win32.hGLRC )) 
+	if (!wglMakeCurrent( dc, win32.hGLRC )) 
 	{
 		common->Printf("ERROR: wglMakeCurrent failed.. Error:%i\n", glGetError());
 		common->Printf("Please restart Q3Radiant if the Map view is not working\n");
@@ -537,7 +537,7 @@ void rvGEViewer::Render	( HDC dc )
 	}
 
 	glFinish ( );
-	qwglSwapBuffers(dc);
+	SwapBuffers(dc);
 }
 
 void rvGEViewer::RunFrame ( void )

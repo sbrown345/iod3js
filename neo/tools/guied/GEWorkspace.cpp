@@ -273,7 +273,7 @@ void rvGEWorkspace::Render ( HDC hdc )
 	scale = g_ZoomScales[mZoom];
 
 	// Switch GL contexts to our dc
-	if (!qwglMakeCurrent( hdc, win32.hGLRC )) 
+	if (!wglMakeCurrent( hdc, win32.hGLRC )) 
 	{
 		common->Printf("ERROR: wglMakeCurrent failed.. Error:%i\n", glGetError());
 		common->Printf("Please restart Q3Radiant if the Map view is not working\n");
@@ -350,7 +350,7 @@ void rvGEWorkspace::Render ( HDC hdc )
 	mSelections.Render ( );
 	
 	glFinish ( );
-	qwglSwapBuffers(hdc);
+	SwapBuffers(hdc);
 
 	glEnable( GL_TEXTURE_CUBE_MAP_EXT );
 	glEnable( GL_CULL_FACE);
