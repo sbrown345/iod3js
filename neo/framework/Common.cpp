@@ -1514,23 +1514,10 @@ void Com_ExecMachineSpec_f( const idCmdArgs &args ) {
 		cvarSystem->SetCVarBool( "r_forceLoadImages", false, CVAR_ARCHIVE );
 	}
 
-	bool oldCard = false;
-	bool nv10or20 = false;
-	renderSystem->GetCardCaps( oldCard, nv10or20 );
-	if ( oldCard ) {
-		cvarSystem->SetCVarBool( "g_decals", false, CVAR_ARCHIVE );
-		cvarSystem->SetCVarBool( "g_projectileLights", false, CVAR_ARCHIVE );
-		cvarSystem->SetCVarBool( "g_doubleVision", false, CVAR_ARCHIVE );
-		cvarSystem->SetCVarBool( "g_muzzleFlash", false, CVAR_ARCHIVE );
-	} else {
-		cvarSystem->SetCVarBool( "g_decals", true, CVAR_ARCHIVE );
-		cvarSystem->SetCVarBool( "g_projectileLights", true, CVAR_ARCHIVE );
-		cvarSystem->SetCVarBool( "g_doubleVision", true, CVAR_ARCHIVE );
-		cvarSystem->SetCVarBool( "g_muzzleFlash", true, CVAR_ARCHIVE );
-	}
-	if ( nv10or20 ) {
-		cvarSystem->SetCVarInteger( "image_useNormalCompression", 1, CVAR_ARCHIVE );
-	}
+	cvarSystem->SetCVarBool("g_decals", true, CVAR_ARCHIVE);
+	cvarSystem->SetCVarBool("g_projectileLights", true, CVAR_ARCHIVE);
+	cvarSystem->SetCVarBool("g_doubleVision", true, CVAR_ARCHIVE);
+	cvarSystem->SetCVarBool("g_muzzleFlash", true, CVAR_ARCHIVE);
 
 #if MACOS_X
 	// On low settings, G4 systems & 64MB FX5200/NV34 Systems should default shadows off
@@ -2728,32 +2715,30 @@ bool idCommonLocal::IsInitialized( void ) const {
 idCommonLocal::SetMachineSpec
 =================
 */
-void idCommonLocal::SetMachineSpec( void ) {
+void idCommonLocal::SetMachineSpec(void)
+{
 	cpuid_t	cpu = Sys_GetProcessorId();
 	double ghz = Sys_ClockTicksPerSecond() * 0.000000001f;
 	int vidRam = Sys_GetVideoRam();
 	int sysRam = Sys_GetSystemRam();
-	bool oldCard = false;
-	bool nv10or20 = false;
 
-	renderSystem->GetCardCaps( oldCard, nv10or20 );
+	Printf("Detected\n \t%.2f GHz CPU\n\t%i MB of System memory\n\t%i MB of Video memory\n\n", ghz, sysRam, vidRam);
 
-	Printf( "Detected\n \t%.2f GHz CPU\n\t%i MB of System memory\n\t%i MB of Video memory on %s\n\n", ghz, sysRam, vidRam, ( oldCard ) ? "a less than optimal video architecture" : "an optimal video architecture" );
-
-	if ( ghz >= 2.75f && vidRam >= 512 && sysRam >= 1024 && !oldCard ) {
-		Printf( "This system qualifies for Ultra quality!\n" );
-		com_machineSpec.SetInteger( 3 );
-	} else if ( ghz >= ( ( cpu & CPUID_AMD ) ? 1.9f : 2.19f ) && vidRam >= 256 && sysRam >= 512 && !oldCard ) {
-		Printf( "This system qualifies for High quality!\n" );
-		com_machineSpec.SetInteger( 2 );
-	} else if ( ghz >= ( ( cpu & CPUID_AMD ) ? 1.1f : 1.25f ) && vidRam >= 128 && sysRam >= 384 ) {
-		Printf( "This system qualifies for Medium quality.\n" );
-		com_machineSpec.SetInteger( 1 );
+	if (ghz >= 2.75f && vidRam >= 512 && sysRam >= 1024) {
+		Printf("This system qualifies for Ultra quality!\n");
+		com_machineSpec.SetInteger(3);
+	} else if (ghz >= ((cpu & CPUID_AMD) ? 1.9f : 2.19f) && vidRam >= 256 && sysRam >= 512) {
+		Printf("This system qualifies for High quality!\n");
+		com_machineSpec.SetInteger(2);
+	} else if (ghz >= ((cpu & CPUID_AMD) ? 1.1f : 1.25f) && vidRam >= 128 && sysRam >= 384) {
+		Printf("This system qualifies for Medium quality.\n");
+		com_machineSpec.SetInteger(1);
 	} else {
-		Printf( "This system qualifies for Low quality.\n" );
-		com_machineSpec.SetInteger( 0 );
+		Printf("This system qualifies for Low quality.\n");
+		com_machineSpec.SetInteger(0);
 	}
-	com_videoRam.SetInteger( vidRam );
+
+	com_videoRam.SetInteger(vidRam);
 }
 
 /*

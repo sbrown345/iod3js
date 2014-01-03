@@ -220,7 +220,8 @@ BindForViewOrigin
 ====================
 */
 void idMegaTexture::BindForViewOrigin( const idVec3 viewOrigin ) {
-
+	common->FatalError( "ignoring BindForViewOrigin" );
+#if 0
 	SetViewOrigin( viewOrigin );
 
 	// borderClamp image goes in texture 0
@@ -264,6 +265,7 @@ void idMegaTexture::BindForViewOrigin( const idVec3 viewOrigin ) {
 	parms[2] = r_terrainScale.GetFloat();
 	parms[3] = 1;
 	glProgramLocalParameter4fvARB( GL_VERTEX_PROGRAM_ARB, 8, parms );
+#endif
 }
 
 /*

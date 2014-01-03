@@ -361,7 +361,7 @@ void RB_T_FillDepthBuffer( const drawSurf_t *surf ) {
 
 	tri = surf->geo;
 	shader = surf->material;
-#warning TODO
+//todo #warning TODO
 #if !defined(GL_ES_VERSION_2_0)
 	// update the clip plane if needed
 	if ( backEnd.viewDef->numClipPlanes && surf->space != backEnd.currentSpace ) {
@@ -541,7 +541,7 @@ void RB_STD_FillDepthBuffer( drawSurf_t **drawSurfs, int numDrawSurfs ) {
 
 	GL_UseProgram(&depthFillShader);
 
-#warning unimplemented in GLES shaders
+//todo #warning unimplemented in GLES shaders
 #if !defined(GL_ES_VERSION_2_0)
 	// enable the second texture for mirror plane clipping if needed
 	if ( backEnd.viewDef->numClipPlanes ) {
@@ -1267,7 +1267,7 @@ RB_T_BlendLight
 =====================
 */
 static void RB_T_BlendLight( const drawSurf_t *surf ) {
-#warning RB_T_BlendLight
+//todo #warning RB_T_BlendLight
 #if !defined(GL_ES_VERSION_2_0)
 	const srfTriangles_t *tri;
 
@@ -1313,7 +1313,7 @@ mode to the framebuffer, instead of interacting with the surface texture
 =====================
 */static void RB_BlendLight(const drawSurf_t *drawSurfs,  const drawSurf_t *drawSurfs2)
 {
-#warning RB_BlendLight
+//#warning RB_BlendLight
 #if !defined(GL_ES_VERSION_2_0)
 	const idMaterial	*lightShader;
 	const shaderStage_t	*stage;
@@ -1401,7 +1401,7 @@ RB_T_BasicFog
 =====================
 */
 static void RB_T_BasicFog( const drawSurf_t *surf ) {
-#warning
+//#warning
 #if !defined(GL_ES_VERSION_2_0)
 	if ( backEnd.currentSpace != surf->space ) {
 		idPlane	local;
@@ -1441,7 +1441,7 @@ RB_FogPass
 */
 static void RB_FogPass(const drawSurf_t *drawSurfs,  const drawSurf_t *drawSurfs2)
 {
-#warning
+//#warning
 #if !defined(GL_ES_VERSION_2_0)
 	const srfTriangles_t *frustumTris;
 	drawSurf_t			ds;
@@ -1563,7 +1563,7 @@ RB_STD_FogAllLights
 ==================
 */
 void RB_STD_FogAllLights( void ) {
-#warning
+//#warning
 #if !defined(GL_ES_VERSION_2_0)
 	viewLight_t	*vLight;
 
@@ -1632,7 +1632,7 @@ a floating point value
 ==================
 */
 void RB_STD_LightScale( void ) {
-#warning
+//#warning
 #if !defined(GL_ES_VERSION_2_0)
 	float	v, f;
 
@@ -1725,9 +1725,6 @@ void	RB_STD_DrawView( void ) {
 
 	// main light renderer
 	switch( tr.backEndRenderer ) {
-	case BE_ARB:
-		RB_ARB_DrawInteractions();
-		break;
 #if 0
 	case BE_ARB2:
 		RB_ARB2_DrawInteractions();
@@ -1735,15 +1732,6 @@ void	RB_STD_DrawView( void ) {
 #endif
 	case BE_GLSL:
 		RB_GLSL_DrawInteractions();
-		break;
-	case BE_NV20:
-		RB_NV20_DrawInteractions();
-		break;
-	case BE_NV10:
-		RB_NV10_DrawInteractions();
-		break;
-	case BE_R200:
-		RB_R200_DrawInteractions();
 		break;
 	}
 

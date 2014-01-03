@@ -1,23 +1,10 @@
-Revision: 860782eb7e0667ccad6b029bad596d379834785c
-Author: Oliver McFadden <omcfadde@gmail.com>
-Date: 24/04/2012 13:07:51
-Message:
-es2: initial OpenGL ES2.0 renderer support.
-
-
-
-
-
-THIS FILE NEXT
-
-
 /*
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code ("Doom 3 Source Code").  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -44,12 +31,10 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "tr_local.h"
 
-shaderProgram_t		interactionShader = {-1};
-shaderProgram_t		ambientInteractionShader = {-1};
-shaderProgram_t		stencilShadowShader = {-1};
-
-shaderProgram_t		defaultShader;
-shaderProgram_t		depthFillShader;
+shaderProgram_t	interactionShader;
+shaderProgram_t	shadowShader;
+shaderProgram_t	defaultShader;
+shaderProgram_t	depthFillShader;
 
 /*
 =========================================================================================
@@ -64,10 +49,11 @@ GENERAL INTERACTION RENDERING
 GL_SelectTextureNoClient
 ====================
 */
-static void GL_SelectTextureNoClient( int unit ) {
+static void GL_SelectTextureNoClient(int unit)
+{
 	backEnd.glState.currenttmu = unit;
-	glActiveTextureARB( GL_TEXTURE0_ARB + unit );
-	RB_LogComment( "glActiveTextureARB( %i )\n", unit );
+	glActiveTexture(GL_TEXTURE0 + unit);
+	RB_LogComment("glActiveTexture( %i )\n", unit);
 }
 
 /*
@@ -230,10 +216,12 @@ void RB_GLSL_CreateDrawInteractions(const drawSurf_t *surf)
 RB_GLSL_DrawInteractions
 ==================
 */
-void RB_GLSL_DrawInteractions( void ) {
+void RB_GLSL_DrawInteractions(void)
+{
 	viewLight_t		*vLight;
+	const idMaterial	*lightShader;
 
-	GL_SelectTexture( 0 );
+	GL_SelectTexture(0);
 	/*
 	GL_DisableVertexAttribArray(offsetof(shaderProgram_t, attr_TexCoord));
 	*/
@@ -241,38 +229,42 @@ void RB_GLSL_DrawInteractions( void ) {
 	//
 	// for each light, perform adding and shadowing
 	//
-	for ( vLight = backEnd.viewDef->viewLights ; vLight ; vLight = vLight->next ) {
+	for (vLight = backEnd.viewDef->viewLights ; vLight ; vLight = vLight->next) {
 		backEnd.vLight = vLight;
 
 		// do fogging later
-		if ( vLight->lightShader->IsFogLight() ) {
-			continue;
-		}
-		if ( vLight->lightShader->IsBlendLight() ) {
+		if (vLight->lightShader->IsFogLight()) {
 			continue;
 		}
 
-		// if there are no interactions, get out!
-		if ( !vLight->localInteractions && !vLight->globalInteractions && 
-			!vLight->translucentInteractions ) {
+		if (vLight->lightShader->IsBlendLight()) {
 			continue;
 		}
+
+		if (!vLight->localInteractions && !vLight->globalInteractions
+		    && !vLight->translucentInteractions) {
+			continue;
+		}
+
+		lightShader = vLight->lightShader;
 
 		// clear the stencil buffer if needed
-		if ( vLight->globalShadows || vLight->localShadows ) {
+		if (vLight->globalShadows || vLight->localShadows) {
 			backEnd.currentScissor = vLight->scissorRect;
-			if ( r_useScissor.GetBool() ) {
-				glScissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1, 
-					backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
-					backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
-					backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
+
+			if (r_useScissor.GetBool()) {
+				glScissor(backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
+				          backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
+				          backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
+				          backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1);
 			}
-			glClear( GL_STENCIL_BUFFER_BIT );
+
+			glClear(GL_STENCIL_BUFFER_BIT);
 		} else {
 			// no shadows, so no need to read or write the stencil buffer
 			// we might in theory want to use GL_ALWAYS instead of disabling
 			// completely, to satisfy the invarience rules
-			glStencilFunc( GL_ALWAYS, 128, 255 );
+			glStencilFunc(GL_ALWAYS, 128, 255);
 		}
 
 		GL_UseProgram(&shadowShader);
@@ -284,27 +276,29 @@ void RB_GLSL_DrawInteractions( void ) {
 		GL_UseProgram(NULL);	// if there weren't any globalInteractions, it would have stayed on
 
 		// translucent surfaces never get stencil shadowed
-		if ( r_skipTranslucent.GetBool() ) {
+		if (r_skipTranslucent.GetBool()) {
 			continue;
 		}
 
-		glStencilFunc( GL_ALWAYS, 128, 255 );
+		glStencilFunc(GL_ALWAYS, 128, 255);
 
 		backEnd.depthFunc = GLS_DEPTHFUNC_LESS;
-		RB_GLSL_CreateDrawInteractions( vLight->translucentInteractions );
+		RB_GLSL_CreateDrawInteractions(vLight->translucentInteractions);
+
 		backEnd.depthFunc = GLS_DEPTHFUNC_EQUAL;
 	}
 
 	// disable stencil shadow test
-	glStencilFunc( GL_ALWAYS, 128, 255 );
+	glStencilFunc(GL_ALWAYS, 128, 255);
 
-	GL_SelectTexture( 0 );
+	GL_SelectTexture(0);
 	/*
 	GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_TexCoord));
 	*/
 }
 
 //===================================================================================
+
 
 /*
 =================
@@ -313,84 +307,52 @@ R_LoadGLSLShader
 loads GLSL vertex or fragment shaders
 =================
 */
-bool R_LoadGLSLShader( const char *name, shaderProgram_t *shaderProgram, GLenum type ) {
+static void R_LoadGLSLShader(const char *name, shaderProgram_t *shaderProgram, GLenum type)
+{
 	idStr	fullPath = "gl2progs/";
 	fullPath += name;
 	char	*fileBuffer;
 	char	*buffer;
 
-	common->Printf( "%s", fullPath.c_str() );
+	common->Printf("%s", fullPath.c_str());
 
 	// load the program even if we don't support it, so
 	// fs_copyfiles can generate cross-platform data dumps
-	fileSystem->ReadFile( fullPath.c_str(), (void **)&fileBuffer, NULL );
-	if ( !fileBuffer ) {
-		common->Printf( ": File not found\n" );
-		return false;
+	fileSystem->ReadFile(fullPath.c_str(), (void **)&fileBuffer, NULL);
+
+	if (!fileBuffer) {
+		common->Printf(": File not found\n");
+		return;
 	}
 
 	// copy to stack memory and free
-	buffer = (char *)_alloca( strlen( fileBuffer ) + 1 );
-	strcpy( buffer, fileBuffer );
-	fileSystem->FreeFile( fileBuffer );
+	buffer = (char *)_alloca(strlen(fileBuffer) + 1);
+	strcpy(buffer, fileBuffer);
+	fileSystem->FreeFile(fileBuffer);
 
-	if ( !glConfig.isInitialized ) {
-		return false;
+	if (!glConfig.isInitialized) {
+		return;
 	}
 
-	GLuint shader;
-	switch( type ) {
-		case GL_VERTEX_SHADER_ARB:
-			if (shaderProgram->vertexShader != -1)
-				glDeleteShader(shaderProgram->vertexShader);
-
-			shaderProgram->vertexShader = -1;
+	switch (type) {
+		case GL_VERTEX_SHADER:
 			// create vertex shader
-			shader = glCreateShaderObjectARB( GL_VERTEX_SHADER_ARB );
-			glShaderSourceARB( shader, 1, (const GLcharARB **)&buffer, 0 );
-			glCompileShaderARB( shader );
+			shaderProgram->vertexShader = glCreateShader(GL_VERTEX_SHADER);
+			glShaderSource(shaderProgram->vertexShader, 1, (const GLchar **)&buffer, 0);
+			glCompileShader(shaderProgram->vertexShader);
 			break;
-		case GL_FRAGMENT_SHADER_ARB:
-			if (shaderProgram->fragmentShader != -1)
-				glDeleteShader(shaderProgram->fragmentShader);
-
-			shaderProgram->fragmentShader = -1;
+		case GL_FRAGMENT_SHADER:
 			// create fragment shader
-			shader = glCreateShaderObjectARB( GL_FRAGMENT_SHADER_ARB );
-			glShaderSourceARB( shader, 1, (const GLcharARB **)&buffer, 0 );
-			glCompileShaderARB( shader );
+			shaderProgram->fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+			glShaderSource(shaderProgram->fragmentShader, 1, (const GLchar **)&buffer, 0);
+			glCompileShader(shaderProgram->fragmentShader);
 			break;
 		default:
-			common->Printf( "R_LoadGLSLShader: no type\n" );
-			return false;
-	}
-	
-
-	GLint logLength;
-	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-	if (logLength > 1)
-	{
-		GLchar *log = (GLchar *)malloc(logLength);
-		glGetShaderInfoLog(shader, logLength, &logLength, log);
-		common->Printf((const char*)log);
-		free(log);
-	}
-		
-	GLint status;
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-	if (status == 0)
-	{
-		glDeleteShader(shader);
-		return false;
-	}
-		
-	switch( type ) {
-		case GL_VERTEX_SHADER_ARB:		shaderProgram->vertexShader = shader; break;
-		case GL_FRAGMENT_SHADER_ARB:	shaderProgram->fragmentShader = shader; break;
+			common->Printf("R_LoadGLSLShader: no type\n");
+			return;
 	}
 
-	common->Printf( "\n" );
-	return true;
+	common->Printf("\n");
 }
 
 /*
@@ -400,27 +362,30 @@ R_LinkGLSLShader
 links the GLSL vertex and fragment shaders together to form a GLSL program
 =================
 */
-bool R_LinkGLSLShader( shaderProgram_t *shaderProgram, bool needsAttributes ) {
+static bool R_LinkGLSLShader(shaderProgram_t *shaderProgram, bool needsAttributes)
+{
 	char buf[BUFSIZ];
 	int len;
 	GLint status;
 	GLint linked;
 
-	shaderProgram->program = glCreateProgram( );
+	shaderProgram->program = glCreateProgram();
 
-	glAttachShader( shaderProgram->program, shaderProgram->vertexShader );
-	glAttachShader( shaderProgram->program, shaderProgram->fragmentShader );
+	glAttachShader(shaderProgram->program, shaderProgram->vertexShader);
+	glAttachShader(shaderProgram->program, shaderProgram->fragmentShader);
 
-	if( needsAttributes ) {
-		glBindAttribLocationARB( shaderProgram->program, 8, "attr_TexCoord" );
-		glBindAttribLocationARB( shaderProgram->program, 9, "attr_Tangent" );
-		glBindAttribLocationARB( shaderProgram->program, 10, "attr_Bitangent" );
-		glBindAttribLocationARB( shaderProgram->program, 11, "attr_Normal" );
+	if (needsAttributes) {
+		glBindAttribLocation(shaderProgram->program, 8, "attr_TexCoord");
+		glBindAttribLocation(shaderProgram->program, 9, "attr_Tangent");
+		glBindAttribLocation(shaderProgram->program, 10, "attr_Bitangent");
+		glBindAttribLocation(shaderProgram->program, 11, "attr_Normal");
+		glBindAttribLocation(shaderProgram->program, 12, "attr_Vertex");
+		glBindAttribLocation(shaderProgram->program, 13, "attr_Color");
 	}
 
-	glLinkProgram( shaderProgram->program );
+	glLinkProgram(shaderProgram->program);
 
-	glGetProgramiv( shaderProgram->program, GL_OBJECT_LINK_STATUS_ARB, &linked );
+	glGetProgramiv(shaderProgram->program, GL_LINK_STATUS, &linked);
 
 	if (com_developer.GetBool()) {
 		glGetShaderInfoLog(shaderProgram->vertexShader, sizeof(buf), &len, buf);
@@ -429,206 +394,13 @@ bool R_LinkGLSLShader( shaderProgram_t *shaderProgram, bool needsAttributes ) {
 		common->Printf("FS:\n%.*s\n", len, buf);
 	}
 
-	if( !linked ) {
-		common->Error( "R_LinkGLSLShader: program failed to link\n" );
+	if (!linked) {
+		common->Error("R_LinkGLSLShader: program failed to link\n");
 		return false;
 	}
 
 	return true;
 }
-////
-/////*
-////=================
-////R_ValidateGLSLProgram
-////
-////makes sure GLSL program is valid
-////=================
-////*/
-////bool R_ValidateGLSLProgram( shaderProgram_t *shaderProgram ) {
-////	GLint validProgram;
-////
-////	glValidateProgramARB( shaderProgram->program );
-////
-////	glGetProgramiv( shaderProgram->program, GL_OBJECT_VALIDATE_STATUS_ARB, &validProgram );
-////	if( !validProgram ) {
-////		common->Printf( "R_ValidateGLSLProgram: program invalid\n" );
-////		return false;
-////	}
-////
-////	return true;
-////}
-////
-////static bool RB_GLSL_InitShaders( ) {
-////	// todo warning: this is different in dante (RB_GLSL_GetUniformLocations)
-////	#warning
-////	// load interation shaders
-////	R_LoadGLSLShader( "interaction.vertex", &interactionShader, GL_VERTEX_SHADER_ARB );
-////	R_LoadGLSLShader( "interaction.fragment", &interactionShader, GL_FRAGMENT_SHADER_ARB );
-////
-////	if ( interactionShader.fragmentShader == -1 ||
-////		 interactionShader.vertexShader == -1 ||
-////		!R_LinkGLSLShader( &interactionShader, true ) && 
-////		!R_ValidateGLSLProgram( &interactionShader ) ) 
-////	{
-////		if (interactionShader.fragmentShader != -1)
-////			glDeleteShader(interactionShader.fragmentShader);
-////		if (interactionShader.vertexShader != -1)
-////			glDeleteShader(interactionShader.vertexShader);
-////		interactionShader.fragmentShader = -1;
-////		interactionShader.vertexShader = -1;
-////		common->Printf( "GLSL interactionShader failed to init.\n" );
-////		return false;
-////	} else {
-////		// set uniform locations
-////		interactionShader.u_normalTexture = glGetUniformLocationARB( interactionShader.program, "u_normalTexture" );
-////		interactionShader.u_lightFalloffTexture = glGetUniformLocationARB( interactionShader.program, "u_lightFalloffTexture" );
-////		interactionShader.u_lightProjectionTexture = glGetUniformLocationARB( interactionShader.program, "u_lightProjectionTexture" );
-////		interactionShader.u_diffuseTexture = glGetUniformLocationARB( interactionShader.program, "u_diffuseTexture" );
-////		interactionShader.u_specularTexture = glGetUniformLocationARB( interactionShader.program, "u_specularTexture" );
-////
-////		interactionShader.modelMatrix = glGetUniformLocationARB( interactionShader.program, "u_modelMatrix" );
-////
-////		interactionShader.localLightOrigin = glGetUniformLocationARB( interactionShader.program, "u_lightOrigin" );
-////		interactionShader.localViewOrigin = glGetUniformLocationARB( interactionShader.program, "u_viewOrigin" );
-////		interactionShader.lightProjectionS = glGetUniformLocationARB( interactionShader.program, "u_lightProjectionS" );
-////		interactionShader.lightProjectionT = glGetUniformLocationARB( interactionShader.program, "u_lightProjectionT" );
-////		interactionShader.lightProjectionQ = glGetUniformLocationARB( interactionShader.program, "u_lightProjectionQ" );
-////		interactionShader.lightFalloff = glGetUniformLocationARB( interactionShader.program, "u_lightFalloff" );
-////
-////		interactionShader.bumpMatrixS = glGetUniformLocationARB( interactionShader.program, "u_bumpMatrixS" );
-////		interactionShader.bumpMatrixT = glGetUniformLocationARB( interactionShader.program, "u_bumpMatrixT" );
-////		interactionShader.diffuseMatrixS = glGetUniformLocationARB( interactionShader.program, "u_diffuseMatrixS" );
-////		interactionShader.diffuseMatrixT = glGetUniformLocationARB( interactionShader.program, "u_diffuseMatrixT" );
-////		interactionShader.specularMatrixS = glGetUniformLocationARB( interactionShader.program, "u_specularMatrixS" );
-////		interactionShader.specularMatrixT = glGetUniformLocationARB( interactionShader.program, "u_specularMatrixT" );
-////
-////		interactionShader.colorModulate = glGetUniformLocationARB( interactionShader.program, "u_colorModulate" );
-////		interactionShader.colorAdd = glGetUniformLocationARB( interactionShader.program, "u_colorAdd" );
-////
-////		interactionShader.diffuseColor = glGetUniformLocationARB( interactionShader.program, "u_diffuseColor" );
-////		interactionShader.specularColor = glGetUniformLocationARB( interactionShader.program, "u_specularColor" );
-////
-////		// set texture locations
-////		glUseProgramObjectARB( interactionShader.program );
-////		glUniform1iARB( interactionShader.u_normalTexture, 0 );
-////		glUniform1iARB( interactionShader.u_lightFalloffTexture, 1 );
-////		glUniform1iARB( interactionShader.u_lightProjectionTexture, 2 );
-////		glUniform1iARB( interactionShader.u_diffuseTexture, 3 );
-////		glUniform1iARB( interactionShader.u_specularTexture, 4 );
-////		glUseProgramObjectARB( 0 );
-////	}
-////
-////	// load ambient interation shaders
-////	R_LoadGLSLShader( "ambientInteraction.vertex", &ambientInteractionShader, GL_VERTEX_SHADER_ARB );
-////	R_LoadGLSLShader( "ambientInteraction.fragment", &ambientInteractionShader, GL_FRAGMENT_SHADER_ARB );
-////	if ( ambientInteractionShader.fragmentShader == -1 ||
-////		 ambientInteractionShader.vertexShader == -1 ||
-////		!R_LinkGLSLShader( &ambientInteractionShader, true ) && !R_ValidateGLSLProgram( &ambientInteractionShader ) ) 
-////	{
-////		if (ambientInteractionShader.fragmentShader != -1)
-////			glDeleteShader(ambientInteractionShader.fragmentShader);
-////		if (ambientInteractionShader.vertexShader != -1)
-////			glDeleteShader(ambientInteractionShader.vertexShader);
-////		ambientInteractionShader.fragmentShader = -1;
-////		ambientInteractionShader.vertexShader = -1;
-////		common->Printf( "GLSL ambientInteractionShader failed to init.\n" );
-////		return false;
-////	} else {
-////		// set uniform locations
-////		ambientInteractionShader.u_normalTexture = glGetUniformLocationARB( ambientInteractionShader.program, "u_normalTexture" );
-////		ambientInteractionShader.u_lightFalloffTexture = glGetUniformLocationARB( ambientInteractionShader.program, "u_lightFalloffTexture" );
-////		ambientInteractionShader.u_lightProjectionTexture = glGetUniformLocationARB( ambientInteractionShader.program, "u_lightProjectionTexture" );
-////		ambientInteractionShader.u_diffuseTexture = glGetUniformLocationARB( ambientInteractionShader.program, "u_diffuseTexture" );
-////
-////		ambientInteractionShader.modelMatrix = glGetUniformLocationARB( ambientInteractionShader.program, "u_modelMatrix" );
-////
-////		ambientInteractionShader.localLightOrigin = glGetUniformLocationARB( ambientInteractionShader.program, "u_lightOrigin" );
-////		ambientInteractionShader.lightProjectionS = glGetUniformLocationARB( ambientInteractionShader.program, "u_lightProjectionS" );
-////		ambientInteractionShader.lightProjectionT = glGetUniformLocationARB( ambientInteractionShader.program, "u_lightProjectionT" );
-////		ambientInteractionShader.lightProjectionQ = glGetUniformLocationARB( ambientInteractionShader.program, "u_lightProjectionQ" );
-////		ambientInteractionShader.lightFalloff = glGetUniformLocationARB( ambientInteractionShader.program, "u_lightFalloff" );
-////
-////		ambientInteractionShader.bumpMatrixS = glGetUniformLocationARB( ambientInteractionShader.program, "u_bumpMatrixS" );
-////		ambientInteractionShader.bumpMatrixT = glGetUniformLocationARB( ambientInteractionShader.program, "u_bumpMatrixT" );
-////		ambientInteractionShader.diffuseMatrixS = glGetUniformLocationARB( ambientInteractionShader.program, "u_diffuseMatrixS" );
-////		ambientInteractionShader.diffuseMatrixT = glGetUniformLocationARB( ambientInteractionShader.program, "u_diffuseMatrixT" );
-////
-////		ambientInteractionShader.colorModulate = glGetUniformLocationARB( ambientInteractionShader.program, "u_colorModulate" );
-////		ambientInteractionShader.colorAdd = glGetUniformLocationARB( ambientInteractionShader.program, "u_colorAdd" );
-////
-////		ambientInteractionShader.diffuseColor = glGetUniformLocationARB( ambientInteractionShader.program, "u_diffuseColor" );
-////
-////		// set texture locations
-////		glUseProgramObjectARB( ambientInteractionShader.program );
-////		glUniform1iARB( ambientInteractionShader.u_normalTexture, 0 );
-////		glUniform1iARB( ambientInteractionShader.u_lightFalloffTexture, 1 );
-////		glUniform1iARB( ambientInteractionShader.u_lightProjectionTexture, 2 );
-////		glUniform1iARB( ambientInteractionShader.u_diffuseTexture, 3 );
-////		glUseProgramObjectARB( 0 );
-////	}
-////
-////	// load stencil shadow extrusion shaders
-////	R_LoadGLSLShader( "stencilshadow.vertex", &stencilShadowShader, GL_VERTEX_SHADER_ARB );
-////	R_LoadGLSLShader( "stencilshadow.fragment", &stencilShadowShader, GL_FRAGMENT_SHADER_ARB );
-////	if ( stencilShadowShader.fragmentShader == -1 ||
-////		 stencilShadowShader.vertexShader == -1 ||
-////		 !R_LinkGLSLShader( &stencilShadowShader, false ) && !R_ValidateGLSLProgram( &stencilShadowShader ) ) {
-////		if (stencilShadowShader.fragmentShader != -1)
-////			glDeleteShader(stencilShadowShader.fragmentShader);
-////		if (stencilShadowShader.vertexShader != -1)
-////			glDeleteShader(stencilShadowShader.vertexShader);
-////		stencilShadowShader.fragmentShader = -1;
-////		stencilShadowShader.vertexShader = -1;
-////		common->Printf( "GLSL stencilShadowShader failed to init.\n" );
-////		return false;
-////	} else {
-////		// set uniform locations
-////		stencilShadowShader.localLightOrigin = glGetUniformLocationARB( stencilShadowShader.program, "u_lightOrigin" );
-////	}
-////
-////	return true;
-////}
-////
-/////*
-////==================
-////R_ReloadGLSLShaders_f
-////==================
-////*/
-////void R_ReloadGLSLShaders_f( const idCmdArgs &args ) {
-////	common->Printf( "----- R_ReloadGLSLShaders -----\n" );
-////	if ( glConfig.GLSLAvailable ) {	
-////		if (RB_GLSL_InitShaders())
-////		{
-////			glConfig.allowGLSLPath = true;
-////		} else
-////			common->Printf( "GLSL shaders failed to init.\n" );
-////	} else		
-////		common->Printf( "Not available.\n" );
-////	common->Printf( "-------------------------------\n" );
-////}
-////
-////void R_GLSL_Init( void ) {
-////	glConfig.allowGLSLPath = false;
-////
-////	common->Printf( "---------- R_GLSL_Init -----------\n" );
-////
-////	if ( !glConfig.GLSLAvailable ) {
-////		common->Printf( "Not available.\n" );
-////		return;
-////	} else if ( !RB_GLSL_InitShaders() ) {
-////		common->Printf( "GLSL shaders failed to init.\n" );
-////		return;
-////	}
-////	
-////	common->Printf( "Available.\n" );
-////
-////	common->Printf( "---------------------------------\n" );
-////
-////	glConfig.allowGLSLPath = true;
-////}
-////
-
-
 
 /*
 =================
@@ -656,41 +428,41 @@ static bool R_ValidateGLSLProgram(shaderProgram_t *shaderProgram)
 
 static void RB_GLSL_GetUniformLocations(shaderProgram_t *shader)
 {
-	shader->localLightOrigin = glGetUniformLocationARB(shader->program, "u_lightOrigin");
-	shader->localViewOrigin = glGetUniformLocationARB(shader->program, "u_viewOrigin");
-	shader->lightProjectionS = glGetUniformLocationARB(shader->program, "u_lightProjectionS");
-	shader->lightProjectionT = glGetUniformLocationARB(shader->program, "u_lightProjectionT");
-	shader->lightProjectionQ = glGetUniformLocationARB(shader->program, "u_lightProjectionQ");
-	shader->lightFalloff = glGetUniformLocationARB(shader->program, "u_lightFalloff");
-	shader->bumpMatrixS = glGetUniformLocationARB(shader->program, "u_bumpMatrixS");
-	shader->bumpMatrixT = glGetUniformLocationARB(shader->program, "u_bumpMatrixT");
-	shader->diffuseMatrixS = glGetUniformLocationARB(shader->program, "u_diffuseMatrixS");
-	shader->diffuseMatrixT = glGetUniformLocationARB(shader->program, "u_diffuseMatrixT");
-	shader->specularMatrixS = glGetUniformLocationARB(shader->program, "u_specularMatrixS");
-	shader->specularMatrixT = glGetUniformLocationARB(shader->program, "u_specularMatrixT");
-	shader->colorModulate = glGetUniformLocationARB(shader->program, "u_colorModulate");
-	shader->colorAdd = glGetUniformLocationARB(shader->program, "u_colorAdd");
-	shader->diffuseColor = glGetUniformLocationARB(shader->program, "u_diffuseColor");
-	shader->specularColor = glGetUniformLocationARB(shader->program, "u_specularColor");
-	shader->glColor = glGetUniformLocationARB(shader->program, "u_glColor");
-	shader->alphaTest = glGetUniformLocationARB(shader->program, "u_alphaTest");
+	shader->localLightOrigin = glGetUniformLocation(shader->program, "u_lightOrigin");
+	shader->localViewOrigin = glGetUniformLocation(shader->program, "u_viewOrigin");
+	shader->lightProjectionS = glGetUniformLocation(shader->program, "u_lightProjectionS");
+	shader->lightProjectionT = glGetUniformLocation(shader->program, "u_lightProjectionT");
+	shader->lightProjectionQ = glGetUniformLocation(shader->program, "u_lightProjectionQ");
+	shader->lightFalloff = glGetUniformLocation(shader->program, "u_lightFalloff");
+	shader->bumpMatrixS = glGetUniformLocation(shader->program, "u_bumpMatrixS");
+	shader->bumpMatrixT = glGetUniformLocation(shader->program, "u_bumpMatrixT");
+	shader->diffuseMatrixS = glGetUniformLocation(shader->program, "u_diffuseMatrixS");
+	shader->diffuseMatrixT = glGetUniformLocation(shader->program, "u_diffuseMatrixT");
+	shader->specularMatrixS = glGetUniformLocation(shader->program, "u_specularMatrixS");
+	shader->specularMatrixT = glGetUniformLocation(shader->program, "u_specularMatrixT");
+	shader->colorModulate = glGetUniformLocation(shader->program, "u_colorModulate");
+	shader->colorAdd = glGetUniformLocation(shader->program, "u_colorAdd");
+	shader->diffuseColor = glGetUniformLocation(shader->program, "u_diffuseColor");
+	shader->specularColor = glGetUniformLocation(shader->program, "u_specularColor");
+	shader->glColor = glGetUniformLocation(shader->program, "u_glColor");
+	shader->alphaTest = glGetUniformLocation(shader->program, "u_alphaTest");
 
-	shader->eyeOrigin = glGetUniformLocationARB(shader->program, "u_eyeOrigin");
-	shader->localEyeOrigin = glGetUniformLocationARB(shader->program, "u_localEyeOrigin");
-	shader->nonPowerOfTwo = glGetUniformLocationARB(shader->program, "u_nonPowerOfTwo");
-	shader->windowCoords = glGetUniformLocationARB(shader->program, "u_windowCoords");
+	shader->eyeOrigin = glGetUniformLocation(shader->program, "u_eyeOrigin");
+	shader->localEyeOrigin = glGetUniformLocation(shader->program, "u_localEyeOrigin");
+	shader->nonPowerOfTwo = glGetUniformLocation(shader->program, "u_nonPowerOfTwo");
+	shader->windowCoords = glGetUniformLocation(shader->program, "u_windowCoords");
 
-	shader->u_bumpTexture = glGetUniformLocationARB(shader->program, "u_bumpTexture");
-	shader->u_lightFalloffTexture = glGetUniformLocationARB(shader->program, "u_lightFalloffTexture");
-	shader->u_lightProjectionTexture = glGetUniformLocationARB(shader->program, "u_lightProjectionTexture");
-	shader->u_diffuseTexture = glGetUniformLocationARB(shader->program, "u_diffuseTexture");
-	shader->u_specularTexture = glGetUniformLocationARB(shader->program, "u_specularTexture");
-	shader->u_specularFalloffTexture = glGetUniformLocationARB(shader->program, "u_specularFalloffTexture");
+	shader->u_bumpTexture = glGetUniformLocation(shader->program, "u_bumpTexture");
+	shader->u_lightFalloffTexture = glGetUniformLocation(shader->program, "u_lightFalloffTexture");
+	shader->u_lightProjectionTexture = glGetUniformLocation(shader->program, "u_lightProjectionTexture");
+	shader->u_diffuseTexture = glGetUniformLocation(shader->program, "u_diffuseTexture");
+	shader->u_specularTexture = glGetUniformLocation(shader->program, "u_specularTexture");
+	shader->u_specularFalloffTexture = glGetUniformLocation(shader->program, "u_specularFalloffTexture");
 
-	shader->modelViewProjectionMatrix = glGetUniformLocationARB(shader->program, "u_modelViewProjectionMatrix");
+	shader->modelViewProjectionMatrix = glGetUniformLocation(shader->program, "u_modelViewProjectionMatrix");
 
-	shader->modelMatrix = glGetUniformLocationARB(shader->program, "u_modelMatrix");
-	shader->textureMatrix = glGetUniformLocationARB(shader->program, "u_textureMatrix");
+	shader->modelMatrix = glGetUniformLocation(shader->program, "u_modelMatrix");
+	shader->textureMatrix = glGetUniformLocation(shader->program, "u_textureMatrix");
 
 	shader->attr_TexCoord = glGetAttribLocation(shader->program, "attr_TexCoord");
 	shader->attr_Tangent = glGetAttribLocation(shader->program, "attr_Tangent");
@@ -701,12 +473,12 @@ static void RB_GLSL_GetUniformLocations(shaderProgram_t *shader)
 
 	// set texture locations
 	GL_UseProgram(shader);
-	glUniform1iARB(shader->u_bumpTexture, 0);
-	glUniform1iARB(shader->u_lightFalloffTexture, 1);
-	glUniform1iARB(shader->u_lightProjectionTexture, 2);
-	glUniform1iARB(shader->u_diffuseTexture, 3);
-	glUniform1iARB(shader->u_specularTexture, 4);
-	glUniform1iARB(shader->u_specularFalloffTexture, 5);
+	glUniform1i(shader->u_bumpTexture, 0);
+	glUniform1i(shader->u_lightFalloffTexture, 1);
+	glUniform1i(shader->u_lightProjectionTexture, 2);
+	glUniform1i(shader->u_diffuseTexture, 3);
+	glUniform1i(shader->u_specularTexture, 4);
+	glUniform1i(shader->u_specularFalloffTexture, 5);
 	GL_UseProgram(NULL);
 }
 

@@ -88,6 +88,7 @@ RB_R200_ARB_DrawInteraction
 ===================
 */
 static void RB_R200_ARB_DrawInteraction( const drawInteraction_t *din ) {
+#if !defined(GL_ES_VERSION_2_0)
 	// check for the case we can't handle in a single pass (we could calculate this at shader parse time to optimize)
 	if ( din->diffuseImage != globalImages->blackImage && din->specularImage != globalImages->blackImage
 		&& memcmp( din->specularMatrix, din->diffuseMatrix, sizeof( din->diffuseMatrix ) ) ) {
@@ -191,6 +192,7 @@ static void RB_R200_ARB_DrawInteraction( const drawInteraction_t *din ) {
 	} else {
 		RB_DrawElementsWithCounters( tri );
 	}
+#endif
 }
 
 /*
@@ -199,6 +201,7 @@ RB_R200_ARB_CreateDrawInteractions
 ==================
 */
 static void RB_R200_ARB_CreateDrawInteractions( const drawSurf_t *surf ) {
+#if !defined(GL_ES_VERSION_2_0)
 	if ( !surf ) {
 		return;
 	}
@@ -265,6 +268,7 @@ static void RB_R200_ARB_CreateDrawInteractions( const drawSurf_t *surf ) {
 #else
 	glDisable( GL_FRAGMENT_SHADER_ATI );
 #endif
+#endif
 }
 
 
@@ -276,6 +280,7 @@ RB_R200_DrawInteractions
 ==================
 */
 void RB_R200_DrawInteractions( void ) {
+#if !defined(GL_ES_VERSION_2_0)
 	glEnable( GL_STENCIL_TEST );
 
 	for ( viewLight_t *vLight = backEnd.viewDef->viewLights ; vLight ; vLight = vLight->next ) {
@@ -341,6 +346,7 @@ void RB_R200_DrawInteractions( void ) {
 		glStencilFunc( GL_ALWAYS, 128, 255 );
 		RB_R200_ARB_CreateDrawInteractions( vLight->translucentInteractions );
 	}
+#endif
 }
 
 
@@ -350,6 +356,7 @@ R_BuildSurfaceFragmentProgram
 =================
 */
 static void R_BuildSurfaceFragmentProgram( int programNum ) {
+#if !defined(GL_ES_VERSION_2_0)
 	glBindFragmentShaderATI( programNum );
 
 	glBeginFragmentShaderATI();
@@ -470,6 +477,7 @@ static void R_BuildSurfaceFragmentProgram( int programNum ) {
 	glEndFragmentShaderATI();
 
 	GL_CheckErrors();
+#endif
 }
 
 /*
@@ -478,6 +486,7 @@ R_R200_Init
 =================
 */
 void R_R200_Init( void ) {
+#if !defined(GL_ES_VERSION_2_0)
 	glConfig.allowR200Path = false;
 
 	common->Printf( "----------- R200_Init -----------\n" );
@@ -513,4 +522,5 @@ void R_R200_Init( void ) {
 	common->Printf( "---------------------\n" );
 
 	glConfig.allowR200Path = true;
+#endif
 }

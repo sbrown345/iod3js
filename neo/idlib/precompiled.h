@@ -29,8 +29,6 @@ If you have questions concerning this license or the applicable additional terms
 #ifndef __PRECOMPILED_H__
 #define __PRECOMPILED_H__
 
-#define GL_ES_VERSION_2_0
-
 #ifdef __cplusplus
 
 //-----------------------------------------------------

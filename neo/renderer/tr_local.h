@@ -674,10 +674,6 @@ const int MAX_GUI_SURFACES	= 1024;		// default size of the drawSurfs list for gu
 										// be automatically expanded as needed
 
 typedef enum {
-	BE_ARB,
-	BE_NV10,
-	BE_NV20,
-	BE_R200,
 	BE_ARB2,
 	BE_GLSL,
 	BE_BAD
@@ -734,7 +730,6 @@ public:
 	virtual void			CaptureRenderToImage( const char *imageName );
 	virtual void			CaptureRenderToFile( const char *fileName, bool fixAlpha );
 	virtual void			UnCrop();
-	virtual void			GetCardCaps( bool &oldCard, bool &nv10or20 );
 	virtual bool			UploadImage( const char *imageName, const byte *data, int width, int height );
 
 public:
@@ -846,11 +841,10 @@ extern idCVar r_flareSize;				// scale the flare deforms from the material def
 extern idCVar r_gamma;					// changes gamma tables
 extern idCVar r_brightness;				// changes gamma tables
 
-extern idCVar r_renderer;				// arb, nv10, nv20, r200, glsl, etc
+extern idCVar r_renderer;	
 
 extern idCVar r_checkBounds;			// compare all surface bounds with precalculated ones
 
-extern idCVar r_useNV20MonoLights;		// 1 = allow an interaction pass optimization
 extern idCVar r_useLightPortalFlow;		// 1 = do a more precise area reference determination
 extern idCVar r_useTripleTextureARB;	// 1 = cards with 3+ texture units do a two pass instead of three pass
 extern idCVar r_useShadowSurfaceScissor;// 1 = scissor shadows by the scissor rect of the interaction surfaces
@@ -1287,7 +1281,6 @@ void RB_DrawElementsWithCounters( const srfTriangles_t *tri );
 void RB_DrawShadowElementsWithCounters( const srfTriangles_t *tri, int numIndexes );
 void RB_STD_FillDepthBuffer( drawSurf_t **drawSurfs, int numDrawSurfs );
 void RB_BindVariableStageImage( const textureStage_t *texture, const float *shaderRegisters );
-void RB_BindStageTexture( const float *shaderRegisters, const textureStage_t *texture, const drawSurf_t *surf );
 void RB_FinishStageTexture( const textureStage_t *texture, const drawSurf_t *surf );
 void RB_StencilShadowPass( const drawSurf_t *drawSurfs );
 void RB_STD_DrawView( void );
@@ -1301,17 +1294,6 @@ DRAW_*
 
 ============================================================
 */
-
-void	RB_ARB_DrawInteractions( void );
-
-void	R_R200_Init( void );
-void	RB_R200_DrawInteractions( void );
-
-void	R_NV10_Init( void );
-void	RB_NV10_DrawInteractions( void );
-
-void	R_NV20_Init( void );
-void	RB_NV20_DrawInteractions( void );
 
 void	R_ARB2_Init( void );
 void	RB_ARB2_DrawInteractions( void );
@@ -1327,12 +1309,7 @@ typedef enum {
 	VPROG_INTERACTION,
 	VPROG_ENVIRONMENT,
 	VPROG_BUMPY_ENVIRONMENT,
-	VPROG_R200_INTERACTION,
 	VPROG_STENCIL_SHADOW,
-	VPROG_NV20_BUMP_AND_LIGHT,
-	VPROG_NV20_DIFFUSE_COLOR,
-	VPROG_NV20_SPECULAR_COLOR,
-	VPROG_NV20_DIFFUSE_AND_SPECULAR_COLOR,
 	VPROG_TEST,
 	FPROG_INTERACTION,
 	FPROG_ENVIRONMENT,

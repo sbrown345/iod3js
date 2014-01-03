@@ -46,9 +46,11 @@ GL_SelectTextureNoClient
 ====================
 */
 static void GL_SelectTextureNoClient( int unit ) {
+#if !defined(GL_ES_VERSION_2_0)
 	backEnd.glState.currenttmu = unit;
 	glActiveTextureARB( GL_TEXTURE0_ARB + unit );
 	RB_LogComment( "glActiveTextureARB( %i )\n", unit );
+#endif
 }
 
 /*
@@ -57,6 +59,7 @@ RB_ARB2_DrawInteraction
 ==================
 */
 void	RB_ARB2_DrawInteraction( const drawInteraction_t *din ) {
+#if !defined(GL_ES_VERSION_2_0)
 	// load all the vertex program parameters
 	glProgramEnvParameter4fvARB( GL_VERTEX_PROGRAM_ARB, PP_LIGHT_ORIGIN, din->localLightOrigin.ToFloatPtr() );
 	glProgramEnvParameter4fvARB( GL_VERTEX_PROGRAM_ARB, PP_VIEW_ORIGIN, din->localViewOrigin.ToFloatPtr() );
@@ -124,6 +127,7 @@ void	RB_ARB2_DrawInteraction( const drawInteraction_t *din ) {
 
 	// draw it
 	RB_DrawElementsWithCounters( din->surf->geo );
+#endif
 }
 
 
@@ -134,6 +138,7 @@ RB_ARB2_CreateDrawInteractions
 =============
 */
 void RB_ARB2_CreateDrawInteractions( const drawSurf_t *surf ) {
+#if !defined(GL_ES_VERSION_2_0)
 	if ( !surf ) {
 		return;
 	}
@@ -224,6 +229,7 @@ void RB_ARB2_CreateDrawInteractions( const drawSurf_t *surf ) {
 
 	glDisable(GL_VERTEX_PROGRAM_ARB);
 	glDisable(GL_FRAGMENT_PROGRAM_ARB);
+#endif
 }
 
 
@@ -233,6 +239,7 @@ RB_ARB2_DrawInteractions
 ==================
 */
 void RB_ARB2_DrawInteractions( void ) {
+#if !defined(GL_ES_VERSION_2_0)
 	viewLight_t		*vLight;
 	const idMaterial	*lightShader;
 
@@ -312,6 +319,7 @@ void RB_ARB2_DrawInteractions( void ) {
 
 	GL_SelectTexture( 0 );
 	glEnableClientState( GL_TEXTURE_COORD_ARRAY );
+#endif
 }
 
 //===================================================================================
@@ -325,6 +333,7 @@ typedef struct {
 
 static	const int	MAX_GLPROGS = 200;
 
+#if !defined(GL_ES_VERSION_2_0)
 // a single file can have both a vertex program and a fragment program
 static progDef_t	progs[MAX_GLPROGS] = {
 	{ GL_VERTEX_PROGRAM_ARB, VPROG_TEST, "test.vfp" },
@@ -336,7 +345,6 @@ static progDef_t	progs[MAX_GLPROGS] = {
 	{ GL_VERTEX_PROGRAM_ARB, VPROG_AMBIENT, "ambientLight.vfp" },
 	{ GL_FRAGMENT_PROGRAM_ARB, FPROG_AMBIENT, "ambientLight.vfp" },
 	{ GL_VERTEX_PROGRAM_ARB, VPROG_STENCIL_SHADOW, "shadow.vp" },
-	{ GL_VERTEX_PROGRAM_ARB, VPROG_R200_INTERACTION, "R200_interaction.vp" },
 	{ GL_VERTEX_PROGRAM_ARB, VPROG_NV20_BUMP_AND_LIGHT, "nv20_bumpAndLight.vp" },
 	{ GL_VERTEX_PROGRAM_ARB, VPROG_NV20_DIFFUSE_COLOR, "nv20_diffuseColor.vp" },
 	{ GL_VERTEX_PROGRAM_ARB, VPROG_NV20_SPECULAR_COLOR, "nv20_specularColor.vp" },
@@ -348,13 +356,14 @@ static progDef_t	progs[MAX_GLPROGS] = {
 
 	// additional programs can be dynamically specified in materials
 };
-
+#endif
 /*
 =================
 R_LoadARBProgram
 =================
 */
 void R_LoadARBProgram( int progIndex ) {
+#if !defined(GL_ES_VERSION_2_0)
 	int		ofs;
 	int		err;
 	idStr	fullPath = "glprogs/";
@@ -445,6 +454,7 @@ void R_LoadARBProgram( int progIndex ) {
 	}
 
 	common->Printf( "\n" );
+#endif
 }
 
 /*
@@ -456,6 +466,7 @@ a text file if it hasn't already been loaded.
 ==================
 */
 int R_FindARBProgram( GLenum target, const char *program ) {
+#if !defined(GL_ES_VERSION_2_0)
 	int		i;
 	idStr	stripped = program;
 
@@ -487,6 +498,7 @@ int R_FindARBProgram( GLenum target, const char *program ) {
 	R_LoadARBProgram( i );
 
 	return progs[i].ident;
+#endif
 }
 
 /*
@@ -495,6 +507,7 @@ R_ReloadARBPrograms_f
 ==================
 */
 void R_ReloadARBPrograms_f( const idCmdArgs &args ) {
+#if !defined(GL_ES_VERSION_2_0)
 	int		i;
 
 	common->Printf( "----- R_ReloadARBPrograms -----\n" );
@@ -502,6 +515,7 @@ void R_ReloadARBPrograms_f( const idCmdArgs &args ) {
 		R_LoadARBProgram( i );
 	}
 	common->Printf( "-------------------------------\n" );
+#endif
 }
 
 /*
@@ -511,6 +525,7 @@ R_ARB2_Init
 ==================
 */
 void R_ARB2_Init( void ) {
+#if !defined(GL_ES_VERSION_2_0)
 	glConfig.allowARB2Path = false;
 
 	common->Printf( "---------- R_ARB2_Init ----------\n" );
@@ -525,5 +540,6 @@ void R_ARB2_Init( void ) {
 	common->Printf( "---------------------------------\n" );
 
 	glConfig.allowARB2Path = true;
+#endif
 }
 

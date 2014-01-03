@@ -1016,7 +1016,7 @@ void GLimp_SwapBuffers( void ) {
 		}
 	}
 
-	qwglSwapBuffers( win32.hDC );
+	SwapBuffers( win32.hDC );
 
 //Sys_DebugPrintf( "*** SwapBuffers() ***\n" );
 }

@@ -1802,6 +1802,8 @@ float RB_DrawTextLength( const char *text, float scale, int len ) {
 		}
 	}
 	return textLen;
+#else
+	return 0;
 #endif
 }
 

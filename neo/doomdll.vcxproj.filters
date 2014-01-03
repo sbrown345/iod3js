@@ -219,16 +219,10 @@
     <ClInclude Include="renderer\GuiModel.h">
       <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="renderer\Image.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="renderer\Interaction.h">
       <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="renderer\Material.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\MegaTexture.h">
       <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="renderer\Model.h">
@@ -633,6 +627,12 @@
     <ClInclude Include="renderer\eglext.h">
       <Filter>Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="renderer\MegaTexture.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\Image.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cm\CollisionModel_contacts.cpp">
@@ -749,22 +749,7 @@
     <ClCompile Include="renderer\Cinematic.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="renderer\draw_arb.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer\draw_arb2.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="renderer\draw_common.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer\draw_nv10.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer\draw_nv20.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer\draw_r200.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="renderer\GuiModel.cpp">
@@ -1155,9 +1140,6 @@
       <Filter>Sys</Filter>
     </ClCompile>
     <ClCompile Include="sys\win32\win_net.cpp">
-      <Filter>Sys</Filter>
-    </ClCompile>
-    <ClCompile Include="sys\win32\win_qgl.cpp">
       <Filter>Sys</Filter>
     </ClCompile>
     <ClCompile Include="sys\win32\win_shared.cpp">
@@ -1842,12 +1824,6 @@
       <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="renderer\gles2.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer\esShader.c">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer\esShapes.c">
       <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="renderer\esUtil.c">

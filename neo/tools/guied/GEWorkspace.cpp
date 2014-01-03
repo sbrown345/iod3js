@@ -264,6 +264,8 @@ Renders the workspace to the given DC
 */
 void rvGEWorkspace::Render ( HDC hdc )
 {
+	common->FatalError("not used vGEWorkspace::Render ");
+#if 0
 	int		front;
 	int		back;
 	float	scale;
@@ -352,6 +354,7 @@ void rvGEWorkspace::Render ( HDC hdc )
 
 	glEnable( GL_TEXTURE_CUBE_MAP_EXT );
 	glEnable( GL_CULL_FACE);
+#endif
 }
 
 /*

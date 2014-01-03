@@ -78,6 +78,7 @@ it is set to lessThan for blended transparent surfaces
 ==================
 */
 static void RB_ARB_DrawInteraction( const drawInteraction_t *din ) {
+#if !defined(GL_ES_VERSION_2_0)
 	const drawSurf_t *surf = din->surf;
 	const srfTriangles_t	*tri = din->surf->geo;
 
@@ -262,6 +263,7 @@ return;
 	}
 
 //	RB_FinishStageTexture( &surfaceStage->texture, surf );
+#endif
 }
 
 /*
@@ -278,6 +280,7 @@ it is set to lessThan for blended transparent surfaces
 ==================
 */
 static void RB_ARB_DrawThreeTextureInteraction( const drawInteraction_t *din ) {
+#if !defined(GL_ES_VERSION_2_0)
 	const drawSurf_t *surf = din->surf;
 	const srfTriangles_t	*tri = din->surf->geo;
 
@@ -427,6 +430,7 @@ static void RB_ARB_DrawThreeTextureInteraction( const drawInteraction_t *din ) {
 	}
 
 //	RB_FinishStageTexture( &surfaceStage->texture, surf );
+#endif
 }
 
 
