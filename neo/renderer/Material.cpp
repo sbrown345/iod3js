@@ -1489,25 +1489,32 @@ void idMaterial::ParseStage( idLexer &src, const textureRepeat_t trpDefault ) {
 		}
 		if ( !token.Icmp( "program" ) ) {
 			if ( src.ReadTokenOnLine( &token ) ) {
+#if !defined(GL_ES_VERSION_2_0)
 				newStage.vertexProgram = R_FindARBProgram( GL_VERTEX_PROGRAM_ARB, token.c_str() );
 				newStage.fragmentProgram = R_FindARBProgram( GL_FRAGMENT_PROGRAM_ARB, token.c_str() );
+#endif
 			}
 			continue;
 		}
 		if ( !token.Icmp( "fragmentProgram" ) ) {
 			if ( src.ReadTokenOnLine( &token ) ) {
+#if !defined(GL_ES_VERSION_2_0)
 				newStage.fragmentProgram = R_FindARBProgram( GL_FRAGMENT_PROGRAM_ARB, token.c_str() );
+#endif
 			}
 			continue;
 		}
 		if ( !token.Icmp( "vertexProgram" ) ) {
 			if ( src.ReadTokenOnLine( &token ) ) {
+#if !defined(GL_ES_VERSION_2_0)
 				newStage.vertexProgram = R_FindARBProgram( GL_VERTEX_PROGRAM_ARB, token.c_str() );
+#endif
 			}
 			continue;
 		}
 		if ( !token.Icmp( "megaTexture" ) ) {
 			if ( src.ReadTokenOnLine( &token ) ) {
+#if !defined(GL_ES_VERSION_2_0)
 				newStage.megaTexture = new idMegaTexture;
 				if ( !newStage.megaTexture->InitFromMegaFile( token.c_str() ) ) {
 					delete newStage.megaTexture;
@@ -1516,18 +1523,23 @@ void idMaterial::ParseStage( idLexer &src, const textureRepeat_t trpDefault ) {
 				}
 				newStage.vertexProgram = R_FindARBProgram( GL_VERTEX_PROGRAM_ARB, "megaTexture.vfp" );
 				newStage.fragmentProgram = R_FindARBProgram( GL_FRAGMENT_PROGRAM_ARB, "megaTexture.vfp" );
+#endif
 				continue;
 			}
 		}
 
 
 		if ( !token.Icmp( "vertexParm" ) ) {
+#if !defined(GL_ES_VERSION_2_0)
 			ParseVertexParm( src, &newStage );
+#endif
 			continue;
 		}
 
 		if (  !token.Icmp( "fragmentMap" ) ) {	
+#if !defined(GL_ES_VERSION_2_0)
 			ParseFragmentMap( src, &newStage );
+#endif
 			continue;
 		}
 

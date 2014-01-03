@@ -970,8 +970,10 @@ void idRenderSystemLocal::CaptureRenderToFile( const char *fileName, bool fixAlp
 	guiModel->EmitFullScreen();
 	guiModel->Clear();
 	R_IssueRenderCommands();
-
+	
+#if !defined(GL_ES_VERSION_2_0)
 	qglReadBuffer( GL_BACK );
+#endif
 
 	// include extra space for OpenGL padding to word boundaries
 	int	c = ( rc->width + 3 ) * rc->height;

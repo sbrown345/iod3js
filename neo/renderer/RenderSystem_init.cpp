@@ -309,9 +309,9 @@ GLhandleARB ( APIENTRY * qglGetHandleARB )( GLenum pname );
 void ( APIENTRY * qglDetachObjectARB )( GLhandleARB containerObj, GLhandleARB attachedObj );
 GLhandleARB ( APIENTRY * qglCreateShaderObjectARB )( GLenum shaderType );
 void ( APIENTRY * qglShaderSourceARB )( GLhandleARB shaderObj, GLsizei count, const GLcharARB* *string, const GLint *length ); void ( APIENTRY * qglCompileShaderARB )( GLhandleARB shaderObj );
-GLhandleARB ( APIENTRY * qglCreateProgramObjectARB )( void ); 
-void ( APIENTRY * qglAttachObjectARB )( GLhandleARB containerObj, GLhandleARB obj );
-void ( APIENTRY * qglLinkProgramARB )( GLhandleARB programObj );
+GLhandleARB ( APIENTRY * qglCreateProgram )( void ); 
+void ( APIENTRY * qglAttachShader )( GLhandleARB containerObj, GLhandleARB obj );
+void ( APIENTRY * qglLinkProgram )( GLhandleARB programObj );
 void ( APIENTRY * qglUseProgramObjectARB )( GLhandleARB programObj );
 void ( APIENTRY * qglValidateProgramARB )( GLhandleARB programObj );
 void ( APIENTRY * qglUniform1fARB )( GLint location, GLfloat v0 );
@@ -332,7 +332,7 @@ void ( APIENTRY * qglUniformMatrix2fvARB )( GLint location, GLsizei count, GLboo
 void ( APIENTRY * qglUniformMatrix3fvARB )( GLint location, GLsizei count, GLboolean transpose, const GLfloat *value );
 void ( APIENTRY * qglUniformMatrix4fvARB )( GLint location, GLsizei count, GLboolean transpose, const GLfloat *value );
 void ( APIENTRY * qglGetObjectParameterfvARB )( GLhandleARB obj, GLenum pname, GLfloat *params );
-void ( APIENTRY * qglGetObjectParameterivARB )( GLhandleARB obj, GLenum pname, GLint *params );
+void ( APIENTRY * qglGetProgramiv )( GLhandleARB obj, GLenum pname, GLint *params );
 void ( APIENTRY * qglGetInfoLogARB )( GLhandleARB obj, GLsizei maxLength, GLsizei *length, GLcharARB *infoLog );
 void ( APIENTRY * qglGetAttachedObjectsARB )( GLhandleARB containerObj, GLsizei maxCount, GLsizei *count, GLhandleARB *obj );
 GLint ( APIENTRY * qglGetUniformLocationARB )( GLhandleARB programObj, const GLcharARB *name );
@@ -373,7 +373,10 @@ static void R_CheckPortableExtensions( void ) {
 
 	// GL_ARB_multitexture
 	glConfig.multitextureAvailable = R_CheckExtension( "GL_ARB_multitexture" );
-	if ( glConfig.multitextureAvailable ) {
+#if !defined(GL_ES_VERSION_2_0)
+	if ( glConfig.multitextureAvailable ) 
+#endif
+	{
 		qglMultiTexCoord2fARB = (void(APIENTRY *)(GLenum, GLfloat, GLfloat))GLimp_ExtensionPointer( "glMultiTexCoord2fARB" );
 		qglMultiTexCoord2fvARB = (void(APIENTRY *)(GLenum, GLfloat *))GLimp_ExtensionPointer( "glMultiTexCoord2fvARB" );
 		qglActiveTextureARB = (void(APIENTRY *)(GLenum))GLimp_ExtensionPointer( "glActiveTextureARB" );
@@ -385,8 +388,13 @@ static void R_CheckPortableExtensions( void ) {
 		if ( glConfig.maxTextureUnits < 2 ) {
 			glConfig.multitextureAvailable = false;	// shouldn't ever happen
 		}
+#if !defined(GL_ES_VERSION_2_0)
 		qglGetIntegerv( GL_MAX_TEXTURE_COORDS_ARB, (GLint *)&glConfig.maxTextureCoords );
 		qglGetIntegerv( GL_MAX_TEXTURE_IMAGE_UNITS_ARB, (GLint *)&glConfig.maxTextureImageUnits );
+#else
+		glGetIntegerv( GL_MAX_TEXTURE_SIZE, (GLint *)&glConfig.maxTextureCoords );
+		glGetIntegerv( GL_MAX_TEXTURE_IMAGE_UNITS, (GLint *)&glConfig.maxTextureImageUnits );
+#endif
 	}
 
 	// GL_ARB_texture_env_combine
@@ -414,6 +422,7 @@ static void R_CheckPortableExtensions( void ) {
 		glConfig.textureCompressionAvailable = false;
 	}
 
+#if !defined(GL_ES_VERSION_2_0)
 	// GL_EXT_texture_filter_anisotropic
 	glConfig.anisotropicAvailable = R_CheckExtension( "GL_EXT_texture_filter_anisotropic" );
 	if ( glConfig.anisotropicAvailable ) {
@@ -422,6 +431,7 @@ static void R_CheckPortableExtensions( void ) {
 	} else {
 		glConfig.maxTextureAnisotropy = 1;
 	}
+#endif
 
 	// GL_EXT_texture_lod_bias
 	// The actual extension is broken as specificed, storing the state in the texture unit instead
@@ -449,24 +459,8 @@ static void R_CheckPortableExtensions( void ) {
 	}
 
 	// EXT_stencil_wrap
-	// This isn't very important, but some pathological case might cause a clamp error and give a shadow bug.
-	// Nvidia also believes that future hardware may be able to run faster with this enabled to avoid the
-	// serialization of clamping.
-	if ( R_CheckExtension( "GL_EXT_stencil_wrap" ) ) {
-		tr.stencilIncr = GL_INCR_WRAP_EXT;
-		tr.stencilDecr = GL_DECR_WRAP_EXT;
-	} else {
-		tr.stencilIncr = GL_INCR;
-		tr.stencilDecr = GL_DECR;
-	}
-
-	// separate stencil (part of OpenGL 2.0 spec)
-	qglStencilOpSeparate = (PFNGLSTENCILOPSEPARATEPROC)GLimp_ExtensionPointer( "glStencilOpSeparate" );
-	if( qglStencilOpSeparate ) {
-		glConfig.twoSidedStencilAvailable = true;
-	} else {
-		glConfig.twoSidedStencilAvailable = false;
-	}
+	tr.stencilIncr = GL_INCR_WRAP;
+	tr.stencilDecr = GL_DECR_WRAP;
 
 	// GL_NV_register_combiners
 	glConfig.registerCombinersAvailable = R_CheckExtension( "GL_NV_register_combiners" );
@@ -488,29 +482,6 @@ static void R_CheckPortableExtensions( void ) {
 			GLimp_ExtensionPointer( "glCombinerOutputNV" );
 		qglFinalCombinerInputNV = (void (APIENTRY *)( GLenum variable, GLenum input, GLenum mapping, GLenum componentUsage ))
 			GLimp_ExtensionPointer( "glFinalCombinerInputNV" );
-	}
-
-	// GL_ATI_fragment_shader
-	glConfig.atiFragmentShaderAvailable = R_CheckExtension( "GL_ATI_fragment_shader" );
-	if (! glConfig.atiFragmentShaderAvailable ) {
-		// only on OSX: ATI_fragment_shader is faked through ATI_text_fragment_shader (macosx_glimp.cpp)
-		glConfig.atiFragmentShaderAvailable = R_CheckExtension( "GL_ATI_text_fragment_shader" );
-	}
-	if ( glConfig.atiFragmentShaderAvailable ) {
-		qglGenFragmentShadersATI = (PFNGLGENFRAGMENTSHADERSATIPROC)GLimp_ExtensionPointer( "glGenFragmentShadersATI" );
-		qglBindFragmentShaderATI = (PFNGLBINDFRAGMENTSHADERATIPROC)GLimp_ExtensionPointer( "glBindFragmentShaderATI" );
-		qglDeleteFragmentShaderATI = (PFNGLDELETEFRAGMENTSHADERATIPROC)GLimp_ExtensionPointer( "glDeleteFragmentShaderATI" );
-		qglBeginFragmentShaderATI = (PFNGLBEGINFRAGMENTSHADERATIPROC)GLimp_ExtensionPointer( "glBeginFragmentShaderATI" );
-		qglEndFragmentShaderATI = (PFNGLENDFRAGMENTSHADERATIPROC)GLimp_ExtensionPointer( "glEndFragmentShaderATI" );
-		qglPassTexCoordATI = (PFNGLPASSTEXCOORDATIPROC)GLimp_ExtensionPointer( "glPassTexCoordATI" );
-		qglSampleMapATI = (PFNGLSAMPLEMAPATIPROC)GLimp_ExtensionPointer( "glSampleMapATI" );
-		qglColorFragmentOp1ATI = (PFNGLCOLORFRAGMENTOP1ATIPROC)GLimp_ExtensionPointer( "glColorFragmentOp1ATI" );
-		qglColorFragmentOp2ATI = (PFNGLCOLORFRAGMENTOP2ATIPROC)GLimp_ExtensionPointer( "glColorFragmentOp2ATI" );
-		qglColorFragmentOp3ATI = (PFNGLCOLORFRAGMENTOP3ATIPROC)GLimp_ExtensionPointer( "glColorFragmentOp3ATI" );
-		qglAlphaFragmentOp1ATI = (PFNGLALPHAFRAGMENTOP1ATIPROC)GLimp_ExtensionPointer( "glAlphaFragmentOp1ATI" );
-		qglAlphaFragmentOp2ATI = (PFNGLALPHAFRAGMENTOP2ATIPROC)GLimp_ExtensionPointer( "glAlphaFragmentOp2ATI" );
-		qglAlphaFragmentOp3ATI = (PFNGLALPHAFRAGMENTOP3ATIPROC)GLimp_ExtensionPointer( "glAlphaFragmentOp3ATI" );
-		qglSetFragmentShaderConstantATI = (PFNGLSETFRAGMENTSHADERCONSTANTATIPROC)GLimp_ExtensionPointer( "glSetFragmentShaderConstantATI" );
 	}
 
 	// ARB_vertex_buffer_object
@@ -562,11 +533,13 @@ static void R_CheckPortableExtensions( void ) {
 			common->Error( common->GetLanguageDict()->GetString( "#str_06780" ) );
 	}
 
+#if !defined(GL_ES_VERSION_2_0)
  	// GL_EXT_depth_bounds_test
  	glConfig.depthBoundsTestAvailable = R_CheckExtension( "EXT_depth_bounds_test" );
  	if ( glConfig.depthBoundsTestAvailable ) {
  		qglDepthBoundsEXT = (PFNGLDEPTHBOUNDSEXTPROC)GLimp_ExtensionPointer( "glDepthBoundsEXT" );
  	}
+#endif
 
 	// GL_ARB_shading_language_100
 	glConfig.GLSLAvailable = R_CheckExtension( "GL_ARB_shading_language_100" );
@@ -577,9 +550,9 @@ static void R_CheckPortableExtensions( void ) {
 		qglCreateShaderObjectARB = (PFNGLCREATESHADEROBJECTARBPROC)GLimp_ExtensionPointer( "glCreateShaderObjectARB" );
 		qglShaderSourceARB = (PFNGLSHADERSOURCEARBPROC)GLimp_ExtensionPointer( "glShaderSourceARB" );
 		qglCompileShaderARB = (PFNGLCOMPILESHADERARBPROC)GLimp_ExtensionPointer( "glCompileShaderARB" );
-		qglCreateProgramObjectARB = (PFNGLCREATEPROGRAMOBJECTARBPROC)GLimp_ExtensionPointer( "glCreateProgramObjectARB" );
-		qglAttachObjectARB = (PFNGLATTACHOBJECTARBPROC)GLimp_ExtensionPointer( "glAttachObjectARB" );
-		qglLinkProgramARB = (PFNGLLINKPROGRAMARBPROC)GLimp_ExtensionPointer( "glLinkProgramARB" );
+		qglCreateProgram = (PFNGLCREATEPROGRAMOBJECTARBPROC)GLimp_ExtensionPointer( "glCreateProgram" );
+		qglAttachShader = (PFNGLATTACHOBJECTARBPROC)GLimp_ExtensionPointer( "glAttachShader" );
+		qglLinkProgram = (PFNGLLINKPROGRAMARBPROC)GLimp_ExtensionPointer( "glLinkProgram" );
 		qglUseProgramObjectARB = (PFNGLUSEPROGRAMOBJECTARBPROC)GLimp_ExtensionPointer( "glUseProgramObjectARB" );
 		qglValidateProgramARB = (PFNGLVALIDATEPROGRAMARBPROC)GLimp_ExtensionPointer( "glValidateProgramARB" );
 		qglUniform1fARB = (PFNGLUNIFORM1FARBPROC)GLimp_ExtensionPointer( "glUniform1fARB" );
@@ -600,7 +573,7 @@ static void R_CheckPortableExtensions( void ) {
 		qglUniformMatrix3fvARB = (PFNGLUNIFORMMATRIX3FVARBPROC)GLimp_ExtensionPointer( "glUniformMatrix3fvARB" );
 		qglUniformMatrix4fvARB = (PFNGLUNIFORMMATRIX4FVARBPROC)GLimp_ExtensionPointer( "glUniformMatrix4fvARB" );
 		qglGetObjectParameterfvARB = (PFNGLGETOBJECTPARAMETERFVARBPROC)GLimp_ExtensionPointer( "glGetObjectParameterfvARB" );
-		qglGetObjectParameterivARB = (PFNGLGETOBJECTPARAMETERIVARBPROC)GLimp_ExtensionPointer( "glGetObjectParameterivARB" );
+		qglGetProgramiv = (PFNGLGETOBJECTPARAMETERIVARBPROC)GLimp_ExtensionPointer( "glGetProgramiv" );
 		qglGetInfoLogARB = (PFNGLGETINFOLOGARBPROC)GLimp_ExtensionPointer( "glGetInfoLogARB" );
 		qglGetAttachedObjectsARB = (PFNGLGETATTACHEDOBJECTSARBPROC)GLimp_ExtensionPointer( "glGetAttachedObjectsARB" );
 		qglGetUniformLocationARB = (PFNGLGETUNIFORMLOCATIONARBPROC)GLimp_ExtensionPointer( "glGetUniformLocationARB" );
@@ -774,7 +747,9 @@ void R_InitOpenGL( void ) {
 	R_ARB2_Init();
 	R_GLSL_Init();
 
+#if !defined(GL_ES_VERSION_2_0)
 	cmdSystem->AddCommand( "reloadARBprograms", R_ReloadARBPrograms_f, CMD_FL_RENDERER, "reloads ARB programs" );
+#endif
 	cmdSystem->AddCommand( "reloadGLSLshaders", R_ReloadGLSLShaders_f, CMD_FL_RENDERER, "reloads ARB programs" );
 	R_ReloadARBPrograms_f( idCmdArgs() );
 
@@ -840,12 +815,14 @@ void GL_CheckErrors( void ) {
 			case GL_INVALID_OPERATION:
 				strcpy( s, "GL_INVALID_OPERATION" );
 				break;
+#if !defined(GL_ES_VERSION_2_0)
 			case GL_STACK_OVERFLOW:
 				strcpy( s, "GL_STACK_OVERFLOW" );
 				break;
 			case GL_STACK_UNDERFLOW:
 				strcpy( s, "GL_STACK_UNDERFLOW" );
 				break;
+#endif
 			case GL_OUT_OF_MEMORY:
 				strcpy( s, "GL_OUT_OF_MEMORY" );
 				break;
@@ -1268,8 +1245,10 @@ void R_ReadTiledPixels( int width, int height, byte *buffer, renderView_t *ref =
 			if ( yo + h > height ) {
 				h = height - yo;
 			}
-
+			
+#if !defined(GL_ES_VERSION_2_0)
 			qglReadBuffer( GL_FRONT );
+#endif
 			qglReadPixels( 0, 0, w, h, GL_RGB, GL_UNSIGNED_BYTE, temp ); 
 
 			int	row = ( w * 3 + 3 ) & ~3;		// OpenGL pads to dword boundaries
@@ -1505,7 +1484,7 @@ void R_StencilShot( void ) {
 
 	byte *byteBuffer = (byte *)Mem_Alloc(pix);
 
-	qglReadPixels( 0, 0, width, height, GL_STENCIL_INDEX , GL_UNSIGNED_BYTE, byteBuffer ); 
+	qglReadPixels( 0, 0, width, height, GL_STENCIL_INDEX4/*_OES*/ , GL_UNSIGNED_BYTE, byteBuffer ); 
 
 	for ( i = 0 ; i < pix ; i++ ) {
 		buffer[18+i*3] =
@@ -1939,19 +1918,6 @@ extern	PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT;
 	}
 #endif
 	
-	if ( !r_useTwoSidedStencil.GetBool() && glConfig.twoSidedStencilAvailable ) {
-		common->Printf( "Two sided stencil available but disabled\n" );
-	} else if ( !glConfig.twoSidedStencilAvailable ) {
-		common->Printf( "Two sided stencil not available\n" );
-	} else if ( glConfig.twoSidedStencilAvailable ) {
-		common->Printf( "Using two sided stencil\n" );
-	}
-
-	if ( vertexCache.IsFast() ) {
-		common->Printf( "Vertex cache is fast\n" );
-	} else {
-		common->Printf( "Vertex cache is SLOW\n" );
-	}
 }
 
 /*
@@ -2133,7 +2099,9 @@ R_InitCommands
 =================
 */
 void R_InitCommands( void ) {
+#if !defined(GL_ES_VERSION_2_0)
 	cmdSystem->AddCommand( "MakeMegaTexture", idMegaTexture::MakeMegaTexture_f, CMD_FL_RENDERER|CMD_FL_CHEAT, "processes giant images" );
+#endif
 	cmdSystem->AddCommand( "sizeUp", R_SizeUp_f, CMD_FL_RENDERER, "makes the rendered view larger" );
 	cmdSystem->AddCommand( "sizeDown", R_SizeDown_f, CMD_FL_RENDERER, "makes the rendered view smaller" );
 	cmdSystem->AddCommand( "reloadGuis", R_ReloadGuis_f, CMD_FL_RENDERER, "reloads guis" );

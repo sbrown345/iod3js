@@ -34,7 +34,6 @@ If you have questions concerning this license or the applicable additional terms
 frameData_t		*frameData;
 backEndState_t	backEnd;
 
-
 /*
 ======================
 RB_SetDefaultGLState
@@ -43,64 +42,65 @@ This should initialize all GL state that any part of the entire program
 may touch, including the editor.
 ======================
 */
-void RB_SetDefaultGLState( void ) {
+void RB_SetDefaultGLState(void)
+{
 	int		i;
 
-	RB_LogComment( "--- R_SetDefaultGLState ---\n" );
-
-	qglClearDepth( 1.0f );
-	qglColor4f (1,1,1,1);
-
-	// the vertex array is always enabled
-	qglEnableClientState( GL_VERTEX_ARRAY );
-	qglEnableClientState( GL_TEXTURE_COORD_ARRAY );
-	qglDisableClientState( GL_COLOR_ARRAY );
+	RB_LogComment("--- R_SetDefaultGLState ---\n");
 
 	//
 	// make sure our GL state vector is set correctly
 	//
-	memset( &backEnd.glState, 0, sizeof( backEnd.glState ) );
+	memset(&backEnd.glState, 0, sizeof(backEnd.glState));
 	backEnd.glState.forceGlState = true;
 
-	qglColorMask( 1, 1, 1, 1 );
+	GL_UseProgram(NULL);
 
-	qglEnable( GL_DEPTH_TEST );
-	qglEnable( GL_BLEND );
-	qglEnable( GL_SCISSOR_TEST );
-	qglEnable( GL_CULL_FACE );
-	qglDisable( GL_LIGHTING );
-	qglDisable( GL_LINE_STIPPLE );
-	qglDisable( GL_STENCIL_TEST );
+	glClearDepthf(1.0f);
+	glClear(GL_DEPTH_BUFFER_BIT);
+#if !defined(GL_ES_VERSION_2_0)
+	glColor4f(1,1,1,1);
+#endif
 
-	qglPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-	qglDepthMask( GL_TRUE );
-	qglDepthFunc( GL_ALWAYS );
- 
-	qglCullFace( GL_FRONT_AND_BACK );
-	qglShadeModel( GL_SMOOTH );
+	glColorMask(1, 1, 1, 1);
 
-	if ( r_useScissor.GetBool() ) {
-		qglScissor( 0, 0, glConfig.vidWidth, glConfig.vidHeight );
+	glEnable(GL_DEPTH_TEST);
+
+	glEnable(GL_BLEND);
+	glEnable(GL_SCISSOR_TEST);
+	glEnable(GL_CULL_FACE);
+#if !defined(GL_ES_VERSION_2_0)
+	glDisable(GL_LIGHTING);
+#endif
+	glDisable(GL_STENCIL_TEST);
+
+	glDepthMask(GL_TRUE);
+	glDepthFunc(GL_ALWAYS);
+
+	glCullFace(GL_FRONT_AND_BACK);
+#if !defined(GL_ES_VERSION_2_0)
+	glShadeModel(GL_SMOOTH);
+#endif
+
+	if (r_useScissor.GetBool()) {
+		glScissor(0, 0, glConfig.vidWidth, glConfig.vidHeight);
 	}
 
-	for ( i = glConfig.maxTextureUnits - 1 ; i >= 0 ; i-- ) {
-		GL_SelectTexture( i );
+#if !defined(GL_ES_VERSION_2_0)
+	for (i = glConfig.maxTextureUnits - 1 ; i >= 0 ; i--) {
+		GL_SelectTexture(i);
 
-		// object linear texgen is our default
-		qglTexGenf( GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR );
-		qglTexGenf( GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR );
-		qglTexGenf( GL_R, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR );
-		qglTexGenf( GL_Q, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR );
+		glDisable(GL_TEXTURE_2D);
 
-		GL_TexEnv( GL_MODULATE );
-		qglDisable( GL_TEXTURE_2D );
-		if ( glConfig.texture3DAvailable ) {
-			qglDisable( GL_TEXTURE_3D );
+		if (glConfig.texture3DAvailable) {
+			glDisable(GL_TEXTURE_3D);
 		}
-		if ( glConfig.cubeMapAvailable ) {
-			qglDisable( GL_TEXTURE_CUBE_MAP_EXT );
+
+		if (glConfig.cubeMapAvailable) {
+			glDisable(GL_TEXTURE_CUBE_MAP);
 		}
 	}
+#endif
 }
 
 
@@ -132,23 +132,173 @@ void RB_LogComment( const char *comment, ... ) {
 GL_SelectTexture
 ====================
 */
-void GL_SelectTexture( int unit ) {
-	if ( backEnd.glState.currenttmu == unit ) {
+void GL_SelectTexture(int unit)
+{
+	if (backEnd.glState.currenttmu == unit) {
 		return;
 	}
 
-	if ( unit < 0 || unit >= glConfig.maxTextureUnits && unit >= glConfig.maxTextureImageUnits ) {
-		common->Warning( "GL_SelectTexture: unit = %i", unit );
+#if 0
+	if (unit < 0 || unit >= glConfig.maxTextureUnits && unit >= glConfig.maxTextureImageUnits) {
+		common->Warning("GL_SelectTexture: unit = %i", unit);
 		return;
 	}
+#endif
 
-	qglActiveTextureARB( GL_TEXTURE0_ARB + unit );
-	qglClientActiveTextureARB( GL_TEXTURE0_ARB + unit );
-	RB_LogComment( "glActiveTextureARB( %i );\nglClientActiveTextureARB( %i );\n", unit, unit );
+	glActiveTexture(GL_TEXTURE0 + unit);
+#if !defined(GL_ES_VERSION_2_0)
+	glClientActiveTexture(GL_TEXTURE0 + unit);
+#endif
+	RB_LogComment("glActiveTextureARB( %i );\nglClientActiveTextureARB( %i );\n", unit, unit);
 
 	backEnd.glState.currenttmu = unit;
 }
 
+/*
+====================
+GL_UseProgram
+====================
+*/
+void GL_UseProgram(shaderProgram_t *program)
+{
+	if (backEnd.glState.currentProgram == program) {
+		return;
+	}
+
+	glUseProgram(program ? program->program : 0);
+	backEnd.glState.currentProgram = program;
+
+	GL_CheckErrors();
+}
+
+/*
+====================
+GL_Uniform1fv
+====================
+*/
+void GL_Uniform1fv(GLint location, const GLfloat *value)
+{
+	if (!backEnd.glState.currentProgram) {
+		common->Printf("GL_Uniform1fv: no current program object\n");
+		__builtin_trap();
+		return;
+	}
+
+	glUniform1fv(*(GLint *)((char *)backEnd.glState.currentProgram + location), 1, value);
+
+	GL_CheckErrors();
+}
+
+/*
+====================
+GL_Uniform4fv
+====================
+*/
+void GL_Uniform4fv(GLint location, const GLfloat *value)
+{
+	if (!backEnd.glState.currentProgram) {
+		common->Printf("GL_Uniform4fv: no current program object\n");
+		__builtin_trap();
+		return;
+	}
+
+	glUniform4fv(*(GLint *)((char *)backEnd.glState.currentProgram + location), 1, value);
+
+	GL_CheckErrors();
+}
+
+/*
+====================
+GL_UniformMatrix4fv
+====================
+*/
+void GL_UniformMatrix4fv(GLint location, const GLfloat *value)
+{
+	if (!backEnd.glState.currentProgram) {
+		common->Printf("GL_Uniform4fv: no current program object\n");
+		__builtin_trap();
+		return;
+	}
+
+	glUniformMatrix4fv(*(GLint *)((char *)backEnd.glState.currentProgram + location), 1, GL_FALSE, value);
+
+	GL_CheckErrors();
+}
+
+/*
+====================
+GL_EnableVertexAttribArray
+====================
+*/
+void GL_EnableVertexAttribArray(GLuint index)
+{
+	if (!backEnd.glState.currentProgram) {
+		common->Printf("GL_EnableVertexAttribArray: no current program object\n");
+		__builtin_trap();
+		return;
+	}
+
+	if ((*(GLint *)((char *)backEnd.glState.currentProgram + index)) == -1) {
+		common->Printf("GL_EnableVertexAttribArray: unbound attribute index\n");
+		__builtin_trap();
+		return;
+	}
+
+	glEnableVertexAttribArray(*(GLint *)((char *)backEnd.glState.currentProgram + index));
+
+	GL_CheckErrors();
+}
+
+/*
+====================
+GL_DisableVertexAttribArray
+====================
+*/
+void GL_DisableVertexAttribArray(GLuint index)
+{
+	if (!backEnd.glState.currentProgram) {
+		common->Printf("GL_DisableVertexAttribArray: no current program object\n");
+		__builtin_trap();
+		return;
+	}
+
+	if ((*(GLint *)((char *)backEnd.glState.currentProgram + index)) == -1) {
+		common->Printf("GL_DisableVertexAttribArray: unbound attribute index\n");
+		__builtin_trap();
+		return;
+	}
+
+	glDisableVertexAttribArray(*(GLint *)((char *)backEnd.glState.currentProgram + index));
+
+	GL_CheckErrors();
+}
+
+/*
+====================
+GL_VertexAttribPointer
+====================
+*/
+void GL_VertexAttribPointer(GLuint index, GLint size, GLenum type,
+			    GLboolean normalized, GLsizei stride,
+			    const GLvoid *pointer)
+{
+	if (!backEnd.glState.currentProgram) {
+		common->Printf("GL_VertexAttribPointer: no current program object\n");
+		__builtin_trap();
+		return;
+	}
+
+	if ((*(GLint *)((char *)backEnd.glState.currentProgram + index)) == -1) {
+		common->Printf("GL_VertexAttribPointer: unbound attribute index\n");
+		__builtin_trap();
+		return;
+	}
+
+	glVertexAttribPointer(*(GLint *)((char *)backEnd.glState.currentProgram + index),
+	                      size, type, normalized, stride, pointer);
+
+	GL_CheckErrors();
+}
 
 /*
 ====================
@@ -214,6 +364,37 @@ void GL_TexEnv( int env ) {
 	default:
 		common->Error( "GL_TexEnv: invalid env '%d' passed\n", env );
 		break;
+	}
+}
+
+/*
+====================
+GL_TexEnv
+====================
+*/
+void GL_TexEnv(int env)
+{
+	tmu_t	*tmu;
+
+	tmu = &backEnd.glState.tmu[backEnd.glState.currenttmu];
+
+	if (env == tmu->texEnv) {
+		return;
+	}
+
+	tmu->texEnv = env;
+
+	switch (env) {
+		case GL_COMBINE_EXT:
+		case GL_MODULATE:
+		case GL_REPLACE:
+		case GL_DECAL:
+		case GL_ADD:
+			glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, env);
+			break;
+		default:
+			common->Error("GL_TexEnv: invalid env '%d' passed\n", env);
+			break;
 	}
 }
 
@@ -365,6 +546,7 @@ void GL_State( int stateBits ) {
 	//
 	// fill/line mode
 	//
+#if !defined(GL_ES_VERSION_2_0)
 	if ( diff & GLS_POLYMODE_LINE ) {
 		if ( stateBits & GLS_POLYMODE_LINE ) {
 			qglPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -372,10 +554,12 @@ void GL_State( int stateBits ) {
 			qglPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		}
 	}
+#endif
 
 	//
 	// alpha test
 	//
+#if !defined(GL_ES_VERSION_2_0)
 	if ( diff & GLS_ATEST_BITS ) {
 		switch ( stateBits & GLS_ATEST_BITS ) {
 		case 0:
@@ -398,6 +582,7 @@ void GL_State( int stateBits ) {
 			break;
 		}
 	}
+#endif
 
 	backEnd.glState.glStateBits = stateBits;
 }
@@ -426,11 +611,15 @@ void RB_SetGL2D( void ) {
 	if ( r_useScissor.GetBool() ) {
 		qglScissor( 0, 0, glConfig.vidWidth, glConfig.vidHeight );
 	}
-	qglMatrixMode( GL_PROJECTION );
-    qglLoadIdentity();
-	qglOrtho( 0, 640, 480, 0, 0, 1 );		// always assume 640x480 virtual coordinates
-	qglMatrixMode( GL_MODELVIEW );
-    qglLoadIdentity();
+
+	// always assume 640x480 virtual coordinates
+	esOrtho((ESMatrix *)backEnd.viewDef->projectionMatrix, 0, 640, 480, 0, 0, 1);
+	esMatrixLoadIdentity((ESMatrix *)backEnd.viewDef->worldSpace.modelViewMatrix);
+
+	float	mat[16];
+	myGlMultMatrix(backEnd.viewDef->worldSpace.modelViewMatrix, backEnd.viewDef->projectionMatrix, mat);
+	GL_UniformMatrix4fv(offsetof(shaderProgram_t, modelViewProjectionMatrix), mat);
+
 
 	GL_State( GLS_DEPTHFUNC_ALWAYS |
 			  GLS_SRCBLEND_SRC_ALPHA |
@@ -458,8 +647,10 @@ static void	RB_SetBuffer( const void *data ) {
 	cmd = (const setBufferCommand_t *)data;
 
 	backEnd.frameCount = cmd->frameCount;
-
+	
+#if !defined(GL_ES_VERSION_2_0)
 	qglDrawBuffer( cmd->buffer );
+#endif
 
 	// clear screen for debugging
 	// automatically enable this with several other debug tools
@@ -488,6 +679,7 @@ was there.  This is used to test for texture thrashing.
 ===============
 */
 void RB_ShowImages( void ) {
+#if !defined(GL_ES_VERSION_2_0)
 	int		i;
 	idImage	*image;
 	float	x, y, w, h;
@@ -537,6 +729,7 @@ void RB_ShowImages( void ) {
 
 	end = Sys_Milliseconds();
 	common->Printf( "%i msec to draw all images\n", end - start );
+#endif
 }
 
 

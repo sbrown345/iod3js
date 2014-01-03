@@ -482,7 +482,7 @@ void R_R200_Init( void ) {
 
 	common->Printf( "----------- R200_Init -----------\n" );
 
-	if ( !glConfig.atiFragmentShaderAvailable || !glConfig.ARBVertexProgramAvailable || !glConfig.ARBVertexBufferObjectAvailable ) {
+	if ( !glConfig.ARBVertexProgramAvailable || !glConfig.ARBVertexBufferObjectAvailable ) {
 		common->Printf( "Not available.\n" );
 		return;
 	}

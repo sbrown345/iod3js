@@ -184,7 +184,7 @@ srfTriangles_t *R_CreateVertexProgramTurboShadowVolume( const idRenderEntityLoca
 R_CreateTurboShadowVolume
 =====================
 */
-srfTriangles_t *R_CreateTurboShadowVolume( const idRenderEntityLocal *ent,
+static srfTriangles_t *R_CreateTurboShadowVolume( const idRenderEntityLocal *ent,
 											const srfTriangles_t *tri, const idRenderLightLocal *light,
 											srfCullInfo_t &cullInfo ) {
 	int		i, j;

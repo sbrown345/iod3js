@@ -420,7 +420,7 @@ vertCache_t	*idVertexCache::AllocFrameTemp( void *data, int size ) {
 	block->vbo = tempBuffers[listNum]->vbo;
 
 	if ( block->vbo ) {
-		qglBindBufferARB( GL_ARRAY_BUFFER_ARB, block->vbo );
+		glBindBuffer( GL_ARRAY_BUFFER, block->vbo );
 		qglBufferSubDataARB( GL_ARRAY_BUFFER_ARB, block->offset, (GLsizeiptrARB)size, data );
 	} else {
 		SIMDProcessor->Memcpy( (byte *)block->virtMem + block->offset, data, size );
@@ -546,18 +546,4 @@ void idVertexCache::List( void ) {
 	} else {
 		common->Printf( "Index buffers are not used.\n" );
 	}
-}
-
-/*
-=============
-idVertexCache::IsFast
-
-just for gfxinfo printing
-=============
-*/
-bool idVertexCache::IsFast() {
-	if ( virtualMemory ) {
-		return false;
-	}
-	return true;
 }

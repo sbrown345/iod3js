@@ -39,43 +39,16 @@ If you have questions concerning this license or the applicable additional terms
 
 
 /*
-=================
-RB_DrawElementsImmediate
-
-Draws with immediate mode commands, which is going to be very slow.
-This should never happen if the vertex cache is operating properly.
-=================
-*/
-void RB_DrawElementsImmediate( const srfTriangles_t *tri ) {
-
-	backEnd.pc.c_drawElements++;
-	backEnd.pc.c_drawIndexes += tri->numIndexes;
-	backEnd.pc.c_drawVertexes += tri->numVerts;
-
-	if ( tri->ambientSurface != NULL  ) {
-		if ( tri->indexes == tri->ambientSurface->indexes ) {
-			backEnd.pc.c_drawRefIndexes += tri->numIndexes;
-		}
-		if ( tri->verts == tri->ambientSurface->verts ) {
-			backEnd.pc.c_drawRefVertexes += tri->numVerts;
-		}
-	}
-
-	qglBegin( GL_TRIANGLES );
-	for ( int i = 0 ; i < tri->numIndexes ; i++ ) {
-		qglTexCoord2fv( tri->verts[ tri->indexes[i] ].st.ToFloatPtr() );
-		qglVertex3fv( tri->verts[ tri->indexes[i] ].xyz.ToFloatPtr() );
-	}
-	qglEnd();
-}
-
-
-/*
 ================
 RB_DrawElementsWithCounters
 ================
 */
 void RB_DrawElementsWithCounters( const srfTriangles_t *tri ) {
+	if (!backEnd.glState.currentProgram) {
+		common->Printf("RB_DrawElementsWithCounters: no current program object\n");
+		__builtin_trap();
+		return;
+	}
 
 	backEnd.pc.c_drawElements++;
 	backEnd.pc.c_drawIndexes += tri->numIndexes;
@@ -115,6 +88,12 @@ May not use all the indexes in the surface if caps are skipped
 ================
 */
 void RB_DrawShadowElementsWithCounters( const srfTriangles_t *tri, int numIndexes ) {
+	if (!backEnd.glState.currentProgram) {
+		common->Printf("RB_DrawShadowElementsWithCounters: no current program object\n");
+		__builtin_trap();
+		return;
+	}
+
 	backEnd.pc.c_shadowElements++;
 	backEnd.pc.c_shadowIndexes += numIndexes;
 	backEnd.pc.c_shadowVertexes += tri->numVerts;
@@ -146,16 +125,15 @@ Sets texcoord and vertex pointers
 */
 void RB_RenderTriangleSurface( const srfTriangles_t *tri ) {
 	if ( !tri->ambientCache ) {
-		RB_DrawElementsImmediate( tri );
 		return;
 	}
 
 
-	idDrawVert *ac = (idDrawVert *)vertexCache.Position( tri->ambientCache );
-	qglVertexPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ac->xyz.ToFloatPtr() );
-	qglTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), ac->st.ToFloatPtr() );
+	idDrawVert *ac = (idDrawVert *)vertexCache.Position(tri->ambientCache);
+	GL_VertexAttribPointer(offsetof(shaderProgram_t, attr_Vertex), 3, GL_FLOAT, false, sizeof(idDrawVert), ac->xyz.ToFloatPtr());
+	GL_VertexAttribPointer(offsetof(shaderProgram_t, attr_TexCoord), 2, GL_FLOAT, false, sizeof(idDrawVert), ac->st.ToFloatPtr());
 
-	RB_DrawElementsWithCounters( tri );
+	RB_DrawElementsWithCounters(tri);
 }
 
 /*
@@ -167,24 +145,24 @@ RB_T_RenderTriangleSurface
 void RB_T_RenderTriangleSurface( const drawSurf_t *surf ) {
 	RB_RenderTriangleSurface( surf->geo );
 }
-
 /*
 ===============
 RB_EnterWeaponDepthHack
 ===============
 */
-void RB_EnterWeaponDepthHack() {
-	qglDepthRange( 0, 0.5 );
+void RB_EnterWeaponDepthHack(const drawSurf_t *surf)
+{
+	glDepthRangef(0, 0.5);
 
 	float	matrix[16];
 
-	memcpy( matrix, backEnd.viewDef->projectionMatrix, sizeof( matrix ) );
+	memcpy(matrix, backEnd.viewDef->projectionMatrix, sizeof(matrix));
 
 	matrix[14] *= 0.25;
 
-	qglMatrixMode(GL_PROJECTION);
-	qglLoadMatrixf( matrix );
-	qglMatrixMode(GL_MODELVIEW);
+	float	mat[16];
+	myGlMultMatrix(surf->space->modelViewMatrix, matrix, mat);
+	GL_UniformMatrix4fv(offsetof(shaderProgram_t, modelViewProjectionMatrix), mat);
 }
 
 /*
@@ -192,18 +170,19 @@ void RB_EnterWeaponDepthHack() {
 RB_EnterModelDepthHack
 ===============
 */
-void RB_EnterModelDepthHack( float depth ) {
-	qglDepthRange( 0.0f, 1.0f );
+void RB_EnterModelDepthHack(const drawSurf_t *surf)
+{
+	glDepthRangef(0.0f, 1.0f);
 
 	float	matrix[16];
 
-	memcpy( matrix, backEnd.viewDef->projectionMatrix, sizeof( matrix ) );
+	memcpy(matrix, backEnd.viewDef->projectionMatrix, sizeof(matrix));
 
-	matrix[14] -= depth;
+	matrix[14] -= surf->space->modelDepthHack;
 
-	qglMatrixMode(GL_PROJECTION);
-	qglLoadMatrixf( matrix );
-	qglMatrixMode(GL_MODELVIEW);
+	float	mat[16];
+	myGlMultMatrix(surf->space->modelViewMatrix, matrix, mat);
+	GL_UniformMatrix4fv(offsetof(shaderProgram_t, modelViewProjectionMatrix), mat);
 }
 
 /*
@@ -211,12 +190,13 @@ void RB_EnterModelDepthHack( float depth ) {
 RB_LeaveDepthHack
 ===============
 */
-void RB_LeaveDepthHack() {
-	qglDepthRange( 0, 1 );
+void RB_LeaveDepthHack(const drawSurf_t *surf)
+{
+	glDepthRangef(0, 1);
 
-	qglMatrixMode(GL_PROJECTION);
-	qglLoadMatrixf( backEnd.viewDef->projectionMatrix );
-	qglMatrixMode(GL_MODELVIEW);
+	float	mat[16];
+	myGlMultMatrix(surf->space->modelViewMatrix, backEnd.viewDef->projectionMatrix, mat);
+	GL_UniformMatrix4fv(offsetof(shaderProgram_t, modelViewProjectionMatrix), mat);
 }
 
 /*
@@ -229,43 +209,50 @@ matrix will already have been loaded, and backEnd.currentSpace will
 be updated after the triangle function completes.
 ====================
 */
-void RB_RenderDrawSurfListWithFunction( drawSurf_t **drawSurfs, int numDrawSurfs, 
-											  void (*triFunc_)( const drawSurf_t *) ) {
+void RB_RenderDrawSurfListWithFunction(drawSurf_t **drawSurfs, int numDrawSurfs,
+                                       void (*triFunc_)(const drawSurf_t *))
+{
 	int				i;
 	const drawSurf_t		*drawSurf;
 
 	backEnd.currentSpace = NULL;
 
-	for (i = 0  ; i < numDrawSurfs ; i++ ) {
+	for (i = 0  ; i < numDrawSurfs ; i++) {
 		drawSurf = drawSurfs[i];
 
 		// change the matrix if needed
-		if ( drawSurf->space != backEnd.currentSpace ) {
-			qglLoadMatrixf( drawSurf->space->modelViewMatrix );
+		if (drawSurf->space != backEnd.currentSpace) {
+			float	mat[16];
+			myGlMultMatrix(drawSurf->space->modelViewMatrix, backEnd.viewDef->projectionMatrix, mat);
+			GL_UniformMatrix4fv(offsetof(shaderProgram_t, modelViewProjectionMatrix), mat);
+
+			// we need the model matrix without it being combined with the view matrix
+			// so we can transform local vectors to global coordinates
+			GL_UniformMatrix4fv(offsetof(shaderProgram_t, modelMatrix), drawSurf->space->modelMatrix);
 		}
 
-		if ( drawSurf->space->weaponDepthHack ) {
-			RB_EnterWeaponDepthHack();
+		if (drawSurf->space->weaponDepthHack) {
+			RB_EnterWeaponDepthHack(drawSurf);
 		}
 
-		if ( drawSurf->space->modelDepthHack != 0.0f ) {
-			RB_EnterModelDepthHack( drawSurf->space->modelDepthHack );
+		if (drawSurf->space->modelDepthHack != 0.0f) {
+			RB_EnterModelDepthHack(drawSurf);
 		}
 
 		// change the scissor if needed
-		if ( r_useScissor.GetBool() && !backEnd.currentScissor.Equals( drawSurf->scissorRect ) ) {
+		if (r_useScissor.GetBool() && !backEnd.currentScissor.Equals(drawSurf->scissorRect)) {
 			backEnd.currentScissor = drawSurf->scissorRect;
-			qglScissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1, 
-				backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
-				backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
-				backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
+			glScissor(backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
+			           backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
+			           backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
+			           backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1);
 		}
 
 		// render it
-		triFunc_( drawSurf );
+		triFunc_(drawSurf);
 
-		if ( drawSurf->space->weaponDepthHack || drawSurf->space->modelDepthHack != 0.0f ) {
-			RB_LeaveDepthHack();
+		if (drawSurf->space->weaponDepthHack || drawSurf->space->modelDepthHack != 0.0f) {
+			RB_LeaveDepthHack(drawSurf);
 		}
 
 		backEnd.currentSpace = drawSurf->space;
@@ -277,40 +264,47 @@ void RB_RenderDrawSurfListWithFunction( drawSurf_t **drawSurfs, int numDrawSurfs
 RB_RenderDrawSurfChainWithFunction
 ======================
 */
-void RB_RenderDrawSurfChainWithFunction( const drawSurf_t *drawSurfs, 
-										void (*triFunc_)( const drawSurf_t *) ) {
+void RB_RenderDrawSurfChainWithFunction(const drawSurf_t *drawSurfs,
+                                        void (*triFunc_)(const drawSurf_t *))
+{
 	const drawSurf_t		*drawSurf;
 
 	backEnd.currentSpace = NULL;
 
-	for ( drawSurf = drawSurfs ; drawSurf ; drawSurf = drawSurf->nextOnLight ) {
+	for (drawSurf = drawSurfs ; drawSurf ; drawSurf = drawSurf->nextOnLight) {
 		// change the matrix if needed
-		if ( drawSurf->space != backEnd.currentSpace ) {
-			qglLoadMatrixf( drawSurf->space->modelViewMatrix );
+		if (drawSurf->space != backEnd.currentSpace) {
+			float	mat[16];
+			myGlMultMatrix(drawSurf->space->modelViewMatrix, backEnd.viewDef->projectionMatrix, mat);
+			GL_UniformMatrix4fv(offsetof(shaderProgram_t, modelViewProjectionMatrix), mat);
+
+			// we need the model matrix without it being combined with the view matrix
+			// so we can transform local vectors to global coordinates
+			GL_UniformMatrix4fv(offsetof(shaderProgram_t, modelMatrix), drawSurf->space->modelMatrix);
 		}
 
-		if ( drawSurf->space->weaponDepthHack ) {
-			RB_EnterWeaponDepthHack();
+		if (drawSurf->space->weaponDepthHack) {
+			RB_EnterWeaponDepthHack(drawSurf);
 		}
 
-		if ( drawSurf->space->modelDepthHack ) {
-			RB_EnterModelDepthHack( drawSurf->space->modelDepthHack );
+		if (drawSurf->space->modelDepthHack) {
+			RB_EnterModelDepthHack(drawSurf);
 		}
 
 		// change the scissor if needed
-		if ( r_useScissor.GetBool() && !backEnd.currentScissor.Equals( drawSurf->scissorRect ) ) {
+		if (r_useScissor.GetBool() && !backEnd.currentScissor.Equals(drawSurf->scissorRect)) {
 			backEnd.currentScissor = drawSurf->scissorRect;
-			qglScissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1, 
-				backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
-				backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
-				backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
+			glScissor(backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
+			           backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
+			           backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
+			           backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1);
 		}
 
 		// render it
-		triFunc_( drawSurf );
+		triFunc_(drawSurf);
 
-		if ( drawSurf->space->weaponDepthHack || drawSurf->space->modelDepthHack != 0.0f ) {
-			RB_LeaveDepthHack();
+		if (drawSurf->space->weaponDepthHack || drawSurf->space->modelDepthHack != 0.0f) {
+			RB_LeaveDepthHack(drawSurf);
 		}
 
 		backEnd.currentSpace = drawSurf->space;
@@ -362,10 +356,8 @@ RB_LoadShaderTextureMatrix
 void RB_LoadShaderTextureMatrix( const float *shaderRegisters, const textureStage_t *texture ) {
 	float	matrix[16];
 
-	RB_GetShaderTextureMatrix( shaderRegisters, texture, matrix );
-	qglMatrixMode( GL_TEXTURE );
-	qglLoadMatrixf( matrix );
-	qglMatrixMode( GL_MODELVIEW );
+	RB_GetShaderTextureMatrix(shaderRegisters, texture, matrix);
+	GL_UniformMatrix4fv(offsetof(shaderProgram_t, textureMatrix), matrix);
 }
 
 /*
@@ -448,32 +440,37 @@ void RB_BindStageTexture( const float *shaderRegisters, const textureStage_t *te
 RB_FinishStageTexture
 ======================
 */
-void RB_FinishStageTexture( const textureStage_t *texture, const drawSurf_t *surf ) {
-	if ( texture->texgen == TG_DIFFUSE_CUBE || texture->texgen == TG_SKYBOX_CUBE 
-		|| texture->texgen == TG_WOBBLESKY_CUBE ) {
-		qglTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), 
-			(void *)&(((idDrawVert *)vertexCache.Position( surf->geo->ambientCache ))->st) );
+void RB_FinishStageTexture(const textureStage_t *texture, const drawSurf_t *surf)
+{
+	if (texture->texgen == TG_DIFFUSE_CUBE || texture->texgen == TG_SKYBOX_CUBE
+	    || texture->texgen == TG_WOBBLESKY_CUBE) {
+		GL_VertexAttribPointer(offsetof(shaderProgram_t, attr_TexCoord), 2, GL_FLOAT, false, sizeof(idDrawVert),
+		                       (void *)&(((idDrawVert *)vertexCache.Position(surf->geo->ambientCache))->st));
 	}
 
-	if ( texture->texgen == TG_REFLECT_CUBE ) {
-		qglDisable( GL_TEXTURE_GEN_S );
-		qglDisable( GL_TEXTURE_GEN_T );
-		qglDisable( GL_TEXTURE_GEN_R );
-		qglTexGenf( GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR );
-		qglTexGenf( GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR );
-		qglTexGenf( GL_R, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR );
-		qglDisableClientState( GL_NORMAL_ARRAY );
+#if !defined(GL_ES_VERSION_2_0)
+	if (texture->texgen == TG_REFLECT_CUBE) {
+		glDisable(GL_TEXTURE_GEN_S);
+		glDisable(GL_TEXTURE_GEN_T);
+		glDisable(GL_TEXTURE_GEN_R);
+		glTexGenf(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+		glTexGenf(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+		glTexGenf(GL_R, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+		glDisableClientState(GL_NORMAL_ARRAY);
 
-		qglMatrixMode( GL_TEXTURE );
-		qglLoadIdentity();
-		qglMatrixMode( GL_MODELVIEW );
+		glMatrixMode(GL_TEXTURE);
+		glLoadIdentity();
+		glMatrixMode(GL_MODELVIEW);
 	}
+#endif
 
-	if ( texture->hasMatrix ) {
-		qglMatrixMode( GL_TEXTURE );
-		qglLoadIdentity();
-		qglMatrixMode( GL_MODELVIEW );
+#if !defined(GL_ES_VERSION_2_0)
+	if (texture->hasMatrix) {
+		glMatrixMode(GL_TEXTURE);
+		glLoadIdentity();
+		glMatrixMode(GL_MODELVIEW);
 	}
+#endif
 }
 
 
@@ -554,9 +551,6 @@ to actually render the visible surfaces for this view
 */
 void RB_BeginDrawingView (void) {
 	// set the modelview matrix for the viewer
-	qglMatrixMode(GL_PROJECTION);
-	qglLoadMatrixf( backEnd.viewDef->projectionMatrix );
-	qglMatrixMode(GL_MODELVIEW);
 
 	// set the window clipping
 	qglViewport( tr.viewportOffset[0] + backEnd.viewDef->viewport.x1, 
@@ -703,9 +697,16 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void (*DrawInterac
 	}
 
 	// change the matrix and light projection vectors if needed
-	if ( surf->space != backEnd.currentSpace ) {
+	if (surf->space != backEnd.currentSpace) {
 		backEnd.currentSpace = surf->space;
-		qglLoadMatrixf( surf->space->modelViewMatrix );
+
+		float	mat[16];
+		myGlMultMatrix(surf->space->modelViewMatrix, backEnd.viewDef->projectionMatrix, mat);
+		GL_UniformMatrix4fv(offsetof(shaderProgram_t, modelViewProjectionMatrix), mat);
+
+		// we need the model matrix without it being combined with the view matrix
+		// so we can transform local vectors to global coordinates
+		GL_UniformMatrix4fv(offsetof(shaderProgram_t, modelMatrix), surf->space->modelMatrix);
 	}
 
 	// change the scissor if needed
@@ -719,11 +720,11 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void (*DrawInterac
 
 	// hack depth range if needed
 	if ( surf->space->weaponDepthHack ) {
-		RB_EnterWeaponDepthHack();
+		RB_EnterWeaponDepthHack(surf);
 	}
 
 	if ( surf->space->modelDepthHack ) {
-		RB_EnterModelDepthHack( surf->space->modelDepthHack );
+		RB_EnterModelDepthHack( surf );
 	}
 
 	inter.surf = surf;
@@ -837,7 +838,7 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void (*DrawInterac
 
 	// unhack depth range if needed
 	if ( surf->space->weaponDepthHack || surf->space->modelDepthHack != 0.0f ) {
-		RB_LeaveDepthHack();
+		RB_LeaveDepthHack( surf );
 	}
 }
 

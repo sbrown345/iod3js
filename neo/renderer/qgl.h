@@ -34,7 +34,11 @@ If you have questions concerning this license or the applicable additional terms
 
 #if defined( _WIN32 )
 
-#include <gl/gl.h>
+#include <EGL/egl.h>
+#include "eglext.h"
+#include <GLES2/gl2.h>
+#include "gl2ext.h"
+#include "esUtil.h"
 
 #elif defined( MACOS_X )
 
@@ -68,7 +72,7 @@ If you have questions concerning this license or the applicable additional terms
 // http://oss.sgi.com/projects/ogl-sample/ABI/
 #ifndef GL_GLEXT_VERSION
 
-#include "glext.h"
+//#include "glext.h"
 
 #endif
 
@@ -91,7 +95,7 @@ extern	void ( APIENTRY * qglActiveTextureARB )( GLenum texture );
 extern	void ( APIENTRY * qglClientActiveTextureARB )( GLenum texture );
 
 // ARB_vertex_buffer_object
-extern PFNGLBINDBUFFERARBPROC qglBindBufferARB;
+//extern PFNGLBINDBUFFERPROC qglBindBuffer;
 extern PFNGLDELETEBUFFERSARBPROC qglDeleteBuffersARB;
 extern PFNGLGENBUFFERSARBPROC qglGenBuffersARB;
 extern PFNGLISBUFFERARBPROC qglIsBufferARB;
@@ -164,8 +168,10 @@ extern PFNGLGENPROGRAMSARBPROC				qglGenProgramsARB;
 extern PFNGLPROGRAMENVPARAMETER4FVARBPROC	qglProgramEnvParameter4fvARB;
 extern PFNGLPROGRAMLOCALPARAMETER4FVARBPROC	qglProgramLocalParameter4fvARB;
 
+#if !defined(GL_ES_VERSION_2_0)
 // GL_EXT_depth_bounds_test
 extern PFNGLDEPTHBOUNDSEXTPROC              qglDepthBoundsEXT;
+#endif
 
 // GL_ARB_shading_language_100
 extern void ( APIENTRY * qglDeleteObjectARB )( GLhandleARB obj );
@@ -173,9 +179,9 @@ extern GLhandleARB ( APIENTRY * qglGetHandleARB )( GLenum pname );
 extern void ( APIENTRY * qglDetachObjectARB )( GLhandleARB containerObj, GLhandleARB attachedObj );
 extern GLhandleARB ( APIENTRY * qglCreateShaderObjectARB )( GLenum shaderType );
 extern void ( APIENTRY * qglShaderSourceARB )( GLhandleARB shaderObj, GLsizei count, const GLcharARB* *string, const GLint *length ); extern void ( APIENTRY * qglCompileShaderARB )( GLhandleARB shaderObj );
-extern GLhandleARB ( APIENTRY * qglCreateProgramObjectARB )( void ); 
-extern void ( APIENTRY * qglAttachObjectARB )( GLhandleARB containerObj, GLhandleARB obj );
-extern void ( APIENTRY * qglLinkProgramARB )( GLhandleARB programObj );
+extern GLhandleARB ( APIENTRY * qglCreateProgram )( void ); 
+extern void ( APIENTRY * qglAttachShader )( GLhandleARB containerObj, GLhandleARB obj );
+extern void ( APIENTRY * qglLinkProgram )( GLhandleARB programObj );
 extern void ( APIENTRY * qglUseProgramObjectARB )( GLhandleARB programObj );
 extern void ( APIENTRY * qglValidateProgramARB )( GLhandleARB programObj );
 extern void ( APIENTRY * qglUniform1fARB )( GLint location, GLfloat v0 );
@@ -196,7 +202,7 @@ extern void ( APIENTRY * qglUniformMatrix2fvARB )( GLint location, GLsizei count
 extern void ( APIENTRY * qglUniformMatrix3fvARB )( GLint location, GLsizei count, GLboolean transpose, const GLfloat *value );
 extern void ( APIENTRY * qglUniformMatrix4fvARB )( GLint location, GLsizei count, GLboolean transpose, const GLfloat *value );
 extern void ( APIENTRY * qglGetObjectParameterfvARB )( GLhandleARB obj, GLenum pname, GLfloat *params );
-extern void ( APIENTRY * qglGetObjectParameterivARB )( GLhandleARB obj, GLenum pname, GLint *params );
+extern void ( APIENTRY * qglGetProgramiv )( GLhandleARB obj, GLenum pname, GLint *params );
 extern void ( APIENTRY * qglGetInfoLogARB )( GLhandleARB obj, GLsizei maxLength, GLsizei *length, GLcharARB *infoLog );
 extern void ( APIENTRY * qglGetAttachedObjectsARB )( GLhandleARB containerObj, GLsizei maxCount, GLsizei *count, GLhandleARB *obj );
 extern GLint ( APIENTRY * qglGetUniformLocationARB )( GLhandleARB programObj, const GLcharARB *name );

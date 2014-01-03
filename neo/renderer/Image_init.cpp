@@ -363,10 +363,13 @@ static void R_BorderClampImage( idImage *image ) {
 		// can't call qglTexParameterfv yet
 		return;
 	}
+
+#if !defined(GL_ES_VERSION_2_0)
 	// explicit zero border
 	float	color[4];
 	color[0] = color[1] = color[2] = color[3] = 0;
 	qglTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color );
+#endif
 }
 
 static void R_RGBA8Image( idImage *image ) {
@@ -978,11 +981,13 @@ static filterName_t textureFilters[] = {
 		case TT_2D:
 			texEnum = GL_TEXTURE_2D;
 			break;
+#if !defined(GL_ES_VERSION_2_0)
 		case TT_3D:
 			texEnum = GL_TEXTURE_3D;
 			break;
+#endif
 		case TT_CUBIC:
-			texEnum = GL_TEXTURE_CUBE_MAP_EXT;
+			texEnum = GL_TEXTURE_CUBE_MAP;
 			break;
 		}
 
@@ -998,9 +1003,11 @@ static filterName_t textureFilters[] = {
 		if ( glConfig.anisotropicAvailable ) {
 			qglTexParameterf(texEnum, GL_TEXTURE_MAX_ANISOTROPY_EXT, globalImages->textureAnisotropy );
 		}	
+#if !defined(GL_ES_VERSION_2_0)
 		if ( glConfig.textureLODBiasAvailable ) {
 			qglTexParameterf(texEnum, GL_TEXTURE_LOD_BIAS_EXT, globalImages->textureLODBias );
 		}
+#endif
 	}
 }
 
@@ -1182,13 +1189,14 @@ void R_ListImages_f( const idCmdArgs &args ) {
 
 	for ( i = 0 ; i < globalImages->images.Num() ; i++ ) {
 		image = globalImages->images[ i ];
-
+#if !defined(GL_ES_VERSION_2_0)
 		if ( uncompressedOnly ) {
 			if ( ( image->internalFormat >= GL_COMPRESSED_RGB_S3TC_DXT1_EXT && image->internalFormat <= GL_COMPRESSED_RGBA_S3TC_DXT5_EXT )
 				|| image->internalFormat == GL_COLOR_INDEX8_EXT ) {
 				continue;
 			}
 		}
+#endif
 
 		if ( matchTag && image->classification != matchTag ) {
 			continue;
@@ -1383,6 +1391,7 @@ void idImageManager::SetNormalPalette( void ) {
 		return;
 	}
 
+#if !defined(GL_ES_VERSION_2_0)
 	qglColorTableEXT( GL_SHARED_TEXTURE_PALETTE_EXT,
 					   GL_RGB,
 					   256,
@@ -1391,6 +1400,7 @@ void idImageManager::SetNormalPalette( void ) {
 					   temptable );
 
 	qglEnable( GL_SHARED_TEXTURE_PALETTE_EXT );
+#endif
 }
 
 /*
@@ -1921,6 +1931,7 @@ void idImageManager::BindNull() {
 	tmu = &backEnd.glState.tmu[backEnd.glState.currenttmu];
 
 	RB_LogComment( "BindNull()\n" );
+#if !defined(GL_ES_VERSION_2_0)
 	if ( tmu->textureType == TT_CUBIC ) {
 		qglDisable( GL_TEXTURE_CUBE_MAP_EXT );
 	} else if ( tmu->textureType == TT_3D ) {
@@ -1929,6 +1940,7 @@ void idImageManager::BindNull() {
 		qglDisable( GL_TEXTURE_2D );
 	}
 	tmu->textureType = TT_DISABLED;
+#endif
 }
 
 /*

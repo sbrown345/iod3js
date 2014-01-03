@@ -216,9 +216,6 @@
     <ClInclude Include="renderer\Cinematic.h">
       <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="renderer\glext.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="renderer\GuiModel.h">
       <Filter>Renderer</Filter>
     </ClInclude>
@@ -620,6 +617,21 @@
     </ClInclude>
     <ClInclude Include="ui\Winvar.h">
       <Filter>Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\esUtil.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\esUtil_win.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\gl2.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\gl2ext.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\eglext.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1824,6 +1836,24 @@
       <Filter>Ui</Filter>
     </ClCompile>
     <ClCompile Include="renderer\draw_glsl.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\esTransform.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\gles2.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\esShader.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\esShapes.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\esUtil.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\esUtil_win32.c">
       <Filter>Renderer</Filter>
     </ClCompile>
   </ItemGroup>
