@@ -1,1 +1,1 @@
-tsc2 -target ES5 --noImplicitAny --sourcemap --out eduke.js eduke32\source\game.c.ts
+tsc2 -target ES5 --noImplicitAny --sourcemap --out doom3.js DoomDLL\Sys\win_main.cpp.ts

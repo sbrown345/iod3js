@@ -58,6 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="compile.bat" />
+    <Content Include="DoomDLL\Sys\win_main.cpp.ts" />
+    <Content Include="index.htm" />
     <Content Include="Web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

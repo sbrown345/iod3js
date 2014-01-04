@@ -1,0 +1,16 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8" />
+        <title>Doom 3 JS</title>
+        <style>body{margin:0;}</style>
+    </head>
+    <body>
+        <script src="doom3.js"></script>
+        <script>
+            var commandLine = "+set com_allowConsole 1 +set si_pure 0 +set r_renderer glsl +set fullscreen 0 ";
+            commandLine += window.location.search ? window.location.search.substr(1) : "game/demo_mars_city1";
+            WinMain(null, null, commandLine, 10);
+        </script>
+    </body>
+</html>
