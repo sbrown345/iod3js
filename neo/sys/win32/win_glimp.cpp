@@ -390,6 +390,8 @@ bool GLimp_OpenDisplay(void)
 	//	return false;
 	//}
 
+
+
 	// Obtain an EGL display object.
 	eglDisplay = eglGetDisplay(GetDC(win32.hWnd));
 	if (eglDisplay == EGL_NO_DISPLAY)
@@ -398,10 +400,20 @@ bool GLimp_OpenDisplay(void)
 	}
 
 	// Initialize the display
-	if (!eglInitialize(eglDisplay, NULL, NULL))
+	EGLint major = 0;
+    EGLint minor = 0;
+	if (!eglInitialize(eglDisplay, &major, &minor))
 	{
 	  return EGL_FALSE;
 	}
+
+	if (major < 1 || minor < 4)
+    {
+        // Does not support EGL 1.4
+        printf("System does not support at least EGL 1.4\n");
+        //CloseNativeDisplay(nativeDisplay);
+        return GL_FALSE;
+    }
 
 	// Obtain the display configs
 	if (!eglGetConfigs(eglDisplay, NULL, 0, &eglNumConfig))
@@ -419,14 +431,32 @@ bool GLimp_OpenDisplay(void)
 		EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,	// 15, 16
 		EGL_NONE,	// 17
 	};
+
 	// Choose the display config
 	if (!eglChooseConfig(eglDisplay, attrib, &eglConfig, 1, &eglNumConfig))
 	{
 	  return EGL_FALSE;
 	}
+	    // Get the native visual id
+    int nativeVid;
+    if (!eglGetConfigAttrib(eglDisplay, eglConfig, EGL_NATIVE_VISUAL_ID, &nativeVid))
+    {
+        printf("Could not get native visual id\n");
+        //CloseNativeDisplay(nativeDisplay);
+        return GL_FALSE;
+    }
+
+	//EGLNativeWindowType nativeWin;
+ //   if(!CreateNativeWin(nativeDisplay, 640, 480, nativeVid, &nativeWin))
+ //   {
+ //       printf("Could not create window\n");
+ //       //CloseNativeDisplay(nativeDisplay);
+ //       return GL_FALSE;
+ //   }
 
 	// Create a surface
 	eglSurface = eglCreateWindowSurface(eglDisplay, eglConfig, (EGLNativeWindowType)win32.hWnd, NULL);
+	//eglSurface = eglCreateWindowSurface(eglDisplay, eglConfig, nativeWin, NULL);
 	if (eglSurface == EGL_NO_SURFACE)
 	{
 	  return EGL_FALSE;
@@ -434,6 +464,7 @@ bool GLimp_OpenDisplay(void)
 
 	return true;
 }
+
 
 /*
 ====================
@@ -1158,7 +1189,7 @@ void GLimp_SwapBuffers( void ) {
 		}
 	}
 
-	SwapBuffers( win32.hDC );
+	eglSwapBuffers( eglDisplay, eglSurface );
 
 //Sys_DebugPrintf( "*** SwapBuffers() ***\n" );
 }
