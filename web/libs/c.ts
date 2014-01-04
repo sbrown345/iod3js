@@ -1,1 +1,1 @@
-var NULL = 0;
+var NULL:number = 0;

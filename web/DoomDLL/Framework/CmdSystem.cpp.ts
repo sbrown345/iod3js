@@ -1,3 +1,8 @@
+/// <reference path="../../libs/idLib/Text/Str.cpp.ts" />
+/// <reference path="../../libs/idLib/Heap.cpp.ts" />
+/// <reference path="Common.cpp.ts" />
+/// <reference path="../../libs/idLib/Text/Str.cpp.ts" />
+/// <reference path="../../libs/idLib/Lib.cpp.ts" />
 /// <reference path="../../utils/todo.ts" />
 /// <reference path="../../TypeSystem/CmdSystem.h.ts" />
 /// <reference path="../../libs/idLib/Text/CmdArgs.h.ts" />
@@ -93,10 +98,10 @@ class commandDef_t {
 var commands: commandDef_t; ////	commandDef_t *			commands;
 
 ////	int						wait;
-////	int						textLength;
+var /*int*/						textLength:number;
 ////	byte					textBuf[MAX_CMD_BUFFER];
 
-////	idStr					completionString;
+var 					        completionString:string /*idStr*/;
 ////	idStrList				completionParms;
 
 ////	// piggybacks on the text buffer, avoids tokenize again and screwing it up
@@ -236,100 +241,104 @@ function /*idCmdSystemLocal::*/ToolList_f( /*const idCmdArgs &*/args:idCmdArgs )
 	//idCmdSystemLocal::ListByFlags( args, CMD_FL_TOOL );
 }
 
-/////*
-////===============
-////idCmdSystemLocal::Exec_f
-////===============
-////*/
-////void idCmdSystemLocal::Exec_f( /*const idCmdArgs &*/args:idCmdArgs ) {
-////	char *	f;
-////	int		len;
-////	idStr	filename;
+/*
+===============
+idCmdSystemLocal::Exec_f
+===============
+*/
+function /*idCmdSystemLocal::*/Exec_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+    todoThrow();
+	////char *	f;
+	////int		len;
+	////idStr	filename;
 
-////	if ( args.Argc () != 2 ) {
-////		common->Printf( "exec <filename> : execute a script file\n" );
-////		return;
-////	}
+	////if ( args.Argc () != 2 ) {
+	////	common->Printf( "exec <filename> : execute a script file\n" );
+	////	return;
+	////}
 
-////	filename = args.Argv(1);
-////	filename.DefaultFileExtension( ".cfg" );
-////	len = fileSystem->ReadFile( filename, reinterpret_cast<void **>(&f), NULL );
-////	if ( !f ) {
-////		common->Printf( "couldn't exec %s\n", args.Argv(1) );
-////		return;
-////	}
-////	common->Printf( "execing %s\n", args.Argv(1) );
+	////filename = args.Argv(1);
+	////filename.DefaultFileExtension( ".cfg" );
+	////len = fileSystem->ReadFile( filename, reinterpret_cast<void **>(&f), NULL );
+	////if ( !f ) {
+	////	common->Printf( "couldn't exec %s\n", args.Argv(1) );
+	////	return;
+	////}
+	////common->Printf( "execing %s\n", args.Argv(1) );
 	
-////	cmdSystemLocal.BufferCommandText( CMD_EXEC_INSERT, f );
+	////cmdSystemLocal.BufferCommandText( CMD_EXEC_INSERT, f );
 
-////	fileSystem->FreeFile( f );
-////}
+	////fileSystem->FreeFile( f );
+}
 
-/////*
-////===============
-////idCmdSystemLocal::Vstr_f
+/*
+===============
+idCmdSystemLocal::Vstr_f
 
-////Inserts the current value of a cvar as command text
-////===============
-////*/
-////void idCmdSystemLocal::Vstr_f( /*const idCmdArgs &*/args:idCmdArgs ) {
-////	const char *v;
+Inserts the current value of a cvar as command text
+===============
+*/
+function /*idCmdSystemLocal::*/Vstr_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+    todoThrow();
+	////const char *v;
 
-////	if ( args.Argc () != 2 ) {
-////		common->Printf( "vstr <variablename> : execute a variable command\n" );
-////		return;
-////	}
+	////if ( args.Argc () != 2 ) {
+	////	common->Printf( "vstr <variablename> : execute a variable command\n" );
+	////	return;
+	////}
 
-////	v = cvarSystem->GetCVarString( args.Argv( 1 ) );
+	////v = cvarSystem->GetCVarString( args.Argv( 1 ) );
 
-////	cmdSystemLocal.BufferCommandText( CMD_EXEC_APPEND, va( "%s\n", v ) );
-////}
+	////cmdSystemLocal.BufferCommandText( CMD_EXEC_APPEND, va( "%s\n", v ) );
+}
 
-/////*
-////===============
-////idCmdSystemLocal::Echo_f
+/*
+===============
+idCmdSystemLocal::Echo_f
 
-////Just prints the rest of the line to the console
-////===============
-////*/
-////void idCmdSystemLocal::Echo_f( /*const idCmdArgs &*/args:idCmdArgs ) {
-////	int		i;
+Just prints the rest of the line to the console
+===============
+*/
+function /*idCmdSystemLocal::*/Echo_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+    todoThrow();
+	////int		i;
 	
-////	for ( i = 1; i < args.Argc(); i++ ) {
-////		common->Printf( "%s ", args.Argv( i ) );
-////	}
-////	common->Printf( "\n" );
-////}
+	////for ( i = 1; i < args.Argc(); i++ ) {
+	////	common->Printf( "%s ", args.Argv( i ) );
+	////}
+	////common->Printf( "\n" );
+}
 
-/////*
-////============
-////idCmdSystemLocal::Wait_f
+/*
+============
+idCmdSystemLocal::Wait_f
 
-////Causes execution of the remainder of the command buffer to be delayed until next frame.
-////============
-////*/
-////void idCmdSystemLocal::Wait_f( /*const idCmdArgs &*/args:idCmdArgs ) {
-////	if ( args.Argc() == 2 ) {
-////		cmdSystemLocal.SetWait( atoi( args.Argv( 1 ) ) );
-////	} else {
-////		cmdSystemLocal.SetWait( 1 );
-////	}
-////}
+Causes execution of the remainder of the command buffer to be delayed until next frame.
+============
+*/
+function /*idCmdSystemLocal::*/Wait_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+    todoThrow();
+	////if ( args.Argc() == 2 ) {
+	////	cmdSystemLocal.SetWait( atoi( args.Argv( 1 ) ) );
+	////} else {
+	////	cmdSystemLocal.SetWait( 1 );
+	////}
+}
 
-/////*
-////============
-////idCmdSystemLocal::Parse_f
+/*
+============
+idCmdSystemLocal::Parse_f
 
-////This just prints out how the rest of the line was parsed, as a debugging tool.
-////============
-////*/
-////void idCmdSystemLocal::Parse_f( /*const idCmdArgs &*/args:idCmdArgs ) {
-////	int		i;
+This just prints out how the rest of the line was parsed, as a debugging tool.
+============
+*/
+function /*idCmdSystemLocal::*/Parse_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+	////int		i;
 
-////	for ( i = 0; i < args.Argc(); i++ ) {
-////		common->Printf( "%i: %s\n", i, args.Argv(i) );
-////	}
-////}
+	////for ( i = 0; i < args.Argc(); i++ ) {
+	////	common->Printf( "%i: %s\n", i, args.Argv(i) );
+	////}
+}
 
 /*
 ============
@@ -381,12 +390,12 @@ function /*idCmdSystemLocal::Init*/cmdSystem__Init(): void  {
 idCmdSystemLocal::AddCommand
 ============
 */
-function /*idCmdSystemLocal::*/AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:cmdFunction_t, /*int*/ flags:number, /*const char **/description:string, /*argCompletion_t */argCompletion: argCompletion_t ) {
+function /*idCmdSystemLocal::*/AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:idCmdArgs)=>void/*cmdFunction_t*/, /*int*/ flags:number, /*const char **/description:string, /*argCompletion_t */argCompletion /*argCompletion_t*/:(args:idCmdArgs, callback: (s: string)=>void)=>void = null):void {
 	var cmd:commandDef_t;
 	
 	// fail if the command already exists
 	for ( cmd = commands; cmd; cmd = cmd.next ) {
-		if ( idStr::Cmp( cmdName, cmd.name ) == 0 ) {
+		if ( idStr.Cmp( cmdName, cmd.name ) == 0 ) {
 			if ( $function != cmd.$function ) {
 				common.Printf( "idCmdSystemLocal::AddCommand: %s already defined\n", cmdName );
 			}

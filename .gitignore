@@ -25,3 +25,6 @@ build
 /web/bin
 
 /web/*.user
+
+/web/doom3.js
+/web/doom3.js.map

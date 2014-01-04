@@ -59,6 +59,7 @@
   <ItemGroup>
     <Content Include="compile.bat" />
     <Content Include="DoomDLL\Framework\CmdSystem.cpp.ts" />
+    <Content Include="DoomDLL\Framework\CmdSystem.h.ts" />
     <Content Include="DoomDLL\Framework\Common.cpp.ts" />
     <Content Include="DoomDLL\Sys\win_main.cpp.ts" />
     <Content Include="index.htm" />
@@ -69,6 +70,8 @@
     <Content Include="libs\idLib\Lib.h.ts" />
     <Content Include="libs\idLib\Text\CmdArgs.cpp.ts" />
     <Content Include="libs\idLib\Text\CmdArgs.h.ts" />
+    <Content Include="libs\idLib\Text\Str.cpp.ts" />
+    <Content Include="libs\idLib\Text\Str.h.ts" />
     <Content Include="TypeSystem\CmdSystem.h.ts" />
     <Content Include="utils\todo.ts" />
     <Content Include="Web.config" />

@@ -1411,7 +1411,7 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 //////	Sys_FPU_EnableExceptions( TEST_FPU_EXCEPTIONS );
 ////	Sys_FPU_SetPrecision( FPU_PRECISION_DOUBLE_EXTENDED );
 
-	common__Init( 0, /*NULL*/null, lpCmdLine );
+	common.Init( 0, /*NULL*/null, lpCmdLine );
 
 ////#if TEST_FPU_EXCEPTIONS != 0
 ////	common->Printf( Sys_FPU_GetState() );

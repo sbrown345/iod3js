@@ -1,3 +1,5 @@
+/// <reference path="CmdSystem.cpp.ts" />
+/// <reference path="../../utils/todo.ts" />
 /// <reference path="../../libs/c.ts" />
 
 /////*
@@ -204,9 +206,11 @@
 ////#endif
 ////};
 
-////idCommonLocal	commonLocal;
-////idCommon *		common = &commonLocal;
+// init after
+//var commonLocal = new idCommon();////idCommonLocal	commonLocal;
+//var common:idCommon = commonLocal;
 
+class idCommon {
 
 /////*
 ////==================
@@ -450,21 +454,18 @@
 ////#endif
 ////}
 
-/////*
-////==================
-////idCommonLocal::Printf
+/*
+==================
+idCommonLocal::Printf
 
-////Both client and server can use this, and it will output to the appropriate place.
+Both client and server can use this, and it will output to the appropriate place.
 
-////A raw string should NEVER be passed as fmt, because of "%f" type crashers.
-////==================
-////*/
-////void idCommonLocal::Printf( const char *fmt, ... ) {
-////	va_list argptr;
-////	va_start( argptr, fmt );
-////	VPrintf( fmt, argptr );
-////	va_end( argptr );
-////}
+A raw string should NEVER be passed as fmt, because of "%f" type crashers.
+==================
+*/
+Printf( /*const char **/ fmt:string, ...args: any[] ):void {
+    console.log(fmt, args);
+}
 
 /////*
 ////==================
@@ -2748,7 +2749,7 @@
 idCommonLocal::Init
 =================
 */
-function /*idCommonLocal::Init*/common__Init( /*int*/ argc: number, /*const char ***/argv: string, /*const char **/cmdline: string ): void {
+/*idCommonLocal::Init*/Init( /*int*/ argc: number, /*const char ***/argv: string, /*const char **/cmdline: string ): void {
 ////try {
 
 ////		// set interface pointers used by idLib
@@ -3086,3 +3087,7 @@ function /*idCommonLocal::Init*/common__Init( /*int*/ argc: number, /*const char
 ////	// shut down the file system
 ////	fileSystem->Shutdown( reloading );
 ////}
+}
+
+//var commonLocal = new idCommon();
+var common:idCommon = new idCommon();
