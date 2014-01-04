@@ -43,6 +43,7 @@ If you have questions concerning this license or the applicable additional terms
 #include "../../idlib/precompiled.h"
 #pragma hdrstop
 
+#include <EGL/egl.h>
 #include "win_local.h"
 #include "rc/AFEditor_resource.h"
 #include "rc/doom_resource.h"
@@ -75,6 +76,9 @@ PFNWGLRELEASETEXIMAGEARBPROC	wglReleaseTexImageARB;
 PFNWGLSETPBUFFERATTRIBARBPROC	wglSetPbufferAttribARB;
 
 
+static EGLDisplay eglDisplay = EGL_NO_DISPLAY;
+static EGLContext eglContext = EGL_NO_CONTEXT;
+static EGLSurface eglSurface = EGL_NO_SURFACE;
 
 /* ARB_pixel_format */
 #define WGL_NUMBER_PIXEL_FORMATS_ARB       0x2000
@@ -345,6 +349,91 @@ static void GLW_GetWGLExtensionsWithFakeWindow( void ) {
 }
 
 //=============================================================================
+EGLConfig eglConfig;
+EGLint eglNumConfig;
+bool GLimp_OpenDisplay(void)
+{
+	//if (dpy) {
+	//	return true;
+	//}
+
+	//if (cvarSystem->GetCVarInteger("net_serverDedicated") == 1) {
+	//	common->DPrintf("not opening the display: dedicated server\n");
+	//	return false;
+	//}
+
+	//common->Printf("Setup X display connection\n");
+
+	//// that should be the first call into X
+	//if (!XInitThreads()) {
+	//	common->Printf("XInitThreads failed\n");
+	//	return false;
+	//}
+
+	//// set up our custom error handler for X failures
+	//XSetErrorHandler(&idXErrorHandler);
+
+	//if (!(dpy = XOpenDisplay(NULL))) {
+	//	common->Printf("Couldn't open the X display\n");
+	//	return false;
+	//}
+
+	//scrnum = DefaultScreen(dpy);
+
+	//if (!(eglDisplay = eglGetDisplay((EGLNativeDisplayType) dpy))) {
+	//	common->Printf("Couldn't open the EGL display\n");
+	//	return false;
+	//}
+
+	//if (!eglInitialize(eglDisplay, NULL, NULL)) {
+	//	common->Printf("Couldn't initialize EGL\n");
+	//	return false;
+	//}
+
+	// Obtain an EGL display object.
+	eglDisplay = eglGetDisplay(GetDC(win32.hWnd));
+	if (eglDisplay == EGL_NO_DISPLAY)
+	{
+	  return EGL_FALSE;
+	}
+
+	// Initialize the display
+	if (!eglInitialize(eglDisplay, NULL, NULL))
+	{
+	  return EGL_FALSE;
+	}
+
+	// Obtain the display configs
+	if (!eglGetConfigs(eglDisplay, NULL, 0, &eglNumConfig))
+	{
+	  return EGL_FALSE;
+	}
+	EGLint attrib[] = {
+		EGL_RED_SIZE, 8,	//  1,  2
+		EGL_GREEN_SIZE, 8,	//  3,  4
+		EGL_BLUE_SIZE, 8,	//  5,  6
+		EGL_ALPHA_SIZE, 8,	//  7,  8
+		EGL_DEPTH_SIZE, 24,	//  9, 10
+		EGL_STENCIL_SIZE, 8,	// 11, 12
+		EGL_BUFFER_SIZE, 24,	// 13, 14
+		EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,	// 15, 16
+		EGL_NONE,	// 17
+	};
+	// Choose the display config
+	if (!eglChooseConfig(eglDisplay, attrib, &eglConfig, 1, &eglNumConfig))
+	{
+	  return EGL_FALSE;
+	}
+
+	// Create a surface
+	eglSurface = eglCreateWindowSurface(eglDisplay, eglConfig, (EGLNativeWindowType)win32.hWnd, NULL);
+	if (eglSurface == EGL_NO_SURFACE)
+	{
+	  return EGL_FALSE;
+	}
+
+	return true;
+}
 
 /*
 ====================
@@ -354,7 +443,7 @@ GLW_WM_CREATE
 void GLW_WM_CREATE( HWND hWnd ) {
 }
 
-
+#define using_egl
 
 /*
 ====================
@@ -364,6 +453,8 @@ Set the pixelformat for the window before it is
 shown, and create the rendering context
 ====================
 */
+
+
 static bool GLW_InitDriver( glimpParms_t parms ) {
     PIXELFORMATDESCRIPTOR src = 
 	{
@@ -470,6 +561,40 @@ static bool GLW_InitDriver( glimpParms_t parms ) {
 		return false;
 	}
 
+
+
+	GLimp_OpenDisplay();
+
+	
+#ifdef using_egl
+	EGLint ctxattrib[] = {
+		EGL_CONTEXT_CLIENT_VERSION, 2,
+		EGL_NONE
+	};
+
+	eglContext = eglCreateContext(eglDisplay, eglConfig, EGL_NO_CONTEXT, ctxattrib);
+	if (eglContext == EGL_NO_CONTEXT) {
+		common->Printf("Couldn't get a EGL context\n");
+		return false;
+	}
+
+	eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext);
+
+	const char *glstring;
+	glstring = (const char *) glGetString(GL_RENDERER);
+	common->Printf("GL_RENDERER: %s\n", glstring);
+
+	glstring = (const char *) glGetString(GL_EXTENSIONS);
+	common->Printf("GL_EXTENSIONS: %s\n", glstring);
+
+	// FIXME: here, software GL test
+
+	//glConfig.isFullscreen = a.fullScreen;
+
+	if (glConfig.isFullscreen) {
+		Sys_GrabMouseCursor(true);
+	}
+#else
 	//
 	// startup the OpenGL subsystem by creating a context and making it current
 	//
@@ -480,6 +605,21 @@ static bool GLW_InitDriver( glimpParms_t parms ) {
 	}
 	common->Printf( "succeeded\n" );
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	common->Printf( "...making context current: " );
 	if ( !wglMakeCurrent( win32.hDC, win32.hGLRC ) ) {
 		wglDeleteContext( win32.hGLRC );
@@ -487,6 +627,8 @@ static bool GLW_InitDriver( glimpParms_t parms ) {
 		common->Printf( "^3failed^0\n" );
 		return false;
 	}
+
+#endif
 	common->Printf( "succeeded\n" );
 
 	return true;
