@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="compile.bat" />
+    <Content Include="DoomDLL\Framework\Common.cpp.ts" />
     <Content Include="DoomDLL\Sys\win_main.cpp.ts" />
     <Content Include="index.htm" />
     <Content Include="Web.config" />
