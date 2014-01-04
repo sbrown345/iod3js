@@ -20,3 +20,8 @@ build
 /neo/demo/warnings.txt
 
 /neo/demo/*
+
+/web/obj
+/web/bin
+
+/web/*.user

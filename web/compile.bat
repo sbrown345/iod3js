@@ -1,0 +1,1 @@
+tsc2 -target ES5 --noImplicitAny --sourcemap --out eduke.js eduke32\source\game.c.ts
