@@ -2773,7 +2773,7 @@ function /*idCommonLocal::Init*/common__Init( /*int*/ argc: number, /*const char
 ////		ParseCommandLine( argc, argv );
 
 		// init console command system
-		cmdSystem->Init();
+		cmdSystem__Init();
 
 ////		// init CVar system
 ////		cvarSystem->Init();

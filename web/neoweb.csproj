@@ -63,6 +63,8 @@
     <Content Include="DoomDLL\Sys\win_main.cpp.ts" />
     <Content Include="index.htm" />
     <Content Include="libs\c.ts" />
+    <Content Include="libs\idLib\Text\CmdArgs.cpp.ts" />
+    <Content Include="libs\idLib\Text\CmdArgs.h.ts" />
     <Content Include="Web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
