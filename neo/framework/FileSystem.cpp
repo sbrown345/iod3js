@@ -860,13 +860,13 @@ const char *idFileSystemLocal::OSPathToRelativePath( const char *OSPath ) {
 	// which won't match any of our drive letter based search paths
 	bool ignoreWarning = false;
 #ifdef ID_DEMO_BUILD
-	base = strstr( OSPath, BASE_GAMEDIR );	
+	base = (char *)strstr( OSPath, BASE_GAMEDIR );	
 	idStr tempStr = OSPath;
 	tempStr.ToLower();
 	if ( ( strstr( tempStr, "//" ) || strstr( tempStr, "w:" ) ) && strstr( tempStr, "/doom/base/") ) {
 		// will cause a warning but will load the file. ase models have
 		// hard coded doom/base/ in the material names
-		base = strstr( OSPath, "base" );
+		base = (char *)strstr( OSPath, "base" );
 		ignoreWarning = true;
 	}
 #else
@@ -2414,18 +2414,18 @@ if the full version is not found
 */
 void idFileSystemLocal::SetRestrictions( void ) {
 #ifdef ID_DEMO_BUILD
-	common->Printf( "\nRunning in restricted demo mode.\n\n" );
-	// make sure that the pak file has the header checksum we expect
-	searchpath_t	*search;
-	for ( search = searchPaths; search; search = search->next ) {
-		if ( search->pack ) {
-			// a tiny attempt to keep the checksum from being scannable from the exe
-			if ( ( search->pack->checksum ^ 0x84268436u ) != ( DEMO_PAK_CHECKSUM ^ 0x84268436u ) ) {
-				common->FatalError( "Corrupted %s: 0x%x", search->pack->pakFilename.c_str(), search->pack->checksum );
-			}
-		}
-	}
-	cvarSystem->SetCVarBool( "fs_restrict", true );
+	//common->Printf( "\nRunning in restricted demo mode.\n\n" );
+	//// make sure that the pak file has the header checksum we expect
+	//searchpath_t	*search;
+	//for ( search = searchPaths; search; search = search->next ) {
+	//	if ( search->pack ) {
+	//		// a tiny attempt to keep the checksum from being scannable from the exe
+	//		if ( ( search->pack->checksum ^ 0x84268436u ) != ( DEMO_PAK_CHECKSUM ^ 0x84268436u ) ) {
+	//			common->FatalError( "Corrupted %s: 0x%x", search->pack->pakFilename.c_str(), search->pack->checksum );
+	//		}
+	//	}
+	//}
+	//cvarSystem->SetCVarBool( "fs_restrict", true );
 #endif
 }
 
