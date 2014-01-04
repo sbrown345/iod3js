@@ -1322,18 +1322,21 @@ typedef enum {
 	PROG_USER
 } program_t;
 
+
+/*
+============================================================
+
+DRAW_GLSL
+
+============================================================
+*/
+
+
 typedef struct shaderProgram_s {
 	GLuint		program;
 
 	GLuint		vertexShader;
 	GLuint		fragmentShader;
-
-	GLint		u_bumpTexture;
-	GLint		u_lightFalloffTexture;
-	GLint		u_lightProjectionTexture;
-	GLint		u_diffuseTexture;
-	GLint		u_specularTexture;
-	GLint		u_specularFalloffTexture;
 
 	GLint		glColor;
 	GLint		alphaTest;
@@ -1376,7 +1379,11 @@ typedef struct shaderProgram_s {
 	GLint		attr_Color;
 
 	GLint		nonPowerOfTwo;
+
+	GLint		u_fragmentMap[MAX_FRAGMENT_IMAGES];
+	GLint		u_vertexParm[MAX_VERTEX_PARMS];
 } shaderProgram_t;
+
 
 
 /* This file was automatically generated.  Do not edit! */
