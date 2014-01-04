@@ -1,3 +1,9 @@
+/// <reference path="../../utils/todo.ts" />
+/// <reference path="../../TypeSystem/CmdSystem.h.ts" />
+/// <reference path="../../libs/idLib/Text/CmdArgs.h.ts" />
+/// <reference path="../../libs/idLib/Text/CmdArgs.cpp.ts" />
+
+
 /////*
 ////===========================================================================
 
@@ -170,66 +176,72 @@ var commands: commandDef_t; ////	commandDef_t *			commands;
 ////	common->Printf( "%i commands\n", cmdList.Num() );
 ////}
 
-/////*
-////============
-////idCmdSystemLocal::List_f
-////============
-////*/
-////void idCmdSystemLocal::List_f( const idCmdArgs &args ) {
-////	idCmdSystemLocal::ListByFlags( args, CMD_FL_ALL );
-////}
+/*
+============
+idCmdSystemLocal::List_f
+============
+*/
+function /*idCmdSystemLocal::*/List_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+    todoThrow();
+    //idCmdSystemLocal::ListByFlags( args, CMD_FL_ALL );
+}
 
-/////*
-////============
-////idCmdSystemLocal::SystemList_f
-////============
-////*/
-////void idCmdSystemLocal::SystemList_f( const idCmdArgs &args ) {
-////	idCmdSystemLocal::ListByFlags( args, CMD_FL_SYSTEM );
-////}
+/*
+============
+idCmdSystemLocal::SystemList_f
+============
+*/
+function /*idCmdSystemLocal::*/SystemList_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+    todoThrow();
+	//idCmdSystemLocal::ListByFlags( args, CMD_FL_SYSTEM );
+}
 
-/////*
-////============
-////idCmdSystemLocal::RendererList_f
-////============
-////*/
-////void idCmdSystemLocal::RendererList_f( const idCmdArgs &args ) {
-////	idCmdSystemLocal::ListByFlags( args, CMD_FL_RENDERER );
-////}
+/*
+============
+idCmdSystemLocal::RendererList_f
+============
+*/
+function /*idCmdSystemLocal::*/RendererList_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+    todoThrow();
+	//idCmdSystemLocal::ListByFlags( args, CMD_FL_RENDERER );
+}
 
-/////*
-////============
-////idCmdSystemLocal::SoundList_f
-////============
-////*/
-////void idCmdSystemLocal::SoundList_f( const idCmdArgs &args ) {
-////	idCmdSystemLocal::ListByFlags( args, CMD_FL_SOUND );
-////}
+/*
+============
+idCmdSystemLocal::SoundList_f
+============
+*/
+function /*idCmdSystemLocal::*/SoundList_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+    todoThrow();
+	//idCmdSystemLocal::ListByFlags( args, CMD_FL_SOUND );
+}
 
-/////*
-////============
-////idCmdSystemLocal::GameList_f
-////============
-////*/
-////void idCmdSystemLocal::GameList_f( const idCmdArgs &args ) {
-////	idCmdSystemLocal::ListByFlags( args, CMD_FL_GAME );
-////}
+/*
+============
+idCmdSystemLocal::GameList_f
+============
+*/
+function /*idCmdSystemLocal::*/GameList_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+    todoThrow();
+	//idCmdSystemLocal::ListByFlags( args, CMD_FL_GAME );
+}
 
-/////*
-////============
-////idCmdSystemLocal::ToolList_f
-////============
-////*/
-////void idCmdSystemLocal::ToolList_f( const idCmdArgs &args ) {
-////	idCmdSystemLocal::ListByFlags( args, CMD_FL_TOOL );
-////}
+/*
+============
+idCmdSystemLocal::ToolList_f
+============
+*/
+function /*idCmdSystemLocal::*/ToolList_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+    todoThrow();
+	//idCmdSystemLocal::ListByFlags( args, CMD_FL_TOOL );
+}
 
 /////*
 ////===============
 ////idCmdSystemLocal::Exec_f
 ////===============
 ////*/
-////void idCmdSystemLocal::Exec_f( const idCmdArgs &args ) {
+////void idCmdSystemLocal::Exec_f( /*const idCmdArgs &*/args:idCmdArgs ) {
 ////	char *	f;
 ////	int		len;
 ////	idStr	filename;
@@ -260,7 +272,7 @@ var commands: commandDef_t; ////	commandDef_t *			commands;
 ////Inserts the current value of a cvar as command text
 ////===============
 ////*/
-////void idCmdSystemLocal::Vstr_f( const idCmdArgs &args ) {
+////void idCmdSystemLocal::Vstr_f( /*const idCmdArgs &*/args:idCmdArgs ) {
 ////	const char *v;
 
 ////	if ( args.Argc () != 2 ) {
@@ -280,7 +292,7 @@ var commands: commandDef_t; ////	commandDef_t *			commands;
 ////Just prints the rest of the line to the console
 ////===============
 ////*/
-////void idCmdSystemLocal::Echo_f( const idCmdArgs &args ) {
+////void idCmdSystemLocal::Echo_f( /*const idCmdArgs &*/args:idCmdArgs ) {
 ////	int		i;
 	
 ////	for ( i = 1; i < args.Argc(); i++ ) {
@@ -296,7 +308,7 @@ var commands: commandDef_t; ////	commandDef_t *			commands;
 ////Causes execution of the remainder of the command buffer to be delayed until next frame.
 ////============
 ////*/
-////void idCmdSystemLocal::Wait_f( const idCmdArgs &args ) {
+////void idCmdSystemLocal::Wait_f( /*const idCmdArgs &*/args:idCmdArgs ) {
 ////	if ( args.Argc() == 2 ) {
 ////		cmdSystemLocal.SetWait( atoi( args.Argv( 1 ) ) );
 ////	} else {
@@ -311,7 +323,7 @@ var commands: commandDef_t; ////	commandDef_t *			commands;
 ////This just prints out how the rest of the line was parsed, as a debugging tool.
 ////============
 ////*/
-////void idCmdSystemLocal::Parse_f( const idCmdArgs &args ) {
+////void idCmdSystemLocal::Parse_f( /*const idCmdArgs &*/args:idCmdArgs ) {
 ////	int		i;
 
 ////	for ( i = 0; i < args.Argc(); i++ ) {
@@ -472,7 +484,7 @@ function /*idCmdSystemLocal::*/AddCommand( /*const char **/cmdName:string, /*cmd
 ////idCmdSystemLocal::ExecuteTokenizedString
 ////============
 ////*/
-////void idCmdSystemLocal::ExecuteTokenizedString( const idCmdArgs &args ) {	
+////void idCmdSystemLocal::ExecuteTokenizedString( /*const idCmdArgs &*/args:idCmdArgs ) {	
 ////	commandDef_t *cmd, **prev;
 	
 ////	// execute the command line
@@ -605,7 +617,7 @@ function /*idCmdSystemLocal::*/AddCommand( /*const char **/cmdName:string, /*cmd
 ////idCmdSystemLocal::BufferCommandArgs
 ////============
 ////*/
-////void idCmdSystemLocal::BufferCommandArgs( cmdExecution_t exec, const idCmdArgs &args ) {
+////void idCmdSystemLocal::BufferCommandArgs( cmdExecution_t exec, /*const idCmdArgs &*/args:idCmdArgs ) {
 ////	switch ( exec ) {
 ////		case CMD_EXEC_NOW: {
 ////			ExecuteTokenizedString( args );
@@ -771,7 +783,7 @@ function /*idCmdSystemLocal::*/AddCommand( /*const char **/cmdName:string, /*cmd
 ////idCmdSystemLocal::SetupReloadEngine
 ////============
 ////*/
-////void idCmdSystemLocal::SetupReloadEngine( const idCmdArgs &args ) {
+////void idCmdSystemLocal::SetupReloadEngine( /*const idCmdArgs &*/args:idCmdArgs ) {
 ////	BufferCommandText( CMD_EXEC_APPEND, "reloadEngine\n" );
 ////	postReload = args;
 ////}
