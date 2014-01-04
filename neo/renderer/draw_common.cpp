@@ -85,9 +85,9 @@ void RB_PrepareStageTexturing( const shaderStage_t *pStage,  const drawSurf_t *s
 	}
 
 	// set the texture matrix if needed
-	if ( pStage->texture.hasMatrix ) {
+	//if ( pStage->texture.hasMatrix ) {
 		RB_LoadShaderTextureMatrix( surf->shaderRegisters, &pStage->texture );
-	}
+	//}
 
 	// texgens
 	if ( pStage->texture.texgen == TG_DIFFUSE_CUBE ) {
