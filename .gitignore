@@ -18,3 +18,5 @@ build
 /neo/workdirectory/gamex86.map
 /neo/workdirectory/gamex86.pdb
 /neo/demo/warnings.txt
+
+/neo/demo/*
