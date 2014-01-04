@@ -1,3 +1,16 @@
+An attempt to get Doom 3 ported into TypeScript/JavaScript.
+
+https://github.com/LogicalError/doom3.gpl/commits/master had a GLSL version compiling in visual studio. So I added the OpenGL ES 2.0 stuff from https://github.com/omcfadde/dante.
+
+This probably only works on AMD cards and some of the files from http://developer.amd.com/tools-and-sdks/graphics-development/amd-opengl-es-sdk/ are required.
+
+It is using the demo assets and a new version of script/weapon_base.script is required.
+
+
+Previous readme:
+
+
+
 Doom 3 GPL source release
 =========================
 
