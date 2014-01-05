@@ -557,45 +557,19 @@ class idStr {
 ////	return false;
 ////}
 
-/////*
-////============
-////idStr::Replace
-////============
-////*/
-////void idStr::Replace( const char *old, const char *nw ) {
-////	int		oldLen, newLen, i, j, count;
-////	idStr	oldString( data );
+/*
+============
+idStr::Replace
+============
+*/
+Replace(  old: string, nw: string  ):void {
+    // https://stackoverflow.com/questions/1144783/replacing-all-occurrences-of-a-string-in-javascript
+    function escapeRegExp(str: string): string {
+        return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    }
 
-////	oldLen = strlen( old );
-////	newLen = strlen( nw );
-
-////	// Work out how big the new string will be
-////	count = 0;
-////	for( i = 0; i < oldString.Length(); i++ ) {
-////		if( !idStr::Cmpn( &oldString[i], old, oldLen ) ) {
-////			count++;
-////			i += oldLen - 1;
-////		}
-////	}
-
-////	if( count ) {
-////		EnsureAlloced( len + ( ( newLen - oldLen ) * count ) + 2, false );
-
-////		// Replace the old data with the new data
-////		for( i = 0, j = 0; i < oldString.Length(); i++ ) {
-////			if( !idStr::Cmpn( &oldString[i], old, oldLen ) ) {
-////				memcpy( data + j, nw, newLen );
-////				i += oldLen - 1;
-////				j += newLen;
-////			} else {
-////				data[j] = oldString[i];
-////				j++;
-////			}
-////		}
-////		data[j] = 0;
-////		len = strlen( data );
-////	}
-////}
+    this["replace"](new RegExp(escapeRegExp(old), 'g'), nw);
+}
 
 /////*
 ////============

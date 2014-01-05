@@ -110,8 +110,8 @@ interface Array<T> {
 //	type &			operator[]( int index );
 
 //	void			Condense( void );									// resizes list to exactly the number of elements it contains
-	Resize( /*int */newsize:number ):void;								// resizes list to the given number of elements
-//	void			Resize( int newsize, int newgranularity	 );			// resizes list and sets new granularity
+//Resize( /*int */newsize:number ):void;								// resizes list to the given number of elements
+	Resize( /*int*/ newsize, /*int*/ newgranularity:number, type: any ):void;// resizes list and sets new granularity
     SetNum( /*int*/ newnum:number, /*bool */resize?:boolean ):void;			// set number of elements in list and resize to exactly this number if necessary
 //	void			AssureSize( int newSize);							// assure list has given number of elements, but leave them uninitialized
 //	void			AssureSize( int newSize, const type &initValue );	// assure list has given number of elements and initialize any new elements
@@ -138,7 +138,7 @@ interface Array<T> {
 //private:
 /*int				*/num:number;
 /*int				*/size:number;
-///*int				*/granularity:number;
+/*int				*/granularity:number;
 //	type *			list;
 };
 
@@ -374,82 +374,28 @@ Contents are copied using their = operator so that data is correnctly instantiat
 ================
 */
 //template< class type >
-Array.prototype.Resize = function(/* int */newsize:number):void {
-	var type	*temp;
-	var/*int		*/i:number;
-
+Array.prototype.Resize = function(/* int */newsize:number, /*int */newgranularity:number, type: any):void {
 	assert( newsize >= 0 );
+    this.granularity = newgranularity;
 
 	// free up the list if no data is being reserved
 	if ( newsize <= 0 ) {
-		Clear();
+		this.Clear();
 		return;
 	}
 
-	if ( newsize == this.size ) {
+	if ( newsize == this.length ) {
 		// not changing the size, so just exit
 		return;
 	}
 
-	temp	= list;
-	this.size	= newsize;
-	if ( this.size < this.num ) {
-		this.num = this.size;
-	}
-
-	// copy the old list into our new one
-	list = new type[ size ];
-	for( i = 0; i < this.num; i++ ) {
-		list[ i ] = temp[ i ];
-	}
-
-	// delete the old list if it exists
-	if ( temp ) {
-		delete[] temp;
-	}
+    if (this.length > newsize) {
+        for (var i = this.length; i < newsize; i++) {
+            this[i] = new type();
+        }
+    }
 }
 
-///*
-//================
-//idList<type>::Resize
-
-//Allocates memory for the amount of elements requested while keeping the contents intact.
-//Contents are copied using their = operator so that data is correnctly instantiated.
-//================
-//*/
-//template< class type >
-//ID_INLINE void idList<type>::Resize( int newsize, int newgranularity ) {
-//	type	*temp;
-//	int		i;
-
-//	assert( newsize >= 0 );
-
-//	assert( newgranularity > 0 );
-//	granularity = newgranularity;
-
-//	// free up the list if no data is being reserved
-//	if ( newsize <= 0 ) {
-//		Clear();
-//		return;
-//	}
-
-//	temp	= list;
-//	size	= newsize;
-//	if ( size < num ) {
-//		num = size;
-//	}
-
-//	// copy the old list into our new one
-//	list = new type[ size ];
-//	for( i = 0; i < num; i++ ) {
-//		list[ i ] = temp[ i ];
-//	}
-
-//	// delete the old list if it exists
-//	if ( temp ) {
-//		delete[] temp;
-//	}
-//}
 
 ///*
 //================

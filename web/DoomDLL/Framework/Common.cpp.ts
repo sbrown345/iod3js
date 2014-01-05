@@ -724,53 +724,55 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 ////	Sys_Error( "%s", errorMessage );
 ////}
 
-/////*
-////==================
-////idCommonLocal::FatalError
+/*
+==================
+idCommonLocal::FatalError
 
-////Dump out of the game to a system dialog
-////==================
-////*/
-////void idCommonLocal::FatalError( const char *fmt, ... ) {
-////	va_list		argptr;
+Dump out of the game to a system dialog
+==================
+*/
+FatalError( /*const char **/fmt:string, ...args:any[] ):void {
+    console.log(fmt, args);
+    throw "Arrrgghhhhhh!!!";
+    ////va_list		argptr;
 
-////	// if we got a recursive error, make it fatal
-////	if ( com_errorEntered ) {
-////		// if we are recursively erroring while exiting
-////		// from a fatal error, just kill the entire
-////		// process immediately, which will prevent a
-////		// full screen rendering window covering the
-////		// error dialog
+    ////// if we got a recursive error, make it fatal
+    ////if ( com_errorEntered ) {
+    ////	// if we are recursively erroring while exiting
+    ////	// from a fatal error, just kill the entire
+    ////	// process immediately, which will prevent a
+    ////	// full screen rendering window covering the
+    ////	// error dialog
 
-////		Sys_Printf( "FATAL: recursed fatal error:\n%s\n", errorMessage );
+    ////	Sys_Printf( "FATAL: recursed fatal error:\n%s\n", errorMessage );
 
-////		va_start( argptr, fmt );
-////		idStr::vsnPrintf( errorMessage, sizeof(errorMessage), fmt, argptr );
-////		va_end( argptr );
-////		errorMessage[sizeof(errorMessage)-1] = '\0';
+    ////	va_start( argptr, fmt );
+    ////	idStr::vsnPrintf( errorMessage, sizeof(errorMessage), fmt, argptr );
+    ////	va_end( argptr );
+    ////	errorMessage[sizeof(errorMessage)-1] = '\0';
 
-////		Sys_Printf( "%s\n", errorMessage );
+    ////	Sys_Printf( "%s\n", errorMessage );
 
-////		// write the console to a log file?
-////		Sys_Quit();
-////	}
-////	com_errorEntered = ERP_FATAL;
+    ////	// write the console to a log file?
+    ////	Sys_Quit();
+    ////}
+    ////com_errorEntered = ERP_FATAL;
 
-////	va_start( argptr, fmt );
-////	idStr::vsnPrintf( errorMessage, sizeof(errorMessage), fmt, argptr );
-////	va_end( argptr );
-////	errorMessage[sizeof(errorMessage)-1] = '\0';
+    ////va_start( argptr, fmt );
+    ////idStr::vsnPrintf( errorMessage, sizeof(errorMessage), fmt, argptr );
+    ////va_end( argptr );
+    ////errorMessage[sizeof(errorMessage)-1] = '\0';
 
-////	if ( cvarSystem->GetCVarBool( "r_fullscreen" ) ) {
-////		cmdSystem->BufferCommandText( CMD_EXEC_NOW, "vid_restart partial windowed\n" );
-////	}
+    ////if ( cvarSystem->GetCVarBool( "r_fullscreen" ) ) {
+    ////	cmdSystem->BufferCommandText( CMD_EXEC_NOW, "vid_restart partial windowed\n" );
+    ////}
 
-////	Sys_SetFatalError( errorMessage );
+    ////Sys_SetFatalError( errorMessage );
 
-////	Shutdown();
+    ////Shutdown();
 
-////	Sys_Error( "%s", errorMessage );
-////}
+    ////Sys_Error( "%s", errorMessage );
+}
 
 /////*
 ////==================

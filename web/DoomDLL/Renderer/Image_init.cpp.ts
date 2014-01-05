@@ -1,3 +1,5 @@
+/// <reference path="../../libs/idLib/Text/Str.cpp.ts" />
+/// <reference path="../Framework/CmdSystem.cpp.ts" />
 /// <reference path="../../utils/types.ts" />
 /// <reference path="../../utils/todo.ts" />
 /// <reference path="Image.h.ts" />
@@ -310,9 +312,9 @@ var globalImages = new idImageManager();
 ////	defaulted = true;
 ////}
 
-////static void R_DefaultImage( idImage *image ) {
-////	image.MakeDefault();
-////}
+/*static*/idImageManager.prototype.R_DefaultImage = function( image: idImage ): void {
+	image.MakeDefault();
+}
 
 ////static void R_WhiteImage( idImage *image ) {
 ////	byte	data[DEFAULT_SIZE][DEFAULT_SIZE][4];
@@ -1438,53 +1440,54 @@ var globalImages = new idImageManager();
 ////	return image;
 ////}
 
-/////*
-////==================
-////ImageFromFunction
+/*
+==================
+ImageFromFunction
 
-////Images that are procedurally generated are allways specified
-////with a callback which must work at any time, allowing the OpenGL
-////system to be completely regenerated if needed.
-////==================
-////*/
-////idImage *idImageManager::ImageFromFunction( const char *_name, void (*generatorFunction)( idImage *image ) ) {
-////	idStr name;
-////	idImage	*image;
-////	int	hash;
+Images that are procedurally generated are allways specified
+with a callback which must work at any time, allowing the OpenGL
+system to be completely regenerated if needed.
+==================
+*/
+idImageManager.prototype.ImageFromFunction = function ( /*const char **/_name:string, generatorFunction: (image:idImage)=>void ): idImage {
+	var/*idStr */name = "";
+	var image:idImage	;
+	var /*int	*/hash:number;
 
-////	if ( !name ) {
-////		common.FatalError( "idImageManager::ImageFromFunction: NULL name" );
-////	}
+	if ( !name ) {
+		common.FatalError( "idImageManager::ImageFromFunction: NULL name" );
+	}
 
-////	// strip any .tga file extensions from anywhere in the _name
-////	name = _name;
-////	name.Replace( ".tga", "" );
-////	name.BackSlashesToSlashes();
+	// strip any .tga file extensions from anywhere in the _name
+	name = _name;
+	name.Replace( ".tga", "" );
+    todoThrow();
+	//name.BackSlashesToSlashes();
 
-////	// see if the image already exists
-////	hash = name.FileNameHash();
-////	for ( image = imageHashTable[hash] ; image; image = image.hashNext ) {
-////		if ( name.Icmp( image.imgName ) == 0 ) {
-////			if ( image.generatorFunction != generatorFunction ) {
-////				common.DPrintf( "WARNING: reused image %s with mixed generators\n", name.c_str() );
-////			}
-////			return image;
-////		}
-////	}
+	//// see if the image already exists
+	//hash = name.FileNameHash();
+	//for ( image = imageHashTable[hash] ; image; image = image.hashNext ) {
+	//	if ( name.Icmp( image.imgName ) == 0 ) {
+	//		if ( image.generatorFunction != generatorFunction ) {
+	//			common.DPrintf( "WARNING: reused image %s with mixed generators\n", name.c_str() );
+	//		}
+	//		return image;
+	//	}
+	//}
 
-////	// create the image and issue the callback
-////	image = AllocImage( name );
+	//// create the image and issue the callback
+	//image = AllocImage( name );
 
-////	image.generatorFunction = generatorFunction;
+	//image.generatorFunction = generatorFunction;
 
-////	if ( image_preload.GetBool() ) {
-////		// check for precompressed, load is from the front end
-////		image.referencedOutsideLevelLoad = true;
-////		image.ActuallyLoadImage( true, false );
-////	}
+	//if ( image_preload.GetBool() ) {
+	//	// check for precompressed, load is from the front end
+	//	image.referencedOutsideLevelLoad = true;
+	//	image.ActuallyLoadImage( true, false );
+	//}
 
-////	return image;
-////}
+	return image;
+}
 
 /////*
 ////===============
@@ -1960,15 +1963,15 @@ idImageManager.prototype.Init = function ():void {
 
 	this.images.Resize( 1024, 1024 );
 
-	//// clear the cached LRU
-	//cacheLRU.cacheUsageNext = &cacheLRU;
-	//cacheLRU.cacheUsagePrev = &cacheLRU;
+	// clear the cached LRU
+	this.cacheLRU.cacheUsageNext = this.cacheLRU;
+	this.cacheLRU.cacheUsagePrev = this.cacheLRU;
 
-	//// set default texture filter modes
-	//ChangeTextureFilter();
+	// set default texture filter modes
+    todo("ChangeTextureFilter();");
 
-	//// create built in images
-	//defaultImage = ImageFromFunction( "_default", R_DefaultImage );
+	// create built in images
+	this.defaultImage = this.ImageFromFunction( "_default", this.R_DefaultImage );
 	//whiteImage = ImageFromFunction( "_white", R_WhiteImage );
 	//blackImage = ImageFromFunction( "_black", R_BlackImage );
 	//borderClampImage = ImageFromFunction( "_borderClamp", R_BorderClampImage );

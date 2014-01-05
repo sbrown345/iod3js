@@ -298,6 +298,10 @@ class idImage {
 
 
 interface IidImageManager {
+    // new ones
+    R_DefaultImage(image:idImage):void;
+
+
 ////public:
     Init():void;
 ////	void				Shutdown();
@@ -318,7 +322,7 @@ interface IidImageManager {
 
 ////	// The callback will be issued immediately, and later if images are reloaded or vid_restart
 ////	// The callback function should call one of the idImage::Generate* functions to fill in the data
-////	idImage *			ImageFromFunction( const char *name, void (*generatorFunction)( idImage *image ));
+    ImageFromFunction( /*const char **/_name: string, generatorFunction: (image:idImage)=> void): idImage;
 
 ////	// called once a frame to allow any background loads that have been completed
 ////	// to turn into textures.
@@ -389,8 +393,8 @@ interface IidImageManager {
 ////	static idCVar		image_ignoreHighQuality;	// ignore high quality on materials
 ////	static idCVar		image_downSizeLimit;		// downsize diffuse limit
 
-////	// built-in images
-////	idImage *			defaultImage;
+	// built-in images
+    defaultImage: idImage;
 ////	idImage *			flatNormalMap;				// 128 128 255 in all pixels
 ////	idImage *			ambientNormalMap;			// tr.ambientLightVector encoded in all pixels
 ////	idImage *			rampImage;					// 0-255 in RGBA in S
@@ -436,7 +440,7 @@ interface IidImageManager {
 /*	idImage *			*/imageHashTable:Array<idImage>/*[FILE_HASH_SIZE]*/;
 
 ////	idImage *			backgroundImageLoads;		// chain of images that have background file loads active
-////	idImage				cacheLRU;					// head/tail of doubly linked list
+        cacheLRU:idImage;   // head/tail of doubly linked list
 ////	int					totalCachedImageSize;		// for determining when something should be purged
 
 ////	int	numActiveBackgroundImageLoads;
@@ -444,6 +448,11 @@ interface IidImageManager {
 };
 
 class idImageManager implements IidImageManager {
+    // new ones
+    R_DefaultImage(image:idImage):void {/*placeholder*/}
+
+
+
     Init():void {/*placeholder*/}
         
     ////	void				Shutdown();
@@ -464,7 +473,7 @@ class idImageManager implements IidImageManager {
 
     ////	// The callback will be issued immediately, and later if images are reloaded or vid_restart
     ////	// The callback function should call one of the idImage::Generate* functions to fill in the data
-    ////	idImage *			ImageFromFunction( const char *name, void (*generatorFunction)( idImage *image ));
+    ImageFromFunction( /*const char **/_name: string, generatorFunction: (image: idImage)=>void): idImage {return null/*placeholder*/}
 
     ////	// called once a frame to allow any background loads that have been completed
     ////	// to turn into textures.
@@ -506,7 +515,7 @@ class idImageManager implements IidImageManager {
     ////	void				PrintMemInfo( MemInfo_t *mi );
 
     ////	// built-in images
-    ////	idImage *			defaultImage;
+    defaultImage: idImage;
     ////	idImage *			flatNormalMap;				// 128 128 255 in all pixels
     ////	idImage *			ambientNormalMap;			// tr.ambientLightVector encoded in all pixels
     ////	idImage *			rampImage;					// 0-255 in RGBA in S
@@ -552,7 +561,7 @@ class idImageManager implements IidImageManager {
     imageHashTable:Array<idImage>;
 
     ////	idImage *			backgroundImageLoads;		// chain of images that have background file loads active
-    ////	idImage				cacheLRU;					// head/tail of doubly linked list
+    cacheLRU:idImage;					// head/tail of doubly linked list
     ////	int					totalCachedImageSize;		// for determining when something should be purged
 
     ////	int	numActiveBackgroundImageLoads;
@@ -601,7 +610,7 @@ class idImageManager implements IidImageManager {
         this.imageHashTable = newStructArray<idImage>(idImage, FILE_HASH_SIZE);
 
 //	idImage *			this.backgroundImageLoads;		// chain of images that have background file loads active
-//	idImage				this.cacheLRU;					// head/tail of doubly linked list
+    this.cacheLRU = new idImage();					// head/tail of doubly linked list
 //	int					this.totalCachedImageSize;		// for determining when something should be purged
 
 //	int	numActiveBackgroundImageLoads;
