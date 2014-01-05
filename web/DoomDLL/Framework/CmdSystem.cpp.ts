@@ -53,7 +53,7 @@ class commandDef_t {
 	next:commandDef_t;////struct commandDef_s *	next;
 	name:string;////char *					name;
 	$function: (args: idCmdArgs) => void;////cmdFunction_t			function;
-	argCompletion;////argCompletion_t			argCompletion;
+	argCompletion:(args:idCmdArgs, callback: (s: string)=>void)=>void;////argCompletion_t			argCompletion;
 	flags:number;////int						flags;
 	description:string;////char *					description;
     constructor() {
@@ -187,7 +187,7 @@ var 					        completionString:string /*idStr*/;
 idCmdSystemLocal::List_f
 ============
 */
-function /*idCmdSystemLocal::*/List_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+function /*idCmdSystemLocal::*/cmdSystem__List_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
     todoThrow();
     //idCmdSystemLocal::ListByFlags( args, CMD_FL_ALL );
 }
@@ -348,7 +348,7 @@ idCmdSystemLocal::Init
 */
 function /*idCmdSystemLocal::Init*/cmdSystem__Init(): void  {
 
-	AddCommand( "listCmds", List_f, CMD_FL_SYSTEM, "lists commands" );
+	AddCommand( "listCmds", cmdSystem__List_f, CMD_FL_SYSTEM, "lists commands" );
 	AddCommand( "listSystemCmds", SystemList_f, CMD_FL_SYSTEM, "lists system commands" );
 	AddCommand( "listRendererCmds", RendererList_f, CMD_FL_SYSTEM, "lists renderer commands" );
 	AddCommand( "listSoundCmds", SoundList_f, CMD_FL_SYSTEM, "lists sound commands" );
