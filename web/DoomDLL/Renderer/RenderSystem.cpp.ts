@@ -1,3 +1,5 @@
+/// <reference path="Image_init.cpp.ts" />
+/// <reference path="Image.h.ts" />
 /// <reference path="GuiModel.cpp.ts" />
 /// <reference path="GuiModel.h.ts" />
 /// <reference path="tr_backend.cpp.ts" />

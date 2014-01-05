@@ -67,6 +67,12 @@
     <Content Include="DoomDLL\Framework\DeclManager.h.ts" />
     <Content Include="DoomDLL\Renderer\GuiModel.cpp.ts" />
     <Content Include="DoomDLL\Renderer\GuiModel.h.ts" />
+    <Content Include="DoomDLL\Renderer\Image.h.ts" />
+    <Content Include="DoomDLL\Renderer\Image_files.cpp.ts" />
+    <Content Include="DoomDLL\Renderer\Image_init.cpp.ts" />
+    <Content Include="DoomDLL\Renderer\Image_load.cpp.ts" />
+    <Content Include="DoomDLL\Renderer\Image_process.cpp.ts" />
+    <Content Include="DoomDLL\Renderer\Image_program.cpp.ts" />
     <Content Include="DoomDLL\Renderer\Material.cpp.ts" />
     <Content Include="DoomDLL\Renderer\Material.h.ts" />
     <Content Include="DoomDLL\Renderer\RenderSystem.cpp.ts" />
