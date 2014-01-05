@@ -176,10 +176,10 @@ var 					        completionString:string /*idStr*/;
 ////	for ( i = 0; i < cmdList.Num(); i++ ) {
 ////		cmd = cmdList[i];
 
-////		common->Printf( "  %-21s %s\n", cmd->name, cmd->description );
+////		common.Printf( "  %-21s %s\n", cmd->name, cmd->description );
 ////	}
 
-////	common->Printf( "%i commands\n", cmdList.Num() );
+////	common.Printf( "%i commands\n", cmdList.Num() );
 ////}
 
 /*
@@ -254,7 +254,7 @@ function /*idCmdSystemLocal::*/Exec_f( /*const idCmdArgs &*/args:idCmdArgs ):voi
 	////idStr	filename;
 
 	////if ( args.Argc () != 2 ) {
-	////	common->Printf( "exec <filename> : execute a script file\n" );
+	////	common.Printf( "exec <filename> : execute a script file\n" );
 	////	return;
 	////}
 
@@ -262,10 +262,10 @@ function /*idCmdSystemLocal::*/Exec_f( /*const idCmdArgs &*/args:idCmdArgs ):voi
 	////filename.DefaultFileExtension( ".cfg" );
 	////len = fileSystem->ReadFile( filename, reinterpret_cast<void **>(&f), NULL );
 	////if ( !f ) {
-	////	common->Printf( "couldn't exec %s\n", args.Argv(1) );
+	////	common.Printf( "couldn't exec %s\n", args.Argv(1) );
 	////	return;
 	////}
-	////common->Printf( "execing %s\n", args.Argv(1) );
+	////common.Printf( "execing %s\n", args.Argv(1) );
 	
 	////cmdSystemLocal.BufferCommandText( CMD_EXEC_INSERT, f );
 
@@ -284,7 +284,7 @@ function /*idCmdSystemLocal::*/Vstr_f( /*const idCmdArgs &*/args:idCmdArgs ):voi
 	////const char *v;
 
 	////if ( args.Argc () != 2 ) {
-	////	common->Printf( "vstr <variablename> : execute a variable command\n" );
+	////	common.Printf( "vstr <variablename> : execute a variable command\n" );
 	////	return;
 	////}
 
@@ -305,9 +305,9 @@ function /*idCmdSystemLocal::*/Echo_f( /*const idCmdArgs &*/args:idCmdArgs ):voi
 	////int		i;
 	
 	////for ( i = 1; i < args.Argc(); i++ ) {
-	////	common->Printf( "%s ", args.Argv( i ) );
+	////	common.Printf( "%s ", args.Argv( i ) );
 	////}
-	////common->Printf( "\n" );
+	////common.Printf( "\n" );
 }
 
 /*
@@ -337,7 +337,7 @@ function /*idCmdSystemLocal::*/Parse_f( /*const idCmdArgs &*/args:idCmdArgs ):vo
 	////int		i;
 
 	////for ( i = 0; i < args.Argc(); i++ ) {
-	////	common->Printf( "%i: %s\n", i, args.Argv(i) );
+	////	common.Printf( "%i: %s\n", i, args.Argv(i) );
 	////}
 }
 
@@ -513,7 +513,7 @@ function /*idCmdSystemLocal::*/AddCommand( /*const char **/cmdName:string, /*cmd
 ////			commands = cmd;
 
 ////			if ( ( cmd->flags & (CMD_FL_CHEAT|CMD_FL_TOOL) ) && session && session->IsMultiplayer() && !cvarSystem->GetCVarBool( "net_allowCheats" ) ) {
-////				common->Printf( "Command '%s' not valid in multiplayer mode.\n", cmd->name );
+////				common.Printf( "Command '%s' not valid in multiplayer mode.\n", cmd->name );
 ////				return;
 ////			}
 ////			// perform the action
@@ -531,7 +531,7 @@ function /*idCmdSystemLocal::*/AddCommand( /*const char **/cmdName:string, /*cmd
 ////		return;
 ////	}
 
-////	common->Printf( "Unknown command '%s'\n", args.Argv( 0 ) );
+////	common.Printf( "Unknown command '%s'\n", args.Argv( 0 ) );
 ////}
 
 /////*
@@ -559,7 +559,7 @@ function /*idCmdSystemLocal::*/AddCommand( /*const char **/cmdName:string, /*cmd
 
 ////	len = strlen( text ) + 1;
 ////	if ( len + textLength > (int)sizeof( textBuf ) ) {
-////		common->Printf( "idCmdSystemLocal::InsertText: buffer overflow\n" );
+////		common.Printf( "idCmdSystemLocal::InsertText: buffer overflow\n" );
 ////		return;
 ////	}
 
@@ -590,7 +590,7 @@ function /*idCmdSystemLocal::*/AddCommand( /*const char **/cmdName:string, /*cmd
 ////	l = strlen( text );
 
 ////	if ( textLength + l >= (int)sizeof( textBuf ) ) {
-////		common->Printf( "idCmdSystemLocal::AppendText: buffer overflow\n" );
+////		common.Printf( "idCmdSystemLocal::AppendText: buffer overflow\n" );
 ////		return;
 ////	}
 ////	memcpy( textBuf + textLength, text, l );

@@ -1159,7 +1159,7 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 ////static void Com_ScriptDebugger_f( const idCmdArgs &args ) {
 ////	// Make sure it wasnt on the command line
 ////	if ( !( com_editors & EDITOR_DEBUGGER ) ) {
-////		common->Printf( "Script debugger is currently disabled\n" );
+////		common.Printf( "Script debugger is currently disabled\n" );
 ////		// DebuggerClientLaunch();
 ////	}
 ////}
@@ -1201,16 +1201,16 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 ////	renderSystem->PrintMemInfo( &mi );			// textures and models
 ////	soundSystem->PrintMemInfo( &mi );			// sounds
 
-////	common->Printf( " Used image memory: %s bytes\n", idStr::FormatNumber( mi.imageAssetsTotal ).c_str() );
+////	common.Printf( " Used image memory: %s bytes\n", idStr::FormatNumber( mi.imageAssetsTotal ).c_str() );
 ////	mi.assetTotals += mi.imageAssetsTotal;
 
-////	common->Printf( " Used model memory: %s bytes\n", idStr::FormatNumber( mi.modelAssetsTotal ).c_str() );
+////	common.Printf( " Used model memory: %s bytes\n", idStr::FormatNumber( mi.modelAssetsTotal ).c_str() );
 ////	mi.assetTotals += mi.modelAssetsTotal;
 
-////	common->Printf( " Used sound memory: %s bytes\n", idStr::FormatNumber( mi.soundAssetsTotal ).c_str() );
+////	common.Printf( " Used sound memory: %s bytes\n", idStr::FormatNumber( mi.soundAssetsTotal ).c_str() );
 ////	mi.assetTotals += mi.soundAssetsTotal;
 
-////	common->Printf( " Used asset memory: %s bytes\n", idStr::FormatNumber( mi.assetTotals ).c_str() );
+////	common.Printf( " Used asset memory: %s bytes\n", idStr::FormatNumber( mi.assetTotals ).c_str() );
 
 ////	// write overview file
 ////	idFile *f;
@@ -1553,7 +1553,7 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 ////		menu = true;
 ////	}
 
-////	common->Printf( "============= ReloadEngine start =============\n" );
+////	common.Printf( "============= ReloadEngine start =============\n" );
 ////	if ( !menu ) {
 ////		Sys_ShowConsole( 1, false );
 ////	}
@@ -1562,7 +1562,7 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 ////	if ( !menu && !idAsyncNetwork::serverDedicated.GetBool() ) {
 ////		Sys_ShowConsole( 0, false );
 ////	}
-////	common->Printf( "============= ReloadEngine end ===============\n" );
+////	common.Printf( "============= ReloadEngine end ===============\n" );
 
 ////	if ( !cmdSystem->PostReloadEngine() ) {
 ////		if ( menu ) {
@@ -1633,7 +1633,7 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 ////	}
 
 ////	for( int i = 0; i < currentLangList.Num(); i++ ) {
-////		//common->Printf("%s\n", currentLangList[i].c_str());
+////		//common.Printf("%s\n", currentLangList[i].c_str());
 ////		languageDict.Load( currentLangList[i], false );
 ////	}
 
@@ -1686,7 +1686,7 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 ////	if ( fileSystem->ReadFile( fileName, (void**)&buffer ) > 0 ) {
 ////		src.LoadMemory( buffer, strlen(buffer), fileName );
 ////		if ( src.IsLoaded() ) {
-////			common->Printf( "Processing %s\n", fileName );
+////			common.Printf( "Processing %s\n", fileName );
 ////			idStr mapFileName;
 ////			idToken token, token2;
 ////			idLangDict replaceArgs;
@@ -1705,7 +1705,7 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 ////						replaceArgs.AddKeyVal( token, token2 );
 ////					}
 ////				}
-////				common->Printf( "  localizing map %s...\n", mapFileName.c_str() );
+////				common.Printf( "  localizing map %s...\n", mapFileName.c_str() );
 ////				LocalizeSpecificMapData( mapFileName, langDict, replaceArgs );
 ////			}
 ////		}
@@ -1734,7 +1734,7 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 ////		src.LoadMemory( buffer, strlen(buffer), fileName );
 ////		if ( src.IsLoaded() ) {
 ////			idFile *outFile = fileSystem->OpenFileWrite( fileName ); 
-////			common->Printf( "Processing %s\n", fileName );
+////			common.Printf( "Processing %s\n", fileName );
 ////			session->UpdateScreen();
 ////			idToken token;
 ////			while( src.ReadToken( &token ) ) {
@@ -1932,7 +1932,7 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 
 ////int LocalizeMap(const char* mapName, idLangDict &langDict, ListHash& listHash, idStrList& excludeList, bool writeFile) {
 
-////	common->Printf("Localizing Map '%s'\n", mapName);
+////	common.Printf("Localizing Map '%s'\n", mapName);
 
 ////	int strCount = 0;
 	
@@ -2006,7 +2006,7 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 ////		}
 ////	}
 
-////	common->Printf("Count: %d\n", strCount);
+////	common.Printf("Count: %d\n", strCount);
 ////	return strCount;
 ////}
 
@@ -2017,7 +2017,7 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 ////*/
 ////void Com_LocalizeMaps_f( const idCmdArgs &args ) {
 ////	if ( args.Argc() < 2 ) {
-////		common->Printf( "Usage: localizeMaps <count | dictupdate | all> <map>\n" );
+////		common.Printf( "Usage: localizeMaps <count | dictupdate | all> <map>\n" );
 ////		return;
 ////	}
 
@@ -2037,8 +2037,8 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 ////		dictUpdate = true;
 ////		write = true;
 ////	} else {
-////		common->Printf( "Invalid Command\n" );
-////		common->Printf( "Usage: localizeMaps <count | dictupdate | all>\n" );
+////		common.Printf( "Invalid Command\n" );
+////		common.Printf( "Usage: localizeMaps <count | dictupdate | all>\n" );
 ////		return;
 
 ////	}
@@ -2070,7 +2070,7 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 ////	}
 
 ////	if(count) {
-////		common->Printf("Localize String Count: %d\n", strCount);
+////		common.Printf("Localize String Count: %d\n", strCount);
 ////	}
 
 ////	common->SetRefreshOnPrint( false );
@@ -2088,7 +2088,7 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 ////void Com_LocalizeGuis_f( const idCmdArgs &args ) {
 
 ////	if ( args.Argc() != 2 ) {
-////		common->Printf( "Usage: localizeGuis <all | gui>\n" );
+////		common.Printf( "Usage: localizeGuis <all | gui>\n" );
 ////		return;
 ////	}
 
@@ -2145,7 +2145,7 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 
 ////	for ( int i = 0; i < files.Num(); i++ ) {
 		
-////		common->Printf("Testing Map '%s'\n", files[i].c_str());
+////		common.Printf("Testing Map '%s'\n", files[i].c_str());
 ////		idMapFile map;
 
 ////		idStr file =  fileSystem->OSPathToRelativePath(files[i]);
@@ -2192,7 +2192,7 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 
 ////	for ( int i = 0; i < files.Num(); i++ ) {
 
-////		common->Printf("Testing Map '%s'\n", files[i].c_str());
+////		common.Printf("Testing Map '%s'\n", files[i].c_str());
 ////		idMapFile map;
 
 ////		idStr file =  fileSystem->OSPathToRelativePath(files[i]);
@@ -2287,25 +2287,25 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 ////==============
 ////*/
 ////void Com_Help_f( const idCmdArgs &args ) {
-////	common->Printf( "\nCommonly used commands:\n" );
-////	common->Printf( "  spawnServer      - start the server.\n" );
-////	common->Printf( "  disconnect       - shut down the server.\n" );
-////	common->Printf( "  listCmds         - list all console commands.\n" );
-////	common->Printf( "  listCVars        - list all console variables.\n" );
-////	common->Printf( "  kick             - kick a client by number.\n" );
-////	common->Printf( "  gameKick         - kick a client by name.\n" );
-////	common->Printf( "  serverNextMap    - immediately load next map.\n" );
-////	common->Printf( "  serverMapRestart - restart the current map.\n" );
-////	common->Printf( "  serverForceReady - force all players to ready status.\n" );
-////	common->Printf( "\nCommonly used variables:\n" );
-////	common->Printf( "  si_name          - server name (change requires a restart to see)\n" );
-////	common->Printf( "  si_gametype      - type of game.\n" );
-////	common->Printf( "  si_fragLimit     - max kills to win (or lives in Last Man Standing).\n" );
-////	common->Printf( "  si_timeLimit     - maximum time a game will last.\n" );
-////	common->Printf( "  si_warmup        - do pre-game warmup.\n" );
-////	common->Printf( "  si_pure          - pure server.\n" );
-////	common->Printf( "  g_mapCycle       - name of .scriptcfg file for cycling maps.\n" );
-////	common->Printf( "See mapcycle.scriptcfg for an example of a mapcyle script.\n\n" );
+////	common.Printf( "\nCommonly used commands:\n" );
+////	common.Printf( "  spawnServer      - start the server.\n" );
+////	common.Printf( "  disconnect       - shut down the server.\n" );
+////	common.Printf( "  listCmds         - list all console commands.\n" );
+////	common.Printf( "  listCVars        - list all console variables.\n" );
+////	common.Printf( "  kick             - kick a client by number.\n" );
+////	common.Printf( "  gameKick         - kick a client by name.\n" );
+////	common.Printf( "  serverNextMap    - immediately load next map.\n" );
+////	common.Printf( "  serverMapRestart - restart the current map.\n" );
+////	common.Printf( "  serverForceReady - force all players to ready status.\n" );
+////	common.Printf( "\nCommonly used variables:\n" );
+////	common.Printf( "  si_name          - server name (change requires a restart to see)\n" );
+////	common.Printf( "  si_gametype      - type of game.\n" );
+////	common.Printf( "  si_fragLimit     - max kills to win (or lives in Last Man Standing).\n" );
+////	common.Printf( "  si_timeLimit     - maximum time a game will last.\n" );
+////	common.Printf( "  si_warmup        - do pre-game warmup.\n" );
+////	common.Printf( "  si_pure          - pure server.\n" );
+////	common.Printf( "  g_mapCycle       - name of .scriptcfg file for cycling maps.\n" );
+////	common.Printf( "See mapcycle.scriptcfg for an example of a mapcyle script.\n\n" );
 ////}
 
 /////*
@@ -2782,14 +2782,14 @@ idCommonLocal::Init
 ////		// start file logging right away, before early console or whatever
 ////		StartupVariable( "win_outputDebugString", false );
 
-////		// register all static CVars
-////		idCVar::RegisterStaticVars();
+		// register all static CVars
+        todo("idCVar::RegisterStaticVars();");
 
 ////		// print engine version
 ////		Printf( "%s\n", version.string );
 
-////		// initialize key input/binding, done early so bind command exists
-////		idKeyInput::Init();
+		// initialize key input/binding, done early so bind command exists
+        todo("idKeyInput::Init();");
 
 ////		// init the console so we can take prints
 ////		console->Init();
@@ -2810,15 +2810,15 @@ idCommonLocal::Init
 ////		// initialize processor specific SIMD implementation
 ////		InitSIMD();
 
-////		// init commands
-////		InitCommands();
+		// init commands
+        todo("InitCommands();");
 
 ////#ifdef ID_WRITE_VERSION
 ////		config_compressor = idCompressor::AllocArithmetic();
 ////#endif
 
-////		// game specific initialization
-////		InitGame();
+		// game specific initialization
+		this.InitGame();
 
 ////		// don't add startup commands if no CD key is present
 ////#if ID_ENFORCE_KEY
@@ -2841,7 +2841,7 @@ idCommonLocal::Init
 
 ////		// remove any prints from the notify lines
 ////		console->ClearNotifyLines();
-		
+
 ////		ClearCommandLine();
 
 ////		com_fullyInitialized = true;
@@ -2850,7 +2850,7 @@ idCommonLocal::Init
 ////	catch( idException & ) {
 ////		Sys_Error( "Error during initialization" );
 ////	}
-}
+    }
 
 
 /////*
@@ -2903,12 +2903,12 @@ idCommonLocal::Init
 ////	idLib::ShutDown();
 ////}
 
-/////*
-////=================
-////idCommonLocal::InitGame
-////=================
-////*/
-////void idCommonLocal::InitGame( void ) {
+/*
+=================
+idCommonLocal::InitGame
+=================
+*/
+/*idCommonLocal::*/InitGame( ):void {
 ////	// initialize the file system
 ////	fileSystem->Init();
 
@@ -2933,9 +2933,9 @@ idCommonLocal::Init
 ////		Com_ExecMachineSpec_f( args );
 ////	}
 
-////	// initialize the renderSystem data structures, but don't start OpenGL yet
-////	renderSystem->Init();
-
+	// initialize the renderSystem data structures, but don't start OpenGL yet
+	renderSystem__Init();
+    todoThrow("probably need declManager->Init() too now");
 ////	// initialize string database right off so we can use it for loading messages
 ////	InitLanguageDict();
 
@@ -3013,7 +3013,7 @@ idCommonLocal::Init
 
 ////	// load the game dll
 ////	LoadGameDLL();
-	
+
 ////	PrintLoadingMessage( common->GetLanguageDict()->GetString( "#str_04351" ) );
 
 ////	// init the session
@@ -3029,7 +3029,7 @@ idCommonLocal::Init
 ////		cmdSystem->BufferCommandText( CMD_EXEC_NOW, "s_restart\n" );
 ////		cmdSystem->ExecuteCommandBuffer();
 ////	}
-////}
+    }
 
 /////*
 ////=================

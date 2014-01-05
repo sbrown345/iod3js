@@ -318,18 +318,18 @@
 ////	if ( session && session->IsMultiplayer() && !fromServer ) {
 ////#ifndef ID_TYPEINFO
 ////		if ( ( flags & CVAR_NETWORKSYNC ) && idAsyncNetwork::client.IsActive() ) {
-////			common->Printf( "%s is a synced over the network and cannot be changed on a multiplayer client.\n", nameString.c_str() );
+////			common.Printf( "%s is a synced over the network and cannot be changed on a multiplayer client.\n", nameString.c_str() );
 ////#if ID_ALLOW_CHEATS
-////			common->Printf( "ID_ALLOW_CHEATS override!\n" );
+////			common.Printf( "ID_ALLOW_CHEATS override!\n" );
 ////#else				
 ////			return;
 ////#endif
 ////		}
 ////#endif
 ////		if ( ( flags & CVAR_CHEAT ) && !cvarSystem->GetCVarBool( "net_allowCheats" ) ) {
-////			common->Printf( "%s cannot be changed in multiplayer.\n", nameString.c_str() );
+////			common.Printf( "%s cannot be changed in multiplayer.\n", nameString.c_str() );
 ////#if ID_ALLOW_CHEATS
-////			common->Printf( "ID_ALLOW_CHEATS override!\n" );
+////			common.Printf( "ID_ALLOW_CHEATS override!\n" );
 ////#else				
 ////			return;
 ////#endif
@@ -342,12 +342,12 @@
 
 ////	if ( !force ) {
 ////		if ( flags & CVAR_ROM ) {
-////			common->Printf( "%s is read only.\n", nameString.c_str() );
+////			common.Printf( "%s is read only.\n", nameString.c_str() );
 ////			return;
 ////		}
 
 ////		if ( flags & CVAR_INIT ) {
-////			common->Printf( "%s is write protected.\n", nameString.c_str() );
+////			common.Printf( "%s is write protected.\n", nameString.c_str() );
 ////			return;
 ////		}
 ////	}
@@ -754,10 +754,10 @@ function /*idCVarSystemLocal::*/cvarSystem__Init( ):void {
 
 //	if ( args.Argc() == 1 ) {
 //		// print the variable
-//		common->Printf( "\"%s\" is:\"%s\"" S_COLOR_WHITE " default:\"%s\"\n",
+//		common.Printf( "\"%s\" is:\"%s\"" S_COLOR_WHITE " default:\"%s\"\n",
 //					internal->nameString.c_str(), internal->valueString.c_str(), internal->resetString.c_str() );
 //		if ( idStr::Length( internal->GetDescription() ) > 0 ) {
-//			common->Printf( S_COLOR_WHITE "%s\n", internal->GetDescription() );
+//			common.Printf( S_COLOR_WHITE "%s\n", internal->GetDescription() );
 //		}
 //	} else {
 //		// set the value
@@ -917,7 +917,7 @@ function /*idCVarSystemLocal::*/Toggle_f( /*const */ args:idCmdArgs  ):void {
 
 	//argc = args.Argc();
 	//if ( argc < 2 ) {
-	//	common->Printf ("usage:\n"
+	//	common.Printf ("usage:\n"
 	//		"   toggle <variable>  - toggles between 0 and 1\n"
 	//		"   toggle <variable> <value> - toggles between 0 and <value>\n"
 	//		"   toggle <variable> [string 1] [string 2]...[string n] - cycles through all strings\n");
@@ -945,7 +945,7 @@ function /*idCVarSystemLocal::*/Toggle_f( /*const */ args:idCmdArgs  ):void {
 	//		i = 2;
 	//	}
 
-	//	common->Printf( "set %s = %s\n", args.Argv(1), args.Argv( i ) );
+	//	common.Printf( "set %s = %s\n", args.Argv(1), args.Argv( i ) );
 	//	cvar->Set( va("%s", args.Argv( i ) ), false, false );
 	//} else {
 	//	// toggle between 0 and 1
@@ -960,7 +960,7 @@ function /*idCVarSystemLocal::*/Toggle_f( /*const */ args:idCmdArgs  ):void {
 	//	} else {
 	//		current = 0.0f;
 	//	}
-	//	common->Printf( "set %s = %f\n", args.Argv(1), current );
+	//	common.Printf( "set %s = %f\n", args.Argv(1), current );
 	//	cvar->Set( idStr( current ), false, false );
 	//}
 }
@@ -1060,7 +1060,7 @@ function /*idCVarSystemLocal::*/Reset_f( /*const */ args:idCmdArgs  ):void {
 	//idInternalCVar *cvar;
 
 	//if ( args.Argc() != 2 ) {
-	//	common->Printf ("usage: reset <variable>\n");
+	//	common.Printf ("usage: reset <variable>\n");
 	//	return;
 	//}
 	//cvar = localCVarSystem.FindInternal( args.Argv( 1 ) );
@@ -1140,7 +1140,7 @@ idCVarSystemLocal::ListByFlags
 //	//	case SHOW_VALUE: {
 //	//		for ( i = 0; i < cvarList.Num(); i++ ) {
 //	//			cvar = cvarList[i];
-//	//			common->Printf( FORMAT_STRING S_COLOR_WHITE "\"%s\"\n", cvar->nameString.c_str(), cvar->valueString.c_str() );
+//	//			common.Printf( FORMAT_STRING S_COLOR_WHITE "\"%s\"\n", cvar->nameString.c_str(), cvar->valueString.c_str() );
 //	//		}
 //	//		break;
 //	//	}
@@ -1150,7 +1150,7 @@ idCVarSystemLocal::ListByFlags
 
 //	//		for ( i = 0; i < cvarList.Num(); i++ ) {
 //	//			cvar = cvarList[i];
-//	//			common->Printf( FORMAT_STRING S_COLOR_WHITE "%s\n", cvar->nameString.c_str(), CreateColumn( cvar->GetDescription(), NUM_DESCRIPTION_CHARS, indent, string ) );
+//	//			common.Printf( FORMAT_STRING S_COLOR_WHITE "%s\n", cvar->nameString.c_str(), CreateColumn( cvar->GetDescription(), NUM_DESCRIPTION_CHARS, indent, string ) );
 //	//		}
 //	//		break;
 //	//	}
@@ -1158,31 +1158,31 @@ idCVarSystemLocal::ListByFlags
 //	//		for ( i = 0; i < cvarList.Num(); i++ ) {
 //	//			cvar = cvarList[i];
 //	//			if ( cvar->GetFlags() & CVAR_BOOL ) {
-//	//				common->Printf( FORMAT_STRING S_COLOR_CYAN "bool\n", cvar->GetName() );
+//	//				common.Printf( FORMAT_STRING S_COLOR_CYAN "bool\n", cvar->GetName() );
 //	//			} else if ( cvar->GetFlags() & CVAR_INTEGER ) {
 //	//				if ( cvar->GetMinValue() < cvar->GetMaxValue() ) {
-//	//					common->Printf( FORMAT_STRING S_COLOR_GREEN "int " S_COLOR_WHITE "[%d, %d]\n", cvar->GetName(), (int) cvar->GetMinValue(), (int) cvar->GetMaxValue() );
+//	//					common.Printf( FORMAT_STRING S_COLOR_GREEN "int " S_COLOR_WHITE "[%d, %d]\n", cvar->GetName(), (int) cvar->GetMinValue(), (int) cvar->GetMaxValue() );
 //	//				} else {
-//	//					common->Printf( FORMAT_STRING S_COLOR_GREEN "int\n", cvar->GetName() );
+//	//					common.Printf( FORMAT_STRING S_COLOR_GREEN "int\n", cvar->GetName() );
 //	//				}
 //	//			} else if ( cvar->GetFlags() & CVAR_FLOAT ) {
 //	//				if ( cvar->GetMinValue() < cvar->GetMaxValue() ) {
-//	//					common->Printf( FORMAT_STRING S_COLOR_RED "float " S_COLOR_WHITE "[%s, %s]\n", cvar->GetName(), idStr( cvar->GetMinValue() ).c_str(), idStr( cvar->GetMaxValue() ).c_str() );
+//	//					common.Printf( FORMAT_STRING S_COLOR_RED "float " S_COLOR_WHITE "[%s, %s]\n", cvar->GetName(), idStr( cvar->GetMinValue() ).c_str(), idStr( cvar->GetMaxValue() ).c_str() );
 //	//				} else {
-//	//					common->Printf( FORMAT_STRING S_COLOR_RED "float\n", cvar->GetName() );
+//	//					common.Printf( FORMAT_STRING S_COLOR_RED "float\n", cvar->GetName() );
 //	//				}
 //	//			} else if ( cvar->GetValueStrings() ) {
-//	//				common->Printf( FORMAT_STRING S_COLOR_WHITE "string " S_COLOR_WHITE "[", cvar->GetName() );
+//	//				common.Printf( FORMAT_STRING S_COLOR_WHITE "string " S_COLOR_WHITE "[", cvar->GetName() );
 //	//				for ( int j = 0; cvar->GetValueStrings()[j] != NULL; j++ ) {
 //	//					if ( j ) {
-//	//						common->Printf( S_COLOR_WHITE ", %s", cvar->GetValueStrings()[j] );
+//	//						common.Printf( S_COLOR_WHITE ", %s", cvar->GetValueStrings()[j] );
 //	//					} else {
-//	//						common->Printf( S_COLOR_WHITE "%s", cvar->GetValueStrings()[j] );
+//	//						common.Printf( S_COLOR_WHITE "%s", cvar->GetValueStrings()[j] );
 //	//					}
 //	//				}
-//	//				common->Printf( S_COLOR_WHITE "]\n" );
+//	//				common.Printf( S_COLOR_WHITE "]\n" );
 //	//			} else {
-//	//				common->Printf( FORMAT_STRING S_COLOR_WHITE "string\n", cvar->GetName() );
+//	//				common.Printf( FORMAT_STRING S_COLOR_WHITE "string\n", cvar->GetName() );
 //	//			}
 //	//		}
 //	//		break;
@@ -1190,7 +1190,7 @@ idCVarSystemLocal::ListByFlags
 //	//	case SHOW_FLAGS: {
 //	//		for ( i = 0; i < cvarList.Num(); i++ ) {
 //	//			cvar = cvarList[i];
-//	//			common->Printf( FORMAT_STRING, cvar->GetName() );
+//	//			common.Printf( FORMAT_STRING, cvar->GetName() );
 //	//			string = "";
 //	//			if ( cvar->GetFlags() & CVAR_BOOL ) {
 //	//				string += S_COLOR_CYAN "B ";
@@ -1225,14 +1225,14 @@ idCVarSystemLocal::ListByFlags
 //	//			string += ( cvar->GetFlags() & CVAR_ARCHIVE ) ?		"AR "	: "   ";
 //	//			string += ( cvar->GetFlags() & CVAR_MODIFIED ) ?	"MO "	: "   ";
 //	//			string += "\n";
-//	//			common->Printf( string );
+//	//			common.Printf( string );
 //	//		}
 //	//		break;
 //	//	}
 //	//}
 
-//	//common->Printf( "\n%i cvars listed\n\n", cvarList.Num() );
-//	//common->Printf(	"listCvar [search string]          = list cvar values\n"
+//	//common.Printf( "\n%i cvars listed\n\n", cvarList.Num() );
+//	//common.Printf(	"listCvar [search string]          = list cvar values\n"
 //	//			"listCvar -help [search string]    = list cvar descriptions\n"
 //	//			"listCvar -type [search string]    = list cvar types\n"
 //	//			"listCvar -flags [search string]   = list cvar flags\n" );

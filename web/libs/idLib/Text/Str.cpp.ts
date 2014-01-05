@@ -1243,7 +1243,7 @@ static Cmp( /*const char **/s1:string, /*const char **/s2:string ):number {
 
 ////#if 0
 //////#if !defined( _WIN32 )
-////	idLib::common->Printf( "WARNING: IcmpPath used on a case-sensitive filesystem?\n" );
+////	idLib::common.Printf( "WARNING: IcmpPath used on a case-sensitive filesystem?\n" );
 ////#endif
 
 ////	do {
@@ -1312,7 +1312,7 @@ static Cmp( /*const char **/s1:string, /*const char **/s2:string ):number {
 
 ////#if 0
 //////#if !defined( _WIN32 )
-////	idLib::common->Printf( "WARNING: IcmpPath used on a case-sensitive filesystem?\n" );
+////	idLib::common.Printf( "WARNING: IcmpPath used on a case-sensitive filesystem?\n" );
 ////#endif
 
 ////	assert( n >= 0 );
@@ -1663,7 +1663,7 @@ static Cmp( /*const char **/s1:string, /*const char **/s2:string ):number {
 ////*/
 ////void idStr::ShowMemoryUsage_f( const idCmdArgs &args ) {
 ////#ifdef USE_STRING_DATA_ALLOCATOR
-////	idLib::common->Printf( "%6d KB string memory (%d KB free in %d blocks, %d empty base blocks)\n",
+////	idLib::common.Printf( "%6d KB string memory (%d KB free in %d blocks, %d empty base blocks)\n",
 ////		stringDataAllocator.GetBaseBlockMemory() >> 10, stringDataAllocator.GetFreeBlockMemory() >> 10,
 ////			stringDataAllocator.GetNumFreeBlocks(), stringDataAllocator.GetNumEmptyBaseBlocks() );
 ////#endif

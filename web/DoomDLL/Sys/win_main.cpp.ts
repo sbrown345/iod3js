@@ -297,8 +297,8 @@ var sys_cmdline: string;
 ////==================
 ////*/
 ////void Sys_DebugMemory_f( void ) {
-////  	common->Printf( "Total allocation %8dk in %d blocks\n", debug_total_alloc / 1024, debug_total_alloc_count );
-////  	common->Printf( "Current allocation %8dk in %d blocks\n", debug_current_alloc / 1024, debug_current_alloc_count );
+////  	common.Printf( "Total allocation %8dk in %d blocks\n", debug_total_alloc / 1024, debug_total_alloc_count );
+////  	common.Printf( "Current allocation %8dk in %d blocks\n", debug_current_alloc / 1024, debug_current_alloc_count );
 ////}
 
 /////*
@@ -308,7 +308,7 @@ var sys_cmdline: string;
 ////*/
 ////void Sys_MemFrame( void ) {
 ////	if( sys_showMallocs.GetInteger() ) {
-////		common->Printf("Frame: %8dk in %5d blocks\n", debug_frame_alloc / 1024, debug_frame_alloc_count );
+////		common.Printf("Frame: %8dk in %5d blocks\n", debug_frame_alloc / 1024, debug_frame_alloc_count );
 ////	}
 
 ////	debug_frame_alloc = 0;
@@ -737,7 +737,7 @@ var sys_cmdline: string;
 ////	ev = &eventQue[ eventHead & MASK_QUED_EVENTS ];
 
 ////	if ( eventHead - eventTail >= MAX_QUED_EVENTS ) {
-////		common->Printf("Sys_QueEvent: overflow\n");
+////		common.Printf("Sys_QueEvent: overflow\n");
 ////		// we are discarding an event, but don't leak memory
 ////		if ( ev->evPtr ) {
 ////			Mem_Free( ev->evPtr );
@@ -773,7 +773,7 @@ var sys_cmdline: string;
 ////		// save the msg time, because wndprocs don't have access to the timestamp
 ////		if ( win32.sysMsgTime && win32.sysMsgTime > (int)msg.time ) {
 ////			// don't ever let the event times run backwards	
-//////			common->Printf( "Sys_PumpEvents: win32.sysMsgTime (%i) > msg.time (%i)\n", win32.sysMsgTime, msg.time );
+//////			common.Printf( "Sys_PumpEvents: win32.sysMsgTime (%i) > msg.time (%i)\n", win32.sysMsgTime, msg.time );
 ////		} else {
 ////			win32.sysMsgTime = msg.time;
 ////		}
@@ -1050,7 +1050,7 @@ var sys_cmdline: string;
 ////	if ( !idStr::Icmp( win32.sys_cpustring.GetString(), "detect" ) ) {
 ////		idStr string;
 
-////		common->Printf( "%1.0f MHz ", Sys_ClockTicksPerSecond() / 1000000.0f );
+////		common.Printf( "%1.0f MHz ", Sys_ClockTicksPerSecond() / 1000000.0f );
 
 ////		win32.cpuid = Sys_GetCPUId();
 
@@ -1089,7 +1089,7 @@ var sys_cmdline: string;
 ////		string.StripTrailing( " with " );
 ////		win32.sys_cpustring.SetString( string );
 ////	} else {
-////		common->Printf( "forcing CPU type to " );
+////		common.Printf( "forcing CPU type to " );
 ////		idLexer src( win32.sys_cpustring.GetString(), idStr::Length( win32.sys_cpustring.GetString() ), "sys_cpustring" );
 ////		idToken token;
 
@@ -1116,15 +1116,15 @@ var sys_cmdline: string;
 ////			}
 ////		}
 ////		if ( id == CPUID_NONE ) {
-////			common->Printf( "WARNING: unknown sys_cpustring '%s'\n", win32.sys_cpustring.GetString() );
+////			common.Printf( "WARNING: unknown sys_cpustring '%s'\n", win32.sys_cpustring.GetString() );
 ////			id = CPUID_GENERIC;
 ////		}
 ////		win32.cpuid = (cpuid_t) id;
 ////	}
 
-////	common->Printf( "%s\n", win32.sys_cpustring.GetString() );
-////	common->Printf( "%d MB System Memory\n", Sys_GetSystemRam() );
-////	common->Printf( "%d MB Video Memory\n", Sys_GetVideoRam() );
+////	common.Printf( "%s\n", win32.sys_cpustring.GetString() );
+////	common.Printf( "%d MB System Memory\n", Sys_GetSystemRam() );
+////	common.Printf( "%d MB Video Memory\n", Sys_GetVideoRam() );
 ////}
 
 /////*
@@ -1414,7 +1414,7 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 	common.Init( 0, /*NULL*/null, lpCmdLine );
     todoThrow();
 ////#if TEST_FPU_EXCEPTIONS != 0
-////	common->Printf( Sys_FPU_GetState() );
+////	common.Printf( Sys_FPU_GetState() );
 ////#endif
 
 ////#ifndef	ID_DEDICATED
@@ -1562,7 +1562,7 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 ////		return;
 ////	}
 
-////	common->Printf("Open URL: %s\n", url);
+////	common.Printf("Open URL: %s\n", url);
 
 ////	if ( !ShellExecute( NULL, "open", url, NULL, NULL, SW_RESTORE ) ) {
 ////		common->Error( "Could not open url: '%s' ", url );

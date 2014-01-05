@@ -250,7 +250,7 @@
 ////		}
 ////		size >>= 1;
 ////	}
-////	idLib::common->Printf( "Allocated a %i mb defrag block\n", size / (1024*1024) );
+////	idLib::common.Printf( "Allocated a %i mb defrag block\n", size / (1024*1024) );
 ////}
 
 /////*
@@ -323,7 +323,7 @@
 ////	ptr = (byte *) malloc( bytes + 16 + 4 );
 ////	if ( !ptr ) {
 ////		if ( defragBlock ) {
-////			idLib::common->Printf( "Freeing defragBlock on alloc of %i.\n", bytes );
+////			idLib::common.Printf( "Freeing defragBlock on alloc of %i.\n", bytes );
 ////			free( defragBlock );
 ////			defragBlock = NULL;
 ////			ptr = (byte *) malloc( bytes + 16 + 4 );			
@@ -402,27 +402,27 @@
 ////	idHeap::page_s	*pg;
 
 ////	for ( pg = smallFirstUsedPage; pg; pg = pg->next ) {
-////		idLib::common->Printf( "%p  bytes %-8d  (in use by small heap)\n", pg->data, pg->dataSize);
+////		idLib::common.Printf( "%p  bytes %-8d  (in use by small heap)\n", pg->data, pg->dataSize);
 ////	}
 
 ////	if ( smallCurPage ) {
 ////		pg = smallCurPage;
-////		idLib::common->Printf( "%p  bytes %-8d  (small heap active page)\n", pg->data, pg->dataSize );
+////		idLib::common.Printf( "%p  bytes %-8d  (small heap active page)\n", pg->data, pg->dataSize );
 ////	}
 
 ////	for ( pg = mediumFirstUsedPage; pg; pg = pg->next ) {
-////		idLib::common->Printf( "%p  bytes %-8d  (completely used by medium heap)\n", pg->data, pg->dataSize );
+////		idLib::common.Printf( "%p  bytes %-8d  (completely used by medium heap)\n", pg->data, pg->dataSize );
 ////	}
 
 ////	for ( pg = mediumFirstFreePage; pg; pg = pg->next ) {
-////		idLib::common->Printf( "%p  bytes %-8d  (partially used by medium heap)\n", pg->data, pg->dataSize );
+////		idLib::common.Printf( "%p  bytes %-8d  (partially used by medium heap)\n", pg->data, pg->dataSize );
 ////	}
 	
 ////	for ( pg = largeFirstUsedPage; pg; pg = pg->next ) {
-////		idLib::common->Printf( "%p  bytes %-8d  (fully used by large heap)\n", pg->data, pg->dataSize );
+////		idLib::common.Printf( "%p  bytes %-8d  (fully used by large heap)\n", pg->data, pg->dataSize );
 ////	}
 
-////	idLib::common->Printf( "pages allocated : %d\n", pagesAllocated );
+////	idLib::common.Printf( "pages allocated : %d\n", pagesAllocated );
 ////}
 
 /////*
@@ -478,7 +478,7 @@
 ////		p = (idHeap::page_s *) ::malloc( size + ALIGN - 1 );
 ////		if ( !p ) {
 ////			if ( defragBlock ) {
-////				idLib::common->Printf( "Freeing defragBlock on alloc of %i.\n", size + ALIGN - 1 );
+////				idLib::common.Printf( "Freeing defragBlock on alloc of %i.\n", size + ALIGN - 1 );
 ////				free( defragBlock );
 ////				defragBlock = NULL;
 ////				p = (idHeap::page_s *) ::malloc( size + ALIGN - 1 );			
@@ -1533,7 +1533,7 @@ function Mem_CopyString( /*const char *in*/$in:string ):string {
 ////		} else if ( arg[0] == 'f' ) {
 ////			numFrames = atoi( arg + 1 );
 ////		} else {
-////			idLib::common->Printf( "memoryDumpCompressed [options] [filename]\n"
+////			idLib::common.Printf( "memoryDumpCompressed [options] [filename]\n"
 ////						"options:\n"
 ////						"  -s     sort on size\n"
 ////						"  -l     sort on location\n"
