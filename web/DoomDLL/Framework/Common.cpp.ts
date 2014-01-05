@@ -2776,8 +2776,8 @@ idCommonLocal::Init
 		// init console command system
 		cmdSystem__Init();
 
-////		// init CVar system
-////		cvarSystem->Init();
+		// init CVar system
+		cvarSystem__Init();
 
 ////		// start file logging right away, before early console or whatever
 ////		StartupVariable( "win_outputDebugString", false );
