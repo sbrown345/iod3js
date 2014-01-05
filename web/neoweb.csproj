@@ -77,6 +77,8 @@
     <Content Include="DoomDLL\Sys\win_main.cpp.ts" />
     <Content Include="index.htm" />
     <Content Include="libs\c.ts" />
+    <Content Include="libs\idLib\Containers\List.h.ts" />
+    <Content Include="libs\idLib\Geometry\DrawVert.h.ts" />
     <Content Include="libs\idLib\Heap.cpp.ts" />
     <Content Include="libs\idLib\Heap.h.ts" />
     <Content Include="libs\idLib\Lib.cpp.ts" />

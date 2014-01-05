@@ -1,3 +1,5 @@
+/// <reference path="../Renderer/RenderSystem.cpp.ts" />
+/// <reference path="../Renderer/RenderSystem.h.ts" />
 /// <reference path="CmdSystem.cpp.ts" />
 /// <reference path="../../utils/todo.ts" />
 /// <reference path="../../libs/c.ts" />
@@ -2934,7 +2936,7 @@ idCommonLocal::InitGame
 ////	}
 
 	// initialize the renderSystem data structures, but don't start OpenGL yet
-	renderSystem__Init();
+	renderSystem.Init();
     todoThrow("probably need declManager->Init() too now");
 ////	// initialize string database right off so we can use it for loading messages
 ////	InitLanguageDict();

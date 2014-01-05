@@ -1,3 +1,4 @@
+/// <reference path="Material.h.ts" />
 /////*
 ////===========================================================================
 
@@ -30,10 +31,19 @@
 class guiModelSurface_t {
 	/*const idMaterial	*/  material:idMaterial;
 	/*float				*/  color:number[/*4*/];
-	/*int				*/	firstVert;
+	/*int				*/	firstVert:number;
 	/*int				*/	numVerts:number;
 	/*int				*/	firstIndex:number;
 	/*int				*/	numIndexes:number;
+
+    constructor() {
+        this.material = new idMaterial;
+        this.color = [0, 0, 0, 0];
+        this.firstVert = 0;
+        this.numVerts = 0;
+        this.firstIndex = 0;
+        this.numIndexes = 0;
+    }
 }
 
 ////class idGuiModel {

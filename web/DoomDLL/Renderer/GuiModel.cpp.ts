@@ -1,3 +1,5 @@
+/// <reference path="../../libs/idLib/Containers/List.h.ts" />
+/// <reference path="../../libs/idLib/Geometry/DrawVert.h.ts" />
 /// <reference path="GuiModel.h.ts" />
 /////*
 ////===========================================================================
@@ -36,12 +38,19 @@
 
 class idGuiModel {
 ////public:
-////	guiModelSurface_t		*surf;
+    /*guiModelSurface_t		**/surf:guiModelSurface_t;
 
-	/*idList<guiModelSurface_t>	*/surfaces:guiModelSurface_t[];
-	/*idList<glIndex_t>		*/indexes:glIndex_t;
-	/*idList<idDrawVert>	*/verts:idDrawVert[];
+	/*idList<guiModelSurface_t>	*/surfaces:Array<guiModelSurface_t>;
+	/*idList<glIndex_t>		*/indexes:Array<number>;
+	/*idList<idDrawVert>	*/verts:Array<idDrawVert>;
 ////};
+
+    constructor() {
+        this.surf = new guiModelSurface_t();
+        this.surfaces = new Array<guiModelSurface_t>();
+        this.indexes = new Array<number>();
+        this.verts = new Array<idDrawVert>();
+    }
 
 /////*
 ////================
@@ -76,41 +85,41 @@ Clear():void {
 ////	int		i, j;
 
 ////	i = verts.Num();
-////	demo->WriteInt( i );
+////	demo.WriteInt( i );
 ////	for ( j = 0; j < i; j++ )
 ////	{
-////		demo->WriteVec3( verts[j].xyz );
-////		demo->WriteVec2( verts[j].st );
-////		demo->WriteVec3( verts[j].normal );
-////		demo->WriteVec3( verts[j].tangents[0] );
-////		demo->WriteVec3( verts[j].tangents[1] );
-////		demo->WriteUnsignedChar( verts[j].color[0] );
-////		demo->WriteUnsignedChar( verts[j].color[1] );
-////		demo->WriteUnsignedChar( verts[j].color[2] );
-////		demo->WriteUnsignedChar( verts[j].color[3] );
+////		demo.WriteVec3( verts[j].xyz );
+////		demo.WriteVec2( verts[j].st );
+////		demo.WriteVec3( verts[j].normal );
+////		demo.WriteVec3( verts[j].tangents[0] );
+////		demo.WriteVec3( verts[j].tangents[1] );
+////		demo.WriteUnsignedChar( verts[j].color[0] );
+////		demo.WriteUnsignedChar( verts[j].color[1] );
+////		demo.WriteUnsignedChar( verts[j].color[2] );
+////		demo.WriteUnsignedChar( verts[j].color[3] );
 ////	}
 	
 ////	i = indexes.Num();
-////	demo->WriteInt( i );
+////	demo.WriteInt( i );
 ////	for ( j = 0; j < i; j++ ) {
-////		demo->WriteInt(indexes[j] );
+////		demo.WriteInt(indexes[j] );
 ////	}
 	
 ////	i = surfaces.Num();
-////	demo->WriteInt( i );
+////	demo.WriteInt( i );
 ////	for ( j = 0 ; j < i ; j++ ) {
 ////		guiModelSurface_t	*surf = &surfaces[j];
 		
-////		demo->WriteInt( (int&)surf->material );
-////		demo->WriteFloat( surf->color[0] );
-////		demo->WriteFloat( surf->color[1] );
-////		demo->WriteFloat( surf->color[2] );
-////		demo->WriteFloat( surf->color[3] );
-////		demo->WriteInt( surf->firstVert );
-////		demo->WriteInt( surf->numVerts );
-////		demo->WriteInt( surf->firstIndex );
-////		demo->WriteInt( surf->numIndexes );
-////		demo->WriteHashString( surf->material->GetName() );
+////		demo.WriteInt( (int&)surf.material );
+////		demo.WriteFloat( surf.color[0] );
+////		demo.WriteFloat( surf.color[1] );
+////		demo.WriteFloat( surf.color[2] );
+////		demo.WriteFloat( surf.color[3] );
+////		demo.WriteInt( surf.firstVert );
+////		demo.WriteInt( surf.numVerts );
+////		demo.WriteInt( surf.firstIndex );
+////		demo.WriteInt( surf.numIndexes );
+////		demo.WriteHashString( surf.material.GetName() );
 ////	}
 ////}
 
@@ -123,44 +132,44 @@ Clear():void {
 ////	int		i, j;
 
 ////	i = verts.Num();
-////	demo->ReadInt( i );
+////	demo.ReadInt( i );
 ////	verts.SetNum( i, false );
 ////	for ( j = 0; j < i; j++ )
 ////	{
-////		demo->ReadVec3( verts[j].xyz );
-////		demo->ReadVec2( verts[j].st );
-////		demo->ReadVec3( verts[j].normal );
-////		demo->ReadVec3( verts[j].tangents[0] );
-////		demo->ReadVec3( verts[j].tangents[1] );
-////		demo->ReadUnsignedChar( verts[j].color[0] );
-////		demo->ReadUnsignedChar( verts[j].color[1] );
-////		demo->ReadUnsignedChar( verts[j].color[2] );
-////		demo->ReadUnsignedChar( verts[j].color[3] );
+////		demo.ReadVec3( verts[j].xyz );
+////		demo.ReadVec2( verts[j].st );
+////		demo.ReadVec3( verts[j].normal );
+////		demo.ReadVec3( verts[j].tangents[0] );
+////		demo.ReadVec3( verts[j].tangents[1] );
+////		demo.ReadUnsignedChar( verts[j].color[0] );
+////		demo.ReadUnsignedChar( verts[j].color[1] );
+////		demo.ReadUnsignedChar( verts[j].color[2] );
+////		demo.ReadUnsignedChar( verts[j].color[3] );
 ////	}
 	
 ////	i = indexes.Num();
-////	demo->ReadInt( i );
+////	demo.ReadInt( i );
 ////	indexes.SetNum( i, false );
 ////	for ( j = 0; j < i; j++ ) {
-////		demo->ReadInt(indexes[j] );
+////		demo.ReadInt(indexes[j] );
 ////	}
 	
 ////	i = surfaces.Num();
-////	demo->ReadInt( i );
+////	demo.ReadInt( i );
 ////	surfaces.SetNum( i, false );
 ////	for ( j = 0 ; j < i ; j++ ) {
 ////		guiModelSurface_t	*surf = &surfaces[j];
 		
-////		demo->ReadInt( (int&)surf->material );
-////		demo->ReadFloat( surf->color[0] );
-////		demo->ReadFloat( surf->color[1] );
-////		demo->ReadFloat( surf->color[2] );
-////		demo->ReadFloat( surf->color[3] );
-////		demo->ReadInt( surf->firstVert );
-////		demo->ReadInt( surf->numVerts );
-////		demo->ReadInt( surf->firstIndex );
-////		demo->ReadInt( surf->numIndexes );
-////		surf->material = declManager->FindMaterial( demo->ReadHashString() );
+////		demo.ReadInt( (int&)surf.material );
+////		demo.ReadFloat( surf.color[0] );
+////		demo.ReadFloat( surf.color[1] );
+////		demo.ReadFloat( surf.color[2] );
+////		demo.ReadFloat( surf.color[3] );
+////		demo.ReadInt( surf.firstVert );
+////		demo.ReadInt( surf.numVerts );
+////		demo.ReadInt( surf.firstIndex );
+////		demo.ReadInt( surf.numIndexes );
+////		surf.material = declManager.FindMaterial( demo.ReadHashString() );
 ////	}
 ////}
 
@@ -172,43 +181,43 @@ Clear():void {
 ////void idGuiModel::EmitSurface( guiModelSurface_t *surf, float modelMatrix[16], float modelViewMatrix[16], bool depthHack ) {
 ////	srfTriangles_t	*tri;
 
-////	if ( surf->numVerts == 0 ) {
+////	if ( surf.numVerts == 0 ) {
 ////		return;		// nothing in the surface
 ////	}
 
 ////	// copy verts and indexes
 ////	tri = (srfTriangles_t *)R_ClearedFrameAlloc( sizeof( *tri ) );
 
-////	tri->numIndexes = surf->numIndexes;
-////	tri->numVerts = surf->numVerts;
-////	tri->indexes = (glIndex_t *)R_FrameAlloc( tri->numIndexes * sizeof( tri->indexes[0] ) );
-////	memcpy( tri->indexes, &indexes[surf->firstIndex], tri->numIndexes * sizeof( tri->indexes[0] ) );
+////	tri.numIndexes = surf.numIndexes;
+////	tri.numVerts = surf.numVerts;
+////	tri.indexes = (glIndex_t *)R_FrameAlloc( tri.numIndexes * sizeof( tri.indexes[0] ) );
+////	memcpy( tri.indexes, &indexes[surf.firstIndex], tri.numIndexes * sizeof( tri.indexes[0] ) );
 
 ////	// we might be able to avoid copying these and just let them reference the list vars
 ////	// but some things, like deforms and recursive
 ////	// guis, need to access the verts in cpu space, not just through the vertex range
-////	tri->verts = (idDrawVert *)R_FrameAlloc( tri->numVerts * sizeof( tri->verts[0] ) );
-////	memcpy( tri->verts, &verts[surf->firstVert], tri->numVerts * sizeof( tri->verts[0] ) );
+////	tri.verts = (idDrawVert *)R_FrameAlloc( tri.numVerts * sizeof( tri.verts[0] ) );
+////	memcpy( tri.verts, &verts[surf.firstVert], tri.numVerts * sizeof( tri.verts[0] ) );
 
 ////	// move the verts to the vertex cache
-////	tri->ambientCache = vertexCache.AllocFrameTemp( tri->verts, tri->numVerts * sizeof( tri->verts[0] ) );
+////	tri.ambientCache = vertexCache.AllocFrameTemp( tri.verts, tri.numVerts * sizeof( tri.verts[0] ) );
 
 ////	// if we are out of vertex cache, don't create the surface
-////	if ( !tri->ambientCache ) {
+////	if ( !tri.ambientCache ) {
 ////		return;
 ////	}
 
 ////	renderEntity_t renderEntity;
 ////	memset( &renderEntity, 0, sizeof( renderEntity ) );
-////	memcpy( renderEntity.shaderParms, surf->color, sizeof( surf->color ) );
+////	memcpy( renderEntity.shaderParms, surf.color, sizeof( surf.color ) );
 
 ////	viewEntity_t *guiSpace = (viewEntity_t *)R_ClearedFrameAlloc( sizeof( *guiSpace ) );
-////	memcpy( guiSpace->modelMatrix, modelMatrix, sizeof( guiSpace->modelMatrix ) );
-////	memcpy( guiSpace->modelViewMatrix, modelViewMatrix, sizeof( guiSpace->modelViewMatrix ) );
-////	guiSpace->weaponDepthHack = depthHack;
+////	memcpy( guiSpace.modelMatrix, modelMatrix, sizeof( guiSpace.modelMatrix ) );
+////	memcpy( guiSpace.modelViewMatrix, modelViewMatrix, sizeof( guiSpace.modelViewMatrix ) );
+////	guiSpace.weaponDepthHack = depthHack;
 
 ////	// add the surface, which might recursively create another gui
-////	R_AddDrawSurf( tri, guiSpace, &renderEntity, surf->material, tr.viewDef->scissor );
+////	R_AddDrawSurf( tri, guiSpace, &renderEntity, surf.material, tr.viewDef.scissor );
 ////}
 
 /////*
@@ -219,7 +228,7 @@ Clear():void {
 ////void idGuiModel::EmitToCurrentView( float modelMatrix[16], bool depthHack ) {
 ////	float	modelViewMatrix[16];
 
-////	myGlMultMatrix( modelMatrix, tr.viewDef->worldSpace.modelViewMatrix, 
+////	myGlMultMatrix( modelMatrix, tr.viewDef.worldSpace.modelViewMatrix, 
 ////			modelViewMatrix );
 
 ////	for ( int i = 0 ; i < surfaces.Num() ; i++ ) {
@@ -244,61 +253,61 @@ Clear():void {
 ////	viewDef = (viewDef_t *)R_ClearedFrameAlloc( sizeof( *viewDef ) );
 
 ////	// for gui editor
-////	if ( !tr.viewDef || !tr.viewDef->isEditor ) {
-////		viewDef->renderView.x = 0;
-////		viewDef->renderView.y = 0;
-////		viewDef->renderView.width = SCREEN_WIDTH;
-////		viewDef->renderView.height = SCREEN_HEIGHT;
+////	if ( !tr.viewDef || !tr.viewDef.isEditor ) {
+////		viewDef.renderView.x = 0;
+////		viewDef.renderView.y = 0;
+////		viewDef.renderView.width = SCREEN_WIDTH;
+////		viewDef.renderView.height = SCREEN_HEIGHT;
 
-////		tr.RenderViewToViewport( &viewDef->renderView, &viewDef->viewport );
+////		tr.RenderViewToViewport( &viewDef.renderView, &viewDef.viewport );
 
-////		viewDef->scissor.x1 = 0;
-////		viewDef->scissor.y1 = 0;
-////		viewDef->scissor.x2 = viewDef->viewport.x2 - viewDef->viewport.x1;
-////		viewDef->scissor.y2 = viewDef->viewport.y2 - viewDef->viewport.y1;
+////		viewDef.scissor.x1 = 0;
+////		viewDef.scissor.y1 = 0;
+////		viewDef.scissor.x2 = viewDef.viewport.x2 - viewDef.viewport.x1;
+////		viewDef.scissor.y2 = viewDef.viewport.y2 - viewDef.viewport.y1;
 ////	} else {
-////		viewDef->renderView.x = tr.viewDef->renderView.x;
-////		viewDef->renderView.y = tr.viewDef->renderView.y;
-////		viewDef->renderView.width = tr.viewDef->renderView.width;
-////		viewDef->renderView.height = tr.viewDef->renderView.height;
+////		viewDef.renderView.x = tr.viewDef.renderView.x;
+////		viewDef.renderView.y = tr.viewDef.renderView.y;
+////		viewDef.renderView.width = tr.viewDef.renderView.width;
+////		viewDef.renderView.height = tr.viewDef.renderView.height;
 		
-////		viewDef->viewport.x1 = tr.viewDef->renderView.x;
-////		viewDef->viewport.x2 = tr.viewDef->renderView.x + tr.viewDef->renderView.width;
-////		viewDef->viewport.y1 = tr.viewDef->renderView.y;
-////		viewDef->viewport.y2 = tr.viewDef->renderView.y + tr.viewDef->renderView.height;
+////		viewDef.viewport.x1 = tr.viewDef.renderView.x;
+////		viewDef.viewport.x2 = tr.viewDef.renderView.x + tr.viewDef.renderView.width;
+////		viewDef.viewport.y1 = tr.viewDef.renderView.y;
+////		viewDef.viewport.y2 = tr.viewDef.renderView.y + tr.viewDef.renderView.height;
 
-////		viewDef->scissor.x1 = tr.viewDef->scissor.x1;
-////		viewDef->scissor.y1 = tr.viewDef->scissor.y1;
-////		viewDef->scissor.x2 = tr.viewDef->scissor.x2;
-////		viewDef->scissor.y2 = tr.viewDef->scissor.y2;
+////		viewDef.scissor.x1 = tr.viewDef.scissor.x1;
+////		viewDef.scissor.y1 = tr.viewDef.scissor.y1;
+////		viewDef.scissor.x2 = tr.viewDef.scissor.x2;
+////		viewDef.scissor.y2 = tr.viewDef.scissor.y2;
 ////	}
 
-////	viewDef->floatTime = tr.frameShaderTime;
+////	viewDef.floatTime = tr.frameShaderTime;
 
 ////	// glOrtho( 0, 640, 480, 0, 0, 1 );		// always assume 640x480 virtual coordinates
-////	viewDef->projectionMatrix[0] = 2.0f / 640.0f;
-////	viewDef->projectionMatrix[5] = -2.0f / 480.0f;
-////	viewDef->projectionMatrix[10] = -2.0f / 1.0f;
-////	viewDef->projectionMatrix[12] = -1.0f;
-////	viewDef->projectionMatrix[13] = 1.0f;
-////	viewDef->projectionMatrix[14] = -1.0f;
-////	viewDef->projectionMatrix[15] = 1.0f;
+////	viewDef.projectionMatrix[0] = 2.0f / 640.0f;
+////	viewDef.projectionMatrix[5] = -2.0f / 480.0f;
+////	viewDef.projectionMatrix[10] = -2.0f / 1.0f;
+////	viewDef.projectionMatrix[12] = -1.0f;
+////	viewDef.projectionMatrix[13] = 1.0f;
+////	viewDef.projectionMatrix[14] = -1.0f;
+////	viewDef.projectionMatrix[15] = 1.0f;
 
-////	viewDef->worldSpace.modelViewMatrix[0] = 1.0f;
-////	viewDef->worldSpace.modelViewMatrix[5] = 1.0f;
-////	viewDef->worldSpace.modelViewMatrix[10] = 1.0f;
-////	viewDef->worldSpace.modelViewMatrix[15] = 1.0f;
+////	viewDef.worldSpace.modelViewMatrix[0] = 1.0f;
+////	viewDef.worldSpace.modelViewMatrix[5] = 1.0f;
+////	viewDef.worldSpace.modelViewMatrix[10] = 1.0f;
+////	viewDef.worldSpace.modelViewMatrix[15] = 1.0f;
 
-////	viewDef->maxDrawSurfs = surfaces.Num();
-////	viewDef->drawSurfs = (drawSurf_t **)R_FrameAlloc( viewDef->maxDrawSurfs * sizeof( viewDef->drawSurfs[0] ) );
-////	viewDef->numDrawSurfs = 0;
+////	viewDef.maxDrawSurfs = surfaces.Num();
+////	viewDef.drawSurfs = (drawSurf_t **)R_FrameAlloc( viewDef.maxDrawSurfs * sizeof( viewDef.drawSurfs[0] ) );
+////	viewDef.numDrawSurfs = 0;
 
 ////	viewDef_t	*oldViewDef = tr.viewDef;
 ////	tr.viewDef = viewDef;
 
 ////	// add the surfaces to this view
 ////	for ( int i = 0 ; i < surfaces.Num() ; i++ ) {
-////		EmitSurface( &surfaces[i], viewDef->worldSpace.modelMatrix, viewDef->worldSpace.modelViewMatrix, false );
+////		EmitSurface( &surfaces[i], viewDef.worldSpace.modelMatrix, viewDef.worldSpace.modelViewMatrix, false );
 ////	}
 
 ////	tr.viewDef = oldViewDef;
@@ -312,15 +321,15 @@ Clear():void {
 AdvanceSurf
 =============
 */
-AdvanceSurf() {
-	var s: guiModelSurface_t;
+AdvanceSurf():void {
+	var s = new guiModelSurface_t();
 
-	if ( surfaces.Num() ) {
-		s.color[0] = surf->color[0];
-		s.color[1] = surf->color[1];
-		s.color[2] = surf->color[2];
-		s.color[3] = surf->color[3];
-		s.material = surf->material;
+	if ( this.surfaces.Num() ) {
+		s.color[0] = this.surf.color[0];
+		s.color[1] = this.surf.color[1];
+		s.color[2] = this.surf.color[2];
+		s.color[3] = this.surf.color[3];
+		s.material = this.surf.material;
 	} else {
 		s.color[0] = 1;
 		s.color[1] = 1;
@@ -329,12 +338,12 @@ AdvanceSurf() {
 		s.material = tr.defaultMaterial;
 	}
 	s.numIndexes = 0;
-	s.firstIndex = indexes.Num();
+	s.firstIndex = this.indexes.Num();
 	s.numVerts = 0;
-	s.firstVert = verts.Num();
+	s.firstVert = this.verts.Num();
 
-	surfaces.Append( s );
-	surf = &surfaces[ surfaces.Num() - 1 ];
+	this.surfaces.Append( s );
+	this.surf = this.surfaces[ this.surfaces.Num() - 1 ];
 }
 
 /////*
@@ -346,20 +355,20 @@ AdvanceSurf() {
 ////	if ( !glConfig.isInitialized ) {
 ////		return;
 ////	}
-////	if ( r == surf->color[0] && g == surf->color[1]
-////		&& b == surf->color[2] && a == surf->color[3] ) {
+////	if ( r == surf.color[0] && g == surf.color[1]
+////		&& b == surf.color[2] && a == surf.color[3] ) {
 ////		return;	// no change
 ////	}
 
-////	if ( surf->numVerts ) {
+////	if ( surf.numVerts ) {
 ////		AdvanceSurf();
 ////	}
 
 ////	// change the parms
-////	surf->color[0] = r;
-////	surf->color[1] = g;
-////	surf->color[2] = b;
-////	surf->color[3] = a;
+////	surf.color[0] = r;
+////	surf.color[1] = g;
+////	surf.color[2] = b;
+////	surf.color[3] = a;
 ////}
 
 /////*
@@ -377,12 +386,12 @@ AdvanceSurf() {
 ////	}
 
 ////	// break the current surface if we are changing to a new material
-////	if ( hShader != surf->material ) {
-////		if ( surf->numVerts ) {
+////	if ( hShader != surf.material ) {
+////		if ( surf.numVerts ) {
 ////			AdvanceSurf();
 ////		}
-////		const_cast<idMaterial *>(hShader)->EnsureNotPurged();	// in case it was a gui item started before a level change
-////		surf->material = hShader;
+////		const_cast<idMaterial *>(hShader).EnsureNotPurged();	// in case it was a gui item started before a level change
+////		surf.material = hShader;
 ////	}
 
 ////	// add the verts and indexes to the current surface
@@ -422,22 +431,22 @@ AdvanceSurf() {
 ////			for ( j = 0 ; j < w.GetNumPoints() ; j++ ) {
 ////				idDrawVert *dv = &verts[numVerts+j];
 
-////				dv->xyz.x = w[j].x;
-////				dv->xyz.y = w[j].y;
-////				dv->xyz.z = w[j].z;
-////				dv->st.x = w[j].s;
-////				dv->st.y = w[j].t;
-////				dv->normal.Set(0, 0, 1);
-////				dv->tangents[0].Set(1, 0, 0);
-////				dv->tangents[1].Set(0, 1, 0);
+////				dv.xyz.x = w[j].x;
+////				dv.xyz.y = w[j].y;
+////				dv.xyz.z = w[j].z;
+////				dv.st.x = w[j].s;
+////				dv.st.y = w[j].t;
+////				dv.normal.Set(0, 0, 1);
+////				dv.tangents[0].Set(1, 0, 0);
+////				dv.tangents[1].Set(0, 1, 0);
 ////			}
-////			surf->numVerts += w.GetNumPoints();
+////			surf.numVerts += w.GetNumPoints();
 
 ////			for ( j = 2; j < w.GetNumPoints(); j++ ) {
-////				indexes.Append( numVerts - surf->firstVert );
-////				indexes.Append( numVerts + j - 1 - surf->firstVert );
-////				indexes.Append( numVerts + j - surf->firstVert );
-////				surf->numIndexes += 3;
+////				indexes.Append( numVerts - surf.firstVert );
+////				indexes.Append( numVerts + j - 1 - surf.firstVert );
+////				indexes.Append( numVerts + j - surf.firstVert );
+////				surf.numIndexes += 3;
 ////			}
 ////		}
 
@@ -449,11 +458,11 @@ AdvanceSurf() {
 ////		verts.AssureSize( numVerts + vertCount );
 ////		indexes.AssureSize( numIndexes + indexCount );
 
-////		surf->numVerts += vertCount;
-////		surf->numIndexes += indexCount;
+////		surf.numVerts += vertCount;
+////		surf.numIndexes += indexCount;
 
 ////		for ( int i = 0; i < indexCount; i++ ) {
-////			indexes[numIndexes + i] = numVerts + dindexes[i] - surf->firstVert;
+////			indexes[numIndexes + i] = numVerts + dindexes[i] - surf.firstVert;
 ////		}
 
 ////		memcpy( &verts[numVerts], dverts, vertCount * sizeof( verts[0] ) );
@@ -636,12 +645,12 @@ AdvanceSurf() {
 ////	tempVerts[2].tangents[1][2] = 0;
 
 ////	// break the current surface if we are changing to a new material
-////	if ( material != surf->material ) {
-////		if ( surf->numVerts ) {
+////	if ( material != surf.material ) {
+////		if ( surf.numVerts ) {
 ////			AdvanceSurf();
 ////		}
-////		const_cast<idMaterial *>(material)->EnsureNotPurged();	// in case it was a gui item started before a level change
-////		surf->material = material;
+////		const_cast<idMaterial *>(material).EnsureNotPurged();	// in case it was a gui item started before a level change
+////		surf.material = material;
 ////	}
 
 
@@ -651,11 +660,11 @@ AdvanceSurf() {
 ////	verts.AssureSize( numVerts + vertCount );
 ////	indexes.AssureSize( numIndexes + indexCount );
 
-////	surf->numVerts += vertCount;
-////	surf->numIndexes += indexCount;
+////	surf.numVerts += vertCount;
+////	surf.numIndexes += indexCount;
 
 ////	for ( int i = 0; i < indexCount; i++ ) {
-////		indexes[numIndexes + i] = numVerts + tempIndexes[i] - surf->firstVert;
+////		indexes[numIndexes + i] = numVerts + tempIndexes[i] - surf.firstVert;
 ////	}
 
 ////	memcpy( &verts[numVerts], tempVerts, vertCount * sizeof( verts[0] ) );

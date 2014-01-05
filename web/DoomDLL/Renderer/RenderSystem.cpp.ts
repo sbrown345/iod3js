@@ -1,3 +1,5 @@
+/// <reference path="GuiModel.cpp.ts" />
+/// <reference path="GuiModel.h.ts" />
 /// <reference path="tr_backend.cpp.ts" />
 /// <reference path="tr_local.h.ts" />
 /// <reference path="../../libs/idLib/Math/Vector.h.ts" />
@@ -244,31 +246,31 @@ class idRenderSystem {
 
 //public:
 //	// renderer globals
-//	bool					registered;		// cleared at shutdown, set at InitOpenGL
+/*	bool					*/registered:boolean;		// cleared at shutdown, set at InitOpenGL
 
-//	bool					takingScreenshot;
+/*	bool					*/takingScreenshot:boolean;
 
-//	int						frameCount;		// incremented every frame
+/*	int						*/frameCount:number;		// incremented every frame
 /*	int						*/viewCount:number;		// incremented every view (twice a scene if subviewed)
 //											// and every R_MarkFragments call
 
-//	int						staticAllocCount;	// running total of bytes allocated
+/*	int						*/staticAllocCount:number;	// running total of bytes allocated
 
-//	float					frameShaderTime;	// shader time for all non-world 2D rendering
+/*	float					*/frameShaderTime:number;	// shader time for all non-world 2D rendering
 
-//	int						viewportOffset[2];	// for doing larger-than-window tiled renderings
-//	int						tiledViewport[2];
+/*	int						*/viewportOffset:Array<number>/*[2]*/;	// for doing larger-than-window tiled renderings
+/*	int						*/tiledViewport:Array<number>/*[2]*/;
 
 //	// determines which back end to use, and if vertex programs are in use
 //	backEndName_t			backEndRenderer;
-//	bool					backEndRendererHasVertexPrograms;
-//	float					backEndRendererMaxLight;	// 1.0 for standard, unlimited for floats
+/*	bool					*/backEndRendererHasVertexPrograms:boolean;
+/*	float					*/backEndRendererMaxLight:number;	// 1.0 for standard, unlimited for floats
 //														// determines how much overbrighting needs
 //														// to be done post-process
 
 /*idVec4					*/ambientLightVector:idVec4;	// used for "ambient bump mapping"
 
-//	float					sortOffset;				// for determinist sorting of equal sort materials
+/*	float					*/sortOffset:number;				// for determinist sorting of equal sort materials
 
 //	idList<idRenderWorldLocal*>worlds;
 
@@ -277,7 +279,7 @@ class idRenderSystem {
 //	viewDef_t *				primaryView;
 //	// many console commands need to know which world they should operate on
 
-//	const idMaterial *		defaultMaterial;
+/*	const idMaterial *		*/defaultMaterial:idMaterial;
 //	idImage *				testImage;
 //	idCinematic *			testVideo;
 //	float					testVideoStartTime;
@@ -304,6 +306,72 @@ class idRenderSystem {
 /*	class idGuiModel *		*/demoGuiModel:idGuiModel;
 
 //	unsigned short			gammaTable[256];	// brightness / gamma modify this
+
+    constructor() {
+
+        //public:
+        //	// renderer globals
+        this.registered=false;		// cleared at shutdown, set at InitOpenGL
+
+        this.takingScreenshot=false;
+
+        this.frameCount=0;		// incremented every frame
+        this.viewCount = 0;		// incremented every view (twice a scene if subviewed)
+        //											// and every R_MarkFragments call
+
+        this.staticAllocCount=0;	// running total of bytes allocated
+
+        this.frameShaderTime=0.0;	// shader time for all non-world 2D rendering
+
+        this.viewportOffset = [0,0];	// for doing larger-than-window tiled renderings
+        this.tiledViewport = [0,0];
+
+        //	// determines which back end to use, and if vertex programs are in use
+        //	backEndName_t			backEndRenderer;
+        this.backEndRendererHasVertexPrograms=false;
+        this.backEndRendererMaxLight=0.0;	// 1.0 for standard, unlimited for floats
+        //														// determines how much overbrighting needs
+        //														// to be done post-process
+
+        this.ambientLightVector = new idVec4();	// used for "ambient bump mapping"
+
+        this.sortOffset=0.0;				// for determinist sorting of equal sort materials
+
+        //	idList<idRenderWorldLocal*>worlds;
+
+        //	idRenderWorldLocal *	primaryWorld;
+        //	renderView_t			primaryRenderView;
+        //	viewDef_t *				primaryView;
+        //	// many console commands need to know which world they should operate on
+
+        this.defaultMaterial=new idMaterial();
+        //	idImage *				testImage;
+        //	idCinematic *			testVideo;
+        //	float					testVideoStartTime;
+
+        //	idImage *				ambientCubeImage;	// hack for testing dependent ambient lighting
+
+        //	viewDef_t *				viewDef;
+
+        //	performanceCounters_t	pc;					// performance counters
+
+        //	drawSurfsCommand_t		lockSurfacesCmd;	// use this when r_lockSurfaces = 1
+
+        //	viewEntity_t			identitySpace;		// can use if we don't know viewDef->worldSpace is valid
+        //	FILE *					logFile;			// for logging GL calls and frame breaks
+
+        //	int						stencilIncr, stencilDecr;	// GL_INCR / INCR_WRAP_EXT, GL_DECR / GL_DECR_EXT
+
+        //	renderCrop_t			renderCrops[MAX_RENDER_CROPS];
+        //	int						currentRenderCrop;
+
+        //	// GUI drawing variables for surface creation
+        //	int						guiRecursionLevel;		// to prevent infinite overruns
+       this.guiModel = new idGuiModel();
+       this.demoGuiModel = new idGuiModel();
+
+        //	unsigned short			gammaTable[256];	// brightness / gamma modify this
+    }
 
 /////*
 ////=================
@@ -1990,22 +2058,22 @@ idRenderSystemLocal::Init
 	this.ambientLightVector[1] = 0.5 - 0.385;
 	this.ambientLightVector[2] = 0.8925;
 	this.ambientLightVector[3] = 1.0;
-    todoThrow();
+    
     backEnd = new backEndState_t();
 
     //R_InitCvars();
 
     this.R_InitCommands();
 
-    guiModel = new idGuiModel;
-    guiModel.Clear();
+    this.guiModel = new idGuiModel;
+    this.guiModel.Clear();
 
-    demoGuiModel = new idGuiModel;
-    demoGuiModel.Clear();
+    this.demoGuiModel = new idGuiModel;
+    this.demoGuiModel.Clear();
 
-    //R_InitTriSurfData();
+    todo("R_InitTriSurfData();");
 
-    //globalImages->Init();
+    globalImages.Init();
 
     //idCinematic::InitCinematic( );
 
@@ -2021,8 +2089,9 @@ idRenderSystemLocal::Init
     //identitySpace.modelMatrix[1*4+1] = 1.0;
     //identitySpace.modelMatrix[2*4+2] = 1.0;
 
-    //common.Printf( "renderSystem initialized.\n" );
-    //common.Printf( "--------------------------------------\n" );
+    common.Printf( "renderSystem initialized.\n" );
+    common.Printf( "--------------------------------------\n" );
+    todoThrow();
 }
 
 /////*
@@ -3201,3 +3270,6 @@ idRenderSystemLocal::Init
 ////	return true;
 ////}
 }
+
+var /*idRenderSystemLocal	*/tr = new idRenderSystem();
+var renderSystem = tr;
