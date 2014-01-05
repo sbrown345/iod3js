@@ -65,6 +65,8 @@
     <Content Include="DoomDLL\Framework\CVarSystem.h.ts" />
     <Content Include="DoomDLL\Renderer\GuiModel.cpp.ts" />
     <Content Include="DoomDLL\Renderer\GuiModel.h.ts" />
+    <Content Include="DoomDLL\Renderer\Material.cpp.ts" />
+    <Content Include="DoomDLL\Renderer\Material.h.ts" />
     <Content Include="DoomDLL\Renderer\RenderSystem.cpp.ts" />
     <Content Include="DoomDLL\Renderer\RenderSystem.h.ts" />
     <Content Include="DoomDLL\Renderer\RenderSystem_init.cpp.ts" />
