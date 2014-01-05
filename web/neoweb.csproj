@@ -63,6 +63,8 @@
     <Content Include="DoomDLL\Framework\Common.cpp.ts" />
     <Content Include="DoomDLL\Framework\CVarSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\CVarSystem.h.ts" />
+    <Content Include="DoomDLL\Framework\DeclManager.cpp.ts" />
+    <Content Include="DoomDLL\Framework\DeclManager.h.ts" />
     <Content Include="DoomDLL\Renderer\GuiModel.cpp.ts" />
     <Content Include="DoomDLL\Renderer\GuiModel.h.ts" />
     <Content Include="DoomDLL\Renderer\Material.cpp.ts" />

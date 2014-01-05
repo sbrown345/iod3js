@@ -38,9 +38,9 @@ class idGuiModel {
 ////public:
 ////	guiModelSurface_t		*surf;
 
-////	idList<guiModelSurface_t>	surfaces;
-////	idList<glIndex_t>		indexes;
-////	idList<idDrawVert>	verts;
+	/*idList<guiModelSurface_t>	*/surfaces:guiModelSurface_t[];
+	/*idList<glIndex_t>		*/indexes:glIndex_t;
+	/*idList<idDrawVert>	*/verts:idDrawVert[];
 ////};
 
 /////*
