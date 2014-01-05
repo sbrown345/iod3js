@@ -75,7 +75,7 @@
 ////class idVec4;
 
 ////#ifndef FILE_HASH_SIZE
-////#define FILE_HASH_SIZE		1024
+var FILE_HASH_SIZE		=   1024;
 ////#endif
 
 ////// color escape character

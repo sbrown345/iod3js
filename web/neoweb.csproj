@@ -96,6 +96,7 @@
     <Content Include="libs\idLib\Text\Str.cpp.ts" />
     <Content Include="libs\idLib\Text\Str.h.ts" />
     <Content Include="utils\todo.ts" />
+    <Content Include="utils\types.ts" />
     <Content Include="Web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

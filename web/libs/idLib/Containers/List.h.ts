@@ -95,7 +95,7 @@ interface Array<T> {
 //					idList( const idList<type> &other );
 //					~idList<type>( void );
 
-//	void			Clear( void );										// clear the list
+    Clear( ):void;              										// clear the list
     Num( ):number /*const;*/									        // returns number of elements in list
 //	int				NumAllocated( void ) const;							// returns number of elements allocated for
 //	void			SetGranularity( int newgranularity );				// set new granularity
@@ -110,7 +110,7 @@ interface Array<T> {
 //	type &			operator[]( int index );
 
 //	void			Condense( void );									// resizes list to exactly the number of elements it contains
-//	void			Resize( int newsize );								// resizes list to the given number of elements
+	Resize( /*int */newsize:number ):void;								// resizes list to the given number of elements
 //	void			Resize( int newsize, int newgranularity	 );			// resizes list and sets new granularity
     SetNum( /*int*/ newnum:number, /*bool */resize?:boolean ):void;			// set number of elements in list and resize to exactly this number if necessary
 //	void			AssureSize( int newSize);							// assure list has given number of elements, but leave them uninitialized
@@ -136,11 +136,22 @@ interface Array<T> {
 //	void			DeleteContents( bool clear );						// delete the contents of the list
 
 //private:
-//	int				num;
-//	int				size;
-//	int				granularity;
+/*int				*/num:number;
+/*int				*/size:number;
+///*int				*/granularity:number;
 //	type *			list;
 };
+
+//Object.defineProperty(Array.prototype, "size", {/////// MAYBE NOT NEEDED...
+//    get: function () { 
+//        return this.length;
+//    },
+//    set: function (value) {
+//        this.length = value;
+//    },
+//    enumerable: true,
+//    configurable: true
+//});
 
 ///*
 //================
@@ -177,23 +188,24 @@ interface Array<T> {
 //	Clear();
 //}
 
-///*
-//================
-//idList<type>::Clear
+/*
+================
+idList<type>::Clear
 
-//Frees up the memory allocated by the list.  Assumes that type automatically handles freeing up memory.
-//================
-//*/
+Frees up the memory allocated by the list.  Assumes that type automatically handles freeing up memory.
+================
+*/
 //template< class type >
-//ID_INLINE void idList<type>::Clear( void ) {
-//	if ( list ) {
-//		delete[] list;
-//	}
+Array.prototype.Clear = function ():void {
+    this.length = 0;
+    //if ( list ) {
+    //	delete[] list;
+    //}
 
-//	list	= NULL;
-//	num		= 0;
-//	size	= 0;
-//}
+    //list	= NULL;
+    //num		= 0;
+    //size	= 0;
+};
 
 ///*
 //================
@@ -353,49 +365,49 @@ Array.prototype.SetNum = function(/* int */newnum:number, /*bool */resize:boolea
 //	}
 //}
 
-///*
-//================
-//idList<type>::Resize
+/*
+================
+idList<type>::Resize
 
-//Allocates memory for the amount of elements requested while keeping the contents intact.
-//Contents are copied using their = operator so that data is correnctly instantiated.
-//================
-//*/
+Allocates memory for the amount of elements requested while keeping the contents intact.
+Contents are copied using their = operator so that data is correnctly instantiated.
+================
+*/
 //template< class type >
-//ID_INLINE void idList<type>::Resize( int newsize ) {
-//	type	*temp;
-//	int		i;
+Array.prototype.Resize = function(/* int */newsize:number):void {
+	var type	*temp;
+	var/*int		*/i:number;
 
-//	assert( newsize >= 0 );
+	assert( newsize >= 0 );
 
-//	// free up the list if no data is being reserved
-//	if ( newsize <= 0 ) {
-//		Clear();
-//		return;
-//	}
+	// free up the list if no data is being reserved
+	if ( newsize <= 0 ) {
+		Clear();
+		return;
+	}
 
-//	if ( newsize == size ) {
-//		// not changing the size, so just exit
-//		return;
-//	}
+	if ( newsize == this.size ) {
+		// not changing the size, so just exit
+		return;
+	}
 
-//	temp	= list;
-//	size	= newsize;
-//	if ( size < num ) {
-//		num = size;
-//	}
+	temp	= list;
+	this.size	= newsize;
+	if ( this.size < this.num ) {
+		this.num = this.size;
+	}
 
-//	// copy the old list into our new one
-//	list = new type[ size ];
-//	for( i = 0; i < num; i++ ) {
-//		list[ i ] = temp[ i ];
-//	}
+	// copy the old list into our new one
+	list = new type[ size ];
+	for( i = 0; i < this.num; i++ ) {
+		list[ i ] = temp[ i ];
+	}
 
-//	// delete the old list if it exists
-//	if ( temp ) {
-//		delete[] temp;
-//	}
-//}
+	// delete the old list if it exists
+	if ( temp ) {
+		delete[] temp;
+	}
+}
 
 ///*
 //================

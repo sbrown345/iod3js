@@ -565,21 +565,15 @@
 ////	return *(short *)swaptest != 1;
 ////}
 
-/////*
-////===============================================================================
+/*
+===============================================================================
 
-////	Assertion
+	Assertion
 
-////===============================================================================
-////*/
+===============================================================================
+*/
 
-////void AssertFailed( const char *file, int line, const char *expression ) {
-////	idLib::sys->DebugPrintf( "\n\nASSERTION FAILED!\n%s(%d): '%s'\n", file, line, expression );
-////#ifdef _WIN32
-////	__asm int 0x03
-////#elif defined( __linux__ )
-////	__asm__ __volatile__ ("int $0x03");
-////#elif defined( MACOS_X )
-////	kill( getpid(), SIGINT );
-////#endif
-////}
+function AssertFailed( /*const char **/file:string, /*int */line:number, /*const char **/expression:string ):void {
+    todoThrow();
+    //idLib::sys->DebugPrintf( "\n\nASSERTION FAILED!\n%s(%d): '%s'\n", file, line, expression );
+}

@@ -1,3 +1,4 @@
+/// <reference path="../../utils/types.ts" />
 /// <reference path="../../utils/todo.ts" />
 /// <reference path="Image.h.ts" />
 /////*
@@ -1955,9 +1956,9 @@ Init
 */
 idImageManager.prototype.Init = function ():void {
 
-	//memset(imageHashTable, 0, sizeof(imageHashTable));
+    clearStructArray(this.imageHashTable);//memset(imageHashTable, 0, sizeof(imageHashTable));
 
-	//images.Resize( 1024, 1024 );
+	this.images.Resize( 1024, 1024 );
 
 	//// clear the cached LRU
 	//cacheLRU.cacheUsageNext = &cacheLRU;
