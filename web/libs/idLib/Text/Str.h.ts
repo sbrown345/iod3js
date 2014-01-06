@@ -115,8 +115,9 @@ var FILE_HASH_SIZE = 1024;
 ////} Measure_t;
 
 class idStr {
+
 	constructor ( str: string ) {
-		this.data = str;//.toUint8Array ( );
+		this.data = str; //.toUint8Array ( );
 	}
 
 ////public:
@@ -318,7 +319,9 @@ class idStr {
 
 //protected:
 ////	int					len;
-/*		char *				*/data:string;
+/*		char *				*/
+	data: string;
+
 ////	int					alloced;
 ////	char				baseBuffer[ STR_ALLOC_BASE ];
 
@@ -488,9 +491,9 @@ class idStr {
 ////	return sizeof( *this ) + Allocated();
 ////}
 
-c_str( ):string {
-	return this.data;
-}
+	c_str ( ): string {
+		return this.data;
+	}
 
 ////ID_INLINE idStr::operator const char *( void ) {
 ////	return c_str();
@@ -653,10 +656,12 @@ c_str( ):string {
 ////	return !( a == b );
 ////}
 
-Cmp( text:idStr ):number {
-	assert( text );
-	return idStr.Cmp( this, text );
-}
+	Cmp ( text: string ): number;
+	Cmp ( text: idStr ): number;
+	Cmp ( text: any ): number {
+		assert( text );
+		return idStr.Cmp( this, text );
+	}
 
 ////ID_INLINE int idStr::Cmpn( const char *text, int n ) const {
 ////	assert( text );
@@ -668,10 +673,12 @@ Cmp( text:idStr ):number {
 ////	return idStr::Cmpn( this.data, text, strlen( text ) );
 ////}
 
-Icmp( text:idStr ):number {
-	assert( text );
-	return idStr.Icmp( this, text );
-}
+	Icmp ( text: string ): number;
+	Icmp ( text: idStr ): number;
+	Icmp ( text: any ): number {
+		assert( text );
+		return idStr.Icmp( this, text );
+	}
 
 ////ID_INLINE int idStr::Icmpn( const char *text, int n ) const {
 ////	assert( text );
@@ -970,14 +977,17 @@ Icmp( text:idStr ):number {
 //////////////////	return hash;
 //////////////////}
 
-static Hash( $string:idStr ):number {
-	var/*int */i:number, hash = 0;
-    var strIdx = 0;
-	for ( i = 0; $string.data.c(strIdx); i++ ) {
-		hash += ( $string.data.c(strIdx++) ) * ( i + 119 );
+	static Hash ( $string: idStr ): number;
+	static Hash ( $string: string ): number;
+	static Hash ( $string: any ): number {
+		var /*int */i: number, hash = 0;
+		var strIdx = 0;
+		var str = idStr.getIdStr( $string );
+		for ( i = 0; $string.c( strIdx ); i++ ) {
+			hash += ( $string.c( strIdx++ ) ) * ( i + 119 );
+		}
+		return hash;
 	}
-	return hash;
-}
 
 //////////////////ID_INLINE int idStr::IHash( const char *string ) {
 //////////////////	int i, hash = 0;
@@ -994,43 +1004,43 @@ static Hash( $string:idStr ):number {
 //////////////////	}
 //////////////////	return hash;
 //////////////////}
-	
-static IHash( $string:idStr ):number;
-static IHash( $string:idStr, /*int */length?:number ):number {
-	var /*int*/ i:number, hash = 0;
-    var idx = 0;
-	if ( typeof (length) === "number" ) {
-		for ( i = 0; $string.c( idx ); i++ ) {
-			hash += idStr.ToLower( $string.v( idx++ ) ).charCodeAt( 0 ) * (i + 119);
-		}
-		return hash;
-	} else {
-		for ( i = 0; i < length; i++ ) {
-			hash += ($string.c( idx++ )) * (i + 119);
+
+	static IHash ( $string: idStr ): number;
+	static IHash ( $string: idStr, /*int */length?: number ): number {
+		var /*int*/ i: number, hash = 0;
+		var idx = 0;
+		if ( typeof ( length ) === "number" ) {
+			for ( i = 0; $string.c( idx ); i++ ) {
+				hash += idStr.ToLower( $string.v( idx++ ) ).charCodeAt( 0 ) * ( i + 119 );
+			}
+			return hash;
+		} else {
+			for ( i = 0; i < length; i++ ) {
+				hash += ( $string.c( idx++ ) ) * ( i + 119 );
+			}
 			return hash;
 		}
 	}
-}
 
 ////ID_INLINE bool idStr::IsColor( const char *s ) {
 ////	return ( s[0] == C_COLOR_ESCAPE && s[1] != '\0' && s[1] != ' ' );
 ////}
 
-static ToLower( /*char */c:string ):string {
-	assert( c.length == 1 );
-	//if ( c <= 'Z' && c >= 'A' ) {
-	//	return ( c + ( 'a' - 'A' ) );
-	//}
-	return c.toLowerCase();
-}
+	static ToLower ( /*char */c: string ): string {
+		assert( c.length == 1 );
+		//if ( c <= 'Z' && c >= 'A' ) {
+		//	return ( c + ( 'a' - 'A' ) );
+		//}
+		return c.toLowerCase ( );
+	}
 
-static ToUpper( /*char*/ c:string ):string {
-	assert( c.length == 1 );
-	//if ( c >= 'a' && c <= 'z' ) {
-	//	return ( c - ( 'a' - 'A' ) );
-	//}
-	return c.toUpperCase();
-}
+	static ToUpper ( /*char*/ c: string ): string {
+		assert( c.length == 1 );
+		//if ( c >= 'a' && c <= 'z' ) {
+		//	return ( c - ( 'a' - 'A' ) );
+		//}
+		return c.toUpperCase ( );
+	}
 
 ////ID_INLINE bool idStr::CharIsPrintable( int c ) {
 ////	// test for regular ascii and western European high-ascii chars
@@ -1078,7 +1088,7 @@ static ToUpper( /*char*/ c:string ):string {
 
 	// Str.cpp:
 
-	
+
 ////#include "precompiled.h"
 ////#pragma hdrstop
 
@@ -1504,7 +1514,7 @@ static ToUpper( /*char*/ c:string ):string {
 ////*/
 ////int idStr::Last( const char c ) const {
 ////	int i;
-	
+
 ////	for( i = Length(); i > 0; i-- ) {
 ////		if ( this.data[ i - 1 ] == c ) {
 ////			return i - 1;
@@ -1567,7 +1577,7 @@ static ToUpper( /*char*/ c:string ):string {
 ////*/
 ////void idStr::StripTrailing( const char c ) {
 ////	int i;
-	
+
 ////	for( i = Length(); i > 0 && this.data[ i - 1 ] == c; i-- ) {
 ////		this.data[ i - 1 ] = '\0';
 ////		len--;
@@ -1613,14 +1623,15 @@ static ToUpper( /*char*/ c:string ):string {
 idStr::Replace
 ============
 */
-Replace(  old: string, nw: string  ):void {
-	// https://stackoverflow.com/questions/1144783/replacing-all-occurrences-of-a-string-in-javascript
-    function escapeRegExp(str: string): string {
-        return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-    }
+	Replace ( old: string, nw: string ): void {
 
-	this.data = this.data.replace( new RegExp( escapeRegExp( old ), 'g' ), nw );
-}
+// https://stackoverflow.com/questions/1144783/replacing-all-occurrences-of-a-string-in-javascript
+		function escapeRegExp ( str: string ): string {
+			return str.replace( /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&" );
+		}
+
+		this.data = this.data.replace( new RegExp( escapeRegExp( old ), 'g' ), nw );
+	}
 
 /////*
 ////============
@@ -1674,7 +1685,7 @@ Replace(  old: string, nw: string  ):void {
 ////*/
 ////void idStr::StripTrailingWhitespace( void ) {
 ////	int i;
-	
+
 ////	// cast to unsigned char to prevent stripping off high-ASCII characters
 ////	for( i = Length(); i > 0 && (unsigned char)(data[ i - 1 ]) <= ' '; i-- ) {
 ////		this.data[ i - 1 ] = '\0';
@@ -1695,7 +1706,7 @@ Replace(  old: string, nw: string  ):void {
 ////	{
 ////		return *this;
 ////	}
-	
+
 ////	// Remove the trailing quote first
 ////	if ( this.data[len-1] == '\"' )
 ////	{
@@ -1707,7 +1718,7 @@ Replace(  old: string, nw: string  ):void {
 ////	len--;	
 ////	memmove( &data[ 0 ], &data[ 1 ], len );
 ////	this.data[len] = '\0';
-	
+
 ////	return *this;
 ////}
 
@@ -1718,41 +1729,41 @@ Replace(  old: string, nw: string  ):void {
 
 ////=====================================================================
 ////*/
-	
-/*
-============
-idStr::FileNameHash
-============
-*/
-FileNameHash( ):number {
-	var/*int		*/i=0;
-	var/*long	*/hash=0;
-	var/*char	*/letter='';
 
-	while( this.data[i] ) {
-		letter = idStr.ToLower( this.data[i] );
-		if ( letter == '.' ) {
-			break;				// don't include extension
+	/*
+	============
+	idStr::FileNameHash
+	============
+	*/
+	FileNameHash ( ): number {
+		var /*int		*/i = 0;
+		var /*long	*/hash = 0;
+		var /*char	*/letter = '';
+
+		while ( this.data[i] ) {
+			letter = idStr.ToLower( this.data[i] );
+			if ( letter == '.' ) {
+				break; // don't include extension
+			}
+			if ( letter == '\\' ) {
+				letter = '/';
+			}
+			hash += /*(long)*/( letter ).charCodeAt( 0 ) * ( i + 119 );
+			i++;
 		}
-		if ( letter =='\\' ) {
-			letter = '/';
-		}
-		hash += /*(long)*/(letter).charCodeAt(0)*(i+119);
-		i++;
+		hash &= ( FILE_HASH_SIZE - 1 );
+		return hash;
 	}
-	hash &= (FILE_HASH_SIZE-1);
-	return hash;
-}
 
-/*
-============
-idStr::BackSlashesToSlashes
-============
-*/
-BackSlashesToSlashes( ):idStr {
-	this.data = this.data.replace(/\\/g, "/");
-	return this;
-}
+	/*
+	============
+	idStr::BackSlashesToSlashes
+	============
+	*/
+	BackSlashesToSlashes ( ): idStr {
+		this.data = this.data.replace( /\\/g, "/" );
+		return this;
+	}
 
 /////*
 ////============
@@ -2049,21 +2060,21 @@ BackSlashesToSlashes( ):idStr {
 ////	if ( !s ) {
 ////		return false;
 ////	}
-	
+
 ////	while ( *s ) {
 ////		if ( CharIsLower( *s ) ) {
 ////			return true;
 ////		}
 ////		s++;
 ////	}
-	
+
 ////	return false;
 ////}
 
 /////*
 ////============
 ////idStr::HasUpper
-	
+
 ////Checks if a string has any uppercase chars
 ////============
 ////*/
@@ -2071,14 +2082,14 @@ BackSlashesToSlashes( ):idStr {
 ////	if ( !s ) {
 ////		return false;
 ////	}
-	
+
 ////	while ( *s ) {
 ////		if ( CharIsUpper( *s ) ) {
 ////			return true;
 ////		}
 ////		s++;
 ////	}
-	
+
 ////	return false;
 ////}
 
@@ -2087,17 +2098,22 @@ BackSlashesToSlashes( ):idStr {
 idStr::Cmp
 ================
 */
-static Cmp( /*const char **/s1:idStr, /*const char **/s2:idStr ):number {
-    if (s1.data == s2.data) {
-        return 0;
-    }
+	static Cmp ( s1: idStr, s2: idStr ): number;
+	static Cmp ( s1: string, s2: string ): number;
+	static Cmp ( s1: any, s2: any ): number {
+		var str1 = idStr.getString( s1 );
+		var str2 = idStr.getString( s2 );
 
-    if(s1.data > s2.data) {
-        return 1;
-    }
+		if ( str1 == str2 ) {
+			return 0;
+		}
 
-    return -1;
-}
+		if ( str1 > str2 ) {
+			return 1;
+		}
+
+		return -1;
+	}
 
 /////*
 ////================
@@ -2131,20 +2147,20 @@ static Cmp( /*const char **/s1:idStr, /*const char **/s2:idStr ):number {
 idStr::Icmp
 ================
 */
-static Icmp( s1:idStr, s2:idStr ):number {
-	var ls1 = s1.data.toLowerCase ( );
-    var ls2 = s2.data.toLowerCase ( );
+	static Icmp ( s1: idStr, s2: idStr ): number {
+		var ls1 = s1.data.toLowerCase ( );
+		var ls2 = s2.data.toLowerCase ( );
 
-    if (ls1 == ls2) {
-        return 0;
-    }
+		if ( ls1 == ls2 ) {
+			return 0;
+		}
 
-    if(ls1 > ls2) {
-        return 1;
-    }
+		if ( ls1 > ls2 ) {
+			return 1;
+		}
 
-    return -1;
-}
+		return -1;
+	}
 
 /////*
 ////================
@@ -2371,7 +2387,7 @@ static Icmp( s1:idStr, s2:idStr ):number {
 /////*
 ////=============
 ////idStr::Copynz
- 
+
 ////Safe strncpy that ensures a trailing zero
 ////=============
 ////*/
@@ -2531,7 +2547,7 @@ static Icmp( s1:idStr, s2:idStr ):number {
 ////	int l;
 ////	va_list argptr;
 ////	char buffer[32000];
-	
+
 ////	va_start( argptr, fmt );
 ////	l = idStr::vsnPrintf( buffer, sizeof(buffer)-1, fmt, argptr );
 ////	va_end( argptr );
@@ -2551,10 +2567,10 @@ static Icmp( s1:idStr, s2:idStr ):number {
 ////int vsprintf( idStr &string, const char *fmt, va_list argptr ) {
 ////	int l;
 ////	char buffer[32000];
-	
+
 ////	l = idStr::vsnPrintf( buffer, sizeof(buffer)-1, fmt, argptr );
 ////	buffer[sizeof(buffer)-1] = '\0';
-	
+
 ////	string = buffer;
 ////	return l;
 ////}
@@ -2582,7 +2598,6 @@ static Icmp( s1:idStr, s2:idStr ):number {
 
 ////	return buf;
 ////}
-
 
 
 /////*
@@ -2743,15 +2758,28 @@ static Icmp( s1:idStr, s2:idStr ):number {
 ////	return string;
 ////}
 
-	
+
 // pointer helpers
 
 
-v (offset:number = 0): string {
-	return this.data[offset];
-}
+	v ( offset: number = 0 ): string {
+		return this.data[offset];
+	}
 
-c (offset:number = 0): number {
-	return this.data.charCodeAt(offset);
-}
+	c ( offset: number = 0 ): number {
+		return this.data.charCodeAt( offset );
+	}
+
+	static getString ( stringOrIdStr: string ): string;
+	static getString ( stringOrIdStr: idStr ): string;
+	static getString ( stringOrIdStr: any ): string {
+		return stringOrIdStr instanceof idStr ? stringOrIdStr.data : stringOrIdStr;
+	}
+
+	static getIdStr ( stringOrIdStr: string ): idStr;
+	static getIdStr ( stringOrIdStr: idStr ): idStr;
+	static getIdStr ( stringOrIdStr: any ): idStr {
+		return stringOrIdStr instanceof idStr ? stringOrIdStr : new idStr(stringOrIdStr);
+	}
+
 }
