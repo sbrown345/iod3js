@@ -1,3 +1,5 @@
+/// <reference path="../../libs/idLib/Text/Str.h.ts" />
+/// <reference path="../../libs/idLib/Containers/HashIndex.h.ts" />
 /// <reference path="CmdSystem.h.ts" />
 /// <reference path="CmdSystem.cpp.ts" />
 /// <reference path="CVarSystem.h.ts" />
@@ -57,28 +59,6 @@ class idInternalCVar extends idCVar {
     constructor( );
     constructor( newName:string, newValue:string, newFlags:number );
     constructor ( cvar: idCVar );
-////	virtual					~idInternalCVar( void );
-
-////	const char **			CopyValueStrings( const char **strings );
-////	void					Update( const idCVar *cvar );
-////	void					UpdateValue( void );
-////	void					UpdateCheat( void );
-////	void					Set( const char *newValue, bool force, bool fromServer );
-////	void					Reset( void );
-
-////private:
-////	idStr					nameString;				// name
-////	idStr					resetString;			// resetting will change to this value
-////	idStr					valueString;			// value
-////	idStr					descriptionString;		// description
-
-////	virtual void			InternalSetString( const char *newValue );
-////	virtual void			InternalServerSetString( const char *newValue );
-////	virtual void			InternalSetBool( const bool newValue );
-////	virtual void			InternalSetInteger( const int newValue );
-////	virtual void			InternalSetFloat( const float newValue );
-////};
-
 
     constructor ( newNameOrCvar?:any, newValue?:string, /*int */newFlags?:number ) {
         super ( null, null, null, null );
@@ -117,6 +97,27 @@ class idInternalCVar extends idCVar {
 	    //    this.internalVar = this;
         //}
     } 
+
+////	const char **			CopyValueStrings( const char **strings );
+////	void					Update( const idCVar *cvar );
+////	void					UpdateValue( void );
+////	void					UpdateCheat( void );
+////	void					Set( const char *newValue, bool force, bool fromServer );
+////	void					Reset( void );
+
+//private:
+/*	idStr					*/nameString:string;			// name
+/*	idStr					*/resetString:string;			// resetting will change to this value
+/*	idStr					*/valueString:string;			// value
+/*	idStr					*/descriptionString:string;		// description
+
+////	virtual void			InternalSetString( const char *newValue );
+////	virtual void			InternalServerSetString( const char *newValue );
+////	virtual void			InternalSetBool( const bool newValue );
+////	virtual void			InternalSetInteger( const int newValue );
+////	virtual void			InternalSetFloat( const float newValue );
+////};
+
 
 /////*
 ////============
@@ -460,7 +461,7 @@ class idCVarSystem {
 
 ////private:
                                 initialized:boolean;
-/*idList<idInternalCVar*>	*/  cvars:idInternalCVar;
+/*idList<idInternalCVar*>	*/  cvars:idInternalCVar[];
 /*	idHashIndex				*/  cvarHash:idHashIndex;
         						modifiedFlags:number;
 ////							// use a static dictionary to MoveCVarsToDict can be used from game

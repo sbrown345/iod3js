@@ -735,6 +735,7 @@ Dump out of the game to a system dialog
 */
 FatalError( /*const char **/fmt:string, ...args:any[] ):void {
     console.log(fmt, args);
+	debugger;
     throw "Arrrgghhhhhh!!!";
     ////va_list		argptr;
 
@@ -3096,4 +3097,4 @@ idCommonLocal::InitGame
 }
 
 //var commonLocal = new idCommon();
-var common:idCommon = new idCommon();
+var common = new idCommon();

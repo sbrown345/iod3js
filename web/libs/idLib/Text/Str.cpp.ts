@@ -1,3 +1,5 @@
+/// <reference path="../../c.ts" />
+/// <reference path="../../c.ts" />
 /// <reference path="Str.h.ts" />
 
 /////*
@@ -660,56 +662,47 @@ Replace(  old: string, nw: string  ):void {
 ////	return *this;
 ////}
 
-/////*
-////=====================================================================
+/*
+=====================================================================
 
-////  filename methods
+  filename methods
 
-////=====================================================================
-////*/
+=====================================================================
+*/
 
-/////*
-////============
-////idStr::FileNameHash
-////============
-////*/
-////int idStr::FileNameHash( void ) const {
-////	int		i;
-////	long	hash;
-////	char	letter;
+/*
+============
+idStr::FileNameHash
+============
+*/
+static FileNameHash( str ):number {
+	var/*int		*/i=0;
+	var/*long	*/hash=0;
+	var/*char	*/letter='';
 
-////	hash = 0;
-////	i = 0;
-////	while( data[i] != '\0' ) {
-////		letter = idStr::ToLower( data[i] );
-////		if ( letter == '.' ) {
-////			break;				// don't include extension
-////		}
-////		if ( letter =='\\' ) {
-////			letter = '/';
-////		}
-////		hash += (long)(letter)*(i+119);
-////		i++;
-////	}
-////	hash &= (FILE_HASH_SIZE-1);
-////	return hash;
-////}
+	while( tstrhis[i] ) {
+		letter = idStr.ToLower( str[i] );
+		if ( letter == '.' ) {
+			break;				// don't include extension
+		}
+		if ( letter =='\\' ) {
+			letter = '/';
+		}
+		hash += /*(long)*/(letter).charCodeAt(0)*(i+119);
+		i++;
+	}
+	hash &= (FILE_HASH_SIZE-1);
+	return hash;
+}
 
-/////*
-////============
-////idStr::BackSlashesToSlashes
-////============
-////*/
-////idStr &idStr::BackSlashesToSlashes( void ) {
-////	int i;
-
-////	for ( i = 0; i < len; i++ ) {
-////		if ( data[ i ] == '\\' ) {
-////			data[ i ] = '/';
-////		}
-////	}
-////	return *this;
-////}
+/*
+============
+idStr::BackSlashesToSlashes
+============
+*/
+static BackSlashesToSlashes( str:string ):string {
+	return str.replace(/\\/g, "/");
+}
 
 /////*
 ////============
@@ -1096,38 +1089,25 @@ static Cmp( /*const char **/s1:string, /*const char **/s2:string ):number {
 ////	return 0;		// strings are equal
 ////}
 
-/////*
-////================
-////idStr::Icmp
-////================
-////*/
-////int idStr::Icmp( const char *s1, const char *s2 ) {
-////	int c1, c2, d;
+/*
+================
+idStr::Icmp
+================
+*/
+static Icmp( s1:string, s2:string ):number {
+    s1 = s1.toLowerCase ( );
+    s2 = s2.toLowerCase ( );
 
-////	do {
-////		c1 = *s1++;
-////		c2 = *s2++;
+    if (s1 == s2) {
+        return 0;
+    }
 
-////		d = c1 - c2;
-////		while( d ) {
-////			if ( c1 <= 'Z' && c1 >= 'A' ) {
-////				d += ('a' - 'A');
-////				if ( !d ) {
-////					break;
-////				}
-////			}
-////			if ( c2 <= 'Z' && c2 >= 'A' ) {
-////				d -= ('a' - 'A');
-////				if ( !d ) {
-////					break;
-////				}
-////			}
-////			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
-////		}
-////	} while( c1 );
+    if(s1 > s2) {
+        return 1;
+    }
 
-////	return 0;		// strings are equal
-////}
+    return -1;
+}
 
 /////*
 ////================
@@ -1724,5 +1704,110 @@ static Cmp( /*const char **/s1:string, /*const char **/s2:string ):number {
 
 ////	return string;
 ////}
+
+
+    // Str.h:
+    
+static Hash( $string:string ):number {
+	var/*int */i:number, hash = 0;
+    var strIdx = 0;
+	for ( i = 0; $string.c(strIdx); i++ ) {
+		hash += ( $string.c(strIdx) ) * ( i + 119 );
+	    $string.increment ( );
+	}
+	return hash;
+}
+
+static IHash( $string:string ):number;
+static IHash( $string:string, /*int */length?:number ):number {
+	var /*int*/ i:number, hash = 0;
+    var strIdx = 0;
+    if ( typeof (length) === "number" ) {
+	    for( i = 0; $string.c(strIdx); i++ ) {
+		    hash += idStr.ToLower( $string ).charCodeAt(strIdx) * ( i + 119 );
+	        $string.increment ( );
+	    }
+	    return hash;
+    } else {
+	    for ( i = 0; i < length; i++ ) {
+		    hash += ( $string.c(strIdx) ) * ( i + 119 );
+	        $string.increment ( );
+	    }
+	    return hash;
+    }
+}
+
+
+
+////ID_INLINE int idStr::IHash( const char *string, int length ) {
+////	int i, hash = 0;
+////	for ( i = 0; i < length; i++ ) {
+////		hash += ToLower( *string++ ) * ( i + 119 );
+////	}
+////	return hash;
+////}
+
+////ID_INLINE bool idStr::IsColor( const char *s ) {
+////	return ( s[0] == C_COLOR_ESCAPE && s[1] != '\0' && s[1] != ' ' );
+////}
+
+static ToLower( /*char */c:string ) {
+	assert( c.length == 1 );
+	//if ( c <= 'Z' && c >= 'A' ) {
+	//	return ( c + ( 'a' - 'A' ) );
+	//}
+	return c.toLowerCase();
+}
+
+static ToUpper( /*char*/ c:string ) {
+	assert( c.length == 1 );
+	//if ( c >= 'a' && c <= 'z' ) {
+	//	return ( c - ( 'a' - 'A' ) );
+	//}
+	return c.toUpperCase();
+}
+
+////ID_INLINE bool idStr::CharIsPrintable( int c ) {
+////	// test for regular ascii and western European high-ascii chars
+////	return ( c >= 0x20 && c <= 0x7E ) || ( c >= 0xA1 && c <= 0xFF );
+////}
+
+////ID_INLINE bool idStr::CharIsLower( int c ) {
+////	// test for regular ascii and western European high-ascii chars
+////	return ( c >= 'a' && c <= 'z' ) || ( c >= 0xE0 && c <= 0xFF );
+////}
+
+////ID_INLINE bool idStr::CharIsUpper( int c ) {
+////	// test for regular ascii and western European high-ascii chars
+////	return ( c <= 'Z' && c >= 'A' ) || ( c >= 0xC0 && c <= 0xDF );
+////}
+
+////ID_INLINE bool idStr::CharIsAlpha( int c ) {
+////	// test for regular ascii and western European high-ascii chars
+////	return ( ( c >= 'a' && c <= 'z' ) || ( c >= 'A' && c <= 'Z' ) ||
+////			 ( c >= 0xC0 && c <= 0xFF ) );
+////}
+
+////ID_INLINE bool idStr::CharIsNumeric( int c ) {
+////	return ( c <= '9' && c >= '0' );
+////}
+
+////ID_INLINE bool idStr::CharIsNewLine( char c ) {
+////	return ( c == '\n' || c == '\r' || c == '\v' );
+////}
+
+////ID_INLINE bool idStr::CharIsTab( char c ) {
+////	return ( c == '\t' );
+////}
+
+////ID_INLINE int idStr::ColorIndex( int c ) {
+////	return ( c & 15 );
+////}
+
+////ID_INLINE int idStr::DynamicMemoryUsed() const {
+////	return ( data == baseBuffer ) ? 0 : alloced;
+////}
+
+////#endif /* !__STR_H__ */
 
 }

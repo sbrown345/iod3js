@@ -1,3 +1,4 @@
+/// <reference path="../../libs/idLib/Text/Str.h.ts" />
 /// <reference path="Material.h.ts" />
 /// <reference path="../../libs/idLib/Text/Str.cpp.ts" />
 /// <reference path="../Framework/CmdSystem.cpp.ts" />
@@ -1455,27 +1456,23 @@ idImageManager.prototype.ImageFromFunction = function ( /*const char **/_name:st
 	var image:idImage	;
 	var /*int	*/hash:number;
 
-	if ( !name ) {
-		common.FatalError( "idImageManager::ImageFromFunction: NULL name" );
-	}
-
 	// strip any .tga file extensions from anywhere in the _name
 	name = _name;
-	name.Replace( ".tga", "" );
-    todoThrow();
-	//name.BackSlashesToSlashes();
+	name = name.Replace( ".tga", "" );
+    
+	name = name.BackSlashesToSlashes();
 
-	//// see if the image already exists
-	//hash = name.FileNameHash();
-	//for ( image = imageHashTable[hash] ; image; image = image.hashNext ) {
-	//	if ( name.Icmp( image.imgName ) == 0 ) {
-	//		if ( image.generatorFunction != generatorFunction ) {
-	//			common.DPrintf( "WARNING: reused image %s with mixed generators\n", name.c_str() );
-	//		}
-	//		return image;
-	//	}
-	//}
-
+	// see if the image already exists
+	hash = name.FileNameHash();
+	for ( image = imageHashTable[hash] ; image; image = image.hashNext ) {
+		if ( name.Icmp( image.imgName ) == 0 ) {
+			if ( image.generatorFunction != generatorFunction ) {
+				common.DPrintf( "WARNING: reused image %s with mixed generators\n", name.c_str() );
+			}
+			return image;
+		}
+	}
+	todoThrow();
 	//// create the image and issue the callback
 	//image = AllocImage( name );
 
@@ -1960,7 +1957,7 @@ Init
 */
 idImageManager.prototype.Init = function ():void {
 
-    clearStructArray(this.imageHashTable);//memset(imageHashTable, 0, sizeof(imageHashTable));
+	this.imageHashTable = [];//memset(imageHashTable, 0, sizeof(imageHashTable));
 
 	this.images.Resize( 1024, 1024 );
 

@@ -111,7 +111,7 @@ interface Array<T> {
 
 //	void			Condense( void );									// resizes list to exactly the number of elements it contains
 //Resize( /*int */newsize:number ):void;								// resizes list to the given number of elements
-	Resize( /*int*/ newsize, /*int*/ newgranularity:number, type: any ):void;// resizes list and sets new granularity
+	Resize( /*int*/ newsize:number, /*int*/ newgranularity:number, type: any ):void;// resizes list and sets new granularity
     SetNum( /*int*/ newnum:number, /*bool */resize?:boolean ):void;			// set number of elements in list and resize to exactly this number if necessary
 //	void			AssureSize( int newSize);							// assure list has given number of elements, but leave them uninitialized
 //	void			AssureSize( int newSize, const type &initValue );	// assure list has given number of elements and initialize any new elements
@@ -120,7 +120,7 @@ interface Array<T> {
 //	type *			Ptr( void );										// returns a pointer to the list
 //	const type *	Ptr( void ) const;									// returns a pointer to the list
 //	type &			Alloc( void );										// returns reference to a new data element at the end of the list
-/*	int				*/Append( obj:T/*const type & obj */):void;				// append element
+/*	int				*/Append( obj:T/*const type & obj */):number;				// append element
 //	int				Append( const idList<type> &other );				// append list
 //	int				AddUnique( const type & obj );						// add unique element
 //	int				Insert( const type & obj, int index = 0 );			// insert the element at the given index

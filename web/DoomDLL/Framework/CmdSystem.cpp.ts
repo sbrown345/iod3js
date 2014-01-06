@@ -811,5 +811,5 @@ AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:id
 }
 
 
-var cmdSystemLocal = new cmdSystem ( );
+var cmdSystemLocal = new idCmdSystem ( );
 var cmdSystem = cmdSystemLocal;

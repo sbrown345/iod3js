@@ -114,49 +114,49 @@ var     CVAR_ALL				= -1,		// all flags
 
 class idCVar {
 //public:
-							//// Never use the default constructor.
-							//idCVar( void ) { assert( typeid( this ) != typeid( idCVar ) ); }
+	//// Never use the default constructor.
+	//idCVar( void ) { assert( typeid( this ) != typeid( idCVar ) ); }
 
-    						// Always use one of the following constructors.
-							constructor( name: string, value: string, flags:number, description:string )
-							constructor( name: string, value: string, flags:number, description:string,
-									valueMin:number, valueMax:number, valueCompletion:(args:idCmdArgs, callback?: (s: string)=>void)=>void/*:argCompletion_t*/ )
-							constructor( name: string, value: string, flags:number, description:string,
-									valueStrings:string, valueCompletion:(args:idCmdArgs, callback?: (s: string)=>void)=>void/*:argCompletion_t*/ )
+    // Always use one of the following constructors.
+	constructor( name: string, value: string, flags:number, description:string )
+	constructor( name: string, value: string, flags:number, description:string,
+			valueMin:number, valueMax:number, valueCompletion:(args:idCmdArgs, callback?: (s: string)=>void)=>void/*:argCompletion_t*/ )
+	constructor( name: string, value: string, flags:number, description:string,
+			valueStrings:string, valueCompletion:(args:idCmdArgs, callback?: (s: string)=>void)=>void/*:argCompletion_t*/ )
 
-							constructor( name: string, value: string, /*int */flags: number, description: string,
-							  valueStringsOrValueMin?:any, valueMaxOrValueCompletion?: any, /*argCompletion_t*/ valueCompletion = null) {
-							    if ( typeof valueStringsOrValueMin === "number" ) {
-							        this.Init( name, value, flags, description, valueStringsOrValueMin, valueMaxOrValueCompletion, null, valueCompletion);
-							    } else {
-							        this.Init( name, value, flags, description, 1, -1, valueStringsOrValueMin, valueCompletion);
-							    }
-							}
+	constructor( name: string, value: string, /*int */flags: number, description: string,
+		valueStringsOrValueMin?:any, valueMaxOrValueCompletion?: any, /*argCompletion_t*/ valueCompletion: ( /*argCompletion_t*/args: idCmdArgs, callback: ( s: string )=> void )=> void = null) {
+		if ( typeof valueStringsOrValueMin === "number" ) {
+			this.Init( name, value, flags, description, valueStringsOrValueMin, valueMaxOrValueCompletion, null, valueCompletion);
+		} else {
+			this.Init( name, value, flags, description, 1, -1, valueStringsOrValueMin, valueCompletion);
+		}
+	}
 
 ////	virtual					~idCVar( void ) {}
-
-/*const char *			*/GetName( ):string { return this.internalVar.name; }
-/*	int						*/GetFlags( ):number { return this.internalVar.flags; }
-////	const char *			GetDescription( void ) const { return this.internalVar.description; }
-////	float					GetMinValue( void ) const { return this.internalVar.valueMin; }
-////	float					GetMaxValue( void ) const { return this.internalVar.valueMax; }
-////	const char **			GetValueStrings( void ) const { return valueStrings; }
-////	argCompletion_t			GetValueCompletion( void ) const { return valueCompletion; }
-
-////	bool					IsModified( void ) const { return ( this.internalVar.flags & CVAR_MODIFIED ) != 0; }
-////	void					SetModified( void ) { this.internalVar.flags |= CVAR_MODIFIED; }
-////	void					ClearModified( void ) { this.internalVar.flags &= ~CVAR_MODIFIED; }
-
-////	const char *			GetString( void ) const { return this.internalVar.value; }
-////	bool					GetBool( void ) const { return ( this.internalVar.integerValue != 0 ); }
-////	int						GetInteger( void ) const { return this.internalVar.integerValue; }
-////	float					GetFloat( void ) const { return this.internalVar.floatValue; }
-
-////	void					SetString( const char *value ) { this.internalVar.InternalSetString( value ); }
-////	void					SetBool( const bool value ) { this.internalVar.InternalSetBool( value ); }
-////	void					SetInteger( const int value ) { this.internalVar.InternalSetInteger( value ); }
-////	void					SetFloat( const float value ) { this.internalVar.InternalSetFloat( value ); }
-
+        
+/*const char *			*/  GetName( ):string { return this.internalVar.name; }
+/*	int					*/  GetFlags( ):number { return this.internalVar.flags; }
+/*const char *			*/  GetDescription( ):string { return this.internalVar.description; }
+/*float					*/  GetMinValue( ):number { return this.internalVar.valueMin; }
+/*float					*/  GetMaxValue( ):number { return this.internalVar.valueMax; }
+/*const char **			*/  GetValueStrings( ):string[]  { return this.valueStrings; }
+/*argCompletion_t		*/	GetValueCompletion( ):( /*argCompletion_t*/args: idCmdArgs, callback: ( s: string )=> void )=> void { return this.valueCompletion; }
+	
+/*	bool					*/IsModified( ):boolean { return ( this.internalVar.flags & CVAR_MODIFIED ) != 0; }
+/*	void					*/SetModified( ):void { this.internalVar.flags |= CVAR_MODIFIED; }
+/*	void					*/ClearModified( ):void { this.internalVar.flags &= ~CVAR_MODIFIED; }
+/*							*/
+/*	const char *			*/GetString( ):string { return this.internalVar.value; }
+/*    bool                  */GetBool( ):boolean { return ( this.internalVar.integerValue != 0 ); }
+/*	int						*/GetInteger( ):number { return this.internalVar.integerValue; }
+/*	float					*/GetFloat( ):number { return this.internalVar.floatValue; }
+/*							*/
+///*	void					*/SetString( value:string ):void { this.internalVar.InternalSetString( value ); }
+///*	void					*/SetBool( value:boolean ):void { this.internalVar.InternalSetBool( value ); }
+///*	void					*/SetInteger( value:number ):void { this.internalVar.InternalSetInteger( value ); }
+///*	void					*/SetFloat( value:number ):void { this.internalVar.InternalSetFloat( value ); }
+/*
 /*	void					*/SetInternalVar( cvar:idCVar ):void { this.internalVar = cvar; }
 
 ////	static void				RegisterStaticVars( void );

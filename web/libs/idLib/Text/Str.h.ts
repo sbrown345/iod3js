@@ -112,7 +112,7 @@ var FILE_HASH_SIZE		=   1024;
 ////	MEASURE_SIZE = 0,
 ////	MEASURE_BANDWIDTH
 ////} Measure_t;
-
+// warning: idStr can be changed, JS strings can't
 interface String {
 ///class idStr {
 
@@ -130,7 +130,7 @@ interface String {
 ////						~idStr( void );
 
 ////	size_t				Size( void ) const;
-////	const char *		c_str( void ) const;
+        c_str( ):string;
 ////	operator			const char *( void ) const;
 ////	operator			const char *( void );
 
@@ -174,7 +174,7 @@ interface String {
 ////	int					CmpPrefix( const char *text ) const;
 
 ////						// case insensitive compare
-////	int					Icmp( const char *text ) const;
+/*/	int					*/Icmp( text:string ): number;
 ////	int					Icmpn( const char *text, int n ) const;
 ////	int					IcmpPrefix( const char *text ) const;
 
@@ -197,8 +197,8 @@ interface String {
 ////	void				Append( const char *text, int len );
 ////	void				Insert( const char a, int index );
 ////	void				Insert( const char *text, int index );
-////	void				ToLower( void );
-////	void				ToUpper( void );
+	/*void				*/ToLower( ):string;
+	/*void				*/ToUpper( ):string;
 ////	bool				IsNumeric( void ) const;
 ////	bool				IsColor( void ) const;
 ////	bool				HasLower( void ) const;
@@ -228,11 +228,11 @@ interface String {
 ////	void				Strip( const char *string );					// strip string from front and end as many times as the string occurs
 ////	void				StripTrailingWhitespace( void );				// strip trailing white space characters
 ////	idStr &				StripQuotes( void );							// strip quotes around string
-    Replace( old: string, nw: string ): void;
+    Replace ( old: string, nw: string ): string/*void*/;
 
 ////	// file name methods
-////	int					FileNameHash( void ) const;						// hash key for the filename (skips extension)
-////	idStr &				BackSlashesToSlashes( void );					// convert slashes
+	FileNameHash( ):number;						// hash key for the filename (skips extension)
+	BackSlashesToSlashes( ):string;					// convert slashes
 ////	idStr &				SetFileExtension( const char *extension );		// set the given file extension
 ////	idStr &				StripFileExtension( void );						// remove any file extension
 ////	idStr &				StripAbsoluteFileExtension( void );				// remove any file extension looking from front (useful if there are multiple .'s)
@@ -321,7 +321,7 @@ interface String {
 
 ////	void				Init( void );										// initialize string using base buffer
 ////	void				EnsureAlloced( int amount, bool keepold = true );	// ensure string data buffer is large anough
-////};
+};
 
 ////char *					va( const char *fmt, ... ) id_attribute((format(printf,1,2)));
 
@@ -485,9 +485,9 @@ interface String {
 ////	return sizeof( *this ) + Allocated();
 ////}
 
-////ID_INLINE const char *idStr::c_str( void ) const {
-////	return data;
-////}
+String.prototype.c_str = function ( ): string {
+    return this;
+};
 
 ////ID_INLINE idStr::operator const char *( void ) {
 ////	return c_str();
@@ -665,10 +665,10 @@ interface String {
 ////	return idStr::Cmpn( data, text, strlen( text ) );
 ////}
 
-////ID_INLINE int idStr::Icmp( const char *text ) const {
-////	assert( text );
-////	return idStr::Icmp( data, text );
-////}
+String.prototype.Icmp = function( text:string ):number {
+	assert( !!text );
+	return idStr.Icmp( this, text );
+}
 
 ////ID_INLINE int idStr::Icmpn( const char *text, int n ) const {
 ////	assert( text );
@@ -815,21 +815,10 @@ interface String {
 ////	len += l;
 ////}
 
-////ID_INLINE void idStr::ToLower( void ) {
-////	for (int i = 0; data[i]; i++ ) {
-////		if ( CharIsUpper( data[i] ) ) {
-////			data[i] += ( 'a' - 'A' );
-////		}
-////	}
-////}
+String.prototype.ToLower = String.prototype.toLowerCase;
 
-////ID_INLINE void idStr::ToUpper( void ) {
-////	for (int i = 0; data[i]; i++ ) {
-////		if ( CharIsLower( data[i] ) ) {
-////			data[i] -= ( 'a' - 'A' );
-////		}
-////	}
-////}
+String.prototype.ToUpper = String.prototype.toUpperCase
+
 
 ////ID_INLINE bool idStr::IsNumeric( void ) const {
 ////	return idStr::IsNumeric( data );
@@ -951,96 +940,15 @@ interface String {
 ////	return s;
 ////}
 
-////ID_INLINE int idStr::Hash( const char *string ) {
-////	int i, hash = 0;
-////	for ( i = 0; *string != '\0'; i++ ) {
-////		hash += ( *string++ ) * ( i + 119 );
-////	}
-////	return hash;
-////}
+//string prototypes from Str.cpp
+String.prototype.BackSlashesToSlashes = function ( ):string {
+	// warning: string cannot modify itself
+	return idStr.BackSlashesToSlashes( this );
+};
 
-////ID_INLINE int idStr::Hash( const char *string, int length ) {
-////	int i, hash = 0;
-////	for ( i = 0; i < length; i++ ) {
-////		hash += ( *string++ ) * ( i + 119 );
-////	}
-////	return hash;
-////}
+String.prototype.FileNameHash = function ( ):number {
+	// warning: string cannot modify itself
+	return idStr.FileNameHash( this );
+};
 
-////ID_INLINE int idStr::IHash( const char *string ) {
-////	int i, hash = 0;
-////	for( i = 0; *string != '\0'; i++ ) {
-////		hash += ToLower( *string++ ) * ( i + 119 );
-////	}
-////	return hash;
-////}
-
-////ID_INLINE int idStr::IHash( const char *string, int length ) {
-////	int i, hash = 0;
-////	for ( i = 0; i < length; i++ ) {
-////		hash += ToLower( *string++ ) * ( i + 119 );
-////	}
-////	return hash;
-////}
-
-////ID_INLINE bool idStr::IsColor( const char *s ) {
-////	return ( s[0] == C_COLOR_ESCAPE && s[1] != '\0' && s[1] != ' ' );
-////}
-
-////ID_INLINE char idStr::ToLower( char c ) {
-////	if ( c <= 'Z' && c >= 'A' ) {
-////		return ( c + ( 'a' - 'A' ) );
-////	}
-////	return c;
-////}
-
-////ID_INLINE char idStr::ToUpper( char c ) {
-////	if ( c >= 'a' && c <= 'z' ) {
-////		return ( c - ( 'a' - 'A' ) );
-////	}
-////	return c;
-////}
-
-////ID_INLINE bool idStr::CharIsPrintable( int c ) {
-////	// test for regular ascii and western European high-ascii chars
-////	return ( c >= 0x20 && c <= 0x7E ) || ( c >= 0xA1 && c <= 0xFF );
-////}
-
-////ID_INLINE bool idStr::CharIsLower( int c ) {
-////	// test for regular ascii and western European high-ascii chars
-////	return ( c >= 'a' && c <= 'z' ) || ( c >= 0xE0 && c <= 0xFF );
-////}
-
-////ID_INLINE bool idStr::CharIsUpper( int c ) {
-////	// test for regular ascii and western European high-ascii chars
-////	return ( c <= 'Z' && c >= 'A' ) || ( c >= 0xC0 && c <= 0xDF );
-////}
-
-////ID_INLINE bool idStr::CharIsAlpha( int c ) {
-////	// test for regular ascii and western European high-ascii chars
-////	return ( ( c >= 'a' && c <= 'z' ) || ( c >= 'A' && c <= 'Z' ) ||
-////			 ( c >= 0xC0 && c <= 0xFF ) );
-////}
-
-////ID_INLINE bool idStr::CharIsNumeric( int c ) {
-////	return ( c <= '9' && c >= '0' );
-////}
-
-////ID_INLINE bool idStr::CharIsNewLine( char c ) {
-////	return ( c == '\n' || c == '\r' || c == '\v' );
-////}
-
-////ID_INLINE bool idStr::CharIsTab( char c ) {
-////	return ( c == '\t' );
-////}
-
-////ID_INLINE int idStr::ColorIndex( int c ) {
-////	return ( c & 15 );
-////}
-
-////ID_INLINE int idStr::DynamicMemoryUsed() const {
-////	return ( data == baseBuffer ) ? 0 : alloced;
-////}
-
-////#endif /* !__STR_H__ */
-}
+// rest MOVED TO str.cpp
