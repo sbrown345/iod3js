@@ -120,9 +120,9 @@ class idCVar {
     // Always use one of the following constructors.
 	constructor( name: string, value: string, flags:number, description:string )
 	constructor( name: string, value: string, flags:number, description:string,
-			valueMin:number, valueMax:number, valueCompletion:(args:idCmdArgs, callback?: (s: string)=>void)=>void/*:argCompletion_t*/ )
+			valueMin:number, valueMax:number, valueCompletion:(args:idCmdArgs, callback: (s: string)=>void)=>void/*:argCompletion_t*/ )
 	constructor( name: string, value: string, flags:number, description:string,
-			valueStrings:string, valueCompletion:(args:idCmdArgs, callback?: (s: string)=>void)=>void/*:argCompletion_t*/ )
+			valueStrings:string[], valueCompletion:(args:idCmdArgs, callback: (s: string)=>void)=>void/*:argCompletion_t*/ )
 
 	constructor( name: string, value: string, /*int */flags: number, description: string,
 		valueStringsOrValueMin?:any, valueMaxOrValueCompletion?: any, /*argCompletion_t*/ valueCompletion: ( /*argCompletion_t*/args: idCmdArgs, callback: ( s: string )=> void )=> void = null) {

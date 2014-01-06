@@ -486,6 +486,13 @@ class idCVarSystem {
 ////#define NUM_DESCRIPTION_CHARS	( NUM_COLUMNS - NUM_NAME_CHARS )
 ////#define FORMAT_STRING			"%-32s "
 
+	constructor ( ) {
+		this.initialized = false;
+		this.cvars = new Array<idInternalCVar> ( ); /*or idList*/
+		this.cvarHash = new idHashIndex ( );
+		this.modifiedFlags = 0;
+	}
+
 ////const char *CreateColumn( const char *text, int columnWidth, const char *indent, idStr &string ) {
 ////	int i, lastLine;
 

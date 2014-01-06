@@ -90,6 +90,8 @@
     <Content Include="libs\idLib\Heap.h.ts" />
     <Content Include="libs\idLib\Lib.cpp.ts" />
     <Content Include="libs\idLib\Lib.h.ts" />
+    <Content Include="libs\idLib\Math\Math.cpp.ts" />
+    <Content Include="libs\idLib\Math\Math.h.ts" />
     <Content Include="libs\idLib\Math\Vector.cpp.ts" />
     <Content Include="libs\idLib\Math\Vector.h.ts" />
     <Content Include="libs\idLib\Text\CmdArgs.cpp.ts" />

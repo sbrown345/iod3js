@@ -625,12 +625,15 @@ DPrintf( fmt:string, ...args:any[] ):void {
 ////	}
 ////}
 
-/////*
-////==================
-////idCommonLocal::Error
-////==================
-////*/
-////void idCommonLocal::Error( const char *fmt, ... ) {
+/*
+==================
+idCommonLocal::Error
+==================
+*/
+Error( fmt:string, ...args:any[] ):void {
+	console.error( fmt, args );
+	debugger;
+	throw "Error!";
 ////	va_list		argptr;
 ////	static int	lastErrorTime;
 ////	static int	errorCount;
@@ -716,7 +719,7 @@ DPrintf( fmt:string, ...args:any[] ):void {
 ////	Shutdown();
 
 ////	Sys_Error( "%s", errorMessage );
-////}
+}
 
 /*
 ==================

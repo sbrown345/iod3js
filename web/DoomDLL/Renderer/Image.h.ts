@@ -1,3 +1,4 @@
+/// <reference path="../Framework/CmdSystem.h.ts" />
 /// <reference path="../../utils/types.ts" />
 /// <reference path="../../libs/idLib/Text/Str.h.ts" />
 /////*
@@ -143,6 +144,16 @@ var	TD_SPECULAR = 0,			// may be compressed, and always zeros the alpha channel
 ////} cubeFiles_t;
 
 var MAX_IMAGE_NAME = 256;
+
+var imageFilter:string[] = [
+	"GL_LINEAR_MIPMAP_NEAREST",
+	"GL_LINEAR_MIPMAP_LINEAR",
+	"GL_NEAREST",
+	"GL_LINEAR",
+	"GL_NEAREST_MIPMAP_NEAREST",
+	"GL_NEAREST_MIPMAP_LINEAR",
+	null
+];
 
 interface IidImage {
 //public:
@@ -477,7 +488,7 @@ interface IidImageManager {
 
 ////	void				PrintMemInfo( MemInfo_t *mi );
 
-////	// cvars
+////	// cvars - moved below
 ////	static idCVar		image_roundDown;			// round bad sizes down to nearest power of two
 ////	static idCVar		image_colorMipLevels;		// development aid to see texture mip usage
 ////	static idCVar		image_downSize;				// controls texture downsampling
@@ -532,7 +543,7 @@ interface IidImageManager {
 
 ////	//--------------------------------------------------------
 	
-////	idImage *			AllocImage( const char *name );
+	AllocImage( name:string ):idImage;
 ////	void				SetNormalPalette();
 ////	void				ChangeTextureFilter();
 
@@ -652,8 +663,8 @@ class idImageManager implements IidImageManager {
     ////	idImage *			borderClampImage;			// white inside, black outside
 
     ////	//--------------------------------------------------------
-	
-    ////	idImage *			AllocImage( const char *name );
+
+	AllocImage ( name: string ): idImage { return null;/*placeholder*/ }
     ////	void				SetNormalPalette();
     ////	void				ChangeTextureFilter();
 
@@ -729,6 +740,35 @@ class idImageManager implements IidImageManager {
 
 //	int	numActiveBackgroundImageLoads;
     }
+
+	
+	static image_filter = new idCVar( "image_filter", imageFilter[1], CVAR_RENDERER | CVAR_ARCHIVE, "changes texture filtering on mipmapped images", imageFilter, ArgCompletion_String_Template(imageFilter)  );
+	static image_anisotropy = new idCVar( "image_anisotropy", "1", CVAR_RENDERER | CVAR_ARCHIVE, "set the maximum texture anisotropy if available" );
+	static image_lodbias = new idCVar( "image_lodbias", "0", CVAR_RENDERER | CVAR_ARCHIVE, "change lod bias on mipmapped images" );
+	static image_downSize = new idCVar( "image_downSize", "0", CVAR_RENDERER | CVAR_ARCHIVE, "controls texture downsampling" );
+	static image_forceDownSize = new idCVar( "image_forceDownSize", "0", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_BOOL, "" );
+	static image_roundDown = new idCVar( "image_roundDown", "1", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_BOOL, "round bad sizes down to nearest power of two" );
+	static image_colorMipLevels = new idCVar( "image_colorMipLevels", "0", CVAR_RENDERER | CVAR_BOOL, "development aid to see texture mip usage" );
+	static image_preload  = new idCVar( "image_preload", "1", CVAR_RENDERER | CVAR_BOOL | CVAR_ARCHIVE, "if 0, dynamically load all images" );
+	static image_useCompression = new idCVar( "image_useCompression", "1", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_BOOL, "0  = force everything to high quality" );
+	static image_useAllFormats = new idCVar( "image_useAllFormats", "1", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_BOOL, "allow alpha/intensity/luminance/luminance+alpha" );
+	static image_useNormalCompression = new idCVar( "image_useNormalCompression", "2", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_INTEGER, "2  = use rxgb compression for normal maps, 1  = use 256 color compression for normal maps if available" );
+	static image_usePrecompressedTextures = new idCVar( "image_usePrecompressedTextures", "1", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_BOOL, "use .dds files if present" );
+	static image_writePrecompressedTextures = new idCVar( "image_writePrecompressedTextures", "0", CVAR_RENDERER | CVAR_BOOL, "write .dds files if necessary" );
+	static image_writeNormalTGA = new idCVar( "image_writeNormalTGA", "0", CVAR_RENDERER | CVAR_BOOL, "write .tgas of the final normal maps for debugging" );
+	static image_writeNormalTGAPalletized = new idCVar( "image_writeNormalTGAPalletized", "0", CVAR_RENDERER | CVAR_BOOL, "write .tgas of the final palletized normal maps for debugging" );
+	static image_writeTGA = new idCVar( "image_writeTGA", "0", CVAR_RENDERER | CVAR_BOOL, "write .tgas of the non normal maps for debugging" );
+	static image_useOffLineCompression = new idCVar( "image_useOfflineCompression", "0", CVAR_RENDERER | CVAR_BOOL, "write a batch file for offline compression of DDS files" );
+	static image_cacheMinK = new idCVar( "image_cacheMinK", "200", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_INTEGER, "maximum KB of precompressed files to read at specification time" );
+	static image_cacheMegs = new idCVar( "image_cacheMegs", "20", CVAR_RENDERER | CVAR_ARCHIVE, "maximum MB set aside for temporary loading of full-sized precompressed images" );
+	static image_useCache = new idCVar( "image_useCache", "0", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_BOOL, "1  = do background load image caching" );
+	static image_showBackgroundLoads = new idCVar( "image_showBackgroundLoads", "0", CVAR_RENDERER | CVAR_BOOL, "1  = print number of outstanding background loads" );
+	static image_downSizeSpecular = new idCVar( "image_downSizeSpecular", "0", CVAR_RENDERER | CVAR_ARCHIVE, "controls specular downsampling" );
+	static image_downSizeBump = new idCVar( "image_downSizeBump", "0", CVAR_RENDERER | CVAR_ARCHIVE, "controls normal map downsampling" );
+	static image_downSizeSpecularLimit = new idCVar( "image_downSizeSpecularLimit", "64", CVAR_RENDERER | CVAR_ARCHIVE, "controls specular downsampled limit" );
+	static image_downSizeBumpLimit = new idCVar( "image_downSizeBumpLimit", "128", CVAR_RENDERER | CVAR_ARCHIVE, "controls normal map downsample limit" );
+	static image_ignoreHighQuality = new idCVar( "image_ignoreHighQuality", "0", CVAR_RENDERER | CVAR_ARCHIVE, "ignore high quality setting on materials" );
+	static image_downSizeLimit = new idCVar( "image_downSizeLimit", "256", CVAR_RENDERER | CVAR_ARCHIVE, "controls diffuse map downsample limit" ); 
 };
 ////extern idImageManager	*globalImages;		// pointer to global list for the rest of the system
 

@@ -1,3 +1,4 @@
+/// <reference path="../Math/Math.h.ts" />
 /////*
 ////===========================================================================
 
@@ -96,21 +97,19 @@ class idHashIndex {
 /*	int				*/private granularity:number;
 /*	int				*/private hashMask:number;
 /*	int				*/private lookupMask:number;
-
-    static /*int		*/INVALID_INDEX = [ -1 ];
-
+	
 ////	void			Init( const int initialHashSize, const int initialIndexSize );
 ////	void			Allocate( const int newHashSize, const int newIndexSize );
 
 
-/////*
-////================
-////idHashIndex::idHashIndex
-////================
-////*/
-////ID_INLINE idHashIndex::idHashIndex( void ) {
-////	Init( DEFAULT_HASH_SIZE, DEFAULT_HASH_SIZE );
-////}
+/*
+================
+idHashIndex::idHashIndex
+================
+*/
+constructor( ) {
+	this.Init( DEFAULT_HASH_SIZE, DEFAULT_HASH_SIZE );
+}
 
 /////*
 ////================
@@ -164,15 +163,15 @@ class idHashIndex {
 ////		Free();
 ////	}
 ////	else {
-////		if ( other.hashSize != hashSize || hash == INVALID_INDEX ) {
-////			if ( hash != INVALID_INDEX ) {
+////		if ( other.hashSize != hashSize || hash == idHashIndex.INVALID_INDEX ) {
+////			if ( hash != idHashIndex.INVALID_INDEX ) {
 ////				delete[] hash;
 ////			}
 ////			hashSize = other.hashSize;
 ////			hash = new int[hashSize];
 ////		}
-////		if ( other.indexSize != this.indexSize || this.indexChain == INVALID_INDEX ) {
-////			if ( this.indexChain != INVALID_INDEX ) {
+////		if ( other.indexSize != this.indexSize || this.indexChain == idHashIndex.INVALID_INDEX ) {
+////			if ( this.indexChain != idHashIndex.INVALID_INDEX ) {
 ////				delete[] this.indexChain;
 ////			}
 ////		 this.indexSize = other.indexSize;
@@ -213,7 +212,7 @@ Add( /*const int */key:number, /*const int */index:number ):void {
 ////ID_INLINE void idHashIndex::Remove( const int key, const int index ) {
 ////	int k = key & this.hashMask;
 
-////	if ( hash == INVALID_INDEX ) {
+////	if ( hash == idHashIndex.INVALID_INDEX ) {
 ////		return;
 ////	}
 ////	if ( hash[k] == index ) {
@@ -257,7 +256,7 @@ Next( /*const int */index:number ):number {
 ////ID_INLINE void idHashIndex::InsertIndex( const int key, const int index ) {
 ////	int i, max;
 
-////	if ( hash != INVALID_INDEX ) {
+////	if ( hash != idHashIndex.INVALID_INDEX ) {
 ////		max = index;
 ////		for ( i = 0; i < hashSize; i++ ) {
 ////			if ( hash[i] >= index ) {
@@ -295,7 +294,7 @@ Next( /*const int */index:number ):number {
 ////	int i, max;
 
 ////	Remove( key, index );
-////	if ( hash != INVALID_INDEX ) {
+////	if ( hash != idHashIndex.INVALID_INDEX ) {
 ////		max = index;
 ////		for ( i = 0; i < hashSize; i++ ) {
 ////			if ( hash[i] >= index ) {
@@ -327,7 +326,7 @@ Next( /*const int */index:number ):number {
 ////*/
 ////ID_INLINE void idHashIndex::Clear( void ) {
 ////	// only clear the hash table because clearing the this.indexChain is not really needed
-////	if ( hash != INVALID_INDEX ) {
+////	if ( hash != idHashIndex.INVALID_INDEX ) {
 ////		memset( hash, 0xff, hashSize * sizeof( hash[0] ) );
 ////	}
 ////}
@@ -438,24 +437,24 @@ GenerateKey( $string: any, caseSensitive:boolean ) :number {
 ////#include "../precompiled.h"
 ////#pragma hdrstop
 
-////int idHashIndex::INVALID_INDEX[1] = { -1 };
+static INVALID_INDEX = [ -1 ];
 
-/////*
-////================
-////idHashIndex::Init
-////================
-////*/
-////void idHashIndex::Init( const int initialHashSize, const int initialIndexSize ) {
-////	assert( idMath::IsPowerOfTwo( initialHashSize ) );
+/*
+================
+idHashIndex::Init
+================
+*/
+Init( initialHashSize:number, initialIndexSize:number ):void {
+	assert( idMath.IsPowerOfTwo( initialHashSize ) );
 
-////	hashSize = initialHashSize;
-////	hash = INVALID_INDEX;
-//// this.indexSize = initialIndexSize;
-////	this.indexChain = INVALID_INDEX;
-////	this.granularity = DEFAULT_HASH_GRANULARITY;
-////	this.hashMask = hashSize - 1;
-////	this.lookupMask = 0;
-////}
+	this.hashSize = initialHashSize;
+	this.hash = idHashIndex.INVALID_INDEX;
+	this.indexSize = initialIndexSize;
+	this.indexChain = idHashIndex.INVALID_INDEX;
+	this.granularity = DEFAULT_HASH_GRANULARITY;
+	this.hashMask = this.hashSize - 1;
+	this.lookupMask = 0;
+}
 
 /*
 ================
@@ -483,13 +482,13 @@ Allocate( /*const int */newHashSize:number, /*const int */newIndexSize:number ):
 ////================
 ////*/
 ////void idHashIndex::Free( void ) {
-////	if ( hash != INVALID_INDEX ) {
+////	if ( hash != idHashIndex.INVALID_INDEX ) {
 ////		delete[] hash;
-////		hash = INVALID_INDEX;
+////		hash = idHashIndex.INVALID_INDEX;
 ////	}
-////	if ( this.indexChain != INVALID_INDEX ) {
+////	if ( this.indexChain != idHashIndex.INVALID_INDEX ) {
 ////		delete[] this.indexChain;
-////		this.indexChain = INVALID_INDEX;
+////		this.indexChain = idHashIndex.INVALID_INDEX;
 ////	}
 ////	this.lookupMask = 0;
 ////}
@@ -514,7 +513,7 @@ ResizeIndex( /*const int */newIndexSize:number ):void {
     //	newSize = newIndexSize + granularity - mod;
     //}
 
-    //if ( this.indexChain == INVALID_INDEX ) {
+    //if ( this.indexChain == idHashIndex.INVALID_INDEX ) {
     // this.indexSize = newSize;
     //	return;
     //}
@@ -535,7 +534,7 @@ ResizeIndex( /*const int */newIndexSize:number ):void {
 ////int idHashIndex::GetSpread( void ) const {
 ////	int i, index, totalItems, *numHashItems, average, error, e;
 
-////	if ( hash == INVALID_INDEX ) {
+////	if ( hash == idHashIndex.INVALID_INDEX ) {
 ////		return 100;
 ////	}
 

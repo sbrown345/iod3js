@@ -143,10 +143,21 @@ var CMD_FL_ALL				= -1,
 //}
 
 //template<const char **strings> ID_STATIC_TEMPLATE ID_INLINE void idCmdSystem::ArgCompletion_String( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
-//	for ( int i = 0; strings[i]; i++ ) {
-//		callback( va( "%s %s", args.Argv( 0 ), strings[i] ) );
-//	}
-//}
+//:(args:idCmdArgs, callback?: (s: string)=>void)=>void
+function ArgCompletion_String_Template (strings: string[] ):( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void )=>void{
+	return function (args:idCmdArgs, callback: (s: string) => void ): void {
+		todoThrow ( );
+		ArgCompletion_String( strings, args, callback );
+	};
+
+	function ArgCompletion_String( strings: string[], /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
+		todoThrow ( );
+		//for ( var i = 0; strings[i]; i++ ) {
+		//	callback( va( "%s %s", args.Argv( 0 ), strings[i] ) );
+		//}
+	}
+}
+
 
 //template<int type> ID_STATIC_TEMPLATE ID_INLINE void idCmdSystem::ArgCompletion_Decl( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
 //	cmdSystem->ArgCompletion_DeclName( args, callback, type );
