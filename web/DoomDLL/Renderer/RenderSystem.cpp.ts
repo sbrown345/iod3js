@@ -1,3 +1,4 @@
+/// <reference path="RenderSystem.h.ts" />
 /// <reference path="Image_init.cpp.ts" />
 /// <reference path="Image.h.ts" />
 /// <reference path="GuiModel.cpp.ts" />
@@ -45,9 +46,9 @@
 ////#include "../sys/win32/win_local.h"
 ////#endif
 
-////// functions that are not called every frame
+// functions that are not called every frame
 
-////glconfig_t	glConfig;
+var glConfig = new glconfig_t ( );
 
 ////static void GfxInfo_f( void );
 

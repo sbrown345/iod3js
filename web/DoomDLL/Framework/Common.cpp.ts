@@ -2780,10 +2780,10 @@ idCommonLocal::Init
 ////		ParseCommandLine( argc, argv );
 
 		// init console command system
-		cmdSystem__Init();
+		cmdSystem.Init();
 
 		// init CVar system
-		cvarSystem__Init();
+		cvarSystem.Init();
 
 ////		// start file logging right away, before early console or whatever
 ////		StartupVariable( "win_outputDebugString", false );

@@ -39,54 +39,53 @@
 ////*/
 
 
-////// Contains variables specific to the OpenGL configuration being run right now.
-////// These are constant once the OpenGL subsystem is initialized.
-////typedef struct glconfig_s {
-////	const char			*renderer_string;
-////	const char			*vendor_string;
-////	const char			*version_string;
-////	const char			*extensions_string;
-////	const char			*wgl_extensions_string;
+// Contains variables specific to the OpenGL configuration being run right now.
+// These are constant once the OpenGL subsystem is initialized.
+class /*glconfig_s*/glconfig_t {
+/*	const char			**/renderer_string:string;
+/*	const char			**/vendor_string:string;
+/*	const char			**/version_string:string;
+/*	const char			**/extensions_string:string;
+/*	const char			**/wgl_extensions_string:string;
 
-////	float				glVersion;				// atof( version_string )
+/*	float				*/glVersion:number;				// atof( version_string )
 
 
-////	int					maxTextureSize;			// queried from GL
-////	int					maxTextureUnits;
-////	int					maxTextureCoords;
-////	int					maxTextureImageUnits;
-////	float				maxTextureAnisotropy;
+/*	int					*/maxTextureSize:number;			// queried from GL
+/*	int					*/maxTextureUnits:number;
+/*	int					*/maxTextureCoords:number;
+/*	int					*/maxTextureImageUnits:number;
+/*	float				*/maxTextureAnisotropy:number;
 
-////	int					colorBits, depthBits, stencilBits;
+/*	int					*/colorBits:number; depthBits:number; stencilBits:number;
 
-////	bool				multitextureAvailable;
-////	bool				textureCompressionAvailable;
-////	bool				anisotropicAvailable;
-////	bool				textureLODBiasAvailable;
-////	bool				textureEnvAddAvailable;
-////	bool				textureEnvCombineAvailable;
-////	bool				cubeMapAvailable;
-////	bool				envDot3Available;
-////	bool				texture3DAvailable;
-////	bool				sharedTexturePaletteAvailable;
-////	bool				ARBVertexBufferObjectAvailable;
-////	bool				ARBVertexProgramAvailable;
-////	bool				ARBFragmentProgramAvailable;
-////	bool				textureNonPowerOfTwoAvailable;
-////	bool				depthBoundsTestAvailable;
-////	bool				GLSLAvailable;
+/*	bool				*/multitextureAvailable:boolean;
+/*	bool				*/textureCompressionAvailable:boolean;
+/*	bool				*/anisotropicAvailable:boolean;
+/*	bool				*/textureLODBiasAvailable:boolean;
+/*	bool				*/textureEnvAddAvailable:boolean;
+/*	bool				*/textureEnvCombineAvailable:boolean;
+/*	bool				*/cubeMapAvailable:boolean;
+/*	bool				*/envDot3Available:boolean;
+/*	bool				*/texture3DAvailable:boolean;
+/*	bool				*/sharedTexturePaletteAvailable:boolean;
+/*	bool				*/ARBVertexBufferObjectAvailable:boolean;
+/*	bool				*/ARBVertexProgramAvailable:boolean;
+/*	bool				*/ARBFragmentProgramAvailable:boolean;
+/*	bool				*/textureNonPowerOfTwoAvailable:boolean;
+/*	bool				*/depthBoundsTestAvailable:boolean;
+/*	bool				*/GLSLAvailable:boolean;
+/*	int					*/vidWidth:number; vidHeight:number;	// passed to R_BeginFrame
 
-////	int					vidWidth, vidHeight;	// passed to R_BeginFrame
+/*	int					*/displayFrequency:number;
 
-////	int					displayFrequency;
+/*	bool				*/isFullscreen:boolean;
 
-////	bool				isFullscreen;
+/*	bool				*/allowARB2Path:boolean;
+/*	bool				*/allowGLSLPath:boolean;
 
-////	bool				allowARB2Path;
-////	bool				allowGLSLPath;
-
-////	bool				isInitialized;
-////} glconfig_t;
+/*	bool				*/isInitialized:boolean;
+};
 
 
 ////// font support 

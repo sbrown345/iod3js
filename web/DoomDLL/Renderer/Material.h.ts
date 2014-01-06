@@ -43,23 +43,23 @@
 ////class idUserInterface;
 ////class idMegaTexture;
 
-////// moved from image.h for default parm
-////typedef enum {
-////	TF_LINEAR,
-////	TF_NEAREST,
-////	TF_DEFAULT				// use the user-specified r_textureFilter
-////} textureFilter_t;
+// moved from image.h for default parm
+//typedef enum {
+var TF_LINEAR = 0,
+    TF_NEAREST = 1,
+    TF_DEFAULT = 2;				// use the user-specified r_textureFilter
+//} textureFilter_t;
 
-////typedef enum {
-////	TR_REPEAT,
-////	TR_CLAMP,
-////	TR_CLAMP_TO_BORDER,		// this should replace TR_CLAMP_TO_ZERO and TR_CLAMP_TO_ZERO_ALPHA,
-////							// but I don't want to risk changing it right now
-////	TR_CLAMP_TO_ZERO,		// guarantee 0,0,0,255 edge for projected textures,
-////	// set AFTER image format selection
-////	TR_CLAMP_TO_ZERO_ALPHA	// guarantee 0 alpha edge for projected textures,
-////	// set AFTER image format selection
-////} textureRepeat_t;
+//typedef enum {
+var TR_REPEAT = 0,
+    TR_CLAMP = 1,
+    TR_CLAMP_TO_BORDER = 2,     // this should replace TR_CLAMP_TO_ZERO and TR_CLAMP_TO_ZERO_ALPHA,
+                                // but I don't want to risk changing it right now
+    TR_CLAMP_TO_ZERO = 3,       // guarantee 0,0,0,255 edge for projected textures,
+                                // set AFTER image format selection
+    TR_CLAMP_TO_ZERO_ALPHA = 4;	// guarantee 0 alpha edge for projected textures,
+	                            // set AFTER image format selection
+//} textureRepeat_t;
 
 ////typedef struct {
 ////	int		stayTime;		// msec for no change

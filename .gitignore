@@ -28,3 +28,5 @@ build
 
 /web/doom3.js
 /web/doom3.js.map
+
+*.ipch

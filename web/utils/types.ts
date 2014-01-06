@@ -88,13 +88,32 @@ function multiDimArray <T>(arrayClass: any, num: number, arrLength: number): T[]
 
 function $3dArray (arrayClass: any, d1: number, d2: number, d3: number):Array<Array<Array>> {
     var array = new Array(d1);
-    for (var i = 0; i < d1; k++) {
+    for (var i = 0; i < d1; i++) {
         array[i] = new Array(d2);
-        for (var j = 0; j < d1; j++) {
+        for (var j = 0; j < d2; j++) {
             array[i][j] = new arrayClass(d3);
         }
     }
+
+    array["totalSize"] = d1 * d2 * d3;
     return array;
+}
+
+function flatten3DArray ( arrayClass: any, array:Array<Array<Array>> ): any[] {
+    var flatArray = new arrayClass( array["totalSize"] );
+    var count = 0;
+    var d1 = array;
+    for (var i = 0; i < d1.length; i++) {
+        var d2 = d1[i];
+        for (var j = 0; j < d2.length; j++) {
+            var d3 = d2[j];
+            for ( var k = 0; k < d3.length; k++ ) {
+                flatArray[count++] = d3[k];
+            }
+        }
+    }
+
+    return flatArray;
 }
 
 //// todo: rename

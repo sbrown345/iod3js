@@ -119,40 +119,44 @@ class idCVar {
 
     						// Always use one of the following constructors.
 							constructor( name: string, value: string, flags:number, description:string,
-									valueMin:number, valueMax:number, valueCompletion/*:argCompletion_t*/ )
+									valueMin:number, valueMax:number, valueCompletion:(args:idCmdArgs, callback: (s: string)=>void)=>void/*:argCompletion_t*/ )
 							constructor( name: string, value: string, flags:number, description:string,
-									valueStrings:string, valueCompletion/*:argCompletion_t*/ )
+									valueStrings:string, valueCompletion:(args:idCmdArgs, callback: (s: string)=>void)=>void/*:argCompletion_t*/ )
 
-							constructor( /*const char **/name: string, /*const char **/value: string, /*int */flags: number, /*const char **/description: string,
-							    /*argCompletion_t*/ valueCompletion = null) {
-							    this.init();
+							constructor( name: string, value: string, /*int */flags: number, description: string,
+							  valueStringsOrValueMin:any, valueMaxOrValueCompletion: any, /*argCompletion_t*/ valueCompletion = null) {
+							    if ( typeof valueStringsOrValueMin === "number" ) {
+							        this.Init( name, value, flags, description, valueStringsOrValueMin, valueMaxOrValueCompletion, null, valueCompletion);
+							    } else {
+							        this.Init( name, value, flags, description, 1, -1, valueStringsOrValueMin, valueCompletion);
+							    }
 							}
 
 ////	virtual					~idCVar( void ) {}
 
-////	const char *			GetName( void ) const { return internalVar.name; }
-////	int						GetFlags( void ) const { return internalVar.flags; }
-////	const char *			GetDescription( void ) const { return internalVar.description; }
-////	float					GetMinValue( void ) const { return internalVar.valueMin; }
-////	float					GetMaxValue( void ) const { return internalVar.valueMax; }
+/*const char *			*/GetName( ):string { return this.internalVar.name; }
+/*	int						*/GetFlags( ):number { return this.internalVar.flags; }
+////	const char *			GetDescription( void ) const { return this.internalVar.description; }
+////	float					GetMinValue( void ) const { return this.internalVar.valueMin; }
+////	float					GetMaxValue( void ) const { return this.internalVar.valueMax; }
 ////	const char **			GetValueStrings( void ) const { return valueStrings; }
 ////	argCompletion_t			GetValueCompletion( void ) const { return valueCompletion; }
 
-////	bool					IsModified( void ) const { return ( internalVar.flags & CVAR_MODIFIED ) != 0; }
-////	void					SetModified( void ) { internalVar.flags |= CVAR_MODIFIED; }
-////	void					ClearModified( void ) { internalVar.flags &= ~CVAR_MODIFIED; }
+////	bool					IsModified( void ) const { return ( this.internalVar.flags & CVAR_MODIFIED ) != 0; }
+////	void					SetModified( void ) { this.internalVar.flags |= CVAR_MODIFIED; }
+////	void					ClearModified( void ) { this.internalVar.flags &= ~CVAR_MODIFIED; }
 
-////	const char *			GetString( void ) const { return internalVar.value; }
-////	bool					GetBool( void ) const { return ( internalVar.integerValue != 0 ); }
-////	int						GetInteger( void ) const { return internalVar.integerValue; }
-////	float					GetFloat( void ) const { return internalVar.floatValue; }
+////	const char *			GetString( void ) const { return this.internalVar.value; }
+////	bool					GetBool( void ) const { return ( this.internalVar.integerValue != 0 ); }
+////	int						GetInteger( void ) const { return this.internalVar.integerValue; }
+////	float					GetFloat( void ) const { return this.internalVar.floatValue; }
 
-////	void					SetString( const char *value ) { internalVar.InternalSetString( value ); }
-////	void					SetBool( const bool value ) { internalVar.InternalSetBool( value ); }
-////	void					SetInteger( const int value ) { internalVar.InternalSetInteger( value ); }
-////	void					SetFloat( const float value ) { internalVar.InternalSetFloat( value ); }
+////	void					SetString( const char *value ) { this.internalVar.InternalSetString( value ); }
+////	void					SetBool( const bool value ) { this.internalVar.InternalSetBool( value ); }
+////	void					SetInteger( const int value ) { this.internalVar.InternalSetInteger( value ); }
+////	void					SetFloat( const float value ) { this.internalVar.InternalSetFloat( value ); }
 
-////	void					SetInternalVar( idCVar *cvar ) { internalVar = cvar; }
+/*	void					*/SetInternalVar( cvar:idCVar ):void { this.internalVar = cvar; }
 
 ////	static void				RegisterStaticVars( void );
 
@@ -164,7 +168,7 @@ class idCVar {
     valueMin:number;				// minimum value                           //	float					
     valueMax:number;				// maximum value                           //	float					
     valueStrings:string[];			// valid value strings                     //	const char **			
-    valueCompletion;		        // value auto-completion function          //	argCompletion_t			
+    valueCompletion:(args:idCmdArgs, callback: (s: string)=>void)=>void;		        // value auto-completion function          //	argCompletion_t			
     integerValue:number;			// atoi( string )                          //	int						
     floatValue:number;				// atof( value )                           //	float					
     internalVar:idCVar;			    // internal cvar                           //	idCVar *				
@@ -215,7 +219,7 @@ class idCVar {
 //*/
 
 Init( /*const char **/name:string, /*const char **/value:string, /*int */flags:number, /*const char **/description:string,
-							/*float*/ valueMin:number, /*float */valueMax:number, /*const char ***/valueStrings:string[], /*argCompletion_t */valueCompletion ) {
+							/*float*/ valueMin:number, /*float */valueMax:number, /*const char ***/valueStrings:string[], valueCompletion:(args:idCmdArgs, callback: (s: string)=>void)=>void = null ) {
 	this.name = name;
 	this.value = value;
 	this.flags = flags;
@@ -255,7 +259,7 @@ Init( /*const char **/name:string, /*const char **/value:string, /*int */flags:n
 ===============================================================================
 */
 
-class idCVarSystem {
+//class idCVarSystem {
 ////public:
 ////	virtual					~idCVarSystem( void ) {}
 
@@ -307,7 +311,7 @@ class idCVarSystem {
 ////							// Moves CVars to and from dictionaries.
 ////	virtual const idDict *	MoveCVarsToDict( int flags ) const = 0;
 ////	virtual void			SetCVarsFromDict( const idDict &dict ) = 0;
-};
+//};
 
 ////extern idCVarSystem *		cvarSystem;
 

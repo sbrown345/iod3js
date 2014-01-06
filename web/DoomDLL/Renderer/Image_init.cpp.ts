@@ -1,3 +1,4 @@
+/// <reference path="Material.h.ts" />
 /// <reference path="../../libs/idLib/Text/Str.cpp.ts" />
 /// <reference path="../Framework/CmdSystem.cpp.ts" />
 /// <reference path="../../utils/types.ts" />
@@ -305,7 +306,7 @@ idImage.prototype.MakeDefault = function():void {
 		}
 	}
 
-	GenerateImage( /*(byte *)*/flattenArray(data), 
+	this.GenerateImage( /*(byte *)*/flatten3DArray(Uint8Array, data), 
 		DEFAULT_SIZE, DEFAULT_SIZE, 
 		TF_DEFAULT, true, TR_REPEAT, TD_DEFAULT );
 

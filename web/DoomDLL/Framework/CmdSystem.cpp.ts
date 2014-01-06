@@ -67,7 +67,7 @@ class commandDef_t {
 } /*commandDef_t*/;
 
 
-////class idCmdSystemLocal : public idCmdSystem {
+class /*idCmdSystemLocal*/ idCmdSystem {
 ////public:
 ////	virtual void			Init( void );
 ////	virtual void			Shutdown( void );
@@ -96,13 +96,13 @@ class commandDef_t {
 ////private:
 ////	static const int		MAX_CMD_BUFFER = 0x10000;
 
-var commands: commandDef_t; ////	commandDef_t *			commands;
+    commands: commandDef_t; ////	commandDef_t *			commands;
 
 ////	int						wait;
-var /*int*/						textLength:number;
+/*int*/						textLength:number;
 ////	byte					textBuf[MAX_CMD_BUFFER];
 
-var 					        completionString:string /*idStr*/;
+    completionString:string /*idStr*/;
 ////	idStrList				completionParms;
 
 ////	// piggybacks on the text buffer, avoids tokenize again and screwing it up
@@ -131,9 +131,6 @@ var 					        completionString:string /*idStr*/;
 ////	static void				Wait_f( const idCmdArgs &args );
 ////	static void				PrintMemInfo_f( const idCmdArgs &args );
 ////};
-
-////idCmdSystemLocal			cmdSystemLocal;
-////idCmdSystem *				cmdSystem = &cmdSystemLocal;
 
 
 /////*
@@ -187,7 +184,7 @@ var 					        completionString:string /*idStr*/;
 idCmdSystemLocal::List_f
 ============
 */
-function /*idCmdSystemLocal::*/cmdSystem__List_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+List_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
     todoThrow();
     //idCmdSystemLocal::ListByFlags( args, CMD_FL_ALL );
 }
@@ -197,7 +194,7 @@ function /*idCmdSystemLocal::*/cmdSystem__List_f( /*const idCmdArgs &*/args:idCm
 idCmdSystemLocal::SystemList_f
 ============
 */
-function /*idCmdSystemLocal::*/SystemList_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+SystemList_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
     todoThrow();
 	//idCmdSystemLocal::ListByFlags( args, CMD_FL_SYSTEM );
 }
@@ -207,7 +204,7 @@ function /*idCmdSystemLocal::*/SystemList_f( /*const idCmdArgs &*/args:idCmdArgs
 idCmdSystemLocal::RendererList_f
 ============
 */
-function /*idCmdSystemLocal::*/RendererList_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+RendererList_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
     todoThrow();
 	//idCmdSystemLocal::ListByFlags( args, CMD_FL_RENDERER );
 }
@@ -217,7 +214,7 @@ function /*idCmdSystemLocal::*/RendererList_f( /*const idCmdArgs &*/args:idCmdAr
 idCmdSystemLocal::SoundList_f
 ============
 */
-function /*idCmdSystemLocal::*/SoundList_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+SoundList_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
     todoThrow();
 	//idCmdSystemLocal::ListByFlags( args, CMD_FL_SOUND );
 }
@@ -227,7 +224,7 @@ function /*idCmdSystemLocal::*/SoundList_f( /*const idCmdArgs &*/args:idCmdArgs 
 idCmdSystemLocal::GameList_f
 ============
 */
-function /*idCmdSystemLocal::*/GameList_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+GameList_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
     todoThrow();
 	//idCmdSystemLocal::ListByFlags( args, CMD_FL_GAME );
 }
@@ -237,7 +234,7 @@ function /*idCmdSystemLocal::*/GameList_f( /*const idCmdArgs &*/args:idCmdArgs )
 idCmdSystemLocal::ToolList_f
 ============
 */
-function /*idCmdSystemLocal::*/ToolList_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+ToolList_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
     todoThrow();
 	//idCmdSystemLocal::ListByFlags( args, CMD_FL_TOOL );
 }
@@ -247,7 +244,7 @@ function /*idCmdSystemLocal::*/ToolList_f( /*const idCmdArgs &*/args:idCmdArgs )
 idCmdSystemLocal::Exec_f
 ===============
 */
-function /*idCmdSystemLocal::*/Exec_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+Exec_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
     todoThrow();
 	////char *	f;
 	////int		len;
@@ -279,7 +276,7 @@ idCmdSystemLocal::Vstr_f
 Inserts the current value of a cvar as command text
 ===============
 */
-function /*idCmdSystemLocal::*/Vstr_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+Vstr_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
     todoThrow();
 	////const char *v;
 
@@ -300,7 +297,7 @@ idCmdSystemLocal::Echo_f
 Just prints the rest of the line to the console
 ===============
 */
-function /*idCmdSystemLocal::*/Echo_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+Echo_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
     todoThrow();
 	////int		i;
 	
@@ -317,7 +314,7 @@ idCmdSystemLocal::Wait_f
 Causes execution of the remainder of the command buffer to be delayed until next frame.
 ============
 */
-function /*idCmdSystemLocal::*/Wait_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+Wait_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
     todoThrow();
 	////if ( args.Argc() == 2 ) {
 	////	cmdSystemLocal.SetWait( atoi( args.Argv( 1 ) ) );
@@ -333,7 +330,7 @@ idCmdSystemLocal::Parse_f
 This just prints out how the rest of the line was parsed, as a debugging tool.
 ============
 */
-function /*idCmdSystemLocal::*/Parse_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
+Parse_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
 	////int		i;
 
 	////for ( i = 0; i < args.Argc(); i++ ) {
@@ -346,23 +343,23 @@ function /*idCmdSystemLocal::*/Parse_f( /*const idCmdArgs &*/args:idCmdArgs ):vo
 idCmdSystemLocal::Init
 ============
 */
-function /*idCmdSystemLocal::Init*/cmdSystem__Init(): void  {
+Init(): void  {
 
-	AddCommand( "listCmds", cmdSystem__List_f, CMD_FL_SYSTEM, "lists commands" );
-	AddCommand( "listSystemCmds", SystemList_f, CMD_FL_SYSTEM, "lists system commands" );
-	AddCommand( "listRendererCmds", RendererList_f, CMD_FL_SYSTEM, "lists renderer commands" );
-	AddCommand( "listSoundCmds", SoundList_f, CMD_FL_SYSTEM, "lists sound commands" );
-	AddCommand( "listGameCmds", GameList_f, CMD_FL_SYSTEM, "lists game commands" );
-	AddCommand( "listToolCmds", ToolList_f, CMD_FL_SYSTEM, "lists tool commands" );
-	AddCommand( "exec", Exec_f, CMD_FL_SYSTEM, "executes a config file", ArgCompletion_ConfigName );
-	AddCommand( "vstr", Vstr_f, CMD_FL_SYSTEM, "inserts the current value of a cvar as command text" );
-	AddCommand( "echo", Echo_f, CMD_FL_SYSTEM, "prints text" );
-	AddCommand( "parse", Parse_f, CMD_FL_SYSTEM, "prints tokenized string" );
-	AddCommand( "wait", Wait_f, CMD_FL_SYSTEM, "delays remaining buffered commands one or more frames" );
+	this.AddCommand( "listCmds", this.List_f, CMD_FL_SYSTEM, "lists commands" );
+	this.AddCommand( "listSystemCmds", this.SystemList_f, CMD_FL_SYSTEM, "lists system commands" );
+	this.AddCommand( "listRendererCmds", this.RendererList_f, CMD_FL_SYSTEM, "lists renderer commands" );
+	this.AddCommand( "listSoundCmds", this.SoundList_f, CMD_FL_SYSTEM, "lists sound commands" );
+	this.AddCommand( "listGameCmds", this.GameList_f, CMD_FL_SYSTEM, "lists game commands" );
+	this.AddCommand( "listToolCmds", this.ToolList_f, CMD_FL_SYSTEM, "lists tool commands" );
+	this.AddCommand( "exec", this.Exec_f, CMD_FL_SYSTEM, "executes a config file", ArgCompletion_ConfigName );
+	this.AddCommand( "vstr", this.Vstr_f, CMD_FL_SYSTEM, "inserts the current value of a cvar as command text" );
+	this.AddCommand( "echo", this.Echo_f, CMD_FL_SYSTEM, "prints text" );
+	this.AddCommand( "parse", this.Parse_f, CMD_FL_SYSTEM, "prints tokenized string" );
+	this.AddCommand( "wait", this.Wait_f, CMD_FL_SYSTEM, "delays remaining buffered commands one or more frames" );
 
-	completionString = "*";
+	this.completionString = "*";
 
-	textLength = 0;
+	this.textLength = 0;
 }
 
 /////*
@@ -391,11 +388,11 @@ function /*idCmdSystemLocal::Init*/cmdSystem__Init(): void  {
 idCmdSystemLocal::AddCommand
 ============
 */
-function /*idCmdSystemLocal::*/AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:idCmdArgs)=>void/*cmdFunction_t*/, /*int*/ flags:number, /*const char **/description:string, /*argCompletion_t */argCompletion /*argCompletion_t*/:(args:idCmdArgs, callback: (s: string)=>void)=>void = null):void {
+AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:idCmdArgs)=>void/*cmdFunction_t*/, /*int*/ flags:number, /*const char **/description:string, /*argCompletion_t */argCompletion /*argCompletion_t*/:(args:idCmdArgs, callback: (s: string)=>void)=>void = null):void {
 	var cmd:commandDef_t;
 	
 	// fail if the command already exists
-	for ( cmd = commands; cmd; cmd = cmd.next ) {
+	for ( cmd = this.commands; cmd; cmd = cmd.next ) {
 		if ( idStr.Cmp( cmdName, cmd.name ) == 0 ) {
 			if ( $function != cmd.$function ) {
 				common.Printf( "idCmdSystemLocal::AddCommand: %s already defined\n", cmdName );
@@ -410,8 +407,8 @@ function /*idCmdSystemLocal::*/AddCommand( /*const char **/cmdName:string, /*cmd
 	cmd.argCompletion = argCompletion;
 	cmd.flags = flags;
 	cmd.description = Mem_CopyString( description );
-	cmd.next = commands;
-	commands = cmd;
+	cmd.next = this.commands;
+	this.commands = cmd;
 }
 
 /////*
@@ -811,3 +808,8 @@ function /*idCmdSystemLocal::*/AddCommand( /*const char **/cmdName:string, /*cmd
 ////	postReload.Clear();
 ////	return true;
 ////}
+}
+
+
+var cmdSystemLocal = new cmdSystem ( );
+var cmdSystem = cmdSystemLocal;

@@ -119,14 +119,14 @@
 ////} ddsFileHeader_t;
 
 
-////// increasing numeric values imply more information is stored
-////typedef enum {
-////	TD_SPECULAR,			// may be compressed, and always zeros the alpha channel
-////	TD_DIFFUSE,				// may be compressed
-////	TD_DEFAULT,				// will use compressed formats when possible
-////	TD_BUMP,				// may be compressed with 8 bit lookup
-////	TD_HIGH_QUALITY			// either 32 bit or a component format, no loss at all
-////} textureDepth_t;
+//// increasing numeric values imply more information is stored
+//typedef enum {
+var	TD_SPECULAR = 0,			// may be compressed, and always zeros the alpha channel
+	TD_DIFFUSE = 0,				// may be compressed
+	TD_DEFAULT = 0,				// will use compressed formats when possible
+	TD_BUMP = 0;				// may be compressed with 8 bit lookup
+//	TD_HIGH_QUALITY 			// either 32 bit or a component format, no loss at all
+//} textureDepth_t;
 
 ////typedef enum {
 ////	TT_DISABLED,
