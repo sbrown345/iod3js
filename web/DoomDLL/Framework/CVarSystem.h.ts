@@ -1,3 +1,4 @@
+/// <reference path="CVarSystem.cpp.ts" />
 /////*
 ////===========================================================================
 
@@ -80,91 +81,94 @@
 ////*/
 
 ////typedef enum {
-////	CVAR_ALL				= -1,		// all flags
-////	CVAR_BOOL				= BIT(0),	// variable is a boolean
-////	CVAR_INTEGER			= BIT(1),	// variable is an integer
-////	CVAR_FLOAT				= BIT(2),	// variable is a float
-////	CVAR_SYSTEM				= BIT(3),	// system variable
-////	CVAR_RENDERER			= BIT(4),	// renderer variable
-////	CVAR_SOUND				= BIT(5),	// sound variable
-////	CVAR_GUI				= BIT(6),	// gui variable
-////	CVAR_GAME				= BIT(7),	// game variable
-////	CVAR_TOOL				= BIT(8),	// tool variable
-////	CVAR_USERINFO			= BIT(9),	// sent to servers, available to menu
-////	CVAR_SERVERINFO			= BIT(10),	// sent from servers, available to menu
-////	CVAR_NETWORKSYNC		= BIT(11),	// cvar is synced from the server to clients
-////	CVAR_STATIC				= BIT(12),	// statically declared, not user created
-////	CVAR_CHEAT				= BIT(13),	// variable is considered a cheat
-////	CVAR_NOCHEAT			= BIT(14),	// variable is not considered a cheat
-////	CVAR_INIT				= BIT(15),	// can only be set from the command-line
-////	CVAR_ROM				= BIT(16),	// display only, cannot be set by user at all
-////	CVAR_ARCHIVE			= BIT(17),	// set to cause it to be saved to a config file
-////	CVAR_MODIFIED			= BIT(18)	// set when the variable is modified
+var     CVAR_ALL				= -1,		// all flags
+        CVAR_BOOL				= BIT(0),	// variable is a boolean
+        CVAR_INTEGER			= BIT(1),	// variable is an integer
+        CVAR_FLOAT				= BIT(2),	// variable is a float
+        CVAR_SYSTEM				= BIT(3),	// system variable
+        CVAR_RENDERER			= BIT(4),	// renderer variable
+        CVAR_SOUND				= BIT(5),	// sound variable
+        CVAR_GUI				= BIT(6),	// gui variable
+        CVAR_GAME				= BIT(7),	// game variable
+        CVAR_TOOL				= BIT(8),	// tool variable
+        CVAR_USERINFO			= BIT(9),	// sent to servers, available to menu
+        CVAR_SERVERINFO			= BIT(10),	// sent from servers, available to menu
+        CVAR_NETWORKSYNC		= BIT(11),	// cvar is synced from the server to clients
+        CVAR_STATIC				= BIT(12),	// statically declared, not user created
+        CVAR_CHEAT				= BIT(13),	// variable is considered a cheat
+        CVAR_NOCHEAT			= BIT(14),	// variable is not considered a cheat
+        CVAR_INIT				= BIT(15),	// can only be set from the command-line
+        CVAR_ROM				= BIT(16),	// display only, cannot be set by user at all
+        CVAR_ARCHIVE			= BIT(17),	// set to cause it to be saved to a config file
+        CVAR_MODIFIED			= BIT(18);	// set when the variable is modified
 ////} cvarFlags_t;
 
 
-/////*
-////===============================================================================
+/*
+===============================================================================
 
-////	idCVar
+	idCVar
 
-////===============================================================================
-////*/
+===============================================================================
+*/
 
-////class idCVar {
-////public:
-////							// Never use the default constructor.
-////							idCVar( void ) { assert( typeid( this ) != typeid( idCVar ) ); }
+class idCVar {
+//public:
+							////// Never use the default constructor.
+							////idCVar( void ) { assert( typeid( this ) != typeid( idCVar ) ); }
 
-////							// Always use one of the following constructors.
-////							idCVar( const char *name, const char *value, int flags, const char *description,
-////									argCompletion_t valueCompletion = NULL );
-////							idCVar( const char *name, const char *value, int flags, const char *description,
-////									float valueMin, float valueMax, argCompletion_t valueCompletion = NULL );
-////							idCVar( const char *name, const char *value, int flags, const char *description,
-////									const char **valueStrings, argCompletion_t valueCompletion = NULL );
+    						// Always use one of the following constructors.
+							constructor( name: string, value: string, flags:number, description:string,
+									valueMin:number, valueMax:number, valueCompletion/*:argCompletion_t*/ )
+							constructor( name: string, value: string, flags:number, description:string,
+									valueStrings:string, valueCompletion/*:argCompletion_t*/ )
+
+							constructor( /*const char **/name: string, /*const char **/value: string, /*int */flags: number, /*const char **/description: string,
+							    /*argCompletion_t*/ valueCompletion = null) {
+							    this.init();
+							}
 
 ////	virtual					~idCVar( void ) {}
 
-////	const char *			GetName( void ) const { return internalVar->name; }
-////	int						GetFlags( void ) const { return internalVar->flags; }
-////	const char *			GetDescription( void ) const { return internalVar->description; }
-////	float					GetMinValue( void ) const { return internalVar->valueMin; }
-////	float					GetMaxValue( void ) const { return internalVar->valueMax; }
+////	const char *			GetName( void ) const { return internalVar.name; }
+////	int						GetFlags( void ) const { return internalVar.flags; }
+////	const char *			GetDescription( void ) const { return internalVar.description; }
+////	float					GetMinValue( void ) const { return internalVar.valueMin; }
+////	float					GetMaxValue( void ) const { return internalVar.valueMax; }
 ////	const char **			GetValueStrings( void ) const { return valueStrings; }
 ////	argCompletion_t			GetValueCompletion( void ) const { return valueCompletion; }
 
-////	bool					IsModified( void ) const { return ( internalVar->flags & CVAR_MODIFIED ) != 0; }
-////	void					SetModified( void ) { internalVar->flags |= CVAR_MODIFIED; }
-////	void					ClearModified( void ) { internalVar->flags &= ~CVAR_MODIFIED; }
+////	bool					IsModified( void ) const { return ( internalVar.flags & CVAR_MODIFIED ) != 0; }
+////	void					SetModified( void ) { internalVar.flags |= CVAR_MODIFIED; }
+////	void					ClearModified( void ) { internalVar.flags &= ~CVAR_MODIFIED; }
 
-////	const char *			GetString( void ) const { return internalVar->value; }
-////	bool					GetBool( void ) const { return ( internalVar->integerValue != 0 ); }
-////	int						GetInteger( void ) const { return internalVar->integerValue; }
-////	float					GetFloat( void ) const { return internalVar->floatValue; }
+////	const char *			GetString( void ) const { return internalVar.value; }
+////	bool					GetBool( void ) const { return ( internalVar.integerValue != 0 ); }
+////	int						GetInteger( void ) const { return internalVar.integerValue; }
+////	float					GetFloat( void ) const { return internalVar.floatValue; }
 
-////	void					SetString( const char *value ) { internalVar->InternalSetString( value ); }
-////	void					SetBool( const bool value ) { internalVar->InternalSetBool( value ); }
-////	void					SetInteger( const int value ) { internalVar->InternalSetInteger( value ); }
-////	void					SetFloat( const float value ) { internalVar->InternalSetFloat( value ); }
+////	void					SetString( const char *value ) { internalVar.InternalSetString( value ); }
+////	void					SetBool( const bool value ) { internalVar.InternalSetBool( value ); }
+////	void					SetInteger( const int value ) { internalVar.InternalSetInteger( value ); }
+////	void					SetFloat( const float value ) { internalVar.InternalSetFloat( value ); }
 
 ////	void					SetInternalVar( idCVar *cvar ) { internalVar = cvar; }
 
 ////	static void				RegisterStaticVars( void );
 
 ////protected:
-////	const char *			name;					// name
-////	const char *			value;					// value
-////	const char *			description;			// description
-////	int						flags;					// CVAR_? flags
-////	float					valueMin;				// minimum value
-////	float					valueMax;				// maximum value
-////	const char **			valueStrings;			// valid value strings
-////	argCompletion_t			valueCompletion;		// value auto-completion function
-////	int						integerValue;			// atoi( string )
-////	float					floatValue;				// atof( value )
-////	idCVar *				internalVar;			// internal cvar
-////	idCVar *				next;					// next statically declared cvar
+    name:string;					// name                                    //	const char *			
+    value:string;					// value                                   //	const char *			
+    description:string;			    // description                             //	const char *			
+    flags:number;					// CVAR_? flags                            //	int						
+    valueMin:number;				// minimum value                           //	float					
+    valueMax:number;				// maximum value                           //	float					
+    valueStrings:string[];			// valid value strings                     //	const char **			
+    valueCompletion;		        // value auto-completion function          //	argCompletion_t			
+    integerValue:number;			// atoi( string )                          //	int						
+    floatValue:number;				// atof( value )                           //	float					
+    internalVar:idCVar;			    // internal cvar                           //	idCVar *				
+    next:idCVar;					// next statically declared cvar           //	idCVar *				
 
 ////private:
 ////	void					Init( const char *name, const char *value, int flags, const char *description,
@@ -176,7 +180,7 @@
 ////	virtual void			InternalSetFloat( const float newValue ) {}
 
 ////	static idCVar *			staticVars;
-////};
+//};
 
 ////ID_INLINE idCVar::idCVar( const char *name, const char *value, int flags, const char *description,
 ////							argCompletion_t valueCompletion ) {
@@ -197,15 +201,61 @@
 ////}
 
 
-/////*
-////===============================================================================
+/*
+===============================================================================
 
-////	idCVarSystem
+	CVar Registration
 
-////===============================================================================
-////*/
+	Each DLL using CVars has to declare a private copy of the static variable
+	idCVar::staticVars like this: idCVar * idCVar::staticVars = NULL;
+	Furthermore idCVar::RegisterStaticVars() has to be called after the
+	cvarSystem pointer is set when the DLL is first initialized.
 
-////class idCVarSystem {
+//===============================================================================
+//*/
+
+Init( /*const char **/name:string, /*const char **/value:string, /*int */flags:number, /*const char **/description:string,
+							/*float*/ valueMin:number, /*float */valueMax:number, /*const char ***/valueStrings:string[], /*argCompletion_t */valueCompletion ) {
+	this.name = name;
+	this.value = value;
+	this.flags = flags;
+	this.description = description;
+	this.flags = flags | CVAR_STATIC;
+	this.valueMin = valueMin;
+	this.valueMax = valueMax;
+	this.valueStrings = valueStrings;
+	this.valueCompletion = valueCompletion;
+	this.integerValue = 0;
+	this.floatValue = 0.0;
+	this.internalVar = this;
+	if ( !staticVars /*!= (idCVar *)0xFFFFFFFF*/ ) {
+		this.next = staticVars;
+		staticVars = this;
+	} else {
+		cvarSystem.Register( this );
+	}
+}
+
+////ID_INLINE void idCVar::RegisterStaticVars( void ) {
+////	if ( staticVars != (idCVar *)0xFFFFFFFF ) {
+////		for ( idCVar *cvar = staticVars; cvar; cvar = cvar.next ) {
+////			cvarSystem.Register( cvar );
+////		}
+////		staticVars = (idCVar *)0xFFFFFFFF;
+////	}
+////}
+
+////#endif /* !__CVARSYSTEM_H__ */
+}
+/*
+===============================================================================
+
+	idCVarSystem
+
+===============================================================================
+*/
+
+class idCVarSystem {
 ////public:
 ////	virtual					~idCVarSystem( void ) {}
 
@@ -257,53 +307,7 @@
 ////							// Moves CVars to and from dictionaries.
 ////	virtual const idDict *	MoveCVarsToDict( int flags ) const = 0;
 ////	virtual void			SetCVarsFromDict( const idDict &dict ) = 0;
-////};
+};
 
 ////extern idCVarSystem *		cvarSystem;
 
-
-/////*
-////===============================================================================
-
-////	CVar Registration
-
-////	Each DLL using CVars has to declare a private copy of the static variable
-////	idCVar::staticVars like this: idCVar * idCVar::staticVars = NULL;
-////	Furthermore idCVar::RegisterStaticVars() has to be called after the
-////	cvarSystem pointer is set when the DLL is first initialized.
-
-////===============================================================================
-////*/
-
-////ID_INLINE void idCVar::Init( const char *name, const char *value, int flags, const char *description,
-////							float valueMin, float valueMax, const char **valueStrings, argCompletion_t valueCompletion ) {
-////	this->name = name;
-////	this->value = value;
-////	this->flags = flags;
-////	this->description = description;
-////	this->flags = flags | CVAR_STATIC;
-////	this->valueMin = valueMin;
-////	this->valueMax = valueMax;
-////	this->valueStrings = valueStrings;
-////	this->valueCompletion = valueCompletion;
-////	this->integerValue = 0;
-////	this->floatValue = 0.0f;
-////	this->internalVar = this;
-////	if ( staticVars != (idCVar *)0xFFFFFFFF ) {
-////		this->next = staticVars;
-////		staticVars = this;
-////	} else {
-////		cvarSystem->Register( this );
-////	}
-////}
-
-////ID_INLINE void idCVar::RegisterStaticVars( void ) {
-////	if ( staticVars != (idCVar *)0xFFFFFFFF ) {
-////		for ( idCVar *cvar = staticVars; cvar; cvar = cvar->next ) {
-////			cvarSystem->Register( cvar );
-////		}
-////		staticVars = (idCVar *)0xFFFFFFFF;
-////	}
-////}
-
-////#endif /* !__CVARSYSTEM_H__ */

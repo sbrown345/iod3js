@@ -41,7 +41,7 @@
 ////#include "../idlib/precompiled.h"
 ////#pragma hdrstop
 
-////idCVar * idCVar::staticVars = NULL;
+var staticVars:idCVar = null;
 
 /////*
 ////===============================================================================
@@ -421,15 +421,15 @@
 ////}
 
 
-/////*
-////===============================================================================
+/*
+===============================================================================
 
-////	idCVarSystemLocal
+	idCVarSystemLocal
 
-////===============================================================================
-////*/
+===============================================================================
+*/
 
-////class idCVarSystemLocal : public idCVarSystem {
+class idCVarSystemLocal extends idCVarSystem {
 ////public:
 ////							idCVarSystemLocal( void );
 
@@ -439,7 +439,7 @@
 ////	virtual void			Shutdown( void );
 ////	virtual bool			IsInitialized( void ) const;
 
-////	virtual void			Register( idCVar *cvar );
+    Register( idCVar *cvar ):;
 
 ////	virtual idCVar *		Find( const char *name );
 
@@ -474,10 +474,10 @@
 ////	void					SetInternal( const char *name, const char *value, int flags );
 
 ////private:
-var                             initialized:boolean;
+                                 initialized:boolean;
 ////	idList<idInternalCVar*>	cvars;
 ////	idHashIndex				cvarHash;
-var /*int*/						modifiedFlags:number;
+        						modifiedFlags:number;
 ////							// use a static dictionary to MoveCVarsToDict can be used from game
 ////	static idDict			moveCVarsToDict;
 
@@ -493,10 +493,10 @@ var /*int*/						modifiedFlags:number;
 ////	static void				ListByFlags( const idCmdArgs &args, cvarFlags_t flags );
 ////	static void				List_f( const idCmdArgs &args );
 ////	static void				Restart_f( const idCmdArgs &args );
-////};
+};
 
-////idCVarSystemLocal			localCVarSystem;
-////idCVarSystem *				cvarSystem = &localCVarSystem;
+var localCVarSystem = new idCVarSystemLocal();
+var cvarSystem = localCVarSystem;
 
 ////idDict						idCVarSystemLocal::moveCVarsToDict;
 
@@ -581,7 +581,7 @@ idCVarSystemLocal::Init
 */
 function /*idCVarSystemLocal::*/cvarSystem__Init( ):void {
 
-	modifiedFlags = 0;
+	this.modifiedFlags = 0;
 
 	AddCommand( "toggle", Toggle_f, CMD_FL_SYSTEM, "toggles a cvar" );
 	AddCommand( "set", Set_f, CMD_FL_SYSTEM, "sets a cvar" );
@@ -593,7 +593,7 @@ function /*idCVarSystemLocal::*/cvarSystem__Init( ):void {
 	AddCommand( "listCvars", cvarSystem_List_f, CMD_FL_SYSTEM, "lists cvars" );
 	AddCommand( "cvar_restart", Restart_f, CMD_FL_SYSTEM, "restart the cvar system" );
 
-	initialized = true;
+	this.initialized = true;
 }
 
 ///*

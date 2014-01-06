@@ -248,69 +248,69 @@ var globalImages = new idImageManager();
 
 
 
-/////*
-////==================
-////R_CreateDefaultImage
+/*
+==================
+R_CreateDefaultImage
 
-////the default image will be grey with a white box outline
-////to allow you to see the mapping coordinates on a surface
-////==================
-////*/
-////#define	DEFAULT_SIZE	16
-////void idImage::MakeDefault() {
-////	int		x, y;
-////	byte	data[DEFAULT_SIZE][DEFAULT_SIZE][4];
+the default image will be grey with a white box outline
+to allow you to see the mapping coordinates on a surface
+==================
+*/
+idImage.prototype.MakeDefault = function():void {
+    var DEFAULT_SIZE = 16;
+	var/*int		*/x:number, y:number;
+	var data = $3dArray(Uint8Array, DEFAULT_SIZE, DEFAULT_SIZE, 4);
 
-////	if ( com_developer.GetBool() ) {
-////		// grey center
-////		for ( y = 0 ; y < DEFAULT_SIZE ; y++ ) {
-////			for ( x = 0 ; x < DEFAULT_SIZE ; x++ ) {
-////				data[y][x][0] = 32;
-////				data[y][x][1] = 32;
-////				data[y][x][2] = 32;
-////				data[y][x][3] = 255;
-////			}
-////		}
+	if ( com_developer.GetBool() ) {
+		// grey center
+		for ( y = 0 ; y < DEFAULT_SIZE ; y++ ) {
+			for ( x = 0 ; x < DEFAULT_SIZE ; x++ ) {
+				data[y][x][0] = 32;
+				data[y][x][1] = 32;
+				data[y][x][2] = 32;
+				data[y][x][3] = 255;
+			}
+		}
 
-////		// white border
-////		for ( x = 0 ; x < DEFAULT_SIZE ; x++ ) {
-////			data[0][x][0] =
-////				data[0][x][1] =
-////				data[0][x][2] =
-////				data[0][x][3] = 255;
+		// white border
+		for ( x = 0 ; x < DEFAULT_SIZE ; x++ ) {
+			data[0][x][0] =
+				data[0][x][1] =
+				data[0][x][2] =
+				data[0][x][3] = 255;
 
-////			data[x][0][0] =
-////				data[x][0][1] =
-////				data[x][0][2] =
-////				data[x][0][3] = 255;
+			data[x][0][0] =
+				data[x][0][1] =
+				data[x][0][2] =
+				data[x][0][3] = 255;
 
-////			data[DEFAULT_SIZE-1][x][0] =
-////				data[DEFAULT_SIZE-1][x][1] =
-////				data[DEFAULT_SIZE-1][x][2] =
-////				data[DEFAULT_SIZE-1][x][3] = 255;
+			data[DEFAULT_SIZE-1][x][0] =
+				data[DEFAULT_SIZE-1][x][1] =
+				data[DEFAULT_SIZE-1][x][2] =
+				data[DEFAULT_SIZE-1][x][3] = 255;
 
-////			data[x][DEFAULT_SIZE-1][0] =
-////				data[x][DEFAULT_SIZE-1][1] =
-////				data[x][DEFAULT_SIZE-1][2] =
-////				data[x][DEFAULT_SIZE-1][3] = 255;
-////		}
-////	} else {
-////		for ( y = 0 ; y < DEFAULT_SIZE ; y++ ) {
-////			for ( x = 0 ; x < DEFAULT_SIZE ; x++ ) {
-////				data[y][x][0] = 0;
-////				data[y][x][1] = 0;
-////				data[y][x][2] = 0;
-////				data[y][x][3] = 0;
-////			}
-////		}
-////	}
+			data[x][DEFAULT_SIZE-1][0] =
+				data[x][DEFAULT_SIZE-1][1] =
+				data[x][DEFAULT_SIZE-1][2] =
+				data[x][DEFAULT_SIZE-1][3] = 255;
+		}
+	} else {
+		for ( y = 0 ; y < DEFAULT_SIZE ; y++ ) {
+			for ( x = 0 ; x < DEFAULT_SIZE ; x++ ) {
+				data[y][x][0] = 0;
+				data[y][x][1] = 0;
+				data[y][x][2] = 0;
+				data[y][x][3] = 0;
+			}
+		}
+	}
 
-////	GenerateImage( (byte *)data, 
-////		DEFAULT_SIZE, DEFAULT_SIZE, 
-////		TF_DEFAULT, true, TR_REPEAT, TD_DEFAULT );
+	GenerateImage( /*(byte *)*/flattenArray(data), 
+		DEFAULT_SIZE, DEFAULT_SIZE, 
+		TF_DEFAULT, true, TR_REPEAT, TD_DEFAULT );
 
-////	defaulted = true;
-////}
+	this.defaulted = true;
+}
 
 /*static*/idImageManager.prototype.R_DefaultImage = function( image: idImage ): void {
 	image.MakeDefault();

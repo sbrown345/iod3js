@@ -86,6 +86,17 @@ function multiDimArray <T>(arrayClass: any, num: number, arrLength: number): T[]
     return multiDimArray;
 }
 
+function $3dArray (arrayClass: any, d1: number, d2: number, d3: number):Array<Array<Array>> {
+    var array = new Array(d1);
+    for (var i = 0; i < d1; k++) {
+        array[i] = new Array(d2);
+        for (var j = 0; j < d1; j++) {
+            array[i][j] = new arrayClass(d3);
+        }
+    }
+    return array;
+}
+
 //// todo: rename
 //// arguments are only optional so an error isn't thrown if array is undefined (custom typescript version)
 //function set0OrNewArray(array?, type?:any, length?:number):any {
