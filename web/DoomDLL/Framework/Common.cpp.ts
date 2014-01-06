@@ -118,6 +118,7 @@ var com_developer = new idCVar( "developer", "0", CVAR_BOOL|CVAR_SYSTEM|CVAR_NOC
 
 ////// writes si_version to the config file - in a kinda obfuscated way
 //////#define ID_WRITE_VERSION
+class idCommon {
 
 ////class idCommonLocal : public idCommon {
 ////public:
@@ -185,9 +186,9 @@ var com_developer = new idCVar( "developer", "0", CVAR_BOOL|CVAR_SYSTEM|CVAR_NOC
 ////	void						FilterLangList( idStrList* list, idStr lang );
 
 ////	bool						com_fullyInitialized;
-////	bool						com_refreshOnPrint;		// update the screen every print for dmap
-////	int							com_errorEntered;		// 0, ERP_DROP, etc
-////	bool						com_shuttingDown;
+/*	bool						*/	com_refreshOnPrint:boolean;		// update the screen every print for dmap
+/*	int							*/	com_errorEntered:number;		// 0, ERP_DROP, etc
+/*	bool						*/	com_shuttingDown:boolean;
 
 ////	idFile *					logFile;
 
@@ -214,7 +215,6 @@ var com_developer = new idCVar( "developer", "0", CVAR_BOOL|CVAR_SYSTEM|CVAR_NOC
 //var commonLocal = new idCommon();////idCommonLocal	commonLocal;
 //var common:idCommon = commonLocal;
 
-class idCommon {
 
 /////*
 ////==================
@@ -312,7 +312,7 @@ class idCommon {
 ////void idCommonLocal::CloseLogFile( void ) {
 ////	if ( logFile ) {
 ////		com_logFile.SetBool( false ); // make sure no further VPrintf attempts to open the log file again
-////		fileSystem->CloseFile( logFile );
+////		fileSystem.CloseFile( logFile );
 ////		logFile = NULL;
 ////	}
 ////}
@@ -339,7 +339,7 @@ class idCommon {
 ////	static bool	logFileFailed = false;
 
 ////	// if the cvar system is not initialized
-////	if ( !cvarSystem->IsInitialized() ) {
+////	if ( !cvarSystem.IsInitialized() ) {
 ////		return;
 ////	}
 
@@ -372,7 +372,7 @@ class idCommon {
 ////	}
 
 ////	// echo to console buffer
-////	console->Print( msg );
+////	console.Print( msg );
 
 ////	// remove any color codes
 ////	idStr::RemoveColors( msg );
@@ -392,7 +392,7 @@ class idCommon {
 ////#endif
 
 ////	// logFile
-////	if ( com_logFile.GetInteger() && !logFileFailed && fileSystem->IsInitialized() ) {
+////	if ( com_logFile.GetInteger() && !logFileFailed && fileSystem.IsInitialized() ) {
 ////		static bool recursing;
 
 ////		if ( !logFile && !recursing ) {
@@ -400,10 +400,10 @@ class idCommon {
 ////			ID_TIME_T aclock;
 ////			const char *fileName = com_logFileName.GetString()[0] ? com_logFileName.GetString() : "qconsole.log";
 
-////			// fileSystem->OpenFileWrite can cause recursive prints into here
+////			// fileSystem.OpenFileWrite can cause recursive prints into here
 ////			recursing = true;
 
-////			logFile = fileSystem->OpenFileWrite( fileName );
+////			logFile = fileSystem.OpenFileWrite( fileName );
 ////			if ( !logFile ) {
 ////				logFileFailed = true;
 ////				FatalError( "failed to open log file '%s'\n", fileName );
@@ -414,7 +414,7 @@ class idCommon {
 ////			if ( com_logFile.GetInteger() > 1 ) {
 ////				// force it to not buffer so we get valid
 ////				// data even if we are crashing
-////				logFile->ForceFlush();
+////				logFile.ForceFlush();
 ////			}
 
 ////			time( &aclock );
@@ -422,20 +422,20 @@ class idCommon {
 ////			Printf( "log file '%s' opened on %s\n", fileName, asctime( newtime ) );
 ////		}
 ////		if ( logFile ) {
-////			logFile->Write( msg, strlen( msg ) );
-////			logFile->Flush();	// ForceFlush doesn't help a whole lot
+////			logFile.Write( msg, strlen( msg ) );
+////			logFile.Flush();	// ForceFlush doesn't help a whole lot
 ////		}
 ////	}
 
 ////	// don't trigger any updates if we are in the process of doing a fatal error
 ////	if ( com_errorEntered != ERP_FATAL ) {
 ////		// update the console if we are in a long-running command, like dmap
-////		if ( com_refreshOnPrint ) {
-////			session->UpdateScreen();
+////		if ( this.com_refreshOnPrint ) {
+////			session.UpdateScreen();
 ////		}
 
 ////		// let session redraw the animated loading screen if necessary
-////		session->PacifierUpdate();
+////		session.PacifierUpdate();
 ////	}
 
 ////#ifdef _WIN32
@@ -471,34 +471,26 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
     console.log(fmt, args);
 }
 
-/////*
-////==================
-////idCommonLocal::DPrintf
+/*
+==================
+idCommonLocal::DPrintf
 
-////prints message that only shows up if the "developer" cvar is set
-////==================
-////*/
-////void idCommonLocal::DPrintf( const char *fmt, ... ) {
-////	va_list		argptr;
-////	char		msg[MAX_PRINT_MSG_SIZE];
-		
-////	if ( !cvarSystem->IsInitialized() || !com_developer.GetBool() ) {
-////		return;			// don't confuse non-developers with techie stuff...
-////	}
+prints message that only shows up if the "developer" cvar is set
+==================
+*/
+DPrintf( fmt:string, ...args:any[] ):void {
+	if ( !cvarSystem.IsInitialized() || !com_developer.GetBool() ) {
+		return;			// don't confuse non-developers with techie stuff...
+	}
 
-////	va_start( argptr, fmt );
-////	idStr::vsnPrintf( msg, sizeof(msg), fmt, argptr );
-////	va_end( argptr );
-////	msg[sizeof(msg)-1] = '\0';
-	
-////	// never refresh the screen, which could cause reentrency problems
-////	bool temp = com_refreshOnPrint;
-////	com_refreshOnPrint = false;
+	// never refresh the screen, which could cause reentrency problems
+	var temp = this.com_refreshOnPrint;
+	this.com_refreshOnPrint = false;
 
-////	Printf( S_COLOR_RED"%s", msg );
+	this.Printf( /*S_COLOR_RED*/"%s", args );
 
-////	com_refreshOnPrint = temp;
-////}
+	this.com_refreshOnPrint = temp;
+}
 
 /////*
 ////==================
@@ -598,36 +590,36 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 ////		return;
 ////	}
 
-////	warningFile = fileSystem->OpenFileWrite( "warnings.txt", "fs_savepath" );
+////	warningFile = fileSystem.OpenFileWrite( "warnings.txt", "fs_savepath" );
 ////	if ( warningFile ) {
 
-////		warningFile->Printf( "------------- Warnings ---------------\n\n" );
-////		warningFile->Printf( "during %s...\n", warningCaption.c_str() );
+////		warningFile.Printf( "------------- Warnings ---------------\n\n" );
+////		warningFile.Printf( "during %s...\n", warningCaption.c_str() );
 ////		warningList.Sort();
 ////		for ( i = 0; i < warningList.Num(); i++ ) {
 ////			warningList[i].RemoveColors();
-////			warningFile->Printf( "WARNING: %s\n", warningList[i].c_str() );
+////			warningFile.Printf( "WARNING: %s\n", warningList[i].c_str() );
 ////		}
 ////		if ( warningList.Num() >= MAX_WARNING_LIST ) {
-////			warningFile->Printf( "\nmore than %d warnings!\n", MAX_WARNING_LIST );
+////			warningFile.Printf( "\nmore than %d warnings!\n", MAX_WARNING_LIST );
 ////		} else {
-////			warningFile->Printf( "\n%d warnings.\n", warningList.Num() );
+////			warningFile.Printf( "\n%d warnings.\n", warningList.Num() );
 ////		}
 
-////		warningFile->Printf( "\n\n-------------- Errors ---------------\n\n" );
+////		warningFile.Printf( "\n\n-------------- Errors ---------------\n\n" );
 ////		errorList.Sort();
 ////		for ( i = 0; i < errorList.Num(); i++ ) {
 ////			errorList[i].RemoveColors();
-////			warningFile->Printf( "ERROR: %s", errorList[i].c_str() );
+////			warningFile.Printf( "ERROR: %s", errorList[i].c_str() );
 ////		}
 
-////		warningFile->ForceFlush();
+////		warningFile.ForceFlush();
 
-////		fileSystem->CloseFile( warningFile );
+////		fileSystem.CloseFile( warningFile );
 
 ////#if defined(_WIN32) && !defined(_DEBUG)
 ////		idStr	osPath;
-////		osPath = fileSystem->RelativePathToOSPath( "warnings.txt", "fs_savepath" );
+////		osPath = fileSystem.RelativePathToOSPath( "warnings.txt", "fs_savepath" );
 ////		WinExec( va( "Notepad.exe %s", osPath.c_str() ), SW_SHOW );
 ////#endif
 ////	}
@@ -647,16 +639,16 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 ////	int code = ERP_DROP;
 
 ////	// always turn this off after an error
-////	com_refreshOnPrint = false;
+////	this.com_refreshOnPrint = false;
 
 ////	// when we are running automated scripts, make sure we
 ////	// know if anything failed
-////	if ( cvarSystem->GetCVarInteger( "fs_copyfiles" ) ) {
+////	if ( cvarSystem.GetCVarInteger( "fs_copyfiles" ) ) {
 ////		code = ERP_FATAL;
 ////	}
 
 ////	// if we don't have GL running, make it a fatal error
-////	if ( !renderSystem->IsOpenGLRunning() ) {
+////	if ( !renderSystem.IsOpenGLRunning() ) {
 ////		code = ERP_FATAL;
 ////	}
 
@@ -699,7 +691,7 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 
 ////	// Dont shut down the session for gui editor or debugger
 ////	if ( !( com_editors & ( EDITOR_GUI | EDITOR_DEBUGGER ) ) ) {
-////		session->Stop();
+////		session.Stop();
 ////	}
 
 ////	if ( code == ERP_DISCONNECT ) {
@@ -717,8 +709,8 @@ Printf( /*const char **/ fmt:string, ...args: any[] ):void {
 ////		Printf( "********************\nERROR: %s\n********************\n", errorMessage );
 ////	}
 
-////	if ( cvarSystem->GetCVarBool( "r_fullscreen" ) ) {
-////		cmdSystem->BufferCommandText( CMD_EXEC_NOW, "vid_restart partial windowed\n" );
+////	if ( cvarSystem.GetCVarBool( "r_fullscreen" ) ) {
+////		cmdSystem.BufferCommandText( CMD_EXEC_NOW, "vid_restart partial windowed\n" );
 ////	}
 
 ////	Shutdown();
@@ -766,8 +758,8 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
     ////va_end( argptr );
     ////errorMessage[sizeof(errorMessage)-1] = '\0';
 
-    ////if ( cvarSystem->GetCVarBool( "r_fullscreen" ) ) {
-    ////	cmdSystem->BufferCommandText( CMD_EXEC_NOW, "vid_restart partial windowed\n" );
+    ////if ( cvarSystem.GetCVarBool( "r_fullscreen" ) ) {
+    ////	cmdSystem.BufferCommandText( CMD_EXEC_NOW, "vid_restart partial windowed\n" );
     ////}
 
     ////Sys_SetFatalError( errorMessage );
@@ -908,7 +900,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////			|| !idStr::Icmp( com_consoleLines[ i ].Argv(0), "dmap" )
 ////			|| !idStr::Icmp( com_consoleLines[ i ].Argv(0), "materialEditor" )
 ////			) {
-////			cvarSystem->SetCVarBool( "r_fullscreen", false );
+////			cvarSystem.SetCVarBool( "r_fullscreen", false );
 ////			return;
 ////		}
 ////	}
@@ -939,7 +931,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////		s = com_consoleLines[ i ].Argv(1);
 
 ////		if ( !match || !idStr::Icmp( s, match ) ) {
-////			cvarSystem->SetCVarString( s, com_consoleLines[ i ].Argv( 2 ) );
+////			cvarSystem.SetCVarString( s, com_consoleLines[ i ].Argv( 2 ) );
 ////			if ( once ) {
 ////				// kill the line
 ////				int j = i + 1;
@@ -982,7 +974,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////			added = true;
 ////		}
 ////		// directly as tokenized so nothing gets screwed
-////		cmdSystem->BufferCommandArgs( CMD_EXEC_APPEND, com_consoleLines[i] );
+////		cmdSystem.BufferCommandArgs( CMD_EXEC_APPEND, com_consoleLines[i] );
 ////	}
 
 ////	return added;
@@ -1027,13 +1019,13 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////void idCommonLocal::WriteFlaggedCVarsToFile( const char *filename, int flags, const char *setCmd ) {
 ////	idFile *f;
 
-////	f = fileSystem->OpenFileWrite( filename );
+////	f = fileSystem.OpenFileWrite( filename );
 ////	if ( !f ) {
 ////		Printf( "Couldn't write %s.\n", filename );
 ////		return;
 ////	}
-////	cvarSystem->WriteFlaggedVariables( flags, setCmd, f );
-////	fileSystem->CloseFile( f );
+////	cvarSystem.WriteFlaggedVariables( flags, setCmd, f );
+////	fileSystem.CloseFile( f );
 ////}
 
 /////*
@@ -1051,7 +1043,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	idBase64 out;
 ////#endif
 
-////	f = fileSystem->OpenFileWrite( filename );
+////	f = fileSystem.OpenFileWrite( filename );
 ////	if ( !f ) {
 ////		Printf ("Couldn't write %s.\n", filename );
 ////		return;
@@ -1061,17 +1053,17 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	assert( config_compressor );
 ////	t = time( NULL );
 ////	curtime = ctime( &t );
-////	sprintf( runtag, "%s - %s", cvarSystem->GetCVarString( "si_version" ), curtime );
-////	config_compressor->Init( &compressed, true, 8 );
-////	config_compressor->Write( runtag.c_str(), runtag.Length() );
-////	config_compressor->FinishCompress( );
+////	sprintf( runtag, "%s - %s", cvarSystem.GetCVarString( "si_version" ), curtime );
+////	config_compressor.Init( &compressed, true, 8 );
+////	config_compressor.Write( runtag.c_str(), runtag.Length() );
+////	config_compressor.FinishCompress( );
 ////	out.Encode( (const byte *)compressed.GetDataPtr(), compressed.Length() );
-////	f->Printf( "// %s\n", out.c_str() );
+////	f.Printf( "// %s\n", out.c_str() );
 ////#endif
 
 ////	idKeyInput::WriteBindings( f );
-////	cvarSystem->WriteFlaggedVariables( CVAR_ARCHIVE, "seta", f );
-////	fileSystem->CloseFile( f );
+////	cvarSystem.WriteFlaggedVariables( CVAR_ARCHIVE, "seta", f );
+////	fileSystem.CloseFile( f );
 ////}
 
 /////*
@@ -1088,17 +1080,17 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////		return;
 ////	}
 
-////	if ( !( cvarSystem->GetModifiedFlags() & CVAR_ARCHIVE ) ) {
+////	if ( !( cvarSystem.GetModifiedFlags() & CVAR_ARCHIVE ) ) {
 ////		return;
 ////	}
-////	cvarSystem->ClearModifiedFlags( CVAR_ARCHIVE );
+////	cvarSystem.ClearModifiedFlags( CVAR_ARCHIVE );
 
 ////	// disable printing out the "Writing to:" message
 ////	bool developer = com_developer.GetBool();
 ////	com_developer.SetBool( false );
 
 ////	WriteConfigToFile( CONFIG_FILE );
-////	session->WriteCDKey( );
+////	session.WriteCDKey( );
 
 ////	// restore the developer cvar
 ////	com_developer.SetBool( developer );
@@ -1131,7 +1123,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////===============
 ////*/
 ////int	idCommonLocal::ButtonState( int key ) {
-////	return usercmdGen->ButtonState(key);
+////	return usercmdGen.ButtonState(key);
 ////}
 
 /////*
@@ -1141,7 +1133,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////===============
 ////*/
 ////int	idCommonLocal::KeyState( int key ) {
-////	return usercmdGen->KeyState(key);
+////	return usercmdGen.KeyState(key);
 ////}
 
 //////============================================================================
@@ -1187,7 +1179,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////*/
 ////static void Com_MaterialEditor_f( const idCmdArgs &args ) {
 ////	// Turn off sounds
-////	soundSystem->SetMute( true );
+////	soundSystem.SetMute( true );
 ////	MaterialEditorInit();
 ////}
 ////#endif // ID_ALLOW_TOOLS
@@ -1203,10 +1195,10 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	MemInfo_t mi;
 
 ////	memset( &mi, 0, sizeof( mi ) );
-////	mi.filebase = session->GetCurrentMapName();
+////	mi.filebase = session.GetCurrentMapName();
 
-////	renderSystem->PrintMemInfo( &mi );			// textures and models
-////	soundSystem->PrintMemInfo( &mi );			// sounds
+////	renderSystem.PrintMemInfo( &mi );			// textures and models
+////	soundSystem.PrintMemInfo( &mi );			// sounds
 
 ////	common.Printf( " Used image memory: %s bytes\n", idStr::FormatNumber( mi.imageAssetsTotal ).c_str() );
 ////	mi.assetTotals += mi.imageAssetsTotal;
@@ -1222,15 +1214,15 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	// write overview file
 ////	idFile *f;
 
-////	f = fileSystem->OpenFileAppend( "maps/printmeminfo.txt" );
+////	f = fileSystem.OpenFileAppend( "maps/printmeminfo.txt" );
 ////	if ( !f ) {
 ////		return;
 ////	}
 
-////	f->Printf( "total(%s ) image(%s ) model(%s ) sound(%s ): %s\n", idStr::FormatNumber( mi.assetTotals ).c_str(), idStr::FormatNumber( mi.imageAssetsTotal ).c_str(), 
+////	f.Printf( "total(%s ) image(%s ) model(%s ) sound(%s ): %s\n", idStr::FormatNumber( mi.assetTotals ).c_str(), idStr::FormatNumber( mi.imageAssetsTotal ).c_str(), 
 ////		idStr::FormatNumber( mi.modelAssetsTotal ).c_str(), idStr::FormatNumber( mi.soundAssetsTotal ).c_str(), mi.filebase.c_str() );
 
-////	fileSystem->CloseFile( f );
+////	fileSystem.CloseFile( f );
 ////}
 
 ////#ifdef ID_ALLOW_TOOLS
@@ -1241,7 +1233,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////*/
 ////static void Com_EditLights_f( const idCmdArgs &args ) {
 ////	LightEditorInit( NULL );
-////	cvarSystem->SetCVarInteger( "g_editEntityMode", 1 );
+////	cvarSystem.SetCVarInteger( "g_editEntityMode", 1 );
 ////}
 
 /////*
@@ -1251,7 +1243,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////*/
 ////static void Com_EditSounds_f( const idCmdArgs &args ) {
 ////	SoundEditorInit( NULL );
-////	cvarSystem->SetCVarInteger( "g_editEntityMode", 2 );
+////	cvarSystem.SetCVarInteger( "g_editEntityMode", 2 );
 ////}
 
 /////*
@@ -1343,10 +1335,10 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 
 ////	s = atof( args.Argv(1) );
 
-////	start = eventLoop->Milliseconds();
+////	start = eventLoop.Milliseconds();
 
 ////	while ( 1 ) {
-////		now = eventLoop->Milliseconds();
+////		now = eventLoop.Milliseconds();
 ////		if ( ( now - start ) * 0.001f > s ) {
 ////			break;
 ////		}
@@ -1419,115 +1411,115 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////#endif
 ////void Com_ExecMachineSpec_f( const idCmdArgs &args ) {
 ////	if ( com_machineSpec.GetInteger() == 3 ) {
-////		cvarSystem->SetCVarInteger( "image_anisotropy", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_lodbias", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_forceDownSize", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_roundDown", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_preload", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_useAllFormats", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeSpecular", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeBump", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeSpecularLimit", 64, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeBumpLimit", 256, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_usePrecompressedTextures", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downsize", 0			, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarString( "image_filter", "GL_LINEAR_MIPMAP_LINEAR", CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_anisotropy", 8, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_useCompression", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_ignoreHighQuality", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "s_maxSoundsPerShader", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "r_mode", 5, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_useNormalCompression", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "r_multiSamples", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_anisotropy", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_lodbias", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_forceDownSize", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_roundDown", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_preload", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_useAllFormats", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeSpecular", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeBump", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeSpecularLimit", 64, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeBumpLimit", 256, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_usePrecompressedTextures", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downsize", 0			, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarString( "image_filter", "GL_LINEAR_MIPMAP_LINEAR", CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_anisotropy", 8, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_useCompression", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_ignoreHighQuality", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "s_maxSoundsPerShader", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "r_mode", 5, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_useNormalCompression", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "r_multiSamples", 0, CVAR_ARCHIVE );
 ////	} else if ( com_machineSpec.GetInteger() == 2 ) {
-////		cvarSystem->SetCVarString( "image_filter", "GL_LINEAR_MIPMAP_LINEAR", CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_anisotropy", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_lodbias", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_forceDownSize", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_roundDown", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_preload", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_useAllFormats", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeSpecular", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeBump", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeSpecularLimit", 64, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeBumpLimit", 256, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_usePrecompressedTextures", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downsize", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_anisotropy", 8, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_useCompression", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_ignoreHighQuality", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "s_maxSoundsPerShader", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_useNormalCompression", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "r_mode", 4, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "r_multiSamples", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarString( "image_filter", "GL_LINEAR_MIPMAP_LINEAR", CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_anisotropy", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_lodbias", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_forceDownSize", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_roundDown", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_preload", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_useAllFormats", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeSpecular", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeBump", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeSpecularLimit", 64, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeBumpLimit", 256, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_usePrecompressedTextures", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downsize", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_anisotropy", 8, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_useCompression", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_ignoreHighQuality", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "s_maxSoundsPerShader", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_useNormalCompression", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "r_mode", 4, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "r_multiSamples", 0, CVAR_ARCHIVE );
 ////	} else if ( com_machineSpec.GetInteger() == 1 ) {
-////		cvarSystem->SetCVarString( "image_filter", "GL_LINEAR_MIPMAP_LINEAR", CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_anisotropy", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_lodbias", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSize", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_forceDownSize", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_roundDown", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_preload", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_useCompression", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_useAllFormats", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_usePrecompressedTextures", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeSpecular", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeBump", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeSpecularLimit", 64, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeBumpLimit", 256, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_useNormalCompression", 2, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "r_mode", 3, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "r_multiSamples", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarString( "image_filter", "GL_LINEAR_MIPMAP_LINEAR", CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_anisotropy", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_lodbias", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSize", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_forceDownSize", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_roundDown", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_preload", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_useCompression", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_useAllFormats", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_usePrecompressedTextures", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeSpecular", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeBump", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeSpecularLimit", 64, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeBumpLimit", 256, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_useNormalCompression", 2, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "r_mode", 3, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "r_multiSamples", 0, CVAR_ARCHIVE );
 ////	} else {
-////		cvarSystem->SetCVarString( "image_filter", "GL_LINEAR_MIPMAP_LINEAR", CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_anisotropy", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_lodbias", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_roundDown", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_preload", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_useAllFormats", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_usePrecompressedTextures", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSize", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_anisotropy", 0, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_useCompression", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_ignoreHighQuality", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "s_maxSoundsPerShader", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeSpecular", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeBump", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeSpecularLimit", 64, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeBumpLimit", 256, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "r_mode", 3	, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_useNormalCompression", 2, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "r_multiSamples", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarString( "image_filter", "GL_LINEAR_MIPMAP_LINEAR", CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_anisotropy", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_lodbias", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_roundDown", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_preload", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_useAllFormats", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_usePrecompressedTextures", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSize", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_anisotropy", 0, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_useCompression", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_ignoreHighQuality", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "s_maxSoundsPerShader", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeSpecular", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeBump", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeSpecularLimit", 64, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeBumpLimit", 256, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "r_mode", 3	, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_useNormalCompression", 2, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "r_multiSamples", 0, CVAR_ARCHIVE );
 ////	}
 
 ////	if ( Sys_GetVideoRam() < 128 ) {
-////		cvarSystem->SetCVarBool( "image_ignoreHighQuality", true, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSize", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeLimit", 256, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeSpecular", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeSpecularLimit", 64, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeBump", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeBumpLimit", 256, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarBool( "image_ignoreHighQuality", true, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSize", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeLimit", 256, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeSpecular", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeSpecularLimit", 64, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeBump", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeBumpLimit", 256, CVAR_ARCHIVE );
 ////	}
 
 ////	if ( Sys_GetSystemRam() < 512 ) {
-////		cvarSystem->SetCVarBool( "image_ignoreHighQuality", true, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "s_maxSoundsPerShader", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSize", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeLimit", 256, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeSpecular", 1, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarInteger( "image_downSizeSpecularLimit", 64, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarBool( "com_purgeAll", true, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarBool( "r_forceLoadImages", true, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarBool( "image_ignoreHighQuality", true, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "s_maxSoundsPerShader", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSize", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeLimit", 256, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeSpecular", 1, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarInteger( "image_downSizeSpecularLimit", 64, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarBool( "com_purgeAll", true, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarBool( "r_forceLoadImages", true, CVAR_ARCHIVE );
 ////	} else {
-////		cvarSystem->SetCVarBool( "com_purgeAll", false, CVAR_ARCHIVE );
-////		cvarSystem->SetCVarBool( "r_forceLoadImages", false, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarBool( "com_purgeAll", false, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarBool( "r_forceLoadImages", false, CVAR_ARCHIVE );
 ////	}
 
-////	cvarSystem->SetCVarBool("g_decals", true, CVAR_ARCHIVE);
-////	cvarSystem->SetCVarBool("g_projectileLights", true, CVAR_ARCHIVE);
-////	cvarSystem->SetCVarBool("g_doubleVision", true, CVAR_ARCHIVE);
-////	cvarSystem->SetCVarBool("g_muzzleFlash", true, CVAR_ARCHIVE);
+////	cvarSystem.SetCVarBool("g_decals", true, CVAR_ARCHIVE);
+////	cvarSystem.SetCVarBool("g_projectileLights", true, CVAR_ARCHIVE);
+////	cvarSystem.SetCVarBool("g_doubleVision", true, CVAR_ARCHIVE);
+////	cvarSystem.SetCVarBool("g_muzzleFlash", true, CVAR_ARCHIVE);
 
 ////#if MACOS_X
 ////	// On low settings, G4 systems & 64MB FX5200/NV34 Systems should default shadows off
@@ -1537,9 +1529,9 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	OSX_GetCPUIdentification( cpuId, oldArch );
 ////	bool isFX5200 = vendorId == 0x10DE && ( deviceId & 0x0FF0 ) == 0x0320;
 ////	if ( ( oldArch || ( isFX5200 && Sys_GetVideoRam() < 128 ) ) && com_machineSpec.GetInteger() == 0 ) {
-////		cvarSystem->SetCVarBool( "r_shadows", false, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarBool( "r_shadows", false, CVAR_ARCHIVE );
 ////	} else {
-////		cvarSystem->SetCVarBool( "r_shadows", true, CVAR_ARCHIVE );
+////		cvarSystem.SetCVarBool( "r_shadows", true, CVAR_ARCHIVE );
 ////	}
 ////#endif
 ////}
@@ -1571,9 +1563,9 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	}
 ////	common.Printf( "============= ReloadEngine end ===============\n" );
 
-////	if ( !cmdSystem->PostReloadEngine() ) {
+////	if ( !cmdSystem.PostReloadEngine() ) {
 ////		if ( menu ) {
-////			session->StartMenu( );
+////			session.StartMenu( );
 ////		}
 ////	}
 ////}
@@ -1595,12 +1587,12 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////void idCommonLocal::FilterLangList( idStrList* list, idStr lang ) {
 	
 ////	idStr temp;
-////	for( int i = 0; i < list->Num(); i++ ) {
+////	for( int i = 0; i < list.Num(); i++ ) {
 ////		temp = (*list)[i];
 ////		temp = temp.Right(temp.Length()-strlen("strings/"));
 ////		temp = temp.Left(lang.Length());
 ////		if(idStr::Icmp(temp, lang) != 0) {
-////			list->RemoveIndex(i);
+////			list.RemoveIndex(i);
 ////			i--;
 ////		}
 ////	}
@@ -1620,12 +1612,12 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	//similar to the way pak files work. So you can place english001.lang
 ////	//to add new strings to the english language dictionary
 ////	idFileList*	langFiles;
-////	langFiles =  fileSystem->ListFilesTree( "strings", ".lang", true );
+////	langFiles =  fileSystem.ListFilesTree( "strings", ".lang", true );
 	
-////	idStrList langList = langFiles->GetList();
+////	idStrList langList = langFiles.GetList();
 
 ////	StartupVariable( "sys_lang", false );	// let it be set on the command line - this is needed because this init happens very early
-////	idStr langName = cvarSystem->GetCVarString( "sys_lang" );
+////	idStr langName = cvarSystem.GetCVarString( "sys_lang" );
 
 ////	//Loop through the list and filter
 ////	idStrList currentLangList = langList;
@@ -1633,8 +1625,8 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 	
 ////	if ( currentLangList.Num() == 0 ) {
 ////		// reset cvar to default and try to load again
-////		cmdSystem->BufferCommandText( CMD_EXEC_NOW, "reset sys_lang" );
-////		langName = cvarSystem->GetCVarString( "sys_lang" );
+////		cmdSystem.BufferCommandText( CMD_EXEC_NOW, "reset sys_lang" );
+////		langName = cvarSystem.GetCVarString( "sys_lang" );
 ////		currentLangList = langList;
 ////		FilterLangList(&currentLangList, langName);
 ////	}
@@ -1644,7 +1636,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////		languageDict.Load( currentLangList[i], false );
 ////	}
 
-////	fileSystem->FreeFileList(langFiles);
+////	fileSystem.FreeFileList(langFiles);
 
 ////	Sys_InitScanTable();
 ////}
@@ -1665,11 +1657,11 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////			if ( ent ) {
 ////				for ( int j = 0; j < replaceArgs.GetNumKeyVals(); j++ ) {
 ////					const idLangKeyValue *kv = replaceArgs.GetKeyVal( j );
-////					const char *temp = ent->epairs.GetString( kv->key );
+////					const char *temp = ent.epairs.GetString( kv.key );
 ////					if ( temp && *temp ) {
-////						idStr val = kv->value;
+////						idStr val = kv.value;
 ////						if ( val == temp ) {
-////							ent->epairs.Set( kv->key, langDict.AddString( temp ) );
+////							ent.epairs.Set( kv.key, langDict.AddString( temp ) );
 ////						}
 ////					}
 ////				}
@@ -1688,9 +1680,9 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	const char *buffer = NULL;
 ////	idLexer src( LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 
-////	common->SetRefreshOnPrint( true );
+////	common.SetRefreshOnPrint( true );
 
-////	if ( fileSystem->ReadFile( fileName, (void**)&buffer ) > 0 ) {
+////	if ( fileSystem.ReadFile( fileName, (void**)&buffer ) > 0 ) {
 ////		src.LoadMemory( buffer, strlen(buffer), fileName );
 ////		if ( src.IsLoaded() ) {
 ////			common.Printf( "Processing %s\n", fileName );
@@ -1716,10 +1708,10 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////				LocalizeSpecificMapData( mapFileName, langDict, replaceArgs );
 ////			}
 ////		}
-////		fileSystem->FreeFile( (void*)buffer );
+////		fileSystem.FreeFile( (void*)buffer );
 ////	}
 
-////	common->SetRefreshOnPrint( false );
+////	common.SetRefreshOnPrint( false );
 ////}
 
 /////*
@@ -1737,12 +1729,12 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	char tab = 't';
 ////	char nl = 'n';
 ////	idLexer src( LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
-////	if ( fileSystem->ReadFile( fileName, (void**)&buffer ) > 0 ) {
+////	if ( fileSystem.ReadFile( fileName, (void**)&buffer ) > 0 ) {
 ////		src.LoadMemory( buffer, strlen(buffer), fileName );
 ////		if ( src.IsLoaded() ) {
-////			idFile *outFile = fileSystem->OpenFileWrite( fileName ); 
+////			idFile *outFile = fileSystem.OpenFileWrite( fileName ); 
 ////			common.Printf( "Processing %s\n", fileName );
-////			session->UpdateScreen();
+////			session.UpdateScreen();
 ////			idToken token;
 ////			while( src.ReadToken( &token ) ) {
 ////				src.GetLastWhiteSpace( ws );
@@ -1753,7 +1745,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////					out += token;
 ////				}
 ////				if ( out.Length() > 200000 ) {
-////					outFile->Write( out.c_str(), out.Length() );
+////					outFile.Write( out.c_str(), out.Length() );
 ////					out = "";
 ////				}
 ////				work = token.Right( 6 );
@@ -1803,10 +1795,10 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////					}
 ////				}
 ////			}
-////			outFile->Write( out.c_str(), out.Length() );
-////			fileSystem->CloseFile( outFile );
+////			outFile.Write( out.c_str(), out.Length() );
+////			fileSystem.CloseFile( outFile );
 ////		}
-////		fileSystem->FreeFile( (void*)buffer );
+////		fileSystem.FreeFile( (void*)buffer );
 ////	}
 ////}
 
@@ -1826,7 +1818,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	const char *buffer = NULL;
 ////	idLexer src( LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 
-////	if ( fileSystem->ReadFile( fileName, (void**)&buffer ) > 0 ) {
+////	if ( fileSystem.ReadFile( fileName, (void**)&buffer ) > 0 ) {
 ////		src.LoadMemory( buffer, strlen(buffer), fileName );
 ////		if ( src.IsLoaded() ) {
 ////			idStr classname;
@@ -1849,7 +1841,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////				listHash.Set(classname, list);
 ////			}
 ////		}
-////		fileSystem->FreeFile( (void*)buffer );
+////		fileSystem.FreeFile( (void*)buffer );
 ////	}
 
 ////}
@@ -1860,7 +1852,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	const char *buffer = NULL;
 ////	idLexer src( LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 
-////	if ( fileSystem->ReadFile( fileName, (void**)&buffer ) > 0 ) {
+////	if ( fileSystem.ReadFile( fileName, (void**)&buffer ) > 0 ) {
 ////		src.LoadMemory( buffer, strlen(buffer), fileName );
 ////		if ( src.IsLoaded() ) {
 ////			idStr classname;
@@ -1872,7 +1864,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////				list.Append(token);
 ////			}
 ////		}
-////		fileSystem->FreeFile( (void*)buffer );
+////		fileSystem.FreeFile( (void*)buffer );
 ////	}
 ////}
 
@@ -1950,7 +1942,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////			idMapEntity *ent = map.GetEntity( j );
 ////			if ( ent ) {
 
-////				idStr classname = ent->epairs.GetString("classname");
+////				idStr classname = ent.epairs.GetString("classname");
 
 ////				//Hack: for info_location
 ////				bool hasLocation = false;
@@ -1959,9 +1951,9 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////				listHash.Get(classname, &list);
 ////				if(list) {
 
-////					for(int k = 0; k < list->Num(); k++) {
+////					for(int k = 0; k < list.Num(); k++) {
 
-////						idStr val = ent->epairs.GetString((*list)[k], "");
+////						idStr val = ent.epairs.GetString((*list)[k], "");
 						
 ////						if(val.Length() && classname == "info_location" && (*list)[k] == "location") {
 ////							hasLocation = true;
@@ -1972,7 +1964,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////							if(!hasLocation || (*list)[k] == "location") {
 ////								//Localize it!!!
 ////								strCount++;
-////								ent->epairs.Set( (*list)[k], langDict.AddString( val ) );
+////								ent.epairs.Set( (*list)[k], langDict.AddString( val ) );
 ////							}
 ////						}
 ////					}
@@ -1980,34 +1972,34 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 
 ////				listHash.Get("all", &list);
 ////				if(list) {
-////					for(int k = 0; k < list->Num(); k++) {
-////						idStr val = ent->epairs.GetString((*list)[k], "");
+////					for(int k = 0; k < list.Num(); k++) {
+////						idStr val = ent.epairs.GetString((*list)[k], "");
 ////						if(val.Length() && TestMapVal(val)) {
 ////							//Localize it!!!
 ////							strCount++;
-////							ent->epairs.Set( (*list)[k], langDict.AddString( val ) );
+////							ent.epairs.Set( (*list)[k], langDict.AddString( val ) );
 ////						}
 ////					}
 ////				}
 
 ////				//Localize the gui_parms
-////				const idKeyValue* kv = ent->epairs.MatchPrefix("gui_parm");
+////				const idKeyValue* kv = ent.epairs.MatchPrefix("gui_parm");
 ////				while( kv ) {
-////					if(TestGuiParm(kv->GetKey(), kv->GetValue(), excludeList)) {
+////					if(TestGuiParm(kv.GetKey(), kv.GetValue(), excludeList)) {
 ////						//Localize It!
 ////						strCount++;
-////						ent->epairs.Set( kv->GetKey(), langDict.AddString( kv->GetValue() ) );
+////						ent.epairs.Set( kv.GetKey(), langDict.AddString( kv.GetValue() ) );
 ////					}
-////					kv = ent->epairs.MatchPrefix( "gui_parm", kv );
+////					kv = ent.epairs.MatchPrefix( "gui_parm", kv );
 ////				}
 ////			}
 ////		}
 ////		if(writeFile && strCount > 0)  {
 ////			//Before we write the map file lets make a backup of the original
-////			idStr file =  fileSystem->RelativePathToOSPath(mapName);
+////			idStr file =  fileSystem.RelativePathToOSPath(mapName);
 ////			idStr bak = file.Left(file.Length() - 4);
 ////			bak.Append(".bak_loc");
-////			fileSystem->CopyFile( file, bak );
+////			fileSystem.CopyFile( file, bak );
 			
 ////			map.Write( mapName, ".map" );
 ////		}
@@ -2057,7 +2049,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////		strTable.SetBaseID(com_product_lang_ext.GetInteger()*100000);
 ////	}
 
-////	common->SetRefreshOnPrint( true );
+////	common.SetRefreshOnPrint( true );
 	
 ////	ListHash listHash;
 ////	LoadMapLocalizeData(listHash);
@@ -2071,7 +2063,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////		idStrList files;
 ////		GetFileList("z:/d3xp/d3xp/maps/game", "*.map", files);
 ////		for ( int i = 0; i < files.Num(); i++ ) {
-////			idStr file =  fileSystem->OSPathToRelativePath(files[i]);
+////			idStr file =  fileSystem.OSPathToRelativePath(files[i]);
 ////			strCount += LocalizeMap(file, strTable, listHash, excludeList, write);		
 ////		}
 ////	}
@@ -2080,7 +2072,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////		common.Printf("Localize String Count: %d\n", strCount);
 ////	}
 
-////	common->SetRefreshOnPrint( false );
+////	common.SetRefreshOnPrint( false );
 
 ////	if(dictUpdate) {
 ////		strTable.Save( filename );
@@ -2109,27 +2101,27 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 
 ////	idFileList *files;
 ////	if ( idStr::Icmp( args.Argv(1), "all" ) == 0 ) {
-////		idStr game = cvarSystem->GetCVarString( "fs_game" );
+////		idStr game = cvarSystem.GetCVarString( "fs_game" );
 ////		if(game.Length()) {
-////			files = fileSystem->ListFilesTree( "guis", "*.gui", true, game );
+////			files = fileSystem.ListFilesTree( "guis", "*.gui", true, game );
 ////		} else {
-////			files = fileSystem->ListFilesTree( "guis", "*.gui", true );
+////			files = fileSystem.ListFilesTree( "guis", "*.gui", true );
 ////		}
-////		for ( int i = 0; i < files->GetNumFiles(); i++ ) {
-////			commonLocal.LocalizeGui( files->GetFile( i ), strTable );
+////		for ( int i = 0; i < files.GetNumFiles(); i++ ) {
+////			commonLocal.LocalizeGui( files.GetFile( i ), strTable );
 ////		}
-////		fileSystem->FreeFileList( files );
+////		fileSystem.FreeFileList( files );
 
 ////		if(game.Length()) {
-////			files = fileSystem->ListFilesTree( "guis", "*.pd", true, game );
+////			files = fileSystem.ListFilesTree( "guis", "*.pd", true, game );
 ////		} else {
-////			files = fileSystem->ListFilesTree( "guis", "*.pd", true, "d3xp" );
+////			files = fileSystem.ListFilesTree( "guis", "*.pd", true, "d3xp" );
 ////		}
 		
-////		for ( int i = 0; i < files->GetNumFiles(); i++ ) {
-////			commonLocal.LocalizeGui( files->GetFile( i ), strTable );
+////		for ( int i = 0; i < files.GetNumFiles(); i++ ) {
+////			commonLocal.LocalizeGui( files.GetFile( i ), strTable );
 ////		}
-////		fileSystem->FreeFileList( files );
+////		fileSystem.FreeFileList( files );
 
 ////	} else {
 ////		commonLocal.LocalizeGui( args.Argv(1), strTable );
@@ -2139,10 +2131,10 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 
 ////void Com_LocalizeGuiParmsTest_f( const idCmdArgs &args ) {
 
-////	common->SetRefreshOnPrint( true );
+////	common.SetRefreshOnPrint( true );
 
-////	idFile *localizeFile = fileSystem->OpenFileWrite( "gui_parm_localize.csv" ); 
-////	idFile *noLocalizeFile = fileSystem->OpenFileWrite( "gui_parm_nolocalize.csv" ); 
+////	idFile *localizeFile = fileSystem.OpenFileWrite( "gui_parm_localize.csv" ); 
+////	idFile *noLocalizeFile = fileSystem.OpenFileWrite( "gui_parm_nolocalize.csv" ); 
 
 ////	idStrList excludeList;
 ////	LoadGuiParmExcludeList(excludeList);
@@ -2155,32 +2147,32 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////		common.Printf("Testing Map '%s'\n", files[i].c_str());
 ////		idMapFile map;
 
-////		idStr file =  fileSystem->OSPathToRelativePath(files[i]);
+////		idStr file =  fileSystem.OSPathToRelativePath(files[i]);
 ////		if ( map.Parse(file, false, false ) ) {
 ////			int count = map.GetNumEntities();
 ////			for ( int j = 0; j < count; j++ ) {
 ////				idMapEntity *ent = map.GetEntity( j );
 ////				if ( ent ) {
-////					const idKeyValue* kv = ent->epairs.MatchPrefix("gui_parm");
+////					const idKeyValue* kv = ent.epairs.MatchPrefix("gui_parm");
 ////					while( kv ) {
-////						if(TestGuiParm(kv->GetKey(), kv->GetValue(), excludeList)) {
-////							idStr out = va("%s,%s,%s\r\n", kv->GetValue().c_str(), kv->GetKey().c_str(), file.c_str());
-////							localizeFile->Write( out.c_str(), out.Length() );
+////						if(TestGuiParm(kv.GetKey(), kv.GetValue(), excludeList)) {
+////							idStr out = va("%s,%s,%s\r\n", kv.GetValue().c_str(), kv.GetKey().c_str(), file.c_str());
+////							localizeFile.Write( out.c_str(), out.Length() );
 ////						} else {
-////							idStr out = va("%s,%s,%s\r\n", kv->GetValue().c_str(), kv->GetKey().c_str(), file.c_str());
-////							noLocalizeFile->Write( out.c_str(), out.Length() );
+////							idStr out = va("%s,%s,%s\r\n", kv.GetValue().c_str(), kv.GetKey().c_str(), file.c_str());
+////							noLocalizeFile.Write( out.c_str(), out.Length() );
 ////						}
-////						kv = ent->epairs.MatchPrefix( "gui_parm", kv );
+////						kv = ent.epairs.MatchPrefix( "gui_parm", kv );
 ////					}
 ////				}
 ////			}
 ////		}
 ////	}
 	
-////	fileSystem->CloseFile( localizeFile );
-////	fileSystem->CloseFile( noLocalizeFile );
+////	fileSystem.CloseFile( localizeFile );
+////	fileSystem.CloseFile( noLocalizeFile );
 
-////	common->SetRefreshOnPrint( false );
+////	common.SetRefreshOnPrint( false );
 ////}
 
 
@@ -2190,9 +2182,9 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	LoadMapLocalizeData(listHash);
 
 
-////	common->SetRefreshOnPrint( true );
+////	common.SetRefreshOnPrint( true );
 
-////	idFile *localizeFile = fileSystem->OpenFileWrite( "map_localize.csv" ); 
+////	idFile *localizeFile = fileSystem.OpenFileWrite( "map_localize.csv" ); 
 	
 ////	idStrList files;
 ////	GetFileList("z:/d3xp/d3xp/maps/game", "*.map", files);
@@ -2202,7 +2194,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////		common.Printf("Testing Map '%s'\n", files[i].c_str());
 ////		idMapFile map;
 
-////		idStr file =  fileSystem->OSPathToRelativePath(files[i]);
+////		idStr file =  fileSystem.OSPathToRelativePath(files[i]);
 ////		if ( map.Parse(file, false, false ) ) {
 ////			int count = map.GetNumEntities();
 ////			for ( int j = 0; j < count; j++ ) {
@@ -2210,17 +2202,17 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////				if ( ent ) {
 					
 ////					//Temp code to get a list of all entity key value pairs
-////					/*idStr classname = ent->epairs.GetString("classname");
+////					/*idStr classname = ent.epairs.GetString("classname");
 ////					if(classname == "worldspawn" || classname == "func_static" || classname == "light" || classname == "speaker" || classname.Left(8) == "trigger_") {
 ////						continue;
 ////					}
-////					for( int i = 0; i < ent->epairs.GetNumKeyVals(); i++) {
-////						const idKeyValue* kv = ent->epairs.GetKeyVal(i);
-////						idStr out = va("%s,%s,%s,%s\r\n", classname.c_str(), kv->GetKey().c_str(), kv->GetValue().c_str(), file.c_str());
-////						localizeFile->Write( out.c_str(), out.Length() );
+////					for( int i = 0; i < ent.epairs.GetNumKeyVals(); i++) {
+////						const idKeyValue* kv = ent.epairs.GetKeyVal(i);
+////						idStr out = va("%s,%s,%s,%s\r\n", classname.c_str(), kv.GetKey().c_str(), kv.GetValue().c_str(), file.c_str());
+////						localizeFile.Write( out.c_str(), out.Length() );
 ////					}*/
 
-////					idStr classname = ent->epairs.GetString("classname");
+////					idStr classname = ent.epairs.GetString("classname");
 					
 ////					//Hack: for info_location
 ////					bool hasLocation = false;
@@ -2229,9 +2221,9 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////					listHash.Get(classname, &list);
 ////					if(list) {
 
-////						for(int k = 0; k < list->Num(); k++) {
+////						for(int k = 0; k < list.Num(); k++) {
 
-////							idStr val = ent->epairs.GetString((*list)[k], "");
+////							idStr val = ent.epairs.GetString((*list)[k], "");
 							
 ////							if(classname == "info_location" && (*list)[k] == "location") {
 ////								hasLocation = true;
@@ -2241,7 +2233,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 								
 ////								if(!hasLocation || (*list)[k] == "location") {
 ////									idStr out = va("%s,%s,%s\r\n", val.c_str(), (*list)[k].c_str(), file.c_str());
-////									localizeFile->Write( out.c_str(), out.Length() );
+////									localizeFile.Write( out.c_str(), out.Length() );
 ////								}
 ////							}
 ////						}
@@ -2249,11 +2241,11 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 
 ////					listHash.Get("all", &list);
 ////					if(list) {
-////						for(int k = 0; k < list->Num(); k++) {
-////							idStr val = ent->epairs.GetString((*list)[k], "");
+////						for(int k = 0; k < list.Num(); k++) {
+////							idStr val = ent.epairs.GetString((*list)[k], "");
 ////							if(val.Length() && TestMapVal(val)) {
 ////								idStr out = va("%s,%s,%s\r\n", val.c_str(), (*list)[k].c_str(), file.c_str());
-////								localizeFile->Write( out.c_str(), out.Length() );
+////								localizeFile.Write( out.c_str(), out.Length() );
 ////							}
 ////						}
 ////					}
@@ -2262,9 +2254,9 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////		}
 ////	}
 
-////	fileSystem->CloseFile( localizeFile );
+////	fileSystem.CloseFile( localizeFile );
 
-////	common->SetRefreshOnPrint( false );
+////	common.SetRefreshOnPrint( false );
 ////}
 
 /////*
@@ -2273,7 +2265,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////=================
 ////*/
 ////void Com_StartBuild_f( const idCmdArgs &args ) {
-////	globalImages->StartBuild();
+////	globalImages.StartBuild();
 ////}
 
 /////*
@@ -2283,9 +2275,9 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////*/
 ////void Com_FinishBuild_f( const idCmdArgs &args ) {
 ////	if ( game ) {
-////		game->CacheDictionaryMedia( NULL );
+////		game.CacheDictionaryMedia( NULL );
 ////	}
-////	globalImages->FinishBuild( ( args.Argc() > 1 ) );
+////	globalImages.FinishBuild( ( args.Argc() > 1 ) );
 ////}
 
 /////*
@@ -2321,70 +2313,70 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////=================
 ////*/
 ////void idCommonLocal::InitCommands( void ) {
-////	cmdSystem->AddCommand( "error", Com_Error_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "causes an error" );
-////	cmdSystem->AddCommand( "crash", Com_Crash_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "causes a crash" );
-////	cmdSystem->AddCommand( "freeze", Com_Freeze_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "freezes the game for a number of seconds" );
-////	cmdSystem->AddCommand( "quit", Com_Quit_f, CMD_FL_SYSTEM, "quits the game" );
-////	cmdSystem->AddCommand( "exit", Com_Quit_f, CMD_FL_SYSTEM, "exits the game" );
-////	cmdSystem->AddCommand( "writeConfig", Com_WriteConfig_f, CMD_FL_SYSTEM, "writes a config file" );
-////	cmdSystem->AddCommand( "reloadEngine", Com_ReloadEngine_f, CMD_FL_SYSTEM, "reloads the engine down to including the file system" );
-////	cmdSystem->AddCommand( "setMachineSpec", Com_SetMachineSpec_f, CMD_FL_SYSTEM, "detects system capabilities and sets com_machineSpec to appropriate value" );
-////	cmdSystem->AddCommand( "execMachineSpec", Com_ExecMachineSpec_f, CMD_FL_SYSTEM, "execs the appropriate config files and sets cvars based on com_machineSpec" );
+////	cmdSystem.AddCommand( "error", Com_Error_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "causes an error" );
+////	cmdSystem.AddCommand( "crash", Com_Crash_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "causes a crash" );
+////	cmdSystem.AddCommand( "freeze", Com_Freeze_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "freezes the game for a number of seconds" );
+////	cmdSystem.AddCommand( "quit", Com_Quit_f, CMD_FL_SYSTEM, "quits the game" );
+////	cmdSystem.AddCommand( "exit", Com_Quit_f, CMD_FL_SYSTEM, "exits the game" );
+////	cmdSystem.AddCommand( "writeConfig", Com_WriteConfig_f, CMD_FL_SYSTEM, "writes a config file" );
+////	cmdSystem.AddCommand( "reloadEngine", Com_ReloadEngine_f, CMD_FL_SYSTEM, "reloads the engine down to including the file system" );
+////	cmdSystem.AddCommand( "setMachineSpec", Com_SetMachineSpec_f, CMD_FL_SYSTEM, "detects system capabilities and sets com_machineSpec to appropriate value" );
+////	cmdSystem.AddCommand( "execMachineSpec", Com_ExecMachineSpec_f, CMD_FL_SYSTEM, "execs the appropriate config files and sets cvars based on com_machineSpec" );
 
 ////#if	!defined( ID_DEMO_BUILD ) && !defined( ID_DEDICATED )
 ////	// compilers
-////	cmdSystem->AddCommand( "dmap", Dmap_f, CMD_FL_TOOL, "compiles a map", idCmdSystem::ArgCompletion_MapName );
-////	cmdSystem->AddCommand( "renderbump", RenderBump_f, CMD_FL_TOOL, "renders a bump map", idCmdSystem::ArgCompletion_ModelName );
-////	cmdSystem->AddCommand( "renderbumpFlat", RenderBumpFlat_f, CMD_FL_TOOL, "renders a flat bump map", idCmdSystem::ArgCompletion_ModelName );
-////	cmdSystem->AddCommand( "runAAS", RunAAS_f, CMD_FL_TOOL, "compiles an AAS file for a map", idCmdSystem::ArgCompletion_MapName );
-////	cmdSystem->AddCommand( "runAASDir", RunAASDir_f, CMD_FL_TOOL, "compiles AAS files for all maps in a folder", idCmdSystem::ArgCompletion_MapName );
-////	cmdSystem->AddCommand( "runReach", RunReach_f, CMD_FL_TOOL, "calculates reachability for an AAS file", idCmdSystem::ArgCompletion_MapName );
-////	cmdSystem->AddCommand( "roq", RoQFileEncode_f, CMD_FL_TOOL, "encodes a roq file" );
+////	cmdSystem.AddCommand( "dmap", Dmap_f, CMD_FL_TOOL, "compiles a map", idCmdSystem::ArgCompletion_MapName );
+////	cmdSystem.AddCommand( "renderbump", RenderBump_f, CMD_FL_TOOL, "renders a bump map", idCmdSystem::ArgCompletion_ModelName );
+////	cmdSystem.AddCommand( "renderbumpFlat", RenderBumpFlat_f, CMD_FL_TOOL, "renders a flat bump map", idCmdSystem::ArgCompletion_ModelName );
+////	cmdSystem.AddCommand( "runAAS", RunAAS_f, CMD_FL_TOOL, "compiles an AAS file for a map", idCmdSystem::ArgCompletion_MapName );
+////	cmdSystem.AddCommand( "runAASDir", RunAASDir_f, CMD_FL_TOOL, "compiles AAS files for all maps in a folder", idCmdSystem::ArgCompletion_MapName );
+////	cmdSystem.AddCommand( "runReach", RunReach_f, CMD_FL_TOOL, "calculates reachability for an AAS file", idCmdSystem::ArgCompletion_MapName );
+////	cmdSystem.AddCommand( "roq", RoQFileEncode_f, CMD_FL_TOOL, "encodes a roq file" );
 ////#endif
 
 ////#ifdef ID_ALLOW_TOOLS
 ////	// editors
-////	cmdSystem->AddCommand( "editor", Com_Editor_f, CMD_FL_TOOL, "launches the level editor Radiant" );
-////	cmdSystem->AddCommand( "editLights", Com_EditLights_f, CMD_FL_TOOL, "launches the in-game Light Editor" );
-////	cmdSystem->AddCommand( "editSounds", Com_EditSounds_f, CMD_FL_TOOL, "launches the in-game Sound Editor" );
-////	cmdSystem->AddCommand( "editDecls", Com_EditDecls_f, CMD_FL_TOOL, "launches the in-game Declaration Editor" );
-////	cmdSystem->AddCommand( "editAFs", Com_EditAFs_f, CMD_FL_TOOL, "launches the in-game Articulated Figure Editor" );
-////	cmdSystem->AddCommand( "editParticles", Com_EditParticles_f, CMD_FL_TOOL, "launches the in-game Particle Editor" );
-////	cmdSystem->AddCommand( "editScripts", Com_EditScripts_f, CMD_FL_TOOL, "launches the in-game Script Editor" );
-////	cmdSystem->AddCommand( "editGUIs", Com_EditGUIs_f, CMD_FL_TOOL, "launches the GUI Editor" );
-////	cmdSystem->AddCommand( "editPDAs", Com_EditPDAs_f, CMD_FL_TOOL, "launches the in-game PDA Editor" );
-////	cmdSystem->AddCommand( "debugger", Com_ScriptDebugger_f, CMD_FL_TOOL, "launches the Script Debugger" );
+////	cmdSystem.AddCommand( "editor", Com_Editor_f, CMD_FL_TOOL, "launches the level editor Radiant" );
+////	cmdSystem.AddCommand( "editLights", Com_EditLights_f, CMD_FL_TOOL, "launches the in-game Light Editor" );
+////	cmdSystem.AddCommand( "editSounds", Com_EditSounds_f, CMD_FL_TOOL, "launches the in-game Sound Editor" );
+////	cmdSystem.AddCommand( "editDecls", Com_EditDecls_f, CMD_FL_TOOL, "launches the in-game Declaration Editor" );
+////	cmdSystem.AddCommand( "editAFs", Com_EditAFs_f, CMD_FL_TOOL, "launches the in-game Articulated Figure Editor" );
+////	cmdSystem.AddCommand( "editParticles", Com_EditParticles_f, CMD_FL_TOOL, "launches the in-game Particle Editor" );
+////	cmdSystem.AddCommand( "editScripts", Com_EditScripts_f, CMD_FL_TOOL, "launches the in-game Script Editor" );
+////	cmdSystem.AddCommand( "editGUIs", Com_EditGUIs_f, CMD_FL_TOOL, "launches the GUI Editor" );
+////	cmdSystem.AddCommand( "editPDAs", Com_EditPDAs_f, CMD_FL_TOOL, "launches the in-game PDA Editor" );
+////	cmdSystem.AddCommand( "debugger", Com_ScriptDebugger_f, CMD_FL_TOOL, "launches the Script Debugger" );
 
 ////	//BSM Nerve: Add support for the material editor
-////	cmdSystem->AddCommand( "materialEditor", Com_MaterialEditor_f, CMD_FL_TOOL, "launches the Material Editor" );
+////	cmdSystem.AddCommand( "materialEditor", Com_MaterialEditor_f, CMD_FL_TOOL, "launches the Material Editor" );
 ////#endif
 
-////	cmdSystem->AddCommand( "printMemInfo", PrintMemInfo_f, CMD_FL_SYSTEM, "prints memory debugging data" );
+////	cmdSystem.AddCommand( "printMemInfo", PrintMemInfo_f, CMD_FL_SYSTEM, "prints memory debugging data" );
 
 ////	// idLib commands
-////	cmdSystem->AddCommand( "memoryDump", Mem_Dump_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "creates a memory dump" );
-////	cmdSystem->AddCommand( "memoryDumpCompressed", Mem_DumpCompressed_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "creates a compressed memory dump" );
-////	cmdSystem->AddCommand( "showStringMemory", idStr::ShowMemoryUsage_f, CMD_FL_SYSTEM, "shows memory used by strings" );
-////	cmdSystem->AddCommand( "showDictMemory", idDict::ShowMemoryUsage_f, CMD_FL_SYSTEM, "shows memory used by dictionaries" );
-////	cmdSystem->AddCommand( "listDictKeys", idDict::ListKeys_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "lists all keys used by dictionaries" );
-////	cmdSystem->AddCommand( "listDictValues", idDict::ListValues_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "lists all values used by dictionaries" );
-////	cmdSystem->AddCommand( "testSIMD", idSIMD::Test_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "test SIMD code" );
+////	cmdSystem.AddCommand( "memoryDump", Mem_Dump_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "creates a memory dump" );
+////	cmdSystem.AddCommand( "memoryDumpCompressed", Mem_DumpCompressed_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "creates a compressed memory dump" );
+////	cmdSystem.AddCommand( "showStringMemory", idStr::ShowMemoryUsage_f, CMD_FL_SYSTEM, "shows memory used by strings" );
+////	cmdSystem.AddCommand( "showDictMemory", idDict::ShowMemoryUsage_f, CMD_FL_SYSTEM, "shows memory used by dictionaries" );
+////	cmdSystem.AddCommand( "listDictKeys", idDict::ListKeys_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "lists all keys used by dictionaries" );
+////	cmdSystem.AddCommand( "listDictValues", idDict::ListValues_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "lists all values used by dictionaries" );
+////	cmdSystem.AddCommand( "testSIMD", idSIMD::Test_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "test SIMD code" );
 
 ////	// localization
-////	cmdSystem->AddCommand( "localizeGuis", Com_LocalizeGuis_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "localize guis" );
-////	cmdSystem->AddCommand( "localizeMaps", Com_LocalizeMaps_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "localize maps" );
-////	cmdSystem->AddCommand( "reloadLanguage", Com_ReloadLanguage_f, CMD_FL_SYSTEM, "reload language dict" );
+////	cmdSystem.AddCommand( "localizeGuis", Com_LocalizeGuis_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "localize guis" );
+////	cmdSystem.AddCommand( "localizeMaps", Com_LocalizeMaps_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "localize maps" );
+////	cmdSystem.AddCommand( "reloadLanguage", Com_ReloadLanguage_f, CMD_FL_SYSTEM, "reload language dict" );
 
 ////	//D3XP Localization
-////	cmdSystem->AddCommand( "localizeGuiParmsTest", Com_LocalizeGuiParmsTest_f, CMD_FL_SYSTEM, "Create test files that show gui parms localized and ignored." );
-////	cmdSystem->AddCommand( "localizeMapsTest", Com_LocalizeMapsTest_f, CMD_FL_SYSTEM, "Create test files that shows which strings will be localized." );
+////	cmdSystem.AddCommand( "localizeGuiParmsTest", Com_LocalizeGuiParmsTest_f, CMD_FL_SYSTEM, "Create test files that show gui parms localized and ignored." );
+////	cmdSystem.AddCommand( "localizeMapsTest", Com_LocalizeMapsTest_f, CMD_FL_SYSTEM, "Create test files that shows which strings will be localized." );
 
 ////	// build helpers
-////	cmdSystem->AddCommand( "startBuild", Com_StartBuild_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "prepares to make a build" );
-////	cmdSystem->AddCommand( "finishBuild", Com_FinishBuild_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "finishes the build process" );
+////	cmdSystem.AddCommand( "startBuild", Com_StartBuild_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "prepares to make a build" );
+////	cmdSystem.AddCommand( "finishBuild", Com_FinishBuild_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "finishes the build process" );
 
 ////#ifdef ID_DEDICATED
-////	cmdSystem->AddCommand( "help", Com_Help_f, CMD_FL_SYSTEM, "shows help" );
+////	cmdSystem.AddCommand( "help", Com_Help_f, CMD_FL_SYSTEM, "shows help" );
 ////#endif
 ////}
 
@@ -2398,8 +2390,8 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////		return;
 ////	}
 
-////	renderSystem->InitOpenGL();
-////	PrintLoadingMessage( common->GetLanguageDict()->GetString( "#str_04343" ) );
+////	renderSystem.InitOpenGL();
+////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04343" ) );
 ////}
 
 /////*
@@ -2411,11 +2403,11 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	if ( !( msg && *msg ) ) {
 ////		return;
 ////	}
-////	renderSystem->BeginFrame( renderSystem->GetScreenWidth(), renderSystem->GetScreenHeight() );
-////	renderSystem->DrawStretchPic( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 1, 1, declManager->FindMaterial( "splashScreen" ) );
+////	renderSystem.BeginFrame( renderSystem.GetScreenWidth(), renderSystem.GetScreenHeight() );
+////	renderSystem.DrawStretchPic( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 1, 1, declManager.FindMaterial( "splashScreen" ) );
 ////	int len = strlen( msg );
-////	renderSystem->DrawSmallStringExt( ( 640 - len * SMALLCHAR_WIDTH ) / 2, 410, msg, idVec4( 0.0f, 0.81f, 0.94f, 1.0f ), true, declManager->FindMaterial( "textures/bigchars" ) );
-////	renderSystem->EndFrame( NULL, NULL );
+////	renderSystem.DrawSmallStringExt( ( 640 - len * SMALLCHAR_WIDTH ) / 2, 410, msg, idVec4( 0.0f, 0.81f, 0.94f, 1.0f ), true, declManager.FindMaterial( "textures/bigchars" ) );
+////	renderSystem.EndFrame( NULL, NULL );
 ////}
 
 /////*
@@ -2447,7 +2439,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////			InitSIMD();
 ////		}
 
-////		eventLoop->RunEventLoop();
+////		eventLoop.RunEventLoop();
 
 ////		com_frameTime = com_ticNumber * USERCMD_MSEC;
 
@@ -2455,14 +2447,14 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 
 ////		if ( idAsyncNetwork::IsActive() ) {
 ////			if ( idAsyncNetwork::serverDedicated.GetInteger() != 1 ) {
-////				session->GuiFrameEvents();
-////				session->UpdateScreen( false );
+////				session.GuiFrameEvents();
+////				session.UpdateScreen( false );
 ////			}
 ////		} else {
-////			session->Frame();
+////			session.Frame();
 
 ////			// normal, in-sequence screen update
-////			session->UpdateScreen( false );
+////			session.UpdateScreen( false );
 ////		}
 
 ////		// report timing information
@@ -2500,13 +2492,13 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////*/
 ////void idCommonLocal::GUIFrame( bool execCmd, bool network ) {
 ////	Sys_GenerateEvents();
-////	eventLoop->RunEventLoop( execCmd );	// and execute any commands
+////	eventLoop.RunEventLoop( execCmd );	// and execute any commands
 ////	com_frameTime = com_ticNumber * USERCMD_MSEC;
 ////	if ( network ) {
 ////		idAsyncNetwork::RunFrame();
 ////	}
-////	session->Frame();
-////	session->UpdateScreen( false );	
+////	session.Frame();
+////	session.UpdateScreen( false );	
 ////}
 
 /////*
@@ -2548,19 +2540,19 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 
 ////	asyncStats_t *stat = &com_asyncStats[com_ticNumber & (MAX_ASYNC_STATS-1)];
 ////	memset( stat, 0, sizeof( *stat ) );
-////	stat->milliseconds = Sys_Milliseconds();
-////	stat->deltaMsec = stat->milliseconds - com_asyncStats[(com_ticNumber - 1) & (MAX_ASYNC_STATS-1)].milliseconds;
+////	stat.milliseconds = Sys_Milliseconds();
+////	stat.deltaMsec = stat.milliseconds - com_asyncStats[(com_ticNumber - 1) & (MAX_ASYNC_STATS-1)].milliseconds;
 
 ////	if ( usercmdGen && com_asyncInput.GetBool() ) {
-////		usercmdGen->UsercmdInterrupt();
+////		usercmdGen.UsercmdInterrupt();
 ////	}
 
 ////	switch ( com_asyncSound.GetInteger() ) {
 ////		case 1:
-////			soundSystem->AsyncUpdate( stat->milliseconds );
+////			soundSystem.AsyncUpdate( stat.milliseconds );
 ////			break;
 ////		case 3:
-////			soundSystem->AsyncUpdateWrite( stat->milliseconds );
+////			soundSystem.AsyncUpdateWrite( stat.milliseconds );
 ////			break;
 ////	}
 
@@ -2568,7 +2560,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	// have completed their work for this tic
 ////	com_ticNumber++;
 
-////	stat->timeConsumed = Sys_Milliseconds() - stat->milliseconds;
+////	stat.timeConsumed = Sys_Milliseconds() - stat.milliseconds;
 
 ////	Sys_LeaveCriticalSection();
 ////}
@@ -2631,16 +2623,16 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	gameExport_t	gameExport;
 ////	GetGameAPI_t	GetGameAPI;
 
-////	fileSystem->FindDLL( "game", dllPath, true );
+////	fileSystem.FindDLL( "game", dllPath, true );
 
 ////	if ( !dllPath[ 0 ] ) {
-////		common->FatalError( "couldn't find game dynamic library" );
+////		common.FatalError( "couldn't find game dynamic library" );
 ////		return;
 ////	}
-////	common->DPrintf( "Loading game DLL: '%s'\n", dllPath );
-////	gameDLL = sys->DLL_Load( dllPath );
+////	common.DPrintf( "Loading game DLL: '%s'\n", dllPath );
+////	gameDLL = sys.DLL_Load( dllPath );
 ////	if ( !gameDLL ) {
-////		common->FatalError( "couldn't load game dynamic library" );
+////		common.FatalError( "couldn't load game dynamic library" );
 ////		return;
 ////	}
 
@@ -2648,7 +2640,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	if ( !GetGameAPI ) {
 ////		Sys_DLL_Unload( gameDLL );
 ////		gameDLL = NULL;
-////		common->FatalError( "couldn't find game DLL API" );
+////		common.FatalError( "couldn't find game DLL API" );
 ////		return;
 ////	}
 
@@ -2672,7 +2664,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	if ( gameExport.version != GAME_API_VERSION ) {
 ////		Sys_DLL_Unload( gameDLL );
 ////		gameDLL = NULL;
-////		common->FatalError( "wrong game DLL API version" );
+////		common.FatalError( "wrong game DLL API version" );
 ////		return;
 ////	}
 
@@ -2683,7 +2675,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 
 ////	// initialize the game object
 ////	if ( game != NULL ) {
-////		game->Init();
+////		game.Init();
 ////	}
 ////}
 
@@ -2696,7 +2688,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 
 ////	// shut down the game object
 ////	if ( game != NULL ) {
-////		game->Shutdown();
+////		game.Shutdown();
 ////	}
 
 ////#ifdef __DOOM_DLL__
@@ -2799,7 +2791,7 @@ idCommonLocal::Init
         todo("idKeyInput::Init();");
 
 ////		// init the console so we can take prints
-////		console->Init();
+////		console.Init();
 
 ////		// get architecture info
 ////		Sys_Init();
@@ -2829,12 +2821,12 @@ idCommonLocal::Init
 
 ////		// don't add startup commands if no CD key is present
 ////#if ID_ENFORCE_KEY
-////		if ( !session->CDKeysAreValid( false ) || !AddStartupCommands() ) {
+////		if ( !session.CDKeysAreValid( false ) || !AddStartupCommands() ) {
 ////#else
 ////		if ( !AddStartupCommands() ) {
 ////#endif
 ////			// if the user didn't give any commands, run default action
-////			session->StartMenu( true );
+////			session.StartMenu( true );
 ////		}
 
 ////		Printf( "--- Common Initialization Complete ---\n" );
@@ -2847,7 +2839,7 @@ idCommonLocal::Init
 ////#endif
 
 ////		// remove any prints from the notify lines
-////		console->ClearNotifyLines();
+////		console.ClearNotifyLines();
 
 ////		ClearCommandLine();
 
@@ -2879,16 +2871,16 @@ idCommonLocal::Init
 ////	Sys_Shutdown();
 
 ////	// shut down the console
-////	console->Shutdown();
+////	console.Shutdown();
 
 ////	// shut down the key system
 ////	idKeyInput::Shutdown();
 
 ////	// shut down the cvar system
-////	cvarSystem->Shutdown();
+////	cvarSystem.Shutdown();
 
 ////	// shut down the console command system
-////	cmdSystem->Shutdown();
+////	cmdSystem.Shutdown();
 
 ////#ifdef ID_WRITE_VERSION
 ////	delete config_compressor;
@@ -2917,21 +2909,21 @@ idCommonLocal::InitGame
 */
 /*idCommonLocal::*/InitGame( ):void {
 ////	// initialize the file system
-////	fileSystem->Init();
+////	fileSystem.Init();
 
 ////	// initialize the declaration manager
-////	declManager->Init();
+////	declManager.Init();
 
 ////	// force r_fullscreen 0 if running a tool
 ////	CheckToolMode();
 
-////	idFile *file = fileSystem->OpenExplicitFileRead( fileSystem->RelativePathToOSPath( CONFIG_SPEC, "fs_savepath" ) );
+////	idFile *file = fileSystem.OpenExplicitFileRead( fileSystem.RelativePathToOSPath( CONFIG_SPEC, "fs_savepath" ) );
 ////	bool sysDetect = ( file == NULL );
 ////	if ( file ) {
-////		fileSystem->CloseFile( file );
+////		fileSystem.CloseFile( file );
 ////	} else {
-////		file = fileSystem->OpenFileWrite( CONFIG_SPEC );
-////		fileSystem->CloseFile( file );
+////		file = fileSystem.OpenFileWrite( CONFIG_SPEC );
+////		fileSystem.CloseFile( file );
 ////	}
 	
 ////	idCmdArgs args;
@@ -2942,89 +2934,89 @@ idCommonLocal::InitGame
 
 	// initialize the renderSystem data structures, but don't start OpenGL yet
 	renderSystem.Init();
-    todoThrow("probably need declManager->Init() too now");
+    todoThrow("probably need declManager.Init() too now");
 ////	// initialize string database right off so we can use it for loading messages
 ////	InitLanguageDict();
 
-////	PrintLoadingMessage( common->GetLanguageDict()->GetString( "#str_04344" ) );
+////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04344" ) );
 
 ////	// load the font, etc
-////	console->LoadGraphics();
+////	console.LoadGraphics();
 
 ////	// init journalling, etc
-////	eventLoop->Init();
+////	eventLoop.Init();
 
-////	PrintLoadingMessage( common->GetLanguageDict()->GetString( "#str_04345" ) );
+////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04345" ) );
 
 ////	// exec the startup scripts
-////	cmdSystem->BufferCommandText( CMD_EXEC_APPEND, "exec editor.cfg\n" );
-////	cmdSystem->BufferCommandText( CMD_EXEC_APPEND, "exec default.cfg\n" );
+////	cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "exec editor.cfg\n" );
+////	cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "exec default.cfg\n" );
 
 ////	// skip the config file if "safe" is on the command line
 ////	if ( !SafeMode() ) {
-////		cmdSystem->BufferCommandText( CMD_EXEC_APPEND, "exec " CONFIG_FILE "\n" );
+////		cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "exec " CONFIG_FILE "\n" );
 ////	}
-////	cmdSystem->BufferCommandText( CMD_EXEC_APPEND, "exec autoexec.cfg\n" );
+////	cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "exec autoexec.cfg\n" );
 
 ////	// reload the language dictionary now that we've loaded config files
-////	cmdSystem->BufferCommandText( CMD_EXEC_APPEND, "reloadLanguage\n" );
+////	cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "reloadLanguage\n" );
 
 ////	// run cfg execution
-////	cmdSystem->ExecuteCommandBuffer();
+////	cmdSystem.ExecuteCommandBuffer();
 
 ////	// re-override anything from the config files with command line args
 ////	StartupVariable( NULL, false );
 
 ////	// if any archived cvars are modified after this, we will trigger a writing of the config file
-////	cvarSystem->ClearModifiedFlags( CVAR_ARCHIVE );
+////	cvarSystem.ClearModifiedFlags( CVAR_ARCHIVE );
 
 ////	// cvars are initialized, but not the rendering system. Allow preference startup dialog
 ////	Sys_DoPreferences();
 
 ////	// init the user command input code
-////	usercmdGen->Init();
+////	usercmdGen.Init();
 
-////	PrintLoadingMessage( common->GetLanguageDict()->GetString( "#str_04346" ) );
+////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04346" ) );
 
 ////	// start the sound system, but don't do any hardware operations yet
-////	soundSystem->Init();
+////	soundSystem.Init();
 
-////	PrintLoadingMessage( common->GetLanguageDict()->GetString( "#str_04347" ) );
+////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04347" ) );
 
 ////	// init async network
 ////	idAsyncNetwork::Init();
 
 ////#ifdef	ID_DEDICATED
 ////	idAsyncNetwork::server.InitPort();
-////	cvarSystem->SetCVarBool( "s_noSound", true );
+////	cvarSystem.SetCVarBool( "s_noSound", true );
 ////#else
 ////	if ( idAsyncNetwork::serverDedicated.GetInteger() == 1 ) {
 ////		idAsyncNetwork::server.InitPort();
-////		cvarSystem->SetCVarBool( "s_noSound", true );
+////		cvarSystem.SetCVarBool( "s_noSound", true );
 ////	} else {
 ////		// init OpenGL, which will open a window and connect sound and input hardware
-////		PrintLoadingMessage( common->GetLanguageDict()->GetString( "#str_04348" ) );
+////		PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04348" ) );
 ////		InitRenderSystem();
 ////	}
 ////#endif
 
-////	PrintLoadingMessage( common->GetLanguageDict()->GetString( "#str_04349" ) );
+////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04349" ) );
 
 ////	// initialize the user interfaces
-////	uiManager->Init();
+////	uiManager.Init();
 
 ////	// startup the script debugger
 ////	// DebuggerServerInit();
 
-////	PrintLoadingMessage( common->GetLanguageDict()->GetString( "#str_04350" ) );
+////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04350" ) );
 
 ////	// load the game dll
 ////	LoadGameDLL();
 
-////	PrintLoadingMessage( common->GetLanguageDict()->GetString( "#str_04351" ) );
+////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04351" ) );
 
 ////	// init the session
-////	session->Init();
+////	session.Init();
 
 ////	// have to do this twice.. first one sets the correct r_mode for the renderer init
 ////	// this time around the backend is all setup correct.. a bit fugly but do not want
@@ -3032,9 +3024,9 @@ idCommonLocal::InitGame
 ////	if ( sysDetect ) {
 ////		SetMachineSpec();
 ////		Com_ExecMachineSpec_f( args );
-////		cvarSystem->SetCVarInteger( "s_numberOfSpeakers", 6 );
-////		cmdSystem->BufferCommandText( CMD_EXEC_NOW, "s_restart\n" );
-////		cmdSystem->ExecuteCommandBuffer();
+////		cvarSystem.SetCVarInteger( "s_numberOfSpeakers", 6 );
+////		cmdSystem.BufferCommandText( CMD_EXEC_NOW, "s_restart\n" );
+////		cmdSystem.ExecuteCommandBuffer();
 ////	}
     }
 
@@ -3046,11 +3038,11 @@ idCommonLocal::InitGame
 ////void idCommonLocal::ShutdownGame( bool reloading ) {
 
 ////	// kill sound first
-////	idSoundWorld *sw = soundSystem->GetPlayingSoundWorld();
+////	idSoundWorld *sw = soundSystem.GetPlayingSoundWorld();
 ////	if ( sw ) {
-////		sw->StopAllSounds();
+////		sw.StopAllSounds();
 ////	}
-////	soundSystem->ClearBuffer();
+////	soundSystem.ClearBuffer();
 
 ////	// shutdown the script debugger
 ////	// DebuggerServerShutdown();
@@ -3058,28 +3050,28 @@ idCommonLocal::InitGame
 ////	idAsyncNetwork::client.Shutdown();
 
 ////	// shut down the session
-////	session->Shutdown();
+////	session.Shutdown();
 
 ////	// shut down the user interfaces
-////	uiManager->Shutdown();
+////	uiManager.Shutdown();
 
 ////	// shut down the sound system
-////	soundSystem->Shutdown();
+////	soundSystem.Shutdown();
 
 ////	// shut down async networking
 ////	idAsyncNetwork::Shutdown();
 
 ////	// shut down the user command input code
-////	usercmdGen->Shutdown();
+////	usercmdGen.Shutdown();
 
 ////	// shut down the event loop
-////	eventLoop->Shutdown();
+////	eventLoop.Shutdown();
 
 ////	// shut down the renderSystem
-////	renderSystem->Shutdown();
+////	renderSystem.Shutdown();
 
 ////	// shutdown the decl manager
-////	declManager->Shutdown();
+////	declManager.Shutdown();
 
 ////	// unload the game dll
 ////	UnloadGameDLL();
@@ -3092,7 +3084,7 @@ idCommonLocal::InitGame
 ////	CloseLogFile();
 
 ////	// shut down the file system
-////	fileSystem->Shutdown( reloading );
+////	fileSystem.Shutdown( reloading );
 ////}
 }
 

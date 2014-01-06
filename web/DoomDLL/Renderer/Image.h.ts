@@ -215,7 +215,7 @@ interface IidImage {
 //	int			NumLevelsForImageSize( int width, int height ) const;
 
 //	// data commonly accessed is grouped here
-//	static const int TEXTURE_NOT_LOADED = -1;
+	TEXTURE_NOT_LOADED:number;
 //	GLuint				texnum;					// gl texture binding, will be TEXTURE_NOT_LOADED if not loaded
 //	textureType_t		type;
 //	int					frameUsed;				// for texture usage in frame statistics
@@ -229,7 +229,7 @@ interface IidImage {
 //	idImage *			bglNext;				// linked from tr.backgroundImageLoads
 
 //	// parameters that define this image
-//	idStr				imgName;				// game path, including extension (except for cube maps), may be an image program
+	imgName:idStr;								// game path, including extension (except for cube maps), may be an image program
 //	void				(*generatorFunction)( idImage *image );	// NULL for files
 //	bool				allowDownSize;			// this also doubles as a don't-partially-load flag
 //	textureFilter_t		filter;
@@ -253,7 +253,7 @@ interface IidImage {
 
 //	idImage 			*cacheUsagePrev, *cacheUsageNext;	// for dynamic cache purging of old images
 
-//	idImage *			hashNext;				// for hash chains to speed lookup
+	hashNext:idImage;							// for hash chains to speed lookup
 
 //	int					refCount;				// overall ref count
 };
@@ -327,9 +327,9 @@ class idImage implements IidImage {
 //	void		ImageProgramStringToCompressedFileName( const char *imageProg, char *fileName ) const;
 //	int			NumLevelsForImageSize( int width, int height ) const;
 
-//	// data commonly accessed is grouped here
-//	static const int TEXTURE_NOT_LOADED = -1;
-//	GLuint				texnum;					// gl texture binding, will be TEXTURE_NOT_LOADED if not loaded
+	// data commonly accessed is grouped here
+	static TEXTURE_NOT_LOADED:number = -1;
+/*	GLuint				*/texnum:number;					// gl texture binding, will be TEXTURE_NOT_LOADED if not loaded
 //	textureType_t		type;
 //	int					frameUsed;				// for texture usage in frame statistics
 //	int					bindCount;				// incremented each bind
@@ -342,8 +342,8 @@ class idImage implements IidImage {
 //	idImage *			bglNext;				// linked from tr.backgroundImageLoads
 
 //	// parameters that define this image
-//	idStr				imgName;				// game path, including extension (except for cube maps), may be an image program
-//	void				(*generatorFunction)( idImage *image );	// NULL for files
+	imgName:idStr;								// game path, including extension (except for cube maps), may be an image program
+	generatorFunction:(image:idImage)=> void;	// NULL for files
 //	bool				allowDownSize;			// this also doubles as a don't-partially-load flag
 //	textureFilter_t		filter;
 //	textureRepeat_t		repeat;
@@ -366,41 +366,42 @@ class idImage implements IidImage {
 
 //	idImage 			*cacheUsagePrev, *cacheUsageNext;	// for dynamic cache purging of old images
 
-//	idImage *			hashNext;				// for hash chains to speed lookup
+	hashNext:idImage;							// for hash chains to speed lookup
 
 //	int					refCount;				// overall ref count
-};
 
-////ID_INLINE idImage::idImage() {
-////	texnum = TEXTURE_NOT_LOADED;
-////	partialImage = NULL;
-////	type = TT_DISABLED;
-////	isPartialImage = false;
-////	frameUsed = 0;
-////	classification = 0;
-////	backgroundLoadInProgress = false;
-////	bgl.opcode = DLTYPE_FILE;
-////	bgl.f = NULL;
-////	bglNext = NULL;
-////	imgName[0] = '\0';
-////	generatorFunction = NULL;
-////	allowDownSize = false;
-////	filter = TF_DEFAULT;
-////	repeat = TR_REPEAT;
-////	depth = TD_DEFAULT;
-////	cubeFiles = CF_2D;
-////	referencedOutsideLevelLoad = false;
-////	levelLoadReferenced = false;
-////	precompressedFile = false;
-////	defaulted = false;
-////	timestamp = 0;
-////	bindCount = 0;
-////	uploadWidth = uploadHeight = uploadDepth = 0;
-////	internalFormat = 0;
-////	cacheUsagePrev = cacheUsageNext = NULL;
-////	hashNext = NULL;
-////	refCount = 0;
-////}
+	constructor() {
+		this.texnum = idImage.TEXTURE_NOT_LOADED;
+		//this.partialImage = NULL;
+		//this.type = TT_DISABLED;
+		//this.isPartialImage = false;
+		//this.frameUsed = 0;
+		//this.classification = 0;
+		//this.backgroundLoadInProgress = false;
+		//this.bgl.opcode = DLTYPE_FILE;
+		//this.bgl.f = NULL;
+		//this.bglNext = NULL;
+		//this.imgName[0] = '\0';
+		//this.generatorFunction = NULL;
+		//this.allowDownSize = false;
+		//this.filter = TF_DEFAULT;
+		//this.repeat = TR_REPEAT;
+		//this.depth = TD_DEFAULT;
+		//this.cubeFiles = CF_2D;
+		//this.referencedOutsideLevelLoad = false;
+		//this.levelLoadReferenced = false;
+		//this.precompressedFile = false;
+		//this.defaulted = false;
+		//this.timestamp = 0;
+		//this.bindCount = 0;
+		//this.uploadWidth = uploadHeight = uploadDepth = 0;
+		//this.internalFormat = 0;
+		//this.cacheUsagePrev = cacheUsageNext = NULL;
+		//this.hashNext = NULL;
+		//this.refCount = 0;
+	}
+
+};
 
 
 ////// data is RGBA

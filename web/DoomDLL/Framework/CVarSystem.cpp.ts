@@ -3,10 +3,8 @@
 /// <reference path="CmdSystem.h.ts" />
 /// <reference path="CmdSystem.cpp.ts" />
 /// <reference path="CVarSystem.h.ts" />
-/// <reference path="../../libs/idLib/Text/Str.cpp.ts" />
 /// <reference path="../../libs/idLib/Heap.cpp.ts" />
 /// <reference path="Common.cpp.ts" />
-/// <reference path="../../libs/idLib/Text/Str.cpp.ts" />
 /// <reference path="../../libs/idLib/Lib.cpp.ts" />
 /// <reference path="../../utils/todo.ts" />
 /// <reference path="../../libs/idLib/Text/CmdArgs.h.ts" />
@@ -106,10 +104,10 @@ class idInternalCVar extends idCVar {
 ////	void					Reset( void );
 
 //private:
-/*	idStr					*/nameString:string;			// name
-/*	idStr					*/resetString:string;			// resetting will change to this value
-/*	idStr					*/valueString:string;			// value
-/*	idStr					*/descriptionString:string;		// description
+/*	idStr					*/nameString:idStr;			// name
+/*	idStr					*/resetString:idStr;			// resetting will change to this value
+/*	idStr					*/valueString:idStr;			// value
+/*	idStr					*/descriptionString:idStr;		// description
 
 ////	virtual void			InternalSetString( const char *newValue );
 ////	virtual void			InternalServerSetString( const char *newValue );
@@ -553,8 +551,8 @@ FindInternal( /*const char **/name:string ):idInternalCVar {
 ////============
 ////*/
 ////idCVarSystemLocal::idCVarSystemLocal( void ) {
-////	initialized = false;
-////	modifiedFlags = 0;
+////	this.initialized = false;
+////	this.modifiedFlags = 0;
 ////}
 
 /*
@@ -588,17 +586,17 @@ Init( ):void {
 //	cvars.DeleteContents( true );
 //	cvarHash.Free();
 //	moveCVarsToDict.Clear();
-//	initialized = false;
+//	this.initialized = false;
 //}
 
-///*
-//============
-//idCVarSystemLocal::IsInitialized
-//============
-//*/
-//bool /*idCVarSystemLocal::*/IsInitialized( void ) const {
-//	return initialized;
-//}
+/*
+============
+idCVarSystemLocal::IsInitialized
+============
+*/
+IsInitialized( ):boolean {
+	return this.initialized;
+}
 
 /*
 ============
@@ -787,7 +785,7 @@ Register( cvar:idCVar ):void {
 //============
 //*/
 //void /*idCVarSystemLocal::*/SetModifiedFlags( int flags ) {
-//	modifiedFlags |= flags;
+//	this.modifiedFlags |= flags;
 //}
 
 ///*
@@ -796,7 +794,7 @@ Register( cvar:idCVar ):void {
 //============
 //*/
 //int /*idCVarSystemLocal::*/GetModifiedFlags( void ) const {
-//	return modifiedFlags;
+//	return this.modifiedFlags;
 //}
 
 ///*
@@ -805,7 +803,7 @@ Register( cvar:idCVar ):void {
 //============
 //*/
 //void /*idCVarSystemLocal::*/ClearModifiedFlags( int flags ) {
-//	modifiedFlags &= ~flags;
+//	this.modifiedFlags &= ~flags;
 //}
 
 ///*

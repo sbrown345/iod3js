@@ -376,7 +376,7 @@ Next( /*const int */index:number ):number {
 idHashIndex::GenerateKey
 ================
 */
-GenerateKey( $string: string, caseSensitive:boolean ) :number {
+GenerateKey( $string: idStr, caseSensitive:boolean ) :number {
 	if ( caseSensitive ) {
 		return ( idStr.Hash( $string ) & this.hashMask );
 	} else {

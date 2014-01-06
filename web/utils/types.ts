@@ -292,31 +292,31 @@ function flatten3DArray ( arrayClass: any, array:Array<Array<Array>> ): any[] {
 //    }
 //}
 
-//interface String {
-//  toUint8Array: () => Uint8Array;
-//}
+interface String {
+  toUint8Array: () => Uint8Array;
+}
 
-//String.prototype.toUint8Array= function () : Uint8Array {
-//    var array = new Uint8Array(this.length);
-//    for (var i = 0; i < this.length; i++) {
-//        array[i] = this.charCodeAt(i);
-//    }
+String.prototype.toUint8Array = function () : Uint8Array {
+    var array = new Uint8Array(this.length);
+    for (var i = 0; i < this.length; i++) {
+        array[i] = this.charCodeAt(i);
+    }
 
-//    return array;
-//}
+    return array;
+}
 
-//interface Uint8Array {
-//  toString: () => string;
-//}
+interface Uint8Array {
+  toString: () => string;
+}
 
-//Uint8Array.prototype.toString = function () : string {
-//    var str = "";
-//    for (var i = 0; i < this.length; i++) {
-//        if(!this[i]) {
-//            break;
-//        }
-//        str += String.fromCharCode(this[i]);
-//    }
+Uint8Array.prototype.toString = function () : string {
+    var str = "";
+    for (var i = 0; i < this.length; i++) {
+        if(!this[i]) {
+            break;
+        }
+        str += String.fromCharCode(this[i]);
+    }
 
-//    return str;
-//};
+    return str;
+};

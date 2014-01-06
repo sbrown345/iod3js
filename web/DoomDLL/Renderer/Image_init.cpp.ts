@@ -1,6 +1,5 @@
 /// <reference path="../../libs/idLib/Text/Str.h.ts" />
 /// <reference path="Material.h.ts" />
-/// <reference path="../../libs/idLib/Text/Str.cpp.ts" />
 /// <reference path="../Framework/CmdSystem.cpp.ts" />
 /// <reference path="../../utils/types.ts" />
 /// <reference path="../../utils/todo.ts" />
@@ -1452,19 +1451,19 @@ system to be completely regenerated if needed.
 ==================
 */
 idImageManager.prototype.ImageFromFunction = function ( /*const char **/_name:string, generatorFunction: (image:idImage)=>void ): idImage {
-	var/*idStr */name = "";
-	var image:idImage	;
+	var name:idStr;
+	var image:idImage;
 	var /*int	*/hash:number;
 
 	// strip any .tga file extensions from anywhere in the _name
-	name = _name;
-	name = name.Replace( ".tga", "" );
+	name = new idStr(_name);
+	name.Replace( ".tga", "" );
     
-	name = name.BackSlashesToSlashes();
+	name.BackSlashesToSlashes();
 
 	// see if the image already exists
 	hash = name.FileNameHash();
-	for ( image = imageHashTable[hash] ; image; image = image.hashNext ) {
+	for ( image = this.imageHashTable[hash] ; image; image = image.hashNext ) {
 		if ( name.Icmp( image.imgName ) == 0 ) {
 			if ( image.generatorFunction != generatorFunction ) {
 				common.DPrintf( "WARNING: reused image %s with mixed generators\n", name.c_str() );

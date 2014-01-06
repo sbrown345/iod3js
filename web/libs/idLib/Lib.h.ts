@@ -145,7 +145,7 @@ function BIT( num: number ):number			{ return ( 1 << ( num ) );}
 ////#ifdef _DEBUG
 ////void AssertFailed( const char *file, int line, const char *expression );
 ////#undef assert
-function assert( X:boolean ):void { if ( X ) { } else AssertFailed( "__FILE__", (new Error)["lineNumber"], "#X" ); }
+function assert( X:any ):void { if ( X ) { } else AssertFailed( "__FILE__", (new Error)["lineNumber"], "#X" ); }
 ////#endif
 
 ////class idException {

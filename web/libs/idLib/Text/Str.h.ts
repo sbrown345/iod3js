@@ -1,3 +1,4 @@
+/// <reference path="../../../utils/types.ts" />
 /////*
 ////===========================================================================
 
@@ -75,7 +76,7 @@
 ////class idVec4;
 
 ////#ifndef FILE_HASH_SIZE
-var FILE_HASH_SIZE		=   1024;
+var FILE_HASH_SIZE = 1024;
 ////#endif
 
 ////// color escape character
@@ -112,9 +113,11 @@ var FILE_HASH_SIZE		=   1024;
 ////	MEASURE_SIZE = 0,
 ////	MEASURE_BANDWIDTH
 ////} Measure_t;
-// warning: idStr can be changed, JS strings can't
-interface String {
-///class idStr {
+
+class idStr {
+	constructor ( str: string ) {
+		this.data = str;//.toUint8Array ( );
+	}
 
 ////public:
 ////						idStr( void );
@@ -130,7 +133,7 @@ interface String {
 ////						~idStr( void );
 
 ////	size_t				Size( void ) const;
-        c_str( ):string;
+////	const char *		c_str( void ) const;
 ////	operator			const char *( void ) const;
 ////	operator			const char *( void );
 
@@ -174,7 +177,7 @@ interface String {
 ////	int					CmpPrefix( const char *text ) const;
 
 ////						// case insensitive compare
-/*/	int					*/Icmp( text:string ): number;
+////	int					Icmp( const char *text ) const;
 ////	int					Icmpn( const char *text, int n ) const;
 ////	int					IcmpPrefix( const char *text ) const;
 
@@ -197,8 +200,8 @@ interface String {
 ////	void				Append( const char *text, int len );
 ////	void				Insert( const char a, int index );
 ////	void				Insert( const char *text, int index );
-	/*void				*/ToLower( ):string;
-	/*void				*/ToUpper( ):string;
+////	void				ToLower( void );
+////	void				ToUpper( void );
 ////	bool				IsNumeric( void ) const;
 ////	bool				IsColor( void ) const;
 ////	bool				HasLower( void ) const;
@@ -228,11 +231,11 @@ interface String {
 ////	void				Strip( const char *string );					// strip string from front and end as many times as the string occurs
 ////	void				StripTrailingWhitespace( void );				// strip trailing white space characters
 ////	idStr &				StripQuotes( void );							// strip quotes around string
-    Replace ( old: string, nw: string ): string/*void*/;
+////	void				Replace( const char *old, const char *nw );
 
 ////	// file name methods
-	FileNameHash( ):number;						// hash key for the filename (skips extension)
-	BackSlashesToSlashes( ):string;					// convert slashes
+////	int					FileNameHash( void ) const;						// hash key for the filename (skips extension)
+////	idStr &				BackSlashesToSlashes( void );					// convert slashes
 ////	idStr &				SetFileExtension( const char *extension );		// set the given file extension
 ////	idStr &				StripFileExtension( void );						// remove any file extension
 ////	idStr &				StripAbsoluteFileExtension( void );				// remove any file extension looking from front (useful if there are multiple .'s)
@@ -313,15 +316,15 @@ interface String {
 ////	int					DynamicMemoryUsed() const;
 ////	static idStr		FormatNumber( int number );
 
-////protected:
+//protected:
 ////	int					len;
-////	char *				data;
+/*		char *				*/data:string;
 ////	int					alloced;
 ////	char				baseBuffer[ STR_ALLOC_BASE ];
 
 ////	void				Init( void );										// initialize string using base buffer
 ////	void				EnsureAlloced( int amount, bool keepold = true );	// ensure string data buffer is large anough
-};
+////};
 
 ////char *					va( const char *fmt, ... ) id_attribute((format(printf,1,2)));
 
@@ -335,8 +338,8 @@ interface String {
 ////ID_INLINE void idStr::Init( void ) {
 ////	len = 0;
 ////	alloced = STR_ALLOC_BASE;
-////	data = baseBuffer;
-////	data[ 0 ] = '\0';
+////	this.data = baseBuffer;
+////	this.data[ 0 ] = '\0';
 ////#ifdef ID_DEBUG_UNINITIALIZED_MEMORY
 ////	memset( baseBuffer, 0, sizeof( baseBuffer ) );
 ////#endif
@@ -352,7 +355,7 @@ interface String {
 ////	Init();
 ////	l = text.Length();
 ////	EnsureAlloced( l + 1 );
-////	strcpy( data, text.data );
+////	strcpy( this.data, text.data );
 ////	len = l;
 ////}
 
@@ -378,10 +381,10 @@ interface String {
 ////	EnsureAlloced( l + 1 );
 
 ////	for ( i = 0; i < l; i++ ) {
-////		data[ i ] = text[ start + i ];
+////		this.data[ i ] = text[ start + i ];
 ////	}
 
-////	data[ l ] = '\0';
+////	this.data[ l ] = '\0';
 ////	len = l;
 ////}
 
@@ -392,7 +395,7 @@ interface String {
 ////	if ( text ) {
 ////		l = strlen( text );
 ////		EnsureAlloced( l + 1 );
-////		strcpy( data, text );
+////		strcpy( this.data, text );
 ////		len = l;
 ////	}
 ////}
@@ -419,26 +422,26 @@ interface String {
 ////	EnsureAlloced( l + 1 );
 
 ////	for ( i = 0; i < l; i++ ) {
-////		data[ i ] = text[ start + i ];
+////		this.data[ i ] = text[ start + i ];
 ////	}
 
-////	data[ l ] = '\0';
+////	this.data[ l ] = '\0';
 ////	len = l;
 ////}
 
 ////ID_INLINE idStr::idStr( const bool b ) {
 ////	Init();
 ////	EnsureAlloced( 2 );
-////	data[ 0 ] = b ? '1' : '0';
-////	data[ 1 ] = '\0';
+////	this.data[ 0 ] = b ? '1' : '0';
+////	this.data[ 1 ] = '\0';
 ////	len = 1;
 ////}
 
 ////ID_INLINE idStr::idStr( const char c ) {
 ////	Init();
 ////	EnsureAlloced( 2 );
-////	data[ 0 ] = c;
-////	data[ 1 ] = '\0';
+////	this.data[ 0 ] = c;
+////	this.data[ 1 ] = '\0';
 ////	len = 1;
 ////}
 
@@ -449,7 +452,7 @@ interface String {
 ////	Init();
 ////	l = sprintf( text, "%d", i );
 ////	EnsureAlloced( l + 1 );
-////	strcpy( data, text );
+////	strcpy( this.data, text );
 ////	len = l;
 ////}
 
@@ -460,7 +463,7 @@ interface String {
 ////	Init();
 ////	l = sprintf( text, "%u", u );
 ////	EnsureAlloced( l + 1 );
-////	strcpy( data, text );
+////	strcpy( this.data, text );
 ////	len = l;
 ////}
 
@@ -473,7 +476,7 @@ interface String {
 ////	while( l > 0 && text[l-1] == '0' ) text[--l] = '\0';
 ////	while( l > 0 && text[l-1] == '.' ) text[--l] = '\0';
 ////	EnsureAlloced( l + 1 );
-////	strcpy( data, text );
+////	strcpy( this.data, text );
 ////	len = l;
 ////}
 
@@ -485,9 +488,9 @@ interface String {
 ////	return sizeof( *this ) + Allocated();
 ////}
 
-String.prototype.c_str = function ( ): string {
-    return this;
-};
+c_str( ):string {
+	return this.data;
+}
 
 ////ID_INLINE idStr::operator const char *( void ) {
 ////	return c_str();
@@ -499,12 +502,12 @@ String.prototype.c_str = function ( ): string {
 
 ////ID_INLINE char idStr::operator[]( int index ) const {
 ////	assert( ( index >= 0 ) && ( index <= len ) );
-////	return data[ index ];
+////	return this.data[ index ];
 ////}
 
 ////ID_INLINE char &idStr::operator[]( int index ) {
 ////	assert( ( index >= 0 ) && ( index <= len ) );
-////	return data[ index ];
+////	return this.data[ index ];
 ////}
 
 ////ID_INLINE void idStr::operator=( const idStr &text ) {
@@ -512,8 +515,8 @@ String.prototype.c_str = function ( ): string {
 
 ////	l = text.Length();
 ////	EnsureAlloced( l + 1, false );
-////	memcpy( data, text.data, l );
-////	data[l] = '\0';
+////	memcpy( this.data, text.data, l );
+////	this.data[l] = '\0';
 ////	len = l;
 ////}
 
@@ -650,54 +653,54 @@ String.prototype.c_str = function ( ): string {
 ////	return !( a == b );
 ////}
 
-////ID_INLINE int idStr::Cmp( const char *text ) const {
-////	assert( text );
-////	return idStr::Cmp( data, text );
-////}
+Cmp( text:idStr ):number {
+	assert( text );
+	return idStr.Cmp( this, text );
+}
 
 ////ID_INLINE int idStr::Cmpn( const char *text, int n ) const {
 ////	assert( text );
-////	return idStr::Cmpn( data, text, n );
+////	return idStr::Cmpn( this.data, text, n );
 ////}
 
 ////ID_INLINE int idStr::CmpPrefix( const char *text ) const {
 ////	assert( text );
-////	return idStr::Cmpn( data, text, strlen( text ) );
+////	return idStr::Cmpn( this.data, text, strlen( text ) );
 ////}
 
-String.prototype.Icmp = function( text:string ):number {
-	assert( !!text );
+Icmp( text:idStr ):number {
+	assert( text );
 	return idStr.Icmp( this, text );
 }
 
 ////ID_INLINE int idStr::Icmpn( const char *text, int n ) const {
 ////	assert( text );
-////	return idStr::Icmpn( data, text, n );
+////	return idStr::Icmpn( this.data, text, n );
 ////}
 
 ////ID_INLINE int idStr::IcmpPrefix( const char *text ) const {
 ////	assert( text );
-////	return idStr::Icmpn( data, text, strlen( text ) );
+////	return idStr::Icmpn( this.data, text, strlen( text ) );
 ////}
 
 ////ID_INLINE int idStr::IcmpNoColor( const char *text ) const {
 ////	assert( text );
-////	return idStr::IcmpNoColor( data, text );
+////	return idStr::IcmpNoColor( this.data, text );
 ////}
 
 ////ID_INLINE int idStr::IcmpPath( const char *text ) const {
 ////	assert( text );
-////	return idStr::IcmpPath( data, text );
+////	return idStr::IcmpPath( this.data, text );
 ////}
 
 ////ID_INLINE int idStr::IcmpnPath( const char *text, int n ) const {
 ////	assert( text );
-////	return idStr::IcmpnPath( data, text, n );
+////	return idStr::IcmpnPath( this.data, text, n );
 ////}
 
 ////ID_INLINE int idStr::IcmpPrefixPath( const char *text ) const {
 ////	assert( text );
-////	return idStr::IcmpnPath( data, text, strlen( text ) );
+////	return idStr::IcmpnPath( this.data, text, strlen( text ) );
 ////}
 
 ////ID_INLINE int idStr::Length( void ) const {
@@ -705,7 +708,7 @@ String.prototype.Icmp = function( text:string ):number {
 ////}
 
 ////ID_INLINE int idStr::Allocated( void ) const {
-////	if ( data != baseBuffer ) {
+////	if ( this.data != baseBuffer ) {
 ////		return alloced;
 ////	} else {
 ////		return 0;
@@ -714,12 +717,12 @@ String.prototype.Icmp = function( text:string ):number {
 
 ////ID_INLINE void idStr::Empty( void ) {
 ////	EnsureAlloced( 1 );
-////	data[ 0 ] = '\0';
+////	this.data[ 0 ] = '\0';
 ////	len = 0;
 ////}
 
 ////ID_INLINE bool idStr::IsEmpty( void ) const {
-////	return ( idStr::Cmp( data, "" ) == 0 );
+////	return ( idStr::Cmp( this.data, "" ) == 0 );
 ////}
 
 ////ID_INLINE void idStr::Clear( void ) {
@@ -729,9 +732,9 @@ String.prototype.Icmp = function( text:string ):number {
 
 ////ID_INLINE void idStr::Append( const char a ) {
 ////	EnsureAlloced( len + 2 );
-////	data[ len ] = a;
+////	this.data[ len ] = a;
 ////	len++;
-////	data[ len ] = '\0';
+////	this.data[ len ] = '\0';
 ////}
 
 ////ID_INLINE void idStr::Append( const idStr &text ) {
@@ -741,10 +744,10 @@ String.prototype.Icmp = function( text:string ):number {
 ////	newLen = len + text.Length();
 ////	EnsureAlloced( newLen + 1 );
 ////	for ( i = 0; i < text.len; i++ ) {
-////		data[ len + i ] = text[ i ];
+////		this.data[ len + i ] = text[ i ];
 ////	}
 ////	len = newLen;
-////	data[ len ] = '\0';
+////	this.data[ len ] = '\0';
 ////}
 
 ////ID_INLINE void idStr::Append( const char *text ) {
@@ -755,10 +758,10 @@ String.prototype.Icmp = function( text:string ):number {
 ////		newLen = len + strlen( text );
 ////		EnsureAlloced( newLen + 1 );
 ////		for ( i = 0; text[ i ]; i++ ) {
-////			data[ len + i ] = text[ i ];
+////			this.data[ len + i ] = text[ i ];
 ////		}
 ////		len = newLen;
-////		data[ len ] = '\0';
+////		this.data[ len ] = '\0';
 ////	}
 ////}
 
@@ -770,10 +773,10 @@ String.prototype.Icmp = function( text:string ):number {
 ////		newLen = len + l;
 ////		EnsureAlloced( newLen + 1 );
 ////		for ( i = 0; text[ i ] && i < l; i++ ) {
-////			data[ len + i ] = text[ i ];
+////			this.data[ len + i ] = text[ i ];
 ////		}
 ////		len = newLen;
-////		data[ len ] = '\0';
+////		this.data[ len ] = '\0';
 ////	}
 ////}
 
@@ -789,9 +792,9 @@ String.prototype.Icmp = function( text:string ):number {
 ////	l = 1;
 ////	EnsureAlloced( len + l + 1 );
 ////	for ( i = len; i >= index; i-- ) {
-////		data[i+l] = data[i];
+////		this.data[i+l] = this.data[i];
 ////	}
-////	data[index] = a;
+////	this.data[index] = a;
 ////	len++;
 ////}
 
@@ -807,76 +810,87 @@ String.prototype.Icmp = function( text:string ):number {
 ////	l = strlen( text );
 ////	EnsureAlloced( len + l + 1 );
 ////	for ( i = len; i >= index; i-- ) {
-////		data[i+l] = data[i];
+////		this.data[i+l] = this.data[i];
 ////	}
 ////	for ( i = 0; i < l; i++ ) {
-////		data[index+i] = text[i];
+////		this.data[index+i] = text[i];
 ////	}
 ////	len += l;
 ////}
 
-String.prototype.ToLower = String.prototype.toLowerCase;
+////ID_INLINE void idStr::ToLower( void ) {
+////	for (int i = 0; this.data[i]; i++ ) {
+////		if ( CharIsUpper( this.data[i] ) ) {
+////			this.data[i] += ( 'a' - 'A' );
+////		}
+////	}
+////}
 
-String.prototype.ToUpper = String.prototype.toUpperCase
-
+////ID_INLINE void idStr::ToUpper( void ) {
+////	for (int i = 0; this.data[i]; i++ ) {
+////		if ( CharIsLower( this.data[i] ) ) {
+////			this.data[i] -= ( 'a' - 'A' );
+////		}
+////	}
+////}
 
 ////ID_INLINE bool idStr::IsNumeric( void ) const {
-////	return idStr::IsNumeric( data );
+////	return idStr::IsNumeric( this.data );
 ////}
 
 ////ID_INLINE bool idStr::IsColor( void ) const {
-////	return idStr::IsColor( data );
+////	return idStr::IsColor( this.data );
 ////}
 
 ////ID_INLINE bool idStr::HasLower( void ) const {
-////	return idStr::HasLower( data );
+////	return idStr::HasLower( this.data );
 ////}
 
 ////ID_INLINE bool idStr::HasUpper( void ) const {
-////	return idStr::HasUpper( data );
+////	return idStr::HasUpper( this.data );
 ////}
 
 ////ID_INLINE idStr &idStr::RemoveColors( void ) {
-////	idStr::RemoveColors( data );
-////	len = Length( data );
+////	idStr::RemoveColors( this.data );
+////	len = Length( this.data );
 ////	return *this;
 ////}
 
 ////ID_INLINE int idStr::LengthWithoutColors( void ) const {
-////	return idStr::LengthWithoutColors( data );
+////	return idStr::LengthWithoutColors( this.data );
 ////}
 
 ////ID_INLINE void idStr::CapLength( int newlen ) {
 ////	if ( len <= newlen ) {
 ////		return;
 ////	}
-////	data[ newlen ] = 0;
+////	this.data[ newlen ] = 0;
 ////	len = newlen;
 ////}
 
 ////ID_INLINE void idStr::Fill( const char ch, int newlen ) {
 ////	EnsureAlloced( newlen + 1 );
 ////	len = newlen;
-////	memset( data, ch, len );
-////	data[ len ] = 0;
+////	memset( this.data, ch, len );
+////	this.data[ len ] = 0;
 ////}
 
 ////ID_INLINE int idStr::Find( const char c, int start, int end ) const {
 ////	if ( end == -1 ) {
 ////		end = len;
 ////	}
-////	return idStr::FindChar( data, c, start, end );
+////	return idStr::FindChar( this.data, c, start, end );
 ////}
 
 ////ID_INLINE int idStr::Find( const char *text, bool casesensitive, int start, int end ) const {
 ////	if ( end == -1 ) {
 ////		end = len;
 ////	}
-////	return idStr::FindText( data, text, casesensitive, start, end );
+////	return idStr::FindText( this.data, text, casesensitive, start, end );
 ////}
 
 ////ID_INLINE bool idStr::Filter( const char *filter, bool casesensitive ) const {
-////	return idStr::Filter( filter, data, casesensitive );
+////	return idStr::Filter( filter, this.data, casesensitive );
 ////}
 
 ////ID_INLINE const char *idStr::Left( int len, idStr &result ) const {
@@ -913,7 +927,7 @@ String.prototype.ToUpper = String.prototype.toUpperCase
 ////}
 
 ////ID_INLINE bool idStr::CheckExtension( const char *ext ) {
-////	return idStr::CheckExtension( data, ext );
+////	return idStr::CheckExtension( this.data, ext );
 ////}
 
 ////ID_INLINE int idStr::Length( const char *s ) {
@@ -940,15 +954,1804 @@ String.prototype.ToUpper = String.prototype.toUpperCase
 ////	return s;
 ////}
 
-//string prototypes from Str.cpp
-String.prototype.BackSlashesToSlashes = function ( ):string {
-	// warning: string cannot modify itself
-	return idStr.BackSlashesToSlashes( this );
-};
+//////////////////ID_INLINE int idStr::Hash( const char *string ) {
+//////////////////	int i, hash = 0;
+//////////////////	for ( i = 0; *string != '\0'; i++ ) {
+//////////////////		hash += ( *string++ ) * ( i + 119 );
+//////////////////	}
+//////////////////	return hash;
+//////////////////}
 
-String.prototype.FileNameHash = function ( ):number {
-	// warning: string cannot modify itself
-	return idStr.FileNameHash( this );
-};
+//////////////////ID_INLINE int idStr::Hash( const char *string, int length ) {
+//////////////////	int i, hash = 0;
+//////////////////	for ( i = 0; i < length; i++ ) {
+//////////////////		hash += ( *string++ ) * ( i + 119 );
+//////////////////	}
+//////////////////	return hash;
+//////////////////}
 
-// rest MOVED TO str.cpp
+static Hash( $string:idStr ):number {
+	var/*int */i:number, hash = 0;
+    var strIdx = 0;
+	for ( i = 0; $string.data.c(strIdx); i++ ) {
+		hash += ( $string.data.c(strIdx++) ) * ( i + 119 );
+	}
+	return hash;
+}
+
+//////////////////ID_INLINE int idStr::IHash( const char *string ) {
+//////////////////	int i, hash = 0;
+//////////////////	for( i = 0; *string != '\0'; i++ ) {
+//////////////////		hash += ToLower( *string++ ) * ( i + 119 );
+//////////////////	}
+//////////////////	return hash;
+//////////////////}
+
+//////////////////ID_INLINE int idStr::IHash( const char *string, int length ) {
+//////////////////	int i, hash = 0;
+//////////////////	for ( i = 0; i < length; i++ ) {
+//////////////////		hash += ToLower( *string++ ) * ( i + 119 );
+//////////////////	}
+//////////////////	return hash;
+//////////////////}
+	
+static IHash( $string:idStr ):number;
+static IHash( $string:idStr, /*int */length?:number ):number {
+	var /*int*/ i:number, hash = 0;
+    var idx = 0;
+	if ( typeof (length) === "number" ) {
+		for ( i = 0; $string.c( idx ); i++ ) {
+			hash += idStr.ToLower( $string.v( idx++ ) ).charCodeAt( 0 ) * (i + 119);
+		}
+		return hash;
+	} else {
+		for ( i = 0; i < length; i++ ) {
+			hash += ($string.c( idx++ )) * (i + 119);
+			return hash;
+		}
+	}
+}
+
+////ID_INLINE bool idStr::IsColor( const char *s ) {
+////	return ( s[0] == C_COLOR_ESCAPE && s[1] != '\0' && s[1] != ' ' );
+////}
+
+static ToLower( /*char */c:string ):string {
+	assert( c.length == 1 );
+	//if ( c <= 'Z' && c >= 'A' ) {
+	//	return ( c + ( 'a' - 'A' ) );
+	//}
+	return c.toLowerCase();
+}
+
+static ToUpper( /*char*/ c:string ):string {
+	assert( c.length == 1 );
+	//if ( c >= 'a' && c <= 'z' ) {
+	//	return ( c - ( 'a' - 'A' ) );
+	//}
+	return c.toUpperCase();
+}
+
+////ID_INLINE bool idStr::CharIsPrintable( int c ) {
+////	// test for regular ascii and western European high-ascii chars
+////	return ( c >= 0x20 && c <= 0x7E ) || ( c >= 0xA1 && c <= 0xFF );
+////}
+
+////ID_INLINE bool idStr::CharIsLower( int c ) {
+////	// test for regular ascii and western European high-ascii chars
+////	return ( c >= 'a' && c <= 'z' ) || ( c >= 0xE0 && c <= 0xFF );
+////}
+
+////ID_INLINE bool idStr::CharIsUpper( int c ) {
+////	// test for regular ascii and western European high-ascii chars
+////	return ( c <= 'Z' && c >= 'A' ) || ( c >= 0xC0 && c <= 0xDF );
+////}
+
+////ID_INLINE bool idStr::CharIsAlpha( int c ) {
+////	// test for regular ascii and western European high-ascii chars
+////	return ( ( c >= 'a' && c <= 'z' ) || ( c >= 'A' && c <= 'Z' ) ||
+////			 ( c >= 0xC0 && c <= 0xFF ) );
+////}
+
+////ID_INLINE bool idStr::CharIsNumeric( int c ) {
+////	return ( c <= '9' && c >= '0' );
+////}
+
+////ID_INLINE bool idStr::CharIsNewLine( char c ) {
+////	return ( c == '\n' || c == '\r' || c == '\v' );
+////}
+
+////ID_INLINE bool idStr::CharIsTab( char c ) {
+////	return ( c == '\t' );
+////}
+
+////ID_INLINE int idStr::ColorIndex( int c ) {
+////	return ( c & 15 );
+////}
+
+////ID_INLINE int idStr::DynamicMemoryUsed() const {
+////	return ( this.data == baseBuffer ) ? 0 : alloced;
+////}
+
+////#endif /* !__STR_H__ */
+
+
+	// Str.cpp:
+
+	
+////#include "precompiled.h"
+////#pragma hdrstop
+
+////#if !defined( ID_REDIRECT_NEWDELETE ) && !defined( MACOS_X )
+////	#define USE_STRING_DATA_ALLOCATOR
+////#endif
+
+////#ifdef USE_STRING_DATA_ALLOCATOR
+////static idDynamicBlockAlloc<char, 1<<18, 128>	stringDataAllocator;
+////#endif
+
+////idVec4	g_color_table[16] =
+////{
+////	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
+////	idVec4(1.0f, 0.0f, 0.0f, 1.0f), // S_COLOR_RED
+////	idVec4(0.0f, 1.0f, 0.0f, 1.0f), // S_COLOR_GREEN
+////	idVec4(1.0f, 1.0f, 0.0f, 1.0f), // S_COLOR_YELLOW
+////	idVec4(0.0f, 0.0f, 1.0f, 1.0f), // S_COLOR_BLUE
+////	idVec4(0.0f, 1.0f, 1.0f, 1.0f), // S_COLOR_CYAN
+////	idVec4(1.0f, 0.0f, 1.0f, 1.0f), // S_COLOR_MAGENTA
+////	idVec4(1.0f, 1.0f, 1.0f, 1.0f), // S_COLOR_WHITE
+////	idVec4(0.5f, 0.5f, 0.5f, 1.0f), // S_COLOR_GRAY
+////	idVec4(0.0f, 0.0f, 0.0f, 1.0f), // S_COLOR_BLACK
+////	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
+////	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
+////	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
+////	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
+////	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
+////	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
+////};
+
+////const char *units[2][4] =
+////{
+////	{ "B", "KB", "MB", "GB" },
+////	{ "B/s", "KB/s", "MB/s", "GB/s" }
+////};
+
+/////*
+////============
+////idStr::ColorForIndex
+////============
+////*/
+////idVec4 & idStr::ColorForIndex( int i ) {
+////	return g_color_table[ i & 15 ];
+////}
+
+/////*
+////============
+////idStr::ReAllocate
+////============
+////*/
+////void idStr::ReAllocate( int amount, bool keepold ) {
+////	char	*newbuffer;
+////	int		newsize;
+////	int		mod;
+
+////	//assert( this.data );
+////	assert( amount > 0 );
+
+////	mod = amount % STR_ALLOC_GRAN;
+////	if ( !mod ) {
+////		newsize = amount;
+////	}
+////	else {
+////		newsize = amount + STR_ALLOC_GRAN - mod;
+////	}
+////	alloced = newsize;
+
+////#ifdef USE_STRING_DATA_ALLOCATOR
+////	newbuffer = stringDataAllocator.Alloc( alloced );
+////#else
+////	newbuffer = new char[ alloced ];
+////#endif
+////	if ( keepold && this.data ) {
+////		this.data[ len ] = '\0';
+////		strcpy( newbuffer, this.data );
+////	}
+
+////	if ( this.data && this.data != baseBuffer ) {
+////#ifdef USE_STRING_DATA_ALLOCATOR
+////		stringDataAllocator.Free( this.data );
+////#else
+////		delete [] this.data;
+////#endif
+////	}
+
+////	this.data = newbuffer;
+////}
+
+/////*
+////============
+////idStr::FreeData
+////============
+////*/
+////void idStr::FreeData( void ) {
+////	if ( this.data && this.data != baseBuffer ) {
+////#ifdef USE_STRING_DATA_ALLOCATOR
+////		stringDataAllocator.Free( this.data );
+////#else
+////		delete[] this.data;
+////#endif
+////		this.data = baseBuffer;
+////	}
+////}
+
+/////*
+////============
+////idStr::operator=
+////============
+////*/
+////void idStr::operator=( const char *text ) {
+////	int l;
+////	int diff;
+////	int i;
+
+////	if ( !text ) {
+////		// safe behaviour if NULL
+////		EnsureAlloced( 1, false );
+////		this.data[ 0 ] = '\0';
+////		len = 0;
+////		return;
+////	}
+
+////	if ( text == this.data ) {
+////		return; // copying same thing
+////	}
+
+////	// check if we're aliasing
+////	if ( text >= this.data && text <= this.data + len ) {
+////		diff = text - this.data;
+
+////		assert( strlen( text ) < (unsigned)len );
+
+////		for ( i = 0; text[ i ]; i++ ) {
+////			this.data[ i ] = text[ i ];
+////		}
+
+////		this.data[ i ] = '\0';
+
+////		len -= diff;
+
+////		return;
+////	}
+
+////	l = strlen( text );
+////	EnsureAlloced( l + 1, false );
+////	strcpy( this.data, text );
+////	len = l;
+////}
+
+/////*
+////============
+////idStr::FindChar
+
+////returns -1 if not found otherwise the index of the char
+////============
+////*/
+////int idStr::FindChar( const char *str, const char c, int start, int end ) {
+////	int i;
+
+////	if ( end == -1 ) {
+////		end = strlen( str ) - 1;
+////	}
+////	for ( i = start; i <= end; i++ ) {
+////		if ( str[i] == c ) {
+////			return i;
+////		}
+////	}
+////	return -1;
+////}
+
+/////*
+////============
+////idStr::FindText
+
+////returns -1 if not found otherwise the index of the text
+////============
+////*/
+////int idStr::FindText( const char *str, const char *text, bool casesensitive, int start, int end ) {
+////	int l, i, j;
+
+////	if ( end == -1 ) {
+////		end = strlen( str );
+////	}
+////	l = end - strlen( text );
+////	for ( i = start; i <= l; i++ ) {
+////		if ( casesensitive ) {
+////			for ( j = 0; text[j]; j++ ) {
+////				if ( str[i+j] != text[j] ) {
+////					break;
+////				}
+////			}
+////		} else {
+////			for ( j = 0; text[j]; j++ ) {
+////				if ( ::toupper( str[i+j] ) != ::toupper( text[j] ) ) {
+////					break;
+////				}
+////			}
+////		}
+////		if ( !text[j] ) {
+////			return i;
+////		}
+////	}
+////	return -1;
+////}
+
+/////*
+////============
+////idStr::Filter
+
+////Returns true if the string conforms the given filter.
+////Several metacharacter may be used in the filter.
+
+////*          match any string of zero or more characters
+////?          match any single character
+////[abc...]   match any of the enclosed characters; a hyphen can
+////           be used to specify a range (e.g. a-z, A-Z, 0-9)
+
+////============
+////*/
+////bool idStr::Filter( const char *filter, const char *name, bool casesensitive ) {
+////	idStr buf;
+////	int i, found, index;
+
+////	while(*filter) {
+////		if (*filter == '*') {
+////			filter++;
+////			buf.Empty();
+////			for (i = 0; *filter; i++) {
+////				if ( *filter == '*' || *filter == '?' || (*filter == '[' && *(filter+1) != '[') ) {
+////					break;
+////				}
+////				buf += *filter;
+////				if ( *filter == '[' ) {
+////					filter++;
+////				}
+////				filter++;
+////			}
+////			if ( buf.Length() ) {
+////				index = idStr(name).Find( buf.c_str(), casesensitive );
+////				if ( index == -1 ) {
+////					return false;
+////				}
+////				name += index + strlen(buf);
+////			}
+////		}
+////		else if (*filter == '?') {
+////			filter++;
+////			name++;
+////		}
+////		else if (*filter == '[') {
+////			if ( *(filter+1) == '[' ) {
+////				if ( *name != '[' ) {
+////					return false;
+////				}
+////				filter += 2;
+////				name++;
+////			}
+////			else {
+////				filter++;
+////				found = false;
+////				while(*filter && !found) {
+////					if (*filter == ']' && *(filter+1) != ']') {
+////						break;
+////					}
+////					if (*(filter+1) == '-' && *(filter+2) && (*(filter+2) != ']' || *(filter+3) == ']')) {
+////						if (casesensitive) {
+////							if (*name >= *filter && *name <= *(filter+2)) {
+////								found = true;
+////							}
+////						}
+////						else {
+////							if ( ::toupper(*name) >= ::toupper(*filter) && ::toupper(*name) <= ::toupper(*(filter+2)) ) {
+////								found = true;
+////							}
+////						}
+////						filter += 3;
+////					}
+////					else {
+////						if (casesensitive) {
+////							if (*filter == *name) {
+////								found = true;
+////							}
+////						}
+////						else {
+////							if ( ::toupper(*filter) == ::toupper(*name) ) {
+////								found = true;
+////							}
+////						}
+////						filter++;
+////					}
+////				}
+////				if (!found) {
+////					return false;
+////				}
+////				while(*filter) {
+////					if ( *filter == ']' && *(filter+1) != ']' ) {
+////						break;
+////					}
+////					filter++;
+////				}
+////				filter++;
+////				name++;
+////			}
+////		}
+////		else {
+////			if (casesensitive) {
+////				if (*filter != *name) {
+////					return false;
+////				}
+////			}
+////			else {
+////				if ( ::toupper(*filter) != ::toupper(*name) ) {
+////					return false;
+////				}
+////			}
+////			filter++;
+////			name++;
+////		}
+////	}
+////	return true;
+////}
+
+/////*
+////=============
+////idStr::StripMediaName
+
+////  makes the string lower case, replaces backslashes with forward slashes, and removes extension
+////=============
+////*/
+////void idStr::StripMediaName( const char *name, idStr &mediaName ) {
+////	char c;
+
+////	mediaName.Empty();
+
+////	for ( c = *name; c; c = *(++name) ) {
+////		// truncate at an extension
+////		if ( c == '.' ) {
+////			break;
+////		}
+////		// convert backslashes to forward slashes
+////		if ( c == '\\' ) {
+////			mediaName.Append( '/' );
+////		} else {
+////			mediaName.Append( idStr::ToLower( c ) );
+////		}
+////	}
+////}
+
+/////*
+////=============
+////idStr::CheckExtension
+////=============
+////*/
+////bool idStr::CheckExtension( const char *name, const char *ext ) {
+////	const char *s1 = name + Length( name ) - 1;
+////	const char *s2 = ext + Length( ext ) - 1;
+////	int c1, c2, d;
+
+////	do {
+////		c1 = *s1--;
+////		c2 = *s2--;
+
+////		d = c1 - c2;
+////		while( d ) {
+////			if ( c1 <= 'Z' && c1 >= 'A' ) {
+////				d += ('a' - 'A');
+////				if ( !d ) {
+////					break;
+////				}
+////			}
+////			if ( c2 <= 'Z' && c2 >= 'A' ) {
+////				d -= ('a' - 'A');
+////				if ( !d ) {
+////					break;
+////				}
+////			}
+////			return false;
+////		}
+////	} while( s1 > name && s2 > ext );
+
+////	return ( s1 >= name );
+////}
+
+/////*
+////=============
+////idStr::FloatArrayToString
+////=============
+////*/
+////const char *idStr::FloatArrayToString( const float *array, const int length, const int precision ) {
+////	static int index = 0;
+////	static char str[4][16384];	// in case called by nested functions
+////	int i, n;
+////	char format[16], *s;
+
+////	// use an array of string so that multiple calls won't collide
+////	s = str[ index ];
+////	index = (index + 1) & 3;
+
+////	idStr::snPrintf( format, sizeof( format ), "%%.%df", precision );
+////	n = idStr::snPrintf( s, sizeof( str[0] ), format, array[0] );
+////	if ( precision > 0 ) {
+////		while( n > 0 && s[n-1] == '0' ) s[--n] = '\0';
+////		while( n > 0 && s[n-1] == '.' ) s[--n] = '\0';
+////	}
+////	idStr::snPrintf( format, sizeof( format ), " %%.%df", precision );
+////	for ( i = 1; i < length; i++ ) {
+////		n += idStr::snPrintf( s + n, sizeof( str[0] ) - n, format, array[i] );
+////		if ( precision > 0 ) {
+////			while( n > 0 && s[n-1] == '0' ) s[--n] = '\0';
+////			while( n > 0 && s[n-1] == '.' ) s[--n] = '\0';
+////		}
+////	}
+////	return s;
+////}
+
+/////*
+////============
+////idStr::Last
+
+////returns -1 if not found otherwise the index of the char
+////============
+////*/
+////int idStr::Last( const char c ) const {
+////	int i;
+	
+////	for( i = Length(); i > 0; i-- ) {
+////		if ( this.data[ i - 1 ] == c ) {
+////			return i - 1;
+////		}
+////	}
+
+////	return -1;
+////}
+
+/////*
+////============
+////idStr::StripLeading
+////============
+////*/
+////void idStr::StripLeading( const char c ) {
+////	while( this.data[ 0 ] == c ) {
+////		memmove( &data[ 0 ], &data[ 1 ], len );
+////		len--;
+////	}
+////}
+
+/////*
+////============
+////idStr::StripLeading
+////============
+////*/
+////void idStr::StripLeading( const char *string ) {
+////	int l;
+
+////	l = strlen( string );
+////	if ( l > 0 ) {
+////		while ( !Cmpn( string, l ) ) {
+////			memmove( this.data, this.data + l, len - l + 1 );
+////			len -= l;
+////		}
+////	}
+////}
+
+/////*
+////============
+////idStr::StripLeadingOnce
+////============
+////*/
+////bool idStr::StripLeadingOnce( const char *string ) {
+////	int l;
+
+////	l = strlen( string );
+////	if ( ( l > 0 ) && !Cmpn( string, l ) ) {
+////		memmove( this.data, this.data + l, len - l + 1 );
+////		len -= l;
+////		return true;
+////	}
+////	return false;
+////}
+
+/////*
+////============
+////idStr::StripTrailing
+////============
+////*/
+////void idStr::StripTrailing( const char c ) {
+////	int i;
+	
+////	for( i = Length(); i > 0 && this.data[ i - 1 ] == c; i-- ) {
+////		this.data[ i - 1 ] = '\0';
+////		len--;
+////	}
+////}
+
+/////*
+////============
+////idStr::StripLeading
+////============
+////*/
+////void idStr::StripTrailing( const char *string ) {
+////	int l;
+
+////	l = strlen( string );
+////	if ( l > 0 ) {
+////		while ( ( len >= l ) && !Cmpn( string, this.data + len - l, l ) ) {
+////			len -= l;
+////			this.data[len] = '\0';
+////		}
+////	}
+////}
+
+/////*
+////============
+////idStr::StripTrailingOnce
+////============
+////*/
+////bool idStr::StripTrailingOnce( const char *string ) {
+////	int l;
+
+////	l = strlen( string );
+////	if ( ( l > 0 ) && ( len >= l ) && !Cmpn( string, this.data + len - l, l ) ) {
+////		len -= l;
+////		this.data[len] = '\0';
+////		return true;
+////	}
+////	return false;
+////}
+
+/*
+============
+idStr::Replace
+============
+*/
+Replace(  old: string, nw: string  ):void {
+	// https://stackoverflow.com/questions/1144783/replacing-all-occurrences-of-a-string-in-javascript
+    function escapeRegExp(str: string): string {
+        return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    }
+
+	this.data = this.data.replace( new RegExp( escapeRegExp( old ), 'g' ), nw );
+}
+
+/////*
+////============
+////idStr::Mid
+////============
+////*/
+////const char *idStr::Mid( int start, int len, idStr &result ) const {
+////	int i;
+
+////	result.Empty();
+
+////	i = Length();
+////	if ( i == 0 || len <= 0 || start >= i ) {
+////		return NULL;
+////	}
+
+////	if ( start + len >= i ) {
+////		len = i - start;
+////	}
+
+////	result.Append( &data[ start ], len );
+////	return result;
+////}
+
+/////*
+////============
+////idStr::Mid
+////============
+////*/
+////idStr idStr::Mid( int start, int len ) const {
+////	int i;
+////	idStr result;
+
+////	i = Length();
+////	if ( i == 0 || len <= 0 || start >= i ) {
+////		return result;
+////	}
+
+////	if ( start + len >= i ) {
+////		len = i - start;
+////	}
+
+////	result.Append( &data[ start ], len );
+////	return result;
+////}
+
+/////*
+////============
+////idStr::StripTrailingWhitespace
+////============
+////*/
+////void idStr::StripTrailingWhitespace( void ) {
+////	int i;
+	
+////	// cast to unsigned char to prevent stripping off high-ASCII characters
+////	for( i = Length(); i > 0 && (unsigned char)(data[ i - 1 ]) <= ' '; i-- ) {
+////		this.data[ i - 1 ] = '\0';
+////		len--;
+////	}
+////}
+
+/////*
+////============
+////idStr::StripQuotes
+
+////Removes the quotes from the beginning and end of the string
+////============
+////*/
+////idStr& idStr::StripQuotes ( void )
+////{
+////	if ( this.data[0] != '\"' )
+////	{
+////		return *this;
+////	}
+	
+////	// Remove the trailing quote first
+////	if ( this.data[len-1] == '\"' )
+////	{
+////		this.data[len-1] = '\0';
+////		len--;
+////	}
+
+////	// Strip the leading quote now
+////	len--;	
+////	memmove( &data[ 0 ], &data[ 1 ], len );
+////	this.data[len] = '\0';
+	
+////	return *this;
+////}
+
+/////*
+////=====================================================================
+
+////  filename methods
+
+////=====================================================================
+////*/
+	
+/*
+============
+idStr::FileNameHash
+============
+*/
+FileNameHash( ):number {
+	var/*int		*/i=0;
+	var/*long	*/hash=0;
+	var/*char	*/letter='';
+
+	while( this.data[i] ) {
+		letter = idStr.ToLower( this.data[i] );
+		if ( letter == '.' ) {
+			break;				// don't include extension
+		}
+		if ( letter =='\\' ) {
+			letter = '/';
+		}
+		hash += /*(long)*/(letter).charCodeAt(0)*(i+119);
+		i++;
+	}
+	hash &= (FILE_HASH_SIZE-1);
+	return hash;
+}
+
+/*
+============
+idStr::BackSlashesToSlashes
+============
+*/
+BackSlashesToSlashes( ):idStr {
+	this.data = this.data.replace(/\\/g, "/");
+	return this;
+}
+
+/////*
+////============
+////idStr::SetFileExtension
+////============
+////*/
+////idStr &idStr::SetFileExtension( const char *extension ) {
+////	StripFileExtension();
+////	if ( *extension != '.' ) {
+////		Append( '.' );
+////	}
+////	Append( extension );
+////	return *this;
+////}
+
+/////*
+////============
+////idStr::StripFileExtension
+////============
+////*/
+////idStr &idStr::StripFileExtension( void ) {
+////	int i;
+
+////	for ( i = len-1; i >= 0; i-- ) {
+////		if ( this.data[i] == '.' ) {
+////			this.data[i] = '\0';
+////			len = i;
+////			break;
+////		}
+////	}
+////	return *this;
+////}
+
+/////*
+////============
+////idStr::StripAbsoluteFileExtension
+////============
+////*/
+////idStr &idStr::StripAbsoluteFileExtension( void ) {
+////	int i;
+
+////	for ( i = 0; i < len; i++ ) {
+////		if ( this.data[i] == '.' ) {
+////			this.data[i] = '\0';
+////			len = i;
+////			break;
+////		}
+////	}
+
+////	return *this;
+////}
+
+/////*
+////==================
+////idStr::DefaultFileExtension
+////==================
+////*/
+////idStr &idStr::DefaultFileExtension( const char *extension ) {
+////	int i;
+
+////	// do nothing if the string already has an extension
+////	for ( i = len-1; i >= 0; i-- ) {
+////		if ( this.data[i] == '.' ) {
+////			return *this;
+////		}
+////	}
+////	if ( *extension != '.' ) {
+////		Append( '.' );
+////	}
+////	Append( extension );
+////	return *this;
+////}
+
+/////*
+////==================
+////idStr::DefaultPath
+////==================
+////*/
+////idStr &idStr::DefaultPath( const char *basepath ) {
+////	if ( ( ( *this )[ 0 ] == '/' ) || ( ( *this )[ 0 ] == '\\' ) ) {
+////		// absolute path location
+////		return *this;
+////	}
+
+////	*this = basepath + *this;
+////	return *this;
+////}
+
+/////*
+////====================
+////idStr::AppendPath
+////====================
+////*/
+////void idStr::AppendPath( const char *text ) {
+////	int pos;
+////	int i = 0;
+
+////	if ( text && text[i] ) {
+////		pos = len;
+////		EnsureAlloced( len + strlen( text ) + 2 );
+
+////		if ( pos ) {
+////			if ( this.data[ pos-1 ] != '/' ) {
+////				this.data[ pos++ ] = '/';
+////			}
+////		}
+////		if ( text[i] == '/' ) {
+////			i++;
+////		}
+
+////		for ( ; text[ i ]; i++ ) {
+////			if ( text[ i ] == '\\' ) {
+////				this.data[ pos++ ] = '/';
+////			} else {
+////				this.data[ pos++ ] = text[ i ];
+////			}
+////		}
+////		len = pos;
+////		this.data[ pos ] = '\0';
+////	}
+////}
+
+/////*
+////==================
+////idStr::StripFilename
+////==================
+////*/
+////idStr &idStr::StripFilename( void ) {
+////	int pos;
+
+////	pos = Length() - 1;
+////	while( ( pos > 0 ) && ( ( *this )[ pos ] != '/' ) && ( ( *this )[ pos ] != '\\' ) ) {
+////		pos--;
+////	}
+
+////	if ( pos < 0 ) {
+////		pos = 0;
+////	}
+
+////	CapLength( pos );
+////	return *this;
+////}
+
+/////*
+////==================
+////idStr::StripPath
+////==================
+////*/
+////idStr &idStr::StripPath( void ) {
+////	int pos;
+
+////	pos = Length();
+////	while( ( pos > 0 ) && ( ( *this )[ pos - 1 ] != '/' ) && ( ( *this )[ pos - 1 ] != '\\' ) ) {
+////		pos--;
+////	}
+
+////	*this = Right( Length() - pos );
+////	return *this;
+////}
+
+/////*
+////====================
+////idStr::ExtractFilePath
+////====================
+////*/
+////void idStr::ExtractFilePath( idStr &dest ) const {
+////	int pos;
+
+////	//
+////	// back up until a \ or the start
+////	//
+////	pos = Length();
+////	while( ( pos > 0 ) && ( ( *this )[ pos - 1 ] != '/' ) && ( ( *this )[ pos - 1 ] != '\\' ) ) {
+////		pos--;
+////	}
+
+////	Left( pos, dest );
+////}
+
+/////*
+////====================
+////idStr::ExtractFileName
+////====================
+////*/
+////void idStr::ExtractFileName( idStr &dest ) const {
+////	int pos;
+
+////	//
+////	// back up until a \ or the start
+////	//
+////	pos = Length() - 1;
+////	while( ( pos > 0 ) && ( ( *this )[ pos - 1 ] != '/' ) && ( ( *this )[ pos - 1 ] != '\\' ) ) {
+////		pos--;
+////	}
+
+////	Right( Length() - pos, dest );
+////}
+
+/////*
+////====================
+////idStr::ExtractFileBase
+////====================
+////*/
+////void idStr::ExtractFileBase( idStr &dest ) const {
+////	int pos;
+////	int start;
+
+////	//
+////	// back up until a \ or the start
+////	//
+////	pos = Length() - 1;
+////	while( ( pos > 0 ) && ( ( *this )[ pos - 1 ] != '/' ) && ( ( *this )[ pos - 1 ] != '\\' ) ) {
+////		pos--;
+////	}
+
+////	start = pos;
+////	while( ( pos < Length() ) && ( ( *this )[ pos ] != '.' ) ) {
+////		pos++;
+////	}
+
+////	Mid( start, pos - start, dest );
+////}
+
+/////*
+////====================
+////idStr::ExtractFileExtension
+////====================
+////*/
+////void idStr::ExtractFileExtension( idStr &dest ) const {
+////	int pos;
+
+////	//
+////	// back up until a . or the start
+////	//
+////	pos = Length() - 1;
+////	while( ( pos > 0 ) && ( ( *this )[ pos - 1 ] != '.' ) ) {
+////		pos--;
+////	}
+
+////	if ( !pos ) {
+////		// no extension
+////		dest.Empty();
+////	} else {
+////		Right( Length() - pos, dest );
+////	}
+////}
+
+
+/////*
+////=====================================================================
+
+////  char * methods to replace library functions
+
+////=====================================================================
+////*/
+
+/////*
+////============
+////idStr::IsNumeric
+
+////Checks a string to see if it contains only numerical values.
+////============
+////*/
+////bool idStr::IsNumeric( const char *s ) {
+////	int		i;
+////	bool	dot;
+
+////	if ( *s == '-' ) {
+////		s++;
+////	}
+
+////	dot = false;
+////	for ( i = 0; s[i]; i++ ) {
+////		if ( !isdigit( s[i] ) ) {
+////			if ( ( s[ i ] == '.' ) && !dot ) {
+////				dot = true;
+////				continue;
+////			}
+////			return false;
+////		}
+////	}
+
+////	return true;
+////}
+
+/////*
+////============
+////idStr::HasLower
+
+////Checks if a string has any lowercase chars
+////============
+////*/
+////bool idStr::HasLower( const char *s ) {
+////	if ( !s ) {
+////		return false;
+////	}
+	
+////	while ( *s ) {
+////		if ( CharIsLower( *s ) ) {
+////			return true;
+////		}
+////		s++;
+////	}
+	
+////	return false;
+////}
+
+/////*
+////============
+////idStr::HasUpper
+	
+////Checks if a string has any uppercase chars
+////============
+////*/
+////bool idStr::HasUpper( const char *s ) {
+////	if ( !s ) {
+////		return false;
+////	}
+	
+////	while ( *s ) {
+////		if ( CharIsUpper( *s ) ) {
+////			return true;
+////		}
+////		s++;
+////	}
+	
+////	return false;
+////}
+
+/*
+================
+idStr::Cmp
+================
+*/
+static Cmp( /*const char **/s1:idStr, /*const char **/s2:idStr ):number {
+    if (s1.data == s2.data) {
+        return 0;
+    }
+
+    if(s1.data > s2.data) {
+        return 1;
+    }
+
+    return -1;
+}
+
+/////*
+////================
+////idStr::Cmpn
+////================
+////*/
+////int idStr::Cmpn( const char *s1, const char *s2, int n ) {
+////	int c1, c2, d;
+
+////	assert( n >= 0 );
+
+////	do {
+////		c1 = *s1++;
+////		c2 = *s2++;
+
+////		if ( !n-- ) {
+////			return 0;		// strings are equal until end point
+////		}
+
+////		d = c1 - c2;
+////		if ( d ) {
+////			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
+////		}
+////	} while( c1 );
+
+////	return 0;		// strings are equal
+////}
+
+/*
+================
+idStr::Icmp
+================
+*/
+static Icmp( s1:idStr, s2:idStr ):number {
+	var ls1 = s1.data.toLowerCase ( );
+    var ls2 = s2.data.toLowerCase ( );
+
+    if (ls1 == ls2) {
+        return 0;
+    }
+
+    if(ls1 > ls2) {
+        return 1;
+    }
+
+    return -1;
+}
+
+/////*
+////================
+////idStr::Icmpn
+////================
+////*/
+////int idStr::Icmpn( const char *s1, const char *s2, int n ) {
+////	int c1, c2, d;
+
+////	assert( n >= 0 );
+
+////	do {
+////		c1 = *s1++;
+////		c2 = *s2++;
+
+////		if ( !n-- ) {
+////			return 0;		// strings are equal until end point
+////		}
+
+////		d = c1 - c2;
+////		while( d ) {
+////			if ( c1 <= 'Z' && c1 >= 'A' ) {
+////				d += ('a' - 'A');
+////				if ( !d ) {
+////					break;
+////				}
+////			}
+////			if ( c2 <= 'Z' && c2 >= 'A' ) {
+////				d -= ('a' - 'A');
+////				if ( !d ) {
+////					break;
+////				}
+////			}
+////			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
+////		}
+////	} while( c1 );
+
+////	return 0;		// strings are equal
+////}
+
+/////*
+////================
+////idStr::Icmp
+////================
+////*/
+////int idStr::IcmpNoColor( const char *s1, const char *s2 ) {
+////	int c1, c2, d;
+
+////	do {
+////		while ( idStr::IsColor( s1 ) ) {
+////			s1 += 2;
+////		}
+////		while ( idStr::IsColor( s2 ) ) {
+////			s2 += 2;
+////		}
+////		c1 = *s1++;
+////		c2 = *s2++;
+
+////		d = c1 - c2;
+////		while( d ) {
+////			if ( c1 <= 'Z' && c1 >= 'A' ) {
+////				d += ('a' - 'A');
+////				if ( !d ) {
+////					break;
+////				}
+////			}
+////			if ( c2 <= 'Z' && c2 >= 'A' ) {
+////				d -= ('a' - 'A');
+////				if ( !d ) {
+////					break;
+////				}
+////			}
+////			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
+////		}
+////	} while( c1 );
+
+////	return 0;		// strings are equal
+////}
+
+/////*
+////================
+////idStr::IcmpPath
+////================
+////*/
+////int idStr::IcmpPath( const char *s1, const char *s2 ) {
+////	int c1, c2, d;
+
+////#if 0
+//////#if !defined( _WIN32 )
+////	idLib::common->Printf( "WARNING: IcmpPath used on a case-sensitive filesystem?\n" );
+////#endif
+
+////	do {
+////		c1 = *s1++;
+////		c2 = *s2++;
+
+////		d = c1 - c2;
+////		while( d ) {
+////			if ( c1 <= 'Z' && c1 >= 'A' ) {
+////				d += ('a' - 'A');
+////				if ( !d ) {
+////					break;
+////				}
+////			}
+////			if ( c1 == '\\' ) {
+////				d += ('/' - '\\');
+////				if ( !d ) {
+////					break;
+////				}
+////			}
+////			if ( c2 <= 'Z' && c2 >= 'A' ) {
+////				d -= ('a' - 'A');
+////				if ( !d ) {
+////					break;
+////				}
+////			}
+////			if ( c2 == '\\' ) {
+////				d -= ('/' - '\\');
+////				if ( !d ) {
+////					break;
+////				}
+////			}
+////			// make sure folders come first
+////			while( c1 ) {
+////				if ( c1 == '/' || c1 == '\\' ) {
+////					break;
+////				}
+////				c1 = *s1++;
+////			}
+////			while( c2 ) {
+////				if ( c2 == '/' || c2 == '\\' ) {
+////					break;
+////				}
+////				c2 = *s2++;
+////			}
+////			if ( c1 && !c2 ) {
+////				return -1;
+////			} else if ( !c1 && c2 ) {
+////				return 1;
+////			}
+////			// same folder depth so use the regular compare
+////			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
+////		}
+////	} while( c1 );
+
+////	return 0;
+////}
+
+/////*
+////================
+////idStr::IcmpnPath
+////================
+////*/
+////int idStr::IcmpnPath( const char *s1, const char *s2, int n ) {
+////	int c1, c2, d;
+
+////#if 0
+//////#if !defined( _WIN32 )
+////	idLib::common->Printf( "WARNING: IcmpPath used on a case-sensitive filesystem?\n" );
+////#endif
+
+////	assert( n >= 0 );
+
+////	do {
+////		c1 = *s1++;
+////		c2 = *s2++;
+
+////		if ( !n-- ) {
+////			return 0;		// strings are equal until end point
+////		}
+
+////		d = c1 - c2;
+////		while( d ) {
+////			if ( c1 <= 'Z' && c1 >= 'A' ) {
+////				d += ('a' - 'A');
+////				if ( !d ) {
+////					break;
+////				}
+////			}
+////			if ( c1 == '\\' ) {
+////				d += ('/' - '\\');
+////				if ( !d ) {
+////					break;
+////				}
+////			}
+////			if ( c2 <= 'Z' && c2 >= 'A' ) {
+////				d -= ('a' - 'A');
+////				if ( !d ) {
+////					break;
+////				}
+////			}
+////			if ( c2 == '\\' ) {
+////				d -= ('/' - '\\');
+////				if ( !d ) {
+////					break;
+////				}
+////			}
+////			// make sure folders come first
+////			while( c1 ) {
+////				if ( c1 == '/' || c1 == '\\' ) {
+////					break;
+////				}
+////				c1 = *s1++;
+////			}
+////			while( c2 ) {
+////				if ( c2 == '/' || c2 == '\\' ) {
+////					break;
+////				}
+////				c2 = *s2++;
+////			}
+////			if ( c1 && !c2 ) {
+////				return -1;
+////			} else if ( !c1 && c2 ) {
+////				return 1;
+////			}
+////			// same folder depth so use the regular compare
+////			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
+////		}
+////	} while( c1 );
+
+////	return 0;
+////}
+
+/////*
+////=============
+////idStr::Copynz
+ 
+////Safe strncpy that ensures a trailing zero
+////=============
+////*/
+////void idStr::Copynz( char *dest, const char *src, int destsize ) {
+////	if ( !src ) {
+////		idLib::common->Warning( "idStr::Copynz: NULL src" );
+////		return;
+////	}
+////	if ( destsize < 1 ) {
+////		idLib::common->Warning( "idStr::Copynz: destsize < 1" ); 
+////		return;
+////	}
+
+////	strncpy( dest, src, destsize-1 );
+////    dest[destsize-1] = 0;
+////}
+
+/////*
+////================
+////idStr::Append
+
+////  never goes past bounds or leaves without a terminating 0
+////================
+////*/
+////void idStr::Append( char *dest, int size, const char *src ) {
+////	int		l1;
+
+////	l1 = strlen( dest );
+////	if ( l1 >= size ) {
+////		idLib::common->Error( "idStr::Append: already overflowed" );
+////	}
+////	idStr::Copynz( dest + l1, src, size - l1 );
+////}
+
+/////*
+////================
+////idStr::LengthWithoutColors
+////================
+////*/
+////int idStr::LengthWithoutColors( const char *s ) {
+////	int len;
+////	const char *p;
+
+////	if ( !s ) {
+////		return 0;
+////	}
+
+////	len = 0;
+////	p = s;
+////	while( *p ) {
+////		if ( idStr::IsColor( p ) ) {
+////			p += 2;
+////			continue;
+////		}
+////		p++;
+////		len++;
+////	}
+
+////	return len;
+////}
+
+/////*
+////================
+////idStr::RemoveColors
+////================
+////*/
+////char *idStr::RemoveColors( char *string ) {
+////	char *d;
+////	char *s;
+////	int c;
+
+////	s = string;
+////	d = string;
+////	while( (c = *s) != 0 ) {
+////		if ( idStr::IsColor( s ) ) {
+////			s++;
+////		}		
+////		else {
+////			*d++ = c;
+////		}
+////		s++;
+////	}
+////	*d = '\0';
+
+////	return string;
+////}
+
+/////*
+////================
+////idStr::snPrintf
+////================
+////*/
+////int idStr::snPrintf( char *dest, int size, const char *fmt, ...) {
+////	int len;
+////	va_list argptr;
+////	char buffer[32000];	// big, but small enough to fit in PPC stack
+
+////	va_start( argptr, fmt );
+////	len = vsprintf( buffer, fmt, argptr );
+////	va_end( argptr );
+////	if ( len >= sizeof( buffer ) ) {
+////		idLib::common->Error( "idStr::snPrintf: overflowed buffer" );
+////	}
+////	if ( len >= size ) {
+////		idLib::common->Warning( "idStr::snPrintf: overflow of %i in %i\n", len, size );
+////		len = size;
+////	}
+////	idStr::Copynz( dest, buffer, size );
+////	return len;
+////}
+
+/////*
+////============
+////idStr::vsnPrintf
+
+////vsnprintf portability:
+
+////C99 standard: vsnprintf returns the number of characters (excluding the trailing
+////'\0') which would have been written to the final string if enough space had been available
+////snprintf and vsnprintf do not write more than size bytes (including the trailing '\0')
+
+////win32: _vsnprintf returns the number of characters written, not including the terminating null character,
+////or a negative value if an output error occurs. If the number of characters to write exceeds count, then count 
+////characters are written and -1 is returned and no trailing '\0' is added.
+
+////idStr::vsnPrintf: always appends a trailing '\0', returns number of characters written (not including terminal \0)
+////or returns -1 on failure or if the buffer would be overflowed.
+////============
+////*/
+////int idStr::vsnPrintf( char *dest, int size, const char *fmt, va_list argptr ) {
+////	int ret;
+
+////#ifdef _WIN32
+////#undef _vsnprintf
+////	ret = _vsnprintf( dest, size-1, fmt, argptr );
+////#define _vsnprintf	use_idStr_vsnPrintf
+////#else
+////#undef vsnprintf
+////	ret = vsnprintf( dest, size, fmt, argptr );
+////#define vsnprintf	use_idStr_vsnPrintf
+////#endif
+////	dest[size-1] = '\0';
+////	if ( ret < 0 || ret >= size ) {
+////		return -1;
+////	}
+////	return ret;
+////}
+
+/////*
+////============
+////sprintf
+
+////Sets the value of the string using a printf interface.
+////============
+////*/
+////int sprintf( idStr &string, const char *fmt, ... ) {
+////	int l;
+////	va_list argptr;
+////	char buffer[32000];
+	
+////	va_start( argptr, fmt );
+////	l = idStr::vsnPrintf( buffer, sizeof(buffer)-1, fmt, argptr );
+////	va_end( argptr );
+////	buffer[sizeof(buffer)-1] = '\0';
+
+////	string = buffer;
+////	return l;
+////}
+
+/////*
+////============
+////vsprintf
+
+////Sets the value of the string using a vprintf interface.
+////============
+////*/
+////int vsprintf( idStr &string, const char *fmt, va_list argptr ) {
+////	int l;
+////	char buffer[32000];
+	
+////	l = idStr::vsnPrintf( buffer, sizeof(buffer)-1, fmt, argptr );
+////	buffer[sizeof(buffer)-1] = '\0';
+	
+////	string = buffer;
+////	return l;
+////}
+
+/////*
+////============
+////va
+
+////does a varargs printf into a temp buffer
+////NOTE: not thread safe
+////============
+////*/
+////char *va( const char *fmt, ... ) {
+////	va_list argptr;
+////	static int index = 0;
+////	static char string[4][16384];	// in case called by nested functions
+////	char *buf;
+
+////	buf = string[index];
+////	index = (index + 1) & 3;
+
+////	va_start( argptr, fmt );
+////	vsprintf( buf, fmt, argptr );
+////	va_end( argptr );
+
+////	return buf;
+////}
+
+
+
+/////*
+////============
+////idStr::BestUnit
+////============
+////*/
+////int idStr::BestUnit( const char *format, float value, Measure_t measure ) {
+////	int unit = 1;
+////	while ( unit <= 3 && ( 1 << ( unit * 10 ) < value ) ) {
+////		unit++;
+////	}
+////	unit--;
+////	value /= 1 << ( unit * 10 );
+////	sprintf( *this, format, value );
+////	*this += " ";
+////	*this += units[ measure ][ unit ];
+////	return unit;
+////}
+
+/////*
+////============
+////idStr::SetUnit
+////============
+////*/
+////void idStr::SetUnit( const char *format, float value, int unit, Measure_t measure ) {
+////	value /= 1 << ( unit * 10 );
+////	sprintf( *this, format, value );
+////	*this += " ";
+////	*this += units[ measure ][ unit ];	
+////}
+
+/////*
+////================
+////idStr::InitMemory
+////================
+////*/
+////void idStr::InitMemory( void ) {
+////#ifdef USE_STRING_DATA_ALLOCATOR
+////	stringDataAllocator.Init();
+////#endif
+////}
+
+/////*
+////================
+////idStr::ShutdownMemory
+////================
+////*/
+////void idStr::ShutdownMemory( void ) {
+////#ifdef USE_STRING_DATA_ALLOCATOR
+////	stringDataAllocator.Shutdown();
+////#endif
+////}
+
+/////*
+////================
+////idStr::PurgeMemory
+////================
+////*/
+////void idStr::PurgeMemory( void ) {
+////#ifdef USE_STRING_DATA_ALLOCATOR
+////	stringDataAllocator.FreeEmptyBaseBlocks();
+////#endif
+////}
+
+/////*
+////================
+////idStr::ShowMemoryUsage_f
+////================
+////*/
+////void idStr::ShowMemoryUsage_f( const idCmdArgs &args ) {
+////#ifdef USE_STRING_DATA_ALLOCATOR
+////	idLib::common->Printf( "%6d KB string memory (%d KB free in %d blocks, %d empty base blocks)\n",
+////		stringDataAllocator.GetBaseBlockMemory() >> 10, stringDataAllocator.GetFreeBlockMemory() >> 10,
+////			stringDataAllocator.GetNumFreeBlocks(), stringDataAllocator.GetNumEmptyBaseBlocks() );
+////#endif
+////}
+
+/////*
+////================
+////idStr::FormatNumber
+////================
+////*/
+////struct formatList_t {
+////	int			gran;
+////	int			count;
+////};
+
+////// elements of list need to decend in size
+////formatList_t formatList[] = {
+////	{ 1000000000, 0 },
+////	{ 1000000, 0 },
+////	{ 1000, 0 }
+////};
+
+////int numFormatList = sizeof(formatList) / sizeof( formatList[0] );
+
+
+////idStr idStr::FormatNumber( int number ) {
+////	idStr string;
+////	bool hit;
+
+////	// reset
+////	for ( int i = 0; i < numFormatList; i++ ) {
+////		formatList_t *li = formatList + i;
+////		li->count = 0;
+////	}
+
+////	// main loop
+////	do {
+////		hit = false;
+
+////		for ( int i = 0; i < numFormatList; i++ ) {
+////			formatList_t *li = formatList + i;
+
+////			if ( number >= li->gran ) {
+////				li->count++;
+////				number -= li->gran;
+////				hit = true;
+////				break;
+////			}
+////		}
+////	} while ( hit );
+
+////	// print out
+////	bool found = false;
+
+////	for ( int i = 0; i < numFormatList; i++ ) {
+////		formatList_t *li = formatList + i;
+
+////		if ( li->count ) {
+////			if ( !found ) {
+////				string += va( "%i,", li->count );
+////			} else {
+////				string += va( "%3.3i,", li->count );
+////			}
+////			found = true;
+////		}
+////		else if ( found ) {
+////			string += va( "%3.3i,", li->count );
+////		}
+////	}
+
+////	if ( found ) {
+////		string += va( "%3.3i", number );
+////	}
+////	else {
+////		string += va( "%i", number );
+////	}
+
+////	// pad to proper size
+////	int count = 11 - string.Length();
+
+////	for ( int i = 0; i < count; i++ ) {
+////		string.Insert( " ", 0 );
+////	}
+
+////	return string;
+////}
+
+	
+// pointer helpers
+
+
+v (offset:number = 0): string {
+	return this.data[offset];
+}
+
+c (offset:number = 0): number {
+	return this.data.charCodeAt(offset);
+}
+}
