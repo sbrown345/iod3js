@@ -52,11 +52,11 @@ var staticVars:idCVar = null;
 ////*/
 
 class idInternalCVar extends idCVar {
-////	friend class idCVarSystemLocal;
-////public:
-////							idInternalCVar( void );
-////							idInternalCVar( const char *newName, const char *newValue, int newFlags );
-////							idInternalCVar( const idCVar *cvar );
+//	friend class idCVarSystemLocal;
+//public:
+    constructor( );
+    constructor( newName:string, newValue:string, newFlags:number );
+    constructor ( cvar: idCVar );
 ////	virtual					~idInternalCVar( void );
 
 ////	const char **			CopyValueStrings( const char **strings );
@@ -79,59 +79,44 @@ class idInternalCVar extends idCVar {
 ////	virtual void			InternalSetFloat( const float newValue );
 ////};
 
-/////*
-////============
-////idInternalCVar::idInternalCVar
-////============
-////*/
-////idInternalCVar::idInternalCVar( void ) {
-////}
 
-/////*
-////============
-////idInternalCVar::idInternalCVar
-////============
-////*/
-////idInternalCVar::idInternalCVar( const char *newName, const char *newValue, int newFlags ) {
-////	nameString = newName;
-////	name = nameString.c_str();
-////	valueString = newValue;
-////	value = valueString.c_str();
-////	resetString = newValue;
-////	descriptionString = "";
-////	description = descriptionString.c_str();
-////	flags = ( newFlags & ~CVAR_STATIC ) | CVAR_MODIFIED;
-////	valueMin = 1;
-////	valueMax = -1;
-////	valueStrings = NULL;
-////	valueCompletion = 0;
-////	UpdateValue();
-////	UpdateCheat();
-////	internalVar = this;
-////}
-
-/////*
-////============
-////idInternalCVar::idInternalCVar
-////============
-////*/
-////idInternalCVar::idInternalCVar( const idCVar *cvar ) {
-////	nameString = cvar.GetName();
-////	name = nameString.c_str();
-////	valueString = cvar.GetString();
-////	value = valueString.c_str();
-////	resetString = cvar.GetString();
-////	descriptionString = cvar.GetDescription();
-////	description = descriptionString.c_str();
-////	flags = cvar.GetFlags() | CVAR_MODIFIED;
-////	valueMin = cvar.GetMinValue();
-////	valueMax = cvar.GetMaxValue();
-////	valueStrings = CopyValueStrings( cvar.GetValueStrings() );
-////	valueCompletion = cvar.GetValueCompletion();
-////	UpdateValue();
-////	UpdateCheat();
-////	internalVar = this;
-////}
+    constructor ( newNameOrCvar?:any, newValue?:string, /*int */newFlags?:number ) {
+        super ( null, null, null, null );
+        todoThrow ( );
+        //if ( this.arguments.length == 3 ) {
+	    //    this.nameString = newName;
+	    //    this.name = nameString.c_str();
+	    //    this.valueString = newValue;
+	    //    this.value = valueString.c_str();
+	    //    this.resetString = newValue;
+	    //    this.descriptionString = "";
+	    //    this.description = descriptionString.c_str();
+	    //    this.flags = ( newFlags & ~CVAR_STATIC ) | CVAR_MODIFIED;
+	    //    this.valueMin = 1;
+	    //    this.valueMax = -1;
+	    //    this.valueStrings = null;
+	    //    this.valueCompletion = 0;
+	    //    this.UpdateValue();
+	    //    this.UpdateCheat();
+	    //    this.internalVar = this;
+        //} else if(arguments.length = 1) {
+	    //    this.nameString = cvar.GetName();
+	    //    this.name = nameString.c_str();
+	    //    this.valueString = cvar.GetString();
+	    //    this.value = valueString.c_str();
+	    //    this.resetString = cvar.GetString();
+	    //    this.descriptionString = cvar.GetDescription();
+	    //    this.description = descriptionString.c_str();
+	    //    this.flags = cvar.GetFlags() | CVAR_MODIFIED;
+	    //    this.valueMin = cvar.GetMinValue();
+	    //    this.valueMax = cvar.GetMaxValue();
+	    //    this.valueStrings = CopyValueStrings( cvar.GetValueStrings() );
+	    //    this.valueCompletion = cvar.GetValueCompletion();
+	    //    this.UpdateValue();
+	    //    this.UpdateCheat();
+	    //    this.internalVar = this;
+        //}
+    } 
 
 /////*
 ////============
@@ -474,7 +459,7 @@ class idCVarSystem {
 ////	void					SetInternal( const char *name, const char *value, int flags );
 
 ////private:
-                                 initialized:boolean;
+                                initialized:boolean;
 /*idList<idInternalCVar*>	*/  cvars:idInternalCVar;
 /*	idHashIndex				*/  cvarHash:idHashIndex;
         						modifiedFlags:number;
@@ -580,15 +565,15 @@ Init( ):void {
 
 	this.modifiedFlags = 0;
 
-	this.AddCommand( "toggle", this.Toggle_f, CMD_FL_SYSTEM, "toggles a cvar" );
-	this.AddCommand( "set", this.Set_f, CMD_FL_SYSTEM, "sets a cvar" );
-	this.AddCommand( "sets", this.SetS_f, CMD_FL_SYSTEM, "sets a cvar and flags it as server info" );
-	this.AddCommand( "setu", this.SetU_f, CMD_FL_SYSTEM, "sets a cvar and flags it as user info" );
-	this.AddCommand( "sett", this.SetT_f, CMD_FL_SYSTEM, "sets a cvar and flags it as tool" );
-	this.AddCommand( "seta", this.SetA_f, CMD_FL_SYSTEM, "sets a cvar and flags it as archive" );
-	this.AddCommand( "reset", this.Reset_f, CMD_FL_SYSTEM, "resets a cvar" );
-	this.AddCommand( "listCvars", this.List_f, CMD_FL_SYSTEM, "lists cvars" );
-	this.AddCommand( "cvar_restart", this.Restart_f, CMD_FL_SYSTEM, "restart the cvar system" );
+	cmdSystem.AddCommand( "toggle", this.Toggle_f, CMD_FL_SYSTEM, "toggles a cvar" );
+	cmdSystem.AddCommand( "set", this.Set_f, CMD_FL_SYSTEM, "sets a cvar" );
+	cmdSystem.AddCommand( "sets", this.SetS_f, CMD_FL_SYSTEM, "sets a cvar and flags it as server info" );
+	cmdSystem.AddCommand( "setu", this.SetU_f, CMD_FL_SYSTEM, "sets a cvar and flags it as user info" );
+	cmdSystem.AddCommand( "sett", this.SetT_f, CMD_FL_SYSTEM, "sets a cvar and flags it as tool" );
+	cmdSystem.AddCommand( "seta", this.SetA_f, CMD_FL_SYSTEM, "sets a cvar and flags it as archive" );
+	cmdSystem.AddCommand( "reset", this.Reset_f, CMD_FL_SYSTEM, "resets a cvar" );
+	cmdSystem.AddCommand( "listCvars", this.List_f, CMD_FL_SYSTEM, "lists cvars" );
+	cmdSystem.AddCommand( "cvar_restart", this.Restart_f, CMD_FL_SYSTEM, "restart the cvar system" );
 
 	this.initialized = true;
 }

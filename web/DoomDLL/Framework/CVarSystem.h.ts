@@ -114,17 +114,18 @@ var     CVAR_ALL				= -1,		// all flags
 
 class idCVar {
 //public:
-							////// Never use the default constructor.
-							////idCVar( void ) { assert( typeid( this ) != typeid( idCVar ) ); }
+							//// Never use the default constructor.
+							//idCVar( void ) { assert( typeid( this ) != typeid( idCVar ) ); }
 
     						// Always use one of the following constructors.
+							constructor( name: string, value: string, flags:number, description:string )
 							constructor( name: string, value: string, flags:number, description:string,
-									valueMin:number, valueMax:number, valueCompletion:(args:idCmdArgs, callback: (s: string)=>void)=>void/*:argCompletion_t*/ )
+									valueMin:number, valueMax:number, valueCompletion:(args:idCmdArgs, callback?: (s: string)=>void)=>void/*:argCompletion_t*/ )
 							constructor( name: string, value: string, flags:number, description:string,
-									valueStrings:string, valueCompletion:(args:idCmdArgs, callback: (s: string)=>void)=>void/*:argCompletion_t*/ )
+									valueStrings:string, valueCompletion:(args:idCmdArgs, callback?: (s: string)=>void)=>void/*:argCompletion_t*/ )
 
 							constructor( name: string, value: string, /*int */flags: number, description: string,
-							  valueStringsOrValueMin:any, valueMaxOrValueCompletion: any, /*argCompletion_t*/ valueCompletion = null) {
+							  valueStringsOrValueMin?:any, valueMaxOrValueCompletion?: any, /*argCompletion_t*/ valueCompletion = null) {
 							    if ( typeof valueStringsOrValueMin === "number" ) {
 							        this.Init( name, value, flags, description, valueStringsOrValueMin, valueMaxOrValueCompletion, null, valueCompletion);
 							    } else {

@@ -1,3 +1,4 @@
+/// <reference path="RenderSystem.cpp.ts" />
 /// <reference path="../../utils/todo.ts" />
 /// <reference path="Material.h.ts" />
 /// <reference path="Image.h.ts" />
