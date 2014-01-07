@@ -211,7 +211,7 @@
 ////		}
 ////	} else {
 ////		// look for an explicit one
-////		editorImage = globalImages->ImageFromFile( editorImageName, TF_DEFAULT, true, TR_REPEAT, TD_DEFAULT );
+////		editorImage = globalImages->ImageFromFile( editorImageName, TF_DEFAULT, true, TR_REPEAT, textureDepth_t.TD_DEFAULT );
 ////	}
 
 ////	if ( !editorImage ) {
@@ -932,7 +932,7 @@
 
 ////	tf = TF_DEFAULT;
 ////	trp = TR_REPEAT;
-////	td = TD_DEFAULT;
+////	td = textureDepth_t.TD_DEFAULT;
 ////	allowPicmip = true;
 ////	cubeMap = CF_2D;
 
@@ -946,7 +946,7 @@
 
 ////	// unit 1 is the normal map.. make sure it gets flagged as the proper depth
 ////	if ( unit == 1 ) {
-////		td = TD_BUMP;
+////		td = textureDepth_t.TD_BUMP;
 ////	}
 
 ////	if ( unit >= newStage->numFragmentProgramImages ) {
@@ -989,13 +989,13 @@
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "forceHighQuality" ) ) {
-////			td = TD_HIGH_QUALITY;
+////			td = textureDepth_t.TD_HIGH_QUALITY;
 ////			continue;
 ////		}
 
 ////		if ( !token.Icmp( "uncompressed" ) || !token.Icmp( "highquality" ) ) {
 ////			if ( !globalImages->image_ignoreHighQuality.GetInteger() ) {
-////				td = TD_HIGH_QUALITY;
+////				td = textureDepth_t.TD_HIGH_QUALITY;
 ////			}
 ////			continue;
 ////		}
@@ -1098,7 +1098,7 @@
 
 ////	tf = TF_DEFAULT;
 ////	trp = trpDefault;
-////	td = TD_DEFAULT;
+////	td = textureDepth_t.TD_DEFAULT;
 ////	allowPicmip = true;
 ////	cubeMap = CF_2D;
 
@@ -1252,12 +1252,12 @@
 ////		}
 ////		if ( !token.Icmp( "uncompressed" ) || !token.Icmp( "highquality" ) ) {
 ////			if ( !globalImages->image_ignoreHighQuality.GetInteger() ) {
-////				td = TD_HIGH_QUALITY;
+////				td = textureDepth_t.TD_HIGH_QUALITY;
 ////			}
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "forceHighQuality" ) ) {
-////			td = TD_HIGH_QUALITY;
+////			td = textureDepth_t.TD_HIGH_QUALITY;
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "nopicmip" ) ) {
@@ -1560,16 +1560,16 @@
 ////	numStages++;
 
 ////	// select a compressed depth based on what the stage is
-////	if ( td == TD_DEFAULT ) {
+////	if ( td == textureDepth_t.TD_DEFAULT ) {
 ////		switch( ss->lighting ) {
 ////		case SL_BUMP:
-////			td = TD_BUMP;
+////			td = textureDepth_t.TD_BUMP;
 ////			break;
 ////		case SL_DIFFUSE:
-////			td = TD_DIFFUSE;
+////			td = textureDepth_t.TD_DIFFUSE;
 ////			break;
 ////		case SL_SPECULAR:
-////			td = TD_SPECULAR;
+////			td = textureDepth_t.TD_SPECULAR;
 ////			break;
 ////		default:
 ////			break;
@@ -1972,7 +1972,7 @@
 ////			idStr	copy;
 
 ////			copy = str;	// so other things don't step on it
-////			lightFalloffImage = globalImages->ImageFromFile( copy, TF_DEFAULT, false, TR_CLAMP /* TR_CLAMP_TO_ZERO */, TD_DEFAULT );
+////			lightFalloffImage = globalImages->ImageFromFile( copy, TF_DEFAULT, false, TR_CLAMP /* TR_CLAMP_TO_ZERO */, textureDepth_t.TD_DEFAULT );
 ////			continue;
 ////		}
 ////		// guisurf <guifile> | guisurf entity

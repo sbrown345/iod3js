@@ -400,7 +400,7 @@
 ////		if ( pic ) {
 ////			R_HeightmapToNormalMap( *pic, *width, *height, scale );
 ////			if ( depth ) {
-////				*depth = TD_BUMP;
+////				*depth = textureDepth_t.TD_BUMP;
 ////			}
 ////		}
 
@@ -433,7 +433,7 @@
 ////			R_AddNormalMaps( *pic, *width, *height, pic2, width2, height2 );
 ////			R_StaticFree( pic2 );
 ////			if ( depth ) {
-////				*depth = TD_BUMP;
+////				*depth = textureDepth_t.TD_BUMP;
 ////			}
 ////		}
 
@@ -451,7 +451,7 @@
 ////		if ( pic ) {
 ////			R_SmoothNormalMap( *pic, *width, *height );
 ////			if ( depth ) {
-////				*depth = TD_BUMP;
+////				*depth = textureDepth_t.TD_BUMP;
 ////			}
 ////		}
 

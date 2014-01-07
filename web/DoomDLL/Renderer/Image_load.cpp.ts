@@ -275,7 +275,7 @@
 ////	}
 
 ////	// catch normal maps first
-////	if ( minimumDepth == TD_BUMP ) {
+////	if ( minimumDepth == textureDepth_t.TD_BUMP ) {
 ////#if !defined(GL_ES_VERSION_2_0)
 ////		if ( globalImages.image_useCompression.GetBool() && globalImages.image_useNormalCompression.GetInteger() == 1 && glConfig.sharedTexturePaletteAvailable ) {
 ////			// image_useNormalCompression should only be set to 1 on nv_10 and nv_20 paths
@@ -293,10 +293,10 @@
 
 ////	// allow a complete override of image compression with a cvar
 ////	if ( !globalImages.image_useCompression.GetBool() ) {
-////		minimumDepth = TD_HIGH_QUALITY;
+////		minimumDepth = textureDepth_t.TD_HIGH_QUALITY;
 ////	}
 
-////	if ( minimumDepth == TD_SPECULAR ) {
+////	if ( minimumDepth == textureDepth_t.TD_SPECULAR ) {
 ////		// we are assuming that any alpha channel is unintentional
 ////#if !defined(GL_ES_VERSION_2_0)
 ////		if ( glConfig.textureCompressionAvailable ) {
@@ -307,7 +307,7 @@
 ////			return GL_RGB5;
 ////		}
 ////	}
-////	if ( minimumDepth == TD_DIFFUSE ) {
+////	if ( minimumDepth == textureDepth_t.TD_DIFFUSE ) {
 ////#if !defined(GL_ES_VERSION_2_0)
 ////		// we might intentionally have an alpha channel for alpha tested textures
 ////		if ( glConfig.textureCompressionAvailable ) {
@@ -338,7 +338,7 @@
 
 ////	// cases without alpha
 ////	if ( !needAlpha ) {
-////		if ( minimumDepth == TD_HIGH_QUALITY ) {
+////		if ( minimumDepth == textureDepth_t.TD_HIGH_QUALITY ) {
 ////			return GL_RGB8;			// four bytes
 ////		}
 ////#if !defined(GL_ES_VERSION_2_0)
@@ -352,7 +352,7 @@
 ////	// cases with alpha
 ////	if ( !rgbaDiffer ) {
 ////#if !defined(GL_ES_VERSION_2_0)
-////		if ( minimumDepth != TD_HIGH_QUALITY && glConfig.textureCompressionAvailable ) {
+////		if ( minimumDepth != textureDepth_t.TD_HIGH_QUALITY && glConfig.textureCompressionAvailable ) {
 ////			return GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;	// one byte
 ////		}
 ////#endif
@@ -369,7 +369,7 @@
 ////	}
 ////#endif
 
-////	if ( minimumDepth == TD_HIGH_QUALITY ) {
+////	if ( minimumDepth == textureDepth_t.TD_HIGH_QUALITY ) {
 ////		return GL_RGBA8;	// four bytes
 ////	}
 ////#if !defined(GL_ES_VERSION_2_0)
@@ -456,12 +456,12 @@
 ////	int size = 0;
 
 ////	// perform optional picmip operation to save texture memory
-////	if ( depth == TD_SPECULAR && globalImages.image_downSizeSpecular.GetInteger() ) {
+////	if ( depth == textureDepth_t.TD_SPECULAR && globalImages.image_downSizeSpecular.GetInteger() ) {
 ////		size = globalImages.image_downSizeSpecularLimit.GetInteger();
 ////		if ( size == 0 ) {
 ////			size = 64;
 ////		}
-////	} else if ( depth == TD_BUMP && globalImages.image_downSizeBump.GetInteger() ) {
+////	} else if ( depth == textureDepth_t.TD_BUMP && globalImages.image_downSizeBump.GetInteger() ) {
 ////		size = globalImages.image_downSizeBumpLimit.GetInteger();
 ////		if ( size == 0 ) {
 ////			size = 64;
@@ -535,7 +535,7 @@ There is no way to specify explicit mip map levels
 */
 idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number, /*int */height:number, 
 					   /*textureFilter_t*/ filterParm:number, /*bool */allowDownSizeParm:boolean, 
-					   /*textureRepeat_t */repeatParm:number, /*textureDepth_t */depthParm ):void {
+					   /*textureRepeat_t */repeatParm:number, depthParm:textureDepth_t ):void {
 	var preserveBorder:boolean;
 	var /*byte		**/scaledBuffer:Uint8Array;
 	var /*int			*/scaled_width:number, scaled_height:number;
@@ -642,7 +642,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 //		R_SetBorderTexels( (byte *)scaledBuffer, width, height, rgba );
 //	}
 
-//	if ( generatorFunction == NULL && ( depth == TD_BUMP && globalImages.image_writeNormalTGA.GetBool() || depth != TD_BUMP && globalImages.image_writeTGA.GetBool() ) ) {
+//	if ( generatorFunction == NULL && ( depth == textureDepth_t.TD_BUMP && globalImages.image_writeNormalTGA.GetBool() || depth != textureDepth_t.TD_BUMP && globalImages.image_writeTGA.GetBool() ) ) {
 //		// Optionally write out the texture to a .tga
 //		char filename[MAX_IMAGE_NAME];
 //		ImageProgramStringToCompressedFileName( imgName, filename );
@@ -658,7 +658,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 //	// one fragment program
 //	// if the image is precompressed ( either in palletized mode or true rxgb mode )
 //	// then it is loaded above and the swap never happens here
-//	if ( depth == TD_BUMP && globalImages.image_useNormalCompression.GetInteger() != 1 ) {
+//	if ( depth == textureDepth_t.TD_BUMP && globalImages.image_useNormalCompression.GetInteger() != 1 ) {
 //		for ( int i = 0; i < scaled_width * scaled_height * 4; i += 4 ) {
 //			scaledBuffer[ i + 3 ] = scaledBuffer[ i ];
 //			scaledBuffer[ i ] = 0;
@@ -701,7 +701,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 //		// level with a different color so you can see the
 //		// rasterizer's texture level selection algorithm
 //		// Changing the color doesn't help with lumminance/alpha/intensity formats...
-//		if ( depth == TD_DIFFUSE && globalImages.image_colorMipLevels.GetBool() ) {
+//		if ( depth == textureDepth_t.TD_DIFFUSE && globalImages.image_colorMipLevels.GetBool() ) {
 //			R_BlendOverTexture( (byte *)scaledBuffer, scaled_width * scaled_height, mipBlendColors[miplevel] );
 //		}
 
@@ -1110,7 +1110,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 ////		inFile.StripFileExtension();
 ////		inFile.SetFileExtension( "tga" );
 ////		idStr format;
-////		if ( depth == TD_BUMP ) {
+////		if ( depth == textureDepth_t.TD_BUMP ) {
 ////			format = "RXGB +red 0.0 +green 0.5 +blue 0.5";
 ////		} else {
 ////			switch ( altInternalFormat ) {
@@ -1345,7 +1345,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 ////	}
 ////#endif
 
-////	if ( depth == TD_BUMP && globalImages.image_useNormalCompression.GetInteger() != 2 ) {
+////	if ( depth == textureDepth_t.TD_BUMP && globalImages.image_useNormalCompression.GetInteger() != 2 ) {
 ////		return false;
 ////	}
 

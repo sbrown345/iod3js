@@ -115,7 +115,7 @@ var globalImages = new idImageManager();
 ////	}
 
 ////	image.GenerateImage( (byte *)data, 256, 1, 
-////		TF_NEAREST, false, TR_CLAMP, TD_HIGH_QUALITY );
+////		TF_NEAREST, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 ////}
 
 /////*
@@ -151,7 +151,7 @@ var globalImages = new idImageManager();
 ////	}
 
 ////	image.GenerateImage( (byte *)data, 256, 1, 
-////		TF_LINEAR, false, TR_CLAMP, TD_HIGH_QUALITY );
+////		TF_LINEAR, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 ////}
 
 
@@ -185,7 +185,7 @@ var globalImages = new idImageManager();
 ////		}
 ////	}
 
-////	image.GenerateImage( (byte *)data, 256, 256, TF_LINEAR, false, TR_CLAMP, TD_HIGH_QUALITY );
+////	image.GenerateImage( (byte *)data, 256, 256, TF_LINEAR, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 ////}
 
 
@@ -209,7 +209,7 @@ var globalImages = new idImageManager();
 ////	}
 
 ////	image.GenerateImage( (byte *)data, 256, 1, 
-////		TF_NEAREST, false, TR_CLAMP, TD_HIGH_QUALITY );
+////		TF_NEAREST, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 ////}
 
 
@@ -273,7 +273,7 @@ idImage.prototype.MakeDefault = function():void {
 
 	this.GenerateImage( /*(byte *)*/flatten3DArray(Uint8Array, data), 
 		DEFAULT_SIZE, DEFAULT_SIZE, 
-		TF_DEFAULT, true, TR_REPEAT, TD_DEFAULT );
+		TF_DEFAULT, true, TR_REPEAT, textureDepth_t.TD_DEFAULT );
 
 	this.defaulted = true;
 }
@@ -288,7 +288,7 @@ idImage.prototype.MakeDefault = function():void {
 ////	// solid white texture
 ////	memset( data, 255, sizeof( data ) );
 ////	image.GenerateImage( (byte *)data, DEFAULT_SIZE, DEFAULT_SIZE, 
-////		TF_DEFAULT, false, TR_REPEAT, TD_DEFAULT );
+////		TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_DEFAULT );
 ////}
 
 ////static void R_BlackImage( idImage *image ) {
@@ -297,7 +297,7 @@ idImage.prototype.MakeDefault = function():void {
 ////	// solid black texture
 ////	memset( data, 0, sizeof( data ) );
 ////	image.GenerateImage( (byte *)data, DEFAULT_SIZE, DEFAULT_SIZE, 
-////		TF_DEFAULT, false, TR_REPEAT, TD_DEFAULT );
+////		TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_DEFAULT );
 ////}
 
 
@@ -331,7 +331,7 @@ idImage.prototype.MakeDefault = function():void {
 ////	}
 
 ////	image.GenerateImage( (byte *)data, BORDER_CLAMP_SIZE, BORDER_CLAMP_SIZE, 
-////		TF_LINEAR /* TF_NEAREST */, false, TR_CLAMP_TO_BORDER, TD_DEFAULT );
+////		TF_LINEAR /* TF_NEAREST */, false, TR_CLAMP_TO_BORDER, textureDepth_t.TD_DEFAULT );
 
 ////	if ( !glConfig.isInitialized ) {
 ////		// can't call glTexParameterfv yet
@@ -356,7 +356,7 @@ idImage.prototype.MakeDefault = function():void {
 ////	data[0][0][3] = 96;
 
 ////	image.GenerateImage( (byte *)data, DEFAULT_SIZE, DEFAULT_SIZE, 
-////		TF_DEFAULT, false, TR_REPEAT, TD_HIGH_QUALITY );
+////		TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_HIGH_QUALITY );
 ////}
 
 ////static void R_RGB8Image( idImage *image ) {
@@ -369,7 +369,7 @@ idImage.prototype.MakeDefault = function():void {
 ////	data[0][0][3] = 255;
 
 ////	image.GenerateImage( (byte *)data, DEFAULT_SIZE, DEFAULT_SIZE, 
-////		TF_DEFAULT, false, TR_REPEAT, TD_HIGH_QUALITY );
+////		TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_HIGH_QUALITY );
 ////}
 
 ////static void R_AlphaNotchImage( idImage *image ) {
@@ -383,7 +383,7 @@ idImage.prototype.MakeDefault = function():void {
 ////	data[1][3] = 255;
 
 ////	image.GenerateImage( (byte *)data, 2, 1, 
-////		TF_NEAREST, false, TR_CLAMP, TD_HIGH_QUALITY );
+////		TF_NEAREST, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 ////}
 
 ////static void R_FlatNormalImage( idImage *image ) {
@@ -400,7 +400,7 @@ idImage.prototype.MakeDefault = function():void {
 ////		data[0][i][alpha] = 255;
 ////	}
 ////	image.GenerateImage( (byte *)data, 2, 2, 
-////		TF_DEFAULT, true, TR_REPEAT, TD_HIGH_QUALITY );
+////		TF_DEFAULT, true, TR_REPEAT, textureDepth_t.TD_HIGH_QUALITY );
 ////}
 
 ////static void R_AmbientNormalImage( idImage *image ) {
@@ -421,7 +421,7 @@ idImage.prototype.MakeDefault = function():void {
 ////		pics[i] = data[0][0];
 ////	}
 ////	// this must be a cube map for fragment programs to simply substitute for the normalization cube map
-////	image.GenerateCubeImage( pics, 2, TF_DEFAULT, true, TD_HIGH_QUALITY );
+////	image.GenerateCubeImage( pics, 2, TF_DEFAULT, true, textureDepth_t.TD_HIGH_QUALITY );
 ////}
 
 
@@ -646,7 +646,7 @@ idImage.prototype.MakeDefault = function():void {
 ////	}
 
 ////	image.GenerateCubeImage( (const byte **)pixels, size,
-////						   TF_LINEAR, false, TD_HIGH_QUALITY ); 
+////						   TF_LINEAR, false, textureDepth_t.TD_HIGH_QUALITY ); 
 
 ////	Mem_Free(pixels[0]);
 ////}
@@ -675,7 +675,7 @@ idImage.prototype.MakeDefault = function():void {
 ////		}
 ////	}
 ////	image.GenerateImage( (byte *)data, FALLOFF_TEXTURE_SIZE, 16,
-////		TF_DEFAULT, false, TR_CLAMP_TO_ZERO, TD_HIGH_QUALITY );
+////		TF_DEFAULT, false, TR_CLAMP_TO_ZERO, textureDepth_t.TD_HIGH_QUALITY );
 ////}
 
 
@@ -728,7 +728,7 @@ idImage.prototype.MakeDefault = function():void {
 ////	}
 
 ////	image.GenerateImage( (byte *)data, FOG_SIZE, FOG_SIZE, 
-////		TF_LINEAR, false, TR_CLAMP, TD_HIGH_QUALITY );
+////		TF_LINEAR, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 ////}
 
 
@@ -836,7 +836,7 @@ idImage.prototype.MakeDefault = function():void {
 
 ////	// if mipmapped, acutely viewed surfaces fade wrong
 ////	image.GenerateImage( (byte *)data, FOG_ENTER_SIZE, FOG_ENTER_SIZE, 
-////		TF_LINEAR, false, TR_CLAMP, TD_HIGH_QUALITY );
+////		TF_LINEAR, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 ////}
 
 
@@ -881,7 +881,7 @@ idImage.prototype.MakeDefault = function():void {
 ////	}
 
 ////	image.GenerateImage( (byte *)data, QUADRATIC_WIDTH, QUADRATIC_HEIGHT, 
-////		TF_DEFAULT, false, TR_CLAMP, TD_HIGH_QUALITY );
+////		TF_DEFAULT, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 ////}
 
 //////=====================================================================

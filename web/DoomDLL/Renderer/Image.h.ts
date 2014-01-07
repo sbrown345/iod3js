@@ -121,13 +121,13 @@
 
 
 //// increasing numeric values imply more information is stored
-//typedef enum {
-var	TD_SPECULAR = 0,			// may be compressed, and always zeros the alpha channel
-	TD_DIFFUSE = 0,				// may be compressed
-	TD_DEFAULT = 0,				// will use compressed formats when possible
-	TD_BUMP = 0;				// may be compressed with 8 bit lookup
-//	TD_HIGH_QUALITY 			// either 32 bit or a component format, no loss at all
-//} textureDepth_t;
+enum textureDepth_t {
+    TD_SPECULAR,			    // may be compressed, and always zeros the alpha channel
+	TD_DIFFUSE,				    // may be compressed
+	TD_DEFAULT,				    // will use compressed formats when possible
+	TD_BUMP,				    // may be compressed with 8 bit lookup
+	TD_HIGH_QUALITY 			// either 32 bit or a component format, no loss at all
+};
 
 ////typedef enum {
 ////	TT_DISABLED,
@@ -175,9 +175,9 @@ interface IidImage {
 //	// data goes from the bottom to the top line of the image, as OpenGL expects it
 //	// These perform an implicit Bind() on the current texture unit
 //	// FIXME: should we implement cinematics this way, instead of with explicit calls?
-//	void		GenerateImage( const byte *pic, int width, int height, 
-//					   textureFilter_t filter, bool allowDownSize, 
-//					   textureRepeat_t repeat, textureDepth_t depth );
+	GenerateImage( pic:Uint8Array, /*int */width:number, /*int */height:number, 
+					   /*textureFilter_t*/ filterParm:number, /*bool */allowDownSizeParm:boolean, 
+					   /*textureRepeat_t */repeatParm:number, depthParm: textureDepth_t):void;
 //#if !defined(GL_ES_VERSION_2_0)
 //	void		Generate3DImage( const byte *pic, int width, int height, int depth,
 //						textureFilter_t filter, bool allowDownSize, 
@@ -288,9 +288,9 @@ class idImage implements IidImage {
 //	// data goes from the bottom to the top line of the image, as OpenGL expects it
 //	// These perform an implicit Bind() on the current texture unit
 //	// FIXME: should we implement cinematics this way, instead of with explicit calls?
-//	void		GenerateImage( const byte *pic, int width, int height, 
-//					   textureFilter_t filter, bool allowDownSize, 
-//					   textureRepeat_t repeat, textureDepth_t depth );
+    GenerateImage ( pic: Uint8Array, /*int */width: number, /*int */height: number,
+        /*textureFilter_t*/ filterParm: number, /*bool */allowDownSizeParm: boolean,
+        /*textureRepeat_t */repeatParm: number, depthParm:textureDepth_t): void {/*placeholder*/}
 //#if !defined(GL_ES_VERSION_2_0)
 //	void		Generate3DImage( const byte *pic, int width, int height, int depth,
 //						textureFilter_t filter, bool allowDownSize, 
@@ -397,7 +397,7 @@ class idImage implements IidImage {
 		//this.allowDownSize = false;
 		//this.filter = TF_DEFAULT;
 		//this.repeat = TR_REPEAT;
-		//this.depth = TD_DEFAULT;
+		//this.depth = textureDepth_t.TD_DEFAULT;
 		//this.cubeFiles = CF_2D;
 		//this.referencedOutsideLevelLoad = false;
 		//this.levelLoadReferenced = false;
