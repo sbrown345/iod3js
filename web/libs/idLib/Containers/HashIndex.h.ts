@@ -378,6 +378,7 @@ idHashIndex::GenerateKey
 GenerateKey( $string: string, caseSensitive:boolean ) :number;
 GenerateKey( $string: idStr, caseSensitive:boolean ) :number;
 GenerateKey( $string: any, caseSensitive:boolean ) :number {
+    $string = idStr.getIdStr( $string );
 	if ( caseSensitive ) {
 		return ( idStr.Hash( $string ) & this.hashMask );
 	} else {

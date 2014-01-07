@@ -1,3 +1,4 @@
+/// <reference path="../../utils/types.ts" />
 /// <reference path="../../libs/idLib/Text/Str.h.ts" />
 /// <reference path="../../libs/idLib/Containers/HashIndex.h.ts" />
 /// <reference path="CmdSystem.h.ts" />
@@ -54,47 +55,48 @@ var staticVars:idCVar = null;
 class idInternalCVar extends idCVar {
 //	friend class idCVarSystemLocal;
 //public:
-    constructor( );
-    constructor( newName:string, newValue:string, newFlags:number );
+    constructor ( );
+    constructor ( newName: string, newValue: string, newFlags: number );
     constructor ( cvar: idCVar );
+    constructor ( newNameOrCvar?: any, newValue?: string, /*int */newFlags?: number ) {
+        super ( );
 
-    constructor ( newNameOrCvar?:any, newValue?:string, /*int */newFlags?:number ) {
-        super ( null, null, null, null );
-        todoThrow ( );
-        //if ( this.arguments.length == 3 ) {
-	    //    this.nameString = newName;
-	    //    this.name = nameString.c_str();
-	    //    this.valueString = newValue;
-	    //    this.value = valueString.c_str();
-	    //    this.resetString = newValue;
-	    //    this.descriptionString = "";
-	    //    this.description = descriptionString.c_str();
-	    //    this.flags = ( newFlags & ~CVAR_STATIC ) | CVAR_MODIFIED;
-	    //    this.valueMin = 1;
-	    //    this.valueMax = -1;
-	    //    this.valueStrings = null;
-	    //    this.valueCompletion = 0;
-	    //    this.UpdateValue();
-	    //    this.UpdateCheat();
-	    //    this.internalVar = this;
-        //} else if(arguments.length = 1) {
-	    //    this.nameString = cvar.GetName();
-	    //    this.name = nameString.c_str();
-	    //    this.valueString = cvar.GetString();
-	    //    this.value = valueString.c_str();
-	    //    this.resetString = cvar.GetString();
-	    //    this.descriptionString = cvar.GetDescription();
-	    //    this.description = descriptionString.c_str();
-	    //    this.flags = cvar.GetFlags() | CVAR_MODIFIED;
-	    //    this.valueMin = cvar.GetMinValue();
-	    //    this.valueMax = cvar.GetMaxValue();
-	    //    this.valueStrings = CopyValueStrings( cvar.GetValueStrings() );
-	    //    this.valueCompletion = cvar.GetValueCompletion();
-	    //    this.UpdateValue();
-	    //    this.UpdateCheat();
-	    //    this.internalVar = this;
-        //}
-    } 
+        if ( typeof newNameOrCvar === "string" ) {
+            var newName = newNameOrCvar;
+            this.nameString = new idStr( newName );
+            this.name = this.nameString.c_str ( );
+            this.valueString = new idStr( newValue );
+            this.value = this.valueString.c_str ( );
+            this.resetString = new idStr( newValue );
+            this.descriptionString = new idStr( "" );
+            this.description = this.descriptionString.c_str ( );
+            this.flags = ( newFlags & ~CVAR_STATIC ) | CVAR_MODIFIED;
+            this.valueMin = 1;
+            this.valueMax = -1;
+            this.valueStrings = null;
+            this.valueCompletion = null;
+            this.UpdateValue ( );
+            this.UpdateCheat ( );
+            this.internalVar = this;
+        } else if ( newNameOrCvar instanceof idCVar ) {
+            var cvar = newNameOrCvar;
+            this.nameString = new idStr( cvar.GetName ( ) );
+            this.name = this.nameString.c_str ( );
+            this.valueString = new idStr( cvar.GetString ( ) );
+            this.value = this.valueString.c_str ( );
+            this.resetString = new idStr( cvar.GetString ( ) );
+            this.descriptionString = new idStr( cvar.GetDescription ( ) );
+            this.description = this.descriptionString.c_str ( );
+            this.flags = cvar.GetFlags ( ) | CVAR_MODIFIED;
+            this.valueMin = cvar.GetMinValue ( );
+            this.valueMax = cvar.GetMaxValue ( );
+            this.valueStrings = this.CopyValueStrings( cvar.GetValueStrings ( ) );
+            this.valueCompletion = cvar.GetValueCompletion ( );
+            this.UpdateValue ( );
+            this.UpdateCheat ( );
+            this.internalVar = this;
+        }
+    }
 
 ////	const char **			CopyValueStrings( const char **strings );
 ////	void					Update( const idCVar *cvar );
@@ -128,37 +130,38 @@ class idInternalCVar extends idCVar {
 ////}
 
 
-/////*
-////============
-////idInternalCVar::CopyValueStrings
-////============
-////*/
-////const char **idInternalCVar::CopyValueStrings( const char **strings ) {
-////	int i, totalLength;
-////	const char **ptr;
-////	char *str;
+/*
+============
+idInternalCVar::CopyValueStrings
+============
+*/
+CopyValueStrings( strings:string[] ):string[] {
+    ////int i, totalLength;
+    ////const char **ptr;
+    ////char *str;
 
-////	if ( !strings ) {
-////		return NULL;
-////	}
+    if ( !strings ) {
+    	return /*NULL*/null;
+    }
+    todoThrow ( );
+    return null;
+    ////totalLength = 0;
+    ////for ( i = 0; strings[i] != NULL; i++ ) {
+    ////	totalLength += idStr.Length( strings[i] ) + 1;
+    ////}
 
-////	totalLength = 0;
-////	for ( i = 0; strings[i] != NULL; i++ ) {
-////		totalLength += idStr::Length( strings[i] ) + 1;
-////	}
+    ////ptr = (const char **) Mem_Alloc( ( i + 1 ) * sizeof( char * ) + totalLength );
+    ////str = (char *) (((byte *)ptr) + ( i + 1 ) * sizeof( char * ) );
 
-////	ptr = (const char **) Mem_Alloc( ( i + 1 ) * sizeof( char * ) + totalLength );
-////	str = (char *) (((byte *)ptr) + ( i + 1 ) * sizeof( char * ) );
+    ////for ( i = 0; strings[i] != NULL; i++ ) {
+    ////	ptr[i] = str;
+    ////	strcpy( str, strings[i] );
+    ////	str += idStr.Length( strings[i] ) + 1;
+    ////}
+    ////ptr[i] = NULL;
 
-////	for ( i = 0; strings[i] != NULL; i++ ) {
-////		ptr[i] = str;
-////		strcpy( str, strings[i] );
-////		str += idStr::Length( strings[i] ) + 1;
-////	}
-////	ptr[i] = NULL;
-
-////	return ptr;
-////}
+    ////return ptr;
+}
 
 /*
 ============
@@ -179,7 +182,7 @@ Update( cvar:idCVar ):void {
     //		if ( ( flags & (CVAR_BOOL|CVAR_INTEGER|CVAR_FLOAT) ) != ( cvar.GetFlags() & (CVAR_BOOL|CVAR_INTEGER|CVAR_FLOAT) ) ) {
     //			common.Warning( "CVar '%s' declared multiple times with different type", nameString.c_str() );
     //		}
-    //		if ( valueMin != cvar.GetMinValue() || valueMax != cvar.GetMaxValue() ) {
+    //		if ( this.valueMin != cvar.GetMinValue() || valueMax != cvar.GetMaxValue() ) {
     //			common.Warning( "CVar '%s' declared multiple times with different minimum/maximum", nameString.c_str() );
     //		}
 
@@ -210,88 +213,88 @@ Update( cvar:idCVar ):void {
     //}
 }
 
-/////*
-////============
-////idInternalCVar::UpdateValue
-////============
-////*/
-////void idInternalCVar::UpdateValue( void ) {
-////	bool clamped = false;
+/*
+============
+idInternalCVar::UpdateValue
+============
+*/
+UpdateValue( ):void {
+    var clamped = false;
 
-////	if ( flags & CVAR_BOOL ) {
-////		integerValue = ( atoi( value ) != 0 );
-////		floatValue = integerValue;
-////		if ( idStr::Icmp( value, "0" ) != 0 && idStr::Icmp( value, "1" ) != 0 ) {
-////			valueString = idStr( (bool)( integerValue != 0 ) );
-////			value = valueString.c_str();
-////		}
-////	} else if ( flags & CVAR_INTEGER ) {
-////		integerValue = (int)atoi( value );
-////		if ( valueMin < valueMax ) {
-////			if ( integerValue < valueMin ) {
-////				integerValue = (int)valueMin;
-////				clamped = true;
-////			} else if ( integerValue > valueMax ) {
-////				integerValue = (int)valueMax;
-////				clamped = true;
-////			}
-////		}
-////		if ( clamped || !idStr::IsNumeric( value ) || idStr::FindChar( value, '.' ) ) {
-////			valueString = idStr( integerValue );
-////			value = valueString.c_str();
-////		}
-////		floatValue = (float)integerValue;
-////	} else if ( flags & CVAR_FLOAT ) {
-////		floatValue = (float)atof( value );
-////		if ( valueMin < valueMax ) {
-////			if ( floatValue < valueMin ) {
-////				floatValue = valueMin;
-////				clamped = true;
-////			} else if ( floatValue > valueMax ) {
-////				floatValue = valueMax;
-////				clamped = true;
-////			}
-////		}
-////		if ( clamped || !idStr::IsNumeric( value ) ) {
-////			valueString = idStr( floatValue );
-////			value = valueString.c_str();
-////		}
-////		integerValue = (int)floatValue;
-////	} else {
-////		if ( valueStrings && valueStrings[0] ) {
-////			integerValue = 0;
-////			for ( int i = 0; valueStrings[i]; i++ ) {
-////				if ( valueString.Icmp( valueStrings[i] ) == 0 ) {
-////					integerValue = i;
-////					break;
-////				}
-////			}
-////			valueString = valueStrings[integerValue];
-////			value = valueString.c_str();
-////			floatValue = (float)integerValue;
-////		} else if ( valueString.Length() < 32 ) {
-////			floatValue = (float)atof( value );
-////			integerValue = (int)floatValue;
-////		} else {
-////			floatValue = 0.0f;
-////			integerValue = 0;
-////		}
-////	}
-////}
+    if ( this.flags & CVAR_BOOL ) {
+    	this.integerValue = ( atoi( this.value ) != 0 ).toNum();
+    	this.floatValue = this.integerValue;
+    	if ( idStr.Icmp( this.value, "0" ) != 0 && idStr.Icmp( this.value, "1" ) != 0 ) {
+    		this.valueString = new idStr( this.integerValue );
+    		this.value = this.valueString.c_str();
+    	}
+    } else if ( this.flags & CVAR_INTEGER ) {
+    	this.integerValue = atoi( this.value );
+    	if ( this.valueMin < this.valueMax ) {
+    		if ( this.integerValue < this.valueMin ) {
+    			this.integerValue = int(this.valueMin);
+    			clamped = true;
+    		} else if ( this.integerValue > this.valueMax ) {
+    			this.integerValue = int(this.valueMax);
+    			clamped = true;
+    		}
+    	}
+    	if ( clamped || !idStr.IsNumeric( this.value ) || idStr.FindChar( this.value, '.' ) ) {
+    		this.valueString = new idStr( this.integerValue );
+    		this.value = this.valueString.c_str();
+    	}
+    	this.floatValue = this.integerValue;
+    } else if ( this.flags & CVAR_FLOAT ) {
+    	this.floatValue = atof( this.value );
+    	if ( this.valueMin < this.valueMax ) {
+    		if ( this.floatValue < this.valueMin ) {
+    			this.floatValue = this.valueMin;
+    			clamped = true;
+    		} else if ( this.floatValue > this.valueMax ) {
+    			this.floatValue = this.valueMax;
+    			clamped = true;
+    		}
+    	}
+    	if ( clamped || !idStr.IsNumeric( this.value ) ) {
+    		this.valueString = new idStr( this.floatValue );
+    		this.value = this.valueString.c_str();
+    	}
+    	this.integerValue = int(this.floatValue);
+    } else {
+    	if ( this.valueStrings && this.valueStrings[0] ) {
+    		this.integerValue = 0;
+    		for ( var i = 0; this.valueStrings[i]; i++ ) {
+    			if ( this.valueString.Icmp( this.valueStrings[i] ) == 0 ) {
+    				this.integerValue = i;
+    				break;
+    			}
+    		}
+	        this.valueString = new idStr( this.valueStrings[this.integerValue] );
+    		this.value = this.valueString.c_str();
+    		this.floatValue = this.integerValue;
+    	} else if ( this.valueString.Length() < 32 ) {
+    		this.floatValue = atof( this.value );
+    		this.integerValue = int(this.floatValue);
+    	} else {
+    		this.floatValue = 0.0;
+    		this.integerValue = 0;
+    	}
+    }
+}
 
-/////*
-////============
-////idInternalCVar::UpdateCheat
-////============
-////*/
-////void idInternalCVar::UpdateCheat( void ) {
-////	// all variables are considered cheats except for a few types
-////	if ( flags & ( CVAR_NOCHEAT | CVAR_INIT | CVAR_ROM | CVAR_ARCHIVE | CVAR_USERINFO | CVAR_SERVERINFO | CVAR_NETWORKSYNC ) ) {
-////		flags &= ~CVAR_CHEAT;
-////	} else {
-////		flags |= CVAR_CHEAT;
-////	}
-////}
+/*
+============
+idInternalCVar::UpdateCheat
+============
+*/
+UpdateCheat( ):void {
+	// all variables are considered cheats except for a few types
+	if ( this.flags & ( CVAR_NOCHEAT | CVAR_INIT | CVAR_ROM | CVAR_ARCHIVE | CVAR_USERINFO | CVAR_SERVERINFO | CVAR_NETWORKSYNC ) ) {
+		this.flags &= ~CVAR_CHEAT;
+	} else {
+		this.flags |= CVAR_CHEAT;
+	}
+}
 
 /////*
 ////============
@@ -459,7 +462,7 @@ class idCVarSystem {
 
 ////private:
                                 initialized:boolean;
-/*idList<idInternalCVar*>	*/  cvars:idInternalCVar[];
+/*idList<idInternalCVar*>	*/  cvars:Array<idInternalCVar>;
 /*	idHashIndex				*/  cvarHash:idHashIndex;
         						modifiedFlags:number;
 ////							// use a static dictionary to MoveCVarsToDict can be used from game
@@ -744,7 +747,7 @@ Register( cvar:idCVar ):void {
 //		// print the variable
 //		common.Printf( "\"%s\" is:\"%s\"" S_COLOR_WHITE " default:\"%s\"\n",
 //					internal.nameString.c_str(), internal.valueString.c_str(), internal.resetString.c_str() );
-//		if ( idStr::Length( internal.GetDescription() ) > 0 ) {
+//		if ( idStr.Length( internal.GetDescription() ) > 0 ) {
 //			common.Printf( S_COLOR_WHITE "%s\n", internal.GetDescription() );
 //		}
 //	} else {
@@ -779,7 +782,7 @@ Register( cvar:idCVar ):void {
 //		if ( !cvars[i].valueCompletion ) {
 //			continue;
 //		}
-//		if ( idStr::Icmp( args.Argv( 0 ), cvars[i].nameString.c_str() ) == 0 ) {
+//		if ( idStr.Icmp( args.Argv( 0 ), cvars[i].nameString.c_str() ) == 0 ) {
 //			cvars[i].valueCompletion( args, callback );
 //			break;
 //		}
@@ -923,7 +926,7 @@ Toggle_f( /*const */ args:idCmdArgs  ):void {
 	//	// cycle through multiple values
 	//	text = cvar.GetString();
 	//	for( i = 2; i < argc; i++ ) {
-	//		if ( !idStr::Icmp( text, args.Argv( i ) ) ) {
+	//		if ( !idStr.Icmp( text, args.Argv( i ) ) ) {
 	//			// point to next value
 	//			i++;
 	//			break;
@@ -1068,7 +1071,7 @@ idCVarSystemLocal::ListByFlags
 //template<>
 //ID_INLINE int idListSortCompare( const idInternalCVar * const *a, const idInternalCVar * const *b ) {
 //    todoThrow();
-//	return idStr::Icmp( (*a).GetName(), (*b).GetName() );
+//	return idStr.Icmp( (*a).GetName(), (*b).GetName() );
 //}
 
 //function idCVarSystemLocal::ListByFlags( const idCmdArgs &args, cvarFlags_t flags ) {
@@ -1088,14 +1091,14 @@ idCVarSystemLocal::ListByFlags
 //	//argNum = 1;
 //	//show = SHOW_VALUE;
 
-//	//if ( idStr::Icmp( args.Argv( argNum ), "-" ) == 0 || idStr::Icmp( args.Argv( argNum ), "/" ) == 0 ) {
-//	//	if ( idStr::Icmp( args.Argv( argNum + 1 ), "help" ) == 0 || idStr::Icmp( args.Argv( argNum + 1 ), "?" ) == 0 ) {
+//	//if ( idStr.Icmp( args.Argv( argNum ), "-" ) == 0 || idStr.Icmp( args.Argv( argNum ), "/" ) == 0 ) {
+//	//	if ( idStr.Icmp( args.Argv( argNum + 1 ), "help" ) == 0 || idStr.Icmp( args.Argv( argNum + 1 ), "?" ) == 0 ) {
 //	//		argNum = 3;
 //	//		show = SHOW_DESCRIPTION;
-//	//	} else if ( idStr::Icmp( args.Argv( argNum + 1 ), "type" ) == 0 || idStr::Icmp( args.Argv( argNum + 1 ), "range" ) == 0 ) {
+//	//	} else if ( idStr.Icmp( args.Argv( argNum + 1 ), "type" ) == 0 || idStr.Icmp( args.Argv( argNum + 1 ), "range" ) == 0 ) {
 //	//		argNum = 3;
 //	//		show = SHOW_TYPE;
-//	//	} else if ( idStr::Icmp( args.Argv( argNum + 1 ), "flags" ) == 0 ) {
+//	//	} else if ( idStr.Icmp( args.Argv( argNum + 1 ), "flags" ) == 0 ) {
 //	//		argNum = 3;
 //	//		show = SHOW_FLAGS;
 //	//	}

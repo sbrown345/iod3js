@@ -48,13 +48,23 @@
 //    return float32ConvertArray[0];
 //};
 
-//var int32 = function (v: number): number {
-//    return v | 0;   
-//};
+var int = function (v: number): number {
+    return v | 0;   
+};
 
-//var uint32 = function (v: number): number {
-//    return v >>> 0;
-//};
+var uint32 = function (v: number): number {
+    return v >>> 0;
+};
+
+var atoi = parseInt;
+var atof = parseFloat;
+
+interface Boolean {
+    toNum():number;
+}
+Boolean.prototype.toNum = function ( ):number {
+    return this ? 1 : 0;
+};
 
 //var unsigned = uint32;
 

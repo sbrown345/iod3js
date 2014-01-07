@@ -116,8 +116,10 @@ var FILE_HASH_SIZE = 1024;
 
 class idStr {
 
-	constructor ( str: string ) {
-		this.data = str; //.toUint8Array ( );
+	constructor ( str: string ) ;
+	constructor ( str: number ) ;
+	constructor ( str: any ) {
+		this.data = str.toString(); //.toUint8Array ( );
 	}
 
 ////public:
@@ -710,9 +712,9 @@ class idStr {
 ////	return idStr::IcmpnPath( this.data, text, strlen( text ) );
 ////}
 
-////ID_INLINE int idStr::Length( void ) const {
-////	return len;
-////}
+Length( ):number {
+    return this.data.length;//this.len;
+}
 
 ////ID_INLINE int idStr::Allocated( void ) const {
 ////	if ( this.data != baseBuffer ) {
@@ -960,65 +962,34 @@ class idStr {
 ////	}
 ////	return s;
 ////}
-
-//////////////////ID_INLINE int idStr::Hash( const char *string ) {
-//////////////////	int i, hash = 0;
-//////////////////	for ( i = 0; *string != '\0'; i++ ) {
-//////////////////		hash += ( *string++ ) * ( i + 119 );
-//////////////////	}
-//////////////////	return hash;
-//////////////////}
-
-//////////////////ID_INLINE int idStr::Hash( const char *string, int length ) {
-//////////////////	int i, hash = 0;
-//////////////////	for ( i = 0; i < length; i++ ) {
-//////////////////		hash += ( *string++ ) * ( i + 119 );
-//////////////////	}
-//////////////////	return hash;
-//////////////////}
-
+    
 	static Hash ( $string: idStr ): number;
 	static Hash ( $string: string ): number;
 	static Hash ( $string: any ): number {
 		var /*int */i: number, hash = 0;
 		var strIdx = 0;
-		var str = idStr.getIdStr( $string );
+		$string = idStr.getIdStr( $string );
 		for ( i = 0; $string.c( strIdx ); i++ ) {
 			hash += ( $string.c( strIdx++ ) ) * ( i + 119 );
 		}
 		return hash;
 	}
-
-//////////////////ID_INLINE int idStr::IHash( const char *string ) {
-//////////////////	int i, hash = 0;
-//////////////////	for( i = 0; *string != '\0'; i++ ) {
-//////////////////		hash += ToLower( *string++ ) * ( i + 119 );
-//////////////////	}
-//////////////////	return hash;
-//////////////////}
-
-//////////////////ID_INLINE int idStr::IHash( const char *string, int length ) {
-//////////////////	int i, hash = 0;
-//////////////////	for ( i = 0; i < length; i++ ) {
-//////////////////		hash += ToLower( *string++ ) * ( i + 119 );
-//////////////////	}
-//////////////////	return hash;
-//////////////////}
-
+    
 	static IHash ( $string: idStr ): number;
 	static IHash ( $string: idStr, /*int */length?: number ): number {
 		var /*int*/ i: number, hash = 0;
 		var idx = 0;
+		$string = idStr.getIdStr( $string );
 		if ( typeof ( length ) === "number" ) {
-			for ( i = 0; $string.c( idx ); i++ ) {
-				hash += idStr.ToLower( $string.v( idx++ ) ).charCodeAt( 0 ) * ( i + 119 );
-			}
-			return hash;
+		    for ( i = 0; i < length; i++ ) {
+		        hash += ( $string.c( idx++ ) ) * ( i + 119 );
+		    }
+		    return hash;
 		} else {
-			for ( i = 0; i < length; i++ ) {
-				hash += ( $string.c( idx++ ) ) * ( i + 119 );
-			}
-			return hash;
+		    for ( i = 0; $string.c( idx ); i++ ) {
+		        hash += idStr.ToLower( $string.v( idx++ ) ).charCodeAt( 0 ) * ( i + 119 );
+		    }
+		    return hash;
 		}
 	}
 
@@ -1239,26 +1210,27 @@ class idStr {
 ////	len = l;
 ////}
 
-/////*
-////============
-////idStr::FindChar
+/*
+============
+idStr::FindChar
 
-////returns -1 if not found otherwise the index of the char
-////============
-////*/
-////int idStr::FindChar( const char *str, const char c, int start, int end ) {
-////	int i;
+returns -1 if not found otherwise the index of the char
+============
+*/
+    static FindChar ( str: string, c: string, /*int */start: number=0, /*int */end: number=-1 ): number {
+        var /*int */i: number;
+        assert( c.length === 1 );
 
-////	if ( end == -1 ) {
-////		end = strlen( str ) - 1;
-////	}
-////	for ( i = start; i <= end; i++ ) {
-////		if ( str[i] == c ) {
-////			return i;
-////		}
-////	}
-////	return -1;
-////}
+        if ( end == -1 ) {
+            end = strlen( str ) - 1;
+        }
+        for ( i = start; i <= end; i++ ) {
+            if ( str[i] == c ) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
 /////*
 ////============
@@ -2012,42 +1984,43 @@ idStr::Replace
 ////}
 
 
-/////*
-////=====================================================================
+/*
+=====================================================================
 
-////  char * methods to replace library functions
+  char * methods to replace library functions
 
-////=====================================================================
-////*/
+=====================================================================
+*/
 
-/////*
-////============
-////idStr::IsNumeric
+/*
+============
+idStr::IsNumeric
 
-////Checks a string to see if it contains only numerical values.
-////============
-////*/
-////bool idStr::IsNumeric( const char *s ) {
-////	int		i;
-////	bool	dot;
+Checks a string to see if it contains only numerical values.
+============
+*/
+static IsNumeric( s:string ):boolean {
+	var /*int		*/i:number;
+	var dot:boolean;
+    var sIdx = 0;
 
-////	if ( *s == '-' ) {
-////		s++;
-////	}
+	if ( s.charAt(sIdx) == '-' ) {
+	    s = s.substr( 1 );
+	}
 
-////	dot = false;
-////	for ( i = 0; s[i]; i++ ) {
-////		if ( !isdigit( s[i] ) ) {
-////			if ( ( s[ i ] == '.' ) && !dot ) {
-////				dot = true;
-////				continue;
-////			}
-////			return false;
-////		}
-////	}
+	dot = false;
+	for ( i = 0; s[i]; i++ ) {
+		if ( !isdigit( s[i] ) ) {
+			if ( ( s[ i ] == '.' ) && !dot ) {
+				dot = true;
+				continue;
+			}
+			return false;
+		}
+	}
 
-////	return true;
-////}
+	return true;
+}
 
 /////*
 ////============
@@ -2147,9 +2120,11 @@ idStr::Cmp
 idStr::Icmp
 ================
 */
-	static Icmp ( s1: idStr, s2: idStr ): number {
-		var ls1 = s1.data.toLowerCase ( );
-		var ls2 = s2.data.toLowerCase ( );
+	static Icmp ( s1: string, s2: string ): number
+	static Icmp ( s1: idStr, s2: idStr ): number
+	static Icmp ( s1: any, s2: any ): number {
+	    var ls1 = this.getString( s1 ).toLowerCase ( );
+	    var ls2 = this.getString( s2 ).toLowerCase ( );
 
 		if ( ls1 == ls2 ) {
 			return 0;
@@ -2767,7 +2742,7 @@ idStr::Icmp
 	}
 
 	c ( offset: number = 0 ): number {
-		return this.data.charCodeAt( offset );
+		return this.data.charCodeAt( offset ) || 0;
 	}
 
 	static getString ( stringOrIdStr: string ): string;
