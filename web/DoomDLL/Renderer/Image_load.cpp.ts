@@ -1563,91 +1563,91 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 ////#endif
 ////}
 
-/////*
-////===============
-////ActuallyLoadImage
+/*
+===============
+ActuallyLoadImage
 
-////Absolutely every image goes through this path
-////On exit, the idImage will have a valid OpenGL texture number that can be bound
-////===============
-////*/
-////void	idImage::ActuallyLoadImage( bool checkForPrecompressed, bool fromBackEnd ) {
-////	int		width, height;
-////	byte	*pic;
+Absolutely every image goes through this path
+On exit, the idImage will have a valid OpenGL texture number that can be bound
+===============
+*/
+idImage.prototype.ActuallyLoadImage = function( checkForPrecompressed:boolean, fromBackEnd:boolean ):void {
+	var/*int		*/width:number, height:number;
+    var /*byte	**/pic: Uint8Array;
 
-////	// this is the ONLY place generatorFunction will ever be called
-////	if ( generatorFunction ) {
-////		generatorFunction( this );
-////		return;
-////	}
+	// this is the ONLY place generatorFunction will ever be called
+	if ( this.generatorFunction ) {
+		this.generatorFunction( this );
+		return;
+	}
+    todoThrow ( );
+	//// if we are a partial image, we are only going to load from a compressed file
+	//if ( this.isPartialImage ) {
+	//	if ( CheckPrecompressedImage( false ) ) {
+	//		return;
+	//	}
+	//	// this is an error -- the partial image failed to load
+	//	MakeDefault();
+	//	return;
+	//}
 
-////	// if we are a partial image, we are only going to load from a compressed file
-////	if ( isPartialImage ) {
-////		if ( CheckPrecompressedImage( false ) ) {
-////			return;
-////		}
-////		// this is an error -- the partial image failed to load
-////		MakeDefault();
-////		return;
-////	}
+	////
+	//// load the image from disk
+	////
+	//if ( cubeFiles != CF_2D ) {
+	//	byte	*pics[6];
 
-////	//
-////	// load the image from disk
-////	//
-////	if ( cubeFiles != CF_2D ) {
-////		byte	*pics[6];
+	//	// we don't check for pre-compressed cube images currently
+	//	R_LoadCubeImages( imgName, cubeFiles, pics, &width, &timestamp );
 
-////		// we don't check for pre-compressed cube images currently
-////		R_LoadCubeImages( imgName, cubeFiles, pics, &width, &timestamp );
+	//	if ( pics[0] == NULL ) {
+	//		common.Warning( "Couldn't load cube image: %s", imgName.c_str() );
+	//		MakeDefault();
+	//		return;
+	//	}
 
-////		if ( pics[0] == NULL ) {
-////			common.Warning( "Couldn't load cube image: %s", imgName.c_str() );
-////			MakeDefault();
-////			return;
-////		}
+	//	GenerateCubeImage( (const byte **)pics, width, filter, allowDownSize, depth );
+	//	precompressedFile = false;
 
-////		GenerateCubeImage( (const byte **)pics, width, filter, allowDownSize, depth );
-////		precompressedFile = false;
+	//	for ( int i = 0 ; i < 6 ; i++ ) {
+	//		if ( pics[i] ) {
+	//			R_StaticFree( pics[i] );
+	//		}
+	//	}
+	//} else {
+	//	// see if we have a pre-generated image file that is
+	//	// already image processed and compressed
+	//	if ( checkForPrecompressed && globalImages.image_usePrecompressedTextures.GetBool() ) {
+	//		if ( CheckPrecompressedImage( true ) ) {
+	//			// we got the precompressed image
+	//			return;
+	//		}
+	//		// fall through to load the normal image
+	//	}
 
-////		for ( int i = 0 ; i < 6 ; i++ ) {
-////			if ( pics[i] ) {
-////				R_StaticFree( pics[i] );
-////			}
-////		}
-////	} else {
-////		// see if we have a pre-generated image file that is
-////		// already image processed and compressed
-////		if ( checkForPrecompressed && globalImages.image_usePrecompressedTextures.GetBool() ) {
-////			if ( CheckPrecompressedImage( true ) ) {
-////				// we got the precompressed image
-////				return;
-////			}
-////			// fall through to load the normal image
-////		}
+	//	R_LoadImageProgram( imgName, &pic, &width, &height, &timestamp, &depth );
 
-////		R_LoadImageProgram( imgName, &pic, &width, &height, &timestamp, &depth );
+	//	if ( pic == NULL ) {
+	//		common.Warning( "Couldn't load image: %s", imgName.c_str() );
+	//		MakeDefault();
+	//		return;
+	//	}
 
-////		if ( pic == NULL ) {
-////			common.Warning( "Couldn't load image: %s", imgName.c_str() );
-////			MakeDefault();
-////			return;
-////		}
+	//	// build a hash for checking duplicate image files
+	//	// NOTE: takes about 10% of image load times (SD)
+	//	// may not be strictly necessary, but some code uses it, so let's leave it in
+	//	imageHash = MD4_BlockChecksum( pic, width * height * 4 );
 
-////		// build a hash for checking duplicate image files
-////		// NOTE: takes about 10% of image load times (SD)
-////		// may not be strictly necessary, but some code uses it, so let's leave it in
-////		imageHash = MD4_BlockChecksum( pic, width * height * 4 );
+	//	GenerateImage( pic, width, height, filter, allowDownSize, repeat, depth );
+	//	timestamp = timestamp;
+	//	precompressedFile = false;
 
-////		GenerateImage( pic, width, height, filter, allowDownSize, repeat, depth );
-////		timestamp = timestamp;
-////		precompressedFile = false;
+	//	R_StaticFree( pic );
 
-////		R_StaticFree( pic );
-
-////		// write out the precompressed version of this file if needed
-////		WritePrecompressedImage();
-////	}
-////}
+	//	// write out the precompressed version of this file if needed
+	//	WritePrecompressedImage();
+	//}
+}
 
 //////=========================================================================================================
 

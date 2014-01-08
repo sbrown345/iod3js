@@ -39,7 +39,7 @@
 ////#include "tr_local.h"
 
 
-var globalImages = new idImageManager();
+var globalImages = new idImageManager ( );
 
 
 ////// do this with a pointer, in case we want to make the actual manager
@@ -82,7 +82,6 @@ var globalImages = new idImageManager();
 ////	{ "textures", "World Geometry", IC_WORLDGEOMETRY, 256, 256 },
 ////	{ "", "Other", IC_OTHER, 256, 256 }
 ////};
-
 
 
 ////static int ClassifyImage( const char *name ) {
@@ -189,7 +188,6 @@ var globalImages = new idImageManager();
 ////}
 
 
-
 /////*
 ////================
 ////R_AlphaRampImage
@@ -213,7 +211,6 @@ var globalImages = new idImageManager();
 ////}
 
 
-
 /*
 ==================
 R_CreateDefaultImage
@@ -222,88 +219,87 @@ the default image will be grey with a white box outline
 to allow you to see the mapping coordinates on a surface
 ==================
 */
-idImage.prototype.MakeDefault = function():void {
-    var DEFAULT_SIZE = 16;
-	var/*int		*/x:number, y:number;
-	var data = $3dArray(Uint8Array, DEFAULT_SIZE, DEFAULT_SIZE, 4);
+var DEFAULT_SIZE = 16;
+idImage.prototype.MakeDefault = function ( ): void {
+    var /*int		*/x: number, y: number;
+    var data = $3dArray( Uint8Array, DEFAULT_SIZE, DEFAULT_SIZE, 4 );
 
-	if ( com_developer.GetBool() ) {
-		// grey center
-		for ( y = 0 ; y < DEFAULT_SIZE ; y++ ) {
-			for ( x = 0 ; x < DEFAULT_SIZE ; x++ ) {
-				data[y][x][0] = 32;
-				data[y][x][1] = 32;
-				data[y][x][2] = 32;
-				data[y][x][3] = 255;
-			}
-		}
+    if ( com_developer.GetBool ( ) ) {
+        // grey center
+        for ( y = 0; y < DEFAULT_SIZE; y++ ) {
+            for ( x = 0; x < DEFAULT_SIZE; x++ ) {
+                data[y][x][0] = 32;
+                data[y][x][1] = 32;
+                data[y][x][2] = 32;
+                data[y][x][3] = 255;
+            }
+        }
 
-		// white border
-		for ( x = 0 ; x < DEFAULT_SIZE ; x++ ) {
-			data[0][x][0] =
-				data[0][x][1] =
-				data[0][x][2] =
-				data[0][x][3] = 255;
+        // white border
+        for ( x = 0; x < DEFAULT_SIZE; x++ ) {
+            data[0][x][0] =
+                data[0][x][1] =
+                data[0][x][2] =
+                data[0][x][3] = 255;
 
-			data[x][0][0] =
-				data[x][0][1] =
-				data[x][0][2] =
-				data[x][0][3] = 255;
+            data[x][0][0] =
+                data[x][0][1] =
+                data[x][0][2] =
+                data[x][0][3] = 255;
 
-			data[DEFAULT_SIZE-1][x][0] =
-				data[DEFAULT_SIZE-1][x][1] =
-				data[DEFAULT_SIZE-1][x][2] =
-				data[DEFAULT_SIZE-1][x][3] = 255;
+            data[DEFAULT_SIZE - 1][x][0] =
+                data[DEFAULT_SIZE - 1][x][1] =
+                data[DEFAULT_SIZE - 1][x][2] =
+                data[DEFAULT_SIZE - 1][x][3] = 255;
 
-			data[x][DEFAULT_SIZE-1][0] =
-				data[x][DEFAULT_SIZE-1][1] =
-				data[x][DEFAULT_SIZE-1][2] =
-				data[x][DEFAULT_SIZE-1][3] = 255;
-		}
-	} else {
-		for ( y = 0 ; y < DEFAULT_SIZE ; y++ ) {
-			for ( x = 0 ; x < DEFAULT_SIZE ; x++ ) {
-				data[y][x][0] = 0;
-				data[y][x][1] = 0;
-				data[y][x][2] = 0;
-				data[y][x][3] = 0;
-			}
-		}
-	}
+            data[x][DEFAULT_SIZE - 1][0] =
+                data[x][DEFAULT_SIZE - 1][1] =
+                data[x][DEFAULT_SIZE - 1][2] =
+                data[x][DEFAULT_SIZE - 1][3] = 255;
+        }
+    } else {
+        for ( y = 0; y < DEFAULT_SIZE; y++ ) {
+            for ( x = 0; x < DEFAULT_SIZE; x++ ) {
+                data[y][x][0] = 0;
+                data[y][x][1] = 0;
+                data[y][x][2] = 0;
+                data[y][x][3] = 0;
+            }
+        }
+    }
 
-	this.GenerateImage( /*(byte *)*/flatten3DArray(Uint8Array, data), 
-		DEFAULT_SIZE, DEFAULT_SIZE, 
-		TF_DEFAULT, true, TR_REPEAT, textureDepth_t.TD_DEFAULT );
+    this.GenerateImage( /*(byte *)*/flatten3DArray( Uint8Array, data ),
+        DEFAULT_SIZE, DEFAULT_SIZE,
+        TF_DEFAULT, true, TR_REPEAT, textureDepth_t.TD_DEFAULT );
 
-	this.defaulted = true;
-}
+    this.defaulted = true;
+};
+idImageManager.prototype.R_DefaultImage = function ( image: idImage ): void {
+    image.MakeDefault ( );
+};
 
-/*static*/idImageManager.prototype.R_DefaultImage = function( image: idImage ): void {
-	image.MakeDefault();
-}
+idImageManager.prototype.R_WhiteImage = function ( image: idImage ): void {
+    var data = new Uint8Array( DEFAULT_SIZE * DEFAULT_SIZE * 4 );
 
-////static void R_WhiteImage( idImage *image ) {
-////	byte	data[DEFAULT_SIZE][DEFAULT_SIZE][4];
+    // solid white texture
+    memset( data, 255, sizeof( data ) );
+    image.GenerateImage( data, DEFAULT_SIZE, DEFAULT_SIZE,
+        TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_DEFAULT );
+};
 
-////	// solid white texture
-////	memset( data, 255, sizeof( data ) );
-////	image.GenerateImage( (byte *)data, DEFAULT_SIZE, DEFAULT_SIZE, 
-////		TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_DEFAULT );
-////}
+idImageManager.prototype.R_BlackImage = function ( image: idImage ): void {
+    var data = new Uint8Array( DEFAULT_SIZE * DEFAULT_SIZE * 4 );
 
-////static void R_BlackImage( idImage *image ) {
-////	byte	data[DEFAULT_SIZE][DEFAULT_SIZE][4];
+    // solid black texture
+    memset( data, 0, sizeof( data ) );
+    image.GenerateImage( data, DEFAULT_SIZE, DEFAULT_SIZE,
+        TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_DEFAULT );
+};
 
-////	// solid black texture
-////	memset( data, 0, sizeof( data ) );
-////	image.GenerateImage( (byte *)data, DEFAULT_SIZE, DEFAULT_SIZE, 
-////		TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_DEFAULT );
-////}
-
-
-////// the size determines how far away from the edge the blocks start fading
-////static const int BORDER_CLAMP_SIZE = 32;
-////static void R_BorderClampImage( idImage *image ) {
+// the size determines how far away from the edge the blocks start fading
+var BORDER_CLAMP_SIZE = 32;
+idImageManager.prototype.R_BorderClampImage = function ( image: idImage ): void {
+    todoThrow ( );
 ////	byte	data[BORDER_CLAMP_SIZE][BORDER_CLAMP_SIZE][4];
 
 ////	// solid white texture with a single pixel black border
@@ -344,35 +340,36 @@ idImage.prototype.MakeDefault = function():void {
 ////	color[0] = color[1] = color[2] = color[3] = 0;
 ////	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color );
 ////#endif
-////}
+};
 
-////static void R_RGBA8Image( idImage *image ) {
-////	byte	data[DEFAULT_SIZE][DEFAULT_SIZE][4];
+//idImageManager.prototype.R_RGBA8Image = function ( image: idImage ): void {
+//////	byte	data[DEFAULT_SIZE][DEFAULT_SIZE][4];
 
-////	memset( data, 0, sizeof( data ) );
-////	data[0][0][0] = 16;
-////	data[0][0][1] = 32;
-////	data[0][0][2] = 48;
-////	data[0][0][3] = 96;
+//////	memset( data, 0, sizeof( data ) );
+//////	data[0][0][0] = 16;
+//////	data[0][0][1] = 32;
+//////	data[0][0][2] = 48;
+//////	data[0][0][3] = 96;
 
-////	image.GenerateImage( (byte *)data, DEFAULT_SIZE, DEFAULT_SIZE, 
-////		TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_HIGH_QUALITY );
-////}
+//////	image.GenerateImage( (byte *)data, DEFAULT_SIZE, DEFAULT_SIZE, 
+//////		TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_HIGH_QUALITY );
+//};
 
-////static void R_RGB8Image( idImage *image ) {
-////	byte	data[DEFAULT_SIZE][DEFAULT_SIZE][4];
+//idImageManager.prototype.R_RGB8Image = function ( image: idImage ): void {
+//////	byte	data[DEFAULT_SIZE][DEFAULT_SIZE][4];
 
-////	memset( data, 0, sizeof( data ) );
-////	data[0][0][0] = 16;
-////	data[0][0][1] = 32;
-////	data[0][0][2] = 48;
-////	data[0][0][3] = 255;
+//////	memset( data, 0, sizeof( data ) );
+//////	data[0][0][0] = 16;
+//////	data[0][0][1] = 32;
+//////	data[0][0][2] = 48;
+//////	data[0][0][3] = 255;
 
-////	image.GenerateImage( (byte *)data, DEFAULT_SIZE, DEFAULT_SIZE, 
-////		TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_HIGH_QUALITY );
-////}
+//////	image.GenerateImage( (byte *)data, DEFAULT_SIZE, DEFAULT_SIZE, 
+//////		TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_HIGH_QUALITY );
+//};
 
-////static void R_AlphaNotchImage( idImage *image ) {
+idImageManager.prototype.R_AlphaNotchImage = function ( image: idImage ): void {
+    todo ( );
 ////	byte	data[2][4];
 
 ////	// this is used for alpha test clip planes
@@ -384,9 +381,10 @@ idImage.prototype.MakeDefault = function():void {
 
 ////	image.GenerateImage( (byte *)data, 2, 1, 
 ////		TF_NEAREST, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
-////}
+};
 
-////static void R_FlatNormalImage( idImage *image ) {
+idImageManager.prototype.R_FlatNormalImage = function ( image: idImage ): void {
+    todo ( );
 ////	byte	data[DEFAULT_SIZE][DEFAULT_SIZE][4];
 ////	int		i;
 
@@ -401,9 +399,10 @@ idImage.prototype.MakeDefault = function():void {
 ////	}
 ////	image.GenerateImage( (byte *)data, 2, 2, 
 ////		TF_DEFAULT, true, TR_REPEAT, textureDepth_t.TD_HIGH_QUALITY );
-////}
+};
 
-////static void R_AmbientNormalImage( idImage *image ) {
+idImageManager.prototype.R_AmbientNormalImage = function ( image: idImage ): void {
+    todo ( );
 ////	byte	data[DEFAULT_SIZE][DEFAULT_SIZE][4];
 ////	int		i;
 
@@ -422,8 +421,7 @@ idImage.prototype.MakeDefault = function():void {
 ////	}
 ////	// this must be a cube map for fragment programs to simply substitute for the normalization cube map
 ////	image.GenerateCubeImage( pics, 2, TF_DEFAULT, true, textureDepth_t.TD_HIGH_QUALITY );
-////}
-
+};
 
 ////static void CreateSquareLight( void ) {
 ////	byte		*buffer;
@@ -652,8 +650,6 @@ idImage.prototype.MakeDefault = function():void {
 ////}
 
 
-
-
 /////*
 ////================
 ////R_CreateNoFalloffImage
@@ -661,7 +657,7 @@ idImage.prototype.MakeDefault = function():void {
 ////This is a solid white texture that is zero clamped.
 ////================
 ////*/
-////static void R_CreateNoFalloffImage( idImage *image ) {
+idImageManager.prototype.R_CreateNoFalloffImage = function ( image: idImage ): void {
 ////	int		x,y;
 ////	byte	data[16][FALLOFF_TEXTURE_SIZE][4];
 
@@ -676,20 +672,18 @@ idImage.prototype.MakeDefault = function():void {
 ////	}
 ////	image.GenerateImage( (byte *)data, FALLOFF_TEXTURE_SIZE, 16,
 ////		TF_DEFAULT, false, TR_CLAMP_TO_ZERO, textureDepth_t.TD_HIGH_QUALITY );
-////}
+}; /*
+================
+R_FogImage
 
+We calculate distance correctly in two planes, but the
+third will still be projection based
+================
+*/
+var FOG_SIZE = 128;
 
-/////*
-////================
-////R_FogImage
-
-////We calculate distance correctly in two planes, but the
-////third will still be projection based
-////================
-////*/
-////const int	FOG_SIZE = 128;
-
-////void R_FogImage( idImage *image ) {
+idImageManager.prototype.R_FogImage = function ( image: idImage ): void {
+    todo ( );
 ////	int		x,y;
 ////	byte	data[FOG_SIZE][FOG_SIZE][4];
 ////	int		b;
@@ -729,18 +723,15 @@ idImage.prototype.MakeDefault = function():void {
 
 ////	image.GenerateImage( (byte *)data, FOG_SIZE, FOG_SIZE, 
 ////		TF_LINEAR, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
-////}
+}; /*
+================
+FogFraction
 
-
-/////*
-////================
-////FogFraction
-
-////Height values below zero are inside the fog volume
-////================
-////*/
-////static const float	RAMP_RANGE =	8;
-////static const float	DEEP_RANGE =	-30;
+Height values below zero are inside the fog volume
+================
+*/
+var RAMP_RANGE = 8.0;
+var DEEP_RANGE = -30.0;
 ////static float	FogFraction( float viewHeight, float targetHeight ) {
 ////	float	total = idMath::Fabs( targetHeight - viewHeight );
 
@@ -802,15 +793,16 @@ idImage.prototype.MakeDefault = function():void {
 ////	return frac;
 ////}
 
-/////*
-////================
-////R_FogEnterImage
+///*
+//================
+//R_FogEnterImage
 
-////Modulate the fog alpha density based on the distance of the
-////start and end points to the terminator plane
-////================
-////*/
-////void R_FogEnterImage( idImage *image ) {
+//Modulate the fog alpha density based on the distance of the
+//start and end points to the terminator plane
+//================
+//*/
+idImageManager.prototype.R_FogEnterImage = function ( image: idImage ): void {
+    todo ( );
 ////	int		x,y;
 ////	byte	data[FOG_ENTER_SIZE][FOG_ENTER_SIZE][4];
 ////	int		b;
@@ -837,19 +829,17 @@ idImage.prototype.MakeDefault = function():void {
 ////	// if mipmapped, acutely viewed surfaces fade wrong
 ////	image.GenerateImage( (byte *)data, FOG_ENTER_SIZE, FOG_ENTER_SIZE, 
 ////		TF_LINEAR, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
-////}
+}; /*
+================
+R_QuadraticImage
 
+================
+*/
+var QUADRATIC_WIDTH = 32;
+var QUADRATIC_HEIGHT = 4;
 
-/////*
-////================
-////R_QuadraticImage
-
-////================
-////*/
-////static const int	QUADRATIC_WIDTH = 32;
-////static const int	QUADRATIC_HEIGHT = 4;
-
-////void R_QuadraticImage( idImage *image ) {
+idImageManager.prototype.R_QuadraticImage = function ( image: idImage ): void {
+    todo ( );
 ////	int		x,y;
 ////	byte	data[QUADRATIC_HEIGHT][QUADRATIC_WIDTH][4];
 ////	int		b;
@@ -863,7 +853,7 @@ idImage.prototype.MakeDefault = function():void {
 ////			d = idMath::Fabs( d );
 ////			d -= 0.5;
 ////			d /= QUADRATIC_WIDTH/2;
-		
+
 ////			d = 1.0 - d;
 ////			d = d * d;
 
@@ -882,16 +872,15 @@ idImage.prototype.MakeDefault = function():void {
 
 ////	image.GenerateImage( (byte *)data, QUADRATIC_WIDTH, QUADRATIC_HEIGHT, 
 ////		TF_DEFAULT, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
-////}
+};
 
-//////=====================================================================
+//=====================================================================
 
 
 ////typedef struct {
 ////	char *name;
 ////	int	minimize, maximize;
 ////} filterName_t;
-
 
 
 /////*
@@ -1023,47 +1012,48 @@ idImage.prototype.MakeDefault = function():void {
 ////	ActuallyLoadImage( checkPrecompressed, false );
 ////}
 
-/////*
-////===============
-////R_ReloadImages_f
+/*
+===============
+R_ReloadImages_f
 
-////Regenerate all images that came directly from files that have changed, so
-////any saved changes will show up in place.
+Regenerate all images that came directly from files that have changed, so
+any saved changes will show up in place.
 
-////New r_texturesize/r_texturedepth variables will take effect on reload
+New r_texturesize/r_texturedepth variables will take effect on reload
 
-////reloadImages <all>
-////===============
-////*/
-////void R_ReloadImages_f( const idCmdArgs &args ) {
-////	int		i;
-////	idImage	*image;
-////	bool	all;
-////	bool	checkPrecompressed;
+reloadImages <all>
+===============
+*/
+idImageManager.prototype.R_ReloadImages_f = function ( args: idCmdArgs ): void {
+    todoThrow ( );
+    //int		i;
+    //idImage	*image;
+    //bool	all;
+    //bool	checkPrecompressed;
 
-////	// this probably isn't necessary...
-////	globalImages.ChangeTextureFilter();
+    //// this probably isn't necessary...
+    //globalImages.ChangeTextureFilter();
 
-////	all = false;
-////	checkPrecompressed = false;		// if we are doing this as a vid_restart, look for precompressed like normal
+    //all = false;
+    //checkPrecompressed = false;		// if we are doing this as a vid_restart, look for precompressed like normal
 
-////	if ( args.Argc() == 2 ) {
-////		if ( !idStr::Icmp( args.Argv(1), "all" ) ) {
-////			all = true;
-////		} else if ( !idStr::Icmp( args.Argv(1), "reload" ) ) {
-////			all = true;
-////			checkPrecompressed = true;
-////		} else {
-////			common.Printf( "USAGE: reloadImages <all>\n" );
-////			return;
-////		}
-////	}
+    //if ( args.Argc() == 2 ) {
+    //	if ( !idStr::Icmp( args.Argv(1), "all" ) ) {
+    //		all = true;
+    //	} else if ( !idStr::Icmp( args.Argv(1), "reload" ) ) {
+    //		all = true;
+    //		checkPrecompressed = true;
+    //	} else {
+    //		common.Printf( "USAGE: reloadImages <all>\n" );
+    //		return;
+    //	}
+    //}
 
-////	for ( i = 0 ; i < globalImages.images.Num() ; i++ ) {
-////		image = globalImages.images[ i ];
-////		image.Reload( checkPrecompressed, all );
-////	}
-////}
+    //for ( i = 0 ; i < globalImages.images.Num() ; i++ ) {
+    //	image = globalImages.images[ i ];
+    //	image.Reload( checkPrecompressed, all );
+    //}
+};
 
 ////typedef struct {
 ////	idImage	*image;
@@ -1091,186 +1081,187 @@ idImage.prototype.MakeDefault = function():void {
 ////	return idStr::Icmp( ea.image.imgName, eb.image.imgName );
 ////}
 
-/////*
-////===============
-////R_ListImages_f
-////===============
-////*/
-////void R_ListImages_f( const idCmdArgs &args ) {
-////	int		i, j, partialSize;
-////	idImage	*image;
-////	int		totalSize;
-////	int		count = 0;
-////	int		matchTag = 0;
-////	bool	uncompressedOnly = false;
-////	bool	unloaded = false;
-////	bool	partial = false;
-////	bool	cached = false;
-////	bool	uncached = false;
-////	bool	failed = false;
-////	bool	touched = false;
-////	bool	sorted = false;
-////	bool	duplicated = false;
-////	bool	byClassification = false;
-////	bool	overSized = false;
+/*
+===============
+R_ListImages_f
+===============
+*/
+idImageManager.prototype.R_ListImages_f = function ( args: idCmdArgs ): void {
+    todoThrow ( );
+//	int		i, j, partialSize;
+//	idImage	*image;
+//	int		totalSize;
+//	int		count = 0;
+//	int		matchTag = 0;
+//	bool	uncompressedOnly = false;
+//	bool	unloaded = false;
+//	bool	partial = false;
+//	bool	cached = false;
+//	bool	uncached = false;
+//	bool	failed = false;
+//	bool	touched = false;
+//	bool	sorted = false;
+//	bool	duplicated = false;
+//	bool	byClassification = false;
+//	bool	overSized = false;
 
-////	if ( args.Argc() == 1 ) {
+//	if ( args.Argc() == 1 ) {
 
-////	} else if ( args.Argc() == 2 ) {
-////		if ( idStr::Icmp( args.Argv( 1 ), "uncompressed" ) == 0 ) {
-////			uncompressedOnly = true;
-////		} else if ( idStr::Icmp( args.Argv( 1 ), "sorted" ) == 0 ) {
-////			sorted = true;
-////		} else if ( idStr::Icmp( args.Argv( 1 ), "partial" ) == 0 ) {
-////			partial = true;
-////		} else if ( idStr::Icmp( args.Argv( 1 ), "unloaded" ) == 0 ) {
-////			unloaded = true;
-////		} else if ( idStr::Icmp( args.Argv( 1 ), "cached" ) == 0 ) {
-////			cached = true;
-////		} else if ( idStr::Icmp( args.Argv( 1 ), "uncached" ) == 0 ) {
-////			uncached = true;
-////		} else if ( idStr::Icmp( args.Argv( 1 ), "tagged" ) == 0 ) {
-////			matchTag = 1;
-////		} else if ( idStr::Icmp( args.Argv( 1 ), "duplicated" ) == 0 ) {
-////			duplicated = true;
-////		} else if ( idStr::Icmp( args.Argv( 1 ), "touched" ) == 0 ) {
-////			touched = true;
-////		} else if ( idStr::Icmp( args.Argv( 1 ), "classify" ) == 0 ) {
-////			byClassification = true;
-////			sorted = true;
-////		} else if ( idStr::Icmp( args.Argv( 1 ), "oversized" ) == 0 ) {
-////			byClassification = true;
-////			sorted = true;
-////			overSized = true;
-////		} else {
-////			failed = true;
-////		}
-////	} else {
-////		failed = true;
-////	}
+//	} else if ( args.Argc() == 2 ) {
+//		if ( idStr::Icmp( args.Argv( 1 ), "uncompressed" ) == 0 ) {
+//			uncompressedOnly = true;
+//		} else if ( idStr::Icmp( args.Argv( 1 ), "sorted" ) == 0 ) {
+//			sorted = true;
+//		} else if ( idStr::Icmp( args.Argv( 1 ), "partial" ) == 0 ) {
+//			partial = true;
+//		} else if ( idStr::Icmp( args.Argv( 1 ), "unloaded" ) == 0 ) {
+//			unloaded = true;
+//		} else if ( idStr::Icmp( args.Argv( 1 ), "cached" ) == 0 ) {
+//			cached = true;
+//		} else if ( idStr::Icmp( args.Argv( 1 ), "uncached" ) == 0 ) {
+//			uncached = true;
+//		} else if ( idStr::Icmp( args.Argv( 1 ), "tagged" ) == 0 ) {
+//			matchTag = 1;
+//		} else if ( idStr::Icmp( args.Argv( 1 ), "duplicated" ) == 0 ) {
+//			duplicated = true;
+//		} else if ( idStr::Icmp( args.Argv( 1 ), "touched" ) == 0 ) {
+//			touched = true;
+//		} else if ( idStr::Icmp( args.Argv( 1 ), "classify" ) == 0 ) {
+//			byClassification = true;
+//			sorted = true;
+//		} else if ( idStr::Icmp( args.Argv( 1 ), "oversized" ) == 0 ) {
+//			byClassification = true;
+//			sorted = true;
+//			overSized = true;
+//		} else {
+//			failed = true;
+//		}
+//	} else {
+//		failed = true;
+//	}
 
-////	if ( failed ) {
-////		common.Printf( "usage: listImages [ sorted | partial | unloaded | cached | uncached | tagged | duplicated | touched | classify | showOverSized ]\n" );
-////		return;
-////	}
+//	if ( failed ) {
+//		common.Printf( "usage: listImages [ sorted | partial | unloaded | cached | uncached | tagged | duplicated | touched | classify | showOverSized ]\n" );
+//		return;
+//	}
 
-////	const char *header = "       -w-- -h-- filt -fmt-- wrap  size --name-------\n";
-////	common.Printf( "\n%s", header );
+//	const char *header = "       -w-- -h-- filt -fmt-- wrap  size --name-------\n";
+//	common.Printf( "\n%s", header );
 
-////	totalSize = 0;
+//	totalSize = 0;
 
-////	sortedImage_t	*sortedArray = (sortedImage_t *)alloca( sizeof( sortedImage_t ) * globalImages.images.Num() );
+//	sortedImage_t	*sortedArray = (sortedImage_t *)alloca( sizeof( sortedImage_t ) * globalImages.images.Num() );
 
-////	for ( i = 0 ; i < globalImages.images.Num() ; i++ ) {
-////		image = globalImages.images[ i ];
-////#if !defined(GL_ES_VERSION_2_0)
-////		if ( uncompressedOnly ) {
-////			if ( ( image.internalFormat >= GL_COMPRESSED_RGB_S3TC_DXT1_EXT && image.internalFormat <= GL_COMPRESSED_RGBA_S3TC_DXT5_EXT )
-////				|| image.internalFormat == GL_COLOR_INDEX8_EXT ) {
-////				continue;
-////			}
-////		}
-////#endif
+//	for ( i = 0 ; i < globalImages.images.Num() ; i++ ) {
+//		image = globalImages.images[ i ];
+//#if !defined(GL_ES_VERSION_2_0)
+//		if ( uncompressedOnly ) {
+//			if ( ( image.internalFormat >= GL_COMPRESSED_RGB_S3TC_DXT1_EXT && image.internalFormat <= GL_COMPRESSED_RGBA_S3TC_DXT5_EXT )
+//				|| image.internalFormat == GL_COLOR_INDEX8_EXT ) {
+//				continue;
+//			}
+//		}
+//#endif
 
-////		if ( matchTag && image.classification != matchTag ) {
-////			continue;
-////		}
-////		if ( unloaded && image.texnum != idImage::TEXTURE_NOT_LOADED ) {
-////			continue;
-////		}
-////		if ( partial && !image.isPartialImage ) {
-////			continue;
-////		}
-////		if ( cached && ( !image.partialImage || image.texnum == idImage::TEXTURE_NOT_LOADED ) ) {
-////			continue;
-////		}
-////		if ( uncached && ( !image.partialImage || image.texnum != idImage::TEXTURE_NOT_LOADED ) ) {
-////			continue;
-////		}
+//		if ( matchTag && image.classification != matchTag ) {
+//			continue;
+//		}
+//		if ( unloaded && image.texnum != idImage::TEXTURE_NOT_LOADED ) {
+//			continue;
+//		}
+//		if ( partial && !image.isPartialImage ) {
+//			continue;
+//		}
+//		if ( cached && ( !image.partialImage || image.texnum == idImage::TEXTURE_NOT_LOADED ) ) {
+//			continue;
+//		}
+//		if ( uncached && ( !image.partialImage || image.texnum != idImage::TEXTURE_NOT_LOADED ) ) {
+//			continue;
+//		}
 
-////		// only print duplicates (from mismatched wrap / clamp, etc)
-////		if ( duplicated ) {
-////			int j;
-////			for ( j = i+1 ; j < globalImages.images.Num() ; j++ ) {
-////				if ( idStr::Icmp( image.imgName, globalImages.images[ j ].imgName ) == 0 ) {
-////					break;
-////				}
-////			}
-////			if ( j == globalImages.images.Num() ) {
-////				continue;
-////			}
-////		}
+//		// only print duplicates (from mismatched wrap / clamp, etc)
+//		if ( duplicated ) {
+//			int j;
+//			for ( j = i+1 ; j < globalImages.images.Num() ; j++ ) {
+//				if ( idStr::Icmp( image.imgName, globalImages.images[ j ].imgName ) == 0 ) {
+//					break;
+//				}
+//			}
+//			if ( j == globalImages.images.Num() ) {
+//				continue;
+//			}
+//		}
 
-////		// "listimages touched" will list only images bound since the last "listimages touched" call
-////		if ( touched ) {
-////			if ( image.bindCount == 0 ) {
-////				continue;
-////			}
-////			image.bindCount = 0;
-////		}
+//		// "listimages touched" will list only images bound since the last "listimages touched" call
+//		if ( touched ) {
+//			if ( image.bindCount == 0 ) {
+//				continue;
+//			}
+//			image.bindCount = 0;
+//		}
 
-////		if ( sorted ) {
-////			sortedArray[count].image = image;
-////			sortedArray[count].size = image.StorageSize();
-////		} else {
-////			common.Printf( "%4i:",	i );
-////			image.Print();
-////		}
-////		totalSize += image.StorageSize();
-////		count++;
-////	}
+//		if ( sorted ) {
+//			sortedArray[count].image = image;
+//			sortedArray[count].size = image.StorageSize();
+//		} else {
+//			common.Printf( "%4i:",	i );
+//			image.Print();
+//		}
+//		totalSize += image.StorageSize();
+//		count++;
+//	}
 
-////	if ( sorted ) {
-////		qsort( sortedArray, count, sizeof( sortedImage_t ), R_QsortImageSizes );
-////		partialSize = 0;
-////		for ( i = 0 ; i < count ; i++ ) {
-////			common.Printf( "%4i:",	i );
-////			sortedArray[i].image.Print();
-////			partialSize += sortedArray[i].image.StorageSize();
-////			if ( ( (i+1) % 10 ) == 0 ) {
-////				common.Printf( "-------- %5.1f of %5.1f megs --------\n", 
-////					partialSize / (1024*1024.0), totalSize / (1024*1024.0) );
-////			}
-////		}
-////	}
+//	if ( sorted ) {
+//		qsort( sortedArray, count, sizeof( sortedImage_t ), R_QsortImageSizes );
+//		partialSize = 0;
+//		for ( i = 0 ; i < count ; i++ ) {
+//			common.Printf( "%4i:",	i );
+//			sortedArray[i].image.Print();
+//			partialSize += sortedArray[i].image.StorageSize();
+//			if ( ( (i+1) % 10 ) == 0 ) {
+//				common.Printf( "-------- %5.1f of %5.1f megs --------\n", 
+//					partialSize / (1024*1024.0), totalSize / (1024*1024.0) );
+//			}
+//		}
+//	}
 
-////	common.Printf( "%s", header );
-////	common.Printf( " %i images (%i total)\n", count, globalImages.images.Num() );
-////	common.Printf( " %5.1f total megabytes of images\n\n\n", totalSize / (1024*1024.0) );
+//	common.Printf( "%s", header );
+//	common.Printf( " %i images (%i total)\n", count, globalImages.images.Num() );
+//	common.Printf( " %5.1f total megabytes of images\n\n\n", totalSize / (1024*1024.0) );
 
-////	if ( byClassification ) {
+//	if ( byClassification ) {
 
-////		idList< int > classifications[IC_COUNT];
+//		idList< int > classifications[IC_COUNT];
 
-////		for ( i = 0 ; i < count ; i++ ) {
-////			int cl = ClassifyImage( sortedArray[i].image.imgName );
-////			classifications[ cl ].Append( i );
-////		}
+//		for ( i = 0 ; i < count ; i++ ) {
+//			int cl = ClassifyImage( sortedArray[i].image.imgName );
+//			classifications[ cl ].Append( i );
+//		}
 
-////		for ( i = 0; i < IC_COUNT; i++ ) {
-////			partialSize = 0;
-////			idList< int > overSizedList;
-////			for ( j = 0; j < classifications[ i ].Num(); j++ ) {
-////				partialSize += sortedArray[ classifications[ i ][ j ] ].image.StorageSize();
-////				if ( overSized ) {
-////					if ( sortedArray[ classifications[ i ][ j ] ].image.uploadWidth > IC_Info[i].maxWidth && sortedArray[ classifications[ i ][ j ] ].image.uploadHeight > IC_Info[i].maxHeight ) {
-////						overSizedList.Append( classifications[ i ][ j ] );
-////					}
-////				}
-////			}
-////			common.Printf ( " Classification %s contains %i images using %5.1f megabytes\n", IC_Info[i].desc, classifications[i].Num(), partialSize / ( 1024*1024.0 ) );
-////			if ( overSized && overSizedList.Num() ) {
-////				common.Printf( "  The following images may be oversized\n" );
-////				for ( j = 0; j < overSizedList.Num(); j++ ) {
-////					common.Printf( "    " );
-////					sortedArray[ overSizedList[ j ] ].image.Print();
-////					common.Printf( "\n" );
-////				}
-////			}
-////		}
-////	}
+//		for ( i = 0; i < IC_COUNT; i++ ) {
+//			partialSize = 0;
+//			idList< int > overSizedList;
+//			for ( j = 0; j < classifications[ i ].Num(); j++ ) {
+//				partialSize += sortedArray[ classifications[ i ][ j ] ].image.StorageSize();
+//				if ( overSized ) {
+//					if ( sortedArray[ classifications[ i ][ j ] ].image.uploadWidth > IC_Info[i].maxWidth && sortedArray[ classifications[ i ][ j ] ].image.uploadHeight > IC_Info[i].maxHeight ) {
+//						overSizedList.Append( classifications[ i ][ j ] );
+//					}
+//				}
+//			}
+//			common.Printf ( " Classification %s contains %i images using %5.1f megabytes\n", IC_Info[i].desc, classifications[i].Num(), partialSize / ( 1024*1024.0 ) );
+//			if ( overSized && overSizedList.Num() ) {
+//				common.Printf( "  The following images may be oversized\n" );
+//				for ( j = 0; j < overSizedList.Num(); j++ ) {
+//					common.Printf( "    " );
+//					sortedArray[ overSizedList[ j ] ].image.Print();
+//					common.Printf( "\n" );
+//				}
+//			}
+//		}
+//	}
 
-////}
+};
 
 /////*
 ////==================
@@ -1386,24 +1377,24 @@ copies the name, and adds it to the hash chain.
 ==============
 */
 idImageManager.prototype.AllocImage = function ( name: string ): idImage {
-	var /*idImage **/image: idImage;
-	var /*int		*/hash: number;
+    var /*idImage **/image: idImage;
+    var /*int		*/hash: number;
 
-	if ( strlen( name ) >= MAX_IMAGE_NAME ) {
-		common.Error( "idImageManager::AllocImage: \"%s\" is too long\n", name );
-	}
+    if ( strlen( name ) >= MAX_IMAGE_NAME ) {
+        common.Error( "idImageManager::AllocImage: \"%s\" is too long\n", name );
+    }
 
-	hash = new idStr( name ).FileNameHash ( );
+    hash = new idStr( name ).FileNameHash ( );
 
-	image = new idImage;
-	this.images.Append( image );
+    image = new idImage;
+    this.images.Append( image );
 
-	image.hashNext = this.imageHashTable[hash];
-	this.imageHashTable[hash] = image;
+    image.hashNext = this.imageHashTable[hash];
+    this.imageHashTable[hash] = image;
 
-	image.imgName = new idStr( name );
+    image.imgName = new idStr( name );
 
-	return image;
+    return image;
 };
 
 /*
@@ -1416,40 +1407,39 @@ system to be completely regenerated if needed.
 ==================
 */
 idImageManager.prototype.ImageFromFunction = function ( _name: string, generatorFunction: ( image: idImage ) => void ): idImage {
-	var name: idStr;
-	var image: idImage;
-	var /*int	*/hash: number;
+    var name: idStr;
+    var image: idImage;
+    var /*int	*/hash: number;
 
-	// strip any .tga file extensions from anywhere in the _name
-	name = new idStr( _name );
-	name.Replace( ".tga", "" );
+    // strip any .tga file extensions from anywhere in the _name
+    name = new idStr( _name );
+    name.Replace( ".tga", "" );
 
-	name.BackSlashesToSlashes ( );
+    name.BackSlashesToSlashes ( );
 
-	// see if the image already exists
-	hash = name.FileNameHash ( );
-	for ( image = this.imageHashTable[hash]; image; image = image.hashNext ) {
-		if ( name.Icmp( image.imgName ) == 0 ) {
-			if ( image.generatorFunction != generatorFunction ) {
-				common.DPrintf( "WARNING: reused image %s with mixed generators\n", name.c_str ( ) );
-			}
-			return image;
-		}
-	}
+    // see if the image already exists
+    hash = name.FileNameHash ( );
+    for ( image = this.imageHashTable[hash]; image; image = image.hashNext ) {
+        if ( name.Icmp( image.imgName ) == 0 ) {
+            if ( image.generatorFunction != generatorFunction ) {
+                common.DPrintf( "WARNING: reused image %s with mixed generators\n", name.c_str ( ) );
+            }
+            return image;
+        }
+    }
 
-	// create the image and issue the callback
-	image = this.AllocImage( name );
+    // create the image and issue the callback
+    image = this.AllocImage( name );
 
-	image.generatorFunction = generatorFunction;
-	
-	if ( idImageManager.image_preload.GetBool() ) {
-		todoThrow ( );
-		//// check for precompressed, load is from the front end
-		//image.referencedOutsideLevelLoad = true;
-		//image.ActuallyLoadImage( true, false );
-	}
+    image.generatorFunction = generatorFunction;
 
-	return image;
+    if ( idImageManager.image_preload.GetBool ( ) ) {
+        // check for precompressed, load is from the front end
+        image.referencedOutsideLevelLoad = true;
+        image.ActuallyLoadImage( true, false );
+    }
+
+    return image;
 };
 
 /////*
@@ -1555,7 +1545,7 @@ idImageManager.prototype.ImageFromFunction = function ( _name: string, generator
 ////	image.type = TT_2D;
 ////	image.cubeFiles = cubeMap;
 ////	image.filter = filter;
-	
+
 ////	image.levelLoadReferenced = true;
 
 ////	// also create a shrunken version if we are going to dynamically cache the full size image
@@ -1665,88 +1655,89 @@ idImageManager.prototype.ImageFromFunction = function ( _name: string, generator
 ////	R_ReloadImages_f( args );
 ////}
 
-/////*
-////===============
-////R_CombineCubeImages_f
+/*
+===============
+R_CombineCubeImages_f
 
-////Used to combine animations of six separate tga files into
-////a serials of 6x taller tga files, for preparation to roq compress
-////===============
-////*/
-////void R_CombineCubeImages_f( const idCmdArgs &args ) {
-////	if ( args.Argc() != 2 ) {
-////		common.Printf( "usage: combineCubeImages <baseName>\n" );
-////		common.Printf( " combines basename[1-6][0001-9999].tga to basenameCM[0001-9999].tga\n" );
-////		common.Printf( " 1: forward 2:right 3:back 4:left 5:up 6:down\n" );
-////		return;
-////	}
+Used to combine animations of six separate tga files into
+a serials of 6x taller tga files, for preparation to roq compress
+===============
+*/
+idImageManager.prototype.R_CombineCubeImages_f = function ( args: idCmdArgs ): void {
+    todoThrow ( );
+    //if ( args.Argc() != 2 ) {
+    //	common.Printf( "usage: combineCubeImages <baseName>\n" );
+    //	common.Printf( " combines basename[1-6][0001-9999].tga to basenameCM[0001-9999].tga\n" );
+    //	common.Printf( " 1: forward 2:right 3:back 4:left 5:up 6:down\n" );
+    //	return;
+    //}
 
-////	idStr	baseName = args.Argv( 1 );
-////	common.SetRefreshOnPrint( true );
+    //idStr	baseName = args.Argv( 1 );
+    //common.SetRefreshOnPrint( true );
 
-////	for ( int frameNum = 1 ; frameNum < 10000 ; frameNum++ ) {
-////		char	filename[MAX_IMAGE_NAME];
-////		byte	*pics[6];
-////		int		width, height;
-////		int		side;
-////		int		orderRemap[6] = { 1,3,4,2,5,6 };
-////		for ( side = 0 ; side < 6 ; side++ ) {
-////			sprintf( filename, "%s%i%04i.tga", baseName.c_str(), orderRemap[side], frameNum );
+    //for ( int frameNum = 1 ; frameNum < 10000 ; frameNum++ ) {
+    //	char	filename[MAX_IMAGE_NAME];
+    //	byte	*pics[6];
+    //	int		width, height;
+    //	int		side;
+    //	int		orderRemap[6] = { 1,3,4,2,5,6 };
+    //	for ( side = 0 ; side < 6 ; side++ ) {
+    //		sprintf( filename, "%s%i%04i.tga", baseName.c_str(), orderRemap[side], frameNum );
 
-////			common.Printf( "reading %s\n", filename );
-////			R_LoadImage( filename, &pics[side], &width, &height, NULL, true );
+    //		common.Printf( "reading %s\n", filename );
+    //		R_LoadImage( filename, &pics[side], &width, &height, NULL, true );
 
-////			if ( !pics[side] ) {
-////				common.Printf( "not found.\n" );
-////				break;
-////			}
+    //		if ( !pics[side] ) {
+    //			common.Printf( "not found.\n" );
+    //			break;
+    //		}
 
-////			// convert from "camera" images to native cube map images
-////			switch( side ) {
-////			case 0:	// forward
-////				R_RotatePic( pics[side], width);
-////				break;
-////			case 1:	// back
-////				R_RotatePic( pics[side], width);
-////				R_HorizontalFlip( pics[side], width, height );
-////				R_VerticalFlip( pics[side], width, height );
-////				break;
-////			case 2:	// left
-////				R_VerticalFlip( pics[side], width, height );
-////				break;
-////			case 3:	// right
-////				R_HorizontalFlip( pics[side], width, height );
-////				break;
-////			case 4:	// up
-////				R_RotatePic( pics[side], width);
-////				break;
-////			case 5: // down
-////				R_RotatePic( pics[side], width);
-////				break;
-////			}
-////		}
+    //		// convert from "camera" images to native cube map images
+    //		switch( side ) {
+    //		case 0:	// forward
+    //			R_RotatePic( pics[side], width);
+    //			break;
+    //		case 1:	// back
+    //			R_RotatePic( pics[side], width);
+    //			R_HorizontalFlip( pics[side], width, height );
+    //			R_VerticalFlip( pics[side], width, height );
+    //			break;
+    //		case 2:	// left
+    //			R_VerticalFlip( pics[side], width, height );
+    //			break;
+    //		case 3:	// right
+    //			R_HorizontalFlip( pics[side], width, height );
+    //			break;
+    //		case 4:	// up
+    //			R_RotatePic( pics[side], width);
+    //			break;
+    //		case 5: // down
+    //			R_RotatePic( pics[side], width);
+    //			break;
+    //		}
+    //	}
 
-////		if ( side != 6 ) {
-////			for ( int i = 0 ; i < side ; side++ ) {
-////				Mem_Free( pics[side] );
-////			}
-////			break;
-////		}
+    //	if ( side != 6 ) {
+    //		for ( int i = 0 ; i < side ; side++ ) {
+    //			Mem_Free( pics[side] );
+    //		}
+    //		break;
+    //	}
 
-////		byte	*combined = (byte *)Mem_Alloc( width*height*6*4 );
-////		for (  side = 0 ; side < 6 ; side++ ) {
-////			memcpy( combined+width*height*4*side, pics[side], width*height*4 );
-////			Mem_Free( pics[side] );
-////		}
-////		sprintf( filename, "%sCM%04i.tga", baseName.c_str(), frameNum );
+    //	byte	*combined = (byte *)Mem_Alloc( width*height*6*4 );
+    //	for (  side = 0 ; side < 6 ; side++ ) {
+    //		memcpy( combined+width*height*4*side, pics[side], width*height*4 );
+    //		Mem_Free( pics[side] );
+    //	}
+    //	sprintf( filename, "%sCM%04i.tga", baseName.c_str(), frameNum );
 
-////		common.Printf( "writing %s\n", filename );
-////		R_WriteTGA( filename, combined, width, height*6 );
+    //	common.Printf( "writing %s\n", filename );
+    //	R_WriteTGA( filename, combined, width, height*6 );
 
-////		Mem_Free( combined );
-////	}
-////	common.SetRefreshOnPrint( false );
-////}
+    //	Mem_Free( combined );
+    //}
+    //common.SetRefreshOnPrint( false );
+};
 
 
 /////*
@@ -1920,54 +1911,53 @@ idImageManager.prototype.ImageFromFunction = function ( _name: string, generator
 Init
 ===============
 */
-idImageManager.prototype.Init = function ():void {
+idImageManager.prototype.Init = function ( ): void {
 
-	this.imageHashTable = [];//memset(imageHashTable, 0, sizeof(imageHashTable));
+    this.imageHashTable = []; //memset(imageHashTable, 0, sizeof(imageHashTable));
 
-	this.images.Resize( 1024, 1024 );
+    this.images.Resize( 1024, 1024 );
 
-	// clear the cached LRU
-	this.cacheLRU.cacheUsageNext = this.cacheLRU;
-	this.cacheLRU.cacheUsagePrev = this.cacheLRU;
+    // clear the cached LRU
+    this.cacheLRU.cacheUsageNext = this.cacheLRU;
+    this.cacheLRU.cacheUsagePrev = this.cacheLRU;
 
-	// set default texture filter modes
-    todo("ChangeTextureFilter();");
+    // set default texture filter modes
+    todo( "ChangeTextureFilter();" );
 
-	// create built in images
-	this.defaultImage = this.ImageFromFunction( "_default", this.R_DefaultImage );
-	//whiteImage = ImageFromFunction( "_white", R_WhiteImage );
-	//blackImage = ImageFromFunction( "_black", R_BlackImage );
-	//borderClampImage = ImageFromFunction( "_borderClamp", R_BorderClampImage );
-	//flatNormalMap = ImageFromFunction( "_flat", R_FlatNormalImage );
-	//ambientNormalMap = ImageFromFunction( "_ambient", R_AmbientNormalImage );
-	//specularTableImage = ImageFromFunction( "_specularTable", R_SpecularTableImage );
-	//specular2DTableImage = ImageFromFunction( "_specular2DTable", R_Specular2DTableImage );
-	//rampImage = ImageFromFunction( "_ramp", R_RampImage );
-	//alphaRampImage = ImageFromFunction( "_alphaRamp", R_RampImage );
-	//alphaNotchImage = ImageFromFunction( "_alphaNotch", R_AlphaNotchImage );
-	//fogImage = ImageFromFunction( "_fog", R_FogImage );
-	//fogEnterImage = ImageFromFunction( "_fogEnter", R_FogEnterImage );
-	//normalCubeMapImage = ImageFromFunction( "_normalCubeMap", makeNormalizeVectorCubeMap );
-	//noFalloffImage = ImageFromFunction( "_noFalloff", R_CreateNoFalloffImage );
-	//ImageFromFunction( "_quadratic", R_QuadraticImage );
+    // create built in images
+    this.defaultImage = this.ImageFromFunction( "_default", this.R_DefaultImage );
+    this.whiteImage = this.ImageFromFunction( "_white", this.R_WhiteImage );
+    this.blackImage = this.ImageFromFunction( "_black", this.R_BlackImage );
+    this.borderClampImage = this.ImageFromFunction( "_borderClamp", this.R_BorderClampImage );
+    this.flatNormalMap = this.ImageFromFunction( "_flat", this.R_FlatNormalImage );
+    this.ambientNormalMap = this.ImageFromFunction( "_ambient", this.R_AmbientNormalImage );
+    this.specularTableImage = this.ImageFromFunction( "_specularTable", this.R_SpecularTableImage );
+    this.specular2DTableImage = this.ImageFromFunction( "_specular2DTable", this.R_Specular2DTableImage );
+    this.rampImage = this.ImageFromFunction( "_ramp", this.R_RampImage );
+    this.alphaRampImage = this.ImageFromFunction( "_alphaRamp", this.R_RampImage );
+    this.alphaNotchImage = this.ImageFromFunction( "_alphaNotch", this.R_AlphaNotchImage );
+    this.fogImage = this.ImageFromFunction( "_fog", this.R_FogImage );
+    this.fogEnterImage = this.ImageFromFunction( "_fogEnter", this.R_FogEnterImage );
+    this.normalCubeMapImage = this.ImageFromFunction( "_normalCubeMap", this.makeNormalizeVectorCubeMap );
+    this.noFalloffImage = this.ImageFromFunction( "_noFalloff", this.R_CreateNoFalloffImage );
+    this.ImageFromFunction( "_quadratic", this.R_QuadraticImage );
 
-	//// cinematicImage is used for cinematic drawing
-	//// scratchImage is used for screen wipes/doublevision etc..
-	//cinematicImage = ImageFromFunction("_cinematic", R_RGBA8Image );
-	//scratchImage = ImageFromFunction("_scratch", R_RGBA8Image );
-	//scratchImage2 = ImageFromFunction("_scratch2", R_RGBA8Image );
-	//accumImage = ImageFromFunction("_accum", R_RGBA8Image );
-	//scratchCubeMapImage = ImageFromFunction("_scratchCubeMap", makeNormalizeVectorCubeMap );
-	//currentRenderImage = ImageFromFunction("_currentRender", R_RGBA8Image );
+    // cinematicImage is used for cinematic drawing
+    // scratchImage is used for screen wipes/doublevision etc..
+    todo( "cinematic images" );
+    //cinematicImage = ImageFromFunction("_cinematic", R_RGBA8Image );
+    //scratchImage = ImageFromFunction("_scratch", R_RGBA8Image );
+    //scratchImage2 = ImageFromFunction("_scratch2", R_RGBA8Image );
+    //accumImage = ImageFromFunction("_accum", R_RGBA8Image );
+    //scratchCubeMapImage = ImageFromFunction("_scratchCubeMap", makeNormalizeVectorCubeMap );
+    //currentRenderImage = ImageFromFunction("_currentRender", R_RGBA8Image );
 
-	//cmdSystem.AddCommand( "reloadImages", R_ReloadImages_f, CMD_FL_RENDERER, "reloads images" );
-	//cmdSystem.AddCommand( "listImages", R_ListImages_f, CMD_FL_RENDERER, "lists images" );
-	//cmdSystem.AddCommand( "combineCubeImages", R_CombineCubeImages_f, CMD_FL_RENDERER, "combines six images for roq compression" );
-    todoThrow();
+    cmdSystem.AddCommand( "reloadImages", this.R_ReloadImages_f, CMD_FL_RENDERER, "reloads images" );
+    cmdSystem.AddCommand( "listImages", this.R_ListImages_f, CMD_FL_RENDERER, "lists images" );
+    cmdSystem.AddCommand( "combineCubeImages", this.R_CombineCubeImages_f, CMD_FL_RENDERER, "combines six images for roq compression" );
+
     // should forceLoadImages be here?
-}
-
-/////*
+};;;;; /////*
 ////===============
 ////Shutdown
 ////===============

@@ -18,7 +18,25 @@ function memset ( arr: ArrayBufferView, value: number, num: number ): void {
     }
 }
 
-function sizeof ( arr: Float64Array ): number; // works for all typed arrays
-function sizeof ( arr: any ): number {
+function sizeof(obj: any) : number {
+    if(typeof obj === "number") {
+        debugger;
+        throw "cannot get size of number type";
+    }
+
+    if (obj.size !== undefined) {
+        return obj.size;
+    }
+
+    if(obj.buffer) {
+        return obj.buffer.byteLength;
+    }
+
+    throw "unsure of size of this type";
+    ////return obj.length;
+}
+
+function sizeofSingleItem ( arr: Float64Array ): number; // works for all typed arrays
+function sizeofSingleItem ( arr: any ): number {
     return arr.BYTES_PER_ELEMENT;
 }

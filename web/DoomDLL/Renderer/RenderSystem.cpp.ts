@@ -2094,7 +2094,6 @@ idRenderSystemLocal::Init
 
     common.Printf( "renderSystem initialized.\n" );
     common.Printf( "--------------------------------------\n" );
-    todoThrow();
 }
 
 /////*

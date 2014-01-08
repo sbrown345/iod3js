@@ -474,10 +474,10 @@ idHashIndex::Allocate
         this.Free();
         this.hashSize = newHashSize;
         this.hash = new Int32Array( this.hashSize );
-        memset( this.hash, 0xff, this.hashSize * sizeof( this.hash ) );
+        memset( this.hash, 0xff, this.hashSize * sizeofSingleItem( this.hash ) );
         this.indexSize = newIndexSize;
         this.indexChain = new Int32Array( this.indexSize );
-        memset( this.indexChain, 0xff, this.indexSize * sizeof( this.indexChain ) );
+        memset( this.indexChain, 0xff, this.indexSize * sizeofSingleItem( this.indexChain ) );
         this.hashMask = this.hashSize - 1;
         this.lookupMask = -1;
     }

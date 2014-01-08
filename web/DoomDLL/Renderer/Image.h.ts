@@ -216,7 +216,7 @@ interface IidImage {
 //	void		WritePrecompressedImage();
 //	bool		CheckPrecompressedImage( bool fullLoad );
 //	void		UploadPrecompressedImage( byte *data, int len );
-//	void		ActuallyLoadImage( bool checkForPrecompressed, bool fromBackEnd );
+    ActuallyLoadImage( checkForPrecompressed:boolean, fromBackEnd:boolean ):void;
 //	void		StartBackgroundImageLoad();
 //	int			BitsForInternalFormat( int internalFormat ) const;
 //	void		UploadCompressedNormalMap( int width, int height, const byte *rgba, int mipLevel );
@@ -248,10 +248,10 @@ interface IidImage {
 //	textureDepth_t		depth;
 //	cubeFiles_t			cubeFiles;				// determines the naming and flipping conventions for the six images
 
-//	bool				referencedOutsideLevelLoad;
-//	bool				levelLoadReferenced;	// for determining if it needs to be purged
-//	bool				precompressedFile;		// true when it was loaded from a .d3t file
-    defaulted:boolean;				// true if the default image was generated because a file couldn't be loaded
+    referencedOutsideLevelLoad:boolean;
+    levelLoadReferenced:boolean;	            // for determining if it needs to be purged
+    precompressedFile:boolean;		            // true when it was loaded from a .d3t file
+    defaulted:boolean;				            // true if the default image was generated because a file couldn't be loaded
 //	ID_TIME_T				timestamp;				// the most recent of all images used in creation, for reloadImages command
 
 //	int					imageHash;				// for identical-image checking
@@ -329,7 +329,7 @@ class idImage implements IidImage {
 //	void		WritePrecompressedImage();
 //	bool		CheckPrecompressedImage( bool fullLoad );
 //	void		UploadPrecompressedImage( byte *data, int len );
-//	void		ActuallyLoadImage( bool checkForPrecompressed, bool fromBackEnd );
+    ActuallyLoadImage( checkForPrecompressed:boolean, fromBackEnd:boolean ):void {/*placeholder*/}
 //	void		StartBackgroundImageLoad();
 //	int			BitsForInternalFormat( int internalFormat ) const;
 //	void		UploadCompressedNormalMap( int width, int height, const byte *rgba, int mipLevel );
@@ -361,10 +361,10 @@ class idImage implements IidImage {
 //	textureDepth_t		depth;
 //	cubeFiles_t			cubeFiles;				// determines the naming and flipping conventions for the six images
 
-//	bool				referencedOutsideLevelLoad;
-//	bool				levelLoadReferenced;	// for determining if it needs to be purged
-//	bool				precompressedFile;		// true when it was loaded from a .d3t file
-    defaulted:boolean;				// true if the default image was generated because a file couldn't be loaded
+    referencedOutsideLevelLoad:boolean;
+    levelLoadReferenced:boolean;	            // for determining if it needs to be purged
+    precompressedFile:boolean;		            // true when it was loaded from a .d3t file
+    defaulted:boolean;				            // true if the default image was generated because a file couldn't be loaded
 //	ID_TIME_T				timestamp;				// the most recent of all images used in creation, for reloadImages command
 
 //	int					imageHash;				// for identical-image checking
@@ -399,10 +399,10 @@ class idImage implements IidImage {
 		//this.repeat = TR_REPEAT;
 		//this.depth = textureDepth_t.TD_DEFAULT;
 		//this.cubeFiles = CF_2D;
-		//this.referencedOutsideLevelLoad = false;
-		//this.levelLoadReferenced = false;
-		//this.precompressedFile = false;
-		//this.defaulted = false;
+		this.referencedOutsideLevelLoad = false;
+		this.levelLoadReferenced = false;
+		this.precompressedFile = false;
+		this.defaulted = false;
 		//this.timestamp = 0;
 		//this.bindCount = 0;
 		//this.uploadWidth = uploadHeight = uploadDepth = 0;
@@ -425,7 +425,26 @@ class idImage implements IidImage {
 interface IidImageManager {
     // new ones
     R_DefaultImage(image:idImage):void;
+    R_WhiteImage(image:idImage):void;
+    R_BlackImage(image:idImage):void;
+    R_BorderClampImage(image:idImage):void;
+    R_FlatNormalImage(image:idImage):void;
+    R_AmbientNormalImage(image:idImage):void;
+    R_SpecularTableImage(image:idImage):void;
+    R_Specular2DTableImage(image:idImage):void;
+    R_RampImage(image:idImage):void;
+    R_AlphaNotchImage(image:idImage):void;
+    R_FogImage(image:idImage):void;
+    R_FogEnterImage(image:idImage):void;
+    makeNormalizeVectorCubeMap(image:idImage):void;
+    R_CreateNoFalloffImage(image:idImage):void;
+    R_QuadraticImage(image:idImage):void;
 
+    R_ReloadImages_f(image:idImage):void;
+    //R_QsortImageSizes(/*?*/):void;
+    R_ListImages_f(args:idCmdArgs):void;
+    //SetNormalPalette():void;
+    R_CombineCubeImages_f(args:idCmdArgs):void;
 
 ////public:
     Init():void;
@@ -575,7 +594,28 @@ interface IidImageManager {
 class idImageManager implements IidImageManager {
     // new ones
     R_DefaultImage(image:idImage):void {/*placeholder*/}
+    R_WhiteImage(image:idImage):void {/*placeholder*/}
+    R_BlackImage(image:idImage):void {/*placeholder*/}
+    R_BorderClampImage(image:idImage):void {/*placeholder*/}
+    R_FlatNormalImage(image:idImage):void {/*placeholder*/}
+    R_AmbientNormalImage(image:idImage):void {/*placeholder*/}
+    R_SpecularTableImage(image:idImage):void {/*placeholder*/}
+    R_Specular2DTableImage(image:idImage):void {/*placeholder*/}
+    R_RampImage(image:idImage):void {/*placeholder*/}
+    R_AlphaNotchImage(image:idImage):void {/*placeholder*/}
+    R_FogImage(image:idImage):void {/*placeholder*/}
+    R_FogEnterImage(image:idImage):void {/*placeholder*/}
+    makeNormalizeVectorCubeMap(image:idImage):void {/*placeholder*/}
+    R_CreateNoFalloffImage(image:idImage):void {/*placeholder*/}
+    R_QuadraticImage(image:idImage):void {/*placeholder*/}
 
+
+
+    R_ReloadImages_f(image:idImage):void{/*placeholder*/}
+    //R_QsortImageSizes(/*?*/):void {/*placeholder*/}
+    R_ListImages_f(args:idCmdArgs):void {/*placeholder*/}
+    //SetNormalPalette():void {/*placeholder*/}
+    R_CombineCubeImages_f(args:idCmdArgs):void {/*placeholder*/} 
 
 
     Init():void {/*placeholder*/}
