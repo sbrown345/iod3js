@@ -261,7 +261,7 @@ UpdateValue( ):void {
     	}
     	this.integerValue = int(this.floatValue);
     } else {
-    	if ( this.valueStrings && this.valueStrings[0] ) {
+    	if ( this.valueStrings ) {
     		this.integerValue = 0;
     		for ( var i = 0; this.valueStrings[i]; i++ ) {
     			if ( this.valueString.Icmp( this.valueStrings[i] ) == 0 ) {

@@ -90,14 +90,21 @@ class idHashIndex {
 ////	int				GenerateKey( const int n1, const int n2 ) const;
 
 //private:
-/*	int				*/private hashSize:number;
-/*	int *			*/private hash:number[];
-/*	int				*/private indexSize:number;
-/*	int *			*/private indexChain:number[];
-/*	int				*/private granularity:number;
-/*	int				*/private hashMask:number;
-/*	int				*/private lookupMask:number;
-	
+/*	int				*/
+    private hashSize: number;
+/*	int *			*/
+    private hash: Int32Array;
+/*	int				*/
+    private indexSize: number;
+/*	int *			*/
+    private indexChain: Int32Array;
+/*	int				*/
+    private granularity: number;
+/*	int				*/
+    private hashMask: number;
+/*	int				*/
+    private lookupMask: number;
+
 ////	void			Init( const int initialHashSize, const int initialIndexSize );
 ////	void			Allocate( const int newHashSize, const int newIndexSize );
 
@@ -107,9 +114,9 @@ class idHashIndex {
 idHashIndex::idHashIndex
 ================
 */
-constructor( ) {
-	this.Init( DEFAULT_HASH_SIZE, DEFAULT_HASH_SIZE );
-}
+    constructor ( ) {
+        this.Init( DEFAULT_HASH_SIZE, DEFAULT_HASH_SIZE );
+    }
 
 /////*
 ////================
@@ -189,20 +196,19 @@ constructor( ) {
 idHashIndex::Add
 ================
 */
-Add( /*const int */key:number, /*const int */index:number ):void {
-	var/*int */h:number;
+    Add ( /*const int */key: number, /*const int */index: number ): void {
+        var /*int */h: number;
 
-	assert( index >= 0 );
-	if ( this.hash[0] == idHashIndex.INVALID_INDEX[0] && this.hash.length === 1 ) {
-		this.Allocate( this.hashSize, index >= this.indexSize ? index + 1 : this.indexSize );
-	}
-	else if ( index >= this.indexSize ) {
-		this.ResizeIndex( index + 1 );
-	}
-	h = key & this.hashMask;
-	this.indexChain[index] = this.hash[h];
-	this.hash[h] = index;
-}
+        assert( index >= 0 );
+        if ( this.hash == idHashIndex.INVALID_INDEX ) {
+            this.Allocate( this.hashSize, index >= this.indexSize ? index + 1 : this.indexSize );
+        } else if ( index >= this.indexSize ) {
+            this.ResizeIndex( index + 1 );
+        }
+        h = key & this.hashMask;
+        this.indexChain[index] = this.hash[h];
+        this.hash[h] = index;
+    }
 
 /////*
 ////================
@@ -234,19 +240,19 @@ Add( /*const int */key:number, /*const int */index:number ):void {
 idHashIndex::First
 ================
 */
-First( /*const int */key:number ):number {
-	return this.hash[key & this.hashMask & this.lookupMask];
-}
+    First ( /*const int */key: number ): number {
+        return this.hash[key & this.hashMask & this.lookupMask];
+    }
 
 /*
 ================
 idHashIndex::Next
 ================
 */
-Next( /*const int */index:number ):number {
-	assert( index >= 0 && index < this.indexSize );
-	return this.indexChain[index & this.lookupMask];
-}
+    Next ( /*const int */index: number ): number {
+        assert( index >= 0 && index < this.indexSize );
+        return this.indexChain[index & this.lookupMask];
+    }
 
 /////*
 ////================
@@ -375,16 +381,16 @@ Next( /*const int */index:number ):number {
 idHashIndex::GenerateKey
 ================
 */
-GenerateKey( $string: string, caseSensitive:boolean ) :number;
-GenerateKey( $string: idStr, caseSensitive:boolean ) :number;
-GenerateKey( $string: any, caseSensitive:boolean ) :number {
-    $string = idStr.getIdStr( $string );
-	if ( caseSensitive ) {
-		return ( idStr.Hash( $string ) & this.hashMask );
-	} else {
-		return ( idStr.IHash( $string ) & this.hashMask );
-	}
-}
+    GenerateKey ( $string: string, caseSensitive: boolean ): number;
+    GenerateKey ( $string: idStr, caseSensitive: boolean ): number;
+    GenerateKey ( $string: any, caseSensitive: boolean ): number {
+        $string = idStr.getIdStr( $string );
+        if ( caseSensitive ) {
+            return ( idStr.Hash( $string ) & this.hashMask );
+        } else {
+            return ( idStr.IHash( $string ) & this.hashMask );
+        }
+    }
 
 /////*
 ////================
@@ -438,94 +444,93 @@ GenerateKey( $string: any, caseSensitive:boolean ) :number {
 ////#include "../precompiled.h"
 ////#pragma hdrstop
 
-static INVALID_INDEX = [ -1 ];
+    static INVALID_INDEX = new Int32Array( [-1] );
 
 /*
 ================
 idHashIndex::Init
 ================
 */
-Init( initialHashSize:number, initialIndexSize:number ):void {
-	assert( idMath.IsPowerOfTwo( initialHashSize ) );
+    Init ( initialHashSize: number, initialIndexSize: number ): void {
+        assert( idMath.IsPowerOfTwo( initialHashSize ) );
 
-	this.hashSize = initialHashSize;
-	this.hash = idHashIndex.INVALID_INDEX;
-	this.indexSize = initialIndexSize;
-	this.indexChain = idHashIndex.INVALID_INDEX;
-	this.granularity = DEFAULT_HASH_GRANULARITY;
-	this.hashMask = this.hashSize - 1;
-	this.lookupMask = 0;
-}
+        this.hashSize = initialHashSize;
+        this.hash = idHashIndex.INVALID_INDEX;
+        this.indexSize = initialIndexSize;
+        this.indexChain = idHashIndex.INVALID_INDEX;
+        this.granularity = DEFAULT_HASH_GRANULARITY;
+        this.hashMask = this.hashSize - 1;
+        this.lookupMask = 0;
+    }
 
 /*
 ================
 idHashIndex::Allocate
 ================
 */
-Allocate( /*const int */newHashSize:number, /*const int */newIndexSize:number ):void {
-    todoThrow ( );
-	//assert( idMath::IsPowerOfTwo( newHashSize ) );
+    Allocate ( /*const int */newHashSize: number, /*const int */newIndexSize: number ): void {
+        assert( idMath.IsPowerOfTwo( newHashSize ) );
 
-	//Free();
-	//hashSize = newHashSize;
-	//hash = new int[hashSize];
-	//memset( hash, 0xff, hashSize * sizeof( hash[0] ) );
-	this.indexSize = newIndexSize;
-	//indexChain = new int this.indexSize];
-	//memset( this.indexChain, 0xff, this.indexSize * sizeof( this.indexChain[0] ) );
-	//hashMask = hashSize - 1;
-	//lookupMask = -1;
-}
+        this.Free();
+        this.hashSize = newHashSize;
+        this.hash = new Int32Array( this.hashSize );
+        memset( this.hash, 0xff, this.hashSize * sizeof( this.hash ) );
+        this.indexSize = newIndexSize;
+        this.indexChain = new Int32Array( this.indexSize );
+        memset( this.indexChain, 0xff, this.indexSize * sizeof( this.indexChain ) );
+        this.hashMask = this.hashSize - 1;
+        this.lookupMask = -1;
+    }
 
-/////*
-////================
-////idHashIndex::Free
-////================
-////*/
-////void idHashIndex::Free( void ) {
-////	if ( hash != idHashIndex.INVALID_INDEX ) {
-////		delete[] hash;
-////		hash = idHashIndex.INVALID_INDEX;
-////	}
-////	if ( this.indexChain != idHashIndex.INVALID_INDEX ) {
-////		delete[] this.indexChain;
-////		this.indexChain = idHashIndex.INVALID_INDEX;
-////	}
-////	this.lookupMask = 0;
-////}
+/*
+================
+idHashIndex::Free
+================
+*/
+    Free ( ): void {
+        if ( this.hash != idHashIndex.INVALID_INDEX ) {
+            delete this.hash;
+            this.hash = idHashIndex.INVALID_INDEX;
+        }
+        if ( this.indexChain != idHashIndex.INVALID_INDEX ) {
+            delete this.indexChain;
+            this.indexChain = idHashIndex.INVALID_INDEX;
+        }
+        this.lookupMask = 0;
+    }
 
 /*
 ================
 idHashIndex::ResizeIndex
 ================
 */
-ResizeIndex( /*const int */newIndexSize:number ):void {
-    todoThrow ( );
-    //int *oldIndexChain, mod, newSize;
+    ResizeIndex ( /*const int */newIndexSize: number ): void {
+        todoThrow ( );
+        //int *oldIndexChain, mod, newSize;
 
-    //if ( newIndexSize <= this.indexSize ) {
-    //	return;
-    //}
+        //if ( newIndexSize <= this.indexSize ) {
+        //	return;
+        //}
 
-    //mod = newIndexSize % granularity;
-    //if ( !mod ) {
-    //	newSize = newIndexSize;
-    //} else {
-    //	newSize = newIndexSize + granularity - mod;
-    //}
+        //mod = newIndexSize % granularity;
+        //if ( !mod ) {
+        //	newSize = newIndexSize;
+        //} else {
+        //	newSize = newIndexSize + granularity - mod;
+        //}
 
-    //if ( this.indexChain == idHashIndex.INVALID_INDEX ) {
-    // this.indexSize = newSize;
-    //	return;
-    //}
+        //if ( this.indexChain == idHashIndex.INVALID_INDEX ) {
+        // this.indexSize = newSize;
+        //	return;
+        //}
 
-    //oldIndexChain = this.indexChain;
-    //indexChain = new int[newSize];
-    //memcpy( this.indexChain, oldIndexChain, this.indexSize * sizeof(int) );
-    //memset( this.indexChain + this.indexSize, 0xff, (newSize - this.indexSize) * sizeof(int) );
-    //delete[] oldIndexChain;
-    //this.indexSize = newSize;
-}
+        //oldIndexChain = this.indexChain;
+        //indexChain = new int[newSize];
+        //memcpy( this.indexChain, oldIndexChain, this.indexSize * sizeof(int) );
+        //memset( this.indexChain + this.indexSize, 0xff, (newSize - this.indexSize) * sizeof(int) );
+        //delete[] oldIndexChain;
+        //this.indexSize = newSize;
+    }
 
 /////*
 ////================
