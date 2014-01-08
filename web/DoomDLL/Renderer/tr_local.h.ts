@@ -50,21 +50,21 @@
 ////// picky to get the bilerp correct at terminator
 
 
-////// idScreenRect gets carried around with each drawSurf, so it makes sense
-////// to keep it compact, instead of just using the idBounds class
-////class idScreenRect {
-////public:
-////	short		x1, y1, x2, y2;							// inclusive pixel bounds inside viewport
-////    float       zmin, zmax;								// for depth bounds test
+// idScreenRect gets carried around with each drawSurf, so it makes sense
+// to keep it compact, instead of just using the idBounds class
+class idScreenRect {
+//public:
+	//short		x1, y1, x2, y2;							// inclusive pixel bounds inside viewport
+    //float       zmin, zmax;								// for depth bounds test
 
-////	void		Clear();								// clear to backwards values
-////	void		AddPoint( float x, float y );			// adds a point
-////	void		Expand();								// expand by one pixel each way to fix roundoffs
-////	void		Intersect( const idScreenRect &rect );
-////	void		Union( const idScreenRect &rect );
-////	bool		Equals( const idScreenRect &rect ) const;
-////	bool		IsEmpty() const;
-////};
+	//void		Clear();								// clear to backwards values
+	//void		AddPoint( float x, float y );			// adds a point
+	//void		Expand();								// expand by one pixel each way to fix roundoffs
+	//void		Intersect( const idScreenRect &rect );
+	//void		Union( const idScreenRect &rect );
+	//bool		Equals( const idScreenRect &rect ) const;
+	//bool		IsEmpty() const;
+};
 
 ////idScreenRect R_ScreenRectFromViewFrustumBounds( const idBounds &bounds );
 ////void R_ShowColoredScreenRect( const idScreenRect &rect, int colorIndex );
@@ -163,8 +163,8 @@
 ////};
 
 
-////// idRenderEntity should become the new public interface replacing the qhandle_t to entity defs in the idRenderWorld interface
-////class idRenderEntity {
+// idRenderEntity should become the new public interface replacing the qhandle_t to entity defs in the idRenderWorld interface
+class idRenderEntity {
 ////public:
 ////	virtual					~idRenderEntity() {}
 
@@ -177,7 +177,7 @@
 ////	// overlays are extra polygons that deform with animating models for blood and damage marks
 ////	virtual void			ProjectOverlay( const idPlane localTextureAxis[2], const idMaterial *material ) = 0;
 ////	virtual void			RemoveDecals() = 0;
-////};
+};
 
 
 ////class idRenderLightLocal : public idRenderLight {
@@ -236,7 +236,7 @@
 ////};
 
 
-////class idRenderEntityLocal : public idRenderEntity {
+class idRenderEntityLocal extends idRenderEntity {
 ////public:
 ////							idRenderEntityLocal();
 
@@ -289,7 +289,7 @@
 ////	idInteraction *			lastInteraction;
 
 ////	bool					needsPortalSky;
-////};
+};
 
 
 ////// viewLights are allocated on the frame temporary stack memory
@@ -337,31 +337,31 @@
 ////} viewLight_t;
 
 
-////// a viewEntity is created whenever a idRenderEntityLocal is considered for inclusion
-////// in the current view, but it may still turn out to be culled.
-////// viewEntity are allocated on the frame temporary stack memory
-////// a viewEntity contains everything that the back end needs out of a idRenderEntityLocal,
-////// which the front end may be modifying simultaniously if running in SMP mode.
-////// A single entityDef can generate multiple viewEntity_t in a single frame, as when seen in a mirror
-////typedef struct viewEntity_s {
-////	struct viewEntity_s	*next;
+// a viewEntity is created whenever a idRenderEntityLocal is considered for inclusion
+// in the current view, but it may still turn out to be culled.
+// viewEntity are allocated on the frame temporary stack memory
+// a viewEntity contains everything that the back end needs out of a idRenderEntityLocal,
+// which the front end may be modifying simultaniously if running in SMP mode.
+// A single entityDef can generate multiple viewEntity_t in a single frame, as when seen in a mirror
+class /*viewEntity_s*/viewEntity_t {
+	next:viewEntity_t;
 
-////	// back end should NOT reference the entityDef, because it can change when running SMP
-////	idRenderEntityLocal	*entityDef;
+	// back end should NOT reference the entityDef, because it can change when running SMP
+	entityDef:idRenderEntityLocal;
 
-////	// for scissor clipping, local inside renderView viewport
-////	// scissorRect.Empty() is true if the viewEntity_t was never actually
-////	// seen through any portals, but was created for shadow casting.
-////	// a viewEntity can have a non-empty scissorRect, meaning that an area
-////	// that it is in is visible, and still not be visible.
-////	idScreenRect		scissorRect;
+	// for scissor clipping, local inside renderView viewport
+	// scissorRect.Empty() is true if the viewEntity_t was never actually
+	// seen through any portals, but was created for shadow casting.
+	// a viewEntity can have a non-empty scissorRect, meaning that an area
+	// that it is in is visible, and still not be visible.
+	scissorRect:idScreenRect;
 
-////	bool				weaponDepthHack;
-////	float				modelDepthHack;
+	/*bool				*/weaponDepthHack:boolean;
+	/*float				*/modelDepthHack:number;
 
-////	float				modelMatrix[16];		// local coords to global coords
-////	float				modelViewMatrix[16];	// local coords to eye coords
-////} viewEntity_t;
+	/*float				*/modelMatrix:Float32Array/*[16]*/;		// local coords to global coords
+	/*float				*/modelViewMatrix:Float32Array/*[16]*/;	// local coords to eye coords
+}
 
 
 ////const int	MAX_CLIP_PLANES	= 1;				// we may expand this to six for some subview issues
@@ -684,13 +684,13 @@ class backEndState_t {
 ////} renderCrop_t;
 ////static const int	MAX_RENDER_CROPS = 8;
 
-/////*
-////** Most renderer globals are defined here.
-////** backend functions should never modify any of these fields,
-////** but may read fields that aren't dynamically modified
-////** by the frontend.
-////*/
-////class idRenderSystemLocal : public idRenderSystem {
+/*
+** Most renderer globals are defined here.
+** backend functions should never modify any of these fields,
+** but may read fields that aren't dynamically modified
+** by the frontend.
+*/
+class idRenderSystemLocal extends idRenderSystem {
 ////public:
 ////	// external functions
 ////	virtual void			Init( void );
@@ -802,8 +802,8 @@ class backEndState_t {
 ////	class idGuiModel *		guiModel;
 ////	class idGuiModel *		demoGuiModel;
 
-////	unsigned short			gammaTable[256];	// brightness / gamma modify this
-////};
+    /*unsigned short			*/gammaTable:Uint8Array/*[256]*/;	// brightness / gamma modify this
+}
 
 ////extern backEndState_t		backEnd;
 ////extern idRenderSystemLocal	tr;

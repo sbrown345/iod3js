@@ -173,7 +173,7 @@
 ////	idDeclLocal *				decls;
 ////};
 
-////class idDeclManagerLocal : public idDeclManager {
+class idDeclManagerLocal extends idDeclManager {
 ////	friend class idDeclLocal;
 
 ////public:
@@ -241,12 +241,12 @@
 ////	static void					ListDecls_f( const idCmdArgs &args );
 ////	static void					ReloadDecls_f( const idCmdArgs &args );
 ////	static void					TouchDecl_f( const idCmdArgs &args );
-////};
+};
 
 ////idCVar idDeclManagerLocal::decl_show( "decl_show", "0", CVAR_SYSTEM, "set to 1 to print parses, 2 to also print references", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
 
-////idDeclManagerLocal	declManagerLocal;
-////idDeclManager *		declManager = &declManagerLocal;
+var declManagerLocal = new idDeclManagerLocal();
+var declManager = declManagerLocal;
 
 /////*
 ////====================================================================================

@@ -234,7 +234,7 @@ class idDecl {
 
 ////public:
 ////	idDeclBase *			base;
-////};
+};
 
 
 ////template< class type >
@@ -247,7 +247,7 @@ class idDecl {
 ////class idDeclSkin;
 ////class idSoundShader;
 
-////class idDeclManager {
+class idDeclManager {
 ////public:
 ////	virtual					~idDeclManager( void ) {}
 

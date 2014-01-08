@@ -80,6 +80,7 @@
     <Content Include="DoomDLL\Renderer\RenderSystem_init.cpp.ts" />
     <Content Include="DoomDLL\Renderer\tr_backend.cpp.ts" />
     <Content Include="DoomDLL\Renderer\tr_local.h.ts" />
+    <Content Include="DoomDLL\Sys\win_glimp.cpp.ts" />
     <Content Include="DoomDLL\Sys\win_main.cpp.ts" />
     <Content Include="index.htm" />
     <Content Include="libs\c.ts" />
