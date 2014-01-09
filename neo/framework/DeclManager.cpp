@@ -61,7 +61,7 @@ missing reload over a previously explicit definition
 
 */
 
-#define USE_COMPRESSED_DECLS
+//#define USE_COMPRESSED_DECLS
 //#define GET_HUFFMAN_FREQUENCIES
 
 class idDeclType {
