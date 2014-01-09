@@ -1,3 +1,4 @@
+/// <reference path="../Framework/DeclManager.cpp.ts" />
 /// <reference path="../Sys/win_glimp.cpp.ts" />
 /// <reference path="../Sys/win_glimp.cpp.ts" />
 /// <reference path="../../libs/c.ts" />

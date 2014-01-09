@@ -62,33 +62,33 @@
 ////===============================================================================
 ////*/
 
-////typedef enum {
-////	DECL_TABLE				= 0,
-////	DECL_MATERIAL,
-////	DECL_SKIN,
-////	DECL_SOUND,
-////	DECL_ENTITYDEF,
-////	DECL_MODELDEF,
-////	DECL_FX,
-////	DECL_PARTICLE,
-////	DECL_AF,
-////	DECL_PDA,
-////	DECL_VIDEO,
-////	DECL_AUDIO,
-////	DECL_EMAIL,
-////	DECL_MODELEXPORT,
-////	DECL_MAPDEF,
+enum declType_t {
+	DECL_TABLE				= 0,
+	DECL_MATERIAL,
+	DECL_SKIN,
+	DECL_SOUND,
+	DECL_ENTITYDEF,
+	DECL_MODELDEF,
+	DECL_FX,
+	DECL_PARTICLE,
+	DECL_AF,
+	DECL_PDA,
+	DECL_VIDEO,
+	DECL_AUDIO,
+	DECL_EMAIL,
+	DECL_MODELEXPORT,
+	DECL_MAPDEF,
 
-////	// new decl types can be added here
+	// new decl types can be added here
 
-////	DECL_MAX_TYPES			= 32
-////} declType_t;
+	DECL_MAX_TYPES			= 32
+};
 
-////typedef enum {
-////	DS_UNPARSED,
-////	DS_DEFAULTED,			// set if a parse failed due to an error, or the lack of any source
-////	DS_PARSED
-////} declState_t;
+enum declState_t{
+	DS_UNPARSED,
+	DS_DEFAULTED,			// set if a parse failed due to an error, or the lack of any source
+	DS_PARSED
+};
 
 ////const int DECL_LEXER_FLAGS	=	LEXFL_NOSTRINGCONCAT |				// multiple strings seperated by whitespaces are not concatenated
 ////								LEXFL_NOSTRINGESCAPECHARS |			// no escape characters inside strings
@@ -98,7 +98,7 @@
 ////								LEXFL_NOFATALERRORS;				// just set a flag instead of fatal erroring
 
 
-////class idDeclBase {
+class idDeclBase {
 ////public:
 ////	virtual 				~idDeclBase() {};
 ////	virtual const char *	GetName( void ) const = 0;
@@ -126,7 +126,7 @@
 ////	virtual size_t			Size( void ) const = 0;
 ////	virtual void			List( void ) const = 0;
 ////	virtual void			Print( void ) const = 0;
-////};
+};
 
 
 class idDecl {

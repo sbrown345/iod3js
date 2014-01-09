@@ -58,3 +58,5 @@ function rand() {
     todo("rand");
     return 10;
 }
+
+var printf = console.log.bind(console);

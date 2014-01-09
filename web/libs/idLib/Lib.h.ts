@@ -93,7 +93,7 @@
 function BIT( num: number ):number			{ return ( 1 << ( num ) );}
 ////#endif
 
-////#define	MAX_STRING_CHARS		1024		// max length of a string
+var MAX_STRING_CHARS = 1024;		// max length of a string
 
 ////// maximum world size
 ////#define MAX_WORLD_COORD			( 128 * 1024 )

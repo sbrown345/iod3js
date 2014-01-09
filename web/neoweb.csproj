@@ -97,6 +97,8 @@
     <Content Include="libs\idLib\Math\Vector.h.ts" />
     <Content Include="libs\idLib\Text\CmdArgs.cpp.ts" />
     <Content Include="libs\idLib\Text\CmdArgs.h.ts" />
+    <Content Include="libs\idLib\Text\Lexer.cpp.ts" />
+    <Content Include="libs\idLib\Text\Lexer.h.ts" />
     <Content Include="libs\idLib\Text\Str.h.ts" />
     <Content Include="utils\todo.ts" />
     <Content Include="utils\types.ts" />
