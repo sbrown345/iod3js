@@ -155,120 +155,7 @@ var imageFilter:string[] = [
 	null
 ];
 
-interface IidImage {
-//public:
-//				idImage();
-
-//	// Makes this image active on the current GL texture unit.
-//	// automatically enables or disables cube mapping or texture3D
-//	// May perform file loading if the image was not preloaded.
-//	// May start a background image read.
-//	void		Bind();
-
-//	// for use with fragment programs, doesn't change any enable2D/3D/cube states
-//	void		BindFragment();
-
-//	// deletes the texture object, but leaves the structure so it can be reloaded
-//	void		PurgeImage();
-
-//	// used by callback functions to specify the actual data
-//	// data goes from the bottom to the top line of the image, as OpenGL expects it
-//	// These perform an implicit Bind() on the current texture unit
-//	// FIXME: should we implement cinematics this way, instead of with explicit calls?
-	GenerateImage( pic:Uint8Array, /*int */width:number, /*int */height:number, 
-					   /*textureFilter_t*/ filterParm:number, /*bool */allowDownSizeParm:boolean, 
-					   /*textureRepeat_t */repeatParm:number, depthParm: textureDepth_t):void;
-//#if !defined(GL_ES_VERSION_2_0)
-//	void		Generate3DImage( const byte *pic, int width, int height, int depth,
-//						textureFilter_t filter, bool allowDownSize, 
-//						textureRepeat_t repeat, textureDepth_t minDepth );
-//#endif
-//	void		GenerateCubeImage( const byte *pic[6], int size, 
-//						textureFilter_t filter, bool allowDownSize, 
-//						textureDepth_t depth );
-
-//	void		CopyFramebuffer( int x, int y, int width, int height, bool useOversizedBuffer );
-
-//	void		CopyDepthbuffer( int x, int y, int width, int height );
-
-//	void		UploadScratch( const byte *pic, int width, int height );
-
-//	// just for resource tracking
-//	void		SetClassification( int tag );
-
-//	// estimates size of the GL image based on dimensions and storage type
-//	int			StorageSize() const;
-
-//	// print a one line summary of the image
-//	void		Print() const;
-
-//	// check for changed timestamp on disk and reload if necessary
-//	void		Reload( bool checkPrecompressed, bool force );
-
-//	void		AddReference()				{ refCount++; };
-
-////==========================================================
-
-//	void		GetDownsize( int &scaled_width, int &scaled_height ) const;
-    MakeDefault():void;	// fill with a grid pattern
-//	void		SetImageFilterAndRepeat() const;
-//	bool		ShouldImageBePartialCached();
-//	void		WritePrecompressedImage();
-//	bool		CheckPrecompressedImage( bool fullLoad );
-//	void		UploadPrecompressedImage( byte *data, int len );
-    ActuallyLoadImage( checkForPrecompressed:boolean, fromBackEnd:boolean ):void;
-//	void		StartBackgroundImageLoad();
-//	int			BitsForInternalFormat( int internalFormat ) const;
-//	void		UploadCompressedNormalMap( int width, int height, const byte *rgba, int mipLevel );
-//	GLenum		SelectInternalFormat( const byte **dataPtrs, int numDataPtrs, int width, int height,
-//									 textureDepth_t minimumDepth ) const;
-//	void		ImageProgramStringToCompressedFileName( const char *imageProg, char *fileName ) const;
-//	int			NumLevelsForImageSize( int width, int height ) const;
-
-//	// data commonly accessed is grouped here
-	TEXTURE_NOT_LOADED:number;
-//	GLuint				texnum;					// gl texture binding, will be TEXTURE_NOT_LOADED if not loaded
-//	textureType_t		type;
-//	int					frameUsed;				// for texture usage in frame statistics
-//	int					bindCount;				// incremented each bind
-
-//	// background loading information
-//	idImage				*partialImage;			// shrunken, space-saving version
-//	bool				isPartialImage;			// true if this is pointed to by another image
-//	bool				backgroundLoadInProgress;	// true if another thread is reading the complete d3t file
-//	backgroundDownload_t	bgl;
-//	idImage *			bglNext;				// linked from tr.backgroundImageLoads
-
-//	// parameters that define this image
-	imgName:idStr;								// game path, including extension (except for cube maps), may be an image program
-//	void				(*generatorFunction)( idImage *image );	// NULL for files
-//	bool				allowDownSize;			// this also doubles as a don't-partially-load flag
-//	textureFilter_t		filter;
-//	textureRepeat_t		repeat;
-//	textureDepth_t		depth;
-//	cubeFiles_t			cubeFiles;				// determines the naming and flipping conventions for the six images
-
-    referencedOutsideLevelLoad:boolean;
-    levelLoadReferenced:boolean;	            // for determining if it needs to be purged
-    precompressedFile:boolean;		            // true when it was loaded from a .d3t file
-    defaulted:boolean;				            // true if the default image was generated because a file couldn't be loaded
-//	ID_TIME_T				timestamp;				// the most recent of all images used in creation, for reloadImages command
-
-//	int					imageHash;				// for identical-image checking
-
-//	int					classification;			// just for resource profiling
-
-//	// data for listImages
-//	int					uploadWidth, uploadHeight, uploadDepth;	// after power of two, downsample, and MAX_TEXTURE_SIZE
-//	int					internalFormat;
-
-//	idImage 			*cacheUsagePrev, *cacheUsageNext;	// for dynamic cache purging of old images
-
-	hashNext:idImage;							// for hash chains to speed lookup
-
-//	int					refCount;				// overall ref count
-};
-class idImage implements IidImage {
+class idImage {
 //public:
 //				idImage();
 
@@ -289,8 +176,8 @@ class idImage implements IidImage {
 //	// These perform an implicit Bind() on the current texture unit
 //	// FIXME: should we implement cinematics this way, instead of with explicit calls?
     GenerateImage ( pic: Uint8Array, /*int */width: number, /*int */height: number,
-        /*textureFilter_t*/ filterParm: number, /*bool */allowDownSizeParm: boolean,
-        /*textureRepeat_t */repeatParm: number, depthParm:textureDepth_t): void {/*placeholder*/}
+        filterParm: textureFilter_t, /*bool */allowDownSizeParm: boolean,
+        repeatParm: textureRepeat_t, depthParm:textureDepth_t): void {/*placeholder*/}
 //#if !defined(GL_ES_VERSION_2_0)
 //	void		Generate3DImage( const byte *pic, int width, int height, int depth,
 //						textureFilter_t filter, bool allowDownSize, 
