@@ -197,28 +197,28 @@
 ////	}
 ////	p = smallFirstUsedPage;					// free small-heap allocated pages 
 ////	while( p ) {
-////		idHeap::page_s *next = p->next;
+////		idHeap::page_s *next = p.next;
 ////		FreePage( p );
 ////		p= next;
 ////	}
 
 ////	p = largeFirstUsedPage;					// free large-heap allocated pages
 ////	while( p ) {
-////		idHeap::page_s *next = p->next;
+////		idHeap::page_s *next = p.next;
 ////		FreePage( p );
 ////		p = next;
 ////	}
 
 ////	p = mediumFirstFreePage;				// free medium-heap allocated pages
 ////	while( p ) {
-////		idHeap::page_s *next = p->next;
+////		idHeap::page_s *next = p.next;
 ////		FreePage( p );
 ////		p = next;
 ////	}
 
 ////	p = mediumFirstUsedPage;				// free medium-heap allocated completely used pages
 ////	while( p ) {
-////		idHeap::page_s *next = p->next;
+////		idHeap::page_s *next = p.next;
 ////		FreePage( p );
 ////		p = next;
 ////	}
@@ -305,7 +305,7 @@
 ////			break;
 ////		}
 ////		default: {
-////			idLib::common->FatalError( "idHeap::Free: invalid memory block (%s)", idLib::sys->GetCallStackCurStr( 4 ) );
+////			idLib::common.FatalError( "idHeap::Free: invalid memory block (%s)", idLib::sys.GetCallStackCurStr( 4 ) );
 ////			break;
 ////		}
 ////	}
@@ -330,7 +330,7 @@
 ////			AllocDefragBlock();
 ////		}
 ////		if ( !ptr ) {
-////			common->FatalError( "malloc failure for %i", bytes );
+////			common.FatalError( "malloc failure for %i", bytes );
 ////		}
 ////	}
 ////	alignedPtr = (byte *) ( ( (int) ptr ) + 15 & ~15 );
@@ -378,13 +378,13 @@
 ////			return SMALL_ALIGN( ((byte *)(p))[-SMALL_HEADER_SIZE] * ALIGN );
 ////		}
 ////		case MEDIUM_ALLOC: {
-////			return ((mediumHeapEntry_s *)(((byte *)(p)) - ALIGN_SIZE( MEDIUM_HEADER_SIZE )))->size - ALIGN_SIZE( MEDIUM_HEADER_SIZE );
+////			return ((mediumHeapEntry_s *)(((byte *)(p)) - ALIGN_SIZE( MEDIUM_HEADER_SIZE ))).size - ALIGN_SIZE( MEDIUM_HEADER_SIZE );
 ////		}
 ////		case LARGE_ALLOC: {
-////			return ((idHeap::page_s*)(*((dword *)(((byte *)p) - ALIGN_SIZE( LARGE_HEADER_SIZE )))))->dataSize - ALIGN_SIZE( LARGE_HEADER_SIZE );
+////			return ((idHeap::page_s*)(*((dword *)(((byte *)p) - ALIGN_SIZE( LARGE_HEADER_SIZE ))))).dataSize - ALIGN_SIZE( LARGE_HEADER_SIZE );
 ////		}
 ////		default: {
-////			idLib::common->FatalError( "idHeap::Msize: invalid memory block (%s)", idLib::sys->GetCallStackCurStr( 4 ) );
+////			idLib::common.FatalError( "idHeap::Msize: invalid memory block (%s)", idLib::sys.GetCallStackCurStr( 4 ) );
 ////			return 0;
 ////		}
 ////	}
@@ -401,25 +401,25 @@
 ////void idHeap::Dump( void ) {
 ////	idHeap::page_s	*pg;
 
-////	for ( pg = smallFirstUsedPage; pg; pg = pg->next ) {
-////		idLib::common.Printf( "%p  bytes %-8d  (in use by small heap)\n", pg->data, pg->dataSize);
+////	for ( pg = smallFirstUsedPage; pg; pg = pg.next ) {
+////		idLib::common.Printf( "%p  bytes %-8d  (in use by small heap)\n", pg.data, pg.dataSize);
 ////	}
 
 ////	if ( smallCurPage ) {
 ////		pg = smallCurPage;
-////		idLib::common.Printf( "%p  bytes %-8d  (small heap active page)\n", pg->data, pg->dataSize );
+////		idLib::common.Printf( "%p  bytes %-8d  (small heap active page)\n", pg.data, pg.dataSize );
 ////	}
 
-////	for ( pg = mediumFirstUsedPage; pg; pg = pg->next ) {
-////		idLib::common.Printf( "%p  bytes %-8d  (completely used by medium heap)\n", pg->data, pg->dataSize );
+////	for ( pg = mediumFirstUsedPage; pg; pg = pg.next ) {
+////		idLib::common.Printf( "%p  bytes %-8d  (completely used by medium heap)\n", pg.data, pg.dataSize );
 ////	}
 
-////	for ( pg = mediumFirstFreePage; pg; pg = pg->next ) {
-////		idLib::common.Printf( "%p  bytes %-8d  (partially used by medium heap)\n", pg->data, pg->dataSize );
+////	for ( pg = mediumFirstFreePage; pg; pg = pg.next ) {
+////		idLib::common.Printf( "%p  bytes %-8d  (partially used by medium heap)\n", pg.data, pg.dataSize );
 ////	}
 	
-////	for ( pg = largeFirstUsedPage; pg; pg = pg->next ) {
-////		idLib::common.Printf( "%p  bytes %-8d  (fully used by large heap)\n", pg->data, pg->dataSize );
+////	for ( pg = largeFirstUsedPage; pg; pg = pg.next ) {
+////		idLib::common.Printf( "%p  bytes %-8d  (fully used by large heap)\n", pg.data, pg.dataSize );
 ////	}
 
 ////	idLib::common.Printf( "pages allocated : %d\n", pagesAllocated );
@@ -466,7 +466,7 @@
 
 ////	pageRequests++;
 
-////	if ( swapPage && swapPage->dataSize == bytes ) {			// if we've got a swap page somewhere
+////	if ( swapPage && swapPage.dataSize == bytes ) {			// if we've got a swap page somewhere
 ////		p			= swapPage;
 ////		swapPage	= NULL;
 ////	}
@@ -485,19 +485,19 @@
 ////				AllocDefragBlock();
 ////			}
 ////			if ( !p ) {
-////				common->FatalError( "malloc failure for %i", bytes );
+////				common.FatalError( "malloc failure for %i", bytes );
 ////			}
 ////		}
 
-////		p->data		= (void *) ALIGN_SIZE( (int)((byte *)(p)) + sizeof( idHeap::page_s ) );
-////		p->dataSize	= size - sizeof(idHeap::page_s);
-////		p->firstFree = NULL;
-////		p->largestFree = 0;
+////		p.data		= (void *) ALIGN_SIZE( (int)((byte *)(p)) + sizeof( idHeap::page_s ) );
+////		p.dataSize	= size - sizeof(idHeap::page_s);
+////		p.firstFree = NULL;
+////		p.largestFree = 0;
 ////		OSAllocs++;
 ////	}
 
-////	p->prev = NULL;
-////	p->next = NULL;
+////	p.prev = NULL;
+////	p.next = NULL;
 
 ////	pagesAllocated++;
 	
@@ -515,7 +515,7 @@
 ////void idHeap::FreePage( idHeap::page_s *p ) {
 ////	assert( p );
 
-////	if ( p->dataSize == pageSize && !swapPage ) {			// add to swap list?
+////	if ( p.dataSize == pageSize && !swapPage ) {			// add to swap list?
 ////		swapPage = p;
 ////	}
 ////	else {
@@ -561,7 +561,7 @@
 ////	// if we need to allocate a new page
 ////	if ( bytes >= bytesLeft ) {
 
-////		smallCurPage->next	= smallFirstUsedPage;
+////		smallCurPage.next	= smallFirstUsedPage;
 ////		smallFirstUsedPage	= smallCurPage;
 ////		smallCurPage		= AllocatePage( pageSize );
 ////		if ( !smallCurPage ) {
@@ -571,7 +571,7 @@
 ////		smallCurPageOffset	= SMALL_ALIGN( 0 );
 ////	}
 
-////	smallBlock			= ((byte *)smallCurPage->data) + smallCurPageOffset;
+////	smallBlock			= ((byte *)smallCurPage.data) + smallCurPageOffset;
 ////	smallBlock[0]		= (byte)(bytes / ALIGN);		// write # of bytes/ALIGN
 ////	smallBlock[1]		= SMALL_ALLOC;					// allocation identifier
 ////	smallCurPageOffset  += bytes + SMALL_HEADER_SIZE;	// increase the offset on the current page
@@ -596,7 +596,7 @@
 
 ////	// check if the index is correct
 ////	if ( ix > (256 / ALIGN) ) {
-////		idLib::common->FatalError( "SmallFree: invalid memory block" );
+////		idLib::common.FatalError( "SmallFree: invalid memory block" );
 ////	}
 
 ////	*dt = (dword)smallFirstFree[ix];	// write next index
@@ -627,47 +627,47 @@
 ////	mediumHeapEntry_s	*best,*nw = NULL;
 ////	byte				*ret;
 
-////	best = (mediumHeapEntry_s *)(p->firstFree);			// first block is largest
+////	best = (mediumHeapEntry_s *)(p.firstFree);			// first block is largest
 
 ////	assert( best );
-////	assert( best->size == p->largestFree );
-////	assert( best->size >= sizeNeeded );
+////	assert( best.size == p.largestFree );
+////	assert( best.size >= sizeNeeded );
 
 ////	// if we can allocate another block from this page after allocating sizeNeeded bytes
-////	if ( best->size >= (dword)( sizeNeeded + MEDIUM_SMALLEST_SIZE ) ) {
-////		nw = (mediumHeapEntry_s *)((byte *)best + best->size - sizeNeeded);
-////		nw->page		= p;
-////		nw->prev		= best;
-////		nw->next		= best->next;
-////		nw->prevFree	= NULL;
-////		nw->nextFree	= NULL;
-////		nw->size		= sizeNeeded;
-////		nw->freeBlock	= 0;			// used block
-////		if ( best->next ) {
-////			best->next->prev = nw;
+////	if ( best.size >= (dword)( sizeNeeded + MEDIUM_SMALLEST_SIZE ) ) {
+////		nw = (mediumHeapEntry_s *)((byte *)best + best.size - sizeNeeded);
+////		nw.page		= p;
+////		nw.prev		= best;
+////		nw.next		= best.next;
+////		nw.prevFree	= NULL;
+////		nw.nextFree	= NULL;
+////		nw.size		= sizeNeeded;
+////		nw.freeBlock	= 0;			// used block
+////		if ( best.next ) {
+////			best.next.prev = nw;
 ////		}
-////		best->next	= nw;
-////		best->size	-= sizeNeeded;
+////		best.next	= nw;
+////		best.size	-= sizeNeeded;
 		
-////		p->largestFree = best->size;
+////		p.largestFree = best.size;
 ////	}
 ////	else {
-////		if ( best->prevFree ) {
-////			best->prevFree->nextFree = best->nextFree;
+////		if ( best.prevFree ) {
+////			best.prevFree.nextFree = best.nextFree;
 ////		}
 ////		else {
-////			p->firstFree = (void *)best->nextFree;
+////			p.firstFree = (void *)best.nextFree;
 ////		}
-////		if ( best->nextFree ) {
-////			best->nextFree->prevFree = best->prevFree;
+////		if ( best.nextFree ) {
+////			best.nextFree.prevFree = best.prevFree;
 ////		}
 
-////		best->prevFree  = NULL;
-////		best->nextFree  = NULL;
-////		best->freeBlock = 0;			// used block
+////		best.prevFree  = NULL;
+////		best.nextFree  = NULL;
+////		best.freeBlock = 0;			// used block
 ////		nw = best;
 
-////		p->largestFree = 0;
+////		p.largestFree = 0;
 ////	}
 
 ////	ret		= (byte *)(nw) + ALIGN_SIZE( MEDIUM_HEADER_SIZE );
@@ -692,8 +692,8 @@
 ////	dword sizeNeeded = ALIGN_SIZE( bytes ) + ALIGN_SIZE( MEDIUM_HEADER_SIZE );
 
 ////	// find first page with enough space
-////	for ( p = mediumFirstFreePage; p; p = p->next ) {
-////		if ( p->largestFree >= sizeNeeded ) {
+////	for ( p = mediumFirstFreePage; p; p = p.next ) {
+////		if ( p.largestFree >= sizeNeeded ) {
 ////			break;
 ////		}
 ////	}
@@ -703,10 +703,10 @@
 ////		if ( !p ) {
 ////			return NULL;					// malloc failure!
 ////		}
-////		p->prev		= NULL;
-////		p->next		= mediumFirstFreePage;
-////		if (p->next) {
-////			p->next->prev = p;
+////		p.prev		= NULL;
+////		p.next		= mediumFirstFreePage;
+////		if (p.next) {
+////			p.next.prev = p;
 ////		}
 ////		else {
 ////			mediumLastFreePage	= p;
@@ -714,19 +714,19 @@
 
 ////		mediumFirstFreePage		= p;
 		
-////		p->largestFree	= pageSize;
-////		p->firstFree	= (void *)p->data;
+////		p.largestFree	= pageSize;
+////		p.firstFree	= (void *)p.data;
 
 ////		mediumHeapEntry_s *e;
-////		e				= (mediumHeapEntry_s *)(p->firstFree);
-////		e->page			= p;
-////		// make sure ((byte *)e + e->size) is aligned
-////		e->size			= pageSize & ~(ALIGN - 1);
-////		e->prev			= NULL;
-////		e->next			= NULL;
-////		e->prevFree		= NULL;
-////		e->nextFree		= NULL;
-////		e->freeBlock	= 1;
+////		e				= (mediumHeapEntry_s *)(p.firstFree);
+////		e.page			= p;
+////		// make sure ((byte *)e + e.size) is aligned
+////		e.size			= pageSize & ~(ALIGN - 1);
+////		e.prev			= NULL;
+////		e.next			= NULL;
+////		e.prevFree		= NULL;
+////		e.nextFree		= NULL;
+////		e.freeBlock	= 1;
 ////	}
 
 ////	data = MediumAllocateFromPage( p, sizeNeeded );		// allocate data from page
@@ -736,27 +736,27 @@
 ////	// this modification speeds up the pageWalk from O(N) to O(sqrt(N))
 ////	// a call to free may swap this page back to the free list
 
-////	if ( p->largestFree < MEDIUM_SMALLEST_SIZE ) {
+////	if ( p.largestFree < MEDIUM_SMALLEST_SIZE ) {
 ////		if ( p == mediumLastFreePage ) {
-////			mediumLastFreePage = p->prev;
+////			mediumLastFreePage = p.prev;
 ////		}
 
 ////		if ( p == mediumFirstFreePage ) {
-////			mediumFirstFreePage = p->next;
+////			mediumFirstFreePage = p.next;
 ////		}
 
-////		if ( p->prev ) {
-////			p->prev->next = p->next;
+////		if ( p.prev ) {
+////			p.prev.next = p.next;
 ////		}
-////		if ( p->next ) {
-////			p->next->prev = p->prev;
+////		if ( p.next ) {
+////			p.next.prev = p.prev;
 ////		}
 
 ////		// link to "completely used" list
-////		p->prev = NULL;
-////		p->next = mediumFirstUsedPage;
-////		if ( p->next ) {
-////			p->next->prev = p;
+////		p.prev = NULL;
+////		p.next = mediumFirstUsedPage;
+////		if ( p.next ) {
+////			p.next.prev = p;
 ////		}
 ////		mediumFirstUsedPage = p;
 ////		return data;
@@ -768,13 +768,13 @@
 ////	if ( p != mediumFirstFreePage ) {
 ////		assert( mediumLastFreePage );
 ////		assert( mediumFirstFreePage );
-////		assert( p->prev);
+////		assert( p.prev);
 
-////		mediumLastFreePage->next	= mediumFirstFreePage;
-////		mediumFirstFreePage->prev	= mediumLastFreePage;
-////		mediumLastFreePage			= p->prev;
-////		p->prev->next				= NULL;
-////		p->prev						= NULL;
+////		mediumLastFreePage.next	= mediumFirstFreePage;
+////		mediumFirstFreePage.prev	= mediumLastFreePage;
+////		mediumLastFreePage			= p.prev;
+////		p.prev.next				= NULL;
+////		p.prev						= NULL;
 ////		mediumFirstFreePage			= p;
 ////	}
 
@@ -793,109 +793,109 @@
 ////	((byte *)(ptr))[-1] = INVALID_ALLOC;
 
 ////	mediumHeapEntry_s	*e = (mediumHeapEntry_s *)((byte *)ptr - ALIGN_SIZE( MEDIUM_HEADER_SIZE ));
-////	idHeap::page_s		*p = e->page;
+////	idHeap::page_s		*p = e.page;
 ////	bool				isInFreeList;
 
-////	isInFreeList = p->largestFree >= MEDIUM_SMALLEST_SIZE;
+////	isInFreeList = p.largestFree >= MEDIUM_SMALLEST_SIZE;
 
-////	assert( e->size );
-////	assert( e->freeBlock == 0 );
+////	assert( e.size );
+////	assert( e.freeBlock == 0 );
 
-////	mediumHeapEntry_s *prev = e->prev;
+////	mediumHeapEntry_s *prev = e.prev;
 
 ////	// if the previous block is free we can merge
-////	if ( prev && prev->freeBlock ) {
-////		prev->size += e->size;
-////		prev->next = e->next;
-////		if ( e->next ) {
-////			e->next->prev = prev;
+////	if ( prev && prev.freeBlock ) {
+////		prev.size += e.size;
+////		prev.next = e.next;
+////		if ( e.next ) {
+////			e.next.prev = prev;
 ////		}
 ////		e = prev;
 ////	}
 ////	else {
-////		e->prevFree		= NULL;				// link to beginning of free list
-////		e->nextFree		= (mediumHeapEntry_s *)p->firstFree;
-////		if ( e->nextFree ) {
-////			assert( !(e->nextFree->prevFree) );
-////			e->nextFree->prevFree = e;
+////		e.prevFree		= NULL;				// link to beginning of free list
+////		e.nextFree		= (mediumHeapEntry_s *)p.firstFree;
+////		if ( e.nextFree ) {
+////			assert( !(e.nextFree.prevFree) );
+////			e.nextFree.prevFree = e;
 ////		}
 
-////		p->firstFree	= e;
-////		p->largestFree	= e->size;
-////		e->freeBlock	= 1;				// mark block as free
+////		p.firstFree	= e;
+////		p.largestFree	= e.size;
+////		e.freeBlock	= 1;				// mark block as free
 ////	}
 			
-////	mediumHeapEntry_s *next = e->next;
+////	mediumHeapEntry_s *next = e.next;
 
 ////	// if the next block is free we can merge
-////	if ( next && next->freeBlock ) {
-////		e->size += next->size;
-////		e->next = next->next;
+////	if ( next && next.freeBlock ) {
+////		e.size += next.size;
+////		e.next = next.next;
 		
-////		if ( next->next ) {
-////			next->next->prev = e;
+////		if ( next.next ) {
+////			next.next.prev = e;
 ////		}
 		
-////		if ( next->prevFree ) {
-////			next->prevFree->nextFree = next->nextFree;
+////		if ( next.prevFree ) {
+////			next.prevFree.nextFree = next.nextFree;
 ////		}
 ////		else {
-////			assert( next == p->firstFree );
-////			p->firstFree = next->nextFree;
+////			assert( next == p.firstFree );
+////			p.firstFree = next.nextFree;
 ////		}
 
-////		if ( next->nextFree ) {
-////			next->nextFree->prevFree = next->prevFree;
+////		if ( next.nextFree ) {
+////			next.nextFree.prevFree = next.prevFree;
 ////		}
 ////	}
 
-////	if ( p->firstFree ) {
-////		p->largestFree = ((mediumHeapEntry_s *)(p->firstFree))->size;
+////	if ( p.firstFree ) {
+////		p.largestFree = ((mediumHeapEntry_s *)(p.firstFree)).size;
 ////	}
 ////	else {
-////		p->largestFree = 0;
+////		p.largestFree = 0;
 ////	}
 
 ////	// did e become the largest block of the page ?
 
-////	if ( e->size > p->largestFree ) {
-////		assert( e != p->firstFree );
-////		p->largestFree = e->size;
+////	if ( e.size > p.largestFree ) {
+////		assert( e != p.firstFree );
+////		p.largestFree = e.size;
 
-////		if ( e->prevFree ) {
-////			e->prevFree->nextFree = e->nextFree;
+////		if ( e.prevFree ) {
+////			e.prevFree.nextFree = e.nextFree;
 ////		}
-////		if ( e->nextFree ) {
-////			e->nextFree->prevFree = e->prevFree;
+////		if ( e.nextFree ) {
+////			e.nextFree.prevFree = e.prevFree;
 ////		}
 		
-////		e->nextFree = (mediumHeapEntry_s *)p->firstFree;
-////		e->prevFree = NULL;
-////		if ( e->nextFree ) {
-////			e->nextFree->prevFree = e;
+////		e.nextFree = (mediumHeapEntry_s *)p.firstFree;
+////		e.prevFree = NULL;
+////		if ( e.nextFree ) {
+////			e.nextFree.prevFree = e;
 ////		}
-////		p->firstFree = e;
+////		p.firstFree = e;
 ////	}
 
 ////	// if page wasn't in free list (because it was near-full), move it back there
 ////	if ( !isInFreeList ) {
 
 ////		// remove from "completely used" list
-////		if ( p->prev ) {
-////			p->prev->next = p->next;
+////		if ( p.prev ) {
+////			p.prev.next = p.next;
 ////		}
-////		if ( p->next ) {
-////			p->next->prev = p->prev;
+////		if ( p.next ) {
+////			p.next.prev = p.prev;
 ////		}
 ////		if ( p == mediumFirstUsedPage ) {
-////			mediumFirstUsedPage = p->next;
+////			mediumFirstUsedPage = p.next;
 ////		}
 
-////		p->next = NULL;
-////		p->prev = mediumLastFreePage;
+////		p.next = NULL;
+////		p.prev = mediumLastFreePage;
 
 ////		if ( mediumLastFreePage ) {
-////			mediumLastFreePage->next = p;
+////			mediumLastFreePage.next = p;
 ////		}
 ////		mediumLastFreePage = p;
 ////		if ( !mediumFirstFreePage ) {
@@ -928,16 +928,16 @@
 ////		return NULL;
 ////	}
 
-////	byte *	d	= (byte*)(p->data) + ALIGN_SIZE( LARGE_HEADER_SIZE );
+////	byte *	d	= (byte*)(p.data) + ALIGN_SIZE( LARGE_HEADER_SIZE );
 ////	dword *	dw	= (dword*)(d - ALIGN_SIZE( LARGE_HEADER_SIZE ));
 ////	dw[0]		= (dword)p;				// write pointer back to page table
 ////	d[-1]		= LARGE_ALLOC;			// allocation identifier
 
 ////	// link to 'large used page list'
-////	p->prev = NULL;
-////	p->next = largeFirstUsedPage;
-////	if ( p->next ) {
-////		p->next->prev = p;
+////	p.prev = NULL;
+////	p.next = largeFirstUsedPage;
+////	if ( p.next ) {
+////		p.next.prev = p;
 ////	}
 ////	largeFirstUsedPage = p;
 
@@ -961,16 +961,16 @@
 ////	pg = (idHeap::page_s *)(*((dword *)(((byte *)ptr) - ALIGN_SIZE( LARGE_HEADER_SIZE ))));
 
 ////	// unlink from doubly linked list
-////	if ( pg->prev ) {
-////		pg->prev->next = pg->next;
+////	if ( pg.prev ) {
+////		pg.prev.next = pg.next;
 ////	}
-////	if ( pg->next ) {
-////		pg->next->prev = pg->prev;
+////	if ( pg.next ) {
+////		pg.next.prev = pg.prev;
 ////	}
 ////	if ( pg == largeFirstUsedPage ) {
-////		largeFirstUsedPage = pg->next;
+////		largeFirstUsedPage = pg.next;
 ////	}
-////	pg->next = pg->prev = NULL;
+////	pg.next = pg.prev = NULL;
 
 ////	FreePage(pg);
 ////}
@@ -1074,8 +1074,8 @@
 ////#endif
 ////		return malloc( size );
 ////	}
-////	void *mem = mem_heap->Allocate( size );
-////	Mem_UpdateAllocStats( mem_heap->Msize( mem ) );
+////	void *mem = mem_heap.Allocate( size );
+////	Mem_UpdateAllocStats( mem_heap.Msize( mem ) );
 ////	return mem;
 ////}
 
@@ -1095,8 +1095,8 @@
 ////		free( ptr );
 ////		return;
 ////	}
-////	Mem_UpdateFreeStats( mem_heap->Msize( ptr ) );
-//// 	mem_heap->Free( ptr );
+////	Mem_UpdateFreeStats( mem_heap.Msize( ptr ) );
+//// 	mem_heap.Free( ptr );
 ////}
 
 /////*
@@ -1114,7 +1114,7 @@
 ////#endif
 ////		return malloc( size );
 ////	}
-////	void *mem = mem_heap->Allocate16( size );
+////	void *mem = mem_heap.Allocate16( size );
 ////	// make sure the memory is 16 byte aligned
 ////	assert( ( ((int)mem) & 15) == 0 );
 ////	return mem;
@@ -1138,7 +1138,7 @@
 ////	}
 ////	// make sure the memory is 16 byte aligned
 ////	assert( ( ((int)ptr) & 15) == 0 );
-//// 	mem_heap->Free16( ptr );
+//// 	mem_heap.Free16( ptr );
 ////}
 
 /////*
@@ -1148,7 +1148,7 @@
 ////*/
 ////void *Mem_ClearedAlloc( const int size ) {
 ////	void *mem = Mem_Alloc( size );
-////	SIMDProcessor->Memset( mem, 0, size );
+////	SIMDProcessor.Memset( mem, 0, size );
 ////	return mem;
 ////}
 
@@ -1158,7 +1158,7 @@
 ////==================
 ////*/
 ////void Mem_AllocDefragBlock( void ) {
-////	mem_heap->AllocDefragBlock();
+////	mem_heap.AllocDefragBlock();
 ////}
 
 /*
@@ -1299,10 +1299,10 @@ function Mem_CopyString( /*const char *in*/$in:string ):string {
 ////	}
 
 ////	totalSize = 0;
-////	for ( numBlocks = 0, b = mem_debugMemory; b; b = b->next, numBlocks++ ) {
+////	for ( numBlocks = 0, b = mem_debugMemory; b; b = b.next, numBlocks++ ) {
 ////		ptr = ((char *) b) + sizeof(debugMemory_t);
-////		totalSize += b->size;
-////		for ( i = 0; i < (sizeof(dump)-1) && i < b->size; i++) {
+////		totalSize += b.size;
+////		for ( i = 0; i < (sizeof(dump)-1) && i < b.size; i++) {
 ////			if ( ptr[i] >= 32 && ptr[i] < 127 ) {
 ////				dump[i] = ptr[i];
 ////			} else {
@@ -1310,15 +1310,15 @@ function Mem_CopyString( /*const char *in*/$in:string ):string {
 ////			}
 ////		}
 ////		dump[i] = '\0';
-////		if ( ( b->size >> 10 ) != 0 ) {
-////			fprintf( f, "size: %6d KB: %s, line: %d [%s], call stack: %s\r\n", ( b->size >> 10 ), Mem_CleanupFileName(b->fileName), b->lineNumber, dump, idLib::sys->GetCallStackStr( b->callStack, MAX_CALLSTACK_DEPTH ) );
+////		if ( ( b.size >> 10 ) != 0 ) {
+////			fprintf( f, "size: %6d KB: %s, line: %d [%s], call stack: %s\r\n", ( b.size >> 10 ), Mem_CleanupFileName(b.fileName), b.lineNumber, dump, idLib::sys.GetCallStackStr( b.callStack, MAX_CALLSTACK_DEPTH ) );
 ////		}
 ////		else {
-////			fprintf( f, "size: %7d B: %s, line: %d [%s], call stack: %s\r\n", b->size, Mem_CleanupFileName(b->fileName), b->lineNumber, dump, idLib::sys->GetCallStackStr( b->callStack, MAX_CALLSTACK_DEPTH ) );
+////			fprintf( f, "size: %7d B: %s, line: %d [%s], call stack: %s\r\n", b.size, Mem_CleanupFileName(b.fileName), b.lineNumber, dump, idLib::sys.GetCallStackStr( b.callStack, MAX_CALLSTACK_DEPTH ) );
 ////		}
 ////	}
 
-////	idLib::sys->ShutdownSymbols();
+////	idLib::sys.ShutdownSymbols();
 
 ////	fprintf( f, "%8d total memory blocks allocated\r\n", numBlocks );
 ////	fprintf( f, "%8d KB memory allocated\r\n", ( totalSize >> 10 ) );
@@ -1374,61 +1374,61 @@ function Mem_CopyString( /*const char *in*/$in:string ):string {
 ////	// build list with memory allocations
 ////	totalSize = 0;
 ////	numBlocks = 0;
-////	for ( b = mem_debugMemory; b; b = b->next ) {
+////	for ( b = mem_debugMemory; b; b = b.next ) {
 
-////		if ( numFrames && b->frameNumber < idLib::frameNumber - numFrames ) {
+////		if ( numFrames && b.frameNumber < idLib::frameNumber - numFrames ) {
 ////			continue;
 ////		}
 
 ////		numBlocks++;
-////		totalSize += b->size;
+////		totalSize += b.size;
 
 ////		// search for an allocation from the same source location
-////		for ( a = allocInfo; a; a = a->next ) {
-////			if ( a->lineNumber != b->lineNumber ) {
+////		for ( a = allocInfo; a; a = a.next ) {
+////			if ( a.lineNumber != b.lineNumber ) {
 ////				continue;
 ////			}
 ////			for ( j = 0; j < MAX_CALLSTACK_DEPTH; j++ ) {
-////				if ( a->callStack[j] != b->callStack[j] ) {
+////				if ( a.callStack[j] != b.callStack[j] ) {
 ////					break;
 ////				}
 ////			}
 ////			if ( j < MAX_CALLSTACK_DEPTH ) {
 ////				continue;
 ////			}
-////			if ( idStr::Cmp( a->fileName, b->fileName ) != 0 ) {
+////			if ( idStr::Cmp( a.fileName, b.fileName ) != 0 ) {
 ////				continue;
 ////			}
-////			a->numAllocs++;
-////			a->size += b->size;
+////			a.numAllocs++;
+////			a.size += b.size;
 ////			break;
 ////		}
 
 ////		// if this is an allocation from a new source location
 ////		if ( !a ) {
 ////			a = (allocInfo_t *) ::malloc( sizeof( allocInfo_t ) );
-////			a->fileName = b->fileName;
-////			a->lineNumber = b->lineNumber;
-////			a->size = b->size;
-////			a->numAllocs = 1;
+////			a.fileName = b.fileName;
+////			a.lineNumber = b.lineNumber;
+////			a.size = b.size;
+////			a.numAllocs = 1;
 ////			for ( j = 0; j < MAX_CALLSTACK_DEPTH; j++ ) {
-////				a->callStack[j] = b->callStack[j];
+////				a.callStack[j] = b.callStack[j];
 ////			}
-////			a->next = allocInfo;
+////			a.next = allocInfo;
 ////			allocInfo = a;
 ////		}
 ////	}
 
 ////	// sort list
 ////	for ( a = allocInfo; a; a = nexta ) {
-////		nexta = a->next;
+////		nexta = a.next;
 
 ////		prevSorted = NULL;
 ////		switch( memSort ) {
 ////			// sort on size
 ////			case MEMSORT_SIZE: {
-////				for ( nextSorted = sortedAllocInfo; nextSorted; nextSorted = nextSorted->next ) {
-////					if ( a->size > nextSorted->size ) {
+////				for ( nextSorted = sortedAllocInfo; nextSorted; nextSorted = nextSorted.next ) {
+////					if ( a.size > nextSorted.size ) {
 ////						break;
 ////					}
 ////					prevSorted = nextSorted;
@@ -1437,9 +1437,9 @@ function Mem_CopyString( /*const char *in*/$in:string ):string {
 ////			}
 ////			// sort on file name and line number
 ////			case MEMSORT_LOCATION: {
-////				for ( nextSorted = sortedAllocInfo; nextSorted; nextSorted = nextSorted->next ) {
-////					r = idStr::Cmp( Mem_CleanupFileName( a->fileName ), Mem_CleanupFileName( nextSorted->fileName ) );
-////					if ( r < 0 || ( r == 0 && a->lineNumber < nextSorted->lineNumber ) ) {
+////				for ( nextSorted = sortedAllocInfo; nextSorted; nextSorted = nextSorted.next ) {
+////					r = idStr::Cmp( Mem_CleanupFileName( a.fileName ), Mem_CleanupFileName( nextSorted.fileName ) );
+////					if ( r < 0 || ( r == 0 && a.lineNumber < nextSorted.lineNumber ) ) {
 ////						break;
 ////					}
 ////					prevSorted = nextSorted;
@@ -1448,8 +1448,8 @@ function Mem_CopyString( /*const char *in*/$in:string ):string {
 ////			}
 ////			// sort on the number of allocations
 ////			case MEMSORT_NUMALLOCS: {
-////				for ( nextSorted = sortedAllocInfo; nextSorted; nextSorted = nextSorted->next ) {
-////					if ( a->numAllocs > nextSorted->numAllocs ) {
+////				for ( nextSorted = sortedAllocInfo; nextSorted; nextSorted = nextSorted.next ) {
+////					if ( a.numAllocs > nextSorted.numAllocs ) {
 ////						break;
 ////					}
 ////					prevSorted = nextSorted;
@@ -1458,8 +1458,8 @@ function Mem_CopyString( /*const char *in*/$in:string ):string {
 ////			}
 ////			// sort on call stack
 ////			case MEMSORT_CALLSTACK: {
-////				for ( nextSorted = sortedAllocInfo; nextSorted; nextSorted = nextSorted->next ) {
-////					if ( a->callStack[sortCallStack] < nextSorted->callStack[sortCallStack] ) {
+////				for ( nextSorted = sortedAllocInfo; nextSorted; nextSorted = nextSorted.next ) {
+////					if ( a.callStack[sortCallStack] < nextSorted.callStack[sortCallStack] ) {
 ////						break;
 ////					}
 ////					prevSorted = nextSorted;
@@ -1468,12 +1468,12 @@ function Mem_CopyString( /*const char *in*/$in:string ):string {
 ////			}
 ////		}
 ////		if ( !prevSorted ) {
-////			a->next = sortedAllocInfo;
+////			a.next = sortedAllocInfo;
 ////			sortedAllocInfo = a;
 ////		}
 ////		else {
-////			prevSorted->next = a;
-////			a->next = nextSorted;
+////			prevSorted.next = a;
+////			a.next = nextSorted;
 ////		}
 ////	}
 
@@ -1484,14 +1484,14 @@ function Mem_CopyString( /*const char *in*/$in:string ):string {
 
 ////	// write list to file
 ////	for ( a = sortedAllocInfo; a; a = nexta ) {
-////		nexta = a->next;
+////		nexta = a.next;
 ////		fprintf( f, "size: %6d KB, allocs: %5d: %s, line: %d, call stack: %s\r\n",
-////					(a->size >> 10), a->numAllocs, Mem_CleanupFileName(a->fileName),
-////							a->lineNumber, idLib::sys->GetCallStackStr( a->callStack, MAX_CALLSTACK_DEPTH ) );
+////					(a.size >> 10), a.numAllocs, Mem_CleanupFileName(a.fileName),
+////							a.lineNumber, idLib::sys.GetCallStackStr( a.callStack, MAX_CALLSTACK_DEPTH ) );
 ////		::free( a );
 ////	}
 
-////	idLib::sys->ShutdownSymbols();
+////	idLib::sys.ShutdownSymbols();
 
 ////	fprintf( f, "%8d total memory blocks allocated\r\n", numBlocks );
 ////	fprintf( f, "%8d KB memory allocated\r\n", ( totalSize >> 10 ) );
@@ -1578,26 +1578,26 @@ function Mem_CopyString( /*const char *in*/$in:string ):string {
 ////	}
 
 ////	if ( align16 ) {
-////		p = mem_heap->Allocate16( size + sizeof( debugMemory_t ) );
+////		p = mem_heap.Allocate16( size + sizeof( debugMemory_t ) );
 ////	}
 ////	else {
-////		p = mem_heap->Allocate( size + sizeof( debugMemory_t ) );
+////		p = mem_heap.Allocate( size + sizeof( debugMemory_t ) );
 ////	}
 
 ////	Mem_UpdateAllocStats( size );
 
 ////	m = (debugMemory_t *) p;
-////	m->fileName = fileName;
-////	m->lineNumber = lineNumber;
-////	m->frameNumber = idLib::frameNumber;
-////	m->size = size;
-////	m->next = mem_debugMemory;
-////	m->prev = NULL;
+////	m.fileName = fileName;
+////	m.lineNumber = lineNumber;
+////	m.frameNumber = idLib::frameNumber;
+////	m.size = size;
+////	m.next = mem_debugMemory;
+////	m.prev = NULL;
 ////	if ( mem_debugMemory ) {
-////		mem_debugMemory->prev = m;
+////		mem_debugMemory.prev = m;
 ////	}
 ////	mem_debugMemory = m;
-////	idLib::sys->GetCallStack( m->callStack, MAX_CALLSTACK_DEPTH );
+////	idLib::sys.GetCallStack( m.callStack, MAX_CALLSTACK_DEPTH );
 
 ////	return ( ( (byte *) p ) + sizeof( debugMemory_t ) );
 ////}
@@ -1625,33 +1625,33 @@ function Mem_CopyString( /*const char *in*/$in:string ):string {
 
 ////	m = (debugMemory_t *) ( ( (byte *) p ) - sizeof( debugMemory_t ) );
 
-////	if ( m->size < 0 ) {
-////		idLib::common->FatalError( "memory freed twice, first from %s, now from %s", idLib::sys->GetCallStackStr( m->callStack, MAX_CALLSTACK_DEPTH ), idLib::sys->GetCallStackCurStr( MAX_CALLSTACK_DEPTH ) );
+////	if ( m.size < 0 ) {
+////		idLib::common.FatalError( "memory freed twice, first from %s, now from %s", idLib::sys.GetCallStackStr( m.callStack, MAX_CALLSTACK_DEPTH ), idLib::sys.GetCallStackCurStr( MAX_CALLSTACK_DEPTH ) );
 ////	}
 
-////	Mem_UpdateFreeStats( m->size );
+////	Mem_UpdateFreeStats( m.size );
 
-////	if ( m->next ) {
-////		m->next->prev = m->prev;
+////	if ( m.next ) {
+////		m.next.prev = m.prev;
 ////	}
-////	if ( m->prev ) {
-////		m->prev->next = m->next;
+////	if ( m.prev ) {
+////		m.prev.next = m.next;
 ////	}
 ////	else {
-////		mem_debugMemory = m->next;
+////		mem_debugMemory = m.next;
 ////	}
 
-////	m->fileName = fileName;
-////	m->lineNumber = lineNumber;
-////	m->frameNumber = idLib::frameNumber;
-////	m->size = -m->size;
-////	idLib::sys->GetCallStack( m->callStack, MAX_CALLSTACK_DEPTH );
+////	m.fileName = fileName;
+////	m.lineNumber = lineNumber;
+////	m.frameNumber = idLib::frameNumber;
+////	m.size = -m.size;
+////	idLib::sys.GetCallStack( m.callStack, MAX_CALLSTACK_DEPTH );
 
 ////	if ( align16 ) {
-//// 		mem_heap->Free16( m );
+//// 		mem_heap.Free16( m );
 ////	}
 ////	else {
-//// 		mem_heap->Free( m );
+//// 		mem_heap.Free( m );
 ////	}
 ////}
 
@@ -1715,7 +1715,7 @@ function Mem_CopyString( /*const char *in*/$in:string ):string {
 ////*/
 ////void *Mem_ClearedAlloc( const int size, const char *fileName, const int lineNumber ) {
 ////	void *mem = Mem_Alloc( size, fileName, lineNumber );
-////	SIMDProcessor->Memset( mem, 0, size );
+////	SIMDProcessor.Memset( mem, 0, size );
 ////	return mem;
 ////}
 

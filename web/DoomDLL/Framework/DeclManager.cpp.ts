@@ -1499,7 +1499,7 @@ idDeclManagerLocal::MediaPrint
 This is just used to nicely indent media caching prints
 ===================
 */
-idDeclManagerLocal.prototype.MediaPrint = function ( fmt, ...args: any[] ): void {
+idDeclManagerLocal.prototype.MediaPrint = function ( fmt:string, ...args: any[] ): void {
     todo ( );
     console.log( "MediaPrint: " + fmt, args );
     //if ( !this.decl_show.GetInteger() ) {
@@ -2195,7 +2195,7 @@ idDeclLocal.prototype.ParseLocal = function( ):void {
 	// parse
 	var/*char **/declText = new Uint8Array(this.GetTextLength() + 1 );
 	this.GetText( declText );
-	self.Parse( declText, this.GetTextLength() );
+	this.self.Parse( declText, this.GetTextLength() );
 
 	// free generated text
 	if ( generatedDefaultText ) {

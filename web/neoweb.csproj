@@ -58,6 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="compile.bat" />
+    <Content Include="dlls\Game\Game_local.cpp.ts" />
+    <Content Include="dlls\Game\Game_local.h.ts" />
     <Content Include="DoomDLL\Framework\CmdSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\CmdSystem.h.ts" />
     <Content Include="DoomDLL\Framework\Common.cpp.ts" />
@@ -75,6 +77,26 @@
     <Content Include="DoomDLL\Renderer\Image_program.cpp.ts" />
     <Content Include="DoomDLL\Renderer\Material.cpp.ts" />
     <Content Include="DoomDLL\Renderer\Material.h.ts" />
+    <Content Include="DoomDLL\Renderer\Model.cpp.ts" />
+    <Content Include="DoomDLL\Renderer\Model.h.ts" />
+    <Content Include="DoomDLL\Renderer\ModelDecal.cpp.ts" />
+    <Content Include="DoomDLL\Renderer\ModelDecal.h.ts" />
+    <Content Include="DoomDLL\Renderer\ModelManager.cpp.ts" />
+    <Content Include="DoomDLL\Renderer\ModelManager.h.ts" />
+    <Content Include="DoomDLL\Renderer\Model_ase.cpp.ts" />
+    <Content Include="DoomDLL\Renderer\Model_ase.h.ts" />
+    <Content Include="DoomDLL\Renderer\Model_beam.cpp.ts" />
+    <Content Include="DoomDLL\Renderer\Model_liquid.cpp.ts" />
+    <Content Include="DoomDLL\Renderer\Model_local.h.ts" />
+    <Content Include="DoomDLL\Renderer\Model_lwo.cpp.ts" />
+    <Content Include="DoomDLL\Renderer\Model_lwo.h.ts" />
+    <Content Include="DoomDLL\Renderer\Model_ma.cpp.ts" />
+    <Content Include="DoomDLL\Renderer\Model_ma.h.ts" />
+    <Content Include="DoomDLL\Renderer\Model_md3.cpp.ts" />
+    <Content Include="DoomDLL\Renderer\Model_md3.h.ts" />
+    <Content Include="DoomDLL\Renderer\Model_md5.cpp.ts" />
+    <Content Include="DoomDLL\Renderer\Model_prt.cpp.ts" />
+    <Content Include="DoomDLL\Renderer\Model_sprite.cpp.ts" />
     <Content Include="DoomDLL\Renderer\RenderSystem.cpp.ts" />
     <Content Include="DoomDLL\Renderer\RenderSystem.h.ts" />
     <Content Include="DoomDLL\Renderer\RenderSystem_init.cpp.ts" />

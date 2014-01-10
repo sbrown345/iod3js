@@ -1,3 +1,4 @@
+/// <reference path="../../utils/todo.ts" />
 /////*
 ////===========================================================================
 
@@ -235,7 +236,7 @@
 ////	idStr::vsnPrintf( text, sizeof( text ), fmt, argptr );
 ////	va_end( argptr );
 
-////	common->Error( "%s", text );
+////	common.Error( "%s", text );
 ////}
 
 /////*
@@ -251,7 +252,7 @@
 ////	idStr::vsnPrintf( text, sizeof( text ), fmt, argptr );
 ////	va_end( argptr );
 
-////	common->Warning( "%s", text );
+////	common.Warning( "%s", text );
 ////}
 
 /////*
@@ -575,5 +576,5 @@
 
 function AssertFailed( /*const char **/file:string, /*int */line:number, /*const char **/expression:string ):void {
     todoThrow();
-    //idLib::sys->DebugPrintf( "\n\nASSERTION FAILED!\n%s(%d): '%s'\n", file, line, expression );
+    //idLib::sys.DebugPrintf( "\n\nASSERTION FAILED!\n%s(%d): '%s'\n", file, line, expression );
 }

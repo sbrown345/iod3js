@@ -147,7 +147,7 @@ var backEnd:backEndState_t;
 
 ////#if 0
 ////	if (unit < 0 || unit >= glConfig.maxTextureUnits && unit >= glConfig.maxTextureImageUnits) {
-////		common->Warning("GL_SelectTexture: unit = %i", unit);
+////		common.Warning("GL_SelectTexture: unit = %i", unit);
 ////		return;
 ////	}
 ////#endif
@@ -172,7 +172,7 @@ var backEnd:backEndState_t;
 ////		return;
 ////	}
 
-////	glUseProgram(program ? program->program : 0);
+////	glUseProgram(program ? program.program : 0);
 ////	backEnd.glState.currentProgram = program;
 
 ////	GL_CheckErrors();
@@ -186,7 +186,7 @@ var backEnd:backEndState_t;
 ////void GL_Uniform1fv(GLint location, const GLfloat *value)
 ////{
 ////	if (!backEnd.glState.currentProgram) {
-////		common->Printf("GL_Uniform1fv: no current program object\n");
+////		common.Printf("GL_Uniform1fv: no current program object\n");
 ////		__builtin_trap();
 ////		return;
 ////	}
@@ -204,7 +204,7 @@ var backEnd:backEndState_t;
 ////void GL_Uniform4fv(GLint location, const GLfloat *value)
 ////{
 ////	if (!backEnd.glState.currentProgram) {
-////		common->Printf("GL_Uniform4fv: no current program object\n");
+////		common.Printf("GL_Uniform4fv: no current program object\n");
 ////		__builtin_trap();
 ////		return;
 ////	}
@@ -223,7 +223,7 @@ var backEnd:backEndState_t;
 ////void GL_UniformMatrix4fv(GLint location, const GLfloat *value)
 ////{
 ////	if (!backEnd.glState.currentProgram) {
-////		common->Printf("GL_Uniform4fv: no current program object\n");
+////		common.Printf("GL_Uniform4fv: no current program object\n");
 ////		__builtin_trap();
 ////		return;
 ////	}
@@ -241,13 +241,13 @@ var backEnd:backEndState_t;
 ////void GL_EnableVertexAttribArray(GLuint index)
 ////{
 ////	if (!backEnd.glState.currentProgram) {
-////		common->Printf("GL_EnableVertexAttribArray: no current program object\n");
+////		common.Printf("GL_EnableVertexAttribArray: no current program object\n");
 ////		__builtin_trap();
 ////		return;
 ////	}
 
 ////	if ((*(GLint *)((char *)backEnd.glState.currentProgram + index)) == -1) {
-////		common->Printf("GL_EnableVertexAttribArray: unbound attribute index\n");
+////		common.Printf("GL_EnableVertexAttribArray: unbound attribute index\n");
 ////		__builtin_trap();
 ////		return;
 ////	}
@@ -265,13 +265,13 @@ var backEnd:backEndState_t;
 ////void GL_DisableVertexAttribArray(GLuint index)
 ////{
 ////	if (!backEnd.glState.currentProgram) {
-////		common->Printf("GL_DisableVertexAttribArray: no current program object\n");
+////		common.Printf("GL_DisableVertexAttribArray: no current program object\n");
 ////		__builtin_trap();
 ////		return;
 ////	}
 
 ////	if ((*(GLint *)((char *)backEnd.glState.currentProgram + index)) == -1) {
-////		common->Printf("GL_DisableVertexAttribArray: unbound attribute index\n");
+////		common.Printf("GL_DisableVertexAttribArray: unbound attribute index\n");
 ////		__builtin_trap();
 ////		return;
 ////	}
@@ -291,13 +291,13 @@ var backEnd:backEndState_t;
 ////			    const GLvoid *pointer)
 ////{
 ////	if (!backEnd.glState.currentProgram) {
-////		common->Printf("GL_VertexAttribPointer: no current program object\n");
+////		common.Printf("GL_VertexAttribPointer: no current program object\n");
 ////		__builtin_trap();
 ////		return;
 ////	}
 
 ////	if ((*(GLint *)((char *)backEnd.glState.currentProgram + index)) == -1) {
-////		common->Printf("GL_VertexAttribPointer: unbound attribute index\n");
+////		common.Printf("GL_VertexAttribPointer: unbound attribute index\n");
 ////		__builtin_trap();
 ////		return;
 ////	}
@@ -330,13 +330,13 @@ var backEnd:backEndState_t;
 ////		}
 
 ////		if (cullType == CT_BACK_SIDED) {
-////			if (backEnd.viewDef->isMirror) {
+////			if (backEnd.viewDef.isMirror) {
 ////				glCullFace(GL_FRONT);
 ////			} else {
 ////				glCullFace(GL_BACK);
 ////			}
 ////		} else {
-////			if (backEnd.viewDef->isMirror) {
+////			if (backEnd.viewDef.isMirror) {
 ////				glCullFace(GL_BACK);
 ////			} else {
 ////				glCullFace(GL_FRONT);
@@ -434,7 +434,7 @@ var backEnd:backEndState_t;
 ////				break;
 ////			default:
 ////				srcFactor = GL_ONE;		// to get warning to shut up
-////				common->Error("GL_State: invalid src blend state bits\n");
+////				common.Error("GL_State: invalid src blend state bits\n");
 ////				break;
 ////		}
 
@@ -465,7 +465,7 @@ var backEnd:backEndState_t;
 ////				break;
 ////			default:
 ////				dstFactor = GL_ONE;		// to get warning to shut up
-////				common->Error("GL_State: invalid dst blend state bits\n");
+////				common.Error("GL_State: invalid dst blend state bits\n");
 ////				break;
 ////		}
 
@@ -567,11 +567,11 @@ var backEnd:backEndState_t;
 ////	}
 
 ////	// always assume 640x480 virtual coordinates
-////	esOrtho((ESMatrix *)backEnd.viewDef->projectionMatrix, 0, 640, 480, 0, 0, 1);
-////	esMatrixLoadIdentity((ESMatrix *)backEnd.viewDef->worldSpace.modelViewMatrix);
+////	esOrtho((ESMatrix *)backEnd.viewDef.projectionMatrix, 0, 640, 480, 0, 0, 1);
+////	esMatrixLoadIdentity((ESMatrix *)backEnd.viewDef.worldSpace.modelViewMatrix);
 
 ////	float	mat[16];
-////	myGlMultMatrix(backEnd.viewDef->worldSpace.modelViewMatrix, backEnd.viewDef->projectionMatrix, mat);
+////	myGlMultMatrix(backEnd.viewDef.worldSpace.modelViewMatrix, backEnd.viewDef.projectionMatrix, mat);
 ////	GL_UniformMatrix4fv(offsetof(shaderProgram_t, modelViewProjectionMatrix), mat);
 
 ////	GL_State(GLS_DEPTHFUNC_ALWAYS |
@@ -600,10 +600,10 @@ var backEnd:backEndState_t;
 
 ////	cmd = (const setBufferCommand_t *)data;
 
-////	backEnd.frameCount = cmd->frameCount;
+////	backEnd.frameCount = cmd.frameCount;
 
 ////#if !defined(GL_ES_VERSION_2_0)
-////	glDrawBuffer(cmd->buffer);
+////	glDrawBuffer(cmd.buffer);
 ////#endif
 
 ////	// clear screen for debugging
@@ -651,10 +651,10 @@ var backEnd:backEndState_t;
 
 ////	start = Sys_Milliseconds();
 
-////	for (i = 0 ; i < globalImages->images.Num() ; i++) {
-////		image = globalImages->images[i];
+////	for (i = 0 ; i < globalImages.images.Num() ; i++) {
+////		image = globalImages.images[i];
 
-////		if (image->texnum == idImage::TEXTURE_NOT_LOADED && image->partialImage == NULL) {
+////		if (image.texnum == idImage::TEXTURE_NOT_LOADED && image.partialImage == NULL) {
 ////			continue;
 ////		}
 
@@ -665,11 +665,11 @@ var backEnd:backEndState_t;
 
 ////		// show in proportional size in mode 2
 ////		if (r_showImages.GetInteger() == 2) {
-////			w *= image->uploadWidth / 512.0f;
-////			h *= image->uploadHeight / 512.0f;
+////			w *= image.uploadWidth / 512.0f;
+////			h *= image.uploadHeight / 512.0f;
 ////		}
 
-////		image->Bind();
+////		image.Bind();
 ////		glBegin(GL_QUADS);
 ////		glTexCoord2f(0, 0);
 ////		glVertex2f(x, y);
@@ -685,7 +685,7 @@ var backEnd:backEndState_t;
 ////	glFinish();
 
 ////	end = Sys_Milliseconds();
-////	common->Printf("%i msec to draw all images\n", end - start);
+////	common.Printf("%i msec to draw all images\n", end - start);
 ////#endif
 ////}
 
@@ -735,8 +735,8 @@ var backEnd:backEndState_t;
 
 ////	RB_LogComment("***************** RB_CopyRender *****************\n");
 
-////	if (cmd->image) {
-////		cmd->image->CopyFramebuffer(cmd->x, cmd->y, cmd->imageWidth, cmd->imageHeight, false);
+////	if (cmd.image) {
+////		cmd.image.CopyFramebuffer(cmd.x, cmd.y, cmd.imageWidth, cmd.imageHeight, false);
 ////	}
 ////}
 
@@ -754,7 +754,7 @@ var backEnd:backEndState_t;
 ////	// r_debugRenderToTexture
 ////	int	c_draw3d = 0, c_draw2d = 0, c_setBuffers = 0, c_swapBuffers = 0, c_copyRenders = 0;
 
-////	if (cmds->commandId == RC_NOP && !cmds->next) {
+////	if (cmds.commandId == RC_NOP && !cmds.next) {
 ////		return;
 ////	}
 
@@ -764,16 +764,16 @@ var backEnd:backEndState_t;
 ////	RB_SetDefaultGLState();
 
 ////	// upload any image loads that have completed
-////	globalImages->CompleteBackgroundImageLoads();
+////	globalImages.CompleteBackgroundImageLoads();
 
-////	for (; cmds ; cmds = (const emptyCommand_t *)cmds->next) {
-////		switch (cmds->commandId) {
+////	for (; cmds ; cmds = (const emptyCommand_t *)cmds.next) {
+////		switch (cmds.commandId) {
 ////			case RC_NOP:
 ////				break;
 ////			case RC_DRAW_VIEW:
 ////				RB_DrawView(cmds);
 
-////				if (((const drawSurfsCommand_t *)cmds)->viewDef->viewEntitys) {
+////				if (((const drawSurfsCommand_t *)cmds).viewDef.viewEntitys) {
 ////					c_draw3d++;
 ////				} else {
 ////					c_draw2d++;
@@ -793,7 +793,7 @@ var backEnd:backEndState_t;
 ////				c_copyRenders++;
 ////				break;
 ////			default:
-////				common->Error("RB_ExecuteBackEndCommands: bad commandId");
+////				common.Error("RB_ExecuteBackEndCommands: bad commandId");
 ////				break;
 ////		}
 ////	}
@@ -807,7 +807,7 @@ var backEnd:backEndState_t;
 ////	backEnd.pc.msec = backEndFinishTime - backEndStartTime;
 
 ////	if (r_debugRenderToTexture.GetInteger() == 1) {
-////		common->Printf("3d: %i, 2d: %i, SetBuf: %i, SwpBuf: %i, CpyRenders: %i, CpyFrameBuf: %i\n", c_draw3d, c_draw2d, c_setBuffers, c_swapBuffers, c_copyRenders, backEnd.c_copyFrameBuffer);
+////		common.Printf("3d: %i, 2d: %i, SetBuf: %i, SwpBuf: %i, CpyRenders: %i, CpyFrameBuf: %i\n", c_draw3d, c_draw2d, c_setBuffers, c_swapBuffers, c_copyRenders, backEnd.c_copyFrameBuffer);
 ////		backEnd.c_copyFrameBuffer = 0;
 ////	}
 ////}

@@ -107,13 +107,13 @@
 ////}
 
 ////ID_INLINE idVec2::idVec2( const float x, const float y ) {
-////	this->x = x;
-////	this->y = y;
+////	this.x = x;
+////	this.y = y;
 ////}
 
 ////ID_INLINE void idVec2::Set( const float x, const float y ) {
-////	this->x = x;
-////	this->y = y;
+////	this.x = x;
+////	this.y = y;
 ////}
 
 ////ID_INLINE void idVec2::Zero( void ) {
@@ -393,9 +393,9 @@
 ////}
 
 ////ID_INLINE idVec3::idVec3( const float x, const float y, const float z ) {
-////	this->x = x;
-////	this->y = y;
-////	this->z = z;
+////	this.x = x;
+////	this.y = y;
+////	this.z = z;
 ////}
 
 ////ID_INLINE float idVec3::operator[]( const int index ) const {
@@ -407,9 +407,9 @@
 ////}
 
 ////ID_INLINE void idVec3::Set( const float x, const float y, const float z ) {
-////	this->x = x;
-////	this->y = y;
-////	this->z = z;
+////	this.x = x;
+////	this.y = y;
+////	this.z = z;
 ////}
 
 ////ID_INLINE void idVec3::Zero( void ) {
@@ -786,7 +786,7 @@
 ////	idVec3 cross;
 ////	float len;
 
-////	cross = this->Cross( normal ).Cross( (*this) );
+////	cross = this.Cross( normal ).Cross( (*this) );
 ////	// normalize so a fixed epsilon can be used
 ////	cross.Normalize();
 ////	len = normal * cross;
@@ -871,17 +871,17 @@ class idVec4 {
 ////}
 
 ////ID_INLINE idVec4::idVec4( const float x, const float y, const float z, const float w ) {
-////	this->x = x;
-////	this->y = y;
-////	this->z = z;
-////	this->w = w;
+////	this.x = x;
+////	this.y = y;
+////	this.z = z;
+////	this.w = w;
 ////}
 
 ////ID_INLINE void idVec4::Set( const float x, const float y, const float z, const float w ) {
-////	this->x = x;
-////	this->y = y;
-////	this->z = z;
-////	this->w = w;
+////	this.x = x;
+////	this.y = y;
+////	this.z = z;
+////	this.w = w;
 ////}
 
 ////ID_INLINE void idVec4::Zero( void ) {
@@ -1112,11 +1112,11 @@ class idVec4 {
 ////}
 
 ////ID_INLINE idVec5::idVec5( const float x, const float y, const float z, const float s, const float t ) {
-////	this->x = x;
-////	this->y = y;
-////	this->z = z;
-////	this->s = s;
-////	this->t = t;
+////	this.x = x;
+////	this.y = y;
+////	this.z = z;
+////	this.s = s;
+////	this.t = t;
 ////}
 
 ////ID_INLINE float idVec5::operator[]( int index ) const {
@@ -1558,7 +1558,7 @@ class idVec4 {
 ////ID_INLINE idVecX &idVecX::operator=( const idVecX &a ) { 
 ////	SetSize( a.size );
 ////#ifdef VECX_SIMD
-////	SIMDProcessor->Copy16( p, a.p, a.size );
+////	SIMDProcessor.Copy16( p, a.p, a.size );
 ////#else
 ////	memcpy( p, a.p, a.size * sizeof( float ) );
 ////#endif
@@ -1572,7 +1572,7 @@ class idVec4 {
 ////	assert( size == a.size );
 ////	m.SetTempSize( size );
 ////#ifdef VECX_SIMD
-////	SIMDProcessor->Add16( m.p, p, a.p, size );
+////	SIMDProcessor.Add16( m.p, p, a.p, size );
 ////#else
 ////	int i;
 ////	for ( i = 0; i < size; i++ ) {
@@ -1588,7 +1588,7 @@ class idVec4 {
 ////	assert( size == a.size );
 ////	m.SetTempSize( size );
 ////#ifdef VECX_SIMD
-////	SIMDProcessor->Sub16( m.p, p, a.p, size );
+////	SIMDProcessor.Sub16( m.p, p, a.p, size );
 ////#else
 ////	int i;
 ////	for ( i = 0; i < size; i++ ) {
@@ -1601,7 +1601,7 @@ class idVec4 {
 ////ID_INLINE idVecX &idVecX::operator+=( const idVecX &a ) {
 ////	assert( size == a.size );
 ////#ifdef VECX_SIMD
-////	SIMDProcessor->AddAssign16( p, a.p, size );
+////	SIMDProcessor.AddAssign16( p, a.p, size );
 ////#else
 ////	int i;
 ////	for ( i = 0; i < size; i++ ) {
@@ -1615,7 +1615,7 @@ class idVec4 {
 ////ID_INLINE idVecX &idVecX::operator-=( const idVecX &a ) {
 ////	assert( size == a.size );
 ////#ifdef VECX_SIMD
-////	SIMDProcessor->SubAssign16( p, a.p, size );
+////	SIMDProcessor.SubAssign16( p, a.p, size );
 ////#else
 ////	int i;
 ////	for ( i = 0; i < size; i++ ) {
@@ -1631,7 +1631,7 @@ class idVec4 {
 
 ////	m.SetTempSize( size );
 ////#ifdef VECX_SIMD
-////	SIMDProcessor->Mul16( m.p, p, a, size );
+////	SIMDProcessor.Mul16( m.p, p, a, size );
 ////#else
 ////	int i;
 ////	for ( i = 0; i < size; i++ ) {
@@ -1643,7 +1643,7 @@ class idVec4 {
 
 ////ID_INLINE idVecX &idVecX::operator*=( const float a ) {
 ////#ifdef VECX_SIMD
-////	SIMDProcessor->MulAssign16( p, a, size );
+////	SIMDProcessor.MulAssign16( p, a, size );
 ////#else
 ////	int i;
 ////	for ( i = 0; i < size; i++ ) {
@@ -1773,7 +1773,7 @@ class idVec4 {
 
 ////ID_INLINE void idVecX::Zero( void ) {
 ////#ifdef VECX_SIMD
-////	SIMDProcessor->Zero16( p, size );
+////	SIMDProcessor.Zero16( p, size );
 ////#else
 ////	memset( p, 0, size * sizeof( float ) );
 ////#endif
@@ -1782,7 +1782,7 @@ class idVec4 {
 ////ID_INLINE void idVecX::Zero( int length ) {
 ////	SetSize( length );
 ////#ifdef VECX_SIMD
-////	SIMDProcessor->Zero16( p, length );
+////	SIMDProcessor.Zero16( p, length );
 ////#else
 ////	memset( p, 0, size * sizeof( float ) );
 ////#endif
@@ -1813,7 +1813,7 @@ class idVec4 {
 
 ////ID_INLINE void idVecX::Negate( void ) {
 ////#ifdef VECX_SIMD
-////	SIMDProcessor->Negate16( p, size );
+////	SIMDProcessor.Negate16( p, size );
 ////#else
 ////	int i;
 ////	for ( i = 0; i < size; i++ ) {
@@ -1951,16 +1951,16 @@ class idVec4 {
 
 ////ID_INLINE idPolar3::idPolar3( const float radius, const float theta, const float phi ) {
 ////	assert( radius > 0 );
-////	this->radius = radius;
-////	this->theta = theta;
-////	this->phi = phi;
+////	this.radius = radius;
+////	this.theta = theta;
+////	this.phi = phi;
 ////}
 	
 ////ID_INLINE void idPolar3::Set( const float radius, const float theta, const float phi ) {
 ////	assert( radius > 0 );
-////	this->radius = radius;
-////	this->theta = theta;
-////	this->phi = phi;
+////	this.radius = radius;
+////	this.theta = theta;
+////	this.phi = phi;
 ////}
 
 ////ID_INLINE float idPolar3::operator[]( const int index ) const {

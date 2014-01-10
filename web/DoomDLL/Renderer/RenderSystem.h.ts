@@ -218,7 +218,7 @@ class /*glconfig_s*/glconfig_t {
 ////	// aviDemo uses this.
 ////	// Will automatically tile render large screen shots if necessary
 ////	// Samples is the number of jittered frames for anti-aliasing
-////	// If ref == NULL, session->updateScreen will be used
+////	// If ref == NULL, session.updateScreen will be used
 ////	// This will perform swapbuffers, so it is NOT an approppriate way to
 ////	// generate image files that happen during gameplay, as for savegame
 ////	// markers.  Use WriteRender() instead.

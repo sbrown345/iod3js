@@ -207,15 +207,15 @@
 ////				editorImage = stages[0].texture.image;
 ////			}
 ////		} else {
-////			editorImage = globalImages->defaultImage;
+////			editorImage = globalImages.defaultImage;
 ////		}
 ////	} else {
 ////		// look for an explicit one
-////		editorImage = globalImages->ImageFromFile( editorImageName, TF_DEFAULT, true, TR_REPEAT, textureDepth_t.TD_DEFAULT );
+////		editorImage = globalImages.ImageFromFile( editorImageName, TF_DEFAULT, true, TR_REPEAT, textureDepth_t.TD_DEFAULT );
 ////	}
 
 ////	if ( !editorImage ) {
-////		editorImage = globalImages->defaultImage;
+////		editorImage = globalImages.defaultImage;
 ////	}
 
 ////	return editorImage;
@@ -294,7 +294,7 @@
 ////bool idMaterial::CheckSurfaceParm( idToken *token ) {
 
 ////	for ( int i = 0 ; i < numInfoParms ; i++ ) {
-////		if ( !token->Icmp( infoParms[i].name ) ) {
+////		if ( !token.Icmp( infoParms[i].name ) ) {
 ////			if ( infoParms[i].surfaceFlags & SURF_TYPE_MASK ) {
 ////				// ensure we only have one surface type set
 ////				surfaceFlags &= ~SURF_TYPE_MASK;
@@ -392,17 +392,17 @@
 ////	int		i;
 
 ////	for ( i = EXP_REG_NUM_PREDEFINED ; i < numRegisters ; i++ ) {
-////		if ( !pd->registerIsTemporary[i] && pd->shaderRegisters[i] == f ) {
+////		if ( !pd.registerIsTemporary[i] && pd.shaderRegisters[i] == f ) {
 ////			return i;
 ////		}
 ////	}
 ////	if ( numRegisters == MAX_EXPRESSION_REGISTERS ) {
-////		common->Warning( "GetExpressionConstant: material '%s' hit MAX_EXPRESSION_REGISTERS", GetName() );
+////		common.Warning( "GetExpressionConstant: material '%s' hit MAX_EXPRESSION_REGISTERS", GetName() );
 ////		SetMaterialFlag( MF_DEFAULTED );
 ////		return 0;
 ////	}
-////	pd->registerIsTemporary[i] = false;
-////	pd->shaderRegisters[i] = f;
+////	pd.registerIsTemporary[i] = false;
+////	pd.shaderRegisters[i] = f;
 ////	numRegisters++;
 
 ////	return i;
@@ -415,11 +415,11 @@
 ////*/
 ////int idMaterial::GetExpressionTemporary( void ) {
 ////	if ( numRegisters == MAX_EXPRESSION_REGISTERS ) {
-////		common->Warning( "GetExpressionTemporary: material '%s' hit MAX_EXPRESSION_REGISTERS", GetName() );
+////		common.Warning( "GetExpressionTemporary: material '%s' hit MAX_EXPRESSION_REGISTERS", GetName() );
 ////		SetMaterialFlag( MF_DEFAULTED );
 ////		return 0;
 ////	}
-////	pd->registerIsTemporary[numRegisters] = true;
+////	pd.registerIsTemporary[numRegisters] = true;
 ////	numRegisters++;
 ////	return numRegisters - 1;
 ////}
@@ -431,12 +431,12 @@
 ////*/
 ////expOp_t	*idMaterial::GetExpressionOp( void ) {
 ////	if ( numOps == MAX_EXPRESSION_OPS ) {
-////		common->Warning( "GetExpressionOp: material '%s' hit MAX_EXPRESSION_OPS", GetName() );
+////		common.Warning( "GetExpressionOp: material '%s' hit MAX_EXPRESSION_OPS", GetName() );
 ////		SetMaterialFlag( MF_DEFAULTED );
-////		return &pd->shaderOps[0];
+////		return &pd.shaderOps[0];
 ////	}
 
-////	return &pd->shaderOps[numOps++];
+////	return &pd.shaderOps[numOps++];
 ////}
 
 /////*
@@ -449,41 +449,41 @@
 
 ////	// optimize away identity operations
 ////	if ( opType == OP_TYPE_ADD ) {
-////		if ( !pd->registerIsTemporary[a] && pd->shaderRegisters[a] == 0 ) {
+////		if ( !pd.registerIsTemporary[a] && pd.shaderRegisters[a] == 0 ) {
 ////			return b;
 ////		}
-////		if ( !pd->registerIsTemporary[b] && pd->shaderRegisters[b] == 0 ) {
+////		if ( !pd.registerIsTemporary[b] && pd.shaderRegisters[b] == 0 ) {
 ////			return a;
 ////		}
-////		if ( !pd->registerIsTemporary[a] && !pd->registerIsTemporary[b] ) {
-////			return GetExpressionConstant( pd->shaderRegisters[a] + pd->shaderRegisters[b] );
+////		if ( !pd.registerIsTemporary[a] && !pd.registerIsTemporary[b] ) {
+////			return GetExpressionConstant( pd.shaderRegisters[a] + pd.shaderRegisters[b] );
 ////		}
 ////	}
 ////	if ( opType == OP_TYPE_MULTIPLY ) {
-////		if ( !pd->registerIsTemporary[a] && pd->shaderRegisters[a] == 1 ) {
+////		if ( !pd.registerIsTemporary[a] && pd.shaderRegisters[a] == 1 ) {
 ////			return b;
 ////		}
-////		if ( !pd->registerIsTemporary[a] && pd->shaderRegisters[a] == 0 ) {
+////		if ( !pd.registerIsTemporary[a] && pd.shaderRegisters[a] == 0 ) {
 ////			return a;
 ////		}
-////		if ( !pd->registerIsTemporary[b] && pd->shaderRegisters[b] == 1 ) {
+////		if ( !pd.registerIsTemporary[b] && pd.shaderRegisters[b] == 1 ) {
 ////			return a;
 ////		}
-////		if ( !pd->registerIsTemporary[b] && pd->shaderRegisters[b] == 0 ) {
+////		if ( !pd.registerIsTemporary[b] && pd.shaderRegisters[b] == 0 ) {
 ////			return b;
 ////		}
-////		if ( !pd->registerIsTemporary[a] && !pd->registerIsTemporary[b] ) {
-////			return GetExpressionConstant( pd->shaderRegisters[a] * pd->shaderRegisters[b] );
+////		if ( !pd.registerIsTemporary[a] && !pd.registerIsTemporary[b] ) {
+////			return GetExpressionConstant( pd.shaderRegisters[a] * pd.shaderRegisters[b] );
 ////		}
 ////	}
 
 ////	op = GetExpressionOp();
-////	op->opType = opType;
-////	op->a = a;
-////	op->b = b;
-////	op->c = GetExpressionTemporary();
+////	op.opType = opType;
+////	op.a = a;
+////	op.b = b;
+////	op.c = GetExpressionTemporary();
 
-////	return op->c;
+////	return op.c;
 ////}
 
 /////*
@@ -518,87 +518,87 @@
 ////	}
 
 ////	if ( !token.Icmp( "time" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_TIME;
 ////	}
 ////	if ( !token.Icmp( "parm0" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_PARM0;
 ////	}
 ////	if ( !token.Icmp( "parm1" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_PARM1;
 ////	}
 ////	if ( !token.Icmp( "parm2" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_PARM2;
 ////	}
 ////	if ( !token.Icmp( "parm3" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_PARM3;
 ////	}
 ////	if ( !token.Icmp( "parm4" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_PARM4;
 ////	}
 ////	if ( !token.Icmp( "parm5" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_PARM5;
 ////	}
 ////	if ( !token.Icmp( "parm6" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_PARM6;
 ////	}
 ////	if ( !token.Icmp( "parm7" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_PARM7;
 ////	}
 ////	if ( !token.Icmp( "parm8" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_PARM8;
 ////	}
 ////	if ( !token.Icmp( "parm9" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_PARM9;
 ////	}
 ////	if ( !token.Icmp( "parm10" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_PARM10;
 ////	}
 ////	if ( !token.Icmp( "parm11" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_PARM11;
 ////	}
 ////	if ( !token.Icmp( "global0" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_GLOBAL0;
 ////	}
 ////	if ( !token.Icmp( "global1" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_GLOBAL1;
 ////	}
 ////	if ( !token.Icmp( "global2" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_GLOBAL2;
 ////	}
 ////	if ( !token.Icmp( "global3" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_GLOBAL3;
 ////	}
 ////	if ( !token.Icmp( "global4" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_GLOBAL4;
 ////	}
 ////	if ( !token.Icmp( "global5" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_GLOBAL5;
 ////	}
 ////	if ( !token.Icmp( "global6" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_GLOBAL6;
 ////	}
 ////	if ( !token.Icmp( "global7" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EXP_REG_GLOBAL7;
 ////	}
 ////	if ( !token.Icmp( "fragmentPrograms" ) ) {
@@ -606,7 +606,7 @@
 ////	}
 
 ////	if ( !token.Icmp( "sound" ) ) {
-////		pd->registersAreConstant = false;
+////		pd.registersAreConstant = false;
 ////		return EmitOp( 0, 0, OP_TYPE_SOUND );
 ////	}
 
@@ -626,7 +626,7 @@
 ////	}
 
 ////	// see if it is a table name
-////	const idDeclTable *table = static_cast<const idDeclTable *>( declManager->FindType( DECL_TABLE, token.c_str(), false ) );
+////	const idDeclTable *table = static_cast<const idDeclTable *>( declManager.FindType( DECL_TABLE, token.c_str(), false ) );
 ////	if ( !table ) {
 ////		src.Warning( "Bad term '%s'", token.c_str() );
 ////		SetMaterialFlag( MF_DEFAULTED );
@@ -640,7 +640,7 @@
 
 ////	MatchToken( src, "]" );
 
-////	return EmitOp( table->Index(), b, OP_TYPE_TABLE );
+////	return EmitOp( table.Index(), b, OP_TYPE_TABLE );
 ////}
 
 /////*
@@ -737,12 +737,12 @@
 ////===============
 ////*/
 ////void idMaterial::ClearStage( shaderStage_t *ss ) {
-////	ss->drawStateBits = 0;
-////	ss->conditionRegister = GetExpressionConstant( 1 );
-////	ss->color.registers[0] =
-////	ss->color.registers[1] =
-////	ss->color.registers[2] =
-////	ss->color.registers[3] = GetExpressionConstant( 1 );
+////	ss.drawStateBits = 0;
+////	ss.conditionRegister = GetExpressionConstant( 1 );
+////	ss.color.registers[0] =
+////	ss.color.registers[1] =
+////	ss.color.registers[2] =
+////	ss.color.registers[3] = GetExpressionConstant( 1 );
 ////}
 
 /////*
@@ -771,7 +771,7 @@
 ////		return GLS_SRCBLEND_ALPHA_SATURATE;
 ////	}
 
-////	common->Warning( "unknown blend mode '%s' in material '%s'", name.c_str(), GetName() );
+////	common.Warning( "unknown blend mode '%s' in material '%s'", name.c_str(), GetName() );
 ////	SetMaterialFlag( MF_DEFAULTED );
 
 ////	return GLS_SRCBLEND_ONE;
@@ -801,7 +801,7 @@
 ////		return GLS_DSTBLEND_ONE_MINUS_SRC_COLOR;
 ////	}
 
-////	common->Warning( "unknown blend mode '%s' in material '%s'", name.c_str(), GetName() );
+////	common.Warning( "unknown blend mode '%s' in material '%s'", name.c_str(), GetName() );
 ////	SetMaterialFlag( MF_DEFAULTED );
 
 ////	return GLS_DSTBLEND_ONE;
@@ -822,32 +822,32 @@
 
 ////	// blending combinations
 ////	if ( !token.Icmp( "blend" ) ) {
-////		stage->drawStateBits = GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA;
+////		stage.drawStateBits = GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA;
 ////		return;
 ////	}
 ////	if ( !token.Icmp( "add" ) ) {
-////		stage->drawStateBits = GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE;
+////		stage.drawStateBits = GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE;
 ////		return;
 ////	}
 ////	if ( !token.Icmp( "filter" ) || !token.Icmp( "modulate" ) ) {
-////		stage->drawStateBits = GLS_SRCBLEND_DST_COLOR | GLS_DSTBLEND_ZERO;
+////		stage.drawStateBits = GLS_SRCBLEND_DST_COLOR | GLS_DSTBLEND_ZERO;
 ////		return;
 ////	}
 ////	if (  !token.Icmp( "none" ) ) {
 ////		// none is used when defining an alpha mask that doesn't draw
-////		stage->drawStateBits = GLS_SRCBLEND_ZERO | GLS_DSTBLEND_ONE;
+////		stage.drawStateBits = GLS_SRCBLEND_ZERO | GLS_DSTBLEND_ONE;
 ////		return;
 ////	}
 ////	if ( !token.Icmp( "bumpmap" ) ) {
-////		stage->lighting = SL_BUMP;
+////		stage.lighting = SL_BUMP;
 ////		return;
 ////	}
 ////	if ( !token.Icmp( "diffusemap" ) ) {
-////		stage->lighting = SL_DIFFUSE;
+////		stage.lighting = SL_DIFFUSE;
 ////		return;
 ////	}
 ////	if ( !token.Icmp( "specularmap" ) ) {
-////		stage->lighting = SL_SPECULAR;
+////		stage.lighting = SL_SPECULAR;
 ////		return;
 ////	}
 
@@ -859,7 +859,7 @@
 ////	}
 ////	dstBlend = NameToDstBlendMode( token );
 
-////	stage->drawStateBits = srcBlend | dstBlend;
+////	stage.drawStateBits = srcBlend | dstBlend;
 ////}
 
 /////*
@@ -877,42 +877,42 @@
 ////	src.ReadTokenOnLine( &token );
 ////	int	parm = token.GetIntValue();
 ////	if ( !token.IsNumeric() || parm < 0 || parm >= MAX_VERTEX_PARMS ) {
-////		common->Warning( "bad vertexParm number\n" );
+////		common.Warning( "bad vertexParm number\n" );
 ////		SetMaterialFlag( MF_DEFAULTED );
 ////		return;
 ////	}
-////	if ( parm >= newStage->numVertexParms ) {
-////		newStage->numVertexParms = parm+1;
+////	if ( parm >= newStage.numVertexParms ) {
+////		newStage.numVertexParms = parm+1;
 ////	}
 
-////	newStage->vertexParms[parm][0] = ParseExpression( src );
+////	newStage.vertexParms[parm][0] = ParseExpression( src );
 
 ////	src.ReadTokenOnLine( &token );
 ////	if ( !token[0] || token.Icmp( "," ) ) {
-////		newStage->vertexParms[parm][1] =
-////		newStage->vertexParms[parm][2] =
-////		newStage->vertexParms[parm][3] = newStage->vertexParms[parm][0];
+////		newStage.vertexParms[parm][1] =
+////		newStage.vertexParms[parm][2] =
+////		newStage.vertexParms[parm][3] = newStage.vertexParms[parm][0];
 ////		return;
 ////	}
 
-////	newStage->vertexParms[parm][1] = ParseExpression( src );
+////	newStage.vertexParms[parm][1] = ParseExpression( src );
 
 ////	src.ReadTokenOnLine( &token );
 ////	if ( !token[0] || token.Icmp( "," ) ) {
-////		newStage->vertexParms[parm][2] = GetExpressionConstant( 0 );
-////		newStage->vertexParms[parm][3] = GetExpressionConstant( 1 );
+////		newStage.vertexParms[parm][2] = GetExpressionConstant( 0 );
+////		newStage.vertexParms[parm][3] = GetExpressionConstant( 1 );
 ////		return;
 ////	}
 
-////	newStage->vertexParms[parm][2] = ParseExpression( src );
+////	newStage.vertexParms[parm][2] = ParseExpression( src );
 
 ////	src.ReadTokenOnLine( &token );
 ////	if ( !token[0] || token.Icmp( "," ) ) {
-////		newStage->vertexParms[parm][3] = GetExpressionConstant( 1 );
+////		newStage.vertexParms[parm][3] = GetExpressionConstant( 1 );
 ////		return;
 ////	}
 
-////	newStage->vertexParms[parm][3] = ParseExpression( src );
+////	newStage.vertexParms[parm][3] = ParseExpression( src );
 ////}
 
 
@@ -939,7 +939,7 @@
 ////	src.ReadTokenOnLine( &token );
 ////	int	unit = token.GetIntValue();
 ////	if ( !token.IsNumeric() || unit < 0 || unit >= MAX_FRAGMENT_IMAGES ) {
-////		common->Warning( "bad fragmentMap number\n" );
+////		common.Warning( "bad fragmentMap number\n" );
 ////		SetMaterialFlag( MF_DEFAULTED );
 ////		return;
 ////	}
@@ -949,8 +949,8 @@
 ////		td = textureDepth_t.TD_BUMP;
 ////	}
 
-////	if ( unit >= newStage->numFragmentProgramImages ) {
-////		newStage->numFragmentProgramImages = unit+1;
+////	if ( unit >= newStage.numFragmentProgramImages ) {
+////		newStage.numFragmentProgramImages = unit+1;
 ////	}
 
 ////	while( 1 ) {
@@ -994,7 +994,7 @@
 ////		}
 
 ////		if ( !token.Icmp( "uncompressed" ) || !token.Icmp( "highquality" ) ) {
-////			if ( !globalImages->image_ignoreHighQuality.GetInteger() ) {
+////			if ( !globalImages.image_ignoreHighQuality.GetInteger() ) {
 ////				td = textureDepth_t.TD_HIGH_QUALITY;
 ////			}
 ////			continue;
@@ -1010,10 +1010,10 @@
 ////	}
 ////	str = R_ParsePastImageProgram( src );
 
-////	newStage->fragmentProgramImages[unit] = 
-////		globalImages->ImageFromFile( str, tf, allowPicmip, trp, td, cubeMap );
-////	if ( !newStage->fragmentProgramImages[unit] ) {
-////		newStage->fragmentProgramImages[unit] = globalImages->defaultImage;
+////	newStage.fragmentProgramImages[unit] = 
+////		globalImages.ImageFromFile( str, tf, allowPicmip, trp, td, cubeMap );
+////	if ( !newStage.fragmentProgramImages[unit] ) {
+////		newStage.fragmentProgramImages[unit] = globalImages.defaultImage;
 ////	}
 ////}
 
@@ -1025,34 +1025,34 @@
 ////void idMaterial::MultiplyTextureMatrix( textureStage_t *ts, int registers[2][3] ) {
 ////	int		old[2][3];
 
-////	if ( !ts->hasMatrix ) {
-////		ts->hasMatrix = true;
-////		memcpy( ts->matrix, registers, sizeof( ts->matrix ) );
+////	if ( !ts.hasMatrix ) {
+////		ts.hasMatrix = true;
+////		memcpy( ts.matrix, registers, sizeof( ts.matrix ) );
 ////		return;
 ////	}
 
-////	memcpy( old, ts->matrix, sizeof( old ) );
+////	memcpy( old, ts.matrix, sizeof( old ) );
 
 ////	// multiply the two maticies
-////	ts->matrix[0][0] = EmitOp(
+////	ts.matrix[0][0] = EmitOp(
 ////							EmitOp( old[0][0], registers[0][0], OP_TYPE_MULTIPLY ),
 ////							EmitOp( old[0][1], registers[1][0], OP_TYPE_MULTIPLY ), OP_TYPE_ADD );
-////	ts->matrix[0][1] = EmitOp(
+////	ts.matrix[0][1] = EmitOp(
 ////							EmitOp( old[0][0], registers[0][1], OP_TYPE_MULTIPLY ),
 ////							EmitOp( old[0][1], registers[1][1], OP_TYPE_MULTIPLY ), OP_TYPE_ADD );
-////	ts->matrix[0][2] = EmitOp( 
+////	ts.matrix[0][2] = EmitOp( 
 ////							EmitOp(
 ////								EmitOp( old[0][0], registers[0][2], OP_TYPE_MULTIPLY ),
 ////								EmitOp( old[0][1], registers[1][2], OP_TYPE_MULTIPLY ), OP_TYPE_ADD ),
 ////							old[0][2], OP_TYPE_ADD );
 
-////	ts->matrix[1][0] = EmitOp(
+////	ts.matrix[1][0] = EmitOp(
 ////							EmitOp( old[1][0], registers[0][0], OP_TYPE_MULTIPLY ),
 ////							EmitOp( old[1][1], registers[1][0], OP_TYPE_MULTIPLY ), OP_TYPE_ADD );
-////	ts->matrix[1][1] = EmitOp(
+////	ts.matrix[1][1] = EmitOp(
 ////							EmitOp( old[1][0], registers[0][1], OP_TYPE_MULTIPLY ),
 ////							EmitOp( old[1][1], registers[1][1], OP_TYPE_MULTIPLY ), OP_TYPE_ADD );
-////	ts->matrix[1][2] = EmitOp( 
+////	ts.matrix[1][2] = EmitOp( 
 ////							EmitOp(
 ////								EmitOp( old[1][0], registers[0][2], OP_TYPE_MULTIPLY ),
 ////								EmitOp( old[1][1], registers[1][2], OP_TYPE_MULTIPLY ), OP_TYPE_ADD ),
@@ -1093,7 +1093,7 @@
 
 ////	if ( numStages >= MAX_SHADER_STAGES ) {
 ////		SetMaterialFlag( MF_DEFAULTED );
-////		common->Warning( "material '%s' exceeded %i stages", GetName(), MAX_SHADER_STAGES );
+////		common.Warning( "material '%s' exceeded %i stages", GetName(), MAX_SHADER_STAGES );
 ////	}
 
 ////	tf = TF_DEFAULT;
@@ -1106,8 +1106,8 @@
 
 ////	memset( &newStage, 0, sizeof( newStage ) );
 
-////	ss = &pd->parseStages[numStages];
-////	ts = &ss->texture;
+////	ss = &pd.parseStages[numStages];
+////	ts = &ss.texture;
 
 ////	ClearStage( ss );
 
@@ -1144,37 +1144,37 @@
 ////		}
 
 ////		if (  !token.Icmp( "remoteRenderMap" ) ) {
-////			ts->dynamic = DI_REMOTE_RENDER;
-////			ts->width = src.ParseInt();
-////			ts->height = src.ParseInt();
+////			ts.dynamic = DI_REMOTE_RENDER;
+////			ts.width = src.ParseInt();
+////			ts.height = src.ParseInt();
 ////			continue;
 ////		}
 
 ////		if (  !token.Icmp( "mirrorRenderMap" ) ) {
-////			ts->dynamic = DI_MIRROR_RENDER;
-////			ts->width = src.ParseInt();
-////			ts->height = src.ParseInt();
-////			ts->texgen = TG_SCREEN;
+////			ts.dynamic = DI_MIRROR_RENDER;
+////			ts.width = src.ParseInt();
+////			ts.height = src.ParseInt();
+////			ts.texgen = TG_SCREEN;
 ////			continue;
 ////		}
 
 ////		if (  !token.Icmp( "xrayRenderMap" ) ) {
-////			ts->dynamic = DI_XRAY_RENDER;
-////			ts->width = src.ParseInt();
-////			ts->height = src.ParseInt();
-////			ts->texgen = TG_SCREEN;
+////			ts.dynamic = DI_XRAY_RENDER;
+////			ts.width = src.ParseInt();
+////			ts.height = src.ParseInt();
+////			ts.texgen = TG_SCREEN;
 ////			continue;
 ////		}
 ////		if (  !token.Icmp( "screen" ) ) {
-////			ts->texgen = TG_SCREEN;
+////			ts.texgen = TG_SCREEN;
 ////			continue;
 ////		}
 ////		if (  !token.Icmp( "screen2" ) ) {
-////			ts->texgen = TG_SCREEN2;
+////			ts.texgen = TG_SCREEN2;
 ////			continue;
 ////		}
 ////		if (  !token.Icmp( "glassWarp" ) ) {
-////			ts->texgen = TG_GLASSWARP;
+////			ts.texgen = TG_GLASSWARP;
 ////			continue;
 ////		}
 
@@ -1182,29 +1182,29 @@
 ////			// note that videomaps will always be in clamp mode, so texture
 ////			// coordinates had better be in the 0 to 1 range
 ////			if ( !src.ReadToken( &token ) ) {
-////				common->Warning( "missing parameter for 'videoMap' keyword in material '%s'", GetName() );
+////				common.Warning( "missing parameter for 'videoMap' keyword in material '%s'", GetName() );
 ////				continue;
 ////			}
 ////			bool loop = false;
 ////			if ( !token.Icmp( "loop" ) ) {
 ////				loop = true;
 ////				if ( !src.ReadToken( &token ) ) {
-////					common->Warning( "missing parameter for 'videoMap' keyword in material '%s'", GetName() );
+////					common.Warning( "missing parameter for 'videoMap' keyword in material '%s'", GetName() );
 ////					continue;
 ////				}
 ////			}
-////			ts->cinematic = idCinematic::Alloc();
-////			ts->cinematic->InitFromFile( token.c_str(), loop );
+////			ts.cinematic = idCinematic::Alloc();
+////			ts.cinematic.InitFromFile( token.c_str(), loop );
 ////			continue;
 ////		}
 
 ////		if ( !token.Icmp( "soundmap" ) ) {
 ////			if ( !src.ReadToken( &token ) ) {
-////				common->Warning( "missing parameter for 'soundmap' keyword in material '%s'", GetName() );
+////				common.Warning( "missing parameter for 'soundmap' keyword in material '%s'", GetName() );
 ////				continue;
 ////			}
-////			ts->cinematic = new idSndWindow();
-////			ts->cinematic->InitFromFile( token.c_str(), true );
+////			ts.cinematic = new idSndWindow();
+////			ts.cinematic.InitFromFile( token.c_str(), true );
 ////			continue;
 ////		}
 
@@ -1223,7 +1223,7 @@
 ////		}
 
 ////		if ( !token.Icmp( "ignoreAlphaTest" ) ) {
-////			ss->ignoreAlphaTest = true;
+////			ss.ignoreAlphaTest = true;
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "nearest" ) ) {
@@ -1251,7 +1251,7 @@
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "uncompressed" ) || !token.Icmp( "highquality" ) ) {
-////			if ( !globalImages->image_ignoreHighQuality.GetInteger() ) {
+////			if ( !globalImages.image_ignoreHighQuality.GetInteger() ) {
 ////				td = textureDepth_t.TD_HIGH_QUALITY;
 ////			}
 ////			continue;
@@ -1265,23 +1265,23 @@
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "vertexColor" ) ) {
-////			ss->vertexColor = SVC_MODULATE;
+////			ss.vertexColor = SVC_MODULATE;
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "inverseVertexColor" ) ) {
-////			ss->vertexColor = SVC_INVERSE_MODULATE;
+////			ss.vertexColor = SVC_INVERSE_MODULATE;
 ////			continue;
 ////		}
 
 ////		// privatePolygonOffset
 ////		else if ( !token.Icmp( "privatePolygonOffset" ) ) {
 ////			if ( !src.ReadTokenOnLine( &token ) ) {
-////				ss->privatePolygonOffset = 1;
+////				ss.privatePolygonOffset = 1;
 ////				continue;
 ////			}
 ////			// explict larger (or negative) offset
 ////			src.UnreadToken( &token );
-////			ss->privatePolygonOffset = src.ParseFloat();
+////			ss.privatePolygonOffset = src.ParseFloat();
 ////			continue;
 ////		}
 
@@ -1289,18 +1289,18 @@
 ////		if ( !token.Icmp( "texGen" ) ) {
 ////			src.ExpectAnyToken( &token );
 ////			if ( !token.Icmp( "normal" ) ) {
-////				ts->texgen = TG_DIFFUSE_CUBE;
+////				ts.texgen = TG_DIFFUSE_CUBE;
 ////			} else if ( !token.Icmp( "reflect" ) ) {
-////				ts->texgen = TG_REFLECT_CUBE;
+////				ts.texgen = TG_REFLECT_CUBE;
 ////			} else if ( !token.Icmp( "skybox" ) ) {
-////				ts->texgen = TG_SKYBOX_CUBE;
+////				ts.texgen = TG_SKYBOX_CUBE;
 ////			} else if ( !token.Icmp( "wobbleSky" ) ) {
-////				ts->texgen = TG_WOBBLESKY_CUBE;
+////				ts.texgen = TG_WOBBLESKY_CUBE;
 ////				texGenRegisters[0] = ParseExpression( src );
 ////				texGenRegisters[1] = ParseExpression( src );
 ////				texGenRegisters[2] = ParseExpression( src );
 ////			} else {
-////				common->Warning( "bad texGen '%s' in material %s", token.c_str(), GetName() );
+////				common.Warning( "bad texGen '%s' in material %s", token.c_str(), GetName() );
 ////				SetMaterialFlag( MF_DEFAULTED );
 ////			}
 ////			continue;
@@ -1371,21 +1371,21 @@
 ////			// in cycles
 ////			a = ParseExpression( src );
 
-////			table = static_cast<const idDeclTable *>( declManager->FindType( DECL_TABLE, "sinTable", false ) );
+////			table = static_cast<const idDeclTable *>( declManager.FindType( DECL_TABLE, "sinTable", false ) );
 ////			if ( !table ) {
-////				common->Warning( "no sinTable for rotate defined" );
+////				common.Warning( "no sinTable for rotate defined" );
 ////				SetMaterialFlag( MF_DEFAULTED );
 ////				return;
 ////			}
-////			sinReg = EmitOp( table->Index(), a, OP_TYPE_TABLE );
+////			sinReg = EmitOp( table.Index(), a, OP_TYPE_TABLE );
 
-////			table = static_cast<const idDeclTable *>( declManager->FindType( DECL_TABLE, "cosTable", false ) );
+////			table = static_cast<const idDeclTable *>( declManager.FindType( DECL_TABLE, "cosTable", false ) );
 ////			if ( !table ) {
-////				common->Warning( "no cosTable for rotate defined" );
+////				common.Warning( "no cosTable for rotate defined" );
 ////				SetMaterialFlag( MF_DEFAULTED );
 ////				return;
 ////			}
-////			cosReg = EmitOp( table->Index(), a, OP_TYPE_TABLE );
+////			cosReg = EmitOp( table.Index(), a, OP_TYPE_TABLE );
 
 ////			// this subtracts 0.5, then rotates, then adds 0.5
 ////			matrix[0][0] = cosReg;
@@ -1406,85 +1406,85 @@
 
 ////		// color mask options
 ////		if ( !token.Icmp( "maskRed" ) ) {
-////			ss->drawStateBits |= GLS_REDMASK;
+////			ss.drawStateBits |= GLS_REDMASK;
 ////			continue;
 ////		}		
 ////		if ( !token.Icmp( "maskGreen" ) ) {
-////			ss->drawStateBits |= GLS_GREENMASK;
+////			ss.drawStateBits |= GLS_GREENMASK;
 ////			continue;
 ////		}		
 ////		if ( !token.Icmp( "maskBlue" ) ) {
-////			ss->drawStateBits |= GLS_BLUEMASK;
+////			ss.drawStateBits |= GLS_BLUEMASK;
 ////			continue;
 ////		}		
 ////		if ( !token.Icmp( "maskAlpha" ) ) {
-////			ss->drawStateBits |= GLS_ALPHAMASK;
+////			ss.drawStateBits |= GLS_ALPHAMASK;
 ////			continue;
 ////		}		
 ////		if ( !token.Icmp( "maskColor" ) ) {
-////			ss->drawStateBits |= GLS_COLORMASK;
+////			ss.drawStateBits |= GLS_COLORMASK;
 ////			continue;
 ////		}		
 ////		if ( !token.Icmp( "maskDepth" ) ) {
-////			ss->drawStateBits |= GLS_DEPTHMASK;
+////			ss.drawStateBits |= GLS_DEPTHMASK;
 ////			continue;
 ////		}		
 ////		if ( !token.Icmp( "alphaTest" ) ) {
-////			ss->hasAlphaTest = true;
-////			ss->alphaTestRegister = ParseExpression( src );
+////			ss.hasAlphaTest = true;
+////			ss.alphaTestRegister = ParseExpression( src );
 ////			coverage = MC_PERFORATED;
 ////			continue;
 ////		}		
 
 ////		// shorthand for 2D modulated
 ////		if ( !token.Icmp( "colored" ) ) {
-////			ss->color.registers[0] = EXP_REG_PARM0;
-////			ss->color.registers[1] = EXP_REG_PARM1;
-////			ss->color.registers[2] = EXP_REG_PARM2;
-////			ss->color.registers[3] = EXP_REG_PARM3;
-////			pd->registersAreConstant = false;
+////			ss.color.registers[0] = EXP_REG_PARM0;
+////			ss.color.registers[1] = EXP_REG_PARM1;
+////			ss.color.registers[2] = EXP_REG_PARM2;
+////			ss.color.registers[3] = EXP_REG_PARM3;
+////			pd.registersAreConstant = false;
 ////			continue;
 ////		}
 
 ////		if ( !token.Icmp( "color" ) ) {
-////			ss->color.registers[0] = ParseExpression( src );
+////			ss.color.registers[0] = ParseExpression( src );
 ////			MatchToken( src, "," );
-////			ss->color.registers[1] = ParseExpression( src );
+////			ss.color.registers[1] = ParseExpression( src );
 ////			MatchToken( src, "," );
-////			ss->color.registers[2] = ParseExpression( src );
+////			ss.color.registers[2] = ParseExpression( src );
 ////			MatchToken( src, "," );
-////			ss->color.registers[3] = ParseExpression( src );
+////			ss.color.registers[3] = ParseExpression( src );
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "red" ) ) {
-////			ss->color.registers[0] = ParseExpression( src );
+////			ss.color.registers[0] = ParseExpression( src );
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "green" ) ) {
-////			ss->color.registers[1] = ParseExpression( src );
+////			ss.color.registers[1] = ParseExpression( src );
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "blue" ) ) {
-////			ss->color.registers[2] = ParseExpression( src );
+////			ss.color.registers[2] = ParseExpression( src );
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "alpha" ) ) {
-////			ss->color.registers[3] = ParseExpression( src );
+////			ss.color.registers[3] = ParseExpression( src );
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "rgb" ) ) {
-////			ss->color.registers[0] = ss->color.registers[1] = 
-////				ss->color.registers[2] = ParseExpression( src );
+////			ss.color.registers[0] = ss.color.registers[1] = 
+////				ss.color.registers[2] = ParseExpression( src );
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "rgba" ) ) {
-////			ss->color.registers[0] = ss->color.registers[1] = 
-////				ss->color.registers[2] = ss->color.registers[3] = ParseExpression( src );
+////			ss.color.registers[0] = ss.color.registers[1] = 
+////				ss.color.registers[2] = ss.color.registers[3] = ParseExpression( src );
 ////			continue;
 ////		}
 
 ////		if ( !token.Icmp( "if" ) ) {
-////			ss->conditionRegister = ParseExpression( src );
+////			ss.conditionRegister = ParseExpression( src );
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "program" ) ) {
@@ -1516,7 +1516,7 @@
 ////			if ( src.ReadTokenOnLine( &token ) ) {
 ////#if !defined(GL_ES_VERSION_2_0)
 ////				newStage.megaTexture = new idMegaTexture;
-////				if ( !newStage.megaTexture->InitFromMegaFile( token.c_str() ) ) {
+////				if ( !newStage.megaTexture.InitFromMegaFile( token.c_str() ) ) {
 ////					delete newStage.megaTexture;
 ////					SetMaterialFlag( MF_DEFAULTED );
 ////					continue;
@@ -1544,7 +1544,7 @@
 ////		}
 
 
-////		common->Warning( "unknown token '%s' in material '%s'", token.c_str(), GetName() );
+////		common.Warning( "unknown token '%s' in material '%s'", token.c_str(), GetName() );
 ////		SetMaterialFlag( MF_DEFAULTED );
 ////		return;
 ////	}
@@ -1552,8 +1552,8 @@
 
 ////	// if we are using newStage, allocate a copy of it
 ////	if ( newStage.fragmentProgram || newStage.vertexProgram ) {
-////		ss->newStage = (newShaderStage_t *)Mem_Alloc( sizeof( newStage ) );
-////		*(ss->newStage) = newStage;
+////		ss.newStage = (newShaderStage_t *)Mem_Alloc( sizeof( newStage ) );
+////		*(ss.newStage) = newStage;
 ////	}
 
 ////	// successfully parsed a stage
@@ -1561,7 +1561,7 @@
 
 ////	// select a compressed depth based on what the stage is
 ////	if ( td == textureDepth_t.TD_DEFAULT ) {
-////		switch( ss->lighting ) {
+////		switch( ss.lighting ) {
 ////		case SL_BUMP:
 ////			td = textureDepth_t.TD_BUMP;
 ////			break;
@@ -1578,13 +1578,13 @@
 
 ////	// now load the image with all the parms we parsed
 ////	if ( imageName[0] ) {
-////		ts->image = globalImages->ImageFromFile( imageName, tf, allowPicmip, trp, td, cubeMap );
-////		if ( !ts->image ) {
-////			ts->image = globalImages->defaultImage;
+////		ts.image = globalImages.ImageFromFile( imageName, tf, allowPicmip, trp, td, cubeMap );
+////		if ( !ts.image ) {
+////			ts.image = globalImages.defaultImage;
 ////		}
-////	} else if ( !ts->cinematic && !ts->dynamic && !ss->newStage ) {
-////		common->Warning( "material '%s' had stage with no image", GetName() );
-////		ts->image = globalImages->defaultImage;
+////	} else if ( !ts.cinematic && !ts.dynamic && !ss.newStage ) {
+////		common.Warning( "material '%s' had stage with no image", GetName() );
+////		ts.image = globalImages.defaultImage;
 ////	}
 ////}
 
@@ -1637,7 +1637,7 @@
 ////			SetMaterialFlag( MF_DEFAULTED );
 ////			return;
 ////		}
-////		deformDecl = declManager->FindType( DECL_TABLE, token.c_str(), true );
+////		deformDecl = declManager.FindType( DECL_TABLE, token.c_str(), true );
 
 ////		deformRegisters[0] = ParseExpression( src );
 ////		deformRegisters[1] = ParseExpression( src );
@@ -1655,7 +1655,7 @@
 ////			SetMaterialFlag( MF_DEFAULTED );
 ////			return;
 ////		}
-////		deformDecl = declManager->FindType( DECL_PARTICLE, token.c_str(), true );
+////		deformDecl = declManager.FindType( DECL_PARTICLE, token.c_str(), true );
 ////		return;
 ////	}
 ////	if ( !token.Icmp( "particle2" ) ) {
@@ -1665,7 +1665,7 @@
 ////			SetMaterialFlag( MF_DEFAULTED );
 ////			return;
 ////		}
-////		deformDecl = declManager->FindType( DECL_PARTICLE, token.c_str(), true );
+////		deformDecl = declManager.FindType( DECL_PARTICLE, token.c_str(), true );
 ////		return;
 ////	}
 ////	src.Warning( "Bad deform type '%s'", token.c_str() );
@@ -1697,16 +1697,16 @@
 ////	bool hasReflection = false;
 
 ////	for ( int i = 0 ; i < numStages ; i++ ) {
-////		if ( pd->parseStages[i].lighting == SL_BUMP ) {
+////		if ( pd.parseStages[i].lighting == SL_BUMP ) {
 ////			hasBump = true;
 ////		}
-////		if ( pd->parseStages[i].lighting == SL_DIFFUSE ) {
+////		if ( pd.parseStages[i].lighting == SL_DIFFUSE ) {
 ////			hasDiffuse = true;
 ////		}
-////		if ( pd->parseStages[i].lighting == SL_SPECULAR ) {
+////		if ( pd.parseStages[i].lighting == SL_SPECULAR ) {
 ////			hasSpecular = true;
 ////		}
-////		if ( pd->parseStages[i].texture.texgen == TG_REFLECT_CUBE ) {
+////		if ( pd.parseStages[i].texture.texgen == TG_REFLECT_CUBE ) {
 ////			hasReflection = true;
 ////		}
 ////	}
@@ -1757,10 +1757,10 @@
 ////	for ( int i = 0 ; i < numStages ; i = j ) {
 ////		// find the next bump map
 ////		for ( j = i + 1 ; j < numStages ; j++ ) {
-////			if ( pd->parseStages[j].lighting == SL_BUMP ) {
+////			if ( pd.parseStages[j].lighting == SL_BUMP ) {
 ////				// if the very first stage wasn't a bumpmap,
 ////				// this bumpmap is part of the first group
-////				if ( pd->parseStages[i].lighting != SL_BUMP ) {
+////				if ( pd.parseStages[i].lighting != SL_BUMP ) {
 ////					continue;
 ////				}
 ////				break;
@@ -1770,12 +1770,12 @@
 ////		// bubble sort everything bump / diffuse / specular
 ////		for ( int l = 1 ; l < j-i ; l++ ) {
 ////			for ( int k = i ; k < j-l ; k++ ) {
-////				if ( pd->parseStages[k].lighting > pd->parseStages[k+1].lighting ) {
+////				if ( pd.parseStages[k].lighting > pd.parseStages[k+1].lighting ) {
 ////					shaderStage_t	temp;
 
-////					temp = pd->parseStages[k];
-////					pd->parseStages[k] = pd->parseStages[k+1];
-////					pd->parseStages[k+1] = temp;
+////					temp = pd.parseStages[k];
+////					pd.parseStages[k] = pd.parseStages[k+1];
+////					pd.parseStages[k+1] = temp;
 ////				}
 ////			}
 ////		}
@@ -1805,7 +1805,7 @@
 ////	numOps = 0;
 ////	numRegisters = EXP_REG_NUM_PREDEFINED;	// leave space for the parms to be copied in
 ////	for ( i = 0 ; i < numRegisters ; i++ ) {
-////		pd->registerIsTemporary[i] = true;		// they aren't constants that can be folded
+////		pd.registerIsTemporary[i] = true;		// they aren't constants that can be folded
 ////	}
 
 ////	numStages = 0;
@@ -1889,7 +1889,7 @@
 ////		}
 ////		// moster blood overlay forcing for alpha tested or translucent surfaces
 ////		else if ( !token.Icmp( "forceOverlays" ) ) {
-////			pd->forceOverlays = true;
+////			pd.forceOverlays = true;
 ////			continue;
 ////		}
 ////		// translucent
@@ -1972,7 +1972,7 @@
 ////			idStr	copy;
 
 ////			copy = str;	// so other things don't step on it
-////			lightFalloffImage = globalImages->ImageFromFile( copy, TF_DEFAULT, false, TR_CLAMP /* TR_CLAMP_TO_ZERO */, textureDepth_t.TD_DEFAULT );
+////			lightFalloffImage = globalImages.ImageFromFile( copy, TF_DEFAULT, false, TR_CLAMP /* TR_CLAMP_TO_ZERO */, textureDepth_t.TD_DEFAULT );
 ////			continue;
 ////		}
 ////		// guisurf <guifile> | guisurf entity
@@ -1987,7 +1987,7 @@
 ////			} else if ( !token.Icmp( "entity3" ) ) {
 ////				entityGui = 3;
 ////			} else {
-////				gui = uiManager->FindGui( token.c_str(), true );
+////				gui = uiManager.FindGui( token.c_str(), true );
 ////			}
 ////			continue;
 ////		}
@@ -2070,7 +2070,7 @@
 ////			continue;
 ////		}
 ////		else {
-////			common->Warning( "unknown general material parameter '%s' in '%s'", token.c_str(), GetName() );
+////			common.Warning( "unknown general material parameter '%s' in '%s'", token.c_str(), GetName() );
 ////			SetMaterialFlag( MF_DEFAULTED );
 ////			return;
 ////		}
@@ -2091,7 +2091,7 @@
 ////	// in temporary form
 ////	if ( cullType == CT_TWO_SIDED ) {
 ////		for ( i = 0 ; i < numStages ; i++ ) {
-////			if ( pd->parseStages[i].lighting != SL_AMBIENT || pd->parseStages[i].texture.texgen != TG_EXPLICIT ) {
+////			if ( pd.parseStages[i].lighting != SL_AMBIENT || pd.parseStages[i].texture.texgen != TG_EXPLICIT ) {
 ////				if ( cullType == CT_TWO_SIDED ) {
 ////					cullType = CT_FRONT_SIDED;
 ////					shouldCreateBackSides = true;
@@ -2104,11 +2104,11 @@
 ////	// currently a surface can only have one unique texgen for all the stages on old hardware
 ////	texgen_t firstGen = TG_EXPLICIT;
 ////	for ( i = 0; i < numStages; i++ ) {
-////		if ( pd->parseStages[i].texture.texgen != TG_EXPLICIT ) {
+////		if ( pd.parseStages[i].texture.texgen != TG_EXPLICIT ) {
 ////			if ( firstGen == TG_EXPLICIT ) {
-////				firstGen = pd->parseStages[i].texture.texgen;
-////			} else if ( firstGen != pd->parseStages[i].texture.texgen ) {
-////				common->Warning( "material '%s' has multiple stages with a texgen", GetName() );
+////				firstGen = pd.parseStages[i].texture.texgen;
+////			} else if ( firstGen != pd.parseStages[i].texture.texgen ) {
+////				common.Warning( "material '%s' has multiple stages with a texgen", GetName() );
 ////				break;
 ////			}
 ////		}
@@ -2121,7 +2121,7 @@
 ////=========================
 ////*/
 ////void idMaterial::SetGui( const char *_gui ) const {
-////	gui = uiManager->FindGui( _gui, true, false, true );
+////	gui = uiManager.FindGui( _gui, true, false, true );
 ////}
 
 /////*
@@ -2151,7 +2151,7 @@
 ////	ParseMaterial( src );
 
 ////	// if we are doing an fs_copyfiles, also reference the editorImage
-////	if ( cvarSystem->GetCVarInteger( "fs_copyFiles" ) ) {
+////	if ( cvarSystem.GetCVarInteger( "fs_copyFiles" ) ) {
 ////		GetEditorImage();
 ////	}
 
@@ -2160,7 +2160,7 @@
 ////	numAmbientStages = 0;
 ////	int i;
 ////	for ( i = 0 ; i < numStages ; i++ ) {
-////		if ( pd->parseStages[i].lighting == SL_AMBIENT ) {
+////		if ( pd.parseStages[i].lighting == SL_AMBIENT ) {
 ////			numAmbientStages++;
 ////		}
 ////	}
@@ -2171,7 +2171,7 @@
 ////	} else {
 ////		hasSubview = false;
 ////		for ( i = 0 ; i < numStages ; i++ ) {
-////			if ( pd->parseStages[i].texture.dynamic ) {
+////			if ( pd.parseStages[i].texture.dynamic ) {
 ////				hasSubview = true;
 ////			}
 ////		}
@@ -2188,11 +2188,11 @@
 ////			// we have an interaction draw
 ////			coverage = MC_OPAQUE;
 ////		} else if ( 
-////			( pd->parseStages[0].drawStateBits & GLS_DSTBLEND_BITS ) != GLS_DSTBLEND_ZERO ||
-////			( pd->parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_COLOR ||
-////			( pd->parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_COLOR ||
-////			( pd->parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_ALPHA ||
-////			( pd->parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_ALPHA
+////			( pd.parseStages[0].drawStateBits & GLS_DSTBLEND_BITS ) != GLS_DSTBLEND_ZERO ||
+////			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_COLOR ||
+////			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_COLOR ||
+////			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_ALPHA ||
+////			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_ALPHA
 ////			) {
 ////			// blended with the destination
 ////				coverage = MC_TRANSLUCENT;
@@ -2231,17 +2231,17 @@
 ////	// and coverage = MC_TRANSLUCENT
 
 ////	for ( i = 0 ; i < numStages ; i++ ) {
-////		shaderStage_t	*pStage = &pd->parseStages[i];
-////		if ( pStage->texture.image == globalImages->currentRenderImage ) {
+////		shaderStage_t	*pStage = &pd.parseStages[i];
+////		if ( pStage.texture.image == globalImages.currentRenderImage ) {
 ////			if ( sort != SS_PORTAL_SKY ) {
 ////				sort = SS_POST_PROCESS;
 ////				coverage = MC_TRANSLUCENT;
 ////			}
 ////			break;
 ////		}
-////		if ( pStage->newStage ) {
-////			for ( int j = 0 ; j < pStage->newStage->numFragmentProgramImages ; j++ ) {
-////				if ( pStage->newStage->fragmentProgramImages[j] == globalImages->currentRenderImage ) {
+////		if ( pStage.newStage ) {
+////			for ( int j = 0 ; j < pStage.newStage.numFragmentProgramImages ; j++ ) {
+////				if ( pStage.newStage.fragmentProgramImages[j] == globalImages.currentRenderImage ) {
 ////					if ( sort != SS_PORTAL_SKY ) {
 ////						sort = SS_POST_PROCESS;
 ////						coverage = MC_TRANSLUCENT;
@@ -2255,24 +2255,24 @@
 
 ////	// set the drawStateBits depth flags
 ////	for ( i = 0 ; i < numStages ; i++ ) {
-////		shaderStage_t	*pStage = &pd->parseStages[i];
+////		shaderStage_t	*pStage = &pd.parseStages[i];
 ////		if ( sort == SS_POST_PROCESS ) {
 ////			// post-process effects fill the depth buffer as they draw, so only the
 ////			// topmost post-process effect is rendered
-////			pStage->drawStateBits |= GLS_DEPTHFUNC_LESS;
-////		} else if ( coverage == MC_TRANSLUCENT || pStage->ignoreAlphaTest ) {
+////			pStage.drawStateBits |= GLS_DEPTHFUNC_LESS;
+////		} else if ( coverage == MC_TRANSLUCENT || pStage.ignoreAlphaTest ) {
 ////			// translucent surfaces can extend past the exactly marked depth buffer
-////			pStage->drawStateBits |= GLS_DEPTHFUNC_LESS | GLS_DEPTHMASK;
+////			pStage.drawStateBits |= GLS_DEPTHFUNC_LESS | GLS_DEPTHMASK;
 ////		} else {
 ////			// opaque and perforated surfaces must exactly match the depth buffer,
 ////			// which gets alpha test correct
-////			pStage->drawStateBits |= GLS_DEPTHFUNC_EQUAL | GLS_DEPTHMASK;
+////			pStage.drawStateBits |= GLS_DEPTHFUNC_EQUAL | GLS_DEPTHMASK;
 ////		}
 ////	}
 
 ////	// determine if this surface will accept overlays / decals
 
-////	if ( pd->forceOverlays ) {
+////	if ( pd.forceOverlays ) {
 ////		// explicitly flaged in material definition
 ////		allowOverlays = true;
 ////	} else {
@@ -2305,17 +2305,17 @@
 
 ////	if (numStages) {
 ////		stages = (shaderStage_t *)R_StaticAlloc( numStages * sizeof( stages[0] ) );
-////		memcpy( stages, pd->parseStages, numStages * sizeof( stages[0] ) );
+////		memcpy( stages, pd.parseStages, numStages * sizeof( stages[0] ) );
 ////	}
 
 ////	if ( numOps ) {
 ////		ops = (expOp_t *)R_StaticAlloc( numOps * sizeof( ops[0] ) );
-////		memcpy( ops, pd->shaderOps, numOps * sizeof( ops[0] ) );
+////		memcpy( ops, pd.shaderOps, numOps * sizeof( ops[0] ) );
 ////	}
 
 ////	if ( numRegisters ) {
 ////		expressionRegisters = (float *)R_StaticAlloc( numRegisters * sizeof( expressionRegisters[0] ) );
-////		memcpy( expressionRegisters, pd->shaderRegisters, numRegisters * sizeof( expressionRegisters[0] ) );
+////		memcpy( expressionRegisters, pd.shaderRegisters, numRegisters * sizeof( expressionRegisters[0] ) );
 ////	}
 
 ////	// see if the registers are completely constant, and don't need to be evaluated
@@ -2358,15 +2358,15 @@
 ////	int			i;
 
 ////	for ( i = EXP_REG_NUM_PREDEFINED ; i < GetNumRegisters() ; i++ ) {
-////		common->Printf( "register %i: %f\n", i, expressionRegisters[i] );
+////		common.Printf( "register %i: %f\n", i, expressionRegisters[i] );
 ////	}
-////	common->Printf( "\n" );
+////	common.Printf( "\n" );
 ////	for ( i = 0 ; i < numOps ; i++ ) {
 ////		const expOp_t *op = &ops[i];
-////		if ( op->opType == OP_TYPE_TABLE ) {
-////			common->Printf( "%i = %s[ %i ]\n", op->c, declManager->DeclByIndex( DECL_TABLE, op->a )->GetName(), op->b );
+////		if ( op.opType == OP_TYPE_TABLE ) {
+////			common.Printf( "%i = %s[ %i ]\n", op.c, declManager.DeclByIndex( DECL_TABLE, op.a ).GetName(), op.b );
 ////		} else {
-////			common->Printf( "%i = %i %s %i\n", op->c, op->a, opNames[ op->opType ], op->b );
+////			common.Printf( "%i = %i %s %i\n", op.c, op.a, opNames[ op.opType ], op.b );
 ////		}
 ////	}
 ////}
@@ -2391,8 +2391,8 @@
 ////	for ( int i = 0; i < numStages; i++ ) {
 ////		shaderStage_t *s = &stages[i];
 
-////		if ( s->texture.image ) {
-////			s->texture.image->AddReference();
+////		if ( s.texture.image ) {
+////			s.texture.image.AddReference();
 ////		}
 ////	}
 ////}
@@ -2417,7 +2417,7 @@
 ////	}
 
 ////	// copy the local and global parameters
-////	registers[EXP_REG_TIME] = view->floatTime;
+////	registers[EXP_REG_TIME] = view.floatTime;
 ////	registers[EXP_REG_PARM0] = shaderParms[0];
 ////	registers[EXP_REG_PARM1] = shaderParms[1];
 ////	registers[EXP_REG_PARM2] = shaderParms[2];
@@ -2430,74 +2430,74 @@
 ////	registers[EXP_REG_PARM9] = shaderParms[9];
 ////	registers[EXP_REG_PARM10] = shaderParms[10];
 ////	registers[EXP_REG_PARM11] = shaderParms[11];
-////	registers[EXP_REG_GLOBAL0] = view->renderView.shaderParms[0];
-////	registers[EXP_REG_GLOBAL1] = view->renderView.shaderParms[1];
-////	registers[EXP_REG_GLOBAL2] = view->renderView.shaderParms[2];
-////	registers[EXP_REG_GLOBAL3] = view->renderView.shaderParms[3];
-////	registers[EXP_REG_GLOBAL4] = view->renderView.shaderParms[4];
-////	registers[EXP_REG_GLOBAL5] = view->renderView.shaderParms[5];
-////	registers[EXP_REG_GLOBAL6] = view->renderView.shaderParms[6];
-////	registers[EXP_REG_GLOBAL7] = view->renderView.shaderParms[7];
+////	registers[EXP_REG_GLOBAL0] = view.renderView.shaderParms[0];
+////	registers[EXP_REG_GLOBAL1] = view.renderView.shaderParms[1];
+////	registers[EXP_REG_GLOBAL2] = view.renderView.shaderParms[2];
+////	registers[EXP_REG_GLOBAL3] = view.renderView.shaderParms[3];
+////	registers[EXP_REG_GLOBAL4] = view.renderView.shaderParms[4];
+////	registers[EXP_REG_GLOBAL5] = view.renderView.shaderParms[5];
+////	registers[EXP_REG_GLOBAL6] = view.renderView.shaderParms[6];
+////	registers[EXP_REG_GLOBAL7] = view.renderView.shaderParms[7];
 
 ////	op = ops;
 ////	for ( i = 0 ; i < numOps ; i++, op++ ) {
-////		switch( op->opType ) {
+////		switch( op.opType ) {
 ////		case OP_TYPE_ADD:
-////			registers[op->c] = registers[op->a] + registers[op->b];
+////			registers[op.c] = registers[op.a] + registers[op.b];
 ////			break;
 ////		case OP_TYPE_SUBTRACT:
-////			registers[op->c] = registers[op->a] - registers[op->b];
+////			registers[op.c] = registers[op.a] - registers[op.b];
 ////			break;
 ////		case OP_TYPE_MULTIPLY:
-////			registers[op->c] = registers[op->a] * registers[op->b];
+////			registers[op.c] = registers[op.a] * registers[op.b];
 ////			break;
 ////		case OP_TYPE_DIVIDE:
-////			registers[op->c] = registers[op->a] / registers[op->b];
+////			registers[op.c] = registers[op.a] / registers[op.b];
 ////			break;
 ////		case OP_TYPE_MOD:
-////			b = (int)registers[op->b];
+////			b = (int)registers[op.b];
 ////			b = b != 0 ? b : 1;
-////			registers[op->c] = (int)registers[op->a] % b;
+////			registers[op.c] = (int)registers[op.a] % b;
 ////			break;
 ////		case OP_TYPE_TABLE:
 ////			{
-////				const idDeclTable *table = static_cast<const idDeclTable *>( declManager->DeclByIndex( DECL_TABLE, op->a ) );
-////				registers[op->c] = table->TableLookup( registers[op->b] );
+////				const idDeclTable *table = static_cast<const idDeclTable *>( declManager.DeclByIndex( DECL_TABLE, op.a ) );
+////				registers[op.c] = table.TableLookup( registers[op.b] );
 ////			}
 ////			break;
 ////		case OP_TYPE_SOUND:
 ////			if ( soundEmitter ) {
-////				registers[op->c] = soundEmitter->CurrentAmplitude();
+////				registers[op.c] = soundEmitter.CurrentAmplitude();
 ////			} else {
-////				registers[op->c] = 0;
+////				registers[op.c] = 0;
 ////			}
 ////			break;
 ////		case OP_TYPE_GT:
-////			registers[op->c] = registers[ op->a ] > registers[op->b];
+////			registers[op.c] = registers[ op.a ] > registers[op.b];
 ////			break;
 ////		case OP_TYPE_GE:
-////			registers[op->c] = registers[ op->a ] >= registers[op->b];
+////			registers[op.c] = registers[ op.a ] >= registers[op.b];
 ////			break;
 ////		case OP_TYPE_LT:
-////			registers[op->c] = registers[ op->a ] < registers[op->b];
+////			registers[op.c] = registers[ op.a ] < registers[op.b];
 ////			break;
 ////		case OP_TYPE_LE:
-////			registers[op->c] = registers[ op->a ] <= registers[op->b];
+////			registers[op.c] = registers[ op.a ] <= registers[op.b];
 ////			break;
 ////		case OP_TYPE_EQ:
-////			registers[op->c] = registers[ op->a ] == registers[op->b];
+////			registers[op.c] = registers[ op.a ] == registers[op.b];
 ////			break;
 ////		case OP_TYPE_NE:
-////			registers[op->c] = registers[ op->a ] != registers[op->b];
+////			registers[op.c] = registers[ op.a ] != registers[op.b];
 ////			break;
 ////		case OP_TYPE_AND:
-////			registers[op->c] = registers[ op->a ] && registers[op->b];
+////			registers[op.c] = registers[ op.a ] && registers[op.b];
 ////			break;
 ////		case OP_TYPE_OR:
-////			registers[op->c] = registers[ op->a ] || registers[op->b];
+////			registers[op.c] = registers[ op.a ] || registers[op.b];
 ////			break;
 ////		default:
-////			common->FatalError( "R_EvaluateExpression: bad opcode" );
+////			common.FatalError( "R_EvaluateExpression: bad opcode" );
 ////		}
 ////	}
 
@@ -2526,8 +2526,8 @@
 ////=============
 ////*/
 ////int idMaterial::GetImageWidth( void ) const {
-////	assert( GetStage(0) && GetStage(0)->texture.image );
-////	return GetStage(0)->texture.image->uploadWidth;
+////	assert( GetStage(0) && GetStage(0).texture.image );
+////	return GetStage(0).texture.image.uploadWidth;
 ////}
 
 /////*
@@ -2536,8 +2536,8 @@
 ////=============
 ////*/
 ////int idMaterial::GetImageHeight( void ) const {
-////	assert( GetStage(0) && GetStage(0)->texture.image );
-////	return GetStage(0)->texture.image->uploadHeight;
+////	assert( GetStage(0) && GetStage(0).texture.image );
+////	return GetStage(0).texture.image.uploadHeight;
 ////}
 
 /////*
@@ -2549,7 +2549,7 @@
 ////	if ( !stages || !stages[0].texture.cinematic ) {
 ////		return 0;
 ////	}
-////	return stages[0].texture.cinematic->AnimationLength();
+////	return stages[0].texture.cinematic.AnimationLength();
 ////}
 
 /////*
@@ -2561,7 +2561,7 @@
 ////	if ( !stages || !stages[0].texture.cinematic || !backEnd.viewDef ) {
 ////		return;
 ////	}
-////	stages[0].texture.cinematic->ImageForTime( tr.primaryRenderView.time );
+////	stages[0].texture.cinematic.ImageForTime( tr.primaryRenderView.time );
 ////}
 
 /////*
@@ -2572,7 +2572,7 @@
 ////void idMaterial::CloseCinematic( void ) const {
 ////	for( int i = 0; i < numStages; i++ ) {
 ////		if ( stages[i].texture.cinematic ) {
-////			stages[i].texture.cinematic->Close();
+////			stages[i].texture.cinematic.Close();
 ////			delete stages[i].texture.cinematic;
 ////			stages[i].texture.cinematic = NULL;
 ////		}
@@ -2587,7 +2587,7 @@
 ////void idMaterial::ResetCinematicTime( int time ) const {
 ////	for( int i = 0; i < numStages; i++ ) {
 ////		if ( stages[i].texture.cinematic ) {
-////			stages[i].texture.cinematic->ResetTime( time );
+////			stages[i].texture.cinematic.ResetTime( time );
 ////		}
 ////	}
 ////}
@@ -2615,7 +2615,7 @@
 ////*/
 ////static int	c_constant, c_variable;
 ////void idMaterial::CheckForConstantRegisters() {
-////	if ( !pd->registersAreConstant ) {
+////	if ( !pd.registersAreConstant ) {
 ////		return;
 ////	}
 
@@ -2641,7 +2641,7 @@
 ////	}
 ////	idImage	*image = stages[0].texture.image;
 ////	if ( image ) {
-////		return image->imgName;
+////		return image.imgName;
 ////	}
 ////	return "_scratch";
 ////}
@@ -2657,7 +2657,7 @@
 ////	for ( int i = 0 ; i < numStages ; i++ ) {
 ////		idImage	*image = stages[i].texture.image;
 ////		if ( image ) {
-////			image->SetClassification( tag );
+////			image.SetClassification( tag );
 ////		}
 ////	}
 ////}
@@ -2678,7 +2678,7 @@
 ////*/
 ////bool idMaterial::SetDefaultText( void ) {
 ////	// if there exists an image with the same name
-////	if ( 1 ) { //fileSystem->ReadFile( GetName(), NULL ) != -1 ) {
+////	if ( 1 ) { //fileSystem.ReadFile( GetName(), NULL ) != -1 ) {
 ////		char generated[2048];
 ////		idStr::snPrintf( generated, sizeof( generated ), 
 ////						"material %s // IMPLICITLY GENERATED\n"
@@ -2736,13 +2736,13 @@
 ////{
 ////	for ( int i = 0 ; i < numStages ; i++ ) {
 ////		if ( stages[i].newStage ) {
-////			for ( int j = 0 ; j < stages[i].newStage->numFragmentProgramImages ; j++ ) {
-////				if ( stages[i].newStage->fragmentProgramImages[j] ) {
-////					stages[i].newStage->fragmentProgramImages[j]->Reload( false, force );
+////			for ( int j = 0 ; j < stages[i].newStage.numFragmentProgramImages ; j++ ) {
+////				if ( stages[i].newStage.fragmentProgramImages[j] ) {
+////					stages[i].newStage.fragmentProgramImages[j].Reload( false, force );
 ////				}
 ////			}
 ////		} else if ( stages[i].texture.image ) {
-////			stages[i].texture.image->Reload( false, force );
+////			stages[i].texture.image.Reload( false, force );
 ////		}
 ////	}
 ////}

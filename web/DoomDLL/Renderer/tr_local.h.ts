@@ -114,7 +114,7 @@ class idScreenRect {
 ////	const srfTriangles_t	*geo;
 ////	const struct viewEntity_s *space;
 ////	const idMaterial		*material;	// may be NULL for shadow volumes
-////	float					sort;		// material->sort, modified by gui / entity sort offsets
+////	float					sort;		// material.sort, modified by gui / entity sort offsets
 ////	const float				*shaderRegisters;	// evaluated and adjusted for referenceShaders
 ////	const struct drawSurf_s	*nextOnLight;	// viewLight chains
 ////	idScreenRect			scissorRect;	// for scissor clipping, local inside renderView viewport
@@ -201,7 +201,7 @@ class idRenderEntity {
 ////	int						index;					// in world lightdefs
 
 ////	int						areaNum;				// if not -1, we may be able to cull all the light's
-////													// interactions if !viewDef->connectedAreas[areaNum]
+////													// interactions if !viewDef.connectedAreas[areaNum]
 
 ////	int						lastModifiedFrameNum;	// to determine if it is constantly changing,
 ////													// and should go in the dynamic frame memory, or kept
@@ -225,7 +225,7 @@ class idRenderEntity {
 ////	int						numShadowFrustums;		// one for projected lights, usually six for point lights
 ////	shadowFrustum_t			shadowFrustums[6];
 
-////	int						viewCount;				// if == tr.viewCount, the light is on the viewDef->viewLights list
+////	int						viewCount;				// if == tr.viewCount, the light is on the viewDef.viewLights list
 ////	struct viewLight_s *	viewLight;
 
 ////	areaReference_t *		references;				// each area the light is present in will have a lightRef
@@ -262,7 +262,7 @@ class idRenderEntityLocal extends idRenderEntity {
 ////													// in the cached memory
 ////	bool					archived;				// for demo writing
 
-////	idRenderModel *			dynamicModel;			// if parms.model->IsDynamicModel(), this is the generated data
+////	idRenderModel *			dynamicModel;			// if parms.model.IsDynamicModel(), this is the generated data
 ////	int						dynamicModelFrameCount;	// continuously animating dynamic models will recreate
 ////													// dynamicModel if this doesn't == tr.viewCount
 ////	idRenderModel *			cachedDynamicModel;
@@ -651,7 +651,7 @@ class backEndState_t {
 
 ////	viewLight_t *		vLight;
 ////	int					depthFunc;			// GLS_DEPTHFUNC_EQUAL, or GLS_DEPTHFUNC_LESS for translucent
-////	float				lightTextureMatrix[16];	// only if lightStage->texture.hasMatrix
+////	float				lightTextureMatrix[16];	// only if lightStage.texture.hasMatrix
 ////	float				lightColor[4];		// evaluation of current light's color stage
 
 ////	float				lightScale;			// Every light color calaculation will be multiplied by this,
@@ -789,7 +789,7 @@ class idRenderSystemLocal extends idRenderSystem {
 
 ////	drawSurfsCommand_t		lockSurfacesCmd;	// use this when r_lockSurfaces = 1
 
-////	viewEntity_t			identitySpace;		// can use if we don't know viewDef->worldSpace is valid
+////	viewEntity_t			identitySpace;		// can use if we don't know viewDef.worldSpace is valid
 ////	FILE *					logFile;			// for logging GL calls and frame breaks
 
 ////	int						stencilIncr, stencilDecr;	// GL_INCR / INCR_WRAP_EXT, GL_DECR / GL_DECR_EXT
@@ -1452,7 +1452,7 @@ class idRenderSystemLocal extends idRenderSystem {
 
 ////TR_STENCILSHADOWS
 
-////"facing" should have one more element than tri->numIndexes / 3, which should be set to 1
+////"facing" should have one more element than tri.numIndexes / 3, which should be set to 1
 
 ////============================================================
 ////*/
@@ -1476,7 +1476,7 @@ class idRenderSystemLocal extends idRenderSystem {
 
 ////Fast, non-clipped overshoot shadow volumes
 
-////"facing" should have one more element than tri->numIndexes / 3, which should be set to 1
+////"facing" should have one more element than tri.numIndexes / 3, which should be set to 1
 ////calling this function may modify "facing" based on culling
 
 ////============================================================

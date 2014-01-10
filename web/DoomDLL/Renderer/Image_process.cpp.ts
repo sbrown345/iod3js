@@ -313,7 +313,7 @@
 ////	float	*fbuf, *fbuf_p;
 
 ////	if ( width < 1 || height < 1 || ( width + height == 2 ) ) {
-////		common->FatalError( "R_MipMapWithAlphaMin called with size %i,%i", width, height );
+////		common.FatalError( "R_MipMapWithAlphaMin called with size %i,%i", width, height );
 ////	}
 
 ////	// convert the incoming texture to centered floating point
@@ -402,7 +402,7 @@
 ////	int		newWidth, newHeight;
 
 ////	if ( width < 1 || height < 1 || ( width + height == 2 ) ) {
-////		common->FatalError( "R_MipMap called with size %i,%i", width, height );
+////		common.FatalError( "R_MipMap called with size %i,%i", width, height );
 ////	}
 
 ////	border[0] = in[0];
@@ -492,7 +492,7 @@
 
 ////	// assume symetric for now
 ////	if ( width < 2 || height < 2 || depth < 2 ) {
-////		common->FatalError( "R_MipMap3D called with size %i,%i,%i", width, height, depth );
+////		common.FatalError( "R_MipMap3D called with size %i,%i,%i", width, height, depth );
 ////	}
 
 ////	border[0] = in[0];

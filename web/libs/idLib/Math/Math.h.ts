@@ -254,7 +254,7 @@ class idMath {
 
 ////ID_INLINE float idMath::InvSqrt16( float x ) {
 
-////	dword a = ((union _flint*)(&x))->i;
+////	dword a = ((union _flint*)(&x)).i;
 ////	union _flint seed;
 
 ////	assert( initialized );
@@ -268,7 +268,7 @@ class idMath {
 
 ////ID_INLINE float idMath::InvSqrt( float x ) {
 
-////	dword a = ((union _flint*)(&x))->i;
+////	dword a = ((union _flint*)(&x)).i;
 ////	union _flint seed;
 
 ////	assert( initialized );
@@ -282,7 +282,7 @@ class idMath {
 ////}
 
 ////ID_INLINE double idMath::InvSqrt64( float x ) {
-////	dword a = ((union _flint*)(&x))->i;
+////	dword a = ((union _flint*)(&x)).i;
 ////	union _flint seed;
 
 ////	assert( initialized );

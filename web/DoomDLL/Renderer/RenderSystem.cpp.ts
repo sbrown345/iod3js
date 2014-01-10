@@ -1,3 +1,5 @@
+/// <reference path="ModelManager.h.ts" />
+/// <reference path="ModelManager.cpp.ts" />
 /// <reference path="../Framework/DeclManager.cpp.ts" />
 /// <reference path="../Sys/win_glimp.cpp.ts" />
 /// <reference path="../Sys/win_glimp.cpp.ts" />
@@ -1708,37 +1710,37 @@ class idRenderSystem {
 R_SetColorMappings
 ===============
 */
-static R_SetColorMappings( ):void {
-	var/*int		*/i:number, j:number;
-	var/*float	*/g:number, b:number;
-	var/*int		*/inf:number;
+    static R_SetColorMappings ( ): void {
+        var /*int		*/i: number, j: number;
+        var /*float	*/g: number, b: number;
+        var /*int		*/inf: number;
 
-	b = r_brightness.GetFloat();
-	g = r_gamma.GetFloat();
+        b = r_brightness.GetFloat ( );
+        g = r_gamma.GetFloat ( );
 
-	for ( i = 0; i < 256; i++ ) {
-		j = i * b;
-		if (j > 255) {
-			j = 255;
-		}
+        for ( i = 0; i < 256; i++ ) {
+            j = i * b;
+            if ( j > 255 ) {
+                j = 255;
+            }
 
-		if ( g == 1 ) {
-			inf = (j<<8) | j;
-		} else {
-			inf = 0xffff * pow ( j/255.0, 1.0 / g ) + 0.5;
-		}
-		if (inf < 0) {
-			inf = 0;
-		}
-		if (inf > 0xffff) {
-			inf = 0xffff;
-		}
+            if ( g == 1 ) {
+                inf = ( j << 8 ) | j;
+            } else {
+                inf = 0xffff * pow( j / 255.0, 1.0 / g ) + 0.5;
+            }
+            if ( inf < 0 ) {
+                inf = 0;
+            }
+            if ( inf > 0xffff ) {
+                inf = 0xffff;
+            }
 
-		tr.gammaTable[i] = inf;
-	}
+            tr.gammaTable[i] = inf;
+        }
 
-	GLimp_SetGamma( tr.gammaTable, tr.gammaTable, tr.gammaTable );
-}
+        GLimp_SetGamma( tr.gammaTable, tr.gammaTable, tr.gammaTable );
+    }
 
 
 /////*
@@ -2087,7 +2089,7 @@ idRenderSystemLocal::Init
     todo( "idCinematic::InitCinematic( );" );
 
     // build brightness translation tables
-    this.R_SetColorMappings();
+    idRenderSystem.R_SetColorMappings();
 
     this.R_InitMaterials();
 

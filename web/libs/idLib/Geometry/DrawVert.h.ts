@@ -97,11 +97,11 @@ class idDrawVert {
 //}
 
 //ID_INLINE void idDrawVert::SetColor( dword color ) {
-//	*reinterpret_cast<dword *>(this->color) = color;
+//	*reinterpret_cast<dword *>(this.color) = color;
 //}
 
 //ID_INLINE dword idDrawVert::GetColor( void ) const {
-//	return *reinterpret_cast<const dword *>(this->color);
+//	return *reinterpret_cast<const dword *>(this.color);
 //}
 
 //#endif /* !__DRAWVERT_H__ */

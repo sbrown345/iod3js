@@ -44,9 +44,9 @@
 
 ////Manager
 
-////->List
-////->Print
-////->Reload( bool force )
+////.List
+////.Print
+////.Reload( bool force )
 
 ////*/
 

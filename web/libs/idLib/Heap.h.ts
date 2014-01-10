@@ -197,25 +197,25 @@
 ////type *idBlockAlloc<type,blockSize>::Alloc( void ) {
 ////	if ( !free ) {
 ////		block_t *block = new block_t;
-////		block->next = blocks;
+////		block.next = blocks;
 ////		blocks = block;
 ////		for ( int i = 0; i < blockSize; i++ ) {
-////			block->elements[i].next = free;
-////			free = &block->elements[i];
+////			block.elements[i].next = free;
+////			free = &block.elements[i];
 ////		}
 ////		total += blockSize;
 ////	}
 ////	active++;
 ////	element_t *element = free;
-////	free = free->next;
-////	element->next = NULL;
-////	return &element->t;
+////	free = free.next;
+////	element.next = NULL;
+////	return &element.t;
 ////}
 
 ////template<class type, int blockSize>
 ////void idBlockAlloc<type,blockSize>::Free( type *t ) {
-////	element_t *element = (element_t *)( ( (unsigned char *) t ) - ( (int) &((element_t *)0)->t ) );
-////	element->next = free;
+////	element_t *element = (element_t *)( ( (unsigned char *) t ) - ( (int) &((element_t *)0).t ) );
+////	element.next = free;
 ////	free = element;
 ////	active--;
 ////}
@@ -224,7 +224,7 @@
 ////void idBlockAlloc<type,blockSize>::Shutdown( void ) {
 ////	while( blocks ) {
 ////		block_t *block = blocks;
-////		blocks = blocks->next;
+////		blocks = blocks.next;
 ////		delete block;
 ////	}
 ////	blocks = NULL;
@@ -461,17 +461,17 @@
 ////void idDynamicBlockAlloc<type, baseBlockSize, minBlockSize>::Shutdown( void ) {
 ////	idDynamicBlock<type> *block;
 
-////	for ( block = firstBlock; block != NULL; block = block->next ) {
-////		if ( block->node == NULL ) {
+////	for ( block = firstBlock; block != NULL; block = block.next ) {
+////		if ( block.node == NULL ) {
 ////			FreeInternal( block );
 ////		}
 ////	}
 
 ////	for ( block = firstBlock; block != NULL; block = firstBlock ) {
-////		firstBlock = block->next;
-////		assert( block->IsBaseBlock() );
+////		firstBlock = block.next;
+////		assert( block.IsBaseBlock() );
 ////		if ( lockMemory ) {
-////			idLib::sys->UnlockMemory( block, block->GetSize() + (int)sizeof( idDynamicBlock<type> ) );
+////			idLib::sys.UnlockMemory( block, block.GetSize() + (int)sizeof( idDynamicBlock<type> ) );
 ////		}
 ////		Mem_Free16( block );
 ////	}
@@ -488,22 +488,22 @@
 ////	for ( int i = numBaseBlocks; i < numBlocks; i++ ) {
 ////		block = ( idDynamicBlock<type> * ) Mem_Alloc16( baseBlockSize );
 ////		if ( lockMemory ) {
-////			idLib::sys->LockMemory( block, baseBlockSize );
+////			idLib::sys.LockMemory( block, baseBlockSize );
 ////		}
 ////#ifdef DYNAMIC_BLOCK_ALLOC_CHECK
-////		memcpy( block->id, blockId, sizeof( block->id ) );
-////		block->allocator = (void*)this;
+////		memcpy( block.id, blockId, sizeof( block.id ) );
+////		block.allocator = (void*)this;
 ////#endif
-////		block->SetSize( baseBlockSize - (int)sizeof( idDynamicBlock<type> ), true );
-////		block->next = NULL;
-////		block->prev = lastBlock;
+////		block.SetSize( baseBlockSize - (int)sizeof( idDynamicBlock<type> ), true );
+////		block.next = NULL;
+////		block.prev = lastBlock;
 ////		if ( lastBlock ) {
-////			lastBlock->next = block;
+////			lastBlock.next = block;
 ////		} else {
 ////			firstBlock = block;
 ////		}
 ////		lastBlock = block;
-////		block->node = NULL;
+////		block.node = NULL;
 
 ////		FreeInternal( block );
 
@@ -524,25 +524,25 @@
 ////	idDynamicBlock<type> *block, *next;
 
 ////	for ( block = firstBlock; block != NULL; block = next ) {
-////		next = block->next;
+////		next = block.next;
 
-////		if ( block->IsBaseBlock() && block->node != NULL && ( next == NULL || next->IsBaseBlock() ) ) {
+////		if ( block.IsBaseBlock() && block.node != NULL && ( next == NULL || next.IsBaseBlock() ) ) {
 ////			UnlinkFreeInternal( block );
-////			if ( block->prev ) {
-////				block->prev->next = block->next;
+////			if ( block.prev ) {
+////				block.prev.next = block.next;
 ////			} else {
-////				firstBlock = block->next;
+////				firstBlock = block.next;
 ////			}
-////			if ( block->next ) {
-////				block->next->prev = block->prev;
+////			if ( block.next ) {
+////				block.next.prev = block.prev;
 ////			} else {
-////				lastBlock = block->prev;
+////				lastBlock = block.prev;
 ////			}
 ////			if ( lockMemory ) {
-////				idLib::sys->UnlockMemory( block, block->GetSize() + (int)sizeof( idDynamicBlock<type> ) );
+////				idLib::sys.UnlockMemory( block, block.GetSize() + (int)sizeof( idDynamicBlock<type> ) );
 ////			}
 ////			numBaseBlocks--;
-////			baseBlockMemory -= block->GetSize() + (int)sizeof( idDynamicBlock<type> );
+////			baseBlockMemory -= block.GetSize() + (int)sizeof( idDynamicBlock<type> );
 ////			Mem_Free16( block );
 ////		}
 ////	}
@@ -558,8 +558,8 @@
 ////	idDynamicBlock<type> *block;
 
 ////	numEmptyBaseBlocks = 0;
-////	for ( block = firstBlock; block != NULL; block = block->next ) {
-////		if ( block->IsBaseBlock() && block->node != NULL && ( block->next == NULL || block->next->IsBaseBlock() ) ) {
+////	for ( block = firstBlock; block != NULL; block = block.next ) {
+////		if ( block.IsBaseBlock() && block.node != NULL && ( block.next == NULL || block.next.IsBaseBlock() ) ) {
 ////			numEmptyBaseBlocks++;
 ////		}
 ////	}
@@ -590,9 +590,9 @@
 ////#endif
 
 ////	numUsedBlocks++;
-////	usedBlockMemory += block->GetSize();
+////	usedBlockMemory += block.GetSize();
 
-////	return block->GetMemory();
+////	return block.GetMemory();
 ////}
 
 ////template<class type, int baseBlockSize, int minBlockSize>
@@ -611,7 +611,7 @@
 
 ////	idDynamicBlock<type> *block = ( idDynamicBlock<type> * ) ( ( (byte *) ptr ) - (int)sizeof( idDynamicBlock<type> ) );
 
-////	usedBlockMemory -= block->GetSize();
+////	usedBlockMemory -= block.GetSize();
 
 ////	block = ResizeInternal( block, num );
 ////	if ( block == NULL ) {
@@ -622,9 +622,9 @@
 ////	CheckMemory();
 ////#endif
 
-////	usedBlockMemory += block->GetSize();
+////	usedBlockMemory += block.GetSize();
 
-////	return block->GetMemory();
+////	return block.GetMemory();
 ////}
 
 ////template<class type, int baseBlockSize, int minBlockSize>
@@ -639,7 +639,7 @@
 ////	idDynamicBlock<type> *block = ( idDynamicBlock<type> * ) ( ( (byte *) ptr ) - (int)sizeof( idDynamicBlock<type> ) );
 
 ////	numUsedBlocks--;
-////	usedBlockMemory -= block->GetSize();
+////	usedBlockMemory -= block.GetSize();
 
 ////	FreeInternal( block );
 
@@ -658,23 +658,23 @@
 
 ////	block = ( idDynamicBlock<type> * ) ( ( (byte *) ptr ) - (int)sizeof( idDynamicBlock<type> ) );
 
-////	if ( block->node != NULL ) {
+////	if ( block.node != NULL ) {
 ////		return "memory has been freed";
 ////	}
 
 ////#ifdef DYNAMIC_BLOCK_ALLOC_CHECK
-////	if ( block->id[0] != 0x11111111 || block->id[1] != 0x22222222 || block->id[2] != 0x33333333 ) {
+////	if ( block.id[0] != 0x11111111 || block.id[1] != 0x22222222 || block.id[2] != 0x33333333 ) {
 ////		return "memory has invalid id";
 ////	}
-////	if ( block->allocator != (void*)this ) {
+////	if ( block.allocator != (void*)this ) {
 ////		return "memory was allocated with different allocator";
 ////	}
 ////#endif
 
 ////	/* base blocks can be larger than baseBlockSize which can cause this code to fail
 ////	idDynamicBlock<type> *base;
-////	for ( base = firstBlock; base != NULL; base = base->next ) {
-////		if ( base->IsBaseBlock() ) {
+////	for ( base = firstBlock; base != NULL; base = base.next ) {
+////		if ( base.IsBaseBlock() ) {
 ////			if ( ((int)block) >= ((int)base) && ((int)block) < ((int)base) + baseBlockSize ) {
 ////				break;
 ////			}
@@ -722,22 +722,22 @@
 ////		int allocSize = Max( baseBlockSize, alignedBytes + (int)sizeof( idDynamicBlock<type> ) );
 ////		block = ( idDynamicBlock<type> * ) Mem_Alloc16( allocSize );
 ////		if ( lockMemory ) {
-////			idLib::sys->LockMemory( block, baseBlockSize );
+////			idLib::sys.LockMemory( block, baseBlockSize );
 ////		}
 ////#ifdef DYNAMIC_BLOCK_ALLOC_CHECK
-////		memcpy( block->id, blockId, sizeof( block->id ) );
-////		block->allocator = (void*)this;
+////		memcpy( block.id, blockId, sizeof( block.id ) );
+////		block.allocator = (void*)this;
 ////#endif
-////		block->SetSize( allocSize - (int)sizeof( idDynamicBlock<type> ), true );
-////		block->next = NULL;
-////		block->prev = lastBlock;
+////		block.SetSize( allocSize - (int)sizeof( idDynamicBlock<type> ), true );
+////		block.next = NULL;
+////		block.prev = lastBlock;
 ////		if ( lastBlock ) {
-////			lastBlock->next = block;
+////			lastBlock.next = block;
 ////		} else {
 ////			firstBlock = block;
 ////		}
 ////		lastBlock = block;
-////		block->node = NULL;
+////		block.node = NULL;
 
 ////		numBaseBlocks++;
 ////		baseBlockMemory += allocSize;
@@ -751,23 +751,23 @@
 ////	int alignedBytes = ( num * sizeof( type ) + 15 ) & ~15;
 
 ////#ifdef DYNAMIC_BLOCK_ALLOC_CHECK
-////	assert( block->id[0] == 0x11111111 && block->id[1] == 0x22222222 && block->id[2] == 0x33333333 && block->allocator == (void*)this );
+////	assert( block.id[0] == 0x11111111 && block.id[1] == 0x22222222 && block.id[2] == 0x33333333 && block.allocator == (void*)this );
 ////#endif
 
 ////	// if the new size is larger
-////	if ( alignedBytes > block->GetSize() ) {
+////	if ( alignedBytes > block.GetSize() ) {
 
-////		idDynamicBlock<type> *nextBlock = block->next;
+////		idDynamicBlock<type> *nextBlock = block.next;
 
 ////		// try to annexate the next block if it's free
-////		if ( nextBlock && !nextBlock->IsBaseBlock() && nextBlock->node != NULL &&
-////				block->GetSize() + (int)sizeof( idDynamicBlock<type> ) + nextBlock->GetSize() >= alignedBytes ) {
+////		if ( nextBlock && !nextBlock.IsBaseBlock() && nextBlock.node != NULL &&
+////				block.GetSize() + (int)sizeof( idDynamicBlock<type> ) + nextBlock.GetSize() >= alignedBytes ) {
 
 ////			UnlinkFreeInternal( nextBlock );
-////			block->SetSize( block->GetSize() + (int)sizeof( idDynamicBlock<type> ) + nextBlock->GetSize(), block->IsBaseBlock() );
-////			block->next = nextBlock->next;
-////			if ( nextBlock->next ) {
-////				nextBlock->next->prev = block;
+////			block.SetSize( block.GetSize() + (int)sizeof( idDynamicBlock<type> ) + nextBlock.GetSize(), block.IsBaseBlock() );
+////			block.next = nextBlock.next;
+////			if ( nextBlock.next ) {
+////				nextBlock.next.prev = block;
 ////			} else {
 ////				lastBlock = block;
 ////			}
@@ -778,13 +778,13 @@
 ////			if ( block == NULL ) {
 ////				return NULL;
 ////			}
-////			memcpy( block->GetMemory(), oldBlock->GetMemory(), oldBlock->GetSize() );
+////			memcpy( block.GetMemory(), oldBlock.GetMemory(), oldBlock.GetSize() );
 ////			FreeInternal( oldBlock );
 ////		}
 ////	}
 
 ////	// if the unused space at the end of this block is large enough to hold a block with at least one element
-////	if ( block->GetSize() - alignedBytes - (int)sizeof( idDynamicBlock<type> ) < Max( minBlockSize, (int)sizeof( type ) ) ) {
+////	if ( block.GetSize() - alignedBytes - (int)sizeof( idDynamicBlock<type> ) < Max( minBlockSize, (int)sizeof( type ) ) ) {
 ////		return block;
 ////	}
 
@@ -792,20 +792,20 @@
 
 ////	newBlock = ( idDynamicBlock<type> * ) ( ( (byte *) block ) + (int)sizeof( idDynamicBlock<type> ) + alignedBytes );
 ////#ifdef DYNAMIC_BLOCK_ALLOC_CHECK
-////	memcpy( newBlock->id, blockId, sizeof( newBlock->id ) );
-////	newBlock->allocator = (void*)this;
+////	memcpy( newBlock.id, blockId, sizeof( newBlock.id ) );
+////	newBlock.allocator = (void*)this;
 ////#endif
-////	newBlock->SetSize( block->GetSize() - alignedBytes - (int)sizeof( idDynamicBlock<type> ), false );
-////	newBlock->next = block->next;
-////	newBlock->prev = block;
-////	if ( newBlock->next ) {
-////		newBlock->next->prev = newBlock;
+////	newBlock.SetSize( block.GetSize() - alignedBytes - (int)sizeof( idDynamicBlock<type> ), false );
+////	newBlock.next = block.next;
+////	newBlock.prev = block;
+////	if ( newBlock.next ) {
+////		newBlock.next.prev = newBlock;
 ////	} else {
 ////		lastBlock = newBlock;
 ////	}
-////	newBlock->node = NULL;
-////	block->next = newBlock;
-////	block->SetSize( alignedBytes, block->IsBaseBlock() );
+////	newBlock.node = NULL;
+////	block.next = newBlock;
+////	block.SetSize( alignedBytes, block.IsBaseBlock() );
 
 ////	FreeInternal( newBlock );
 
@@ -815,33 +815,33 @@
 ////template<class type, int baseBlockSize, int minBlockSize>
 ////void idDynamicBlockAlloc<type, baseBlockSize, minBlockSize>::FreeInternal( idDynamicBlock<type> *block ) {
 
-////	assert( block->node == NULL );
+////	assert( block.node == NULL );
 
 ////#ifdef DYNAMIC_BLOCK_ALLOC_CHECK
-////	assert( block->id[0] == 0x11111111 && block->id[1] == 0x22222222 && block->id[2] == 0x33333333 && block->allocator == (void*)this );
+////	assert( block.id[0] == 0x11111111 && block.id[1] == 0x22222222 && block.id[2] == 0x33333333 && block.allocator == (void*)this );
 ////#endif
 
 ////	// try to merge with a next free block
-////	idDynamicBlock<type> *nextBlock = block->next;
-////	if ( nextBlock && !nextBlock->IsBaseBlock() && nextBlock->node != NULL ) {
+////	idDynamicBlock<type> *nextBlock = block.next;
+////	if ( nextBlock && !nextBlock.IsBaseBlock() && nextBlock.node != NULL ) {
 ////		UnlinkFreeInternal( nextBlock );
-////		block->SetSize( block->GetSize() + (int)sizeof( idDynamicBlock<type> ) + nextBlock->GetSize(), block->IsBaseBlock() );
-////		block->next = nextBlock->next;
-////		if ( nextBlock->next ) {
-////			nextBlock->next->prev = block;
+////		block.SetSize( block.GetSize() + (int)sizeof( idDynamicBlock<type> ) + nextBlock.GetSize(), block.IsBaseBlock() );
+////		block.next = nextBlock.next;
+////		if ( nextBlock.next ) {
+////			nextBlock.next.prev = block;
 ////		} else {
 ////			lastBlock = block;
 ////		}
 ////	}
 
 ////	// try to merge with a previous free block
-////	idDynamicBlock<type> *prevBlock = block->prev;
-////	if ( prevBlock && !block->IsBaseBlock() && prevBlock->node != NULL ) {
+////	idDynamicBlock<type> *prevBlock = block.prev;
+////	if ( prevBlock && !block.IsBaseBlock() && prevBlock.node != NULL ) {
 ////		UnlinkFreeInternal( prevBlock );
-////		prevBlock->SetSize( prevBlock->GetSize() + (int)sizeof( idDynamicBlock<type> ) + block->GetSize(), prevBlock->IsBaseBlock() );
-////		prevBlock->next = block->next;
-////		if ( block->next ) {
-////			block->next->prev = prevBlock;
+////		prevBlock.SetSize( prevBlock.GetSize() + (int)sizeof( idDynamicBlock<type> ) + block.GetSize(), prevBlock.IsBaseBlock() );
+////		prevBlock.next = block.next;
+////		if ( block.next ) {
+////			block.next.prev = prevBlock;
 ////		} else {
 ////			lastBlock = prevBlock;
 ////		}
@@ -853,34 +853,34 @@
 
 ////template<class type, int baseBlockSize, int minBlockSize>
 ////ID_INLINE void idDynamicBlockAlloc<type, baseBlockSize, minBlockSize>::LinkFreeInternal( idDynamicBlock<type> *block ) {
-////	block->node = freeTree.Add( block, block->GetSize() );
+////	block.node = freeTree.Add( block, block.GetSize() );
 ////	numFreeBlocks++;
-////	freeBlockMemory += block->GetSize();
+////	freeBlockMemory += block.GetSize();
 ////}
 
 ////template<class type, int baseBlockSize, int minBlockSize>
 ////ID_INLINE void idDynamicBlockAlloc<type, baseBlockSize, minBlockSize>::UnlinkFreeInternal( idDynamicBlock<type> *block ) {
-////	freeTree.Remove( block->node );
-////	block->node = NULL;
+////	freeTree.Remove( block.node );
+////	block.node = NULL;
 ////	numFreeBlocks--;
-////	freeBlockMemory -= block->GetSize();
+////	freeBlockMemory -= block.GetSize();
 ////}
 
 ////template<class type, int baseBlockSize, int minBlockSize>
 ////void idDynamicBlockAlloc<type, baseBlockSize, minBlockSize>::CheckMemory( void ) const {
 ////	idDynamicBlock<type> *block;
 
-////	for ( block = firstBlock; block != NULL; block = block->next ) {
+////	for ( block = firstBlock; block != NULL; block = block.next ) {
 ////		// make sure the block is properly linked
-////		if ( block->prev == NULL ) {
+////		if ( block.prev == NULL ) {
 ////			assert( firstBlock == block );
 ////		} else {
-////			assert( block->prev->next == block );
+////			assert( block.prev.next == block );
 ////		}
-////		if ( block->next == NULL ) {
+////		if ( block.next == NULL ) {
 ////			assert( lastBlock == block );
 ////		} else {
-////			assert( block->next->prev == block );
+////			assert( block.next.prev == block );
 ////		}
 ////	}
 ////}

@@ -139,7 +139,7 @@ class /*idCmdSystemLocal*/ idCmdSystem {
 ////// NOTE: the const wonkyness is required to make msvc happy
 ////template<>
 ////ID_INLINE int idListSortCompare( const commandDef_t * const *a, const commandDef_t * const *b ) {
-////	return idStr::Icmp( (*a)->name, (*b)->name );
+////	return idStr::Icmp( (*a).name, (*b).name );
 ////}
 
 ////void idCmdSystemLocal::ListByFlags( const idCmdArgs &args, cmdFlags_t flags ) {
@@ -155,11 +155,11 @@ class /*idCmdSystemLocal*/ idCmdSystem {
 ////		match = "";
 ////	}
 
-////	for ( cmd = cmdSystemLocal.GetCommands(); cmd; cmd = cmd->next ) {
-////		if ( !( cmd->flags & flags ) ) {
+////	for ( cmd = cmdSystemLocal.GetCommands(); cmd; cmd = cmd.next ) {
+////		if ( !( cmd.flags & flags ) ) {
 ////			continue;
 ////		}
-////		if ( match.Length() && idStr( cmd->name ).Filter( match, false ) == 0 ) {
+////		if ( match.Length() && idStr( cmd.name ).Filter( match, false ) == 0 ) {
 ////			continue;
 ////		}
 
@@ -171,7 +171,7 @@ class /*idCmdSystemLocal*/ idCmdSystem {
 ////	for ( i = 0; i < cmdList.Num(); i++ ) {
 ////		cmd = cmdList[i];
 
-////		common.Printf( "  %-21s %s\n", cmd->name, cmd->description );
+////		common.Printf( "  %-21s %s\n", cmd.name, cmd.description );
 ////	}
 
 ////	common.Printf( "%i commands\n", cmdList.Num() );
@@ -255,7 +255,7 @@ Exec_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
 
 	////filename = args.Argv(1);
 	////filename.DefaultFileExtension( ".cfg" );
-	////len = fileSystem->ReadFile( filename, reinterpret_cast<void **>(&f), NULL );
+	////len = fileSystem.ReadFile( filename, reinterpret_cast<void **>(&f), NULL );
 	////if ( !f ) {
 	////	common.Printf( "couldn't exec %s\n", args.Argv(1) );
 	////	return;
@@ -264,7 +264,7 @@ Exec_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
 	
 	////cmdSystemLocal.BufferCommandText( CMD_EXEC_INSERT, f );
 
-	////fileSystem->FreeFile( f );
+	////fileSystem.FreeFile( f );
 }
 
 /*
@@ -283,7 +283,7 @@ Vstr_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
 	////	return;
 	////}
 
-	////v = cvarSystem->GetCVarString( args.Argv( 1 ) );
+	////v = cvarSystem.GetCVarString( args.Argv( 1 ) );
 
 	////cmdSystemLocal.BufferCommandText( CMD_EXEC_APPEND, va( "%s\n", v ) );
 }
@@ -369,9 +369,9 @@ Init(): void  {
 ////	commandDef_t *cmd;
 
 ////	for ( cmd = commands; cmd; cmd = commands ) {
-////		commands = commands->next;
-////		Mem_Free( cmd->name );
-////		Mem_Free( cmd->description );
+////		commands = commands.next;
+////		Mem_Free( cmd.name );
+////		Mem_Free( cmd.description );
 ////		delete cmd;
 ////	}
 
@@ -418,14 +418,14 @@ AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:id
 ////	commandDef_t *cmd, **last;
 
 ////	for ( last = &commands, cmd = *last; cmd; cmd = *last ) {
-////		if ( idStr::Cmp( cmdName, cmd->name ) == 0 ) {
-////			*last = cmd->next;
-////			Mem_Free( cmd->name );
-////			Mem_Free( cmd->description );
+////		if ( idStr::Cmp( cmdName, cmd.name ) == 0 ) {
+////			*last = cmd.next;
+////			Mem_Free( cmd.name );
+////			Mem_Free( cmd.description );
 ////			delete cmd;
 ////			return;
 ////		}
-////		last = &cmd->next;
+////		last = &cmd.next;
 ////	}
 ////}
 
@@ -438,14 +438,14 @@ AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:id
 ////	commandDef_t *cmd, **last;
 
 ////	for ( last = &commands, cmd = *last; cmd; cmd = *last ) {
-////		if ( cmd->flags & flags ) {
-////			*last = cmd->next;
-////			Mem_Free( cmd->name );
-////			Mem_Free( cmd->description );
+////		if ( cmd.flags & flags ) {
+////			*last = cmd.next;
+////			Mem_Free( cmd.name );
+////			Mem_Free( cmd.description );
 ////			delete cmd;
 ////			continue;
 ////		}
-////		last = &cmd->next;
+////		last = &cmd.next;
 ////	}
 ////}
 
@@ -457,8 +457,8 @@ AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:id
 ////void idCmdSystemLocal::CommandCompletion( void(*callback)( const char *s ) ) {
 ////	commandDef_t *cmd;
 	
-////	for ( cmd = commands; cmd; cmd = cmd->next ) {
-////		callback( cmd->name );
+////	for ( cmd = commands; cmd; cmd = cmd.next ) {
+////		callback( cmd.name );
 ////	}
 ////}
 
@@ -473,12 +473,12 @@ AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:id
 
 ////	args.TokenizeString( cmdString, false );
 
-////	for ( cmd = commands; cmd; cmd = cmd->next ) {
-////		if ( !cmd->argCompletion ) {
+////	for ( cmd = commands; cmd; cmd = cmd.next ) {
+////		if ( !cmd.argCompletion ) {
 ////			continue;
 ////		}
-////		if ( idStr::Icmp( args.Argv( 0 ), cmd->name ) == 0 ) {
-////			cmd->argCompletion( args, callback );
+////		if ( idStr::Icmp( args.Argv( 0 ), cmd.name ) == 0 ) {
+////			cmd.argCompletion( args, callback );
 ////			break;
 ////		}
 ////	}
@@ -498,31 +498,31 @@ AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:id
 ////	}
 
 ////	// check registered command functions	
-////	for ( prev = &commands; *prev; prev = &cmd->next ) {
+////	for ( prev = &commands; *prev; prev = &cmd.next ) {
 ////		cmd = *prev;
-////		if ( idStr::Icmp( args.Argv( 0 ), cmd->name ) == 0 ) {
+////		if ( idStr::Icmp( args.Argv( 0 ), cmd.name ) == 0 ) {
 ////			// rearrange the links so that the command will be
 ////			// near the head of the list next time it is used
-////			*prev = cmd->next;
-////			cmd->next = commands;
+////			*prev = cmd.next;
+////			cmd.next = commands;
 ////			commands = cmd;
 
-////			if ( ( cmd->flags & (CMD_FL_CHEAT|CMD_FL_TOOL) ) && session && session->IsMultiplayer() && !cvarSystem->GetCVarBool( "net_allowCheats" ) ) {
-////				common.Printf( "Command '%s' not valid in multiplayer mode.\n", cmd->name );
+////			if ( ( cmd.flags & (CMD_FL_CHEAT|CMD_FL_TOOL) ) && session && session.IsMultiplayer() && !cvarSystem.GetCVarBool( "net_allowCheats" ) ) {
+////				common.Printf( "Command '%s' not valid in multiplayer mode.\n", cmd.name );
 ////				return;
 ////			}
 ////			// perform the action
-////			if ( !cmd->function ) {
+////			if ( !cmd.function ) {
 ////				break;
 ////			} else {
-////				cmd->function( args );
+////				cmd.function( args );
 ////			}
 ////			return;
 ////		}
 ////	}
 	
 ////	// check cvars
-////	if ( cvarSystem->Command( args ) ) {
+////	if ( cvarSystem.Command( args ) ) {
 ////		return;
 ////	}
 
@@ -612,7 +612,7 @@ AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:id
 ////			break;
 ////		}
 ////		default: {
-////			common->FatalError( "idCmdSystemLocal::BufferCommandText: bad exec type" );
+////			common.FatalError( "idCmdSystemLocal::BufferCommandText: bad exec type" );
 ////		}
 ////	}
 ////}
@@ -634,7 +634,7 @@ AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:id
 ////			break;
 ////		}
 ////		default: {
-////			common->FatalError( "idCmdSystemLocal::BufferCommandArgs: bad exec type" );
+////			common.FatalError( "idCmdSystemLocal::BufferCommandArgs: bad exec type" );
 ////		}
 ////	}
 ////}
@@ -730,9 +730,9 @@ AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:id
 ////		path.StripTrailing( '/' );
 
 ////		// list folders
-////		names = fileSystem->ListFiles( path, "/", true, true );
-////		for ( i = 0; i < names->GetNumFiles(); i++ ) {
-////			idStr name = names->GetFile( i );
+////		names = fileSystem.ListFiles( path, "/", true, true );
+////		for ( i = 0; i < names.GetNumFiles(); i++ ) {
+////			idStr name = names.GetFile( i );
 ////			if ( stripFolder ) {
 ////				name.Strip( folder );
 ////			} else {
@@ -741,14 +741,14 @@ AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:id
 ////			name = args.Argv( 0 ) + ( " " + name ) + "/";
 ////			completionParms.Append( name );
 ////		}
-////		fileSystem->FreeFileList( names );
+////		fileSystem.FreeFileList( names );
 
 ////		// list files
 ////		va_start( argPtr, stripFolder );
 ////		for ( extension = va_arg( argPtr, const char * ); extension; extension = va_arg( argPtr, const char * ) ) {
-////			names = fileSystem->ListFiles( path, extension, true, true );
-////			for ( i = 0; i < names->GetNumFiles(); i++ ) {
-////				idStr name = names->GetFile( i );
+////			names = fileSystem.ListFiles( path, extension, true, true );
+////			for ( i = 0; i < names.GetNumFiles(); i++ ) {
+////				idStr name = names.GetFile( i );
 ////				if ( stripFolder ) {
 ////					name.Strip( folder );
 ////				} else {
@@ -757,7 +757,7 @@ AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:id
 ////				name = args.Argv( 0 ) + ( " " + name );
 ////				completionParms.Append( name );
 ////			}
-////			fileSystem->FreeFileList( names );
+////			fileSystem.FreeFileList( names );
 ////		}
 ////		va_end( argPtr );
 ////	}
@@ -777,9 +777,9 @@ AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:id
 ////	if ( declManager == NULL ) {
 ////		return;
 ////	}
-////	num = declManager->GetNumDecls( (declType_t)type );
+////	num = declManager.GetNumDecls( (declType_t)type );
 ////	for ( i = 0; i < num; i++ ) {
-////		callback( idStr( args.Argv( 0 ) ) + " " + declManager->DeclByIndex( (declType_t)type, i , false )->GetName() );
+////		callback( idStr( args.Argv( 0 ) ) + " " + declManager.DeclByIndex( (declType_t)type, i , false ).GetName() );
 ////	}
 ////}
 

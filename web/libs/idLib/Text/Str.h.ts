@@ -1,3 +1,5 @@
+/// <reference path="../../c.ts" />
+/// <reference path="../Lib.h.ts" />
 /// <reference path="../../../utils/types.ts" />
 /////*
 ////===========================================================================
@@ -665,10 +667,10 @@ class idStr {
 		return idStr.Cmp( this, text );
 	}
 
-////ID_INLINE int idStr::Cmpn( const char *text, int n ) const {
-////	assert( text );
-////	return idStr::Cmpn( this.data, text, n );
-////}
+Cmpn( text:string, /*int*/ n:number ) :number {
+	assert( text );
+	return idStr.Cmpn( this.data, text, n );
+}
 
 ////ID_INLINE int idStr::CmpPrefix( const char *text ) const {
 ////	assert( text );
@@ -2088,32 +2090,27 @@ idStr::Cmp
 		return -1;
 	}
 
-/////*
-////================
-////idStr::Cmpn
-////================
-////*/
-////int idStr::Cmpn( const char *s1, const char *s2, int n ) {
-////	int c1, c2, d;
+/*
+================
+idStr::Cmpn
+================
+*/
+    static Cmpn ( s1: idStr, s2: idStr, n: number ): number;
+    static Cmpn ( s1: string, s2: string, n: number ): number;
+    static Cmpn ( s1: any, s2: any, n: number ): number {
+        var str1 = idStr.getString( s1 ).substr( n );
+        var str2 = idStr.getString( s2 ).substr( n );
 
-////	assert( n >= 0 );
+        if ( str1 == str2 ) {
+            return 0;
+        }
 
-////	do {
-////		c1 = *s1++;
-////		c2 = *s2++;
+        if ( str1 > str2 ) {
+            return 1;
+        }
 
-////		if ( !n-- ) {
-////			return 0;		// strings are equal until end point
-////		}
-
-////		d = c1 - c2;
-////		if ( d ) {
-////			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
-////		}
-////	} while( c1 );
-
-////	return 0;		// strings are equal
-////}
+        return -1;
+    }
 
 /*
 ================
@@ -2225,7 +2222,7 @@ idStr::Icmp
 
 ////#if 0
 //////#if !defined( _WIN32 )
-////	idLib::common->Printf( "WARNING: IcmpPath used on a case-sensitive filesystem?\n" );
+////	idLib::common.Printf( "WARNING: IcmpPath used on a case-sensitive filesystem?\n" );
 ////#endif
 
 ////	do {
@@ -2294,7 +2291,7 @@ idStr::Icmp
 
 ////#if 0
 //////#if !defined( _WIN32 )
-////	idLib::common->Printf( "WARNING: IcmpPath used on a case-sensitive filesystem?\n" );
+////	idLib::common.Printf( "WARNING: IcmpPath used on a case-sensitive filesystem?\n" );
 ////#endif
 
 ////	assert( n >= 0 );
@@ -2368,11 +2365,11 @@ idStr::Icmp
 ////*/
 ////void idStr::Copynz( char *dest, const char *src, int destsize ) {
 ////	if ( !src ) {
-////		idLib::common->Warning( "idStr::Copynz: NULL src" );
+////		idLib::common.Warning( "idStr::Copynz: NULL src" );
 ////		return;
 ////	}
 ////	if ( destsize < 1 ) {
-////		idLib::common->Warning( "idStr::Copynz: destsize < 1" ); 
+////		idLib::common.Warning( "idStr::Copynz: destsize < 1" ); 
 ////		return;
 ////	}
 
@@ -2392,7 +2389,7 @@ idStr::Icmp
 
 ////	l1 = strlen( dest );
 ////	if ( l1 >= size ) {
-////		idLib::common->Error( "idStr::Append: already overflowed" );
+////		idLib::common.Error( "idStr::Append: already overflowed" );
 ////	}
 ////	idStr::Copynz( dest + l1, src, size - l1 );
 ////}
@@ -2464,10 +2461,10 @@ idStr::Icmp
 ////	len = vsprintf( buffer, fmt, argptr );
 ////	va_end( argptr );
 ////	if ( len >= sizeof( buffer ) ) {
-////		idLib::common->Error( "idStr::snPrintf: overflowed buffer" );
+////		idLib::common.Error( "idStr::snPrintf: overflowed buffer" );
 ////	}
 ////	if ( len >= size ) {
-////		idLib::common->Warning( "idStr::snPrintf: overflow of %i in %i\n", len, size );
+////		idLib::common.Warning( "idStr::snPrintf: overflow of %i in %i\n", len, size );
 ////		len = size;
 ////	}
 ////	idStr::Copynz( dest, buffer, size );
@@ -2645,7 +2642,7 @@ idStr::Icmp
 ////*/
 ////void idStr::ShowMemoryUsage_f( const idCmdArgs &args ) {
 ////#ifdef USE_STRING_DATA_ALLOCATOR
-////	idLib::common->Printf( "%6d KB string memory (%d KB free in %d blocks, %d empty base blocks)\n",
+////	idLib::common.Printf( "%6d KB string memory (%d KB free in %d blocks, %d empty base blocks)\n",
 ////		stringDataAllocator.GetBaseBlockMemory() >> 10, stringDataAllocator.GetFreeBlockMemory() >> 10,
 ////			stringDataAllocator.GetNumFreeBlocks(), stringDataAllocator.GetNumEmptyBaseBlocks() );
 ////#endif
@@ -2678,7 +2675,7 @@ idStr::Icmp
 ////	// reset
 ////	for ( int i = 0; i < numFormatList; i++ ) {
 ////		formatList_t *li = formatList + i;
-////		li->count = 0;
+////		li.count = 0;
 ////	}
 
 ////	// main loop
@@ -2688,9 +2685,9 @@ idStr::Icmp
 ////		for ( int i = 0; i < numFormatList; i++ ) {
 ////			formatList_t *li = formatList + i;
 
-////			if ( number >= li->gran ) {
-////				li->count++;
-////				number -= li->gran;
+////			if ( number >= li.gran ) {
+////				li.count++;
+////				number -= li.gran;
 ////				hit = true;
 ////				break;
 ////			}
@@ -2703,16 +2700,16 @@ idStr::Icmp
 ////	for ( int i = 0; i < numFormatList; i++ ) {
 ////		formatList_t *li = formatList + i;
 
-////		if ( li->count ) {
+////		if ( li.count ) {
 ////			if ( !found ) {
-////				string += va( "%i,", li->count );
+////				string += va( "%i,", li.count );
 ////			} else {
-////				string += va( "%3.3i,", li->count );
+////				string += va( "%3.3i,", li.count );
 ////			}
 ////			found = true;
 ////		}
 ////		else if ( found ) {
-////			string += va( "%3.3i,", li->count );
+////			string += va( "%3.3i,", li.count );
 ////		}
 ////	}
 

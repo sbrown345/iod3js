@@ -160,31 +160,32 @@ function ArgCompletion_String_Template (strings: string[] ):( /*const idCmdArgs 
 
 
 //template<int type> ID_STATIC_TEMPLATE ID_INLINE void idCmdSystem::ArgCompletion_Decl( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
-//	cmdSystem->ArgCompletion_DeclName( args, callback, type );
+//	cmdSystem.ArgCompletion_DeclName( args, callback, type );
 //}
 
 //ID_INLINE void idCmdSystem::ArgCompletion_FileName( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
-//	cmdSystem->ArgCompletion_FolderExtension( args, callback, "/", true, "", NULL );
+//	cmdSystem.ArgCompletion_FolderExtension( args, callback, "/", true, "", NULL );
 //}
 
 //ID_INLINE void idCmdSystem::ArgCompletion_MapName( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
-//	cmdSystem->ArgCompletion_FolderExtension( args, callback, "maps/", true, ".map", NULL );
+//	cmdSystem.ArgCompletion_FolderExtension( args, callback, "maps/", true, ".map", NULL );
 //}
 
-//ID_INLINE void idCmdSystem::ArgCompletion_ModelName( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
-//	cmdSystem->ArgCompletion_FolderExtension( args, callback, "models/", false, ".lwo", ".ase", ".md5mesh", ".ma", NULL );
-//}
+function ArgCompletion_ModelName ( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
+		todoThrow ( );
+	//cmdSystem.ArgCompletion_FolderExtension( args, callback, "models/", false, ".lwo", ".ase", ".md5mesh", ".ma", NULL );
+}
 
 //ID_INLINE void idCmdSystem::ArgCompletion_SoundName( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
-//	cmdSystem->ArgCompletion_FolderExtension( args, callback, "sound/", false, ".wav", ".ogg", NULL );
+//	cmdSystem.ArgCompletion_FolderExtension( args, callback, "sound/", false, ".wav", ".ogg", NULL );
 //}
 
 //ID_INLINE void idCmdSystem::ArgCompletion_ImageName( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
-//	cmdSystem->ArgCompletion_FolderExtension( args, callback, "/", false, ".tga", ".dds", ".jpg", ".pcx", NULL );
+//	cmdSystem.ArgCompletion_FolderExtension( args, callback, "/", false, ".tga", ".dds", ".jpg", ".pcx", NULL );
 //}
 
 //ID_INLINE void idCmdSystem::ArgCompletion_VideoName( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
-//	cmdSystem->ArgCompletion_FolderExtension( args, callback, "video/", false, ".roq", NULL );
+//	cmdSystem.ArgCompletion_FolderExtension( args, callback, "video/", false, ".roq", NULL );
 //}
 
 function /*ID_INLINE void idCmdSystem::*/ArgCompletion_ConfigName( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
@@ -193,11 +194,11 @@ function /*ID_INLINE void idCmdSystem::*/ArgCompletion_ConfigName( /*const idCmd
 }
 
 //ID_INLINE void idCmdSystem::ArgCompletion_SaveGame( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
-//	cmdSystem->ArgCompletion_FolderExtension( args, callback, "SaveGames/", true, ".save", NULL );
+//	cmdSystem.ArgCompletion_FolderExtension( args, callback, "SaveGames/", true, ".save", NULL );
 //}
 
 //ID_INLINE void idCmdSystem::ArgCompletion_DemoName( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
-//	cmdSystem->ArgCompletion_FolderExtension( args, callback, "demos/", true, ".demo", NULL );
+//	cmdSystem.ArgCompletion_FolderExtension( args, callback, "demos/", true, ".demo", NULL );
 //}
 
 //#endif /* !__CMDSYSTEM_H__ */

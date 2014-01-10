@@ -60,7 +60,7 @@
 ////		vsprintf (msg,fmt,argptr);
 ////		va_end (argptr);
 
-////		common->FatalError( "%s", msg );
+////		common.FatalError( "%s", msg );
 ////	}
 
 ////	void jpg_Printf( const char *fmt, ... ) {
@@ -71,7 +71,7 @@
 ////		vsprintf (msg,fmt,argptr);
 ////		va_end (argptr);
 
-////		common->Printf( "%s", msg );
+////		common.Printf( "%s", msg );
 ////	}
 
 ////}
@@ -108,7 +108,7 @@
 ////		buffer[i+3] = data[i-imgStart+3];		// alpha
 ////	}
 
-////	fileSystem->WriteFile( filename, buffer, bufferSize );
+////	fileSystem.WriteFile( filename, buffer, bufferSize );
 
 ////	Mem_Free (buffer);
 ////}
@@ -154,7 +154,7 @@
 ////		buffer[i] = data[i-imgStart];
 ////	}
 
-////	fileSystem->WriteFile( filename, buffer, bufferSize );
+////	fileSystem.WriteFile( filename, buffer, bufferSize );
 
 ////	Mem_Free (buffer);
 ////}
@@ -252,7 +252,7 @@
 ////	byte		*bmpRGBA;
 
 ////	if ( !pic ) {
-////		fileSystem->ReadFile ( name, NULL, timestamp );
+////		fileSystem.ReadFile ( name, NULL, timestamp );
 ////		return;	// just getting timestamp
 ////	}
 
@@ -261,7 +261,7 @@
 ////	//
 ////	// load the file
 ////	//
-////	length = fileSystem->ReadFile( name, (void **)&buffer, timestamp );
+////	length = fileSystem.ReadFile( name, (void **)&buffer, timestamp );
 ////	if ( !buffer ) {
 ////		return;
 ////	}
@@ -306,19 +306,19 @@
 
 ////	if ( bmpHeader.id[0] != 'B' && bmpHeader.id[1] != 'M' ) 
 ////	{
-////		common->Error( "LoadBMP: only Windows-style BMP files supported (%s)\n", name );
+////		common.Error( "LoadBMP: only Windows-style BMP files supported (%s)\n", name );
 ////	}
 ////	if ( bmpHeader.fileSize != length )
 ////	{
-////		common->Error( "LoadBMP: header size does not match file size (%lu vs. %d) (%s)\n", bmpHeader.fileSize, length, name );
+////		common.Error( "LoadBMP: header size does not match file size (%lu vs. %d) (%s)\n", bmpHeader.fileSize, length, name );
 ////	}
 ////	if ( bmpHeader.compression != 0 )
 ////	{
-////		common->Error( "LoadBMP: only uncompressed BMP files supported (%s)\n", name );
+////		common.Error( "LoadBMP: only uncompressed BMP files supported (%s)\n", name );
 ////	}
 ////	if ( bmpHeader.bitsPerPixel < 8 )
 ////	{
-////		common->Error( "LoadBMP: monochrome and 4-bit BMP files not supported (%s)\n", name );
+////		common.Error( "LoadBMP: monochrome and 4-bit BMP files not supported (%s)\n", name );
 ////	}
 
 ////	columns = bmpHeader.width;
@@ -384,13 +384,13 @@
 ////				*pixbuf++ = alpha;
 ////				break;
 ////			default:
-////				common->Error( "LoadBMP: illegal pixel_size '%d' in file '%s'\n", bmpHeader.bitsPerPixel, name );
+////				common.Error( "LoadBMP: illegal pixel_size '%d' in file '%s'\n", bmpHeader.bitsPerPixel, name );
 ////				break;
 ////			}
 ////		}
 ////	}
 
-////	fileSystem->FreeFile( buffer );
+////	fileSystem.FreeFile( buffer );
 
 ////}
 
@@ -420,7 +420,7 @@
 ////	int		xmax, ymax;
 
 ////	if ( !pic ) {
-////		fileSystem->ReadFile( filename, NULL, timestamp );
+////		fileSystem.ReadFile( filename, NULL, timestamp );
 ////		return;	// just getting timestamp
 ////	}
 
@@ -430,7 +430,7 @@
 ////	//
 ////	// load the file
 ////	//
-////	len = fileSystem->ReadFile( filename, (void **)&raw, timestamp );
+////	len = fileSystem.ReadFile( filename, (void **)&raw, timestamp );
 ////	if (!raw) {
 ////		return;
 ////	}
@@ -439,19 +439,19 @@
 ////	// parse the PCX file
 ////	//
 ////	pcx = (pcx_t *)raw;
-////	raw = &pcx->data;
+////	raw = &pcx.data;
 
-////  	xmax = LittleShort(pcx->xmax);
-////    ymax = LittleShort(pcx->ymax);
+////  	xmax = LittleShort(pcx.xmax);
+////    ymax = LittleShort(pcx.ymax);
 
-////	if (pcx->manufacturer != 0x0a
-////		|| pcx->version != 5
-////		|| pcx->encoding != 1
-////		|| pcx->bits_per_pixel != 8
+////	if (pcx.manufacturer != 0x0a
+////		|| pcx.version != 5
+////		|| pcx.encoding != 1
+////		|| pcx.bits_per_pixel != 8
 ////		|| xmax >= 1024
 ////		|| ymax >= 1024)
 ////	{
-////		common->Printf( "Bad pcx file %s (%i x %i) (%i x %i)\n", filename, xmax+1, ymax+1, pcx->xmax, pcx->ymax);
+////		common.Printf( "Bad pcx file %s (%i x %i) (%i x %i)\n", filename, xmax+1, ymax+1, pcx.xmax, pcx.ymax);
 ////		return;
 ////	}
 
@@ -495,12 +495,12 @@
 
 ////	if ( raw - (byte *)pcx > len)
 ////	{
-////		common->Printf( "PCX file %s was malformed", filename );
+////		common.Printf( "PCX file %s was malformed", filename );
 ////		R_StaticFree (*pic);
 ////		*pic = NULL;
 ////	}
 
-////	fileSystem->FreeFile( pcx );
+////	fileSystem.FreeFile( pcx );
 ////}
 
 
@@ -516,7 +516,7 @@
 ////	byte	*pic32;
 
 ////	if ( !pic ) {
-////		fileSystem->ReadFile( filename, NULL, timestamp );
+////		fileSystem.ReadFile( filename, NULL, timestamp );
 ////		return;	// just getting timestamp
 ////	}
 ////	LoadPCX (filename, &pic8, &palette, width, height, timestamp);
@@ -563,7 +563,7 @@
 ////	byte		*targa_rgba;
 
 ////	if ( !pic ) {
-////		fileSystem->ReadFile( name, NULL, timestamp );
+////		fileSystem.ReadFile( name, NULL, timestamp );
 ////		return;	// just getting timestamp
 ////	}
 
@@ -572,7 +572,7 @@
 ////	//
 ////	// load the file
 ////	//
-////	fileSize = fileSystem->ReadFile( name, (void **)&buffer, timestamp );
+////	fileSize = fileSystem.ReadFile( name, (void **)&buffer, timestamp );
 ////	if ( !buffer ) {
 ////		return;
 ////	}
@@ -600,21 +600,21 @@
 ////	targa_header.attributes = *buf_p++;
 
 ////	if ( targa_header.image_type != 2 && targa_header.image_type != 10 && targa_header.image_type != 3 ) {
-////		common->Error( "LoadTGA( %s ): Only type 2 (RGB), 3 (gray), and 10 (RGB) TGA images supported\n", name );
+////		common.Error( "LoadTGA( %s ): Only type 2 (RGB), 3 (gray), and 10 (RGB) TGA images supported\n", name );
 ////	}
 
 ////	if ( targa_header.colormap_type != 0 ) {
-////		common->Error( "LoadTGA( %s ): colormaps not supported\n", name );
+////		common.Error( "LoadTGA( %s ): colormaps not supported\n", name );
 ////	}
 
 ////	if ( ( targa_header.pixel_size != 32 && targa_header.pixel_size != 24 ) && targa_header.image_type != 3 ) {
-////		common->Error( "LoadTGA( %s ): Only 32 or 24 bit images supported (no colormaps)\n", name );
+////		common.Error( "LoadTGA( %s ): Only 32 or 24 bit images supported (no colormaps)\n", name );
 ////	}
 
 ////	if ( targa_header.image_type == 2 || targa_header.image_type == 3 ) {
 ////		numBytes = targa_header.width * targa_header.height * ( targa_header.pixel_size >> 3 );
 ////		if ( numBytes > fileSize - 18 - targa_header.id_length ) {
-////			common->Error( "LoadTGA( %s ): incomplete file\n", name );
+////			common.Error( "LoadTGA( %s ): incomplete file\n", name );
 ////		}
 ////	}
 
@@ -678,7 +678,7 @@
 ////					*pixbuf++ = alphabyte;
 ////					break;
 ////				default:
-////					common->Error( "LoadTGA( %s ): illegal pixel_size '%d'\n", name, targa_header.pixel_size );
+////					common.Error( "LoadTGA( %s ): illegal pixel_size '%d'\n", name, targa_header.pixel_size );
 ////					break;
 ////				}
 ////			}
@@ -712,7 +712,7 @@
 ////								alphabyte = *buf_p++;
 ////								break;
 ////						default:
-////							common->Error( "LoadTGA( %s ): illegal pixel_size '%d'\n", name, targa_header.pixel_size );
+////							common.Error( "LoadTGA( %s ): illegal pixel_size '%d'\n", name, targa_header.pixel_size );
 ////							break;
 ////					}
 	
@@ -757,7 +757,7 @@
 ////									*pixbuf++ = alphabyte;
 ////									break;
 ////							default:
-////								common->Error( "LoadTGA( %s ): illegal pixel_size '%d'\n", name, targa_header.pixel_size );
+////								common.Error( "LoadTGA( %s ): illegal pixel_size '%d'\n", name, targa_header.pixel_size );
 ////								break;
 ////						}
 ////						column++;
@@ -782,7 +782,7 @@
 ////		R_VerticalFlip( *pic, *width, *height );
 ////	}
 
-////	fileSystem->FreeFile( buffer );
+////	fileSystem.FreeFile( buffer );
 ////}
 
 /////*
@@ -839,21 +839,21 @@
 ////		int		len;
 ////		idFile *f;
 
-////		f = fileSystem->OpenFileRead( filename );
+////		f = fileSystem.OpenFileRead( filename );
 ////		if ( !f ) {
 ////			return;
 ////		}
-////		len = f->Length();
+////		len = f.Length();
 ////		if ( timestamp ) {
-////			*timestamp = f->Timestamp();
+////			*timestamp = f.Timestamp();
 ////		}
 ////		if ( !pic ) {
-////			fileSystem->CloseFile( f );
+////			fileSystem.CloseFile( f );
 ////			return;	// just getting timestamp
 ////		}
 ////		fbuffer = (byte *)Mem_ClearedAlloc( len + 4096 );
-////		f->Read( fbuffer, len );
-////		fileSystem->CloseFile( f );
+////		f.Read( fbuffer, len );
+////		fileSystem.CloseFile( f );
 ////  }
 
 
@@ -905,7 +905,7 @@
 ////  row_stride = cinfo.output_width * cinfo.output_components;
 
 ////  if (cinfo.output_components!=4) {
-////		common->DWarning( "JPG %s is unsupported color depth (%d)", 
+////		common.DWarning( "JPG %s is unsupported color depth (%d)", 
 ////			filename, cinfo.output_components);
 ////  }
 ////  out = (byte *)R_StaticAlloc(cinfo.output_width*cinfo.output_height*4);
@@ -1060,10 +1060,10 @@
 ////			;
 
 ////		if ( scaled_width != w || scaled_height != h ) {
-////			if ( globalImages->image_roundDown.GetBool() && scaled_width > w ) {
+////			if ( globalImages.image_roundDown.GetBool() && scaled_width > w ) {
 ////				scaled_width >>= 1;
 ////			}
-////			if ( globalImages->image_roundDown.GetBool() && scaled_height > h ) {
+////			if ( globalImages.image_roundDown.GetBool() && scaled_height > h ) {
 ////				scaled_height >>= 1;
 ////			}
 
@@ -1125,7 +1125,7 @@
 ////			size = width;
 ////		}
 ////		if ( width != size || height != size ) {
-////			common->Warning( "Mismatched sizes on cube map '%s'", imgName );
+////			common.Warning( "Mismatched sizes on cube map '%s'", imgName );
 ////			break;
 ////		}
 ////		if ( timestamp ) {

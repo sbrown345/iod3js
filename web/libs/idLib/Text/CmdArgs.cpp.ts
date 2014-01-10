@@ -147,7 +147,7 @@
 ////				return;
 ////			}
 ////			if ( idLib::cvarSystem ) {
-////				token = idLib::cvarSystem->GetCVarString( token.c_str() );
+////				token = idLib::cvarSystem.GetCVarString( token.c_str() );
 ////			} else {
 ////				token = "<unknown>";
 ////			}

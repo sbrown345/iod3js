@@ -111,7 +111,7 @@ var sys_cmdline: string;
 ////	if ( *thread_count < MAX_THREADS ) {
 ////		threads[(*thread_count)++] = &info;
 ////	} else {
-////		common->DPrintf("WARNING: MAX_THREADS reached\n");
+////		common.DPrintf("WARNING: MAX_THREADS reached\n");
 ////	}
 ////}
 
@@ -143,11 +143,11 @@ var sys_cmdline: string;
 ////const char* Sys_GetThreadName(int *index) {
 ////	int id = GetCurrentThreadId();
 ////	for( int i = 0; i < g_thread_count; i++ ) {
-////		if ( id == g_threads[i]->threadId ) {
+////		if ( id == g_threads[i].threadId ) {
 ////			if ( index ) {
 ////				*index = i;
 ////			}
-////			return g_threads[i]->name;
+////			return g_threads[i].name;
 ////		}
 ////	}
 ////	if ( index ) {
@@ -166,7 +166,7 @@ var sys_cmdline: string;
 ////	assert( index >= 0 && index < MAX_CRITICAL_SECTIONS );
 ////	if ( TryEnterCriticalSection( &win32.criticalSections[index] ) == 0 ) {
 ////		EnterCriticalSection( &win32.criticalSections[index] );
-//////		Sys_DebugPrintf( "busy lock '%s' in thread '%s'\n", lock->name, Sys_GetThreadName() );
+//////		Sys_DebugPrintf( "busy lock '%s' in thread '%s'\n", lock.name, Sys_GetThreadName() );
 ////	}
 ////}
 
@@ -269,18 +269,18 @@ var sys_cmdline: string;
 ////			break;
 
 ////		case	_HOOK_FREE:
-////			assert( pHead->gap[0] == 0xfd && pHead->gap[1] == 0xfd && pHead->gap[2] == 0xfd && pHead->gap[3] == 0xfd );
+////			assert( pHead.gap[0] == 0xfd && pHead.gap[1] == 0xfd && pHead.gap[2] == 0xfd && pHead.gap[3] == 0xfd );
 
-////			debug_current_alloc -= pHead->nDataSize;
+////			debug_current_alloc -= pHead.nDataSize;
 ////			debug_current_alloc_count--;
 ////			debug_total_alloc_count++;
 ////			debug_frame_alloc_count++;
 ////			break;
 
 ////		case	_HOOK_REALLOC:
-////			assert( pHead->gap[0] == 0xfd && pHead->gap[1] == 0xfd && pHead->gap[2] == 0xfd && pHead->gap[3] == 0xfd );
+////			assert( pHead.gap[0] == 0xfd && pHead.gap[1] == 0xfd && pHead.gap[2] == 0xfd && pHead.gap[3] == 0xfd );
 
-////			debug_current_alloc -= pHead->nDataSize;
+////			debug_current_alloc -= pHead.nDataSize;
 ////			debug_total_alloc += nSize;
 ////			debug_current_alloc += nSize;
 ////			debug_frame_alloc += nSize;
@@ -360,7 +360,7 @@ var sys_cmdline: string;
 ////	// wait for the user to quit
 ////	while ( 1 ) {
 ////		if ( !GetMessage( &msg, NULL, 0, 0 ) ) {
-////			common->Quit();
+////			common.Quit();
 ////		}
 ////		TranslateMessage( &msg );
 ////      	DispatchMessage( &msg );
@@ -524,7 +524,7 @@ var sys_cmdline: string;
 ////==============
 ////*/
 ////const char *Sys_DefaultSavePath( void ) {
-////	return cvarSystem->GetCVarString( "fs_basepath" );
+////	return cvarSystem.GetCVarString( "fs_basepath" );
 ////}
 
 /////*
@@ -740,19 +740,19 @@ var sys_cmdline: string;
 ////	if ( eventHead - eventTail >= MAX_QUED_EVENTS ) {
 ////		common.Printf("Sys_QueEvent: overflow\n");
 ////		// we are discarding an event, but don't leak memory
-////		if ( ev->evPtr ) {
-////			Mem_Free( ev->evPtr );
+////		if ( ev.evPtr ) {
+////			Mem_Free( ev.evPtr );
 ////		}
 ////		eventTail++;
 ////	}
 
 ////	eventHead++;
 
-////	ev->evType = type;
-////	ev->evValue = value;
-////	ev->evValue2 = value2;
-////	ev->evPtrLength = ptrLength;
-////	ev->evPtr = ptr;
+////	ev.evType = type;
+////	ev.evValue = value;
+////	ev.evValue2 = value2;
+////	ev.evPtrLength = ptrLength;
+////	ev.evPtr = ptr;
 ////}
 
 /////*
@@ -768,7 +768,7 @@ var sys_cmdline: string;
 ////	// pump the message loop
 ////	while( PeekMessage( &msg, NULL, 0, 0, PM_NOREMOVE ) ) {
 ////		if ( !GetMessage( &msg, NULL, 0, 0 ) ) {
-////			common->Quit();
+////			common.Quit();
 ////		}
 
 ////		// save the msg time, because wndprocs don't have access to the timestamp
@@ -902,7 +902,7 @@ var sys_cmdline: string;
 ////#endif
 
 
-////		common->Async();
+////		common.Async();
 ////	}
 ////}
 
@@ -917,7 +917,7 @@ var sys_cmdline: string;
 ////	// create an auto-reset event that happens 60 times a second
 ////	hTimer = CreateWaitableTimer( NULL, false, NULL );
 ////	if ( !hTimer ) {
-////		common->Error( "idPacketServer::Spawn: CreateWaitableTimer failed" );
+////		common.Error( "idPacketServer::Spawn: CreateWaitableTimer failed" );
 ////	}
 
 ////	LARGE_INTEGER	t;
@@ -932,7 +932,7 @@ var sys_cmdline: string;
 ////#endif
 
 ////	if ( !threadInfo.threadHandle ) {
-////		common->Error( "Sys_StartAsyncThread: failed" );
+////		common.Error( "Sys_StartAsyncThread: failed" );
 ////	}
 ////}
 
@@ -976,12 +976,12 @@ var sys_cmdline: string;
 ////	// get WM_TIMER messages pumped every millisecond
 //////	SetTimer( NULL, 0, 100, NULL );
 
-////	cmdSystem->AddCommand( "in_restart", Sys_In_Restart_f, CMD_FL_SYSTEM, "restarts the input system" );
+////	cmdSystem.AddCommand( "in_restart", Sys_In_Restart_f, CMD_FL_SYSTEM, "restarts the input system" );
 ////#ifdef DEBUG
-////	cmdSystem->AddCommand( "createResourceIDs", CreateResourceIDs_f, CMD_FL_TOOL, "assigns resource IDs in _resouce.h files" );
+////	cmdSystem.AddCommand( "createResourceIDs", CreateResourceIDs_f, CMD_FL_TOOL, "assigns resource IDs in _resouce.h files" );
 ////#endif
 ////#if 0
-////	cmdSystem->AddCommand( "setAsyncSound", Sys_SetAsyncSound_f, CMD_FL_SYSTEM, "set the async sound option" );
+////	cmdSystem.AddCommand( "setAsyncSound", Sys_SetAsyncSound_f, CMD_FL_SYSTEM, "set the async sound option" );
 ////#endif
 
 ////	//
@@ -1297,13 +1297,13 @@ var sys_cmdline: string;
 ////	static char msg[ 8192 ];
 ////	char FPUFlags[2048];
 
-////	Sys_FPU_PrintStateFlags( FPUFlags, ContextRecord->FloatSave.ControlWord,
-////										ContextRecord->FloatSave.StatusWord,
-////										ContextRecord->FloatSave.TagWord,
-////										ContextRecord->FloatSave.ErrorOffset,
-////										ContextRecord->FloatSave.ErrorSelector,
-////										ContextRecord->FloatSave.DataOffset,
-////										ContextRecord->FloatSave.DataSelector );
+////	Sys_FPU_PrintStateFlags( FPUFlags, ContextRecord.FloatSave.ControlWord,
+////										ContextRecord.FloatSave.StatusWord,
+////										ContextRecord.FloatSave.TagWord,
+////										ContextRecord.FloatSave.ErrorOffset,
+////										ContextRecord.FloatSave.ErrorSelector,
+////										ContextRecord.FloatSave.DataOffset,
+////										ContextRecord.FloatSave.DataSelector );
 
 
 ////	sprintf( msg, 
@@ -1333,25 +1333,25 @@ var sys_cmdline: string;
 ////			"\n"
 ////			"%s\n",
 ////			com_version.GetString(),
-////			ExceptionRecord->ExceptionCode,
-////			ExceptionRecord->ExceptionAddress,
-////			GetExceptionCodeInfo( ExceptionRecord->ExceptionCode ),
-////			ContextRecord->Eax, ContextRecord->Ebx,
-////			ContextRecord->Ecx, ContextRecord->Edx,
-////			ContextRecord->Esi, ContextRecord->Edi,
-////			ContextRecord->Eip, ContextRecord->Esp,
-////			ContextRecord->Ebp, ContextRecord->EFlags,
-////			ContextRecord->SegCs,
-////			ContextRecord->SegSs,
-////			ContextRecord->SegDs,
-////			ContextRecord->SegEs,
-////			ContextRecord->SegFs,
-////			ContextRecord->SegGs,
+////			ExceptionRecord.ExceptionCode,
+////			ExceptionRecord.ExceptionAddress,
+////			GetExceptionCodeInfo( ExceptionRecord.ExceptionCode ),
+////			ContextRecord.Eax, ContextRecord.Ebx,
+////			ContextRecord.Ecx, ContextRecord.Edx,
+////			ContextRecord.Esi, ContextRecord.Edi,
+////			ContextRecord.Eip, ContextRecord.Esp,
+////			ContextRecord.Ebp, ContextRecord.EFlags,
+////			ContextRecord.SegCs,
+////			ContextRecord.SegSs,
+////			ContextRecord.SegDs,
+////			ContextRecord.SegEs,
+////			ContextRecord.SegFs,
+////			ContextRecord.SegGs,
 ////			FPUFlags
 ////		);
 
 ////	EmailCrashReport( msg );
-////	common->FatalError( msg );
+////	common.FatalError( msg );
 
 ////    // Tell the OS to restart the faulting instruction
 ////    return ExceptionContinueExecution;
@@ -1506,7 +1506,7 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 ////		}
 ////#endif
 ////		// run the game
-////		common->Frame();
+////		common.Frame();
 ////	}
 
 	// never gets here
@@ -1559,14 +1559,14 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 ////	HWND wnd;
 
 ////	if (doexit_spamguard) {
-////		common->DPrintf( "OpenURL: already in an exit sequence, ignoring %s\n", url );
+////		common.DPrintf( "OpenURL: already in an exit sequence, ignoring %s\n", url );
 ////		return;
 ////	}
 
 ////	common.Printf("Open URL: %s\n", url);
 
 ////	if ( !ShellExecute( NULL, "open", url, NULL, NULL, SW_RESTORE ) ) {
-////		common->Error( "Could not open url: '%s' ", url );
+////		common.Error( "Could not open url: '%s' ", url );
 ////		return;
 ////	}
 
@@ -1577,7 +1577,7 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 
 ////	if ( doexit ) {
 ////		doexit_spamguard = true;
-////		cmdSystem->BufferCommandText( CMD_EXEC_APPEND, "quit\n" );
+////		cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "quit\n" );
 ////	}
 ////}
 
@@ -1597,12 +1597,12 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 ////	strncpy( szPathOrig, exePath, _MAX_PATH );
 
 ////	if( !CreateProcess( NULL, szPathOrig, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi ) ) {
-////        common->Error( "Could not start process: '%s' ", szPathOrig );
+////        common.Error( "Could not start process: '%s' ", szPathOrig );
 ////	    return;
 ////	}
 
 ////	if ( doexit ) {
-////		cmdSystem->BufferCommandText( CMD_EXEC_APPEND, "quit\n" );
+////		cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "quit\n" );
 ////	}
 ////}
 
