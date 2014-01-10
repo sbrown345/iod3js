@@ -598,7 +598,7 @@ class idMaterial extends idDecl {
 ////	void				ParseBlend( idLexer &src, shaderStage_t *stage );
 ////	void				ParseVertexParm( idLexer &src, newShaderStage_t *newStage );
 ////	void				ParseFragmentMap( idLexer &src, newShaderStage_t *newStage );
-////	void				ParseStage( idLexer &src, const textureRepeat_t trpDefault = TR_REPEAT );
+////	void				ParseStage( idLexer &src, const textureRepeat_t trpDefault = textureRepeat_t.TR_REPEAT );
 ////	void				ParseDeform( idLexer &src );
 ////	void				ParseDecalInfo( idLexer &src );
 ////	bool				CheckSurfaceParm( idToken *token );
@@ -615,7 +615,7 @@ class idMaterial extends idDecl {
 ////	int					NameToDstBlendMode( const idStr &name );
 ////	void				MultiplyTextureMatrix( textureStage_t *ts, int registers[2][3] );	// FIXME: for some reason the const is bad for gcc and Mac
 ////	void				SortInteractionStages();
-////	void				AddImplicitStages( const textureRepeat_t trpDefault = TR_REPEAT );
+////	void				AddImplicitStages( const textureRepeat_t trpDefault = textureRepeat_t.TR_REPEAT );
 ////	void				CheckForConstantRegisters();
 
 ////private:

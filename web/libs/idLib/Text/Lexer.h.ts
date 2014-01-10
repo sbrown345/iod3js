@@ -134,7 +134,7 @@
 ////} punctuation_t;
 
 
-////class idLexer {
+class idLexer {
 
 ////	friend class idParser;
 
@@ -277,7 +277,7 @@
 ////	int				ReadPrimitive( idToken *token );
 ////	int				CheckString( const char *str ) const;
 ////	int				NumLinesCrossed( void );
-////};
+};
 
 ////ID_INLINE const char *idLexer::GetFileName( void ) {
 ////	return idLexer::filename;

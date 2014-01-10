@@ -1,3 +1,5 @@
+/// <reference path="../../libs/c.ts" />
+/// <reference path="../../libs/idLib/Text/Lexer.h.ts" />
 /// <reference path="../../libs/idLib/Lib.h.ts" />
 /// <reference path="DeclManager.h.ts" />
 /// <reference path="../Renderer/Material.cpp.ts" />
@@ -103,7 +105,7 @@ class idDeclLocal extends idDeclBase {
 /*	virtual int					*/GetLineNum( ) :number {throw "placeholder";}
 /*	virtual const char *		*/GetFileName( ) :string {throw "placeholder";}
 /*	virtual size_t				*/Size( ):number {throw "placeholder";}
-/*	virtual void				*/GetText( text:string ):void{}
+/*	virtual void				*/GetText( text:Uint8Array):void{}
 /*	virtual int					*/GetTextLength( ):number {throw "placeholder";}
 /*	virtual void				*/SetText( text:string ):void{throw "placeholder";}
 /*	virtual bool				*/ReplaceSourceFileText( ):boolean{throw "placeholder";}
@@ -213,7 +215,7 @@ class idDeclManagerLocal extends idDeclManager {
 ///*virtual int				*/	GetNumDeclTypes( ) :number{throw "placeholder";}
 ///*virtual int				*/	GetNumDecls( type:declType_t ):number{throw "placeholder";}
 ///*virtual const char *		*/  GetDeclNameFromType( type:declType_t ) :string{throw "placeholder";}
-///*//	virtual declType_t	*/	GetDeclTypeFromName( typeName:string ):declType_t { throw "placeholder"; }
+    GetDeclTypeFromName( typeName:string ):declType_t { throw "placeholder"; }
 /*	virtual const idDecl *		*/FindType( type: declType_t, name:string, makeDefault:boolean = true ):idDecl { throw "placeholder"; }
 //	virtual const idDecl *		DeclByIndex( declType_t type, int index, bool forceParse = true ):idDecl{throw "placeholder";}
 
@@ -1884,7 +1886,7 @@ idDeclLocal.prototype.GetText = function ( /*char **/text: Uint8Array ): void {
 //#ifdef USE_COMPRESSED_DECLS
 //	HuffmanDecompressText( text, textLength, (byte *)textSource, compressedLength );
 //#else
-    memcpy( text, this.textSource, this.textLength + 1 );
+    todoThrow( "memcpy( text, this.textSource, this.textLength + 1 );" );
 //#endif
 };
 
@@ -2104,11 +2106,11 @@ idDeclLocal::Parse
 */
 idDeclLocal.prototype.Parse = function( text:string, textLength:number ):boolean {
     var src = new idLexer ( );
-
-	src.LoadMemory( text, textLength, GetFileName(), GetLineNum() );
-	src.SetFlags( DECL_LEXER_FLAGS );
-	src.SkipUntilString( "{" );
-	src.SkipBracedSection( false );
+    todoThrow ( );
+	//src.LoadMemory( text, textLength, GetFileName(), GetLineNum() );
+	//src.SetFlags( DECL_LEXER_FLAGS );
+	//src.SkipUntilString( "{" );
+	//src.SkipBracedSection( false );
 	return true;
 }
 

@@ -114,7 +114,7 @@ var globalImages = new idImageManager ( );
 ////	}
 
 ////	image.GenerateImage( (byte *)data, 256, 1, 
-////		TF_NEAREST, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+////		textureFilter_t.TF_NEAREST, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 ////}
 
 /////*
@@ -150,7 +150,7 @@ var globalImages = new idImageManager ( );
 ////	}
 
 ////	image.GenerateImage( (byte *)data, 256, 1, 
-////		TF_LINEAR, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+////		textureFilter_t.TF_LINEAR, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 ////}
 
 
@@ -184,7 +184,7 @@ var globalImages = new idImageManager ( );
 ////		}
 ////	}
 
-////	image.GenerateImage( (byte *)data, 256, 256, TF_LINEAR, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+////	image.GenerateImage( (byte *)data, 256, 256, textureFilter_t.TF_LINEAR, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 ////}
 
 
@@ -207,7 +207,7 @@ var globalImages = new idImageManager ( );
 ////	}
 
 ////	image.GenerateImage( (byte *)data, 256, 1, 
-////		TF_NEAREST, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+////		textureFilter_t.TF_NEAREST, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 ////}
 
 
@@ -270,7 +270,7 @@ idImage.prototype.MakeDefault = function ( ): void {
 
     this.GenerateImage( /*(byte *)*/flatten3DArray( Uint8Array, data ),
         DEFAULT_SIZE, DEFAULT_SIZE,
-        TF_DEFAULT, true, TR_REPEAT, textureDepth_t.TD_DEFAULT );
+        textureFilter_t.TF_DEFAULT, true, textureRepeat_t.TR_REPEAT, textureDepth_t.TD_DEFAULT );
 
     this.defaulted = true;
 };
@@ -284,7 +284,7 @@ idImageManager.prototype.R_WhiteImage = function ( image: idImage ): void {
     // solid white texture
     memset( data, 255, sizeof( data ) );
     image.GenerateImage( data, DEFAULT_SIZE, DEFAULT_SIZE,
-        TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_DEFAULT );
+        textureFilter_t.TF_DEFAULT, false, textureRepeat_t.TR_REPEAT, textureDepth_t.TD_DEFAULT );
 };
 
 idImageManager.prototype.R_BlackImage = function ( image: idImage ): void {
@@ -293,7 +293,7 @@ idImageManager.prototype.R_BlackImage = function ( image: idImage ): void {
     // solid black texture
     memset( data, 0, sizeof( data ) );
     image.GenerateImage( data, DEFAULT_SIZE, DEFAULT_SIZE,
-        TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_DEFAULT );
+        textureFilter_t.TF_DEFAULT, false, textureRepeat_t.TR_REPEAT, textureDepth_t.TD_DEFAULT );
 };
 
 // the size determines how far away from the edge the blocks start fading
@@ -327,7 +327,7 @@ idImageManager.prototype.R_BorderClampImage = function ( image: idImage ): void 
 ////	}
 
 ////	image.GenerateImage( (byte *)data, BORDER_CLAMP_SIZE, BORDER_CLAMP_SIZE, 
-////		TF_LINEAR /* TF_NEAREST */, false, TR_CLAMP_TO_BORDER, textureDepth_t.TD_DEFAULT );
+////		textureFilter_t.TF_LINEAR /* TF_NEAREST */, false, TR_CLAMP_TO_BORDER, textureDepth_t.TD_DEFAULT );
 
 ////	if ( !glConfig.isInitialized ) {
 ////		// can't call glTexParameterfv yet
@@ -352,7 +352,7 @@ idImageManager.prototype.R_BorderClampImage = function ( image: idImage ): void 
 //////	data[0][0][3] = 96;
 
 //////	image.GenerateImage( (byte *)data, DEFAULT_SIZE, DEFAULT_SIZE, 
-//////		TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_HIGH_QUALITY );
+//////		textureFilter_t.TF_DEFAULT, false, textureRepeat_t.TR_REPEAT, textureDepth_t.TD_HIGH_QUALITY );
 //};
 
 //idImageManager.prototype.R_RGB8Image = function ( image: idImage ): void {
@@ -365,7 +365,7 @@ idImageManager.prototype.R_BorderClampImage = function ( image: idImage ): void 
 //////	data[0][0][3] = 255;
 
 //////	image.GenerateImage( (byte *)data, DEFAULT_SIZE, DEFAULT_SIZE, 
-//////		TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_HIGH_QUALITY );
+//////		textureFilter_t.TF_DEFAULT, false, textureRepeat_t.TR_REPEAT, textureDepth_t.TD_HIGH_QUALITY );
 //};
 
 idImageManager.prototype.R_AlphaNotchImage = function ( image: idImage ): void {
@@ -380,7 +380,7 @@ idImageManager.prototype.R_AlphaNotchImage = function ( image: idImage ): void {
 ////	data[1][3] = 255;
 
 ////	image.GenerateImage( (byte *)data, 2, 1, 
-////		TF_NEAREST, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+////		textureFilter_t.TF_NEAREST, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 };
 
 idImageManager.prototype.R_FlatNormalImage = function ( image: idImage ): void {
@@ -398,7 +398,7 @@ idImageManager.prototype.R_FlatNormalImage = function ( image: idImage ): void {
 ////		data[0][i][alpha] = 255;
 ////	}
 ////	image.GenerateImage( (byte *)data, 2, 2, 
-////		TF_DEFAULT, true, TR_REPEAT, textureDepth_t.TD_HIGH_QUALITY );
+////		textureFilter_t.TF_DEFAULT, true, textureRepeat_t.TR_REPEAT, textureDepth_t.TD_HIGH_QUALITY );
 };
 
 idImageManager.prototype.R_AmbientNormalImage = function ( image: idImage ): void {
@@ -420,7 +420,7 @@ idImageManager.prototype.R_AmbientNormalImage = function ( image: idImage ): voi
 ////		pics[i] = data[0][0];
 ////	}
 ////	// this must be a cube map for fragment programs to simply substitute for the normalization cube map
-////	image.GenerateCubeImage( pics, 2, TF_DEFAULT, true, textureDepth_t.TD_HIGH_QUALITY );
+////	image.GenerateCubeImage( pics, 2, textureFilter_t.TF_DEFAULT, true, textureDepth_t.TD_HIGH_QUALITY );
 };
 
 ////static void CreateSquareLight( void ) {
@@ -644,7 +644,7 @@ idImageManager.prototype.R_AmbientNormalImage = function ( image: idImage ): voi
 ////	}
 
 ////	image.GenerateCubeImage( (const byte **)pixels, size,
-////						   TF_LINEAR, false, textureDepth_t.TD_HIGH_QUALITY ); 
+////						   textureFilter_t.TF_LINEAR, false, textureDepth_t.TD_HIGH_QUALITY ); 
 
 ////	Mem_Free(pixels[0]);
 ////}
@@ -671,7 +671,7 @@ idImageManager.prototype.R_CreateNoFalloffImage = function ( image: idImage ): v
 ////		}
 ////	}
 ////	image.GenerateImage( (byte *)data, FALLOFF_TEXTURE_SIZE, 16,
-////		TF_DEFAULT, false, TR_CLAMP_TO_ZERO, textureDepth_t.TD_HIGH_QUALITY );
+////		textureFilter_t.TF_DEFAULT, false, TR_CLAMP_TO_ZERO, textureDepth_t.TD_HIGH_QUALITY );
 }; /*
 ================
 R_FogImage
@@ -722,7 +722,7 @@ idImageManager.prototype.R_FogImage = function ( image: idImage ): void {
 ////	}
 
 ////	image.GenerateImage( (byte *)data, FOG_SIZE, FOG_SIZE, 
-////		TF_LINEAR, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+////		textureFilter_t.TF_LINEAR, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 }; /*
 ================
 FogFraction
@@ -828,7 +828,7 @@ idImageManager.prototype.R_FogEnterImage = function ( image: idImage ): void {
 
 ////	// if mipmapped, acutely viewed surfaces fade wrong
 ////	image.GenerateImage( (byte *)data, FOG_ENTER_SIZE, FOG_ENTER_SIZE, 
-////		TF_LINEAR, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+////		textureFilter_t.TF_LINEAR, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 }; /*
 ================
 R_QuadraticImage
@@ -871,7 +871,7 @@ idImageManager.prototype.R_QuadraticImage = function ( image: idImage ): void {
 ////	}
 
 ////	image.GenerateImage( (byte *)data, QUADRATIC_WIDTH, QUADRATIC_HEIGHT, 
-////		TF_DEFAULT, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+////		textureFilter_t.TF_DEFAULT, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 };
 
 //=====================================================================
@@ -959,7 +959,7 @@ idImageManager.prototype.R_QuadraticImage = function ( image: idImage ): void {
 ////			continue;
 ////		}
 ////		glt.Bind();
-////		if ( glt.filter == TF_DEFAULT ) {
+////		if ( glt.filter == textureFilter_t.TF_DEFAULT ) {
 ////			glTexParameterf(texEnum, GL_TEXTURE_MIN_FILTER, globalImages.textureMinFilter );
 ////			glTexParameterf(texEnum, GL_TEXTURE_MAG_FILTER, globalImages.textureMaxFilter );
 ////		}
