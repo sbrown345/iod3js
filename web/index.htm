@@ -3,14 +3,14 @@
     <head>
         <meta charset="utf-8" />
         <title>Doom 3 JS</title>
-        <style>body{margin:0;}</style>
+        <style>body { margin: 0; }</style>
     </head>
     <body>
         <script src="doom3.js"></script>
         <script>
             var commandLine = "+set com_allowConsole 1 +set si_pure 0 +set r_renderer glsl +set fullscreen 0 ";
-            commandLine += "+map " + (window.location.search ? window.location.search.substr(1) : "game/demo_mars_city1");
-            WinMain(null, null, commandLine, commandLine.split(" ").length);
+            commandLine += "+map " + ( window.location.search ? window.location.search.substr( 1 ) : "game/demo_mars_city1" );
+            console.log("todo")////WinMain( null, null, commandLine, commandLine.split( " " ).length );
         </script>
     </body>
 </html>

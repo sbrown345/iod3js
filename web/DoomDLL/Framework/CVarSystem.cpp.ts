@@ -136,31 +136,16 @@ idInternalCVar::CopyValueStrings
 ============
 */
 CopyValueStrings( strings:string[] ):string[] {
-    ////int i, totalLength;
-    ////const char **ptr;
-    ////char *str;
-
     if ( !strings ) {
-    	return /*NULL*/null;
+    	return null;
     }
-    todoThrow ( );
-    return null;
-    ////totalLength = 0;
-    ////for ( i = 0; strings[i] != NULL; i++ ) {
-    ////	totalLength += idStr.Length( strings[i] ) + 1;
-    ////}
+    
+    var ptr:string[] = [];
+    for ( var i = 0; i < strings.length; i++ ) {
+        ptr[i] = strings[i];
+    }
 
-    ////ptr = (const char **) Mem_Alloc( ( i + 1 ) * sizeof( char * ) + totalLength );
-    ////str = (char *) (((byte *)ptr) + ( i + 1 ) * sizeof( char * ) );
-
-    ////for ( i = 0; strings[i] != NULL; i++ ) {
-    ////	ptr[i] = str;
-    ////	strcpy( str, strings[i] );
-    ////	str += idStr.Length( strings[i] ) + 1;
-    ////}
-    ////ptr[i] = NULL;
-
-    ////return ptr;
+    return ptr;
 }
 
 /*

@@ -1,3 +1,5 @@
+/// <reference path="RenderSystem.h.ts" />
+/// <reference path="RenderSystem.cpp.ts" />
 /////*
 ////===========================================================================
 
@@ -690,7 +692,9 @@ class backEndState_t {
 ** but may read fields that aren't dynamically modified
 ** by the frontend.
 */
-class idRenderSystemLocal extends idRenderSystem {
+
+// to sort out typescript ordering issues use the non local render system class 
+//class idRenderSystemLocal extends idRenderSystem {
 ////public:
 ////	// external functions
 ////	virtual void			Init( void );
@@ -736,6 +740,9 @@ class idRenderSystemLocal extends idRenderSystem {
 ////	// internal functions
 ////							idRenderSystemLocal( void );
 ////							~idRenderSystemLocal( void );
+    //constructor ( ) {
+    //    super ( );
+    //}
 
 ////	void					Clear( void );
 ////	void					SetBackEndRenderer();			// sets tr.backEndRenderer based on cvars
@@ -802,8 +809,8 @@ class idRenderSystemLocal extends idRenderSystem {
 ////	class idGuiModel *		guiModel;
 ////	class idGuiModel *		demoGuiModel;
 
-    /*unsigned short			*/gammaTable:Uint8Array/*[256]*/;	// brightness / gamma modify this
-}
+//    /*unsigned short			*/gammaTable:Uint8Array/*[256]*/;	// brightness / gamma modify this
+//}
 
 ////extern backEndState_t		backEnd;
 ////extern idRenderSystemLocal	tr;

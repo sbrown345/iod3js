@@ -239,7 +239,7 @@ Init( /*const char **/name:string, /*const char **/value:string, /*int */flags:n
 	this.integerValue = 0;
 	this.floatValue = 0.0;
 	this.internalVar = this;
-	if ( !staticVars /*!= (idCVar *)0xFFFFFFFF*/ ) {
+	if ( staticVars /*!= (idCVar *)0xFFFFFFFF*/ ) {
 		this.next = staticVars;
 		staticVars = this;
 	} else {

@@ -56,8 +56,13 @@ var uint32 = function (v: number): number {
     return v >>> 0;
 };
 
-var atoi = parseInt;
-var atof = parseFloat;
+function atoi ( s: string ): number {
+    return parseInt( s ) || 0;
+}
+
+function atof ( s: string ): number {
+    return parseFloat( s ) || 0;
+}
 
 interface Boolean {
     toNum():number;

@@ -66,6 +66,7 @@ class commandDef_t {
 
 
 class /*idCmdSystemLocal*/ idCmdSystem {
+    constructor() {}
 ////public:
 ////	virtual void			Init( void );
 ////	virtual void			Shutdown( void );
