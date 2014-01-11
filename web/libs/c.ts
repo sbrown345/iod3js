@@ -60,3 +60,7 @@ function rand() {
 }
 
 var printf = console.log.bind(console);
+
+function Mem_Free ( arg: any ) {
+    
+}

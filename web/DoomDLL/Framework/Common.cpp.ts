@@ -521,28 +521,29 @@ DPrintf( fmt:string, ...args:any[] ):void {
 ////	Printf( S_COLOR_YELLOW"WARNING: %s\n", msg );
 ////}
 
-/////*
-////==================
-////idCommonLocal::Warning
+/*
+==================
+idCommonLocal::Warning
 
-////prints WARNING %s and adds the warning message to a queue to be printed later on
-////==================
-////*/
-////void idCommonLocal::Warning( const char *fmt, ... ) {
-////	va_list		argptr;
-////	char		msg[MAX_PRINT_MSG_SIZE];
-		
-////	va_start( argptr, fmt );
-////	idStr::vsnPrintf( msg, sizeof(msg), fmt, argptr );
-////	va_end( argptr );
-////	msg[sizeof(msg)-1] = 0;
+prints WARNING %s and adds the warning message to a queue to be printed later on
+==================
+*/
+Warning( /*const char **/ fmt:string, ...args: any[] ):void {
+    console.warn( fmt, args );
+    //va_list		argptr;
+    //char		msg[MAX_PRINT_MSG_SIZE];
 
-////	Printf( S_COLOR_YELLOW "WARNING: " S_COLOR_RED "%s\n", msg );
+    //va_start( argptr, fmt );
+    //idStr::vsnPrintf( msg, sizeof(msg), fmt, argptr );
+    //va_end( argptr );
+    //msg[sizeof(msg)-1] = 0;
 
-////	if ( warningList.Num() < MAX_WARNING_LIST ) {
-////		warningList.AddUnique( msg );
-////	}
-////}
+    //Printf( S_COLOR_YELLOW "WARNING: " S_COLOR_RED "%s\n", msg );
+
+    //if ( warningList.Num() < MAX_WARNING_LIST ) {
+    //	warningList.AddUnique( msg );
+    //}
+}
 
 /////*
 ////==================

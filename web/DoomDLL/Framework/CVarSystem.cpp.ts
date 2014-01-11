@@ -125,8 +125,8 @@ class idInternalCVar extends idCVar {
 ////============
 ////*/
 ////idInternalCVar::~idInternalCVar( void ) {
-////	Mem_Free( valueStrings );
-////	valueStrings = NULL;
+////	Mem_Free( this.valueStrings );
+////	this.valueStrings = NULL;
 ////}
 
 
@@ -154,48 +154,47 @@ idInternalCVar::Update
 ============
 */
 Update( cvar:idCVar ):void {
-    todoThrow ( );
-    //// if this is a statically declared variable
-    //if ( cvar.GetFlags() & CVAR_STATIC ) {
+    // if this is a statically declared variable
+    if ( cvar.GetFlags ( ) & CVAR_STATIC ) {
 
-    //	if ( this.flags & CVAR_STATIC ) {
+        if ( this.flags & CVAR_STATIC ) {
 
-    //		// the code has more than one static declaration of the same variable, make sure they have the same properties
-    //		if ( resetString.Icmp( cvar.GetString() ) != 0 ) {
-    //			common.Warning( "CVar '%s' declared multiple times with different initial value", nameString.c_str() );
-    //		}
-    //		if ( ( flags & (CVAR_BOOL|CVAR_INTEGER|CVAR_FLOAT) ) != ( cvar.GetFlags() & (CVAR_BOOL|CVAR_INTEGER|CVAR_FLOAT) ) ) {
-    //			common.Warning( "CVar '%s' declared multiple times with different type", nameString.c_str() );
-    //		}
-    //		if ( this.valueMin != cvar.GetMinValue() || valueMax != cvar.GetMaxValue() ) {
-    //			common.Warning( "CVar '%s' declared multiple times with different minimum/maximum", nameString.c_str() );
-    //		}
+            // the code has more than one static declaration of the same variable, make sure they have the same properties
+            if ( this.resetString.Icmp( cvar.GetString ( ) ) != 0 ) {
+                common.Warning( "CVar '%s' declared multiple times with different initial value", this.nameString.c_str ( ) );
+            }
+            if ( ( this.flags & ( CVAR_BOOL | CVAR_INTEGER | CVAR_FLOAT ) ) != ( cvar.GetFlags ( ) & ( CVAR_BOOL | CVAR_INTEGER | CVAR_FLOAT ) ) ) {
+                common.Warning( "CVar '%s' declared multiple times with different type", this.nameString.c_str ( ) );
+            }
+            if ( this.valueMin != cvar.GetMinValue ( ) || this.valueMax != cvar.GetMaxValue ( ) ) {
+                common.Warning( "CVar '%s' declared multiple times with different minimum/maximum", this.nameString.c_str ( ) );
+            }
 
-    //	}
+        }
 
-    //	// the code is now specifying a variable that the user already set a value for, take the new value as the reset value
-    //	this.resetString = cvar.GetString();
-    //	this.descriptionString = cvar.GetDescription();
-    //	this.description = this.descriptionString.c_str();
-    //	this.valueMin = cvar.GetMinValue();
-    //	this.valueMax = cvar.GetMaxValue();
-    //	this.Mem_Free( valueStrings );
-    //	this.valueStrings = CopyValueStrings( cvar.GetValueStrings() );
-    //	this.valueCompletion = cvar.GetValueCompletion();
-    //	this.UpdateValue();
-    //	cvarSystem.SetModifiedFlags( cvar.GetFlags() );
-    //}
+        // the code is now specifying a variable that the user already set a value for, take the new value as the reset value
+        this.resetString = new idStr( cvar.GetString ( ) );
+        this.descriptionString = new idStr( cvar.GetDescription ( ) );
+        this.description = this.descriptionString.c_str ( );
+        this.valueMin = cvar.GetMinValue ( );
+        this.valueMax = cvar.GetMaxValue ( );
+        Mem_Free( this.valueStrings );
+        this.valueStrings = this.CopyValueStrings( cvar.GetValueStrings ( ) );
+        this.valueCompletion = cvar.GetValueCompletion ( );
+        this.UpdateValue ( );
+        cvarSystem.SetModifiedFlags( cvar.GetFlags ( ) );
+    }
 
-    //flags |= cvar.GetFlags();
+    this.flags |= cvar.GetFlags();
 
-    //UpdateCheat();
+    this.UpdateCheat();
 
-    //// only allow one non-empty reset string without a warning
-    //if ( resetString.Length() == 0 ) {
-    //	resetString = cvar.GetString();
-    //} else if ( cvar.GetString()[0] && resetString.Cmp( cvar.GetString() ) != 0 ) {
-    //	common.Warning( "cvar \"%s\" given initial values: \"%s\" and \"%s\"\n", nameString.c_str(), resetString.c_str(), cvar.GetString() );
-    //}
+    // only allow one non-empty reset string without a warning
+    if ( this.resetString.Length() == 0 ) {
+    	this.resetString = new idStr(cvar.GetString());
+    } else if ( cvar.GetString()[0] && this.resetString.Cmp( cvar.GetString() ) != 0 ) {
+        common.Warning( "cvar \"%s\" given initial values: \"%s\" and \"%s\"\n", this.nameString.c_str(), this.resetString.c_str(), cvar.GetString() );
+    }
 }
 
 /*
@@ -289,8 +288,8 @@ UpdateCheat( ):void {
 ////void idInternalCVar::Set( const char *newValue, bool force, bool fromServer ) {
 ////	if ( session && session.IsMultiplayer() && !fromServer ) {
 ////#ifndef ID_TYPEINFO
-////		if ( ( flags & CVAR_NETWORKSYNC ) && idAsyncNetwork::client.IsActive() ) {
-////			common.Printf( "%s is a synced over the network and cannot be changed on a multiplayer client.\n", nameString.c_str() );
+////		if ( ( this.flags & CVAR_NETWORKSYNC ) && idAsyncNetwork::client.IsActive() ) {
+////			common.Printf( "%s is a synced over the network and cannot be changed on a multiplayer client.\n", this.nameString.c_str() );
 ////#if ID_ALLOW_CHEATS
 ////			common.Printf( "ID_ALLOW_CHEATS override!\n" );
 ////#else				
@@ -298,8 +297,8 @@ UpdateCheat( ):void {
 ////#endif
 ////		}
 ////#endif
-////		if ( ( flags & CVAR_CHEAT ) && !cvarSystem.GetCVarBool( "net_allowCheats" ) ) {
-////			common.Printf( "%s cannot be changed in multiplayer.\n", nameString.c_str() );
+////		if ( ( this.flags & CVAR_CHEAT ) && !cvarSystem.GetCVarBool( "net_allowCheats" ) ) {
+////			common.Printf( "%s cannot be changed in multiplayer.\n", this.nameString.c_str() );
 ////#if ID_ALLOW_CHEATS
 ////			common.Printf( "ID_ALLOW_CHEATS override!\n" );
 ////#else				
@@ -309,17 +308,17 @@ UpdateCheat( ):void {
 ////	}
 
 ////	if ( !newValue ) {
-////		newValue = resetString.c_str();
+////		newValue = this.resetString.c_str();
 ////	}
 
 ////	if ( !force ) {
-////		if ( flags & CVAR_ROM ) {
-////			common.Printf( "%s is read only.\n", nameString.c_str() );
+////		if ( this.flags & CVAR_ROM ) {
+////			common.Printf( "%s is read only.\n", this.nameString.c_str() );
 ////			return;
 ////		}
 
-////		if ( flags & CVAR_INIT ) {
-////			common.Printf( "%s is write protected.\n", nameString.c_str() );
+////		if ( this.flags & CVAR_INIT ) {
+////			common.Printf( "%s is write protected.\n", this.nameString.c_str() );
 ////			return;
 ////		}
 ////	}
@@ -342,7 +341,7 @@ UpdateCheat( ):void {
 ////============
 ////*/
 ////void idInternalCVar::Reset( void ) {
-////	valueString = resetString;
+////	valueString = this.resetString;
 ////	value = valueString.c_str();
 ////	UpdateValue();
 ////}
@@ -774,14 +773,14 @@ Register( cvar:idCVar ):void {
 //	}
 //}
 
-///*
-//============
-//idCVarSystemLocal::SetModifiedFlags
-//============
-//*/
-//void /*idCVarSystemLocal::*/SetModifiedFlags( int flags ) {
-//	this.modifiedFlags |= flags;
-//}
+/*
+============
+idCVarSystemLocal::SetModifiedFlags
+============
+*/
+SetModifiedFlags( /*int */flags:number ):void {
+	this.modifiedFlags |= flags;
+}
 
 ///*
 //============
