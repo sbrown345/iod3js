@@ -120,8 +120,8 @@ interface Array<T> {
 //	type *			Ptr( void );										// returns a pointer to the list
 //	const type *	Ptr( void ) const;									// returns a pointer to the list
 //	type &			Alloc( void );										// returns reference to a new data element at the end of the list
-/*	int				*/Append( obj:T/*const type & obj */):number;				// append element
-//	int				Append( const idList<type> &other );				// append list
+/*	int				*/Append( obj:T/*const type & obj */):number;		// append element
+/*	int				*/Append( /*const idList<type> &*/other:T[] ):number;// append list
 //	int				AddUnique( const type & obj );						// add unique element
 //	int				Insert( const type & obj, int index = 0 );			// insert the element at the given index
 //	int				FindIndex( const type & obj ) const;				// find the index for the given element
@@ -631,6 +631,42 @@ Array.prototype.Resize = function(/* int */newsize:number, /*int */newgranularit
 
 ///*
 //================
+//idList<type>::Append
+
+//adds the other list to this one
+
+//Returns the size of the new combined list
+//================
+//*/
+//template< class type >
+//ID_INLINE int idList<type>::Append( const idList<type> &other ) {
+//	if ( !list ) {
+//		if ( granularity == 0 ) {	// this is a hack to fix our memset classes
+//			granularity = 16;
+//		}
+//		Resize( granularity );
+//	}
+
+//	int n = other.Num();
+//	for (int i = 0; i < n; i++) {
+//		Append(other[i]);
+//	}
+
+//	return Num();
+//}
+
+Array.prototype.Append = function ( objOrList: any ): number {
+    if ( objOrList.hasOwnProperty( "length" ) ) {
+        throw "todo logic for array";
+    }
+
+    var obj = objOrList;
+    this.push( obj );
+    return this.length - 1;
+};
+
+///*
+//================
 //idList<type>::Insert
 
 //Increases the size of the list by at leat one element if necessary 
@@ -669,32 +705,7 @@ Array.prototype.Resize = function(/* int */newsize:number, /*int */newgranularit
 //	return index;
 //}
 
-///*
-//================
-//idList<type>::Append
-
-//adds the other list to this one
-
-//Returns the size of the new combined list
-//================
-//*/
-//template< class type >
-Array.prototype.Append = Array.prototype.push;
-//ID_INLINE int idList<type>::Append( const idList<type> &other ) {
-//	if ( !list ) {
-//		if ( granularity == 0 ) {	// this is a hack to fix our memset classes
-//			granularity = 16;
-//		}
-//		Resize( granularity );
-//	}
-
-//	int n = other.Num();
-//	for (int i = 0; i < n; i++) {
-//		Append(other[i]);
-//	}
-
-//	return Num();
-//}
+// moved Append list next to Append item
 
 ///*
 //================
