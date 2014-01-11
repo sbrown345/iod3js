@@ -142,7 +142,7 @@ idHashIndex::idHashIndex
 ////================
 ////*/
 ////ID_INLINE size_t idHashIndex::Allocated( void ) const {
-////	return hashSize * sizeof( int ) + this.indexSize * sizeof( int );
+////	return this.hashSize * sizeof( int ) + this.indexSize * sizeof( int );
 ////}
 
 /////*
@@ -165,17 +165,17 @@ idHashIndex::idHashIndex
 ////	this.lookupMask = other.lookupMask;
 
 ////	if ( other.lookupMask == 0 ) {
-////		hashSize = other.hashSize;
+////		this.hashSize = other.hashSize;
 ////	 this.indexSize = other.indexSize;
 ////		Free();
 ////	}
 ////	else {
-////		if ( other.hashSize != hashSize || hash == idHashIndex.INVALID_INDEX ) {
-////			if ( hash != idHashIndex.INVALID_INDEX ) {
-////				delete[] hash;
+////		if ( other.hashSize != this.hashSize || this.hash == idHashIndex.INVALID_INDEX ) {
+////			if ( this.hash != idHashIndex.INVALID_INDEX ) {
+////				delete[] this.hash;
 ////			}
-////			hashSize = other.hashSize;
-////			hash = new int[hashSize];
+////			this.hashSize = other.hashSize;
+////			this.hash = new int[this.hashSize];
 ////		}
 ////		if ( other.indexSize != this.indexSize || this.indexChain == idHashIndex.INVALID_INDEX ) {
 ////			if ( this.indexChain != idHashIndex.INVALID_INDEX ) {
@@ -184,7 +184,7 @@ idHashIndex::idHashIndex
 ////		 this.indexSize = other.indexSize;
 ////			this.indexChain = new int this.indexSize];
 ////		}
-////		memcpy( hash, other.hash, hashSize * sizeof( hash[0] ) );
+////		memcpy( this.hash, other.hash, this.hashSize * sizeof( this.hash[0] ) );
 ////		memcpy( this.indexChain, other.indexChain, this.indexSize * sizeof( this.indexChain[0] ) );
 ////	}
 
@@ -218,14 +218,14 @@ idHashIndex::Add
 ////ID_INLINE void idHashIndex::Remove( const int key, const int index ) {
 ////	int k = key & this.hashMask;
 
-////	if ( hash == idHashIndex.INVALID_INDEX ) {
+////	if ( this.hash == idHashIndex.INVALID_INDEX ) {
 ////		return;
 ////	}
-////	if ( hash[k] == index ) {
-////		hash[k] = this.indexChain[index];
+////	if ( this.hash[k] == index ) {
+////		this.hash[k] = this.indexChain[index];
 ////	}
 ////	else {
-////		for ( int i = hash[k]; i != -1; i = this.indexChain[i] ) {
+////		for ( int i = this.hash[k]; i != -1; i = this.indexChain[i] ) {
 ////			if ( this.indexChain[i] == index ) {
 ////				this.indexChain[i] = this.indexChain[index];
 ////				break;
@@ -262,13 +262,13 @@ idHashIndex::Next
 ////ID_INLINE void idHashIndex::InsertIndex( const int key, const int index ) {
 ////	int i, max;
 
-////	if ( hash != idHashIndex.INVALID_INDEX ) {
+////	if ( this.hash != idHashIndex.INVALID_INDEX ) {
 ////		max = index;
-////		for ( i = 0; i < hashSize; i++ ) {
-////			if ( hash[i] >= index ) {
-////				hash[i]++;
-////				if ( hash[i] > max ) {
-////					max = hash[i];
+////		for ( i = 0; i < this.hashSize; i++ ) {
+////			if ( this.hash[i] >= index ) {
+////				this.hash[i]++;
+////				if ( this.hash[i] > max ) {
+////					max = this.hash[i];
 ////				}
 ////			}
 ////		}
@@ -300,14 +300,14 @@ idHashIndex::Next
 ////	int i, max;
 
 ////	Remove( key, index );
-////	if ( hash != idHashIndex.INVALID_INDEX ) {
+////	if ( this.hash != idHashIndex.INVALID_INDEX ) {
 ////		max = index;
-////		for ( i = 0; i < hashSize; i++ ) {
-////			if ( hash[i] >= index ) {
-////				if ( hash[i] > max ) {
-////					max = hash[i];
+////		for ( i = 0; i < this.hashSize; i++ ) {
+////			if ( this.hash[i] >= index ) {
+////				if ( this.hash[i] > max ) {
+////					max = this.hash[i];
 ////				}
-////				hash[i]--;
+////				this.hash[i]--;
 ////			}
 ////		}
 ////		for ( i = 0; i < this.indexSize; i++ ) {
@@ -325,28 +325,39 @@ idHashIndex::Next
 ////	}
 ////}
 
-/////*
-////================
-////idHashIndex::Clear
-////================
-////*/
-////ID_INLINE void idHashIndex::Clear( void ) {
-////	// only clear the hash table because clearing the this.indexChain is not really needed
-////	if ( hash != idHashIndex.INVALID_INDEX ) {
-////		memset( hash, 0xff, hashSize * sizeof( hash[0] ) );
-////	}
-////}
 
-/////*
-////================
-////idHashIndex::Clear
-////================
-////*/
-////ID_INLINE void idHashIndex::Clear( const int newHashSize, const int newIndexSize ) {
-////	Free();
-////	hashSize = newHashSize;
-////    this.indexSize = newIndexSize;
-////}
+    Clear ( ):void
+    Clear ( /*const int*/ newHashSize: number, /*int */newIndexSize: number ) :void
+    Clear ( newHashSize?: number,newIndexSize?: number ):void {
+        if ( arguments.length == 0 ) {
+            this.ClearNoArgs ( );
+        } else {
+            this.ClearWithSize( newHashSize, newIndexSize );
+        }
+    }
+
+/*
+================
+idHashIndex::Clear
+================
+*/
+    private ClearNoArgs ( ): void {
+        // only clear the hash table because clearing the this.indexChain is not really needed
+        if ( this.hash != idHashIndex.INVALID_INDEX ) {
+            memset( this.hash, 0xff, this.hashSize * sizeof( this.hash ) );
+        }
+    }
+
+/*
+================
+idHashIndex::Clear
+================
+*/
+    private ClearWithSize ( /*const int*/ newHashSize: number, /*const int */newIndexSize: number ): void {
+        this.Free ( );
+        this.hashSize = newHashSize;
+        this.indexSize = newIndexSize;
+    }
 
 /////*
 ////================
@@ -354,7 +365,7 @@ idHashIndex::Next
 ////================
 ////*/
 ////ID_INLINE int idHashIndex::GetHashSize( void ) const {
-////	return hashSize;
+////	return this.hashSize;
 ////}
 
 /////*
@@ -366,15 +377,15 @@ idHashIndex::Next
 ////	return this.indexSize;
 ////}
 
-/////*
-////================
-////idHashIndex::SetGranularity
-////================
-////*/
-////ID_INLINE void idHashIndex::SetGranularity( const int newGranularity ) {
-////	assert( newGranularity > 0 );
-////	this.granularity = newGranularity;
-////}
+/*
+================
+idHashIndex::SetGranularity
+================
+*/
+    SetGranularity ( /*int */newGranularity: number ): void {
+        assert( newGranularity > 0 );
+        this.granularity = newGranularity;
+    }
 
 /*
 ================
@@ -471,7 +482,7 @@ idHashIndex::Allocate
     Allocate ( /*const int */newHashSize: number, /*const int */newIndexSize: number ): void {
         assert( idMath.IsPowerOfTwo( newHashSize ) );
 
-        this.Free();
+        this.Free ( );
         this.hashSize = newHashSize;
         this.hash = new Int32Array( this.hashSize );
         memset( this.hash, 0xff, this.hashSize * sizeofSingleItem( this.hash ) );
@@ -540,27 +551,27 @@ idHashIndex::ResizeIndex
 ////int idHashIndex::GetSpread( void ) const {
 ////	int i, index, totalItems, *numHashItems, average, error, e;
 
-////	if ( hash == idHashIndex.INVALID_INDEX ) {
+////	if ( this.hash == idHashIndex.INVALID_INDEX ) {
 ////		return 100;
 ////	}
 
 ////	totalItems = 0;
-////	numHashItems = new int[hashSize];
-////	for ( i = 0; i < hashSize; i++ ) {
+////	numHashItems = new int[this.hashSize];
+////	for ( i = 0; i < this.hashSize; i++ ) {
 ////		numHashItems[i] = 0;
-////		for ( index = hash[i]; index >= 0; index = this.indexChain[index] ) {
+////		for ( index = this.hash[i]; index >= 0; index = this.indexChain[index] ) {
 ////			numHashItems[i]++;
 ////		}
 ////		totalItems += numHashItems[i];
 ////	}
-////	// if no items in hash
+////	// if no items in this.hash
 ////	if ( totalItems <= 1 ) {
 ////		delete[] numHashItems;
 ////		return 100;
 ////	}
-////	average = totalItems / hashSize;
+////	average = totalItems / this.hashSize;
 ////	error = 0;
-////	for ( i = 0; i < hashSize; i++ ) {
+////	for ( i = 0; i < this.hashSize; i++ ) {
 ////		e = abs( numHashItems[i] - average );
 ////		if ( e > 1 ) {
 ////			error += e - 1;

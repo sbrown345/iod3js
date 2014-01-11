@@ -1,3 +1,4 @@
+/// <reference path="../../libs/LangDict.cpp.ts" />
 /// <reference path="CVarSystem.cpp.ts" />
 /// <reference path="CVarSystem.h.ts" />
 /// <reference path="../Renderer/RenderSystem.cpp.ts" />
@@ -185,14 +186,14 @@ class idCommon {
 ////	void						PrintLoadingMessage( const char *msg );
 ////	void						FilterLangList( idStrList* list, idStr lang );
 
-////	bool						com_fullyInitialized;
+/*	bool						*/com_fullyInitialized:boolean;
 /*	bool						*/	com_refreshOnPrint:boolean;		// update the screen every print for dmap
 /*	int							*/	com_errorEntered:number;		// 0, ERP_DROP, etc
 /*	bool						*/	com_shuttingDown:boolean;
 
 ////	idFile *					logFile;
 
-////	char						errorMessage[MAX_PRINT_MSG_SIZE];
+    /*char						*/errorMessage:string;//[MAX_PRINT_MSG_SIZE];
 
 ////	char *						rd_buffer;
 ////	int							rd_buffersize;
@@ -204,43 +205,48 @@ class idCommon {
 
 ////	int							gameDLL;
 
-////	idLangDict					languageDict;
+/*	idLangDict					*/languageDict:idLangDict;
 
 ////#ifdef ID_WRITE_VERSION
 ////	idCompressor *				config_compressor;
 ////#endif
 ////};
 
+
 // init after
 //var commonLocal = new idCommon();////idCommonLocal	commonLocal;
 //var common:idCommon = commonLocal;
 
 
-/////*
-////==================
-////idCommonLocal::idCommonLocal
-////==================
-////*/
-////idCommonLocal::idCommonLocal( void ) {
-////	com_fullyInitialized = false;
-////	com_refreshOnPrint = false;
-////	com_errorEntered = 0;
-////	com_shuttingDown = false;
+/*
+==================
+idCommonLocal::idCommonLocal
+==================
+*/
+constructor( ) {
+    // defaults
+    this.languageDict = new idLangDict ( );
 
-////	logFile = NULL;
+    // id ctor
+	this.com_fullyInitialized = false;
+	this.com_refreshOnPrint = false;
+	this.com_errorEntered = 0;
+	this.com_shuttingDown = false;
 
-////	strcpy( errorMessage, "" );
+    todo( "this.logFile = NULL;" );
 
-////	rd_buffer = NULL;
-////	rd_buffersize = 0;
-////	rd_flush = NULL;
+    this.errorMessage = "";//strcpy( errorMessage, "" );
 
-////	gameDLL = 0;
+	todo( "this.rd_buffer = NULL;" );
+	todo( "this.rd_buffersize = 0;" );
+    todo( "this.rd_flush = NULL;" );
 
-////#ifdef ID_WRITE_VERSION
-////	config_compressor = NULL;
-////#endif
-////}
+	todo( "this.gameDLL = 0;" );
+
+//#ifdef ID_WRITE_VERSION
+//	config_compressor = NULL;
+//#endif
+}
 
 /////*
 ////==================

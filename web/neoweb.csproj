@@ -122,6 +122,7 @@
     <Content Include="libs\idLib\Text\Lexer.cpp.ts" />
     <Content Include="libs\idLib\Text\Lexer.h.ts" />
     <Content Include="libs\idLib\Text\Str.h.ts" />
+    <Content Include="libs\LangDict.cpp.ts" />
     <Content Include="utils\todo.ts" />
     <Content Include="utils\types.ts" />
     <Content Include="Web.config" />

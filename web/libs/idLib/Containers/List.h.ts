@@ -98,7 +98,7 @@ interface Array<T> {
     Clear( ):void;              										// clear the list
     Num( ):number /*const;*/									        // returns number of elements in list
 //	int				NumAllocated( void ) const;							// returns number of elements allocated for
-//	void			SetGranularity( int newgranularity );				// set new granularity
+    SetGranularity( /*int */newgranularity:number ):void;				// set new granularity
 //	int				GetGranularity( void ) const;						// get the current granularity
 
 //	size_t			Allocated( void ) const;							// returns total size of allocated memory
@@ -311,15 +311,15 @@ Array.prototype.SetNum = function(/* int */newnum:number, /*bool */resize:boolea
     this.length = newnum;
 }
 
-///*
-//================
-//idList<type>::SetGranularity
+/*
+================
+idList<type>::SetGranularity
 
-//Sets the base size of the array and resizes the array to match.
-//================
-//*/
+Sets the base size of the array and resizes the array to match.
+================
+*/
 //template< class type >
-//ID_INLINE void idList<type>::SetGranularity( int newgranularity ) {
+/*//ID_INLINE void idList<type>::*/Array.prototype.SetGranularity( /*int*/ newgranularity:number ):void {
 //	int newsize;
 
 //	assert( newgranularity > 0 );
@@ -333,7 +333,7 @@ Array.prototype.SetNum = function(/* int */newnum:number, /*bool */resize:boolea
 //			Resize( newsize );
 //		}
 //	}
-//}
+}
 
 ///*
 //================
