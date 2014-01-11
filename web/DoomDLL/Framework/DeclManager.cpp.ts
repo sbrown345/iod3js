@@ -1,3 +1,15 @@
+/// <reference path="DeclParticle.cpp.ts" />
+/// <reference path="DeclFX.cpp.ts" />
+/// <reference path="DeclTable.cpp.ts" />
+/// <reference path="DeclSkin.cpp.ts" />
+/// <reference path="DeclEntityDef.cpp.ts" />
+/// <reference path="../Sound/sound.h.ts" />
+/// <reference path="DeclSkin.cpp.ts" />
+/// <reference path="DeclTable.cpp.ts" />
+/// <reference path="DeclPDA.h.ts" />
+/// <reference path="DeclAF.h.ts" />
+/// <reference path="DeclAF.cpp.ts" />
+/// <reference path="DeclPDA.h.ts" />
 /// <reference path="../../libs/c.ts" />
 /// <reference path="../../libs/idLib/Text/Lexer.h.ts" />
 /// <reference path="../../libs/idLib/Lib.h.ts" />
@@ -204,12 +216,12 @@ class idDeclManagerLocal extends idDeclManager {
 ////	friend class idDeclLocal;
 
 //public:
-///*virtual void				*/Init( ):void{throw "placeholder";}
+    Init( ):void{throw "placeholder";}
 ///*virtual void				*/Shutdown( ):void{throw "placeholder";}
 ///*virtual void				*/Reload( force:boolean ):void{throw "placeholder";}
 ///*virtual void				*/BeginLevelLoad():void{throw "placeholder";}
 ///*virtual void				*/EndLevelLoad():void{throw "placeholder";}
-/////*virtual void			*/RegisterDeclType( const char *typeName, declType_t type, idDecl *(*allocator)( ) ):void{throw "placeholder";}
+    RegisterDeclType( typeName:string, type:declType_t , allocator: ()=> idDecl ):void{throw "placeholder";}
 /////*virtual void			*/RegisterDeclFolder( const char *folder, const char *extension, declType_t defaultType ):void{throw "placeholder";}
 ///*virtual int				*/	GetChecksum( ) :number{throw "placeholder";}
 ///*virtual int				*/	GetNumDeclTypes( ) :number{throw "placeholder";}
@@ -265,9 +277,9 @@ class idDeclManagerLocal extends idDeclManager {
     static decl_show:idCVar;
 
 //private:
-//	static void					ListDecls_f( const idCmdArgs &args );
-//	static void					ReloadDecls_f( const idCmdArgs &args );
-//	static void					TouchDecl_f( const idCmdArgs &args );
+    ListDecls_f( args:idCmdArgs  ):void { throw "placeholder"; }
+    ReloadDecls_f( args:idCmdArgs  ):void { throw "placeholder"; }
+    TouchDecl_f( args:idCmdArgs  ):void { throw "placeholder"; }
 };
 
 ////idCVar idDeclManagerLocal::decl_show( "decl_show", "0", CVAR_SYSTEM, "set to 1 to print parses, 2 to also print references", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
@@ -810,85 +822,86 @@ var declManager = declManagerLocal;
 
 ////const char *listDeclStrings[] = { "current", "all", "ever", NULL };
 
-/////*
-////===================
-////idDeclManagerLocal::Init
-////===================
-////*/
-////void idDeclManagerLocal::Init( ) {
+/*
+===================
+idDeclManagerLocal::Init
+===================
+*/
+idDeclManagerLocal.prototype.Init = function( ):void {
 
-////	common.Printf( "----- Initializing Decls -----\n" );
+	common.Printf( "----- Initializing Decls -----\n" );
 
-////	checksum = 0;
+	this.checksum = 0;
 
-////#ifdef USE_COMPRESSED_DECLS
-////	SetupHuffman();
-////#endif
+//#ifdef USE_COMPRESSED_DECLS
+//	SetupHuffman();
+//#endif
 
-////#ifdef GET_HUFFMAN_FREQUENCIES
-////	ClearHuffmanFrequencies();
-////#endif
+//#ifdef GET_HUFFMAN_FREQUENCIES
+//	ClearHuffmanFrequencies();
+//#endif
 
-////	// decls used throughout the engine
-////	RegisterDeclType( "table",				declType_t.DECL_TABLE,			idDeclAllocator<idDeclTable> );
-////	RegisterDeclType( "material",			declType_t.DECL_MATERIAL,		idDeclAllocator<idMaterial> );
-////	RegisterDeclType( "skin",				declType_t.ECL_SKIN,			idDeclAllocator<idDeclSkin> );
-////	RegisterDeclType( "sound",				declType_t.ECL_SOUND,			idDeclAllocator<idSoundShader> );
+	// decls used throughout the engine
+	this.RegisterDeclType( "table",				declType_t.DECL_TABLE,			idDeclAllocator<idDeclTable>(idDeclTable) );
+	this.RegisterDeclType( "material",			declType_t.DECL_MATERIAL,		idDeclAllocator<idMaterial>(idMaterial) );
+	this.RegisterDeclType( "skin",				declType_t.DECL_SKIN,			idDeclAllocator<idDeclSkin>(idDeclSkin) );
+	this.RegisterDeclType( "sound",				declType_t.DECL_SOUND,			idDeclAllocator<idSoundShader>(idSoundShader) );
 
-////	RegisterDeclType( "entityDef",			declType_t.DECL_ENTITYDEF,		idDeclAllocator<idDeclEntityDef> );
-////	RegisterDeclType( "mapDef",				declType_t.DECL_MAPDEF,		idDeclAllocator<idDeclEntityDef> );
-////	RegisterDeclType( "fx",					declType_t.DECL_FX,			idDeclAllocator<idDeclFX> );
-////	RegisterDeclType( "particle",			declType_t.DECL_PARTICLE,		idDeclAllocator<idDeclParticle> );
-////	RegisterDeclType( "articulatedFigure",	declType_t.DECL_AF,			idDeclAllocator<idDeclAF> );
-////	RegisterDeclType( "pda",				declType_t.DECL_PDA,			idDeclAllocator<idDeclPDA> );
-////	RegisterDeclType( "email",				declType_t.DECL_EMAIL,			idDeclAllocator<idDeclEmail> );
-////	RegisterDeclType( "video",				declType_t.DECL_VIDEO,			idDeclAllocator<idDeclVideo> );
-////	RegisterDeclType( "audio",				declType_t.DECL_AUDIO,			idDeclAllocator<idDeclAudio> );
+	this.RegisterDeclType( "entityDef",			declType_t.DECL_ENTITYDEF,		idDeclAllocator<idDeclEntityDef>(idDeclEntityDef) );
+	this.RegisterDeclType( "mapDef",			declType_t.DECL_MAPDEF,		    idDeclAllocator<idDeclEntityDef>(idDeclEntityDef) );
+	this.RegisterDeclType( "fx",				declType_t.DECL_FX,			    idDeclAllocator<idDeclFX>(idDeclFX) );
+	this.RegisterDeclType( "particle",			declType_t.DECL_PARTICLE,		idDeclAllocator<idDeclParticle>(idDeclParticle) );
+	this.RegisterDeclType( "articulatedFigure",	declType_t.DECL_AF,			    idDeclAllocator<idDeclAF>(idDeclAF) );
+	this.RegisterDeclType( "pda",				declType_t.DECL_PDA,			idDeclAllocator<idDeclPDA>(idDeclPDA) );
+	this.RegisterDeclType( "email",				declType_t.DECL_EMAIL,			idDeclAllocator<idDeclEmail>(idDeclEmail) );
+	this.RegisterDeclType( "video",				declType_t.DECL_VIDEO,			idDeclAllocator<idDeclVideo>(idDeclVideo) );
+	this.RegisterDeclType( "audio",				declType_t.DECL_AUDIO,			idDeclAllocator<idDeclAudio>(idDeclAudio) );
+    
+	this.RegisterDeclFolder( "materials",		".mtr",				declType_t.DECL_MATERIAL );
+	this.RegisterDeclFolder( "skins",			".skin",			declType_t.DECL_SKIN );
+	this.RegisterDeclFolder( "sound",			".sndshd",			declType_t.DECL_SOUND );
 
-////	RegisterDeclFolder( "materials",		".mtr",				declType_t.DECL_MATERIAL );
-////	RegisterDeclFolder( "skins",			".skin",			declType_t.DECL_SKIN );
-////	RegisterDeclFolder( "sound",			".sndshd",			declType_t.DECL_SOUND );
+	// add console commands
+	cmdSystem.AddCommand( "listDecls", this.ListDecls_f, CMD_FL_SYSTEM, "lists all decls" );
 
-////	// add console commands
-////	cmdSystem.AddCommand( "listDecls", ListDecls_f, CMD_FL_SYSTEM, "lists all decls" );
+	cmdSystem.AddCommand( "reloadDecls", this.ReloadDecls_f, CMD_FL_SYSTEM, "reloads decls" );
+	cmdSystem.AddCommand( "touch", this.TouchDecl_f, CMD_FL_SYSTEM, "touches a decl" );
 
-////	cmdSystem.AddCommand( "reloadDecls", ReloadDecls_f, CMD_FL_SYSTEM, "reloads decls" );
-////	cmdSystem.AddCommand( "touch", TouchDecl_f, CMD_FL_SYSTEM, "touches a decl" );
+    todo( "list decals" );
+	//cmdSystem.AddCommand( "listTables", idListDecls_f<DECL_TABLE>, CMD_FL_SYSTEM, "lists tables", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listMaterials", idListDecls_f<DECL_MATERIAL>, CMD_FL_SYSTEM, "lists materials", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listSkins", idListDecls_f<DECL_SKIN>, CMD_FL_SYSTEM, "lists skins", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listSoundShaders", idListDecls_f<DECL_SOUND>, CMD_FL_SYSTEM, "lists sound shaders", idCmdSystem::ArgCompletion_String<listDeclStrings> );
 
-////	cmdSystem.AddCommand( "listTables", idListDecls_f<DECL_TABLE>, CMD_FL_SYSTEM, "lists tables", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-////	cmdSystem.AddCommand( "listMaterials", idListDecls_f<DECL_MATERIAL>, CMD_FL_SYSTEM, "lists materials", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-////	cmdSystem.AddCommand( "listSkins", idListDecls_f<DECL_SKIN>, CMD_FL_SYSTEM, "lists skins", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-////	cmdSystem.AddCommand( "listSoundShaders", idListDecls_f<DECL_SOUND>, CMD_FL_SYSTEM, "lists sound shaders", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listEntityDefs", idListDecls_f<DECL_ENTITYDEF>, CMD_FL_SYSTEM, "lists entity defs", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listFX", idListDecls_f<DECL_FX>, CMD_FL_SYSTEM, "lists FX systems", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listParticles", idListDecls_f<DECL_PARTICLE>, CMD_FL_SYSTEM, "lists particle systems", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listAF", idListDecls_f<DECL_AF>, CMD_FL_SYSTEM, "lists articulated figures", idCmdSystem::ArgCompletion_String<listDeclStrings>);
 
-////	cmdSystem.AddCommand( "listEntityDefs", idListDecls_f<DECL_ENTITYDEF>, CMD_FL_SYSTEM, "lists entity defs", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-////	cmdSystem.AddCommand( "listFX", idListDecls_f<DECL_FX>, CMD_FL_SYSTEM, "lists FX systems", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-////	cmdSystem.AddCommand( "listParticles", idListDecls_f<DECL_PARTICLE>, CMD_FL_SYSTEM, "lists particle systems", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-////	cmdSystem.AddCommand( "listAF", idListDecls_f<DECL_AF>, CMD_FL_SYSTEM, "lists articulated figures", idCmdSystem::ArgCompletion_String<listDeclStrings>);
+	//cmdSystem.AddCommand( "listPDAs", idListDecls_f<DECL_PDA>, CMD_FL_SYSTEM, "lists PDAs", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listEmails", idListDecls_f<DECL_EMAIL>, CMD_FL_SYSTEM, "lists Emails", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listVideos", idListDecls_f<DECL_VIDEO>, CMD_FL_SYSTEM, "lists Videos", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listAudios", idListDecls_f<DECL_AUDIO>, CMD_FL_SYSTEM, "lists Audios", idCmdSystem::ArgCompletion_String<listDeclStrings> );
 
-////	cmdSystem.AddCommand( "listPDAs", idListDecls_f<DECL_PDA>, CMD_FL_SYSTEM, "lists PDAs", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-////	cmdSystem.AddCommand( "listEmails", idListDecls_f<DECL_EMAIL>, CMD_FL_SYSTEM, "lists Emails", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-////	cmdSystem.AddCommand( "listVideos", idListDecls_f<DECL_VIDEO>, CMD_FL_SYSTEM, "lists Videos", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-////	cmdSystem.AddCommand( "listAudios", idListDecls_f<DECL_AUDIO>, CMD_FL_SYSTEM, "lists Audios", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "printTable", idPrintDecls_f<DECL_TABLE>, CMD_FL_SYSTEM, "prints a table", idCmdSystem::ArgCompletion_Decl<DECL_TABLE> );
+	//cmdSystem.AddCommand( "printMaterial", idPrintDecls_f<DECL_MATERIAL>, CMD_FL_SYSTEM, "prints a material", idCmdSystem::ArgCompletion_Decl<DECL_MATERIAL> );
+	//cmdSystem.AddCommand( "printSkin", idPrintDecls_f<DECL_SKIN>, CMD_FL_SYSTEM, "prints a skin", idCmdSystem::ArgCompletion_Decl<DECL_SKIN> );
+	//cmdSystem.AddCommand( "printSoundShader", idPrintDecls_f<DECL_SOUND>, CMD_FL_SYSTEM, "prints a sound shader", idCmdSystem::ArgCompletion_Decl<DECL_SOUND> );
 
-////	cmdSystem.AddCommand( "printTable", idPrintDecls_f<DECL_TABLE>, CMD_FL_SYSTEM, "prints a table", idCmdSystem::ArgCompletion_Decl<DECL_TABLE> );
-////	cmdSystem.AddCommand( "printMaterial", idPrintDecls_f<DECL_MATERIAL>, CMD_FL_SYSTEM, "prints a material", idCmdSystem::ArgCompletion_Decl<DECL_MATERIAL> );
-////	cmdSystem.AddCommand( "printSkin", idPrintDecls_f<DECL_SKIN>, CMD_FL_SYSTEM, "prints a skin", idCmdSystem::ArgCompletion_Decl<DECL_SKIN> );
-////	cmdSystem.AddCommand( "printSoundShader", idPrintDecls_f<DECL_SOUND>, CMD_FL_SYSTEM, "prints a sound shader", idCmdSystem::ArgCompletion_Decl<DECL_SOUND> );
+	//cmdSystem.AddCommand( "printEntityDef", idPrintDecls_f<DECL_ENTITYDEF>, CMD_FL_SYSTEM, "prints an entity def", idCmdSystem::ArgCompletion_Decl<DECL_ENTITYDEF> );
+	//cmdSystem.AddCommand( "printFX", idPrintDecls_f<DECL_FX>, CMD_FL_SYSTEM, "prints an FX system", idCmdSystem::ArgCompletion_Decl<DECL_FX> );
+	//cmdSystem.AddCommand( "printParticle", idPrintDecls_f<DECL_PARTICLE>, CMD_FL_SYSTEM, "prints a particle system", idCmdSystem::ArgCompletion_Decl<DECL_PARTICLE> );
+	//cmdSystem.AddCommand( "printAF", idPrintDecls_f<DECL_AF>, CMD_FL_SYSTEM, "prints an articulated figure", idCmdSystem::ArgCompletion_Decl<DECL_AF> );
 
-////	cmdSystem.AddCommand( "printEntityDef", idPrintDecls_f<DECL_ENTITYDEF>, CMD_FL_SYSTEM, "prints an entity def", idCmdSystem::ArgCompletion_Decl<DECL_ENTITYDEF> );
-////	cmdSystem.AddCommand( "printFX", idPrintDecls_f<DECL_FX>, CMD_FL_SYSTEM, "prints an FX system", idCmdSystem::ArgCompletion_Decl<DECL_FX> );
-////	cmdSystem.AddCommand( "printParticle", idPrintDecls_f<DECL_PARTICLE>, CMD_FL_SYSTEM, "prints a particle system", idCmdSystem::ArgCompletion_Decl<DECL_PARTICLE> );
-////	cmdSystem.AddCommand( "printAF", idPrintDecls_f<DECL_AF>, CMD_FL_SYSTEM, "prints an articulated figure", idCmdSystem::ArgCompletion_Decl<DECL_AF> );
+	//cmdSystem.AddCommand( "printPDA", idPrintDecls_f<DECL_PDA>, CMD_FL_SYSTEM, "prints an PDA", idCmdSystem::ArgCompletion_Decl<DECL_PDA> );
+	//cmdSystem.AddCommand( "printEmail", idPrintDecls_f<DECL_EMAIL>, CMD_FL_SYSTEM, "prints an Email", idCmdSystem::ArgCompletion_Decl<DECL_EMAIL> );
+	//cmdSystem.AddCommand( "printVideo", idPrintDecls_f<DECL_VIDEO>, CMD_FL_SYSTEM, "prints a Audio", idCmdSystem::ArgCompletion_Decl<DECL_VIDEO> );
+	//cmdSystem.AddCommand( "printAudio", idPrintDecls_f<DECL_AUDIO>, CMD_FL_SYSTEM, "prints an Video", idCmdSystem::ArgCompletion_Decl<DECL_AUDIO> );
 
-////	cmdSystem.AddCommand( "printPDA", idPrintDecls_f<DECL_PDA>, CMD_FL_SYSTEM, "prints an PDA", idCmdSystem::ArgCompletion_Decl<DECL_PDA> );
-////	cmdSystem.AddCommand( "printEmail", idPrintDecls_f<DECL_EMAIL>, CMD_FL_SYSTEM, "prints an Email", idCmdSystem::ArgCompletion_Decl<DECL_EMAIL> );
-////	cmdSystem.AddCommand( "printVideo", idPrintDecls_f<DECL_VIDEO>, CMD_FL_SYSTEM, "prints a Audio", idCmdSystem::ArgCompletion_Decl<DECL_VIDEO> );
-////	cmdSystem.AddCommand( "printAudio", idPrintDecls_f<DECL_AUDIO>, CMD_FL_SYSTEM, "prints an Video", idCmdSystem::ArgCompletion_Decl<DECL_AUDIO> );
+	//cmdSystem.AddCommand( "listHuffmanFrequencies", ListHuffmanFrequencies_f, CMD_FL_SYSTEM, "lists decl text character frequencies" );
 
-////	cmdSystem.AddCommand( "listHuffmanFrequencies", ListHuffmanFrequencies_f, CMD_FL_SYSTEM, "lists decl text character frequencies" );
-
-////	common.Printf( "------------------------------\n" );
-////}
+	common.Printf( "------------------------------\n" );
+};
 
 /////*
 ////===================
@@ -971,29 +984,29 @@ var declManager = declManagerLocal;
 ////	// and sound sample manager will need to free media that was not referenced
 ////}
 
-/////*
-////===================
-////idDeclManagerLocal::RegisterDeclType
-////===================
-////*/
-////void idDeclManagerLocal::RegisterDeclType( const char *typeName, declType_t type, idDecl *(*allocator)( ) ) {
-////	idDeclType *declType;
+/*
+===================
+idDeclManagerLocal::RegisterDeclType
+===================
+*/
+idDeclManagerLocal.prototype.RegisterDeclType = function ( typeName: string, type: declType_t, allocator: ( ) => idDecl ): void {
+    var declType: idDeclType;
 
-////	if ( type < this.declTypes.Num() && this.declTypes[(int)type] ) {
-////		common.Warning( "idDeclManager::RegisterDeclType: type '%s' already exists", typeName );
-////		return;
-////	}
+    if ( type < this.declTypes.Num ( ) && this.declTypes[ /*(int)*/type] ) {
+        common.Warning( "idDeclManager::RegisterDeclType: type '%s' already exists", typeName );
+        return;
+    }
 
-////	declType = new idDeclType;
-////	declType.typeName = typeName;
-////	declType.type = type;
-////	declType.allocator = allocator;
+    declType = new idDeclType;
+    declType.typeName = new idStr( typeName );
+    declType.type = type;
+    declType.allocator = allocator;
 
-////	if ( (int)type + 1 > this.declTypes.Num() ) {
-////		this.declTypes.AssureSize( (int)type + 1, NULL );
-////	}
-////	this.declTypes[type] = declType;
-////}
+    if ( /*(int)*/type + 1 > this.declTypes.Num ( ) ) {
+        this.declTypes.AssureSize( /*(int)*/type + 1, NULL );
+    }
+    this.declTypes[type] = declType;
+};
 
 /////*
 ////===================
@@ -1606,12 +1619,12 @@ idDeclManagerLocal.prototype.MakeNameCanonical = function ( name: string, /*char
     }
 };
 
-/////*
-////================
-////idDeclManagerLocal::ListDecls_f
-////================
-////*/
-////void idDeclManagerLocal::ListDecls_f( const idCmdArgs &args ) {
+/*
+================
+idDeclManagerLocal::ListDecls_f
+================
+*/
+idDeclManagerLocal.prototype.ListDecls_f = function ( args: idCmdArgs ): void {
 ////	int		i, j;
 ////	int		totalDecls = 0;
 ////	int		totalText = 0;
@@ -1646,7 +1659,7 @@ idDeclManagerLocal.prototype.MakeNameCanonical = function ( name: string, /*char
 
 ////	common.Printf( "%i total decls is %i decl files\n", totalDecls, declManagerLocal.loadedFiles.Num() );
 ////	common.Printf( "%iKB in text, %iKB in structures\n", totalText >> 10, totalStructs >> 10 );
-////}
+};
 
 /////*
 ////===================

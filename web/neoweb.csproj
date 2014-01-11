@@ -65,8 +65,17 @@
     <Content Include="DoomDLL\Framework\Common.cpp.ts" />
     <Content Include="DoomDLL\Framework\CVarSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\CVarSystem.h.ts" />
+    <Content Include="DoomDLL\Framework\DeclAF.cpp.ts" />
+    <Content Include="DoomDLL\Framework\DeclAF.h.ts" />
+    <Content Include="DoomDLL\Framework\DeclEntityDef.cpp.ts" />
+    <Content Include="DoomDLL\Framework\DeclFX.cpp.ts" />
     <Content Include="DoomDLL\Framework\DeclManager.cpp.ts" />
     <Content Include="DoomDLL\Framework\DeclManager.h.ts" />
+    <Content Include="DoomDLL\Framework\DeclParticle.cpp.ts" />
+    <Content Include="DoomDLL\Framework\DeclPDA.cpp.ts" />
+    <Content Include="DoomDLL\Framework\DeclPDA.h.ts" />
+    <Content Include="DoomDLL\Framework\DeclSkin.cpp.ts" />
+    <Content Include="DoomDLL\Framework\DeclTable.cpp.ts" />
     <Content Include="DoomDLL\Renderer\GuiModel.cpp.ts" />
     <Content Include="DoomDLL\Renderer\GuiModel.h.ts" />
     <Content Include="DoomDLL\Renderer\Image.h.ts" />
@@ -102,6 +111,7 @@
     <Content Include="DoomDLL\Renderer\RenderSystem_init.cpp.ts" />
     <Content Include="DoomDLL\Renderer\tr_backend.cpp.ts" />
     <Content Include="DoomDLL\Renderer\tr_local.h.ts" />
+    <Content Include="DoomDLL\Sound\sound.h.ts" />
     <Content Include="DoomDLL\Sys\win_glimp.cpp.ts" />
     <Content Include="DoomDLL\Sys\win_main.cpp.ts" />
     <Content Include="DoomDLL\Sys\win_main.cpp.ts" />

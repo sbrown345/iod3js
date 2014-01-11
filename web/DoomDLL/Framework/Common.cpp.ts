@@ -2921,8 +2921,9 @@ idCommonLocal::InitGame
 ////	// initialize the file system
 ////	fileSystem.Init();
 
-////	// initialize the declaration manager
-////	declManager.Init();
+	// initialize the declaration manager
+        debugger;
+	declManager.Init();
 
 ////	// force r_fullscreen 0 if running a tool
 ////	CheckToolMode();

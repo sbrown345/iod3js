@@ -112,8 +112,8 @@ interface Array<T> {
 //	void			Condense( void );									// resizes list to exactly the number of elements it contains
 //Resize( /*int */newsize:number ):void;								// resizes list to the given number of elements
 	Resize( /*int*/ newsize:number, /*int*/ newgranularity:number, type: any ):void;// resizes list and sets new granularity
-    SetNum( /*int*/ newnum:number, /*bool */resize?:boolean ):void;			// set number of elements in list and resize to exactly this number if necessary
-//	void			AssureSize( int newSize);							// assure list has given number of elements, but leave them uninitialized
+    SetNum( /*int*/ newnum:number, /*bool */resize?:boolean ):void;			// set number of elemerents in list and resize to exactly this number if necessary
+    AssureSize( /*int */newSize:number):void;							// assure list has given number of elements, but leave them uninitialized
 //	void			AssureSize( int newSize, const type &initValue );	// assure list has given number of elements and initialize any new elements
 //	void			AssureSizeAlloc( int newSize, new_t *allocator );	// assure the pointer list has the given number of elements and allocate any new elements
 
@@ -142,16 +142,27 @@ interface Array<T> {
 //	type *			list;
 };
 
-//Object.defineProperty(Array.prototype, "size", {/////// MAYBE NOT NEEDED...
-//    get: function () { 
-//        return this.length;
-//    },
-//    set: function (value) {
-//        this.length = value;
-//    },
-//    enumerable: true,
-//    configurable: true
-//});
+Object.defineProperty(Array.prototype, "size", {/////// MAYBE NOT NEEDED...
+    get: function () { 
+        return this.length;
+    },
+    set: function (value) {
+        this.length = value;
+    },
+    enumerable: true,
+    configurable: true
+});
+
+Object.defineProperty(Array.prototype, "num", {/////// MAYBE NOT NEEDED...
+    get: function () { 
+        return this.length;
+    },
+    set: function (value) {
+        this.length = value;
+    },
+    enumerable: true,
+    configurable: true
+});
 
 ///*
 //================
@@ -266,7 +277,7 @@ Array.prototype.Clear = function ():void {
 //*/
 //template< class type >
 //ID_INLINE size_t idList<type>::MemoryUsed( void ) const {
-//	return num * sizeof( *list );
+//	return this.num * sizeof( *list );
 //}
 
 /*
@@ -279,7 +290,7 @@ Note that this is NOT an indication of the memory allocated.
 */
 //template< class type >
 Array.prototype.Num = function( ):number {
-	return this.length;//num;
+    return this.num;
 };
 
 ///*
@@ -307,8 +318,7 @@ Array.prototype.SetNum = function ( /* int */newnum: number, /*bool */resize: bo
 //	if ( resize || newnum > size ) {
 //		Resize( newnum );
 //	}
-//	num = newnum;
-    this.length = newnum;
+    this.num = newnum;
 };
 
 /*
@@ -328,7 +338,7 @@ Array.prototype.SetGranularity = function ( /*int*/ newgranularity: number ): vo
 
 //	if ( list ) {
 //		// resize it to the closest level of granularity
-//		newsize = num + granularity - 1;
+//		newsize = this.num + granularity - 1;
 //		newsize -= newsize % granularity;
 //		if ( newsize != size ) {
 //			Resize( newsize );
@@ -358,8 +368,8 @@ Array.prototype.SetGranularity = function ( /*int*/ newgranularity: number ): vo
 //template< class type >
 //ID_INLINE void idList<type>::Condense( void ) {
 //	if ( list ) {
-//		if ( num ) {
-//			Resize( num );
+//		if ( this.num ) {
+//			Resize( this.num );
 //		} else {
 //			Clear();
 //		}
@@ -398,30 +408,31 @@ Array.prototype.Resize = function(/* int */newsize:number, /*int */newgranularit
 }
 
 
-///*
-//================
-//idList<type>::AssureSize
+/*
+================
+idList<type>::AssureSize
 
-//Makes sure the list has at least the given number of elements.
-//================
-//*/
+Makes sure the list has at least the given number of elements.
+================
+*/
 //template< class type >
-//ID_INLINE void idList<type>::AssureSize( int newSize ) {
-//	int newNum = newSize;
+//ID_INLINE void idList<type>::
+Array.prototype.AssureSize = function ( /*int */newSize: number ): void {
+    var /*int */newNum = newSize;
 
-//	if ( newSize > size ) {
+    if ( this.newSize > this.size ) {
 
-//		if ( granularity == 0 ) {	// this is a hack to fix our memset classes
-//			granularity = 16;
-//		}
+        if ( this.granularity == 0 ) { // this is a hack to fix our memset classes
+            this.granularity = 16;
+        }
 
-//		newSize += granularity - 1;
-//		newSize -= newSize % granularity;
-//		Resize( newSize );
-//	}
+        newSize += this.granularity - 1;
+        newSize -= newSize % this.granularity;
+        this.Resize( newSize );
+    }
 
-//	num = newNum;
-//}
+    this.num = newNum;
+};
 
 ///*
 //================
@@ -442,15 +453,15 @@ Array.prototype.Resize = function(/* int */newsize:number, /*int */newgranularit
 
 //		newSize += granularity - 1;
 //		newSize -= newSize % granularity;
-//		num = size;
+//		this.num = size;
 //		Resize( newSize );
 
-//		for ( int i = num; i < newSize; i++ ) {
+//		for ( int i = this.num; i < newSize; i++ ) {
 //			list[i] = initValue;
 //		}
 //	}
 
-//	num = newNum;
+//	this.num = newNum;
 //}
 
 ///*
@@ -475,15 +486,15 @@ Array.prototype.Resize = function(/* int */newsize:number, /*int */newgranularit
 
 //		newSize += granularity - 1;
 //		newSize -= newSize % granularity;
-//		num = size;
+//		this.num = size;
 //		Resize( newSize );
 
-//		for ( int i = num; i < newSize; i++ ) {
+//		for ( int i = this.num; i < newSize; i++ ) {
 //			list[i] = (*allocator)();
 //		}
 //	}
 
-//	num = newNum;
+//	this.num = newNum;
 //}
 
 ///*
@@ -499,13 +510,13 @@ Array.prototype.Resize = function(/* int */newsize:number, /*int */newgranularit
 
 //	Clear();
 
-//	num			= other.num;
+//	this.num			= other.num;
 //	size		= other.size;
 //	granularity	= other.granularity;
 
 //	if ( size ) {
 //		list = new type[ size ];
-//		for( i = 0; i < num; i++ ) {
+//		for( i = 0; i < this.num; i++ ) {
 //			list[ i ] = other.list[ i ];
 //		}
 //	}
@@ -524,7 +535,7 @@ Array.prototype.Resize = function(/* int */newsize:number, /*int */newgranularit
 //template< class type >
 //ID_INLINE const type &idList<type>::operator[]( int index ) const {
 //	assert( index >= 0 );
-//	assert( index < num );
+//	assert( index < this.num );
 
 //	return list[ index ];
 //}
@@ -540,7 +551,7 @@ Array.prototype.Resize = function(/* int */newsize:number, /*int */newgranularit
 //template< class type >
 //ID_INLINE type &idList<type>::operator[]( int index ) {
 //	assert( index >= 0 );
-//	assert( index < num );
+//	assert( index < this.num );
 
 //	return list[ index ];
 //}
@@ -590,11 +601,11 @@ Array.prototype.Resize = function(/* int */newsize:number, /*int */newgranularit
 //		Resize( granularity );
 //	}
 
-//	if ( num == size ) {
+//	if ( this.num == size ) {
 //		Resize( size + granularity );
 //	}
 
-//	return list[ num++ ];
+//	return list[ this.num++ ];
 //}
 
 ///*
@@ -612,7 +623,7 @@ Array.prototype.Resize = function(/* int */newsize:number, /*int */newgranularit
 //		Resize( granularity );
 //	}
 
-//	if ( num == size ) {
+//	if ( this.num == size ) {
 //		int newsize;
 
 //		if ( granularity == 0 ) {	// this is a hack to fix our memset classes
@@ -622,10 +633,10 @@ Array.prototype.Resize = function(/* int */newsize:number, /*int */newgranularit
 //		Resize( newsize - newsize % granularity );
 //	}
 
-//	list[ num ] = obj;
-//	num++;
+//	list[ this.num ] = obj;
+//	this.num++;
 
-//	return num - 1;
+//	return this.num - 1;
 //}
 
 
@@ -681,7 +692,7 @@ Array.prototype.Append = function ( objOrList: any ): number {
 //		Resize( granularity );
 //	}
 
-//	if ( num == size ) {
+//	if ( this.num == size ) {
 //		int newsize;
 
 //		if ( granularity == 0 ) {	// this is a hack to fix our memset classes
@@ -694,13 +705,13 @@ Array.prototype.Append = function ( objOrList: any ): number {
 //	if ( index < 0 ) {
 //		index = 0;
 //	}
-//	else if ( index > num ) {
-//		index = num;
+//	else if ( index > this.num ) {
+//		index = this.num;
 //	}
-//	for ( int i = num; i > index; --i ) {
+//	for ( int i = this.num; i > index; --i ) {
 //		list[i] = list[i-1];
 //	}
-//	num++;
+//	this.num++;
 //	list[index] = obj;
 //	return index;
 //}
@@ -737,7 +748,7 @@ Array.prototype.Append = function ( objOrList: any ): number {
 //ID_INLINE int idList<type>::FindIndex( type const & obj ) const {
 //	int i;
 
-//	for( i = 0; i < num; i++ ) {
+//	for( i = 0; i < this.num; i++ ) {
 //		if ( list[ i ] == obj ) {
 //			return i;
 //		}
@@ -780,7 +791,7 @@ Array.prototype.Append = function ( objOrList: any ): number {
 //ID_INLINE int idList<type>::FindNull( void ) const {
 //	int i;
 
-//	for( i = 0; i < num; i++ ) {
+//	for( i = 0; i < this.num; i++ ) {
 //		if ( list[ i ] == NULL ) {
 //			return i;
 //		}
@@ -807,7 +818,7 @@ Array.prototype.Append = function ( objOrList: any ): number {
 //	index = objptr - list;
 
 //	assert( index >= 0 );
-//	assert( index < num );
+//	assert( index < this.num );
 
 //	return index;
 //}
@@ -827,14 +838,14 @@ Array.prototype.Append = function ( objOrList: any ): number {
 
 //	assert( list != NULL );
 //	assert( index >= 0 );
-//	assert( index < num );
+//	assert( index < this.num );
 
-//	if ( ( index < 0 ) || ( index >= num ) ) {
+//	if ( ( index < 0 ) || ( index >= this.num ) ) {
 //		return false;
 //	}
 
-//	num--;
-//	for( i = index; i < num; i++ ) {
+//	this.num--;
+//	for( i = index; i < this.num; i++ ) {
 //		list[ i ] = list[ i + 1 ];
 //	}
 
@@ -878,7 +889,7 @@ Array.prototype.Append = function ( objOrList: any ): number {
 //	typedef int cmp_c(const void *, const void *);
 
 //	cmp_c *vCompare = (cmp_c *)compare;
-//	qsort( ( void * )list, ( size_t )num, sizeof( type ), vCompare );
+//	qsort( ( void * )list, ( size_t )this.num, sizeof( type ), vCompare );
 //}
 
 ///*
@@ -896,8 +907,8 @@ Array.prototype.Append = function ( objOrList: any ): number {
 //	if ( startIndex < 0 ) {
 //		startIndex = 0;
 //	}
-//	if ( endIndex >= num ) {
-//		endIndex = num - 1;
+//	if ( endIndex >= this.num ) {
+//		endIndex = this.num - 1;
 //	}
 //	if ( startIndex >= endIndex ) {
 //		return;
@@ -917,7 +928,7 @@ Array.prototype.Append = function ( objOrList: any ): number {
 //*/
 //template< class type >
 //ID_INLINE void idList<type>::Swap( idList<type> &other ) {
-//	idSwap( num, other.num );
+//	idSwap( this.num, other.num );
 //	idSwap( size, other.size );
 //	idSwap( granularity, other.granularity );
 //	idSwap( list, other.list );

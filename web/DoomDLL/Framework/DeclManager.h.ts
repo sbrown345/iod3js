@@ -84,7 +84,7 @@ enum declType_t {
 	DECL_MAX_TYPES			= 32
 };
 
-enum declState_t{
+enum declState_t {
 	DS_UNPARSED,
 	DS_DEFAULTED,			// set if a parse failed due to an error, or the lack of any source
 	DS_PARSED
@@ -237,10 +237,10 @@ class idDecl {
 };
 
 
-////template< class type >
-////ID_INLINE idDecl *idDeclAllocator( void ) {
-////	return new type;
-////}
+//template< class type >
+function idDeclAllocator<T> ( type: any ): ( ) => T {
+    return function ( ) { return new type; };
+}
 
 
 ////class idMaterial;
@@ -323,10 +323,10 @@ class idDeclManager {
 ////extern idDeclManager *		declManager;
 
 
-////template< declType_t type >
-////ID_INLINE void idListDecls_f( const idCmdArgs &args ) {
-////	declManager.ListType( args, type );
-////}
+//template< declType_t type >
+//ID_INLINE void idListDecls_f( const idCmdArgs &args ) {
+//	declManager.ListType( args, type );
+//}
 
 ////template< declType_t type >
 ////ID_INLINE void idPrintDecls_f( const idCmdArgs &args ) {
