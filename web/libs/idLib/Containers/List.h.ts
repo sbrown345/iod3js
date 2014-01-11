@@ -302,14 +302,14 @@ Array.prototype.Num = function( ):number {
 //================
 //*/
 //template< class type >
-Array.prototype.SetNum = function(/* int */newnum:number, /*bool */resize:boolean = true):void {
+Array.prototype.SetNum = function ( /* int */newnum: number, /*bool */resize: boolean = true ): void {
 //	assert( newnum >= 0 );
 //	if ( resize || newnum > size ) {
 //		Resize( newnum );
 //	}
 //	num = newnum;
     this.length = newnum;
-}
+};
 
 /*
 ================
@@ -319,7 +319,8 @@ Sets the base size of the array and resizes the array to match.
 ================
 */
 //template< class type >
-/*//ID_INLINE void idList<type>::*/Array.prototype.SetGranularity( /*int*/ newgranularity:number ):void {
+/*//ID_INLINE void idList<type>::*/
+Array.prototype.SetGranularity = function ( /*int*/ newgranularity: number ): void {
 //	int newsize;
 
 //	assert( newgranularity > 0 );
@@ -333,7 +334,7 @@ Sets the base size of the array and resizes the array to match.
 //			Resize( newsize );
 //		}
 //	}
-}
+};
 
 ///*
 //================

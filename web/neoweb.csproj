@@ -104,6 +104,7 @@
     <Content Include="DoomDLL\Renderer\tr_local.h.ts" />
     <Content Include="DoomDLL\Sys\win_glimp.cpp.ts" />
     <Content Include="DoomDLL\Sys\win_main.cpp.ts" />
+    <Content Include="DoomDLL\Sys\win_main.cpp.ts" />
     <Content Include="index.htm" />
     <Content Include="libs\c.ts" />
     <Content Include="libs\idLib\Containers\HashIndex.h.ts" />

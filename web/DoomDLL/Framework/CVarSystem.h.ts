@@ -1,3 +1,4 @@
+/// <reference path="CmdSystem.h.ts" />
 /// <reference path="CVarSystem.cpp.ts" />
 /////*
 ////===========================================================================
@@ -122,20 +123,28 @@ class idCVar {
     constructor ( name: string, value: string, flags: number, description: string )
     constructor ( name: string, value: string, flags: number, description: string, valueMin: number, valueMax: number)
     constructor ( name: string, value: string, flags: number, description: string,
-        valueMin: number, valueMax: number, valueCompletion: ( args: idCmdArgs, callback: ( s: string ) => void ) => void /*:argCompletion_t*/ )
+        valueMin: number, valueMax: number, valueCompletion:/*:argCompletion_t*/ ( args: idCmdArgs, callback: ( s: string ) => void ) => void  )
     constructor ( name: string, value: string, flags: number, description: string,
-        valueStrings: string[], valueCompletion: ( args: idCmdArgs, callback: ( s: string ) => void ) => void /*:argCompletion_t*/ )
+        valueStrings: string[], valueCompletion:/*:argCompletion_t*/ ( args: idCmdArgs, callback: ( s: string ) => void ) => void  )
     constructor ( name?: string, value?: string, /*int */flags?: number, description?: string,
-        valueStringsOrValueMin?: any, valueMaxOrValueCompletion?: any, /*argCompletion_t*/ valueCompletion: ( /*argCompletion_t*/args: idCmdArgs, callback: ( s: string ) => void ) => void = null ) {
+        valueStringsOrValueMinOrValueCompletion?: any, valueMaxOrValueCompletion?: any, valueCompletion:/*argCompletion_t*/ ( args: idCmdArgs, callback: ( s: string ) => void ) => void = null ) {
+
+        // todo wtf: tidy this up
 
         if ( arguments.length == 0 ) {
             return; // empty ctor call e.g. super ( ); from idInternalCVar
         }
+        else if ( arguments.length == 4 || arguments.length == 5 ) {
+            if ( !valueCompletion && ( flags & CVAR_BOOL ) ) {
+		        this.valueCompletion = /*idCmdSystem::*/ArgCompletion_Boolean;
+	        }
+	        this.Init( name, value, flags, description, 1, -1, null, valueStringsOrValueMinOrValueCompletion );
+        }
 
-        if ( typeof valueStringsOrValueMin === "number" ) {
-            this.Init( name, value, flags, description, valueStringsOrValueMin, valueMaxOrValueCompletion, null, valueCompletion );
+        if ( typeof valueStringsOrValueMinOrValueCompletion === "number" ) {
+            this.Init( name, value, flags, description, valueStringsOrValueMinOrValueCompletion, valueMaxOrValueCompletion, null, valueCompletion );
         } else {
-            this.Init( name, value, flags, description, 1, -1, valueStringsOrValueMin, valueCompletion );
+            this.Init( name, value, flags, description, 1, -1, valueStringsOrValueMinOrValueCompletion, valueMaxOrValueCompletion );
         }
     }
 
@@ -190,7 +199,7 @@ class idCVar {
 ////	virtual void			InternalSetInteger( const int newValue ) {}
 ////	virtual void			InternalSetFloat( const float newValue ) {}
 
-////	static idCVar *			staticVars;
+    static staticVars:idCVar = new idCVar();
 //};
 
 ////ID_INLINE idCVar::idCVar( const char *name, const char *value, int flags, const char *description,
@@ -247,14 +256,14 @@ Init( /*const char **/name:string, /*const char **/value:string, /*int */flags:n
 	}
 }
 
-////ID_INLINE void idCVar::RegisterStaticVars( void ) {
-////	if ( staticVars != (idCVar *)0xFFFFFFFF ) {
-////		for ( idCVar *cvar = staticVars; cvar; cvar = cvar.next ) {
-////			cvarSystem.Register( cvar );
-////		}
-////		staticVars = (idCVar *)0xFFFFFFFF;
-////	}
-////}
+static RegisterStaticVars( ):void {
+	if ( staticVars /*!= (idCVar *)0xFFFFFFFF*/ ) {
+		for ( var cvar = staticVars; cvar; cvar = cvar.next ) {
+			cvarSystem.Register( cvar );
+		}
+	    staticVars = null;/*(idCVar *)0xFFFFFFFF;*/
+	}
+}
 
 ////#endif /* !__CVARSYSTEM_H__ */
 }

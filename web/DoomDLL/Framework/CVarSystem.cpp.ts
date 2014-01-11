@@ -42,7 +42,7 @@
 ////#include "../idlib/precompiled.h"
 ////#pragma hdrstop
 
-var staticVars:idCVar = null;
+var staticVars:idCVar = idCVar.staticVars;
 
 /////*
 ////===============================================================================

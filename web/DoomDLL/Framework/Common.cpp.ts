@@ -2791,7 +2791,7 @@ idCommonLocal::Init
 ////		StartupVariable( "win_outputDebugString", false );
 
 		// register all static CVars
-        todo("idCVar::RegisterStaticVars();");
+        idCVar.RegisterStaticVars(); // don'try need to do because this is for registering vars in different DLLs?
 
 ////		// print engine version
 ////		Printf( "%s\n", version.string );

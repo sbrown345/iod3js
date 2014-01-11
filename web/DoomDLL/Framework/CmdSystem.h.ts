@@ -131,10 +131,11 @@ var CMD_FL_ALL				= -1,
 //extern idCmdSystem *	cmdSystem;
 
 
-//ID_INLINE void idCmdSystem::ArgCompletion_Boolean( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
+/*ID_INLINE void idCmdSystem::*/function ArgCompletion_Boolean( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
+		todoThrow ( );
 //	callback( va( "%s 0", args.Argv( 0 ) ) );
 //	callback( va( "%s 1", args.Argv( 0 ) ) );
-//}
+}
 
 //template<int min,int max> ID_STATIC_TEMPLATE ID_INLINE void idCmdSystem::ArgCompletion_Integer( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
 //	for ( int i = min; i <= max; i++ ) {
@@ -146,7 +147,7 @@ var CMD_FL_ALL				= -1,
 //:(args:idCmdArgs, callback?: (s: string)=>void)=>void
 function ArgCompletion_String_Template (strings: string[] ):( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void )=>void{
 	return function (args:idCmdArgs, callback: (s: string) => void ): void {
-		todoThrow ( );
+		todoThrow ( "ArgCompletion_String_Template return func todo" );
 		ArgCompletion_String( strings, args, callback );
 	};
 
