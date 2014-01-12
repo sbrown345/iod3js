@@ -1629,9 +1629,9 @@ ListFiles( relativePath:string, extension:string, sort:boolean, fullRelativePath
 	var fileList = new idFileList;
 	fileList.basePath = relativePath;
 
-	GetExtensionList( extension, extensionList );
+	this.GetExtensionList( extension, extensionList );
 
-	GetFileList( relativePath, extensionList, fileList.list, hashIndex, fullRelativePath, gamedir );
+	this.GetFileList( relativePath, extensionList, fileList.list, hashIndex, fullRelativePath, gamedir );
 
 	if ( sort ) {
 		idStrListSortPaths( fileList.list );

@@ -58,7 +58,7 @@ class idLangDict {
 ////	void					SetBaseID(int id) { baseID = id; };
 
 ////private:
-/*idList<idLangKeyValue>	*/args:idLangKeyValue[];
+        args:idList<idLangKeyValue>;
         hash:idHashIndex;
 
 ////	bool					ExcludeString( const char *str ) const;

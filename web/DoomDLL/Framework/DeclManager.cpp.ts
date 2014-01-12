@@ -938,7 +938,7 @@ idDeclManagerLocal.prototype.Init = function( ):void {
 ////	}
 
 ////	// free decl files
-////	loadedFiles.DeleteContents( true );
+////	this.loadedFiles.DeleteContents( true );
 
 ////	// free the decl types and folders
 ////	this.declTypes.DeleteContents( true );
@@ -955,8 +955,8 @@ idDeclManagerLocal.prototype.Init = function( ):void {
 ////===================
 ////*/
 ////void idDeclManagerLocal::Reload( bool force ) {
-////	for ( int i = 0; i < loadedFiles.Num(); i++ ) {
-////		loadedFiles[i].Reload( force );
+////	for ( int i = 0; i < this.loadedFiles.Num(); i++ ) {
+////		this.loadedFiles[i].Reload( force );
 ////	}
 ////}
 
@@ -1048,19 +1048,19 @@ idDeclManagerLocal.prototype.RegisterDeclFolder = function( folder:string, exten
 
 	// load and parse decl files
 	for ( i = 0; i < fileList.GetNumFiles(); i++ ) {
-		fileName = declFolder.folder + "/" + fileList.GetFile( i );
+		fileName = new idStr( declFolder.folder + "/" + fileList.GetFile( i ) );
 
 		// check whether this file has already been loaded
-		for ( j = 0; j < loadedFiles.Num(); j++ ) {
-			if ( fileName.Icmp( loadedFiles[j].fileName ) == 0 ) {
+		for ( j = 0; j < this.loadedFiles.Num(); j++ ) {
+			if ( fileName.Icmp( this.loadedFiles[j].fileName ) == 0 ) {
 				break;
 			}
 		}
-		if ( j < loadedFiles.Num() ) {
-			df = loadedFiles[j];
+		if ( j < this.loadedFiles.Num() ) {
+			df = this.loadedFiles[j];
 		} else {
 			df = new idDeclFile( fileName, defaultType );
-			loadedFiles.Append( df );
+			this.loadedFiles.Append( df );
 		}
 		df.LoadAndParse();
 	}
@@ -1208,11 +1208,11 @@ idDeclManagerLocal.prototype.FindType = function ( type: declType_t, name: strin
 ////===============
 ////*/
 ////void idDeclManagerLocal::ReloadFile( const char* filename, bool force ) {
-////	for ( int i = 0; i < loadedFiles.Num(); i++ ) {
-////		if(!loadedFiles[i].fileName.Icmp(filename)) {
-////			checksum ^= loadedFiles[i].checksum;
-////			loadedFiles[i].Reload( force );
-////			checksum ^= loadedFiles[i].checksum;
+////	for ( int i = 0; i < this.loadedFiles.Num(); i++ ) {
+////		if(!this.loadedFiles[i].fileName.Icmp(filename)) {
+////			checksum ^= this.loadedFiles[i].checksum;
+////			this.loadedFiles[i].Reload( force );
+////			checksum ^= this.loadedFiles[i].checksum;
 ////		}
 ////	}
 ////}
@@ -1415,16 +1415,16 @@ idDeclManagerLocal.prototype.FindType = function ( type: declType_t, name: strin
 ////	idDeclFile *sourceFile;
 
 ////	// find existing source file or create a new one
-////	for ( i = 0; i < loadedFiles.Num(); i++ ) {
-////		if ( loadedFiles[i].fileName.Icmp( fileName ) == 0 ) {
+////	for ( i = 0; i < this.loadedFiles.Num(); i++ ) {
+////		if ( this.loadedFiles[i].fileName.Icmp( fileName ) == 0 ) {
 ////			break;
 ////		}
 ////	}
-////	if ( i < loadedFiles.Num() ) {
-////		sourceFile = loadedFiles[i];
+////	if ( i < this.loadedFiles.Num() ) {
+////		sourceFile = this.loadedFiles[i];
 ////	} else {
 ////		sourceFile = new idDeclFile( fileName, type );
-////		loadedFiles.Append( sourceFile );
+////		this.loadedFiles.Append( sourceFile );
 ////	}
 
 ////	idDeclLocal *decl = new idDeclLocal;

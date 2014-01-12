@@ -1,3 +1,5 @@
+/// <reference path="List.h.ts" />
+/// <reference path="../Text/Str.h.ts" />
 /////*
 ////===========================================================================
 
@@ -38,11 +40,11 @@
 ////*/
 
 
-class idStrList  extends idList<string>{
+class idStrList  extends idList<idStr>{
     strings:Array<string>;
 
     constructor() {
-        super();
+        super(String);
         this.strings = [];
     }
 ////typedef idList<idStr> idStrList;
@@ -58,7 +60,7 @@ class idStrList  extends idList<string>{
 ////*/
 ////template<>
 ////ID_INLINE int idListSortCompare<idStrPtr>( const idStrPtr *a, const idStrPtr *b ) {
-////	return ( *a )->Icmp( **b );
+////	return ( *a ).Icmp( **b );
 ////}
 
 /////*
@@ -93,7 +95,7 @@ class idStrList  extends idList<string>{
 ////		other[ i ] = *pointerList[ i ];
 ////	}
 
-////	this->Swap( other );
+////	this.Swap( other );
 ////}
 
 /////*
@@ -156,58 +158,60 @@ class idStrList  extends idList<string>{
 ////	return s;
 ////}
 
-/////*
-////===============================================================================
+}
 
-////	idStrList path sorting
 
-////===============================================================================
-////*/
+/*
+===============================================================================
 
-/////*
-////================
-////idListSortComparePaths
+	idStrList path sorting
 
-////Compares two pointers to strings. Used to sort a list of string pointers alphabetically in idList<idStr>::Sort.
-////================
-////*/
-////template<class idStrPtr>
-////ID_INLINE int idListSortComparePaths( const idStrPtr *a, const idStrPtr *b ) {
-////	return ( *a )->IcmpPath( **b );
-////}
+===============================================================================
+*/
 
-/////*
-////================
-////idStrListSortPaths
+/*
+================
+idListSortComparePaths
 
-////Sorts the list of path strings alphabetically and makes sure folders come first.
-////================
-////*/
-////ID_INLINE void idStrListSortPaths( idStrList &list ) {
-////	int i;
+//Compares two pointers to strings. Used to sort a list of string pointers alphabetically in idList<idStr>::Sort.
+//================
+*/
+//template<class idStrPtr>
+function idListSortComparePaths( ):(a:string,b:string)=>number {
+	return function (a:string,b:string):number {return ( /*  **/a ).IcmpPath( /* ** */b );};
+}
 
-////	if ( !list.Num() ) {
-////		return;
-////	}
+/*
+================
+idStrListSortPaths
 
-////	idList<idStr>		other;
-////	idList<idStrPtr>	pointerList;
+Sorts the list of path strings alphabetically and makes sure folders come first.
+================
+*/
+function idStrListSortPaths( list:idStrList  ):void {
+	var /*int*/ i:number;
 
-////	pointerList.SetNum( list.Num() );
-////	for( i = 0; i < list.Num(); i++ ) {
-////		pointerList[ i ] = &list[ i ];
-////	}
+	if ( !list.Num() ) {
+		return;
+	}
 
-////	pointerList.Sort( idListSortComparePaths<idStrPtr> );
+	var other:idList<idStr>;
+	var	pointerList:idList<idStrPtr>;
 
-////	other.SetNum( list.Num() );
-////	other.SetGranularity( list.GetGranularity() );
-////	for( i = 0; i < other.Num(); i++ ) {
-////		other[ i ] = *pointerList[ i ];
-////	}
+	pointerList.SetNum( list.Num() );
+	for( i = 0; i < list.Num(); i++ ) {
+		pointerList[ i ] = /*&*/list[ i ];
+	}
 
-////	list.Swap( other );
-////}
+	pointerList.Sort( idListSortComparePaths(/*idStrPtr*/) );
+
+	other.SetNum( list.Num() );
+	other.SetGranularity( list.GetGranularity() );
+	for( i = 0; i < other.Num(); i++ ) {
+		other[ i ] = /* * */pointerList[ i ];
+	}
+
+	list.Swap( other );
+}
 
 ////#endif /* !__STRLIST_H__ */
-}

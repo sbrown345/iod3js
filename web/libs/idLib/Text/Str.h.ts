@@ -1,44 +1,45 @@
+/// <reference path="../Math/Math.h.ts" />
 /// <reference path="../../c.ts" />
 /// <reference path="../Lib.h.ts" />
 /// <reference path="../../../utils/types.ts" />
-/////*
-////===========================================================================
+/*
+===========================================================================
 
-////Doom 3 GPL Source Code
-////Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Doom 3 GPL Source Code
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
 
-////This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
 
-////Doom 3 Source Code is free software: you can redistribute it and/or modify
-////it under the terms of the GNU General Public License as published by
-////the Free Software Foundation, either version 3 of the License, or
-////(at your option) any later version.
+Doom 3 Source Code is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-////Doom 3 Source Code is distributed in the hope that it will be useful,
-////but WITHOUT ANY WARRANTY; without even the implied warranty of
-////MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-////GNU General Public License for more details.
+Doom 3 Source Code is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-////You should have received a copy of the GNU General Public License
-////along with Doom 3 Source Code.  If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License
+along with Doom 3 Source Code.  If not, see <http://www.gnu.org/licenses/>.
 
-////In addition, the Doom 3 Source Code is also subject to certain additional terms. You should have received a copy of these additional terms immediately following the terms and conditions of the GNU General Public License which accompanied the Doom 3 Source Code.  If not, please request a copy in writing from id Software at the address below.
+In addition, the Doom 3 Source Code is also subject to certain additional terms. You should have received a copy of these additional terms immediately following the terms and conditions of the GNU General Public License which accompanied the Doom 3 Source Code.  If not, please request a copy in writing from id Software at the address below.
 
-////If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
+If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-////===========================================================================
-////*/
+===========================================================================
+*/
 
 ////#ifndef __STR_H__
 ////#define __STR_H__
 
-/////*
-////===============================================================================
+/*
+===============================================================================
 
-////	Character string
+	Character string
 
-////===============================================================================
-////*/
+===============================================================================
+*/
 
 ////// these library functions should not be used for cross platform compatibility
 ////#define strcmp			idStr::Cmp		// use_idStr_Cmp
@@ -705,10 +706,10 @@ Cmpn( text:string, /*int*/ n:number ) :number {
 ////	return idStr::IcmpNoColor( this.data, text );
 ////}
 
-////ID_INLINE int idStr::IcmpPath( const char *text ) const {
-////	assert( text );
-////	return idStr::IcmpPath( this.data, text );
-////}
+IcmpPath( /*const char * */text:string ) :number{
+	//assert( text );
+	return idStr.IcmpPath( this.data, text );
+}
 
 ////ID_INLINE int idStr::IcmpnPath( const char *text, int n ) const {
 ////	assert( text );
@@ -2216,74 +2217,75 @@ idStr::Icmp
 ////	return 0;		// strings are equal
 ////}
 
-/////*
-////================
-////idStr::IcmpPath
-////================
-////*/
-////int idStr::IcmpPath( const char *s1, const char *s2 ) {
-////	int c1, c2, d;
+/*
+================
+idStr::IcmpPath
+================
+*/
+static IcmpPath( /*const char **/s1:string, /*const char **/s2:string ):number {
+	var/*int*/ c1:number, c2:number, d:number;
 
-////#if 0
-//////#if !defined( _WIN32 )
-////	idLib::common.Printf( "WARNING: IcmpPath used on a case-sensitive filesystem?\n" );
-////#endif
+//#if 0
+////#if !defined( _WIN32 )
+//	idLib::common.Printf( "WARNING: IcmpPath used on a case-sensitive filesystem?\n" );
+//#endif
+    var s1Idx = 0;
+    var s2Idx = 0;
+	do {
+		c1 = s1.charCodeAt(s1Idx++);
+		c2 = s2.charCodeAt(s2Idx++);
 
-////	do {
-////		c1 = *s1++;
-////		c2 = *s2++;
+		d = c1 - c2;
+		while( d ) {
+			if ( c1 <= 'Z'.charCodeAt(0) && c1 >= 'A'.charCodeAt(0) ) {
+				d += ('a'.charCodeAt(0) - 'A'.charCodeAt(0));
+				if ( !d ) {
+					break;
+				}
+			}
+			if ( c1 == '\\'.charCodeAt(0) ) {
+				d += ('/'.charCodeAt(0) - '\\'.charCodeAt(0));
+				if ( !d ) {
+					break;
+				}
+			}
+			if ( c2 <= 'Z'.charCodeAt(0) && c2 >= 'A'.charCodeAt(0) ) {
+				d -= ('a'.charCodeAt(0) - 'A'.charCodeAt(0));
+				if ( !d ) {
+					break;
+				}
+			}
+			if ( c2 == '\\'.charCodeAt(0) ) {
+				d -= ('/'.charCodeAt(0) - '\\'.charCodeAt(0));
+				if ( !d ) {
+					break;
+				}
+			}
+			// make sure folders come first
+			while( c1 ) {
+				if ( c1 == '/'.charCodeAt(0) || c1 == '\\'.charCodeAt(0) ) {
+					break;
+				}
+				c1 = s1.charCodeAt(s1Idx++);
+			}
+			while( c2 ) {
+				if ( c2 == '/'.charCodeAt(0) || c2 == '\\'.charCodeAt(0) ) {
+					break;
+				}
+				c2 = s2.charCodeAt(s2Idx++);
+			}
+			if ( c1 && !c2 ) {
+				return -1;
+			} else if ( !c1 && c2 ) {
+				return 1;
+			}
+			// same folder depth so use the regular compare
+			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
+		}
+	} while( c1 );
 
-////		d = c1 - c2;
-////		while( d ) {
-////			if ( c1 <= 'Z' && c1 >= 'A' ) {
-////				d += ('a' - 'A');
-////				if ( !d ) {
-////					break;
-////				}
-////			}
-////			if ( c1 == '\\' ) {
-////				d += ('/' - '\\');
-////				if ( !d ) {
-////					break;
-////				}
-////			}
-////			if ( c2 <= 'Z' && c2 >= 'A' ) {
-////				d -= ('a' - 'A');
-////				if ( !d ) {
-////					break;
-////				}
-////			}
-////			if ( c2 == '\\' ) {
-////				d -= ('/' - '\\');
-////				if ( !d ) {
-////					break;
-////				}
-////			}
-////			// make sure folders come first
-////			while( c1 ) {
-////				if ( c1 == '/' || c1 == '\\' ) {
-////					break;
-////				}
-////				c1 = *s1++;
-////			}
-////			while( c2 ) {
-////				if ( c2 == '/' || c2 == '\\' ) {
-////					break;
-////				}
-////				c2 = *s2++;
-////			}
-////			if ( c1 && !c2 ) {
-////				return -1;
-////			} else if ( !c1 && c2 ) {
-////				return 1;
-////			}
-////			// same folder depth so use the regular compare
-////			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
-////		}
-////	} while( c1 );
-
-////	return 0;
-////}
+	return 0;
+}
 
 /////*
 ////================

@@ -70,25 +70,25 @@ If you have questions concerning this license or the applicable additional terms
 //	return new type;
 //}
 
-///*
-//================
-//idSwap<type>
-//================
-//*/
+/*
+================
+idSwap<type>
+================
+*/
 //template< class type >
-//ID_INLINE void idSwap( type &a, type &b ) {
-//	type c = a;
-//	a = b;
-//	b = c;
-//}
+function idSwap( a:any, aProperty:string, b:any, bProperty:string ) {
+	var c = a[aProperty];
+	a[aProperty] = b[bProperty];
+	b[bProperty] = c;
+}
 
 //template< class type >
-class idList<T> {
+class idList<type> {
     //private:
 	private num:number;                 //int				
 	private size:number;                //int				
 	private granularity:number;         //int				
-	private list:Array<T>;             //type *			
+	private list:Array<type>;             //type *			
     private type:any;
 
     constructor(type) {
@@ -246,7 +246,7 @@ Num():number {
 //================
 //*/
 //template< class type >
-ASetNum ( /* int */newnum: number, /*bool */resize: boolean = true ): void {
+SetNum ( /* int */newnum: number, /*bool */resize: boolean = true ): void {
 	assert( newnum >= 0 );
 	if ( resize || newnum > this.size ) {
 		this.Resize( newnum );
@@ -320,7 +320,7 @@ Contents are copied using their = operator so that data is correnctly instantiat
 //template< class type >
 Resize (/* int */newsize:number)
 Resize (/* int */newsize:number, /*int */newgranularity?:number):void {
-	var temp:T[];
+	var temp:type[];
 	var/*int		*/i:number;
 
 	assert( newsize >= 0 );
@@ -610,7 +610,7 @@ AssureSize ( /*int */newSize: number ): void {
 
 //	return Num();
 //}
-Append( obj:T ):number {
+Append( obj:type ):number {
 	if ( !this.list ) {
 		this.Resize( this.granularity );
 	}
@@ -828,24 +828,25 @@ Append( obj:T ):number {
 //	return false;
 //}
 
-///*
-//================
-//idList<type>::Sort
+/*
+================
+idList<type>::Sort
 
-//Performs a qsort on the list using the supplied comparison function.  Note that the data is merely moved around the
-//list, so any pointers to data within the list may no longer be valid.
-//================
-//*/
+Performs a qsort on the list using the supplied comparison function.  Note that the data is merely moved around the
+list, so any pointers to data within the list may no longer be valid.
+================
+*/
 //template< class type >
-//ID_INLINE void idList<type>::Sort( cmp_t *compare ) {
-//	if ( !this.list ) {
-//		return;
-//	}
-//	typedef int cmp_c(const void *, const void *);
+Sort( compare:(a:string,b:string)=>number ):void {
+	if ( !this.list ) {
+		return;
+	}
+    todoThrow();
+	//typedef int cmp_c(const void *, const void *);
 
-//	cmp_c *vCompare = (cmp_c *)compare;
-//	qsort( ( void * )this.list, ( size_t )this.num, sizeof( type ), vCompare );
-//}
+	//cmp_c *vCompare = (cmp_c *)compare;
+	//qsort( ( void * )this.list, ( size_t )this.num, sizeof( type ), vCompare );
+}
 
 ///*
 //================
@@ -874,20 +875,20 @@ Append( obj:T ):number {
 //	qsort( ( void * )( &this.list[startIndex] ), ( size_t )( endIndex - startIndex + 1 ), sizeof( type ), vCompare );
 //}
 
-///*
-//================
-//idList<type>::Swap
+/*
+================
+idList<type>::Swap
 
-//Swaps the contents of two lists
-//================
-//*/
+Swaps the contents of two lists
+================
+*/
 //template< class type >
-//ID_INLINE void idList<type>::Swap( idList<type> &other ) {
-//	idSwap( this.num, other.num );
-//	idSwap( this.size, other.size );
-//	idSwap( this.granularity, other.granularity );
-//	idSwap( this.list, other.list );
-//}
+Swap( other:idList<type> ):void {
+	idSwap( this, "num", other, "num" );
+	idSwap( this, "size", other, "size" );
+	idSwap( this, "granularity", other, "granularity" );
+	idSwap( this, "list", other, "list" );
+}
 
 //#endif /* !__LIST_H__ */
 }
