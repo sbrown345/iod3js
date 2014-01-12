@@ -939,11 +939,9 @@ Length( ):number {
 ////	return idStr::CheckExtension( this.data, ext );
 ////}
 
-////ID_INLINE int idStr::Length( const char *s ) {
-////	int i;
-////	for ( i = 0; s[i]; i++ ) {}
-////	return i;
-////}
+static Length( s:string ):number {
+    return s.length;
+}
 
 ////ID_INLINE char *idStr::ToLower( char *s ) {
 ////	for ( int i = 0; s[i]; i++ ) {

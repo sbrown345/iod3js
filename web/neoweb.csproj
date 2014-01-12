@@ -76,6 +76,11 @@
     <Content Include="DoomDLL\Framework\DeclPDA.h.ts" />
     <Content Include="DoomDLL\Framework\DeclSkin.cpp.ts" />
     <Content Include="DoomDLL\Framework\DeclTable.cpp.ts" />
+    <Content Include="DoomDLL\Framework\File.cpp.ts" />
+    <Content Include="DoomDLL\Framework\File.h.ts" />
+    <Content Include="DoomDLL\Framework\files.ts" />
+    <Content Include="DoomDLL\Framework\FileSystem.cpp.ts" />
+    <Content Include="DoomDLL\Framework\FileSystem.h.ts" />
     <Content Include="DoomDLL\Renderer\GuiModel.cpp.ts" />
     <Content Include="DoomDLL\Renderer\GuiModel.h.ts" />
     <Content Include="DoomDLL\Renderer\Image.h.ts" />

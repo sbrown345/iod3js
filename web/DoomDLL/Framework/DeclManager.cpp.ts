@@ -1,3 +1,5 @@
+/// <reference path="FileSystem.h.ts" />
+/// <reference path="FileSystem.cpp.ts" />
 /// <reference path="DeclParticle.cpp.ts" />
 /// <reference path="DeclFX.cpp.ts" />
 /// <reference path="DeclTable.cpp.ts" />
@@ -222,7 +224,7 @@ class idDeclManagerLocal extends idDeclManager {
 ///*virtual void				*/BeginLevelLoad():void{throw "placeholder";}
 ///*virtual void				*/EndLevelLoad():void{throw "placeholder";}
     RegisterDeclType( typeName:string, type:declType_t , allocator: ()=> idDecl ):void{throw "placeholder";}
-/////*virtual void			*/RegisterDeclFolder( const char *folder, const char *extension, declType_t defaultType ):void{throw "placeholder";}
+    RegisterDeclFolder( folder:string, extension:string, defaultType:declType_t ):void{throw "placeholder";}
 ///*virtual int				*/	GetChecksum( ) :number{throw "placeholder";}
 ///*virtual int				*/	GetNumDeclTypes( ) :number{throw "placeholder";}
 ///*virtual int				*/	GetNumDecls( type:declType_t ):number{throw "placeholder";}
@@ -261,12 +263,12 @@ class idDeclManagerLocal extends idDeclManager {
 //	const idDeclFile *			GetImplicitDeclFile( ) const { return &implicitDecls; }
 
 //private:
-/*	idList<idDeclType *>		*/  declTypes:idDeclType[];
-	/*idList<idDeclFolder *>		*/declFolders:idDeclFolder[];
+/*	idList<idDeclType *>		*/  declTypes:Array<idDeclType>;
+	/*idList<idDeclFolder *>		*/declFolders:Array<idDeclFolder>;
 
-//	idList<idDeclFile *>		loadedFiles;
+/*	idList<idDeclFile *>		*/loadedFiles:Array<idDeclFile>;
 //	idHashIndex					hashTables[declType_t.DECL_MAX_TYPES];
-/*	idList<idDeclLocal *>		*/linearLists:idDeclLocal[]/*[declType_t.DECL_MAX_TYPES]*/;
+/*	idList<idDeclLocal *>		*/linearLists:Array<idDeclLocal>/*[declType_t.DECL_MAX_TYPES]*/;
                                 implicitDecls:idDeclFile;	// this holds all the decls that were created because explicit
 												// text definitions were not found. Decls that became default
 												// because of a parse error are not in this list.
@@ -275,6 +277,11 @@ class idDeclManagerLocal extends idDeclManager {
 /*	bool						*/insideLevelLoad:boolean;
 
     static decl_show:idCVar;
+
+    constructor() {
+        super();
+        this.declTypes = [];
+    }
 
 //private:
     ListDecls_f( args:idCmdArgs  ):void { throw "placeholder"; }
@@ -935,7 +942,7 @@ idDeclManagerLocal.prototype.Init = function( ):void {
 
 ////	// free the decl types and folders
 ////	this.declTypes.DeleteContents( true );
-////	declFolders.DeleteContents( true );
+////	this.declFolders.DeleteContents( true );
 
 ////#ifdef USE_COMPRESSED_DECLS
 ////	ShutdownHuffman();
@@ -1008,58 +1015,58 @@ idDeclManagerLocal.prototype.RegisterDeclType = function ( typeName: string, typ
     this.declTypes[type] = declType;
 };
 
-/////*
-////===================
-////idDeclManagerLocal::RegisterDeclFolder
-////===================
-////*/
-////void idDeclManagerLocal::RegisterDeclFolder( const char *folder, const char *extension, declType_t defaultType ) {
-////	int i, j;
-////	idStr fileName;
-////	idDeclFolder *declFolder;
-////	idFileList *fileList;
-////	idDeclFile *df;
+/*
+===================
+idDeclManagerLocal::RegisterDeclFolder
+===================
+*/
+idDeclManagerLocal.prototype.RegisterDeclFolder = function( folder:string, extension:string, defaultType:declType_t ) {
+	var/*int*/ i:number, j:number;
+	var fileName:idStr;
+	var declFolder:idDeclFolder;
+    var	fileList:idFileList;
+	var df = new idDeclFile;
 
-////	// check whether this folder / extension combination already exists
-////	for ( i = 0; i < declFolders.Num(); i++ ) {
-////		if ( declFolders[i].folder.Icmp( folder ) == 0 && declFolders[i].extension.Icmp( extension ) == 0 ) {
-////			break;
-////		}
-////	}
-////	if ( i < declFolders.Num() ) {
-////		declFolder = declFolders[i];
-////	} else {
-////		declFolder = new idDeclFolder;
-////		declFolder.folder = folder;
-////		declFolder.extension = extension;
-////		declFolder.defaultType = defaultType;
-////		declFolders.Append( declFolder );
-////	}
+	// check whether this folder / extension combination already exists
+	for ( i = 0; i < this.declFolders.Num(); i++ ) {
+		if ( this.declFolders[i].folder.Icmp( folder ) == 0 && this.declFolders[i].extension.Icmp( extension ) == 0 ) {
+			break;
+		}
+	}
+	if ( i < this.declFolders.Num() ) {
+		declFolder = this.declFolders[i];
+	} else {
+		declFolder = new idDeclFolder;
+		declFolder.folder = new idStr(folder);
+		declFolder.extension = new idStr(extension);
+		declFolder.defaultType = defaultType;
+		this.declFolders.Append( declFolder );
+	}
 
-////	// scan for decl files
-////	fileList = fileSystem.ListFiles( declFolder.folder, declFolder.extension, true );
+	// scan for decl files
+	fileList = fileSystem.ListFiles( declFolder.folder, declFolder.extension, true );
 
-////	// load and parse decl files
-////	for ( i = 0; i < fileList.GetNumFiles(); i++ ) {
-////		fileName = declFolder.folder + "/" + fileList.GetFile( i );
+	// load and parse decl files
+	for ( i = 0; i < fileList.GetNumFiles(); i++ ) {
+		fileName = declFolder.folder + "/" + fileList.GetFile( i );
 
-////		// check whether this file has already been loaded
-////		for ( j = 0; j < loadedFiles.Num(); j++ ) {
-////			if ( fileName.Icmp( loadedFiles[j].fileName ) == 0 ) {
-////				break;
-////			}
-////		}
-////		if ( j < loadedFiles.Num() ) {
-////			df = loadedFiles[j];
-////		} else {
-////			df = new idDeclFile( fileName, defaultType );
-////			loadedFiles.Append( df );
-////		}
-////		df.LoadAndParse();
-////	}
+		// check whether this file has already been loaded
+		for ( j = 0; j < loadedFiles.Num(); j++ ) {
+			if ( fileName.Icmp( loadedFiles[j].fileName ) == 0 ) {
+				break;
+			}
+		}
+		if ( j < loadedFiles.Num() ) {
+			df = loadedFiles[j];
+		} else {
+			df = new idDeclFile( fileName, defaultType );
+			loadedFiles.Append( df );
+		}
+		df.LoadAndParse();
+	}
 
-////	fileSystem.FreeFileList( fileList );
-////}
+	fileSystem.FreeFileList( fileList );
+}
 
 /////*
 ////===================

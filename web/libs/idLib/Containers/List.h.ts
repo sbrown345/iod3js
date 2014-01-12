@@ -314,10 +314,10 @@ Array.prototype.Num = function( ):number {
 //*/
 //template< class type >
 Array.prototype.SetNum = function ( /* int */newnum: number, /*bool */resize: boolean = true ): void {
-//	assert( newnum >= 0 );
-//	if ( resize || newnum > size ) {
-//		Resize( newnum );
-//	}
+	assert( newnum >= 0 );
+	if ( resize || newnum > this.size ) {
+		this.Resize( newnum );
+	}
     this.num = newnum;
 };
 
