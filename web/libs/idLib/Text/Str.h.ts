@@ -120,8 +120,15 @@ class idStr {
 
 	constructor ( str: string ) ;
 	constructor ( str: number ) ;
-	constructor ( str: any ) {
-		this.data = str + ""; //.toUint8Array ( );
+	constructor ( str: string, start:number, end:number ) ;
+	constructor ( str: any, start?:number, end?:number ) {
+        this.Init();
+
+        if(arguments.length === 1) {
+		    this.data = str + ""; //.toUint8Array ( );
+        } else if(arguments.length === 3) {
+            this.data = (str + "").substring(start, end);
+        }
 	}
 
 ////public:
@@ -322,7 +329,7 @@ class idStr {
 ////	static idStr		FormatNumber( int number );
 
 //protected:
-////	int					len;
+    	/*int	*/				len:number;
 /*		char *				*/
 	data: string;
 
@@ -342,15 +349,16 @@ class idStr {
 ////	}
 ////}
 
-////ID_INLINE void idStr::Init( void ) {
-////	len = 0;
-////	alloced = STR_ALLOC_BASE;
-////	this.data = baseBuffer;
-////	this.data[ 0 ] = '\0';
-////#ifdef ID_DEBUG_UNINITIALIZED_MEMORY
-////	memset( baseBuffer, 0, sizeof( baseBuffer ) );
-////#endif
-////}
+    Init( ):void {
+	    this.len = 0;
+	    //alloced = STR_ALLOC_BASE;
+	    //this.data = baseBuffer;
+	    //this.data[ 0 ] = '\0';
+        this.data = "";
+    //#ifdef ID_DEBUG_UNINITIALIZED_MEMORY
+    //	memset( baseBuffer, 0, sizeof( baseBuffer ) );
+    //#endif
+    }
 
 ////ID_INLINE idStr::idStr( void ) {
 ////	Init();
@@ -1595,7 +1603,7 @@ idStr::Replace
 */
 	Replace ( old: string, nw: string ): void {
 
-// https://stackoverflow.com/questions/1144783/replacing-all-occurrences-of-a-string-in-javascript
+    // https://stackoverflow.com/questions/1144783/replacing-all-occurrences-of-a-string-in-javascript
 		function escapeRegExp ( str: string ): string {
 			return str.replace( /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&" );
 		}

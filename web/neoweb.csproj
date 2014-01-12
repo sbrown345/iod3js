@@ -124,6 +124,7 @@
     <Content Include="libs\c.ts" />
     <Content Include="libs\idLib\Containers\HashIndex.h.ts" />
     <Content Include="libs\idLib\Containers\List.h.ts" />
+    <Content Include="libs\idLib\Containers\StrList.h.ts" />
     <Content Include="libs\idLib\Geometry\DrawVert.h.ts" />
     <Content Include="libs\idLib\Heap.cpp.ts" />
     <Content Include="libs\idLib\Heap.h.ts" />

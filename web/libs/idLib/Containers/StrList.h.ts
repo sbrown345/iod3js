@@ -38,10 +38,11 @@
 ////*/
 
 
-class idStrList {
+class idStrList  extends idList<string>{
     strings:Array<string>;
 
     constructor() {
+        super();
         this.strings = [];
     }
 ////typedef idList<idStr> idStrList;
