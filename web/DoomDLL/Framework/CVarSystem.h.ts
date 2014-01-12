@@ -139,9 +139,7 @@ class idCVar {
 		        this.valueCompletion = /*idCmdSystem::*/ArgCompletion_Boolean;
 	        }
 	        this.Init( name, value, flags, description, 1, -1, null, valueStringsOrValueMinOrValueCompletion );
-        }
-
-        if ( typeof valueStringsOrValueMinOrValueCompletion === "number" ) {
+        } else if ( typeof valueStringsOrValueMinOrValueCompletion === "number" ) {
             this.Init( name, value, flags, description, valueStringsOrValueMinOrValueCompletion, valueMaxOrValueCompletion, null, valueCompletion );
         } else {
             this.Init( name, value, flags, description, 1, -1, valueStringsOrValueMinOrValueCompletion, valueMaxOrValueCompletion );
@@ -248,20 +246,20 @@ Init( /*const char **/name:string, /*const char **/value:string, /*int */flags:n
 	this.integerValue = 0;
 	this.floatValue = 0.0;
 	this.internalVar = this;
-	if ( staticVars /*!= (idCVar *)0xFFFFFFFF*/ ) {
-		this.next = staticVars;
-		staticVars = this;
+	if ( idCVar.staticVars /*!= (idCVar *)0xFFFFFFFF*/ ) {
+		this.next = idCVar.staticVars;
+		idCVar.staticVars = this;
 	} else {
 		cvarSystem.Register( this );
 	}
 }
 
 static RegisterStaticVars( ):void {
-	if ( staticVars /*!= (idCVar *)0xFFFFFFFF*/ ) {
-		for ( var cvar = staticVars; cvar; cvar = cvar.next ) {
+	if ( idCVar.staticVars /*!= (idCVar *)0xFFFFFFFF*/ ) {
+		for ( var cvar = idCVar.staticVars; cvar; cvar = cvar.next ) {
 			cvarSystem.Register( cvar );
 		}
-	    staticVars = null;/*(idCVar *)0xFFFFFFFF;*/
+	    idCVar.staticVars = null;/*(idCVar *)0xFFFFFFFF;*/
 	}
 }
 

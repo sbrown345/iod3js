@@ -121,7 +121,7 @@ class idStr {
 	constructor ( str: string ) ;
 	constructor ( str: number ) ;
 	constructor ( str: any ) {
-		this.data = str.toString(); //.toUint8Array ( );
+		this.data = str + ""; //.toUint8Array ( );
 	}
 
 ////public:
@@ -663,12 +663,10 @@ class idStr {
 	Cmp ( text: string ): number;
 	Cmp ( text: idStr ): number;
 	Cmp ( text: any ): number {
-		assert( text );
 		return idStr.Cmp( this, text );
 	}
 
 Cmpn( text:string, /*int*/ n:number ) :number {
-	assert( text );
 	return idStr.Cmpn( this.data, text, n );
 }
 

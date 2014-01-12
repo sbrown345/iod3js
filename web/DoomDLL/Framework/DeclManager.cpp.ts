@@ -85,7 +85,7 @@
 class idDeclType {
 //public:
 	/*idStr						*/typeName:idStr;
-	/*declType_t				*/	type:declType_t;
+	/*declType_t				*/type:declType_t;
 	/*idDecl *					*/allocator:()=>idDecl//(*allocator)( void );
 };
 
@@ -830,7 +830,7 @@ idDeclManagerLocal::Init
 idDeclManagerLocal.prototype.Init = function( ):void {
 
 	common.Printf( "----- Initializing Decls -----\n" );
-
+    debugger;
 	this.checksum = 0;
 
 //#ifdef USE_COMPRESSED_DECLS
