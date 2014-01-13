@@ -324,8 +324,10 @@ Resize (/* int */newsize:number, /*int */newgranularity?:number):void {
 
 	assert( newsize >= 0 );
 
-	assert( newgranularity > 0 );
-	this.granularity = newgranularity;
+    if( arguments.length === 2 ) {
+	    assert( newgranularity > 0 );
+	    this.granularity = newgranularity;
+    }
 
 	// free up the list if no data is being reserved
 	if ( newsize <= 0 ) {
