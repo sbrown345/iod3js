@@ -45,11 +45,9 @@
 //var idStrPtr = idStr;
 
 class idStrList  extends idList<idStr>{
-    strings:Array<string>;
 
     constructor() {
         super(String);
-        this.strings = [];
     }
 
 /////*

@@ -122,10 +122,10 @@
 class idFileList {
 ////	friend class idFileSystemLocal;
 ////public:
-////	const char *			GetBasePath( void ) const { return basePath; }
-////	int						GetNumFiles( void ) const { return list.Num(); }
-////	const char *			GetFile( int index ) const { return list[index]; }
-////	const idStrList &		GetList( void ) const { return list; }
+    GetBasePath( ):idStr { return this.basePath; }
+    GetNumFiles( ):number { return this.list.Num(); }
+    GetFile( index:number ):idStr { return this.list[index]; }
+    GetList( ):idStrList { return this.list; }
 ////
 ////private:
 	basePath:idStr;

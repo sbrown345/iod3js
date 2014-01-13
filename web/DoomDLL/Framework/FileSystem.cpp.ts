@@ -1619,7 +1619,7 @@ When 'sort' is true only the new files added to the list are sorted.
     for( var i = 0; i < fileList.length; i++ ) {
         if( fileList[i].indexOf(relativePath + "\\") === 0) {
             //list.Append(fileList[i].substr( pathLength );
-            AddUnique ( fileList[i].substr( pathLength ), list, hashIndex );
+            this.AddUnique ( fileList[i].substr( pathLength ), list, hashIndex );
         }
     }
 
@@ -1702,14 +1702,14 @@ ListFiles( relativePath:string, extension:string, sort:boolean = false, fullRela
 ////	return fileList;
 ////}
 ////
-/////*
-////===============
-////idFileSystemLocal::FreeFileList
-////===============
-////*/
-////void idFileSystemLocal::FreeFileList( idFileList *fileList ) {
-////	delete fileList;
-////}
+/*
+===============
+idFileSystemLocal::FreeFileList
+===============
+*/
+FreeFileList( fileList:idFileList ):void  {
+	delete fileList; // ??
+}
 ////
 /////*
 ////===============

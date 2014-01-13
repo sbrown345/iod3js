@@ -178,7 +178,7 @@ class idDeclLocal extends idDeclBase {
 	    this.textSource = /*NULL*/null;
 	    this.textLength = 0;
 	    this.compressedLength = 0;
-	    this.sourceFile = NULL;
+	    this.sourceFile = null;
 	    this.sourceTextOffset = 0;
 	    this.sourceTextLength = 0;
 	    this.sourceLine = 0;
@@ -197,6 +197,7 @@ class idDeclLocal extends idDeclBase {
 class idDeclFile {
     
     constructor() 
+    constructor( fileName:string, defaultType:declType_t )
     constructor( fileName?:string, defaultType?:declType_t ) {
         if( arguments.length === 2 ) {
             this.fileName = new idStr(fileName);
@@ -217,8 +218,8 @@ class idDeclFile {
         }
     }
 
-////	void						Reload( bool force );
-////	int							LoadAndParse();
+    Reload(force:boolean):void{throw "placeholder";}
+    LoadAndParse():number{throw "placeholder";}
 
 ////public:
 	/*idStr						*/fileName:idStr;
@@ -303,7 +304,7 @@ class idDeclManagerLocal extends idDeclManager {
         this.loadedFiles = new idList<idDeclFile>( idDeclFile );
         this.hashTables = newStructArray<idHashIndex>( idHashIndex, declType_t.DECL_MAX_TYPES );
         this.linearLists = new idList<idDeclLocal>( idDeclLocal );
-        this.implicitDecls = new idList<idDeclLocal>( idDeclLocal );
+        this.implicitDecls = new idDeclFile( );
         this.checksum = 0;
         this.indent = 0;
         this.insideLevelLoad = false;
@@ -633,16 +634,16 @@ var declManager = declManagerLocal;
 ////	LoadAndParse();
 ////}
 
-/////*
-////================
-////idDeclFile::LoadAndParse
+/*
+================
+idDeclFile::LoadAndParse
 
-////This is used during both the initial load, and any reloads
-////================
-////*/
-////int c_savedMemory = 0;
+This is used during both the initial load, and any reloads
+================
+*/
+var/*int */c_savedMemory = 0;
 
-////int idDeclFile::LoadAndParse() {
+/*int*/ idDeclFile.prototype.LoadAndParse = function():number {
 ////	int			i, numTypes;
 ////	idLexer		src;
 ////	idToken		token;
@@ -675,7 +676,7 @@ var declManager = declManagerLocal;
 
 ////	src.SetFlags( DECL_LEXER_FLAGS );
 
-////	checksum = MD5_BlockChecksum( buffer, length );
+////	this.checksum = MD5_BlockChecksum( buffer, length );
 
 ////	fileSize = length;
 
@@ -813,8 +814,8 @@ var declManager = declManagerLocal;
 ////		}
 ////	}
 
-////	return checksum;
-////}
+	return this.checksum;
+}
 
 /////*
 ////====================================================================================
@@ -1056,7 +1057,7 @@ idDeclManagerLocal.prototype.RegisterDeclFolder = function( folder:string, exten
 		if ( j < this.loadedFiles.Num() ) {
 			df = this.loadedFiles[j];
 		} else {
-			df = new idDeclFile( fileName, defaultType );
+			df = new idDeclFile( fileName.c_str(), defaultType );
 			this.loadedFiles.Append( df );
 		}
 		df.LoadAndParse();

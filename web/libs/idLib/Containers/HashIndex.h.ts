@@ -113,14 +113,9 @@ class idHashIndex {
 ================
 idHashIndex::idHashIndex
 ================
-*/
-    constructor ( ); 
-    constructor ( /*const int*/ initialHashSize?:number, /*const int*/ initialIndexSize?:number  ) {
-        if( arguments.length === 2 ) {
-            this.Init( initialHashSize, initialIndexSize );
-        } else {
-            this.Init( DEFAULT_HASH_SIZE, DEFAULT_HASH_SIZE );
-        }
+//*/
+    constructor ( initialHashSize:number = DEFAULT_HASH_SIZE, initialIndexSize:number = DEFAULT_HASH_SIZE ) {
+        this.Init( initialHashSize, initialIndexSize );
     }
 
 
