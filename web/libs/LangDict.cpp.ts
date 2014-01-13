@@ -79,7 +79,7 @@ idLangDict::idLangDict
 ============
 */
 constructor( ) {
-    this.args = [];
+    this.args = new idList<idLangKeyValue>(idLangKeyValue);
 	this.args.SetGranularity( 256 );
     this.hash = new idHashIndex ( );
 	this.hash.SetGranularity( 256 );

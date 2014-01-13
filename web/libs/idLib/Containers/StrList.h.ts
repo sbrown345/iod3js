@@ -40,6 +40,10 @@
 ////*/
 
 
+////typedef idList<idStr> idStrList;
+////typedef idList<idStr*> idStrPtrList;
+//var idStrPtr = idStr;
+
 class idStrList  extends idList<idStr>{
     strings:Array<string>;
 
@@ -47,9 +51,6 @@ class idStrList  extends idList<idStr>{
         super(String);
         this.strings = [];
     }
-////typedef idList<idStr> idStrList;
-////typedef idList<idStr*> idStrPtrList;
-////typedef idStr *idStrPtr;
 
 /////*
 ////================
@@ -177,8 +178,8 @@ idListSortComparePaths
 //================
 */
 //template<class idStrPtr>
-function idListSortComparePaths( ):(a:string,b:string)=>number {
-	return function (a:string,b:string):number {return ( /*  **/a ).IcmpPath( /* ** */b );};
+function idListSortComparePaths( ):(a:idStr,b:idStr)=>number {
+	return function (a:idStr,b:idStr):number {return ( /*  **/a ).IcmpPath( /* ** */b.data );};
 }
 
 /*
@@ -196,7 +197,7 @@ function idStrListSortPaths( list:idStrList  ):void {
 	}
 
 	var other:idList<idStr>;
-	var	pointerList:idList<idStrPtr>;
+	var	pointerList:idList<idStr/*Ptr*/>;
 
 	pointerList.SetNum( list.Num() );
 	for( i = 0; i < list.Num(); i++ ) {

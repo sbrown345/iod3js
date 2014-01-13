@@ -114,18 +114,15 @@ class idHashIndex {
 idHashIndex::idHashIndex
 ================
 */
-    constructor ( ) {
-        this.Init( DEFAULT_HASH_SIZE, DEFAULT_HASH_SIZE );
+    constructor ( ); 
+    constructor ( /*const int*/ initialHashSize?:number, /*const int*/ initialIndexSize?:number  ) {
+        if( arguments.length === 2 ) {
+            this.Init( initialHashSize, initialIndexSize );
+        } else {
+            this.Init( DEFAULT_HASH_SIZE, DEFAULT_HASH_SIZE );
+        }
     }
 
-/////*
-////================
-////idHashIndex::idHashIndex
-////================
-////*/
-////ID_INLINE idHashIndex::idHashIndex( const int initialHashSize, const int initialIndexSize ) {
-////	Init( initialHashSize, initialIndexSize );
-////}
 
 /////*
 ////================
@@ -392,9 +389,7 @@ idHashIndex::SetGranularity
 idHashIndex::GenerateKey
 ================
 */
-    GenerateKey ( $string: string, caseSensitive: boolean ): number;
-    GenerateKey ( $string: idStr, caseSensitive: boolean ): number;
-    GenerateKey ( $string: any, caseSensitive: boolean ): number {
+    GenerateKey ( $string: any, caseSensitive: boolean = true): number {
         $string = idStr.getIdStr( $string );
         if ( caseSensitive ) {
             return ( idStr.Hash( $string ) & this.hashMask );

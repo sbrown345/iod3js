@@ -91,7 +91,7 @@ class idList<type> {
 	private list:Array<type>;             //type *			
     private type:any;
 
-    constructor(type) {
+    constructor(type:any) {
         this.type = type;
         this.num = 0;
         this.size = 0;
@@ -279,17 +279,16 @@ SetGranularity ( /*int*/ newgranularity: number ): void {
 	}
 }
 
-///*
-//================
-//idList<type>::GetGranularity
+/*
+================
+idList<type>::GetGranularity
 
-//Get the current granularity.
-//================
-//*/
-//template< class type >
-//ID_INLINE int idList<type>::GetGranularity( void ) const {
-//	return this.granularity;
-//}
+Get the current granularity.
+================
+*/
+GetGranularity( ) :number {
+	return this.granularity;
+}
 
 ///*
 //================
@@ -318,7 +317,7 @@ Contents are copied using their = operator so that data is correnctly instantiat
 ================
 */
 //template< class type >
-Resize (/* int */newsize:number)
+Resize (/* int */newsize:number):void
 Resize (/* int */newsize:number, /*int */newgranularity?:number):void {
 	var temp:type[];
 	var/*int		*/i:number;
@@ -837,7 +836,11 @@ list, so any pointers to data within the list may no longer be valid.
 ================
 */
 //template< class type >
-Sort( compare:(a:string,b:string)=>number ):void {
+    /*Sort( compare:(a:idStr,b:idStr)=>number ):void
+Sort( compare:(a:string,b:string)=>number ):void
+Sort( compare:(a:any,b:any)=>number ):void {*/
+
+Sort( compare:(a:idStr,b:idStr)=>number ):void {
 	if ( !this.list ) {
 		return;
 	}

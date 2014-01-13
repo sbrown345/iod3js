@@ -128,8 +128,8 @@ class idFileList {
 ////	const idStrList &		GetList( void ) const { return list; }
 ////
 ////private:
-////	idStr					basePath;
-////	idStrList				list;
+	basePath:idStr;
+	list:idStrList;
 };
 ////
 ////// mod list

@@ -444,7 +444,7 @@ class idCVarSystem {
 
 ////private:
                                 initialized:boolean;
-/*idList<idInternalCVar*>	*/  cvars:Array<idInternalCVar>;
+/*idList<idInternalCVar*>	*/  cvars:idList<idInternalCVar>;
 /*	idHashIndex				*/  cvarHash:idHashIndex;
         						modifiedFlags:number;
 ////							// use a static dictionary to MoveCVarsToDict can be used from game
@@ -473,7 +473,7 @@ class idCVarSystem {
 
 	constructor ( ) {
 		this.initialized = false;
-		this.cvars = new Array<idInternalCVar> ( ); /*or idList*/
+		this.cvars = new idList<idInternalCVar> ( idInternalCVar );
 		this.cvarHash = new idHashIndex ( );
 		this.modifiedFlags = 0;
 	}

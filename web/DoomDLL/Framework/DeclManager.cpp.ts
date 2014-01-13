@@ -195,23 +195,41 @@ class idDeclLocal extends idDeclBase {
 };
 
 class idDeclFile {
-////public:
-////								idDeclFile();
-////								idDeclFile( const char *fileName, declType_t defaultType );
+    
+    constructor() 
+    constructor( fileName?:string, defaultType?:declType_t ) {
+        if( arguments.length === 2 ) {
+            this.fileName = new idStr(fileName);
+            this.defaultType = defaultType;
+            this.timestamp = 0;
+            this.checksum = 0;
+            this.fileSize = 0;
+            this.numLines = 0;
+            this.decls = /*NULL*/null;
+        } else {
+            this.fileName = new idStr("<implicit file>");
+            this.defaultType = declType_t.DECL_MAX_TYPES;
+            this.timestamp = 0;
+            this.checksum = 0;
+            this.fileSize = 0;
+            this.numLines = 0;
+            this.decls = /*NULL*/null;
+        }
+    }
 
 ////	void						Reload( bool force );
 ////	int							LoadAndParse();
 
 ////public:
-////	idStr						fileName;
-////	declType_t					defaultType;
-
-////	ID_TIME_T						timestamp;
-////	int							checksum;
-////	int							fileSize;
-////	int							numLines;
-
-////	idDeclLocal *				decls;
+	/*idStr						*/fileName:idStr;
+	/*declType_t				*/defaultType:declType_t;
+    
+	/*ID_TIME_T					*/timestamp:number;
+	/*int						*/checksum:number;
+	/*int						*/fileSize:number;
+	/*int						*/numLines:number;
+    
+	/*idDeclLocal *				*/decls:idDeclLocal;
 };
 
 class idDeclManagerLocal extends idDeclManager {
@@ -263,12 +281,12 @@ class idDeclManagerLocal extends idDeclManager {
 //	const idDeclFile *			GetImplicitDeclFile( ) const { return &implicitDecls; }
 
 //private:
-/*	idList<idDeclType *>		*/  declTypes:Array<idDeclType>;
-	/*idList<idDeclFolder *>		*/declFolders:Array<idDeclFolder>;
+/*	idList<idDeclType *>		*/  declTypes:idList<idDeclType>;
+	/*idList<idDeclFolder *>		*/declFolders:idList<idDeclFolder>;
 
-/*	idList<idDeclFile *>		*/loadedFiles:Array<idDeclFile>;
-//	idHashIndex					hashTables[declType_t.DECL_MAX_TYPES];
-/*	idList<idDeclLocal *>		*/linearLists:Array<idDeclLocal>/*[declType_t.DECL_MAX_TYPES]*/;
+/*	idList<idDeclFile *>		*/loadedFiles:idList<idDeclFile>;
+    hashTables:idHashIndex[/*declType_t.DECL_MAX_TYPES*/];
+/*	idList<idDeclLocal *>		*/linearLists:idList<idDeclLocal>/*[declType_t.DECL_MAX_TYPES]*/;
                                 implicitDecls:idDeclFile;	// this holds all the decls that were created because explicit
 												// text definitions were not found. Decls that became default
 												// because of a parse error are not in this list.
@@ -280,7 +298,15 @@ class idDeclManagerLocal extends idDeclManager {
 
     constructor() {
         super();
-        this.declTypes = [];
+        this.declTypes = new idList<idDeclType>( idDeclType );
+        this.declFolders = new idList<idDeclFolder>( idDeclFolder );
+        this.loadedFiles = new idList<idDeclFile>( idDeclFile );
+        this.hashTables = newStructArray<idHashIndex>( idHashIndex, declType_t.DECL_MAX_TYPES );
+        this.linearLists = new idList<idDeclLocal>( idDeclLocal );
+        this.implicitDecls = new idList<idDeclLocal>( idDeclLocal );
+        this.checksum = 0;
+        this.indent = 0;
+        this.insideLevelLoad = false;
     }
 
 //private:
@@ -584,35 +610,6 @@ var declManager = declManagerLocal;
 ////====================================================================================
 ////*/
 
-/////*
-////================
-////idDeclFile::idDeclFile
-////================
-////*/
-////idDeclFile::idDeclFile( const char *fileName, declType_t defaultType ) {
-////	this.fileName = fileName;
-////	this.defaultType = defaultType;
-////	this.timestamp = 0;
-////	this.checksum = 0;
-////	this.fileSize = 0;
-////	this.numLines = 0;
-////	this.decls = NULL;
-////}
-
-/////*
-////================
-////idDeclFile::idDeclFile
-////================
-////*/
-////idDeclFile::idDeclFile() {
-////	this.fileName = "<implicit file>";
-////	this.defaultType = declType_t.DECL_MAX_TYPES;
-////	this.timestamp = 0;
-////	this.checksum = 0;
-////	this.fileSize = 0;
-////	this.numLines = 0;
-////	this.decls = NULL;
-////}
 
 /////*
 ////================
@@ -1044,7 +1041,7 @@ idDeclManagerLocal.prototype.RegisterDeclFolder = function( folder:string, exten
 	}
 
 	// scan for decl files
-	fileList = fileSystem.ListFiles( declFolder.folder, declFolder.extension, true );
+	fileList = fileSystem.ListFiles( declFolder.folder.c_str(), declFolder.extension.c_str(), true );
 
 	// load and parse decl files
 	for ( i = 0; i < fileList.GetNumFiles(); i++ ) {

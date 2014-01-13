@@ -1,3 +1,5 @@
+/// <reference path="files.ts" />
+/// <reference path="../../libs/idLib/Containers/HashIndex.h.ts" />
 /// <reference path="../../libs/idLib/Text/Str.h.ts" />
 /// <reference path="../../libs/idLib/Containers/StrList.h.ts" />
 /*
@@ -1429,26 +1431,26 @@ class idFileSystemLocal extends idFileSystem {
 ////	common.Printf( "Appended pk4 %s with checksum 0x%x\n", pak.pakFilename.c_str(), pak.checksum );
 ////	return pak.checksum;
 ////}
-////
-/////*
-////===============
-////idFileSystemLocal::AddUnique
-////===============
-////*/
-////int idFileSystemLocal::AddUnique( const char *name, idStrList &list, idHashIndex &hashIndex ) const {
-////	int i, hashKey;
-////
-////	hashKey = hashIndex.GenerateKey( name );
-////	for ( i = hashIndex.First( hashKey ); i >= 0; i = hashIndex.Next( i ) ) {
-////		if ( list[i].Icmp( name ) == 0 ) {
-////			return i;
-////		}
-////	}
-////	i = list.Append( name );
-////	hashIndex.Add( hashKey, i );
-////	return i;
-////}
-////
+
+/*
+===============
+idFileSystemLocal::AddUnique
+===============
+*/
+AddUnique( name:string, list:idStrList, hashIndex:idHashIndex ):number {
+	var/*int*/ i:number, hashKey:number;
+
+	hashKey = hashIndex.GenerateKey( name );
+	for ( i = hashIndex.First( hashKey ); i >= 0; i = hashIndex.Next( i ) ) {
+		if ( list[i].Icmp( name ) == 0 ) {
+			return i;
+		}
+	}
+	i = list.Append( new idStr(name) );
+	hashIndex.Add( hashKey, i );
+	return i;
+}
+
 /*
 ===============
 idFileSystemLocal::GetExtensionList
@@ -1470,164 +1472,171 @@ GetExtensionList( extension:string, extensionList:idStrList ):void {
 		}
 	}
 }
-////
-/////*
-////===============
-////idFileSystemLocal::GetFileList
-////
-////Does not clear the list first so this can be used to progressively build a file list.
-////When 'sort' is true only the new files added to the list are sorted.
-////===============
-////*/
-////int idFileSystemLocal::GetFileList( const char *relativePath, const idStrList &extensions, idStrList &list, idHashIndex &hashIndex, bool fullRelativePath, const char* gamedir ) {
-////	searchpath_t *	search;
-////	fileInPack_t *	buildBuffer;
-////	int				i, j;
-////	int				pathLength;
-////	int				length;
-////	const char *	name;
-////	pack_t *		pak;
-////	idStr			work;
-////
-////	if ( !searchPaths ) {
-////		common.FatalError( "Filesystem call made without initialization\n" );
-////	}
-////
-////	if ( !extensions.Num() ) {
-////		return 0;
-////	}
-////
-////	if ( !relativePath ) {
-////		return 0;
-////	}
-////	pathLength = strlen( relativePath );
-////	if ( pathLength ) {
-////		pathLength++;	// for the trailing '/'
-////	}
-////
-////	// search through the path, one element at a time, adding to list
-////	for( search = searchPaths; search != NULL; search = search.next ) {
-////		if ( search.dir ) {
-////			if(gamedir && strlen(gamedir)) {
-////				if(search.dir.gamedir != gamedir) {
-////					continue;
-////				}
-////			}
-////
-////			idStrList	sysFiles;
-////			idStr		netpath;
-////
-////			netpath = BuildOSPath( search.dir.path, search.dir.gamedir, relativePath );
-////
-////			for ( i = 0; i < extensions.Num(); i++ ) {
-////
-////				// scan for files in the filesystem
-////				ListOSFiles( netpath, extensions[i], sysFiles );
-////
-////				// if we are searching for directories, remove . and ..
-////				if ( extensions[i][0] == '/' && extensions[i][1] == 0 ) {
-////					sysFiles.Remove( "." );
-////					sysFiles.Remove( ".." );
-////				}
-////
-////				for( j = 0; j < sysFiles.Num(); j++ ) {
-////					// unique the match
-////					if ( fullRelativePath ) {
-////						work = relativePath;
-////						work += "/";
-////						work += sysFiles[j];
-////						AddUnique( work, list, hashIndex );
-////					}
-////					else {
-////						AddUnique( sysFiles[j], list, hashIndex );
-////					}
-////				}
-////			}
-////		} else if ( search.pack ) {
-////			// look through all the pak file elements
-////
-////			// exclude any extra packs if we have server paks to search
-////			if ( serverPaks.Num() ) {
-////				GetPackStatus( search.pack );
-////				if ( search.pack.pureStatus != PURE_NEVER && !serverPaks.Find( search.pack ) ) {
-////					continue; // not on the pure server pak list
-////				}
-////			}
-////
-////			pak = search.pack;
-////			buildBuffer = pak.buildBuffer;
-////			for( i = 0; i < pak.numfiles; i++ ) {
-////
-////				length = buildBuffer[i].name.Length();
-////
-////				// if the name is not long anough to at least contain the path
-////				if ( length <= pathLength ) {
-////					continue;
-////				}
-////
-////				name = buildBuffer[i].name;
-////
-////
-////				// check for a path match without the trailing '/'
-////				if ( pathLength && idStr::Icmpn( name, relativePath, pathLength - 1 ) != 0 ) {
-////					continue;
-////				}
-//// 
-////				// ensure we have a path, and not just a filename containing the path
-////				if ( name[ pathLength ] == '\0' || name[pathLength - 1] != '/' ) {
-////					continue;
-////				}
-//// 
-////				// make sure the file is not in a subdirectory
-////				for ( j = pathLength; name[j+1] != '\0'; j++ ) {
-////					if ( name[j] == '/' ) {
-////						break;
-////					}
-////				}
-////				if ( name[j+1] ) {
-////					continue;
-////				}
-////
-////				// check for extension match
-////				for ( j = 0; j < extensions.Num(); j++ ) {
-////					if ( length >= extensions[j].Length() && extensions[j].Icmp( name + length - extensions[j].Length() ) == 0 ) {
-////						break;
-////					}
-////				}
-////				if ( j >= extensions.Num() ) {
-////					continue;
-////				}
-////
-////				// unique the match
-////				if ( fullRelativePath ) {
-////					work = relativePath;
-////					work += "/";
-////					work += name + pathLength;
-////					work.StripTrailing( '/' );
-////					AddUnique( work, list, hashIndex );
-////				} else {
-////					work = name + pathLength;
-////					work.StripTrailing( '/' );
-////					AddUnique( work, list, hashIndex );
-////				}
-////			}
-////		}
-////	}
-////
-////	return list.Num();
-////}
-////
+
+/*
+===============
+idFileSystemLocal::GetFileList
+
+Does not clear the list first so this can be used to progressively build a file list.
+When 'sort' is true only the new files added to the list are sorted.
+===============
+*/
+/*int*/ GetFileList( relativePath:string, extensions:idStrList , list:idStrList, hashIndex:idHashIndex, fullRelativePath:boolean, gamedir:string ):number {
+	//searchpath_t *	search;
+	//fileInPack_t *	buildBuffer;
+	//var i:number, j:number;
+	var pathLength:number;
+	var	length:number;
+	//const char *	name;
+	//pack_t *		pak;
+	//idStr			work;
+
+	//if ( !searchPaths ) {
+	//	common.FatalError( "Filesystem call made without initialization\n" );
+	//}
+
+	if ( !extensions.Num() ) {
+		return 0;
+	}
+
+	if ( !relativePath ) {
+		return 0;
+	}
+	pathLength = strlen( relativePath );
+	if ( pathLength ) {
+		pathLength++;	// for the trailing '/'
+	}
+
+	//// search through the path, one element at a time, adding to list
+	//for( search = searchPaths; search != NULL; search = search.next ) {
+	//	if ( search.dir ) {
+	//		if(gamedir && strlen(gamedir)) {
+	//			if(search.dir.gamedir != gamedir) {
+	//				continue;
+	//			}
+	//		}
+
+	//		idStrList	sysFiles;
+	//		idStr		netpath;
+
+	//		netpath = BuildOSPath( search.dir.path, search.dir.gamedir, relativePath );
+
+	//		for ( i = 0; i < extensions.Num(); i++ ) {
+
+	//			// scan for files in the filesystem
+	//			ListOSFiles( netpath, extensions[i], sysFiles );
+
+	//			// if we are searching for directories, remove . and ..
+	//			if ( extensions[i][0] == '/' && extensions[i][1] == 0 ) {
+	//				sysFiles.Remove( "." );
+	//				sysFiles.Remove( ".." );
+	//			}
+
+	//			for( j = 0; j < sysFiles.Num(); j++ ) {
+	//				// unique the match
+	//				if ( fullRelativePath ) {
+	//					work = relativePath;
+	//					work += "/";
+	//					work += sysFiles[j];
+	//					AddUnique( work, list, hashIndex );
+	//				}
+	//				else {
+	//					AddUnique( sysFiles[j], list, hashIndex );
+	//				}
+	//			}
+	//		}
+	//	} else if ( search.pack ) {
+	//		// look through all the pak file elements
+
+	//		// exclude any extra packs if we have server paks to search
+	//		if ( serverPaks.Num() ) {
+	//			GetPackStatus( search.pack );
+	//			if ( search.pack.pureStatus != PURE_NEVER && !serverPaks.Find( search.pack ) ) {
+	//				continue; // not on the pure server pak list
+	//			}
+	//		}
+
+	//		pak = search.pack;
+	//		buildBuffer = pak.buildBuffer;
+	//		for( i = 0; i < pak.numfiles; i++ ) {
+
+	//			length = buildBuffer[i].name.Length();
+
+	//			// if the name is not long anough to at least contain the path
+	//			if ( length <= pathLength ) {
+	//				continue;
+	//			}
+
+	//			name = buildBuffer[i].name;
+
+
+	//			// check for a path match without the trailing '/'
+	//			if ( pathLength && idStr::Icmpn( name, relativePath, pathLength - 1 ) != 0 ) {
+	//				continue;
+	//			}
+ 
+	//			// ensure we have a path, and not just a filename containing the path
+	//			if ( name[ pathLength ] == '\0' || name[pathLength - 1] != '/' ) {
+	//				continue;
+	//			}
+ 
+	//			// make sure the file is not in a subdirectory
+	//			for ( j = pathLength; name[j+1] != '\0'; j++ ) {
+	//				if ( name[j] == '/' ) {
+	//					break;
+	//				}
+	//			}
+	//			if ( name[j+1] ) {
+	//				continue;
+	//			}
+
+	//			// check for extension match
+	//			for ( j = 0; j < extensions.Num(); j++ ) {
+	//				if ( length >= extensions[j].Length() && extensions[j].Icmp( name + length - extensions[j].Length() ) == 0 ) {
+	//					break;
+	//				}
+	//			}
+	//			if ( j >= extensions.Num() ) {
+	//				continue;
+	//			}
+
+	//			// unique the match
+	//			if ( fullRelativePath ) {
+	//				work = relativePath;
+	//				work += "/";
+	//				work += name + pathLength;
+	//				work.StripTrailing( '/' );
+	//				AddUnique( work, list, hashIndex );
+	//			} else {
+	//				work = name + pathLength;
+	//				work.StripTrailing( '/' );
+	//				AddUnique( work, list, hashIndex );
+	//			}
+	//		}
+	//	}
+	//}
+
+    for( var i = 0; i < fileList.length; i++ ) {
+        if( fileList[i].indexOf(relativePath + "\\") === 0) {
+            //list.Append(fileList[i].substr( pathLength );
+            AddUnique ( fileList[i].substr( pathLength ), list, hashIndex );
+        }
+    }
+
+	return list.Num();
+}
+
 /*
 ===============
 idFileSystemLocal::ListFiles
 ===============
 */
-ListFiles( relativePath:string, extension:string, sort:boolean, fullRelativePath:boolean, gamedir:string ) {
+ListFiles( relativePath:string, extension:string, sort:boolean = false, fullRelativePath:boolean = false, gamedir:string = null ):idFileList {
 	var hashIndex = new idHashIndex ( 4096, 4096 );
 	var extensionList:idStrList ;
 
 	var fileList = new idFileList;
-	fileList.basePath = relativePath;
+	fileList.basePath = new idStr(relativePath);
 
 	this.GetExtensionList( extension, extensionList );
 
