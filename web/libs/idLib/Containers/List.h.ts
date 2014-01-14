@@ -91,11 +91,12 @@ class idList<type> {
 	private list:Array<type>;             //type *			
     private type:any;
 
-    constructor(type:any) {
+    constructor(type:any, newgranularity:number = 16) {
+        assert(typeof type !== "number"); // new type arg not to be confused with newgranularity
         this.type = type;
         this.num = 0;
         this.size = 0;
-        this.granularity = 0;
+        this.granularity = newgranularity;
     }
 
 ///*
@@ -147,7 +148,7 @@ Clear ():void {
     }
 
     this.list	= null;
-    this.num		= 0;
+    this.num	= 0;
     this.size	= 0;
 }
 
