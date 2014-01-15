@@ -69,7 +69,7 @@
 ////#define FLOATSIGNBITNOTSET(f)	((~(*(const unsigned long *)&(f))) >> 31)
 ////#define FLOATNOTZERO(f)			((*(const unsigned long *)&(f)) & ~(1<<31) )
 ////#define INTSIGNBITSET(i)		(((const unsigned long)(i)) >> 31)
-function INTSIGNBITNOTSET(i:number):number	{return ((~(/*(const unsigned long)*/(i))) >> 31);}
+function INTSIGNBITNOTSET(i:number):number	{throw "convert this";}
 
 ////#define	FLOAT_IS_NAN(x)			(((*(const unsigned long *)&x) & 0x7f800000) == 0x7f800000)
 ////#define FLOAT_IS_INF(x)			(((*(const unsigned long *)&x) & 0x7fffffff) == 0x7f800000)

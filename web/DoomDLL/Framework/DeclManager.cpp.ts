@@ -835,7 +835,7 @@ idDeclManagerLocal::Init
 idDeclManagerLocal.prototype.Init = function( ):void {
 
 	common.Printf( "----- Initializing Decls -----\n" );
-    debugger;
+    
 	this.checksum = 0;
 
 //#ifdef USE_COMPRESSED_DECLS
@@ -861,7 +861,7 @@ idDeclManagerLocal.prototype.Init = function( ):void {
 	this.RegisterDeclType( "email",				declType_t.DECL_EMAIL,			idDeclAllocator<idDeclEmail>(idDeclEmail) );
 	this.RegisterDeclType( "video",				declType_t.DECL_VIDEO,			idDeclAllocator<idDeclVideo>(idDeclVideo) );
 	this.RegisterDeclType( "audio",				declType_t.DECL_AUDIO,			idDeclAllocator<idDeclAudio>(idDeclAudio) );
-    
+    debugger;
 	this.RegisterDeclFolder( "materials",		".mtr",				declType_t.DECL_MATERIAL );
 	this.RegisterDeclFolder( "skins",			".skin",			declType_t.DECL_SKIN );
 	this.RegisterDeclFolder( "sound",			".sndshd",			declType_t.DECL_SOUND );

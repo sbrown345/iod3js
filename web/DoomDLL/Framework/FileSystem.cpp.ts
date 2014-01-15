@@ -1633,7 +1633,7 @@ idFileSystemLocal::ListFiles
 */
 ListFiles( relativePath:string, extension:string, sort:boolean = false, fullRelativePath:boolean = false, gamedir:string = null ):idFileList {
 	var hashIndex = new idHashIndex ( 4096, 4096 );
-	var extensionList:idStrList ;
+	var extensionList = new idStrList;
 
 	var fileList = new idFileList;
 	fileList.basePath = new idStr(relativePath);

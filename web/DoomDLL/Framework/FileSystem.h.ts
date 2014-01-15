@@ -130,6 +130,11 @@ class idFileList {
 ////private:
 	basePath:idStr;
 	list:idStrList;
+
+    constructor () {
+        this.basePath = null;
+        this.list = new idStrList;
+    }
 };
 ////
 ////// mod list

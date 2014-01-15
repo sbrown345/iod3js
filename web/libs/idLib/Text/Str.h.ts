@@ -2232,8 +2232,8 @@ static IcmpPath( /*const char **/s1:string, /*const char **/s2:string ):number {
     var s1Idx = 0;
     var s2Idx = 0;
 	do {
-		c1 = s1.charCodeAt(s1Idx++);
-		c2 = s2.charCodeAt(s2Idx++);
+		c1 = s1.charCodeAt(s1Idx++) || 0;
+		c2 = s2.charCodeAt(s2Idx++) || 0;
 
 		d = c1 - c2;
 		while( d ) {
@@ -2266,13 +2266,13 @@ static IcmpPath( /*const char **/s1:string, /*const char **/s2:string ):number {
 				if ( c1 == '/'.charCodeAt(0) || c1 == '\\'.charCodeAt(0) ) {
 					break;
 				}
-				c1 = s1.charCodeAt(s1Idx++);
+				c1 = s1.charCodeAt(s1Idx++) || 0;
 			}
 			while( c2 ) {
 				if ( c2 == '/'.charCodeAt(0) || c2 == '\\'.charCodeAt(0) ) {
 					break;
 				}
-				c2 = s2.charCodeAt(s2Idx++);
+				c2 = s2.charCodeAt(s2Idx++) || 0;
 			}
 			if ( c1 && !c2 ) {
 				return -1;
@@ -2280,7 +2280,8 @@ static IcmpPath( /*const char **/s1:string, /*const char **/s2:string ):number {
 				return 1;
 			}
 			// same folder depth so use the regular compare
-			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
+			//return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
+			return d < 0 ? -1 : 1;
 		}
 	} while( c1 );
 

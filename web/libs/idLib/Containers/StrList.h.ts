@@ -194,14 +194,14 @@ function idStrListSortPaths( list:idStrList  ):void {
 		return;
 	}
 
-	var other:idList<idStr>;
-	var	pointerList:idList<idStr/*Ptr*/>;
+	var other = new idList<idStr>( idStr );
+	var	pointerList = new idList<idStr/*Ptr*/>( idStr );
 
 	pointerList.SetNum( list.Num() );
 	for( i = 0; i < list.Num(); i++ ) {
 		pointerList[ i ] = /*&*/list[ i ];
 	}
-
+    
 	pointerList.Sort( idListSortComparePaths(/*idStrPtr*/) );
 
 	other.SetNum( list.Num() );

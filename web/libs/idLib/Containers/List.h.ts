@@ -849,11 +849,15 @@ Sort( compare:(a:idStr,b:idStr)=>number ):void {
 	if ( !this.list ) {
 		return;
 	}
-    todoThrow();
 	//typedef int cmp_c(const void *, const void *);
 
 	//cmp_c *vCompare = (cmp_c *)compare;
 	//qsort( ( void * )this.list, ( size_t )this.num, sizeof( type ), vCompare );
+
+    this["length"] = this.num;
+    this["splice"] = [].splice;
+    this["sort"] = [].sort;
+    this["sort"](compare);
 }
 
 ///*
