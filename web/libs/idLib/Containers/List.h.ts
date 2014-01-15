@@ -88,7 +88,7 @@ class idList<type> {
 	private num:number;                 //int				
 	private size:number;                //int				
 	private granularity:number;         //int				
-	private list:Array<type>;             //type *			
+	private list:any; // reference itself		
     private type:any;
 
     constructor(type:any, newgranularity:number = 16) {
@@ -97,6 +97,7 @@ class idList<type> {
         this.num = 0;
         this.size = 0;
         this.granularity = newgranularity;
+        this.list = this;
     }
 
 ///*
@@ -144,10 +145,11 @@ Frees up the memory allocated by the list.  Assumes that type automatically hand
 //template< class type >
 Clear ():void {
     if ( this.list ) {
-    	delete this.list;
+        for( var i=0; i < this.num; i++) {
+            delete this[i];
+        }
     }
 
-    this.list	= null;
     this.num	= 0;
     this.size	= 0;
 }
@@ -170,7 +172,7 @@ Clear ():void {
 
 //	for( i = 0; i < num; i++ ) {
 //		delete this.list[ i ];
-//		this.list[ i ] = NULL;
+////		this.list[ i ] = NULL;
 //	}
 
 //	if ( clear ) {
@@ -336,22 +338,22 @@ Resize (/* int */newsize:number, /*int */newgranularity?:number):void {
 		return;
 	}
 
-	temp	= this.list;
+	//temp	= this.list;
 	this.size	= newsize;
 	if ( this.size < this.num ) {
 		this.num = this.size;
 	}
 
-	// copy the old list into our new one
-	this.list = new Array( this.size );
-	for( i = 0; i < this.num; i++ ) {
-		this.list[ i ] = temp[ i ];
-	}
+	//// copy the old list into our new one
+	//this.list = new Array( this.size );
+	//for( i = 0; i < this.num; i++ ) {
+	//	this.list[ i ] = temp[ i ];
+	//}
 
-	// delete the old list if it exists
-	if ( temp ) {
-		delete temp;
-	}
+	//// delete the old list if it exists
+	//if ( temp ) {
+	//	delete temp;
+	//}
 }
 
 
@@ -893,6 +895,7 @@ Swap( other:idList<type> ):void {
 	idSwap( this, "num", other, "num" );
 	idSwap( this, "size", other, "size" );
 	idSwap( this, "granularity", other, "granularity" );
+    todoThrow("swap itself ??list??");
 	idSwap( this, "list", other, "list" );
 }
 
