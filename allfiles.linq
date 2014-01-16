@@ -2,11 +2,11 @@
 
 void Main()
 {			
-	string[] files = 	Directory.GetFiles(@"C:\dev\iod3_LogicalError_glsl_es2\neo\demo", "*",
+	var path = @"C:\dev\iod3_LogicalError_glsl_es2\neo\demo";
+	string[] files = 	Directory.GetFiles(path, "*",
 		    SearchOption.AllDirectories);
 	foreach (string file in files)
 	{
-	    Console.WriteLine("\"" + file.Replace(@"C:\dev\iod3_LogicalError_glsl_es2\neo\demo\", "").Replace(@"\", @"\\") + "\",");
+	    Console.WriteLine("{path: \"" + file.Replace(path, "").Replace(@"\", @"\\") + "\", size: " + new FileInfo(file).Length + "},");
 	}
 }
-
