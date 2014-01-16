@@ -1,0 +1,208 @@
+/// <reference path="CmdSystem.h.ts" />
+/// <reference path="CVarSystem.cpp.ts" />
+/////*
+////===========================================================================
+////Doom 3 GPL Source Code
+////Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
+////This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
+////Doom 3 Source Code is free software: you can redistribute it and/or modify
+////it under the terms of the GNU General Public License as published by
+////the Free Software Foundation, either version 3 of the License, or
+////(at your option) any later version.
+////Doom 3 Source Code is distributed in the hope that it will be useful,
+////but WITHOUT ANY WARRANTY; without even the implied warranty of
+////MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+////GNU General Public License for more details.
+////You should have received a copy of the GNU General Public License
+////along with Doom 3 Source Code.  If not, see <http://www.gnu.org/licenses/>.
+////In addition, the Doom 3 Source Code is also subject to certain additional terms. You should have received a copy of these additional terms immediately following the terms and conditions of the GNU General Public License which accompanied the Doom 3 Source Code.  If not, please request a copy in writing from id Software at the address below.
+////If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
+////===========================================================================
+////*/
+////#ifndef __CVARSYSTEM_H__
+////#define __CVARSYSTEM_H__
+/////*
+////===============================================================================
+////	Console Variables (CVars) are used to hold scalar or string variables
+////	that can be changed or displayed at the console as well as accessed
+////	directly in code.
+////	CVars are mostly used to hold settings that can be changed from the
+////	console or saved to and loaded from configuration files. CVars are also
+////	occasionally used to communicate information between different modules
+////	of the program.
+////	CVars are restricted from having the same names as console commands to
+////	keep the console interface from being ambiguous.
+////	CVars can be accessed from the console in three ways:
+////	cvarName			prints the current value
+////	cvarName X			sets the value to X if the variable exists
+////	set cvarName X		as above, but creates the CVar if not present
+////	CVars may be declared in the global namespace, in classes and in functions.
+////	However declarations in classes and functions should always be static to
+////	save space and time. Making CVars static does not change their
+////	functionality due to their global nature.
+////	CVars should be contructed only through one of the constructors with name,
+////	value, flags and description. The name, value and description parameters
+////	to the constructor have to be static strings, do not use va() or the like
+////	functions returning a string.
+////	CVars may be declared multiple times using the same name string. However,
+////	they will all reference the same value and changing the value of one CVar
+////	changes the value of all CVars with the same name.
+////	CVars should always be declared with the correct type flag: CVAR_BOOL,
+////	CVAR_INTEGER or CVAR_FLOAT. If no such flag is specified the CVar
+////	defaults to type string. If the CVAR_BOOL flag is used there is no need
+////	to specify an argument auto-completion function because the CVar gets
+////	one assigned automatically.
+////	CVars are automatically range checked based on their type and any min/max
+////	or valid string set specified in the constructor.
+////	CVars are always considered cheats except when CVAR_NOCHEAT, CVAR_INIT,
+////	CVAR_ROM, CVAR_ARCHIVE, CVAR_USERINFO, CVAR_SERVERINFO, CVAR_NETWORKSYNC
+////	is set.
+////===============================================================================
+////*/
+////typedef enum {
+var CVAR_ALL = -1, CVAR_BOOL = BIT(0), CVAR_INTEGER = BIT(1), CVAR_FLOAT = BIT(2), CVAR_SYSTEM = BIT(3), CVAR_RENDERER = BIT(4), CVAR_SOUND = BIT(5), CVAR_GUI = BIT(6), CVAR_GAME = BIT(7), CVAR_TOOL = BIT(8), CVAR_USERINFO = BIT(9), CVAR_SERVERINFO = BIT(10), CVAR_NETWORKSYNC = BIT(11), CVAR_STATIC = BIT(12), CVAR_CHEAT = BIT(13), CVAR_NOCHEAT = BIT(14), CVAR_INIT = BIT(15), CVAR_ROM = BIT(16), CVAR_ARCHIVE = BIT(17), CVAR_MODIFIED = BIT(18);
+
+////} cvarFlags_t;
+/*
+===============================================================================
+
+idCVar
+
+===============================================================================
+*/
+var idCVar = (function () {
+    function idCVar(name, value, /*int */ flags, description, valueStringsOrValueMinOrValueCompletion, valueMaxOrValueCompletion, valueCompletion) {
+        if (typeof valueCompletion === "undefined") { valueCompletion = null; }
+        if (arguments.length == 0) {
+            return;
+        } else if (arguments.length == 4 || arguments.length == 5) {
+            if (!valueCompletion && (flags & CVAR_BOOL)) {
+                this.valueCompletion = ArgCompletion_Boolean;
+            }
+            this.Init(name, value, flags, description, 1, -1, null, valueStringsOrValueMinOrValueCompletion);
+        } else if (typeof valueStringsOrValueMinOrValueCompletion === "number") {
+            this.Init(name, value, flags, description, valueStringsOrValueMinOrValueCompletion, valueMaxOrValueCompletion, null, valueCompletion);
+        } else {
+            this.Init(name, value, flags, description, 1, -1, valueStringsOrValueMinOrValueCompletion, valueMaxOrValueCompletion);
+        }
+    }
+    ////	virtual					~idCVar( void ) {}
+    /*const char *			*/ idCVar.prototype.GetName = function () {
+        return this.internalVar.name;
+    };
+    /*	int					*/ idCVar.prototype.GetFlags = function () {
+        return this.internalVar.flags;
+    };
+    /*const char *			*/ idCVar.prototype.GetDescription = function () {
+        return this.internalVar.description;
+    };
+    /*float					*/ idCVar.prototype.GetMinValue = function () {
+        return this.internalVar.valueMin;
+    };
+    /*float					*/ idCVar.prototype.GetMaxValue = function () {
+        return this.internalVar.valueMax;
+    };
+    /*const char **			*/ idCVar.prototype.GetValueStrings = function () {
+        return this.valueStrings;
+    };
+    /*argCompletion_t		*/ idCVar.prototype.GetValueCompletion = function () {
+        return this.valueCompletion;
+    };
+
+    /*	bool					*/ idCVar.prototype.IsModified = function () {
+        return (this.internalVar.flags & CVAR_MODIFIED) != 0;
+    };
+    /*	void					*/ idCVar.prototype.SetModified = function () {
+        this.internalVar.flags |= CVAR_MODIFIED;
+    };
+    /*	void					*/ idCVar.prototype.ClearModified = function () {
+        this.internalVar.flags &= ~CVAR_MODIFIED;
+    };
+
+    /*							*/
+    /*	const char *			*/ idCVar.prototype.GetString = function () {
+        return this.internalVar.value;
+    };
+    /*    bool                  */ idCVar.prototype.GetBool = function () {
+        return (this.internalVar.integerValue != 0);
+    };
+    /*	int						*/ idCVar.prototype.GetInteger = function () {
+        return this.internalVar.integerValue;
+    };
+    /*	float					*/ idCVar.prototype.GetFloat = function () {
+        return this.internalVar.floatValue;
+    };
+
+    /*							*/
+    ///*	void					*/SetString( value:string ):void { this.internalVar.InternalSetString( value ); }
+    ///*	void					*/SetBool( value:boolean ):void { this.internalVar.InternalSetBool( value ); }
+    ///*	void					*/SetInteger( value:number ):void { this.internalVar.InternalSetInteger( value ); }
+    ///*	void					*/SetFloat( value:number ):void { this.internalVar.InternalSetFloat( value ); }
+    /*
+    /*	void					*/
+    idCVar.prototype.SetInternalVar = function (cvar) {
+        this.internalVar = cvar;
+    };
+
+    //};
+    ////ID_INLINE idCVar::idCVar( const char *name, const char *value, int flags, const char *description,
+    ////							argCompletion_t valueCompletion ) {
+    ////	if ( !valueCompletion && ( flags & CVAR_BOOL ) ) {
+    ////		valueCompletion = idCmdSystem::ArgCompletion_Boolean;
+    ////	}
+    ////	Init( name, value, flags, description, 1, -1, NULL, valueCompletion );
+    ////}
+    ////ID_INLINE idCVar::idCVar( const char *name, const char *value, int flags, const char *description,
+    ////							float valueMin, float valueMax, argCompletion_t valueCompletion ) {
+    ////	Init( name, value, flags, description, valueMin, valueMax, NULL, valueCompletion );
+    ////}
+    ////ID_INLINE idCVar::idCVar( const char *name, const char *value, int flags, const char *description,
+    ////							const char **valueStrings, argCompletion_t valueCompletion ) {
+    ////	Init( name, value, flags, description, 1, -1, valueStrings, valueCompletion );
+    ////}
+    /*
+    ===============================================================================
+    
+    CVar Registration
+    
+    Each DLL using CVars has to declare a private copy of the static variable
+    idCVar::staticVars like this: idCVar * idCVar::staticVars = NULL;
+    Furthermore idCVar::RegisterStaticVars() has to be called after the
+    cvarSystem pointer is set when the DLL is first initialized.
+    
+    //===============================================================================
+    //*/
+    idCVar.prototype.Init = function (/*const char **/ name, /*const char **/ value, /*int */ flags, /*const char **/ description, /*float*/ valueMin, /*float */ valueMax, /*const char ***/ valueStrings, valueCompletion) {
+        if (typeof valueCompletion === "undefined") { valueCompletion = null; }
+        this.name = name;
+        this.value = value;
+        this.flags = flags;
+        this.description = description;
+        this.flags = flags | CVAR_STATIC;
+        this.valueMin = valueMin;
+        this.valueMax = valueMax;
+        this.valueStrings = valueStrings;
+        this.valueCompletion = valueCompletion;
+        this.integerValue = 0;
+        this.floatValue = 0.0;
+        this.internalVar = this;
+        if (idCVar.staticVars) {
+            this.next = idCVar.staticVars;
+            idCVar.staticVars = this;
+        } else {
+            cvarSystem.Register(this);
+        }
+    };
+
+    idCVar.RegisterStaticVars = function () {
+        if (idCVar.staticVars) {
+            for (var cvar = idCVar.staticVars; cvar; cvar = cvar.next) {
+                cvarSystem.Register(cvar);
+            }
+            idCVar.staticVars = null;
+        }
+    };
+    idCVar.staticVars = new idCVar();
+    return idCVar;
+})();
+//@ sourceMappingURL=CVarSystem.h.js.map
