@@ -132,6 +132,10 @@ class idStr {
         }
 	}
 
+    toString() {
+        return this.data;
+    }
+
 ////public:
 ////						idStr( void );
 ////						idStr( const idStr &text );
