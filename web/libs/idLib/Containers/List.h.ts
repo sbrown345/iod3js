@@ -896,11 +896,18 @@ Swaps the contents of two lists
 */
 //template< class type >
 Swap( other:idList<type> ):void {
+    for( var i = 0; i < this.num; i++ ) {
+        delete this[i];
+    }
+
+    for( var i = 0; i < other.num; i++ ) {
+        this[i] = other[i];
+    }
+
 	idSwap( this, "num", other, "num" );
 	idSwap( this, "size", other, "size" );
 	idSwap( this, "granularity", other, "granularity" );
-    todoThrow("swap itself ??list??");
-	idSwap( this, "list", other, "list" );
+	//idSwap( this, "list", other, "list" );
 }
 
 //#endif /* !__LIST_H__ */
