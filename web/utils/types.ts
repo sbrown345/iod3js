@@ -290,35 +290,31 @@ function flatten3DArray ( arrayClass: any, array:Array<Array<Array>> ): any[] {
 //////    }
 //////}
 
+class R<T> {
+    $: T;
 
-//class Ref {
-//    $: any;
-
-//    constructor(val: any) {
-//        this.$ = val;
-//    }
-//}
-
-//class R<T> {
-//    $: T;
-
-//    constructor(val?: T) {
-//        this.$ = val;
-//    }
-//}
+    constructor(val?: T) {
+        this.$ = val;
+    }
+}
 
 interface String {
   toUint8Array: () => Uint8Array;
+  endsWith(str:string):boolean;
 }
 
-String.prototype.toUint8Array = function () : Uint8Array {
-    var array = new Uint8Array(this.length);
-    for (var i = 0; i < this.length; i++) {
-        array[i] = this.charCodeAt(i);
+String.prototype.toUint8Array = function ( ): Uint8Array {
+    var array = new Uint8Array( this.length );
+    for ( var i = 0; i < this.length; i++ ) {
+        array[i] = this.charCodeAt( i );
     }
 
     return array;
-}
+};
+
+String.prototype.endsWith = function ( suffix ) {
+    return this.indexOf( suffix, this.length - suffix.length ) !== -1;
+};
 
 interface Uint8Array {
   toString: () => string;

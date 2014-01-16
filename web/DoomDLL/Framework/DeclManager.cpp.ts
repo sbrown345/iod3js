@@ -648,23 +648,25 @@ var/*int */c_savedMemory = 0;
 ////	idLexer		src;
 ////	idToken		token;
 ////	int			startMarker;
-////	char *		buffer;
+    var buffer = new R( );
 ////	int			length, size;
 ////	int			sourceLine;
 ////	idStr		name;
 ////	idDeclLocal *newDecl;
 ////	bool		reparse;
 
-////	// load the text
-////	common.DPrintf( "...loading '%s'\n", fileName.c_str() );
-////	length = fileSystem.ReadFile( fileName, (void **)&buffer, &timestamp );
+	// load the text
+	common.DPrintf( "...loading '%s'\n", this.fileName.c_str() );
+    var $timestamp = new R( this.timestamp );
+	length = fileSystem.ReadFile( this.fileName, /*(void **)&*/buffer, $timestamp );
+    this.timestamp = $timestamp.$;
 ////	if ( length == -1 ) {
-////		common.FatalError( "couldn't load %s", fileName.c_str() );
+////		common.FatalError( "couldn't load %s", this.this..c_str() );
 ////		return 0;
 ////	}
 
-////	if ( !src.LoadMemory( buffer, length, fileName ) ) {
-////		common.Error( "Couldn't parse %s", fileName.c_str() );
+////	if ( !src.LoadMemory( buffer, length, this.this. ) ) {
+////		common.Error( "Couldn't parse %s", this.this..c_str() );
 ////		Mem_Free( buffer );
 ////		return 0;
 ////	}

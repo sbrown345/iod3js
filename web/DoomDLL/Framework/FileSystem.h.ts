@@ -52,7 +52,7 @@
 ////===============================================================================
 ////*/
 ////
-////static const ID_TIME_T		FILE_NOT_FOUND_TIMESTAMP	= 0xFFFFFFFF;
+var FILE_NOT_FOUND_TIMESTAMP	= 0xFFFFFFFF;
 ////static const int		MAX_PURE_PAKS				= 128;
 ////static const int		MAX_OSPATH					= 256;
 ////

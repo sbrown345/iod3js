@@ -1,3 +1,5 @@
+/// <reference path="../../libs/c.ts" />
+/// <reference path="FileSystem.h.ts" />
 /// <reference path="files.ts" />
 /// <reference path="../../libs/idLib/Containers/HashIndex.h.ts" />
 /// <reference path="../../libs/idLib/Text/Str.h.ts" />
@@ -1033,71 +1035,74 @@ class idFileSystemLocal extends idFileSystem {
 ////	return false;
 ////}
 ////
-/////*
-////============
-////idFileSystemLocal::ReadFile
-////
-////Filename are relative to the search path
-////a null buffer will just return the file length and time without loading
-////timestamp can be NULL if not required
-////============
-////*/
-////int idFileSystemLocal::ReadFile( const char *relativePath, void **buffer, ID_TIME_T *timestamp ) {
+/*
+============
+idFileSystemLocal::ReadFile
+
+Filename are relative to the search path
+a null buffer will just return the file length and time without loading
+timestamp can be NULL if not required
+============
+*/
+/*int*/ReadFile( relativePath:string, /*void ***/buffer:R<number>, /*ID_TIME_T **/timestamp:R<number> ):number {
 ////	idFile *	f;
 ////	byte *		buf;
 ////	int			len;
-////	bool		isConfig;
+    var isConfig:boolean;
 ////
-////	if ( !searchPaths ) {
-////		common.FatalError( "Filesystem call made without initialization\n" );
-////	}
+	//if ( !this.searchPaths ) {
+	//	common.FatalError( "Filesystem call made without initialization\n" );
+	//}
 ////
-////	if ( !relativePath || !relativePath[0] ) {
-////		common.FatalError( "idFileSystemLocal::ReadFile with empty name\n" );
-////	}
-////
-////	if ( timestamp ) {
-////		*timestamp = FILE_NOT_FOUND_TIMESTAMP;
-////	}
-////
-////	if ( buffer ) {
-////		*buffer = NULL;
-////	}
-////
-////	buf = NULL;	// quiet compiler warning
-////
-////	// if this is a .cfg file and we are playing back a journal, read
-////	// it from the journal file
-////	if ( strstr( relativePath, ".cfg" ) == relativePath + strlen( relativePath ) - 4 ) {
-////		isConfig = true;
-////		if ( eventLoop && eventLoop.JournalLevel() == 2 ) {
-////			int		r;
-////
-////			loadCount++;
-////			loadStack++;
-////
-////			common.DPrintf( "Loading %s from journal file.\n", relativePath );
-////			len = 0;
-////			r = eventLoop.com_journalDataFile.Read( &len, sizeof( len ) );
-////			if ( r != sizeof( len ) ) {
-////				*buffer = NULL;
-////				return -1;
-////			}
-////			buf = (byte *)Mem_ClearedAlloc(len+1);
-////			*buffer = buf;
-////			r = eventLoop.com_journalDataFile.Read( buf, len );
-////			if ( r != len ) {
-////				common.FatalError( "Read from journalDataFile failed" );
-////			}
-////
-////			// guarantee that it will have a trailing 0 for string operations
-////			buf[len] = 0;
-////
-////			return len;
-////		}
-////	} else {
-////		isConfig = false;
-////	}
+	if ( !relativePath || !relativePath[0] ) {
+		common.FatalError( "idFileSystemLocal::ReadFile with empty name\n" );
+	}
+
+	if ( timestamp ) {
+		timestamp.$ = FILE_NOT_FOUND_TIMESTAMP;
+	}
+
+//	if ( buffer ) {
+//		*buffer = NULL;
+//	}
+//
+//	buf = NULL;	// quiet compiler warning
+//
+	// if this is a .cfg file and we are playing back a journal, read
+	// it from the journal file
+	//if ( strstr( relativePath, ".cfg" ) == relativePath + strlen( relativePath ) - 4 ) {
+	if ( relativePath.endsWith(".cfg") ) {
+	    todoThrow ( );
+	    //isConfig = true;
+	    //if ( eventLoop && eventLoop.JournalLevel() == 2 ) {
+	    //	int		r;
+
+	    //	loadCount++;
+	    //	loadStack++;
+
+	    //	common.DPrintf( "Loading %s from journal file.\n", relativePath );
+	    //	len = 0;
+	    //	r = eventLoop.com_journalDataFile.Read( &len, sizeof( len ) );
+	    //	if ( r != sizeof( len ) ) {
+	    //		*buffer = NULL;
+	    //		return -1;
+	    //	}
+	    //	buf = (byte *)Mem_ClearedAlloc(len+1);
+	    //	*buffer = buf;
+	    //	r = eventLoop.com_journalDataFile.Read( buf, len );
+	    //	if ( r != len ) {
+	    //		common.FatalError( "Read from journalDataFile failed" );
+	    //	}
+
+	    //	// guarantee that it will have a trailing 0 for string operations
+	    //	buf[len] = 0;
+
+	    //	return len;
+	    //}
+	} else {
+		isConfig = false;
+	}
+	    todoThrow ( );
 ////
 ////	// look for it in the filesystem or pack files
 ////	f = OpenFileRead( relativePath, ( buffer != NULL ) );
@@ -1110,7 +1115,7 @@ class idFileSystemLocal extends idFileSystem {
 ////	len = f.Length();
 ////
 ////	if ( timestamp ) {
-////		*timestamp = f.Timestamp();
+////		timestamp.$ = f.Timestamp();
 ////	}
 ////	
 ////	if ( !buffer ) {
@@ -1138,9 +1143,9 @@ class idFileSystemLocal extends idFileSystem {
 ////		eventLoop.com_journalDataFile.Flush();
 ////	}
 ////
-////	return len;
-////}
-////
+	return len;
+}
+
 /////*
 ////=============
 ////idFileSystemLocal::FreeFile
