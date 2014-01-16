@@ -658,7 +658,7 @@ var/*int */c_savedMemory = 0;
 	// load the text
 	common.DPrintf( "...loading '%s'\n", this.fileName.c_str() );
     var $timestamp = new R( this.timestamp );
-	length = fileSystem.ReadFile( this.fileName, /*(void **)&*/buffer, $timestamp );
+	length = fileSystem.ReadFile( this.fileName.c_str(), /*(void **)&*/buffer, $timestamp );
     this.timestamp = $timestamp.$;
 ////	if ( length == -1 ) {
 ////		common.FatalError( "couldn't load %s", this.this..c_str() );

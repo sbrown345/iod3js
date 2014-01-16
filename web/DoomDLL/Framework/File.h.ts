@@ -47,7 +47,7 @@
 ////class idFileSystemLocal;
 ////
 ////
-////class idFile {
+class idFile {
 ////public:
 ////	virtual					~idFile( void ) {};
 ////							// Get the name of the file.
@@ -110,9 +110,9 @@
 ////	virtual int				WriteVec4( const idVec4 &vec );
 ////	virtual int				WriteVec6( const idVec6 &vec );
 ////	virtual int				WriteMat3( const idMat3 &mat );
-////};
-////
-////
+};
+
+
 ////class idFile_Memory : public idFile {
 ////	friend class			idFileSystemLocal;
 ////
@@ -183,7 +183,7 @@
 ////};
 ////
 ////
-////class idFile_Permanent : public idFile {
+class idFile_Permanent extends idFile {
 ////	friend class			idFileSystemLocal;
 ////
 ////public:
@@ -211,7 +211,7 @@
 ////	int						fileSize;		// size of the file
 ////	FILE *					o;				// file handle
 ////	bool					handleSync;		// true if written data is immediately flushed
-////};
+};
 ////
 ////
 ////class idFile_InZip : public idFile {
