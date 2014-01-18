@@ -13,6 +13,7 @@
 /// <reference path="DeclAF.cpp.ts" />
 /// <reference path="DeclPDA.h.ts" />
 /// <reference path="../../libs/c.ts" />
+/// <reference path="../../libs/idlib/text/lexer.cpp.ts" />
 /// <reference path="../../libs/idLib/Text/Lexer.h.ts" />
 /// <reference path="../../libs/idLib/Lib.h.ts" />
 /// <reference path="DeclManager.h.ts" />
@@ -644,8 +645,8 @@ This is used during both the initial load, and any reloads
 var/*int */c_savedMemory = 0;
 
 /*int*/ idDeclFile.prototype.LoadAndParse = function():number {
-////	int			i, numTypes;
-////	idLexer		src;
+    var /*int*/i: number, numTypes: number;
+    var src = new idLexer;
 ////	idToken		token;
 ////	int			startMarker;
     var buffer = new R < Uint8Array>( );
@@ -660,16 +661,16 @@ var/*int */c_savedMemory = 0;
     var $timestamp = new R<number>( this.timestamp );
 	length = fileSystem.ReadFile( this.fileName.c_str(), /*(void **)&*/buffer, $timestamp );
     this.timestamp = $timestamp.$;
-////	if ( length == -1 ) {
-////		common.FatalError( "couldn't load %s", this.this..c_str() );
-////		return 0;
-////	}
+	if ( length == -1 ) {
+		common.FatalError( "couldn't load %s", this.fileName.c_str() );
+		return 0;
+	}
 
-////	if ( !src.LoadMemory( buffer, length, this.this. ) ) {
-////		common.Error( "Couldn't parse %s", this.this..c_str() );
-////		Mem_Free( buffer );
-////		return 0;
-////	}
+    if (!src.LoadMemory(buffer, length, this.fileName.c_str() ) ) {
+		common.Error( "Couldn't parse %s", this.thisc_str() );
+		Mem_Free( buffer );
+		return 0;
+	}
 
 ////	// mark all the defs that were from the last reload of this file
 ////	for ( idDeclLocal *decl = decls; decl; decl = decl.nextInFile ) {

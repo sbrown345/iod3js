@@ -134,7 +134,7 @@
 ////} punctuation_t;
 
 
-class idLexer {
+//class idLexer {
 
 ////	friend class idParser;
 
@@ -242,31 +242,6 @@ class idLexer {
 ////	static void		SetBaseFolder( const char *path );
 
 ////private:
-////	int				loaded;					// set when a script file is loaded from file or memory
-////	idStr			filename;				// file name of the script
-////	int				allocated;				// true if buffer memory was allocated
-////	const char *	buffer;					// buffer containing the script
-////	const char *	script_p;				// current pointer in the script
-////	const char *	end_p;					// pointer to the end of the script
-////	const char *	lastScript_p;			// script pointer before reading token
-////	const char *	whiteSpaceStart_p;		// start of last white space
-////	const char *	whiteSpaceEnd_p;		// end of last white space
-////	ID_TIME_T			fileTime;				// file time
-////	int				length;					// length of the script in bytes
-////	int				line;					// current line in script
-////	int				lastline;				// line before reading token
-////	int				tokenavailable;			// set by unreadToken
-////	int				flags;					// several script flags
-////	const punctuation_t *punctuations;		// the punctuations used in the script
-////	int *			punctuationtable;		// ASCII table with punctuations
-////	int *			nextpunctuation;		// next punctuation in chain
-////	idToken			token;					// available token
-////	idLexer *		next;					// next script in a chain
-////	bool			hadError;				// set by idLexer::Error, even if the error is supressed
-
-////	static char		baseFolder[ 256 ];		// base folder to load files from
-
-////private:
 ////	void			CreatePunctuationTable( const punctuation_t *punctuations );
 ////	int				ReadWhiteSpace( void );
 ////	int				ReadEscapeCharacter( char *ch );
@@ -277,23 +252,8 @@ class idLexer {
 ////	int				ReadPrimitive( idToken *token );
 ////	int				CheckString( const char *str ) const;
 ////	int				NumLinesCrossed( void );
-};
+//};
 
-////ID_INLINE const char *idLexer::GetFileName( void ) {
-////	return idLexer::filename;
-////}
-
-////ID_INLINE const int idLexer::GetFileOffset( void ) {
-////	return idLexer::script_p - idLexer::buffer;
-////}
-
-////ID_INLINE const ID_TIME_T idLexer::GetFileTime( void ) {
-////	return idLexer::fileTime;
-////}
-
-////ID_INLINE const int idLexer::GetLineNum( void ) {
-////	return idLexer::line;
-////}
 
 ////ID_INLINE void idLexer::SetFlags( int flags ) {
 ////	idLexer::flags = flags;
