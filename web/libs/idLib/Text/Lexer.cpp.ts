@@ -65,7 +65,7 @@ var default_punctuations = [
 	new punctuation_t(">>",P_RSHIFT),					// pre-compiler
 	new punctuation_t("<<",P_LSHIFT),					// pre-compiler
 	// reference operators
-	new punctuation_t(".",P_POINTERREF),
+	new punctuation_t("->",P_POINTERREF),
 	// C++
 	new punctuation_t("::",P_CPP1),
 	new punctuation_t(".*",P_CPP2),
@@ -98,11 +98,11 @@ var default_punctuations = [
 	new punctuation_t("(",P_PARENTHESESOPEN),			// pre-compiler
 	new punctuation_t(")",P_PARENTHESESCLOSE),			// pre-compiler
 	new punctuation_t("{",P_BRACEOPEN),					// pre-compiler
-	new punctuation_t(")",P_BRACECLOSE),					// pre-compiler
+	new punctuation_t("}",P_BRACECLOSE),					// pre-compiler
 	new punctuation_t("[",P_SQBRACKETOPEN),
 	new punctuation_t("]",P_SQBRACKETCLOSE),
 	//
-	new punctuation_t("\\\\",P_BACKSLASH),
+	new punctuation_t("\\",P_BACKSLASH),
 	// precompiler operator
 	new punctuation_t("#",P_PRECOMP),					// pre-compiler
 	new punctuation_t("$",P_DOLLAR),
@@ -197,7 +197,7 @@ class idLexer {
 				return;
 			}
 			default_setup = 1 /*true*/;
-			i = 53;//sizeof( default_punctuations ) / sizeof( punctuation_t );
+			i = 53; //sizeof( default_punctuations ) / sizeof( punctuation_t );
 		} else {
 			if ( !this.punctuationtable || this.punctuationtable == default_punctuationtable ) {
 				this.punctuationtable = new Int32Array( 256 ); //(int *) Mem_Alloc(256 * sizeof(int));
@@ -216,14 +216,14 @@ class idLexer {
 			newp = /*&*/punctuations[i];
 			lastp = -1;
 			//sort the punctuations in this table entry on length (longer punctuations first)
-			for ( n = this.punctuationtable[newp.p.charCodeAt( 0 )]; n >= 0; n = this.nextpunctuation[n] ) {
+			for ( n = this.punctuationtable[newp.p.charCodeAt( 0 ) >>> 0]; n >= 0; n = this.nextpunctuation[n] ) {
 				p = /*&*/punctuations[n];
 				if ( strlen( p.p ) < strlen( newp.p ) ) {
 					this.nextpunctuation[i] = n;
 					if ( lastp >= 0 ) {
 						this.nextpunctuation[lastp] = i;
 					} else {
-						this.punctuationtable[newp.p.charCodeAt( 0 )] = i;
+						this.punctuationtable[newp.p.charCodeAt( 0 ) >>> 0] = i;
 					}
 					break;
 				}
@@ -234,7 +234,7 @@ class idLexer {
 				if ( lastp >= 0 ) {
 					this.nextpunctuation[lastp] = i;
 				} else {
-					this.punctuationtable[newp.p.charCodeAt( 0 )] = i;
+					this.punctuationtable[newp.p.charCodeAt( 0 ) >>> 0] = i;
 				}
 			}
 		}
@@ -846,7 +846,6 @@ class idLexer {
 		var/*int */l: number, n: number, i: number;
 		var /*char const* */p:string;
 		var punc: punctuation_t;
-
 	//#ifdef PUNCTABLE
 		for (n = this.punctuationtable[this.buffer.charCodeAt(this.script_p) >>> 0]; n >= 0; n = this.nextpunctuation[n])
 		{
