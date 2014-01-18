@@ -91,12 +91,12 @@ enum declState_t {
 	DS_PARSED
 };
 
-var /*int */DECL_LEXER_FLAGS	=	LEXFL_NOSTRINGCONCAT |				// multiple strings seperated by whitespaces are not concatenated
-								LEXFL_NOSTRINGESCAPECHARS |			// no escape characters inside strings
-								LEXFL_ALLOWPATHNAMES |				// allow path seperators in names
-								LEXFL_ALLOWMULTICHARLITERALS |		// allow multi character literals
-								LEXFL_ALLOWBACKSLASHSTRINGCONCAT |	// allow multiple strings seperated by '\' to be concatenated
-								lexerFlags_t.LEXFL_NOFATALERRORS;				// just set a flag instead of fatal erroring
+var DECL_LEXER_FLAGS = lexerFlags_t.LEXFL_NOSTRINGCONCAT | // multiple strings seperated by whitespaces are not concatenated
+	lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | // no escape characters inside strings
+	lexerFlags_t.LEXFL_ALLOWPATHNAMES | // allow path seperators in names
+	lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | // allow multi character literals
+	lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT | // allow multiple strings seperated by '\' to be concatenated
+	lexerFlags_t.LEXFL_NOFATALERRORS;				// just set a flag instead of fatal erroring
 
 
 class idDeclBase {
@@ -269,7 +269,7 @@ class idDeclManager {
 ////	virtual int				GetChecksum( void ) const = 0;
 
 ////							// Returns the number of decl types.
-////	virtual int				GetNumDeclTypes( void ) const = 0;
+	GetNumDeclTypes ( ): number /*int*/ /*const = 0;*/ { throw "placeholder"; }
 
 ////							// Returns the type name for a decl type.
 ////	virtual const char *	GetDeclNameFromType( declType_t type ) const = 0;

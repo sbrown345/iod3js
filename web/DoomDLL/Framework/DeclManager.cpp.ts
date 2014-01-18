@@ -248,7 +248,7 @@ class idDeclManagerLocal extends idDeclManager {
 ///*virtual int				*/	GetChecksum( ) :number{throw "placeholder";}
 ///*virtual int				*/	GetNumDeclTypes( ) :number{throw "placeholder";}
 ///*virtual int				*/	GetNumDecls( type:declType_t ):number{throw "placeholder";}
-///*virtual const char *		*/  GetDeclNameFromType( type:declType_t ) :string{throw "placeholder";}
+/*virtual const char *		*/  GetDeclNameFromType( type:declType_t ) :string{throw "placeholder";}
     GetDeclTypeFromName( typeName:string ):declType_t { throw "placeholder"; }
 /*	virtual const idDecl *		*/FindType( type: declType_t, name:string, makeDefault:boolean = true ):idDecl { throw "placeholder"; }
 //	virtual const idDecl *		DeclByIndex( declType_t type, int index, bool forceParse = true ):idDecl{throw "placeholder";}
@@ -647,7 +647,7 @@ var/*int */c_savedMemory = 0;
 /*int*/ idDeclFile.prototype.LoadAndParse = function():number {
     var /*int*/i: number, numTypes: number;
     var src = new idLexer;
-	var token: idToken;
+	var token = new R<idToken>( new idToken ( ) );
 	var/*int			*/startMarker:number;
     var buffer = new R < Uint8Array>( );
 	var /*int			*/length:number, size: number;
@@ -686,15 +686,12 @@ var/*int */c_savedMemory = 0;
 //	// scan through, identifying each individual declaration
 	while( 1 ) {
 
-		todoThrow();
 		startMarker = src.GetFileOffset();
 		sourceLine = src.GetLineNum();
 
 		// parse the decl type name
 
-		var $token = new R<idToken>( token );
-		var readTokenVal = src.ReadToken($token);
-		token = $token.$;
+		var readTokenVal = src.ReadToken(token);
 		if ( !readTokenVal ) {
 			break;
 		}
@@ -705,89 +702,92 @@ var/*int */c_savedMemory = 0;
 		numTypes = declManagerLocal.GetNumDeclTypes();
 		for ( i = 0; i < numTypes; i++ ) {
 			var typeInfo: idDeclType = declManagerLocal.GetDeclType( i );
-			if ( typeInfo && typeInfo.typeName.Icmp( token ) == 0 ) {
+			if (typeInfo && typeInfo.typeName.Icmp(token.$ ) == 0 ) {
 				identifiedType = typeInfo.type;
 				break;
 			}
 		}
 
-////		if ( i >= numTypes ) {
+		if ( i >= numTypes ) {
 
-////			if ( token.Icmp( "{" ) == 0 ) {
+			if (token.$.Icmp( "{" ) == 0 ) {
 
-////				// if we ever see an open brace, we somehow missed the [type] <name> prefix
-////				src.Warning( "Missing decl name" );
-////				src.SkipBracedSection( false );
-////				continue;
+				// if we ever see an open brace, we somehow missed the [type] <name> prefix
+				src.Warning( "Missing decl name" );
+				src.SkipBracedSection( false );
+				continue;
 
-////			} else {
+			} else {
 
-////				if ( defaultType == declType_t.DECL_MAX_TYPES ) {
-////					src.Warning( "No type" );
-////					continue;
-////				}
-////				src.UnreadToken( &token );
-////				// use the default type
-////				identifiedType = defaultType;
-////			}
-////		}
+				if ( this.defaultType == declType_t.DECL_MAX_TYPES ) {
+					src.Warning( "No type" );
+					continue;
+				}
+				src.UnreadToken( token );
+				// use the default type
+				identifiedType = this.defaultType;
+			}
+		}
 
-////		// now parse the name
-////		if ( !src.ReadToken( &token ) ) {
-////			src.Warning( "Type without definition at end of file" );
-////			break;
-////		}
+		// now parse the name
+		var readToken = src.ReadToken(token);
+		if ( !readToken ) {
+			src.Warning( "Type without definition at end of file" );
+			break;
+		}
 
-////		if ( !token.Icmp( "{" ) ) {
-////			// if we ever see an open brace, we somehow missed the [type] <name> prefix
-////			src.Warning( "Missing decl name" );
-////			src.SkipBracedSection( false );
-////			continue;
-////		}
+		if (!token.$.Icmp( "{" ) ) {
+			// if we ever see an open brace, we somehow missed the [type] <name> prefix
+			src.Warning( "Missing decl name" );
+			src.SkipBracedSection( false );
+			continue;
+		}
 
-////		// FIXME: export decls are only used by the model exporter, they are skipped here for now
-////		if ( identifiedType == DECL_MODELEXPORT ) {
-////			src.SkipBracedSection();
-////			continue;
-////		}
+		// FIXME: export decls are only used by the model exporter, they are skipped here for now
+		if (identifiedType == declType_t.DECL_MODELEXPORT ) {
+			src.SkipBracedSection();
+			continue;
+		}
 
-////		name = token;
+		name = token.$;
 
-////		// make sure there's a '{'
-////		if ( !src.ReadToken( &token ) ) {
-////			src.Warning( "Type without definition at end of file" );
-////			break;
-////		}
-////		if ( token != "{" ) {
-////			src.Warning( "Expecting '{' but found '%s'", token.c_str() );
-////			continue;
-////		}
-////		src.UnreadToken( &token );
+		// make sure there's a '{'
+		var readToken1 = src.ReadToken(token);
+		if ( !readToken1 ) {
+			src.Warning( "Type without definition at end of file" );
+			break;
+		}
+		if ( token.$.c_str() != "{" ) {
+			src.Warning("Expecting '{' but found '%s'", token.$.c_str() );
+			continue;
+		}
+		src.UnreadToken( token );
 
-////		// now take everything until a matched closing brace
-////		src.SkipBracedSection();
-////		size = src.GetFileOffset() - startMarker;
+		// now take everything until a matched closing brace
+		src.SkipBracedSection();
+		size = src.GetFileOffset() - startMarker;
 
-////		// look it up, possibly getting a newly created default decl
-////		reparse = false;
-////		newDecl = declManagerLocal.FindTypeWithoutParsing( identifiedType, name, false );
-////		if ( newDecl ) {
-////			// update the existing copy
-////			if ( newDecl.sourceFile != this || newDecl.redefinedInReload ) {
-////				src.Warning( "%s '%s' previously defined at %s:%i", declManagerLocal.GetDeclNameFromType( identifiedType ),
-////								name.c_str(), newDecl.sourceFile.fileName.c_str(), newDecl.sourceLine );
-////				continue;
-////			}
-////			if ( newDecl.declState != declState_t.DS_UNPARSED ) {
-////				reparse = true;
-////			}
-////		} else {
-////			// allow it to be created as a default, then add it to the per-file list
-////			newDecl = declManagerLocal.FindTypeWithoutParsing( identifiedType, name, true );
-////			newDecl.nextInFile = this.decls;
-////			this.decls = newDecl;
-////		}
+		// look it up, possibly getting a newly created default decl
+		reparse = false;
+		newDecl = declManagerLocal.FindTypeWithoutParsing( identifiedType, name.data, false );
+		if ( newDecl ) {
+			// update the existing copy
+			if ( newDecl.sourceFile != this || newDecl.redefinedInReload ) {
+				src.Warning( "%s '%s' previously defined at %s:%i", declManagerLocal.GetDeclNameFromType( identifiedType ),
+								name.c_str(), newDecl.sourceFile.fileName.c_str(), newDecl.sourceLine );
+				continue;
+			}
+			if ( newDecl.declState != declState_t.DS_UNPARSED ) {
+				reparse = true;
+			}
+		} else {
+			// allow it to be created as a default, then add it to the per-file list
+			newDecl = declManagerLocal.FindTypeWithoutParsing( identifiedType, name.data, true );
+			newDecl.nextInFile = this.decls;
+			this.decls = newDecl;
+		}
 
+		todoThrow();
 ////		newDecl.redefinedInReload = true;
 
 ////		if ( newDecl.textSource ) {
@@ -806,7 +806,7 @@ var/*int */c_savedMemory = 0;
 ////		if ( reparse ) {
 ////			newDecl.ParseLocal();
 ////		}
-////	}
+	}
 
 	this.numLines = src.GetLineNum();
 
@@ -868,7 +868,7 @@ idDeclManagerLocal.prototype.Init = function( ):void {
 	this.RegisterDeclType( "email",				declType_t.DECL_EMAIL,			idDeclAllocator<idDeclEmail>(idDeclEmail) );
 	this.RegisterDeclType( "video",				declType_t.DECL_VIDEO,			idDeclAllocator<idDeclVideo>(idDeclVideo) );
 	this.RegisterDeclType( "audio",				declType_t.DECL_AUDIO,			idDeclAllocator<idDeclAudio>(idDeclAudio) );
-    debugger;
+    
 	this.RegisterDeclFolder( "materials",		".mtr",				declType_t.DECL_MATERIAL );
 	this.RegisterDeclFolder( "skins",			".skin",			declType_t.DECL_SKIN );
 	this.RegisterDeclFolder( "sound",			".sndshd",			declType_t.DECL_SOUND );
@@ -1117,28 +1117,29 @@ idDeclManagerLocal.prototype.RegisterDeclFolder = function ( folder: string, ext
 ////	return MD5_BlockChecksum( checksumData, total * 2 * sizeof( int ) );
 ////}
 
-/////*
-////===================
-////idDeclManagerLocal::GetNumDeclTypes
-////===================
-////*/
-////int idDeclManagerLocal::GetNumDeclTypes( ) const {
-////	return this.declTypes.Num();
-////}
+/*
+===================
+idDeclManagerLocal::GetNumDeclTypes
+===================
+*/
+/*int */
+idDeclManagerLocal.prototype.GetNumDeclTypes = function ( ):number {
+	return this.declTypes.Num ( );
+};
 
-/////*
-////===================
-////idDeclManagerLocal::GetDeclNameFromType
-////===================
-////*/
-////const char * idDeclManagerLocal::GetDeclNameFromType( declType_t type ) const {
-////	int typeIndex = (int)type;
+/*
+===================
+idDeclManagerLocal::GetDeclNameFromType
+===================
+*/
+idDeclManagerLocal.prototype.GetDeclNameFromType = function ( type: declType_t ): string {
+	var /*int */typeIndex = /*(int)*/type;
 
-////	if ( typeIndex < 0 || typeIndex >= this.declTypes.Num() || this.declTypes[typeIndex] == NULL ) {
-////		common.FatalError( "idDeclManager::GetDeclNameFromType: bad type: %i", typeIndex );
-////	}
-////	return this.declTypes[typeIndex].typeName;
-////}
+	if ( typeIndex < 0 || typeIndex >= this.declTypes.Num ( ) || this.declTypes[typeIndex] == NULL ) {
+		common.FatalError( "idDeclManager::GetDeclNameFromType: bad type: %i", typeIndex );
+	}
+	return this.declTypes[typeIndex].typeName;
+};
 
 /*
 ===================
@@ -2129,15 +2130,15 @@ idDeclLocal.prototype.GetText = function ( /*char **/text: Uint8Array ): void {
 idDeclLocal::Parse
 =================
 */
-idDeclLocal.prototype.Parse = function( text:string, textLength:number ):boolean {
-    var src = new idLexer ( );
-    todoThrow ( );
+idDeclLocal.prototype.Parse = function ( text: string, textLength: number ): boolean {
+	var src = new idLexer ( );
+	todoThrow ( );
 	//src.LoadMemory( text, textLength, GetFileName(), GetLineNum() );
 	//src.SetFlags( DECL_LEXER_FLAGS );
 	//src.SkipUntilString( "{" );
 	//src.SkipBracedSection( false );
 	return true;
-}
+};
 
 /*
 =================
@@ -2179,10 +2180,10 @@ idDeclLocal::AllocateSelf
 =================
 */
 idDeclLocal.prototype.AllocateSelf = function ( ): void {
-    if ( this.self == NULL ) {
-        this.self = declManagerLocal.GetDeclType( /*(int)*/this.type ).allocator ( );
-        this.self.base = this;
-    }
+	if ( this.self == NULL ) {
+		this.self = declManagerLocal.GetDeclType( /*(int)*/this.type ).allocator ( );
+		this.self.base = this;
+	}
 };
 
 /*
@@ -2190,19 +2191,19 @@ idDeclLocal.prototype.AllocateSelf = function ( ): void {
 idDeclLocal::ParseLocal
 =================
 */
-idDeclLocal.prototype.ParseLocal = function( ):void {
+idDeclLocal.prototype.ParseLocal = function ( ): void {
 	var generatedDefaultText = false;
 
-	this.AllocateSelf();
+	this.AllocateSelf ( );
 
 	// always free data before parsing
-	this.self.FreeData();
+	this.self.FreeData ( );
 
-	declManagerLocal.MediaPrint( "parsing %s %s\n", declManagerLocal.declTypes[this.type].typeName.c_str(), this.name.c_str() );
+	declManagerLocal.MediaPrint( "parsing %s %s\n", declManagerLocal.declTypes[this.type].typeName.c_str ( ), this.name.c_str ( ) );
 
 	// if no text source try to generate default text
 	if ( this.textSource == NULL ) {
-		generatedDefaultText = this.self.SetDefaultText();
+		generatedDefaultText = this.self.SetDefaultText ( );
 	}
 
 	// indent for DEFAULTED or media file references
@@ -2210,7 +2211,7 @@ idDeclLocal.prototype.ParseLocal = function( ):void {
 
 	// no text immediately causes a MakeDefault()
 	if ( this.textSource == NULL ) {
-		this.MakeDefault();
+		this.MakeDefault ( );
 		declManagerLocal.indent--;
 		return;
 	}
@@ -2218,9 +2219,9 @@ idDeclLocal.prototype.ParseLocal = function( ):void {
 	this.declState = declState_t.DS_PARSED;
 
 	// parse
-	var/*char **/declText = new Uint8Array(this.GetTextLength() + 1 );
+	var /*char **/declText = new Uint8Array( this.GetTextLength ( ) + 1 );
 	this.GetText( declText );
-	this.self.Parse( declText, this.GetTextLength() );
+	this.self.Parse( declText, this.GetTextLength ( ) );
 
 	// free generated text
 	if ( generatedDefaultText ) {

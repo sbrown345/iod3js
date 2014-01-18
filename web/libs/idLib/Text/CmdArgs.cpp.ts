@@ -119,7 +119,7 @@
 ////	lex.SetFlags( LEXFL_NOERRORS
 ////				| LEXFL_NOWARNINGS
 ////				| LEXFL_NOSTRINGCONCAT
-////				| LEXFL_ALLOWPATHNAMES
+////				| lexerFlags_t.LEXFL_ALLOWPATHNAMES
 ////				| LEXFL_NOSTRINGESCAPECHARS
 ////				| LEXFL_ALLOWIPADDRESSES | ( keepAsStrings ? lexerFlags_t.LEXFL_ONLYSTRINGS : 0 ) );
 

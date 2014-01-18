@@ -1723,7 +1723,7 @@
 ////	if ( !hasBump ) {
 ////		idStr::snPrintf( buffer, sizeof( buffer ), "blend bumpmap\nmap _flat\n}\n" );
 ////		newSrc.LoadMemory( buffer, strlen(buffer), "bumpmap" );
-////		newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | LEXFL_ALLOWPATHNAMES );
+////		newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 ////		ParseStage( newSrc, trpDefault );
 ////		newSrc.FreeSource();
 ////	}
@@ -1731,7 +1731,7 @@
 ////	if ( !hasDiffuse && !hasSpecular && !hasReflection ) {
 ////		idStr::snPrintf( buffer, sizeof( buffer ), "blend diffusemap\nmap _white\n}\n" );
 ////		newSrc.LoadMemory( buffer, strlen(buffer), "diffusemap" );
-////		newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | LEXFL_ALLOWPATHNAMES );
+////		newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 ////		ParseStage( newSrc, trpDefault );
 ////		newSrc.FreeSource();
 ////	}
@@ -2022,7 +2022,7 @@
 ////			str = R_ParsePastImageProgram( src );
 ////			idStr::snPrintf( buffer, sizeof( buffer ), "blend diffusemap\nmap %s\n}\n", str );
 ////			newSrc.LoadMemory( buffer, strlen(buffer), "diffusemap" );
-////			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | LEXFL_ALLOWPATHNAMES );
+////			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 ////			ParseStage( newSrc, trpDefault );
 ////			newSrc.FreeSource();
 ////			continue;
@@ -2032,7 +2032,7 @@
 ////			str = R_ParsePastImageProgram( src );
 ////			idStr::snPrintf( buffer, sizeof( buffer ), "blend specularmap\nmap %s\n}\n", str );
 ////			newSrc.LoadMemory( buffer, strlen(buffer), "specularmap" );
-////			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | LEXFL_ALLOWPATHNAMES );
+////			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 ////			ParseStage( newSrc, trpDefault );
 ////			newSrc.FreeSource();
 ////			continue;
@@ -2042,7 +2042,7 @@
 ////			str = R_ParsePastImageProgram( src );
 ////			idStr::snPrintf( buffer, sizeof( buffer ), "blend bumpmap\nmap %s\n}\n", str );
 ////			newSrc.LoadMemory( buffer, strlen(buffer), "bumpmap" );
-////			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | LEXFL_ALLOWPATHNAMES );
+////			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 ////			ParseStage( newSrc, trpDefault );
 ////			newSrc.FreeSource();
 ////			continue;

@@ -24,6 +24,10 @@ function sizeof(obj: any) : number {
         throw "cannot get size of number type";
     }
 
+	if ( obj === int) {
+		return 4;
+	}
+
     if (obj.size !== undefined) {
         return obj.size;
     }

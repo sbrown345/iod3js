@@ -277,7 +277,7 @@
 
 ////	// register game specific decl types
 ////	declManager.RegisterDeclType( "model",				DECL_MODELDEF,		idDeclAllocator<idDeclModelDef> );
-////	declManager.RegisterDeclType( "export",			DECL_MODELEXPORT,	idDeclAllocator<idDecl> );
+////	declManager.RegisterDeclType( "export",			declType_t.DECL_MODELEXPORT,	idDeclAllocator<idDecl> );
 
 ////	// register game specific decl folders
 ////	declManager.RegisterDeclFolder( "def",				".def",				DECL_ENTITYDEF );

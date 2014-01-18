@@ -34,84 +34,84 @@
 
 ////#define PUNCTABLE
 
-//////longer punctuations first
-////punctuation_t default_punctuations[] = {
-////	//binary operators
-////	{">>=",P_RSHIFT_ASSIGN},
-////	{"<<=",P_LSHIFT_ASSIGN},
-////	//
-////	{"...",P_PARMS},
-////	//define merge operator
-////	{"##",P_PRECOMPMERGE},				// pre-compiler
-////	//logic operators
-////	{"&&",P_LOGIC_AND},					// pre-compiler
-////	{"||",P_LOGIC_OR},					// pre-compiler
-////	{">=",P_LOGIC_GEQ},					// pre-compiler
-////	{"<=",P_LOGIC_LEQ},					// pre-compiler
-////	{"==",P_LOGIC_EQ},					// pre-compiler
-////	{"!=",P_LOGIC_UNEQ},				// pre-compiler
-////	//arithmatic operators
-////	{"*=",P_MUL_ASSIGN},
-////	{"/=",P_DIV_ASSIGN},
-////	{"%=",P_MOD_ASSIGN},
-////	{"+=",P_ADD_ASSIGN},
-////	{"-=",P_SUB_ASSIGN},
-////	{"++",P_INC},
-////	{"--",P_DEC},
-////	//binary operators
-////	{"&=",P_BIN_AND_ASSIGN},
-////	{"|=",P_BIN_OR_ASSIGN},
-////	{"^=",P_BIN_XOR_ASSIGN},
-////	{">>",P_RSHIFT},					// pre-compiler
-////	{"<<",P_LSHIFT},					// pre-compiler
-////	//reference operators
-////	{".",P_POINTERREF},
-////	//C++
-////	{"::",P_CPP1},
-////	{".*",P_CPP2},
-////	//arithmatic operators
-////	{"*",P_MUL},						// pre-compiler
-////	{"/",P_DIV},						// pre-compiler
-////	{"%",P_MOD},						// pre-compiler
-////	{"+",P_ADD},						// pre-compiler
-////	{"-",P_SUB},						// pre-compiler
-////	{"=",P_ASSIGN},
-////	//binary operators
-////	{"&",P_BIN_AND},					// pre-compiler
-////	{"|",P_BIN_OR},						// pre-compiler
-////	{"^",P_BIN_XOR},					// pre-compiler
-////	{"~",P_BIN_NOT},					// pre-compiler
-////	//logic operators
-////	{"!",P_LOGIC_NOT},					// pre-compiler
-////	{">",P_LOGIC_GREATER},				// pre-compiler
-////	{"<",P_LOGIC_LESS},					// pre-compiler
-////	//reference operator
-////	{".",P_REF},
-////	//seperators
-////	{",",P_COMMA},						// pre-compiler
-////	{";",P_SEMICOLON},
-////	//label indication
-////	{":",P_COLON},						// pre-compiler
-////	//if statement
-////	{"?",P_QUESTIONMARK},				// pre-compiler
-////	//embracements
-////	{"(",P_PARENTHESESOPEN},			// pre-compiler
-////	{")",P_PARENTHESESCLOSE},			// pre-compiler
-////	{"{",P_BRACEOPEN},					// pre-compiler
-////	{"}",P_BRACECLOSE},					// pre-compiler
-////	{"[",P_SQBRACKETOPEN},
-////	{"]",P_SQBRACKETCLOSE},
-////	//
-////	{"\\",P_BACKSLASH},
-////	//precompiler operator
-////	{"#",P_PRECOMP},					// pre-compiler
-////	{"$",P_DOLLAR},
-////	{NULL, 0}
-////};
+//longer punctuations first
+var default_punctuations = [
+	//binary operators
+	new punctuation_t(">>=",P_RSHIFT_ASSIGN),
+	new punctuation_t("<<=",P_LSHIFT_ASSIGN),
+	//
+	new punctuation_t("...(",P_PARMS),
+	// define merge operator
+	new punctuation_t("##",P_PRECOMPMERGE),				// pre-compiler
+	// logic operators
+	new punctuation_t("&&",P_LOGIC_AND),					// pre-compiler
+	new punctuation_t("||",P_LOGIC_OR),					// pre-compiler
+	new punctuation_t(">=",P_LOGIC_GEQ),					// pre-compiler
+	new punctuation_t("<=",P_LOGIC_LEQ),					// pre-compiler
+	new punctuation_t("==",P_LOGIC_EQ),					// pre-compiler
+	new punctuation_t("!=",P_LOGIC_UNEQ),				// pre-compiler
+	// arithmatic operators
+	new punctuation_t("*=",P_MUL_ASSIGN),
+	new punctuation_t("/=",P_DIV_ASSIGN),
+	new punctuation_t("%=",P_MOD_ASSIGN),
+	new punctuation_t("+=",P_ADD_ASSIGN),
+	new punctuation_t("-=",P_SUB_ASSIGN),
+	new punctuation_t("++",P_INC),
+	new punctuation_t("--",P_DEC),
+	// binary operators
+	new punctuation_t("&=",P_BIN_AND_ASSIGN),
+	new punctuation_t("|=",P_BIN_OR_ASSIGN),
+	new punctuation_t("^=",P_BIN_XOR_ASSIGN),
+	new punctuation_t(">>",P_RSHIFT),					// pre-compiler
+	new punctuation_t("<<",P_LSHIFT),					// pre-compiler
+	// reference operators
+	new punctuation_t(".",P_POINTERREF),
+	// C++
+	new punctuation_t("::",P_CPP1),
+	new punctuation_t(".*",P_CPP2),
+	// arithmatic operators
+	new punctuation_t("*",P_MUL),						// pre-compiler
+	new punctuation_t("/",P_DIV),						// pre-compiler
+	new punctuation_t("%",P_MOD),						// pre-compiler
+	new punctuation_t("+",P_ADD),						// pre-compiler
+	new punctuation_t("-",P_SUB),						// pre-compiler
+	new punctuation_t("=",P_ASSIGN),
+	// binary operators
+	new punctuation_t("&",P_BIN_AND),					// pre-compiler
+	new punctuation_t("|",P_BIN_OR),						// pre-compiler
+	new punctuation_t("^",P_BIN_XOR),					// pre-compiler
+	new punctuation_t("~",P_BIN_NOT),					// pre-compiler
+	// logic operators
+	new punctuation_t("!",P_LOGIC_NOT),					// pre-compiler
+	new punctuation_t(">",P_LOGIC_GREATER),				// pre-compiler
+	new punctuation_t("<",P_LOGIC_LESS),					// pre-compiler
+	// reference operator
+	new punctuation_t(".",P_REF),
+	// seperators
+	new punctuation_t(",",P_COMMA),						// pre-compiler
+	new punctuation_t(";",P_SEMICOLON),
+	// label indication
+	new punctuation_t(":",P_COLON),						// pre-compiler
+	//if statement
+	new punctuation_t("?",P_QUESTIONMARK),				// pre-compiler
+	// embracements
+	new punctuation_t("(",P_PARENTHESESOPEN),			// pre-compiler
+	new punctuation_t(")",P_PARENTHESESCLOSE),			// pre-compiler
+	new punctuation_t("{",P_BRACEOPEN),					// pre-compiler
+	new punctuation_t(")",P_BRACECLOSE),					// pre-compiler
+	new punctuation_t("[",P_SQBRACKETOPEN),
+	new punctuation_t("]",P_SQBRACKETCLOSE),
+	//
+	new punctuation_t("\\\\",P_BACKSLASH),
+	// precompiler operator
+	new punctuation_t("#",P_PRECOMP),					// pre-compiler
+	new punctuation_t("$",P_DOLLAR),
+	new punctuation_t(null, 0)
+];
 
-////int default_punctuationtable[256];
-////int default_nextpunctuation[sizeof(default_punctuations) / sizeof(punctuation_t)];
-////int default_setup;
+var default_punctuationtable = new Int32Array(256);
+var default_nextpunctuation = new Int32Array(424 / 8); //sizeof(default_punctuations) / sizeof(punctuation_t)
+var /*int */default_setup = 0;
 
 ////char idLexer::baseFolder[ 256 ];
 
@@ -149,11 +149,11 @@ class idLexer {
 	tokenavailable: number; // set by unreadToken
 	/*int			*/
 	flags: number; // several script flags
-	/*const punctuation_t *punctuations;		// the punctuations used in the script
+	punctuations: punctuation_t[];		// the punctuations used in the script
     /*int *			*/
-	punctuationtable: number; // ASCII table with punctuations
+	punctuationtable: Int32Array; // ASCII table with punctuations
 	/*int *			*/
-	nextpunctuation: number; // next punctuation in chain
+	nextpunctuation: Int32Array; // next punctuation in chain
 	/*idToken		*/
 	token: idToken; // available token
 	/*idLexer *		*/
@@ -165,7 +165,7 @@ class idLexer {
 	baseFolder: string /*[ 256 ]*/; // base folder to load files from
 
 	////ID_INLINE const char *idLexer::GetFileName( void ) {
-	////	return idLexer::filename;
+	////	return this.filename;
 	////}
 
 	GetFileOffset ( ): number {
@@ -180,68 +180,65 @@ class idLexer {
 		return this.line;
 	}
 
-	/////*
-	////================
-	////idLexer::CreatePunctuationTable
-	////================
-	////*/
-	////void idLexer::CreatePunctuationTable( const punctuation_t *punctuations ) {
-	////	int i, n, lastp;
-	////	const punctuation_t *p, *newp;
+	/*
+	================
+	idLexer::CreatePunctuationTable
+	================
+	*/
+	CreatePunctuationTable ( punctuations: punctuation_t[] ): void {
+		var /*int */i: number, n: number, lastp: number;
+		var p: punctuation_t, newp: punctuation_t;
 
-	////	//get memory for the table
-	////	if ( punctuations == default_punctuations ) {
-	////		idLexer::punctuationtable = default_punctuationtable;
-	////		idLexer::nextpunctuation = default_nextpunctuation;
-	////		if ( default_setup ) {
-	////			return;
-	////		}
-	////		default_setup = true;
-	////		i = sizeof(default_punctuations) / sizeof(punctuation_t);
-	////	}
-	////	else {
-	////		if ( !idLexer::punctuationtable || idLexer::punctuationtable == default_punctuationtable ) {
-	////			idLexer::punctuationtable = (int *) Mem_Alloc(256 * sizeof(int));
-	////		}
-	////		if ( idLexer::nextpunctuation && idLexer::nextpunctuation != default_nextpunctuation ) {
-	////			Mem_Free( idLexer::nextpunctuation );
-	////		}
-	////		for (i = 0; punctuations[i].p; i++) {
-	////		}
-	////		idLexer::nextpunctuation = (int *) Mem_Alloc(i * sizeof(int));
-	////	}
-	////	memset(idLexer::punctuationtable, 0xFF, 256 * sizeof(int));
-	////	memset(idLexer::nextpunctuation, 0xFF, i * sizeof(int));
-	////	//add the punctuations in the list to the punctuation table
-	////	for (i = 0; punctuations[i].p; i++) {
-	////		newp = &punctuations[i];
-	////		lastp = -1;
-	////		//sort the punctuations in this table entry on length (longer punctuations first)
-	////		for (n = idLexer::punctuationtable[(unsigned int) newp.p[0]]; n >= 0; n = idLexer::nextpunctuation[n] ) {
-	////			p = &punctuations[n];
-	////			if (strlen(p.p) < strlen(newp.p)) {
-	////				idLexer::nextpunctuation[i] = n;
-	////				if (lastp >= 0) {
-	////					idLexer::nextpunctuation[lastp] = i;
-	////				}
-	////				else {
-	////					idLexer::punctuationtable[(unsigned int) newp.p[0]] = i;
-	////				}
-	////				break;
-	////			}
-	////			lastp = n;
-	////		}
-	////		if (n < 0) {
-	////			idLexer::nextpunctuation[i] = -1;
-	////			if (lastp >= 0) {
-	////				idLexer::nextpunctuation[lastp] = i;
-	////			}
-	////			else {
-	////				idLexer::punctuationtable[(unsigned int) newp.p[0]] = i;
-	////			}
-	////		}
-	////	}
-	////}
+		//get memory for the table
+		if ( punctuations == default_punctuations ) {
+			this.punctuationtable = default_punctuationtable;
+			this.nextpunctuation = default_nextpunctuation;
+			if ( default_setup ) {
+				return;
+			}
+			default_setup = 1 /*true*/;
+			i = 53;//sizeof( default_punctuations ) / sizeof( punctuation_t );
+		} else {
+			if ( !this.punctuationtable || this.punctuationtable == default_punctuationtable ) {
+				this.punctuationtable = new Int32Array( 256 ); //(int *) Mem_Alloc(256 * sizeof(int));
+			}
+			if ( this.nextpunctuation && this.nextpunctuation != default_nextpunctuation ) {
+				Mem_Free( this.nextpunctuation );
+			}
+			for ( i = 0; punctuations[i].p; i++ ) {
+			}
+			this.nextpunctuation = new Int32Array( i ); // (int *) Mem_Alloc(i * sizeof(int));
+		}
+		memset( this.punctuationtable, 0xFF, 256 * sizeof( int ) );
+		memset( this.nextpunctuation, 0xFF, i * sizeof( int ) );
+		//add the punctuations in the list to the punctuation table
+		for ( i = 0; punctuations[i].p; i++ ) {
+			newp = /*&*/punctuations[i];
+			lastp = -1;
+			//sort the punctuations in this table entry on length (longer punctuations first)
+			for ( n = this.punctuationtable[newp.p.charCodeAt( 0 )]; n >= 0; n = this.nextpunctuation[n] ) {
+				p = /*&*/punctuations[n];
+				if ( strlen( p.p ) < strlen( newp.p ) ) {
+					this.nextpunctuation[i] = n;
+					if ( lastp >= 0 ) {
+						this.nextpunctuation[lastp] = i;
+					} else {
+						this.punctuationtable[newp.p.charCodeAt( 0 )] = i;
+					}
+					break;
+				}
+				lastp = n;
+			}
+			if ( n < 0 ) {
+				this.nextpunctuation[i] = -1;
+				if ( lastp >= 0 ) {
+					this.nextpunctuation[lastp] = i;
+				} else {
+					this.punctuationtable[newp.p.charCodeAt( 0 )] = i;
+				}
+			}
+		}
+	}
 
 	/////*
 	////================
@@ -251,9 +248,9 @@ class idLexer {
 	////const char *idLexer::GetPunctuationFromId( int id ) {
 	////	int i;
 
-	////	for (i = 0; idLexer::punctuations[i].p; i++) {
-	////		if ( idLexer::punctuations[i].n == id ) {
-	////			return idLexer::punctuations[i].p;
+	////	for (i = 0; this.punctuations[i].p; i++) {
+	////		if ( this.punctuations[i].n == id ) {
+	////			return this.punctuations[i].p;
 	////		}
 	////	}
 	////	return "unkown punctuation";
@@ -267,9 +264,9 @@ class idLexer {
 	////int idLexer::GetPunctuationId( const char *p ) {
 	////	int i;
 
-	////	for (i = 0; idLexer::punctuations[i].p; i++) {
-	////		if ( !strcmp(idLexer::punctuations[i].p, p) ) {
-	////			return idLexer::punctuations[i].n;
+	////	for (i = 0; this.punctuations[i].p; i++) {
+	////		if ( !strcmp(this.punctuations[i].p, p) ) {
+	////			return this.punctuations[i].n;
 	////		}
 	////	}
 	////	return 0;
@@ -280,13 +277,13 @@ class idLexer {
 	idLexer::Error
 	================
 	*/
-	Error( str:string, ...args:any[] ) {
-		var text: string;//char text[MAX_STRING_CHARS];
+	Error ( str: string, ...args: any[] ) {
+		var text: string; //char text[MAX_STRING_CHARS];
 		//va_list ap;
 
 		this.hadError = true;
 
-		if (this.flags & lexerFlags_t.LEXFL_NOERRORS ) {
+		if ( this.flags & lexerFlags_t.LEXFL_NOERRORS ) {
 			return;
 		}
 
@@ -294,130 +291,132 @@ class idLexer {
 		//vsprintf(text, str, ap);
 		//va_end(ap);
 
+		todoThrow ( );
 		text = "todo - add in js sprintf here";
 
-		if (this.flags & lexerFlags_t.LEXFL_NOFATALERRORS ) {
-			common.Warning("file %s, line %d: %s", this.filename.c_str(), this.line, text );
+		if ( this.flags & lexerFlags_t.LEXFL_NOFATALERRORS ) {
+			common.Warning( "file %s, line %d: %s", this.filename.c_str ( ), this.line, text );
 		} else {
-			common.Error("file %s, line %d: %s", this.filename.c_str(), this.line, text );
+			common.Error( "file %s, line %d: %s", this.filename.c_str ( ), this.line, text );
 		}
 	}
 
-	/////*
-	////================
-	////idLexer::Warning
-	////================
-	////*/
-	////void idLexer::Warning( const char *str, ... ) {
-	////	char text[MAX_STRING_CHARS];
-	////	va_list ap;
+	/*
+	================
+	idLexer::Warning
+	================
+	*/
+	Warning ( str: string, ...args: any[] ): void {
+		var text = ""; //char text[MAX_STRING_CHARS];
+		//va_list ap;
 
-	////	if ( this.flags & LEXFL_NOWARNINGS ) {
-	////		return;
-	////	}
+		if ( this.flags & lexerFlags_t.LEXFL_NOWARNINGS ) {
+			return;
+		}
+		todoThrow ( );
+		//va_start( ap, str );
+		//vsprintf( text, str, ap );
+		//va_end( ap );
+		text = "todo - add in js sprintf here";
+		common.Warning( "file %s, line %d: %s", this.filename.c_str ( ), this.line, text );
+	}
 
-	////	va_start( ap, str );
-	////	vsprintf( text, str, ap );
-	////	va_end( ap );
-	////	idLib::common.Warning( "file %s, line %d: %s", idLexer::filename.c_str(), idLexer::line, text );
-	////}
+	/*
+	================
+	idLexer::SetPunctuations
+	================
+	*/
+	SetPunctuations(p:punctuation_t[] ):void {
+	//#ifdef PUNCTABLE
+		if (p) {
+			this.CreatePunctuationTable( p );
+		}
+		else {
+			this.CreatePunctuationTable( default_punctuations );
+		}
+	//#endif //PUNCTABLE
+		if (p) {
+			this.punctuations = p;
+		}
+		else {
+			this.punctuations = default_punctuations;
+		}
+	}
 
-	/////*
-	////================
-	////idLexer::SetPunctuations
-	////================
-	////*/
-	////void idLexer::SetPunctuations( const punctuation_t *p ) {
-	////#ifdef PUNCTABLE
-	////	if (p) {
-	////		idLexer::CreatePunctuationTable( p );
-	////	}
-	////	else {
-	////		idLexer::CreatePunctuationTable( default_punctuations );
-	////	}
-	////#endif //PUNCTABLE
-	////	if (p) {
-	////		idLexer::punctuations = p;
-	////	}
-	////	else {
-	////		idLexer::punctuations = default_punctuations;
-	////	}
-	////}
+	/*
+	================
+	idLexer::ReadWhiteSpace
 
-	/////*
-	////================
-	////idLexer::ReadWhiteSpace
-
-	////Reads spaces, tabs, C-like comments etc.
-	////When a newline character is found the scripts line counter is increased.
-	////================
-	////*/
-	////int idLexer::ReadWhiteSpace( void ) {
-	////	while(1) {
-	////		// skip white space
-	////		while(this.buffer[this.script_p] <= ' ') {
-	////			if (!this.buffer[this.script_p]) {
-	////				return 0;
-	////			}
-	////			if (this.buffer[this.script_p] == '\n') {
-	////				idLexer::line++;
-	////			}
-	////			this.script_p++;
-	////		}
-	////		// skip comments
-	////		if (this.buffer[this.script_p] == '/') {
-	////			// comments //
-	////			if (*(this.script_p+1) == '/') {
-	////				this.script_p++;
-	////				do {
-	////					this.script_p++;
-	////					if ( !this.buffer[this.script_p] ) {
-	////						return 0;
-	////					}
-	////				}
-	////				while( this.buffer[this.script_p] != '\n' );
-	////				idLexer::line++;
-	////				this.script_p++;
-	////				if ( !this.buffer[this.script_p] ) {
-	////					return 0;
-	////				}
-	////				continue;
-	////			}
-	////			// comments /* */
-	////			else if (*(this.script_p+1) == '*') {
-	////				this.script_p++;
-	////				while( 1 ) {
-	////					this.script_p++;
-	////					if ( !this.buffer[this.script_p] ) {
-	////						return 0;
-	////					}
-	////					if ( this.buffer[this.script_p] == '\n' ) {
-	////						idLexer::line++;
-	////					}
-	////					else if ( this.buffer[this.script_p] == '/' ) {
-	////						if ( *(this.script_p-1) == '*' ) {
-	////							break;
-	////						}
-	////						if ( *(this.script_p+1) == '*' ) {
-	////							idLexer::Warning( "nested comment" );
-	////						}
-	////					}
-	////				}
-	////				this.script_p++;
-	////				if ( !this.buffer[this.script_p] ) {
-	////					return 0;
-	////				}
-	////				this.script_p++;
-	////				if ( !this.buffer[this.script_p] ) {
-	////					return 0;
-	////				}
-	////				continue;
-	////			}
-	////		}
-	////		break;
-	////	}
-	////	return 1;
-	////}
+	Reads spaces, tabs, C-like comments etc.
+	When a newline character is found the scripts line counter is increased.
+	================
+	*/
+	/*int */ReadWhiteSpace( ):number {
+		while(1) {
+			// skip white space
+			while(this.buffer[this.script_p] <= ' ') {
+				if (!this.buffer[this.script_p]) {
+					return 0;
+				}
+				if (this.buffer[this.script_p] == '\n') {
+					this.line++;
+				}
+				this.script_p++;
+			}
+			// skip comments
+			if (this.buffer[this.script_p] == '/') {
+				// comments //
+				if (this.buffer[this.script_p+1] == '/') {
+					this.script_p++;
+					do {
+						this.script_p++;
+						if ( !this.buffer[this.script_p] ) {
+							return 0;
+						}
+					}
+					while( this.buffer[this.script_p] != '\n' );
+					this.line++;
+					this.script_p++;
+					if ( !this.buffer[this.script_p] ) {
+						return 0;
+					}
+					continue;
+				}
+				// comments /* */
+				else if (this.buffer[this.script_p+1] == '*') {
+					this.script_p++;
+					while( 1 ) {
+						this.script_p++;
+						if ( !this.buffer[this.script_p] ) {
+							return 0;
+						}
+						if ( this.buffer[this.script_p] == '\n' ) {
+							this.line++;
+						}
+						else if ( this.buffer[this.script_p] == '/' ) {
+							if ( this.buffer[this.script_p-1] == '*' ) {
+								break;
+							}
+							if ( this.buffer[this.script_p+1] == '*' ) {
+								this.Warning( "nested comment" );
+							}
+						}
+					}
+					this.script_p++;
+					if ( !this.buffer[this.script_p] ) {
+						return 0;
+					}
+					this.script_p++;
+					if ( !this.buffer[this.script_p] ) {
+						return 0;
+					}
+					continue;
+				}
+			}
+			break;
+		}
+		return 1;
+	}
 
 	/////*
 	////================
@@ -459,7 +458,7 @@ class idLexer {
 	////			}
 	////			this.script_p--;
 	////			if (val > 0xFF) {
-	////				idLexer::Warning( "too large value in escape character" );
+	////				this.Warning( "too large value in escape character" );
 	////				val = 0xFF;
 	////			}
 	////			c = val;
@@ -480,7 +479,7 @@ class idLexer {
 	////			}
 	////			this.script_p--;
 	////			if (val > 0xFF) {
-	////				idLexer::Warning( "too large value in escape character" );
+	////				this.Warning( "too large value in escape character" );
 	////				val = 0xFF;
 	////			}
 	////			c = val;
@@ -495,15 +494,16 @@ class idLexer {
 	////	return 1;
 	////}
 
-	/////*
-	////================
-	////idLexer::ReadString
+	/*
+	================
+	idLexer::ReadString
 
-	////Escape characters are interpretted.
-	////Reads two strings with only a white space between them as one string.
-	////================
-	////*/
-	////int idLexer::ReadString( idToken *token, int quote ) {
+	Escape characters are interpretted.
+	Reads two strings with only a white space between them as one string.
+	================
+	*/
+	/*int */ReadString(token: idToken, /*int */quote: string): number {
+		todoThrow ( );
 	////	int tmpline;
 	////	const char *tmpscript_p;
 	////	char ch;
@@ -536,18 +536,18 @@ class idLexer {
 	////			}
 
 	////			tmpscript_p = this.script_p;
-	////			tmpline = idLexer::line;
+	////			tmpline = this.line;
 	////			// read white space between possible two consecutive strings
 	////			if ( !idLexer::ReadWhiteSpace() ) {
 	////				this.script_p = tmpscript_p;
-	////				idLexer::line = tmpline;
+	////				this.line = tmpline;
 	////				break;
 	////			}
 
 	////			if ( this.flags & LEXFL_NOSTRINGCONCAT ) {
 	////				if ( this.buffer[this.script_p] != '\\' ) {
 	////					this.script_p = tmpscript_p;
-	////					idLexer::line = tmpline;
+	////					this.line = tmpline;
 	////					break;
 	////				}
 	////				// step over the '\\'
@@ -561,7 +561,7 @@ class idLexer {
 	////			// if there's no leading qoute
 	////			if ( this.buffer[this.script_p] != quote ) {
 	////				this.script_p = tmpscript_p;
-	////				idLexer::line = tmpline;
+	////				this.line = tmpline;
 	////				break;
 	////			}
 	////			// step over the new leading quote
@@ -584,7 +584,7 @@ class idLexer {
 	////	if ( token.type == TT_LITERAL ) {
 	////		if ( !(this.flags & LEXFL_ALLOWMULTICHARLITERALS) ) {
 	////			if ( token.Length() != 1 ) {
-	////				idLexer::Warning( "literal is not one character long" );
+	////				this.Warning( "literal is not one character long" );
 	////			}
 	////		}
 	////		token.subtype = (*token)[0];
@@ -593,34 +593,34 @@ class idLexer {
 	////		// the sub type is the length of the string
 	////		token.subtype = token.Length();
 	////	}
-	////	return 1;
-	////}
+		return 1;
+	}
 
-	/////*
-	////================
-	////idLexer::ReadName
-	////================
-	////*/
-	////int idLexer::ReadName( idToken *token ) {
-	////	char c;
+	/*
+	================
+	idLexer::ReadName
+	================
+	*/
+	/*int*/ ReadName(token: idToken): number {
+		var/*char */c:string;
 
-	////	token.type = TT_NAME;
-	////	do {
-	////		token.AppendDirty( this.buffer[this.script_p+9] );
-	////		c = this.buffer[this.script_p];
-	////	} while ((c >= 'a' && c <= 'z') ||
-	////				(c >= 'A' && c <= 'Z') ||
-	////				(c >= '0' && c <= '9') ||
-	////				c == '_' ||
-	////				// if treating all tokens as strings, don't parse '-' as a seperate token
-	////				((this.flags & lexerFlags_t.LEXFL_ONLYSTRINGS) && (c == '-')) ||
-	////				// if special path name characters are allowed
-	////				((this.flags & LEXFL_ALLOWPATHNAMES) && (c == '/' || c == '\\' || c == ':' || c == '.')) );
-	////	token.data[token.len] = '\0';// TODO: WATCH OUT HERE
-	////	//the sub type is the length of the name
-	////	token.subtype = token.Length();
-	////	return 1;
-	////}
+		token.type = TT_NAME;
+		do {
+			token.AppendDirty( this.buffer[this.script_p++] );
+			c = this.buffer[this.script_p];
+		} while ((c >= 'a' && c <= 'z') ||
+					(c >= 'A' && c <= 'Z') ||
+					(c >= '0' && c <= '9') ||
+					c == '_' ||
+					// if treating all tokens as strings, don't parse '-' as a seperate token
+					((this.flags & lexerFlags_t.LEXFL_ONLYSTRINGS) && (c == '-')) ||
+					// if special path name characters are allowed
+					((this.flags & lexerFlags_t.LEXFL_ALLOWPATHNAMES) && (c == '/' || c == '\\' || c == ':' || c == '.')) );
+		//token.data[token.len] = '\0';// TODO: WATCH OUT HERE
+		//the sub type is the length of the name
+		token.subtype = token.Length();
+		return 1;
+	}
 
 	/////*
 	////================
@@ -631,19 +631,20 @@ class idLexer {
 	////	int i;
 
 	////	for ( i = 0; str[i]; i++ ) {
-	////		if ( this.script_p[i] != str[i] ) {
+	////		if ( this.buffer[this.script_p + i] != str[i] ) {
 	////			return false;
 	////		}
 	////	}
 	////	return true;
 	////}
 
-	/////*
-	////================
-	////idLexer::ReadNumber
-	////================
-	////*/
-	////int idLexer::ReadNumber( idToken *token ) {
+	/*
+	================
+	idLexer::ReadNumber
+	================
+	*/
+	/*int*/ ReadNumber(token: idToken): number {
+		todoThrow ( );
 	////	int i;
 	////	int dot;
 	////	char c, c2;
@@ -834,53 +835,56 @@ class idLexer {
 	////		}
 	////	}
 	////	token.data[token.len] = '\0';// TODO: WATCH OUT HERE
-	////	return 1;
-	////}
+		return 1;
+	}
 
-	/////*
-	////================
-	////idLexer::ReadPunctuation
-	////================
-	////*/
-	////int idLexer::ReadPunctuation( idToken *token ) {
-	////	int l, n, i;
-	////	char const* p;
-	////	const punctuation_t *punc;
+	/*
+	================
+	idLexer::ReadPunctuation
+	================
+	*/
+	/*int */ReadPunctuation(token: idToken): number {
+		var/*int */l: number, n: number, i: number;
+		var /*char const* */p:string;
+		var punc: punctuation_t;
 
-	////#ifdef PUNCTABLE
-	////	for (n = idLexer::punctuationtable[(unsigned int)*(this.script_p)]; n >= 0; n = idLexer::nextpunctuation[n])
-	////	{
-	////		punc = &(idLexer::punctuations[n]);
-	////#else
-	////	int i;
+	//#ifdef PUNCTABLE
+		for (n = this.punctuationtable[this.buffer.charCodeAt(this.script_p) >>> 0]; n >= 0; n = this.nextpunctuation[n])
+		{
+			punc = this.punctuations[n];
+	//#else
+	//	int i;
 
-	////	for (i = 0; idLexer::punctuations[i].p; i++) {
-	////		punc = &idLexer::punctuations[i];
-	////#endif
-	////		p = punc.p;
-	////		// check for this punctuation in the script
-	////		for ( l = 0; p[l] && this.script_p[l]; l++ ) {
-	////			if ( this.script_p[l] != p[l] ) {
-	////				break;
-	////			}
-	////		}
-	////		if ( !p[l] ) {
-	////			//
-	////			token.EnsureAlloced( l+1, false );
-	////			for ( i = 0; i <= l; i++ ) {
-	////				token.data[i] = p[i];
-	////			}
-	////			token.len = l;
-	////			//
-	////			this.script_p += l;
-	////			token.type = TT_PUNCTUATION;
-	////			// sub type is the punctuation id
-	////			token.subtype = punc.n;
-	////			return 1;
-	////		}
-	////	}
-	////	return 0;
-	////}
+	//	for (i = 0; this.punctuations[i].p; i++) {
+	//		punc = &this.punctuations[i];
+	//#endif
+			p = punc.p;
+			// check for this punctuation in the script
+			for ( l = 0; p[l] && this.buffer[this.script_p + l]; l++ ) {
+				if ( this.buffer[this.script_p + l] != p[l] ) {
+					break;
+				}
+			}
+			if ( !p[l] ) {
+				//
+				//token.EnsureAlloced( l+1, false );
+				//for ( i = 0; i <= l; i++ ) {
+				//	//token.data[i] = p[i];
+				//	token.data += p[i];
+				//}
+				token.data = p;
+				token.len = l;
+				assert( token.data.length = token.len );
+				//
+				this.script_p += l;
+				token.type = TT_PUNCTUATION;
+				// sub type is the punctuation id
+				token.subtype = punc.n;
+				return 1;
+			}
+		}
+		return 0;
+	}
 
 	/*
 	================
@@ -906,7 +910,7 @@ class idLexer {
 		// save line counter
 		this.lastline = this.line;
 		// clear the token stuff
-		token.$.data[0] = '\0';// TODO: WATCH OUT HERE
+		token.$.data = "";//[0] = '\0';
 		token.$.len = 0;
 		// start of the white space
 		this.whiteSpaceStart_p = this.script_p;
@@ -962,18 +966,18 @@ class idLexer {
 		}
 		// if there is a name
 		else if ( (c >= 'a' && c <= 'z') ||	(c >= 'A' && c <= 'Z') || c == '_' ) {
-			if ( !idLexer::ReadName( token.$ ) ) {
+			if ( !this.ReadName( token.$ ) ) {
 				return 0;
 			}
 		}
 		// names may also start with a slash when pathnames are allowed
-		else if ( ( this.flags & LEXFL_ALLOWPATHNAMES ) && ( (c == '/' || c == '\\') || c == '.' ) ) {
-			if ( !idLexer::ReadName( token.$ ) ) {
+		else if ( ( this.flags & lexerFlags_t.LEXFL_ALLOWPATHNAMES ) && ( (c == '/' || c == '\\') || c == '.' ) ) {
+			if ( !this.ReadName( token.$ ) ) {
 				return 0;
 			}
 		}
 		// check for punctuations
-		else if ( !idLexer::ReadPunctuation( token.$ ) ) {
+		else if ( !this.ReadPunctuation( token.$ ) ) {
 			this.Error( "unknown punctuation %c", c );
 			return 0;
 		}
@@ -1186,53 +1190,56 @@ class idLexer {
 	////	while(idLexer::ReadToken( &token )) {
 	////		if ( token.linesCrossed ) {
 	////			this.script_p = lastScript_p;
-	////			idLexer::line = this.lastline;
+	////			this.line = this.lastline;
 	////			return 1;
 	////		}
 	////	}
 	////	return 0;
 	////}
 
-	/////*
-	////=================
-	////idLexer::SkipBracedSection
+	/*
+	=================
+	idLexer::SkipBracedSection
 
-	////Skips until a matching close brace is found.
-	////Internal brace depths are properly skipped.
-	////=================
-	////*/
-	////int idLexer::SkipBracedSection( bool parseFirstBrace ) {
-	////	idToken token;
-	////	int depth;
+	Skips until a matching close brace is found.
+	Internal brace depths are properly skipped.
+	=================
+	*/
+	/*int */SkipBracedSection( parseFirstBrace:boolean = true ):number {
+		var token = new idToken;
+		var /*int */depth:number;
 
-	////	depth = parseFirstBrace ? 0 : 1;
-	////	do {
-	////		if ( !ReadToken( &token ) ) {
-	////			return false;
-	////		}
-	////		if ( token.type == TT_PUNCTUATION ) {
-	////			if ( token == "{" ) {
-	////				depth++;
-	////			} else if ( token == "}" ) {
-	////				depth--;
-	////			}
-	////		}
-	////	} while( depth );
-	////	return true;
-	////}
+		depth = parseFirstBrace ? 0 : 1;
+		do {
+			var $token = new R<idToken>( token );
+			var readToken = this.ReadToken($token);
+			token = $token.$;
+			if ( !readToken ) {
+				return 0/*false*/;
+			}
+			if ( token.type == TT_PUNCTUATION ) {
+				if ( token.c_str() == "{" ) {
+					depth++;
+				} else if (token.c_str() == "}" ) {
+					depth--;
+				}
+			}
+		} while( depth );
+		return 1/*true*/;
+	}
 
-	/////*
-	////================
-	////idLexer::UnreadToken
-	////================
-	////*/
-	////void idLexer::UnreadToken( const idToken *token ) {
-	////	if ( idLexer::tokenavailable ) {
-	////		idLib::common.FatalError( "idLexer::unreadToken, unread token twice\n" );
-	////	}
-	////	idLexer::token = *token;
-	////	idLexer::tokenavailable = 1;
-	////}
+	/*
+	================
+	idLexer::UnreadToken
+	================
+	*/
+	UnreadToken(token: R<idToken> ):void {
+		if ( this.tokenavailable ) {
+			common.FatalError( "idLexer::unreadToken, unread token twice\n" );
+		}
+		this.token = token.$;
+		this.tokenavailable = 1;
+	}
 
 	/////*
 	////================
@@ -1244,7 +1251,7 @@ class idLexer {
 
 	////	if (!idLexer::ReadToken( &tok )) {
 	////		this.script_p = lastScript_p;
-	////		idLexer::line = this.lastline;
+	////		this.line = this.lastline;
 	////		return false;
 	////	}
 	////	// if no lines were crossed before this token
@@ -1254,7 +1261,7 @@ class idLexer {
 	////	}
 	////	// restore our position
 	////	this.script_p = lastScript_p;
-	////	idLexer::line = this.lastline;
+	////	this.line = this.lastline;
 	////	token.Clear();
 	////	return false;
 	////}
@@ -1268,7 +1275,7 @@ class idLexer {
 	////	while(1) {
 
 	////		if(this.buffer[this.script_p] == '\n') {
-	////			idLexer::line++;
+	////			this.line++;
 	////			break;
 	////		}
 
@@ -1340,7 +1347,7 @@ class idLexer {
 
 	////	if ( !idLexer::ReadToken( &token ) ) {
 	////		if ( errorFlag ) {
-	////			idLexer::Warning( "couldn't read expected floating point number" );
+	////			this.Warning( "couldn't read expected floating point number" );
 	////			*errorFlag = true;
 	////		} else {
 	////			idLexer::Error( "couldn't read expected floating point number" );
@@ -1353,7 +1360,7 @@ class idLexer {
 	////	}
 	////	else if ( token.type != TT_NUMBER ) {
 	////		if ( errorFlag ) {
-	////			idLexer::Warning( "expected float value, found '%s'", token.c_str() );
+	////			this.Warning( "expected float value, found '%s'", token.c_str() );
 	////			*errorFlag = true;
 	////		} else {
 	////			idLexer::Error( "expected float value, found '%s'", token.c_str() );
@@ -1570,7 +1577,7 @@ class idLexer {
 	////	while(idLexer::ReadToken( &token )) {
 	////		if ( token.linesCrossed ) {
 	////			this.script_p = lastScript_p;
-	////			idLexer::line = this.lastline;
+	////			this.line = this.lastline;
 	////			break;
 	////		}
 	////		if ( out.Length() ) {
@@ -1619,20 +1626,20 @@ class idLexer {
 	////*/
 	////void idLexer::Reset( void ) {
 	////	// pointer in script buffer
-	////	this.script_p = idLexer::buffer;
+	////	this.script_p = 0;//idLexer::buffer;
 	////	// pointer in script buffer before reading token
-	////	idLexer::lastScript_p = idLexer::buffer;
+	////	idLexer::lastScript_p = 0;//idLexer::buffer;
 	////	// begin of white space
 	////	idLexer::whiteSpaceStart_p = NULL;
 	////	// end of white space
 	////	idLexer::whiteSpaceEnd_p = NULL;
 	////	// set if there's a token available in idLexer::token
-	////	idLexer::tokenavailable = 0;
+	////	this.tokenavailable = 0;
 
-	////	idLexer::line = 1;
+	////	this.line = 1;
 	////	idLexer::lastline = 1;
 	////	// clear the saved token
-	////	idLexer::token = "";
+	////	this.token = new idToken();
 	////}
 
 	/////*
@@ -1650,7 +1657,7 @@ class idLexer {
 	////================
 	////*/
 	////int idLexer::NumLinesCrossed( void ) {
-	////	return idLexer::line - idLexer::lastline;
+	////	return this.line - idLexer::lastline;
 	////}
 
 	/////*
@@ -1687,20 +1694,20 @@ class idLexer {
 	////	buf[length] = '\0';// TODO: WATCH OUT HERE
 	////	fp.Read( buf, length );
 	////	idLexer::fileTime = fp.Timestamp();
-	////	idLexer::filename = fp.GetFullPath();
+	////	this.filename = fp.GetFullPath();
 	////	idLib::fileSystem.CloseFile( fp );
 
-	////	idLexer::buffer = buf;
+	////	this.buffer = buf;
 	////	idLexer::length = length;
 	////	// pointer in script buffer
-	////	this.script_p = idLexer::buffer;
+	////	this.script_p = 0;//idLexer::buffer;
 	////	// pointer in script buffer before reading token
-	////	idLexer::lastScript_p = idLexer::buffer;
+	////	idLexer::lastScript_p = 0;//idLexer::buffer;
 	////	// pointer to end of script buffer
-	////	idLexer::end_p = &(idLexer::buffer[length]);
+	////	idLexer::end_p = this.buffer.length;//&(idLexer::buffer[length]);
 
-	////	idLexer::tokenavailable = 0;
-	////	idLexer::line = 1;
+	////	this.tokenavailable = 0;
+	////	this.line = 1;
 	////	idLexer::lastline = 1;
 	////	idLexer::allocated = true;
 	////	idLexer::loaded = true;
@@ -1746,22 +1753,22 @@ class idLexer {
 ////*/
 ////void idLexer::FreeSource( void ) {
 ////#ifdef PUNCTABLE
-////	if ( idLexer::punctuationtable && idLexer::punctuationtable != default_punctuationtable ) {
-////		Mem_Free( (void *) idLexer::punctuationtable );
-////		idLexer::punctuationtable = NULL;
+////	if ( this.punctuationtable && this.punctuationtable != default_punctuationtable ) {
+////		Mem_Free( (void *) this.punctuationtable );
+////		this.punctuationtable = NULL;
 ////	}
-////	if ( idLexer::nextpunctuation && idLexer::nextpunctuation != default_nextpunctuation ) {
-////		Mem_Free( (void *) idLexer::nextpunctuation );
-////		idLexer::nextpunctuation = NULL;
+////	if ( this.nextpunctuation && this.nextpunctuation != default_nextpunctuation ) {
+////		Mem_Free( (void *) this.nextpunctuation );
+////		this.nextpunctuation = NULL;
 ////	}
 ////#endif //PUNCTABLE
 ////	if ( idLexer::allocated ) {
-////		Mem_Free( (void *) idLexer::buffer );
-////		idLexer::buffer = NULL;
+////		Mem_Free( (void *) this.buffer );
+////		this.buffer = NULL;
 ////		idLexer::allocated = false;
 ////	}
-////	idLexer::tokenavailable = 0;
-////	idLexer::token = "";
+////	this.tokenavailable = 0;
+////	this.token = new idToken();
 ////	idLexer::loaded = false;
 ////}
 
@@ -1772,19 +1779,35 @@ class idLexer {
 ////*/
 ////idLexer::idLexer( void ) {
 ////	idLexer::loaded = false;
-////	idLexer::filename = "";
+////	this.filename = "";
 ////	this.flags = 0;
 ////	idLexer::SetPunctuations( NULL );
 ////	idLexer::allocated = false;
 ////	idLexer::fileTime = 0;
 ////	idLexer::length = 0;
-////	idLexer::line = 0;
+////	this.line = 0;
 ////	idLexer::lastline = 0;
-////	idLexer::tokenavailable = 0;
-////	idLexer::token = "";
+////	this.tokenavailable = 0;
+////	this.token = new idToken();
 ////	idLexer::next = NULL;
 ////	idLexer::hadError = false;
 ////}
+
+	constructor() {
+		this.loaded = 0/*false*/;
+		this.filename = new idStr("");
+		this.flags = 0;
+		this.SetPunctuations(null);
+		this.allocated = 0/*false*/;
+		this.fileTime = 0;
+		this.length = 0;
+		this.line = 0;
+		this.lastline = 0;
+		this.tokenavailable = 0;
+		this.token = new idToken();
+		this.next = null;
+		this.hadError = false;
+	}
 
 /////*
 ////================
@@ -1793,16 +1816,16 @@ class idLexer {
 ////*/
 ////idLexer::idLexer( int flags ) {
 ////	idLexer::loaded = false;
-////	idLexer::filename = "";
+////	this.filename = "";
 ////	this.flags = flags;
 ////	idLexer::SetPunctuations( NULL );
 ////	idLexer::allocated = false;
 ////	idLexer::fileTime = 0;
 ////	idLexer::length = 0;
-////	idLexer::line = 0;
+////	this.line = 0;
 ////	idLexer::lastline = 0;
-////	idLexer::tokenavailable = 0;
-////	idLexer::token = "";
+////	this.tokenavailable = 0;
+////	this.token = new idToken();
 ////	idLexer::next = NULL;
 ////	idLexer::hadError = false;
 ////}
@@ -1817,7 +1840,7 @@ class idLexer {
 ////	this.flags = flags;
 ////	idLexer::SetPunctuations( NULL );
 ////	idLexer::allocated = false;
-////	idLexer::token = "";
+////	this.token = new idToken();
 ////	idLexer::next = NULL;
 ////	idLexer::hadError = false;
 ////	idLexer::LoadFile( filename, OSPath );
@@ -1833,7 +1856,7 @@ class idLexer {
 ////	this.flags = flags;
 ////	idLexer::SetPunctuations( NULL );
 ////	idLexer::allocated = false;
-////	idLexer::token = "";
+////	this.token = new idToken();
 ////	idLexer::next = NULL;
 ////	idLexer::hadError = false;
 ////	idLexer::LoadMemory( ptr, length, name );

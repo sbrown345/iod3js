@@ -119,10 +119,16 @@ var FILE_HASH_SIZE = 1024;
 
 class idStr {
 
+	constructor ( ) ;
 	constructor ( str: string ) ;
 	constructor ( str: number ) ;
 	constructor ( str: string, start:number, end:number ) ;
-	constructor ( str: any, start?:number, end?:number ) {
+	constructor(str?: any, start?: number, end?: number) {
+		if ( arguments.length === 0 && this instanceof idToken) {
+			return;
+		}
+
+
         this.Init();
 
         if(arguments.length === 1) {

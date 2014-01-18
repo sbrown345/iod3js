@@ -30,56 +30,56 @@
 ////#pragma hdrstop
 
 
-/////*
-////===============================================================================
-////
-////	idToken is a token read from a file or memory with idLexer or idParser
-////
-////===============================================================================
-////*/
-////
-////// token types
-////#define TT_STRING					1		// string
-////#define TT_LITERAL					2		// literal
-////#define TT_NUMBER					3		// number
-////#define TT_NAME						4		// name
-////#define TT_PUNCTUATION				5		// punctuation
-////
-////// number sub types
-////#define TT_INTEGER					0x00001		// integer
-////#define TT_DECIMAL					0x00002		// decimal number
-////#define TT_HEX						0x00004		// hexadecimal number
-////#define TT_OCTAL					0x00008		// octal number
-////#define TT_BINARY					0x00010		// binary number
-////#define TT_LONG						0x00020		// long int
-////#define TT_UNSIGNED					0x00040		// unsigned int
-////#define TT_FLOAT					0x00080		// floating point number
-////#define TT_SINGLE_PRECISION			0x00100		// float
-////#define TT_DOUBLE_PRECISION			0x00200		// double
-////#define TT_EXTENDED_PRECISION		0x00400		// long double
-////#define TT_INFINITE					0x00800		// infinite 1.#INF
-////#define TT_INDEFINITE				0x01000		// indefinite 1.#IND
-////#define TT_NAN						0x02000		// NaN
-////#define TT_IPADDRESS				0x04000		// ip address
-////#define TT_IPPORT					0x08000		// ip port
-////#define TT_VALUESVALID				0x10000		// set if intvalue and floatvalue are valid
-////
-////// string sub type is the length of the string
-////// literal sub type is the ASCII code
-////// punctuation sub type is the punctuation id
-////// name sub type is the length of the name
-////
+/*
+===============================================================================
+
+	idToken is a token read from a file or memory with idLexer or idParser
+
+===============================================================================
+*/
+
+// token types
+var TT_STRING = 1;		// string
+var TT_LITERAL = 2;		// literal
+var TT_NUMBER					=3;		// number
+var TT_NAME						=4;		// name
+var TT_PUNCTUATION				=5;		// punctuation
+
+// number sub types
+var TT_INTEGER = 0x00001;		// integer
+var TT_DECIMAL = 0x00002;		// decimal number
+var TT_HEX = 0x00004;		// hexadecimal number
+var TT_OCTAL = 0x00008;		// octal number
+var TT_BINARY = 0x00010;		// binary number
+var TT_LONG = 0x00020;		// long int
+var TT_UNSIGNED = 0x00040;		// unsigned int
+var TT_FLOAT = 0x00080;		// floating point number
+var TT_SINGLE_PRECISION = 0x00100;		// float
+var TT_DOUBLE_PRECISION = 0x00200;		// double
+var TT_EXTENDED_PRECISION = 0x00400;		// long double
+var TT_INFINITE = 0x00800;		// infinite 1.#INF
+var TT_INDEFINITE = 0x01000;		// indefinite 1.#IND
+var TT_NAN = 0x02000;		// NaN
+var TT_IPADDRESS = 0x04000;		// ip address
+var TT_IPPORT = 0x08000;		// ip port
+var TT_VALUESVALID = 0x10000;		// set if intvalue and floatvalue are valid
+
+// string sub type is the length of the string
+// literal sub type is the ASCII code
+// punctuation sub type is the punctuation id
+// name sub type is the length of the name
+
 class idToken extends idStr {
     ////
     ////	friend class idParser;
     ////	friend class idLexer;
     ////
-    ////public:
-    ////	int				type;								// token type
-    ////	int				subtype;							// token sub type
-    ////	int				line;								// line in script the token was on
-    ////	int				linesCrossed;						// number of lines crossed in white space before token
-    ////	int				flags;								// token flags, used for recursive defines
+    //public:
+	/*	int				*/type: number;								// token type
+	/*	int				*/subtype: number;							// token sub type
+	/*	int				*/line: number;								// line in script the token was on
+	/*	int				*/linesCrossed: number;						// number of lines crossed in white space before token
+    /*	int				*/flags:number;								// token flags, used for recursive defines
     ////
     ////public:
     ////					idToken( void );
@@ -99,17 +99,20 @@ class idToken extends idStr {
     ////	void			NumberValue( void );				// calculate values for a TT_NUMBER
     ////
     ////private:
-    ////	unsigned long	intvalue;							// integer value
-    ////	double			floatvalue;							// floating point value
-    ////	const char *	whiteSpaceStart_p;					// start of white space before token, only used by idLexer
-    ////	const char *	whiteSpaceEnd_p;					// end of white space before token, only used by idLexer
-    ////	idToken *		next;								// next token in chain, only used by idParser
+    /*	unsigned long	*/intvalue:number;							// integer value
+    /*	double			*/floatvalue:number;							// floating point value
+    /*	const char *	*/whiteSpaceStart_p:number;					// start of white space before token, only used by idLexer
+    /*	const char *	*/whiteSpaceEnd_p:number;					// end of white space before token, only used by idLexer
+	/*	idToken *		*/next: idToken;								// next token in chain, only used by idParser
     ////
     ////	void			AppendDirty( const char a );		// append character without adding trailing zero
     ////};
     ////
-    ////ID_INLINE idToken::idToken( void ) {
-    ////}
+	
+	constructor ( ) {
+		super ( );
+	}
+
     ////
     ////ID_INLINE idToken::idToken( const idToken *token ) {
     ////	*this = *token;
@@ -158,12 +161,13 @@ class idToken extends idStr {
     ////	return ( whiteSpaceEnd_p > whiteSpaceStart_p );
     ////}
     ////
-    ////ID_INLINE void idToken::AppendDirty( const char a ) {
-    ////	EnsureAlloced( len + 2, true );
-    ////	data[len++] = a;
-    ////}
-    ////
-    ////#endif /* !__TOKEN_H__ */
+    AppendDirty( /*const char */a:string ):void {
+    	//EnsureAlloced( len + 2, true );
+    	//data[len++] = a;
+	    this.data += a;
+    }
+    
+    //#endif /* !__TOKEN_H__ */
 
 
     /////*

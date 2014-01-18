@@ -619,7 +619,7 @@
 ////	idLexer src;
 
 ////	src.LoadMemory( name, strlen(name), name );
-////	src.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | LEXFL_ALLOWPATHNAMES );
+////	src.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 
 ////	parseBuffer[0] = 0;
 ////	if ( timestamps ) {
