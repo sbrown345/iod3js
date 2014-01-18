@@ -3161,27 +3161,22 @@ separate file or a ZIP file.
 ===========
 */
     OpenFileReadFlags ( relativePath: string, /*int */searchFlags: number, foundInPak: pack_t = null, allowCopyFiles = true, gamedir: string = null ): idFile {
-
-        // https://github.com/SiPlus/WebQuake/blob/master/Client/WebQuake/COM.js
         var xhr = new XMLHttpRequest ( );
         xhr["overrideMimeType"]( 'text/plain; charset=x-user-defined' );
         xhr.open( 'GET', "/demo/" + relativePath, false );
         xhr.send ( );
         var arr = this.StringToArrayBuffer( xhr.responseText );
-
-		var file = new idFile_Permanent();
-		//file.o = fp;
-		//file.name = relativePath;
-		//file.fullPath = netpath;
-		//file.mode = ( 1 << FS_READ );
-		//file.fileSize = DirectFileLength( file.o );
+        var fp = new FILE( arr );
+        var file = new idFile_Permanent ( );
+        file.o = fp;
+        file.name = new idStr( relativePath );
+        file.fullPath = new idStr( "todo: set netpath in FileSystem.cpp.ts ~line3175" );
+        file.mode = ( 1 << fsMode_t.FS_READ );
+        file.fileSize = arr.byteLength; //DirectFileLength( file.o );
         return file;
 
 
-
-
-
-        //searchpath_t *	search;
+//searchpath_t *	search;
         //idStr			netpath;
         //pack_t *		pak;
         //fileInPack_t *	pakFile;
@@ -3260,7 +3255,7 @@ separate file or a ZIP file.
         //		file.o = fp;
         //		file.name = relativePath;
         //		file.fullPath = netpath;
-        //		file.mode = ( 1 << FS_READ );
+        //		file.mode = ( 1 << fsMode_t.FS_READ );
         //		file.fileSize = DirectFileLength( file.o );
         //		if ( fs_debug.GetInteger() ) {
         //			common.Printf( "idFileSystem::OpenFileRead: %s (found in '%s/%s')\n", relativePath, dir.path.c_str(), dir.gamedir.c_str() );
@@ -3423,6 +3418,7 @@ separate file or a ZIP file.
     }
 
     StringToArrayBuffer ( src: string ): ArrayBuffer {
+        // from https://github.com/SiPlus/WebQuake/blob/master/Client/WebQuake/COM.js
         var buf = new ArrayBuffer( src.length );
         var dest = new Uint8Array( buf );
         var i:number;
@@ -3481,7 +3477,7 @@ idFileSystemLocal::OpenFileRead
 ////	}
 ////	f.name = relativePath;
 ////	f.fullPath = OSpath;
-////	f.mode = ( 1 << FS_WRITE );
+////	f.mode = ( 1 << fsMode_t.FS_WRITE );
 ////	f.handleSync = false;
 ////	f.fileSize = 0;
 ////
@@ -3514,7 +3510,7 @@ idFileSystemLocal::OpenFileRead
 ////	}
 ////	f.name = OSPath;
 ////	f.fullPath = OSPath;
-////	f.mode = ( 1 << FS_READ );
+////	f.mode = ( 1 << fsMode_t.FS_READ );
 ////	f.handleSync = false;
 ////	f.fileSize = DirectFileLength( f.o );
 ////
@@ -3548,7 +3544,7 @@ idFileSystemLocal::OpenFileRead
 ////	}
 ////	f.name = OSPath;
 ////	f.fullPath = OSPath;
-////	f.mode = ( 1 << FS_WRITE );
+////	f.mode = ( 1 << fsMode_t.FS_WRITE );
 ////	f.handleSync = false;
 ////	f.fileSize = 0;
 ////
@@ -3589,7 +3585,7 @@ idFileSystemLocal::OpenFileRead
 ////	}
 ////	f.name = relativePath;
 ////	f.fullPath = OSpath;
-////	f.mode = ( 1 << FS_WRITE ) + ( 1 << FS_APPEND );
+////	f.mode = ( 1 << fsMode_t.FS_WRITE ) + ( 1 << fsMode_t.FS_APPEND );
 ////	f.handleSync = sync;
 ////	f.fileSize = DirectFileLength( f.o );
 ////
@@ -3602,13 +3598,13 @@ idFileSystemLocal::OpenFileRead
 ////================
 ////*/
 ////idFile *idFileSystemLocal::OpenFileByMode( const char *relativePath, fsMode_t mode ) {
-////	if ( mode == FS_READ ) {
+////	if ( mode == fsMode_t.FS_READ ) {
 ////		return OpenFileRead( relativePath );
 ////	}
-////	if ( mode == FS_WRITE ) {
+////	if ( mode == fsMode_t.FS_WRITE ) {
 ////		return OpenFileWrite( relativePath );
 ////	}
-////	if ( mode == FS_APPEND ) {
+////	if ( mode == fsMode_t.FS_APPEND ) {
 ////		return OpenFileAppend( relativePath, true );
 ////	}
 ////	common.FatalError( "idFileSystemLocal::OpenFileByMode: bad mode" );
@@ -4130,7 +4126,7 @@ idFileSystemLocal::OpenFileRead
 ////	file.o = f;
 ////	file.name = "<tempfile>";
 ////	file.fullPath = "<tempfile>";
-////	file.mode = ( 1 << FS_READ ) + ( 1 << FS_WRITE );
+////	file.mode = ( 1 << fsMode_t.FS_READ ) + ( 1 << fsMode_t.FS_WRITE );
 ////	file.fileSize = 0;
 ////	return file;
 ////}

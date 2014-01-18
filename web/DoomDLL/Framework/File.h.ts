@@ -47,6 +47,7 @@
 ////class idFileSystemLocal;
 ////
 ////
+/// <reference path="../../libs/c.ts" />
 class idFile {
 ////public:
 ////	virtual					~idFile( void ) {};
@@ -204,13 +205,13 @@ class idFile_Permanent extends idFile {
 ////	// returns file pointer
 ////	FILE *					GetFilePtr( void ) { return o; }
 ////
-////private:
-////	idStr					name;			// relative path of the file - relative path
-////	idStr					fullPath;		// full file path - OS path
-////	int						mode;			// open mode
-////	int						fileSize;		// size of the file
-////	FILE *					o;				// file handle
-////	bool					handleSync;		// true if written data is immediately flushed
+//private:
+	/*idStr					*/name:idStr;			// relative path of the file - relative path
+	/*idStr					*/fullPath:idStr;		// full file path - OS path
+	/*int					*/	mode:number;			// open mode
+	/*int					*/	fileSize:number;		// size of the file
+	/*FILE *				*/	o:FILE;				// file handle
+	/*bool					*/handleSync:boolean;		// true if written data is immediately flushed
 };
 ////
 ////

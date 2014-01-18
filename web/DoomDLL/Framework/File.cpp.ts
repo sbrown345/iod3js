@@ -627,7 +627,7 @@
 ////	allocated = 0;
 ////	granularity = 16384;
 ////
-////	mode = ( 1 << FS_WRITE );
+////	mode = ( 1 << fsMode_t.FS_WRITE );
 ////	filePtr = NULL;
 ////	curPtr = NULL;
 ////}
@@ -644,7 +644,7 @@
 ////	allocated = 0;
 ////	granularity = 16384;
 ////
-////	mode = ( 1 << FS_WRITE );
+////	mode = ( 1 << fsMode_t.FS_WRITE );
 ////	filePtr = NULL;
 ////	curPtr = NULL;
 ////}
@@ -661,7 +661,7 @@
 ////	allocated = length;
 ////	granularity = 16384;
 ////
-////	mode = ( 1 << FS_WRITE );
+////	mode = ( 1 << fsMode_t.FS_WRITE );
 ////	filePtr = data;
 ////	curPtr = data;
 ////}
@@ -678,7 +678,7 @@
 ////	allocated = 0;
 ////	granularity = 16384;
 ////
-////	mode = ( 1 << FS_READ );
+////	mode = ( 1 << fsMode_t.FS_READ );
 ////	filePtr = const_cast<char *>(data);
 ////	curPtr = const_cast<char *>(data);
 ////}
@@ -701,7 +701,7 @@
 ////*/
 ////int idFile_Memory::Read( void *buffer, int len ) {
 ////
-////	if ( !( mode & ( 1 << FS_READ ) ) ) {
+////	if ( !( mode & ( 1 << fsMode_t.FS_READ ) ) ) {
 ////		common->FatalError( "idFile_Memory::Read: %s not opened in read mode", name.c_str() );
 ////		return 0;
 ////	}
@@ -721,7 +721,7 @@
 ////*/
 ////int idFile_Memory::Write( const void *buffer, int len ) {
 ////
-////	if ( !( mode & ( 1 << FS_WRITE ) ) ) {
+////	if ( !( mode & ( 1 << fsMode_t.FS_WRITE ) ) ) {
 ////		common->FatalError( "idFile_Memory::Write: %s not opened in write mode", name.c_str() );
 ////		return 0;
 ////	}
@@ -838,7 +838,7 @@
 ////=================
 ////*/
 ////void idFile_Memory::MakeReadOnly( void ) {
-////	mode = ( 1 << FS_READ );
+////	mode = ( 1 << fsMode_t.FS_READ );
 ////	Rewind();
 ////}
 ////
@@ -871,7 +871,7 @@
 ////	allocated = 0;
 ////	granularity = 16384;
 ////
-////	mode = ( 1 << FS_READ );
+////	mode = ( 1 << fsMode_t.FS_READ );
 ////	filePtr = const_cast<char *>(data);
 ////	curPtr = const_cast<char *>(data);
 ////}
@@ -892,7 +892,7 @@
 ////*/
 ////idFile_BitMsg::idFile_BitMsg( idBitMsg &msg ) {
 ////	name = "*unknown*";
-////	mode = ( 1 << FS_WRITE );
+////	mode = ( 1 << fsMode_t.FS_WRITE );
 ////	this->msg = &msg;
 ////}
 ////
@@ -903,7 +903,7 @@
 ////*/
 ////idFile_BitMsg::idFile_BitMsg( const idBitMsg &msg ) {
 ////	name = "*unknown*";
-////	mode = ( 1 << FS_READ );
+////	mode = ( 1 << fsMode_t.FS_READ );
 ////	this->msg = const_cast<idBitMsg *>(&msg);
 ////}
 ////
@@ -922,7 +922,7 @@
 ////*/
 ////int idFile_BitMsg::Read( void *buffer, int len ) {
 ////
-////	if ( !( mode & ( 1 << FS_READ ) ) ) {
+////	if ( !( mode & ( 1 << fsMode_t.FS_READ ) ) ) {
 ////		common->FatalError( "idFile_BitMsg::Read: %s not opened in read mode", name.c_str() );
 ////		return 0;
 ////	}
@@ -937,7 +937,7 @@
 ////*/
 ////int idFile_BitMsg::Write( const void *buffer, int len ) {
 ////
-////	if ( !( mode & ( 1 << FS_WRITE ) ) ) {
+////	if ( !( mode & ( 1 << fsMode_t.FS_WRITE ) ) ) {
 ////		common->FatalError( "idFile_Memory::Write: %s not opened in write mode", name.c_str() );
 ////		return 0;
 ////	}
@@ -970,7 +970,7 @@
 ////=================
 ////*/
 ////int idFile_BitMsg::Tell( void ) {
-////	if ( mode & FS_READ ) {
+////	if ( mode & fsMode_t.FS_READ ) {
 ////		return msg->GetReadCount();
 ////	} else {
 ////		return msg->GetSize();
@@ -1050,7 +1050,7 @@
 ////	byte *	buf;
 ////	int		tries;
 ////
-////	if ( !(mode & ( 1 << FS_READ ) ) ) {
+////	if ( !(mode & ( 1 << fsMode_t.FS_READ ) ) ) {
 ////		common->FatalError( "idFile_Permanent::Read: %s not opened in read mode", name.c_str() );
 ////		return 0;
 ////	}
@@ -1102,7 +1102,7 @@
 ////	byte *	buf;
 ////	int		tries;
 ////
-////	if ( !( mode & ( 1 << FS_WRITE ) ) ) {
+////	if ( !( mode & ( 1 << fsMode_t.FS_WRITE ) ) ) {
 ////		common->FatalError( "idFile_Permanent::Write: %s not opened in write mode", name.c_str() );
 ////		return 0;
 ////	}

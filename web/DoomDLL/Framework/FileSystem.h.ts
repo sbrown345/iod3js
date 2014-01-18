@@ -57,11 +57,11 @@ var FILE_NOT_FOUND_TIMESTAMP	= 0xFFFFFFFF;
 ////static const int		MAX_OSPATH					= 256;
 ////
 ////// modes for OpenFileByMode. used as bit mask internally
-////typedef enum {
-////	FS_READ		= 0,
-////	FS_WRITE	= 1,
-////	FS_APPEND	= 2
-////} fsMode_t;
+enum fsMode_t{
+	FS_READ		= 0,
+	FS_WRITE	= 1,
+	FS_APPEND	= 2
+};
 ////
 ////typedef enum {
 ////	PURE_OK,		// we are good to connect as-is

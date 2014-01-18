@@ -64,3 +64,12 @@ var printf = console.log.bind(console);
 function Mem_Free ( arg: any ) {
     
 }
+
+class FILE {
+
+    constructor ( arrayBuffer: ArrayBuffer ) {
+        this.arrayBuffer = arrayBuffer;
+    }
+
+    arrayBuffer: ArrayBuffer;
+}
