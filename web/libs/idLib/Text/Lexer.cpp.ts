@@ -467,7 +467,7 @@ class idLexer {
 	////		default: //NOTE: decimal ASCII code, NOT octal
 	////		{
 	////			if (this.buffer[this.script_p] < '0' || this.buffer[this.script_p] > '9') {
-	////				idLexer::Error("unknown escape char");
+	////				this.Error("unknown escape char");
 	////			}
 	////			for (i = 0, val = 0; ; i++, this.script_p++) {
 	////				c = this.buffer[this.script_p];
@@ -553,7 +553,7 @@ class idLexer {
 	////				// step over the '\\'
 	////				this.script_p++;
 	////				if ( !idLexer::ReadWhiteSpace() || ( this.buffer[this.script_p] != quote ) ) {
-	////					idLexer::Error( "expecting string after '\' terminated line" );
+	////					this.Error( "expecting string after '\' terminated line" );
 	////					return 0;
 	////				}
 	////			}
@@ -569,11 +569,11 @@ class idLexer {
 	////		}
 	////		else {
 	////			if (this.buffer[this.script_p] == '\0') { // TODO: WATCH OUT HERE
-	////				idLexer::Error( "missing trailing quote" );
+	////				this.Error( "missing trailing quote" );
 	////				return 0;
 	////			}
 	////			if (this.buffer[this.script_p] == '\n') {
-	////				idLexer::Error( "newline inside string" );
+	////				this.Error( "newline inside string" );
 	////				return 0;
 	////			}
 	////			token.AppendDirty( this.buffer[this.script_p]++ );
@@ -622,21 +622,21 @@ class idLexer {
 		return 1;
 	}
 
-	/////*
-	////================
-	////idLexer::CheckString
-	////================
-	////*/
-	////ID_INLINE int idLexer::CheckString( const char *str ) const {
-	////	int i;
+	/*
+	================
+	idLexer::CheckString
+	================
+	*/
+	CheckString( str:string ):number {
+		var/*int */i:number;
 
-	////	for ( i = 0; str[i]; i++ ) {
-	////		if ( this.buffer[this.script_p + i] != str[i] ) {
-	////			return false;
-	////		}
-	////	}
-	////	return true;
-	////}
+		for ( i = 0; str[i]; i++ ) {
+			if ( this.buffer[this.script_p + i] != str[i] ) {
+				return 0/*false*/;
+			}
+		}
+		return 1/*true*/;
+	}
 
 	/*
 	================
@@ -644,197 +644,196 @@ class idLexer {
 	================
 	*/
 	/*int*/ ReadNumber(token: idToken): number {
-		todoThrow ( );
-	////	int i;
-	////	int dot;
-	////	char c, c2;
+		var /*int*/ i:number;
+		var /*int*/ dot: number;
+		var /*char*/ c: string, c2:string;
 
-	////	token.type = TT_NUMBER;
-	////	token.subtype = 0;
-	////	token.intvalue = 0;
-	////	token.floatvalue = 0;
+		token.type = TT_NUMBER;
+		token.subtype = 0;
+		token.intvalue = 0;
+		token.floatvalue = 0;
 
-	////	c = this.buffer[this.script_p];
-	////	c2 = this.buffer[this.script_p + 1];
+		c = this.buffer[this.script_p];
+		c2 = this.buffer[this.script_p + 1];
 
-	////	if ( c == '0' && c2 != '.' ) {
-	////		// check for a hexadecimal number
-	////		if ( c2 == 'x' || c2 == 'X' ) {
-	////			token.AppendDirty( this.buffer[this.script_p++] );
-	////			token.AppendDirty( this.buffer[this.script_p++] );
-	////			c = this.buffer[this.script_p];
-	////			while((c >= '0' && c <= '9') ||
-	////						(c >= 'a' && c <= 'f') ||
-	////						(c >= 'A' && c <= 'F')) {
-	////				token.AppendDirty( c );
-	////				c = *(++this.script_p);
-	////			}
-	////			token.subtype = TT_HEX | TT_INTEGER;
-	////		}
-	////		// check for a binary number
-	////		else if ( c2 == 'b' || c2 == 'B' ) {
-	////			token.AppendDirty( this.buffer[this.script_p++] );
-	////			token.AppendDirty( this.buffer[this.script_p++] );
-	////			c = this.buffer[this.script_p];
-	////			while( c == '0' || c == '1' ) {
-	////				token.AppendDirty( c );
-	////				c = *(++this.script_p);
-	////			}
-	////			token.subtype = TT_BINARY | TT_INTEGER;
-	////		}
-	////		// its an octal number
-	////		else {
-	////			token.AppendDirty( this.buffer[this.script_p++] );
-	////			c = this.buffer[this.script_p];
-	////			while( c >= '0' && c <= '7' ) {
-	////				token.AppendDirty( c );
-	////				c = *(++this.script_p);
-	////			}
-	////			token.subtype = TT_OCTAL | TT_INTEGER;
-	////		}
-	////	}
-	////	else {
-	////		// decimal integer or floating point number or ip address
-	////		dot = 0;
-	////		while( 1 ) {
-	////			if ( c >= '0' && c <= '9' ) {
-	////			}
-	////			else if ( c == '.' ) {
-	////				dot++;
-	////			}
-	////			else {
-	////				break;
-	////			}
-	////			token.AppendDirty( c );
-	////			c = *(++this.script_p);
-	////		}
-	////		if( c == 'e' && dot == 0) {
-	////			//We have scientific notation without a decimal point
-	////			dot++;
-	////		}
-	////		// if a floating point number
-	////		if ( dot == 1 ) {
-	////			token.subtype = TT_DECIMAL | TT_FLOAT;
-	////			// check for floating point exponent
-	////			if ( c == 'e' ) {
-	////				//Append the e so that GetFloatValue code works
-	////				token.AppendDirty( c );
-	////				c = *(++this.script_p);
-	////				if ( c == '-' ) {
-	////					token.AppendDirty( c );
-	////					c = *(++this.script_p);
-	////				}
-	////				else if ( c == '+' ) {
-	////					token.AppendDirty( c );
-	////					c = *(++this.script_p);
-	////				}
-	////				while( c >= '0' && c <= '9' ) {
-	////					token.AppendDirty( c );
-	////					c = *(++this.script_p);
-	////				}
-	////			}
-	////			// check for floating point exception infinite 1.#INF or indefinite 1.#IND or NaN
-	////			else if ( c == '#' ) {
-	////				c2 = 4;
-	////				if ( CheckString( "INF" ) ) {
-	////					token.subtype |= TT_INFINITE;
-	////				}
-	////				else if ( CheckString( "IND" ) ) {
-	////					token.subtype |= TT_INDEFINITE;
-	////				}
-	////				else if ( CheckString( "NAN" ) ) {
-	////					token.subtype |= TT_NAN;
-	////				}
-	////				else if ( CheckString( "QNAN" ) ) {
-	////					token.subtype |= TT_NAN;
-	////					c2++;
-	////				}
-	////				else if ( CheckString( "SNAN" ) ) {
-	////					token.subtype |= TT_NAN;
-	////					c2++;
-	////				}
-	////				for ( i = 0; i < c2; i++ ) {
-	////					token.AppendDirty( c );
-	////					c = *(++this.script_p);
-	////				}
-	////				while( c >= '0' && c <= '9' ) {
-	////					token.AppendDirty( c );
-	////					c = *(++this.script_p);
-	////				}
-	////				if ( !(this.flags & LEXFL_ALLOWFLOATEXCEPTIONS) ) {
-	////					token.AppendDirty( 0 );	// zero terminate for c_str
-	////					idLexer::Error( "parsed %s", token.c_str() );
-	////				}
-	////			}
-	////		}
-	////		else if ( dot > 1 ) {
-	////			if ( !( this.flags & LEXFL_ALLOWIPADDRESSES ) ) {
-	////				idLexer::Error( "more than one dot in number" );
-	////				return 0;
-	////			}
-	////			if ( dot != 3 ) {
-	////				idLexer::Error( "ip address should have three dots" );
-	////				return 0;
-	////			}
-	////			token.subtype = TT_IPADDRESS;
-	////		}
-	////		else {
-	////			token.subtype = TT_DECIMAL | TT_INTEGER;
-	////		}
-	////	}
+		if ( c == '0' && c2 != '.' ) {
+			// check for a hexadecimal number
+			if ( c2 == 'x' || c2 == 'X' ) {
+				token.AppendDirty( this.buffer[this.script_p++] );
+				token.AppendDirty( this.buffer[this.script_p++] );
+				c = this.buffer[this.script_p];
+				while((c >= '0' && c <= '9') ||
+							(c >= 'a' && c <= 'f') ||
+							(c >= 'A' && c <= 'F')) {
+					token.AppendDirty( c );
+					c = this.buffer[++this.script_p];
+				}
+				token.subtype = TT_HEX | TT_INTEGER;
+			}
+			// check for a binary number
+			else if ( c2 == 'b' || c2 == 'B' ) {
+				token.AppendDirty( this.buffer[this.script_p++] );
+				token.AppendDirty( this.buffer[this.script_p++] );
+				c = this.buffer[this.script_p];
+				while( c == '0' || c == '1' ) {
+					token.AppendDirty( c );
+					c = this.buffer[++this.script_p];
+				}
+				token.subtype = TT_BINARY | TT_INTEGER;
+			}
+			// its an octal number
+			else {
+				token.AppendDirty( this.buffer[this.script_p++] );
+				c = this.buffer[this.script_p];
+				while( c >= '0' && c <= '7' ) {
+					token.AppendDirty( c );
+					c = this.buffer[++this.script_p];
+				}
+				token.subtype = TT_OCTAL | TT_INTEGER;
+			}
+		}
+		else {
+			// decimal integer or floating point number or ip address
+			dot = 0;
+			while( 1 ) {
+				if ( c >= '0' && c <= '9' ) {
+				}
+				else if ( c == '.' ) {
+					dot++;
+				}
+				else {
+					break;
+				}
+				token.AppendDirty( c );
+				c = this.buffer[++this.script_p];
+			}
+			if( c == 'e' && dot == 0) {
+				//We have scientific notation without a decimal point
+				dot++;
+			}
+			// if a floating point number
+			if ( dot == 1 ) {
+				token.subtype = TT_DECIMAL | TT_FLOAT;
+				// check for floating point exponent
+				if ( c == 'e' ) {
+					//Append the e so that GetFloatValue code works
+					token.AppendDirty( c );
+					c = this.buffer[++this.script_p];
+					if ( c == '-' ) {
+						token.AppendDirty( c );
+						c = this.buffer[++this.script_p];
+					}
+					else if ( c == '+' ) {
+						token.AppendDirty( c );
+						c = this.buffer[++this.script_p];
+					}
+					while( c >= '0' && c <= '9' ) {
+						token.AppendDirty( c );
+						c = this.buffer[++this.script_p];
+					}
+				}
+				// check for floating point exception infinite 1.#INF or indefinite 1.#IND or NaN
+				else if ( c == '#' ) {
+					c2 = String.fromCharCode(4);
+					if ( this.CheckString( "INF" ) ) {
+						token.subtype |= TT_INFINITE;
+					}
+					else if ( this.CheckString( "IND" ) ) {
+						token.subtype |= TT_INDEFINITE;
+					}
+					else if ( this.CheckString( "NAN" ) ) {
+						token.subtype |= TT_NAN;
+					}
+					else if ( this.CheckString( "QNAN" ) ) {
+						token.subtype |= TT_NAN;
+						c2 = String.fromCharCode( c2.charCodeAt( 0 ) + 1 ); //c2++;
+					}
+					else if ( this.CheckString( "SNAN" ) ) {
+						token.subtype |= TT_NAN;
+						c2 = String.fromCharCode(c2.charCodeAt(0) + 1); //c2++;
+					}
+					for ( i = 0; i < c2.charCodeAt(0); i++ ) {
+						token.AppendDirty( c );
+						c = this.buffer[++this.script_p];
+					}
+					while( c >= '0' && c <= '9' ) {
+						token.AppendDirty( c );
+						c = this.buffer[++this.script_p];
+					}
+					if (!(this.flags & lexerFlags_t.LEXFL_ALLOWFLOATEXCEPTIONS) ) {
+						token.AppendDirty( String.fromCharCode(0) );	// zero terminate for c_str
+						this.Error( "parsed %s", token.c_str() );
+					}
+				}
+			}
+			else if ( dot > 1 ) {
+				if (!(this.flags & lexerFlags_t.LEXFL_ALLOWIPADDRESSES ) ) {
+					this.Error( "more than one dot in number" );
+					return 0;
+				}
+				if ( dot != 3 ) {
+					this.Error( "ip address should have three dots" );
+					return 0;
+				}
+				token.subtype = TT_IPADDRESS;
+			}
+			else {
+				token.subtype = TT_DECIMAL | TT_INTEGER;
+			}
+		}
 
-	////	if ( token.subtype & TT_FLOAT ) {
-	////		if ( c > ' ' ) {
-	////			// single-precision: float
-	////			if ( c == 'f' || c == 'F' ) {
-	////				token.subtype |= TT_SINGLE_PRECISION;
-	////				this.script_p++;
-	////			}
-	////			// extended-precision: long double
-	////			else if ( c == 'l' || c == 'L' ) {
-	////				token.subtype |= TT_EXTENDED_PRECISION;
-	////				this.script_p++;
-	////			}
-	////			// default is double-precision: double
-	////			else {
-	////				token.subtype |= TT_DOUBLE_PRECISION;
-	////			}
-	////		}
-	////		else {
-	////			token.subtype |= TT_DOUBLE_PRECISION;
-	////		}
-	////	}
-	////	else if ( token.subtype & TT_INTEGER ) {
-	////		if ( c > ' ' ) {
-	////			// default: signed long
-	////			for ( i = 0; i < 2; i++ ) {
-	////				// long integer
-	////				if ( c == 'l' || c == 'L' ) {
-	////					token.subtype |= TT_LONG;
-	////				}
-	////				// unsigned integer
-	////				else if ( c == 'u' || c == 'U' ) {
-	////					token.subtype |= TT_UNSIGNED;
-	////				}
-	////				else {
-	////					break;
-	////				}
-	////				c = *(++this.script_p);
-	////			}
-	////		}
-	////	}
-	////	else if ( token.subtype & TT_IPADDRESS ) {
-	////		if ( c == ':' ) {
-	////			token.AppendDirty( c );
-	////			c = *(++this.script_p);
-	////			while( c >= '0' && c <= '9' ) {
-	////				token.AppendDirty( c );
-	////				c = *(++this.script_p);
-	////			}
-	////			token.subtype |= TT_IPPORT;
-	////		}
-	////	}
-	////	token.data[token.len] = '\0';// TODO: WATCH OUT HERE
+		if ( token.subtype & TT_FLOAT ) {
+			if ( c > ' ' ) {
+				// single-precision: float
+				if ( c == 'f' || c == 'F' ) {
+					token.subtype |= TT_SINGLE_PRECISION;
+					this.script_p++;
+				}
+				// extended-precision: long double
+				else if ( c == 'l' || c == 'L' ) {
+					token.subtype |= TT_EXTENDED_PRECISION;
+					this.script_p++;
+				}
+				// default is double-precision: double
+				else {
+					token.subtype |= TT_DOUBLE_PRECISION;
+				}
+			}
+			else {
+				token.subtype |= TT_DOUBLE_PRECISION;
+			}
+		}
+		else if ( token.subtype & TT_INTEGER ) {
+			if ( c > ' ' ) {
+				// default: signed long
+				for ( i = 0; i < 2; i++ ) {
+					// long integer
+					if ( c == 'l' || c == 'L' ) {
+						token.subtype |= TT_LONG;
+					}
+					// unsigned integer
+					else if ( c == 'u' || c == 'U' ) {
+						token.subtype |= TT_UNSIGNED;
+					}
+					else {
+						break;
+					}
+					c = this.buffer[++this.script_p];
+				}
+			}
+		}
+		else if ( token.subtype & TT_IPADDRESS ) {
+			if ( c == ':' ) {
+				token.AppendDirty( c );
+				c = this.buffer[++this.script_p];
+				while( c >= '0' && c <= '9' ) {
+					token.AppendDirty( c );
+					c = this.buffer[++this.script_p];
+				}
+				token.subtype |= TT_IPPORT;
+			}
+		}
+		//token.data[token.len] = '\0';// TODO: WATCH OUT HERE
 		return 1;
 	}
 
@@ -994,11 +993,11 @@ class idLexer {
 	////	idToken token;
 
 	////	if (!idLexer::ReadToken( &token )) {
-	////		idLexer::Error( "couldn't find expected '%s'", string );
+	////		this.Error( "couldn't find expected '%s'", string );
 	////		return 0;
 	////	}
 	////	if ( token != string ) {
-	////		idLexer::Error( "expected '%s' but found '%s'", string, token.c_str() );
+	////		this.Error( "expected '%s' but found '%s'", string, token.c_str() );
 	////		return 0;
 	////	}
 	////	return 1;
@@ -1013,7 +1012,7 @@ class idLexer {
 	////	idStr str;
 
 	////	if ( !idLexer::ReadToken( token ) ) {
-	////		idLexer::Error( "couldn't read expected token" );
+	////		this.Error( "couldn't read expected token" );
 	////		return 0;
 	////	}
 
@@ -1026,7 +1025,7 @@ class idLexer {
 	////			case TT_PUNCTUATION: str = "punctuation"; break;
 	////			default: str = "unknown type"; break;
 	////		}
-	////		idLexer::Error( "expected a %s but found '%s'", str.c_str(), token.c_str() );
+	////		this.Error( "expected a %s but found '%s'", str.c_str(), token.c_str() );
 	////		return 0;
 	////	}
 	////	if ( token.type == TT_NUMBER ) {
@@ -1041,17 +1040,17 @@ class idLexer {
 	////			if ( subtype & TT_FLOAT ) str += "float ";
 	////			if ( subtype & TT_INTEGER ) str += "integer ";
 	////			str.StripTrailing( ' ' );
-	////			idLexer::Error( "expected %s but found '%s'", str.c_str(), token.c_str() );
+	////			this.Error( "expected %s but found '%s'", str.c_str(), token.c_str() );
 	////			return 0;
 	////		}
 	////	}
 	////	else if ( token.type == TT_PUNCTUATION ) {
 	////		if ( subtype < 0 ) {
-	////			idLexer::Error( "BUG: wrong punctuation subtype" );
+	////			this.Error( "BUG: wrong punctuation subtype" );
 	////			return 0;
 	////		}
 	////		if ( token.subtype != subtype ) {
-	////			idLexer::Error( "expected '%s' but found '%s'", GetPunctuationFromId( subtype ), token.c_str() );
+	////			this.Error( "expected '%s' but found '%s'", GetPunctuationFromId( subtype ), token.c_str() );
 	////			return 0;
 	////		}
 	////	}
@@ -1065,7 +1064,7 @@ class idLexer {
 	////*/
 	////int idLexer::ExpectAnyToken( idToken *token ) {
 	////	if (!idLexer::ReadToken( token )) {
-	////		idLexer::Error( "couldn't read expected token" );
+	////		this.Error( "couldn't read expected token" );
 	////		return 0;
 	////	}
 	////	else {
@@ -1305,7 +1304,7 @@ class idLexer {
 	////	idToken token;
 
 	////	if ( !idLexer::ReadToken( &token ) ) {
-	////		idLexer::Error( "couldn't read expected integer" );
+	////		this.Error( "couldn't read expected integer" );
 	////		return 0;
 	////	}
 	////	if ( token.type == TT_PUNCTUATION && token == "-" ) {
@@ -1313,7 +1312,7 @@ class idLexer {
 	////		return -((signed int) token.GetIntValue());
 	////	}
 	////	else if ( token.type != TT_NUMBER || token.subtype == TT_FLOAT ) {
-	////		idLexer::Error( "expected integer value, found '%s'", token.c_str() );
+	////		this.Error( "expected integer value, found '%s'", token.c_str() );
 	////	}
 	////	return token.GetIntValue();
 	////}
@@ -1327,7 +1326,7 @@ class idLexer {
 	////	idToken token;
 
 	////	if ( !idLexer::ExpectTokenType( TT_NUMBER, 0, &token ) ) {
-	////		idLexer::Error( "couldn't read expected boolean" );
+	////		this.Error( "couldn't read expected boolean" );
 	////		return false;
 	////	}
 	////	return ( token.GetIntValue() != 0 );
@@ -1350,7 +1349,7 @@ class idLexer {
 	////			this.Warning( "couldn't read expected floating point number" );
 	////			*errorFlag = true;
 	////		} else {
-	////			idLexer::Error( "couldn't read expected floating point number" );
+	////			this.Error( "couldn't read expected floating point number" );
 	////		}
 	////		return 0;
 	////	}
@@ -1363,7 +1362,7 @@ class idLexer {
 	////			this.Warning( "expected float value, found '%s'", token.c_str() );
 	////			*errorFlag = true;
 	////		} else {
-	////			idLexer::Error( "expected float value, found '%s'", token.c_str() );
+	////			this.Error( "expected float value, found '%s'", token.c_str() );
 	////		}
 	////	}
 	////	return token.GetFloatValue();
