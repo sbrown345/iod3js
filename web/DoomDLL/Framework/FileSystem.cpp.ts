@@ -1047,7 +1047,7 @@ timestamp can be NULL if not required
 ============
 */
 /*int*/
-    ReadFile ( relativePath: string, /*void ***/buffer: R<number>, /*ID_TIME_T **/timestamp: R<number> ): number {
+    ReadFile ( relativePath: string, /*void ***/buffer: R<Uint8Array>, /*ID_TIME_T **/timestamp: R<number> ): number {
         var f: idFile;
 ////	byte *		buf;
         var len:number;
@@ -3425,7 +3425,7 @@ separate file or a ZIP file.
     StringToArrayBuffer ( src: string ): ArrayBuffer {
         var buf = new ArrayBuffer( src.length );
         var dest = new Uint8Array( buf );
-        var i;
+        var i:number;
         for ( i = 0; i < src.length; ++i )
             dest[i] = src.charCodeAt( i ) & 255;
         return buf;

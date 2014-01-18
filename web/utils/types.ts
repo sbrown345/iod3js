@@ -87,7 +87,7 @@ interface Object {
     init():void;
 }
 
-function clearStructArray(array : Array) : void {
+function clearStructArray(array : Array<any>) : void {
     for (var i = 0; i < array.length; i++) {
         array[i].init();
     }
@@ -101,7 +101,7 @@ function multiDimArray <T>(arrayClass: any, num: number, arrLength: number): T[]
     return multiDimArray;
 }
 
-function $3dArray (arrayClass: any, d1: number, d2: number, d3: number):Array<Array<Array>> {
+function $3dArray (arrayClass: any, d1: number, d2: number, d3: number):Array<Array<Array<any>>> {
     var array = new Array(d1);
     for (var i = 0; i < d1; i++) {
         array[i] = new Array(d2);
@@ -114,7 +114,7 @@ function $3dArray (arrayClass: any, d1: number, d2: number, d3: number):Array<Ar
     return array;
 }
 
-function flatten3DArray ( arrayClass: any, array:Array<Array<Array>> ): any[] {
+function flatten3DArray ( arrayClass: any, array:Array<Array<Array<any>>> ): any[] {
     var flatArray = new arrayClass( array["totalSize"] );
     var count = 0;
     var d1 = array;

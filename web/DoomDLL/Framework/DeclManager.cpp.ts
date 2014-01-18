@@ -648,7 +648,7 @@ var/*int */c_savedMemory = 0;
 ////	idLexer		src;
 ////	idToken		token;
 ////	int			startMarker;
-    var buffer = new R( );
+    var buffer = new R < Uint8Array>( );
 ////	int			length, size;
 ////	int			sourceLine;
 ////	idStr		name;
@@ -657,7 +657,7 @@ var/*int */c_savedMemory = 0;
 
 	// load the text
 	common.DPrintf( "...loading '%s'\n", this.fileName.c_str() );
-    var $timestamp = new R( this.timestamp );
+    var $timestamp = new R<number>( this.timestamp );
 	length = fileSystem.ReadFile( this.fileName.c_str(), /*(void **)&*/buffer, $timestamp );
     this.timestamp = $timestamp.$;
 ////	if ( length == -1 ) {
@@ -1020,53 +1020,53 @@ idDeclManagerLocal.prototype.RegisterDeclType = function ( typeName: string, typ
 idDeclManagerLocal::RegisterDeclFolder
 ===================
 */
-idDeclManagerLocal.prototype.RegisterDeclFolder = function( folder:string, extension:string, defaultType:declType_t ) {
-	var/*int*/ i:number, j:number;
-	var fileName:idStr;
-	var declFolder:idDeclFolder;
-    var	fileList:idFileList;
-	var df = new idDeclFile;
+idDeclManagerLocal.prototype.RegisterDeclFolder = function ( folder: string, extension: string, defaultType: declType_t ) {
+    var /*int*/ i: number, j: number;
+    var fileName: idStr;
+    var declFolder: idDeclFolder;
+    var fileList: idFileList;
+    var df = new idDeclFile;
 
-	// check whether this folder / extension combination already exists
-	for ( i = 0; i < this.declFolders.Num(); i++ ) {
-		if ( this.declFolders[i].folder.Icmp( folder ) == 0 && this.declFolders[i].extension.Icmp( extension ) == 0 ) {
-			break;
-		}
-	}
-	if ( i < this.declFolders.Num() ) {
-		declFolder = this.declFolders[i];
-	} else {
-		declFolder = new idDeclFolder;
-		declFolder.folder = new idStr(folder);
-		declFolder.extension = new idStr(extension);
-		declFolder.defaultType = defaultType;
-		this.declFolders.Append( declFolder );
-	}
+    // check whether this folder / extension combination already exists
+    for ( i = 0; i < this.declFolders.Num ( ); i++ ) {
+        if ( this.declFolders[i].folder.Icmp( folder ) == 0 && this.declFolders[i].extension.Icmp( extension ) == 0 ) {
+            break;
+        }
+    }
+    if ( i < this.declFolders.Num ( ) ) {
+        declFolder = this.declFolders[i];
+    } else {
+        declFolder = new idDeclFolder;
+        declFolder.folder = new idStr( folder );
+        declFolder.extension = new idStr( extension );
+        declFolder.defaultType = defaultType;
+        this.declFolders.Append( declFolder );
+    }
 
-	// scan for decl files
-	fileList = fileSystem.ListFiles( declFolder.folder.c_str(), declFolder.extension.c_str(), true );
+    // scan for decl files
+    fileList = fileSystem.ListFiles( declFolder.folder.c_str ( ), declFolder.extension.c_str ( ), true );
 
-	// load and parse decl files
-	for ( i = 0; i < fileList.GetNumFiles(); i++ ) {
-		fileName = new idStr( declFolder.folder + "/" + fileList.GetFile( i ) );
+    // load and parse decl files
+    for ( i = 0; i < fileList.GetNumFiles ( ); i++ ) {
+        fileName = new idStr( declFolder.folder + "/" + fileList.GetFile( i ) );
 
-		// check whether this file has already been loaded
-		for ( j = 0; j < this.loadedFiles.Num(); j++ ) {
-			if ( fileName.Icmp( this.loadedFiles[j].fileName ) == 0 ) {
-				break;
-			}
-		}
-		if ( j < this.loadedFiles.Num() ) {
-			df = this.loadedFiles[j];
-		} else {
-			df = new idDeclFile( fileName.c_str(), defaultType );
-			this.loadedFiles.Append( df );
-		}
-		df.LoadAndParse();
-	}
+        // check whether this file has already been loaded
+        for ( j = 0; j < this.loadedFiles.Num ( ); j++ ) {
+            if ( fileName.Icmp( this.loadedFiles[j].fileName ) == 0 ) {
+                break;
+            }
+        }
+        if ( j < this.loadedFiles.Num ( ) ) {
+            df = this.loadedFiles[j];
+        } else {
+            df = new idDeclFile( fileName.c_str ( ), defaultType );
+            this.loadedFiles.Append( df );
+        }
+        df.LoadAndParse ( );
+    }
 
-	fileSystem.FreeFileList( fileList );
-}
+    fileSystem.FreeFileList( fileList );
+};
 
 /////*
 ////===================
@@ -1614,7 +1614,7 @@ idDeclManagerLocal.prototype.MakeNameCanonical = function ( name: string, /*char
             result[i] = '/'.charCodeAt( 0 );
         } else if ( c == '.' ) {
             lastDot = i;
-            result[i] = c;
+            result[i] = c.charCodeAt(0);
         } else {
             result[i] = idStr.ToLower( c ).charCodeAt( 0 );
         }
