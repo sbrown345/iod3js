@@ -666,7 +666,7 @@ var/*int */c_savedMemory = 0;
 		return 0;
 	}
 
-    if (!src.LoadMemory(buffer, length, this.fileName.c_str() ) ) {
+    if (!src.LoadMemory(buffer.$.toString(), length, this.fileName.c_str() ) ) {
 		common.Error( "Couldn't parse %s", this.thisc_str() );
 		Mem_Free( buffer );
 		return 0;
