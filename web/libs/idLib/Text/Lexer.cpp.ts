@@ -355,30 +355,30 @@ class idLexer {
 	////int idLexer::ReadWhiteSpace( void ) {
 	////	while(1) {
 	////		// skip white space
-	////		while(*this.script_p <= ' ') {
-	////			if (!*this.script_p) {
+	////		while(this.buffer[this.script_p] <= ' ') {
+	////			if (!this.buffer[this.script_p]) {
 	////				return 0;
 	////			}
-	////			if (*this.script_p == '\n') {
+	////			if (this.buffer[this.script_p] == '\n') {
 	////				idLexer::line++;
 	////			}
 	////			this.script_p++;
 	////		}
 	////		// skip comments
-	////		if (*this.script_p == '/') {
+	////		if (this.buffer[this.script_p] == '/') {
 	////			// comments //
 	////			if (*(this.script_p+1) == '/') {
 	////				this.script_p++;
 	////				do {
 	////					this.script_p++;
-	////					if ( !*this.script_p ) {
+	////					if ( !this.buffer[this.script_p] ) {
 	////						return 0;
 	////					}
 	////				}
-	////				while( *this.script_p != '\n' );
+	////				while( this.buffer[this.script_p] != '\n' );
 	////				idLexer::line++;
 	////				this.script_p++;
-	////				if ( !*this.script_p ) {
+	////				if ( !this.buffer[this.script_p] ) {
 	////					return 0;
 	////				}
 	////				continue;
@@ -388,13 +388,13 @@ class idLexer {
 	////				this.script_p++;
 	////				while( 1 ) {
 	////					this.script_p++;
-	////					if ( !*this.script_p ) {
+	////					if ( !this.buffer[this.script_p] ) {
 	////						return 0;
 	////					}
-	////					if ( *this.script_p == '\n' ) {
+	////					if ( this.buffer[this.script_p] == '\n' ) {
 	////						idLexer::line++;
 	////					}
-	////					else if ( *this.script_p == '/' ) {
+	////					else if ( this.buffer[this.script_p] == '/' ) {
 	////						if ( *(this.script_p-1) == '*' ) {
 	////							break;
 	////						}
@@ -404,11 +404,11 @@ class idLexer {
 	////					}
 	////				}
 	////				this.script_p++;
-	////				if ( !*this.script_p ) {
+	////				if ( !this.buffer[this.script_p] ) {
 	////					return 0;
 	////				}
 	////				this.script_p++;
-	////				if ( !*this.script_p ) {
+	////				if ( !this.buffer[this.script_p] ) {
 	////					return 0;
 	////				}
 	////				continue;
@@ -430,7 +430,7 @@ class idLexer {
 	////	// step over the leading '\\'
 	////	this.script_p++;
 	////	// determine the escape character
-	////	switch(*this.script_p) {
+	////	switch(this.buffer[this.script_p]) {
 	////		case '\\': c = '\\'; break;
 	////		case 'n': c = '\n'; break;
 	////		case 'r': c = '\r'; break;
@@ -446,7 +446,7 @@ class idLexer {
 	////		{
 	////			this.script_p++;
 	////			for (i = 0, val = 0; ; i++, this.script_p++) {
-	////				c = *this.script_p;
+	////				c = this.buffer[this.script_p];
 	////				if (c >= '0' && c <= '9')
 	////					c = c - '0';
 	////				else if (c >= 'A' && c <= 'Z')
@@ -467,11 +467,11 @@ class idLexer {
 	////		}
 	////		default: //NOTE: decimal ASCII code, NOT octal
 	////		{
-	////			if (*this.script_p < '0' || *this.script_p > '9') {
+	////			if (this.buffer[this.script_p] < '0' || this.buffer[this.script_p] > '9') {
 	////				idLexer::Error("unknown escape char");
 	////			}
 	////			for (i = 0, val = 0; ; i++, this.script_p++) {
-	////				c = *this.script_p;
+	////				c = this.buffer[this.script_p];
 	////				if (c >= '0' && c <= '9')
 	////					c = c - '0';
 	////				else
@@ -519,14 +519,14 @@ class idLexer {
 
 	////	while(1) {
 	////		// if there is an escape character and escape characters are allowed
-	////		if (*this.script_p == '\\' && !(this.flags & LEXFL_NOSTRINGESCAPECHARS)) {
+	////		if (this.buffer[this.script_p] == '\\' && !(this.flags & LEXFL_NOSTRINGESCAPECHARS)) {
 	////			if ( !idLexer::ReadEscapeCharacter( &ch ) ) {
 	////				return 0;
 	////			}
 	////			token.AppendDirty( ch );
 	////		}
 	////		// if a trailing quote
-	////		else if (*this.script_p == quote) {
+	////		else if (this.buffer[this.script_p] == quote) {
 	////			// step over the quote
 	////			this.script_p++;
 	////			// if consecutive strings should not be concatenated
@@ -545,21 +545,21 @@ class idLexer {
 	////			}
 
 	////			if ( this.flags & LEXFL_NOSTRINGCONCAT ) {
-	////				if ( *this.script_p != '\\' ) {
+	////				if ( this.buffer[this.script_p] != '\\' ) {
 	////					this.script_p = tmpscript_p;
 	////					idLexer::line = tmpline;
 	////					break;
 	////				}
 	////				// step over the '\\'
 	////				this.script_p++;
-	////				if ( !idLexer::ReadWhiteSpace() || ( *this.script_p != quote ) ) {
+	////				if ( !idLexer::ReadWhiteSpace() || ( this.buffer[this.script_p] != quote ) ) {
 	////					idLexer::Error( "expecting string after '\' terminated line" );
 	////					return 0;
 	////				}
 	////			}
 
 	////			// if there's no leading qoute
-	////			if ( *this.script_p != quote ) {
+	////			if ( this.buffer[this.script_p] != quote ) {
 	////				this.script_p = tmpscript_p;
 	////				idLexer::line = tmpline;
 	////				break;
@@ -568,18 +568,18 @@ class idLexer {
 	////			this.script_p++;
 	////		}
 	////		else {
-	////			if (*this.script_p == '\0') {
+	////			if (this.buffer[this.script_p] == '\0') { // TODO: WATCH OUT HERE
 	////				idLexer::Error( "missing trailing quote" );
 	////				return 0;
 	////			}
-	////			if (*this.script_p == '\n') {
+	////			if (this.buffer[this.script_p] == '\n') {
 	////				idLexer::Error( "newline inside string" );
 	////				return 0;
 	////			}
-	////			token.AppendDirty( *this.script_p++ );
+	////			token.AppendDirty( this.buffer[this.script_p]++ );
 	////		}
 	////	}
-	////	token.data[token.len] = '\0';
+	////	token.data[token.len] = '\0';// TODO: WATCH OUT HERE
 
 	////	if ( token.type == TT_LITERAL ) {
 	////		if ( !(this.flags & LEXFL_ALLOWMULTICHARLITERALS) ) {
@@ -606,8 +606,8 @@ class idLexer {
 
 	////	token.type = TT_NAME;
 	////	do {
-	////		token.AppendDirty( *this.script_p++ );
-	////		c = *this.script_p;
+	////		token.AppendDirty( this.buffer[this.script_p+9] );
+	////		c = this.buffer[this.script_p];
 	////	} while ((c >= 'a' && c <= 'z') ||
 	////				(c >= 'A' && c <= 'Z') ||
 	////				(c >= '0' && c <= '9') ||
@@ -616,7 +616,7 @@ class idLexer {
 	////				((this.flags & lexerFlags_t.LEXFL_ONLYSTRINGS) && (c == '-')) ||
 	////				// if special path name characters are allowed
 	////				((this.flags & LEXFL_ALLOWPATHNAMES) && (c == '/' || c == '\\' || c == ':' || c == '.')) );
-	////	token.data[token.len] = '\0';
+	////	token.data[token.len] = '\0';// TODO: WATCH OUT HERE
 	////	//the sub type is the length of the name
 	////	token.subtype = token.Length();
 	////	return 1;
@@ -653,15 +653,15 @@ class idLexer {
 	////	token.intvalue = 0;
 	////	token.floatvalue = 0;
 
-	////	c = *this.script_p;
-	////	c2 = *(this.script_p + 1);
+	////	c = this.buffer[this.script_p];
+	////	c2 = this.buffer[this.script_p + 1];
 
 	////	if ( c == '0' && c2 != '.' ) {
 	////		// check for a hexadecimal number
 	////		if ( c2 == 'x' || c2 == 'X' ) {
-	////			token.AppendDirty( *this.script_p++ );
-	////			token.AppendDirty( *this.script_p++ );
-	////			c = *this.script_p;
+	////			token.AppendDirty( this.buffer[this.script_p++] );
+	////			token.AppendDirty( this.buffer[this.script_p++] );
+	////			c = this.buffer[this.script_p];
 	////			while((c >= '0' && c <= '9') ||
 	////						(c >= 'a' && c <= 'f') ||
 	////						(c >= 'A' && c <= 'F')) {
@@ -672,9 +672,9 @@ class idLexer {
 	////		}
 	////		// check for a binary number
 	////		else if ( c2 == 'b' || c2 == 'B' ) {
-	////			token.AppendDirty( *this.script_p++ );
-	////			token.AppendDirty( *this.script_p++ );
-	////			c = *this.script_p;
+	////			token.AppendDirty( this.buffer[this.script_p++] );
+	////			token.AppendDirty( this.buffer[this.script_p++] );
+	////			c = this.buffer[this.script_p];
 	////			while( c == '0' || c == '1' ) {
 	////				token.AppendDirty( c );
 	////				c = *(++this.script_p);
@@ -683,8 +683,8 @@ class idLexer {
 	////		}
 	////		// its an octal number
 	////		else {
-	////			token.AppendDirty( *this.script_p++ );
-	////			c = *this.script_p;
+	////			token.AppendDirty( this.buffer[this.script_p++] );
+	////			c = this.buffer[this.script_p];
 	////			while( c >= '0' && c <= '7' ) {
 	////				token.AppendDirty( c );
 	////				c = *(++this.script_p);
@@ -833,7 +833,7 @@ class idLexer {
 	////			token.subtype |= TT_IPPORT;
 	////		}
 	////	}
-	////	token.data[token.len] = '\0';
+	////	token.data[token.len] = '\0';// TODO: WATCH OUT HERE
 	////	return 1;
 	////}
 
@@ -888,7 +888,7 @@ class idLexer {
 	================
 	*/
 	/*int */ReadToken(token: R<idToken> ):number {
-		var/*int */c:number;
+		var/*int */c:string;
 
 		if ( !this.loaded ) {
 			common.Error( "idLexer::ReadToken: no file loaded" );
@@ -906,7 +906,7 @@ class idLexer {
 		// save line counter
 		this.lastline = this.line;
 		// clear the token stuff
-		token.$.data[0] = '\0';
+		token.$.data[0] = '\0';// TODO: WATCH OUT HERE
 		token.$.len = 0;
 		// start of the white space
 		this.whiteSpaceStart_p = this.script_p;
@@ -931,7 +931,7 @@ class idLexer {
 		if ( this.flags & lexerFlags_t.LEXFL_ONLYSTRINGS ) {
 			// if there is a leading quote
 			if ( c == '\"' || c == '\'' ) {
-				if (!idLexer::ReadString( token.$, c )) {
+				if (!this.ReadString( token.$, c )) {
 					return 0;
 				}
 			} else if ( !this.ReadName( token.$ ) ) {
@@ -940,15 +940,15 @@ class idLexer {
 		}
 		// if there is a number
 		else if ( (c >= '0' && c <= '9') ||
-				(c == '.' && (*(this.script_p + 1) >= '0' && *(this.script_p + 1) <= '9')) ) {
-			if ( !idLexer::ReadNumber( token.$ ) ) {
+				(c == '.' && (this.buffer[this.script_p + 1] >= '0' && this.buffer[this.script_p + 1] <= '9')) ) {
+			if ( !this.ReadNumber( token.$ ) ) {
 				return 0;
 			}
 			// if names are allowed to start with a number
 			if ( this.flags & lexerFlags_t.LEXFL_ALLOWNUMBERNAMES ) {
-				c = *this.script_p;
+				c = this.buffer[this.script_p];
 				if ( (c >= 'a' && c <= 'z') ||	(c >= 'A' && c <= 'Z') || c == '_' ) {
-					if ( !idLexer::ReadName( token.$ ) ) {
+					if ( !this.ReadName( token.$ ) ) {
 						return 0;
 					}
 				}
@@ -956,7 +956,7 @@ class idLexer {
 		}
 		// if there is a leading quote
 		else if ( c == '\"' || c == '\'' ) {
-			if (!idLexer::ReadString( token.$, c )) {
+			if (!this.ReadString( token.$, c )) {
 				return 0;
 			}
 		}
@@ -1267,19 +1267,19 @@ class idLexer {
 	////const char*	idLexer::ReadRestOfLine(idStr& out) {
 	////	while(1) {
 
-	////		if(*this.script_p == '\n') {
+	////		if(this.buffer[this.script_p] == '\n') {
 	////			idLexer::line++;
 	////			break;
 	////		}
 
-	////		if(!*this.script_p) {
+	////		if(!this.buffer[this.script_p]) {
 	////			break;
 	////		}
 
-	////		if(*this.script_p <= ' ') {
+	////		if(this.buffer[this.script_p] <= ' ') {
 	////			out += " ";
 	////		} else {
-	////			out += *this.script_p;
+	////			out += this.buffer[this.script_p];
 	////		}
 	////		this.script_p++;
 
@@ -1459,7 +1459,7 @@ class idLexer {
 	////	skipWhite = false;
 	////	doTabs = tabs >= 0;
 
-	////	while( depth && *this.script_p ) {
+	////	while( depth && this.buffer[this.script_p] ) {
 	////		char c = *(this.script_p++);
 
 	////		switch ( c ) {
@@ -1669,7 +1669,7 @@ class idLexer {
 	////		return false;
 	////	}
 
-	////	if ( !OSPath && ( baseFolder[0] != '\0' ) ) {
+	////	if ( !OSPath && ( baseFolder[0] != '\0' ) ) {// TODO: WATCH OUT HERE
 	////		pathname = va( "%s/%s", baseFolder, filename );
 	////	} else {
 	////		pathname = filename;
@@ -1684,7 +1684,7 @@ class idLexer {
 	////	}
 	////	length = fp.Length();
 	////	buf = (char *) Mem_Alloc( length + 1 );
-	////	buf[length] = '\0';
+	////	buf[length] = '\0';// TODO: WATCH OUT HERE
 	////	fp.Read( buf, length );
 	////	idLexer::fileTime = fp.Timestamp();
 	////	idLexer::filename = fp.GetFullPath();
