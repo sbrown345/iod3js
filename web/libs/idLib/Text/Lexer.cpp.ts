@@ -1203,27 +1203,25 @@ class idLexer {
 	Internal brace depths are properly skipped.
 	=================
 	*/
-	/*int */SkipBracedSection( parseFirstBrace:boolean = true ):number {
-		var token = new idToken;
-		var /*int */depth:number;
+	/*int */
+	SkipBracedSection ( parseFirstBrace: boolean = true ): number {
+		var token = new R<idToken>( new idToken ( ) );
+		var /*int */depth: number;
 
 		depth = parseFirstBrace ? 0 : 1;
 		do {
-			var $token = new R<idToken>( token );
-			var readToken = this.ReadToken($token);
-			token = $token.$;
-			if ( !readToken ) {
-				return 0/*false*/;
+			if ( !this.ReadToken( token ) ) {
+				return 0 /*false*/;
 			}
-			if ( token.type == TT_PUNCTUATION ) {
-				if ( token.c_str() == "{" ) {
+			if ( token.$.type == TT_PUNCTUATION ) {
+				if ( token.$.data == "{" ) {
 					depth++;
-				} else if (token.c_str() == "}" ) {
+				} else if ( token.$.data == "}" ) {
 					depth--;
 				}
 			}
-		} while( depth );
-		return 1/*true*/;
+		} while ( depth );
+		return 1 /*true*/;
 	}
 
 	/*

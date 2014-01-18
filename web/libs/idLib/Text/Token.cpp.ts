@@ -113,7 +113,24 @@ class idToken extends idStr {
 		super ( );
 	}
 
-    ////
+	clone ( ): idToken {
+		var cloned = new idToken ( );
+		cloned.type = this.type;
+		cloned.subtype = this.subtype;
+		cloned.line = this.line;
+		cloned.linesCrossed = this.linesCrossed;
+		cloned.flags = this.flags;
+		cloned.intvalue = this.intvalue;
+		cloned.floatvalue = this.floatvalue;
+		cloned.whiteSpaceStart_p = this.whiteSpaceStart_p;
+		cloned.whiteSpaceEnd_p = this.whiteSpaceEnd_p;
+		cloned.next = this.next;
+		cloned.data = this.data;
+		cloned.len = this.len;
+		return cloned;
+	}
+
+	////
     ////ID_INLINE idToken::idToken( const idToken *token ) {
     ////	*this = *token;
     ////}

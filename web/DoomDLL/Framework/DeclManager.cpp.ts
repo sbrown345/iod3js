@@ -667,7 +667,7 @@ var/*int */c_savedMemory = 0;
 	}
 
     if (!src.LoadMemory(buffer.$.toString(), length, this.fileName.c_str() ) ) {
-		common.Error( "Couldn't parse %s", this.thisc_str() );
+		common.Error( "Couldn't parse %s", this.c_str() );
 		Mem_Free( buffer );
 		return 0;
 	}
@@ -690,9 +690,7 @@ var/*int */c_savedMemory = 0;
 		sourceLine = src.GetLineNum();
 
 		// parse the decl type name
-
-		var readTokenVal = src.ReadToken(token);
-		if ( !readTokenVal ) {
+		if (!src.ReadToken(token) ) {
 			break;
 		}
 
@@ -730,8 +728,7 @@ var/*int */c_savedMemory = 0;
 		}
 
 		// now parse the name
-		var readToken = src.ReadToken(token);
-		if ( !readToken ) {
+			if (!src.ReadToken( token )) {
 			src.Warning( "Type without definition at end of file" );
 			break;
 		}
@@ -749,11 +746,10 @@ var/*int */c_savedMemory = 0;
 			continue;
 		}
 
-		name = token.$;
+		name = token.$.clone();
 
 		// make sure there's a '{'
-		var readToken1 = src.ReadToken(token);
-		if ( !readToken1 ) {
+		if ( !src.ReadToken(token) ) {
 			src.Warning( "Type without definition at end of file" );
 			break;
 		}
@@ -1753,9 +1749,10 @@ idDeclManagerLocal.prototype.FindTypeWithoutParsing = function ( type: declType_
         common.FatalError( "idDeclManager::FindTypeWithoutParsing: bad type: %i", typeIndex );
     }
 
-    var canonicalName = new Uint8Array( MAX_STRING_CHARS );
+    var canonicalNameArray = new Uint8Array( MAX_STRING_CHARS );
 
-    this.MakeNameCanonical( name, canonicalName, sizeof( canonicalName ) );
+	this.MakeNameCanonical(name, canonicalNameArray, sizeof(canonicalNameArray));
+	var canonicalName = canonicalNameArray.toString ( );
 
     // see if it already exists
     hash = this.hashTables[typeIndex].GenerateKey( canonicalName, false );
@@ -1775,7 +1772,7 @@ idDeclManagerLocal.prototype.FindTypeWithoutParsing = function ( type: declType_
 
     var decl = new idDeclLocal;
     decl.self = /*NULL*/null;
-    decl.name = new idStr( canonicalName.toString ( ) );
+    decl.name = new idStr( canonicalName );
     decl.type = type;
     decl.declState = declState_t.DS_UNPARSED;
     decl.textSource = /*NULL*/null;
