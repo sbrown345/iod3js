@@ -1,3 +1,5 @@
+/// <reference path="../../libs/idlib/text/str.h.ts" />
+/// <reference path="filesystem.h.ts" />
 /////*
 ////===========================================================================
 ////
@@ -56,13 +58,13 @@ class idFile {
 ////							// Get the full file path.
 ////	virtual const char *	GetFullPath( void );
 ////							// Read data from the file to the buffer.
-////	virtual int				Read( void *buffer, int len );
+    Read(buffer: Uint8Array, len: number): number { throw "placeholder"; }
 ////							// Write data from the buffer to the file.
 ////	virtual int				Write( const void *buffer, int len );
 ////							// Returns the length of the file.
-////	virtual int				Length( void );
+    Length(): number { throw "placeholder"; }
 ////							// Return a time value for reload operations.
-////	virtual ID_TIME_T			Timestamp( void );
+    Timestamp(): number { throw "placeholder"; }
 ////							// Returns offset in file.
 ////	virtual int				Tell( void );
 ////							// Forces flush on files being writting to.
@@ -195,9 +197,9 @@ class idFile_Permanent extends idFile {
 ////	virtual const char *	GetFullPath( void ) { return fullPath.c_str(); }
 ////	virtual int				Read( void *buffer, int len );
 ////	virtual int				Write( const void *buffer, int len );
-    Length ( ):number { throw "placeholder"; }
+    //Length ( ):number { throw "placeholder"; }
 
-    Timestamp ( ): number /*ID_TIME_T*/ { throw "placeholder"; }
+    //Timestamp ( ): number /*ID_TIME_T*/ { throw "placeholder"; }
 
 ////	virtual int				Tell( void );
 ////	virtual void			ForceFlush( void );

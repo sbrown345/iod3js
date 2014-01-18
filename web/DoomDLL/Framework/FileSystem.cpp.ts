@@ -1,5 +1,6 @@
 /// <reference path="File.h.ts" />
 /// <reference path="../../libs/c.ts" />
+/// <reference path="file.cpp.ts" />
 /// <reference path="FileSystem.h.ts" />
 /// <reference path="files.ts" />
 /// <reference path="../../libs/idLib/Containers/HashIndex.h.ts" />
@@ -385,9 +386,9 @@ class idFileSystemLocal extends idFileSystem {
 ////	virtual idFile *		OpenExplicitFileWrite( const char *OSPath );
 ////	virtual void			CloseFile( idFile *f );
 ////	virtual void			BackgroundDownload( backgroundDownload_t *bgl );
-////	virtual void			ResetReadCount( void ) { readCount = 0; }
-////	virtual void			AddToReadCount( int c ) { readCount += c; }
-////	virtual int				GetReadCount( void ) { return readCount; }
+    ResetReadCount ( ): void { this.readCount = 0; }
+    AddToReadCount ( c: number ): void { this.readCount += c; }
+    GetReadCount ( ): number { return this.readCount; }
 ////	virtual void			FindDLL( const char *basename, char dllPath[ MAX_OSPATH ], bool updateChecksum );
 ////	virtual void			ClearDirCache( void );
 ////	virtual bool			HasD3XP( void );
@@ -417,7 +418,7 @@ class idFileSystemLocal extends idFileSystem {
 	/*int						*/loadStack:number;			// total files in memory
     /*idStr				    	*/gameFolder: idStr;			// this will be a single name without separators
 ////
-////	searchpath_t			*addonPaks;			// not loaded up, but we saw them
+    addonPaks: searchpath_t;			// not loaded up, but we saw them
 ////
 ////	idDict					mapDict;			// for GetMapDecl
 ////
@@ -452,79 +453,80 @@ class idFileSystemLocal extends idFileSystem {
 /*	int						*/dir_cache_count:number;
 ////
 /*int						*/d3xp:number;	// 0: didn't check, -1: not installed, 1: installed
-////
-////private:
-////	void					ReplaceSeparators( idStr &path, char sep = PATHSEPERATOR_CHAR );
-////	long					HashFileName( const char *fname ) const;
-////	int						ListOSFiles( const char *directory, const char *extension, idStrList &list );
-////	FILE *					OpenOSFile( const char *name, const char *mode, idStr *caseSensitiveName = NULL );
-////	FILE *					OpenOSFileCorrectName( idStr &path, const char *mode );
-////	int						DirectFileLength( FILE *o );
-////	void					CopyFile( idFile *src, const char *toOSPath );
-////	int						AddUnique( const char *name, idStrList &list, idHashIndex &hashIndex ) const;
-////	void					GetExtensionList( const char *extension, idStrList &extensionList ) const;
-////	int						GetFileList( const char *relativePath, const idStrList &extensions, idStrList &list, idHashIndex &hashIndex, bool fullRelativePath, const char* gamedir = NULL );
-////
-////	int						GetFileListTree( const char *relativePath, const idStrList &extensions, idStrList &list, idHashIndex &hashIndex, const char* gamedir = NULL );
-////	pack_t *				LoadZipFile( const char *zipfile );
-////	void					AddGameDirectory( const char *path, const char *dir );
-////	void					SetupGameDirectories( const char *gameName );
-////	void					Startup( void );
-////	void					SetRestrictions( void );
-////							// some files can be obtained from directories without compromising si_pure
-////	bool					FileAllowedFromDir( const char *path );
-////							// searches all the paks, no pure check
-////	pack_t *				GetPackForChecksum( int checksum, bool searchAddons = false );
-////							// searches all the paks, no pure check
-////	pack_t *				FindPakForFileChecksum( const char *relativePath, int fileChecksum, bool bReference );
-////	idFile_InZip *			ReadFileFromZip( pack_t *pak, fileInPack_t *pakFile, const char *relativePath );
-////	int						GetFileChecksum( idFile *file );
-////	pureStatus_t			GetPackStatus( pack_t *pak );
-////	addonInfo_t *			ParseAddonDef( const char *buf, const int len );
-////	void					FollowAddonDependencies( pack_t *pak );
-////
-////	static size_t			CurlWriteFunction( void *ptr, size_t size, size_t nmemb, void *stream );
-////							// curl_progress_callback in curl.h
-////	static int				CurlProgressFunction( void *clientp, double dltotal, double dlnow, double ultotal, double ulnow );
-////};
-////
-////idCVar	idFileSystemLocal::fs_restrict( "fs_restrict", "", CVAR_SYSTEM | CVAR_INIT | CVAR_BOOL, "" );
-////idCVar	idFileSystemLocal::fs_debug( "fs_debug", "0", CVAR_SYSTEM | CVAR_INTEGER, "", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
-////idCVar	idFileSystemLocal::fs_copyfiles( "fs_copyfiles", "0", CVAR_SYSTEM | CVAR_INIT | CVAR_INTEGER, "", 0, 4, idCmdSystem::ArgCompletion_Integer<0,3> );
-////idCVar	idFileSystemLocal::fs_basepath( "fs_basepath", "", CVAR_SYSTEM | CVAR_INIT, "" );
-////idCVar	idFileSystemLocal::fs_savepath( "fs_savepath", "", CVAR_SYSTEM | CVAR_INIT, "" );
-////idCVar	idFileSystemLocal::fs_cdpath( "fs_cdpath", "", CVAR_SYSTEM | CVAR_INIT, "" );
-////idCVar	idFileSystemLocal::fs_devpath( "fs_devpath", "", CVAR_SYSTEM | CVAR_INIT, "" );
-////idCVar	idFileSystemLocal::fs_game( "fs_game", "", CVAR_SYSTEM | CVAR_INIT | CVAR_SERVERINFO, "mod path" );
-////idCVar  idFileSystemLocal::fs_game_base( "fs_game_base", "", CVAR_SYSTEM | CVAR_INIT | CVAR_SERVERINFO, "alternate mod path, searched after the main fs_game path, before the basedir" );
-////#ifdef WIN32
-////idCVar	idFileSystemLocal::fs_caseSensitiveOS( "fs_caseSensitiveOS", "0", CVAR_SYSTEM | CVAR_BOOL, "" );
-////#else
-////idCVar	idFileSystemLocal::fs_caseSensitiveOS( "fs_caseSensitiveOS", "1", CVAR_SYSTEM | CVAR_BOOL, "" );
-////#endif
-////idCVar	idFileSystemLocal::fs_searchAddons( "fs_searchAddons", "0", CVAR_SYSTEM | CVAR_BOOL, "search all addon pk4s ( disables addon functionality )" );
-////
-////idFileSystemLocal	fileSystemLocal;
-////idFileSystem *		fileSystem = &fileSystemLocal;
-////
-/*
-================
-idFileSystemLocal::idFileSystemLocal
-================
-*/
-constructor() {
-	this.searchPaths = null;
-	this.readCount = 0;
-	this.loadCount = 0;
-	this.loadStack = 0;
-	this.dir_cache_index = 0;
-	this.dir_cache_count = 0;
-	this.d3xp = 0;
-	this.loadedFileFromDir = false;
-	this.restartGamePakChecksum = 0;
-	this.memset( &backgroundThread, 0, sizeof( backgroundThread ) );
-	this.addonPaks = null;
-}
+    ////
+    ////private:
+    ////	void					ReplaceSeparators( idStr &path, char sep = PATHSEPERATOR_CHAR );
+    ////	long					HashFileName( const char *fname ) const;
+    ////	int						ListOSFiles( const char *directory, const char *extension, idStrList &list );
+    ////	FILE *					OpenOSFile( const char *name, const char *mode, idStr *caseSensitiveName = NULL );
+    ////	FILE *					OpenOSFileCorrectName( idStr &path, const char *mode );
+    ////	int						DirectFileLength( FILE *o );
+    ////	void					CopyFile( idFile *src, const char *toOSPath );
+    ////	int						AddUnique( const char *name, idStrList &list, idHashIndex &hashIndex ) const;
+    ////	void					GetExtensionList( const char *extension, idStrList &extensionList ) const;
+    ////	int						GetFileList( const char *relativePath, const idStrList &extensions, idStrList &list, idHashIndex &hashIndex, bool fullRelativePath, const char* gamedir = NULL );
+    ////
+    ////	int						GetFileListTree( const char *relativePath, const idStrList &extensions, idStrList &list, idHashIndex &hashIndex, const char* gamedir = NULL );
+    ////	pack_t *				LoadZipFile( const char *zipfile );
+    ////	void					AddGameDirectory( const char *path, const char *dir );
+    ////	void					SetupGameDirectories( const char *gameName );
+    ////	void					Startup( void );
+    ////	void					SetRestrictions( void );
+    ////							// some files can be obtained from directories without compromising si_pure
+    ////	bool					FileAllowedFromDir( const char *path );
+    ////							// searches all the paks, no pure check
+    ////	pack_t *				GetPackForChecksum( int checksum, bool searchAddons = false );
+    ////							// searches all the paks, no pure check
+    ////	pack_t *				FindPakForFileChecksum( const char *relativePath, int fileChecksum, bool bReference );
+    ////	idFile_InZip *			ReadFileFromZip( pack_t *pak, fileInPack_t *pakFile, const char *relativePath );
+    ////	int						GetFileChecksum( idFile *file );
+    ////	pureStatus_t			GetPackStatus( pack_t *pak );
+    ////	addonInfo_t *			ParseAddonDef( const char *buf, const int len );
+    ////	void					FollowAddonDependencies( pack_t *pak );
+    ////
+    ////	static size_t			CurlWriteFunction( void *ptr, size_t size, size_t nmemb, void *stream );
+    ////							// curl_progress_callback in curl.h
+    ////	static int				CurlProgressFunction( void *clientp, double dltotal, double dlnow, double ultotal, double ulnow );
+    ////};
+    ////
+    ////idCVar	idFileSystemLocal::fs_restrict( "fs_restrict", "", CVAR_SYSTEM | CVAR_INIT | CVAR_BOOL, "" );
+    ////idCVar	idFileSystemLocal::fs_debug( "fs_debug", "0", CVAR_SYSTEM | CVAR_INTEGER, "", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
+    ////idCVar	idFileSystemLocal::fs_copyfiles( "fs_copyfiles", "0", CVAR_SYSTEM | CVAR_INIT | CVAR_INTEGER, "", 0, 4, idCmdSystem::ArgCompletion_Integer<0,3> );
+    ////idCVar	idFileSystemLocal::fs_basepath( "fs_basepath", "", CVAR_SYSTEM | CVAR_INIT, "" );
+    ////idCVar	idFileSystemLocal::fs_savepath( "fs_savepath", "", CVAR_SYSTEM | CVAR_INIT, "" );
+    ////idCVar	idFileSystemLocal::fs_cdpath( "fs_cdpath", "", CVAR_SYSTEM | CVAR_INIT, "" );
+    ////idCVar	idFileSystemLocal::fs_devpath( "fs_devpath", "", CVAR_SYSTEM | CVAR_INIT, "" );
+    ////idCVar	idFileSystemLocal::fs_game( "fs_game", "", CVAR_SYSTEM | CVAR_INIT | CVAR_SERVERINFO, "mod path" );
+    ////idCVar  idFileSystemLocal::fs_game_base( "fs_game_base", "", CVAR_SYSTEM | CVAR_INIT | CVAR_SERVERINFO, "alternate mod path, searched after the main fs_game path, before the basedir" );
+    ////#ifdef WIN32
+    ////idCVar	idFileSystemLocal::fs_caseSensitiveOS( "fs_caseSensitiveOS", "0", CVAR_SYSTEM | CVAR_BOOL, "" );
+    ////#else
+    ////idCVar	idFileSystemLocal::fs_caseSensitiveOS( "fs_caseSensitiveOS", "1", CVAR_SYSTEM | CVAR_BOOL, "" );
+    ////#endif
+    ////idCVar	idFileSystemLocal::fs_searchAddons( "fs_searchAddons", "0", CVAR_SYSTEM | CVAR_BOOL, "search all addon pk4s ( disables addon functionality )" );
+    ////
+    ////idFileSystemLocal	fileSystemLocal;
+    ////idFileSystem *		fileSystem = &fileSystemLocal;
+    ////
+    /*
+    ================
+    idFileSystemLocal::idFileSystemLocal
+    ================
+    */
+    constructor() {
+        super();
+        this.searchPaths = null;
+        this.readCount = 0;
+        this.loadCount = 0;
+        this.loadStack = 0;
+        this.dir_cache_index = 0;
+        this.dir_cache_count = 0;
+        this.d3xp = 0;
+        //this.loadedFileFromDir = false;
+        //this.restartGamePakChecksum = 0;
+        //this.memset( &backgroundThread, 0, sizeof( backgroundThread ) );
+        this.addonPaks = null;
+    }
 
 /////*
 ////================
@@ -1129,7 +1131,7 @@ timestamp can be NULL if not required
         this.loadCount++;
         this.loadStack++;
 
-        buf = new Uint16Array( len + 1 );
+        buf = new Uint8Array( len + 1 );
         buffer.$ = buf;
 
         f.Read( buf, len );

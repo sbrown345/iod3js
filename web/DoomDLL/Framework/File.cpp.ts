@@ -1,3 +1,4 @@
+/// <reference path="common.cpp.ts" />
 /// <reference path="file.h.ts" />
 /////*
 ////===========================================================================
@@ -1045,50 +1046,55 @@ idFile_Permanent::Read
 Properly handles partial reads
 =================
 */
-/*int */idFile_Permanent.prototype.Read = function(/* void **/buffer:Uint8Array, /*int */len:number ):number {
-	int		block, remaining;
-	int		read;
-	byte *	buf;
-	int		tries;
+/*int */idFile_Permanent.prototype.Read = function ( /* void **/buffer: Uint8Array, /*int */len: number): number {
+    var /*int		*/block: number, remaining: number;
+    var /*int		*/read: number;
+    var /*byte *	*/buf: Uint8Array;
+    var /*int		*/tries: number;
 
-	if ( !(mode & ( 1 << fsMode_t.FS_READ ) ) ) {
-		common.FatalError( "idFile_Permanent::Read: %s not opened in read mode", name.c_str() );
-		return 0;
-	}
+    if (!(this.mode & (1 << fsMode_t.FS_READ))) {
+        common.FatalError("idFile_Permanent::Read: %s not opened in read mode", this.name.c_str());
+        return 0;
+    }
 
-	if ( !o ) {
-		return 0;
-	}
+    if (!this.o) {
+        return 0;
+    }
 
-	buf = (byte *)buffer;
+    //buf = /*(byte *)*/buffer;
 
-	remaining = len;
-	tries = 0;
-	while( remaining ) {
-		block = remaining;
-		read = fread( buf, 1, block, o );
-		if ( read == 0 ) {
-			// we might have been trying to read from a CD, which
-			// sometimes returns a 0 read on windows
-			if ( !tries ) {
-				tries = 1;
-			}
-			else {
-				fileSystem.AddToReadCount( len - remaining );
-				return len-remaining;
-			}
-		}
+    //remaining = len;
+    //tries = 0;
+    //while ( remaining ) {
+    //    block = remaining;
+    //    read = fread( buf, 1, block, this.o );
+    //    if ( read == 0 ) {
+    //        // we might have been trying to read from a CD, which
+    //        // sometimes returns a 0 read on windows
+    //        if ( !tries ) {
+    //            tries = 1;
+    //        } else {
+    //            fileSystem.AddToReadCount( len - remaining );
+    //            return len - remaining;
+    //        }
+    //    }
 
-		if ( read == -1 ) {
-			common.FatalError( "idFile_Permanent::Read: -1 bytes read from %s", name.c_str() );
-		}
+    //    if ( read == -1 ) {
+    //        common.FatalError( "idFile_Permanent::Read: -1 bytes read from %s", name.c_str ( ) );
+    //    }
 
-		remaining -= read;
-		buf += read;
-	}
-	fileSystem.AddToReadCount( len );
-	return len;
-}
+    //    remaining -= read;
+    //    buf += read;
+    //}
+
+    var source = new Uint8Array(this.o.arrayBuffer);
+    for (var i = 0; i < len; i++) {
+        buffer[i] = source[i];
+    }
+
+    fileSystem.AddToReadCount(len);
+    return len;
+};
 
 /////*
 ////=================
