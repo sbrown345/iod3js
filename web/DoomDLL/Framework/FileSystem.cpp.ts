@@ -308,11 +308,11 @@ class pack_t {
 ////	idStr				gamedir;					// base
 ////} directory_t;
 ////
-////typedef struct searchpath_s {
+class /*searchpath_s*/ searchpath_t{
 ////	pack_t *			pack;						// only one of pack / dir will be non NULL
 ////	directory_t *		dir;
 ////	struct searchpath_s *next;
-////} searchpath_t;
+};
 
 // search flags when opening a file
 var FSFLAG_SEARCH_DIRS		= ( 1 << 0 );
@@ -411,11 +411,11 @@ class idFileSystemLocal extends idFileSystem {
 ////private:
 ////	friend dword 			BackgroundDownloadThread( void *parms );
 ////
-////	searchpath_t *			searchPaths;
-////	int						readCount;			// total bytes read
-////	int						loadCount;			// total files read
-////	int						loadStack;			// total files in memory
-////	idStr					gameFolder;			// this will be a single name without separators
+    /*searchpath_t *			*/searchPaths: searchpath_t;
+	/*int						*/readCount:number;			// total bytes read
+	/*int						*/loadCount:number;			// total files read
+	/*int						*/loadStack:number;			// total files in memory
+    /*idStr				    	*/gameFolder: idStr;			// this will be a single name without separators
 ////
 ////	searchpath_t			*addonPaks;			// not loaded up, but we saw them
 ////
@@ -448,10 +448,10 @@ class idFileSystemLocal extends idFileSystem {
 ////	int						gamePakForOS[ MAX_GAME_OS ];
 ////
 ////	idDEntry				dir_cache[ MAX_CACHED_DIRS ]; // fifo
-////	int						dir_cache_index;
-////	int						dir_cache_count;
+/*	int						*/dir_cache_index:number;
+/*	int						*/dir_cache_count:number;
 ////
-////	int						d3xp;	// 0: didn't check, -1: not installed, 1: installed
+/*int						*/d3xp:number;	// 0: didn't check, -1: not installed, 1: installed
 ////
 ////private:
 ////	void					ReplaceSeparators( idStr &path, char sep = PATHSEPERATOR_CHAR );
@@ -507,25 +507,25 @@ class idFileSystemLocal extends idFileSystem {
 ////idFileSystemLocal	fileSystemLocal;
 ////idFileSystem *		fileSystem = &fileSystemLocal;
 ////
-/////*
-////================
-////idFileSystemLocal::idFileSystemLocal
-////================
-////*/
-////idFileSystemLocal::idFileSystemLocal( void ) {
-////	searchPaths = NULL;
-////	readCount = 0;
-////	loadCount = 0;
-////	loadStack = 0;
-////	dir_cache_index = 0;
-////	dir_cache_count = 0;
-////	d3xp = 0;
-////	loadedFileFromDir = false;
-////	restartGamePakChecksum = 0;
-////	memset( &backgroundThread, 0, sizeof( backgroundThread ) );
-////	addonPaks = NULL;
-////}
-////
+/*
+================
+idFileSystemLocal::idFileSystemLocal
+================
+*/
+constructor() {
+	this.searchPaths = null;
+	this.readCount = 0;
+	this.loadCount = 0;
+	this.loadStack = 0;
+	this.dir_cache_index = 0;
+	this.dir_cache_count = 0;
+	this.d3xp = 0;
+	this.loadedFileFromDir = false;
+	this.restartGamePakChecksum = 0;
+	this.memset( &backgroundThread, 0, sizeof( backgroundThread ) );
+	this.addonPaks = null;
+}
+
 /////*
 ////================
 ////idFileSystemLocal::HashFileName
@@ -1048,9 +1048,9 @@ timestamp can be NULL if not required
 */
 /*int*/
     ReadFile ( relativePath: string, /*void ***/buffer: R<Uint8Array>, /*ID_TIME_T **/timestamp: R<number> ): number {
-        var f: idFile;
-////	byte *		buf;
-        var len:number;
+        var f: idFile_Permanent;
+        var buf: Uint8Array;
+        var len: number;
         var isConfig: boolean;
 ////
         //if ( !this.searchPaths ) {
@@ -1080,8 +1080,8 @@ timestamp can be NULL if not required
             //if ( eventLoop && eventLoop.JournalLevel() == 2 ) {
             //	int		r;
 
-            //	loadCount++;
-            //	loadStack++;
+            //	this.loadCount++;
+            //	this.loadStack++;
 
             //	common.DPrintf( "Loading %s from journal file.\n", relativePath );
             //	len = 0;
@@ -1107,36 +1107,36 @@ timestamp can be NULL if not required
         }
 
         // look for it in the filesystem or pack files
-        f = this.OpenFileRead( relativePath, ( buffer != null ) );
-        todoThrow ( );
-////	if ( f == NULL ) {
-////		if ( buffer ) {
-////			*buffer = NULL;
-////		}
-////		return -1;
-////	}
-	//len = f.Length();
-////
-////	if ( timestamp ) {
-////		timestamp.$ = f.Timestamp();
-////	}
-////	
-////	if ( !buffer ) {
-////		CloseFile( f );
-////		return len;
-////	}
-////
-////	loadCount++;
-////	loadStack++;
-////
-////	buf = (byte *)Mem_ClearedAlloc(len+1);
-////	*buffer = buf;
-////
-////	f.Read( buf, len );
-////
-////	// guarantee that it will have a trailing 0 for string operations
-////	buf[len] = 0;
-////	CloseFile( f );
+        f = <idFile_Permanent>this.OpenFileRead( relativePath, ( buffer != null ) );
+
+        if ( f == null ) {
+            if ( buffer ) {
+                buffer.$ = null;
+            }
+            return -1;
+        }
+        len = f.Length ( );
+
+        if ( timestamp ) {
+            timestamp.$ = f.Timestamp ( );
+        }
+
+        if ( !buffer ) {
+            this.CloseFile( f );
+            return len;
+        }
+
+        this.loadCount++;
+        this.loadStack++;
+
+        buf = new Uint16Array( len + 1 );
+        buffer.$ = buf;
+
+        f.Read( buf, len );
+
+        // guarantee that it will have a trailing 0 for string operations
+        buf[len] = 0;
+        this.CloseFile( f );
 ////
 ////	// if we are journalling and it is a config file, write it to the journal file
 ////	if ( isConfig && eventLoop && eventLoop.JournalLevel() == 1 ) {
@@ -1161,7 +1161,7 @@ timestamp can be NULL if not required
 ////	if ( !buffer ) {
 ////		common.FatalError( "idFileSystemLocal::FreeFile( NULL )" );
 ////	}
-////	loadStack--;
+////	this.loadStack--;
 ////
 ////	Mem_Free( buffer );
 ////}
@@ -3611,17 +3611,18 @@ idFileSystemLocal::OpenFileRead
 ////	return NULL;
 ////}
 ////
-/////*
-////==============
-////idFileSystemLocal::CloseFile
-////==============
-////*/
-////void idFileSystemLocal::CloseFile( idFile *f ) {
-////	if ( !searchPaths ) {
-////		common.FatalError( "Filesystem call made without initialization\n" );
-////	}
-////	delete f;
-////}
+/*
+==============
+idFileSystemLocal::CloseFile
+==============
+*/
+    CloseFile ( f: idFile ): void {
+        //if ( !searchPaths ) {
+        //	common.FatalError( "Filesystem call made without initialization\n" );
+        //}
+        //delete f;
+    }
+
 ////
 ////
 /////*

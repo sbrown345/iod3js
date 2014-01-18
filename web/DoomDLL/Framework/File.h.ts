@@ -195,8 +195,10 @@ class idFile_Permanent extends idFile {
 ////	virtual const char *	GetFullPath( void ) { return fullPath.c_str(); }
 ////	virtual int				Read( void *buffer, int len );
 ////	virtual int				Write( const void *buffer, int len );
-////	virtual int				Length( void );
-////	virtual ID_TIME_T			Timestamp( void );
+    Length ( ):number { throw "placeholder"; }
+
+    Timestamp ( ): number /*ID_TIME_T*/ { throw "placeholder"; }
+
 ////	virtual int				Tell( void );
 ////	virtual void			ForceFlush( void );
 ////	virtual void			Flush( void );

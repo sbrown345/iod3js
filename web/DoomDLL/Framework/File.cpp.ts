@@ -1,3 +1,4 @@
+/// <reference path="file.h.ts" />
 /////*
 ////===========================================================================
 ////
@@ -109,7 +110,7 @@
 ////						index += sprintf( buf+index, format.c_str() );
 ////						break;
 ////					default:
-////						common->Error( "FS_WriteFloatString: invalid format %s", format.c_str() );
+////						common.Error( "FS_WriteFloatString: invalid format %s", format.c_str() );
 ////						break;
 ////				}
 ////				fmt++;
@@ -130,7 +131,7 @@
 ////						index += sprintf( buf+index, "\\" );
 ////						break;
 ////					default:
-////						common->Error( "FS_WriteFloatString: unknown escape character \'%c\'", *fmt );
+////						common.Error( "FS_WriteFloatString: unknown escape character \'%c\'", *fmt );
 ////						break;
 ////				}
 ////				fmt++;
@@ -177,7 +178,7 @@
 ////=================
 ////*/
 ////int idFile::Read( void *buffer, int len ) {
-////	common->FatalError( "idFile::Read: cannot read from idFile" );
+////	common.FatalError( "idFile::Read: cannot read from idFile" );
 ////	return 0;
 ////}
 ////
@@ -187,7 +188,7 @@
 ////=================
 ////*/
 ////int idFile::Write( const void *buffer, int len ) {
-////	common->FatalError( "idFile::Write: cannot write to idFile" );
+////	common.FatalError( "idFile::Write: cannot write to idFile" );
 ////	return 0;
 ////}
 ////
@@ -638,7 +639,7 @@
 ////=================
 ////*/
 ////idFile_Memory::idFile_Memory( const char *name ) {
-////	this->name = name;
+////	this.name = name;
 ////	maxSize = 0;
 ////	fileSize = 0;
 ////	allocated = 0;
@@ -655,7 +656,7 @@
 ////=================
 ////*/
 ////idFile_Memory::idFile_Memory( const char *name, char *data, int length ) {
-////	this->name = name;
+////	this.name = name;
 ////	maxSize = length;
 ////	fileSize = 0;
 ////	allocated = length;
@@ -672,7 +673,7 @@
 ////=================
 ////*/
 ////idFile_Memory::idFile_Memory( const char *name, const char *data, int length ) {
-////	this->name = name;
+////	this.name = name;
 ////	maxSize = 0;
 ////	fileSize = length;
 ////	allocated = 0;
@@ -702,7 +703,7 @@
 ////int idFile_Memory::Read( void *buffer, int len ) {
 ////
 ////	if ( !( mode & ( 1 << fsMode_t.FS_READ ) ) ) {
-////		common->FatalError( "idFile_Memory::Read: %s not opened in read mode", name.c_str() );
+////		common.FatalError( "idFile_Memory::Read: %s not opened in read mode", name.c_str() );
 ////		return 0;
 ////	}
 ////
@@ -722,14 +723,14 @@
 ////int idFile_Memory::Write( const void *buffer, int len ) {
 ////
 ////	if ( !( mode & ( 1 << fsMode_t.FS_WRITE ) ) ) {
-////		common->FatalError( "idFile_Memory::Write: %s not opened in write mode", name.c_str() );
+////		common.FatalError( "idFile_Memory::Write: %s not opened in write mode", name.c_str() );
 ////		return 0;
 ////	}
 ////
 ////	int alloc = curPtr + len + 1 - filePtr - allocated; // need room for len+1
 ////	if ( alloc > 0 ) {
 ////		if ( maxSize != 0 ) {
-////			common->Error( "idFile_Memory::Write: exceeded maximum size %d", maxSize );
+////			common.Error( "idFile_Memory::Write: exceeded maximum size %d", maxSize );
 ////			return 0;
 ////		}
 ////		int extra = granularity * ( 1 + alloc / granularity );
@@ -817,7 +818,7 @@
 ////			break;
 ////		}
 ////		default: {
-////			common->FatalError( "idFile_Memory::Seek: bad origin for %s\n", name.c_str() );
+////			common.FatalError( "idFile_Memory::Seek: bad origin for %s\n", name.c_str() );
 ////			return -1;
 ////		}
 ////	}
@@ -893,7 +894,7 @@
 ////idFile_BitMsg::idFile_BitMsg( idBitMsg &msg ) {
 ////	name = "*unknown*";
 ////	mode = ( 1 << fsMode_t.FS_WRITE );
-////	this->msg = &msg;
+////	this.msg = &msg;
 ////}
 ////
 /////*
@@ -904,7 +905,7 @@
 ////idFile_BitMsg::idFile_BitMsg( const idBitMsg &msg ) {
 ////	name = "*unknown*";
 ////	mode = ( 1 << fsMode_t.FS_READ );
-////	this->msg = const_cast<idBitMsg *>(&msg);
+////	this.msg = const_cast<idBitMsg *>(&msg);
 ////}
 ////
 /////*
@@ -923,11 +924,11 @@
 ////int idFile_BitMsg::Read( void *buffer, int len ) {
 ////
 ////	if ( !( mode & ( 1 << fsMode_t.FS_READ ) ) ) {
-////		common->FatalError( "idFile_BitMsg::Read: %s not opened in read mode", name.c_str() );
+////		common.FatalError( "idFile_BitMsg::Read: %s not opened in read mode", name.c_str() );
 ////		return 0;
 ////	}
 ////
-////	return msg->ReadData( buffer, len );
+////	return msg.ReadData( buffer, len );
 ////}
 ////
 /////*
@@ -938,11 +939,11 @@
 ////int idFile_BitMsg::Write( const void *buffer, int len ) {
 ////
 ////	if ( !( mode & ( 1 << fsMode_t.FS_WRITE ) ) ) {
-////		common->FatalError( "idFile_Memory::Write: %s not opened in write mode", name.c_str() );
+////		common.FatalError( "idFile_Memory::Write: %s not opened in write mode", name.c_str() );
 ////		return 0;
 ////	}
 ////
-////	msg->WriteData( buffer, len );
+////	msg.WriteData( buffer, len );
 ////	return len;
 ////}
 ////
@@ -952,7 +953,7 @@
 ////=================
 ////*/
 ////int idFile_BitMsg::Length( void ) {
-////	return msg->GetSize();
+////	return msg.GetSize();
 ////}
 ////
 /////*
@@ -971,9 +972,9 @@
 ////*/
 ////int idFile_BitMsg::Tell( void ) {
 ////	if ( mode & fsMode_t.FS_READ ) {
-////		return msg->GetReadCount();
+////		return msg.GetReadCount();
 ////	} else {
-////		return msg->GetSize();
+////		return msg.GetSize();
 ////	}
 ////}
 ////
@@ -1036,59 +1037,59 @@
 ////		fclose( o );
 ////	}
 ////}
-////
-/////*
-////=================
-////idFile_Permanent::Read
-////
-////Properly handles partial reads
-////=================
-////*/
-////int idFile_Permanent::Read( void *buffer, int len ) {
-////	int		block, remaining;
-////	int		read;
-////	byte *	buf;
-////	int		tries;
-////
-////	if ( !(mode & ( 1 << fsMode_t.FS_READ ) ) ) {
-////		common->FatalError( "idFile_Permanent::Read: %s not opened in read mode", name.c_str() );
-////		return 0;
-////	}
-////
-////	if ( !o ) {
-////		return 0;
-////	}
-////
-////	buf = (byte *)buffer;
-////
-////	remaining = len;
-////	tries = 0;
-////	while( remaining ) {
-////		block = remaining;
-////		read = fread( buf, 1, block, o );
-////		if ( read == 0 ) {
-////			// we might have been trying to read from a CD, which
-////			// sometimes returns a 0 read on windows
-////			if ( !tries ) {
-////				tries = 1;
-////			}
-////			else {
-////				fileSystem->AddToReadCount( len - remaining );
-////				return len-remaining;
-////			}
-////		}
-////
-////		if ( read == -1 ) {
-////			common->FatalError( "idFile_Permanent::Read: -1 bytes read from %s", name.c_str() );
-////		}
-////
-////		remaining -= read;
-////		buf += read;
-////	}
-////	fileSystem->AddToReadCount( len );
-////	return len;
-////}
-////
+
+/*
+=================
+idFile_Permanent::Read
+
+Properly handles partial reads
+=================
+*/
+/*int */idFile_Permanent.prototype.Read = function(/* void **/buffer:Uint8Array, /*int */len:number ):number {
+	int		block, remaining;
+	int		read;
+	byte *	buf;
+	int		tries;
+
+	if ( !(mode & ( 1 << fsMode_t.FS_READ ) ) ) {
+		common.FatalError( "idFile_Permanent::Read: %s not opened in read mode", name.c_str() );
+		return 0;
+	}
+
+	if ( !o ) {
+		return 0;
+	}
+
+	buf = (byte *)buffer;
+
+	remaining = len;
+	tries = 0;
+	while( remaining ) {
+		block = remaining;
+		read = fread( buf, 1, block, o );
+		if ( read == 0 ) {
+			// we might have been trying to read from a CD, which
+			// sometimes returns a 0 read on windows
+			if ( !tries ) {
+				tries = 1;
+			}
+			else {
+				fileSystem.AddToReadCount( len - remaining );
+				return len-remaining;
+			}
+		}
+
+		if ( read == -1 ) {
+			common.FatalError( "idFile_Permanent::Read: -1 bytes read from %s", name.c_str() );
+		}
+
+		remaining -= read;
+		buf += read;
+	}
+	fileSystem.AddToReadCount( len );
+	return len;
+}
+
 /////*
 ////=================
 ////idFile_Permanent::Write
@@ -1103,7 +1104,7 @@
 ////	int		tries;
 ////
 ////	if ( !( mode & ( 1 << fsMode_t.FS_WRITE ) ) ) {
-////		common->FatalError( "idFile_Permanent::Write: %s not opened in write mode", name.c_str() );
+////		common.FatalError( "idFile_Permanent::Write: %s not opened in write mode", name.c_str() );
 ////		return 0;
 ////	}
 ////
@@ -1123,13 +1124,13 @@
 ////				tries = 1;
 ////			}
 ////			else {
-////				common->Printf( "idFile_Permanent::Write: 0 bytes written to %s\n", name.c_str() );
+////				common.Printf( "idFile_Permanent::Write: 0 bytes written to %s\n", name.c_str() );
 ////				return 0;
 ////			}
 ////		}
 ////
 ////		if ( written == -1 ) {
-////			common->Printf( "idFile_Permanent::Write: -1 bytes written to %s\n", name.c_str() );
+////			common.Printf( "idFile_Permanent::Write: -1 bytes written to %s\n", name.c_str() );
 ////			return 0;
 ////		}
 ////
@@ -1170,24 +1171,25 @@
 ////	return ftell( o );
 ////}
 ////
-/////*
-////================
-////idFile_Permanent::Length
-////================
-////*/
-////int idFile_Permanent::Length( void ) {
-////	return fileSize;
-////}
-////
-/////*
-////================
-////idFile_Permanent::Timestamp
-////================
-////*/
-////ID_TIME_T idFile_Permanent::Timestamp( void ) {
-////	return Sys_FileTimeStamp( o );
-////}
-////
+/*
+================
+idFile_Permanent::Length
+================
+*/
+/*int */idFile_Permanent.prototype.Length = function ( ): number {
+    return this.fileSize;
+};
+
+/*
+================
+idFile_Permanent::Timestamp
+================
+*/
+/*ID_TIME_T */
+idFile_Permanent.prototype.Timestamp = function ( ): number {
+    return 0; //return Sys_FileTimeStamp( o );
+};
+
 /////*
 ////=================
 ////idFile_Permanent::Seek
@@ -1213,7 +1215,7 @@
 ////		}
 ////		default: {
 ////			_origin = SEEK_CUR;
-////			common->FatalError( "idFile_Permanent::Seek: bad origin for %s\n", name.c_str() );
+////			common.FatalError( "idFile_Permanent::Seek: bad origin for %s\n", name.c_str() );
 ////			break;
 ////		}
 ////	}
@@ -1261,7 +1263,7 @@
 ////*/
 ////int idFile_InZip::Read( void *buffer, int len ) {
 ////	int l = unzReadCurrentFile( z, buffer, len );
-////	fileSystem->AddToReadCount( l );
+////	fileSystem.AddToReadCount( l );
 ////	return l;
 ////}
 ////
@@ -1271,7 +1273,7 @@
 ////=================
 ////*/
 ////int idFile_InZip::Write( const void *buffer, int len ) {
-////	common->FatalError( "idFile_InZip::Write: cannot write to the zipped file %s", name.c_str() );
+////	common.FatalError( "idFile_InZip::Write: cannot write to the zipped file %s", name.c_str() );
 ////	return 0;
 ////}
 ////
@@ -1281,7 +1283,7 @@
 ////=================
 ////*/
 ////void idFile_InZip::ForceFlush( void ) {
-////	common->FatalError( "idFile_InZip::ForceFlush: cannot flush the zipped file %s", name.c_str() );
+////	common.FatalError( "idFile_InZip::ForceFlush: cannot flush the zipped file %s", name.c_str() );
 ////}
 ////
 /////*
@@ -1290,7 +1292,7 @@
 ////=================
 ////*/
 ////void idFile_InZip::Flush( void ) {
-////	common->FatalError( "idFile_InZip::Flush: cannot flush the zipped file %s", name.c_str() );
+////	common.FatalError( "idFile_InZip::Flush: cannot flush the zipped file %s", name.c_str() );
 ////}
 ////
 /////*
@@ -1357,7 +1359,7 @@
 ////			return ( res == offset ) ? 0 : -1;
 ////		}
 ////		default: {
-////			common->FatalError( "idFile_InZip::Seek: bad origin for %s\n", name.c_str() );
+////			common.FatalError( "idFile_InZip::Seek: bad origin for %s\n", name.c_str() );
 ////			break;
 ////		}
 ////	}
