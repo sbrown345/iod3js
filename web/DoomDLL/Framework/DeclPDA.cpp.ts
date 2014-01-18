@@ -357,7 +357,7 @@
 ////	idToken token;
 ////
 ////	src.LoadMemory( _text, textLength, GetFileName(), GetLineNum() );
-////	src.SetFlags( LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWPATHNAMES |	LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT | LEXFL_NOFATALERRORS );
+////	src.SetFlags( LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWPATHNAMES |	LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT | lexerFlags_t.LEXFL_NOFATALERRORS );
 ////	src.SkipUntilString( "{" );
 ////
 ////	text = "";
@@ -483,7 +483,7 @@
 ////	idToken token;
 ////
 ////	src.LoadMemory( text, textLength, GetFileName(), GetLineNum() );
-////	src.SetFlags( LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWPATHNAMES |	LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT | LEXFL_NOFATALERRORS );
+////	src.SetFlags( LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWPATHNAMES |	LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT | lexerFlags_t.LEXFL_NOFATALERRORS );
 ////	src.SkipUntilString( "{" );
 ////
 ////	// scan through, identifying each individual parameter
@@ -597,7 +597,7 @@
 ////	idToken token;
 ////
 ////	src.LoadMemory( text, textLength, GetFileName(), GetLineNum() );
-////	src.SetFlags( LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWPATHNAMES |	LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT | LEXFL_NOFATALERRORS );
+////	src.SetFlags( LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWPATHNAMES |	LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT | lexerFlags_t.LEXFL_NOFATALERRORS );
 ////	src.SkipUntilString( "{" );
 ////
 ////	// scan through, identifying each individual parameter

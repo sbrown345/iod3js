@@ -118,7 +118,7 @@ Clear(  ):void {
 ////	}
 
 ////	const char *buffer = NULL;
-////	idLexer src( LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
+////	idLexer src( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 
 ////	int len = idLib::fileSystem->ReadFile( fileName, (void**)&buffer );
 ////	if ( len <= 0 ) {

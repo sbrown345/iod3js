@@ -1688,7 +1688,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////*/
 ////void idCommonLocal::LocalizeMapData( const char *fileName, idLangDict &langDict ) {
 ////	const char *buffer = NULL;
-////	idLexer src( LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
+////	idLexer src( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 
 ////	common.SetRefreshOnPrint( true );
 
@@ -1738,7 +1738,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	char slash = '\\';
 ////	char tab = 't';
 ////	char nl = 'n';
-////	idLexer src( LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
+////	idLexer src( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 ////	if ( fileSystem.ReadFile( fileName, (void**)&buffer ) > 0 ) {
 ////		src.LoadMemory( buffer, strlen(buffer), fileName );
 ////		if ( src.IsLoaded() ) {
@@ -1826,7 +1826,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 
 ////	idStr fileName = "map_localize.cfg";
 ////	const char *buffer = NULL;
-////	idLexer src( LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
+////	idLexer src( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 
 ////	if ( fileSystem.ReadFile( fileName, (void**)&buffer ) > 0 ) {
 ////		src.LoadMemory( buffer, strlen(buffer), fileName );
@@ -1860,7 +1860,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 
 ////	idStr fileName = "guiparm_exclude.cfg";
 ////	const char *buffer = NULL;
-////	idLexer src( LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
+////	idLexer src( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 
 ////	if ( fileSystem.ReadFile( fileName, (void**)&buffer ) > 0 ) {
 ////		src.LoadMemory( buffer, strlen(buffer), fileName );

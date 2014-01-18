@@ -121,7 +121,7 @@
 ////				| LEXFL_NOSTRINGCONCAT
 ////				| LEXFL_ALLOWPATHNAMES
 ////				| LEXFL_NOSTRINGESCAPECHARS
-////				| LEXFL_ALLOWIPADDRESSES | ( keepAsStrings ? LEXFL_ONLYSTRINGS : 0 ) );
+////				| LEXFL_ALLOWIPADDRESSES | ( keepAsStrings ? lexerFlags_t.LEXFL_ONLYSTRINGS : 0 ) );
 
 ////	totalLen = 0;
 

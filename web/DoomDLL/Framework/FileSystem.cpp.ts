@@ -2102,7 +2102,7 @@ idFileSystemLocal::FreeFileList
 ////	}
 ////
 ////	const char *buffer = NULL;
-////	idParser src( LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
+////	idParser src( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 ////	if ( fileSystem.ReadFile( args.Argv( 1 ), ( void** )&buffer, NULL ) && buffer ) {
 ////		src.LoadMemory( buffer, strlen( buffer ), args.Argv( 1 ) );
 ////		if ( src.IsLoaded() ) {

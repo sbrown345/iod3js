@@ -647,14 +647,14 @@ var/*int */c_savedMemory = 0;
 /*int*/ idDeclFile.prototype.LoadAndParse = function():number {
     var /*int*/i: number, numTypes: number;
     var src = new idLexer;
-////	idToken		token;
-////	int			startMarker;
+	var token: idToken;
+	var/*int			*/startMarker:number;
     var buffer = new R < Uint8Array>( );
-////	int			length, size;
-////	int			sourceLine;
-////	idStr		name;
-////	idDeclLocal *newDecl;
-////	bool		reparse;
+	var /*int			*/length:number, size: number;
+	var /*int			*/sourceLine:number;
+	var name: idStr;
+	var newDecl: idDeclLocal;
+	var reparse:boolean;
 
 	// load the text
 	common.DPrintf( "...loading '%s'\n", this.fileName.c_str() );
@@ -672,39 +672,44 @@ var/*int */c_savedMemory = 0;
 		return 0;
 	}
 
-////	// mark all the defs that were from the last reload of this file
-////	for ( idDeclLocal *decl = decls; decl; decl = decl.nextInFile ) {
-////		decl.redefinedInReload = false;
-////	}
+	// mark all the defs that were from the last reload of this file
+	for ( var decl:idDeclLocal = this.decls; decl; decl = decl.nextInFile ) {
+		decl.redefinedInReload = false;
+	}
 
-////	src.SetFlags( DECL_LEXER_FLAGS );
+	src.SetFlags( DECL_LEXER_FLAGS );
 
-////	this.checksum = MD5_BlockChecksum( buffer, length );
+	//this.checksum = MD5_BlockChecksum( buffer, length ); // not needed, for sp at least
 
-////	fileSize = length;
+	this.fileSize = length;
 
-////	// scan through, identifying each individual declaration
-////	while( 1 ) {
+//	// scan through, identifying each individual declaration
+	while( 1 ) {
 
-////		startMarker = src.GetFileOffset();
-////		sourceLine = src.GetLineNum();
+		todoThrow();
+		startMarker = src.GetFileOffset();
+		sourceLine = src.GetLineNum();
 
-////		// parse the decl type name
-////		if ( !src.ReadToken( &token ) ) {
-////			break;
-////		}
+		// parse the decl type name
 
-////		declType_t identifiedType = declType_t.DECL_MAX_TYPES;
+		var $token = new R<idToken>( token );
+		var readTokenVal = src.ReadToken($token);
+		token = $token.$;
+		if ( !readTokenVal ) {
+			break;
+		}
 
-////		// get the decl type from the type name
-////		numTypes = declManagerLocal.GetNumDeclTypes();
-////		for ( i = 0; i < numTypes; i++ ) {
-////			idDeclType *typeInfo = declManagerLocal.GetDeclType( i );
-////			if ( typeInfo && typeInfo.typeName.Icmp( token ) == 0 ) {
-////				identifiedType = (declType_t) typeInfo.type;
-////				break;
-////			}
-////		}
+		var identifiedType = declType_t.DECL_MAX_TYPES;
+
+		// get the decl type from the type name
+		numTypes = declManagerLocal.GetNumDeclTypes();
+		for ( i = 0; i < numTypes; i++ ) {
+			var typeInfo: idDeclType = declManagerLocal.GetDeclType( i );
+			if ( typeInfo && typeInfo.typeName.Icmp( token ) == 0 ) {
+				identifiedType = typeInfo.type;
+				break;
+			}
+		}
 
 ////		if ( i >= numTypes ) {
 
@@ -803,20 +808,19 @@ var/*int */c_savedMemory = 0;
 ////		}
 ////	}
 
-////	numLines = src.GetLineNum();
+	this.numLines = src.GetLineNum();
 
-////	Mem_Free( buffer );
+	Mem_Free( buffer );
 
-////	// any defs that weren't redefinedInReload should now be defaulted
-////	for ( idDeclLocal *decl = decls ; decl ; decl = decl.nextInFile ) {
-////		if ( decl.redefinedInReload == false ) {
-////			decl.MakeDefault();
-////			decl.sourceTextOffset = decl.sourceFile.fileSize;
-////			decl.sourceTextLength = 0;
-////			decl.sourceLine = decl.sourceFile.numLines;
-////		}
-////	}
-    todoThrow();
+	// any defs that weren't redefinedInReload should now be defaulted
+	for (var decl: idDeclLocal = this.decls ; decl ; decl = decl.nextInFile ) {
+		if ( decl.redefinedInReload == false ) {
+			decl.MakeDefault();
+			decl.sourceTextOffset = decl.sourceFile.fileSize;
+			decl.sourceTextLength = 0;
+			decl.sourceLine = decl.sourceFile.numLines;
+		}
+	}
 	return this.checksum;
 }
 

@@ -82,6 +82,9 @@
     <Content Include="libs\idLib\Containers\List.h.ts" />
     <Content Include="libs\idLib\Containers\StrList.h.ts" />
     <Content Include="libs\idLib\Geometry\DrawVert.h.ts" />
+    <TypeScriptCompile Include="libs\idLib\Hashing\CRC32.cpp.ts" />
+    <TypeScriptCompile Include="libs\idLib\Hashing\MD4.cpp.ts" />
+    <TypeScriptCompile Include="libs\idLib\Hashing\MD5.cpp.ts" />
     <Content Include="libs\idLib\Heap.cpp.ts" />
     <Content Include="libs\idLib\Heap.h.ts" />
     <Content Include="libs\idLib\Lib.cpp.ts" />
