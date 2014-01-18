@@ -148,7 +148,7 @@ class idDeclLocal extends idDeclBase {
 ////	void						Purge( );
 
 ////								// Set textSource possible with compression.
-////	void						SetTextLocal( const char *text, const int length );
+	SetTextLocal(text: Uint8Array, length: number): void { throw "placeholder"; }
 
 //private:
 /*	idDecl *					*/self:idDecl;
@@ -786,25 +786,24 @@ var/*int */c_savedMemory = 0;
 			this.decls = newDecl;
 		}
 
-		todoThrow();
-////		newDecl.redefinedInReload = true;
+		newDecl.redefinedInReload = true;
 
-////		if ( newDecl.textSource ) {
-////			Mem_Free( newDecl.textSource );
-////			newDecl.textSource = NULL;
-////		}
+		if ( newDecl.textSource ) {
+			Mem_Free( newDecl.textSource );
+			newDecl.textSource = null/*NULL*/;
+		}
 
-////		newDecl.SetTextLocal( buffer + startMarker, size );
-////		newDecl.sourceFile = this;
-////		newDecl.sourceTextOffset = startMarker;
-////		newDecl.sourceTextLength = size;
-////		newDecl.sourceLine = sourceLine;
-////		newDecl.declState = declState_t.DS_UNPARSED;
+		newDecl.SetTextLocal( buffer.$.subarray(startMarker), size );
+		newDecl.sourceFile = this;
+		newDecl.sourceTextOffset = startMarker;
+		newDecl.sourceTextLength = size;
+		newDecl.sourceLine = sourceLine;
+		newDecl.declState = declState_t.DS_UNPARSED;
 
-////		// if it is currently in use, reparse it immedaitely
-////		if ( reparse ) {
-////			newDecl.ParseLocal();
-////		}
+		// if it is currently in use, reparse it immedaitely
+		if ( reparse ) {
+			newDecl.ParseLocal();
+		}
 	}
 
 	this.numLines = src.GetLineNum();
@@ -1934,37 +1933,36 @@ idDeclLocal.prototype.GetText = function ( /*char **/text: Uint8Array ): void {
 ////	SetTextLocal( text, idStr::Length( text ) );
 ////}
 
-/////*
-////=================
-////idDeclLocal::SetTextLocal
-////=================
-////*/
-////void idDeclLocal::SetTextLocal( const char *text, const int length ) {
+/*
+=================
+idDeclLocal::SetTextLocal
+=================
+*/
+idDeclLocal.prototype.SetTextLocal = function ( text: Uint8Array, /*const int */length: number ): void {
+	Mem_Free( this.textSource );
 
-////	Mem_Free( textSource );
+	this.checksum = MD5_BlockChecksum( text, length );
 
-////	checksum = MD5_BlockChecksum( text, length );
+//#ifdef GET_HUFFMAN_FREQUENCIES
+//	for( int i = 0; i < length; i++ ) {
+//		huffmanFrequencies[((const unsigned char *)text)[i]]++;
+//	}
+//#endif
 
-////#ifdef GET_HUFFMAN_FREQUENCIES
-////	for( int i = 0; i < length; i++ ) {
-////		huffmanFrequencies[((const unsigned char *)text)[i]]++;
-////	}
-////#endif
-
-////#ifdef USE_COMPRESSED_DECLS
-////	int maxBytesPerCode = ( maxHuffmanBits + 7 ) >> 3;
-////	byte *compressed = (byte *)_alloca( length * maxBytesPerCode );
-////	compressedLength = HuffmanCompressText( text, length, compressed, length * maxBytesPerCode );
-////	textSource = (char *)Mem_Alloc( compressedLength );
-////	memcpy( textSource, compressed, compressedLength );
-////#else
-////	compressedLength = length;
-////	textSource = (char *) Mem_Alloc( length + 1 );
-////	memcpy( textSource, text, length );
-////	textSource[length] = '\0';
-////#endif
-////	textLength = length;
-////}
+//#ifdef USE_COMPRESSED_DECLS
+//	int maxBytesPerCode = ( maxHuffmanBits + 7 ) >> 3;
+//	byte *compressed = (byte *)_alloca( length * maxBytesPerCode );
+//	compressedLength = HuffmanCompressText( text, length, compressed, length * maxBytesPerCode );
+//	textSource = (char *)Mem_Alloc( compressedLength );
+//	memcpy( textSource, compressed, compressedLength );
+//#else
+	this.compressedLength = length;
+	this.textSource = text.subarray( 0, length ).toString ( ); //this.textSource = (char *) Mem_Alloc( length + 1 );
+	//memcpy( textSource, text, length );
+	//textSource[length] = '\0';
+//#endif
+	this.textLength = length;
+};
 
 /////*
 ////=================

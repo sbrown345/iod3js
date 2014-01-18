@@ -252,21 +252,22 @@
 //    memset( ctx, 0, sizeof( ctx ) );        /* In case it's sensitive */
 //}
 //
-///*
-//===============
-//MD5_BlockChecksum
-//===============
-//*/
-//unsigned long MD5_BlockChecksum( const void *data, int length ) {
-//	unsigned long	digest[4];
-//	unsigned long	val;
-//	MD5_CTX			ctx;
-//
-//	MD5_Init( &ctx );
-//	MD5_Update( &ctx, (unsigned char *)data, length );
-//	MD5_Final( &ctx, (unsigned char *)digest );
-//
-//	val = digest[0] ^ digest[1] ^ digest[2] ^ digest[3];
-//
-//	return val;
-//}
+/*
+===============
+MD5_BlockChecksum
+===============
+*/
+/*unsigned long */function MD5_BlockChecksum( /*const void **/data:any, /*int */length:number ):number {
+	//unsigned long	digest[4];
+	//unsigned long	val;
+	//MD5_CTX			ctx;
+
+	//MD5_Init( &ctx );
+	//MD5_Update( &ctx, (unsigned char *)data, length );
+	//MD5_Final( &ctx, (unsigned char *)digest );
+
+	//val = digest[0] ^ digest[1] ^ digest[2] ^ digest[3];
+
+	//return val;
+	return -99999991111111; // not needed for now
+}
