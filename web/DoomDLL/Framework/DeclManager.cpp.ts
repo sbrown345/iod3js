@@ -288,7 +288,7 @@ class idDeclManagerLocal extends idDeclManager {
 
 /*	idList<idDeclFile *>		*/loadedFiles:idList<idDeclFile>;
     hashTables:idHashIndex[/*declType_t.DECL_MAX_TYPES*/];
-/*	idList<idDeclLocal *>		*/linearLists:idList<idDeclLocal>/*[declType_t.DECL_MAX_TYPES]*/;
+/*	idList<idDeclLocal *>		*/linearLists:idList<idDeclLocal>[]/*[declType_t.DECL_MAX_TYPES]*/;
                                 implicitDecls:idDeclFile;	// this holds all the decls that were created because explicit
 												// text definitions were not found. Decls that became default
 												// because of a parse error are not in this list.
@@ -304,7 +304,10 @@ class idDeclManagerLocal extends idDeclManager {
         this.declFolders = new idList<idDeclFolder>( idDeclFolder );
         this.loadedFiles = new idList<idDeclFile>( idDeclFile );
         this.hashTables = newStructArray<idHashIndex>( idHashIndex, declType_t.DECL_MAX_TYPES );
-        this.linearLists = new idList<idDeclLocal>( idDeclLocal );
+		this.linearLists = new Array(declType_t.DECL_MAX_TYPES);
+	    for ( var i = 0; i < declType_t.DECL_MAX_TYPES; i++ ) {
+			this.linearLists[i] = new idList<idDeclLocal>(idDeclLocal);
+	    }
         this.implicitDecls = new idDeclFile( );
         this.checksum = 0;
         this.indent = 0;
