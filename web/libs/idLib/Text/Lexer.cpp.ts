@@ -354,7 +354,7 @@ class idLexer {
 	/*int */ReadWhiteSpace( ):number {
 		while(1) {
 			// skip white space
-			while(this.buffer[this.script_p] <= ' ') {
+			while (this.buffer[this.script_p] <= ' ' || !this.buffer[this.script_p] /*end of string (rather than '\0' which is less than ' ')*/) {
 				if (!this.buffer[this.script_p]) {
 					return 0;
 				}
@@ -895,7 +895,7 @@ class idLexer {
 			common.Error( "idLexer::ReadToken: no file loaded" );
 			return 0;
 		}
-		if ( this.line == 1085 )debugger;
+		
 		// if there is a token available (from unreadToken)
 		if ( this.tokenavailable ) {
 			this.tokenavailable = 0;
@@ -927,7 +927,7 @@ class idLexer {
 		token.$.flags = 0;
 
 		c = this.buffer[this.script_p];
-
+		
 		// if we're keeping everything as whitespace deliminated strings
 		if ( this.flags & lexerFlags_t.LEXFL_ONLYSTRINGS ) {
 			// if there is a leading quote

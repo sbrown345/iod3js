@@ -731,7 +731,7 @@ var/*int */c_savedMemory = 0;
 		}
 
 		// now parse the name
-			if (!src.ReadToken( token )) {
+		if ( !src.ReadToken( token ) ) {
 			src.Warning( "Type without definition at end of file" );
 			break;
 		}
@@ -1028,7 +1028,7 @@ idDeclManagerLocal.prototype.RegisterDeclFolder = function ( folder: string, ext
     var fileName: idStr;
     var declFolder: idDeclFolder;
     var fileList: idFileList;
-    var df = new idDeclFile;
+    var df:idDeclFile;
 
     // check whether this folder / extension combination already exists
     for ( i = 0; i < this.declFolders.Num ( ); i++ ) {
