@@ -1627,14 +1627,23 @@ When 'sort' is true only the new files added to the list are sorted.
         //	}
         //}
 
-        for ( var i = 0; i < fileList.length; i++ ) {
-            if ( fileList[i].indexOf( relativePath + "\\" ) === 0 ) {
-                //list.Append(fileList[i].substr( pathLength );
-                this.AddUnique( fileList[i].substr( pathLength ), list, hashIndex );
-            }
-        }
+	    for ( var i = 0; i < fileList.length; i++ ) {
+		    if ( fileList[i].indexOf( relativePath + "\\" ) === 0 ) {
+			    //list.Append(fileList[i].substr( pathLength );
 
-        return list.Num ( );
+			    var isValidExtension = false;
+			    for ( var j = 0; j < extensions.Num ( ); j++ ) {
+				    if ( fileList[i].endsWith( extensions[j].data ) ) {
+					    isValidExtension = true;
+				    }
+			    }
+			    if ( isValidExtension ) {
+				    this.AddUnique( fileList[i].substr( pathLength ), list, hashIndex );
+			    }
+		    }
+	    }
+
+	    return list.Num ( );
     }
 
 /*
