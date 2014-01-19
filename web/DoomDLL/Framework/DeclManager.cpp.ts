@@ -868,17 +868,19 @@ idDeclManagerLocal.prototype.Init = function( ):void {
 	this.RegisterDeclType( "email",				declType_t.DECL_EMAIL,			idDeclAllocator<idDeclEmail>(idDeclEmail) );
 	this.RegisterDeclType( "video",				declType_t.DECL_VIDEO,			idDeclAllocator<idDeclVideo>(idDeclVideo) );
 	this.RegisterDeclType( "audio",				declType_t.DECL_AUDIO,			idDeclAllocator<idDeclAudio>(idDeclAudio) );
-    
-	this.RegisterDeclFolder( "materials",		".mtr",				declType_t.DECL_MATERIAL );
-	this.RegisterDeclFolder( "skins",			".skin",			declType_t.DECL_SKIN );
-	this.RegisterDeclFolder( "sound",			".sndshd",			declType_t.DECL_SOUND );
+
+	this.RegisterDeclFolder( "materials", ".mtr", declType_t.DECL_MATERIAL );
+	this.RegisterDeclFolder( "skins", ".skin", declType_t.DECL_SKIN );
+	this.RegisterDeclFolder("sound", ".sndshd", declType_t.DECL_SOUND);
+
+	dlog(DEBUG_RegisterDeclFolder, "finished adding sounds decl\n");
 
 	// add console commands
 	cmdSystem.AddCommand( "listDecls", this.ListDecls_f, CMD_FL_SYSTEM, "lists all decls" );
 
 	cmdSystem.AddCommand( "reloadDecls", this.ReloadDecls_f, CMD_FL_SYSTEM, "reloads decls" );
 	cmdSystem.AddCommand( "touch", this.TouchDecl_f, CMD_FL_SYSTEM, "touches a decl" );
-
+	dlogFlush ( );
     todo( "list decals" );
 	//cmdSystem.AddCommand( "listTables", idListDecls_f<DECL_TABLE>, CMD_FL_SYSTEM, "lists tables", idCmdSystem::ArgCompletion_String<listDeclStrings> );
 	//cmdSystem.AddCommand( "listMaterials", idListDecls_f<DECL_MATERIAL>, CMD_FL_SYSTEM, "lists materials", idCmdSystem::ArgCompletion_String<listDeclStrings> );
@@ -1055,6 +1057,7 @@ idDeclManagerLocal.prototype.RegisterDeclFolder = function ( folder: string, ext
     for ( i = 0; i < fileList.GetNumFiles ( ); i++ ) {
         fileName = new idStr( declFolder.folder + "/" + fileList.GetFile( i ) );
 
+		dlog(DEBUG_RegisterDeclFolder, "fileName: %s\n", fileName);
         // check whether this file has already been loaded
         for ( j = 0; j < this.loadedFiles.Num ( ); j++ ) {
             if ( fileName.Icmp( this.loadedFiles[j].fileName ) == 0 ) {

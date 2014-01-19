@@ -972,6 +972,7 @@ class idLexer {
 			return 0;
 		}
 		// succesfully read a token
+		dlog(DEBUG_Lexer, "t: %s\n", token.$.data);
 		return 1;
 	}
 

@@ -1,4 +1,5 @@
-﻿// keep track of things to do
+﻿/// <reference path="../libs/idlib/lib.h.ts" />
+// keep track of things to do
 function todo(reason?: string) {
     //console.log("todo", reason);
 }
@@ -6,7 +7,8 @@ function todo(reason?: string) {
 function todoUnimportant(reason?: string): void {
 }
 
-function todoThrow(message : string = ""): any {
+function todoThrow(message: string = ""): any {
+	dlogFlush ( );
     debugger;
     console.error("todo \n" + message);
     throw "!";

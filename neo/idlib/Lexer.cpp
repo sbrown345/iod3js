@@ -907,7 +907,9 @@ int idLexer::ReadToken( idToken *token ) {
 		idLexer::Error( "unknown punctuation %c", c );
 		return 0;
 	}
+
 	// succesfully read a token
+	dlog(DEBUG_Lexer, "t: %s\n", token->data);
 	return 1;
 }
 

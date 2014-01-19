@@ -161,6 +161,20 @@ template<class T> ID_INLINE T	Min( T x, T y ) { return ( x < y ) ? x : y; }
 /*
 ===============================================================================
 
+JavaScript Debug Helpers
+
+===============================================================================
+*/
+#define DEBUG_LOG_MODE 1
+#define isd(v) DEBUG_LOG_MODE && v
+
+#define DEBUG_RegisterDeclFolder isd(0)
+#define DEBUG_Lexer isd(0)
+void dlog(bool log, char *format, ...);
+
+/*
+===============================================================================
+
 	idLib headers.
 
 ===============================================================================
@@ -242,3 +256,4 @@ template<class T> ID_INLINE T	Min( T x, T y ) { return ( x < y ) ? x : y; }
 #include "Timer.h"
 
 #endif	/* !__LIB_H__ */
+

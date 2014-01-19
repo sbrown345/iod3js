@@ -1003,6 +1003,7 @@ void idDeclManagerLocal::RegisterDeclFolder( const char *folder, const char *ext
 	for ( i = 0; i < fileList->GetNumFiles(); i++ ) {
 		fileName = declFolder->folder + "/" + fileList->GetFile( i );
 
+		dlog(DEBUG_RegisterDeclFolder, "fileName: %s\n", fileName.c_str());
 		// check whether this file has already been loaded
 		for ( j = 0; j < loadedFiles.Num(); j++ ) {
 			if ( fileName.Icmp( loadedFiles[j]->fileName ) == 0 ) {
