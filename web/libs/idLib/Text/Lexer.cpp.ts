@@ -1,3 +1,4 @@
+/// <reference path="../../../utils/sprintf.d.ts" />
 /// <reference path="lexer.h.ts" />
 /// <reference path="token.cpp.ts" />
 /// <reference path="../../../doomdll/framework/common.cpp.ts" />
@@ -287,12 +288,7 @@ class idLexer {
 			return;
 		}
 
-		//va_start(ap, str);
-		//vsprintf(text, str, ap);
-		//va_end(ap);
-
-		todoThrow ( );
-		text = "todo - add in js sprintf here";
+		text = vsprintf(str, args);
 
 		if ( this.flags & lexerFlags_t.LEXFL_NOFATALERRORS ) {
 			common.Warning( "file %s, line %d: %s", this.filename.c_str ( ), this.line, text );
@@ -313,11 +309,8 @@ class idLexer {
 		if ( this.flags & lexerFlags_t.LEXFL_NOWARNINGS ) {
 			return;
 		}
-		todoThrow ( );
-		//va_start( ap, str );
-		//vsprintf( text, str, ap );
-		//va_end( ap );
-		text = "todo - add in js sprintf here";
+		text = vsprintf( str, args );
+		
 		common.Warning( "file %s, line %d: %s", this.filename.c_str ( ), this.line, text );
 	}
 

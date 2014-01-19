@@ -506,31 +506,29 @@ idHashIndex::ResizeIndex
 ================
 */
     ResizeIndex ( /*const int */newIndexSize: number ): void {
-        todoThrow ( );
-        //int *oldIndexChain, mod, newSize;
+		var /*int **/oldIndexChain:Int32Array, mod: number, newSize: number;
 
-        //if ( newIndexSize <= this.indexSize ) {
-        //	return;
-        //}
+        if ( newIndexSize <= this.indexSize ) {
+        	return;
+        }
 
-        //mod = newIndexSize % granularity;
-        //if ( !mod ) {
-        //	newSize = newIndexSize;
-        //} else {
-        //	newSize = newIndexSize + granularity - mod;
-        //}
+        mod = newIndexSize % this.granularity;
+        if ( !mod ) {
+        	newSize = newIndexSize;
+        } else {
+			newSize = newIndexSize + this.granularity - mod;
+        }
 
-        //if ( this.indexChain == idHashIndex.INVALID_INDEX ) {
-        // this.indexSize = newSize;
-        //	return;
-        //}
+        if ( this.indexChain == idHashIndex.INVALID_INDEX ) {
+         this.indexSize = newSize;
+        	return;
+        }
 
-        //oldIndexChain = this.indexChain;
-        //indexChain = new int[newSize];
-        //memcpy( this.indexChain, oldIndexChain, this.indexSize * sizeof(int) );
-        //memset( this.indexChain + this.indexSize, 0xff, (newSize - this.indexSize) * sizeof(int) );
-        //delete[] oldIndexChain;
-        //this.indexSize = newSize;
+        oldIndexChain = this.indexChain;
+        this.indexChain = new Int32Array(newSize);
+        memcpy( this.indexChain, oldIndexChain, this.indexSize * sizeof(int) );
+        memset( /*some built in subarray??*/this.indexChain.subarray(this.indexSize), 0xff, (newSize - this.indexSize) * sizeof(int) );
+        this.indexSize = newSize;
     }
 
 /////*

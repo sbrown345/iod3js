@@ -100,8 +100,10 @@
     <Content Include="libs\idLib\Text\Str.h.ts" />
     <TypeScriptCompile Include="libs\idLib\Text\Token.cpp.ts" />
     <Content Include="libs\LangDict.cpp.ts" />
+    <Content Include="utils\sprintf.js" />
     <Content Include="utils\todo.ts" />
     <Content Include="utils\types.ts" />
+    <TypeScriptCompile Include="utils\sprintf.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="compile.bat" />

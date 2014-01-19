@@ -9,6 +9,22 @@ function isdigit ( c: string ): number {
     return ( c >= "0" && c <= "9" ) ? 1 : 0;
 }
 
+function memcpy(destination: ArrayBufferView, source: ArrayBufferView, count: number): void {
+	var sourceArray = new Uint8Array(destination.buffer);
+	var destArray = new Uint8Array(source.buffer);
+	for (var i = 0; i < count; i++) {
+		sourceArray[i] = destArray[i];
+	}
+}
+
+//function memcpy(destination: P, source: P, count: number): void {
+//	for (var i = 0; i < count; i++) {
+//		destination.s(source.v());
+//		destination.incr();
+//		source.incr();
+//	}
+//}
+
 function memset ( arr: ArrayBufferView, value: number, num: number ): void {
     //assert.uint8(value).int32(num);
     var startIndex = 0;
@@ -76,4 +92,32 @@ class FILE {
     }
 
     arrayBuffer: ArrayBuffer;
+}
+
+class P {
+	buf: ArrayBuffer;
+	arr: Uint8Array;
+	idx: number;
+
+	s(v: number, offset: number = 0): void {
+		this.arr[this.idx + offset] = v;
+	}
+
+	v(offset: number = 0): number {
+		return this.arr[this.idx + offset];
+	}
+
+	incr(): void {
+		this.idx++;
+	}
+
+	constructor(buffer: ArrayBuffer, indexOffset: number = 0) {
+		if (buffer["buffer"])
+			this.buf = buffer["buffer"]; // typescript wasn't warning about typed arrays, so force it to deal with either
+		else
+			this.buf = buffer;
+
+		this.arr = new Uint8Array(this.buf);
+		this.idx = indexOffset;
+	}
 }
