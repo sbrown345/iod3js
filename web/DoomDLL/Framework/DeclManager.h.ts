@@ -123,7 +123,7 @@ class idDeclBase {
 ////	virtual bool			SetDefaultText( void ) = 0;
 ////	virtual const char *	DefaultDefinition( void ) const = 0;
 ////	virtual bool			Parse( const char *text, const int textLength ) = 0;
-////	virtual void			FreeData( void ) = 0;
+	FreeData ( ): void /* = 0;*/ { throw "placeholder"; }
 ////	virtual size_t			Size( void ) const = 0;
 ////	virtual void			List( void ) const = 0;
 ////	virtual void			Print( void ) const = 0;
@@ -218,7 +218,7 @@ class idDecl {
 ////							// any Parse(), so the constructor must have set sane values. The decl will be
 ////							// invalid after issuing this call, but it will always be immediately followed
 ////							// by a Parse()
-////	virtual void			FreeData( void ) { base.FreeData(); }
+	FreeData( ):void { this.base.FreeData ( ); }
 
 ////							// Returns the size of the decl in memory.
 ////	virtual size_t			Size( void ) const { return base.Size(); }
@@ -233,8 +233,8 @@ class idDecl {
 ////							// explicit data.
 ////	virtual void			Print( void ) const { base.Print(); }
 
-////public:
-////	idDeclBase *			base;
+//public:
+	base: idDeclBase ;
 };
 
 

@@ -137,11 +137,11 @@ class idDeclLocal extends idDeclBase {
 /*virtual void				*/Print( ):void { throw "placeholder"; }
 
 //protected:
-    AllocateSelf( ):void{}
+    AllocateSelf( ):void{ throw "placeholder";}
 
 ////								// Parses the decl definition.
 ////								// After calling parse, a decl will be guaranteed usable.
-    ParseLocal ( ): void {}
+	ParseLocal(): void { throw "placeholder";}
 
 ////								// Does a MakeDefualt, but flags the decl so that it
 ////								// will Parse() the next time the decl is found.
@@ -296,7 +296,7 @@ class idDeclManagerLocal extends idDeclManager {
 /*	int							*/indent:number;			// for MediaPrint
 /*	bool						*/insideLevelLoad:boolean;
 
-    static decl_show:idCVar;
+    static decl_show = new idCVar("decl_show", "0", CVAR_SYSTEM, "set to 1 to print parses, 2 to also print references", 0, 2, ArgCompletion_Integer_Template(0, 2));
 
     constructor() {
         super();
@@ -319,8 +319,6 @@ class idDeclManagerLocal extends idDeclManager {
     ReloadDecls_f( args:idCmdArgs  ):void { throw "placeholder"; }
     TouchDecl_f( args:idCmdArgs  ):void { throw "placeholder"; }
 };
-
-////idCVar idDeclManagerLocal::decl_show( "decl_show", "0", CVAR_SYSTEM, "set to 1 to print parses, 2 to also print references", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
 
 var declManagerLocal = new idDeclManagerLocal();
 var declManager = declManagerLocal;
@@ -1177,7 +1175,7 @@ idDeclManagerLocal.prototype.FindType = function ( type: declType_t, name: strin
 
     decl = this.FindTypeWithoutParsing( type, name, makeDefault );
     if ( !decl ) {
-        return NULL;
+        return null;
     }
 
     decl.AllocateSelf ( );
@@ -1766,7 +1764,7 @@ idDeclManagerLocal.prototype.FindTypeWithoutParsing = function ( type: declType_
     for ( i = this.hashTables[typeIndex].First( hash ); i >= 0; i = this.hashTables[typeIndex].Next( i ) ) {
         if ( this.linearLists[typeIndex][i].name.Icmp( canonicalName ) == 0 ) {
             // only print these when decl_show is set to 2, because it can be a lot of clutter
-            if ( this.decl_show.GetInteger ( ) > 1 ) {
+            if ( idDeclManagerLocal.decl_show.GetInteger ( ) > 1 ) {
                 this.MediaPrint( "referencing %s %s\n", this.declTypes[this.type].typeName.c_str ( ), name );
             }
             return this.linearLists[typeIndex][i];
@@ -1916,18 +1914,18 @@ idDeclLocal.prototype.GetText = function ( /*char **/text: Uint8Array ): void {
 //#ifdef USE_COMPRESSED_DECLS
 //	HuffmanDecompressText( text, textLength, (byte *)textSource, compressedLength );
 //#else
-    todoThrow( "memcpy( text, this.textSource, this.textLength + 1 );" );
+	memcpy( text, this.textSource.toUint8Array ( ), this.textLength /*+ 1 */ );
 //#endif
 };
 
-/////*
-////=================
-////idDeclLocal::GetTextLength
-////=================
-////*/
-////int idDeclLocal::GetTextLength( ) const {
-////	return textLength;
-////}
+/*
+=================
+idDeclLocal::GetTextLength
+=================
+*/
+idDeclLocal.prototype.GetTextLength = function ( ): number {
+	return this.textLength;
+};
 
 /////*
 ////=================
@@ -2183,7 +2181,7 @@ idDeclLocal::AllocateSelf
 =================
 */
 idDeclLocal.prototype.AllocateSelf = function ( ): void {
-	if ( this.self == NULL ) {
+	if ( !this.self ) {
 		this.self = declManagerLocal.GetDeclType( /*(int)*/this.type ).allocator ( );
 		this.self.base = this;
 	}
@@ -2205,7 +2203,7 @@ idDeclLocal.prototype.ParseLocal = function ( ): void {
 	declManagerLocal.MediaPrint( "parsing %s %s\n", declManagerLocal.declTypes[this.type].typeName.c_str ( ), this.name.c_str ( ) );
 
 	// if no text source try to generate default text
-	if ( this.textSource == NULL ) {
+	if ( !this.textSource ) {
 		generatedDefaultText = this.self.SetDefaultText ( );
 	}
 
@@ -2213,7 +2211,7 @@ idDeclLocal.prototype.ParseLocal = function ( ): void {
 	declManagerLocal.indent++;
 
 	// no text immediately causes a MakeDefault()
-	if ( this.textSource == NULL ) {
+	if ( !this.textSource ) {
 		this.MakeDefault ( );
 		declManagerLocal.indent--;
 		return;

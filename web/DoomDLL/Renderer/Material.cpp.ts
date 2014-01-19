@@ -2124,213 +2124,213 @@
 ////	gui = uiManager.FindGui( _gui, true, false, true );
 ////}
 
-/////*
-////=========================
-////idMaterial::Parse
+/*
+=========================
+idMaterial::Parse
 
-////Parses the current material definition and finds all necessary images.
-////=========================
-////*/
-////bool idMaterial::Parse( const char *text, const int textLength ) {
-////	idLexer	src;
-////	idToken	token;
-////	mtrParsingData_t parsingData;
+Parses the current material definition and finds all necessary images.
+=========================
+*/
+/*bool idMaterial::*/Parse( /*const char **/text:string, /*const int */textLength:number ):boolean {
+	var src: idLexer;
+	var token:idToken;
+	var parsingData: mtrParsingData_t;
 
-////	src.LoadMemory( text, textLength, GetFileName(), GetLineNum() );
-////	src.SetFlags( DECL_LEXER_FLAGS );
-////	src.SkipUntilString( "{" );
+	src.LoadMemory( text, textLength, GetFileName(), GetLineNum() );
+	src.SetFlags( DECL_LEXER_FLAGS );
+	src.SkipUntilString( "{" );
 
-////	// reset to the unparsed state
-////	CommonInit();
+	// reset to the unparsed state
+	CommonInit();
 
-////	memset( &parsingData, 0, sizeof( parsingData ) );
+	memset( &parsingData, 0, sizeof( parsingData ) );
 
-////	pd = &parsingData;	// this is only valid during parse
+	pd = &parsingData;	// this is only valid during parse
 
-////	// parse it
-////	ParseMaterial( src );
+	// parse it
+	ParseMaterial( src );
 
-////	// if we are doing an fs_copyfiles, also reference the editorImage
-////	if ( cvarSystem.GetCVarInteger( "fs_copyFiles" ) ) {
-////		GetEditorImage();
-////	}
+	// if we are doing an fs_copyfiles, also reference the editorImage
+	if ( cvarSystem.GetCVarInteger( "fs_copyFiles" ) ) {
+		GetEditorImage();
+	}
 
-////	//
-////	// count non-lit stages
-////	numAmbientStages = 0;
-////	int i;
-////	for ( i = 0 ; i < numStages ; i++ ) {
-////		if ( pd.parseStages[i].lighting == SL_AMBIENT ) {
-////			numAmbientStages++;
-////		}
-////	}
+	//
+	// count non-lit stages
+	numAmbientStages = 0;
+	int i;
+	for ( i = 0 ; i < numStages ; i++ ) {
+		if ( pd.parseStages[i].lighting == SL_AMBIENT ) {
+			numAmbientStages++;
+		}
+	}
 
-////	// see if there is a subview stage
-////	if ( sort == SS_SUBVIEW ) {
-////		hasSubview = true;
-////	} else {
-////		hasSubview = false;
-////		for ( i = 0 ; i < numStages ; i++ ) {
-////			if ( pd.parseStages[i].texture.dynamic ) {
-////				hasSubview = true;
-////			}
-////		}
-////	}
+	// see if there is a subview stage
+	if ( sort == SS_SUBVIEW ) {
+		hasSubview = true;
+	} else {
+		hasSubview = false;
+		for ( i = 0 ; i < numStages ; i++ ) {
+			if ( pd.parseStages[i].texture.dynamic ) {
+				hasSubview = true;
+			}
+		}
+	}
 
-////	// automatically determine coverage if not explicitly set
-////	if ( coverage == MC_BAD ) {
-////		// automatically set MC_TRANSLUCENT if we don't have any interaction stages and 
-////		// the first stage is blended and not an alpha test mask or a subview
-////		if ( !numStages ) {
-////			// non-visible
-////			coverage = MC_TRANSLUCENT;
-////		} else if ( numStages != numAmbientStages ) {
-////			// we have an interaction draw
-////			coverage = MC_OPAQUE;
-////		} else if ( 
-////			( pd.parseStages[0].drawStateBits & GLS_DSTBLEND_BITS ) != GLS_DSTBLEND_ZERO ||
-////			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_COLOR ||
-////			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_COLOR ||
-////			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_ALPHA ||
-////			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_ALPHA
-////			) {
-////			// blended with the destination
-////				coverage = MC_TRANSLUCENT;
-////		} else {
-////			coverage = MC_OPAQUE;
-////		}
-////	}
+	// automatically determine coverage if not explicitly set
+	if ( coverage == MC_BAD ) {
+		// automatically set MC_TRANSLUCENT if we don't have any interaction stages and 
+		// the first stage is blended and not an alpha test mask or a subview
+		if ( !numStages ) {
+			// non-visible
+			coverage = MC_TRANSLUCENT;
+		} else if ( numStages != numAmbientStages ) {
+			// we have an interaction draw
+			coverage = MC_OPAQUE;
+		} else if ( 
+			( pd.parseStages[0].drawStateBits & GLS_DSTBLEND_BITS ) != GLS_DSTBLEND_ZERO ||
+			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_COLOR ||
+			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_COLOR ||
+			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_ALPHA ||
+			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_ALPHA
+			) {
+			// blended with the destination
+				coverage = MC_TRANSLUCENT;
+		} else {
+			coverage = MC_OPAQUE;
+		}
+	}
 
-////	// translucent automatically implies noshadows
-////	if ( coverage == MC_TRANSLUCENT ) {
-////		SetMaterialFlag( MF_NOSHADOWS );
-////	} else {
-////		// mark the contents as opaque
-////		contentFlags |= CONTENTS_OPAQUE;
-////	}
+	// translucent automatically implies noshadows
+	if ( coverage == MC_TRANSLUCENT ) {
+		SetMaterialFlag( MF_NOSHADOWS );
+	} else {
+		// mark the contents as opaque
+		contentFlags |= CONTENTS_OPAQUE;
+	}
 
-////	// if we are translucent, draw with an alpha in the editor
-////	if ( coverage == MC_TRANSLUCENT ) {
-////		editorAlpha = 0.5;
-////	} else {
-////		editorAlpha = 1.0;
-////	}
+	// if we are translucent, draw with an alpha in the editor
+	if ( coverage == MC_TRANSLUCENT ) {
+		editorAlpha = 0.5;
+	} else {
+		editorAlpha = 1.0;
+	}
 
-////	// the sorts can make reasonable defaults
-////	if ( sort == SS_BAD ) {
-////		if ( TestMaterialFlag(MF_POLYGONOFFSET) ) {
-////			sort = SS_DECAL;
-////		} else if ( coverage == MC_TRANSLUCENT ) {
-////			sort = SS_MEDIUM;
-////		} else {
-////			sort = SS_OPAQUE;
-////		}
-////	}
+	// the sorts can make reasonable defaults
+	if ( sort == SS_BAD ) {
+		if ( TestMaterialFlag(MF_POLYGONOFFSET) ) {
+			sort = SS_DECAL;
+		} else if ( coverage == MC_TRANSLUCENT ) {
+			sort = SS_MEDIUM;
+		} else {
+			sort = SS_OPAQUE;
+		}
+	}
 
-////	// anything that references _currentRender will automatically get sort = SS_POST_PROCESS
-////	// and coverage = MC_TRANSLUCENT
+	// anything that references _currentRender will automatically get sort = SS_POST_PROCESS
+	// and coverage = MC_TRANSLUCENT
 
-////	for ( i = 0 ; i < numStages ; i++ ) {
-////		shaderStage_t	*pStage = &pd.parseStages[i];
-////		if ( pStage.texture.image == globalImages.currentRenderImage ) {
-////			if ( sort != SS_PORTAL_SKY ) {
-////				sort = SS_POST_PROCESS;
-////				coverage = MC_TRANSLUCENT;
-////			}
-////			break;
-////		}
-////		if ( pStage.newStage ) {
-////			for ( int j = 0 ; j < pStage.newStage.numFragmentProgramImages ; j++ ) {
-////				if ( pStage.newStage.fragmentProgramImages[j] == globalImages.currentRenderImage ) {
-////					if ( sort != SS_PORTAL_SKY ) {
-////						sort = SS_POST_PROCESS;
-////						coverage = MC_TRANSLUCENT;
-////					}
-////					i = numStages;
-////					break;
-////				}
-////			}
-////		}
-////	}
+	for ( i = 0 ; i < numStages ; i++ ) {
+		shaderStage_t	*pStage = &pd.parseStages[i];
+		if ( pStage.texture.image == globalImages.currentRenderImage ) {
+			if ( sort != SS_PORTAL_SKY ) {
+				sort = SS_POST_PROCESS;
+				coverage = MC_TRANSLUCENT;
+			}
+			break;
+		}
+		if ( pStage.newStage ) {
+			for ( int j = 0 ; j < pStage.newStage.numFragmentProgramImages ; j++ ) {
+				if ( pStage.newStage.fragmentProgramImages[j] == globalImages.currentRenderImage ) {
+					if ( sort != SS_PORTAL_SKY ) {
+						sort = SS_POST_PROCESS;
+						coverage = MC_TRANSLUCENT;
+					}
+					i = numStages;
+					break;
+				}
+			}
+		}
+	}
 
-////	// set the drawStateBits depth flags
-////	for ( i = 0 ; i < numStages ; i++ ) {
-////		shaderStage_t	*pStage = &pd.parseStages[i];
-////		if ( sort == SS_POST_PROCESS ) {
-////			// post-process effects fill the depth buffer as they draw, so only the
-////			// topmost post-process effect is rendered
-////			pStage.drawStateBits |= GLS_DEPTHFUNC_LESS;
-////		} else if ( coverage == MC_TRANSLUCENT || pStage.ignoreAlphaTest ) {
-////			// translucent surfaces can extend past the exactly marked depth buffer
-////			pStage.drawStateBits |= GLS_DEPTHFUNC_LESS | GLS_DEPTHMASK;
-////		} else {
-////			// opaque and perforated surfaces must exactly match the depth buffer,
-////			// which gets alpha test correct
-////			pStage.drawStateBits |= GLS_DEPTHFUNC_EQUAL | GLS_DEPTHMASK;
-////		}
-////	}
+	// set the drawStateBits depth flags
+	for ( i = 0 ; i < numStages ; i++ ) {
+		shaderStage_t	*pStage = &pd.parseStages[i];
+		if ( sort == SS_POST_PROCESS ) {
+			// post-process effects fill the depth buffer as they draw, so only the
+			// topmost post-process effect is rendered
+			pStage.drawStateBits |= GLS_DEPTHFUNC_LESS;
+		} else if ( coverage == MC_TRANSLUCENT || pStage.ignoreAlphaTest ) {
+			// translucent surfaces can extend past the exactly marked depth buffer
+			pStage.drawStateBits |= GLS_DEPTHFUNC_LESS | GLS_DEPTHMASK;
+		} else {
+			// opaque and perforated surfaces must exactly match the depth buffer,
+			// which gets alpha test correct
+			pStage.drawStateBits |= GLS_DEPTHFUNC_EQUAL | GLS_DEPTHMASK;
+		}
+	}
 
-////	// determine if this surface will accept overlays / decals
+	// determine if this surface will accept overlays / decals
 
-////	if ( pd.forceOverlays ) {
-////		// explicitly flaged in material definition
-////		allowOverlays = true;
-////	} else {
-////		if ( !IsDrawn() ) {
-////			allowOverlays = false;
-////		}
-////		if ( Coverage() != MC_OPAQUE ) {
-////			allowOverlays = false;
-////		}
-////		if ( GetSurfaceFlags() & SURF_NOIMPACT ) {
-////			allowOverlays = false;
-////		}
-////	}
+	if ( pd.forceOverlays ) {
+		// explicitly flaged in material definition
+		allowOverlays = true;
+	} else {
+		if ( !IsDrawn() ) {
+			allowOverlays = false;
+		}
+		if ( Coverage() != MC_OPAQUE ) {
+			allowOverlays = false;
+		}
+		if ( GetSurfaceFlags() & SURF_NOIMPACT ) {
+			allowOverlays = false;
+		}
+	}
 
-////	// add a tiny offset to the sort orders, so that different materials
-////	// that have the same sort value will at least sort consistantly, instead
-////	// of flickering back and forth
-/////* this messed up in-game guis
-////	if ( sort != SS_SUBVIEW ) {
-////		int	hash, l;
+	// add a tiny offset to the sort orders, so that different materials
+	// that have the same sort value will at least sort consistantly, instead
+	// of flickering back and forth
+/* this messed up in-game guis
+	if ( sort != SS_SUBVIEW ) {
+		int	hash, l;
 
-////		l = name.Length();
-////		hash = 0;
-////		for ( int i = 0 ; i < l ; i++ ) {
-////			hash ^= name[i];
-////		}
-////		sort += hash * 0.01;
-////	}
-////*/
+		l = name.Length();
+		hash = 0;
+		for ( int i = 0 ; i < l ; i++ ) {
+			hash ^= name[i];
+		}
+		sort += hash * 0.01;
+	}
+*/
 
-////	if (numStages) {
-////		stages = (shaderStage_t *)R_StaticAlloc( numStages * sizeof( stages[0] ) );
-////		memcpy( stages, pd.parseStages, numStages * sizeof( stages[0] ) );
-////	}
+	if (numStages) {
+		stages = (shaderStage_t *)R_StaticAlloc( numStages * sizeof( stages[0] ) );
+		memcpy( stages, pd.parseStages, numStages * sizeof( stages[0] ) );
+	}
 
-////	if ( numOps ) {
-////		ops = (expOp_t *)R_StaticAlloc( numOps * sizeof( ops[0] ) );
-////		memcpy( ops, pd.shaderOps, numOps * sizeof( ops[0] ) );
-////	}
+	if ( numOps ) {
+		ops = (expOp_t *)R_StaticAlloc( numOps * sizeof( ops[0] ) );
+		memcpy( ops, pd.shaderOps, numOps * sizeof( ops[0] ) );
+	}
 
-////	if ( numRegisters ) {
-////		expressionRegisters = (float *)R_StaticAlloc( numRegisters * sizeof( expressionRegisters[0] ) );
-////		memcpy( expressionRegisters, pd.shaderRegisters, numRegisters * sizeof( expressionRegisters[0] ) );
-////	}
+	if ( numRegisters ) {
+		expressionRegisters = (float *)R_StaticAlloc( numRegisters * sizeof( expressionRegisters[0] ) );
+		memcpy( expressionRegisters, pd.shaderRegisters, numRegisters * sizeof( expressionRegisters[0] ) );
+	}
 
-////	// see if the registers are completely constant, and don't need to be evaluated
-////	// per-surface
-////	CheckForConstantRegisters();
+	// see if the registers are completely constant, and don't need to be evaluated
+	// per-surface
+	CheckForConstantRegisters();
 
-////	pd = NULL;	// the pointer will be invalid after exiting this function
+	pd = NULL;	// the pointer will be invalid after exiting this function
 
-////	// finish things up
-////	if ( TestMaterialFlag( MF_DEFAULTED ) ) {
-////		MakeDefault();
-////		return false;
-////	}
-////	return true;
-////}
+	// finish things up
+	if ( TestMaterialFlag( MF_DEFAULTED ) ) {
+		MakeDefault();
+		return false;
+	}
+	return true;
+}
 
 /////*
 ////===================

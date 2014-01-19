@@ -1898,7 +1898,6 @@ R_InitMaterials
 =================
 */
 R_InitMaterials( ):void {
-    todoThrow();
 	tr.defaultMaterial = declManager.FindMaterial( "_default", false );
 	if ( !tr.defaultMaterial ) {
 		common.FatalError( "_default material not found" );

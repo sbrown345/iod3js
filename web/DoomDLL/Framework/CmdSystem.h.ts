@@ -137,11 +137,19 @@ var CMD_FL_ALL				= -1,
 //	callback( va( "%s 1", args.Argv( 0 ) ) );
 }
 
-//template<int min,int max> ID_STATIC_TEMPLATE ID_INLINE void idCmdSystem::ArgCompletion_Integer( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
-//	for ( int i = min; i <= max; i++ ) {
-//		callback( va( "%s %d", args.Argv( 0 ), i ) );
-//	}
-//}
+/*template<int min,int max> ID_STATIC_TEMPLATE ID_INLINE void idCmdSystem::*/
+function ArgCompletion_Integer_Template ( min: number, max: number ): ( /*const idCmdArgs &*/args: idCmdArgs, callback: ( s: string ) => void ) => void {
+	return function ( args: idCmdArgs, callback: ( s: string ) => void ): void {
+		todoThrow( "ArgCompletion_Integer" );
+		ArgCompletion_Integer( min, max, args, callback );
+	};
+
+	function ArgCompletion_Integer ( min: number, max: number, /*const idCmdArgs &*/args: idCmdArgs, callback: ( s: string ) => void ): void {
+		//for ( var/*int */i = min; i <= max; i++ ) {
+		//	callback( va( "%s %d", args.Argv( 0 ), i ) );
+		//}
+	}
+}
 
 //template<const char **strings> ID_STATIC_TEMPLATE ID_INLINE void idCmdSystem::ArgCompletion_String( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
 //:(args:idCmdArgs, callback?: (s: string)=>void)=>void
