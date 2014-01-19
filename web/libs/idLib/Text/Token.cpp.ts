@@ -182,6 +182,7 @@ class idToken extends idStr {
     	//EnsureAlloced( len + 2, true );
     	//data[len++] = a;
 	    this.data += a;
+	    this.len++;
     }
     
     //#endif /* !__TOKEN_H__ */

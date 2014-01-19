@@ -418,81 +418,81 @@ class idLexer {
 		return 1;
 	}
 
-	/////*
-	////================
-	////idLexer::ReadEscapeCharacter
-	////================
-	////*/
-	////int idLexer::ReadEscapeCharacter( char *ch ) {
-	////	int c, val, i;
+	/*
+	================
+	idLexer::ReadEscapeCharacter
+	================
+	*/
+	/*int*/ ReadEscapeCharacter( /*char **/ch:R<string> ):number {
+		var/*int */c: number, val: number, i:number;
 
-	////	// step over the leading '\\'
-	////	this.script_p++;
-	////	// determine the escape character
-	////	switch(this.buffer[this.script_p]) {
-	////		case '\\': c = '\\'; break;
-	////		case 'n': c = '\n'; break;
-	////		case 'r': c = '\r'; break;
-	////		case 't': c = '\t'; break;
-	////		case 'v': c = '\v'; break;
-	////		case 'b': c = '\b'; break;
-	////		case 'f': c = '\f'; break;
-	////		case 'a': c = '\a'; break;
-	////		case '\'': c = '\''; break;
-	////		case '\"': c = '\"'; break;
-	////		case '\?': c = '\?'; break;
-	////		case 'x':
-	////		{
-	////			this.script_p++;
-	////			for (i = 0, val = 0; ; i++, this.script_p++) {
-	////				c = this.buffer[this.script_p];
-	////				if (c >= '0' && c <= '9')
-	////					c = c - '0';
-	////				else if (c >= 'A' && c <= 'Z')
-	////					c = c - 'A' + 10;
-	////				else if (c >= 'a' && c <= 'z')
-	////					c = c - 'a' + 10;
-	////				else
-	////					break;
-	////				val = (val << 4) + c;
-	////			}
-	////			this.script_p--;
-	////			if (val > 0xFF) {
-	////				this.Warning( "too large value in escape character" );
-	////				val = 0xFF;
-	////			}
-	////			c = val;
-	////			break;
-	////		}
-	////		default: //NOTE: decimal ASCII code, NOT octal
-	////		{
-	////			if (this.buffer[this.script_p] < '0' || this.buffer[this.script_p] > '9') {
-	////				this.Error("unknown escape char");
-	////			}
-	////			for (i = 0, val = 0; ; i++, this.script_p++) {
-	////				c = this.buffer[this.script_p];
-	////				if (c >= '0' && c <= '9')
-	////					c = c - '0';
-	////				else
-	////					break;
-	////				val = val * 10 + c;
-	////			}
-	////			this.script_p--;
-	////			if (val > 0xFF) {
-	////				this.Warning( "too large value in escape character" );
-	////				val = 0xFF;
-	////			}
-	////			c = val;
-	////			break;
-	////		}
-	////	}
-	////	// step over the escape character or the last digit of the number
-	////	this.script_p++;
-	////	// store the escape character
-	////	*ch = c;
-	////	// succesfully read escape character
-	////	return 1;
-	////}
+		// step over the leading '\\'
+		this.script_p++;
+		// determine the escape character
+		switch(this.buffer[this.script_p]) {
+			case '\\': c = '\\'.charCodeAt(0); break;
+			case 'n': c = '\n'.charCodeAt(0); break;
+			case 'r': c = '\r'.charCodeAt(0); break;
+			case 't': c = '\t'.charCodeAt(0); break;
+			case 'v': c = '\v'.charCodeAt(0); break;
+			case 'b': c = '\b'.charCodeAt(0); break;
+			case 'f': c = '\f'.charCodeAt(0); break;
+			case 'a': c = '\a'.charCodeAt(0); break;
+			case '\'': c = '\''.charCodeAt(0); break;
+			case '\"': c = '\"'.charCodeAt(0); break;
+			case '\?': c = '\?'.charCodeAt(0); break;
+			case 'x':
+			{
+				this.script_p++;
+				for (i = 0, val = 0; ; i++, this.script_p++) {
+					c = this.buffer.charCodeAt(this.script_p);
+					if (c >= '0'.charCodeAt(0) && c <= '9'.charCodeAt(0))
+						c = c - '0'.charCodeAt(0);
+					else if (c >= 'A'.charCodeAt(0) && c <= 'Z'.charCodeAt(0))
+						c = c - 'A'.charCodeAt(0) + 10;
+					else if (c >= 'a'.charCodeAt(0) && c <= 'z'.charCodeAt(0))
+						c = c - 'a'.charCodeAt(0) + 10;
+					else
+						break;
+					val = (val << 4) + c;
+				}
+				this.script_p--;
+				if (val > 0xFF) {
+					this.Warning( "too large value in escape character" );
+					val = 0xFF;
+				}
+				c = val;
+				break;
+			}
+			default: //NOTE: decimal ASCII code, NOT octal
+			{
+				if (this.buffer[this.script_p] < '0' || this.buffer[this.script_p] > '9') {
+					this.Error("unknown escape char");
+				}
+				for (i = 0, val = 0; ; i++, this.script_p++) {
+					c = this.buffer.charCodeAt(this.script_p);
+					if (c >= '0'.charCodeAt(0) && c <= '9'.charCodeAt(0))
+						c = c - '0'.charCodeAt(0);
+					else
+						break;
+					val = val * 10 + c;
+				}
+				this.script_p--;
+				if (val > 0xFF) {
+					this.Warning( "too large value in escape character" );
+					val = 0xFF;
+				}
+				c = val;
+				break;
+			}
+		}
+		// step over the escape character or the last digit of the number
+		this.script_p++;
+		// store the escape character
+		ch.$ = String.fromCharCode(c);
+		// succesfully read escape character
+		return 1;
+	}
 
 	/*
 	================
@@ -503,96 +503,95 @@ class idLexer {
 	================
 	*/
 	/*int */ReadString(token: idToken, /*int */quote: string): number {
-		todoThrow ( );
-	////	int tmpline;
-	////	const char *tmpscript_p;
-	////	char ch;
+		var/*int */tmpline:number;
+		var/*const char **/tmpscript_p:number;
+		var/*char */ch = new R<string>();
 
-	////	if ( quote == '\"' ) {
-	////		token.type = TT_STRING;
-	////	} else {
-	////		token.type = TT_LITERAL;
-	////	}
+		if ( quote == '\"' ) {
+			token.type = TT_STRING;
+		} else {
+			token.type = TT_LITERAL;
+		}
 
-	////	// leading quote
-	////	this.script_p++;
+		// leading quote
+		this.script_p++;
 
-	////	while(1) {
-	////		// if there is an escape character and escape characters are allowed
-	////		if (this.buffer[this.script_p] == '\\' && !(this.flags & LEXFL_NOSTRINGESCAPECHARS)) {
-	////			if ( !idLexer::ReadEscapeCharacter( &ch ) ) {
-	////				return 0;
-	////			}
-	////			token.AppendDirty( ch );
-	////		}
-	////		// if a trailing quote
-	////		else if (this.buffer[this.script_p] == quote) {
-	////			// step over the quote
-	////			this.script_p++;
-	////			// if consecutive strings should not be concatenated
-	////			if ( (this.flags & LEXFL_NOSTRINGCONCAT) &&
-	////					(!(this.flags & LEXFL_ALLOWBACKSLASHSTRINGCONCAT) || (quote != '\"')) ) {
-	////				break;
-	////			}
+		while(1) {
+			// if there is an escape character and escape characters are allowed
+			if (this.buffer[this.script_p] == '\\' && !(this.flags & lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS)) {
+				if ( !this.ReadEscapeCharacter( ch ) ) {
+					return 0;
+				}
+				token.AppendDirty( ch.$ );
+			}
+			// if a trailing quote
+			else if (this.buffer[this.script_p] == quote) {
+				// step over the quote
+				this.script_p++;
+				// if consecutive strings should not be concatenated
+				if ((this.flags & lexerFlags_t.LEXFL_NOSTRINGCONCAT) &&
+					(!(this.flags & lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT) || (quote != '\"')) ) {
+					break;
+				}
 
-	////			tmpscript_p = this.script_p;
-	////			tmpline = this.line;
-	////			// read white space between possible two consecutive strings
-	////			if ( !idLexer::ReadWhiteSpace() ) {
-	////				this.script_p = tmpscript_p;
-	////				this.line = tmpline;
-	////				break;
-	////			}
+				tmpscript_p = this.script_p;
+				tmpline = this.line;
+				// read white space between possible two consecutive strings
+				if ( !this.ReadWhiteSpace() ) {
+					this.script_p = tmpscript_p;
+					this.line = tmpline;
+					break;
+				}
 
-	////			if ( this.flags & LEXFL_NOSTRINGCONCAT ) {
-	////				if ( this.buffer[this.script_p] != '\\' ) {
-	////					this.script_p = tmpscript_p;
-	////					this.line = tmpline;
-	////					break;
-	////				}
-	////				// step over the '\\'
-	////				this.script_p++;
-	////				if ( !idLexer::ReadWhiteSpace() || ( this.buffer[this.script_p] != quote ) ) {
-	////					this.Error( "expecting string after '\' terminated line" );
-	////					return 0;
-	////				}
-	////			}
+				if (this.flags & lexerFlags_t.LEXFL_NOSTRINGCONCAT ) {
+					if ( this.buffer[this.script_p] != '\\' ) {
+						this.script_p = tmpscript_p;
+						this.line = tmpline;
+						break;
+					}
+					// step over the '\\'
+					this.script_p++;
+					if ( !this.ReadWhiteSpace() || ( this.buffer[this.script_p] != quote ) ) {
+						this.Error( "expecting string after '\' terminated line" );
+						return 0;
+					}
+				}
 
-	////			// if there's no leading qoute
-	////			if ( this.buffer[this.script_p] != quote ) {
-	////				this.script_p = tmpscript_p;
-	////				this.line = tmpline;
-	////				break;
-	////			}
-	////			// step over the new leading quote
-	////			this.script_p++;
-	////		}
-	////		else {
-	////			if (this.buffer[this.script_p] == '\0') { // TODO: WATCH OUT HERE
-	////				this.Error( "missing trailing quote" );
-	////				return 0;
-	////			}
-	////			if (this.buffer[this.script_p] == '\n') {
-	////				this.Error( "newline inside string" );
-	////				return 0;
-	////			}
-	////			token.AppendDirty( this.buffer[this.script_p]++ );
-	////		}
-	////	}
-	////	token.data[token.len] = '\0';// TODO: WATCH OUT HERE
+				// if there's no leading qoute
+				if ( this.buffer[this.script_p] != quote ) {
+					this.script_p = tmpscript_p;
+					this.line = tmpline;
+					break;
+				}
+				// step over the new leading quote
+				this.script_p++;
+			}
+			else {
+				if (this.buffer[this.script_p] == '\0' || !this.buffer[this.script_p]) {
+					this.Error( "missing trailing quote" );
+					return 0;
+				}
+				if (this.buffer[this.script_p] == '\n') {
+					this.Error( "newline inside string" );
+					return 0;
+				}
+				token.AppendDirty(this.buffer[this.script_p++] );
+			}
+		}
+		//token.data[token.len] = '\0';// TODO: WATCH OUT HERE
 
-	////	if ( token.type == TT_LITERAL ) {
-	////		if ( !(this.flags & LEXFL_ALLOWMULTICHARLITERALS) ) {
-	////			if ( token.Length() != 1 ) {
-	////				this.Warning( "literal is not one character long" );
-	////			}
-	////		}
-	////		token.subtype = (*token)[0];
-	////	}
-	////	else {
-	////		// the sub type is the length of the string
-	////		token.subtype = token.Length();
-	////	}
+		if ( token.type == TT_LITERAL ) {
+			if (!(this.flags & lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS) ) {
+				if ( token.Length() != 1 ) {
+					this.Warning( "literal is not one character long" );
+				}
+			}
+			todoThrow( "token.subtype = (*token)[0]; " ); //??
+		}
+		else {
+			// the sub type is the length of the string
+			token.subtype = token.Length();
+		}
 		return 1;
 	}
 
@@ -896,7 +895,7 @@ class idLexer {
 			common.Error( "idLexer::ReadToken: no file loaded" );
 			return 0;
 		}
-
+		if ( this.line == 1085 )debugger;
 		// if there is a token available (from unreadToken)
 		if ( this.tokenavailable ) {
 			this.tokenavailable = 0;
