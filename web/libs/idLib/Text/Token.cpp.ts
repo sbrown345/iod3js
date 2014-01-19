@@ -222,33 +222,33 @@ class idToken extends idStr {
     			}
     		}
     		else {
-    			while( *p && *p != '.' && *p != 'e' ) {
-    				this.floatvalue = this.floatvalue * 10.0 + /*(double)*/ (*p - '0');
-    				p++;
+    			while( p[pIdx] && p[pIdx] != '.' && p[pIdx] != 'e' ) {
+					this.floatvalue = this.floatvalue * 10.0 + /*(double)*/ (p.charCodeAt(pIdx) - '0'.charCodeAt(0));
+    				pIdx++;
     			}
-    			if ( *p == '.' ) {
-    				p++;
-    				for( m = 0.1; *p && *p != 'e'; p++ ) {
-    					this.floatvalue = this.floatvalue + /*(double)*/ (*p - '0') * m;
+    			if ( p[pIdx] == '.' ) {
+    				pIdx++;
+    				for( m = 0.1; p[pIdx] && p[pIdx] != 'e'; pIdx++ ) {
+						this.floatvalue = this.floatvalue + /*(double)*/ (p.charCodeAt(pIdx) - '0'.charCodeAt(0)) * m;
     					m *= 0.1;
     				}
     			}
-    			if ( *p == 'e' ) {
-    				p++;
-    				if ( *p == '-' ) {
-    					div = true;
-    					p++;
+    			if ( p[pIdx] == 'e' ) {
+    				pIdx++;
+    				if ( p[pIdx] == '-' ) {
+    					div = 1;
+    					pIdx++;
     				}
-    				else if ( *p == '+' ) {
-    					div = false;
-    					p++;
+    				else if ( p[pIdx] == '+' ) {
+    					div = 0;
+    					pIdx++;
     				}
     				else {
-    					div = false;
+    					div = 0;
     				}
     				pow = 0;
-    				for ( pow = 0; *p; p++ ) {
-    					pow = pow * 10 +/* (int)*/ (*p - '0');
+    				for ( pow = 0; p[pIdx]; pIdx++ ) {
+						pow = pow * 10 +/* (int)*/ (p.charCodeAt(pIdx) - '0'.charCodeAt(0));
     				}
     				for ( m = 1.0, i = 0; i < pow; i++ ) {
     					m *= 10.0;
@@ -264,16 +264,16 @@ class idToken extends idStr {
     		this.intvalue = idMath.Ftol( this.floatvalue );
     	}
     	else if ( this.subtype & TT_DECIMAL ) {
-    		while( *p ) {
-    			this.intvalue = this.intvalue * 10 + (*p - '0');
-    			p++;
+    		while( p[pIdx] ) {
+				this.intvalue = this.intvalue * 10 + (p.charCodeAt(pIdx) - '0'.charCodeAt(0));
+    			pIdx++;
     		}
     		this.floatvalue = this.intvalue;
     	}
     	else if ( this.subtype & TT_IPADDRESS ) {
     		c = 0;
-    		while( *p && *p != ':' ) {
-    			if ( *p == '.' ) {
+    		while( p[pIdx] && p[pIdx] != ':' ) {
+    			if ( p[pIdx] == '.' ) {
     				while( c != 3 ) {
     					this.intvalue = this.intvalue * 10;
     					c++;
@@ -281,10 +281,10 @@ class idToken extends idStr {
     				c = 0;
     			}
     			else {
-    				this.intvalue = this.intvalue * 10 + (*p - '0');
+					this.intvalue = this.intvalue * 10 + (p.charCodeAt(pIdx) - '0'.charCodeAt(0));
     				c++;
     			}
-    			p++;
+    			pIdx++;
     		}
     		while( c != 3 ) {
     			this.intvalue = this.intvalue * 10;
@@ -295,33 +295,33 @@ class idToken extends idStr {
     	else if ( this.subtype & TT_OCTAL ) {
     		// step over the first zero
     		p += 1;
-    		while( *p ) {
-    			this.intvalue = (this.intvalue << 3) + (*p - '0');
-    			p++;
+    		while( p[pIdx] ) {
+				this.intvalue = (this.intvalue << 3) + (p.charCodeAt(pIdx) - '0'.charCodeAt(0));
+    			pIdx++;
     		}
     		this.floatvalue = this.intvalue;
     	}
     	else if ( this.subtype & TT_HEX ) {
     		// step over the leading 0x or 0X
     		p += 2;
-    		while( *p ) {
+    		while( p[pIdx] ) {
     			this.intvalue <<= 4;
-    			if (*p >= 'a' && *p <= 'f')
-    				this.intvalue += *p - 'a' + 10;
-    			else if (*p >= 'A' && *p <= 'F')
-    				this.intvalue += *p - 'A' + 10;
+    			if (p[pIdx] >= 'a' && p[pIdx] <= 'f')
+					this.intvalue += p.charCodeAt(pIdx) - 'a'.charCodeAt(0) + 10;
+    			else if (p[pIdx] >= 'A' && p[pIdx] <= 'F')
+					this.intvalue += p.charCodeAt(pIdx) - 'A'.charCodeAt(0) + 10;
     			else
-    				this.intvalue += *p - '0';
-    			p++;
+					this.intvalue += p.charCodeAt(pIdx) - '0'.charCodeAt(0);
+    			pIdx++;
     		}
     		this.floatvalue = this.intvalue;
     	}
     	else if ( this.subtype & TT_BINARY ) {
     		// step over the leading 0b or 0B
     		p += 2;
-    		while( *p ) {
-    			this.intvalue = (this.intvalue << 1) + (*p - '0');
-    			p++;
+    		while( p[pIdx] ) {
+    			this.intvalue = (this.intvalue << 1) + (p.charCodeAt(pIdx) - '0'.charCodeAt(0));
+    			pIdx++;
     		}
     		this.floatvalue = this.intvalue;
     	}

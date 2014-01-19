@@ -253,12 +253,12 @@ See if the current token matches one of the surface parm bit flags
 		if ( !token.$.Icmp( infoParms[i].name ) ) {
 			if ( infoParms[i].surfaceFlags & surfaceFlags_t.SURF_TYPE_MASK ) {
 				// ensure we only have one surface type set
-				surfaceFlags &= ~surfaceFlags_t.SURF_TYPE_MASK;
+				this.surfaceFlags &= ~surfaceFlags_t.SURF_TYPE_MASK;
 			}
-			surfaceFlags |= infoParms[i].surfaceFlags;
-			contentFlags |= infoParms[i].contents;
+			this.surfaceFlags |= infoParms[i].surfaceFlags;
+			this.contentFlags |= infoParms[i].contents;
 			if ( infoParms[i].clearSolid ) {
-				contentFlags &= ~contentsFlags_t.CONTENTS_SOLID;
+				this.contentFlags &= ~contentsFlags_t.CONTENTS_SOLID;
 			}
 			return true;
 		}
@@ -281,44 +281,44 @@ See if the current token matches one of the surface parm bit flags
 ////	return true;
 ////}
 
-/////*
-////=================
-////idMaterial::ParseSort
-////=================
-////*/
-////void idMaterial::ParseSort( idLexer &src ) {
-////	idToken token;
+/*
+=================
+idMaterial::ParseSort
+=================
+*/
+ParseSort(src:idLexer ):number {
+	var token = new R(new idToken);
 
-////	if ( !src.ReadTokenOnLine( &token ) ) {
-////		src.Warning( "missing sort parameter" );
-////		SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-////		return;
-////	}
+	if ( !src.ReadTokenOnLine( token ) ) {
+		src.Warning( "missing sort parameter" );
+		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+		return;
+	}
 
-////	if ( !token.Icmp( "subview" ) ) {
-////		sort = SS_SUBVIEW;
-////	} else if ( !token.Icmp( "opaque" ) ) {
-////		sort = SS_OPAQUE;
-////	}else if ( !token.Icmp( "decal" ) ) {
-////		sort = SS_DECAL;
-////	} else if ( !token.Icmp( "far" ) ) {
-////		sort = SS_FAR;
-////	} else if ( !token.Icmp( "medium" ) ) {
-////		sort = SS_MEDIUM;
-////	} else if ( !token.Icmp( "close" ) ) {
-////		sort = SS_CLOSE;
-////	} else if ( !token.Icmp( "almostNearest" ) ) {
-////		sort = SS_ALMOST_NEAREST;
-////	} else if ( !token.Icmp( "nearest" ) ) {
-////		sort = SS_NEAREST;
-////	} else if ( !token.Icmp( "postProcess" ) ) {
-////		sort = SS_POST_PROCESS;
-////	} else if ( !token.Icmp( "portalSky" ) ) {
-////		sort = SS_PORTAL_SKY;
-////	} else {
-////		sort = atof( token );
-////	}
-////}
+	if ( !token.$.Icmp( "subview" ) ) {
+		this.sort = materialSort_t.SS_SUBVIEW;
+	} else if ( !token.$.Icmp( "opaque" ) ) {
+		this.sort = materialSort_t.SS_OPAQUE;
+	}else if ( !token.$.Icmp( "decal" ) ) {
+		this.sort = materialSort_t.SS_DECAL;
+	} else if ( !token.$.Icmp( "far" ) ) {
+		this.sort = materialSort_t.SS_FAR;
+	} else if ( !token.$.Icmp( "medium" ) ) {
+		this.sort = materialSort_t.SS_MEDIUM;
+	} else if ( !token.$.Icmp( "close" ) ) {
+		this.sort = materialSort_t.SS_CLOSE;
+	} else if ( !token.$.Icmp( "almostNearest" ) ) {
+		this.sort = materialSort_t.SS_ALMOST_NEAREST;
+	} else if ( !token.$.Icmp( "nearest" ) ) {
+		this.sort = materialSort_t.SS_NEAREST;
+	} else if ( !token.$.Icmp( "postProcess" ) ) {
+		this.sort = materialSort_t.SS_POST_PROCESS;
+	} else if ( !token.$.Icmp( "portalSky" ) ) {
+		this.sort = materialSort_t.SS_PORTAL_SKY;
+	} else {
+		this.sort = atof( token.$.data );
+	}
+}
 
 /////*
 ////=================
@@ -1927,15 +1927,15 @@ If there is any error during parsing, defaultShader will be set.
 			str = R_ParsePastImageProgram( src );
 			var copy: idStr;
 
-			copy = str.clone();	// so other things don't step on it
-			this.lightFalloffImage = globalImages.ImageFromFile( copy, TF_DEFAULT, false, textureRepeat_t.TR_CLAMP /* TR_CLAMP_TO_ZERO */, textureDepth_t.TD_DEFAULT );
+			copy = new idStr(str);	// so other things don't step on it
+			this.lightFalloffImage = globalImages.ImageFromFile(copy, textureFilter_t.TF_DEFAULT, false, textureRepeat_t.TR_CLAMP /* TR_CLAMP_TO_ZERO */, textureDepth_t.TD_DEFAULT );
 			continue;
 		}
 		// guisurf <guifile> | guisurf entity
 		// an entity guisurf must have an idUserInterface
 		// specified in the renderEntity
 		else if ( !token.$.Icmp( "guisurf" ) ) {
-			src.ReadTokenOnLine( &token );
+			src.ReadTokenOnLine( token );
 			if ( !token.$.Icmp( "entity" ) ) {
 				this.entityGui = 1;
 			} else if ( !token.$.Icmp( "entity2" ) ) {
@@ -1979,7 +1979,7 @@ If there is any error during parsing, defaultShader will be set.
 			idStr.snPrintf( buffer, sizeof( buffer ), "blend diffusemap\nmap %s\n}\n", str );
 			newSrc.LoadMemory( buffer, strlen(buffer), "diffusemap" );
 			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
-			ParseStage( newSrc, trpDefault );
+			this.ParseStage( newSrc, trpDefault );
 			newSrc.FreeSource();
 			continue;
 		}
@@ -1999,7 +1999,7 @@ If there is any error during parsing, defaultShader will be set.
 			idStr.snPrintf( buffer, sizeof( buffer ), "blend bumpmap\nmap %s\n}\n", str );
 			newSrc.LoadMemory( buffer, strlen(buffer), "bumpmap" );
 			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
-			ParseStage( newSrc, trpDefault );
+			this.ParseStage( newSrc, trpDefault );
 			newSrc.FreeSource();
 			continue;
 		}
