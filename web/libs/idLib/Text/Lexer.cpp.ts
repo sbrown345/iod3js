@@ -876,6 +876,9 @@ class idLexer {
 		return 0;
 	}
 
+	// from Lexer.h:
+	IsLoaded ( ): number { return this.loaded ? 1 : 0; }
+
 	/*
 	================
 	idLexer::ReadToken
@@ -976,24 +979,24 @@ class idLexer {
 		return 1;
 	}
 
-	/////*
-	////================
-	////idLexer::ExpectTokenString
-	////================
-	////*/
-	////int idLexer::ExpectTokenString( const char *string ) {
-	////	idToken token;
+	/*
+	================
+	idLexer::ExpectTokenString
+	================
+	*/
+	ExpectTokenString( $string:string ):number {
+		var token = new R<idToken>( new idToken ( ) );
 
-	////	if (!idLexer::ReadToken( &token )) {
-	////		this.Error( "couldn't find expected '%s'", string );
-	////		return 0;
-	////	}
-	////	if ( token != string ) {
-	////		this.Error( "expected '%s' but found '%s'", string, token.c_str() );
-	////		return 0;
-	////	}
-	////	return 1;
-	////}
+		if (!this.ReadToken( token )) {
+			this.Error( "couldn't find expected '%s'", $string );
+			return 0;
+		}
+		if (token.$.data != $string ) {
+			this.Error( "expected '%s' but found '%s'", $string, token.$.c_str() );
+			return 0;
+		}
+		return 1;
+	}
 
 	/////*
 	////================
@@ -1782,7 +1785,7 @@ class idLexer {
 ////	idLexer::hadError = false;
 ////}
 
-	constructor() {
+	constructor(flags:number = 0) {
 		this.loaded = 0/*false*/;
 		this.filename = new idStr("");
 		this.flags = 0;

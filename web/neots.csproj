@@ -21,6 +21,7 @@
     <Content Include="DoomDLL\Framework\CmdSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\CmdSystem.h.ts" />
     <Content Include="DoomDLL\Framework\Common.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Common.h.ts" />
     <Content Include="DoomDLL\Framework\CVarSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\CVarSystem.h.ts" />
     <Content Include="DoomDLL\Framework\DeclAF.cpp.ts" />
@@ -77,6 +78,7 @@
     <Content Include="DoomDLL\Sound\sound.h.ts" />
     <Content Include="DoomDLL\Sys\win_glimp.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Sys\win_main.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Sys\win_input.cpp.ts" />
     <Content Include="libs\c.ts" />
     <Content Include="libs\idLib\Containers\HashIndex.h.ts" />
     <Content Include="libs\idLib\Containers\List.h.ts" />

@@ -379,7 +379,7 @@ class idRenderSystem {
         this.guiModel = new idGuiModel ( );
         this.demoGuiModel = new idGuiModel ( );
 
-        //	unsigned short			gammaTable[256];	// brightness / gamma modify this
+	    this.gammaTable = new Uint8Array( 256 ); // brightness / gamma modify this
     }
 
 /////*

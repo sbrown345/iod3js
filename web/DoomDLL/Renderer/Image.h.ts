@@ -1,5 +1,6 @@
 /// <reference path="../Framework/CmdSystem.h.ts" />
 /// <reference path="../../utils/types.ts" />
+/// <reference path="../../libs/idlib/containers/list.h.ts" />
 /// <reference path="../../libs/idLib/Text/Str.h.ts" />
 /////*
 ////===========================================================================
@@ -595,7 +596,7 @@ class idImageManager implements IidImageManager {
     ////	void				SetNormalPalette();
     ////	void				ChangeTextureFilter();
 
-    images:Array<idImage>;
+    images:idList<idImage>;
     ////	idStrList			ddsList;
     ////	idHashIndex			ddsHash;
 
@@ -644,7 +645,7 @@ class idImageManager implements IidImageManager {
         //this.specular2DTableImage=null;		// 2D intensity texture with our specular function with variable specularity
         //this.borderClampImage=null;			// white inside, black outside
 
-        this.images=new Array<idImage>();
+	    this.images = new idList<idImage>( idImage );
 //	idStrList			this.ddsList;
 //	idHashIndex			this.ddsHash=null;
 

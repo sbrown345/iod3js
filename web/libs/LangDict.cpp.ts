@@ -32,9 +32,9 @@
 // LangDict.h:
 
 class idLangKeyValue {
-////public:
-////	idStr					key;
-////	idStr					value;
+//public:
+	key:idStr;
+	value: idStr;
 };
 
 class idLangDict {
@@ -106,52 +106,52 @@ Clear(  ):void {
 	this.hash.Clear();
 }
 
-/////*
-////============
-////idLangDict::Load
-////============
-////*/
-////bool idLangDict::Load( const char *fileName, bool clear /* _D3XP */ ) {
+/*
+============
+idLangDict::Load
+============
+*/
+Load( fileName:string, clear:boolean /* _D3XP */ ) {
 
-////	if ( clear ) {
-////		Clear();
-////	}
+	if ( clear ) {
+		this.Clear();
+	}
 
-////	const char *buffer = NULL;
-////	idLexer src( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
+	var buffer = new R<Uint8Array>();
+	var src = new idLexer( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 
-////	int len = idLib::fileSystem->ReadFile( fileName, (void**)&buffer );
-////	if ( len <= 0 ) {
-////		// let whoever called us deal with the failure (so sys_lang can be reset)
-////		return false;
-////	}
-////	src.LoadMemory( buffer, strlen( buffer ), fileName );
-////	if ( !src.IsLoaded() ) {
-////		return false;
-////	}
+	var /*int */len = fileSystem.ReadFile( fileName, /*(void**)&*/buffer );
+	if ( len <= 0 ) {
+		// let whoever called us deal with the failure (so sys_lang can be reset)
+		return false;
+	}
+	src.LoadMemory(buffer.toString(), /*strlen( buffer )*/buffer.$.length, fileName );
+	if ( !src.IsLoaded() ) {
+		return false;
+	}
 
-////	idToken tok, tok2;
-////	src.ExpectTokenString( "{" );
-////	while ( src.ReadToken( &tok ) ) {
-////		if ( tok == "}" ) {
-////			break;
-////		}
-////		if ( src.ReadToken( &tok2 ) ) {
-////			if ( tok2 == "}" ) {
-////				break;
-////			}
-////			idLangKeyValue kv;
-////			kv.key = tok;
-////			kv.value = tok2;
-////			assert( kv.key.Cmpn( STRTABLE_ID, STRTABLE_ID_LENGTH ) == 0 );
-////			this.hash.Add( GetHashKey( kv.key ), this.args.Append( kv ) );
-////		}
-////	}
-////	idLib::common->Printf( "%i strings read from %s\n", this.args.Num(), fileName );
-////	idLib::fileSystem->FreeFile( (void*)buffer );
+	var tok = new R<idToken>(new idToken()), tok2 = new R<idToken>(new idToken());
+	src.ExpectTokenString( "{" );
+	while ( src.ReadToken( tok ) ) {
+		if (tok.$.data == "}" ) {
+			break;
+		}
+		if ( src.ReadToken( tok2 ) ) {
+			if (tok2.$.data == "}" ) {
+				break;
+			}
+			var kv = new idLangKeyValue;
+			kv.key = tok.$.clone();
+			kv.value = tok2.$.clone();
+			assert( kv.key.Cmpn( STRTABLE_ID, STRTABLE_ID_LENGTH ) == 0 );
+			this.hash.Add( this.GetHashKey( kv.key.data ), this.args.Append( kv ) );
+		}
+	}
+	common.Printf( "%i strings read from %s\n", this.args.Num(), fileName );
+	//fileSystem.FreeFile( (void*)buffer );
 
-////	return true;
-////}
+	return true;
+}
 
 /////*
 ////============
@@ -159,10 +159,10 @@ Clear(  ):void {
 ////============
 ////*/
 ////void idLangDict::Save( const char *fileName ) {
-////	idFile *outFile = idLib::fileSystem->OpenFileWrite( fileName );
-////	outFile->WriteFloatString( "// string table\n// english\n//\n\n{\n" );
+////	idFile *outFile = idLib::fileSystem.OpenFileWrite( fileName );
+////	outFile.WriteFloatString( "// string table\n// english\n//\n\n{\n" );
 ////	for ( int j = 0; j < this.args.Num(); j++ ) {
-////		outFile->WriteFloatString( "\t\"%s\"\t\"", this.args[j].key.c_str() );
+////		outFile.WriteFloatString( "\t\"%s\"\t\"", this.args[j].key.c_str() );
 ////		int l = this.args[j].value.Length();
 ////		char slash = '\\';
 ////		char tab = 't';
@@ -170,19 +170,19 @@ Clear(  ):void {
 ////		for ( int k = 0; k < l; k++ ) {
 ////			char ch = this.args[j].value[k];
 ////			if ( ch == '\t' ) {
-////				outFile->Write( &slash, 1 );
-////				outFile->Write( &tab, 1 );
+////				outFile.Write( &slash, 1 );
+////				outFile.Write( &tab, 1 );
 ////			} else if ( ch == '\n' || ch == '\r' ) {
-////				outFile->Write( &slash, 1 );
-////				outFile->Write( &nl, 1 );
+////				outFile.Write( &slash, 1 );
+////				outFile.Write( &nl, 1 );
 ////			} else {
-////				outFile->Write( &ch, 1 );
+////				outFile.Write( &ch, 1 );
 ////			}
 ////		}
-////		outFile->WriteFloatString( "\"\n" );
+////		outFile.WriteFloatString( "\"\n" );
 ////	}
-////	outFile->WriteFloatString( "\n}\n" );
-////	idLib::fileSystem->CloseFile( outFile );
+////	outFile.WriteFloatString( "\n}\n" );
+////	idLib::fileSystem.CloseFile( outFile );
 ////}
 
 /////*
@@ -207,7 +207,7 @@ Clear(  ):void {
 ////		}
 ////	}
 
-////	idLib::common->Warning( "Unknown string id %s", str );
+////	idLib::common.Warning( "Unknown string id %s", str );
 ////	return str;
 ////}
 
@@ -339,17 +339,19 @@ Clear(  ):void {
 ////	return id + 1;
 ////}
 
-/////*
-////============
-////idLangDict::GetHashKey
-////============
-////*/
-////int idLangDict::GetHashKey( const char *str ) const {
-////	int hashKey = 0;
-////	for ( str += STRTABLE_ID_LENGTH; str[0] != '\0'; str++ ) {
-////		assert( str[0] >= '0' && str[0] <= '9' );
-////		hashKey = hashKey * 10 + str[0] - '0';
-////	}
-////	return hashKey;
-////}
+/*
+============
+idLangDict::GetHashKey
+============
+*/
+/*int */
+	GetHashKey ( str: string ): number {
+		var /*int*/ hashKey = 0;
+		var i = 0;
+		for ( str += STRTABLE_ID_LENGTH; i < str.length; i++ ) {
+			assert( str[i] >= '0' && str[i] <= '9' );
+			hashKey = hashKey * 10 + str.charCodeAt( i ) - '0'.charCodeAt( 0 );
+		}
+		return hashKey;
+	}
 }

@@ -173,7 +173,7 @@ var DEBUG_LOG_MODE = true;
 function isd(v: boolean): boolean { return DEBUG_LOG_MODE && v;}
 
 var DEBUG_RegisterDeclFolder = isd( true );
-var DEBUG_Lexer = isd( true );
+var DEBUG_Lexer = isd( false );
 
 function dlog(log: boolean, format: string, ...args: any[]) {
 	if (!log || SKIP_ALL_LOGGING) return;

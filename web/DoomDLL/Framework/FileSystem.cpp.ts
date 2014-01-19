@@ -1049,7 +1049,7 @@ timestamp can be NULL if not required
 ============
 */
 /*int*/
-    ReadFile ( relativePath: string, /*void ***/buffer: R<Uint8Array>, /*ID_TIME_T **/timestamp: R<number> ): number {
+    ReadFile ( relativePath: string, /*void ***/buffer: R<Uint8Array>, /*ID_TIME_T **/timestamp = new R<number>(0)): number {
         var f: idFile_Permanent;
         var buf: Uint8Array;
         var len: number;

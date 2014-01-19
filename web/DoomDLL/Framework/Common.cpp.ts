@@ -1,6 +1,8 @@
 /// <reference path="../../libs/LangDict.cpp.ts" />
 /// <reference path="CVarSystem.cpp.ts" />
 /// <reference path="CVarSystem.h.ts" />
+/// <reference path="common.h.ts" />
+/// <reference path="../sys/win_input.cpp.ts" />
 /// <reference path="../Renderer/RenderSystem.cpp.ts" />
 /// <reference path="../Renderer/RenderSystem.h.ts" />
 /// <reference path="CmdSystem.cpp.ts" />
@@ -1608,48 +1610,51 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	}
 ////}
 
-/////*
-////===============
-////idCommonLocal::InitLanguageDict
-////===============
-////*/
-////void idCommonLocal::InitLanguageDict( void ) {
-////	idStr fileName;
-////	languageDict.Clear();
+/*
+===============
+idCommonLocal::InitLanguageDict
+===============
+*/
+InitLanguageDict( ):void {
+	var fileName: idStr;
+	this.languageDict.Clear();
 
-////	//D3XP: Instead of just loading a single lang file for each language
-////	//we are going to load all files that begin with the language name
-////	//similar to the way pak files work. So you can place english001.lang
-////	//to add new strings to the english language dictionary
-////	idFileList*	langFiles;
-////	langFiles =  fileSystem.ListFilesTree( "strings", ".lang", true );
+	////D3XP: Instead of just loading a single lang file for each language
+	////we are going to load all files that begin with the language name
+	////similar to the way pak files work. So you can place english001.lang
+	////to add new strings to the english language dictionary
+	//idFileList*	langFiles;
+	//langFiles =  fileSystem.ListFilesTree( "strings", ".lang", true );
 	
-////	idStrList langList = langFiles.GetList();
+	//idStrList langList = langFiles.GetList();
 
-////	StartupVariable( "sys_lang", false );	// let it be set on the command line - this is needed because this init happens very early
-////	idStr langName = cvarSystem.GetCVarString( "sys_lang" );
+	//StartupVariable( "sys_lang", false );	// let it be set on the command line - this is needed because this init happens very early
+	//idStr langName = cvarSystem.GetCVarString( "sys_lang" );
 
-////	//Loop through the list and filter
-////	idStrList currentLangList = langList;
-////	FilterLangList(&currentLangList, langName);
+	////Loop through the list and filter
+	//idStrList currentLangList = langList;
+	//FilterLangList(&currentLangList, langName);
 	
-////	if ( currentLangList.Num() == 0 ) {
-////		// reset cvar to default and try to load again
-////		cmdSystem.BufferCommandText( CMD_EXEC_NOW, "reset sys_lang" );
-////		langName = cvarSystem.GetCVarString( "sys_lang" );
-////		currentLangList = langList;
-////		FilterLangList(&currentLangList, langName);
-////	}
+	//if ( currentLangList.Num() == 0 ) {
+	//	// reset cvar to default and try to load again
+	//	cmdSystem.BufferCommandText( CMD_EXEC_NOW, "reset sys_lang" );
+	//	langName = cvarSystem.GetCVarString( "sys_lang" );
+	//	currentLangList = langList;
+	//	FilterLangList(&currentLangList, langName);
+	//}
 
-////	for( int i = 0; i < currentLangList.Num(); i++ ) {
-////		//common.Printf("%s\n", currentLangList[i].c_str());
-////		languageDict.Load( currentLangList[i], false );
-////	}
+	//for( int i = 0; i < currentLangList.Num(); i++ ) {
+	//	//common.Printf("%s\n", currentLangList[i].c_str());
+	//	languageDict.Load( currentLangList[i], false );
+	//}
 
-////	fileSystem.FreeFileList(langFiles);
+	//fileSystem.FreeFileList(langFiles);
 
-////	Sys_InitScanTable();
-////}
+
+	// js: skip checking for other languages
+	this.languageDict.Load("strings/english.lang", false);
+	Sys_InitScanTable();
+}
 
 /////*
 ////===============
@@ -2923,7 +2928,6 @@ idCommonLocal::InitGame
 
 	// initialize the declaration manager
 	declManager.Init();
-    debugger;
 
 ////	// force r_fullscreen 0 if running a tool
 ////	CheckToolMode();
@@ -2945,10 +2949,10 @@ idCommonLocal::InitGame
 
 	// initialize the renderSystem data structures, but don't start OpenGL yet
 	renderSystem.Init();
-    todoThrow("probably need declManager.Init() too now");
-////	// initialize string database right off so we can use it for loading messages
-////	InitLanguageDict();
 
+	// initialize string database right off so we can use it for loading messages
+	this.InitLanguageDict ( );
+	debugger;
 ////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04344" ) );
 
 ////	// load the font, etc
@@ -3039,7 +3043,7 @@ idCommonLocal::InitGame
 ////		cmdSystem.BufferCommandText( CMD_EXEC_NOW, "s_restart\n" );
 ////		cmdSystem.ExecuteCommandBuffer();
 ////	}
-    }
+	}
 
 /////*
 ////=================
