@@ -1157,21 +1157,22 @@ class idLexer {
 	////	return 0;
 	////}
 
-	/////*
-	////================
-	////idLexer::SkipUntilString
-	////================
-	////*/
-	////int idLexer::SkipUntilString( const char *string ) {
-	////	idToken token;
+	/*
+	================
+	idLexer::SkipUntilString
+	================
+	*/
+	/*int */
+	SkipUntilString ( $string: string ): number {
+		var token = new R( new idToken ( ) );
 
-	////	while(idLexer::ReadToken( &token )) {
-	////		if ( token == string ) {
-	////			return 1;
-	////		}
-	////	}
-	////	return 0;
-	////}
+		while ( this.ReadToken( token ) ) {
+			if ( token.$.data == $string ) {
+				return 1;
+			}
+		}
+		return 0;
+	}
 
 	/////*
 	////================
@@ -1718,6 +1719,9 @@ class idLexer {
 			common.Error( "idLexer::LoadMemory: another script already loaded" );
 			return 1 /*false*/;
 		}
+
+		assert( typeof ptr === "string" );
+
 		this.filename = new idStr( name );
 		this.buffer = ptr;
 		this.fileTime = 0;

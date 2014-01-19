@@ -1,3 +1,4 @@
+/// <reference path="material.h.ts" />
 /////*
 ////===========================================================================
 
@@ -57,8 +58,9 @@
 
 ////*/
 
+
 ////// keep all of these on the stack, when they are static it makes material parsing non-reentrant
-////typedef struct mtrParsingData_s {
+class mtrParsingData_t {
 ////	bool			registerIsTemporary[MAX_EXPRESSION_REGISTERS];
 ////	float			shaderRegisters[MAX_EXPRESSION_REGISTERS];
 ////	expOp_t			shaderOps[MAX_EXPRESSION_OPS];
@@ -66,63 +68,64 @@
 
 ////	bool			registersAreConstant;
 ////	bool			forceOverlays;
-////} mtrParsingData_t;
+}
 
+class idMaterial extends idDecl {
 
-/////*
-////=============
-////idMaterial::CommonInit
-////=============
-////*/
-////void idMaterial::CommonInit() {
-////	desc = "<none>";
-////	renderBump = "";
-////	contentFlags = CONTENTS_SOLID;
-////	surfaceFlags = SURFTYPE_NONE;
-////	materialFlags = 0;
-////	sort = SS_BAD;
-////	coverage = MC_BAD;
-////	cullType = CT_FRONT_SIDED;
-////	deform = DFRM_NONE;
-////	numOps = 0;
-////	ops = NULL;
-////	numRegisters = 0;
-////	expressionRegisters = NULL;
-////	constantRegisters = NULL;
-////	numStages = 0;
-////	numAmbientStages = 0;
-////	stages = NULL;
-////	editorImage = NULL;
-////	lightFalloffImage = NULL;
-////	shouldCreateBackSides = false;
-////	entityGui = 0;
-////	fogLight = false;
-////	blendLight = false;
-////	ambientLight = false;
-////	noFog = false;
-////	hasSubview = false;
-////	allowOverlays = true;
-////	unsmoothedTangents = false;
-////	gui = NULL;
-////	memset( deformRegisters, 0, sizeof( deformRegisters ) );
-////	editorAlpha = 1.0;
-////	spectrum = 0;
-////	polygonOffset = 0;
-////	suppressInSubview = false;
-////	refCount = 0;
-////	portalSky = false;
+/*
+=============
+idMaterial::CommonInit
+=============
+*/
+CommonInit():void {
+	this.desc = "<none>";
+	this.renderBump = "";
+	this.contentFlags = CONTENTS_SOLID;
+	this.surfaceFlags = SURFTYPE_NONE;
+	this.materialFlags = 0;
+	this.sort = SS_BAD;
+	this.coverage = MC_BAD;
+	this.cullType = CT_FRONT_SIDED;
+	this.deform = DFRM_NONE;
+	this.numOps = 0;
+	this.ops = NULL;
+	this.numRegisters = 0;
+	this.expressionRegisters = NULL;
+	this.constantRegisters = NULL;
+	this.numStages = 0;
+	this.numAmbientStages = 0;
+	this.stages = NULL;
+	this.editorImage = NULL;
+	this.lightFalloffImage = NULL;
+	this.shouldCreateBackSides = false;
+	this.entityGui = 0;
+	this.fogLight = false;
+	this.blendLight = false;
+	this.ambientLight = false;
+	this.noFog = false;
+	this.hasSubview = false;
+	this.allowOverlays = true;
+	this.unsmoothedTangents = false;
+	this.gui = NULL;
+	this.memset( deformRegisters, 0, sizeof( deformRegisters ) );
+	this.editorAlpha = 1.0;
+	this.spectrum = 0;
+	this.polygonOffset = 0;
+	this.suppressInSubview = false;
+	this.refCount = 0;
+	this.portalSky = false;
 
-////	decalInfo.stayTime = 10000;
-////	decalInfo.fadeTime = 4000;
-////	decalInfo.start[0] = 1;
-////	decalInfo.start[1] = 1;
-////	decalInfo.start[2] = 1;
-////	decalInfo.start[3] = 1;
-////	decalInfo.end[0] = 0;
-////	decalInfo.end[1] = 0;
-////	decalInfo.end[2] = 0;
-////	decalInfo.end[3] = 0;
-////}
+	this.decalInfo.stayTime = 10000;
+	this.decalInfo.fadeTime = 4000;
+	this.decalInfo.start[0] = 1;
+	this.decalInfo.start[1] = 1;
+	this.decalInfo.start[2] = 1;
+	this.decalInfo.start[3] = 1;
+	this.decalInfo.end[0] = 0;
+	this.decalInfo.end[1] = 0;
+	this.decalInfo.end[2] = 0;
+	this.decalInfo.end[3] = 0;
+}
 
 /////*
 ////=============
@@ -2132,203 +2135,203 @@ Parses the current material definition and finds all necessary images.
 =========================
 */
 /*bool idMaterial::*/Parse( /*const char **/text:string, /*const int */textLength:number ):boolean {
-	var src: idLexer;
+	var src = new idLexer;
 	var token:idToken;
 	var parsingData: mtrParsingData_t;
 
-	src.LoadMemory( text, textLength, GetFileName(), GetLineNum() );
+	src.LoadMemory(text, textLength, this.GetFileName(), this.GetLineNum() );
 	src.SetFlags( DECL_LEXER_FLAGS );
 	src.SkipUntilString( "{" );
-
+	
 	// reset to the unparsed state
-	CommonInit();
+	this.CommonInit();
+	debugger;
+//	memset( &parsingData, 0, sizeof( parsingData ) );
 
-	memset( &parsingData, 0, sizeof( parsingData ) );
+//	pd = &parsingData;	// this is only valid during parse
 
-	pd = &parsingData;	// this is only valid during parse
+//	// parse it
+//	ParseMaterial( src );
 
-	// parse it
-	ParseMaterial( src );
+//	// if we are doing an fs_copyfiles, also reference the editorImage
+//	if ( cvarSystem.GetCVarInteger( "fs_copyFiles" ) ) {
+//		GetEditorImage();
+//	}
 
-	// if we are doing an fs_copyfiles, also reference the editorImage
-	if ( cvarSystem.GetCVarInteger( "fs_copyFiles" ) ) {
-		GetEditorImage();
-	}
+//	//
+//	// count non-lit stages
+//	numAmbientStages = 0;
+//	int i;
+//	for ( i = 0 ; i < numStages ; i++ ) {
+//		if ( pd.parseStages[i].lighting == SL_AMBIENT ) {
+//			numAmbientStages++;
+//		}
+//	}
 
-	//
-	// count non-lit stages
-	numAmbientStages = 0;
-	int i;
-	for ( i = 0 ; i < numStages ; i++ ) {
-		if ( pd.parseStages[i].lighting == SL_AMBIENT ) {
-			numAmbientStages++;
-		}
-	}
+//	// see if there is a subview stage
+//	if ( sort == SS_SUBVIEW ) {
+//		hasSubview = true;
+//	} else {
+//		hasSubview = false;
+//		for ( i = 0 ; i < numStages ; i++ ) {
+//			if ( pd.parseStages[i].texture.dynamic ) {
+//				hasSubview = true;
+//			}
+//		}
+//	}
 
-	// see if there is a subview stage
-	if ( sort == SS_SUBVIEW ) {
-		hasSubview = true;
-	} else {
-		hasSubview = false;
-		for ( i = 0 ; i < numStages ; i++ ) {
-			if ( pd.parseStages[i].texture.dynamic ) {
-				hasSubview = true;
-			}
-		}
-	}
+//	// automatically determine coverage if not explicitly set
+//	if ( coverage == MC_BAD ) {
+//		// automatically set MC_TRANSLUCENT if we don't have any interaction stages and 
+//		// the first stage is blended and not an alpha test mask or a subview
+//		if ( !numStages ) {
+//			// non-visible
+//			coverage = MC_TRANSLUCENT;
+//		} else if ( numStages != numAmbientStages ) {
+//			// we have an interaction draw
+//			coverage = MC_OPAQUE;
+//		} else if ( 
+//			( pd.parseStages[0].drawStateBits & GLS_DSTBLEND_BITS ) != GLS_DSTBLEND_ZERO ||
+//			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_COLOR ||
+//			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_COLOR ||
+//			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_ALPHA ||
+//			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_ALPHA
+//			) {
+//			// blended with the destination
+//				coverage = MC_TRANSLUCENT;
+//		} else {
+//			coverage = MC_OPAQUE;
+//		}
+//	}
 
-	// automatically determine coverage if not explicitly set
-	if ( coverage == MC_BAD ) {
-		// automatically set MC_TRANSLUCENT if we don't have any interaction stages and 
-		// the first stage is blended and not an alpha test mask or a subview
-		if ( !numStages ) {
-			// non-visible
-			coverage = MC_TRANSLUCENT;
-		} else if ( numStages != numAmbientStages ) {
-			// we have an interaction draw
-			coverage = MC_OPAQUE;
-		} else if ( 
-			( pd.parseStages[0].drawStateBits & GLS_DSTBLEND_BITS ) != GLS_DSTBLEND_ZERO ||
-			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_COLOR ||
-			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_COLOR ||
-			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_ALPHA ||
-			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_ALPHA
-			) {
-			// blended with the destination
-				coverage = MC_TRANSLUCENT;
-		} else {
-			coverage = MC_OPAQUE;
-		}
-	}
+//	// translucent automatically implies noshadows
+//	if ( coverage == MC_TRANSLUCENT ) {
+//		SetMaterialFlag( MF_NOSHADOWS );
+//	} else {
+//		// mark the contents as opaque
+//		contentFlags |= CONTENTS_OPAQUE;
+//	}
 
-	// translucent automatically implies noshadows
-	if ( coverage == MC_TRANSLUCENT ) {
-		SetMaterialFlag( MF_NOSHADOWS );
-	} else {
-		// mark the contents as opaque
-		contentFlags |= CONTENTS_OPAQUE;
-	}
+//	// if we are translucent, draw with an alpha in the editor
+//	if ( coverage == MC_TRANSLUCENT ) {
+//		editorAlpha = 0.5;
+//	} else {
+//		editorAlpha = 1.0;
+//	}
 
-	// if we are translucent, draw with an alpha in the editor
-	if ( coverage == MC_TRANSLUCENT ) {
-		editorAlpha = 0.5;
-	} else {
-		editorAlpha = 1.0;
-	}
+//	// the sorts can make reasonable defaults
+//	if ( sort == SS_BAD ) {
+//		if ( TestMaterialFlag(MF_POLYGONOFFSET) ) {
+//			sort = SS_DECAL;
+//		} else if ( coverage == MC_TRANSLUCENT ) {
+//			sort = SS_MEDIUM;
+//		} else {
+//			sort = SS_OPAQUE;
+//		}
+//	}
 
-	// the sorts can make reasonable defaults
-	if ( sort == SS_BAD ) {
-		if ( TestMaterialFlag(MF_POLYGONOFFSET) ) {
-			sort = SS_DECAL;
-		} else if ( coverage == MC_TRANSLUCENT ) {
-			sort = SS_MEDIUM;
-		} else {
-			sort = SS_OPAQUE;
-		}
-	}
+//	// anything that references _currentRender will automatically get sort = SS_POST_PROCESS
+//	// and coverage = MC_TRANSLUCENT
 
-	// anything that references _currentRender will automatically get sort = SS_POST_PROCESS
-	// and coverage = MC_TRANSLUCENT
+//	for ( i = 0 ; i < numStages ; i++ ) {
+//		shaderStage_t	*pStage = &pd.parseStages[i];
+//		if ( pStage.texture.image == globalImages.currentRenderImage ) {
+//			if ( sort != SS_PORTAL_SKY ) {
+//				sort = SS_POST_PROCESS;
+//				coverage = MC_TRANSLUCENT;
+//			}
+//			break;
+//		}
+//		if ( pStage.newStage ) {
+//			for ( int j = 0 ; j < pStage.newStage.numFragmentProgramImages ; j++ ) {
+//				if ( pStage.newStage.fragmentProgramImages[j] == globalImages.currentRenderImage ) {
+//					if ( sort != SS_PORTAL_SKY ) {
+//						sort = SS_POST_PROCESS;
+//						coverage = MC_TRANSLUCENT;
+//					}
+//					i = numStages;
+//					break;
+//				}
+//			}
+//		}
+//	}
 
-	for ( i = 0 ; i < numStages ; i++ ) {
-		shaderStage_t	*pStage = &pd.parseStages[i];
-		if ( pStage.texture.image == globalImages.currentRenderImage ) {
-			if ( sort != SS_PORTAL_SKY ) {
-				sort = SS_POST_PROCESS;
-				coverage = MC_TRANSLUCENT;
-			}
-			break;
-		}
-		if ( pStage.newStage ) {
-			for ( int j = 0 ; j < pStage.newStage.numFragmentProgramImages ; j++ ) {
-				if ( pStage.newStage.fragmentProgramImages[j] == globalImages.currentRenderImage ) {
-					if ( sort != SS_PORTAL_SKY ) {
-						sort = SS_POST_PROCESS;
-						coverage = MC_TRANSLUCENT;
-					}
-					i = numStages;
-					break;
-				}
-			}
-		}
-	}
+//	// set the drawStateBits depth flags
+//	for ( i = 0 ; i < numStages ; i++ ) {
+//		shaderStage_t	*pStage = &pd.parseStages[i];
+//		if ( sort == SS_POST_PROCESS ) {
+//			// post-process effects fill the depth buffer as they draw, so only the
+//			// topmost post-process effect is rendered
+//			pStage.drawStateBits |= GLS_DEPTHFUNC_LESS;
+//		} else if ( coverage == MC_TRANSLUCENT || pStage.ignoreAlphaTest ) {
+//			// translucent surfaces can extend past the exactly marked depth buffer
+//			pStage.drawStateBits |= GLS_DEPTHFUNC_LESS | GLS_DEPTHMASK;
+//		} else {
+//			// opaque and perforated surfaces must exactly match the depth buffer,
+//			// which gets alpha test correct
+//			pStage.drawStateBits |= GLS_DEPTHFUNC_EQUAL | GLS_DEPTHMASK;
+//		}
+//	}
 
-	// set the drawStateBits depth flags
-	for ( i = 0 ; i < numStages ; i++ ) {
-		shaderStage_t	*pStage = &pd.parseStages[i];
-		if ( sort == SS_POST_PROCESS ) {
-			// post-process effects fill the depth buffer as they draw, so only the
-			// topmost post-process effect is rendered
-			pStage.drawStateBits |= GLS_DEPTHFUNC_LESS;
-		} else if ( coverage == MC_TRANSLUCENT || pStage.ignoreAlphaTest ) {
-			// translucent surfaces can extend past the exactly marked depth buffer
-			pStage.drawStateBits |= GLS_DEPTHFUNC_LESS | GLS_DEPTHMASK;
-		} else {
-			// opaque and perforated surfaces must exactly match the depth buffer,
-			// which gets alpha test correct
-			pStage.drawStateBits |= GLS_DEPTHFUNC_EQUAL | GLS_DEPTHMASK;
-		}
-	}
+//	// determine if this surface will accept overlays / decals
 
-	// determine if this surface will accept overlays / decals
+//	if ( pd.forceOverlays ) {
+//		// explicitly flaged in material definition
+//		allowOverlays = true;
+//	} else {
+//		if ( !IsDrawn() ) {
+//			allowOverlays = false;
+//		}
+//		if ( Coverage() != MC_OPAQUE ) {
+//			allowOverlays = false;
+//		}
+//		if ( GetSurfaceFlags() & SURF_NOIMPACT ) {
+//			allowOverlays = false;
+//		}
+//	}
 
-	if ( pd.forceOverlays ) {
-		// explicitly flaged in material definition
-		allowOverlays = true;
-	} else {
-		if ( !IsDrawn() ) {
-			allowOverlays = false;
-		}
-		if ( Coverage() != MC_OPAQUE ) {
-			allowOverlays = false;
-		}
-		if ( GetSurfaceFlags() & SURF_NOIMPACT ) {
-			allowOverlays = false;
-		}
-	}
+//	// add a tiny offset to the sort orders, so that different materials
+//	// that have the same sort value will at least sort consistantly, instead
+//	// of flickering back and forth
+///* this messed up in-game guis
+//	if ( sort != SS_SUBVIEW ) {
+//		int	hash, l;
 
-	// add a tiny offset to the sort orders, so that different materials
-	// that have the same sort value will at least sort consistantly, instead
-	// of flickering back and forth
-/* this messed up in-game guis
-	if ( sort != SS_SUBVIEW ) {
-		int	hash, l;
+//		l = name.Length();
+//		hash = 0;
+//		for ( int i = 0 ; i < l ; i++ ) {
+//			hash ^= name[i];
+//		}
+//		sort += hash * 0.01;
+//	}
+//*/
 
-		l = name.Length();
-		hash = 0;
-		for ( int i = 0 ; i < l ; i++ ) {
-			hash ^= name[i];
-		}
-		sort += hash * 0.01;
-	}
-*/
+//	if (numStages) {
+//		stages = (shaderStage_t *)R_StaticAlloc( numStages * sizeof( stages[0] ) );
+//		memcpy( stages, pd.parseStages, numStages * sizeof( stages[0] ) );
+//	}
 
-	if (numStages) {
-		stages = (shaderStage_t *)R_StaticAlloc( numStages * sizeof( stages[0] ) );
-		memcpy( stages, pd.parseStages, numStages * sizeof( stages[0] ) );
-	}
+//	if ( numOps ) {
+//		ops = (expOp_t *)R_StaticAlloc( numOps * sizeof( ops[0] ) );
+//		memcpy( ops, pd.shaderOps, numOps * sizeof( ops[0] ) );
+//	}
 
-	if ( numOps ) {
-		ops = (expOp_t *)R_StaticAlloc( numOps * sizeof( ops[0] ) );
-		memcpy( ops, pd.shaderOps, numOps * sizeof( ops[0] ) );
-	}
+//	if ( numRegisters ) {
+//		expressionRegisters = (float *)R_StaticAlloc( numRegisters * sizeof( expressionRegisters[0] ) );
+//		memcpy( expressionRegisters, pd.shaderRegisters, numRegisters * sizeof( expressionRegisters[0] ) );
+//	}
 
-	if ( numRegisters ) {
-		expressionRegisters = (float *)R_StaticAlloc( numRegisters * sizeof( expressionRegisters[0] ) );
-		memcpy( expressionRegisters, pd.shaderRegisters, numRegisters * sizeof( expressionRegisters[0] ) );
-	}
+//	// see if the registers are completely constant, and don't need to be evaluated
+//	// per-surface
+//	CheckForConstantRegisters();
 
-	// see if the registers are completely constant, and don't need to be evaluated
-	// per-surface
-	CheckForConstantRegisters();
+//	pd = NULL;	// the pointer will be invalid after exiting this function
 
-	pd = NULL;	// the pointer will be invalid after exiting this function
-
-	// finish things up
-	if ( TestMaterialFlag( MF_DEFAULTED ) ) {
-		MakeDefault();
-		return false;
-	}
+//	// finish things up
+//	if ( TestMaterialFlag( MF_DEFAULTED ) ) {
+//		MakeDefault();
+//		return false;
+//	}
 	return true;
 }
 
@@ -2746,3 +2749,103 @@ Parses the current material definition and finds all necessary images.
 ////		}
 ////	}
 ////}
+
+
+////private:
+////	// parse the entire material
+////	void				CommonInit();
+////	void				ParseMaterial( idLexer &src );
+////	bool				MatchToken( idLexer &src, const char *match );
+////	void				ParseSort( idLexer &src );
+////	void				ParseBlend( idLexer &src, shaderStage_t *stage );
+////	void				ParseVertexParm( idLexer &src, newShaderStage_t *newStage );
+////	void				ParseFragmentMap( idLexer &src, newShaderStage_t *newStage );
+////	void				ParseStage( idLexer &src, const textureRepeat_t trpDefault = textureRepeat_t.TR_REPEAT );
+////	void				ParseDeform( idLexer &src );
+////	void				ParseDecalInfo( idLexer &src );
+////	bool				CheckSurfaceParm( idToken *token );
+////	int					GetExpressionConstant( float f );
+////	int					GetExpressionTemporary( void );
+////	expOp_t	*			GetExpressionOp( void );
+////	int					EmitOp( int a, int b, expOpType_t opType );
+////	int					ParseEmitOp( idLexer &src, int a, expOpType_t opType, int priority );
+////	int					ParseTerm( idLexer &src );
+////	int					ParseExpressionPriority( idLexer &src, int priority );
+////	int					ParseExpression( idLexer &src );
+////	void				ClearStage( shaderStage_t *ss );
+////	int					NameToSrcBlendMode( const idStr &name );
+////	int					NameToDstBlendMode( const idStr &name );
+////	void				MultiplyTextureMatrix( textureStage_t *ts, int registers[2][3] );	// FIXME: for some reason the const is bad for gcc and Mac
+////	void				SortInteractionStages();
+////	void				AddImplicitStages( const textureRepeat_t trpDefault = textureRepeat_t.TR_REPEAT );
+////	void				CheckForConstantRegisters();
+
+////private:
+////	idStr				desc;				// description
+////	idStr				renderBump;			// renderbump command options, without the "renderbump" at the start
+
+////	idImage	*			lightFalloffImage;
+
+////	int					entityGui;			// draw a gui with the idUserInterface from the renderEntity_t
+////											// non zero will draw gui, gui2, or gui3 from renderEnitty_t
+////	mutable idUserInterface	*gui;			// non-custom guis are shared by all users of a material
+
+////	bool				noFog;				// surface does not create fog interactions
+
+////	int					spectrum;			// for invisible writing, used for both lights and surfaces
+
+////	float				polygonOffset;
+
+////	int					contentFlags;		// content flags
+////	int					surfaceFlags;		// surface flags
+////	mutable int			materialFlags;		// material flags
+
+////	decalInfo_t			decalInfo;
+
+
+////	mutable	float		sort;				// lower numbered shaders draw before higher numbered
+////	deform_t			deform;
+////	int					deformRegisters[4];		// numeric parameter for deforms
+////	const idDecl		*deformDecl;			// for surface emitted particle deforms and tables
+
+////	int					texGenRegisters[MAX_TEXGEN_REGISTERS];	// for wobbleSky
+
+////	materialCoverage_t	coverage;
+////	cullType_t			cullType;			// CT_FRONT_SIDED, CT_BACK_SIDED, or CT_TWO_SIDED
+////	bool				shouldCreateBackSides;
+
+////	bool				fogLight;
+////	bool				blendLight;
+////	bool				ambientLight;
+////	bool				unsmoothedTangents;
+////	bool				hasSubview;			// mirror, remote render, etc
+////	bool				allowOverlays;
+
+////	int					numOps;
+////	expOp_t *			ops;				// evaluate to make expressionRegisters
+
+////	int					numRegisters;																			//
+////	float *				expressionRegisters;
+
+////	float *				constantRegisters;	// NULL if ops ever reference globalParms or entityParms
+
+////	int					numStages;
+////	int					numAmbientStages;
+
+////	shaderStage_t *		stages;
+
+////	struct mtrParsingData_s	*pd;			// only used during parsing
+
+////	float				surfaceArea;		// only for listSurfaceAreas
+
+////	// we defer loading of the editor image until it is asked for, so the game doesn't load up
+////	// all the invisible and uncompressed images.
+////	// If editorImage is NULL, it will atempt to load editorImageName, and set editorImage to that or defaultImage
+////	idStr				editorImageName;
+////	mutable idImage *	editorImage;		// image used for non-shaded preview
+////	float				editorAlpha;
+
+////	bool				suppressInSubview;
+////	bool				portalSky;
+////	int					refCount;
+};

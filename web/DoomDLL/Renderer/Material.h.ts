@@ -341,7 +341,7 @@ enum textureRepeat_t {
 
 ////class idSoundEmitter;
 
-class idMaterial extends idDecl {
+//class idMaterial extends idDecl {
 ////public:
 ////						idMaterial();
 ////	virtual				~idMaterial();
@@ -686,7 +686,7 @@ class idMaterial extends idDecl {
 ////	bool				suppressInSubview;
 ////	bool				portalSky;
 ////	int					refCount;
-};
+//};
 
 ////typedef idList<const idMaterial *> idMatList;
 

@@ -1878,23 +1878,23 @@ idDeclManagerLocal.prototype.FindTypeWithoutParsing = function ( type: declType_
 ////	return index;
 ////}
 
-/////*
-////=================
-////idDeclLocal::GetLineNum
-////=================
-////*/
-////int idDeclLocal::GetLineNum( ) const {
-////	return sourceLine;
-////}
+/*
+=================
+idDeclLocal::GetLineNum
+=================
+*/
+idDeclLocal.prototype.GetLineNum = function ( ): number {
+	return this.sourceLine;
+};
 
-/////*
-////=================
-////idDeclLocal::GetFileName
-////=================
-////*/
-////const char *idDeclLocal::GetFileName( ) const {
-////	return ( sourceFile ) ? sourceFile.fileName.c_str() : "*invalid*";
-////}
+/*
+=================
+idDeclLocal::GetFileName
+=================
+*/
+idDeclLocal.prototype.GetFileName = function ( ): string {
+	return ( this.sourceFile ) ? this.sourceFile.fileName.c_str ( ) : "*invalid*";
+};
 
 /////*
 ////=================
@@ -2222,7 +2222,7 @@ idDeclLocal.prototype.ParseLocal = function ( ): void {
 	// parse
 	var /*char **/declText = new Uint8Array( this.GetTextLength ( ) + 1 );
 	this.GetText( declText );
-	this.self.Parse( declText, this.GetTextLength ( ) );
+	this.self.Parse( declText.toString(), this.GetTextLength ( ) );
 
 	// free generated text
 	if ( generatedDefaultText ) {
