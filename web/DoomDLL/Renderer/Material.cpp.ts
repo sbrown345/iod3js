@@ -238,66 +238,6 @@ CommonInit():void {
 ////}
 
 
-// info parms
-typedef struct {
-	char	*name;
-	int		clearSolid, surfaceFlags, contents;
-} infoParm_t;
-
-static infoParm_t	infoParms[] = {
-	// game relevant attributes
-	{"solid",		0,	0,	contentsFlags_t.CONTENTS_SOLID },		// may need to override a clearSolid
-	{"water",		1,	0,	CONTENTS_WATER },		// used for water
-	{"playerclip",	0,	0,	CONTENTS_PLAYERCLIP },	// solid to players
-	{"monsterclip",	0,	0,	CONTENTS_MONSTERCLIP },	// solid to monsters
-	{"moveableclip",0,	0,	CONTENTS_MOVEABLECLIP },// solid to moveable entities
-	{"ikclip",		0,	0,	CONTENTS_IKCLIP },		// solid to IK
-	{"blood",		0,	0,	CONTENTS_BLOOD },		// used to detect blood decals
-	{"trigger",		0,	0,	CONTENTS_TRIGGER },		// used for triggers
-	{"aassolid",	0,	0,	CONTENTS_AAS_SOLID },	// solid for AAS
-	{"aasobstacle",	0,	0,	CONTENTS_AAS_OBSTACLE },// used to compile an obstacle into AAS that can be enabled/disabled
-	{"flashlight_trigger",	0,	0,	CONTENTS_FLASHLIGHT_TRIGGER }, // used for triggers that are activated by the flashlight
-	{"nonsolid",	1,	0,	0 },					// clears the solid flag
-	{"nullNormal",	0,	SURF_NULLNORMAL,0 },		// renderbump will draw as 0x80 0x80 0x80
-
-	// utility relevant attributes
-	{"areaportal",	1,	0,	CONTENTS_AREAPORTAL },	// divides areas
-	{"qer_nocarve",	1,	0,	CONTENTS_NOCSG},		// don't cut brushes in editor
-
-	{"discrete",	1,	SURF_DISCRETE,	0 },		// surfaces should not be automatically merged together or
-													// clipped to the world,
-													// because they represent discrete objects like gui shaders
-													// mirrors, or autosprites
-	{"noFragment",	0,	SURF_NOFRAGMENT,	0 },
-
-	{"slick",		0,	SURF_SLICK,		0 },
-	{"collision",	0,	SURF_COLLISION,	0 },
-	{"noimpact",	0,	SURF_NOIMPACT,	0 },		// don't make impact explosions or marks
-	{"nodamage",	0,	SURF_NODAMAGE,	0 },		// no falling damage when hitting
-	{"ladder",		0,	SURF_LADDER,	0 },		// climbable
-	{"nosteps",		0,	SURF_NOSTEPS,	0 },		// no footsteps
-
-	// material types for particle, sound, footstep feedback
-	{"metal",		0,  SURFTYPE_METAL,		0 },	// metal
-	{"stone",		0,  SURFTYPE_STONE,		0 },	// stone
-	{"flesh",		0,  SURFTYPE_FLESH,		0 },	// flesh
-	{"wood",		0,  SURFTYPE_WOOD,		0 },	// wood
-	{"cardboard",	0,	SURFTYPE_CARDBOARD,	0 },	// cardboard
-	{"liquid",		0,	SURFTYPE_LIQUID,	0 },	// liquid
-	{"glass",		0,	SURFTYPE_GLASS,		0 },	// glass
-	{"plastic",		0,	SURFTYPE_PLASTIC,	0 },	// plastic
-	{"ricochet",	0,	SURFTYPE_RICOCHET,	0 },	// behaves like metal but causes a ricochet sound
-
-	// unassigned surface types
-	{"surftype10",	0,	SURFTYPE_10,	0 },
-	{"surftype11",	0,	SURFTYPE_11,	0 },
-	{"surftype12",	0,	SURFTYPE_12,	0 },
-	{"surftype13",	0,	SURFTYPE_13,	0 },
-	{"surftype14",	0,	SURFTYPE_14,	0 },
-	{"surftype15",	0,	SURFTYPE_15,	0 },
-};
-
-static const int numInfoParms = sizeof(infoParms) / sizeof (infoParms[0]);
 
 
 /*
@@ -3109,3 +3049,72 @@ Parses the current material definition and finds all necessary images.
 	/*bool				*/portalSky:boolean;
 	/*int					*/refCount:number;
 };
+
+
+
+
+// info parms
+class infoParm_t {
+	name: string;
+	/*int		*/clearSolid: number; surfaceFlags: number; contents: number;
+
+	constructor ( name: string, clearSolid: number, surfaceFlags: number, contents: number ) {
+		this.name = name;
+		this.clearSolid = clearSolid;
+		this.surfaceFlags = surfaceFlags;
+		this.contents = contents;
+	}
+};
+
+var infoParms: infoParm_t[] = [
+	// game relevant attributes
+	new infoParm_t( "solid", 0, 0, contentsFlags_t.CONTENTS_SOLID ), // may need to override a clearSolid
+	new infoParm_t( "water", 1, 0, contentsFlags_t.CONTENTS_WATER ), // used for water
+	new infoParm_t( "playerclip", 0, 0, contentsFlags_t.CONTENTS_PLAYERCLIP ), // solid to players
+	new infoParm_t( "monsterclip", 0, 0, contentsFlags_t.CONTENTS_MONSTERCLIP ), // solid to monsters
+	new infoParm_t( "moveableclip", 0, 0, contentsFlags_t.CONTENTS_MOVEABLECLIP ), // solid to moveable entities
+	new infoParm_t( "ikclip", 0, 0, contentsFlags_t.CONTENTS_IKCLIP ), // solid to IK
+	new infoParm_t( "blood", 0, 0, contentsFlags_t.CONTENTS_BLOOD ), // used to detect blood decals
+	new infoParm_t( "trigger", 0, 0, contentsFlags_t.CONTENTS_TRIGGER ), // used for triggers
+	new infoParm_t( "aassolid", 0, 0, contentsFlags_t.CONTENTS_AAS_SOLID ), // solid for AAS
+	new infoParm_t( "aasobstacle", 0, 0, contentsFlags_t.CONTENTS_AAS_OBSTACLE ), // used to compile an obstacle into AAS that can be enabled/disabled
+	new infoParm_t( "flashlight_trigger", 0, 0, contentsFlags_t.CONTENTS_FLASHLIGHT_TRIGGER ), // used for triggers that are activated by the flashlight
+	new infoParm_t( "nonsolid", 1, 0, 0 ), // clears the solid flag
+	new infoParm_t("nullNormal", 0, surfaceFlags_t.SURF_NULLNORMAL, 0 ), // renderbump will draw as 0x80 0x80 0x80
+
+	// utility relevant attributes
+	new infoParm_t( "areaportal", 1, 0, contentsFlags_t.CONTENTS_AREAPORTAL ), // divides areas
+	new infoParm_t( "qer_nocarve", 1, 0, contentsFlags_t.CONTENTS_NOCSG ), // don't cut brushes in editor
+	new infoParm_t("discrete", 1, surfaceFlags_t.SURF_DISCRETE, 0 ), // surfaces should not be automatically merged together or
+	// clipped to the world,
+	// because they represent discrete objects like gui shaders
+	// mirrors, or autosprites
+	new infoParm_t("noFragment", 0, surfaceFlags_t.SURF_NOFRAGMENT, 0 ),
+	new infoParm_t("slick", 0, surfaceFlags_t.SURF_SLICK, 0 ),
+	new infoParm_t("collision", 0, surfaceFlags_t.SURF_COLLISION, 0 ),
+	new infoParm_t("noimpact", 0, surfaceFlags_t.SURF_NOIMPACT, 0 ), // don't make impact explosions or marks
+	new infoParm_t("nodamage", 0, surfaceFlags_t.SURF_NODAMAGE, 0 ), // no falling damage when hitting
+	new infoParm_t("ladder", 0, surfaceFlags_t.SURF_LADDER, 0 ), // climbable
+	new infoParm_t("nosteps", 0, surfaceFlags_t.SURF_NOSTEPS, 0 ), // no footsteps
+
+	// material types for particle, sound, footstep feedback
+	new infoParm_t( "metal", 0, surfTypes_t.SURFTYPE_METAL, 0 ), // metal
+	new infoParm_t( "stone", 0, surfTypes_t.SURFTYPE_STONE, 0 ), // stone
+	new infoParm_t( "flesh", 0, surfTypes_t.SURFTYPE_FLESH, 0 ), // flesh
+	new infoParm_t( "wood", 0, surfTypes_t.SURFTYPE_WOOD, 0 ), // wood
+	new infoParm_t( "cardboard", 0, surfTypes_t.SURFTYPE_CARDBOARD, 0 ), // cardboard
+	new infoParm_t( "liquid", 0, surfTypes_t.SURFTYPE_LIQUID, 0 ), // liquid
+	new infoParm_t( "glass", 0, surfTypes_t.SURFTYPE_GLASS, 0 ), // glass
+	new infoParm_t( "plastic", 0, surfTypes_t.SURFTYPE_PLASTIC, 0 ), // plastic
+	new infoParm_t( "ricochet", 0, surfTypes_t.SURFTYPE_RICOCHET, 0 ), // behaves like metal but causes a ricochet sound
+
+	// unassigned surface types
+	new infoParm_t("surftype10", 0, surfTypes_t.SURFTYPE_10, 0),
+	new infoParm_t("surftype11", 0, surfTypes_t.SURFTYPE_11, 0),
+	new infoParm_t("surftype12", 0, surfTypes_t.SURFTYPE_12, 0),
+	new infoParm_t("surftype13", 0, surfTypes_t.SURFTYPE_13, 0),
+	new infoParm_t("surftype14", 0, surfTypes_t.SURFTYPE_14, 0),
+	new infoParm_t("surftype15", 0, surfTypes_t.SURFTYPE_15, 0 )
+];
+
+var numInfoParms = infoParms.length;

@@ -827,9 +827,10 @@ class idMath {
 ////#endif
 ////}
 
-////ID_INLINE unsigned long idMath::Ftol( float f ) {
-////	return (unsigned long) f;
-////}
+	static /*unsigned long */Ftol( /*float */f: number): number {
+		todoThrow ( "not a long after this op.." );
+	return /*(unsigned long)*/ f >>> 0;
+}
 
 ////ID_INLINE unsigned long idMath::FtolFast( float f ) {
 ////#ifdef _WIN32
