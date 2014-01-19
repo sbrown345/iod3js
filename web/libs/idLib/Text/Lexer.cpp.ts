@@ -1006,7 +1006,7 @@ class idLexer {
 	////int idLexer::ExpectTokenType( int type, int subtype, idToken *token ) {
 	////	idStr str;
 
-	////	if ( !idLexer::ReadToken( token ) ) {
+	////	if ( !this.ReadToken( token ) ) {
 	////		this.Error( "couldn't read expected token" );
 	////		return 0;
 	////	}
@@ -1052,20 +1052,20 @@ class idLexer {
 	////	return 1;
 	////}
 
-	/////*
-	////================
-	////idLexer::ExpectAnyToken
-	////================
-	////*/
-	////int idLexer::ExpectAnyToken( idToken *token ) {
-	////	if (!idLexer::ReadToken( token )) {
-	////		this.Error( "couldn't read expected token" );
-	////		return 0;
-	////	}
-	////	else {
-	////		return 1;
-	////	}
-	////}
+	/*
+	================
+	idLexer::ExpectAnyToken
+	================
+	*/
+	ExpectAnyToken(token: R<idToken> ):number {
+		if (!this.ReadToken( token )) {
+			this.Error( "couldn't read expected token" );
+			return 0;
+		}
+		else {
+			return 1;
+		}
+	}
 
 	/////*
 	////================
@@ -1083,7 +1083,7 @@ class idLexer {
 	////		return 1;
 	////	}
 	////	// unread token
-	////	script_p = lastScript_p;
+	////	script_p = this.lastScript_p;
 	////	this.line = this.lastline;
 	////	return 0;
 	////}
@@ -1105,7 +1105,7 @@ class idLexer {
 	////		return 1;
 	////	}
 	////	// unread token
-	////	script_p = lastScript_p;
+	////	script_p = this.lastScript_p;
 	////	this.line = this.lastline;
 	////	return 0;
 	////}
@@ -1123,7 +1123,7 @@ class idLexer {
 	////	}
 
 	////	// unread token
-	////	script_p = lastScript_p;
+	////	script_p = this.lastScript_p;
 	////	this.line = this.lastline;
 
 	////	// if the given string is available
@@ -1146,7 +1146,7 @@ class idLexer {
 	////	}
 
 	////	// unread token
-	////	script_p = lastScript_p;
+	////	script_p = this.lastScript_p;
 	////	this.line = this.lastline;
 
 	////	// if the type matches
@@ -1174,23 +1174,23 @@ class idLexer {
 		return 0;
 	}
 
-	/////*
-	////================
-	////idLexer::SkipRestOfLine
-	////================
-	////*/
-	////int idLexer::SkipRestOfLine( void ) {
-	////	idToken token;
+	/*
+	================
+	idLexer::SkipRestOfLine
+	================
+	*/
+	SkipRestOfLine( ) :number {
+		var token = new R(new idToken);
 
-	////	while(idLexer::ReadToken( &token )) {
-	////		if ( token.linesCrossed ) {
-	////			this.script_p = lastScript_p;
-	////			this.line = this.lastline;
-	////			return 1;
-	////		}
-	////	}
-	////	return 0;
-	////}
+		while(this.ReadToken( token )) {
+			if ( token.$.linesCrossed ) {
+				this.script_p = this.lastScript_p;
+				this.line = this.lastline;
+				return 1;
+			}
+		}
+		return 0;
+	}
 
 	/*
 	=================
@@ -1234,30 +1234,30 @@ class idLexer {
 		this.tokenavailable = 1;
 	}
 
-	/////*
-	////================
-	////idLexer::ReadTokenOnLine
-	////================
-	////*/
-	////int idLexer::ReadTokenOnLine( token:R<idToken> ) {
-	////	idToken tok;
+	/*
+	================
+	idLexer::ReadTokenOnLine
+	================
+	*/
+	ReadTokenOnLine( token:R<idToken> ):number {
+		var tok = new R( new idToken );
 
-	////	if (!idLexer::ReadToken( &tok )) {
-	////		this.script_p = lastScript_p;
-	////		this.line = this.lastline;
-	////		return false;
-	////	}
-	////	// if no lines were crossed before this token
-	////	if ( !tok.linesCrossed ) {
-	////		*token = tok;
-	////		return true;
-	////	}
-	////	// restore our position
-	////	this.script_p = lastScript_p;
-	////	this.line = this.lastline;
-	////	token.Clear();
-	////	return false;
-	////}
+		if (!this.ReadToken( tok )) {
+			this.script_p = this.lastScript_p;
+			this.line = this.lastline;
+			return 0;
+		}
+		// if no lines were crossed before this token
+		if ( !tok.$.linesCrossed ) {
+			token.$ = tok.$;
+			return 1;
+		}
+		// restore our position
+		this.script_p = this.lastScript_p;
+		this.line = this.lastline;
+		token.$.Clear();
+		return 0;
+	}
 
 	/////*
 	////================
@@ -1297,7 +1297,7 @@ class idLexer {
 	////int idLexer::ParseInt( void ) {
 	////	idToken token;
 
-	////	if ( !idLexer::ReadToken( &token ) ) {
+	////	if ( !this.ReadToken( &token ) ) {
 	////		this.Error( "couldn't read expected integer" );
 	////		return 0;
 	////	}
@@ -1338,7 +1338,7 @@ class idLexer {
 	////		*errorFlag = false;
 	////	}
 
-	////	if ( !idLexer::ReadToken( &token ) ) {
+	////	if ( !this.ReadToken( &token ) ) {
 	////		if ( errorFlag ) {
 	////			this.Warning( "couldn't read expected floating point number" );
 	////			*errorFlag = true;
@@ -1525,7 +1525,7 @@ class idLexer {
 	////	out = "{";
 	////	depth = 1;
 	////	do {
-	////		if ( !idLexer::ReadToken( &token ) ) {
+	////		if ( !this.ReadToken( &token ) ) {
 	////			Error( "missing closing brace" );
 	////			return out.c_str();
 	////		}
@@ -1567,9 +1567,9 @@ class idLexer {
 	////	idToken token;
 
 	////	out.Empty();
-	////	while(idLexer::ReadToken( &token )) {
+	////	while(this.ReadToken( &token )) {
 	////		if ( token.linesCrossed ) {
-	////			this.script_p = lastScript_p;
+	////			this.script_p = this.lastScript_p;
 	////			this.line = this.lastline;
 	////			break;
 	////		}

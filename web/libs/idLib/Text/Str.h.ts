@@ -748,10 +748,10 @@ Length( ):number {
 ////	return ( idStr::Cmp( this.data, "" ) == 0 );
 ////}
 
-////ID_INLINE void idStr::Clear( void ) {
-////	FreeData();
-////	Init();
-////}
+Clear( ):void {
+	this.FreeData();
+	this.Init();
+}
 
 ////ID_INLINE void idStr::Append( const char a ) {
 ////	EnsureAlloced( len + 2 );
@@ -1161,21 +1161,22 @@ static Length( s:string ):number {
 ////	this.data = newbuffer;
 ////}
 
-/////*
-////============
-////idStr::FreeData
-////============
-////*/
-////void idStr::FreeData( void ) {
-////	if ( this.data && this.data != baseBuffer ) {
+/*
+============
+idStr::FreeData
+============
+*/
+FreeData( ):void {
+//	if ( this.data && this.data != this.baseBuffer ) {
 ////#ifdef USE_STRING_DATA_ALLOCATOR
-////		stringDataAllocator.Free( this.data );
+//		stringDataAllocator.Free( this.data );
 ////#else
-////		delete[] this.data;
+//		//delete[] this.data;
 ////#endif
-////		this.data = baseBuffer;
-////	}
-////}
+//		this.data = this.baseBuffer;
+//	}
+	this.data = null;
+}
 
 /////*
 ////============

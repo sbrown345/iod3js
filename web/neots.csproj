@@ -79,6 +79,9 @@
     <Content Include="DoomDLL\Sys\win_glimp.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Sys\win_main.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Sys\win_input.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\UserInterface.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\UserInterface.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\UserInterfaceLocal.h.ts" />
     <Content Include="libs\c.ts" />
     <Content Include="libs\idLib\Containers\HashIndex.h.ts" />
     <Content Include="libs\idLib\Containers\List.h.ts" />
@@ -95,6 +98,7 @@
     <Content Include="libs\idLib\Math\Math.h.ts" />
     <Content Include="libs\idLib\Math\Vector.cpp.ts" />
     <Content Include="libs\idLib\Math\Vector.h.ts" />
+    <TypeScriptCompile Include="libs\idLib\precompiled.h.ts" />
     <Content Include="libs\idLib\Text\CmdArgs.cpp.ts" />
     <Content Include="libs\idLib\Text\CmdArgs.h.ts" />
     <Content Include="libs\idLib\Text\Lexer.cpp.ts" />

@@ -1,3 +1,4 @@
+/// <reference path="../../libs/idlib/precompiled.h.ts" />
 /// <reference path="material.h.ts" />
 /////*
 ////===========================================================================
@@ -61,13 +62,24 @@
 
 ////// keep all of these on the stack, when they are static it makes material parsing non-reentrant
 class mtrParsingData_t {
-////	bool			registerIsTemporary[MAX_EXPRESSION_REGISTERS];
-////	float			shaderRegisters[MAX_EXPRESSION_REGISTERS];
-////	expOp_t			shaderOps[MAX_EXPRESSION_OPS];
-////	shaderStage_t	parseStages[MAX_SHADER_STAGES];
+	/*bool			*/registerIsTemporary:boolean[];//[MAX_EXPRESSION_REGISTERS];
+	/*float			*/shaderRegisters:Float32Array;//[MAX_EXPRESSION_REGISTERS];
+	/*expOp_t		*/shaderOps:expOp_t[];//[MAX_EXPRESSION_OPS];
+	/*shaderStage_t	*/parseStages:shaderStage_t[];//[MAX_SHADER_STAGES];
 
-////	bool			registersAreConstant;
-////	bool			forceOverlays;
+	registersAreConstant: boolean;
+	forceOverlays: boolean;
+
+	constructor ( ) {
+		this.init ( );
+	}
+
+	init ( ) {
+		this.registerIsTemporary = new Array( MAX_EXPRESSION_REGISTERS );
+		this.shaderRegisters = new Float32Array( MAX_EXPRESSION_REGISTERS );
+		this.shaderOps = newStructArray<expOp_t>( expOp_t, MAX_EXPRESSION_OPS );
+		this.parseStages = newStructArray<shaderStage_t>(shaderStage_t, MAX_SHADER_STAGES);
+	}
 }
 
 class idMaterial extends idDecl {
@@ -78,25 +90,25 @@ idMaterial::CommonInit
 =============
 */
 CommonInit():void {
-	this.desc = "<none>";
-	this.renderBump = "";
-	this.contentFlags = CONTENTS_SOLID;
-	this.surfaceFlags = SURFTYPE_NONE;
+	this.desc = new idStr("<none>");
+	this.renderBump = new idStr("");
+	this.contentFlags = contentsFlags_t.CONTENTS_SOLID;
+	this.surfaceFlags = surfTypes_t.SURFTYPE_NONE;
 	this.materialFlags = 0;
-	this.sort = SS_BAD;
-	this.coverage = MC_BAD;
-	this.cullType = CT_FRONT_SIDED;
-	this.deform = DFRM_NONE;
+	this.sort = materialSort_t.SS_BAD;
+	this.coverage = materialCoverage_t.MC_BAD;
+	this.cullType = cullType_t.CT_FRONT_SIDED;
+	this.deform = deform_t.DFRM_NONE;
 	this.numOps = 0;
-	this.ops = NULL;
+	this.ops = null;
 	this.numRegisters = 0;
-	this.expressionRegisters = NULL;
-	this.constantRegisters = NULL;
+	this.expressionRegisters = null;
+	this.constantRegisters = null;
 	this.numStages = 0;
 	this.numAmbientStages = 0;
-	this.stages = NULL;
-	this.editorImage = NULL;
-	this.lightFalloffImage = NULL;
+	this.stages = null;
+	this.editorImage = null;
+	this.lightFalloffImage = null;
 	this.shouldCreateBackSides = false;
 	this.entityGui = 0;
 	this.fogLight = false;
@@ -107,7 +119,7 @@ CommonInit():void {
 	this.allowOverlays = true;
 	this.unsmoothedTangents = false;
 	this.gui = NULL;
-	this.memset( deformRegisters, 0, sizeof( deformRegisters ) );
+	this.deformRegisters = new Int32Array( 4 );//this.memset( deformRegisters, 0, sizeof( deformRegisters ) );
 	this.editorAlpha = 1.0;
 	this.spectrum = 0;
 	this.polygonOffset = 0;
@@ -115,6 +127,7 @@ CommonInit():void {
 	this.refCount = 0;
 	this.portalSky = false;
 
+	this.decalInfo = new decalInfo_t;
 	this.decalInfo.stayTime = 10000;
 	this.decalInfo.fadeTime = 4000;
 	this.decalInfo.start[0] = 1;
@@ -196,7 +209,7 @@ CommonInit():void {
 ////	}
 
 ////	// if we don't have an editorImageName, use the first stage image
-////	if ( !editorImageName.Length()) {
+////	if ( !this.editorImageName.Length()) {
 ////		// _D3XP :: First check for a diffuse image, then use the first
 ////		if ( numStages && stages ) {
 ////			int i;
@@ -214,7 +227,7 @@ CommonInit():void {
 ////		}
 ////	} else {
 ////		// look for an explicit one
-////		editorImage = globalImages.ImageFromFile( editorImageName, TF_DEFAULT, true, TR_REPEAT, textureDepth_t.TD_DEFAULT );
+////		editorImage = globalImages.ImageFromFile( this.editorImageName, TF_DEFAULT, true, textureRepeat_t.TR_REPEAT, textureDepth_t.TD_DEFAULT );
 ////	}
 
 ////	if ( !editorImage ) {
@@ -225,93 +238,93 @@ CommonInit():void {
 ////}
 
 
-////// info parms
-////typedef struct {
-////	char	*name;
-////	int		clearSolid, surfaceFlags, contents;
-////} infoParm_t;
+// info parms
+typedef struct {
+	char	*name;
+	int		clearSolid, surfaceFlags, contents;
+} infoParm_t;
 
-////static infoParm_t	infoParms[] = {
-////	// game relevant attributes
-////	{"solid",		0,	0,	CONTENTS_SOLID },		// may need to override a clearSolid
-////	{"water",		1,	0,	CONTENTS_WATER },		// used for water
-////	{"playerclip",	0,	0,	CONTENTS_PLAYERCLIP },	// solid to players
-////	{"monsterclip",	0,	0,	CONTENTS_MONSTERCLIP },	// solid to monsters
-////	{"moveableclip",0,	0,	CONTENTS_MOVEABLECLIP },// solid to moveable entities
-////	{"ikclip",		0,	0,	CONTENTS_IKCLIP },		// solid to IK
-////	{"blood",		0,	0,	CONTENTS_BLOOD },		// used to detect blood decals
-////	{"trigger",		0,	0,	CONTENTS_TRIGGER },		// used for triggers
-////	{"aassolid",	0,	0,	CONTENTS_AAS_SOLID },	// solid for AAS
-////	{"aasobstacle",	0,	0,	CONTENTS_AAS_OBSTACLE },// used to compile an obstacle into AAS that can be enabled/disabled
-////	{"flashlight_trigger",	0,	0,	CONTENTS_FLASHLIGHT_TRIGGER }, // used for triggers that are activated by the flashlight
-////	{"nonsolid",	1,	0,	0 },					// clears the solid flag
-////	{"nullNormal",	0,	SURF_NULLNORMAL,0 },		// renderbump will draw as 0x80 0x80 0x80
+static infoParm_t	infoParms[] = {
+	// game relevant attributes
+	{"solid",		0,	0,	contentsFlags_t.CONTENTS_SOLID },		// may need to override a clearSolid
+	{"water",		1,	0,	CONTENTS_WATER },		// used for water
+	{"playerclip",	0,	0,	CONTENTS_PLAYERCLIP },	// solid to players
+	{"monsterclip",	0,	0,	CONTENTS_MONSTERCLIP },	// solid to monsters
+	{"moveableclip",0,	0,	CONTENTS_MOVEABLECLIP },// solid to moveable entities
+	{"ikclip",		0,	0,	CONTENTS_IKCLIP },		// solid to IK
+	{"blood",		0,	0,	CONTENTS_BLOOD },		// used to detect blood decals
+	{"trigger",		0,	0,	CONTENTS_TRIGGER },		// used for triggers
+	{"aassolid",	0,	0,	CONTENTS_AAS_SOLID },	// solid for AAS
+	{"aasobstacle",	0,	0,	CONTENTS_AAS_OBSTACLE },// used to compile an obstacle into AAS that can be enabled/disabled
+	{"flashlight_trigger",	0,	0,	CONTENTS_FLASHLIGHT_TRIGGER }, // used for triggers that are activated by the flashlight
+	{"nonsolid",	1,	0,	0 },					// clears the solid flag
+	{"nullNormal",	0,	SURF_NULLNORMAL,0 },		// renderbump will draw as 0x80 0x80 0x80
 
-////	// utility relevant attributes
-////	{"areaportal",	1,	0,	CONTENTS_AREAPORTAL },	// divides areas
-////	{"qer_nocarve",	1,	0,	CONTENTS_NOCSG},		// don't cut brushes in editor
+	// utility relevant attributes
+	{"areaportal",	1,	0,	CONTENTS_AREAPORTAL },	// divides areas
+	{"qer_nocarve",	1,	0,	CONTENTS_NOCSG},		// don't cut brushes in editor
 
-////	{"discrete",	1,	SURF_DISCRETE,	0 },		// surfaces should not be automatically merged together or
-////													// clipped to the world,
-////													// because they represent discrete objects like gui shaders
-////													// mirrors, or autosprites
-////	{"noFragment",	0,	SURF_NOFRAGMENT,	0 },
+	{"discrete",	1,	SURF_DISCRETE,	0 },		// surfaces should not be automatically merged together or
+													// clipped to the world,
+													// because they represent discrete objects like gui shaders
+													// mirrors, or autosprites
+	{"noFragment",	0,	SURF_NOFRAGMENT,	0 },
 
-////	{"slick",		0,	SURF_SLICK,		0 },
-////	{"collision",	0,	SURF_COLLISION,	0 },
-////	{"noimpact",	0,	SURF_NOIMPACT,	0 },		// don't make impact explosions or marks
-////	{"nodamage",	0,	SURF_NODAMAGE,	0 },		// no falling damage when hitting
-////	{"ladder",		0,	SURF_LADDER,	0 },		// climbable
-////	{"nosteps",		0,	SURF_NOSTEPS,	0 },		// no footsteps
+	{"slick",		0,	SURF_SLICK,		0 },
+	{"collision",	0,	SURF_COLLISION,	0 },
+	{"noimpact",	0,	SURF_NOIMPACT,	0 },		// don't make impact explosions or marks
+	{"nodamage",	0,	SURF_NODAMAGE,	0 },		// no falling damage when hitting
+	{"ladder",		0,	SURF_LADDER,	0 },		// climbable
+	{"nosteps",		0,	SURF_NOSTEPS,	0 },		// no footsteps
 
-////	// material types for particle, sound, footstep feedback
-////	{"metal",		0,  SURFTYPE_METAL,		0 },	// metal
-////	{"stone",		0,  SURFTYPE_STONE,		0 },	// stone
-////	{"flesh",		0,  SURFTYPE_FLESH,		0 },	// flesh
-////	{"wood",		0,  SURFTYPE_WOOD,		0 },	// wood
-////	{"cardboard",	0,	SURFTYPE_CARDBOARD,	0 },	// cardboard
-////	{"liquid",		0,	SURFTYPE_LIQUID,	0 },	// liquid
-////	{"glass",		0,	SURFTYPE_GLASS,		0 },	// glass
-////	{"plastic",		0,	SURFTYPE_PLASTIC,	0 },	// plastic
-////	{"ricochet",	0,	SURFTYPE_RICOCHET,	0 },	// behaves like metal but causes a ricochet sound
+	// material types for particle, sound, footstep feedback
+	{"metal",		0,  SURFTYPE_METAL,		0 },	// metal
+	{"stone",		0,  SURFTYPE_STONE,		0 },	// stone
+	{"flesh",		0,  SURFTYPE_FLESH,		0 },	// flesh
+	{"wood",		0,  SURFTYPE_WOOD,		0 },	// wood
+	{"cardboard",	0,	SURFTYPE_CARDBOARD,	0 },	// cardboard
+	{"liquid",		0,	SURFTYPE_LIQUID,	0 },	// liquid
+	{"glass",		0,	SURFTYPE_GLASS,		0 },	// glass
+	{"plastic",		0,	SURFTYPE_PLASTIC,	0 },	// plastic
+	{"ricochet",	0,	SURFTYPE_RICOCHET,	0 },	// behaves like metal but causes a ricochet sound
 
-////	// unassigned surface types
-////	{"surftype10",	0,	SURFTYPE_10,	0 },
-////	{"surftype11",	0,	SURFTYPE_11,	0 },
-////	{"surftype12",	0,	SURFTYPE_12,	0 },
-////	{"surftype13",	0,	SURFTYPE_13,	0 },
-////	{"surftype14",	0,	SURFTYPE_14,	0 },
-////	{"surftype15",	0,	SURFTYPE_15,	0 },
-////};
+	// unassigned surface types
+	{"surftype10",	0,	SURFTYPE_10,	0 },
+	{"surftype11",	0,	SURFTYPE_11,	0 },
+	{"surftype12",	0,	SURFTYPE_12,	0 },
+	{"surftype13",	0,	SURFTYPE_13,	0 },
+	{"surftype14",	0,	SURFTYPE_14,	0 },
+	{"surftype15",	0,	SURFTYPE_15,	0 },
+};
 
-////static const int numInfoParms = sizeof(infoParms) / sizeof (infoParms[0]);
+static const int numInfoParms = sizeof(infoParms) / sizeof (infoParms[0]);
 
 
-/////*
-////===============
-////idMaterial::CheckSurfaceParm
+/*
+===============
+idMaterial::CheckSurfaceParm
 
-////See if the current token matches one of the surface parm bit flags
-////===============
-////*/
-////bool idMaterial::CheckSurfaceParm( idToken *token ) {
+See if the current token matches one of the surface parm bit flags
+===============
+*/
+	CheckSurfaceParm(token: R<idToken> ):boolean {
 
-////	for ( int i = 0 ; i < numInfoParms ; i++ ) {
-////		if ( !token.Icmp( infoParms[i].name ) ) {
-////			if ( infoParms[i].surfaceFlags & SURF_TYPE_MASK ) {
-////				// ensure we only have one surface type set
-////				surfaceFlags &= ~SURF_TYPE_MASK;
-////			}
-////			surfaceFlags |= infoParms[i].surfaceFlags;
-////			contentFlags |= infoParms[i].contents;
-////			if ( infoParms[i].clearSolid ) {
-////				contentFlags &= ~CONTENTS_SOLID;
-////			}
-////			return true;
-////		}
-////	}
-////	return false;
-////}
+	for ( var i = 0 ; i < numInfoParms ; i++ ) {
+		if ( !token.$.Icmp( infoParms[i].name ) ) {
+			if ( infoParms[i].surfaceFlags & surfaceFlags_t.SURF_TYPE_MASK ) {
+				// ensure we only have one surface type set
+				surfaceFlags &= ~surfaceFlags_t.SURF_TYPE_MASK;
+			}
+			surfaceFlags |= infoParms[i].surfaceFlags;
+			contentFlags |= infoParms[i].contents;
+			if ( infoParms[i].clearSolid ) {
+				contentFlags &= ~contentsFlags_t.CONTENTS_SOLID;
+			}
+			return true;
+		}
+	}
+	return false;
+}
 
 /////*
 ////===============
@@ -322,7 +335,7 @@ CommonInit():void {
 ////*/
 ////bool idMaterial::MatchToken( idLexer &src, const char *match ) {
 ////	if ( !src.ExpectTokenString( match ) ) {
-////		SetMaterialFlag( MF_DEFAULTED );
+////		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////		return false;
 ////	}
 ////	return true;
@@ -338,7 +351,7 @@ CommonInit():void {
 
 ////	if ( !src.ReadTokenOnLine( &token ) ) {
 ////		src.Warning( "missing sort parameter" );
-////		SetMaterialFlag( MF_DEFAULTED );
+////		SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////		return;
 ////	}
 
@@ -394,19 +407,19 @@ CommonInit():void {
 ////int idMaterial::GetExpressionConstant( float f ) {
 ////	int		i;
 
-////	for ( i = EXP_REG_NUM_PREDEFINED ; i < numRegisters ; i++ ) {
-////		if ( !pd.registerIsTemporary[i] && pd.shaderRegisters[i] == f ) {
+////	for ( i = expRegister_t.EXP_REG_NUM_PREDEFINED ; i < this.numRegisters ; i++ ) {
+////		if ( !this.pd.registerIsTemporary[i] && this.pd.shaderRegisters[i] == f ) {
 ////			return i;
 ////		}
 ////	}
-////	if ( numRegisters == MAX_EXPRESSION_REGISTERS ) {
+////	if ( this.numRegisters == MAX_EXPRESSION_REGISTERS ) {
 ////		common.Warning( "GetExpressionConstant: material '%s' hit MAX_EXPRESSION_REGISTERS", GetName() );
-////		SetMaterialFlag( MF_DEFAULTED );
+////		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////		return 0;
 ////	}
-////	pd.registerIsTemporary[i] = false;
-////	pd.shaderRegisters[i] = f;
-////	numRegisters++;
+////	this.pd.registerIsTemporary[i] = false;
+////	this.pd.shaderRegisters[i] = f;
+////	this.numRegisters++;
 
 ////	return i;
 ////}
@@ -417,14 +430,14 @@ CommonInit():void {
 ////=============
 ////*/
 ////int idMaterial::GetExpressionTemporary( void ) {
-////	if ( numRegisters == MAX_EXPRESSION_REGISTERS ) {
+////	if ( this.numRegisters == MAX_EXPRESSION_REGISTERS ) {
 ////		common.Warning( "GetExpressionTemporary: material '%s' hit MAX_EXPRESSION_REGISTERS", GetName() );
-////		SetMaterialFlag( MF_DEFAULTED );
+////		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////		return 0;
 ////	}
-////	pd.registerIsTemporary[numRegisters] = true;
-////	numRegisters++;
-////	return numRegisters - 1;
+////	this.pd.registerIsTemporary[this.numRegisters] = true;
+////	this.numRegisters++;
+////	return this.numRegisters - 1;
 ////}
 
 /////*
@@ -433,13 +446,13 @@ CommonInit():void {
 ////=============
 ////*/
 ////expOp_t	*idMaterial::GetExpressionOp( void ) {
-////	if ( numOps == MAX_EXPRESSION_OPS ) {
+////	if ( this.numOps == MAX_EXPRESSION_OPS ) {
 ////		common.Warning( "GetExpressionOp: material '%s' hit MAX_EXPRESSION_OPS", GetName() );
-////		SetMaterialFlag( MF_DEFAULTED );
-////		return &pd.shaderOps[0];
+////		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+////		return &this.pd.shaderOps[0];
 ////	}
 
-////	return &pd.shaderOps[numOps++];
+////	return &this.pd.shaderOps[this.numOps++];
 ////}
 
 /////*
@@ -452,31 +465,31 @@ CommonInit():void {
 
 ////	// optimize away identity operations
 ////	if ( opType == OP_TYPE_ADD ) {
-////		if ( !pd.registerIsTemporary[a] && pd.shaderRegisters[a] == 0 ) {
+////		if ( !this.pd.registerIsTemporary[a] && this.pd.shaderRegisters[a] == 0 ) {
 ////			return b;
 ////		}
-////		if ( !pd.registerIsTemporary[b] && pd.shaderRegisters[b] == 0 ) {
+////		if ( !this.pd.registerIsTemporary[b] && this.pd.shaderRegisters[b] == 0 ) {
 ////			return a;
 ////		}
-////		if ( !pd.registerIsTemporary[a] && !pd.registerIsTemporary[b] ) {
-////			return GetExpressionConstant( pd.shaderRegisters[a] + pd.shaderRegisters[b] );
+////		if ( !this.pd.registerIsTemporary[a] && !this.pd.registerIsTemporary[b] ) {
+////			return GetExpressionConstant( this.pd.shaderRegisters[a] + this.pd.shaderRegisters[b] );
 ////		}
 ////	}
 ////	if ( opType == OP_TYPE_MULTIPLY ) {
-////		if ( !pd.registerIsTemporary[a] && pd.shaderRegisters[a] == 1 ) {
+////		if ( !this.pd.registerIsTemporary[a] && this.pd.shaderRegisters[a] == 1 ) {
 ////			return b;
 ////		}
-////		if ( !pd.registerIsTemporary[a] && pd.shaderRegisters[a] == 0 ) {
+////		if ( !this.pd.registerIsTemporary[a] && this.pd.shaderRegisters[a] == 0 ) {
 ////			return a;
 ////		}
-////		if ( !pd.registerIsTemporary[b] && pd.shaderRegisters[b] == 1 ) {
+////		if ( !this.pd.registerIsTemporary[b] && this.pd.shaderRegisters[b] == 1 ) {
 ////			return a;
 ////		}
-////		if ( !pd.registerIsTemporary[b] && pd.shaderRegisters[b] == 0 ) {
+////		if ( !this.pd.registerIsTemporary[b] && this.pd.shaderRegisters[b] == 0 ) {
 ////			return b;
 ////		}
-////		if ( !pd.registerIsTemporary[a] && !pd.registerIsTemporary[b] ) {
-////			return GetExpressionConstant( pd.shaderRegisters[a] * pd.shaderRegisters[b] );
+////		if ( !this.pd.registerIsTemporary[a] && !this.pd.registerIsTemporary[b] ) {
+////			return GetExpressionConstant( this.pd.shaderRegisters[a] * this.pd.shaderRegisters[b] );
 ////		}
 ////	}
 
@@ -521,87 +534,87 @@ CommonInit():void {
 ////	}
 
 ////	if ( !token.Icmp( "time" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_TIME;
 ////	}
 ////	if ( !token.Icmp( "parm0" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_PARM0;
 ////	}
 ////	if ( !token.Icmp( "parm1" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_PARM1;
 ////	}
 ////	if ( !token.Icmp( "parm2" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_PARM2;
 ////	}
 ////	if ( !token.Icmp( "parm3" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_PARM3;
 ////	}
 ////	if ( !token.Icmp( "parm4" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_PARM4;
 ////	}
 ////	if ( !token.Icmp( "parm5" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_PARM5;
 ////	}
 ////	if ( !token.Icmp( "parm6" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_PARM6;
 ////	}
 ////	if ( !token.Icmp( "parm7" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_PARM7;
 ////	}
 ////	if ( !token.Icmp( "parm8" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_PARM8;
 ////	}
 ////	if ( !token.Icmp( "parm9" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_PARM9;
 ////	}
 ////	if ( !token.Icmp( "parm10" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_PARM10;
 ////	}
 ////	if ( !token.Icmp( "parm11" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_PARM11;
 ////	}
 ////	if ( !token.Icmp( "global0" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_GLOBAL0;
 ////	}
 ////	if ( !token.Icmp( "global1" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_GLOBAL1;
 ////	}
 ////	if ( !token.Icmp( "global2" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_GLOBAL2;
 ////	}
 ////	if ( !token.Icmp( "global3" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_GLOBAL3;
 ////	}
 ////	if ( !token.Icmp( "global4" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_GLOBAL4;
 ////	}
 ////	if ( !token.Icmp( "global5" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_GLOBAL5;
 ////	}
 ////	if ( !token.Icmp( "global6" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_GLOBAL6;
 ////	}
 ////	if ( !token.Icmp( "global7" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EXP_REG_GLOBAL7;
 ////	}
 ////	if ( !token.Icmp( "fragmentPrograms" ) ) {
@@ -609,7 +622,7 @@ CommonInit():void {
 ////	}
 
 ////	if ( !token.Icmp( "sound" ) ) {
-////		pd.registersAreConstant = false;
+////		this.pd.registersAreConstant = false;
 ////		return EmitOp( 0, 0, OP_TYPE_SOUND );
 ////	}
 
@@ -620,7 +633,7 @@ CommonInit():void {
 ////			return GetExpressionConstant( -(float) token.GetFloatValue() );
 ////		}
 ////		src.Warning( "Bad negative number '%s'", token.c_str() );
-////		SetMaterialFlag( MF_DEFAULTED );
+////		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////		return 0;
 ////	}
 
@@ -632,7 +645,7 @@ CommonInit():void {
 ////	const idDeclTable *table = static_cast<const idDeclTable *>( declManager.FindType( DECL_TABLE, token.c_str(), false ) );
 ////	if ( !table ) {
 ////		src.Warning( "Bad term '%s'", token.c_str() );
-////		SetMaterialFlag( MF_DEFAULTED );
+////		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////		return 0;
 ////	}
 
@@ -664,7 +677,7 @@ CommonInit():void {
 
 ////	a = ParseExpressionPriority( src, priority - 1 );
 
-////	if ( TestMaterialFlag( MF_DEFAULTED ) ) {	// we have a parse error
+////	if ( TestMaterialFlag( materialFlags_t.MF_DEFAULTED ) ) {	// we have a parse error
 ////		return 0;
 ////	}
 
@@ -775,7 +788,7 @@ CommonInit():void {
 ////	}
 
 ////	common.Warning( "unknown blend mode '%s' in material '%s'", name.c_str(), GetName() );
-////	SetMaterialFlag( MF_DEFAULTED );
+////	this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 
 ////	return GLS_SRCBLEND_ONE;
 ////}
@@ -805,7 +818,7 @@ CommonInit():void {
 ////	}
 
 ////	common.Warning( "unknown blend mode '%s' in material '%s'", name.c_str(), GetName() );
-////	SetMaterialFlag( MF_DEFAULTED );
+////	this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 
 ////	return GLS_DSTBLEND_ONE;
 ////}
@@ -881,7 +894,7 @@ CommonInit():void {
 ////	int	parm = token.GetIntValue();
 ////	if ( !token.IsNumeric() || parm < 0 || parm >= MAX_VERTEX_PARMS ) {
 ////		common.Warning( "bad vertexParm number\n" );
-////		SetMaterialFlag( MF_DEFAULTED );
+////		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////		return;
 ////	}
 ////	if ( parm >= newStage.numVertexParms ) {
@@ -934,7 +947,7 @@ CommonInit():void {
 ////	idToken				token;
 
 ////	tf = TF_DEFAULT;
-////	trp = TR_REPEAT;
+////	trp = textureRepeat_t.TR_REPEAT;
 ////	td = textureDepth_t.TD_DEFAULT;
 ////	allowPicmip = true;
 ////	cubeMap = CF_2D;
@@ -943,7 +956,7 @@ CommonInit():void {
 ////	int	unit = token.GetIntValue();
 ////	if ( !token.IsNumeric() || unit < 0 || unit >= MAX_FRAGMENT_IMAGES ) {
 ////		common.Warning( "bad fragmentMap number\n" );
-////		SetMaterialFlag( MF_DEFAULTED );
+////		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////		return;
 ////	}
 
@@ -976,15 +989,15 @@ CommonInit():void {
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "clamp" ) ) {
-////			trp = TR_CLAMP;
+////			trp = textureRepeat_t.TR_CLAMP;
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "noclamp" ) ) {
-////			trp = TR_REPEAT;
+////			trp = textureRepeat_t.TR_REPEAT;
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "zeroclamp" ) ) {
-////			trp = TR_CLAMP_TO_ZERO;
+////			trp = textureRepeat_t.TR_CLAMP_TO_ZERO;
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "alphazeroclamp" ) ) {
@@ -1095,7 +1108,7 @@ CommonInit():void {
 ////	newShaderStage_t	newStage;
 
 ////	if ( numStages >= MAX_SHADER_STAGES ) {
-////		SetMaterialFlag( MF_DEFAULTED );
+////		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////		common.Warning( "material '%s' exceeded %i stages", GetName(), MAX_SHADER_STAGES );
 ////	}
 
@@ -1109,17 +1122,17 @@ CommonInit():void {
 
 ////	memset( &newStage, 0, sizeof( newStage ) );
 
-////	ss = &pd.parseStages[numStages];
+////	ss = &this.pd.parseStages[numStages];
 ////	ts = &ss.texture;
 
 ////	ClearStage( ss );
 
 ////	while ( 1 ) {
-////		if ( TestMaterialFlag( MF_DEFAULTED ) ) {	// we have a parse error
+////		if ( TestMaterialFlag( materialFlags_t.MF_DEFAULTED ) ) {	// we have a parse error
 ////			return;
 ////		}
 ////		if ( !src.ExpectAnyToken( &token ) ) {
-////			SetMaterialFlag( MF_DEFAULTED );
+////			this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////			return;
 ////		}
 
@@ -1238,15 +1251,15 @@ CommonInit():void {
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "clamp" ) ) {
-////			trp = TR_CLAMP;
+////			trp = textureRepeat_t.TR_CLAMP;
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "noclamp" ) ) {
-////			trp = TR_REPEAT;
+////			trp = textureRepeat_t.TR_REPEAT;
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "zeroclamp" ) ) {
-////			trp = TR_CLAMP_TO_ZERO;
+////			trp = textureRepeat_t.TR_CLAMP_TO_ZERO;
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "alphazeroclamp" ) ) {
@@ -1304,7 +1317,7 @@ CommonInit():void {
 ////				texGenRegisters[2] = ParseExpression( src );
 ////			} else {
 ////				common.Warning( "bad texGen '%s' in material %s", token.c_str(), GetName() );
-////				SetMaterialFlag( MF_DEFAULTED );
+////				this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////			}
 ////			continue;
 ////		}
@@ -1377,7 +1390,7 @@ CommonInit():void {
 ////			table = static_cast<const idDeclTable *>( declManager.FindType( DECL_TABLE, "sinTable", false ) );
 ////			if ( !table ) {
 ////				common.Warning( "no sinTable for rotate defined" );
-////				SetMaterialFlag( MF_DEFAULTED );
+////				this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////				return;
 ////			}
 ////			sinReg = EmitOp( table.Index(), a, OP_TYPE_TABLE );
@@ -1385,7 +1398,7 @@ CommonInit():void {
 ////			table = static_cast<const idDeclTable *>( declManager.FindType( DECL_TABLE, "cosTable", false ) );
 ////			if ( !table ) {
 ////				common.Warning( "no cosTable for rotate defined" );
-////				SetMaterialFlag( MF_DEFAULTED );
+////				this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////				return;
 ////			}
 ////			cosReg = EmitOp( table.Index(), a, OP_TYPE_TABLE );
@@ -1435,7 +1448,7 @@ CommonInit():void {
 ////		if ( !token.Icmp( "alphaTest" ) ) {
 ////			ss.hasAlphaTest = true;
 ////			ss.alphaTestRegister = ParseExpression( src );
-////			coverage = MC_PERFORATED;
+////			this.coverage = MC_PERFORATED;
 ////			continue;
 ////		}		
 
@@ -1445,7 +1458,7 @@ CommonInit():void {
 ////			ss.color.registers[1] = EXP_REG_PARM1;
 ////			ss.color.registers[2] = EXP_REG_PARM2;
 ////			ss.color.registers[3] = EXP_REG_PARM3;
-////			pd.registersAreConstant = false;
+////			this.pd.registersAreConstant = false;
 ////			continue;
 ////		}
 
@@ -1521,7 +1534,7 @@ CommonInit():void {
 ////				newStage.megaTexture = new idMegaTexture;
 ////				if ( !newStage.megaTexture.InitFromMegaFile( token.c_str() ) ) {
 ////					delete newStage.megaTexture;
-////					SetMaterialFlag( MF_DEFAULTED );
+////					this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////					continue;
 ////				}
 ////				newStage.vertexProgram = R_FindARBProgram( GL_VERTEX_PROGRAM_ARB, "megaTexture.vfp" );
@@ -1548,7 +1561,7 @@ CommonInit():void {
 
 
 ////		common.Warning( "unknown token '%s' in material '%s'", token.c_str(), GetName() );
-////		SetMaterialFlag( MF_DEFAULTED );
+////		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////		return;
 ////	}
 
@@ -1605,21 +1618,21 @@ CommonInit():void {
 
 ////	if ( !token.Icmp( "sprite" ) ) {
 ////		deform = DFRM_SPRITE;
-////		cullType = CT_TWO_SIDED;
-////		SetMaterialFlag( MF_NOSHADOWS );
+////		this.cullType = cullType_t.CT_TWO_SIDED;
+////		this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
 ////		return;
 ////	}
 ////	if ( !token.Icmp( "tube" ) ) {
 ////		deform = DFRM_TUBE;
-////		cullType = CT_TWO_SIDED;
-////		SetMaterialFlag( MF_NOSHADOWS );
+////		this.cullType = cullType_t.CT_TWO_SIDED;
+////		this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
 ////		return;
 ////	}
 ////	if ( !token.Icmp( "flare" ) ) {
 ////		deform = DFRM_FLARE;
-////		cullType = CT_TWO_SIDED;
+////		this.cullType = cullType_t.CT_TWO_SIDED;
 ////		deformRegisters[0] = ParseExpression( src );
-////		SetMaterialFlag( MF_NOSHADOWS );
+////		this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
 ////		return;
 ////	}
 ////	if ( !token.Icmp( "expand" ) ) {
@@ -1637,7 +1650,7 @@ CommonInit():void {
 
 ////		if ( !src.ExpectAnyToken( &token ) ) {
 ////			src.Warning( "deform particle missing particle name" );
-////			SetMaterialFlag( MF_DEFAULTED );
+////			this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////			return;
 ////		}
 ////		deformDecl = declManager.FindType( DECL_TABLE, token.c_str(), true );
@@ -1655,7 +1668,7 @@ CommonInit():void {
 ////		deform = DFRM_PARTICLE;
 ////		if ( !src.ExpectAnyToken( &token ) ) {
 ////			src.Warning( "deform particle missing particle name" );
-////			SetMaterialFlag( MF_DEFAULTED );
+////			this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////			return;
 ////		}
 ////		deformDecl = declManager.FindType( DECL_PARTICLE, token.c_str(), true );
@@ -1665,14 +1678,14 @@ CommonInit():void {
 ////		deform = DFRM_PARTICLE2;
 ////		if ( !src.ExpectAnyToken( &token ) ) {
 ////			src.Warning( "deform particle missing particle name" );
-////			SetMaterialFlag( MF_DEFAULTED );
+////			this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////			return;
 ////		}
 ////		deformDecl = declManager.FindType( DECL_PARTICLE, token.c_str(), true );
 ////		return;
 ////	}
 ////	src.Warning( "Bad deform type '%s'", token.c_str() );
-////	SetMaterialFlag( MF_DEFAULTED );
+////	this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////}
 
 
@@ -1700,16 +1713,16 @@ CommonInit():void {
 ////	bool hasReflection = false;
 
 ////	for ( int i = 0 ; i < numStages ; i++ ) {
-////		if ( pd.parseStages[i].lighting == SL_BUMP ) {
+////		if ( this.pd.parseStages[i].lighting == SL_BUMP ) {
 ////			hasBump = true;
 ////		}
-////		if ( pd.parseStages[i].lighting == SL_DIFFUSE ) {
+////		if ( this.pd.parseStages[i].lighting == SL_DIFFUSE ) {
 ////			hasDiffuse = true;
 ////		}
-////		if ( pd.parseStages[i].lighting == SL_SPECULAR ) {
+////		if ( this.pd.parseStages[i].lighting == SL_SPECULAR ) {
 ////			hasSpecular = true;
 ////		}
-////		if ( pd.parseStages[i].texture.texgen == TG_REFLECT_CUBE ) {
+////		if ( this.pd.parseStages[i].texture.texgen == TG_REFLECT_CUBE ) {
 ////			hasReflection = true;
 ////		}
 ////	}
@@ -1726,7 +1739,7 @@ CommonInit():void {
 ////	if ( !hasBump ) {
 ////		idStr::snPrintf( buffer, sizeof( buffer ), "blend bumpmap\nmap _flat\n}\n" );
 ////		newSrc.LoadMemory( buffer, strlen(buffer), "bumpmap" );
-////		newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
+////		newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 ////		ParseStage( newSrc, trpDefault );
 ////		newSrc.FreeSource();
 ////	}
@@ -1734,7 +1747,7 @@ CommonInit():void {
 ////	if ( !hasDiffuse && !hasSpecular && !hasReflection ) {
 ////		idStr::snPrintf( buffer, sizeof( buffer ), "blend diffusemap\nmap _white\n}\n" );
 ////		newSrc.LoadMemory( buffer, strlen(buffer), "diffusemap" );
-////		newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
+////		newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 ////		ParseStage( newSrc, trpDefault );
 ////		newSrc.FreeSource();
 ////	}
@@ -1760,10 +1773,10 @@ CommonInit():void {
 ////	for ( int i = 0 ; i < numStages ; i = j ) {
 ////		// find the next bump map
 ////		for ( j = i + 1 ; j < numStages ; j++ ) {
-////			if ( pd.parseStages[j].lighting == SL_BUMP ) {
+////			if ( this.pd.parseStages[j].lighting == SL_BUMP ) {
 ////				// if the very first stage wasn't a bumpmap,
 ////				// this bumpmap is part of the first group
-////				if ( pd.parseStages[i].lighting != SL_BUMP ) {
+////				if ( this.pd.parseStages[i].lighting != SL_BUMP ) {
 ////					continue;
 ////				}
 ////				break;
@@ -1773,350 +1786,350 @@ CommonInit():void {
 ////		// bubble sort everything bump / diffuse / specular
 ////		for ( int l = 1 ; l < j-i ; l++ ) {
 ////			for ( int k = i ; k < j-l ; k++ ) {
-////				if ( pd.parseStages[k].lighting > pd.parseStages[k+1].lighting ) {
+////				if ( this.pd.parseStages[k].lighting > this.pd.parseStages[k+1].lighting ) {
 ////					shaderStage_t	temp;
 
-////					temp = pd.parseStages[k];
-////					pd.parseStages[k] = pd.parseStages[k+1];
-////					pd.parseStages[k+1] = temp;
+////					temp = this.pd.parseStages[k];
+////					this.pd.parseStages[k] = this.pd.parseStages[k+1];
+////					this.pd.parseStages[k+1] = temp;
 ////				}
 ////			}
 ////		}
 ////	}
 ////}
 
-/////*
-////=================
-////idMaterial::ParseMaterial
+/*
+=================
+idMaterial::ParseMaterial
 
-////The current text pointer is at the explicit text definition of the
-////Parse it into the global material variable. Later functions will optimize it.
+The current text pointer is at the explicit text definition of the
+Parse it into the global material variable. Later functions will optimize it.
 
-////If there is any error during parsing, defaultShader will be set.
-////=================
-////*/
-////void idMaterial::ParseMaterial( idLexer &src ) {
-////	idToken		token;
-////	int			s;
-////	char		buffer[1024];
-////	const char	*str;
-////	idLexer		newSrc;
-////	int			i;
+If there is any error during parsing, defaultShader will be set.
+=================
+*/
+	ParseMaterial(src: idLexer  ):void {
+		var token = new R( new idToken );
+		var/*int			*/s:number;
+		var buffer = "";//char		buffer[1024];
+		var str = "";/*const char	*str;*/
+		var newSrc: idLexer;
+		var /*int			*/i:number;
 
-////	s = 0;
+	s = 0;
 
-////	numOps = 0;
-////	numRegisters = EXP_REG_NUM_PREDEFINED;	// leave space for the parms to be copied in
-////	for ( i = 0 ; i < numRegisters ; i++ ) {
-////		pd.registerIsTemporary[i] = true;		// they aren't constants that can be folded
-////	}
+	this.numOps = 0;
+		this.numRegisters = expRegister_t.EXP_REG_NUM_PREDEFINED;	// leave space for the parms to be copied in
+	for ( i = 0 ; i < this.numRegisters ; i++ ) {
+		this.pd.registerIsTemporary[i] = true;		// they aren't constants that can be folded
+	}
 
-////	numStages = 0;
+	this.numStages = 0;
 
-////	textureRepeat_t	trpDefault = TR_REPEAT;		// allow a global setting for repeat
+		var trpDefault = textureRepeat_t.TR_REPEAT;		// allow a global setting for repeat
 
-////	while ( 1 ) {
-////		if ( TestMaterialFlag( MF_DEFAULTED ) ) {	// we have a parse error
-////			return;
-////		}
-////		if ( !src.ExpectAnyToken( &token ) ) {
-////			SetMaterialFlag( MF_DEFAULTED );
-////			return;
-////		}
+	while ( 1 ) {
+		if ( this.TestMaterialFlag( materialFlags_t.MF_DEFAULTED ) ) {	// we have a parse error
+			return;
+		}
+		if ( !src.ExpectAnyToken( token ) ) {
+			this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+			return;
+		}
 
-////		// end of material definition
-////		if ( token == "}" ) {
-////			break;
-////		}
-////		else if ( !token.Icmp( "qer_editorimage") ) {
-////			src.ReadTokenOnLine( &token );
-////			editorImageName = token.c_str();
-////			src.SkipRestOfLine();
-////			continue;
-////		}
-////		// description
-////		else if ( !token.Icmp( "description") ) {
-////			src.ReadTokenOnLine( &token );
-////			desc = token.c_str();
-////			continue;
-////		}
-////		// check for the surface / content bit flags
-////		else if ( CheckSurfaceParm( &token ) ) {
-////			continue;
-////		}
+		// end of material definition
+		if ( token.$.data == "}" ) {
+			break;
+		}
+		else if ( !token.$.Icmp( "qer_editorimage") ) {
+			src.ReadTokenOnLine( token );
+			this.editorImageName = new idStr(token.$.c_str());
+			src.SkipRestOfLine();
+			continue;
+		}
+		// description
+		else if ( !token.$.Icmp( "description") ) {
+			src.ReadTokenOnLine( token );
+			this.desc = new idStr(token.$.c_str());
+			continue;
+		}
+		// check for the surface / content bit flags
+		else if ( this.CheckSurfaceParm( token ) ) {
+			continue;
+		}
 
 
-////		// polygonOffset
-////		else if ( !token.Icmp( "polygonOffset" ) ) {
-////			SetMaterialFlag( MF_POLYGONOFFSET );
-////			if ( !src.ReadTokenOnLine( &token ) ) {
-////				polygonOffset = 1;
-////				continue;
-////			}
-////			// explict larger (or negative) offset
-////			polygonOffset = token.GetFloatValue();
-////			continue;
-////		}
-////		// noshadow
-////		else if ( !token.Icmp( "noShadows" ) ) {
-////			SetMaterialFlag( MF_NOSHADOWS );
-////			continue;
-////		}
-////		else if ( !token.Icmp( "suppressInSubview" ) ) {
-////			suppressInSubview = true;
-////			continue;
-////		}
-////		else if ( !token.Icmp( "portalSky" ) ) {
-////			portalSky = true;
-////			continue;
-////		}
-////		// noSelfShadow
-////		else if ( !token.Icmp( "noSelfShadow" ) ) {
-////			SetMaterialFlag( MF_NOSELFSHADOW );
-////			continue;
-////		}
-////		// noPortalFog
-////		else if ( !token.Icmp( "noPortalFog" ) ) {
-////			SetMaterialFlag( MF_NOPORTALFOG );
-////			continue;
-////		}
-////		// forceShadows allows nodraw surfaces to cast shadows
-////		else if ( !token.Icmp( "forceShadows" ) ) {
-////			SetMaterialFlag( MF_FORCESHADOWS );
-////			continue;
-////		}
-////		// overlay / decal suppression
-////		else if ( !token.Icmp( "noOverlays" ) ) {
-////			allowOverlays = false;
-////			continue;
-////		}
-////		// moster blood overlay forcing for alpha tested or translucent surfaces
-////		else if ( !token.Icmp( "forceOverlays" ) ) {
-////			pd.forceOverlays = true;
-////			continue;
-////		}
-////		// translucent
-////		else if ( !token.Icmp( "translucent" ) ) {
-////			coverage = MC_TRANSLUCENT;
-////			continue;
-////		}
-////		// global zero clamp
-////		else if ( !token.Icmp( "zeroclamp" ) ) {
-////			trpDefault = TR_CLAMP_TO_ZERO;
-////			continue;
-////		}
-////		// global clamp
-////		else if ( !token.Icmp( "clamp" ) ) {
-////			trpDefault = TR_CLAMP;
-////			continue;
-////		}
-////		// global clamp
-////		else if ( !token.Icmp( "alphazeroclamp" ) ) {
-////			trpDefault = TR_CLAMP_TO_ZERO;
-////			continue;
-////		}
-////		// forceOpaque is used for skies-behind-windows
-////		else if ( !token.Icmp( "forceOpaque" ) ) {
-////			coverage = MC_OPAQUE;
-////			continue;
-////		}
-////		// twoSided
-////		else if ( !token.Icmp( "twoSided" ) ) {
-////			cullType = CT_TWO_SIDED;
-////			// twoSided implies no-shadows, because the shadow
-////			// volume would be coplanar with the surface, giving depth fighting
-////			// we could make this no-self-shadows, but it may be more important
-////			// to receive shadows from no-self-shadow monsters
-////			SetMaterialFlag( MF_NOSHADOWS );
-////		}
-////		// backSided
-////		else if ( !token.Icmp( "backSided" ) ) {
-////			cullType = CT_BACK_SIDED;
-////			// the shadow code doesn't handle this, so just disable shadows.
-////			// We could fix this in the future if there was a need.
-////			SetMaterialFlag( MF_NOSHADOWS );
-////		}
-////		// foglight
-////		else if ( !token.Icmp( "fogLight" ) ) {
-////			fogLight = true;
-////			continue;
-////		}
-////		// blendlight
-////		else if ( !token.Icmp( "blendLight" ) ) {
-////			blendLight = true;
-////			continue;
-////		}
-////		// ambientLight
-////		else if ( !token.Icmp( "ambientLight" ) ) {
-////			ambientLight = true;
-////			continue;
-////		}
-////		// mirror
-////		else if ( !token.Icmp( "mirror" ) ) {
-////			sort = SS_SUBVIEW;
-////			coverage = MC_OPAQUE;
-////			continue;
-////		}
-////		// noFog
-////		else if ( !token.Icmp( "noFog" ) ) {
-////			noFog = true;
-////			continue;
-////		}
-////		// unsmoothedTangents
-////		else if ( !token.Icmp( "unsmoothedTangents" ) ) {
-////			unsmoothedTangents = true;
-////			continue;
-////		}
-////		// lightFallofImage <imageprogram>
-////		// specifies the image to use for the third axis of projected
-////		// light volumes
-////		else if ( !token.Icmp( "lightFalloffImage" ) ) {
-////			str = R_ParsePastImageProgram( src );
-////			idStr	copy;
+		// polygonOffset
+		else if ( !token.$.Icmp( "polygonOffset" ) ) {
+			this.SetMaterialFlag( materialFlags_t.MF_POLYGONOFFSET );
+			if ( !src.ReadTokenOnLine( token ) ) {
+				this.polygonOffset = 1;
+				continue;
+			}
+			// explict larger (or negative) offset
+			this.polygonOffset = token.$.GetFloatValue();
+			continue;
+		}
+		// noshadow
+		else if ( !token.$.Icmp( "noShadows" ) ) {
+			this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
+			continue;
+		}
+		else if ( !token.$.Icmp( "suppressInSubview" ) ) {
+			this.suppressInSubview = true;
+			continue;
+		}
+		else if ( !token.$.Icmp( "portalSky" ) ) {
+			this.portalSky = true;
+			continue;
+		}
+		// noSelfShadow
+		else if ( !token.$.Icmp( "noSelfShadow" ) ) {
+			this.SetMaterialFlag( materialFlags_t.MF_NOSELFSHADOW );
+			continue;
+		}
+		// noPortalFog
+		else if ( !token.$.Icmp( "noPortalFog" ) ) {
+			this.SetMaterialFlag(materialFlags_t.MF_NOPORTALFOG );
+			continue;
+		}
+		// forceShadows allows nodraw surfaces to cast shadows
+		else if ( !token.$.Icmp( "forceShadows" ) ) {
+			this.SetMaterialFlag(materialFlags_t.MF_FORCESHADOWS );
+			continue;
+		}
+		// overlay / decal suppression
+		else if ( !token.$.Icmp( "noOverlays" ) ) {
+			this.allowOverlays = false;
+			continue;
+		}
+		// moster blood overlay forcing for alpha tested or translucent surfaces
+		else if ( !token.$.Icmp( "forceOverlays" ) ) {
+			this.pd.forceOverlays = true;
+			continue;
+		}
+		// translucent
+		else if ( !token.$.Icmp( "translucent" ) ) {
+			this.coverage = materialCoverage_t.MC_TRANSLUCENT;
+			continue;
+		}
+		// global zero clamp
+		else if ( !token.$.Icmp( "zeroclamp" ) ) {
+			trpDefault = textureRepeat_t.TR_CLAMP_TO_ZERO;
+			continue;
+		}
+		// global clamp
+		else if ( !token.$.Icmp( "clamp" ) ) {
+			trpDefault = textureRepeat_t.TR_CLAMP;
+			continue;
+		}
+		// global clamp
+		else if ( !token.$.Icmp( "alphazeroclamp" ) ) {
+			trpDefault = textureRepeat_t.TR_CLAMP_TO_ZERO;
+			continue;
+		}
+		// forceOpaque is used for skies-behind-windows
+		else if ( !token.$.Icmp( "forceOpaque" ) ) {
+			this.coverage = materialCoverage_t.MC_OPAQUE;
+			continue;
+		}
+		// twoSided
+		else if ( !token.$.Icmp( "twoSided" ) ) {
+			this.cullType = cullType_t.CT_TWO_SIDED;
+			// twoSided implies no-shadows, because the shadow
+			// volume would be coplanar with the surface, giving depth fighting
+			// we could make this no-self-shadows, but it may be more important
+			// to receive shadows from no-self-shadow monsters
+			this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
+		}
+		// backSided
+		else if ( !token.$.Icmp( "backSided" ) ) {
+			this.cullType = cullType_t.CT_BACK_SIDED;
+			// the shadow code doesn't handle this, so just disable shadows.
+			// We could fix this in the future if there was a need.
+			this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
+		}
+		// foglight
+		else if ( !token.$.Icmp( "fogLight" ) ) {
+			this.fogLight = true;
+			continue;
+		}
+		// blendlight
+		else if ( !token.$.Icmp( "blendLight" ) ) {
+			this.blendLight = true;
+			continue;
+		}
+		// ambientLight
+		else if ( !token.$.Icmp( "ambientLight" ) ) {
+			this.ambientLight = true;
+			continue;
+		}
+		// mirror
+		else if ( !token.$.Icmp( "mirror" ) ) {
+			this.sort = materialSort_t.SS_SUBVIEW;
+			this.coverage = materialCoverage_t.MC_OPAQUE;
+			continue;
+		}
+		// noFog
+		else if ( !token.$.Icmp( "noFog" ) ) {
+			this.noFog = true;
+			continue;
+		}
+		// unsmoothedTangents
+		else if ( !token.$.Icmp( "unsmoothedTangents" ) ) {
+			this.unsmoothedTangents = true;
+			continue;
+		}
+		// lightFallofImage <imageprogram>
+		// specifies the image to use for the third axis of projected
+		// light volumes
+		else if ( !token.$.Icmp( "lightFalloffImage" ) ) {
+			str = R_ParsePastImageProgram( src );
+			var copy: idStr;
 
-////			copy = str;	// so other things don't step on it
-////			lightFalloffImage = globalImages.ImageFromFile( copy, TF_DEFAULT, false, TR_CLAMP /* TR_CLAMP_TO_ZERO */, textureDepth_t.TD_DEFAULT );
-////			continue;
-////		}
-////		// guisurf <guifile> | guisurf entity
-////		// an entity guisurf must have an idUserInterface
-////		// specified in the renderEntity
-////		else if ( !token.Icmp( "guisurf" ) ) {
-////			src.ReadTokenOnLine( &token );
-////			if ( !token.Icmp( "entity" ) ) {
-////				entityGui = 1;
-////			} else if ( !token.Icmp( "entity2" ) ) {
-////				entityGui = 2;
-////			} else if ( !token.Icmp( "entity3" ) ) {
-////				entityGui = 3;
-////			} else {
-////				gui = uiManager.FindGui( token.c_str(), true );
-////			}
-////			continue;
-////		}
-////		// sort
-////		else if ( !token.Icmp( "sort" ) ) {
-////			ParseSort( src );
-////			continue;
-////		}
-////		// spectrum <integer>
-////		else if ( !token.Icmp( "spectrum" ) ) {
-////			src.ReadTokenOnLine( &token );
-////			spectrum = atoi( token.c_str() );
-////			continue;
-////		}
-////		// deform < sprite | tube | flare >
-////		else if ( !token.Icmp( "deform" ) ) {
-////			ParseDeform( src );
-////			continue;
-////		}
-////		// decalInfo <staySeconds> <fadeSeconds> ( <start rgb> ) ( <end rgb> )
-////		else if ( !token.Icmp( "decalInfo" ) ) {
-////			ParseDecalInfo( src );
-////			continue;
-////		}
-////		// renderbump <args...>
-////		else if ( !token.Icmp( "renderbump") ) {
-////			src.ParseRestOfLine( renderBump );
-////			continue;
-////		}
-////		// diffusemap for stage shortcut
-////		else if ( !token.Icmp( "diffusemap" ) ) {
-////			str = R_ParsePastImageProgram( src );
-////			idStr::snPrintf( buffer, sizeof( buffer ), "blend diffusemap\nmap %s\n}\n", str );
-////			newSrc.LoadMemory( buffer, strlen(buffer), "diffusemap" );
-////			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
-////			ParseStage( newSrc, trpDefault );
-////			newSrc.FreeSource();
-////			continue;
-////		}
-////		// specularmap for stage shortcut
-////		else if ( !token.Icmp( "specularmap" ) ) {
-////			str = R_ParsePastImageProgram( src );
-////			idStr::snPrintf( buffer, sizeof( buffer ), "blend specularmap\nmap %s\n}\n", str );
-////			newSrc.LoadMemory( buffer, strlen(buffer), "specularmap" );
-////			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
-////			ParseStage( newSrc, trpDefault );
-////			newSrc.FreeSource();
-////			continue;
-////		}
-////		// normalmap for stage shortcut
-////		else if ( !token.Icmp( "bumpmap" ) ) {
-////			str = R_ParsePastImageProgram( src );
-////			idStr::snPrintf( buffer, sizeof( buffer ), "blend bumpmap\nmap %s\n}\n", str );
-////			newSrc.LoadMemory( buffer, strlen(buffer), "bumpmap" );
-////			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
-////			ParseStage( newSrc, trpDefault );
-////			newSrc.FreeSource();
-////			continue;
-////		}
-////		// DECAL_MACRO for backwards compatibility with the preprocessor macros
-////		else if ( !token.Icmp( "DECAL_MACRO" ) ) {
-////			// polygonOffset
-////			SetMaterialFlag( MF_POLYGONOFFSET );
-////			polygonOffset = 1;
+			copy = str.clone();	// so other things don't step on it
+			this.lightFalloffImage = globalImages.ImageFromFile( copy, TF_DEFAULT, false, textureRepeat_t.TR_CLAMP /* TR_CLAMP_TO_ZERO */, textureDepth_t.TD_DEFAULT );
+			continue;
+		}
+		// guisurf <guifile> | guisurf entity
+		// an entity guisurf must have an idUserInterface
+		// specified in the renderEntity
+		else if ( !token.$.Icmp( "guisurf" ) ) {
+			src.ReadTokenOnLine( &token );
+			if ( !token.$.Icmp( "entity" ) ) {
+				this.entityGui = 1;
+			} else if ( !token.$.Icmp( "entity2" ) ) {
+				this.entityGui = 2;
+			} else if ( !token.$.Icmp( "entity3" ) ) {
+				this.entityGui = 3;
+			} else {
+				this.gui = uiManager.FindGui( token.$.c_str(), true );
+			}
+			continue;
+		}
+		// sort
+		else if ( !token.$.Icmp( "sort" ) ) {
+			this.ParseSort( src );
+			continue;
+		}
+		// spectrum <integer>
+		else if ( !token.$.Icmp( "spectrum" ) ) {
+			src.ReadTokenOnLine( token );
+			this.spectrum = atoi( token.$.c_str() );
+			continue;
+		}
+		// deform < sprite | tube | flare >
+		else if ( !token.$.Icmp( "deform" ) ) {
+			this.ParseDeform( src );
+			continue;
+		}
+		// decalInfo <staySeconds> <fadeSeconds> ( <start rgb> ) ( <end rgb> )
+		else if ( !token.$.Icmp( "decalInfo" ) ) {
+			this.ParseDecalInfo( src );
+			continue;
+		}
+		// renderbump <args...>
+		else if ( !token.$.Icmp( "renderbump") ) {
+			src.ParseRestOfLine( renderBump );
+			continue;
+		}
+		// diffusemap for stage shortcut
+		else if ( !token.$.Icmp( "diffusemap" ) ) {
+			str = R_ParsePastImageProgram( src );
+			idStr.snPrintf( buffer, sizeof( buffer ), "blend diffusemap\nmap %s\n}\n", str );
+			newSrc.LoadMemory( buffer, strlen(buffer), "diffusemap" );
+			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
+			ParseStage( newSrc, trpDefault );
+			newSrc.FreeSource();
+			continue;
+		}
+		// specularmap for stage shortcut
+		else if ( !token.$.Icmp( "specularmap" ) ) {
+			str = R_ParsePastImageProgram( src );
+			idStr.snPrintf( buffer, sizeof( buffer ), "blend specularmap\nmap %s\n}\n", str );
+			newSrc.LoadMemory( buffer, strlen(buffer), "specularmap" );
+			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
+			this.ParseStage( newSrc, trpDefault );
+			newSrc.FreeSource();
+			continue;
+		}
+		// normalmap for stage shortcut
+		else if ( !token.$.Icmp( "bumpmap" ) ) {
+			str = R_ParsePastImageProgram( src );
+			idStr.snPrintf( buffer, sizeof( buffer ), "blend bumpmap\nmap %s\n}\n", str );
+			newSrc.LoadMemory( buffer, strlen(buffer), "bumpmap" );
+			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
+			ParseStage( newSrc, trpDefault );
+			newSrc.FreeSource();
+			continue;
+		}
+		// DECAL_MACRO for backwards compatibility with the preprocessor macros
+		else if ( !token.$.Icmp( "DECAL_MACRO" ) ) {
+			// polygonOffset
+			this.SetMaterialFlag( materialFlags_t.MF_POLYGONOFFSET );
+			this.polygonOffset = 1;
 
-////			// discrete
-////			surfaceFlags |= SURF_DISCRETE;
-////			contentFlags &= ~CONTENTS_SOLID;
+			// discrete
+			this.surfaceFlags |= surfaceFlags_t.SURF_DISCRETE;
+			this.contentFlags &= ~contentsFlags_t.CONTENTS_SOLID;
 
-////			// sort decal
-////			sort = SS_DECAL;
+			// sort decal
+			this.sort = materialSort_t.SS_DECAL;
 
-////			// noShadows
-////			SetMaterialFlag( MF_NOSHADOWS );
-////			continue;
-////		}
-////		else if ( token == "{" ) {
-////			// create the new stage
-////			ParseStage( src, trpDefault );
-////			continue;
-////		}
-////		else {
-////			common.Warning( "unknown general material parameter '%s' in '%s'", token.c_str(), GetName() );
-////			SetMaterialFlag( MF_DEFAULTED );
-////			return;
-////		}
-////	}
+			// noShadows
+			this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
+			continue;
+		}
+		else if ( token.$.data == "{" ) {
+			// create the new stage
+			this.ParseStage( src, trpDefault );
+			continue;
+		}
+		else {
+			common.Warning( "unknown general material parameter '%s' in '%s'", token.$.c_str(), this.GetName() );
+			this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+			return;
+		}
+	}
 
-////	// add _flat or _white stages if needed
-////	AddImplicitStages();
+	// add _flat or _white stages if needed
+	this.AddImplicitStages();
 
-////	// order the diffuse / bump / specular stages properly
-////	SortInteractionStages();
+	// order the diffuse / bump / specular stages properly
+		this.SortInteractionStages();
 
-////	// if we need to do anything with normals (lighting or environment mapping)
-////	// and two sided lighting was asked for, flag
-////	// shouldCreateBackSides() and change culling back to single sided,
-////	// so we get proper tangent vectors on both sides
+	// if we need to do anything with normals (lighting or environment mapping)
+	// and two sided lighting was asked for, flag
+	// shouldCreateBackSides() and change culling back to single sided,
+	// so we get proper tangent vectors on both sides
 
-////	// we can't just call ReceivesLighting(), because the stages are still
-////	// in temporary form
-////	if ( cullType == CT_TWO_SIDED ) {
-////		for ( i = 0 ; i < numStages ; i++ ) {
-////			if ( pd.parseStages[i].lighting != SL_AMBIENT || pd.parseStages[i].texture.texgen != TG_EXPLICIT ) {
-////				if ( cullType == CT_TWO_SIDED ) {
-////					cullType = CT_FRONT_SIDED;
-////					shouldCreateBackSides = true;
-////				}
-////				break;
-////			}
-////		}
-////	}
+	// we can't just call ReceivesLighting(), because the stages are still
+	// in temporary form
+	if ( this.cullType == cullType_t.CT_TWO_SIDED ) {
+		for ( i = 0 ; i < this.numStages ; i++ ) {
+			if (this.pd.parseStages[i].lighting != stageLighting_t.SL_AMBIENT || this.pd.parseStages[i].texture.texgen != texgen_t.TG_EXPLICIT ) {
+				if ( this.cullType == cullType_t.CT_TWO_SIDED ) {
+					this.cullType = cullType_t.CT_FRONT_SIDED;
+					this.shouldCreateBackSides = true;
+				}
+				break;
+			}
+		}
+	}
 
-////	// currently a surface can only have one unique texgen for all the stages on old hardware
-////	texgen_t firstGen = TG_EXPLICIT;
-////	for ( i = 0; i < numStages; i++ ) {
-////		if ( pd.parseStages[i].texture.texgen != TG_EXPLICIT ) {
-////			if ( firstGen == TG_EXPLICIT ) {
-////				firstGen = pd.parseStages[i].texture.texgen;
-////			} else if ( firstGen != pd.parseStages[i].texture.texgen ) {
-////				common.Warning( "material '%s' has multiple stages with a texgen", GetName() );
-////				break;
-////			}
-////		}
-////	}
-////}
+	// currently a surface can only have one unique texgen for all the stages on old hardware
+		var firstGen = texgen_t.TG_EXPLICIT;
+	for ( i = 0; i < this.numStages; i++ ) {
+		if ( this.pd.parseStages[i].texture.texgen != texgen_t.TG_EXPLICIT ) {
+			if ( firstGen == texgen_t.TG_EXPLICIT ) {
+				firstGen = this.pd.parseStages[i].texture.texgen;
+			} else if ( firstGen != this.pd.parseStages[i].texture.texgen ) {
+				common.Warning( "material '%s' has multiple stages with a texgen", GetName() );
+				break;
+			}
+		}
+	}
+}
 
 /////*
 ////=========================
@@ -2146,12 +2159,12 @@ Parses the current material definition and finds all necessary images.
 	// reset to the unparsed state
 	this.CommonInit();
 	debugger;
-//	memset( &parsingData, 0, sizeof( parsingData ) );
+	parsingData = new mtrParsingData_t;//	memset( &parsingData, 0, sizeof( parsingData ) );
 
-//	pd = &parsingData;	// this is only valid during parse
+	this.pd = parsingData;	// this is only valid during parse
 
-//	// parse it
-//	ParseMaterial( src );
+	// parse it
+	this.ParseMaterial( src );
 
 //	// if we are doing an fs_copyfiles, also reference the editorImage
 //	if ( cvarSystem.GetCVarInteger( "fs_copyFiles" ) ) {
@@ -2162,8 +2175,8 @@ Parses the current material definition and finds all necessary images.
 //	// count non-lit stages
 //	numAmbientStages = 0;
 //	int i;
-//	for ( i = 0 ; i < numStages ; i++ ) {
-//		if ( pd.parseStages[i].lighting == SL_AMBIENT ) {
+//	for ( i = 0 ; i < this.numStages ; i++ ) {
+//		if ( this.pd.parseStages[i].lighting == SL_AMBIENT ) {
 //			numAmbientStages++;
 //		}
 //	}
@@ -2173,57 +2186,57 @@ Parses the current material definition and finds all necessary images.
 //		hasSubview = true;
 //	} else {
 //		hasSubview = false;
-//		for ( i = 0 ; i < numStages ; i++ ) {
-//			if ( pd.parseStages[i].texture.dynamic ) {
+//		for ( i = 0 ; i < this.numStages ; i++ ) {
+//			if ( this.pd.parseStages[i].texture.dynamic ) {
 //				hasSubview = true;
 //			}
 //		}
 //	}
 
 //	// automatically determine coverage if not explicitly set
-//	if ( coverage == MC_BAD ) {
+//	if ( this.coverage == materialCoverage_t.MC_BAD ) {
 //		// automatically set MC_TRANSLUCENT if we don't have any interaction stages and 
 //		// the first stage is blended and not an alpha test mask or a subview
-//		if ( !numStages ) {
+//		if ( !this.numStages ) {
 //			// non-visible
-//			coverage = MC_TRANSLUCENT;
-//		} else if ( numStages != numAmbientStages ) {
+//			this.coverage = materialFlags_t.MC_TRANSLUCENT;
+//		} else if ( this.numStages != numAmbientStages ) {
 //			// we have an interaction draw
-//			coverage = MC_OPAQUE;
+//			this.coverage = materialCoverage_t.MC_OPAQUE;
 //		} else if ( 
-//			( pd.parseStages[0].drawStateBits & GLS_DSTBLEND_BITS ) != GLS_DSTBLEND_ZERO ||
-//			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_COLOR ||
-//			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_COLOR ||
-//			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_ALPHA ||
-//			( pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_ALPHA
+//			( this.pd.parseStages[0].drawStateBits & GLS_DSTBLEND_BITS ) != GLS_DSTBLEND_ZERO ||
+//			( this.pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_COLOR ||
+//			( this.pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_COLOR ||
+//			( this.pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_ALPHA ||
+//			( this.pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_ALPHA
 //			) {
 //			// blended with the destination
-//				coverage = MC_TRANSLUCENT;
+//				this.coverage = materialFlags_t.MC_TRANSLUCENT;
 //		} else {
-//			coverage = MC_OPAQUE;
+//			this.coverage = materialCoverage_t.MC_OPAQUE;
 //		}
 //	}
 
 //	// translucent automatically implies noshadows
-//	if ( coverage == MC_TRANSLUCENT ) {
-//		SetMaterialFlag( MF_NOSHADOWS );
+//	if ( this.coverage == materialFlags_t.MC_TRANSLUCENT ) {
+//		this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
 //	} else {
 //		// mark the contents as opaque
 //		contentFlags |= CONTENTS_OPAQUE;
 //	}
 
 //	// if we are translucent, draw with an alpha in the editor
-//	if ( coverage == MC_TRANSLUCENT ) {
+//	if ( this.coverage == materialFlags_t.MC_TRANSLUCENT ) {
 //		editorAlpha = 0.5;
 //	} else {
 //		editorAlpha = 1.0;
 //	}
 
 //	// the sorts can make reasonable defaults
-//	if ( sort == SS_BAD ) {
-//		if ( TestMaterialFlag(MF_POLYGONOFFSET) ) {
+//	if ( sort == materialSort_t.SS_BAD ) {
+//		if ( TestMaterialFlag(materialFlags_t.MF_POLYGONOFFSET) ) {
 //			sort = SS_DECAL;
-//		} else if ( coverage == MC_TRANSLUCENT ) {
+//		} else if ( this.coverage == materialFlags_t.MC_TRANSLUCENT ) {
 //			sort = SS_MEDIUM;
 //		} else {
 //			sort = SS_OPAQUE;
@@ -2233,12 +2246,12 @@ Parses the current material definition and finds all necessary images.
 //	// anything that references _currentRender will automatically get sort = SS_POST_PROCESS
 //	// and coverage = MC_TRANSLUCENT
 
-//	for ( i = 0 ; i < numStages ; i++ ) {
-//		shaderStage_t	*pStage = &pd.parseStages[i];
+//	for ( i = 0 ; i < this.numStages ; i++ ) {
+//		shaderStage_t	*pStage = &this.pd.parseStages[i];
 //		if ( pStage.texture.image == globalImages.currentRenderImage ) {
 //			if ( sort != SS_PORTAL_SKY ) {
 //				sort = SS_POST_PROCESS;
-//				coverage = MC_TRANSLUCENT;
+//				this.coverage = materialFlags_t.MC_TRANSLUCENT;
 //			}
 //			break;
 //		}
@@ -2247,9 +2260,9 @@ Parses the current material definition and finds all necessary images.
 //				if ( pStage.newStage.fragmentProgramImages[j] == globalImages.currentRenderImage ) {
 //					if ( sort != SS_PORTAL_SKY ) {
 //						sort = SS_POST_PROCESS;
-//						coverage = MC_TRANSLUCENT;
+//						this.coverage = materialFlags_t.MC_TRANSLUCENT;
 //					}
-//					i = numStages;
+//					i = this.numStages;
 //					break;
 //				}
 //			}
@@ -2257,13 +2270,13 @@ Parses the current material definition and finds all necessary images.
 //	}
 
 //	// set the drawStateBits depth flags
-//	for ( i = 0 ; i < numStages ; i++ ) {
-//		shaderStage_t	*pStage = &pd.parseStages[i];
+//	for ( i = 0 ; i < this.numStages ; i++ ) {
+//		shaderStage_t	*pStage = &this.pd.parseStages[i];
 //		if ( sort == SS_POST_PROCESS ) {
 //			// post-process effects fill the depth buffer as they draw, so only the
 //			// topmost post-process effect is rendered
 //			pStage.drawStateBits |= GLS_DEPTHFUNC_LESS;
-//		} else if ( coverage == MC_TRANSLUCENT || pStage.ignoreAlphaTest ) {
+//		} else if ( this.coverage == materialFlags_t.MC_TRANSLUCENT || pStage.ignoreAlphaTest ) {
 //			// translucent surfaces can extend past the exactly marked depth buffer
 //			pStage.drawStateBits |= GLS_DEPTHFUNC_LESS | GLS_DEPTHMASK;
 //		} else {
@@ -2275,14 +2288,14 @@ Parses the current material definition and finds all necessary images.
 
 //	// determine if this surface will accept overlays / decals
 
-//	if ( pd.forceOverlays ) {
+//	if ( this.pd.forceOverlays ) {
 //		// explicitly flaged in material definition
 //		allowOverlays = true;
 //	} else {
 //		if ( !IsDrawn() ) {
 //			allowOverlays = false;
 //		}
-//		if ( Coverage() != MC_OPAQUE ) {
+//		if ( Coverage() != materialCoverage_t.MC_OPAQUE ) {
 //			allowOverlays = false;
 //		}
 //		if ( GetSurfaceFlags() & SURF_NOIMPACT ) {
@@ -2306,29 +2319,29 @@ Parses the current material definition and finds all necessary images.
 //	}
 //*/
 
-//	if (numStages) {
-//		stages = (shaderStage_t *)R_StaticAlloc( numStages * sizeof( stages[0] ) );
-//		memcpy( stages, pd.parseStages, numStages * sizeof( stages[0] ) );
+//	if (this.numStages) {
+//		stages = (shaderStage_t *)R_StaticAlloc( this.numStages * sizeof( stages[0] ) );
+//		memcpy( stages, this.pd.parseStages, this.numStages * sizeof( stages[0] ) );
 //	}
 
-//	if ( numOps ) {
-//		ops = (expOp_t *)R_StaticAlloc( numOps * sizeof( ops[0] ) );
-//		memcpy( ops, pd.shaderOps, numOps * sizeof( ops[0] ) );
+//	if ( this.numOps ) {
+//		ops = (expOp_t *)R_StaticAlloc( this.numOps * sizeof( ops[0] ) );
+//		memcpy( ops, this.pd.shaderOps, this.numOps * sizeof( ops[0] ) );
 //	}
 
-//	if ( numRegisters ) {
-//		expressionRegisters = (float *)R_StaticAlloc( numRegisters * sizeof( expressionRegisters[0] ) );
-//		memcpy( expressionRegisters, pd.shaderRegisters, numRegisters * sizeof( expressionRegisters[0] ) );
+//	if ( this.numRegisters ) {
+//		expressionRegisters = (float *)R_StaticAlloc( this.numRegisters * sizeof( expressionRegisters[0] ) );
+//		memcpy( expressionRegisters, this.pd.shaderRegisters, this.numRegisters * sizeof( expressionRegisters[0] ) );
 //	}
 
 //	// see if the registers are completely constant, and don't need to be evaluated
 //	// per-surface
 //	CheckForConstantRegisters();
 
-//	pd = NULL;	// the pointer will be invalid after exiting this function
+//	this.pd = NULL;	// the pointer will be invalid after exiting this function
 
 //	// finish things up
-//	if ( TestMaterialFlag( MF_DEFAULTED ) ) {
+//	if ( TestMaterialFlag( materialFlags_t.MF_DEFAULTED ) ) {
 //		MakeDefault();
 //		return false;
 //	}
@@ -2360,11 +2373,11 @@ Parses the current material definition and finds all necessary images.
 ////void idMaterial::Print() const {
 ////	int			i;
 
-////	for ( i = EXP_REG_NUM_PREDEFINED ; i < GetNumRegisters() ; i++ ) {
+////	for ( i = expRegister_t.EXP_REG_NUM_PREDEFINED ; i < GetNumRegisters() ; i++ ) {
 ////		common.Printf( "register %i: %f\n", i, expressionRegisters[i] );
 ////	}
 ////	common.Printf( "\n" );
-////	for ( i = 0 ; i < numOps ; i++ ) {
+////	for ( i = 0 ; i < this.numOps ; i++ ) {
 ////		const expOp_t *op = &ops[i];
 ////		if ( op.opType == OP_TYPE_TABLE ) {
 ////			common.Printf( "%i = %s[ %i ]\n", op.c, declManager.DeclByIndex( DECL_TABLE, op.a ).GetName(), op.b );
@@ -2391,7 +2404,7 @@ Parses the current material definition and finds all necessary images.
 ////void idMaterial::AddReference() {
 ////	refCount++;
 
-////	for ( int i = 0; i < numStages; i++ ) {
+////	for ( int i = 0; i < this.numStages; i++ ) {
 ////		shaderStage_t *s = &stages[i];
 
 ////		if ( s.texture.image ) {
@@ -2415,7 +2428,7 @@ Parses the current material definition and finds all necessary images.
 ////	expOp_t	*op;
 
 ////	// copy the material constants
-////	for ( i = EXP_REG_NUM_PREDEFINED ; i < numRegisters ; i++ ) {
+////	for ( i = expRegister_t.EXP_REG_NUM_PREDEFINED ; i < this.numRegisters ; i++ ) {
 ////		registers[i] = expressionRegisters[i];
 ////	}
 
@@ -2443,7 +2456,7 @@ Parses the current material definition and finds all necessary images.
 ////	registers[EXP_REG_GLOBAL7] = view.renderView.shaderParms[7];
 
 ////	op = ops;
-////	for ( i = 0 ; i < numOps ; i++, op++ ) {
+////	for ( i = 0 ; i < this.numOps ; i++, op++ ) {
 ////		switch( op.opType ) {
 ////		case OP_TYPE_ADD:
 ////			registers[op.c] = registers[op.a] + registers[op.b];
@@ -2513,14 +2526,14 @@ Parses the current material definition and finds all necessary images.
 ////*/
 ////texgen_t idMaterial::Texgen() const {
 ////	if ( stages ) {
-////		for ( int i = 0; i < numStages; i++ ) {
-////			if ( stages[ i ].texture.texgen != TG_EXPLICIT ) {
+////		for ( int i = 0; i < this.numStages; i++ ) {
+////			if ( stages[ i ].texture.texgen != texgen_t.TG_EXPLICIT ) {
 ////				return stages[ i ].texture.texgen;
 ////			}
 ////		}
 ////	}
 	
-////	return TG_EXPLICIT;
+////	return texgen_t.TG_EXPLICIT;
 ////}
 
 /////*
@@ -2573,7 +2586,7 @@ Parses the current material definition and finds all necessary images.
 ////=============
 ////*/
 ////void idMaterial::CloseCinematic( void ) const {
-////	for( int i = 0; i < numStages; i++ ) {
+////	for( int i = 0; i < this.numStages; i++ ) {
 ////		if ( stages[i].texture.cinematic ) {
 ////			stages[i].texture.cinematic.Close();
 ////			delete stages[i].texture.cinematic;
@@ -2588,7 +2601,7 @@ Parses the current material definition and finds all necessary images.
 ////=============
 ////*/
 ////void idMaterial::ResetCinematicTime( int time ) const {
-////	for( int i = 0; i < numStages; i++ ) {
+////	for( int i = 0; i < this.numStages; i++ ) {
 ////		if ( stages[i].texture.cinematic ) {
 ////			stages[i].texture.cinematic.ResetTime( time );
 ////		}
@@ -2618,7 +2631,7 @@ Parses the current material definition and finds all necessary images.
 ////*/
 ////static int	c_constant, c_variable;
 ////void idMaterial::CheckForConstantRegisters() {
-////	if ( !pd.registersAreConstant ) {
+////	if ( !this.pd.registersAreConstant ) {
 ////		return;
 ////	}
 
@@ -2639,7 +2652,7 @@ Parses the current material definition and finds all necessary images.
 ////===================
 ////*/
 ////const char *idMaterial::ImageName( void ) const {
-////	if ( numStages == 0 ) {
+////	if ( this.numStages == 0 ) {
 ////		return "_scratch";
 ////	}
 ////	idImage	*image = stages[0].texture.image;
@@ -2657,7 +2670,7 @@ Parses the current material definition and finds all necessary images.
 ////===================
 ////*/
 ////void idMaterial::SetImageClassifications( int tag ) const {
-////	for ( int i = 0 ; i < numStages ; i++ ) {
+////	for ( int i = 0 ; i < this.numStages ; i++ ) {
 ////		idImage	*image = stages[i].texture.image;
 ////		if ( image ) {
 ////			image.SetClassification( tag );
@@ -2722,7 +2735,7 @@ Parses the current material definition and finds all necessary images.
 ////===================
 ////*/
 ////const shaderStage_t *idMaterial::GetBumpStage( void ) const {
-////	for ( int i = 0 ; i < numStages ; i++ ) {
+////	for ( int i = 0 ; i < this.numStages ; i++ ) {
 ////		if ( stages[i].lighting == SL_BUMP ) {
 ////			return &stages[i];
 ////		}
@@ -2737,7 +2750,7 @@ Parses the current material definition and finds all necessary images.
 ////*/
 ////void idMaterial::ReloadImages( bool force ) const
 ////{
-////	for ( int i = 0 ; i < numStages ; i++ ) {
+////	for ( int i = 0 ; i < this.numStages ; i++ ) {
 ////		if ( stages[i].newStage ) {
 ////			for ( int j = 0 ; j < stages[i].newStage.numFragmentProgramImages ; j++ ) {
 ////				if ( stages[i].newStage.fragmentProgramImages[j] ) {
@@ -2750,6 +2763,253 @@ Parses the current material definition and finds all necessary images.
 ////	}
 ////}
 
+
+//public:
+//						idMaterial();
+//	virtual				~idMaterial();
+
+//	virtual size_t		Size( void ) const;
+//	virtual bool		SetDefaultText( void );
+//	virtual const char *DefaultDefinition( void ) const;
+//	virtual bool		Parse( const char *text, const int textLength );
+//	virtual void		FreeData( void );
+//	virtual void		Print( void ) const;
+
+//	//BSM Nerve: Added for material editor
+//	bool				Save( const char *fileName = NULL );
+
+//						// returns the internal image name for stage 0, which can be used
+//						// for the renderer CaptureRenderToImage() call
+//						// I'm not really sure why this needs to be virtual...
+//	virtual const char	*ImageName( void ) const;
+
+//	void				ReloadImages( bool force ) const;
+
+//						// returns number of stages this material contains
+//	const int			GetNumStages( void ) const { return numStages; }
+
+//						// get a specific stage
+//	const shaderStage_t *GetStage( const int index ) const { assert(index >= 0 && index < numStages); return &stages[index]; }
+
+//						// get the first bump map stage, or NULL if not present.
+//						// used for bumpy-specular
+//	const shaderStage_t *GetBumpStage( void ) const;
+
+//						// returns true if the material will draw anything at all.  Triggers, portals,
+//						// etc, will not have anything to draw.  A not drawn surface can still castShadow,
+//						// which can be used to make a simplified shadow hull for a complex object set
+//						// as noShadow
+//	bool				IsDrawn( void ) const { return ( numStages > 0 || entityGui != 0 || gui != NULL ); }
+
+//						// returns true if the material will draw any non light interaction stages
+//	bool				HasAmbient( void ) const { return ( numAmbientStages > 0 ); }
+
+//						// returns true if material has a gui
+//	bool				HasGui( void ) const { return ( entityGui != 0 || gui != NULL ); }
+
+//						// returns true if the material will generate another view, either as
+//						// a mirror or dynamic rendered image
+//	bool				HasSubview( void ) const { return hasSubview; }
+
+//						// returns true if the material will generate shadows, not making a
+//						// distinction between global and no-self shadows
+//	bool				SurfaceCastsShadow( void ) const { return TestMaterialFlag( MF_FORCESHADOWS ) || !TestMaterialFlag( MF_NOSHADOWS ); }
+
+//						// returns true if the material will generate interactions with fog/blend lights
+//						// All non-translucent surfaces receive fog unless they are explicitly noFog
+//	bool				ReceivesFog( void ) const { return ( IsDrawn() && !noFog && coverage != MC_TRANSLUCENT ); }
+
+//						// returns true if the material will generate interactions with normal lights
+//						// Many special effect surfaces don't have any bump/diffuse/specular
+//						// stages, and don't interact with lights at all
+//	bool				ReceivesLighting( void ) const { return numAmbientStages != numStages; }
+
+//						// returns true if the material should generate interactions on sides facing away
+//						// from light centers, as with noshadow and noselfshadow options
+//	bool				ReceivesLightingOnBackSides( void ) const { return ( materialFlags & (MF_NOSELFSHADOW|MF_NOSHADOWS) ) != 0; }
+
+//						// Standard two-sided triangle rendering won't work with bump map lighting, because
+//						// the normal and tangent vectors won't be correct for the back sides.  When two
+//						// sided lighting is desired. typically for alpha tested surfaces, this is
+//						// addressed by having CleanupModelSurfaces() create duplicates of all the triangles
+//						// with apropriate order reversal.
+//	bool				ShouldCreateBackSides( void ) const { return shouldCreateBackSides; }
+
+//						// characters and models that are created by a complete renderbump can use a faster
+//						// method of tangent and normal vector generation than surfaces which have a flat
+//						// renderbump wrapped over them.
+//	bool				UseUnsmoothedTangents( void ) const { return unsmoothedTangents; }
+
+//						// by default, monsters can have blood overlays placed on them, but this can
+//						// be overrided on a per-material basis with the "noOverlays" material command.
+//						// This will always return false for translucent surfaces
+//	bool				AllowOverlays( void ) const { return allowOverlays; }
+
+//						// MC_OPAQUE, MC_PERFORATED, or MC_TRANSLUCENT, for interaction list linking and
+//						// dmap flood filling
+//						// The depth buffer will not be filled for MC_TRANSLUCENT surfaces
+//						// FIXME: what do nodraw surfaces return?
+//	materialCoverage_t	Coverage( void ) const { return coverage; }
+
+//						// returns true if this material takes precedence over other in coplanar cases
+//	bool				HasHigherDmapPriority( const idMaterial &other ) const { return ( IsDrawn() && !other.IsDrawn() ) ||
+//																						( Coverage() < other.Coverage() ); }
+
+//						// returns a idUserInterface if it has a global gui, or NULL if no gui
+//	idUserInterface	*	GlobalGui( void ) const { return gui; }
+
+//						// a discrete surface will never be merged with other surfaces by dmap, which is
+//						// necessary to prevent mutliple gui surfaces, mirrors, autosprites, and some other
+//						// special effects from being combined into a single surface
+//						// guis, merging sprites or other effects, mirrors and remote views are always discrete
+//	bool				IsDiscrete( void ) const { return ( entityGui || gui || deform != DFRM_NONE || sort == SS_SUBVIEW ||
+//												( surfaceFlags & SURF_DISCRETE ) != 0 ); }
+
+//						// Normally, dmap chops each surface by every BSP boundary, then reoptimizes.
+//						// For gigantic polygons like sky boxes, this can cause a huge number of planar
+//						// triangles that make the optimizer take forever to turn back into a single
+//						// triangle.  The "noFragment" option causes dmap to only break the polygons at
+//						// area boundaries, instead of every BSP boundary.  This has the negative effect
+//						// of not automatically fixing up interpenetrations, so when this is used, you
+//						// should manually make the edges of your sky box exactly meet, instead of poking
+//						// into each other.
+//	bool				NoFragment( void ) const { return ( surfaceFlags & SURF_NOFRAGMENT ) != 0; }
+
+//	//------------------------------------------------------------------
+//	// light shader specific functions, only called for light entities
+
+//						// lightshader option to fill with fog from viewer instead of light from center
+//	bool				IsFogLight() const { return fogLight; }
+
+//						// perform simple blending of the projection, instead of interacting with bumps and textures
+//	bool				IsBlendLight() const { return blendLight; }
+
+//						// an ambient light has non-directional bump mapping and no specular
+//	bool				IsAmbientLight() const { return ambientLight; }
+
+//						// implicitly no-shadows lights (ambients, fogs, etc) will never cast shadows
+//						// but individual light entities can also override this value
+//	bool				LightCastsShadows() const { return TestMaterialFlag( MF_FORCESHADOWS ) ||
+//								( !fogLight && !ambientLight && !blendLight && !TestMaterialFlag( MF_NOSHADOWS ) ); }
+
+//						// fog lights, blend lights, ambient lights, etc will all have to have interaction
+//						// triangles generated for sides facing away from the light as well as those
+//						// facing towards the light.  It is debatable if noshadow lights should effect back
+//						// sides, making everything "noSelfShadow", but that would make noshadow lights
+//						// potentially slower than normal lights, which detracts from their optimization
+//						// ability, so they currently do not.
+//	bool				LightEffectsBackSides() const { return fogLight || ambientLight || blendLight; }
+
+//						// NULL unless an image is explicitly specified in the shader with "lightFalloffShader <image>"
+//	idImage	*			LightFalloffImage() const { return lightFalloffImage; }
+
+//	//------------------------------------------------------------------
+
+//						// returns the renderbump command line for this shader, or an empty string if not present
+//	const char *		GetRenderBump() const { return renderBump; };
+
+	// set specific material flag(s)
+	SetMaterialFlag ( /*const int */flag: number ): void { this.materialFlags |= flag; }
+
+//						// clear specific material flag(s)
+//	void				ClearMaterialFlag( const int flag ) const { materialFlags &= ~flag; }
+
+	// test for existance of specific material flag(s)
+	TestMaterialFlag( /*const int */flag:number ):boolean { return ( this.materialFlags & flag ) != 0; }
+
+//						// get content flags
+//	const int			GetContentFlags( void ) const { return contentFlags; }
+
+//						// get surface flags
+//	const int			GetSurfaceFlags( void ) const { return surfaceFlags; }
+
+//						// gets name for surface type (stone, metal, flesh, etc.)
+//	const surfTypes_t	GetSurfaceType( void ) const { return static_cast<surfTypes_t>( surfaceFlags & surfaceFlags_t.SURF_TYPE_MASK ); }
+
+//						// get material description
+//	const char *		GetDescription( void ) const { return desc; }
+
+//						// get sort order
+//	const float			GetSort( void ) const { return sort; }
+//						// this is only used by the gui system to force sorting order
+//						// on images referenced from tga's instead of materials. 
+//						// this is done this way as there are 2000 tgas the guis use
+//	void				SetSort( float s ) const { sort = s; };
+
+//						// DFRM_NONE, DFRM_SPRITE, etc
+//	deform_t			Deform( void ) const { return deform; }
+
+//						// flare size, expansion size, etc
+//	const int			GetDeformRegister( int index ) const { return deformRegisters[index]; }
+
+//						// particle system to emit from surface and table for turbulent
+//	const idDecl		*GetDeformDecl( void ) const { return deformDecl; }
+
+//						// currently a surface can only have one unique texgen for all the stages
+//	texgen_t			Texgen() const;
+
+//						// wobble sky parms
+//	const int *			GetTexGenRegisters( void ) const { return texGenRegisters; }
+
+//						// get cull type
+//	const cullType_t	GetCullType( void ) const { return cullType; }
+
+//	float				GetEditorAlpha( void ) const { return editorAlpha; }
+
+//	int					GetEntityGui( void ) const { return entityGui; }
+
+//	decalInfo_t			GetDecalInfo( void ) const { return decalInfo; }
+
+//						// spectrums are used for "invisible writing" that can only be
+//						// illuminated by a light of matching spectrum
+//	int					Spectrum( void ) const { return spectrum; }
+
+//	float				GetPolygonOffset( void ) const { return polygonOffset; }
+
+//	float				GetSurfaceArea( void ) const { return surfaceArea; }
+//	void				AddToSurfaceArea( float area ) { surfaceArea += area; }
+
+//	//------------------------------------------------------------------
+
+//						// returns the length, in milliseconds, of the videoMap on this material,
+//						// or zero if it doesn't have one
+//	int					CinematicLength( void ) const;
+
+//	void				CloseCinematic( void ) const;
+
+//	void				ResetCinematicTime( int time ) const;
+
+//	void				UpdateCinematic( int time ) const;
+
+//	//------------------------------------------------------------------
+
+//						// gets an image for the editor to use
+//	idImage *			GetEditorImage( void ) const;
+//	int					GetImageWidth( void ) const;
+//	int					GetImageHeight( void ) const;
+
+//	void				SetGui( const char *_gui ) const;
+
+//						// just for resource tracking
+//	void				SetImageClassifications( int tag ) const;
+
+//	//------------------------------------------------------------------
+
+//						// returns number of registers this material contains
+//	const int			GetNumRegisters() const { return numRegisters; }
+
+//						// regs should point to a float array large enough to hold GetNumRegisters() floats
+//	void				EvaluateRegisters( float *regs, const float entityParms[MAX_ENTITY_SHADER_PARMS], 
+//											const struct viewDef_s *view, idSoundEmitter *soundEmitter = NULL ) const;
+
+//						// if a material only uses constants (no entityParm or globalparm references), this
+//						// will return a pointer to an internal table, and EvaluateRegisters will not need
+//						// to be called.  If NULL is returned, EvaluateRegisters must be used.
+//	const float *		ConstantRegisters() const;
+
+//	bool				SuppressInSubview() const				{ return suppressInSubview; };
+//	bool				IsPortalSky() const						{ return portalSky; };
+//	void				AddReference();
 
 ////private:
 ////	// parse the entire material
@@ -2780,72 +3040,72 @@ Parses the current material definition and finds all necessary images.
 ////	void				AddImplicitStages( const textureRepeat_t trpDefault = textureRepeat_t.TR_REPEAT );
 ////	void				CheckForConstantRegisters();
 
-////private:
-////	idStr				desc;				// description
-////	idStr				renderBump;			// renderbump command options, without the "renderbump" at the start
+//private:
+	desc: idStr;				// description
+	renderBump: idStr;			// renderbump command options, without the "renderbump" at the start
 
-////	idImage	*			lightFalloffImage;
+	lightFalloffImage: idImage;
 
-////	int					entityGui;			// draw a gui with the idUserInterface from the renderEntity_t
-////											// non zero will draw gui, gui2, or gui3 from renderEnitty_t
-////	mutable idUserInterface	*gui;			// non-custom guis are shared by all users of a material
+	/*int					*/entityGui:number;			// draw a gui with the idUserInterface from the renderEntity_t
+											// non zero will draw gui, gui2, or gui3 from renderEnitty_t
+	/*mutable idUserInterface	**/gui: idUserInterface;			// non-custom guis are shared by all users of a material
 
-////	bool				noFog;				// surface does not create fog interactions
+	noFog:boolean;				// surface does not create fog interactions
 
-////	int					spectrum;			// for invisible writing, used for both lights and surfaces
+	/*int					*/spectrum:number;			// for invisible writing, used for both lights and surfaces
 
-////	float				polygonOffset;
+	/*float				*/polygonOffset:number;
 
-////	int					contentFlags;		// content flags
-////	int					surfaceFlags;		// surface flags
-////	mutable int			materialFlags;		// material flags
+	/*int					*/contentFlags:number;		// content flags
+	/*int					*/surfaceFlags:number;		// surface flags
+	/*mutable int			*/materialFlags: number;		// material flags
 
-////	decalInfo_t			decalInfo;
+	decalInfo: decalInfo_t;
 
 
-////	mutable	float		sort;				// lower numbered shaders draw before higher numbered
-////	deform_t			deform;
-////	int					deformRegisters[4];		// numeric parameter for deforms
-////	const idDecl		*deformDecl;			// for surface emitted particle deforms and tables
+	/*mutable	float		*/sort:number;				// lower numbered shaders draw before higher numbered
+	deform: deform_t;
+	deformRegisters:Int32Array/*[4]*/;		// numeric parameter for deforms
+	deformDecl: idDecl;			// for surface emitted particle deforms and tables
 
-////	int					texGenRegisters[MAX_TEXGEN_REGISTERS];	// for wobbleSky
+	texGenRegisters:Int32Array/*[MAX_TEXGEN_REGISTERS]*/;	// for wobbleSky
 
-////	materialCoverage_t	coverage;
-////	cullType_t			cullType;			// CT_FRONT_SIDED, CT_BACK_SIDED, or CT_TWO_SIDED
-////	bool				shouldCreateBackSides;
+	coverage: materialCoverage_t;
+	cullType: cullType_t;			// CT_FRONT_SIDED, CT_BACK_SIDED, or CT_TWO_SIDED
+	shouldCreateBackSides:boolean;
 
-////	bool				fogLight;
-////	bool				blendLight;
-////	bool				ambientLight;
-////	bool				unsmoothedTangents;
-////	bool				hasSubview;			// mirror, remote render, etc
-////	bool				allowOverlays;
+	fogLight:boolean;
+	blendLight:boolean;
+	ambientLight:boolean;
+	unsmoothedTangents:boolean;
+	hasSubview:boolean;			// mirror, remote render, etc
+	allowOverlays:boolean;
 
-////	int					numOps;
-////	expOp_t *			ops;				// evaluate to make expressionRegisters
+	/*int					*/numOps:number;
+	/*expOp_t *			*/ops: expOp_t[];				// evaluate to make expressionRegisters
 
-////	int					numRegisters;																			//
-////	float *				expressionRegisters;
+	/*int					*/numRegisters:number;																			
+	/*float *				*/expressionRegisters:Float32Array;
 
-////	float *				constantRegisters;	// NULL if ops ever reference globalParms or entityParms
+	/*float *				*/constantRegisters:Float32Array;	// NULL if ops ever reference globalParms or entityParms
 
-////	int					numStages;
-////	int					numAmbientStages;
+	/*int					*/numStages:number;
+	/*int					*/numAmbientStages:number;
 
-////	shaderStage_t *		stages;
+	/*shaderStage_t *		*/stages: shaderStage_t ;
 
-////	struct mtrParsingData_s	*pd;			// only used during parsing
+	/*struct mtrParsingData_s	**/pd: mtrParsingData_t;			// only used during parsing
 
-////	float				surfaceArea;		// only for listSurfaceAreas
+	/*float				*/surfaceArea:number;		// only for listSurfaceAreas
 
-////	// we defer loading of the editor image until it is asked for, so the game doesn't load up
-////	// all the invisible and uncompressed images.
-////	// If editorImage is NULL, it will atempt to load editorImageName, and set editorImage to that or defaultImage
-////	idStr				editorImageName;
-////	mutable idImage *	editorImage;		// image used for non-shaded preview
-////	float				editorAlpha;
+	// we defer loading of the editor image until it is asked for, so the game doesn't load up
+	// all the invisible and uncompressed images.
+	// If editorImage is NULL, it will atempt to load editorImageName, and set editorImage to that or defaultImage
+	editorImageName: idStr;
+	/*mutable idImage *	*/editorImage:idImage;		// image used for non-shaded preview
+	/*float				*/editorAlpha:number;
 
-////	bool				suppressInSubview;
-////	bool				portalSky;
-////	int					refCount;
+	/*bool				*/suppressInSubview:boolean;
+	/*bool				*/portalSky:boolean;
+	/*int					*/refCount:number;
 };

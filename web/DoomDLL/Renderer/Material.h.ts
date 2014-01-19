@@ -62,25 +62,31 @@ enum textureRepeat_t {
 	                        // set AFTER image format selection
 };
 
-////typedef struct {
-////	int		stayTime;		// msec for no change
-////	int		fadeTime;		// msec to fade vertex colors over
-////	float	start[4];		// vertex color at spawn (possibly out of 0.0 - 1.0 range, will clamp after calc)
-////	float	end[4];			// vertex color at fade-out (possibly out of 0.0 - 1.0 range, will clamp after calc)
-////} decalInfo_t;
+class decalInfo_t{
+	/*int		*/stayTime:number;		// msec for no change
+	/*int		*/fadeTime:number;		// msec to fade vertex colors over
+	/*float	*/start:Float32Array/*[4]*/;		// vertex color at spawn (possibly out of 0.0 - 1.0 range, will clamp after calc)
+	/*float	*/end: Float32Array/*[4]*/;			// vertex color at fade-out (possibly out of 0.0 - 1.0 range, will clamp after calc)
+	constructor ( ) {
+		this.stayTime = 0;
+		this.stayTime = 0;
+		this.start = new Float32Array(4);
+		this.end = new Float32Array(4);
+	}
+}
 
-////typedef enum {
-////	DFRM_NONE,
-////	DFRM_SPRITE,
-////	DFRM_TUBE,
-////	DFRM_FLARE,
-////	DFRM_EXPAND,
-////	DFRM_MOVE,
-////	DFRM_EYEBALL,
-////	DFRM_PARTICLE,
-////	DFRM_PARTICLE2,
-////	DFRM_TURB
-////} deform_t;
+enum deform_t {
+	DFRM_NONE,
+	DFRM_SPRITE,
+	DFRM_TUBE,
+	DFRM_FLARE,
+	DFRM_EXPAND,
+	DFRM_MOVE,
+	DFRM_EYEBALL,
+	DFRM_PARTICLE,
+	DFRM_PARTICLE2,
+	DFRM_TURB
+}
 
 ////typedef enum {
 ////	DI_STATIC,
@@ -110,53 +116,53 @@ enum textureRepeat_t {
 ////	OP_TYPE_SOUND
 ////} expOpType_t;
 
-////typedef enum {
-////	EXP_REG_TIME,
+enum expRegister_t {
+	EXP_REG_TIME,
 
-////	EXP_REG_PARM0,
-////	EXP_REG_PARM1,
-////	EXP_REG_PARM2,
-////	EXP_REG_PARM3,
-////	EXP_REG_PARM4,
-////	EXP_REG_PARM5,
-////	EXP_REG_PARM6,
-////	EXP_REG_PARM7,
-////	EXP_REG_PARM8,
-////	EXP_REG_PARM9,
-////	EXP_REG_PARM10,
-////	EXP_REG_PARM11,
+	EXP_REG_PARM0,
+	EXP_REG_PARM1,
+	EXP_REG_PARM2,
+	EXP_REG_PARM3,
+	EXP_REG_PARM4,
+	EXP_REG_PARM5,
+	EXP_REG_PARM6,
+	EXP_REG_PARM7,
+	EXP_REG_PARM8,
+	EXP_REG_PARM9,
+	EXP_REG_PARM10,
+	EXP_REG_PARM11,
 
-////	EXP_REG_GLOBAL0,
-////	EXP_REG_GLOBAL1,
-////	EXP_REG_GLOBAL2,
-////	EXP_REG_GLOBAL3,
-////	EXP_REG_GLOBAL4,
-////	EXP_REG_GLOBAL5,
-////	EXP_REG_GLOBAL6,
-////	EXP_REG_GLOBAL7,
+	EXP_REG_GLOBAL0,
+	EXP_REG_GLOBAL1,
+	EXP_REG_GLOBAL2,
+	EXP_REG_GLOBAL3,
+	EXP_REG_GLOBAL4,
+	EXP_REG_GLOBAL5,
+	EXP_REG_GLOBAL6,
+	EXP_REG_GLOBAL7,
 
-////	EXP_REG_NUM_PREDEFINED
-////} expRegister_t;
+	EXP_REG_NUM_PREDEFINED
+};
 
-////typedef struct {
+class expOp_t {
 ////	expOpType_t		opType;	
 ////	int				a, b, c;
-////} expOp_t;
+};
 
-////typedef struct {
+class colorStage_t{
 ////	int				registers[4];
-////} colorStage_t;
+};
 
-////typedef enum {
-////	TG_EXPLICIT,
-////	TG_DIFFUSE_CUBE,
-////	TG_REFLECT_CUBE,
-////	TG_SKYBOX_CUBE,
-////	TG_WOBBLESKY_CUBE,
-////	TG_SCREEN,			// screen aligned, for mirrorRenders and screen space temporaries
-////	TG_SCREEN2,
-////	TG_GLASSWARP
-////} texgen_t;
+enum texgen_t {
+	TG_EXPLICIT,
+	TG_DIFFUSE_CUBE,
+	TG_REFLECT_CUBE,
+	TG_SKYBOX_CUBE,
+	TG_WOBBLESKY_CUBE,
+	TG_SCREEN,			// screen aligned, for mirrorRenders and screen space temporaries
+	TG_SCREEN2,
+	TG_GLASSWARP
+};
 
 ////typedef struct {
 ////	idCinematic *		cinematic;
@@ -171,13 +177,13 @@ enum textureRepeat_t {
 ////	int					dynamicFrameCount;
 ////} textureStage_t;
 
-////// the order BUMP / DIFFUSE / SPECULAR is necessary for interactions to draw correctly on low end cards
-////typedef enum {
-////	SL_AMBIENT,						// execute after lighting
-////	SL_BUMP,
-////	SL_DIFFUSE,
-////	SL_SPECULAR
-////} stageLighting_t;
+// the order BUMP / DIFFUSE / SPECULAR is necessary for interactions to draw correctly on low end cards
+enum stageLighting_t {
+	SL_AMBIENT,						// execute after lighting
+	SL_BUMP,
+	SL_DIFFUSE,
+	SL_SPECULAR
+};
 
 ////// cross-blended terrain textures need to modulate the color by
 ////// the vertex color to smoothly blend between two textures
@@ -190,7 +196,7 @@ enum textureRepeat_t {
 ////static const int	MAX_FRAGMENT_IMAGES = 8;
 ////static const int	MAX_VERTEX_PARMS = 4;
 
-////typedef struct {
+class newShaderStage_t {
 ////	int					vertexProgram;
 ////	int					numVertexParms;
 ////	int					vertexParms[MAX_VERTEX_PARMS][4];	// evaluated register indexes
@@ -200,144 +206,144 @@ enum textureRepeat_t {
 ////	idImage *			fragmentProgramImages[MAX_FRAGMENT_IMAGES];
 
 ////	idMegaTexture		*megaTexture;		// handles all the binding and parameter setting 
-////} newShaderStage_t;
+};
 
-////typedef struct {
-////	int					conditionRegister;	// if registers[conditionRegister] == 0, skip stage
-////	stageLighting_t		lighting;			// determines which passes interact with lights
-////	int					drawStateBits;
-////	colorStage_t		color;
-////	bool				hasAlphaTest;
-////	int					alphaTestRegister;
-////	textureStage_t		texture;
-////	stageVertexColor_t	vertexColor;
-////	bool				ignoreAlphaTest;	// this stage should act as translucent, even
-////											// if the surface is alpha tested
-////	float				privatePolygonOffset;	// a per-stage polygon offset
+class shaderStage_t {
+	/*int					*/conditionRegister:number;	// if registers[conditionRegister] == 0, skip stage
+	/*stageLighting_t		*/lighting: stageLighting_t;			// determines which passes interact with lights
+	/*int					*/drawStateBits: number;
+	/*colorStage_t			*/color: colorStage_t;
+	/*bool					*/hasAlphaTest:boolean;
+	/*int					*/alphaTestRegister: number;
+	/*textureStage_t		*/texture: textureStage_t;
+	/*stageVertexColor_t	*/vertexColor: stageVertexColor_t;
+	/*bool					*/ignoreAlphaTest;	// this stage should act as translucent, even
+	/*						*/					// if the surface is alpha tested
+	/*float					*/privatePolygonOffset: number;	// a per-stage polygon offset
+	/*						*/
+	/*newShaderStage_t		**/newStage: newShaderStage_t[];			// vertex / fragment program based stage
+};
 
-////	newShaderStage_t	*newStage;			// vertex / fragment program based stage
-////} shaderStage_t;
+enum materialCoverage_t {
+	MC_BAD,
+	MC_OPAQUE,			// completely fills the triangle, will have black drawn on fillDepthBuffer
+	MC_PERFORATED,		// may have alpha tested holes
+	MC_TRANSLUCENT		// blended with background
+}
 
-////typedef enum {
-////	MC_BAD,
-////	MC_OPAQUE,			// completely fills the triangle, will have black drawn on fillDepthBuffer
-////	MC_PERFORATED,		// may have alpha tested holes
-////	MC_TRANSLUCENT		// blended with background
-////} materialCoverage_t;
+enum materialSort_t {
+	SS_SUBVIEW = -3,	// mirrors, viewscreens, etc
+	SS_GUI = -2,		// guis
+	SS_BAD = -1,
+	SS_OPAQUE = 0,			// opaque
 
-////typedef enum {
-////	SS_SUBVIEW = -3,	// mirrors, viewscreens, etc
-////	SS_GUI = -2,		// guis
-////	SS_BAD = -1,
-////	SS_OPAQUE,			// opaque
+	SS_PORTAL_SKY=1,
 
-////	SS_PORTAL_SKY,
+	SS_DECAL=2,			// scorch marks, etc.
 
-////	SS_DECAL,			// scorch marks, etc.
+	SS_FAR=3,
+	SS_MEDIUM=4,			// normal translucent
+	SS_CLOSE=5,
 
-////	SS_FAR,
-////	SS_MEDIUM,			// normal translucent
-////	SS_CLOSE,
+	SS_ALMOST_NEAREST=6,	// gun smoke puffs
 
-////	SS_ALMOST_NEAREST,	// gun smoke puffs
+	SS_NEAREST=7,			// screen blood blobs
 
-////	SS_NEAREST,			// screen blood blobs
+	SS_POST_PROCESS = 100	// after a screen copy to texture
+}
 
-////	SS_POST_PROCESS = 100	// after a screen copy to texture
-////} materialSort_t;
+enum cullType_t {
+	CT_FRONT_SIDED,
+	CT_BACK_SIDED,
+	CT_TWO_SIDED
+}
 
-////typedef enum {
-////	CT_FRONT_SIDED,
-////	CT_BACK_SIDED,
-////	CT_TWO_SIDED
-////} cullType_t;
+// these don't effect per-material storage, so they can be very large
+var MAX_SHADER_STAGES			= 256;
 
-////// these don't effect per-material storage, so they can be very large
-////const int MAX_SHADER_STAGES			= 256;
+var MAX_TEXGEN_REGISTERS		= 4;
 
-////const int MAX_TEXGEN_REGISTERS		= 4;
+var MAX_ENTITY_SHADER_PARMS	= 12;
 
-////const int MAX_ENTITY_SHADER_PARMS	= 12;
+// material flags
+enum materialFlags_t {
+	MF_DEFAULTED				= BIT(0),
+	MF_POLYGONOFFSET			= BIT(1),
+	MF_NOSHADOWS				= BIT(2),
+	MF_FORCESHADOWS				= BIT(3),
+	MF_NOSELFSHADOW				= BIT(4),
+	MF_NOPORTALFOG				= BIT(5),	// this fog volume won't ever consider a portal fogged out
+	MF_EDITOR_VISIBLE			= BIT(6)	// in use (visible) per editor
+};
 
-////// material flags
-////typedef enum {
-////	MF_DEFAULTED				= BIT(0),
-////	MF_POLYGONOFFSET			= BIT(1),
-////	MF_NOSHADOWS				= BIT(2),
-////	MF_FORCESHADOWS				= BIT(3),
-////	MF_NOSELFSHADOW				= BIT(4),
-////	MF_NOPORTALFOG				= BIT(5),	// this fog volume won't ever consider a portal fogged out
-////	MF_EDITOR_VISIBLE			= BIT(6)	// in use (visible) per editor
-////} materialFlags_t;
+// contents flags, NOTE: make sure to keep the defines in doom_defs.script up to date with these!
+enum contentsFlags_t {
+	CONTENTS_SOLID				= BIT(0),	// an eye is never valid in a solid
+	CONTENTS_OPAQUE				= BIT(1),	// blocks visibility (for ai)
+	CONTENTS_WATER				= BIT(2),	// used for water
+	CONTENTS_PLAYERCLIP			= BIT(3),	// solid to players
+	CONTENTS_MONSTERCLIP		= BIT(4),	// solid to monsters
+	CONTENTS_MOVEABLECLIP		= BIT(5),	// solid to moveable entities
+	CONTENTS_IKCLIP				= BIT(6),	// solid to IK
+	CONTENTS_BLOOD				= BIT(7),	// used to detect blood decals
+	CONTENTS_BODY				= BIT(8),	// used for actors
+	CONTENTS_PROJECTILE			= BIT(9),	// used for projectiles
+	CONTENTS_CORPSE				= BIT(10),	// used for dead bodies
+	CONTENTS_RENDERMODEL		= BIT(11),	// used for render models for collision detection
+	CONTENTS_TRIGGER			= BIT(12),	// used for triggers
+	CONTENTS_AAS_SOLID			= BIT(13),	// solid for AAS
+	CONTENTS_AAS_OBSTACLE		= BIT(14),	// used to compile an obstacle into AAS that can be enabled/disabled
+	CONTENTS_FLASHLIGHT_TRIGGER	= BIT(15),	// used for triggers that are activated by the flashlight
 
-////// contents flags, NOTE: make sure to keep the defines in doom_defs.script up to date with these!
-////typedef enum {
-////	CONTENTS_SOLID				= BIT(0),	// an eye is never valid in a solid
-////	CONTENTS_OPAQUE				= BIT(1),	// blocks visibility (for ai)
-////	CONTENTS_WATER				= BIT(2),	// used for water
-////	CONTENTS_PLAYERCLIP			= BIT(3),	// solid to players
-////	CONTENTS_MONSTERCLIP		= BIT(4),	// solid to monsters
-////	CONTENTS_MOVEABLECLIP		= BIT(5),	// solid to moveable entities
-////	CONTENTS_IKCLIP				= BIT(6),	// solid to IK
-////	CONTENTS_BLOOD				= BIT(7),	// used to detect blood decals
-////	CONTENTS_BODY				= BIT(8),	// used for actors
-////	CONTENTS_PROJECTILE			= BIT(9),	// used for projectiles
-////	CONTENTS_CORPSE				= BIT(10),	// used for dead bodies
-////	CONTENTS_RENDERMODEL		= BIT(11),	// used for render models for collision detection
-////	CONTENTS_TRIGGER			= BIT(12),	// used for triggers
-////	CONTENTS_AAS_SOLID			= BIT(13),	// solid for AAS
-////	CONTENTS_AAS_OBSTACLE		= BIT(14),	// used to compile an obstacle into AAS that can be enabled/disabled
-////	CONTENTS_FLASHLIGHT_TRIGGER	= BIT(15),	// used for triggers that are activated by the flashlight
+	// contents used by utils
+	CONTENTS_AREAPORTAL			= BIT(20),	// portal separating renderer areas
+	CONTENTS_NOCSG				= BIT(21),	// don't cut this brush with CSG operations in the editor
 
-////	// contents used by utils
-////	CONTENTS_AREAPORTAL			= BIT(20),	// portal separating renderer areas
-////	CONTENTS_NOCSG				= BIT(21),	// don't cut this brush with CSG operations in the editor
+	CONTENTS_REMOVE_UTIL		= ~(CONTENTS_AREAPORTAL|CONTENTS_NOCSG)
+}
 
-////	CONTENTS_REMOVE_UTIL		= ~(CONTENTS_AREAPORTAL|CONTENTS_NOCSG)
-////} contentsFlags_t;
+// surface types
+var NUM_SURFACE_BITS		= 4;
+var MAX_SURFACE_TYPES		= 1 << NUM_SURFACE_BITS;
 
-////// surface types
-////const int NUM_SURFACE_BITS		= 4;
-////const int MAX_SURFACE_TYPES		= 1 << NUM_SURFACE_BITS;
+enum surfTypes_t {
+	SURFTYPE_NONE,					// default type
+    SURFTYPE_METAL,
+	SURFTYPE_STONE,
+	SURFTYPE_FLESH,
+	SURFTYPE_WOOD,
+	SURFTYPE_CARDBOARD,
+	SURFTYPE_LIQUID,
+	SURFTYPE_GLASS,
+	SURFTYPE_PLASTIC,
+	SURFTYPE_RICOCHET,
+	SURFTYPE_10,
+	SURFTYPE_11,
+	SURFTYPE_12,
+	SURFTYPE_13,
+	SURFTYPE_14,
+	SURFTYPE_15
+}
 
-////typedef enum {
-////	SURFTYPE_NONE,					// default type
-////    SURFTYPE_METAL,
-////	SURFTYPE_STONE,
-////	SURFTYPE_FLESH,
-////	SURFTYPE_WOOD,
-////	SURFTYPE_CARDBOARD,
-////	SURFTYPE_LIQUID,
-////	SURFTYPE_GLASS,
-////	SURFTYPE_PLASTIC,
-////	SURFTYPE_RICOCHET,
-////	SURFTYPE_10,
-////	SURFTYPE_11,
-////	SURFTYPE_12,
-////	SURFTYPE_13,
-////	SURFTYPE_14,
-////	SURFTYPE_15
-////} surfTypes_t;
+// surface flags
+enum surfaceFlags_t {
+	SURF_TYPE_BIT0				= BIT(0),	// encodes the material type (metal, flesh, concrete, etc.)
+	SURF_TYPE_BIT1				= BIT(1),	// "
+	SURF_TYPE_BIT2				= BIT(2),	// "
+	SURF_TYPE_BIT3				= BIT(3),	// "
+	SURF_TYPE_MASK				= ( 1 << NUM_SURFACE_BITS ) - 1,
 
-////// surface flags
-////typedef enum {
-////	SURF_TYPE_BIT0				= BIT(0),	// encodes the material type (metal, flesh, concrete, etc.)
-////	SURF_TYPE_BIT1				= BIT(1),	// "
-////	SURF_TYPE_BIT2				= BIT(2),	// "
-////	SURF_TYPE_BIT3				= BIT(3),	// "
-////	SURF_TYPE_MASK				= ( 1 << NUM_SURFACE_BITS ) - 1,
-
-////	SURF_NODAMAGE				= BIT(4),	// never give falling damage
-////	SURF_SLICK					= BIT(5),	// effects game physics
-////	SURF_COLLISION				= BIT(6),	// collision surface
-////	SURF_LADDER					= BIT(7),	// player can climb up this surface
-////	SURF_NOIMPACT				= BIT(8),	// don't make missile explosions
-////	SURF_NOSTEPS				= BIT(9),	// no footstep sounds
-////	SURF_DISCRETE				= BIT(10),	// not clipped or merged by utilities
-////	SURF_NOFRAGMENT				= BIT(11),	// dmap won't cut surface at each bsp boundary
-////	SURF_NULLNORMAL				= BIT(12)	// renderbump will draw this surface as 0x80 0x80 0x80, which
-////											// won't collect light from any angle
-////} surfaceFlags_t;
+	SURF_NODAMAGE				= BIT(4),	// never give falling damage
+	SURF_SLICK					= BIT(5),	// effects game physics
+	SURF_COLLISION				= BIT(6),	// collision surface
+	SURF_LADDER					= BIT(7),	// player can climb up this surface
+	SURF_NOIMPACT				= BIT(8),	// don't make missile explosions
+	SURF_NOSTEPS				= BIT(9),	// no footstep sounds
+	SURF_DISCRETE				= BIT(10),	// not clipped or merged by utilities
+	SURF_NOFRAGMENT				= BIT(11),	// dmap won't cut surface at each bsp boundary
+	SURF_NULLNORMAL				= BIT(12)	// renderbump will draw this surface as 0x80 0x80 0x80, which
+											// won't collect light from any angle
+;
 
 ////class idSoundEmitter;
 
