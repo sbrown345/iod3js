@@ -751,6 +751,8 @@ var/*int */c_savedMemory = 0;
 
 		name = token.$.clone();
 
+		assert( src.buffer.indexOf( "<!DOCTYPE html" ) === -1 );
+
 		// make sure there's a '{'
 		if ( !src.ReadToken(token) ) {
 			src.Warning( "Type without definition at end of file" );
