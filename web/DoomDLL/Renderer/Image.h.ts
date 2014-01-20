@@ -170,7 +170,7 @@ class idImage {
 //	void		BindFragment();
 
 //	// deletes the texture object, but leaves the structure so it can be reloaded
-//	void		PurgeImage();
+	PurgeImage():void { throw "placeholder"; }
 
 //	// used by callback functions to specify the actual data
 //	// data goes from the bottom to the top line of the image, as OpenGL expects it

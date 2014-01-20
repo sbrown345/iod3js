@@ -1,5 +1,6 @@
 /// <reference path="RenderSystem.cpp.ts" />
 /// <reference path="../../utils/todo.ts" />
+/// <reference path="../../other/gl.h.ts" />
 /// <reference path="Material.h.ts" />
 /// <reference path="Image.h.ts" />
 /////*
@@ -577,7 +578,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 //	scaledBuffer = NULL;
 
 //	// generate the texture number
-//	glGenTextures( 1, &texnum );
+//	glGenTextures( 1, &this.texnum );
 
 //	// select proper internal format before we resample
 //	internalFormat = SelectInternalFormat( &pic, 1, width, height, depth );
@@ -764,7 +765,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 ////	// FIXME: allow picmip here
 
 ////	// generate the texture number
-////	glGenTextures( 1, &texnum );
+////	glGenTextures( 1, &this.texnum );
 
 ////	// select proper internal format before we resample
 ////	// this function doesn't need to know it is 3D, so just make it very "tall"
@@ -896,7 +897,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 ////	width = height = size;
 
 ////	// generate the texture number
-////	glGenTextures( 1, &texnum );
+////	glGenTextures( 1, &this.texnum );
 
 ////	// select proper internal format before we resample
 ////	internalFormat = SelectInternalFormat( pic, 6, width, height, depth );
@@ -1459,7 +1460,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 ////	header.ddspf.dwABitMask = LittleLong( header.ddspf.dwABitMask );
 
 ////	// generate the texture number
-////	glGenTextures( 1, &texnum );
+////	glGenTextures( 1, &this.texnum );
 
 ////	int externalFormat = 0;
 
@@ -1649,29 +1650,33 @@ idImage.prototype.ActuallyLoadImage = function( checkForPrecompressed:boolean, f
 	//}
 }
 
-//////=========================================================================================================
+//=========================================================================================================
 
-/////*
-////===============
-////PurgeImage
-////===============
-////*/
-////void idImage::PurgeImage() {
-////	if ( texnum != TEXTURE_NOT_LOADED ) {
-////		// sometimes is NULL when exiting with an error
-////		if ( glDeleteTextures ) {
-////			glDeleteTextures( 1, &texnum );	// this should be the ONLY place it is ever called!
-////		}
-////		texnum = TEXTURE_NOT_LOADED;
-////	}
+/*
+===============
+PurgeImage
+===============
+*/
+idImage.prototype.PurgeImage = function ( ): void {
+	if ( this.texnum != idImage.TEXTURE_NOT_LOADED ) {
+		// sometimes is NULL when exiting with an error
+		if ( glDeleteTextures ) {
+			var $texnum = new R($texnum);
+			glDeleteTextures(1, $texnum); // this should be the ONLY place it is ever called!
+			this.texnum = $texnum.$;
+		}
+		this.texnum = idImage.TEXTURE_NOT_LOADED;
+	}
 
-////	// clear all the current binding caches, so the next bind will do a real one
-////	for ( int i = 0 ; i < MAX_MULTITEXTURE_UNITS ; i++ ) {
-////		backEnd.glState.tmu[i].current2DMap = -1;
-////		backEnd.glState.tmu[i].current3DMap = -1;
-////		backEnd.glState.tmu[i].currentCubeMap = -1;
-////	}
-////}
+	// clear all the current binding caches, so the next bind will do a real one
+	for ( var i = 0; i < MAX_MULTITEXTURE_UNITS;
+	i++ )
+	{
+		backEnd.glState.tmu[i].current2DMap = -1;
+		backEnd.glState.tmu[i].current3DMap = -1;
+		backEnd.glState.tmu[i].currentCubeMap = -1;
+	}
+};
 
 /////*
 ////==============
@@ -1701,7 +1706,7 @@ idImage.prototype.ActuallyLoadImage = function( checkForPrecompressed:boolean, f
 ////	}
 
 ////	// load the image if necessary (FIXME: not SMP safe!)
-////	if ( texnum == TEXTURE_NOT_LOADED ) {
+////	if ( this.texnum == idImage.TEXTURE_NOT_LOADED ) {
 ////		if ( partialImage ) {
 ////			// if we have a partial image, go ahead and use that
 ////			this.partialImage.Bind();
@@ -1748,21 +1753,21 @@ idImage.prototype.ActuallyLoadImage = function( checkForPrecompressed:boolean, f
 
 ////	// bind the texture
 ////	if ( type == TT_2D ) {
-////		if ( tmu.current2DMap != texnum ) {
-////			tmu.current2DMap = texnum;
-////			glBindTexture( GL_TEXTURE_2D, texnum );
+////		if ( tmu.current2DMap != this.texnum ) {
+////			tmu.current2DMap = this.texnum;
+////			glBindTexture( GL_TEXTURE_2D, this.texnum );
 ////		}
 ////	} else if ( type == TT_CUBIC ) {
-////		if ( tmu.currentCubeMap != texnum ) {
-////			tmu.currentCubeMap = texnum;
-////			glBindTexture( GL_TEXTURE_CUBE_MAP, texnum );
+////		if ( tmu.currentCubeMap != this.texnum ) {
+////			tmu.currentCubeMap = this.texnum;
+////			glBindTexture( GL_TEXTURE_CUBE_MAP, this.texnum );
 ////		}
 ////	} 
 ////#if !defined(GL_ES_VERSION_2_0)
 ////	else if ( type == TT_3D ) {
-////		if ( tmu.current3DMap != texnum ) {
-////			tmu.current3DMap = texnum;
-////			glBindTexture( GL_TEXTURE_3D, texnum );
+////		if ( tmu.current3DMap != this.texnum ) {
+////			tmu.current3DMap = this.texnum;
+////			glBindTexture( GL_TEXTURE_3D, this.texnum );
 ////		}
 ////	}
 ////#endif
@@ -1797,7 +1802,7 @@ idImage.prototype.ActuallyLoadImage = function( checkForPrecompressed:boolean, f
 ////	}
 
 ////	// load the image if necessary (FIXME: not SMP safe!)
-////	if ( texnum == TEXTURE_NOT_LOADED ) {
+////	if ( this.texnum == idImage.TEXTURE_NOT_LOADED ) {
 ////		if ( partialImage ) {
 ////			// if we have a partial image, go ahead and use that
 ////			this.partialImage.BindFragment();
@@ -1820,19 +1825,19 @@ idImage.prototype.ActuallyLoadImage = function( checkForPrecompressed:boolean, f
 
 ////	// bind the texture
 ////	if (type == TT_2D) {
-////		glBindTexture(GL_TEXTURE_2D, texnum);
+////		glBindTexture(GL_TEXTURE_2D, this.texnum);
 ////	}
 ////#if defined(GL_NV_texture_rectangle)
 ////	else if (type == TT_RECT) {
-////		glBindTexture(GL_TEXTURE_RECTANGLE_NV, texnum);
+////		glBindTexture(GL_TEXTURE_RECTANGLE_NV, this.texnum);
 ////	}
 ////#endif
 ////	else if (type == TT_CUBIC) {
-////		glBindTexture(GL_TEXTURE_CUBE_MAP, texnum);
+////		glBindTexture(GL_TEXTURE_CUBE_MAP, this.texnum);
 ////	}
 ////#if !defined(GL_ES_VERSION_2_0)
 ////	else if (type == TT_3D) {
-////		glBindTexture(GL_TEXTURE_3D, texnum);
+////		glBindTexture(GL_TEXTURE_3D, this.texnum);
 ////	}
 ////#endif
 ////}
@@ -2042,7 +2047,7 @@ idImage.prototype.ActuallyLoadImage = function( checkForPrecompressed:boolean, f
 ////int idImage::StorageSize() const {
 ////	int		baseSize;
 
-////	if ( texnum == TEXTURE_NOT_LOADED ) {
+////	if ( this.texnum == idImage.TEXTURE_NOT_LOADED ) {
 ////		return 0;
 ////	}
 

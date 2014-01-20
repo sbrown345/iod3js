@@ -595,17 +595,18 @@ class /*viewEntity_s*/viewEntity_t {
 ////} performanceCounters_t;
 
 
-////typedef struct {
-////	int		current2DMap;
-////	int		current3DMap;
-////	int		currentCubeMap;
-////	int		texEnv;
-////	textureType_t	textureType;
-////} tmu_t;
+class tmu_t {
+	current2DMap: number; //int		
+	current3DMap: number; //int		
+	currentCubeMap: number; //int		
+	texEnv: number; //int		
+	textureType: textureType_t;
+}
 
-////const int MAX_MULTITEXTURE_UNITS =	8;
-////typedef struct {
-////	tmu_t		tmu[MAX_MULTITEXTURE_UNITS];
+var MAX_MULTITEXTURE_UNITS =	8;
+
+class glstate_t {
+	tmu:tmu_t[];//[MAX_MULTITEXTURE_UNITS];
 ////	int			currenttmu;
 
 ////	int			faceCulling;
@@ -613,7 +614,17 @@ class /*viewEntity_s*/viewEntity_t {
 ////	bool		forceGlState;		// the next GL_State will ignore glStateBits and set everything
 
 ////	shaderProgram_s	*currentProgram;
-////} glstate_t;
+
+	constructor ( ) {
+		this.tmu = newStructArray<tmu_t>( tmu_t, MAX_MULTITEXTURE_UNITS );
+////	int			currenttmu;
+
+////	int			faceCulling;
+////	int			glStateBits;
+////	bool		forceGlState;		// the next GL_State will ignore glStateBits and set everything
+
+////	shaderProgram_s	*currentProgram;
+	}
 
 
 ////typedef struct {
@@ -665,10 +676,39 @@ class backEndState_t {
 
 ////	bool				currentRenderCopied;	// true if any material has already referenced _currentRender
 
-////	// our OpenGL state deltas
-////	glstate_t			glState;
+	// our OpenGL state deltas
+	glState: glstate_t;
 
 ////	int					c_copyFrameBuffer;
+
+	constructor ( ) {
+		////	int					frameCount;		// used to track all images used in a frame
+		////	const viewDef_t	*	viewDef;
+		////	backEndCounters_t	pc;
+
+		////	const viewEntity_t *currentSpace;		// for detecting when a matrix must change
+		////	idScreenRect		currentScissor;
+		////	// for scissor clipping, local inside renderView viewport
+
+		////	viewLight_t *		vLight;
+		////	int					depthFunc;			// GLS_DEPTHFUNC_EQUAL, or GLS_DEPTHFUNC_LESS for translucent
+		////	float				lightTextureMatrix[16];	// only if lightStage.texture.hasMatrix
+		////	float				lightColor[4];		// evaluation of current light's color stage
+
+		////	float				lightScale;			// Every light color calaculation will be multiplied by this,
+		////											// which will guarantee that the result is < tr.backEndRendererMaxLight
+		////											// A card with high dynamic range will have this set to 1.0
+		////	float				overBright;			// The amount that all light interactions must be multiplied by
+		////											// with post processing to get the desired total light level.
+		////											// A high dynamic range card will have this set to 1.0.
+
+		////	bool				currentRenderCopied;	// true if any material has already referenced _currentRender
+
+		// our OpenGL state deltas
+		this.glState = new glstate_t;
+
+////	int					c_copyFrameBuffer;
+	}
 } //backEndState_t;
 
 
