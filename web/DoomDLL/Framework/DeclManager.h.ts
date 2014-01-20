@@ -102,7 +102,7 @@ var DECL_LEXER_FLAGS = lexerFlags_t.LEXFL_NOSTRINGCONCAT | // multiple strings s
 class idDeclBase {
 ////public:
 ////	virtual 				~idDeclBase() {};
-////	virtual const char *	GetName( void ) const = 0;
+	GetName(): string { throw "placeholder"; }
 ////	virtual declType_t		GetType( void ) const = 0;
 ////	virtual declState_t		GetState( void ) const = 0;
 ////	virtual bool			IsImplicit( void ) const = 0;
@@ -137,8 +137,8 @@ class idDecl {
 ////							idDecl( void ) { base = NULL; }
 ////	virtual 				~idDecl( void ) {};
 
-////							// Returns the name of the decl.
-////	const char *			GetName( void ) const { return base.GetName(); }
+	// Returns the name of the decl.
+	GetName ( ): string { return this.base.GetName ( ); }
 
 ////							// Returns the decl type.
 ////	declType_t				GetType( void ) const { return base.GetType(); }

@@ -1442,19 +1442,21 @@ idImageManager.prototype.ImageFromFunction = function ( _name: string, generator
     return image;
 };
 
-/////*
-////===============
-////ImageFromFile
+/*
+===============
+ImageFromFile
 
-////Finds or loads the given image, always returning a valid image pointer.
-////Loading of the image may be deferred for dynamic loading.
-////==============
-////*/
-////idImage	*idImageManager::ImageFromFile( const char *_name, textureFilter_t filter, bool allowDownSize,
-////						 textureRepeat_t repeat, textureDepth_t depth, cubeFiles_t cubeMap ) {
-////	idStr name;
-////	idImage	*image;
-////	int hash;
+Finds or loads the given image, always returning a valid image pointer.
+Loading of the image may be deferred for dynamic loading.
+==============
+*/
+idImageManager.prototype.ImageFromFile = function ( _name: string, filter: textureFilter_t, allowDownSize: boolean,
+	repeat: textureRepeat_t, depth: textureDepth_t, cubeMapL: cubeFiles_t = cubeFiles_t.CF_2D): idImage {
+	debugger;
+	throw "todo";
+	var name: idStr;
+	var image: idImage;
+	var /*int */hash:number;
 
 ////	if ( !_name || !_name[0] || idStr::Icmp( _name, "default" ) == 0 || idStr::Icmp( _name, "_default" ) == 0 ) {
 ////		declManager.MediaPrint( "DEFAULTED\n" );
@@ -1589,8 +1591,8 @@ idImageManager.prototype.ImageFromFunction = function ( _name: string, generator
 ////		declManager.MediaPrint( "%s\n", image.imgName.c_str() );
 ////	}
 
-////	return image;
-////}
+	return image;
+};
 
 /////*
 ////===============

@@ -164,18 +164,18 @@ enum texgen_t {
 	TG_GLASSWARP
 };
 
-////typedef struct {
-////	idCinematic *		cinematic;
-////	idImage *			image;
-////	texgen_t			texgen;
-////	bool				hasMatrix;
-////	int					matrix[2][3];	// we only allow a subset of the full projection matrix
+class textureStage_t {
+//	idCinematic *		cinematic;
+	image: idImage;
+	texgen: texgen_t;
+	hasMatrix:boolean;
+//	int					matrix[2][3];	// we only allow a subset of the full projection matrix
 
-////	// dynamic image variables
-////	dynamicidImage_t	dynamic;
-////	int					width, height;
-////	int					dynamicFrameCount;
-////} textureStage_t;
+//	// dynamic image variables
+//	dynamicidImage_t	dynamic;
+	/*	int				*/	width:number; height:number;
+	/*	int				*/	dynamicFrameCount: number;
+};
 
 // the order BUMP / DIFFUSE / SPECULAR is necessary for interactions to draw correctly on low end cards
 enum stageLighting_t {
@@ -185,13 +185,13 @@ enum stageLighting_t {
 	SL_SPECULAR
 };
 
-////// cross-blended terrain textures need to modulate the color by
-////// the vertex color to smoothly blend between two textures
-////typedef enum {
-////	SVC_IGNORE,
-////	SVC_MODULATE,
-////	SVC_INVERSE_MODULATE
-////} stageVertexColor_t;
+// cross-blended terrain textures need to modulate the color by
+// the vertex color to smoothly blend between two textures
+enum stageVertexColor_t {
+	SVC_IGNORE,
+	SVC_MODULATE,
+	SVC_INVERSE_MODULATE
+};
 
 ////static const int	MAX_FRAGMENT_IMAGES = 8;
 ////static const int	MAX_VERTEX_PARMS = 4;
@@ -217,7 +217,7 @@ class shaderStage_t {
 	/*int					*/alphaTestRegister: number;
 	/*textureStage_t		*/texture: textureStage_t;
 	/*stageVertexColor_t	*/vertexColor: stageVertexColor_t;
-	/*bool					*/ignoreAlphaTest;	// this stage should act as translucent, even
+	/*bool					*/ignoreAlphaTest:boolean;	// this stage should act as translucent, even
 	/*						*/					// if the surface is alpha tested
 	/*float					*/privatePolygonOffset: number;	// a per-stage polygon offset
 	/*						*/

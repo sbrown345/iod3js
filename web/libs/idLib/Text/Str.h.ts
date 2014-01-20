@@ -349,21 +349,21 @@ class idStr {
 ////char *					va( const char *fmt, ... ) id_attribute((format(printf,1,2)));
 
 
-////ID_INLINE void idStr::EnsureAlloced( int amount, bool keepold ) {
-////	if ( amount > alloced ) {
-////		ReAllocate( amount, keepold );
-////	}
-////}
+	EnsureAlloced ( /*int */amount: number, keepold: boolean = true ): void {
+		//if ( amount > this.alloced ) {
+		//	this.ReAllocate( amount, keepold );
+		//}
+	}
 
-    Init( ):void {
+	Init( ):void {
 	    this.len = 0;
 	    //alloced = STR_ALLOC_BASE;
 	    //this.data = baseBuffer;
 	    //this.data[ 0 ] = '\0';
         this.data = "";
-    //#ifdef ID_DEBUG_UNINITIALIZED_MEMORY
-    //	memset( baseBuffer, 0, sizeof( baseBuffer ) );
-    //#endif
+		//#ifdef ID_DEBUG_UNINITIALIZED_MEMORY
+		//	memset( baseBuffer, 0, sizeof( baseBuffer ) );
+		//#endif
     }
 
 ////ID_INLINE idStr::idStr( void ) {
@@ -738,11 +738,11 @@ Length( ):number {
 ////	}
 ////}
 
-////ID_INLINE void idStr::Empty( void ) {
-////	EnsureAlloced( 1 );
-////	this.data[ 0 ] = '\0';
-////	len = 0;
-////}
+Empty( ):void {
+	this.EnsureAlloced( 1 );
+	this.data = "";//this.data[ 0 ] = '\0';
+	this.len = 0;
+}
 
 ////ID_INLINE bool idStr::IsEmpty( void ) const {
 ////	return ( idStr::Cmp( this.data, "" ) == 0 );
@@ -2460,29 +2460,30 @@ static IcmpPath( /*const char **/s1:string, /*const char **/s2:string ):number {
 ////	return string;
 ////}
 
-/////*
-////================
-////idStr::snPrintf
-////================
-////*/
-////int idStr::snPrintf( char *dest, int size, const char *fmt, ...) {
-////	int len;
-////	va_list argptr;
-////	char buffer[32000];	// big, but small enough to fit in PPC stack
+/*
+================
+idStr::snPrintf
+================
+*/
+	static snPrintf ( dest: string, /*int */size: number, fmt: string, ...args: any[] ): number {
+		todoThrow ( );
+		var /*int */len: number;
+		//va_list argptr;
+		//char buffer[32000];	// big, but small enough to fit in PPC stack
 
-////	va_start( argptr, fmt );
-////	len = vsprintf( buffer, fmt, argptr );
-////	va_end( argptr );
-////	if ( len >= sizeof( buffer ) ) {
-////		idLib::common.Error( "idStr::snPrintf: overflowed buffer" );
-////	}
-////	if ( len >= size ) {
-////		idLib::common.Warning( "idStr::snPrintf: overflow of %i in %i\n", len, size );
-////		len = size;
-////	}
-////	idStr::Copynz( dest, buffer, size );
-////	return len;
-////}
+		//va_start( argptr, fmt );
+		//len = vsprintf( buffer, fmt, argptr );
+		//va_end( argptr );
+		//if ( len >= sizeof( buffer ) ) {
+		//	idLib::common.Error( "idStr::snPrintf: overflowed buffer" );
+		//}
+		//if ( len >= size ) {
+		//	idLib::common.Warning( "idStr::snPrintf: overflow of %i in %i\n", len, size );
+		//	len = size;
+		//}
+		//idStr::Copynz( dest, buffer, size );
+		return len;
+	}
 
 /////*
 ////============

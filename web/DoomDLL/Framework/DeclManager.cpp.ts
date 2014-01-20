@@ -12,6 +12,7 @@
 /// <reference path="DeclAF.h.ts" />
 /// <reference path="DeclAF.cpp.ts" />
 /// <reference path="DeclPDA.h.ts" />
+/// <reference path="../../libs/idlib/hashing/md5.cpp.ts" />
 /// <reference path="../../libs/c.ts" />
 /// <reference path="../../libs/idlib/text/lexer.cpp.ts" />
 /// <reference path="../../libs/idLib/Text/Lexer.h.ts" />

@@ -1,3 +1,5 @@
+/// <reference path="devicecontext.cpp.ts" />
+/// <reference path="rectangle.h.ts" />
 ///*
 //===========================================================================
 //
@@ -36,8 +38,8 @@
 //
 //extern idCVar r_skipGuiShaders;		// 1 = don't render any gui elements on surfaces
 //
-//idUserInterfaceManagerLocal	uiManagerLocal;
-//idUserInterfaceManager *	uiManager = &uiManagerLocal;
+var uiManagerLocal: idUserInterfaceManagerLocal;
+/*idUserInterfaceManager *	*/var uiManager = uiManagerLocal;
 //
 ///*
 //===============================================================================
@@ -46,32 +48,33 @@
 //
 //===============================================================================
 //*/
-//
+class idUserInterfaceManagerLocal extends idUserInterfaceManager {
+
 //void idUserInterfaceManagerLocal::Init() {
 //	screenRect = idRectangle(0, 0, 640, 480);
 //	dc.Init();
 //}
 //
 //void idUserInterfaceManagerLocal::Shutdown() {
-//	guis.DeleteContents( true );
+//	this.guis.DeleteContents( true );
 //	demoGuis.DeleteContents( true );
 //	dc.Shutdown();
 //}
 //
 //void idUserInterfaceManagerLocal::Touch( const char *name ) {
-//	idUserInterface *gui = Alloc();
-//	gui->InitFromFile( name );
+//	idUserInterface *gui = this.Alloc();
+//	gui.InitFromFile( name );
 ////	delete gui;
 //}
 //
 //void idUserInterfaceManagerLocal::WritePrecacheCommands( idFile *f ) {
 //
-//	int c = guis.Num();
+//	int c = this.guis.Num();
 //	for( int i = 0; i < c; i++ ) {
 //		char	str[1024];
-//		sprintf( str, "touchGui %s\n", guis[i]->Name() );
-//		common->Printf( "%s", str );
-//		f->Printf( "%s", str );
+//		sprintf( str, "touchGui %s\n", this.guis[i].Name() );
+//		common.Printf( "%s", str );
+//		f.Printf( "%s", str );
 //	}
 //}
 //
@@ -80,13 +83,13 @@
 //}
 //
 //void idUserInterfaceManagerLocal::BeginLevelLoad() {
-//	int c = guis.Num();
+//	int c = this.guis.Num();
 //	for ( int i = 0; i < c; i++ ) {
-//		if ( (guis[ i ]->GetDesktop()->GetFlags() & WIN_MENUGUI) == 0 ) {
-//			guis[ i ]->ClearRefs();
+//		if ( (this.guis[ i ].GetDesktop().GetFlags() & WIN_MENUGUI) == 0 ) {
+//			this.guis[ i ].ClearRefs();
 //			/*
-//			delete guis[ i ];
-//			guis.RemoveIndex( i );
+//			delete this.guis[ i ];
+//			this.guis.RemoveIndex( i );
 //			i--; c--;
 //			*/
 //		}
@@ -94,23 +97,23 @@
 //}
 //
 //void idUserInterfaceManagerLocal::EndLevelLoad() {
-//	int c = guis.Num();
+//	int c = this.guis.Num();
 //	for ( int i = 0; i < c; i++ ) {
-//		if ( guis[i]->GetRefs() == 0 ) {
-//			//common->Printf( "purging %s.\n", guis[i]->GetSourceFile() );
+//		if ( this.guis[i].GetRefs() == 0 ) {
+//			//common.Printf( "purging %s.\n", this.guis[i].GetSourceFile() );
 //
 //			// use this to make sure no materials still reference this gui
 //			bool remove = true;
-//			for ( int j = 0; j < declManager->GetNumDecls( DECL_MATERIAL ); j++ ) {
-//				const idMaterial *material = static_cast<const idMaterial *>(declManager->DeclByIndex( DECL_MATERIAL, j, false ));
-//				if ( material->GlobalGui() == guis[i] ) {
+//			for ( int j = 0; j < declManager.GetNumDecls( DECL_MATERIAL ); j++ ) {
+//				const idMaterial *material = static_cast<const idMaterial *>(declManager.DeclByIndex( DECL_MATERIAL, j, false ));
+//				if ( material.GlobalGui() == this.guis[i] ) {
 //					remove = false;
 //					break;
 //				}
 //			}
 //			if ( remove ) {
-//				delete guis[ i ];
-//				guis.RemoveIndex( i );
+//				delete this.guis[ i ];
+//				this.guis.RemoveIndex( i );
 //				i--; c--;
 //			}
 //		}
@@ -120,97 +123,97 @@
 //void idUserInterfaceManagerLocal::Reload( bool all ) {
 //	ID_TIME_T ts;
 //
-//	int c = guis.Num();
+//	int c = this.guis.Num();
 //	for ( int i = 0; i < c; i++ ) {
 //		if ( !all ) {
-//			fileSystem->ReadFile( guis[i]->GetSourceFile(), NULL, &ts );
-//			if ( ts <= guis[i]->GetTimeStamp() ) {
+//			fileSystem.ReadFile( this.guis[i].GetSourceFile(), NULL, &ts );
+//			if ( ts <= this.guis[i].GetTimeStamp() ) {
 //				continue;
 //			}
 //		}
 //
-//		guis[i]->InitFromFile( guis[i]->GetSourceFile() );
-//		common->Printf( "reloading %s.\n", guis[i]->GetSourceFile() );
+//		this.guis[i].InitFromFile( this.guis[i].GetSourceFile() );
+//		common.Printf( "reloading %s.\n", this.guis[i].GetSourceFile() );
 //	}
 //}
 //
 //void idUserInterfaceManagerLocal::ListGuis() const {
-//	int c = guis.Num();
-//	common->Printf( "\n   size   refs   name\n" );
+//	int c = this.guis.Num();
+//	common.Printf( "\n   size   refs   name\n" );
 //	size_t total = 0;
 //	int copies = 0;
 //	int unique = 0;
 //	for ( int i = 0; i < c; i++ ) {
-//		idUserInterfaceLocal *gui = guis[i];
-//		size_t sz = gui->Size();
-//		bool isUnique = guis[i]->interactive;
+//		idUserInterfaceLocal *gui = this.guis[i];
+//		size_t sz = gui.Size();
+//		bool isUnique = this.guis[i].interactive;
 //		if ( isUnique ) {
 //			unique++;
 //		} else {
 //			copies++;
 //		}
-//		common->Printf( "%6.1fk %4i (%s) %s ( %i transitions )\n", sz / 1024.0f, guis[i]->GetRefs(), isUnique ? "unique" : "copy", guis[i]->GetSourceFile(), guis[i]->desktop->NumTransitions() );
+//		common.Printf( "%6.1fk %4i (%s) %s ( %i transitions )\n", sz / 1024.0f, this.guis[i].GetRefs(), isUnique ? "unique" : "copy", this.guis[i].GetSourceFile(), this.guis[i].desktop.NumTransitions() );
 //		total += sz;
 //	}
-//	common->Printf( "===========\n  %i total Guis ( %i copies, %i unique ), %.2f total Mbytes", c, copies, unique, total / ( 1024.0f * 1024.0f ) );
+//	common.Printf( "===========\n  %i total Guis ( %i copies, %i unique ), %.2f total Mbytes", c, copies, unique, total / ( 1024.0f * 1024.0f ) );
 //}
 //
 //bool idUserInterfaceManagerLocal::CheckGui( const char *qpath ) const {
-//	idFile *file = fileSystem->OpenFileRead( qpath );
+//	idFile *file = fileSystem.OpenFileRead( qpath );
 //	if ( file ) {
-//		fileSystem->CloseFile( file );
+//		fileSystem.CloseFile( file );
 //		return true;
 //	}
 //	return false;
 //}
 //
-//idUserInterface *idUserInterfaceManagerLocal::Alloc( void ) const {
-//	return new idUserInterfaceLocal();
-//}
+	Alloc ( ): idUserInterface {
+		return new idUserInterfaceLocal ( );
+	}
 //
 //void idUserInterfaceManagerLocal::DeAlloc( idUserInterface *gui ) {
 //	if ( gui ) {
-//		int c = guis.Num();
+//		int c = this.guis.Num();
 //		for ( int i = 0; i < c; i++ ) {
-//			if ( guis[i] == gui ) {
-//				delete guis[i];
-//				guis.RemoveIndex( i );
+//			if ( this.guis[i] == gui ) {
+//				delete this.guis[i];
+//				this.guis.RemoveIndex( i );
 //				return;
 //			}
 //		}
 //	}
 //}
 //
-//idUserInterface *idUserInterfaceManagerLocal::FindGui( const char *qpath, bool autoLoad, bool needUnique, bool forceNOTUnique ) {
-//	int c = guis.Num();
-//
-//	for ( int i = 0; i < c; i++ ) {
-//		idUserInterfaceLocal *gui = guis[i];
-//		if ( !idStr::Icmp( guis[i]->GetSourceFile(), qpath ) ) {
-//			if ( !forceNOTUnique && ( needUnique || guis[i]->IsInteractive() ) ) {
-//				break;
-//			}
-//			guis[i]->AddRef();
-//			return guis[i];
-//		}
-//	}
-//
-//	if ( autoLoad ) {
-//		idUserInterface *gui = Alloc();
-//		if ( gui->InitFromFile( qpath ) ) {
-//			gui->SetUniqued( forceNOTUnique ? false : needUnique );
-//			return gui;
-//		} else {
-//			delete gui;
-//		}
-//	}
-//	return NULL;
-//}
-//
+	FindGui ( qpath: string, autoLoad = false, needUnique = false, forceNOTUnique = false ): idUserInterface {
+		var /*int */c = this.guis.Num ( );
+		todoThrow ( );
+		//for ( var i = 0; i < c; i++ ) {
+		//	var gui = <idUserInterface>this.guis[i];
+		//	if ( !idStr.Icmp( this.guis[i].GetSourceFile ( ), qpath ) ) {
+		//		if ( !forceNOTUnique && ( needUnique || this.guis[i].IsInteractive ( ) ) ) {
+		//			break;
+		//		}
+		//		this.guis[i].AddRef ( );
+		//		return this.guis[i];
+		//	}
+		//}
+
+		//if ( autoLoad ) {
+		//	var /*idUserInterface **/gui = this.Alloc ( );
+		//	if ( gui.InitFromFile( qpath ) ) {
+		//		gui.SetUniqued( forceNOTUnique ? false : needUnique );
+		//		return gui;
+		//	} else {
+		//		delete gui;
+		//	}
+		//}
+		return null;
+	}
+
 //idUserInterface *idUserInterfaceManagerLocal::FindDemoGui( const char *qpath ) {
 //	int c = demoGuis.Num();
 //	for ( int i = 0; i < c; i++ ) {
-//		if ( !idStr::Icmp( demoGuis[i]->GetSourceFile(), qpath ) ) {
+//		if ( !idStr::Icmp( demoGuis[i].GetSourceFile(), qpath ) ) {
 //			return demoGuis[i];
 //		}
 //	}
@@ -224,7 +227,16 @@
 //void idUserInterfaceManagerLocal::FreeListGUI( idListGUI *listgui ) {
 //	delete listgui;
 //}
-//
+
+	//private:
+	screenRect: idRectangle;
+	dc: idDeviceContext;
+
+	guis: idList<idUserInterfaceLocal/***/>;
+	demoGuis: idList<idUserInterfaceLocal/***/> ;
+};
+
+
 ///*
 //===============================================================================
 //
@@ -232,7 +244,9 @@
 //
 //===============================================================================
 //*/
-//
+
+class idUserInterfaceLocal extends idUserInterface {
+
 //idUserInterfaceLocal::idUserInterfaceLocal() {
 //	cursorX = cursorY = 0.0;
 //	desktop = NULL;
@@ -257,7 +271,7 @@
 //
 //const char *idUserInterfaceLocal::Comment() const {
 //	if ( desktop ) {
-//		return desktop->GetComment();
+//		return desktop.GetComment();
 //	}
 //	return "";
 //}
@@ -290,7 +304,7 @@
 //	idParser src( LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 //
 //	//Load the timestamp so reload guis will work correctly
-//	fileSystem->ReadFile(qpath, NULL, &timeStamp);
+//	fileSystem.ReadFile(qpath, NULL, &timeStamp);
 //
 //	src.LoadFile( qpath );
 //
@@ -298,10 +312,10 @@
 //		idToken token;
 //		while( src.ReadToken( &token ) ) {
 //			if ( idStr::Icmp( token, "windowDef" ) == 0 ) {
-//				desktop->SetDC( &uiManagerLocal.dc );
-//				if ( desktop->Parse( &src, rebuild ) ) {
-//					desktop->SetFlag( WIN_DESKTOP );
-//					desktop->FixupParms();
+//				desktop.SetDC( &uiManagerLocal.dc );
+//				if ( desktop.Parse( &src, rebuild ) ) {
+//					desktop.SetFlag( WIN_DESKTOP );
+//					desktop.FixupParms();
 //				}
 //				continue;
 //			}
@@ -309,19 +323,19 @@
 //
 //		state.Set( "name", qpath );
 //	} else {
-//		desktop->SetDC( &uiManagerLocal.dc );
-//		desktop->SetFlag( WIN_DESKTOP );
-//		desktop->name = "Desktop";
-//		desktop->text = va( "Invalid GUI: %s", qpath );
-//		desktop->rect = idRectangle( 0.0f, 0.0f, 640.0f, 480.0f );
-//		desktop->drawRect = desktop->rect;
-//		desktop->foreColor = idVec4( 1.0f, 1.0f, 1.0f, 1.0f );
-//		desktop->backColor = idVec4( 0.0f, 0.0f, 0.0f, 1.0f );
-//		desktop->SetupFromState();
-//		common->Warning( "Couldn't load gui: '%s'", qpath );
+//		desktop.SetDC( &uiManagerLocal.dc );
+//		desktop.SetFlag( WIN_DESKTOP );
+//		desktop.name = "Desktop";
+//		desktop.text = va( "Invalid GUI: %s", qpath );
+//		desktop.rect = idRectangle( 0.0f, 0.0f, 640.0f, 480.0f );
+//		desktop.drawRect = desktop.rect;
+//		desktop.foreColor = idVec4( 1.0f, 1.0f, 1.0f, 1.0f );
+//		desktop.backColor = idVec4( 0.0f, 0.0f, 0.0f, 1.0f );
+//		desktop.SetupFromState();
+//		common.Warning( "Couldn't load gui: '%s'", qpath );
 //	}
 //
-//	interactive = desktop->Interactive();
+//	interactive = desktop.Interactive();
 //
 //	if ( uiManagerLocal.guis.Find( this ) == NULL ) {
 //		uiManagerLocal.guis.Append( this );
@@ -336,15 +350,15 @@
 //
 //	time = _time;
 //
-//	if ( bindHandler && event->evType == SE_KEY && event->evValue2 == 1 ) {
-//		const char *ret = bindHandler->HandleEvent( event, updateVisuals );
+//	if ( bindHandler && event.evType == SE_KEY && event.evValue2 == 1 ) {
+//		const char *ret = bindHandler.HandleEvent( event, updateVisuals );
 //		bindHandler = NULL;
 //		return ret;
 //	}
 //
-//	if ( event->evType == SE_MOUSE ) {
-//		cursorX += event->evValue;
-//		cursorY += event->evValue2;
+//	if ( event.evType == SE_MOUSE ) {
+//		cursorX += event.evValue;
+//		cursorY += event.evValue2;
 //
 //		if (cursorX < 0) {
 //			cursorX = 0;
@@ -355,14 +369,14 @@
 //	}
 //
 //	if ( desktop ) {
-//		return desktop->HandleEvent( event, updateVisuals );
+//		return desktop.HandleEvent( event, updateVisuals );
 //	} 
 //
 //	return "";
 //}
 //
 //void idUserInterfaceLocal::HandleNamedEvent ( const char* eventName ) {
-//	desktop->RunNamedEvent( eventName );
+//	desktop.RunNamedEvent( eventName );
 //}
 //
 //void idUserInterfaceLocal::Redraw( int _time ) {
@@ -372,13 +386,13 @@
 //	if ( !loading && desktop ) {
 //		time = _time;
 //		uiManagerLocal.dc.PushClipRect( uiManagerLocal.screenRect );
-//		desktop->Redraw( 0, 0 );
+//		desktop.Redraw( 0, 0 );
 //		uiManagerLocal.dc.PopClipRect();
 //	}
 //}
 //
 //void idUserInterfaceLocal::DrawCursor() {
-//	if ( !desktop || desktop->GetFlags() & WIN_MENUGUI ) {
+//	if ( !desktop || desktop.GetFlags() & WIN_MENUGUI ) {
 //		uiManagerLocal.dc.DrawCursor(&cursorX, &cursorY, 32.0f );
 //	} else {
 //		uiManagerLocal.dc.DrawCursor(&cursorX, &cursorY, 64.0f );
@@ -428,14 +442,14 @@
 //void idUserInterfaceLocal::StateChanged( int _time, bool redraw ) {
 //	time = _time;
 //	if (desktop) {
-//		desktop->StateChanged( redraw );
+//		desktop.StateChanged( redraw );
 //	}
 //	if ( state.GetBool( "noninteractive" ) ) {
 //		interactive = false;
 //	}
 //	else {
 //		if (desktop) {
-//			interactive = desktop->Interactive();
+//			interactive = desktop.Interactive();
 //		} else {
 //			interactive = false;
 //		}
@@ -447,7 +461,7 @@
 //	active = activate;
 //	if ( desktop ) {
 //		activateStr = "";
-//		desktop->Activate( activate, activateStr );
+//		desktop.Activate( activate, activateStr );
 //		return activateStr;
 //	}
 //	return "";
@@ -456,28 +470,28 @@
 //void idUserInterfaceLocal::Trigger(int _time) {
 //	time = _time;
 //	if ( desktop ) {
-//		desktop->Trigger();
+//		desktop.Trigger();
 //	}
 //}
 //
 //void idUserInterfaceLocal::ReadFromDemoFile( class idDemoFile *f ) {
 //	idStr work;
-//	f->ReadDict( state );
+//	f.ReadDict( state );
 //	source = state.GetString("name");
 //
 //	if (desktop == NULL) {
-//		f->Log("creating new gui\n");
+//		f.Log("creating new gui\n");
 //		desktop = new idWindow(this);
-//	   	desktop->SetFlag( WIN_DESKTOP );
-//	   	desktop->SetDC( &uiManagerLocal.dc );
-//		desktop->ReadFromDemoFile(f);
+//	   	desktop.SetFlag( WIN_DESKTOP );
+//	   	desktop.SetDC( &uiManagerLocal.dc );
+//		desktop.ReadFromDemoFile(f);
 //	} else {
-//		f->Log("re-using gui\n");
-//		desktop->ReadFromDemoFile(f, false);
+//		f.Log("re-using gui\n");
+//		desktop.ReadFromDemoFile(f, false);
 //	}
 //
-//	f->ReadFloat( cursorX );
-//	f->ReadFloat( cursorY );
+//	f.ReadFloat( cursorX );
+//	f.ReadFloat( cursorY );
 //
 //	bool add = true;
 //	int c = uiManagerLocal.demoGuis.Num();
@@ -495,13 +509,13 @@
 //
 //void idUserInterfaceLocal::WriteToDemoFile( class idDemoFile *f ) {
 //	idStr work;
-//	f->WriteDict( state );
+//	f.WriteDict( state );
 //	if (desktop) {
-//		desktop->WriteToDemoFile(f);
+//		desktop.WriteToDemoFile(f);
 //	}
 //
-//	f->WriteFloat( cursorX );
-//	f->WriteFloat( cursorY );
+//	f.WriteFloat( cursorX );
+//	f.WriteFloat( cursorY );
 //}
 //
 //bool idUserInterfaceLocal::WriteToSaveGame( idFile *savefile ) const {
@@ -510,39 +524,39 @@
 //	const char *string;
 //
 //	int num = state.GetNumKeyVals();
-//	savefile->Write( &num, sizeof( num ) );
+//	savefile.Write( &num, sizeof( num ) );
 //
 //	for( int i = 0; i < num; i++ ) {
 //		kv = state.GetKeyVal( i );
-//		len = kv->GetKey().Length();
-//		string = kv->GetKey().c_str();
-//		savefile->Write( &len, sizeof( len ) );
-//		savefile->Write( string, len );
+//		len = kv.GetKey().Length();
+//		string = kv.GetKey().c_str();
+//		savefile.Write( &len, sizeof( len ) );
+//		savefile.Write( string, len );
 //
-//		len = kv->GetValue().Length();
-//		string = kv->GetValue().c_str();
-//		savefile->Write( &len, sizeof( len ) );
-//		savefile->Write( string, len );
+//		len = kv.GetValue().Length();
+//		string = kv.GetValue().c_str();
+//		savefile.Write( &len, sizeof( len ) );
+//		savefile.Write( string, len );
 //	}
 //
-//	savefile->Write( &active, sizeof( active ) );
-//	savefile->Write( &interactive, sizeof( interactive ) );
-//	savefile->Write( &uniqued, sizeof( uniqued ) );
-//	savefile->Write( &time, sizeof( time ) );
+//	savefile.Write( &active, sizeof( active ) );
+//	savefile.Write( &interactive, sizeof( interactive ) );
+//	savefile.Write( &uniqued, sizeof( uniqued ) );
+//	savefile.Write( &time, sizeof( time ) );
 //	len = activateStr.Length();
-//	savefile->Write( &len, sizeof( len ) );
-//	savefile->Write( activateStr.c_str(), len );
+//	savefile.Write( &len, sizeof( len ) );
+//	savefile.Write( activateStr.c_str(), len );
 //	len = pendingCmd.Length();
-//	savefile->Write( &len, sizeof( len ) );
-//	savefile->Write( pendingCmd.c_str(), len );
+//	savefile.Write( &len, sizeof( len ) );
+//	savefile.Write( pendingCmd.c_str(), len );
 //	len = returnCmd.Length();
-//	savefile->Write( &len, sizeof( len ) );
-//	savefile->Write( returnCmd.c_str(), len );
+//	savefile.Write( &len, sizeof( len ) );
+//	savefile.Write( returnCmd.c_str(), len );
 //
-//	savefile->Write( &cursorX, sizeof( cursorX ) );
-//	savefile->Write( &cursorY, sizeof( cursorY ) );
+//	savefile.Write( &cursorX, sizeof( cursorX ) );
+//	savefile.Write( &cursorY, sizeof( cursorY ) );
 //
-//	desktop->WriteToSaveGame( savefile );
+//	desktop.WriteToSaveGame( savefile );
 //
 //	return true;
 //}
@@ -553,40 +567,40 @@
 //	idStr key;
 //	idStr value;
 //
-//	savefile->Read( &num, sizeof( num ) );
+//	savefile.Read( &num, sizeof( num ) );
 //
 //	state.Clear();
 //	for( i = 0; i < num; i++ ) {
-//		savefile->Read( &len, sizeof( len ) );
+//		savefile.Read( &len, sizeof( len ) );
 //		key.Fill( ' ', len );
-//		savefile->Read( &key[0], len );
+//		savefile.Read( &key[0], len );
 //
-//		savefile->Read( &len, sizeof( len ) );
+//		savefile.Read( &len, sizeof( len ) );
 //		value.Fill( ' ', len );
-//		savefile->Read( &value[0], len );
+//		savefile.Read( &value[0], len );
 //		
 //		state.Set( key, value );
 //	}
 //
-//	savefile->Read( &active, sizeof( active ) );
-//	savefile->Read( &interactive, sizeof( interactive ) );
-//	savefile->Read( &uniqued, sizeof( uniqued ) );
-//	savefile->Read( &time, sizeof( time ) );
+//	savefile.Read( &active, sizeof( active ) );
+//	savefile.Read( &interactive, sizeof( interactive ) );
+//	savefile.Read( &uniqued, sizeof( uniqued ) );
+//	savefile.Read( &time, sizeof( time ) );
 //
-//	savefile->Read( &len, sizeof( len ) );
+//	savefile.Read( &len, sizeof( len ) );
 //	activateStr.Fill( ' ', len );
-//	savefile->Read( &activateStr[0], len );
-//	savefile->Read( &len, sizeof( len ) );
+//	savefile.Read( &activateStr[0], len );
+//	savefile.Read( &len, sizeof( len ) );
 //	pendingCmd.Fill( ' ', len );
-//	savefile->Read( &pendingCmd[0], len );
-//	savefile->Read( &len, sizeof( len ) );
+//	savefile.Read( &pendingCmd[0], len );
+//	savefile.Read( &len, sizeof( len ) );
 //	returnCmd.Fill( ' ', len );
-//	savefile->Read( &returnCmd[0], len );
+//	savefile.Read( &returnCmd[0], len );
 //
-//	savefile->Read( &cursorX, sizeof( cursorX ) );
-//	savefile->Read( &cursorY, sizeof( cursorY ) );
+//	savefile.Read( &cursorX, sizeof( cursorX ) );
+//	savefile.Read( &cursorY, sizeof( cursorY ) );
 //
-//	desktop->ReadFromSaveGame( savefile );
+//	desktop.ReadFromSaveGame( savefile );
 //
 //	return true;
 //}
@@ -594,20 +608,20 @@
 //size_t idUserInterfaceLocal::Size() {
 //	size_t sz = sizeof(*this) + state.Size() + source.Allocated();
 //	if ( desktop ) {
-//		sz += desktop->Size();
+//		sz += desktop.Size();
 //	}
 //	return sz;
 //}
 //
 //void idUserInterfaceLocal::RecurseSetKeyBindingNames( idWindow *window ) {
 //	int i;
-//	idWinVar *v = window->GetWinVarByName( "bind" );
+//	idWinVar *v = window.GetWinVarByName( "bind" );
 //	if ( v ) {
-//		SetStateString( v->GetName(), idKeyInput::KeysFromBinding( v->GetName() ) );
+//		SetStateString( v.GetName(), idKeyInput::KeysFromBinding( v.GetName() ) );
 //	}
 //	i = 0;
-//	while ( i < window->GetChildCount() ) {
-//		idWindow *next = window->GetChild( i );
+//	while ( i < window.GetChildCount() ) {
+//		idWindow *next = window.GetChild( i );
 //		if ( next ) {
 //			RecurseSetKeyBindingNames( next );
 //		}
@@ -637,4 +651,27 @@
 //	cursorX = x;
 //	cursorY = y;
 //}
+
+//private:
+//	bool						active;
+//	bool						loading;
+//	bool						interactive;
+//	bool						uniqued;
 //
+//	idDict						state;
+//	idWindow *					desktop;
+//	idWindow *					bindHandler;
+//
+//	idStr						source;
+//	idStr						activateStr;
+//	idStr						pendingCmd;
+//	idStr						returnCmd;
+//	ID_TIME_T						timeStamp;
+//
+//	float						cursorX;
+//	float						cursorY;
+//
+//	int							time;
+//
+//	int							refs;
+};

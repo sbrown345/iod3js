@@ -1,4 +1,7 @@
 /// <reference path="../../libs/idlib/precompiled.h.ts" />
+/// <reference path="../ui/userinterface.h.ts" />
+/// <reference path="../ui/userinterface.cpp.ts" />
+/// <reference path="image_program.cpp.ts" />
 /// <reference path="material.h.ts" />
 /////*
 ////===========================================================================
@@ -320,24 +323,25 @@ ParseSort(src:idLexer ):number {
 	}
 }
 
-/////*
-////=================
-////idMaterial::ParseDecalInfo
-////=================
-////*/
-////void idMaterial::ParseDecalInfo( idLexer &src ) {
-////	idToken token;
+/*
+=================
+idMaterial::ParseDecalInfo
+=================
+*/
+	ParseDecalInfo ( src: idLexer ): void {
+		todoThrow ( );
+		//idToken token;
 
-////	decalInfo.stayTime = src.ParseFloat() * 1000;
-////	decalInfo.fadeTime = src.ParseFloat() * 1000;
-////	float	start[4], end[4];
-////	src.Parse1DMatrix( 4, start );
-////	src.Parse1DMatrix( 4, end );
-////	for ( int i = 0 ; i < 4 ; i++ ) {
-////		decalInfo.start[i] = start[i];
-////		decalInfo.end[i] = end[i];
-////	}
-////}
+		//decalInfo.stayTime = src.ParseFloat() * 1000;
+		//decalInfo.fadeTime = src.ParseFloat() * 1000;
+		//float	start[4], end[4];
+		//src.Parse1DMatrix( 4, start );
+		//src.Parse1DMatrix( 4, end );
+		//for ( int i = 0 ; i < 4 ; i++ ) {
+		//	decalInfo.start[i] = start[i];
+		//	decalInfo.end[i] = end[i];
+		//}
+	}
 
 /////*
 ////=============
@@ -353,7 +357,7 @@ ParseSort(src:idLexer ):number {
 ////		}
 ////	}
 ////	if ( this.numRegisters == MAX_EXPRESSION_REGISTERS ) {
-////		common.Warning( "GetExpressionConstant: material '%s' hit MAX_EXPRESSION_REGISTERS", GetName() );
+////		common.Warning( "GetExpressionConstant: material '%s' hit MAX_EXPRESSION_REGISTERS", this.GetName() );
 ////		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////		return 0;
 ////	}
@@ -371,7 +375,7 @@ ParseSort(src:idLexer ):number {
 ////*/
 ////int idMaterial::GetExpressionTemporary( void ) {
 ////	if ( this.numRegisters == MAX_EXPRESSION_REGISTERS ) {
-////		common.Warning( "GetExpressionTemporary: material '%s' hit MAX_EXPRESSION_REGISTERS", GetName() );
+////		common.Warning( "GetExpressionTemporary: material '%s' hit MAX_EXPRESSION_REGISTERS", this.GetName() );
 ////		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////		return 0;
 ////	}
@@ -387,7 +391,7 @@ ParseSort(src:idLexer ):number {
 ////*/
 ////expOp_t	*idMaterial::GetExpressionOp( void ) {
 ////	if ( this.numOps == MAX_EXPRESSION_OPS ) {
-////		common.Warning( "GetExpressionOp: material '%s' hit MAX_EXPRESSION_OPS", GetName() );
+////		common.Warning( "GetExpressionOp: material '%s' hit MAX_EXPRESSION_OPS", this.GetName() );
 ////		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////		return &this.pd.shaderOps[0];
 ////	}
@@ -727,7 +731,7 @@ ParseSort(src:idLexer ):number {
 ////		return GLS_SRCBLEND_ALPHA_SATURATE;
 ////	}
 
-////	common.Warning( "unknown blend mode '%s' in material '%s'", name.c_str(), GetName() );
+////	common.Warning( "unknown blend mode '%s' in material '%s'", name.c_str(), this.GetName() );
 ////	this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 
 ////	return GLS_SRCBLEND_ONE;
@@ -757,7 +761,7 @@ ParseSort(src:idLexer ):number {
 ////		return GLS_DSTBLEND_ONE_MINUS_SRC_COLOR;
 ////	}
 
-////	common.Warning( "unknown blend mode '%s' in material '%s'", name.c_str(), GetName() );
+////	common.Warning( "unknown blend mode '%s' in material '%s'", name.c_str(), this.GetName() );
 ////	this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 
 ////	return GLS_DSTBLEND_ONE;
@@ -1016,23 +1020,24 @@ ParseSort(src:idLexer ):number {
 
 ////}
 
-/////*
-////=================
-////idMaterial::ParseStage
+/*
+=================
+idMaterial::ParseStage
 
-////An open brace has been parsed
+An open brace has been parsed
 
 
-////{
-////	if <expression>
-////	map <imageprogram>
-////	"nearest" "linear" "clamp" "zeroclamp" "uncompressed" "highquality" "nopicmip"
-////	scroll, scale, rotate
-////}
+{
+	if <expression>
+	map <imageprogram>
+	"nearest" "linear" "clamp" "zeroclamp" "uncompressed" "highquality" "nopicmip"
+	scroll, scale, rotate
+}
 
-////=================
-////*/
-////void idMaterial::ParseStage( idLexer &src, const textureRepeat_t trpDefault ) {
+=================
+*/
+	ParseStage(src: idLexer, trpDefault: textureRepeat_t): void {
+		todoThrow ( );
 ////	idToken				token;
 ////	const char			*str;
 ////	shaderStage_t		*ss;
@@ -1049,7 +1054,7 @@ ParseSort(src:idLexer ):number {
 
 ////	if ( numStages >= MAX_SHADER_STAGES ) {
 ////		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-////		common.Warning( "material '%s' exceeded %i stages", GetName(), MAX_SHADER_STAGES );
+////		common.Warning( "material '%s' exceeded %i stages", this.GetName(), MAX_SHADER_STAGES );
 ////	}
 
 ////	tf = TF_DEFAULT;
@@ -1138,14 +1143,14 @@ ParseSort(src:idLexer ):number {
 ////			// note that videomaps will always be in clamp mode, so texture
 ////			// coordinates had better be in the 0 to 1 range
 ////			if ( !src.ReadToken( &token ) ) {
-////				common.Warning( "missing parameter for 'videoMap' keyword in material '%s'", GetName() );
+////				common.Warning( "missing parameter for 'videoMap' keyword in material '%s'", this.GetName() );
 ////				continue;
 ////			}
 ////			bool loop = false;
 ////			if ( !token.Icmp( "loop" ) ) {
 ////				loop = true;
 ////				if ( !src.ReadToken( &token ) ) {
-////					common.Warning( "missing parameter for 'videoMap' keyword in material '%s'", GetName() );
+////					common.Warning( "missing parameter for 'videoMap' keyword in material '%s'", this.GetName() );
 ////					continue;
 ////				}
 ////			}
@@ -1156,7 +1161,7 @@ ParseSort(src:idLexer ):number {
 
 ////		if ( !token.Icmp( "soundmap" ) ) {
 ////			if ( !src.ReadToken( &token ) ) {
-////				common.Warning( "missing parameter for 'soundmap' keyword in material '%s'", GetName() );
+////				common.Warning( "missing parameter for 'soundmap' keyword in material '%s'", this.GetName() );
 ////				continue;
 ////			}
 ////			ts.cinematic = new idSndWindow();
@@ -1256,7 +1261,7 @@ ParseSort(src:idLexer ):number {
 ////				texGenRegisters[1] = ParseExpression( src );
 ////				texGenRegisters[2] = ParseExpression( src );
 ////			} else {
-////				common.Warning( "bad texGen '%s' in material %s", token.c_str(), GetName() );
+////				common.Warning( "bad texGen '%s' in material %s", token.c_str(), this.GetName() );
 ////				this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////			}
 ////			continue;
@@ -1500,7 +1505,7 @@ ParseSort(src:idLexer ):number {
 ////		}
 
 
-////		common.Warning( "unknown token '%s' in material '%s'", token.c_str(), GetName() );
+////		common.Warning( "unknown token '%s' in material '%s'", token.c_str(), this.GetName() );
 ////		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 ////		return;
 ////	}
@@ -1539,112 +1544,114 @@ ParseSort(src:idLexer ):number {
 ////			ts.image = globalImages.defaultImage;
 ////		}
 ////	} else if ( !ts.cinematic && !ts.dynamic && !ss.newStage ) {
-////		common.Warning( "material '%s' had stage with no image", GetName() );
+////		common.Warning( "material '%s' had stage with no image", this.GetName() );
 ////		ts.image = globalImages.defaultImage;
 ////	}
-////}
+	}
 
-/////*
-////===============
-////idMaterial::ParseDeform
-////===============
-////*/
-////void idMaterial::ParseDeform( idLexer &src ) {
-////	idToken token;
+/*
+===============
+idMaterial::ParseDeform
+===============
+*/
+	ParseDeform ( src: idLexer ): void {
+		todoThrow ( );
+		//idToken token;
 
-////	if ( !src.ExpectAnyToken( &token ) ) {
-////		return;
-////	}
+		//if ( !src.ExpectAnyToken( &token ) ) {
+		//	return;
+		//}
 
-////	if ( !token.Icmp( "sprite" ) ) {
-////		deform = DFRM_SPRITE;
-////		this.cullType = cullType_t.CT_TWO_SIDED;
-////		this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
-////		return;
-////	}
-////	if ( !token.Icmp( "tube" ) ) {
-////		deform = DFRM_TUBE;
-////		this.cullType = cullType_t.CT_TWO_SIDED;
-////		this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
-////		return;
-////	}
-////	if ( !token.Icmp( "flare" ) ) {
-////		deform = DFRM_FLARE;
-////		this.cullType = cullType_t.CT_TWO_SIDED;
-////		deformRegisters[0] = ParseExpression( src );
-////		this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
-////		return;
-////	}
-////	if ( !token.Icmp( "expand" ) ) {
-////		deform = DFRM_EXPAND;
-////		deformRegisters[0] = ParseExpression( src );
-////		return;
-////	}
-////	if ( !token.Icmp( "move" ) ) {
-////		deform = DFRM_MOVE;
-////		deformRegisters[0] = ParseExpression( src );
-////		return;
-////	}
-////	if ( !token.Icmp( "turbulent" ) ) {
-////		deform = DFRM_TURB;
+		//if ( !token.Icmp( "sprite" ) ) {
+		//	deform = DFRM_SPRITE;
+		//	this.cullType = cullType_t.CT_TWO_SIDED;
+		//	this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
+		//	return;
+		//}
+		//if ( !token.Icmp( "tube" ) ) {
+		//	deform = DFRM_TUBE;
+		//	this.cullType = cullType_t.CT_TWO_SIDED;
+		//	this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
+		//	return;
+		//}
+		//if ( !token.Icmp( "flare" ) ) {
+		//	deform = DFRM_FLARE;
+		//	this.cullType = cullType_t.CT_TWO_SIDED;
+		//	deformRegisters[0] = ParseExpression( src );
+		//	this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
+		//	return;
+		//}
+		//if ( !token.Icmp( "expand" ) ) {
+		//	deform = DFRM_EXPAND;
+		//	deformRegisters[0] = ParseExpression( src );
+		//	return;
+		//}
+		//if ( !token.Icmp( "move" ) ) {
+		//	deform = DFRM_MOVE;
+		//	deformRegisters[0] = ParseExpression( src );
+		//	return;
+		//}
+		//if ( !token.Icmp( "turbulent" ) ) {
+		//	deform = DFRM_TURB;
 
-////		if ( !src.ExpectAnyToken( &token ) ) {
-////			src.Warning( "deform particle missing particle name" );
-////			this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-////			return;
-////		}
-////		deformDecl = declManager.FindType( DECL_TABLE, token.c_str(), true );
+		//	if ( !src.ExpectAnyToken( &token ) ) {
+		//		src.Warning( "deform particle missing particle name" );
+		//		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+		//		return;
+		//	}
+		//	deformDecl = declManager.FindType( DECL_TABLE, token.c_str(), true );
 
-////		deformRegisters[0] = ParseExpression( src );
-////		deformRegisters[1] = ParseExpression( src );
-////		deformRegisters[2] = ParseExpression( src );
-////		return;
-////	}
-////	if ( !token.Icmp( "eyeBall" ) ) {
-////		deform = DFRM_EYEBALL;
-////		return;
-////	}
-////	if ( !token.Icmp( "particle" ) ) {
-////		deform = DFRM_PARTICLE;
-////		if ( !src.ExpectAnyToken( &token ) ) {
-////			src.Warning( "deform particle missing particle name" );
-////			this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-////			return;
-////		}
-////		deformDecl = declManager.FindType( DECL_PARTICLE, token.c_str(), true );
-////		return;
-////	}
-////	if ( !token.Icmp( "particle2" ) ) {
-////		deform = DFRM_PARTICLE2;
-////		if ( !src.ExpectAnyToken( &token ) ) {
-////			src.Warning( "deform particle missing particle name" );
-////			this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-////			return;
-////		}
-////		deformDecl = declManager.FindType( DECL_PARTICLE, token.c_str(), true );
-////		return;
-////	}
-////	src.Warning( "Bad deform type '%s'", token.c_str() );
-////	this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-////}
+		//	deformRegisters[0] = ParseExpression( src );
+		//	deformRegisters[1] = ParseExpression( src );
+		//	deformRegisters[2] = ParseExpression( src );
+		//	return;
+		//}
+		//if ( !token.Icmp( "eyeBall" ) ) {
+		//	deform = DFRM_EYEBALL;
+		//	return;
+		//}
+		//if ( !token.Icmp( "particle" ) ) {
+		//	deform = DFRM_PARTICLE;
+		//	if ( !src.ExpectAnyToken( &token ) ) {
+		//		src.Warning( "deform particle missing particle name" );
+		//		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+		//		return;
+		//	}
+		//	deformDecl = declManager.FindType( DECL_PARTICLE, token.c_str(), true );
+		//	return;
+		//}
+		//if ( !token.Icmp( "particle2" ) ) {
+		//	deform = DFRM_PARTICLE2;
+		//	if ( !src.ExpectAnyToken( &token ) ) {
+		//		src.Warning( "deform particle missing particle name" );
+		//		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+		//		return;
+		//	}
+		//	deformDecl = declManager.FindType( DECL_PARTICLE, token.c_str(), true );
+		//	return;
+		//}
+		//src.Warning( "Bad deform type '%s'", token.c_str() );
+		//this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+	}
 
 
-/////*
-////==============
-////idMaterial::AddImplicitStages
+/*
+==============
+idMaterial::AddImplicitStages
 
-////If a material has diffuse or specular stages without any
-////bump stage, add an implicit _flat bumpmap stage.
+If a material has diffuse or specular stages without any
+bump stage, add an implicit _flat bumpmap stage.
 
-////If a material has a bump stage but no diffuse or specular
-////stage, add a _white diffuse stage.
+If a material has a bump stage but no diffuse or specular
+stage, add a _white diffuse stage.
 
-////It is valid to have either a diffuse or specular without the other.
+It is valid to have either a diffuse or specular without the other.
 
-////It is valid to have a reflection map and a bump map for bumpy reflection
-////==============
-////*/
-////void idMaterial::AddImplicitStages( const textureRepeat_t trpDefault /* = TR_REPEAT  */ ) {
+It is valid to have a reflection map and a bump map for bumpy reflection
+==============
+*/
+	AddImplicitStages(trpDefault: textureRepeat_t = textureRepeat_t.TR_REPEAT  ): void {
+		todoThrow ( );
 ////	char	buffer[1024];
 ////	idLexer		newSrc;
 ////	bool hasDiffuse = false;
@@ -1679,7 +1686,7 @@ ParseSort(src:idLexer ):number {
 ////	if ( !hasBump ) {
 ////		idStr::snPrintf( buffer, sizeof( buffer ), "blend bumpmap\nmap _flat\n}\n" );
 ////		newSrc.LoadMemory( buffer, strlen(buffer), "bumpmap" );
-////		newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
+////		newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 ////		ParseStage( newSrc, trpDefault );
 ////		newSrc.FreeSource();
 ////	}
@@ -1687,27 +1694,27 @@ ParseSort(src:idLexer ):number {
 ////	if ( !hasDiffuse && !hasSpecular && !hasReflection ) {
 ////		idStr::snPrintf( buffer, sizeof( buffer ), "blend diffusemap\nmap _white\n}\n" );
 ////		newSrc.LoadMemory( buffer, strlen(buffer), "diffusemap" );
-////		newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
+////		newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 ////		ParseStage( newSrc, trpDefault );
 ////		newSrc.FreeSource();
 ////	}
+	}
 
-////}
+/*
+===============
+idMaterial::SortInteractionStages
 
-/////*
-////===============
-////idMaterial::SortInteractionStages
+The renderer expects bump, then diffuse, then specular
+There can be multiple bump maps, followed by additional
+diffuse and specular stages, which allows cross-faded bump mapping.
 
-////The renderer expects bump, then diffuse, then specular
-////There can be multiple bump maps, followed by additional
-////diffuse and specular stages, which allows cross-faded bump mapping.
-
-////Ambient stages can be interspersed anywhere, but they are
-////ignored during interactions, and all the interaction
-////stages are ignored during ambient drawing.
-////===============
-////*/
-////void idMaterial::SortInteractionStages() {
+Ambient stages can be interspersed anywhere, but they are
+ignored during interactions, and all the interaction
+stages are ignored during ambient drawing.
+===============
+*/
+SortInteractionStages(): void {
+	todoThrow ( );
 ////	int		j;
 
 ////	for ( int i = 0 ; i < numStages ; i = j ) {
@@ -1736,7 +1743,7 @@ ParseSort(src:idLexer ):number {
 ////			}
 ////		}
 ////	}
-////}
+}
 
 /*
 =================
@@ -1748,328 +1755,321 @@ Parse it into the global material variable. Later functions will optimize it.
 If there is any error during parsing, defaultShader will be set.
 =================
 */
-	ParseMaterial(src: idLexer  ):void {
+	ParseMaterial ( src: idLexer ): void {
 		var token = new R( new idToken );
-		var/*int			*/s:number;
-		var buffer = "";//char		buffer[1024];
-		var str = "";/*const char	*str;*/
+		var /*int			*/s: number;
+		var buffer = ""; //char		buffer[1024];
+		var str = ""; /*const char	*str;*/
 		var newSrc: idLexer;
-		var /*int			*/i:number;
+		var /*int			*/i: number;
 
-	s = 0;
+		s = 0;
 
-	this.numOps = 0;
-		this.numRegisters = expRegister_t.EXP_REG_NUM_PREDEFINED;	// leave space for the parms to be copied in
-	for ( i = 0 ; i < this.numRegisters ; i++ ) {
-		this.pd.registerIsTemporary[i] = true;		// they aren't constants that can be folded
-	}
-
-	this.numStages = 0;
-
-		var trpDefault = textureRepeat_t.TR_REPEAT;		// allow a global setting for repeat
-
-	while ( 1 ) {
-		if ( this.TestMaterialFlag( materialFlags_t.MF_DEFAULTED ) ) {	// we have a parse error
-			return;
-		}
-		if ( !src.ExpectAnyToken( token ) ) {
-			this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-			return;
+		this.numOps = 0;
+		this.numRegisters = expRegister_t.EXP_REG_NUM_PREDEFINED; // leave space for the parms to be copied in
+		for ( i = 0; i < this.numRegisters; i++ ) {
+			this.pd.registerIsTemporary[i] = true; // they aren't constants that can be folded
 		}
 
-		// end of material definition
-		if ( token.$.data == "}" ) {
-			break;
-		}
-		else if ( !token.$.Icmp( "qer_editorimage") ) {
-			src.ReadTokenOnLine( token );
-			this.editorImageName = new idStr(token.$.c_str());
-			src.SkipRestOfLine();
-			continue;
-		}
-		// description
-		else if ( !token.$.Icmp( "description") ) {
-			src.ReadTokenOnLine( token );
-			this.desc = new idStr(token.$.c_str());
-			continue;
-		}
-		// check for the surface / content bit flags
-		else if ( this.CheckSurfaceParm( token ) ) {
-			continue;
-		}
+		this.numStages = 0;
 
+		var trpDefault = textureRepeat_t.TR_REPEAT; // allow a global setting for repeat
 
-		// polygonOffset
-		else if ( !token.$.Icmp( "polygonOffset" ) ) {
-			this.SetMaterialFlag( materialFlags_t.MF_POLYGONOFFSET );
-			if ( !src.ReadTokenOnLine( token ) ) {
-				this.polygonOffset = 1;
+		while ( 1 ) {
+			if ( this.TestMaterialFlag( materialFlags_t.MF_DEFAULTED ) ) { // we have a parse error
+				return;
+			}
+			if ( !src.ExpectAnyToken( token ) ) {
+				this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+				return;
+			}
+
+			// end of material definition
+			if ( token.$.data == "}" ) {
+				break;
+			} else if ( !token.$.Icmp( "qer_editorimage" ) ) {
+				src.ReadTokenOnLine( token );
+				this.editorImageName = new idStr( token.$.c_str ( ) );
+				src.SkipRestOfLine ( );
 				continue;
 			}
-			// explict larger (or negative) offset
-			this.polygonOffset = token.$.GetFloatValue();
-			continue;
-		}
-		// noshadow
-		else if ( !token.$.Icmp( "noShadows" ) ) {
-			this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
-			continue;
-		}
-		else if ( !token.$.Icmp( "suppressInSubview" ) ) {
-			this.suppressInSubview = true;
-			continue;
-		}
-		else if ( !token.$.Icmp( "portalSky" ) ) {
-			this.portalSky = true;
-			continue;
-		}
-		// noSelfShadow
-		else if ( !token.$.Icmp( "noSelfShadow" ) ) {
-			this.SetMaterialFlag( materialFlags_t.MF_NOSELFSHADOW );
-			continue;
-		}
-		// noPortalFog
-		else if ( !token.$.Icmp( "noPortalFog" ) ) {
-			this.SetMaterialFlag(materialFlags_t.MF_NOPORTALFOG );
-			continue;
-		}
-		// forceShadows allows nodraw surfaces to cast shadows
-		else if ( !token.$.Icmp( "forceShadows" ) ) {
-			this.SetMaterialFlag(materialFlags_t.MF_FORCESHADOWS );
-			continue;
-		}
-		// overlay / decal suppression
-		else if ( !token.$.Icmp( "noOverlays" ) ) {
-			this.allowOverlays = false;
-			continue;
-		}
-		// moster blood overlay forcing for alpha tested or translucent surfaces
-		else if ( !token.$.Icmp( "forceOverlays" ) ) {
-			this.pd.forceOverlays = true;
-			continue;
-		}
-		// translucent
-		else if ( !token.$.Icmp( "translucent" ) ) {
-			this.coverage = materialCoverage_t.MC_TRANSLUCENT;
-			continue;
-		}
-		// global zero clamp
-		else if ( !token.$.Icmp( "zeroclamp" ) ) {
-			trpDefault = textureRepeat_t.TR_CLAMP_TO_ZERO;
-			continue;
-		}
-		// global clamp
-		else if ( !token.$.Icmp( "clamp" ) ) {
-			trpDefault = textureRepeat_t.TR_CLAMP;
-			continue;
-		}
-		// global clamp
-		else if ( !token.$.Icmp( "alphazeroclamp" ) ) {
-			trpDefault = textureRepeat_t.TR_CLAMP_TO_ZERO;
-			continue;
-		}
-		// forceOpaque is used for skies-behind-windows
-		else if ( !token.$.Icmp( "forceOpaque" ) ) {
-			this.coverage = materialCoverage_t.MC_OPAQUE;
-			continue;
-		}
-		// twoSided
-		else if ( !token.$.Icmp( "twoSided" ) ) {
-			this.cullType = cullType_t.CT_TWO_SIDED;
-			// twoSided implies no-shadows, because the shadow
-			// volume would be coplanar with the surface, giving depth fighting
-			// we could make this no-self-shadows, but it may be more important
-			// to receive shadows from no-self-shadow monsters
-			this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
-		}
-		// backSided
-		else if ( !token.$.Icmp( "backSided" ) ) {
-			this.cullType = cullType_t.CT_BACK_SIDED;
-			// the shadow code doesn't handle this, so just disable shadows.
-			// We could fix this in the future if there was a need.
-			this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
-		}
-		// foglight
-		else if ( !token.$.Icmp( "fogLight" ) ) {
-			this.fogLight = true;
-			continue;
-		}
-		// blendlight
-		else if ( !token.$.Icmp( "blendLight" ) ) {
-			this.blendLight = true;
-			continue;
-		}
-		// ambientLight
-		else if ( !token.$.Icmp( "ambientLight" ) ) {
-			this.ambientLight = true;
-			continue;
-		}
-		// mirror
-		else if ( !token.$.Icmp( "mirror" ) ) {
-			this.sort = materialSort_t.SS_SUBVIEW;
-			this.coverage = materialCoverage_t.MC_OPAQUE;
-			continue;
-		}
-		// noFog
-		else if ( !token.$.Icmp( "noFog" ) ) {
-			this.noFog = true;
-			continue;
-		}
-		// unsmoothedTangents
-		else if ( !token.$.Icmp( "unsmoothedTangents" ) ) {
-			this.unsmoothedTangents = true;
-			continue;
-		}
-		// lightFallofImage <imageprogram>
-		// specifies the image to use for the third axis of projected
-		// light volumes
-		else if ( !token.$.Icmp( "lightFalloffImage" ) ) {
-			str = R_ParsePastImageProgram( src );
-			var copy: idStr;
-
-			copy = new idStr(str);	// so other things don't step on it
-			this.lightFalloffImage = globalImages.ImageFromFile(copy, textureFilter_t.TF_DEFAULT, false, textureRepeat_t.TR_CLAMP /* TR_CLAMP_TO_ZERO */, textureDepth_t.TD_DEFAULT );
-			continue;
-		}
-		// guisurf <guifile> | guisurf entity
-		// an entity guisurf must have an idUserInterface
-		// specified in the renderEntity
-		else if ( !token.$.Icmp( "guisurf" ) ) {
-			src.ReadTokenOnLine( token );
-			if ( !token.$.Icmp( "entity" ) ) {
-				this.entityGui = 1;
-			} else if ( !token.$.Icmp( "entity2" ) ) {
-				this.entityGui = 2;
-			} else if ( !token.$.Icmp( "entity3" ) ) {
-				this.entityGui = 3;
-			} else {
-				this.gui = uiManager.FindGui( token.$.c_str(), true );
+			// description
+			else if ( !token.$.Icmp( "description" ) ) {
+				src.ReadTokenOnLine( token );
+				this.desc = new idStr( token.$.c_str ( ) );
+				continue;
 			}
-			continue;
-		}
-		// sort
-		else if ( !token.$.Icmp( "sort" ) ) {
-			this.ParseSort( src );
-			continue;
-		}
-		// spectrum <integer>
-		else if ( !token.$.Icmp( "spectrum" ) ) {
-			src.ReadTokenOnLine( token );
-			this.spectrum = atoi( token.$.c_str() );
-			continue;
-		}
-		// deform < sprite | tube | flare >
-		else if ( !token.$.Icmp( "deform" ) ) {
-			this.ParseDeform( src );
-			continue;
-		}
-		// decalInfo <staySeconds> <fadeSeconds> ( <start rgb> ) ( <end rgb> )
-		else if ( !token.$.Icmp( "decalInfo" ) ) {
-			this.ParseDecalInfo( src );
-			continue;
-		}
-		// renderbump <args...>
-		else if ( !token.$.Icmp( "renderbump") ) {
-			src.ParseRestOfLine( renderBump );
-			continue;
-		}
-		// diffusemap for stage shortcut
-		else if ( !token.$.Icmp( "diffusemap" ) ) {
-			str = R_ParsePastImageProgram( src );
-			idStr.snPrintf( buffer, sizeof( buffer ), "blend diffusemap\nmap %s\n}\n", str );
-			newSrc.LoadMemory( buffer, strlen(buffer), "diffusemap" );
-			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
-			this.ParseStage( newSrc, trpDefault );
-			newSrc.FreeSource();
-			continue;
-		}
-		// specularmap for stage shortcut
-		else if ( !token.$.Icmp( "specularmap" ) ) {
-			str = R_ParsePastImageProgram( src );
-			idStr.snPrintf( buffer, sizeof( buffer ), "blend specularmap\nmap %s\n}\n", str );
-			newSrc.LoadMemory( buffer, strlen(buffer), "specularmap" );
-			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
-			this.ParseStage( newSrc, trpDefault );
-			newSrc.FreeSource();
-			continue;
-		}
-		// normalmap for stage shortcut
-		else if ( !token.$.Icmp( "bumpmap" ) ) {
-			str = R_ParsePastImageProgram( src );
-			idStr.snPrintf( buffer, sizeof( buffer ), "blend bumpmap\nmap %s\n}\n", str );
-			newSrc.LoadMemory( buffer, strlen(buffer), "bumpmap" );
-			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
-			this.ParseStage( newSrc, trpDefault );
-			newSrc.FreeSource();
-			continue;
-		}
-		// DECAL_MACRO for backwards compatibility with the preprocessor macros
-		else if ( !token.$.Icmp( "DECAL_MACRO" ) ) {
-			// polygonOffset
-			this.SetMaterialFlag( materialFlags_t.MF_POLYGONOFFSET );
-			this.polygonOffset = 1;
-
-			// discrete
-			this.surfaceFlags |= surfaceFlags_t.SURF_DISCRETE;
-			this.contentFlags &= ~contentsFlags_t.CONTENTS_SOLID;
-
-			// sort decal
-			this.sort = materialSort_t.SS_DECAL;
-
-			// noShadows
-			this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
-			continue;
-		}
-		else if ( token.$.data == "{" ) {
-			// create the new stage
-			this.ParseStage( src, trpDefault );
-			continue;
-		}
-		else {
-			common.Warning( "unknown general material parameter '%s' in '%s'", token.$.c_str(), this.GetName() );
-			this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-			return;
-		}
-	}
-
-	// add _flat or _white stages if needed
-	this.AddImplicitStages();
-
-	// order the diffuse / bump / specular stages properly
-		this.SortInteractionStages();
-
-	// if we need to do anything with normals (lighting or environment mapping)
-	// and two sided lighting was asked for, flag
-	// shouldCreateBackSides() and change culling back to single sided,
-	// so we get proper tangent vectors on both sides
-
-	// we can't just call ReceivesLighting(), because the stages are still
-	// in temporary form
-	if ( this.cullType == cullType_t.CT_TWO_SIDED ) {
-		for ( i = 0 ; i < this.numStages ; i++ ) {
-			if (this.pd.parseStages[i].lighting != stageLighting_t.SL_AMBIENT || this.pd.parseStages[i].texture.texgen != texgen_t.TG_EXPLICIT ) {
-				if ( this.cullType == cullType_t.CT_TWO_SIDED ) {
-					this.cullType = cullType_t.CT_FRONT_SIDED;
-					this.shouldCreateBackSides = true;
+			// check for the surface / content bit flags
+			else if ( this.CheckSurfaceParm( token ) ) {
+				continue;
+			}
+// polygonOffset
+			else if ( !token.$.Icmp( "polygonOffset" ) ) {
+				this.SetMaterialFlag( materialFlags_t.MF_POLYGONOFFSET );
+				if ( !src.ReadTokenOnLine( token ) ) {
+					this.polygonOffset = 1;
+					continue;
 				}
-				break;
+				// explict larger (or negative) offset
+				this.polygonOffset = token.$.GetFloatValue ( );
+				continue;
 			}
-		}
-	}
+			// noshadow
+			else if ( !token.$.Icmp( "noShadows" ) ) {
+				this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
+				continue;
+			} else if ( !token.$.Icmp( "suppressInSubview" ) ) {
+				this.suppressInSubview = true;
+				continue;
+			} else if ( !token.$.Icmp( "portalSky" ) ) {
+				this.portalSky = true;
+				continue;
+			}
+			// noSelfShadow
+			else if ( !token.$.Icmp( "noSelfShadow" ) ) {
+				this.SetMaterialFlag( materialFlags_t.MF_NOSELFSHADOW );
+				continue;
+			}
+			// noPortalFog
+			else if ( !token.$.Icmp( "noPortalFog" ) ) {
+				this.SetMaterialFlag( materialFlags_t.MF_NOPORTALFOG );
+				continue;
+			}
+			// forceShadows allows nodraw surfaces to cast shadows
+			else if ( !token.$.Icmp( "forceShadows" ) ) {
+				this.SetMaterialFlag( materialFlags_t.MF_FORCESHADOWS );
+				continue;
+			}
+			// overlay / decal suppression
+			else if ( !token.$.Icmp( "noOverlays" ) ) {
+				this.allowOverlays = false;
+				continue;
+			}
+			// moster blood overlay forcing for alpha tested or translucent surfaces
+			else if ( !token.$.Icmp( "forceOverlays" ) ) {
+				this.pd.forceOverlays = true;
+				continue;
+			}
+			// translucent
+			else if ( !token.$.Icmp( "translucent" ) ) {
+				this.coverage = materialCoverage_t.MC_TRANSLUCENT;
+				continue;
+			}
+			// global zero clamp
+			else if ( !token.$.Icmp( "zeroclamp" ) ) {
+				trpDefault = textureRepeat_t.TR_CLAMP_TO_ZERO;
+				continue;
+			}
+			// global clamp
+			else if ( !token.$.Icmp( "clamp" ) ) {
+				trpDefault = textureRepeat_t.TR_CLAMP;
+				continue;
+			}
+			// global clamp
+			else if ( !token.$.Icmp( "alphazeroclamp" ) ) {
+				trpDefault = textureRepeat_t.TR_CLAMP_TO_ZERO;
+				continue;
+			}
+			// forceOpaque is used for skies-behind-windows
+			else if ( !token.$.Icmp( "forceOpaque" ) ) {
+				this.coverage = materialCoverage_t.MC_OPAQUE;
+				continue;
+			}
+			// twoSided
+			else if ( !token.$.Icmp( "twoSided" ) ) {
+				this.cullType = cullType_t.CT_TWO_SIDED;
+				// twoSided implies no-shadows, because the shadow
+				// volume would be coplanar with the surface, giving depth fighting
+				// we could make this no-self-shadows, but it may be more important
+				// to receive shadows from no-self-shadow monsters
+				this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
+			}
+			// backSided
+			else if ( !token.$.Icmp( "backSided" ) ) {
+				this.cullType = cullType_t.CT_BACK_SIDED;
+				// the shadow code doesn't handle this, so just disable shadows.
+				// We could fix this in the future if there was a need.
+				this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
+			}
+			// foglight
+			else if ( !token.$.Icmp( "fogLight" ) ) {
+				this.fogLight = true;
+				continue;
+			}
+			// blendlight
+			else if ( !token.$.Icmp( "blendLight" ) ) {
+				this.blendLight = true;
+				continue;
+			}
+			// ambientLight
+			else if ( !token.$.Icmp( "ambientLight" ) ) {
+				this.ambientLight = true;
+				continue;
+			}
+			// mirror
+			else if ( !token.$.Icmp( "mirror" ) ) {
+				this.sort = materialSort_t.SS_SUBVIEW;
+				this.coverage = materialCoverage_t.MC_OPAQUE;
+				continue;
+			}
+			// noFog
+			else if ( !token.$.Icmp( "noFog" ) ) {
+				this.noFog = true;
+				continue;
+			}
+			// unsmoothedTangents
+			else if ( !token.$.Icmp( "unsmoothedTangents" ) ) {
+				this.unsmoothedTangents = true;
+				continue;
+			}
+			// lightFallofImage <imageprogram>
+			// specifies the image to use for the third axis of projected
+			// light volumes
+			else if ( !token.$.Icmp( "lightFalloffImage" ) ) {
+				str = R_ParsePastImageProgram( src ).toString ( );
+				var copy: idStr;
 
-	// currently a surface can only have one unique texgen for all the stages on old hardware
+				copy = new idStr( str ); // so other things don't step on it
+				this.lightFalloffImage = globalImages.ImageFromFile( copy.data, textureFilter_t.TF_DEFAULT, false, textureRepeat_t.TR_CLAMP /* TR_CLAMP_TO_ZERO */, textureDepth_t.TD_DEFAULT );
+				continue;
+			}
+			// guisurf <guifile> | guisurf entity
+			// an entity guisurf must have an idUserInterface
+			// specified in the renderEntity
+			else if ( !token.$.Icmp( "guisurf" ) ) {
+				src.ReadTokenOnLine( token );
+				if ( !token.$.Icmp( "entity" ) ) {
+					this.entityGui = 1;
+				} else if ( !token.$.Icmp( "entity2" ) ) {
+					this.entityGui = 2;
+				} else if ( !token.$.Icmp( "entity3" ) ) {
+					this.entityGui = 3;
+				} else {
+					this.gui = uiManager.FindGui( token.$.c_str ( ), true );
+				}
+				continue;
+			}
+			// sort
+			else if ( !token.$.Icmp( "sort" ) ) {
+				this.ParseSort( src );
+				continue;
+			}
+			// spectrum <integer>
+			else if ( !token.$.Icmp( "spectrum" ) ) {
+				src.ReadTokenOnLine( token );
+				this.spectrum = atoi( token.$.c_str ( ) );
+				continue;
+			}
+			// deform < sprite | tube | flare >
+			else if ( !token.$.Icmp( "deform" ) ) {
+				this.ParseDeform( src );
+				continue;
+			}
+			// decalInfo <staySeconds> <fadeSeconds> ( <start rgb> ) ( <end rgb> )
+			else if ( !token.$.Icmp( "decalInfo" ) ) {
+				this.ParseDecalInfo( src );
+				continue;
+			}
+			// renderbump <args...>
+			else if ( !token.$.Icmp( "renderbump" ) ) {
+				src.ParseRestOfLine( this.renderBump );
+				continue;
+			}
+			// diffusemap for stage shortcut
+			else if ( !token.$.Icmp( "diffusemap" ) ) {
+				str = R_ParsePastImageProgram( src ).toString ( );
+				idStr.snPrintf( buffer, sizeof( buffer ), "blend diffusemap\nmap %s\n}\n", str );
+				newSrc.LoadMemory( buffer, strlen( buffer ), "diffusemap" );
+				newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
+				this.ParseStage( newSrc, trpDefault );
+				newSrc.FreeSource ( );
+				continue;
+			}
+			// specularmap for stage shortcut
+			else if ( !token.$.Icmp( "specularmap" ) ) {
+				str = R_ParsePastImageProgram( src ).toString ( );
+				idStr.snPrintf( buffer, sizeof( buffer ), "blend specularmap\nmap %s\n}\n", str );
+				newSrc.LoadMemory( buffer, strlen( buffer ), "specularmap" );
+				newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
+				this.ParseStage( newSrc, trpDefault );
+				newSrc.FreeSource ( );
+				continue;
+			}
+			// normalmap for stage shortcut
+			else if ( !token.$.Icmp( "bumpmap" ) ) {
+				str = R_ParsePastImageProgram( src ).toString ( );
+				idStr.snPrintf( buffer, sizeof( buffer ), "blend bumpmap\nmap %s\n}\n", str );
+				newSrc.LoadMemory( buffer, strlen( buffer ), "bumpmap" );
+				newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
+				this.ParseStage( newSrc, trpDefault );
+				newSrc.FreeSource ( );
+				continue;
+			}
+			// DECAL_MACRO for backwards compatibility with the preprocessor macros
+			else if ( !token.$.Icmp( "DECAL_MACRO" ) ) {
+				// polygonOffset
+				this.SetMaterialFlag( materialFlags_t.MF_POLYGONOFFSET );
+				this.polygonOffset = 1;
+
+				// discrete
+				this.surfaceFlags |= surfaceFlags_t.SURF_DISCRETE;
+				this.contentFlags &= ~contentsFlags_t.CONTENTS_SOLID;
+
+				// sort decal
+				this.sort = materialSort_t.SS_DECAL;
+
+				// noShadows
+				this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
+				continue;
+			} else if ( token.$.data == "{" ) {
+				// create the new stage
+				this.ParseStage( src, trpDefault );
+				continue;
+			} else {
+				common.Warning( "unknown general material parameter '%s' in '%s'", token.$.c_str ( ), this.GetName ( ) );
+				this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+				return;
+			}
+		}
+
+		// add _flat or _white stages if needed
+		this.AddImplicitStages ( );
+
+		// order the diffuse / bump / specular stages properly
+		this.SortInteractionStages ( );
+
+		// if we need to do anything with normals (lighting or environment mapping)
+		// and two sided lighting was asked for, flag
+		// shouldCreateBackSides() and change culling back to single sided,
+		// so we get proper tangent vectors on both sides
+
+		// we can't just call ReceivesLighting(), because the stages are still
+		// in temporary form
+		if ( this.cullType == cullType_t.CT_TWO_SIDED ) {
+			for ( i = 0; i < this.numStages; i++ ) {
+				if ( this.pd.parseStages[i].lighting != stageLighting_t.SL_AMBIENT || this.pd.parseStages[i].texture.texgen != texgen_t.TG_EXPLICIT ) {
+					if ( this.cullType == cullType_t.CT_TWO_SIDED ) {
+						this.cullType = cullType_t.CT_FRONT_SIDED;
+						this.shouldCreateBackSides = true;
+					}
+					break;
+				}
+			}
+		}
+
+		// currently a surface can only have one unique texgen for all the stages on old hardware
 		var firstGen = texgen_t.TG_EXPLICIT;
-	for ( i = 0; i < this.numStages; i++ ) {
-		if ( this.pd.parseStages[i].texture.texgen != texgen_t.TG_EXPLICIT ) {
-			if ( firstGen == texgen_t.TG_EXPLICIT ) {
-				firstGen = this.pd.parseStages[i].texture.texgen;
-			} else if ( firstGen != this.pd.parseStages[i].texture.texgen ) {
-				common.Warning( "material '%s' has multiple stages with a texgen", GetName() );
-				break;
+		for ( i = 0; i < this.numStages; i++ ) {
+			if ( this.pd.parseStages[i].texture.texgen != texgen_t.TG_EXPLICIT ) {
+				if ( firstGen == texgen_t.TG_EXPLICIT ) {
+					firstGen = this.pd.parseStages[i].texture.texgen;
+				} else if ( firstGen != this.pd.parseStages[i].texture.texgen ) {
+					common.Warning( "material '%s' has multiple stages with a texgen", this.GetName ( ) );
+					break;
+				}
 			}
 		}
 	}
-}
 
 /////*
 ////=========================
@@ -2634,7 +2634,7 @@ Parses the current material definition and finds all necessary images.
 ////*/
 ////bool idMaterial::SetDefaultText( void ) {
 ////	// if there exists an image with the same name
-////	if ( 1 ) { //fileSystem.ReadFile( GetName(), NULL ) != -1 ) {
+////	if ( 1 ) { //fileSystem.ReadFile( this.GetName(), NULL ) != -1 ) {
 ////		char generated[2048];
 ////		idStr::snPrintf( generated, sizeof( generated ), 
 ////						"material %s // IMPLICITLY GENERATED\n"
@@ -2645,7 +2645,7 @@ Parses the current material definition and finds all necessary images.
 ////						"map \"%s\"\n"
 ////						"clamp\n"
 ////						"}\n"
-////						"}\n", GetName(), GetName() );
+////						"}\n", this.GetName(), this.GetName() );
 ////		SetText( generated );
 ////		return true;
 ////	} else {

@@ -128,21 +128,21 @@ enum textureDepth_t {
 	TD_DEFAULT,				    // will use compressed formats when possible
 	TD_BUMP,				    // may be compressed with 8 bit lookup
 	TD_HIGH_QUALITY 			// either 32 bit or a component format, no loss at all
-};
+}
 
-////typedef enum {
-////	TT_DISABLED,
-////	TT_2D,
-////	TT_3D,
-////	TT_CUBIC,
-////	TT_RECT
-////} textureType_t;
+enum textureType_t{
+	TT_DISABLED,
+	TT_2D,
+	TT_3D,
+	TT_CUBIC,
+	TT_RECT
+}
 
-////typedef enum {
-////	CF_2D,			// not a cube map
-////	CF_NATIVE,		// _px, _nx, _py, etc, directly sent to GL
-////	CF_CAMERA		// _forward, _back, etc, rotated and flipped as needed before sending to GL
-////} cubeFiles_t;
+enum cubeFiles_t{
+	CF_2D,			// not a cube map
+	CF_NATIVE,		// _px, _nx, _py, etc, directly sent to GL
+	CF_CAMERA		// _forward, _back, etc, rotated and flipped as needed before sending to GL
+}
 
 var MAX_IMAGE_NAME = 256;
 
@@ -178,7 +178,7 @@ class idImage {
 //	// FIXME: should we implement cinematics this way, instead of with explicit calls?
     GenerateImage ( pic: Uint8Array, /*int */width: number, /*int */height: number,
         filterParm: textureFilter_t, /*bool */allowDownSizeParm: boolean,
-        repeatParm: textureRepeat_t, depthParm:textureDepth_t): void {/*placeholder*/}
+		repeatParm: textureRepeat_t, depthParm: textureDepth_t): void { throw "placeholder";}
 //#if !defined(GL_ES_VERSION_2_0)
 //	void		Generate3DImage( const byte *pic, int width, int height, int depth,
 //						textureFilter_t filter, bool allowDownSize, 
@@ -211,13 +211,13 @@ class idImage {
 ////==========================================================
 
 //	void		GetDownsize( int &scaled_width, int &scaled_height ) const;
-    MakeDefault(): void {/*placeholder*/}	// fill with a grid pattern
+	MakeDefault(): void { throw "placeholder";}	// fill with a grid pattern
 //	void		SetImageFilterAndRepeat() const;
 //	bool		ShouldImageBePartialCached();
 //	void		WritePrecompressedImage();
 //	bool		CheckPrecompressedImage( bool fullLoad );
 //	void		UploadPrecompressedImage( byte *data, int len );
-    ActuallyLoadImage( checkForPrecompressed:boolean, fromBackEnd:boolean ):void {/*placeholder*/}
+	ActuallyLoadImage(checkForPrecompressed: boolean, fromBackEnd: boolean): void { throw "placeholder";}
 //	void		StartBackgroundImageLoad();
 //	int			BitsForInternalFormat( int internalFormat ) const;
 //	void		UploadCompressedNormalMap( int width, int height, const byte *rgba, int mipLevel );
@@ -309,204 +309,34 @@ class idImage {
 ////void	R_WritePalTGA( const char *filename, const byte *data, const byte *palette, int width, int height, bool flipVertical = false );
 ////// data is in top-to-bottom raster order unless flipVertical is set
 
-
-interface IidImageManager {
+class idImageManager {
     // new ones
-    R_DefaultImage(image:idImage):void;
-    R_WhiteImage(image:idImage):void;
-    R_BlackImage(image:idImage):void;
-    R_BorderClampImage(image:idImage):void;
-    R_FlatNormalImage(image:idImage):void;
-    R_AmbientNormalImage(image:idImage):void;
-    R_SpecularTableImage(image:idImage):void;
-    R_Specular2DTableImage(image:idImage):void;
-    R_RampImage(image:idImage):void;
-    R_AlphaNotchImage(image:idImage):void;
-    R_FogImage(image:idImage):void;
-    R_FogEnterImage(image:idImage):void;
-    makeNormalizeVectorCubeMap(image:idImage):void;
-    R_CreateNoFalloffImage(image:idImage):void;
-    R_QuadraticImage(image:idImage):void;
-
-    R_ReloadImages_f(image:idImage):void;
-    //R_QsortImageSizes(/*?*/):void;
-    R_ListImages_f(args:idCmdArgs):void;
-    //SetNormalPalette():void;
-    R_CombineCubeImages_f(args:idCmdArgs):void;
-
-////public:
-    Init():void;
-////	void				Shutdown();
-
-////	// If the exact combination of parameters has been asked for already, an existing
-////	// image will be returned, otherwise a new image will be created.
-////	// Be careful not to use the same image file with different filter / repeat / etc parameters
-////	// if possible, because it will cause a second copy to be loaded.
-////	// If the load fails for any reason, the image will be filled in with the default
-////	// grid pattern.
-////	// Will automatically resample non-power-of-two images and execute image programs if needed.
-////	idImage *			ImageFromFile( const char *name,
-////							 textureFilter_t filter, bool allowDownSize,
-////							 textureRepeat_t repeat, textureDepth_t depth, cubeFiles_t cubeMap = CF_2D );
-
-////	// look for a loaded image, whatever the parameters
-////	idImage *			GetImage( const char *name ) const;
-
-////	// The callback will be issued immediately, and later if images are reloaded or vid_restart
-////	// The callback function should call one of the idImage::Generate* functions to fill in the data
-    ImageFromFunction( /*const char **/_name: string, generatorFunction: (image:idImage)=> void): idImage;
-
-////	// called once a frame to allow any background loads that have been completed
-////	// to turn into textures.
-////	void				CompleteBackgroundImageLoads();
-
-////	// returns the number of bytes of image data bound in the previous frame
-////	int					SumOfUsedImages();
-
-////	// called each frame to allow some cvars to automatically force changes
-////	void				CheckCvars();
-
-////	// purges all the images before a vid_restart
-////	void				PurgeAllImages();
-
-////	// reloads all apropriate images after a vid_restart
-////	void				ReloadAllImages();
-
-////	// disable the active texture unit
-////	void				BindNull();
-
-////	// Mark all file based images as currently unused,
-////	// but don't free anything.  Calls to ImageFromFile() will
-////	// either mark the image as used, or create a new image without
-////	// loading the actual data.
-////	// Called only by renderSystem::BeginLevelLoad
-////	void				BeginLevelLoad();
-
-////	// Free all images marked as unused, and load all images that are necessary.
-////	// This architecture prevents us from having the union of two level's
-////	// worth of data present at one time.
-////	// Called only by renderSystem::EndLevelLoad
-////	void				EndLevelLoad();
-
-////	// used to clear and then write the dds conversion batch file
-////	void				StartBuild();
-////	void				FinishBuild( bool removeDups = false );
-////	void				AddDDSCommand( const char *cmd );
-
-////	void				PrintMemInfo( MemInfo_t *mi );
-
-////	// cvars - moved below
-////	static idCVar		image_roundDown;			// round bad sizes down to nearest power of two
-////	static idCVar		image_colorMipLevels;		// development aid to see texture mip usage
-////	static idCVar		image_downSize;				// controls texture downsampling
-////	static idCVar		image_useCompression;		// 0 = force everything to high quality
-////	static idCVar		image_filter;				// changes texture filtering on mipmapped images
-////	static idCVar		image_anisotropy;			// set the maximum texture anisotropy if available
-////	static idCVar		image_lodbias;				// change lod bias on mipmapped images
-////	static idCVar		image_useAllFormats;		// allow alpha/intensity/luminance/luminance+alpha
-////	static idCVar		image_usePrecompressedTextures;	// use .dds files if present
-////	static idCVar		image_writePrecompressedTextures; // write .dds files if necessary
-////	static idCVar		image_writeNormalTGA;		// debug tool to write out .tgas of the final normal maps
-////	static idCVar		image_writeNormalTGAPalletized;		// debug tool to write out palletized versions of the final normal maps
-////	static idCVar		image_writeTGA;				// debug tool to write out .tgas of the non normal maps
-////	static idCVar		image_useNormalCompression;	// 1 = use 256 color compression for normal maps if available, 2 = use rxgb compression
-////	static idCVar		image_useOffLineCompression; // will write a batch file with commands for the offline compression
-////	static idCVar		image_preload;				// if 0, dynamically load all images
-////	static idCVar		image_cacheMinK;			// maximum K of precompressed files to read at specification time,
-////													// the remainder will be dynamically cached
-////	static idCVar		image_cacheMegs;			// maximum bytes set aside for temporary loading of full-sized precompressed images
-////	static idCVar		image_useCache;				// 1 = do background load image caching
-////	static idCVar		image_showBackgroundLoads;	// 1 = print number of outstanding background loads
-////	static idCVar		image_forceDownSize;		// allows the ability to force a downsize
-////	static idCVar		image_downSizeSpecular;		// downsize specular
-////	static idCVar		image_downSizeSpecularLimit;// downsize specular limit
-////	static idCVar		image_downSizeBump;			// downsize bump maps
-////	static idCVar		image_downSizeBumpLimit;	// downsize bump limit
-////	static idCVar		image_ignoreHighQuality;	// ignore high quality on materials
-////	static idCVar		image_downSizeLimit;		// downsize diffuse limit
-
-	// built-in images
-    defaultImage: idImage;
-////	idImage *			flatNormalMap;				// 128 128 255 in all pixels
-////	idImage *			ambientNormalMap;			// tr.ambientLightVector encoded in all pixels
-////	idImage *			rampImage;					// 0-255 in RGBA in S
-////	idImage *			alphaRampImage;				// 0-255 in alpha, 255 in RGB
-////	idImage *			alphaNotchImage;			// 2x1 texture with just 1110 and 1111 with point sampling
-////	idImage *			whiteImage;					// full of 0xff
-////	idImage *			blackImage;					// full of 0x00
-////	idImage *			normalCubeMapImage;			// cube map to normalize STR into RGB
-////	idImage *			noFalloffImage;				// all 255, but zero clamped
-////	idImage *			fogImage;					// increasing alpha is denser fog
-////	idImage *			fogEnterImage;				// adjust fogImage alpha based on terminator plane
-////	idImage *			cinematicImage;
-////	idImage *			scratchImage;
-////	idImage *			scratchImage2;
-////	idImage *			accumImage;
-////	idImage *			currentRenderImage;			// for SS_POST_PROCESS shaders
-////	idImage *			scratchCubeMapImage;
-////	idImage *			specularTableImage;			// 1D intensity texture with our specular function
-////	idImage *			specular2DTableImage;		// 2D intensity texture with our specular function with variable specularity
-////	idImage *			borderClampImage;			// white inside, black outside
-
-////	//--------------------------------------------------------
-	
-	AllocImage( name:string ):idImage;
-////	void				SetNormalPalette();
-////	void				ChangeTextureFilter();
-
-////	idList<idImage*>	images;
-////	idStrList			ddsList;
-////	idHashIndex			ddsHash;
-
-////	bool				insideLevelLoad;			// don't actually load images now
-
-////	byte				originalToCompressed[256];	// maps normal maps to 8 bit textures
-////	byte				compressedPalette[768];		// the palette that normal maps use
-
-////	// default filter modes for images
-////	GLenum				textureMinFilter;
-////	GLenum				textureMaxFilter;
-////	float				textureAnisotropy;
-////	float				textureLODBias;
-
-/*	idImage *			*/imageHashTable:Array<idImage>/*[FILE_HASH_SIZE]*/;
-
-////	idImage *			backgroundImageLoads;		// chain of images that have background file loads active
-        cacheLRU:idImage;   // head/tail of doubly linked list
-////	int					totalCachedImageSize;		// for determining when something should be purged
-
-////	int	numActiveBackgroundImageLoads;
-////	const static int MAX_BACKGROUND_IMAGE_LOADS = 8;
-};
-
-class idImageManager implements IidImageManager {
-    // new ones
-    R_DefaultImage(image:idImage):void {/*placeholder*/}
-    R_WhiteImage(image:idImage):void {/*placeholder*/}
-    R_BlackImage(image:idImage):void {/*placeholder*/}
-    R_BorderClampImage(image:idImage):void {/*placeholder*/}
-    R_FlatNormalImage(image:idImage):void {/*placeholder*/}
-    R_AmbientNormalImage(image:idImage):void {/*placeholder*/}
-    R_SpecularTableImage(image:idImage):void {/*placeholder*/}
-    R_Specular2DTableImage(image:idImage):void {/*placeholder*/}
-    R_RampImage(image:idImage):void {/*placeholder*/}
-    R_AlphaNotchImage(image:idImage):void {/*placeholder*/}
-    R_FogImage(image:idImage):void {/*placeholder*/}
-    R_FogEnterImage(image:idImage):void {/*placeholder*/}
-    makeNormalizeVectorCubeMap(image:idImage):void {/*placeholder*/}
-    R_CreateNoFalloffImage(image:idImage):void {/*placeholder*/}
-    R_QuadraticImage(image:idImage):void {/*placeholder*/}
+    R_DefaultImage(image:idImage):void {throw "placeholder";}
+    R_WhiteImage(image:idImage):void {throw "placeholder";}
+    R_BlackImage(image:idImage):void {throw "placeholder";}
+    R_BorderClampImage(image:idImage):void {throw "placeholder";}
+    R_FlatNormalImage(image:idImage):void {throw "placeholder";}
+    R_AmbientNormalImage(image:idImage):void {throw "placeholder";}
+    R_SpecularTableImage(image:idImage):void {throw "placeholder";}
+    R_Specular2DTableImage(image:idImage):void {throw "placeholder";}
+    R_RampImage(image:idImage):void {throw "placeholder";}
+    R_AlphaNotchImage(image:idImage):void {throw "placeholder";}
+    R_FogImage(image:idImage):void {throw "placeholder";}
+    R_FogEnterImage(image:idImage):void {throw "placeholder";}
+    makeNormalizeVectorCubeMap(image:idImage):void {throw "placeholder";}
+    R_CreateNoFalloffImage(image:idImage):void {throw "placeholder";}
+    R_QuadraticImage(image:idImage):void {throw "placeholder";}
 
 
 
-    R_ReloadImages_f(image:idImage):void{/*placeholder*/}
-    //R_QsortImageSizes(/*?*/):void {/*placeholder*/}
-    R_ListImages_f(args:idCmdArgs):void {/*placeholder*/}
-    //SetNormalPalette():void {/*placeholder*/}
-    R_CombineCubeImages_f(args:idCmdArgs):void {/*placeholder*/} 
+    R_ReloadImages_f(image:idImage):void{throw "placeholder";}
+    //R_QsortImageSizes(/*?*/):void {throw "placeholder";}
+    R_ListImages_f(args:idCmdArgs):void {throw "placeholder";}
+    //SetNormalPalette():void {throw "placeholder";}
+    R_CombineCubeImages_f(args:idCmdArgs):void {throw "placeholder";} 
 
 
-    Init():void {/*placeholder*/}
+    Init():void {throw "placeholder";}
         
     ////	void				Shutdown();
 
@@ -517,16 +347,15 @@ class idImageManager implements IidImageManager {
     ////	// If the load fails for any reason, the image will be filled in with the default
     ////	// grid pattern.
     ////	// Will automatically resample non-power-of-two images and execute image programs if needed.
-    ////	idImage *			ImageFromFile( const char *name,
-    ////							 textureFilter_t filter, bool allowDownSize,
-    ////							 textureRepeat_t repeat, textureDepth_t depth, cubeFiles_t cubeMap = CF_2D );
+	ImageFromFile(name: string, filter: textureFilter_t, allowDownSize:boolean,
+		repeat: textureRepeat_t, depth: textureDepth_t, cubeMapL: cubeFiles_t = cubeFiles_t.CF_2D): idImage { throw "placeholder"; }
 
     ////	// look for a loaded image, whatever the parameters
     ////	idImage *			GetImage( const char *name ) const;
 
     ////	// The callback will be issued immediately, and later if images are reloaded or vid_restart
     ////	// The callback function should call one of the idImage::Generate* functions to fill in the data
-    ImageFromFunction( /*const char **/_name: string, generatorFunction: (image: idImage)=>void): idImage {return null/*placeholder*/}
+    ImageFromFunction( /*const char **/_name: string, generatorFunction: (image: idImage)=>void): idImage {throw "placeholder";}
 
     ////	// called once a frame to allow any background loads that have been completed
     ////	// to turn into textures.
@@ -592,7 +421,7 @@ class idImageManager implements IidImageManager {
 
     ////	//--------------------------------------------------------
 
-	AllocImage ( name: string ): idImage { return null;/*placeholder*/ }
+	AllocImage(name: string): idImage { throw "placeholder"; }
     ////	void				SetNormalPalette();
     ////	void				ChangeTextureFilter();
 

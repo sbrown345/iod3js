@@ -81,7 +81,9 @@
     <TypeScriptCompile Include="DoomDLL\Sys\win_input.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Ui\UserInterface.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Ui\UserInterface.h.ts" />
-    <TypeScriptCompile Include="DoomDLL\Ui\UserInterfaceLocal.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\Rectangle.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\DeviceContext.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\DeviceContext.h.ts" />
     <Content Include="libs\c.ts" />
     <Content Include="libs\idLib\Containers\HashIndex.h.ts" />
     <Content Include="libs\idLib\Containers\List.h.ts" />

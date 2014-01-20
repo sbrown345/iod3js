@@ -1,3 +1,6 @@
+/// <reference path="../../libs/idlib/text/lexer.cpp.ts" />
+/// <reference path="image.h.ts" />
+
 /////*
 ////===========================================================================
 
@@ -336,8 +339,8 @@
 ////}
 
 
-////// we build a canonical token form of the image program here
-////static char parseBuffer[MAX_IMAGE_NAME];
+// we build a canonical token form of the image program here
+var parseBuffer = new Uint8Array( MAX_IMAGE_NAME );
 
 /////*
 ////===================
@@ -631,14 +634,13 @@
 ////	src.FreeSource();
 ////}
 
-/////*
-////===================
-////R_ParsePastImageProgram
-////===================
-////*/
-////const char *R_ParsePastImageProgram( idLexer &src ) {
-////	parseBuffer[0] = 0;
-////	R_ParseImageProgram_r( src, NULL, NULL, NULL, NULL, NULL );
-////	return parseBuffer;
-////}
-
+/*
+===================
+R_ParsePastImageProgram
+===================
+*/
+function R_ParsePastImageProgram ( src: idLexer ): Uint8Array {
+	parseBuffer[0] = 0;
+	todoThrow( "R_ParseImageProgram_r( src, NULL, NULL, NULL, NULL, NULL );" );
+	return parseBuffer;
+}

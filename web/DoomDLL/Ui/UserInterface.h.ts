@@ -114,7 +114,7 @@ class idUserInterface {
 };
 //
 //
-//class idUserInterfaceManager {
+class idUserInterfaceManager {
 //public:
 //	virtual						~idUserInterfaceManager( void ) {};
 //
@@ -155,7 +155,7 @@ class idUserInterface {
 //
 //								// De-allocates a list gui
 //	virtual void				FreeListGUI( idListGUI *listgui ) = 0;
-//};
+};
 //
 //extern idUserInterfaceManager *	uiManager;
 //
