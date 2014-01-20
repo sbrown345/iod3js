@@ -184,9 +184,9 @@ class idImage {
 //						textureFilter_t filter, bool allowDownSize, 
 //						textureRepeat_t repeat, textureDepth_t minDepth );
 //#endif
-//	void		GenerateCubeImage( const byte *pic[6], int size, 
-//						textureFilter_t filter, bool allowDownSize, 
-//						textureDepth_t depth );
+GenerateCubeImage( /*const byte *pic[6]*/pic:Uint8Array, /*int*/ size: number,
+	filterParm: textureFilter_t, allowDownSizeParm: boolean,
+	depthParm: textureDepth_t):void { throw "placeholder"; }
 
 //	void		CopyFramebuffer( int x, int y, int width, int height, bool useOversizedBuffer );
 

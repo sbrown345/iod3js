@@ -96,97 +96,97 @@ var globalImages = new idImageManager ( );
 ////	return IC_OTHER;
 ////}
 
-/////*
-////================
-////R_RampImage
+/*
+================
+R_RampImage
 
-////Creates a 0-255 ramp image
-////================
-////*/
-////static void R_RampImage( idImage *image ) {
-////	int		x;
-////	byte	data[256][4];
+Creates a 0-255 ramp image
+================
+*/
+idImageManager.prototype.R_RampImage = function ( image: idImage ): void {
+	var /*int		*/x: number;
+	var data = new Uint8Array( 256 * 4 );
 
-////	for (x=0 ; x<256 ; x++) {
-////		data[x][0] = 
-////		data[x][1] = 
-////		data[x][2] = 
-////		data[x][3] = x;			
-////	}
+	for ( x = 0; x < 256; x++ ) {
+		data[x * 4 + 0] =
+			data[x * 4 + 1] =
+			data[x * 4 + 2] =
+			data[x * 4 + 3] = x;
+	}
 
-////	image.GenerateImage( (byte *)data, 256, 1, 
-////		textureFilter_t.TF_NEAREST, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
-////}
+	image.GenerateImage( data, 256, 1,
+		textureFilter_t.TF_NEAREST, false, textureRepeat_t.TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+};
 
-/////*
-////================
-////R_SpecularTableImage
+/*
+================
+R_SpecularTableImage
 
-////Creates a ramp that matches our fudged specular calculation
-////================
-////*/
-////static void R_SpecularTableImage( idImage *image ) {
-////	int		x;
-////	byte	data[256][4];
+Creates a ramp that matches our fudged specular calculation
+================
+*/
+idImageManager.prototype.R_SpecularTableImage = function ( image: idImage ): void {
+	var x: number;
+	var data = new Uint8Array( 256 * 4 );
 
-////	for (x=0 ; x<256 ; x++) {
-////		float f = x/255.f;
-////#if 0
-////		f = pow(f, 16);
-////#else
-////		// this is the behavior of the hacked up fragment programs that
-////		// can't really do a power function
-////		f = (f-0.75)*4;
-////		if ( f < 0 ) {
-////			f = 0;
-////		}
-////		f = f * f;
-////#endif
-////		int		b = (int)(f * 255);
+	for ( x = 0; x < 256; x++ ) {
+		var /*float */f = x / 255.0;
+//#if 0
+//		f = pow(f, 16);
+//#else
+		// this is the behavior of the hacked up fragment programs that
+		// can't really do a power function
+		f = ( f - 0.75 ) * 4;
+		if ( f < 0 ) {
+			f = 0;
+		}
+		f = f * f;
+//#endif
+		var b = /*(int)*/( f * 255 ) | 0;
 
-////		data[x][0] = 
-////		data[x][1] = 
-////		data[x][2] = 
-////		data[x][3] = b;
-////	}
+		data[x * 4 + 0] =
+			data[x * 4 + 1] =
+			data[x * 4 + 2] =
+			data[x * 4 + 3] = b;
+	}
 
-////	image.GenerateImage( (byte *)data, 256, 1, 
-////		textureFilter_t.TF_LINEAR, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
-////}
+	image.GenerateImage( data, 256, 1,
+		textureFilter_t.TF_LINEAR, false, textureRepeat_t.TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+};
 
 
-/////*
-////================
-////R_Specular2DTableImage
+/*
+================
+R_Specular2DTableImage
 
-////Create a 2D table that calculates ( reflection dot , specularity )
-////================
-////*/
-////static void R_Specular2DTableImage( idImage *image ) {
-////	int		x, y;
-////	byte	data[256][256][4];
+Create a 2D table that calculates ( reflection dot , specularity )
+================
+*/
+idImageManager.prototype.R_Specular2DTableImage = function ( image: idImage ): void {
+	var /*int		*/x: number, y: number;
+	var data = $3dArray( Uint8Array, 256, 256, 4 );
 
-////	memset( data, 0, sizeof( data ) );
-////		for ( x = 0 ; x < 256 ; x++ ) {
-////			float f = x / 255.0f;
-////		for ( y = 0; y < 256; y++ ) {
+	//memset( data, 0, sizeof( data ) );
+	for ( x = 0; x < 256; x++ ) {
+		var /*float */f = x / 255.0;
+		for ( y = 0; y < 256; y++ ) {
 
-////			int b = (int)( pow( f, y ) * 255.0f );
-////			if ( b == 0 ) {
-////				// as soon as b equals zero all remaining values in this column are going to be zero
-////				// we early out to avoid pow() underflows
-////				break;
-////			}
+			var /*int */b = /*(int)*/( pow( f, y ) * 255.0 ) | 0;
+			if ( b == 0 ) {
+				// as soon as b equals zero all remaining values in this column are going to be zero
+				// we early out to avoid pow() underflows
+				break;
+			}
 
-////			data[y][x][0] = 
-////			data[y][x][1] = 
-////			data[y][x][2] = 
-////			data[y][x][3] = b;
-////		}
-////	}
+			data[y][x][0] =
+				data[y][x][1] =
+				data[y][x][2] =
+				data[y][x][3] = b;
+		}
+	}
 
-////	image.GenerateImage( (byte *)data, 256, 256, textureFilter_t.TF_LINEAR, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
-////}
+	image.GenerateImage( flatten3DArray<Uint8Array>( Uint8Array, data ), 256, 256, textureFilter_t.TF_LINEAR, false, textureRepeat_t.TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+};
 
 
 /////*
@@ -208,7 +208,7 @@ var globalImages = new idImageManager ( );
 ////	}
 
 ////	image.GenerateImage( (byte *)data, 256, 1, 
-////		textureFilter_t.TF_NEAREST, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+////		textureFilter_t.TF_NEAREST, false, textureRepeat_t.TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 ////}
 
 
@@ -269,7 +269,7 @@ idImage.prototype.MakeDefault = function ( ): void {
         }
     }
 
-    this.GenerateImage( /*(byte *)*/flatten3DArray( Uint8Array, data ),
+    this.GenerateImage( /*(byte *)*/flatten3DArray<Uint8Array>( Uint8Array, data ),
         DEFAULT_SIZE, DEFAULT_SIZE,
         textureFilter_t.TF_DEFAULT, true, textureRepeat_t.TR_REPEAT, textureDepth_t.TD_DEFAULT );
 
@@ -300,40 +300,39 @@ idImageManager.prototype.R_BlackImage = function ( image: idImage ): void {
 // the size determines how far away from the edge the blocks start fading
 var BORDER_CLAMP_SIZE = 32;
 idImageManager.prototype.R_BorderClampImage = function ( image: idImage ): void {
-    todoThrow ( );
-////	byte	data[BORDER_CLAMP_SIZE][BORDER_CLAMP_SIZE][4];
+	var data = $3dArray( Uint8Array, BORDER_CLAMP_SIZE, BORDER_CLAMP_SIZE, 4 );
 
-////	// solid white texture with a single pixel black border
-////	memset( data, 255, sizeof( data ) );
-////	for ( int i = 0 ; i < BORDER_CLAMP_SIZE ; i++ ) {
-////		data[i][0][0] = 
-////		data[i][0][1] = 
-////		data[i][0][2] = 
-////		data[i][0][3] = 
+	// solid white texture with a single pixel black border
+	memset3DArray( data, 255 );
+	for ( var i = 0 ; i < BORDER_CLAMP_SIZE ; i++ ) {
+		data[i][0][0] = 
+		data[i][0][1] = 
+		data[i][0][2] = 
+		data[i][0][3] = 
 
-////		data[i][BORDER_CLAMP_SIZE-1][0] = 
-////		data[i][BORDER_CLAMP_SIZE-1][1] = 
-////		data[i][BORDER_CLAMP_SIZE-1][2] = 
-////		data[i][BORDER_CLAMP_SIZE-1][3] = 
+		data[i][BORDER_CLAMP_SIZE-1][0] = 
+		data[i][BORDER_CLAMP_SIZE-1][1] = 
+		data[i][BORDER_CLAMP_SIZE-1][2] = 
+		data[i][BORDER_CLAMP_SIZE-1][3] = 
 
-////		data[0][i][0] = 
-////		data[0][i][1] = 
-////		data[0][i][2] = 
-////		data[0][i][3] = 
+		data[0][i][0] = 
+		data[0][i][1] = 
+		data[0][i][2] = 
+		data[0][i][3] = 
 
-////		data[BORDER_CLAMP_SIZE-1][i][0] = 
-////		data[BORDER_CLAMP_SIZE-1][i][1] = 
-////		data[BORDER_CLAMP_SIZE-1][i][2] = 
-////		data[BORDER_CLAMP_SIZE-1][i][3] = 0;
-////	}
+		data[BORDER_CLAMP_SIZE-1][i][0] = 
+		data[BORDER_CLAMP_SIZE-1][i][1] = 
+		data[BORDER_CLAMP_SIZE-1][i][2] = 
+		data[BORDER_CLAMP_SIZE-1][i][3] = 0;
+	}
 
-////	image.GenerateImage( (byte *)data, BORDER_CLAMP_SIZE, BORDER_CLAMP_SIZE, 
-////		textureFilter_t.TF_LINEAR /* TF_NEAREST */, false, TR_CLAMP_TO_BORDER, textureDepth_t.TD_DEFAULT );
+	image.GenerateImage(flatten3DArray <Uint8Array>(Uint8Array, data), BORDER_CLAMP_SIZE, BORDER_CLAMP_SIZE, 
+		textureFilter_t.TF_LINEAR /* TF_NEAREST */, false, textureRepeat_t.TR_CLAMP_TO_BORDER, textureDepth_t.TD_DEFAULT );
 
-////	if ( !glConfig.isInitialized ) {
-////		// can't call glTexParameterfv yet
-////		return;
-////	}
+	if ( !glConfig.isInitialized ) {
+		// can't call glTexParameterfv yet
+		return;
+	}
 
 ////#if !defined(GL_ES_VERSION_2_0)
 ////	// explicit zero border
@@ -381,7 +380,7 @@ idImageManager.prototype.R_AlphaNotchImage = function ( image: idImage ): void {
 ////	data[1][3] = 255;
 
 ////	image.GenerateImage( (byte *)data, 2, 1, 
-////		textureFilter_t.TF_NEAREST, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+////		textureFilter_t.TF_NEAREST, false, textureRepeat_t.TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 };
 
 idImageManager.prototype.R_FlatNormalImage = function ( image: idImage ): void {
@@ -562,93 +561,94 @@ idImageManager.prototype.R_AmbientNormalImage = function ( image: idImage ): voi
 ////	R_WriteTGA( "shapes/alphaSquare.tga", data[0][0], 16, 16 );
 ////}
 
-////#define	NORMAL_MAP_SIZE		32
+var NORMAL_MAP_SIZE = 32;
 
-/////*** NORMALIZATION CUBE MAP CONSTRUCTION ***/
+/*** NORMALIZATION CUBE MAP CONSTRUCTION ***/
 
-/////* Given a cube map face index, cube map size, and integer 2D face position,
-//// * return the cooresponding normalized vector.
-//// */
-////static void getCubeVector(int i, int cubesize, int x, int y, float *vector) {
-////  float s, t, sc, tc, mag;
+/* Given a cube map face index, cube map size, and integer 2D face position,
+ * return the cooresponding normalized vector.
+ */
+function getCubeVector(/*int */i:number, /*int */cubesize:number, /*int */x:number, /*int */y:number, vector:Float32Array):void {
+  var/*float */s:number, t: number, sc: number, tc: number, mag:number;
 
-////  s = ((float)x + 0.5) / (float)cubesize;
-////  t = ((float)y + 0.5) / (float)cubesize;
-////  sc = s*2.0 - 1.0;
-////  tc = t*2.0 - 1.0;
+  s = (/*(float)*/x + 0.5) / /*(float)*/cubesize;
+  t = (/*(float)*/y + 0.5) / /*(float)*/cubesize;
+  sc = s*2.0 - 1.0;
+  tc = t*2.0 - 1.0;
 
-////  switch (i) {
-////  case 0:
-////    vector[0] = 1.0;
-////    vector[1] = -tc;
-////    vector[2] = -sc;
-////    break;
-////  case 1:
-////    vector[0] = -1.0;
-////    vector[1] = -tc;
-////    vector[2] = sc;
-////    break;
-////  case 2:
-////    vector[0] = sc;
-////    vector[1] = 1.0;
-////    vector[2] = tc;
-////    break;
-////  case 3:
-////    vector[0] = sc;
-////    vector[1] = -1.0;
-////    vector[2] = -tc;
-////    break;
-////  case 4:
-////    vector[0] = sc;
-////    vector[1] = -tc;
-////    vector[2] = 1.0;
-////    break;
-////  case 5:
-////    vector[0] = -sc;
-////    vector[1] = -tc;
-////    vector[2] = -1.0;
-////    break;
-////  }
+  switch (i) {
+  case 0:
+    vector[0] = 1.0;
+    vector[1] = -tc;
+    vector[2] = -sc;
+    break;
+  case 1:
+    vector[0] = -1.0;
+    vector[1] = -tc;
+    vector[2] = sc;
+    break;
+  case 2:
+    vector[0] = sc;
+    vector[1] = 1.0;
+    vector[2] = tc;
+    break;
+  case 3:
+    vector[0] = sc;
+    vector[1] = -1.0;
+    vector[2] = -tc;
+    break;
+  case 4:
+    vector[0] = sc;
+    vector[1] = -tc;
+    vector[2] = 1.0;
+    break;
+  case 5:
+    vector[0] = -sc;
+    vector[1] = -tc;
+    vector[2] = -1.0;
+    break;
+  }
 
-////  mag = idMath::InvSqrt(vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2]);
-////  vector[0] *= mag;
-////  vector[1] *= mag;
-////  vector[2] *= mag;
-////}
+  mag = idMath.InvSqrt(vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2]);
+  vector[0] *= mag;
+  vector[1] *= mag;
+  vector[2] *= mag;
+}
 
-/////* Initialize a cube map texture object that generates RGB values
-//// * that when expanded to a [-1,1] range in the register combiners
-//// * form a normalized vector matching the per-pixel vector used to
-//// * access the cube map.
-//// */
-////static void makeNormalizeVectorCubeMap( idImage *image ) {
-////	float vector[3];
-////	int i, x, y;
-////	byte	*pixels[6];
-////	int		size;
+/* Initialize a cube map texture object that generates RGB values
+ * that when expanded to a [-1,1] range in the register combiners
+ * form a normalized vector matching the per-pixel vector used to
+ * access the cube map.
+ */
+idImageManager.prototype.makeNormalizeVectorCubeMap = function ( image: idImage ): void {
+	todoThrow ( );
+	var /*float */vector = new Float32Array( 3 );
+	var /*int */i: number, x: number, y: number;
+	var pixels: Uint8Array;
+	var /*int		*/size: number;
 
-////	size = NORMAL_MAP_SIZE;
+	size = NORMAL_MAP_SIZE;
 
-////	pixels[0] = (GLubyte*) Mem_Alloc(size*size*4*6);
+	pixels = new Uint8Array( size * size * 4 * 6 );
 
-////	for (i = 0; i < 6; i++) {
-////		pixels[i] = pixels[0] + i*size*size*4;
-////		for (y = 0; y < size; y++) {
-////		  for (x = 0; x < size; x++) {
-////			getCubeVector(i, size, x, y, vector);
-////			pixels[i][4*(y*size+x) + 0] = (byte)(128 + 127*vector[0]);
-////			pixels[i][4*(y*size+x) + 1] = (byte)(128 + 127*vector[1]);
-////			pixels[i][4*(y*size+x) + 2] = (byte)(128 + 127*vector[2]);
-////			pixels[i][4*(y*size+x) + 3] = 255;
-////		  }
-////		}
-////	}
+	for ( i = 0; i < 6; i++ ) {
+		pixels[i] = pixels[0] + i * size * size * 4;
+		for ( y = 0; y < size; y++ ) {
+			for ( x = 0; x < size; x++ ) {
+				getCubeVector( i, size, x, y, vector );
+				pixels[( i * 6 ) + 4 * ( y * size + x ) + 0] = ( 128 + 127 * vector[0] );
+				pixels[( i * 6 ) + 4 * ( y * size + x ) + 1] = ( 128 + 127 * vector[1] );
+				pixels[( i * 6 ) + 4 * ( y * size + x ) + 2] = ( 128 + 127 * vector[2] );
+				pixels[( i * 6 ) + 4 * ( y * size + x ) + 3] = 255;
+			}
+		}
+	}
 
-////	image.GenerateCubeImage( (const byte **)pixels, size,
-////						   textureFilter_t.TF_LINEAR, false, textureDepth_t.TD_HIGH_QUALITY ); 
+	image.GenerateCubeImage( pixels, size,
+		textureFilter_t.TF_LINEAR, false, textureDepth_t.TD_HIGH_QUALITY );
 
-////	Mem_Free(pixels[0]);
-////}
+	//Mem_Free(pixels[0]);
+};
 
 
 /////*
@@ -723,7 +723,7 @@ idImageManager.prototype.R_FogImage = function ( image: idImage ): void {
 ////	}
 
 ////	image.GenerateImage( (byte *)data, FOG_SIZE, FOG_SIZE, 
-////		textureFilter_t.TF_LINEAR, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+////		textureFilter_t.TF_LINEAR, false, textureRepeat_t.TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 }; /*
 ================
 FogFraction
@@ -829,7 +829,7 @@ idImageManager.prototype.R_FogEnterImage = function ( image: idImage ): void {
 
 ////	// if mipmapped, acutely viewed surfaces fade wrong
 ////	image.GenerateImage( (byte *)data, FOG_ENTER_SIZE, FOG_ENTER_SIZE, 
-////		textureFilter_t.TF_LINEAR, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+////		textureFilter_t.TF_LINEAR, false, textureRepeat_t.TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 }; /*
 ================
 R_QuadraticImage
@@ -872,7 +872,7 @@ idImageManager.prototype.R_QuadraticImage = function ( image: idImage ): void {
 ////	}
 
 ////	image.GenerateImage( (byte *)data, QUADRATIC_WIDTH, QUADRATIC_HEIGHT, 
-////		textureFilter_t.TF_DEFAULT, false, TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+////		textureFilter_t.TF_DEFAULT, false, textureRepeat_t.TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 };
 
 //=====================================================================

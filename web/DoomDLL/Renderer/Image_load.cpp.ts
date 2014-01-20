@@ -435,7 +435,7 @@
 ////		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
 ////		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 ////		break;
-////	case TR_CLAMP_TO_BORDER:
+////	case textureRepeat_t.TR_CLAMP_TO_BORDER:
 ////	case TR_CLAMP_TO_ZERO:
 ////	case TR_CLAMP_TO_ZERO_ALPHA:
 ////	case TR_CLAMP:
@@ -843,7 +843,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 ////		glTexParameterf( GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 ////		glTexParameterf( GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT );
 ////		break;
-////	case TR_CLAMP_TO_BORDER:
+////	case textureRepeat_t.TR_CLAMP_TO_BORDER:
 ////	case TR_CLAMP_TO_ZERO:
 ////	case TR_CLAMP_TO_ZERO_ALPHA:
 ////	case TR_CLAMP:
@@ -860,16 +860,17 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 ////}
 ////#endif
 
-/////*
-////====================
-////GenerateCubeImage
+/*
+====================
+GenerateCubeImage
 
-////Non-square cube sides are not allowed
-////====================
-////*/
-////void idImage::GenerateCubeImage( const byte *pic[6], int size, 
-////					   textureFilter_t filterParm, bool allowDownSizeParm, 
-////					   textureDepth_t depthParm ) {
+Non-square cube sides are not allowed
+====================
+*/
+idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic:Uint8Array, /*int*/ size: number,
+	filterParm: textureFilter_t, allowDownSizeParm: boolean,
+	depthParm: textureDepth_t): void {
+	todoThrow ( );
 ////	int			scaled_width, scaled_height;
 ////	int			width, height;
 ////	int			i;
@@ -975,7 +976,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 
 ////	// see if we messed anything up
 ////	GL_CheckErrors();
-////}
+};
 
 
 /////*

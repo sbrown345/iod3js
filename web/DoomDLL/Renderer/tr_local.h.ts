@@ -625,7 +625,7 @@ class glstate_t {
 
 ////	shaderProgram_s	*currentProgram;
 	}
-
+}
 
 ////typedef struct {
 ////	int		c_surfaces;

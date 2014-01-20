@@ -114,7 +114,7 @@ function $3dArray (arrayClass: any, d1: number, d2: number, d3: number):Array<Ar
     return array;
 }
 
-function flatten3DArray ( arrayClass: any, array:Array<Array<Array<any>>> ): any[] {
+function flatten3DArray <T>( arrayClass: any, array:Array<Array<Array<any>>> ): T {
     var flatArray = new arrayClass( array["totalSize"] );
     var count = 0;
     var d1 = array;
@@ -129,6 +129,19 @@ function flatten3DArray ( arrayClass: any, array:Array<Array<Array<any>>> ): any
     }
 
     return flatArray;
+}
+
+function memset3DArray(array: Array<Array<Array<any>>> , val:number ): void {
+    var d1 = array;
+    for (var i = 0; i < d1.length; i++) {
+        var d2 = d1[i];
+        for (var j = 0; j < d2.length; j++) {
+            var d3 = d2[j];
+            for ( var k = 0; k < d3.length; k++ ) {
+                d3[k] = val;
+            }
+        }
+    }
 }
 
 //// todo: rename

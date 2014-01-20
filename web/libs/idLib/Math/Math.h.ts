@@ -266,20 +266,21 @@ class idMath {
 ////	return (float) r;
 ////}
 
-////ID_INLINE float idMath::InvSqrt( float x ) {
+static InvSqrt( /*float */x:number ):number/*float*/ {
 
-////	dword a = ((union _flint*)(&x)).i;
-////	union _flint seed;
+	//dword a = ((union _flint*)(&x)).i;
+	//union _flint seed;
 
-////	assert( initialized );
+	//assert( initialized );
 
-////	double y = x * 0.5f;
-////	seed.i = (( ( (3*EXP_BIAS-1) - ( (a >> EXP_POS) & 0xFF) ) >> 1)<<EXP_POS) | iSqrt[(a >> (EXP_POS-LOOKUP_BITS)) & LOOKUP_MASK];
-////	double r = seed.f;
-////	r = r * ( 1.5f - r * r * y );
-////	r = r * ( 1.5f - r * r * y );
-////	return (float) r;
-////}
+	//double y = x * 0.5f;
+	//seed.i = (( ( (3*EXP_BIAS-1) - ( (a >> EXP_POS) & 0xFF) ) >> 1)<<EXP_POS) | iSqrt[(a >> (EXP_POS-LOOKUP_BITS)) & LOOKUP_MASK];
+	//double r = seed.f;
+	//r = r * ( 1.5f - r * r * y );
+	//r = r * ( 1.5f - r * r * y );
+	//return (float) r;
+	return 1 / Math.sqrt( x ); //http://jsperf.com/invsqrt/3
+}
 
 ////ID_INLINE double idMath::InvSqrt64( float x ) {
 ////	dword a = ((union _flint*)(&x)).i;
