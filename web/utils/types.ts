@@ -101,7 +101,7 @@ function multiDimArray <T>(arrayClass: any, num: number, arrLength: number): T[]
     return multiDimArray;
 }
 
-function $3dArray (arrayClass: any, d1: number, d2: number, d3: number):Array<Array<Array<any>>> {
+function $3dArray <T>(arrayClass: any, d1: number, d2: number, d3: number):Array<Array<T>> {
     var array = new Array(d1);
     for (var i = 0; i < d1; i++) {
         array[i] = new Array(d2);
@@ -114,7 +114,7 @@ function $3dArray (arrayClass: any, d1: number, d2: number, d3: number):Array<Ar
     return array;
 }
 
-function flatten3DArray <T>( arrayClass: any, array:Array<Array<Array<any>>> ): T {
+function flatten3DArray <T>( arrayClass: any, array:Array<Array<T>> ): T {
     var flatArray = new arrayClass( array["totalSize"] );
     var count = 0;
     var d1 = array;
@@ -122,7 +122,7 @@ function flatten3DArray <T>( arrayClass: any, array:Array<Array<Array<any>>> ): 
         var d2 = d1[i];
         for (var j = 0; j < d2.length; j++) {
             var d3 = d2[j];
-            for ( var k = 0; k < d3.length; k++ ) {
+            for ( var k = 0; k < d3["length"]; k++ ) {
                 flatArray[count++] = d3[k];
             }
         }
@@ -131,17 +131,17 @@ function flatten3DArray <T>( arrayClass: any, array:Array<Array<Array<any>>> ): 
     return flatArray;
 }
 
-function memset3DArray(array: Array<Array<Array<any>>> , val:number ): void {
-    var d1 = array;
-    for (var i = 0; i < d1.length; i++) {
-        var d2 = d1[i];
-        for (var j = 0; j < d2.length; j++) {
-            var d3 = d2[j];
-            for ( var k = 0; k < d3.length; k++ ) {
-                d3[k] = val;
-            }
-        }
-    }
+function memset3DArray<T> ( array: Array<Array<T>>, val: number ): void {
+	var d1 = array;
+	for ( var i = 0; i < d1.length; i++ ) {
+		var d2 = d1[i];
+		for ( var j = 0; j < d2.length; j++ ) {
+			var d3 = d2[j];
+			for ( var k = 0; k < d3["length"]; k++ ) {
+				d3[k] = val;
+			}
+		}
+	}
 }
 
 //// todo: rename

@@ -867,115 +867,116 @@ GenerateCubeImage
 Non-square cube sides are not allowed
 ====================
 */
-idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic:Uint8Array, /*int*/ size: number,
+idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic:Uint8Array[], /*int*/ size: number,
 	filterParm: textureFilter_t, allowDownSizeParm: boolean,
 	depthParm: textureDepth_t): void {
-	todoThrow ( );
-////	int			scaled_width, scaled_height;
-////	int			width, height;
-////	int			i;
+	var/*int	*/		scaled_width: number, scaled_height: number;
+	var/*int	*/		width: number, height: number;
+	var/*int	*/		i:number;
 
-////	PurgeImage();
+	this.PurgeImage();
 
-////	filter = filterParm;
-////	allowDownSize = allowDownSizeParm;
-////	depth = depthParm;
+	this.filter = filterParm;
+	this.allowDownSize = allowDownSizeParm;
+		this.depth = depthParm;
 
-////	type = TT_CUBIC;
+		this.type = textureType_t.TT_CUBIC;
 
-////	// if we don't have a rendering context, just return after we
-////	// have filled in the parms.  We must have the values set, or
-////	// an image match from a shader before OpenGL starts would miss
-////	// the generated texture
-////	if ( !glConfig.isInitialized ) {
-////		return;
-////	}
-////#if !defined(GL_ES_VERSION_2_0)
-////	if ( ! glConfig.cubeMapAvailable ) {
-////		return;
-////	}
-////#endif
-////	width = height = size;
+	// if we don't have a rendering context, just return after we
+	// have filled in the parms.  We must have the values set, or
+	// an image match from a shader before OpenGL starts would miss
+	// the generated texture
+	if ( !glConfig.isInitialized ) {
+		return;
+	}
+//#if !defined(GL_ES_VERSION_2_0)
+//	if ( ! glConfig.cubeMapAvailable ) {
+//		return;
+//	}
+//#endif
+	width = height = size;
 
-////	// generate the texture number
-////	glGenTextures( 1, &this.texnum );
+	// generate the texture number
+	var $texnum = new R( this.texnum );
+	glGenTextures(1, $texnum);
+	this.textnum = $texnum.$;
 
-////	// select proper internal format before we resample
-////	internalFormat = SelectInternalFormat( pic, 6, width, height, depth );
+	// select proper internal format before we resample
+	this.internalFormat = SelectInternalFormat( pic, 6, width, height, depth );
 
-////	// don't bother with downsample for now
-////	scaled_width = width;
-////	scaled_height = height;
+	// don't bother with downsample for now
+	scaled_width = width;
+	scaled_height = height;
 
-////	uploadHeight = scaled_height;
-////	uploadWidth = scaled_width;
+		this.uploadHeight = scaled_height;
+		this.uploadWidth = scaled_width;
 
-////	Bind();
+		this.Bind();
 
-////	// no other clamp mode makes sense
-////	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-////	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	// no other clamp mode makes sense
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-////	// set the minimize / maximize filtering
-////	switch( filter ) {
-////	case TF_DEFAULT:
-////		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, globalImages.textureMinFilter );
-////		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, globalImages.textureMaxFilter );
-////		break;
-////	case TF_LINEAR:
-////		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-////		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-////		break;
-////	case TF_NEAREST:
-////		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-////		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-////		break;
-////	default:
-////		common.FatalError( "R_CreateImage: bad texture filter" );
-////	}
+	// set the minimize / maximize filtering
+	switch( filter ) {
+	case TF_DEFAULT:
+		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, globalImages.textureMinFilter );
+		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, globalImages.textureMaxFilter );
+		break;
+	case TF_LINEAR:
+		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+		break;
+	case TF_NEAREST:
+		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+		break;
+	default:
+		common.FatalError( "R_CreateImage: bad texture filter" );
+	}
 
-////	// upload the base level
-////	// FIXME: support GL_COLOR_INDEX8_EXT?
-////	for ( i = 0 ; i < 6 ; i++ ) {
-////		glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X+i, 0, internalFormat, scaled_width, scaled_height, 0, 
-////			GL_RGBA, GL_UNSIGNED_BYTE, pic[i] );
-////	}
+	// upload the base level
+	// FIXME: support GL_COLOR_INDEX8_EXT?
+	for ( i = 0 ; i < 6 ; i++ ) {
+		glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X+i, 0, internalFormat, scaled_width, scaled_height, 0, 
+			GL_RGBA, GL_UNSIGNED_BYTE, pic[i] );
+	}
 
 
-////	// create and upload the mip map levels
-////	int		miplevel;
-////	byte	*shrunk[6];
+	// create and upload the mip map levels
+	var/*int		*/miplevel:number;
+	var shrunk = new Array<Uint8Array>( 6 );//byte	*shrunk[6];
 
-////	for ( i = 0 ; i < 6 ; i++ ) {
-////		shrunk[i] = R_MipMap( pic[i], scaled_width, scaled_height, false );
-////	}
+	for ( i = 0 ; i < 6 ; i++ ) {
+		shrunk[i] = R_MipMap( pic[i], scaled_width, scaled_height, false );
+	}
 
-////	miplevel = 1;
-////	while ( scaled_width > 1 ) {
-////		for ( i = 0 ; i < 6 ; i++ ) {
-////			byte	*shrunken;
+	miplevel = 1;
+	while ( scaled_width > 1 ) {
+		for ( i = 0 ; i < 6 ; i++ ) {
+			var	shrunken:Uint8Array;
 
-////			glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X+i, miplevel, internalFormat, 
-////				scaled_width / 2, scaled_height / 2, 0, 
-////				GL_RGBA, GL_UNSIGNED_BYTE, shrunk[i] );
+			glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X+i, miplevel, internalFormat, 
+				scaled_width / 2, scaled_height / 2, 0, 
+				GL_RGBA, GL_UNSIGNED_BYTE, shrunk[i] );
 
-////			if ( scaled_width > 2 ) {
-////				shrunken = R_MipMap( shrunk[i], scaled_width/2, scaled_height/2, false );
-////			} else {
-////				shrunken = NULL;
-////			}
+			if ( scaled_width > 2 ) {
+				shrunken = R_MipMap( shrunk[i], scaled_width/2, scaled_height/2, false );
+			} else {
+				shrunken = NULL;
+			}
 
-////			R_StaticFree( shrunk[i] );
-////			shrunk[i] = shrunken;
-////		}
+			R_StaticFree( shrunk[i] );
+			shrunk[i] = shrunken;
+		}
 
-////		scaled_width >>= 1;
-////		scaled_height >>= 1;
-////		miplevel++;
-////	}
+		scaled_width >>= 1;
+		scaled_height >>= 1;
+		miplevel++;
+	}
 
-////	// see if we messed anything up
-////	GL_CheckErrors();
+	// see if we messed anything up
+	GL_CheckErrors();
 };
 
 
@@ -1662,7 +1663,7 @@ idImage.prototype.PurgeImage = function ( ): void {
 	if ( this.texnum != idImage.TEXTURE_NOT_LOADED ) {
 		// sometimes is NULL when exiting with an error
 		if ( glDeleteTextures ) {
-			var $texnum = new R($texnum);
+			var $texnum = new R(this.texnum);
 			glDeleteTextures(1, $texnum); // this should be the ONLY place it is ever called!
 			this.texnum = $texnum.$;
 		}
@@ -1733,7 +1734,7 @@ idImage.prototype.PurgeImage = function ( ): void {
 ////	// enable or disable apropriate texture modes
 ////	if ( tmu.textureType != type && ( backEnd.glState.currenttmu <	glConfig.maxTextureUnits ) ) {
 ////#if !defined(GL_ES_VERSION_2_0)
-////		if ( tmu.textureType == TT_CUBIC ) {
+////		if ( tmu.textureType == textureType_t.TT_CUBIC ) {
 ////			glDisable( GL_TEXTURE_CUBE_MAP );
 ////		} else if ( tmu.textureType == TT_3D ) {
 ////			glDisable( GL_TEXTURE_3D );
@@ -1741,7 +1742,7 @@ idImage.prototype.PurgeImage = function ( ): void {
 ////			glDisable( GL_TEXTURE_2D );
 ////		}
 
-////		if ( type == TT_CUBIC ) {
+////		if ( type == textureType_t.TT_CUBIC ) {
 ////			glEnable( GL_TEXTURE_CUBE_MAPT );
 ////		} else if ( type == TT_3D ) {
 ////			glEnable( GL_TEXTURE_3D );
@@ -1758,7 +1759,7 @@ idImage.prototype.PurgeImage = function ( ): void {
 ////			tmu.current2DMap = this.texnum;
 ////			glBindTexture( GL_TEXTURE_2D, this.texnum );
 ////		}
-////	} else if ( type == TT_CUBIC ) {
+////	} else if ( type == textureType_t.TT_CUBIC ) {
 ////		if ( tmu.currentCubeMap != this.texnum ) {
 ////			tmu.currentCubeMap = this.texnum;
 ////			glBindTexture( GL_TEXTURE_CUBE_MAP, this.texnum );
@@ -1833,7 +1834,7 @@ idImage.prototype.PurgeImage = function ( ): void {
 ////		glBindTexture(GL_TEXTURE_RECTANGLE_NV, this.texnum);
 ////	}
 ////#endif
-////	else if (type == TT_CUBIC) {
+////	else if (type == textureType_t.TT_CUBIC) {
 ////		glBindTexture(GL_TEXTURE_CUBE_MAP, this.texnum);
 ////	}
 ////#if !defined(GL_ES_VERSION_2_0)
@@ -1970,8 +1971,8 @@ idImage.prototype.PurgeImage = function ( ): void {
 
 ////	// if rows = cols * 6, assume it is a cube map animation
 ////	if ( rows == cols * 6 ) {
-////		if ( type != TT_CUBIC ) {
-////			type = TT_CUBIC;
+////		if ( type != textureType_t.TT_CUBIC ) {
+////			type = textureType_t.TT_CUBIC;
 ////			uploadWidth = -1;	// for a non-sub upload
 ////		}
 
@@ -2060,7 +2061,7 @@ idImage.prototype.PurgeImage = function ( ): void {
 ////	case TT_3D:
 ////		baseSize = uploadWidth*uploadHeight*uploadDepth;
 ////		break;
-////	case TT_CUBIC:
+////	case textureType_t.TT_CUBIC:
 ////		baseSize = 6 * uploadWidth*uploadHeight;
 ////		break;
 ////	}
@@ -2096,7 +2097,7 @@ idImage.prototype.PurgeImage = function ( ): void {
 ////	case TT_3D:
 ////		common.Printf( "3" );
 ////		break;
-////	case TT_CUBIC:
+////	case textureType_t.TT_CUBIC:
 ////		common.Printf( "C" );
 ////		break;
 ////	case TT_RECT:

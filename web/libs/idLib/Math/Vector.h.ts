@@ -813,7 +813,7 @@ class idVec4 {
 	///*float			*/w:number;
 
     constructor() {
-        this[0] = 0.0;
+        this[0] = 0.0; // could extend float32 array
 	    this[1] = 0.0;
 	    this[2] = 0.0;
         this[3] = 0.0;

@@ -164,7 +164,7 @@ Create a 2D table that calculates ( reflection dot , specularity )
 */
 idImageManager.prototype.R_Specular2DTableImage = function ( image: idImage ): void {
 	var /*int		*/x: number, y: number;
-	var data = $3dArray( Uint8Array, 256, 256, 4 );
+	var data = $3dArray < Uint8Array>( Uint8Array, 256, 256, 4 );
 
 	//memset( data, 0, sizeof( data ) );
 	for ( x = 0; x < 256; x++ ) {
@@ -223,7 +223,7 @@ to allow you to see the mapping coordinates on a surface
 var DEFAULT_SIZE = 16;
 idImage.prototype.MakeDefault = function ( ): void {
     var /*int		*/x: number, y: number;
-    var data = $3dArray( Uint8Array, DEFAULT_SIZE, DEFAULT_SIZE, 4 );
+	var data = $3dArray<Uint8Array>( Uint8Array, DEFAULT_SIZE, DEFAULT_SIZE, 4 );
 
     if ( com_developer.GetBool ( ) ) {
         // grey center
@@ -300,10 +300,10 @@ idImageManager.prototype.R_BlackImage = function ( image: idImage ): void {
 // the size determines how far away from the edge the blocks start fading
 var BORDER_CLAMP_SIZE = 32;
 idImageManager.prototype.R_BorderClampImage = function ( image: idImage ): void {
-	var data = $3dArray( Uint8Array, BORDER_CLAMP_SIZE, BORDER_CLAMP_SIZE, 4 );
+	var data = $3dArray<Uint8Array>( Uint8Array, BORDER_CLAMP_SIZE, BORDER_CLAMP_SIZE, 4 );
 
 	// solid white texture with a single pixel black border
-	memset3DArray( data, 255 );
+	memset3DArray<Uint8Array>( data, 255 );
 	for ( var i = 0 ; i < BORDER_CLAMP_SIZE ; i++ ) {
 		data[i][0][0] = 
 		data[i][0][1] = 
@@ -402,25 +402,24 @@ idImageManager.prototype.R_FlatNormalImage = function ( image: idImage ): void {
 };
 
 idImageManager.prototype.R_AmbientNormalImage = function ( image: idImage ): void {
-    todo ( );
-////	byte	data[DEFAULT_SIZE][DEFAULT_SIZE][4];
-////	int		i;
+	var data = $3dArray<Uint8Array>( Uint8Array, DEFAULT_SIZE, DEFAULT_SIZE, 4 );
+	var i: number;
 
-////	int red = ( globalImages.image_useNormalCompression.GetInteger() == 1 ) ? 0 : 3;
-////	int alpha = ( red == 0 ) ? 3 : 0;
-////	// flat normal map for default bunp mapping
-////	for ( i = 0 ; i < 4 ; i++ ) {
-////		data[0][i][red] = (byte)(255 * tr.ambientLightVector[0]);
-////		data[0][i][1] = (byte)(255 * tr.ambientLightVector[1]);
-////		data[0][i][2] = (byte)(255 * tr.ambientLightVector[2]);
-////		data[0][i][alpha] = 255;
-////	}
-////	const byte	*pics[6];
-////	for ( i = 0 ; i < 6 ; i++ ) {
-////		pics[i] = data[0][0];
-////	}
-////	// this must be a cube map for fragment programs to simply substitute for the normalization cube map
-////	image.GenerateCubeImage( pics, 2, textureFilter_t.TF_DEFAULT, true, textureDepth_t.TD_HIGH_QUALITY );
+	var /*int */red = ( idImageManager.image_useNormalCompression.GetInteger ( ) == 1 ) ? 0 : 3;
+	var /*int */alpha = ( red == 0 ) ? 3 : 0;
+	// flat normal map for default bunp mapping
+	for ( i = 0; i < 4; i++ ) {
+		data[0][i][red] = /*(byte)*/( 255 * tr.ambientLightVector[0] );
+		data[0][i][1] = /*(byte)*/( 255 * tr.ambientLightVector[1] );
+		data[0][i][2] = /*(byte)*/( 255 * tr.ambientLightVector[2] );
+		data[0][i][alpha] = 255;
+	}
+	var pics = new Array<Uint8Array>( 6 ); //const byte	*pics[6];
+	for ( i = 0; i < 6; i++ ) {
+		pics[i] = data[0][0];
+	}
+	// this must be a cube map for fragment programs to simply substitute for the normalization cube map
+	image.GenerateCubeImage( pics, 2, textureFilter_t.TF_DEFAULT, true, textureDepth_t.TD_HIGH_QUALITY );
 };
 
 ////static void CreateSquareLight( void ) {
@@ -620,26 +619,26 @@ function getCubeVector(/*int */i:number, /*int */cubesize:number, /*int */x:numb
  * form a normalized vector matching the per-pixel vector used to
  * access the cube map.
  */
-idImageManager.prototype.makeNormalizeVectorCubeMap = function ( image: idImage ): void {
+function makeNormalizeVectorCubeMap ( image: idImage ): void {
 	todoThrow ( );
 	var /*float */vector = new Float32Array( 3 );
 	var /*int */i: number, x: number, y: number;
-	var pixels: Uint8Array;
+	var pixels: Uint8Array[];
 	var /*int		*/size: number;
 
 	size = NORMAL_MAP_SIZE;
 
-	pixels = new Uint8Array( size * size * 4 * 6 );
+	pixels = multiDimArray<Uint8Array>( Uint8Array, size, size * 4 * 6 );
 
-	for ( i = 0; i < 6; i++ ) {
-		pixels[i] = pixels[0] + i * size * size * 4;
-		for ( y = 0; y < size; y++ ) {
-			for ( x = 0; x < size; x++ ) {
-				getCubeVector( i, size, x, y, vector );
-				pixels[( i * 6 ) + 4 * ( y * size + x ) + 0] = ( 128 + 127 * vector[0] );
-				pixels[( i * 6 ) + 4 * ( y * size + x ) + 1] = ( 128 + 127 * vector[1] );
-				pixels[( i * 6 ) + 4 * ( y * size + x ) + 2] = ( 128 + 127 * vector[2] );
-				pixels[( i * 6 ) + 4 * ( y * size + x ) + 3] = 255;
+	for (i = 0; i < 6; i++) {
+		//pixels[i] = pixels[0] + i * size * size * 4;
+		for (y = 0; y < size; y++) {
+			for (x = 0; x < size; x++) {
+				getCubeVector(i, size, x, y, vector);
+				pixels[i][4 * (y * size + x) + 0] = /*(byte)*/(128 + 127 * vector[0]);
+				pixels[i][4 * (y * size + x) + 1] = /*(byte)*/(128 + 127 * vector[1]);
+				pixels[i][4 * (y * size + x) + 2] = /*(byte)*/(128 + 127 * vector[2]);
+				pixels[i][4 * (y * size + x) + 3] = 255;
 			}
 		}
 	}
@@ -950,7 +949,7 @@ idImageManager.prototype.R_QuadraticImage = function ( image: idImage ): void {
 ////			texEnum = GL_TEXTURE_3D;
 ////			break;
 ////#endif
-////		case TT_CUBIC:
+////		case textureType_t.TT_CUBIC:
 ////			texEnum = GL_TEXTURE_CUBE_MAP;
 ////			break;
 ////		}
@@ -1898,7 +1897,7 @@ idImageManager.prototype.R_CombineCubeImages_f = function ( args: idCmdArgs ): v
 
 ////	RB_LogComment( "BindNull()\n" );
 ////#if !defined(GL_ES_VERSION_2_0)
-////	if ( tmu.textureType == TT_CUBIC ) {
+////	if ( tmu.textureType == textureType_t.TT_CUBIC ) {
 ////		glDisable( GL_TEXTURE_CUBE_MAP_EXT );
 ////	} else if ( tmu.textureType == TT_3D ) {
 ////		glDisable( GL_TEXTURE_3D );
@@ -1941,7 +1940,7 @@ idImageManager.prototype.Init = function ( ): void {
     this.alphaNotchImage = this.ImageFromFunction( "_alphaNotch", this.R_AlphaNotchImage );
     this.fogImage = this.ImageFromFunction( "_fog", this.R_FogImage );
     this.fogEnterImage = this.ImageFromFunction( "_fogEnter", this.R_FogEnterImage );
-    this.normalCubeMapImage = this.ImageFromFunction( "_normalCubeMap", this.makeNormalizeVectorCubeMap );
+    this.normalCubeMapImage = this.ImageFromFunction( "_normalCubeMap", makeNormalizeVectorCubeMap );
     this.noFalloffImage = this.ImageFromFunction( "_noFalloff", this.R_CreateNoFalloffImage );
     this.ImageFromFunction( "_quadratic", this.R_QuadraticImage );
 
@@ -1960,7 +1959,7 @@ idImageManager.prototype.Init = function ( ): void {
     cmdSystem.AddCommand( "combineCubeImages", this.R_CombineCubeImages_f, CMD_FL_RENDERER, "combines six images for roq compression" );
 
     // should forceLoadImages be here?
-};;;;; /////*
+}; /////*
 ////===============
 ////Shutdown
 ////===============
