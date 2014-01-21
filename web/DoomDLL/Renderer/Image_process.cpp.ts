@@ -401,7 +401,7 @@ function R_MipMap($in: Uint8Array, /*int */width: number, /*int */height: number
 	todoThrow ( );
 ////	int		i:number, j:number;
 ////	const byte	*in_p;
-	var out: Uint8Array, out_p: Uint8Array;
+	var out: Uint8Array, out_p: number;
 ////	int		row:number;
 ////	byte	border[4];
 	var /*int		*/newWidth: number, newHeight:number;
@@ -426,7 +426,7 @@ function R_MipMap($in: Uint8Array, /*int */width: number, /*int */height: number
 ////		newHeight = 1;
 ////	}
 	out = new Uint8Array( newWidth * newHeight * 4 );
-	out_p = out;
+	out_p = 0;//out;
 
 ////	in_p = $in;
 
@@ -483,10 +483,10 @@ will result in a slight shrinking of the texture as it mips, but better than
 smeared clamps...
 ================
 */
-function R_MipMap3D( /*const byte **/$in: Uint8Array[], /*int */width: number, /*int */height: number, /*int */depth: number, preserveBorder :boolean):Uint8Array {
+function R_MipMap3D( /*const byte **/$in: Uint8Array, /*int */width: number, /*int */height: number, /*int */depth: number, preserveBorder :boolean):Uint8Array {
 	var/*int		*/i: number, j: number, k: number;
-	var in_p: Uint8Array;
-	var out:Uint8Array, out_p:Uint8Array;
+	var in_p: number;
+	var out: Uint8Array, out_p: number;
 	var/*int		*/row: number, plane:number;
 	var border = new Array<Uint8Array>(4);
 	var/*int		*/newWidth: number, newHeight:number, newDepth:number;
@@ -494,56 +494,56 @@ function R_MipMap3D( /*const byte **/$in: Uint8Array[], /*int */width: number, /
 	if ( depth == 1 ) {
 		return R_MipMap( $in, width, height, preserveBorder );
 	}
+	todoThrow ( );
+	//// assume symetric for now
+	//if ( width < 2 || height < 2 || depth < 2 ) {
+	//	common.FatalError( "R_MipMap3D called with size %i,%i,%i", width, height, depth );
+	//}
 
-	// assume symetric for now
-	if ( width < 2 || height < 2 || depth < 2 ) {
-		common.FatalError( "R_MipMap3D called with size %i,%i,%i", width, height, depth );
-	}
+	//border[0] = $in[0];
+	//border[1] = $in[1];
+	//border[2] = $in[2];
+	//border[3] = $in[3];
 
-	border[0] = $in[0];
-	border[1] = $in[1];
-	border[2] = $in[2];
-	border[3] = $in[3];
+	//row = width * 4;
+	//plane = row * height;
 
-	row = width * 4;
-	plane = row * height;
+	//newWidth = width >> 1;
+	//newHeight = height >> 1;
+	//newDepth = depth >> 1;
 
-	newWidth = width >> 1;
-	newHeight = height >> 1;
-	newDepth = depth >> 1;
+	//out = new Uint8Array( newWidth * newHeight * newDepth * 4 );
+	//out_p = 0;//out;
 
-	out = new Uint8Array( newWidth * newHeight * newDepth * 4 );
-	out_p = out;
+	//in_p = 0;//$in;
 
-	in_p = $in;
+	//width >>= 1;
+	//height >>= 1;
+	//depth >>= 1;
 
-	width >>= 1;
-	height >>= 1;
-	depth >>= 1;
+	//for (k=0 ; k<depth ; k++, in_p+=plane) {
+	//	for (i=0 ; i<height ; i++, in_p+=row) {
+	//		for (j=0 ; j<width ; j++, out_p+=4, in_p+=8) {
+	//			out[out_p + 0] = ($in[ in_p + 0] + $in[ in_p + 4] + $in[ in_p + row+0] + $in[ in_p + row+4] +
+	//				$in[ in_p + plane+0] + $in[ in_p + plane+4] + $in[ in_p + plane+row+0] + $in[ in_p + plane+row+4]
+	//				)>>3;
+	//			out[out_p + 1] = ($in[ in_p + 1] + $in[ in_p + 5] + $in[ in_p + row+1] + $in[ in_p + row+5] +
+	//				$in[ in_p + plane+1] + $in[ in_p + plane+5] + $in[ in_p + plane+row+1] + $in[ in_p + plane+row+5]
+	//				)>>3;
+	//			out[out_p + 2] = ($in[ in_p + 2] + $in[ in_p + 6] + $in[ in_p + row+2] + $in[ in_p + row+6] +
+	//				$in[ in_p + plane+2] + $in[ in_p + plane+6] + $in[ in_p + plane+row+2] + $in[ in_p + plane+row+6]
+	//				)>>3;
+	//			out[out_p + 3] = ($in[ in_p + 3] + $in[ in_p + 7] + $in[ in_p + row+3] + $in[ in_p + row+7] +
+	//				$in[ in_p + plane+3] + $in[ in_p + plane+6] + $in[ in_p + plane+row+3] + $in[ in_p + plane+row+6]
+	//				)>>3;
+	//		}
+	//	}
+	//}
 
-	for (k=0 ; k<depth ; k++, in_p+=plane) {
-		for (i=0 ; i<height ; i++, in_p+=row) {
-			for (j=0 ; j<width ; j++, out_p+=4, in_p+=8) {
-				out_p[0] = (in_p[0] + in_p[4] + in_p[row+0] + in_p[row+4] +
-					in_p[plane+0] + in_p[plane+4] + in_p[plane+row+0] + in_p[plane+row+4]
-					)>>3;
-				out_p[1] = (in_p[1] + in_p[5] + in_p[row+1] + in_p[row+5] +
-					in_p[plane+1] + in_p[plane+5] + in_p[plane+row+1] + in_p[plane+row+5]
-					)>>3;
-				out_p[2] = (in_p[2] + in_p[6] + in_p[row+2] + in_p[row+6] +
-					in_p[plane+2] + in_p[plane+6] + in_p[plane+row+2] + in_p[plane+row+6]
-					)>>3;
-				out_p[3] = (in_p[3] + in_p[7] + in_p[row+3] + in_p[row+7] +
-					in_p[plane+3] + in_p[plane+6] + in_p[plane+row+3] + in_p[plane+row+6]
-					)>>3;
-			}
-		}
-	}
-
-	// copy the old border texel back around if desired
-	if ( preserveBorder ) {
-		this.R_SetBorderTexels3D( out, width, height, depth, border );
-	}
+	//// copy the old border texel back around if desired
+	//if ( preserveBorder ) {
+	//	this.R_SetBorderTexels3D( out, width, height, depth, border );
+	//}
 
 	return out;
 }

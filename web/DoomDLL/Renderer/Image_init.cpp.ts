@@ -621,7 +621,7 @@ function getCubeVector(/*int */i:number, /*int */cubesize:number, /*int */x:numb
  * access the cube map.
  */
 function makeNormalizeVectorCubeMap ( image: idImage ): void {
-	todoThrow ( );
+
 	var /*float */vector = new Float32Array( 3 );
 	var /*int */i: number, x: number, y: number;
 	var pixels: Uint8Array[];
