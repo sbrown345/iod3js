@@ -925,11 +925,11 @@ idMaterial::ParseDecalInfo
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "nearest" ) ) {
-////			tf = TF_NEAREST;
+////			tf = textureFilter_t.TF_NEAREST;
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "linear" ) ) {
-////			tf = TF_LINEAR;
+////			tf = textureFilter_t.TF_LINEAR;
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "clamp" ) ) {
@@ -1188,11 +1188,11 @@ An open brace has been parsed
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "nearest" ) ) {
-////			tf = TF_NEAREST;
+////			tf = textureFilter_t.TF_NEAREST;
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "linear" ) ) {
-////			tf = TF_LINEAR;
+////			tf = textureFilter_t.TF_LINEAR;
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "clamp" ) ) {

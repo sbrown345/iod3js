@@ -542,7 +542,7 @@ function R_MipMap3D( /*const byte **/$in: Uint8Array[], /*int */width: number, /
 
 	// copy the old border texel back around if desired
 	if ( preserveBorder ) {
-		R_SetBorderTexels3D( out, width, height, depth, border );
+		this.R_SetBorderTexels3D( out, width, height, depth, border );
 	}
 
 	return out;

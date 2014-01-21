@@ -569,30 +569,63 @@ class /*viewEntity_s*/viewEntity_t {
 //////====================================================
 
 
-/////*
-////** performanceCounters_t
-////*/
-////typedef struct {
-////	int		c_sphere_cull_in, c_sphere_cull_clip, c_sphere_cull_out;
-////	int		c_box_cull_in, c_box_cull_out;
-////	int		c_createInteractions;	// number of calls to idInteraction::CreateInteraction
-////	int		c_createLightTris;
-////	int		c_createShadowVolumes;
-////	int		c_generateMd5;
-////	int		c_entityDefCallbacks;
-////	int		c_alloc, c_free;	// counts for R_StaticAllc/R_StaticFree
-////	int		c_visibleViewEntities;
-////	int		c_shadowViewEntities;
-////	int		c_viewLights;
-////	int		c_numViews;			// number of total views rendered
-////	int		c_deformedSurfaces;	// idMD5Mesh::GenerateSurface
-////	int		c_deformedVerts;	// idMD5Mesh::GenerateSurface
-////	int		c_deformedIndexes;	// idMD5Mesh::GenerateSurface
-////	int		c_tangentIndexes;	// R_DeriveTangents()
-////	int		c_entityUpdates, c_lightUpdates, c_entityReferences, c_lightReferences;
-////	int		c_guiSurfs;
-////	int		frontEndMsec;		// sum of time in all RE_RenderScene's in a frame
-////} performanceCounters_t;
+/*
+** performanceCounters_t
+*/
+class performanceCounters_t{
+/*	int		*/c_sphere_cull_in:number; c_sphere_cull_clip:number; c_sphere_cull_out:number;
+/*	int		*/c_box_cull_in:number; c_box_cull_out:number;
+/*	int		*/c_createInteractions:number;	// number of calls to idInteraction::CreateInteraction
+/*	int		*/c_createLightTris:number;
+/*	int		*/c_createShadowVolumes:number;
+/*	int		*/c_generateMd5:number;
+/*	int		*/c_entityDefCallbacks:number;
+/*	int		*/c_alloc:number; c_free:number;	// counts for R_StaticAllc/R_StaticFree
+/*	int		*/c_visibleViewEntities:number;
+/*	int		*/c_shadowViewEntities:number;
+/*	int		*/c_viewLights:number;
+/*	int		*/c_numViews:number;			// number of total views rendered
+/*	int		*/c_deformedSurfaces:number;	// idMD5Mesh::GenerateSurface
+/*	int		*/c_deformedVerts:number;	// idMD5Mesh::GenerateSurface
+/*	int		*/c_deformedIndexes:number;	// idMD5Mesh::GenerateSurface
+/*	int		*/c_tangentIndexes:number;	// R_DeriveTangents()
+/*	int		*/c_entityUpdates:number; c_lightUpdates:number; c_entityReferences:number; c_lightReferences:number;
+/*	int		*/c_guiSurfs:number;
+	/*	int		*/frontEndMsec: number;		// sum of time in all RE_RenderScene's in a frame
+
+	constructor() {
+		this.init ( );
+	}
+
+	init ( ) {
+		this.c_sphere_cull_in = 0;
+		this.c_sphere_cull_clip = 0;
+		this.c_sphere_cull_out = 0;
+		this.c_box_cull_in = 0;
+		this.c_box_cull_out = 0;
+		this.c_createInteractions = 0; 
+		this.c_createLightTris = 0;
+		this.c_createShadowVolumes = 0;
+		this.c_generateMd5 = 0;
+		this.c_entityDefCallbacks = 0;
+		this.c_alloc = 0;
+		this.c_free = 0;
+		this.c_visibleViewEntities = 0;
+		this.c_shadowViewEntities = 0;
+		this.c_viewLights = 0;
+		this.c_numViews = 0;
+		this.c_deformedSurfaces = 0; 
+		this.c_deformedVerts = 0; 
+		this.c_deformedIndexes = 0; 
+		this.c_tangentIndexes = 0; 
+		this.c_entityUpdates = 0;
+		this.c_lightUpdates = 0;
+		this.c_entityReferences = 0;
+		this.c_lightReferences = 0;
+		this.c_guiSurfs = 0;
+		this.frontEndMsec = 0; 
+	}
+};
 
 
 class tmu_t {

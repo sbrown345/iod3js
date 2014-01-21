@@ -1,6 +1,7 @@
 /// <reference path="RenderSystem.cpp.ts" />
 /// <reference path="../../utils/todo.ts" />
-/// <reference path="../../other/gl.h.ts" />
+/// <reference path="image_process.cpp.ts" />
+/// <reference path="../../other/gl2.h.ts" />
 /// <reference path="Material.h.ts" />
 /// <reference path="Image.h.ts" />
 /////*
@@ -35,10 +36,10 @@
 ////#pragma hdrstop
 
 ////#include "tr_local.h"
-////#define GL_RGB8	GL_RGBA
-////#define GL_RGBA8 GL_RGBA
-////#define GL_ALPHA8 GL_ALPHA
-////#define GL_RGB5	GL_RGBA
+var GL_RGB8 = GL_RGBA;
+var GL_RGBA8 = GL_RGBA;
+var GL_ALPHA8 = GL_ALPHA;
+var GL_RGB5 = GL_RGBA;
 
 /////*
 ////PROBLEM: compressed textures may break the zero clamp rule!
@@ -215,15 +216,15 @@
 ////	{0,0,255,128},
 ////};
 
-/////*
-////===============
-////SelectInternalFormat
+/*
+===============
+SelectInternalFormat
 
-////This may need to scan six cube map images
-////===============
-////*/
-////GLenum idImage::SelectInternalFormat( const byte **dataPtrs, int numDataPtrs, int width, int height,
-////									 textureDepth_t minimumDepth ) const {
+This may need to scan six cube map images
+===============
+*/
+/*GLenum */function SelectInternalFormat( /*const byte ***/dataPtrs:Uint8Array[], /*int */numDataPtrs:number, /*int */width:number, /*int */height:number,
+									 minimumDepth:textureDepth_t  ) :number {
 ////#if !defined(GL_ES_VERSION_2_0)
 ////	int		i, c;
 ////	const byte	*scan;
@@ -384,9 +385,9 @@
 ////	}
 ////	return GL_RGBA4;	// two bytes
 ////#else
-////	return GL_RGBA8;	// four bytes
+	return GL_RGBA8;	// four bytes
 ////#endif
-////}
+}
 
 /////*
 ////==================
@@ -396,15 +397,15 @@
 ////void idImage::SetImageFilterAndRepeat() const {
 ////	// set the minimize / maximize filtering
 ////	switch( filter ) {
-////	case TF_DEFAULT:
+////	case textureFilter_t.TF_DEFAULT:
 ////		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, globalImages.textureMinFilter );
 ////		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, globalImages.textureMaxFilter );
 ////		break;
-////	case TF_LINEAR:
+////	case textureFilter_t.TF_LINEAR:
 ////		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 ////		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 ////		break;
-////	case TF_NEAREST:
+////	case textureFilter_t.TF_NEAREST:
 ////		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 ////		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 ////		break;
@@ -415,7 +416,7 @@
 ////#if !defined(GL_ES_VERSION_2_0)
 ////	if ( glConfig.anisotropicAvailable ) {
 ////		// only do aniso filtering on mip mapped images
-////		if ( filter == TF_DEFAULT ) {
+////		if ( filter == textureFilter_t.TF_DEFAULT ) {
 ////			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, globalImages.textureAnisotropy );
 ////		} else {
 ////			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1 );
@@ -820,15 +821,15 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 
 ////	// set the minimize / maximize filtering
 ////	switch( filter ) {
-////	case TF_DEFAULT:
+////	case textureFilter_t.TF_DEFAULT:
 ////		glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, globalImages.textureMinFilter );
 ////		glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, globalImages.textureMaxFilter );
 ////		break;
-////	case TF_LINEAR:
+////	case textureFilter_t.TF_LINEAR:
 ////		glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 ////		glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 ////		break;
-////	case TF_NEAREST:
+////	case textureFilter_t.TF_NEAREST:
 ////		glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 ////		glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 ////		break;
@@ -878,9 +879,9 @@ idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic:Uint8
 
 	this.filter = filterParm;
 	this.allowDownSize = allowDownSizeParm;
-		this.depth = depthParm;
+	this.depth = depthParm;
 
-		this.type = textureType_t.TT_CUBIC;
+	this.type = textureType_t.TT_CUBIC;
 
 	// if we don't have a rendering context, just return after we
 	// have filled in the parms.  We must have the values set, or
@@ -902,7 +903,7 @@ idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic:Uint8
 	this.textnum = $texnum.$;
 
 	// select proper internal format before we resample
-	this.internalFormat = SelectInternalFormat( pic, 6, width, height, depth );
+	this.internalFormat = this.SelectInternalFormat( pic, 6, width, height, this.depth );
 
 	// don't bother with downsample for now
 	scaled_width = width;
@@ -918,16 +919,16 @@ idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic:Uint8
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 	// set the minimize / maximize filtering
-	switch( filter ) {
-	case TF_DEFAULT:
+	switch( this.filter ) {
+	case textureFilter_t.TF_DEFAULT:
 		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, globalImages.textureMinFilter );
 		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, globalImages.textureMaxFilter );
 		break;
-	case TF_LINEAR:
+	case textureFilter_t.TF_LINEAR:
 		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 		break;
-	case TF_NEAREST:
+	case textureFilter_t.TF_NEAREST:
 		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 		break;
@@ -938,7 +939,7 @@ idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic:Uint8
 	// upload the base level
 	// FIXME: support GL_COLOR_INDEX8_EXT?
 	for ( i = 0 ; i < 6 ; i++ ) {
-		glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X+i, 0, internalFormat, scaled_width, scaled_height, 0, 
+		glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X+i, 0, this.internalFormat, scaled_width, scaled_height, 0, 
 			GL_RGBA, GL_UNSIGNED_BYTE, pic[i] );
 	}
 
@@ -956,17 +957,17 @@ idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic:Uint8
 		for ( i = 0 ; i < 6 ; i++ ) {
 			var	shrunken:Uint8Array;
 
-			glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X+i, miplevel, internalFormat, 
+			glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X+i, miplevel, this.internalFormat, 
 				scaled_width / 2, scaled_height / 2, 0, 
 				GL_RGBA, GL_UNSIGNED_BYTE, shrunk[i] );
 
 			if ( scaled_width > 2 ) {
-				shrunken = R_MipMap( shrunk[i], scaled_width/2, scaled_height/2, false );
+				shrunken = R_MipMap(shrunk[i], scaled_width / 2 | 0, scaled_height / 2 | 0, false );
 			} else {
-				shrunken = NULL;
+				shrunken = null;
 			}
 
-			R_StaticFree( shrunk[i] );
+			this.R_StaticFree( shrunk[i] );
 			shrunk[i] = shrunken;
 		}
 
@@ -976,7 +977,7 @@ idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic:Uint8
 	}
 
 	// see if we messed anything up
-	GL_CheckErrors();
+	this.GL_CheckErrors();
 };
 
 
@@ -2111,13 +2112,13 @@ idImage.prototype.PurgeImage = function ( ): void {
 ////	common.Printf( "%4i %4i ",	uploadWidth, uploadHeight );
 
 ////	switch( filter ) {
-////	case TF_DEFAULT:
+////	case textureFilter_t.TF_DEFAULT:
 ////		common.Printf( "dflt " );
 ////		break;
-////	case TF_LINEAR:
+////	case textureFilter_t.TF_LINEAR:
 ////		common.Printf( "linr " );
 ////		break;
-////	case TF_NEAREST:
+////	case textureFilter_t.TF_NEAREST:
 ////		common.Printf( "nrst " );
 ////		break;
 ////	default:

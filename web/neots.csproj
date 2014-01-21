@@ -70,11 +70,13 @@
     <Content Include="DoomDLL\Renderer\Model_md5.cpp.ts" />
     <Content Include="DoomDLL\Renderer\Model_prt.cpp.ts" />
     <Content Include="DoomDLL\Renderer\Model_sprite.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\qgl_linked.h.ts" />
     <Content Include="DoomDLL\Renderer\RenderSystem.cpp.ts" />
     <Content Include="DoomDLL\Renderer\RenderSystem.h.ts" />
     <Content Include="DoomDLL\Renderer\RenderSystem_init.cpp.ts" />
     <Content Include="DoomDLL\Renderer\tr_backend.cpp.ts" />
     <Content Include="DoomDLL\Renderer\tr_local.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\tr_main.cpp.ts" />
     <Content Include="DoomDLL\Sound\sound.h.ts" />
     <Content Include="DoomDLL\Sys\win_glimp.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Sys\win_main.cpp.ts" />
@@ -111,7 +113,7 @@
     <Content Include="utils\sprintf.js" />
     <Content Include="utils\todo.ts" />
     <Content Include="utils\types.ts" />
-    <TypeScriptCompile Include="other\GL.h.ts" />
+    <TypeScriptCompile Include="other\gl2.h.ts" />
     <TypeScriptCompile Include="utils\sprintf.d.ts" />
   </ItemGroup>
   <ItemGroup>

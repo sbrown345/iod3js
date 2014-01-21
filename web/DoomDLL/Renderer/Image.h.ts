@@ -426,28 +426,28 @@ class idImageManager {
     ////	void				ChangeTextureFilter();
 
     images:idList<idImage>;
-    ////	idStrList			ddsList;
-    ////	idHashIndex			ddsHash;
+    ddsList:idStrList;
+    ddsHash:idHashIndex;
 
-    ////	bool				insideLevelLoad;			// don't actually load images now
+    insideLevelLoad:boolean;			// don't actually load images now
 
     ////	byte				originalToCompressed[256];	// maps normal maps to 8 bit textures
     ////	byte				compressedPalette[768];		// the palette that normal maps use
 
-    ////	// default filter modes for images
-    ////	GLenum				textureMinFilter;
-    ////	GLenum				textureMaxFilter;
-    ////	float				textureAnisotropy;
-    ////	float				textureLODBias;
+    // default filter modes for images
+    /*GLenum		*/	textureMinFilter:number;
+	/*GLenum		*/	textureMaxFilter: number;
+	/*float			*/	textureAnisotropy: number;
+	/*float			*/	textureLODBias: number;
 
     imageHashTable:Array<idImage>;
 
     ////	idImage *			backgroundImageLoads;		// chain of images that have background file loads active
     cacheLRU:idImage;					// head/tail of doubly linked list
-    ////	int					totalCachedImageSize;		// for determining when something should be purged
+    /*int					*/totalCachedImageSize:number;		// for determining when something should be purged
 
-    ////	int	numActiveBackgroundImageLoads;
-    ////	const static int MAX_BACKGROUND_IMAGE_LOADS = 8;
+    /*int	*/numActiveBackgroundImageLoads:number;
+    /*const static int */static MAX_BACKGROUND_IMAGE_LOADS = 8;
 
     constructor() {
 

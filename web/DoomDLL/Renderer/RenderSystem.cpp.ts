@@ -297,7 +297,7 @@ class idRenderSystem {
 
 //	viewDef_t *				viewDef;
 
-//	performanceCounters_t	pc;					// performance counters
+	pc: performanceCounters_t;					// performance counters
 
 //	drawSurfsCommand_t		lockSurfacesCmd;	// use this when r_lockSurfaces = 1
 
@@ -701,53 +701,53 @@ class idRenderSystem {
 ////	R_SetColorMappings();
 ////}
 
-/////*
-////==================
-////GL_CheckErrors
-////==================
-////*/
-////void GL_CheckErrors( void ) {
-////    int		err;
-////    char	s[64];
-////	int		i;
+/*
+==================
+GL_CheckErrors
+==================
+*/
+GL_CheckErrors():void {
+    var/*int		*/err:number;
+		var s = "";//char	s[64];
+	var i:number;
 
-////	// check for up to 10 errors pending
-////	for ( i = 0 ; i < 10 ; i++ ) {
-////		err = glGetError();
-////		if ( err == GL_NO_ERROR ) {
-////			return;
-////		}
-////		switch( err ) {
-////			case GL_INVALID_ENUM:
-////				strcpy( s, "GL_INVALID_ENUM" );
-////				break;
-////			case GL_INVALID_VALUE:
-////				strcpy( s, "GL_INVALID_VALUE" );
-////				break;
-////			case GL_INVALID_OPERATION:
-////				strcpy( s, "GL_INVALID_OPERATION" );
-////				break;
-////#if !defined(GL_ES_VERSION_2_0)
-////			case GL_STACK_OVERFLOW:
-////				strcpy( s, "GL_STACK_OVERFLOW" );
-////				break;
-////			case GL_STACK_UNDERFLOW:
-////				strcpy( s, "GL_STACK_UNDERFLOW" );
-////				break;
-////#endif
-////			case GL_OUT_OF_MEMORY:
-////				strcpy( s, "GL_OUT_OF_MEMORY" );
-////				break;
-////			default:
-////				idStr::snPrintf( s, sizeof(s), "%i", err);
-////				break;
-////		}
+	// check for up to 10 errors pending
+	for ( i = 0 ; i < 10 ; i++ ) {
+		err = glGetError();
+		if ( err == GL_NO_ERROR ) {
+			return;
+		}
+		switch( err ) {
+			case GL_INVALID_ENUM:
+				s = "GL_INVALID_ENUM" ;
+				break;
+			case GL_INVALID_VALUE:
+				s = "GL_INVALID_VALUE" ;
+				break;
+			case GL_INVALID_OPERATION:
+				s = "GL_INVALID_OPERATION" ;
+				break;
+//#if !defined(GL_ES_VERSION_2_0)
+//			case GL_STACK_OVERFLOW:
+//				strcpy( s, "GL_STACK_OVERFLOW" );
+//				break;
+//			case GL_STACK_UNDERFLOW:
+//				strcpy( s, "GL_STACK_UNDERFLOW" );
+//				break;
+//#endif
+			case GL_OUT_OF_MEMORY:
+				s = "GL_OUT_OF_MEMORY";
+				break;
+			default:
+				idStr.snPrintf( s, sizeof(s), "%i", err);
+				break;
+		}
 
-////		if ( !r_ignoreGLErrors.GetBool() ) {
-////			common.Printf( "GL_CheckErrors: %s\n", s );
-////		}
-////	}
-////}
+		if ( !r_ignoreGLErrors.GetBool() ) {
+			common.Printf( "GL_CheckErrors: %s\n", s );
+		}
+	}
+}
 
 /////*
 ////=====================
