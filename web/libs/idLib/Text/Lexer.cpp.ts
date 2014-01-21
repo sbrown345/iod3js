@@ -1873,7 +1873,7 @@ FreeSource( ):void {
 ////================
 ////*/
 ////void idLexer::SetBaseFolder( const char *path ) {
-////	idStr::Copynz( baseFolder, path, sizeof( baseFolder ) );
+////	idStr.Copynz( baseFolder, path, sizeof( baseFolder ) );
 ////}
 
 /////*

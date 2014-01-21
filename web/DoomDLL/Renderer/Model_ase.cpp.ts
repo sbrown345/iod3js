@@ -187,7 +187,7 @@
 ////		// convert the 3DSMax material pathname to a qpath
 ////		matname.BackSlashesToSlashes();
 ////		qpath = fileSystem.OSPathToRelativePath( matname );
-////		idStr::Copynz( ase.currentMaterial.name, qpath, sizeof( ase.currentMaterial.name ) );
+////		idStr.Copynz( ase.currentMaterial.name, qpath, sizeof( ase.currentMaterial.name ) );
 ////	}
 ////	else if ( !strcmp( token, "*UVW_U_OFFSET" ) )
 ////	{
@@ -712,7 +712,7 @@
 ////	{
 ////		ASE_GetToken( true );
 ////		VERBOSE( ( " %s\n", ase.token ) );
-////		idStr::Copynz( object.name, ase.token, sizeof( object.name ) );
+////		idStr.Copynz( object.name, ase.token, sizeof( object.name ) );
 ////	}
 ////	else if ( !strcmp( token, "*NODE_PARENT" ) )
 ////	{

@@ -283,10 +283,10 @@ GenerateCubeImage( /*const byte *pic[6]*/pic:Uint8Array[], /*int*/ size: number,
 		//this.imgName[0] = '\0';
 		//this.generatorFunction = NULL;
 		//this.allowDownSize = false;
-		//this.filter = TF_DEFAULT;
+		//this.filter = textureFilter_t.TF_DEFAULT;
 		//this.repeat = TR_REPEAT;
 		//this.depth = textureDepth_t.TD_DEFAULT;
-		//this.cubeFiles = CF_2D;
+		//this.cubeFiles = cubeFiles_t.CF_2D;
 		this.referencedOutsideLevelLoad = false;
 		this.levelLoadReferenced = false;
 		this.precompressedFile = false;

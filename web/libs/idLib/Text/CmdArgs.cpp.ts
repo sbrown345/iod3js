@@ -163,7 +163,7 @@
 ////		argv[argc] = tokenized + totalLen;
 ////		argc++;
 
-////		idStr::Copynz( tokenized + totalLen, token.c_str(), sizeof( tokenized ) - totalLen );
+////		idStr.Copynz( tokenized + totalLen, token.c_str(), sizeof( tokenized ) - totalLen );
 
 ////		totalLen += len + 1;
 ////	}
@@ -178,10 +178,10 @@
 ////	if ( !argc ) {
 ////		argc = 1;
 ////		argv[ 0 ] = tokenized;
-////		idStr::Copynz( tokenized, text, sizeof( tokenized ) );
+////		idStr.Copynz( tokenized, text, sizeof( tokenized ) );
 ////	} else {
 ////		argv[ argc ] = argv[ argc-1 ] + strlen( argv[ argc-1 ] ) + 1;
-////		idStr::Copynz( argv[ argc ], text, sizeof( tokenized ) - ( argv[ argc ] - tokenized ) );
+////		idStr.Copynz( argv[ argc ], text, sizeof( tokenized ) - ( argv[ argc ] - tokenized ) );
 ////		argc++;
 ////	}
 ////}

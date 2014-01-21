@@ -64,7 +64,7 @@
 //	fontInfoEx_t fontInfo;
 //		int index = fonts.Append( fontInfo );
 //		if ( renderSystem->RegisterFont( fileName, fonts[index] ) ){
-//		idStr::Copynz( fonts[index].name, name, sizeof( fonts[index].name ) );
+//		idStr.Copynz( fonts[index].name, name, sizeof( fonts[index].name ) );
 //		return index;
 //		} else {
 //		common->Printf( "Could not register font %s [%s]\n", name, fileName.c_str() );

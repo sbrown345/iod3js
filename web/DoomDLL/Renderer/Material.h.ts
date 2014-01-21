@@ -88,33 +88,33 @@ enum deform_t {
 	DFRM_TURB
 }
 
-////typedef enum {
-////	DI_STATIC,
-////	DI_SCRATCH,		// video, screen wipe, etc
-////	DI_CUBE_RENDER,
-////	DI_MIRROR_RENDER,
-////	DI_XRAY_RENDER,
-////	DI_REMOTE_RENDER
-////} dynamicidImage_t;
+enum dynamicidImage_t{
+	DI_STATIC,
+	DI_SCRATCH,		// video, screen wipe, etc
+	DI_CUBE_RENDER,
+	DI_MIRROR_RENDER,
+	DI_XRAY_RENDER,
+	DI_REMOTE_RENDER
+};
 
-////// note: keep opNames[] in sync with changes
-////typedef enum {
-////	OP_TYPE_ADD,
-////	OP_TYPE_SUBTRACT,
-////	OP_TYPE_MULTIPLY,
-////	OP_TYPE_DIVIDE,
-////	OP_TYPE_MOD,
-////	OP_TYPE_TABLE,
-////	OP_TYPE_GT,
-////	OP_TYPE_GE,
-////	OP_TYPE_LT,
-////	OP_TYPE_LE,
-////	OP_TYPE_EQ,
-////	OP_TYPE_NE,
-////	OP_TYPE_AND,
-////	OP_TYPE_OR,
-////	OP_TYPE_SOUND
-////} expOpType_t;
+// note: keep opNames[] in sync with changes
+enum expOpType_t{
+	OP_TYPE_ADD,
+	OP_TYPE_SUBTRACT,
+	OP_TYPE_MULTIPLY,
+	OP_TYPE_DIVIDE,
+	OP_TYPE_MOD,
+	OP_TYPE_TABLE,
+	OP_TYPE_GT,
+	OP_TYPE_GE,
+	OP_TYPE_LT,
+	OP_TYPE_LE,
+	OP_TYPE_EQ,
+	OP_TYPE_NE,
+	OP_TYPE_AND,
+	OP_TYPE_OR,
+	OP_TYPE_SOUND
+};
 
 enum expRegister_t {
 	EXP_REG_TIME,
@@ -149,9 +149,12 @@ class expOp_t {
 ////	int				a, b, c;
 };
 
-class colorStage_t{
-////	int				registers[4];
-};
+class colorStage_t {
+	registers: Int32Array;
+	constructor ( ) {
+		this.registers = new Int32Array( 4 );
+	}
+}
 
 enum texgen_t {
 	TG_EXPLICIT,

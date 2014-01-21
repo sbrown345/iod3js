@@ -823,7 +823,7 @@ GL_CheckErrors():void {
 ////			tr.testImage = globalImages.images[imageNum];
 ////		}
 ////	} else {
-////		tr.testImage = globalImages.ImageFromFile( args.Argv( 1 ), TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_DEFAULT );
+////		tr.testImage = globalImages.ImageFromFile( args.Argv( 1 ), textureFilter_t.TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_DEFAULT );
 ////	}
 ////}
 
@@ -845,7 +845,7 @@ GL_CheckErrors():void {
 ////		return;
 ////	}
 
-////	tr.testImage = globalImages.ImageFromFile( "_scratch", TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_DEFAULT );
+////	tr.testImage = globalImages.ImageFromFile( "_scratch", textureFilter_t.TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_DEFAULT );
 ////	tr.testVideo = idCinematic::Alloc();
 ////	tr.testVideo.InitFromFile( args.Argv( 1 ), true );
 
@@ -959,7 +959,7 @@ GL_CheckErrors():void {
 ////			// ignore procedural images
 ////			continue;
 ////		}
-////		if ( image1.cubeFiles != CF_2D ) {
+////		if ( image1.cubeFiles != cubeFiles_t.CF_2D ) {
 ////			// ignore cube maps
 ////			continue;
 ////		}
@@ -980,7 +980,7 @@ GL_CheckErrors():void {
 ////			if ( image2.generatorFunction ) {
 ////				continue;
 ////			}
-////			if ( image2.cubeFiles != CF_2D ) {
+////			if ( image2.cubeFiles != cubeFiles_t.CF_2D ) {
 ////				continue;
 ////			}
 ////			if ( image2.defaulted ) {
@@ -3165,7 +3165,7 @@ idRenderSystemLocal::Init
 
 ////	// look up the image before we create the render command, because it
 ////	// may need to sync to create the image
-////	idImage	*image = globalImages.ImageFromFile(imageName, TF_DEFAULT, true, TR_REPEAT, textureDepth_t.TD_DEFAULT);
+////	idImage	*image = globalImages.ImageFromFile(imageName, textureFilter_t.TF_DEFAULT, true, TR_REPEAT, textureDepth_t.TD_DEFAULT);
 
 ////	renderCrop_t *rc = &renderCrops[currentRenderCrop];
 

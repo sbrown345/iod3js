@@ -1765,7 +1765,7 @@ function Mem_CopyString( /*const char *in*/$in:string ):string {
 ////==================
 ////*/
 ////void Mem_EnableLeakTest( const char *name ) {
-////	idStr::Copynz( mem_leakName, name, sizeof( mem_leakName ) );
+////	idStr.Copynz( mem_leakName, name, sizeof( mem_leakName ) );
 ////}
 
 ////#endif /* !ID_DEBUG_MEMORY */

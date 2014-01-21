@@ -992,7 +992,7 @@ idImageManager.prototype.R_QuadraticImage = function ( image: idImage ): void {
 ////	if ( !force ) {
 ////		ID_TIME_T	current;
 
-////		if ( cubeFiles != CF_2D ) {
+////		if ( cubeFiles != cubeFiles_t.CF_2D ) {
 ////			R_LoadCubeImages( imgName, cubeFiles, NULL, NULL, &current );
 ////		} else {
 ////			// get the current values

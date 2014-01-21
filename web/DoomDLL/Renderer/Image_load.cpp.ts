@@ -1598,7 +1598,7 @@ idImage.prototype.ActuallyLoadImage = function( checkForPrecompressed:boolean, f
 	////
 	//// load the image from disk
 	////
-	//if ( cubeFiles != CF_2D ) {
+	//if ( cubeFiles != cubeFiles_t.CF_2D ) {
 	//	byte	*pics[6];
 
 	//	// we don't check for pre-compressed cube images currently

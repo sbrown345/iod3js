@@ -18,6 +18,14 @@
   <ItemGroup>
     <Content Include="dlls\Game\Game_local.cpp.ts" />
     <Content Include="dlls\Game\Game_local.h.ts" />
+    <TypeScriptCompile Include="dlls\Game\Script\Script_Compiler.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\Script\Script_Compiler.h.ts" />
+    <TypeScriptCompile Include="dlls\Game\Script\Script_Interpreter.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\Script\Script_Interpreter.h.ts" />
+    <TypeScriptCompile Include="dlls\Game\Script\Script_Program.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\Script\Script_Program.h.ts" />
+    <TypeScriptCompile Include="dlls\Game\Script\Script_Thread.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\Script\Script_Thread.h.ts" />
     <Content Include="DoomDLL\Framework\CmdSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\CmdSystem.h.ts" />
     <Content Include="DoomDLL\Framework\Common.cpp.ts" />

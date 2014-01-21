@@ -2404,7 +2404,7 @@ static IcmpPath( /*const char **/s1:string, /*const char **/s2:string ):number {
 ////	if ( l1 >= size ) {
 ////		idLib::common.Error( "idStr::Append: already overflowed" );
 ////	}
-////	idStr::Copynz( dest + l1, src, size - l1 );
+////	idStr.Copynz( dest + l1, src, size - l1 );
 ////}
 
 /////*
@@ -2481,7 +2481,7 @@ idStr::snPrintf
 		//	idLib::common.Warning( "idStr::snPrintf: overflow of %i in %i\n", len, size );
 		//	len = size;
 		//}
-		//idStr::Copynz( dest, buffer, size );
+		//idStr.Copynz( dest, buffer, size );
 		return len;
 	}
 
