@@ -773,20 +773,28 @@ Clear( ):void {
 ////	this.data[ len ] = '\0';
 ////}
 
-////ID_INLINE void idStr::Append( const char *text ) {
-////	int newLen;
-////	int i;
+	Append(text: string): void {
+		if ( typeof text != "string" ) {
+			throw "not a string";
+		}
 
-////	if ( text ) {
-////		newLen = len + strlen( text );
-////		EnsureAlloced( newLen + 1 );
-////		for ( i = 0; text[ i ]; i++ ) {
-////			this.data[ len + i ] = text[ i ];
-////		}
-////		len = newLen;
-////		this.data[ len ] = '\0';
-////	}
-////}
+		if ( text ) {
+			this.data += text;
+			this.len = this.data.length;
+		}
+		//int newLen;
+		//int i;
+
+		//if ( text ) {
+		//	newLen = len + strlen( text );
+		//	EnsureAlloced( newLen + 1 );
+		//	for ( i = 0; text[ i ]; i++ ) {
+		//		this.data[ len + i ] = text[ i ];
+		//	}
+		//	len = newLen;
+		//	this.data[ len ] = '\0';
+		//}
+	}
 
 ////ID_INLINE void idStr::Append( const char *text, int l ) {
 ////	int newLen;
@@ -944,10 +952,10 @@ Clear( ):void {
 ////	StripTrailing( c );
 ////}
 
-////ID_INLINE void idStr::Strip( const char *string ) {
-////	StripLeading( string );
-////	StripTrailing( string );
-////}
+Strip( $string:string ):void {
+	this.StripLeading( $string );
+	this.StripTrailing( $string );
+}
 
 ////ID_INLINE bool idStr::CheckExtension( const char *ext ) {
 ////	return idStr::CheckExtension( this.data, ext );
@@ -1521,22 +1529,22 @@ returns -1 if not found otherwise the index of the char
 ////	}
 ////}
 
-/////*
-////============
-////idStr::StripLeading
-////============
-////*/
-////void idStr::StripLeading( const char *string ) {
-////	int l;
-
-////	l = strlen( string );
-////	if ( l > 0 ) {
-////		while ( !Cmpn( string, l ) ) {
-////			memmove( this.data, this.data + l, len - l + 1 );
-////			len -= l;
-////		}
-////	}
-////}
+/*
+============
+idStr::StripLeading
+============
+*/
+StripLeading( $string:string ):void {
+	var/*int */l:number;
+	debugger;
+	l = strlen($string );
+	if ( l > 0 ) {
+		while (!this.Cmpn($string, l ) ) {
+			this.data = this.data.substr( l );//memmove(this.data, this.data + l, this.len - l + 1 );
+			this.len -= l;
+		}
+	}
+}
 
 /////*
 ////============
@@ -1554,37 +1562,30 @@ returns -1 if not found otherwise the index of the char
 ////	}
 ////	return false;
 ////}
+	
+/*
+============
+idStr::StripLeading
+============
+*/
+StripTrailing( $string:string ):void {
+	var /*int */l:number;
 
-/////*
-////============
-////idStr::StripTrailing
-////============
-////*/
-////void idStr::StripTrailing( const char c ) {
-////	int i;
+	var data = this.data.toUint8Array ( );
 
-////	for( i = Length(); i > 0 && this.data[ i - 1 ] == c; i-- ) {
-////		this.data[ i - 1 ] = '\0';
-////		len--;
-////	}
-////}
+	debugger;
+	l = strlen($string );
+	if ( l > 0 ) {
+		//while ((len >= l) && !Cmpn(string, data + len - l, l)) {
+		while ((this.len >= l) && !idStr.Cmpn($string, data.subarray(this.len - l).toString(), l)) {
+			this.len -= l;
+			data[this.len] = 0;
+		}
+	}
 
-/////*
-////============
-////idStr::StripLeading
-////============
-////*/
-////void idStr::StripTrailing( const char *string ) {
-////	int l;
-
-////	l = strlen( string );
-////	if ( l > 0 ) {
-////		while ( ( len >= l ) && !Cmpn( string, this.data + len - l, l ) ) {
-////			len -= l;
-////			this.data[len] = '\0';
-////		}
-////	}
-////}
+	this.data = data.toString();
+	assert( this.len == this.data.length );
+}
 
 /////*
 ////============
@@ -2369,26 +2370,27 @@ static IcmpPath( /*const char **/s1:string, /*const char **/s2:string ):number {
 ////	return 0;
 ////}
 
-/////*
-////=============
-////idStr::Copynz
+/*
+=============
+idStr::Copynz
 
-////Safe strncpy that ensures a trailing zero
-////=============
-////*/
-////void idStr::Copynz( char *dest, const char *src, int destsize ) {
-////	if ( !src ) {
-////		idLib::common.Warning( "idStr::Copynz: NULL src" );
-////		return;
-////	}
-////	if ( destsize < 1 ) {
-////		idLib::common.Warning( "idStr::Copynz: destsize < 1" ); 
-////		return;
-////	}
-
-////	strncpy( dest, src, destsize-1 );
-////    dest[destsize-1] = 0;
-////}
+Safe strncpy that ensures a trailing zero
+=============
+*/
+	// USE JS STRING INSTEAD
+	//static Copynz ( /*char **/dest: any, /*const char **/src: any, /*int */destsize: number ): void {
+	//	throw "use js string instead";
+	//	//if ( !src ) {
+	//	//	idLib::common.Warning( "idStr::Copynz: NULL src" );
+	//	//	return;
+	//	//}
+	//	//if ( destsize < 1 ) {
+	//	//	idLib::common.Warning( "idStr::Copynz: destsize < 1" ); 
+	//	//	return;
+	//	//}
+	//	//strncpy( dest, src, destsize-1 );
+	//	//dest[destsize-1] = 0;
+	//}
 
 /////*
 ////================

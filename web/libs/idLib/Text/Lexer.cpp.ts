@@ -241,21 +241,21 @@ class idLexer {
 		}
 	}
 
-	/////*
-	////================
-	////idLexer::GetPunctuationFromId
-	////================
-	////*/
-	////const char *idLexer::GetPunctuationFromId( int id ) {
-	////	int i;
+	/*
+	================
+	idLexer::GetPunctuationFromId
+	================
+	*/
+	GetPunctuationFromId ( /*int */id: number ): string {
+		var /*int */i: number;
 
-	////	for (i = 0; this.punctuations[i].p; i++) {
-	////		if ( this.punctuations[i].n == id ) {
-	////			return this.punctuations[i].p;
-	////		}
-	////	}
-	////	return "unkown punctuation";
-	////}
+		for ( i = 0; this.punctuations[i].p; i++ ) {
+			if ( this.punctuations[i].n == id ) {
+				return this.punctuations[i].p;
+			}
+		}
+		return "unkown punctuation";
+	}
 
 	/////*
 	////================
@@ -998,59 +998,59 @@ class idLexer {
 		return 1;
 	}
 
-	/////*
-	////================
-	////idLexer::ExpectTokenType
-	////================
-	////*/
-	////int idLexer::ExpectTokenType( int type, int subtype, idToken *token ) {
-	////	idStr str;
+	/*
+	================
+	idLexer::ExpectTokenType
+	================
+	*/
+	/*int */ExpectTokenType( /*int */type: number, /*int */subtype: number, token: R<idToken> ):number {
+		var str: idStr;
 
-	////	if ( !this.ReadToken( token ) ) {
-	////		this.Error( "couldn't read expected token" );
-	////		return 0;
-	////	}
+		if ( !this.ReadToken( token ) ) {
+			this.Error( "couldn't read expected token" );
+			return 0;
+		}
 
-	////	if ( token.type != type ) {
-	////		switch( type ) {
-	////			case TT_STRING: str = "string"; break;
-	////			case TT_LITERAL: str = "literal"; break;
-	////			case TT_NUMBER: str = "number"; break;
-	////			case TT_NAME: str = "name"; break;
-	////			case TT_PUNCTUATION: str = "punctuation"; break;
-	////			default: str = "unknown type"; break;
-	////		}
-	////		this.Error( "expected a %s but found '%s'", str.c_str(), token.c_str() );
-	////		return 0;
-	////	}
-	////	if ( token.type == TT_NUMBER ) {
-	////		if ( (token.subtype & subtype) != subtype ) {
-	////			str.Clear();
-	////			if ( subtype & TT_DECIMAL ) str = "decimal ";
-	////			if ( subtype & TT_HEX ) str = "hex ";
-	////			if ( subtype & TT_OCTAL ) str = "octal ";
-	////			if ( subtype & TT_BINARY ) str = "binary ";
-	////			if ( subtype & TT_UNSIGNED ) str += "unsigned ";
-	////			if ( subtype & TT_LONG ) str += "long ";
-	////			if ( subtype & TT_FLOAT ) str += "float ";
-	////			if ( subtype & TT_INTEGER ) str += "integer ";
-	////			str.StripTrailing( ' ' );
-	////			this.Error( "expected %s but found '%s'", str.c_str(), token.c_str() );
-	////			return 0;
-	////		}
-	////	}
-	////	else if ( token.type == TT_PUNCTUATION ) {
-	////		if ( subtype < 0 ) {
-	////			this.Error( "BUG: wrong punctuation subtype" );
-	////			return 0;
-	////		}
-	////		if ( token.subtype != subtype ) {
-	////			this.Error( "expected '%s' but found '%s'", GetPunctuationFromId( subtype ), token.c_str() );
-	////			return 0;
-	////		}
-	////	}
-	////	return 1;
-	////}
+		if (token.$.type != type ) {
+			switch( type ) {
+				case TT_STRING: str = new idStr("string"); break;
+				case TT_LITERAL: str = new idStr("literal"); break;
+				case TT_NUMBER: str = new idStr("number"); break;
+				case TT_NAME: str = new idStr("name"); break;
+				case TT_PUNCTUATION: str = new idStr("punctuation"); break;
+				default: str = new idStr("unknown type"); break;
+			}
+			this.Error( "expected a %s but found '%s'", str.c_str(), token.$.c_str() );
+			return 0;
+		}
+		if (token.$.type == TT_NUMBER ) {
+			if ((token.$.subtype & subtype) != subtype ) {
+				str.Clear();
+				if (subtype & TT_DECIMAL) str = new idStr("decimal ");
+				if (subtype & TT_HEX) str = new idStr("hex ");
+				if (subtype & TT_OCTAL) str = new idStr("octal ");
+				if (subtype & TT_BINARY) str = new idStr("binary ");
+				if (subtype & TT_UNSIGNED) str.Append("unsigned ");
+				if (subtype & TT_LONG) str.Append("long ");
+				if (subtype & TT_FLOAT) str.Append("float ");
+				if (subtype & TT_INTEGER) str.Append("integer ");
+				str.StripTrailing( ' ' );
+				this.Error( "expected %s but found '%s'", str.c_str(), token.$.c_str() );
+				return 0;
+			}
+		}
+		else if (token.$.type == TT_PUNCTUATION ) {
+			if ( subtype < 0 ) {
+				this.Error( "BUG: wrong punctuation subtype" );
+				return 0;
+			}
+			if (token.$.subtype != subtype ) {
+				this.Error("expected '%s' but found '%s'", this.GetPunctuationFromId(subtype), token.$.c_str() );
+				return 0;
+			}
+		}
+		return 1;
+	}
 
 	/*
 	================
@@ -1289,27 +1289,27 @@ class idLexer {
 	////	return out.c_str();
 	////}
 
-	/////*
-	////================
-	////idLexer::ParseInt
-	////================
-	////*/
-	////int idLexer::ParseInt( void ) {
-	////	idToken token;
+	/*
+	================
+	idLexer::ParseInt
+	================
+	*/
+	/*int */ParseInt( ):number {
+		var token = new R(new idToken);
 
-	////	if ( !this.ReadToken( &token ) ) {
-	////		this.Error( "couldn't read expected integer" );
-	////		return 0;
-	////	}
-	////	if ( token.type == TT_PUNCTUATION && token == "-" ) {
-	////		idLexer::ExpectTokenType( TT_NUMBER, TT_INTEGER, &token );
-	////		return -((signed int) token.GetIntValue());
-	////	}
-	////	else if ( token.type != TT_NUMBER || token.subtype == TT_FLOAT ) {
-	////		this.Error( "expected integer value, found '%s'", token.c_str() );
-	////	}
-	////	return token.GetIntValue();
-	////}
+		if ( !this.ReadToken( token ) ) {
+			this.Error( "couldn't read expected integer" );
+			return 0;
+		}
+		if (token.$.type == TT_PUNCTUATION && token.$.data == "-" ) {
+			this.ExpectTokenType( TT_NUMBER, TT_INTEGER, token );
+			return -(/*(signed int)*/ token.$.GetIntValue());
+		}
+		else if (token.$.type != TT_NUMBER || token.$.subtype == TT_FLOAT ) {
+			this.Error("expected integer value, found '%s'", token.$.c_str() );
+		}
+		return token.$.GetIntValue();
+	}
 
 	/////*
 	////================
@@ -1317,50 +1317,50 @@ class idLexer {
 	////================
 	////*/
 	////bool idLexer::ParseBool( void ) {
-	////	idToken token;
+	////	var token = new R(new idToken);
 
-	////	if ( !idLexer::ExpectTokenType( TT_NUMBER, 0, &token ) ) {
+	////	if ( !this.ExpectTokenType( TT_NUMBER, 0, &token ) ) {
 	////		this.Error( "couldn't read expected boolean" );
 	////		return false;
 	////	}
 	////	return ( token.GetIntValue() != 0 );
 	////}
 
-	/////*
-	////================
-	////idLexer::ParseFloat
-	////================
-	////*/
-	////float idLexer::ParseFloat( bool *errorFlag ) {
-	////	idToken token;
+	/*
+	================
+	idLexer::ParseFloat
+	================
+	*/
+	/*float */ParseFloat( errorFlag:R<boolean> = null):number {
+		var token = new R( new idToken );
 
-	////	if ( errorFlag ) {
-	////		*errorFlag = false;
-	////	}
+		if ( errorFlag ) {
+			errorFlag.$ = false;
+		}
 
-	////	if ( !this.ReadToken( &token ) ) {
-	////		if ( errorFlag ) {
-	////			this.Warning( "couldn't read expected floating point number" );
-	////			*errorFlag = true;
-	////		} else {
-	////			this.Error( "couldn't read expected floating point number" );
-	////		}
-	////		return 0;
-	////	}
-	////	if ( token.type == TT_PUNCTUATION && token == "-" ) {
-	////		idLexer::ExpectTokenType( TT_NUMBER, 0, &token );
-	////		return -token.GetFloatValue();
-	////	}
-	////	else if ( token.type != TT_NUMBER ) {
-	////		if ( errorFlag ) {
-	////			this.Warning( "expected float value, found '%s'", token.c_str() );
-	////			*errorFlag = true;
-	////		} else {
-	////			this.Error( "expected float value, found '%s'", token.c_str() );
-	////		}
-	////	}
-	////	return token.GetFloatValue();
-	////}
+		if ( !this.ReadToken( token ) ) {
+			if ( errorFlag ) {
+				this.Warning( "couldn't read expected floating point number" );
+				errorFlag.$ = true;
+			} else {
+				this.Error( "couldn't read expected floating point number" );
+			}
+			return 0;
+		}
+		if ( token.$.type == TT_PUNCTUATION && token.$.data == "-" ) {
+			this.ExpectTokenType( TT_NUMBER, 0, token );
+			return -token.$.GetFloatValue();
+		}
+		else if (token.$.type != TT_NUMBER ) {
+			if ( errorFlag ) {
+				this.Warning("expected float value, found '%s'", token.$.c_str() );
+				errorFlag.$ = true;
+			} else {
+				this.Error("expected float value, found '%s'", token.$.c_str() );
+			}
+		}
+		return token.$.GetFloatValue();
+	}
 
 	/////*
 	////================
@@ -1515,7 +1515,7 @@ class idLexer {
 	////=================
 	////*/
 	////const char *idLexer::ParseBracedSection( idStr &out ) {
-	////	idToken token;
+	////	var token = new R(new idToken);
 	////	int i, depth;
 
 	////	out.Empty();

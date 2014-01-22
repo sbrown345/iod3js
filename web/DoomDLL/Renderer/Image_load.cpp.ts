@@ -438,7 +438,7 @@ This may need to scan six cube map images
 ////		break;
 ////	case textureRepeat_t.TR_CLAMP_TO_BORDER:
 ////	case TR_CLAMP_TO_ZERO:
-////	case TR_CLAMP_TO_ZERO_ALPHA:
+////	case textureRepeat_t.TR_CLAMP_TO_ZERO_ALPHA:
 ////	case TR_CLAMP:
 ////		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
 ////		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
@@ -636,7 +636,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 //		rgba[3] = 255;
 //		R_SetBorderTexels( (byte *)scaledBuffer, width, height, rgba );
 //	}
-//	if ( repeat == TR_CLAMP_TO_ZERO_ALPHA ) {
+//	if ( repeat == textureRepeat_t.TR_CLAMP_TO_ZERO_ALPHA ) {
 //		byte	rgba[4];
 
 //		rgba[0] = rgba[1] = rgba[2] = 255;
@@ -846,7 +846,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 ////		break;
 ////	case textureRepeat_t.TR_CLAMP_TO_BORDER:
 ////	case TR_CLAMP_TO_ZERO:
-////	case TR_CLAMP_TO_ZERO_ALPHA:
+////	case textureRepeat_t.TR_CLAMP_TO_ZERO_ALPHA:
 ////	case TR_CLAMP:
 ////		glTexParameterf( GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
 ////		glTexParameterf( GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
@@ -2200,7 +2200,7 @@ idImage.prototype.PurgeImage = function ( ): void {
 ////	case TR_CLAMP_TO_ZERO:
 ////		common.Printf( "zero " );
 ////		break;
-////	case TR_CLAMP_TO_ZERO_ALPHA:
+////	case textureRepeat_t.TR_CLAMP_TO_ZERO_ALPHA:
 ////		common.Printf( "azro " );
 ////		break;
 ////	case TR_CLAMP:

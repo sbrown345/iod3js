@@ -48,6 +48,8 @@
     <Content Include="DoomDLL\Framework\files.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\Cinematic.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\Cinematic.h.ts" />
     <Content Include="DoomDLL\Renderer\GuiModel.cpp.ts" />
     <Content Include="DoomDLL\Renderer\GuiModel.h.ts" />
     <Content Include="DoomDLL\Renderer\Image.h.ts" />

@@ -1083,49 +1083,49 @@ class backEndState_t {
 ////void	GL_TexEnv( int env );
 ////void	GL_Cull( int cullType );
 
-////const int GLS_SRCBLEND_ZERO						= 0x00000001;
-////const int GLS_SRCBLEND_ONE						= 0x0;
-////const int GLS_SRCBLEND_DST_COLOR				= 0x00000003;
-////const int GLS_SRCBLEND_ONE_MINUS_DST_COLOR		= 0x00000004;
-////const int GLS_SRCBLEND_SRC_ALPHA				= 0x00000005;
-////const int GLS_SRCBLEND_ONE_MINUS_SRC_ALPHA		= 0x00000006;
-////const int GLS_SRCBLEND_DST_ALPHA				= 0x00000007;
-////const int GLS_SRCBLEND_ONE_MINUS_DST_ALPHA		= 0x00000008;
-////const int GLS_SRCBLEND_ALPHA_SATURATE			= 0x00000009;
-////const int GLS_SRCBLEND_BITS						= 0x0000000f;
+var GLS_SRCBLEND_ZERO						= 0x00000001;
+var GLS_SRCBLEND_ONE						= 0x0;
+var GLS_SRCBLEND_DST_COLOR				= 0x00000003;
+var GLS_SRCBLEND_ONE_MINUS_DST_COLOR		= 0x00000004;
+var GLS_SRCBLEND_SRC_ALPHA				= 0x00000005;
+var GLS_SRCBLEND_ONE_MINUS_SRC_ALPHA		= 0x00000006;
+var GLS_SRCBLEND_DST_ALPHA				= 0x00000007;
+var GLS_SRCBLEND_ONE_MINUS_DST_ALPHA		= 0x00000008;
+var GLS_SRCBLEND_ALPHA_SATURATE			= 0x00000009;
+var GLS_SRCBLEND_BITS						= 0x0000000f;
 
-////const int GLS_DSTBLEND_ZERO						= 0x0;
-////const int GLS_DSTBLEND_ONE						= 0x00000020;
-////const int GLS_DSTBLEND_SRC_COLOR				= 0x00000030;
-////const int GLS_DSTBLEND_ONE_MINUS_SRC_COLOR		= 0x00000040;
-////const int GLS_DSTBLEND_SRC_ALPHA				= 0x00000050;
-////const int GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA		= 0x00000060;
-////const int GLS_DSTBLEND_DST_ALPHA				= 0x00000070;
-////const int GLS_DSTBLEND_ONE_MINUS_DST_ALPHA		= 0x00000080;
-////const int GLS_DSTBLEND_BITS						= 0x000000f0;
+var GLS_DSTBLEND_ZERO						= 0x0;
+var GLS_DSTBLEND_ONE						= 0x00000020;
+var GLS_DSTBLEND_SRC_COLOR				= 0x00000030;
+var GLS_DSTBLEND_ONE_MINUS_SRC_COLOR		= 0x00000040;
+var GLS_DSTBLEND_SRC_ALPHA				= 0x00000050;
+var GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA		= 0x00000060;
+var GLS_DSTBLEND_DST_ALPHA				= 0x00000070;
+var GLS_DSTBLEND_ONE_MINUS_DST_ALPHA		= 0x00000080;
+var GLS_DSTBLEND_BITS						= 0x000000f0;
 
 
-////// these masks are the inverse, meaning when set the glColorMask value will be 0,
-////// preventing that channel from being written
-////const int GLS_DEPTHMASK							= 0x00000100;
-////const int GLS_REDMASK							= 0x00000200;
-////const int GLS_GREENMASK							= 0x00000400;
-////const int GLS_BLUEMASK							= 0x00000800;
-////const int GLS_ALPHAMASK							= 0x00001000;
-////const int GLS_COLORMASK							= (GLS_REDMASK|GLS_GREENMASK|GLS_BLUEMASK);
+// these masks are the inverse, meaning when set the glColorMask value will be 0,
+// preventing that channel from being written
+var GLS_DEPTHMASK							= 0x00000100;
+var GLS_REDMASK							= 0x00000200;
+var GLS_GREENMASK							= 0x00000400;
+var GLS_BLUEMASK							= 0x00000800;
+var GLS_ALPHAMASK							= 0x00001000;
+var GLS_COLORMASK							= (GLS_REDMASK|GLS_GREENMASK|GLS_BLUEMASK);
 
-////const int GLS_POLYMODE_LINE						= 0x00002000;
+var GLS_POLYMODE_LINE						= 0x00002000;
 
-////const int GLS_DEPTHFUNC_ALWAYS					= 0x00010000;
-////const int GLS_DEPTHFUNC_EQUAL					= 0x00020000;
-////const int GLS_DEPTHFUNC_LESS					= 0x0;
+var GLS_DEPTHFUNC_ALWAYS					= 0x00010000;
+var GLS_DEPTHFUNC_EQUAL					= 0x00020000;
+var GLS_DEPTHFUNC_LESS					= 0x0;
 
-////const int GLS_ATEST_EQ_255						= 0x10000000;
-////const int GLS_ATEST_LT_128						= 0x20000000;
-////const int GLS_ATEST_GE_128						= 0x40000000;
-////const int GLS_ATEST_BITS						= 0x70000000;
+var GLS_ATEST_EQ_255						= 0x10000000;
+var GLS_ATEST_LT_128						= 0x20000000;
+var GLS_ATEST_GE_128						= 0x40000000;
+var GLS_ATEST_BITS						= 0x70000000;
 
-////const int GLS_DEFAULT							= GLS_DEPTHFUNC_ALWAYS;
+var GLS_DEFAULT							= GLS_DEPTHFUNC_ALWAYS;
 
 ////void R_Init( void );
 ////void R_InitOpenGL( void );

@@ -159,20 +159,20 @@ class idToken extends idStr {
     GetFloatValue( ):number {
     	return /*(float) */this.GetDoubleValue();
     }
-    ////
-    ////ID_INLINE unsigned long	idToken::GetUnsignedLongValue( void ) {
-    ////	if ( type != TT_NUMBER ) {
-    ////		return 0;
-    ////	}
-    ////	if ( !(subtype & TT_VALUESVALID) ) {
-    ////		NumberValue();
-    ////	}
-    ////	return intvalue;
-    ////}
-    ////
-    ////ID_INLINE int idToken::GetIntValue( void ) {
-    ////	return (int) GetUnsignedLongValue();
-    ////}
+    
+    /*unsigned long	*/GetUnsignedLongValue( ):number {
+    	if ( this.type != TT_NUMBER ) {
+    		return 0;
+    	}
+		if (!(this.subtype & TT_VALUESVALID) ) {
+			this.NumberValue();
+    	}
+		return this.intvalue;
+    }
+    
+    GetIntValue( ):number {
+    	return /*(int) */this.GetUnsignedLongValue() | 0;
+    }
     ////
     ////ID_INLINE int idToken::WhiteSpaceBeforeToken( void ) const {
     ////	return ( whiteSpaceEnd_p > whiteSpaceStart_p );

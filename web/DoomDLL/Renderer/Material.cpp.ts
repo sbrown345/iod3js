@@ -62,6 +62,7 @@
 
 ////*/
 
+var TOP_PRIORITY = 4;
 
 ////// keep all of these on the stack, when they are static it makes material parsing non-reentrant
 class mtrParsingData_t {
@@ -217,7 +218,7 @@ CommonInit():void {
 ////		if ( numStages && stages ) {
 ////			int i;
 ////			for( i = 0; i < numStages; i++ ) {
-////				if ( stages[i].lighting == SL_DIFFUSE ) {
+////				if ( stages[i].lighting == stageLighting_t.SL_DIFFUSE ) {
 ////					editorImage = stages[i].texture.image;
 ////					break;
 ////				}
@@ -269,20 +270,20 @@ See if the current token matches one of the surface parm bit flags
 	return false;
 }
 
-/////*
-////===============
-////idMaterial::MatchToken
+/*
+===============
+idMaterial::MatchToken
 
-////Sets defaultShader and returns false if the next token doesn't match
-////===============
-////*/
-////bool idMaterial::MatchToken( idLexer &src, const char *match ) {
-////	if ( !src.ExpectTokenString( match ) ) {
-////		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-////		return false;
-////	}
-////	return true;
-////}
+Sets defaultShader and returns false if the next token doesn't match
+===============
+*/
+	MatchToken ( src: idLexer, match: string ): boolean {
+		if ( !src.ExpectTokenString( match ) ) {
+			this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+			return false;
+		}
+		return true;
+	}
 
 /*
 =================
@@ -343,30 +344,30 @@ idMaterial::ParseDecalInfo
 		//}
 	}
 
-/////*
-////=============
-////idMaterial::GetExpressionConstant
-////=============
-////*/
-////int idMaterial::GetExpressionConstant( float f ) {
-////	int		i;
+/*
+=============
+idMaterial::GetExpressionConstant
+=============
+*/
+	/*int */GetExpressionConstant( /*float */f: number): number {
+	todoThrow();
+	var/*int		*/i:number;
+	//for ( i = expRegister_t.EXP_REG_NUM_PREDEFINED ; i < this.numRegisters ; i++ ) {
+	//	if ( !this.pd.registerIsTemporary[i] && this.pd.shaderRegisters[i] == f ) {
+	//		return i;
+	//	}
+	//}
+	//if ( this.numRegisters == MAX_EXPRESSION_REGISTERS ) {
+	//	common.Warning( "GetExpressionConstant: material '%s' hit MAX_EXPRESSION_REGISTERS", this.GetName() );
+	//	this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+	//	return 0;
+	//}
+	//this.pd.registerIsTemporary[i] = false;
+	//this.pd.shaderRegisters[i] = f;
+	//this.numRegisters++;
 
-////	for ( i = expRegister_t.EXP_REG_NUM_PREDEFINED ; i < this.numRegisters ; i++ ) {
-////		if ( !this.pd.registerIsTemporary[i] && this.pd.shaderRegisters[i] == f ) {
-////			return i;
-////		}
-////	}
-////	if ( this.numRegisters == MAX_EXPRESSION_REGISTERS ) {
-////		common.Warning( "GetExpressionConstant: material '%s' hit MAX_EXPRESSION_REGISTERS", this.GetName() );
-////		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-////		return 0;
-////	}
-////	this.pd.registerIsTemporary[i] = false;
-////	this.pd.shaderRegisters[i] = f;
-////	this.numRegisters++;
-
-////	return i;
-////}
+	return i;
+}
 
 /////*
 ////=============
@@ -399,81 +400,85 @@ idMaterial::ParseDecalInfo
 ////	return &this.pd.shaderOps[this.numOps++];
 ////}
 
-/////*
-////=================
-////idMaterial::EmitOp
-////=================
-////*/
-////int idMaterial::EmitOp( int a, int b, expOpType_t opType ) {
-////	expOp_t	*op;
+/*
+=================
+idMaterial::EmitOp
+=================
+*/
+	/*int */EmitOp(/*int */a: number, /*int */b: number, opType: expOpType_t  ):number {
+	var op:expOp_t;
+		todoThrow ( );
+	//// optimize away identity operations
+	//if ( opType == expOpType_t.OP_TYPE_ADD ) {
+	//	if ( !this.pd.registerIsTemporary[a] && this.pd.shaderRegisters[a] == 0 ) {
+	//		return b;
+	//	}
+	//	if ( !this.pd.registerIsTemporary[b] && this.pd.shaderRegisters[b] == 0 ) {
+	//		return a;
+	//	}
+	//	if ( !this.pd.registerIsTemporary[a] && !this.pd.registerIsTemporary[b] ) {
+	//		return this.GetExpressionConstant( this.pd.shaderRegisters[a] + this.pd.shaderRegisters[b] );
+	//	}
+	//}
+	//	if (opType == expOpType_t.OP_TYPE_MULTIPLY ) {
+	//	if ( !this.pd.registerIsTemporary[a] && this.pd.shaderRegisters[a] == 1 ) {
+	//		return b;
+	//	}
+	//	if ( !this.pd.registerIsTemporary[a] && this.pd.shaderRegisters[a] == 0 ) {
+	//		return a;
+	//	}
+	//	if ( !this.pd.registerIsTemporary[b] && this.pd.shaderRegisters[b] == 1 ) {
+	//		return a;
+	//	}
+	//	if ( !this.pd.registerIsTemporary[b] && this.pd.shaderRegisters[b] == 0 ) {
+	//		return b;
+	//	}
+	//	if ( !this.pd.registerIsTemporary[a] && !this.pd.registerIsTemporary[b] ) {
+	//		return this.GetExpressionConstant( this.pd.shaderRegisters[a] * this.pd.shaderRegisters[b] );
+	//	}
+	//}
 
-////	// optimize away identity operations
-////	if ( opType == OP_TYPE_ADD ) {
-////		if ( !this.pd.registerIsTemporary[a] && this.pd.shaderRegisters[a] == 0 ) {
-////			return b;
-////		}
-////		if ( !this.pd.registerIsTemporary[b] && this.pd.shaderRegisters[b] == 0 ) {
-////			return a;
-////		}
-////		if ( !this.pd.registerIsTemporary[a] && !this.pd.registerIsTemporary[b] ) {
-////			return GetExpressionConstant( this.pd.shaderRegisters[a] + this.pd.shaderRegisters[b] );
-////		}
-////	}
-////	if ( opType == OP_TYPE_MULTIPLY ) {
-////		if ( !this.pd.registerIsTemporary[a] && this.pd.shaderRegisters[a] == 1 ) {
-////			return b;
-////		}
-////		if ( !this.pd.registerIsTemporary[a] && this.pd.shaderRegisters[a] == 0 ) {
-////			return a;
-////		}
-////		if ( !this.pd.registerIsTemporary[b] && this.pd.shaderRegisters[b] == 1 ) {
-////			return a;
-////		}
-////		if ( !this.pd.registerIsTemporary[b] && this.pd.shaderRegisters[b] == 0 ) {
-////			return b;
-////		}
-////		if ( !this.pd.registerIsTemporary[a] && !this.pd.registerIsTemporary[b] ) {
-////			return GetExpressionConstant( this.pd.shaderRegisters[a] * this.pd.shaderRegisters[b] );
-////		}
-////	}
+	//op = this.GetExpressionOp();
+	//op.opType = opType;
+	//op.a = a;
+	//op.b = b;
+	//	op.c = this.GetExpressionTemporary();
 
-////	op = GetExpressionOp();
-////	op.opType = opType;
-////	op.a = a;
-////	op.b = b;
-////	op.c = GetExpressionTemporary();
+	return op.c;
+}
 
-////	return op.c;
-////}
+/*
+=================
+idMaterial::ParseEmitOp
+=================
+*/
+	/*int */
+	ParseEmitOp ( src: idLexer, /*int */a: number, /*expOpType_t */opType: expOpType_t, /*int */priority: number ): number {
+		var /*int		*/b: number;
 
-/////*
-////=================
-////idMaterial::ParseEmitOp
-////=================
-////*/
-////int idMaterial::ParseEmitOp( idLexer &src, int a, expOpType_t opType, int priority ) {
-////	int		b;
+		b = this.ParseExpressionPriority( src, priority );
+		return this.EmitOp( a, b, opType );
+	}
 
-////	b = ParseExpressionPriority( src, priority );
-////	return EmitOp( a, b, opType );
-////}
+/*
+=================
+idMaterial::ParseTerm
 
-/////*
-////=================
-////idMaterial::ParseTerm
+Returns a register index
+=================
+*/
+	/*int */ParseTerm(src: idLexer ):number {
+		todoThrow();
+		return 999999999999999;//!
 
-////Returns a register index
-////=================
-////*/
-////int idMaterial::ParseTerm( idLexer &src ) {
 ////	idToken token;
 ////	int		a, b;
 
 ////	src.ReadToken( &token );
 
 ////	if ( token == "(" ) {
-////		a = ParseExpression( src );
-////		MatchToken( src, ")" );
+////		a = this.ParseExpression( src );
+////		this.MatchToken( src, ")" );
 ////		return a;
 ////	}
 
@@ -562,19 +567,19 @@ idMaterial::ParseDecalInfo
 ////		return EXP_REG_GLOBAL7;
 ////	}
 ////	if ( !token.Icmp( "fragmentPrograms" ) ) {
-////		return GetExpressionConstant( (float) glConfig.ARBFragmentProgramAvailable );
+////		return this.GetExpressionConstant( (float) glConfig.ARBFragmentProgramAvailable );
 ////	}
 
 ////	if ( !token.Icmp( "sound" ) ) {
 ////		this.pd.registersAreConstant = false;
-////		return EmitOp( 0, 0, OP_TYPE_SOUND );
+////		return EmitOp( 0, 0, expOpType_t.OP_TYPE_SOUND );
 ////	}
 
 ////	// parse negative numbers
 ////	if ( token == "-" ) {
 ////		src.ReadToken( &token );
 ////		if ( token.type == TT_NUMBER || token == "." ) {
-////			return GetExpressionConstant( -(float) token.GetFloatValue() );
+////			return this.GetExpressionConstant( -(float) token.GetFloatValue() );
 ////		}
 ////		src.Warning( "Bad negative number '%s'", token.c_str() );
 ////		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
@@ -582,7 +587,7 @@ idMaterial::ParseDecalInfo
 ////	}
 
 ////	if ( token.type == TT_NUMBER || token == "." || token == "-" ) {
-////		return GetExpressionConstant( (float) token.GetFloatValue() );
+////		return this.GetExpressionConstant( (float) token.GetFloatValue() );
 ////	}
 
 ////	// see if it is a table name
@@ -594,90 +599,89 @@ idMaterial::ParseDecalInfo
 ////	}
 
 ////	// parse a table expression
-////	MatchToken( src, "[" );
+////	this.MatchToken( src, "[" );
 
-////	b = ParseExpression( src );
+////	b = this.ParseExpression( src );
 
-////	MatchToken( src, "]" );
+////	this.MatchToken( src, "]" );
 
-////	return EmitOp( table.Index(), b, OP_TYPE_TABLE );
-////}
+////	return EmitOp( table.Index(), b, expOpType_t.OP_TYPE_TABLE );
+	}
 
-/////*
-////=================
-////idMaterial::ParseExpressionPriority
+/*
+=================
+idMaterial::ParseExpressionPriority
 
-////Returns a register index
-////=================
-////*/
-////#define	TOP_PRIORITY 4
-////int idMaterial::ParseExpressionPriority( idLexer &src, int priority ) {
-////	idToken token;
-////	int		a;
+Returns a register index
+=================
+*/
+/*int */ParseExpressionPriority( src:idLexer, /*int */priority:number ):number {
+		var token = new R( new idToken );
+	var /*int		*/a:number;
 
-////	if ( priority == 0 ) {
-////		return ParseTerm( src );
-////	}
+	if ( priority == 0 ) {
+		return this.ParseTerm( src );
+	}
 
-////	a = ParseExpressionPriority( src, priority - 1 );
+	a = this.ParseExpressionPriority( src, priority - 1 );
 
-////	if ( TestMaterialFlag( materialFlags_t.MF_DEFAULTED ) ) {	// we have a parse error
-////		return 0;
-////	}
+	if ( this.TestMaterialFlag( materialFlags_t.MF_DEFAULTED ) ) {	// we have a parse error
+		return 0;
+	}
 
-////	if ( !src.ReadToken( &token ) ) {
-////		// we won't get EOF in a real file, but we can
-////		// when parsing from generated strings
-////		return a;
-////	}
+	if ( !src.ReadToken( token ) ) {
+		// we won't get EOF in a real file, but we can
+		// when parsing from generated strings
+		return a;
+	}
 
-////	if ( priority == 1 && token == "*" ) {
-////		return ParseEmitOp( src, a, OP_TYPE_MULTIPLY, priority );
-////	}
-////	if ( priority == 1 && token == "/" ) {
-////		return ParseEmitOp( src, a, OP_TYPE_DIVIDE, priority );
-////	}
-////	if ( priority == 1 && token == "%" ) {	// implied truncate both to integer
-////		return ParseEmitOp( src, a, OP_TYPE_MOD, priority );
-////	}
-////	if ( priority == 2 && token == "+" ) {
-////		return ParseEmitOp( src, a, OP_TYPE_ADD, priority );
-////	}
-////	if ( priority == 2 && token == "-" ) {
-////		return ParseEmitOp( src, a, OP_TYPE_SUBTRACT, priority );
-////	}
-////	if ( priority == 3 && token == ">" ) {
-////		return ParseEmitOp( src, a, OP_TYPE_GT, priority );
-////	}
-////	if ( priority == 3 && token == ">=" ) {
-////		return ParseEmitOp( src, a, OP_TYPE_GE, priority );
-////	}
-////	if ( priority == 3 && token == "<" ) {
-////		return ParseEmitOp( src, a, OP_TYPE_LT, priority );
-////	}
-////	if ( priority == 3 && token == "<=" ) {
-////		return ParseEmitOp( src, a, OP_TYPE_LE, priority );
-////	}
-////	if ( priority == 3 && token == "==" ) {
-////		return ParseEmitOp( src, a, OP_TYPE_EQ, priority );
-////	}
-////	if ( priority == 3 && token == "!=" ) {
-////		return ParseEmitOp( src, a, OP_TYPE_NE, priority );
-////	}
-////	if ( priority == 4 && token == "&&" ) {
-////		return ParseEmitOp( src, a, OP_TYPE_AND, priority );
-////	}
-////	if ( priority == 4 && token == "||" ) {
-////		return ParseEmitOp( src, a, OP_TYPE_OR, priority );
-////	}
+	if ( priority == 1 && token.$.data == "*" ) {
+		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_MULTIPLY, priority );
+	}
+	if ( priority == 1 && token.$.data == "/" ) {
+		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_DIVIDE, priority );
+	}
+	if ( priority == 1 && token.$.data == "%" ) {	// implied truncate both to integer
+		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_MOD, priority );
+	}
+	if ( priority == 2 && token.$.data == "+" ) {
+		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_ADD, priority );
+	}
+	if ( priority == 2 && token.$.data == "-" ) {
+		return this.ParseEmitOp( src, a, expOpType_t.OP_TYPE_SUBTRACT, priority );
+	}
+	if ( priority == 3 && token.$.data == ">" ) {
+		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_GT, priority );
+	}
+	if ( priority == 3 && token.$.data == ">=" ) {
+		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_GE, priority );
+	}
+	if ( priority == 3 && token.$.data == "<" ) {
+		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_LT, priority );
+	}
+	if ( priority == 3 && token.$.data == "<=" ) {
+		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_LE, priority );
+	}
+	if ( priority == 3 && token.$.data == "==" ) {
+		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_EQ, priority );
+	}
+	if ( priority == 3 && token.$.data == "!=" ) {
+		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_NE, priority );
+	}
+	if ( priority == 4 && token.$.data == "&&" ) {
+		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_AND, priority );
+	}
+	if ( priority == 4 && token.$.data == "||" ) {
+		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_OR, priority );
+	}
 
-////	// assume that anything else terminates the expression
-////	// not too robust error checking...
+	// assume that anything else terminates the expression
+	// not too robust error checking...
 
-////	src.UnreadToken( &token );
+	src.UnreadToken( token );
 
-////	return a;
-////}
+	return a;
+}
 
 /*
 =================
@@ -686,9 +690,9 @@ idMaterial::ParseExpression
 Returns a register index
 =================
 */
-	ParseExpression(src: idLexer ):number {
-	return this.ParseExpressionPriority( src, TOP_PRIORITY );
-}
+	ParseExpression ( src: idLexer ): number {
+		return this.ParseExpressionPriority( src, TOP_PRIORITY );
+	}
 
 
 /*
@@ -698,11 +702,11 @@ idMaterial::ClearStage
 */
 ClearStage(ss:shaderStage_t ):void {
 	ss.drawStateBits = 0;
-	ss.conditionRegister = GetExpressionConstant( 1 );
+	ss.conditionRegister = this.GetExpressionConstant( 1 );
 	ss.color.registers[0] =
 	ss.color.registers[1] =
 	ss.color.registers[2] =
-	ss.color.registers[3] = GetExpressionConstant( 1 );
+	ss.color.registers[3] = this.GetExpressionConstant( 1 );
 }
 
 /////*
@@ -800,21 +804,21 @@ idMaterial::ParseBlend
 ////		return;
 ////	}
 ////	if ( !token.Icmp( "bumpmap" ) ) {
-////		stage.lighting = SL_BUMP;
+////		stage.lighting = stageLighting_t.SL_BUMP;
 ////		return;
 ////	}
 ////	if ( !token.Icmp( "diffusemap" ) ) {
-////		stage.lighting = SL_DIFFUSE;
+////		stage.lighting = stageLighting_t.SL_DIFFUSE;
 ////		return;
 ////	}
 ////	if ( !token.Icmp( "specularmap" ) ) {
-////		stage.lighting = SL_SPECULAR;
+////		stage.lighting = stageLighting_t.SL_SPECULAR;
 ////		return;
 ////	}
 
 ////	srcBlend = NameToSrcBlendMode( token );
 
-////	MatchToken( src, "," );
+////	this.MatchToken( src, "," );
 ////	if ( !src.ReadToken( &token ) ) {
 ////		return;
 ////	}
@@ -846,7 +850,7 @@ idMaterial::ParseBlend
 ////		newStage.numVertexParms = parm+1;
 ////	}
 
-////	newStage.vertexParms[parm][0] = ParseExpression( src );
+////	newStage.vertexParms[parm][0] = this.ParseExpression( src );
 
 ////	src.ReadTokenOnLine( &token );
 ////	if ( !token[0] || token.Icmp( "," ) ) {
@@ -856,24 +860,24 @@ idMaterial::ParseBlend
 ////		return;
 ////	}
 
-////	newStage.vertexParms[parm][1] = ParseExpression( src );
+////	newStage.vertexParms[parm][1] = this.ParseExpression( src );
 
 ////	src.ReadTokenOnLine( &token );
 ////	if ( !token[0] || token.Icmp( "," ) ) {
-////		newStage.vertexParms[parm][2] = GetExpressionConstant( 0 );
-////		newStage.vertexParms[parm][3] = GetExpressionConstant( 1 );
+////		newStage.vertexParms[parm][2] = this.GetExpressionConstant( 0 );
+////		newStage.vertexParms[parm][3] = this.GetExpressionConstant( 1 );
 ////		return;
 ////	}
 
-////	newStage.vertexParms[parm][2] = ParseExpression( src );
+////	newStage.vertexParms[parm][2] = this.ParseExpression( src );
 
 ////	src.ReadTokenOnLine( &token );
 ////	if ( !token[0] || token.Icmp( "," ) ) {
-////		newStage.vertexParms[parm][3] = GetExpressionConstant( 1 );
+////		newStage.vertexParms[parm][3] = this.GetExpressionConstant( 1 );
 ////		return;
 ////	}
 
-////	newStage.vertexParms[parm][3] = ParseExpression( src );
+////	newStage.vertexParms[parm][3] = this.ParseExpression( src );
 ////}
 
 
@@ -918,11 +922,11 @@ idMaterial::ParseBlend
 ////		src.ReadTokenOnLine( &token );
 
 ////		if ( !token.Icmp( "cubeMap" ) ) {
-////			cubeMap = CF_NATIVE;
+////			cubeMap = cubeFiles_t.CF_NATIVE;
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "cameraCubeMap" ) ) {
-////			cubeMap = CF_CAMERA;
+////			cubeMap = cubeFiles_t.CF_CAMERA;
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "nearest" ) ) {
@@ -946,7 +950,7 @@ idMaterial::ParseBlend
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "alphazeroclamp" ) ) {
-////			trp = TR_CLAMP_TO_ZERO_ALPHA;
+////			trp = textureRepeat_t.TR_CLAMP_TO_ZERO_ALPHA;
 ////			continue;
 ////		}
 ////		if ( !token.Icmp( "forceHighQuality" ) ) {
@@ -996,28 +1000,28 @@ idMaterial::ParseBlend
 
 ////	// multiply the two maticies
 ////	ts.matrix[0][0] = EmitOp(
-////							EmitOp( old[0][0], registers[0][0], OP_TYPE_MULTIPLY ),
-////							EmitOp( old[0][1], registers[1][0], OP_TYPE_MULTIPLY ), OP_TYPE_ADD );
+////							EmitOp( old[0][0], registers[0][0], expOpType_t.OP_TYPE_MULTIPLY ),
+////							EmitOp( old[0][1], registers[1][0], expOpType_t.OP_TYPE_MULTIPLY ), expOpType_t.OP_TYPE_ADD );
 ////	ts.matrix[0][1] = EmitOp(
-////							EmitOp( old[0][0], registers[0][1], OP_TYPE_MULTIPLY ),
-////							EmitOp( old[0][1], registers[1][1], OP_TYPE_MULTIPLY ), OP_TYPE_ADD );
+////							EmitOp( old[0][0], registers[0][1], expOpType_t.OP_TYPE_MULTIPLY ),
+////							EmitOp( old[0][1], registers[1][1], expOpType_t.OP_TYPE_MULTIPLY ), expOpType_t.OP_TYPE_ADD );
 ////	ts.matrix[0][2] = EmitOp( 
 ////							EmitOp(
-////								EmitOp( old[0][0], registers[0][2], OP_TYPE_MULTIPLY ),
-////								EmitOp( old[0][1], registers[1][2], OP_TYPE_MULTIPLY ), OP_TYPE_ADD ),
-////							old[0][2], OP_TYPE_ADD );
+////								EmitOp( old[0][0], registers[0][2], expOpType_t.OP_TYPE_MULTIPLY ),
+////								EmitOp( old[0][1], registers[1][2], expOpType_t.OP_TYPE_MULTIPLY ), expOpType_t.OP_TYPE_ADD ),
+////							old[0][2], expOpType_t.OP_TYPE_ADD );
 
 ////	ts.matrix[1][0] = EmitOp(
-////							EmitOp( old[1][0], registers[0][0], OP_TYPE_MULTIPLY ),
-////							EmitOp( old[1][1], registers[1][0], OP_TYPE_MULTIPLY ), OP_TYPE_ADD );
+////							EmitOp( old[1][0], registers[0][0], expOpType_t.OP_TYPE_MULTIPLY ),
+////							EmitOp( old[1][1], registers[1][0], expOpType_t.OP_TYPE_MULTIPLY ), expOpType_t.OP_TYPE_ADD );
 ////	ts.matrix[1][1] = EmitOp(
-////							EmitOp( old[1][0], registers[0][1], OP_TYPE_MULTIPLY ),
-////							EmitOp( old[1][1], registers[1][1], OP_TYPE_MULTIPLY ), OP_TYPE_ADD );
+////							EmitOp( old[1][0], registers[0][1], expOpType_t.OP_TYPE_MULTIPLY ),
+////							EmitOp( old[1][1], registers[1][1], expOpType_t.OP_TYPE_MULTIPLY ), expOpType_t.OP_TYPE_ADD );
 ////	ts.matrix[1][2] = EmitOp( 
 ////							EmitOp(
-////								EmitOp( old[1][0], registers[0][2], OP_TYPE_MULTIPLY ),
-////								EmitOp( old[1][1], registers[1][2], OP_TYPE_MULTIPLY ), OP_TYPE_ADD ),
-////							old[1][2], OP_TYPE_ADD );
+////								EmitOp( old[1][0], registers[0][2], expOpType_t.OP_TYPE_MULTIPLY ),
+////								EmitOp( old[1][1], registers[1][2], expOpType_t.OP_TYPE_MULTIPLY ), expOpType_t.OP_TYPE_ADD ),
+////							old[1][2], expOpType_t.OP_TYPE_ADD );
 
 ////}
 
@@ -1063,9 +1067,9 @@ An open brace has been parsed
 	allowPicmip = true;
 	cubeMap = cubeFiles_t.CF_2D;
 
-		imageName = "";
+	imageName = "";
 
-		newStage = newShaderStage_t;//new memset( &newStage, 0, sizeof( newStage ) );
+		newStage = new newShaderStage_t();//new memset( &newStage, 0, sizeof( newStage ) );
 
 	ss = /*&*/this.pd.parseStages[this.numStages];
 	ts = /*&*/ss.texture;
@@ -1100,7 +1104,7 @@ An open brace has been parsed
 
 		if (  !token.$.Icmp( "map" ) ) {
 			str = R_ParsePastImageProgram( src ).toString();
-			idStr.Copynz( imageName, str, sizeof( imageName ) );
+			imageName = str;//idStr.Copynz( imageName, str, sizeof( imageName ) );
 			continue;
 		}
 
@@ -1112,7 +1116,7 @@ An open brace has been parsed
 		}
 
 		if (  !token.$.Icmp( "mirrorRenderMap" ) ) {
-			ts.dynamic = DI_MIRROR_RENDER;
+			ts.dynamic = dynamicidImage_t.DI_MIRROR_RENDER;
 			ts.width = src.ParseInt();
 			ts.height = src.ParseInt();
 			ts.texgen = texgen_t.TG_SCREEN;
@@ -1120,7 +1124,7 @@ An open brace has been parsed
 		}
 
 		if (  !token.$.Icmp( "xrayRenderMap" ) ) {
-			ts.dynamic = DI_XRAY_RENDER;
+			ts.dynamic = dynamicidImage_t.DI_XRAY_RENDER;
 			ts.width = src.ParseInt();
 			ts.height = src.ParseInt();
 			ts.texgen = texgen_t.TG_SCREEN;
@@ -1154,8 +1158,9 @@ An open brace has been parsed
 					continue;
 				}
 			}
-			ts.cinematic = idCinematic::Alloc();
-			ts.cinematic.InitFromFile( token.$.c_str(), loop );
+			todoThrow ( );
+			//ts.cinematic = idCinematic::Alloc();
+			//ts.cinematic.InitFromFile( token.$.c_str(), loop );
 			continue;
 		}
 
@@ -1164,22 +1169,23 @@ An open brace has been parsed
 				common.Warning( "missing parameter for 'soundmap' keyword in material '%s'", this.GetName() );
 				continue;
 			}
-			ts.cinematic = new idSndWindow();
-			ts.cinematic.InitFromFile( token.$.c_str(), true );
+			todoThrow();
+			//ts.cinematic = new idSndWindow();
+			//ts.cinematic.InitFromFile( token.$.c_str(), true );
 			continue;
 		}
 
 		if ( !token.$.Icmp( "cubeMap" ) ) {
 			str = R_ParsePastImageProgram( src ).toString();
-			idStr.Copynz( imageName, str, sizeof( imageName ) );
-			cubeMap = CF_NATIVE;
+			imageName = imageName;//idStr.Copynz( imageName, str, sizeof( imageName ) );
+			cubeMap = cubeFiles_t.CF_NATIVE;
 			continue;
 		}
 
 		if ( !token.$.Icmp( "cameraCubeMap" ) ) {
-			str = R_ParsePastImageProgram(src).toString(;
-			idStr.Copynz( imageName, str, sizeof( imageName ) );
-			cubeMap = CF_CAMERA;
+			str = R_ParsePastImageProgram(src).toString();
+			imageName = str;//idStr.Copynz( imageName, str, sizeof( imageName ) );
+			cubeMap = cubeFiles_t.CF_CAMERA;
 			continue;
 		}
 
@@ -1208,11 +1214,11 @@ An open brace has been parsed
 			continue;
 		}
 		if ( !token.$.Icmp( "alphazeroclamp" ) ) {
-			trp = TR_CLAMP_TO_ZERO_ALPHA;
+			trp = textureRepeat_t.TR_CLAMP_TO_ZERO_ALPHA;
 			continue;
 		}
 		if ( !token.$.Icmp( "uncompressed" ) || !token.$.Icmp( "highquality" ) ) {
-			if ( !globalImages.image_ignoreHighQuality.GetInteger() ) {
+			if ( !idImageManager.image_ignoreHighQuality.GetInteger() ) {
 				td = textureDepth_t.TD_HIGH_QUALITY;
 			}
 			continue;
@@ -1226,11 +1232,11 @@ An open brace has been parsed
 			continue;
 		}
 		if ( !token.$.Icmp( "vertexColor" ) ) {
-			ss.vertexColor = SVC_MODULATE;
+			ss.vertexColor = stageVertexColor_t.SVC_MODULATE;
 			continue;
 		}
 		if ( !token.$.Icmp( "inverseVertexColor" ) ) {
-			ss.vertexColor = SVC_INVERSE_MODULATE;
+			ss.vertexColor = stageVertexColor_t.SVC_INVERSE_MODULATE;
 			continue;
 		}
 
@@ -1248,120 +1254,126 @@ An open brace has been parsed
 
 		// texture coordinate generation
 		if ( !token.$.Icmp( "texGen" ) ) {
+			todoThrow();
 			src.ExpectAnyToken( token );
-			if ( !token.$.Icmp( "normal" ) ) {
-				ts.texgen = TG_DIFFUSE_CUBE;
-			} else if ( !token.$.Icmp( "reflect" ) ) {
-				ts.texgen = TG_REFLECT_CUBE;
-			} else if ( !token.$.Icmp( "skybox" ) ) {
-				ts.texgen = TG_SKYBOX_CUBE;
-			} else if ( !token.$.Icmp( "wobbleSky" ) ) {
-				ts.texgen = TG_WOBBLESKY_CUBE;
-				texGenRegisters[0] = ParseExpression( src );
-				texGenRegisters[1] = ParseExpression( src );
-				texGenRegisters[2] = ParseExpression( src );
-			} else {
-				common.Warning( "bad texGen '%s' in material %s", token.$.c_str(), this.GetName() );
-				this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-			}
+			//if ( !token.$.Icmp( "normal" ) ) {
+			//	ts.texgen = TG_DIFFUSE_CUBE;
+			//} else if ( !token.$.Icmp( "reflect" ) ) {
+			//	ts.texgen = TG_REFLECT_CUBE;
+			//} else if ( !token.$.Icmp( "skybox" ) ) {
+			//	ts.texgen = TG_SKYBOX_CUBE;
+			//} else if ( !token.$.Icmp( "wobbleSky" ) ) {
+			//	ts.texgen = TG_WOBBLESKY_CUBE;
+			//	texGenRegisters[0] = this.ParseExpression( src );
+			//	texGenRegisters[1] = this.ParseExpression( src );
+			//	texGenRegisters[2] = this.ParseExpression( src );
+			//} else {
+			//	common.Warning( "bad texGen '%s' in material %s", token.$.c_str(), this.GetName() );
+			//	this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+			//}
 			continue;
 		}
 		if ( !token.$.Icmp( "scroll" ) || !token.$.Icmp( "translate" ) ) {
-			a = ParseExpression( src );
-			MatchToken( src, "," );
-			b = ParseExpression( src );
-			matrix[0][0] = GetExpressionConstant( 1 );
-			matrix[0][1] = GetExpressionConstant( 0 );
-			matrix[0][2] = a;
-			matrix[1][0] = GetExpressionConstant( 0 );
-			matrix[1][1] = GetExpressionConstant( 1 );
-			matrix[1][2] = b;
+			todoThrow();
+			//a = this.ParseExpression( src );
+			//this.MatchToken( src, "," );
+			//b = this.ParseExpression( src );
+			//matrix[0][0] = this.GetExpressionConstant( 1 );
+			//matrix[0][1] = this.GetExpressionConstant( 0 );
+			//matrix[0][2] = a;
+			//matrix[1][0] = this.GetExpressionConstant( 0 );
+			//matrix[1][1] = this.GetExpressionConstant( 1 );
+			//matrix[1][2] = b;
 
-			MultiplyTextureMatrix( ts, matrix );
+			//MultiplyTextureMatrix( ts, matrix );
 			continue;
 		}
 		if ( !token.$.Icmp( "scale" ) ) {
-			a = ParseExpression( src );
-			MatchToken( src, "," );
-			b = ParseExpression( src );
-			// this just scales without a centering
-			matrix[0][0] = a;
-			matrix[0][1] = GetExpressionConstant( 0 );
-			matrix[0][2] = GetExpressionConstant( 0 );
-			matrix[1][0] = GetExpressionConstant( 0 );
-			matrix[1][1] = b;
-			matrix[1][2] = GetExpressionConstant( 0 );
+			todoThrow();
+			//a = this.ParseExpression( src );
+			//this.MatchToken( src, "," );
+			//b = this.ParseExpression( src );
+			//// this just scales without a centering
+			//matrix[0][0] = a;
+			//matrix[0][1] = this.GetExpressionConstant( 0 );
+			//matrix[0][2] = this.GetExpressionConstant( 0 );
+			//matrix[1][0] = this.GetExpressionConstant( 0 );
+			//matrix[1][1] = b;
+			//matrix[1][2] = this.GetExpressionConstant( 0 );
 
-			MultiplyTextureMatrix( ts, matrix );
+			//MultiplyTextureMatrix( ts, matrix );
 			continue;
 		}
-		if ( !token.$.Icmp( "centerScale" ) ) {
-			a = ParseExpression( src );
-			MatchToken( src, "," );
-			b = ParseExpression( src );
-			// this subtracts 0.5, then scales, then adds 0.5
-			matrix[0][0] = a;
-			matrix[0][1] = GetExpressionConstant( 0 );
-			matrix[0][2] = EmitOp( GetExpressionConstant( 0.5 ), EmitOp( GetExpressionConstant( 0.5 ), a, OP_TYPE_MULTIPLY ), OP_TYPE_SUBTRACT );
-			matrix[1][0] = GetExpressionConstant( 0 );
-			matrix[1][1] = b;
-			matrix[1][2] = EmitOp( GetExpressionConstant( 0.5 ), EmitOp( GetExpressionConstant( 0.5 ), b, OP_TYPE_MULTIPLY ), OP_TYPE_SUBTRACT );
+		if (!token.$.Icmp("centerScale")) {
+			todoThrow ( );
+			//a = this.ParseExpression( src );
+			//this.MatchToken( src, "," );
+			//b = this.ParseExpression( src );
+			//// this subtracts 0.5, then scales, then adds 0.5
+			//matrix[0][0] = a;
+			//matrix[0][1] = this.GetExpressionConstant( 0 );
+			//matrix[0][2] = EmitOp( this.GetExpressionConstant( 0.5 ), EmitOp( this.GetExpressionConstant( 0.5 ), a, expOpType_t.OP_TYPE_MULTIPLY ), expOpType_t.OP_TYPE_SUBTRACT );
+			//matrix[1][0] = this.GetExpressionConstant( 0 );
+			//matrix[1][1] = b;
+			//matrix[1][2] = EmitOp( this.GetExpressionConstant( 0.5 ), EmitOp( this.GetExpressionConstant( 0.5 ), b, expOpType_t.OP_TYPE_MULTIPLY ), expOpType_t.OP_TYPE_SUBTRACT );
 
-			MultiplyTextureMatrix( ts, matrix );
+			//MultiplyTextureMatrix( ts, matrix );
 			continue;
 		}
 		if ( !token.$.Icmp( "shear" ) ) {
-			a = ParseExpression( src );
-			MatchToken( src, "," );
-			b = ParseExpression( src );
-			// this subtracts 0.5, then shears, then adds 0.5
-			matrix[0][0] = GetExpressionConstant( 1 );
-			matrix[0][1] = a;
-			matrix[0][2] = EmitOp( GetExpressionConstant( -0.5 ), a, OP_TYPE_MULTIPLY );
-			matrix[1][0] = b;
-			matrix[1][1] = GetExpressionConstant( 1 );
-			matrix[1][2] = EmitOp( GetExpressionConstant( -0.5 ), b, OP_TYPE_MULTIPLY );
+			todoThrow();
+			//a = this.ParseExpression( src );
+			//this.MatchToken( src, "," );
+			//b = this.ParseExpression( src );
+			//// this subtracts 0.5, then shears, then adds 0.5
+			//matrix[0][0] = this.GetExpressionConstant( 1 );
+			//matrix[0][1] = a;
+			//matrix[0][2] = EmitOp( this.GetExpressionConstant( -0.5 ), a, expOpType_t.OP_TYPE_MULTIPLY );
+			//matrix[1][0] = b;
+			//matrix[1][1] = this.GetExpressionConstant( 1 );
+			//matrix[1][2] = EmitOp( this.GetExpressionConstant( -0.5 ), b, expOpType_t.OP_TYPE_MULTIPLY );
 
-			MultiplyTextureMatrix( ts, matrix );
+			//MultiplyTextureMatrix( ts, matrix );
 			continue;
 		}
 		if ( !token.$.Icmp( "rotate" ) ) {
-			var  table: idDeclTable;
-			var /*int		*/sinReg: number, cosReg: number;
+			todoThrow();
+			//var  table: idDeclTable;
+			//var /*int		*/sinReg: number, cosReg: number;
 
-			// in cycles
-			a = ParseExpression( src );
+			//// in cycles
+			//a = this.this.ParseExpression( src );
 
-			table = static_cast<const idDeclTable *>( declManager.FindType( DECL_TABLE, "sinTable", false ) );
-			if ( !table ) {
-				common.Warning( "no sinTable for rotate defined" );
-				this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-				return;
-			}
-			sinReg = EmitOp( table.Index(), a, OP_TYPE_TABLE );
+			//table = static_cast<const idDeclTable *>( declManager.FindType( DECL_TABLE, "sinTable", false ) );
+			//if ( !table ) {
+			//	common.Warning( "no sinTable for rotate defined" );
+			//	this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+			//	return;
+			//}
+			//sinReg = EmitOp( table.Index(), a, expOpType_t.OP_TYPE_TABLE );
 
-			table = static_cast<const idDeclTable *>( declManager.FindType( DECL_TABLE, "cosTable", false ) );
-			if ( !table ) {
-				common.Warning( "no cosTable for rotate defined" );
-				this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-				return;
-			}
-			cosReg = EmitOp( table.Index(), a, OP_TYPE_TABLE );
+			//table = static_cast<const idDeclTable *>( declManager.FindType( DECL_TABLE, "cosTable", false ) );
+			//if ( !table ) {
+			//	common.Warning( "no cosTable for rotate defined" );
+			//	this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+			//	return;
+			//}
+			//cosReg = EmitOp( table.Index(), a, expOpType_t.OP_TYPE_TABLE );
 
-			// this subtracts 0.5, then rotates, then adds 0.5
-			matrix[0][0] = cosReg;
-			matrix[0][1] = EmitOp( GetExpressionConstant( 0 ), sinReg, OP_TYPE_SUBTRACT );
-			matrix[0][2] = EmitOp( EmitOp( EmitOp( GetExpressionConstant( -0.5 ), cosReg, OP_TYPE_MULTIPLY ), 
-										EmitOp( GetExpressionConstant( 0.5 ), sinReg, OP_TYPE_MULTIPLY ), OP_TYPE_ADD ),
-										GetExpressionConstant( 0.5 ), OP_TYPE_ADD );
+			//// this subtracts 0.5, then rotates, then adds 0.5
+			//matrix[0][0] = cosReg;
+			//matrix[0][1] = EmitOp( this.GetExpressionConstant( 0 ), sinReg, expOpType_t.OP_TYPE_SUBTRACT );
+			//matrix[0][2] = EmitOp( EmitOp( EmitOp( this.GetExpressionConstant( -0.5 ), cosReg, expOpType_t.OP_TYPE_MULTIPLY ), 
+			//							EmitOp( this.GetExpressionConstant( 0.5 ), sinReg, expOpType_t.OP_TYPE_MULTIPLY ), expOpType_t.OP_TYPE_ADD ),
+			//							this.GetExpressionConstant( 0.5 ), expOpType_t.OP_TYPE_ADD );
 
-			matrix[1][0] = sinReg;
-			matrix[1][1] = cosReg;
-			matrix[1][2] = EmitOp( EmitOp( EmitOp( GetExpressionConstant( -0.5 ), sinReg, OP_TYPE_MULTIPLY ), 
-										EmitOp( GetExpressionConstant( -0.5 ), cosReg, OP_TYPE_MULTIPLY ), OP_TYPE_ADD ),
-										GetExpressionConstant( 0.5 ), OP_TYPE_ADD );
+			//matrix[1][0] = sinReg;
+			//matrix[1][1] = cosReg;
+			//matrix[1][2] = EmitOp( EmitOp( EmitOp( this.GetExpressionConstant( -0.5 ), sinReg, expOpType_t.OP_TYPE_MULTIPLY ), 
+			//							EmitOp( this.GetExpressionConstant( -0.5 ), cosReg, expOpType_t.OP_TYPE_MULTIPLY ), expOpType_t.OP_TYPE_ADD ),
+			//							this.GetExpressionConstant( 0.5 ), expOpType_t.OP_TYPE_ADD );
 
-			MultiplyTextureMatrix( ts, matrix );
+			//MultiplyTextureMatrix( ts, matrix );
 			continue;
 		}
 
@@ -1392,60 +1404,60 @@ An open brace has been parsed
 		}		
 		if ( !token.$.Icmp( "alphaTest" ) ) {
 			ss.hasAlphaTest = true;
-			ss.alphaTestRegister = ParseExpression( src );
-			this.coverage = MC_PERFORATED;
+			ss.alphaTestRegister = this.ParseExpression( src );
+			this.coverage = materialCoverage_t.MC_PERFORATED;
 			continue;
 		}		
 
 		// shorthand for 2D modulated
 		if ( !token.$.Icmp( "colored" ) ) {
-			ss.color.registers[0] = EXP_REG_PARM0;
-			ss.color.registers[1] = EXP_REG_PARM1;
-			ss.color.registers[2] = EXP_REG_PARM2;
-			ss.color.registers[3] = EXP_REG_PARM3;
+			ss.color.registers[0] = expRegister_t.EXP_REG_PARM0;
+			ss.color.registers[1] = expRegister_t.EXP_REG_PARM1;
+			ss.color.registers[2] = expRegister_t.EXP_REG_PARM2;
+			ss.color.registers[3] = expRegister_t.EXP_REG_PARM3;
 			this.pd.registersAreConstant = false;
 			continue;
 		}
 
 		if ( !token.$.Icmp( "color" ) ) {
-			ss.color.registers[0] = ParseExpression( src );
-			MatchToken( src, "," );
-			ss.color.registers[1] = ParseExpression( src );
-			MatchToken( src, "," );
-			ss.color.registers[2] = ParseExpression( src );
-			MatchToken( src, "," );
-			ss.color.registers[3] = ParseExpression( src );
+			ss.color.registers[0] = this.ParseExpression( src );
+			this.MatchToken( src, "," );
+			ss.color.registers[1] = this.ParseExpression( src );
+			this.MatchToken( src, "," );
+			ss.color.registers[2] = this.ParseExpression( src );
+			this.MatchToken( src, "," );
+			ss.color.registers[3] = this.ParseExpression( src );
 			continue;
 		}
 		if ( !token.$.Icmp( "red" ) ) {
-			ss.color.registers[0] = ParseExpression( src );
+			ss.color.registers[0] = this.ParseExpression( src );
 			continue;
 		}
 		if ( !token.$.Icmp( "green" ) ) {
-			ss.color.registers[1] = ParseExpression( src );
+			ss.color.registers[1] = this.ParseExpression( src );
 			continue;
 		}
 		if ( !token.$.Icmp( "blue" ) ) {
-			ss.color.registers[2] = ParseExpression( src );
+			ss.color.registers[2] = this.ParseExpression( src );
 			continue;
 		}
 		if ( !token.$.Icmp( "alpha" ) ) {
-			ss.color.registers[3] = ParseExpression( src );
+			ss.color.registers[3] = this.ParseExpression( src );
 			continue;
 		}
 		if ( !token.$.Icmp( "rgb" ) ) {
 			ss.color.registers[0] = ss.color.registers[1] = 
-				ss.color.registers[2] = ParseExpression( src );
+				ss.color.registers[2] = this.ParseExpression( src );
 			continue;
 		}
 		if ( !token.$.Icmp( "rgba" ) ) {
 			ss.color.registers[0] = ss.color.registers[1] = 
-				ss.color.registers[2] = ss.color.registers[3] = ParseExpression( src );
+				ss.color.registers[2] = ss.color.registers[3] = this.ParseExpression( src );
 			continue;
 		}
 
 		if ( !token.$.Icmp( "if" ) ) {
-			ss.conditionRegister = ParseExpression( src );
+			ss.conditionRegister = this.ParseExpression( src );
 			continue;
 		}
 		if ( !token.$.Icmp( "program" ) ) {
@@ -1512,9 +1524,10 @@ An open brace has been parsed
 
 
 	// if we are using newStage, allocate a copy of it
-	if ( newStage.fragmentProgram || newStage.vertexProgram ) {
-		ss.newStage = new newShaderStage_t;//(newShaderStage_t *)Mem_Alloc( sizeof( newStage ) );
-		*(ss.newStage) = newStage;
+		if (newStage.fragmentProgram || newStage.vertexProgram) {
+			todoThrow ( );
+		//ss.newStage = new newShaderStage_t;//(newShaderStage_t *)Mem_Alloc( sizeof( newStage ) );
+		//*(ss.newStage) = newStage;
 	}
 
 	// successfully parsed a stage
@@ -1523,13 +1536,13 @@ An open brace has been parsed
 	// select a compressed depth based on what the stage is
 	if ( td == textureDepth_t.TD_DEFAULT ) {
 		switch( ss.lighting ) {
-		case SL_BUMP:
+		case stageLighting_t.SL_BUMP:
 			td = textureDepth_t.TD_BUMP;
 			break;
-		case SL_DIFFUSE:
+		case stageLighting_t.SL_DIFFUSE:
 			td = textureDepth_t.TD_DIFFUSE;
 			break;
-		case SL_SPECULAR:
+		case stageLighting_t.SL_SPECULAR:
 			td = textureDepth_t.TD_SPECULAR;
 			break;
 		default:
@@ -1577,18 +1590,18 @@ idMaterial::ParseDeform
 		//if ( !token.Icmp( "flare" ) ) {
 		//	deform = DFRM_FLARE;
 		//	this.cullType = cullType_t.CT_TWO_SIDED;
-		//	deformRegisters[0] = ParseExpression( src );
+		//	deformRegisters[0] = this.ParseExpression( src );
 		//	this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
 		//	return;
 		//}
 		//if ( !token.Icmp( "expand" ) ) {
 		//	deform = DFRM_EXPAND;
-		//	deformRegisters[0] = ParseExpression( src );
+		//	deformRegisters[0] = this.ParseExpression( src );
 		//	return;
 		//}
 		//if ( !token.Icmp( "move" ) ) {
 		//	deform = DFRM_MOVE;
-		//	deformRegisters[0] = ParseExpression( src );
+		//	deformRegisters[0] = this.ParseExpression( src );
 		//	return;
 		//}
 		//if ( !token.Icmp( "turbulent" ) ) {
@@ -1601,9 +1614,9 @@ idMaterial::ParseDeform
 		//	}
 		//	deformDecl = declManager.FindType( DECL_TABLE, token.c_str(), true );
 
-		//	deformRegisters[0] = ParseExpression( src );
-		//	deformRegisters[1] = ParseExpression( src );
-		//	deformRegisters[2] = ParseExpression( src );
+		//	deformRegisters[0] = this.ParseExpression( src );
+		//	deformRegisters[1] = this.ParseExpression( src );
+		//	deformRegisters[2] = this.ParseExpression( src );
 		//	return;
 		//}
 		//if ( !token.Icmp( "eyeBall" ) ) {
@@ -1660,13 +1673,13 @@ It is valid to have a reflection map and a bump map for bumpy reflection
 ////	bool hasReflection = false;
 
 ////	for ( int i = 0 ; i < numStages ; i++ ) {
-////		if ( this.pd.parseStages[i].lighting == SL_BUMP ) {
+////		if ( this.pd.parseStages[i].lighting == stageLighting_t.SL_BUMP ) {
 ////			hasBump = true;
 ////		}
-////		if ( this.pd.parseStages[i].lighting == SL_DIFFUSE ) {
+////		if ( this.pd.parseStages[i].lighting == stageLighting_t.SL_DIFFUSE ) {
 ////			hasDiffuse = true;
 ////		}
-////		if ( this.pd.parseStages[i].lighting == SL_SPECULAR ) {
+////		if ( this.pd.parseStages[i].lighting == stageLighting_t.SL_SPECULAR ) {
 ////			hasSpecular = true;
 ////		}
 ////		if ( this.pd.parseStages[i].texture.texgen == TG_REFLECT_CUBE ) {
@@ -1720,10 +1733,10 @@ SortInteractionStages(): void {
 ////	for ( int i = 0 ; i < numStages ; i = j ) {
 ////		// find the next bump map
 ////		for ( j = i + 1 ; j < numStages ; j++ ) {
-////			if ( this.pd.parseStages[j].lighting == SL_BUMP ) {
+////			if ( this.pd.parseStages[j].lighting == stageLighting_t.SL_BUMP ) {
 ////				// if the very first stage wasn't a bumpmap,
 ////				// this bumpmap is part of the first group
-////				if ( this.pd.parseStages[i].lighting != SL_BUMP ) {
+////				if ( this.pd.parseStages[i].lighting != stageLighting_t.SL_BUMP ) {
 ////					continue;
 ////				}
 ////				break;
@@ -2174,7 +2187,7 @@ Parses the current material definition and finds all necessary images.
 
 //	// the sorts can make reasonable defaults
 //	if ( sort == materialSort_t.SS_BAD ) {
-//		if ( TestMaterialFlag(materialFlags_t.MF_POLYGONOFFSET) ) {
+//		if ( this.TestMaterialFlag(materialFlags_t.MF_POLYGONOFFSET) ) {
 //			sort = SS_DECAL;
 //		} else if ( this.coverage == materialFlags_t.MC_TRANSLUCENT ) {
 //			sort = SS_MEDIUM;
@@ -2281,7 +2294,7 @@ Parses the current material definition and finds all necessary images.
 //	this.pd = NULL;	// the pointer will be invalid after exiting this function
 
 //	// finish things up
-//	if ( TestMaterialFlag( materialFlags_t.MF_DEFAULTED ) ) {
+//	if ( this.TestMaterialFlag( materialFlags_t.MF_DEFAULTED ) ) {
 //		MakeDefault();
 //		return false;
 //	}
@@ -2319,7 +2332,7 @@ Parses the current material definition and finds all necessary images.
 ////	common.Printf( "\n" );
 ////	for ( i = 0 ; i < this.numOps ; i++ ) {
 ////		const expOp_t *op = &ops[i];
-////		if ( op.opType == OP_TYPE_TABLE ) {
+////		if ( op.opType == expOpType_t.OP_TYPE_TABLE ) {
 ////			common.Printf( "%i = %s[ %i ]\n", op.c, declManager.DeclByIndex( DECL_TABLE, op.a ).GetName(), op.b );
 ////		} else {
 ////			common.Printf( "%i = %i %s %i\n", op.c, op.a, opNames[ op.opType ], op.b );
@@ -2398,13 +2411,13 @@ Parses the current material definition and finds all necessary images.
 ////	op = ops;
 ////	for ( i = 0 ; i < this.numOps ; i++, op++ ) {
 ////		switch( op.opType ) {
-////		case OP_TYPE_ADD:
+////		case expOpType_t.OP_TYPE_ADD:
 ////			registers[op.c] = registers[op.a] + registers[op.b];
 ////			break;
-////		case OP_TYPE_SUBTRACT:
+////		case expOpType_t.OP_TYPE_SUBTRACT:
 ////			registers[op.c] = registers[op.a] - registers[op.b];
 ////			break;
-////		case OP_TYPE_MULTIPLY:
+////		case expOpType_t.OP_TYPE_MULTIPLY:
 ////			registers[op.c] = registers[op.a] * registers[op.b];
 ////			break;
 ////		case OP_TYPE_DIVIDE:
@@ -2415,13 +2428,13 @@ Parses the current material definition and finds all necessary images.
 ////			b = b != 0 ? b : 1;
 ////			registers[op.c] = (int)registers[op.a] % b;
 ////			break;
-////		case OP_TYPE_TABLE:
+////		case expOpType_t.OP_TYPE_TABLE:
 ////			{
 ////				const idDeclTable *table = static_cast<const idDeclTable *>( declManager.DeclByIndex( DECL_TABLE, op.a ) );
 ////				registers[op.c] = table.TableLookup( registers[op.b] );
 ////			}
 ////			break;
-////		case OP_TYPE_SOUND:
+////		case expOpType_t.OP_TYPE_SOUND:
 ////			if ( soundEmitter ) {
 ////				registers[op.c] = soundEmitter.CurrentAmplitude();
 ////			} else {
@@ -2446,10 +2459,10 @@ Parses the current material definition and finds all necessary images.
 ////		case OP_TYPE_NE:
 ////			registers[op.c] = registers[ op.a ] != registers[op.b];
 ////			break;
-////		case OP_TYPE_AND:
+////		case expOpType_t.OP_TYPE_AND:
 ////			registers[op.c] = registers[ op.a ] && registers[op.b];
 ////			break;
-////		case OP_TYPE_OR:
+////		case expOpType_t.OP_TYPE_OR:
 ////			registers[op.c] = registers[ op.a ] || registers[op.b];
 ////			break;
 ////		default:
@@ -2676,7 +2689,7 @@ Parses the current material definition and finds all necessary images.
 ////*/
 ////const shaderStage_t *idMaterial::GetBumpStage( void ) const {
 ////	for ( int i = 0 ; i < this.numStages ; i++ ) {
-////		if ( stages[i].lighting == SL_BUMP ) {
+////		if ( stages[i].lighting == stageLighting_t.SL_BUMP ) {
 ////			return &stages[i];
 ////		}
 ////	}
@@ -2753,7 +2766,7 @@ Parses the current material definition and finds all necessary images.
 
 //						// returns true if the material will generate shadows, not making a
 //						// distinction between global and no-self shadows
-//	bool				SurfaceCastsShadow( void ) const { return TestMaterialFlag( MF_FORCESHADOWS ) || !TestMaterialFlag( MF_NOSHADOWS ); }
+//	bool				SurfaceCastsShadow( void ) const { return this.TestMaterialFlag( MF_FORCESHADOWS ) || !this.TestMaterialFlag( MF_NOSHADOWS ); }
 
 //						// returns true if the material will generate interactions with fog/blend lights
 //						// All non-translucent surfaces receive fog unless they are explicitly noFog
@@ -2829,8 +2842,8 @@ Parses the current material definition and finds all necessary images.
 
 //						// implicitly no-shadows lights (ambients, fogs, etc) will never cast shadows
 //						// but individual light entities can also override this value
-//	bool				LightCastsShadows() const { return TestMaterialFlag( MF_FORCESHADOWS ) ||
-//								( !fogLight && !ambientLight && !blendLight && !TestMaterialFlag( MF_NOSHADOWS ) ); }
+//	bool				LightCastsShadows() const { return this.TestMaterialFlag( MF_FORCESHADOWS ) ||
+//								( !fogLight && !ambientLight && !blendLight && !this.TestMaterialFlag( MF_NOSHADOWS ) ); }
 
 //						// fog lights, blend lights, ambient lights, etc will all have to have interaction
 //						// triangles generated for sides facing away from the light as well as those

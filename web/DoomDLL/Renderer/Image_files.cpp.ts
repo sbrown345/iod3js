@@ -1094,7 +1094,7 @@
 ////	char	fullName[MAX_IMAGE_NAME];
 ////	int		width, height, size = 0;
 
-////	if ( extensions == CF_CAMERA ) {
+////	if ( extensions == cubeFiles_t.CF_CAMERA ) {
 ////		sides = cameraSides;
 ////	} else {
 ////		sides = axisSides;
@@ -1133,7 +1133,7 @@
 ////				*timestamp = thisTime;
 ////			}
 ////		}
-////		if ( pics && extensions == CF_CAMERA ) {
+////		if ( pics && extensions == cubeFiles_t.CF_CAMERA ) {
 ////			// convert from "camera" images to native cube map images
 ////			switch( i ) {
 ////			case 0:	// forward

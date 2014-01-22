@@ -145,8 +145,8 @@ enum expRegister_t {
 };
 
 class expOp_t {
-////	expOpType_t		opType;	
-////	int				a, b, c;
+	opType: expOpType_t		;	
+	/*int				*/a:number;b:number;c:number;
 };
 
 class colorStage_t {
@@ -168,14 +168,14 @@ enum texgen_t {
 };
 
 class textureStage_t {
-//	idCinematic *		cinematic;
+	cinematic: idCinematic;
 	image: idImage;
 	texgen: texgen_t;
 	hasMatrix:boolean;
 //	int					matrix[2][3];	// we only allow a subset of the full projection matrix
 
-//	// dynamic image variables
-//	dynamicidImage_t	dynamic;
+	// dynamic image variables
+	dynamic:dynamicidImage_t	;
 	/*	int				*/	width:number; height:number;
 	/*	int				*/	dynamicFrameCount: number;
 };
@@ -196,19 +196,19 @@ enum stageVertexColor_t {
 	SVC_INVERSE_MODULATE
 };
 
-////static const int	MAX_FRAGMENT_IMAGES = 8;
-////static const int	MAX_VERTEX_PARMS = 4;
+var MAX_FRAGMENT_IMAGES = 8;
+var MAX_VERTEX_PARMS = 4;
 
 class newShaderStage_t {
-////	int					vertexProgram;
-////	int					numVertexParms;
-////	int					vertexParms[MAX_VERTEX_PARMS][4];	// evaluated register indexes
-
-////	int					fragmentProgram;
-////	int					numFragmentProgramImages;
-////	idImage *			fragmentProgramImages[MAX_FRAGMENT_IMAGES];
-
-////	idMegaTexture		*megaTexture;		// handles all the binding and parameter setting 
+	/*int			*/		vertexProgram:number;
+	/*int			*/		numVertexParms:number;
+	/*int			*/		vertexParms: number[][];// [MAX_VERTEX_PARMS][4];	// evaluated register indexes
+	/*				*/
+	/*int			*/		fragmentProgram:number;
+	/*int			*/		numFragmentProgramImages:number;
+	/*idImage *		*/		fragmentProgramImages: idImage[];//[MAX_FRAGMENT_IMAGES];
+	/*				*/
+	///*idMegaTexture	*/	megaTexture: idMegaTexture;		// handles all the binding and parameter setting 
 };
 
 class shaderStage_t {
@@ -400,7 +400,7 @@ enum surfaceFlags_t {
 
 ////						// returns true if the material will generate shadows, not making a
 ////						// distinction between global and no-self shadows
-////	bool				SurfaceCastsShadow( void ) const { return TestMaterialFlag( MF_FORCESHADOWS ) || !TestMaterialFlag( MF_NOSHADOWS ); }
+////	bool				SurfaceCastsShadow( void ) const { return this.TestMaterialFlag( MF_FORCESHADOWS ) || !this.TestMaterialFlag( MF_NOSHADOWS ); }
 
 ////						// returns true if the material will generate interactions with fog/blend lights
 ////						// All non-translucent surfaces receive fog unless they are explicitly noFog
@@ -476,8 +476,8 @@ enum surfaceFlags_t {
 
 ////						// implicitly no-shadows lights (ambients, fogs, etc) will never cast shadows
 ////						// but individual light entities can also override this value
-////	bool				LightCastsShadows() const { return TestMaterialFlag( MF_FORCESHADOWS ) ||
-////								( !fogLight && !ambientLight && !blendLight && !TestMaterialFlag( MF_NOSHADOWS ) ); }
+////	bool				LightCastsShadows() const { return this.TestMaterialFlag( MF_FORCESHADOWS ) ||
+////								( !fogLight && !ambientLight && !blendLight && !this.TestMaterialFlag( MF_NOSHADOWS ) ); }
 
 ////						// fog lights, blend lights, ambient lights, etc will all have to have interaction
 ////						// triangles generated for sides facing away from the light as well as those
