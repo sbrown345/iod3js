@@ -348,33 +348,33 @@ function R_ImageAdd(data1: Uint8Array, /*int */width1: number, /*int */height1: 
 
 
 // we build a canonical token form of the image program here
-var parseBuffer = new Uint8Array( MAX_IMAGE_NAME );
+var parseBuffer = "";
 
-/////*
-////===================
-////AppendToken
-////===================
-////*/
-////static void AppendToken( idToken &token ) {
-////	// add a leading space if not at the beginning
-////	if ( parseBuffer[0] ) {
-////		idStr::Append( parseBuffer, MAX_IMAGE_NAME, " " );
-////	}
-////	idStr::Append( parseBuffer, MAX_IMAGE_NAME, token.c_str() );
-////}
+/*
+===================
+AppendToken
+===================
+*/
+function AppendToken ( token: R<idToken> ): void {
+	// add a leading space if not at the beginning
+	if ( parseBuffer ) {
+		parseBuffer += " ";
+	}
+	parseBuffer += token.$.c_str ( );
+}
 
-/////*
-////===================
-////MatchAndAppendToken
-////===================
-////*/
-////static void MatchAndAppendToken( idLexer &src, const char *match ) {
-////	if ( !src.ExpectTokenString( match ) ) {
-////		return;
-////	}
-////	// a matched token won't need a leading space
-////	idStr::Append( parseBuffer, MAX_IMAGE_NAME, match );
-////}
+/*
+===================
+MatchAndAppendToken
+===================
+*/
+function MatchAndAppendToken(src: idLexer , match:string ) {
+	if ( !src.ExpectTokenString( match ) ) {
+		return;
+	}
+	// a matched token won't need a leading space
+	parseBuffer += match;
+}
 
 /*
 ===================
@@ -392,16 +392,16 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 	var timestamp = new R<number>(0);
 
 	src.ReadToken( token );
-	this.AppendToken( token );
+	AppendToken( token );
 
 	if ( !token.$.Icmp( "heightmap" ) ) {
-		this.MatchAndAppendToken( src, "(" );
+		MatchAndAppendToken( src, "(" );
 
 		if ( !R_ParseImageProgram_r( src, pic, width, height, timestamps, depth ) ) {
 			return false;
 		}
 
-		this.MatchAndAppendToken( src, "," );
+		MatchAndAppendToken( src, "," );
 
 		src.ReadToken( token );
 		this.AppendToken( token );
@@ -415,7 +415,7 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 			}
 		}
 
-		this.MatchAndAppendToken( src, ")" );
+		MatchAndAppendToken( src, ")" );
 		return true;
 	}
 
@@ -423,13 +423,13 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 		var /*byte	**/pic2 = new R<Uint8Array>();
 		var /*int		*/width2 = new R<number>(0), height2 = new R<number>(0);
 
-		this.MatchAndAppendToken( src, "(" );
+		MatchAndAppendToken( src, "(" );
 
 		if ( !R_ParseImageProgram_r( src, pic, width, height, timestamps, depth ) ) {
 			return false;
 		}
 
-		this.MatchAndAppendToken( src, "," );
+		MatchAndAppendToken( src, "," );
 
 		if ( !R_ParseImageProgram_r( src, pic ? /*&*/pic2 : null, width2, height2, timestamps, depth ) ) {
 			if ( pic ) {
@@ -448,12 +448,12 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 			}
 		}
 
-		this.MatchAndAppendToken( src, ")" );
+		MatchAndAppendToken( src, ")" );
 		return true;
 	}
 
 	if ( !token.$.Icmp( "smoothnormals" ) ) {
-		this.MatchAndAppendToken( src, "(" );
+		MatchAndAppendToken( src, "(" );
 
 		if ( !R_ParseImageProgram_r( src, pic, width, height, timestamps, depth ) ) {
 			return false;
@@ -466,7 +466,7 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 			}
 		}
 
-		this.MatchAndAppendToken( src, ")" );
+		MatchAndAppendToken( src, ")" );
 		return true;
 	}
 
@@ -474,13 +474,13 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 		var pic2 = new R<Uint8Array> ( );
 		var /*int		*/width2 = new R<number>(0), height2 = new R<number> ( );
 
-		this.MatchAndAppendToken( src, "(" );
+		MatchAndAppendToken( src, "(" );
 
 		if ( !R_ParseImageProgram_r( src, pic, width, height, timestamps, depth ) ) {
 			return false;
 		}
 
-		this.MatchAndAppendToken( src, "," );
+		MatchAndAppendToken( src, "," );
 
 		if ( !R_ParseImageProgram_r( src, pic ? pic2 : null, width2, height2, timestamps, depth ) ) {
 			if ( pic ) {
@@ -496,7 +496,7 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 			R_StaticFree( pic2 );
 		}
 
-		this.MatchAndAppendToken( src, ")" );
+		MatchAndAppendToken( src, ")" );
 		return true;
 	}
 
@@ -504,12 +504,12 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 		var scale_ = new Float32Array(4);
 		var i: number;
 
-		this.MatchAndAppendToken( src, "(" );
+		MatchAndAppendToken( src, "(" );
 
 		R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
 
 		for ( i = 0 ; i < 4 ; i++ ) {
-			this.MatchAndAppendToken( src, "," );
+			MatchAndAppendToken( src, "," );
 			src.ReadToken( token );
 			this.AppendToken( token );
 			scale_[i] = token.$.GetFloatValue();
@@ -520,12 +520,12 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 			R_ImageScale(pic.$, width.$, height.$, scale_ );
 		}
 
-		this.MatchAndAppendToken( src, ")" );
+		MatchAndAppendToken( src, ")" );
 		return true;
 	}
 
 	if ( !token.$.Icmp( "invertAlpha" ) ) {
-		this.MatchAndAppendToken( src, "(" );
+		MatchAndAppendToken( src, "(" );
 
 		R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
 
@@ -534,12 +534,12 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 			R_InvertAlpha( pic.$, width.$, height.$ );
 		}
 
-		this.MatchAndAppendToken( src, ")" );
+		MatchAndAppendToken( src, ")" );
 		return true;
 	}
 
 	if ( !token.$.Icmp( "invertColor" ) ) {
-		this.MatchAndAppendToken( src, "(" );
+		MatchAndAppendToken( src, "(" );
 
 		R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
 
@@ -548,14 +548,14 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 			R_InvertColor( pic.$, width.$, height.$ );
 		}
 
-		this.MatchAndAppendToken( src, ")" );
+		MatchAndAppendToken( src, ")" );
 		return true;
 	}
 
 	if ( !token.$.Icmp( "makeIntensity" ) ) {
 		var i:number;
 
-		this.MatchAndAppendToken( src, "(" );
+		MatchAndAppendToken( src, "(" );
 
 		R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
 
@@ -570,14 +570,14 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 			}
 		}
 
-		this.MatchAndAppendToken( src, ")" );
+		MatchAndAppendToken( src, ")" );
 		return true;
 	}
 
 	if ( !token.$.Icmp( "makeAlpha" ) ) {
 		var i: number;
 
-		this.MatchAndAppendToken( src, "(" );
+		MatchAndAppendToken( src, "(" );
 
 		R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
 
@@ -593,7 +593,7 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 			}
 		}
 
-		this.MatchAndAppendToken( src, ")" );
+		MatchAndAppendToken( src, ")" );
 		return true;
 	}
 
@@ -632,7 +632,7 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 ////	src.LoadMemory( name, strlen(name), name );
 ////	src.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 
-////	parseBuffer[0] = 0;
+////	parseBuffer = ""4;
 ////	if ( timestamps ) {
 ////		*timestamps = 0;
 ////	}
@@ -647,8 +647,8 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 R_ParsePastImageProgram
 ===================
 */
-function R_ParsePastImageProgram ( src: idLexer ): Uint8Array {
-	parseBuffer[0] = 0;
+function R_ParsePastImageProgram ( src: idLexer ): string {
+	parseBuffer = "";
 	R_ParseImageProgram_r(src, null, null, null, null, null );
 	return parseBuffer;
 }
