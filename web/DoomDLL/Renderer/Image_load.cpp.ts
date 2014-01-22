@@ -1269,65 +1269,67 @@ idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic:Uint8
 ////#endif
 ////}
 
-/////*
-////================
-////ShouldImageBePartialCached
+/*
+================
+ShouldImageBePartialCached
 
-////Returns true if there is a precompressed image, and it is large enough
-////to be worth caching
-////================
-////*/
-////bool idImage::ShouldImageBePartialCached() {
-////	if ( !glConfig.textureCompressionAvailable ) {
-////		return false;
-////	}
+Returns true if there is a precompressed image, and it is large enough
+to be worth caching
+================
+*/
+idImage.prototype.ShouldImageBePartialCached = function ():boolean {
+	if ( !glConfig.textureCompressionAvailable ) {
+		return false;
+	}
 
-////	if ( !globalImages.image_useCache.GetBool() ) {
-////		return false;
-////	}
+	if ( !idImageManager.image_useCache.GetBool() ) {
+		return false;
+	}
 
-////	// the allowDownSize flag does double-duty as don't-partial-load
-////	if ( !allowDownSize ) {
-////		return false;
-////	}
+	// the allowDownSize flag does double-duty as don't-partial-load
+	if ( !this.allowDownSize ) {
+		return false;
+	}
 
-////	if ( globalImages.image_cacheMinK.GetInteger() <= 0 ) {
-////		return false;
-////	}
+	if ( idImageManager.image_cacheMinK.GetInteger() <= 0 ) {
+		return false;
+	}
 
-////	// if we are doing a copyFiles, make sure the original images are referenced
-////	if ( fileSystem.PerformingCopyFiles() ) {
-////		return false;
-////	}
+	// if we are doing a copyFiles, make sure the original images are referenced
+	if ( fileSystem.PerformingCopyFiles() ) {
+		return false;
+	}
 
-////	char	filename[MAX_IMAGE_NAME];
-////	ImageProgramStringToCompressedFileName( imgName, filename );
+	var filename: string;
+	this.ImageProgramStringToCompressedFileName( this.imgName, filename );
 
-////	// get the file timestamp
-////	fileSystem.ReadFile( filename, NULL, &timestamp );
+	// get the file timestamp
+	var $timestamp = new R ( this.timestamp);
+	fileSystem.ReadFile(filename, null, $timestamp);
+	this.timestamp = $timestamp.$;
 
-////	if ( timestamp == FILE_NOT_FOUND_TIMESTAMP ) {
-////		return false;
-////	}
+	if ( this.timestamp == FILE_NOT_FOUND_TIMESTAMP ) {
+		return false;
+	}
 
-////	// open it and get the file size
-////	idFile *f;
+	// open it and get the file size
+	var f:idFile;
 
-////	f = fileSystem.OpenFileRead( filename );
-////	if ( !f ) {
-////		return false;
-////	}
+	f = fileSystem.OpenFileRead( filename );
+	if ( !f ) {
+		return false;
+	}
 
-////	int	len = f.Length();
-////	fileSystem.CloseFile( f );
+	var	len = f.Length();
+	fileSystem.CloseFile( f );
 
-////	if ( len <= globalImages.image_cacheMinK.GetInteger() * 1024 ) {
-////		return false;
-////	}
+	if ( len <= idImageManager.image_cacheMinK.GetInteger() * 1024 ) {
+		return false;
+	}
 
-////	// we do want to do a partial load
-////	return true;
-////}
+	// we do want to do a partial load
+	return true;
+}
 
 /////*
 ////================

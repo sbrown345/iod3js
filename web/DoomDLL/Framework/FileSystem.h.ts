@@ -108,17 +108,17 @@ enum fsMode_t{
 ////	int					length;
 ////	void *				buffer;
 ////} fileDownload_t;
-////
-////typedef struct backgroundDownload_s {
-////	struct backgroundDownload_s	*next;	// set by the fileSystem
-////	dlType_t			opcode;
-////	idFile *			f;
-////	fileDownload_t		file;
-////	urlDownload_t		url;
-////	volatile bool		completed;
-////} backgroundDownload_t;
-////
-////// file list for directory listings
+
+class backgroundDownload_t{
+	//struct backgroundDownload_s	*next;	// set by the fileSystem
+	//dlType_t			opcode;
+	//idFile *			f;
+	//fileDownload_t		file;
+	//urlDownload_t		url;
+	//volatile bool		completed;
+} ;
+
+// file list for directory listings
 class idFileList {
 ////	friend class idFileSystemLocal;
 ////public:

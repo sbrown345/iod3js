@@ -906,19 +906,19 @@ Clear( ):void {
 ////	this.data[ len ] = 0;
 ////}
 
-////ID_INLINE int idStr::Find( const char c, int start, int end ) const {
-////	if ( end == -1 ) {
-////		end = len;
-////	}
-////	return idStr::FindChar( this.data, c, start, end );
-////}
+//ID_INLINE int idStr::Find( const char c, int start, int end ) const {
+//	if ( end == -1 ) {
+//		end = len;
+//	}
+//	return idStr::FindChar( this.data, c, start, end );
+//}
 
-////ID_INLINE int idStr::Find( const char *text, bool casesensitive, int start, int end ) const {
-////	if ( end == -1 ) {
-////		end = len;
-////	}
-////	return idStr::FindText( this.data, text, casesensitive, start, end );
-////}
+Find( text:string, casesensitive = true, /*int */start = 0, /*int */end = -1):number{
+	if ( end == -1 ) {
+		end = this.len;
+	}
+	return idStr.FindText( this.data, text, casesensitive, start, end );
+}
 
 ////ID_INLINE bool idStr::Filter( const char *filter, bool casesensitive ) const {
 ////	return idStr::Filter( filter, this.data, casesensitive );
@@ -1253,40 +1253,40 @@ returns -1 if not found otherwise the index of the char
         return -1;
     }
 
-/////*
-////============
-////idStr::FindText
+/*
+============
+idStr::FindText
 
-////returns -1 if not found otherwise the index of the text
-////============
-////*/
-////int idStr::FindText( const char *str, const char *text, bool casesensitive, int start, int end ) {
-////	int l, i, j;
+returns -1 if not found otherwise the index of the text
+============
+*/
+	static FindText ( str: string, text: string, casesensitive: boolean, /*int */start: number, /*int */end: number ): number {
+		var l: number, i: number, j: number;
 
-////	if ( end == -1 ) {
-////		end = strlen( str );
-////	}
-////	l = end - strlen( text );
-////	for ( i = start; i <= l; i++ ) {
-////		if ( casesensitive ) {
-////			for ( j = 0; text[j]; j++ ) {
-////				if ( str[i+j] != text[j] ) {
-////					break;
-////				}
-////			}
-////		} else {
-////			for ( j = 0; text[j]; j++ ) {
-////				if ( ::toupper( str[i+j] ) != ::toupper( text[j] ) ) {
-////					break;
-////				}
-////			}
-////		}
-////		if ( !text[j] ) {
-////			return i;
-////		}
-////	}
-////	return -1;
-////}
+		if ( end == -1 ) {
+			end = strlen( str );
+		}
+		l = end - strlen( text );
+		for ( i = start; i <= l; i++ ) {
+			if ( casesensitive ) {
+				for ( j = 0; text[j]; j++ ) {
+					if ( str[i + j] != text[j] ) {
+						break;
+					}
+				}
+			} else {
+				for ( j = 0; text[j]; j++ ) {
+					if ( toupper( str[i + j] ) != toupper( text[j] ) ) {
+						break;
+					}
+				}
+			}
+			if ( !text[j] ) {
+				return i;
+			}
+		}
+		return -1;
+	}
 
 /////*
 ////============
@@ -2234,7 +2234,7 @@ static IcmpPath( /*const char **/s1:string, /*const char **/s2:string ):number {
 
 //#if 0
 ////#if !defined( _WIN32 )
-//	idLib::common.Printf( "WARNING: IcmpPath used on a case-sensitive filesystem?\n" );
+//	common.Printf( "WARNING: IcmpPath used on a case-sensitive filesystem?\n" );
 //#endif
     var s1Idx = 0;
     var s2Idx = 0;
@@ -2305,7 +2305,7 @@ static IcmpPath( /*const char **/s1:string, /*const char **/s2:string ):number {
 
 ////#if 0
 //////#if !defined( _WIN32 )
-////	idLib::common.Printf( "WARNING: IcmpPath used on a case-sensitive filesystem?\n" );
+////	common.Printf( "WARNING: IcmpPath used on a case-sensitive filesystem?\n" );
 ////#endif
 
 ////	assert( n >= 0 );
@@ -2377,20 +2377,18 @@ idStr::Copynz
 Safe strncpy that ensures a trailing zero
 =============
 */
-	// USE JS STRING INSTEAD
-	//static Copynz ( /*char **/dest: any, /*const char **/src: any, /*int */destsize: number ): void {
-	//	throw "use js string instead";
-	//	//if ( !src ) {
-	//	//	idLib::common.Warning( "idStr::Copynz: NULL src" );
-	//	//	return;
-	//	//}
-	//	//if ( destsize < 1 ) {
-	//	//	idLib::common.Warning( "idStr::Copynz: destsize < 1" ); 
-	//	//	return;
-	//	//}
-	//	//strncpy( dest, src, destsize-1 );
-	//	//dest[destsize-1] = 0;
-	//}
+	static Copynz ( /*char **/dest: Uint8Array, /*const char **/src: string, /*int */destsize: number ): void {
+		if ( !src ) {
+			common.Warning( "idStr::Copynz: NULL src" );
+			return;
+		}
+		if ( destsize < 1 ) {
+			common.Warning( "idStr::Copynz: destsize < 1" ); 
+			return;
+		}
+		strncpy( dest, src, destsize-1 );
+		dest[destsize-1] = 0;
+	}
 
 /////*
 ////================
@@ -2404,7 +2402,7 @@ Safe strncpy that ensures a trailing zero
 
 ////	l1 = strlen( dest );
 ////	if ( l1 >= size ) {
-////		idLib::common.Error( "idStr::Append: already overflowed" );
+////		common.Error( "idStr::Append: already overflowed" );
 ////	}
 ////	idStr.Copynz( dest + l1, src, size - l1 );
 ////}
@@ -2467,23 +2465,22 @@ Safe strncpy that ensures a trailing zero
 idStr::snPrintf
 ================
 */
-	static snPrintf ( dest: string, /*int */size: number, fmt: string, ...args: any[] ): number {
+	static snPrintf ( dest: Uint8Array, /*int */size: number, fmt: string, ...args: any[] ): number {
 		todoThrow ( );
 		var /*int */len: number;
-		//va_list argptr;
-		//char buffer[32000];	// big, but small enough to fit in PPC stack
 
-		//va_start( argptr, fmt );
-		//len = vsprintf( buffer, fmt, argptr );
-		//va_end( argptr );
+		var buffer = vsprintf( fmt, args );
+		len = buffer.length;
+		
 		//if ( len >= sizeof( buffer ) ) {
-		//	idLib::common.Error( "idStr::snPrintf: overflowed buffer" );
+		//	common.Error( "idStr::snPrintf: overflowed buffer" );
 		//}
 		//if ( len >= size ) {
-		//	idLib::common.Warning( "idStr::snPrintf: overflow of %i in %i\n", len, size );
+		//	common.Warning( "idStr::snPrintf: overflow of %i in %i\n", len, size );
 		//	len = size;
 		//}
-		//idStr.Copynz( dest, buffer, size );
+
+		idStr.Copynz( dest, buffer, size );
 		return len;
 	}
 
@@ -2658,7 +2655,7 @@ idStr::snPrintf
 ////*/
 ////void idStr::ShowMemoryUsage_f( const idCmdArgs &args ) {
 ////#ifdef USE_STRING_DATA_ALLOCATOR
-////	idLib::common.Printf( "%6d KB string memory (%d KB free in %d blocks, %d empty base blocks)\n",
+////	common.Printf( "%6d KB string memory (%d KB free in %d blocks, %d empty base blocks)\n",
 ////		stringDataAllocator.GetBaseBlockMemory() >> 10, stringDataAllocator.GetFreeBlockMemory() >> 10,
 ////			stringDataAllocator.GetNumFreeBlocks(), stringDataAllocator.GetNumEmptyBaseBlocks() );
 ////#endif

@@ -739,7 +739,7 @@ GL_CheckErrors():void {
 				s = "GL_OUT_OF_MEMORY";
 				break;
 			default:
-				idStr.snPrintf( s, sizeof(s), "%i", err);
+				s = err.toString ( );//idStr.snPrintf( s, sizeof(s), "%i", err);
 				break;
 		}
 

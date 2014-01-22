@@ -1,12 +1,47 @@
 var NULL: number = 0; //var NULL:any = null;
 
 
-function strlen ( str: string ): number {
-    return str.length;
+function strlen ( str: string ): number;
+function strlen ( str: Uint8Array ): number;
+function strlen ( str: any ): number {
+	return str.length;
+}
+
+function strcpy(destination: Uint8Array, source: string): Uint8Array {
+	//assert.isType(Uint8Array, destination).isString(source);
+
+	var i: number;
+	for (i = 0; i < source.length && source.charCodeAt(i); i++) {
+		destination[i] = source.charCodeAt(i);
+	}
+
+	destination[i] = 0; // because the js string doesn't have a final 0
+
+	return destination;
+}
+
+function strncpy(destination: Uint8Array, source: string, numChars: number): Uint8Array {
+	//assert.isType(Uint8Array, destination).isString(source);
+
+	for (var i = 0; i < source.length && i < numChars; i++) {
+		destination[i] = source.charCodeAt(i);
+	}
+
+	destination[i] = 0;
+
+	return destination;
 }
 
 function isdigit ( c: string ): number {
     return ( c >= "0" && c <= "9" ) ? 1 : 0;
+}
+
+function tolower(s: string): string {
+	return s.toLowerCase();
+}
+
+function toupper(s: string): string {
+	return s.toUpperCase();
 }
 
 function memcpy(destination: ArrayBufferView, source: ArrayBufferView, count: number): void {

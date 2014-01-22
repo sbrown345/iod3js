@@ -229,39 +229,39 @@ GenerateCubeImage( /*const byte *pic[6]*/pic:Uint8Array[], /*int*/ size: number,
 	// data commonly accessed is grouped here
 	static TEXTURE_NOT_LOADED:number = -1;
 /*	GLuint				*/texnum:number;					// gl texture binding, will be TEXTURE_NOT_LOADED if not loaded
-//	textureType_t		type;
-//	int					frameUsed;				// for texture usage in frame statistics
-//	int					bindCount;				// incremented each bind
+	type: textureType_t;
+	/*	int					*/frameUsed: number;				// for texture usage in frame statistics
+/*	int					*/bindCount:number;			// incremented each bind
 
-//	// background loading information
-//	idImage				*partialImage;			// shrunken, space-saving version
-//	bool				isPartialImage;			// true if this is pointed to by another image
-//	bool				backgroundLoadInProgress;	// true if another thread is reading the complete d3t file
-//	backgroundDownload_t	bgl;
-//	idImage *			bglNext;				// linked from tr.backgroundImageLoads
+	// background loading information
+	partialImage: idImage	;			// shrunken, space-saving version
+	isPartialImage:boolean;			// true if this is pointed to by another image
+	backgroundLoadInProgress:boolean;	// true if another thread is reading the complete d3t file
+	bgl:backgroundDownload_t;
+	bglNext: idImage;				// linked from tr.backgroundImageLoads
 
 //	// parameters that define this image
 	imgName:idStr;								// game path, including extension (except for cube maps), may be an image program
 	generatorFunction:(image:idImage)=> void;	// NULL for files
-//	bool				allowDownSize;			// this also doubles as a don't-partially-load flag
-//	textureFilter_t		filter;
-//	textureRepeat_t		repeat;
-//	textureDepth_t		depth;
-//	cubeFiles_t			cubeFiles;				// determines the naming and flipping conventions for the six images
+	allowDownSize:boolean;			// this also doubles as a don't-partially-load flag
+	filter: textureFilter_t;
+	repeat: textureRepeat_t;
+	depth: textureDepth_t;
+	cubeFiles: cubeFiles_t;				// determines the naming and flipping conventions for the six images
 
     referencedOutsideLevelLoad:boolean;
     levelLoadReferenced:boolean;	            // for determining if it needs to be purged
     precompressedFile:boolean;		            // true when it was loaded from a .d3t file
     defaulted:boolean;				            // true if the default image was generated because a file couldn't be loaded
-//	ID_TIME_T				timestamp;				// the most recent of all images used in creation, for reloadImages command
+/*	ID_TIME_T			*/	timestamp:number;				// the most recent of all images used in creation, for reloadImages command
 
-//	int					imageHash;				// for identical-image checking
+	/*	int					*/imageHash: number;				// for identical-image checking
 
-//	int					classification;			// just for resource profiling
+	/*	int					*/classification: number;			// just for resource profiling
 
-//	// data for listImages
-//	int					uploadWidth, uploadHeight, uploadDepth;	// after power of two, downsample, and MAX_TEXTURE_SIZE
-//	int					internalFormat;
+	// data for listImages
+/*	int					*/uploadWidth:number; uploadHeight:number; uploadDepth: number;	// after power of two, downsample, and MAX_TEXTURE_SIZE
+/*int					*/internalFormat:number;
 
 //	idImage 			*cacheUsagePrev, *cacheUsageNext;	// for dynamic cache purging of old images
 

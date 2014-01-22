@@ -1259,7 +1259,7 @@ An open brace has been parsed
 			//if ( !token.$.Icmp( "normal" ) ) {
 			//	ts.texgen = TG_DIFFUSE_CUBE;
 			//} else if ( !token.$.Icmp( "reflect" ) ) {
-			//	ts.texgen = TG_REFLECT_CUBE;
+			//	ts.texgen = texgen_t.TG_REFLECT_CUBE;
 			//} else if ( !token.$.Icmp( "skybox" ) ) {
 			//	ts.texgen = TG_SKYBOX_CUBE;
 			//} else if ( !token.$.Icmp( "wobbleSky" ) ) {
@@ -1663,54 +1663,54 @@ It is valid to have either a diffuse or specular without the other.
 It is valid to have a reflection map and a bump map for bumpy reflection
 ==============
 */
-	AddImplicitStages(trpDefault: textureRepeat_t = textureRepeat_t.TR_REPEAT  ): void {
-		todoThrow ( );
-////	char	buffer[1024];
-////	idLexer		newSrc;
-////	bool hasDiffuse = false;
-////	bool hasSpecular = false;
-////	bool hasBump = false;
-////	bool hasReflection = false;
+	AddImplicitStages ( trpDefault: textureRepeat_t = textureRepeat_t.TR_REPEAT ): void {
 
-////	for ( int i = 0 ; i < numStages ; i++ ) {
-////		if ( this.pd.parseStages[i].lighting == stageLighting_t.SL_BUMP ) {
-////			hasBump = true;
-////		}
-////		if ( this.pd.parseStages[i].lighting == stageLighting_t.SL_DIFFUSE ) {
-////			hasDiffuse = true;
-////		}
-////		if ( this.pd.parseStages[i].lighting == stageLighting_t.SL_SPECULAR ) {
-////			hasSpecular = true;
-////		}
-////		if ( this.pd.parseStages[i].texture.texgen == TG_REFLECT_CUBE ) {
-////			hasReflection = true;
-////		}
-////	}
+		var buffer = new Uint8Array( 1024 );
+		var newSrc = new idLexer;
+		var hasDiffuse = false;
+		var hasSpecular = false;
+		var hasBump = false;
+		var hasReflection = false;
 
-////	// if it doesn't have an interaction at all, don't add anything
-////	if ( !hasBump && !hasDiffuse && !hasSpecular ) {
-////		return;
-////	}
+		for ( var i = 0; i < this.numStages; i++ ) {
+			if ( this.pd.parseStages[i].lighting == stageLighting_t.SL_BUMP ) {
+				hasBump = true;
+			}
+			if ( this.pd.parseStages[i].lighting == stageLighting_t.SL_DIFFUSE ) {
+				hasDiffuse = true;
+			}
+			if ( this.pd.parseStages[i].lighting == stageLighting_t.SL_SPECULAR ) {
+				hasSpecular = true;
+			}
+			if ( this.pd.parseStages[i].texture.texgen == texgen_t.TG_REFLECT_CUBE ) {
+				hasReflection = true;
+			}
+		}
 
-////	if ( numStages == MAX_SHADER_STAGES ) {
-////		return;
-////	}
+		// if it doesn't have an interaction at all, don't add anything
+		if ( !hasBump && !hasDiffuse && !hasSpecular ) {
+			return;
+		}
 
-////	if ( !hasBump ) {
-////		idStr::snPrintf( buffer, sizeof( buffer ), "blend bumpmap\nmap _flat\n}\n" );
-////		newSrc.LoadMemory( buffer, strlen(buffer), "bumpmap" );
-////		newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
-////		ParseStage( newSrc, trpDefault );
-////		newSrc.FreeSource();
-////	}
+		if ( this.numStages == MAX_SHADER_STAGES ) {
+			return;
+		}
 
-////	if ( !hasDiffuse && !hasSpecular && !hasReflection ) {
-////		idStr::snPrintf( buffer, sizeof( buffer ), "blend diffusemap\nmap _white\n}\n" );
-////		newSrc.LoadMemory( buffer, strlen(buffer), "diffusemap" );
-////		newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
-////		ParseStage( newSrc, trpDefault );
-////		newSrc.FreeSource();
-////	}
+		if ( !hasBump ) {
+			idStr.snPrintf( buffer, sizeof( buffer ), "blend bumpmap\nmap _flat\n}\n" );
+			newSrc.LoadMemory( buffer.toString(), strlen( buffer ), "bumpmap" );
+			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
+			this.ParseStage( newSrc, trpDefault );
+			newSrc.FreeSource ( );
+		}
+
+		if ( !hasDiffuse && !hasSpecular && !hasReflection ) {
+			idStr.snPrintf( buffer, sizeof( buffer ), "blend diffusemap\nmap _white\n}\n" );
+			newSrc.LoadMemory(buffer.toString(), strlen( buffer ), "diffusemap" );
+			newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
+			this.ParseStage( newSrc, trpDefault );
+			newSrc.FreeSource ( );
+		}
 	}
 
 /*
@@ -1726,37 +1726,36 @@ ignored during interactions, and all the interaction
 stages are ignored during ambient drawing.
 ===============
 */
-SortInteractionStages(): void {
-	todoThrow ( );
-////	int		j;
+	SortInteractionStages ( ): void {
+		var /*int		*/j: number;
 
-////	for ( int i = 0 ; i < numStages ; i = j ) {
-////		// find the next bump map
-////		for ( j = i + 1 ; j < numStages ; j++ ) {
-////			if ( this.pd.parseStages[j].lighting == stageLighting_t.SL_BUMP ) {
-////				// if the very first stage wasn't a bumpmap,
-////				// this bumpmap is part of the first group
-////				if ( this.pd.parseStages[i].lighting != stageLighting_t.SL_BUMP ) {
-////					continue;
-////				}
-////				break;
-////			}
-////		}
+		for ( var i = 0; i < this.numStages; i = j ) {
+			// find the next bump map
+			for ( j = i + 1; j < this.numStages; j++ ) {
+				if ( this.pd.parseStages[j].lighting == stageLighting_t.SL_BUMP ) {
+					// if the very first stage wasn't a bumpmap,
+					// this bumpmap is part of the first group
+					if ( this.pd.parseStages[i].lighting != stageLighting_t.SL_BUMP ) {
+						continue;
+					}
+					break;
+				}
+			}
 
-////		// bubble sort everything bump / diffuse / specular
-////		for ( int l = 1 ; l < j-i ; l++ ) {
-////			for ( int k = i ; k < j-l ; k++ ) {
-////				if ( this.pd.parseStages[k].lighting > this.pd.parseStages[k+1].lighting ) {
-////					shaderStage_t	temp;
+			// bubble sort everything bump / diffuse / specular
+			for ( var l = 1; l < j - i; l++ ) {
+				for ( var k = i; k < j - l; k++ ) {
+					if ( this.pd.parseStages[k].lighting > this.pd.parseStages[k + 1].lighting ) {
+						var temp: shaderStage_t;
 
-////					temp = this.pd.parseStages[k];
-////					this.pd.parseStages[k] = this.pd.parseStages[k+1];
-////					this.pd.parseStages[k+1] = temp;
-////				}
-////			}
-////		}
-////	}
-}
+						temp = this.pd.parseStages[k];
+						this.pd.parseStages[k] = this.pd.parseStages[k + 1];
+						this.pd.parseStages[k + 1] = temp;
+					}
+				}
+			}
+		}
+	}
 
 /*
 =================
@@ -1991,7 +1990,7 @@ If there is any error during parsing, defaultShader will be set.
 			// diffusemap for stage shortcut
 			else if ( !token.$.Icmp( "diffusemap" ) ) {
 				str = R_ParsePastImageProgram( src ).toString ( );
-				idStr.snPrintf( buffer, sizeof( buffer ), "blend diffusemap\nmap %s\n}\n", str );
+				buffer = sprintf("blend diffusemap\nmap %s\n}\n", str);//idStr.snPrintf( buffer, sizeof( buffer ), "blend diffusemap\nmap %s\n}\n", str );
 				newSrc.LoadMemory( buffer, strlen( buffer ), "diffusemap" );
 				newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 				this.ParseStage( newSrc, trpDefault );
@@ -2001,7 +2000,7 @@ If there is any error during parsing, defaultShader will be set.
 			// specularmap for stage shortcut
 			else if ( !token.$.Icmp( "specularmap" ) ) {
 				str = R_ParsePastImageProgram( src ).toString ( );
-				idStr.snPrintf( buffer, sizeof( buffer ), "blend specularmap\nmap %s\n}\n", str );
+				buffer = sprintf( "blend specularmap\nmap %s\n}\n", str );//idStr.snPrintf( buffer, sizeof( buffer ), "blend specularmap\nmap %s\n}\n", str );
 				newSrc.LoadMemory( buffer, strlen( buffer ), "specularmap" );
 				newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 				this.ParseStage( newSrc, trpDefault );
@@ -2011,7 +2010,7 @@ If there is any error during parsing, defaultShader will be set.
 			// normalmap for stage shortcut
 			else if ( !token.$.Icmp( "bumpmap" ) ) {
 				str = R_ParsePastImageProgram( src ).toString ( );
-				idStr.snPrintf( buffer, sizeof( buffer ), "blend bumpmap\nmap %s\n}\n", str );
+				buffer = sprintf( "blend bumpmap\nmap %s\n}\n", str );//idStr.snPrintf( buffer, sizeof( buffer ), "blend bumpmap\nmap %s\n}\n", str );
 				newSrc.LoadMemory( buffer, strlen( buffer ), "bumpmap" );
 				newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 				this.ParseStage( newSrc, trpDefault );

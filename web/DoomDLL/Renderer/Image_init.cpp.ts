@@ -1452,145 +1452,142 @@ Loading of the image may be deferred for dynamic loading.
 ==============
 */
 idImageManager.prototype.ImageFromFile = function ( _name: string, filter: textureFilter_t, allowDownSize: boolean,
-	repeat: textureRepeat_t, depth: textureDepth_t, cubeMapL: cubeFiles_t = cubeFiles_t.CF_2D): idImage {
-	debugger;
-	throw "todo";
+	repeat: textureRepeat_t, depth: textureDepth_t, cubeMapL: cubeFiles_t = cubeFiles_t.CF_2D ): idImage {
+
 	var name: idStr;
 	var image: idImage;
-	var /*int */hash:number;
+	var /*int */hash: number;
 
-////	if ( !_name || !_name[0] || idStr::Icmp( _name, "default" ) == 0 || idStr::Icmp( _name, "_default" ) == 0 ) {
-////		declManager.MediaPrint( "DEFAULTED\n" );
-////		return globalImages.defaultImage;
-////	}
+	if ( !_name || !_name[0] || idStr.Icmp( _name, "default" ) == 0 || idStr.Icmp( _name, "_default" ) == 0 ) {
+		declManager.MediaPrint( "DEFAULTED\n" );
+		return globalImages.defaultImage;
+	}
+	// strip any .tga file extensions from anywhere in the _name, including image program parameters
+	name = new idStr( _name );
+	name.Replace( ".tga", "" );
+	name.BackSlashesToSlashes ( );
 
-////	// strip any .tga file extensions from anywhere in the _name, including image program parameters
-////	name = _name;
-////	name.Replace( ".tga", "" );
-////	name.BackSlashesToSlashes();
+	//
+	// see if the image is already loaded, unless we
+	// are in a reloadImages call
+	//
+	hash = name.FileNameHash ( );
+	for ( image = this.imageHashTable[hash]; image; image = image.hashNext ) {
+		if ( name.Icmp( image.imgName ) == 0 ) {
+			// the built in's, like _white and _flat always match the other options
+			if ( name[0] == '_' ) {
+				return image;
+			}
+			if ( image.cubeFiles != this.cubeMap ) {
+				common.Error( "Image '%s' has been referenced with conflicting cube map states", _name );
+			}
 
-////	//
-////	// see if the image is already loaded, unless we
-////	// are in a reloadImages call
-////	//
-////	hash = name.FileNameHash();
-////	for ( image = imageHashTable[hash]; image; image = image.hashNext ) {
-////		if ( name.Icmp( image.imgName ) == 0 ) {
-////			// the built in's, like _white and _flat always match the other options
-////			if ( name[0] == '_' ) {
-////				return image;
-////			}
-////			if ( image.cubeFiles != cubeMap ) {
-////				common.Error( "Image '%s' has been referenced with conflicting cube map states", _name );
-////			}
+			if ( image.filter != filter || image.repeat != repeat ) {
+				// we might want to have the system reset these parameters on every bind and
+				// share the image data
+				continue;
+			}
 
-////			if ( image.filter != filter || image.repeat != repeat ) {
-////				// we might want to have the system reset these parameters on every bind and
-////				// share the image data
-////				continue;
-////			}
+			if ( image.allowDownSize == allowDownSize && image.depth == depth ) {
+				// note that it is used this level load
+				image.levelLoadReferenced = true;
+				if ( image.partialImage != null ) {
+					image.partialImage.levelLoadReferenced = true;
+				}
+				return image;
+			}
 
-////			if ( image.allowDownSize == allowDownSize && image.depth == depth ) {
-////				// note that it is used this level load
-////				image.levelLoadReferenced = true;
-////				if ( image.partialImage != NULL ) {
-////					image.partialImage.levelLoadReferenced = true;
-////				}
-////				return image;
-////			}
+			// the same image is being requested, but with a different allowDownSize or depth
+			// so pick the highest of the two and reload the old image with those parameters
+			if ( !image.allowDownSize ) {
+				allowDownSize = false;
+			}
+			if ( image.depth > depth ) {
+				depth = image.depth;
+			}
+			if ( image.allowDownSize == allowDownSize && image.depth == depth ) {
+				// the already created one is already the highest quality
+				image.levelLoadReferenced = true;
+				if ( image.partialImage != null ) {
+					image.partialImage.levelLoadReferenced = true;
+				}
+				return image;
+			}
 
-////			// the same image is being requested, but with a different allowDownSize or depth
-////			// so pick the highest of the two and reload the old image with those parameters
-////			if ( !image.allowDownSize ) {
-////				allowDownSize = false;
-////			}
-////			if ( image.depth > depth ) {
-////				depth = image.depth;
-////			}
-////			if ( image.allowDownSize == allowDownSize && image.depth == depth ) {
-////				// the already created one is already the highest quality
-////				image.levelLoadReferenced = true;
-////				if ( image.partialImage != NULL ) {
-////					image.partialImage.levelLoadReferenced = true;
-////				}
-////				return image;
-////			}
+			image.allowDownSize = allowDownSize;
+			image.depth = depth;
+			image.levelLoadReferenced = true;
+			if ( image.partialImage != null ) {
+				image.partialImage.levelLoadReferenced = true;
+			}
+			if ( this.image_preload.GetBool ( ) && !this.insideLevelLoad ) {
+				image.referencedOutsideLevelLoad = true;
+				image.ActuallyLoadImage( true, false ); // check for precompressed, load is from front end
+				declManager.MediaPrint( "%ix%i %s (reload for mixed referneces)\n", image.uploadWidth, image.uploadHeight, image.imgName.c_str ( ) );
+			}
+			return image;
+		}
+	}
+	//
+	// create a new image
+	//
+	image = this.AllocImage( name.data );
 
-////			image.allowDownSize = allowDownSize;
-////			image.depth = depth;
-////			image.levelLoadReferenced = true;
-////			if ( image.partialImage != NULL ) {
-////				image.partialImage.levelLoadReferenced = true;
-////			}
-////			if ( image_preload.GetBool() && !insideLevelLoad ) {
-////				image.referencedOutsideLevelLoad = true;
-////				image.ActuallyLoadImage( true, false );	// check for precompressed, load is from front end
-////				declManager.MediaPrint( "%ix%i %s (reload for mixed referneces)\n", image.uploadWidth, image.uploadHeight, image.imgName.c_str() );
-////			}
-////			return image;
-////		}
-////	}
+	// HACK: to allow keep fonts from being mip'd, as new ones will be introduced with localization
+	// this keeps us from having to make a material for each font tga
+	if ( name.Find( "fontImage_" ) >= 0 ) {
+		allowDownSize = false;
+	}
 
-////	//
-////	// create a new image
-////	//
-////	image = AllocImage( name );
+	image.allowDownSize = allowDownSize;
+	image.repeat = repeat;
+	image.depth = depth;
+	image.type = textureType_t.TT_2D;
+	image.cubeFiles = this.cubeMap;
+	image.filter = filter;
 
-////	// HACK: to allow keep fonts from being mip'd, as new ones will be introduced with localization
-////	// this keeps us from having to make a material for each font tga
-////	if ( name.Find( "fontImage_") >= 0 ) {
-////		allowDownSize = false;
-////	}
+	image.levelLoadReferenced = true;
 
-////	image.allowDownSize = allowDownSize;
-////	image.repeat = repeat;
-////	image.depth = depth;
-////	image.type = TT_2D;
-////	image.cubeFiles = cubeMap;
-////	image.filter = filter;
+	// also create a shrunken version if we are going to dynamically cache the full size image
+	if ( image.ShouldImageBePartialCached ( ) ) {
+		// if we only loaded part of the file, create a new idImage for the shrunken version
+		image.partialImage = new idImage;
 
-////	image.levelLoadReferenced = true;
+		image.partialImage.allowDownSize = allowDownSize;
+		image.partialImage.repeat = repeat;
+		image.partialImage.depth = depth;
+		image.partialImage.type = textureType_t.TT_2D;
+		image.partialImage.cubeFiles = this.cubeMap;
+		image.partialImage.filter = filter;
 
-////	// also create a shrunken version if we are going to dynamically cache the full size image
-////	if ( image.ShouldImageBePartialCached() ) {
-////		// if we only loaded part of the file, create a new idImage for the shrunken version
-////		image.partialImage = new idImage;
+		image.partialImage.levelLoadReferenced = true;
 
-////		image.partialImage.allowDownSize = allowDownSize;
-////		image.partialImage.repeat = repeat;
-////		image.partialImage.depth = depth;
-////		image.partialImage.type = TT_2D;
-////		image.partialImage.cubeFiles = cubeMap;
-////		image.partialImage.filter = filter;
+		// we don't bother hooking this into the hash table for lookup, but we do add it to the manager
+		// list for listImages
+		globalImages.images.Append( image.partialImage );
+		image.partialImage.imgName = image.imgName;
+		image.partialImage.isPartialImage = true;
 
-////		image.partialImage.levelLoadReferenced = true;
+		// let the background file loader know that we can load
+		image.precompressedFile = true;
 
-////		// we don't bother hooking this into the hash table for lookup, but we do add it to the manager
-////		// list for listImages
-////		globalImages.images.Append( image.partialImage );
-////		image.partialImage.imgName = image.imgName;
-////		image.partialImage.isPartialImage = true;
+		if ( this.image_preload.GetBool ( ) && !this.insideLevelLoad ) {
+			image.partialImage.ActuallyLoadImage( true, false ); // check for precompressed, load is from front end
+			declManager.MediaPrint( "%ix%i %s\n", image.partialImage.uploadWidth, image.partialImage.uploadHeight, image.imgName.c_str ( ) );
+		} else {
+			declManager.MediaPrint( "%s\n", image.imgName.c_str ( ) );
+		}
+		return image;
+	}
 
-////		// let the background file loader know that we can load
-////		image.precompressedFile = true;
-
-////		if ( image_preload.GetBool() && !insideLevelLoad ) {
-////			image.partialImage.ActuallyLoadImage( true, false );	// check for precompressed, load is from front end
-////			declManager.MediaPrint( "%ix%i %s\n", image.partialImage.uploadWidth, image.partialImage.uploadHeight, image.imgName.c_str() );
-////		} else {
-////			declManager.MediaPrint( "%s\n", image.imgName.c_str() );
-////		}
-////		return image;
-////	}
-
-////	// load it if we aren't in a level preload
-////	if ( image_preload.GetBool() && !insideLevelLoad ) {
-////		image.referencedOutsideLevelLoad = true;
-////		image.ActuallyLoadImage( true, false );	// check for precompressed, load is from front end
-////		declManager.MediaPrint( "%ix%i %s\n", image.uploadWidth, image.uploadHeight, image.imgName.c_str() );
-////	} else {
-////		declManager.MediaPrint( "%s\n", image.imgName.c_str() );
-////	}
+	// load it if we aren't in a level preload
+	if ( this.image_preload.GetBool ( ) && !this.insideLevelLoad ) {
+		image.referencedOutsideLevelLoad = true;
+		image.ActuallyLoadImage( true, false ); // check for precompressed, load is from front end
+		declManager.MediaPrint( "%ix%i %s\n", image.uploadWidth, image.uploadHeight, image.imgName.c_str ( ) );
+	} else {
+		declManager.MediaPrint( "%s\n", image.imgName.c_str ( ) );
+	}
 
 	return image;
 };
@@ -1619,7 +1616,7 @@ idImageManager.prototype.ImageFromFile = function ( _name: string, filter: textu
 ////	// look in loaded images
 ////	//
 ////	hash = name.FileNameHash();
-////	for ( image = imageHashTable[hash]; image; image = image.hashNext ) {
+////	for ( image = this.imageHashTable[hash]; image; image = image.hashNext ) {
 ////		if ( name.Icmp( image.imgName ) == 0 ) {
 ////			return image;
 ////		}

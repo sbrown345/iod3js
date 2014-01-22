@@ -312,17 +312,22 @@ class R<T> {
 }
 
 interface String {
-  toUint8Array: () => Uint8Array;
+  toUint8Array: (destination?:Uint8Array) => Uint8Array;
   endsWith(str:string):boolean;
 }
 
-String.prototype.toUint8Array = function ( ): Uint8Array {
-    var array = new Uint8Array( this.length );
-    for ( var i = 0; i < this.length; i++ ) {
-        array[i] = this.charCodeAt( i );
-    }
+String.prototype.toUint8Array = function ( destination?: Uint8Array ): Uint8Array {
+	var array = destination || new Uint8Array( this.length );
+	var i = 0;
+	for ( ; i < this.length; i++ ) {
+		array[i] = this.charCodeAt( i );
+	}
 
-    return array;
+	//if ( array.length > this.length ) {
+	//	array[i+1] = 0;
+	//}
+
+	return array;
 };
 
 String.prototype.endsWith = function ( suffix ) {
