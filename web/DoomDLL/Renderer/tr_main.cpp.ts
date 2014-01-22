@@ -333,7 +333,7 @@
 R_StaticFree
 =================
 */
-function R_StaticFree( /*void **/data:Uint8Array ):void {
+function R_StaticFree( /*void **/data:any ):void {
 	tr.pc.c_free++;
     Mem_Free( data );
 }

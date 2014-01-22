@@ -225,6 +225,22 @@ class shaderStage_t {
 	/*float					*/privatePolygonOffset: number;	// a per-stage polygon offset
 	/*						*/
 	/*newShaderStage_t		**/newStage: newShaderStage_t[];			// vertex / fragment program based stage
+
+	constructor ( ) {
+		this.conditionRegister = 0;
+		this.lighting = stageLighting_t.SL_AMBIENT;		
+		this.drawStateBits = 0;
+		this.color = new colorStage_t;
+		this.hasAlphaTest = false;
+		this.alphaTestRegister = 0;
+		this.texture = new textureStage_t;
+		this.vertexColor = stageVertexColor_t.SVC_IGNORE;
+		this.ignoreAlphaTest = false;
+		
+		this.privatePolygonOffset = 0;
+
+		this.newStage = null;
+	}
 };
 
 enum materialCoverage_t {

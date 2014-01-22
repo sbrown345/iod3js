@@ -1,4 +1,6 @@
 /// <reference path="../../libs/idlib/text/lexer.cpp.ts" />
+/// <reference path="tr_main.cpp.ts" />
+/// <reference path="image_files.cpp.ts" />
 /// <reference path="image.h.ts" />
 
 /////*
@@ -70,16 +72,17 @@
 
 ////*/
 
-/////*
-////=================
-////R_HeightmapToNormalMap
+/*
+=================
+R_HeightmapToNormalMap
 
-////it is not possible to convert a heightmap into a normal map
-////properly without knowing the texture coordinate stretching.
-////We can assume constant and equal ST vectors for walls, but not for characters.
-////=================
-////*/
-////static void R_HeightmapToNormalMap( byte *data, int width, int height, float scale ) {
+it is not possible to convert a heightmap into a normal map
+properly without knowing the texture coordinate stretching.
+We can assume constant and equal ST vectors for walls, but not for characters.
+=================
+*/
+function R_HeightmapToNormalMap( /*byte **/data:Uint8Array, /*int */width:number, /*int */height:number, /*float */scale:number ):void {
+	todoThrow();
 ////	int		i, j;
 ////	byte	*depth;
 
@@ -135,15 +138,17 @@
 
 
 ////	R_StaticFree( depth );
-////}
+}
 
 
-/////*
-////=================
-////R_ImageScale
-////=================
-////*/
-////static void R_ImageScale( byte *data, int width, int height, float scale[4] ) {
+/*
+=================
+R_ImageScale
+=================
+*/
+function R_ImageScale( data:Uint8Array, /*int */width:number, /*int*/height:number, scale:Float32Array): void
+{
+	todoThrow ( );
 ////	int		i, j;
 ////	int		c;
 
@@ -158,50 +163,51 @@
 ////		}
 ////		data[i] = j;
 ////	}
-////}
+}
 
-/////*
-////=================
-////R_InvertAlpha
-////=================
-////*/
-////static void R_InvertAlpha( byte *data, int width, int height ) {
-////	int		i;
-////	int		c;
+/*
+=================
+R_InvertAlpha
+=================
+*/
+function R_InvertAlpha( data:Uint8Array, /*int*/width: number, /*int*/height: number): void {
+	var /*int		*/i:number;
+	var/*int		*/c:number;
 
-////	c = width * height* 4;
+	c = width * height* 4;
 
-////	for ( i = 0 ; i < c ; i+=4 ) {
-////		data[i+3] = 255 - data[i+3];
-////	}
-////}
+	for ( i = 0 ; i < c ; i+=4 ) {
+		data[i+3] = 255 - data[i+3];
+	}
+}
 
-/////*
-////=================
-////R_InvertColor
-////=================
-////*/
-////static void R_InvertColor( byte *data, int width, int height ) {
-////	int		i;
-////	int		c;
+/*
+=================
+R_InvertColor
+=================
+*/
+function R_InvertColor( data:Uint8Array, /*int*/width:number, /*int*/height:number ):void {
+	var /*int		*/i: number;
+	var/*int		*/c: number;
 
-////	c = width * height* 4;
+	c = width * height* 4;
 
-////	for ( i = 0 ; i < c ; i+=4 ) {
-////		data[i+0] = 255 - data[i+0];
-////		data[i+1] = 255 - data[i+1];
-////		data[i+2] = 255 - data[i+2];
-////	}
-////}
+	for ( i = 0 ; i < c ; i+=4 ) {
+		data[i+0] = 255 - data[i+0];
+		data[i+1] = 255 - data[i+1];
+		data[i+2] = 255 - data[i+2];
+	}
+}
 
 
-/////*
-////===================
-////R_AddNormalMaps
+/*
+===================
+R_AddNormalMaps
 
-////===================
-////*/
-////static void R_AddNormalMaps( byte *data1, int width1, int height1, byte *data2, int width2, int height2 ) {
+===================
+*/
+function R_AddNormalMaps(data1: Uint8Array, /*int */width1: number, /*int */height1: number, data2: Uint8Array, /*int */width2: number, /*int */height2: number):void {
+	todoThrow();
 ////	int		i, j;
 ////	byte	*newMap;
 
@@ -248,14 +254,15 @@
 ////	if ( newMap ) {
 ////		R_StaticFree( newMap );
 ////	}
-////}
+}
 
-/////*
-////================
-////R_SmoothNormalMap
-////================
-////*/
-////static void R_SmoothNormalMap( byte *data, int width, int height ) {
+/*
+================
+R_SmoothNormalMap
+================
+*/
+function R_SmoothNormalMap( /*byte **/data:Uint8Array, /*int */width:number, /*int */height:number ):void {
+	todoThrow();
 ////	byte	*orig;
 ////	int		i, j, k, l;
 ////	idVec3	normal;
@@ -300,16 +307,17 @@
 ////	}
 
 ////	R_StaticFree( orig );
-////}
+}
 
 
-/////*
-////===================
-////R_ImageAdd
+/*
+===================
+R_ImageAdd
 
-////===================
-////*/
-////static void R_ImageAdd( byte *data1, int width1, int height1, byte *data2, int width2, int height2 ) {
+===================
+*/
+function R_ImageAdd(data1: Uint8Array, /*int */width1: number, /*int */height1: number, data2: Uint8Array, /*int */width2: number, /*int */height2: number):void {
+	todoThrow ( );
 ////	int		i, j;
 ////	int		c;
 ////	byte	*newMap;
@@ -336,7 +344,7 @@
 ////	if ( newMap ) {
 ////		R_StaticFree( newMap );
 ////	}
-////}
+}
 
 
 // we build a canonical token form of the image program here
@@ -368,249 +376,249 @@ var parseBuffer = new Uint8Array( MAX_IMAGE_NAME );
 ////	idStr::Append( parseBuffer, MAX_IMAGE_NAME, match );
 ////}
 
-/////*
-////===================
-////R_ParseImageProgram_r
+/*
+===================
+R_ParseImageProgram_r
 
-////If pic is NULL, the timestamps will be filled in, but no image will be generated
-////If both pic and timestamps are NULL, it will just advance past it, which can be
-////used to parse an image program from a text stream.
-////===================
-////*/
-////static bool R_ParseImageProgram_r( idLexer &src, byte **pic, int *width, int *height,
-////								  ID_TIME_T *timestamps, textureDepth_t *depth ) {
-////	idToken		token;
-////	float		scale;
-////	ID_TIME_T		timestamp;
+If pic is NULL, the timestamps will be filled in, but no image will be generated
+If both pic and timestamps are NULL, it will just advance past it, which can be
+used to parse an image program from a text stream.
+===================
+*/
+function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*int **/width: R<number>, /*int **/height: R<number>,
+	/*ID_TIME_T **/timestamps: R<number>, depth: R<textureDepth_t> ):boolean {
+	var token = new R(new idToken);
+	var/*float		*/scale:number;
+	var timestamp = new R<number>(0);
 
-////	src.ReadToken( &token );
-////	AppendToken( token );
+	src.ReadToken( token );
+	this.AppendToken( token );
 
-////	if ( !token.Icmp( "heightmap" ) ) {
-////		MatchAndAppendToken( src, "(" );
+	if ( !token.$.Icmp( "heightmap" ) ) {
+		this.MatchAndAppendToken( src, "(" );
 
-////		if ( !R_ParseImageProgram_r( src, pic, width, height, timestamps, depth ) ) {
-////			return false;
-////		}
+		if ( !R_ParseImageProgram_r( src, pic, width, height, timestamps, depth ) ) {
+			return false;
+		}
 
-////		MatchAndAppendToken( src, "," );
+		this.MatchAndAppendToken( src, "," );
 
-////		src.ReadToken( &token );
-////		AppendToken( token );
-////		scale = token.GetFloatValue();
+		src.ReadToken( token );
+		this.AppendToken( token );
+		scale = token.$.GetFloatValue();
 		
-////		// process it
-////		if ( pic ) {
-////			R_HeightmapToNormalMap( *pic, *width, *height, scale );
-////			if ( depth ) {
-////				*depth = textureDepth_t.TD_BUMP;
-////			}
-////		}
+		// process it
+		if ( pic ) {
+			R_HeightmapToNormalMap( pic.$, width.$, height.$, scale );
+			if ( depth ) {
+				depth.$ = textureDepth_t.TD_BUMP;
+			}
+		}
 
-////		MatchAndAppendToken( src, ")" );
-////		return true;
-////	}
+		this.MatchAndAppendToken( src, ")" );
+		return true;
+	}
 
-////	if ( !token.Icmp( "addnormals" ) ) {
-////		byte	*pic2;
-////		int		width2, height2;
+	if ( !token.$.Icmp( "addnormals" ) ) {
+		var /*byte	**/pic2 = new R<Uint8Array>();
+		var /*int		*/width2 = new R<number>(0), height2 = new R<number>(0);
 
-////		MatchAndAppendToken( src, "(" );
+		this.MatchAndAppendToken( src, "(" );
 
-////		if ( !R_ParseImageProgram_r( src, pic, width, height, timestamps, depth ) ) {
-////			return false;
-////		}
+		if ( !R_ParseImageProgram_r( src, pic, width, height, timestamps, depth ) ) {
+			return false;
+		}
 
-////		MatchAndAppendToken( src, "," );
+		this.MatchAndAppendToken( src, "," );
 
-////		if ( !R_ParseImageProgram_r( src, pic ? &pic2 : NULL, &width2, &height2, timestamps, depth ) ) {
-////			if ( pic ) {
-////				R_StaticFree( *pic );
-////				*pic = NULL;
-////			}
-////			return false;
-////		}
+		if ( !R_ParseImageProgram_r( src, pic ? /*&*/pic2 : null, width2, height2, timestamps, depth ) ) {
+			if ( pic ) {
+				R_StaticFree( pic.$ );
+				pic.$ = null;
+			}
+			return false;
+		}
 		
-////		// process it
-////		if ( pic ) {
-////			R_AddNormalMaps( *pic, *width, *height, pic2, width2, height2 );
-////			R_StaticFree( pic2 );
-////			if ( depth ) {
-////				*depth = textureDepth_t.TD_BUMP;
-////			}
-////		}
+		// process it
+		if ( pic ) {
+			R_AddNormalMaps( pic.$, width.$, height.$, pic2.$, width2.$, height2.$ );
+			R_StaticFree( pic2 );
+			if ( depth ) {
+				depth.$ = textureDepth_t.TD_BUMP;
+			}
+		}
 
-////		MatchAndAppendToken( src, ")" );
-////		return true;
-////	}
+		this.MatchAndAppendToken( src, ")" );
+		return true;
+	}
 
-////	if ( !token.Icmp( "smoothnormals" ) ) {
-////		MatchAndAppendToken( src, "(" );
+	if ( !token.$.Icmp( "smoothnormals" ) ) {
+		this.MatchAndAppendToken( src, "(" );
 
-////		if ( !R_ParseImageProgram_r( src, pic, width, height, timestamps, depth ) ) {
-////			return false;
-////		}
+		if ( !R_ParseImageProgram_r( src, pic, width, height, timestamps, depth ) ) {
+			return false;
+		}
 
-////		if ( pic ) {
-////			R_SmoothNormalMap( *pic, *width, *height );
-////			if ( depth ) {
-////				*depth = textureDepth_t.TD_BUMP;
-////			}
-////		}
+		if ( pic ) {
+			R_SmoothNormalMap( pic.$, width.$, height.$ );
+			if ( depth ) {
+				depth.$ = textureDepth_t.TD_BUMP;
+			}
+		}
 
-////		MatchAndAppendToken( src, ")" );
-////		return true;
-////	}
+		this.MatchAndAppendToken( src, ")" );
+		return true;
+	}
 
-////	if ( !token.Icmp( "add" ) ) {
-////		byte	*pic2;
-////		int		width2, height2;
+	if ( !token.$.Icmp( "add" ) ) {
+		var pic2 = new R<Uint8Array> ( );
+		var /*int		*/width2 = new R<number>(0), height2 = new R<number> ( );
 
-////		MatchAndAppendToken( src, "(" );
+		this.MatchAndAppendToken( src, "(" );
 
-////		if ( !R_ParseImageProgram_r( src, pic, width, height, timestamps, depth ) ) {
-////			return false;
-////		}
+		if ( !R_ParseImageProgram_r( src, pic, width, height, timestamps, depth ) ) {
+			return false;
+		}
 
-////		MatchAndAppendToken( src, "," );
+		this.MatchAndAppendToken( src, "," );
 
-////		if ( !R_ParseImageProgram_r( src, pic ? &pic2 : NULL, &width2, &height2, timestamps, depth ) ) {
-////			if ( pic ) {
-////				R_StaticFree( *pic );
-////				*pic = NULL;
-////			}
-////			return false;
-////		}
+		if ( !R_ParseImageProgram_r( src, pic ? pic2 : null, width2, height2, timestamps, depth ) ) {
+			if ( pic ) {
+				//R_StaticFree( pic.$ );
+				pic = null;
+			}
+			return false;
+		}
 		
-////		// process it
-////		if ( pic ) {
-////			R_ImageAdd( *pic, *width, *height, pic2, width2, height2 );
-////			R_StaticFree( pic2 );
-////		}
+		// process it
+		if ( pic ) {
+			R_ImageAdd(pic.$, width.$, height.$, pic2.$, width2.$, height2.$ );
+			R_StaticFree( pic2 );
+		}
 
-////		MatchAndAppendToken( src, ")" );
-////		return true;
-////	}
+		this.MatchAndAppendToken( src, ")" );
+		return true;
+	}
 
-////	if ( !token.Icmp( "scale" ) ) {
-////		float	scale[4];
-////		int		i;
+	if ( !token.$.Icmp( "scale" ) ) {
+		var scale_ = new Float32Array(4);
+		var i: number;
 
-////		MatchAndAppendToken( src, "(" );
+		this.MatchAndAppendToken( src, "(" );
 
-////		R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
+		R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
 
-////		for ( i = 0 ; i < 4 ; i++ ) {
-////			MatchAndAppendToken( src, "," );
-////			src.ReadToken( &token );
-////			AppendToken( token );
-////			scale[i] = token.GetFloatValue();
-////		}
+		for ( i = 0 ; i < 4 ; i++ ) {
+			this.MatchAndAppendToken( src, "," );
+			src.ReadToken( token );
+			this.AppendToken( token );
+			scale_[i] = token.$.GetFloatValue();
+		}
 
-////		// process it
-////		if ( pic ) {
-////			R_ImageScale( *pic, *width, *height, scale );
-////		}
+		// process it
+		if ( pic ) {
+			R_ImageScale(pic.$, width.$, height.$, scale_ );
+		}
 
-////		MatchAndAppendToken( src, ")" );
-////		return true;
-////	}
+		this.MatchAndAppendToken( src, ")" );
+		return true;
+	}
 
-////	if ( !token.Icmp( "invertAlpha" ) ) {
-////		MatchAndAppendToken( src, "(" );
+	if ( !token.$.Icmp( "invertAlpha" ) ) {
+		this.MatchAndAppendToken( src, "(" );
 
-////		R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
+		R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
 
-////		// process it
-////		if ( pic ) {
-////			R_InvertAlpha( *pic, *width, *height );
-////		}
+		// process it
+		if ( pic ) {
+			R_InvertAlpha( pic.$, width.$, height.$ );
+		}
 
-////		MatchAndAppendToken( src, ")" );
-////		return true;
-////	}
+		this.MatchAndAppendToken( src, ")" );
+		return true;
+	}
 
-////	if ( !token.Icmp( "invertColor" ) ) {
-////		MatchAndAppendToken( src, "(" );
+	if ( !token.$.Icmp( "invertColor" ) ) {
+		this.MatchAndAppendToken( src, "(" );
 
-////		R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
+		R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
 
-////		// process it
-////		if ( pic ) {
-////			R_InvertColor( *pic, *width, *height );
-////		}
+		// process it
+		if ( pic ) {
+			R_InvertColor( pic.$, width.$, height.$ );
+		}
 
-////		MatchAndAppendToken( src, ")" );
-////		return true;
-////	}
+		this.MatchAndAppendToken( src, ")" );
+		return true;
+	}
 
-////	if ( !token.Icmp( "makeIntensity" ) ) {
-////		int		i;
+	if ( !token.$.Icmp( "makeIntensity" ) ) {
+		var i:number;
 
-////		MatchAndAppendToken( src, "(" );
+		this.MatchAndAppendToken( src, "(" );
 
-////		R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
+		R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
 
-////		// copy red to green, blue, and alpha
-////		if ( pic ) {
-////			int		c;
-////			c = *width * *height * 4;
-////			for ( i = 0 ; i < c ; i+=4 ) {
-////				(*pic)[i+1] = 
-////				(*pic)[i+2] = 
-////				(*pic)[i+3] = (*pic)[i];
-////			}
-////		}
+		// copy red to green, blue, and alpha
+		if ( pic ) {
+			var/*int		*/c:number;
+			c = width.$ * height.$ * 4;
+			for ( i = 0 ; i < c ; i+=4 ) {
+				(pic.$)[i+1] = 
+				(pic.$)[i+2] = 
+				(pic.$)[i+3] = (pic.$)[i];
+			}
+		}
 
-////		MatchAndAppendToken( src, ")" );
-////		return true;
-////	}
+		this.MatchAndAppendToken( src, ")" );
+		return true;
+	}
 
-////	if ( !token.Icmp( "makeAlpha" ) ) {
-////		int		i;
+	if ( !token.$.Icmp( "makeAlpha" ) ) {
+		var i: number;
 
-////		MatchAndAppendToken( src, "(" );
+		this.MatchAndAppendToken( src, "(" );
 
-////		R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
+		R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
 
-////		// average RGB into alpha, then set RGB to white
-////		if ( pic ) {
-////			int		c;
-////			c = *width * *height * 4;
-////			for ( i = 0 ; i < c ; i+=4 ) {
-////				(*pic)[i+3] = ( (*pic)[i+0] + (*pic)[i+1] + (*pic)[i+2] ) / 3;
-////				(*pic)[i+0] = 
-////				(*pic)[i+1] = 
-////				(*pic)[i+2] = 255;
-////			}
-////		}
+		// average RGB into alpha, then set RGB to white
+		if ( pic ) {
+			var /*int		*/c: number;
+			c = width.$ * height.$ * 4;
+			for ( i = 0 ; i < c ; i+=4 ) {
+				(pic.$)[i+3] = ( (pic.$)[i+0] + (pic.$)[i+1] + (pic.$)[i+2] ) / 3;
+				(pic.$)[i+0] = 
+				(pic.$)[i+1] = 
+				(pic.$)[i+2] = 255;
+			}
+		}
 
-////		MatchAndAppendToken( src, ")" );
-////		return true;
-////	}
+		this.MatchAndAppendToken( src, ")" );
+		return true;
+	}
 
-////	// if we are just parsing instead of loading or checking,
-////	// don't do the R_LoadImage
-////	if ( !timestamps && !pic ) {
-////		return true;
-////	}
+	// if we are just parsing instead of loading or checking,
+	// don't do the R_LoadImage
+	if ( !timestamps && !pic ) {
+		return true;
+	}
 
-////	// load it as an image
-////	R_LoadImage( token.c_str(), pic, width, height, &timestamp, true );
+	// load it as an image
+	R_LoadImage( token.$.c_str(), pic, width, height, timestamp, true );
 
-////	if ( timestamp == -1 ) {
-////		return false;
-////	}
+	if ( timestamp.$ == -1 ) {
+		return false;
+	}
 
-////	// add this to the timestamp
-////	if ( timestamps ) {
-////		if ( timestamp > *timestamps ) {
-////			*timestamps = timestamp;
-////		}
-////	}
+	// add this to the timestamp
+	if ( timestamps ) {
+		if (timestamp.$ > timestamps.$ ) {
+			timestamps.$ = timestamp.$;
+		}
+	}
 
-////	return true;
-////}
+	return true;
+}
 
 
 /////*
@@ -641,6 +649,6 @@ R_ParsePastImageProgram
 */
 function R_ParsePastImageProgram ( src: idLexer ): Uint8Array {
 	parseBuffer[0] = 0;
-	todoThrow( "R_ParseImageProgram_r( src, NULL, NULL, NULL, NULL, NULL );" );
+	R_ParseImageProgram_r(src, null, null, null, null, null );
 	return parseBuffer;
 }

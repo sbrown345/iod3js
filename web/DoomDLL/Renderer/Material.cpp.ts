@@ -350,21 +350,21 @@ idMaterial::GetExpressionConstant
 =============
 */
 	/*int */GetExpressionConstant( /*float */f: number): number {
-	todoThrow();
+	
 	var/*int		*/i:number;
-	//for ( i = expRegister_t.EXP_REG_NUM_PREDEFINED ; i < this.numRegisters ; i++ ) {
-	//	if ( !this.pd.registerIsTemporary[i] && this.pd.shaderRegisters[i] == f ) {
-	//		return i;
-	//	}
-	//}
-	//if ( this.numRegisters == MAX_EXPRESSION_REGISTERS ) {
-	//	common.Warning( "GetExpressionConstant: material '%s' hit MAX_EXPRESSION_REGISTERS", this.GetName() );
-	//	this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-	//	return 0;
-	//}
-	//this.pd.registerIsTemporary[i] = false;
-	//this.pd.shaderRegisters[i] = f;
-	//this.numRegisters++;
+	for ( i = expRegister_t.EXP_REG_NUM_PREDEFINED ; i < this.numRegisters ; i++ ) {
+		if ( !this.pd.registerIsTemporary[i] && this.pd.shaderRegisters[i] == f ) {
+			return i;
+		}
+	}
+	if ( this.numRegisters == MAX_EXPRESSION_REGISTERS ) {
+		common.Warning( "GetExpressionConstant: material '%s' hit MAX_EXPRESSION_REGISTERS", this.GetName() );
+		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+		return 0;
+	}
+	this.pd.registerIsTemporary[i] = false;
+	this.pd.shaderRegisters[i] = f;
+	this.numRegisters++;
 
 	return i;
 }
