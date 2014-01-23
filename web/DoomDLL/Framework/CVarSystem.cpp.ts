@@ -685,18 +685,18 @@ Register( cvar:idCVar ):void {
 //	return false;
 //}
 
-///*
-//============
-//idCVarSystemLocal::GetCVarInteger
-//============
-//*/
-//int /*idCVarSystemLocal::*/GetCVarInteger( const char *name ) const {
-//	idInternalCVar *internal = FindInternal( name );
-//	if ( internal ) {
-//		return internal.GetInteger();
-//	}
-//	return 0;
-//}
+/*
+============
+idCVarSystemLocal::GetCVarInteger
+============
+*/
+/*int */GetCVarInteger( name:string ):number {
+	var internal = this.FindInternal( name );
+	if ( internal ) {
+		return internal.GetInteger();
+	}
+	return 0;
+}
 
 ///*
 //============

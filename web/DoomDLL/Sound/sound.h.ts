@@ -148,7 +148,7 @@ class idSoundShader extends idDecl {
 ////typedef int s_channelType;	// the game uses its own series of enums, and we don't want to require casts
 ////
 ////
-////class idSoundEmitter {
+class idSoundEmitter {
 ////public:
 ////	virtual					~idSoundEmitter( void ) {}
 ////
@@ -182,7 +182,7 @@ class idSoundShader extends idDecl {
 ////
 ////	// for save games.  Index will always be > 0
 ////	virtual	int				Index( void ) const = 0;
-////};
+};
 ////
 /////*
 ////===============================================================================

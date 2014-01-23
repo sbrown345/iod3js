@@ -118,7 +118,7 @@ class idDeclBase {
 ////	virtual void			SetText( const char *text ) = 0;
 ////	virtual bool			ReplaceSourceFileText( void ) = 0;
 ////	virtual bool			SourceFileChanged( void ) const = 0;
-////	virtual void			MakeDefault( void ) = 0;
+	MakeDefault(): void { throw "placeholder"; }
 ////	virtual bool			EverReferenced( void ) const = 0;
 ////	virtual bool			SetDefaultText( void ) = 0;
 ////	virtual const char *	DefaultDefinition( void ) const = 0;
@@ -187,8 +187,8 @@ class idDecl {
 ////							// Returns true if the source file changed since it was loaded and parsed.
 ////	bool					SourceFileChanged( void ) const { return base.SourceFileChanged(); }
 
-////							// Frees data and makes the decl a default.
-////	void					MakeDefault( void ) { base.MakeDefault(); }
+							// Frees data and makes the decl a default.
+	MakeDefault ( ): void { this.base.MakeDefault ( ); }
 
 ////							// Returns true if the decl was ever referenced.
 ////	bool					EverReferenced( void ) const { return base.EverReferenced(); }

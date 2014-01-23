@@ -180,6 +180,7 @@ class textureStage_t {
 	/*	int				*/	dynamicFrameCount: number;
 };
 
+
 // the order BUMP / DIFFUSE / SPECULAR is necessary for interactions to draw correctly on low end cards
 enum stageLighting_t {
 	SL_AMBIENT,						// execute after lighting
@@ -224,7 +225,7 @@ class shaderStage_t {
 	/*						*/					// if the surface is alpha tested
 	/*float					*/privatePolygonOffset: number;	// a per-stage polygon offset
 	/*						*/
-	/*newShaderStage_t		**/newStage: newShaderStage_t[];			// vertex / fragment program based stage
+	/*newShaderStage_t		**/newStage: newShaderStage_t;			// vertex / fragment program based stage
 
 	constructor ( ) {
 		this.conditionRegister = 0;
@@ -412,7 +413,7 @@ enum surfaceFlags_t {
 
 ////						// returns true if the material will generate another view, either as
 ////						// a mirror or dynamic rendered image
-////	bool				HasSubview( void ) const { return hasSubview; }
+////	bool				HasSubview( void ) const { return this.hasSubview; }
 
 ////						// returns true if the material will generate shadows, not making a
 ////						// distinction between global and no-self shadows
@@ -465,7 +466,7 @@ enum surfaceFlags_t {
 ////						// necessary to prevent mutliple gui surfaces, mirrors, autosprites, and some other
 ////						// special effects from being combined into a single surface
 ////						// guis, merging sprites or other effects, mirrors and remote views are always discrete
-////	bool				IsDiscrete( void ) const { return ( entityGui || gui || deform != DFRM_NONE || sort == SS_SUBVIEW ||
+////	bool				IsDiscrete( void ) const { return ( entityGui || gui || deform != DFRM_NONE || sort == materialSort_t.SS_SUBVIEW ||
 ////												( surfaceFlags & SURF_DISCRETE ) != 0 ); }
 
 ////						// Normally, dmap chops each surface by every BSP boundary, then reoptimizes.
@@ -521,7 +522,7 @@ enum surfaceFlags_t {
 ////	bool				TestMaterialFlag( const int flag ) const { return ( materialFlags & flag ) != 0; }
 
 ////						// get content flags
-////	const int			GetContentFlags( void ) const { return contentFlags; }
+////	const int			GetContentFlags( void ) const { return this.contentFlags; }
 
 ////						// get surface flags
 ////	const int			GetSurfaceFlags( void ) const { return surfaceFlags; }

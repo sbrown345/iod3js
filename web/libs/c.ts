@@ -51,6 +51,11 @@ function memcpy(destination: ArrayBufferView, source: ArrayBufferView, count: nu
 		sourceArray[i] = destArray[i];
 	}
 }
+function memcpyStructs(destination: any[], source: any[], count: number): void {
+	for (var i = 0; i < count; i++) {
+		sourceArray[i] = destArray[i];
+	}
+}
 
 //function memcpy(destination: P, source: P, count: number): void {
 //	for (var i = 0; i < count; i++) {

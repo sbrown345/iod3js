@@ -1,6 +1,7 @@
 /// <reference path="../../libs/idlib/precompiled.h.ts" />
 /// <reference path="../ui/userinterface.h.ts" />
 /// <reference path="../ui/userinterface.cpp.ts" />
+/// <reference path="tr_local.h.ts" />
 /// <reference path="image_program.cpp.ts" />
 /// <reference path="material.h.ts" />
 /////*
@@ -173,28 +174,28 @@ CommonInit():void {
 ////void idMaterial::FreeData() {
 ////	int i;
 
-////	if ( stages ) {
+////	if ( this.stages ) {
 ////		// delete any idCinematic textures
-////		for ( i = 0; i < numStages; i++ ) {
-////			if ( stages[i].texture.cinematic != NULL ) {
-////				delete stages[i].texture.cinematic;
-////				stages[i].texture.cinematic = NULL;
+////		for ( i = 0; i < this.numStages; i++ ) {
+////			if ( this.stages[i].texture.cinematic != NULL ) {
+////				delete this.stages[i].texture.cinematic;
+////				this.stages[i].texture.cinematic = NULL;
 ////			}
-////			if ( stages[i].newStage != NULL ) {
-////				Mem_Free( stages[i].newStage );
-////				stages[i].newStage = NULL;
+////			if ( this.stages[i].newStage != NULL ) {
+////				Mem_Free( this.stages[i].newStage );
+////				this.stages[i].newStage = NULL;
 ////			}
 ////		}
-////		R_StaticFree( stages );
-////		stages = NULL;
+////		R_StaticFree( this.stages );
+////		this.stages = NULL;
 ////	}
 ////	if ( expressionRegisters != NULL ) {
 ////		R_StaticFree( expressionRegisters );
 ////		expressionRegisters = NULL;
 ////	}
-////	if ( constantRegisters != NULL ) {
-////		R_StaticFree( constantRegisters );
-////		constantRegisters = NULL;
+////	if ( this.constantRegisters != NULL ) {
+////		R_StaticFree( this.constantRegisters );
+////		this.constantRegisters = NULL;
 ////	}
 ////	if ( ops != NULL ) {
 ////		R_StaticFree( ops );
@@ -202,46 +203,44 @@ CommonInit():void {
 ////	}
 ////}
 
-/////*
-////==============
-////idMaterial::GetEditorImage
-////==============
-////*/
-////idImage *idMaterial::GetEditorImage( void ) const {
-////	if ( editorImage ) {
-////		return editorImage;
-////	}
+/*
+==============
+idMaterial::GetEditorImage
+==============
+*/
+	GetEditorImage ( ): idImage {
+		if ( this.editorImage ) {
+			return this.editorImage;
+		}
 
-////	// if we don't have an editorImageName, use the first stage image
-////	if ( !this.editorImageName.Length()) {
-////		// _D3XP :: First check for a diffuse image, then use the first
-////		if ( numStages && stages ) {
-////			int i;
-////			for( i = 0; i < numStages; i++ ) {
-////				if ( stages[i].lighting == stageLighting_t.SL_DIFFUSE ) {
-////					editorImage = stages[i].texture.image;
-////					break;
-////				}
-////			}
-////			if ( !editorImage ) {
-////				editorImage = stages[0].texture.image;
-////			}
-////		} else {
-////			editorImage = globalImages.defaultImage;
-////		}
-////	} else {
-////		// look for an explicit one
-////		editorImage = globalImages.ImageFromFile( this.editorImageName, textureFilter_t.TF_DEFAULT, true, textureRepeat_t.TR_REPEAT, textureDepth_t.TD_DEFAULT );
-////	}
+		// if we don't have an editorImageName, use the first stage image
+		if ( !this.editorImageName.Length ( ) ) {
+			// _D3XP :: First check for a diffuse image, then use the first
+			if ( this.numStages && this.stages ) {
+				var i: number;
+				for ( i = 0; i < this.numStages; i++ ) {
+					if ( this.stages[i].lighting == stageLighting_t.SL_DIFFUSE ) {
+						this.editorImage = this.stages[i].texture.image;
+						break;
+					}
+				}
+				if ( !this.editorImage ) {
+					this.editorImage = this.stages[0].texture.image;
+				}
+			} else {
+				this.editorImage = globalImages.defaultImage;
+			}
+		} else {
+			// look for an explicit one
+			this.editorImage = globalImages.ImageFromFile( this.editorImageName.data, textureFilter_t.TF_DEFAULT, true, textureRepeat_t.TR_REPEAT, textureDepth_t.TD_DEFAULT );
+		}
 
-////	if ( !editorImage ) {
-////		editorImage = globalImages.defaultImage;
-////	}
+		if ( !this.editorImage ) {
+			this.editorImage = globalImages.defaultImage;
+		}
 
-////	return editorImage;
-////}
-
-
+		return this.editorImage;
+	}
 
 
 /*
@@ -2110,193 +2109,193 @@ Parses the current material definition and finds all necessary images.
 	
 	// reset to the unparsed state
 	this.CommonInit();
-	debugger;
+	
 	parsingData = new mtrParsingData_t;//	memset( &parsingData, 0, sizeof( parsingData ) );
 
 	this.pd = parsingData;	// this is only valid during parse
 
 	// parse it
-	this.ParseMaterial( src );
+	this.ParseMaterial(src);
 
-//	// if we are doing an fs_copyfiles, also reference the editorImage
-//	if ( cvarSystem.GetCVarInteger( "fs_copyFiles" ) ) {
-//		GetEditorImage();
-//	}
+	// if we are doing an fs_copyfiles, also reference the editorImage
+	if ( cvarSystem.GetCVarInteger( "fs_copyFiles" ) ) {
+		this.GetEditorImage();
+	}
 
-//	//
-//	// count non-lit stages
-//	numAmbientStages = 0;
-//	int i;
-//	for ( i = 0 ; i < this.numStages ; i++ ) {
-//		if ( this.pd.parseStages[i].lighting == SL_AMBIENT ) {
-//			numAmbientStages++;
-//		}
-//	}
+	//
+	// count non-lit stages
+	this.numAmbientStages = 0;
+	var i:number;
+	for ( i = 0 ; i < this.numStages ; i++ ) {
+		if ( this.pd.parseStages[i].lighting == stageLighting_t.SL_AMBIENT ) {
+			this.numAmbientStages++;
+		}
+	}
 
-//	// see if there is a subview stage
-//	if ( sort == SS_SUBVIEW ) {
-//		hasSubview = true;
-//	} else {
-//		hasSubview = false;
-//		for ( i = 0 ; i < this.numStages ; i++ ) {
-//			if ( this.pd.parseStages[i].texture.dynamic ) {
-//				hasSubview = true;
-//			}
-//		}
-//	}
+	// see if there is a subview stage
+	if ( this.sort == materialSort_t.SS_SUBVIEW ) {
+		this.hasSubview = true;
+	} else {
+		this.hasSubview = false;
+		for ( i = 0 ; i < this.numStages ; i++ ) {
+			if ( this.pd.parseStages[i].texture.dynamic ) {
+				this.hasSubview = true;
+			}
+		}
+	}
 
-//	// automatically determine coverage if not explicitly set
-//	if ( this.coverage == materialCoverage_t.MC_BAD ) {
-//		// automatically set MC_TRANSLUCENT if we don't have any interaction stages and 
-//		// the first stage is blended and not an alpha test mask or a subview
-//		if ( !this.numStages ) {
-//			// non-visible
-//			this.coverage = materialFlags_t.MC_TRANSLUCENT;
-//		} else if ( this.numStages != numAmbientStages ) {
-//			// we have an interaction draw
-//			this.coverage = materialCoverage_t.MC_OPAQUE;
-//		} else if ( 
-//			( this.pd.parseStages[0].drawStateBits & GLS_DSTBLEND_BITS ) != GLS_DSTBLEND_ZERO ||
-//			( this.pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_COLOR ||
-//			( this.pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_COLOR ||
-//			( this.pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_ALPHA ||
-//			( this.pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_ALPHA
-//			) {
-//			// blended with the destination
-//				this.coverage = materialFlags_t.MC_TRANSLUCENT;
-//		} else {
-//			this.coverage = materialCoverage_t.MC_OPAQUE;
-//		}
-//	}
+	// automatically determine coverage if not explicitly set
+	if ( this.coverage == materialCoverage_t.MC_BAD ) {
+		// automatically set MC_TRANSLUCENT if we don't have any interaction stages and 
+		// the first stage is blended and not an alpha test mask or a subview
+		if ( !this.numStages ) {
+			// non-visible
+			this.coverage = materialCoverage_t.MC_TRANSLUCENT;
+		} else if ( this.numStages != this.numAmbientStages ) {
+			// we have an interaction draw
+			this.coverage = materialCoverage_t.MC_OPAQUE;
+		} else if ( 
+			( this.pd.parseStages[0].drawStateBits & GLS_DSTBLEND_BITS ) != GLS_DSTBLEND_ZERO ||
+			( this.pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_COLOR ||
+			( this.pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_COLOR ||
+			( this.pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_DST_ALPHA ||
+			( this.pd.parseStages[0].drawStateBits & GLS_SRCBLEND_BITS ) == GLS_SRCBLEND_ONE_MINUS_DST_ALPHA
+			) {
+			// blended with the destination
+				this.coverage = materialCoverage_t.MC_TRANSLUCENT;
+		} else {
+			this.coverage = materialCoverage_t.MC_OPAQUE;
+		}
+	}
 
-//	// translucent automatically implies noshadows
-//	if ( this.coverage == materialFlags_t.MC_TRANSLUCENT ) {
-//		this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
-//	} else {
-//		// mark the contents as opaque
-//		contentFlags |= CONTENTS_OPAQUE;
-//	}
+	// translucent automatically implies noshadows
+	if (this.coverage == materialCoverage_t.MC_TRANSLUCENT ) {
+		this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
+	} else {
+		// mark the contents as opaque
+		this.contentFlags |= contentsFlags_t.CONTENTS_OPAQUE;
+	}
 
-//	// if we are translucent, draw with an alpha in the editor
-//	if ( this.coverage == materialFlags_t.MC_TRANSLUCENT ) {
-//		editorAlpha = 0.5;
-//	} else {
-//		editorAlpha = 1.0;
-//	}
+	// if we are translucent, draw with an alpha in the editor
+	if ( this.coverage == materialCoverage_t.MC_TRANSLUCENT ) {
+		this.editorAlpha = 0.5;
+	} else {
+		this.editorAlpha = 1.0;
+	}
 
-//	// the sorts can make reasonable defaults
-//	if ( sort == materialSort_t.SS_BAD ) {
-//		if ( this.TestMaterialFlag(materialFlags_t.MF_POLYGONOFFSET) ) {
-//			sort = SS_DECAL;
-//		} else if ( this.coverage == materialFlags_t.MC_TRANSLUCENT ) {
-//			sort = SS_MEDIUM;
-//		} else {
-//			sort = SS_OPAQUE;
-//		}
-//	}
+	// the sorts can make reasonable defaults
+	if ( this.sort == materialSort_t.SS_BAD ) {
+		if ( this.TestMaterialFlag(materialFlags_t.MF_POLYGONOFFSET) ) {
+			this.sort = materialSort_t.SS_DECAL;
+		} else if ( this.coverage == materialCoverage_t.MC_TRANSLUCENT ) {
+			this.sort = materialSort_t.SS_MEDIUM;
+		} else {
+			this.sort = materialSort_t.SS_OPAQUE;
+		}
+	}
 
-//	// anything that references _currentRender will automatically get sort = SS_POST_PROCESS
-//	// and coverage = MC_TRANSLUCENT
+	// anything that references _currentRender will automatically get sort = SS_POST_PROCESS
+	// and coverage = MC_TRANSLUCENT
 
-//	for ( i = 0 ; i < this.numStages ; i++ ) {
-//		shaderStage_t	*pStage = &this.pd.parseStages[i];
-//		if ( pStage.texture.image == globalImages.currentRenderImage ) {
-//			if ( sort != SS_PORTAL_SKY ) {
-//				sort = SS_POST_PROCESS;
-//				this.coverage = materialFlags_t.MC_TRANSLUCENT;
-//			}
-//			break;
-//		}
-//		if ( pStage.newStage ) {
-//			for ( int j = 0 ; j < pStage.newStage.numFragmentProgramImages ; j++ ) {
-//				if ( pStage.newStage.fragmentProgramImages[j] == globalImages.currentRenderImage ) {
-//					if ( sort != SS_PORTAL_SKY ) {
-//						sort = SS_POST_PROCESS;
-//						this.coverage = materialFlags_t.MC_TRANSLUCENT;
-//					}
-//					i = this.numStages;
-//					break;
-//				}
-//			}
-//		}
-//	}
+	for ( i = 0 ; i < this.numStages ; i++ ) {
+		var	pStage = /*&*/this.pd.parseStages[i];
+		if ( pStage.texture.image == globalImages.currentRenderImage ) {
+			if (this.sort != materialSort_t.SS_PORTAL_SKY ) {
+				this.sort = materialSort_t.SS_POST_PROCESS;
+				this.coverage = materialCoverage_t.MC_TRANSLUCENT;
+			}
+			break;
+		}
+		if ( pStage.newStage ) {
+			for ( var j = 0 ; j < pStage.newStage.numFragmentProgramImages ; j++ ) {
+				if ( pStage.newStage.fragmentProgramImages[j] == globalImages.currentRenderImage ) {
+					if (this.sort != materialSort_t.SS_PORTAL_SKY ) {
+						this.sort = materialSort_t.SS_POST_PROCESS;
+						this.coverage = materialCoverage_t.MC_TRANSLUCENT;
+					}
+					i = this.numStages;
+					break;
+				}
+			}
+		}
+	}
 
-//	// set the drawStateBits depth flags
-//	for ( i = 0 ; i < this.numStages ; i++ ) {
-//		shaderStage_t	*pStage = &this.pd.parseStages[i];
-//		if ( sort == SS_POST_PROCESS ) {
-//			// post-process effects fill the depth buffer as they draw, so only the
-//			// topmost post-process effect is rendered
-//			pStage.drawStateBits |= GLS_DEPTHFUNC_LESS;
-//		} else if ( this.coverage == materialFlags_t.MC_TRANSLUCENT || pStage.ignoreAlphaTest ) {
-//			// translucent surfaces can extend past the exactly marked depth buffer
-//			pStage.drawStateBits |= GLS_DEPTHFUNC_LESS | GLS_DEPTHMASK;
-//		} else {
-//			// opaque and perforated surfaces must exactly match the depth buffer,
-//			// which gets alpha test correct
-//			pStage.drawStateBits |= GLS_DEPTHFUNC_EQUAL | GLS_DEPTHMASK;
-//		}
-//	}
+	// set the drawStateBits depth flags
+	for ( i = 0 ; i < this.numStages ; i++ ) {
+		var pStage = /*&*/this.pd.parseStages[i];
+		if (this.sort == materialSort_t.SS_POST_PROCESS ) {
+			// post-process effects fill the depth buffer as they draw, so only the
+			// topmost post-process effect is rendered
+			pStage.drawStateBits |= GLS_DEPTHFUNC_LESS;
+		} else if ( this.coverage == materialCoverage_t.MC_TRANSLUCENT || pStage.ignoreAlphaTest ) {
+			// translucent surfaces can extend past the exactly marked depth buffer
+			pStage.drawStateBits |= GLS_DEPTHFUNC_LESS | GLS_DEPTHMASK;
+		} else {
+			// opaque and perforated surfaces must exactly match the depth buffer,
+			// which gets alpha test correct
+			pStage.drawStateBits |= GLS_DEPTHFUNC_EQUAL | GLS_DEPTHMASK;
+		}
+	}
 
-//	// determine if this surface will accept overlays / decals
+	// determine if this surface will accept overlays / decals
 
-//	if ( this.pd.forceOverlays ) {
-//		// explicitly flaged in material definition
-//		allowOverlays = true;
-//	} else {
-//		if ( !IsDrawn() ) {
-//			allowOverlays = false;
-//		}
-//		if ( Coverage() != materialCoverage_t.MC_OPAQUE ) {
-//			allowOverlays = false;
-//		}
-//		if ( GetSurfaceFlags() & SURF_NOIMPACT ) {
-//			allowOverlays = false;
-//		}
-//	}
+	if ( this.pd.forceOverlays ) {
+		// explicitly flaged in material definition
+		this.allowOverlays = true;
+	} else {
+		if ( !this.IsDrawn() ) {
+			this.allowOverlays = false;
+		}
+		if (this.Coverage() != materialCoverage_t.MC_OPAQUE ) {
+			this.allowOverlays = false;
+		}
+		if (this.GetSurfaceFlags() & surfaceFlags_t.SURF_NOIMPACT ) {
+			this.allowOverlays = false;
+		}
+	}
 
-//	// add a tiny offset to the sort orders, so that different materials
-//	// that have the same sort value will at least sort consistantly, instead
-//	// of flickering back and forth
-///* this messed up in-game guis
-//	if ( sort != SS_SUBVIEW ) {
-//		int	hash, l;
+	// add a tiny offset to the sort orders, so that different materials
+	// that have the same sort value will at least sort consistantly, instead
+	// of flickering back and forth
+/* this messed up in-game guis
+	if ( this.sort != materialSort_t.SS_SUBVIEW ) {
+		int	hash, l;
 
-//		l = name.Length();
-//		hash = 0;
-//		for ( int i = 0 ; i < l ; i++ ) {
-//			hash ^= name[i];
-//		}
-//		sort += hash * 0.01;
-//	}
-//*/
+		l = name.Length();
+		hash = 0;
+		for ( int i = 0 ; i < l ; i++ ) {
+			hash ^= name[i];
+		}
+		this.sort += hash * 0.01;
+	}
+*/
 
-//	if (this.numStages) {
-//		stages = (shaderStage_t *)R_StaticAlloc( this.numStages * sizeof( stages[0] ) );
-//		memcpy( stages, this.pd.parseStages, this.numStages * sizeof( stages[0] ) );
-//	}
+	if (this.numStages) {
+		this.stages = newStructArray<shaderStage_t>( shaderStage_t, this.numStages ); //(shaderStage_t *)R_StaticAlloc( this.numStages * sizeof( stages[0] ) );
+		memcpy( this.stages, this.pd.parseStages, this.numStages /** sizeof( stages[0] )*/ );
+	}
 
-//	if ( this.numOps ) {
-//		ops = (expOp_t *)R_StaticAlloc( this.numOps * sizeof( ops[0] ) );
-//		memcpy( ops, this.pd.shaderOps, this.numOps * sizeof( ops[0] ) );
-//	}
+	if ( this.numOps ) {
+		this.ops = newStructArray<expOp_t>( expOp_t, this.numOps );
+		todoThrow("clone these: memcpy( ops, this.pd.shaderOps, this.numOps * sizeof( ops[0] ) );");
+	}
 
-//	if ( this.numRegisters ) {
-//		expressionRegisters = (float *)R_StaticAlloc( this.numRegisters * sizeof( expressionRegisters[0] ) );
-//		memcpy( expressionRegisters, this.pd.shaderRegisters, this.numRegisters * sizeof( expressionRegisters[0] ) );
-//	}
+	if ( this.numRegisters ) {
+		this.expressionRegisters = new Float32Array( this.numRegisters );// (float *)R_StaticAlloc( this.numRegisters * sizeof( expressionRegisters[0] ) );
+		todoThrow("clone these: memcpy( expressionRegisters, this.pd.shaderRegisters, this.numRegisters * sizeof( expressionRegisters[0] ) );");
+	}
 
-//	// see if the registers are completely constant, and don't need to be evaluated
-//	// per-surface
-//	CheckForConstantRegisters();
+	// see if the registers are completely constant, and don't need to be evaluated
+	// per-surface
+	this.CheckForConstantRegisters();
 
-//	this.pd = NULL;	// the pointer will be invalid after exiting this function
+	this.pd = null;	// the pointer will be invalid after exiting this function
 
-//	// finish things up
-//	if ( this.TestMaterialFlag( materialFlags_t.MF_DEFAULTED ) ) {
-//		MakeDefault();
-//		return false;
-//	}
+	// finish things up
+	if ( this.TestMaterialFlag( materialFlags_t.MF_DEFAULTED ) ) {
+		this.MakeDefault();
+		return false;
+	}
 	return true;
 }
 
@@ -2357,7 +2356,7 @@ Parses the current material definition and finds all necessary images.
 ////	refCount++;
 
 ////	for ( int i = 0; i < this.numStages; i++ ) {
-////		shaderStage_t *s = &stages[i];
+////		shaderStage_t *s = &this.stages[i];
 
 ////		if ( s.texture.image ) {
 ////			s.texture.image.AddReference();
@@ -2365,17 +2364,17 @@ Parses the current material definition and finds all necessary images.
 ////	}
 ////}
 
-/////*
-////===============
-////idMaterial::EvaluateRegisters
+/*
+===============
+idMaterial::EvaluateRegisters
 
-////Parameters are taken from the localSpace and the renderView,
-////then all expressions are evaluated, leaving the material registers
-////set to their apropriate values.
-////===============
-////*/
-////void idMaterial::EvaluateRegisters( float *registers, const float shaderParms[MAX_ENTITY_SHADER_PARMS],
-////									const viewDef_t *view, idSoundEmitter *soundEmitter ) const {
+Parameters are taken from the localSpace and the renderView,
+then all expressions are evaluated, leaving the material registers
+set to their apropriate values.
+===============
+*/
+EvaluateRegisters( /*float **/registers:Float32Array, /*const float */shaderParms:Float32Array/*[MAX_ENTITY_SHADER_PARMS]*/,
+	view: viewDef_t, soundEmitter: idSoundEmitter ):void {
 ////	int		i, b;
 ////	expOp_t	*op;
 
@@ -2469,7 +2468,7 @@ Parses the current material definition and finds all necessary images.
 ////		}
 ////	}
 
-////}
+}
 
 /////*
 ////=============
@@ -2477,10 +2476,10 @@ Parses the current material definition and finds all necessary images.
 ////=============
 ////*/
 ////texgen_t idMaterial::Texgen() const {
-////	if ( stages ) {
+////	if ( this.stages ) {
 ////		for ( int i = 0; i < this.numStages; i++ ) {
-////			if ( stages[ i ].texture.texgen != texgen_t.TG_EXPLICIT ) {
-////				return stages[ i ].texture.texgen;
+////			if ( this.stages[ i ].texture.texgen != texgen_t.TG_EXPLICIT ) {
+////				return this.stages[ i ].texture.texgen;
 ////			}
 ////		}
 ////	}
@@ -2514,10 +2513,10 @@ Parses the current material definition and finds all necessary images.
 ////=============
 ////*/
 ////int	idMaterial::CinematicLength() const {
-////	if ( !stages || !stages[0].texture.cinematic ) {
+////	if ( !this.stages || !this.stages[0].texture.cinematic ) {
 ////		return 0;
 ////	}
-////	return stages[0].texture.cinematic.AnimationLength();
+////	return this.stages[0].texture.cinematic.AnimationLength();
 ////}
 
 /////*
@@ -2526,10 +2525,10 @@ Parses the current material definition and finds all necessary images.
 ////=============
 ////*/
 ////void idMaterial::UpdateCinematic( int time ) const {
-////	if ( !stages || !stages[0].texture.cinematic || !backEnd.viewDef ) {
+////	if ( !this.stages || !this.stages[0].texture.cinematic || !backEnd.viewDef ) {
 ////		return;
 ////	}
-////	stages[0].texture.cinematic.ImageForTime( tr.primaryRenderView.time );
+////	this.stages[0].texture.cinematic.ImageForTime( tr.primaryRenderView.time );
 ////}
 
 /////*
@@ -2539,10 +2538,10 @@ Parses the current material definition and finds all necessary images.
 ////*/
 ////void idMaterial::CloseCinematic( void ) const {
 ////	for( int i = 0; i < this.numStages; i++ ) {
-////		if ( stages[i].texture.cinematic ) {
-////			stages[i].texture.cinematic.Close();
-////			delete stages[i].texture.cinematic;
-////			stages[i].texture.cinematic = NULL;
+////		if ( this.stages[i].texture.cinematic ) {
+////			this.stages[i].texture.cinematic.Close();
+////			delete this.stages[i].texture.cinematic;
+////			this.stages[i].texture.cinematic = NULL;
 ////		}
 ////	}
 ////}
@@ -2554,8 +2553,8 @@ Parses the current material definition and finds all necessary images.
 ////*/
 ////void idMaterial::ResetCinematicTime( int time ) const {
 ////	for( int i = 0; i < this.numStages; i++ ) {
-////		if ( stages[i].texture.cinematic ) {
-////			stages[i].texture.cinematic.ResetTime( time );
+////		if ( this.stages[i].texture.cinematic ) {
+////			this.stages[i].texture.cinematic.ResetTime( time );
 ////		}
 ////	}
 ////}
@@ -2569,34 +2568,33 @@ Parses the current material definition and finds all necessary images.
 ////	if ( !r_useConstantMaterials.GetBool() ) {
 ////		return NULL;
 ////	}
-////	return constantRegisters;
+////	return this.constantRegisters;
 ////}
 
-/////*
-////==================
-////idMaterial::CheckForConstantRegisters
+/*
+==================
+idMaterial::CheckForConstantRegisters
 
-////As of 5/2/03, about half of the unique materials loaded on typical
-////maps are constant, but 2/3 of the surface references are.
-////This is probably an optimization of dubious value.
-////==================
-////*/
-////static int	c_constant, c_variable;
-////void idMaterial::CheckForConstantRegisters() {
-////	if ( !this.pd.registersAreConstant ) {
-////		return;
-////	}
+As of 5/2/03, about half of the unique materials loaded on typical
+maps are constant, but 2/3 of the surface references are.
+This is probably an optimization of dubious value.
+==================
+*/
+///*static int	*/var c_constant=0, c_variable=0;
+CheckForConstantRegisters():void {
+	if ( !this.pd.registersAreConstant ) {
+		return;
+	}
 
-////	// evaluate the registers once, and save them 
-////	constantRegisters = (float *)R_ClearedStaticAlloc( GetNumRegisters() * sizeof( float ) );
+	// evaluate the registers once, and save them 
+	this.constantRegisters = new Float32Array( this.GetNumRegisters ( ) );
 
-////	float shaderParms[MAX_ENTITY_SHADER_PARMS];
-////	memset( shaderParms, 0, sizeof( shaderParms ) );
-////	viewDef_t	viewDef;
-////	memset( &viewDef, 0, sizeof( viewDef ) );
+	var  shaderParms = new Float32Array(MAX_ENTITY_SHADER_PARMS);
+	memset( shaderParms, 0, sizeof( shaderParms ) );
+	var viewDef = new viewDef_t;
 
-////	EvaluateRegisters( constantRegisters, shaderParms, &viewDef, 0 );
-////}
+	this.EvaluateRegisters( this.constantRegisters, shaderParms, /*&*/viewDef, 0 );
+}
 
 /////*
 ////===================
@@ -2607,7 +2605,7 @@ Parses the current material definition and finds all necessary images.
 ////	if ( this.numStages == 0 ) {
 ////		return "_scratch";
 ////	}
-////	idImage	*image = stages[0].texture.image;
+////	idImage	*image = this.stages[0].texture.image;
 ////	if ( image ) {
 ////		return image.imgName;
 ////	}
@@ -2623,7 +2621,7 @@ Parses the current material definition and finds all necessary images.
 ////*/
 ////void idMaterial::SetImageClassifications( int tag ) const {
 ////	for ( int i = 0 ; i < this.numStages ; i++ ) {
-////		idImage	*image = stages[i].texture.image;
+////		idImage	*image = this.stages[i].texture.image;
 ////		if ( image ) {
 ////			image.SetClassification( tag );
 ////		}
@@ -2688,8 +2686,8 @@ Parses the current material definition and finds all necessary images.
 ////*/
 ////const shaderStage_t *idMaterial::GetBumpStage( void ) const {
 ////	for ( int i = 0 ; i < this.numStages ; i++ ) {
-////		if ( stages[i].lighting == stageLighting_t.SL_BUMP ) {
-////			return &stages[i];
+////		if ( this.stages[i].lighting == stageLighting_t.SL_BUMP ) {
+////			return &this.stages[i];
 ////		}
 ////	}
 ////	return NULL;
@@ -2703,14 +2701,14 @@ Parses the current material definition and finds all necessary images.
 ////void idMaterial::ReloadImages( bool force ) const
 ////{
 ////	for ( int i = 0 ; i < this.numStages ; i++ ) {
-////		if ( stages[i].newStage ) {
-////			for ( int j = 0 ; j < stages[i].newStage.numFragmentProgramImages ; j++ ) {
-////				if ( stages[i].newStage.fragmentProgramImages[j] ) {
-////					stages[i].newStage.fragmentProgramImages[j].Reload( false, force );
+////		if ( this.stages[i].newStage ) {
+////			for ( int j = 0 ; j < this.stages[i].newStage.numFragmentProgramImages ; j++ ) {
+////				if ( this.stages[i].newStage.fragmentProgramImages[j] ) {
+////					this.stages[i].newStage.fragmentProgramImages[j].Reload( false, force );
 ////				}
 ////			}
-////		} else if ( stages[i].texture.image ) {
-////			stages[i].texture.image.Reload( false, force );
+////		} else if ( this.stages[i].texture.image ) {
+////			this.stages[i].texture.image.Reload( false, force );
 ////		}
 ////	}
 ////}
@@ -2738,30 +2736,30 @@ Parses the current material definition and finds all necessary images.
 //	void				ReloadImages( bool force ) const;
 
 //						// returns number of stages this material contains
-//	const int			GetNumStages( void ) const { return numStages; }
+//	const int			GetNumStages( void ) const { return this.numStages; }
 
 //						// get a specific stage
-//	const shaderStage_t *GetStage( const int index ) const { assert(index >= 0 && index < numStages); return &stages[index]; }
+//	const shaderStage_t *GetStage( const int index ) const { assert(index >= 0 && index < this.numStages); return &this.stages[index]; }
 
 //						// get the first bump map stage, or NULL if not present.
 //						// used for bumpy-specular
 //	const shaderStage_t *GetBumpStage( void ) const;
 
-//						// returns true if the material will draw anything at all.  Triggers, portals,
-//						// etc, will not have anything to draw.  A not drawn surface can still castShadow,
-//						// which can be used to make a simplified shadow hull for a complex object set
-//						// as noShadow
-//	bool				IsDrawn( void ) const { return ( numStages > 0 || entityGui != 0 || gui != NULL ); }
+						// returns true if the material will draw anything at all.  Triggers, portals,
+						// etc, will not have anything to draw.  A not drawn surface can still castShadow,
+						// which can be used to make a simplified shadow hull for a complex object set
+						// as noShadow
+	IsDrawn(): boolean { return (this.numStages > 0 || this.entityGui != 0 || this.gui != null ); }
 
 //						// returns true if the material will draw any non light interaction stages
-//	bool				HasAmbient( void ) const { return ( numAmbientStages > 0 ); }
+//	bool				HasAmbient( void ) const { return ( this.numAmbientStages > 0 ); }
 
 //						// returns true if material has a gui
 //	bool				HasGui( void ) const { return ( entityGui != 0 || gui != NULL ); }
 
 //						// returns true if the material will generate another view, either as
 //						// a mirror or dynamic rendered image
-//	bool				HasSubview( void ) const { return hasSubview; }
+//	bool				HasSubview( void ) const { return this.hasSubview; }
 
 //						// returns true if the material will generate shadows, not making a
 //						// distinction between global and no-self shadows
@@ -2769,12 +2767,12 @@ Parses the current material definition and finds all necessary images.
 
 //						// returns true if the material will generate interactions with fog/blend lights
 //						// All non-translucent surfaces receive fog unless they are explicitly noFog
-//	bool				ReceivesFog( void ) const { return ( IsDrawn() && !noFog && coverage != MC_TRANSLUCENT ); }
+//	bool				ReceivesFog( void ) const { return ( this.IsDrawn() && !noFog && coverage != MC_TRANSLUCENT ); }
 
 //						// returns true if the material will generate interactions with normal lights
 //						// Many special effect surfaces don't have any bump/diffuse/specular
 //						// stages, and don't interact with lights at all
-//	bool				ReceivesLighting( void ) const { return numAmbientStages != numStages; }
+//	bool				ReceivesLighting( void ) const { return this.numAmbientStages != this.numStages; }
 
 //						// returns true if the material should generate interactions on sides facing away
 //						// from light centers, as with noshadow and noselfshadow options
@@ -2797,24 +2795,24 @@ Parses the current material definition and finds all necessary images.
 //						// This will always return false for translucent surfaces
 //	bool				AllowOverlays( void ) const { return allowOverlays; }
 
-//						// MC_OPAQUE, MC_PERFORATED, or MC_TRANSLUCENT, for interaction list linking and
-//						// dmap flood filling
-//						// The depth buffer will not be filled for MC_TRANSLUCENT surfaces
-//						// FIXME: what do nodraw surfaces return?
-//	materialCoverage_t	Coverage( void ) const { return coverage; }
+	// MC_OPAQUE, MC_PERFORATED, or MC_TRANSLUCENT, for interaction list linking and
+	// dmap flood filling
+	// The depth buffer will not be filled for MC_TRANSLUCENT surfaces
+	// FIXME: what do nodraw surfaces return?
+	Coverage():materialCoverage_t { return this.coverage; }
 
-//						// returns true if this material takes precedence over other in coplanar cases
-//	bool				HasHigherDmapPriority( const idMaterial &other ) const { return ( IsDrawn() && !other.IsDrawn() ) ||
-//																						( Coverage() < other.Coverage() ); }
+	// returns true if this material takes precedence over other in coplanar cases
+	HasHigherDmapPriority(other: idMaterial ):boolean { return ( this.IsDrawn() && !other.IsDrawn() ) ||
+																						( this.Coverage() < other.Coverage() ); }
 
-//						// returns a idUserInterface if it has a global gui, or NULL if no gui
-//	idUserInterface	*	GlobalGui( void ) const { return gui; }
+	// returns a idUserInterface if it has a global gui, or NULL if no gui
+	GlobalGui ( ): idUserInterface { return this.gui; }
 
 //						// a discrete surface will never be merged with other surfaces by dmap, which is
 //						// necessary to prevent mutliple gui surfaces, mirrors, autosprites, and some other
 //						// special effects from being combined into a single surface
 //						// guis, merging sprites or other effects, mirrors and remote views are always discrete
-//	bool				IsDiscrete( void ) const { return ( entityGui || gui || deform != DFRM_NONE || sort == SS_SUBVIEW ||
+//	bool				IsDiscrete( void ) const { return ( entityGui || gui || deform != DFRM_NONE || this.sort == materialSort_t.SS_SUBVIEW ||
 //												( surfaceFlags & SURF_DISCRETE ) != 0 ); }
 
 //						// Normally, dmap chops each surface by every BSP boundary, then reoptimizes.
@@ -2869,11 +2867,11 @@ Parses the current material definition and finds all necessary images.
 	// test for existance of specific material flag(s)
 	TestMaterialFlag( /*const int */flag:number ):boolean { return ( this.materialFlags & flag ) != 0; }
 
-//						// get content flags
-//	const int			GetContentFlags( void ) const { return contentFlags; }
+						// get content flags
+	GetContentFlags( ):number { return this.contentFlags; }
 
-//						// get surface flags
-//	const int			GetSurfaceFlags( void ) const { return surfaceFlags; }
+							// get surface flags
+	GetSurfaceFlags( ):number { return this.surfaceFlags; }
 
 //						// gets name for surface type (stone, metal, flesh, etc.)
 //	const surfTypes_t	GetSurfaceType( void ) const { return static_cast<surfTypes_t>( surfaceFlags & surfaceFlags_t.SURF_TYPE_MASK ); }
@@ -2882,11 +2880,11 @@ Parses the current material definition and finds all necessary images.
 //	const char *		GetDescription( void ) const { return desc; }
 
 //						// get sort order
-//	const float			GetSort( void ) const { return sort; }
+//	const float			GetSort( void ) const { return this.sort; }
 //						// this is only used by the gui system to force sorting order
 //						// on images referenced from tga's instead of materials. 
 //						// this is done this way as there are 2000 tgas the guis use
-//	void				SetSort( float s ) const { sort = s; };
+//	void				SetSort( float s ) const { this.sort = s; };
 
 //						// DFRM_NONE, DFRM_SPRITE, etc
 //	deform_t			Deform( void ) const { return deform; }
@@ -2945,10 +2943,10 @@ Parses the current material definition and finds all necessary images.
 //						// just for resource tracking
 //	void				SetImageClassifications( int tag ) const;
 
-//	//------------------------------------------------------------------
+//------------------------------------------------------------------
 
-//						// returns number of registers this material contains
-//	const int			GetNumRegisters() const { return numRegisters; }
+// returns number of registers this material contains
+GetNumRegisters():number { return this.numRegisters; }
 
 //						// regs should point to a float array large enough to hold GetNumRegisters() floats
 //	void				EvaluateRegisters( float *regs, const float entityParms[MAX_ENTITY_SHADER_PARMS], 
@@ -3044,7 +3042,7 @@ Parses the current material definition and finds all necessary images.
 	/*int					*/numStages:number;
 	/*int					*/numAmbientStages:number;
 
-	/*shaderStage_t *		*/stages: shaderStage_t ;
+	/*shaderStage_t *		*/stages: shaderStage_t[] ;
 
 	/*struct mtrParsingData_s	**/pd: mtrParsingData_t;			// only used during parsing
 

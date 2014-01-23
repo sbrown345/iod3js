@@ -398,30 +398,30 @@ class idImageManager {
 
     ////	void				PrintMemInfo( MemInfo_t *mi );
 
-    ////	// built-in images
+    // built-in images
     defaultImage: idImage;
-    ////	idImage *			flatNormalMap;				// 128 128 255 in all pixels
-    ////	idImage *			ambientNormalMap;			// tr.ambientLightVector encoded in all pixels
-    ////	idImage *			rampImage;					// 0-255 in RGBA in S
-    ////	idImage *			alphaRampImage;				// 0-255 in alpha, 255 in RGB
-    ////	idImage *			alphaNotchImage;			// 2x1 texture with just 1110 and 1111 with point sampling
-    ////	idImage *			whiteImage;					// full of 0xff
-    ////	idImage *			blackImage;					// full of 0x00
-    ////	idImage *			normalCubeMapImage;			// cube map to normalize STR into RGB
-    ////	idImage *			noFalloffImage;				// all 255, but zero clamped
-    ////	idImage *			fogImage;					// increasing alpha is denser fog
-    ////	idImage *			fogEnterImage;				// adjust fogImage alpha based on terminator plane
-    ////	idImage *			cinematicImage;
-    ////	idImage *			scratchImage;
-    ////	idImage *			scratchImage2;
-    ////	idImage *			accumImage;
-    ////	idImage *			currentRenderImage;			// for SS_POST_PROCESS shaders
-    ////	idImage *			scratchCubeMapImage;
-    ////	idImage *			specularTableImage;			// 1D intensity texture with our specular function
-    ////	idImage *			specular2DTableImage;		// 2D intensity texture with our specular function with variable specularity
-    ////	idImage *			borderClampImage;			// white inside, black outside
+    flatNormalMap:idImage;				// 128 128 255 in all pixels
+    ambientNormalMap:idImage;			// tr.ambientLightVector encoded in all pixels
+    rampImage:idImage;					// 0-255 in RGBA in S
+    alphaRampImage:idImage;				// 0-255 in alpha, 255 in RGB
+    alphaNotchImage:idImage;			// 2x1 texture with just 1110 and 1111 with point sampling
+    whiteImage:idImage;					// full of 0xff
+    blackImage:idImage;					// full of 0x00
+    normalCubeMapImage:idImage;			// cube map to normalize STR into RGB
+    noFalloffImage:idImage;				// all 255, but zero clamped
+    fogImage:idImage;					// increasing alpha is denser fog
+    fogEnterImage:idImage;				// adjust fogImage alpha based on terminator plane
+    cinematicImage:idImage;
+    scratchImage:idImage;
+    scratchImage2:idImage;
+    accumImage:idImage;
+    currentRenderImage:idImage;			// for SS_POST_PROCESS shaders
+    scratchCubeMapImage:idImage;
+    specularTableImage:idImage;			// 1D intensity texture with our specular function
+    specular2DTableImage:idImage;		// 2D intensity texture with our specular function with variable specularity
+    borderClampImage:idImage;			// white inside, black outside
 
-    ////	//--------------------------------------------------------
+    //--------------------------------------------------------
 
 	AllocImage(name: string): idImage { throw "placeholder"; }
     ////	void				SetNormalPalette();
@@ -433,8 +433,8 @@ class idImageManager {
 
     insideLevelLoad:boolean;			// don't actually load images now
 
-    ////	byte				originalToCompressed[256];	// maps normal maps to 8 bit textures
-    ////	byte				compressedPalette[768];		// the palette that normal maps use
+    originalToCompressed:Uint8Array/*[256]*/;	// maps normal maps to 8 bit textures
+    compressedPalette:Uint8Array/*[768]*/;		// the palette that normal maps use
 
     // default filter modes for images
     /*GLenum		*/	textureMinFilter:number;
@@ -444,7 +444,7 @@ class idImageManager {
 
     imageHashTable:Array<idImage>;
 
-    ////	idImage *			backgroundImageLoads;		// chain of images that have background file loads active
+	backgroundImageLoads: idImage;		// chain of images that have background file loads active
     cacheLRU:idImage;					// head/tail of doubly linked list
     /*int					*/totalCachedImageSize:number;		// for determining when something should be purged
 

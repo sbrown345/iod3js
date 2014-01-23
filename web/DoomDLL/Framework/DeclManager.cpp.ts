@@ -126,7 +126,7 @@ class idDeclLocal extends idDeclBase {
 /*	virtual void				*/SetText( text:string ):void{throw "placeholder";}
 /*	virtual bool				*/ReplaceSourceFileText( ):boolean{throw "placeholder";}
 /*	virtual bool				*/SourceFileChanged( ):boolean{throw "placeholder";}
-/*	virtual void				*/MakeDefault( ):void{}
+/*	virtual void				*/MakeDefault(): void { throw "placeholder"; }
 /*	virtual bool				*/EverReferenced( ):boolean { throw "placeholder"; }
 
 //protected:
@@ -2075,57 +2075,57 @@ idDeclLocal.prototype.SetTextLocal = function ( text: Uint8Array, /*const int */
 ////	return false;
 ////}
 
-/////*
-////=================
-////idDeclLocal::MakeDefault
-////=================
-////*/
-////void idDeclLocal::MakeDefault() {
-////	static int recursionLevel;
-////	const char *defaultText;
+/*
+=================
+idDeclLocal::MakeDefault
+=================
+*/
+var recursionLevel = 0;
+idDeclLocal.prototype.MakeDefault = function ( ): void {
+	var defaultText: string;
 
-////	declManagerLocal.MediaPrint( "DEFAULTED\n" );
-////	declState = declState_t.DS_DEFAULTED;
+	declManagerLocal.MediaPrint( "DEFAULTED\n" );
+	this.declState = declState_t.DS_DEFAULTED;
 
-////	AllocateSelf();
+	this.AllocateSelf ( );
 
-////	defaultText = self.DefaultDefinition();
+	defaultText = this.self.DefaultDefinition ( );
 
-////	// a parse error inside a DefaultDefinition() string could
-////	// cause an infinite loop, but normal default definitions could
-////	// still reference other default definitions, so we can't
-////	// just dump out on the first recursion
-////	if ( ++recursionLevel > 100 ) {
-////		common.FatalError( "idDecl::MakeDefault: bad DefaultDefinition(): %s", defaultText );
-////	}
+	// a parse error inside a DefaultDefinition() string could
+	// cause an infinite loop, but normal default definitions could
+	// still reference other default definitions, so we can't
+	// just dump out on the first recursion
+	if ( ++recursionLevel > 100 ) {
+		common.FatalError( "idDecl::MakeDefault: bad DefaultDefinition(): %s", defaultText );
+	}
 
-////	// always free data before parsing
-////	self.FreeData();
+	// always free data before parsing
+	this.self.FreeData ( );
 
-////	// parse
-////	self.Parse( defaultText, strlen( defaultText ) );
+	// parse
+	this.self.Parse( defaultText, strlen( defaultText ) );
 
-////	// we could still eventually hit the recursion if we have enough Error() calls inside Parse...
-////	--recursionLevel;
-////}
+	// we could still eventually hit the recursion if we have enough Error() calls inside Parse...
+	--recursionLevel;
+};
 
-/////*
-////=================
-////idDeclLocal::SetDefaultText
-////=================
-////*/
-////bool idDeclLocal::SetDefaultText( ) {
-////	return false;
-////}
+/*
+=================
+idDeclLocal::SetDefaultText
+=================
+*/
+idDeclLocal.prototype.SetDefaultText = function ( ): boolean {
+	return false;
+};
 
-/////*
-////=================
-////idDeclLocal::DefaultDefinition
-////=================
-////*/
-////const char *idDeclLocal::DefaultDefinition() const {
-////	return "{ }";
-////}
+/*
+=================
+idDeclLocal::DefaultDefinition
+=================
+*/
+idDeclLocal.prototype.DefaultDefinition = function ( ): string {
+	return "{ }";
+};
 
 /*
 =================

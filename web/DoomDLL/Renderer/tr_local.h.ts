@@ -368,8 +368,8 @@ class /*viewEntity_s*/viewEntity_t {
 
 ////const int	MAX_CLIP_PLANES	= 1;				// we may expand this to six for some subview issues
 
-////// viewDefs are allocated on the frame temporary stack memory
-////typedef struct viewDef_s {
+// viewDefs are allocated on the frame temporary stack memory
+class viewDef_t {
 ////	// specified in the call to DrawScene()
 ////	renderView_t		renderView;
 
@@ -432,7 +432,7 @@ class /*viewEntity_s*/viewEntity_t {
 ////	// crossing a closed door.  This is used to avoid drawing interactions
 ////	// when the light is behind a closed door.
 
-////} viewDef_t;
+};
 
 
 ////// complex light / surface interactions are broken up into multiple passes of a

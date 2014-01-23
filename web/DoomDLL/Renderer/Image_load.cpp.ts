@@ -1581,7 +1581,7 @@ On exit, the idImage will have a valid OpenGL texture number that can be bound
 idImage.prototype.ActuallyLoadImage = function( checkForPrecompressed:boolean, fromBackEnd:boolean ):void {
 	var/*int		*/width = new R(0), height = new R(0);
     var /*byte	**/pic = new R<Uint8Array>();
-
+	dlog(true, "ActuallyLoadImage: %s\n", this.imgName.c_str());
 	// this is the ONLY place generatorFunction will ever be called
 	if ( this.generatorFunction ) {
 		this.generatorFunction( this );
