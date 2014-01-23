@@ -1,22 +1,28 @@
-﻿//interface ITypeInfo {
-//    typeInfo: string[][];
-//    size: number;
-//}
+﻿interface ITypeInfo {
+    //typeInfo: string[][];
+    //size: number;
+}
 
-//function ITypeInfoLogger(v: ITypeInfo, typeInfo: string[][]) {
-//    for (var j = 0; j < typeInfo.length; j++) {
-//        var name = typeInfo[j][0];   
-//        var type = typeInfo[j][1];   
-//        console.log(name + ": " + v[name] + "\t\t(" + type + ")");
-//    }
-//}
+function ITypeInfoLogger(v: ITypeInfo, typeInfo: string[][]):void {
+    for (var i = 0; i < typeInfo.length; i++) {
+        var name = typeInfo[i][0];   
+        var type = typeInfo[i][1];   
+        console.log(name + ": " + v[name] + "\t\t(" + type + ")");
+    }
+}
 
-//function ITypeInfoCopier(dest: ITypeInfo, source: ITypeInfo, typeInfo: string[][]) {
-//    for (var j = 0; j < typeInfo.length; j++) {
-//        var name = typeInfo[j][0];   
-//        dest[name] = source[name]; 
-//    }
-//}
+function ITypeInfoCopier(dest: ITypeInfo, source: ITypeInfo, typeInfo: string[][]):void {
+    for (var i = 0; i < typeInfo.length; i++) {
+        var name = typeInfo[i][0];   
+        dest[name] = source[name]; 
+    }
+}
+
+function memcpyStruct(dest: ITypeInfo[], source: ITypeInfo[], count: number, typeInfo: string[][]):void {
+	for ( var i = 0; i < count; i++ ) {
+		ITypeInfoCopier( dest[i], source[i], typeInfo );
+	}
+}
 
 //var int8ConvertArray = new Int8Array(1);
 //var int8 = function (v: number): number {

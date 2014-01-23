@@ -216,7 +216,7 @@ GenerateCubeImage( /*const byte *pic[6]*/pic:Uint8Array[], /*int*/ size: number,
 //	void		SetImageFilterAndRepeat() const;
 	ShouldImageBePartialCached():boolean { throw "placeholder"; }
 //	void		WritePrecompressedImage();
-//	bool		CheckPrecompressedImage( bool fullLoad );
+	CheckPrecompressedImage( fullLoad: boolean ):boolean { throw "placeholder"; }
 //	void		UploadPrecompressedImage( byte *data, int len );
 	ActuallyLoadImage(checkForPrecompressed: boolean, fromBackEnd: boolean): void { throw "placeholder";}
 //	void		StartBackgroundImageLoad();
@@ -453,28 +453,28 @@ class idImageManager {
 
     constructor() {
 
-        //////built-in images
-        //this.defaultImage=null;
-        //this.flatNormalMap=null;				// 128 128 255 in all pixels
-        //this.ambientNormalMap=null;			// tr.ambientLightVector encoded in all pixels
-        //this.rampImage=null;					// 0-255 in RGBA in S
-        //this.alphaRampImage=null;				// 0-255 in alpha, 255 in RGB
-        //this.alphaNotchImage=null;			// 2x1 texture with just 1110 and 1111 with point sampling
-        //this.whiteImage=null;					// full of 0xff
-        //this.blackImage=null;					// full of 0x00
-        //this.normalCubeMapImage=null;			// cube map to normalize STR into RGB
-        //this.noFalloffImage=null;				// all 255, but zero clamped
-        //this.fogImage=null;					// increasing alpha is denser fog
-        //this.fogEnterImage=null;				// adjust fogImage alpha based on terminator plane
-        //this.cinematicImage=null;
-        //this.scratchImage=null;
-        //this.scratchImage2=null;
-        //this.accumImage=null;
-        //this.currentRenderImage=null;			// for SS_POST_PROCESS shaders
-        //this.scratchCubeMapImage=null;
-        //this.specularTableImage=null;			// 1D intensity texture with our specular function
-        //this.specular2DTableImage=null;		// 2D intensity texture with our specular function with variable specularity
-        //this.borderClampImage=null;			// white inside, black outside
+        //built-in images
+        this.defaultImage=null;
+        this.flatNormalMap=null;				// 128 128 255 in all pixels
+        this.ambientNormalMap=null;			// tr.ambientLightVector encoded in all pixels
+        this.rampImage=null;					// 0-255 in RGBA in S
+        this.alphaRampImage=null;				// 0-255 in alpha, 255 in RGB
+        this.alphaNotchImage=null;			// 2x1 texture with just 1110 and 1111 with point sampling
+        this.whiteImage=null;					// full of 0xff
+        this.blackImage=null;					// full of 0x00
+        this.normalCubeMapImage=null;			// cube map to normalize STR into RGB
+        this.noFalloffImage=null;				// all 255, but zero clamped
+        this.fogImage=null;					// increasing alpha is denser fog
+        this.fogEnterImage=null;				// adjust fogImage alpha based on terminator plane
+        this.cinematicImage=null;
+        this.scratchImage=null;
+        this.scratchImage2=null;
+        this.accumImage=null;
+        this.currentRenderImage=null;			// for SS_POST_PROCESS shaders
+        this.scratchCubeMapImage=null;
+        this.specularTableImage=null;			// 1D intensity texture with our specular function
+        this.specular2DTableImage=null;		// 2D intensity texture with our specular function with variable specularity
+        this.borderClampImage=null;			// white inside, black outside
 
 	    this.images = new idList<idImage>( idImage );
 //	idStrList			this.ddsList;

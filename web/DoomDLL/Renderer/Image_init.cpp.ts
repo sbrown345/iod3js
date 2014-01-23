@@ -1452,7 +1452,7 @@ Loading of the image may be deferred for dynamic loading.
 ==============
 */
 idImageManager.prototype.ImageFromFile = function ( _name: string, filter: textureFilter_t, allowDownSize: boolean,
-	repeat: textureRepeat_t, depth: textureDepth_t, cubeMapL: cubeFiles_t = cubeFiles_t.CF_2D ): idImage {
+	repeat: textureRepeat_t, depth: textureDepth_t, cubeMap: cubeFiles_t = cubeFiles_t.CF_2D ): idImage {
 
 	var name: idStr;
 	var image: idImage;
@@ -1478,7 +1478,7 @@ idImageManager.prototype.ImageFromFile = function ( _name: string, filter: textu
 			if ( name[0] == '_' ) {
 				return image;
 			}
-			if ( image.cubeFiles != this.cubeMap ) {
+			if ( image.cubeFiles != cubeMap ) {
 				common.Error( "Image '%s' has been referenced with conflicting cube map states", _name );
 			}
 
@@ -1543,7 +1543,7 @@ idImageManager.prototype.ImageFromFile = function ( _name: string, filter: textu
 	image.repeat = repeat;
 	image.depth = depth;
 	image.type = textureType_t.TT_2D;
-	image.cubeFiles = this.cubeMap;
+	image.cubeFiles = cubeMap;
 	image.filter = filter;
 
 	image.levelLoadReferenced = true;
@@ -1557,7 +1557,7 @@ idImageManager.prototype.ImageFromFile = function ( _name: string, filter: textu
 		image.partialImage.repeat = repeat;
 		image.partialImage.depth = depth;
 		image.partialImage.type = textureType_t.TT_2D;
-		image.partialImage.cubeFiles = this.cubeMap;
+		image.partialImage.cubeFiles = cubeMap;
 		image.partialImage.filter = filter;
 
 		image.partialImage.levelLoadReferenced = true;

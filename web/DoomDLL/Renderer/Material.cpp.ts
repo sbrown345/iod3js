@@ -2272,7 +2272,7 @@ Parses the current material definition and finds all necessary images.
 
 	if (this.numStages) {
 		this.stages = newStructArray<shaderStage_t>( shaderStage_t, this.numStages ); //(shaderStage_t *)R_StaticAlloc( this.numStages * sizeof( stages[0] ) );
-		memcpy( this.stages, this.pd.parseStages, this.numStages /** sizeof( stages[0] )*/ );
+		memcpyStruct( this.stages, this.pd.parseStages, this.numStages , shaderStage_t.typeInfo);
 	}
 
 	if ( this.numOps ) {
@@ -2282,7 +2282,7 @@ Parses the current material definition and finds all necessary images.
 
 	if ( this.numRegisters ) {
 		this.expressionRegisters = new Float32Array( this.numRegisters );// (float *)R_StaticAlloc( this.numRegisters * sizeof( expressionRegisters[0] ) );
-		todoThrow("clone these: memcpy( expressionRegisters, this.pd.shaderRegisters, this.numRegisters * sizeof( expressionRegisters[0] ) );");
+		memcpy( this.expressionRegisters, this.pd.shaderRegisters, this.numRegisters * this.expressionRegisters.BYTES_PER_ELEMENT );
 	}
 
 	// see if the registers are completely constant, and don't need to be evaluated

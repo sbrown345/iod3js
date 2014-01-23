@@ -87,7 +87,7 @@
 ////void R_WriteTGA( const char *filename, const byte *data, int width, int height, bool flipVertical ) {
 ////	byte	*buffer;
 ////	int		i;
-////	int		bufferSize = width*height*4 + 18;
+////	int		bufferSize = widthheight.$*4 + 18;
 ////	int     imgStart = 18;
 
 ////	buffer = (byte *)Mem_Alloc( bufferSize );
@@ -330,9 +330,9 @@
 ////	numPixels = columns * rows;
 
 ////	if ( width ) 
-////		*width = columns;
+////		width.$ = columns;
 ////	if ( height )
-////		*height = rows;
+////		height.$ = rows;
 
 ////	bmpRGBA = (byte *)R_StaticAlloc( numPixels * 4 );
 ////	*pic = bmpRGBA;
@@ -470,9 +470,9 @@
 ////	}
 
 ////	if (width)
-////		*width = xmax+1;
+////		width.$ = xmax+1;
 ////	if (height)
-////		*height = ymax+1;
+////		height.$ = ymax+1;
 ////// FIXME: use bytes_per_line here?
 
 ////	for (y=0 ; y<=ymax ; y++, pix += xmax+1)
@@ -527,7 +527,7 @@
 ////		return;
 ////	}
 
-////	c = (*width) * (*height);
+////	c = (width.$) * (height.$);
 ////	pic32 = *pic = (byte *)R_StaticAlloc(4 * c );
 ////	for (i = 0 ; i < c ; i++) {
 ////		p = pic8[i];
@@ -625,10 +625,10 @@
 ////	numPixels = columns * rows;
 
 ////	if ( width ) {
-////		*width = columns;
+////		width.$ = columns;
 ////	}
 ////	if ( height ) {
-////		*height = rows;
+////		height.$ = rows;
 ////	}
 
 ////	targa_rgba = (byte *)R_StaticAlloc(numPixels*4);
@@ -781,7 +781,7 @@
 ////	}
 
 ////	if ( (targa_header.attributes & (1<<5)) ) {			// image flp bit
-////		R_VerticalFlip( *pic, *width, *height );
+////		R_VerticalFlip( *pic, width.$, height.$ );
 ////	}
 
 ////	fileSystem.FreeFile( buffer );
@@ -847,7 +847,7 @@
 ////		}
 ////		len = f.Length();
 ////		if ( timestamp ) {
-////			*timestamp = f.Timestamp();
+////			timestamp.$ = f.Timestamp();
 ////		}
 ////		if ( !pic ) {
 ////			fileSystem.CloseFile( f );
@@ -913,8 +913,8 @@
 ////  out = (byte *)R_StaticAlloc(cinfo.output_width*cinfo.output_height*4);
 
 ////  *pic = out;
-////  *width = cinfo.output_width;
-////  *height = cinfo.output_height;
+////  width.$ = cinfo.output_width;
+////  height.$ = cinfo.output_height;
 
 ////  /* Step 6: while (scan lines remain to be read) */
 ////  /*           jpeg_read_scanlines(...); */
@@ -998,54 +998,54 @@ timestamp.
 =================
 */
 function R_LoadImage( cname:string, pic:R<Uint8Array>, /*int **/width:R < Number>, /*int **/height:R < Number>, /*ID_TIME_T **/timestamp:R<Number>, makePowerOf2:boolean ):void {
-	todoThrow ( );
-	//idStr name = cname;
+	var name = new idStr(cname);
 
-////	if ( pic ) {
-////		*pic = NULL;
-////	}
-////	if ( timestamp ) {
-////		*timestamp = 0xFFFFFFFF;
-////	}
-////	if ( width ) {
-////		*width = 0;
-////	}
-////	if ( height ) {
-////		*height = 0;
-////	}
+	if ( pic.$ ) {
+		pic.$ = null;
+	}
+	if ( timestamp ) {
+		timestamp.$ = 0xFFFFFFFF;
+	}
+	if ( width ) {
+		width.$ = 0;
+	}
+	if ( height ) {
+		height.$ = 0;
+	}
 
-////	name.DefaultFileExtension( ".tga" );
+	name.DefaultFileExtension( ".tga" );
 
-////	if (name.Length()<5) {
-////		return;
-////	}
+	if (name.Length()<5) {
+		return;
+	}
 
-////	name.ToLower();
-////	idStr ext;
-////	name.ExtractFileExtension( ext );
+	name.ToLower();
+	var ext = new idStr;
+	name.ExtractFileExtension( ext );
 
-////	if ( ext == "tga" ) {
-////		LoadTGA( name.c_str(), pic, width, height, timestamp );            // try tga first
-////		if ( ( pic && *pic == 0 ) || ( timestamp && *timestamp == -1 ) ) {
-////			name.StripFileExtension();
-////			name.DefaultFileExtension( ".jpg" );
-////			LoadJPG( name.c_str(), pic, width, height, timestamp );
-////		}
-////	} else if ( ext == "pcx" ) {
-////		LoadPCX32( name.c_str(), pic, width, height, timestamp );
-////	} else if ( ext == "bmp" ) {
-////		LoadBMP( name.c_str(), pic, width, height, timestamp );
-////	} else if ( ext == "jpg" ) {
-////		LoadJPG( name.c_str(), pic, width, height, timestamp );
-////	}
 
-////	if ( ( width && *width < 1 ) || ( height && *height < 1 ) ) {
-////		if ( pic && *pic ) {
-////			R_StaticFree( *pic );
-////			*pic = 0;
-////		}
-////	}
+	if ( ext.data == "tga" ) {
+		this.LoadTGA( name.c_str(), pic, width, height, timestamp );            // try tga first
+		if ( ( pic && *pic == 0 ) || ( timestamp && timestamp.$ == -1 ) ) {
+			name.StripFileExtension();
+			name.DefaultFileExtension( ".jpg" );
+			this.LoadJPG( name.c_str(), pic, width, height, timestamp );
+		}
+	} else if (ext.data == "pcx" ) {
+		this.LoadPCX32( name.c_str(), pic, width, height, timestamp );
+	} else if (ext.data == "bmp" ) {
+		this.LoadBMP( name.c_str(), pic, width, height, timestamp );
+	} else if (ext.data == "jpg" ) {
+		this.LoadJPG( name.c_str(), pic, width, height, timestamp );
+	}
 
+	if ( ( width && width.$ < 1 ) || ( height && height.$ < 1 ) ) {
+		if ( pic && *pic ) {
+			R_StaticFree( *pic );
+			*pic = 0;
+		}
+	}
+	todoThrow();
 ////	//
 ////	// convert to exact power of 2 sizes
 ////	//
@@ -1054,8 +1054,8 @@ function R_LoadImage( cname:string, pic:R<Uint8Array>, /*int **/width:R < Number
 ////		int		scaled_width, scaled_height;
 ////		byte	*resampledBuffer;
 
-////		w = *width;
-////		h = *height;
+////		w = width.$;
+////		h = height.$;
 
 ////		for (scaled_width = 1 ; scaled_width < w ; scaled_width<<=1)
 ////			;
@@ -1073,8 +1073,8 @@ function R_LoadImage( cname:string, pic:R<Uint8Array>, /*int **/width:R < Number
 ////			resampledBuffer = R_ResampleTexture( *pic, w, h, scaled_width, scaled_height );
 ////			R_StaticFree( *pic );
 ////			*pic = resampledBuffer;
-////			*width = scaled_width;
-////			*height = scaled_height;
+////			width.$ = scaled_width;
+////			height.$ = scaled_height;
 ////		}
 ////	}
 }
@@ -1109,7 +1109,7 @@ function R_LoadCubeImages(imgName: string, extensions: cubeFiles_t, /*byte **/pi
 ////		memset( pics, 0, 6*sizeof(pics[0]) );
 ////	}
 ////	if ( timestamp ) {
-////		*timestamp = 0;
+////		timestamp.$ = 0;
 ////	}
 
 ////	for ( i = 0 ; i < 6 ; i++ ) {
@@ -1133,8 +1133,8 @@ function R_LoadCubeImages(imgName: string, extensions: cubeFiles_t, /*byte **/pi
 ////			break;
 ////		}
 ////		if ( timestamp ) {
-////			if ( thisTime > *timestamp ) {
-////				*timestamp = thisTime;
+////			if ( thisTime > timestamp.$ ) {
+////				timestamp.$ = thisTime;
 ////			}
 ////		}
 ////		if ( pics && extensions == cubeFiles_t.CF_CAMERA ) {
@@ -1173,7 +1173,7 @@ function R_LoadCubeImages(imgName: string, extensions: cubeFiles_t, /*byte **/pi
 ////		}
 
 ////		if ( timestamp ) {
-////			*timestamp = 0;
+////			timestamp.$ = 0;
 ////		}
 ////		return false;
 ////	}

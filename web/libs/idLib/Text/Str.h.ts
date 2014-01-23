@@ -773,27 +773,32 @@ Clear( ):void {
 ////	this.data[ len ] = '\0';
 ////}
 
-	Append(text: string): void {
+	Append ( text: string, l: number = null ): void {
 		if ( typeof text != "string" ) {
 			throw "not a string";
 		}
 
-		if ( text ) {
-			this.data += text;
-			this.len = this.data.length;
-		}
-		//int newLen;
-		//int i;
+		if ( arguments.length == 1 ) {
+			if ( text ) {
+				this.data += text;
+				this.len = this.data.length;
+			}
+		} else if ( arguments.length == 2 ) {
+			var newLen: number;
+			var i: number;
 
-		//if ( text ) {
-		//	newLen = len + strlen( text );
-		//	EnsureAlloced( newLen + 1 );
-		//	for ( i = 0; text[ i ]; i++ ) {
-		//		this.data[ len + i ] = text[ i ];
-		//	}
-		//	len = newLen;
-		//	this.data[ len ] = '\0';
-		//}
+			if ( text && l ) {
+				newLen = this.len + l;
+				//this.EnsureAlloced( newLen + 1 );
+				//for ( i = 0; text[i] && i < l; i++ ) {
+				//	this.data[this.len + i] = text[i];
+				//}
+				this.data += text.substr( l );
+				this.len = newLen;
+				//this.data[this.len] = '\0';
+			}
+		}
+
 	}
 
 ////ID_INLINE void idStr::Append( const char *text, int l ) {
@@ -928,13 +933,13 @@ Find( text:string, casesensitive = true, /*int */start = 0, /*int */end = -1):nu
 ////	return Mid( 0, len, result );
 ////}
 
-////ID_INLINE const char *idStr::Right( int len, idStr &result ) const {
-////	if ( len >= Length() ) {
-////		result = *this;
-////		return result;
-////	}
-////	return Mid( Length() - len, len, result );
-////}
+	Right ( /*int */len: number, result: R<idStr> ): string {
+		if ( this.len >= this.Length ( ) ) {
+			result.$ = this;
+			return result.$.data;
+		}
+		return this.Mid( this.Length ( ) - this.len, this.len, result );
+	}
 
 ////ID_INLINE idStr idStr::Left( int len ) const {
 ////	return Mid( 0, len );
@@ -1619,28 +1624,28 @@ idStr::Replace
 		this.data = this.data.replace( new RegExp( escapeRegExp( old ), 'g' ), nw );
 	}
 
-/////*
-////============
-////idStr::Mid
-////============
-////*/
-////const char *idStr::Mid( int start, int len, idStr &result ) const {
-////	int i;
+/*
+============
+idStr::Mid
+============
+*/
+	Mid ( /*int */start: number, /*int */len: number, result: idStr ): string {
+		var /*int */i: number;
 
-////	result.Empty();
+		result.Empty ( );
 
-////	i = Length();
-////	if ( i == 0 || len <= 0 || start >= i ) {
-////		return NULL;
-////	}
+		i = this.Length ( );
+		if ( i == 0 || len <= 0 || start >= i ) {
+			return null;
+		}
 
-////	if ( start + len >= i ) {
-////		len = i - start;
-////	}
+		if ( start + len >= i ) {
+			len = i - start;
+		}
 
-////	result.Append( &data[ start ], len );
-////	return result;
-////}
+		result.Append( /*&*/this.data[start], this.len );
+		return result.data;
+	}
 
 /////*
 ////============
@@ -1802,26 +1807,26 @@ idStr::Replace
 ////	return *this;
 ////}
 
-/////*
-////==================
-////idStr::DefaultFileExtension
-////==================
-////*/
-////idStr &idStr::DefaultFileExtension( const char *extension ) {
-////	int i;
+/*
+==================
+idStr::DefaultFileExtension
+==================
+*/
+DefaultFileExtension( extension:string ):idStr {
+	var i:number;
 
-////	// do nothing if the string already has an extension
-////	for ( i = len-1; i >= 0; i-- ) {
-////		if ( this.data[i] == '.' ) {
-////			return *this;
-////		}
-////	}
-////	if ( *extension != '.' ) {
-////		Append( '.' );
-////	}
-////	Append( extension );
-////	return *this;
-////}
+	// do nothing if the string already has an extension
+	for ( i = this.len-1; i >= 0; i-- ) {
+		if ( this.data[i] == '.' ) {
+			return this;
+		}
+	}
+	if ( extension != '.' ) {
+		this.Append( '.' );
+	}
+	this.Append( extension );
+	return this;
+}
 
 /////*
 ////==================
@@ -1973,29 +1978,29 @@ idStr::Replace
 ////	Mid( start, pos - start, dest );
 ////}
 
-/////*
-////====================
-////idStr::ExtractFileExtension
-////====================
-////*/
-////void idStr::ExtractFileExtension( idStr &dest ) const {
-////	int pos;
+/*
+====================
+idStr::ExtractFileExtension
+====================
+*/
+	ExtractFileExtension(dest: idStr  ):void {
+	var pos:number;
 
-////	//
-////	// back up until a . or the start
-////	//
-////	pos = Length() - 1;
-////	while( ( pos > 0 ) && ( ( *this )[ pos - 1 ] != '.' ) ) {
-////		pos--;
-////	}
+	//
+	// back up until a . or the start
+	//
+	pos = this.Length() - 1;
+	while( ( pos > 0 ) && ( ( this.data )[ pos - 1 ] != '.' ) ) {
+		pos--;
+	}
 
-////	if ( !pos ) {
-////		// no extension
-////		dest.Empty();
-////	} else {
-////		Right( Length() - pos, dest );
-////	}
-////}
+	if ( !pos ) {
+		// no extension
+		dest.Empty();
+	} else {
+		this.Right(this.Length() - pos, dest );
+	}
+}
 
 
 /*

@@ -1332,14 +1332,14 @@ idImage.prototype.ShouldImageBePartialCached = function ():boolean {
 	return true;
 }
 
-/////*
-////================
-////CheckPrecompressedImage
+/*
+================
+CheckPrecompressedImage
 
-////If fullLoad is false, only the small mip levels of the image will be loaded
-////================
-////*/
-////bool idImage::CheckPrecompressedImage( bool fullLoad ) {
+If fullLoad is false, only the small mip levels of the image will be loaded
+================
+*/
+idImage.prototype.CheckPrecompressedImage = function( fullLoad:boolean ):boolean {
 ////#if !defined(GL_ES_VERSION_2_0)
 ////	if ( !glConfig.isInitialized || !glConfig.textureCompressionAvailable ) {
 ////		return false;
@@ -1429,9 +1429,9 @@ idImage.prototype.ShouldImageBePartialCached = function ():boolean {
 ////	R_StaticFree( data );
 
 ////#else
-////	return false;
+	return false;
 ////#endif
-////}
+};
 
 /////*
 ////===================
@@ -1636,7 +1636,7 @@ idImage.prototype.ActuallyLoadImage = function( checkForPrecompressed:boolean, f
 
 		var $timestamp = new R( this.timestamp );
 		var $depth = new R( this.depth );
-		R_LoadImageProgram(this.imgName, pic, width, height, $timestamp, $depth);
+		R_LoadImageProgram(this.imgName.data, pic, width, height, $timestamp, $depth);
 		this.timestamp = $timestamp.$;
 		this.depth = $depth.$;
 

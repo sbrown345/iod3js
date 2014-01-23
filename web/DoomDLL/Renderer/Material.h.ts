@@ -172,12 +172,24 @@ class textureStage_t {
 	image: idImage;
 	texgen: texgen_t;
 	hasMatrix:boolean;
-//	int					matrix[2][3];	// we only allow a subset of the full projection matrix
+	matrix:Int32Array[];//[2][3];	// we only allow a subset of the full projection matrix
 
 	// dynamic image variables
 	dynamic:dynamicidImage_t	;
 	/*	int				*/	width:number; height:number;
 	/*	int				*/	dynamicFrameCount: number;
+
+	constructor ( ) {
+		this.cinematic = null;
+		this.image = null;
+		this.texgen = 0;
+		this.hasMatrix = false;
+		this.matrix = multiDimArray<Int32Array>(Int32Array, 2, 3);
+		this.dynamic = 0;
+		this.width = 0;
+		this.height = 0;
+		this.dynamicFrameCount = 0;
+	}
 };
 
 
@@ -242,6 +254,24 @@ class shaderStage_t {
 
 		this.newStage = null;
 	}
+
+	static typeInfo = [
+		["conditionRegister", ""],
+		["lighting", ""],
+		["drawStateBits", ""],
+		["color", ""],
+		["hasAlphaTest", ""],
+		["alphaTestRegister", ""],
+		["texture", ""],
+		["vertexColor", ""],
+		["ignoreAlphaTest", ""],
+		
+		["privatePolygonOffset", ""],
+		
+		["newStage", ""],
+		["dynamicFrameCount", ""],
+		["dynamicFrameCount", ""]
+	];
 };
 
 enum materialCoverage_t {
