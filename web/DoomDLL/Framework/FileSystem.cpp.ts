@@ -4,6 +4,7 @@
 /// <reference path="FileSystem.h.ts" />
 /// <reference path="files.ts" />
 /// <reference path="../../libs/idLib/Containers/HashIndex.h.ts" />
+/// <reference path="cvarsystem.h.ts" />
 /// <reference path="../../libs/idLib/Text/Str.h.ts" />
 /// <reference path="../../libs/idLib/Containers/StrList.h.ts" />
 /*
@@ -489,15 +490,15 @@ class idFileSystemLocal extends idFileSystem {
     ////	static int				CurlProgressFunction( void *clientp, double dltotal, double dlnow, double ultotal, double ulnow );
     ////};
     ////
-    ////idCVar	idFileSystemLocal::fs_restrict( "fs_restrict", "", CVAR_SYSTEM | CVAR_INIT | CVAR_BOOL, "" );
-    ////idCVar	idFileSystemLocal::fs_debug( "fs_debug", "0", CVAR_SYSTEM | CVAR_INTEGER, "", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
-    ////idCVar	idFileSystemLocal::fs_copyfiles( "fs_copyfiles", "0", CVAR_SYSTEM | CVAR_INIT | CVAR_INTEGER, "", 0, 4, idCmdSystem::ArgCompletion_Integer<0,3> );
-    ////idCVar	idFileSystemLocal::fs_basepath( "fs_basepath", "", CVAR_SYSTEM | CVAR_INIT, "" );
-    ////idCVar	idFileSystemLocal::fs_savepath( "fs_savepath", "", CVAR_SYSTEM | CVAR_INIT, "" );
-    ////idCVar	idFileSystemLocal::fs_cdpath( "fs_cdpath", "", CVAR_SYSTEM | CVAR_INIT, "" );
-    ////idCVar	idFileSystemLocal::fs_devpath( "fs_devpath", "", CVAR_SYSTEM | CVAR_INIT, "" );
-    ////idCVar	idFileSystemLocal::fs_game( "fs_game", "", CVAR_SYSTEM | CVAR_INIT | CVAR_SERVERINFO, "mod path" );
-    ////idCVar  idFileSystemLocal::fs_game_base( "fs_game_base", "", CVAR_SYSTEM | CVAR_INIT | CVAR_SERVERINFO, "alternate mod path, searched after the main fs_game path, before the basedir" );
+	static fs_restrict = new idCVar( "fs_restrict", "", CVAR_SYSTEM | CVAR_INIT | CVAR_BOOL, "" );
+	static fs_debug = new idCVar( "fs_debug", "0", CVAR_SYSTEM | CVAR_INTEGER, "", 0, 2, ArgCompletion_Integer_Template(0,2) );
+	static fs_copyfiles = new idCVar("fs_copyfiles", "0", CVAR_SYSTEM | CVAR_INIT | CVAR_INTEGER, "", 0, 4, ArgCompletion_Integer_Template(0,3) );
+	static fs_basepath = new idCVar( "fs_basepath", "", CVAR_SYSTEM | CVAR_INIT, "" );
+	static fs_savepath = new idCVar( "fs_savepath", "", CVAR_SYSTEM | CVAR_INIT, "" );
+	static fs_cdpath = new idCVar( "fs_cdpath", "", CVAR_SYSTEM | CVAR_INIT, "" );
+	static fs_devpath = new idCVar( "fs_devpath", "", CVAR_SYSTEM | CVAR_INIT, "" );
+	static fs_game = new idCVar( "fs_game", "", CVAR_SYSTEM | CVAR_INIT | CVAR_SERVERINFO, "mod path" );
+	static fs_game_base = new idCVar( "fs_game_base", "", CVAR_SYSTEM | CVAR_INIT | CVAR_SERVERINFO, "alternate mod path, searched after the main fs_game path, before the basedir" );
     ////#ifdef WIN32
     ////idCVar	idFileSystemLocal::fs_caseSensitiveOS( "fs_caseSensitiveOS", "0", CVAR_SYSTEM | CVAR_BOOL, "" );
     ////#else
@@ -2111,7 +2112,7 @@ idFileSystemLocal::FreeFileList
 ////	}
 ////
 ////	const char *buffer = NULL;
-////	idParser src( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
+////	idParser src( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 ////	if ( fileSystem.ReadFile( args.Argv( 1 ), ( void** )&buffer, NULL ) && buffer ) {
 ////		src.LoadMemory( buffer, strlen( buffer ), args.Argv( 1 ) );
 ////		if ( src.IsLoaded() ) {
@@ -3698,7 +3699,7 @@ idFileSystemLocal::CloseFile
 ////
 ////		bgl.next = NULL;
 ////
-////		if ( bgl.opcode == DLTYPE_FILE ) {
+////		if ( bgl.opcode == dlType_t.DLTYPE_FILE ) {
 ////			// use the low level read function, because fread may allocate memory
 ////			#if defined(WIN32)
 ////				_read( static_cast<idFile_Permanent*>(bgl.f).GetFilePtr()._file, bgl.file.buffer, bgl.file.length );
@@ -3821,7 +3822,7 @@ idFileSystemLocal::CloseFile
 ////=================
 ////*/
 ////void idFileSystemLocal::BackgroundDownload( backgroundDownload_t *bgl ) {
-////	if ( bgl.opcode == DLTYPE_FILE ) {
+////	if ( bgl.opcode == dlType_t.DLTYPE_FILE ) {
 ////		if ( dynamic_cast<idFile_Permanent *>(bgl.f) ) {
 ////			// add the bgl to the background download list
 ////			Sys_EnterCriticalSection();
@@ -3843,16 +3844,16 @@ idFileSystemLocal::CloseFile
 ////		Sys_LeaveCriticalSection();
 ////	}
 ////}
-////
-/////*
-////=================
-////idFileSystemLocal::PerformingCopyFiles
-////=================
-////*/
-////bool idFileSystemLocal::PerformingCopyFiles( void ) const {
-////	return fs_copyfiles.GetInteger() > 0;
-////}
-////
+
+/*
+=================
+idFileSystemLocal::PerformingCopyFiles
+=================
+*/
+PerformingCopyFiles( ):boolean {
+	return idFileSystemLocal.fs_copyfiles.GetInteger ( ) > 0;
+}
+
 /////*
 ////=================
 ////idFileSystemLocal::FindPakForFileChecksum

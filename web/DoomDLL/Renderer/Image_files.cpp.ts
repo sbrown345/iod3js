@@ -1080,14 +1080,15 @@ function R_LoadImage( cname:string, pic:R<Uint8Array>, /*int **/width:R < Number
 }
 
 
-/////*
-////=======================
-////R_LoadCubeImages
+/*
+=======================
+R_LoadCubeImages
 
-////Loads six files with proper extensions
-////=======================
-////*/
-////bool R_LoadCubeImages( const char *imgName, cubeFiles_t extensions, byte *pics[6], int *outSize, ID_TIME_T *timestamp ) {
+Loads six files with proper extensions
+=======================
+*/
+function R_LoadCubeImages(imgName: string, extensions: cubeFiles_t, /*byte **/pics: Uint8Array[/*6*/], /*int **/outSize: R<Number>, /*ID_TIME_T **/timestamp: R<Number>): boolean {
+	todoThrow ( );
 ////	int		i, j;
 ////	char	*cameraSides[6] =  { "_forward.tga", "_back.tga", "_left.tga", "_right.tga", 
 ////		"_up.tga", "_down.tga" };
@@ -1180,5 +1181,5 @@ function R_LoadImage( cname:string, pic:R<Uint8Array>, /*int **/width:R < Number
 ////	if ( outSize ) {
 ////		*outSize = size;
 ////	}
-////	return true;
-////}
+	return true;
+}

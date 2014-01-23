@@ -1693,7 +1693,7 @@ InitLanguageDict( ):void {
 ////*/
 ////void idCommonLocal::LocalizeMapData( const char *fileName, idLangDict &langDict ) {
 ////	const char *buffer = NULL;
-////	idLexer src( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
+////	idLexer src( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT |  lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 
 ////	common.SetRefreshOnPrint( true );
 
@@ -1743,7 +1743,7 @@ InitLanguageDict( ):void {
 ////	char slash = '\\';
 ////	char tab = 't';
 ////	char nl = 'n';
-////	idLexer src( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
+////	idLexer src( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT |  lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 ////	if ( fileSystem.ReadFile( fileName, (void**)&buffer ) > 0 ) {
 ////		src.LoadMemory( buffer, strlen(buffer), fileName );
 ////		if ( src.IsLoaded() ) {
@@ -1831,7 +1831,7 @@ InitLanguageDict( ):void {
 
 ////	idStr fileName = "map_localize.cfg";
 ////	const char *buffer = NULL;
-////	idLexer src( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
+////	idLexer src( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT |  lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 
 ////	if ( fileSystem.ReadFile( fileName, (void**)&buffer ) > 0 ) {
 ////		src.LoadMemory( buffer, strlen(buffer), fileName );
@@ -1865,7 +1865,7 @@ InitLanguageDict( ):void {
 
 ////	idStr fileName = "guiparm_exclude.cfg";
 ////	const char *buffer = NULL;
-////	idLexer src( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
+////	idLexer src( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT |  lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 
 ////	if ( fileSystem.ReadFile( fileName, (void**)&buffer ) > 0 ) {
 ////		src.LoadMemory( buffer, strlen(buffer), fileName );

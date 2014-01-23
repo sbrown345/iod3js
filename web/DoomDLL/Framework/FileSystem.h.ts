@@ -62,60 +62,75 @@ enum fsMode_t{
 	FS_WRITE	= 1,
 	FS_APPEND	= 2
 };
+
+enum fsPureReply_t{
+	PURE_OK,		// we are good to connect as-is
+	PURE_RESTART,	// restart required
+	PURE_MISSING,	// pak files missing on the client
+	PURE_NODLL		// no DLL could be extracted
+}
+
+enum dlType_t {
+	DLTYPE_URL,
+	DLTYPE_FILE
+}
+
+enum dlStatus_t{
+	DL_WAIT,		// waiting in the list for beginning of the download
+	DL_INPROGRESS,	// in progress
+	DL_DONE,		// download completed, success
+	DL_ABORTING,	// this one can be set during a download, it will force the next progress callback to abort - then will go to DL_FAILED
+	DL_FAILED
+};
+
+enum dlMime_t{
+	FILE_EXEC,
+	FILE_OPEN
+};
+
+enum findFile_t{
+	FIND_NO,
+	FIND_YES,
+	FIND_ADDON
+};
+
+class urlDownload_t{
+	/*idStr			*/	url:idStr;
+	/*char			*/	dlerror:string;//[ MAX_STRING_CHARS ];
+	/*int			*/		dltotal:number;
+	/*int			*/		dlnow: number;
+	/*int			*/		dlstatus: number;
+	/*dlStatus_t	*/		status: dlStatus_t;
+
+	constructor ( ) {
+		this.url = null;
+		this.dlerror = null;
+		this.dltotal = 0;
+		this.dlnow = 0;
+		this.dlstatus = 0;
+		this.status = 0;
+	}
+} ;
 ////
-////typedef enum {
-////	PURE_OK,		// we are good to connect as-is
-////	PURE_RESTART,	// restart required
-////	PURE_MISSING,	// pak files missing on the client
-////	PURE_NODLL		// no DLL could be extracted
-////} fsPureReply_t;
-////
-////typedef enum {
-////	DLTYPE_URL,
-////	DLTYPE_FILE
-////} dlType_t;
-////
-////typedef enum {
-////	DL_WAIT,		// waiting in the list for beginning of the download
-////	DL_INPROGRESS,	// in progress
-////	DL_DONE,		// download completed, success
-////	DL_ABORTING,	// this one can be set during a download, it will force the next progress callback to abort - then will go to DL_FAILED
-////	DL_FAILED
-////} dlStatus_t;
-////
-////typedef enum {
-////	FILE_EXEC,
-////	FILE_OPEN
-////} dlMime_t;
-////
-////typedef enum {
-////	FIND_NO,
-////	FIND_YES,
-////	FIND_ADDON
-////} findFile_t;
-////
-////typedef struct urlDownload_s {
-////	idStr				url;
-////	char				dlerror[ MAX_STRING_CHARS ];
-////	int					dltotal;
-////	int					dlnow;
-////	int					dlstatus;
-////	dlStatus_t			status;
-////} urlDownload_t;
-////
-////typedef struct fileDownload_s {
-////	int					position;
-////	int					length;
-////	void *				buffer;
-////} fileDownload_t;
+class fileDownload_t {
+	/*int					*/position:number;
+	/*int					*/length: number;
+	/*void *				*/buffer: Uint8Array;
+	constructor ( ) {
+		this.position = 0;
+		this.length = 0;
+		this.buffer = null;
+	}
+
+};
 
 class backgroundDownload_t{
-	//struct backgroundDownload_s	*next;	// set by the fileSystem
-	//dlType_t			opcode;
-	//idFile *			f;
-	//fileDownload_t		file;
-	//urlDownload_t		url;
-	//volatile bool		completed;
+	/*struct backgroundDownload_s	**/next: backgroundDownload_t;	// set by the fileSystem
+	opcode: dlType_t;
+	f: idFile ;
+	file: fileDownload_t;
+	url: urlDownload_t;
+	/*volatile bool		*/completed:boolean;
 } ;
 
 // file list for directory listings

@@ -345,7 +345,7 @@
 ////void idRenderModelLiquid::InitFromFile( const char *fileName ) {
 ////	int				i, x, y;
 ////	idToken			token;
-////	idParser		parser( lexerFlags_t.LEXFL_ALLOWPATHNAMES | LEXFL_NOSTRINGESCAPECHARS );
+////	idParser		parser( lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS );
 ////	idList<int>		tris;
 ////	float			size_x, size_y;
 ////	float			rate;

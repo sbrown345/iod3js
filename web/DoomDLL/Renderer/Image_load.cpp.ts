@@ -2,6 +2,7 @@
 /// <reference path="../../utils/todo.ts" />
 /// <reference path="image_process.cpp.ts" />
 /// <reference path="../../other/gl2.h.ts" />
+/// <reference path="../../libs/idlib/hashing/md4.cpp.ts" />
 /// <reference path="Material.h.ts" />
 /// <reference path="Image.h.ts" />
 /////*
@@ -170,7 +171,7 @@ var GL_RGB5 = GL_RGBA;
 ////		// Optionally write out the paletized normal map to a .tga
 ////		if ( globalImages.image_writeNormalTGAPalletized.GetBool() ) {
 ////			char filename[MAX_IMAGE_NAME];
-////			ImageProgramStringToCompressedFileName( imgName, filename );
+////			ImageProgramStringToCompressedFileName( this.imgName, filename );
 ////			char *ext = strrchr(filename, '.');
 ////			if ( ext ) {
 ////				strcpy(ext, "_pal.tga");
@@ -432,7 +433,7 @@ This may need to scan six cube map images
 
 ////	// set the wrap/clamp modes
 ////	switch( repeat ) {
-////	case TR_REPEAT:
+////	case textureRepeat_t.TR_REPEAT:
 ////		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
 ////		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 ////		break;
@@ -458,12 +459,12 @@ This may need to scan six cube map images
 ////	int size = 0;
 
 ////	// perform optional picmip operation to save texture memory
-////	if ( depth == textureDepth_t.TD_SPECULAR && globalImages.image_downSizeSpecular.GetInteger() ) {
+////	if ( this.depth == textureDepth_t.TD_SPECULAR && globalImages.image_downSizeSpecular.GetInteger() ) {
 ////		size = globalImages.image_downSizeSpecularLimit.GetInteger();
 ////		if ( size == 0 ) {
 ////			size = 64;
 ////		}
-////	} else if ( depth == textureDepth_t.TD_BUMP && globalImages.image_downSizeBump.GetInteger() ) {
+////	} else if ( this.depth == textureDepth_t.TD_BUMP && globalImages.image_downSizeBump.GetInteger() ) {
 ////		size = globalImages.image_downSizeBumpLimit.GetInteger();
 ////		if ( size == 0 ) {
 ////			size = 64;
@@ -582,7 +583,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 //	glGenTextures( 1, &this.texnum );
 
 //	// select proper internal format before we resample
-//	internalFormat = SelectInternalFormat( &pic, 1, width, height, depth );
+//	internalFormat = SelectInternalFormat( &pic, 1, width, height, this.depth );
 
 //	// copy or resample data as appropriate for first MIP level
 //	if ( ( scaled_width == width ) && ( scaled_height == height ) ) {
@@ -644,10 +645,10 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 //		R_SetBorderTexels( (byte *)scaledBuffer, width, height, rgba );
 //	}
 
-//	if ( generatorFunction == NULL && ( depth == textureDepth_t.TD_BUMP && globalImages.image_writeNormalTGA.GetBool() || depth != textureDepth_t.TD_BUMP && globalImages.image_writeTGA.GetBool() ) ) {
+//	if ( generatorFunction == NULL && ( this.depth == textureDepth_t.TD_BUMP && globalImages.image_writeNormalTGA.GetBool() || this.depth != textureDepth_t.TD_BUMP && globalImages.image_writeTGA.GetBool() ) ) {
 //		// Optionally write out the texture to a .tga
 //		char filename[MAX_IMAGE_NAME];
-//		ImageProgramStringToCompressedFileName( imgName, filename );
+//		ImageProgramStringToCompressedFileName( this.imgName, filename );
 //		char *ext = strrchr(filename, '.');
 //		if ( ext ) {
 //			strcpy( ext, ".tga" );
@@ -660,7 +661,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 //	// one fragment program
 //	// if the image is precompressed ( either in palletized mode or true rxgb mode )
 //	// then it is loaded above and the swap never happens here
-//	if ( depth == textureDepth_t.TD_BUMP && globalImages.image_useNormalCompression.GetInteger() != 1 ) {
+//	if ( this.depth == textureDepth_t.TD_BUMP && globalImages.image_useNormalCompression.GetInteger() != 1 ) {
 //		for ( int i = 0; i < scaled_width * scaled_height * 4; i += 4 ) {
 //			scaledBuffer[ i + 3 ] = scaledBuffer[ i ];
 //			scaledBuffer[ i ] = 0;
@@ -703,7 +704,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 //		// level with a different color so you can see the
 //		// rasterizer's texture level selection algorithm
 //		// Changing the color doesn't help with lumminance/alpha/intensity formats...
-//		if ( depth == textureDepth_t.TD_DIFFUSE && globalImages.image_colorMipLevels.GetBool() ) {
+//		if ( this.depth == textureDepth_t.TD_DIFFUSE && globalImages.image_colorMipLevels.GetBool() ) {
 //			R_BlendOverTexture( (byte *)scaledBuffer, scaled_width * scaled_height, mipBlendColors[miplevel] );
 //		}
 
@@ -745,7 +746,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 ////	filter = filterParm;
 ////	allowDownSize = allowDownSizeParm;
 ////	repeat = repeatParm;
-////	depth = minDepthParm;
+////	this.depth = minDepthParm;
 
 ////	// if we don't have a rendering context, just return after we
 ////	// have filled in the parms.  We must have the values set, or
@@ -795,7 +796,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 ////	while ( scaled_width > 1 || scaled_height > 1 || scaled_depth > 1 ) {
 ////		// preserve the border after mip map unless repeating
 ////		shrunk = R_MipMap3D( scaledBuffer, scaled_width, scaled_height, scaled_depth,
-////			(bool)(repeat != TR_REPEAT) );
+////			(bool)(repeat != textureRepeat_t.TR_REPEAT) );
 ////		R_StaticFree( scaledBuffer );
 ////		scaledBuffer = shrunk;
 
@@ -839,7 +840,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 
 ////	// set the wrap/clamp modes
 ////	switch( repeat ) {
-////	case TR_REPEAT:
+////	case textureRepeat_t.TR_REPEAT:
 ////		glTexParameterf( GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_REPEAT );
 ////		glTexParameterf( GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 ////		glTexParameterf( GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT );
@@ -1049,7 +1050,7 @@ idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic:Uint8
 ////#if !defined(GL_ES_VERSION_2_0)
 ////	// Always write the precompressed image if we're making a build
 ////	if ( !com_makingBuild.GetBool() ) {
-////		if ( !globalImages.image_writePrecompressedTextures.GetBool() || !globalImages.image_usePrecompressedTextures.GetBool() ) {
+////		if ( !globalImages.image_writePrecompressedTextures.GetBool() || !idImageManager.image_usePrecompressedTextures.GetBool() ) {
 ////			return;
 ////		}
 ////	}
@@ -1059,7 +1060,7 @@ idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic:Uint8
 ////	}
 
 ////	char filename[MAX_IMAGE_NAME];
-////	ImageProgramStringToCompressedFileName( imgName, filename );
+////	ImageProgramStringToCompressedFileName( this.imgName, filename );
 
 
 
@@ -1356,12 +1357,12 @@ idImage.prototype.ShouldImageBePartialCached = function ():boolean {
 ////	}
 
 ////	// god i love last minute hacks :-)
-////	if ( com_machineSpec.GetInteger() >= 1 && com_videoRam.GetInteger() >= 128 && imgName.Icmpn( "lights/", 7 ) == 0 ) {
+////	if ( com_machineSpec.GetInteger() >= 1 && com_videoRam.GetInteger() >= 128 && this.imgName.Icmpn( "lights/", 7 ) == 0 ) {
 ////		return false;
 ////	}
 
 ////	char filename[MAX_IMAGE_NAME];
-////	ImageProgramStringToCompressedFileName( imgName, filename );
+////	ImageProgramStringToCompressedFileName( this.imgName, filename );
 
 ////	// get the file timestamp
 ////	ID_TIME_T precompTimestamp;
@@ -1410,7 +1411,7 @@ idImage.prototype.ShouldImageBePartialCached = function ():boolean {
 ////	int ddspf_dwFlags = LittleLong( _header.ddspf.dwFlags );
 
 ////	if ( magic != DDS_MAKEFOURCC('D', 'D', 'S', ' ')) {
-////		common.Printf( "CheckPrecompressedImage( %s ): magic != 'DDS '\n", imgName.c_str() );
+////		common.Printf( "CheckPrecompressedImage( %s ): magic != 'DDS '\n", this.imgName.c_str() );
 ////		R_StaticFree( data );
 ////		return false;
 ////	}
@@ -1578,81 +1579,87 @@ On exit, the idImage will have a valid OpenGL texture number that can be bound
 ===============
 */
 idImage.prototype.ActuallyLoadImage = function( checkForPrecompressed:boolean, fromBackEnd:boolean ):void {
-	var/*int		*/width:number, height:number;
-    var /*byte	**/pic: Uint8Array;
+	var/*int		*/width = new R(0), height = new R(0);
+    var /*byte	**/pic = new R<Uint8Array>();
 
 	// this is the ONLY place generatorFunction will ever be called
 	if ( this.generatorFunction ) {
 		this.generatorFunction( this );
 		return;
 	}
-    todoThrow ( );
-	//// if we are a partial image, we are only going to load from a compressed file
-	//if ( this.isPartialImage ) {
-	//	if ( CheckPrecompressedImage( false ) ) {
-	//		return;
-	//	}
-	//	// this is an error -- the partial image failed to load
-	//	MakeDefault();
-	//	return;
-	//}
+    
+	// if we are a partial image, we are only going to load from a compressed file
+	if ( this.isPartialImage ) {
+		if ( this.CheckPrecompressedImage( false ) ) {
+			return;
+		}
+		// this is an error -- the partial image failed to load
+		this.MakeDefault();
+		return;
+	}
 
-	////
-	//// load the image from disk
-	////
-	//if ( cubeFiles != cubeFiles_t.CF_2D ) {
-	//	byte	*pics[6];
+	//
+	// load the image from disk
+	//
+	if (this.cubeFiles != cubeFiles_t.CF_2D ) {
+		var pics = new Array<Uint8Array>( 6 );//	*pics[6];
 
-	//	// we don't check for pre-compressed cube images currently
-	//	R_LoadCubeImages( imgName, cubeFiles, pics, &width, &timestamp );
+		// we don't check for pre-compressed cube images currently
+		var $timestamp = new R(this.timestamp);
+		R_LoadCubeImages( this.imgName, this.cubeFiles, pics, width, $timestamp );
+		this.timestamp = $timestamp.$;
 
-	//	if ( pics[0] == NULL ) {
-	//		common.Warning( "Couldn't load cube image: %s", imgName.c_str() );
-	//		MakeDefault();
-	//		return;
-	//	}
+		if ( pics[0] == null ) {
+			common.Warning( "Couldn't load cube image: %s", this.imgName.c_str() );
+			this.MakeDefault();
+			return;
+		}
 
-	//	GenerateCubeImage( (const byte **)pics, width, filter, allowDownSize, depth );
-	//	precompressedFile = false;
+		this.GenerateCubeImage( /*(const byte **)*/pics, width, this.filter, this.allowDownSize, this.depth );
+		this.precompressedFile = false;
 
-	//	for ( int i = 0 ; i < 6 ; i++ ) {
-	//		if ( pics[i] ) {
-	//			R_StaticFree( pics[i] );
-	//		}
-	//	}
-	//} else {
-	//	// see if we have a pre-generated image file that is
-	//	// already image processed and compressed
-	//	if ( checkForPrecompressed && globalImages.image_usePrecompressedTextures.GetBool() ) {
-	//		if ( CheckPrecompressedImage( true ) ) {
-	//			// we got the precompressed image
-	//			return;
-	//		}
-	//		// fall through to load the normal image
-	//	}
+		for ( var i = 0 ; i < 6 ; i++ ) {
+			if ( pics[i] ) {
+				R_StaticFree( pics[i] );
+			}
+		}
+	} else {
+		// see if we have a pre-generated image file that is
+		// already image processed and compressed
+		if ( checkForPrecompressed && idImageManager.image_usePrecompressedTextures.GetBool() ) {
+			if ( this.CheckPrecompressedImage( true ) ) {
+				// we got the precompressed image
+				return;
+			}
+			// fall through to load the normal image
+		}
 
-	//	R_LoadImageProgram( imgName, &pic, &width, &height, &timestamp, &depth );
+		var $timestamp = new R( this.timestamp );
+		var $depth = new R( this.depth );
+		R_LoadImageProgram(this.imgName, pic, width, height, $timestamp, $depth);
+		this.timestamp = $timestamp.$;
+		this.depth = $depth.$;
 
-	//	if ( pic == NULL ) {
-	//		common.Warning( "Couldn't load image: %s", imgName.c_str() );
-	//		MakeDefault();
-	//		return;
-	//	}
+		if ( pic.$ == null ) {
+			common.Warning( "Couldn't load image: %s", this.imgName.c_str() );
+			this.MakeDefault();
+			return;
+		}
 
-	//	// build a hash for checking duplicate image files
-	//	// NOTE: takes about 10% of image load times (SD)
-	//	// may not be strictly necessary, but some code uses it, so let's leave it in
-	//	imageHash = MD4_BlockChecksum( pic, width * height * 4 );
+		// build a hash for checking duplicate image files
+		// NOTE: takes about 10% of image load times (SD)
+		// may not be strictly necessary, but some code uses it, so let's leave it in
+		this.imageHash = MD4_BlockChecksum(pic, width.$ * height.$ * 4 );
 
-	//	GenerateImage( pic, width, height, filter, allowDownSize, repeat, depth );
-	//	timestamp = timestamp;
-	//	precompressedFile = false;
+		this.GenerateImage(pic, width.$, height.$, this.filter, this.allowDownSize, this.repeat, this.depth );
+		//this.timestamp = this.timestamp; //??
+		this.precompressedFile = false;
 
-	//	R_StaticFree( pic );
+		R_StaticFree( pic );
 
-	//	// write out the precompressed version of this file if needed
-	//	WritePrecompressedImage();
-	//}
+		// write out the precompressed version of this file if needed
+		this.WritePrecompressedImage();
+	}
 }
 
 //=========================================================================================================
@@ -1692,7 +1699,7 @@ idImage.prototype.PurgeImage = function ( ): void {
 ////*/
 ////void idImage::Bind() {
 ////	if ( tr.logFile ) {
-////		RB_LogComment( "idImage::Bind( %s )\n", imgName.c_str() );
+////		RB_LogComment( "idImage::Bind( %s )\n", this.imgName.c_str() );
 ////	}
 
 ////	// if this is an image that we are caching, move it to the front of the LRU chain
@@ -1788,7 +1795,7 @@ idImage.prototype.PurgeImage = function ( ): void {
 ////*/
 ////void idImage::BindFragment() {
 ////	if ( tr.logFile ) {
-////		RB_LogComment( "idImage::BindFragment %s )\n", imgName.c_str() );
+////		RB_LogComment( "idImage::BindFragment %s )\n", this.imgName.c_str() );
 ////	}
 
 ////	// if this is an image that we are caching, move it to the front of the LRU chain
@@ -2196,7 +2203,7 @@ idImage.prototype.PurgeImage = function ( ): void {
 ////	}
 
 ////	switch ( repeat ) {
-////	case TR_REPEAT:
+////	case textureRepeat_t.TR_REPEAT:
 ////		common.Printf( "rept " );
 ////		break;
 ////	case TR_CLAMP_TO_ZERO:
@@ -2215,5 +2222,5 @@ idImage.prototype.PurgeImage = function ( ): void {
 	
 ////	common.Printf( "%4ik ", StorageSize() / 1024 );
 
-////	common.Printf( " %s\n", imgName.c_str() );
+////	common.Printf( " %s\n", this.imgName.c_str() );
 ////}

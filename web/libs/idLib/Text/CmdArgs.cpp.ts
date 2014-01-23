@@ -116,9 +116,9 @@
 ////	}
 
 ////	lex.LoadMemory( text, strlen( text ), "idCmdSystemLocal::TokenizeString" );
-////	lex.SetFlags( LEXFL_NOERRORS
-////				| LEXFL_NOWARNINGS
-////				| LEXFL_NOSTRINGCONCAT
+////	lex.SetFlags( lexerFlags_t.LEXFL_NOERRORS
+////				| lexerFlags_t.LEXFL_NOWARNINGS
+////				| lexerFlags_t.LEXFL_NOSTRINGCONCAT
 ////				| lexerFlags_t.LEXFL_ALLOWPATHNAMES
 ////				| lexerFlags_t.NOSTRINGESCAPECHARS
 ////				| lexerFlags_t.LEXFL_ALLOWIPADDRESSES | ( keepAsStrings ? lexerFlags_t.LEXFL_ONLYSTRINGS : 0 ) );

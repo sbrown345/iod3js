@@ -2589,7 +2589,7 @@ var TOP_PRIORITY = 7;
 //	
 //	memset( &immediate, 0, sizeof( immediate ) );
 //
-//	parser.SetFlags( LEXFL_ALLOWMULTICHARLITERALS );
+//	parser.SetFlags( lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS );
 //	parser.LoadMemory( text, strlen( text ), filename );
 //	parserPtr = &parser;
 //

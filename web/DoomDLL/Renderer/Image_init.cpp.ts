@@ -1520,7 +1520,7 @@ idImageManager.prototype.ImageFromFile = function ( _name: string, filter: textu
 			if ( image.partialImage != null ) {
 				image.partialImage.levelLoadReferenced = true;
 			}
-			if ( this.image_preload.GetBool ( ) && !this.insideLevelLoad ) {
+			if (idImageManager.image_preload.GetBool ( ) && !this.insideLevelLoad ) {
 				image.referencedOutsideLevelLoad = true;
 				image.ActuallyLoadImage( true, false ); // check for precompressed, load is from front end
 				declManager.MediaPrint( "%ix%i %s (reload for mixed referneces)\n", image.uploadWidth, image.uploadHeight, image.imgName.c_str ( ) );
@@ -1571,7 +1571,7 @@ idImageManager.prototype.ImageFromFile = function ( _name: string, filter: textu
 		// let the background file loader know that we can load
 		image.precompressedFile = true;
 
-		if ( this.image_preload.GetBool ( ) && !this.insideLevelLoad ) {
+		if (idImageManager.image_preload.GetBool ( ) && !this.insideLevelLoad ) {
 			image.partialImage.ActuallyLoadImage( true, false ); // check for precompressed, load is from front end
 			declManager.MediaPrint( "%ix%i %s\n", image.partialImage.uploadWidth, image.partialImage.uploadHeight, image.imgName.c_str ( ) );
 		} else {
@@ -1581,7 +1581,7 @@ idImageManager.prototype.ImageFromFile = function ( _name: string, filter: textu
 	}
 
 	// load it if we aren't in a level preload
-	if ( this.image_preload.GetBool ( ) && !this.insideLevelLoad ) {
+	if ( idImageManager.image_preload.GetBool ( ) && !this.insideLevelLoad ) {
 		image.referencedOutsideLevelLoad = true;
 		image.ActuallyLoadImage( true, false ); // check for precompressed, load is from front end
 		declManager.MediaPrint( "%ix%i %s\n", image.uploadWidth, image.uploadHeight, image.imgName.c_str ( ) );
@@ -1902,7 +1902,7 @@ idImageManager.prototype.R_CombineCubeImages_f = function ( args: idCmdArgs ): v
 ////	} else if ( tmu.textureType == TT_2D ) {
 ////		glDisable( GL_TEXTURE_2D );
 ////	}
-////	tmu.textureType = TT_DISABLED;
+////	tmu.textureType = textureType_t.TT_DISABLED;
 ////#endif
 ////}
 

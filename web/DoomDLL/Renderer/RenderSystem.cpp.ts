@@ -823,7 +823,7 @@ GL_CheckErrors():void {
 ////			tr.testImage = globalImages.images[imageNum];
 ////		}
 ////	} else {
-////		tr.testImage = globalImages.ImageFromFile( args.Argv( 1 ), textureFilter_t.TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_DEFAULT );
+////		tr.testImage = globalImages.ImageFromFile( args.Argv( 1 ), textureFilter_t.TF_DEFAULT, false, textureRepeat_t.TR_REPEAT, textureDepth_t.TD_DEFAULT );
 ////	}
 ////}
 
@@ -845,7 +845,7 @@ GL_CheckErrors():void {
 ////		return;
 ////	}
 
-////	tr.testImage = globalImages.ImageFromFile( "_scratch", textureFilter_t.TF_DEFAULT, false, TR_REPEAT, textureDepth_t.TD_DEFAULT );
+////	tr.testImage = globalImages.ImageFromFile( "_scratch", textureFilter_t.TF_DEFAULT, false, textureRepeat_t.TR_REPEAT, textureDepth_t.TD_DEFAULT );
 ////	tr.testVideo = idCinematic::Alloc();
 ////	tr.testVideo.InitFromFile( args.Argv( 1 ), true );
 
@@ -3165,7 +3165,7 @@ idRenderSystemLocal::Init
 
 ////	// look up the image before we create the render command, because it
 ////	// may need to sync to create the image
-////	idImage	*image = globalImages.ImageFromFile(imageName, textureFilter_t.TF_DEFAULT, true, TR_REPEAT, textureDepth_t.TD_DEFAULT);
+////	idImage	*image = globalImages.ImageFromFile(imageName, textureFilter_t.TF_DEFAULT, true, textureRepeat_t.TR_REPEAT, textureDepth_t.TD_DEFAULT);
 
 ////	renderCrop_t *rc = &renderCrops[currentRenderCrop];
 

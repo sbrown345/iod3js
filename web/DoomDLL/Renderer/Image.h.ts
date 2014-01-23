@@ -1,5 +1,6 @@
 /// <reference path="../Framework/CmdSystem.h.ts" />
 /// <reference path="../../utils/types.ts" />
+/// <reference path="../framework/filesystem.h.ts" />
 /// <reference path="../../libs/idlib/containers/list.h.ts" />
 /// <reference path="../../libs/idLib/Text/Str.h.ts" />
 /////*
@@ -213,7 +214,7 @@ GenerateCubeImage( /*const byte *pic[6]*/pic:Uint8Array[], /*int*/ size: number,
 //	void		GetDownsize( int &scaled_width, int &scaled_height ) const;
 	MakeDefault(): void { throw "placeholder";}	// fill with a grid pattern
 //	void		SetImageFilterAndRepeat() const;
-//	bool		ShouldImageBePartialCached();
+	ShouldImageBePartialCached():boolean { throw "placeholder"; }
 //	void		WritePrecompressedImage();
 //	bool		CheckPrecompressedImage( bool fullLoad );
 //	void		UploadPrecompressedImage( byte *data, int len );
@@ -263,41 +264,42 @@ GenerateCubeImage( /*const byte *pic[6]*/pic:Uint8Array[], /*int*/ size: number,
 /*	int					*/uploadWidth:number; uploadHeight:number; uploadDepth: number;	// after power of two, downsample, and MAX_TEXTURE_SIZE
 /*int					*/internalFormat:number;
 
-//	idImage 			*cacheUsagePrev, *cacheUsageNext;	// for dynamic cache purging of old images
+	cacheUsagePrev: idImage; cacheUsageNext: idImage;	// for dynamic cache purging of old images
 
 	hashNext:idImage;							// for hash chains to speed lookup
 
-//	int					refCount;				// overall ref count
+/*	int					*/refCount:number;				// overall ref count
 
 	constructor() {
 		this.texnum = idImage.TEXTURE_NOT_LOADED;
-		//this.partialImage = NULL;
-		//this.type = TT_DISABLED;
-		//this.isPartialImage = false;
-		//this.frameUsed = 0;
-		//this.classification = 0;
-		//this.backgroundLoadInProgress = false;
-		//this.bgl.opcode = DLTYPE_FILE;
-		//this.bgl.f = NULL;
-		//this.bglNext = NULL;
-		//this.imgName[0] = '\0';
-		//this.generatorFunction = NULL;
-		//this.allowDownSize = false;
-		//this.filter = textureFilter_t.TF_DEFAULT;
-		//this.repeat = TR_REPEAT;
-		//this.depth = textureDepth_t.TD_DEFAULT;
-		//this.cubeFiles = cubeFiles_t.CF_2D;
+		this.partialImage = null;
+		this.type = textureType_t.TT_DISABLED;
+		this.isPartialImage = false;
+		this.frameUsed = 0;
+		this.classification = 0;
+		this.backgroundLoadInProgress = false;
+		this.bgl = new backgroundDownload_t ( );
+		this.bgl.opcode = dlType_t.DLTYPE_FILE;
+		this.bgl.f = null;
+		this.bglNext = null;
+		this.imgName = new idStr("");
+		this.generatorFunction = null;
+		this.allowDownSize = false;
+		this.filter = textureFilter_t.TF_DEFAULT;
+		this.repeat = textureRepeat_t.TR_REPEAT;
+		this.depth = textureDepth_t.TD_DEFAULT;
+		this.cubeFiles = cubeFiles_t.CF_2D;
 		this.referencedOutsideLevelLoad = false;
 		this.levelLoadReferenced = false;
 		this.precompressedFile = false;
 		this.defaulted = false;
-		//this.timestamp = 0;
-		//this.bindCount = 0;
-		//this.uploadWidth = uploadHeight = uploadDepth = 0;
-		//this.internalFormat = 0;
-		//this.cacheUsagePrev = cacheUsageNext = NULL;
-		//this.hashNext = NULL;
-		//this.refCount = 0;
+		this.timestamp = 0;
+		this.bindCount = 0;
+		this.uploadWidth = this.uploadHeight = this.uploadDepth = 0;
+		this.internalFormat = 0;
+		this.cacheUsagePrev = this.cacheUsageNext = null;
+		this.hashNext = null;
+		this.refCount = 0;
 	}
 
 };

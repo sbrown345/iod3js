@@ -301,7 +301,7 @@ class idUserInterfaceLocal extends idUserInterface {
 //	source = qpath;
 //	state.Set( "text", "Test Text!" );
 //
-//	idParser src( LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
+//	idParser src( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT |  lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 //
 //	//Load the timestamp so reload guis will work correctly
 //	fileSystem.ReadFile(qpath, NULL, &timeStamp);

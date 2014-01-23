@@ -494,7 +494,7 @@
 ////	int			num;
 ////	int			parentNum;
 ////	idToken		token;
-////	idLexer		parser( lexerFlags_t.LEXFL_ALLOWPATHNAMES | LEXFL_NOSTRINGESCAPECHARS );
+////	idLexer		parser( lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS );
 ////	idJointQuat	*pose;
 ////	idMD5Joint	*joint;
 ////	idJointMat *poseMat3;

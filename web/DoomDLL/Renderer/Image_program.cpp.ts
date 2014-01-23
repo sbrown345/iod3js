@@ -621,26 +621,26 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 }
 
 
-/////*
-////===================
-////R_LoadImageProgram
-////===================
-////*/
-////void R_LoadImageProgram( const char *name, byte **pic, int *width, int *height, ID_TIME_T *timestamps, textureDepth_t *depth ) {
-////	idLexer src;
+/*
+===================
+R_LoadImageProgram
+===================
+*/
+function R_LoadImageProgram(name: string, /*byte ***/pic: R<Uint8Array>, /*int **/width: R<number>, /*int **/height: R<number>, /*ID_TIME_T **/timestamps: R<number>, depth: R<textureDepth_t> ):void {
+	var src = new idLexer;
 
-////	src.LoadMemory( name, strlen(name), name );
-////	src.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
+	src.LoadMemory( name, strlen(name), name );
+	src.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 
-////	parseBuffer = ""4;
-////	if ( timestamps ) {
-////		*timestamps = 0;
-////	}
+	parseBuffer = "";
+	if ( timestamps ) {
+		timestamps.$ = 0;
+	}
 
-////	R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
+	R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
 
-////	src.FreeSource();
-////}
+	src.FreeSource();
+}
 
 /*
 ===================
