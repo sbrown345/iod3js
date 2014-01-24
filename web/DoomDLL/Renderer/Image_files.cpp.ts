@@ -1026,7 +1026,7 @@ function R_LoadImage( cname:string, pic:R<Uint8Array>, /*int **/width:R < Number
 
 	if ( ext.data == "tga" ) {
 		this.LoadTGA( name.c_str(), pic, width, height, timestamp );            // try tga first
-		if ( ( pic && *pic == 0 ) || ( timestamp && timestamp.$ == -1 ) ) {
+		if ( ( pic && !pic.$ ) || ( timestamp && timestamp.$ == -1 ) ) {
 			name.StripFileExtension();
 			name.DefaultFileExtension( ".jpg" );
 			this.LoadJPG( name.c_str(), pic, width, height, timestamp );
@@ -1040,9 +1040,9 @@ function R_LoadImage( cname:string, pic:R<Uint8Array>, /*int **/width:R < Number
 	}
 
 	if ( ( width && width.$ < 1 ) || ( height && height.$ < 1 ) ) {
-		if ( pic && *pic ) {
-			R_StaticFree( *pic );
-			*pic = 0;
+		if ( pic && pic.$ ) {
+			R_StaticFree( pic.$ );
+			pic.$ = null;
 		}
 	}
 	todoThrow();

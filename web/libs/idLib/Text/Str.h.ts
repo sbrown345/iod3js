@@ -127,9 +127,11 @@ class idStr {
         this.Init();
 
         if(arguments.length === 1) {
-		    this.data = str + ""; //.toUint8Array ( );
+			this.data = str + ""; //.toUint8Array ( );
+	        this.len = this.data.length;
         } else if(arguments.length === 3) {
             this.data = (str + "").substring(start, end);
+			this.len = this.data.length;
         }
 	}
 
@@ -793,7 +795,7 @@ Clear( ):void {
 				//for ( i = 0; text[i] && i < l; i++ ) {
 				//	this.data[this.len + i] = text[i];
 				//}
-				this.data += text.substr( l );
+				this.data += text.substring( 0, l );
 				this.len = newLen;
 				//this.data[this.len] = '\0';
 			}
@@ -854,21 +856,13 @@ Clear( ):void {
 ////	len += l;
 ////}
 
-////ID_INLINE void idStr::ToLower( void ) {
-////	for (int i = 0; this.data[i]; i++ ) {
-////		if ( CharIsUpper( this.data[i] ) ) {
-////			this.data[i] += ( 'a' - 'A' );
-////		}
-////	}
-////}
+	ToLower(): void {
+		this.data = this.data.toLowerCase ( );
+	}
 
-////ID_INLINE void idStr::ToUpper( void ) {
-////	for (int i = 0; this.data[i]; i++ ) {
-////		if ( CharIsLower( this.data[i] ) ) {
-////			this.data[i] -= ( 'a' - 'A' );
-////		}
-////	}
-////}
+	ToUpper(): void {
+		this.data = this.data.toUpperCase ( );
+	}
 
 ////ID_INLINE bool idStr::IsNumeric( void ) const {
 ////	return idStr::IsNumeric( this.data );
@@ -933,12 +927,12 @@ Find( text:string, casesensitive = true, /*int */start = 0, /*int */end = -1):nu
 ////	return Mid( 0, len, result );
 ////}
 
-	Right ( /*int */len: number, result: R<idStr> ): string {
-		if ( this.len >= this.Length ( ) ) {
-			result.$ = this;
-			return result.$.data;
+	Right ( /*int */len: number, result: idStr ): string {
+		if ( len >= this.Length ( ) ) {
+			result.data = this.data;
+			return result.data;
 		}
-		return this.Mid( this.Length ( ) - this.len, this.len, result );
+		return this.Mid( this.Length ( ) - len, len, result );
 	}
 
 ////ID_INLINE idStr idStr::Left( int len ) const {
@@ -1643,7 +1637,7 @@ idStr::Mid
 			len = i - start;
 		}
 
-		result.Append( /*&*/this.data[start], this.len );
+		result.Append( /*&*/this.data.substr( start ), len );
 		return result.data;
 	}
 
@@ -1770,23 +1764,23 @@ idStr::Mid
 ////	return *this;
 ////}
 
-/////*
-////============
-////idStr::StripFileExtension
-////============
-////*/
-////idStr &idStr::StripFileExtension( void ) {
-////	int i;
+/*
+============
+idStr::StripFileExtension
+============
+*/
+	StripFileExtension ( ): idStr {
+		var i: number;
 
-////	for ( i = len-1; i >= 0; i-- ) {
-////		if ( this.data[i] == '.' ) {
-////			this.data[i] = '\0';
-////			len = i;
-////			break;
-////		}
-////	}
-////	return *this;
-////}
+		for ( i = this.len - 1; i >= 0; i-- ) {
+			if ( this.data[i] == '.' ) {
+				this.data = this.data.substring( 0, i );
+				this.len = i;
+				break;
+			}
+		}
+		return this;
+	}
 
 /////*
 ////============
@@ -1821,7 +1815,7 @@ DefaultFileExtension( extension:string ):idStr {
 			return this;
 		}
 	}
-	if ( extension != '.' ) {
+	if ( extension[0] != '.' ) {
 		this.Append( '.' );
 	}
 	this.Append( extension );
@@ -1983,24 +1977,24 @@ DefaultFileExtension( extension:string ):idStr {
 idStr::ExtractFileExtension
 ====================
 */
-	ExtractFileExtension(dest: idStr  ):void {
-	var pos:number;
+	ExtractFileExtension ( dest: idStr ): void {
+		var pos: number;
 
-	//
-	// back up until a . or the start
-	//
-	pos = this.Length() - 1;
-	while( ( pos > 0 ) && ( ( this.data )[ pos - 1 ] != '.' ) ) {
-		pos--;
-	}
+		//
+		// back up until a . or the start
+		//
+		pos = this.Length ( ) - 1;
+		while ( ( pos > 0 ) && ( ( this.data )[pos - 1] != '.' ) ) {
+			pos--;
+		}
 
-	if ( !pos ) {
-		// no extension
-		dest.Empty();
-	} else {
-		this.Right(this.Length() - pos, dest );
+		if ( !pos ) {
+			// no extension
+			dest.Empty ( );
+		} else {
+			this.Right( this.Length ( ) - pos, dest );
+		}
 	}
-}
 
 
 /*
