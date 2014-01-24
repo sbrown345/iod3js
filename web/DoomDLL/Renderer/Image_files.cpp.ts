@@ -1000,7 +1000,7 @@ If pic is NULL, the image won't actually be loaded, it will just find the
 timestamp.
 =================
 */
-function R_LoadImage( cname:string, pic:R<Uint8Array>, /*int **/width:R < Number>, /*int **/height:R < Number>, /*ID_TIME_T **/timestamp:R<Number>, makePowerOf2:boolean ):void {
+function R_LoadImage( cname:string, pic:R<Uint8Array>, /*int **/width:R <number>, /*int **/height:R <number>, /*ID_TIME_T **/timestamp:R<number>, makePowerOf2:boolean ):void {
 	var name = new idStr(cname);
 
 	if ( pic.$ ) {
@@ -1048,38 +1048,38 @@ function R_LoadImage( cname:string, pic:R<Uint8Array>, /*int **/width:R < Number
 			pic.$ = null;
 		}
 	}
-	todoThrow();
-////	//
-////	// convert to exact power of 2 sizes
-////	//
-////	if ( pic && *pic && makePowerOf2 ) {
-////		int		w, h;
-////		int		scaled_width, scaled_height;
-////		byte	*resampledBuffer;
+	
+	//
+	// convert to exact power of 2 sizes
+	//
+	if ( pic && pic.$ && makePowerOf2 ) {
+		var/*int		*/w: number, h: number;
+		var/*int		*/scaled_width: number, scaled_height:number;
+		var/*byte	**/resampledBuffer:Uint8Array;
 
-////		w = width.$;
-////		h = height.$;
+		w = width.$;
+		h = height.$;
 
-////		for (scaled_width = 1 ; scaled_width < w ; scaled_width<<=1)
-////			;
-////		for (scaled_height = 1 ; scaled_height < h ; scaled_height<<=1)
-////			;
+		for (scaled_width = 1 ; scaled_width < w ; scaled_width<<=1)
+			;
+		for (scaled_height = 1 ; scaled_height < h ; scaled_height<<=1)
+			;
 
-////		if ( scaled_width != w || scaled_height != h ) {
-////			if ( globalImages.image_roundDown.GetBool() && scaled_width > w ) {
-////				scaled_width >>= 1;
-////			}
-////			if ( globalImages.image_roundDown.GetBool() && scaled_height > h ) {
-////				scaled_height >>= 1;
-////			}
+		if ( scaled_width != w || scaled_height != h ) {
+			if (idImageManager.image_roundDown.GetBool() && scaled_width > w ) {
+				scaled_width >>= 1;
+			}
+			if (idImageManager.image_roundDown.GetBool() && scaled_height > h ) {
+				scaled_height >>= 1;
+			}
 
-////			resampledBuffer = R_ResampleTexture( *pic, w, h, scaled_width, scaled_height );
-////			R_StaticFree( *pic );
-////			*pic = resampledBuffer;
-////			width.$ = scaled_width;
-////			height.$ = scaled_height;
-////		}
-////	}
+			resampledBuffer = R_ResampleTexture( pic.$, w, h, scaled_width, scaled_height );
+			R_StaticFree( pic );
+			pic.$ = resampledBuffer;
+			width.$ = scaled_width;
+			height.$ = scaled_height;
+		}
+	}
 }
 
 
@@ -1090,7 +1090,7 @@ R_LoadCubeImages
 Loads six files with proper extensions
 =======================
 */
-function R_LoadCubeImages(imgName: string, extensions: cubeFiles_t, /*byte **/pics: Uint8Array[/*6*/], /*int **/outSize: R<Number>, /*ID_TIME_T **/timestamp: R<Number>): boolean {
+function R_LoadCubeImages(imgName: string, extensions: cubeFiles_t, /*byte **/pics: Uint8Array[/*6*/], /*int **/outSize: R<number>, /*ID_TIME_T **/timestamp: R<number>): boolean {
 	todoThrow ( );
 ////	int		i, j;
 ////	char	*cameraSides[6] =  { "_forward.tga", "_back.tga", "_left.tga", "_right.tga", 

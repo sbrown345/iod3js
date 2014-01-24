@@ -33,70 +33,71 @@
 
 ////#include "tr_local.h"
 
-/////*
-////================
-////R_ResampleTexture
+/*
+================
+R_ResampleTexture
 
-////Used to resample images in a more general than quartering fashion.
+Used to resample images in a more general than quartering fashion.
 
-////This will only have filter coverage if the resampled size
-////is greater than half the original size.
+This will only have filter coverage if the resampled size
+is greater than half the original size.
 
-////If a larger shrinking is needed, use the mipmap function 
-////after resampling to the next lower power of two.
-////================
-////*/
-////#define	MAX_DIMENSION	4096
-////byte *R_ResampleTexture( const byte *in, int inwidth, int inheight,  
-////							int outwidth, int outheight ) {
-////	int		i, j;
-////	const byte	*inrow, *inrow2;
-////	unsigned int	frac, fracstep;
-////	unsigned int	p1[MAX_DIMENSION], p2[MAX_DIMENSION];
-////	const byte		*pix1, *pix2, *pix3, *pix4;
-////	byte		*out, *out_p;
+If a larger shrinking is needed, use the mipmap function 
+after resampling to the next lower power of two.
+================
+*/
+var MAX_DIMENSION = 4096;
+function R_ResampleTexture( /*const byte **/$in: Uint8Array, /*int */inwidth: number, /*int */inheight: number,  
+	/*int */outwidth: number, /*int */outheight: number): Uint8Array {
+	todoThrow ( );
+	//int		i, j;
+	//const byte	*inrow, *inrow2;
+	//unsigned int	frac, fracstep;
+	//unsigned int	p1[MAX_DIMENSION], p2[MAX_DIMENSION];
+	//const byte		*pix1, *pix2, *pix3, *pix4;
+	var out: Uint8Array, out_p: number;//byte		*out, *out_p;
 
-////	if ( outwidth > MAX_DIMENSION ) {
-////		outwidth = MAX_DIMENSION;
-////	}
-////	if ( outheight > MAX_DIMENSION ) {
-////		outheight = MAX_DIMENSION;
-////	}
+	//if ( outwidth > MAX_DIMENSION ) {
+	//	outwidth = MAX_DIMENSION;
+	//}
+	//if ( outheight > MAX_DIMENSION ) {
+	//	outheight = MAX_DIMENSION;
+	//}
 
-////	out = (byte *)R_StaticAlloc( outwidth * outheight * 4 );
-////	out_p = out;
+	//out = (byte *)R_StaticAlloc( outwidth * outheight * 4 );
+	//out_p = out;
 
-////	fracstep = inwidth*0x10000/outwidth;
+	//fracstep = inwidth*0x10000/outwidth;
 
-////	frac = fracstep>>2;
-////	for ( i=0 ; i<outwidth ; i++ ) {
-////		p1[i] = 4*(frac>>16);
-////		frac += fracstep;
-////	}
-////	frac = 3*(fracstep>>2);
-////	for ( i=0 ; i<outwidth ; i++ ) {
-////		p2[i] = 4*(frac>>16);
-////		frac += fracstep;
-////	}
+	//frac = fracstep>>2;
+	//for ( i=0 ; i<outwidth ; i++ ) {
+	//	p1[i] = 4*(frac>>16);
+	//	frac += fracstep;
+	//}
+	//frac = 3*(fracstep>>2);
+	//for ( i=0 ; i<outwidth ; i++ ) {
+	//	p2[i] = 4*(frac>>16);
+	//	frac += fracstep;
+	//}
 
-////	for (i=0 ; i<outheight ; i++, out_p += outwidth*4 ) {
-////		inrow = in + 4 * inwidth * (int)( ( i + 0.25f ) * inheight / outheight );
-////		inrow2 = in + 4 * inwidth * (int)( ( i + 0.75f ) * inheight / outheight );
-////		frac = fracstep >> 1;
-////		for (j=0 ; j<outwidth ; j++) {
-////			pix1 = inrow + p1[j];
-////			pix2 = inrow + p2[j];
-////			pix3 = inrow2 + p1[j];
-////			pix4 = inrow2 + p2[j];
-////			out_p[j*4+0] = (pix1[0] + pix2[0] + pix3[0] + pix4[0])>>2;
-////			out_p[j*4+1] = (pix1[1] + pix2[1] + pix3[1] + pix4[1])>>2;
-////			out_p[j*4+2] = (pix1[2] + pix2[2] + pix3[2] + pix4[2])>>2;
-////			out_p[j*4+3] = (pix1[3] + pix2[3] + pix3[3] + pix4[3])>>2;
-////		}
-////	}
+	//for (i=0 ; i<outheight ; i++, out_p += outwidth*4 ) {
+	//	inrow = in + 4 * inwidth * (int)( ( i + 0.25f ) * inheight / outheight );
+	//	inrow2 = in + 4 * inwidth * (int)( ( i + 0.75f ) * inheight / outheight );
+	//	frac = fracstep >> 1;
+	//	for (j=0 ; j<outwidth ; j++) {
+	//		pix1 = inrow + p1[j];
+	//		pix2 = inrow + p2[j];
+	//		pix3 = inrow2 + p1[j];
+	//		pix4 = inrow2 + p2[j];
+	//		out_p[j*4+0] = (pix1[0] + pix2[0] + pix3[0] + pix4[0])>>2;
+	//		out_p[j*4+1] = (pix1[1] + pix2[1] + pix3[1] + pix4[1])>>2;
+	//		out_p[j*4+2] = (pix1[2] + pix2[2] + pix3[2] + pix4[2])>>2;
+	//		out_p[j*4+3] = (pix1[3] + pix2[3] + pix3[3] + pix4[3])>>2;
+	//	}
+	//}
 
-////	return out;
-////}
+	return out;
+}
 
 /////*
 ////================

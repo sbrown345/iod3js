@@ -1658,7 +1658,7 @@ idImage.prototype.ActuallyLoadImage = function( checkForPrecompressed:boolean, f
 		R_StaticFree( pic );
 
 		// write out the precompressed version of this file if needed
-		this.WritePrecompressedImage();
+		//this.WritePrecompressedImage();
 	}
 }
 
