@@ -27,4 +27,24 @@
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DB4D0F71255A5B439A684F56668E63EA/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DB4D0F71255A5B439A684F56668E63EA/Shortcut/@EntryValue">agc</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DB4D0F71255A5B439A684F56668E63EA/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
-	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DB4D0F71255A5B439A684F56668E63EA/Text/@EntryValue">(/*argCompletion_t*/args:idCmdArgs, callback?: (s: string)=&gt;void)=&gt;void</s:String></wpf:ResourceDictionary>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DB4D0F71255A5B439A684F56668E63EA/Text/@EntryValue">(/*argCompletion_t*/args:idCmdArgs, callback?: (s: string)=&gt;void)=&gt;void</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DD2081B6A1C9674E8C5BFCFA6008B51F/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DD2081B6A1C9674E8C5BFCFA6008B51F/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DD2081B6A1C9674E8C5BFCFA6008B51F/Field/=VAR_005FNAME/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DD2081B6A1C9674E8C5BFCFA6008B51F/Field/=VAR_005FNAME/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DD2081B6A1C9674E8C5BFCFA6008B51F/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DD2081B6A1C9674E8C5BFCFA6008B51F/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DD2081B6A1C9674E8C5BFCFA6008B51F/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DD2081B6A1C9674E8C5BFCFA6008B51F/Shortcut/@EntryValue">ref</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DD2081B6A1C9674E8C5BFCFA6008B51F/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DD2081B6A1C9674E8C5BFCFA6008B51F/Text/@EntryValue">var $$VAR_NAME$ = new R($VAR_NAME$);</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DEBAA48738CD1448A31EF901AEA89D4B/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DEBAA48738CD1448A31EF901AEA89D4B/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DEBAA48738CD1448A31EF901AEA89D4B/Field/=VAR_005FNAME/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DEBAA48738CD1448A31EF901AEA89D4B/Field/=VAR_005FNAME/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DEBAA48738CD1448A31EF901AEA89D4B/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DEBAA48738CD1448A31EF901AEA89D4B/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DEBAA48738CD1448A31EF901AEA89D4B/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DEBAA48738CD1448A31EF901AEA89D4B/Shortcut/@EntryValue">ref2</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DEBAA48738CD1448A31EF901AEA89D4B/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DEBAA48738CD1448A31EF901AEA89D4B/Text/@EntryValue">$VAR_NAME$ = $$VAR_NAME$.$;</s:String></wpf:ResourceDictionary>
