@@ -276,15 +276,15 @@
 ////static void		(*_SixtetsForInt)( byte *out, int src );
 ////static int		(*_IntForSixtets)( byte *in );
 
-////short	BigShort( short l ) { return _BigShort( l ); }
-////short	LittleShort( short l ) { return _LittleShort( l ); }
-////int		BigLong( int l ) { return _BigLong( l ); }
-////int		LittleLong( int l ) { return _LittleLong( l ); }
-////float	BigFloat( float l ) { return _BigFloat( l ); }
-////float	LittleFloat( float l ) { return _LittleFloat( l ); }
-////void	BigRevBytes( void *bp, int elsize, int elcount ) { _BigRevBytes( bp, elsize, elcount ); }
-////void	LittleRevBytes( void *bp, int elsize, int elcount ){ _LittleRevBytes( bp, elsize, elcount ); }
-////void	LittleBitField( void *bp, int elsize ){ _LittleBitField( bp, elsize ); }
+function BigShort( /*short*/ l: number): number { return l/*_BigShort( l );*/ }											 //short
+function LittleShort( /*short*/ l: number): number { return l/*_LittleShort( l );*/ }												 //short
+function BigLong( /*int*/ l: number): number { return l/*_BigLong( l );*/ }															 //int	
+function LittleLong( /*int*/ l: number): number { return l/*_LittleLong( l );*/ }													 //int	
+function BigFloat( /*float*/ l: number): number { return l/*_BigFloat( l );*/ }														 //float
+function LittleFloat( /*float*/ l: number): number { return l/*return _LittleFloat( l );*/ }												 //float
+//function BigRevBytes( void *bp, int elsize, int elcount ) { _BigRevBytes( bp, elsize, elcount ); }			 //void
+//function LittleRevBytes( void *bp, int elsize, int elcount ){ _LittleRevBytes( bp, elsize, elcount ); }		 //void
+//function LittleBitField( void *bp, int elsize ){ _LittleBitField( bp, elsize ); }							 //void
 
 ////void	SixtetsForInt( byte *out, int src) { _SixtetsForInt( out, src ); }
 ////int		IntForSixtets( byte *in ) { return _IntForSixtets( in ); }

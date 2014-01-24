@@ -1152,23 +1152,23 @@ timestamp can be NULL if not required
         return len;
     }
 
-/////*
-////=============
-////idFileSystemLocal::FreeFile
-////=============
-////*/
-////void idFileSystemLocal::FreeFile( void *buffer ) {
-////	if ( !searchPaths ) {
-////		common.FatalError( "Filesystem call made without initialization\n" );
-////	}
-////	if ( !buffer ) {
-////		common.FatalError( "idFileSystemLocal::FreeFile( NULL )" );
-////	}
-////	this.loadStack--;
-////
-////	Mem_Free( buffer );
-////}
-////
+/*
+=============
+idFileSystemLocal::FreeFile
+=============
+*/
+	FreeFile ( buffer: Uint8Array ): void {
+		//if ( !this.searchPaths ) {
+		//	common.FatalError( "Filesystem call made without initialization\n" );
+		//}
+		//if ( !buffer ) {
+		//	common.FatalError( "idFileSystemLocal::FreeFile( NULL )" );
+		//}
+		this.loadStack--;
+
+		Mem_Free( buffer );
+	}
+
 /////*
 ////============
 ////idFileSystemLocal::WriteFile

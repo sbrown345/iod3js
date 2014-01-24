@@ -69,6 +69,10 @@ function memset ( arr: ArrayBufferView, value: number, num: number ): void {
     }
 }
 
+function short(buf: Uint8Array, ptr: number): number {
+	return buf[ptr] + (buf[ptr + 1] << 8);
+}
+
 function sizeof(obj: any) : number {
     if(typeof obj === "number") {
         debugger;

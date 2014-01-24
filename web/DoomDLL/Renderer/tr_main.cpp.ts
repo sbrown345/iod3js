@@ -294,27 +294,28 @@
 //	return count;
 //}
 //
-///*
-//=================
-//R_StaticAlloc
-//=================
-//*/
-//void *R_StaticAlloc( int bytes ) {
-//	void	*buf;
-//
-//	tr.pc.c_alloc++;
-//
-//	tr.staticAllocCount += bytes;
-//
-//    buf = Mem_Alloc( bytes );
-//
-//	// don't exit on failure on zero length allocations since the old code didn't
-//	if ( !buf && ( bytes != 0 ) ) {
-//		common->FatalError( "R_StaticAlloc failed on %i bytes", bytes );
-//	}
-//	return buf;
-//}
-//
+/*
+=================
+R_StaticAlloc
+=================
+*/
+
+function R_StaticAlloc ( /*int */bytes: number ): Uint8Array {
+	var buf: Uint8Array;
+
+	tr.pc.c_alloc++; // some of these were missed out so tr.pc.c_alloc won't match up with original
+
+	tr.staticAllocCount += bytes;
+
+	buf = new Uint8Array( bytes );
+
+	//// don't exit on failure on zero length allocations since the old code didn't
+	//if ( !buf && ( bytes != 0 ) ) {
+	//	common.FatalError( "R_StaticAlloc failed on %i bytes", bytes );
+	//}
+	return buf;
+}
+
 ///*
 //=================
 //R_ClearedStaticAlloc

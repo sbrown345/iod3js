@@ -362,7 +362,7 @@ class idRenderSystem {
 
         //	viewDef_t *				viewDef;
 
-        //	performanceCounters_t	pc;					// performance counters
+		this.pc = new performanceCounters_t	();					// performance counters
 
         //	drawSurfsCommand_t		lockSurfacesCmd;	// use this when r_lockSurfaces = 1
 
