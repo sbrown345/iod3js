@@ -553,7 +553,7 @@ R_AllocStaticTriSurfVerts
 =================
 */
 void R_AllocStaticTriSurfVerts( srfTriangles_t *tri, int numVerts ) {
-	assert( tri->verts == NULL );
+	//assert( tri->verts == NULL );
 	tri->verts = triVertexAllocator.Alloc( numVerts );
 }
 
@@ -598,7 +598,7 @@ void R_ResizeStaticTriSurfVerts( srfTriangles_t *tri, int numVerts ) {
 #ifdef USE_TRI_DATA_ALLOCATOR
 	tri->verts = triVertexAllocator.Resize( tri->verts, numVerts );
 #else
-	assert( false );
+	//assert( false );
 #endif
 }
 
@@ -611,7 +611,7 @@ void R_ResizeStaticTriSurfIndexes( srfTriangles_t *tri, int numIndexes ) {
 #ifdef USE_TRI_DATA_ALLOCATOR
 	tri->indexes = triIndexAllocator.Resize( tri->indexes, numIndexes );
 #else
-	assert( false );
+	//assert( false );
 #endif
 }
 
@@ -624,7 +624,7 @@ void R_ResizeStaticTriSurfShadowVerts( srfTriangles_t *tri, int numVerts ) {
 #ifdef USE_TRI_DATA_ALLOCATOR
 	tri->shadowVertexes = triShadowVertexAllocator.Resize( tri->shadowVertexes, numVerts );
 #else
-	assert( false );
+	//assert( false );
 #endif
 }
 
