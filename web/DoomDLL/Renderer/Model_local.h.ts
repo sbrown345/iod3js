@@ -46,23 +46,23 @@ class idRenderModelStatic extends idRenderModel {
 ////								idRenderModelStatic();
 ////	virtual						~idRenderModelStatic();
 
-////	virtual void				InitFromFile( const char *fileName ): void { throw "placeholder"; }
-////	virtual void				PartialInitFromFile( const char *fileName ): void { throw "placeholder"; }
-////	virtual void				PurgeModel(): void { throw "placeholder"; }
-////	virtual void				Reset() {}: void { throw "placeholder"; }
-////	virtual void				LoadModel(): void { throw "placeholder"; }
-////	virtual bool				IsLoaded();
-    SetLevelLoadReferenced( referenced:boolean ): void { throw "placeholder"; }
-////	virtual bool				IsLevelLoadReferenced();
-////	virtual void				TouchData(): void { throw "placeholder"; }
-    InitEmpty ( name: string ): void { throw "placeholder"; }
+		InitFromFile( fileName:string ): void { throw "placeholder"; }
+		PartialInitFromFile( fileName:string ): void { throw "placeholder"; }
+		PurgeModel(): void { throw "placeholder"; }
+		Reset(): void { throw "placeholder"; }
+		LoadModel(): void { throw "placeholder"; }
+		IsLoaded(): boolean { throw "placeholder"; }
+		SetLevelLoadReferenced( referenced:boolean ): void { throw "placeholder"; }
+		IsLevelLoadReferenced(): boolean { throw "placeholder"; }
+		TouchData(): void { throw "placeholder"; }
+		InitEmpty ( name: string ): void { throw "placeholder"; }
 
-////	virtual void				AddSurface( modelSurface_t surface ): void { throw "placeholder"; }
-////	virtual void				FinishSurfaces(): void { throw "placeholder"; }
-////	virtual void				FreeVertexCache(): void { throw "placeholder"; }
-    //Name():string { throw "placeholder"; }
-////	virtual void				Print() : void { throw "placeholder"; }
-////	virtual void				List() : void { throw "placeholder"; }
+		AddSurface(surface: modelSurface_t ): void { throw "placeholder"; }
+		FinishSurfaces(): void { throw "placeholder"; }
+		FreeVertexCache(): void { throw "placeholder"; }
+		Name():string { throw "placeholder"; }
+		Print() : void { throw "placeholder"; }
+		List() : void { throw "placeholder"; }
 ////	virtual int					Memory() const;
 ////	virtual ID_TIME_T				Timestamp() const;
 ////	virtual int					NumSurfaces() const;
@@ -73,8 +73,8 @@ class idRenderModelStatic extends idRenderModel {
 ////	virtual srfTriangles_t *	ShadowHull() const;
 ////	virtual bool				IsStaticWorldModel() const;
 ////	virtual dynamicModel_t		IsDynamicModel() const;
-////	virtual bool				IsDefaultModel() const;
-////	virtual bool				IsReloadable() const;
+		IsDefaultModel(): boolean { throw "placeholder"; }
+		IsReloadable(): boolean { throw "placeholder"; }
 ////	virtual idRenderModel *		InstantiateDynamicModel( const struct renderEntity_s *ent, const struct viewDef_s *view, idRenderModel *cachedModel );
 ////	virtual int					NumJoints( void ) const;
 ////	virtual const idMD5Joint *	GetJoints( void ) const;
@@ -104,29 +104,51 @@ class idRenderModelStatic extends idRenderModel {
 ////	void						DeleteSurfacesWithNegativeId( void );
 ////	bool						FindSurfaceWithId( int id, int &surfaceNum );
 
-////public:
-////	idList<modelSurface_t>		surfaces;
-////	idBounds					bounds;
-////	int							overlaysAdded;
+//public:
+	surfaces:idList<modelSurface_t>;
+	bounds:idBounds;
+	overlaysAdded:number;//	int							
 
-////protected:
-////	int							lastModifiedFrame;
-////	int							lastArchivedFrame;
+//protected:
+	lastModifiedFrame:number;//	int							
+	lastArchivedFrame:number;//	int							
 
-////	idStr						name;
-////	srfTriangles_t *			shadowHull;
-    isStaticWorldModelboolean:boolean;
-    defaultedboolean:boolean;
-    purgedboolean:boolean;					// eventually we will have dynamic reloading
-    fastLoadboolean:boolean;				// don't generate tangents and shadow data
-    reloadableboolean:boolean;				// if not, reloadModels won't check timestamp
-    levelLoadReferencedboolean:boolean;	// for determining if it needs to be freed
-////	ID_TIME_T						timeStamp;
+	name:idStr;
+	shadowHull: srfTriangles_t;
+
+	isStaticWorldModel:boolean;
+    defaulted:boolean;
+    purged:boolean;					// eventually we will have dynamic reloading
+    fastLoad:boolean;				// don't generate tangents and shadow data
+    reloadable:boolean;				// if not, reloadModels won't check timestamp
+    levelLoadReferenced:boolean;	// for determining if it needs to be freed
+	timeStamp: number; //ID_TIME_T
 
 ////	static idCVar				r_mergeModelSurfaces;	// combine model surfaces with the same material
 ////	static idCVar				r_slopVertex;			// merge xyz coordinates this far apart
 ////	static idCVar				r_slopTexCoord;			// merge texture coordinates this far apart
 ////	static idCVar				r_slopNormal;			// merge normals that dot less than this
+
+
+	constructor ( ) {
+		super ( );
+		this.name = new idStr("<undefined>");
+		this.bounds = new idBounds ( );
+		this.bounds.Clear ( );
+		this.lastModifiedFrame = 0;
+		this.lastArchivedFrame = 0;
+		this.overlaysAdded = 0;
+		this.shadowHull = null;
+		this.isStaticWorldModel = false;
+		this.defaulted = false;
+		this.purged = false;
+		this.fastLoad = false;
+		this.reloadable = true;
+		this.levelLoadReferenced = false;
+		this.timeStamp = 0;
+
+		this.surfaces = new idList<modelSurface_t>( modelSurface_t );
+	}
 };
 
 /////*

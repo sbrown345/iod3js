@@ -463,28 +463,28 @@ class viewDef_t {
 ////} drawInteraction_t;
 
 
-/////*
-////=============================================================
+/*
+=============================================================
 
-////RENDERER BACK END COMMAND QUEUE
+RENDERER BACK END COMMAND QUEUE
 
-////TR_CMDS
+TR_CMDS
 
-////=============================================================
-////*/
+=============================================================
+*/
 
-////typedef enum {
-////	RC_NOP,
-////	RC_DRAW_VIEW,
-////	RC_SET_BUFFER,
-////	RC_COPY_RENDER,
-////	RC_SWAP_BUFFERS		// can't just assume swap at end of list because
-////						// of forced list submission before syncs
-////} renderCommand_t;
+enum renderCommand_t {
+	RC_NOP,
+	RC_DRAW_VIEW,
+	RC_SET_BUFFER,
+	RC_COPY_RENDER,
+	RC_SWAP_BUFFERS		// can't just assume swap at end of list because
+						// of forced list submission before syncs
+};
 
-////typedef struct {
-////	renderCommand_t		commandId, *next;
-////} emptyCommand_t;
+class emptyCommand_t {
+	commandId: renderCommand_t; next: renderCommand_t;
+};
 
 ////typedef struct {
 ////	renderCommand_t		commandId, *next;
@@ -515,36 +515,36 @@ class viewDef_t {
 ////// (until malloc fails), but it may force the
 ////// allocation of a new memory block that will
 ////// be discontinuous with the existing memory
-////typedef struct frameMemoryBlock_s {
+class frameMemoryBlock_t {
 ////	struct frameMemoryBlock_s *next;
 ////	int		size;
 ////	int		used;
 ////	int		poop;			// so that base is 16 byte aligned
 ////	byte	base[4];	// dynamically allocated as [size]
-////} frameMemoryBlock_t;
+};
 
-////// all of the information needed by the back end must be
-////// contained in a frameData_t.  This entire structure is
-////// duplicated so the front and back end can run in parallel
-////// on an SMP machine (OBSOLETE: this capability has been removed)
-////typedef struct {
-////	// one or more blocks of memory for all frame
-////	// temporary allocations
-////	frameMemoryBlock_t	*memory;
+// all of the information needed by the back end must be
+// contained in a frameData_t.  This entire structure is
+// duplicated so the front and back end can run in parallel
+// on an SMP machine (OBSOLETE: this capability has been removed)
+class frameData_t{
+	// one or more blocks of memory for all frame
+	// temporary allocations
+	memory: frameMemoryBlock_t;
 
-////	// alloc will point somewhere into the memory chain
-////	frameMemoryBlock_t	*alloc;
+	// alloc will point somewhere into the memory chain
+	alloc: frameMemoryBlock_t;
 
-////	srfTriangles_t *	firstDeferredFreeTriSurf;
-////	srfTriangles_t *	lastDeferredFreeTriSurf;
+	firstDeferredFreeTriSurf: srfTriangles_t;
+	lastDeferredFreeTriSurf: srfTriangles_t;
 
-////	int					memoryHighwater;	// max used on any frame
+	/*int					*/memoryHighwater:number;	// max used on any frame
 
-////	// the currently building command list 
-////	// commands can be inserted at the front if needed, as for required
-////	// dynamically generated textures
-////	emptyCommand_t	*cmdHead, *cmdTail;		// may be of other command type based on commandId
-////} frameData_t;
+	// the currently building command list 
+	// commands can be inserted at the front if needed, as for required
+	// dynamically generated textures
+	cmdHead: emptyCommand_t; cmdTail: emptyCommand_t;		// may be of other command type based on commandId
+};
 
 ////extern	frameData_t	*frameData;
 

@@ -1,3 +1,5 @@
+/// <reference path="../../libs/idlib/math/plane.h.ts" />
+/// <reference path="../../libs/idlib/bv/bounds.h.ts" />
 /////*
 ////===========================================================================
 
@@ -59,93 +61,98 @@
 ////#endif
 
 
-////typedef struct {
-////	// NOTE: making this a glIndex is dubious, as there can be 2x the faces as verts
-////	glIndex_t					p1, p2;					// planes defining the edge
-////	glIndex_t					v1, v2;					// verts defining the edge
-////} silEdge_t;
+class silEdge_t {
+	// NOTE: making this a glIndex is dubious, as there can be 2x the faces as verts
+	p1:number; p2: number;					// planes defining the edge
+	v1:number; v2: number;					// verts defining the edge
+};
 
-////// this is used for calculating unsmoothed normals and tangents for deformed models
-////typedef struct dominantTri_s {
-////	glIndex_t					v2, v3;
-////	float						normalizationScale[3];
-////} dominantTri_t;
+// this is used for calculating unsmoothed normals and tangents for deformed models
+class dominantTri_t {
+	v2:number; v3:number; //glIndex_t
+	normalizationScale: Float32Array;
+	constructor ( ) {
+		this.v2 = 0;
+		this.v3 = 0;
+		this.normalizationScale = new Float32Array( 3 );
+	}
+} ;
 
-////typedef struct lightingCache_s {
-////	idVec3						localLightVector;		// this is the statically computed vector to the light
-////														// in texture space for cards without vertex programs
-////} lightingCache_t;
+class lightingCache_t {
+	localLightVector: idVec3;		// this is the statically computed vector to the light
+														// in texture space for cards without vertex programs
+} ;
 
-////typedef struct shadowCache_s {
-////	idVec4						xyz;					// we use homogenous coordinate tricks
-////} shadowCache_t;
+class shadowCache_t {
+	xyz:idVec4;					// we use homogenous coordinate tricks
+} ;
 
-////const int SHADOW_CAP_INFINITE	= 64;
+var SHADOW_CAP_INFINITE	= 64;
 
-////// our only drawing geometry type
-////typedef struct srfTriangles_s {
-////	idBounds					bounds;					// for culling
+// our only drawing geometry type
+class srfTriangles_t {
+	bounds: idBounds;					// for culling																				idBounds					
 
-////	int							ambientViewCount;		// if == tr.viewCount, it is visible this view
+	ambientViewCount:number;		// if == tr.viewCount, it is visible this view												int							
 
-////	bool						generateNormals;		// create normals from geometry, instead of using explicit ones
-////	bool						tangentsCalculated;		// set when the vertex tangents have been calculated
-////	bool						facePlanesCalculated;	// set when the face planes have been calculated
-////	bool						perfectHull;			// true if there aren't any dangling edges
-////	bool						deformedSurface;		// if true, indexes, silIndexes, mirrorVerts, and silEdges are
-////														// pointers into the original surface, and should not be freed
+	generateNormals:boolean;		// create normals from geometry, instead of using explicit ones								bool						
+	tangentsCalculated: boolean;		// set when the vertex tangents have been calculated										bool						
+	facePlanesCalculated: boolean;	// set when the face planes have been calculated											bool						
+	perfectHull: boolean;			// true if there aren't any dangling edges													bool						
+	deformedSurface: boolean;		// if true, indexes, silIndexes, mirrorVerts, and silEdges are								bool						
+	// pointers into the original surface, and should not be freed															
 
-////	int							numVerts;				// number of vertices
-////	idDrawVert *				verts;					// vertices, allocated with special allocator
+	numVerts:number;				// number of vertices																		int							
+	verts: idDrawVert;					// vertices, allocated with special allocator												idDrawVert *				
 
-////	int							numIndexes;				// for shadows, this has both front and rear end caps and silhouette planes
-////	glIndex_t *					indexes;				// indexes, allocated with special allocator
+	numIndexes: number;				// for shadows, this has both front and rear end caps and silhouette planes					int							
+	indexes: Int32Array;				// indexes, allocated with special allocator												glIndex_t *					
 
-////	glIndex_t *					silIndexes;				// indexes changed to be the first vertex with same XYZ, ignoring normal and texcoords
+	silIndexes: Int32Array;				// indexes changed to be the first vertex with same XYZ, ignoring normal and texcoords		glIndex_t *					
 
-////	int							numMirroredVerts;		// this many verts at the end of the vert list are tangent mirrors
-////	int *						mirroredVerts;			// tri.mirroredVerts[0] is the mirror of tri.numVerts - tri.numMirroredVerts + 0
+	numMirroredVerts: number;		// this many verts at the end of the vert list are tangent mirrors							int							
+	mirroredVerts: Int32Array;			// tri.mirroredVerts[0] is the mirror of tri.numVerts - tri.numMirroredVerts + 0			int *						
 
-////	int							numDupVerts;			// number of duplicate vertexes
-////	int *						dupVerts;				// pairs of the number of the first vertex and the number of the duplicate vertex
+	numDupVerts: number;			// number of duplicate vertexes																int							
+	dupVerts: Int32Array;				// pairs of the number of the first vertex and the number of the duplicate vertex			int *						
 
-////	int							numSilEdges;			// number of silhouette edges
-////	silEdge_t *					silEdges;				// silhouette edges
+	numSilEdges:number;			// number of silhouette edges																int							
+	silEdges: silEdge_t;				// silhouette edges																			silEdge_t *					
 
-////	idPlane *					facePlanes;				// [numIndexes/3] plane equations
+	facePlanes: idPlane;				// [numIndexes/3] plane equations															idPlane *					
 
-////	dominantTri_t *				dominantTris;			// [numVerts] for deformed surface fast tangent calculation
+	dominantTris: dominantTri_t;			// [numVerts] for deformed surface fast tangent calculation									dominantTri_t *				
 
-////	int							numShadowIndexesNoFrontCaps;	// shadow volumes with front caps omitted
-////	int							numShadowIndexesNoCaps;			// shadow volumes with the front and rear caps omitted
+	numShadowIndexesNoFrontCaps: number;	// shadow volumes with front caps omitted											  int							
+	numShadowIndexesNoCaps: number;			// shadow volumes with the front and rear caps omitted								  int							
 
-////	int							shadowCapPlaneBits;		// bits 0-5 are set when that plane of the interacting light has triangles
-////														// projected on it, which means that if the view is on the outside of that
-////														// plane, we need to draw the rear caps of the shadow volume
-////														// turboShadows will have SHADOW_CAP_INFINITE
+	shadowCapPlaneBits: number;		// bits 0-5 are set when that plane of the interacting light has triangles					  int							
+							// projected on it, which means that if the view is on the outside of that					  							
+							// plane, we need to draw the rear caps of the shadow volume								  							
+							// turboShadows will have SHADOW_CAP_INFINITE												  							
 
-////	shadowCache_t *				shadowVertexes;			// these will be copied to shadowCache when it is going to be drawn.
-////														// these are NULL when vertex programs are available
+	shadowVertexes: shadowCache_t;			// these will be copied to shadowCache when it is going to be drawn.						  shadowCache_t *				
+														// these are NULL when vertex programs are available
 
-////	struct srfTriangles_s *		ambientSurface;			// for light interactions, point back at the original surface that generated
-////														// the interaction, which we will get the ambientCache from
+	ambientSurface:srfTriangles_t;			// for light interactions, point back at the original surface that generated
+															// the interaction, which we will get the ambientCache from
+		
+	nextDeferredFree:srfTriangles_t;		// chain of tris to free next frame
 
-////	struct srfTriangles_s *		nextDeferredFree;		// chain of tris to free next frame
-
-////	// data in vertex object space, not directly readable by the CPU
-////	struct vertCache_s *		indexCache;				// int
-////	struct vertCache_s *		ambientCache;			// idDrawVert
-////	struct vertCache_s *		lightingCache;			// lightingCache_t
-////	struct vertCache_s *		shadowCache;			// shadowCache_t
-////} srfTriangles_t;
+	// data in vertex object space, not directly readable by the CPU
+	indexCache: vertCache_t;				// int
+	ambientCache: vertCache_t;			// idDrawVert
+	lightingCache: vertCache_t;			// lightingCache_t
+	shadowCache: vertCache_t;			// shadowCache_t
+};
 
 ////typedef idList<srfTriangles_t *> idTriList;
 
-////typedef struct modelSurface_s {
-////	int							id;
-////	const idMaterial *			shader;
-////	srfTriangles_t *			geometry;
-////} modelSurface_t;
+class modelSurface_t {
+	id:number;				//int							
+	shader: idMaterial;			//const idMaterial *			
+	geometry: srfTriangles_t;		//srfTriangles_t *			
+};
 
 ////typedef enum {
 ////	DM_STATIC,		// never creates a dynamic model

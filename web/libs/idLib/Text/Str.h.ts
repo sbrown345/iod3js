@@ -1535,7 +1535,6 @@ idStr::StripLeading
 */
 StripLeading( $string:string ):void {
 	var/*int */l:number;
-	debugger;
 	l = strlen($string );
 	if ( l > 0 ) {
 		while (!this.Cmpn($string, l ) ) {
@@ -1572,7 +1571,6 @@ StripTrailing( $string:string ):void {
 
 	var data = this.data.toUint8Array ( );
 
-	debugger;
 	l = strlen($string );
 	if ( l > 0 ) {
 		//while ((len >= l) && !Cmpn(string, data + len - l, l)) {

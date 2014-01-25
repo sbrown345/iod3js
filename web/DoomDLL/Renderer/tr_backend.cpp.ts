@@ -32,7 +32,7 @@
 ////#include "tr_local.h"
 
 
-////frameData_t		*frameData;
+var frameData: frameData_t;
 var backEnd:backEndState_t;
 
 

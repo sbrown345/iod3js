@@ -87,6 +87,9 @@
     <Content Include="DoomDLL\Renderer\tr_backend.cpp.ts" />
     <Content Include="DoomDLL\Renderer\tr_local.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\tr_main.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\tr_trisurf.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\VertexCache.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\VertexCache.h.ts" />
     <Content Include="DoomDLL\Sound\sound.h.ts" />
     <Content Include="DoomDLL\Sys\win_glimp.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Sys\win_main.cpp.ts" />
@@ -97,6 +100,7 @@
     <TypeScriptCompile Include="DoomDLL\Ui\DeviceContext.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Ui\DeviceContext.h.ts" />
     <Content Include="libs\c.ts" />
+    <TypeScriptCompile Include="libs\idLib\BV\Bounds.h.ts" />
     <Content Include="libs\idLib\Containers\HashIndex.h.ts" />
     <Content Include="libs\idLib\Containers\List.h.ts" />
     <Content Include="libs\idLib\Containers\StrList.h.ts" />
@@ -110,6 +114,7 @@
     <Content Include="libs\idLib\Lib.h.ts" />
     <Content Include="libs\idLib\Math\Math.cpp.ts" />
     <Content Include="libs\idLib\Math\Math.h.ts" />
+    <TypeScriptCompile Include="libs\idLib\Math\Plane.h.ts" />
     <Content Include="libs\idLib\Math\Vector.cpp.ts" />
     <Content Include="libs\idLib\Math\Vector.h.ts" />
     <TypeScriptCompile Include="libs\idLib\precompiled.h.ts" />

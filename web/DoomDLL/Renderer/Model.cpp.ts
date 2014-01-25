@@ -230,36 +230,35 @@ idRenderModelStatic::MakeDefaultModel
 ================
 */
 idRenderModelStatic.prototype.MakeDefaultModel = function ( ): void {
-    todoThrow ( );
-    //defaulted = true;
+    this.defaulted = true;
 
-    //// throw out any surfaces we already have
-    //PurgeModel();
+    // throw out any surfaces we already have
+	this.PurgeModel();
 
-    //// create one new surface
-    //modelSurface_t	surf;
+    // create one new surface
+    var surf:modelSurface_t;
 
-    //srfTriangles_t *tri = R_AllocStaticTriSurf();
+    var tri = R_AllocStaticTriSurf();
 
-    //surf.shader = tr.defaultMaterial;
-    //surf.geometry = tri;
+    surf.shader = tr.defaultMaterial;
+    surf.geometry = tri;
 
-    //R_AllocStaticTriSurfVerts( tri, 24 );
-    //R_AllocStaticTriSurfIndexes( tri, 36 );
+    R_AllocStaticTriSurfVerts( tri, 24 );
+    R_AllocStaticTriSurfIndexes( tri, 36 );
 
-    //AddCubeFace( tri, idVec3(-1, 1, 1), idVec3(1, 1, 1), idVec3(1, -1, 1), idVec3(-1, -1, 1) );
-    //AddCubeFace( tri, idVec3(-1, 1, -1), idVec3(-1, -1, -1), idVec3(1, -1, -1), idVec3(1, 1, -1) );
+    this.AddCubeFace( tri, new idVec3(-1, 1, 1), new idVec3(1, 1, 1), new idVec3(1, -1, 1), new idVec3(-1, -1, 1) );
+    this.AddCubeFace( tri, new idVec3(-1, 1, -1), new idVec3(-1, -1, -1), new idVec3(1, -1, -1), new idVec3(1, 1, -1) );
+	
+    this.AddCubeFace( tri, new idVec3(1, -1, 1), new idVec3(1, 1, 1), new idVec3(1, 1, -1), new idVec3(1, -1, -1) );
+    this.AddCubeFace( tri, new idVec3(-1, -1, 1), new idVec3(-1, -1, -1), new idVec3(-1, 1, -1), new idVec3(-1, 1, 1) );
 
-    //AddCubeFace( tri, idVec3(1, -1, 1), idVec3(1, 1, 1), idVec3(1, 1, -1), idVec3(1, -1, -1) );
-    //AddCubeFace( tri, idVec3(-1, -1, 1), idVec3(-1, -1, -1), idVec3(-1, 1, -1), idVec3(-1, 1, 1) );
+    this.AddCubeFace( tri, new idVec3(-1, -1, 1), new idVec3(1, -1, 1), new idVec3(1, -1, -1), new idVec3(-1, -1, -1) );
+    this.AddCubeFace( tri, new idVec3(-1, 1, 1), new idVec3(-1, 1, -1), new idVec3(1, 1, -1), new idVec3(1, 1, 1) );
 
-    //AddCubeFace( tri, idVec3(-1, -1, 1), idVec3(1, -1, 1), idVec3(1, -1, -1), idVec3(-1, -1, -1) );
-    //AddCubeFace( tri, idVec3(-1, 1, 1), idVec3(-1, 1, -1), idVec3(1, 1, -1), idVec3(1, 1, 1) );
+    tri.generateNormals = true;
 
-    //tri.generateNormals = true;
-
-    //AddSurface( surf );
-    //FinishSurfaces();
+	this.AddSurface(surf);
+	this.FinishSurfaces();
 };
 
 /////*
@@ -2100,28 +2099,28 @@ idRenderModelStatic.prototype.Name = function ( ): string {
 ////}
 
 
-//////=============================================================================
+//=============================================================================
 
-/////*
-////================
-////idRenderModelStatic::PurgeModel
-////================
-////*/
-////void idRenderModelStatic::PurgeModel() {
-////	int		i;
-////	modelSurface_t	*surf;
+/*
+================
+idRenderModelStatic::PurgeModel
+================
+*/
+idRenderModelStatic.prototype.PurgeModel = function ( ) {
+	var i: number;
+	var surf: modelSurface_t;
 
-////	for ( i = 0 ; i < surfaces.Num() ; i++ ) {
-////		surf = &surfaces[i];
+	for (i = 0; i < this.surfaces.Num ( ); i++ ) {
+		surf = this.surfaces[i];
 
-////		if ( surf.geometry ) {
-////			R_FreeStaticTriSurf( surf.geometry );
-////		}
-////	}
-////	surfaces.Clear();
+		if ( surf.geometry ) {
+			R_FreeStaticTriSurf( surf.geometry );
+		}
+	}
+	this.surfaces.Clear ( );
 
-////	purged = true;
-////}
+	this.purged = true;
+};
 
 /////*
 ////==============

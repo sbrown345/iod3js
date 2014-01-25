@@ -2960,7 +2960,7 @@ idCommonLocal::InitGame
 
 	// initialize string database right off so we can use it for loading messages
 	this.InitLanguageDict ( );
-	debugger;
+		todoThrow ( );
 ////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04344" ) );
 
 ////	// load the font, etc

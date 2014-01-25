@@ -116,7 +116,7 @@ class idDeclLocal extends idDeclBase {
 /*	virtual bool				*/IsValid( ) :boolean {throw "placeholder";}
 /*	virtual void				*/Invalidate( ):void{throw "placeholder";}
 /*	virtual void				*/Reload( ):void {throw "placeholder";}
-/*	virtual void				*/EnsureNotPurged( ):number {throw "placeholder";}
+/*	virtual void				*/EnsureNotPurged( ):void {throw "placeholder";}
 /*	virtual int					*/Index( ) :number {return null;}
 /*	virtual int					*/GetLineNum( ) :number {throw "placeholder";}
 /*	virtual const char *		*/GetFileName( ) :string {throw "placeholder";}
@@ -281,7 +281,7 @@ class idDeclManagerLocal extends idDeclManager {
 /*	idDeclLocal *				*/FindTypeWithoutParsing( type:declType_t, name:string, makeDefault:boolean = true ):idDeclLocal { throw "placeholder"; }
 
 	 GetDeclType( /*int */type:number ):idDeclType { return this.declTypes[type]; }
-//	const idDeclFile *			GetImplicitDeclFile( ) const { return &implicitDecls; }
+	GetImplicitDeclFile ( ): idDeclFile { return this.implicitDecls; }
 
 //private:
 /*	idList<idDeclType *>		*/  declTypes:idList<idDeclType>;
@@ -1803,79 +1803,80 @@ idDeclManagerLocal.prototype.FindTypeWithoutParsing = function ( type: declType_
 */
 
 
-/////*
-////=================
-////idDeclLocal::GetName
-////=================
-////*/
-////const char *idDeclLocal::GetName( ) const {
-////	return name.c_str();
-////}
+/*
+=================
+idDeclLocal::GetName
+=================
+*/
+idDeclLocal.prototype.GetName = function ( ): string {
+	return this.name.c_str ( );
+};
 
-/////*
-////=================
-////idDeclLocal::GetType
-////=================
-////*/
-////declType_t idDeclLocal::GetType( ) const {
-////	return type;
-////}
+/*
+=================
+idDeclLocal::GetType
+=================
+*/
+idDeclLocal.prototype.GetType = function (): declType_t {
+	return this.type;
+};
 
-/////*
-////=================
-////idDeclLocal::GetState
-////=================
-////*/
-////declState_t idDeclLocal::GetState( ) const {
-////	return declState;
-////}
+/*
+=================
+idDeclLocal::GetState
+=================
+*/
+idDeclLocal.prototype.GetState = function ( ): declState_t {
+	return this.declState;
+};
 
-/////*
-////=================
-////idDeclLocal::IsImplicit
-////=================
-////*/
-////bool idDeclLocal::IsImplicit( ) const {
-////	return ( sourceFile == declManagerLocal.GetImplicitDeclFile() );
-////}
+/*
+=================
+idDeclLocal::IsImplicit
+=================
+*/
+idDeclLocal.prototype.IsImplicit = function ( ): boolean {
+	return ( this.sourceFile == declManagerLocal.GetImplicitDeclFile ( ) );
+};
 
-/////*
-////=================
-////idDeclLocal::IsValid
-////=================
-////*/
-////bool idDeclLocal::IsValid( ) const {
-////	return ( declState != declState_t.DS_UNPARSED );
-////}
+/*
+=================
+idDeclLocal::IsValid
+=================
+*/
+idDeclLocal.prototype.IsValid = function ( ): boolean {
+	return ( this.declState != declState_t.DS_UNPARSED );
+};
 
-/////*
-////=================
-////idDeclLocal::Invalidate
-////=================
-////*/
-////void idDeclLocal::Invalidate( ) {
-////	declState = declState_t.DS_UNPARSED;
-////}
+/*
+=================
+idDeclLocal::Invalidate
+=================
+*/
+idDeclLocal.prototype.Invalidate = function ( ): void {
+	this.declState = declState_t.DS_UNPARSED;
+};
 
-/////*
-////=================
-////idDeclLocal::EnsureNotPurged
-////=================
-////*/
-////void idDeclLocal::EnsureNotPurged( ) {
-////	if ( declState == declState_t.DS_UNPARSED ) {
-////		ParseLocal();
-////	}
-////}
+/*
+=================
+idDeclLocal::EnsureNotPurged
+=================
+*/
+idDeclLocal.prototype.EnsureNotPurged = function ( ): void {
+	if ( this.declState == declState_t.DS_UNPARSED ) {
+		this.ParseLocal ( );
+	}
+};
 
-/////*
-////=================
-////idDeclLocal::Index
-////=================
-////*/
-////int idDeclLocal::Index( ) const {
-////	return index;
-////}
+/*
+=================
+idDeclLocal::Index
+=================
+*/
+/*int */
+idDeclLocal.prototype.Index = function ( ): number {
+	return this.index;
+};
 
 /*
 =================

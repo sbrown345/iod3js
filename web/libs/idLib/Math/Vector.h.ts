@@ -307,17 +307,23 @@
 ////}
 
 
-//////===============================================================
-//////
-//////	idVec3 - 3D vector
-//////
-//////===============================================================
+//===============================================================
+//
+//	idVec3 - 3D vector
+//
+//===============================================================
 
-////class idVec3 {
-////public:	
-////	float			x;
-////	float			y;
-////	float			z;
+class idVec3 {
+//public:	
+	//x:number;	  //float			
+	//y:number;	  //float			
+	//z: number;	  //float		
+	
+	constructor ( ) {
+		this[0] = 0.0; // could extend float32 array?
+		this[1] = 0.0;
+		this[2] = 0.0;
+	}
 
 ////					idVec3( void );
 ////					explicit idVec3( const float x, const float y, const float z );
@@ -384,7 +390,7 @@
 
 ////	void			Lerp( const idVec3 &v1, const idVec3 &v2, const float l );
 ////	void			SLerp( const idVec3 &v1, const idVec3 &v2, const float l );
-////};
+};
 
 ////extern idVec3 vec3_origin;
 ////#define vec3_zero vec3_origin
