@@ -38,18 +38,18 @@
 
 ////class idRenderWorldLocal;
 
-////// everything that is needed by the backend needs
-////// to be double buffered to allow it to run in
-////// parallel on a dual cpu machine
-////const int SMP_FRAMES = 1;
+// everything that is needed by the backend needs
+// to be double buffered to allow it to run in
+// parallel on a dual cpu machine
+var SMP_FRAMES = 1;
 
-////const int FALLOFF_TEXTURE_SIZE =	64;
+var FALLOFF_TEXTURE_SIZE =	64;
 
-////const float	DEFAULT_FOG_DISTANCE = 500.0f;
+var	DEFAULT_FOG_DISTANCE = 500.0;
 
-////const int FOG_ENTER_SIZE = 64;
-////const float FOG_ENTER = (FOG_ENTER_SIZE+1.0f)/(FOG_ENTER_SIZE*2);
-////// picky to get the bilerp correct at terminator
+var FOG_ENTER_SIZE = 64;
+var /*float */FOG_ENTER = ( FOG_ENTER_SIZE + 1.0 ) / ( FOG_ENTER_SIZE * 2 );
+// picky to get the bilerp correct at terminator
 
 
 // idScreenRect gets carried around with each drawSurf, so it makes sense

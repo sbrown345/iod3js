@@ -301,9 +301,9 @@ static InvSqrt( /*float */x:number ):number/*float*/ {
 ////	return x * InvSqrt16( x );
 ////}
 
-////ID_INLINE float idMath::Sqrt( float x ) {
-////	return x * InvSqrt( x );
-////}
+static Sqrt( /*float */x:number):number {
+	return Math.sqrt(x); //x * InvSqrt( x );
+}
 
 ////ID_INLINE double idMath::Sqrt64( float x ) {
 ////	return x * InvSqrt64( x );
@@ -778,11 +778,9 @@ static InvSqrt( /*float */x:number ):number/*float*/ {
 ////   return ( ( x ^ y ) - y );
 ////}
 
-////ID_INLINE float idMath::Fabs( float f ) {
-////	int tmp = *reinterpret_cast<int *>( &f );
-////	tmp &= 0x7FFFFFFF;
-////	return *reinterpret_cast<float *>( &tmp );
-////}
+static Fabs( /*float */f:number ):number {
+	return Math.abs( f );
+}
 
 ////ID_INLINE float idMath::Floor( float f ) {
 ////	return floorf( f );

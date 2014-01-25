@@ -438,7 +438,7 @@ This may need to scan six cube map images
 ////		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 ////		break;
 ////	case textureRepeat_t.TR_CLAMP_TO_BORDER:
-////	case TR_CLAMP_TO_ZERO:
+////	case textureRepeat_t.TR_CLAMP_TO_ZERO:
 ////	case textureRepeat_t.TR_CLAMP_TO_ZERO_ALPHA:
 ////	case TR_CLAMP:
 ////		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
@@ -560,7 +560,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 	}
     todoThrow ( );
 //	// don't let mip mapping smear the texture into the clamped border
-//	if ( repeat == TR_CLAMP_TO_ZERO ) {
+//	if ( repeat == textureRepeat_t.TR_CLAMP_TO_ZERO ) {
 //		preserveBorder = true;
 //	} else {
 //		preserveBorder = false;
@@ -630,7 +630,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 
 //	// zero the border if desired, allowing clamped projection textures
 //	// even after picmip resampling or careless artists.
-//	if ( repeat == TR_CLAMP_TO_ZERO ) {
+//	if ( repeat == textureRepeat_t.TR_CLAMP_TO_ZERO ) {
 //		byte	rgba[4];
 
 //		rgba[0] = rgba[1] = rgba[2] = 0;
@@ -846,7 +846,7 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 ////		glTexParameterf( GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT );
 ////		break;
 ////	case textureRepeat_t.TR_CLAMP_TO_BORDER:
-////	case TR_CLAMP_TO_ZERO:
+////	case textureRepeat_t.TR_CLAMP_TO_ZERO:
 ////	case textureRepeat_t.TR_CLAMP_TO_ZERO_ALPHA:
 ////	case TR_CLAMP:
 ////		glTexParameterf( GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
@@ -2206,7 +2206,7 @@ idImage.prototype.PurgeImage = function ( ): void {
 ////	case textureRepeat_t.TR_REPEAT:
 ////		common.Printf( "rept " );
 ////		break;
-////	case TR_CLAMP_TO_ZERO:
+////	case textureRepeat_t.TR_CLAMP_TO_ZERO:
 ////		common.Printf( "zero " );
 ////		break;
 ////	case textureRepeat_t.TR_CLAMP_TO_ZERO_ALPHA:

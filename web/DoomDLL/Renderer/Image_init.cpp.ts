@@ -370,36 +370,37 @@ idImageManager.prototype.R_BorderClampImage = function ( image: idImage ): void 
 //};
 
 idImageManager.prototype.R_AlphaNotchImage = function ( image: idImage ): void {
-    todo ( );
-////	byte	data[2][4];
+	// this is used for alpha test clip planes
+	var data = new Uint8Array( [
+		255,
+		255,
+		255,
+		0,
+		255,
+		255,
+		255,
+		255
+	] );
 
-////	// this is used for alpha test clip planes
-
-////	data[0][0] = data[0][1] = data[0][2] = 255;
-////	data[0][3] = 0;
-////	data[1][0] = data[1][1] = data[1][2] = 255;
-////	data[1][3] = 255;
-
-////	image.GenerateImage( (byte *)data, 2, 1, 
-////		textureFilter_t.TF_NEAREST, false, textureRepeat_t.TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+	image.GenerateImage( data, 2, 1, 
+		textureFilter_t.TF_NEAREST, false, textureRepeat_t.TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 };
 
 idImageManager.prototype.R_FlatNormalImage = function ( image: idImage ): void {
-    todo ( );
-////	byte	data[DEFAULT_SIZE][DEFAULT_SIZE][4];
-////	int		i;
+	var data = $3dArray<Uint8Array>( Uint8Array, DEFAULT_SIZE, DEFAULT_SIZE, 4 );
+	var i: number;
 
-////	int red = ( globalImages.image_useNormalCompression.GetInteger() == 1 ) ? 0 : 3;
-////	int alpha = ( red == 0 ) ? 3 : 0;
-////	// flat normal map for default bunp mapping
-////	for ( i = 0 ; i < 4 ; i++ ) {
-////		data[0][i][red] = 128;
-////		data[0][i][1] = 128;
-////		data[0][i][2] = 255;
-////		data[0][i][alpha] = 255;
-////	}
-////	image.GenerateImage( (byte *)data, 2, 2, 
-////		textureFilter_t.TF_DEFAULT, true, textureRepeat_t.TR_REPEAT, textureDepth_t.TD_HIGH_QUALITY );
+	var red = ( idImageManager.image_useNormalCompression.GetInteger ( ) == 1 ) ? 0 : 3;
+	var alpha = ( red == 0 ) ? 3 : 0;
+	// flat normal map for default bunp mapping
+	for ( i = 0; i < 4; i++ ) {
+		data[0][i][red] = 128;
+		data[0][i][1] = 128;
+		data[0][i][2] = 255;
+		data[0][i][alpha] = 255;
+	}
+	image.GenerateImage( flatten3DArray<Uint8Array>( Uint8Array, data ), 2, 2,
+		textureFilter_t.TF_DEFAULT, true, textureRepeat_t.TR_REPEAT, textureDepth_t.TD_HIGH_QUALITY );
 };
 
 idImageManager.prototype.R_AmbientNormalImage = function ( image: idImage ): void {
@@ -450,7 +451,7 @@ idImageManager.prototype.R_AmbientNormalImage = function ( image: idImage ): voi
 ////			} else {
 ////				dy = 0;
 ////			}
-////			d = (byte)idMath::Sqrt( dx * dx + dy * dy );
+////			d = byte(idMath.Sqrt( dx * dx + dy * dy ));
 ////			if ( d > 32 ) {
 ////				d = 32;
 ////			}
@@ -659,20 +660,19 @@ function makeNormalizeVectorCubeMap ( image: idImage ): void {
 ////================
 ////*/
 idImageManager.prototype.R_CreateNoFalloffImage = function ( image: idImage ): void {
-////	int		x,y;
-////	byte	data[16][FALLOFF_TEXTURE_SIZE][4];
+	var/*int		*/x: number, y: number;
+	var data = $3dArray<Uint8Array>( Uint8Array, 16, FALLOFF_TEXTURE_SIZE, 4 );
 
-////	memset( data, 0, sizeof( data ) );
-////	for (x=1 ; x<FALLOFF_TEXTURE_SIZE-1 ; x++) {
-////		for (y=1 ; y<15 ; y++) {
-////			data[y][x][0] = 255;
-////			data[y][x][1] = 255;
-////			data[y][x][2] = 255;
-////			data[y][x][3] = 255;
-////		}
-////	}
-////	image.GenerateImage( (byte *)data, FALLOFF_TEXTURE_SIZE, 16,
-////		textureFilter_t.TF_DEFAULT, false, TR_CLAMP_TO_ZERO, textureDepth_t.TD_HIGH_QUALITY );
+	for (x=1 ; x<FALLOFF_TEXTURE_SIZE-1 ; x++) {
+		for (y=1 ; y<15 ; y++) {
+			data[y][x][0] = 255;
+			data[y][x][1] = 255;
+			data[y][x][2] = 255;
+			data[y][x][3] = 255;
+		}
+	}
+	image.GenerateImage( flatten3DArray<Uint8Array>( Uint8Array, data ), FALLOFF_TEXTURE_SIZE, 16,
+		textureFilter_t.TF_DEFAULT, false, textureRepeat_t.TR_CLAMP_TO_ZERO, textureDepth_t.TD_HIGH_QUALITY );
 }; /*
 ================
 R_FogImage
@@ -684,47 +684,48 @@ third will still be projection based
 var FOG_SIZE = 128;
 
 idImageManager.prototype.R_FogImage = function ( image: idImage ): void {
-    todo ( );
-////	int		x,y;
-////	byte	data[FOG_SIZE][FOG_SIZE][4];
-////	int		b;
+	var /*int		*/x: number, y: number;
+	var data = $3dArray<Uint8Array>( Uint8Array, FOG_SIZE, FOG_SIZE, 4 );
+	var b: number;
 
-////float	step[256];
-////int		i;
-////float	remaining = 1.0;
-////for ( i = 0 ; i < 256 ; i++ ) {
-////	step[i] = remaining;
-////	remaining *= 0.982f;
-////}
+	var step = new Float32Array( 256 );
+	var i: number;
+	var /*float	*/remaining = 1.0;
+	for ( i = 0; i < 256; i++ ) {
+		step[i] = remaining;
+		remaining *= 0.982;
+	}
 
-////	for (x=0 ; x<FOG_SIZE ; x++) {
-////		for (y=0 ; y<FOG_SIZE ; y++) {
-////			float	d;
+	for ( x = 0; x < FOG_SIZE; x++ ) {
+		for ( y = 0; y < FOG_SIZE; y++ ) {
+			var /*float	*/d: number;
 
-////			d = idMath::Sqrt( (x - FOG_SIZE/2) * (x - FOG_SIZE/2) 
-////				+ (y - FOG_SIZE/2) * (y - FOG_SIZE / 2) );
-////			d /= FOG_SIZE/2-1;
+			d = idMath.Sqrt( ( x - FOG_SIZE / 2 ) * ( x - FOG_SIZE / 2 )
+				+ ( y - FOG_SIZE / 2 ) * ( y - FOG_SIZE / 2 ) );
+			d /= FOG_SIZE / 2 - 1;
 
-////			b = (byte)(d * 255);
-////			if ( b <= 0 ) {
-////				b = 0;
-////			} else if ( b > 255 ) {
-////				b = 255;
-////			}
-////b = (byte)(255 * ( 1.0 - step[b] ));
-////			if ( x == 0 || x == FOG_SIZE-1 || y == 0 || y == FOG_SIZE-1 ) {
-////				b = 255;		// avoid clamping issues
-////			}
-////			data[y][x][0] =
-////			data[y][x][1] =
-////			data[y][x][2] = 255;
-////			data[y][x][3] = b;
-////		}
-////	}
+			b = byte( d * 255 );
+			if ( b <= 0 ) {
+				b = 0;
+			} else if ( b > 255 ) {
+				b = 255;
+			}
+			b = byte( 255 * ( 1.0 - step[b] ) );
+			if ( x == 0 || x == FOG_SIZE - 1 || y == 0 || y == FOG_SIZE - 1 ) {
+				b = 255; // avoid clamping issues
+			}
+			data[y][x][0] =
+				data[y][x][1] =
+				data[y][x][2] = 255;
+			data[y][x][3] = b;
+		}
+	}
 
-////	image.GenerateImage( (byte *)data, FOG_SIZE, FOG_SIZE, 
-////		textureFilter_t.TF_LINEAR, false, textureRepeat_t.TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
-}; /*
+	image.GenerateImage( flatten3DArray<Uint8Array>( Uint8Array, data ), FOG_SIZE, FOG_SIZE,
+		textureFilter_t.TF_LINEAR, false, textureRepeat_t.TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+};
+
+/*
 ================
 FogFraction
 
@@ -733,66 +734,66 @@ Height values below zero are inside the fog volume
 */
 var RAMP_RANGE = 8.0;
 var DEEP_RANGE = -30.0;
-////static float	FogFraction( float viewHeight, float targetHeight ) {
-////	float	total = idMath::Fabs( targetHeight - viewHeight );
+function /*float	*/FogFraction( /*float */viewHeight: number, /*float */targetHeight: number ):number {
+	var /*float	*/total = idMath.Fabs( targetHeight - viewHeight );
 
-//////	return targetHeight >= 0 ? 0 : 1.0;
+//	return targetHeight >= 0 ? 0 : 1.0;
 
-////	// only ranges that cross the ramp range are special
-////	if ( targetHeight > 0 && viewHeight > 0 ) {
-////		return 0.0;
-////	}
-////	if ( targetHeight < -RAMP_RANGE && viewHeight < -RAMP_RANGE ) {
-////		return 1.0;
-////	}
+	// only ranges that cross the ramp range are special
+	if ( targetHeight > 0 && viewHeight > 0 ) {
+		return 0.0;
+	}
+	if ( targetHeight < -RAMP_RANGE && viewHeight < -RAMP_RANGE ) {
+		return 1.0;
+	}
 
-////	float	above;
-////	if ( targetHeight > 0 ) {
-////		above = targetHeight;
-////	} else if ( viewHeight > 0 ) {
-////		above = viewHeight;
-////	} else {
-////		above = 0;
-////	}
+	var/*float	*/above: number;
+	if ( targetHeight > 0 ) {
+		above = targetHeight;
+	} else if ( viewHeight > 0 ) {
+		above = viewHeight;
+	} else {
+		above = 0;
+	}
 
-////	float	rampTop, rampBottom;
+	var /*float	*/rampTop: number, rampBottom: number;
 
-////	if ( viewHeight > targetHeight ) {
-////		rampTop = viewHeight;
-////		rampBottom = targetHeight;
-////	} else {
-////		rampTop = targetHeight;
-////		rampBottom = viewHeight;
-////	}
-////	if ( rampTop > 0 ) {
-////		rampTop = 0;
-////	}
-////	if ( rampBottom < -RAMP_RANGE ) {
-////		rampBottom = -RAMP_RANGE;
-////	}
+	if ( viewHeight > targetHeight ) {
+		rampTop = viewHeight;
+		rampBottom = targetHeight;
+	} else {
+		rampTop = targetHeight;
+		rampBottom = viewHeight;
+	}
+	if ( rampTop > 0 ) {
+		rampTop = 0;
+	}
+	if ( rampBottom < -RAMP_RANGE ) {
+		rampBottom = -RAMP_RANGE;
+	}
 
-////	float	rampSlope = 1.0 / RAMP_RANGE;
+	var/*float*/rampSlope = 1.0 / RAMP_RANGE;
 
-////	if ( !total ) {
-////		return -viewHeight * rampSlope;
-////	}
+	if ( !total ) {
+		return -viewHeight * rampSlope;
+	}
 
-////	float ramp = ( 1.0 - ( rampTop * rampSlope + rampBottom * rampSlope ) * -0.5 ) * ( rampTop - rampBottom );
+	var/*float */ramp: number = ( 1.0 - ( rampTop * rampSlope + rampBottom * rampSlope ) * -0.5 ) * ( rampTop - rampBottom );
 
-////	float	frac = ( total - above - ramp ) / total;
+	var/*float*/frac = ( total - above - ramp ) / total;
 
-////	// after it gets moderately deep, always use full value
-////	float deepest = viewHeight < targetHeight ? viewHeight : targetHeight;
+	// after it gets moderately deep, always use full value
+	var/*float */deepest :number= viewHeight < targetHeight ? viewHeight : targetHeight;
 
-////	float	deepFrac = deepest / DEEP_RANGE;
-////	if ( deepFrac >= 1.0 ) {
-////		return 1.0;
-////	}
+	var/*float*/deepFrac = deepest / DEEP_RANGE;
+	if ( deepFrac >= 1.0 ) {
+		return 1.0;
+	}
 
-////	frac = frac * ( 1.0 - deepFrac ) + deepFrac;
+	frac = frac * ( 1.0 - deepFrac ) + deepFrac;
 
-////	return frac;
-////}
+	return frac;
+}
 
 ///*
 //================
@@ -803,33 +804,32 @@ var DEEP_RANGE = -30.0;
 //================
 //*/
 idImageManager.prototype.R_FogEnterImage = function ( image: idImage ): void {
-    todo ( );
-////	int		x,y;
-////	byte	data[FOG_ENTER_SIZE][FOG_ENTER_SIZE][4];
-////	int		b;
+	var  /*int		*/x: number, y: number;
+	var data = $3dArray<Uint8Array>( Uint8Array, FOG_ENTER_SIZE, FOG_ENTER_SIZE, 4 );
+	var /*int		*/b: number;
 
-////	for (x=0 ; x<FOG_ENTER_SIZE ; x++) {
-////		for (y=0 ; y<FOG_ENTER_SIZE ; y++) {
-////			float	d;
+	for (x=0 ; x<FOG_ENTER_SIZE ; x++) {
+		for (y=0 ; y<FOG_ENTER_SIZE ; y++) {
+			var/*float	*/d:number;
 
-////			d = FogFraction( x - (FOG_ENTER_SIZE / 2), y - (FOG_ENTER_SIZE / 2) );
+			d = FogFraction( x - (FOG_ENTER_SIZE / 2), y - (FOG_ENTER_SIZE / 2) );
 
-////			b = (byte)(d * 255);
-////			if ( b <= 0 ) {
-////				b = 0;
-////			} else if ( b > 255 ) {
-////				b = 255;
-////			}
-////			data[y][x][0] =
-////			data[y][x][1] =
-////			data[y][x][2] = 255;
-////			data[y][x][3] = b;
-////		}
-////	}
+			b = byte(d * 255);
+			if ( b <= 0 ) {
+				b = 0;
+			} else if ( b > 255 ) {
+				b = 255;
+			}
+			data[y][x][0] =
+			data[y][x][1] =
+			data[y][x][2] = 255;
+			data[y][x][3] = b;
+		}
+	}
 
-////	// if mipmapped, acutely viewed surfaces fade wrong
-////	image.GenerateImage( (byte *)data, FOG_ENTER_SIZE, FOG_ENTER_SIZE, 
-////		textureFilter_t.TF_LINEAR, false, textureRepeat_t.TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
+	// if mipmapped, acutely viewed surfaces fade wrong
+	image.GenerateImage( flatten3DArray<Uint8Array>( Uint8Array, data ), FOG_ENTER_SIZE, FOG_ENTER_SIZE,
+		textureFilter_t.TF_LINEAR, false, textureRepeat_t.TR_CLAMP, textureDepth_t.TD_HIGH_QUALITY );
 }; /*
 ================
 R_QuadraticImage
@@ -848,7 +848,7 @@ idImageManager.prototype.R_QuadraticImage = function ( image: idImage ): void {
 
 ////	for (x=0 ; x<QUADRATIC_WIDTH ; x++) {
 ////		for (y=0 ; y<QUADRATIC_HEIGHT ; y++) {
-////			float	d;
+////			var/*float*/d;
 
 ////			d = x - (QUADRATIC_WIDTH/2 - 0.5);
 ////			d = idMath::Fabs( d );
@@ -858,7 +858,7 @@ idImageManager.prototype.R_QuadraticImage = function ( image: idImage ): void {
 ////			d = 1.0 - d;
 ////			d = d * d;
 
-////			b = (byte)(d * 255);
+////			b = byte(d * 255);
 ////			if ( b <= 0 ) {
 ////				b = 0;
 ////			} else if ( b > 255 ) {
@@ -1274,14 +1274,14 @@ idImageManager.prototype.R_ListImages_f = function ( args: idCmdArgs ): void {
 ////void idImageManager::SetNormalPalette( void ) {
 ////	int		i, j;
 ////	idVec3	v;
-////	float	t;
+////	var/*float*/t;
 ////	//byte temptable[768];
 ////	byte	*temptable = compressedPalette;
 ////	int		compressedToOriginal[16];
 
 ////	// make an ad-hoc separable compression mapping scheme
 ////	for ( i = 0 ; i < 8 ; i++ ) {
-////		float	f, y;
+////		var/*float*/f, y;
 
 ////		f = ( i + 1 ) / 8.5;
 ////		y = idMath::Sqrt( 1.0 - f * f );

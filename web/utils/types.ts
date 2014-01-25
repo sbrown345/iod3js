@@ -30,11 +30,11 @@ function memcpyStruct(dest: ITypeInfo[], source: ITypeInfo[], count: number, typ
 //    return int8ConvertArray[0];
 //};
 
-//var uint8ConvertArray = new Uint8Array(1);
-//var uint8 = function (v: number): number {
-//   uint8ConvertArray[0] = v;
-//    return uint8ConvertArray[0];
-//};
+var byte8ConvertArray = new Uint8Array(1);
+var byte = function (v: number): number {
+	byte8ConvertArray[0] = v;
+	return byte8ConvertArray[0];
+};
 
 //var int16ConvertArray = new Int16Array(1);
 //var int16 = function (v: number): number {
