@@ -1477,7 +1477,7 @@ idImageManager.prototype.ImageFromFile = function ( _name: string, filter: textu
 	for ( image = this.imageHashTable[hash]; image; image = image.hashNext ) {
 		if ( name.Icmp( image.imgName ) == 0 ) {
 			// the built in's, like _white and _flat always match the other options
-			if ( name[0] == '_' ) {
+			if ( name.data[0] == '_' ) {
 				return image;
 			}
 			if ( image.cubeFiles != cubeMap ) {
