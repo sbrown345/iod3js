@@ -54,9 +54,9 @@ var byte = function (v: number): number {
 //    return float32ConvertArray[0];
 //};
 
-var int = function (v: number): number {
-    return v | 0;   
-};
+function int ( v: number ): number {
+	return v | 0;
+}
 
 var uint32 = function (v: number): number {
     return v >>> 0;

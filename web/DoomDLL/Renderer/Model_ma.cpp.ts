@@ -924,13 +924,13 @@
 ////			roty.Identity();
 ////			rotz.Identity();
 
-////			if(fabs(transform.rotate.x) > 0.0f) {
+////			if(fabs(transform.rotate.x) > 0.0) {
 ////				MA_BuildAxisRotation(rotx, DEG2RAD(-transform.rotate.x), 0);
 ////			}
-////			if(fabs(transform.rotate.y) > 0.0f) {
+////			if(fabs(transform.rotate.y) > 0.0) {
 ////				MA_BuildAxisRotation(roty, DEG2RAD(transform.rotate.y), 1);
 ////			}
-////			if(fabs(transform.rotate.z) > 0.0f) {
+////			if(fabs(transform.rotate.z) > 0.0) {
 ////				MA_BuildAxisRotation(rotz, DEG2RAD(-transform.rotate.z), 2);
 ////			}
 

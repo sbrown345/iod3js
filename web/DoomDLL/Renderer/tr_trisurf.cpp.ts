@@ -1,5 +1,6 @@
 /// <reference path="tr_local.h.ts" />
 /// <reference path="model.h.ts" />
+/// <reference path="../../utils/types.ts" />
 /// <reference path="../../libs/idlib/heap.cpp.ts" />
 ///*
 //===========================================================================
@@ -118,14 +119,14 @@
 //
 //// instead of using the texture T vector, cross the normal and S vector for an orthogonal axis
 //#define DERIVE_UNSMOOTHED_BITANGENT
-//
-//const int MAX_SIL_EDGES			= 0x10000;
-//const int SILEDGE_HASH_SIZE		= 1024;
-//
-//static int			numSilEdges;
-//static silEdge_t *	silEdges;
-//static idHashIndex	silEdgeHash( SILEDGE_HASH_SIZE, MAX_SIL_EDGES );
-//static int			numPlanes;
+
+var MAX_SIL_EDGES			= 0x10000;
+var SILEDGE_HASH_SIZE		= 1024;
+
+var /*int			*/numSilEdges: number;
+var silEdges: silEdge_t;
+var silEdgeHash = new idHashIndex( SILEDGE_HASH_SIZE, MAX_SIL_EDGES );
+var /*int			*/numPlanes: number;
 //
 var srfTrianglesAllocator = idBlockAlloc_template<srfTriangles_t>( srfTriangles_t, 1 << 8 );
 //
@@ -133,55 +134,55 @@ var srfTrianglesAllocator = idBlockAlloc_template<srfTriangles_t>( srfTriangles_
 //var triVertexAllocator;			 //static idDynamicBlockAlloc<idDrawVert, 1<<20, 1<<10>		
 //var triIndexAllocator;			 //static idDynamicBlockAlloc<glIndex_t, 1<<18, 1<<10>		
 //var triShadowVertexAllocator;	 //static idDynamicBlockAlloc<shadowCache_t, 1<<18, 1<<10>	
-//mabye use idDynamicAlloc instead?					 //var triPlaneAllocator;			 //static idDynamicBlockAlloc<idPlane, 1<<17, 1<<10>			
+//var triPlaneAllocator;			 //static idDynamicBlockAlloc<idPlane, 1<<17, 1<<10>			
 //var triSilIndexAllocator;		 //static idDynamicBlockAlloc<glIndex_t, 1<<17, 1<<10>		
 //var triSilEdgeAllocator;		 //static idDynamicBlockAlloc<silEdge_t, 1<<17, 1<<10>		
 //var triDominantTrisAllocator;	 //static idDynamicBlockAlloc<dominantTri_t, 1<<16, 1<<10>	
 //var triMirroredVertAllocator;	 //static idDynamicBlockAlloc<int, 1<<16, 1<<10>				
 //var triDupVertAllocator;		 //static idDynamicBlockAlloc<int, 1<<16, 1<<10>				
 //#else
-//static idDynamicAlloc<idDrawVert, 1<<20, 1<<10>			triVertexAllocator;
-//static idDynamicAlloc<glIndex_t, 1<<18, 1<<10>			triIndexAllocator;
-//static idDynamicAlloc<shadowCache_t, 1<<18, 1<<10>		triShadowVertexAllocator;
-//static idDynamicAlloc<idPlane, 1<<17, 1<<10>			triPlaneAllocator;
-//static idDynamicAlloc<glIndex_t, 1<<17, 1<<10>			triSilIndexAllocator;
-//static idDynamicAlloc<silEdge_t, 1<<17, 1<<10>			triSilEdgeAllocator;
-//static idDynamicAlloc<dominantTri_t, 1<<16, 1<<10>		triDominantTrisAllocator;
-//static idDynamicAlloc<int, 1<<16, 1<<10>				triMirroredVertAllocator;
-//static idDynamicAlloc<int, 1<<16, 1<<10>				triDupVertAllocator;
+var triVertexAllocator = idDynamicAlloc_template<idDrawVert>( idDrawVert, 1 << 20, 1 << 10 );
+var triIndexAllocator = idDynamicAlloc_template<Int32Array>( Int32Array, 1 << 18, 1 << 10 );
+var triShadowVertexAllocator = idDynamicAlloc_template<shadowCache_t>( shadowCache_t, 1 << 18, 1 << 10 );
+var triPlaneAllocator = idDynamicAlloc_template<idPlane>( idPlane, 1 << 17, 1 << 10 );
+var triSilIndexAllocator = idDynamicAlloc_template<Int32Array>(Int32Array, 1 << 17, 1 << 10 );
+var triSilEdgeAllocator = idDynamicAlloc_template<silEdge_t>( silEdge_t, 1 << 17, 1 << 10 );
+var triDominantTrisAllocator = idDynamicAlloc_template<dominantTri_t>(dominantTri_t, 1 << 16, 1 << 10);
+var triMirroredVertAllocator = idDynamicAlloc_template<Int32Array>(Int32Array, 1 << 16, 1 << 10);
+var triDupVertAllocator = idDynamicAlloc_template<Int32Array>(Int32Array, 1 << 16, 1 << 10 );
 //#endif
 //
 //
-///*
-//===============
-//R_InitTriSurfData
-//===============
-//*/
-//void R_InitTriSurfData( void ) {
-//	silEdges = (silEdge_t *)R_StaticAlloc( MAX_SIL_EDGES * sizeof( silEdges[0] ) );
-//
-//	// initialize allocators for triangle surfaces
-//	triVertexAllocator.Init();
-//	triIndexAllocator.Init();
-//	triShadowVertexAllocator.Init();
-//	triPlaneAllocator.Init();
-//	triSilIndexAllocator.Init();
-//	triSilEdgeAllocator.Init();
-//	triDominantTrisAllocator.Init();
-//	triMirroredVertAllocator.Init();
-//	triDupVertAllocator.Init();
-//
-//	// never swap out triangle surfaces
-//	triVertexAllocator.SetLockMemory( true );
-//	triIndexAllocator.SetLockMemory( true );
-//	triShadowVertexAllocator.SetLockMemory( true );
-//	triPlaneAllocator.SetLockMemory( true );
-//	triSilIndexAllocator.SetLockMemory( true );
-//	triSilEdgeAllocator.SetLockMemory( true );
-//	triDominantTrisAllocator.SetLockMemory( true );
-//	triMirroredVertAllocator.SetLockMemory( true );
-//	triDupVertAllocator.SetLockMemory( true );
-//}
+/*
+===============
+R_InitTriSurfData
+===============
+*/
+function R_InitTriSurfData( ):void {
+	silEdges = new silEdge_t;
+
+	// initialize allocators for triangle surfaces
+	triVertexAllocator.Init();
+	triIndexAllocator.Init();
+	triShadowVertexAllocator.Init();
+	triPlaneAllocator.Init();
+	triSilIndexAllocator.Init();
+	triSilEdgeAllocator.Init();
+	triDominantTrisAllocator.Init();
+	triMirroredVertAllocator.Init();
+	triDupVertAllocator.Init();
+
+	// never swap out triangle surfaces
+	triVertexAllocator.SetLockMemory( true );
+	triIndexAllocator.SetLockMemory( true );
+	triShadowVertexAllocator.SetLockMemory( true );
+	triPlaneAllocator.SetLockMemory( true );
+	triSilIndexAllocator.SetLockMemory( true );
+	triSilEdgeAllocator.SetLockMemory( true );
+	triDominantTrisAllocator.SetLockMemory( true );
+	triMirroredVertAllocator.SetLockMemory( true );
+	triDupVertAllocator.SetLockMemory( true );
+}
 //
 ///*
 //===============
@@ -529,47 +530,48 @@ function R_AllocStaticTriSurf(): srfTriangles_t {
 	return tris;
 }
 
-///*
-//=================
-//R_CopyStaticTriSurf
-//
-//This only duplicates the indexes and verts, not any of the derived data.
-//=================
-//*/
-//srfTriangles_t *R_CopyStaticTriSurf( const srfTriangles_t *tri ) {
-//	srfTriangles_t	*newTri;
-//
-//	newTri = R_AllocStaticTriSurf();
-//	R_AllocStaticTriSurfVerts( newTri, tri.numVerts );
-//	R_AllocStaticTriSurfIndexes( newTri, tri.numIndexes );
-//	newTri.numVerts = tri.numVerts;
-//	newTri.numIndexes = tri.numIndexes;
-//	memcpy( newTri.verts, tri.verts, tri.numVerts * sizeof( newTri.verts[0] ) );
-//	memcpy( newTri.indexes, tri.indexes, tri.numIndexes * sizeof( newTri.indexes[0] ) );
-//
-//	return newTri;
-//}
-//
-///*
-//=================
-//R_AllocStaticTriSurfVerts
-//=================
-//*/
-//void R_AllocStaticTriSurfVerts( srfTriangles_t *tri, int numVerts ) {
-//	assert( tri.verts == null );
-//	tri.verts = triVertexAllocator.Alloc( numVerts );
-//}
-//
-///*
-//=================
-//R_AllocStaticTriSurfIndexes
-//=================
-//*/
-//void R_AllocStaticTriSurfIndexes( srfTriangles_t *tri, int numIndexes ) {
-//	assert( tri.indexes == null );
-//	tri.indexes = triIndexAllocator.Alloc( numIndexes );
-//}
-//
+/*
+=================
+R_CopyStaticTriSurf
+
+This only duplicates the indexes and verts, not any of the derived data.
+=================
+*/
+function R_CopyStaticTriSurf( tri:srfTriangles_t ):srfTriangles_t {
+	var newTri: srfTriangles_t;
+
+	newTri = R_AllocStaticTriSurf();
+	R_AllocStaticTriSurfVerts( newTri, tri.numVerts );
+	R_AllocStaticTriSurfIndexes( newTri, tri.numIndexes );
+	newTri.numVerts = tri.numVerts;
+	newTri.numIndexes = tri.numIndexes;
+	todoThrow ( );
+	//memcpy( newTri.verts, tri.verts, tri.numVerts * sizeof( newTri.verts[0] ) );
+	//memcpy( newTri.indexes, tri.indexes, tri.numIndexes * sizeof( newTri.indexes[0] ) );
+
+	return newTri;
+}
+
+/*
+=================
+R_AllocStaticTriSurfVerts
+=================
+*/
+function R_AllocStaticTriSurfVerts(tri: srfTriangles_t, /*int */numVerts:number ):void {
+	//assert( tri.verts == null );
+	tri.verts = triVertexAllocator.Alloc( numVerts );
+}
+
+/*
+=================
+R_AllocStaticTriSurfIndexes
+=================
+*/
+function R_AllocStaticTriSurfIndexes(tri: srfTriangles_t, /*int */numIndexes:number ):void {
+	assert( tri.indexes == null );
+	tri.indexes = triIndexAllocator.Alloc( numIndexes );
+}
+
 ///*
 //=================
 //R_AllocStaticTriSurfShadowVerts
@@ -659,132 +661,134 @@ function R_AllocStaticTriSurf(): srfTriangles_t {
 //	tri.silIndexes = null;
 //}
 //
-///*
-//===============
-//R_RangeCheckIndexes
-//
-//Check for syntactically incorrect indexes, like out of range values.
-//Does not check for semantics, like degenerate triangles.
-//
-//No vertexes is acceptable if no indexes.
-//No indexes is acceptable.
-//More vertexes than are referenced by indexes are acceptable.
-//===============
-//*/
-//void R_RangeCheckIndexes( const srfTriangles_t *tri ) {
-//	int		i;
-//
-//	if ( tri.numIndexes < 0 ) {
-//		common.Error( "R_RangeCheckIndexes: numIndexes < 0" );
-//	}
-//	if ( tri.numVerts < 0 ) {
-//		common.Error( "R_RangeCheckIndexes: numVerts < 0" );
-//	}
-//
-//	// must specify an integral number of triangles
-//	if ( tri.numIndexes % 3 != 0 ) {
-//		common.Error( "R_RangeCheckIndexes: numIndexes %% 3" );
-//	}
-//
-//	for ( i = 0 ; i < tri.numIndexes ; i++ ) {
-//		if ( tri.indexes[i] < 0 || tri.indexes[i] >= tri.numVerts ) {
-//			common.Error( "R_RangeCheckIndexes: index out of range" );
-//		}
-//	}
-//
-//	// this should not be possible unless there are unused verts
-//	if ( tri.numVerts > tri.numIndexes ) {
-//		// FIXME: find the causes of these
-//		// common.Printf( "R_RangeCheckIndexes: tri.numVerts > tri.numIndexes\n" );
-//	}
-//}
-//
-///*
-//=================
-//R_BoundTriSurf
-//=================
-//*/
-//void R_BoundTriSurf( srfTriangles_t *tri ) {
-//	SIMDProcessor.MinMax( tri.bounds[0], tri.bounds[1], tri.verts, tri.numVerts );
-//}
-//
-///*
-//=================
-//R_CreateSilRemap
-//=================
-//*/
-//static int *R_CreateSilRemap( const srfTriangles_t *tri ) {
-//	int		c_removed, c_unique;
-//	int		*remap;
-//	int		i, j, hashKey;
-//	const idDrawVert *v1, *v2;
-//
-//	remap = (int *)R_ClearedStaticAlloc( tri.numVerts * sizeof( remap[0] ) );
-//
-//	if ( !r_useSilRemap.GetBool() ) {
-//		for ( i = 0 ; i < tri.numVerts ; i++ ) {
-//			remap[i] = i;
-//		}
-//		return remap;
-//	}
-//
-//	idHashIndex		hash( 1024, tri.numVerts );
-//
-//	c_removed = 0;
-//	c_unique = 0;
-//	for ( i = 0 ; i < tri.numVerts ; i++ ) {
-//		v1 = &tri.verts[i];
-//
-//		// see if there is an earlier vert that it can map to
-//		hashKey = hash.GenerateKey( v1.xyz );
-//		for ( j = hash.First( hashKey ); j >= 0; j = hash.Next( j ) ) {
-//			v2 = &tri.verts[j];
-//			if ( v2.xyz[0] == v1.xyz[0]
-//				&& v2.xyz[1] == v1.xyz[1]
-//				&& v2.xyz[2] == v1.xyz[2] ) {
-//				c_removed++;
-//				remap[i] = j;
-//				break;
-//			}
-//		}
-//		if ( j < 0 ) {
-//			c_unique++;
-//			remap[i] = i;
-//			hash.Add( hashKey, i );
-//		}
-//	}
-//
-//	return remap;
-//}
-//
-///*
-//=================
-//R_CreateSilIndexes
-//
-//Uniquing vertexes only on xyz before creating sil edges reduces
-//the edge count by about 20% on Q3 models
-//=================
-//*/
-//void R_CreateSilIndexes( srfTriangles_t *tri ) {
-//	int		i;
-//	int		*remap;
-//
-//	if ( tri.silIndexes ) {
-//		triSilIndexAllocator.Free( tri.silIndexes );
-//		tri.silIndexes = null;
-//	}
-//
-//	remap = R_CreateSilRemap( tri );
-//
-//	// remap indexes to the first one
-//	tri.silIndexes = triSilIndexAllocator.Alloc( tri.numIndexes );
-//	for ( i = 0; i < tri.numIndexes; i++ ) {
-//		tri.silIndexes[i] = remap[tri.indexes[i]];
-//	}
-//
-//	R_StaticFree( remap );
-//}
-//
+/*
+===============
+R_RangeCheckIndexes
+
+Check for syntactically incorrect indexes, like out of range values.
+Does not check for semantics, like degenerate triangles.
+
+No vertexes is acceptable if no indexes.
+No indexes is acceptable.
+More vertexes than are referenced by indexes are acceptable.
+===============
+*/
+function R_RangeCheckIndexes ( tri: srfTriangles_t ): void {
+	var i: number;
+
+	if ( tri.numIndexes < 0 ) {
+		common.Error( "R_RangeCheckIndexes: numIndexes < 0" );
+	}
+	if ( tri.numVerts < 0 ) {
+		common.Error( "R_RangeCheckIndexes: numVerts < 0" );
+	}
+
+	// must specify an integral number of triangles
+	if ( tri.numIndexes % 3 != 0 ) {
+		common.Error( "R_RangeCheckIndexes: numIndexes %% 3" );
+	}
+
+	for ( i = 0; i < tri.numIndexes; i++ ) {
+		if ( tri.indexes[i] < 0 || tri.indexes[i] >= tri.numVerts ) {
+			common.Error( "R_RangeCheckIndexes: index out of range" );
+		}
+	}
+
+	// this should not be possible unless there are unused verts
+	if ( tri.numVerts > tri.numIndexes ) {
+		// FIXME: find the causes of these
+		// common.Printf( "R_RangeCheckIndexes: tri.numVerts > tri.numIndexes\n" );
+	}
+}
+
+/*
+=================
+R_BoundTriSurf
+=================
+*/
+function R_BoundTriSurf(tri: srfTriangles_t): void {
+	todoThrow ( );
+	//SIMDProcessor.MinMax( tri.bounds[0], tri.bounds[1], tri.verts, tri.numVerts );
+}
+
+/*
+=================
+R_CreateSilRemap
+=================
+*/
+/*static int **/
+function R_CreateSilRemap ( tri: srfTriangles_t ): Int32Array {
+	var /*int*/ c_removed: number, c_unique: number;
+	var remap: Int32Array;
+	var /*int*/ i: number, j: number, hashKey: number;
+	var v1: idDrawVert, v2: idDrawVert;
+
+	remap = new Int32Array( tri.numVerts ); ////(int *)R_ClearedStaticAlloc( tri.numVerts * sizeof( remap[0] ) );
+
+	if ( !r_useSilRemap.GetBool ( ) ) {
+		for ( i = 0; i < tri.numVerts; i++ ) {
+			remap[i] = i;
+		}
+		return remap;
+	}
+
+	var hash = new idHashIndex( 1024, tri.numVerts );
+
+	c_removed = 0;
+	c_unique = 0;
+	for ( i = 0; i < tri.numVerts; i++ ) {
+		v1 = tri.verts[i];
+
+		// see if there is an earlier vert that it can map to
+		hashKey = hash.GenerateKey( v1.xyz );
+		for ( j = hash.First( hashKey ); j >= 0; j = hash.Next( j ) ) {
+			v2 = tri.verts[j];
+			if ( v2.xyz[0] == v1.xyz[0]
+				&& v2.xyz[1] == v1.xyz[1]
+				&& v2.xyz[2] == v1.xyz[2] ) {
+				c_removed++;
+				remap[i] = j;
+				break;
+			}
+		}
+		if ( j < 0 ) {
+			c_unique++;
+			remap[i] = i;
+			hash.Add( hashKey, i );
+		}
+	}
+
+	return remap;
+}
+
+/*
+=================
+R_CreateSilIndexes
+
+Uniquing vertexes only on xyz before creating sil edges reduces
+the edge count by about 20% on Q3 models
+=================
+*/
+function R_CreateSilIndexes ( tri: srfTriangles_t ): void {
+	var /*int		*/i:number;
+	var /*int		*/remap: Int32Array;
+
+	if ( tri.silIndexes ) {
+		triSilIndexAllocator.Free( tri.silIndexes );
+		tri.silIndexes = null;
+	}
+
+	remap = R_CreateSilRemap( tri );
+
+	// remap indexes to the first one
+	tri.silIndexes = triSilIndexAllocator.Alloc( tri.numIndexes );
+	for ( i = 0; i < tri.numIndexes; i++ ) {
+		tri.silIndexes[i] = remap[tri.indexes[i]];
+	}
+
+	R_StaticFree( remap );
+}
+
 ///*
 //=====================
 //R_CreateDupVerts
@@ -925,51 +929,51 @@ function R_AllocStaticTriSurf(): srfTriangles_t {
 //R_DefineEdge
 //===============
 //*/
-//static int c_duplicatedEdges, c_tripledEdges;
-//
-//static void R_DefineEdge( int v1, int v2, int planeNum ) {
-//	int		i, hashKey;
-//
-//	// check for degenerate edge
-//	if ( v1 == v2 ) {
-//		return;
-//	}
-//	hashKey = silEdgeHash.GenerateKey( v1, v2 );
-//	// search for a matching other side
-//	for ( i = silEdgeHash.First( hashKey ); i >= 0 && i < MAX_SIL_EDGES; i = silEdgeHash.Next( i ) ) {
-//		if ( silEdges[i].v1 == v1 && silEdges[i].v2 == v2 ) {
-//			c_duplicatedEdges++;
-//			// allow it to still create a new edge
-//			continue;
-//		}
-//		if ( silEdges[i].v2 == v1 && silEdges[i].v1 == v2 ) {
-//			if ( silEdges[i].p2 != numPlanes )  {
-//				c_tripledEdges++;
-//				// allow it to still create a new edge
-//				continue;
-//			}
-//			// this is a matching back side
-//			silEdges[i].p2 = planeNum;
-//			return;
-//		}
-//
-//	}
-//
-//	// define the new edge
-//	if ( numSilEdges == MAX_SIL_EDGES ) {
-//		common.DWarning( "MAX_SIL_EDGES" );
-//		return;
-//	}
-//	
-//	silEdgeHash.Add( hashKey, numSilEdges );
-//
-//	silEdges[numSilEdges].p1 = planeNum;
-//	silEdges[numSilEdges].p2 = numPlanes;
-//	silEdges[numSilEdges].v1 = v1;
-//	silEdges[numSilEdges].v2 = v2;
-//
-//	numSilEdges++;
-//}
+var c_duplicatedEdges:number, c_tripledEdges:number;
+
+function R_DefineEdge( /*int*/ v1:number, /*int */v2:number, /*int */planeNum :number):void {
+	var/*int		*/i: number, hashKey: number;
+
+	// check for degenerate edge
+	if ( v1 == v2 ) {
+		return;
+	}
+	hashKey = silEdgeHash.GenerateKey( v1, v2 );
+	// search for a matching other side
+	for ( i = silEdgeHash.First( hashKey ); i >= 0 && i < MAX_SIL_EDGES; i = silEdgeHash.Next( i ) ) {
+		if ( silEdges[i].v1 == v1 && silEdges[i].v2 == v2 ) {
+			c_duplicatedEdges++;
+			// allow it to still create a new edge
+			continue;
+		}
+		if ( silEdges[i].v2 == v1 && silEdges[i].v1 == v2 ) {
+			if ( silEdges[i].p2 != numPlanes )  {
+				c_tripledEdges++;
+				// allow it to still create a new edge
+				continue;
+			}
+			// this is a matching back side
+			silEdges[i].p2 = planeNum;
+			return;
+		}
+
+	}
+
+	// define the new edge
+	if ( numSilEdges == MAX_SIL_EDGES ) {
+		common.DWarning( "MAX_SIL_EDGES" );
+		return;
+	}
+	
+	silEdgeHash.Add( hashKey, numSilEdges );
+
+	silEdges[numSilEdges].p1 = planeNum;
+	silEdges[numSilEdges].p2 = numPlanes;
+	silEdges[numSilEdges].v1 = v1;
+	silEdges[numSilEdges].v2 = v2;
+
+	numSilEdges++;
+}
 //
 ///*
 //=================
@@ -992,133 +996,133 @@ function R_AllocStaticTriSurf(): srfTriangles_t {
 //	return 0;
 //}
 //
-///*
-//=================
-//R_IdentifySilEdges
-//
-//If the surface will not deform, coplanar edges (polygon interiors)
-//can never create silhouette plains, and can be omited
-//=================
-//*/
-//int	c_coplanarSilEdges;
-//int	c_totalSilEdges;
-//
-//void R_IdentifySilEdges( srfTriangles_t *tri, bool omitCoplanarEdges ) {
-//	int		i;
-//	int		numTris;
-//	int		shared, single;
-//
-//	omitCoplanarEdges = false;	// optimization doesn't work for some reason
-//
-//	numTris = tri.numIndexes / 3;
-//
-//	numSilEdges = 0;
-//	silEdgeHash.Clear();
-//	numPlanes = numTris;
-//
-//	c_duplicatedEdges = 0;
-//	c_tripledEdges = 0;
-//
-//	for ( i = 0 ; i < numTris ; i++ ) {
-//		int		i1, i2, i3;
-//
-//		i1 = tri.silIndexes[ i*3 + 0 ];
-//		i2 = tri.silIndexes[ i*3 + 1 ];
-//		i3 = tri.silIndexes[ i*3 + 2 ];
-//
-//		// create the edges
-//		R_DefineEdge( i1, i2, i );
-//		R_DefineEdge( i2, i3, i );
-//		R_DefineEdge( i3, i1, i );
-//	}
-//
-//	if ( c_duplicatedEdges || c_tripledEdges ) {
-//		common.DWarning( "%i duplicated edge directions, %i tripled edges", c_duplicatedEdges, c_tripledEdges );
-//	}
-//
-//	// if we know that the vertexes aren't going
-//	// to deform, we can remove interior triangulation edges
-//	// on otherwise planar polygons.
-//	// I earlier believed that I could also remove concave
-//	// edges, because they are never silhouettes in the conventional sense,
-//	// but they are still needed to balance out all the true sil edges
-//	// for the shadow algorithm to function
-//	int		c_coplanarCulled;
-//
-//	c_coplanarCulled = 0;
-//	if ( omitCoplanarEdges ) {
-//		for ( i = 0 ; i < numSilEdges ; i++ ) {
-//			int			i1, i2, i3;
-//			idPlane		plane;
-//			int			base;
-//			int			j;
-//			float		d;
-//
-//			if ( silEdges[i].p2 == numPlanes ) {	// the fake dangling edge
-//				continue;
-//			}
-//
-//			base = silEdges[i].p1 * 3;
-//			i1 = tri.silIndexes[ base + 0 ];
-//			i2 = tri.silIndexes[ base + 1 ];
-//			i3 = tri.silIndexes[ base + 2 ];
-//
-//			plane.FromPoints( tri.verts[i1].xyz, tri.verts[i2].xyz, tri.verts[i3].xyz );
-//
-//			// check to see if points of second triangle are not coplanar
-//			base = silEdges[i].p2 * 3;
-//			for ( j = 0 ; j < 3 ; j++ ) {
-//				i1 = tri.silIndexes[ base + j ];
-//				d = plane.Distance( tri.verts[i1].xyz );
-//				if ( d != 0 ) {		// even a small epsilon causes problems
-//					break;
-//				}
-//			}
-//
-//			if ( j == 3 ) {
-//				// we can cull this sil edge
-//				memmove( &silEdges[i], &silEdges[i+1], (numSilEdges-i-1) * sizeof( silEdges[i] ) );
-//				c_coplanarCulled++;
-//				numSilEdges--;
-//				i--;
-//			}
-//		}
-//		if ( c_coplanarCulled ) {
-//			c_coplanarSilEdges += c_coplanarCulled;
-////			common.Printf( "%i of %i sil edges coplanar culled\n", c_coplanarCulled,
-////				c_coplanarCulled + numSilEdges );
-//		}
-//	}
-//	c_totalSilEdges += numSilEdges;
-//
-//	// sort the sil edges based on plane number
-//	qsort( silEdges, numSilEdges, sizeof( silEdges[0] ), SilEdgeSort );
-//
-//	// count up the distribution.
-//	// a perfectly built model should only have shared
-//	// edges, but most models will have some interpenetration
-//	// and dangling edges
-//	shared = 0;
-//	single = 0;
-//	for ( i = 0 ; i < numSilEdges ; i++ ) {
-//		if ( silEdges[i].p2 == numPlanes ) {
-//			single++;
-//		} else {
-//			shared++;
-//		}
-//	}
-//
-//	if ( !single ) {
-//		tri.perfectHull = true;
-//	} else {
-//		tri.perfectHull = false;
-//	}
-//
-//	tri.numSilEdges = numSilEdges;
-//	tri.silEdges = triSilEdgeAllocator.Alloc( numSilEdges );
-//	memcpy( tri.silEdges, silEdges, numSilEdges * sizeof( tri.silEdges[0] ) );
-//}
-//
+/*
+=================
+R_IdentifySilEdges
+
+If the surface will not deform, coplanar edges (polygon interiors)
+can never create silhouette plains, and can be omited
+=================
+*/
+var /*int*/	c_coplanarSilEdges: number;
+var /*int*/	c_totalSilEdges:number;
+
+function R_IdentifySilEdges(tri: srfTriangles_t, omitCoplanarEdges:boolean): void {
+	var /*int		*/i: number;
+	var /*int		*/numTris: number;
+	var /*int		*/shared: number, single: number;
+
+	omitCoplanarEdges = false;	// optimization doesn't work for some reason
+
+	numTris = tri.numIndexes / 3;
+
+	numSilEdges = 0;
+	silEdgeHash.Clear();
+	numPlanes = numTris;
+
+	c_duplicatedEdges = 0;
+	c_tripledEdges = 0;
+
+	for ( i = 0 ; i < numTris ; i++ ) {
+		var/*int		*/i1: number, i2: number, i3: number;
+
+		i1 = tri.silIndexes[ i*3 + 0 ];
+		i2 = tri.silIndexes[ i*3 + 1 ];
+		i3 = tri.silIndexes[ i*3 + 2 ];
+
+		// create the edges
+		R_DefineEdge( i1, i2, i );
+		R_DefineEdge( i2, i3, i );
+		R_DefineEdge( i3, i1, i );
+	}
+
+	if ( c_duplicatedEdges || c_tripledEdges ) {
+		common.DWarning( "%i duplicated edge directions, %i tripled edges", c_duplicatedEdges, c_tripledEdges );
+	}
+
+	// if we know that the vertexes aren't going
+	// to deform, we can remove interior triangulation edges
+	// on otherwise planar polygons.
+	// I earlier believed that I could also remove concave
+	// edges, because they are never silhouettes in the conventional sense,
+	// but they are still needed to balance out all the true sil edges
+	// for the shadow algorithm to function
+	var/*int		*/c_coplanarCulled:number;
+
+	c_coplanarCulled = 0;
+	if ( omitCoplanarEdges ) {
+		for ( i = 0 ; i < numSilEdges ; i++ ) {
+			var /*int		*/	i1: number, i2: number, i3:number;
+			var /*idPlane	*/	plane = new idPlane;
+			var /*int		*/	base: number;
+			var /*int		*/	j: number;
+			var /*float		*/d: number;
+
+			if ( silEdges[i].p2 == numPlanes ) {	// the fake dangling edge
+				continue;
+			}
+
+			base = silEdges[i].p1 * 3;
+			i1 = tri.silIndexes[ base + 0 ];
+			i2 = tri.silIndexes[ base + 1 ];
+			i3 = tri.silIndexes[ base + 2 ];
+
+			plane.FromPoints( tri.verts[i1].xyz, tri.verts[i2].xyz, tri.verts[i3].xyz );
+
+			// check to see if points of second triangle are not coplanar
+			base = silEdges[i].p2 * 3;
+			for ( j = 0 ; j < 3 ; j++ ) {
+				i1 = tri.silIndexes[ base + j ];
+				d = plane.Distance( tri.verts[i1].xyz );
+				if ( d != 0 ) {		// even a small epsilon causes problems
+					break;
+				}
+			}
+
+			if ( j == 3 ) {
+				// we can cull this sil edge
+				memmove( &silEdges[i], &silEdges[i+1], (numSilEdges-i-1) * sizeof( silEdges[i] ) );
+				c_coplanarCulled++;
+				numSilEdges--;
+				i--;
+			}
+		}
+		if ( c_coplanarCulled ) {
+			c_coplanarSilEdges += c_coplanarCulled;
+//			common.Printf( "%i of %i sil edges coplanar culled\n", c_coplanarCulled,
+//				c_coplanarCulled + numSilEdges );
+		}
+	}
+	c_totalSilEdges += numSilEdges;
+
+	// sort the sil edges based on plane number
+	qsort( silEdges, numSilEdges, sizeof( silEdges[0] ), SilEdgeSort );
+
+	// count up the distribution.
+	// a perfectly built model should only have shared
+	// edges, but most models will have some interpenetration
+	// and dangling edges
+	shared = 0;
+	single = 0;
+	for ( i = 0 ; i < numSilEdges ; i++ ) {
+		if ( silEdges[i].p2 == numPlanes ) {
+			single++;
+		} else {
+			shared++;
+		}
+	}
+
+	if ( !single ) {
+		tri.perfectHull = true;
+	} else {
+		tri.perfectHull = false;
+	}
+
+	tri.numSilEdges = numSilEdges;
+	tri.silEdges = triSilEdgeAllocator.Alloc( numSilEdges );
+	memcpy( tri.silEdges, silEdges, numSilEdges * sizeof( tri.silEdges[0] ) );
+}
+
 ///*
 //===============
 //R_FaceNegativePolarity
@@ -1204,7 +1208,7 @@ function R_AllocStaticTriSurf(): srfTriangles_t {
 //			c_textureDegenerateFaces++;
 //			continue;
 //		}
-//		if ( area > 0.0f ) {
+//		if ( area > 0.0 ) {
 //			ft.negativePolarity = false;
 //			c_positive++;
 //		} else {
@@ -1214,7 +1218,7 @@ function R_AllocStaticTriSurf(): srfTriangles_t {
 //		ft.degenerate = false;
 //
 //#ifdef USE_INVA
-//		float inva = area < 0.0f ? -1 : 1;		// was = 1.0f / area;
+//		float inva = area < 0.0 ? -1 : 1;		// was = 1.0f / area;
 //
 //        temp[0] = (d0[0] * d1[4] - d0[4] * d1[0]) * inva;
 //        temp[1] = (d0[1] * d1[4] - d0[4] * d1[1]) * inva;
@@ -1713,7 +1717,7 @@ function R_AllocStaticTriSurf(): srfTriangles_t {
 //
 //#ifdef USE_INVA
 //		float area = d0[3] * d1[4] - d0[4] * d1[3];
-//		float inva = area < 0.0f ? -1 : 1;		// was = 1.0f / area;
+//		float inva = area < 0.0 ? -1 : 1;		// was = 1.0f / area;
 //
 //        temp[0] = (d0[0] * d1[4] - d0[4] * d1[0]) * inva;
 //        temp[1] = (d0[1] * d1[4] - d0[4] * d1[1]) * inva;
@@ -1874,69 +1878,70 @@ function R_AllocStaticTriSurf(): srfTriangles_t {
 //	}
 //
 //}
-//
-///*
-//=================
-//R_RemoveDegenerateTriangles
-//
-//silIndexes must have already been calculated
-//=================
-//*/
-//void R_RemoveDegenerateTriangles( srfTriangles_t *tri ) {
-//	int		c_removed;
-//	int		i;
-//	int		a, b, c;
-//
-//	// check for completely degenerate triangles
-//	c_removed = 0;
-//	for ( i = 0; i < tri.numIndexes; i += 3 ) {
-//		a = tri.silIndexes[i];
-//		b = tri.silIndexes[i+1];
-//		c = tri.silIndexes[i+2];
-//		if ( a == b || a == c || b == c ) {
-//			c_removed++;
-//			memmove( tri.indexes + i, tri.indexes + i + 3, ( tri.numIndexes - i - 3 ) * sizeof( tri.indexes[0] ) );
-//			if ( tri.silIndexes ) {
-//				memmove( tri.silIndexes + i, tri.silIndexes + i + 3, ( tri.numIndexes - i - 3 ) * sizeof( tri.silIndexes[0] ) );
-//			}
-//			tri.numIndexes -= 3;
-//			i -= 3;
-//		}
-//	}
-//
-//	// this doesn't free the memory used by the unused verts
-//
-//	if ( c_removed ) {
-//		common.Printf( "removed %i degenerate triangles\n", c_removed );
-//	}
-//}
-//
-///*
-//=================
-//R_TestDegenerateTextureSpace
-//=================
-//*/
-//void R_TestDegenerateTextureSpace( srfTriangles_t *tri ) {
-//	int		c_degenerate;
-//	int		i;
-//
-//	// check for triangles with a degenerate texture space
-//	c_degenerate = 0;
-//	for ( i = 0; i < tri.numIndexes; i += 3 ) {
-//		const idDrawVert &a = tri.verts[tri.indexes[i+0]];
-//		const idDrawVert &b = tri.verts[tri.indexes[i+1]];
-//		const idDrawVert &c = tri.verts[tri.indexes[i+2]];
-//
-//		if ( a.st == b.st || b.st == c.st || c.st == a.st ) {
-//			c_degenerate++;
-//		}
-//	}
-//
-//	if ( c_degenerate ) {
-////		common.Printf( "%d triangles with a degenerate texture space\n", c_degenerate );
-//	}
-//}
-//
+
+/*
+=================
+R_RemoveDegenerateTriangles
+
+silIndexes must have already been calculated
+=================
+*/
+function R_RemoveDegenerateTriangles(tri: srfTriangles_t ): void {
+	var /*int		*/c_removed:number;
+	var /*int		*/i: number;
+	var /*int		*/a: number, b: number, c: number;
+
+	// check for completely degenerate triangles
+	c_removed = 0;
+	for ( i = 0; i < tri.numIndexes; i += 3 ) {
+		a = tri.silIndexes[i];
+		b = tri.silIndexes[i+1];
+		c = tri.silIndexes[i+2];
+		if ( a == b || a == c || b == c ) {
+			c_removed++;
+			todoThrow ( );
+			//memmove( tri.indexes + i, tri.indexes + i + 3, ( tri.numIndexes - i - 3 ) * sizeof( tri.indexes[0] ) );
+			//if ( tri.silIndexes ) {
+			//	memmove( tri.silIndexes + i, tri.silIndexes + i + 3, ( tri.numIndexes - i - 3 ) * sizeof( tri.silIndexes[0] ) );
+			//}
+			tri.numIndexes -= 3;
+			i -= 3;
+		}
+	}
+
+	// this doesn't free the memory used by the unused verts
+
+	if ( c_removed ) {
+		common.Printf( "removed %i degenerate triangles\n", c_removed );
+	}
+}
+
+/*
+=================
+R_TestDegenerateTextureSpace
+=================
+*/
+function R_TestDegenerateTextureSpace ( tri: srfTriangles_t ): void {
+	var /*int		*/c_degenerate: number;
+	var /*int		*/i: number;
+
+	// check for triangles with a degenerate texture space
+	c_degenerate = 0;
+	for ( i = 0; i < tri.numIndexes; i += 3 ) {
+		var a = tri.verts[tri.indexes[i + 0]];
+		var b = tri.verts[tri.indexes[i + 1]];
+		var c = tri.verts[tri.indexes[i + 2]];
+
+		if ( a.st == b.st || b.st == c.st || c.st == a.st ) {
+			c_degenerate++;
+		}
+	}
+
+	if ( c_degenerate ) {
+//		common.Printf( "%d triangles with a degenerate texture space\n", c_degenerate );
+	}
+}
+
 ///*
 //=================
 //R_RemoveUnusedVerts
@@ -2057,91 +2062,92 @@ function R_AllocStaticTriSurf(): srfTriangles_t {
 //
 //	return R_MergeSurfaceList( tris, 2 );
 //}
-//
-///*
-//=================
-//R_ReverseTriangles
-//
-//Lit two sided surfaces need to have the triangles actually duplicated,
-//they can't just turn on two sided lighting, because the normal and tangents
-//are wrong on the other sides.
-//
-//This should be called before R_CleanupTriangles
-//=================
-//*/
-//void R_ReverseTriangles( srfTriangles_t *tri ) {
-//	int			i;
-//
-//	// flip the normal on each vertex
-//	// If the surface is going to have generated normals, this won't matter,
-//	// but if it has explicit normals, this will keep it on the correct side
-//	for ( i = 0 ; i < tri.numVerts ; i++ ) {
-//		tri.verts[i].normal = vec3_origin - tri.verts[i].normal;
-//	}
-//
-//	// flip the index order to make them back sided
-//	for ( i = 0 ; i < tri.numIndexes ; i+= 3 ) {
-//		glIndex_t	temp;
-//
-//		temp = tri.indexes[ i + 0 ];
-//		tri.indexes[ i + 0 ] = tri.indexes[ i + 1 ];
-//		tri.indexes[ i + 1 ] = temp;
-//	}
-//}
-//
-///*
-//=================
-//R_CleanupTriangles
-//
-//FIXME: allow createFlat and createSmooth normals, as well as explicit
-//=================
-//*/
-//void R_CleanupTriangles( srfTriangles_t *tri, bool createNormals, bool identifySilEdges, bool useUnsmoothedTangents ) {
-//	R_RangeCheckIndexes( tri );
-//
-//	R_CreateSilIndexes( tri );
-//
-////	R_RemoveDuplicatedTriangles( tri );	// this may remove valid overlapped transparent triangles
-//
-//	R_RemoveDegenerateTriangles( tri );
-//
-//	R_TestDegenerateTextureSpace( tri );
-//
-////	R_RemoveUnusedVerts( tri );
-//
-//	if ( identifySilEdges ) {
-//		R_IdentifySilEdges( tri, true );	// assume it is non-deformable, and omit coplanar edges
-//	}
-//
-//	// bust vertexes that share a mirrored edge into separate vertexes
-//	R_DuplicateMirroredVertexes( tri );
-//
-//	// optimize the index order (not working?)
-////	R_OrderIndexes( tri.numIndexes, tri.indexes );
-//
-//	R_CreateDupVerts( tri );
-//
-//	R_BoundTriSurf( tri );
-//
-//	if ( useUnsmoothedTangents ) {
-//		R_BuildDominantTris( tri );
-//		R_DeriveUnsmoothedTangents( tri );
-//	} else if ( !createNormals ) {
-//		R_DeriveFacePlanes( tri );
-//		R_DeriveTangentsWithoutNormals( tri );
-//	} else {
-//		R_DeriveTangents( tri );
-//	}
-//}
-//
-///*
-//===================================================================================
-//
-//DEFORMED SURFACES
-//
-//===================================================================================
-//*/
-//
+
+/*
+=================
+R_ReverseTriangles
+
+Lit two sided surfaces need to have the triangles actually duplicated,
+they can't just turn on two sided lighting, because the normal and tangents
+are wrong on the other sides.
+
+This should be called before R_CleanupTriangles
+=================
+*/
+function R_ReverseTriangles ( tri: srfTriangles_t ): void {
+	todoThrow ( );
+	//int			i;
+
+	//// flip the normal on each vertex
+	//// If the surface is going to have generated normals, this won't matter,
+	//// but if it has explicit normals, this will keep it on the correct side
+	//for ( i = 0 ; i < tri.numVerts ; i++ ) {
+	//	tri.verts[i].normal = vec3_origin - tri.verts[i].normal;
+	//}
+
+	//// flip the index order to make them back sided
+	//for ( i = 0 ; i < tri.numIndexes ; i+= 3 ) {
+	//	glIndex_t	temp;
+
+	//	temp = tri.indexes[ i + 0 ];
+	//	tri.indexes[ i + 0 ] = tri.indexes[ i + 1 ];
+	//	tri.indexes[ i + 1 ] = temp;
+	//}
+}
+
+/*
+=================
+R_CleanupTriangles
+
+FIXME: allow createFlat and createSmooth normals, as well as explicit
+=================
+*/
+function R_CleanupTriangles(tri: srfTriangles_t, createNormals:boolean, identifySilEdges:boolean, useUnsmoothedTangents:boolean): void {
+	R_RangeCheckIndexes( tri );
+
+	R_CreateSilIndexes( tri );
+
+//	R_RemoveDuplicatedTriangles( tri );	// this may remove valid overlapped transparent triangles
+
+	R_RemoveDegenerateTriangles( tri );
+
+	R_TestDegenerateTextureSpace( tri );
+
+//	R_RemoveUnusedVerts( tri );
+
+	if ( identifySilEdges ) {
+		R_IdentifySilEdges( tri, true );	// assume it is non-deformable, and omit coplanar edges
+	}
+
+	// bust vertexes that share a mirrored edge into separate vertexes
+	R_DuplicateMirroredVertexes( tri );
+
+	// optimize the index order (not working?)
+//	R_OrderIndexes( tri.numIndexes, tri.indexes );
+
+	R_CreateDupVerts( tri );
+
+	R_BoundTriSurf( tri );
+
+	if ( useUnsmoothedTangents ) {
+		R_BuildDominantTris( tri );
+		R_DeriveUnsmoothedTangents( tri );
+	} else if ( !createNormals ) {
+		R_DeriveFacePlanes( tri );
+		R_DeriveTangentsWithoutNormals( tri );
+	} else {
+		R_DeriveTangents( tri );
+	}
+}
+
+/*
+===================================================================================
+
+DEFORMED SURFACES
+
+===================================================================================
+*/
+
 ///*
 //===================
 //R_BuildDeformInfo

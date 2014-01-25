@@ -994,7 +994,7 @@
 //				gameLocal.program.ReturnFloat( newThread->GetThreadNum() );
 //			} else {
 //				// return a null thread to the script
-//				gameLocal.program.ReturnFloat( 0.0f );
+//				gameLocal.program.ReturnFloat( 0.0 );
 //			}
 //			PopParms( st->c->value.argSize );
 //			break;
@@ -1133,7 +1133,7 @@
 //			var_b = GetVariable( st->b );
 //			var_c = GetVariable( st->c );
 //
-//			if ( *var_b.floatPtr == 0.0f ) {
+//			if ( *var_b.floatPtr == 0.0 ) {
 //				Warning( "Divide by zero" );
 //				*var_c.floatPtr = idMath::INFINITY;
 //			} else {
@@ -1146,7 +1146,7 @@
 //			var_b = GetVariable( st->b );
 //			var_c = GetVariable ( st->c );
 //
-//			if ( *var_b.floatPtr == 0.0f ) {
+//			if ( *var_b.floatPtr == 0.0 ) {
 //				Warning( "Divide by zero" );
 //				*var_c.floatPtr = *var_a.floatPtr;
 //			} else {
@@ -1200,21 +1200,21 @@
 //			var_a = GetVariable( st->a );
 //			var_b = GetVariable( st->b );
 //			var_c = GetVariable( st->c );
-//			*var_c.floatPtr = ( *var_a.floatPtr != 0.0f ) && ( *var_b.floatPtr != 0.0f );
+//			*var_c.floatPtr = ( *var_a.floatPtr != 0.0 ) && ( *var_b.floatPtr != 0.0 );
 //			break;
 //
 //		case OP_AND_BOOLF:
 //			var_a = GetVariable( st->a );
 //			var_b = GetVariable( st->b );
 //			var_c = GetVariable( st->c );
-//			*var_c.floatPtr = ( *var_a.intPtr != 0 ) && ( *var_b.floatPtr != 0.0f );
+//			*var_c.floatPtr = ( *var_a.intPtr != 0 ) && ( *var_b.floatPtr != 0.0 );
 //			break;
 //
 //		case OP_AND_FBOOL:
 //			var_a = GetVariable( st->a );
 //			var_b = GetVariable( st->b );
 //			var_c = GetVariable( st->c );
-//			*var_c.floatPtr = ( *var_a.floatPtr != 0.0f ) && ( *var_b.intPtr != 0 );
+//			*var_c.floatPtr = ( *var_a.floatPtr != 0.0 ) && ( *var_b.intPtr != 0 );
 //			break;
 //
 //		case OP_AND_BOOLBOOL:
@@ -1228,21 +1228,21 @@
 //			var_a = GetVariable( st->a );
 //			var_b = GetVariable( st->b );
 //			var_c = GetVariable( st->c );
-//			*var_c.floatPtr = ( *var_a.floatPtr != 0.0f ) || ( *var_b.floatPtr != 0.0f );
+//			*var_c.floatPtr = ( *var_a.floatPtr != 0.0 ) || ( *var_b.floatPtr != 0.0 );
 //			break;
 //
 //		case OP_OR_BOOLF:
 //			var_a = GetVariable( st->a );
 //			var_b = GetVariable( st->b );
 //			var_c = GetVariable( st->c );
-//			*var_c.floatPtr = ( *var_a.intPtr != 0 ) || ( *var_b.floatPtr != 0.0f );
+//			*var_c.floatPtr = ( *var_a.intPtr != 0 ) || ( *var_b.floatPtr != 0.0 );
 //			break;
 //
 //		case OP_OR_FBOOL:
 //			var_a = GetVariable( st->a );
 //			var_b = GetVariable( st->b );
 //			var_c = GetVariable( st->c );
-//			*var_c.floatPtr = ( *var_a.floatPtr != 0.0f ) || ( *var_b.intPtr != 0 );
+//			*var_c.floatPtr = ( *var_a.floatPtr != 0.0 ) || ( *var_b.intPtr != 0 );
 //			break;
 //			
 //		case OP_OR_BOOLBOOL:
@@ -1261,7 +1261,7 @@
 //		case OP_NOT_F:
 //			var_a = GetVariable( st->a );
 //			var_c = GetVariable( st->c );
-//			*var_c.floatPtr = ( *var_a.floatPtr == 0.0f );
+//			*var_c.floatPtr = ( *var_a.floatPtr == 0.0 );
 //			break;
 //
 //		case OP_NOT_V:
@@ -1399,7 +1399,7 @@
 //			var_a = GetVariable( st->a );
 //			var_b = GetVariable( st->b );
 //
-//			if ( *var_a.floatPtr == 0.0f ) {
+//			if ( *var_a.floatPtr == 0.0 ) {
 //				Warning( "Divide by zero" );
 //				*var_b.floatPtr = idMath::INFINITY;
 //			} else {
@@ -1411,7 +1411,7 @@
 //			var_a = GetVariable( st->a );
 //			var_b = GetVariable( st->b );
 //
-//			if ( *var_a.floatPtr == 0.0f ) {
+//			if ( *var_a.floatPtr == 0.0 ) {
 //				Warning( "Divide by zero" );
 //				var_b.vectorPtr->Set( idMath::INFINITY, idMath::INFINITY, idMath::INFINITY );
 //			} else {
@@ -1423,7 +1423,7 @@
 //			var_a = GetVariable( st->a );
 //			var_b = GetVariable( st->b );
 //
-//			if ( *var_a.floatPtr == 0.0f ) {
+//			if ( *var_a.floatPtr == 0.0 ) {
 //				Warning( "Divide by zero" );
 //				*var_b.floatPtr = *var_a.floatPtr;
 //			} else {
@@ -1544,7 +1544,7 @@
 //		case OP_STORE_FTOBOOL:
 //			var_a = GetVariable( st->a );
 //			var_b = GetVariable( st->b );
-//			if ( *var_a.floatPtr != 0.0f ) {
+//			if ( *var_a.floatPtr != 0.0 ) {
 //				*var_b.intPtr = 1;
 //			} else {
 //				*var_b.intPtr = 0;
@@ -1616,7 +1616,7 @@
 //			var_b = GetVariable( st->b );
 //			if ( var_b.evalPtr && var_b.evalPtr->stringPtr ) {
 //				var_a = GetVariable( st->a );
-//				if ( *var_a.floatPtr != 0.0f ) {
+//				if ( *var_a.floatPtr != 0.0 ) {
 //					idStr.Copynz( var_b.evalPtr->stringPtr, "true", MAX_STRING_LEN );
 //				} else {
 //					idStr.Copynz( var_b.evalPtr->stringPtr, "false", MAX_STRING_LEN );
@@ -1636,7 +1636,7 @@
 //			var_b = GetVariable( st->b );
 //			if ( var_b.evalPtr && var_b.evalPtr->intPtr ) {
 //				var_a = GetVariable( st->a );
-//				if ( *var_a.floatPtr != 0.0f ) {
+//				if ( *var_a.floatPtr != 0.0 ) {
 //					*var_b.evalPtr->intPtr = 1;
 //				} else {
 //					*var_b.evalPtr->intPtr = 0;
@@ -1699,7 +1699,7 @@
 //				var.bytePtr = &obj->data[ st->b->value.ptrOffset ];
 //				*var_c.floatPtr = *var.floatPtr;
 //			} else {
-//				*var_c.floatPtr = 0.0f;
+//				*var_c.floatPtr = 0.0;
 //			}
 //			break;
 //
@@ -1780,7 +1780,7 @@
 //
 //		case OP_PUSH_FTOB:
 //			var_a = GetVariable( st->a );
-//			if ( *var_a.floatPtr != 0.0f ) {
+//			if ( *var_a.floatPtr != 0.0 ) {
 //				Push( 1 );
 //			} else {
 //				Push( 0 );

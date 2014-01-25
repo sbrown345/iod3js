@@ -416,13 +416,13 @@ AdvanceSurf():void {
 ////			}
 ////			if ( j < 3 ) {
 ////				idPlane p;
-////				p.Normal().y = p.Normal().z = 0.0f; p.Normal().x = 1.0f; p.SetDist( min_x );
+////				p.Normal().y = p.Normal().z = 0.0; p.Normal().x = 1.0f; p.SetDist( min_x );
 ////				w.ClipInPlace( p );
-////				p.Normal().y = p.Normal().z = 0.0f; p.Normal().x = -1.0f; p.SetDist( -max_x );
+////				p.Normal().y = p.Normal().z = 0.0; p.Normal().x = -1.0f; p.SetDist( -max_x );
 ////				w.ClipInPlace( p );
-////				p.Normal().x = p.Normal().z = 0.0f; p.Normal().y = 1.0f; p.SetDist( min_y );
+////				p.Normal().x = p.Normal().z = 0.0; p.Normal().y = 1.0f; p.SetDist( min_y );
 ////				w.ClipInPlace( p );
-////				p.Normal().x = p.Normal().z = 0.0f; p.Normal().y = -1.0f; p.SetDist( -max_y );
+////				p.Normal().x = p.Normal().z = 0.0; p.Normal().y = -1.0f; p.SetDist( -max_y );
 ////				w.ClipInPlace( p );
 ////			}
 
@@ -575,7 +575,7 @@ AdvanceSurf():void {
 ////	verts[3].tangents[1][1] = 1;
 ////	verts[3].tangents[1][2] = 0;
 
-////	DrawStretchPic( &verts[0], &indexes[0], 4, 6, hShader, false, 0.0f, 0.0f, 640.0f, 480.0f );
+////	DrawStretchPic( &verts[0], &indexes[0], 4, 6, hShader, false, 0.0, 0.0, 640.0f, 480.0f );
 ////}
 
 /////*

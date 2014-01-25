@@ -46,35 +46,35 @@ class idRenderModelStatic extends idRenderModel {
 ////								idRenderModelStatic();
 ////	virtual						~idRenderModelStatic();
 
-		InitFromFile( fileName:string ): void { throw "placeholder"; }
-		PartialInitFromFile( fileName:string ): void { throw "placeholder"; }
-		PurgeModel(): void { throw "placeholder"; }
-		Reset(): void { throw "placeholder"; }
-		LoadModel(): void { throw "placeholder"; }
-		IsLoaded(): boolean { throw "placeholder"; }
-		SetLevelLoadReferenced( referenced:boolean ): void { throw "placeholder"; }
-		IsLevelLoadReferenced(): boolean { throw "placeholder"; }
-		TouchData(): void { throw "placeholder"; }
-		InitEmpty ( name: string ): void { throw "placeholder"; }
+	InitFromFile( fileName:string ): void { throw "placeholder"; }
+	PartialInitFromFile( fileName:string ): void { throw "placeholder"; }
+	PurgeModel(): void { throw "placeholder"; }
+	Reset(): void { throw "placeholder"; }
+	LoadModel(): void { throw "placeholder"; }
+	IsLoaded(): boolean { throw "placeholder"; }
+	SetLevelLoadReferenced( referenced:boolean ): void { throw "placeholder"; }
+	IsLevelLoadReferenced(): boolean { throw "placeholder"; }
+	TouchData(): void { throw "placeholder"; }
+	InitEmpty ( name: string ): void { throw "placeholder"; }
 
-		AddSurface(surface: modelSurface_t ): void { throw "placeholder"; }
-		FinishSurfaces(): void { throw "placeholder"; }
-		FreeVertexCache(): void { throw "placeholder"; }
-		Name():string { throw "placeholder"; }
-		Print() : void { throw "placeholder"; }
-		List() : void { throw "placeholder"; }
+	AddSurface(surface: modelSurface_t ): void { throw "placeholder"; }
+	FinishSurfaces(): void { throw "placeholder"; }
+	FreeVertexCache(): void { throw "placeholder"; }
+	Name():string { throw "placeholder"; }
+	Print() : void { throw "placeholder"; }
+	List() : void { throw "placeholder"; }
 ////	virtual int					Memory() const;
 ////	virtual ID_TIME_T				Timestamp() const;
 ////	virtual int					NumSurfaces() const;
 ////	virtual int					NumBaseSurfaces() const;
-////	virtual const modelSurface_t *Surface( int surfaceNum ) const;
+	Surface ( surfaceNum: number ): modelSurface_t { throw "placeholder"; }
 ////	virtual srfTriangles_t *	AllocSurfaceTriangles( int numVerts, int numIndexes ) const;
 ////	virtual void				FreeSurfaceTriangles( srfTriangles_t *tris ) : void { throw "placeholder"; }
 ////	virtual srfTriangles_t *	ShadowHull() const;
 ////	virtual bool				IsStaticWorldModel() const;
 ////	virtual dynamicModel_t		IsDynamicModel() const;
-		IsDefaultModel(): boolean { throw "placeholder"; }
-		IsReloadable(): boolean { throw "placeholder"; }
+	IsDefaultModel(): boolean { throw "placeholder"; }
+	IsReloadable(): boolean { throw "placeholder"; }
 ////	virtual idRenderModel *		InstantiateDynamicModel( const struct renderEntity_s *ent, const struct viewDef_s *view, idRenderModel *cachedModel );
 ////	virtual int					NumJoints( void ) const;
 ////	virtual const idMD5Joint *	GetJoints( void ) const;

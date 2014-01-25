@@ -199,7 +199,7 @@
 //		float ow = *w;
 //		float oh = *h;
 //
-//		if ( ow <= 0.0f || oh <= 0.0f ) {
+//		if ( ow <= 0.0 || oh <= 0.0 ) {
 //			break;
 //		}
 //
@@ -226,7 +226,7 @@
 //			*h = clipRect->Bottom() - *y;
 //		}
 //
-//		if ( s1 && s2 && t1 && t2 && ow > 0.0f ) {
+//		if ( s1 && s2 && t1 && t2 && ow > 0.0 ) {
 //			float ns1, ns2, nt1, nt2;
 //			// upper left
 //			float u = ( *x - ox ) / ow;
@@ -443,7 +443,7 @@
 //		t1 = 1 * scaley;
 //	}
 //
-//	if ( angle == 0.0f && ClippedCoords( &x, &y, &w, &h, &s0, &t0, &s1, &t1 ) ) {
+//	if ( angle == 0.0 && ClippedCoords( &x, &y, &w, &h, &s0, &t0, &s1, &t1 ) ) {
 //		return;
 //	}
 //
@@ -568,7 +568,7 @@
 //
 //void idDeviceContext::DrawFilledRect( float x, float y, float w, float h, const idVec4 &color) {
 //
-//	if ( color.w == 0.0f ) {
+//	if ( color.w == 0.0 ) {
 //		return;
 //	}
 //
@@ -585,7 +585,7 @@
 //
 //void idDeviceContext::DrawRect( float x, float y, float w, float h, float size, const idVec4 &color) {
 //
-//	if ( color.w == 0.0f ) {
+//	if ( color.w == 0.0 ) {
 //		return;
 //	}
 //
@@ -604,7 +604,7 @@
 //
 //void idDeviceContext::DrawMaterialRect( float x, float y, float w, float h, float size, const idMaterial *mat, const idVec4 &color) {
 //
-//	if ( color.w == 0.0f ) {
+//	if ( color.w == 0.0 ) {
 //		return;
 //	}
 //
@@ -684,7 +684,7 @@
 //	SetFontByScale(scale);
 //	useScale = scale * useFont->glyphScale;
 //	count = 0;
-//	if ( text && color.w != 0.0f ) {
+//	if ( text && color.w != 0.0 ) {
 //		const unsigned char	*s = (const unsigned char*)text;
 //		renderSystem->SetColor(color);
 //		memcpy(&newColor[0], &color[0], sizeof(idVec4));
@@ -748,8 +748,8 @@
 //void idDeviceContext::SetSize(float width, float height) {
 //	vidWidth = VIRTUAL_WIDTH;
 //	vidHeight = VIRTUAL_HEIGHT;
-//	xScale = yScale = 0.0f;
-//	if ( width != 0.0f && height != 0.0f ) {
+//	xScale = yScale = 0.0;
+//	if ( width != 0.0 && height != 0.0 ) {
 //		xScale = vidWidth * ( 1.0f / width );
 //		yScale = vidHeight * ( 1.0f / height );
 //	}

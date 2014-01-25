@@ -289,14 +289,14 @@
 ////	friction = file->defaultConstraintFriction;
 ////	anchor.ToVec3().Zero();
 ////	anchor2.ToVec3().Zero();
-////	axis.ToVec3().Set( 1.0f, 0.0f, 0.0f );
-////	shaft[0].ToVec3().Set( 0.0f, 0.0f, -1.0f );
-////	shaft[1].ToVec3().Set( 0.0f, 0.0f, 1.0f );
+////	axis.ToVec3().Set( 1.0f, 0.0, 0.0 );
+////	shaft[0].ToVec3().Set( 0.0, 0.0, -1.0f );
+////	shaft[1].ToVec3().Set( 0.0, 0.0, 1.0f );
 ////	limit = idDeclAF_Constraint::LIMIT_NONE;
 ////	limitAngles[0] =
 ////	limitAngles[1] =
-////	limitAngles[2] = 0.0f;
-////	limitAxis.ToVec3().Set( 0.0f, 0.0f, -1.0f );
+////	limitAngles[2] = 0.0;
+////	limitAxis.ToVec3().Set( 0.0, 0.0, -1.0f );
 ////}
 class idDeclAF {
 /////*

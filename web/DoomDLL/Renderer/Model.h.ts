@@ -64,7 +64,14 @@
 class silEdge_t {
 	// NOTE: making this a glIndex is dubious, as there can be 2x the faces as verts
 	p1:number; p2: number;					// planes defining the edge
-	v1:number; v2: number;					// verts defining the edge
+	v1: number; v2: number;					// verts defining the edge
+
+	constructor ( ) {
+		this.p1 = 0;
+		this.p2 = 0;
+		this.v1 = 0;
+		this.v2 = 0;
+	}
 };
 
 // this is used for calculating unsmoothed normals and tangents for deformed models
@@ -341,7 +348,7 @@ class idRenderModel {
 ////	// static models should usually return the exact value
 ////	virtual idBounds			Bounds( const struct renderEntity_s *ent = NULL ) const = 0;
 
-////	// returns value != 0.0f if the model requires the depth hack
+////	// returns value != 0.0 if the model requires the depth hack
 ////	virtual float				DepthHack() const = 0;
 
 ////	// returns a static model based on the definition and view

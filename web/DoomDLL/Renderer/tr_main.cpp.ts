@@ -48,7 +48,7 @@
 //void idScreenRect::Clear() {
 //	x1 = y1 = 32000;
 //	x2 = y2 = -32000;
-//	zmin = 0.0f; zmax = 1.0f;
+//	zmin = 0.0; zmax = 1.0f;
 //}
 //
 ///*
@@ -570,8 +570,8 @@ function R_StaticFree( /*void **/data:any ):void {
 //	clip_z = src_z * projectionMatrix[ 2 + 2 * 4 ] + projectionMatrix[ 2 + 3 * 4 ];
 //	clip_w = src_z * projectionMatrix[ 3 + 2 * 4 ] + projectionMatrix[ 3 + 3 * 4 ];
 //
-//	if ( clip_w <= 0.0f ) {
-//		dst_z = 0.0f;					// clamp to near plane
+//	if ( clip_w <= 0.0 ) {
+//		dst_z = 0.0;					// clamp to near plane
 //	} else {
 //		dst_z = clip_z / clip_w;
 //		dst_z = dst_z * 0.5f + 0.5f;	// convert to window coords
@@ -1009,7 +1009,7 @@ function R_StaticFree( /*void **/data:any ):void {
 //	}
 //	tr.viewDef->viewFrustum.ConstrainToBounds( bounds );
 //
-//	if ( r_useFrustumFarDistance.GetFloat() > 0.0f ) {
+//	if ( r_useFrustumFarDistance.GetFloat() > 0.0 ) {
 //		tr.viewDef->viewFrustum.MoveFarDistance( r_useFrustumFarDistance.GetFloat() );
 //	}
 //}

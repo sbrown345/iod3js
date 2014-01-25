@@ -1527,7 +1527,7 @@
 
 ////				// don't OGG sounds that cause a shake because that would
 ////				// cause continuous seeking on the OGG file which is expensive
-////				if ( parms.shakes != 0.0f ) {
+////				if ( parms.shakes != 0.0 ) {
 ////					shakeSounds.AddUnique( soundName );
 ////					continue;
 ////				}
@@ -1616,7 +1616,7 @@
 ////	idStr soundName;
 
 ////	soundShaderName = dict.GetString( "s_shader" );
-////	if ( soundShaderName != '\0' && dict.GetFloat( "s_shakes" ) != 0.0f ) {
+////	if ( soundShaderName != '\0' && dict.GetFloat( "s_shakes" ) != 0.0 ) {
 ////		soundShader = declManager.FindSound( soundShaderName );
 
 ////		for ( int i = 0; i < soundShader.GetNumSounds(); i++ ) {
@@ -2055,7 +2055,7 @@
 ////	idEntity *ent;
 
 ////	if ( g_gravity.IsModified() ) {
-////		if ( g_gravity.GetFloat() == 0.0f ) {
+////		if ( g_gravity.GetFloat() == 0.0 ) {
 ////			g_gravity.SetFloat( 1.0f );
 ////		}
 ////        gravity.Set( 0, 0, -g_gravity.GetFloat() );
@@ -2614,7 +2614,7 @@
 ////		dir.NormalizeFast();
 ////		totalBounds.RayIntersection( viewPos, dir, dist );
 ////		float frac = ( 512.0f - dist ) / 512.0f;
-////		if ( frac < 0.0f ) {
+////		if ( frac < 0.0 ) {
 ////			continue;
 ////		}
 
@@ -2755,7 +2755,7 @@
 
 ////				velocity.x = cos( DEG2RAD( player.viewAngles.yaw ) ) * 100.0f;
 ////				velocity.y = sin( DEG2RAD( player.viewAngles.yaw ) ) * 100.0f;
-////				velocity.z = 0.0f;
+////				velocity.z = 0.0;
 ////				idAI::PredictPath( player, aas, origin, velocity, 1000, 100, SE_ENTER_OBSTACLE | SE_BLOCKED | SE_ENTER_LEDGE_AREA, path );
 ////			}
 ////		}
@@ -3400,7 +3400,7 @@
 ////		if ( ent.IsType( c ) && ent != skip ) {
 ////			b = ent.GetPhysics().GetAbsBounds().Expand( 16 );
 ////			if ( b.RayIntersection( start, end-start, scale ) ) {
-////				if ( scale >= 0.0f && scale < bestScale ) {
+////				if ( scale >= 0.0 && scale < bestScale ) {
 ////					bestEnt = ent;
 ////					bestScale = scale;
 ////				}
@@ -3655,7 +3655,7 @@
 ////	idEntity *ent;
 ////	float scale;
 
-////	dir.Set( 0.0f, 0.0f, 1.0f );
+////	dir.Set( 0.0, 0.0, 1.0f );
 
 ////	bounds = idBounds( origin ).Expand( radius );
 
@@ -3753,7 +3753,7 @@
 ////		v = center - localOrigin;
 ////		dist = v.NormalizeFast();
 ////		dot = v * poly.normal;
-////		if ( dot > 0.0f ) {
+////		if ( dot > 0.0 ) {
 ////			continue;
 ////		}
 ////		area = w.GetArea();
@@ -3784,10 +3784,10 @@
 ////	idVec3 windingOrigin, projectionOrigin;
 
 ////	static idVec3 decalWinding[4] = {
-////		idVec3(  1.0f,  1.0f, 0.0f ),
-////		idVec3( -1.0f,  1.0f, 0.0f ),
-////		idVec3( -1.0f, -1.0f, 0.0f ),
-////		idVec3(  1.0f, -1.0f, 0.0f )
+////		idVec3(  1.0f,  1.0f, 0.0 ),
+////		idVec3( -1.0f,  1.0f, 0.0 ),
+////		idVec3( -1.0f, -1.0f, 0.0 ),
+////		idVec3(  1.0f, -1.0f, 0.0 )
 ////	};
 
 ////	if ( !g_decals.GetBool() ) {
@@ -3828,10 +3828,10 @@
 ////*/
 ////void idGameLocal::BloodSplat( const idVec3 &origin, const idVec3 &dir, float size, const char *material ) {
 ////	float halfSize = size * 0.5f;
-////	idVec3 verts[] = {	idVec3( 0.0f, +halfSize, +halfSize ),
-////						idVec3( 0.0f, +halfSize, -halfSize ),
-////						idVec3( 0.0f, -halfSize, -halfSize ),
-////						idVec3( 0.0f, -halfSize, +halfSize ) };
+////	idVec3 verts[] = {	idVec3( 0.0, +halfSize, +halfSize ),
+////						idVec3( 0.0, +halfSize, -halfSize ),
+////						idVec3( 0.0, -halfSize, -halfSize ),
+////						idVec3( 0.0, -halfSize, +halfSize ) };
 ////	idTraceModel trm;
 ////	idClipModel mdl;
 ////	trace_t results;
@@ -4080,9 +4080,9 @@
 ////	float diff;
 
 ////	diff = spot1.dist - spot2.dist;
-////	if ( diff < 0.0f ) {
+////	if ( diff < 0.0 ) {
 ////		return 1;
-////	} else if ( diff > 0.0f ) {
+////	} else if ( diff > 0.0 ) {
 ////		return -1;
 ////	} else {
 ////		return 0;

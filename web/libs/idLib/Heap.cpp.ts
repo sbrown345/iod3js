@@ -1100,12 +1100,13 @@
 //// 	mem_heap.Free( ptr );
 ////}
 
-/////*
-////==================
-////Mem_Alloc16
-////==================
-////*/
-////void *Mem_Alloc16( const int size ) {
+///*
+//==================
+//Mem_Alloc16
+//==================
+//*/
+///*void **/function Mem_Alloc16<T>( /*const int */size: number, type: any): T {
+//	return new type;
 ////	if ( !size ) {
 ////		return NULL;
 ////	}
@@ -1119,7 +1120,7 @@
 ////	// make sure the memory is 16 byte aligned
 ////	assert( ( ((int)mem) & 15) == 0 );
 ////	return mem;
-////}
+//}
 
 /////*
 ////==================

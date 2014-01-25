@@ -223,11 +223,11 @@
 
 ////		for ( i = 0; i < w.GetNumPoints(); i++ ) {
 ////			fade = fadePlanes[0].Distance( w[i].ToVec3() ) * invFadeDepth;
-////			if ( fade < 0.0f ) {
+////			if ( fade < 0.0 ) {
 ////				fade = fadePlanes[1].Distance( w[i].ToVec3() ) * invFadeDepth;
 ////			}
-////			if ( fade < 0.0f ) {
-////				fade = 0.0f;
+////			if ( fade < 0.0 ) {
+////				fade = 0.0;
 ////			} else if ( fade > 0.99f ) {
 ////				fade = 1.0f;
 ////			}

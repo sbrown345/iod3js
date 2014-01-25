@@ -615,11 +615,11 @@ var backEnd:backEndState_t;
 ////		if (sscanf(r_clear.GetString(), "%f %f %f", &c[0], &c[1], &c[2]) == 3) {
 ////			glClearColor(c[0], c[1], c[2], 1);
 ////		} else if (r_clear.GetInteger() == 2) {
-////			glClearColor(0.0f, 0.0f,  0.0f, 1.0f);
+////			glClearColor(0.0, 0.0,  0.0, 1.0f);
 ////		} else if (r_showOverDraw.GetBool()) {
 ////			glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 ////		} else {
-////			glClearColor(0.4f, 0.0f, 0.25f, 1.0f);
+////			glClearColor(0.4f, 0.0, 0.25f, 1.0f);
 ////		}
 
 ////		glClear(GL_COLOR_BUFFER_BIT);

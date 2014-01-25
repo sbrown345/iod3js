@@ -322,7 +322,7 @@
 ////		}
 ////	}
 
-////	if ( ent.shaderParms[ SHADERPARM_MD5_SKINSCALE ] != 0.0f ) {
+////	if ( ent.shaderParms[ SHADERPARM_MD5_SKINSCALE ] != 0.0 ) {
 ////		TransformScaledVerts( tri.verts, entJoints, ent.shaderParms[ SHADERPARM_MD5_SKINSCALE ] );
 ////	} else {
 ////		TransformVerts( tri.verts, entJoints );
@@ -700,7 +700,7 @@
 ////	bounds.FromTransformedBounds( ent.bounds, vec3_zero, ent.axis );
 ////	session.rw.DebugBounds( colorMagenta, bounds, ent.origin );
 
-////	if ( ( r_jointNameScale.GetFloat() != 0.0f ) && ( bounds.Expand( 128.0f ).ContainsPoint( view.renderView.vieworg - ent.origin ) ) ) {
+////	if ( ( r_jointNameScale.GetFloat() != 0.0 ) && ( bounds.Expand( 128.0f ).ContainsPoint( view.renderView.vieworg - ent.origin ) ) ) {
 ////		idVec3	offset( 0, 0, r_jointNameOffset.GetFloat() );
 ////		float	scale;
 

@@ -1092,22 +1092,22 @@ static Length( s:string ):number {
 
 ////idVec4	g_color_table[16] =
 ////{
-////	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
-////	idVec4(1.0f, 0.0f, 0.0f, 1.0f), // S_COLOR_RED
-////	idVec4(0.0f, 1.0f, 0.0f, 1.0f), // S_COLOR_GREEN
-////	idVec4(1.0f, 1.0f, 0.0f, 1.0f), // S_COLOR_YELLOW
-////	idVec4(0.0f, 0.0f, 1.0f, 1.0f), // S_COLOR_BLUE
-////	idVec4(0.0f, 1.0f, 1.0f, 1.0f), // S_COLOR_CYAN
-////	idVec4(1.0f, 0.0f, 1.0f, 1.0f), // S_COLOR_MAGENTA
-////	idVec4(1.0f, 1.0f, 1.0f, 1.0f), // S_COLOR_WHITE
-////	idVec4(0.5f, 0.5f, 0.5f, 1.0f), // S_COLOR_GRAY
-////	idVec4(0.0f, 0.0f, 0.0f, 1.0f), // S_COLOR_BLACK
-////	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
-////	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
-////	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
-////	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
-////	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
-////	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
+////	idVec4(0.0, 0.0, 0.0, 1.0),
+////	idVec4(1.0, 0.0, 0.0, 1.0), // S_COLOR_RED
+////	idVec4(0.0, 1.0, 0.0, 1.0), // S_COLOR_GREEN
+////	idVec4(1.0, 1.0, 0.0, 1.0), // S_COLOR_YELLOW
+////	idVec4(0.0, 0.0, 1.0, 1.0), // S_COLOR_BLUE
+////	idVec4(0.0, 1.0, 1.0, 1.0), // S_COLOR_CYAN
+////	idVec4(1.0, 0.0, 1.0, 1.0), // S_COLOR_MAGENTA
+////	idVec4(1.0, 1.0, 1.0, 1.0), // S_COLOR_WHITE
+////	idVec4(0.5, 0.5, 0.5, 1.0), // S_COLOR_GRAY
+////	idVec4(0.0, 0.0, 0.0, 1.0), // S_COLOR_BLACK
+////	idVec4(0.0, 0.0, 0.0, 1.0),
+////	idVec4(0.0, 0.0, 0.0, 1.0),
+////	idVec4(0.0, 0.0, 0.0, 1.0),
+////	idVec4(0.0, 0.0, 0.0, 1.0),
+////	idVec4(0.0, 0.0, 0.0, 1.0),
+////	idVec4(0.0, 0.0, 0.0, 1.0),
 ////};
 
 ////const char *units[2][4] =

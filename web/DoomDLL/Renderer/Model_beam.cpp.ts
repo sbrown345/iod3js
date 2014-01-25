@@ -146,7 +146,7 @@
 ////	idVec3	dir = mid - localView;
 ////	minor.Cross( major, dir );
 ////	minor.Normalize();
-////	if ( renderEntity.shaderParms[SHADERPARM_BEAM_WIDTH] != 0.0f ) {
+////	if ( renderEntity.shaderParms[SHADERPARM_BEAM_WIDTH] != 0.0 ) {
 ////		minor *= renderEntity.shaderParms[SHADERPARM_BEAM_WIDTH] * 0.5f;
 ////	}
 
@@ -205,7 +205,7 @@
 ////		R_GlobalPointToLocal( modelMatrix, target, localTarget ); 
 
 ////		b.AddPoint( localTarget );
-////		if ( renderEntity.shaderParms[SHADERPARM_BEAM_WIDTH] != 0.0f ) {
+////		if ( renderEntity.shaderParms[SHADERPARM_BEAM_WIDTH] != 0.0 ) {
 ////			b.ExpandSelf( renderEntity.shaderParms[SHADERPARM_BEAM_WIDTH] * 0.5f );
 ////		}
 ////	}

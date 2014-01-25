@@ -116,13 +116,13 @@ class idBounds {
 	}
 
 //ID_INLINE idBounds::idBounds( const idVec3 &mins, const idVec3 &maxs ) {
-//	b[0] = mins;
-//	b[1] = maxs;
+//	this.b[0] = mins;
+//	this.b[1] = maxs;
 //}
 
 //ID_INLINE idBounds::idBounds( const idVec3 &point ) {
-//	b[0] = point;
-//	b[1] = point;
+//	this.b[0] = point;
+//	this.b[1] = point;
 //}
 
 //ID_INLINE const idVec3 &idBounds::operator[]( const int index ) const {
@@ -138,8 +138,8 @@ class idBounds {
 //}
 
 //ID_INLINE idBounds &idBounds::operator+=( const idVec3 &t ) {
-//	b[0] += t;
-//	b[1] += t;
+//	this.b[0] += t;
+//	this.b[1] += t;
 //	return *this;
 //}
 
@@ -168,18 +168,18 @@ class idBounds {
 
 //ID_INLINE idBounds idBounds::operator-( const idBounds &a ) const {
 //	assert( this.b[1][0] - this.b[0][0] > a.b[1][0] - a.b[0][0] &&
-//				b[1][1] - this.b[0][1] > a.b[1][1] - a.b[0][1] &&
-//					b[1][2] - this.b[0][2] > a.b[1][2] - a.b[0][2] );
+//				this.b[1][1] - this.b[0][1] > a.b[1][1] - a.b[0][1] &&
+//					this.b[1][2] - this.b[0][2] > a.b[1][2] - a.b[0][2] );
 //	return idBounds( idVec3( this.b[0][0] + a.b[1][0], this.b[0][1] + a.b[1][1], this.b[0][2] + a.b[1][2] ),
 //					idVec3( this.b[1][0] + a.b[0][0], this.b[1][1] + a.b[0][1], this.b[1][2] + a.b[0][2] ) );
 //}
 
 //ID_INLINE idBounds &idBounds::operator-=( const idBounds &a ) {
 //	assert( this.b[1][0] - this.b[0][0] > a.b[1][0] - a.b[0][0] &&
-//				b[1][1] - this.b[0][1] > a.b[1][1] - a.b[0][1] &&
-//					b[1][2] - this.b[0][2] > a.b[1][2] - a.b[0][2] );
-//	b[0] += a.b[1];
-//	b[1] += a.b[0];
+//				this.b[1][1] - this.b[0][1] > a.b[1][1] - a.b[0][1] &&
+//					this.b[1][2] - this.b[0][2] > a.b[1][2] - a.b[0][2] );
+//	this.b[0] += a.b[1];
+//	this.b[1] += a.b[0];
 //	return *this;
 //}
 
@@ -215,7 +215,7 @@ Zero( ):void {
 
 //ID_INLINE float idBounds::GetVolume( void ) const {
 //	if ( this.b[0][0] >= this.b[1][0] || this.b[0][1] >= this.b[1][1] || this.b[0][2] >= this.b[1][2] ) {
-//		return 0.0f;
+//		return 0.0;
 //	}
 //	return ( ( this.b[1][0] - this.b[0][0] ) * ( this.b[1][1] - this.b[0][1] ) * ( this.b[1][2] - this.b[0][2] ) );
 //}
@@ -243,44 +243,44 @@ Zero( ):void {
 //		expanded = true;
 //	}
 //	if ( v[2] < this.b[0][2] ) {
-//		b[0][2] = v[2];
+//		this.b[0][2] = v[2];
 //		expanded = true;
 //	}
 //	if ( v[2] > this.b[1][2]) {
-//		b[1][2] = v[2];
+//		this.b[1][2] = v[2];
 //		expanded = true;
 //	}
 //	return expanded;
 //}
 
-//ID_INLINE bool idBounds::AddBounds( const idBounds &a ) {
-//	bool expanded = false;
-//	if ( a.b[0][0] < this.b[0][0] ) {
-//		b[0][0] = a.b[0][0];
-//		expanded = true;
-//	}
-//	if ( a.b[0][1] < this.b[0][1] ) {
-//		b[0][1] = a.b[0][1];
-//		expanded = true;
-//	}
-//	if ( a.b[0][2] < this.b[0][2] ) {
-//		b[0][2] = a.b[0][2];
-//		expanded = true;
-//	}
-//	if ( a.b[1][0] > this.b[1][0] ) {
-//		b[1][0] = a.b[1][0];
-//		expanded = true;
-//	}
-//	if ( a.b[1][1] > this.b[1][1] ) {
-//		b[1][1] = a.b[1][1];
-//		expanded = true;
-//	}
-//	if ( a.b[1][2] > this.b[1][2] ) {
-//		b[1][2] = a.b[1][2];
-//		expanded = true;
-//	}
-//	return expanded;
-//}
+	AddBounds ( a: idBounds ): boolean {
+		var expanded = false;
+		if ( a.b[0][0] < this.b[0][0] ) {
+			this.b[0][0] = a.b[0][0];
+			expanded = true;
+		}
+		if ( a.b[0][1] < this.b[0][1] ) {
+			this.b[0][1] = a.b[0][1];
+			expanded = true;
+		}
+		if ( a.b[0][2] < this.b[0][2] ) {
+			this.b[0][2] = a.b[0][2];
+			expanded = true;
+		}
+		if ( a.b[1][0] > this.b[1][0] ) {
+			this.b[1][0] = a.b[1][0];
+			expanded = true;
+		}
+		if ( a.b[1][1] > this.b[1][1] ) {
+			this.b[1][1] = a.b[1][1];
+			expanded = true;
+		}
+		if ( a.b[1][2] > this.b[1][2] ) {
+			this.b[1][2] = a.b[1][2];
+			expanded = true;
+		}
+		return expanded;
+	}
 
 //ID_INLINE idBounds idBounds::Intersect( const idBounds &a ) const {
 //	idBounds n;
@@ -295,22 +295,22 @@ Zero( ):void {
 
 //ID_INLINE idBounds &idBounds::IntersectSelf( const idBounds &a ) {
 //	if ( a.b[0][0] > this.b[0][0] ) {
-//		b[0][0] = a.b[0][0];
+//		this.b[0][0] = a.b[0][0];
 //	}
 //	if ( a.b[0][1] > this.b[0][1] ) {
-//		b[0][1] = a.b[0][1];
+//		this.b[0][1] = a.b[0][1];
 //	}
 //	if ( a.b[0][2] > this.b[0][2] ) {
-//		b[0][2] = a.b[0][2];
+//		this.b[0][2] = a.b[0][2];
 //	}
 //	if ( a.b[1][0] < this.b[1][0] ) {
-//		b[1][0] = a.b[1][0];
+//		this.b[1][0] = a.b[1][0];
 //	}
 //	if ( a.b[1][1] < this.b[1][1] ) {
-//		b[1][1] = a.b[1][1];
+//		this.b[1][1] = a.b[1][1];
 //	}
 //	if ( a.b[1][2] < this.b[1][2] ) {
-//		b[1][2] = a.b[1][2];
+//		this.b[1][2] = a.b[1][2];
 //	}
 //	return *this;
 //}
@@ -321,12 +321,12 @@ Zero( ):void {
 //}
 
 //ID_INLINE idBounds &idBounds::ExpandSelf( const float d ) {
-//	b[0][0] -= d;
-//	b[0][1] -= d;
-//	b[0][2] -= d;
-//	b[1][0] += d;
-//	b[1][1] += d;
-//	b[1][2] += d;
+//	this.b[0][0] -= d;
+//	this.b[0][1] -= d;
+//	this.b[0][2] -= d;
+//	this.b[1][0] += d;
+//	this.b[1][1] += d;
+//	this.b[1][2] += d;
 //	return *this;
 //}
 
@@ -335,8 +335,8 @@ Zero( ):void {
 //}
 
 //ID_INLINE idBounds &idBounds::TranslateSelf( const idVec3 &translation ) {
-//	b[0] += translation;
-//	b[1] += translation;
+//	this.b[0] += translation;
+//	this.b[1] += translation;
 //	return *this;
 //}
 
@@ -424,7 +424,7 @@ Zero( ):void {
 //	int		i;
 //	float	total, b0, b1;
 
-//	total = 0.0f;
+//	total = 0.0;
 //	for (i = 0; i < 3; i++) {
 //		b0 = (float)idMath::Fabs(b[0][i]);
 //		b1 = (float)idMath::Fabs(b[1][i]);
@@ -447,7 +447,7 @@ Zero( ):void {
 //	int		i;
 //	float	total, b0, b1;
 
-//	total = 0.0f;
+//	total = 0.0;
 //	for (i = 0; i < 3; i++) {
 //		b0 = (float)idMath::Fabs(center[i] - this.b[0][i]);
 //		b1 = (float)idMath::Fabs(b[1][i] - center[i]);
@@ -477,13 +477,13 @@ Zero( ):void {
 //		idMath::Fabs((b[1][1] - center[1]) * plane.Normal()[1]) +
 //		idMath::Fabs((b[1][2] - center[2]) * plane.Normal()[2]);
 
-//	if (d1 - d2 > 0.0f) {
+//	if (d1 - d2 > 0.0) {
 //		return d1 - d2;
 //	}
-//	if (d1 + d2 < 0.0f) {
+//	if (d1 + d2 < 0.0) {
 //		return d1 + d2;
 //	}
-//	return 0.0f;
+//	return 0.0;
 //}
 
 	///*
@@ -585,7 +585,7 @@ Zero( ):void {
 //			inside++;
 //			continue;
 //		}
-//		if (dir[i] == 0.0f) {
+//		if (dir[i] == 0.0) {
 //			continue;
 //		}
 //		f = (start[i] - this.b[side][i]);
@@ -596,7 +596,7 @@ Zero( ):void {
 //	}
 
 //	if (ax0 < 0) {
-//		scale = 0.0f;
+//		scale = 0.0;
 //		// return true if the start point is inside the bounds
 //		return (inside == 3);
 //	}
@@ -629,8 +629,8 @@ Zero( ):void {
 //	}
 
 //	center = origin + center * axis;
-//	b[0] = center - rotatedExtents;
-//	b[1] = center + rotatedExtents;
+//	this.b[0] = center - rotatedExtents;
+//	this.b[1] = center + rotatedExtents;
 //}
 
 	///*
@@ -655,13 +655,13 @@ Zero( ):void {
 //	int i;
 
 //	for (i = 0; i < 3; i++) {
-//		if (translation[i] < 0.0f) {
-//			b[0][i] = point[i] + translation[i];
-//			b[1][i] = point[i];
+//		if (translation[i] < 0.0) {
+//			this.b[0][i] = point[i] + translation[i];
+//			this.b[1][i] = point[i];
 //		}
 //		else {
-//			b[0][i] = point[i];
-//			b[1][i] = point[i] + translation[i];
+//			this.b[0][i] = point[i];
+//			this.b[1][i] = point[i] + translation[i];
 //		}
 //	}
 //}
@@ -680,15 +680,15 @@ Zero( ):void {
 //		FromTransformedBounds(bounds, origin, axis);
 //	}
 //	else {
-//		b[0] = bounds[0] + origin;
-//		b[1] = bounds[1] + origin;
+//		this.b[0] = bounds[0] + origin;
+//		this.b[1] = bounds[1] + origin;
 //	}
 //	for (i = 0; i < 3; i++) {
-//		if (translation[i] < 0.0f) {
-//			b[0][i] += translation[i];
+//		if (translation[i] < 0.0) {
+//			this.b[0][i] += translation[i];
 //		}
 //		else {
-//			b[1][i] += translation[i];
+//			this.b[1][i] += translation[i];
 //		}
 //	}
 //}
@@ -716,8 +716,8 @@ Zero( ):void {
 
 //	for (i = 0; i < 3; i++) {
 //		// if the derivative changes sign along this axis during the rotation from start to end
-//		if ((v1[i] > 0.0f && v2[i] < 0.0f) || (v1[i] < 0.0f && v2[i] > 0.0f)) {
-//			if ((0.5f * (start[i] + end[i]) - origin[i]) > 0.0f) {
+//		if ((v1[i] > 0.0 && v2[i] < 0.0) || (v1[i] < 0.0 && v2[i] > 0.0)) {
+//			if ((0.5f * (start[i] + end[i]) - origin[i]) > 0.0) {
 //				bounds[0][i] = Min(start[i], end[i]);
 //				bounds[1][i] = origin[i] + idMath::Sqrt(radiusSqr * (1.0f - axis[i] * axis[i]));
 //			}
@@ -757,8 +757,8 @@ Zero( ):void {
 //		radius = (point - rotation.GetOrigin()).Length();
 
 //		// FIXME: these bounds are usually way larger
-//		b[0].Set(-radius, -radius, -radius);
-//		b[1].Set(radius, radius, radius);
+//		this.b[0].Set(-radius, -radius, -radius);
+//		this.b[1].Set(radius, radius, radius);
 //	}
 //}
 
@@ -791,8 +791,8 @@ Zero( ):void {
 //		radius = (bounds[1] - point).Length() + (point - rotation.GetOrigin()).Length();
 
 //		// FIXME: these bounds are usually way larger
-//		b[0].Set(-radius, -radius, -radius);
-//		b[1].Set(radius, radius, radius);
+//		this.b[0].Set(-radius, -radius, -radius);
+//		this.b[1].Set(radius, radius, radius);
 //	}
 //}
 

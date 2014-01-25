@@ -330,9 +330,9 @@
 
 ////	for ( i = 0, y = 0; y < verts_y; y++ ) {
 ////		for ( x = 0; x < verts_x; x++, i++ ) {
-////			page1[ i ] = 0.0f;
-////			page2[ i ] = 0.0f;
-////			verts[ i ].xyz.z = 0.0f;
+////			page1[ i ] = 0.0;
+////			page2[ i ] = 0.0;
+////			verts[ i ].xyz.z = 0.0;
 ////		}
 ////	}
 ////}
@@ -403,7 +403,7 @@
 ////			seed = parser.ParseInt();
 ////		} else if ( !token.Icmp( "update_rate" ) ) {
 ////			rate = parser.ParseFloat();
-////			if ( ( rate <= 0.0f ) || ( rate > 60.0f ) ) {
+////			if ( ( rate <= 0.0 ) || ( rate > 60.0f ) ) {
 ////				parser.Warning( "Invalid update_rate.  Must be between 0 and 60.  Using default model." );
 ////				MakeDefaultModel();
 ////				return;
@@ -426,10 +426,10 @@
 ////	verts.SetNum( verts_x * verts_y );
 ////	for ( i = 0, y = 0; y < verts_y; y++ ) {
 ////		for ( x = 0; x < verts_x; x++, i++ ) {
-////			page1[ i ] = 0.0f;
-////			page2[ i ] = 0.0f;
+////			page1[ i ] = 0.0;
+////			page2[ i ] = 0.0;
 ////			verts[ i ].Clear();
-////			verts[ i ].xyz.Set( x * scale_x, y * scale_y, 0.0f );
+////			verts[ i ].xyz.Set( x * scale_x, y * scale_y, 0.0 );
 ////			verts[ i ].st.Set( (float) x / (float)( verts_x - 1 ), (float) -y / (float)( verts_y - 1 ) );
 ////		}
 ////	}
@@ -452,7 +452,7 @@
 ////	deformInfo = R_BuildDeformInfo( verts.Num(), verts.Ptr(), tris.Num(), tris.Ptr(), true );
 
 ////	bounds.Clear();
-////	bounds.AddPoint( idVec3( 0.0f, 0.0f, drop_height * -10.0f ) );
+////	bounds.AddPoint( idVec3( 0.0, 0.0, drop_height * -10.0f ) );
 ////	bounds.AddPoint( idVec3( ( verts_x - 1 ) * scale_x, ( verts_y - 1 ) * scale_y, drop_height * 10.0f ) );
 
 ////	// set the timestamp for reloadmodels

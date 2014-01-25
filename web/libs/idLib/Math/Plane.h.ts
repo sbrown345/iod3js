@@ -109,7 +109,7 @@ class idPlane {
 	//	idPlane &		RotateSelf( const idVec3 &origin, const idMat3 &axis );
 	//
 	//	float			Distance( const idVec3 &v ) const;
-	//	int				Side( const idVec3 &v, const float epsilon = 0.0f ) const;
+	//	int				Side( const idVec3 &v, const float epsilon = 0.0 ) const;
 	//
 	//	bool			LineIntersection( const idVec3 &start, const idVec3 &end ) const;
 	//					// intersection point is start + dir * scale
@@ -180,7 +180,7 @@ class idPlane {
 	//}
 	//
 	//ID_INLINE idPlane &idPlane::operator*=( const idMat3 &m ) {
-	//	Normal() *= m;
+	//	this.Normal() *= m;
 	//	return *this;
 	//}
 	//
@@ -212,7 +212,7 @@ class idPlane {
 	//	if ( idMath::Fabs( d - p.d ) > distEps ) {
 	//		return false;
 	//	}
-	//	if ( !Normal().Compare( p.Normal(), normalEps ) ) {
+	//	if ( !this.Normal().Compare( p.Normal(), normalEps ) ) {
 	//		return false;
 	//	}
 	//	return true;
@@ -227,7 +227,7 @@ class idPlane {
 	//}
 	//
 	//ID_INLINE void idPlane::Zero( void ) {
-	//	a = b = c = d = 0.0f;
+	//	a = b = c = d = 0.0;
 	//}
 	//
 	//ID_INLINE void idPlane::SetNormal( const idVec3 &normal ) {
@@ -254,7 +254,7 @@ class idPlane {
 	//}
 	//
 	//ID_INLINE bool idPlane::FixDegenerateNormal( void ) {
-	//	return Normal().FixDegenerateNormal();
+	//	return this.Normal().FixDegenerateNormal();
 	//}
 	//
 	//ID_INLINE bool idPlane::FixDegeneracies( float distEpsilon ) {
@@ -276,48 +276,48 @@ class idPlane {
 	//	d = -dist;
 	//}
 	//
-	//ID_INLINE bool idPlane::FromPoints( const idVec3 &p1, const idVec3 &p2, const idVec3 &p3, bool fixDegenerate ) {
-	//	Normal() = (p1 - p2).Cross( p3 - p2 );
-	//	if ( Normalize( fixDegenerate ) == 0.0f ) {
-	//		return false;
-	//	}
-	//	d = -( Normal() * p2 );
-	//	return true;
-	//}
-	//
+	FromPoints(p1: idVec3, p2: idVec3, p3: idVec3, fixDegenerate:boolean ): boolean {
+		this.Normal() = (p1 - p2).Cross( p3 - p2 );
+		if ( Normalize( fixDegenerate ) == 0.0 ) {
+			return false;
+		}
+		d = -( this.Normal() * p2 );
+		return true;
+	}
+	
 	//ID_INLINE bool idPlane::FromVecs( const idVec3 &dir1, const idVec3 &dir2, const idVec3 &p, bool fixDegenerate ) {
-	//	Normal() = dir1.Cross( dir2 );
-	//	if ( Normalize( fixDegenerate ) == 0.0f ) {
+	//	this.Normal() = dir1.Cross( dir2 );
+	//	if ( Normalize( fixDegenerate ) == 0.0 ) {
 	//		return false;
 	//	}
-	//	d = -( Normal() * p );
+	//	d = -( this.Normal() * p );
 	//	return true;
 	//}
 	//
 	//ID_INLINE void idPlane::FitThroughPoint( const idVec3 &p ) {
-	//	d = -( Normal() * p );
+	//	d = -( this.Normal() * p );
 	//}
 	//
 	//ID_INLINE idPlane idPlane::Translate( const idVec3 &translation ) const {
-	//	return idPlane( a, b, c, d - translation * Normal() );
+	//	return idPlane( a, b, c, d - translation * this.Normal() );
 	//}
 	//
 	//ID_INLINE idPlane &idPlane::TranslateSelf( const idVec3 &translation ) {
-	//	d -= translation * Normal();
+	//	d -= translation * this.Normal();
 	//	return *this;
 	//}
 	//
 	//ID_INLINE idPlane idPlane::Rotate( const idVec3 &origin, const idMat3 &axis ) const {
 	//	idPlane p;
-	//	p.Normal() = Normal() * axis;
-	//	p.d = d + origin * Normal() - origin * p.Normal();
+	//	p.Normal() = this.Normal() * axis;
+	//	p.d = d + origin * this.Normal() - origin * p.Normal();
 	//	return p;
 	//}
 	//
 	//ID_INLINE idPlane &idPlane::RotateSelf( const idVec3 &origin, const idMat3 &axis ) {
-	//	d += origin * Normal();
-	//	Normal() *= axis;
-	//	d -= origin * Normal();
+	//	d += origin * this.Normal();
+	//	this.Normal() *= axis;
+	//	d -= origin * this.Normal();
 	//	return *this;
 	//}
 	//
@@ -341,27 +341,27 @@ class idPlane {
 	//ID_INLINE bool idPlane::LineIntersection( const idVec3 &start, const idVec3 &end ) const {
 	//	float d1, d2, fraction;
 	//
-	//	d1 = Normal() * start + d;
-	//	d2 = Normal() * end + d;
+	//	d1 = this.Normal() * start + d;
+	//	d2 = this.Normal() * end + d;
 	//	if ( d1 == d2 ) {
 	//		return false;
 	//	}
-	//	if ( d1 > 0.0f && d2 > 0.0f ) {
+	//	if ( d1 > 0.0 && d2 > 0.0 ) {
 	//		return false;
 	//	}
-	//	if ( d1 < 0.0f && d2 < 0.0f ) {
+	//	if ( d1 < 0.0 && d2 < 0.0 ) {
 	//		return false;
 	//	}
 	//	fraction = ( d1 / ( d1 - d2 ) );
-	//	return ( fraction >= 0.0f && fraction <= 1.0f );
+	//	return ( fraction >= 0.0 && fraction <= 1.0f );
 	//}
 	//
 	//ID_INLINE bool idPlane::RayIntersection( const idVec3 &start, const idVec3 &dir, float &scale ) const {
 	//	float d1, d2;
 	//
-	//	d1 = Normal() * start + d;
-	//	d2 = Normal() * dir;
-	//	if ( d2 == 0.0f ) {
+	//	d1 = this.Normal() * start + d;
+	//	d2 = this.Normal() * dir;
+	//	if ( d2 == 0.0 ) {
 	//		return false;
 	//	}
 	//	scale = -( d1 / d2 );
@@ -425,7 +425,7 @@ class idPlane {
 	//#include "../precompiled.h"
 	//#pragma hdrstop
 	//
-	//idPlane plane_origin(0.0f, 0.0f, 0.0f, 0.0f);
+	//idPlane plane_origin(0.0, 0.0, 0.0, 0.0);
 	//
 	///*
 	//================
@@ -433,26 +433,26 @@ class idPlane {
 	//================
 	//*/
 	//int idPlane::Type(void) const {
-	//	if (Normal()[0] == 0.0f) {
-	//		if (Normal()[1] == 0.0f) {
-	//			return Normal()[2] > 0.0f ? PLANETYPE_Z : PLANETYPE_NEGZ;
+	//	if (this.Normal()[0] == 0.0) {
+	//		if (this.Normal()[1] == 0.0) {
+	//			return this.Normal()[2] > 0.0 ? PLANETYPE_Z : PLANETYPE_NEGZ;
 	//		}
-	//		else if (Normal()[2] == 0.0f) {
-	//			return Normal()[1] > 0.0f ? PLANETYPE_Y : PLANETYPE_NEGY;
+	//		else if (this.Normal()[2] == 0.0) {
+	//			return this.Normal()[1] > 0.0 ? PLANETYPE_Y : PLANETYPE_NEGY;
 	//		}
 	//		else {
 	//			return PLANETYPE_ZEROX;
 	//		}
 	//	}
-	//	else if (Normal()[1] == 0.0f) {
-	//		if (Normal()[2] == 0.0f) {
-	//			return Normal()[0] > 0.0f ? PLANETYPE_X : PLANETYPE_NEGX;
+	//	else if (this.Normal()[1] == 0.0) {
+	//		if (this.Normal()[2] == 0.0) {
+	//			return this.Normal()[0] > 0.0 ? PLANETYPE_X : PLANETYPE_NEGX;
 	//		}
 	//		else {
 	//			return PLANETYPE_ZEROY;
 	//		}
 	//	}
-	//	else if (Normal()[2] == 0.0f) {
+	//	else if (this.Normal()[2] == 0.0) {
 	//		return PLANETYPE_ZEROZ;
 	//	}
 	//	else {
@@ -467,22 +467,22 @@ class idPlane {
 	//*/
 	//bool idPlane::HeightFit(const idVec3 *points, const int numPoints) {
 	//	int i;
-	//	float sumXX = 0.0f, sumXY = 0.0f, sumXZ = 0.0f;
-	//	float sumYY = 0.0f, sumYZ = 0.0f;
+	//	float sumXX = 0.0, sumXY = 0.0, sumXZ = 0.0;
+	//	float sumYY = 0.0, sumYZ = 0.0;
 	//	idVec3 sum, average, dir;
 	//
 	//	if (numPoints == 1) {
-	//		a = 0.0f;
-	//		b = 0.0f;
+	//		a = 0.0;
+	//		b = 0.0;
 	//		c = 1.0f;
 	//		d = -points[0].z;
 	//		return true;
 	//	}
 	//	if (numPoints == 2) {
 	//		dir = points[1] - points[0];
-	//		Normal() = dir.Cross(idVec3(0, 0, 1)).Cross(dir);
+	//		this.Normal() = dir.Cross(idVec3(0, 0, 1)).Cross(dir);
 	//		Normalize();
-	//		d = -(Normal() * points[0]);
+	//		d = -(this.Normal() * points[0]);
 	//		return true;
 	//	}
 	//
@@ -522,9 +522,9 @@ class idPlane {
 	//bool idPlane::PlaneIntersection(const idPlane &plane, idVec3 &start, idVec3 &dir) const {
 	//	double n00, n01, n11, det, invDet, f0, f1;
 	//
-	//	n00 = Normal().LengthSqr();
-	//	n01 = Normal() * plane.Normal();
-	//	n11 = plane.Normal().LengthSqr();
+	//	n00 = this.Normal().LengthSqr();
+	//	n01 = this.Normal() * plane.this.Normal();
+	//	n11 = plane.this.Normal().LengthSqr();
 	//	det = n00 * n11 - n01 * n01;
 	//
 	//	if (idMath::Fabs(det) < 1e-6f) {
@@ -535,8 +535,8 @@ class idPlane {
 	//	f0 = (n01 * plane.d - n11 * d) * invDet;
 	//	f1 = (n01 * d - n00 * plane.d) * invDet;
 	//
-	//	dir = Normal().Cross(plane.Normal());
-	//	start = f0 * Normal() + f1 * plane.Normal();
+	//	dir = this.Normal().Cross(plane.this.Normal());
+	//	start = f0 * this.Normal() + f1 * plane.this.Normal();
 	//	return true;
 	//}
 	//

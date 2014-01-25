@@ -197,7 +197,7 @@
 
 ////			// supress particles before or after the age clamp
 ////			g.frac = (float)inCycleTime / ( stage.particleLife * 1000 );
-////			if ( g.frac < 0.0f ) {
+////			if ( g.frac < 0.0 ) {
 ////				// yet to be spawned
 ////				continue;
 ////			}

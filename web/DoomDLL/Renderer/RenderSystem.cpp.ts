@@ -763,7 +763,7 @@ GL_CheckErrors():void {
 ////	// start far enough away that we don't hit the player model
 ////	start = tr.primaryView.renderView.vieworg + tr.primaryView.renderView.viewaxis[0] * 16;
 ////	end = start + tr.primaryView.renderView.viewaxis[0] * 1000.0f;
-////	if ( !tr.primaryWorld.Trace( mt, start, end, 0.0f, false ) ) {
+////	if ( !tr.primaryWorld.Trace( mt, start, end, 0.0, false ) ) {
 ////		return;
 ////	}
 
@@ -2016,7 +2016,7 @@ R_InitCommands( ):void {
 ////	frameCount = 0;
 ////	viewCount = 0;
 ////	staticAllocCount = 0;
-////	frameShaderTime = 0.0f;
+////	frameShaderTime = 0.0;
 ////	viewportOffset[0] = 0;
 ////	viewportOffset[1] = 0;
 ////	tiledViewport[0] = 0;
@@ -2080,7 +2080,7 @@ idRenderSystemLocal::Init
     this.demoGuiModel = new idGuiModel;
     this.demoGuiModel.Clear();
 
-    todo("R_InitTriSurfData();");
+    R_InitTriSurfData();
 
     globalImages.Init();
 

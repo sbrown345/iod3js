@@ -1,6 +1,7 @@
 /// <reference path="../../libs/idLib/Text/Str.h.ts" />
-/// <reference path="Model_local.h.ts" />
 /// <reference path="Model.h.ts" />
+/// <reference path="Model_local.h.ts" />
+/// <reference path="../../libs/idlib/geometry/winding.h.ts" />
 /////*
 ////===========================================================================
 
@@ -43,26 +44,6 @@
 ////idCVar idRenderModelStatic::r_slopTexCoord( "r_slopTexCoord", "0.001", CVAR_RENDERER, "merge texture coordinates this far apart" );
 ////idCVar idRenderModelStatic::r_slopNormal( "r_slopNormal", "0.02", CVAR_RENDERER, "merge normals that dot less than this" );
 
-/////*
-////================
-////idRenderModelStatic::idRenderModelStatic
-////================
-////*/
-////idRenderModelStatic::idRenderModelStatic() {
-////	name = "<undefined>";
-////	bounds.Clear();
-////	lastModifiedFrame = 0;
-////	lastArchivedFrame = 0;
-////	overlaysAdded = 0;
-////	shadowHull = NULL;
-////	isStaticWorldModel = false;
-////	defaulted = false;
-////	purged = false;
-////	fastLoad = false;
-////	reloadable = true;
-////	levelLoadReferenced = false;
-////	timeStamp = 0;
-////}
 
 /////*
 ////================
@@ -82,12 +63,12 @@
 ////	common.Printf( "%s\n", name.c_str() );
 ////	common.Printf( "Static model.\n" );
 ////	common.Printf( "bounds: (%f %f %f) to (%f %f %f)\n", 
-////		bounds[0][0], bounds[0][1], bounds[0][2], 
-////		bounds[1][0], bounds[1][1], bounds[1][2] );
+////		this.bounds[0][0], this.bounds[0][1], this.bounds[0][2], 
+////		this.bounds[1][0], this.bounds[1][1], this.bounds[1][2] );
 
 ////	common.Printf( "    verts  tris material\n" );
 ////	for ( int i = 0 ; i < NumSurfaces() ; i++ ) {
-////		const modelSurface_t	*surf = Surface( i );
+////		var surf = this.Surface( i );
 
 ////		srfTriangles_t *tri = surf.geometry;
 ////		const idMaterial *material = surf.shader;
@@ -123,7 +104,7 @@
 ////	}
 
 ////	for ( int j = 0 ; j < NumSurfaces() ; j++ ) {
-////		const modelSurface_t	*surf = Surface( j );
+////		var surf = this.Surface( j );
 ////		if ( !surf.geometry ) {
 ////			continue;
 ////		}
@@ -147,7 +128,7 @@
 
 ////	char	closed = 'C';
 ////	for ( int j = 0 ; j < NumSurfaces() ; j++ ) {
-////		const modelSurface_t	*surf = Surface( j );
+////		var surf = this.Surface( j );
 ////		if ( !surf.geometry ) {
 ////			continue;
 ////		}
@@ -168,61 +149,61 @@
 ////	if ( defaulted ) {
 ////		common.Printf( " (DEFAULTED)" );
 ////	}
-////	if ( bounds[0][0] >= bounds[1][0] ) {
+////	if ( this.bounds[0][0] >= this.bounds[1][0] ) {
 ////		common.Printf( " (EMPTY BOUNDS)" );
 ////	}
-////	if ( bounds[1][0] - bounds[0][0] > 100000 ) {
+////	if ( this.bounds[1][0] - this.bounds[0][0] > 100000 ) {
 ////		common.Printf( " (HUGE BOUNDS)" );
 ////	}
 
 ////	common.Printf( "\n" );
 ////}
 
-/////*
-////================
-////idRenderModelStatic::IsDefaultModel
-////================
-////*/
-////bool idRenderModelStatic::IsDefaultModel() const {
-////	return defaulted;
-////}
+/*
+================
+idRenderModelStatic::IsDefaultModel
+================
+*/
+idRenderModelStatic.prototype.IsDefaultModel = function ( ): boolean {
+	return this.defaulted;
+};
 
-/////*
-////================
-////AddCubeFace
-////================
-////*/
-////static void AddCubeFace( srfTriangles_t *tri, idVec3 v1, idVec3 v2, idVec3 v3, idVec3 v4 ) {
-////	tri.verts[tri.numVerts+0].Clear();
-////	tri.verts[tri.numVerts+0].xyz = v1 * 8;
-////	tri.verts[tri.numVerts+0].st[0] = 0;
-////	tri.verts[tri.numVerts+0].st[1] = 0;
+/*
+================
+AddCubeFace
+================
+*/
+function AddCubeFace( tri: srfTriangles_t, v1: idVec3, v2: idVec3, v3: idVec3, v4: idVec3 ): void {
+	tri.verts[tri.numVerts + 0].Clear ( );
+	tri.verts[tri.numVerts + 0].xyz = v1.multiplyByFloat(8);
+	tri.verts[tri.numVerts + 0].st[0] = 0;
+	tri.verts[tri.numVerts + 0].st[1] = 0;
 
-////	tri.verts[tri.numVerts+1].Clear();
-////	tri.verts[tri.numVerts+1].xyz = v2 * 8;
-////	tri.verts[tri.numVerts+1].st[0] = 1;
-////	tri.verts[tri.numVerts+1].st[1] = 0;
+	tri.verts[tri.numVerts + 1].Clear ( );
+	tri.verts[tri.numVerts + 1].xyz = v2.multiplyByFloat(8);
+	tri.verts[tri.numVerts + 1].st[0] = 1;
+	tri.verts[tri.numVerts + 1].st[1] = 0;
 
-////	tri.verts[tri.numVerts+2].Clear();
-////	tri.verts[tri.numVerts+2].xyz = v3 * 8;
-////	tri.verts[tri.numVerts+2].st[0] = 1;
-////	tri.verts[tri.numVerts+2].st[1] = 1;
+	tri.verts[tri.numVerts + 2].Clear ( );
+	tri.verts[tri.numVerts + 2].xyz = v3.multiplyByFloat(8);
+	tri.verts[tri.numVerts + 2].st[0] = 1;
+	tri.verts[tri.numVerts + 2].st[1] = 1;
 
-////	tri.verts[tri.numVerts+3].Clear();
-////	tri.verts[tri.numVerts+3].xyz = v4 * 8;
-////	tri.verts[tri.numVerts+3].st[0] = 0;
-////	tri.verts[tri.numVerts+3].st[1] = 1;
+	tri.verts[tri.numVerts + 3].Clear ( );
+	tri.verts[tri.numVerts + 3].xyz = v4.multiplyByFloat(8);
+	tri.verts[tri.numVerts + 3].st[0] = 0;
+	tri.verts[tri.numVerts + 3].st[1] = 1;
 
-////	tri.indexes[tri.numIndexes+0] = tri.numVerts + 0;
-////	tri.indexes[tri.numIndexes+1] = tri.numVerts + 1;
-////	tri.indexes[tri.numIndexes+2] = tri.numVerts + 2;
-////	tri.indexes[tri.numIndexes+3] = tri.numVerts + 0;
-////	tri.indexes[tri.numIndexes+4] = tri.numVerts + 2;
-////	tri.indexes[tri.numIndexes+5] = tri.numVerts + 3;
+	tri.indexes[tri.numIndexes + 0] = tri.numVerts + 0;
+	tri.indexes[tri.numIndexes + 1] = tri.numVerts + 1;
+	tri.indexes[tri.numIndexes + 2] = tri.numVerts + 2;
+	tri.indexes[tri.numIndexes + 3] = tri.numVerts + 0;
+	tri.indexes[tri.numIndexes + 4] = tri.numVerts + 2;
+	tri.indexes[tri.numIndexes + 5] = tri.numVerts + 3;
 
-////	tri.numVerts += 4;
-////	tri.numIndexes += 6;
-////}
+	tri.numVerts += 4;
+	tri.numIndexes += 6;
+};
 
 /*
 ================
@@ -243,17 +224,17 @@ idRenderModelStatic.prototype.MakeDefaultModel = function ( ): void {
     surf.shader = tr.defaultMaterial;
     surf.geometry = tri;
 
-	todoThrow( "R_AllocStaticTriSurfVerts( tri, 24 );		" );
-	todoThrow( "R_AllocStaticTriSurfIndexes( tri, 36 		" );
+    R_AllocStaticTriSurfVerts( tri, 24 );
+    R_AllocStaticTriSurfIndexes( tri, 36 );
 
-    this.AddCubeFace( tri, new idVec3(-1, 1, 1), new idVec3(1, 1, 1), new idVec3(1, -1, 1), new idVec3(-1, -1, 1) );
-    this.AddCubeFace( tri, new idVec3(-1, 1, -1), new idVec3(-1, -1, -1), new idVec3(1, -1, -1), new idVec3(1, 1, -1) );
+	AddCubeFace( tri, new idVec3(-1, 1, 1), new idVec3(1, 1, 1), new idVec3(1, -1, 1), new idVec3(-1, -1, 1) );
+	AddCubeFace( tri, new idVec3(-1, 1, -1), new idVec3(-1, -1, -1), new idVec3(1, -1, -1), new idVec3(1, 1, -1) );
 	
-    this.AddCubeFace( tri, new idVec3(1, -1, 1), new idVec3(1, 1, 1), new idVec3(1, 1, -1), new idVec3(1, -1, -1) );
-    this.AddCubeFace( tri, new idVec3(-1, -1, 1), new idVec3(-1, -1, -1), new idVec3(-1, 1, -1), new idVec3(-1, 1, 1) );
+	AddCubeFace( tri, new idVec3(1, -1, 1), new idVec3(1, 1, 1), new idVec3(1, 1, -1), new idVec3(1, -1, -1) );
+	AddCubeFace( tri, new idVec3(-1, -1, 1), new idVec3(-1, -1, -1), new idVec3(-1, 1, -1), new idVec3(-1, 1, 1) );
 
-    this.AddCubeFace( tri, new idVec3(-1, -1, 1), new idVec3(1, -1, 1), new idVec3(1, -1, -1), new idVec3(-1, -1, -1) );
-    this.AddCubeFace( tri, new idVec3(-1, 1, 1), new idVec3(-1, 1, -1), new idVec3(1, 1, -1), new idVec3(1, 1, 1) );
+	AddCubeFace( tri, new idVec3(-1, -1, 1), new idVec3(1, -1, 1), new idVec3(1, -1, -1), new idVec3(-1, -1, -1) );
+	AddCubeFace( tri, new idVec3(-1, 1, 1), new idVec3(-1, 1, -1), new idVec3(1, 1, -1), new idVec3(1, 1, 1) );
 
     tri.generateNormals = true;
 
@@ -267,7 +248,7 @@ idRenderModelStatic.prototype.MakeDefaultModel = function ( ): void {
 ////================
 ////*/
 ////void idRenderModelStatic::PartialInitFromFile( const char *fileName ) {
-////	fastLoad = true;
+////	this.fastLoad = true;
 ////	InitFromFile( fileName );
 ////}
 
@@ -349,17 +330,17 @@ idRenderModelStatic.prototype.InitEmpty = function ( fileName: string ): void {
     this.bounds.Zero ( );
 };
 
-/////*
-////================
-////idRenderModelStatic::AddSurface
-////================
-////*/
-////void idRenderModelStatic::AddSurface( modelSurface_t surface ) {
-////	surfaces.Append( surface );
-////	if ( surface.geometry ) {
-////		bounds += surface.geometry.bounds;
-////	}
-////}
+/*
+================
+idRenderModelStatic::AddSurface
+================
+*/
+idRenderModelStatic.prototype.AddSurface = function ( surface: modelSurface_t ): void {
+	this.surfaces.Append( surface );
+	if ( surface.geometry ) {
+		this.bounds.AddBounds( surface.geometry.bounds );
+	}
+};
 
 /*
 ================
@@ -385,7 +366,7 @@ idRenderModelStatic.prototype.Name = function ( ): string {
 ////================
 ////*/
 ////int idRenderModelStatic::NumSurfaces() const {
-////	return surfaces.Num();
+////	return this.surfaces.Num();
 ////}
 
 /////*
@@ -394,17 +375,17 @@ idRenderModelStatic.prototype.Name = function ( ): string {
 ////================
 ////*/
 ////int idRenderModelStatic::NumBaseSurfaces() const {
-////	return surfaces.Num() - overlaysAdded;
+////	return this.surfaces.Num() - overlaysAdded;
 ////}
 
-/////*
-////================
-////idRenderModelStatic::Surface
-////================
-////*/
-////const modelSurface_t *idRenderModelStatic::Surface( int surfaceNum ) const {
-////	return &surfaces[surfaceNum];
-////}
+/*
+================
+idRenderModelStatic::Surface
+================
+*/
+idRenderModelStatic.prototype.Surface = function ( surfaceNum: number ): modelSurface_t {
+	return this.surfaces[surfaceNum];
+};
 
 /////*
 ////================
@@ -470,7 +451,7 @@ idRenderModelStatic.prototype.Name = function ( ): string {
 ////================
 ////*/
 ////idBounds idRenderModelStatic::Bounds( const struct renderEntity_s *mdef ) const {
-////	return bounds;
+////	return this.bounds;
 ////}
 
 /////*
@@ -479,7 +460,7 @@ idRenderModelStatic.prototype.Name = function ( ): string {
 ////================
 ////*/
 ////float idRenderModelStatic::DepthHack() const {
-////	return 0.0f;
+////	return 0.0;
 ////}
 
 /////*
@@ -551,163 +532,162 @@ idRenderModelStatic.prototype.Name = function ( ): string {
 ////}
 
 
-//////=====================================================================
+//=====================================================================
 
 
-/////*
-////================
-////idRenderModelStatic::FinishSurfaces
+/*
+================
+idRenderModelStatic::FinishSurfaces
 
-////The mergeShadows option allows surfaces with different textures to share
-////silhouette edges for shadow calculation, instead of leaving shared edges
-////hanging.
+The mergeShadows option allows surfaces with different textures to share
+silhouette edges for shadow calculation, instead of leaving shared edges
+hanging.
 
-////If any of the original shaders have the noSelfShadow flag set, the surfaces
-////can't be merged, because they will need to be drawn in different order.
+If any of the original shaders have the noSelfShadow flag set, the surfaces
+can't be merged, because they will need to be drawn in different order.
 
-////If there is only one surface, a separate merged surface won't be generated.
+If there is only one surface, a separate merged surface won't be generated.
 
-////A model with multiple surfaces can't later have a skinned shader change the
-////state of the noSelfShadow flag.
+A model with multiple surfaces can't later have a skinned shader change the
+state of the noSelfShadow flag.
 
-////-----------------
+-----------------
 
-////Creates mirrored copies of two sided surfaces with normal maps, which would
-////otherwise light funny.
+Creates mirrored copies of two sided surfaces with normal maps, which would
+otherwise light funny.
 
-////Extends the bounds of deformed surfaces so they don't cull incorrectly at screen edges.
+Extends the bounds of deformed surfaces so they don't cull incorrectly at screen edges.
 
-////================
-////*/
-////void idRenderModelStatic::FinishSurfaces() {
-////	int			i;
-////	int			totalVerts, totalIndexes;
+================
+*/
+idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
+	var /*int			*/i: number;
+	var /*int			*/totalVerts: number, totalIndexes: number;
 
-////	purged = false;
+	this.purged = false;
 
-////	// make sure we don't have a huge bounds even if we don't finish everything
-////	bounds.Zero();
+	// make sure we don't have a huge bounds even if we don't finish everything
+	this.bounds.Zero ( );
 
-////	if ( surfaces.Num() == 0 ) {
-////		return;
-////	}
+	if ( this.surfaces.Num ( ) == 0 ) {
+		return;
+	}
 
-////	// renderBump doesn't care about most of this
-////	if ( fastLoad ) {
-////		bounds.Zero();
-////		for ( i = 0 ; i < surfaces.Num() ; i++ ) {
-////			const modelSurface_t	*surf = &surfaces[i];
+	// renderBump doesn't care about most of this
+	if ( this.fastLoad ) {
+		this.bounds.Zero ( );
+		for ( i = 0; i < this.surfaces.Num ( ); i++ ) {
+			var surf = this.surfaces[i];
 
-////			R_BoundTriSurf( surf.geometry );
-////			bounds.AddBounds( surf.geometry.bounds );
-////		}
+			R_BoundTriSurf( surf.geometry );
+			this.bounds.AddBounds( surf.geometry.bounds );
+		}
 
-////		return;
-////	}
+		return;
+	}
 
-////	// cleanup all the final surfaces, but don't create sil edges
-////	totalVerts = 0;
-////	totalIndexes = 0;
+	// cleanup all the final surfaces, but don't create sil edges
+	totalVerts = 0;
+	totalIndexes = 0;
 
-////	// decide if we are going to merge all the surfaces into one shadower
-////	int	numOriginalSurfaces = surfaces.Num();
+	// decide if we are going to merge all the surfaces into one shadower
+	var /*int	*/numOriginalSurfaces = this.surfaces.Num ( );
 
-////	// make sure there aren't any NULL shaders or geometry
-////	for ( i = 0 ; i < numOriginalSurfaces ; i++ ) {
-////		const modelSurface_t	*surf = &surfaces[i];
+	// make sure there aren't any NULL shaders or geometry
+	for ( i = 0; i < numOriginalSurfaces; i++ ) {
+		var surf = this.surfaces[i];
 
-////		if ( surf.geometry == NULL || surf.shader == NULL ) {
-////			MakeDefaultModel();
-////			common.Error( "Model %s, surface %i had NULL geometry", name.c_str(), i );
-////		}
-////		if ( surf.shader == NULL ) {
-////			MakeDefaultModel();
-////			common.Error( "Model %s, surface %i had NULL shader", name.c_str(), i );
-////		}
-////	}
+		if ( surf.geometry == null || surf.shader == null ) {
+			this.MakeDefaultModel ( );
+			common.Error( "Model %s, surface %i had NULL geometry", this.name.c_str ( ), i );
+		}
+		if ( surf.shader == null ) {
+			this.MakeDefaultModel ( );
+			common.Error( "Model %s, surface %i had NULL shader", this.name.c_str ( ), i );
+		}
+	}
 
-////	// duplicate and reverse triangles for two sided bump mapped surfaces
-////	// note that this won't catch surfaces that have their shaders dynamically
-////	// changed, and won't work with animated models.
-////	// It is better to create completely separate surfaces, rather than
-////	// add vertexes and indexes to the existing surface, because the
-////	// tangent generation wouldn't like the acute shared edges
-////	for ( i = 0 ; i < numOriginalSurfaces ; i++ ) {
-////		const modelSurface_t	*surf = &surfaces[i];
+	// duplicate and reverse triangles for two sided bump mapped surfaces
+	// note that this won't catch surfaces that have their shaders dynamically
+	// changed, and won't work with animated models.
+	// It is better to create completely separate surfaces, rather than
+	// add vertexes and indexes to the existing surface, because the
+	// tangent generation wouldn't like the acute shared edges
+	for ( i = 0; i < numOriginalSurfaces; i++ ) {
+		var surf = this.surfaces[i];
 
-////		if ( surf.shader.ShouldCreateBackSides() ) {
-////			srfTriangles_t *newTri;
+		if ( surf.shader.ShouldCreateBackSides ( ) ) {
+			var newTri: srfTriangles_t;
 
-////			newTri = R_CopyStaticTriSurf( surf.geometry );
-////			R_ReverseTriangles( newTri );
+			newTri = R_CopyStaticTriSurf( surf.geometry );
+			R_ReverseTriangles( newTri );
 
-////			modelSurface_t	newSurf;
+			var newSurf: modelSurface_t;
 
-////			newSurf.shader = surf.shader;
-////			newSurf.geometry = newTri;
+			newSurf.shader = surf.shader;
+			newSurf.geometry = newTri;
 
-////			AddSurface( newSurf );
-////		}
-////	}
+			this.AddSurface( newSurf );
+		}
+	}
 
-////	// clean the surfaces
-////	for ( i = 0 ; i < surfaces.Num() ; i++ ) {
-////		const modelSurface_t	*surf = &surfaces[i];
+	// clean the surfaces
+	for ( i = 0; i < this.surfaces.Num ( ); i++ ) {
+		var surf = this.surfaces[i];
 
-////		R_CleanupTriangles( surf.geometry, surf.geometry.generateNormals, true, surf.shader.UseUnsmoothedTangents() );
-////		if ( surf.shader.SurfaceCastsShadow() ) {
-////			totalVerts += surf.geometry.numVerts;
-////			totalIndexes += surf.geometry.numIndexes;
-////		}
-////	}
+		R_CleanupTriangles( surf.geometry, surf.geometry.generateNormals, true, surf.shader.UseUnsmoothedTangents ( ) );
+		if ( surf.shader.SurfaceCastsShadow ( ) ) {
+			totalVerts += surf.geometry.numVerts;
+			totalIndexes += surf.geometry.numIndexes;
+		}
+	}
 
-////	// add up the total surface area for development information
-////	for ( i = 0 ; i < surfaces.Num() ; i++ ) {
-////		const modelSurface_t	*surf = &surfaces[i];
-////		srfTriangles_t	*tri = surf.geometry;
+	// add up the total surface area for development information
+	for ( i = 0; i < this.surfaces.Num ( ); i++ ) {
+		var surf = this.surfaces[i];
+		var tri = surf.geometry;
 
-////		for ( int j = 0 ; j < tri.numIndexes ; j += 3 ) {
-////			float	area = idWinding::TriangleArea( tri.verts[tri.indexes[j]].xyz,
-////				 tri.verts[tri.indexes[j+1]].xyz,  tri.verts[tri.indexes[j+2]].xyz );
-////			const_cast<idMaterial *>(surf.shader).AddToSurfaceArea( area );
-////		}
-////	}
+		for ( var j = 0; j < tri.numIndexes; j += 3 ) {
+			var area = idWinding.TriangleArea( tri.verts[tri.indexes[j]].xyz,
+				tri.verts[tri.indexes[j + 1]].xyz, tri.verts[tri.indexes[j + 2]].xyz );
+			todoThrow( "const_cast<idMaterial *>(surf.shader).AddToSurfaceArea( area );" );
+		}
+	}
 
-////	// calculate the bounds
-////	if ( surfaces.Num() == 0 ) {
-////		bounds.Zero();
-////	} else {
-////		bounds.Clear();
-////		for ( i = 0 ; i < surfaces.Num() ; i++ ) {
-////			modelSurface_t	*surf = &surfaces[i];
+	// calculate the bounds
+	if ( this.surfaces.Num ( ) == 0 ) {
+		this.bounds.Zero ( );
+	} else {
+		this.bounds.Clear ( );
+		for ( i = 0; i < this.surfaces.Num ( ); i++ ) {
+			var surf = this.surfaces[i];
 
-////			// if the surface has a deformation, increase the bounds
-////			// the amount here is somewhat arbitrary, designed to handle
-////			// autosprites and flares, but could be done better with exact
-////			// deformation information.
-////			// Note that this doesn't handle deformations that are skinned in
-////			// at run time...
-////			if ( surf.shader.Deform() != DFRM_NONE ) {
-////				srfTriangles_t	*tri = surf.geometry;
-////				idVec3	mid = ( tri.bounds[1] + tri.bounds[0] ) * 0.5f;
-////				float	radius = ( tri.bounds[0] - mid ).Length();
-////				radius += 20.0f;
+			// if the surface has a deformation, increase the bounds
+			// the amount here is somewhat arbitrary, designed to handle
+			// autosprites and flares, but could be done better with exact
+			// deformation information.
+			// Note that this doesn't handle deformations that are skinned in
+			// at run time...
+			if ( surf.shader.Deform ( ) != deform_t.DFRM_NONE ) {
+				var tri = surf.geometry;
+				var mid = new idVec3( tri.bounds[1] + tri.bounds[0] ).multiplyByFloat( 0.5 );
+				var /*float	*/radius = ( tri.bounds[0].subtract( mid ) ).Length ( );
+				radius += 20.0;
 
-////				tri.bounds[0][0] = mid[0] - radius;
-////				tri.bounds[0][1] = mid[1] - radius;
-////				tri.bounds[0][2] = mid[2] - radius;
+				tri.bounds[0][0] = mid[0] - radius;
+				tri.bounds[0][1] = mid[1] - radius;
+				tri.bounds[0][2] = mid[2] - radius;
 
-////				tri.bounds[1][0] = mid[0] + radius;
-////				tri.bounds[1][1] = mid[1] + radius;
-////				tri.bounds[1][2] = mid[2] + radius;
-////			}
+				tri.bounds[1][0] = mid[0] + radius;
+				tri.bounds[1][1] = mid[1] + radius;
+				tri.bounds[1][2] = mid[2] + radius;
+			}
 
-////			// add to the model bounds
-////			bounds.AddBounds( surf.geometry.bounds );
-
-////		}
-////	}
-////}
+			// add to the model bounds
+			this.bounds.AddBounds( surf.geometry.bounds );
+		}
+	}
+};
 
 /////*
 ////=================
@@ -833,7 +813,7 @@ idRenderModelStatic.prototype.Name = function ( ): string {
 
 ////		vRemap = (int *)R_StaticAlloc( mesh.numVertexes * sizeof( vRemap[0] ) );
 
-////		if ( fastLoad ) {
+////		if ( this.fastLoad ) {
 ////			// renderbump doesn't care about vertex count
 ////			for ( j = 0; j < mesh.numVertexes; j++ ) {
 ////				vRemap[j] = j;
@@ -854,7 +834,7 @@ idRenderModelStatic.prototype.Name = function ( ): string {
 
 ////		tvRemap = (int *)R_StaticAlloc( mesh.numTVertexes * sizeof( tvRemap[0] ) );
 
-////		if ( fastLoad ) {
+////		if ( this.fastLoad ) {
 ////			// renderbump doesn't care about vertex count
 ////			for ( j = 0; j < mesh.numTVertexes; j++ ) {
 ////				tvRemap[j] = j;
@@ -975,9 +955,9 @@ idRenderModelStatic.prototype.Name = function ( ): string {
 
 ////		// an ASE allows the texture coordinates to be scaled, translated, and rotated
 ////		if ( ase.materials.Num() == 0 ) {
-////			uOffset = vOffset = 0.0f;
+////			uOffset = vOffset = 0.0;
 ////			uTiling = vTiling = 1.0f;
-////			textureSin = 0.0f;
+////			textureSin = 0.0;
 ////			textureCos = 1.0f;
 ////		} else {
 ////			material = ase.materials[object.materialRef];
@@ -1164,7 +1144,7 @@ idRenderModelStatic.prototype.Name = function ( ): string {
 
 ////	vRemap = (int *)R_StaticAlloc( layer.point.count * sizeof( vRemap[0] ) );
 
-////	if ( fastLoad ) {
+////	if ( this.fastLoad ) {
 ////		// renderbump doesn't care about vertex count
 ////		for ( j = 0; j < layer.point.count; j++ ) {
 ////			vRemap[j] = j;
@@ -1185,7 +1165,7 @@ idRenderModelStatic.prototype.Name = function ( ): string {
 
 ////	tvRemap = (int *)R_StaticAlloc( numTVertexes * sizeof( tvRemap[0] ) );
 
-////	if ( fastLoad ) {
+////	if ( this.fastLoad ) {
 ////		// renderbump doesn't care about vertex count
 ////		for ( j = 0; j < numTVertexes; j++ ) {
 ////			tvRemap[j] = j;
@@ -1234,7 +1214,7 @@ idRenderModelStatic.prototype.Name = function ( ): string {
 
 ////		// find all the unique combinations
 ////		float	normalEpsilon;
-////		if ( fastLoad ) {
+////		if ( this.fastLoad ) {
 ////			normalEpsilon = 1.0f;	// don't merge unless completely exact
 ////		} else {
 ////			normalEpsilon = 1.0f - r_slopNormal.GetFloat();
@@ -1678,7 +1658,7 @@ idRenderModelStatic.prototype.Name = function ( ): string {
 
 ////		vRemap = (int *)R_StaticAlloc( mesh.numVertexes * sizeof( vRemap[0] ) );
 
-////		if ( fastLoad ) {
+////		if ( this.fastLoad ) {
 ////			// renderbump doesn't care about vertex count
 ////			for ( j = 0; j < mesh.numVertexes; j++ ) {
 ////				vRemap[j] = j;
@@ -1699,7 +1679,7 @@ idRenderModelStatic.prototype.Name = function ( ): string {
 
 ////		tvRemap = (int *)R_StaticAlloc( mesh.numTVertexes * sizeof( tvRemap[0] ) );
 
-////		if ( fastLoad ) {
+////		if ( this.fastLoad ) {
 ////			// renderbump doesn't care about vertex count
 ////			for ( j = 0; j < mesh.numTVertexes; j++ ) {
 ////				tvRemap[j] = j;
@@ -1823,9 +1803,9 @@ idRenderModelStatic.prototype.Name = function ( ): string {
 ////		// an MA allows the texture coordinates to be scaled, translated, and rotated
 ////		//BSM: Todo: Does Maya support this and if so how
 ////		//if ( ase.materials.Num() == 0 ) {
-////			uOffset = vOffset = 0.0f;
+////			uOffset = vOffset = 0.0;
 ////			uTiling = vTiling = 1.0f;
-////			textureSin = 0.0f;
+////			textureSin = 0.0;
 ////			textureCos = 1.0f;
 ////		//} else {
 ////		//	material = ase.materials[object.materialRef];
@@ -2047,7 +2027,7 @@ idRenderModelStatic.prototype.Name = function ( ): string {
 ////	tri.numVerts = width * height;
 ////	tri.numIndexes = (width-1) * (height-1) * 6;
 
-////	fastLoad = true;		// don't do all the sil processing
+////	this.fastLoad = true;		// don't do all the sil processing
 
 ////	R_AllocStaticTriSurfIndexes( tri, tri.numIndexes );
 ////	R_AllocStaticTriSurfVerts( tri, tri.numVerts );
@@ -2212,7 +2192,7 @@ idRenderModelStatic.prototype.PurgeModel = function ( ) {
 ////	f.WriteInt( iData );
 
 ////	for ( i = 0 ; i < surfaces.Num() ; i++ ) {
-////		const modelSurface_t	*surf = &surfaces[i];
+////		var surf = &surfaces[i];
 		
 ////		f.WriteHashString( surf.shader.GetName() );
 		
@@ -2269,7 +2249,7 @@ idRenderModelStatic.prototype.SetLevelLoadReferenced = function ( referenced: bo
 ////*/
 ////void idRenderModelStatic::TouchData( void ) {
 ////	for ( int i = 0 ; i < surfaces.Num() ; i++ ) {
-////		const modelSurface_t	*surf = &surfaces[i];
+////		var surf = &surfaces[i];
 
 ////		// re-find the material to make sure it gets added to the
 ////		// level keep list

@@ -188,22 +188,22 @@ class idDeclFX extends idDecl {
 ////	FXAction.name = "<none>";
 ////	FXAction.fire = "<none>";
 ////
-////	FXAction.delay = 0.0f;
-////	FXAction.duration = 0.0f;
-////	FXAction.restart = 0.0f;
-////	FXAction.size = 0.0f;
-////	FXAction.fadeInTime = 0.0f;
-////	FXAction.fadeOutTime = 0.0f;
-////	FXAction.shakeTime = 0.0f;
-////	FXAction.shakeAmplitude = 0.0f;
-////	FXAction.shakeDistance = 0.0f;
+////	FXAction.delay = 0.0;
+////	FXAction.duration = 0.0;
+////	FXAction.restart = 0.0;
+////	FXAction.size = 0.0;
+////	FXAction.fadeInTime = 0.0;
+////	FXAction.fadeOutTime = 0.0;
+////	FXAction.shakeTime = 0.0;
+////	FXAction.shakeAmplitude = 0.0;
+////	FXAction.shakeDistance = 0.0;
 ////	FXAction.shakeFalloff = false;
-////	FXAction.shakeImpulse = 0.0f;
+////	FXAction.shakeImpulse = 0.0;
 ////	FXAction.shakeIgnoreMaster = false;
-////	FXAction.lightRadius = 0.0f;
-////	FXAction.rotate = 0.0f;
-////	FXAction.random1 = 0.0f;
-////	FXAction.random2 = 0.0f;
+////	FXAction.lightRadius = 0.0;
+////	FXAction.rotate = 0.0;
+////	FXAction.random1 = 0.0;
+////	FXAction.random2 = 0.0;
 ////
 ////	FXAction.lightColor = vec3_origin;
 ////	FXAction.offset = vec3_origin;
@@ -260,7 +260,7 @@ class idDeclFX extends idDecl {
 ////			FXAction.random1 = src.ParseFloat();
 ////			src.ExpectTokenString( "," );
 ////			FXAction.random2 = src.ParseFloat();
-////			FXAction.delay = 0.0f;		// check random
+////			FXAction.delay = 0.0;		// check random
 ////			continue;
 ////		}
 ////

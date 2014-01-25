@@ -708,7 +708,7 @@ idCVarSystemLocal::GetCVarInteger
 //	if ( internal ) {
 //		return internal.GetFloat();
 //	}
-//	return 0.0f;
+//	return 0.0;
 //}
 
 ///*
@@ -928,10 +928,10 @@ Toggle_f( /*const */ args:idCmdArgs  ):void {
 	//	} else {
 	//		set = 1.0f;
 	//	}
-	//	if ( current == 0.0f ) {
+	//	if ( current == 0.0 ) {
 	//		current = set;
 	//	} else {
-	//		current = 0.0f;
+	//		current = 0.0;
 	//	}
 	//	common.Printf( "set %s = %f\n", args.Argv(1), current );
 	//	cvar.Set( idStr( current ), false, false );

@@ -268,125 +268,143 @@ class idBlockAlloc<T> {
 
 };
 
-/////*
-////==============================================================================
+/*
+==============================================================================
 
-////	Dynamic allocator, simple wrapper for normal allocations which can
-////	be interchanged with idDynamicBlockAlloc.
+	Dynamic allocator, simple wrapper for normal allocations which can
+	be interchanged with idDynamicBlockAlloc.
 
-////	No constructor is called for the 'type'.
-////	Allocated blocks are always 16 byte aligned.
+	No constructor is called for the 'type'.
+	Allocated blocks are always 16 byte aligned.
 
-////==============================================================================
-////*/
+==============================================================================
+*/
 
-////template<class type, int baseBlockSize, int minBlockSize>
-////class idDynamicAlloc {
-////public:
-////									idDynamicAlloc( void );
-////									~idDynamicAlloc( void );
+function idDynamicAlloc_template<T>(type: any, baseBlockSize: number, minBlockSize: number): idDynamicAlloc<T> {
+	var dynamicAlloc = new idDynamicAlloc<T>();
+	dynamicAlloc.type = type;
+	dynamicAlloc.baseBlockSize = baseBlockSize;
+	dynamicAlloc.minBlockSize = minBlockSize;
+	return dynamicAlloc;
+}
 
-////	void							Init( void );
-////	void							Shutdown( void );
-////	void							SetFixedBlocks( int numBlocks ) {}
-////	void							SetLockMemory( bool lock ) {}
-////	void							FreeEmptyBaseBlocks( void ) {}
 
-////	type *							Alloc( const int num );
-////	type *							Resize( type *ptr, const int num );
-////	void							Free( type *ptr );
-////	const char *					CheckMemory( const type *ptr ) const;
+//template<class type, int baseBlockSize, int minBlockSize>
+class idDynamicAlloc<T> {
+//public:
+//									idDynamicAlloc( void );
+//									~idDynamicAlloc( void );
 
-////	int								GetNumBaseBlocks( void ) const { return 0; }
-////	int								GetBaseBlockMemory( void ) const { return 0; }
-////	int								GetNumUsedBlocks( void ) const { return numUsedBlocks; }
-////	int								GetUsedBlockMemory( void ) const { return usedBlockMemory; }
-////	int								GetNumFreeBlocks( void ) const { return 0; }
-////	int								GetFreeBlockMemory( void ) const { return 0; }
-////	int								GetNumEmptyBaseBlocks( void ) const { return 0; }
+//	void							Init( void );
+//	void							Shutdown( void );
+	SetFixedBlocks( /*int*/ numBlocks :number):void {}
+	SetLockMemory(lock:boolean): void {}
+	FreeEmptyBaseBlocks( ):void {}
 
-////private:
-////	int								numUsedBlocks;			// number of used blocks
-////	int								usedBlockMemory;		// total memory in used blocks
+//	type *							Alloc( const int num );
+//	type *							Resize( type *ptr, const int num );
+//	void							Free( type *ptr );
+//	const char *					CheckMemory( const type *ptr ) const;
 
-////	int								numAllocs;
-////	int								numResizes;
-////	int								numFrees;
+	GetNumBaseBlocks(): number { return 0; }
+	GetBaseBlockMemory( ) :number { return 0; }
+	GetNumUsedBlocks( ) :number { return this.numUsedBlocks; }
+	GetUsedBlockMemory(): number { return this.usedBlockMemory; }
+	GetNumFreeBlocks( ) :number { return 0; }
+	GetFreeBlockMemory( ) :number { return 0; }
+	GetNumEmptyBaseBlocks( ):number { return 0; }
 
-////	void							Clear( void );
-////};
+	//private:
+	/*	int	*/numUsedBlocks: number;			// number of used blocks
+	/*	int	*/usedBlockMemory: number;		// total memory in used blocks (won't match up to original)
+	/*
+	/*	int	*/numAllocs:number;
+	/*	int	*/numResizes: number;
+	/*	int	*/numFrees: number;
 
-////template<class type, int baseBlockSize, int minBlockSize>
-////idDynamicAlloc<type, baseBlockSize, minBlockSize>::idDynamicAlloc( void ) {
-////	Clear();
-////}
+	// template:
+	type: T;
+	baseBlockSize: number;
+	minBlockSize: number;
 
-////template<class type, int baseBlockSize, int minBlockSize>
-////idDynamicAlloc<type, baseBlockSize, minBlockSize>::~idDynamicAlloc( void ) {
-////	Shutdown();
-////}
+//	void							Clear( void );
 
-////template<class type, int baseBlockSize, int minBlockSize>
-////void idDynamicAlloc<type, baseBlockSize, minBlockSize>::Init( void ) {
-////}
+//template<class type, int baseBlockSize, int minBlockSize>
+	constructor ( ) {
+		this.Clear ( );
+	}
 
-////template<class type, int baseBlockSize, int minBlockSize>
-////void idDynamicAlloc<type, baseBlockSize, minBlockSize>::Shutdown( void ) {
-////	Clear();
-////}
+//template<class type, int baseBlockSize, int minBlockSize>
+//idDynamicAlloc<type, baseBlockSize, minBlockSize>::~idDynamicAlloc( void ) {
+//	Shutdown();
+//}
 
-////template<class type, int baseBlockSize, int minBlockSize>
-////type *idDynamicAlloc<type, baseBlockSize, minBlockSize>::Alloc( const int num ) {
-////	numAllocs++;
-////	if ( num <= 0 ) {
-////		return NULL;
-////	}
-////	numUsedBlocks++;
-////	usedBlockMemory += num * sizeof( type );
-////	return Mem_Alloc16( num * sizeof( type ) );
-////}
+//template<class type, int baseBlockSize, int minBlockSize>
+	Init ( ): void {
+	}
 
-////template<class type, int baseBlockSize, int minBlockSize>
-////type *idDynamicAlloc<type, baseBlockSize, minBlockSize>::Resize( type *ptr, const int num ) {
+//template<class type, int baseBlockSize, int minBlockSize>
+//void idDynamicAlloc<type, baseBlockSize, minBlockSize>::Shutdown( void ) {
+//	Clear();
+//}
 
-////	numResizes++;
+//template<class type, int baseBlockSize, int minBlockSize>
+	Alloc ( /*const int */num: number ) {
+		this.numAllocs++;
+		if ( num <= 0 ) {
+			return null;
+		}
+		this.numUsedBlocks++;
+		this.usedBlockMemory += num;//* sizeof( type );
+		if (this.type["name"] == "Int32Array" ) {
+			return <any>( new Int32Array( num ) );
+		}
 
-////	if ( ptr == NULL ) {
-////		return Alloc( num );
-////	}
+		return newStructArray<T>( this.type, num ); //Mem_Alloc16( num * sizeof( type ) );
+	}	
 
-////	if ( num <= 0 ) {
-////		Free( ptr );
-////		return NULL;
-////	}
+//template<class type, int baseBlockSize, int minBlockSize>
+//type *idDynamicAlloc<type, baseBlockSize, minBlockSize>::Resize( type *ptr, const int num ) {
 
-////	assert( 0 );
-////	return ptr;
-////}
+//	numResizes++;
 
-////template<class type, int baseBlockSize, int minBlockSize>
-////void idDynamicAlloc<type, baseBlockSize, minBlockSize>::Free( type *ptr ) {
-////	numFrees++;
-////	if ( ptr == NULL ) {
-////		return;
-////	}
-////	Mem_Free16( ptr );
-////}
+//	if ( ptr == NULL ) {
+//		return Alloc( num );
+//	}
 
-////template<class type, int baseBlockSize, int minBlockSize>
-////const char *idDynamicAlloc<type, baseBlockSize, minBlockSize>::CheckMemory( const type *ptr ) const {
-////	return NULL;
-////}
+//	if ( num <= 0 ) {
+//		Free( ptr );
+//		return NULL;
+//	}
 
-////template<class type, int baseBlockSize, int minBlockSize>
-////void idDynamicAlloc<type, baseBlockSize, minBlockSize>::Clear( void ) {
-////	numUsedBlocks = 0;
-////	usedBlockMemory = 0;
-////	numAllocs = 0;
-////	numResizes = 0;
-////	numFrees = 0;
-////}
+//	assert( 0 );
+//	return ptr;
+//}
 
+//template<class type, int baseBlockSize, int minBlockSize>
+	Free ( /*type **/ptr: T ) {
+		this.numFrees++;
+		if ( ptr == null ) {
+			return;
+		}
+		//Mem_Free16( ptr );
+	}
+
+//template<class type, int baseBlockSize, int minBlockSize>
+//const char *idDynamicAlloc<type, baseBlockSize, minBlockSize>::CheckMemory( const type *ptr ) const {
+//	return NULL;
+//}
+
+//template<class type, int baseBlockSize, int minBlockSize>
+	Clear ( ): void {
+		this.numUsedBlocks = 0;
+		this.usedBlockMemory = 0;
+		this.numAllocs = 0;
+		this.numResizes = 0;
+		this.numFrees = 0;
+	}
+
+};
 
 /////*
 ////==============================================================================
@@ -550,7 +568,7 @@ class idBlockAlloc<T> {
 ////	allowAllocs = false;
 ////}
 
-////template<class type, int baseBlockSize, int minBlockSize>
+//template<class type, int baseBlockSize, int minBlockSize>
 ////void idDynamicBlockAlloc<type, baseBlockSize, minBlockSize>::SetLockMemory( bool lock ) {
 ////	lockMemory = lock;
 ////}

@@ -2778,22 +2778,22 @@ CheckForConstantRegisters():void {
 //						// from light centers, as with noshadow and noselfshadow options
 //	bool				ReceivesLightingOnBackSides( void ) const { return ( materialFlags & (MF_NOSELFSHADOW|MF_NOSHADOWS) ) != 0; }
 
-//						// Standard two-sided triangle rendering won't work with bump map lighting, because
-//						// the normal and tangent vectors won't be correct for the back sides.  When two
-//						// sided lighting is desired. typically for alpha tested surfaces, this is
-//						// addressed by having CleanupModelSurfaces() create duplicates of all the triangles
-//						// with apropriate order reversal.
-//	bool				ShouldCreateBackSides( void ) const { return shouldCreateBackSides; }
+	// Standard two-sided triangle rendering won't work with bump map lighting, because
+	// the normal and tangent vectors won't be correct for the back sides.  When two
+	// sided lighting is desired. typically for alpha tested surfaces, this is
+	// addressed by having CleanupModelSurfaces() create duplicates of all the triangles
+	// with apropriate order reversal.
+	ShouldCreateBackSides(): boolean { return this.shouldCreateBackSides; }
 
-//						// characters and models that are created by a complete renderbump can use a faster
-//						// method of tangent and normal vector generation than surfaces which have a flat
-//						// renderbump wrapped over them.
-//	bool				UseUnsmoothedTangents( void ) const { return unsmoothedTangents; }
+	// characters and models that are created by a complete renderbump can use a faster
+	// method of tangent and normal vector generation than surfaces which have a flat
+	// renderbump wrapped over them.
+	UseUnsmoothedTangents( ):boolean { return this.unsmoothedTangents; }
 
-//						// by default, monsters can have blood overlays placed on them, but this can
-//						// be overrided on a per-material basis with the "noOverlays" material command.
-//						// This will always return false for translucent surfaces
-//	bool				AllowOverlays( void ) const { return allowOverlays; }
+	// by default, monsters can have blood overlays placed on them, but this can
+	// be overrided on a per-material basis with the "noOverlays" material command.
+	// This will always return false for translucent surfaces
+	AllowOverlays(): boolean { return this.allowOverlays; }
 
 	// MC_OPAQUE, MC_PERFORATED, or MC_TRANSLUCENT, for interaction list linking and
 	// dmap flood filling
@@ -2812,7 +2812,7 @@ CheckForConstantRegisters():void {
 //						// necessary to prevent mutliple gui surfaces, mirrors, autosprites, and some other
 //						// special effects from being combined into a single surface
 //						// guis, merging sprites or other effects, mirrors and remote views are always discrete
-//	bool				IsDiscrete( void ) const { return ( entityGui || gui || deform != DFRM_NONE || this.sort == materialSort_t.SS_SUBVIEW ||
+//	bool				IsDiscrete( void ) const { return ( entityGui || gui || deform != deform_t.DFRM_NONE || this.sort == materialSort_t.SS_SUBVIEW ||
 //												( surfaceFlags & SURF_DISCRETE ) != 0 ); }
 
 //						// Normally, dmap chops each surface by every BSP boundary, then reoptimizes.

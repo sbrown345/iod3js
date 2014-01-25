@@ -108,6 +108,7 @@
     <TypeScriptCompile Include="libs\idLib\Hashing\CRC32.cpp.ts" />
     <TypeScriptCompile Include="libs\idLib\Hashing\MD4.cpp.ts" />
     <TypeScriptCompile Include="libs\idLib\Hashing\MD5.cpp.ts" />
+    <TypeScriptCompile Include="libs\idLib\Geometry\Winding.h.ts" />
     <Content Include="libs\idLib\Heap.cpp.ts" />
     <Content Include="libs\idLib\Heap.h.ts" />
     <Content Include="libs\idLib\Lib.cpp.ts" />
@@ -115,6 +116,7 @@
     <Content Include="libs\idLib\Math\Math.cpp.ts" />
     <Content Include="libs\idLib\Math\Math.h.ts" />
     <TypeScriptCompile Include="libs\idLib\Math\Plane.h.ts" />
+    <TypeScriptCompile Include="libs\idLib\Math\Simd_Generic.cpp.ts" />
     <Content Include="libs\idLib\Math\Vector.cpp.ts" />
     <Content Include="libs\idLib\Math\Vector.h.ts" />
     <TypeScriptCompile Include="libs\idLib\precompiled.h.ts" />

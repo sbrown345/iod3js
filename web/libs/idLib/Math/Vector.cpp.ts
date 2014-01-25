@@ -29,11 +29,11 @@
 ////#include "../precompiled.h"
 ////#pragma hdrstop
 
-////idVec2 vec2_origin( 0.0f, 0.0f );
-////idVec3 vec3_origin( 0.0f, 0.0f, 0.0f );
-////idVec4 vec4_origin( 0.0f, 0.0f, 0.0f, 0.0f );
-////idVec5 vec5_origin( 0.0f, 0.0f, 0.0f, 0.0f, 0.0f );
-////idVec6 vec6_origin( 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f );
+////idVec2 vec2_origin( 0.0, 0.0 );
+////idVec3 vec3_origin( 0.0, 0.0, 0.0 );
+////idVec4 vec4_origin( 0.0, 0.0, 0.0, 0.0 );
+////idVec5 vec5_origin( 0.0, 0.0, 0.0, 0.0, 0.0 );
+////idVec6 vec6_origin( 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 );
 ////idVec6 vec6_infinity( idMath::INFINITY, idMath::INFINITY, idMath::INFINITY, idMath::INFINITY, idMath::INFINITY, idMath::INFINITY );
 
 
@@ -60,7 +60,7 @@
 ////=============
 ////*/
 ////void idVec2::Lerp( const idVec2 &v1, const idVec2 &v2, const float l ) {
-////	if ( l <= 0.0f ) {
+////	if ( l <= 0.0 ) {
 ////		(*this) = v1;
 ////	} else if ( l >= 1.0f ) {
 ////		(*this) = v2;
@@ -84,11 +84,11 @@
 ////float idVec3::ToYaw( void ) const {
 ////	float yaw;
 	
-////	if ( ( y == 0.0f ) && ( x == 0.0f ) ) {
-////		yaw = 0.0f;
+////	if ( ( y == 0.0 ) && ( x == 0.0 ) ) {
+////		yaw = 0.0;
 ////	} else {
 ////		yaw = RAD2DEG( atan2( y, x ) );
-////		if ( yaw < 0.0f ) {
+////		if ( yaw < 0.0 ) {
 ////			yaw += 360.0f;
 ////		}
 ////	}
@@ -105,8 +105,8 @@
 ////	float	forward;
 ////	float	pitch;
 	
-////	if ( ( x == 0.0f ) && ( y == 0.0f ) ) {
-////		if ( z > 0.0f ) {
+////	if ( ( x == 0.0 ) && ( y == 0.0 ) ) {
+////		if ( z > 0.0 ) {
 ////			pitch = 90.0f;
 ////		} else {
 ////			pitch = 270.0f;
@@ -114,7 +114,7 @@
 ////	} else {
 ////		forward = ( float )idMath::Sqrt( x * x + y * y );
 ////		pitch = RAD2DEG( atan2( z, forward ) );
-////		if ( pitch < 0.0f ) {
+////		if ( pitch < 0.0 ) {
 ////			pitch += 360.0f;
 ////		}
 ////	}
@@ -132,27 +132,27 @@
 ////	float yaw;
 ////	float pitch;
 	
-////	if ( ( x == 0.0f ) && ( y == 0.0f ) ) {
-////		yaw = 0.0f;
-////		if ( z > 0.0f ) {
+////	if ( ( x == 0.0 ) && ( y == 0.0 ) ) {
+////		yaw = 0.0;
+////		if ( z > 0.0 ) {
 ////			pitch = 90.0f;
 ////		} else {
 ////			pitch = 270.0f;
 ////		}
 ////	} else {
 ////		yaw = RAD2DEG( atan2( y, x ) );
-////		if ( yaw < 0.0f ) {
+////		if ( yaw < 0.0 ) {
 ////			yaw += 360.0f;
 ////		}
 
 ////		forward = ( float )idMath::Sqrt( x * x + y * y );
 ////		pitch = RAD2DEG( atan2( z, forward ) );
-////		if ( pitch < 0.0f ) {
+////		if ( pitch < 0.0 ) {
 ////			pitch += 360.0f;
 ////		}
 ////	}
 
-////	return idAngles( -pitch, yaw, 0.0f );
+////	return idAngles( -pitch, yaw, 0.0 );
 ////}
 
 /////*
@@ -165,22 +165,22 @@
 ////	float yaw;
 ////	float pitch;
 	
-////	if ( ( x == 0.0f ) && ( y == 0.0f ) ) {
-////		yaw = 0.0f;
-////		if ( z > 0.0f ) {
+////	if ( ( x == 0.0 ) && ( y == 0.0 ) ) {
+////		yaw = 0.0;
+////		if ( z > 0.0 ) {
 ////			pitch = 90.0f;
 ////		} else {
 ////			pitch = 270.0f;
 ////		}
 ////	} else {
 ////		yaw = RAD2DEG( atan2( y, x ) );
-////		if ( yaw < 0.0f ) {
+////		if ( yaw < 0.0 ) {
 ////			yaw += 360.0f;
 ////		}
 
 ////		forward = ( float )idMath::Sqrt( x * x + y * y );
 ////		pitch = RAD2DEG( atan2( z, forward ) );
-////		if ( pitch < 0.0f ) {
+////		if ( pitch < 0.0 ) {
 ////			pitch += 360.0f;
 ////		}
 ////	}
@@ -200,13 +200,13 @@
 ////	d = x * x + y * y;
 ////	if ( !d ) {
 ////		mat[1][0] = 1.0f;
-////		mat[1][1] = 0.0f;
-////		mat[1][2] = 0.0f;
+////		mat[1][1] = 0.0;
+////		mat[1][2] = 0.0;
 ////	} else {
 ////		d = idMath::InvSqrt( d );
 ////		mat[1][0] = -y * d;
 ////		mat[1][1] = x * d;
-////		mat[1][2] = 0.0f;
+////		mat[1][2] = 0.0;
 ////	}
 ////	mat[2] = Cross( mat[1] );
 
@@ -230,7 +230,7 @@
 ////=============
 ////*/
 ////void idVec3::Lerp( const idVec3 &v1, const idVec3 &v2, const float l ) {
-////	if ( l <= 0.0f ) {
+////	if ( l <= 0.0 ) {
 ////		(*this) = v1;
 ////	} else if ( l >= 1.0f ) {
 ////		(*this) = v2;
@@ -252,7 +252,7 @@
 ////void idVec3::SLerp( const idVec3 &v1, const idVec3 &v2, const float t ) {
 ////	float omega, cosom, sinom, scale0, scale1;
 
-////	if ( t <= 0.0f ) {
+////	if ( t <= 0.0 ) {
 ////		(*this) = v1;
 ////		return;
 ////	} else if ( t >= 1.0f ) {
@@ -316,7 +316,7 @@
 ////=============
 ////*/
 ////void idVec4::Lerp( const idVec4 &v1, const idVec4 &v2, const float l ) {
-////	if ( l <= 0.0f ) {
+////	if ( l <= 0.0 ) {
 ////		(*this) = v1;
 ////	} else if ( l >= 1.0f ) {
 ////		(*this) = v2;
@@ -347,7 +347,7 @@
 ////=============
 ////*/
 ////void idVec5::Lerp( const idVec5 &v1, const idVec5 &v2, const float l ) {
-////	if ( l <= 0.0f ) {
+////	if ( l <= 0.0 ) {
 ////		(*this) = v1;
 ////	} else if ( l >= 1.0f ) {
 ////		(*this) = v2;

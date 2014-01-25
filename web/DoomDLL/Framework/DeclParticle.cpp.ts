@@ -208,7 +208,7 @@ class idDeclParticle extends idDecl {
 ////	idToken token;
 ////
 ////	parm->table = NULL;
-////	parm->from = parm->to = 0.0f;
+////	parm->from = parm->to = 0.0;
 ////
 ////	if ( !src.ReadToken( &token ) ) {
 ////		src.Error( "not enough parameters" );
@@ -456,7 +456,7 @@ class idDeclParticle extends idDecl {
 ////	src.SetFlags( DECL_LEXER_FLAGS );
 ////	src.SkipUntilString( "{" );
 ////
-////	depthHack = 0.0f;
+////	depthHack = 0.0;
 ////
 ////	while (1) {
 ////		if ( !src.ReadToken( &token ) ) {
@@ -809,40 +809,40 @@ class idParticleStage {
 ////idParticleStage::idParticleStage( void ) {
 ////	material = NULL;
 ////	totalParticles = 0;
-////	cycles = 0.0f;
+////	cycles = 0.0;
 ////	cycleMsec = 0;
-////	spawnBunching = 0.0f;
-////	particleLife = 0.0f;
-////	timeOffset = 0.0f;
-////	deadTime = 0.0f;
+////	spawnBunching = 0.0;
+////	particleLife = 0.0;
+////	timeOffset = 0.0;
+////	deadTime = 0.0;
 ////	distributionType = PDIST_RECT;
-////	distributionParms[0] = distributionParms[1] = distributionParms[2] = distributionParms[3] = 0.0f;
+////	distributionParms[0] = distributionParms[1] = distributionParms[2] = distributionParms[3] = 0.0;
 ////	directionType = PDIR_CONE;
-////	directionParms[0] = directionParms[1] = directionParms[2] = directionParms[3] = 0.0f;
+////	directionParms[0] = directionParms[1] = directionParms[2] = directionParms[3] = 0.0;
 ////	// idParticleParm		speed;
-////	gravity = 0.0f;
+////	gravity = 0.0;
 ////	worldGravity = false;
 ////	customPathType = PPATH_STANDARD;
-////	customPathParms[0] = customPathParms[1] = customPathParms[2] = customPathParms[3] = 0.0f;
-////	customPathParms[4] = customPathParms[5] = customPathParms[6] = customPathParms[7] = 0.0f;
+////	customPathParms[0] = customPathParms[1] = customPathParms[2] = customPathParms[3] = 0.0;
+////	customPathParms[4] = customPathParms[5] = customPathParms[6] = customPathParms[7] = 0.0;
 ////	offset.Zero();
 ////	animationFrames = 0;
-////	animationRate = 0.0f;
+////	animationRate = 0.0;
 ////	randomDistribution = true;
 ////	entityColor = false;
-////	initialAngle = 0.0f;
+////	initialAngle = 0.0;
 ////	// idParticleParm		rotationSpeed;
 ////	orientation = POR_VIEW;
-////	orientationParms[0] = orientationParms[1] = orientationParms[2] = orientationParms[3] = 0.0f;
+////	orientationParms[0] = orientationParms[1] = orientationParms[2] = orientationParms[3] = 0.0;
 ////	// idParticleParm		size
 ////	// idParticleParm		aspect
 ////	color.Zero();
 ////	fadeColor.Zero();
-////	fadeInFraction = 0.0f;
-////	fadeOutFraction = 0.0f;
-////	fadeIndexFraction = 0.0f;
+////	fadeInFraction = 0.0;
+////	fadeOutFraction = 0.0;
+////	fadeIndexFraction = 0.0;
 ////	hidden = false;
-////	boundsExpansion = 0.0f;
+////	boundsExpansion = 0.0;
 ////	bounds.Clear();
 ////}
 ////
@@ -858,43 +858,43 @@ class idParticleStage {
 ////	totalParticles = 100;
 ////	spawnBunching = 1.0f;
 ////	particleLife = 1.5f;
-////	timeOffset = 0.0f;
-////	deadTime = 0.0f;
+////	timeOffset = 0.0;
+////	deadTime = 0.0;
 ////	distributionType = PDIST_RECT;
 ////	distributionParms[0] = 8.0f;
 ////	distributionParms[1] = 8.0f;
 ////	distributionParms[2] = 8.0f;
-////	distributionParms[3] = 0.0f;
+////	distributionParms[3] = 0.0;
 ////	directionType = PDIR_CONE;
 ////	directionParms[0] = 90.0f;
-////	directionParms[1] = 0.0f;
-////	directionParms[2] = 0.0f;
-////	directionParms[3] = 0.0f;
+////	directionParms[1] = 0.0;
+////	directionParms[2] = 0.0;
+////	directionParms[3] = 0.0;
 ////	orientation = POR_VIEW;
-////	orientationParms[0] = 0.0f;
-////	orientationParms[1] = 0.0f;
-////	orientationParms[2] = 0.0f;
-////	orientationParms[3] = 0.0f;
+////	orientationParms[0] = 0.0;
+////	orientationParms[1] = 0.0;
+////	orientationParms[2] = 0.0;
+////	orientationParms[3] = 0.0;
 ////	speed.from = 150.0f;
 ////	speed.to = 150.0f;
 ////	speed.table = NULL;
 ////	gravity = 1.0f;
 ////	worldGravity = false;
 ////	customPathType = PPATH_STANDARD;
-////	customPathParms[0] = 0.0f;
-////	customPathParms[1] = 0.0f;
-////	customPathParms[2] = 0.0f;
-////	customPathParms[3] = 0.0f;
-////	customPathParms[4] = 0.0f;
-////	customPathParms[5] = 0.0f;
-////	customPathParms[6] = 0.0f;
-////	customPathParms[7] = 0.0f;
+////	customPathParms[0] = 0.0;
+////	customPathParms[1] = 0.0;
+////	customPathParms[2] = 0.0;
+////	customPathParms[3] = 0.0;
+////	customPathParms[4] = 0.0;
+////	customPathParms[5] = 0.0;
+////	customPathParms[6] = 0.0;
+////	customPathParms[7] = 0.0;
 ////	offset.Zero();
 ////	animationFrames = 0;
-////	animationRate = 0.0f;
-////	initialAngle = 0.0f;
-////	rotationSpeed.from = 0.0f;
-////	rotationSpeed.to = 0.0f;
+////	animationRate = 0.0;
+////	initialAngle = 0.0;
+////	rotationSpeed.from = 0.0;
+////	rotationSpeed.to = 0.0;
 ////	rotationSpeed.table = NULL;
 ////	size.from = 4.0f;
 ////	size.to = 4.0f;
@@ -906,14 +906,14 @@ class idParticleStage {
 ////	color.y = 1.0f;
 ////	color.z = 1.0f;
 ////	color.w = 1.0f;
-////	fadeColor.x = 0.0f;
-////	fadeColor.y = 0.0f;
-////	fadeColor.z = 0.0f;
-////	fadeColor.w = 0.0f;
+////	fadeColor.x = 0.0;
+////	fadeColor.y = 0.0;
+////	fadeColor.z = 0.0;
+////	fadeColor.w = 0.0;
 ////	fadeInFraction = 0.1f;
 ////	fadeOutFraction = 0.25f;
-////	fadeIndexFraction = 0.0f;
-////	boundsExpansion = 0.0f;
+////	fadeIndexFraction = 0.0;
+////	boundsExpansion = 0.0;
 ////	randomDistribution = true;
 ////	entityColor = false;
 ////	cycleMsec = ( particleLife + deadTime ) * 1000;
@@ -969,7 +969,7 @@ class idParticleStage {
 ////				origin[2] = ( ( randomDistribution ) ? g->random.CRandomFloat() : 1.0f );
 ////
 ////				// reproject points that are inside the ringFraction to the outer band
-////				if ( distributionParms[3] > 0.0f ) {
+////				if ( distributionParms[3] > 0.0 ) {
 ////					radiusSqr = origin[0] * origin[0] + origin[1] * origin[1];
 ////					if ( radiusSqr < distributionParms[3] * distributionParms[3] ) {
 ////						// if we are inside the inner reject zone, rescale to put it out into the good zone
@@ -1001,7 +1001,7 @@ class idParticleStage {
 ////					radiusSqr = 3.0f;
 ////				}
 ////
-////				if ( distributionParms[3] > 0.0f ) {
+////				if ( distributionParms[3] > 0.0 ) {
 ////					// we could iterate until we got something that also satisfied ringFraction,
 ////					// but for narrow rings that could be a lot of work, so reproject inside points instead
 ////					if ( radiusSqr < distributionParms[3] * distributionParms[3] ) {
@@ -1107,8 +1107,8 @@ class idParticleStage {
 ////				break;
 ////			}
 ////			case PPATH_DRIP: {		// ( speed )
-////				origin[0] = 0.0f;
-////				origin[1] = 0.0f;
+////				origin[0] = 0.0;
+////				origin[1] = 0.0;
 ////				origin[2] = -( g->age * customPathParms[0] );
 ////				break;
 ////			}
@@ -1318,11 +1318,11 @@ class idParticleStage {
 ////		g->animationFrameFrac = floatFrame - intFrame;
 ////		s = width * intFrame;
 ////	} else {
-////		s = 0.0f;
+////		s = 0.0;
 ////		width = 1.0f;
 ////	}
 ////
-////	t = 0.0f;
+////	t = 0.0;
 ////	height = 1.0f;
 ////
 ////	verts[0].st[0] = s;

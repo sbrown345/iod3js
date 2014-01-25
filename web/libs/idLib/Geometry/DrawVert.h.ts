@@ -39,11 +39,11 @@
 
 class idDrawVert {
 //public:
-//	idVec3			xyz;
-//	idVec2			st;
-//	idVec3			normal;
-//	idVec3			tangents[2];
-//	byte			color[4];
+	xyz: idVec3;
+	st: idVec3;
+	normal: idVec3;
+	tangents: idVec3[/*2*/];
+	color:Uint8Array/*4*/;
 //#if 0 // was MACOS_X see comments concerning DRAWVERT_PADDED in Simd_Altivec.h 
 //	float			padding;
 //#endif
@@ -61,7 +61,15 @@ class idDrawVert {
 //	dword			GetColor( void ) const;
 //};
 
-//ID_INLINE float idDrawVert::operator[]( const int index ) const {
+	constructor ( ) {
+		this.xyz = new idVec3;
+		this.st = new idVec3;
+		this.normal = new idVec3;
+		this.tangents = [new idVec3, new idVec3];
+		this.color = new Uint8Array( 4 );
+	}
+
+//IDcolor:Uint8Array/*4*/;_INLINE float idDrawVert::operator[]( const int index ) const {
 //	assert( index >= 0 && index < 5 );
 //	return ((float *)(&xyz))[index];
 //}
@@ -70,14 +78,14 @@ class idDrawVert {
 //	return ((float *)(&xyz))[index];
 //}
 
-//ID_INLINE void idDrawVert::Clear( void ) {
-//	xyz.Zero();
-//	st.Zero();
-//	normal.Zero();
-//	tangents[0].Zero();
-//	tangents[1].Zero();
-//	color[0] = color[1] = color[2] = color[3] = 0;
-//}
+	Clear ( ): void {
+		this.xyz.Zero ( );
+		this.st.Zero ( );
+		this.normal.Zero ( );
+		this.tangents[0].Zero ( );
+		this.tangents[1].Zero ( );
+		this.color[0] = this.color[1] = this.color[2] = this.color[3] = 0;
+	}
 
 //ID_INLINE void idDrawVert::Lerp( const idDrawVert &a, const idDrawVert &b, const float f ) {
 //	xyz = a.xyz + f * ( b.xyz - a.xyz );

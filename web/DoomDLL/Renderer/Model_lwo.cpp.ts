@@ -601,7 +601,7 @@
 
 ////static float bez2( lwKey *key0, lwKey *key1, float time )
 ////{
-////   float x, y, t, t0 = 0.0f, t1 = 1.0f;
+////   float x, y, t, t0 = 0.0, t1 = 1.0f;
 
 ////   if ( key0.shape == ID_BEZ2 )
 ////      x = key0.time + key0.param[ 2 ];
@@ -679,7 +679,7 @@
 
 ////      case ID_STEP:
 ////      default:
-////         out = 0.0f;
+////         out = 0.0;
 ////         break;
 ////   }
 
@@ -746,7 +746,7 @@
 
 ////      case ID_STEP:
 ////      default:
-////         in = 0.0f;
+////         in = 0.0;
 ////         break;
 ////   }
 
@@ -765,13 +765,13 @@
 ////float evalEnvelope( lwEnvelope *env, float time )
 ////{
 ////   lwKey *key0, *key1, *skey, *ekey;
-////   float t, h1, h2, h3, h4, in, out, offset = 0.0f;
+////   float t, h1, h2, h3, h4, in, out, offset = 0.0;
 ////   int noff;
 
 
 ////   /* if there's no key, the value is 0 */
 
-////   if ( env.nkeys == 0 ) return 0.0f;
+////   if ( env.nkeys == 0 ) return 0.0;
 
 ////   /* if there's only one key, the value is constant */
 
@@ -789,7 +789,7 @@
 ////      switch ( env.behavior[ 0 ] )
 ////      {
 ////         case BEH_RESET:
-////            return 0.0f;
+////            return 0.0;
 
 ////         case BEH_CONSTANT:
 ////            return skey.value;
@@ -822,7 +822,7 @@
 ////      switch ( env.behavior[ 1 ] )
 ////      {
 ////         case BEH_RESET:
-////            return 0.0f;
+////            return 0.0;
 
 ////         case BEH_CONSTANT:
 ////            return ekey.value;
@@ -1179,16 +1179,16 @@
 ////{
 ////   float f;
 
-////   if ( flen == FLEN_ERROR ) return 0.0f;
+////   if ( flen == FLEN_ERROR ) return 0.0;
 ////   if ( 4 != fp.Read( &f, 4 ) ) {
 ////      flen = FLEN_ERROR;
-////      return 0.0f;
+////      return 0.0;
 ////   }
 ////   BigRevBytes( &f, 4, 1 );
 ////   flen += 4;
 
 ////   if ( FLOAT_IS_DENORMAL( f ) ) {
-////	   f = 0.0f;
+////	   f = 0.0;
 ////   }
 ////   return f;
 ////}
@@ -1342,14 +1342,14 @@
 ////{
 ////   float f;
 
-////   if ( flen == FLEN_ERROR ) return 0.0f;
+////   if ( flen == FLEN_ERROR ) return 0.0;
 ////   memcpy( &f, *bp, 4 );
 ////   BigRevBytes( &f, 4, 1 );
 ////   flen += 4;
 ////   *bp += 4;
 
 ////   if ( FLOAT_IS_DENORMAL( f ) ) {
-////	   f = 0.0f;
+////	   f = 0.0;
 ////   }
 ////   return f;
 ////}
@@ -1745,7 +1745,7 @@
 
 ////      key0.next = key1;
 ////      key0.value = pos[ i ];
-////      key0.time = 0.0f;
+////      key0.time = 0.0;
 ////      key1.prev = key0;
 ////      key1.value = pos[ i ] + vel[ i ] * 30.0f;
 ////      key1.time = 1.0f;
@@ -2454,7 +2454,7 @@
 ////	if ( point.count == 0 ) return;
 
 ////	for ( i = 0; i < 6; i++ )
-////		if ( bbox[ i ] != 0.0f ) return;
+////		if ( bbox[ i ] != 0.0 ) return;
 
 ////	bbox[ 0 ] = bbox[ 1 ] = bbox[ 2 ] = 1e20f;
 ////	bbox[ 3 ] = bbox[ 4 ] = bbox[ 5 ] = -1e20f;

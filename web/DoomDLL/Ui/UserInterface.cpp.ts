@@ -327,10 +327,10 @@ class idUserInterfaceLocal extends idUserInterface {
 //		desktop.SetFlag( WIN_DESKTOP );
 //		desktop.name = "Desktop";
 //		desktop.text = va( "Invalid GUI: %s", qpath );
-//		desktop.rect = idRectangle( 0.0f, 0.0f, 640.0f, 480.0f );
+//		desktop.rect = idRectangle( 0.0, 0.0, 640.0f, 480.0f );
 //		desktop.drawRect = desktop.rect;
 //		desktop.foreColor = idVec4( 1.0f, 1.0f, 1.0f, 1.0f );
-//		desktop.backColor = idVec4( 0.0f, 0.0f, 0.0f, 1.0f );
+//		desktop.backColor = idVec4( 0.0, 0.0, 0.0, 1.0f );
 //		desktop.SetupFromState();
 //		common.Warning( "Couldn't load gui: '%s'", qpath );
 //	}

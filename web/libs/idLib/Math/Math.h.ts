@@ -171,7 +171,7 @@ class idMath {
 
 ////	static int					BitsForFloat( float f );	// minumum number of bits required to represent ceil( f )
 ////	static int					BitsForInteger( int i );	// minumum number of bits required to represent i
-////	static int					MaskForFloatSign( float f );// returns 0x00000000 if x >= 0.0f and returns 0xFFFFFFFF if x <= -0.0f
+////	static int					MaskForFloatSign( float f );// returns 0x00000000 if x >= 0.0 and returns 0xFFFFFFFF if x <= -0.0
 ////	static int					MaskForIntegerSign( int i );// returns 0x00000000 if x >= 0 and returns 0xFFFFFFFF if x < 0
 ////	static int					FloorPowerOfTwo( int x );	// round x down to the nearest power of 2
 ////	static int					CeilPowerOfTwo( int x );	// round x up to the nearest power of 2
@@ -316,7 +316,7 @@ static Sqrt( /*float */x:number):number {
 ////ID_INLINE float idMath::Sin16( float a ) {
 ////	float s;
 
-////	if ( ( a < 0.0f ) || ( a >= TWO_PI ) ) {
+////	if ( ( a < 0.0 ) || ( a >= TWO_PI ) ) {
 ////		a -= floorf( a / TWO_PI ) * TWO_PI;
 ////	}
 ////#if 1
@@ -334,7 +334,7 @@ static Sqrt( /*float */x:number):number {
 ////#else
 ////	a = PI - a;
 ////	if ( fabs( a ) >= HALF_PI ) {
-////		a = ( ( a < 0.0f ) ? -PI : PI ) - a;
+////		a = ( ( a < 0.0 ) ? -PI : PI ) - a;
 ////	}
 ////#endif
 ////	s = a * a;
@@ -352,7 +352,7 @@ static Sqrt( /*float */x:number):number {
 ////ID_INLINE float idMath::Cos16( float a ) {
 ////	float s, d;
 
-////	if ( ( a < 0.0f ) || ( a >= TWO_PI ) ) {
+////	if ( ( a < 0.0 ) || ( a >= TWO_PI ) ) {
 ////		a -= floorf( a / TWO_PI ) * TWO_PI;
 ////	}
 ////#if 1
@@ -375,7 +375,7 @@ static Sqrt( /*float */x:number):number {
 ////#else
 ////	a = PI - a;
 ////	if ( fabs( a ) >= HALF_PI ) {
-////		a = ( ( a < 0.0f ) ? -PI : PI ) - a;
+////		a = ( ( a < 0.0 ) ? -PI : PI ) - a;
 ////		d = 1.0f;
 ////	} else {
 ////		d = -1.0f;
@@ -408,7 +408,7 @@ static Sqrt( /*float */x:number):number {
 ////ID_INLINE void idMath::SinCos16( float a, float &s, float &c ) {
 ////	float t, d;
 
-////	if ( ( a < 0.0f ) || ( a >= idMath::TWO_PI ) ) {
+////	if ( ( a < 0.0 ) || ( a >= idMath::TWO_PI ) ) {
 ////		a -= floorf( a / idMath::TWO_PI ) * idMath::TWO_PI;
 ////	}
 ////#if 1
@@ -431,7 +431,7 @@ static Sqrt( /*float */x:number):number {
 ////#else
 ////	a = PI - a;
 ////	if ( fabs( a ) >= HALF_PI ) {
-////		a = ( ( a < 0.0f ) ? -PI : PI ) - a;
+////		a = ( ( a < 0.0 ) ? -PI : PI ) - a;
 ////		d = 1.0f;
 ////	} else {
 ////		d = -1.0f;
@@ -466,7 +466,7 @@ static Sqrt( /*float */x:number):number {
 ////	float s;
 ////	bool reciprocal;
 
-////	if ( ( a < 0.0f ) || ( a >= PI ) ) {
+////	if ( ( a < 0.0 ) || ( a >= PI ) ) {
 ////		a -= floorf( a / PI ) * PI;
 ////	}
 ////#if 1
@@ -489,7 +489,7 @@ static Sqrt( /*float */x:number):number {
 ////#else
 ////	a = HALF_PI - a;
 ////	if ( fabs( a ) >= ONEFOURTH_PI ) {
-////		a = ( ( a < 0.0f ) ? -HALF_PI : HALF_PI ) - a;
+////		a = ( ( a < 0.0 ) ? -HALF_PI : HALF_PI ) - a;
 ////		reciprocal = false;
 ////	} else {
 ////		reciprocal = true;
@@ -548,7 +548,7 @@ static Sqrt( /*float */x:number):number {
 ////		return PI;
 ////	}
 ////	if ( a >= 1.0f ) {
-////		return 0.0f;
+////		return 0.0;
 ////	}
 ////	return acosf( a );
 ////}
@@ -562,7 +562,7 @@ static Sqrt( /*float */x:number):number {
 ////		return PI - ( ( ( -0.0187293f * a + 0.0742610f ) * a - 0.2121144f ) * a + 1.5707288f ) * sqrt( 1.0f - a );
 ////	} else {
 ////		if ( a >= 1.0f ) {
-////			return 0.0f;
+////			return 0.0;
 ////		}
 ////		return ( ( ( -0.0187293f * a + 0.0742610f ) * a - 0.2121144f ) * a + 1.5707288f ) * sqrt( 1.0f - a );
 ////	}
@@ -573,7 +573,7 @@ static Sqrt( /*float */x:number):number {
 ////		return PI;
 ////	}
 ////	if ( a >= 1.0f ) {
-////		return 0.0f;
+////		return 0.0;
 ////	}
 ////	return acos( a );
 ////}
@@ -664,7 +664,7 @@ static Sqrt( /*float */x:number):number {
 ////	i = ( ( m >> ( IEEE_FLT_MANTISSA_BITS - e ) ) & ~( e >> 31 ) ) ^ s;
 ////#else
 ////	i = (int) x;
-////	if ( x < 0.0f ) {
+////	if ( x < 0.0 ) {
 ////		i--;
 ////	}
 ////#endif
@@ -902,7 +902,7 @@ static Fabs( /*float */f:number ):number {
 ////}
 
 ////ID_INLINE float idMath::AngleNormalize360( float angle ) {
-////	if ( ( angle >= 360.0f ) || ( angle < 0.0f ) ) {
+////	if ( ( angle >= 360.0f ) || ( angle < 0.0 ) ) {
 ////		angle -= floor( angle / 360.0f ) * 360.0f;
 ////	}
 ////	return angle;
@@ -988,7 +988,7 @@ static Fabs( /*float */f:number ):number {
 ////	float max = BitsToFloat( maxBits, exponentBits, mantissaBits );
 ////	float min = BitsToFloat( minBits, exponentBits, mantissaBits );
 
-////	if ( f >= 0.0f ) {
+////	if ( f >= 0.0 ) {
 ////		if ( f >= max ) {
 ////			return maxBits;
 ////		} else if ( f <= min ) {

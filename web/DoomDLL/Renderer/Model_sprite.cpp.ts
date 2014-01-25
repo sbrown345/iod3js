@@ -98,31 +98,31 @@
 ////		R_AllocStaticTriSurfIndexes( tri, 6 );
 
 ////		tri.verts[ 0 ].Clear();
-////		tri.verts[ 0 ].normal.Set( 1.0f, 0.0f, 0.0f );
-////		tri.verts[ 0 ].tangents[0].Set( 0.0f, 1.0f, 0.0f );
-////		tri.verts[ 0 ].tangents[1].Set( 0.0f, 0.0f, 1.0f );
-////		tri.verts[ 0 ].st[ 0 ] = 0.0f;
-////		tri.verts[ 0 ].st[ 1 ] = 0.0f;
+////		tri.verts[ 0 ].normal.Set( 1.0f, 0.0, 0.0 );
+////		tri.verts[ 0 ].tangents[0].Set( 0.0, 1.0f, 0.0 );
+////		tri.verts[ 0 ].tangents[1].Set( 0.0, 0.0, 1.0f );
+////		tri.verts[ 0 ].st[ 0 ] = 0.0;
+////		tri.verts[ 0 ].st[ 1 ] = 0.0;
 
 ////		tri.verts[ 1 ].Clear();
-////		tri.verts[ 1 ].normal.Set( 1.0f, 0.0f, 0.0f );
-////		tri.verts[ 1 ].tangents[0].Set( 0.0f, 1.0f, 0.0f );
-////		tri.verts[ 1 ].tangents[1].Set( 0.0f, 0.0f, 1.0f );
+////		tri.verts[ 1 ].normal.Set( 1.0f, 0.0, 0.0 );
+////		tri.verts[ 1 ].tangents[0].Set( 0.0, 1.0f, 0.0 );
+////		tri.verts[ 1 ].tangents[1].Set( 0.0, 0.0, 1.0f );
 ////		tri.verts[ 1 ].st[ 0 ] = 1.0f;
-////		tri.verts[ 1 ].st[ 1 ] = 0.0f;
+////		tri.verts[ 1 ].st[ 1 ] = 0.0;
 
 ////		tri.verts[ 2 ].Clear();
-////		tri.verts[ 2 ].normal.Set( 1.0f, 0.0f, 0.0f );
-////		tri.verts[ 2 ].tangents[0].Set( 0.0f, 1.0f, 0.0f );
-////		tri.verts[ 2 ].tangents[1].Set( 0.0f, 0.0f, 1.0f );
+////		tri.verts[ 2 ].normal.Set( 1.0f, 0.0, 0.0 );
+////		tri.verts[ 2 ].tangents[0].Set( 0.0, 1.0f, 0.0 );
+////		tri.verts[ 2 ].tangents[1].Set( 0.0, 0.0, 1.0f );
 ////		tri.verts[ 2 ].st[ 0 ] = 1.0f;
 ////		tri.verts[ 2 ].st[ 1 ] = 1.0f;
 
 ////		tri.verts[ 3 ].Clear();
-////		tri.verts[ 3 ].normal.Set( 1.0f, 0.0f, 0.0f );
-////		tri.verts[ 3 ].tangents[0].Set( 0.0f, 1.0f, 0.0f );
-////		tri.verts[ 3 ].tangents[1].Set( 0.0f, 0.0f, 1.0f );
-////		tri.verts[ 3 ].st[ 0 ] = 0.0f;
+////		tri.verts[ 3 ].normal.Set( 1.0f, 0.0, 0.0 );
+////		tri.verts[ 3 ].tangents[0].Set( 0.0, 1.0f, 0.0 );
+////		tri.verts[ 3 ].tangents[1].Set( 0.0, 0.0, 1.0f );
+////		tri.verts[ 3 ].st[ 0 ] = 0.0;
 ////		tri.verts[ 3 ].st[ 1 ] = 1.0f;
 
 ////		tri.indexes[ 0 ] = 0;
@@ -146,8 +146,8 @@
 ////	int	blue		= idMath::FtoiFast( renderEntity.shaderParms[ SHADERPARM_BLUE ] * 255.0f );
 ////	int	alpha		= idMath::FtoiFast( renderEntity.shaderParms[ SHADERPARM_ALPHA ] * 255.0f );
 
-////	idVec3 right	= idVec3( 0.0f, renderEntity.shaderParms[ SHADERPARM_SPRITE_WIDTH ] * 0.5f, 0.0f );
-////	idVec3 up		= idVec3( 0.0f, 0.0f, renderEntity.shaderParms[ SHADERPARM_SPRITE_HEIGHT ] * 0.5f );
+////	idVec3 right	= idVec3( 0.0, renderEntity.shaderParms[ SHADERPARM_SPRITE_WIDTH ] * 0.5f, 0.0 );
+////	idVec3 up		= idVec3( 0.0, 0.0, renderEntity.shaderParms[ SHADERPARM_SPRITE_HEIGHT ] * 0.5f );
 
 ////	tri.verts[ 0 ].xyz = up + right;
 ////	tri.verts[ 0 ].color[ 0 ] = red;

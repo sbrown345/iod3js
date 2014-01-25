@@ -496,7 +496,7 @@ enum surfaceFlags_t {
 ////						// necessary to prevent mutliple gui surfaces, mirrors, autosprites, and some other
 ////						// special effects from being combined into a single surface
 ////						// guis, merging sprites or other effects, mirrors and remote views are always discrete
-////	bool				IsDiscrete( void ) const { return ( entityGui || gui || deform != DFRM_NONE || sort == materialSort_t.SS_SUBVIEW ||
+////	bool				IsDiscrete( void ) const { return ( entityGui || gui || deform != deform_t.DFRM_NONE || sort == materialSort_t.SS_SUBVIEW ||
 ////												( surfaceFlags & SURF_DISCRETE ) != 0 ); }
 
 ////						// Normally, dmap chops each surface by every BSP boundary, then reoptimizes.

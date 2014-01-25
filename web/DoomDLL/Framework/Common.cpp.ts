@@ -508,28 +508,30 @@ prints message that only shows up if the "developer" cvar is set
 		this.com_refreshOnPrint = temp;
 	}
 
-/////*
-////==================
-////idCommonLocal::DWarning
+/*
+==================
+idCommonLocal::DWarning
 
-////prints warning message in yellow that only shows up if the "developer" cvar is set
-////==================
-////*/
-////void idCommonLocal::DWarning( const char *fmt, ... ) {
-////	va_list		argptr;
-////	char		msg[MAX_PRINT_MSG_SIZE];
-		
-////	if ( !com_developer.GetBool() ) {
-////		return;			// don't confuse non-developers with techie stuff...
-////	}
+prints warning message in yellow that only shows up if the "developer" cvar is set
+==================
+*/
+	DWarning ( fmt: string, ...args: any[] ): void {
+		//va_list		argptr;
+		//char		msg[MAX_PRINT_MSG_SIZE];
 
-////	va_start( argptr, fmt );
-////	idStr::vsnPrintf( msg, sizeof(msg), fmt, argptr );
-////	va_end( argptr );
-////	msg[sizeof(msg)-1] = '\0';
+		if ( !com_developer.GetBool ( ) ) {
+			return; // don't confuse non-developers with techie stuff...
+		}
 
-////	Printf( S_COLOR_YELLOW"WARNING: %s\n", msg );
-////}
+		//va_start( argptr, fmt );
+		//idStr::vsnPrintf( msg, sizeof(msg), fmt, argptr );
+		//va_end( argptr );
+		//msg[sizeof(msg)-1] = '\0';
+
+		var msg = vsprintf( fmt, args );
+
+		this.Printf( /* S_COLOR_YELLOW*/"WARNING: %s\n", msg );
+	}
 
 /*
 ==================
@@ -2429,7 +2431,7 @@ InitLanguageDict( ):void {
 ////	renderSystem.BeginFrame( renderSystem.GetScreenWidth(), renderSystem.GetScreenHeight() );
 ////	renderSystem.DrawStretchPic( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 1, 1, declManager.FindMaterial( "splashScreen" ) );
 ////	int len = strlen( msg );
-////	renderSystem.DrawSmallStringExt( ( 640 - len * SMALLCHAR_WIDTH ) / 2, 410, msg, idVec4( 0.0f, 0.81f, 0.94f, 1.0f ), true, declManager.FindMaterial( "textures/bigchars" ) );
+////	renderSystem.DrawSmallStringExt( ( 640 - len * SMALLCHAR_WIDTH ) / 2, 410, msg, idVec4( 0.0, 0.81f, 0.94f, 1.0f ), true, declManager.FindMaterial( "textures/bigchars" ) );
 ////	renderSystem.EndFrame( NULL, NULL );
 ////}
 
