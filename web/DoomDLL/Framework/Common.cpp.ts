@@ -475,9 +475,11 @@ Both client and server can use this, and it will output to the appropriate place
 A raw string should NEVER be passed as fmt, because of "%f" type crashers.
 ==================
 */
-Printf( /*const char **/ fmt:string, ...args: any[] ):void {
-    console.log(fmt, args);
-}
+	Printf ( /*const char **/ fmt: string, ...args: any[] ): void {
+		var argArr = args.slice( 0 );
+		argArr.unshift( fmt );
+		console.log.apply( console, argArr );
+	}
 
 /*
 ==================
@@ -486,19 +488,25 @@ idCommonLocal::DPrintf
 prints message that only shows up if the "developer" cvar is set
 ==================
 */
-DPrintf( fmt:string, ...args:any[] ):void {
-	if ( !cvarSystem.IsInitialized() || !com_developer.GetBool() ) {
-		return;			// don't confuse non-developers with techie stuff...
+	DPrintf ( fmt: string, ...args: any[] ): void {
+		//va_list		argptr;
+		//char		msg[MAX_PRINT_MSG_SIZE];
+
+		if ( !cvarSystem.IsInitialized ( ) || !com_developer.GetBool ( ) ) {
+			return; // don't confuse non-developers with techie stuff...
+		}
+
+		var msg = vsprintf( fmt, args );
+
+		// never refresh the screen, which could cause reentrency problems
+		var temp = this.com_refreshOnPrint;
+		this.com_refreshOnPrint = false;
+
+		//this.Printf( /*S_COLOR_RED*/"%s", msg );
+		this.Printf( /*S_COLOR_RED*/"%c%s", "color: red;", msg );
+
+		this.com_refreshOnPrint = temp;
 	}
-
-	// never refresh the screen, which could cause reentrency problems
-	var temp = this.com_refreshOnPrint;
-	this.com_refreshOnPrint = false;
-
-	this.Printf( /*S_COLOR_RED*/"%s", args );
-
-	this.com_refreshOnPrint = temp;
-}
 
 /////*
 ////==================

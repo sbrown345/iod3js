@@ -673,7 +673,9 @@ idImageManager.prototype.R_CreateNoFalloffImage = function ( image: idImage ): v
 	}
 	image.GenerateImage( flatten3DArray<Uint8Array>( Uint8Array, data ), FALLOFF_TEXTURE_SIZE, 16,
 		textureFilter_t.TF_DEFAULT, false, textureRepeat_t.TR_CLAMP_TO_ZERO, textureDepth_t.TD_HIGH_QUALITY );
-}; /*
+}; 
+
+/*
 ================
 R_FogImage
 
