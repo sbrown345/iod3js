@@ -151,7 +151,43 @@
 ////*/
 
 ////template<class type, int blockSize>
-////class idBlockAlloc {
+
+function idBlockAlloc_template<T> ( type: any, blockSize: number ): idBlockAlloc<T> {
+	var blockAlloc = new idBlockAlloc<T> ( );
+	blockAlloc.type = type;
+	blockAlloc.blockSize = blockSize;
+	return blockAlloc;
+}
+
+
+
+class block_t<T> {
+	constructor(type: any, blockSize: number) {
+		this.type = type;
+		this.blockSize = blockSize;
+		this.elements = new Array<element_t<T>>(this.blockSize);
+		for ( var i = 0; i < this.blockSize; i++ ) {
+			this.elements[i] = new element_t<T>( this.type );
+		}
+	}
+	type:any;
+	blockSize:number;
+	elements:element_t<T>[/*blockSize*/];	//element_t			
+	next: block_t<T> ;					//struct block_s *	
+};
+
+class element_t<T> {
+	next:element_t<T>;
+	t: T; //type
+	type:any;
+
+	constructor(type: any) {
+		this.type = type;
+		this.t = <T>new this.type;
+	}
+};
+
+class idBlockAlloc<T> {
 ////public:
 ////							idBlockAlloc( void );
 ////							~idBlockAlloc( void );
@@ -165,21 +201,15 @@
 ////	int						GetAllocCount( void ) const { return active; }
 ////	int						GetFreeCount( void ) const { return total - active; }
 
-////private:
-////	typedef struct element_s {
-////		struct element_s *	next;
-////		type				t;
-////	} element_t;
-////	typedef struct block_s {
-////		element_t			elements[blockSize];
-////		struct block_s *	next;
-////	} block_t;
+//private:
+	blocks: block_t<T>;
+	free: element_t<T>;
+	total:number;	  //int		
+	active: number;	  //int		
 
-////	block_t *				blocks;
-////	element_t *				free;
-////	int						total;
-////	int						active;
-////};
+	// template:
+	type:any;
+	blockSize:number;
 
 ////template<class type, int blockSize>
 ////idBlockAlloc<type,blockSize>::idBlockAlloc( void ) {
@@ -187,30 +217,34 @@
 ////	free = NULL;
 ////	total = active = 0;
 ////}
-
+	constructor ( ) {
+		this.blocks = null;
+		this.free = null;
+		this.total = this.active = 0;
+	}
 ////template<class type, int blockSize>
 ////idBlockAlloc<type,blockSize>::~idBlockAlloc( void ) {
 ////	Shutdown();
 ////}
 
-////template<class type, int blockSize>
-////type *idBlockAlloc<type,blockSize>::Alloc( void ) {
-////	if ( !free ) {
-////		block_t *block = new block_t;
-////		block.next = blocks;
-////		blocks = block;
-////		for ( int i = 0; i < blockSize; i++ ) {
-////			block.elements[i].next = free;
-////			free = &block.elements[i];
-////		}
-////		total += blockSize;
-////	}
-////	active++;
-////	element_t *element = free;
-////	free = free.next;
-////	element.next = NULL;
-////	return &element.t;
-////}
+//template<class type, int blockSize>
+	Alloc ( ): T {
+		if ( !this.free ) {
+			var block = new block_t<T>( this.type, this.blockSize );
+			block.next = this.blocks;
+			this.blocks = block;
+			for ( var i = 0; i < this.blockSize; i++ ) {
+				block.elements[i].next = this.free;
+				this.free = /*&*/block.elements[i];
+			}
+			this.total += this.blockSize;
+		}
+		this.active++;
+		var element = this.free;
+		this.free = this.free.next;
+		element.next = null;
+		return /*&*/element.t;
+	}
 
 ////template<class type, int blockSize>
 ////void idBlockAlloc<type,blockSize>::Free( type *t ) {
@@ -231,6 +265,8 @@
 ////	free = NULL;
 ////	total = active = 0;
 ////}
+
+};
 
 /////*
 ////==============================================================================

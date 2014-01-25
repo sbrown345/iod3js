@@ -144,6 +144,64 @@ class srfTriangles_t {
 	ambientCache: vertCache_t;			// idDrawVert
 	lightingCache: vertCache_t;			// lightingCache_t
 	shadowCache: vertCache_t;			// shadowCache_t
+
+	constructor() {
+		this.init ( );
+	}
+
+	init ( ) {
+		this.bounds = new idBounds;
+
+		this.ambientViewCount = 0;
+
+		this.generateNormals = false;
+		this.tangentsCalculated = false;
+		this.facePlanesCalculated = false;
+		this.perfectHull = false;
+		this.deformedSurface = false;
+
+
+		this.numVerts = 0;
+		this.verts = new idDrawVert;
+
+		this.numIndexes = 0;
+		this.indexes = null;
+
+		this.silIndexes = null;
+
+		this.numMirroredVerts = 0;
+		this.mirroredVerts = null;
+
+		this.numDupVerts = 0;
+		this.dupVerts = null;
+
+		this.numSilEdges = 0;
+		this.silEdges = null;
+
+		this.facePlanes = null;
+
+		this.dominantTris = null;
+
+		this.numShadowIndexesNoFrontCaps = 0;
+		this.numShadowIndexesNoCaps = 0;
+
+		this.shadowCapPlaneBits = 0;
+
+
+		this.shadowVertexes = null;
+
+
+		this.ambientSurface = null;
+
+
+		this.nextDeferredFree = null;
+
+
+		this.indexCache = null;
+		this.ambientCache = null;
+		this.lightingCache = null;
+		this.shadowCache = null;	
+	}
 };
 
 ////typedef idList<srfTriangles_t *> idTriList;

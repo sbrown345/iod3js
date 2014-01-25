@@ -1,5 +1,6 @@
 /// <reference path="tr_local.h.ts" />
 /// <reference path="model.h.ts" />
+/// <reference path="../../libs/idlib/heap.cpp.ts" />
 ///*
 //===========================================================================
 //
@@ -126,7 +127,7 @@
 //static idHashIndex	silEdgeHash( SILEDGE_HASH_SIZE, MAX_SIL_EDGES );
 //static int			numPlanes;
 //
-var srfTrianglesAllocator = idBlockAlloc( srfTriangles_t, 1, 8 );// < srfTriangles_t, 1 << 8 > //static idBlockAlloc<srfTriangles_t, 1<<8>				srfTrianglesAllocator;
+var srfTrianglesAllocator = idBlockAlloc_template<srfTriangles_t>( srfTriangles_t, 1 << 8 );
 //
 //#ifdef USE_TRI_DATA_ALLOCATOR
 //var triVertexAllocator;			 //static idDynamicBlockAlloc<idDrawVert, 1<<20, 1<<10>		
@@ -524,7 +525,7 @@ R_AllocStaticTriSurf
 */
 function R_AllocStaticTriSurf(): srfTriangles_t {
 	var tris = srfTrianglesAllocator.Alloc();
-	memset( tris, 0, sizeof( srfTriangles_t ) );
+	tris.init ( );// memset( tris, 0, sizeof( srfTriangles_t ) );
 	return tris;
 }
 

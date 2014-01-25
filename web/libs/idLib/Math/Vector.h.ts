@@ -319,10 +319,10 @@ class idVec3 {
 	//y:number;	  //float			
 	//z: number;	  //float		
 	
-	constructor ( ) {
-		this[0] = 0.0; // could extend float32 array?
-		this[1] = 0.0;
-		this[2] = 0.0;
+	constructor(x= 0.0, y= 0.0, z= 0.0 ) {
+		this[0] = x;
+		this[1] = y;
+		this[2] = z;
 	}
 
 ////					idVec3( void );

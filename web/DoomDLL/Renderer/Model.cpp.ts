@@ -236,15 +236,15 @@ idRenderModelStatic.prototype.MakeDefaultModel = function ( ): void {
 	this.PurgeModel();
 
     // create one new surface
-    var surf:modelSurface_t;
+    var surf = new modelSurface_t;
 
-    var tri = R_AllocStaticTriSurf();
+	var tri: srfTriangles_t = R_AllocStaticTriSurf();
 
     surf.shader = tr.defaultMaterial;
     surf.geometry = tri;
 
-    R_AllocStaticTriSurfVerts( tri, 24 );
-    R_AllocStaticTriSurfIndexes( tri, 36 );
+	todoThrow( "R_AllocStaticTriSurfVerts( tri, 24 );		" );
+	todoThrow( "R_AllocStaticTriSurfIndexes( tri, 36 		" );
 
     this.AddCubeFace( tri, new idVec3(-1, 1, 1), new idVec3(1, 1, 1), new idVec3(1, -1, 1), new idVec3(-1, -1, 1) );
     this.AddCubeFace( tri, new idVec3(-1, 1, -1), new idVec3(-1, -1, -1), new idVec3(1, -1, -1), new idVec3(1, 1, -1) );
