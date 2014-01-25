@@ -355,3 +355,11 @@ Uint8Array.prototype.toString = function () : string {
 
     return str;
 };
+
+interface VBArray {
+	toArray():Array<number>
+}
+
+declare var VBArray: {
+	new ( text?: any ): VBArray;
+};

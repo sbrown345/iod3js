@@ -3173,11 +3173,32 @@ separate file or a ZIP file.
 ===========
 */
     OpenFileReadFlags ( relativePath: string, /*int */searchFlags: number, foundInPak: pack_t = null, allowCopyFiles = true, gamedir: string = null ): idFile {
-        var xhr = new XMLHttpRequest ( );
-        xhr["overrideMimeType"]( 'text/plain; charset=x-user-defined' );
-        xhr.open( 'GET', "/demo/" + relativePath, false );
-        xhr.send ( );
-        var arr = this.StringToArrayBuffer( xhr.responseText );
+	    var arr: ArrayBuffer;
+		var xhr = new XMLHttpRequest();
+		xhr["overrideMimeType"]('text/plain; charset=x-user-defined');
+		xhr.open('GET', "/demo/" + relativePath, false);
+		xhr.send();
+
+		if (typeof VBArray !== "undefined") { // debugging in VS
+			var data = new VBArray(xhr.responseBody).toArray();
+			var buf = new ArrayBuffer(data.length);
+			var dest = new Uint8Array(buf);
+			for (var i = 0; i < data.length; ++i) {
+				dest[i] = data[i];
+			}
+
+			arr = buf;
+		} else {
+			var src = xhr.responseText;
+			var buf = new ArrayBuffer(src.length);
+			var dest = new Uint8Array(buf);
+			for (var i = 0; i < src.length; ++i) {
+				dest[i] = src.charCodeAt(i) & 255;
+			}
+
+			arr = buf;
+		}
+
         var fp = new FILE( arr );
         var file = new idFile_Permanent ( );
         file.o = fp;
@@ -3428,17 +3449,6 @@ separate file or a ZIP file.
 
         return null;
     }
-
-    StringToArrayBuffer ( src: string ): ArrayBuffer {
-        // from https://github.com/SiPlus/WebQuake/blob/master/Client/WebQuake/COM.js
-        var buf = new ArrayBuffer( src.length );
-        var dest = new Uint8Array( buf );
-        var i:number;
-        for ( i = 0; i < src.length; ++i )
-            dest[i] = src.charCodeAt( i ) & 255;
-        return buf;
-    }
-
 
 /*
 ===========
