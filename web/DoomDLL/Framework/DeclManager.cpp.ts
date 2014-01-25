@@ -1528,22 +1528,20 @@ This is just used to nicely indent media caching prints
 ===================
 */
 idDeclManagerLocal.prototype.MediaPrint = function ( fmt:string, ...args: any[] ): void {
-    todo ( );
-    console.log( "MediaPrint: " + fmt, args );
-    //if ( !this.decl_show.GetInteger() ) {
-    //	return;
-    //}
-    //for ( var/*int */i = 0 ; i < this.indent ; i++ ) {
-    //	common.Printf( "    " );
-    //}
-    //va_list		argptr;
-    //char		buffer[1024];
-    //va_start (argptr,fmt);
-    //idStr::vsnPrintf( buffer, sizeof(buffer), fmt, argptr );
-    //va_end (argptr);
-    //buffer[sizeof(buffer)-1] = '\0';
+	if (!idDeclManagerLocal.decl_show.GetInteger() ) {
+    	return;
+	}
 
-    //common.Printf( "%s", buffer );
+	var output = "";
+
+    for ( var/*int */i = 0 ; i < this.indent ; i++ ) {
+		common.Printf("    ");
+	    output += "    ";//
+	}
+
+	output += vsprintf( fmt, args );
+
+	common.Printf("%s", output );
 };
 
 /////*
