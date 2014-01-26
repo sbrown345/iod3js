@@ -125,10 +125,10 @@ class idPlane {
 	//	const char *	ToString( int precision = 2 ) const;
 	//
 	//private:
-	//	float			a;
-	//	float			b;
-	//	float			c;
-	//	float			d;
+	a:number; //	float			
+	b:number; //	float			
+	c:number; //	float			
+	d:number; //	float			
 	//};
 	//
 	//extern idPlane plane_origin;
@@ -240,9 +240,9 @@ class idPlane {
 	//	return *reinterpret_cast<const idVec3 *>(&a);
 	//}
 	//
-	//ID_INLINE idVec3 &idPlane::Normal( void ) {
-	//	return *reinterpret_cast<idVec3 *>(&a);
-	//}
+	/*ID_INLINE idVec3 &idPlane::*/Normal( val:idVec3 =null):idVec3 {
+		return new idVec3( this.a );
+	}
 	//
 	//ID_INLINE float idPlane::Normalize( bool fixDegenerate ) {
 	//	float length = reinterpret_cast<idVec3 *>(&a)->Normalize();
@@ -276,12 +276,13 @@ class idPlane {
 	//	d = -dist;
 	//}
 	//
-	FromPoints(p1: idVec3, p2: idVec3, p3: idVec3, fixDegenerate:boolean ): boolean {
-		this.Normal() = (p1 - p2).Cross( p3 - p2 );
-		if ( Normalize( fixDegenerate ) == 0.0 ) {
-			return false;
-		}
-		d = -( this.Normal() * p2 );
+	FromPoints(p1: idVec3, p2: idVec3, p3: idVec3, fixDegenerate: boolean = true): boolean {
+		todoThrow ( );
+		//this.Normal( ( p1.subtracVec( p2 ) ).Cross( p3.subtracVec( p2 ) ) );
+		//if ( this.Normalize( fixDegenerate ) == 0.0 ) {
+		//	return false;
+		//}
+		//this.d = -( this.Normal() * p2 );
 		return true;
 	}
 	
@@ -320,11 +321,12 @@ class idPlane {
 	//	d -= origin * this.Normal();
 	//	return *this;
 	//}
-	//
-	//ID_INLINE float idPlane::Distance( const idVec3 &v ) const {
-	//	return a * v.x + b * v.y + c * v.z + d;
-	//}
-	//
+	
+	/*float */
+	Distance ( v: idVec3 ): number {
+		return this.a * v.x + this.b * v.y + this.c * v.z + this.d;
+	}
+
 	//ID_INLINE int idPlane::Side( const idVec3 &v, const float epsilon ) const {
 	//	float dist = Distance( v );
 	//	if ( dist > epsilon ) {

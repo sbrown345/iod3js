@@ -459,9 +459,9 @@ class idVec3 {
 ////	return *this;
 ////}
 
-////ID_INLINE idVec3 idVec3::operator-( const idVec3 &a ) const {
-////	return idVec3( this.x - a.x, this.y - a.y, this.z - a.z );
-////}
+	subtracVec ( a: idVec3 ): idVec3 {
+		return new idVec3( this.x - a.x, this.y - a.y, this.z - a.z );
+	}
 
 /*float*/
 	multiplyByVec ( a: idVec3 ): number {

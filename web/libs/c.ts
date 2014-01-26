@@ -118,6 +118,13 @@ function rand() {
     return 10;
 }
 
+function qsort ( base: any[], num: number, size: number, compar: ( a: any, b: any ) => number ): void {
+	var array = base.slice(0, num).sort(compar);
+	for ( var i = 0; i < num; i++ ) {
+		base[i] = array[i];
+	}
+}
+
 var printf = console.log.bind(console);
 
 function Mem_Free ( arg: any ) {

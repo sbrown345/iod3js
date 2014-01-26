@@ -402,14 +402,14 @@ idHashIndex::GenerateKey
 ////	return ( (((int) v[0]) + ((int) v[1]) + ((int) v[2])) & this.hashMask );
 ////}
 
-/////*
-////================
-////idHashIndex::GenerateKey
-////================
-////*/
-////ID_INLINE int idHashIndex::GenerateKey( const int n1, const int n2 ) const {
-////	return ( ( n1 + n2 ) & this.hashMask );
-////}
+/*
+================
+idHashIndex::GenerateKey
+================
+*/
+	GenerateKeyFromNumbers ( /*const int */n1: number, /*const int */n2: number ): number {
+		return ( ( n1 + n2 ) & this.hashMask );
+	}
 
 ////#endif /* !__HASHINDEX_H__ */
 

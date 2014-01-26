@@ -124,7 +124,7 @@ var MAX_SIL_EDGES			= 0x10000;
 var SILEDGE_HASH_SIZE		= 1024;
 
 var /*int			*/numSilEdges: number;
-var silEdges: silEdge_t;
+var silEdges: silEdge_t[];
 var silEdgeHash = new idHashIndex( SILEDGE_HASH_SIZE, MAX_SIL_EDGES );
 var /*int			*/numPlanes: number;
 //
@@ -159,7 +159,7 @@ R_InitTriSurfData
 ===============
 */
 function R_InitTriSurfData( ):void {
-	silEdges = new silEdge_t;
+	silEdges = newStructArray<silEdge_t>( silEdge_t, MAX_SIL_EDGES );
 
 	// initialize allocators for triangle surfaces
 	triVertexAllocator.Init();
@@ -929,7 +929,7 @@ function R_CreateSilIndexes ( tri: srfTriangles_t ): void {
 //R_DefineEdge
 //===============
 //*/
-var c_duplicatedEdges:number, c_tripledEdges:number;
+var c_duplicatedEdges = 0, c_tripledEdges = 0;
 
 function R_DefineEdge( /*int*/ v1:number, /*int */v2:number, /*int */planeNum :number):void {
 	var/*int		*/i: number, hashKey: number;
@@ -938,7 +938,7 @@ function R_DefineEdge( /*int*/ v1:number, /*int */v2:number, /*int */planeNum :n
 	if ( v1 == v2 ) {
 		return;
 	}
-	hashKey = silEdgeHash.GenerateKey( v1, v2 );
+	hashKey = silEdgeHash.GenerateKeyFromNumbers( v1, v2 );
 	// search for a matching other side
 	for ( i = silEdgeHash.First( hashKey ); i >= 0 && i < MAX_SIL_EDGES; i = silEdgeHash.Next( i ) ) {
 		if ( silEdges[i].v1 == v1 && silEdges[i].v2 == v2 ) {
@@ -974,28 +974,28 @@ function R_DefineEdge( /*int*/ v1:number, /*int */v2:number, /*int */planeNum :n
 
 	numSilEdges++;
 }
-//
-///*
-//=================
-//SilEdgeSort
-//=================
-//*/
-//static int SilEdgeSort( const void *a, const void *b ) {
-//	if ( ((silEdge_t *)a).p1 < ((silEdge_t *)b).p1 ) {
-//		return -1;
-//	}
-//	if ( ((silEdge_t *)a).p1 > ((silEdge_t *)b).p1 ) {
-//		return 1;
-//	}
-//	if ( ((silEdge_t *)a).p2 < ((silEdge_t *)b).p2 ) {
-//		return -1;
-//	}
-//	if ( ((silEdge_t *)a).p2 > ((silEdge_t *)b).p2 ) {
-//		return 1;
-//	}
-//	return 0;
-//}
-//
+
+/*
+=================
+SilEdgeSort
+=================
+*/
+function SilEdgeSort ( a: any, b: any ): number {
+	if ( <silEdge_t >a.p1 < <silEdge_t >b.p1 ) {
+		return -1;
+	}
+	if ( <silEdge_t >a.p1 > <silEdge_t >b.p1 ) {
+		return 1;
+	}
+	if ( <silEdge_t >a.p2 < <silEdge_t >b.p2 ) {
+		return -1;
+	}
+	if ( <silEdge_t >a.p2 > <silEdge_t >b.p2 ) {
+		return 1;
+	}
+	return 0;
+}
+
 /*
 =================
 R_IdentifySilEdges
@@ -1004,8 +1004,8 @@ If the surface will not deform, coplanar edges (polygon interiors)
 can never create silhouette plains, and can be omited
 =================
 */
-var /*int*/	c_coplanarSilEdges: number;
-var /*int*/	c_totalSilEdges:number;
+var /*int*/	c_coplanarSilEdges = 0
+var /*int*/ c_totalSilEdges = 0;
 
 function R_IdentifySilEdges(tri: srfTriangles_t, omitCoplanarEdges:boolean): void {
 	var /*int		*/i: number;
@@ -1081,7 +1081,8 @@ function R_IdentifySilEdges(tri: srfTriangles_t, omitCoplanarEdges:boolean): voi
 
 			if ( j == 3 ) {
 				// we can cull this sil edge
-				memmove( &silEdges[i], &silEdges[i+1], (numSilEdges-i-1) * sizeof( silEdges[i] ) );
+				todoThrow ( );
+				//memmove( &silEdges[i], &silEdges[i+1], (numSilEdges-i-1) * sizeof( silEdges[i] ) );
 				c_coplanarCulled++;
 				numSilEdges--;
 				i--;
@@ -1096,7 +1097,7 @@ function R_IdentifySilEdges(tri: srfTriangles_t, omitCoplanarEdges:boolean): voi
 	c_totalSilEdges += numSilEdges;
 
 	// sort the sil edges based on plane number
-	qsort( silEdges, numSilEdges, sizeof( silEdges[0] ), SilEdgeSort );
+	qsort( silEdges, numSilEdges, 0/*sizeof( silEdges[0] )*/, SilEdgeSort );
 
 	// count up the distribution.
 	// a perfectly built model should only have shared
@@ -1120,7 +1121,7 @@ function R_IdentifySilEdges(tri: srfTriangles_t, omitCoplanarEdges:boolean): voi
 
 	tri.numSilEdges = numSilEdges;
 	tri.silEdges = triSilEdgeAllocator.Alloc( numSilEdges );
-	memcpy( tri.silEdges, silEdges, numSilEdges * sizeof( tri.silEdges[0] ) );
+	todoThrow( "memcpy( tri.silEdges, silEdges, numSilEdges * sizeof( tri.silEdges[0] ) );" );
 }
 
 ///*
@@ -2118,26 +2119,26 @@ function R_CleanupTriangles(tri: srfTriangles_t, createNormals:boolean, identify
 	if ( identifySilEdges ) {
 		R_IdentifySilEdges( tri, true );	// assume it is non-deformable, and omit coplanar edges
 	}
+	todoThrow ( );
+//	// bust vertexes that share a mirrored edge into separate vertexes
+//	R_DuplicateMirroredVertexes( tri );
 
-	// bust vertexes that share a mirrored edge into separate vertexes
-	R_DuplicateMirroredVertexes( tri );
+//	// optimize the index order (not working?)
+////	R_OrderIndexes( tri.numIndexes, tri.indexes );
 
-	// optimize the index order (not working?)
-//	R_OrderIndexes( tri.numIndexes, tri.indexes );
+//	R_CreateDupVerts( tri );
 
-	R_CreateDupVerts( tri );
+//	R_BoundTriSurf( tri );
 
-	R_BoundTriSurf( tri );
-
-	if ( useUnsmoothedTangents ) {
-		R_BuildDominantTris( tri );
-		R_DeriveUnsmoothedTangents( tri );
-	} else if ( !createNormals ) {
-		R_DeriveFacePlanes( tri );
-		R_DeriveTangentsWithoutNormals( tri );
-	} else {
-		R_DeriveTangents( tri );
-	}
+//	if ( useUnsmoothedTangents ) {
+//		R_BuildDominantTris( tri );
+//		R_DeriveUnsmoothedTangents( tri );
+//	} else if ( !createNormals ) {
+//		R_DeriveFacePlanes( tri );
+//		R_DeriveTangentsWithoutNormals( tri );
+//	} else {
+//		R_DeriveTangents( tri );
+//	}
 }
 
 /*
