@@ -872,14 +872,12 @@ idDeclManagerLocal.prototype.Init = function( ):void {
 	this.RegisterDeclFolder( "skins", ".skin", declType_t.DECL_SKIN );
 	this.RegisterDeclFolder("sound", ".sndshd", declType_t.DECL_SOUND);
 
-	dlog(DEBUG_RegisterDeclFolder, "finished adding sounds decl\n");
-
 	// add console commands
 	cmdSystem.AddCommand( "listDecls", this.ListDecls_f, CMD_FL_SYSTEM, "lists all decls" );
 
 	cmdSystem.AddCommand( "reloadDecls", this.ReloadDecls_f, CMD_FL_SYSTEM, "reloads decls" );
 	cmdSystem.AddCommand( "touch", this.TouchDecl_f, CMD_FL_SYSTEM, "touches a decl" );
-	dlogFlush ( );
+	
     todo( "list decals" );
 	//cmdSystem.AddCommand( "listTables", idListDecls_f<DECL_TABLE>, CMD_FL_SYSTEM, "lists tables", idCmdSystem::ArgCompletion_String<listDeclStrings> );
 	//cmdSystem.AddCommand( "listMaterials", idListDecls_f<DECL_MATERIAL>, CMD_FL_SYSTEM, "lists materials", idCmdSystem::ArgCompletion_String<listDeclStrings> );

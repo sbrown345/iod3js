@@ -2055,53 +2055,54 @@ Clear( ) {
 idRenderSystemLocal::Init
 ===============
 */
-/*idRenderSystemLocal::*/Init():void {	
+/*idRenderSystemLocal::*/
+	Init ( ): void {
 
-	common.Printf( "------- Initializing renderSystem --------\n" );
+		common.Printf( "------- Initializing renderSystem --------\n" );
 
-	// clear all our internal state
-	this.viewCount = 1;		// so cleared structures never match viewCount
-	// we used to memset tr, but now that it is a class, we can't, so
-	// there may be other state we need to reset
+		// clear all our internal state
+		this.viewCount = 1; // so cleared structures never match viewCount
+		// we used to memset tr, but now that it is a class, we can't, so
+		// there may be other state we need to reset
 
-	this.ambientLightVector[0] = 0.5;
-	this.ambientLightVector[1] = 0.5 - 0.385;
-	this.ambientLightVector[2] = 0.8925;
-	this.ambientLightVector[3] = 1.0;
-    
-    backEnd = new backEndState_t();
+		this.ambientLightVector[0] = 0.5;
+		this.ambientLightVector[1] = 0.5 - 0.385;
+		this.ambientLightVector[2] = 0.8925;
+		this.ambientLightVector[3] = 1.0;
 
-    //R_InitCvars();
+		backEnd = new backEndState_t ( );
 
-    this.R_InitCommands();
+		//R_InitCvars();
 
-    this.guiModel = new idGuiModel;
-    this.guiModel.Clear();
+		this.R_InitCommands ( );
 
-    this.demoGuiModel = new idGuiModel;
-    this.demoGuiModel.Clear();
+		this.guiModel = new idGuiModel;
+		this.guiModel.Clear ( );
 
-    R_InitTriSurfData();
+		this.demoGuiModel = new idGuiModel;
+		this.demoGuiModel.Clear ( );
 
-    globalImages.Init();
+		R_InitTriSurfData ( );
 
-    todo( "idCinematic::InitCinematic( );" );
+		globalImages.Init ( );
 
-    // build brightness translation tables
-    idRenderSystem.R_SetColorMappings();
+		todo( "idCinematic::InitCinematic( );" );
 
-    this.R_InitMaterials();
+		// build brightness translation tables
+		idRenderSystem.R_SetColorMappings ( );
 
-    renderModelManager.Init();
+		this.R_InitMaterials ( );
 
-    // set the identity space
-    this.identitySpace.modelMatrix[0*4+0] = 1.0;
-    this.identitySpace.modelMatrix[1*4+1] = 1.0;
-    this.identitySpace.modelMatrix[2*4+2] = 1.0;
+		renderModelManager.Init ( );
 
-    common.Printf( "renderSystem initialized.\n" );
-    common.Printf( "--------------------------------------\n" );
-    }
+		// set the identity space
+		this.identitySpace.modelMatrix[0 * 4 + 0] = 1.0;
+		this.identitySpace.modelMatrix[1 * 4 + 1] = 1.0;
+		this.identitySpace.modelMatrix[2 * 4 + 2] = 1.0;
+
+		common.Printf( "renderSystem initialized.\n" );
+		common.Printf( "--------------------------------------\n" );
+	}
 
 /////*
 ////===============

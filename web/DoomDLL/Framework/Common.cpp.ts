@@ -651,8 +651,9 @@ idCommonLocal::Error
 */
 Error( fmt:string, ...args:any[] ):void {
 	console.error( fmt, args );
+	dlogFlush();
 	debugger;
-	throw "Error!";
+	throw "!";
 ////	va_list		argptr;
 ////	static int	lastErrorTime;
 ////	static int	errorCount;
@@ -749,8 +750,9 @@ Dump out of the game to a system dialog
 */
 FatalError( /*const char **/fmt:string, ...args:any[] ):void {
     console.log(fmt, args);
+	dlogFlush();
 	debugger;
-    throw "Arrrgghhhhhh!!!";
+	throw "!";
     ////va_list		argptr;
 
     ////// if we got a recursive error, make it fatal

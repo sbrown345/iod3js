@@ -1768,7 +1768,7 @@ void R_DeriveTangents( srfTriangles_t *tri, bool allocFacePlanes ) {
 #else
 	dlog(DEBUG_R_DeriveTangents, "DEBUG_R_DeriveTangents\n");
 	for (i = 0; i < tri->numVerts; i++) {
-		dlog(DEBUG_R_DeriveTangents, "i: %i - %s\n", tri->verts[i].ToString());
+		dlog(DEBUG_R_DeriveTangents, "i: %i - %s\n", i, tri->verts[i].ToString());
 	}
 
 	int *dupVerts = tri->dupVerts;

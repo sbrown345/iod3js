@@ -88,8 +88,8 @@ constructor() {
 	this.defaultModel = null;
 	this.beamModel = null;
 	this.spriteModel = null;
-	this.trailModel = null;
 	this.insideLevelLoad = false;
+	this.trailModel = null;
 }
 
 /*

@@ -2569,7 +2569,7 @@ idSIMD_Generic::DeriveTangents
 			// area sign bit
 			area = d0[3] * d1[4] - d0[4] * d1[3];
 			signBit = (area) & (1 << 31);// signBit = ( *(unsigned long *)&area ) & ( 1 << 31 );
-			dlog( DEBUG_DeriveTangents, "area: %i, signBit: %i\n", area, signBit );
+			dlog( DEBUG_DeriveTangents, "area: %f, signBit: %i\n", area, signBit );
 
 			// first tangent
 			t0[0] = d0[0] * d1[4] - d0[4] * d1[0];
@@ -2578,7 +2578,7 @@ idSIMD_Generic::DeriveTangents
 
 			f = idMath.RSqrt( t0.x * t0.x + t0.y * t0.y + t0.z * t0.z );
 			f ^= signBit;//*(unsigned long *)&f ^= signBit;
-			dlog(DEBUG_DeriveTangents, "1 f: %i\n", f);
+			dlog(DEBUG_DeriveTangents, "1 f: %f\n", f);
 
 			t0.x *= f;
 			t0.y *= f;
@@ -2591,7 +2591,7 @@ idSIMD_Generic::DeriveTangents
 
 			f = idMath.RSqrt( t1.x * t1.x + t1.y * t1.y + t1.z * t1.z );
 			f ^= signBit;//*(unsigned long *)&f ^= signBit;
-			dlog(DEBUG_DeriveTangents, "2 f: %i\n", f);
+			dlog(DEBUG_DeriveTangents, "2 f: %f\n", f);
 
 			t1.x *= f;
 			t1.y *= f;

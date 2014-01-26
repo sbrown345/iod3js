@@ -173,7 +173,7 @@ var DEBUG_LOG_MODE = true;
 function isd(v: boolean): boolean { return DEBUG_LOG_MODE && v;}
 
 var DEBUG_RegisterDeclFolder = isd( true );
-var DEBUG_Lexer = isd( false );
+var DEBUG_Lexer = isd( true );
 var DEBUG_DeriveTangents = isd( true );
 var DEBUG_R_DeriveTangents = isd(true);
 
