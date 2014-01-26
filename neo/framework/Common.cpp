@@ -1605,6 +1605,7 @@ void idCommonLocal::InitLanguageDict( void ) {
 	idStr fileName;
 	languageDict.Clear();
 
+#ifndef JS_CHANGES
 	//D3XP: Instead of just loading a single lang file for each language
 	//we are going to load all files that begin with the language name
 	//similar to the way pak files work. So you can place english001.lang
@@ -1635,6 +1636,9 @@ void idCommonLocal::InitLanguageDict( void ) {
 	}
 
 	fileSystem->FreeFileList(langFiles);
+#else
+	languageDict.Load("strings/english.lang", false);
+#endif
 
 	Sys_InitScanTable();
 }

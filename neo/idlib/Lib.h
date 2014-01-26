@@ -165,6 +165,9 @@ JavaScript Debug Helpers
 
 ===============================================================================
 */
+
+#define JS_CHANGES
+
 #define DEBUG_LOG_MODE 1
 #define isd(v) DEBUG_LOG_MODE && v
 
