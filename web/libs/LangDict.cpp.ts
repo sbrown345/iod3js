@@ -125,7 +125,7 @@ Load( fileName:string, clear:boolean /* _D3XP */ ) {
 		// let whoever called us deal with the failure (so sys_lang can be reset)
 		return false;
 	}
-	src.LoadMemory(buffer.toString(), /*strlen( buffer )*/buffer.$.length, fileName );
+	src.LoadMemory(buffer.$.toString(), /*strlen( buffer )*/buffer.$.length, fileName );
 	if ( !src.IsLoaded() ) {
 		return false;
 	}
@@ -185,31 +185,31 @@ Load( fileName:string, clear:boolean /* _D3XP */ ) {
 ////	idLib::fileSystem.CloseFile( outFile );
 ////}
 
-/////*
-////============
-////idLangDict::GetString
-////============
-////*/
-////const char *idLangDict::GetString( const char *str ) const {
+/*
+============
+idLangDict::GetString
+============
+*/
+	GetString ( str: string ): string {
 
-////	if ( str == NULL || str[0] == '\0' ) {
-////		return "";
-////	}
+		if ( !str ) {
+			return "";
+		}
 
-////	if ( idStr::Cmpn( str, STRTABLE_ID, STRTABLE_ID_LENGTH ) != 0 ) {
-////		return str;
-////	}
+		if ( idStr.Cmpn( str, STRTABLE_ID, STRTABLE_ID_LENGTH ) != 0 ) {
+			return str;
+		}
 
-////	int hashKey = GetHashKey( str );
-////	for ( int i = this.hash.First( hashKey ); i != -1; i = this.hash.Next( i ) ) {
-////		if ( this.args[i].key.Cmp( str ) == 0 ) {
-////			return this.args[i].value;
-////		}
-////	}
+		var hashKey = this.GetHashKey( str );
+		for ( var i = this.hash.First( hashKey ); i != -1; i = this.hash.Next( i ) ) {
+			if ( this.args[i].key.Cmp( str ) == 0 ) {
+				return this.args[i].value;
+			}
+		}
 
-////	idLib::common.Warning( "Unknown string id %s", str );
-////	return str;
-////}
+		common.Warning( "Unknown string id %s", str );
+		return str;
+	}
 
 /////*
 ////============

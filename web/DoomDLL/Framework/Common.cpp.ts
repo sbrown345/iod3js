@@ -1594,14 +1594,14 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	}
 ////}
 
-/////*
-////===============
-////idCommonLocal::GetLanguageDict
-////===============
-////*/
-////const idLangDict *idCommonLocal::GetLanguageDict( void ) {
-////	return &languageDict;
-////}
+/*
+===============
+idCommonLocal::GetLanguageDict
+===============
+*/
+	GetLanguageDict ( ): idLangDict {
+		return this.languageDict;
+	}
 
 /////*
 ////===============
@@ -2421,21 +2421,21 @@ InitLanguageDict( ):void {
 ////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04343" ) );
 ////}
 
-/////*
-////=================
-////idCommonLocal::PrintLoadingMessage
-////=================
-////*/
-////void idCommonLocal::PrintLoadingMessage( const char *msg ) {
-////	if ( !( msg && *msg ) ) {
-////		return;
-////	}
-////	renderSystem.BeginFrame( renderSystem.GetScreenWidth(), renderSystem.GetScreenHeight() );
-////	renderSystem.DrawStretchPic( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 1, 1, declManager.FindMaterial( "splashScreen" ) );
-////	int len = strlen( msg );
-////	renderSystem.DrawSmallStringExt( ( 640 - len * SMALLCHAR_WIDTH ) / 2, 410, msg, idVec4( 0.0, 0.81f, 0.94f, 1.0f ), true, declManager.FindMaterial( "textures/bigchars" ) );
-////	renderSystem.EndFrame( NULL, NULL );
-////}
+/*
+=================
+idCommonLocal::PrintLoadingMessage
+=================
+*/
+	PrintLoadingMessage( msg:string ): void {
+	if ( !msg  ) {
+		return;
+	}
+	renderSystem.BeginFrame( renderSystem.GetScreenWidth(), renderSystem.GetScreenHeight() );
+	renderSystem.DrawStretchPic( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 1, 1, declManager.FindMaterial( "splashScreen" ) );
+	var len = strlen( msg );
+	renderSystem.DrawSmallStringExt( ( 640 - len * SMALLCHAR_WIDTH ) / 2, 410, msg, new idVec4( 0.0, 0.81, 0.94, 1.0 ), true, declManager.FindMaterial( "textures/bigchars" ) );
+		renderSystem.EndFrame(null, null );
+}
 
 /////*
 ////=================
@@ -2964,9 +2964,10 @@ idCommonLocal::InitGame
 
 	// initialize string database right off so we can use it for loading messages
 	this.InitLanguageDict ( );
-		todoThrow ( );
-////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04344" ) );
+	todoThrow ( );
+	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04344" ) );
 
+	todoThrow();
 ////	// load the font, etc
 ////	console.LoadGraphics();
 
