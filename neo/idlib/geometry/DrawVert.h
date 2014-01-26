@@ -59,6 +59,8 @@ public:
 
 	void			SetColor( dword color );
 	dword			GetColor( void ) const;
+
+	char*			ToString();
 };
 
 ID_INLINE float idDrawVert::operator[]( const int index ) const {
@@ -102,6 +104,10 @@ ID_INLINE void idDrawVert::SetColor( dword color ) {
 
 ID_INLINE dword idDrawVert::GetColor( void ) const {
 	return *reinterpret_cast<const dword *>(this->color);
+}
+
+ID_INLINE char* idDrawVert::ToString( void )  {
+	return va("xyz: %s", xyz.ToString());
 }
 
 #endif /* !__DRAWVERT_H__ */

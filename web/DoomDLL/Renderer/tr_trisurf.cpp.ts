@@ -1776,6 +1776,11 @@ function R_DeriveTangents(tri:srfTriangles_t, allocFacePlanes:boolean = true):vo
 //	}
 
 //#else
+	dlog(DEBUG_R_DeriveTangents, "DEBUG_R_DeriveTangents\n");
+	for (i = 0; i < tri.numVerts; i++) {
+		dlog(DEBUG_R_DeriveTangents, "i: %i - %s\n", i, tri.verts[i].ToString());
+	}
+
 
 	var dupVerts:Int32Array = tri.dupVerts;
 	var verts: idDrawVert[] = tri.verts;

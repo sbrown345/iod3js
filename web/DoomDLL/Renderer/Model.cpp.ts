@@ -175,22 +175,22 @@ AddCubeFace
 */
 function AddCubeFace( tri: srfTriangles_t, v1: idVec3, v2: idVec3, v3: idVec3, v4: idVec3 ): void {
 	tri.verts[tri.numVerts + 0].Clear ( );
-	tri.verts[tri.numVerts + 0].xyz = v1.multiplyByFloat(8);
+	tri.verts[tri.numVerts + 0].xyz = v1.timesFloat(8);
 	tri.verts[tri.numVerts + 0].st[0] = 0;
 	tri.verts[tri.numVerts + 0].st[1] = 0;
 
 	tri.verts[tri.numVerts + 1].Clear ( );
-	tri.verts[tri.numVerts + 1].xyz = v2.multiplyByFloat(8);
+	tri.verts[tri.numVerts + 1].xyz = v2.timesFloat(8);
 	tri.verts[tri.numVerts + 1].st[0] = 1;
 	tri.verts[tri.numVerts + 1].st[1] = 0;
 
 	tri.verts[tri.numVerts + 2].Clear ( );
-	tri.verts[tri.numVerts + 2].xyz = v3.multiplyByFloat(8);
+	tri.verts[tri.numVerts + 2].xyz = v3.timesFloat(8);
 	tri.verts[tri.numVerts + 2].st[0] = 1;
 	tri.verts[tri.numVerts + 2].st[1] = 1;
 
 	tri.verts[tri.numVerts + 3].Clear ( );
-	tri.verts[tri.numVerts + 3].xyz = v4.multiplyByFloat(8);
+	tri.verts[tri.numVerts + 3].xyz = v4.timesFloat(8);
 	tri.verts[tri.numVerts + 3].st[0] = 0;
 	tri.verts[tri.numVerts + 3].st[1] = 1;
 
@@ -650,7 +650,7 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 		for ( var j = 0; j < tri.numIndexes; j += 3 ) {
 			var area = idWinding.TriangleArea( tri.verts[tri.indexes[j]].xyz,
 				tri.verts[tri.indexes[j + 1]].xyz, tri.verts[tri.indexes[j + 2]].xyz );
-			todoThrow( "const_cast<idMaterial *>(surf.shader).AddToSurfaceArea( area );" );
+			/*const_cast<idMaterial *>*/(surf.shader).AddToSurfaceArea( area );
 		}
 	}
 
@@ -670,7 +670,7 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 			// at run time...
 			if ( surf.shader.Deform ( ) != deform_t.DFRM_NONE ) {
 				var tri = surf.geometry;
-				var mid = new idVec3( tri.bounds[1] + tri.bounds[0] ).multiplyByFloat( 0.5 );
+				var mid = new idVec3( tri.bounds[1] + tri.bounds[0] ).timesFloat( 0.5 );
 				var /*float	*/radius = ( tri.bounds[0].subtract( mid ) ).Length ( );
 				radius += 20.0;
 

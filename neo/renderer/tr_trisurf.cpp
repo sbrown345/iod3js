@@ -1644,6 +1644,7 @@ This is called once for static surfaces, and every frame for deforming surfaces
 Builds tangents, normals, and face planes
 ==================
 */
+const int DEBUG_R_DeriveTangents = 1;
 void R_DeriveTangents( srfTriangles_t *tri, bool allocFacePlanes ) {
 	int				i;
 	idPlane			*planes;
@@ -1765,10 +1766,14 @@ void R_DeriveTangents( srfTriangles_t *tri, bool allocFacePlanes ) {
 	}
 
 #else
+	dlog(DEBUG_R_DeriveTangents, "DEBUG_R_DeriveTangents\n");
+	for (i = 0; i < tri->numVerts; i++) {
+		dlog(DEBUG_R_DeriveTangents, "i: %i - %s\n", tri->verts[i].ToString());
+	}
 
 	int *dupVerts = tri->dupVerts;
 	idDrawVert *verts = tri->verts;
-
+	
 	// add the normal of a duplicated vertex to the normal of the first vertex with the same XYZ
 	for ( i = 0; i < tri->numDupVerts; i++ ) {
 		verts[dupVerts[i*2+0]].normal += verts[dupVerts[i*2+1]].normal;

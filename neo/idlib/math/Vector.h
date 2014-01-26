@@ -384,6 +384,8 @@ public:
 
 	void			Lerp( const idVec3 &v1, const idVec3 &v2, const float l );
 	void			SLerp( const idVec3 &v1, const idVec3 &v2, const float l );
+
+	char*			ToString();
 };
 
 extern idVec3 vec3_origin;
@@ -798,6 +800,9 @@ ID_INLINE bool idVec3::ProjectAlongPlane( const idVec3 &normal, const float epsi
 	return true;
 }
 
+ID_INLINE char* idVec3::ToString(void)  {
+	return va("x: %f, y: %f, z:%f", x, y, z);
+}
 
 //===============================================================
 //

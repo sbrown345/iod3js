@@ -1042,3 +1042,4 @@ ID_INLINE int idStr::DynamicMemoryUsed() const {
 }
 
 #endif /* !__STR_H__ */
+

@@ -41,7 +41,8 @@
 					case 'c': arg = String.fromCharCode(arg); break;
 					case 'd': arg = parseInt(arg, 10); break;
 					case 'e': arg = match[7] ? arg.toExponential(match[7]) : arg.toExponential(); break;
-					case 'f': arg = match[7] ? parseFloat(arg).toFixed(match[7]) : parseFloat(arg); break;
+				    case 'f': arg = match[7] ? parseFloat(arg).toFixed(match[7]) : parseFloat(arg); break;
+				    case 'i': arg = parseInt(arg, 10); break;
 					case 'o': arg = arg.toString(8); break;
 					case 's': arg = ((arg = String(arg)) && match[7] ? arg.substring(0, match[7]) : arg); break;
 					case 'u': arg = arg >>> 0; break;
@@ -69,7 +70,7 @@
 			else if ((match = /^\x25{2}/.exec(_fmt)) !== null) {
 				parse_tree.push('%');
 			}
-			else if ((match = /^\x25(?:([1-9]\d*)\$|\(([^\)]+)\))?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-fosuxX])/.exec(_fmt)) !== null) {
+			else if ((match = /^\x25(?:([1-9]\d*)\$|\(([^\)]+)\))?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-fosuxXi])/.exec(_fmt)) !== null) {
 				if (match[2]) {
 					arg_names |= 1;
 					var field_list = [], replacement_field = match[2], field_match = [];

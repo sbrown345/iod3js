@@ -136,7 +136,9 @@ class idDrawVert {
 ////	tangents[0].Cross( tangents[1], normal );
 ////	tangents[0].Normalize();
 ////}
-
+	ToString ( ): string {
+		return va("xyz: %s", this.xyz.ToString());
+	}
 }
 
 // todo: remove later on
@@ -147,6 +149,9 @@ Object.defineProperty( idDrawVert.prototype, "0", {
 	set: function ( value: number ): void {
 		if ( value === undefined ) {
 			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
 		}
 		this.xyz[0] = value;
 	},
@@ -162,6 +167,9 @@ Object.defineProperty( idDrawVert.prototype, "1", {
 		if ( value === undefined ) {
 			throw 'Undefined value';
 		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
 		this.xyz[1] = value;
 	},
 	enumerable: false,
@@ -175,6 +183,9 @@ Object.defineProperty( idDrawVert.prototype, "2", {
 	set: function ( value: number ): void {
 		if ( value === undefined ) {
 			throw 'Undefined value';
+		}
+		if ( typeof value !== "number") {
+			throw 'must be number type';
 		}
 		this.xyz[2] = value;
 	},

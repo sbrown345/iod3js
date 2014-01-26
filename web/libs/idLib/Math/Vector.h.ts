@@ -463,16 +463,16 @@ class idVec3 {
 ////	return *this;
 ////}
 
-	subtracVec ( a: idVec3 ): idVec3 {
+	minus ( a: idVec3 ): idVec3 {
 		return new idVec3( this.x - a.x, this.y - a.y, this.z - a.z );
 	}
 
 /*float*/
-	multiplyByVec ( a: idVec3 ): number {
+	timesVec ( a: idVec3 ): number {
 		return this.x * a.x + this.y * a.y + this.z * a.z;
 	}
 
-	multiplyByFloat ( /*const float */a: number ): idVec3 {
+	timesFloat ( /*const float */a: number ): idVec3 {
 		return new idVec3( this.x * a, this.y * a, this.z * a );
 	}
 
@@ -481,9 +481,10 @@ class idVec3 {
 ////	return idVec3( this.x * inva, this.y * inva, this.z * inva );
 ////}
 
-////ID_INLINE idVec3 operator*( const float a, const idVec3 b ) {
-////	return idVec3( b.x * a, b.y * a, b.z * a );
-////}
+	/*operator**/
+	static times ( /*const float */a: number, b: idVec3 ): idVec3 {
+		return new idVec3( b.x * a, b.y * a, b.z * a );
+	}
 
 ////ID_INLINE idVec3 idVec3::operator+( const idVec3 &a ) const {
 ////	return idVec3( this.x + a.x, this.y + a.y, this.z + a.z );
@@ -522,14 +523,14 @@ class idVec3 {
 
 ////	return *this;
 ////}
+	/*-=*/
+	minusEquals ( a: idVec3 ): idVec3 {
+		this.x -= a.x;
+		this.y -= a.y;
+		this.z -= a.z;
 
-////ID_INLINE idVec3 &idVec3::operator-=( const idVec3 &a ) {
-////	this.x -= a.x;
-////	this.y -= a.y;
-////	this.z -= a.z;
-
-////	return *this;
-////}
+		return this;
+	}
 
 ////ID_INLINE idVec3 &idVec3::operator*=( const float a ) {
 ////	this.x *= a;
@@ -662,9 +663,9 @@ class idVec3 {
 ////	return denormal;
 ////}
 
-////ID_INLINE idVec3 idVec3::Cross( const idVec3 &a ) const {
-////	return idVec3( this.y * a.z - this.z * a.y, this.z * a.x - this.x * a.z, this.x * a.y - this.y * a.x );
-////}
+	Cross ( a: idVec3 ): idVec3 {
+		return new idVec3( this.y * a.z - this.z * a.y, this.z * a.x - this.x * a.z, this.x * a.y - this.y * a.x );
+	}
 
 ////ID_INLINE idVec3 &idVec3::Cross( const idVec3 &a, const idVec3 &b ) {
 ////	x = a.y * b.z - a.z * b.y;
@@ -844,6 +845,9 @@ class idVec3 {
 ////	return true;
 ////}
 
+	ToString(): string {
+		return va("x: %f, y: %f, z:%f", this.x, this.y, this.z);
+	}
 };
 
 //===============================================================
@@ -854,10 +858,46 @@ class idVec3 {
 
 class idVec4 {
 //public:	
-	///*float			*/x:number;  // maybe get/set?
+	///*float			*/x:number; 
 	///*float			*/y:number;
 	///*float			*/z:number;
 	///*float			*/w:number;
+
+	get x(): number { return this[0]; }
+
+	set x(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this[0] = value;
+	}
+
+	get y(): number { return this[1]; }
+
+	set y(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this[1] = value;
+	}
+
+	get z(): number { return this[2]; }
+
+	set z(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this[2] = value;
+	}
+
+	get w(): number { return this[3]; }
+
+	set w(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this[3] = value;
+	}
 
     constructor() {
         this[0] = 0.0; // could extend float32 array
@@ -931,9 +971,9 @@ class idVec4 {
 ////	this.w = w;
 ////}
 
-////ID_INLINE void idVec4::Zero( void ) {
-////	x = y = z = w = 0.0;
-////}
+Zero( ):void {
+	this.x = this.y = this.z = this.w = 0.0;
+}
 
 ////ID_INLINE float idVec4::operator[]( int index ) const {
 ////	return ( &x )[ index ];

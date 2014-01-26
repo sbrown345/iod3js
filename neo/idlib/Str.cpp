@@ -1559,32 +1559,6 @@ int vsprintf( idStr &string, const char *fmt, va_list argptr ) {
 
 /*
 ============
-va
-
-does a varargs printf into a temp buffer
-NOTE: not thread safe
-============
-*/
-char *va( const char *fmt, ... ) {
-	va_list argptr;
-	static int index = 0;
-	static char string[4][16384];	// in case called by nested functions
-	char *buf;
-
-	buf = string[index];
-	index = (index + 1) & 3;
-
-	va_start( argptr, fmt );
-	vsprintf( buf, fmt, argptr );
-	va_end( argptr );
-
-	return buf;
-}
-
-
-
-/*
-============
 idStr::BestUnit
 ============
 */

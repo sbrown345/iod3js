@@ -230,12 +230,12 @@ class idPlane {
 	//	a = b = c = d = 0.0;
 	//}
 	//
-	//ID_INLINE void idPlane::SetNormal( const idVec3 &normal ) {
-	//	a = normal.x;
-	//	b = normal.y;
-	//	c = normal.z;
-	//}
-	//
+	SetNormal(normal: idVec3 ):void {
+		this.a = normal.x;
+		this.b = normal.y;
+		this.c = normal.z;
+	}
+	
 	//ID_INLINE const idVec3 &idPlane::Normal( void ) const {
 	//	return *reinterpret_cast<const idVec3 *>(&a);
 	//}
@@ -278,7 +278,7 @@ class idPlane {
 	//
 	FromPoints(p1: idVec3, p2: idVec3, p3: idVec3, fixDegenerate: boolean = true): boolean {
 		todoThrow ( );
-		//this.Normal( ( p1.subtracVec( p2 ) ).Cross( p3.subtracVec( p2 ) ) );
+		//this.Normal( ( p1.minus( p2 ) ).Cross( p3.minus( p2 ) ) );
 		//if ( this.Normalize( fixDegenerate ) == 0.0 ) {
 		//	return false;
 		//}
@@ -295,9 +295,10 @@ class idPlane {
 	//	return true;
 	//}
 	//
-	//ID_INLINE void idPlane::FitThroughPoint( const idVec3 &p ) {
-	//	d = -( this.Normal() * p );
-	//}
+	FitThroughPoint( p: idVec3 ):void {
+		//d = -( this.Normal() * p );
+		this.d = -(this.Normal()/* * */.timesVec(p) );
+	}
 	//
 	//ID_INLINE idPlane idPlane::Translate( const idVec3 &translation ) const {
 	//	return idPlane( a, b, c, d - translation * this.Normal() );

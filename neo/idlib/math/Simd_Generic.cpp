@@ -2490,6 +2490,7 @@ idSIMD_Generic::DeriveTangents
 	In the process the triangle planes are calculated as well.
 ============
 */
+const int DEBUG_DeriveTangents = 1;
 void VPCALL idSIMD_Generic::DeriveTangents( idPlane *planes, idDrawVert *verts, const int numVerts, const int *indexes, const int numIndexes ) {
 	int i;
 
@@ -2541,6 +2542,7 @@ void VPCALL idSIMD_Generic::DeriveTangents( idPlane *planes, idDrawVert *verts, 
 		// area sign bit
 		area = d0[3] * d1[4] - d0[4] * d1[3];
 		signBit = ( *(unsigned long *)&area ) & ( 1 << 31 );
+		dlog(DEBUG_DeriveTangents, "area: %i, signBit: %i\n", area, signBit);
 
 		// first tangent
 		t0[0] = d0[0] * d1[4] - d0[4] * d1[0];
@@ -2549,6 +2551,7 @@ void VPCALL idSIMD_Generic::DeriveTangents( idPlane *planes, idDrawVert *verts, 
 
 		f = idMath::RSqrt( t0.x * t0.x + t0.y * t0.y + t0.z * t0.z );
 		*(unsigned long *)&f ^= signBit;
+		dlog(DEBUG_DeriveTangents, "1 f: %i\n", area, signBit);
 
 		t0.x *= f;
 		t0.y *= f;
@@ -2561,6 +2564,7 @@ void VPCALL idSIMD_Generic::DeriveTangents( idPlane *planes, idDrawVert *verts, 
 
 		f = idMath::RSqrt( t1.x * t1.x + t1.y * t1.y + t1.z * t1.z );
 		*(unsigned long *)&f ^= signBit;
+		dlog(DEBUG_DeriveTangents, "2 f: %i\n", area, signBit);
 
 		t1.x *= f;
 		t1.y *= f;

@@ -2751,32 +2751,32 @@ CheckForConstantRegisters():void {
 						// as noShadow
 	IsDrawn(): boolean { return (this.numStages > 0 || this.entityGui != 0 || this.gui != null ); }
 
-//						// returns true if the material will draw any non light interaction stages
-//	bool				HasAmbient( void ) const { return ( this.numAmbientStages > 0 ); }
+	// returns true if the material will draw any non light interaction stages
+	HasAmbient(): boolean { return ( this.numAmbientStages > 0 ); }
 
-//						// returns true if material has a gui
-//	bool				HasGui( void ) const { return ( entityGui != 0 || gui != NULL ); }
+	// returns true if material has a gui
+	HasGui(): boolean { return (this.entityGui != 0 || this.gui != null ); }
 
-//						// returns true if the material will generate another view, either as
-//						// a mirror or dynamic rendered image
-//	bool				HasSubview( void ) const { return this.hasSubview; }
+	// returns true if the material will generate another view, either as
+	// a mirror or dynamic rendered image
+	HasSubview(): boolean { return this.hasSubview; }
 
-//						// returns true if the material will generate shadows, not making a
-//						// distinction between global and no-self shadows
-//	bool				SurfaceCastsShadow( void ) const { return this.TestMaterialFlag( MF_FORCESHADOWS ) || !this.TestMaterialFlag( MF_NOSHADOWS ); }
+	// returns true if the material will generate shadows, not making a
+	// distinction between global and no-self shadows
+	SurfaceCastsShadow(): boolean { return this.TestMaterialFlag(materialFlags_t.MF_FORCESHADOWS) || !this.TestMaterialFlag(materialFlags_t. MF_NOSHADOWS ); }
 
-//						// returns true if the material will generate interactions with fog/blend lights
-//						// All non-translucent surfaces receive fog unless they are explicitly noFog
-//	bool				ReceivesFog( void ) const { return ( this.IsDrawn() && !noFog && coverage != MC_TRANSLUCENT ); }
+	// returns true if the material will generate interactions with fog/blend lights
+	// All non-translucent surfaces receive fog unless they are explicitly noFog
+	ReceivesFog(): boolean { return (this.IsDrawn() && !this.noFog && this.coverage != materialCoverage_t.MC_TRANSLUCENT ); }
 
-//						// returns true if the material will generate interactions with normal lights
-//						// Many special effect surfaces don't have any bump/diffuse/specular
-//						// stages, and don't interact with lights at all
-//	bool				ReceivesLighting( void ) const { return this.numAmbientStages != this.numStages; }
+	// returns true if the material will generate interactions with normal lights
+	// Many special effect surfaces don't have any bump/diffuse/specular
+	// stages, and don't interact with lights at all
+	ReceivesLighting(): boolean { return this.numAmbientStages != this.numStages; }
 
-//						// returns true if the material should generate interactions on sides facing away
-//						// from light centers, as with noshadow and noselfshadow options
-//	bool				ReceivesLightingOnBackSides( void ) const { return ( materialFlags & (MF_NOSELFSHADOW|MF_NOSHADOWS) ) != 0; }
+	// returns true if the material should generate interactions on sides facing away
+	// from light centers, as with noshadow and noselfshadow options
+	ReceivesLightingOnBackSides(): boolean { return (this.materialFlags & (materialFlags_t.MF_NOSELFSHADOW | materialFlags_t.MF_NOSHADOWS) ) != 0; }
 
 	// Standard two-sided triangle rendering won't work with bump map lighting, because
 	// the normal and tangent vectors won't be correct for the back sides.  When two
@@ -2812,7 +2812,7 @@ CheckForConstantRegisters():void {
 //						// necessary to prevent mutliple gui surfaces, mirrors, autosprites, and some other
 //						// special effects from being combined into a single surface
 //						// guis, merging sprites or other effects, mirrors and remote views are always discrete
-//	bool				IsDiscrete( void ) const { return ( entityGui || gui || deform != deform_t.DFRM_NONE || this.sort == materialSort_t.SS_SUBVIEW ||
+//	bool				IsDiscrete(): boolean { return ( entityGui || gui || deform != deform_t.DFRM_NONE || this.sort == materialSort_t.SS_SUBVIEW ||
 //												( surfaceFlags & SURF_DISCRETE ) != 0 ); }
 
 //						// Normally, dmap chops each surface by every BSP boundary, then reoptimizes.
@@ -2823,7 +2823,7 @@ CheckForConstantRegisters():void {
 //						// of not automatically fixing up interpenetrations, so when this is used, you
 //						// should manually make the edges of your sky box exactly meet, instead of poking
 //						// into each other.
-//	bool				NoFragment( void ) const { return ( surfaceFlags & SURF_NOFRAGMENT ) != 0; }
+//	bool				NoFragment(): boolean { return ( surfaceFlags & SURF_NOFRAGMENT ) != 0; }
 
 //	//------------------------------------------------------------------
 //	// light shader specific functions, only called for light entities
@@ -2839,7 +2839,7 @@ CheckForConstantRegisters():void {
 
 //						// implicitly no-shadows lights (ambients, fogs, etc) will never cast shadows
 //						// but individual light entities can also override this value
-//	bool				LightCastsShadows() const { return this.TestMaterialFlag( MF_FORCESHADOWS ) ||
+//	bool				LightCastsShadows() const { return this.TestMaterialFlag( materialFlags_t.MF_FORCESHADOWS ) ||
 //								( !fogLight && !ambientLight && !blendLight && !this.TestMaterialFlag( MF_NOSHADOWS ) ); }
 
 //						// fog lights, blend lights, ambient lights, etc will all have to have interaction
@@ -2855,14 +2855,14 @@ CheckForConstantRegisters():void {
 
 //	//------------------------------------------------------------------
 
-//						// returns the renderbump command line for this shader, or an empty string if not present
-//	const char *		GetRenderBump() const { return renderBump; };
+	// returns the renderbump command line for this shader, or an empty string if not present
+	GetRenderBump():string { return this.renderBump.data; }
 
 	// set specific material flag(s)
 	SetMaterialFlag ( /*const int */flag: number ): void { this.materialFlags |= flag; }
 
-//						// clear specific material flag(s)
-//	void				ClearMaterialFlag( const int flag ) const { materialFlags &= ~flag; }
+	// clear specific material flag(s)
+	ClearMaterialFlag( /*int */flag:number ):void { this.materialFlags &= ~flag; }
 
 	// test for existance of specific material flag(s)
 	TestMaterialFlag( /*const int */flag:number ):boolean { return ( this.materialFlags & flag ) != 0; }
@@ -2873,51 +2873,52 @@ CheckForConstantRegisters():void {
 							// get surface flags
 	GetSurfaceFlags( ):number { return this.surfaceFlags; }
 
-//						// gets name for surface type (stone, metal, flesh, etc.)
-//	const surfTypes_t	GetSurfaceType( void ) const { return static_cast<surfTypes_t>( surfaceFlags & surfaceFlags_t.SURF_TYPE_MASK ); }
+	// gets name for surface type (stone, metal, flesh, etc.)
+	GetSurfaceType( ):surfTypes_t { return /*static_cast<surfTypes_t>*/( this.surfaceFlags & surfaceFlags_t.SURF_TYPE_MASK ); }
 
-//						// get material description
-//	const char *		GetDescription( void ) const { return desc; }
+	// get material description
+	GetDescription( ):string { return this.desc.data; }
 
-//						// get sort order
-//	const float			GetSort( void ) const { return this.sort; }
-//						// this is only used by the gui system to force sorting order
-//						// on images referenced from tga's instead of materials. 
-//						// this is done this way as there are 2000 tgas the guis use
-//	void				SetSort( float s ) const { this.sort = s; };
+	// get sort order
+	GetSort( ):number { return this.sort; }
+	// this is only used by the gui system to force sorting order
+	// on images referenced from tga's instead of materials. 
+	// this is done this way as there are 2000 tgas the guis use
+	SetSort( /*float */s:number ):void { this.sort = s; }
 
-//						// DFRM_NONE, DFRM_SPRITE, etc
-//	deform_t			Deform( void ) const { return deform; }
+	// DFRM_NONE, DFRM_SPRITE, etc
+	Deform(): deform_t { return this.deform; }
 
-//						// flare size, expansion size, etc
-//	const int			GetDeformRegister( int index ) const { return deformRegisters[index]; }
+	// flare size, expansion size, etc
+	GetDeformRegister( /*int */index:number ):number { return this.deformRegisters[index]; }
 
-//						// particle system to emit from surface and table for turbulent
-//	const idDecl		*GetDeformDecl( void ) const { return deformDecl; }
+	// particle system to emit from surface and table for turbulent
+	GetDeformDecl( ):idDecl { return this.deformDecl; }
 
-//						// currently a surface can only have one unique texgen for all the stages
-//	texgen_t			Texgen() const;
+	// currently a surface can only have one unique texgen for all the stages
+	//Texgen() const;
 
-//						// wobble sky parms
-//	const int *			GetTexGenRegisters( void ) const { return texGenRegisters; }
+	// wobble sky parms
+	GetTexGenRegisters( ) :Int32Array { return this.texGenRegisters; }
 
-//						// get cull type
-//	const cullType_t	GetCullType( void ) const { return cullType; }
+	// get cull type
+	GetCullType( ):cullType_t { return this.cullType; }
 
-//	float				GetEditorAlpha( void ) const { return editorAlpha; }
+	GetEditorAlpha( ):number { return this.editorAlpha; }
 
-//	int					GetEntityGui( void ) const { return entityGui; }
+	GetEntityGui( ):number { return this.entityGui; }
 
-//	decalInfo_t			GetDecalInfo( void ) const { return decalInfo; }
+	GetDecalInfo( ):decalInfo_t { return this.decalInfo; }
+	
+	// spectrums are used for "invisible writing" that can only be
+	// illuminated by a light of matching spectrum
+	Spectrum( ):number { return this.spectrum; }
+	
+	GetPolygonOffset( ):number { return this.polygonOffset; }
+	
+	GetSurfaceArea( ):number { return this.surfaceArea; }
+	AddToSurfaceArea( /*float */area: number): void { this.surfaceArea += area; }
 
-//						// spectrums are used for "invisible writing" that can only be
-//						// illuminated by a light of matching spectrum
-//	int					Spectrum( void ) const { return spectrum; }
-
-//	float				GetPolygonOffset( void ) const { return polygonOffset; }
-
-//	float				GetSurfaceArea( void ) const { return surfaceArea; }
-//	void				AddToSurfaceArea( float area ) { surfaceArea += area; }
 
 //	//------------------------------------------------------------------
 

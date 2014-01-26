@@ -243,12 +243,13 @@ static RSqrt( /*float */x :number):number {
 
 	var /*long */i: number;
 	var/*float */y: number, r:number;
-	todoThrow ( );
+	// https://github.com/mikolalysenko/rsqrt/blob/master/rsqrt.js - maybe useful for comparing?
 	//y = x * 0.5;
 	//i = *reinterpret_cast<long *>( &x );
 	//i = 0x5f3759df - ( i >> 1 );
 	//r = *reinterpret_cast<float *>( &i );
 	//r = r * ( 1.5 - r * r * y );
+	r = 1.0 / Math.sqrt( x );
 	return r;
 }
 

@@ -363,6 +363,14 @@ class /*viewEntity_s*/viewEntity_t {
 
 	/*float				*/modelMatrix:Float32Array/*[16]*/;		// local coords to global coords
 	/*float				*/modelViewMatrix:Float32Array/*[16]*/;	// local coords to eye coords
+
+	constructor ( ) {
+		this.scissorRect = new idScreenRect;
+		this.weaponDepthHack = false;
+		this.modelDepthHack = 0;
+		this.modelMatrix = new Float32Array(16);
+		this.modelViewMatrix = new Float32Array(16);
+	}
 }
 
 
@@ -492,10 +500,10 @@ class emptyCommand_t {
 ////	int		frameCount;
 ////} setBufferCommand_t;
 
-////typedef struct {
-////	renderCommand_t		commandId, *next;
-////	viewDef_t	*viewDef;
-////} drawSurfsCommand_t;
+class drawSurfsCommand_t {
+	commandId:renderCommand_t; next: renderCommand_t;
+	viewDef: viewDef_t;
+};
 
 ////typedef struct {
 ////	renderCommand_t		commandId, *next;
@@ -745,19 +753,18 @@ class backEndState_t {
 } //backEndState_t;
 
 
-////const int MAX_GUI_SURFACES	= 1024;		// default size of the drawSurfs list for guis, will
-////										// be automatically expanded as needed
+var MAX_GUI_SURFACES	= 1024;		// default size of the drawSurfs list for guis, will
+										// be automatically expanded as needed
+enum backEndName_t {
+	BE_ARB2,
+	BE_GLSL,
+	BE_BAD
+}
 
-////typedef enum {
-////	BE_ARB2,
-////	BE_GLSL,
-////	BE_BAD
-////} backEndName_t;
-
-////typedef struct {
-////	int		x, y, width, height;	// these are in physical, OpenGL Y-at-bottom pixels
-////} renderCrop_t;
-////static const int	MAX_RENDER_CROPS = 8;
+class renderCrop_t {
+	/*int*/		x: number; y: number; width: number; height: number;	// these are in physical, OpenGL Y-at-bottom pixels
+} ;
+var MAX_RENDER_CROPS = 8;
 
 /*
 ** Most renderer globals are defined here.

@@ -173,6 +173,15 @@ JavaScript Debug Helpers
 void dlog(bool log, char *format, ...);
 
 /*
+============
+va
+
+does a varargs printf into a temp buffer
+NOTE: not thread safe
+============
+*/
+char *va(const char *fmt, ...);
+/*
 ===============================================================================
 
 	idLib headers.

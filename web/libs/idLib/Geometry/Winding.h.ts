@@ -1707,10 +1707,9 @@ idWinding::TriangleArea
 	static /*float */TriangleArea ( a: idVec3, b: idVec3, c: idVec3 ): number {
 		var v1: idVec3, v2: idVec3;
 		var cross: idVec3;
-		todoThrow ( );
-		//v1 = b - a;
-		//v2 = c - a;
-		//cross = v1.Cross(v2);
+		v1 = b. /*-*/minus( a );
+		v2 = c. /*-*/minus( a );
+		cross = v1.Cross( v2 );
 		return 0.5 * cross.Length ( );
 	}
 }

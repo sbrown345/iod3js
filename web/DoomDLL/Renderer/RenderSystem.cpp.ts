@@ -13,6 +13,7 @@
 /// <reference path="tr_backend.cpp.ts" />
 /// <reference path="../../libs/idLib/Math/Vector.h.ts" />
 /// <reference path="../Framework/Common.cpp.ts" />
+/// <reference path="renderworld_local.h.ts" />
 
 /*
 ===========================================================================
@@ -270,8 +271,8 @@ class idRenderSystem {
 /*	int						*/viewportOffset:Array<number>/*[2]*/;	// for doing larger-than-window tiled renderings
 /*	int						*/tiledViewport:Array<number>/*[2]*/;
 
-//	// determines which back end to use, and if vertex programs are in use
-//	backEndName_t			backEndRenderer;
+	// determines which back end to use, and if vertex programs are in use
+	backEndRenderer:backEndName_t;
 /*	bool					*/backEndRendererHasVertexPrograms:boolean;
 /*	float					*/backEndRendererMaxLight:number;	// 1.0 for standard, unlimited for floats
 //														// determines how much overbrighting needs
@@ -281,105 +282,105 @@ class idRenderSystem {
 
 /*	float					*/sortOffset:number;				// for determinist sorting of equal sort materials
 
-//	idList<idRenderWorldLocal*>worlds;
+	worlds: idList<idRenderWorldLocal>;
 
-//	idRenderWorldLocal *	primaryWorld;
-//	renderView_t			primaryRenderView;
-//	viewDef_t *				primaryView;
+	primaryWorld: idRenderWorldLocal;
+	primaryRenderView: renderView_t;
+	primaryView:viewDef_t;
 //	// many console commands need to know which world they should operate on
 
-/*	const idMaterial *		*/defaultMaterial:idMaterial;
-//	idImage *				testImage;
-//	idCinematic *			testVideo;
-//	float					testVideoStartTime;
+	defaultMaterial:idMaterial;
+	testImage:idImage;
+	testVideo:idCinematic;
+/*	float*/testVideoStartTime:number;
 
-//	idImage *				ambientCubeImage;	// hack for testing dependent ambient lighting
+	ambientCubeImage: idImage;	// hack for testing dependent ambient lighting
 
-//	viewDef_t *				viewDef;
+	viewDef: viewDef_t;
 
 	pc: performanceCounters_t;					// performance counters
 
-//	drawSurfsCommand_t		lockSurfacesCmd;	// use this when r_lockSurfaces = 1
+	lockSurfacesCmd: drawSurfsCommand_t;	// use this when r_lockSurfaces = 1
 
     identitySpace:viewEntity_t;		            // can use if we don't know viewDef.worldSpace is valid
-//	FILE *					logFile;			// for logging GL calls and frame breaks
+	logFile:FILE;			// for logging GL calls and frame breaks
 
-//	int						stencilIncr, stencilDecr;	// GL_INCR / INCR_WRAP_EXT, GL_DECR / GL_DECR_EXT
+	/*int*/stencilIncr:number; stencilDecr:number;	// GL_INCR / INCR_WRAP_EXT, GL_DECR / GL_DECR_EXT
 
-//	renderCrop_t			renderCrops[MAX_RENDER_CROPS];
-//	int						currentRenderCrop;
+	renderCrops:renderCrop_t[/*MAX_RENDER_CROPS*/];
+	/*int*/currentRenderCrop:number;
 
-//	// GUI drawing variables for surface creation
-//	int						guiRecursionLevel;		// to prevent infinite overruns
-/*	class idGuiModel *		*/guiModel:idGuiModel;
-/*	class idGuiModel *		*/demoGuiModel:idGuiModel;
+	// GUI drawing variables for surface creation
+	/*int*/guiRecursionLevel:number;		// to prevent infinite overruns
+	guiModel:idGuiModel;
+	demoGuiModel:idGuiModel;
 
 /*	unsigned short*/		gammaTable:Uint8Array;	// brightness / gamma modify this
 
     constructor ( ) {
+	    this.Clear ( );
+        ////public:
+        ////	// renderer globals
+        //this.registered = false; // cleared at shutdown, set at InitOpenGL
 
-        //public:
-        //	// renderer globals
-        this.registered = false; // cleared at shutdown, set at InitOpenGL
+        //this.takingScreenshot = false;
 
-        this.takingScreenshot = false;
+        //this.frameCount = 0; // incremented every frame
+        //this.viewCount = 0; // incremented every view (twice a scene if subviewed)
+        ////											// and every R_MarkFragments call
 
-        this.frameCount = 0; // incremented every frame
-        this.viewCount = 0; // incremented every view (twice a scene if subviewed)
-        //											// and every R_MarkFragments call
+        //this.staticAllocCount = 0; // running total of bytes allocated
 
-        this.staticAllocCount = 0; // running total of bytes allocated
+        //this.frameShaderTime = 0.0; // shader time for all non-world 2D rendering
 
-        this.frameShaderTime = 0.0; // shader time for all non-world 2D rendering
+        //this.viewportOffset = [0, 0]; // for doing larger-than-window tiled renderings
+        //this.tiledViewport = [0, 0];
 
-        this.viewportOffset = [0, 0]; // for doing larger-than-window tiled renderings
-        this.tiledViewport = [0, 0];
+        ////	// determines which back end to use, and if vertex programs are in use
+        ////	backEndName_t			backEndRenderer;
+        //this.backEndRendererHasVertexPrograms = false;
+        //this.backEndRendererMaxLight = 0.0; // 1.0 for standard, unlimited for floats
+        ////														// determines how much overbrighting needs
+        ////														// to be done post-process
 
-        //	// determines which back end to use, and if vertex programs are in use
-        //	backEndName_t			backEndRenderer;
-        this.backEndRendererHasVertexPrograms = false;
-        this.backEndRendererMaxLight = 0.0; // 1.0 for standard, unlimited for floats
-        //														// determines how much overbrighting needs
-        //														// to be done post-process
+        //this.ambientLightVector = new idVec4 ( ); // used for "ambient bump mapping"
 
-        this.ambientLightVector = new idVec4 ( ); // used for "ambient bump mapping"
+        //this.sortOffset = 0.0; // for determinist sorting of equal sort materials
 
-        this.sortOffset = 0.0; // for determinist sorting of equal sort materials
+        ////	idList<idRenderWorldLocal*>worlds;
 
-        //	idList<idRenderWorldLocal*>worlds;
+        //// *	primaryWorld;
+        ////	renderView_t			primaryRenderView;
+        ////	viewDef_t *				primaryView;
+        ////	// many console commands need to know which world they should operate on
 
-        //	idRenderWorldLocal *	primaryWorld;
-        //	renderView_t			primaryRenderView;
-        //	viewDef_t *				primaryView;
-        //	// many console commands need to know which world they should operate on
+        //this.defaultMaterial = new idMaterial ( );
+        ////	idImage *				testImage;
+        ////	idCinematic *			testVideo;
+        ////	float					testVideoStartTime;
 
-        this.defaultMaterial = new idMaterial ( );
-        //	idImage *				testImage;
-        //	idCinematic *			testVideo;
-        //	float					testVideoStartTime;
+        ////	idImage *				ambientCubeImage;	// hack for testing dependent ambient lighting
 
-        //	idImage *				ambientCubeImage;	// hack for testing dependent ambient lighting
+        ////	viewDef_t *				viewDef;
 
-        //	viewDef_t *				viewDef;
+		//this.pc = new performanceCounters_t	();					// performance counters
 
-		this.pc = new performanceCounters_t	();					// performance counters
+        ////	drawSurfsCommand_t		lockSurfacesCmd;	// use this when r_lockSurfaces = 1
 
-        //	drawSurfsCommand_t		lockSurfacesCmd;	// use this when r_lockSurfaces = 1
+        ////	viewEntity_t			identitySpace;		// can use if we don't know viewDef.worldSpace is valid
+        ////	FILE *					logFile;			// for logging GL calls and frame breaks
 
-        //	viewEntity_t			identitySpace;		// can use if we don't know viewDef.worldSpace is valid
-        //	FILE *					logFile;			// for logging GL calls and frame breaks
+        ////	int						stencilIncr, stencilDecr;	// GL_INCR / INCR_WRAP_EXT, GL_DECR / GL_DECR_EXT
 
-        //	int						stencilIncr, stencilDecr;	// GL_INCR / INCR_WRAP_EXT, GL_DECR / GL_DECR_EXT
+        ////	renderCrop_t			renderCrops[MAX_RENDER_CROPS];
+        ////	int						currentRenderCrop;
 
-        //	renderCrop_t			renderCrops[MAX_RENDER_CROPS];
-        //	int						currentRenderCrop;
+        ////	// GUI drawing variables for surface creation
+        ////	int						guiRecursionLevel;		// to prevent infinite overruns
+        //this.guiModel = new idGuiModel ( );
+        //this.demoGuiModel = new idGuiModel ( );
 
-        //	// GUI drawing variables for surface creation
-        //	int						guiRecursionLevel;		// to prevent infinite overruns
-        this.guiModel = new idGuiModel ( );
-        this.demoGuiModel = new idGuiModel ( );
-
-	    this.gammaTable = new Uint8Array( 256 ); // brightness / gamma modify this
+	    //this.gammaTable = new Uint8Array( 256 ); // brightness / gamma modify this
     }
 
 /////*
@@ -2006,48 +2007,48 @@ R_InitCommands( ):void {
 	//cmdSystem.AddCommand( "reloadSurface", R_ReloadSurface_f, CMD_FL_RENDERER, "reloads the decl and images for selected surface" );
 }
 
-/////*
-////===============
-////idRenderSystemLocal::Clear
-////===============
-////*/
-////void idRenderSystemLocal::Clear( void ) {
-////	registered = false;
-////	frameCount = 0;
-////	viewCount = 0;
-////	staticAllocCount = 0;
-////	frameShaderTime = 0.0;
-////	viewportOffset[0] = 0;
-////	viewportOffset[1] = 0;
-////	tiledViewport[0] = 0;
-////	tiledViewport[1] = 0;
-////	backEndRenderer = BE_BAD;
-////	backEndRendererHasVertexPrograms = false;
-////	backEndRendererMaxLight = 1.0f;
-////	ambientLightVector.Zero();
-////	sortOffset = 0;
-////	worlds.Clear();
-////	primaryWorld = NULL;
-////	memset( &primaryRenderView, 0, sizeof( primaryRenderView ) );
-////	primaryView = NULL;
-////	defaultMaterial = NULL;
-////	testImage = NULL;
-////	ambientCubeImage = NULL;
-////	viewDef = NULL;
-////	memset( &pc, 0, sizeof( pc ) );
-////	memset( &lockSurfacesCmd, 0, sizeof( lockSurfacesCmd ) );
-////	memset( &identitySpace, 0, sizeof( identitySpace ) );
-////	logFile = NULL;
-////	stencilIncr = 0;
-////	stencilDecr = 0;
-////	memset( renderCrops, 0, sizeof( renderCrops ) );
-////	currentRenderCrop = 0;
-////	guiRecursionLevel = 0;
-////	guiModel = NULL;
-////	demoGuiModel = NULL;
-////	memset( gammaTable, 0, sizeof( gammaTable ) );
-////	takingScreenshot = false;
-////}
+/*
+===============
+idRenderSystemLocal::Clear
+===============
+*/
+Clear( ) {
+	this.registered = false;
+	this.frameCount = 0;
+	this.viewCount = 0;
+	this.staticAllocCount = 0;
+	this.frameShaderTime = 0.0;
+	this.viewportOffset = [0, 0];
+	this.tiledViewport = [0, 0];
+	this.backEndRenderer = backEndName_t.BE_BAD;
+	this.backEndRendererHasVertexPrograms = false;
+	this.backEndRendererMaxLight = 1.0;
+	this.ambientLightVector = new idVec4();
+	this.ambientLightVector.Zero();
+	this.sortOffset = 0;
+	this.worlds = new idList<idRenderWorldLocal>( idRenderWorldLocal );
+	this.worlds.Clear();
+	this.primaryWorld = null;
+	this.primaryRenderView = new renderView_t ( );
+	this.primaryView = null;
+	this.defaultMaterial = null;
+	this.testImage = null;
+	this.ambientCubeImage = null;
+	this.viewDef = null;
+	this.pc = new performanceCounters_t;
+	this.lockSurfacesCmd = new drawSurfsCommand_t;
+	this.identitySpace = new viewEntity_t;
+	this.logFile = null;
+	this.stencilIncr = 0;
+	this.stencilDecr = 0;
+	this.renderCrops = newStructArray<renderCrop_t>( renderCrop_t, MAX_RENDER_CROPS );
+	this.currentRenderCrop = 0;
+	this.guiRecursionLevel = 0;
+	this.guiModel = null;
+	this.demoGuiModel = null;
+	this.gammaTable = new Uint8Array(256);//	this.memset( gammaTable, 0, sizeof( gammaTable ) );
+	this.takingScreenshot = false;
+}
 
 /*
 ===============
@@ -2100,7 +2101,6 @@ idRenderSystemLocal::Init
 
     common.Printf( "renderSystem initialized.\n" );
     common.Printf( "--------------------------------------\n" );
-        todoThrow ( );
     }
 
 /////*

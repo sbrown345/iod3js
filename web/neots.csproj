@@ -84,6 +84,12 @@
     <Content Include="DoomDLL\Renderer\RenderSystem.cpp.ts" />
     <Content Include="DoomDLL\Renderer\RenderSystem.h.ts" />
     <Content Include="DoomDLL\Renderer\RenderSystem_init.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\RenderWorld.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\RenderWorld.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\RenderWorld_demo.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\RenderWorld_load.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\RenderWorld_local.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\RenderWorld_portals.cpp.ts" />
     <Content Include="DoomDLL\Renderer\tr_backend.cpp.ts" />
     <Content Include="DoomDLL\Renderer\tr_local.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\tr_main.cpp.ts" />

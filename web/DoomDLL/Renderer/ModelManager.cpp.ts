@@ -83,11 +83,13 @@ idRenderModelManagerLocal::idRenderModelManagerLocal
 */
 constructor() {
     super ( );
+	this.models = new idList<idRenderModel>( idRenderModel );
+	this.hash = new idHashIndex ( );
 	this.defaultModel = null;
 	this.beamModel = null;
 	this.spriteModel = null;
-	this.insideLevelLoad = false;
 	this.trailModel = null;
+	this.insideLevelLoad = false;
 }
 
 /*
