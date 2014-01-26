@@ -239,18 +239,18 @@ class idMath {
 ////	static bool					initialized;
 ////};
 
-////ID_INLINE float idMath::RSqrt( float x ) {
+static RSqrt( /*float */x :number):number {
 
-////	long i;
-////	float y, r;
-
-////	y = x * 0.5f;
-////	i = *reinterpret_cast<long *>( &x );
-////	i = 0x5f3759df - ( i >> 1 );
-////	r = *reinterpret_cast<float *>( &i );
-////	r = r * ( 1.5f - r * r * y );
-////	return r;
-////}
+	var /*long */i: number;
+	var/*float */y: number, r:number;
+	todoThrow ( );
+	//y = x * 0.5;
+	//i = *reinterpret_cast<long *>( &x );
+	//i = 0x5f3759df - ( i >> 1 );
+	//r = *reinterpret_cast<float *>( &i );
+	//r = r * ( 1.5 - r * r * y );
+	return r;
+}
 
 ////ID_INLINE float idMath::InvSqrt16( float x ) {
 
@@ -259,10 +259,10 @@ class idMath {
 
 ////	assert( initialized );
 
-////	double y = x * 0.5f;
+////	double y = x * 0.5;
 ////	seed.i = (( ( (3*EXP_BIAS-1) - ( (a >> EXP_POS) & 0xFF) ) >> 1)<<EXP_POS) | iSqrt[(a >> (EXP_POS-LOOKUP_BITS)) & LOOKUP_MASK];
 ////	double r = seed.f;
-////	r = r * ( 1.5f - r * r * y );
+////	r = r * ( 1.5 - r * r * y );
 ////	return (float) r;
 ////}
 
@@ -273,11 +273,11 @@ static InvSqrt( /*float */x:number ):number/*float*/ {
 
 	//assert( initialized );
 
-	//double y = x * 0.5f;
+	//double y = x * 0.5;
 	//seed.i = (( ( (3*EXP_BIAS-1) - ( (a >> EXP_POS) & 0xFF) ) >> 1)<<EXP_POS) | iSqrt[(a >> (EXP_POS-LOOKUP_BITS)) & LOOKUP_MASK];
 	//double r = seed.f;
-	//r = r * ( 1.5f - r * r * y );
-	//r = r * ( 1.5f - r * r * y );
+	//r = r * ( 1.5 - r * r * y );
+	//r = r * ( 1.5 - r * r * y );
 	//return (float) r;
 	return 1 / Math.sqrt( x ); //http://jsperf.com/invsqrt/3
 }
@@ -288,12 +288,12 @@ static InvSqrt( /*float */x:number ):number/*float*/ {
 
 ////	assert( initialized );
 
-////	double y = x * 0.5f;
+////	double y = x * 0.5;
 ////	seed.i = (( ( (3*EXP_BIAS-1) - ( (a >> EXP_POS) & 0xFF) ) >> 1)<<EXP_POS) | iSqrt[(a >> (EXP_POS-LOOKUP_BITS)) & LOOKUP_MASK];
 ////	double r = seed.f;
-////	r = r * ( 1.5f - r * r * y );
-////	r = r * ( 1.5f - r * r * y );
-////	r = r * ( 1.5f - r * r * y );
+////	r = r * ( 1.5 - r * r * y );
+////	r = r * ( 1.5 - r * r * y );
+////	r = r * ( 1.5 - r * r * y );
 ////	return r;
 ////}
 
@@ -671,8 +671,8 @@ static Sqrt( /*float */x:number):number {
 ////	exponent = ( i + IEEE_FLT_EXPONENT_BIAS ) << IEEE_FLT_MANTISSA_BITS;
 ////	y = *reinterpret_cast<float *>(&exponent);
 ////	x -= (float) i;
-////	if ( x >= 0.5f ) {
-////		x -= 0.5f;
+////	if ( x >= 0.5 ) {
+////		x -= 0.5;
 ////		y *= 1.4142135623730950488f;	// multiply with sqrt( 2 )
 ////	}
 ////	x2 = x * x;
@@ -702,7 +702,7 @@ static Sqrt( /*float */x:number):number {
 ////	y = ( y - 1.0f ) / ( y + 1.0f );
 ////	y2 = y * y;
 ////	y = y * ( 2.000000000046727f + y2 * ( 0.666666635059382f + y2 * ( 0.4000059794795f + y2 * ( 0.28525381498f + y2 * 0.2376245609f ) ) ) );
-////	y += 0.693147180559945f * ( (float)exponent + 0.5f );
+////	y += 0.693147180559945f * ( (float)exponent + 0.5 );
 ////	return y;
 ////}
 
@@ -791,7 +791,7 @@ static Fabs( /*float */f:number ):number {
 ////}
 
 ////ID_INLINE float idMath::Rint( float f ) {
-////	return floorf( f + 0.5f );
+////	return floorf( f + 0.5 );
 ////}
 
 ////ID_INLINE int idMath::Ftoi( float f ) {

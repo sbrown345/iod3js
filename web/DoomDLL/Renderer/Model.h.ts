@@ -61,7 +61,7 @@
 ////#endif
 
 
-class silEdge_t {
+class silEdge_t implements ITypeInfo {
 	// NOTE: making this a glIndex is dubious, as there can be 2x the faces as verts
 	p1:number; p2: number;					// planes defining the edge
 	v1: number; v2: number;					// verts defining the edge
@@ -72,6 +72,13 @@ class silEdge_t {
 		this.v1 = 0;
 		this.v2 = 0;
 	}
+
+	static typeInfo = [
+		["p1", ""],
+		["p2", ""],
+		["v1", ""],
+		["v2", ""]
+	];
 };
 
 // this is used for calculating unsmoothed normals and tangents for deformed models
@@ -98,61 +105,61 @@ var SHADOW_CAP_INFINITE	= 64;
 
 // our only drawing geometry type
 class srfTriangles_t {
-	bounds: idBounds;					// for culling																				idBounds					
+	bounds: idBounds; // for culling																				idBounds					
 
-	ambientViewCount:number;		// if == tr.viewCount, it is visible this view												int							
+	ambientViewCount: number; // if == tr.viewCount, it is visible this view												int							
 
-	generateNormals:boolean;		// create normals from geometry, instead of using explicit ones								bool						
-	tangentsCalculated: boolean;		// set when the vertex tangents have been calculated										bool						
-	facePlanesCalculated: boolean;	// set when the face planes have been calculated											bool						
-	perfectHull: boolean;			// true if there aren't any dangling edges													bool						
-	deformedSurface: boolean;		// if true, indexes, silIndexes, mirrorVerts, and silEdges are								bool						
+	generateNormals: boolean; // create normals from geometry, instead of using explicit ones								bool						
+	tangentsCalculated: boolean; // set when the vertex tangents have been calculated										bool						
+	facePlanesCalculated: boolean; // set when the face planes have been calculated											bool						
+	perfectHull: boolean; // true if there aren't any dangling edges													bool						
+	deformedSurface: boolean; // if true, indexes, silIndexes, mirrorVerts, and silEdges are								bool						
 	// pointers into the original surface, and should not be freed															
 
-	numVerts:number;				// number of vertices																		int							
-	verts: idDrawVert;					// vertices, allocated with special allocator												idDrawVert *				
+	numVerts: number; // number of vertices																		int							
+	verts: idDrawVert[]; // vertices, allocated with special allocator												idDrawVert *				
 
-	numIndexes: number;				// for shadows, this has both front and rear end caps and silhouette planes					int							
-	indexes: Int32Array;				// indexes, allocated with special allocator												glIndex_t *					
+	numIndexes: number; // for shadows, this has both front and rear end caps and silhouette planes					int							
+	indexes: Int32Array; // indexes, allocated with special allocator												glIndex_t *					
 
-	silIndexes: Int32Array;				// indexes changed to be the first vertex with same XYZ, ignoring normal and texcoords		glIndex_t *					
+	silIndexes: Int32Array; // indexes changed to be the first vertex with same XYZ, ignoring normal and texcoords		glIndex_t *					
 
-	numMirroredVerts: number;		// this many verts at the end of the vert list are tangent mirrors							int							
-	mirroredVerts: Int32Array;			// tri.mirroredVerts[0] is the mirror of tri.numVerts - tri.numMirroredVerts + 0			int *						
+	numMirroredVerts: number; // this many verts at the end of the vert list are tangent mirrors							int							
+	mirroredVerts: Int32Array; // tri.mirroredVerts[0] is the mirror of tri.numVerts - tri.numMirroredVerts + 0			int *						
 
-	numDupVerts: number;			// number of duplicate vertexes																int							
-	dupVerts: Int32Array;				// pairs of the number of the first vertex and the number of the duplicate vertex			int *						
+	numDupVerts: number; // number of duplicate vertexes																int							
+	dupVerts: Int32Array; // pairs of the number of the first vertex and the number of the duplicate vertex			int *						
 
-	numSilEdges:number;			// number of silhouette edges																int							
-	silEdges: silEdge_t;				// silhouette edges																			silEdge_t *					
+	numSilEdges: number; // number of silhouette edges																int							
+	silEdges: silEdge_t[]; // silhouette edges																			silEdge_t *					
 
-	facePlanes: idPlane;				// [numIndexes/3] plane equations															idPlane *					
+	facePlanes: idPlane[]; // [numIndexes/3] plane equations															idPlane *					
 
-	dominantTris: dominantTri_t;			// [numVerts] for deformed surface fast tangent calculation									dominantTri_t *				
+	dominantTris: dominantTri_t; // [numVerts] for deformed surface fast tangent calculation									dominantTri_t *				
 
-	numShadowIndexesNoFrontCaps: number;	// shadow volumes with front caps omitted											  int							
-	numShadowIndexesNoCaps: number;			// shadow volumes with the front and rear caps omitted								  int							
+	numShadowIndexesNoFrontCaps: number; // shadow volumes with front caps omitted											  int							
+	numShadowIndexesNoCaps: number; // shadow volumes with the front and rear caps omitted								  int							
 
-	shadowCapPlaneBits: number;		// bits 0-5 are set when that plane of the interacting light has triangles					  int							
-							// projected on it, which means that if the view is on the outside of that					  							
-							// plane, we need to draw the rear caps of the shadow volume								  							
-							// turboShadows will have SHADOW_CAP_INFINITE												  							
+	shadowCapPlaneBits: number; // bits 0-5 are set when that plane of the interacting light has triangles					  int							
+	// projected on it, which means that if the view is on the outside of that					  							
+	// plane, we need to draw the rear caps of the shadow volume								  							
+	// turboShadows will have SHADOW_CAP_INFINITE												  							
 
-	shadowVertexes: shadowCache_t;			// these will be copied to shadowCache when it is going to be drawn.						  shadowCache_t *				
-														// these are NULL when vertex programs are available
+	shadowVertexes: shadowCache_t; // these will be copied to shadowCache when it is going to be drawn.						  shadowCache_t *				
+	// these are NULL when vertex programs are available
 
-	ambientSurface:srfTriangles_t;			// for light interactions, point back at the original surface that generated
-															// the interaction, which we will get the ambientCache from
-		
-	nextDeferredFree:srfTriangles_t;		// chain of tris to free next frame
+	ambientSurface: srfTriangles_t; // for light interactions, point back at the original surface that generated
+	// the interaction, which we will get the ambientCache from
+
+	nextDeferredFree: srfTriangles_t; // chain of tris to free next frame
 
 	// data in vertex object space, not directly readable by the CPU
-	indexCache: vertCache_t;				// int
-	ambientCache: vertCache_t;			// idDrawVert
-	lightingCache: vertCache_t;			// lightingCache_t
-	shadowCache: vertCache_t;			// shadowCache_t
+	indexCache: vertCache_t; // int
+	ambientCache: vertCache_t; // idDrawVert
+	lightingCache: vertCache_t; // lightingCache_t
+	shadowCache: vertCache_t; // shadowCache_t
 
-	constructor() {
+	constructor ( ) {
 		this.init ( );
 	}
 
@@ -169,7 +176,7 @@ class srfTriangles_t {
 
 
 		this.numVerts = 0;
-		this.verts = new idDrawVert;
+		this.verts = null;
 
 		this.numIndexes = 0;
 		this.indexes = null;
@@ -207,8 +214,41 @@ class srfTriangles_t {
 		this.indexCache = null;
 		this.ambientCache = null;
 		this.lightingCache = null;
-		this.shadowCache = null;	
+		this.shadowCache = null;
 	}
+
+	static typeInfo = [
+		["bounds", ""],
+		["ambientViewCount", ""],
+		["generateNormals", ""],
+		["tangentsCalculated", ""],
+		["facePlanesCalculated", ""],
+		["perfectHull", ""],
+		["deformedSurface", ""],
+		["numVerts", ""],
+		["verts", ""],
+		["numIndexes", ""],
+		["indexes", ""],
+		["silIndexes", ""],
+		["numMirroredVerts", ""],
+		["mirroredVerts", ""],
+		["numDupVerts", ""],
+		["dupVerts", ""],
+		["numSilEdges", ""],
+		["silEdges", ""],
+		["facePlanes", ""],
+		["dominantTris", ""],
+		["numShadowIndexesNoFrontCaps", ""],
+		["numShadowIndexesNoCaps", ""],
+		["shadowCapPlaneBits", ""],
+		["shadowVertexes", ""],
+		["ambientSurface", ""],
+		["nextDeferredFree", ""],
+		["indexCache", ""],
+		["ambientCache", ""],
+		["lightingCache", ""],
+		["shadowCache", ""]
+	];
 };
 
 ////typedef idList<srfTriangles_t *> idTriList;

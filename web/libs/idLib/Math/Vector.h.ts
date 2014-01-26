@@ -352,6 +352,10 @@ class idVec3 {
 		this.z = z;
 	}
 
+	copy ( ):idVec3 {
+		return new idVec3( this.x, this.y, this.z );
+	}
+
 ////					idVec3( void );
 ////					explicit idVec3( const float x, const float y, const float z );
 
@@ -485,43 +489,52 @@ class idVec3 {
 ////	return idVec3( this.x + a.x, this.y + a.y, this.z + a.z );
 ////}
 
-////ID_INLINE idVec3 &idVec3::operator+=( const idVec3 &a ) {
-////	x += a.x;
-////	y += a.y;
-////	z += a.z;
+	equals ( a: idVec3 ): idVec3 {
+		this.x = a.x;
+		this.y = a.y;
+		this.z = a.z;
 
-////	return *this;
-////}
+		return this;
+	}
+
+	/*operator+=*/
+	/*AdditionAssignment*/ plusEquals( a: idVec3 ): idVec3 {
+		this.x += a.x;
+		this.y += a.y;
+		this.z += a.z;
+
+		return this;
+	}
 
 ////ID_INLINE idVec3 &idVec3::operator/=( const idVec3 &a ) {
-////	x /= a.x;
-////	y /= a.y;
-////	z /= a.z;
+////	this.x /= a.x;
+////	this.y /= a.y;
+////	this.z /= a.z;
 
 ////	return *this;
 ////}
 
 ////ID_INLINE idVec3 &idVec3::operator/=( const float a ) {
 ////	float inva = 1.0 / a;
-////	x *= inva;
-////	y *= inva;
-////	z *= inva;
+////	this.x *= inva;
+////	this.y *= inva;
+////	this.z *= inva;
 
 ////	return *this;
 ////}
 
 ////ID_INLINE idVec3 &idVec3::operator-=( const idVec3 &a ) {
-////	x -= a.x;
-////	y -= a.y;
-////	z -= a.z;
+////	this.x -= a.x;
+////	this.y -= a.y;
+////	this.z -= a.z;
 
 ////	return *this;
 ////}
 
 ////ID_INLINE idVec3 &idVec3::operator*=( const float a ) {
-////	x *= a;
-////	y *= a;
-////	z *= a;
+////	this.x *= a;
+////	this.y *= a;
+////	this.z *= a;
 
 ////	return *this;
 ////}

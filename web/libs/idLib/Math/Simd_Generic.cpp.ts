@@ -497,7 +497,7 @@ class /*idSIMD_Generic*/SIMDProcessor {
 //============
 //*/
 //void VPCALL idSIMD_Generic::MinMax( float &min, float &max, const float *src, const int count ) {
-//	min = idMath::INFINITY; max = -idMath::INFINITY;
+//	min = idMath.INFINITY; max = -idMath.INFINITY;
 //#define OPER(X) if ( src[(X)] < min ) {min = src[(X)];} if ( src[(X)] > max ) {max = src[(X)];}
 //	UNROLL1(OPER)
 //#undef OPER
@@ -509,31 +509,58 @@ class /*idSIMD_Generic*/SIMDProcessor {
 //============
 //*/
 //void VPCALL idSIMD_Generic::MinMax( idVec2 &min, idVec2 &max, const idVec2 *src, const int count ) {
-//	min[0] = min[1] = idMath::INFINITY; max[0] = max[1] = -idMath::INFINITY;
+//	min[0] = min[1] = idMath.INFINITY; max[0] = max[1] = -idMath.INFINITY;
 //#define OPER(X) const idVec2 &v = src[(X)]; if ( v[0] < min[0] ) { min[0] = v[0]; } if ( v[0] > max[0] ) { max[0] = v[0]; } if ( v[1] < min[1] ) { min[1] = v[1]; } if ( v[1] > max[1] ) { max[1] = v[1]; }
 //	UNROLL1(OPER)
 //#undef OPER
 //}
 //
-///*
-//============
-//idSIMD_Generic::MinMax
-//============
-//*/
-//void VPCALL idSIMD_Generic::MinMax( idVec3 &min, idVec3 &max, const idVec3 *src, const int count ) {
-//	min[0] = min[1] = min[2] = idMath::INFINITY; max[0] = max[1] = max[2] = -idMath::INFINITY;
+/*
+============
+idSIMD_Generic::MinMax
+============
+*/
+	static MinMax(min: idVec3, max: idVec3, src: idDrawVert[], count: number ): void {
+		min[0] = min[1] = min[2] = idMath.INFINITY;
+		max[0] = max[1] = max[2] = -idMath.INFINITY;
+
+		function Y ( X: number ) {
+			var v:idVec3 = src[( X )].xyz;
+			if ( v[0] < min[0] ) {
+				min[0] = v[0];
+			}
+			if ( v[0] > max[0] ) {
+				max[0] = v[0];
+			}
+			if ( v[1] < min[1] ) {
+				min[1] = v[1];
+			}
+			if ( v[1] > max[1] ) {
+				max[1] = v[1];
+			}
+			if ( v[2] < min[2] ) {
+				min[2] = v[2];
+			}
+			if ( v[2] > max[2] ) {
+				max[2] = v[2];
+			}
+		}
+
+		for ( var _IX = 0; _IX < count; _IX++ ) {
+			 Y(_IX);
+		}
 //#define OPER(X) const idVec3 &v = src[(X)]; if ( v[0] < min[0] ) { min[0] = v[0]; } if ( v[0] > max[0] ) { max[0] = v[0]; } if ( v[1] < min[1] ) { min[1] = v[1]; } if ( v[1] > max[1] ) { max[1] = v[1]; } if ( v[2] < min[2] ) { min[2] = v[2]; } if ( v[2] > max[2] ) { max[2] = v[2]; }
 //	UNROLL1(OPER)
 //#undef OPER
-//}
-//
+	}
+
 ///*
 //============
 //idSIMD_Generic::MinMax
 //============
 //*/
 //void VPCALL idSIMD_Generic::MinMax( idVec3 &min, idVec3 &max, const idDrawVert *src, const int count ) {
-//	min[0] = min[1] = min[2] = idMath::INFINITY; max[0] = max[1] = max[2] = -idMath::INFINITY;
+//	min[0] = min[1] = min[2] = idMath.INFINITY; max[0] = max[1] = max[2] = -idMath.INFINITY;
 //#define OPER(X) const idVec3 &v = src[(X)].xyz; if ( v[0] < min[0] ) { min[0] = v[0]; } if ( v[0] > max[0] ) { max[0] = v[0]; } if ( v[1] < min[1] ) { min[1] = v[1]; } if ( v[1] > max[1] ) { max[1] = v[1]; } if ( v[2] < min[2] ) { min[2] = v[2]; } if ( v[2] > max[2] ) { max[2] = v[2]; }
 //	UNROLL1(OPER)
 //#undef OPER
@@ -545,7 +572,7 @@ class /*idSIMD_Generic*/SIMDProcessor {
 //============
 //*/
 //void VPCALL idSIMD_Generic::MinMax( idVec3 &min, idVec3 &max, const idDrawVert *src, const int *indexes, const int count ) {
-//	min[0] = min[1] = min[2] = idMath::INFINITY; max[0] = max[1] = max[2] = -idMath::INFINITY;
+//	min[0] = min[1] = min[2] = idMath.INFINITY; max[0] = max[1] = max[2] = -idMath.INFINITY;
 //#define OPER(X) const idVec3 &v = src[indexes[(X)]].xyz; if ( v[0] < min[0] ) { min[0] = v[0]; } if ( v[0] > max[0] ) { max[0] = v[0]; } if ( v[1] < min[1] ) { min[1] = v[1]; } if ( v[1] > max[1] ) { max[1] = v[1]; } if ( v[2] < min[2] ) { min[2] = v[2]; } if ( v[2] > max[2] ) { max[2] = v[2]; }
 //	UNROLL1(OPER)
 //#undef OPER
@@ -2456,151 +2483,151 @@ class /*idSIMD_Generic*/SIMDProcessor {
 //		b = verts + indexes[i + 1];
 //		c = verts + indexes[i + 2];
 //
-//		d0[0] = b->xyz[0] - a->xyz[0];
-//		d0[1] = b->xyz[1] - a->xyz[1];
-//		d0[2] = b->xyz[2] - a->xyz[2];
+//		d0[0] = b.xyz[0] - a.xyz[0];
+//		d0[1] = b.xyz[1] - a.xyz[1];
+//		d0[2] = b.xyz[2] - a.xyz[2];
 //
-//		d1[0] = c->xyz[0] - a->xyz[0];
-//		d1[1] = c->xyz[1] - a->xyz[1];
-//		d1[2] = c->xyz[2] - a->xyz[2];
+//		d1[0] = c.xyz[0] - a.xyz[0];
+//		d1[1] = c.xyz[1] - a.xyz[1];
+//		d1[2] = c.xyz[2] - a.xyz[2];
 //
 //		n[0] = d1[1] * d0[2] - d1[2] * d0[1];
 //		n[1] = d1[2] * d0[0] - d1[0] * d0[2];
 //		n[2] = d1[0] * d0[1] - d1[1] * d0[0];
 //
-//		f = idMath::RSqrt( n.x * n.x + n.y * n.y + n.z * n.z );
+//		f = idMath.RSqrt( n.x * n.x + n.y * n.y + n.z * n.z );
 //
 //		n.x *= f;
 //		n.y *= f;
 //		n.z *= f;
 //
-//		planes->SetNormal( n );
-//		planes->FitThroughPoint( a->xyz );
+//		planes.SetNormal( n );
+//		planes.FitThroughPoint( a.xyz );
 //		planes++;
 //	}
 //}
 //
-///*
-//============
-//idSIMD_Generic::DeriveTangents
-//
-//	Derives the normal and orthogonal tangent vectors for the triangle vertices.
-//	For each vertex the normal and tangent vectors are derived from all triangles
-//	using the vertex which results in smooth tangents across the mesh.
-//	In the process the triangle planes are calculated as well.
-//============
-//*/
-//void VPCALL idSIMD_Generic::DeriveTangents( idPlane *planes, idDrawVert *verts, const int numVerts, const int *indexes, const int numIndexes ) {
-//	int i;
-//
-//	bool *used = (bool *)_alloca16( numVerts * sizeof( used[0] ) );
-//	memset( used, 0, numVerts * sizeof( used[0] ) );
-//
-//	idPlane *planesPtr = planes;
-//	for ( i = 0; i < numIndexes; i += 3 ) {
-//		idDrawVert *a, *b, *c;
-//		unsigned long signBit;
-//		float d0[5], d1[5], f, area;
-//		idVec3 n, t0, t1;
-//
-//		int v0 = indexes[i + 0];
-//		int v1 = indexes[i + 1];
-//		int v2 = indexes[i + 2];
-//
-//		a = verts + v0;
-//		b = verts + v1;
-//		c = verts + v2;
-//
-//		d0[0] = b->xyz[0] - a->xyz[0];
-//		d0[1] = b->xyz[1] - a->xyz[1];
-//		d0[2] = b->xyz[2] - a->xyz[2];
-//		d0[3] = b->st[0] - a->st[0];
-//		d0[4] = b->st[1] - a->st[1];
-//
-//		d1[0] = c->xyz[0] - a->xyz[0];
-//		d1[1] = c->xyz[1] - a->xyz[1];
-//		d1[2] = c->xyz[2] - a->xyz[2];
-//		d1[3] = c->st[0] - a->st[0];
-//		d1[4] = c->st[1] - a->st[1];
-//
-//		// normal
-//		n[0] = d1[1] * d0[2] - d1[2] * d0[1];
-//		n[1] = d1[2] * d0[0] - d1[0] * d0[2];
-//		n[2] = d1[0] * d0[1] - d1[1] * d0[0];
-//
-//		f = idMath::RSqrt( n.x * n.x + n.y * n.y + n.z * n.z );
-//
-//		n.x *= f;
-//		n.y *= f;
-//		n.z *= f;
-//
-//		planesPtr->SetNormal( n );
-//		planesPtr->FitThroughPoint( a->xyz );
-//		planesPtr++;
-//
-//		// area sign bit
-//		area = d0[3] * d1[4] - d0[4] * d1[3];
-//		signBit = ( *(unsigned long *)&area ) & ( 1 << 31 );
-//
-//		// first tangent
-//		t0[0] = d0[0] * d1[4] - d0[4] * d1[0];
-//		t0[1] = d0[1] * d1[4] - d0[4] * d1[1];
-//		t0[2] = d0[2] * d1[4] - d0[4] * d1[2];
-//
-//		f = idMath::RSqrt( t0.x * t0.x + t0.y * t0.y + t0.z * t0.z );
-//		*(unsigned long *)&f ^= signBit;
-//
-//		t0.x *= f;
-//		t0.y *= f;
-//		t0.z *= f;
-//
-//		// second tangent
-//		t1[0] = d0[3] * d1[0] - d0[0] * d1[3];
-//		t1[1] = d0[3] * d1[1] - d0[1] * d1[3];
-//		t1[2] = d0[3] * d1[2] - d0[2] * d1[3];
-//
-//		f = idMath::RSqrt( t1.x * t1.x + t1.y * t1.y + t1.z * t1.z );
-//		*(unsigned long *)&f ^= signBit;
-//
-//		t1.x *= f;
-//		t1.y *= f;
-//		t1.z *= f;
-//
-//		if ( used[v0] ) {
-//			a->normal += n;
-//			a->tangents[0] += t0;
-//			a->tangents[1] += t1;
-//		} else {
-//			a->normal = n;
-//			a->tangents[0] = t0;
-//			a->tangents[1] = t1;
-//			used[v0] = true;
-//		}
-//
-//		if ( used[v1] ) {
-//			b->normal += n;
-//			b->tangents[0] += t0;
-//			b->tangents[1] += t1;
-//		} else {
-//			b->normal = n;
-//			b->tangents[0] = t0;
-//			b->tangents[1] = t1;
-//			used[v1] = true;
-//		}
-//
-//		if ( used[v2] ) {
-//			c->normal += n;
-//			c->tangents[0] += t0;
-//			c->tangents[1] += t1;
-//		} else {
-//			c->normal = n;
-//			c->tangents[0] = t0;
-//			c->tangents[1] = t1;
-//			used[v2] = true;
-//		}
-//	}
-//}
-//
+/*
+============
+idSIMD_Generic::DeriveTangents
+
+	Derives the normal and orthogonal tangent vectors for the triangle vertices.
+	For each vertex the normal and tangent vectors are derived from all triangles
+	using the vertex which results in smooth tangents across the mesh.
+	In the process the triangle planes are calculated as well.
+============
+*/
+	DeriveTangents(planes: idPlane, verts: idDrawVert, /*const int */numVerts:number, /*const int **/indexes:Int32Array, /*const int */numIndexes:number ):void {
+	var /*int */i:number;
+
+		var used = new Array<Boolean>( numVerts );//:bool[];//bool *used = (bool *)_alloca16( numVerts * sizeof( used[0] ) );
+	//memset( used, 0, numVerts * sizeof( used[0] ) );
+
+	var planesPtr = 0;
+	for ( i = 0; i < numIndexes; i += 3 ) {
+		var /*idDrawVert **/a: idDrawVert, b: idDrawVert, c: idDrawVert;
+		var /*unsigned long */signBit: number;
+		var d0 = new Float32Array(5), d1 = new Float32Array(5), f:number, area:number;
+		var n = new idVec3, t0 = new idVec3, t1 = newidVec3;
+
+		var/*int*/ v0 = indexes[i + 0];
+		var/*int*/ v1 = indexes[i + 1];
+		var/*int*/ v2 = indexes[i + 2];
+
+		a = verts[v0];
+		b = verts[v1];
+		c = verts[v2];
+
+		d0[0] = b.xyz[0] - a.xyz[0];
+		d0[1] = b.xyz[1] - a.xyz[1];
+		d0[2] = b.xyz[2] - a.xyz[2];
+		d0[3] = b.st[0] - a.st[0];
+		d0[4] = b.st[1] - a.st[1];
+
+		d1[0] = c.xyz[0] - a.xyz[0];
+		d1[1] = c.xyz[1] - a.xyz[1];
+		d1[2] = c.xyz[2] - a.xyz[2];
+		d1[3] = c.st[0] - a.st[0];
+		d1[4] = c.st[1] - a.st[1];
+
+		// normal
+		n[0] = d1[1] * d0[2] - d1[2] * d0[1];
+		n[1] = d1[2] * d0[0] - d1[0] * d0[2];
+		n[2] = d1[0] * d0[1] - d1[1] * d0[0];
+
+		f = idMath.RSqrt( n.x * n.x + n.y * n.y + n.z * n.z );
+
+		n.x *= f;
+		n.y *= f;
+		n.z *= f;
+
+		planesPtr.SetNormal( n );
+		planesPtr.FitThroughPoint( a.xyz );
+		planesPtr++;
+
+		// area sign bit
+		area = d0[3] * d1[4] - d0[4] * d1[3];
+		signBit = ( *(unsigned long *)&area ) & ( 1 << 31 );
+
+		// first tangent
+		t0[0] = d0[0] * d1[4] - d0[4] * d1[0];
+		t0[1] = d0[1] * d1[4] - d0[4] * d1[1];
+		t0[2] = d0[2] * d1[4] - d0[4] * d1[2];
+
+		f = idMath.RSqrt( t0.x * t0.x + t0.y * t0.y + t0.z * t0.z );
+		*(unsigned long *)&f ^= signBit;
+
+		t0.x *= f;
+		t0.y *= f;
+		t0.z *= f;
+
+		// second tangent
+		t1[0] = d0[3] * d1[0] - d0[0] * d1[3];
+		t1[1] = d0[3] * d1[1] - d0[1] * d1[3];
+		t1[2] = d0[3] * d1[2] - d0[2] * d1[3];
+
+		f = idMath.RSqrt( t1.x * t1.x + t1.y * t1.y + t1.z * t1.z );
+		*(unsigned long *)&f ^= signBit;
+
+		t1.x *= f;
+		t1.y *= f;
+		t1.z *= f;
+
+		if ( used[v0] ) {
+			a.normal += n;
+			a.tangents[0] += t0;
+			a.tangents[1] += t1;
+		} else {
+			a.normal = n;
+			a.tangents[0] = t0;
+			a.tangents[1] = t1;
+			used[v0] = true;
+		}
+
+		if ( used[v1] ) {
+			b.normal += n;
+			b.tangents[0] += t0;
+			b.tangents[1] += t1;
+		} else {
+			b.normal = n;
+			b.tangents[0] = t0;
+			b.tangents[1] = t1;
+			used[v1] = true;
+		}
+
+		if ( used[v2] ) {
+			c.normal += n;
+			c.tangents[0] += t0;
+			c.tangents[1] += t1;
+		} else {
+			c.normal = n;
+			c.tangents[0] = t0;
+			c.tangents[1] = t1;
+			used[v2] = true;
+		}
+	}
+}
+
 ///*
 //============
 //idSIMD_Generic::DeriveUnsmoothedTangents
@@ -2629,17 +2656,17 @@ class /*idSIMD_Generic*/SIMDProcessor {
 //		b = verts + dt.v2;
 //		c = verts + dt.v3;
 //
-//		d0 = b->xyz[0] - a->xyz[0];
-//		d1 = b->xyz[1] - a->xyz[1];
-//		d2 = b->xyz[2] - a->xyz[2];
-//		d3 = b->st[0] - a->st[0];
-//		d4 = b->st[1] - a->st[1];
+//		d0 = b.xyz[0] - a.xyz[0];
+//		d1 = b.xyz[1] - a.xyz[1];
+//		d2 = b.xyz[2] - a.xyz[2];
+//		d3 = b.st[0] - a.st[0];
+//		d4 = b.st[1] - a.st[1];
 //
-//		d5 = c->xyz[0] - a->xyz[0];
-//		d6 = c->xyz[1] - a->xyz[1];
-//		d7 = c->xyz[2] - a->xyz[2];
-//		d8 = c->st[0] - a->st[0];
-//		d9 = c->st[1] - a->st[1];
+//		d5 = c.xyz[0] - a.xyz[0];
+//		d6 = c.xyz[1] - a.xyz[1];
+//		d7 = c.xyz[2] - a.xyz[2];
+//		d8 = c.st[0] - a.st[0];
+//		d9 = c.st[1] - a.st[1];
 //
 //		s0 = dt.normalizationScale[0];
 //		s1 = dt.normalizationScale[1];
@@ -2663,17 +2690,17 @@ class /*idSIMD_Generic*/SIMDProcessor {
 //		t5 = s1 * ( n1 * t0 - n0 * t1 );
 //#endif
 //
-//		a->normal[0] = n0;
-//		a->normal[1] = n1;
-//		a->normal[2] = n2;
+//		a.normal[0] = n0;
+//		a.normal[1] = n1;
+//		a.normal[2] = n2;
 //
-//		a->tangents[0][0] = t0;
-//		a->tangents[0][1] = t1;
-//		a->tangents[0][2] = t2;
+//		a.tangents[0][0] = t0;
+//		a.tangents[0][1] = t1;
+//		a.tangents[0][2] = t2;
 //
-//		a->tangents[1][0] = t3;
-//		a->tangents[1][1] = t4;
-//		a->tangents[1][2] = t5;
+//		a.tangents[1][0] = t3;
+//		a.tangents[1][1] = t4;
+//		a.tangents[1][2] = t5;
 //	}
 //}
 //
@@ -2691,14 +2718,14 @@ class /*idSIMD_Generic*/SIMDProcessor {
 //		idVec3 &v = verts[i].normal;
 //		float f;
 //
-//		f = idMath::RSqrt( v.x * v.x + v.y * v.y + v.z * v.z );
+//		f = idMath.RSqrt( v.x * v.x + v.y * v.y + v.z * v.z );
 //		v.x *= f; v.y *= f; v.z *= f;
 //
 //		for ( int j = 0; j < 2; j++ ) {
 //			idVec3 &t = verts[i].tangents[j];
 //
 //			t -= ( t * v ) * v;
-//			f = idMath::RSqrt( t.x * t.x + t.y * t.y + t.z * t.z );
+//			f = idMath.RSqrt( t.x * t.x + t.y * t.y + t.z * t.z );
 //			t.x *= f; t.y *= f; t.z *= f;
 //		}
 //	}
@@ -2729,11 +2756,11 @@ class /*idSIMD_Generic*/SIMDProcessor {
 //
 //		const idDrawVert *v = &verts[i];
 //
-//		idVec3 lightDir = lightOrigin - v->xyz;
+//		idVec3 lightDir = lightOrigin - v.xyz;
 //
-//		lightVectors[i][0] = lightDir * v->tangents[0];
-//		lightVectors[i][1] = lightDir * v->tangents[1];
-//		lightVectors[i][2] = lightDir * v->normal;
+//		lightVectors[i][0] = lightDir * v.tangents[0];
+//		lightVectors[i][1] = lightDir * v.tangents[1];
+//		lightVectors[i][2] = lightDir * v.normal;
 //	}
 //}
 //
@@ -2763,26 +2790,26 @@ class /*idSIMD_Generic*/SIMDProcessor {
 //
 //		const idDrawVert *v = &verts[i];
 //
-//		idVec3 lightDir = lightOrigin - v->xyz;
-//		idVec3 viewDir = viewOrigin - v->xyz;
+//		idVec3 lightDir = lightOrigin - v.xyz;
+//		idVec3 viewDir = viewOrigin - v.xyz;
 //
 //		float ilength;
 //
-//		ilength = idMath::RSqrt( lightDir * lightDir );
+//		ilength = idMath.RSqrt( lightDir * lightDir );
 //		lightDir[0] *= ilength;
 //		lightDir[1] *= ilength;
 //		lightDir[2] *= ilength;
 //
-//		ilength = idMath::RSqrt( viewDir * viewDir );
+//		ilength = idMath.RSqrt( viewDir * viewDir );
 //		viewDir[0] *= ilength;
 //		viewDir[1] *= ilength;
 //		viewDir[2] *= ilength;
 //
 //		lightDir += viewDir;
 //
-//		texCoords[i][0] = lightDir * v->tangents[0];
-//		texCoords[i][1] = lightDir * v->tangents[1];
-//		texCoords[i][2] = lightDir * v->normal;
+//		texCoords[i][0] = lightDir * v.tangents[0];
+//		texCoords[i][1] = lightDir * v.tangents[1];
+//		texCoords[i][2] = lightDir * v.normal;
 //		texCoords[i][3] = 1.0f;
 //	}
 //}

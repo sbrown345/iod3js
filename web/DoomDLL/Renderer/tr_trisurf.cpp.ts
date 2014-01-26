@@ -569,7 +569,7 @@ R_AllocStaticTriSurfIndexes
 */
 function R_AllocStaticTriSurfIndexes(tri: srfTriangles_t, /*int */numIndexes:number ):void {
 	assert( tri.indexes == null );
-	tri.indexes = triIndexAllocator.Alloc( numIndexes );
+	tri.indexes = triIndexAllocator.AllocInt32Array( numIndexes );
 }
 
 ///*
@@ -582,18 +582,18 @@ function R_AllocStaticTriSurfIndexes(tri: srfTriangles_t, /*int */numIndexes:num
 //	tri.shadowVertexes = triShadowVertexAllocator.Alloc( numVerts );
 //}
 //
-///*
-//=================
-//R_AllocStaticTriSurfPlanes
-//=================
-//*/
-//void R_AllocStaticTriSurfPlanes( srfTriangles_t *tri, int numIndexes ) {
-//	if ( tri.facePlanes ) {
-//		triPlaneAllocator.Free( tri.facePlanes );
-//	}
-//	tri.facePlanes = triPlaneAllocator.Alloc( numIndexes / 3 );
-//}
-//
+/*
+=================
+R_AllocStaticTriSurfPlanes
+=================
+*/
+function R_AllocStaticTriSurfPlanes ( tri: srfTriangles_t, /*int */numIndexes: number ): void {
+	if ( tri.facePlanes ) {
+		triPlaneAllocator.Free( tri.facePlanes );
+	}
+	tri.facePlanes = triPlaneAllocator.Alloc( numIndexes / 3 | 0 );
+}
+
 ///*
 //=================
 //R_ResizeStaticTriSurfVerts
@@ -707,8 +707,7 @@ R_BoundTriSurf
 =================
 */
 function R_BoundTriSurf(tri: srfTriangles_t): void {
-	todoThrow ( );
-	//SIMDProcessor.MinMax( tri.bounds[0], tri.bounds[1], tri.verts, tri.numVerts );
+	SIMDProcessor.MinMax(tri.bounds.b[0], tri.bounds.b[1], tri.verts, tri.numVerts );
 }
 
 /*
@@ -781,7 +780,7 @@ function R_CreateSilIndexes ( tri: srfTriangles_t ): void {
 	remap = R_CreateSilRemap( tri );
 
 	// remap indexes to the first one
-	tri.silIndexes = triSilIndexAllocator.Alloc( tri.numIndexes );
+	tri.silIndexes = triSilIndexAllocator.AllocInt32Array( tri.numIndexes );
 	for ( i = 0; i < tri.numIndexes; i++ ) {
 		tri.silIndexes[i] = remap[tri.indexes[i]];
 	}
@@ -789,41 +788,41 @@ function R_CreateSilIndexes ( tri: srfTriangles_t ): void {
 	R_StaticFree( remap );
 }
 
-///*
-//=====================
-//R_CreateDupVerts
-//=====================
-//*/
-//void R_CreateDupVerts( srfTriangles_t *tri ) {
-//	int i;
-//
-//	int *remap = (int *) _alloca16( tri.numVerts * sizeof( remap[0] ) );
-//
-//	// initialize vertex remap in case there are unused verts
-//	for ( i = 0; i < tri.numVerts; i++ ) {
-//		remap[i] = i;
-//	}
-//
-//	// set the remap based on how the silhouette indexes are remapped
-//	for ( i = 0; i < tri.numIndexes; i++ ) {
-//		remap[tri.indexes[i]] = tri.silIndexes[i];
-//	}
-//
-//	// create duplicate vertex index based on the vertex remap
-//	int * tempDupVerts = (int *) _alloca16( tri.numVerts * 2 * sizeof( tempDupVerts[0] ) );
-//	tri.numDupVerts = 0;
-//	for ( i = 0; i < tri.numVerts; i++ ) {
-//		if ( remap[i] != i ) {
-//			tempDupVerts[tri.numDupVerts*2+0] = i;
-//			tempDupVerts[tri.numDupVerts*2+1] = remap[i];
-//			tri.numDupVerts++;
-//		}
-//	}
-//
-//	tri.dupVerts = triDupVertAllocator.Alloc( tri.numDupVerts * 2 );
-//	memcpy( tri.dupVerts, tempDupVerts, tri.numDupVerts * 2 * sizeof( tri.dupVerts[0] ) );
-//}
-//
+/*
+=====================
+R_CreateDupVerts
+=====================
+*/
+function R_CreateDupVerts(tri: srfTriangles_t): void {
+	var /*int */i:number;
+
+	var /*int **/remap = new Int32Array( tri.numVerts );//(int *) _alloca16( tri.numVerts * sizeof( remap[0] ) );
+
+	// initialize vertex remap in case there are unused verts
+	for ( i = 0; i < tri.numVerts; i++ ) {
+		remap[i] = i;
+	}
+
+	// set the remap based on how the silhouette indexes are remapped
+	for ( i = 0; i < tri.numIndexes; i++ ) {
+		remap[tri.indexes[i]] = tri.silIndexes[i];
+	}
+
+	// create duplicate vertex index based on the vertex remap
+	var tempDupVerts = new Int32Array(tri.numVerts * 2 );// (int *) _alloca16( tri.numVerts * 2 * sizeof( tempDupVerts[0] ) );
+	tri.numDupVerts = 0;
+	for ( i = 0; i < tri.numVerts; i++ ) {
+		if ( remap[i] != i ) {
+			tempDupVerts[tri.numDupVerts*2+0] = i;
+			tempDupVerts[tri.numDupVerts*2+1] = remap[i];
+			tri.numDupVerts++;
+		}
+	}
+
+	tri.dupVerts = triDupVertAllocator.AllocInt32Array( tri.numDupVerts * 2 );
+	memcpy( tri.dupVerts, tempDupVerts, tri.numDupVerts * 2 * sizeofSingleItem( tri.dupVerts ) );
+}
+
 ///*
 //=====================
 //R_DeriveFacePlanes
@@ -1120,39 +1119,39 @@ function R_IdentifySilEdges(tri: srfTriangles_t, omitCoplanarEdges:boolean): voi
 	}
 
 	tri.numSilEdges = numSilEdges;
-	tri.silEdges = triSilEdgeAllocator.Alloc( numSilEdges );
-	todoThrow( "memcpy( tri.silEdges, silEdges, numSilEdges * sizeof( tri.silEdges[0] ) );" );
+	tri.silEdges = triSilEdgeAllocator.Alloc(numSilEdges);
+	memcpyStruct(tri.silEdges, silEdges, numSilEdges, silEdge_t.typeInfo );
 }
 
-///*
-//===============
-//R_FaceNegativePolarity
-//
-//Returns true if the texture polarity of the face is negative, false if it is positive or zero
-//===============
-//*/
-//static bool R_FaceNegativePolarity( const srfTriangles_t *tri, int firstIndex ) {
-//	idDrawVert	*a, *b, *c;
-//	float	area;
-//	float		d0[5], d1[5];
-//
-//	a = tri.verts + tri.indexes[firstIndex + 0];
-//	b = tri.verts + tri.indexes[firstIndex + 1];
-//	c = tri.verts + tri.indexes[firstIndex + 2];
-//
-//	d0[3] = b.st[0] - a.st[0];
-//	d0[4] = b.st[1] - a.st[1];
-//
-//	d1[3] = c.st[0] - a.st[0];
-//	d1[4] = c.st[1] - a.st[1];
-//
-//	area = d0[3] * d1[4] - d0[4] * d1[3];
-//	if ( area >= 0 ) {
-//		return false;
-//	}
-//	return true;
-//}
-//
+/*
+===============
+R_FaceNegativePolarity
+
+Returns true if the texture polarity of the face is negative, false if it is positive or zero
+===============
+*/
+function R_FaceNegativePolarity( tri:srfTriangles_t, /*int */firstIndex:number ):boolean {
+	var a: number, b: number, c: number;
+	var /*float	*/area:number;
+	var d0 = new Float32Array(5), d1 = new Float32Array(5);
+
+	a = /*tri.verts + */tri.indexes[firstIndex + 0];
+	b = /*tri.verts + */tri.indexes[firstIndex + 1];
+	c = /*tri.verts + */tri.indexes[firstIndex + 2];
+
+	d0[3] = tri.verts[b].st[0] - tri.verts[a].st[0];
+	d0[4] = tri.verts[b].st[1] - tri.verts[a].st[1];
+
+	d1[3] = tri.verts[c].st[0] - tri.verts[a].st[0];
+	d1[4] = tri.verts[c].st[1] - tri.verts[a].st[1];
+
+	area = d0[3] * d1[4] - d0[4] * d1[3];
+	if ( area >= 0 ) {
+		return false;
+	}
+	return true;
+}
+
 ///*
 //==================
 //R_DeriveFaceTangents
@@ -1247,105 +1246,109 @@ function R_IdentifySilEdges(tri: srfTriangles_t, omitCoplanarEdges:boolean): voi
 //#endif
 //	}
 //}
-//
-//
-//
-///*
-//===================
-//R_DuplicateMirroredVertexes
-//
-//Modifies the surface to bust apart any verts that are shared by both positive and
-//negative texture polarities, so tangent space smoothing at the vertex doesn't
-//degenerate.
-//
-//This will create some identical vertexes (which will eventually get different tangent
-//vectors), so never optimize the resulting mesh, or it will get the mirrored edges back.
-//
-//Reallocates tri.verts and changes tri.indexes in place
-//Silindexes are unchanged by this.
-//
-//sets mirroredVerts and mirroredVerts[]
-//
-//===================
-//*/
-//typedef struct {
-//	bool	polarityUsed[2];
-//	int			negativeRemap;
-//} tangentVert_t;
-//
-//static void	R_DuplicateMirroredVertexes( srfTriangles_t *tri ) {
-//	tangentVert_t	*tverts, *vert;
-//	int				i, j;
-//	int				totalVerts;
-//	int				numMirror;
-//
-//	tverts = (tangentVert_t *)_alloca16( tri.numVerts * sizeof( *tverts ) );
-//	memset( tverts, 0, tri.numVerts * sizeof( *tverts ) );
-//
-//	// determine texture polarity of each surface
-//
-//	// mark each vert with the polarities it uses
-//	for ( i = 0 ; i < tri.numIndexes ; i+=3 ) {
-//		int	polarity;
-//
-//		polarity = R_FaceNegativePolarity( tri, i );
-//		for ( j = 0 ; j < 3 ; j++ ) {
-//			tverts[tri.indexes[i+j]].polarityUsed[ polarity ] = true;
-//		}
-//	}
-//
-//	// now create new verts as needed
-//	totalVerts = tri.numVerts;
-//	for ( i = 0 ; i < tri.numVerts ; i++ ) {
-//		vert = &tverts[i];
-//		if ( vert.polarityUsed[0] && vert.polarityUsed[1] ) {
-//			vert.negativeRemap = totalVerts;
-//			totalVerts++;	
-//		}
-//	}
-//
-//	tri.numMirroredVerts = totalVerts - tri.numVerts;
-//
-//	// now create the new list
-//	if ( totalVerts == tri.numVerts ) {
-//		tri.mirroredVerts = null;
-//		return;
-//	}
-//
-//	tri.mirroredVerts = triMirroredVertAllocator.Alloc( tri.numMirroredVerts );
-//
+
+
+
+/*
+===================
+R_DuplicateMirroredVertexes
+
+Modifies the surface to bust apart any verts that are shared by both positive and
+negative texture polarities, so tangent space smoothing at the vertex doesn't
+degenerate.
+
+This will create some identical vertexes (which will eventually get different tangent
+vectors), so never optimize the resulting mesh, or it will get the mirrored edges back.
+
+Reallocates tri.verts and changes tri.indexes in place
+Silindexes are unchanged by this.
+
+sets mirroredVerts and mirroredVerts[]
+
+===================
+*/
+class tangentVert_t {
+	polarityUsed:boolean[/*2*/];	/*bool	*/	
+	negativeRemap: number;		/*int	*/		
+	constructor ( ) {
+		this.polarityUsed = [false, false];
+		this.negativeRemap = 0;
+	}
+};
+
+function R_DuplicateMirroredVertexes( tri:srfTriangles_t ):void {
+	var tverts: tangentVert_t[], vert: tangentVert_t;	   //tangentVert_t	
+	var i: number, j:number;			   //int				
+	var totalVerts: number;		   //int				
+	var numMirror: number;		   //int				
+
+	tverts = newStructArray<tangentVert_t>( tangentVert_t, tri.numVerts ); //(tangentVert_t *)_alloca16( tri.numVerts * sizeof( *tverts ) );
+	//memset( tverts, 0, tri.numVerts * sizeof( *tverts ) );
+
+	// determine texture polarity of each surface
+
+	// mark each vert with the polarities it uses
+	for ( i = 0 ; i < tri.numIndexes ; i+=3 ) {
+		var/*int	*/polarity:number;
+
+		polarity = R_FaceNegativePolarity( tri, i ) ? 1 : 0;
+		for ( j = 0 ; j < 3 ; j++ ) {
+			tverts[tri.indexes[i+j]].polarityUsed[ polarity ] = true;
+		}
+	}
+
+	// now create new verts as needed
+	totalVerts = tri.numVerts;
+	for ( i = 0 ; i < tri.numVerts ; i++ ) {
+		vert = tverts[i];
+		if ( vert.polarityUsed[0] && vert.polarityUsed[1] ) {
+			vert.negativeRemap = totalVerts;
+			totalVerts++;	
+		}
+	}
+
+	tri.numMirroredVerts = totalVerts - tri.numVerts;
+
+	// now create the new list
+	if ( totalVerts == tri.numVerts ) {
+		tri.mirroredVerts = null;
+		return;
+	}
+	todoThrow ( );
+	tri.mirroredVerts = triMirroredVertAllocator.AllocInt32Array( tri.numMirroredVerts );
+
 //#ifdef USE_TRI_DATA_ALLOCATOR
 //	tri.verts = triVertexAllocator.Resize( tri.verts, totalVerts );
 //#else
-//	idDrawVert *oldVerts = tri.verts;
-//	R_AllocStaticTriSurfVerts( tri, totalVerts );
-//	memcpy( tri.verts, oldVerts, tri.numVerts * sizeof( tri.verts[0] ) );
-//	triVertexAllocator.Free( oldVerts );
+	var oldVerts = tri.verts;
+	R_AllocStaticTriSurfVerts( tri, totalVerts );
+	memcpyStruct(tri.verts, oldVerts, tri.numVerts, idDrawVert.typeInfo);
+	triVertexAllocator.Free( oldVerts );
 //#endif
-//
-//	// create the duplicates
-//	numMirror = 0;
-//	for ( i = 0 ; i < tri.numVerts ; i++ ) {
-//		j = tverts[i].negativeRemap;
-//		if ( j ) {
-//			tri.verts[j] = tri.verts[i];
-//			tri.mirroredVerts[numMirror] = i;
-//			numMirror++;
-//		}
-//	}
-//
-//	tri.numVerts = totalVerts;
-//	// change the indexes
-//	for ( i = 0 ; i < tri.numIndexes ; i++ ) {
-//		if ( tverts[tri.indexes[i]].negativeRemap && 
-//			R_FaceNegativePolarity( tri, 3*(i/3) ) ) {
-//			tri.indexes[i] = tverts[tri.indexes[i]].negativeRemap;
-//		}
-//	}
-//
-//	tri.numVerts = totalVerts;
-//}
-//
+
+	// create the duplicates
+	numMirror = 0;
+	for ( i = 0 ; i < tri.numVerts ; i++ ) {
+		j = tverts[i].negativeRemap;
+		if ( j ) {
+			tri.verts[j] = tri.verts[i];
+			tri.mirroredVerts[numMirror] = i;
+			numMirror++;
+		}
+	}
+
+	tri.numVerts = totalVerts;
+	// change the indexes
+	for ( i = 0 ; i < tri.numIndexes ; i++ ) {
+		if ( tverts[tri.indexes[i]].negativeRemap && 
+			R_FaceNegativePolarity( tri, 3*(i/3) ) ) {
+			tri.indexes[i] = tverts[tri.indexes[i]].negativeRemap;
+		}
+	}
+
+	tri.numVerts = totalVerts;
+}
+
 ///*
 //=================
 //R_DeriveTangentsWithoutNormals
@@ -1576,22 +1579,22 @@ function R_IdentifySilEdges(tri: srfTriangles_t, omitCoplanarEdges:boolean): voi
 //	R_StaticFree( ind );
 //}
 //
-///*
-//====================
-//R_DeriveUnsmoothedTangents
-//
-//Uses the single largest area triangle for each vertex, instead of smoothing over all
-//====================
-//*/
-//void R_DeriveUnsmoothedTangents( srfTriangles_t *tri ) {
-//	if ( tri.tangentsCalculated ) {
-//		return;
-//	}
-//
+/*
+====================
+R_DeriveUnsmoothedTangents
+
+Uses the single largest area triangle for each vertex, instead of smoothing over all
+====================
+*/
+function R_DeriveUnsmoothedTangents(tri: srfTriangles_t): void {
+	if ( tri.tangentsCalculated ) {
+		return;
+	}
+
 //#if 1
-//
-//	SIMDProcessor.DeriveUnsmoothedTangents( tri.verts, tri.dominantTris, tri.numVerts );
-//
+
+	SIMDProcessor.DeriveUnsmoothedTangents( tri.verts, tri.dominantTris, tri.numVerts );
+
 //#else
 //
 //	for ( int i = 0 ; i < tri.numVerts ; i++ ) {
@@ -1639,92 +1642,92 @@ function R_IdentifySilEdges(tri: srfTriangles_t, omitCoplanarEdges:boolean): voi
 //	}
 //
 //#endif
-//
-//	tri.tangentsCalculated = true;
-//}
-//
-///*
-//==================
-//R_DeriveTangents
-//
-//This is called once for static surfaces, and every frame for deforming surfaces
-//
-//Builds tangents, normals, and face planes
-//==================
-//*/
-//void R_DeriveTangents( srfTriangles_t *tri, bool allocFacePlanes ) {
-//	int				i;
-//	idPlane			*planes;
-//
-//	if ( tri.dominantTris != null ) {
-//		R_DeriveUnsmoothedTangents( tri );
-//		return;
-//	}
-//
-//	if ( tri.tangentsCalculated ) {
-//		return;
-//	}
-//
-//	tr.pc.c_tangentIndexes += tri.numIndexes;
-//
-//	if ( !tri.facePlanes && allocFacePlanes ) {
-//		R_AllocStaticTriSurfPlanes( tri, tri.numIndexes );
-//	}
-//	planes = tri.facePlanes;
-//
+
+	tri.tangentsCalculated = true;
+}
+
+/*
+==================
+R_DeriveTangents
+
+This is called once for static surfaces, and every frame for deforming surfaces
+
+Builds tangents, normals, and face planes
+==================
+*/
+function R_DeriveTangents(tri:srfTriangles_t, allocFacePlanes:boolean = true):void {
+	var/*int				*/i:number;
+	var planes: idPlane[];
+
+	if ( tri.dominantTris != null ) {
+		R_DeriveUnsmoothedTangents( tri );
+		return;
+	}
+
+	if ( tri.tangentsCalculated ) {
+		return;
+	}
+
+	tr.pc.c_tangentIndexes += tri.numIndexes;
+
+	if ( !tri.facePlanes && allocFacePlanes ) {
+		R_AllocStaticTriSurfPlanes( tri, tri.numIndexes );
+	}
+	planes = tri.facePlanes;
+
 //#if 1
-//
-//	if ( !planes ) {
-//		planes = (idPlane *)_alloca16( ( tri.numIndexes / 3 ) * sizeof( planes[0] ) );
-//	}
-//
-//	SIMDProcessor.DeriveTangents( planes, tri.verts, tri.numVerts, tri.indexes, tri.numIndexes );
-//
+
+	if ( !planes ) {
+		planes = newStructArray<idPlane>( idPlane, tri.numIndexes / 3 | 0 ); // (idPlane *)_alloca16( ( tri.numIndexes / 3 ) * sizeof( planes[0] ) );
+	}
+
+	SIMDProcessor.DeriveTangents( planes, tri.verts, tri.numVerts, tri.indexes, tri.numIndexes );
+
 //#else
-//
+
 //	for ( i = 0; i < tri.numVerts; i++ ) {
 //		tri.verts[i].normal.Zero();
 //		tri.verts[i].tangents[0].Zero();
 //		tri.verts[i].tangents[1].Zero();
 //	}
-//
+
 //	for ( i = 0; i < tri.numIndexes; i += 3 ) {
 //		// make face tangents
 //		float		d0[5], d1[5];
 //		idDrawVert	*a, *b, *c;
 //		idVec3		temp, normal, tangents[2];
-//
+
 //		a = tri.verts + tri.indexes[i + 0];
 //		b = tri.verts + tri.indexes[i + 1];
 //		c = tri.verts + tri.indexes[i + 2];
-//
+
 //		d0[0] = b.xyz[0] - a.xyz[0];
 //		d0[1] = b.xyz[1] - a.xyz[1];
 //		d0[2] = b.xyz[2] - a.xyz[2];
 //		d0[3] = b.st[0] - a.st[0];
 //		d0[4] = b.st[1] - a.st[1];
-//
+
 //		d1[0] = c.xyz[0] - a.xyz[0];
 //		d1[1] = c.xyz[1] - a.xyz[1];
 //		d1[2] = c.xyz[2] - a.xyz[2];
 //		d1[3] = c.st[0] - a.st[0];
 //		d1[4] = c.st[1] - a.st[1];
-//
+
 //		// normal
 //		temp[0] = d1[1] * d0[2] - d1[2] * d0[1];
 //		temp[1] = d1[2] * d0[0] - d1[0] * d0[2];
 //		temp[2] = d1[0] * d0[1] - d1[1] * d0[0];
 //		VectorNormalizeFast2( temp, normal );
-//
+
 //#ifdef USE_INVA
 //		float area = d0[3] * d1[4] - d0[4] * d1[3];
 //		float inva = area < 0.0 ? -1 : 1;		// was = 1.0f / area;
-//
+
 //        temp[0] = (d0[0] * d1[4] - d0[4] * d1[0]) * inva;
 //        temp[1] = (d0[1] * d1[4] - d0[4] * d1[1]) * inva;
 //        temp[2] = (d0[2] * d1[4] - d0[4] * d1[2]) * inva;
 //		VectorNormalizeFast2( temp, tangents[0] );
-//        
+        
 //        temp[0] = (d0[3] * d1[0] - d0[0] * d1[3]) * inva;
 //        temp[1] = (d0[3] * d1[1] - d0[1] * d1[3]) * inva;
 //        temp[2] = (d0[3] * d1[2] - d0[2] * d1[3]) * inva;
@@ -1734,13 +1737,13 @@ function R_IdentifySilEdges(tri: srfTriangles_t, omitCoplanarEdges:boolean): voi
 //        temp[1] = (d0[1] * d1[4] - d0[4] * d1[1]);
 //        temp[2] = (d0[2] * d1[4] - d0[4] * d1[2]);
 //		VectorNormalizeFast2( temp, tangents[0] );
-//        
+        
 //        temp[0] = (d0[3] * d1[0] - d0[0] * d1[3]);
 //        temp[1] = (d0[3] * d1[1] - d0[1] * d1[3]);
 //        temp[2] = (d0[3] * d1[2] - d0[2] * d1[3]);
 //		VectorNormalizeFast2( temp, tangents[1] );
 //#endif
-//
+
 //		// sum up the tangents and normals for each vertex on this face
 //		for ( int j = 0 ; j < 3 ; j++ ) {
 //			vert = &tri.verts[tri.indexes[i+j]];
@@ -1748,18 +1751,18 @@ function R_IdentifySilEdges(tri: srfTriangles_t, omitCoplanarEdges:boolean): voi
 //			vert.tangents[0] += tangents[0];
 //			vert.tangents[1] += tangents[1];
 //		}
-//
+
 //		if ( planes ) {
 //			planes.Normal() = normal;
 //			planes.FitThroughPoint( a.xyz );
 //			planes++;
 //		}
 //	}
-//
+
 //#endif
-//
+
 //#if 0
-//
+
 //	if ( tri.silIndexes != null ) {
 //		for ( i = 0; i < tri.numVerts; i++ ) {
 //			tri.verts[i].normal.Zero();
@@ -1771,72 +1774,72 @@ function R_IdentifySilEdges(tri: srfTriangles_t, omitCoplanarEdges:boolean): voi
 //			tri.verts[tri.indexes[i]].normal = tri.verts[tri.silIndexes[i]].normal;
 //		}
 //	}
-//
+
 //#else
-//
-//	int *dupVerts = tri.dupVerts;
-//	idDrawVert *verts = tri.verts;
-//
-//	// add the normal of a duplicated vertex to the normal of the first vertex with the same XYZ
-//	for ( i = 0; i < tri.numDupVerts; i++ ) {
-//		verts[dupVerts[i*2+0]].normal += verts[dupVerts[i*2+1]].normal;
-//	}
-//
-//	// copy vertex normals to duplicated vertices
-//	for ( i = 0; i < tri.numDupVerts; i++ ) {
-//		verts[dupVerts[i*2+1]].normal = verts[dupVerts[i*2+0]].normal;
-//	}
-//
+
+	var dupVerts:Int32Array = tri.dupVerts;
+	var verts: idDrawVert[] = tri.verts;
+
+	// add the normal of a duplicated vertex to the normal of the first vertex with the same XYZ
+	for ( i = 0; i < tri.numDupVerts; i++ ) {
+		verts[dupVerts[i * 2 + 0]].normal /*+=*/.plusEquals( verts[dupVerts[i * 2 + 1]].normal );
+	}
+
+	// copy vertex normals to duplicated vertices
+	for ( i = 0; i < tri.numDupVerts; i++ ) {
+		verts[dupVerts[i * 2 + 1]].normal /*=*/.equals( verts[dupVerts[i * 2 + 0]].normal );
+	}
+
 //#endif
-//
+
 //#if 0
 //	// sum up both sides of the mirrored verts
 //	// so the S vectors exactly mirror, and the T vectors are equal
 //	for ( i = 0 ; i < tri.numMirroredVerts ; i++ ) {
 //		idDrawVert	*v1, *v2;
-//
+
 //		v1 = &tri.verts[ tri.numVerts - tri.numMirroredVerts + i ];
 //		v2 = &tri.verts[ tri.mirroredVerts[i] ];
-//
+
 //		v1.tangents[0] -= v2.tangents[0];
 //		v1.tangents[1] += v2.tangents[1];
-//
+
 //		v2.tangents[0] = vec3_origin - v1.tangents[0];
 //		v2.tangents[1] = v1.tangents[1];
 //	}
 //#endif
-//
-//	// project the summed vectors onto the normal plane
-//	// and normalize.  The tangent vectors will not necessarily
-//	// be orthogonal to each other, but they will be orthogonal
-//	// to the surface normal.
+
+	// project the summed vectors onto the normal plane
+	// and normalize.  The tangent vectors will not necessarily
+	// be orthogonal to each other, but they will be orthogonal
+	// to the surface normal.
 //#if 1
-//
-//	SIMDProcessor.NormalizeTangents( tri.verts, tri.numVerts );
-//
+
+	SIMDProcessor.NormalizeTangents( tri.verts, tri.numVerts );
+
 //#else
-//
+
 //	for ( i = 0 ; i < tri.numVerts ; i++ ) {
 //		idDrawVert *vert = &tri.verts[i];
-//
+
 //		VectorNormalizeFast2( vert.normal, vert.normal );
-//
+
 //		// project the tangent vectors
 //		for ( int j = 0 ; j < 2 ; j++ ) {
 //			float d;
-//
+
 //			d = vert.tangents[j] * vert.normal;
 //			vert.tangents[j] = vert.tangents[j] - d * vert.normal;
 //			VectorNormalizeFast2( vert.tangents[j], vert.tangents[j] );
 //		}
 //	}
-//
+
 //#endif
-//
-//	tri.tangentsCalculated = true;
-//	tri.facePlanesCalculated = true;
-//}
-//
+
+	tri.tangentsCalculated = true;
+	tri.facePlanesCalculated = true;
+}
+
 ///*
 //=================
 //R_RemoveDuplicatedTriangles
@@ -2119,26 +2122,28 @@ function R_CleanupTriangles(tri: srfTriangles_t, createNormals:boolean, identify
 	if ( identifySilEdges ) {
 		R_IdentifySilEdges( tri, true );	// assume it is non-deformable, and omit coplanar edges
 	}
-	todoThrow ( );
-//	// bust vertexes that share a mirrored edge into separate vertexes
-//	R_DuplicateMirroredVertexes( tri );
+	
+	// bust vertexes that share a mirrored edge into separate vertexes
+	R_DuplicateMirroredVertexes( tri );
 
-//	// optimize the index order (not working?)
-////	R_OrderIndexes( tri.numIndexes, tri.indexes );
+	// optimize the index order (not working?)
+	//R_OrderIndexes( tri.numIndexes, tri.indexes );
 
-//	R_CreateDupVerts( tri );
+	R_CreateDupVerts( tri );
 
-//	R_BoundTriSurf( tri );
+	R_BoundTriSurf( tri );
 
-//	if ( useUnsmoothedTangents ) {
-//		R_BuildDominantTris( tri );
-//		R_DeriveUnsmoothedTangents( tri );
-//	} else if ( !createNormals ) {
-//		R_DeriveFacePlanes( tri );
-//		R_DeriveTangentsWithoutNormals( tri );
-//	} else {
-//		R_DeriveTangents( tri );
-//	}
+	if (useUnsmoothedTangents) {
+		todoThrow ( );
+		//R_BuildDominantTris( tri );
+		//R_DeriveUnsmoothedTangents( tri );
+	} else if ( !createNormals ) {
+		todoThrow();
+		//R_DeriveFacePlanes( tri );
+		//R_DeriveTangentsWithoutNormals( tri );
+	} else {
+		R_DeriveTangents( tri );
+	}
 }
 
 /*

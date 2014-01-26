@@ -60,6 +60,13 @@ class idDrawVert {
 //	void			SetColor( dword color );
 //	dword			GetColor( void ) const;
 //};
+	static typeInfo = [
+		["xyz", ""],
+		["st", ""],
+		["normal", ""],
+		["tangents", ""],
+		["color", ""]
+	];
 
 	constructor ( ) {
 		this.xyz = new idVec3;
@@ -131,3 +138,46 @@ class idDrawVert {
 ////}
 
 }
+
+// todo: remove later on
+Object.defineProperty( idDrawVert.prototype, "0", {
+	get: function ( ): number {
+		return this.xyz[0];
+	},
+	set: function ( value: number ): void {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this.xyz[0] = value;
+	},
+	enumerable: false,
+	configurable: false
+} );
+
+Object.defineProperty( idDrawVert.prototype, "1", {
+	get: function ( ): number {
+		return this.xyz[1];
+	},
+	set: function ( value: number ): void {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this.xyz[1] = value;
+	},
+	enumerable: false,
+	configurable: false
+} );
+
+Object.defineProperty( idDrawVert.prototype, "2", {
+	get: function ( ): number {
+		return this.xyz[2];
+	},
+	set: function ( value: number ): void {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this.xyz[2] = value;
+	},
+	enumerable: false,
+	configurable: false
+} );

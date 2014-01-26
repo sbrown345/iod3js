@@ -349,19 +349,33 @@ class idDynamicAlloc<T> {
 //}
 
 //template<class type, int baseBlockSize, int minBlockSize>
-	Alloc ( /*const int */num: number ) {
+	Alloc ( /*const int */num: number ): T[] {
 		this.numAllocs++;
 		if ( num <= 0 ) {
 			return null;
 		}
 		this.numUsedBlocks++;
-		this.usedBlockMemory += num;//* sizeof( type );
-		if (this.type["name"] == "Int32Array" ) {
-			return <any>( new Int32Array( num ) );
+		this.usedBlockMemory += num; //* sizeof( type );
+		if (this["type"] === window["Int32Array"] ) {
+			throw "use AllocInt32Array() instead";
 		}
 
 		return newStructArray<T>( this.type, num ); //Mem_Alloc16( num * sizeof( type ) );
-	}	
+	}
+
+	AllocInt32Array ( /*const int */num: number ): Int32Array {
+		this.numAllocs++;
+		if ( num <= 0 ) {
+			return null;
+		}
+		this.numUsedBlocks++;
+		this.usedBlockMemory += num; //* sizeof( type );
+		if (this["type"] !== window["Int32Array"] ) {
+			throw "use Alloc() instead";
+		}
+
+		return <any>(new Int32Array(num));
+	}
 
 //template<class type, int baseBlockSize, int minBlockSize>
 //type *idDynamicAlloc<type, baseBlockSize, minBlockSize>::Resize( type *ptr, const int num ) {
@@ -382,7 +396,7 @@ class idDynamicAlloc<T> {
 //}
 
 //template<class type, int baseBlockSize, int minBlockSize>
-	Free ( /*type **/ptr: T ) {
+	Free ( /*type **/ptr: any ):void {
 		this.numFrees++;
 		if ( ptr == null ) {
 			return;
