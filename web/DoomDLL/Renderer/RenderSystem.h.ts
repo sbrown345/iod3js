@@ -133,15 +133,15 @@ class /*glconfig_s*/glconfig_t {
 ////	char				name[64];
 ////} fontInfoEx_t;
 
-////const int SMALLCHAR_WIDTH		= 8;
-////const int SMALLCHAR_HEIGHT		= 16;
-////const int BIGCHAR_WIDTH			= 16;
-////const int BIGCHAR_HEIGHT		= 16;
+var SMALLCHAR_WIDTH		= 8;
+var SMALLCHAR_HEIGHT	= 16;
+var BIGCHAR_WIDTH		= 16;
+var BIGCHAR_HEIGHT		= 16;
 
-////// all drawing is done to a 640 x 480 virtual screen size
-////// and will be automatically scaled to the real resolution
-////const int SCREEN_WIDTH			= 640;
-////const int SCREEN_HEIGHT			= 480;
+// all drawing is done to a 640 x 480 virtual screen size
+// and will be automatically scaled to the real resolution
+var SCREEN_WIDTH		= 640;
+var SCREEN_HEIGHT		= 480;
 
 ////class idRenderWorld;
 

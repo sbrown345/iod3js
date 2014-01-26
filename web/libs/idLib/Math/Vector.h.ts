@@ -899,12 +899,12 @@ class idVec4 {
 		this[3] = value;
 	}
 
-    constructor() {
-        this[0] = 0.0; // could extend float32 array
-	    this[1] = 0.0;
-	    this[2] = 0.0;
-        this[3] = 0.0;
-    }
+	constructor ( x = 0.0, y = 0.0, z = 0.0, w = 0.0 ) {
+		this.x = x; // could extend float32 array
+		this.y = y;
+		this.z = z;
+		this.w = w;
+	}
 
 ////					idVec4( void );
 ////					explicit idVec4( const float x, const float y, const float z, const float w );

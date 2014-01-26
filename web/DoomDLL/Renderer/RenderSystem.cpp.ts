@@ -763,7 +763,7 @@ GL_CheckErrors():void {
 	
 ////	// start far enough away that we don't hit the player model
 ////	start = tr.primaryView.renderView.vieworg + tr.primaryView.renderView.viewaxis[0] * 16;
-////	end = start + tr.primaryView.renderView.viewaxis[0] * 1000.0f;
+////	end = start + tr.primaryView.renderView.viewaxis[0] * 1000.0;
 ////	if ( !tr.primaryWorld.Trace( mt, start, end, 0.0, false ) ) {
 ////		return;
 ////	}
@@ -2217,63 +2217,32 @@ idRenderSystemLocal::Init
 ////	return true;
 ////}
 
-/////*
-////========================
-////idRenderSystemLocal::IsFullScreen
-////========================
-////*/
-////bool idRenderSystemLocal::IsFullScreen( void ) const {
-////	return glConfig.isFullscreen;
-////}
+/*
+========================
+idRenderSystemLocal::IsFullScreen
+========================
+*/
+	IsFullScreen ( ): boolean {
+		return glConfig.isFullscreen;
+	}
 
-/////*
-////========================
-////idRenderSystemLocal::GetScreenWidth
-////========================
-////*/
-////int idRenderSystemLocal::GetScreenWidth( void ) const {
-////	return glConfig.vidWidth;
-////}
+/*
+========================
+idRenderSystemLocal::GetScreenWidth
+========================
+*/
+	GetScreenWidth ( ): number {
+		return glConfig.vidWidth;
+	}
 
-/////*
-////========================
-////idRenderSystemLocal::GetScreenHeight
-////========================
-////*/
-////int idRenderSystemLocal::GetScreenHeight( void ) const {
-////	return glConfig.vidHeight;
-////}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+========================
+idRenderSystemLocal::GetScreenHeight
+========================
+*/
+	GetScreenHeight ( ): number {
+		return glConfig.vidHeight;
+	}
 
 
 /////*
@@ -2580,17 +2549,17 @@ idRenderSystemLocal::Init
 ////idRenderSystemLocal::~idRenderSystemLocal( void ) {
 ////}
 
-/////*
-////=============
-////SetColor
+/*
+=============
+SetColor
 
-////This can be used to pass general information to the current material, not
-////just colors
-////=============
-////*/
-////void idRenderSystemLocal::SetColor( const idVec4 &rgba ) {
-////	guiModel.SetColor( rgba[0], rgba[1], rgba[2], rgba[3] );
-////}
+This can be used to pass general information to the current material, not
+just colors
+=============
+*/
+	SetColor ( rgba: idVec4 ): void {
+		this.guiModel.SetColor( rgba[0], rgba[1], rgba[2], rgba[3] );
+	}
 
 
 /////*
@@ -2602,27 +2571,27 @@ idRenderSystemLocal::Init
 ////	guiModel.SetColor( r, g, b, a );
 ////}
 
-/////*
-////=============
-////DrawStretchPic
-////=============
-////*/
-////void idRenderSystemLocal::DrawStretchPic( const idDrawVert *verts, const glIndex_t *indexes, int vertCount, int indexCount, const idMaterial *material, 
-////									   bool clip, float min_x, float min_y, float max_x, float max_y ) {
-////	guiModel.DrawStretchPic( verts, indexes, vertCount, indexCount, material,
-////		clip, min_x, min_y, max_x, max_y );
-////}
+/*
+=============
+DrawStretchPic
+=============
+*/
+	DrawStretchPic ( verts: idDrawVert[], /*const glIndex_t **/indexes: Int32Array, /*int */vertCount: number, /*int */indexCount: number, material: idMaterial,
+		clip: boolean, /* float */min_x: number, /*float */min_y: number, /*float */max_x: number, /*float */max_y: number ): void {
+		this.guiModel.DrawStretchPic( verts, indexes, vertCount, indexCount, material,
+			clip, min_x, min_y, max_x, max_y );
+	}
 
-/////*
-////=============
-////DrawStretchPic
+/*
+=============
+DrawStretchPic
 
-////x/y/w/h are in the 0,0 to 640,480 range
-////=============
-////*/
-////void idRenderSystemLocal::DrawStretchPic( float x, float y, float w, float h, float s1, float t1, float s2, float t2, const idMaterial *material ) {
-////	guiModel.DrawStretchPic( x, y, w, h, s1, t1, s2, t2, material );
-////}
+x/y/w/h are in the 0,0 to 640,480 range
+=============
+*/
+	DrawStretchPicFloats ( /*float*/x: number, /*float*/y: number, /*float*/w: number, /*float*/h: number, /*float*/s1: number, /*float*/t1: number, /*float*/s2: number, /*float*/t2: number, material: idMaterial ): void {
+		this.guiModel.DrawStretchPicFloats( x, y, w, h, s1, t1, s2, t2, material );
+	}
 
 /////*
 ////=============
@@ -2689,45 +2658,45 @@ idRenderSystemLocal::Init
 ////					   material );
 ////}
 
-/////*
-////==================
-////idRenderSystemLocal::DrawSmallString[Color]
+/*
+==================
+idRenderSystemLocal::DrawSmallString[Color]
 
-////Draws a multi-colored string with a drop shadow, optionally forcing
-////to a fixed color.
+Draws a multi-colored string with a drop shadow, optionally forcing
+to a fixed color.
 
-////Coordinates are at 640 by 480 virtual resolution
-////==================
-////*/
-////void idRenderSystemLocal::DrawSmallStringExt( int x, int y, const char *string, const idVec4 &setColor, bool forceColor, const idMaterial *material ) {
-////	idVec4		color;
-////	const unsigned char	*s;
-////	int			xx;
+Coordinates are at 640 by 480 virtual resolution
+==================
+*/
+	DrawSmallStringExt( /*int */x: number, /*int */y: number, $string:string, setColor:idVec4, forceColor:boolean, material :idMaterial):void {
+	var color: idVec4;
+	var s:number;
+	var /*int*/xx:number;
 
-////	// draw the colored text
-////	s = (const unsigned char*)string;
-////	xx = x;
-////	SetColor( setColor );
-////	while ( *s ) {
-////		if ( idStr::IsColor( (const char*)s ) ) {
-////			if ( !forceColor ) {
-////				if ( *(s+1) == C_COLOR_DEFAULT ) {
-////					SetColor( setColor );
-////				} else {
-////					color = idStr::ColorForIndex( *(s+1) );
-////					color[3] = setColor[3];
-////					SetColor( color );
-////				}
-////			}
-////			s += 2;
-////			continue;
-////		}
-////		DrawSmallChar( xx, y, *s, material );
-////		xx += SMALLCHAR_WIDTH;
-////		s++;
-////	}
-////	SetColor( colorWhite );
-////}
+	// draw the colored text
+		s = 0;
+	xx = x;
+	this.SetColor( setColor );
+	while ( $string[s] ) {
+		if ( idStr.IsColor( /*(const char*)*/s ) ) {
+			if ( !forceColor ) {
+				if ($string[s+1] == C_COLOR_DEFAULT ) {
+					this.SetColor( setColor );
+				} else {
+					color = idStr.ColorForIndex($string[s+1] );
+					color[3] = setColor[3];
+					this.SetColor( color );
+				}
+			}
+			s += 2;
+			continue;
+		}
+		this.DrawSmallChar( xx, y, $string[s], material );
+		xx += SMALLCHAR_WIDTH;
+		s++;
+	}
+	this.SetColor( colorWhite );
+}
 
 /////*
 ////=====================
@@ -2780,16 +2749,16 @@ idRenderSystemLocal::Init
 ////	// draw the colored text
 ////	s = string;
 ////	xx = x;
-////	SetColor( setColor );
+////	this.SetColor( setColor );
 ////	while ( *s ) {
-////		if ( idStr::IsColor( s ) ) {
+////		if ( idStr.IsColor( s ) ) {
 ////			if ( !forceColor ) {
 ////				if ( *(s+1) == C_COLOR_DEFAULT ) {
-////					SetColor( setColor );
+////					this.SetColor( setColor );
 ////				} else {
 ////					color = idStr::ColorForIndex( *(s+1) );
 ////					color[3] = setColor[3];
-////					SetColor( color );
+////					this.SetColor( color );
 ////				}
 ////			}
 ////			s += 2;
@@ -2799,7 +2768,7 @@ idRenderSystemLocal::Init
 ////		xx += BIGCHAR_WIDTH;
 ////		s++;
 ////	}
-////	SetColor( colorWhite );
+////	this.SetColor( colorWhite );
 ////}
 
 //////======================================================================================
@@ -2857,74 +2826,74 @@ idRenderSystemLocal::Init
 ////	r_renderer.ClearModified();
 ////}
 
-/////*
-////====================
-////BeginFrame
-////====================
-////*/
-////void idRenderSystemLocal::BeginFrame( int windowWidth, int windowHeight ) {
-////	setBufferCommand_t	*cmd;
+/*
+====================
+BeginFrame
+====================
+*/
+BeginFrame( /*int */windowWidth:number, /*int */windowHeight:number ):void {
+	var cmd: setBufferCommand_t;
 
-////	if ( !glConfig.isInitialized ) {
-////		return;
-////	}
+	if ( !glConfig.isInitialized ) {
+		return;
+	}
+	todoThrow ( );
+//	// determine which back end we will use
+//	SetBackEndRenderer();
 
-////	// determine which back end we will use
-////	SetBackEndRenderer();
+//	guiModel.Clear();
 
-////	guiModel.Clear();
+//	// for the larger-than-window tiled rendering screenshots
+//	if ( tiledViewport[0] ) {
+//		windowWidth = tiledViewport[0];
+//		windowHeight = tiledViewport[1];
+//	}
 
-////	// for the larger-than-window tiled rendering screenshots
-////	if ( tiledViewport[0] ) {
-////		windowWidth = tiledViewport[0];
-////		windowHeight = tiledViewport[1];
-////	}
+//	glConfig.vidWidth = windowWidth;
+//	glConfig.vidHeight = windowHeight;
 
-////	glConfig.vidWidth = windowWidth;
-////	glConfig.vidHeight = windowHeight;
+//	renderCrops[0].x = 0;
+//	renderCrops[0].y = 0;
+//	renderCrops[0].width = windowWidth;
+//	renderCrops[0].height = windowHeight;
+//	currentRenderCrop = 0;
 
-////	renderCrops[0].x = 0;
-////	renderCrops[0].y = 0;
-////	renderCrops[0].width = windowWidth;
-////	renderCrops[0].height = windowHeight;
-////	currentRenderCrop = 0;
-
-////	// screenFraction is just for quickly testing fill rate limitations
-////	if ( r_screenFraction.GetInteger() != 100 ) {
-////		int	w = SCREEN_WIDTH * r_screenFraction.GetInteger() / 100.0f;
-////		int h = SCREEN_HEIGHT * r_screenFraction.GetInteger() / 100.0f;
-////		CropRenderSize( w, h );
-////	}
+//	// screenFraction is just for quickly testing fill rate limitations
+//	if ( r_screenFraction.GetInteger() != 100 ) {
+//		int	w = SCREEN_WIDTH * r_screenFraction.GetInteger() / 100.0;
+//		int h = SCREEN_HEIGHT * r_screenFraction.GetInteger() / 100.0;
+//		CropRenderSize( w, h );
+//	}
 
 
-////	// this is the ONLY place this is modified
-////	frameCount++;
+//	// this is the ONLY place this is modified
+//	frameCount++;
 
-////	// just in case we did a common.Error while this
-////	// was set
-////	guiRecursionLevel = 0;
+//	// just in case we did a common.Error while this
+//	// was set
+//	guiRecursionLevel = 0;
 
-////	// the first rendering will be used for commands like
-////	// screenshot, rather than a possible subsequent remote
-////	// or mirror render
-//////	primaryWorld = NULL;
+//	// the first rendering will be used for commands like
+//	// screenshot, rather than a possible subsequent remote
+//	// or mirror render
+////	primaryWorld = NULL;
 
-////	// set the time for shader effects in 2D rendering
-////	frameShaderTime = eventLoop.Milliseconds() * 0.001;
+//	// set the time for shader effects in 2D rendering
+//	frameShaderTime = eventLoop.Milliseconds() * 0.001;
 
-////	//
-////	// draw buffer stuff
-////	//
-////	cmd = (setBufferCommand_t *)R_GetCommandBuffer( sizeof( *cmd ) );
-////	cmd.commandId = RC_SET_BUFFER;
-////	cmd.frameCount = frameCount;
+//	//
+//	// draw buffer stuff
+//	//
+//	cmd = (setBufferCommand_t *)R_GetCommandBuffer( sizeof( *cmd ) );
+//	cmd.commandId = RC_SET_BUFFER;
+//	cmd.frameCount = frameCount;
 
-////	if ( r_frontBuffer.GetBool() ) {
-////		cmd.buffer = (int)GL_FRONT;
-////	} else {
-////		cmd.buffer = (int)GL_BACK;
-////	}
-////}
+//	if ( r_frontBuffer.GetBool() ) {
+//		cmd.buffer = (int)GL_FRONT;
+//	} else {
+//		cmd.buffer = (int)GL_BACK;
+//	}
+}
 
 ////void idRenderSystemLocal::WriteDemoPics() {
 ////	session.writeDemo.WriteInt( DS_RENDER );

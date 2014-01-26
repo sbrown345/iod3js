@@ -105,29 +105,29 @@
 ////}
 
 
-/////*
-////===============================================================================
+/*
+===============================================================================
 
-////	Colors
+	Colors
 
-////===============================================================================
-////*/
+===============================================================================
+*/
 
-////idVec4	colorBlack	= idVec4( 0.00f, 0.00f, 0.00f, 1.00f );
-////idVec4	colorWhite	= idVec4( 1.00f, 1.00f, 1.00f, 1.00f );
-////idVec4	colorRed	= idVec4( 1.00f, 0.00f, 0.00f, 1.00f );
-////idVec4	colorGreen	= idVec4( 0.00f, 1.00f, 0.00f, 1.00f );
-////idVec4	colorBlue	= idVec4( 0.00f, 0.00f, 1.00f, 1.00f );
-////idVec4	colorYellow	= idVec4( 1.00f, 1.00f, 0.00f, 1.00f );
-////idVec4	colorMagenta= idVec4( 1.00f, 0.00f, 1.00f, 1.00f );
-////idVec4	colorCyan	= idVec4( 0.00f, 1.00f, 1.00f, 1.00f );
-////idVec4	colorOrange	= idVec4( 1.00f, 0.50f, 0.00f, 1.00f );
-////idVec4	colorPurple	= idVec4( 0.60f, 0.00f, 0.60f, 1.00f );
-////idVec4	colorPink	= idVec4( 0.73f, 0.40f, 0.48f, 1.00f );
-////idVec4	colorBrown	= idVec4( 0.40f, 0.35f, 0.08f, 1.00f );
-////idVec4	colorLtGrey	= idVec4( 0.75f, 0.75f, 0.75f, 1.00f );
-////idVec4	colorMdGrey	= idVec4( 0.50f, 0.50f, 0.50f, 1.00f );
-////idVec4	colorDkGrey	= idVec4( 0.25f, 0.25f, 0.25f, 1.00f );
+var	colorBlack	= new idVec4( 0.00, 0.00, 0.00, 1.00 );
+var	colorWhite	= new idVec4( 1.00, 1.00, 1.00, 1.00 );
+var	colorRed	= new idVec4( 1.00, 0.00, 0.00, 1.00 );
+var	colorGreen	= new idVec4( 0.00, 1.00, 0.00, 1.00 );
+var	colorBlue	= new idVec4( 0.00, 0.00, 1.00, 1.00 );
+var	colorYellow	= new idVec4( 1.00, 1.00, 0.00, 1.00 );
+var	colorMagenta= new idVec4( 1.00, 0.00, 1.00, 1.00 );
+var	colorCyan	= new idVec4( 0.00, 1.00, 1.00, 1.00 );
+var	colorOrange	= new idVec4( 1.00, 0.50, 0.00, 1.00 );
+var	colorPurple	= new idVec4( 0.60, 0.00, 0.60, 1.00 );
+var	colorPink	= new idVec4( 0.73, 0.40, 0.48, 1.00 );
+var	colorBrown	= new idVec4( 0.40, 0.35, 0.08, 1.00 );
+var	colorLtGrey	= new idVec4( 0.75, 0.75, 0.75, 1.00 );
+var	colorMdGrey	= new idVec4( 0.50, 0.50, 0.50, 1.00 );
+var	colorDkGrey	= new idVec4( 0.25, 0.25, 0.25, 1.00 );
 
 ////static dword colorMask[2] = { 255, 0 };
 

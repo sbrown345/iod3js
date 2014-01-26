@@ -285,18 +285,18 @@ Clear():void {
 ////	viewDef.floatTime = tr.frameShaderTime;
 
 ////	// glOrtho( 0, 640, 480, 0, 0, 1 );		// always assume 640x480 virtual coordinates
-////	viewDef.projectionMatrix[0] = 2.0f / 640.0f;
-////	viewDef.projectionMatrix[5] = -2.0f / 480.0f;
-////	viewDef.projectionMatrix[10] = -2.0f / 1.0f;
-////	viewDef.projectionMatrix[12] = -1.0f;
-////	viewDef.projectionMatrix[13] = 1.0f;
-////	viewDef.projectionMatrix[14] = -1.0f;
-////	viewDef.projectionMatrix[15] = 1.0f;
+////	viewDef.projectionMatrix[0] = 2.0 / 640.0;
+////	viewDef.projectionMatrix[5] = -2.0 / 480.0;
+////	viewDef.projectionMatrix[10] = -2.0 / 1.0;
+////	viewDef.projectionMatrix[12] = -1.0;
+////	viewDef.projectionMatrix[13] = 1.0;
+////	viewDef.projectionMatrix[14] = -1.0;
+////	viewDef.projectionMatrix[15] = 1.0;
 
-////	viewDef.worldSpace.modelViewMatrix[0] = 1.0f;
-////	viewDef.worldSpace.modelViewMatrix[5] = 1.0f;
-////	viewDef.worldSpace.modelViewMatrix[10] = 1.0f;
-////	viewDef.worldSpace.modelViewMatrix[15] = 1.0f;
+////	viewDef.worldSpace.modelViewMatrix[0] = 1.0;
+////	viewDef.worldSpace.modelViewMatrix[5] = 1.0;
+////	viewDef.worldSpace.modelViewMatrix[10] = 1.0;
+////	viewDef.worldSpace.modelViewMatrix[15] = 1.0;
 
 ////	viewDef.maxDrawSurfs = surfaces.Num();
 ////	viewDef.drawSurfs = (drawSurf_t **)R_FrameAlloc( viewDef.maxDrawSurfs * sizeof( viewDef.drawSurfs[0] ) );
@@ -346,146 +346,146 @@ AdvanceSurf():void {
 	this.surf = this.surfaces[ this.surfaces.Num() - 1 ];
 }
 
-/////*
-////=============
-////SetColor
-////=============
-////*/
-////void idGuiModel::SetColor( float r, float g, float b, float a ) {
-////	if ( !glConfig.isInitialized ) {
-////		return;
-////	}
-////	if ( r == surf.color[0] && g == surf.color[1]
-////		&& b == surf.color[2] && a == surf.color[3] ) {
-////		return;	// no change
-////	}
+/*
+=============
+SetColor
+=============
+*/
+	SetColor ( /*float*/ r: number, /*float */g: number, /*float */b: number, /*float */a: number ): void {
+		if ( !glConfig.isInitialized ) {
+			return;
+		}
+		if ( r == this.surf.color[0] && g == this.surf.color[1]
+			&& b == this.surf.color[2] && a == this.surf.color[3] ) {
+			return; // no change
+		}
 
-////	if ( surf.numVerts ) {
-////		AdvanceSurf();
-////	}
+		if ( this.surf.numVerts ) {
+			this.AdvanceSurf ( );
+		}
 
-////	// change the parms
-////	surf.color[0] = r;
-////	surf.color[1] = g;
-////	surf.color[2] = b;
-////	surf.color[3] = a;
-////}
+		// change the parms
+		this.surf.color[0] = r;
+		this.surf.color[1] = g;
+		this.surf.color[2] = b;
+		this.surf.color[3] = a;
+	}
 
-/////*
-////=============
-////DrawStretchPic
-////=============
-////*/
-////void idGuiModel::DrawStretchPic( const idDrawVert *dverts, const glIndex_t *dindexes, int vertCount, int indexCount, const idMaterial *hShader, 
-////									   bool clip, float min_x, float min_y, float max_x, float max_y ) {
-////	if ( !glConfig.isInitialized ) {
-////		return;
-////	}
-////	if ( !( dverts && dindexes && vertCount && indexCount && hShader ) ) {
-////		return;
-////	}
+/*
+=============
+DrawStretchPic
+=============
+*/
+	DrawStretchPic ( dverts: idDrawVert[], /*const glIndex_t **/indexes: Int32Array, /*int */vertCount: number, /*int */indexCount: number, hShader: idMaterial,
+		clip: boolean, /*float */min_x: number, /*float */min_y: number, /*float */max_x: number, /*float */max_y: number ): void {
+		if ( !glConfig.isInitialized ) {
+			return;
+		}
+		////	if ( !( dverts && dindexes && vertCount && indexCount && hShader ) ) {
+		////		return;
+		////	}
 
-////	// break the current surface if we are changing to a new material
-////	if ( hShader != surf.material ) {
-////		if ( surf.numVerts ) {
-////			AdvanceSurf();
-////		}
-////		const_cast<idMaterial *>(hShader).EnsureNotPurged();	// in case it was a gui item started before a level change
-////		surf.material = hShader;
-////	}
+		////	// break the current surface if we are changing to a new material
+		////	if ( hShader != surf.material ) {
+		////		if ( surf.numVerts ) {
+		////			AdvanceSurf();
+		////		}
+		////		const_cast<idMaterial *>(hShader).EnsureNotPurged();	// in case it was a gui item started before a level change
+		////		surf.material = hShader;
+		////	}
 
-////	// add the verts and indexes to the current surface
+		////	// add the verts and indexes to the current surface
 
-////	if ( clip ) {
-////		int i, j;
+		////	if ( clip ) {
+		////		int i, j;
 
-////		// FIXME:	this is grim stuff, and should be rewritten if we have any significant
-////		//			number of guis asking for clipping
-////		idFixedWinding w;
-////		for ( i = 0; i < indexCount; i += 3 ) {
-////			w.Clear();
-////			w.AddPoint(idVec5(dverts[dindexes[i]].xyz.x, dverts[dindexes[i]].xyz.y, dverts[dindexes[i]].xyz.z, dverts[dindexes[i]].st.x, dverts[dindexes[i]].st.y));
-////			w.AddPoint(idVec5(dverts[dindexes[i+1]].xyz.x, dverts[dindexes[i+1]].xyz.y, dverts[dindexes[i+1]].xyz.z, dverts[dindexes[i+1]].st.x, dverts[dindexes[i+1]].st.y));
-////			w.AddPoint(idVec5(dverts[dindexes[i+2]].xyz.x, dverts[dindexes[i+2]].xyz.y, dverts[dindexes[i+2]].xyz.z, dverts[dindexes[i+2]].st.x, dverts[dindexes[i+2]].st.y));
+		////		// FIXME:	this is grim stuff, and should be rewritten if we have any significant
+		////		//			number of guis asking for clipping
+		////		idFixedWinding w;
+		////		for ( i = 0; i < indexCount; i += 3 ) {
+		////			w.Clear();
+		////			w.AddPoint(idVec5(dverts[dindexes[i]].xyz.x, dverts[dindexes[i]].xyz.y, dverts[dindexes[i]].xyz.z, dverts[dindexes[i]].st.x, dverts[dindexes[i]].st.y));
+		////			w.AddPoint(idVec5(dverts[dindexes[i+1]].xyz.x, dverts[dindexes[i+1]].xyz.y, dverts[dindexes[i+1]].xyz.z, dverts[dindexes[i+1]].st.x, dverts[dindexes[i+1]].st.y));
+		////			w.AddPoint(idVec5(dverts[dindexes[i+2]].xyz.x, dverts[dindexes[i+2]].xyz.y, dverts[dindexes[i+2]].xyz.z, dverts[dindexes[i+2]].st.x, dverts[dindexes[i+2]].st.y));
 
-////			for ( j = 0; j < 3; j++ ) {
-////				if ( w[j].x < min_x || w[j].x > max_x ||
-////					w[j].y < min_y || w[j].y > max_y ) {
-////					break;
-////				}
-////			}
-////			if ( j < 3 ) {
-////				idPlane p;
-////				p.Normal().y = p.Normal().z = 0.0; p.Normal().x = 1.0f; p.SetDist( min_x );
-////				w.ClipInPlace( p );
-////				p.Normal().y = p.Normal().z = 0.0; p.Normal().x = -1.0f; p.SetDist( -max_x );
-////				w.ClipInPlace( p );
-////				p.Normal().x = p.Normal().z = 0.0; p.Normal().y = 1.0f; p.SetDist( min_y );
-////				w.ClipInPlace( p );
-////				p.Normal().x = p.Normal().z = 0.0; p.Normal().y = -1.0f; p.SetDist( -max_y );
-////				w.ClipInPlace( p );
-////			}
+		////			for ( j = 0; j < 3; j++ ) {
+		////				if ( w[j].x < min_x || w[j].x > max_x ||
+		////					w[j].y < min_y || w[j].y > max_y ) {
+		////					break;
+		////				}
+		////			}
+		////			if ( j < 3 ) {
+		////				idPlane p;
+		////				p.Normal().y = p.Normal().z = 0.0; p.Normal().x = 1.0; p.SetDist( min_x );
+		////				w.ClipInPlace( p );
+		////				p.Normal().y = p.Normal().z = 0.0; p.Normal().x = -1.0; p.SetDist( -max_x );
+		////				w.ClipInPlace( p );
+		////				p.Normal().x = p.Normal().z = 0.0; p.Normal().y = 1.0; p.SetDist( min_y );
+		////				w.ClipInPlace( p );
+		////				p.Normal().x = p.Normal().z = 0.0; p.Normal().y = -1.0; p.SetDist( -max_y );
+		////				w.ClipInPlace( p );
+		////			}
 
-////			int	numVerts = verts.Num();
-////			verts.SetNum( numVerts + w.GetNumPoints(), false );
-////			for ( j = 0 ; j < w.GetNumPoints() ; j++ ) {
-////				idDrawVert *dv = &verts[numVerts+j];
+		////			int	numVerts = verts.Num();
+		////			verts.SetNum( numVerts + w.GetNumPoints(), false );
+		////			for ( j = 0 ; j < w.GetNumPoints() ; j++ ) {
+		////				idDrawVert *dv = &verts[numVerts+j];
 
-////				dv.xyz.x = w[j].x;
-////				dv.xyz.y = w[j].y;
-////				dv.xyz.z = w[j].z;
-////				dv.st.x = w[j].s;
-////				dv.st.y = w[j].t;
-////				dv.normal.Set(0, 0, 1);
-////				dv.tangents[0].Set(1, 0, 0);
-////				dv.tangents[1].Set(0, 1, 0);
-////			}
-////			surf.numVerts += w.GetNumPoints();
+		////				dv.xyz.x = w[j].x;
+		////				dv.xyz.y = w[j].y;
+		////				dv.xyz.z = w[j].z;
+		////				dv.st.x = w[j].s;
+		////				dv.st.y = w[j].t;
+		////				dv.normal.Set(0, 0, 1);
+		////				dv.tangents[0].Set(1, 0, 0);
+		////				dv.tangents[1].Set(0, 1, 0);
+		////			}
+		////			surf.numVerts += w.GetNumPoints();
 
-////			for ( j = 2; j < w.GetNumPoints(); j++ ) {
-////				indexes.Append( numVerts - surf.firstVert );
-////				indexes.Append( numVerts + j - 1 - surf.firstVert );
-////				indexes.Append( numVerts + j - surf.firstVert );
-////				surf.numIndexes += 3;
-////			}
-////		}
+		////			for ( j = 2; j < w.GetNumPoints(); j++ ) {
+		////				indexes.Append( numVerts - surf.firstVert );
+		////				indexes.Append( numVerts + j - 1 - surf.firstVert );
+		////				indexes.Append( numVerts + j - surf.firstVert );
+		////				surf.numIndexes += 3;
+		////			}
+		////		}
 
-////	} else {
+		////	} else {
 
-////		int numVerts = verts.Num();
-////		int numIndexes = indexes.Num();
+		////		int numVerts = verts.Num();
+		////		int numIndexes = indexes.Num();
 
-////		verts.AssureSize( numVerts + vertCount );
-////		indexes.AssureSize( numIndexes + indexCount );
+		////		verts.AssureSize( numVerts + vertCount );
+		////		indexes.AssureSize( numIndexes + indexCount );
 
-////		surf.numVerts += vertCount;
-////		surf.numIndexes += indexCount;
+		////		surf.numVerts += vertCount;
+		////		surf.numIndexes += indexCount;
 
-////		for ( int i = 0; i < indexCount; i++ ) {
-////			indexes[numIndexes + i] = numVerts + dindexes[i] - surf.firstVert;
-////		}
+		////		for ( int i = 0; i < indexCount; i++ ) {
+		////			indexes[numIndexes + i] = numVerts + dindexes[i] - surf.firstVert;
+		////		}
 
-////		memcpy( &verts[numVerts], dverts, vertCount * sizeof( verts[0] ) );
-////	}
-////}
+		////		memcpy( &verts[numVerts], dverts, vertCount * sizeof( verts[0] ) );
+		////	}
+	}
 
-/////*
-////=============
-////DrawStretchPic
+/*
+=============
+DrawStretchPic
 
-////x/y/w/h are in the 0,0 to 640,480 range
-////=============
-////*/
-////void idGuiModel::DrawStretchPic( float x, float y, float w, float h, float s1, float t1, float s2, float t2, const idMaterial *hShader ) {
-////	idDrawVert verts[4];
-////	glIndex_t indexes[6];
+x/y/w/h are in the 0,0 to 640,480 range
+=============
+*/
+DrawStretchPicFloats( /*float*/x: number, /*float*/y: number, /*float*/w: number, /*float*/h: number, /*float*/s1: number, /*float*/t1: number, /*float*/s2: number, /*float*/t2: number, hShader: idMaterial ): void {
+	//idDrawVert verts[4];
+	//glIndex_t indexes[6];
 
-////	if ( !glConfig.isInitialized ) {
-////		return;
-////	}
-////	if ( !hShader ) {
-////		return;
-////	}
+	if ( !glConfig.isInitialized ) {
+		return;
+	}
+	if ( !hShader ) {
+		return;
+	}
 
 ////	// clip to edges, because the pic may be going into a guiShader
 ////	// instead of full screen
@@ -575,8 +575,8 @@ AdvanceSurf():void {
 ////	verts[3].tangents[1][1] = 1;
 ////	verts[3].tangents[1][2] = 0;
 
-////	DrawStretchPic( &verts[0], &indexes[0], 4, 6, hShader, false, 0.0, 0.0, 640.0f, 480.0f );
-////}
+////	DrawStretchPic( &verts[0], &indexes[0], 4, 6, hShader, false, 0.0, 0.0, 640.0, 480.0 );
+}
 
 /////*
 ////=============

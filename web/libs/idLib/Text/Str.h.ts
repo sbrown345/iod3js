@@ -82,30 +82,30 @@ If you have questions concerning this license or the applicable additional terms
 var FILE_HASH_SIZE = 1024;
 ////#endif
 
-////// color escape character
-////const int C_COLOR_ESCAPE			= '^';
-////const int C_COLOR_DEFAULT			= '0';
-////const int C_COLOR_RED				= '1';
-////const int C_COLOR_GREEN				= '2';
-////const int C_COLOR_YELLOW			= '3';
-////const int C_COLOR_BLUE				= '4';
-////const int C_COLOR_CYAN				= '5';
-////const int C_COLOR_MAGENTA			= '6';
-////const int C_COLOR_WHITE				= '7';
-////const int C_COLOR_GRAY				= '8';
-////const int C_COLOR_BLACK				= '9';
+// color escape character
+var C_COLOR_ESCAPE			= '^';
+var C_COLOR_DEFAULT			= '0';
+var C_COLOR_RED				= '1';
+var C_COLOR_GREEN			= '2';
+var C_COLOR_YELLOW			= '3';
+var C_COLOR_BLUE			= '4';
+var C_COLOR_CYAN			= '5';
+var C_COLOR_MAGENTA			= '6';
+var C_COLOR_WHITE			= '7';
+var C_COLOR_GRAY			= '8';
+var C_COLOR_BLACK			= '9';
 
-////// color escape string
-////#define S_COLOR_DEFAULT				"^0"
-////#define S_COLOR_RED					"^1"
-////#define S_COLOR_GREEN				"^2"
-////#define S_COLOR_YELLOW				"^3"
-////#define S_COLOR_BLUE				"^4"
-////#define S_COLOR_CYAN				"^5"
-////#define S_COLOR_MAGENTA				"^6"
-////#define S_COLOR_WHITE				"^7"
-////#define S_COLOR_GRAY				"^8"
-////#define S_COLOR_BLACK				"^9"
+// color escape string
+var S_COLOR_DEFAULT				="^0";
+var S_COLOR_RED					="^1";
+var S_COLOR_GREEN				="^2";
+var S_COLOR_YELLOW				="^3";
+var S_COLOR_BLUE				="^4";
+var S_COLOR_CYAN				="^5";
+var S_COLOR_MAGENTA				="^6";
+var S_COLOR_WHITE				="^7";
+var S_COLOR_GRAY				="^8";
+var S_COLOR_BLACK				="^9";
 
 ////// make idStr a multiple of 16 bytes long
 ////// don't make too large to keep memory requirements to a minimum
@@ -868,9 +868,9 @@ Clear( ):void {
 ////	return idStr::IsNumeric( this.data );
 ////}
 
-////ID_INLINE bool idStr::IsColor( void ) const {
-////	return idStr::IsColor( this.data );
-////}
+	IsColor ( ): boolean {
+		return idStr.IsColor( this.data );
+	}
 
 ////ID_INLINE bool idStr::HasLower( void ) const {
 ////	return idStr::HasLower( this.data );
@@ -1012,9 +1012,9 @@ static Length( s:string ):number {
 		}
 	}
 
-////ID_INLINE bool idStr::IsColor( const char *s ) {
-////	return ( s[0] == C_COLOR_ESCAPE && s[1] != '\0' && s[1] != ' ' );
-////}
+	static IsColor ( s: string ): boolean {
+		return ( s[0] == C_COLOR_ESCAPE && s[1] != '\0' && s[1] != ' ' );
+	}
 
 	static ToLower ( /*char */c: string ): string {
 		assert( c.length == 1 );
@@ -1090,25 +1090,25 @@ static Length( s:string ):number {
 ////static idDynamicBlockAlloc<char, 1<<18, 128>	stringDataAllocator;
 ////#endif
 
-////idVec4	g_color_table[16] =
-////{
-////	idVec4(0.0, 0.0, 0.0, 1.0),
-////	idVec4(1.0, 0.0, 0.0, 1.0), // S_COLOR_RED
-////	idVec4(0.0, 1.0, 0.0, 1.0), // S_COLOR_GREEN
-////	idVec4(1.0, 1.0, 0.0, 1.0), // S_COLOR_YELLOW
-////	idVec4(0.0, 0.0, 1.0, 1.0), // S_COLOR_BLUE
-////	idVec4(0.0, 1.0, 1.0, 1.0), // S_COLOR_CYAN
-////	idVec4(1.0, 0.0, 1.0, 1.0), // S_COLOR_MAGENTA
-////	idVec4(1.0, 1.0, 1.0, 1.0), // S_COLOR_WHITE
-////	idVec4(0.5, 0.5, 0.5, 1.0), // S_COLOR_GRAY
-////	idVec4(0.0, 0.0, 0.0, 1.0), // S_COLOR_BLACK
-////	idVec4(0.0, 0.0, 0.0, 1.0),
-////	idVec4(0.0, 0.0, 0.0, 1.0),
-////	idVec4(0.0, 0.0, 0.0, 1.0),
-////	idVec4(0.0, 0.0, 0.0, 1.0),
-////	idVec4(0.0, 0.0, 0.0, 1.0),
-////	idVec4(0.0, 0.0, 0.0, 1.0),
-////};
+private static  g_color_table/*[16]*/ =
+[
+	new idVec4(0.0, 0.0, 0.0, 1.0),
+	new idVec4(1.0, 0.0, 0.0, 1.0), // S_COLOR_RED
+	new idVec4(0.0, 1.0, 0.0, 1.0), // S_COLOR_GREEN
+	new idVec4(1.0, 1.0, 0.0, 1.0), // S_COLOR_YELLOW
+	new idVec4(0.0, 0.0, 1.0, 1.0), // S_COLOR_BLUE
+	new idVec4(0.0, 1.0, 1.0, 1.0), // S_COLOR_CYAN
+	new idVec4(1.0, 0.0, 1.0, 1.0), // S_COLOR_MAGENTA
+	new idVec4(1.0, 1.0, 1.0, 1.0), // S_COLOR_WHITE
+	new idVec4(0.5, 0.5, 0.5, 1.0), // S_COLOR_GRAY
+	new idVec4(0.0, 0.0, 0.0, 1.0), // S_COLOR_BLACK
+	new idVec4(0.0, 0.0, 0.0, 1.0),
+	new idVec4(0.0, 0.0, 0.0, 1.0),
+	new idVec4(0.0, 0.0, 0.0, 1.0),
+	new idVec4(0.0, 0.0, 0.0, 1.0),
+	new idVec4(0.0, 0.0, 0.0, 1.0),
+	new idVec4(0.0, 0.0, 0.0, 1.0)
+];
 
 ////const char *units[2][4] =
 ////{
@@ -1116,14 +1116,14 @@ static Length( s:string ):number {
 ////	{ "B/s", "KB/s", "MB/s", "GB/s" }
 ////};
 
-/////*
-////============
-////idStr::ColorForIndex
-////============
-////*/
-////idVec4 & idStr::ColorForIndex( int i ) {
-////	return g_color_table[ i & 15 ];
-////}
+/*
+============
+idStr::ColorForIndex
+============
+*/
+	ColorForIndex ( /*int */i: number ): idVec4 {
+		return idStr.g_color_table[i & 15];
+	}
 
 /////*
 ////============

@@ -494,11 +494,11 @@ class emptyCommand_t {
 	commandId: renderCommand_t; next: renderCommand_t;
 };
 
-////typedef struct {
-////	renderCommand_t		commandId, *next;
-////	GLenum	buffer;
-////	int		frameCount;
-////} setBufferCommand_t;
+class setBufferCommand_t {
+	commandId: renderCommand_t; next: renderCommand_t;
+	/*GLenum	*/buffer:number;
+	/*int		*/frameCount:number;
+};
 
 class drawSurfsCommand_t {
 	commandId:renderCommand_t; next: renderCommand_t;
