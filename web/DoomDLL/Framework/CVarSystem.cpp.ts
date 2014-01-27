@@ -278,60 +278,60 @@ idInternalCVar::UpdateCheat
         }
     }
 
-/////*
-////============
-////idInternalCVar::Set
-////============
-////*/
-////void idInternalCVar::Set( const char *newValue, bool force, bool fromServer ) {
-////	if ( session && session.IsMultiplayer() && !fromServer ) {
-////#ifndef ID_TYPEINFO
-////		if ( ( this.flags & CVAR_NETWORKSYNC ) && idAsyncNetwork::client.IsActive() ) {
-////			common.Printf( "%s is a synced over the network and cannot be changed on a multiplayer client.\n", this.nameString.c_str() );
-////#if ID_ALLOW_CHEATS
-////			common.Printf( "ID_ALLOW_CHEATS override!\n" );
-////#else				
-////			return;
-////#endif
-////		}
-////#endif
-////		if ( ( this.flags & CVAR_CHEAT ) && !cvarSystem.GetCVarBool( "net_allowCheats" ) ) {
-////			common.Printf( "%s cannot be changed in multiplayer.\n", this.nameString.c_str() );
-////#if ID_ALLOW_CHEATS
-////			common.Printf( "ID_ALLOW_CHEATS override!\n" );
-////#else				
-////			return;
-////#endif
-////		}	
-////	}
+/*
+============
+idInternalCVar::Set
+============
+*/
+	Set( newValue:string, force:boolean, fromServer:boolean ):void {
+		if (session && session.IsMultiplayer() && !fromServer ) {
+//#ifndef ID_TYPEINFO
+		if ( ( this.flags & CVAR_NETWORKSYNC ) && idAsyncNetwork.client.IsActive() ) {
+			common.Printf( "%s is a synced over the network and cannot be changed on a multiplayer client.\n", this.nameString.c_str() );
+//#if ID_ALLOW_CHEATS
+//			common.Printf( "ID_ALLOW_CHEATS override!\n" );
+//#else				
+			return;
+//#endif
+		}
+//#endif
+		if ( ( this.flags & CVAR_CHEAT ) && !cvarSystem.GetCVarBool( "net_allowCheats" ) ) {
+			common.Printf( "%s cannot be changed in multiplayer.\n", this.nameString.c_str() );
+//#if ID_ALLOW_CHEATS
+//			common.Printf( "ID_ALLOW_CHEATS override!\n" );
+//#else				
+			return;
+//#endif
+		}	
+	}
 
-////	if ( !newValue ) {
-////		newValue = this.resetString.c_str();
-////	}
+	if ( !newValue ) {
+		newValue = this.resetString.c_str();
+	}
 
-////	if ( !force ) {
-////		if ( this.flags & CVAR_ROM ) {
-////			common.Printf( "%s is read only.\n", this.nameString.c_str() );
-////			return;
-////		}
+	if ( !force ) {
+		if ( this.flags & CVAR_ROM ) {
+			common.Printf( "%s is read only.\n", this.nameString.c_str() );
+			return;
+		}
 
-////		if ( this.flags & CVAR_INIT ) {
-////			common.Printf( "%s is write protected.\n", this.nameString.c_str() );
-////			return;
-////		}
-////	}
+		if ( this.flags & CVAR_INIT ) {
+			common.Printf( "%s is write protected.\n", this.nameString.c_str() );
+			return;
+		}
+	}
 
-////	if ( valueString.Icmp( newValue ) == 0 ) {
-////		return;
-////	}
+		if (this.valueString.Icmp( newValue ) == 0 ) {
+		return;
+	}
 
-////	valueString = newValue;
-////	value = valueString.c_str();
-////	UpdateValue();
+		this.valueString = new idStr(newValue);
+		this.value = this. valueString.c_str();
+		this.UpdateValue();
 
-////	SetModified();
-////	cvarSystem.SetModifiedFlags( flags );
-////}
+		this.SetModified();
+		cvarSystem.SetModifiedFlags(this.flags );
+}
 
 /////*
 ////============
@@ -339,19 +339,19 @@ idInternalCVar::UpdateCheat
 ////============
 ////*/
 ////void idInternalCVar::Reset( void ) {
-////	valueString = this.resetString;
-////	value = valueString.c_str();
+////	this.valueString = this.resetString;
+////	this.value = valueString.c_str();
 ////	UpdateValue();
 ////}
 
-/////*
-////============
-////idInternalCVar::InternalSetString
-////============
-////*/
-////void idInternalCVar::InternalSetString( const char *newValue ) {
-////	Set( newValue, true, false );
-////}
+/*
+============
+idInternalCVar::InternalSetString
+============
+*/
+	InternalSetString ( newValue: string ): void {
+		this.Set( newValue, true, false );
+	}
 
 /////*
 ////===============
@@ -515,37 +515,37 @@ FindInternal( /*const char **/name:string ):idInternalCVar {
 	return /*NULL*/null;
 }
 
-/////*
-////============
-////idCVarSystemLocal::SetInternal
-////============
-////*/
-////void idCVarSystemLocal::SetInternal( const char *name, const char *value, int flags ) {
-////	int hash;
-////	idInternalCVar *internal;
+/*
+============
+idCVarSystemLocal::SetInternal
+============
+*/
+	SetInternal ( name: string, value: string, /*int */flags: number ): void {
+		var /*int */hash: number;
+		var internal: idInternalCVar;
 
-////	internal = FindInternal( name );
+		internal = this.FindInternal( name );
 
-////	if ( internal ) {
-////		internal.InternalSetString( value );
-////		internal.flags |= flags & ~CVAR_STATIC;
-////		internal.UpdateCheat();
-////	} else {
-////		internal = new idInternalCVar( name, value, flags );
-////		hash = cvarHash.GenerateKey( internal.nameString.c_str(), false );
-////		cvarHash.Add( hash, cvars.Append( internal ) );
-////	}
-////}
+		if ( internal ) {
+			internal.InternalSetString( value );
+			internal.flags |= flags & ~CVAR_STATIC;
+			internal.UpdateCheat ( );
+		} else {
+			internal = new idInternalCVar( name, value, flags );
+			hash = this.cvarHash.GenerateKey( internal.nameString.c_str ( ), false );
+			this.cvarHash.Add(hash, this.cvars.Append( internal ) );
+		}
+	}
 
-/////*
-////============
-////idCVarSystemLocal::idCVarSystemLocal
-////============
-////*/
-////idCVarSystemLocal::idCVarSystemLocal( void ) {
-////	this.initialized = false;
-////	this.modifiedFlags = 0;
-////}
+///*
+//============
+//idCVarSystemLocal::idCVarSystemLocal
+//============
+//*/
+//idCVarSystemLocal::idCVarSystemLocal( void ) {
+//initialized = false;
+//modifiedFlags = 0;
+//}
 
 /*
 ============
@@ -628,25 +628,25 @@ Register( cvar:idCVar ):void {
 //idCVarSystemLocal::SetCVarString
 //============
 //*/
-//void /*idCVarSystemLocal::*/SetCVarString( const char *name, const char *value, int flags ) {
+//void /*idCVarSystemLocal::*/SetCVarString( const char *name, const char *value, int flags = 0 ) {
 //	SetInternal( name, value, flags );
 //}
 
+/*
+============
+idCVarSystemLocal::SetCVarBool
+============
+*/
+	SetCVarBool ( name: string, value: boolean, /*int */flags: number = 0 ): void {
+		this.SetInternal( name, new idStr( value ).toString ( ), flags );
+	}
 ///*
-//============
-//idCVarSystemLocal::SetCVarBool
-//============
-//*/
-//void /*idCVarSystemLocal::*/SetCVarBool( const char *name, const bool value, int flags ) {
-//	SetInternal( name, idStr( value ), flags );
-//}
 
-///*
 //============
 //idCVarSystemLocal::SetCVarInteger
 //============
 //*/
-//void /*idCVarSystemLocal::*/SetCVarInteger( const char *name, const int value, int flags ) {
+//void /*idCVarSystemLocal::*/SetCVarInteger( const char *name, const int value, int flags = 0 ) {
 //	SetInternal( name, idStr( value ), flags );
 //}
 
@@ -655,7 +655,7 @@ Register( cvar:idCVar ):void {
 //idCVarSystemLocal::SetCVarFloat
 //============
 //*/
-//void idCVarSystemLocal::SetCVarFloat( const char *name, const float value, int flags ) {
+//void idCVarSystemLocal::SetCVarFloat( const char *name, const float value, int flags = 0 ) {
 //	SetInternal( name, idStr( value ), flags );
 //}
 
@@ -672,18 +672,18 @@ Register( cvar:idCVar ):void {
 //	return "";
 //}
 
-///*
-//============
-//idCVarSystemLocal::GetCVarBool
-//============
-//*/
-//bool /*idCVarSystemLocal::*/GetCVarBool( const char *name ) const {
-//	idInternalCVar *internal = FindInternal( name );
-//	if ( internal ) {
-//		return internal.GetBool();
-//	}
-//	return false;
-//}
+/*
+============
+idCVarSystemLocal::GetCVarBool
+============
+*/
+	GetCVarBool ( name: string ): boolean {
+		var internal = this.FindInternal( name );
+		if ( internal ) {
+			return internal.GetBool ( );
+		}
+		return false;
+	}
 
 /*
 ============

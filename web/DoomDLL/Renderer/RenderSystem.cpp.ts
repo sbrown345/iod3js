@@ -129,10 +129,10 @@ var r_skipROQ= new idCVar( "r_skipROQ", "0", CVAR_RENDERER | CVAR_BOOL, "skip RO
 var r_ignore= new idCVar( "r_ignore", "0", CVAR_RENDERER, "used for random debugging without defining new vars" );
 var r_ignore2= new idCVar( "r_ignore2", "0", CVAR_RENDERER, "used for random debugging without defining new vars" );
 var r_usePreciseTriangleInteractions= new idCVar( "r_usePreciseTriangleInteractions", "0", CVAR_RENDERER | CVAR_BOOL, "1 = do winding clipping to determine if each ambiguous tri should be lit" );
-//var r_useCulling= new idCVar( "r_useCulling", "2", CVAR_RENDERER | CVAR_INTEGER, "0 = none, 1 = sphere, 2 = sphere + box", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
+//var r_useCulling= new idCVar( "r_useCulling", "2", CVAR_RENDERER | CVAR_INTEGER, "0 = none, 1 = sphere, 2 = sphere + box", 0, 2, ArgCompletion_Integer_Template(0,2));
 //var r_useLightCulling= new idCVar( "r_useLightCulling", "3", CVAR_RENDERER | CVAR_INTEGER, "0 = none, 1 = box, 2 = exact clip of polyhedron faces, 3 = also areas", 0, 3, idCmdSystem::ArgCompletion_Integer<0,3> );
 var r_useLightScissors= new idCVar( "r_useLightScissors", "1", CVAR_RENDERER | CVAR_BOOL, "1 = use custom scissor rectangle for each light" );
-//var r_useClippedLightScissors= new idCVar( "r_useClippedLightScissors", "1", CVAR_RENDERER | CVAR_INTEGER, "0 = full screen when near clipped, 1 = exact when near clipped, 2 = exact always", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
+//var r_useClippedLightScissors= new idCVar( "r_useClippedLightScissors", "1", CVAR_RENDERER | CVAR_INTEGER, "0 = full screen when near clipped, 1 = exact when near clipped, 2 = exact always", 0, 2, ArgCompletion_Integer_Template(0,2));
 var r_useEntityCulling= new idCVar( "r_useEntityCulling", "1", CVAR_RENDERER | CVAR_BOOL, "0 = none, 1 = box" );
 var r_useEntityScissors= new idCVar( "r_useEntityScissors", "0", CVAR_RENDERER | CVAR_BOOL, "1 = use custom scissor rectangle for each entity" );
 var r_useInteractionCulling= new idCVar( "r_useInteractionCulling", "1", CVAR_RENDERER | CVAR_BOOL, "1 = cull interactions" );
@@ -159,7 +159,7 @@ var r_lightScale= new idCVar( "r_lightScale", "2", CVAR_RENDERER | CVAR_FLOAT, "
 var r_lightSourceRadius= new idCVar( "r_lightSourceRadius", "0", CVAR_RENDERER | CVAR_FLOAT, "for soft-shadow sampling" );
 var r_flareSize= new idCVar( "r_flareSize", "1", CVAR_RENDERER | CVAR_FLOAT, "scale the flare deforms from the material def" ); 
 
-//var r_useExternalShadows= new idCVar( "r_useExternalShadows", "1", CVAR_RENDERER | CVAR_INTEGER, "1 = skip drawing caps when outside the light volume, 2 = force to no caps for testing", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
+//var r_useExternalShadows= new idCVar( "r_useExternalShadows", "1", CVAR_RENDERER | CVAR_INTEGER, "1 = skip drawing caps when outside the light volume, 2 = force to no caps for testing", 0, 2, ArgCompletion_Integer_Template(0,2));
 var r_useOptimizedShadows= new idCVar( "r_useOptimizedShadows", "1", CVAR_RENDERER | CVAR_BOOL, "use the dmap generated static shadow volumes" );
 var r_useScissor= new idCVar( "r_useScissor", "1", CVAR_RENDERER | CVAR_BOOL, "scissor clip as portals and lights are processed" );
 var r_useCombinerDisplayLists= new idCVar( "r_useCombinerDisplayLists", "1", CVAR_RENDERER | CVAR_BOOL | CVAR_NOCHEAT, "put all nvidia register combiner programming in display lists" );
@@ -188,7 +188,7 @@ var r_showLightScale= new idCVar( "r_showLightScale", "0", CVAR_RENDERER | CVAR_
 var r_showDefs= new idCVar( "r_showDefs", "0", CVAR_RENDERER | CVAR_BOOL, "report the number of modeDefs and lightDefs in view" );
 //var r_showTrace= new idCVar( "r_showTrace", "0", CVAR_RENDERER | CVAR_INTEGER, "show the intersection of an eye trace with the world", idCmdSystem.ArgCompletion_Integer<0,2> );
 var r_showIntensity= new idCVar( "r_showIntensity", "0", CVAR_RENDERER | CVAR_BOOL, "draw the screen colors based on intensity, red = 0, green = 128, blue = 255" );
-//var r_showImages= new idCVar( "r_showImages", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = show all images instead of rendering, 2 = show in proportional size", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
+//var r_showImages= new idCVar( "r_showImages", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = show all images instead of rendering, 2 = show in proportional size", 0, 2, ArgCompletion_Integer_Template(0,2));
 var r_showSmp= new idCVar( "r_showSmp", "0", CVAR_RENDERER | CVAR_BOOL, "show which end = new idCVar(front or back) is blocking" );
 //var r_showLights= new idCVar( "r_showLights", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = just print volumes numbers, highlighting ones covering the view, 2 = also draw planes of each volume, 3 = also draw edges of each volume", 0, 3, idCmdSystem::ArgCompletion_Integer<0,3> );
 //var r_showShadows= new idCVar( "r_showShadows", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = visualize the stencil shadow volumes, 2 = draw filled in", 0, 3, idCmdSystem::ArgCompletion_Integer<0,3> );
@@ -196,7 +196,7 @@ var r_showSmp= new idCVar( "r_showSmp", "0", CVAR_RENDERER | CVAR_BOOL, "show wh
 var r_showLightScissors= new idCVar( "r_showLightScissors", "0", CVAR_RENDERER | CVAR_BOOL, "show light scissor rectangles" );
 var r_showEntityScissors= new idCVar( "r_showEntityScissors", "0", CVAR_RENDERER | CVAR_BOOL, "show entity scissor rectangles" );
 //var r_showInteractionFrustums= new idCVar( "r_showInteractionFrustums", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = show a frustum for each interaction, 2 = also draw lines to light origin, 3 = also draw entity bbox", 0, 3, idCmdSystem::ArgCompletion_Integer<0,3> );
-//var r_showInteractionScissors= new idCVar( "r_showInteractionScissors", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = show screen rectangle which contains the interaction frustum, 2 = also draw construction lines", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
+//var r_showInteractionScissors= new idCVar( "r_showInteractionScissors", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = show screen rectangle which contains the interaction frustum, 2 = also draw construction lines", 0, 2, ArgCompletion_Integer_Template(0,2));
 //var r_showLightCount= new idCVar( "r_showLightCount", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = colors surfaces based on light count, 2 = also count everything through walls, 3 = also print overdraw", 0, 3, idCmdSystem::ArgCompletion_Integer<0,3> );
 //var r_showViewEntitys= new idCVar( "r_showViewEntitys", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = displays the bounding boxes of all view models, 2 = print index numbers" );
 //var r_showTris= new idCVar( "r_showTris", "0", CVAR_RENDERER | CVAR_INTEGER, "enables wireframe rendering of the world, 1 = only draw visible ones, 2 = draw all front facing, 3 = draw all", 0, 3, idCmdSystem::ArgCompletion_Integer<0,3> );
@@ -219,7 +219,7 @@ var r_showTextureVectors= new idCVar( "r_showTextureVectors", "0", CVAR_RENDERER
 var r_lockSurfaces= new idCVar( "r_lockSurfaces", "0", CVAR_RENDERER | CVAR_BOOL, "allow moving the view point without changing the composition of the scene, including culling" );
 var r_useEntityCallbacks= new idCVar( "r_useEntityCallbacks", "1", CVAR_RENDERER | CVAR_BOOL, "if 0, issue the callback immediately at update time, rather than defering" );
 
-//var r_showSkel= new idCVar( "r_showSkel", "0", CVAR_RENDERER | CVAR_INTEGER, "draw the skeleton when model animates, 1 = draw model with skeleton, 2 = draw skeleton only", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
+//var r_showSkel= new idCVar( "r_showSkel", "0", CVAR_RENDERER | CVAR_INTEGER, "draw the skeleton when model animates, 1 = draw model with skeleton, 2 = draw skeleton only", 0, 2, ArgCompletion_Integer_Template(0,2));
 var r_jointNameScale= new idCVar( "r_jointNameScale", "0.02", CVAR_RENDERER | CVAR_FLOAT, "size of joint names when r_showskel is set to 1" );
 var r_jointNameOffset= new idCVar( "r_jointNameOffset", "0.5", CVAR_RENDERER | CVAR_FLOAT, "offset of joint names when r_showskel is set to 1" );
 

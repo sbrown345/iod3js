@@ -50,10 +50,10 @@ var uiManagerLocal: idUserInterfaceManagerLocal;
 //*/
 class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 
-//void idUserInterfaceManagerLocal::Init() {
-//	screenRect = idRectangle(0, 0, 640, 480);
-//	dc.Init();
-//}
+	Init ( ): void {
+		this.screenRect = idRectangle( 0, 0, 640, 480 );
+		this.dc.Init ( );
+	}
 //
 //void idUserInterfaceManagerLocal::Shutdown() {
 //	this.guis.DeleteContents( true );

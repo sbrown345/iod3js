@@ -29,6 +29,18 @@
     <Content Include="DoomDLL\Framework\CmdSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\CmdSystem.h.ts" />
     <Content Include="DoomDLL\Framework\Common.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Async\AsyncClient.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Async\AsyncClient.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Async\AsyncNetwork.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Async\AsyncNetwork.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Async\AsyncServer.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Async\AsyncServer.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Async\MsgChannel.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Async\MsgChannel.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Async\NetworkSystem.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Async\NetworkSystem.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Async\ServerScan.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Async\ServerScan.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Framework\Common.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Framework\Console.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Framework\Console.h.ts" />
@@ -52,6 +64,13 @@
     <Content Include="DoomDLL\Framework\FileSystem.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\Cinematic.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\Cinematic.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\UsercmdGen.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\UsercmdGen.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Licensee.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Session.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Session.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Session_local.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Session_menu.cpp.ts" />
     <Content Include="DoomDLL\Renderer\GuiModel.cpp.ts" />
     <Content Include="DoomDLL\Renderer\GuiModel.h.ts" />
     <Content Include="DoomDLL\Renderer\Image.h.ts" />
@@ -99,6 +118,7 @@
     <TypeScriptCompile Include="DoomDLL\Renderer\VertexCache.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\VertexCache.h.ts" />
     <Content Include="DoomDLL\Sound\sound.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Sys\sys_public.h.ts" />
     <Content Include="DoomDLL\Sys\win_glimp.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Sys\win_main.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Sys\win_input.cpp.ts" />
@@ -155,6 +175,7 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

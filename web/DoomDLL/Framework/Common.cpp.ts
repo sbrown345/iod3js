@@ -9,6 +9,7 @@
 /// <reference path="../../utils/todo.ts" />
 /// <reference path="../../libs/c.ts" />
 /// <reference path="console.cpp.ts" />
+/// <reference path="usercmdgen.cpp.ts" />
 
 /////*
 ////===========================================================================
@@ -87,9 +88,9 @@ var com_developer = new idCVar( "developer", "0", CVAR_BOOL|CVAR_SYSTEM|CVAR_NOC
 ////idCVar com_showMemoryUsage( "com_showMemoryUsage", "0", CVAR_BOOL|CVAR_SYSTEM|CVAR_NOCHEAT, "show total and per frame memory usage" );
 ////idCVar com_showAsyncStats( "com_showAsyncStats", "0", CVAR_BOOL|CVAR_SYSTEM|CVAR_NOCHEAT, "show async network stats" );
 ////idCVar com_showSoundDecoders( "com_showSoundDecoders", "0", CVAR_BOOL|CVAR_SYSTEM|CVAR_NOCHEAT, "show sound decoders" );
-////idCVar com_timestampPrints( "com_timestampPrints", "0", CVAR_SYSTEM, "print time with each console print, 1 = msec, 2 = sec", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
+////idCVar com_timestampPrints( "com_timestampPrints", "0", CVAR_SYSTEM, "print time with each console print, 1 = msec, 2 = sec", 0, 2, ArgCompletion_Integer_Template(0,2));
 ////idCVar com_timescale( "timescale", "1", CVAR_SYSTEM | CVAR_FLOAT, "scales the time", 0.1f, 10.0f );
-////idCVar com_logFile( "logFile", "0", CVAR_SYSTEM | CVAR_NOCHEAT, "1 = buffer log, 2 = flush after each print", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
+////idCVar com_logFile( "logFile", "0", CVAR_SYSTEM | CVAR_NOCHEAT, "1 = buffer log, 2 = flush after each print", 0, 2, ArgCompletion_Integer_Template(0,2));
 ////idCVar com_logFileName( "logFileName", "qconsole.log", CVAR_SYSTEM | CVAR_NOCHEAT, "name of log file, if empty, qconsole.log will be used" );
 ////idCVar com_makingBuild( "com_makingBuild", "0", CVAR_BOOL | CVAR_SYSTEM, "1 when making a build" );
 ////idCVar com_updateLoadSize( "com_updateLoadSize", "0", CVAR_BOOL | CVAR_SYSTEM | CVAR_NOCHEAT, "update the load size after loading a map" );
@@ -2973,11 +2974,11 @@ idCommonLocal::InitGame
 
 	// load the font, etc
 	$console.LoadGraphics();
-	todoThrow();
-////	// init journalling, etc
-////	eventLoop.Init();
 
-////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04345" ) );
+	// init journalling, etc
+	//eventLoop.Init();
+
+	this.PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04345" ) );
 
 ////	// exec the startup scripts
 ////	cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "exec editor.cfg\n" );
@@ -2992,8 +2993,8 @@ idCommonLocal::InitGame
 ////	// reload the language dictionary now that we've loaded config files
 ////	cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "reloadLanguage\n" );
 
-////	// run cfg execution
-////	cmdSystem.ExecuteCommandBuffer();
+//	// run cfg execution
+//	cmdSystem.ExecuteCommandBuffer();
 
 ////	// re-override anything from the config files with command line args
 ////	StartupVariable( NULL, false );
@@ -3001,25 +3002,25 @@ idCommonLocal::InitGame
 ////	// if any archived cvars are modified after this, we will trigger a writing of the config file
 ////	cvarSystem.ClearModifiedFlags( CVAR_ARCHIVE );
 
-////	// cvars are initialized, but not the rendering system. Allow preference startup dialog
-////	Sys_DoPreferences();
-
-////	// init the user command input code
-////	usercmdGen.Init();
-
-////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04346" ) );
+	// cvars are initialized, but not the rendering system. Allow preference startup dialog
+	Sys_DoPreferences();
+	
+	// init the user command input code
+	usercmdGen.Init();
+	todoThrow ( );
+	this.PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04346" ) );
 
 ////	// start the sound system, but don't do any hardware operations yet
 ////	soundSystem.Init();
 
 ////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04347" ) );
 
-////	// init async network
-////	idAsyncNetwork::Init();
+	// init async network
+	idAsyncNetwork.Init();
 
 ////#ifdef	ID_DEDICATED
 ////	idAsyncNetwork::server.InitPort();
-////	cvarSystem.SetCVarBool( "s_noSound", true );
+	cvarSystem.SetCVarBool( "s_noSound", true );
 ////#else
 ////	if ( idAsyncNetwork::serverDedicated.GetInteger() == 1 ) {
 ////		idAsyncNetwork::server.InitPort();
@@ -3033,11 +3034,11 @@ idCommonLocal::InitGame
 
 ////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04349" ) );
 
-////	// initialize the user interfaces
-////	uiManager.Init();
+	// initialize the user interfaces
+	uiManager.Init();
 
-////	// startup the script debugger
-////	// DebuggerServerInit();
+	// startup the script debugger
+	// DebuggerServerInit();
 
 ////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04350" ) );
 

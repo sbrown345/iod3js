@@ -1614,10 +1614,11 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 ////void Sys_SetFatalError( const char *error ) {
 ////}
 
-/////*
-////==================
-////Sys_DoPreferences
-////==================
-////*/
-////void Sys_DoPreferences( void ) {
-////}
+/*
+==================
+Sys_DoPreferences
+==================
+*/
+function Sys_DoPreferences(): void {
+	// yay
+}

@@ -120,17 +120,23 @@ var S_COLOR_BLACK				="^9";
 class idStr {
 
 	constructor ( );
+	constructor ( str: boolean );
 	constructor ( str: string );
 	constructor ( str: number );
 	constructor ( str: string, start: number, end: number );
-	constructor ( str?: any, start?: number, end?: number ) {
+	constructor ( val?: any, start?: number, end?: number ) {
 		this.Init ( );
 
-		if ( arguments.length === 1 ) {
-			this.data = str + ""; //.toUint8Array ( );
+		if (arguments.length === 1) {
+			if ( typeof val === "boolean" ) {
+				this.data = val ? '1' : '0';
+			} else {
+				this.data = val + ""; //.toUint8Array ( );
+			}
+
 			this.len = this.data.length;
 		} else if ( arguments.length === 3 ) {
-			this.data = ( str + "" ).substring( start, end );
+			this.data = ( val + "" ).substring( start, end );
 			this.len = this.data.length;
 		}
 	}
