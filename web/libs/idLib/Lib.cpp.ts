@@ -1,3 +1,4 @@
+/// <reference path="math/vector.cpp.ts" />
 /// <reference path="../../utils/todo.ts" />
 /////*
 ////===========================================================================
@@ -50,39 +51,59 @@
 ////idFileSystem *	idLib::fileSystem	= NULL;
 ////int				idLib::frameNumber	= 0;
 
-/////*
-////================
-////idLib::Init
-////================
-////*/
-////void idLib::Init( void ) {
+var colorBlack: idVec4;
+var colorWhite: idVec4;
+var colorRed: idVec4;
+var colorGreen: idVec4;
+var colorBlue: idVec4;
+var colorYellow: idVec4;
+var colorMagenta: idVec4;
+var colorCyan: idVec4;
+var colorOrange: idVec4;
+var colorPurple: idVec4;
+var colorPink: idVec4;
+var colorBrown: idVec4;
+var colorLtGrey: idVec4;
+var colorMdGrey: idVec4;
+var colorDkGrey: idVec4;
 
-////	assert( sizeof( bool ) == 1 );
+class idLib {
 
-////	// initialize little/big endian conversion
-////	Swap_Init();
+/*
+================
+idLib::Init
+================
+*/
+	static Init ( ): void {
 
-////	// initialize memory manager
-////	Mem_Init();
+		//assert( sizeof( bool ) == 1 );
 
-////	// init string memory allocator
-////	idStr::InitMemory();
+		//// initialize little/big endian conversion
+		//Swap_Init();
 
-////	// initialize generic SIMD implementation
-////	idSIMD::Init();
+		//// initialize memory manager
+		//Mem_Init();
 
-////	// initialize math
-////	idMath::Init();
+		//// init string memory allocator
+		//idStr::InitMemory();
 
-////	// test idMatX
-////	//idMatX::Test();
+		//// initialize generic SIMD implementation
+		//idSIMD::Init();
 
-////	// test idPolynomial
-////	idPolynomial::Test();
+		//// initialize math
+		//idMath::Init();
 
-////	// initialize the dictionary string pools
-////	idDict::Init();
-////}
+		//// test idMatX
+		////idMatX::Test();
+
+		//// test idPolynomial
+		//idPolynomial::Test();
+
+		//// initialize the dictionary string pools
+		//idDict::Init();
+
+		idLib.InitColors ( );
+	}
 
 /////*
 ////================
@@ -113,21 +134,23 @@
 ===============================================================================
 */
 
-var	colorBlack	= new idVec4( 0.00, 0.00, 0.00, 1.00 );
-var	colorWhite	= new idVec4( 1.00, 1.00, 1.00, 1.00 );
-var	colorRed	= new idVec4( 1.00, 0.00, 0.00, 1.00 );
-var	colorGreen	= new idVec4( 0.00, 1.00, 0.00, 1.00 );
-var	colorBlue	= new idVec4( 0.00, 0.00, 1.00, 1.00 );
-var	colorYellow	= new idVec4( 1.00, 1.00, 0.00, 1.00 );
-var	colorMagenta= new idVec4( 1.00, 0.00, 1.00, 1.00 );
-var	colorCyan	= new idVec4( 0.00, 1.00, 1.00, 1.00 );
-var	colorOrange	= new idVec4( 1.00, 0.50, 0.00, 1.00 );
-var	colorPurple	= new idVec4( 0.60, 0.00, 0.60, 1.00 );
-var	colorPink	= new idVec4( 0.73, 0.40, 0.48, 1.00 );
-var	colorBrown	= new idVec4( 0.40, 0.35, 0.08, 1.00 );
-var	colorLtGrey	= new idVec4( 0.75, 0.75, 0.75, 1.00 );
-var	colorMdGrey	= new idVec4( 0.50, 0.50, 0.50, 1.00 );
-var	colorDkGrey	= new idVec4( 0.25, 0.25, 0.25, 1.00 );
+	static InitColors ( ): void {
+		colorBlack = new idVec4( 0.00, 0.00, 0.00, 1.00 );
+		colorWhite = new idVec4( 1.00, 1.00, 1.00, 1.00 );
+		colorRed = new idVec4( 1.00, 0.00, 0.00, 1.00 );
+		colorGreen = new idVec4( 0.00, 1.00, 0.00, 1.00 );
+		colorBlue = new idVec4( 0.00, 0.00, 1.00, 1.00 );
+		colorYellow = new idVec4( 1.00, 1.00, 0.00, 1.00 );
+		colorMagenta = new idVec4( 1.00, 0.00, 1.00, 1.00 );
+		colorCyan = new idVec4( 0.00, 1.00, 1.00, 1.00 );
+		colorOrange = new idVec4( 1.00, 0.50, 0.00, 1.00 );
+		colorPurple = new idVec4( 0.60, 0.00, 0.60, 1.00 );
+		colorPink = new idVec4( 0.73, 0.40, 0.48, 1.00 );
+		colorBrown = new idVec4( 0.40, 0.35, 0.08, 1.00 );
+		colorLtGrey = new idVec4( 0.75, 0.75, 0.75, 1.00 );
+		colorMdGrey = new idVec4( 0.50, 0.50, 0.50, 1.00 );
+		colorDkGrey = new idVec4( 0.25, 0.25, 0.25, 1.00 );
+	}
 
 ////static dword colorMask[2] = { 255, 0 };
 
@@ -254,6 +277,8 @@ var	colorDkGrey	= new idVec4( 0.25, 0.25, 0.25, 1.00 );
 
 ////	common.Warning( "%s", text );
 ////}
+
+}
 
 /////*
 ////===============================================================================

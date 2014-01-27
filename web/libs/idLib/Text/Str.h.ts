@@ -119,25 +119,25 @@ var S_COLOR_BLACK				="^9";
 
 class idStr {
 
-	constructor ( ) ;
-	constructor ( str: string ) ;
-	constructor ( str: number ) ;
-	constructor ( str: string, start:number, end:number ) ;
-	constructor(str?: any, start?: number, end?: number) {
-        this.Init();
+	constructor ( );
+	constructor ( str: string );
+	constructor ( str: number );
+	constructor ( str: string, start: number, end: number );
+	constructor ( str?: any, start?: number, end?: number ) {
+		this.Init ( );
 
-        if(arguments.length === 1) {
+		if ( arguments.length === 1 ) {
 			this.data = str + ""; //.toUint8Array ( );
-	        this.len = this.data.length;
-        } else if(arguments.length === 3) {
-            this.data = (str + "").substring(start, end);
 			this.len = this.data.length;
-        }
+		} else if ( arguments.length === 3 ) {
+			this.data = ( str + "" ).substring( start, end );
+			this.len = this.data.length;
+		}
 	}
 
-    toString() {
-        return this.data;
-    }
+	toString ( ) {
+		return this.data;
+	}
 
 ////public:
 ////						idStr( void );
@@ -337,7 +337,8 @@ class idStr {
 ////	static idStr		FormatNumber( int number );
 
 //protected:
-    	/*int	*/				len:number;
+	/*int	*/
+	len: number;
 /*		char *				*/
 	data: string;
 
@@ -357,16 +358,16 @@ class idStr {
 		//}
 	}
 
-	Init( ):void {
-	    this.len = 0;
-	    //alloced = STR_ALLOC_BASE;
-	    //this.data = baseBuffer;
-	    //this.data[ 0 ] = '\0';
-        this.data = "";
+	Init ( ): void {
+		this.len = 0;
+		//alloced = STR_ALLOC_BASE;
+		//this.data = baseBuffer;
+		//this.data[ 0 ] = '\0';
+		this.data = "";
 		//#ifdef ID_DEBUG_UNINITIALIZED_MEMORY
 		//	memset( baseBuffer, 0, sizeof( baseBuffer ) );
 		//#endif
-    }
+	}
 
 ////ID_INLINE idStr::idStr( void ) {
 ////	Init();
@@ -682,9 +683,9 @@ class idStr {
 		return idStr.Cmp( this, text );
 	}
 
-Cmpn( text:string, /*int*/ n:number ) :number {
-	return idStr.Cmpn( this.data, text, n );
-}
+	Cmpn ( text: string, /*int*/ n: number ): number {
+		return idStr.Cmpn( this.data, text, n );
+	}
 
 ////ID_INLINE int idStr::CmpPrefix( const char *text ) const {
 ////	assert( text );
@@ -713,10 +714,10 @@ Cmpn( text:string, /*int*/ n:number ) :number {
 ////	return idStr::IcmpNoColor( this.data, text );
 ////}
 
-IcmpPath( /*const char * */text:string ) :number{
-	//assert( text );
-	return idStr.IcmpPath( this.data, text );
-}
+	IcmpPath ( /*const char * */text: string ): number {
+		//assert( text );
+		return idStr.IcmpPath( this.data, text );
+	}
 
 ////ID_INLINE int idStr::IcmpnPath( const char *text, int n ) const {
 ////	assert( text );
@@ -728,9 +729,9 @@ IcmpPath( /*const char * */text:string ) :number{
 ////	return idStr::IcmpnPath( this.data, text, strlen( text ) );
 ////}
 
-Length( ):number {
-    return this.data.length;//this.len;
-}
+	Length ( ): number {
+		return this.data.length; //this.len;
+	}
 
 ////ID_INLINE int idStr::Allocated( void ) const {
 ////	if ( this.data != baseBuffer ) {
@@ -740,20 +741,20 @@ Length( ):number {
 ////	}
 ////}
 
-Empty( ):void {
-	this.EnsureAlloced( 1 );
-	this.data = "";//this.data[ 0 ] = '\0';
-	this.len = 0;
-}
+	Empty ( ): void {
+		this.EnsureAlloced( 1 );
+		this.data = ""; //this.data[ 0 ] = '\0';
+		this.len = 0;
+	}
 
 ////ID_INLINE bool idStr::IsEmpty( void ) const {
 ////	return ( idStr::Cmp( this.data, "" ) == 0 );
 ////}
 
-Clear( ):void {
-	this.FreeData();
-	this.Init();
-}
+	Clear ( ): void {
+		this.FreeData ( );
+		this.Init ( );
+	}
 
 ////ID_INLINE void idStr::Append( const char a ) {
 ////	EnsureAlloced( len + 2 );
@@ -856,11 +857,11 @@ Clear( ):void {
 ////	len += l;
 ////}
 
-	ToLower(): void {
+	ToLower ( ): void {
 		this.data = this.data.toLowerCase ( );
 	}
 
-	ToUpper(): void {
+	ToUpper ( ): void {
 		this.data = this.data.toUpperCase ( );
 	}
 
@@ -912,12 +913,12 @@ Clear( ):void {
 //	return idStr::FindChar( this.data, c, start, end );
 //}
 
-Find( text:string, casesensitive = true, /*int */start = 0, /*int */end = -1):number{
-	if ( end == -1 ) {
-		end = this.len;
+	Find ( text: string, casesensitive = true, /*int */start = 0, /*int */end = -1 ): number {
+		if ( end == -1 ) {
+			end = this.len;
+		}
+		return idStr.FindText( this.data, text, casesensitive, start, end );
 	}
-	return idStr.FindText( this.data, text, casesensitive, start, end );
-}
 
 ////ID_INLINE bool idStr::Filter( const char *filter, bool casesensitive ) const {
 ////	return idStr::Filter( filter, this.data, casesensitive );
@@ -951,18 +952,18 @@ Find( text:string, casesensitive = true, /*int */start = 0, /*int */end = -1):nu
 ////	StripTrailing( c );
 ////}
 
-Strip( $string:string ):void {
-	this.StripLeading( $string );
-	this.StripTrailing( $string );
-}
+	Strip ( $string: string ): void {
+		this.StripLeading( $string );
+		this.StripTrailing( $string );
+	}
 
 ////ID_INLINE bool idStr::CheckExtension( const char *ext ) {
 ////	return idStr::CheckExtension( this.data, ext );
 ////}
 
-static Length( s:string ):number {
-    return s.length;
-}
+	static Length ( s: string ): number {
+		return s.length;
+	}
 
 ////ID_INLINE char *idStr::ToLower( char *s ) {
 ////	for ( int i = 0; s[i]; i++ ) {
@@ -981,7 +982,7 @@ static Length( s:string ):number {
 ////	}
 ////	return s;
 ////}
-    
+
 	static Hash ( $string: idStr ): number;
 	static Hash ( $string: string ): number;
 	static Hash ( $string: any ): number {
@@ -993,22 +994,22 @@ static Length( s:string ):number {
 		}
 		return hash;
 	}
-    
+
 	static IHash ( $string: idStr ): number;
 	static IHash ( $string: idStr, /*int */length?: number ): number {
 		var /*int*/ i: number, hash = 0;
 		var idx = 0;
 		$string = idStr.getIdStr( $string );
 		if ( typeof ( length ) === "number" ) {
-		    for ( i = 0; i < length; i++ ) {
-		        hash += ( $string.c( idx++ ) ) * ( i + 119 );
-		    }
-		    return hash;
+			for ( i = 0; i < length; i++ ) {
+				hash += ( $string.c( idx++ ) ) * ( i + 119 );
+			}
+			return hash;
 		} else {
-		    for ( i = 0; $string.c( idx ); i++ ) {
-		        hash += idStr.ToLower( $string.v( idx++ ) ).charCodeAt( 0 ) * ( i + 119 );
-		    }
-		    return hash;
+			for ( i = 0; $string.c( idx ); i++ ) {
+				hash += idStr.ToLower( $string.v( idx++ ) ).charCodeAt( 0 ) * ( i + 119 );
+			}
+			return hash;
 		}
 	}
 
@@ -1090,25 +1091,28 @@ static Length( s:string ):number {
 ////static idDynamicBlockAlloc<char, 1<<18, 128>	stringDataAllocator;
 ////#endif
 
-private static  g_color_table/*[16]*/ =
-[
-	new idVec4(0.0, 0.0, 0.0, 1.0),
-	new idVec4(1.0, 0.0, 0.0, 1.0), // S_COLOR_RED
-	new idVec4(0.0, 1.0, 0.0, 1.0), // S_COLOR_GREEN
-	new idVec4(1.0, 1.0, 0.0, 1.0), // S_COLOR_YELLOW
-	new idVec4(0.0, 0.0, 1.0, 1.0), // S_COLOR_BLUE
-	new idVec4(0.0, 1.0, 1.0, 1.0), // S_COLOR_CYAN
-	new idVec4(1.0, 0.0, 1.0, 1.0), // S_COLOR_MAGENTA
-	new idVec4(1.0, 1.0, 1.0, 1.0), // S_COLOR_WHITE
-	new idVec4(0.5, 0.5, 0.5, 1.0), // S_COLOR_GRAY
-	new idVec4(0.0, 0.0, 0.0, 1.0), // S_COLOR_BLACK
-	new idVec4(0.0, 0.0, 0.0, 1.0),
-	new idVec4(0.0, 0.0, 0.0, 1.0),
-	new idVec4(0.0, 0.0, 0.0, 1.0),
-	new idVec4(0.0, 0.0, 0.0, 1.0),
-	new idVec4(0.0, 0.0, 0.0, 1.0),
-	new idVec4(0.0, 0.0, 0.0, 1.0)
-];
+	private static g_color_table: idVec4[/*16*/];
+
+	static Init ( ): void {
+		idStr.g_color_table = [
+			new idVec4( 0.0, 0.0, 0.0, 1.0 ),
+			new idVec4( 1.0, 0.0, 0.0, 1.0 ), // S_COLOR_RED
+			new idVec4( 0.0, 1.0, 0.0, 1.0 ), // S_COLOR_GREEN
+			new idVec4( 1.0, 1.0, 0.0, 1.0 ), // S_COLOR_YELLOW
+			new idVec4( 0.0, 0.0, 1.0, 1.0 ), // S_COLOR_BLUE
+			new idVec4( 0.0, 1.0, 1.0, 1.0 ), // S_COLOR_CYAN
+			new idVec4( 1.0, 0.0, 1.0, 1.0 ), // S_COLOR_MAGENTA
+			new idVec4( 1.0, 1.0, 1.0, 1.0 ), // S_COLOR_WHITE
+			new idVec4( 0.5, 0.5, 0.5, 1.0 ), // S_COLOR_GRAY
+			new idVec4( 0.0, 0.0, 0.0, 1.0 ), // S_COLOR_BLACK
+			new idVec4( 0.0, 0.0, 0.0, 1.0 ),
+			new idVec4( 0.0, 0.0, 0.0, 1.0 ),
+			new idVec4( 0.0, 0.0, 0.0, 1.0 ),
+			new idVec4( 0.0, 0.0, 0.0, 1.0 ),
+			new idVec4( 0.0, 0.0, 0.0, 1.0 ),
+			new idVec4( 0.0, 0.0, 0.0, 1.0 )
+		];
+	}
 
 ////const char *units[2][4] =
 ////{
@@ -1121,7 +1125,7 @@ private static  g_color_table/*[16]*/ =
 idStr::ColorForIndex
 ============
 */
-	ColorForIndex ( /*int */i: number ): idVec4 {
+	static ColorForIndex ( /*int */i: number ): idVec4 {
 		return idStr.g_color_table[i & 15];
 	}
 

@@ -2426,16 +2426,16 @@ InitLanguageDict( ):void {
 idCommonLocal::PrintLoadingMessage
 =================
 */
-	PrintLoadingMessage( msg:string ): void {
-	if ( !msg  ) {
-		return;
+	PrintLoadingMessage ( msg: string ): void {
+		if ( !msg ) {
+			return;
+		}
+		renderSystem.BeginFrame( renderSystem.GetScreenWidth ( ), renderSystem.GetScreenHeight ( ) );
+		renderSystem.DrawStretchPicFloats( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 1, 1, declManager.FindMaterial( "splashScreen" ) );
+		var len = strlen( msg );
+		renderSystem.DrawSmallStringExt( ( 640 - len * SMALLCHAR_WIDTH ) / 2, 410, msg, new idVec4( 0.0, 0.81, 0.94, 1.0 ), true, declManager.FindMaterial( "textures/bigchars" ) );
+		renderSystem.EndFrame( null, null );
 	}
-	renderSystem.BeginFrame( renderSystem.GetScreenWidth(), renderSystem.GetScreenHeight() );
-	renderSystem.DrawStretchPicFloats( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 1, 1, declManager.FindMaterial( "splashScreen" ) );
-	var len = strlen( msg );
-	renderSystem.DrawSmallStringExt( ( 640 - len * SMALLCHAR_WIDTH ) / 2, 410, msg, new idVec4( 0.0, 0.81, 0.94, 1.0 ), true, declManager.FindMaterial( "textures/bigchars" ) );
-		renderSystem.EndFrame(null, null );
-}
 
 /////*
 ////=================
@@ -2777,15 +2777,17 @@ idCommonLocal::Init
 */
 /*idCommonLocal::Init*/Init( /*int*/ argc: number, /*const char ***/argv: string, /*const char **/cmdline: string ): void {
 ////try {
-
 ////		// set interface pointers used by idLib
 ////		idLib::sys			= sys;
 ////		idLib::common		= common;
 ////		idLib::cvarSystem	= cvarSystem;
 ////		idLib::fileSystem	= fileSystem;
 
-////		// initialize idLib
-////		idLib::Init();
+		// initialize idLib
+		idLib.Init ( );
+
+		// initialize idStr
+		idStr.Init ( );
 
 ////		// clear warning buffer
 ////		ClearWarnings( GAME_NAME " initialization" );
@@ -2964,8 +2966,8 @@ idCommonLocal::InitGame
 
 	// initialize string database right off so we can use it for loading messages
 	this.InitLanguageDict ( );
-	todoThrow ( );
-	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04344" ) );
+
+	this.PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04344" ) );
 
 	todoThrow();
 ////	// load the font, etc

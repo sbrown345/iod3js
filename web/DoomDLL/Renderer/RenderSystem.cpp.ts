@@ -2623,40 +2623,40 @@ x/y/w/h are in the 0,0 to 640,480 range
 ////	height = glConfig.vidHeight;
 ////}
 
-/////*
-////=====================
-////idRenderSystemLocal::DrawSmallChar
+/*
+=====================
+idRenderSystemLocal::DrawSmallChar
 
-////small chars are drawn at native screen resolution
-////=====================
-////*/
-////void idRenderSystemLocal::DrawSmallChar( int x, int y, int ch, const idMaterial *material ) {
-////	int row, col;
-////	float frow, fcol;
-////	float size;
+small chars are drawn at native screen resolution
+=====================
+*/
+	DrawSmallChar ( /*int */x: number, /*int */y: number, /*int */ch: number, material: idMaterial ): void {
+		var /*int */row: number, col: number;
+		var /*float */frow: number, fcol: number;
+		var /*float */size: number;
 
-////	ch &= 255;
+		ch &= 255;
 
-////	if ( ch == ' ' ) {
-////		return;
-////	}
+		if ( ch == ' '.charCodeAt( 0 ) ) {
+			return;
+		}
 
-////	if ( y < -SMALLCHAR_HEIGHT ) {
-////		return;
-////	}
+		if ( y < -SMALLCHAR_HEIGHT ) {
+			return;
+		}
 
-////	row = ch >> 4;
-////	col = ch & 15;
+		row = ch >> 4;
+		col = ch & 15;
 
-////	frow = row * 0.0625f;
-////	fcol = col * 0.0625f;
-////	size = 0.0625f;
+		frow = row * 0.0625;
+		fcol = col * 0.0625;
+		size = 0.0625;
 
-////	DrawStretchPic( x, y, SMALLCHAR_WIDTH, SMALLCHAR_HEIGHT,
-////					   fcol, frow, 
-////					   fcol + size, frow + size, 
-////					   material );
-////}
+		this.DrawStretchPicFloats( x, y, SMALLCHAR_WIDTH, SMALLCHAR_HEIGHT,
+			fcol, frow,
+			fcol + size, frow + size,
+			material );
+	}
 
 /*
 ==================
@@ -2677,25 +2677,25 @@ Coordinates are at 640 by 480 virtual resolution
 		s = 0;
 	xx = x;
 	this.SetColor( setColor );
-	while ( $string[s] ) {
-		if ( idStr.IsColor( /*(const char*)*/s ) ) {
-			if ( !forceColor ) {
-				if ($string[s+1] == C_COLOR_DEFAULT ) {
-					this.SetColor( setColor );
-				} else {
-					color = idStr.ColorForIndex($string[s+1] );
-					color[3] = setColor[3];
-					this.SetColor( color );
+		while ( $string[s] ) {
+			if ( idStr.IsColor( $string.substr( s ) ) ) {
+				if ( !forceColor ) {
+					if ( $string[s + 1] == C_COLOR_DEFAULT ) {
+						this.SetColor( setColor );
+					} else {
+						color = idStr.ColorForIndex( $string.charCodeAt( s + 1 ) );
+						color[3] = setColor[3];
+						this.SetColor( color );
+					}
 				}
+				s += 2;
+				continue;
 			}
-			s += 2;
-			continue;
+			this.DrawSmallChar( xx, y, $string.charCodeAt(s), material );
+			xx += SMALLCHAR_WIDTH;
+			s++;
 		}
-		this.DrawSmallChar( xx, y, $string[s], material );
-		xx += SMALLCHAR_WIDTH;
-		s++;
-	}
-	this.SetColor( colorWhite );
+		this.SetColor( colorWhite );
 }
 
 /////*
@@ -2905,20 +2905,20 @@ BeginFrame( /*int */windowWidth:number, /*int */windowHeight:number ):void {
 ////	demoGuiModel.EmitFullScreen();
 ////}
 
-/////*
-////=============
-////EndFrame
+/*
+=============
+EndFrame
 
-////Returns the number of msec spent in the back end
-////=============
-////*/
-////void idRenderSystemLocal::EndFrame( int *frontEndMsec, int *backEndMsec ) {
-////	emptyCommand_t *cmd;
+Returns the number of msec spent in the back end
+=============
+*/
+EndFrame( /*int **/frontEndMsec:R<number>, /*int **/backEndMsec:R<number> ):void {
+	var cmd: emptyCommand_t ;
 
-////	if ( !glConfig.isInitialized ) {
-////		return;
-////	}
-
+	if ( !glConfig.isInitialized ) {
+		return;
+	}
+	todoThrow();
 ////	// close any gui drawing
 ////	guiModel.EmitFullScreen();
 ////	guiModel.Clear();
@@ -2962,7 +2962,7 @@ BeginFrame( /*int */windowWidth:number, /*int */windowHeight:number ):void {
 ////		}
 ////	}
 
-////}
+}
 
 /////*
 ////=====================
