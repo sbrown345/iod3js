@@ -8,6 +8,7 @@
 /// <reference path="CmdSystem.cpp.ts" />
 /// <reference path="../../utils/todo.ts" />
 /// <reference path="../../libs/c.ts" />
+/// <reference path="console.cpp.ts" />
 
 /////*
 ////===========================================================================
@@ -2969,10 +2970,10 @@ idCommonLocal::InitGame
 
 	this.PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04344" ) );
 
-	todoThrow();
-////	// load the font, etc
-////	console.LoadGraphics();
 
+	// load the font, etc
+	$console.LoadGraphics();
+	todoThrow();
 ////	// init journalling, etc
 ////	eventLoop.Init();
 

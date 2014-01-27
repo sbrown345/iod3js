@@ -708,122 +708,123 @@ ClearStage(ss:shaderStage_t ):void {
 	ss.color.registers[3] = this.GetExpressionConstant( 1 );
 }
 
-/////*
-////===============
-////idMaterial::NameToSrcBlendMode
-////===============
-////*/
-////int idMaterial::NameToSrcBlendMode( const idStr &name ) {
-////	if ( !name.Icmp( "GL_ONE" ) ) {
-////		return GLS_SRCBLEND_ONE;
-////	} else if ( !name.Icmp( "GL_ZERO" ) ) {
-////		return GLS_SRCBLEND_ZERO;
-////	} else if ( !name.Icmp( "GL_DST_COLOR" ) ) {
-////		return GLS_SRCBLEND_DST_COLOR;
-////	} else if ( !name.Icmp( "GL_ONE_MINUS_DST_COLOR" ) ) {
-////		return GLS_SRCBLEND_ONE_MINUS_DST_COLOR;
-////	} else if ( !name.Icmp( "GL_SRC_ALPHA" ) ) {
-////		return GLS_SRCBLEND_SRC_ALPHA;
-////	} else if ( !name.Icmp( "GL_ONE_MINUS_SRC_ALPHA" ) ) {
-////		return GLS_SRCBLEND_ONE_MINUS_SRC_ALPHA;
-////	} else if ( !name.Icmp( "GL_DST_ALPHA" ) ) {
-////		return GLS_SRCBLEND_DST_ALPHA;
-////	} else if ( !name.Icmp( "GL_ONE_MINUS_DST_ALPHA" ) ) {
-////		return GLS_SRCBLEND_ONE_MINUS_DST_ALPHA;
-////	} else if ( !name.Icmp( "GL_SRC_ALPHA_SATURATE" ) ) {
-////		return GLS_SRCBLEND_ALPHA_SATURATE;
-////	}
+/*
+===============
+idMaterial::NameToSrcBlendMode
+===============
+*/
+/*int */
+	NameToSrcBlendMode ( name: idStr ): number {
+		if ( !name.Icmp( "GL_ONE" ) ) {
+			return GLS_SRCBLEND_ONE;
+		} else if ( !name.Icmp( "GL_ZERO" ) ) {
+			return GLS_SRCBLEND_ZERO;
+		} else if ( !name.Icmp( "GL_DST_COLOR" ) ) {
+			return GLS_SRCBLEND_DST_COLOR;
+		} else if ( !name.Icmp( "GL_ONE_MINUS_DST_COLOR" ) ) {
+			return GLS_SRCBLEND_ONE_MINUS_DST_COLOR;
+		} else if ( !name.Icmp( "GL_SRC_ALPHA" ) ) {
+			return GLS_SRCBLEND_SRC_ALPHA;
+		} else if ( !name.Icmp( "GL_ONE_MINUS_SRC_ALPHA" ) ) {
+			return GLS_SRCBLEND_ONE_MINUS_SRC_ALPHA;
+		} else if ( !name.Icmp( "GL_DST_ALPHA" ) ) {
+			return GLS_SRCBLEND_DST_ALPHA;
+		} else if ( !name.Icmp( "GL_ONE_MINUS_DST_ALPHA" ) ) {
+			return GLS_SRCBLEND_ONE_MINUS_DST_ALPHA;
+		} else if ( !name.Icmp( "GL_SRC_ALPHA_SATURATE" ) ) {
+			return GLS_SRCBLEND_ALPHA_SATURATE;
+		}
 
-////	common.Warning( "unknown blend mode '%s' in material '%s'", name.c_str(), this.GetName() );
-////	this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+		common.Warning( "unknown blend mode '%s' in material '%s'", name.c_str ( ), this.GetName ( ) );
+		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 
-////	return GLS_SRCBLEND_ONE;
-////}
+		return GLS_SRCBLEND_ONE;
+	}
 
-/////*
-////===============
-////idMaterial::NameToDstBlendMode
-////===============
-////*/
-////int idMaterial::NameToDstBlendMode( const idStr &name ) {
-////	if ( !name.Icmp( "GL_ONE" ) ) {
-////		return GLS_DSTBLEND_ONE;
-////	} else if ( !name.Icmp( "GL_ZERO" ) ) {
-////		return GLS_DSTBLEND_ZERO;
-////	} else if ( !name.Icmp( "GL_SRC_ALPHA" ) ) {
-////		return GLS_DSTBLEND_SRC_ALPHA;
-////	} else if ( !name.Icmp( "GL_ONE_MINUS_SRC_ALPHA" ) ) {
-////		return GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA;
-////	} else if ( !name.Icmp( "GL_DST_ALPHA" ) ) {
-////		return GLS_DSTBLEND_DST_ALPHA;
-////	} else if ( !name.Icmp( "GL_ONE_MINUS_DST_ALPHA" ) ) {
-////		return GLS_DSTBLEND_ONE_MINUS_DST_ALPHA;
-////	} else if ( !name.Icmp( "GL_SRC_COLOR" ) ) {
-////		return GLS_DSTBLEND_SRC_COLOR;
-////	} else if ( !name.Icmp( "GL_ONE_MINUS_SRC_COLOR" ) ) {
-////		return GLS_DSTBLEND_ONE_MINUS_SRC_COLOR;
-////	}
+/*
+===============
+idMaterial::NameToDstBlendMode
+===============
+*/
+/*int */
+	NameToDstBlendMode ( name: idStr ): number {
+		if ( !name.Icmp( "GL_ONE" ) ) {
+			return GLS_DSTBLEND_ONE;
+		} else if ( !name.Icmp( "GL_ZERO" ) ) {
+			return GLS_DSTBLEND_ZERO;
+		} else if ( !name.Icmp( "GL_SRC_ALPHA" ) ) {
+			return GLS_DSTBLEND_SRC_ALPHA;
+		} else if ( !name.Icmp( "GL_ONE_MINUS_SRC_ALPHA" ) ) {
+			return GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA;
+		} else if ( !name.Icmp( "GL_DST_ALPHA" ) ) {
+			return GLS_DSTBLEND_DST_ALPHA;
+		} else if ( !name.Icmp( "GL_ONE_MINUS_DST_ALPHA" ) ) {
+			return GLS_DSTBLEND_ONE_MINUS_DST_ALPHA;
+		} else if ( !name.Icmp( "GL_SRC_COLOR" ) ) {
+			return GLS_DSTBLEND_SRC_COLOR;
+		} else if ( !name.Icmp( "GL_ONE_MINUS_SRC_COLOR" ) ) {
+			return GLS_DSTBLEND_ONE_MINUS_SRC_COLOR;
+		}
 
-////	common.Warning( "unknown blend mode '%s' in material '%s'", name.c_str(), this.GetName() );
-////	this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+		common.Warning( "unknown blend mode '%s' in material '%s'", name.c_str ( ), this.GetName ( ) );
+		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 
-////	return GLS_DSTBLEND_ONE;
-////}
+		return GLS_DSTBLEND_ONE;
+	}
 
 /*
 ================
 idMaterial::ParseBlend
 ================
 */
-	ParseBlend(src: idLexer, stage: shaderStage_t): void {
-		todoThrow ( );
-////	idToken token;
-////	int		srcBlend, dstBlend;
+	ParseBlend ( src: idLexer, stage: shaderStage_t ): void {
+		var token = new R( new idToken );
+		var /*int		*/srcBlend: number, dstBlend: number;
 
-////	if ( !src.ReadToken( &token ) ) {
-////		return;
-////	}
+		if ( !src.ReadToken( token ) ) {
+			return;
+		}
 
-////	// blending combinations
-////	if ( !token.Icmp( "blend" ) ) {
-////		stage.drawStateBits = GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA;
-////		return;
-////	}
-////	if ( !token.Icmp( "add" ) ) {
-////		stage.drawStateBits = GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE;
-////		return;
-////	}
-////	if ( !token.Icmp( "filter" ) || !token.Icmp( "modulate" ) ) {
-////		stage.drawStateBits = GLS_SRCBLEND_DST_COLOR | GLS_DSTBLEND_ZERO;
-////		return;
-////	}
-////	if (  !token.Icmp( "none" ) ) {
-////		// none is used when defining an alpha mask that doesn't draw
-////		stage.drawStateBits = GLS_SRCBLEND_ZERO | GLS_DSTBLEND_ONE;
-////		return;
-////	}
-////	if ( !token.Icmp( "bumpmap" ) ) {
-////		stage.lighting = stageLighting_t.SL_BUMP;
-////		return;
-////	}
-////	if ( !token.Icmp( "diffusemap" ) ) {
-////		stage.lighting = stageLighting_t.SL_DIFFUSE;
-////		return;
-////	}
-////	if ( !token.Icmp( "specularmap" ) ) {
-////		stage.lighting = stageLighting_t.SL_SPECULAR;
-////		return;
-////	}
+		// blending combinations
+		if ( !token.$.Icmp( "blend" ) ) {
+			stage.drawStateBits = GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA;
+			return;
+		}
+		if ( !token.$.Icmp( "add" ) ) {
+			stage.drawStateBits = GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE;
+			return;
+		}
+		if ( !token.$.Icmp( "filter" ) || !token.$.Icmp( "modulate" ) ) {
+			stage.drawStateBits = GLS_SRCBLEND_DST_COLOR | GLS_DSTBLEND_ZERO;
+			return;
+		}
+		if ( !token.$.Icmp( "none" ) ) {
+			// none is used when defining an alpha mask that doesn't draw
+			stage.drawStateBits = GLS_SRCBLEND_ZERO | GLS_DSTBLEND_ONE;
+			return;
+		}
+		if ( !token.$.Icmp( "bumpmap" ) ) {
+			stage.lighting = stageLighting_t.SL_BUMP;
+			return;
+		}
+		if ( !token.$.Icmp( "diffusemap" ) ) {
+			stage.lighting = stageLighting_t.SL_DIFFUSE;
+			return;
+		}
+		if ( !token.$.Icmp( "specularmap" ) ) {
+			stage.lighting = stageLighting_t.SL_SPECULAR;
+			return;
+		}
 
-////	srcBlend = NameToSrcBlendMode( token );
+		srcBlend = this.NameToSrcBlendMode(token.$ );
 
-////	this.MatchToken( src, "," );
-////	if ( !src.ReadToken( &token ) ) {
-////		return;
-////	}
-////	dstBlend = NameToDstBlendMode( token );
+		this.MatchToken( src, "," );
+		if ( !src.ReadToken( token ) ) {
+			return;
+		}
+		dstBlend = this.NameToDstBlendMode( token.$ );
 
-////	stage.drawStateBits = srcBlend | dstBlend;
+		stage.drawStateBits = srcBlend | dstBlend;
 	}
 
 /////*

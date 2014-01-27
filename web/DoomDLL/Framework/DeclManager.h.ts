@@ -119,9 +119,9 @@ class idDeclBase {
 ////	virtual bool			ReplaceSourceFileText( void ) = 0;
 ////	virtual bool			SourceFileChanged( void ) const = 0;
 	MakeDefault(): void { throw "placeholder"; }
-////	virtual bool			EverReferenced( void ) const = 0;
-////	virtual bool			SetDefaultText( void ) = 0;
-////	virtual const char *	DefaultDefinition( void ) const = 0;
+	EverReferenced ( ): boolean /* = 0;*/ { throw "placeholder"; }
+	SetDefaultText ( ): boolean /* = 0;*/ { throw "placeholder"; }
+	DefaultDefinition ( ): string { throw "placeholder"; }
 ////	virtual bool			Parse( const char *text, const int textLength ) = 0;
 	FreeData ( ): void /* = 0;*/ { throw "placeholder"; }
 ////	virtual size_t			Size( void ) const = 0;
@@ -134,36 +134,36 @@ class idDecl {
 ////public:
 ////							// The constructor should initialize variables such that
 ////							// an immediate call to FreeData() does no harm.
-////							idDecl( void ) { base = NULL; }
+////							idDecl( void ) { this.base = NULL; }
 ////	virtual 				~idDecl( void ) {};
 
 	// Returns the name of the decl.
 	GetName ( ): string { return this.base.GetName ( ); }
 
 ////							// Returns the decl type.
-////	declType_t				GetType( void ) const { return base.GetType(); }
+////	declType_t				GetType( void ) const { return this.base.GetType(); }
 
 ////							// Returns the decl state which is usefull for finding out if a decl defaulted.
-////	declState_t				GetState( void ) const { return base.GetState(); }
+////	declState_t				GetState( void ) const { return this.base.GetState(); }
 
 ////							// Returns true if the decl was defaulted or the text was created with a call to SetDefaultText.
-////	bool					IsImplicit( void ) const { return base.IsImplicit(); }
+////	bool					IsImplicit( void ) const { return this.base.IsImplicit(); }
 
 ////							// The only way non-manager code can have an invalid decl is if the *ByIndex()
 ////							// call was used with forceParse = false to walk the lists to look at names
 ////							// without touching the media.
-////	bool					IsValid( void ) const { return base.IsValid(); }
+////	bool					IsValid( void ) const { return this.base.IsValid(); }
 
 ////							// Sets state back to unparsed.
 ////							// Used by decl editors to undo any changes to the decl.
-////	void					Invalidate( void ) { base.Invalidate(); }
+////	void					Invalidate( void ) { this.base.Invalidate(); }
 
 ////							// if a pointer might possible be stale from a previous level,
 ////							// call this to have it re-parsed
-////	void					EnsureNotPurged( void ) { base.EnsureNotPurged(); }
+////	void					EnsureNotPurged( void ) { this.base.EnsureNotPurged(); }
 
 ////							// Returns the index in the per-type list.
-////	int						Index( void ) const { return base.Index(); }
+////	int						Index( void ) const { return this.base.Index(); }
 
 							// Returns the line number the decl starts.
 	GetLineNum( ):number { return this.base.GetLineNum(); }
@@ -172,47 +172,47 @@ class idDecl {
 	GetFileName( ):string { return this.base.GetFileName(); }
 
 ////							// Returns the decl text.
-////	void					GetText( char *text ) const { base.GetText( text ); }
+////	void					GetText( char *text ) const { this.base.GetText( text ); }
 
 ////							// Returns the length of the decl text.
-////	int						GetTextLength( void ) const { return base.GetTextLength(); }
+////	int						GetTextLength( void ) const { return this.base.GetTextLength(); }
 
 ////							// Sets new decl text.
-////	void					SetText( const char *text ) { base.SetText( text ); }
+////	void					SetText( const char *text ) { this.base.SetText( text ); }
 
 ////							// Saves out new text for the decl.
 ////							// Used by decl editors to replace the decl text in the source file.
-////	bool					ReplaceSourceFileText( void ) { return base.ReplaceSourceFileText(); }
+////	bool					ReplaceSourceFileText( void ) { return this.base.ReplaceSourceFileText(); }
 
 ////							// Returns true if the source file changed since it was loaded and parsed.
-////	bool					SourceFileChanged( void ) const { return base.SourceFileChanged(); }
+////	bool					SourceFileChanged( void ) const { return this.base.SourceFileChanged(); }
 
 							// Frees data and makes the decl a default.
 	MakeDefault ( ): void { this.base.MakeDefault ( ); }
 
 ////							// Returns true if the decl was ever referenced.
-////	bool					EverReferenced( void ) const { return base.EverReferenced(); }
+////	bool					EverReferenced( void ) const { return this.base.EverReferenced(); }
 
 ////public:
 ////							// Sets textSource to a default text if necessary.
 ////							// This may be overridden to provide a default definition based on the
 ////							// decl name. For instance materials may default to an implicit definition
 ////							// using a texture with the same name as the decl.
-////	virtual bool			SetDefaultText( void ) { return base.SetDefaultText(); }
+	SetDefaultText ( ): boolean { return this.base.SetDefaultText ( ); }
 
-////							// Each declaration type must have a default string that it is guaranteed
-////							// to parse acceptably. When a decl is not explicitly found, is purged, or
-////							// has an error while parsing, MakeDefault() will do a FreeData(), then a
-////							// Parse() with DefaultDefinition(). The defaultDefintion should start with
-////							// an open brace and end with a close brace.
-////	virtual const char *	DefaultDefinition( void ) const { return base.DefaultDefinition(); }
+	// Each declaration type must have a default string that it is guaranteed
+	// to parse acceptably. When a decl is not explicitly found, is purged, or
+	// has an error while parsing, MakeDefault() will do a FreeData(), then a
+	// Parse() with DefaultDefinition(). The defaultDefintion should start with
+	// an open brace and end with a close brace.
+	DefaultDefinition ( ): string { return this.base.DefaultDefinition ( ); }
 
 ////							// The manager will have already parsed past the type, name and opening brace.
 ////							// All necessary media will be touched before return.
 ////							// The manager will have called FreeData() before issuing a Parse().
 ////							// The subclass can call MakeDefault() internally at any point if
 ////							// there are parse errors.
-////	virtual bool			Parse( const char *text, const int textLength ) { return base.Parse( text, textLength ); }
+////	virtual bool			Parse( const char *text, const int textLength ) { return this.base.Parse( text, textLength ); }
 
 ////							// Frees any pointers held by the subclass. This may be called before
 ////							// any Parse(), so the constructor must have set sane values. The decl will be
@@ -221,17 +221,17 @@ class idDecl {
 	FreeData( ):void { this.base.FreeData ( ); }
 
 ////							// Returns the size of the decl in memory.
-////	virtual size_t			Size( void ) const { return base.Size(); }
+////	virtual size_t			Size( void ) const { return this.base.Size(); }
 
 ////							// If this isn't overridden, it will just print the decl name.
 ////							// The manager will have printed 7 characters on the line already,
 ////							// containing the reference state and index number.
-////	virtual void			List( void ) const { base.List(); }
+////	virtual void			List( void ) const { this.base.List(); }
 
 ////							// The print function will already have dumped the text source
 ////							// and common data, subclasses can override this to dump more
 ////							// explicit data.
-////	virtual void			Print( void ) const { base.Print(); }
+////	virtual void			Print( void ) const { this.base.Print(); }
 
 //public:
 	base: idDeclBase ;

@@ -30,6 +30,8 @@
     <Content Include="DoomDLL\Framework\CmdSystem.h.ts" />
     <Content Include="DoomDLL\Framework\Common.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Framework\Common.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Console.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\Console.h.ts" />
     <Content Include="DoomDLL\Framework\CVarSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\CVarSystem.h.ts" />
     <Content Include="DoomDLL\Framework\DeclAF.cpp.ts" />
