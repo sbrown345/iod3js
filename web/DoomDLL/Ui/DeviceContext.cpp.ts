@@ -1,4 +1,6 @@
-/// <reference path="devicecontext.h.ts" />
+/// <reference path="../../libs/idlib/math/matrix.h.ts" />
+/// <reference path="../renderer/tr_font.cpp.ts" />
+/// <reference path="../renderer/material.h.ts" />
 ///*
 //===========================================================================
 //
@@ -30,62 +32,186 @@
 //#include "../idlib/precompiled.h"
 //#pragma hdrstop
 //
-//#include "DeviceContext.h"
+
+//// device context support for gui stuff
+////
 //
-//idVec4 idDeviceContext::colorPurple;
-//idVec4 idDeviceContext::colorOrange;
-//idVec4 idDeviceContext::colorYellow;
-//idVec4 idDeviceContext::colorGreen;
-//idVec4 idDeviceContext::colorBlue;
-//idVec4 idDeviceContext::colorRed;
-//idVec4 idDeviceContext::colorBlack;
-//idVec4 idDeviceContext::colorWhite;
-//idVec4 idDeviceContext::colorNone;
-//
+//#include "Rectangle.h"
+
+
+var colorPurple:idVec4;
+var colorOrange:idVec4;
+var colorYellow:idVec4;
+var colorGreen:idVec4;
+var colorBlue:idVec4;
+var colorRed:idVec4;
+var colorBlack:idVec4;
+var colorWhite:idVec4;
+var colorNone:idVec4;
+
+
+var VIRTUAL_WIDTH = 640;
+var VIRTUAL_HEIGHT = 480;
+var BLINK_DIVISOR = 200;
+
+var CURSOR_ARROW = 0,
+	CURSOR_HAND = 1,
+	CURSOR_COUNT = 2;
+
+var ALIGN_LEFT = 0,
+	ALIGN_CENTER = 1,
+	ALIGN_RIGHT = 2;
+
+var SCROLLBAR_HBACK = 0,
+	SCROLLBAR_VBACK = 1,
+	SCROLLBAR_THUMB = 2,
+	SCROLLBAR_RIGHT = 3,
+	SCROLLBAR_LEFT = 4,
+	SCROLLBAR_UP = 5,
+	SCROLLBAR_DOWN = 6,
+	SCROLLBAR_COUNT = 7;
+
+class idDeviceContext {
+	//public:
+	//	idDeviceContext();
+	//	~idDeviceContext() { }
+	//	
+	//	void				Init();
+	//	void				Shutdown();
+	//	bool				Initialized() { return initialized; }
+	//	void				EnableLocalization();
+	//
+	//	void				GetTransformInfo(idVec3& origin, idMat3& mat );
+	//
+	//	void				SetTransformInfo(const idVec3 &origin, const idMat3 &mat);
+	//	void				DrawMaterial(float x, float y, float w, float h, const idMaterial *mat, const idVec4 &color, float scalex = 1.0, float scaley = 1.0);
+	//	void				DrawRect(float x, float y, float width, float height, float size, const idVec4 &color);
+	//	void				DrawFilledRect(float x, float y, float width, float height, const idVec4 &color);
+	//	int					DrawText(const char *text, float textScale, int textAlign, idVec4 color, idRectangle rectDraw, bool wrap, int cursor = -1, bool calcOnly = false, idList<int> *breaks = NULL, int limit = 0 );
+	//	void				DrawMaterialRect( float x, float y, float w, float h, float size, const idMaterial *mat, const idVec4 &color);
+	//	void				DrawStretchPic(float x, float y, float w, float h, float s0, float t0, float s1, float t1, const idMaterial *mat);
+	//
+	//	void				DrawMaterialRotated(float x, float y, float w, float h, const idMaterial *mat, const idVec4 &color, float scalex = 1.0, float scaley = 1.0, float angle = 0.0);
+	//	void				DrawStretchPicRotated(float x, float y, float w, float h, float s0, float t0, float s1, float t1, const idMaterial *mat, float angle = 0.0);
+	//
+	//	int					CharWidth( const char c, float scale );
+	//	int					TextWidth(const char *text, float scale, int limit);
+	//	int					TextHeight(const char *text, float scale, int limit);
+	//	int					MaxCharHeight(float scale);
+	//	int					MaxCharWidth(float scale);
+	//
+	//	int					FindFont( const char *name );
+	//	void				SetupFonts();
+	//
+	//	idRegion			*GetTextRegion(const char *text, float textScale, idRectangle rectDraw, float xStart, float yStart);
+	//
+	//	void				SetSize(float width, float height);
+	//
+	//	const idMaterial	*GetScrollBarImage(int index);
+	//
+	//	void				DrawCursor(float *x, float *y, float size);
+	//	void				SetCursor(int n);
+	//
+	//	void				AdjustCoords(float *x, float *y, float *w, float *h);
+	//	bool				ClippedCoords(float *x, float *y, float *w, float *h);
+	//	bool				ClippedCoords(float *x, float *y, float *w, float *h, float *s1, float *t1, float *s2, float *t2);
+	//
+	//	void				PushClipRect(float x, float y, float w, float h);
+	//	void				PushClipRect(idRectangle r);
+	//	void				PopClipRect();
+	//
+	//	void				EnableClipping(bool b) { enableClipping = b; };
+	//	void				SetFont( int num );
+	//
+	//	void				SetOverStrike(bool b) { overStrikeMode = b; }
+	//
+	//	bool				GetOverStrike() { return overStrikeMode; }
+	//
+	//	void				DrawEditCursor(float x, float y, float scale);
+
+	
+	//private:
+	//	int					DrawText(float x, float y, float scale, idVec4 color, const char *text, float adjust, int limit, int style, int cursor = -1);
+	//	void				PaintChar(float x,float y,float width,float height,float scale,float	s,float	t,float	s2,float t2,const idMaterial *hShader);
+	//	void				SetFontByScale( float scale );
+	//	void				Clear( void );
+	//
+	cursorImages: idMaterial[/*CURSOR_COUNT*/];			//	*const idMaterial
+	scrollBarImages: idMaterial[/*SCROLLBAR_COUNT*/];	//	*const idMaterial
+	whiteImage: idMaterial;								//	*const idMaterial
+	activeFont: fontInfoEx_t;							//	*fontInfoEx_t
+	useFont: fontInfo_t;								//	*fontInfo_t			
+	fontName: idStr;							  //	idStr				
+	xScale:number;								  //	float				
+	yScale:number;								  //	float				
+	
+	vidHeight: number;							  //	float				
+	vidWidth: number;							  //	float				
+	//
+	cursor: number;								  //	int					
+	//
+	clipRects:idList<idRectangle>;
+										  
+	static fonts:idList<fontInfoEx_t>;						  
+	fontLang:idStr;
+	
+	enableClipping:boolean;						  //	bool				
+	
+	overStrikeMode: boolean;						  //	bool				
+	
+	mat:idMat3;								  //	idMat3				
+	origin:idVec3;								  //	idVec3				
+	initialized:boolean;						  //	bool				
+	
+	mbcs:boolean;								  //	bool				
+
+//#endif /* !__DEVICECONTEXT_H__ */
+
 //
 //idCVar gui_smallFontLimit( "gui_smallFontLimit", "0.30", CVAR_GUI | CVAR_ARCHIVE, "" );
 //idCVar gui_mediumFontLimit( "gui_mediumFontLimit", "0.60", CVAR_GUI | CVAR_ARCHIVE, "" );
 //
 //
 //idList<fontInfoEx_t> idDeviceContext::fonts;
-//
-//int idDeviceContext::FindFont( const char *name ) {
-//	int c = fonts.Num();
-//	for (int i = 0; i < c; i++) {
-//		if (idStr::Icmp(name, fonts[i].name) == 0) {
-//			return i;
-//		}
-//	}
-//
-//	// If the font was not found, try to register it
-//	idStr fileName = name;
-//	fileName.Replace("fonts", va("fonts/%s", fontLang.c_str()) );
-//
-//	fontInfoEx_t fontInfo;
-//		int index = fonts.Append( fontInfo );
-//		if ( renderSystem->RegisterFont( fileName, fonts[index] ) ){
-//		idStr.Copynz( fonts[index].name, name, sizeof( fonts[index].name ) );
-//		return index;
-//		} else {
-//		common->Printf( "Could not register font %s [%s]\n", name, fileName.c_str() );
-//		return -1;
-//}
-//}
-//
-//void idDeviceContext::SetupFonts() {
-//	fonts.SetGranularity( 1 );
-//
-//	fontLang = cvarSystem->GetCVarString( "sys_lang" );
-//	
-//	// western european languages can use the english font
-//	if ( fontLang == "french" || fontLang == "german" || fontLang == "spanish" || fontLang == "italian" ) {
-//		fontLang = "english";
-//	}
-//
-//	// Default font has to be added first
-//	FindFont( "fonts" );
-//}
-//
+
+/*int */
+	FindFont ( name: string ) {
+		var /*int */c = idDeviceContext.fonts.Num ( );
+		for ( var i = 0; i < c; i++ ) {
+			if ( idStr.Icmp( name, idDeviceContext.fonts[i].name ) == 0 ) {
+				return i;
+			}
+		}
+
+		// If the font was not found, try to register it
+		var fileName = new idStr( name );
+		fileName.Replace( "fonts", va( "fonts/%s", this.fontLang.c_str ( ) ) );
+
+		var fontInfo = new fontInfoEx_t;
+		var /*int */index = idDeviceContext.fonts.Append( fontInfo );
+		if ( renderSystem.RegisterFont( fileName.toString(), idDeviceContext.fonts[index] ) ) {
+			idStr.Copynz( idDeviceContext.fonts[index].name, name, sizeof( idDeviceContext.fonts[index].name ) );
+			return index;
+		} else {
+			common.Printf( "Could not register font %s [%s]\n", name, fileName.c_str ( ) );
+			return -1;
+		}
+	}
+
+	SetupFonts ( ): void {
+		idDeviceContext.fonts.SetGranularity( 1 );
+
+		this.fontLang = new idStr( cvarSystem.GetCVarString( "sys_lang" ) );
+
+		// western european languages can use the english font
+		if ( this.fontLang.data == "french" || this.fontLang.data == "german" || this.fontLang.data == "spanish" || this.fontLang.data == "italian" ) {
+			this.fontLang.data = "english";
+		}
+
+		// Default font has to be added first
+		this.FindFont( "fonts" );
+	}
+
 //void idDeviceContext::SetFont( int num ) {
 //	if ( num >= 0 && num < fonts.Num() ) {
 //		activeFont = &fonts[num];
@@ -95,53 +221,53 @@
 //}
 //
 //
-//void idDeviceContext::Init() {
-//	xScale = 0.0;
-//	SetSize(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
-//	whiteImage = declManager->FindMaterial("guis/assets/white.tga");
-//	whiteImage->SetSort( SS_GUI );
-//	mbcs = false;
-//	SetupFonts();
-//	activeFont = &fonts[0];
-//	colorPurple = idVec4(1, 0, 1, 1);
-//	colorOrange = idVec4(1, 1, 0, 1);
-//	colorYellow = idVec4(0, 1, 1, 1);
-//	colorGreen = idVec4(0, 1, 0, 1);
-//	colorBlue = idVec4(0, 0, 1, 1);
-//	colorRed = idVec4(1, 0, 0, 1);
-//	colorWhite = idVec4(1, 1, 1, 1);
-//	colorBlack = idVec4(0, 0, 0, 1);
-//	colorNone = idVec4(0, 0, 0, 0);
-//	cursorImages[CURSOR_ARROW] = declManager->FindMaterial("ui/assets/guicursor_arrow.tga");
-//	cursorImages[CURSOR_HAND] = declManager->FindMaterial("ui/assets/guicursor_hand.tga");
-//	scrollBarImages[SCROLLBAR_HBACK] = declManager->FindMaterial("ui/assets/scrollbarh.tga");
-//	scrollBarImages[SCROLLBAR_VBACK] = declManager->FindMaterial("ui/assets/scrollbarv.tga");
-//	scrollBarImages[SCROLLBAR_THUMB] = declManager->FindMaterial("ui/assets/scrollbar_thumb.tga");
-//	scrollBarImages[SCROLLBAR_RIGHT] = declManager->FindMaterial("ui/assets/scrollbar_right.tga");
-//	scrollBarImages[SCROLLBAR_LEFT] = declManager->FindMaterial("ui/assets/scrollbar_left.tga");
-//	scrollBarImages[SCROLLBAR_UP] = declManager->FindMaterial("ui/assets/scrollbar_up.tga");
-//	scrollBarImages[SCROLLBAR_DOWN] = declManager->FindMaterial("ui/assets/scrollbar_down.tga");
-//	cursorImages[CURSOR_ARROW]->SetSort( SS_GUI );
-//	cursorImages[CURSOR_HAND]->SetSort( SS_GUI );
-//	scrollBarImages[SCROLLBAR_HBACK]->SetSort( SS_GUI );
-//	scrollBarImages[SCROLLBAR_VBACK]->SetSort( SS_GUI );
-//	scrollBarImages[SCROLLBAR_THUMB]->SetSort( SS_GUI );
-//	scrollBarImages[SCROLLBAR_RIGHT]->SetSort( SS_GUI );
-//	scrollBarImages[SCROLLBAR_LEFT]->SetSort( SS_GUI );
-//	scrollBarImages[SCROLLBAR_UP]->SetSort( SS_GUI );
-//	scrollBarImages[SCROLLBAR_DOWN]->SetSort( SS_GUI );
-//	cursor = CURSOR_ARROW;
-//	enableClipping = true;
-//	overStrikeMode = true;
-//	mat.Identity();
-//	origin.Zero();
-//	initialized = true;
-//}
+Init():void {
+	this.xScale = 0.0;
+	this.SetSize(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
+	this.whiteImage = declManager.FindMaterial("guis/assets/white.tga");
+	this.whiteImage.SetSort( materialSort_t.SS_GUI );
+	this.mbcs = false;
+	this.SetupFonts();
+	this.activeFont = idDeviceContext.fonts[0];
+	colorPurple = new idVec4(1, 0, 1, 1);
+	colorOrange = new idVec4(1, 1, 0, 1);
+	colorYellow = new idVec4(0, 1, 1, 1);
+	colorGreen = new idVec4(0, 1, 0, 1);
+	colorBlue = new idVec4(0, 0, 1, 1);
+	colorRed = new idVec4(1, 0, 0, 1);
+	colorWhite = new idVec4(1, 1, 1, 1);
+	colorBlack = new idVec4(0, 0, 0, 1);
+	colorNone = new idVec4(0, 0, 0, 0);
+	this.cursorImages[CURSOR_ARROW] = declManager.FindMaterial("ui/assets/guicursor_arrow.tga");
+	this.cursorImages[CURSOR_HAND] = declManager.FindMaterial("ui/assets/guicursor_hand.tga");
+	this.scrollBarImages[SCROLLBAR_HBACK] = declManager.FindMaterial("ui/assets/scrollbarh.tga");
+	this.scrollBarImages[SCROLLBAR_VBACK] = declManager.FindMaterial("ui/assets/scrollbarv.tga");
+	this.scrollBarImages[SCROLLBAR_THUMB] = declManager.FindMaterial("ui/assets/scrollbar_thumb.tga");
+	this.scrollBarImages[SCROLLBAR_RIGHT] = declManager.FindMaterial("ui/assets/scrollbar_right.tga");
+	this.scrollBarImages[SCROLLBAR_LEFT] = declManager.FindMaterial("ui/assets/scrollbar_left.tga");
+	this.scrollBarImages[SCROLLBAR_UP] = declManager.FindMaterial("ui/assets/scrollbar_up.tga");
+	this.scrollBarImages[SCROLLBAR_DOWN] = declManager.FindMaterial("ui/assets/scrollbar_down.tga");
+	this.cursorImages[CURSOR_ARROW].SetSort( materialSort_t.SS_GUI );
+	this.cursorImages[CURSOR_HAND].SetSort( materialSort_t.SS_GUI );
+	this.scrollBarImages[SCROLLBAR_HBACK].SetSort( materialSort_t.SS_GUI );
+	this.scrollBarImages[SCROLLBAR_VBACK].SetSort( materialSort_t.SS_GUI );
+	this.scrollBarImages[SCROLLBAR_THUMB].SetSort( materialSort_t.SS_GUI );
+	this.scrollBarImages[SCROLLBAR_RIGHT].SetSort( materialSort_t.SS_GUI );
+	this.scrollBarImages[SCROLLBAR_LEFT].SetSort( materialSort_t.SS_GUI );
+	this.scrollBarImages[SCROLLBAR_UP].SetSort( materialSort_t.SS_GUI );
+	this.scrollBarImages[SCROLLBAR_DOWN].SetSort( materialSort_t.SS_GUI );
+	this.cursor = CURSOR_ARROW;
+	this.enableClipping = true;
+	this.overStrikeMode = true;
+	this.mat.Identity();
+	this.origin.Zero();
+	this.initialized = true;
+}
 //
 //void idDeviceContext::Shutdown() {
 //	fontName.Clear();
 //	clipRects.Clear();
-//	fonts.Clear();
+//	idDeviceContext.fonts.Clear();
 //	Clear();
 //}
 //
@@ -203,27 +329,27 @@
 //			break;
 //		}
 //
-//		if (*x < clipRect->x) {
-//			*w -= clipRect->x - *x;
-//			*x = clipRect->x;
-//		} else if (*x > clipRect->x + clipRect->w) {
+//		if (*x < clipRect.x) {
+//			*w -= clipRect.x - *x;
+//			*x = clipRect.x;
+//		} else if (*x > clipRect.x + clipRect.w) {
 //			*x = *w = *y = *h = 0;
 //		}
-//		if (*y < clipRect->y) {
-//			*h -= clipRect->y - *y;
-//			*y = clipRect->y;
-//		} else if (*y > clipRect->y + clipRect->h) {
+//		if (*y < clipRect.y) {
+//			*h -= clipRect.y - *y;
+//			*y = clipRect.y;
+//		} else if (*y > clipRect.y + clipRect.h) {
 //			*x = *w = *y = *h = 0;
 //		}
-//		if (*w > clipRect->w) {
-//			*w = clipRect->w - *x + clipRect->x;
-//		} else if (*x + *w > clipRect->x + clipRect->w) {
-//			*w = clipRect->Right() - *x;
+//		if (*w > clipRect.w) {
+//			*w = clipRect.w - *x + clipRect.x;
+//		} else if (*x + *w > clipRect.x + clipRect.w) {
+//			*w = clipRect.Right() - *x;
 //		}
-//		if (*h > clipRect->h) {
-//			*h = clipRect->h - *y + clipRect->y;
-//		} else if (*y + *h > clipRect->y + clipRect->h) {
-//			*h = clipRect->Bottom() - *y;
+//		if (*h > clipRect.h) {
+//			*h = clipRect.h - *y + clipRect.y;
+//		} else if (*y + *h > clipRect.y + clipRect.h) {
+//			*h = clipRect.Bottom() - *y;
 //		}
 //
 //		if ( s1 && s2 && t1 && t2 && ow > 0.0 ) {
@@ -258,16 +384,16 @@
 //
 //void idDeviceContext::AdjustCoords(float *x, float *y, float *w, float *h) {
 //	if (x) {
-//		*x *= xScale;
+//		*x *= this.xScale;
 //	}
 //	if (y) {
-//		*y *= yScale;
+//		*y *= this.yScale;
 //	}
 //	if (w) {
-//		*w *= xScale;
+//		*w *= this.xScale;
 //	}
 //	if (h) {
-//		*h *= yScale;
+//		*h *= this.yScale;
 //	}
 //}
 //
@@ -353,14 +479,14 @@
 //		verts[3].xyz += origin;
 //	}
 //
-//	renderSystem->DrawStretchPic( &verts[0], &indexes[0], 4, 6, shader, ident );
+//	renderSystem.DrawStretchPic( &verts[0], &indexes[0], 4, 6, shader, ident );
 //	
 //}
 //
 //
 //void idDeviceContext::DrawMaterial(float x, float y, float w, float h, const idMaterial *mat, const idVec4 &color, float scalex, float scaley) {
 //
-//	renderSystem->SetColor(color);
+//	renderSystem.SetColor(color);
 //
 //	float	s0, s1, t0, t1;
 //// 
@@ -407,7 +533,7 @@
 //
 //void idDeviceContext::DrawMaterialRotated(float x, float y, float w, float h, const idMaterial *mat, const idVec4 &color, float scalex, float scaley, float angle) {
 //	
-//	renderSystem->SetColor(color);
+//	renderSystem.SetColor(color);
 //
 //	float	s0, s1, t0, t1;
 //	// 
@@ -563,7 +689,7 @@
 //	}
 //
 //
-//	renderSystem->DrawStretchPic( &verts[0], &indexes[0], 4, 6, shader, (angle == 0.0) ? false : true );
+//	renderSystem.DrawStretchPic( &verts[0], &indexes[0], 4, 6, shader, (angle == 0.0) ? false : true );
 //}
 //
 //void idDeviceContext::DrawFilledRect( float x, float y, float w, float h, const idVec4 &color) {
@@ -572,7 +698,7 @@
 //		return;
 //	}
 //
-//	renderSystem->SetColor(color);
+//	renderSystem.SetColor(color);
 //	
 //	if (ClippedCoords(&x, &y, &w, &h, NULL, NULL, NULL, NULL)) {
 //		return;
@@ -589,7 +715,7 @@
 //		return;
 //	}
 //
-//	renderSystem->SetColor(color);
+//	renderSystem.SetColor(color);
 //	
 //	if (ClippedCoords(&x, &y, &w, &h, NULL, NULL, NULL, NULL)) {
 //		return;
@@ -608,7 +734,7 @@
 //		return;
 //	}
 //
-//	renderSystem->SetColor(color);
+//	renderSystem.SetColor(color);
 //	DrawMaterial( x, y, size, h, mat, color );
 //	DrawMaterial( x + w - size, y, size, h, mat, color );
 //	DrawMaterial( x, y, w, size, mat, color );
@@ -625,19 +751,19 @@
 //		*x = 0;
 //	}
 //
-//	if (*x >= vidWidth) {
-//		*x = vidWidth;
+//	if (*x >= this.vidWidth) {
+//		*x = this.vidWidth;
 //	}
 //
 //	if (*y < 0) {
 //		*y = 0;
 //	}
 //
-//	if (*y >= vidHeight) {
-//		*y = vidHeight;
+//	if (*y >= this.vidHeight) {
+//		*y = this.vidHeight;
 //	}
 //
-//	renderSystem->SetColor(colorWhite);
+//	renderSystem.SetColor(colorWhite);
 //	AdjustCoords(x, y, &size, &size);
 //	DrawStretchPic( *x, *y, size, size, 0, 0, 1, 1, cursorImages[cursor]);
 //}
@@ -662,17 +788,17 @@
 //
 //void idDeviceContext::SetFontByScale(float scale) {
 //	if (scale <= gui_smallFontLimit.GetFloat()) {
-//		useFont = &activeFont->fontInfoSmall;
-//		activeFont->maxHeight = activeFont->maxHeightSmall;
-//		activeFont->maxWidth = activeFont->maxWidthSmall;
+//		useFont = &activeFont.fontInfoSmall;
+//		activeFont.maxHeight = activeFont.maxHeightSmall;
+//		activeFont.maxWidth = activeFont.maxWidthSmall;
 //	} else if (scale <= gui_mediumFontLimit.GetFloat()) {
-//		useFont = &activeFont->fontInfoMedium;
-//		activeFont->maxHeight = activeFont->maxHeightMedium;
-//		activeFont->maxWidth = activeFont->maxWidthMedium;
+//		useFont = &activeFont.fontInfoMedium;
+//		activeFont.maxHeight = activeFont.maxHeightMedium;
+//		activeFont.maxWidth = activeFont.maxWidthMedium;
 //	} else {
-//		useFont = &activeFont->fontInfoLarge;
-//		activeFont->maxHeight = activeFont->maxHeightLarge;
-//		activeFont->maxWidth = activeFont->maxWidthLarge;
+//		useFont = &activeFont.fontInfoLarge;
+//		activeFont.maxHeight = activeFont.maxHeightLarge;
+//		activeFont.maxWidth = activeFont.maxWidthLarge;
 //	}
 //}
 //
@@ -682,11 +808,11 @@
 //	const glyphInfo_t *glyph;
 //	float		useScale;
 //	SetFontByScale(scale);
-//	useScale = scale * useFont->glyphScale;
+//	useScale = scale * useFont.glyphScale;
 //	count = 0;
 //	if ( text && color.w != 0.0 ) {
 //		const unsigned char	*s = (const unsigned char*)text;
-//		renderSystem->SetColor(color);
+//		renderSystem.SetColor(color);
 //		memcpy(&newColor[0], &color[0], sizeof(idVec4));
 //		len = strlen(text);
 //		if (limit > 0 && len > limit) {
@@ -698,7 +824,7 @@
 //				s++;
 //				continue;
 //			}
-//			glyph = &useFont->glyphs[*s];
+//			glyph = &useFont.glyphs[*s];
 //
 //			//
 //			// int yadj = Assets.textFont.glyphs[text[i]].bottom +
@@ -714,26 +840,26 @@
 //					newColor[3] = color[3];
 //				}
 //				if (cursor == count || cursor == count+1) {
-//					float partialSkip = ((glyph->xSkip * useScale) + adjust) / 5.0f;
+//					float partialSkip = ((glyph.xSkip * useScale) + adjust) / 5.0f;
 //					if ( cursor == count ) {
 //						partialSkip *= 2.0f;
 //					} else {
-//						renderSystem->SetColor(newColor);
+//						renderSystem.SetColor(newColor);
 //					}
 //					DrawEditCursor(x - partialSkip, y, scale);
 //				}
-//				renderSystem->SetColor(newColor);
+//				renderSystem.SetColor(newColor);
 //				s += 2;
 //				count += 2;
 //				continue;
 //			} else {
-//				float yadj = useScale * glyph->top;
-//				PaintChar(x,y - yadj,glyph->imageWidth,glyph->imageHeight,useScale,glyph->s,glyph->t,glyph->s2,glyph->t2,glyph->glyph);
+//				float yadj = useScale * glyph.top;
+//				PaintChar(x,y - yadj,glyph.imageWidth,glyph.imageHeight,useScale,glyph.s,glyph.t,glyph.s2,glyph.t2,glyph.glyph);
 //
 //				if (cursor == count) {
 //					DrawEditCursor(x, y, scale);
 //				}
-//				x += (glyph->xSkip * useScale) + adjust;
+//				x += (glyph.xSkip * useScale) + adjust;
 //				s++;
 //				count++;
 //			}
@@ -744,32 +870,32 @@
 //	}
 //	return count;
 //}
-//
-//void idDeviceContext::SetSize(float width, float height) {
-//	vidWidth = VIRTUAL_WIDTH;
-//	vidHeight = VIRTUAL_HEIGHT;
-//	xScale = yScale = 0.0;
-//	if ( width != 0.0 && height != 0.0 ) {
-//		xScale = vidWidth * ( 1.0f / width );
-//		yScale = vidHeight * ( 1.0f / height );
-//	}
-//}
+
+	SetSize ( /*float */width: number, /*float */height: number ): void {
+		this.vidWidth = VIRTUAL_WIDTH;
+		this.vidHeight = VIRTUAL_HEIGHT;
+		this.xScale = this.yScale = 0.0;
+		if ( width != 0.0 && height != 0.0 ) {
+			this.xScale = this.vidWidth * ( 1.0 / width );
+			this.yScale = this.vidHeight * ( 1.0 / height );
+		}
+	}
 //
 //int idDeviceContext::CharWidth( const char c, float scale ) {
 //	glyphInfo_t *glyph;
 //	float		useScale;
 //	SetFontByScale(scale);
 //	fontInfo_t	*font = useFont;
-//	useScale = scale * font->glyphScale;
-//	glyph = &font->glyphs[(const unsigned char)c];
-//	return idMath::FtoiFast( glyph->xSkip * useScale );
+//	useScale = scale * font.glyphScale;
+//	glyph = &font.glyphs[(const unsigned char)c];
+//	return idMath::FtoiFast( glyph.xSkip * useScale );
 //}
 //
 //int idDeviceContext::TextWidth( const char *text, float scale, int limit ) {
 //	int i, width;
 //
 //	SetFontByScale( scale );
-//	const glyphInfo_t *glyphs = useFont->glyphs;
+//	const glyphInfo_t *glyphs = useFont.glyphs;
 //
 //	if ( text == NULL ) {
 //		return 0;
@@ -793,7 +919,7 @@
 //			}
 //		}
 //	}
-//	return idMath::FtoiFast( scale * useFont->glyphScale * width );
+//	return idMath::FtoiFast( scale * useFont.glyphScale * width );
 //}
 //
 //int idDeviceContext::TextHeight(const char *text, float scale, int limit) {
@@ -805,7 +931,7 @@
 //	SetFontByScale(scale);
 //	fontInfo_t	*font = useFont;
 //
-//	useScale = scale * font->glyphScale;
+//	useScale = scale * font.glyphScale;
 //	max = 0;
 //	if (text) {
 //		len = strlen(text);
@@ -820,9 +946,9 @@
 //				continue;
 //			}
 //			else {
-//				glyph = &font->glyphs[*(const unsigned char*)s];
-//				if (max < glyph->height) {
-//					max = glyph->height;
+//				glyph = &font.glyphs[*(const unsigned char*)s];
+//				if (max < glyph.height) {
+//					max = glyph.height;
 //				}
 //
 //				s++;
@@ -836,14 +962,14 @@
 //
 //int idDeviceContext::MaxCharWidth(float scale) {
 //	SetFontByScale(scale);
-//	float useScale = scale * useFont->glyphScale;
-//	return idMath::FtoiFast( activeFont->maxWidth * useScale );
+//	float useScale = scale * useFont.glyphScale;
+//	return idMath::FtoiFast( activeFont.maxWidth * useScale );
 //}
 //
 //int idDeviceContext::MaxCharHeight(float scale) {
 //	SetFontByScale(scale);
-//	float useScale = scale * useFont->glyphScale;
-//	return idMath::FtoiFast( activeFont->maxHeight * useScale );
+//	float useScale = scale * useFont.glyphScale;
+//	return idMath::FtoiFast( activeFont.maxHeight * useScale );
 //}
 //
 //const idMaterial *idDeviceContext::GetScrollBarImage(int index) {
@@ -929,10 +1055,10 @@
 //		return;
 //	}
 //	SetFontByScale(scale);
-//	float useScale = scale * useFont->glyphScale;
-//	const glyphInfo_t *glyph2 = &useFont->glyphs[(overStrikeMode) ? '_' : '|'];
-//	float	yadj = useScale * glyph2->top;
-// 	PaintChar(x, y - yadj,glyph2->imageWidth,glyph2->imageHeight,useScale,glyph2->s,glyph2->t,glyph2->s2,glyph2->t2,glyph2->glyph);
+//	float useScale = scale * useFont.glyphScale;
+//	const glyphInfo_t *glyph2 = &useFont.glyphs[(overStrikeMode) ? '_' : '|'];
+//	float	yadj = useScale * glyph2.top;
+// 	PaintChar(x, y - yadj,glyph2.imageWidth,glyph2.imageHeight,useScale,glyph2.s,glyph2.t,glyph2.s2,glyph2.t2,glyph2.glyph);
 //}
 //
 //int idDeviceContext::DrawText( const char *text, float textScale, int textAlign, idVec4 color, idRectangle rectDraw, bool wrap, int cursor, bool calcOnly, idList<int> *breaks, int limit ) {
@@ -956,7 +1082,7 @@
 //
 //	if (!calcOnly && !(text && *text)) {
 //		if (cursor == 0) {
-//			renderSystem->SetColor(color);
+//			renderSystem.SetColor(color);
 //			DrawEditCursor(rectDraw.x, lineSkip + rectDraw.y, textScale);
 //		}
 //		return idMath::FtoiFast( rectDraw.w / charSkip );
@@ -972,7 +1098,7 @@
 //	p = textPtr;
 //
 //	if ( breaks ) {
-//		breaks->Append(0);
+//		breaks.Append(0);
 //	}
 //	count = 0;
 //	textWidth = 0;
@@ -1056,7 +1182,7 @@
 //			p = newLinePtr;
 //
 //			if (breaks) {
-//				breaks->Append(p - text);
+//				breaks.Append(p - text);
 //			}
 //
 //			len = 0;
@@ -1072,13 +1198,17 @@
 //		buff[len] = '\0';
 //		// update the width
 //		if ( *( buff + len - 1 ) != C_COLOR_ESCAPE && (len <= 1 || *( buff + len - 2 ) != C_COLOR_ESCAPE)) {
-//			textWidth += textScale * useFont->glyphScale * useFont->glyphs[ (const unsigned char)*( buff + len - 1 ) ].xSkip;
+//			textWidth += textScale * useFont.glyphScale * useFont.glyphs[ (const unsigned char)*( buff + len - 1 ) ].xSkip;
 //		}
 //	}
 //
 //	return idMath::FtoiFast( rectDraw.w / charSkip );
 //}
-//
+
+
+};
+
+
 ///*
 //=============
 //idRectangle::String

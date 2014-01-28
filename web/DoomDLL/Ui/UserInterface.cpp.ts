@@ -1,5 +1,6 @@
 /// <reference path="devicecontext.cpp.ts" />
 /// <reference path="rectangle.h.ts" />
+/// <reference path="rectangle.h.ts" />
 ///*
 //===========================================================================
 //
@@ -51,7 +52,7 @@ var uiManagerLocal: idUserInterfaceManagerLocal;
 class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 
 	Init ( ): void {
-		this.screenRect = idRectangle( 0, 0, 640, 480 );
+		this.screenRect = new idRectangle( 0, 0, 640, 480 );
 		this.dc.Init ( );
 	}
 //

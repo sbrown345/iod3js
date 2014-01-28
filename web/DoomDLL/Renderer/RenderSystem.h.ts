@@ -112,26 +112,26 @@ class /*glconfig_s*/glconfig_t {
 ////	char				shaderName[32];
 ////} glyphInfo_t;
 
-////typedef struct {
-////	glyphInfo_t			glyphs [GLYPHS_PER_FONT];
-////	float				glyphScale;
-////	char				name[64];
-////} fontInfo_t;
+class fontInfo_t {
+	//glyphInfo_t			glyphs [GLYPHS_PER_FONT];
+	//float				glyphScale;
+	//char				name[64];
+}
 
-////typedef struct {
-////	fontInfo_t			fontInfoSmall;
-////	fontInfo_t			fontInfoMedium;
-////	fontInfo_t			fontInfoLarge;
-////	int					maxHeight;
-////	int					maxWidth;
-////	int					maxHeightSmall;
-////	int					maxWidthSmall;
-////	int					maxHeightMedium;
-////	int					maxWidthMedium;
-////	int					maxHeightLarge;
-////	int					maxWidthLarge;
-////	char				name[64];
-////} fontInfoEx_t;
+class fontInfoEx_t {
+//	fontInfo_t			fontInfoSmall;
+//	fontInfo_t			fontInfoMedium;
+//	fontInfo_t			fontInfoLarge;
+//	int					maxHeight;
+//	int					maxWidth;
+//	int					maxHeightSmall;
+//	int					maxWidthSmall;
+//	int					maxHeightMedium;
+//	int					maxWidthMedium;
+//	int					maxHeightLarge;
+//	int					maxWidthLarge;
+//	char				name[64];
+}
 
 var SMALLCHAR_WIDTH		= 8;
 var SMALLCHAR_HEIGHT	= 16;

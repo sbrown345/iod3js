@@ -252,7 +252,12 @@ var r__debugRenderToTexture = new idCVar( "r_debugRenderToTexture", "0", CVAR_RE
 ////////#endif
 
 class idRenderSystem {
-    // from tr_loca.h
+	// other tr_* files:
+	RegisterFont(fontName: string, font: fontInfoEx_t ) :boolean { throw "placeholder"; }
+
+
+
+    // from tr_local.h
 
 //public:
 //	// renderer globals

@@ -614,23 +614,23 @@ Register( cvar:idCVar ):void {
 	cvar.SetInternalVar( internal );
 }
 
-///*
-//============
-//idCVarSystemLocal::Find
-//============
-//*/
-//idCVar */*idCVarSystemLocal::*/Find( const char *name ) {
-//	return FindInternal( name );
-//}
+/*
+============
+idCVarSystemLocal::Find
+============
+*/
+	Find ( name: string ): idCVar {
+		return this.FindInternal( name );
+	}
 
-///*
-//============
-//idCVarSystemLocal::SetCVarString
-//============
-//*/
-//void /*idCVarSystemLocal::*/SetCVarString( const char *name, const char *value, int flags = 0 ) {
-//	SetInternal( name, value, flags );
-//}
+/*
+============
+idCVarSystemLocal::SetCVarString
+============
+*/
+	SetCVarString ( name: string, value: string, /*int */flags = 0 ): void {
+		this.SetInternal( name, value, flags );
+	}
 
 /*
 ============
@@ -640,37 +640,37 @@ idCVarSystemLocal::SetCVarBool
 	SetCVarBool ( name: string, value: boolean, /*int */flags: number = 0 ): void {
 		this.SetInternal( name, new idStr( value ).toString ( ), flags );
 	}
-///*
+/*
 
-//============
-//idCVarSystemLocal::SetCVarInteger
-//============
-//*/
-//void /*idCVarSystemLocal::*/SetCVarInteger( const char *name, const int value, int flags = 0 ) {
-//	SetInternal( name, idStr( value ), flags );
-//}
+============
+idCVarSystemLocal::SetCVarInteger
+============
+*/
+	SetCVarInteger ( name: string, /*const int */value: number, /*int */flags = 0 ): void {
+		this.SetInternal( name, new idStr( value ).toString ( ), flags );
+	}
 
-///*
-//============
-//idCVarSystemLocal::SetCVarFloat
-//============
-//*/
-//void idCVarSystemLocal::SetCVarFloat( const char *name, const float value, int flags = 0 ) {
-//	SetInternal( name, idStr( value ), flags );
-//}
+/*
+============
+idCVarSystemLocal::SetCVarFloat
+============
+*/
+	SetCVarFloat ( name: string, /*const float */value: number, /*int */flags = 0 ): void {
+		this.SetInternal( name, new idStr( value ).toString(), flags );
+	}
 
-///*
-//============
-//idCVarSystemLocal::GetCVarString
-//============
-//*/
-//const char */*idCVarSystemLocal::*/GetCVarString( const char *name ) const {
-//	idInternalCVar *internal = FindInternal( name );
-//	if ( internal ) {
-//		return internal.GetString();
-//	}
-//	return "";
-//}
+/*
+============
+idCVarSystemLocal::GetCVarString
+============
+*/
+	GetCVarString ( name: string ): string {
+		var internal = this.FindInternal( name );
+		if ( internal ) {
+			return internal.GetString ( );
+		}
+		return "";
+	}
 
 /*
 ============
@@ -690,20 +690,21 @@ idCVarSystemLocal::GetCVarBool
 idCVarSystemLocal::GetCVarInteger
 ============
 */
-/*int */GetCVarInteger( name:string ):number {
-	var internal = this.FindInternal( name );
-	if ( internal ) {
-		return internal.GetInteger();
+/*int */
+	GetCVarInteger ( name: string ): number {
+		var internal = this.FindInternal( name );
+		if ( internal ) {
+			return internal.GetInteger ( );
+		}
+		return 0;
 	}
-	return 0;
-}
 
 ///*
 //============
 //idCVarSystemLocal::GetCVarFloat
 //============
 //*/
-//float /*idCVarSystemLocal::*/GetCVarFloat( const char *name ) const {
+//float /*idCVarSystemLocal::*/GetCVarFloat( name:string ) const {
 //	idInternalCVar *internal = FindInternal( name );
 //	if ( internal ) {
 //		return internal.GetFloat();

@@ -33,18 +33,18 @@
 //extern void RotateVector(idVec3 &v, idVec3 origin, float a, float c, float s);
 class idRectangle {
 //public:
-//	float x;    // horiz position
-//	float y;    // vert position
-//	float w;    // width
-//	float h;    // height;
+	x:number;    // horiz position		//	float 
+	y:number;    // vert position		//	float 
+	w:number;    // width				//	float 
+	h:number;    // height;			//	float 
 //	idRectangle() { x = y = w= h = 0.0; }
-//	idRectangle(float ix, float iy, float iw, float ih) { x = ix; y = iy; w = iw; h = ih; }
-//	float Bottom() const { return y + h; }
-//	float Right() const { return x + w; }
-//	void Offset (float x, float y) { 
-//		this->x += x;
-//		this->y += y;
-//	}
+	constructor(/*float */ix: number= 0, /*float */iy: number= 0, /*float */iw: number= 0, /*float */ih: number= 0) { this.x = ix; this.y = iy; this.w = iw; this.h = ih; }
+	Bottom() :number/*float*/{ return this.y + this.h; }
+	Right(): number /*float*/{ return this.x + this.w; }
+	Offset ( /*float */x: number, /*float */y: number ): void {
+		this.x += x;
+		this.y += y;
+	}
 //	bool Contains(float xt, float yt) {
 //		if (w == 0.0 && h == 0.0) {
 //			return false;
