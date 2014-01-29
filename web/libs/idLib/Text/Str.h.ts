@@ -1,7 +1,3 @@
-/// <reference path="../Math/Math.h.ts" />
-/// <reference path="../../c.ts" />
-/// <reference path="../Lib.h.ts" />
-/// <reference path="../../../utils/types.ts" />
 /*
 ===========================================================================
 

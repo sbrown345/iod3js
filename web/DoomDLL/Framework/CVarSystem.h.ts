@@ -1,5 +1,3 @@
-/// <reference path="CmdSystem.h.ts" />
-/// <reference path="CVarSystem.cpp.ts" />
 /////*
 ////===========================================================================
 

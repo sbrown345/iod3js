@@ -1,6 +1,3 @@
-/// <reference path="devicecontext.cpp.ts" />
-/// <reference path="rectangle.h.ts" />
-/// <reference path="rectangle.h.ts" />
 ///*
 //===========================================================================
 //
@@ -39,8 +36,6 @@
 //
 //extern idCVar r_skipGuiShaders;		// 1 = don't render any gui elements on surfaces
 //
-var uiManagerLocal: idUserInterfaceManagerLocal;
-/*idUserInterfaceManager *	*/var uiManager = uiManagerLocal;
 //
 ///*
 //===============================================================================
@@ -676,3 +671,7 @@ class idUserInterfaceLocal extends idUserInterface {
 //
 //	int							refs;
 };
+
+
+var uiManagerLocal = new idUserInterfaceManagerLocal ( );
+/*idUserInterfaceManager *	*/var uiManager = uiManagerLocal;

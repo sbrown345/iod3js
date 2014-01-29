@@ -1,25 +1,3 @@
-/// <reference path="FileSystem.h.ts" />
-/// <reference path="FileSystem.cpp.ts" />
-/// <reference path="DeclParticle.cpp.ts" />
-/// <reference path="DeclFX.cpp.ts" />
-/// <reference path="DeclTable.cpp.ts" />
-/// <reference path="DeclSkin.cpp.ts" />
-/// <reference path="DeclEntityDef.cpp.ts" />
-/// <reference path="../Sound/sound.h.ts" />
-/// <reference path="DeclSkin.cpp.ts" />
-/// <reference path="DeclTable.cpp.ts" />
-/// <reference path="DeclPDA.h.ts" />
-/// <reference path="DeclAF.h.ts" />
-/// <reference path="DeclAF.cpp.ts" />
-/// <reference path="DeclPDA.h.ts" />
-/// <reference path="../../libs/idlib/hashing/md5.cpp.ts" />
-/// <reference path="../../libs/c.ts" />
-/// <reference path="../../libs/idlib/text/lexer.cpp.ts" />
-/// <reference path="../../libs/idLib/Text/Lexer.h.ts" />
-/// <reference path="../../libs/idLib/Lib.h.ts" />
-/// <reference path="DeclManager.h.ts" />
-/// <reference path="../Renderer/Material.cpp.ts" />
-/// <reference path="../Renderer/Material.h.ts" />
 /////*
 ////===========================================================================
 

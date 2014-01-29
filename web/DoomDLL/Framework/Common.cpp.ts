@@ -1,15 +1,4 @@
-/// <reference path="../../libs/LangDict.cpp.ts" />
-/// <reference path="CVarSystem.cpp.ts" />
-/// <reference path="CVarSystem.h.ts" />
-/// <reference path="common.h.ts" />
-/// <reference path="../sys/win_input.cpp.ts" />
-/// <reference path="../Renderer/RenderSystem.cpp.ts" />
-/// <reference path="../Renderer/RenderSystem.h.ts" />
-/// <reference path="CmdSystem.cpp.ts" />
-/// <reference path="../../utils/todo.ts" />
-/// <reference path="../../libs/c.ts" />
-/// <reference path="console.cpp.ts" />
-/// <reference path="usercmdgen.cpp.ts" />
+
 
 /////*
 ////===========================================================================

@@ -1,5 +1,3 @@
-/// <reference path="../../libs/idlib/text/str.h.ts" />
-/// <reference path="filesystem.h.ts" />
 /////*
 ////===========================================================================
 ////
@@ -49,7 +47,6 @@
 ////class idFileSystemLocal;
 ////
 ////
-/// <reference path="../../libs/c.ts" />
 class idFile {
 ////public:
 ////	virtual					~idFile( void ) {};

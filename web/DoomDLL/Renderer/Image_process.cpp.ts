@@ -1,6 +1,3 @@
-/// <reference path="../framework/common.h.ts" />
-/// <reference path="../framework/common.cpp.ts" />
-/// <reference path="../../utils/todo.ts" />
 /////*
 ////===========================================================================
 

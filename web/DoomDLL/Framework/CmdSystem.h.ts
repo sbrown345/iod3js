@@ -1,4 +1,3 @@
-/// <reference path="../../libs/idLib/Lib.h.ts" />
 
 
 ///*

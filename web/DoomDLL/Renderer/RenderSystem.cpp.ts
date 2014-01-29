@@ -1,19 +1,3 @@
-/// <reference path="Image_init.cpp.ts" />
-/// <reference path="tr_local.h.ts" />
-/// <reference path="ModelManager.h.ts" />
-/// <reference path="ModelManager.cpp.ts" />
-/// <reference path="../Framework/DeclManager.cpp.ts" />
-/// <reference path="../Sys/win_glimp.cpp.ts" />
-/// <reference path="../Sys/win_glimp.cpp.ts" />
-/// <reference path="../../libs/c.ts" />
-/// <reference path="tr_local.h.ts" />
-/// <reference path="Image.h.ts" />
-/// <reference path="GuiModel.cpp.ts" />
-/// <reference path="GuiModel.h.ts" />
-/// <reference path="tr_backend.cpp.ts" />
-/// <reference path="../../libs/idLib/Math/Vector.h.ts" />
-/// <reference path="../Framework/Common.cpp.ts" />
-/// <reference path="renderworld_local.h.ts" />
 
 /*
 ===========================================================================

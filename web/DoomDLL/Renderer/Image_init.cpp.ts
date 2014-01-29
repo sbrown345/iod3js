@@ -1,12 +1,3 @@
-/// <reference path="../../libs/c.ts" />
-/// <reference path="../../libs/idLib/Text/Str.h.ts" />
-/// <reference path="Material.h.ts" />
-/// <reference path="../Framework/CmdSystem.cpp.ts" />
-/// <reference path="image_process.cpp.ts" />
-/// <reference path="../../utils/types.ts" />
-/// <reference path="image_load.cpp.ts" />
-/// <reference path="../../utils/todo.ts" />
-/// <reference path="Image.h.ts" />
 /////*
 ////===========================================================================
 

@@ -1,6 +1,3 @@
-/// <reference path="../../libs/idLib/Containers/List.h.ts" />
-/// <reference path="../../libs/c.ts" />
-/// <reference path="../Framework/Common.cpp.ts" />
 
 /////*
 ////===========================================================================

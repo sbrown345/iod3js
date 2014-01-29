@@ -1,6 +1,3 @@
-/// <reference path="../../libs/idLib/Containers/List.h.ts" />
-/// <reference path="../../libs/idLib/Geometry/DrawVert.h.ts" />
-/// <reference path="GuiModel.h.ts" />
 /*
 ===========================================================================
 

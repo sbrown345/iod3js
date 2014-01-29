@@ -1,15 +1,3 @@
-/// <reference path="../../utils/types.ts" />
-/// <reference path="../../libs/idLib/Text/Str.h.ts" />
-/// <reference path="../../libs/idLib/Containers/HashIndex.h.ts" />
-/// <reference path="CmdSystem.h.ts" />
-/// <reference path="CmdSystem.cpp.ts" />
-/// <reference path="CVarSystem.h.ts" />
-/// <reference path="../../libs/idLib/Heap.cpp.ts" />
-/// <reference path="Common.cpp.ts" />
-/// <reference path="../../libs/idLib/Lib.cpp.ts" />
-/// <reference path="../../utils/todo.ts" />
-/// <reference path="../../libs/idLib/Text/CmdArgs.h.ts" />
-/// <reference path="../../libs/idLib/Text/CmdArgs.cpp.ts" />
 
 /////*
 ////===========================================================================

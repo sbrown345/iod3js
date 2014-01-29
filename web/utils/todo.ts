@@ -1,5 +1,4 @@
-﻿/// <reference path="../libs/idlib/lib.h.ts" />
-// keep track of things to do
+﻿// keep track of things to do
 function todo(reason?: string) {
     //console.log("todo", reason);
 }

@@ -59,7 +59,7 @@
     <Content Include="DoomDLL\Framework\DeclTable.cpp.ts" />
     <Content Include="DoomDLL\Framework\File.cpp.ts" />
     <Content Include="DoomDLL\Framework\File.h.ts" />
-    <Content Include="DoomDLL\Framework\files.ts" />
+    <Content Include="other\files.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\Cinematic.cpp.ts" />
@@ -127,7 +127,7 @@
     <TypeScriptCompile Include="DoomDLL\Ui\UserInterface.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Ui\Rectangle.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Ui\DeviceContext.cpp.ts" />
-    <Content Include="libs\c.ts" />
+    <Content Include="other\c.ts" />
     <TypeScriptCompile Include="libs\idLib\BV\Bounds.h.ts" />
     <Content Include="libs\idLib\Containers\HashIndex.h.ts" />
     <Content Include="libs\idLib\Containers\List.h.ts" />
@@ -211,6 +211,7 @@
     <TypeScriptNoImplicitAny>True</TypeScriptNoImplicitAny>
     <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
     <TypeScriptOutFile>doom3.js</TypeScriptOutFile>
+    <TypeScriptCompileOnSaveEnabled>False</TypeScriptCompileOnSaveEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptTarget>ES3</TypeScriptTarget>

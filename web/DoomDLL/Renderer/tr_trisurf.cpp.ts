@@ -1,7 +1,3 @@
-/// <reference path="tr_local.h.ts" />
-/// <reference path="model.h.ts" />
-/// <reference path="../../utils/types.ts" />
-/// <reference path="../../libs/idlib/heap.cpp.ts" />
 ///*
 //===========================================================================
 //

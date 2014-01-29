@@ -1,9 +1,3 @@
-/// <reference path="../../libs/idlib/precompiled.h.ts" />
-/// <reference path="../ui/userinterface.h.ts" />
-/// <reference path="../ui/userinterface.cpp.ts" />
-/// <reference path="tr_local.h.ts" />
-/// <reference path="image_program.cpp.ts" />
-/// <reference path="material.h.ts" />
 /////*
 ////===========================================================================
 

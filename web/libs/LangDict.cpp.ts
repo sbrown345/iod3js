@@ -1,5 +1,3 @@
-/// <reference path="idLib/Containers/HashIndex.h.ts" />
-/// <reference path="idLib/Containers/List.h.ts" />
 /////*
 ////===========================================================================
 

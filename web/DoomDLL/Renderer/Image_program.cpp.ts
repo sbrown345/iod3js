@@ -1,7 +1,3 @@
-/// <reference path="../../libs/idlib/text/lexer.cpp.ts" />
-/// <reference path="tr_main.cpp.ts" />
-/// <reference path="image_files.cpp.ts" />
-/// <reference path="image.h.ts" />
 
 /////*
 ////===========================================================================

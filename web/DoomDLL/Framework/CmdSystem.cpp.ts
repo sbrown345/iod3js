@@ -1,11 +1,3 @@
-/// <reference path="CVarSystem.cpp.ts" />
-/// <reference path="CVarSystem.h.ts" />
-/// <reference path="../../libs/idLib/Heap.cpp.ts" />
-/// <reference path="Common.cpp.ts" />
-/// <reference path="../../libs/idLib/Lib.cpp.ts" />
-/// <reference path="../../utils/todo.ts" />
-/// <reference path="../../libs/idLib/Text/CmdArgs.h.ts" />
-/// <reference path="../../libs/idLib/Text/CmdArgs.cpp.ts" />
 
 
 /////*

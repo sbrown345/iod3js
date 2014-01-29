@@ -1,10 +1,3 @@
-/// <reference path="RenderSystem.cpp.ts" />
-/// <reference path="../../utils/todo.ts" />
-/// <reference path="image_process.cpp.ts" />
-/// <reference path="../../other/gl2.h.ts" />
-/// <reference path="../../libs/idlib/hashing/md4.cpp.ts" />
-/// <reference path="Material.h.ts" />
-/// <reference path="Image.h.ts" />
 /////*
 ////===========================================================================
 

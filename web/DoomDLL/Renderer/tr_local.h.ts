@@ -1,5 +1,3 @@
-/// <reference path="RenderSystem.h.ts" />
-/// <reference path="RenderSystem.cpp.ts" />
 /////*
 ////===========================================================================
 

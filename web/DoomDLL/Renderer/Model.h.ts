@@ -1,5 +1,3 @@
-/// <reference path="../../libs/idlib/math/plane.h.ts" />
-/// <reference path="../../libs/idlib/bv/bounds.h.ts" />
 /////*
 ////===========================================================================
 

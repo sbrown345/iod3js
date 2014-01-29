@@ -1,6 +1,3 @@
-/// <reference path="../../libs/idlib/math/matrix.h.ts" />
-/// <reference path="../renderer/tr_font.cpp.ts" />
-/// <reference path="../renderer/material.h.ts" />
 ///*
 //===========================================================================
 //

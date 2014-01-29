@@ -1,8 +1,3 @@
-/// <reference path="../Framework/CmdSystem.h.ts" />
-/// <reference path="../../utils/types.ts" />
-/// <reference path="../framework/filesystem.h.ts" />
-/// <reference path="../../libs/idlib/containers/list.h.ts" />
-/// <reference path="../../libs/idLib/Text/Str.h.ts" />
 /////*
 ////===========================================================================
 

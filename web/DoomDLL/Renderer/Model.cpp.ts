@@ -1,7 +1,3 @@
-/// <reference path="../../libs/idLib/Text/Str.h.ts" />
-/// <reference path="Model.h.ts" />
-/// <reference path="Model_local.h.ts" />
-/// <reference path="../../libs/idlib/geometry/winding.h.ts" />
 /////*
 ////===========================================================================
 

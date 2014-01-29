@@ -1,6 +1,3 @@
-/// <reference path="../licensee.h.ts" />
-/// <reference path="asyncclient.h.ts" />
-/// <reference path="asyncnetwork.h.ts" />
 ///*
 //===========================================================================
 //

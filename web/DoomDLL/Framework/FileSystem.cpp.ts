@@ -1,12 +1,3 @@
-/// <reference path="File.h.ts" />
-/// <reference path="../../libs/c.ts" />
-/// <reference path="file.cpp.ts" />
-/// <reference path="FileSystem.h.ts" />
-/// <reference path="files.ts" />
-/// <reference path="../../libs/idLib/Containers/HashIndex.h.ts" />
-/// <reference path="cvarsystem.h.ts" />
-/// <reference path="../../libs/idLib/Text/Str.h.ts" />
-/// <reference path="../../libs/idLib/Containers/StrList.h.ts" />
 /*
 ===========================================================================
 

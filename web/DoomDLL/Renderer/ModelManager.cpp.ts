@@ -1,7 +1,3 @@
-/// <reference path="Model.cpp.ts" />
-/// <reference path="Model_local.h.ts" />
-/// <reference path="Model.h.ts" />
-/// <reference path="ModelManager.h.ts" />
 /////*
 ////===========================================================================
 ////

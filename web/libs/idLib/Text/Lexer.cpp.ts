@@ -1,7 +1,3 @@
-/// <reference path="../../../utils/sprintf.d.ts" />
-/// <reference path="lexer.h.ts" />
-/// <reference path="token.cpp.ts" />
-/// <reference path="../../../doomdll/framework/common.cpp.ts" />
 /////*
 ////===========================================================================
 
