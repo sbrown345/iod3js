@@ -235,6 +235,19 @@ var r__debugRenderToTexture = new idCVar( "r_debugRenderToTexture", "0", CVAR_RE
 ////////void (GL_APIENTRY *qglDepthBoundsEXT)(GLclampd zmin, GLclampd zmax);
 ////////#endif
 
+class vidmode_t {
+	description: string; //const char *
+	width: number;
+	height: number; //int        
+
+	constructor ( description: string, width: number, height: number ) {
+		this.description = description;
+		this.width = width;
+		this.height = height;
+	}
+};
+
+
 class idRenderSystem {
 	// other tr_* files:
 	RegisterFont(fontName: string, font: fontInfoEx_t ) :boolean { throw "placeholder"; }
@@ -467,50 +480,51 @@ will be used instead.
 //	width:number; height:number;	//int         
 //};
 
-////vidmode_t r_vidModes[] = {
-////    { "Mode  0: 320x240",		320,	240 },
-////    { "Mode  1: 400x300",		400,	300 },
-////    { "Mode  2: 512x384",		512,	384 },
-////    { "Mode  3: 640x480",		640,	480 },
-////    { "Mode  4: 800x600",		800,	600 },
-////    { "Mode  5: 1024x768",		1024,	768 },
-////    { "Mode  6: 1152x864",		1152,	864 },
-////    { "Mode  7: 1280x1024",		1280,	1024 },
-////    { "Mode  8: 1600x1200",		1600,	1200 },
-////};
-////static int	s_numVidModes = ( sizeof( r_vidModes ) / sizeof( r_vidModes[0] ) );
+static r_vidModes = [
+    new vidmode_t("Mode  0: 320x240",		320,	240 ),
+    new vidmode_t( "Mode  1: 400x300", 400, 300),
+    new vidmode_t( "Mode  2: 512x384", 512, 384),
+    new vidmode_t( "Mode  3: 640x480", 640, 480),
+    new vidmode_t( "Mode  4: 800x600", 800, 600),
+    new vidmode_t( "Mode  5: 1024x768", 1024, 768),
+    new vidmode_t( "Mode  6: 1152x864", 1152, 864),
+    new vidmode_t( "Mode  7: 1280x1024", 1280, 1024),
+    new vidmode_t( "Mode  8: 1600x1200",		1600,	1200 )
+];
+	static s_numVidModes: number = idRenderSystem.r_vidModes.length;
 
 ////#if MACOS_X
 ////bool R_GetModeInfo( int *width, int *height, int mode ) {
 ////#else
-////static bool R_GetModeInfo( int *width, int *height, int mode ) {
-////#endif
-////	vidmode_t	*vm;
+	/*static*/
+	R_GetModeInfo ( /*int **/width: R<number>, /*int **/height: R<number>, /*int */mode: number ): boolean {
+//#endif
+		var vm: vidmode_t;
 
-////    if ( mode < -1 ) {
-////        return false;
-////	}
-////	if ( mode >= s_numVidModes ) {
-////		return false;
-////	}
+		if ( mode < -1 ) {
+			return false;
+		}
+		if ( mode >= idRenderSystem.s_numVidModes ) {
+			return false;
+		}
 
-////	if ( mode == -1 ) {
-////		*width = r_customWidth.GetInteger();
-////		*height = r_customHeight.GetInteger();
-////		return true;
-////	}
+		if ( mode == -1 ) {
+			width.$ = r_customWidth.GetInteger ( );
+			height.$ = r_customHeight.GetInteger ( );
+			return true;
+		}
 
-////	vm = &r_vidModes[mode];
+		vm = idRenderSystem.r_vidModes[mode];
 
-////	if ( width ) {
-////		*width  = vm.width;
-////	}
-////	if ( height ) {
-////		*height = vm.height;
-////	}
+		if ( width ) {
+			width.$ = vm.width;
+		}
+		if ( height ) {
+			height.$ = vm.height;
+		}
 
-////    return true;
-////}
+		return true;
+	}
 
 
 /*
@@ -549,7 +563,11 @@ R_InitOpenGL(): void {
 	//
 	for (i = 0 ; i < 2 ; i++) {
 		// set the parameters we are trying
-		R_GetModeInfo(&glConfig.vidWidth, &glConfig.vidHeight, r_mode.GetInteger());
+		var $vidWidth = new R(glConfig.vidWidth);
+		var $vidHeight = new R(glConfig.vidHeight );
+		this.R_GetModeInfo($vidWidth, $vidHeight, r_mode.GetInteger());
+		glConfig.vidWidth = $vidWidth.$;
+		glConfig.vidHeight= $vidHeight.$;
 
 		parms.width = glConfig.vidWidth;
 		parms.height = glConfig.vidHeight;
@@ -562,70 +580,71 @@ R_InitOpenGL(): void {
 			// it worked
 			break;
 		}
+		
+		//if (i == 1) {
+		//	common.FatalError("Unable to initialize OpenGL");
+		//}
 
-		if (i == 1) {
-			common.FatalError("Unable to initialize OpenGL");
-		}
-
-		// if we failed, set everything back to "safe mode"
-		// and try again
-		r_mode.SetInteger(3);
-		r_fullscreen.SetInteger(1);
-		r_displayRefresh.SetInteger(0);
-		r_multiSamples.SetInteger(0);
+		//// if we failed, set everything back to "safe mode"
+		//// and try again
+		//r_mode.SetInteger(3);
+		//r_fullscreen.SetInteger(1);
+		//r_displayRefresh.SetInteger(0);
+		//r_multiSamples.SetInteger(0);
 	}
+	todoThrow();
 
-	// input and sound systems need to be tied to the new window
-	Sys_InitInput();
-	soundSystem.InitHW();
+//	// input and sound systems need to be tied to the new window
+//	Sys_InitInput();
+//	soundSystem.InitHW();
 
-	// get our config strings
-	glConfig.vendor_string = (const char *)glGetString(GL_VENDOR);
-	glConfig.renderer_string = (const char *)glGetString(GL_RENDERER);
-	glConfig.version_string = (const char *)glGetString(GL_VERSION);
-	glConfig.extensions_string = (const char *)glGetString(GL_EXTENSIONS);
+//	// get our config strings
+//	glConfig.vendor_string = /*(const char *)*/glGetString(GL_VENDOR);
+//	glConfig.renderer_string =/* (const char *)*/glGetString(GL_RENDERER);
+//	glConfig.version_string = /*(const char *)*/glGetString(GL_VERSION);
+//	glConfig.extensions_string = /*(const char *)*/glGetString(GL_EXTENSIONS);
 
-	// OpenGL driver constants
-	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &temp);
-	glConfig.maxTextureSize = temp;
+//	// OpenGL driver constants
+//	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &temp);
+//	glConfig.maxTextureSize = temp;
 
-	// stubbed or broken drivers may have reported 0...
-	if (glConfig.maxTextureSize <= 0) {
-		glConfig.maxTextureSize = 256;
-	}
+//	// stubbed or broken drivers may have reported 0...
+//	if (glConfig.maxTextureSize <= 0) {
+//		glConfig.maxTextureSize = 256;
+//	}
 
-	glConfig.isInitialized = true;
+//	glConfig.isInitialized = true;
 
-	// recheck all the extensions (FIXME: this might be dangerous)
-	R_CheckPortableExtensions();
+//	// recheck all the extensions (FIXME: this might be dangerous)
+//	R_CheckPortableExtensions();
 
-	// parse our vertex and fragment programs, possibly disably support for
-	// one of the paths if there was an error
-#if !defined(GL_ES_VERSION_2_0)
-	R_ARB2_Init();
-#endif
-	R_GLSL_Init();
+//	// parse our vertex and fragment programs, possibly disably support for
+//	// one of the paths if there was an error
+////#if !defined(GL_ES_VERSION_2_0)
+////	R_ARB2_Init();
+////#endif
+//	R_GLSL_Init();
 
-#if !defined(GL_ES_VERSION_2_0)
-	cmdSystem.AddCommand("reloadARBprograms", R_ReloadARBPrograms_f, CMD_FL_RENDERER, "reloads ARB programs");
-	R_ReloadARBPrograms_f(idCmdArgs());
-#endif
+////#if !defined(GL_ES_VERSION_2_0)
+////	cmdSystem.AddCommand("reloadARBprograms", R_ReloadARBPrograms_f, CMD_FL_RENDERER, "reloads ARB programs");
+////	R_ReloadARBPrograms_f(idCmdArgs());
+////#endif
 
-	cmdSystem.AddCommand("reloadGLSLprograms", R_ReloadGLSLPrograms_f, CMD_FL_RENDERER, "reloads GLSL programs");
-	R_ReloadGLSLPrograms_f(idCmdArgs());
+//	cmdSystem.AddCommand("reloadGLSLprograms", R_ReloadGLSLPrograms_f, CMD_FL_RENDERER, "reloads GLSL programs");
+//	R_ReloadGLSLPrograms_f(idCmdArgs());
 
-	// allocate the vertex array range or vertex objects
-	vertexCache.Init();
+//	// allocate the vertex array range or vertex objects
+//	vertexCache.Init();
 
-	// select which renderSystem we are going to use
-	r_renderer.SetModified();
-	tr.SetBackEndRenderer();
+//	// select which renderSystem we are going to use
+//	r_renderer.SetModified();
+//	tr.SetBackEndRenderer();
 
-	// allocate the frame data, which may be more if smp is enabled
-	R_InitFrameData();
+//	// allocate the frame data, which may be more if smp is enabled
+//	R_InitFrameData();
 
-	// Reset our gamma
-	R_SetColorMappings();
+//	// Reset our gamma
+//	R_SetColorMappings();
 }
 
 /*
