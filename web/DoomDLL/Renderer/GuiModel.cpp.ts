@@ -34,30 +34,16 @@ If you have questions concerning this license or the applicable additional terms
 
 
 class idGuiModel {
-////public:
-    /*guiModelSurface_t		**/surf:guiModelSurface_t;
-
-	/*idList<guiModelSurface_t>	*/surfaces:idList<guiModelSurface_t>;
-	/*idList<glIndex_t>		*/indexes:idList<number>;
-	/*idList<idDrawVert>	*/verts:idList<idDrawVert>;
-////};
+//public:
+	surf = new guiModelSurface_t();
+	surfaces = new idList<guiModelSurface_t>(guiModelSurface_t);
+	indexes: idList<number> = new idList<number>(Number);
+	verts: idList<idDrawVert> = new idList<idDrawVert>(idDrawVert);
 
     constructor() {
-        this.surf = new guiModelSurface_t();
-        this.surfaces = new idList<guiModelSurface_t>(guiModelSurface_t);
-        this.indexes = new idList<number>(Number);
-        this.verts = new idList<idDrawVert>(idDrawVert);
+		this.indexes.SetGranularity(1000);
+		this.verts.SetGranularity( 1000 );
     }
-
-/////*
-////================
-////idGuiModel::idGuiModel
-////================
-////*/
-////idGuiModel::idGuiModel() {
-////	indexes.SetGranularity( 1000 );
-////	verts.SetGranularity( 1000 );
-////}
 
 /*
 ================
