@@ -362,3 +362,8 @@ class idSessionLocal extends idSession {
 //extern idSessionLocal	sessLocal;
 //
 //#endif /* !__SESSIONLOCAL_H__ */
+
+
+
+var sessLocal = new idSessionLocal();
+var session: idSession = sessLocal;

@@ -41,38 +41,38 @@ class idAsyncNetwork {
 	static server: idAsyncServer;
 	static client: idAsyncClient;
 //
-	static verbose = new idCVar( "net_verbose", "0", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "1 = verbose output, 2 = even more verbose output", 0, 2, ArgCompletion_Integer_Template(0,2));
-	static allowCheats = new idCVar( "net_allowCheats", "0", CVAR_SYSTEM | CVAR_BOOL | CVAR_NETWORKSYNC, "Allow cheats in network game" );
+	static verbose: idCVar;
+	static allowCheats: idCVar;
 //#ifdef ID_DEDICATED
 //// dedicated executable can only have a value of 1 for net_serverDedicated
 //idCVar				idAsyncNetwork::serverDedicated( "net_serverDedicated", "1", CVAR_SERVERINFO | CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT | CVAR_ROM, "" );
 //#else
-	static serverDedicated = new idCVar( "net_serverDedicated", "0", CVAR_SERVERINFO | CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "1 = text console dedicated server, 2 = graphical dedicated server", 0, 2, ArgCompletion_Integer_Template(0,2));
+	static serverDedicated: idCVar;
 //#endif
-	static serverSnapshotDelay = new idCVar( "net_serverSnapshotDelay", "50", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "delay between snapshots in milliseconds" );
-	static serverMaxClientRate = new idCVar( "net_serverMaxClientRate", "16000", CVAR_SYSTEM | CVAR_INTEGER | CVAR_ARCHIVE | CVAR_NOCHEAT, "maximum rate to a client in bytes/sec" );
-	static clientMaxRate = new idCVar( "net_clientMaxRate", "16000", CVAR_SYSTEM | CVAR_INTEGER | CVAR_ARCHIVE | CVAR_NOCHEAT, "maximum rate requested by client from server in bytes/sec" );
-	//static serverMaxUsercmdRelay = new idCVar( "net_serverMaxUsercmdRelay", "5", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "maximum number of usercmds from other clients the server relays to a client", 1, MAX_USERCMD_RELAY, idCmdSystem::ArgCompletion_Integer<1,MAX_USERCMD_RELAY> );
-	static serverZombieTimeout = new idCVar( "net_serverZombieTimeout", "5", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "disconnected client timeout in seconds" );
-	static serverClientTimeout = new idCVar( "net_serverClientTimeout", "40", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "client time out in seconds" );
-	static clientServerTimeout = new idCVar( "net_clientServerTimeout", "40", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "server time out in seconds" );
-	static serverDrawClient = new idCVar( "net_serverDrawClient", "-1", CVAR_SYSTEM | CVAR_INTEGER, "number of client for which to draw view on server" );
-	static serverRemoteConsolePassword = new idCVar( "net_serverRemoteConsolePassword", "", CVAR_SYSTEM | CVAR_NOCHEAT, "remote console password" );
-	static clientPrediction = new idCVar( "net_clientPrediction", "16", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "additional client side prediction in milliseconds" );
-	static clientMaxPrediction = new idCVar( "net_clientMaxPrediction", "1000", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "maximum number of milliseconds a client can predict ahead of server." );
-	static clientUsercmdBackup = new idCVar( "net_clientUsercmdBackup", "5", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "number of usercmds to resend" );
-	static clientRemoteConsoleAddress = new idCVar( "net_clientRemoteConsoleAddress", "localhost", CVAR_SYSTEM | CVAR_NOCHEAT, "remote console address" );
-	static clientRemoteConsolePassword = new idCVar( "net_clientRemoteConsolePassword", "", CVAR_SYSTEM | CVAR_NOCHEAT, "remote console password" );
-	static master0 = new idCVar( "net_master0", IDNET_HOST + ":" + IDNET_MASTER_PORT, CVAR_SYSTEM | CVAR_ROM, "idnet master server address" );
-	static master1 = new idCVar( "net_master1", "", CVAR_SYSTEM | CVAR_ARCHIVE, "1st master server address" );
-	static master2 = new idCVar( "net_master2", "", CVAR_SYSTEM | CVAR_ARCHIVE, "2nd master server address" );
-	static master3 = new idCVar( "net_master3", "", CVAR_SYSTEM | CVAR_ARCHIVE, "3rd master server address" );
-	static master4 = new idCVar( "net_master4", "", CVAR_SYSTEM | CVAR_ARCHIVE, "4th master server address" );
-	static LANServer = new idCVar( "net_LANServer", "0", CVAR_SYSTEM | CVAR_BOOL | CVAR_NOCHEAT, "config LAN games only - affects clients and servers" );
-	static serverReloadEngine = new idCVar( "net_serverReloadEngine", "0", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "perform a full reload on next map restart  = new idCVar(including flushing referenced pak files) - decreased if > 0" );
-	static serverAllowServerMod = new idCVar( "net_serverAllowServerMod", "0", CVAR_SYSTEM | CVAR_BOOL | CVAR_NOCHEAT, "allow server-side mods" );
-	static idleServer = new idCVar( "si_idleServer", "0", CVAR_SYSTEM | CVAR_BOOL | CVAR_INIT | CVAR_SERVERINFO, "game clients are idle" );
-	static clientDownload = new idCVar( "net_clientDownload", "1", CVAR_SYSTEM | CVAR_INTEGER | CVAR_ARCHIVE, "client pk4 downloads policy: 0 - never, 1 - ask, 2 - always (will still prompt for binary code)" );
+	static serverSnapshotDelay: idCVar;
+	static serverMaxClientRate: idCVar;
+	static clientMaxRate: idCVar;
+	static serverMaxUsercmdRelay: idCVar;
+	static serverZombieTimeout: idCVar;
+	static serverClientTimeout: idCVar;
+	static clientServerTimeout: idCVar;
+	static serverDrawClient: idCVar;
+	static serverRemoteConsolePassword: idCVar;
+	static clientPrediction: idCVar;
+	static clientMaxPrediction: idCVar;
+	static clientUsercmdBackup: idCVar;
+	static clientRemoteConsoleAddress: idCVar;
+	static clientRemoteConsolePassword: idCVar;
+	static master0: idCVar;
+	static master1: idCVar;
+	static master2: idCVar;
+	static master3: idCVar;
+	static master4: idCVar;
+	static LANServer: idCVar;
+	static serverReloadEngine: idCVar;
+	static serverAllowServerMod: idCVar;
+	static idleServer: idCVar;
+	static clientDownload: idCVar;
 //
 	static realTime:/*int*/number;
 	static masters:master_t[ /*MAX_MASTER_SERVERS */];
@@ -91,6 +91,40 @@ idAsyncNetwork::Init
 ==================
 */
 static Init( ):void {
+	idAsyncNetwork.verbose = new idCVar("net_verbose", "0", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "1 = verbose output, 2 = even more verbose output", 0, 2, ArgCompletion_Integer_Template(0, 2));
+	idAsyncNetwork.allowCheats = new idCVar("net_allowCheats", "0", CVAR_SYSTEM | CVAR_BOOL | CVAR_NETWORKSYNC, "Allow cheats in network game");
+	//#ifdef ID_DEDICATED
+	//// dedicated executable can only have a value of 1 for net_serverDedicated
+	//idCVar				idAsyncNetwork::serverDedicated( "net_serverDedicated", "1", CVAR_SERVERINFO | CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT | CVAR_ROM, "" );
+	//#else
+	idAsyncNetwork.serverDedicated = new idCVar("net_serverDedicated", "0", CVAR_SERVERINFO | CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "1 = text console dedicated server, 2 = graphical dedicated server", 0, 2, ArgCompletion_Integer_Template(0, 2));
+	//#endif
+	idAsyncNetwork.serverSnapshotDelay = new idCVar("net_serverSnapshotDelay", "50", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "delay between snapshots in milliseconds");
+	idAsyncNetwork.serverMaxClientRate = new idCVar("net_serverMaxClientRate", "16000", CVAR_SYSTEM | CVAR_INTEGER | CVAR_ARCHIVE | CVAR_NOCHEAT, "maximum rate to a client in bytes/sec");
+	idAsyncNetwork.clientMaxRate = new idCVar("net_clientMaxRate", "16000", CVAR_SYSTEM | CVAR_INTEGER | CVAR_ARCHIVE | CVAR_NOCHEAT, "maximum rate requested by client from server in bytes/sec");
+	//idAsyncNetwork.serverMaxUsercmdRelay = new idCVar( "net_serverMaxUsercmdRelay", "5", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "maximum number of usercmds from other clients the server relays to a client", 1, MAX_USERCMD_RELAY, idCmdSystem::ArgCompletion_Integer<1,MAX_USERCMD_RELAY> );
+	idAsyncNetwork.serverZombieTimeout = new idCVar("net_serverZombieTimeout", "5", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "disconnected client timeout in seconds");
+	idAsyncNetwork.serverClientTimeout = new idCVar("net_serverClientTimeout", "40", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "client time out in seconds");
+	idAsyncNetwork.clientServerTimeout = new idCVar("net_clientServerTimeout", "40", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "server time out in seconds");
+	idAsyncNetwork.serverDrawClient = new idCVar("net_serverDrawClient", "-1", CVAR_SYSTEM | CVAR_INTEGER, "number of client for which to draw view on server");
+	idAsyncNetwork.serverRemoteConsolePassword = new idCVar("net_serverRemoteConsolePassword", "", CVAR_SYSTEM | CVAR_NOCHEAT, "remote console password");
+	idAsyncNetwork.clientPrediction = new idCVar("net_clientPrediction", "16", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "additional client side prediction in milliseconds");
+	idAsyncNetwork.clientMaxPrediction = new idCVar("net_clientMaxPrediction", "1000", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "maximum number of milliseconds a client can predict ahead of server.");
+	idAsyncNetwork.clientUsercmdBackup = new idCVar("net_clientUsercmdBackup", "5", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "number of usercmds to resend");
+	idAsyncNetwork.clientRemoteConsoleAddress = new idCVar("net_clientRemoteConsoleAddress", "localhost", CVAR_SYSTEM | CVAR_NOCHEAT, "remote console address");
+	idAsyncNetwork.clientRemoteConsolePassword = new idCVar("net_clientRemoteConsolePassword", "", CVAR_SYSTEM | CVAR_NOCHEAT, "remote console password");
+	idAsyncNetwork.master0 = new idCVar("net_master0", IDNET_HOST + ":" + IDNET_MASTER_PORT, CVAR_SYSTEM | CVAR_ROM, "idnet master server address");
+	idAsyncNetwork.master1 = new idCVar("net_master1", "", CVAR_SYSTEM | CVAR_ARCHIVE, "1st master server address");
+	idAsyncNetwork.master2 = new idCVar("net_master2", "", CVAR_SYSTEM | CVAR_ARCHIVE, "2nd master server address");
+	idAsyncNetwork.master3 = new idCVar("net_master3", "", CVAR_SYSTEM | CVAR_ARCHIVE, "3rd master server address");
+	idAsyncNetwork.master4 = new idCVar("net_master4", "", CVAR_SYSTEM | CVAR_ARCHIVE, "4th master server address");
+	idAsyncNetwork.LANServer = new idCVar("net_LANServer", "0", CVAR_SYSTEM | CVAR_BOOL | CVAR_NOCHEAT, "config LAN games only - affects clients and servers");
+	idAsyncNetwork.serverReloadEngine = new idCVar("net_serverReloadEngine", "0", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "perform a full reload on next map restart  = new idCVar(including flushing referenced pak files) - decreased if > 0");
+	idAsyncNetwork.serverAllowServerMod = new idCVar("net_serverAllowServerMod", "0", CVAR_SYSTEM | CVAR_BOOL | CVAR_NOCHEAT, "allow server-side mods");
+	idAsyncNetwork.idleServer = new idCVar("si_idleServer", "0", CVAR_SYSTEM | CVAR_BOOL | CVAR_INIT | CVAR_SERVERINFO, "game clients are idle");
+	idAsyncNetwork.clientDownload = new idCVar("net_clientDownload", "1", CVAR_SYSTEM | CVAR_INTEGER | CVAR_ARCHIVE, "client pk4 downloads policy: 0 - never, 1 - ask, 2 - always (will still prompt for binary code)");
+
+
 
 	idAsyncNetwork.realTime = 0;
 

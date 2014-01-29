@@ -163,6 +163,7 @@
     <TypeScriptCompile Include="other\gl2.h.ts" />
     <TypeScriptCompile Include="utils\sprintf.d.ts" />
     <Content Include="utils\helpers.ts" />
+    <TypeScriptCompile Include="_references.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="compile.bat" />

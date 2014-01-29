@@ -336,10 +336,6 @@
 ////
 ////===============================================================
 
-var mat3_zero = new idMat3 ( );
-var mat3_identity = new idMat3 ( );
-var mat3_default = mat3_identity;
-
 class idMat3 {
 //public:
 //					idMat3( void );
@@ -779,6 +775,10 @@ Identity(  ):void {
 //}
 
 };
+
+var mat3_zero = new idMat3();
+var mat3_identity = new idMat3();
+var mat3_default = mat3_identity;
 
 ////===============================================================
 ////

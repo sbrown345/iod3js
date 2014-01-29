@@ -3336,6 +3336,3 @@ idSessionLocal::IsMultiplayer
 //	idDemoFile *	writeDemo;
 //	int				renderdemoVersion;
 };
-
-var sessLocal = new idSessionLocal ( );
-var session: idSession = sessLocal;

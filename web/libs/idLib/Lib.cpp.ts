@@ -1,4 +1,4 @@
-/// <reference path="math/vector.cpp.ts" />
+/// <reference path="math/Matrix.cpp.ts" />
 /// <reference path="../../utils/todo.ts" />
 /////*
 ////===========================================================================
