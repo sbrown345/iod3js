@@ -139,25 +139,25 @@ class idDeviceContext {
 	activeFont: fontInfoEx_t;							//	*fontInfoEx_t
 	useFont: fontInfo_t;								//	*fontInfo_t			
 	fontName: idStr;							  //	idStr				
-	xScale:number;								  //	float				
-	yScale:number;								  //	float				
+	xScale = 0.0;								  //	float				
+	yScale = 0.0;								  //	float				
 	
-	vidHeight: number;							  //	float				
-	vidWidth: number;							  //	float				
+	vidHeight = 0.0;							  //	float				
+	vidWidth = 0.0;							  //	float				
 	//
 	cursor: number;								  //	int					
 	//
 	clipRects:idList<idRectangle>;
 										  
-	static fonts:idList<fontInfoEx_t>;						  
+	static fonts: idList<fontInfoEx_t> = new idList<fontInfoEx_t>(fontInfoEx_t);
 	fontLang:idStr;
 	
 	enableClipping:boolean;						  //	bool				
 	
 	overStrikeMode: boolean;						  //	bool				
 	
-	mat:idMat3;								  //	idMat3				
-	origin:idVec3;								  //	idVec3				
+	mat = new idMat3;								  //	idMat3				
+	origin = new idVec3;								  //	idVec3				
 	initialized:boolean;						  //	bool				
 	
 	mbcs:boolean;								  //	bool				

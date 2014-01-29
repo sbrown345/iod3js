@@ -278,6 +278,8 @@
 //// user interfaces
 //#include "../ui/ListGUI.h"
 //#include "../ui/UserInterface.h"
+/// <reference path="doomdll/ui/rectangle.h.ts" />
+/// <reference path="doomdll/ui/devicecontext.cpp.ts" />
 /// <reference path="doomdll/ui/userinterface.h.ts" />
 /// <reference path="doomdll/ui/userinterface.cpp.ts" />
 

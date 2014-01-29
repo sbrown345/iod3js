@@ -45,7 +45,7 @@
 //===============================================================================
 //*/
 class idUserInterfaceManagerLocal extends idUserInterfaceManager {
-
+	
 	Init ( ): void {
 		this.screenRect = new idRectangle( 0, 0, 640, 480 );
 		this.dc.Init ( );
@@ -226,7 +226,7 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 
 	//private:
 	screenRect: idRectangle;
-	dc: idDeviceContext;
+	dc: idDeviceContext = new idDeviceContext();
 
 	guis: idList<idUserInterfaceLocal/***/>;
 	demoGuis: idList<idUserInterfaceLocal/***/> ;

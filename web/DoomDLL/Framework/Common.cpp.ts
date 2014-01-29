@@ -2996,7 +2996,7 @@ idCommonLocal::InitGame
 	
 	// init the user command input code
 	usercmdGen.Init();
-	todoThrow ( );
+	
 	this.PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04346" ) );
 
 ////	// start the sound system, but don't do any hardware operations yet
@@ -3025,7 +3025,7 @@ idCommonLocal::InitGame
 
 	// initialize the user interfaces
 	uiManager.Init();
-
+	todoThrow();
 	// startup the script debugger
 	// DebuggerServerInit();
 
