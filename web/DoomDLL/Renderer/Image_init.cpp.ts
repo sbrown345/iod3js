@@ -1633,20 +1633,21 @@ idImageManager.prototype.ImageFromFile = function ( _name: string, filter: textu
 ////	}
 ////}
 
-/////*
-////===============
-////ReloadAllImages
-////===============
-////*/
-////void idImageManager::ReloadAllImages() {
-////	idCmdArgs args;
+/*
+===============
+ReloadAllImages
+===============
+*/
+idImageManager.prototype.ReloadAllImages = function ( ): void {
+	var args: idCmdArgs;
+	todoThrow ( );
 
-////	// build the compressed normal map palette
-////	SetNormalPalette();
+	//// build the compressed normal map palette
+	//SetNormalPalette();
 
-////	args.TokenizeString( "reloadImages reload", false );
-////	R_ReloadImages_f( args );
-////}
+	//args.TokenizeString( "reloadImages reload", false );
+	//R_ReloadImages_f( args );
+};
 
 /*
 ===============

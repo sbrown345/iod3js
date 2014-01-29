@@ -367,10 +367,10 @@ class idImageManager {
     ////	// purges all the images before a vid_restart
     ////	void				PurgeAllImages();
 
-    ////	// reloads all apropriate images after a vid_restart
-    ////	void				ReloadAllImages();
+    // reloads all apropriate images after a vid_restart
+	ReloadAllImages ( ): void { throw "placeholder"; }
 
-    ////	// disable the active texture unit
+	////	// disable the active texture unit
     ////	void				BindNull();
 
     ////	// Mark all file based images as currently unused,

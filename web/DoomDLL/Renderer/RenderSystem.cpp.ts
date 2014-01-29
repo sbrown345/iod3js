@@ -257,8 +257,8 @@ class idRenderSystem {
 
 /*	float					*/frameShaderTime:number;	// shader time for all non-world 2D rendering
 
-/*	int						*/viewportOffset:Array<number>/*[2]*/;	// for doing larger-than-window tiled renderings
-/*	int						*/tiledViewport:Array<number>/*[2]*/;
+/*	int						*/viewportOffset:Array<number> = [0,0];	// for doing larger-than-window tiled renderings
+/*	int						*/tiledViewport: Array<number> = [0, 0];
 
 	// determines which back end to use, and if vertex programs are in use
 	backEndRenderer:backEndName_t;
@@ -308,68 +308,6 @@ class idRenderSystem {
 
     constructor ( ) {
 	    this.Clear ( );
-        ////public:
-        ////	// renderer globals
-        //this.registered = false; // cleared at shutdown, set at InitOpenGL
-
-        //this.takingScreenshot = false;
-
-        //this.frameCount = 0; // incremented every frame
-        //this.viewCount = 0; // incremented every view (twice a scene if subviewed)
-        ////											// and every R_MarkFragments call
-
-        //this.staticAllocCount = 0; // running total of bytes allocated
-
-        //this.frameShaderTime = 0.0; // shader time for all non-world 2D rendering
-
-        //this.viewportOffset = [0, 0]; // for doing larger-than-window tiled renderings
-        //this.tiledViewport = [0, 0];
-
-        ////	// determines which back end to use, and if vertex programs are in use
-        ////	backEndName_t			backEndRenderer;
-        //this.backEndRendererHasVertexPrograms = false;
-        //this.backEndRendererMaxLight = 0.0; // 1.0 for standard, unlimited for floats
-        ////														// determines how much overbrighting needs
-        ////														// to be done post-process
-
-        //this.ambientLightVector = new idVec4 ( ); // used for "ambient bump mapping"
-
-        //this.sortOffset = 0.0; // for determinist sorting of equal sort materials
-
-        ////	idList<idRenderWorldLocal*>worlds;
-
-        //// *	primaryWorld;
-        ////	renderView_t			primaryRenderView;
-        ////	viewDef_t *				primaryView;
-        ////	// many console commands need to know which world they should operate on
-
-        //this.defaultMaterial = new idMaterial ( );
-        ////	idImage *				testImage;
-        ////	idCinematic *			testVideo;
-        ////	float					testVideoStartTime;
-
-        ////	idImage *				ambientCubeImage;	// hack for testing dependent ambient lighting
-
-        ////	viewDef_t *				viewDef;
-
-		//this.pc = new performanceCounters_t	();					// performance counters
-
-        ////	drawSurfsCommand_t		lockSurfacesCmd;	// use this when r_lockSurfaces = 1
-
-        ////	viewEntity_t			identitySpace;		// can use if we don't know viewDef.worldSpace is valid
-        ////	FILE *					logFile;			// for logging GL calls and frame breaks
-
-        ////	int						stencilIncr, stencilDecr;	// GL_INCR / INCR_WRAP_EXT, GL_DECR / GL_DECR_EXT
-
-        ////	renderCrop_t			renderCrops[MAX_RENDER_CROPS];
-        ////	int						currentRenderCrop;
-
-        ////	// GUI drawing variables for surface creation
-        ////	int						guiRecursionLevel;		// to prevent infinite overruns
-        //this.guiModel = new idGuiModel ( );
-        //this.demoGuiModel = new idGuiModel ( );
-
-	    //this.gammaTable = new Uint8Array( 256 ); // brightness / gamma modify this
     }
 
 /////*
@@ -514,20 +452,20 @@ class idRenderSystem {
 ////#endif
 ////}
 
-/////*
-////====================
-////R_GetModeInfo
+/*
+====================
+R_GetModeInfo
 
-////r_mode is normally a small non-negative integer that
-////looks resolutions up in a table, but if it is set to -1,
-////the values from r_customWidth, amd r_customHeight
-////will be used instead.
-////====================
-////*/
-////typedef struct vidmode_s {
-////    const char *description;
-////    int         width, height;
-////} vidmode_t;
+r_mode is normally a small non-negative integer that
+looks resolutions up in a table, but if it is set to -1,
+the values from r_customWidth, amd r_customHeight
+will be used instead.
+====================
+*/
+//class vidmode_t {
+//	description:string;	//const char *
+//	width:number; height:number;	//int         
+//};
 
 ////vidmode_t r_vidModes[] = {
 ////    { "Mode  0: 320x240",		320,	240 },
@@ -575,121 +513,120 @@ class idRenderSystem {
 ////}
 
 
-/////*
-////==================
-////R_InitOpenGL
+/*
+==================
+R_InitOpenGL
 
-////This function is responsible for initializing a valid OpenGL subsystem
-////for rendering.  This is done by calling the system specific GLimp_Init,
-////which gives us a working OGL subsystem, then setting all necessary openGL
-////state, including images, vertex programs, and display lists.
+This function is responsible for initializing a valid OpenGL subsystem
+for rendering.  This is done by calling the system specific GLimp_Init,
+which gives us a working OGL subsystem, then setting all necessary openGL
+state, including images, vertex programs, and display lists.
 
-////Changes to the vertex cache size or smp state require a vid_restart.
+Changes to the vertex cache size or smp state require a vid_restart.
 
-////If glConfig.isInitialized is false, no rendering can take place, but
-////all renderSystem functions will still operate properly, notably the material
-////and model information functions.
-////==================
-////*/
-////void R_InitOpenGL(void)
-////{
-////	GLint			temp;
-////	glimpParms_t	parms;
-////	int				i;
+If glConfig.isInitialized is false, no rendering can take place, but
+all renderSystem functions will still operate properly, notably the material
+and model information functions.
+==================
+*/
+R_InitOpenGL(): void {
+	var temp:number;		//GLint			
+	var parms: glimpParms_t;		//glimpParms_t	
+	var i: number;			//int				
 
-////	common.Printf("----- R_InitOpenGL -----\n");
+	common.Printf("----- R_InitOpenGL -----\n");
 
-////	if (glConfig.isInitialized) {
-////		common.FatalError("R_InitOpenGL called while active");
-////	}
+	if (glConfig.isInitialized) {
+		common.FatalError("R_InitOpenGL called while active");
+	}
 
-////	// in case we had an error while doing a tiled rendering
-////	tr.viewportOffset[0] = 0;
-////	tr.viewportOffset[1] = 0;
+	// in case we had an error while doing a tiled rendering
+	tr.viewportOffset[0] = 0;
+	tr.viewportOffset[1] = 0;
 
-////	//
-////	// initialize OS specific portions of the renderSystem
-////	//
-////	for (i = 0 ; i < 2 ; i++) {
-////		// set the parameters we are trying
-////		R_GetModeInfo(&glConfig.vidWidth, &glConfig.vidHeight, r_mode.GetInteger());
+	//
+	// initialize OS specific portions of the renderSystem
+	//
+	for (i = 0 ; i < 2 ; i++) {
+		// set the parameters we are trying
+		R_GetModeInfo(&glConfig.vidWidth, &glConfig.vidHeight, r_mode.GetInteger());
 
-////		parms.width = glConfig.vidWidth;
-////		parms.height = glConfig.vidHeight;
-////		parms.fullScreen = r_fullscreen.GetBool();
-////		parms.displayHz = r_displayRefresh.GetInteger();
-////		parms.multiSamples = r_multiSamples.GetInteger();
-////		parms.stereo = false;
+		parms.width = glConfig.vidWidth;
+		parms.height = glConfig.vidHeight;
+		parms.fullScreen = r_fullscreen.GetBool();
+		parms.displayHz = r_displayRefresh.GetInteger();
+		parms.multiSamples = r_multiSamples.GetInteger();
+		parms.stereo = false;
 
-////		if (GLimp_Init(parms)) {
-////			// it worked
-////			break;
-////		}
+		if (GLimp_Init(parms)) {
+			// it worked
+			break;
+		}
 
-////		if (i == 1) {
-////			common.FatalError("Unable to initialize OpenGL");
-////		}
+		if (i == 1) {
+			common.FatalError("Unable to initialize OpenGL");
+		}
 
-////		// if we failed, set everything back to "safe mode"
-////		// and try again
-////		r_mode.SetInteger(3);
-////		r_fullscreen.SetInteger(1);
-////		r_displayRefresh.SetInteger(0);
-////		r_multiSamples.SetInteger(0);
-////	}
+		// if we failed, set everything back to "safe mode"
+		// and try again
+		r_mode.SetInteger(3);
+		r_fullscreen.SetInteger(1);
+		r_displayRefresh.SetInteger(0);
+		r_multiSamples.SetInteger(0);
+	}
 
-////	// input and sound systems need to be tied to the new window
-////	Sys_InitInput();
-////	soundSystem.InitHW();
+	// input and sound systems need to be tied to the new window
+	Sys_InitInput();
+	soundSystem.InitHW();
 
-////	// get our config strings
-////	glConfig.vendor_string = (const char *)glGetString(GL_VENDOR);
-////	glConfig.renderer_string = (const char *)glGetString(GL_RENDERER);
-////	glConfig.version_string = (const char *)glGetString(GL_VERSION);
-////	glConfig.extensions_string = (const char *)glGetString(GL_EXTENSIONS);
+	// get our config strings
+	glConfig.vendor_string = (const char *)glGetString(GL_VENDOR);
+	glConfig.renderer_string = (const char *)glGetString(GL_RENDERER);
+	glConfig.version_string = (const char *)glGetString(GL_VERSION);
+	glConfig.extensions_string = (const char *)glGetString(GL_EXTENSIONS);
 
-////	// OpenGL driver constants
-////	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &temp);
-////	glConfig.maxTextureSize = temp;
+	// OpenGL driver constants
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &temp);
+	glConfig.maxTextureSize = temp;
 
-////	// stubbed or broken drivers may have reported 0...
-////	if (glConfig.maxTextureSize <= 0) {
-////		glConfig.maxTextureSize = 256;
-////	}
+	// stubbed or broken drivers may have reported 0...
+	if (glConfig.maxTextureSize <= 0) {
+		glConfig.maxTextureSize = 256;
+	}
 
-////	glConfig.isInitialized = true;
+	glConfig.isInitialized = true;
 
-////	// recheck all the extensions (FIXME: this might be dangerous)
-////	R_CheckPortableExtensions();
+	// recheck all the extensions (FIXME: this might be dangerous)
+	R_CheckPortableExtensions();
 
-////	// parse our vertex and fragment programs, possibly disably support for
-////	// one of the paths if there was an error
-////#if !defined(GL_ES_VERSION_2_0)
-////	R_ARB2_Init();
-////#endif
-////	R_GLSL_Init();
+	// parse our vertex and fragment programs, possibly disably support for
+	// one of the paths if there was an error
+#if !defined(GL_ES_VERSION_2_0)
+	R_ARB2_Init();
+#endif
+	R_GLSL_Init();
 
-////#if !defined(GL_ES_VERSION_2_0)
-////	cmdSystem.AddCommand("reloadARBprograms", R_ReloadARBPrograms_f, CMD_FL_RENDERER, "reloads ARB programs");
-////	R_ReloadARBPrograms_f(idCmdArgs());
-////#endif
+#if !defined(GL_ES_VERSION_2_0)
+	cmdSystem.AddCommand("reloadARBprograms", R_ReloadARBPrograms_f, CMD_FL_RENDERER, "reloads ARB programs");
+	R_ReloadARBPrograms_f(idCmdArgs());
+#endif
 
-////	cmdSystem.AddCommand("reloadGLSLprograms", R_ReloadGLSLPrograms_f, CMD_FL_RENDERER, "reloads GLSL programs");
-////	R_ReloadGLSLPrograms_f(idCmdArgs());
+	cmdSystem.AddCommand("reloadGLSLprograms", R_ReloadGLSLPrograms_f, CMD_FL_RENDERER, "reloads GLSL programs");
+	R_ReloadGLSLPrograms_f(idCmdArgs());
 
-////	// allocate the vertex array range or vertex objects
-////	vertexCache.Init();
+	// allocate the vertex array range or vertex objects
+	vertexCache.Init();
 
-////	// select which renderSystem we are going to use
-////	r_renderer.SetModified();
-////	tr.SetBackEndRenderer();
+	// select which renderSystem we are going to use
+	r_renderer.SetModified();
+	tr.SetBackEndRenderer();
 
-////	// allocate the frame data, which may be more if smp is enabled
-////	R_InitFrameData();
+	// allocate the frame data, which may be more if smp is enabled
+	R_InitFrameData();
 
-////	// Reset our gamma
-////	R_SetColorMappings();
-////}
+	// Reset our gamma
+	R_SetColorMappings();
+}
 
 /*
 ==================
@@ -2161,26 +2098,26 @@ idRenderSystemLocal::Init
 ////	}
 ////}
 
-/////*
-////========================
-////idRenderSystemLocal::InitOpenGL
-////========================
-////*/
-////void idRenderSystemLocal::InitOpenGL( void ) {
-////	// if OpenGL isn't started, start it now
-////	if ( !glConfig.isInitialized ) {
-////		int	err;
+/*
+========================
+idRenderSystemLocal::InitOpenGL
+========================
+*/
+	InitOpenGL ( ): void {
+		// if OpenGL isn't started, start it now
+		if ( !glConfig.isInitialized ) {
+			var /*int	*/err: number;
 
-////		R_InitOpenGL();
+			this.R_InitOpenGL ( );
 
-////		globalImages.ReloadAllImages();
+			globalImages.ReloadAllImages ( );
 
-////		err = glGetError();
-////		if ( err != GL_NO_ERROR ) {
-////			common.Printf( "glGetError() = 0x%x\n", err );
-////		}
-////	}
-////}
+			err = glGetError ( );
+			if ( err != GL_NO_ERROR ) {
+				common.Printf( "glGetError() = 0x%x\n", err );
+			}
+		}
+	}
 
 /////*
 ////========================

@@ -1145,22 +1145,22 @@ var GLS_DEFAULT							= GLS_DEPTHFUNC_ALWAYS;
 ////bool R_CheckExtension( char *name );
 
 
-/////*
-////====================================================================
+/*
+====================================================================
 
-////IMPLEMENTATION SPECIFIC FUNCTIONS
+IMPLEMENTATION SPECIFIC FUNCTIONS
 
-////====================================================================
-////*/
+====================================================================
+*/
 
-////typedef struct {
-////	int			width;
-////	int			height;
-////	bool		fullScreen;
-////	bool		stereo;
-////	int			displayHz;
-////	int			multiSamples;
-////} glimpParms_t;
+class glimpParms_t {
+	width:number;			 //int			
+	height: number;			 //int			
+	fullScreen:boolean;		 //bool		
+	stereo:boolean;			 //bool		
+	displayHz: number;		 //int			
+	multiSamples: number;	 //int			
+}
 
 ////bool		GLimp_Init( glimpParms_t parms );
 ////// If the desired mode can't be set satisfactorily, false will be returned.
