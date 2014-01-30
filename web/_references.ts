@@ -1,5 +1,6 @@
 /// <reference path="other/files.ts" />
 /// <reference path="other/c.ts" />
+/// <reference path="other/webgl.d.ts" />
 /// <reference path="other/gl2.h.ts" />
 
 /// <reference path="utils/types.ts" />
