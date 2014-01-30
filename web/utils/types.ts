@@ -70,13 +70,6 @@ function atof ( s: string ): number {
     return parseFloat( s ) || 0;
 }
 
-interface Boolean {
-    toNum():number;
-}
-Boolean.prototype.toNum = function ( ):number {
-    return this ? 1 : 0;
-};
-
 //var unsigned = uint32;
 
 function newStructArray<T>($class: any, count: number): T[] {

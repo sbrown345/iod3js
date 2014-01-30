@@ -127,7 +127,7 @@ class idCVar {
     constructor ( name?: string, value?: string, /*int */flags?: number, description?: string,
         valueStringsOrValueMinOrValueCompletion?: any, valueMaxOrValueCompletion?: any, valueCompletion:/*argCompletion_t*/ ( args: idCmdArgs, callback: ( s: string ) => void ) => void = null ) {
 
-        // todo wtf: tidy this up
+        // todo wtf: tidy this up - create a method for each overload
 
         if ( arguments.length == 0 ) {
             return; // empty ctor call e.g. super ( ); from idInternalCVar

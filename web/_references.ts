@@ -1,12 +1,16 @@
-/// <reference path="other/files.ts" />
-/// <reference path="other/c.ts" />
+/// <reference path="utils/sprintf.d.ts" />
 /// <reference path="other/webgl.d.ts" />
-/// <reference path="other/gl2.h.ts" />
 
 /// <reference path="utils/types.ts" />
 /// <reference path="utils/helpers.ts" />
-/// <reference path="utils/sprintf.d.ts" />
 /// <reference path="utils/todo.ts" />
+
+/// <reference path="utils/logging.ts" />
+/// <reference path="other/files.ts" />
+/// <reference path="other/c.ts" />
+
+/// <reference path="other/gl2.h.ts" />
+
 
 // precompiled.h
 ///*
@@ -257,7 +261,6 @@
 /// <reference path="doomdll/renderer/renderworld.cpp.ts" />
 /// <reference path="doomdll/renderer/rendersystem.h.ts" />
 /// <reference path="doomdll/renderer/rendersystem.cpp.ts" />
-/// <reference path="doomdll/renderer/rendersystem_init.cpp.ts" />
 /// <reference path="doomdll/renderer/renderworld_demo.cpp.ts" />
 /// <reference path="doomdll/renderer/renderworld_load.cpp.ts" />
 /// <reference path="doomdll/renderer/renderworld_local.h.ts" />

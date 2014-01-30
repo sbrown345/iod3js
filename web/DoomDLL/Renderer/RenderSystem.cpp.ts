@@ -543,9 +543,8 @@ all renderSystem functions will still operate properly, notably the material
 and model information functions.
 ==================
 */
-R_InitOpenGL(): void {
-	var temp:number;		//GLint			
-	var parms: glimpParms_t;		//glimpParms_t	
+R_InitOpenGL(): void {	
+	var parms = new glimpParms_t;		//glimpParms_t	
 	var i: number;			//int				
 
 	common.Printf("----- R_InitOpenGL -----\n");
@@ -592,28 +591,27 @@ R_InitOpenGL(): void {
 		//r_displayRefresh.SetInteger(0);
 		//r_multiSamples.SetInteger(0);
 	}
-	todoThrow();
 
 //	// input and sound systems need to be tied to the new window
+	todo ( );
 //	Sys_InitInput();
 //	soundSystem.InitHW();
 
-//	// get our config strings
-//	glConfig.vendor_string = /*(const char *)*/glGetString(GL_VENDOR);
-//	glConfig.renderer_string =/* (const char *)*/glGetString(GL_RENDERER);
-//	glConfig.version_string = /*(const char *)*/glGetString(GL_VERSION);
-//	glConfig.extensions_string = /*(const char *)*/glGetString(GL_EXTENSIONS);
+	// get our config strings
+	glConfig.vendor_string = /*(const char *)*/glGetString(GL_VENDOR);
+	glConfig.renderer_string =/* (const char *)*/glGetString(GL_RENDERER);
+	glConfig.version_string = /*(const char *)*/glGetString(GL_VERSION);
+	glConfig.extensions_string = /*(const char *)*/glGetString(GL_EXTENSIONS);
 
-//	// OpenGL driver constants
-//	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &temp);
-//	glConfig.maxTextureSize = temp;
+	// OpenGL driver constants
+	glConfig.maxTextureSize = glGetIntegerv(GL_MAX_TEXTURE_SIZE);
 
-//	// stubbed or broken drivers may have reported 0...
-//	if (glConfig.maxTextureSize <= 0) {
-//		glConfig.maxTextureSize = 256;
-//	}
+	// stubbed or broken drivers may have reported 0...
+	if (glConfig.maxTextureSize <= 0) {
+		glConfig.maxTextureSize = 256;
+	}
 
-//	glConfig.isInitialized = true;
+	glConfig.isInitialized = true;
 
 //	// recheck all the extensions (FIXME: this might be dangerous)
 //	R_CheckPortableExtensions();
@@ -623,7 +621,7 @@ R_InitOpenGL(): void {
 ////#if !defined(GL_ES_VERSION_2_0)
 ////	R_ARB2_Init();
 ////#endif
-//	R_GLSL_Init();
+	R_GLSL_Init();
 
 ////#if !defined(GL_ES_VERSION_2_0)
 ////	cmdSystem.AddCommand("reloadARBprograms", R_ReloadARBPrograms_f, CMD_FL_RENDERER, "reloads ARB programs");

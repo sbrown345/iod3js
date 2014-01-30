@@ -104,7 +104,6 @@
     <TypeScriptCompile Include="DoomDLL\Renderer\qgl_linked.h.ts" />
     <Content Include="DoomDLL\Renderer\RenderSystem.cpp.ts" />
     <Content Include="DoomDLL\Renderer\RenderSystem.h.ts" />
-    <Content Include="DoomDLL\Renderer\RenderSystem_init.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\RenderWorld.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\RenderWorld.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\RenderWorld_demo.cpp.ts" />
@@ -163,6 +162,7 @@
     <Content Include="utils\types.ts" />
     <TypeScriptCompile Include="other\gl2.h.ts" />
     <TypeScriptCompile Include="other\WebGL.d.ts" />
+    <Content Include="utils\logging.ts" />
     <TypeScriptCompile Include="utils\sprintf.d.ts" />
     <Content Include="utils\helpers.ts" />
     <TypeScriptCompile Include="_references.ts" />
@@ -190,11 +190,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>24738</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:24738/</IISUrl>
+          <IISUrl>http://localhost:24799/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -212,7 +212,7 @@
     <TypeScriptNoImplicitAny>True</TypeScriptNoImplicitAny>
     <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
     <TypeScriptOutFile>doom3.js</TypeScriptOutFile>
-    <TypeScriptCompileOnSaveEnabled>False</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptTarget>ES3</TypeScriptTarget>

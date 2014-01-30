@@ -946,91 +946,91 @@ function GLimp_SetGamma( red:Uint8Array/*[256]*/, green:Uint8Array/*[256]*/, blu
 ////	common.Printf( "\n...^3no high res mode found^0\n" );
 ////	return false;
 ////}
-////
-////
-////
-/////*
-////===================
-////GLimp_Init
-////
-////This is the platform specific OpenGL initialization function.  It
-////is responsible for loading OpenGL, initializing it,
-////creating a window of the appropriate size, doing
-////fullscreen manipulations, etc.  Its overall responsibility is
-////to make sure that a functional OpenGL subsystem is operating
-////when it returns to the ref.
-////
-////If there is any failure, the renderer will revert back to safe
-////parameters and try again.
-////===================
-////*/
-////bool GLimp_Init( glimpParms_t parms ) {
-////	const char	*driverName;
-////	HDC		hDC;
-////
-////	common.Printf( "Initializing OpenGL subsystem\n" );
-////
-////	// check our desktop attributes
-////	hDC = GetDC( GetDesktopWindow() );
-////	win32.desktopBitsPixel = GetDeviceCaps( hDC, BITSPIXEL );
-////	win32.desktopWidth = GetDeviceCaps( hDC, HORZRES );
-////	win32.desktopHeight = GetDeviceCaps( hDC, VERTRES );
-////	ReleaseDC( GetDesktopWindow(), hDC );
-////
-////	// we can't run in a window unless it is 32 bpp
-////	if ( win32.desktopBitsPixel < 32 && !parms.fullScreen ) {
-////		common.Printf("^3Windowed mode requires 32 bit desktop depth^0\n");
-////		return false;
-////	}
-////
-////	// save the hardware gamma so it can be
-////	// restored on exit
-////	GLimp_SaveGamma();
-////
-////	// create our window classes if we haven't already
-////	GLW_CreateWindowClasses();
-////
-////	// this will load the dll and set all our gl* function pointers,
-////	// but doesn't create a window
-////
-////	// r_glDriver is only intended for using instrumented OpenGL
-////	// dlls.  Normal users should never have to use it, and it is
-////	// not archived.
-////	driverName = r_glDriver.GetString()[0] ? r_glDriver.GetString() : "opengl32";
-////	if ( !QGL_Init( driverName ) ) {
-////		common.Printf( "^3GLimp_Init() could not load r_glDriver \"%s\"^0\n", driverName );
-////		return false;
-////	}
-////
-////	// getting the wgl extensions involves creating a fake window to get a context,
-////	// which is pretty disgusting, and seems to mess with the AGP VAR allocation
-////	GLW_GetWGLExtensionsWithFakeWindow();
-////
-////	// try to change to fullscreen
-////	if ( parms.fullScreen ) {
-////		if ( !GLW_SetFullScreen( parms ) ) {
-////			GLimp_Shutdown();
-////			return false;
-////		}
-////	}
-////
-////	// try to create a window with the correct pixel format
-////	// and init the renderer context
-////	if ( !GLW_CreateWindow( parms ) ) {
-////		GLimp_Shutdown();
-////		return false;
-////	}
-////
-////	// wglSwapinterval, etc
-////	GLW_CheckWGLExtensions( win32.hDC );
-////
-////	// check logging
-////	GLimp_EnableLogging( ( r_logFile.GetInteger() != 0 ) );
-////
-////	return true;
-////}
-////
-////
+
+
+
+/*
+===================
+GLimp_Init
+
+This is the platform specific OpenGL initialization function.  It
+is responsible for loading OpenGL, initializing it,
+creating a window of the appropriate size, doing
+fullscreen manipulations, etc.  Its overall responsibility is
+to make sure that a functional OpenGL subsystem is operating
+when it returns to the ref.
+
+If there is any failure, the renderer will revert back to safe
+parameters and try again.
+===================
+*/
+function GLimp_Init(parms: glimpParms_t ):boolean {
+	//const char	*driverName;
+	//HDC		hDC;
+
+	//common.Printf( "Initializing OpenGL subsystem\n" );
+
+	//// check our desktop attributes
+	//hDC = GetDC( GetDesktopWindow() );
+	//win32.desktopBitsPixel = GetDeviceCaps( hDC, BITSPIXEL );
+	//win32.desktopWidth = GetDeviceCaps( hDC, HORZRES );
+	//win32.desktopHeight = GetDeviceCaps( hDC, VERTRES );
+	//ReleaseDC( GetDesktopWindow(), hDC );
+
+	//// we can't run in a window unless it is 32 bpp
+	//if ( win32.desktopBitsPixel < 32 && !parms.fullScreen ) {
+	//	common.Printf("^3Windowed mode requires 32 bit desktop depth^0\n");
+	//	return false;
+	//}
+
+	//// save the hardware gamma so it can be
+	//// restored on exit
+	//GLimp_SaveGamma();
+
+	//// create our window classes if we haven't already
+	//GLW_CreateWindowClasses();
+
+	//// this will load the dll and set all our gl* function pointers,
+	//// but doesn't create a window
+
+	//// r_glDriver is only intended for using instrumented OpenGL
+	//// dlls.  Normal users should never have to use it, and it is
+	//// not archived.
+	//driverName = r_glDriver.GetString()[0] ? r_glDriver.GetString() : "opengl32";
+	//if ( !QGL_Init( driverName ) ) {
+	//	common.Printf( "^3GLimp_Init() could not load r_glDriver \"%s\"^0\n", driverName );
+	//	return false;
+	//}
+
+	// getting the wgl extensions involves creating a fake window to get a context,
+	// which is pretty disgusting, and seems to mess with the AGP VAR allocation
+	//GLW_GetWGLExtensionsWithFakeWindow();
+
+	//// try to change to fullscreen
+	//if ( parms.fullScreen ) {
+	//	if ( !GLW_SetFullScreen( parms ) ) {
+	//		GLimp_Shutdown();
+	//		return false;
+	//	}
+	//}
+
+	//// try to create a window with the correct pixel format
+	//// and init the renderer context
+	//if ( !GLW_CreateWindow( parms ) ) {
+	//	GLimp_Shutdown();
+	//	return false;
+	//}
+
+	//// wglSwapinterval, etc
+	//GLW_CheckWGLExtensions( win32.hDC );
+
+	//// check logging
+	//GLimp_EnableLogging( ( r_logFile.GetInteger() != 0 ) );
+
+	return true;
+}
+
+
 /////*
 ////===================
 ////GLimp_SetScreenParms

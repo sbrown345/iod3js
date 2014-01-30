@@ -192,7 +192,7 @@ idInternalCVar::UpdateValue
         var clamped = false;
 
         if ( this.flags & CVAR_BOOL ) {
-            this.integerValue = ( atoi( this.value ) != 0 ).toNum ( );
+	        this.integerValue = ( atoi( this.value ) != 0 ) ? 1 : 0;
             this.floatValue = this.integerValue;
             if ( idStr.Icmp( this.value, "0" ) != 0 && idStr.Icmp( this.value, "1" ) != 0 ) {
                 this.valueString = new idStr( this.integerValue );

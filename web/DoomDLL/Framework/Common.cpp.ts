@@ -3021,7 +3021,7 @@ idCommonLocal::InitGame
 ////	}
 ////#endif
 
-////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04349" ) );
+	this.PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04349" ) );
 
 	// initialize the user interfaces
 	uiManager.Init();

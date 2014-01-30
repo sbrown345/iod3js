@@ -1,4 +1,3 @@
-
 ///* $Revision: 10602 $ on $Date:: 2010-03-04 22:35:34 -0800 #$ */
 
 //#include <GLES2/gl2platform.h>
@@ -6,6 +5,60 @@
 //#ifdef __cplusplus
 //extern "C" {
 //#endif
+
+
+
+
+
+
+// Temp (hopefully) GL init code
+
+declare module WebGLDebugUtils {
+	function makeDebugContext(ctx: WebGLRenderingContext, nothingInParticular: any, fnForEveryCall: any): WebGLRenderingContext;
+	function glFunctionArgsToString(fn: string, args: any[]): WebGLRenderingContext;
+}
+
+function logGLCall(functionName: string, args: any[]): void {
+	console.error("gl." + functionName + "(" +
+		WebGLDebugUtils.glFunctionArgsToString(functionName, args) + ")");
+}
+
+function validateNoneOfTheArgsAreUndefined(functionName: string, args: any[]): void {
+	for (var ii = 0; ii < args.length; ++ii) {
+		if (args[ii] === undefined) {
+			debugger;
+			console.error("undefined passed to gl." + functionName + "(" +
+				WebGLDebugUtils.glFunctionArgsToString(functionName, args) + ")");
+		}
+		if (typeof args[ii] === "number" && isNaN(args[ii])) {
+			debugger;
+			console.error("NaN passed to gl." + functionName + "(" +
+				WebGLDebugUtils.glFunctionArgsToString(functionName, args) + ")");
+		}
+	}
+}
+
+function logAndValidate(functionName: string, args: any[]): void {
+	logGLCall(functionName, args);
+	validateNoneOfTheArgsAreUndefined(functionName, args);
+}
+
+var canvas = <HTMLCanvasElement> document.createElement( "canvas" );
+if ( document.body /*qunit*/ ) {
+	document.body.appendChild( canvas );
+}
+
+var webglContext = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+var gl: WebGLRenderingContext = DEBUG_WEBGL_UTIL ? WebGLDebugUtils.makeDebugContext(webglContext, undefined, logAndValidate) : webglContext;
+canvas.width = 640;
+canvas.height = 480;
+
+
+
+
+
+
+
 
 ///*
 // * This document is licensed under the SGI Free Software B License Version
