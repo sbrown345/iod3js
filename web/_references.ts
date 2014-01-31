@@ -271,6 +271,8 @@
 /// <reference path="doomdll/renderer/tr_trisurf.cpp.ts" />
 /// <reference path="doomdll/renderer/vertexcache.h.ts" />
 /// <reference path="doomdll/renderer/vertexcache.cpp.ts" />
+/// <reference path="doomdll/renderer/draw_common.cpp.ts" />
+/// <reference path="doomdll/renderer/draw_glsl.cpp.ts" />
 
 //// sound engine
 //#include "../sound/sound.h"

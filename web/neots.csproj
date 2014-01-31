@@ -59,6 +59,8 @@
     <Content Include="DoomDLL\Framework\DeclTable.cpp.ts" />
     <Content Include="DoomDLL\Framework\File.cpp.ts" />
     <Content Include="DoomDLL\Framework\File.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\draw_common.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\draw_glsl.cpp.ts" />
     <Content Include="other\files.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.h.ts" />
