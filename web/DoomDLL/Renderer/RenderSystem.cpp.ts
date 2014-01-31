@@ -628,21 +628,21 @@ R_InitOpenGL(): void {
 ////	R_ReloadARBPrograms_f(idCmdArgs());
 ////#endif
 
-//	cmdSystem.AddCommand("reloadGLSLprograms", R_ReloadGLSLPrograms_f, CMD_FL_RENDERER, "reloads GLSL programs");
-//	R_ReloadGLSLPrograms_f(idCmdArgs());
+	cmdSystem.AddCommand("reloadGLSLprograms", R_ReloadGLSLPrograms_f, CMD_FL_RENDERER, "reloads GLSL programs");
+	R_ReloadGLSLPrograms_f(new idCmdArgs());
 
-//	// allocate the vertex array range or vertex objects
-//	vertexCache.Init();
+	// allocate the vertex array range or vertex objects
+	vertexCache.Init();
+	todoThrow ( );
+	//// select which renderSystem we are going to use
+	//r_renderer.SetModified();
+	//tr.SetBackEndRenderer();
 
-//	// select which renderSystem we are going to use
-//	r_renderer.SetModified();
-//	tr.SetBackEndRenderer();
+	//// allocate the frame data, which may be more if smp is enabled
+	//R_InitFrameData();
 
-//	// allocate the frame data, which may be more if smp is enabled
-//	R_InitFrameData();
-
-//	// Reset our gamma
-//	R_SetColorMappings();
+	//// Reset our gamma
+	//R_SetColorMappings();
 }
 
 /*

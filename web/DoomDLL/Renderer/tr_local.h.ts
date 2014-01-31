@@ -1408,67 +1408,122 @@ class glimpParms_t {
 ////} program_t;
 
 
-/////*
-////============================================================
+/*
+============================================================
 
-////DRAW_GLSL
+DRAW_GLSL
 
-////============================================================
-////*/
+============================================================
+*/
 
 
-////typedef struct shaderProgram_s {
-////	GLuint		program;
+class shaderProgram_t {
+	program: WebGLProgram; //GLuint		
+	
+	vertexShader: WebGLShader; //GLuint		
+	fragmentShader: WebGLShader; //GLuint		
+	
+	glColor: number; //GLint		
+	alphaTest: number; //GLint		
+	specularExponent: number; //GLint		
+	
+	modelViewProjectionMatrix: number; //GLint		
+	modelMatrix: number; //GLint		
+	textureMatrix: number; //GLint		
+	
+	windowCoords: number; //GLint		
+	eyeOrigin: number; //GLint		
+	localEyeOrigin: number; //GLint		
+	localLightOrigin: number; //GLint		
+	localViewOrigin: number; //GLint		
+	
+	lightProjectionS: number; //GLint		
+	lightProjectionT: number; //GLint		
+	lightProjectionQ: number; //GLint		
+	lightFalloff: number; //GLint		
+	
+	bumpMatrixS: number; //GLint		
+	bumpMatrixT: number; //GLint		
+	diffuseMatrixS: number; //GLint		
+	diffuseMatrixT: number; //GLint		
+	specularMatrixS: number; //GLint		
+	specularMatrixT: number; //GLint		
+	
+	colorModulate: number; //GLint		
+	colorAdd: number; //GLint		
+	
+	diffuseColor: number; //GLint		
+	specularColor: number; //GLint		
+	
+	///* gl_... */
+	attr_TexCoord: number; //GLint		
+	attr_Tangent: number; //GLint		
+	attr_Bitangent: number; //GLint		
+	attr_Normal: number; //GLint		
+	attr_Vertex: number; //GLint		
+	attr_Color: number; //GLint		
+	
+	nonPowerOfTwo: number; //GLint		
+	
+	u_fragmentMap = new Int32Array( MAX_FRAGMENT_IMAGES ); //GLint		
+	u_vertexParm = new Int32Array( MAX_VERTEX_PARMS ); //GLint
 
-////	GLuint		vertexShader;
-////	GLuint		fragmentShader;
+	constructor ( ) {
+		this.init ( );
+	}
 
-////	GLint		glColor;
-////	GLint		alphaTest;
-////	GLint		specularExponent;
+	init ( ): void {
+		this.program = null; //GLuint		
 
-////	GLint		modelViewProjectionMatrix;
-////	GLint		modelMatrix;
-////	GLint		textureMatrix;
+		this.vertexShader = null; //GLuint		
+		this.fragmentShader = null; //GLuint		
 
-////	GLint		windowCoords;
-////	GLint		eyeOrigin;
-////	GLint		localEyeOrigin;
-////	GLint		localLightOrigin;
-////	GLint		localViewOrigin;
+		this.glColor = 0; //GLint		
+		this.alphaTest = 0; //GLint		
+		this.specularExponent = 0; //GLint		
 
-////	GLint		lightProjectionS;
-////	GLint		lightProjectionT;
-////	GLint		lightProjectionQ;
-////	GLint		lightFalloff;
+		this.modelViewProjectionMatrix = 0; //GLint		
+		this.modelMatrix = 0; //GLint		
+		this.textureMatrix = 0; //GLint		
 
-////	GLint		bumpMatrixS;
-////	GLint		bumpMatrixT;
-////	GLint		diffuseMatrixS;
-////	GLint		diffuseMatrixT;
-////	GLint		specularMatrixS;
-////	GLint		specularMatrixT;
+		this.windowCoords = 0; //GLint		
+		this.eyeOrigin = 0; //GLint		
+		this.localEyeOrigin = 0; //GLint		
+		this.localLightOrigin = 0; //GLint		
+		this.localViewOrigin = 0; //GLint		
 
-////	GLint		colorModulate;
-////	GLint		colorAdd;
+		this.lightProjectionS = 0; //GLint		
+		this.lightProjectionT = 0; //GLint		
+		this.lightProjectionQ = 0; //GLint		
+		this.lightFalloff = 0; //GLint		
 
-////	GLint		diffuseColor;
-////	GLint		specularColor;
+		this.bumpMatrixS = 0; //GLint		
+		this.bumpMatrixT = 0; //GLint		
+		this.diffuseMatrixS = 0; //GLint		
+		this.diffuseMatrixT = 0; //GLint		
+		this.specularMatrixS = 0; //GLint		
+		this.specularMatrixT = 0; //GLint		
 
-////	/* gl_... */
-////	GLint		attr_TexCoord;
-////	GLint		attr_Tangent;
-////	GLint		attr_Bitangent;
-////	GLint		attr_Normal;
-////	GLint		attr_Vertex;
-////	GLint		attr_Color;
+		this.colorModulate = 0; //GLint		
+		this.colorAdd = 0; //GLint		
 
-////	GLint		nonPowerOfTwo;
+		this.diffuseColor = 0; //GLint		
+		this.specularColor = 0; //GLint		
 
-////	GLint		u_fragmentMap[MAX_FRAGMENT_IMAGES];
-////	GLint		u_vertexParm[MAX_VERTEX_PARMS];
-////} shaderProgram_t;
+		/* gl_... */
+		this.attr_TexCoord = 0; //GLint		
+		this.attr_Tangent = 0; //GLint		
+		this.attr_Bitangent = 0; //GLint		
+		this.attr_Normal = 0; //GLint		
+		this.attr_Vertex = 0; //GLint		
+		this.attr_Color = 0; //GLint		
 
+		this.nonPowerOfTwo = 0; //GLint		
+		//
+		memset( this.u_fragmentMap, 0, this.u_fragmentMap.byteLength );
+		memset( this.u_vertexParm, 0, this.u_vertexParm.byteLength );
+	}
+}
 
 
 /////* This file was automatically generated.  Do not edit! */

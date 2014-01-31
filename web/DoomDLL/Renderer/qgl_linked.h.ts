@@ -371,3 +371,29 @@ var glViewport = ( ...args: any[]) => { todoThrow ( ); };
 //var  glXSwapBuffers glXSwapBuffers
 //var  glXGetProcAddressARB glXGetProcAddressARB
 //#endif
+
+// missing ones
+var glCreateShader = <(type: number) => WebGLShader> gl.createShader.bind(gl);
+//var glShaderSource = <(shader: WebGLShader, source: string) => void> gl.shaderSource.bind(gl);
+//var glCompileShader = <( shader: WebGLShader ) => void>gl.compileShader.bind( gl );
+var glShaderSource = (shader: WebGLShader, source: string) => {
+	// for now keep track of required shader changes here
+	source = source.replace( "#version 100", "" );
+	source = source.replace("vec3 lightProjection", "//todo: vec3 lightProjection" ); // todo: replace with a call to texture2D and some different args
+	source = source.replace("color *= NdotL * lightProjection;", "color *= NdotL;// * lightProjection;" );
+	console.log( "shader source: \n" + source );
+	gl.shaderSource.call( gl, shader, source );
+};
+var glCompileShader = ( shader: WebGLShader): void => {
+	gl.compileShader.call( gl, shader );
+	if ( !gl.getShaderParameter( shader, gl.COMPILE_STATUS ) ) {
+		console.log( gl.getShaderInfoLog( shader ) );
+		throw "shader error";
+	}
+};
+var glCreateProgram = <( ) => WebGLProgram>gl.createProgram.bind( gl );
+var glAttachShader = <( program: WebGLProgram, shader: WebGLShader ) => void>gl.attachShader.bind( gl );
+var glBindAttribLocation = <( program: WebGLProgram, index: number, name: string ) => void>gl.bindAttribLocation.bind( gl );
+var glLinkProgram = <( program: WebGLProgram ) => void>gl.linkProgram.bind( gl );
+var glGetProgramiv = <( program: WebGLProgram, pname: number ) => any>gl.getProgramParameter.bind( gl );
+var glValidateProgram = <( program: WebGLProgram ) => void>gl.validateProgram.bind( gl );
