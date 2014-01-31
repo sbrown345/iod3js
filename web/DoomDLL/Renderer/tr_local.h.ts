@@ -645,25 +645,14 @@ class tmu_t {
 var MAX_MULTITEXTURE_UNITS =	8;
 
 class glstate_t {
-	tmu:tmu_t[];//[MAX_MULTITEXTURE_UNITS];
-////	int			currenttmu;
+	tmu = newStructArray<tmu_t>( tmu_t, MAX_MULTITEXTURE_UNITS )
+	currenttmu: number; // int
 
-////	int			faceCulling;
-////	int			glStateBits;
-////	bool		forceGlState;		// the next GL_State will ignore glStateBits and set everything
+	faceCulling: number; //	int
+	glStateBits: number; //	int
+	forceGlState: boolean; // the next GL_State will ignore glStateBits and set everything
 
-////	shaderProgram_s	*currentProgram;
-
-	constructor ( ) {
-		this.tmu = newStructArray<tmu_t>( tmu_t, MAX_MULTITEXTURE_UNITS );
-////	int			currenttmu;
-
-////	int			faceCulling;
-////	int			glStateBits;
-////	bool		forceGlState;		// the next GL_State will ignore glStateBits and set everything
-
-////	shaderProgram_s	*currentProgram;
-	}
+	currentProgram: shaderProgram_t;
 }
 
 ////typedef struct {
@@ -1419,42 +1408,42 @@ DRAW_GLSL
 
 class shaderProgram_t {
 	program: WebGLProgram; //GLuint		
-	
+
 	vertexShader: WebGLShader; //GLuint		
 	fragmentShader: WebGLShader; //GLuint		
-	
-	glColor: number; //GLint		
-	alphaTest: number; //GLint		
-	specularExponent: number; //GLint		
-	
-	modelViewProjectionMatrix: number; //GLint		
-	modelMatrix: number; //GLint		
-	textureMatrix: number; //GLint		
-	
-	windowCoords: number; //GLint		
-	eyeOrigin: number; //GLint		
-	localEyeOrigin: number; //GLint		
-	localLightOrigin: number; //GLint		
-	localViewOrigin: number; //GLint		
-	
-	lightProjectionS: number; //GLint		
-	lightProjectionT: number; //GLint		
-	lightProjectionQ: number; //GLint		
-	lightFalloff: number; //GLint		
-	
-	bumpMatrixS: number; //GLint		
-	bumpMatrixT: number; //GLint		
-	diffuseMatrixS: number; //GLint		
-	diffuseMatrixT: number; //GLint		
-	specularMatrixS: number; //GLint		
-	specularMatrixT: number; //GLint		
-	
-	colorModulate: number; //GLint		
-	colorAdd: number; //GLint		
-	
-	diffuseColor: number; //GLint		
-	specularColor: number; //GLint		
-	
+
+	glColor: WebGLUniformLocation; //GLint		
+	alphaTest: WebGLUniformLocation; //GLint		
+	specularExponent: WebGLUniformLocation; //GLint		
+
+	modelViewProjectionMatrix: WebGLUniformLocation; //GLint		
+	modelMatrix: WebGLUniformLocation; //GLint		
+	textureMatrix: WebGLUniformLocation; //GLint		
+
+	windowCoords: WebGLUniformLocation; //GLint		
+	eyeOrigin: WebGLUniformLocation; //GLint		
+	localEyeOrigin: WebGLUniformLocation; //GLint		
+	localLightOrigin: WebGLUniformLocation; //GLint		
+	localViewOrigin: WebGLUniformLocation; //GLint		
+
+	lightProjectionS: WebGLUniformLocation; //GLint		
+	lightProjectionT: WebGLUniformLocation; //GLint		
+	lightProjectionQ: WebGLUniformLocation; //GLint		
+	lightFalloff: WebGLUniformLocation; //GLint		
+
+	bumpMatrixS: WebGLUniformLocation; //GLint		
+	bumpMatrixT: WebGLUniformLocation; //GLint		
+	diffuseMatrixS: WebGLUniformLocation; //GLint		
+	diffuseMatrixT: WebGLUniformLocation; //GLint		
+	specularMatrixS: WebGLUniformLocation; //GLint		
+	specularMatrixT: WebGLUniformLocation; //GLint		
+
+	colorModulate: WebGLUniformLocation; //GLint		
+	colorAdd: WebGLUniformLocation; //GLint		
+
+	diffuseColor: WebGLUniformLocation; //GLint		
+	specularColor: WebGLUniformLocation; //GLint		
+
 	///* gl_... */
 	attr_TexCoord: number; //GLint		
 	attr_Tangent: number; //GLint		
@@ -1462,66 +1451,71 @@ class shaderProgram_t {
 	attr_Normal: number; //GLint		
 	attr_Vertex: number; //GLint		
 	attr_Color: number; //GLint		
-	
-	nonPowerOfTwo: number; //GLint		
-	
-	u_fragmentMap = new Int32Array( MAX_FRAGMENT_IMAGES ); //GLint		
-	u_vertexParm = new Int32Array( MAX_VERTEX_PARMS ); //GLint
+
+	nonPowerOfTwo: WebGLUniformLocation; //GLint		
+
+	u_fragmentMap = new Array<WebGLUniformLocation>( MAX_FRAGMENT_IMAGES ); //GLint		
+	u_vertexParm = new Array<Number>( MAX_VERTEX_PARMS ); //GLint
 
 	constructor ( ) {
 		this.init ( );
 	}
 
 	init ( ): void {
-		this.program = null; //GLuint		
+		this.program = null;
 
-		this.vertexShader = null; //GLuint		
-		this.fragmentShader = null; //GLuint		
+		this.vertexShader = null;
+		this.fragmentShader = null;
 
-		this.glColor = 0; //GLint		
-		this.alphaTest = 0; //GLint		
-		this.specularExponent = 0; //GLint		
+		this.glColor = null;
+		this.alphaTest = null;
+		this.specularExponent = null;
 
-		this.modelViewProjectionMatrix = 0; //GLint		
-		this.modelMatrix = 0; //GLint		
-		this.textureMatrix = 0; //GLint		
+		this.modelViewProjectionMatrix = null;
+		this.modelMatrix = null;
+		this.textureMatrix = null;
 
-		this.windowCoords = 0; //GLint		
-		this.eyeOrigin = 0; //GLint		
-		this.localEyeOrigin = 0; //GLint		
-		this.localLightOrigin = 0; //GLint		
-		this.localViewOrigin = 0; //GLint		
+		this.windowCoords = null;
+		this.eyeOrigin = null;
+		this.localEyeOrigin = null;
+		this.localLightOrigin = null;
+		this.localViewOrigin = null;
 
-		this.lightProjectionS = 0; //GLint		
-		this.lightProjectionT = 0; //GLint		
-		this.lightProjectionQ = 0; //GLint		
-		this.lightFalloff = 0; //GLint		
+		this.lightProjectionS = null;
+		this.lightProjectionT = null;
+		this.lightProjectionQ = null;
+		this.lightFalloff = null;
 
-		this.bumpMatrixS = 0; //GLint		
-		this.bumpMatrixT = 0; //GLint		
-		this.diffuseMatrixS = 0; //GLint		
-		this.diffuseMatrixT = 0; //GLint		
-		this.specularMatrixS = 0; //GLint		
-		this.specularMatrixT = 0; //GLint		
+		this.bumpMatrixS = null;
+		this.bumpMatrixT = null;
+		this.diffuseMatrixS = null;
+		this.diffuseMatrixT = null;
+		this.specularMatrixS = null;
+		this.specularMatrixT = null;
 
-		this.colorModulate = 0; //GLint		
-		this.colorAdd = 0; //GLint		
+		this.colorModulate = null;
+		this.colorAdd = null;
 
-		this.diffuseColor = 0; //GLint		
-		this.specularColor = 0; //GLint		
+		this.diffuseColor = null;
+		this.specularColor = null;
 
 		/* gl_... */
-		this.attr_TexCoord = 0; //GLint		
-		this.attr_Tangent = 0; //GLint		
-		this.attr_Bitangent = 0; //GLint		
-		this.attr_Normal = 0; //GLint		
-		this.attr_Vertex = 0; //GLint		
-		this.attr_Color = 0; //GLint		
+		this.attr_TexCoord = 0;
+		this.attr_Tangent = 0;
+		this.attr_Bitangent = 0;
+		this.attr_Normal = 0;
+		this.attr_Vertex = 0;
+		this.attr_Color = 0;
 
-		this.nonPowerOfTwo = 0; //GLint		
-		//
-		memset( this.u_fragmentMap, 0, this.u_fragmentMap.byteLength );
-		memset( this.u_vertexParm, 0, this.u_vertexParm.byteLength );
+		this.nonPowerOfTwo = 0;
+
+		for ( var i = 0; i < this.u_fragmentMap.length; i++ ) {
+			this.u_fragmentMap[i] = null;
+		}
+
+		for ( var i = 0; i < this.u_vertexParm.length; i++ ) {
+			this.u_vertexParm[i] = null;
+		}
 	}
 }
 

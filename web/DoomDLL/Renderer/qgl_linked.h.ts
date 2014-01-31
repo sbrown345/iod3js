@@ -128,7 +128,7 @@ var glGenTextures = ( ...args: any[]) => { todoThrow ( ); };
 var glGetBooleanv = ( ...args: any[]) => { todoThrow ( ); };
 var glGetClipPlane = ( ...args: any[]) => { todoThrow ( ); };
 var glGetDoublev = ( ...args: any[]) => { todoThrow ( ); };
-var glGetError = ( ...args: any[]):number => { todoThrow ( );return 99199; };
+var glGetError = <( ) => number> gl.getError.bind( gl );
 var glGetFloatv = <(name: number) => number> gl.getParameter.bind(gl);
 var glGetIntegerv = <( name: number ) => number> gl.getParameter.bind( gl );
 var glGetLightfv = ( ...args: any[]) => { todoThrow ( ); };
@@ -396,4 +396,8 @@ var glAttachShader = <( program: WebGLProgram, shader: WebGLShader ) => void>gl.
 var glBindAttribLocation = <( program: WebGLProgram, index: number, name: string ) => void>gl.bindAttribLocation.bind( gl );
 var glLinkProgram = <( program: WebGLProgram ) => void>gl.linkProgram.bind( gl );
 var glGetProgramiv = <( program: WebGLProgram, pname: number ) => any>gl.getProgramParameter.bind( gl );
-var glValidateProgram = <( program: WebGLProgram ) => void>gl.validateProgram.bind( gl );
+var glValidateProgram = <(program: WebGLProgram) => void>gl.validateProgram.bind(gl);
+var glUseProgram = <(program: WebGLProgram) => void>gl.useProgram.bind(gl);
+var glGetUniformLocation = <( program: WebGLProgram, name: string ) => WebGLUniformLocation>gl.getUniformLocation.bind( gl );
+var glGetAttribLocation = <( program: WebGLProgram, name: string ) => number> gl.getAttribLocation.bind( gl );
+var glUniform1i = <( location: WebGLUniformLocation, x: number ) => void>gl.uniform1i.bind( gl );

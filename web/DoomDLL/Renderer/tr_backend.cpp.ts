@@ -160,22 +160,21 @@ var backEnd:backEndState_t;
 ////	backEnd.glState.currenttmu = unit;
 ////}
 
-/////*
-////====================
-////GL_UseProgram
-////====================
-////*/
-////void GL_UseProgram(shaderProgram_t *program)
-////{
-////	if (backEnd.glState.currentProgram == program) {
-////		return;
-////	}
+/*
+====================
+GL_UseProgram
+====================
+*/
+function GL_UseProgram ( program: shaderProgram_t ): void {
+	if ( backEnd.glState.currentProgram == program ) {
+		return;
+	}
 
-////	glUseProgram(program ? program.program : 0);
-////	backEnd.glState.currentProgram = program;
+	glUseProgram( program ? program.program : null );
+	backEnd.glState.currentProgram = program;
 
-////	GL_CheckErrors();
-////}
+	idRenderSystem.GL_CheckErrors ( );
+}
 
 /////*
 ////====================

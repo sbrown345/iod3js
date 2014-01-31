@@ -445,63 +445,62 @@ function R_ValidateGLSLProgram(shaderProgram:shaderProgram_t ):boolean
 
 
 function RB_GLSL_GetUniformLocations(shader: shaderProgram_t): void {
-	todoThrow ( );
-	//int	i;
-	//char	buffer[32];
+	var i:number;
+	var buffer: string;
 
-	//GL_UseProgram(shader);
+	GL_UseProgram(shader);
 
-	//shader.localLightOrigin = glGetUniformLocation(shader.program, "u_lightOrigin");
-	//shader.localViewOrigin = glGetUniformLocation(shader.program, "u_viewOrigin");
-	//shader.lightProjectionS = glGetUniformLocation(shader.program, "u_lightProjectionS");
-	//shader.lightProjectionT = glGetUniformLocation(shader.program, "u_lightProjectionT");
-	//shader.lightProjectionQ = glGetUniformLocation(shader.program, "u_lightProjectionQ");
-	//shader.lightFalloff = glGetUniformLocation(shader.program, "u_lightFalloff");
-	//shader.bumpMatrixS = glGetUniformLocation(shader.program, "u_bumpMatrixS");
-	//shader.bumpMatrixT = glGetUniformLocation(shader.program, "u_bumpMatrixT");
-	//shader.diffuseMatrixS = glGetUniformLocation(shader.program, "u_diffuseMatrixS");
-	//shader.diffuseMatrixT = glGetUniformLocation(shader.program, "u_diffuseMatrixT");
-	//shader.specularMatrixS = glGetUniformLocation(shader.program, "u_specularMatrixS");
-	//shader.specularMatrixT = glGetUniformLocation(shader.program, "u_specularMatrixT");
-	//shader.colorModulate = glGetUniformLocation(shader.program, "u_colorModulate");
-	//shader.colorAdd = glGetUniformLocation(shader.program, "u_colorAdd");
-	//shader.diffuseColor = glGetUniformLocation(shader.program, "u_diffuseColor");
-	//shader.specularColor = glGetUniformLocation(shader.program, "u_specularColor");
-	//shader.glColor = glGetUniformLocation(shader.program, "u_glColor");
-	//shader.alphaTest = glGetUniformLocation(shader.program, "u_alphaTest");
-	//shader.specularExponent = glGetUniformLocation(shader.program, "u_specularExponent");
+	shader.localLightOrigin = glGetUniformLocation(shader.program, "u_lightOrigin");
+	shader.localViewOrigin = glGetUniformLocation(shader.program, "u_viewOrigin");
+	shader.lightProjectionS = glGetUniformLocation(shader.program, "u_lightProjectionS");
+	shader.lightProjectionT = glGetUniformLocation(shader.program, "u_lightProjectionT");
+	shader.lightProjectionQ = glGetUniformLocation(shader.program, "u_lightProjectionQ");
+	shader.lightFalloff = glGetUniformLocation(shader.program, "u_lightFalloff");
+	shader.bumpMatrixS = glGetUniformLocation(shader.program, "u_bumpMatrixS");
+	shader.bumpMatrixT = glGetUniformLocation(shader.program, "u_bumpMatrixT");
+	shader.diffuseMatrixS = glGetUniformLocation(shader.program, "u_diffuseMatrixS");
+	shader.diffuseMatrixT = glGetUniformLocation(shader.program, "u_diffuseMatrixT");
+	shader.specularMatrixS = glGetUniformLocation(shader.program, "u_specularMatrixS");
+	shader.specularMatrixT = glGetUniformLocation(shader.program, "u_specularMatrixT");
+	shader.colorModulate = glGetUniformLocation(shader.program, "u_colorModulate");
+	shader.colorAdd = glGetUniformLocation(shader.program, "u_colorAdd");
+	shader.diffuseColor = glGetUniformLocation(shader.program, "u_diffuseColor");
+	shader.specularColor = glGetUniformLocation(shader.program, "u_specularColor");
+	shader.glColor = glGetUniformLocation(shader.program, "u_glColor");
+	shader.alphaTest = glGetUniformLocation(shader.program, "u_alphaTest");
+	shader.specularExponent = glGetUniformLocation(shader.program, "u_specularExponent");
 
-	//shader.eyeOrigin = glGetUniformLocation(shader.program, "u_eyeOrigin");
-	//shader.localEyeOrigin = glGetUniformLocation(shader.program, "u_localEyeOrigin");
-	//shader.nonPowerOfTwo = glGetUniformLocation(shader.program, "u_nonPowerOfTwo");
-	//shader.windowCoords = glGetUniformLocation(shader.program, "u_windowCoords");
+	shader.eyeOrigin = glGetUniformLocation(shader.program, "u_eyeOrigin");
+	shader.localEyeOrigin = glGetUniformLocation(shader.program, "u_localEyeOrigin");
+	shader.nonPowerOfTwo = glGetUniformLocation(shader.program, "u_nonPowerOfTwo");
+	shader.windowCoords = glGetUniformLocation(shader.program, "u_windowCoords");
 
-	//shader.modelViewProjectionMatrix = glGetUniformLocation(shader.program, "u_modelViewProjectionMatrix");
+	shader.modelViewProjectionMatrix = glGetUniformLocation(shader.program, "u_modelViewProjectionMatrix");
 
-	//shader.modelMatrix = glGetUniformLocation(shader.program, "u_modelMatrix");
-	//shader.textureMatrix = glGetUniformLocation(shader.program, "u_textureMatrix");
+	shader.modelMatrix = glGetUniformLocation(shader.program, "u_modelMatrix");
+	shader.textureMatrix = glGetUniformLocation(shader.program, "u_textureMatrix");
 
-	//shader.attr_TexCoord = glGetAttribLocation(shader.program, "attr_TexCoord");
-	//shader.attr_Tangent = glGetAttribLocation(shader.program, "attr_Tangent");
-	//shader.attr_Bitangent = glGetAttribLocation(shader.program, "attr_Bitangent");
-	//shader.attr_Normal = glGetAttribLocation(shader.program, "attr_Normal");
-	//shader.attr_Vertex = glGetAttribLocation(shader.program, "attr_Vertex");
-	//shader.attr_Color = glGetAttribLocation(shader.program, "attr_Color");
+	shader.attr_TexCoord = glGetAttribLocation(shader.program, "attr_TexCoord");
+	shader.attr_Tangent = glGetAttribLocation(shader.program, "attr_Tangent");
+	shader.attr_Bitangent = glGetAttribLocation(shader.program, "attr_Bitangent");
+	shader.attr_Normal = glGetAttribLocation(shader.program, "attr_Normal");
+	shader.attr_Vertex = glGetAttribLocation(shader.program, "attr_Vertex");
+	shader.attr_Color = glGetAttribLocation(shader.program, "attr_Color");
 
-	//for (i = 0; i < MAX_VERTEX_PARMS; i++) {
-	//	idStr::snPrintf(buffer, sizeof(buffer), "u_vertexParm%d", i);
-	//	shader.u_vertexParm[i] = glGetAttribLocation(shader.program, buffer);
-	//}
+	for (i = 0; i < MAX_VERTEX_PARMS; i++) {
+		buffer = "u_vertexParm" + i;
+		shader.u_vertexParm[i] = glGetAttribLocation(shader.program, buffer);
+	}
 
-	//for (i = 0; i < MAX_FRAGMENT_IMAGES; i++) {
-	//	idStr::snPrintf(buffer, sizeof(buffer), "u_fragmentMap%d", i);
-	//	shader.u_fragmentMap[i] = glGetUniformLocation(shader.program, buffer);
-	//	glUniform1i(shader.u_fragmentMap[i], i);
-	//}
+	for (i = 0; i < MAX_FRAGMENT_IMAGES; i++) {
+		buffer = "u_fragmentMap" + i;
+		shader.u_fragmentMap[i] = glGetUniformLocation(shader.program, buffer);
+		glUniform1i(shader.u_fragmentMap[i], i);
+	}
 
-	//GL_CheckErrors();
+	idRenderSystem.GL_CheckErrors();
 
-	//GL_UseProgram(NULL);
+	GL_UseProgram(null);
 }
 
 function RB_GLSL_InitShaders ( ): boolean {

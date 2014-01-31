@@ -650,7 +650,7 @@ R_InitOpenGL(): void {
 GL_CheckErrors
 ==================
 */
-GL_CheckErrors():void {
+static GL_CheckErrors():void {
     var/*int		*/err:number;
 		var s = "";//char	s[64];
 	var i:number;
