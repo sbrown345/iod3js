@@ -41,48 +41,48 @@
 class idInternalCVar extends idCVar {
 //	friend class idCVarSystemLocal;
 //public:
-    constructor ( );
-    constructor ( newName: string, newValue: string, newFlags: number );
-    constructor ( cvar: idCVar );
-    constructor ( newNameOrCvar?: any, newValue?: string, /*int */newFlags?: number ) {
-        super ( );
+	constructor ( );
+	constructor ( newName: string, newValue: string, newFlags: number );
+	constructor ( cvar: idCVar );
+	constructor ( newNameOrCvar?: any, newValue?: string, /*int */newFlags?: number ) {
+		super ( );
 
-        if ( typeof newNameOrCvar === "string" ) {
-            var newName = newNameOrCvar;
-            this.nameString = new idStr( newName );
-            this.name = this.nameString.c_str ( );
-            this.valueString = new idStr( newValue );
-            this.value = this.valueString.c_str ( );
-            this.resetString = new idStr( newValue );
-            this.descriptionString = new idStr( "" );
-            this.description = this.descriptionString.c_str ( );
-            this.flags = ( newFlags & ~CVAR_STATIC ) | CVAR_MODIFIED;
-            this.valueMin = 1;
-            this.valueMax = -1;
-            this.valueStrings = null;
-            this.valueCompletion = null;
-            this.UpdateValue ( );
-            this.UpdateCheat ( );
-            this.internalVar = this;
-        } else if ( newNameOrCvar instanceof idCVar ) {
-            var cvar = newNameOrCvar;
-            this.nameString = new idStr( cvar.GetName ( ) );
-            this.name = this.nameString.c_str ( );
-            this.valueString = new idStr( cvar.GetString ( ) );
-            this.value = this.valueString.c_str ( );
-            this.resetString = new idStr( cvar.GetString ( ) );
-            this.descriptionString = new idStr( cvar.GetDescription ( ) );
-            this.description = this.descriptionString.c_str ( );
-            this.flags = cvar.GetFlags ( ) | CVAR_MODIFIED;
-            this.valueMin = cvar.GetMinValue ( );
-            this.valueMax = cvar.GetMaxValue ( );
-            this.valueStrings = this.CopyValueStrings( cvar.GetValueStrings ( ) );
-            this.valueCompletion = cvar.GetValueCompletion ( );
-            this.UpdateValue ( );
-            this.UpdateCheat ( );
-            this.internalVar = this;
-        }
-    }
+		if ( typeof newNameOrCvar === "string" ) {
+			var newName = newNameOrCvar;
+			this.nameString = new idStr( newName );
+			this.name = this.nameString.c_str ( );
+			this.valueString = new idStr( newValue );
+			this.value = this.valueString.c_str ( );
+			this.resetString = new idStr( newValue );
+			this.descriptionString = new idStr( "" );
+			this.description = this.descriptionString.c_str ( );
+			this.flags = ( newFlags & ~CVAR_STATIC ) | CVAR_MODIFIED;
+			this.valueMin = 1;
+			this.valueMax = -1;
+			this.valueStrings = null;
+			this.valueCompletion = null;
+			this.UpdateValue ( );
+			this.UpdateCheat ( );
+			this.internalVar = this;
+		} else if ( newNameOrCvar instanceof idCVar ) {
+			var cvar = newNameOrCvar;
+			this.nameString = new idStr( cvar.GetName ( ) );
+			this.name = this.nameString.c_str ( );
+			this.valueString = new idStr( cvar.GetString ( ) );
+			this.value = this.valueString.c_str ( );
+			this.resetString = new idStr( cvar.GetString ( ) );
+			this.descriptionString = new idStr( cvar.GetDescription ( ) );
+			this.description = this.descriptionString.c_str ( );
+			this.flags = cvar.GetFlags ( ) | CVAR_MODIFIED;
+			this.valueMin = cvar.GetMinValue ( );
+			this.valueMax = cvar.GetMaxValue ( );
+			this.valueStrings = this.CopyValueStrings( cvar.GetValueStrings ( ) );
+			this.valueCompletion = cvar.GetValueCompletion ( );
+			this.UpdateValue ( );
+			this.UpdateCheat ( );
+			this.internalVar = this;
+		}
+	}
 
 ////	const char **			CopyValueStrings( const char **strings );
 ////	void					Update( const idCVar *cvar );
@@ -92,10 +92,14 @@ class idInternalCVar extends idCVar {
 ////	void					Reset( void );
 
 //private:
-/*	idStr					*/nameString:idStr;			// name
-/*	idStr					*/resetString:idStr;			// resetting will change to this value
-/*	idStr					*/valueString:idStr;			// value
-/*	idStr					*/descriptionString:idStr;		// description
+/*	idStr					*/
+	nameString: idStr; // name
+/*	idStr					*/
+	resetString: idStr; // resetting will change to this value
+/*	idStr					*/
+	valueString: idStr; // value
+/*	idStr					*/
+	descriptionString: idStr; // description
 
 ////	virtual void			InternalSetString( const char *newValue );
 ////	virtual void			InternalServerSetString( const char *newValue );
@@ -121,205 +125,205 @@ class idInternalCVar extends idCVar {
 idInternalCVar::CopyValueStrings
 ============
 */
-CopyValueStrings( strings:string[] ):string[] {
-    if ( !strings ) {
-    	return null;
-    }
-    
-    var ptr:string[] = [];
-    for ( var i = 0; i < strings.length; i++ ) {
-        ptr[i] = strings[i];
-    }
+	CopyValueStrings ( strings: string[] ): string[] {
+		if ( !strings ) {
+			return null;
+		}
 
-    return ptr;
-}
+		var ptr: string[] = [];
+		for ( var i = 0; i < strings.length; i++ ) {
+			ptr[i] = strings[i];
+		}
+
+		return ptr;
+	}
 
 /*
 ============
 idInternalCVar::Update
 ============
 */
-    Update ( cvar: idCVar ): void {
-        // if this is a statically declared variable
-        if ( cvar.GetFlags ( ) & CVAR_STATIC ) {
+	Update ( cvar: idCVar ): void {
+		// if this is a statically declared variable
+		if ( cvar.GetFlags ( ) & CVAR_STATIC ) {
 
-            if ( this.flags & CVAR_STATIC ) {
+			if ( this.flags & CVAR_STATIC ) {
 
-                // the code has more than one static declaration of the same variable, make sure they have the same properties
-                if ( this.resetString.Icmp( cvar.GetString ( ) ) != 0 ) {
-                    common.Warning( "CVar '%s' declared multiple times with different initial value", this.nameString.c_str ( ) );
-                }
-                if ( ( this.flags & ( CVAR_BOOL | CVAR_INTEGER | CVAR_FLOAT ) ) != ( cvar.GetFlags ( ) & ( CVAR_BOOL | CVAR_INTEGER | CVAR_FLOAT ) ) ) {
-                    common.Warning( "CVar '%s' declared multiple times with different type", this.nameString.c_str ( ) );
-                }
-                if ( this.valueMin != cvar.GetMinValue ( ) || this.valueMax != cvar.GetMaxValue ( ) ) {
-                    common.Warning( "CVar '%s' declared multiple times with different minimum/maximum", this.nameString.c_str ( ) );
-                }
+				// the code has more than one static declaration of the same variable, make sure they have the same properties
+				if ( this.resetString.Icmp( cvar.GetString ( ) ) != 0 ) {
+					common.Warning( "CVar '%s' declared multiple times with different initial value", this.nameString.c_str ( ) );
+				}
+				if ( ( this.flags & ( CVAR_BOOL | CVAR_INTEGER | CVAR_FLOAT ) ) != ( cvar.GetFlags ( ) & ( CVAR_BOOL | CVAR_INTEGER | CVAR_FLOAT ) ) ) {
+					common.Warning( "CVar '%s' declared multiple times with different type", this.nameString.c_str ( ) );
+				}
+				if ( this.valueMin != cvar.GetMinValue ( ) || this.valueMax != cvar.GetMaxValue ( ) ) {
+					common.Warning( "CVar '%s' declared multiple times with different minimum/maximum", this.nameString.c_str ( ) );
+				}
 
-            }
+			}
 
-            // the code is now specifying a variable that the user already set a value for, take the new value as the reset value
-            this.resetString = new idStr( cvar.GetString ( ) );
-            this.descriptionString = new idStr( cvar.GetDescription ( ) );
-            this.description = this.descriptionString.c_str ( );
-            this.valueMin = cvar.GetMinValue ( );
-            this.valueMax = cvar.GetMaxValue ( );
-            Mem_Free( this.valueStrings );
-            this.valueStrings = this.CopyValueStrings( cvar.GetValueStrings ( ) );
-            this.valueCompletion = cvar.GetValueCompletion ( );
-            this.UpdateValue ( );
-            cvarSystem.SetModifiedFlags( cvar.GetFlags ( ) );
-        }
+			// the code is now specifying a variable that the user already set a value for, take the new value as the reset value
+			this.resetString = new idStr( cvar.GetString ( ) );
+			this.descriptionString = new idStr( cvar.GetDescription ( ) );
+			this.description = this.descriptionString.c_str ( );
+			this.valueMin = cvar.GetMinValue ( );
+			this.valueMax = cvar.GetMaxValue ( );
+			Mem_Free( this.valueStrings );
+			this.valueStrings = this.CopyValueStrings( cvar.GetValueStrings ( ) );
+			this.valueCompletion = cvar.GetValueCompletion ( );
+			this.UpdateValue ( );
+			cvarSystem.SetModifiedFlags( cvar.GetFlags ( ) );
+		}
 
-        this.flags |= cvar.GetFlags ( );
+		this.flags |= cvar.GetFlags ( );
 
-        this.UpdateCheat ( );
+		this.UpdateCheat ( );
 
-        // only allow one non-empty reset string without a warning
-        if ( this.resetString.Length ( ) == 0 ) {
-            this.resetString = new idStr( cvar.GetString ( ) );
-        } else if ( cvar.GetString ( )[0] && this.resetString.Cmp( cvar.GetString ( ) ) != 0 ) {
-            common.Warning( "cvar \"%s\" given initial values: \"%s\" and \"%s\"\n", this.nameString.c_str ( ), this.resetString.c_str ( ), cvar.GetString ( ) );
-        }
-    }
+		// only allow one non-empty reset string without a warning
+		if ( this.resetString.Length ( ) == 0 ) {
+			this.resetString = new idStr( cvar.GetString ( ) );
+		} else if ( cvar.GetString ( )[0] && this.resetString.Cmp( cvar.GetString ( ) ) != 0 ) {
+			common.Warning( "cvar \"%s\" given initial values: \"%s\" and \"%s\"\n", this.nameString.c_str ( ), this.resetString.c_str ( ), cvar.GetString ( ) );
+		}
+	}
 
 /*
 ============
 idInternalCVar::UpdateValue
 ============
 */
-    UpdateValue ( ): void {
-        var clamped = false;
+	UpdateValue ( ): void {
+		var clamped = false;
 
-        if ( this.flags & CVAR_BOOL ) {
-	        this.integerValue = ( atoi( this.value ) != 0 ) ? 1 : 0;
-            this.floatValue = this.integerValue;
-            if ( idStr.Icmp( this.value, "0" ) != 0 && idStr.Icmp( this.value, "1" ) != 0 ) {
-                this.valueString = new idStr( this.integerValue );
-                this.value = this.valueString.c_str ( );
-            }
-        } else if ( this.flags & CVAR_INTEGER ) {
-            this.integerValue = atoi( this.value );
-            if ( this.valueMin < this.valueMax ) {
-                if ( this.integerValue < this.valueMin ) {
-                    this.integerValue = int( this.valueMin );
-                    clamped = true;
-                } else if ( this.integerValue > this.valueMax ) {
-                    this.integerValue = int( this.valueMax );
-                    clamped = true;
-                }
-            }
-            if ( clamped || !idStr.IsNumeric( this.value ) || idStr.FindChar( this.value, '.' ) ) {
-                this.valueString = new idStr( this.integerValue );
-                this.value = this.valueString.c_str ( );
-            }
-            this.floatValue = this.integerValue;
-        } else if ( this.flags & CVAR_FLOAT ) {
-            this.floatValue = atof( this.value );
-            if ( this.valueMin < this.valueMax ) {
-                if ( this.floatValue < this.valueMin ) {
-                    this.floatValue = this.valueMin;
-                    clamped = true;
-                } else if ( this.floatValue > this.valueMax ) {
-                    this.floatValue = this.valueMax;
-                    clamped = true;
-                }
-            }
-            if ( clamped || !idStr.IsNumeric( this.value ) ) {
-                this.valueString = new idStr( this.floatValue );
-                this.value = this.valueString.c_str ( );
-            }
-            this.integerValue = int( this.floatValue );
-        } else {
-            if ( this.valueStrings ) {
-                this.integerValue = 0;
-                for ( var i = 0; this.valueStrings[i]; i++ ) {
-                    if ( this.valueString.Icmp( this.valueStrings[i] ) == 0 ) {
-                        this.integerValue = i;
-                        break;
-                    }
-                }
-                this.valueString = new idStr( this.valueStrings[this.integerValue] );
-                this.value = this.valueString.c_str ( );
-                this.floatValue = this.integerValue;
-            } else if ( this.valueString.Length ( ) < 32 ) {
-                this.floatValue = atof( this.value );
-                this.integerValue = int( this.floatValue );
-            } else {
-                this.floatValue = 0.0;
-                this.integerValue = 0;
-            }
-        }
-    }
+		if ( this.flags & CVAR_BOOL ) {
+			this.integerValue = ( atoi( this.value ) != 0 ) ? 1 : 0;
+			this.floatValue = this.integerValue;
+			if ( idStr.Icmp( this.value, "0" ) != 0 && idStr.Icmp( this.value, "1" ) != 0 ) {
+				this.valueString = new idStr( this.integerValue );
+				this.value = this.valueString.c_str ( );
+			}
+		} else if ( this.flags & CVAR_INTEGER ) {
+			this.integerValue = atoi( this.value );
+			if ( this.valueMin < this.valueMax ) {
+				if ( this.integerValue < this.valueMin ) {
+					this.integerValue = int( this.valueMin );
+					clamped = true;
+				} else if ( this.integerValue > this.valueMax ) {
+					this.integerValue = int( this.valueMax );
+					clamped = true;
+				}
+			}
+			if ( clamped || !idStr.IsNumeric( this.value ) || idStr.FindChar( this.value, '.' ) ) {
+				this.valueString = new idStr( this.integerValue );
+				this.value = this.valueString.c_str ( );
+			}
+			this.floatValue = this.integerValue;
+		} else if ( this.flags & CVAR_FLOAT ) {
+			this.floatValue = atof( this.value );
+			if ( this.valueMin < this.valueMax ) {
+				if ( this.floatValue < this.valueMin ) {
+					this.floatValue = this.valueMin;
+					clamped = true;
+				} else if ( this.floatValue > this.valueMax ) {
+					this.floatValue = this.valueMax;
+					clamped = true;
+				}
+			}
+			if ( clamped || !idStr.IsNumeric( this.value ) ) {
+				this.valueString = new idStr( this.floatValue );
+				this.value = this.valueString.c_str ( );
+			}
+			this.integerValue = int( this.floatValue );
+		} else {
+			if ( this.valueStrings ) {
+				this.integerValue = 0;
+				for ( var i = 0; this.valueStrings[i]; i++ ) {
+					if ( this.valueString.Icmp( this.valueStrings[i] ) == 0 ) {
+						this.integerValue = i;
+						break;
+					}
+				}
+				this.valueString = new idStr( this.valueStrings[this.integerValue] );
+				this.value = this.valueString.c_str ( );
+				this.floatValue = this.integerValue;
+			} else if ( this.valueString.Length ( ) < 32 ) {
+				this.floatValue = atof( this.value );
+				this.integerValue = int( this.floatValue );
+			} else {
+				this.floatValue = 0.0;
+				this.integerValue = 0;
+			}
+		}
+	}
 
 /*
 ============
 idInternalCVar::UpdateCheat
 ============
 */
-    UpdateCheat ( ): void {
-        // all variables are considered cheats except for a few types
-        if ( this.flags & ( CVAR_NOCHEAT | CVAR_INIT | CVAR_ROM | CVAR_ARCHIVE | CVAR_USERINFO | CVAR_SERVERINFO | CVAR_NETWORKSYNC ) ) {
-            this.flags &= ~CVAR_CHEAT;
-        } else {
-            this.flags |= CVAR_CHEAT;
-        }
-    }
+	UpdateCheat ( ): void {
+		// all variables are considered cheats except for a few types
+		if ( this.flags & ( CVAR_NOCHEAT | CVAR_INIT | CVAR_ROM | CVAR_ARCHIVE | CVAR_USERINFO | CVAR_SERVERINFO | CVAR_NETWORKSYNC ) ) {
+			this.flags &= ~CVAR_CHEAT;
+		} else {
+			this.flags |= CVAR_CHEAT;
+		}
+	}
 
 /*
 ============
 idInternalCVar::Set
 ============
 */
-	Set( newValue:string, force:boolean, fromServer:boolean ):void {
-		if (session && session.IsMultiplayer() && !fromServer ) {
+	Set ( newValue: string, force: boolean, fromServer: boolean ): void {
+		if ( session && session.IsMultiplayer ( ) && !fromServer ) {
 //#ifndef ID_TYPEINFO
-		if ( ( this.flags & CVAR_NETWORKSYNC ) && idAsyncNetwork.client.IsActive() ) {
-			common.Printf( "%s is a synced over the network and cannot be changed on a multiplayer client.\n", this.nameString.c_str() );
+			if ( ( this.flags & CVAR_NETWORKSYNC ) && idAsyncNetwork.client.IsActive ( ) ) {
+				common.Printf( "%s is a synced over the network and cannot be changed on a multiplayer client.\n", this.nameString.c_str ( ) );
 //#if ID_ALLOW_CHEATS
 //			common.Printf( "ID_ALLOW_CHEATS override!\n" );
 //#else				
-			return;
+				return;
 //#endif
-		}
+			}
 //#endif
-		if ( ( this.flags & CVAR_CHEAT ) && !cvarSystem.GetCVarBool( "net_allowCheats" ) ) {
-			common.Printf( "%s cannot be changed in multiplayer.\n", this.nameString.c_str() );
+			if ( ( this.flags & CVAR_CHEAT ) && !cvarSystem.GetCVarBool( "net_allowCheats" ) ) {
+				common.Printf( "%s cannot be changed in multiplayer.\n", this.nameString.c_str ( ) );
 //#if ID_ALLOW_CHEATS
 //			common.Printf( "ID_ALLOW_CHEATS override!\n" );
 //#else				
-			return;
+				return;
 //#endif
-		}	
-	}
+			}
+		}
 
-	if ( !newValue ) {
-		newValue = this.resetString.c_str();
-	}
+		if ( !newValue ) {
+			newValue = this.resetString.c_str ( );
+		}
 
-	if ( !force ) {
-		if ( this.flags & CVAR_ROM ) {
-			common.Printf( "%s is read only.\n", this.nameString.c_str() );
+		if ( !force ) {
+			if ( this.flags & CVAR_ROM ) {
+				common.Printf( "%s is read only.\n", this.nameString.c_str ( ) );
+				return;
+			}
+
+			if ( this.flags & CVAR_INIT ) {
+				common.Printf( "%s is write protected.\n", this.nameString.c_str ( ) );
+				return;
+			}
+		}
+
+		if ( this.valueString.Icmp( newValue ) == 0 ) {
 			return;
 		}
 
-		if ( this.flags & CVAR_INIT ) {
-			common.Printf( "%s is write protected.\n", this.nameString.c_str() );
-			return;
-		}
+		this.valueString = new idStr( newValue );
+		this.value = this.valueString.c_str ( );
+		this.UpdateValue ( );
+
+		this.SetModified ( );
+		cvarSystem.SetModifiedFlags( this.flags );
 	}
-
-		if (this.valueString.Icmp( newValue ) == 0 ) {
-		return;
-	}
-
-		this.valueString = new idStr(newValue);
-		this.value = this. valueString.c_str();
-		this.UpdateValue();
-
-		this.SetModified();
-		cvarSystem.SetModifiedFlags(this.flags );
-}
 
 /////*
 ////============
@@ -341,41 +345,41 @@ idInternalCVar::InternalSetString
 		this.Set( newValue, true, false );
 	}
 
-/////*
-////===============
-////idInternalCVar::InternalServerSetString
-////===============
-////*/
-////void idInternalCVar::InternalServerSetString( const char *newValue ) {
-////	Set( newValue, true, true );
-////}
+/*
+===============
+idInternalCVar::InternalServerSetString
+===============
+*/
+	InternalServerSetString ( newValue: string ): void {
+		this.Set( newValue, true, true );
+	}
 
-/////*
-////============
-////idInternalCVar::InternalSetBool
-////============
-////*/
-////void idInternalCVar::InternalSetBool( const bool newValue ) {
-////	Set( idStr( newValue ), true, false );
-////}
+/*
+============
+idInternalCVar::InternalSetBool
+============
+*/
+	InternalSetBool ( newValue: boolean ): void {
+		this.Set( new idStr( newValue ).data, true, false );
+	}
 
-/////*
-////============
-////idInternalCVar::InternalSetInteger
-////============
-////*/
-////void idInternalCVar::InternalSetInteger( const int newValue ) {
-////	Set( idStr( newValue ), true, false );
-////}
+/*
+============
+idInternalCVar::InternalSetInteger
+============
+*/
+	InternalSetInteger ( /*const int */newValue: number ): void {
+		this.Set( new idStr( newValue ).data, true, false );
+	}
 
-/////*
-////============
-////idInternalCVar::InternalSetFloat
-////============
-////*/
-////void idInternalCVar::InternalSetFloat( const float newValue ) {
-////	Set( idStr( newValue ), true, false );
-////}
+/*
+============
+idInternalCVar::InternalSetFloat
+============
+*/
+	InternalSetFloat ( /*const float */newValue: number ): void {
+		this.Set( new idStr( newValue ).data, true, false );
+	}
 }
 
 /*

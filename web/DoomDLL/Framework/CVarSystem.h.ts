@@ -163,10 +163,10 @@ class idCVar {
 /*	int						*/GetInteger( ):number { return this.internalVar.integerValue; }
 /*	float					*/GetFloat( ):number { return this.internalVar.floatValue; }
 /*							*/
-///*	void					*/SetString( value:string ):void { this.internalVar.InternalSetString( value ); }
-///*	void					*/SetBool( value:boolean ):void { this.internalVar.InternalSetBool( value ); }
-///*	void					*/SetInteger( value:number ):void { this.internalVar.InternalSetInteger( value ); }
-///*	void					*/SetFloat( value:number ):void { this.internalVar.InternalSetFloat( value ); }
+/*	void					*/SetString( value:string ):void { this.internalVar.InternalSetString( value ); }
+/*	void					*/SetBool( value:boolean ):void { this.internalVar.InternalSetBool( value ); }
+/*	void					*/SetInteger( value:number ):void { this.internalVar.InternalSetInteger( value ); }
+/*	void					*/SetFloat( value:number ):void { this.internalVar.InternalSetFloat( value ); }
 /*
 /*	void					*/SetInternalVar( cvar:idCVar ):void { this.internalVar = cvar; }
 

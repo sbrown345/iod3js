@@ -401,3 +401,4 @@ var glUseProgram = <(program: WebGLProgram) => void>gl.useProgram.bind(gl);
 var glGetUniformLocation = <( program: WebGLProgram, name: string ) => WebGLUniformLocation>gl.getUniformLocation.bind( gl );
 var glGetAttribLocation = <( program: WebGLProgram, name: string ) => number> gl.getAttribLocation.bind( gl );
 var glUniform1i = <( location: WebGLUniformLocation, x: number ) => void>gl.uniform1i.bind( gl );
+var glBindBuffer = <( target: number, buffer: WebGLBuffer ) => void>gl.bindBuffer.bind( gl );
