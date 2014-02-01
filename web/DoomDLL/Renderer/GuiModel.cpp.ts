@@ -448,9 +448,7 @@ DrawStretchPic
 					this.indexes[numIndexes + i] = numVerts + dindexes[i] - this.surf.firstVert;
 				}
 
-				for ( var k = 0; k < vertCount; k++ ) {
-					this.verts[k].equals( dverts[k] );
-				}
+				memcpyStruct( this.verts, dverts, vertCount, idDrawVert.typeInfo );
 			}
 	}
 

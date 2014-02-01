@@ -59,7 +59,7 @@
 ////#endif
 
 
-class silEdge_t implements ITypeInfo {
+class silEdge_t {
 	// NOTE: making this a glIndex is dubious, as there can be 2x the faces as verts
 	p1:number; p2: number;					// planes defining the edge
 	v1: number; v2: number;					// verts defining the edge
@@ -71,12 +71,12 @@ class silEdge_t implements ITypeInfo {
 		this.v2 = 0;
 	}
 
-	static typeInfo = [
+	static typeInfo = new TypeInfo(silEdge_t, [
 		["p1", ""],
 		["p2", ""],
 		["v1", ""],
 		["v2", ""]
-	];
+	]);
 };
 
 // this is used for calculating unsmoothed normals and tangents for deformed models

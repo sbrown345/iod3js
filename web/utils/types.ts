@@ -1,26 +1,36 @@
-﻿interface ITypeInfo {
-    //typeInfo: string[][];
-    //size: number;
+﻿class TypeInfo {
+	constructor ( typeClass: any, typeInfo: string[][] ) {
+		this.typeClass = typeClass;
+		this.typeInfo = typeInfo;
+	}
+
+	typeClass: any;
+	typeInfo: string[][];
+	size: number;
 }
 
-function ITypeInfoLogger(v: ITypeInfo, typeInfo: string[][]):void {
-    for (var i = 0; i < typeInfo.length; i++) {
-        var name = typeInfo[i][0];   
-        var type = typeInfo[i][1];   
-        console.log(name + ": " + v[name] + "\t\t(" + type + ")");
-    }
+//function ITypeInfoLogger(v: ITypeInfo, typeInfo: string[][]):void {
+//    for (var i = 0; i < typeInfo.length; i++) {
+//        var name = typeInfo[i][0];   
+//        var type = typeInfo[i][1];   
+//        console.log(name + ": " + v[name] + "\t\t(" + type + ")");
+//    }
+//}
+
+function TypeInfoCopier ( dest: any, source: any, typeInfo: TypeInfo ): void {
+	for ( var i = 0; i < typeInfo.typeInfo.length; i++ ) {
+		var name = typeInfo.typeInfo[i][0];
+		dest[name] = source[name];
+	}
 }
 
-function ITypeInfoCopier(dest: ITypeInfo, source: ITypeInfo, typeInfo: string[][]):void {
-    for (var i = 0; i < typeInfo.length; i++) {
-        var name = typeInfo[i][0];   
-        dest[name] = source[name]; 
-    }
-}
+function memcpyStruct ( dest: any, source: any, count: number, typeInfo: TypeInfo ): void {
+	for (var i = 0; i < count; i++) {
+		if ( !dest[i] ) {
+			dest[i] = new typeInfo.typeClass;
+		}
 
-function memcpyStruct(dest: ITypeInfo[], source: ITypeInfo[], count: number, typeInfo: string[][]):void {
-	for ( var i = 0; i < count; i++ ) {
-		ITypeInfoCopier( dest[i], source[i], typeInfo );
+		TypeInfoCopier( dest[i], source[i], typeInfo );
 	}
 }
 

@@ -254,7 +254,7 @@ class shaderStage_t {
 		this.newStage = null;
 	}
 
-	static typeInfo = [
+	static typeInfo = new TypeInfo(shaderStage_t, [
 		["conditionRegister", ""],
 		["lighting", ""],
 		["drawStateBits", ""],
@@ -270,7 +270,7 @@ class shaderStage_t {
 		["newStage", ""],
 		["dynamicFrameCount", ""],
 		["dynamicFrameCount", ""]
-	];
+	]);
 };
 
 enum materialCoverage_t {

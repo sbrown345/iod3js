@@ -60,13 +60,13 @@ class idDrawVert {
 //	void			SetColor( dword color );
 //	dword			GetColor( void ) const;
 //};
-	static typeInfo = [
+	static typeInfo = new TypeInfo(idDrawVert, [
 		["xyz", ""],
 		["st", ""],
 		["normal", ""],
 		["tangents", ""],
 		["color", ""]
-	];
+	]);
 
 	constructor ( ) {
 		this.xyz = new idVec3;
