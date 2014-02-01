@@ -121,92 +121,100 @@ class idWinding {
 //	static float	TriangleArea( const idVec3 &a, const idVec3 &b, const idVec3 &c );
 //
 //protected:
-//	int				numPoints;				// number of points
-//	idVec5 *		p;						// pointer to point data
-//	int				allocedSize;
+	numPoints:number/*int*/;				// number of points
+	p: idVec5[] = null;						// pointer to point data
+	allocedSize: number/*int*/;
 //
 //	bool			EnsureAlloced( int n, bool keep = false );
 //	virtual bool	ReAllocate( int n, bool keep = false );
 //};
 //
 //ID_INLINE idWinding::idWinding( void ) {
-//	numPoints = allocedSize = 0;
-//	p = NULL;
+//	this.numPoints = this.allocedSize = 0;
+//	this.p = NULL;
 //}
 //
 //ID_INLINE idWinding::idWinding( int n ) {
-//	numPoints = allocedSize = 0;
-//	p = NULL;
+//	this.numPoints = this.allocedSize = 0;
+//	this.p = NULL;
 //	EnsureAlloced( n );
 //}
+
+	constructor ( n: number=null ) {
+		this.numPoints = this.allocedSize = 0;
+		this.p = null;
+		if ( n ) {
+			this.EnsureAlloced( n );
+		}
+	}
 //
 //ID_INLINE idWinding::idWinding( const idVec3 *verts, const int n ) {
 //	int i;
 //
-//	numPoints = allocedSize = 0;
-//	p = NULL;
+//	this.numPoints = this.allocedSize = 0;
+//	this.p = NULL;
 //	if ( !EnsureAlloced( n ) ) {
-//		numPoints = 0;
+//		this.numPoints = 0;
 //		return;
 //	}
 //	for ( i = 0; i < n; i++ ) {
-//		p[i].ToVec3() = verts[i];
-//		p[i].s = p[i].t = 0.0;
+//		this.p[i].ToVec3() = verts[i];
+//		this.p[i].s = this.p[i].t = 0.0;
 //	}
-//	numPoints = n;
+//	this.numPoints = n;
 //}
 //
 //ID_INLINE idWinding::idWinding( const idVec3 &normal, const float dist ) {
-//	numPoints = allocedSize = 0;
-//	p = NULL;
+//	this.numPoints = this.allocedSize = 0;
+//	this.p = NULL;
 //	BaseForPlane( normal, dist );
 //}
 //
 //ID_INLINE idWinding::idWinding( const idPlane &plane ) {
-//	numPoints = allocedSize = 0;
-//	p = NULL;
+//	this.numPoints = this.allocedSize = 0;
+//	this.p = NULL;
 //	BaseForPlane( plane );
 //}
 //
 //ID_INLINE idWinding::idWinding( const idWinding &winding ) {
 //	int i;
 //	if ( !EnsureAlloced( winding.GetNumPoints() ) ) {
-//		numPoints = 0;
+//		this.numPoints = 0;
 //		return;
 //	}
 //	for ( i = 0; i < winding.GetNumPoints(); i++ ) {
-//		p[i] = winding[i];
+//		this.p[i] = winding[i];
 //	}
-//	numPoints = winding.GetNumPoints();
+//	this.numPoints = winding.GetNumPoints();
 //}
 //
 //ID_INLINE idWinding::~idWinding( void ) {
-//	delete[] p;
-//	p = NULL;
+//	delete[] this.p;
+//	this.p = NULL;
 //}
 //
 //ID_INLINE idWinding &idWinding::operator=( const idWinding &winding ) {
 //	int i;
 //
 //	if ( !EnsureAlloced( winding.numPoints ) ) {
-//		numPoints = 0;
+//		this.numPoints = 0;
 //		return *this;
 //	}
 //	for ( i = 0; i < winding.numPoints; i++ ) {
-//		p[i] = winding.p[i];
+//		this.p[i] = winding.p[i];
 //	}
-//	numPoints = winding.numPoints;
+//	this.numPoints = winding.numPoints;
 //	return *this;
 //}
 //
 //ID_INLINE const idVec5 &idWinding::operator[]( const int index ) const {
-//	//assert( index >= 0 && index < numPoints );
-//	return p[ index ];
+//	//assert( index >= 0 && index < this.numPoints );
+//	return this.p[ index ];
 //}
 //
 //ID_INLINE idVec5 &idWinding::operator[]( const int index ) {
-//	//assert( index >= 0 && index < numPoints );
-//	return p[ index ];
+//	//assert( index >= 0 && index < this.numPoints );
+//	return this.p[ index ];
 //}
 //
 //ID_INLINE idWinding &idWinding::operator+=( const idVec3 &v ) {
@@ -220,48 +228,48 @@ class idWinding {
 //}
 //
 //ID_INLINE void idWinding::AddPoint( const idVec3 &v ) {
-//	if ( !EnsureAlloced(numPoints+1, true) ) {
+//	if ( !EnsureAlloced(this.numPoints+1, true) ) {
 //		return;
 //	}
-//	p[numPoints] = v;
-//	numPoints++;
+//	this.p[this.numPoints] = v;
+//	this.numPoints++;
 //}
 //
-//ID_INLINE void idWinding::AddPoint( const idVec5 &v ) {
-//	if ( !EnsureAlloced(numPoints+1, true) ) {
-//		return;
-//	}
-//	p[numPoints] = v;
-//	numPoints++;
-//}
-//
-//ID_INLINE int idWinding::GetNumPoints( void ) const {
-//	return numPoints;
-//}
+	AddPoint ( /*const */v: idVec5 ): void {
+		if ( !this.EnsureAlloced( this.numPoints + 1, true ) ) {
+			return;
+		}
+		this.p[this.numPoints] = v;
+		this.numPoints++;
+	}
+
+	GetNumPoints ( ): number {
+		return this.numPoints;
+	}
 //
 //ID_INLINE void idWinding::SetNumPoints( int n ) {
 //	if ( !EnsureAlloced( n, true ) ) {
 //		return;
 //	}
-//	numPoints = n;
+//	this.numPoints = n;
 //}
 //
 //ID_INLINE void idWinding::Clear( void ) {
-//	numPoints = 0;
-//	delete[] p;
-//	p = NULL;
+//	this.numPoints = 0;
+//	delete[] this.p;
+//	this.p = NULL;
 //}
 //
 //ID_INLINE void idWinding::BaseForPlane( const idPlane &plane ) {
 //	BaseForPlane( plane.Normal(), plane.Dist() );
 //}
-//
-//ID_INLINE bool idWinding::EnsureAlloced( int n, bool keep ) {
-//	if ( n > allocedSize ) {
-//		return ReAllocate( n, keep );
-//	}
-//	return true;
-//}
+
+	EnsureAlloced ( /*int */n: number, keep = false ): boolean {
+		if ( n > this.allocedSize ) {
+			return this.ReAllocate( n, keep );
+		}
+		return true;
+	}
 //
 //
 //
@@ -276,27 +284,29 @@ class idWinding {
 ////
 ////===============================================================
 //
-	///*
-//=============
-//idWinding::ReAllocate
-//=============
-//*/
-//bool idWinding::ReAllocate(int n, bool keep) {
-//	idVec5 *oldP;
-//
-//	oldP = p;
-//	n = (n + 3) & ~3;	// align up to multiple of four
-//	p = new idVec5[n];
-//	if (oldP) {
-//		if (keep) {
-//			memcpy(p, oldP, numPoints * sizeof(p[0]));
-//		}
-//		delete[] oldP;
-//	}
-//	allocedSize = n;
-//
-//	return true;
-//}
+	/*
+=============
+idWinding::ReAllocate
+=============
+*/
+	ReAllocate ( /*int */n: number, keep: boolean ): boolean {
+		var oldP: idVec5[];
+
+		oldP = this.p;
+		n = ( n + 3 ) & ~3; // align up to multiple of four
+		this.p = newStructArray<idVec5>( idVec5, n );
+		if ( oldP ) {
+			if ( keep ) {
+				for ( var i = 0; i < this.numPoints; i++ ) {
+					this.p[i].equals( oldP[i] );
+				}
+			}
+			//delete[] oldP;
+		}
+		this.allocedSize = n;
+
+		return true;
+	}
 //
 	///*
 //=============
@@ -313,15 +323,15 @@ class idWinding {
 //	vright *= MAX_WORLD_SIZE;
 //
 //	EnsureAlloced(4);
-//	numPoints = 4;
-//	p[0].ToVec3() = org - vright + vup;
-//	p[0].s = p[0].t = 0.0;
-//	p[1].ToVec3() = org + vright + vup;
-//	p[1].s = p[1].t = 0.0;
-//	p[2].ToVec3() = org + vright - vup;
-//	p[2].s = p[2].t = 0.0;
-//	p[3].ToVec3() = org - vright - vup;
-//	p[3].s = p[3].t = 0.0;
+//	this.numPoints = 4;
+//	this.p[0].ToVec3() = org - vright + vup;
+//	this.p[0].s = this.p[0].t = 0.0;
+//	this.p[1].ToVec3() = org + vright + vup;
+//	this.p[1].s = this.p[1].t = 0.0;
+//	this.p[2].ToVec3() = org + vright - vup;
+//	this.p[2].s = this.p[2].t = 0.0;
+//	this.p[3].ToVec3() = org - vright - vup;
+//	this.p[3].s = this.p[3].t = 0.0;
 //}
 //
 	///*
@@ -348,7 +358,7 @@ class idWinding {
 //	counts[0] = counts[1] = counts[2] = 0;
 //
 //	// determine sides for each point
-//	for (i = 0; i < numPoints; i++) {
+//	for (i = 0; i < this.numPoints; i++) {
 //		dists[i] = dot = plane.Distance(p[i].ToVec3());
 //		if (dot > epsilon) {
 //			sides[i] = SIDE_FRONT;
@@ -391,30 +401,30 @@ class idWinding {
 //		return SIDE_FRONT;
 //	}
 //
-//	maxpts = numPoints + 4;	// cant use counts[0]+2 because of fp grouping errors
+//	maxpts = this.numPoints + 4;	// cant use counts[0]+2 because of fp grouping errors
 //
 //	*front = f = new idWinding(maxpts);
 //	*back = b = new idWinding(maxpts);
 //
-//	for (i = 0; i < numPoints; i++) {
+//	for (i = 0; i < this.numPoints; i++) {
 //		p1 = &p[i];
 //
 //		if (sides[i] == SIDE_ON) {
-//			f->p[f->numPoints] = *p1;
-//			f->numPoints++;
-//			b->p[b->numPoints] = *p1;
-//			b->numPoints++;
+//			f.p[f.numPoints] = *p1;
+//			f.numPoints++;
+//			b.p[b.numPoints] = *p1;
+//			b.numPoints++;
 //			continue;
 //		}
 //
 //		if (sides[i] == SIDE_FRONT) {
-//			f->p[f->numPoints] = *p1;
-//			f->numPoints++;
+//			f.p[f.numPoints] = *p1;
+//			f.numPoints++;
 //		}
 //
 //		if (sides[i] == SIDE_BACK) {
-//			b->p[b->numPoints] = *p1;
-//			b->numPoints++;
+//			b.p[b.numPoints] = *p1;
+//			b.numPoints++;
 //		}
 //
 //		if (sides[i + 1] == SIDE_ON || sides[i + 1] == sides[i]) {
@@ -422,7 +432,7 @@ class idWinding {
 //		}
 //
 //		// generate a split point
-//		p2 = &p[(i + 1) % numPoints];
+//		p2 = &p[(i + 1) % this.numPoints];
 //
 //		// always calculate the split going from the same side
 //		// or minor epsilon issues can happen
@@ -440,8 +450,8 @@ class idWinding {
 //					mid[j] = (*p1)[j] + dot * ((*p2)[j] - (*p1)[j]);
 //				}
 //			}
-//			mid.s = p1->s + dot * (p2->s - p1->s);
-//			mid.t = p1->t + dot * (p2->t - p1->t);
+//			mid.s = p1.s + dot * (p2.s - p1.s);
+//			mid.t = p1.t + dot * (p2.t - p1.t);
 //		}
 //		else {
 //			dot = dists[i + 1] / (dists[i + 1] - dists[i]);
@@ -457,18 +467,18 @@ class idWinding {
 //					mid[j] = (*p2)[j] + dot * ((*p1)[j] - (*p2)[j]);
 //				}
 //			}
-//			mid.s = p2->s + dot * (p1->s - p2->s);
-//			mid.t = p2->t + dot * (p1->t - p2->t);
+//			mid.s = p2.s + dot * (p1.s - p2.s);
+//			mid.t = p2.t + dot * (p1.t - p2.t);
 //		}
 //
-//		f->p[f->numPoints] = mid;
-//		f->numPoints++;
-//		b->p[b->numPoints] = mid;
-//		b->numPoints++;
+//		f.p[f.numPoints] = mid;
+//		f.numPoints++;
+//		b.p[b.numPoints] = mid;
+//		b.numPoints++;
 //	}
 //
-//	if (f->numPoints > maxpts || b->numPoints > maxpts) {
-//		idLib::common->FatalError("idWinding::Split: points exceeded estimate.");
+//	if (f.numPoints > maxpts || b.numPoints > maxpts) {
+//		idLib::common.FatalError("idWinding::Split: points exceeded estimate.");
 //	}
 //
 //	return SIDE_CROSS;
@@ -499,7 +509,7 @@ class idWinding {
 //	counts[SIDE_FRONT] = counts[SIDE_BACK] = counts[SIDE_ON] = 0;
 //
 //	// determine sides for each point
-//	for (i = 0; i < numPoints; i++) {
+//	for (i = 0; i < this.numPoints; i++) {
 //		dists[i] = dot = plane.Distance(p[i].ToVec3());
 //		if (dot > epsilon) {
 //			sides[i] = SIDE_FRONT;
@@ -529,12 +539,12 @@ class idWinding {
 //		return this;
 //	}
 //
-//	maxpts = numPoints + 4;		// cant use counts[0]+2 because of fp grouping errors
+//	maxpts = this.numPoints + 4;		// cant use counts[0]+2 because of fp grouping errors
 //
 //	newPoints = (idVec5 *)_alloca16(maxpts * sizeof(idVec5));
 //	newNumPoints = 0;
 //
-//	for (i = 0; i < numPoints; i++) {
+//	for (i = 0; i < this.numPoints; i++) {
 //		p1 = &p[i];
 //
 //		if (newNumPoints + 1 > maxpts) {
@@ -561,7 +571,7 @@ class idWinding {
 //		}
 //
 //		// generate a split point
-//		p2 = &p[(i + 1) % numPoints];
+//		p2 = &p[(i + 1) % this.numPoints];
 //
 //		dot = dists[i] / (dists[i] - dists[i + 1]);
 //		for (j = 0; j < 3; j++) {
@@ -576,8 +586,8 @@ class idWinding {
 //				mid[j] = (*p1)[j] + dot * ((*p2)[j] - (*p1)[j]);
 //			}
 //		}
-//		mid.s = p1->s + dot * (p2->s - p1->s);
-//		mid.t = p1->t + dot * (p2->t - p1->t);
+//		mid.s = p1.s + dot * (p2.s - p1.s);
+//		mid.t = p1.t + dot * (p2.t - p1.t);
 //
 //		newPoints[newNumPoints] = mid;
 //		newNumPoints++;
@@ -587,25 +597,26 @@ class idWinding {
 //		return this;
 //	}
 //
-//	numPoints = newNumPoints;
+//	this.numPoints = newNumPoints;
 //	memcpy(p, newPoints, newNumPoints * sizeof(idVec5));
 //
 //	return this;
 //}
 //
-	///*
-//=============
-//idWinding::ClipInPlace
-//=============
-//*/
-//bool idWinding::ClipInPlace(const idPlane &plane, const float epsilon, const bool keepOn) {
-//	float*		dists;
+/*
+=============
+idWinding::ClipInPlace
+=============
+*/
+	ClipInPlace(plane: idPlane, /*float */epsilon: number = ON_EPSILON, keepOn = false ): boolean {
+		todoThrow ( );
+		//float*		dists;
 //	byte *		sides;
 //	idVec5 *	newPoints;
 //	int			newNumPoints;
 //	int			counts[3];
-//	float		dot;
 //	int			i, j;
+//	float		dot;
 //	idVec5 *	p1, *p2;
 //	idVec5		mid;
 //	int			maxpts;
@@ -618,7 +629,7 @@ class idWinding {
 //	counts[SIDE_FRONT] = counts[SIDE_BACK] = counts[SIDE_ON] = 0;
 //
 //	// determine sides for each point
-//	for (i = 0; i < numPoints; i++) {
+//	for (i = 0; i < this.numPoints; i++) {
 //		dists[i] = dot = plane.Distance(p[i].ToVec3());
 //		if (dot > epsilon) {
 //			sides[i] = SIDE_FRONT;
@@ -640,7 +651,7 @@ class idWinding {
 //	}
 //	// if nothing at the front of the clipping plane
 //	if (!counts[SIDE_FRONT]) {
-//		numPoints = 0;
+//		this.numPoints = 0;
 //		return false;
 //	}
 //	// if nothing at the back of the clipping plane
@@ -648,12 +659,12 @@ class idWinding {
 //		return true;
 //	}
 //
-//	maxpts = numPoints + 4;		// cant use counts[0]+2 because of fp grouping errors
+//	maxpts = this.numPoints + 4;		// cant use counts[0]+2 because of fp grouping errors
 //
 //	newPoints = (idVec5 *)_alloca16(maxpts * sizeof(idVec5));
 //	newNumPoints = 0;
 //
-//	for (i = 0; i < numPoints; i++) {
+//	for (i = 0; i < this.numPoints; i++) {
 //		p1 = &p[i];
 //
 //		if (newNumPoints + 1 > maxpts) {
@@ -680,7 +691,7 @@ class idWinding {
 //		}
 //
 //		// generate a split point
-//		p2 = &p[(i + 1) % numPoints];
+//		p2 = &p[(i + 1) % this.numPoints];
 //
 //		dot = dists[i] / (dists[i] - dists[i + 1]);
 //		for (j = 0; j < 3; j++) {
@@ -695,8 +706,8 @@ class idWinding {
 //				mid[j] = (*p1)[j] + dot * ((*p2)[j] - (*p1)[j]);
 //			}
 //		}
-//		mid.s = p1->s + dot * (p2->s - p1->s);
-//		mid.t = p1->t + dot * (p2->t - p1->t);
+//		mid.s = p1.s + dot * (p2.s - p1.s);
+//		mid.t = p1.t + dot * (p2.t - p1.t);
 //
 //		newPoints[newNumPoints] = mid;
 //		newNumPoints++;
@@ -706,11 +717,11 @@ class idWinding {
 //		return true;
 //	}
 //
-//	numPoints = newNumPoints;
+//	this.numPoints = newNumPoints;
 //	memcpy(p, newPoints, newNumPoints * sizeof(idVec5));
 //
-//	return true;
-//}
+		return true;
+	}
 //
 	///*
 //=============
@@ -721,8 +732,8 @@ class idWinding {
 //	idWinding *w;
 //
 //	w = new idWinding(numPoints);
-//	w->numPoints = numPoints;
-//	memcpy(w->p, p, numPoints * sizeof(p[0]));
+//	w.numPoints = this.numPoints;
+//	memcpy(w.p, this.p, this.numPoints * sizeof(p[0]));
 //	return w;
 //}
 //
@@ -736,9 +747,9 @@ class idWinding {
 //	int i;
 //
 //	w = new idWinding(numPoints);
-//	w->numPoints = numPoints;
-//	for (i = 0; i < numPoints; i++) {
-//		w->p[numPoints - i - 1] = p[i];
+//	w.numPoints = this.numPoints;
+//	for (i = 0; i < this.numPoints; i++) {
+//		w.p[numPoints - i - 1] = this.p[i];
 //	}
 //	return w;
 //}
@@ -753,9 +764,9 @@ class idWinding {
 //	int i;
 //
 //	for (i = 0; i < (numPoints >> 1); i++) {
-//		v = p[i];
-//		p[i] = p[numPoints - i - 1];
-//		p[numPoints - i - 1] = v;
+//		v = this.p[i];
+//		this.p[i] = this.p[numPoints - i - 1];
+//		this.p[numPoints - i - 1] = v;
 //	}
 //}
 //
@@ -773,7 +784,7 @@ class idWinding {
 //
 //	if (numPoints < 3) {
 //		if (print) {
-//			idLib::common->Printf("idWinding::Check: only %i points.", numPoints);
+//			idLib::common.Printf("idWinding::Check: only %i points.", this.numPoints);
 //		}
 //		return false;
 //	}
@@ -781,44 +792,44 @@ class idWinding {
 //	area = GetArea();
 //	if (area < 1.0f) {
 //		if (print) {
-//			idLib::common->Printf("idWinding::Check: tiny area: %f", area);
+//			idLib::common.Printf("idWinding::Check: tiny area: %f", area);
 //		}
 //		return false;
 //	}
 //
 //	GetPlane(plane);
 //
-//	for (i = 0; i < numPoints; i++) {
-//		const idVec3 &p1 = p[i].ToVec3();
+//	for (i = 0; i < this.numPoints; i++) {
+//		const idVec3 &p1 = this.p[i].ToVec3();
 //
 //		// check if the winding is huge
 //		for (j = 0; j < 3; j++) {
 //			if (p1[j] >= MAX_WORLD_COORD || p1[j] <= MIN_WORLD_COORD) {
 //				if (print) {
-//					idLib::common->Printf("idWinding::Check: point %d outside world %c-axis: %f", i, 'X' + j, p1[j]);
+//					idLib::common.Printf("idWinding::Check: point %d outside world %c-axis: %f", i, 'X' + j, p1[j]);
 //				}
 //				return false;
 //			}
 //		}
 //
-//		j = i + 1 == numPoints ? 0 : i + 1;
+//		j = i + 1 == this.numPoints ? 0 : i + 1;
 //
 //		// check if the point is on the face plane
 //		d = p1 * plane.Normal() + plane[3];
 //		if (d < -ON_EPSILON || d > ON_EPSILON) {
 //			if (print) {
-//				idLib::common->Printf("idWinding::Check: point %d off plane.", i);
+//				idLib::common.Printf("idWinding::Check: point %d off plane.", i);
 //			}
 //			return false;
 //		}
 //
 //		// check if the edge isn't degenerate
-//		const idVec3 &p2 = p[j].ToVec3();
+//		const idVec3 &p2 = this.p[j].ToVec3();
 //		dir = p2 - p1;
 //
 //		if (dir.Length() < ON_EPSILON) {
 //			if (print) {
-//				idLib::common->Printf("idWinding::Check: edge %d is degenerate.", i);
+//				idLib::common.Printf("idWinding::Check: edge %d is degenerate.", i);
 //			}
 //			return false;
 //		}
@@ -830,14 +841,14 @@ class idWinding {
 //		edgedist += ON_EPSILON;
 //
 //		// all other points must be on front side
-//		for (j = 0; j < numPoints; j++) {
+//		for (j = 0; j < this.numPoints; j++) {
 //			if (j == i) {
 //				continue;
 //			}
-//			d = p[j].ToVec3() * edgenormal;
+//			d = this.p[j].ToVec3() * edgenormal;
 //			if (d > edgedist) {
 //				if (print) {
-//					idLib::common->Printf("idWinding::Check: non-convex.");
+//					idLib::common.Printf("idWinding::Check: non-convex.");
 //				}
 //				return false;
 //			}
@@ -857,9 +868,9 @@ class idWinding {
 //	float total;
 //
 //	total = 0.0;
-//	for (i = 2; i < numPoints; i++) {
-//		d1 = p[i - 1].ToVec3() - p[0].ToVec3();
-//		d2 = p[i].ToVec3() - p[0].ToVec3();
+//	for (i = 2; i < this.numPoints; i++) {
+//		d1 = this.p[i - 1].ToVec3() - this.p[0].ToVec3();
+//		d2 = this.p[i].ToVec3() - this.p[0].ToVec3();
 //		cross = d1.Cross(d2);
 //		total += cross.Length();
 //	}
@@ -877,8 +888,8 @@ class idWinding {
 //	idVec3 dir;
 //
 //	radius = 0.0;
-//	for (i = 0; i < numPoints; i++) {
-//		dir = p[i].ToVec3() - center;
+//	for (i = 0; i < this.numPoints; i++) {
+//		dir = this.p[i].ToVec3() - center;
 //		r = dir * dir;
 //		if (r > radius) {
 //			radius = r;
@@ -897,10 +908,10 @@ class idWinding {
 //	idVec3 center;
 //
 //	center.Zero();
-//	for (i = 0; i < numPoints; i++) {
-//		center += p[i].ToVec3();
+//	for (i = 0; i < this.numPoints; i++) {
+//		center += this.p[i].ToVec3();
 //	}
-//	center *= (1.0f / numPoints);
+//	center *= (1.0f / this.numPoints);
 //	return center;
 //}
 //
@@ -919,11 +930,11 @@ class idWinding {
 //	}
 //
 //	center = GetCenter();
-//	v1 = p[0].ToVec3() - center;
-//	v2 = p[1].ToVec3() - center;
+//	v1 = this.p[0].ToVec3() - center;
+//	v2 = this.p[1].ToVec3() - center;
 //	normal = v2.Cross(v1);
 //	normal.Normalize();
-//	dist = p[0].ToVec3() * normal;
+//	dist = this.p[0].ToVec3() * normal;
 //}
 //
 	///*
@@ -941,8 +952,8 @@ class idWinding {
 //	}
 //
 //	center = GetCenter();
-//	v1 = p[0].ToVec3() - center;
-//	v2 = p[1].ToVec3() - center;
+//	v1 = this.p[0].ToVec3() - center;
+//	v2 = this.p[1].ToVec3() - center;
 //	plane.SetNormal(v2.Cross(v1));
 //	plane.Normalize();
 //	plane.FitThroughPoint(p[0].ToVec3());
@@ -961,25 +972,25 @@ class idWinding {
 //		return;
 //	}
 //
-//	bounds[0] = bounds[1] = p[0].ToVec3();
-//	for (i = 1; i < numPoints; i++) {
+//	bounds[0] = bounds[1] = this.p[0].ToVec3();
+//	for (i = 1; i < this.numPoints; i++) {
 //		if (p[i].x < bounds[0].x) {
-//			bounds[0].x = p[i].x;
+//			bounds[0].x = this.p[i].x;
 //		}
 //		else if (p[i].x > bounds[1].x) {
-//			bounds[1].x = p[i].x;
+//			bounds[1].x = this.p[i].x;
 //		}
 //		if (p[i].y < bounds[0].y) {
-//			bounds[0].y = p[i].y;
+//			bounds[0].y = this.p[i].y;
 //		}
 //		else if (p[i].y > bounds[1].y) {
-//			bounds[1].y = p[i].y;
+//			bounds[1].y = this.p[i].y;
 //		}
 //		if (p[i].z < bounds[0].z) {
-//			bounds[0].z = p[i].z;
+//			bounds[0].z = this.p[i].z;
 //		}
 //		else if (p[i].z > bounds[1].z) {
-//			bounds[1].z = p[i].z;
+//			bounds[1].z = this.p[i].z;
 //		}
 //	}
 //}
@@ -992,13 +1003,13 @@ class idWinding {
 //void idWinding::RemoveEqualPoints(const float epsilon) {
 //	int i, j;
 //
-//	for (i = 0; i < numPoints; i++) {
-//		if ((p[i].ToVec3() - p[(i + numPoints - 1) % numPoints].ToVec3()).LengthSqr() >= Square(epsilon)) {
+//	for (i = 0; i < this.numPoints; i++) {
+//		if ((p[i].ToVec3() - this.p[(i + this.numPoints - 1) % this.numPoints].ToVec3()).LengthSqr() >= Square(epsilon)) {
 //			continue;
 //		}
-//		numPoints--;
-//		for (j = i; j < numPoints; j++) {
-//			p[j] = p[j + 1];
+//		this.numPoints--;
+//		for (j = i; j < this.numPoints; j++) {
+//			this.p[j] = this.p[j + 1];
 //		}
 //		i--;
 //	}
@@ -1018,20 +1029,20 @@ class idWinding {
 //		return;
 //	}
 //
-//	for (i = 0; i < numPoints; i++) {
+//	for (i = 0; i < this.numPoints; i++) {
 //
 //		// create plane through edge orthogonal to winding plane
-//		edgeNormal = (p[i].ToVec3() - p[(i + numPoints - 1) % numPoints].ToVec3()).Cross(normal);
+//		edgeNormal = (p[i].ToVec3() - this.p[(i + this.numPoints - 1) % this.numPoints].ToVec3()).Cross(normal);
 //		edgeNormal.Normalize();
-//		dist = edgeNormal * p[i].ToVec3();
+//		dist = edgeNormal * this.p[i].ToVec3();
 //
-//		if (idMath::Fabs(edgeNormal * p[(i + 1) % numPoints].ToVec3() - dist) > epsilon) {
+//		if (idMath::Fabs(edgeNormal * this.p[(i + 1) % this.numPoints].ToVec3() - dist) > epsilon) {
 //			continue;
 //		}
 //
-//		numPoints--;
-//		for (j = i; j < numPoints; j++) {
-//			p[j] = p[j + 1];
+//		this.numPoints--;
+//		for (j = i; j < this.numPoints; j++) {
+//			this.p[j] = this.p[j + 1];
 //		}
 //		i--;
 //	}
@@ -1060,9 +1071,9 @@ class idWinding {
 //		return;
 //	}
 //
-//	maxPts = this->numPoints + winding->numPoints;
+//	maxPts = this.numPoints + winding.numPoints;
 //
-//	if (!this->EnsureAlloced(maxPts, true)) {
+//	if (!this.EnsureAlloced(maxPts, true)) {
 //		return;
 //	}
 //
@@ -1070,20 +1081,20 @@ class idWinding {
 //	hullDirs = (idVec3 *)stack_alloc(maxPts * sizeof(idVec3));
 //	hullSide = (bool *)stack_alloc(maxPts * sizeof(bool));
 //
-//	for (i = 0; i < winding->numPoints; i++) {
-//		const idVec5 &p1 = winding->p[i];
+//	for (i = 0; i < winding.numPoints; i++) {
+//		const idVec5 &p1 = winding.p[i];
 //
 //		// calculate hull edge vectors
-//		for (j = 0; j < this->numPoints; j++) {
-//			dir = this->p[(j + 1) % this->numPoints].ToVec3() - this->p[j].ToVec3();
+//		for (j = 0; j < this.numPoints; j++) {
+//			dir = this.p[(j + 1) % this.numPoints].ToVec3() - this.p[j].ToVec3();
 //			dir.Normalize();
 //			hullDirs[j] = normal.Cross(dir);
 //		}
 //
 //		// calculate side for each hull edge
 //		outside = false;
-//		for (j = 0; j < this->numPoints; j++) {
-//			dir = p1.ToVec3() - this->p[j].ToVec3();
+//		for (j = 0; j < this.numPoints; j++) {
+//			dir = p1.ToVec3() - this.p[j].ToVec3();
 //			d = dir * hullDirs[j];
 //			if (d >= epsilon) {
 //				outside = true;
@@ -1102,12 +1113,12 @@ class idWinding {
 //		}
 //
 //		// find the back side to front side transition
-//		for (j = 0; j < this->numPoints; j++) {
-//			if (!hullSide[j] && hullSide[(j + 1) % this->numPoints]) {
+//		for (j = 0; j < this.numPoints; j++) {
+//			if (!hullSide[j] && hullSide[(j + 1) % this.numPoints]) {
 //				break;
 //			}
 //		}
-//		if (j >= this->numPoints) {
+//		if (j >= this.numPoints) {
 //			continue;
 //		}
 //
@@ -1116,17 +1127,17 @@ class idWinding {
 //		numNewHullPoints = 1;
 //
 //		// copy over all points that aren't double fronts
-//		j = (j + 1) % this->numPoints;
-//		for (k = 0; k < this->numPoints; k++) {
-//			if (hullSide[(j + k) % this->numPoints] && hullSide[(j + k + 1) % this->numPoints]) {
+//		j = (j + 1) % this.numPoints;
+//		for (k = 0; k < this.numPoints; k++) {
+//			if (hullSide[(j + k) % this.numPoints] && hullSide[(j + k + 1) % this.numPoints]) {
 //				continue;
 //			}
-//			newHullPoints[numNewHullPoints] = this->p[(j + k + 1) % this->numPoints];
+//			newHullPoints[numNewHullPoints] = this.p[(j + k + 1) % this.numPoints];
 //			numNewHullPoints++;
 //		}
 //
-//		this->numPoints = numNewHullPoints;
-//		memcpy(this->p, newHullPoints, numNewHullPoints * sizeof(idVec5));
+//		this.numPoints = numNewHullPoints;
+//		memcpy(this.p, newHullPoints, numNewHullPoints * sizeof(idVec5));
 //	}
 //}
 //
@@ -1149,8 +1160,8 @@ class idWinding {
 //
 //	switch (numPoints) {
 //	case 0: {
-//				p[0] = point;
-//				numPoints++;
+//				this.p[0] = point;
+//				this.numPoints++;
 //				return;
 //	}
 //	case 1: {
@@ -1158,30 +1169,30 @@ class idWinding {
 //				if (p[0].ToVec3().Compare(point, epsilon)) {
 //					return;
 //				}
-//				p[1].ToVec3() = point;
-//				numPoints++;
+//				this.p[1].ToVec3() = point;
+//				this.numPoints++;
 //				return;
 //	}
 //	case 2: {
 //				// don't add a point if it already exists
-//				if (p[0].ToVec3().Compare(point, epsilon) || p[1].ToVec3().Compare(point, epsilon)) {
+//				if (p[0].ToVec3().Compare(point, epsilon) || this.p[1].ToVec3().Compare(point, epsilon)) {
 //					return;
 //				}
 //				// if only two points make sure we have the right ordering according to the normal
-//				dir = point - p[0].ToVec3();
-//				dir = dir.Cross(p[1].ToVec3() - p[0].ToVec3());
+//				dir = point - this.p[0].ToVec3();
+//				dir = dir.Cross(p[1].ToVec3() - this.p[0].ToVec3());
 //				if (dir[0] == 0.0 && dir[1] == 0.0 && dir[2] == 0.0) {
 //					// points don't make a plane
 //					return;
 //				}
 //				if (dir * normal > 0.0) {
-//					p[2].ToVec3() = point;
+//					this.p[2].ToVec3() = point;
 //				}
 //				else {
-//					p[2] = p[1];
-//					p[1].ToVec3() = point;
+//					this.p[2] = this.p[1];
+//					this.p[1].ToVec3() = point;
 //				}
-//				numPoints++;
+//				this.numPoints++;
 //				return;
 //	}
 //	}
@@ -1190,15 +1201,15 @@ class idWinding {
 //	hullSide = (bool *)stack_alloc(numPoints * sizeof(bool));
 //
 //	// calculate hull edge vectors
-//	for (j = 0; j < numPoints; j++) {
-//		dir = p[(j + 1) % numPoints].ToVec3() - p[j].ToVec3();
+//	for (j = 0; j < this.numPoints; j++) {
+//		dir = this.p[(j + 1) % this.numPoints].ToVec3() - this.p[j].ToVec3();
 //		hullDirs[j] = normal.Cross(dir);
 //	}
 //
 //	// calculate side for each hull edge
 //	outside = false;
-//	for (j = 0; j < numPoints; j++) {
-//		dir = point - p[j].ToVec3();
+//	for (j = 0; j < this.numPoints; j++) {
+//		dir = point - this.p[j].ToVec3();
 //		d = dir * hullDirs[j];
 //		if (d >= epsilon) {
 //			outside = true;
@@ -1217,12 +1228,12 @@ class idWinding {
 //	}
 //
 //	// find the back side to front side transition
-//	for (j = 0; j < numPoints; j++) {
-//		if (!hullSide[j] && hullSide[(j + 1) % numPoints]) {
+//	for (j = 0; j < this.numPoints; j++) {
+//		if (!hullSide[j] && hullSide[(j + 1) % this.numPoints]) {
 //			break;
 //		}
 //	}
-//	if (j >= numPoints) {
+//	if (j >= this.numPoints) {
 //		return;
 //	}
 //
@@ -1233,19 +1244,19 @@ class idWinding {
 //	numHullPoints = 1;
 //
 //	// copy over all points that aren't double fronts
-//	j = (j + 1) % numPoints;
-//	for (k = 0; k < numPoints; k++) {
-//		if (hullSide[(j + k) % numPoints] && hullSide[(j + k + 1) % numPoints]) {
+//	j = (j + 1) % this.numPoints;
+//	for (k = 0; k < this.numPoints; k++) {
+//		if (hullSide[(j + k) % this.numPoints] && hullSide[(j + k + 1) % this.numPoints]) {
 //			continue;
 //		}
-//		hullPoints[numHullPoints] = p[(j + k + 1) % numPoints];
+//		hullPoints[numHullPoints] = this.p[(j + k + 1) % this.numPoints];
 //		numHullPoints++;
 //	}
 //
 //	if (!EnsureAlloced(numHullPoints, false)) {
 //		return;
 //	}
-//	numPoints = numHullPoints;
+//	this.numPoints = numHullPoints;
 //	memcpy(p, hullPoints, numHullPoints * sizeof(idVec5));
 //}
 //
@@ -1273,12 +1284,12 @@ class idWinding {
 //	p1 = p2 = NULL;	// stop compiler warning
 //	j = 0;
 //
-//	for (i = 0; i < f1->numPoints; i++) {
-//		p1 = &f1->p[i].ToVec3();
-//		p2 = &f1->p[(i + 1) % f1->numPoints].ToVec3();
-//		for (j = 0; j < f2->numPoints; j++) {
-//			p3 = &f2->p[j].ToVec3();
-//			p4 = &f2->p[(j + 1) % f2->numPoints].ToVec3();
+//	for (i = 0; i < f1.numPoints; i++) {
+//		p1 = &f1.p[i].ToVec3();
+//		p2 = &f1.p[(i + 1) % f1.numPoints].ToVec3();
+//		for (j = 0; j < f2.numPoints; j++) {
+//			p3 = &f2.p[j].ToVec3();
+//			p4 = &f2.p[(j + 1) % f2.numPoints].ToVec3();
 //			for (k = 0; k < 3; k++) {
 //				if (idMath::Fabs((*p1)[k] - (*p4)[k]) > 0.1f) {
 //					break;
@@ -1291,12 +1302,12 @@ class idWinding {
 //				break;
 //			}
 //		}
-//		if (j < f2->numPoints) {
+//		if (j < f2.numPoints) {
 //			break;
 //		}
 //	}
 //
-//	if (i == f1->numPoints) {
+//	if (i == f1.numPoints) {
 //		return NULL;			// no matching edges
 //	}
 //
@@ -1304,12 +1315,12 @@ class idWinding {
 //	// check slope of connected lines
 //	// if the slopes are colinear, the point can be removed
 //	//
-//	back = &f1->p[(i + f1->numPoints - 1) % f1->numPoints].ToVec3();
+//	back = &f1.p[(i + f1.numPoints - 1) % f1.numPoints].ToVec3();
 //	delta = (*p1) - (*back);
 //	normal = planenormal.Cross(delta);
 //	normal.Normalize();
 //
-//	back = &f2->p[(j + 2) % f2->numPoints].ToVec3();
+//	back = &f2.p[(j + 2) % f2.numPoints].ToVec3();
 //	delta = (*back) - (*p1);
 //	dot = delta * normal;
 //	if (dot > CONTINUOUS_EPSILON) {
@@ -1318,12 +1329,12 @@ class idWinding {
 //
 //	keep1 = (bool)(dot < -CONTINUOUS_EPSILON);
 //
-//	back = &f1->p[(i + 2) % f1->numPoints].ToVec3();
+//	back = &f1.p[(i + 2) % f1.numPoints].ToVec3();
 //	delta = (*back) - (*p2);
 //	normal = planenormal.Cross(delta);
 //	normal.Normalize();
 //
-//	back = &f2->p[(j + f2->numPoints - 1) % f2->numPoints].ToVec3();
+//	back = &f2.p[(j + f2.numPoints - 1) % f2.numPoints].ToVec3();
 //	delta = (*back) - (*p2);
 //	dot = delta * normal;
 //	if (dot > CONTINUOUS_EPSILON) {
@@ -1335,25 +1346,25 @@ class idWinding {
 //	//
 //	// build the new polygon
 //	//
-//	newf = new idWinding(f1->numPoints + f2->numPoints);
+//	newf = new idWinding(f1.numPoints + f2.numPoints);
 //
 //	// copy first polygon
-//	for (k = (i + 1) % f1->numPoints; k != i; k = (k + 1) % f1->numPoints) {
-//		if (!keep && k == (i + 1) % f1->numPoints && !keep2) {
+//	for (k = (i + 1) % f1.numPoints; k != i; k = (k + 1) % f1.numPoints) {
+//		if (!keep && k == (i + 1) % f1.numPoints && !keep2) {
 //			continue;
 //		}
 //
-//		newf->p[newf->numPoints] = f1->p[k];
-//		newf->numPoints++;
+//		newf.p[newf.numPoints] = f1.p[k];
+//		newf.numPoints++;
 //	}
 //
 //	// copy second polygon
-//	for (l = (j + 1) % f2->numPoints; l != j; l = (l + 1) % f2->numPoints) {
-//		if (!keep && l == (j + 1) % f2->numPoints && !keep1) {
+//	for (l = (j + 1) % f2.numPoints; l != j; l = (l + 1) % f2.numPoints) {
+//		if (!keep && l == (j + 1) % f2.numPoints && !keep1) {
 //			continue;
 //		}
-//		newf->p[newf->numPoints] = f2->p[l];
-//		newf->numPoints++;
+//		newf.p[newf.numPoints] = f2.p[l];
+//		newf.numPoints++;
 //	}
 //
 //	return newf;
@@ -1365,13 +1376,13 @@ class idWinding {
 //=============
 //*/
 //void idWinding::RemovePoint(int point) {
-//	if (point < 0 || point >= numPoints) {
-//		idLib::common->FatalError("idWinding::removePoint: point out of range");
+//	if (point < 0 || point >= this.numPoints) {
+//		idLib::common.FatalError("idWinding::removePoint: point out of range");
 //	}
-//	if (point < numPoints - 1) {
+//	if (point < this.numPoints - 1) {
 //		memmove(&p[point], &p[point + 1], (numPoints - point - 1) * sizeof(p[0]));
 //	}
-//	numPoints--;
+//	this.numPoints--;
 //}
 //
 	///*
@@ -1382,20 +1393,20 @@ class idWinding {
 //void idWinding::InsertPoint(const idVec3 &point, int spot) {
 //	int i;
 //
-//	if (spot > numPoints) {
-//		idLib::common->FatalError("idWinding::insertPoint: spot > numPoints");
+//	if (spot > this.numPoints) {
+//		idLib::common.FatalError("idWinding::insertPoint: spot > this.numPoints");
 //	}
 //
 //	if (spot < 0) {
-//		idLib::common->FatalError("idWinding::insertPoint: spot < 0");
+//		idLib::common.FatalError("idWinding::insertPoint: spot < 0");
 //	}
 //
 //	EnsureAlloced(numPoints + 1, true);
-//	for (i = numPoints; i > spot; i--) {
-//		p[i] = p[i - 1];
+//	for (i = this.numPoints; i > spot; i--) {
+//		this.p[i] = this.p[i - 1];
 //	}
-//	p[spot] = point;
-//	numPoints++;
+//	this.p[spot] = point;
+//	this.numPoints++;
 //}
 //
 	///*
@@ -1413,12 +1424,12 @@ class idWinding {
 //		return false;
 //	}
 //
-//	for (i = 0; i < numPoints; i++) {
+//	for (i = 0; i < this.numPoints; i++) {
 //
 //		// create plane through edge orthogonal to winding plane
-//		normal = (p[(i + 1) % numPoints].ToVec3() - p[i].ToVec3()).Cross(plane.Normal());
+//		normal = (p[(i + 1) % this.numPoints].ToVec3() - this.p[i].ToVec3()).Cross(plane.Normal());
 //		normal.Normalize();
-//		dist = normal * p[i].ToVec3();
+//		dist = normal * this.p[i].ToVec3();
 //
 //		if (idMath::Fabs(normal * point - dist) > epsilon) {
 //			continue;
@@ -1427,7 +1438,7 @@ class idWinding {
 //		normal = plane.Normal().Cross(normal);
 //		dot = normal * point;
 //
-//		dist = dot - normal * p[i].ToVec3();
+//		dist = dot - normal * this.p[i].ToVec3();
 //
 //		if (dist < epsilon) {
 //			// if the winding already has the point
@@ -1437,7 +1448,7 @@ class idWinding {
 //			continue;
 //		}
 //
-//		dist = dot - normal * p[(i + 1) % numPoints].ToVec3();
+//		dist = dot - normal * this.p[(i + 1) % this.numPoints].ToVec3();
 //
 //		if (dist > -epsilon) {
 //			// if the winding already has the point
@@ -1467,8 +1478,8 @@ class idWinding {
 //	int		edges;
 //
 //	edges = 0;
-//	for (i = 0; i < numPoints; i++) {
-//		delta = p[(i + 1) % numPoints].ToVec3() - p[i].ToVec3();
+//	for (i = 0; i < this.numPoints; i++) {
+//		delta = this.p[(i + 1) % this.numPoints].ToVec3() - this.p[i].ToVec3();
 //		len = delta.Length();
 //		if (len > EDGE_LENGTH) {
 //			if (++edges == 3) {
@@ -1487,9 +1498,9 @@ class idWinding {
 //bool idWinding::IsHuge(void) const {
 //	int i, j;
 //
-//	for (i = 0; i < numPoints; i++) {
+//	for (i = 0; i < this.numPoints; i++) {
 //		for (j = 0; j < 3; j++) {
-//			if (p[i][j] <= MIN_WORLD_COORD || p[i][j] >= MAX_WORLD_COORD) {
+//			if (p[i][j] <= MIN_WORLD_COORD || this.p[i][j] >= MAX_WORLD_COORD) {
 //				return true;
 //			}
 //		}
@@ -1505,8 +1516,8 @@ class idWinding {
 //void idWinding::Print(void) const {
 //	int i;
 //
-//	for (i = 0; i < numPoints; i++) {
-//		idLib::common->Printf("(%5.1f, %5.1f, %5.1f)\n", p[i][0], p[i][1], p[i][2]);
+//	for (i = 0; i < this.numPoints; i++) {
+//		idLib::common.Printf("(%5.1f, %5.1f, %5.1f)\n", this.p[i][0], this.p[i][1], this.p[i][2]);
 //	}
 //}
 //
@@ -1521,7 +1532,7 @@ class idWinding {
 //
 //	min = idMath::INFINITY;
 //	max = -min;
-//	for (i = 0; i < numPoints; i++) {
+//	for (i = 0; i < this.numPoints; i++) {
 //		d = plane.Distance(p[i].ToVec3());
 //		if (d < min) {
 //			min = d;
@@ -1557,7 +1568,7 @@ class idWinding {
 //
 //	front = false;
 //	back = false;
-//	for (i = 0; i < numPoints; i++) {
+//	for (i = 0; i < this.numPoints; i++) {
 //		d = plane.Distance(p[i].ToVec3());
 //		if (d < -epsilon) {
 //			if (front) {
@@ -1595,8 +1606,8 @@ class idWinding {
 //	int i;
 //
 //	// check if one of the points of winding 1 is at the back of the plane of winding 2
-//	for (i = 0; i < numPoints; i++) {
-//		if (normal2 * p[i].ToVec3() - dist2 > WCONVEX_EPSILON) {
+//	for (i = 0; i < this.numPoints; i++) {
+//		if (normal2 * this.p[i].ToVec3() - dist2 > WCONVEX_EPSILON) {
 //			return true;
 //		}
 //	}
@@ -1619,9 +1630,9 @@ class idWinding {
 //	int i;
 //	idVec3 dir, n, pointvec;
 //
-//	for (i = 0; i < numPoints; i++) {
-//		dir = p[(i + 1) % numPoints].ToVec3() - p[i].ToVec3();
-//		pointvec = point - p[i].ToVec3();
+//	for (i = 0; i < this.numPoints; i++) {
+//		dir = this.p[(i + 1) % this.numPoints].ToVec3() - this.p[i].ToVec3();
+//		pointvec = point - this.p[i].ToVec3();
 //
 //		n = dir.Cross(normal);
 //
@@ -1684,8 +1695,8 @@ class idWinding {
 //
 //	scale = 0.0;
 //	pl1.FromRay(start, dir);
-//	for (i = 0; i < numPoints; i++) {
-//		pl2.FromLine(p[i].ToVec3(), p[(i + 1) % numPoints].ToVec3());
+//	for (i = 0; i < this.numPoints; i++) {
+//		pl2.FromLine(p[i].ToVec3(), this.p[(i + 1) % this.numPoints].ToVec3());
 //		side = pl1.PermutedInnerProduct(pl2) > 0.0;
 //		if (i && side != lastside) {
 //			return false;
@@ -1714,28 +1725,45 @@ idWinding::TriangleArea
 	}
 }
 
-////===============================================================
-////
-////	idFixedWinding
-////
-////===============================================================
+//===============================================================
 //
-///*
-//=============
-//idFixedWinding::ReAllocate
-//=============
-//*/
-//bool idFixedWinding::ReAllocate(int n, bool keep) {
+//	idFixedWinding
 //
-//	assert(n <= MAX_POINTS_ON_WINDING);
-//
-//	if (n > MAX_POINTS_ON_WINDING) {
-//		idLib::common->Printf("WARNING: idFixedWinding -> MAX_POINTS_ON_WINDING overflowed\n");
-//		return false;
-//	}
-//	return true;
-//}
-//
+//===============================================================
+
+
+
+/*
+===============================================================================
+
+	idFixedWinding is a fixed buffer size winding not using
+	memory allocations.
+
+	When an operation would overflow the fixed buffer a warning
+	is printed and the operation is safely cancelled.
+
+===============================================================================
+*/
+
+var MAX_POINTS_ON_WINDING = 64;
+
+class idFixedWinding extends idWinding {
+/*
+=============
+idFixedWinding::ReAllocate
+=============
+*/
+	ReAllocate ( /*int*/ n: number, /*bool */keep: boolean ): boolean {
+
+		assert( n <= MAX_POINTS_ON_WINDING );
+
+		if ( n > MAX_POINTS_ON_WINDING ) {
+			common.Printf( "WARNING: idFixedWinding . MAX_POINTS_ON_WINDING overflowed\n" );
+			return false;
+		}
+		return true;
+	}
+
 ///*
 //=============
 //idFixedWinding::Split
@@ -1754,7 +1782,7 @@ idWinding::TriangleArea
 //	counts[SIDE_FRONT] = counts[SIDE_BACK] = counts[SIDE_ON] = 0;
 //
 //	// determine sides for each point
-//	for (i = 0; i < numPoints; i++) {
+//	for (i = 0; i < this.numPoints; i++) {
 //		dists[i] = dot = plane.Distance(p[i].ToVec3());
 //		if (dot > epsilon) {
 //			sides[i] = SIDE_FRONT;
@@ -1785,23 +1813,23 @@ idWinding::TriangleArea
 //	dists[i] = dists[0];
 //
 //	out.numPoints = 0;
-//	back->numPoints = 0;
+//	back.numPoints = 0;
 //
-//	for (i = 0; i < numPoints; i++) {
+//	for (i = 0; i < this.numPoints; i++) {
 //		p1 = &p[i];
 //
 //		if (!out.EnsureAlloced(out.numPoints + 1, true)) {
 //			return SIDE_FRONT;		// can't split -- fall back to original
 //		}
-//		if (!back->EnsureAlloced(back->numPoints + 1, true)) {
+//		if (!back.EnsureAlloced(back.numPoints + 1, true)) {
 //			return SIDE_FRONT;		// can't split -- fall back to original
 //		}
 //
 //		if (sides[i] == SIDE_ON) {
 //			out.p[out.numPoints] = *p1;
 //			out.numPoints++;
-//			back->p[back->numPoints] = *p1;
-//			back->numPoints++;
+//			back.p[back.numPoints] = *p1;
+//			back.numPoints++;
 //			continue;
 //		}
 //
@@ -1810,8 +1838,8 @@ idWinding::TriangleArea
 //			out.numPoints++;
 //		}
 //		if (sides[i] == SIDE_BACK) {
-//			back->p[back->numPoints] = *p1;
-//			back->numPoints++;
+//			back.p[back.numPoints] = *p1;
+//			back.numPoints++;
 //		}
 //
 //		if (sides[i + 1] == SIDE_ON || sides[i + 1] == sides[i]) {
@@ -1822,13 +1850,13 @@ idWinding::TriangleArea
 //			return SIDE_FRONT;		// can't split -- fall back to original
 //		}
 //
-//		if (!back->EnsureAlloced(back->numPoints + 1, true)) {
+//		if (!back.EnsureAlloced(back.numPoints + 1, true)) {
 //			return SIDE_FRONT;		// can't split -- fall back to original
 //		}
 //
 //		// generate a split point
 //		j = i + 1;
-//		if (j >= numPoints) {
+//		if (j >= this.numPoints) {
 //			p2 = &p[0];
 //		}
 //		else {
@@ -1848,45 +1876,22 @@ idWinding::TriangleArea
 //				mid[j] = (*p1)[j] + dot * ((*p2)[j] - (*p1)[j]);
 //			}
 //		}
-//		mid.s = p1->s + dot * (p2->s - p1->s);
-//		mid.t = p1->t + dot * (p2->t - p1->t);
+//		mid.s = p1.s + dot * (p2.s - p1.s);
+//		mid.t = p1.t + dot * (p2.t - p1.t);
 //
 //		out.p[out.numPoints] = mid;
 //		out.numPoints++;
-//		back->p[back->numPoints] = mid;
-//		back->numPoints++;
+//		back.p[back.numPoints] = mid;
+//		back.numPoints++;
 //	}
 //	for (i = 0; i < out.numPoints; i++) {
-//		p[i] = out.p[i];
+//		this.p[i] = out.p[i];
 //	}
-//	numPoints = out.numPoints;
+//	this.numPoints = out.numPoints;
 //
 //	return SIDE_CROSS;
 //}
 //
-//
-//
-//
-//
-//
-//
-//
-//
-///*
-//===============================================================================
-//
-//	idFixedWinding is a fixed buffer size winding not using
-//	memory allocations.
-//
-//	When an operation would overflow the fixed buffer a warning
-//	is printed and the operation is safely cancelled.
-//
-//===============================================================================
-//*/
-//
-//#define	MAX_POINTS_ON_WINDING	64
-//
-//class idFixedWinding : public idWinding {
 //
 //public:
 //					idFixedWinding( void );
@@ -1913,97 +1918,98 @@ idWinding::TriangleArea
 //};
 //
 //ID_INLINE idFixedWinding::idFixedWinding( void ) {
-//	numPoints = 0;
-//	p = data;
-//	allocedSize = MAX_POINTS_ON_WINDING;
+//	this.numPoints = 0;
+//	this.p = data;
+//	this.allocedSize = MAX_POINTS_ON_WINDING;
 //}
 //
 //ID_INLINE idFixedWinding::idFixedWinding( int n ) {
-//	numPoints = 0;
-//	p = data;
-//	allocedSize = MAX_POINTS_ON_WINDING;
+//	this.numPoints = 0;
+//	this.p = data;
+//	this.allocedSize = MAX_POINTS_ON_WINDING;
 //}
 //
 //ID_INLINE idFixedWinding::idFixedWinding( const idVec3 *verts, const int n ) {
 //	int i;
 //
-//	numPoints = 0;
-//	p = data;
-//	allocedSize = MAX_POINTS_ON_WINDING;
+//	this.numPoints = 0;
+//	this.p = data;
+//	this.allocedSize = MAX_POINTS_ON_WINDING;
 //	if ( !EnsureAlloced( n ) ) {
-//		numPoints = 0;
+//		this.numPoints = 0;
 //		return;
 //	}
 //	for ( i = 0; i < n; i++ ) {
-//		p[i].ToVec3() = verts[i];
-//		p[i].s = p[i].t = 0;
+//		this.p[i].ToVec3() = verts[i];
+//		this.p[i].s = this.p[i].t = 0;
 //	}
-//	numPoints = n;
+//	this.numPoints = n;
 //}
 //
 //ID_INLINE idFixedWinding::idFixedWinding( const idVec3 &normal, const float dist ) {
-//	numPoints = 0;
-//	p = data;
-//	allocedSize = MAX_POINTS_ON_WINDING;
+//	this.numPoints = 0;
+//	this.p = data;
+//	this.allocedSize = MAX_POINTS_ON_WINDING;
 //	BaseForPlane( normal, dist );
 //}
 //
 //ID_INLINE idFixedWinding::idFixedWinding( const idPlane &plane ) {
-//	numPoints = 0;
-//	p = data;
-//	allocedSize = MAX_POINTS_ON_WINDING;
+//	this.numPoints = 0;
+//	this.p = data;
+//	this.allocedSize = MAX_POINTS_ON_WINDING;
 //	BaseForPlane( plane );
 //}
 //
 //ID_INLINE idFixedWinding::idFixedWinding( const idWinding &winding ) {
 //	int i;
 //
-//	p = data;
-//	allocedSize = MAX_POINTS_ON_WINDING;
+//	this.p = data;
+//	this.allocedSize = MAX_POINTS_ON_WINDING;
 //	if ( !EnsureAlloced( winding.GetNumPoints() ) ) {
-//		numPoints = 0;
+//		this.numPoints = 0;
 //		return;
 //	}
 //	for ( i = 0; i < winding.GetNumPoints(); i++ ) {
-//		p[i] = winding[i];
+//		this.p[i] = winding[i];
 //	}
-//	numPoints = winding.GetNumPoints();
+//	this.numPoints = winding.GetNumPoints();
 //}
 //
 //ID_INLINE idFixedWinding::idFixedWinding( const idFixedWinding &winding ) {
 //	int i;
 //
-//	p = data;
-//	allocedSize = MAX_POINTS_ON_WINDING;
+//	this.p = data;
+//	this.allocedSize = MAX_POINTS_ON_WINDING;
 //	if ( !EnsureAlloced( winding.GetNumPoints() ) ) {
-//		numPoints = 0;
+//		this.numPoints = 0;
 //		return;
 //	}
 //	for ( i = 0; i < winding.GetNumPoints(); i++ ) {
-//		p[i] = winding[i];
+//		this.p[i] = winding[i];
 //	}
-//	numPoints = winding.GetNumPoints();
+//	this.numPoints = winding.GetNumPoints();
 //}
 //
 //ID_INLINE idFixedWinding::~idFixedWinding( void ) {
-//	p = NULL;	// otherwise it tries to free the fixed buffer
+//	this.p = NULL;	// otherwise it tries to free the fixed buffer
 //}
 //
 //ID_INLINE idFixedWinding &idFixedWinding::operator=( const idWinding &winding ) {
 //	int i;
 //
 //	if ( !EnsureAlloced( winding.GetNumPoints() ) ) {
-//		numPoints = 0;
+//		this.numPoints = 0;
 //		return *this;
 //	}
 //	for ( i = 0; i < winding.GetNumPoints(); i++ ) {
-//		p[i] = winding[i];
+//		this.p[i] = winding[i];
 //	}
-//	numPoints = winding.GetNumPoints();
+//	this.numPoints = winding.GetNumPoints();
 //	return *this;
 //}
 //
-//ID_INLINE void idFixedWinding::Clear( void ) {
-//	numPoints = 0;
-//}
+	Clear ( ): void {
+		this.numPoints = 0;
+	}
+}
 //#endif	/* !__WINDING_H__ */

@@ -108,7 +108,7 @@ class idDeclBase {
 ////	virtual bool			IsValid( void ) const = 0;
 ////	virtual void			Invalidate( void ) = 0;
 ////	virtual void			Reload( void ) = 0;
-////	virtual void			EnsureNotPurged( void ) = 0;
+	EnsureNotPurged(): void { throw "placeholder"; }
 ////	virtual int				Index( void ) const = 0;
 	GetLineNum ( ): number { throw "placeholder"; }
 	GetFileName( ):string { throw "placeholder"; }
@@ -157,9 +157,9 @@ class idDecl {
 ////							// Used by decl editors to undo any changes to the decl.
 ////	void					Invalidate( void ) { this.base.Invalidate(); }
 
-////							// if a pointer might possible be stale from a previous level,
-////							// call this to have it re-parsed
-////	void					EnsureNotPurged( void ) { this.base.EnsureNotPurged(); }
+							// if a pointer might possible be stale from a previous level,
+							// call this to have it re-parsed
+	EnsureNotPurged ( ): void { this.base.EnsureNotPurged ( ); }
 
 ////							// Returns the index in the per-type list.
 ////	int						Index( void ) const { return this.base.Index(); }

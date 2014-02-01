@@ -359,97 +359,99 @@ SetColor
 DrawStretchPic
 =============
 */
-	DrawStretchPic ( dverts: idDrawVert[], /*const glIndex_t **/indexes: Int32Array, /*int */vertCount: number, /*int */indexCount: number, hShader: idMaterial,
+	DrawStretchPic ( dverts: idDrawVert[], /*const glIndex_t **/dindexes: Int32Array, /*int */vertCount: number, /*int */indexCount: number, hShader: idMaterial,
 		clip: boolean, /*float */min_x: number, /*float */min_y: number, /*float */max_x: number, /*float */max_y: number ): void {
 		if ( !glConfig.isInitialized ) {
 			return;
 		}
-		////	if ( !( dverts && dindexes && vertCount && indexCount && hShader ) ) {
-		////		return;
-		////	}
+			if ( !( dverts && dindexes && vertCount && indexCount && hShader ) ) {
+				return;
+			}
 
-		////	// break the current surface if we are changing to a new material
-		////	if ( hShader != surf.material ) {
-		////		if ( surf.numVerts ) {
-		////			AdvanceSurf();
-		////		}
-		////		const_cast<idMaterial *>(hShader).EnsureNotPurged();	// in case it was a gui item started before a level change
-		////		surf.material = hShader;
-		////	}
+			// break the current surface if we are changing to a new material
+			if ( hShader != this.surf.material ) {
+				if ( this.surf.numVerts ) {
+					todoThrow( "AdvanceSurf();" );
+				}
+				/*const_cast<idMaterial *>(hShader)*/hShader.EnsureNotPurged();	// in case it was a gui item started before a level change
+				this.surf.material = hShader;
+			}
 
-		////	// add the verts and indexes to the current surface
+			// add the verts and indexes to the current surface
 
-		////	if ( clip ) {
-		////		int i, j;
+			if ( clip ) {
+				var i: number, j: number;
 
-		////		// FIXME:	this is grim stuff, and should be rewritten if we have any significant
-		////		//			number of guis asking for clipping
-		////		idFixedWinding w;
-		////		for ( i = 0; i < indexCount; i += 3 ) {
-		////			w.Clear();
-		////			w.AddPoint(idVec5(dverts[dindexes[i]].xyz.x, dverts[dindexes[i]].xyz.y, dverts[dindexes[i]].xyz.z, dverts[dindexes[i]].st.x, dverts[dindexes[i]].st.y));
-		////			w.AddPoint(idVec5(dverts[dindexes[i+1]].xyz.x, dverts[dindexes[i+1]].xyz.y, dverts[dindexes[i+1]].xyz.z, dverts[dindexes[i+1]].st.x, dverts[dindexes[i+1]].st.y));
-		////			w.AddPoint(idVec5(dverts[dindexes[i+2]].xyz.x, dverts[dindexes[i+2]].xyz.y, dverts[dindexes[i+2]].xyz.z, dverts[dindexes[i+2]].st.x, dverts[dindexes[i+2]].st.y));
+				// FIXME:	this is grim stuff, and should be rewritten if we have any significant
+				//			number of guis asking for clipping
+				var w = new idFixedWinding;
+				for ( i = 0; i < indexCount; i += 3 ) {
+					w.Clear();
+					w.AddPoint(new idVec5(dverts[dindexes[i]].xyz.x, dverts[dindexes[i]].xyz.y, dverts[dindexes[i]].xyz.z, dverts[dindexes[i]].st.x, dverts[dindexes[i]].st.y));
+					w.AddPoint(new idVec5(dverts[dindexes[i+1]].xyz.x, dverts[dindexes[i+1]].xyz.y, dverts[dindexes[i+1]].xyz.z, dverts[dindexes[i+1]].st.x, dverts[dindexes[i+1]].st.y));
+					w.AddPoint(new idVec5(dverts[dindexes[i+2]].xyz.x, dverts[dindexes[i+2]].xyz.y, dverts[dindexes[i+2]].xyz.z, dverts[dindexes[i+2]].st.x, dverts[dindexes[i+2]].st.y));
 
-		////			for ( j = 0; j < 3; j++ ) {
-		////				if ( w[j].x < min_x || w[j].x > max_x ||
-		////					w[j].y < min_y || w[j].y > max_y ) {
-		////					break;
-		////				}
-		////			}
-		////			if ( j < 3 ) {
-		////				idPlane p;
-		////				p.Normal().y = p.Normal().z = 0.0; p.Normal().x = 1.0; p.SetDist( min_x );
-		////				w.ClipInPlace( p );
-		////				p.Normal().y = p.Normal().z = 0.0; p.Normal().x = -1.0; p.SetDist( -max_x );
-		////				w.ClipInPlace( p );
-		////				p.Normal().x = p.Normal().z = 0.0; p.Normal().y = 1.0; p.SetDist( min_y );
-		////				w.ClipInPlace( p );
-		////				p.Normal().x = p.Normal().z = 0.0; p.Normal().y = -1.0; p.SetDist( -max_y );
-		////				w.ClipInPlace( p );
-		////			}
+					for ( j = 0; j < 3; j++ ) {
+						if ( w[j].x < min_x || w[j].x > max_x ||
+							w[j].y < min_y || w[j].y > max_y ) {
+							break;
+						}
+					}
+					if ( j < 3 ) {
+						var p = new idPlane;
+						p.Normal().y = p.Normal().z = 0.0; p.Normal().x = 1.0; p.SetDist( min_x );
+						w.ClipInPlace( p );
+						p.Normal().y = p.Normal().z = 0.0; p.Normal().x = -1.0; p.SetDist( -max_x );
+						w.ClipInPlace( p );
+						p.Normal().x = p.Normal().z = 0.0; p.Normal().y = 1.0; p.SetDist( min_y );
+						w.ClipInPlace( p );
+						p.Normal().x = p.Normal().z = 0.0; p.Normal().y = -1.0; p.SetDist( -max_y );
+						w.ClipInPlace( p );
+					}
 
-		////			int	numVerts = verts.Num();
-		////			verts.SetNum( numVerts + w.GetNumPoints(), false );
-		////			for ( j = 0 ; j < w.GetNumPoints() ; j++ ) {
-		////				idDrawVert *dv = &verts[numVerts+j];
+					var	numVerts = this.verts.Num();
+					this.verts.SetNum( numVerts + w.GetNumPoints(), false );
+					for ( j = 0 ; j < w.GetNumPoints() ; j++ ) {
+						var dv: idDrawVert = this.verts[numVerts+j];
 
-		////				dv.xyz.x = w[j].x;
-		////				dv.xyz.y = w[j].y;
-		////				dv.xyz.z = w[j].z;
-		////				dv.st.x = w[j].s;
-		////				dv.st.y = w[j].t;
-		////				dv.normal.Set(0, 0, 1);
-		////				dv.tangents[0].Set(1, 0, 0);
-		////				dv.tangents[1].Set(0, 1, 0);
-		////			}
-		////			surf.numVerts += w.GetNumPoints();
+						dv.xyz.x = w[j].x;
+						dv.xyz.y = w[j].y;
+						dv.xyz.z = w[j].z;
+						dv.st.x = w[j].s;
+						dv.st.y = w[j].t;
+						dv.normal.Set(0, 0, 1);
+						dv.tangents[0].Set(1, 0, 0);
+						dv.tangents[1].Set(0, 1, 0);
+					}
+					this.surf.numVerts += w.GetNumPoints();
 
-		////			for ( j = 2; j < w.GetNumPoints(); j++ ) {
-		////				indexes.Append( numVerts - surf.firstVert );
-		////				indexes.Append( numVerts + j - 1 - surf.firstVert );
-		////				indexes.Append( numVerts + j - surf.firstVert );
-		////				surf.numIndexes += 3;
-		////			}
-		////		}
+					for ( j = 2; j < w.GetNumPoints(); j++ ) {
+						this.indexes.Append(numVerts - this.surf.firstVert);
+						this.indexes.Append(numVerts + j - 1 - this.surf.firstVert);
+						this.indexes.Append( numVerts + j - this.surf.firstVert );
+						this.surf.numIndexes += 3;
+					}
+				}
 
-		////	} else {
+			} else {
 
-		////		int numVerts = verts.Num();
-		////		int numIndexes = indexes.Num();
+				var numVerts = this.verts.Num();
+				var numIndexes = this.indexes.Num();
 
-		////		verts.AssureSize( numVerts + vertCount );
-		////		indexes.AssureSize( numIndexes + indexCount );
+				this.verts.AssureSize( numVerts + vertCount );
+				this.indexes.AssureSize( numIndexes + indexCount );
 
-		////		surf.numVerts += vertCount;
-		////		surf.numIndexes += indexCount;
+				this.surf.numVerts += vertCount;
+				this.surf.numIndexes += indexCount;
 
-		////		for ( int i = 0; i < indexCount; i++ ) {
-		////			indexes[numIndexes + i] = numVerts + dindexes[i] - surf.firstVert;
-		////		}
+				for ( var i = 0; i < indexCount; i++ ) {
+					this.indexes[numIndexes + i] = numVerts + dindexes[i] - this.surf.firstVert;
+				}
 
-		////		memcpy( &verts[numVerts], dverts, vertCount * sizeof( verts[0] ) );
-		////	}
+				for ( var k = 0; k < vertCount; k++ ) {
+					this.verts[k].equals( dverts[k] );
+				}
+			}
 	}
 
 /*
@@ -460,8 +462,8 @@ x/y/w/h are in the 0,0 to 640,480 range
 =============
 */
 DrawStretchPicFloats( /*float*/x: number, /*float*/y: number, /*float*/w: number, /*float*/h: number, /*float*/s1: number, /*float*/t1: number, /*float*/s2: number, /*float*/t2: number, hShader: idMaterial ): void {
-	//idDrawVert verts[4];
-	//glIndex_t indexes[6];
+	var verts = newStructArray<idDrawVert>( idDrawVert, 4 );
+	var /*glIndex_t */indexes = new Int32Array(6);
 
 	if ( !glConfig.isInitialized ) {
 		return;
@@ -470,95 +472,95 @@ DrawStretchPicFloats( /*float*/x: number, /*float*/y: number, /*float*/w: number
 		return;
 	}
 
-////	// clip to edges, because the pic may be going into a guiShader
-////	// instead of full screen
-////	if ( x < 0 ) {
-////		s1 += ( s2 - s1 ) * -x / w;
-////		w += x;
-////		x = 0;
-////	}
-////	if ( y < 0 ) {
-////		t1 += ( t2 - t1 ) * -y / h;
-////		h += y;
-////		y = 0;
-////	}
-////	if ( x + w > 640 ) {
-////		s2 -= ( s2 - s1 ) * ( x + w - 640 ) / w;
-////		w = 640 - x;
-////	}
-////	if ( y + h > 480 ) {
-////		t2 -= ( t2 - t1 ) * ( y + h - 480 ) / h;
-////		h = 480 - y;
-////	}
+	// clip to edges, because the pic may be going into a guiShader
+	// instead of full screen
+	if ( x < 0 ) {
+		s1 += ( s2 - s1 ) * -x / w;
+		w += x;
+		x = 0;
+	}
+	if ( y < 0 ) {
+		t1 += ( t2 - t1 ) * -y / h;
+		h += y;
+		y = 0;
+	}
+	if ( x + w > 640 ) {
+		s2 -= ( s2 - s1 ) * ( x + w - 640 ) / w;
+		w = 640 - x;
+	}
+	if ( y + h > 480 ) {
+		t2 -= ( t2 - t1 ) * ( y + h - 480 ) / h;
+		h = 480 - y;
+	}
 	
-////	if ( w <= 0 || h <= 0 ) {
-////		return;		// completely clipped away
-////	}
+	if ( w <= 0 || h <= 0 ) {
+		return;		// completely clipped away
+	}
 
-////	indexes[0] = 3;
-////	indexes[1] = 0;
-////	indexes[2] = 2;
-////	indexes[3] = 2;
-////	indexes[4] = 0;
-////	indexes[5] = 1;
-////	verts[0].xyz[0] = x;
-////	verts[0].xyz[1] = y;
-////	verts[0].xyz[2] = 0;
-////	verts[0].st[0] = s1;
-////	verts[0].st[1] = t1;
-////	verts[0].normal[0] = 0;
-////	verts[0].normal[1] = 0;
-////	verts[0].normal[2] = 1;
-////	verts[0].tangents[0][0] = 1;
-////	verts[0].tangents[0][1] = 0;
-////	verts[0].tangents[0][2] = 0;
-////	verts[0].tangents[1][0] = 0;
-////	verts[0].tangents[1][1] = 1;
-////	verts[0].tangents[1][2] = 0;
-////	verts[1].xyz[0] = x + w;
-////	verts[1].xyz[1] = y;
-////	verts[1].xyz[2] = 0;
-////	verts[1].st[0] = s2;
-////	verts[1].st[1] = t1;
-////	verts[1].normal[0] = 0;
-////	verts[1].normal[1] = 0;
-////	verts[1].normal[2] = 1;
-////	verts[1].tangents[0][0] = 1;
-////	verts[1].tangents[0][1] = 0;
-////	verts[1].tangents[0][2] = 0;
-////	verts[1].tangents[1][0] = 0;
-////	verts[1].tangents[1][1] = 1;
-////	verts[1].tangents[1][2] = 0;
-////	verts[2].xyz[0] = x + w;
-////	verts[2].xyz[1] = y + h;
-////	verts[2].xyz[2] = 0;
-////	verts[2].st[0] = s2;
-////	verts[2].st[1] = t2;
-////	verts[2].normal[0] = 0;
-////	verts[2].normal[1] = 0;
-////	verts[2].normal[2] = 1;
-////	verts[2].tangents[0][0] = 1;
-////	verts[2].tangents[0][1] = 0;
-////	verts[2].tangents[0][2] = 0;
-////	verts[2].tangents[1][0] = 0;
-////	verts[2].tangents[1][1] = 1;
-////	verts[2].tangents[1][2] = 0;
-////	verts[3].xyz[0] = x;
-////	verts[3].xyz[1] = y + h;
-////	verts[3].xyz[2] = 0;
-////	verts[3].st[0] = s1;
-////	verts[3].st[1] = t2;
-////	verts[3].normal[0] = 0;
-////	verts[3].normal[1] = 0;
-////	verts[3].normal[2] = 1;
-////	verts[3].tangents[0][0] = 1;
-////	verts[3].tangents[0][1] = 0;
-////	verts[3].tangents[0][2] = 0;
-////	verts[3].tangents[1][0] = 0;
-////	verts[3].tangents[1][1] = 1;
-////	verts[3].tangents[1][2] = 0;
+	indexes[0] = 3;
+	indexes[1] = 0;
+	indexes[2] = 2;
+	indexes[3] = 2;
+	indexes[4] = 0;
+	indexes[5] = 1;
+	verts[0].xyz[0] = x;
+	verts[0].xyz[1] = y;
+	verts[0].xyz[2] = 0;
+	verts[0].st[0] = s1;
+	verts[0].st[1] = t1;
+	verts[0].normal[0] = 0;
+	verts[0].normal[1] = 0;
+	verts[0].normal[2] = 1;
+	verts[0].tangents[0][0] = 1;
+	verts[0].tangents[0][1] = 0;
+	verts[0].tangents[0][2] = 0;
+	verts[0].tangents[1][0] = 0;
+	verts[0].tangents[1][1] = 1;
+	verts[0].tangents[1][2] = 0;
+	verts[1].xyz[0] = x + w;
+	verts[1].xyz[1] = y;
+	verts[1].xyz[2] = 0;
+	verts[1].st[0] = s2;
+	verts[1].st[1] = t1;
+	verts[1].normal[0] = 0;
+	verts[1].normal[1] = 0;
+	verts[1].normal[2] = 1;
+	verts[1].tangents[0][0] = 1;
+	verts[1].tangents[0][1] = 0;
+	verts[1].tangents[0][2] = 0;
+	verts[1].tangents[1][0] = 0;
+	verts[1].tangents[1][1] = 1;
+	verts[1].tangents[1][2] = 0;
+	verts[2].xyz[0] = x + w;
+	verts[2].xyz[1] = y + h;
+	verts[2].xyz[2] = 0;
+	verts[2].st[0] = s2;
+	verts[2].st[1] = t2;
+	verts[2].normal[0] = 0;
+	verts[2].normal[1] = 0;
+	verts[2].normal[2] = 1;
+	verts[2].tangents[0][0] = 1;
+	verts[2].tangents[0][1] = 0;
+	verts[2].tangents[0][2] = 0;
+	verts[2].tangents[1][0] = 0;
+	verts[2].tangents[1][1] = 1;
+	verts[2].tangents[1][2] = 0;
+	verts[3].xyz[0] = x;
+	verts[3].xyz[1] = y + h;
+	verts[3].xyz[2] = 0;
+	verts[3].st[0] = s1;
+	verts[3].st[1] = t2;
+	verts[3].normal[0] = 0;
+	verts[3].normal[1] = 0;
+	verts[3].normal[2] = 1;
+	verts[3].tangents[0][0] = 1;
+	verts[3].tangents[0][1] = 0;
+	verts[3].tangents[0][2] = 0;
+	verts[3].tangents[1][0] = 0;
+	verts[3].tangents[1][1] = 1;
+	verts[3].tangents[1][2] = 0;
 
-////	DrawStretchPic( &verts[0], &indexes[0], 4, 6, hShader, false, 0.0, 0.0, 640.0, 480.0 );
+	this.DrawStretchPic( verts, indexes, 4, 6, hShader, false, 0.0, 0.0, 640.0, 480.0 );
 }
 
 /////*
@@ -628,12 +630,12 @@ DrawStretchPicFloats( /*float*/x: number, /*float*/y: number, /*float*/w: number
 ////	tempVerts[2].tangents[1][2] = 0;
 
 ////	// break the current surface if we are changing to a new material
-////	if ( material != surf.material ) {
-////		if ( surf.numVerts ) {
+////	if ( material != this.surf.material ) {
+////		if ( this.surf.numVerts ) {
 ////			AdvanceSurf();
 ////		}
 ////		const_cast<idMaterial *>(material).EnsureNotPurged();	// in case it was a gui item started before a level change
-////		surf.material = material;
+////		this.surf.material = material;
 ////	}
 
 
@@ -643,11 +645,11 @@ DrawStretchPicFloats( /*float*/x: number, /*float*/y: number, /*float*/w: number
 ////	verts.AssureSize( numVerts + vertCount );
 ////	indexes.AssureSize( numIndexes + indexCount );
 
-////	surf.numVerts += vertCount;
-////	surf.numIndexes += indexCount;
+////	this.surf.numVerts += vertCount;
+////	this.surf.numIndexes += indexCount;
 
 ////	for ( int i = 0; i < indexCount; i++ ) {
-////		indexes[numIndexes + i] = numVerts + tempIndexes[i] - surf.firstVert;
+////		indexes[numIndexes + i] = numVerts + tempIndexes[i] - this.surf.firstVert;
 ////	}
 
 ////	memcpy( &verts[numVerts], tempVerts, vertCount * sizeof( verts[0] ) );

@@ -47,4 +47,24 @@
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DEBAA48738CD1448A31EF901AEA89D4B/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DEBAA48738CD1448A31EF901AEA89D4B/Shortcut/@EntryValue">ref2</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DEBAA48738CD1448A31EF901AEA89D4B/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
-	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DEBAA48738CD1448A31EF901AEA89D4B/Text/@EntryValue">$VAR_NAME$ = $$VAR_NAME$.$;</s:String></wpf:ResourceDictionary>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DEBAA48738CD1448A31EF901AEA89D4B/Text/@EntryValue">$VAR_NAME$ = $$VAR_NAME$.$;</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DF1DFA21D853564F9EE29E9CFDD57469/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DF1DFA21D853564F9EE29E9CFDD57469/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DF1DFA21D853564F9EE29E9CFDD57469/Description/@EntryValue">Get set indexer</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DF1DFA21D853564F9EE29E9CFDD57469/Field/=INDEX/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DF1DFA21D853564F9EE29E9CFDD57469/Field/=INDEX/Order/@EntryValue">1</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DF1DFA21D853564F9EE29E9CFDD57469/Field/=NAME/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DF1DFA21D853564F9EE29E9CFDD57469/Field/=NAME/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DF1DFA21D853564F9EE29E9CFDD57469/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DF1DFA21D853564F9EE29E9CFDD57469/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DF1DFA21D853564F9EE29E9CFDD57469/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DF1DFA21D853564F9EE29E9CFDD57469/Shortcut/@EntryValue">gsi</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DF1DFA21D853564F9EE29E9CFDD57469/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DF1DFA21D853564F9EE29E9CFDD57469/Text/@EntryValue">get $NAME$ ( ): number { return this[$INDEX$]; }&#xD;
+&#xD;
+set $NAME$ ( value: number ) {&#xD;
+	if ( value === undefined ) {&#xD;
+		throw 'Undefined value';&#xD;
+	}&#xD;
+	this[$INDEX$] = value;&#xD;
+}</s:String></wpf:ResourceDictionary>

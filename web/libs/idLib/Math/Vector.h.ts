@@ -43,16 +43,33 @@
 ////class idPolar3;
 ////class idMat3;
 
-//////===============================================================
-//////
-//////	idVec2 - 2D vector
-//////
-//////===============================================================
+//===============================================================
+//
+//	idVec2 - 2D vector
+//
+//===============================================================
 
-////class idVec2 {
-////public:
-////	float			x;
-////	float			y;
+class idVec2 {
+//public:
+	//x: number; //	float			
+	//y: number; //	float			
+	get x(): number { return this[0]; }
+
+	set x(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this[0] = value;
+	}
+
+	get y(): number { return this[1]; }
+
+	set y(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this[1] = value;
+	}
 
 ////					idVec2( void );
 ////					explicit idVec2( const float x, const float y );
@@ -128,7 +145,7 @@
 ////	if ( idMath::Fabs( x - a.x ) > epsilon ) {
 ////		return false;
 ////	}
-			
+
 ////	if ( idMath::Fabs( y - a.y ) > epsilon ) {
 ////		return false;
 ////	}
@@ -232,7 +249,7 @@
 ////ID_INLINE idVec2 idVec2::operator-() const {
 ////	return idVec2( -x, -y );
 ////}
-	
+
 ////ID_INLINE idVec2 idVec2::operator-( const idVec2 &a ) const {
 ////	return idVec2( x - a.x, y - a.y );
 ////}
@@ -305,6 +322,7 @@
 ////ID_INLINE float *idVec2::ToFloatPtr( void ) {
 ////	return &x;
 ////}
+}
 
 
 //===============================================================
@@ -442,11 +460,11 @@ class idVec3 {
 ////	return ( &x )[ index ];
 ////}
 
-////ID_INLINE void idVec3::Set( const float x, const float y, const float z ) {
-////	this.x = x;
-////	this.y = y;
-////	this.z = z;
-////}
+	Set ( /*const float */x: number, /*const float */y: number, /*const float */z: number ) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
 
 	Zero ( ): void {
 		this.x = this.y = this.z = 0.0;
@@ -1151,19 +1169,63 @@ Zero( ):void {
 ////}
 }
 
-//////===============================================================
-//////
-//////	idVec5 - 5D vector
-//////
-//////===============================================================
+//===============================================================
+//
+//	idVec5 - 5D vector
+//
+//===============================================================
 
-////class idVec5 {
-////public:
-////	float			x;
-////	float			y;
-////	float			z;
-////	float			s;
-////	float			t;
+class idVec5 {
+//public:
+	//x: number; //	float			
+	//y: number; //	float			
+	//z: number; //	float			
+	//s: number; //	float			
+	//t: number; //	float		
+	get x ( ): number { return this[0]; }
+
+	set x ( value: number ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this[0] = value;
+	}
+
+	get y ( ): number { return this[1]; }
+
+	set y ( value: number ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this[1] = value;
+	}
+
+	get z ( ): number { return this[2]; }
+
+	set z ( value: number ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this[2] = value;
+	}
+
+	get s ( ): number { return this[3]; }
+
+	set s ( value: number ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this[3] = value;
+	}
+
+	get t ( ): number { return this[4]; }
+
+	set t ( value: number ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this[4] = value;
+	}
 
 ////					idVec5( void );
 ////					explicit idVec5( const idVec3 &xyz, const idVec2 &st );
@@ -1190,21 +1252,40 @@ Zero( ):void {
 ////ID_INLINE idVec5::idVec5( void ) {
 ////}
 
-////ID_INLINE idVec5::idVec5( const idVec3 &xyz, const idVec2 &st ) {
-////	x = xyz.x;
-////	y = xyz.y;
-////	z = xyz.z;
-////	s = st[0];
-////	t = st[1];
-////}
+	constructor ( )
+	constructor ( xyz: idVec3, st: idVec2 )
+	constructor ( x: number, y: number, z: number, s: number, t: number )
+	constructor ( xyz_x?: any, st_y?: any, z?: number, s?: number, t?: number ) {
+		if ( arguments.length == 2 ) {
+			this.constructor_fromVectors( <idVec3>xyz_x, <idVec2> st_y );
+		} else if ( arguments.length == 5 ) {
+			this.constructor_fromFloats( xyz_x, st_y, z, s, t );
+		}
+	}
 
-////ID_INLINE idVec5::idVec5( const float x, const float y, const float z, const float s, const float t ) {
-////	this.x = x;
-////	this.y = y;
-////	this.z = z;
-////	this.s = s;
-////	this.t = t;
-////}
+	constructor_fromVectors ( xyz: idVec3, st: idVec2 ): void {
+		this.x = xyz.x;
+		this.y = xyz.y;
+		this.z = xyz.z;
+		this.s = st[0];
+		this.t = st[1];
+	}
+
+	constructor_fromFloats ( x: number, y: number, z: number, s: number, t: number ): void {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.s = s;
+		this.t = t;
+	}
+
+	equals ( copyFrom: idVec5 ) {
+		this.x = copyFrom.x;
+		this.y = copyFrom.y;
+		this.z = copyFrom.z;
+		this.s = copyFrom.s;
+		this.t = copyFrom.t;
+	}
 
 ////ID_INLINE float idVec5::operator[]( int index ) const {
 ////	return ( &x )[ index ];
@@ -1241,7 +1322,7 @@ Zero( ):void {
 ////ID_INLINE float *idVec5::ToFloatPtr( void ) {
 ////	return &x;
 ////}
-
+}
 
 //////===============================================================
 //////
