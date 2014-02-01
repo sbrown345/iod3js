@@ -345,8 +345,8 @@ idLangDict::GetHashKey
 /*int */
 	GetHashKey ( str: string ): number {
 		var /*int*/ hashKey = 0;
-		var i = 0;
-		for ( str += STRTABLE_ID_LENGTH; i < str.length; i++ ) {
+		var i = STRTABLE_ID_LENGTH;
+		for ( ; i < str.length; i++ ) {
 			assert( str[i] >= '0' && str[i] <= '9' );
 			hashKey = hashKey * 10 + str.charCodeAt( i ) - '0'.charCodeAt( 0 );
 		}

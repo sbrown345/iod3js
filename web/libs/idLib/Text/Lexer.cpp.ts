@@ -1788,7 +1788,7 @@ FreeSource( ):void {
 	constructor(flags:number = 0) {
 		this.loaded = 0/*false*/;
 		this.filename = new idStr("");
-		this.flags = 0;
+		this.flags = flags;
 		this.SetPunctuations(null);
 		this.allocated = 0/*false*/;
 		this.fileTime = 0;

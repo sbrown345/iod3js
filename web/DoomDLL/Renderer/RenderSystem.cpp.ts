@@ -2613,15 +2613,15 @@ to a fixed color.
 Coordinates are at 640 by 480 virtual resolution
 ==================
 */
-	DrawSmallStringExt( /*int */x: number, /*int */y: number, $string:string, setColor:idVec4, forceColor:boolean, material :idMaterial):void {
-	var color: idVec4;
-	var s:number;
-	var /*int*/xx:number;
+	DrawSmallStringExt ( /*int */x: number, /*int */y: number, $string: string, setColor: idVec4, forceColor: boolean, material: idMaterial ): void {
+		var color: idVec4;
+		var s: number;
+		var /*int*/xx: number;
 
-	// draw the colored text
+		// draw the colored text
 		s = 0;
-	xx = x;
-	this.SetColor( setColor );
+		xx = x;
+		this.SetColor( setColor );
 		while ( $string[s] ) {
 			if ( idStr.IsColor( $string.substr( s ) ) ) {
 				if ( !forceColor ) {
@@ -2636,12 +2636,12 @@ Coordinates are at 640 by 480 virtual resolution
 				s += 2;
 				continue;
 			}
-			this.DrawSmallChar( xx, y, $string.charCodeAt(s), material );
+			this.DrawSmallChar( xx, y, $string.charCodeAt( s ), material );
 			xx += SMALLCHAR_WIDTH;
 			s++;
 		}
 		this.SetColor( colorWhite );
-}
+	}
 
 /////*
 ////=====================

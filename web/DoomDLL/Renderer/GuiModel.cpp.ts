@@ -386,7 +386,7 @@ DrawStretchPic
 
 			if ( clip ) {
 				var i: number, j: number;
-
+				todoThrow( "winding indexer" );
 				// FIXME:	this is grim stuff, and should be rewritten if we have any significant
 				//			number of guis asking for clipping
 				var w = new idFixedWinding;
@@ -453,12 +453,12 @@ DrawStretchPic
 					this.indexes[numIndexes + i] = numVerts + dindexes[i] - this.surf.firstVert;
 				}
 
-				//memcpyStruct(this.verts, dverts, vertCount, idDrawVert.typeInfo);
+				//memcpy( &verts[numVerts], dverts, vertCount * sizeof( verts[0] ) );
 				for ( var k = 0; k < vertCount; k++ ) {
 					if ( !this.verts[k] ) {
 						this.verts[k] = new idDrawVert ( );
 					}
-					this.verts[k].equals( dverts[k] );
+					this.verts[numVerts + k].equals( dverts[k] );
 				}
 			}
 	}

@@ -2113,8 +2113,8 @@ idStr::Cmpn
     static Cmpn ( s1: idStr, s2: idStr, n: number ): number;
     static Cmpn ( s1: string, s2: string, n: number ): number;
     static Cmpn ( s1: any, s2: any, n: number ): number {
-        var str1 = idStr.getString( s1 ).substr( n );
-        var str2 = idStr.getString( s2 ).substr( n );
+        var str1 = idStr.getString( s1 ).substr( 0, n );
+        var str2 = idStr.getString( s2 ).substr( 0, n );
 
         if ( str1 == str2 ) {
             return 0;
