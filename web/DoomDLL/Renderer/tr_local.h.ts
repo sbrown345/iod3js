@@ -696,27 +696,27 @@ class glstate_t {
 }
 
 class backEndCounters_t	{
-////	int		c_surfaces;
-////	int		c_shaders;
-////	int		c_vertexes;
-////	int		c_indexes;		// one set per pass
-////	int		c_totalIndexes;	// counting all passes
+	c_surfaces:number;										   //	int		
+	c_shaders:number;										   //	int		
+	c_vertexes:number;										   //	int		
+	c_indexes:number;		// one set per pass				   //	int		
+	c_totalIndexes:number;	// counting all passes			   //	int		
 
-////	int		c_drawElements;
-////	int		c_drawIndexes;
-////	int		c_drawVertexes;
-////	int		c_drawRefIndexes;
-////	int		c_drawRefVertexes;
+	c_drawElements:number;									   //	int		
+	c_drawIndexes:number;									   //	int		
+	c_drawVertexes:number;									   //	int		
+	c_drawRefIndexes:number;									   //	int		
+	c_drawRefVertexes:number;								   //	int		
 
-////	int		c_shadowElements;
-////	int		c_shadowIndexes;
-////	int		c_shadowVertexes;
+	c_shadowElements:number;									   //	int		
+	c_shadowIndexes:number;									   //	int		
+	c_shadowVertexes:number;									   //	int		
 
-////	int		c_vboIndexes;
-////	float	c_overDraw;	
+	c_vboIndexes:number;										   //	int		
+	c_overDraw:number;										   //	float	
 
-////	float	maxLightValue;	// for light scale
-////	int		msec;			// total msec for backend run
+	maxLightValue:number;	// for light scale				   //	float	
+	msec:number;			// total msec for backend run		   //	int		
 };
 
 ////// all state modified by the back end is separated
@@ -747,7 +747,7 @@ class backEndState_t {
 	// our OpenGL state deltas
 	glState: glstate_t;
 
-////	int					c_copyFrameBuffer;
+	c_copyFrameBuffer:number; //int
 
 	constructor ( ) {
 		////	int					frameCount;		// used to track all images used in a frame

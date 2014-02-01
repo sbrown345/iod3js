@@ -68,7 +68,7 @@ function RB_SetDefaultGLState():void
 //	glColor4f(1,1,1,1);
 //#endif
 
-	glColorMask(1, 1, 1, 1);
+	glColorMask(true, true, true, true);
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -764,31 +764,33 @@ function RB_ExecuteBackEndCommands(cmds:emptyCommand_t):void
 	// upload any image loads that have completed
 	globalImages.CompleteBackgroundImageLoads();
 
-	for (; cmds ; cmds = (const emptyCommand_t *)cmds.next) {
+	for (; cmds; cmds = (<emptyCommand_t>cmds).next) {
 		switch (cmds.commandId) {
 			case renderCommand_t.RC_NOP:
 				break;
-			case RC_DRAW_VIEW:
+			case renderCommand_t.RC_DRAW_VIEW:
 				RB_DrawView(cmds);
 
-				if (((const drawSurfsCommand_t *)cmds).viewDef.viewEntitys) {
+				if ((<drawSurfsCommand_t>cmds).viewDef.viewEntitys) {
 					c_draw3d++;
 				} else {
 					c_draw2d++;
 				}
 
 				break;
-			case RC_SET_BUFFER:
+			case renderCommand_t.RC_SET_BUFFER:
 				RB_SetBuffer(cmds);
 				c_setBuffers++;
 				break;
-			case RC_SWAP_BUFFERS:
-				RB_SwapBuffers(cmds);
-				c_swapBuffers++;
+			case renderCommand_t.RC_SWAP_BUFFERS:
+				todoThrow ( );
+				//RB_SwapBuffers(cmds);
+				//c_swapBuffers++;
 				break;
-			case RC_COPY_RENDER:
-				RB_CopyRender(cmds);
-				c_copyRenders++;
+			case renderCommand_t.RC_COPY_RENDER:
+				todoThrow();
+				//RB_CopyRender(cmds);
+				//c_copyRenders++;
 				break;
 			default:
 				common.Error("RB_ExecuteBackEndCommands: bad commandId");

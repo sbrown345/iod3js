@@ -354,11 +354,11 @@ class idImageManager {
     ////	// The callback function should call one of the idImage::Generate* functions to fill in the data
     ImageFromFunction( /*const char **/_name: string, generatorFunction: (image: idImage)=>void): idImage {throw "placeholder";}
 
-    ////	// called once a frame to allow any background loads that have been completed
-    ////	// to turn into textures.
-    ////	void				CompleteBackgroundImageLoads();
+    	// called once a frame to allow any background loads that have been completed
+    	// to turn into textures.
+	CompleteBackgroundImageLoads ( ): void { throw "placeholder"; }
 
-    ////	// returns the number of bytes of image data bound in the previous frame
+	////	// returns the number of bytes of image data bound in the previous frame
     ////	int					SumOfUsedImages();
 
     ////	// called each frame to allow some cvars to automatically force changes

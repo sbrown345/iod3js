@@ -48,7 +48,8 @@ if ( document.body /*qunit*/ ) {
 	document.body.appendChild( canvas );
 }
 
-var webglContext = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+var glOpts = { preserveDrawingBuffer: true }; // todo: set as false
+var webglContext = canvas.getContext( "webgl", glOpts ) || canvas.getContext( "experimental-webgl", glOpts );
 var gl: WebGLRenderingContext = DEBUG_WEBGL_UTIL ? WebGLDebugUtils.makeDebugContext(webglContext, undefined, logAndValidate) : webglContext;
 canvas.width = 640;
 canvas.height = 480;
@@ -96,8 +97,8 @@ canvas.height = 480;
 var GL_DEPTH_BUFFER_BIT             = 0x00000100;
 var GL_STENCIL_BUFFER_BIT           = 0x00000400;
 var GL_COLOR_BUFFER_BIT             = 0x00004000; ///* Boolean */
-var GL_FALSE                       =  0;
-var GL_TRUE                        =  1; ///* BeginMode */
+var GL_FALSE = false;//0;
+var GL_TRUE = true;//1; ///* BeginMode */
 var GL_POINTS                       = 0x0000;
 var GL_LINES                        = 0x0001;
 var GL_LINE_LOOP                    = 0x0002;

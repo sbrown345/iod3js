@@ -536,8 +536,8 @@ interface WebGLRenderingContext
 	deleteBuffer(buffer: WebGLBuffer): void;
 	deleteFramebuffer(framebuffer: WebGLFramebuffer): void;
 	deleteProgram(program: WebGLProgram): void;
-	deleteRenderbuffer(renderbuffer: WebGLRenderbuffer): void;
-	deleteShader(shader: WebGLShader): void;
+	deleteRenderbuffer(renderbuffer: WebGLRenderbuffer): void;cu
+	deleteShader(shader: WebGLShader): void;de
 	deleteTexture(texture: WebGLTexture): void;
 
 	depthFunc(func: number): void;
@@ -547,7 +547,7 @@ interface WebGLRenderingContext
 	disable(cap: number): void;
 	disableVertexAttribArray(index: number): void;
 	drawArrays(mode: number, first: number, count: number): void;
-	drawElements(mode: number, count: number, type: number, offset: number): void;
+	drawElemdients(mode: number, count: number, type: number, offset: number): void;
 
 	enable(cap: number): void;
 	enableVertexAttribArray(index: number): void;

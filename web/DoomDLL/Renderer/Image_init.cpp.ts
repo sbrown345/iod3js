@@ -1804,43 +1804,43 @@ idImageManager.prototype.R_CombineCubeImages_f = function ( args: idCmdArgs ): v
 ////	}
 ////}
 
-/////*
-////==================
-////R_CompleteBackgroundImageLoads
+/*
+==================
+R_CompleteBackgroundImageLoads
 
-////Do we need to worry about vid_restarts here?
-////==================
-////*/
-////void idImageManager::CompleteBackgroundImageLoads() {
-////	idImage	*remainingList = null;
-////	idImage	*next;
+Do we need to worry about vid_restarts here?
+==================
+*/
+var CompleteBackgroundImageLoads_prev = 0;
+idImageManager.prototype.CompleteBackgroundImageLoads = function ( ) {
+	var remainingList: idImage = null;
+	var next: idImage;
 
-////	for ( idImage *image = backgroundImageLoads ; image ; image = next ) {
-////		next = image.bglNext;
-////		if ( image.bgl.completed ) {
-////			numActiveBackgroundImageLoads--;
-////			fileSystem.CloseFile( image.bgl.f );
-////			// upload the image
-////			image.UploadPrecompressedImage( (byte *)image.bgl.file.buffer, image.bgl.file.length );
-////			R_StaticFree( image.bgl.file.buffer );
-////			if ( image_showBackgroundLoads.GetBool() ) {
-////				common.Printf( "R_CompleteBackgroundImageLoad: %s\n", image.imgName.c_str() );
-////			}
-////		} else {
-////			image.bglNext = remainingList;
-////			remainingList = image;
-////		}
-////	}
-////	if ( image_showBackgroundLoads.GetBool() ) {
-////		static int prev;
-////		if ( numActiveBackgroundImageLoads != prev ) {
-////			prev = numActiveBackgroundImageLoads;
-////			common.Printf( "background Loads: %i\n", numActiveBackgroundImageLoads );
-////		}
-////	}
+	for ( var image = this.backgroundImageLoads; image; image = next ) {
+		next = image.bglNext;
+		if ( image.bgl.completed ) {
+			this.numActiveBackgroundImageLoads--;
+			fileSystem.CloseFile( image.bgl.f );
+			// upload the image
+			image.UploadPrecompressedImage( /*(byte *)*/image.bgl.file.buffer, image.bgl.file.length );
+			R_StaticFree( image.bgl.file.buffer );
+			if ( this.image_showBackgroundLoads.GetBool ( ) ) {
+				common.Printf( "R_CompleteBackgroundImageLoad: %s\n", image.imgName.c_str ( ) );
+			}
+		} else {
+			image.bglNext = remainingList;
+			remainingList = image;
+		}
+	}
+	if ( this.image_showBackgroundLoads.GetBool ( ) ) {
+		if ( this.numActiveBackgroundImageLoads != CompleteBackgroundImageLoads_prev ) {
+			CompleteBackgroundImageLoads_prev = this.numActiveBackgroundImageLoads;
+			common.Printf( "background Loads: %i\n", this.numActiveBackgroundImageLoads );
+		}
+	}
 
-////	backgroundImageLoads = remainingList;
-////}
+	this.backgroundImageLoads = remainingList;
+};
 
 /////*
 ////===============

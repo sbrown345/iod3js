@@ -214,7 +214,7 @@ var r_debugPolygonFilled= new idCVar( "r_debugPolygonFilled", "1", CVAR_RENDERER
 
 //var r__materialOverride= new idCVar( "r_materialOverride", "", CVAR_RENDERER, "overrides all materials", idCmdSystem::ArgCompletion_Decl<DECL_MATERIAL> );
 
-var r__debugRenderToTexture = new idCVar( "r_debugRenderToTexture", "0", CVAR_RENDERER | CVAR_INTEGER, "" );
+var r_debugRenderToTexture = new idCVar( "r_debugRenderToTexture", "0", CVAR_RENDERER | CVAR_INTEGER, "" );
 
 ////////void (APIENTRY *glVertexArrayRangeNV)( GLsizei length, void *pointer );
 ////////// TTimo: wgl vs glX
