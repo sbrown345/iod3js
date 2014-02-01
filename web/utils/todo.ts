@@ -3,6 +3,10 @@ function todo(reason?: string) {
     //console.log("todo", reason);
 }
 
+function notNeeded(reason?: string) {
+    //console.log("todo", reason);
+}
+
 function todoUnimportant(reason?: string): void {
 }
 

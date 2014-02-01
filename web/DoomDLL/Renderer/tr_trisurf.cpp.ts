@@ -457,27 +457,27 @@ function R_ReallyFreeStaticTriSurf(tri: srfTriangles_t): void {
 //		assert( error == null );
 //	}
 //}
-//
-///*
-//==================
-//R_FreeDeferredTriSurfs
-//==================
-//*/
-//void R_FreeDeferredTriSurfs( frameData_t *frame ) {
-//	srfTriangles_t	*tri, *next;
-//
-//	if ( !frame ) {
-//		return;
-//	}
-//
-//	for ( tri = frame.firstDeferredFreeTriSurf; tri; tri = next ) {
-//		next = tri.nextDeferredFree;
-//		R_ReallyFreeStaticTriSurf( tri );
-//	}
-//
-//	frame.firstDeferredFreeTriSurf = null;
-//	frame.lastDeferredFreeTriSurf = null;
-//}
+
+/*
+==================
+R_FreeDeferredTriSurfs
+==================
+*/
+function R_FreeDeferredTriSurfs ( frame: frameData_t ): void {
+	var tri: srfTriangles_t, next: srfTriangles_t;
+
+	if ( !frame ) {
+		return;
+	}
+
+	for ( tri = frame.firstDeferredFreeTriSurf; tri; tri = next ) {
+		next = tri.nextDeferredFree;
+		R_ReallyFreeStaticTriSurf( tri );
+	}
+
+	frame.firstDeferredFreeTriSurf = null;
+	frame.lastDeferredFreeTriSurf = null;
+}
 
 /*
 ==============

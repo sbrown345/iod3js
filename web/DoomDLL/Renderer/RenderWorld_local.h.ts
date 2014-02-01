@@ -149,10 +149,10 @@ class idRenderWorldLocal extends idRenderWorld {
 //	doublePortal_t *		doublePortals;
 //	int						numInterAreaPortals;
 //
-//	idList<idRenderModel *>	localModels;
-//
-//	idList<idRenderEntityLocal*>	entityDefs;
-//	idList<idRenderLightLocal*>		lightDefs;
+	localModels: idList<idRenderModel>;
+
+	entityDefs:	idList <idRenderEntityLocal>;
+	lightDefs 	:idList <idRenderLightLocal>;
 //
 //	idBlockAlloc<areaReference_t, 1024> areaReferenceAllocator;
 //	idBlockAlloc<idInteraction, 256>	interactionAllocator;
@@ -248,7 +248,7 @@ class idRenderWorldLocal extends idRenderWorld {
 //
 //	float					DrawTextLength( const char *text, float scale, int len = 0 );
 //
-//	void					FreeInteractions();
+	FreeInteractions():void { throw "placeholder"; }
 //
 //	void					PushVolumeIntoTree_r( idRenderEntityLocal *def, idRenderLightLocal *light, const idSphere *sphere, int numPoints, const idVec3 (*points), int nodeNum );
 //

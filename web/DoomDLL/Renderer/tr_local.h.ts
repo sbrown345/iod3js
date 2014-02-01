@@ -139,28 +139,28 @@ class idScreenRect {
 ////} shadowFrustum_t;
 
 
-////// areas have references to hold all the lights and entities in them
-////typedef struct areaReference_s {
-////	struct areaReference_s *areaNext;				// chain in the area
-////	struct areaReference_s *areaPrev;
-////	struct areaReference_s *ownerNext;				// chain on either the entityDef or lightDef
-////	idRenderEntityLocal *	entity;					// only one of entity / light will be non-NULL
-////	idRenderLightLocal *	light;					// only one of entity / light will be non-NULL
-////	struct portalArea_s	*	area;					// so owners can find all the areas they are in
-////} areaReference_t;
+// areas have references to hold all the lights and entities in them
+class areaReference_t {
+	//struct areaReference_s *areaNext;				// chain in the area
+	//struct areaReference_s *areaPrev;
+	//struct areaReference_s *ownerNext;				// chain on either the entityDef or lightDef
+	//idRenderEntityLocal *	entity;					// only one of entity / light will be non-NULL
+	//idRenderLightLocal *	light;					// only one of entity / light will be non-NULL
+	//struct portalArea_s	*	area;					// so owners can find all the areas they are in
+};
 
 
-////// idRenderLight should become the new public interface replacing the qhandle_t to light defs in the idRenderWorld interface
-////class idRenderLight {
-////public:
-////	virtual					~idRenderLight() {}
+// idRenderLight should become the new public interface replacing the qhandle_t to light defs in the idRenderWorld interface
+class idRenderLight {
+//public:
+	//virtual					~idRenderLight() {}
 
-////	virtual void			FreeRenderLight() = 0;
-////	virtual void			UpdateRenderLight( const renderLight_t *re, bool forceUpdate = false ) = 0;
-////	virtual void			GetRenderLight( renderLight_t *re ) = 0;
-////	virtual void			ForceUpdate() = 0;
-////	virtual int				GetIndex() = 0;
-////};
+	//virtual void			FreeRenderLight() = 0;
+	//virtual void			UpdateRenderLight( const renderLight_t *re, bool forceUpdate = false ) = 0;
+	//virtual void			GetRenderLight( renderLight_t *re ) = 0;
+	//virtual void			ForceUpdate() = 0;
+	//virtual int				GetIndex() = 0;
+};
 
 
 // idRenderEntity should become the new public interface replacing the qhandle_t to entity defs in the idRenderWorld interface
@@ -180,7 +180,7 @@ class idRenderEntity {
 };
 
 
-////class idRenderLightLocal : public idRenderLight {
+class idRenderLightLocal extends idRenderLight {
 ////public:
 ////							idRenderLightLocal();
 
@@ -233,7 +233,7 @@ class idRenderEntity {
 ////	idInteraction *			lastInteraction;
 
 ////	struct doublePortal_s *	foggedPortals;
-////};
+};
 
 
 class idRenderEntityLocal extends idRenderEntity {
@@ -284,11 +284,11 @@ class idRenderEntityLocal extends idRenderEntity {
 ////	idRenderModelDecal *	decals;					// chain of decals that have been projected on this model
 ////	idRenderModelOverlay *	overlay;				// blood overlays on animated models
 
-////	areaReference_t *		entityRefs;				// chain of all references
-////	idInteraction *			firstInteraction;		// doubly linked list
-////	idInteraction *			lastInteraction;
+	entityRefs:areaReference_t;				// chain of all references
+	firstInteraction: idInteraction;		// doubly linked list
+	lastInteraction:idInteraction;
 
-////	bool					needsPortalSky;
+	needsPortalSky:boolean;
 };
 
 
@@ -511,22 +511,22 @@ class drawSurfsCommand_t {
 ////} copyRenderCommand_t;
 
 
-//////=======================================================================
+//=======================================================================
 
-////// this is the inital allocation for max number of drawsurfs
-////// in a given view, but it will automatically grow if needed
-////const int	INITIAL_DRAWSURFS =			0x4000;
+// this is the inital allocation for max number of drawsurfs
+// in a given view, but it will automatically grow if needed
+var INITIAL_DRAWSURFS = 0x4000;
 
-////// a request for frame memory will never fail
-////// (until malloc fails), but it may force the
-////// allocation of a new memory block that will
-////// be discontinuous with the existing memory
+// a request for frame memory will never fail
+// (until malloc fails), but it may force the
+// allocation of a new memory block that will
+// be discontinuous with the existing memory
 class frameMemoryBlock_t {
-////	struct frameMemoryBlock_s *next;
-////	int		size;
-////	int		used;
-////	int		poop;			// so that base is 16 byte aligned
-////	byte	base[4];	// dynamically allocated as [size]
+	next:frameMemoryBlock_t; //struct frameMemoryBlock_s *
+	size:number;													 //	int		
+	used: number;													 //	int		
+	poop: number;			// so that base is 16 byte aligned		 //	int		
+	base = new Uint8Array(4);	// dynamically allocated as [size]	//	byte	
 };
 
 // all of the information needed by the back end must be

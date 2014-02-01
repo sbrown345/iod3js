@@ -61,6 +61,8 @@
     <Content Include="DoomDLL\Framework\File.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\draw_common.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\draw_glsl.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\Interaction.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\Interaction.h.ts" />
     <Content Include="other\files.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.h.ts" />

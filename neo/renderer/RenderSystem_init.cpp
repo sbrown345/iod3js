@@ -1562,6 +1562,7 @@ R_SetColorMappings
 ===============
 */
 void R_SetColorMappings( void ) {
+#ifdef JS_CHANGES
 	int		i, j;
 	float	g, b;
 	int		inf;
@@ -1591,6 +1592,7 @@ void R_SetColorMappings( void ) {
 	}
 
 	GLimp_SetGamma( tr.gammaTable, tr.gammaTable, tr.gammaTable );
+#endif
 }
 
 

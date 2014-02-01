@@ -38,15 +38,15 @@ enum vertBlockTag_t{
 };
 
 class vertCache_t {
-	vbo: WebGLBuffer; //	GLuint
+	vbo: WebGLBuffer = null; //	GLuint
 	virtMem: Uint8Array;//*	virtMem;			// only one of vbo / virtMem will be set					   //	void			
-	indexBuffer: boolean; // holds indexes instead of vertexes						   //	bool			
+	indexBuffer: boolean = false; // holds indexes instead of vertexes						   //	bool			
 	//
-	offset: number; //	intptr_t		
-	size: number; // may be larger than the amount asked for, due				   //	int				
+	offset: number = 0; //	intptr_t		
+	size: number = 0; // may be larger than the amount asked for, due				   //	int				
 	// to round up and minimum fragment sizes					   //					
-	tag: number; // a tag of 0 is a free block								   //	int				
-	user: vertCache_t;//	struct vertCache_s	**	user;				// will be set to zero when purged
-	next: vertCache_t; prev: vertCache_t; // may be on the static list or one of the frame lists
-	frameUsed: number /*int*/; // it can't be purged if near the current frame
+	tag: number = 0; // a tag of 0 is a free block								   //	int				
+	user: vertCache_t = null;//	struct vertCache_s	**	user;				// will be set to zero when purged
+	next: vertCache_t = null; prev: vertCache_t = null; // may be on the static list or one of the frame lists
+	frameUsed: number /*int*/ = 0; // it can't be purged if near the current frame
 }

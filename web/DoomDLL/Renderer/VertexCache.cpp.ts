@@ -103,16 +103,16 @@ class idVertexCache {
 //	static idCVar	r_showVertexCache;
 //	static idCVar	r_vertexBufferMegs;
 //
-	staticCountTotal:number;											   //	int				
-	staticAllocTotal:number;		// for end of frame purging			   //	int				
+	staticCountTotal = 0;											   //	int				
+	staticAllocTotal = 0;		// for end of frame purging			   //	int				
 
-	staticAllocThisFrame:number;	// debug counter		 //	int				s
-	staticCountThisFrame:number;							 //	int				s
-	dynamicAllocThisFrame:number;							 //	int				d
-	dynamicCountThisFrame:number;							 //	int				d
+	staticAllocThisFrame = 0;	// debug counter		 //	int				
+	staticCountThisFrame = 0;							 //	int				
+	dynamicAllocThisFrame = 0;							 //	int				
+	dynamicCountThisFrame = 0;							 //	int				
 
-	currentFrame:number;			// for purgable block tracking												//	int				
-	listNum:number;				// currentFrame % NUM_VERTEX_FRAMES, determines which tempBuffers to use	//	int				
+	currentFrame = 0;			// for purgable block tracking												//	int				
+	listNum = 0;				// currentFrame % NUM_VERTEX_FRAMES, determines which tempBuffers to use	//	int				
 
 	virtualMemory:boolean;			// not fast stuff
 
@@ -123,14 +123,14 @@ class idVertexCache {
 
 	headerAllocator = idBlockAlloc_template<vertCache_t>(vertCache_t, 1024);
 
-	freeStaticHeaders:vertCache_t;		// head of doubly linked list
-	freeDynamicHeaders:vertCache_t;		// head of doubly linked list
-	dynamicHeaders:vertCache_t;			// head of doubly linked list
-	deferredFreeList:vertCache_t;		// head of doubly linked list
-	staticHeaders:vertCache_t;			// head of doubly linked list in MRU order,
+	freeStaticHeaders = new vertCache_t;		// head of doubly linked list
+	freeDynamicHeaders = new vertCache_t;		// head of doubly linked list
+	dynamicHeaders = new vertCache_t;			// head of doubly linked list
+	deferredFreeList = new vertCache_t;		// head of doubly linked list
+	staticHeaders = new vertCache_t;			// head of doubly linked list in MRU order,
 //											// staticHeaders.next is most recently used
 
-	frameBytes:number;				// for each of NUM_VERTEX_FRAMES frames//	int				
+	frameBytes = 0;				// for each of NUM_VERTEX_FRAMES frames//	int				
 
 	/*
 ==============
@@ -279,21 +279,20 @@ idVertexCache::Init
 		this.EndFrame();
 	}
 
-	///*
-//===========
-//idVertexCache::PurgeAll
-//
-//Used when toggling vertex programs on or off, because
-//the cached data isn't valid
-//===========
-//*/
-//void idVertexCache::PurgeAll()
-//{
-//	while (this.staticHeaders.next != &this.staticHeaders) {
-//		ActuallyFree(this.staticHeaders.next);
-//	}
-//}
-//
+/*
+===========
+idVertexCache::PurgeAll
+
+Used when toggling vertex programs on or off, because
+the cached data isn't valid
+===========
+*/
+	PurgeAll ( ): void {
+		while ( this.staticHeaders.next != this.staticHeaders ) {
+			this.ActuallyFree( this.staticHeaders.next );
+		}
+	}
+
 	///*
 //===========
 //idVertexCache::Shutdown
@@ -526,27 +525,27 @@ idVertexCache::Free
 idVertexCache::EndFrame
 ===========
 */
- EndFrame():void{
-	// display debug information
-	if (r_showVertexCache.GetBool()) {
-		var /*int	*/staticUseCount = 0;
-		var /*int */staticUseSize = 0;
+	EndFrame ( ): void {
+		// display debug information
+		if ( r_showVertexCache.GetBool ( ) ) {
+			var /*int	*/staticUseCount = 0;
+			var /*int */staticUseSize = 0;
 
-		for (var block = this.staticHeaders.next ; block != this.staticHeaders ; block = block.next) {
-			if (block.frameUsed == this.currentFrame) {
-				staticUseCount++;
-				staticUseSize += block.size;
+			for ( var block = this.staticHeaders.next; block != this.staticHeaders; block = block.next ) {
+				if ( block.frameUsed == this.currentFrame ) {
+					staticUseCount++;
+					staticUseSize += block.size;
+				}
 			}
+
+			var frameOverflow = this.tempOverflow ? "(OVERFLOW)" : "";
+
+			common.Printf( "vertex dynamic:%i=%ik%s, static alloc:%i=%ik used:%i=%ik total:%i=%ik\n",
+				this.dynamicCountThisFrame, this.dynamicAllocThisFrame / 1024, frameOverflow,
+				this.staticCountThisFrame, this.staticAllocThisFrame / 1024,
+				staticUseCount, staticUseSize / 1024,
+				this.staticCountTotal, this.staticAllocTotal / 1024 );
 		}
-
-		var frameOverflow = this.tempOverflow ? "(OVERFLOW)" : "";
-
-		common.Printf("vertex dynamic:%i=%ik%s, static alloc:%i=%ik used:%i=%ik total:%i=%ik\n",
-		               this.dynamicCountThisFrame, this.dynamicAllocThisFrame/1024, frameOverflow,
-		               this.staticCountThisFrame, this.staticAllocThisFrame/1024,
-		               staticUseCount, staticUseSize/1024,
-		               this.staticCountTotal, this.staticAllocTotal/1024);
-	}
 
 //#if 0
 
@@ -558,35 +557,35 @@ idVertexCache::EndFrame
 
 //#endif
 
-	// unbind vertex buffers
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		// unbind vertex buffers
+		glBindBuffer( GL_ARRAY_BUFFER, null );
+		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, null );
 
-	this.currentFrame = tr.frameCount;
-	this.listNum = this.currentFrame % NUM_VERTEX_FRAMES;
-	this.staticAllocThisFrame = 0;
-	this.staticCountThisFrame = 0;
-	this.dynamicAllocThisFrame = 0;
-	this.dynamicCountThisFrame = 0;
-	this.tempOverflow = false;
+		this.currentFrame = tr.frameCount;
+		this.listNum = this.currentFrame % NUM_VERTEX_FRAMES;
+		this.staticAllocThisFrame = 0;
+		this.staticCountThisFrame = 0;
+		this.dynamicAllocThisFrame = 0;
+		this.dynamicCountThisFrame = 0;
+		this.tempOverflow = false;
 
-	// free all the deferred free headers
-	while (this.deferredFreeList.next != this.deferredFreeList) {
-		this.ActuallyFree(this.deferredFreeList.next);
+		// free all the deferred free headers
+		while ( this.deferredFreeList.next != this.deferredFreeList ) {
+			this.ActuallyFree( this.deferredFreeList.next );
+		}
+
+		// free all the frame temp headers
+		var block = this.dynamicHeaders.next;
+
+		if ( block != this.dynamicHeaders ) {
+			block.prev = this.freeDynamicHeaders;
+			this.dynamicHeaders.prev.next = this.freeDynamicHeaders.next;
+			this.freeDynamicHeaders.next.prev = this.dynamicHeaders.prev;
+			this.freeDynamicHeaders.next = block;
+
+			this.dynamicHeaders.next = this.dynamicHeaders.prev = this.dynamicHeaders;
+		}
 	}
-
-	// free all the frame temp headers
-	var block = this.dynamicHeaders.next;
-
-	if (block != this.dynamicHeaders) {
-		block.prev = this.freeDynamicHeaders;
-		this.dynamicHeaders.prev.next = this.freeDynamicHeaders.next;
-		this.freeDynamicHeaders.next.prev = this.dynamicHeaders.prev;
-		this.freeDynamicHeaders.next = block;
-
-		this.dynamicHeaders.next = this.dynamicHeaders.prev = this.dynamicHeaders;
-	}
-}
 
 /*
 =============

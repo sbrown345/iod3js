@@ -47,32 +47,32 @@
 //	int	totalRef = 0;
 //	int	totalIntr = 0;
 //
-//	for ( i = 0 ; i < tr.primaryWorld->lightDefs.Num() ; i++ ) {
-//		ldef = tr.primaryWorld->lightDefs[i];
+//	for ( i = 0 ; i < tr.primaryWorld.lightDefs.Num() ; i++ ) {
+//		ldef = tr.primaryWorld.lightDefs[i];
 //		if ( !ldef ) {
-//			common->Printf( "%4i: FREED\n", i );
+//			common.Printf( "%4i: FREED\n", i );
 //			continue;
 //		}
 //
 //		// count up the interactions
 //		int	iCount = 0;
-//		for ( idInteraction *inter = ldef->firstInteraction; inter != NULL; inter = inter->lightNext ) {
+//		for ( idInteraction *inter = ldef.firstInteraction; inter != NULL; inter = inter.lightNext ) {
 //			iCount++;
 //		}
 //		totalIntr += iCount;
 //
 //		// count up the references
 //		int	rCount = 0;
-//		for ( areaReference_t *ref = ldef->references ; ref ; ref = ref->ownerNext ) {
+//		for ( areaReference_t *ref = ldef.references ; ref ; ref = ref.ownerNext ) {
 //			rCount++;
 //		}
 //		totalRef += rCount;
 //
-//		common->Printf( "%4i: %3i intr %2i refs %s\n", i, iCount, rCount, ldef->lightShader->GetName());
+//		common.Printf( "%4i: %3i intr %2i refs %s\n", i, iCount, rCount, ldef.lightShader.GetName());
 //		active++;
 //	}
 //
-//	common->Printf( "%i lightDefs, %i interactions, %i areaRefs\n", active, totalIntr, totalRef );
+//	common.Printf( "%i lightDefs, %i interactions, %i areaRefs\n", active, totalIntr, totalRef );
 //}
 //
 ///*
@@ -91,32 +91,32 @@
 //	int	totalRef = 0;
 //	int	totalIntr = 0;
 //
-//	for ( i = 0 ; i < tr.primaryWorld->entityDefs.Num() ; i++ ) {
-//		mdef = tr.primaryWorld->entityDefs[i];
+//	for ( i = 0 ; i < tr.primaryWorld.entityDefs.Num() ; i++ ) {
+//		mdef = tr.primaryWorld.entityDefs[i];
 //		if ( !mdef ) {
-//			common->Printf( "%4i: FREED\n", i );
+//			common.Printf( "%4i: FREED\n", i );
 //			continue;
 //		}
 //
 //		// count up the interactions
 //		int	iCount = 0;
-//		for ( idInteraction *inter = mdef->firstInteraction; inter != NULL; inter = inter->entityNext ) {
+//		for ( idInteraction *inter = mdef.firstInteraction; inter != NULL; inter = inter.entityNext ) {
 //			iCount++;
 //		}
 //		totalIntr += iCount;
 //
 //		// count up the references
 //		int	rCount = 0;
-//		for ( areaReference_t *ref = mdef->entityRefs ; ref ; ref = ref->ownerNext ) {
+//		for ( areaReference_t *ref = mdef.entityRefs ; ref ; ref = ref.ownerNext ) {
 //			rCount++;
 //		}
 //		totalRef += rCount;
 //
-//		common->Printf( "%4i: %3i intr %2i refs %s\n", i, iCount, rCount, mdef->parms.hModel->Name());
+//		common.Printf( "%4i: %3i intr %2i refs %s\n", i, iCount, rCount, mdef.parms.hModel.Name());
 //		active++;
 //	}
 //
-//	common->Printf( "total active: %i\n", active );
+//	common.Printf( "total active: %i\n", active );
 //}
 //
 ///*
@@ -167,7 +167,7 @@
 //void idRenderWorldLocal::ResizeInteractionTable() {
 //	// we overflowed the interaction table, so dump it
 //	// we may want to resize this in the future if it turns out to be common
-//	common->Printf( "idRenderWorldLocal::ResizeInteractionTable: overflowed interactionTableWidth, dumping\n" );
+//	common.Printf( "idRenderWorldLocal::ResizeInteractionTable: overflowed interactionTableWidth, dumping\n" );
 //	R_StaticFree( interactionTable );
 //	interactionTable = NULL;
 //}
@@ -179,10 +179,10 @@
 //*/
 //qhandle_t idRenderWorldLocal::AddEntityDef( const renderEntity_t *re ){
 //	// try and reuse a free spot
-//	int entityHandle = entityDefs.FindNull();
+//	int entityHandle = this.entityDefs.FindNull();
 //	if ( entityHandle == -1 ) {
-//		entityHandle = entityDefs.Append( NULL );
-//		if ( interactionTable && entityDefs.Num() > interactionTableWidth ) {
+//		entityHandle = this.entityDefs.Append( NULL );
+//		if ( interactionTable && this.entityDefs.Num() > interactionTableWidth ) {
 //			ResizeInteractionTable();
 //		}
 //	}
@@ -209,25 +209,25 @@
 //
 //	tr.pc.c_entityUpdates++;
 //
-//	if ( !re->hModel && !re->callback ) {
-//		common->Error( "idRenderWorld::UpdateEntityDef: NULL hModel" );
+//	if ( !re.hModel && !re.callback ) {
+//		common.Error( "idRenderWorld::UpdateEntityDef: NULL hModel" );
 //	}
 //
 //	// create new slots if needed
 //	if ( entityHandle < 0 || entityHandle > LUDICROUS_INDEX ) {
-//		common->Error( "idRenderWorld::UpdateEntityDef: index = %i", entityHandle );
+//		common.Error( "idRenderWorld::UpdateEntityDef: index = %i", entityHandle );
 //	}
-//	while ( entityHandle >= entityDefs.Num() ) {
-//		entityDefs.Append( NULL );
+//	while ( entityHandle >= this.entityDefs.Num() ) {
+//		this.entityDefs.Append( NULL );
 //	}
 //
-//	idRenderEntityLocal	*def = entityDefs[entityHandle];
+//	idRenderEntityLocal	*def = this.entityDefs[entityHandle];
 //	if ( def ) {
 //
-//		if ( !re->forceUpdate ) {
+//		if ( !re.forceUpdate ) {
 //
 //			// check for exact match (OPTIMIZE: check through pointers more)
-//			if ( !re->joints && !re->callbackData && !def->dynamicModel && !memcmp( re, &def->parms, sizeof( *re ) ) ) {
+//			if ( !re.joints && !re.callbackData && !def.dynamicModel && !memcmp( re, &def.parms, sizeof( *re ) ) ) {
 //				return;
 //			}
 //
@@ -236,25 +236,25 @@
 //
 //			// if we have a callback function and the bounds, origin, axis and model match,
 //			// then we can leave the references as they are
-//			if ( re->callback ) {
+//			if ( re.callback ) {
 //
-//				bool axisMatch = ( re->axis == def->parms.axis );
-//				bool originMatch = ( re->origin == def->parms.origin );
-//				bool boundsMatch = ( re->bounds == def->referenceBounds );
-//				bool modelMatch = ( re->hModel == def->parms.hModel );
+//				bool axisMatch = ( re.axis == def.parms.axis );
+//				bool originMatch = ( re.origin == def.parms.origin );
+//				bool boundsMatch = ( re.bounds == def.referenceBounds );
+//				bool modelMatch = ( re.hModel == def.parms.hModel );
 //
 //				if ( boundsMatch && originMatch && axisMatch && modelMatch ) {
 //					// only clear the dynamic model and interaction surfaces if they exist
 //					c_callbackUpdate++;
 //					R_ClearEntityDefDynamicModel( def );
-//					def->parms = *re;
+//					def.parms = *re;
 //					return;
 //				}
 //			}
 //		}
 //
 //		// save any decals if the model is the same, allowing marks to move with entities
-//		if ( def->parms.hModel == re->hModel ) {
+//		if ( def.parms.hModel == re.hModel ) {
 //			R_FreeEntityDefDerivedData( def, true, true );
 //		} else {
 //			R_FreeEntityDefDerivedData( def, false, false );
@@ -262,24 +262,24 @@
 //	} else {
 //		// creating a new one
 //		def = new idRenderEntityLocal;
-//		entityDefs[entityHandle] = def;
+//		this.entityDefs[entityHandle] = def;
 //
-//		def->world = this;
-//		def->index = entityHandle;
+//		def.world = this;
+//		def.index = entityHandle;
 //	}
 //
-//	def->parms = *re;
+//	def.parms = *re;
 //
-//	R_AxisToModelMatrix( def->parms.axis, def->parms.origin, def->modelMatrix );
+//	R_AxisToModelMatrix( def.parms.axis, def.parms.origin, def.modelMatrix );
 //
-//	def->lastModifiedFrameNum = tr.frameCount;
-//	if ( session->writeDemo && def->archived ) {
+//	def.lastModifiedFrameNum = tr.frameCount;
+//	if ( session.writeDemo && def.archived ) {
 //		WriteFreeEntity( entityHandle );
-//		def->archived = false;
+//		def.archived = false;
 //	}
 //
 //	// optionally immediately issue any callbacks
-//	if ( !r_useEntityCallbacks.GetBool() && def->parms.callback ) {
+//	if ( !r_useEntityCallbacks.GetBool() && def.parms.callback ) {
 //		R_IssueEntityDefCallback( def );
 //	}
 //
@@ -299,20 +299,20 @@
 //void idRenderWorldLocal::FreeEntityDef( qhandle_t entityHandle ) {
 //	idRenderEntityLocal	*def;
 //
-//	if ( entityHandle < 0 || entityHandle >= entityDefs.Num() ) {
-//		common->Printf( "idRenderWorld::FreeEntityDef: handle %i > %i\n", entityHandle, entityDefs.Num() );
+//	if ( entityHandle < 0 || entityHandle >= this.entityDefs.Num() ) {
+//		common.Printf( "idRenderWorld::FreeEntityDef: handle %i > %i\n", entityHandle, this.entityDefs.Num() );
 //		return;
 //	}
 //
-//	def = entityDefs[entityHandle];
+//	def = this.entityDefs[entityHandle];
 //	if ( !def ) {
-//		common->Printf( "idRenderWorld::FreeEntityDef: handle %i is NULL\n", entityHandle );
+//		common.Printf( "idRenderWorld::FreeEntityDef: handle %i is NULL\n", entityHandle );
 //		return;
 //	}
 //
 //	R_FreeEntityDefDerivedData( def, false, false );
 //
-//	if ( session->writeDemo && def->archived ) {
+//	if ( session.writeDemo && def.archived ) {
 //		WriteFreeEntity( entityHandle );
 //	}
 //
@@ -320,12 +320,12 @@
 //	// in R_FreeEntityDefDerivedData(), otherwise the gui
 //	// object still exists in the game
 //
-//	def->parms.gui[ 0 ] = NULL;
-//	def->parms.gui[ 1 ] = NULL;
-//	def->parms.gui[ 2 ] = NULL;
+//	def.parms.gui[ 0 ] = NULL;
+//	def.parms.gui[ 1 ] = NULL;
+//	def.parms.gui[ 2 ] = NULL;
 //
 //	delete def;
-//	entityDefs[ entityHandle ] = NULL;
+//	this.entityDefs[ entityHandle ] = NULL;
 //}
 //
 ///*
@@ -336,18 +336,18 @@
 //const renderEntity_t *idRenderWorldLocal::GetRenderEntity( qhandle_t entityHandle ) const {
 //	idRenderEntityLocal	*def;
 //
-//	if ( entityHandle < 0 || entityHandle >= entityDefs.Num() ) {
-//		common->Printf( "idRenderWorld::GetRenderEntity: invalid handle %i [0, %i]\n", entityHandle, entityDefs.Num() );
+//	if ( entityHandle < 0 || entityHandle >= this.entityDefs.Num() ) {
+//		common.Printf( "idRenderWorld::GetRenderEntity: invalid handle %i [0, %i]\n", entityHandle, this.entityDefs.Num() );
 //		return NULL;
 //	}
 //
-//	def = entityDefs[entityHandle];
+//	def = this.entityDefs[entityHandle];
 //	if ( !def ) {
-//		common->Printf( "idRenderWorld::GetRenderEntity: handle %i is NULL\n", entityHandle );
+//		common.Printf( "idRenderWorld::GetRenderEntity: handle %i is NULL\n", entityHandle );
 //		return NULL;
 //	}
 //
-//	return &def->parms;
+//	return &def.parms;
 //}
 //
 ///*
@@ -389,7 +389,7 @@
 //
 //	// create new slots if needed
 //	if ( lightHandle < 0 || lightHandle > LUDICROUS_INDEX ) {
-//		common->Error( "idRenderWorld::UpdateLightDef: index = %i", lightHandle );
+//		common.Error( "idRenderWorld::UpdateLightDef: index = %i", lightHandle );
 //	}
 //	while ( lightHandle >= lightDefs.Num() ) {
 //		lightDefs.Append( NULL );
@@ -400,17 +400,17 @@
 //	if ( light ) {
 //		// if the shape of the light stays the same, we don't need to dump
 //		// any of our derived data, because shader parms are calculated every frame
-//		if ( rlight->axis == light->parms.axis && rlight->end == light->parms.end &&
-//			 rlight->lightCenter == light->parms.lightCenter && rlight->lightRadius == light->parms.lightRadius &&
-//			 rlight->noShadows == light->parms.noShadows && rlight->origin == light->parms.origin &&
-//			 rlight->parallel == light->parms.parallel && rlight->pointLight == light->parms.pointLight &&
-//			 rlight->right == light->parms.right && rlight->start == light->parms.start &&
-//			 rlight->target == light->parms.target && rlight->up == light->parms.up && 
-//			 rlight->shader == light->lightShader && rlight->prelightModel == light->parms.prelightModel ) {
+//		if ( rlight.axis == light.parms.axis && rlight.end == light.parms.end &&
+//			 rlight.lightCenter == light.parms.lightCenter && rlight.lightRadius == light.parms.lightRadius &&
+//			 rlight.noShadows == light.parms.noShadows && rlight.origin == light.parms.origin &&
+//			 rlight.parallel == light.parms.parallel && rlight.pointLight == light.parms.pointLight &&
+//			 rlight.right == light.parms.right && rlight.start == light.parms.start &&
+//			 rlight.target == light.parms.target && rlight.up == light.parms.up && 
+//			 rlight.shader == light.lightShader && rlight.prelightModel == light.parms.prelightModel ) {
 //			justUpdate = true;
 //		} else {
 //			// if we are updating shadows, the prelight model is no longer valid
-//			light->lightHasMoved = true;
+//			light.lightHasMoved = true;
 //			R_FreeLightDefDerivedData( light );
 //		}
 //	} else {
@@ -418,19 +418,19 @@
 //		light = new idRenderLightLocal;
 //		lightDefs[lightHandle] = light;
 //
-//		light->world = this;
-//		light->index = lightHandle;
+//		light.world = this;
+//		light.index = lightHandle;
 //	}
 //
-//	light->parms = *rlight;
-//	light->lastModifiedFrameNum = tr.frameCount;
-//	if ( session->writeDemo && light->archived ) {
+//	light.parms = *rlight;
+//	light.lastModifiedFrameNum = tr.frameCount;
+//	if ( session.writeDemo && light.archived ) {
 //		WriteFreeLight( lightHandle );
-//		light->archived = false;
+//		light.archived = false;
 //	}
 //
-//	if ( light->lightHasMoved ) {
-//		light->parms.prelightModel = NULL;
+//	if ( light.lightHasMoved ) {
+//		light.parms.prelightModel = NULL;
 //	}
 //
 //	if (!justUpdate) {
@@ -452,19 +452,19 @@
 //	idRenderLightLocal	*light;
 //
 //	if ( lightHandle < 0 || lightHandle >= lightDefs.Num() ) {
-//		common->Printf( "idRenderWorld::FreeLightDef: invalid handle %i [0, %i]\n", lightHandle, lightDefs.Num() );
+//		common.Printf( "idRenderWorld::FreeLightDef: invalid handle %i [0, %i]\n", lightHandle, lightDefs.Num() );
 //		return;
 //	}
 //
 //	light = lightDefs[lightHandle];
 //	if ( !light ) {
-//		common->Printf( "idRenderWorld::FreeLightDef: handle %i is NULL\n", lightHandle );
+//		common.Printf( "idRenderWorld::FreeLightDef: handle %i is NULL\n", lightHandle );
 //		return;
 //	}
 //
 //	R_FreeLightDefDerivedData( light );
 //
-//	if ( session->writeDemo && light->archived ) {
+//	if ( session.writeDemo && light.archived ) {
 //		WriteFreeLight( lightHandle );
 //	}
 //
@@ -481,17 +481,17 @@
 //	idRenderLightLocal *def;
 //
 //	if ( lightHandle < 0 || lightHandle >= lightDefs.Num() ) {
-//		common->Printf( "idRenderWorld::GetRenderLight: handle %i > %i\n", lightHandle, lightDefs.Num() );
+//		common.Printf( "idRenderWorld::GetRenderLight: handle %i > %i\n", lightHandle, lightDefs.Num() );
 //		return NULL;
 //	}
 //
 //	def = lightDefs[lightHandle];
 //	if ( !def ) {
-//		common->Printf( "idRenderWorld::GetRenderLight: handle %i is NULL\n", lightHandle );
+//		common.Printf( "idRenderWorld::GetRenderLight: handle %i is NULL\n", lightHandle );
 //		return NULL;
 //	}
 //
-//	return &def->parms;
+//	return &def.parms;
 //}
 //
 ///*
@@ -520,21 +520,21 @@
 //		area = &portalAreas[ areas[i] ];
 //
 //		// check all models in this area
-//		for ( ref = area->entityRefs.areaNext; ref != &area->entityRefs; ref = ref->areaNext ) {
-//			def = ref->entity;
+//		for ( ref = area.entityRefs.areaNext; ref != &area.entityRefs; ref = ref.areaNext ) {
+//			def = ref.entity;
 //
 //			// completely ignore any dynamic or callback models
-//			model = def->parms.hModel;
-//			if ( model == NULL || model->IsDynamicModel() != DM_STATIC || def->parms.callback ) {
+//			model = def.parms.hModel;
+//			if ( model == NULL || model.IsDynamicModel() != DM_STATIC || def.parms.callback ) {
 //				continue;
 //			}
 //
-//			if ( def->parms.customShader != NULL && !def->parms.customShader->AllowOverlays() ) {
+//			if ( def.parms.customShader != NULL && !def.parms.customShader.AllowOverlays() ) {
 //				continue;
 //			}
 //
 //			idBounds bounds;
-//			bounds.FromTransformedBounds( model->Bounds( &def->parms ), def->parms.origin, def->parms.axis );
+//			bounds.FromTransformedBounds( model.Bounds( &def.parms ), def.parms.origin, def.parms.axis );
 //
 //			// if the model bounds do not overlap with the projection bounds
 //			if ( !info.projectionBounds.IntersectsBounds( bounds ) ) {
@@ -542,13 +542,13 @@
 //			}
 //
 //			// transform the bounding planes, fade planes and texture axis into local space
-//			idRenderModelDecal::GlobalProjectionInfoToLocal( localInfo, info, def->parms.origin, def->parms.axis );
-//			localInfo.force = ( def->parms.customShader != NULL );
+//			idRenderModelDecal::GlobalProjectionInfoToLocal( localInfo, info, def.parms.origin, def.parms.axis );
+//			localInfo.force = ( def.parms.customShader != NULL );
 //
-//			if ( !def->decals ) {
-//				def->decals = idRenderModelDecal::Alloc();
+//			if ( !def.decals ) {
+//				def.decals = idRenderModelDecal::Alloc();
 //			}
-//			def->decals->CreateDecal( model, localInfo );
+//			def.decals.CreateDecal( model, localInfo );
 //		}
 //	}
 //}
@@ -561,19 +561,19 @@
 //void idRenderWorldLocal::ProjectDecal( qhandle_t entityHandle, const idFixedWinding &winding, const idVec3 &projectionOrigin, const bool parallel, const float fadeDepth, const idMaterial *material, const int startTime ) {
 //	decalProjectionInfo_t info, localInfo;
 //
-//	if ( entityHandle < 0 || entityHandle >= entityDefs.Num() ) {
-//		common->Error( "idRenderWorld::ProjectOverlay: index = %i", entityHandle );
+//	if ( entityHandle < 0 || entityHandle >= this.entityDefs.Num() ) {
+//		common.Error( "idRenderWorld::ProjectOverlay: index = %i", entityHandle );
 //		return;
 //	}
 //
-//	idRenderEntityLocal	*def = entityDefs[ entityHandle ];
+//	idRenderEntityLocal	*def = this.entityDefs[ entityHandle ];
 //	if ( !def ) {
 //		return;
 //	}
 //
-//	const idRenderModel *model = def->parms.hModel;
+//	const idRenderModel *model = def.parms.hModel;
 //
-//	if ( model == NULL || model->IsDynamicModel() != DM_STATIC || def->parms.callback ) {
+//	if ( model == NULL || model.IsDynamicModel() != DM_STATIC || def.parms.callback ) {
 //		return;
 //	}
 //
@@ -582,7 +582,7 @@
 //	}
 //
 //	idBounds bounds;
-//	bounds.FromTransformedBounds( model->Bounds( &def->parms ), def->parms.origin, def->parms.axis );
+//	bounds.FromTransformedBounds( model.Bounds( &def.parms ), def.parms.origin, def.parms.axis );
 //
 //	// if the model bounds do not overlap with the projection bounds
 //	if ( !info.projectionBounds.IntersectsBounds( bounds ) ) {
@@ -590,13 +590,13 @@
 //	}
 //
 //	// transform the bounding planes, fade planes and texture axis into local space
-//	idRenderModelDecal::GlobalProjectionInfoToLocal( localInfo, info, def->parms.origin, def->parms.axis );
-//	localInfo.force = ( def->parms.customShader != NULL );
+//	idRenderModelDecal::GlobalProjectionInfoToLocal( localInfo, info, def.parms.origin, def.parms.axis );
+//	localInfo.force = ( def.parms.customShader != NULL );
 //
-//	if ( def->decals == NULL ) {
-//		def->decals = idRenderModelDecal::Alloc();
+//	if ( def.decals == NULL ) {
+//		def.decals = idRenderModelDecal::Alloc();
 //	}
-//	def->decals->CreateDecal( model, localInfo );
+//	def.decals.CreateDecal( model, localInfo );
 //}
 //
 ///*
@@ -606,28 +606,28 @@
 //*/
 //void idRenderWorldLocal::ProjectOverlay( qhandle_t entityHandle, const idPlane localTextureAxis[2], const idMaterial *material ) {
 //
-//	if ( entityHandle < 0 || entityHandle >= entityDefs.Num() ) {
-//		common->Error( "idRenderWorld::ProjectOverlay: index = %i", entityHandle );
+//	if ( entityHandle < 0 || entityHandle >= this.entityDefs.Num() ) {
+//		common.Error( "idRenderWorld::ProjectOverlay: index = %i", entityHandle );
 //		return;
 //	}
 //
-//	idRenderEntityLocal	*def = entityDefs[ entityHandle ];
+//	idRenderEntityLocal	*def = this.entityDefs[ entityHandle ];
 //	if ( !def ) {
 //		return;
 //	}
 //
-//	const renderEntity_t *refEnt = &def->parms;
+//	const renderEntity_t *refEnt = &def.parms;
 //
-//	idRenderModel *model = refEnt->hModel;
-//	if ( model->IsDynamicModel() != DM_CACHED ) {	// FIXME: probably should be MD5 only
+//	idRenderModel *model = refEnt.hModel;
+//	if ( model.IsDynamicModel() != DM_CACHED ) {	// FIXME: probably should be MD5 only
 //		return;
 //	}
 //	model = R_EntityDefDynamicModel( def );
 //
-//	if ( def->overlay == NULL ) {
-//		def->overlay = idRenderModelOverlay::Alloc();
+//	if ( def.overlay == NULL ) {
+//		def.overlay = idRenderModelOverlay::Alloc();
 //	}
-//	def->overlay->CreateOverlay( model, localTextureAxis, material );
+//	def.overlay.CreateOverlay( model, localTextureAxis, material );
 //}
 //
 ///*
@@ -636,12 +636,12 @@
 //====================
 //*/
 //void idRenderWorldLocal::RemoveDecals( qhandle_t entityHandle ) {
-//	if ( entityHandle < 0 || entityHandle >= entityDefs.Num() ) {
-//		common->Error( "idRenderWorld::ProjectOverlay: index = %i", entityHandle );
+//	if ( entityHandle < 0 || entityHandle >= this.entityDefs.Num() ) {
+//		common.Error( "idRenderWorld::ProjectOverlay: index = %i", entityHandle );
 //		return;
 //	}
 //
-//	idRenderEntityLocal	*def = entityDefs[ entityHandle ];
+//	idRenderEntityLocal	*def = this.entityDefs[ entityHandle ];
 //	if ( !def ) {
 //		return;
 //	}
@@ -688,54 +688,54 @@
 //		return;
 //	}
 //
-//	if ( renderView->fov_x <= 0 || renderView->fov_y <= 0 ) {
-//		common->Error( "idRenderWorld::RenderScene: bad FOVs: %f, %f", renderView->fov_x, renderView->fov_y );
+//	if ( renderView.fov_x <= 0 || renderView.fov_y <= 0 ) {
+//		common.Error( "idRenderWorld::RenderScene: bad FOVs: %f, %f", renderView.fov_x, renderView.fov_y );
 //	}
 //
 //	// close any gui drawing
-//	tr.guiModel->EmitFullScreen();
-//	tr.guiModel->Clear();
+//	tr.guiModel.EmitFullScreen();
+//	tr.guiModel.Clear();
 //
 //	int startTime = Sys_Milliseconds();
 //
 //	// setup view parms for the initial view
 //	//
 //	viewDef_t		*parms = (viewDef_t *)R_ClearedFrameAlloc( sizeof( *parms ) );
-//	parms->renderView = *renderView;
+//	parms.renderView = *renderView;
 //
 //	if ( tr.takingScreenshot ) {
-//		parms->renderView.forceUpdate = true;
+//		parms.renderView.forceUpdate = true;
 //	}
 //
 //	// set up viewport, adjusted for resolution and OpenGL style 0 at the bottom
-//	tr.RenderViewToViewport( &parms->renderView, &parms->viewport );
+//	tr.RenderViewToViewport( &parms.renderView, &parms.viewport );
 //
 //	// the scissor bounds may be shrunk in subviews even if
 //	// the viewport stays the same
 //	// this scissor range is local inside the viewport
-//	parms->scissor.x1 = 0;
-//	parms->scissor.y1 = 0;
-//	parms->scissor.x2 = parms->viewport.x2 - parms->viewport.x1;
-//	parms->scissor.y2 = parms->viewport.y2 - parms->viewport.y1;
+//	parms.scissor.x1 = 0;
+//	parms.scissor.y1 = 0;
+//	parms.scissor.x2 = parms.viewport.x2 - parms.viewport.x1;
+//	parms.scissor.y2 = parms.viewport.y2 - parms.viewport.y1;
 //
 //
-//	parms->isSubview = false;
-//	parms->initialViewAreaOrigin = renderView->vieworg;
-//	parms->floatTime = parms->renderView.time * 0.001f;
-//	parms->renderWorld = this;
+//	parms.isSubview = false;
+//	parms.initialViewAreaOrigin = renderView.vieworg;
+//	parms.floatTime = parms.renderView.time * 0.001f;
+//	parms.renderWorld = this;
 //
 //	// use this time for any subsequent 2D rendering, so damage blobs/etc 
 //	// can use level time
-//	tr.frameShaderTime = parms->floatTime;
+//	tr.frameShaderTime = parms.floatTime;
 //
 //	// see if the view needs to reverse the culling sense in mirrors
 //	// or environment cube sides
 //	idVec3	cross;
-//	cross = parms->renderView.viewaxis[1].Cross( parms->renderView.viewaxis[2] );
-//	if ( cross * parms->renderView.viewaxis[0] > 0 ) {
-//		parms->isMirror = false;
+//	cross = parms.renderView.viewaxis[1].Cross( parms.renderView.viewaxis[2] );
+//	if ( cross * parms.renderView.viewaxis[0] > 0 ) {
+//		parms.isMirror = false;
 //	} else {
-//		parms->isMirror = true;
+//		parms.isMirror = true;
 //	}
 //
 //	if ( r_lockSurfaces.GetBool() ) {
@@ -756,20 +756,20 @@
 //
 //	// now write delete commands for any modified-but-not-visible entities, and
 //	// add the renderView command to the demo
-//	if ( session->writeDemo ) {
+//	if ( session.writeDemo ) {
 //		WriteRenderView( renderView );
 //	}
 //
 //#if 0
-//	for ( int i = 0 ; i < entityDefs.Num() ; i++ ) {
-//		idRenderEntityLocal	*def = entityDefs[i];
+//	for ( int i = 0 ; i < this.entityDefs.Num() ; i++ ) {
+//		idRenderEntityLocal	*def = this.entityDefs[i];
 //		if ( !def ) {
 //			continue;
 //		}
-//		if ( def->parms.callback ) {
+//		if ( def.parms.callback ) {
 //			continue;
 //		}
-//		if ( def->parms.hModel->IsDynamicModel() == DM_CONTINUOUS ) {
+//		if ( def.parms.hModel.IsDynamicModel() == DM_CONTINUOUS ) {
 //		}
 //	}
 //#endif
@@ -779,7 +779,7 @@
 //	tr.pc.frontEndMsec += endTime - startTime;
 //
 //	// prepare for any 2D drawing after this
-//	tr.guiModel->Clear();
+//	tr.guiModel.Clear();
 //#endif
 //}
 //
@@ -803,12 +803,12 @@
 //	portal_t		*portal;
 //
 //	if ( areaNum >= numPortalAreas || areaNum < 0 ) {
-//		common->Error( "idRenderWorld::NumPortalsInArea: bad areanum %i", areaNum );
+//		common.Error( "idRenderWorld::NumPortalsInArea: bad areanum %i", areaNum );
 //	}
 //	area = &portalAreas[areaNum];
 //
 //	count = 0;
-//	for ( portal = area->portals ; portal ; portal = portal->next ) {
+//	for ( portal = area.portals ; portal ; portal = portal.next ) {
 //		count++;
 //	}
 //	return count;
@@ -826,24 +826,24 @@
 //	exitPortal_t	ret;
 //
 //	if ( areaNum > numPortalAreas ) {
-//		common->Error( "idRenderWorld::GetPortal: areaNum > numAreas" );
+//		common.Error( "idRenderWorld::GetPortal: areaNum > numAreas" );
 //	}
 //	area = &portalAreas[areaNum];
 //
 //	count = 0;
-//	for ( portal = area->portals ; portal ; portal = portal->next ) {
+//	for ( portal = area.portals ; portal ; portal = portal.next ) {
 //		if ( count == portalNum ) {
 //			ret.areas[0] = areaNum;
-//			ret.areas[1] = portal->intoArea;
-//			ret.w = portal->w;
-//			ret.blockingBits = portal->doublePortal->blockingBits;
-//			ret.portalHandle = portal->doublePortal - doublePortals + 1;
+//			ret.areas[1] = portal.intoArea;
+//			ret.w = portal.w;
+//			ret.blockingBits = portal.doublePortal.blockingBits;
+//			ret.portalHandle = portal.doublePortal - doublePortals + 1;
 //			return ret;
 //		}
 //		count++;
 //	}
 //
-//	common->Error( "idRenderWorld::GetPortal: portalNum > numPortals" );
+//	common.Error( "idRenderWorld::GetPortal: portalNum > numPortals" );
 //
 //	memset( &ret, 0, sizeof( ret ) );
 //	return ret;
@@ -854,7 +854,7 @@
 //PointInAreaNum
 //
 //Will return -1 if the point is not in an area, otherwise
-//it will return 0 <= value < tr.world->numPortalAreas
+//it will return 0 <= value < tr.world.numPortalAreas
 //===============
 //*/
 //int idRenderWorldLocal::PointInArea( const idVec3 &point ) const {
@@ -867,11 +867,11 @@
 //		return -1;
 //	}
 //	while( 1 ) {
-//		d = point * node->plane.Normal() + node->plane[3];
+//		d = point * node.plane.Normal() + node.plane[3];
 //		if (d > 0) {
-//			nodeNum = node->children[0];
+//			nodeNum = node.children[0];
 //		} else {
-//			nodeNum = node->children[1];
+//			nodeNum = node.children[1];
 //		}
 //		if ( nodeNum == 0 ) {
 //			return -1;		// in solid
@@ -879,7 +879,7 @@
 //		if ( nodeNum < 0 ) {
 //			nodeNum = -1 - nodeNum;
 //			if ( nodeNum >= numPortalAreas ) {
-//				common->Error( "idRenderWorld::PointInArea: area out of range" );
+//				common.Error( "idRenderWorld::PointInArea: area out of range" );
 //			}
 //			return nodeNum;
 //		}
@@ -915,21 +915,21 @@
 //
 //		node = areaNodes + nodeNum;
 //
-//		side = bounds.PlaneSide( node->plane );
+//		side = bounds.PlaneSide( node.plane );
 //		if ( side == PLANESIDE_FRONT ) {
-//			nodeNum = node->children[0];
+//			nodeNum = node.children[0];
 //		}
 //		else if ( side == PLANESIDE_BACK ) {
-//			nodeNum = node->children[1];
+//			nodeNum = node.children[1];
 //		}
 //		else {
-//			if ( node->children[1] != 0 ) {
-//				BoundsInAreas_r( node->children[1], bounds, areas, numAreas, maxAreas );
+//			if ( node.children[1] != 0 ) {
+//				BoundsInAreas_r( node.children[1], bounds, areas, numAreas, maxAreas );
 //				if ( (*numAreas) >= maxAreas ) {
 //					return;
 //				}
 //			}
-//			nodeNum = node->children[0];
+//			nodeNum = node.children[0];
 //		}
 //	} while( nodeNum != 0 );
 //
@@ -980,44 +980,44 @@
 //	pt.x = pt.y = -1;
 //	pt.guiId = 0;
 //
-//	if ( ( entityHandle < 0 ) || ( entityHandle >= entityDefs.Num() ) ) {
-//		common->Printf( "idRenderWorld::GuiTrace: invalid handle %i\n", entityHandle );
+//	if ( ( entityHandle < 0 ) || ( entityHandle >= this.entityDefs.Num() ) ) {
+//		common.Printf( "idRenderWorld::GuiTrace: invalid handle %i\n", entityHandle );
 //		return pt;
 //	}
 //
-//	idRenderEntityLocal *def = entityDefs[entityHandle];	
+//	idRenderEntityLocal *def = this.entityDefs[entityHandle];	
 //	if ( !def ) {
-//		common->Printf( "idRenderWorld::GuiTrace: handle %i is NULL\n", entityHandle );
+//		common.Printf( "idRenderWorld::GuiTrace: handle %i is NULL\n", entityHandle );
 //		return pt;
 //	}
 //
-//	model = def->parms.hModel;
-//	if ( def->parms.callback || !def->parms.hModel || def->parms.hModel->IsDynamicModel() != DM_STATIC ) {
+//	model = def.parms.hModel;
+//	if ( def.parms.callback || !def.parms.hModel || def.parms.hModel.IsDynamicModel() != DM_STATIC ) {
 //		return pt;
 //	}
 //
 //	// transform the points into local space
-//	R_GlobalPointToLocal( def->modelMatrix, start, localStart );
-//	R_GlobalPointToLocal( def->modelMatrix, end, localEnd );
+//	R_GlobalPointToLocal( def.modelMatrix, start, localStart );
+//	R_GlobalPointToLocal( def.modelMatrix, end, localEnd );
 //
 //
 //	float best = 99999.0;
 //	const modelSurface_t *bestSurf = NULL;
 //
-//	for ( j = 0 ; j < model->NumSurfaces() ; j++ ) {
-//		const modelSurface_t *surf = model->Surface( j );
+//	for ( j = 0 ; j < model.NumSurfaces() ; j++ ) {
+//		const modelSurface_t *surf = model.Surface( j );
 //
-//		tri = surf->geometry;
+//		tri = surf.geometry;
 //		if ( !tri ) {
 //			continue;
 //		}
 //
-//		shader = R_RemapShaderBySkin( surf->shader, def->parms.customSkin, def->parms.customShader );
+//		shader = R_RemapShaderBySkin( surf.shader, def.parms.customSkin, def.parms.customShader );
 //		if ( !shader ) {
 //			continue;
 //		}
 //		// only trace against gui surfaces
-//		if (!shader->HasGui()) {
+//		if (!shader.HasGui()) {
 //			continue;
 //		}
 //
@@ -1035,7 +1035,7 @@
 //
 //			pt.x = ( cursor * axis[0] ) / ( axisLen[0] * axisLen[0] );
 //			pt.y = ( cursor * axis[1] ) / ( axisLen[1] * axisLen[1] );
-//			pt.guiId = shader->GetEntityGui();
+//			pt.guiId = shader.GetEntityGui();
 //
 //			return pt;
 //		}
@@ -1061,17 +1061,17 @@
 //
 //	trace.fraction = 1.0f;
 //
-//	if ( entityHandle < 0 || entityHandle >= entityDefs.Num() ) {
-////		common->Error( "idRenderWorld::ModelTrace: index = %i", entityHandle );
+//	if ( entityHandle < 0 || entityHandle >= this.entityDefs.Num() ) {
+////		common.Error( "idRenderWorld::ModelTrace: index = %i", entityHandle );
 //		return false;
 //	}
 //
-//	idRenderEntityLocal	*def = entityDefs[entityHandle];
+//	idRenderEntityLocal	*def = this.entityDefs[entityHandle];
 //	if ( !def ) {
 //		return false;
 //	}
 //
-//	renderEntity_t *refEnt = &def->parms;
+//	renderEntity_t *refEnt = &def.parms;
 //
 //	model = R_EntityDefDynamicModel( def );
 //	if ( !model ) {
@@ -1079,55 +1079,55 @@
 //	}
 //
 //	// transform the points into local space
-//	R_AxisToModelMatrix( refEnt->axis, refEnt->origin, modelMatrix );
+//	R_AxisToModelMatrix( refEnt.axis, refEnt.origin, modelMatrix );
 //	R_GlobalPointToLocal( modelMatrix, start, localStart );
 //	R_GlobalPointToLocal( modelMatrix, end, localEnd );
 //
 //	// if we have explicit collision surfaces, only collide against them
 //	// (FIXME, should probably have a parm to control this)
 //	collisionSurface = false;
-//	for ( i = 0; i < model->NumBaseSurfaces(); i++ ) {
-//		surf = model->Surface( i );
+//	for ( i = 0; i < model.NumBaseSurfaces(); i++ ) {
+//		surf = model.Surface( i );
 //
-//		shader = R_RemapShaderBySkin( surf->shader, def->parms.customSkin, def->parms.customShader );
+//		shader = R_RemapShaderBySkin( surf.shader, def.parms.customSkin, def.parms.customShader );
 //
-//		if ( shader->GetSurfaceFlags() & SURF_COLLISION ) {
+//		if ( shader.GetSurfaceFlags() & SURF_COLLISION ) {
 //			collisionSurface = true;
 //			break;
 //		}
 //	}
 //
 //	// only use baseSurfaces, not any overlays
-//	for ( i = 0; i < model->NumBaseSurfaces(); i++ ) {
-//		surf = model->Surface( i );
+//	for ( i = 0; i < model.NumBaseSurfaces(); i++ ) {
+//		surf = model.Surface( i );
 //
-//		shader = R_RemapShaderBySkin( surf->shader, def->parms.customSkin, def->parms.customShader );
+//		shader = R_RemapShaderBySkin( surf.shader, def.parms.customSkin, def.parms.customShader );
 //
-//		if ( !surf->geometry || !shader ) {
+//		if ( !surf.geometry || !shader ) {
 //			continue;
 //		}
 //
 //		if ( collisionSurface ) {
 //			// only trace vs collision surfaces
-//			if ( !( shader->GetSurfaceFlags() & SURF_COLLISION ) ) {
+//			if ( !( shader.GetSurfaceFlags() & SURF_COLLISION ) ) {
 //				continue;
 //			}
 //		} else {
 //			// skip if not drawn or translucent
-//			if ( !shader->IsDrawn() || ( shader->Coverage() != MC_OPAQUE && shader->Coverage() != MC_PERFORATED ) ) {
+//			if ( !shader.IsDrawn() || ( shader.Coverage() != MC_OPAQUE && shader.Coverage() != MC_PERFORATED ) ) {
 //				continue;
 //			}
 //		}
 //
-//		localTrace = R_LocalTrace( localStart, localEnd, radius, surf->geometry );
+//		localTrace = R_LocalTrace( localStart, localEnd, radius, surf.geometry );
 //
 //		if ( localTrace.fraction < trace.fraction ) {
 //			trace.fraction = localTrace.fraction;
 //			R_LocalPointToGlobal( modelMatrix, localTrace.point, trace.point );
-//			trace.normal = localTrace.normal * refEnt->axis;
+//			trace.normal = localTrace.normal * refEnt.axis;
 //			trace.material = shader;
-//			trace.entity = &def->parms;
-//			trace.jointNumber = refEnt->hModel->NearestJoint( i, localTrace.indexes[0], localTrace.indexes[1], localTrace.indexes[2] );
+//			trace.entity = &def.parms;
+//			trace.jointNumber = refEnt.hModel.NearestJoint( i, localTrace.indexes[0], localTrace.indexes[1], localTrace.indexes[2] );
 //		}
 //	}
 //
@@ -1184,22 +1184,22 @@
 //		area = &portalAreas[ areas[i] ];
 //
 //		// check all models in this area
-//		for ( ref = area->entityRefs.areaNext; ref != &area->entityRefs; ref = ref->areaNext ) {
-//			def = ref->entity;
+//		for ( ref = area.entityRefs.areaNext; ref != &area.entityRefs; ref = ref.areaNext ) {
+//			def = ref.entity;
 //
-//			model = def->parms.hModel;
+//			model = def.parms.hModel;
 //			if ( !model ) {
 //				continue;
 //			}
 //
-//			if ( model->IsDynamicModel() != DM_STATIC ) {
+//			if ( model.IsDynamicModel() != DM_STATIC ) {
 //				if ( skipDynamic ) {
 //					continue;
 //				}
 //
 //#if 1	/* _D3XP addition. could use a cleaner approach */
 //				if ( skipPlayer ) {
-//					idStr name = model->Name();
+//					idStr name = model.Name();
 //					const char *exclude;
 //					int k;
 //
@@ -1222,7 +1222,7 @@
 //				}
 //			}
 //
-//			bounds.FromTransformedBounds( model->Bounds( &def->parms ), def->parms.origin, def->parms.axis );
+//			bounds.FromTransformedBounds( model.Bounds( &def.parms ), def.parms.origin, def.parms.axis );
 //
 //			// if the model bounds do not overlap with the trace bounds
 //			if ( !traceBounds.IntersectsBounds( bounds ) || !bounds.LineIntersection( start, trace.point ) ) {
@@ -1230,19 +1230,19 @@
 //			}
 //
 //			// check all model surfaces
-//			for ( j = 0; j < model->NumSurfaces(); j++ ) {
-//				const modelSurface_t *surf = model->Surface( j );
+//			for ( j = 0; j < model.NumSurfaces(); j++ ) {
+//				const modelSurface_t *surf = model.Surface( j );
 //
-//				shader = R_RemapShaderBySkin( surf->shader, def->parms.customSkin, def->parms.customShader );
+//				shader = R_RemapShaderBySkin( surf.shader, def.parms.customSkin, def.parms.customShader );
 //
 //				// if no geometry or no shader
-//				if ( !surf->geometry || !shader ) {
+//				if ( !surf.geometry || !shader ) {
 //					continue;
 //				}
 //
 //#if 1 /* _D3XP addition. could use a cleaner approach */
 //				if ( skipPlayer ) {
-//					idStr name = shader->GetName();
+//					idStr name = shader.GetName();
 //					const char *exclude;
 //					int k;
 //
@@ -1259,9 +1259,9 @@
 //				}
 //#endif
 //
-//				tri = surf->geometry;
+//				tri = surf.geometry;
 //
-//				bounds.FromTransformedBounds( tri->bounds, def->parms.origin, def->parms.axis );
+//				bounds.FromTransformedBounds( tri.bounds, def.parms.origin, def.parms.axis );
 //
 //				// if triangle bounds do not overlap with the trace bounds
 //				if ( !traceBounds.IntersectsBounds( bounds ) || !bounds.LineIntersection( start, trace.point ) ) {
@@ -1271,19 +1271,19 @@
 //				numSurfaces++;
 //
 //				// transform the points into local space
-//				R_AxisToModelMatrix( def->parms.axis, def->parms.origin, modelMatrix );
+//				R_AxisToModelMatrix( def.parms.axis, def.parms.origin, modelMatrix );
 //				R_GlobalPointToLocal( modelMatrix, start, localStart );
 //				R_GlobalPointToLocal( modelMatrix, end, localEnd );
 //
-//				localTrace = R_LocalTrace( localStart, localEnd, radius, surf->geometry );
+//				localTrace = R_LocalTrace( localStart, localEnd, radius, surf.geometry );
 //
 //				if ( localTrace.fraction < trace.fraction ) {
 //					trace.fraction = localTrace.fraction;
 //					R_LocalPointToGlobal( modelMatrix, localTrace.point, trace.point );
-//					trace.normal = localTrace.normal * def->parms.axis;
+//					trace.normal = localTrace.normal * def.parms.axis;
 //					trace.material = shader;
-//					trace.entity = &def->parms;
-//					trace.jointNumber = model->NearestJoint( j, localTrace.indexes[0], localTrace.indexes[1], localTrace.indexes[2] );
+//					trace.entity = &def.parms;
+//					trace.jointNumber = model.NearestJoint( j, localTrace.indexes[0], localTrace.indexes[1], localTrace.indexes[2] );
 //
 //					traceBounds.Clear();
 //					traceBounds.AddPoint( start );
@@ -1308,7 +1308,7 @@
 //	float		midf;
 //	areaNode_t *node;
 //
-//	if ( results->fraction <= p1f) {
+//	if ( results.fraction <= p1f) {
 //		return;		// already hit something nearer
 //	}
 //	// empty leaf
@@ -1319,25 +1319,25 @@
 //	if ( nodeNum == 0 ) {
 //		if ( parentNodeNum != -1 ) {
 //
-//			results->fraction = p1f;
-//			results->point = p1;
+//			results.fraction = p1f;
+//			results.point = p1;
 //			node = &areaNodes[parentNodeNum];
-//			results->normal = node->plane.Normal();
+//			results.normal = node.plane.Normal();
 //			return;
 //		}
 //	}
 //	node = &areaNodes[nodeNum];
 //
 //	// distance from plane for trace start and end
-//	t1 = node->plane.Normal() * p1 + node->plane[3];
-//	t2 = node->plane.Normal() * p2 + node->plane[3];
+//	t1 = node.plane.Normal() * p1 + node.plane[3];
+//	t2 = node.plane.Normal() * p2 + node.plane[3];
 //
 //	if ( t1 >= 0.0f && t2 >= 0.0f ) {
-//		RecurseProcBSP_r( results, nodeNum, node->children[0], p1f, p2f, p1, p2 );
+//		RecurseProcBSP_r( results, nodeNum, node.children[0], p1f, p2f, p1, p2 );
 //		return;
 //	}
 //	if ( t1 < 0.0f && t2 < 0.0f ) {
-//		RecurseProcBSP_r( results, nodeNum, node->children[1], p1f, p2f, p1, p2 );
+//		RecurseProcBSP_r( results, nodeNum, node.children[1], p1f, p2f, p1, p2 );
 //		return;
 //	}
 //	side = t1 < t2;
@@ -1346,8 +1346,8 @@
 //	mid[0] = p1[0] + frac*(p2[0] - p1[0]);
 //	mid[1] = p1[1] + frac*(p2[1] - p1[1]);
 //	mid[2] = p1[2] + frac*(p2[2] - p1[2]);
-//	RecurseProcBSP_r( results, nodeNum, node->children[side], p1f, midf, p1, mid );
-//	RecurseProcBSP_r( results, nodeNum, node->children[side^1], midf, p2f, mid, p2 );
+//	RecurseProcBSP_r( results, nodeNum, node.children[side], p1f, midf, p1, mid );
+//	RecurseProcBSP_r( results, nodeNum, node.children[side^1], midf, p2f, mid, p2 );
 //}
 //
 ///*
@@ -1385,25 +1385,25 @@
 //	areaReference_t	*ref;
 //
 //	if ( !def ) {
-//		common->Error( "idRenderWorldLocal::AddEntityRefToArea: NULL def" );
+//		common.Error( "idRenderWorldLocal::AddEntityRefToArea: NULL def" );
 //	}
 //
 //	ref = areaReferenceAllocator.Alloc();
 //
 //	tr.pc.c_entityReferences++;
 //
-//	ref->entity = def;
+//	ref.entity = def;
 //
 //	// link to entityDef
-//	ref->ownerNext = def->entityRefs;
-//	def->entityRefs = ref;
+//	ref.ownerNext = def.entityRefs;
+//	def.entityRefs = ref;
 //
 //	// link to end of area list
-//	ref->area = area;
-//	ref->areaNext = &area->entityRefs;
-//	ref->areaPrev = area->entityRefs.areaPrev;
-//	ref->areaNext->areaPrev = ref;
-//	ref->areaPrev->areaNext = ref;
+//	ref.area = area;
+//	ref.areaNext = &area.entityRefs;
+//	ref.areaPrev = area.entityRefs.areaPrev;
+//	ref.areaNext.areaPrev = ref;
+//	ref.areaPrev.areaNext = ref;
 //}
 //
 ///*
@@ -1417,17 +1417,17 @@
 //
 //	// add a lightref to this area
 //	lref = areaReferenceAllocator.Alloc();
-//	lref->light = light;
-//	lref->area = area;
-//	lref->ownerNext = light->references;
-//	light->references = lref;
+//	lref.light = light;
+//	lref.area = area;
+//	lref.ownerNext = light.references;
+//	light.references = lref;
 //	tr.pc.c_lightReferences++;
 //
 //	// doubly linked list so we can free them easily later
-//	area->lightRefs.areaNext->areaPrev = lref;
-//	lref->areaNext = area->lightRefs.areaNext;
-//	lref->areaPrev = &area->lightRefs;
-//	area->lightRefs.areaNext = lref;
+//	area.lightRefs.areaNext.areaPrev = lref;
+//	lref.areaNext = area.lightRefs.areaNext;
+//	lref.areaPrev = &area.lightRefs;
+//	area.lightRefs.areaNext = lref;
 //}
 //
 ///*
@@ -1458,72 +1458,72 @@
 //	// try and do any view specific optimizations
 //	tr.viewDef = NULL;
 //
-//	for ( int i = 0 ; i < this->lightDefs.Num() ; i++ ) {
-//		idRenderLightLocal	*ldef = this->lightDefs[i];
+//	for ( int i = 0 ; i < this.lightDefs.Num() ; i++ ) {
+//		idRenderLightLocal	*ldef = this.lightDefs[i];
 //		if ( !ldef ) {
 //			continue;
 //		}
-//		this->CreateLightDefInteractions( ldef );
+//		this.CreateLightDefInteractions( ldef );
 //	}
 //
 //	int end = Sys_Milliseconds();
 //	int	msec = end - start;
 //
-//	common->Printf( "idRenderWorld::GenerateAllInteractions, msec = %i, staticAllocCount = %i.\n", msec, tr.staticAllocCount );
+//	common.Printf( "idRenderWorld::GenerateAllInteractions, msec = %i, staticAllocCount = %i.\n", msec, tr.staticAllocCount );
 //
 //
 //	// build the interaction table
 //	if ( r_useInteractionTable.GetBool() ) {
-//		interactionTableWidth = entityDefs.Num() + 100;
+//		interactionTableWidth = this.entityDefs.Num() + 100;
 //		interactionTableHeight = lightDefs.Num() + 100;
 //		int	size =  interactionTableWidth * interactionTableHeight * sizeof( *interactionTable );
 //		interactionTable = (idInteraction **)R_ClearedStaticAlloc( size );
 //
 //		int	count = 0;
-//		for ( int i = 0 ; i < this->lightDefs.Num() ; i++ ) {
-//			idRenderLightLocal	*ldef = this->lightDefs[i];
+//		for ( int i = 0 ; i < this.lightDefs.Num() ; i++ ) {
+//			idRenderLightLocal	*ldef = this.lightDefs[i];
 //			if ( !ldef ) {
 //				continue;
 //			}
 //			idInteraction	*inter;
-//			for ( inter = ldef->firstInteraction; inter != NULL; inter = inter->lightNext ) {
-//				idRenderEntityLocal	*edef = inter->entityDef;
-//				int index = ldef->index * interactionTableWidth + edef->index;
+//			for ( inter = ldef.firstInteraction; inter != NULL; inter = inter.lightNext ) {
+//				idRenderEntityLocal	*edef = inter.entityDef;
+//				int index = ldef.index * interactionTableWidth + edef.index;
 //
 //				interactionTable[ index ] = inter;
 //				count++;
 //			}
 //		}
 //
-//		common->Printf( "interactionTable size: %i bytes\n", size );
-//		common->Printf( "%i interaction take %i bytes\n", count, count * sizeof( idInteraction ) );
+//		common.Printf( "interactionTable size: %i bytes\n", size );
+//		common.Printf( "%i interaction take %i bytes\n", count, count * sizeof( idInteraction ) );
 //	}
 //
 //	// entities flagged as noDynamicInteractions will no longer make any
 //	generateAllInteractionsCalled = true;
 //}
-//
-///*
-//===================
-//idRenderWorldLocal::FreeInteractions
-//===================
-//*/
-//void idRenderWorldLocal::FreeInteractions() {
-//	int			i;
-//	idRenderEntityLocal	*def;
-//
-//	for ( i = 0 ; i < entityDefs.Num(); i++ ) {
-//		def = entityDefs[i];
-//		if ( !def ) {
-//			continue;
-//		}
-//		// free all the interactions
-//		while ( def->firstInteraction != NULL ) {
-//			def->firstInteraction->UnlinkAndFree();
-//		}
-//	}
-//}
-//
+
+/*
+===================
+idRenderWorldLocal::FreeInteractions
+===================
+*/
+idRenderWorldLocal.prototype.FreeInteractions = function ( ): void {
+	var i: number;
+	var def: idRenderEntityLocal;
+
+	for ( i = 0; i < this.entityDefs.Num ( ); i++ ) {
+		def = this.entityDefs[i];
+		if ( !def ) {
+			continue;
+		}
+		// free all the interactions
+		while ( def.firstInteraction != null ) {
+			def.firstInteraction.UnlinkAndFree ( );
+		}
+	}
+};
+
 ///*
 //==================
 //PushVolumeIntoTree
@@ -1550,10 +1550,10 @@
 //		int		areaNum = -1 - nodeNum;
 //
 //		area = &portalAreas[ areaNum ];
-//		if ( area->viewCount == tr.viewCount ) {
+//		if ( area.viewCount == tr.viewCount ) {
 //			return;	// already added a reference here
 //		}
-//		area->viewCount = tr.viewCount;
+//		area.viewCount = tr.viewCount;
 //
 //		if ( def ) {
 //			AddEntityRefToArea( def, area );
@@ -1570,28 +1570,28 @@
 //	// if we know that all possible children nodes only touch an area
 //	// we have already marked, we can early out
 //	if ( r_useNodeCommonChildren.GetBool() &&
-//		node->commonChildrenArea != CHILDREN_HAVE_MULTIPLE_AREAS ) {
+//		node.commonChildrenArea != CHILDREN_HAVE_MULTIPLE_AREAS ) {
 //		// note that we do NOT try to set a reference in this area
 //		// yet, because the test volume may yet wind up being in the
 //		// solid part, which would cause bounds slightly poked into
 //		// a wall to show up in the next room
-//		if ( portalAreas[ node->commonChildrenArea ].viewCount == tr.viewCount ) {
+//		if ( portalAreas[ node.commonChildrenArea ].viewCount == tr.viewCount ) {
 //			return;
 //		}
 //	}
 //
 //	// if the bounding sphere is completely on one side, don't
 //	// bother checking the individual points
-//	float sd = node->plane.Distance( sphere->GetOrigin() );
-//	if ( sd >= sphere->GetRadius() ) {
-//		nodeNum = node->children[0];
+//	float sd = node.plane.Distance( sphere.GetOrigin() );
+//	if ( sd >= sphere.GetRadius() ) {
+//		nodeNum = node.children[0];
 //		if ( nodeNum ) {	// 0 = solid
 //			PushVolumeIntoTree_r( def, light, sphere, numPoints, points, nodeNum );
 //		}
 //		return;
 //	}
-//	if ( sd <= -sphere->GetRadius() ) {
-//		nodeNum = node->children[1];
+//	if ( sd <= -sphere.GetRadius() ) {
+//		nodeNum = node.children[1];
 //		if ( nodeNum ) {	// 0 = solid
 //			PushVolumeIntoTree_r( def, light, sphere, numPoints, points, nodeNum );
 //		}
@@ -1601,8 +1601,8 @@
 //	// exact check all the points against the node plane
 //	front = back = false;
 //#ifdef MACOS_X	//loop unrolling & pre-fetching for performance
-//	const idVec3 norm = node->plane.Normal();
-//	const float plane3 = node->plane[3];
+//	const idVec3 norm = node.plane.Normal();
+//	const float plane3 = node.plane[3];
 //	float D0, D1, D2, D3;
 //
 //	for ( i = 0 ; i < numPoints - 4; i+=4 ) {
@@ -1638,7 +1638,7 @@
 //	if(!(back && front)) {
 //		for (; i < numPoints ; i++ ) {
 //			float d;
-//			d = points[i] * node->plane.Normal() + node->plane[3];
+//			d = points[i] * node.plane.Normal() + node.plane[3];
 //			if ( d >= 0.0f ) {
 //				front = true;
 //			} else if ( d <= 0.0f ) {
@@ -1653,7 +1653,7 @@
 //	for ( i = 0 ; i < numPoints ; i++ ) {
 //		float d;
 //
-//		d = points[i] * node->plane.Normal() + node->plane[3];
+//		d = points[i] * node.plane.Normal() + node.plane[3];
 //		if ( d >= 0.0f ) {
 //		    front = true;
 //		} else if ( d <= 0.0f ) {
@@ -1665,13 +1665,13 @@
 //	}
 //#endif
 //	if ( front ) {
-//		nodeNum = node->children[0];
+//		nodeNum = node.children[0];
 //		if ( nodeNum ) {	// 0 = solid
 //			PushVolumeIntoTree_r( def, light, sphere, numPoints, points, nodeNum );
 //		}
 //	}
 //	if ( back ) {
-//		nodeNum = node->children[1];
+//		nodeNum = node.children[1];
 //		if ( nodeNum ) {	// 0 = solid
 //			PushVolumeIntoTree_r( def, light, sphere, numPoints, points, nodeNum );
 //		}
@@ -2029,12 +2029,12 @@
 //	idBounds bounds;
 //	idVec3 p[4];
 //
-//	centerx = ( viewDef->viewport.x2 - viewDef->viewport.x1 ) * 0.5f;
-//	centery = ( viewDef->viewport.y2 - viewDef->viewport.y1 ) * 0.5f;
+//	centerx = ( viewDef.viewport.x2 - viewDef.viewport.x1 ) * 0.5f;
+//	centery = ( viewDef.viewport.y2 - viewDef.viewport.y1 ) * 0.5f;
 //
 //	dScale = r_znear.GetFloat() + 1.0f;
-//	hScale = dScale * idMath::Tan16( DEG2RAD( viewDef->renderView.fov_x * 0.5f ) );
-//	vScale = dScale * idMath::Tan16( DEG2RAD( viewDef->renderView.fov_y * 0.5f ) );
+//	hScale = dScale * idMath::Tan16( DEG2RAD( viewDef.renderView.fov_x * 0.5f ) );
+//	vScale = dScale * idMath::Tan16( DEG2RAD( viewDef.renderView.fov_y * 0.5f ) );
 //
 //	bounds[0][0] = bounds[1][0] = dScale;
 //	bounds[0][1] = -( rect.x1 - centerx ) / centerx * hScale;
@@ -2046,7 +2046,7 @@
 //		p[i].x = bounds[0][0];
 //		p[i].y = bounds[(i^(i>>1))&1].y;
 //		p[i].z = bounds[(i>>1)&1].z;
-//		p[i] = viewDef->renderView.vieworg + p[i] * viewDef->renderView.viewaxis;
+//		p[i] = viewDef.renderView.vieworg + p[i] * viewDef.renderView.viewaxis;
 //	}
 //	for ( i = 0; i < 4; i++ ) {
 //		DebugLine( color, p[i], p[(i+1)&3], false );
@@ -2092,7 +2092,7 @@
 //*/
 //bool R_GlobalShaderOverride( const idMaterial **shader ) {
 //
-//	if ( !(*shader)->IsDrawn() ) {
+//	if ( !(*shader).IsDrawn() ) {
 //		return false;
 //	}
 //
@@ -2102,7 +2102,7 @@
 //	}
 //
 //	if ( r_materialOverride.GetString()[0] != '\0' ) {
-//		*shader = declManager->FindMaterial( r_materialOverride.GetString() );
+//		*shader = declManager.FindMaterial( r_materialOverride.GetString() );
 //		return true;
 //	}
 //	
@@ -2121,14 +2121,14 @@
 //	}
 //
 //	// never remap surfaces that were originally nodraw, like collision hulls
-//	if ( !shader->IsDrawn() ) {
+//	if ( !shader.IsDrawn() ) {
 //		return shader;
 //	}
 //
 //	if ( customShader ) {
 //		// this is sort of a hack, but cause deformed surfaces to map to empty surfaces,
 //		// so the item highlight overlay doesn't highlight the autosprite surface
-//		if ( shader->Deform() ) {
+//		if ( shader.Deform() ) {
 //			return NULL;
 //		}
 //		return const_cast<idMaterial *>(customShader);
@@ -2138,5 +2138,5 @@
 //		return const_cast<idMaterial *>(shader);
 //	}
 //
-//	return skin->RemapShaderBySkin( shader );
+//	return skin.RemapShaderBySkin( shader );
 //}

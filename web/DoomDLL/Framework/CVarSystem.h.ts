@@ -190,12 +190,12 @@ class idCVar {
 ////	void					Init( const char *name, const char *value, int flags, const char *description,
 ////									float valueMin, float valueMax, const char **valueStrings, argCompletion_t valueCompletion );
 
-////	virtual void			InternalSetString( const char *newValue ) {}
-////	virtual void			InternalSetBool( const bool newValue ) {}
-////	virtual void			InternalSetInteger( const int newValue ) {}
-////	virtual void			InternalSetFloat( const float newValue ) {}
+	InternalSetString ( newValue: string ): void {}
+	InternalSetBool ( newValue: boolean ): void {}
+	InternalSetInteger ( /*const int*/ newValue: number ): void {}
+	InternalSetFloat ( /*const float */newValue: number ): void {}
 
-    static staticVars:idCVar = new idCVar();
+	static staticVars:idCVar = new idCVar();
 //};
 
 ////ID_INLINE idCVar::idCVar( const char *name, const char *value, int flags, const char *description,
@@ -230,36 +230,36 @@ class idCVar {
 //===============================================================================
 //*/
 
-Init( /*const char **/name:string, /*const char **/value:string, /*int */flags:number, /*const char **/description:string,
-							/*float*/ valueMin:number, /*float */valueMax:number, /*const char ***/valueStrings:string[], valueCompletion:(args:idCmdArgs, callback: (s: string)=>void)=>void = null ) {
-	this.name = name;
-	this.value = value;
-	this.flags = flags;
-	this.description = description;
-	this.flags = flags | CVAR_STATIC;
-	this.valueMin = valueMin;
-	this.valueMax = valueMax;
-	this.valueStrings = valueStrings;
-	this.valueCompletion = valueCompletion;
-	this.integerValue = 0;
-	this.floatValue = 0.0;
-	this.internalVar = this;
-	if ( idCVar.staticVars /*!= (idCVar *)0xFFFFFFFF*/ ) {
-		this.next = idCVar.staticVars;
-		idCVar.staticVars = this;
-	} else {
-		cvarSystem.Register( this );
-	}
-}
-
-static RegisterStaticVars( ):void {
-	if ( idCVar.staticVars /*!= (idCVar *)0xFFFFFFFF*/ ) {
-		for ( var cvar = idCVar.staticVars; cvar; cvar = cvar.next ) {
-			cvarSystem.Register( cvar );
+	Init ( /*const char **/name: string, /*const char **/value: string, /*int */flags: number, /*const char **/description: string,
+		/*float*/ valueMin: number, /*float */valueMax: number, /*const char ***/valueStrings: string[], valueCompletion: ( args: idCmdArgs, callback: ( s: string ) => void ) => void = null ) {
+		this.name = name;
+		this.value = value;
+		this.flags = flags;
+		this.description = description;
+		this.flags = flags | CVAR_STATIC;
+		this.valueMin = valueMin;
+		this.valueMax = valueMax;
+		this.valueStrings = valueStrings;
+		this.valueCompletion = valueCompletion;
+		this.integerValue = 0;
+		this.floatValue = 0.0;
+		this.internalVar = this;
+		if ( !( idCVar.staticVars instanceof idCVar ) /*!= (idCVar *)0xFFFFFFFF*/ ) {
+			this.next = idCVar.staticVars;
+			idCVar.staticVars = this;
+		} else {
+			cvarSystem.Register( this );
 		}
-	    idCVar.staticVars = null;/*(idCVar *)0xFFFFFFFF;*/
 	}
-}
+
+	static RegisterStaticVars( ):void {
+		if ( !( idCVar.staticVars instanceof idCVar ) /*!= (idCVar *)0xFFFFFFFF*/ ) {
+			for ( var cvar = idCVar.staticVars; cvar; cvar = cvar.next ) {
+				cvarSystem.Register( cvar );
+			}
+			idCVar.staticVars = null; /*(idCVar *)0xFFFFFFFF;*/
+		}
+	}
 
 ////#endif /* !__CVARSYSTEM_H__ */
 }

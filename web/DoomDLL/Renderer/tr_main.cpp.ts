@@ -151,14 +151,14 @@
 //idScreenRect R_ScreenRectFromViewFrustumBounds( const idBounds &bounds ) {
 //	idScreenRect screenRect;
 //
-//	screenRect.x1 = idMath::FtoiFast( 0.5f * ( 1.0f - bounds[1].y ) * ( tr.viewDef->viewport.x2 - tr.viewDef->viewport.x1 ) );
-//	screenRect.x2 = idMath::FtoiFast( 0.5f * ( 1.0f - bounds[0].y ) * ( tr.viewDef->viewport.x2 - tr.viewDef->viewport.x1 ) );
-//	screenRect.y1 = idMath::FtoiFast( 0.5f * ( 1.0f + bounds[0].z ) * ( tr.viewDef->viewport.y2 - tr.viewDef->viewport.y1 ) );
-//	screenRect.y2 = idMath::FtoiFast( 0.5f * ( 1.0f + bounds[1].z ) * ( tr.viewDef->viewport.y2 - tr.viewDef->viewport.y1 ) );
+//	screenRect.x1 = idMath::FtoiFast( 0.5f * ( 1.0f - bounds[1].y ) * ( tr.viewDef.viewport.x2 - tr.viewDef.viewport.x1 ) );
+//	screenRect.x2 = idMath::FtoiFast( 0.5f * ( 1.0f - bounds[0].y ) * ( tr.viewDef.viewport.x2 - tr.viewDef.viewport.x1 ) );
+//	screenRect.y1 = idMath::FtoiFast( 0.5f * ( 1.0f + bounds[0].z ) * ( tr.viewDef.viewport.y2 - tr.viewDef.viewport.y1 ) );
+//	screenRect.y2 = idMath::FtoiFast( 0.5f * ( 1.0f + bounds[1].z ) * ( tr.viewDef.viewport.y2 - tr.viewDef.viewport.y1 ) );
 //
 //	if ( r_useDepthBoundsTest.GetInteger() ) {
-//		R_TransformEyeZToWin( -bounds[0].x, tr.viewDef->projectionMatrix, screenRect.zmin );
-//		R_TransformEyeZToWin( -bounds[1].x, tr.viewDef->projectionMatrix, screenRect.zmax );
+//		R_TransformEyeZToWin( -bounds[0].x, tr.viewDef.projectionMatrix, screenRect.zmin );
+//		R_TransformEyeZToWin( -bounds[1].x, tr.viewDef.projectionMatrix, screenRect.zmax );
 //	}
 //
 //	return screenRect;
@@ -172,126 +172,126 @@
 //void R_ShowColoredScreenRect( const idScreenRect &rect, int colorIndex ) {
 //	if ( !rect.IsEmpty() ) {
 //		static idVec4 colors[] = { colorRed, colorGreen, colorBlue, colorYellow, colorMagenta, colorCyan, colorWhite, colorPurple };
-//		tr.viewDef->renderWorld->DebugScreenRect( colors[colorIndex & 7], rect, tr.viewDef );
+//		tr.viewDef.renderWorld.DebugScreenRect( colors[colorIndex & 7], rect, tr.viewDef );
 //	}
 //}
 //
-///*
-//====================
-//R_ToggleSmpFrame
-//====================
-//*/
-//void R_ToggleSmpFrame( void ) {
-//	if ( r_lockSurfaces.GetBool() ) {
-//		return;
-//	}
-//	R_FreeDeferredTriSurfs( frameData );
-//
-//	// clear frame-temporary data
-//	frameData_t		*frame;
-//	frameMemoryBlock_t	*block;
-//
-//	// update the highwater mark
-//	R_CountFrameData();
-//
-//	frame = frameData;
-//
-//	// reset the memory allocation to the first block
-//	frame->alloc = frame->memory;
-//
-//	// clear all the blocks
-//	for ( block = frame->memory ; block ; block = block->next ) {
-//		block->used = 0;
-//	}
-//
-//	R_ClearCommandChain();
-//}
-//
-//
-////=====================================================
-//
-//#define	MEMORY_BLOCK_SIZE	0x100000
-//
-///*
-//=====================
-//R_ShutdownFrameData
-//=====================
-//*/
-//void R_ShutdownFrameData( void ) {
-//	frameData_t *frame;
-//	frameMemoryBlock_t *block;
-//
-//	// free any current data
-//	frame = frameData;
-//	if ( !frame ) {
-//		return;
-//	}
-//
-//	R_FreeDeferredTriSurfs( frame );
-//
-//	frameMemoryBlock_t *nextBlock;
-//	for ( block = frame->memory ; block ; block = nextBlock ) {
-//		nextBlock = block->next;
-//		Mem_Free( block );
-//	}
-//	Mem_Free( frame );
-//	frameData = NULL;
-//}
-//
-///*
-//=====================
-//R_InitFrameData
-//=====================
-//*/
-//void R_InitFrameData( void ) {
-//	int size;
-//	frameData_t *frame;
-//	frameMemoryBlock_t *block;
-//
-//	R_ShutdownFrameData();
-//
-//	frameData = (frameData_t *)Mem_ClearedAlloc( sizeof( *frameData ));
-//	frame = frameData;
-//	size = MEMORY_BLOCK_SIZE;
-//	block = (frameMemoryBlock_t *)Mem_Alloc( size + sizeof( *block ) );
-//	if ( !block ) {
-//		common->FatalError( "R_InitFrameData: Mem_Alloc() failed" );
-//	}
-//	block->size = size;
-//	block->used = 0;
-//	block->next = NULL;
-//	frame->memory = block;
-//	frame->memoryHighwater = 0;
-//
-//	R_ToggleSmpFrame();
-//}
-//
-///*
-//================
-//R_CountFrameData
-//================
-//*/
-//int R_CountFrameData( void ) {
-//	frameData_t		*frame;
-//	frameMemoryBlock_t	*block;
-//	int				count;
-//
-//	count = 0;
-//	frame = frameData;
-//	for ( block = frame->memory ; block ; block=block->next ) {
-//		count += block->used;
-//		if ( block == frame->alloc ) {
-//			break;
-//		}
-//	}
-//
-//	// note if this is a new highwater mark
-//	if ( count > frame->memoryHighwater ) {
-//		frame->memoryHighwater = count;
-//	}
-//
-//	return count;
-//}
+/*
+====================
+R_ToggleSmpFrame
+====================
+*/
+function R_ToggleSmpFrame(): void {
+	if ( r_lockSurfaces.GetBool() ) {
+		return;
+	}
+	R_FreeDeferredTriSurfs( frameData );
+
+	// clear frame-temporary data
+	var frame: frameData_t;
+	var block: frameMemoryBlock_t;
+
+	// update the highwater mark
+	R_CountFrameData();	
+
+	frame = frameData;
+
+	// reset the memory allocation to the first block
+	frame.alloc = frame.memory;
+
+	// clear all the blocks
+	for ( block = frame.memory ; block ; block = block.next ) {
+		block.used = 0;
+	}
+
+	idRenderSystem.R_ClearCommandChain ( );
+}
+
+
+//=====================================================
+
+var MEMORY_BLOCK_SIZE = 0x100000;
+
+/*
+=====================
+R_ShutdownFrameData
+=====================
+*/
+function R_ShutdownFrameData(): void {
+	var frame: frameData_t;
+	var block: frameMemoryBlock_t ;
+
+	// free any current data
+	frame = frameData;
+	if ( !frame ) {
+		return;
+	}
+
+	R_FreeDeferredTriSurfs( frame );
+
+	var nextBlock: frameMemoryBlock_t;
+	for ( block = frame.memory ; block ; block = nextBlock ) {
+		nextBlock = block.next;
+		Mem_Free( block );
+	}
+	Mem_Free( frame );
+	frameData = null;
+}
+
+/*
+=====================
+R_InitFrameData
+=====================
+*/
+function R_InitFrameData( ):void {
+	var /*int */size:number;
+	var frame: frameData_t ;
+	var block: frameMemoryBlock_t;
+
+	R_ShutdownFrameData();
+
+	frameData = new frameData_t ( );//frameData_t *)Mem_ClearedAlloc( sizeof( *frameData ));
+	frame = frameData;
+	size = MEMORY_BLOCK_SIZE;
+	block = new frameMemoryBlock_t;//(frameMemoryBlock_t *)Mem_Alloc( size + sizeof( *block ) );
+	if ( !block ) {
+		common.FatalError( "R_InitFrameData: Mem_Alloc() failed" );
+	}
+	block.size = size;
+	block.used = 0;
+	block.next = null;
+	frame.memory = block;
+	frame.memoryHighwater = 0;
+
+	R_ToggleSmpFrame();
+}
+
+/*
+================
+R_CountFrameData
+================
+*/
+function R_CountFrameData ( ): /*int*/number {
+	var frame: frameData_t;
+	var block: frameMemoryBlock_t;
+	var /*int*/count: number;
+
+	count = 0;
+	frame = frameData;
+	for ( block = frame.memory; block; block = block.next ) {
+		count += block.used;
+		if ( block == frame.alloc ) {
+			break;
+		}
+	}
+
+	// note if this is a new highwater mark
+	if ( count > frame.memoryHighwater ) {
+		frame.memoryHighwater = count;
+	}
+
+	return count;
+}
 //
 /*
 =================
@@ -324,7 +324,7 @@ function R_StaticAlloc ( /*int */bytes: number ): Uint8Array {
 //	void	*buf;
 //
 //	buf = R_StaticAlloc( bytes );
-//	SIMDProcessor->Memset( buf, 0, bytes );
+//	SIMDProcessor.Memset( buf, 0, bytes );
 //	return buf;
 //}
 //
@@ -337,78 +337,80 @@ function R_StaticFree( /*void **/data:any ):void {
 	tr.pc.c_free++;
     Mem_Free( data );
 }
-//
-///*
-//================
-//R_FrameAlloc
-//
-//This data will be automatically freed when the
-//current frame's back end completes.
-//
-//This should only be called by the front end.  The
-//back end shouldn't need to allocate memory.
-//
-//If we passed smpFrame in, the back end could
-//alloc memory, because it will always be a
-//different frameData than the front end is using.
-//
-//All temporary data, like dynamic tesselations
-//and local spaces are allocated here.
-//
-//The memory will not move, but it may not be
-//contiguous with previous allocations even
-//from this frame.
-//
-//The memory is NOT zero filled.
-//Should part of this be inlined in a macro?
-//================
-//*/
-//void *R_FrameAlloc( int bytes ) {
-//	frameData_t		*frame;
-//	frameMemoryBlock_t	*block;
-//	void			*buf;
-//    
-//	bytes = (bytes+16)&~15;
-//	// see if it can be satisfied in the current block
-//	frame = frameData;
-//	block = frame->alloc;
-//
-//	if ( block->size - block->used >= bytes ) {
-//		buf = block->base + block->used;
-//		block->used += bytes;
-//		return buf;
-//	}
-//
-//	// advance to the next memory block if available
-//	block = block->next;
-//	// create a new block if we are at the end of
-//	// the chain
-//	if ( !block ) {
-//		int		size;
-//
-//		size = MEMORY_BLOCK_SIZE;
-//		block = (frameMemoryBlock_t *)Mem_Alloc( size + sizeof( *block ) );
-//		if ( !block ) {
-//			common->FatalError( "R_FrameAlloc: Mem_Alloc() failed" );
-//		}
-//		block->size = size;
-//		block->used = 0;
-//		block->next = NULL;
-//		frame->alloc->next = block;
-//	}
-//
-//	// we could fix this if we needed to...
-//	if ( bytes > block->size ) {
-//		common->FatalError( "R_FrameAlloc of %i exceeded MEMORY_BLOCK_SIZE",
-//			bytes );
-//	}
-//
-//	frame->alloc = block;
-//
-//	block->used = bytes;
-//
-//	return block->base;
-//}
+
+/*
+================
+R_FrameAlloc
+
+This data will be automatically freed when the
+current frame's back end completes.
+
+This should only be called by the front end.  The
+back end shouldn't need to allocate memory.
+
+If we passed smpFrame in, the back end could
+alloc memory, because it will always be a
+different frameData than the front end is using.
+
+All temporary data, like dynamic tesselations
+and local spaces are allocated here.
+
+The memory will not move, but it may not be
+contiguous with previous allocations even
+from this frame.
+
+The memory is NOT zero filled.
+Should part of this be inlined in a macro?
+================
+*/
+function R_FrameAlloc<T>(type: any /*int bytes */) {
+	todo("R_FrameAlloc ??");
+	return <T>new type;
+	//frameData_t		*frame;
+	//frameMemoryBlock_t	*block;
+	//void			*buf;
+
+	//bytes = (bytes+16)&~15;
+	//// see if it can be satisfied in the current block
+	//frame = frameData;
+	//block = frame.alloc;
+
+	//if ( block.size - block.used >= bytes ) {
+	//	buf = block.base + block.used;
+	//	block.used += bytes;
+	//	return buf;
+	//}
+
+	//// advance to the next memory block if available
+	//block = block.next;
+	//// create a new block if we are at the end of
+	//// the chain
+	//if ( !block ) {
+	//	int		size;
+
+	//	size = MEMORY_BLOCK_SIZE;
+	//	block = (frameMemoryBlock_t *)Mem_Alloc( size + sizeof( *block ) );
+	//	if ( !block ) {
+	//		common.FatalError( "R_FrameAlloc: Mem_Alloc() failed" );
+	//	}
+	//	block.size = size;
+	//	block.used = 0;
+	//	block.next = NULL;
+	//	frame.alloc.next = block;
+	//}
+
+	//// we could fix this if we needed to...
+	//if ( bytes > block.size ) {
+	//	common.FatalError( "R_FrameAlloc of %i exceeded MEMORY_BLOCK_SIZE",
+	//		bytes );
+	//}
+
+	//frame.alloc = block;
+
+	//block.used = bytes;
+
+	//return block.base;
+}
 //
 ///*
 //==================
@@ -419,7 +421,7 @@ function R_StaticFree( /*void **/data:any ):void {
 //	void	*r;
 //
 //	r = R_FrameAlloc( bytes );
-//	SIMDProcessor->Memset( r, 0, bytes );
+//	SIMDProcessor.Memset( r, 0, bytes );
 //	return r;
 //}
 //
@@ -605,7 +607,7 @@ function R_StaticFree( /*void **/data:any ):void {
 //
 //	for ( i = 0 ; i < numPlanes ; i++ ) {
 //		frust = planes + i;
-//		d = frust->Distance( worldOrigin );
+//		d = frust.Distance( worldOrigin );
 //		if ( d > worldRadius ) {
 //			return true;	// culled
 //		}
@@ -648,7 +650,7 @@ function R_StaticFree( /*void **/data:any ):void {
 //	for ( i = 0 ; i < numPlanes ; i++ ) {
 //		frust = planes + i;
 //		for ( j = 0 ; j < 8 ; j++ ) {
-//			dists[j] = frust->Distance( transformed[j] );
+//			dists[j] = frust.Distance( transformed[j] );
 //			if ( dists[j] < 0 ) {
 //				break;
 //			}
@@ -722,37 +724,37 @@ function R_StaticFree( /*void **/data:any ):void {
 //
 //		for ( i = 0 ; i < 4 ; i ++ ) {
 //			view[i] = 
-//				global[0] * tr.primaryView->worldSpace.modelViewMatrix[ i + 0 * 4 ] +
-//				global[1] * tr.primaryView->worldSpace.modelViewMatrix[ i + 1 * 4 ] +
-//				global[2] * tr.primaryView->worldSpace.modelViewMatrix[ i + 2 * 4 ] +
-//					tr.primaryView->worldSpace.modelViewMatrix[ i + 3 * 4 ];
+//				global[0] * tr.primaryView.worldSpace.modelViewMatrix[ i + 0 * 4 ] +
+//				global[1] * tr.primaryView.worldSpace.modelViewMatrix[ i + 1 * 4 ] +
+//				global[2] * tr.primaryView.worldSpace.modelViewMatrix[ i + 2 * 4 ] +
+//					tr.primaryView.worldSpace.modelViewMatrix[ i + 3 * 4 ];
 //		}
 //
 //		for ( i = 0 ; i < 4 ; i ++ ) {
 //			clip[i] = 
-//				view[0] * tr.primaryView->projectionMatrix[ i + 0 * 4 ] +
-//				view[1] * tr.primaryView->projectionMatrix[ i + 1 * 4 ] +
-//				view[2] * tr.primaryView->projectionMatrix[ i + 2 * 4 ] +
-//				view[3] * tr.primaryView->projectionMatrix[ i + 3 * 4 ];
+//				view[0] * tr.primaryView.projectionMatrix[ i + 0 * 4 ] +
+//				view[1] * tr.primaryView.projectionMatrix[ i + 1 * 4 ] +
+//				view[2] * tr.primaryView.projectionMatrix[ i + 2 * 4 ] +
+//				view[3] * tr.primaryView.projectionMatrix[ i + 3 * 4 ];
 //		}
 //
 //	} else {
 //
 //		for ( i = 0 ; i < 4 ; i ++ ) {
 //			view[i] = 
-//				global[0] * tr.viewDef->worldSpace.modelViewMatrix[ i + 0 * 4 ] +
-//				global[1] * tr.viewDef->worldSpace.modelViewMatrix[ i + 1 * 4 ] +
-//				global[2] * tr.viewDef->worldSpace.modelViewMatrix[ i + 2 * 4 ] +
-//				tr.viewDef->worldSpace.modelViewMatrix[ i + 3 * 4 ];
+//				global[0] * tr.viewDef.worldSpace.modelViewMatrix[ i + 0 * 4 ] +
+//				global[1] * tr.viewDef.worldSpace.modelViewMatrix[ i + 1 * 4 ] +
+//				global[2] * tr.viewDef.worldSpace.modelViewMatrix[ i + 2 * 4 ] +
+//				tr.viewDef.worldSpace.modelViewMatrix[ i + 3 * 4 ];
 //		}
 //
 //
 //		for ( i = 0 ; i < 4 ; i ++ ) {
 //			clip[i] = 
-//				view[0] * tr.viewDef->projectionMatrix[ i + 0 * 4 ] +
-//				view[1] * tr.viewDef->projectionMatrix[ i + 1 * 4 ] +
-//				view[2] * tr.viewDef->projectionMatrix[ i + 2 * 4 ] +
-//				view[3] * tr.viewDef->projectionMatrix[ i + 3 * 4 ];
+//				view[0] * tr.viewDef.projectionMatrix[ i + 0 * 4 ] +
+//				view[1] * tr.viewDef.projectionMatrix[ i + 1 * 4 ] +
+//				view[2] * tr.viewDef.projectionMatrix[ i + 2 * 4 ] +
+//				view[3] * tr.viewDef.projectionMatrix[ i + 3 * 4 ];
 //		}
 //
 //	}
@@ -830,31 +832,31 @@ function R_StaticFree( /*void **/data:any ):void {
 //		0, 0, 0, 1
 //	};
 //
-//	world = &viewDef->worldSpace;
+//	world = &viewDef.worldSpace;
 //
 //	memset( world, 0, sizeof(*world) );
 //
 //	// the model matrix is an identity
-//	world->modelMatrix[0*4+0] = 1;
-//	world->modelMatrix[1*4+1] = 1;
-//	world->modelMatrix[2*4+2] = 1;
+//	world.modelMatrix[0*4+0] = 1;
+//	world.modelMatrix[1*4+1] = 1;
+//	world.modelMatrix[2*4+2] = 1;
 //
 //	// transform by the camera placement
-//	origin = viewDef->renderView.vieworg;
+//	origin = viewDef.renderView.vieworg;
 //
-//	viewerMatrix[0] = viewDef->renderView.viewaxis[0][0];
-//	viewerMatrix[4] = viewDef->renderView.viewaxis[0][1];
-//	viewerMatrix[8] = viewDef->renderView.viewaxis[0][2];
+//	viewerMatrix[0] = viewDef.renderView.viewaxis[0][0];
+//	viewerMatrix[4] = viewDef.renderView.viewaxis[0][1];
+//	viewerMatrix[8] = viewDef.renderView.viewaxis[0][2];
 //	viewerMatrix[12] = -origin[0] * viewerMatrix[0] + -origin[1] * viewerMatrix[4] + -origin[2] * viewerMatrix[8];
 //
-//	viewerMatrix[1] = viewDef->renderView.viewaxis[1][0];
-//	viewerMatrix[5] = viewDef->renderView.viewaxis[1][1];
-//	viewerMatrix[9] = viewDef->renderView.viewaxis[1][2];
+//	viewerMatrix[1] = viewDef.renderView.viewaxis[1][0];
+//	viewerMatrix[5] = viewDef.renderView.viewaxis[1][1];
+//	viewerMatrix[9] = viewDef.renderView.viewaxis[1][2];
 //	viewerMatrix[13] = -origin[0] * viewerMatrix[1] + -origin[1] * viewerMatrix[5] + -origin[2] * viewerMatrix[9];
 //
-//	viewerMatrix[2] = viewDef->renderView.viewaxis[2][0];
-//	viewerMatrix[6] = viewDef->renderView.viewaxis[2][1];
-//	viewerMatrix[10] = viewDef->renderView.viewaxis[2][2];
+//	viewerMatrix[2] = viewDef.renderView.viewaxis[2][0];
+//	viewerMatrix[6] = viewDef.renderView.viewaxis[2][1];
+//	viewerMatrix[10] = viewDef.renderView.viewaxis[2][2];
 //	viewerMatrix[14] = -origin[0] * viewerMatrix[2] + -origin[1] * viewerMatrix[6] + -origin[2] * viewerMatrix[10];
 //
 //	viewerMatrix[3] = 0;
@@ -864,7 +866,7 @@ function R_StaticFree( /*void **/data:any ):void {
 //
 //	// convert from our coordinate system (looking down X)
 //	// to OpenGL's coordinate system (looking down -Z)
-//	myGlMultMatrix( viewerMatrix, s_flipMatrix, world->modelViewMatrix );
+//	myGlMultMatrix( viewerMatrix, s_flipMatrix, world.modelViewMatrix );
 //}
 //
 ///*
@@ -895,48 +897,48 @@ function R_StaticFree( /*void **/data:any ):void {
 //	// set up projection matrix
 //	//
 //	zNear	= r_znear.GetFloat();
-//	if ( tr.viewDef->renderView.cramZNear ) {
+//	if ( tr.viewDef.renderView.cramZNear ) {
 //		zNear *= 0.25;
 //	}
 //
-//	ymax = zNear * tan( tr.viewDef->renderView.fov_y * idMath::PI / 360.0f );
+//	ymax = zNear * tan( tr.viewDef.renderView.fov_y * idMath::PI / 360.0f );
 //	ymin = -ymax;
 //
-//	xmax = zNear * tan( tr.viewDef->renderView.fov_x * idMath::PI / 360.0f );
+//	xmax = zNear * tan( tr.viewDef.renderView.fov_x * idMath::PI / 360.0f );
 //	xmin = -xmax;
 //
 //	width = xmax - xmin;
 //	height = ymax - ymin;
 //
-//	jitterx = jitterx * width / ( tr.viewDef->viewport.x2 - tr.viewDef->viewport.x1 + 1 );
+//	jitterx = jitterx * width / ( tr.viewDef.viewport.x2 - tr.viewDef.viewport.x1 + 1 );
 //	xmin += jitterx;
 //	xmax += jitterx;
-//	jittery = jittery * height / ( tr.viewDef->viewport.y2 - tr.viewDef->viewport.y1 + 1 );
+//	jittery = jittery * height / ( tr.viewDef.viewport.y2 - tr.viewDef.viewport.y1 + 1 );
 //	ymin += jittery;
 //	ymax += jittery;
 //
-//	tr.viewDef->projectionMatrix[0] = 2 * zNear / width;
-//	tr.viewDef->projectionMatrix[4] = 0;
-//	tr.viewDef->projectionMatrix[8] = ( xmax + xmin ) / width;	// normally 0
-//	tr.viewDef->projectionMatrix[12] = 0;
+//	tr.viewDef.projectionMatrix[0] = 2 * zNear / width;
+//	tr.viewDef.projectionMatrix[4] = 0;
+//	tr.viewDef.projectionMatrix[8] = ( xmax + xmin ) / width;	// normally 0
+//	tr.viewDef.projectionMatrix[12] = 0;
 //
-//	tr.viewDef->projectionMatrix[1] = 0;
-//	tr.viewDef->projectionMatrix[5] = 2 * zNear / height;
-//	tr.viewDef->projectionMatrix[9] = ( ymax + ymin ) / height;	// normally 0
-//	tr.viewDef->projectionMatrix[13] = 0;
+//	tr.viewDef.projectionMatrix[1] = 0;
+//	tr.viewDef.projectionMatrix[5] = 2 * zNear / height;
+//	tr.viewDef.projectionMatrix[9] = ( ymax + ymin ) / height;	// normally 0
+//	tr.viewDef.projectionMatrix[13] = 0;
 //
 //	// this is the far-plane-at-infinity formulation, and
 //	// crunches the Z range slightly so w=0 vertexes do not
 //	// rasterize right at the wraparound point
-//	tr.viewDef->projectionMatrix[2] = 0;
-//	tr.viewDef->projectionMatrix[6] = 0;
-//	tr.viewDef->projectionMatrix[10] = -0.999f;
-//	tr.viewDef->projectionMatrix[14] = -2.0f * zNear;
+//	tr.viewDef.projectionMatrix[2] = 0;
+//	tr.viewDef.projectionMatrix[6] = 0;
+//	tr.viewDef.projectionMatrix[10] = -0.999f;
+//	tr.viewDef.projectionMatrix[14] = -2.0f * zNear;
 //
-//	tr.viewDef->projectionMatrix[3] = 0;
-//	tr.viewDef->projectionMatrix[7] = 0;
-//	tr.viewDef->projectionMatrix[11] = -1;
-//	tr.viewDef->projectionMatrix[15] = 0;
+//	tr.viewDef.projectionMatrix[3] = 0;
+//	tr.viewDef.projectionMatrix[7] = 0;
+//	tr.viewDef.projectionMatrix[11] = -1;
+//	tr.viewDef.projectionMatrix[15] = 0;
 //}
 //
 ///*
@@ -952,25 +954,25 @@ function R_StaticFree( /*void **/data:any ):void {
 //	float	xs, xc;
 //	float	ang;
 //
-//	ang = DEG2RAD( tr.viewDef->renderView.fov_x ) * 0.5f;
+//	ang = DEG2RAD( tr.viewDef.renderView.fov_x ) * 0.5f;
 //	idMath::SinCos( ang, xs, xc );
 //
-//	tr.viewDef->frustum[0] = xs * tr.viewDef->renderView.viewaxis[0] + xc * tr.viewDef->renderView.viewaxis[1];
-//	tr.viewDef->frustum[1] = xs * tr.viewDef->renderView.viewaxis[0] - xc * tr.viewDef->renderView.viewaxis[1];
+//	tr.viewDef.frustum[0] = xs * tr.viewDef.renderView.viewaxis[0] + xc * tr.viewDef.renderView.viewaxis[1];
+//	tr.viewDef.frustum[1] = xs * tr.viewDef.renderView.viewaxis[0] - xc * tr.viewDef.renderView.viewaxis[1];
 //
-//	ang = DEG2RAD( tr.viewDef->renderView.fov_y ) * 0.5f;
+//	ang = DEG2RAD( tr.viewDef.renderView.fov_y ) * 0.5f;
 //	idMath::SinCos( ang, xs, xc );
 //
-//	tr.viewDef->frustum[2] = xs * tr.viewDef->renderView.viewaxis[0] + xc * tr.viewDef->renderView.viewaxis[2];
-//	tr.viewDef->frustum[3] = xs * tr.viewDef->renderView.viewaxis[0] - xc * tr.viewDef->renderView.viewaxis[2];
+//	tr.viewDef.frustum[2] = xs * tr.viewDef.renderView.viewaxis[0] + xc * tr.viewDef.renderView.viewaxis[2];
+//	tr.viewDef.frustum[3] = xs * tr.viewDef.renderView.viewaxis[0] - xc * tr.viewDef.renderView.viewaxis[2];
 //
 //	// plane four is the front clipping plane
-//	tr.viewDef->frustum[4] = /* vec3_origin - */ tr.viewDef->renderView.viewaxis[0];
+//	tr.viewDef.frustum[4] = /* vec3_origin - */ tr.viewDef.renderView.viewaxis[0];
 //
 //	for ( i = 0; i < 5; i++ ) {
 //		// flip direction so positive side faces out (FIXME: globally unify this)
-//		tr.viewDef->frustum[i] = -tr.viewDef->frustum[i].Normal();
-//		tr.viewDef->frustum[i][3] = -( tr.viewDef->renderView.vieworg * tr.viewDef->frustum[i].Normal() );
+//		tr.viewDef.frustum[i] = -tr.viewDef.frustum[i].Normal();
+//		tr.viewDef.frustum[i][3] = -( tr.viewDef.renderView.vieworg * tr.viewDef.frustum[i].Normal() );
 //	}
 //
 //	// eventually, plane five will be the rear clipping plane for fog
@@ -978,16 +980,16 @@ function R_StaticFree( /*void **/data:any ):void {
 //	float dNear, dFar, dLeft, dUp;
 //
 //	dNear = r_znear.GetFloat();
-//	if ( tr.viewDef->renderView.cramZNear ) {
+//	if ( tr.viewDef.renderView.cramZNear ) {
 //		dNear *= 0.25f;
 //	}
 //
 //	dFar = MAX_WORLD_SIZE;
-//	dLeft = dFar * tan( DEG2RAD( tr.viewDef->renderView.fov_x * 0.5f ) );
-//	dUp = dFar * tan( DEG2RAD( tr.viewDef->renderView.fov_y * 0.5f ) );
-//	tr.viewDef->viewFrustum.SetOrigin( tr.viewDef->renderView.vieworg );
-//	tr.viewDef->viewFrustum.SetAxis( tr.viewDef->renderView.viewaxis );
-//	tr.viewDef->viewFrustum.SetSize( dNear, dFar, dLeft, dUp );
+//	dLeft = dFar * tan( DEG2RAD( tr.viewDef.renderView.fov_x * 0.5f ) );
+//	dUp = dFar * tan( DEG2RAD( tr.viewDef.renderView.fov_y * 0.5f ) );
+//	tr.viewDef.viewFrustum.SetOrigin( tr.viewDef.renderView.vieworg );
+//	tr.viewDef.viewFrustum.SetAxis( tr.viewDef.renderView.viewaxis );
+//	tr.viewDef.viewFrustum.SetSize( dNear, dFar, dLeft, dUp );
 //}
 //
 ///*
@@ -1000,16 +1002,16 @@ function R_StaticFree( /*void **/data:any ):void {
 //
 //	// constrain the view frustum to the total bounds of all visible lights and visible entities
 //	bounds.Clear();
-//	for ( viewLight_t *vLight = tr.viewDef->viewLights; vLight; vLight = vLight->next ) {
-//		bounds.AddBounds( vLight->lightDef->frustumTris->bounds );
+//	for ( viewLight_t *vLight = tr.viewDef.viewLights; vLight; vLight = vLight.next ) {
+//		bounds.AddBounds( vLight.lightDef.frustumTris.bounds );
 //	}
-//	for ( viewEntity_t *vEntity = tr.viewDef->viewEntitys; vEntity; vEntity = vEntity->next ) {
-//		bounds.AddBounds( vEntity->entityDef->referenceBounds );
+//	for ( viewEntity_t *vEntity = tr.viewDef.viewEntitys; vEntity; vEntity = vEntity.next ) {
+//		bounds.AddBounds( vEntity.entityDef.referenceBounds );
 //	}
-//	tr.viewDef->viewFrustum.ConstrainToBounds( bounds );
+//	tr.viewDef.viewFrustum.ConstrainToBounds( bounds );
 //
 //	if ( r_useFrustumFarDistance.GetFloat() > 0.0 ) {
-//		tr.viewDef->viewFrustum.MoveFarDistance( r_useFrustumFarDistance.GetFloat() );
+//		tr.viewDef.viewFrustum.MoveFarDistance( r_useFrustumFarDistance.GetFloat() );
 //	}
 //}
 //
@@ -1034,10 +1036,10 @@ function R_StaticFree( /*void **/data:any ):void {
 //	ea = *(drawSurf_t **)a;
 //	eb = *(drawSurf_t **)b;
 //
-//	if ( ea->sort < eb->sort ) {
+//	if ( ea.sort < eb.sort ) {
 //		return -1;
 //	}
-//	if ( ea->sort > eb->sort ) {
+//	if ( ea.sort > eb.sort ) {
 //		return 1;
 //	}
 //	return 0;
@@ -1051,7 +1053,7 @@ function R_StaticFree( /*void **/data:any ):void {
 //*/
 //static void R_SortDrawSurfs( void ) {
 //	// sort the drawsurfs by sort type, then orientation, then shader
-//	qsort( tr.viewDef->drawSurfs, tr.viewDef->numDrawSurfs, sizeof( tr.viewDef->drawSurfs[0] ),
+//	qsort( tr.viewDef.drawSurfs, tr.viewDef.numDrawSurfs, sizeof( tr.viewDef.drawSurfs[0] ),
 //		R_QsortSurfaces );
 //}
 //
@@ -1077,7 +1079,7 @@ function R_StaticFree( /*void **/data:any ):void {
 //void R_RenderView( viewDef_t *parms ) {
 //	viewDef_t		*oldView;
 //
-//	if ( parms->renderView.width <= 0 || parms->renderView.height <= 0 ) {
+//	if ( parms.renderView.width <= 0 || parms.renderView.height <= 0 ) {
 //		return;
 //	}
 //
@@ -1103,7 +1105,7 @@ function R_StaticFree( /*void **/data:any ):void {
 //
 //	// identify all the visible portalAreas, and the entityDefs and
 //	// lightDefs that are in them and pass culling.
-//	static_cast<idRenderWorldLocal *>(parms->renderWorld)->FindViewLightsAndEntities();
+//	static_cast<idRenderWorldLocal *>(parms.renderWorld).FindViewLightsAndEntities();
 //
 //	// constrain the view frustum to the view lights and entities
 //	R_ConstrainViewFrustum();
@@ -1133,8 +1135,8 @@ function R_StaticFree( /*void **/data:any ):void {
 //	}
 //
 //	// write everything needed to the demo file
-//	if ( session->writeDemo ) {
-//		static_cast<idRenderWorldLocal *>(parms->renderWorld)->WriteVisibleDefs( tr.viewDef );
+//	if ( session.writeDemo ) {
+//		static_cast<idRenderWorldLocal *>(parms.renderWorld).WriteVisibleDefs( tr.viewDef );
 //	}
 //
 //	// add the rendering commands for this viewDef

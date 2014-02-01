@@ -83,7 +83,7 @@ var r_swapInterval = new idCVar( "r_swapInterval", "0", CVAR_RENDERER | CVAR_ARC
 var r_gamma = new idCVar( "r_gamma", "1", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_FLOAT, "changes gamma tables", 0.5, 3.0 );
 var r_brightness = new idCVar( "r_brightness", "1", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_FLOAT, "changes gamma tables", 0.5, 2.0 );
 
-var r__renderer= new idCVar("r_renderer", "glsl", CVAR_RENDERER | CVAR_ARCHIVE, "hardware specific renderer path to use");
+var r_renderer = new idCVar("r_renderer", "glsl", CVAR_RENDERER | CVAR_ARCHIVE, "hardware specific renderer path to use");
 
 var r_jitter= new idCVar( "r_jitter", "0", CVAR_RENDERER | CVAR_BOOL, "randomly subpixel jitter the projection matrix" );
 
@@ -633,16 +633,16 @@ R_InitOpenGL(): void {
 
 	// allocate the vertex array range or vertex objects
 	vertexCache.Init();
-	todoThrow ( );
-	//// select which renderSystem we are going to use
-	//r_renderer.SetModified();
-	//tr.SetBackEndRenderer();
+	
+	// select which renderSystem we are going to use
+	r_renderer.SetModified();
+	tr.SetBackEndRenderer();
 
-	//// allocate the frame data, which may be more if smp is enabled
-	//R_InitFrameData();
+	// allocate the frame data, which may be more if smp is enabled
+	R_InitFrameData();
 
-	//// Reset our gamma
-	//R_SetColorMappings();
+	// Reset our gamma
+	idRenderSystem.R_SetColorMappings();
 }
 
 /*
@@ -1653,37 +1653,38 @@ static GL_CheckErrors():void {
 R_SetColorMappings
 ===============
 */
-    static R_SetColorMappings ( ): void {
-        var /*int		*/i: number, j: number;
-        var /*float	*/g: number, b: number;
-        var /*int		*/inf: number;
+	static R_SetColorMappings(): void {
+		notNeeded ( );
+		//var /*int		*/i: number, j: number;
+		//var /*float	*/g: number, b: number;
+		//var /*int		*/inf: number;
 
-        b = r_brightness.GetFloat ( );
-        g = r_gamma.GetFloat ( );
+		//b = r_brightness.GetFloat ( );
+		//g = r_gamma.GetFloat ( );
 
-        for ( i = 0; i < 256; i++ ) {
-            j = i * b;
-            if ( j > 255 ) {
-                j = 255;
-            }
+		//for ( i = 0; i < 256; i++ ) {
+		//    j = i * b;
+		//    if ( j > 255 ) {
+		//        j = 255;
+		//    }
 
-            if ( g == 1 ) {
-                inf = ( j << 8 ) | j;
-            } else {
-                inf = 0xffff * pow( j / 255.0, 1.0 / g ) + 0.5;
-            }
-            if ( inf < 0 ) {
-                inf = 0;
-            }
-            if ( inf > 0xffff ) {
-                inf = 0xffff;
-            }
+		//    if ( g == 1 ) {
+		//        inf = ( j << 8 ) | j;
+		//    } else {
+		//        inf = 0xffff * pow( j / 255.0, 1.0 / g ) + 0.5;
+		//    }
+		//    if ( inf < 0 ) {
+		//        inf = 0;
+		//    }
+		//    if ( inf > 0xffff ) {
+		//        inf = 0xffff;
+		//    }
 
-            tr.gammaTable[i] = inf;
-        }
+		//    tr.gammaTable[i] = inf;
+		//}
 
-        GLimp_SetGamma( tr.gammaTable, tr.gammaTable, tr.gammaTable );
-    }
+		//GLimp_SetGamma( tr.gammaTable, tr.gammaTable, tr.gammaTable );
+	}
 
 
 /////*
@@ -2359,20 +2360,20 @@ idRenderSystemLocal::GetScreenHeight
 ////}
 
 
-/////*
-////====================
-////R_ClearCommandChain
+/*
+====================
+R_ClearCommandChain
 
-////Called after every buffer submission
-////and by R_ToggleSmpFrame
-////====================
-////*/
-////void R_ClearCommandChain( void ) {
-////	// clear the command chain
-////	frameData.cmdHead = frameData.cmdTail = (emptyCommand_t *)R_FrameAlloc( sizeof( *frameData.cmdHead ) );
-////	frameData.cmdHead.commandId = RC_NOP;
-////	frameData.cmdHead.next = NULL;
-////}
+Called after every buffer submission
+and by R_ToggleSmpFrame
+====================
+*/
+	static R_ClearCommandChain ( ): void {
+		// clear the command chain
+		frameData.cmdHead = frameData.cmdTail = R_FrameAlloc<emptyCommand_t>( emptyCommand_t /*sizeof( *frameData.cmdHead )*/ );
+		frameData.cmdHead.commandId = renderCommand_t.RC_NOP;
+		frameData.cmdHead.next = null;
+	}
 
 /////*
 ////=================
@@ -2714,60 +2715,60 @@ Coordinates are at 640 by 480 virtual resolution
 ////	this.SetColor( colorWhite );
 ////}
 
-//////======================================================================================
+//======================================================================================
 
-/////*
-////==================
-////SetBackEndRenderer
+/*
+==================
+SetBackEndRenderer
 
-////Check for changes in the back end renderSystem, possibly invalidating cached data
-////==================
-////*/
-////void idRenderSystemLocal::SetBackEndRenderer() {
-////	if ( !r_renderer.IsModified() ) {
-////		return;
-////	}
+Check for changes in the back end renderSystem, possibly invalidating cached data
+==================
+*/
+SetBackEndRenderer():void {
+	if ( !r_renderer.IsModified() ) {
+		return;
+	}
 
-////	bool oldVPstate = backEndRendererHasVertexPrograms;
+	var oldVPstate = this.backEndRendererHasVertexPrograms;
 
-////	backEndRenderer = BE_BAD;
+	this.backEndRenderer = backEndName_t.BE_BAD;
 
-////	if ( idStr::Icmp( r_renderer.GetString(), "glsl" ) == 0 ) {
-////		if ( glConfig.allowGLSLPath ) {
-////			backEndRenderer = BE_GLSL;
-////		}
-////	}
+	if ( idStr.Icmp( r_renderer.GetString(), "glsl" ) == 0 ) {
+		if ( glConfig.allowGLSLPath ) {
+			this.backEndRenderer = backEndName_t.BE_GLSL;
+		}
+	}
 
-////	backEndRendererHasVertexPrograms = false;
-////	backEndRendererMaxLight = 1.0;
+	this.backEndRendererHasVertexPrograms = false;
+	this.backEndRendererMaxLight = 1.0;
 
-////	switch( backEndRenderer ) {
-////	case BE_ARB2:
-////		common.Printf( "using ARB2 renderSystem\n" );
-////		backEndRendererHasVertexPrograms = true;
-////		backEndRendererMaxLight = 999;
-////		break;
-////	case BE_GLSL:
-////		common.Printf( "using GLSL renderSystem\n" );
-////		backEndRendererHasVertexPrograms = true;
-////		backEndRendererMaxLight = 999;
-////		break;
-////	default:
-////		common.FatalError( "SetbackEndRenderer: bad back end" );
-////	}
+	switch( this.backEndRenderer ) {
+		case backEndName_t.BE_ARB2:
+		common.Printf( "using ARB2 renderSystem\n" );
+		this.backEndRendererHasVertexPrograms = true;
+		this.backEndRendererMaxLight = 999;
+		break;
+		case backEndName_t.BE_GLSL:
+		common.Printf( "using GLSL renderSystem\n" );
+		this.backEndRendererHasVertexPrograms = true;
+		this.backEndRendererMaxLight = 999;
+		break;
+	default:
+		common.FatalError( "SetbackEndRenderer: bad back end" );
+	}
 
-////	// clear the vertex cache if we are changing between
-////	// using vertex programs and not, because specular and
-////	// shadows will be different data
-////	if ( oldVPstate != backEndRendererHasVertexPrograms ) {
-////		vertexCache.PurgeAll();
-////		if ( primaryWorld ) {
-////			primaryWorld.FreeInteractions();
-////		}
-////	}
+	// clear the vertex cache if we are changing between
+	// using vertex programs and not, because specular and
+	// shadows will be different data
+	if ( oldVPstate != this.backEndRendererHasVertexPrograms ) {
+		vertexCache.PurgeAll();
+		if ( this.primaryWorld ) {
+			this.primaryWorld.FreeInteractions();
+		}
+	}
 
-////	r_renderer.ClearModified();
-////}
+	r_renderer.ClearModified();
+}
 
 /*
 ====================
@@ -2819,7 +2820,7 @@ BeginFrame( /*int */windowWidth:number, /*int */windowHeight:number ):void {
 //	// the first rendering will be used for commands like
 //	// screenshot, rather than a possible subsequent remote
 //	// or mirror render
-////	primaryWorld = NULL;
+////	this.primaryWorld = NULL;
 
 //	// set the time for shader effects in 2D rendering
 //	frameShaderTime = eventLoop.Milliseconds() * 0.001;
@@ -3154,8 +3155,8 @@ EndFrame( /*int **/frontEndMsec:R<number>, /*int **/backEndMsec:R<number> ):void
 ////==============
 ////*/
 ////void idRenderSystemLocal::FreeRenderWorld( idRenderWorld *rw ) {
-////	if ( primaryWorld == rw ) {
-////		primaryWorld = NULL;
+////	if ( this.primaryWorld == rw ) {
+////		this.primaryWorld = NULL;
 ////	}
 ////	worlds.Remove( static_cast<idRenderWorldLocal *>(rw) );
 ////	delete rw;
