@@ -81,6 +81,36 @@ class idDrawVert {
 		this.color[3] = other.color[3];
 	}
 
+	toByteArray ( ): Uint8Array {
+		//60 len?
+		var dv = new DataView( new ArrayBuffer( 60 ), 0, 60 );
+		var i = 0;
+		dv.setFloat32( i += 4, this.xyz[0], true );
+		dv.setFloat32( i += 4, this.xyz[1], true );
+		dv.setFloat32( i += 4, this.xyz[2], true );
+
+		dv.setFloat32( i += 4, this.st[0], true );
+		dv.setFloat32( i += 4, this.st[1], true );
+
+		dv.setFloat32( i += 4, this.normal[0], true );
+		dv.setFloat32( i += 4, this.normal[1], true );
+		dv.setFloat32( i += 4, this.normal[2], true );
+
+		dv.setFloat32( i += 4, this.tangents[0][0], true );
+		dv.setFloat32( i += 4, this.tangents[0][1], true );
+		dv.setFloat32( i += 4, this.tangents[0][2], true );
+
+		dv.setFloat32( i += 4, this.tangents[1][0], true );
+		dv.setFloat32( i += 4, this.tangents[1][1], true );
+		dv.setFloat32( i += 4, this.tangents[1][2], true );
+
+		dv.setUint8( i++, this.color[0] );
+		dv.setUint8( i++, this.color[1] );
+		dv.setUint8( i++, this.color[2] );
+		dv.setUint8( i++, this.color[3] );
+		return new Uint8Array( dv.buffer );
+	}
+
 //IDcolor:Uint8Array/*4*/;_INLINE float idDrawVert::operator[]( const int index ) const {
 //	assert( index >= 0 && index < 5 );
 //	return ((float *)(&xyz))[index];
