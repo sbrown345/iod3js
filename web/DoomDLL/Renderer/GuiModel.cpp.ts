@@ -186,9 +186,9 @@ EmitSurface
 		for ( var j = 0; j < tri.numVerts; j++ ) {
 			tri.verts[j].equals( this.verts[surf.firstVert + j] );
 		}
-		var test = tri.verts[0].toByteArray();
 		// move the verts to the vertex cache
-		tri.ambientCache = vertexCache.AllocFrameTemp(tri.verts, tri.numVerts /** sizeof( tri.verts[0] ) */ );
+		var data = idDrawVert.toArrayBuffer( tri.verts, tri.numVerts );
+		tri.ambientCache = vertexCache.AllocFrameTemp(data, tri.numVerts * idDrawVert.size /** sizeof( tri.verts[0] ) */ );
 
 		// if we are out of vertex cache, don't create the surface
 		if ( !tri.ambientCache ) {

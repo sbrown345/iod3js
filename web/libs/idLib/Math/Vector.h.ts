@@ -71,6 +71,14 @@ class idVec2 {
 		this[1] = value;
 	}
 
+
+	equals ( a: idVec2 ): idVec2 {
+		this.x = a.x;
+		this.y = a.y;
+
+		return this;
+	}
+
 ////					idVec2( void );
 ////					explicit idVec2( const float x, const float y );
 
@@ -132,10 +140,9 @@ class idVec2 {
 ////	this.x = x;
 ////	this.y = y;
 ////}
-
-////ID_INLINE void idVec2::Zero( void ) {
-////	x = y = 0.0;
-////}
+	Zero ( ): void {
+		this.x = this.y = 0.0;
+	}
 
 ////ID_INLINE bool idVec2::Compare( const idVec2 &a ) const {
 ////	return ( ( x == a.x ) && ( y == a.y ) );

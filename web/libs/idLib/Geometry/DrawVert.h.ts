@@ -40,7 +40,7 @@
 class idDrawVert {
 //public:
 	xyz: idVec3;
-	st: idVec3;
+	st: idVec2;
 	normal: idVec3;
 	tangents: idVec3[/*2*/];
 	color:Uint8Array/*4*/;
@@ -63,7 +63,7 @@ class idDrawVert {
 	
 	constructor ( ) {
 		this.xyz = new idVec3;
-		this.st = new idVec3;
+		this.st = new idVec2;
 		this.normal = new idVec3;
 		this.tangents = [new idVec3, new idVec3];
 		this.color = new Uint8Array( 4 );
@@ -81,10 +81,10 @@ class idDrawVert {
 		this.color[3] = other.color[3];
 	}
 
-	toByteArray ( ): Uint8Array {
-		//60 len?
-		var dv = new DataView( new ArrayBuffer( 60 ), 0, 60 );
-		var i = 0;
+	public static size = 60;
+
+	writeToDataView ( dv: DataView, offset: number ): void {
+		var i = offset + -4;
 		dv.setFloat32( i += 4, this.xyz[0], true );
 		dv.setFloat32( i += 4, this.xyz[1], true );
 		dv.setFloat32( i += 4, this.xyz[2], true );
@@ -108,7 +108,15 @@ class idDrawVert {
 		dv.setUint8( i++, this.color[1] );
 		dv.setUint8( i++, this.color[2] );
 		dv.setUint8( i++, this.color[3] );
-		return new Uint8Array( dv.buffer );
+	}
+
+	static toArrayBuffer ( verts: idDrawVert[], numVerts: number ): ArrayBuffer {
+		var dv = new DataView( new ArrayBuffer( numVerts * idDrawVert.size ) );
+		for ( var i = 0; i < numVerts; i++ ) {
+			verts[i].writeToDataView( dv, i * idDrawVert.size );
+		}
+
+		return dv.buffer;
 	}
 
 //IDcolor:Uint8Array/*4*/;_INLINE float idDrawVert::operator[]( const int index ) const {
