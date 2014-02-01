@@ -1,4 +1,5 @@
 /// <reference path="utils/sprintf.d.ts" />
+/// <reference path="utils/sscanf.d.ts" />
 /// <reference path="other/webgl.d.ts" />
 
 /// <reference path="utils/types.ts" />
@@ -280,6 +281,8 @@
 /// <reference path="doomdll/renderer/vertexcache.cpp.ts" />
 /// <reference path="doomdll/renderer/draw_common.cpp.ts" />
 /// <reference path="doomdll/renderer/draw_glsl.cpp.ts" />
+/// <reference path="doomdll/renderer/tr_render.cpp.ts" />
+/// <reference path="doomdll/renderer/tr_rendertools.cpp.ts" />
 
 //// sound engine
 //#include "../sound/sound.h"

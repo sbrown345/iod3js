@@ -584,45 +584,44 @@ function GL_UseProgram ( program: shaderProgram_t ): void {
 
 
 
-/////*
-////=============
-////RB_SetBuffer
+/*
+=============
+RB_SetBuffer
 
-////=============
-////*/
-////static void	RB_SetBuffer(const void *data)
-////{
-////	const setBufferCommand_t	*cmd;
+=============
+*/
+function	RB_SetBuffer(/*const void **/data:any):void
+{
+	var cmd:setBufferCommand_t	;
 
-////	// see which draw buffer we want to render the frame to
+	// see which draw buffer we want to render the frame to
 
-////	cmd = (const setBufferCommand_t *)data;
+	cmd = <setBufferCommand_t	>data;
 
-////	backEnd.frameCount = cmd.frameCount;
+	backEnd.frameCount = cmd.frameCount;
 
-////#if !defined(GL_ES_VERSION_2_0)
-////	glDrawBuffer(cmd.buffer);
-////#endif
+//#if !defined(GL_ES_VERSION_2_0)
+//	glDrawBuffer(cmd.buffer);
+//#endif
 
-////	// clear screen for debugging
-////	// automatically enable this with several other debug tools
-////	// that might leave unrendered portions of the screen
-////	if (r_clear.GetFloat() || idStr::Length(r_clear.GetString()) != 1 || r_lockSurfaces.GetBool() || r_singleArea.GetBool() || r_showOverDraw.GetBool()) {
-////		float c[3];
+	// clear screen for debugging
+	// automatically enable this with several other debug tools
+	// that might leave unrendered portions of the screen
+	if (r_clear.GetFloat() || idStr.Length(r_clear.GetString()) != 1 || r_lockSurfaces.GetBool() || r_singleArea.GetBool() || r_showOverDraw.GetBool()) {
+		var c = sscanf(r_clear.GetString(), "%f %f %f");
+		if (c.length == 3) {
+			glClearColor(c[0], c[1], c[2], 1);
+		} else if (r_clear.GetInteger() == 2) {
+			glClearColor(0.0, 0.0,  0.0, 1.0);
+		} else if (r_showOverDraw.GetBool()) {
+			glClearColor(1.0, 1.0, 1.0, 1.0);
+		} else {
+			glClearColor(0.4, 0.0, 0.25, 1.0);
+		}
 
-////		if (sscanf(r_clear.GetString(), "%f %f %f", &c[0], &c[1], &c[2]) == 3) {
-////			glClearColor(c[0], c[1], c[2], 1);
-////		} else if (r_clear.GetInteger() == 2) {
-////			glClearColor(0.0, 0.0,  0.0, 1.0);
-////		} else if (r_showOverDraw.GetBool()) {
-////			glClearColor(1.0, 1.0, 1.0, 1.0);
-////		} else {
-////			glClearColor(0.4f, 0.0, 0.25f, 1.0);
-////		}
-
-////		glClear(GL_COLOR_BUFFER_BIT);
-////	}
-////}
+		glClear(GL_COLOR_BUFFER_BIT);
+	}
+}
 
 /////*
 ////===============
@@ -764,7 +763,7 @@ function RB_ExecuteBackEndCommands(cmds:emptyCommand_t):void
 	// upload any image loads that have completed
 	globalImages.CompleteBackgroundImageLoads();
 
-	for (; cmds; cmds = (<emptyCommand_t>cmds).next) {
+	for (; cmds; cmds = (</*emptyCommand_t   ????*/any>cmds).next) {
 		switch (cmds.commandId) {
 			case renderCommand_t.RC_NOP:
 				break;

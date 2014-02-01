@@ -373,7 +373,7 @@ function R_FrameAllocStructArray<T> ( type: any, arraySize: number ):Array<T> {
 
 function R_FrameAllocTypedArray<T> ( type: any, arraySize: number ):T {
 	todo( "R_FrameAlloc ??" );
-	return new type ( );
+	return new type( arraySize );
 }
 
 function R_FrameAlloc<T>(type: any /*int bytes */) {

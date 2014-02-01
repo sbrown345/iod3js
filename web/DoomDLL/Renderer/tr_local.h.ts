@@ -722,32 +722,32 @@ class backEndCounters_t	{
 ////// all state modified by the back end is separated
 ////// from the front end state
 class backEndState_t {
-////	int					frameCount;		// used to track all images used in a frame
-////	const viewDef_t	*	viewDef;
+	frameCount: number; // used to track all images used in a frame//	int					
+	viewDef: viewDef_t;
 	pc: backEndCounters_t;
 
-////	const viewEntity_t *currentSpace;		// for detecting when a matrix must change
-////	idScreenRect		currentScissor;
-////	// for scissor clipping, local inside renderView viewport
+	currentSpace: viewEntity_t=null; // for detecting when a matrix must change
+	currentScissor: idScreenRect;
+	// for scissor clipping, local inside renderView viewport
 
-////	viewLight_t *		vLight;
-////	int					depthFunc;			// GLS_DEPTHFUNC_EQUAL, or GLS_DEPTHFUNC_LESS for translucent
-////	float				lightTextureMatrix[16];	// only if lightStage.texture.hasMatrix
-////	float				lightColor[4];		// evaluation of current light's color stage
+	vLight: viewLight_t = null;
+	depthFunc: number //	int					;			// GLS_DEPTHFUNC_EQUAL, or GLS_DEPTHFUNC_LESS for translucent
+	lightTextureMatri = new Float32Array( 16 ); // only if lightStage.texture.hasMatrix
+	lightColor = new Float32Array( 4 ); // evaluation of current light's color stage
 
-////	float				lightScale;			// Every light color calaculation will be multiplied by this,
-////											// which will guarantee that the result is < tr.backEndRendererMaxLight
-////											// A card with high dynamic range will have this set to 1.0
-////	float				overBright;			// The amount that all light interactions must be multiplied by
-////											// with post processing to get the desired total light level.
-////											// A high dynamic range card will have this set to 1.0.
+	lightScale: number; // Every light color calaculation will be multiplied by this,
+	// which will guarantee that the result is < tr.backEndRendererMaxLight
+	// A card with high dynamic range will have this set to 1.0
+	overBright: number; // The amount that all light interactions must be multiplied by
+	// with post processing to get the desired total light level.
+	// A high dynamic range card will have this set to 1.0.
 
-////	bool				currentRenderCopied;	// true if any material has already referenced _currentRender
+	currentRenderCopied: boolean; // true if any material has already referenced _currentRender
 
 	// our OpenGL state deltas
 	glState: glstate_t;
 
-	c_copyFrameBuffer:number; //int
+	c_copyFrameBuffer: number; //int
 
 	constructor ( ) {
 		////	int					frameCount;		// used to track all images used in a frame
@@ -777,7 +777,7 @@ class backEndState_t {
 
 ////	int					c_copyFrameBuffer;
 	}
-} //backEndState_t;
+}
 
 
 var MAX_GUI_SURFACES	= 1024;		// default size of the drawSurfs list for guis, will

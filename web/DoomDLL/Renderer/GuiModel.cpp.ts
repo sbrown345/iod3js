@@ -161,34 +161,39 @@ Clear():void {
 EmitSurface
 ================
 */
-	EmitSurface(surf: guiModelSurface_t, modelMatrix:Float32Array/*[16]*/,  modelViewMatrix:Float32Array/*[16]*/, depthHack :boolean):void {
+	EmitSurface ( surf: guiModelSurface_t, modelMatrix: Float32Array /*[16]*/, modelViewMatrix: Float32Array /*[16]*/, depthHack: boolean ): void {
 		var tri: srfTriangles_t;
 
-	if ( surf.numVerts == 0 ) {
-		return;		// nothing in the surface
-	}
+		if ( surf.numVerts == 0 ) {
+			return; // nothing in the surface
+		}
 
-	// copy verts and indexes
-	tri = R_ClearedFrameAlloc<srfTriangles_t>( srfTriangles_t, null );
+		// copy verts and indexes
+		tri = R_ClearedFrameAlloc<srfTriangles_t>( srfTriangles_t, null );
 
-	tri.numIndexes = surf.numIndexes;
-	tri.numVerts = surf.numVerts;
-	tri.indexes = R_FrameAllocTypedArray<Int32Array>( Int32Array, tri.numIndexes ); // (glIndex_t *)R_FrameAlloc( tri.numIndexes * sizeof( tri.indexes[0] ) );
-	memcpy( tri.indexes, this.indexes[surf.firstIndex], tri.numIndexes * sizeofSingleItem( tri.indexes ) );
+		tri.numIndexes = surf.numIndexes;
+		tri.numVerts = surf.numVerts;
+		tri.indexes = R_FrameAllocTypedArray<Int32Array>( Int32Array, tri.numIndexes ); // (glIndex_t *)R_FrameAlloc( tri.numIndexes * sizeof( tri.indexes[0] ) );
+		for ( var i = 0; i < tri.numIndexes; i++ ) {
+			tri.indexes[i] = this.indexes[surf.firstIndex + i];
+		}
+		console.error( "something not right here, tri.verts has wrong numbers?" );
+		// we might be able to avoid copying these and just let them reference the list vars
+		// but some things, like deforms and recursive
+		// guis, need to access the verts in cpu space, not just through the vertex range
+		tri.verts = R_FrameAllocStructArray<idDrawVert>( idDrawVert, tri.numVerts );
+		//memcpy( tri->verts, &verts[surf->firstVert], tri->numVerts * sizeof( tri->verts[0] ) );
+		for ( var j = 0; j < tri.numVerts; j++ ) {
+			tri.verts[j].equals( this.verts[surf.firstVert + j] );
+		}
 
-	// we might be able to avoid copying these and just let them reference the list vars
-	// but some things, like deforms and recursive
-	// guis, need to access the verts in cpu space, not just through the vertex range
-	tri.verts = R_FrameAllocStructArray<idDrawVert>( idDrawVert, tri.numVerts );
-	memcpyStruct( tri.verts, this.verts[surf.firstVert], tri.numVerts, idDrawVert.typeInfo );
+		// move the verts to the vertex cache
+		tri.ambientCache = vertexCache.AllocFrameTemp( tri.verts, tri.numVerts /** sizeof( tri.verts[0] ) */ );
 
-	// move the verts to the vertex cache
-	tri.ambientCache = vertexCache.AllocFrameTemp( tri.verts, tri.numVerts /** sizeof( tri.verts[0] ) */);
-
-	// if we are out of vertex cache, don't create the surface
-	if ( !tri.ambientCache ) {
-		return;
-	}
+		// if we are out of vertex cache, don't create the surface
+		if ( !tri.ambientCache ) {
+			return;
+		}
 		todoThrow ( );
 		//var renderEntity = new renderEntity_t;//memset( &renderEntity, 0, sizeof( renderEntity ) );
 		//renderEntity.init ( );
@@ -448,7 +453,13 @@ DrawStretchPic
 					this.indexes[numIndexes + i] = numVerts + dindexes[i] - this.surf.firstVert;
 				}
 
-				memcpyStruct( this.verts, dverts, vertCount, idDrawVert.typeInfo );
+				//memcpyStruct(this.verts, dverts, vertCount, idDrawVert.typeInfo);
+				for ( var k = 0; k < vertCount; k++ ) {
+					if ( !this.verts[k] ) {
+						this.verts[k] = new idDrawVert ( );
+					}
+					this.verts[k].equals( dverts[k] );
+				}
 			}
 	}
 

@@ -68,6 +68,8 @@
     <TypeScriptCompile Include="DoomDLL\Renderer\Interaction.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Sys\win_shared.cpp.ts" />
     <TypeScriptCompile Include="libs\idLib\BV\Frustum.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\tr_render.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\tr_rendertools.cpp.ts" />
     <Content Include="other\files.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.h.ts" />
@@ -166,11 +168,13 @@
     <Content Include="libs\LangDict.cpp.ts" />
     <Content Include="other\webgl-debug.js" />
     <Content Include="utils\sprintf.js" />
+    <Content Include="utils\sscanf.js" />
     <Content Include="utils\todo.ts" />
     <Content Include="utils\types.ts" />
     <TypeScriptCompile Include="other\gl2.h.ts" />
     <TypeScriptCompile Include="other\WebGL.d.ts" />
     <Content Include="utils\logging.ts" />
+    <TypeScriptCompile Include="utils\sscanf.d.ts" />
     <TypeScriptCompile Include="utils\sprintf.d.ts" />
     <Content Include="utils\helpers.ts" />
     <TypeScriptCompile Include="_references.ts" />

@@ -60,20 +60,25 @@ class idDrawVert {
 //	void			SetColor( dword color );
 //	dword			GetColor( void ) const;
 //};
-	static typeInfo = new TypeInfo(idDrawVert, [
-		["xyz", ""],
-		["st", ""],
-		["normal", ""],
-		["tangents", ""],
-		["color", ""]
-	]);
-
+	
 	constructor ( ) {
 		this.xyz = new idVec3;
 		this.st = new idVec3;
 		this.normal = new idVec3;
 		this.tangents = [new idVec3, new idVec3];
 		this.color = new Uint8Array( 4 );
+	}
+
+	equals ( other: idDrawVert ): void {
+		this.xyz.equals(other.xyz );
+		this.st.equals( other.st );
+		this.normal.equals( other.normal );
+		this.tangents[0].equals( other.tangents[0] );
+		this.tangents[1].equals(other.tangents[1]);
+		this.color[0] = other.color[0];
+		this.color[1] = other.color[1];
+		this.color[2] = other.color[2];
+		this.color[3] = other.color[3];
 	}
 
 //IDcolor:Uint8Array/*4*/;_INLINE float idDrawVert::operator[]( const int index ) const {

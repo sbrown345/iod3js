@@ -373,7 +373,7 @@ class idVec3 {
 	copy ( ):idVec3 {
 		return new idVec3( this.x, this.y, this.z );
 	}
-
+	
 ////					idVec3( void );
 ////					explicit idVec3( const float x, const float y, const float z );
 

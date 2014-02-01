@@ -24,13 +24,13 @@ function TypeInfoCopier ( dest: any, source: any, typeInfo: TypeInfo ): void {
 	}
 }
 
-function memcpyStruct ( dest: any, source: any, count: number, typeInfo: TypeInfo ): void {
-	for (var i = 0; i < count; i++) {
+function memcpyStruct ( dest: any, source: any, count: number, typeInfo: TypeInfo, srcOffset = 0 ): void {
+	for ( var i = 0; i < count; i++ ) {
 		if ( !dest[i] ) {
 			dest[i] = new typeInfo.typeClass;
 		}
 
-		TypeInfoCopier( dest[i], source[i], typeInfo );
+		TypeInfoCopier( dest[i], source[i + srcOffset], typeInfo );
 	}
 }
 

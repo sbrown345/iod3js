@@ -198,7 +198,7 @@ var r_showTexturePolarity= new idCVar( "r_showTexturePolarity", "0", CVAR_RENDER
 var r_showDominantTri= new idCVar( "r_showDominantTri", "0", CVAR_RENDERER | CVAR_BOOL, "draw lines from vertexes to center of dominant triangles" );
 var r_showAlloc= new idCVar( "r_showAlloc", "0", CVAR_RENDERER | CVAR_BOOL, "report alloc/free counts" );
 var r_showTextureVectors= new idCVar( "r_showTextureVectors", "0", CVAR_RENDERER | CVAR_FLOAT, " if > 0 draw each triangles texture = new idCVar(tangent) vectors" );
-//var r_showOverDraw= new idCVar( "r_showOverDraw", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = geometry overdraw, 2 = light interaction overdraw, 3 = geometry and light interaction overdraw", 0, 3, idCmdSystem::ArgCompletion_Integer<0,3> );
+var r_showOverDraw = new idCVar( "r_showOverDraw", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = geometry overdraw, 2 = light interaction overdraw, 3 = geometry and light interaction overdraw", 0, 3, ArgCompletion_Integer_Template( 0, 3 ) );
 
 var r_lockSurfaces= new idCVar( "r_lockSurfaces", "0", CVAR_RENDERER | CVAR_BOOL, "allow moving the view point without changing the composition of the scene, including culling" );
 var r_useEntityCallbacks= new idCVar( "r_useEntityCallbacks", "1", CVAR_RENDERER | CVAR_BOOL, "if 0, issue the callback immediately at update time, rather than defering" );
@@ -2870,7 +2870,7 @@ EndFrame( /*int **/frontEndMsec:R<number>, /*int **/backEndMsec:R<number> ):void
 
 	// save out timing information
 	if ( frontEndMsec ) {
-		frontEndMsec.$ = pc.frontEndMsec;
+		frontEndMsec.$ = this.pc.frontEndMsec;
 	}
 	if ( backEndMsec ) {
 		backEndMsec.$ = backEnd.pc.msec;

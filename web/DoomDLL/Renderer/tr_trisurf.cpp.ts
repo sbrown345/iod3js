@@ -1318,7 +1318,10 @@ function R_DuplicateMirroredVertexes( tri:srfTriangles_t ):void {
 //#else
 	var oldVerts = tri.verts;
 	R_AllocStaticTriSurfVerts( tri, totalVerts );
-	memcpyStruct(tri.verts, oldVerts, tri.numVerts, idDrawVert.typeInfo);
+	//memcpyStruct(tri.verts, oldVerts, tri.numVerts, idDrawVert.typeInfo);
+	for ( var k = 0; k < tri.numVerts; k++ ) {
+		tri.verts[k].equals( oldVerts[k] );
+	}
 	triVertexAllocator.Free( oldVerts );
 //#endif
 
