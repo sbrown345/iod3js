@@ -292,12 +292,12 @@ class idRenderEntityLocal extends idRenderEntity {
 };
 
 
-////// viewLights are allocated on the frame temporary stack memory
-////// a viewLight contains everything that the back end needs out of an idRenderLightLocal,
-////// which the front end may be modifying simultaniously if running in SMP mode.
-////// a viewLight may exist even without any surfaces, and may be relevent for fogging,
-////// but should never exist if its volume does not intersect the view frustum
-////typedef struct viewLight_s {
+// viewLights are allocated on the frame temporary stack memory
+// a viewLight contains everything that the back end needs out of an idRenderLightLocal,
+// which the front end may be modifying simultaniously if running in SMP mode.
+// a viewLight may exist even without any surfaces, and may be relevent for fogging,
+// but should never exist if its volume does not intersect the view frustum
+class viewLight_t {
 ////	struct viewLight_s *	next;
 
 ////	// back end should NOT reference the lightDef, because it can change when running SMP
@@ -334,7 +334,7 @@ class idRenderEntityLocal extends idRenderEntity {
 ////	const struct drawSurf_s	*localShadows;				// don't shadow local Surfaces
 ////	const struct drawSurf_s	*globalInteractions;		// get shadows from everything
 ////	const struct drawSurf_s	*translucentInteractions;	// get shadows from everything
-////} viewLight_t;
+};
 
 
 // a viewEntity is created whenever a idRenderEntityLocal is considered for inclusion
@@ -376,67 +376,67 @@ class /*viewEntity_s*/viewEntity_t {
 
 // viewDefs are allocated on the frame temporary stack memory
 class viewDef_t {
-////	// specified in the call to DrawScene()
-////	renderView_t		renderView;
+	// specified in the call to DrawScene()
+	renderView = new renderView_t;
 
-////	float				projectionMatrix[16];
-////	viewEntity_t		worldSpace;
+	projectionMatrix = new Float32Array(16);
+	worldSpace = new viewEntity_t;
 
-////	idRenderWorldLocal *renderWorld;
+	renderWorld: idRenderWorldLocal;
 
-////	float				floatTime;
+	floatTime=0.0;//	float				
 
-////	idVec3				initialViewAreaOrigin;
-////	// Used to find the portalArea that view flooding will take place from.
-////	// for a normal view, the initialViewOrigin will be renderView.viewOrg,
-////	// but a mirror may put the projection origin outside
-////	// of any valid area, or in an unconnected area of the map, so the view
-////	// area must be based on a point just off the surface of the mirror / subview.
-////	// It may be possible to get a failed portal pass if the plane of the
-////	// mirror intersects a portal, and the initialViewAreaOrigin is on
-////	// a different side than the renderView.viewOrg is.
+	initialViewAreaOrigin = new idVec3;
+	// Used to find the portalArea that view flooding will take place from.
+	// for a normal view, the initialViewOrigin will be renderView.viewOrg,
+	// but a mirror may put the projection origin outside
+	// of any valid area, or in an unconnected area of the map, so the view
+	// area must be based on a point just off the surface of the mirror / subview.
+	// It may be possible to get a failed portal pass if the plane of the
+	// mirror intersects a portal, and the initialViewAreaOrigin is on
+	// a different side than the renderView.viewOrg is.
 
-////	bool				isSubview;				// true if this view is not the main view
-////	bool				isMirror;				// the portal is a mirror, invert the face culling
-////	bool				isXraySubview;
+	sSubview:boolean;				// true if this view is not the main view
+	sMirror:boolean;				// the portal is a mirror, invert the face culling
+	sXraySubview:boolean;
 
-////	bool				isEditor;
+	isEditor:boolean;
 
-////	int					numClipPlanes;			// mirrors will often use a single clip plane
-////	idPlane				clipPlanes[MAX_CLIP_PLANES];		// in world space, the positive side
-////												// of the plane is the visible side
-////	idScreenRect		viewport;				// in real pixels and proper Y flip
+	numClipPlanes:number;			// mirrors will often use a single clip plane//	int	
+	clipPlanes = newStructArray<idPlane>(idPlane,MAX_CLIP_PLANES);		// in world space, the positive side
+												// of the plane is the visible side
+	viewport = new idScreenRect;				// in real pixels and proper Y flip
 
-////	idScreenRect		scissor;
-////	// for scissor clipping, local inside renderView viewport
-////	// subviews may only be rendering part of the main view
-////	// these are real physical pixel values, possibly scaled and offset from the
-////	// renderView x/y/width/height
+	scissor = new idScreenRect;
+	// for scissor clipping, local inside renderView viewport
+	// subviews may only be rendering part of the main view
+	// these are real physical pixel values, possibly scaled and offset from the
+	// renderView x/y/width/height
 
-////	struct viewDef_s *	superView;				// never go into an infinite subview loop 
-////	struct drawSurf_s *	subviewSurface;
+	superView:viewDef_t;				// never go into an infinite subview loop 	 //struct viewDef_s *	
+	subviewSurface: viewDef_t;													 //struct drawSurf_s *
 
-////	// drawSurfs are the visible surfaces of the viewEntities, sorted
-////	// by the material sort parameter
-////	drawSurf_t **		drawSurfs;				// we don't use an idList for this, because
-////	int					numDrawSurfs;			// it is allocated in frame temporary memory
-////	int					maxDrawSurfs;			// may be resized
+	// drawSurfs are the visible surfaces of the viewEntities, sorted
+	// by the material sort parameter
+	drawSurfs: drawSurf_t []		;				// we don't use an idList for this, because
+	numDrawSurfs: number;			// it is allocated in frame temporary memory		  //	int					
+	maxDrawSurfs: number;			// may be resized									  //	int					
 
-////	struct viewLight_s	*viewLights;			// chain of all viewLights effecting view
-////	struct viewEntity_s	*viewEntitys;			// chain of all viewEntities effecting view, including off screen ones casting shadows
-////	// we use viewEntities as a check to see if a given view consists solely
-////	// of 2D rendering, which we can optimize in certain ways.  A 2D view will
-////	// not have any viewEntities
+	viewLights: viewLight_t;			// chain of all viewLights effecting view
+	viewEntitys: viewEntity_t;			// chain of all viewEntities effecting view, including off screen ones casting shadows
+	// we use viewEntities as a check to see if a given view consists solely
+	// of 2D rendering, which we can optimize in certain ways.  A 2D view will
+	// not have any viewEntities
 
-////	idPlane				frustum[5];				// positive sides face outward, [4] is the front clip plane
-////	idFrustum			viewFrustum;
+	frustum = newStructArra<idPlane>(idPlane,5);				// positive sides face outward, [4] is the front clip plane
+	viewFrustum: idFrustum;
 
-////	int					areaNum;				// -1 = not in a valid area
+	areaNum=0;//int				// -1 = not in a valid area
 
-////	bool *				connectedAreas;
-////	// An array in frame temporary memory that lists if an area can be reached without
-////	// crossing a closed door.  This is used to avoid drawing interactions
-////	// when the light is behind a closed door.
+	connectedAreas: boolean[];//bool *				
+	// An array in frame temporary memory that lists if an area can be reached without
+	// crossing a closed door.  This is used to avoid drawing interactions
+	// when the light is behind a closed door.
 
 };
 

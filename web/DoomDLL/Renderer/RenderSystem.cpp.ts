@@ -2085,7 +2085,7 @@ idRenderSystemLocal::Init
 
 ////	RB_ShutdownDebugTools();
 
-////	delete guiModel;
+////	delete this.guiModel;
 ////	delete demoGuiModel;
 
 ////	Clear();
@@ -2512,7 +2512,7 @@ just colors
 ////=============
 ////*/
 ////void idRenderSystemLocal::SetColor4( float r, float g, float b, float a ) {
-////	guiModel.SetColor( r, g, b, a );
+////	this.guiModel.SetColor( r, g, b, a );
 ////}
 
 /*
@@ -2781,68 +2781,68 @@ BeginFrame( /*int */windowWidth:number, /*int */windowHeight:number ):void {
 	if ( !glConfig.isInitialized ) {
 		return;
 	}
-	todoThrow ( );
-//	// determine which back end we will use
-//	SetBackEndRenderer();
 
-//	guiModel.Clear();
+	// determine which back end we will use
+	this.SetBackEndRenderer();
 
-//	// for the larger-than-window tiled rendering screenshots
-//	if ( tiledViewport[0] ) {
-//		windowWidth = tiledViewport[0];
-//		windowHeight = tiledViewport[1];
-//	}
+	this.guiModel.Clear();
 
-//	glConfig.vidWidth = windowWidth;
-//	glConfig.vidHeight = windowHeight;
+	// for the larger-than-window tiled rendering screenshots
+	if ( this.tiledViewport[0] ) {
+		windowWidth = this.tiledViewport[0];
+		windowHeight = this.tiledViewport[1];
+	}
 
-//	renderCrops[0].x = 0;
-//	renderCrops[0].y = 0;
-//	renderCrops[0].width = windowWidth;
-//	renderCrops[0].height = windowHeight;
-//	currentRenderCrop = 0;
+	glConfig.vidWidth = windowWidth;
+	glConfig.vidHeight = windowHeight;
 
-//	// screenFraction is just for quickly testing fill rate limitations
-//	if ( r_screenFraction.GetInteger() != 100 ) {
-//		int	w = SCREEN_WIDTH * r_screenFraction.GetInteger() / 100.0;
-//		int h = SCREEN_HEIGHT * r_screenFraction.GetInteger() / 100.0;
-//		CropRenderSize( w, h );
-//	}
+	this.renderCrops[0].x = 0;
+	this.renderCrops[0].y = 0;
+	this.renderCrops[0].width = windowWidth;
+	this.renderCrops[0].height = windowHeight;
+	this.currentRenderCrop = 0;
+
+	// screenFraction is just for quickly testing fill rate limitations
+	if ( r_screenFraction.GetInteger() != 100 ) {
+		var/*int	*/w = SCREEN_WIDTH * r_screenFraction.GetInteger() / 100.0;
+		var/*int */h = SCREEN_HEIGHT * r_screenFraction.GetInteger() / 100.0;
+		this.CropRenderSize( w, h );
+	}
 
 
-//	// this is the ONLY place this is modified
-//	frameCount++;
+	// this is the ONLY place this is modified
+	this.frameCount++;
 
-//	// just in case we did a common.Error while this
-//	// was set
-//	guiRecursionLevel = 0;
+	// just in case we did a common.Error while this
+	// was set
+	this.guiRecursionLevel = 0;
 
-//	// the first rendering will be used for commands like
-//	// screenshot, rather than a possible subsequent remote
-//	// or mirror render
-////	this.primaryWorld = NULL;
+	// the first rendering will be used for commands like
+	// screenshot, rather than a possible subsequent remote
+	// or mirror render
+//	this.primaryWorld = NULL;
 
-//	// set the time for shader effects in 2D rendering
-//	frameShaderTime = eventLoop.Milliseconds() * 0.001;
+	// set the time for shader effects in 2D rendering
+	this.frameShaderTime = this.eventLoop.Milliseconds() * 0.001;
 
-//	//
-//	// draw buffer stuff
-//	//
-//	cmd = (setBufferCommand_t *)R_GetCommandBuffer( sizeof( *cmd ) );
-//	cmd.commandId = RC_SET_BUFFER;
-//	cmd.frameCount = frameCount;
+	//
+	// draw buffer stuff
+	//
+	cmd = (setBufferCommand_t *)R_GetCommandBuffer( sizeof( *cmd ) );
+	cmd.commandId = RC_SET_BUFFER;
+	cmd.frameCount = this.frameCount;
 
-//	if ( r_frontBuffer.GetBool() ) {
-//		cmd.buffer = (int)GL_FRONT;
-//	} else {
-//		cmd.buffer = (int)GL_BACK;
-//	}
+	if ( r_frontBuffer.GetBool() ) {
+		cmd.buffer = /*(int)*/GL_FRONT;
+	} else {
+		cmd.buffer = /*(int)*/GL_BACK;
+	}	todoThrow ( );
 }
 
 ////void idRenderSystemLocal::WriteDemoPics() {
 ////	session.writeDemo.WriteInt( DS_RENDER );
 ////	session.writeDemo.WriteInt( DC_GUI_MODEL );
-////	guiModel.WriteToDemo( session.writeDemo );
+////	this.guiModel.WriteToDemo( session.writeDemo );
 ////}
 
 ////void idRenderSystemLocal::DrawDemoPics() {
@@ -2864,8 +2864,8 @@ EndFrame( /*int **/frontEndMsec:R<number>, /*int **/backEndMsec:R<number> ):void
 	}
 	todoThrow();
 ////	// close any gui drawing
-////	guiModel.EmitFullScreen();
-////	guiModel.Clear();
+////	this.guiModel.EmitFullScreen();
+////	this.guiModel.Clear();
 
 ////	// save out timing information
 ////	if ( frontEndMsec ) {
@@ -2916,7 +2916,7 @@ EndFrame( /*int **/frontEndMsec:R<number>, /*int **/backEndMsec:R<number> ):void
 ////=====================
 ////*/
 ////void idRenderSystemLocal::RenderViewToViewport( const renderView_t *renderView, idScreenRect *viewport ) {
-////	renderCrop_t	*rc = &renderCrops[currentRenderCrop];
+////	renderCrop_t	*rc = &this.renderCrops[this.currentRenderCrop];
 
 ////	float wRatio = (float)rc.width / SCREEN_WIDTH;
 ////	float hRatio = (float)rc.height / SCREEN_HEIGHT;
@@ -2941,89 +2941,89 @@ EndFrame( /*int **/frontEndMsec:R<number>, /*int **/backEndMsec:R<number> ):void
 ////	return 1<<i;
 ////}
 
-/////*
-////================
-////CropRenderSize
+/*
+================
+CropRenderSize
 
-////This automatically halves sizes until it fits in the current window size,
-////so if you specify a power of two size for a texture copy, it may be shrunk
-////down, but still valid.
-////================
-////*/
-////void	idRenderSystemLocal::CropRenderSize( int width, int height, bool makePowerOfTwo, bool forceDimensions ) {
-////	if ( !glConfig.isInitialized ) {
-////		return;
-////	}
+This automatically halves sizes until it fits in the current window size,
+so if you specify a power of two size for a texture copy, it may be shrunk
+down, but still valid.
+================
+*/
+	CropRenderSize( /*int*/ width: number, /*int */height: number, makePowerOfTwo: boolean, forceDimensions: boolean):void {
+	if ( !glConfig.isInitialized ) {
+		return;
+	}
 
-////	// close any gui drawing before changing the size
-////	guiModel.EmitFullScreen();
-////	guiModel.Clear();
+	// close any gui drawing before changing the size
+	this.guiModel.EmitFullScreen();
+	this.guiModel.Clear();
 
-////	if ( width < 1 || height < 1 ) {
-////		common.Error( "CropRenderSize: bad sizes" );
-////	}
+	if ( width < 1 || height < 1 ) {
+		common.Error( "CropRenderSize: bad sizes" );
+	}
 
-////	if ( session.writeDemo ) {
-////		session.writeDemo.WriteInt( DS_RENDER );
-////		session.writeDemo.WriteInt( DC_CROP_RENDER );
-////		session.writeDemo.WriteInt( width );
-////		session.writeDemo.WriteInt( height );
-////		session.writeDemo.WriteInt( makePowerOfTwo );
+	if ( session.writeDemo ) {
+		session.writeDemo.WriteInt( DS_RENDER );
+		session.writeDemo.WriteInt( DC_CROP_RENDER );
+		session.writeDemo.WriteInt( width );
+		session.writeDemo.WriteInt( height );
+		session.writeDemo.WriteInt( makePowerOfTwo );
 
-////		if ( r_showDemo.GetBool() ) {
-////			common.Printf( "write DC_CROP_RENDER\n" );
-////		}
-////	}
+		if ( r_showDemo.GetBool() ) {
+			common.Printf( "write DC_CROP_RENDER\n" );
+		}
+	}
 
-////	// convert from virtual SCREEN_WIDTH/SCREEN_HEIGHT coordinates to physical OpenGL pixels
-////	renderView_t renderView;
-////	renderView.x = 0;
-////	renderView.y = 0;
-////	renderView.width = width;
-////	renderView.height = height;
+	// convert from virtual SCREEN_WIDTH/SCREEN_HEIGHT coordinates to physical OpenGL pixels
+		var renderView = new renderView_t;
+	renderView.x = 0;
+	renderView.y = 0;
+	renderView.width = width;
+	renderView.height = height;
 
-////	idScreenRect	r;
-////	RenderViewToViewport( &renderView, &r );
+	var r: idScreenRect;
+	RenderViewToViewport( &renderView, &r );
 
-////	width = r.x2 - r.x1 + 1;
-////	height = r.y2 - r.y1 + 1;
+	width = r.x2 - r.x1 + 1;
+	height = r.y2 - r.y1 + 1;
 
-////	if ( forceDimensions ) {
-////		// just give exactly what we ask for
-////		width = renderView.width;
-////		height = renderView.height;
-////	}
+	if ( forceDimensions ) {
+		// just give exactly what we ask for
+		width = renderView.width;
+		height = renderView.height;
+	}
 
-////	// if makePowerOfTwo, drop to next lower power of two after scaling to physical pixels
-////	if ( makePowerOfTwo ) {
-////		width = RoundDownToPowerOfTwo( width );
-////		height = RoundDownToPowerOfTwo( height );
-////		// FIXME: megascreenshots with offset viewports don't work right with this yet
-////	}
+	// if makePowerOfTwo, drop to next lower power of two after scaling to physical pixels
+	if ( makePowerOfTwo ) {
+		width = RoundDownToPowerOfTwo( width );
+		height = RoundDownToPowerOfTwo( height );
+		// FIXME: megascreenshots with offset viewports don't work right with this yet
+	}
 
-////	renderCrop_t	*rc = &renderCrops[currentRenderCrop];
+	var rc = this.renderCrops[this.currentRenderCrop];
 
-////	// we might want to clip these to the crop window instead
-////	while ( width > glConfig.vidWidth ) {
-////		width >>= 1;
-////	}
-////	while ( height > glConfig.vidHeight ) {
-////		height >>= 1;
-////	}
+	// we might want to clip these to the crop window instead
+	while ( width > glConfig.vidWidth ) {
+		width >>= 1;
+	}
+	while ( height > glConfig.vidHeight ) {
+		height >>= 1;
+	}
 
-////	if ( currentRenderCrop == MAX_RENDER_CROPS ) {
-////		common.Error( "idRenderSystemLocal::CropRenderSize: currentRenderCrop == MAX_RENDER_CROPS" );
-////	}
+	if ( this.currentRenderCrop == MAX_RENDER_CROPS ) {
+		common.Error( "idRenderSystemLocal::CropRenderSize: this.currentRenderCrop == MAX_RENDER_CROPS" );
+	}
 
-////	currentRenderCrop++;
+	this.currentRenderCrop++;
 
-////	rc = &renderCrops[currentRenderCrop];
+	rc = this.renderCrops[this.currentRenderCrop];
 
-////	rc.x = 0;
-////	rc.y = 0;
-////	rc.width = width;
-////	rc.height = height;
-////}
+	rc.x = 0;
+	rc.y = 0;
+	rc.width = width;
+	rc.height = height;
+}
 
 /////*
 ////================
@@ -3035,15 +3035,15 @@ EndFrame( /*int **/frontEndMsec:R<number>, /*int **/backEndMsec:R<number> ):void
 ////		return;
 ////	}
 
-////	if ( currentRenderCrop < 1 ) {
-////		common.Error( "idRenderSystemLocal::UnCrop: currentRenderCrop < 1" );
+////	if ( this.currentRenderCrop < 1 ) {
+////		common.Error( "idRenderSystemLocal::UnCrop: this.currentRenderCrop < 1" );
 ////	}
 
 ////	// close any gui drawing
-////	guiModel.EmitFullScreen();
-////	guiModel.Clear();
+////	this.guiModel.EmitFullScreen();
+////	this.guiModel.Clear();
 
-////	currentRenderCrop--;
+////	this.currentRenderCrop--;
 
 ////	if ( session.writeDemo ) {
 ////		session.writeDemo.WriteInt( DS_RENDER );
@@ -3064,8 +3064,8 @@ EndFrame( /*int **/frontEndMsec:R<number>, /*int **/backEndMsec:R<number> ):void
 ////	if ( !glConfig.isInitialized ) {
 ////		return;
 ////	}
-////	guiModel.EmitFullScreen();
-////	guiModel.Clear();
+////	this.guiModel.EmitFullScreen();
+////	this.guiModel.Clear();
 
 ////	if ( session.writeDemo ) {
 ////		session.writeDemo.WriteInt( DS_RENDER );
@@ -3081,7 +3081,7 @@ EndFrame( /*int **/frontEndMsec:R<number>, /*int **/backEndMsec:R<number> ):void
 ////	// may need to sync to create the image
 ////	idImage	*image = globalImages.ImageFromFile(imageName, textureFilter_t.TF_DEFAULT, true, textureRepeat_t.TR_REPEAT, textureDepth_t.TD_DEFAULT);
 
-////	renderCrop_t *rc = &renderCrops[currentRenderCrop];
+////	renderCrop_t *rc = &this.renderCrops[this.currentRenderCrop];
 
 ////	copyRenderCommand_t *cmd = (copyRenderCommand_t *)R_GetCommandBuffer( sizeof( *cmd ) );
 ////	cmd.commandId = RC_COPY_RENDER;
@@ -3091,7 +3091,7 @@ EndFrame( /*int **/frontEndMsec:R<number>, /*int **/backEndMsec:R<number> ):void
 ////	cmd.imageHeight = rc.height;
 ////	cmd.image = image;
 
-////	guiModel.Clear();
+////	this.guiModel.Clear();
 ////}
 
 /////*
@@ -3105,10 +3105,10 @@ EndFrame( /*int **/frontEndMsec:R<number>, /*int **/backEndMsec:R<number> ):void
 ////		return;
 ////	}
 
-////	renderCrop_t *rc = &renderCrops[currentRenderCrop];
+////	renderCrop_t *rc = &this.renderCrops[this.currentRenderCrop];
 
-////	guiModel.EmitFullScreen();
-////	guiModel.Clear();
+////	this.guiModel.EmitFullScreen();
+////	this.guiModel.Clear();
 ////	R_IssueRenderCommands();
 	
 ////#if !defined(GL_ES_VERSION_2_0)

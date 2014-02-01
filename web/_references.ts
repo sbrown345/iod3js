@@ -181,6 +181,8 @@
 //#include "../framework/File.h"
 /// <reference path="doomdll/framework/file.h.ts" />
 /// <reference path="doomdll/framework/file.cpp.ts" />
+/// <reference path="doomdll/framework/demofile.h.ts" />
+/// <reference path="doomdll/framework/demofile.cpp.ts" />
 //#include "../framework/FileSystem.h"
 /// <reference path="doomdll/framework/filesystem.h.ts" />
 /// <reference path="doomdll/framework/filesystem.cpp.ts" />

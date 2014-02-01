@@ -411,20 +411,21 @@ function R_FrameAlloc<T>(type: any /*int bytes */) {
 
 	//return block.base;
 }
-//
-///*
-//==================
-//R_ClearedFrameAlloc
-//==================
-//*/
-//void *R_ClearedFrameAlloc( int bytes ) {
-//	void	*r;
-//
-//	r = R_FrameAlloc( bytes );
-//	SIMDProcessor.Memset( r, 0, bytes );
-//	return r;
-//}
-//
+
+/*
+==================
+R_ClearedFrameAlloc
+==================
+*/
+function R_ClearedFrameAlloc<T> ( type: any, /*int */bytes: number ): T {
+	return <T>new type;
+	//void	*r;
+
+	//r = R_FrameAlloc( bytes );
+	//SIMDProcessor.Memset( r, 0, bytes );
+	//return r;
+}
+
 //
 ///*
 //==================

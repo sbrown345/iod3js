@@ -88,10 +88,10 @@ Clear():void {
 ////		demo.WriteInt(indexes[j] );
 ////	}
 	
-////	i = surfaces.Num();
+////	i = this.surfaces.Num();
 ////	demo.WriteInt( i );
 ////	for ( j = 0 ; j < i ; j++ ) {
-////		guiModelSurface_t	*surf = &surfaces[j];
+////		guiModelSurface_t	*surf = &this.surfaces[j];
 		
 ////		demo.WriteInt( (int&)surf.material );
 ////		demo.WriteFloat( surf.color[0] );
@@ -137,11 +137,11 @@ Clear():void {
 ////		demo.ReadInt(indexes[j] );
 ////	}
 	
-////	i = surfaces.Num();
+////	i = this.surfaces.Num();
 ////	demo.ReadInt( i );
-////	surfaces.SetNum( i, false );
+////	this.surfaces.SetNum( i, false );
 ////	for ( j = 0 ; j < i ; j++ ) {
-////		guiModelSurface_t	*surf = &surfaces[j];
+////		guiModelSurface_t	*surf = &this.surfaces[j];
 		
 ////		demo.ReadInt( (int&)surf.material );
 ////		demo.ReadFloat( surf.color[0] );
@@ -214,90 +214,90 @@ Clear():void {
 ////	myGlMultMatrix( modelMatrix, tr.viewDef.worldSpace.modelViewMatrix, 
 ////			modelViewMatrix );
 
-////	for ( int i = 0 ; i < surfaces.Num() ; i++ ) {
-////		EmitSurface( &surfaces[i], modelMatrix, modelViewMatrix, depthHack );
+////	for ( int i = 0 ; i < this.surfaces.Num() ; i++ ) {
+////		EmitSurface( &this.surfaces[i], modelMatrix, modelViewMatrix, depthHack );
 ////	}
 ////}
 
-/////*
-////================
-////idGuiModel::EmitFullScreen
+/*
+================
+idGuiModel::EmitFullScreen
 
-////Creates a view that covers the screen and emit the surfaces
-////================
-////*/
-////void idGuiModel::EmitFullScreen( void ) {
-////	viewDef_t	*viewDef;
+Creates a view that covers the screen and emit the surfaces
+================
+*/
+EmitFullScreen( ):void {
+	var viewDef: viewDef_t;
 
-////	if ( surfaces[0].numVerts == 0 ) {
-////		return;
-////	}
+	if ( this.surfaces[0].numVerts == 0 ) {
+		return;
+	}
 
-////	viewDef = (viewDef_t *)R_ClearedFrameAlloc( sizeof( *viewDef ) );
+	viewDef = R_ClearedFrameAlloc<viewDef_t>( viewDef_t, null ); //new viewDef_t;//(viewDef_t *)R_ClearedFrameAlloc( sizeof( *viewDef ) );
 
-////	// for gui editor
-////	if ( !tr.viewDef || !tr.viewDef.isEditor ) {
-////		viewDef.renderView.x = 0;
-////		viewDef.renderView.y = 0;
-////		viewDef.renderView.width = SCREEN_WIDTH;
-////		viewDef.renderView.height = SCREEN_HEIGHT;
+	// for gui editor
+	if ( !tr.viewDef || !tr.viewDef.isEditor ) {
+		viewDef.renderView.x = 0;
+		viewDef.renderView.y = 0;
+		viewDef.renderView.width = SCREEN_WIDTH;
+		viewDef.renderView.height = SCREEN_HEIGHT;
 
-////		tr.RenderViewToViewport( &viewDef.renderView, &viewDef.viewport );
+		tr.RenderViewToViewport( &viewDef.renderView, &viewDef.viewport );
 
-////		viewDef.scissor.x1 = 0;
-////		viewDef.scissor.y1 = 0;
-////		viewDef.scissor.x2 = viewDef.viewport.x2 - viewDef.viewport.x1;
-////		viewDef.scissor.y2 = viewDef.viewport.y2 - viewDef.viewport.y1;
-////	} else {
-////		viewDef.renderView.x = tr.viewDef.renderView.x;
-////		viewDef.renderView.y = tr.viewDef.renderView.y;
-////		viewDef.renderView.width = tr.viewDef.renderView.width;
-////		viewDef.renderView.height = tr.viewDef.renderView.height;
+		viewDef.scissor.x1 = 0;
+		viewDef.scissor.y1 = 0;
+		viewDef.scissor.x2 = viewDef.viewport.x2 - viewDef.viewport.x1;
+		viewDef.scissor.y2 = viewDef.viewport.y2 - viewDef.viewport.y1;
+	} else {
+		viewDef.renderView.x = tr.viewDef.renderView.x;
+		viewDef.renderView.y = tr.viewDef.renderView.y;
+		viewDef.renderView.width = tr.viewDef.renderView.width;
+		viewDef.renderView.height = tr.viewDef.renderView.height;
 		
-////		viewDef.viewport.x1 = tr.viewDef.renderView.x;
-////		viewDef.viewport.x2 = tr.viewDef.renderView.x + tr.viewDef.renderView.width;
-////		viewDef.viewport.y1 = tr.viewDef.renderView.y;
-////		viewDef.viewport.y2 = tr.viewDef.renderView.y + tr.viewDef.renderView.height;
+		viewDef.viewport.x1 = tr.viewDef.renderView.x;
+		viewDef.viewport.x2 = tr.viewDef.renderView.x + tr.viewDef.renderView.width;
+		viewDef.viewport.y1 = tr.viewDef.renderView.y;
+		viewDef.viewport.y2 = tr.viewDef.renderView.y + tr.viewDef.renderView.height;
 
-////		viewDef.scissor.x1 = tr.viewDef.scissor.x1;
-////		viewDef.scissor.y1 = tr.viewDef.scissor.y1;
-////		viewDef.scissor.x2 = tr.viewDef.scissor.x2;
-////		viewDef.scissor.y2 = tr.viewDef.scissor.y2;
-////	}
+		viewDef.scissor.x1 = tr.viewDef.scissor.x1;
+		viewDef.scissor.y1 = tr.viewDef.scissor.y1;
+		viewDef.scissor.x2 = tr.viewDef.scissor.x2;
+		viewDef.scissor.y2 = tr.viewDef.scissor.y2;
+	}
 
-////	viewDef.floatTime = tr.frameShaderTime;
+	viewDef.floatTime = tr.frameShaderTime;
 
-////	// glOrtho( 0, 640, 480, 0, 0, 1 );		// always assume 640x480 virtual coordinates
-////	viewDef.projectionMatrix[0] = 2.0 / 640.0;
-////	viewDef.projectionMatrix[5] = -2.0 / 480.0;
-////	viewDef.projectionMatrix[10] = -2.0 / 1.0;
-////	viewDef.projectionMatrix[12] = -1.0;
-////	viewDef.projectionMatrix[13] = 1.0;
-////	viewDef.projectionMatrix[14] = -1.0;
-////	viewDef.projectionMatrix[15] = 1.0;
+	// glOrtho( 0, 640, 480, 0, 0, 1 );		// always assume 640x480 virtual coordinates
+	viewDef.projectionMatrix[0] = 2.0 / 640.0;
+	viewDef.projectionMatrix[5] = -2.0 / 480.0;
+	viewDef.projectionMatrix[10] = -2.0 / 1.0;
+	viewDef.projectionMatrix[12] = -1.0;
+	viewDef.projectionMatrix[13] = 1.0;
+	viewDef.projectionMatrix[14] = -1.0;
+	viewDef.projectionMatrix[15] = 1.0;
 
-////	viewDef.worldSpace.modelViewMatrix[0] = 1.0;
-////	viewDef.worldSpace.modelViewMatrix[5] = 1.0;
-////	viewDef.worldSpace.modelViewMatrix[10] = 1.0;
-////	viewDef.worldSpace.modelViewMatrix[15] = 1.0;
+	viewDef.worldSpace.modelViewMatrix[0] = 1.0;
+	viewDef.worldSpace.modelViewMatrix[5] = 1.0;
+	viewDef.worldSpace.modelViewMatrix[10] = 1.0;
+	viewDef.worldSpace.modelViewMatrix[15] = 1.0;
 
-////	viewDef.maxDrawSurfs = surfaces.Num();
-////	viewDef.drawSurfs = (drawSurf_t **)R_FrameAlloc( viewDef.maxDrawSurfs * sizeof( viewDef.drawSurfs[0] ) );
-////	viewDef.numDrawSurfs = 0;
+	viewDef.maxDrawSurfs = this.surfaces.Num();
+	viewDef.drawSurfs = (drawSurf_t **)R_FrameAlloc( viewDef.maxDrawSurfs * sizeof( viewDef.drawSurfs[0] ) );
+	viewDef.numDrawSurfs = 0;
 
-////	viewDef_t	*oldViewDef = tr.viewDef;
-////	tr.viewDef = viewDef;
+	var oldViewDef = tr.viewDef;
+	tr.viewDef = viewDef;
 
-////	// add the surfaces to this view
-////	for ( int i = 0 ; i < surfaces.Num() ; i++ ) {
-////		EmitSurface( &surfaces[i], viewDef.worldSpace.modelMatrix, viewDef.worldSpace.modelViewMatrix, false );
-////	}
+	// add the surfaces to this view
+	for ( int i = 0 ; i < this.surfaces.Num() ; i++ ) {
+		EmitSurface( this.surfaces[i], viewDef.worldSpace.modelMatrix, viewDef.worldSpace.modelViewMatrix, false );
+	}
 
-////	tr.viewDef = oldViewDef;
+	tr.viewDef = oldViewDef;
 
-////	// add the command to draw this view
-////	R_AddDrawViewCmd( viewDef );
-////}
+	// add the command to draw this view
+	R_AddDrawViewCmd( viewDef );
+}
 
 /*
 =============

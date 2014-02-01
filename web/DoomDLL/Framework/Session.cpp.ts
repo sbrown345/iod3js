@@ -32,9 +32,6 @@
 //#include "Session_local.h"
 
 
-class idSession {
-
-
 //idCVar	idSessionLocal::com_showAngles( "com_showAngles", "0", CVAR_SYSTEM | CVAR_BOOL, "" );
 //idCVar	idSessionLocal::com_minTics( "com_minTics", "1", CVAR_SYSTEM, "" );
 //idCVar	idSessionLocal::com_showTics( "com_showTics", "0", CVAR_SYSTEM | CVAR_BOOL, "" );
@@ -72,9 +69,9 @@ class idSession {
 //=================
 //*/
 //void Session_RescanSI_f( const idCmdArgs &args ) {
-//	sessLocal.mapSpawnData.serverInfo = *cvarSystem->MoveCVarsToDict( CVAR_SERVERINFO );
+//	sessLocal.mapSpawnData.serverInfo = *cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO );
 //	if ( game && idAsyncNetwork::server.IsActive() ) {
-//		game->SetServerInfo( sessLocal.mapSpawnData.serverInfo );
+//		game.SetServerInfo( sessLocal.mapSpawnData.serverInfo );
 //	}
 //}
 //
@@ -100,22 +97,22 @@ class idSession {
 //	// a typo at the server console won't end the game
 //	// handle addon packs through reloadEngine
 //	sprintf( string, "maps/%s.map", map.c_str() );
-//	ff = fileSystem->FindFile( string, true );
+//	ff = fileSystem.FindFile( string, true );
 //	switch ( ff ) {
 //	case FIND_NO:
-//		common->Printf( "Can't find map %s\n", string.c_str() );
+//		common.Printf( "Can't find map %s\n", string.c_str() );
 //		return;
 //	case FIND_ADDON:
-//		common->Printf( "map %s is in an addon pak - reloading\n", string.c_str() );
+//		common.Printf( "map %s is in an addon pak - reloading\n", string.c_str() );
 //		rl_args.AppendArg( "map" );
 //		rl_args.AppendArg( map );
-//		cmdSystem->SetupReloadEngine( rl_args );
+//		cmdSystem.SetupReloadEngine( rl_args );
 //		return;
 //	default:
 //		break;
 //	}
 //
-//	cvarSystem->SetCVarBool( "developer", false );
+//	cvarSystem.SetCVarBool( "developer", false );
 //	sessLocal.StartNewGame( map, true );
 //}
 //
@@ -141,22 +138,22 @@ class idSession {
 //	// a typo at the server console won't end the game
 //	// handle addon packs through reloadEngine
 //	sprintf( string, "maps/%s.map", map.c_str() );
-//	ff = fileSystem->FindFile( string, true );
+//	ff = fileSystem.FindFile( string, true );
 //	switch ( ff ) {
 //	case FIND_NO:
-//		common->Printf( "Can't find map %s\n", string.c_str() );
+//		common.Printf( "Can't find map %s\n", string.c_str() );
 //		return;
 //	case FIND_ADDON:
-//		common->Printf( "map %s is in an addon pak - reloading\n", string.c_str() );
+//		common.Printf( "map %s is in an addon pak - reloading\n", string.c_str() );
 //		rl_args.AppendArg( "devmap" );
 //		rl_args.AppendArg( map );
-//		cmdSystem->SetupReloadEngine( rl_args );
+//		cmdSystem.SetupReloadEngine( rl_args );
 //		return;
 //	default:
 //		break;
 //	}
 //
-//	cvarSystem->SetCVarBool( "developer", true );
+//	cvarSystem.SetCVarBool( "developer", true );
 //	sessLocal.StartNewGame( map, true );
 //}
 //
@@ -174,13 +171,13 @@ class idSession {
 //	}
 //	map.StripFileExtension();
 //
-//	cmdSystem->BufferCommandText( CMD_EXEC_NOW, "disconnect" );
+//	cmdSystem.BufferCommandText( CMD_EXEC_NOW, "disconnect" );
 //
 //	sprintf( string, "dmap maps/%s.map", map.c_str() );
-//	cmdSystem->BufferCommandText( CMD_EXEC_NOW, string );
+//	cmdSystem.BufferCommandText( CMD_EXEC_NOW, string );
 //
 //	sprintf( string, "devmap %s", map.c_str() );
-//	cmdSystem->BufferCommandText( CMD_EXEC_NOW, string );
+//	cmdSystem.BufferCommandText( CMD_EXEC_NOW, string );
 //}
 //
 ///*
@@ -190,19 +187,36 @@ class idSession {
 //*/
 //static void Sess_WritePrecache_f( const idCmdArgs &args ) {
 //	if ( args.Argc() != 2 ) {
-//		common->Printf( "USAGE: writePrecache <execFile>\n" );
+//		common.Printf( "USAGE: writePrecache <execFile>\n" );
 //		return;
 //	}
 //	idStr	str = args.Argv(1);
 //	str.DefaultFileExtension( ".cfg" );
-//	idFile *f = fileSystem->OpenFileWrite( str );
-//	declManager->WritePrecacheCommands( f );
-//	renderModelManager->WritePrecacheCommands( f );
-//	uiManager->WritePrecacheCommands( f );
+//	idFile *f = fileSystem.OpenFileWrite( str );
+//	declManager.WritePrecacheCommands( f );
+//	renderModelManager.WritePrecacheCommands( f );
+//	uiManager.WritePrecacheCommands( f );
 //
-//	fileSystem->CloseFile( f );
+//	fileSystem.CloseFile( f );
 //}
+
+
+
+
+class idSession {
+	
 //
+//	// The render world and sound world used for this session.
+//	idRenderWorld *	rw;
+//	idSoundWorld *	sw;
+//
+//	// The renderer and sound system will write changes to writeDemo.
+//	// Demos can be recorded and played at the same time when splicing.
+	readDemo: idDemoFile;
+	writeDemo: idDemoFile;
+	renderdemoVersion:number;//	int	
+
+
 ///*
 //===============
 //idSessionLocal::MaybeWaitOnCDKey
@@ -211,7 +225,7 @@ class idSession {
 //bool idSessionLocal::MaybeWaitOnCDKey( void ) {
 //	if ( authEmitTimeout > 0 ) {
 //		authWaitBox = true;
-//		sessLocal.MessageBox( MSG_WAIT, common->GetLanguageDict()->GetString( "#str_07191" ), NULL, true, NULL, NULL, true );
+//		sessLocal.MessageBox( MSG_WAIT, common.GetLanguageDict().GetString( "#str_07191" ), NULL, true, NULL, NULL, true );
 //		return true;
 //	}
 //	return false;
@@ -228,7 +242,7 @@ class idSession {
 //	static bool recursed = false;
 //
 //	if ( recursed ) {
-//		common->Warning( "promptKey recursed - aborted" );
+//		common.Warning( "promptKey recursed - aborted" );
 //		return;
 //	}
 //	recursed = true;
@@ -244,9 +258,9 @@ class idSession {
 //		// the auth server may have replied and set an error message, otherwise use a default
 //		const char *prompt_msg = sessLocal.GetAuthMsg();
 //		if ( prompt_msg[ 0 ] == '\0' ) {
-//			prompt_msg = common->GetLanguageDict()->GetString( "#str_04308" );
+//			prompt_msg = common.GetLanguageDict().GetString( "#str_04308" );
 //		}
-//		retkey = sessLocal.MessageBox( MSG_CDKEY, prompt_msg, common->GetLanguageDict()->GetString( "#str_04305" ), true, NULL, NULL, true );
+//		retkey = sessLocal.MessageBox( MSG_CDKEY, prompt_msg, common.GetLanguageDict().GetString( "#str_04305" ), true, NULL, NULL, true );
 //		if ( retkey ) {
 //			if ( sessLocal.CheckKey( retkey, false, valid ) ) {
 //				// if all went right, then we may have sent an auth request to the master ( unless the prompt is used during a net connect )
@@ -256,14 +270,14 @@ class idSession {
 //					if ( !sessLocal.CDKeysAreValid( true ) ) {
 //						// server says key is invalid - MaybeWaitOnCDKey was interrupted by a CDKeysAuthReply call, which has set the right error message
 //						// the invalid keys have also been cleared in the process
-//						sessLocal.MessageBox( MSG_OK, sessLocal.GetAuthMsg(), common->GetLanguageDict()->GetString( "#str_04310" ), true, NULL, NULL, true );
+//						sessLocal.MessageBox( MSG_OK, sessLocal.GetAuthMsg(), common.GetLanguageDict().GetString( "#str_04310" ), true, NULL, NULL, true );
 //						canExit = false;
 //					}
 //				}
 //				if ( canExit ) {
 //					// make sure that's saved on file
 //					sessLocal.WriteCDKey();
-//					sessLocal.MessageBox( MSG_OK, common->GetLanguageDict()->GetString( "#str_04307" ), common->GetLanguageDict()->GetString( "#str_04305" ), true, NULL, NULL, true );
+//					sessLocal.MessageBox( MSG_OK, common.GetLanguageDict().GetString( "#str_04307" ), common.GetLanguageDict().GetString( "#str_04305" ), true, NULL, NULL, true );
 //					break;
 //				}
 //			} else {
@@ -272,12 +286,12 @@ class idSession {
 //				// ( the keys may be valid, but user would have clicked on the dialog anyway, that kind of thing )
 //				idStr msg;
 //				idAsyncNetwork::BuildInvalidKeyMsg( msg, valid );
-//				sessLocal.MessageBox( MSG_OK, msg, common->GetLanguageDict()->GetString( "#str_04310" ), true, NULL, NULL, true );
+//				sessLocal.MessageBox( MSG_OK, msg, common.GetLanguageDict().GetString( "#str_04310" ), true, NULL, NULL, true );
 //			}
 //		} else if ( args.Argc() == 2 && idStr::Icmp( args.Argv(1), "force" ) == 0 ) {
 //			// cancelled in force mode
-//			cmdSystem->BufferCommandText( CMD_EXEC_APPEND, "quit\n" );
-//			cmdSystem->ExecuteCommandBuffer();
+//			cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "quit\n" );
+//			cmdSystem.ExecuteCommandBuffer();
 //		}
 //	} while ( retkey );
 //	recursed = false;
@@ -391,7 +405,7 @@ class idSession {
 //	idAsyncNetwork::server.Kill();
 //
 //	if ( sw ) {
-//		sw->StopAllSounds();
+//		sw.StopAllSounds();
 //	}
 //
 //	insideUpdateScreen = false;
@@ -438,8 +452,8 @@ class idSession {
 //	}
 //
 //	if ( guiMainMenu_MapList != NULL ) {
-//		guiMainMenu_MapList->Shutdown();
-//		uiManager->FreeListGUI( guiMainMenu_MapList );
+//		guiMainMenu_MapList.Shutdown();
+//		uiManager.FreeListGUI( guiMainMenu_MapList );
 //		guiMainMenu_MapList = NULL;
 //	}
 //
@@ -463,17 +477,17 @@ idSessionLocal::IsMultiplayer
 //================
 //*/
 //void idSessionLocal::StartWipe( const char *_wipeMaterial, bool hold ) {
-//	console->Close();
+//	console.Close();
 //
 //	// render the current screen into a texture for the wipe model
-//	renderSystem->CropRenderSize( 640, 480, true );
+//	renderSystem.CropRenderSize( 640, 480, true );
 //
 //	Draw();
 //
-//	renderSystem->CaptureRenderToImage( "_scratch");
-//	renderSystem->UnCrop();
+//	renderSystem.CaptureRenderToImage( "_scratch");
+//	renderSystem.UnCrop();
 //
-//	wipeMaterial = declManager->FindMaterial( _wipeMaterial, false );
+//	wipeMaterial = declManager.FindMaterial( _wipeMaterial, false );
 //
 //	wipeStartTic = com_ticNumber;
 //	wipeStopTic = wipeStartTic + 1000.0f / USERCMD_MSEC * com_wipeSeconds.GetFloat();
@@ -509,7 +523,7 @@ idSessionLocal::IsMultiplayer
 //	if ( com_ticNumber == 0 ) {
 //		return;
 //	}
-//	console->Close();
+//	console.Close();
 //
 //	// introduced in D3XP code. don't think it actually fixes anything, but doesn't hurt either
 //#if 1
@@ -518,15 +532,15 @@ idSessionLocal::IsMultiplayer
 //	int force = 10;
 //	while ( Sys_Milliseconds() < stop || force-- > 0 ) {
 //		com_frameTime = com_ticNumber * USERCMD_MSEC;
-//		session->Frame();
-//		session->UpdateScreen( false );
+//		session.Frame();
+//		session.UpdateScreen( false );
 //	}
 //#else
 //	int stop = com_ticNumber + 1000.0f / USERCMD_MSEC * 1.0f;
 //	while ( com_ticNumber < stop ) {
 //		com_frameTime = com_ticNumber * USERCMD_MSEC;
-//		session->Frame();
-//		session->UpdateScreen( false );
+//		session.Frame();
+//		session.UpdateScreen( false );
 //	}
 //#endif
 //}
@@ -560,7 +574,7 @@ idSessionLocal::IsMultiplayer
 //*/
 //void idSessionLocal::TestGUI( const char *guiName ) {
 //	if ( guiName && *guiName ) {
-//		guiTest = uiManager->FindGui( guiName, true, false, true );
+//		guiTest = uiManager.FindGui( guiName, true, false, true );
 //	} else {
 //		guiTest = NULL;
 //	}
@@ -577,7 +591,7 @@ idSessionLocal::IsMultiplayer
 //
 //	for ( i = 0 ; i < 999 ; i++ ) {
 //		sprintf( filename, format, i );
-//		int len = fileSystem->ReadFile( filename, NULL, NULL );
+//		int len = fileSystem.ReadFile( filename, NULL, NULL );
 //		if ( len <= 0 ) {
 //			return filename;	// file doesn't exist
 //		}
@@ -625,7 +639,7 @@ idSessionLocal::IsMultiplayer
 //	} else if ( args.Argc() == 3 ) {
 //		sessLocal.CompressDemoFile( args.Argv(2), args.Argv(1) );
 //	} else {
-//		common->Printf("use: CompressDemo <file> [scheme]\nscheme is the same as com_compressDemo, defaults to 2" );
+//		common.Printf("use: CompressDemo <file> [scheme]\nscheme is the same as com_compressDemo, defaults to 2" );
 //	}
 //}
 //
@@ -712,7 +726,7 @@ idSessionLocal::IsMultiplayer
 //	} else if ( args.Argc() == 2 ) {
 //		sessLocal.WriteCmdDemo( va( "demos/%s.cdemo", args.Argv( 1 ) ) );
 //	} else {
-//		common->Printf( "usage: writeCmdDemo [demoName]\n" );
+//		common.Printf( "usage: writeCmdDemo [demoName]\n" );
 //	}
 //}
 //
@@ -743,7 +757,7 @@ idSessionLocal::IsMultiplayer
 //	sessLocal.Stop();
 //	sessLocal.StartMenu();
 //	if ( soundSystem ) {
-//		soundSystem->SetMute( false );
+//		soundSystem.SetMute( false );
 //	}
 //}
 //
@@ -757,10 +771,10 @@ idSessionLocal::IsMultiplayer
 //	sessLocal.Stop();
 //	sessLocal.StartMenu();
 //	if ( soundSystem ) {
-//		soundSystem->SetMute( false );
+//		soundSystem.SetMute( false );
 //	}
 //	if ( sessLocal.guiActive ) {
-//		sessLocal.guiActive->HandleNamedEvent( "endOfDemo" );
+//		sessLocal.guiActive.HandleNamedEvent( "endOfDemo" );
 //	}
 //}
 //#endif
@@ -772,11 +786,11 @@ idSessionLocal::IsMultiplayer
 //*/
 //static void Session_ExitCmdDemo_f( const idCmdArgs &args ) {
 //	if ( !sessLocal.cmdDemoFile ) {
-//		common->Printf( "not reading from a cmdDemo\n" );
+//		common.Printf( "not reading from a cmdDemo\n" );
 //		return;
 //	}
-//	fileSystem->CloseFile( sessLocal.cmdDemoFile );
-//	common->Printf( "Command demo exited at logIndex %i\n", sessLocal.logIndex );
+//	fileSystem.CloseFile( sessLocal.cmdDemoFile );
+//	common.Printf( "Command demo exited at logIndex %i\n", sessLocal.logIndex );
 //	sessLocal.cmdDemoFile = NULL;
 //}
 //
@@ -793,28 +807,28 @@ idSessionLocal::IsMultiplayer
 //	}
 //
 //	if ( !demoName[0] ) {
-//		common->Printf( "idSessionLocal::StartRecordingRenderDemo: no name specified\n" );
+//		common.Printf( "idSessionLocal::StartRecordingRenderDemo: no name specified\n" );
 //		return;
 //	}
 //
-//	console->Close();
+//	console.Close();
 //
 //	writeDemo = new idDemoFile;
-//	if ( !writeDemo->OpenForWriting( demoName ) ) {
-//		common->Printf( "error opening %s\n", demoName );
+//	if ( !writeDemo.OpenForWriting( demoName ) ) {
+//		common.Printf( "error opening %s\n", demoName );
 //		delete writeDemo;
 //		writeDemo = NULL;
 //		return;
 //	}
 //
-//	common->Printf( "recording to %s\n", writeDemo->GetName() );
+//	common.Printf( "recording to %s\n", writeDemo.GetName() );
 //
-//	writeDemo->WriteInt( DS_VERSION );
-//	writeDemo->WriteInt( RENDERDEMO_VERSION );
+//	writeDemo.WriteInt( DS_VERSION );
+//	writeDemo.WriteInt( RENDERDEMO_VERSION );
 //
 //	// if we are in a map already, dump the current state
-//	sw->StartWritingDemo( writeDemo );
-//	rw->StartWritingDemo( writeDemo );
+//	sw.StartWritingDemo( writeDemo );
+//	rw.StartWritingDemo( writeDemo );
 //}
 //
 ///*
@@ -824,14 +838,14 @@ idSessionLocal::IsMultiplayer
 //*/
 //void idSessionLocal::StopRecordingRenderDemo() {
 //	if ( !writeDemo ) {
-//		common->Printf( "idSessionLocal::StopRecordingRenderDemo: not recording\n" );
+//		common.Printf( "idSessionLocal::StopRecordingRenderDemo: not recording\n" );
 //		return;
 //	}
-//	sw->StopWritingDemo();
-//	rw->StopWritingDemo();
+//	sw.StopWritingDemo();
+//	rw.StopWritingDemo();
 //
-//	writeDemo->Close();
-//	common->Printf( "stopped recording %s.\n", writeDemo->GetName() );
+//	writeDemo.Close();
+//	common.Printf( "stopped recording %s.\n", writeDemo.GetName() );
 //	delete writeDemo;
 //	writeDemo = NULL;
 //}
@@ -854,12 +868,12 @@ idSessionLocal::IsMultiplayer
 //
 //	EndAVICapture();
 //
-//	readDemo->Close();
+//	readDemo.Close();
 //
-//	sw->StopAllSounds();
-//	soundSystem->SetPlayingSoundWorld( menuSoundWorld );
+//	sw.StopAllSounds();
+//	soundSystem.SetPlayingSoundWorld( menuSoundWorld );
 //
-//	common->Printf( "stopped playing %s.\n", readDemo->GetName() );
+//	common.Printf( "stopped playing %s.\n", readDemo.GetName() );
 //	delete readDemo;
 //	readDemo = NULL;
 //
@@ -869,13 +883,13 @@ idSessionLocal::IsMultiplayer
 //		float	demoFPS = numDemoFrames / demoSeconds;
 //		idStr	message = va( "%i frames rendered in %3.1f seconds = %3.1f fps\n", numDemoFrames, demoSeconds, demoFPS );
 //
-//		common->Printf( message );
+//		common.Printf( message );
 //		if ( timeDemo == TD_YES_THEN_QUIT ) {
-//			cmdSystem->BufferCommandText( CMD_EXEC_APPEND, "quit\n" );
+//			cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "quit\n" );
 //		} else {
-//			soundSystem->SetMute( true );
+//			soundSystem.SetMute( true );
 //			MessageBox( MSG_OK, message, "Time Demo Results", true );
-//			soundSystem->SetMute( false );
+//			soundSystem.SetMute( false );
 //		}
 //		timeDemo = TD_NO;
 //	}
@@ -904,42 +918,42 @@ idSessionLocal::IsMultiplayer
 //*/
 //void idSessionLocal::StartPlayingRenderDemo( idStr demoName ) {
 //	if ( !demoName[0] ) {
-//		common->Printf( "idSessionLocal::StartPlayingRenderDemo: no name specified\n" );
+//		common.Printf( "idSessionLocal::StartPlayingRenderDemo: no name specified\n" );
 //		return;
 //	}
 //
 //	// make sure localSound / GUI intro music shuts up
-//	sw->StopAllSounds();
-//	sw->PlayShaderDirectly( "", 0 );	
-//	menuSoundWorld->StopAllSounds();
-//	menuSoundWorld->PlayShaderDirectly( "", 0 );
+//	sw.StopAllSounds();
+//	sw.PlayShaderDirectly( "", 0 );	
+//	menuSoundWorld.StopAllSounds();
+//	menuSoundWorld.PlayShaderDirectly( "", 0 );
 //
 //	// exit any current game
 //	Stop();
 //
 //	// automatically put the console away
-//	console->Close();
+//	console.Close();
 //
 //	// bring up the loading screen manually, since demos won't
 //	// call ExecuteMapChange()
-//	guiLoading = uiManager->FindGui( "guis/map/loading.gui", true, false, true );
-//	guiLoading->SetStateString( "demo", common->GetLanguageDict()->GetString( "#str_02087" ) );
+//	guiLoading = uiManager.FindGui( "guis/map/loading.gui", true, false, true );
+//	guiLoading.SetStateString( "demo", common.GetLanguageDict().GetString( "#str_02087" ) );
 //	readDemo = new idDemoFile;
 //	demoName.DefaultFileExtension( ".demo" );
-//	if ( !readDemo->OpenForReading( demoName ) ) {
-//		common->Printf( "couldn't open %s\n", demoName.c_str() );
+//	if ( !readDemo.OpenForReading( demoName ) ) {
+//		common.Printf( "couldn't open %s\n", demoName.c_str() );
 //		delete readDemo;
 //		readDemo = NULL;
 //		Stop();
 //		StartMenu();
-//		soundSystem->SetMute( false );
+//		soundSystem.SetMute( false );
 //		return;
 //	}
 //
 //	insideExecuteMapChange = true;
 //	UpdateScreen();
 //	insideExecuteMapChange = false;
-//	guiLoading->SetStateString( "demo", "" );
+//	guiLoading.SetStateString( "demo", "" );
 //
 //	// setup default render demo settings
 //	// that's default for <= Doom3 v1.1
@@ -963,21 +977,21 @@ idSessionLocal::IsMultiplayer
 //	idStr demo = demoName;
 //	
 //	// no sound in time demos
-//	soundSystem->SetMute( true );
+//	soundSystem.SetMute( true );
 //
 //	StartPlayingRenderDemo( demo );
 //	
 //	if ( twice && readDemo ) {
 //		// cycle through once to precache everything
-//		guiLoading->SetStateString( "demo", common->GetLanguageDict()->GetString( "#str_04852" ) );
-//		guiLoading->StateChanged( com_frameTime );
+//		guiLoading.SetStateString( "demo", common.GetLanguageDict().GetString( "#str_04852" ) );
+//		guiLoading.StateChanged( com_frameTime );
 //		while ( readDemo ) {
 //			insideExecuteMapChange = true;
 //			UpdateScreen();
 //			insideExecuteMapChange = false;
 //			AdvanceRenderDemo( true );
 //		}
-//		guiLoading->SetStateString( "demo", "" );
+//		guiLoading.SetStateString( "demo", "" );
 //		StartPlayingRenderDemo( demo );
 //	}
 //	
@@ -1001,7 +1015,7 @@ idSessionLocal::IsMultiplayer
 //	aviCaptureMode = true;
 //	aviDemoFrameCount = 0;
 //	aviTicStart = 0;
-//	sw->AVIOpen( va( "demos/%s/", aviDemoShortName.c_str() ), aviDemoShortName.c_str() );
+//	sw.AVIOpen( va( "demos/%s/", aviDemoShortName.c_str() ), aviDemoShortName.c_str() );
 //}
 //
 ///*
@@ -1014,19 +1028,19 @@ idSessionLocal::IsMultiplayer
 //		return;
 //	}
 //
-//	sw->AVIClose();
+//	sw.AVIClose();
 //
 //	// write a .roqParam file so the demo can be converted to a roq file
-//	idFile *f = fileSystem->OpenFileWrite( va( "demos/%s/%s.roqParam", 
+//	idFile *f = fileSystem.OpenFileWrite( va( "demos/%s/%s.roqParam", 
 //		aviDemoShortName.c_str(), aviDemoShortName.c_str() ) );
-//	f->Printf( "INPUT_DIR demos/%s\n", aviDemoShortName.c_str() );
-//	f->Printf( "FILENAME demos/%s/%s.RoQ\n", aviDemoShortName.c_str(), aviDemoShortName.c_str() );
-//	f->Printf( "\nINPUT\n" );
-//	f->Printf( "%s_*.tga [00000-%05i]\n", aviDemoShortName.c_str(), (int)( aviDemoFrameCount-1 ) );
-//	f->Printf( "END_INPUT\n" );
+//	f.Printf( "INPUT_DIR demos/%s\n", aviDemoShortName.c_str() );
+//	f.Printf( "FILENAME demos/%s/%s.RoQ\n", aviDemoShortName.c_str(), aviDemoShortName.c_str() );
+//	f.Printf( "\nINPUT\n" );
+//	f.Printf( "%s_*.tga [00000-%05i]\n", aviDemoShortName.c_str(), (int)( aviDemoFrameCount-1 ) );
+//	f.Printf( "END_INPUT\n" );
 //	delete f;
 //
-//	common->Printf( "captured %i frames for %s.\n", ( int )aviDemoFrameCount, aviDemoShortName.c_str() );
+//	common.Printf( "captured %i frames for %s.\n", ( int )aviDemoFrameCount, aviDemoShortName.c_str() );
 //
 //	aviCaptureMode = false;
 //}
@@ -1077,7 +1091,7 @@ idSessionLocal::IsMultiplayer
 //	}
 //
 //	if ( !mapSpawned ) {
-//		common->Printf( "No map spawned.\n" );
+//		common.Printf( "No map spawned.\n" );
 //	}
 //
 //	if ( !demoName || !demoName[0] ) {
@@ -1085,7 +1099,7 @@ idSessionLocal::IsMultiplayer
 //		demoName = filename.c_str();
 //
 //		// write a one byte stub .game file just so the FindUnusedFileName works,
-//		fileSystem->WriteFile( demoName, demoName, 1 );
+//		fileSystem.WriteFile( demoName, demoName, 1 );
 //	}
 //
 //	BeginAVICapture( demoName ) ;
@@ -1104,42 +1118,42 @@ idSessionLocal::IsMultiplayer
 //	compressedName.StripFileExtension();
 //	compressedName.Append( "_compressed.demo" );
 //
-//	int savedCompression = cvarSystem->GetCVarInteger("com_compressDemos");
-//	bool savedPreload = cvarSystem->GetCVarBool("com_preloadDemos");
-//	cvarSystem->SetCVarBool( "com_preloadDemos", false );
-//	cvarSystem->SetCVarInteger("com_compressDemos", atoi(scheme) );
+//	int savedCompression = cvarSystem.GetCVarInteger("com_compressDemos");
+//	bool savedPreload = cvarSystem.GetCVarBool("com_preloadDemos");
+//	cvarSystem.SetCVarBool( "com_preloadDemos", false );
+//	cvarSystem.SetCVarInteger("com_compressDemos", atoi(scheme) );
 //
 //	idDemoFile demoread, demowrite;
 //	if ( !demoread.OpenForReading( fullDemoName ) ) {
-//		common->Printf( "Could not open %s for reading\n", fullDemoName.c_str() );
+//		common.Printf( "Could not open %s for reading\n", fullDemoName.c_str() );
 //		return;
 //	}
 //	if ( !demowrite.OpenForWriting( compressedName ) ) {
-//		common->Printf( "Could not open %s for writing\n", compressedName.c_str() );
+//		common.Printf( "Could not open %s for writing\n", compressedName.c_str() );
 //		demoread.Close();
-//		cvarSystem->SetCVarBool( "com_preloadDemos", savedPreload );
-//		cvarSystem->SetCVarInteger("com_compressDemos", savedCompression);
+//		cvarSystem.SetCVarBool( "com_preloadDemos", savedPreload );
+//		cvarSystem.SetCVarInteger("com_compressDemos", savedCompression);
 //		return;
 //	}
-//	common->SetRefreshOnPrint( true );
-//	common->Printf( "Compressing %s to %s...\n", fullDemoName.c_str(), compressedName.c_str() );
+//	common.SetRefreshOnPrint( true );
+//	common.Printf( "Compressing %s to %s...\n", fullDemoName.c_str(), compressedName.c_str() );
 //
 //	static const int bufferSize = 65535;
 //	char buffer[bufferSize];
 //	int bytesRead;
 //	while ( 0 != (bytesRead = demoread.Read( buffer, bufferSize ) ) ) {
 //		demowrite.Write( buffer, bytesRead );
-//		common->Printf( "." );
+//		common.Printf( "." );
 //	}
 //
 //	demoread.Close();
 //	demowrite.Close();
 //
-//	cvarSystem->SetCVarBool( "com_preloadDemos", savedPreload );
-//	cvarSystem->SetCVarInteger("com_compressDemos", savedCompression);
+//	cvarSystem.SetCVarBool( "com_preloadDemos", savedPreload );
+//	cvarSystem.SetCVarInteger("com_compressDemos", savedCompression);
 //
-//	common->Printf( "Done\n" );
-//	common->SetRefreshOnPrint( false );
+//	common.Printf( "Done\n" );
+//	common.SetRefreshOnPrint( false );
 //
 //}
 //
@@ -1151,7 +1165,7 @@ idSessionLocal::IsMultiplayer
 //*/
 //void idSessionLocal::StartNewGame( const char *mapName, bool devmap ) {
 //#ifdef	ID_DEDICATED
-//	common->Printf( "Dedicated servers cannot start singleplayer games.\n" );
+//	common.Printf( "Dedicated servers cannot start singleplayer games.\n" );
 //	return;
 //#else
 //#if ID_ENFORCE_KEY
@@ -1166,27 +1180,27 @@ idSessionLocal::IsMultiplayer
 //			}
 //		}
 //		if ( prompt ) {
-//			cmdSystem->BufferCommandText( CMD_EXEC_NOW, "promptKey force" );
-//			cmdSystem->ExecuteCommandBuffer();
+//			cmdSystem.BufferCommandText( CMD_EXEC_NOW, "promptKey force" );
+//			cmdSystem.ExecuteCommandBuffer();
 //		}
 //	}
 //#endif
 //	if ( idAsyncNetwork::server.IsActive() ) {
-//		common->Printf("Server running, use si_map / serverMapRestart\n");
+//		common.Printf("Server running, use si_map / serverMapRestart\n");
 //		return;
 //	}
 //	if ( idAsyncNetwork::client.IsActive() ) {
-//		common->Printf("Client running, disconnect from server first\n");
+//		common.Printf("Client running, disconnect from server first\n");
 //		return;
 //	}
 //
 //	// clear the userInfo so the player starts out with the defaults
 //	mapSpawnData.userInfo[0].Clear();
 //	mapSpawnData.persistentPlayerInfo[0].Clear();
-//	mapSpawnData.userInfo[0] = *cvarSystem->MoveCVarsToDict( CVAR_USERINFO );
+//	mapSpawnData.userInfo[0] = *cvarSystem.MoveCVarsToDict( CVAR_USERINFO );
 //
 //	mapSpawnData.serverInfo.Clear();
-//	mapSpawnData.serverInfo = *cvarSystem->MoveCVarsToDict( CVAR_SERVERINFO );
+//	mapSpawnData.serverInfo = *cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO );
 //	mapSpawnData.serverInfo.Set( "si_gameType", "singleplayer" );
 //
 //	// set the devmap key so any play testing items will be given at
@@ -1196,7 +1210,7 @@ idSessionLocal::IsMultiplayer
 //	}
 //
 //	mapSpawnData.syncedCVars.Clear();
-//	mapSpawnData.syncedCVars = *cvarSystem->MoveCVarsToDict( CVAR_NETWORKSYNC );
+//	mapSpawnData.syncedCVars = *cvarSystem.MoveCVarsToDict( CVAR_NETWORKSYNC );
 //
 //	MoveToNewMap( mapName );
 //#endif
@@ -1208,10 +1222,10 @@ idSessionLocal::IsMultiplayer
 //===============
 //*/
 //idStr idSessionLocal::GetAutoSaveName( const char *mapName ) const {
-//	const idDecl *mapDecl = declManager->FindType( DECL_MAPDEF, mapName, false );
+//	const idDecl *mapDecl = declManager.FindType( DECL_MAPDEF, mapName, false );
 //	const idDeclEntityDef *mapDef = static_cast<const idDeclEntityDef *>( mapDecl );
 //	if ( mapDef ) {
-//		mapName = common->GetLanguageDict()->GetString( mapDef->dict.GetString( "name", mapName ) );
+//		mapName = common.GetLanguageDict().GetString( mapDef.dict.GetString( "name", mapName ) );
 //	}
 //	// Fixme: Localization
 //	return va( "^3AutoSave:^0 %s", mapName );
@@ -1251,12 +1265,12 @@ idSessionLocal::IsMultiplayer
 //		mapSpawnData.persistentPlayerInfo[i].WriteToFileHandle( file );
 //	}
 //
-//	file->Write( &mapSpawnData.mapSpawnUsercmd, sizeof( mapSpawnData.mapSpawnUsercmd ) );
+//	file.Write( &mapSpawnData.mapSpawnUsercmd, sizeof( mapSpawnData.mapSpawnUsercmd ) );
 //
 //	if ( numClients < 1 ) {
 //		numClients = 1;
 //	}
-//	file->Write( loggedUsercmds, numClients * logIndex * sizeof( loggedUsercmds[0] ) );
+//	file.Write( loggedUsercmds, numClients * logIndex * sizeof( loggedUsercmds[0] ) );
 //}
 //
 ///*
@@ -1272,7 +1286,7 @@ idSessionLocal::IsMultiplayer
 //		mapSpawnData.userInfo[i].ReadFromFileHandle( file );
 //		mapSpawnData.persistentPlayerInfo[i].ReadFromFileHandle( file );
 //	}
-//	file->Read( &mapSpawnData.mapSpawnUsercmd, sizeof( mapSpawnData.mapSpawnUsercmd ) );
+//	file.Read( &mapSpawnData.mapSpawnUsercmd, sizeof( mapSpawnData.mapSpawnUsercmd ) );
 //}
 //
 ///*
@@ -1286,7 +1300,7 @@ idSessionLocal::IsMultiplayer
 //void idSessionLocal::WriteCmdDemo( const char *demoName, bool save ) {
 //	
 //	if ( !demoName[0] ) {
-//		common->Printf( "idSessionLocal::WriteCmdDemo: no name specified\n" );
+//		common.Printf( "idSessionLocal::WriteCmdDemo: no name specified\n" );
 //		return;
 //	}
 //
@@ -1297,30 +1311,30 @@ idSessionLocal::IsMultiplayer
 //		statsName.DefaultFileExtension(".stats");
 //	}
 //
-//	common->Printf( "writing save data to %s\n", demoName );
+//	common.Printf( "writing save data to %s\n", demoName );
 //
-//	idFile *cmdDemoFile = fileSystem->OpenFileWrite( demoName );
+//	idFile *cmdDemoFile = fileSystem.OpenFileWrite( demoName );
 //	if ( !cmdDemoFile ) {
-//		common->Printf( "Couldn't open for writing %s\n", demoName );
+//		common.Printf( "Couldn't open for writing %s\n", demoName );
 //		return;
 //	}
 //
 //	if ( save ) {
-//		cmdDemoFile->Write( &logIndex, sizeof( logIndex ) );
+//		cmdDemoFile.Write( &logIndex, sizeof( logIndex ) );
 //	}
 //	
 //	SaveCmdDemoToFile( cmdDemoFile );
 //
 //	if ( save ) {
-//		idFile *statsFile = fileSystem->OpenFileWrite( statsName );
+//		idFile *statsFile = fileSystem.OpenFileWrite( statsName );
 //		if ( statsFile ) {
-//			statsFile->Write( &statIndex, sizeof( statIndex ) );
-//			statsFile->Write( loggedStats, numClients * statIndex * sizeof( loggedStats[0] ) );
-//			fileSystem->CloseFile( statsFile );
+//			statsFile.Write( &statIndex, sizeof( statIndex ) );
+//			statsFile.Write( loggedStats, numClients * statIndex * sizeof( loggedStats[0] ) );
+//			fileSystem.CloseFile( statsFile );
 //		}
 //	}
 //
-//	fileSystem->CloseFile( cmdDemoFile );
+//	fileSystem.CloseFile( cmdDemoFile );
 //}
 //
 ///*
@@ -1343,22 +1357,22 @@ idSessionLocal::IsMultiplayer
 //	idStr fullDemoName = "demos/";
 //	fullDemoName += demoName;
 //	fullDemoName.DefaultFileExtension( ".cdemo" );
-//	cmdDemoFile = fileSystem->OpenFileRead(fullDemoName);
+//	cmdDemoFile = fileSystem.OpenFileRead(fullDemoName);
 //
 //	if ( cmdDemoFile == NULL ) {
-//		common->Printf( "Couldn't open %s\n", fullDemoName.c_str() );
+//		common.Printf( "Couldn't open %s\n", fullDemoName.c_str() );
 //		return;
 //	}
 //
-//	guiLoading = uiManager->FindGui( "guis/map/loading.gui", true, false, true );
-//	//cmdDemoFile->Read(&loadGameTime, sizeof(loadGameTime));
+//	guiLoading = uiManager.FindGui( "guis/map/loading.gui", true, false, true );
+//	//cmdDemoFile.Read(&loadGameTime, sizeof(loadGameTime));
 //
 //	LoadCmdDemoFromFile(cmdDemoFile);
 //
 //	// start the map
 //	ExecuteMapChange();
 //
-//	cmdDemoFile = fileSystem->OpenFileRead(fullDemoName);
+//	cmdDemoFile = fileSystem.OpenFileRead(fullDemoName);
 //
 //	// have to do this twice as the execmapchange clears the cmddemofile
 //	LoadCmdDemoFromFile(cmdDemoFile);
@@ -1393,14 +1407,14 @@ idSessionLocal::IsMultiplayer
 //			minuteEnd = Sys_Milliseconds();
 //			sec = ( minuteEnd - minuteStart ) / 1000.0;
 //			minuteStart = minuteEnd;
-//			common->Printf( "minute %i took %3.1f seconds\n", count / 3600, sec );
+//			common.Printf( "minute %i took %3.1f seconds\n", count / 3600, sec );
 //			UpdateScreen();
 //		}
 //	}
 //
 //	int		endTime = Sys_Milliseconds();
 //	sec = ( endTime - startTime ) / 1000.0;
-//	common->Printf( "%i seconds of game, replayed in %5.1f seconds\n", count / 60, sec );
+//	common.Printf( "%i seconds of game, replayed in %5.1f seconds\n", count / 60, sec );
 //}
 //
 ///*
@@ -1417,11 +1431,11 @@ idSessionLocal::IsMultiplayer
 //
 //	// end the current map in the game
 //	if ( game ) {
-//		game->MapShutdown();
+//		game.MapShutdown();
 //	}
 //
 //	if ( cmdDemoFile ) {
-//		fileSystem->CloseFile( cmdDemoFile );
+//		fileSystem.CloseFile( cmdDemoFile );
 //		cmdDemoFile = NULL;
 //	}
 //
@@ -1446,14 +1460,14 @@ idSessionLocal::IsMultiplayer
 //	char guiMap[ MAX_STRING_CHARS ];
 //	strncpy( guiMap, va( "guis/map/%s.gui", stripped.c_str() ), MAX_STRING_CHARS );
 //	// give the gamecode a chance to override
-//	game->GetMapLoadingGUI( guiMap );
+//	game.GetMapLoadingGUI( guiMap );
 //
-//	if ( uiManager->CheckGui( guiMap ) ) {
-//		guiLoading = uiManager->FindGui( guiMap, true, false, true );
+//	if ( uiManager.CheckGui( guiMap ) ) {
+//		guiLoading = uiManager.FindGui( guiMap, true, false, true );
 //	} else {
-//		guiLoading = uiManager->FindGui( "guis/map/loading.gui", true, false, true );
+//		guiLoading = uiManager.FindGui( "guis/map/loading.gui", true, false, true );
 //	}
-//	guiLoading->SetStateFloat( "map_loading", 0.0f );
+//	guiLoading.SetStateFloat( "map_loading", 0.0f );
 //}
 //
 ///*
@@ -1462,10 +1476,10 @@ idSessionLocal::IsMultiplayer
 //===============
 //*/
 //int idSessionLocal::GetBytesNeededForMapLoad( const char *mapName ) {
-//	const idDecl *mapDecl = declManager->FindType( DECL_MAPDEF, mapName, false );
+//	const idDecl *mapDecl = declManager.FindType( DECL_MAPDEF, mapName, false );
 //	const idDeclEntityDef *mapDef = static_cast<const idDeclEntityDef *>( mapDecl );
 //	if ( mapDef ) {
-//		return mapDef->dict.GetInt( va("size%d", Max( 0, com_machineSpec.GetInteger() ) ) );
+//		return mapDef.dict.GetInt( va("size%d", Max( 0, com_machineSpec.GetInteger() ) ) );
 //	} else {
 //		if ( com_machineSpec.GetInteger() < 2 ) {
 //			return 200 * 1024 * 1024;
@@ -1481,26 +1495,26 @@ idSessionLocal::IsMultiplayer
 //===============
 //*/
 //void idSessionLocal::SetBytesNeededForMapLoad( const char *mapName, int bytesNeeded ) {
-//	idDecl *mapDecl = const_cast<idDecl *>(declManager->FindType( DECL_MAPDEF, mapName, false ));
+//	idDecl *mapDecl = const_cast<idDecl *>(declManager.FindType( DECL_MAPDEF, mapName, false ));
 //	idDeclEntityDef *mapDef = static_cast<idDeclEntityDef *>( mapDecl );
 //
 //	if ( com_updateLoadSize.GetBool() && mapDef ) {
 //		// we assume that if com_updateLoadSize is true then the file is writable
 //
-//		mapDef->dict.SetInt( va("size%d", com_machineSpec.GetInteger()), bytesNeeded );
+//		mapDef.dict.SetInt( va("size%d", com_machineSpec.GetInteger()), bytesNeeded );
 //
 //		idStr declText = "\nmapDef ";
-//		declText += mapDef->GetName();
+//		declText += mapDef.GetName();
 //		declText += " {\n";
-//		for (int i=0; i<mapDef->dict.GetNumKeyVals(); i++) {
-//			const idKeyValue *kv = mapDef->dict.GetKeyVal( i );
-//			if ( kv && (kv->GetKey().Cmp("classname") != 0 ) ) {
-//				declText += "\t\"" + kv->GetKey() + "\"\t\t\"" + kv->GetValue() + "\"\n";
+//		for (int i=0; i<mapDef.dict.GetNumKeyVals(); i++) {
+//			const idKeyValue *kv = mapDef.dict.GetKeyVal( i );
+//			if ( kv && (kv.GetKey().Cmp("classname") != 0 ) ) {
+//				declText += "\t\"" + kv.GetKey() + "\"\t\t\"" + kv.GetValue() + "\"\n";
 //			}
 //		}
 //		declText += "}";
-//		mapDef->SetText( declText );
-//		mapDef->ReplaceSourceFileText();
+//		mapDef.SetText( declText );
+//		mapDef.ReplaceSourceFileText();
 //	}
 //}
 //
@@ -1519,7 +1533,7 @@ idSessionLocal::IsMultiplayer
 //	bool	reloadingSameMap;
 //
 //	// close console and remove any prints from the notify lines
-//	console->Close();
+//	console.Close();
 //
 //	if ( IsMultiplayer() ) {
 //		// make sure the mp GUI isn't up, or when players get back in the
@@ -1528,15 +1542,15 @@ idSessionLocal::IsMultiplayer
 //	}
 //
 //	// mute sound
-//	soundSystem->SetMute( true );
+//	soundSystem.SetMute( true );
 //
 //	// clear all menu sounds
-//	menuSoundWorld->ClearAllSoundEmitters();
+//	menuSoundWorld.ClearAllSoundEmitters();
 //
 //	// unpause the game sound world
 //	// NOTE: we UnPause again later down. not sure this is needed
-//	if ( sw->IsPaused() ) {
-//		sw->UnPause();
+//	if ( sw.IsPaused() ) {
+//		sw.UnPause();
 //	}
 //
 //	if ( !noFadeWipe ) {
@@ -1568,13 +1582,13 @@ idSessionLocal::IsMultiplayer
 //
 //	// note which media we are going to need to load
 //	if ( !reloadingSameMap ) {
-//		declManager->BeginLevelLoad();
-//		renderSystem->BeginLevelLoad();
-//		soundSystem->BeginLevelLoad();
+//		declManager.BeginLevelLoad();
+//		renderSystem.BeginLevelLoad();
+//		soundSystem.BeginLevelLoad();
 //	}
 //
-//	uiManager->BeginLevelLoad();
-//	uiManager->Reload( true );
+//	uiManager.BeginLevelLoad();
+//	uiManager.Reload( true );
 //
 //	// set the loading gui that we will wipe to
 //	LoadLoadingGui( mapString );
@@ -1585,7 +1599,7 @@ idSessionLocal::IsMultiplayer
 //
 //	// if this works out we will probably want all the sizes in a def file although this solution will 
 //	// work for new maps etc. after the first load. we can also drop the sizes into the default.cfg
-//	fileSystem->ResetReadCount();
+//	fileSystem.ResetReadCount();
 //	if ( !reloadingSameMap  ) {
 //		bytesNeededForMapLoad = GetBytesNeededForMapLoad( mapString.c_str() );
 //	} else {
@@ -1598,7 +1612,7 @@ idSessionLocal::IsMultiplayer
 //	ShowLoadingGui();
 //
 //	// note any warning prints that happen during the load process
-//	common->ClearWarnings( mapString );
+//	common.ClearWarnings( mapString );
 //
 //	// release the mouse cursor
 //	// before we do this potentially long operation
@@ -1611,82 +1625,82 @@ idSessionLocal::IsMultiplayer
 //	
 //	int start = Sys_Milliseconds();
 //
-//	common->Printf( "--------- Map Initialization ---------\n" );
-//	common->Printf( "Map: %s\n", mapString.c_str() );
+//	common.Printf( "--------- Map Initialization ---------\n" );
+//	common.Printf( "Map: %s\n", mapString.c_str() );
 //
 //	// let the renderSystem load all the geometry
-//	if ( !rw->InitFromMap( fullMapName ) ) {
-//		common->Error( "couldn't load %s", fullMapName.c_str() );
+//	if ( !rw.InitFromMap( fullMapName ) ) {
+//		common.Error( "couldn't load %s", fullMapName.c_str() );
 //	}
 //
 //	// for the synchronous networking we needed to roll the angles over from
 //	// level to level, but now we can just clear everything
-//	usercmdGen->InitForNewMap();
+//	usercmdGen.InitForNewMap();
 //	memset( &mapSpawnData.mapSpawnUsercmd, 0, sizeof( mapSpawnData.mapSpawnUsercmd ) );
 //
 //	// set the user info
 //	for ( i = 0; i < numClients; i++ ) {
-//		game->SetUserInfo( i, mapSpawnData.userInfo[i], idAsyncNetwork::client.IsActive(), false );
-//		game->SetPersistentPlayerInfo( i, mapSpawnData.persistentPlayerInfo[i] );
+//		game.SetUserInfo( i, mapSpawnData.userInfo[i], idAsyncNetwork::client.IsActive(), false );
+//		game.SetPersistentPlayerInfo( i, mapSpawnData.persistentPlayerInfo[i] );
 //	}
 //
 //	// load and spawn all other entities ( from a savegame possibly )
 //	if ( loadingSaveGame && savegameFile ) {
-//		if ( game->InitFromSaveGame( fullMapName + ".map", rw, sw, savegameFile ) == false ) {
+//		if ( game.InitFromSaveGame( fullMapName + ".map", rw, sw, savegameFile ) == false ) {
 //			// If the loadgame failed, restart the map with the player persistent data
 //			loadingSaveGame = false;
-//			fileSystem->CloseFile( savegameFile );
+//			fileSystem.CloseFile( savegameFile );
 //			savegameFile = NULL;
 //
-//			game->SetServerInfo( mapSpawnData.serverInfo );
-//			game->InitFromNewMap( fullMapName + ".map", rw, sw, idAsyncNetwork::server.IsActive(), idAsyncNetwork::client.IsActive(), Sys_Milliseconds() );
+//			game.SetServerInfo( mapSpawnData.serverInfo );
+//			game.InitFromNewMap( fullMapName + ".map", rw, sw, idAsyncNetwork::server.IsActive(), idAsyncNetwork::client.IsActive(), Sys_Milliseconds() );
 //		}
 //	} else {
-//		game->SetServerInfo( mapSpawnData.serverInfo );
-//		game->InitFromNewMap( fullMapName + ".map", rw, sw, idAsyncNetwork::server.IsActive(), idAsyncNetwork::client.IsActive(), Sys_Milliseconds() );
+//		game.SetServerInfo( mapSpawnData.serverInfo );
+//		game.InitFromNewMap( fullMapName + ".map", rw, sw, idAsyncNetwork::server.IsActive(), idAsyncNetwork::client.IsActive(), Sys_Milliseconds() );
 //	}
 //
 //	if ( !idAsyncNetwork::IsActive() && !loadingSaveGame ) {
 //		// spawn players
 //		for ( i = 0; i < numClients; i++ ) {
-//			game->SpawnPlayer( i );
+//			game.SpawnPlayer( i );
 //		}
 //	}
 //
 //	// actually purge/load the media
 //	if ( !reloadingSameMap ) {
-//		renderSystem->EndLevelLoad();
-//		soundSystem->EndLevelLoad( mapString.c_str() );
-//		declManager->EndLevelLoad();
-//		SetBytesNeededForMapLoad( mapString.c_str(), fileSystem->GetReadCount() );
+//		renderSystem.EndLevelLoad();
+//		soundSystem.EndLevelLoad( mapString.c_str() );
+//		declManager.EndLevelLoad();
+//		SetBytesNeededForMapLoad( mapString.c_str(), fileSystem.GetReadCount() );
 //	}
-//	uiManager->EndLevelLoad();
+//	uiManager.EndLevelLoad();
 //
 //	if ( !idAsyncNetwork::IsActive() && !loadingSaveGame ) {
 //		// run a few frames to allow everything to settle
 //		for ( i = 0; i < 10; i++ ) {
-//			game->RunFrame( mapSpawnData.mapSpawnUsercmd );
+//			game.RunFrame( mapSpawnData.mapSpawnUsercmd );
 //		}
 //	}
 //
-//	common->Printf ("-----------------------------------\n");
+//	common.Printf ("-----------------------------------\n");
 //
 //	int	msec = Sys_Milliseconds() - start;
-//	common->Printf( "%6d msec to load %s\n", msec, mapString.c_str() );
+//	common.Printf( "%6d msec to load %s\n", msec, mapString.c_str() );
 //
 //	// let the renderSystem generate interactions now that everything is spawned
-//	rw->GenerateAllInteractions();
+//	rw.GenerateAllInteractions();
 //
-//	common->PrintWarnings();
+//	common.PrintWarnings();
 //
 //	if ( guiLoading && bytesNeededForMapLoad ) {
-//		float pct = guiLoading->State().GetFloat( "map_loading" );
+//		float pct = guiLoading.State().GetFloat( "map_loading" );
 //		if ( pct < 0.0f ) {
 //			pct = 0.0f;
 //		}
 //		while ( pct < 1.0f ) {
-//			guiLoading->SetStateFloat( "map_loading", pct );
-//			guiLoading->StateChanged( com_frameTime );
+//			guiLoading.SetStateFloat( "map_loading", pct );
+//			guiLoading.StateChanged( com_frameTime );
 //			Sys_GenerateEvents();
 //			UpdateScreen();
 //			pct += 0.05f;
@@ -1696,7 +1710,7 @@ idSessionLocal::IsMultiplayer
 //	// capture the current screen and start a wipe
 //	StartWipe( "wipe2Material" );
 //
-//	usercmdGen->Clear();
+//	usercmdGen.Clear();
 //
 //	// start saving commands for possible writeCmdDemo usage
 //	logIndex = 0;
@@ -1707,7 +1721,7 @@ idSessionLocal::IsMultiplayer
 //	lastGameTic = latchedTicNumber = com_ticNumber;
 //
 //	// remove any prints from the notify lines
-//	console->ClearNotifyLines();
+//	console.ClearNotifyLines();
 //
 //	// stop drawing the laoding screen
 //	insideExecuteMapChange = false;
@@ -1715,16 +1729,16 @@ idSessionLocal::IsMultiplayer
 //	Sys_SetPhysicalWorkMemory( -1, -1 );
 //
 //	// set the game sound world for playback
-//	soundSystem->SetPlayingSoundWorld( sw );
+//	soundSystem.SetPlayingSoundWorld( sw );
 //
 //	// when loading a save game the sound is paused
-//	if ( sw->IsPaused() ) {
+//	if ( sw.IsPaused() ) {
 //		// unpause the game sound world
-//		sw->UnPause();
+//		sw.UnPause();
 //	}
 //
 //	// restart entity sound playback
-//	soundSystem->SetMute( false );
+//	soundSystem.SetMute( false );
 //
 //	// we are valid for game draws now
 //	mapSpawned = true;
@@ -1737,9 +1751,9 @@ idSessionLocal::IsMultiplayer
 //===============
 //*/
 //void LoadGame_f( const idCmdArgs &args ) {
-//	console->Close();
+//	console.Close();
 //	if ( args.Argc() < 2 || idStr::Icmp(args.Argv(1), "quick" ) == 0 ) {
-//		idStr saveName = common->GetLanguageDict()->GetString( "#str_07178" );
+//		idStr saveName = common.GetLanguageDict().GetString( "#str_07178" );
 //		sessLocal.LoadGame( saveName );
 //	} else {
 //		sessLocal.LoadGame( args.Argv(1) );
@@ -1753,13 +1767,13 @@ idSessionLocal::IsMultiplayer
 //*/
 //void SaveGame_f( const idCmdArgs &args ) {
 //	if ( args.Argc() < 2 || idStr::Icmp( args.Argv(1), "quick" ) == 0 ) {
-//		idStr saveName = common->GetLanguageDict()->GetString( "#str_07178" );
+//		idStr saveName = common.GetLanguageDict().GetString( "#str_07178" );
 //		if ( sessLocal.SaveGame( saveName ) ) {
-//			common->Printf( "%s\n", saveName.c_str() );
+//			common.Printf( "%s\n", saveName.c_str() );
 //		}
 //	} else {
 //		if ( sessLocal.SaveGame( args.Argv(1) ) ) {
-//			common->Printf( "Saved %s\n", args.Argv(1) );
+//			common.Printf( "Saved %s\n", args.Argv(1) );
 //		}
 //	}
 //}
@@ -1791,12 +1805,12 @@ idSessionLocal::IsMultiplayer
 //*/
 //void idSessionLocal::TakeNotes( const char *p, bool extended ) {
 //	if ( !mapSpawned ) {
-//		common->Printf( "No map loaded!\n" );
+//		common.Printf( "No map loaded!\n" );
 //		return;
 //	}
 //
 //	if ( extended ) {
-//		guiTakeNotes = uiManager->FindGui( "guis/takeNotes2.gui", true, false, true );
+//		guiTakeNotes = uiManager.FindGui( "guis/takeNotes2.gui", true, false, true );
 //
 //#if 0
 //		const char *people[] = {
@@ -1813,22 +1827,22 @@ idSessionLocal::IsMultiplayer
 //#endif
 //		const int numPeople = sizeof( people ) / sizeof( people[0] );
 //
-//		idListGUI * guiList_people = uiManager->AllocListGUI();
-//		guiList_people->Config( guiTakeNotes, "person" );
+//		idListGUI * guiList_people = uiManager.AllocListGUI();
+//		guiList_people.Config( guiTakeNotes, "person" );
 //		for ( int i = 0; i < numPeople; i++ ) {
-//			guiList_people->Push( people[i] );
+//			guiList_people.Push( people[i] );
 //		}
-//		uiManager->FreeListGUI( guiList_people );
+//		uiManager.FreeListGUI( guiList_people );
 //
 //	} else {
-//		guiTakeNotes = uiManager->FindGui( "guis/takeNotes.gui", true, false, true );
+//		guiTakeNotes = uiManager.FindGui( "guis/takeNotes.gui", true, false, true );
 //	}
 //
 //	SetGUI( guiTakeNotes, NULL );
-//	guiActive->SetStateString( "note", "" );
-//	guiActive->SetStateString( "notefile", p );
-//	guiActive->SetStateBool( "extended", extended );
-//	guiActive->Activate( true, com_frameTime );
+//	guiActive.SetStateString( "note", "" );
+//	guiActive.SetStateString( "notefile", p );
+//	guiActive.SetStateBool( "extended", extended );
+//	guiActive.Activate( true, com_frameTime );
 //}
 //
 ///*
@@ -1837,10 +1851,10 @@ idSessionLocal::IsMultiplayer
 //===============
 //*/
 //void Session_Hitch_f( const idCmdArgs &args ) {
-//	idSoundWorld *sw = soundSystem->GetPlayingSoundWorld();
+//	idSoundWorld *sw = soundSystem.GetPlayingSoundWorld();
 //	if ( sw ) {
-//		soundSystem->SetMute(true);
-//		sw->Pause();
+//		soundSystem.SetMute(true);
+//		sw.Pause();
 //		Sys_EnterCriticalSection();
 //	}
 //	if ( args.Argc() == 2 ) {
@@ -1850,8 +1864,8 @@ idSessionLocal::IsMultiplayer
 //	}
 //	if ( sw ) {
 //		Sys_LeaveCriticalSection();
-//		sw->UnPause();
-//		soundSystem->SetMute(false);
+//		sw.UnPause();
+//		soundSystem.SetMute(false);
 //	}
 //}
 //
@@ -1895,38 +1909,38 @@ idSessionLocal::IsMultiplayer
 //*/
 //bool idSessionLocal::SaveGame( const char *saveName, bool autosave ) {
 //#ifdef	ID_DEDICATED
-//	common->Printf( "Dedicated servers cannot save games.\n" );
+//	common.Printf( "Dedicated servers cannot save games.\n" );
 //	return false;
 //#else
 //	int i;
 //	idStr gameFile, previewFile, descriptionFile, mapName;
 //
 //	if ( !mapSpawned ) {
-//		common->Printf( "Not playing a game.\n" );
+//		common.Printf( "Not playing a game.\n" );
 //		return false;
 //	}
 //
 //	if ( IsMultiplayer() ) {
-//		common->Printf( "Can't save during net play.\n" );
+//		common.Printf( "Can't save during net play.\n" );
 //		return false;
 //	}
 //
-//	if ( game->GetPersistentPlayerInfo( 0 ).GetInt( "health" ) <= 0 ) {
-//		MessageBox( MSG_OK, common->GetLanguageDict()->GetString ( "#str_04311" ), common->GetLanguageDict()->GetString ( "#str_04312" ), true );
-//		common->Printf( "You must be alive to save the game\n" );
+//	if ( game.GetPersistentPlayerInfo( 0 ).GetInt( "health" ) <= 0 ) {
+//		MessageBox( MSG_OK, common.GetLanguageDict().GetString ( "#str_04311" ), common.GetLanguageDict().GetString ( "#str_04312" ), true );
+//		common.Printf( "You must be alive to save the game\n" );
 //		return false;
 //	}
 //
-//	if ( Sys_GetDriveFreeSpace( cvarSystem->GetCVarString( "fs_savepath" ) ) < 25 ) {
-//		MessageBox( MSG_OK, common->GetLanguageDict()->GetString ( "#str_04313" ), common->GetLanguageDict()->GetString ( "#str_04314" ), true );
-//		common->Printf( "Not enough drive space to save the game\n" );
+//	if ( Sys_GetDriveFreeSpace( cvarSystem.GetCVarString( "fs_savepath" ) ) < 25 ) {
+//		MessageBox( MSG_OK, common.GetLanguageDict().GetString ( "#str_04313" ), common.GetLanguageDict().GetString ( "#str_04314" ), true );
+//		common.Printf( "Not enough drive space to save the game\n" );
 //		return false;
 //	}
 //
-//	idSoundWorld *pauseWorld = soundSystem->GetPlayingSoundWorld();
+//	idSoundWorld *pauseWorld = soundSystem.GetPlayingSoundWorld();
 //	if ( pauseWorld ) {
-//		pauseWorld->Pause();
-//		soundSystem->SetPlayingSoundWorld( NULL );
+//		pauseWorld.Pause();
+//		soundSystem.SetPlayingSoundWorld( NULL );
 //	}
 //
 //	// setup up filenames and paths
@@ -1943,12 +1957,12 @@ idSessionLocal::IsMultiplayer
 //	descriptionFile.SetFileExtension( ".txt" );
 //
 //	// Open savegame file
-//	idFile *fileOut = fileSystem->OpenFileWrite( gameFile );
+//	idFile *fileOut = fileSystem.OpenFileWrite( gameFile );
 //	if ( fileOut == NULL ) {
-//		common->Warning( "Failed to open save file '%s'\n", gameFile.c_str() );
+//		common.Warning( "Failed to open save file '%s'\n", gameFile.c_str() );
 //		if ( pauseWorld ) {
-//			soundSystem->SetPlayingSoundWorld( pauseWorld );
-//			pauseWorld->UnPause();
+//			soundSystem.SetPlayingSoundWorld( pauseWorld );
+//			pauseWorld.UnPause();
 //		}
 //		return false;
 //	}
@@ -1958,43 +1972,43 @@ idSessionLocal::IsMultiplayer
 //
 //	// game
 //	const char *gamename = GAME_NAME;
-//	fileOut->WriteString( gamename );
+//	fileOut.WriteString( gamename );
 //
 //	// version
-//	fileOut->WriteInt( SAVEGAME_VERSION );
+//	fileOut.WriteInt( SAVEGAME_VERSION );
 //
 //	// map
 //	mapName = mapSpawnData.serverInfo.GetString( "si_map" );
-//	fileOut->WriteString( mapName );
+//	fileOut.WriteString( mapName );
 //
 //	// persistent player info
 //	for ( i = 0; i < MAX_ASYNC_CLIENTS; i++ ) {
-//		mapSpawnData.persistentPlayerInfo[i] = game->GetPersistentPlayerInfo( i );
+//		mapSpawnData.persistentPlayerInfo[i] = game.GetPersistentPlayerInfo( i );
 //		mapSpawnData.persistentPlayerInfo[i].WriteToFileHandle( fileOut );
 //	}
 //
 //	// let the game save its state
-//	game->SaveGame( fileOut );
+//	game.SaveGame( fileOut );
 //
 //	// close the sava game file
-//	fileSystem->CloseFile( fileOut );
+//	fileSystem.CloseFile( fileOut );
 //
 //	// Write screenshot
 //	if ( !autosave ) {
-//		renderSystem->CropRenderSize( 320, 240, false );
-//		game->Draw( 0 );
-//		renderSystem->CaptureRenderToFile( previewFile, true );
-//		renderSystem->UnCrop();
+//		renderSystem.CropRenderSize( 320, 240, false );
+//		game.Draw( 0 );
+//		renderSystem.CaptureRenderToFile( previewFile, true );
+//		renderSystem.UnCrop();
 //	}
 //
 //	// Write description, which is just a text file with
 //	// the unclean save name on line 1, map name on line 2, screenshot on line 3
-//	idFile *fileDesc = fileSystem->OpenFileWrite( descriptionFile );
+//	idFile *fileDesc = fileSystem.OpenFileWrite( descriptionFile );
 //	if ( fileDesc == NULL ) {
-//		common->Warning( "Failed to open description file '%s'\n", descriptionFile.c_str() );
+//		common.Warning( "Failed to open description file '%s'\n", descriptionFile.c_str() );
 //		if ( pauseWorld ) {
-//			soundSystem->SetPlayingSoundWorld( pauseWorld );
-//			pauseWorld->UnPause();
+//			soundSystem.SetPlayingSoundWorld( pauseWorld );
+//			pauseWorld.UnPause();
 //		}
 //		return false;
 //	}
@@ -2003,28 +2017,28 @@ idSessionLocal::IsMultiplayer
 //	description.Replace( "\\", "\\\\" );
 //	description.Replace( "\"", "\\\"" );
 //
-//	const idDeclEntityDef *mapDef = static_cast<const idDeclEntityDef *>(declManager->FindType( DECL_MAPDEF, mapName, false ));
+//	const idDeclEntityDef *mapDef = static_cast<const idDeclEntityDef *>(declManager.FindType( DECL_MAPDEF, mapName, false ));
 //	if ( mapDef ) {
-//		mapName = common->GetLanguageDict()->GetString( mapDef->dict.GetString( "name", mapName ) );
+//		mapName = common.GetLanguageDict().GetString( mapDef.dict.GetString( "name", mapName ) );
 //	}
 //
-//	fileDesc->Printf( "\"%s\"\n", description.c_str() );
-//	fileDesc->Printf( "\"%s\"\n", mapName.c_str());
+//	fileDesc.Printf( "\"%s\"\n", description.c_str() );
+//	fileDesc.Printf( "\"%s\"\n", mapName.c_str());
 //
 //	if ( autosave ) {
 //		idStr sshot = mapSpawnData.serverInfo.GetString( "si_map" );
 //		sshot.StripPath();
 //		sshot.StripFileExtension();
-//		fileDesc->Printf( "\"guis/assets/autosave/%s\"\n", sshot.c_str() );
+//		fileDesc.Printf( "\"guis/assets/autosave/%s\"\n", sshot.c_str() );
 //	} else {
-//		fileDesc->Printf( "\"\"\n" );
+//		fileDesc.Printf( "\"\"\n" );
 //	}
 //
-//	fileSystem->CloseFile( fileDesc );
+//	fileSystem.CloseFile( fileDesc );
 //
 //	if ( pauseWorld ) {
-//		soundSystem->SetPlayingSoundWorld( pauseWorld );
-//		pauseWorld->UnPause();
+//		soundSystem.SetPlayingSoundWorld( pauseWorld );
+//		pauseWorld.UnPause();
 //	}
 //
 //	syncNextGameFrame = true;
@@ -2041,14 +2055,14 @@ idSessionLocal::IsMultiplayer
 //*/
 //bool idSessionLocal::LoadGame( const char *saveName ) { 
 //#ifdef	ID_DEDICATED
-//	common->Printf( "Dedicated servers cannot load games.\n" );
+//	common.Printf( "Dedicated servers cannot load games.\n" );
 //	return false;
 //#else
 //	int i;
 //	idStr in, loadFile, saveMap, gamename;
 //
 //	if ( IsMultiplayer() ) {
-//		common->Printf( "Can't load during net play.\n" );
+//		common.Printf( "Can't load during net play.\n" );
 //		return false;
 //	}
 //
@@ -2064,11 +2078,11 @@ idSessionLocal::IsMultiplayer
 //
 //	// Open savegame file
 //	// only allow loads from the game directory because we don't want a base game to load
-//	idStr game = cvarSystem->GetCVarString( "fs_game" );
-//	savegameFile = fileSystem->OpenFileRead( in, true, game.Length() ? game : NULL );
+//	idStr game = cvarSystem.GetCVarString( "fs_game" );
+//	savegameFile = fileSystem.OpenFileRead( in, true, game.Length() ? game : NULL );
 //
 //	if ( savegameFile == NULL ) {
-//		common->Warning( "Couldn't open savegame file %s", in.c_str() );
+//		common.Warning( "Couldn't open savegame file %s", in.c_str() );
 //		return false;
 //	}
 //
@@ -2078,23 +2092,23 @@ idSessionLocal::IsMultiplayer
 //	// Game Name / Version / Map Name / Persistant Player Info
 //
 //	// game
-//	savegameFile->ReadString( gamename );
+//	savegameFile.ReadString( gamename );
 //
 //	// if this isn't a savegame for the correct game, abort loadgame
 //	if ( gamename != GAME_NAME ) {
-//		common->Warning( "Attempted to load an invalid savegame: %s", in.c_str() );
+//		common.Warning( "Attempted to load an invalid savegame: %s", in.c_str() );
 //
 //		loadingSaveGame = false;
-//		fileSystem->CloseFile( savegameFile );
+//		fileSystem.CloseFile( savegameFile );
 //		savegameFile = NULL;
 //		return false;
 //	}
 //
 //	// version
-//	savegameFile->ReadInt( savegameVersion );
+//	savegameFile.ReadInt( savegameVersion );
 //
 //	// map
-//	savegameFile->ReadString( saveMap );
+//	savegameFile.ReadString( saveMap );
 //
 //	// persistent player info
 //	for ( i = 0; i < MAX_ASYNC_CLIENTS; i++ ) {
@@ -2106,28 +2120,28 @@ idSessionLocal::IsMultiplayer
 //	// so that the player doesn't lose too much progress.
 //	if ( savegameVersion != SAVEGAME_VERSION &&
 //		 !( savegameVersion == 16 && SAVEGAME_VERSION == 17 ) ) {	// handle savegame v16 in v17
-//		common->Warning( "Savegame Version mismatch: aborting loadgame and starting level with persistent data" );
+//		common.Warning( "Savegame Version mismatch: aborting loadgame and starting level with persistent data" );
 //		loadingSaveGame = false;
-//		fileSystem->CloseFile( savegameFile );
+//		fileSystem.CloseFile( savegameFile );
 //		savegameFile = NULL;
 //	}
 //
-//	common->DPrintf( "loading a v%d savegame\n", savegameVersion );
+//	common.DPrintf( "loading a v%d savegame\n", savegameVersion );
 //
 //	if ( saveMap.Length() > 0 ) {
 //
 //		// Start loading map
 //		mapSpawnData.serverInfo.Clear();
 //
-//		mapSpawnData.serverInfo = *cvarSystem->MoveCVarsToDict( CVAR_SERVERINFO );
+//		mapSpawnData.serverInfo = *cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO );
 //		mapSpawnData.serverInfo.Set( "si_gameType", "singleplayer" );
 //
 //		mapSpawnData.serverInfo.Set( "si_map", saveMap );
 //
 //		mapSpawnData.syncedCVars.Clear();
-//		mapSpawnData.syncedCVars = *cvarSystem->MoveCVarsToDict( CVAR_NETWORKSYNC );
+//		mapSpawnData.syncedCVars = *cvarSystem.MoveCVarsToDict( CVAR_NETWORKSYNC );
 //
-//		mapSpawnData.mapSpawnUsercmd[0] = usercmdGen->TicCmd( latchedTicNumber );
+//		mapSpawnData.mapSpawnUsercmd[0] = usercmdGen.TicCmd( latchedTicNumber );
 //		// make sure no buttons are pressed
 //		mapSpawnData.mapSpawnUsercmd[0].buttons = 0;
 //
@@ -2137,7 +2151,7 @@ idSessionLocal::IsMultiplayer
 //	}
 //
 //	if ( loadingSaveGame ) {
-//		fileSystem->CloseFile( savegameFile );
+//		fileSystem.CloseFile( savegameFile );
 //		loadingSaveGame = false;
 //		savegameFile = NULL;
 //	}
@@ -2153,12 +2167,12 @@ idSessionLocal::IsMultiplayer
 //*/
 //bool idSessionLocal::ProcessEvent( const sysEvent_t *event ) {
 //	// hitting escape anywhere brings up the menu
-//	if ( !guiActive && event->evType == SE_KEY && event->evValue2 == 1 && event->evValue == K_ESCAPE ) {
-//		console->Close();
+//	if ( !guiActive && event.evType == SE_KEY && event.evValue2 == 1 && event.evValue == K_ESCAPE ) {
+//		console.Close();
 //		if ( game ) {
 //			idUserInterface	*gui = NULL;
 //			escReply_t		op;
-//			op = game->HandleESC( &gui );
+//			op = game.HandleESC( &gui );
 //			if ( op == ESC_IGNORE ) {
 //				return true;
 //			} else if ( op == ESC_GUI ) {
@@ -2171,22 +2185,22 @@ idSessionLocal::IsMultiplayer
 //	}
 //
 //	// let the pull-down console take it if desired
-//	if ( console->ProcessEvent( event, false ) ) {
+//	if ( console.ProcessEvent( event, false ) ) {
 //		return true;
 //	}
 //
 //	// if we are testing a GUI, send all events to it
 //	if ( guiTest ) {
 //		// hitting escape exits the testgui
-//		if ( event->evType == SE_KEY && event->evValue2 == 1 && event->evValue == K_ESCAPE ) {
+//		if ( event.evType == SE_KEY && event.evValue2 == 1 && event.evValue == K_ESCAPE ) {
 //			guiTest = NULL;
 //			return true;
 //		}
 //		
 //		static const char *cmd;
-//		cmd = guiTest->HandleEvent( event, com_frameTime );
+//		cmd = guiTest.HandleEvent( event, com_frameTime );
 //		if ( cmd && cmd[0] ) {
-//			common->Printf( "testGui event returned: '%s'\n", cmd );
+//			common.Printf( "testGui event returned: '%s'\n", cmd );
 //		}
 //		return true;
 //	}
@@ -2199,13 +2213,13 @@ idSessionLocal::IsMultiplayer
 //
 //	// if we aren't in a game, force the console to take it
 //	if ( !mapSpawned ) {
-//		console->ProcessEvent( event, true );
+//		console.ProcessEvent( event, true );
 //		return true;
 //	}
 //
 //	// in game, exec bindings for all key downs
-//	if ( event->evType == SE_KEY && event->evValue2 == 1 ) {
-//		idKeyInput::ExecKeyBinding( event->evValue );
+//	if ( event.evType == SE_KEY && event.evValue2 == 1 ) {
+//		idKeyInput::ExecKeyBinding( event.evValue );
 //		return true;
 //	}
 //
@@ -2231,8 +2245,8 @@ idSessionLocal::IsMultiplayer
 //	}
 //
 //	float fade = ( float )( latchedTic - wipeStartTic ) / ( wipeStopTic - wipeStartTic );
-//	renderSystem->SetColor4( 1, 1, 1, fade );
-//	renderSystem->DrawStretchPic( 0, 0, 640, 480, 0, 0, 1, 1, wipeMaterial );
+//	renderSystem.SetColor4( 1, 1, 1, fade );
+//	renderSystem.DrawStretchPic( 0, 0, 640, 480, 0, 0, 1, 1, wipeMaterial );
 //}
 //
 ///*
@@ -2262,7 +2276,7 @@ idSessionLocal::IsMultiplayer
 //	while( skipFrames > -1 ) {
 //		int		ds = DS_FINISHED;
 //
-//		readDemo->ReadInt( ds );
+//		readDemo.ReadInt( ds );
 //		if ( ds == DS_FINISHED ) {
 //			if ( numDemoFrames != 1 ) {
 //				// if the demo has a single frame (a demoShot), continuously replay
@@ -2273,7 +2287,7 @@ idSessionLocal::IsMultiplayer
 //			break;
 //		}
 //		if ( ds == DS_RENDER ) {
-//			if ( rw->ProcessDemoCommand( readDemo, &currentDemoRenderView, &demoTimeOffset ) ) {
+//			if ( rw.ProcessDemoCommand( readDemo, &currentDemoRenderView, &demoTimeOffset ) ) {
 //				// a view is ready to render
 //				skipFrames--;
 //				numDemoFrames++;
@@ -2281,22 +2295,22 @@ idSessionLocal::IsMultiplayer
 //			continue;
 //		}
 //		if ( ds == DS_SOUND ) {
-//			sw->ProcessDemoCommand( readDemo );
+//			sw.ProcessDemoCommand( readDemo );
 //			continue;
 //		}
 //		// appears in v1.2, with savegame format 17
 //		if ( ds == DS_VERSION ) {
-//			readDemo->ReadInt( renderdemoVersion );
-//			common->Printf( "reading a v%d render demo\n", renderdemoVersion );
+//			readDemo.ReadInt( renderdemoVersion );
+//			common.Printf( "reading a v%d render demo\n", renderdemoVersion );
 //			// set the savegameVersion to current for render demo paths that share the savegame paths
 //			savegameVersion = SAVEGAME_VERSION;
 //			continue;
 //		}
-//		common->Error( "Bad render demo token" );
+//		common.Error( "Bad render demo token" );
 //	}
 //
 //	if ( com_showDemo.GetBool() ) {
-//		common->Printf( "frame:%i DemoTic:%i latched:%i skip:%i\n", numDemoFrames, lastDemoTic, latchedTicNumber, skipFrames );
+//		common.Printf( "frame:%i DemoTic:%i latched:%i skip:%i\n", numDemoFrames, lastDemoTic, latchedTicNumber, skipFrames );
 //	}
 //
 //}
@@ -2314,15 +2328,15 @@ idSessionLocal::IsMultiplayer
 //	if ( !com_showAngles.GetBool() ) {
 //		return;
 //	}
-//	renderSystem->SetColor4( 0.1f, 0.1f, 0.1f, 1.0f );
-//	renderSystem->DrawStretchPic( 0, 480-ANGLE_GRAPH_HEIGHT, MAX_BUFFERED_USERCMD*ANGLE_GRAPH_STRETCH, ANGLE_GRAPH_HEIGHT, 0, 0, 1, 1, whiteMaterial );
-//	renderSystem->SetColor4( 0.9f, 0.9f, 0.9f, 1.0f );
+//	renderSystem.SetColor4( 0.1f, 0.1f, 0.1f, 1.0f );
+//	renderSystem.DrawStretchPic( 0, 480-ANGLE_GRAPH_HEIGHT, MAX_BUFFERED_USERCMD*ANGLE_GRAPH_STRETCH, ANGLE_GRAPH_HEIGHT, 0, 0, 1, 1, whiteMaterial );
+//	renderSystem.SetColor4( 0.9f, 0.9f, 0.9f, 1.0f );
 //	for ( int i = 0 ; i < MAX_BUFFERED_USERCMD-4 ; i++ ) {
-//		usercmd_t	cmd = usercmdGen->TicCmd( latchedTicNumber - (MAX_BUFFERED_USERCMD-4) + i );
+//		usercmd_t	cmd = usercmdGen.TicCmd( latchedTicNumber - (MAX_BUFFERED_USERCMD-4) + i );
 //		int h = cmd.angles[1];
 //		h >>= 8;
 //		h &= (ANGLE_GRAPH_HEIGHT-1);
-//		renderSystem->DrawStretchPic( i* ANGLE_GRAPH_STRETCH, 480-h, 1, h, 0, 0, 1, 1, whiteMaterial );
+//		renderSystem.DrawStretchPic( i* ANGLE_GRAPH_STRETCH, 480-h, 1, h, 0, 0, 1, 1, whiteMaterial );
 //	}
 //}
 //
@@ -2342,7 +2356,7 @@ idSessionLocal::IsMultiplayer
 //		return;
 //	}
 //
-//	int	time = eventLoop->Milliseconds();
+//	int	time = eventLoop.Milliseconds();
 //
 //	if ( time - lastPacifierTime < 100 ) {
 //		return;
@@ -2350,11 +2364,11 @@ idSessionLocal::IsMultiplayer
 //	lastPacifierTime = time;
 //
 //	if ( guiLoading && bytesNeededForMapLoad ) {
-//		float n = fileSystem->GetReadCount();
+//		float n = fileSystem.GetReadCount();
 //		float pct = ( n / bytesNeededForMapLoad );
 //		// pct = idMath::ClampFloat( 0.0f, 100.0f, pct );
-//		guiLoading->SetStateFloat( "map_loading", pct );
-//		guiLoading->StateChanged( com_frameTime );
+//		guiLoading.SetStateFloat( "map_loading", pct );
+//		guiLoading.StateChanged( com_frameTime );
 //	}
 //
 //	Sys_GenerateEvents();
@@ -2375,79 +2389,79 @@ idSessionLocal::IsMultiplayer
 //
 //	if ( insideExecuteMapChange ) {
 //		if ( guiLoading ) {
-//			guiLoading->Redraw( com_frameTime );
+//			guiLoading.Redraw( com_frameTime );
 //		}
 //		if ( guiActive == guiMsg ) {
-//			guiMsg->Redraw( com_frameTime );
+//			guiMsg.Redraw( com_frameTime );
 //		} 
 //	} else if ( guiTest ) {
 //		// if testing a gui, clear the screen and draw it
 //		// clear the background, in case the tested gui is transparent
 //		// NOTE that you can't use this for aviGame recording, it will tick at real com_frameTime between screenshots..
-//		renderSystem->SetColor( colorBlack );
-//		renderSystem->DrawStretchPic( 0, 0, 640, 480, 0, 0, 1, 1, declManager->FindMaterial( "_white" ) );
-//		guiTest->Redraw( com_frameTime );
-//	} else if ( guiActive && !guiActive->State().GetBool( "gameDraw" ) ) {
+//		renderSystem.SetColor( colorBlack );
+//		renderSystem.DrawStretchPic( 0, 0, 640, 480, 0, 0, 1, 1, declManager.FindMaterial( "_white" ) );
+//		guiTest.Redraw( com_frameTime );
+//	} else if ( guiActive && !guiActive.State().GetBool( "gameDraw" ) ) {
 //		
 //		// draw the frozen gui in the background
 //		if ( guiActive == guiMsg && guiMsgRestore ) {
-//			guiMsgRestore->Redraw( com_frameTime );
+//			guiMsgRestore.Redraw( com_frameTime );
 //		}
 //		
 //		// draw the menus full screen
 //		if ( guiActive == guiTakeNotes && !com_skipGameDraw.GetBool() ) {
-//			game->Draw( GetLocalClientNum() );
+//			game.Draw( GetLocalClientNum() );
 //		}
 //
-//		guiActive->Redraw( com_frameTime );
+//		guiActive.Redraw( com_frameTime );
 //	} else if ( readDemo ) {
-//		rw->RenderScene( &currentDemoRenderView );
-//		renderSystem->DrawDemoPics();
+//		rw.RenderScene( &currentDemoRenderView );
+//		renderSystem.DrawDemoPics();
 //	} else if ( mapSpawned ) {
 //		bool gameDraw = false;
 //		// normal drawing for both single and multi player
 //		if ( !com_skipGameDraw.GetBool() && GetLocalClientNum() >= 0 ) {
 //			// draw the game view
 //			int	start = Sys_Milliseconds();
-//			gameDraw = game->Draw( GetLocalClientNum() );
+//			gameDraw = game.Draw( GetLocalClientNum() );
 //			int end = Sys_Milliseconds();
 //			time_gameDraw += ( end - start );	// note time used for com_speeds
 //		}
 //		if ( !gameDraw ) {
-//			renderSystem->SetColor( colorBlack );
-//			renderSystem->DrawStretchPic( 0, 0, 640, 480, 0, 0, 1, 1, declManager->FindMaterial( "_white" ) );
+//			renderSystem.SetColor( colorBlack );
+//			renderSystem.DrawStretchPic( 0, 0, 640, 480, 0, 0, 1, 1, declManager.FindMaterial( "_white" ) );
 //		}
 //
 //		// save off the 2D drawing from the game
 //		if ( writeDemo ) {
-//			renderSystem->WriteDemoPics();
+//			renderSystem.WriteDemoPics();
 //		}
 //	} else {
 //#if ID_CONSOLE_LOCK
 //		if ( com_allowConsole.GetBool() ) {
-//			console->Draw( true );
+//			console.Draw( true );
 //		} else {
 //			emptyDrawCount++;
 //			if ( emptyDrawCount > 5 ) {
 //				// it's best if you can avoid triggering the watchgod by doing the right thing somewhere else
 //				assert( false );
-//				common->Warning( "idSession: triggering mainmenu watchdog" );
+//				common.Warning( "idSession: triggering mainmenu watchdog" );
 //				emptyDrawCount = 0;
 //				StartMenu();
 //			}
-//			renderSystem->SetColor4( 0, 0, 0, 1 );
-//			renderSystem->DrawStretchPic( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 1, 1, declManager->FindMaterial( "_white" ) );
+//			renderSystem.SetColor4( 0, 0, 0, 1 );
+//			renderSystem.DrawStretchPic( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 1, 1, declManager.FindMaterial( "_white" ) );
 //		}
 //#else
 //		// draw the console full screen - this should only ever happen in developer builds
-//		console->Draw( true );
+//		console.Draw( true );
 //#endif
 //		fullConsole = true;
 //	}
 //
 //#if ID_CONSOLE_LOCK
 //	if ( !fullConsole && emptyDrawCount ) {
-//		common->DPrintf( "idSession: %d empty frame draws\n", emptyDrawCount );
+//		common.DPrintf( "idSession: %d empty frame draws\n", emptyDrawCount );
 //		emptyDrawCount = 0;
 //	}
 //	fullConsole = false;
@@ -2461,7 +2475,7 @@ idSessionLocal::IsMultiplayer
 //
 //	// draw the half console / notify console on top of everything
 //	if ( !fullConsole ) {
-//		console->Draw( false );
+//		console.Draw( false );
 //	}
 //}
 //
@@ -2483,7 +2497,7 @@ idSessionLocal::IsMultiplayer
 //
 //	if ( insideUpdateScreen ) {
 //		return;
-////		common->FatalError( "idSessionLocal::UpdateScreen: recursively called" );
+////		common.FatalError( "idSessionLocal::UpdateScreen: recursively called" );
 //	}
 //
 //	insideUpdateScreen = true;
@@ -2494,15 +2508,15 @@ idSessionLocal::IsMultiplayer
 //		Sys_GrabMouseCursor( false );
 //	}
 //
-//	renderSystem->BeginFrame( renderSystem->GetScreenWidth(), renderSystem->GetScreenHeight() );
+//	renderSystem.BeginFrame( renderSystem.GetScreenWidth(), renderSystem.GetScreenHeight() );
 //
 //	// draw everything
 //	Draw();
 //
 //	if ( com_speeds.GetBool() ) {
-//		renderSystem->EndFrame( &time_frontend, &time_backend );
+//		renderSystem.EndFrame( &time_frontend, &time_backend );
 //	} else {
-//		renderSystem->EndFrame( NULL, NULL );
+//		renderSystem.EndFrame( NULL, NULL );
 //	}
 //
 //	insideUpdateScreen = false;
@@ -2516,7 +2530,7 @@ idSessionLocal::IsMultiplayer
 //void idSessionLocal::Frame() {
 //
 //	if ( com_asyncSound.GetInteger() == 0 ) {
-//		soundSystem->AsyncUpdate( Sys_Milliseconds() );
+//		soundSystem.AsyncUpdate( Sys_Milliseconds() );
 //	}
 //
 //	// Editors that completely take over the game
@@ -2526,7 +2540,7 @@ idSessionLocal::IsMultiplayer
 //
 //	// if the console is down, we don't need to hold
 //	// the mouse cursor
-//	if ( console->Active() || com_editorActive ) {
+//	if ( console.Active() || com_editorActive ) {
 //		Sys_GrabMouseCursor( false );
 //	} else {
 //		Sys_GrabMouseCursor( true );
@@ -2544,17 +2558,17 @@ idSessionLocal::IsMultiplayer
 //			// skipped frames so write them out
 //			int c = aviDemoFrameCount - aviTicStart;
 //			while ( c-- ) {
-//				renderSystem->TakeScreenshot( com_aviDemoWidth.GetInteger(), com_aviDemoHeight.GetInteger(), name, com_aviDemoSamples.GetInteger(), NULL );
+//				renderSystem.TakeScreenshot( com_aviDemoWidth.GetInteger(), com_aviDemoHeight.GetInteger(), name, com_aviDemoSamples.GetInteger(), NULL );
 //				name = va("demos/%s/%s_%05i.tga", aviDemoShortName.c_str(), aviDemoShortName.c_str(), ++aviTicStart );
 //			}
 //		}
 //		aviTicStart = aviDemoFrameCount;
 //
 //		// remove any printed lines at the top before taking the screenshot
-//		console->ClearNotifyLines();
+//		console.ClearNotifyLines();
 //
 //		// this will call Draw, possibly multiple times if com_aviDemoSamples is > 1
-//		renderSystem->TakeScreenshot( com_aviDemoWidth.GetInteger(), com_aviDemoHeight.GetInteger(), name, com_aviDemoSamples.GetInteger(), NULL );
+//		renderSystem.TakeScreenshot( com_aviDemoWidth.GetInteger(), com_aviDemoHeight.GetInteger(), name, com_aviDemoSamples.GetInteger(), NULL );
 //	}
 //
 //	// at startup, we may be backwards
@@ -2612,7 +2626,7 @@ idSessionLocal::IsMultiplayer
 //		if ( Sys_Milliseconds() > authEmitTimeout ) {
 //			// expired with no reply
 //			// means that if a firewall is blocking the master, we will let through
-//			common->DPrintf( "no reply from auth\n" );
+//			common.DPrintf( "no reply from auth\n" );
 //			if ( authWaitBox ) {
 //				// close the wait box
 //				StopBox();
@@ -2645,7 +2659,7 @@ idSessionLocal::IsMultiplayer
 //	if ( !mapSpawned || guiActive ) {
 //		if ( !com_asyncInput.GetBool() ) {
 //			// early exit, won't do RunGameTic .. but still need to update mouse position for GUIs
-//			usercmdGen->GetDirectUsercmd();
+//			usercmdGen.GetDirectUsercmd();
 //		}
 //	}
 //
@@ -2665,10 +2679,10 @@ idSessionLocal::IsMultiplayer
 //	}
 //
 //	// check for user info changes
-//	if ( cvarSystem->GetModifiedFlags() & CVAR_USERINFO ) {
-//		mapSpawnData.userInfo[0] = *cvarSystem->MoveCVarsToDict( CVAR_USERINFO );
-//		game->SetUserInfo( 0, mapSpawnData.userInfo[0], false, false );
-//		cvarSystem->ClearModifiedFlags( CVAR_USERINFO );
+//	if ( cvarSystem.GetModifiedFlags() & CVAR_USERINFO ) {
+//		mapSpawnData.userInfo[0] = *cvarSystem.MoveCVarsToDict( CVAR_USERINFO );
+//		game.SetUserInfo( 0, mapSpawnData.userInfo[0], false, false );
+//		cvarSystem.ClearModifiedFlags( CVAR_USERINFO );
 //	}
 //
 //	// see how many usercmds we are going to run
@@ -2693,7 +2707,7 @@ idSessionLocal::IsMultiplayer
 //		int fixedTic = USERCMD_PER_DEMO_FRAME;
 //		// we should have waited long enough
 //		if ( numCmdsToRun < fixedTic ) {
-//			common->Error( "idSessionLocal::Frame: numCmdsToRun < fixedTic" );
+//			common.Error( "idSessionLocal::Frame: numCmdsToRun < fixedTic" );
 //		}
 //		// we may need to dump older commands
 //		lastGameTic = latchedTicNumber - fixedTic;
@@ -2716,7 +2730,7 @@ idSessionLocal::IsMultiplayer
 //	// create client commands, which will be sent directly
 //	// to the game
 //	if ( com_showTics.GetBool() ) {
-//		common->Printf( "%i ", latchedTicNumber - lastGameTic );
+//		common.Printf( "%i ", latchedTicNumber - lastGameTic );
 //	}
 //
 //	int	gameTicsToRun = latchedTicNumber - lastGameTic;
@@ -2745,9 +2759,9 @@ idSessionLocal::IsMultiplayer
 //
 //	// if we are doing a command demo, read or write from the file
 //	if ( cmdDemoFile ) {
-//		if ( !cmdDemoFile->Read( &logCmd, sizeof( logCmd ) ) ) {
-//			common->Printf( "Command demo completed at logIndex %i\n", logIndex );
-//			fileSystem->CloseFile( cmdDemoFile );
+//		if ( !cmdDemoFile.Read( &logCmd, sizeof( logCmd ) ) ) {
+//			common.Printf( "Command demo completed at logIndex %i\n", logIndex );
+//			fileSystem.CloseFile( cmdDemoFile );
 //			cmdDemoFile = NULL;
 //			if ( aviCaptureMode ) {
 //				EndAVICapture();
@@ -2767,16 +2781,16 @@ idSessionLocal::IsMultiplayer
 //	if ( !cmdDemoFile ) {
 //		// get a locally created command
 //		if ( com_asyncInput.GetBool() ) {
-//			cmd = usercmdGen->TicCmd( lastGameTic );
+//			cmd = usercmdGen.TicCmd( lastGameTic );
 //		} else {
-//			cmd = usercmdGen->GetDirectUsercmd();
+//			cmd = usercmdGen.GetDirectUsercmd();
 //		}
 //		lastGameTic++;
 //	}
 //
 //	// run the game logic every player move
 //	int	start = Sys_Milliseconds();
-//	gameReturn_t	ret = game->RunFrame( &cmd );
+//	gameReturn_t	ret = game.RunFrame( &cmd );
 //
 //	int end = Sys_Milliseconds();
 //	time_gameFrame += end - start;	// note time used for com_speeds
@@ -2784,7 +2798,7 @@ idSessionLocal::IsMultiplayer
 //	// check for constency failure from a recorded command
 //	if ( cmdDemoFile ) {
 //		if ( ret.consistencyHash != logCmd.consistencyHash ) {
-//			common->Printf( "Consistency failure on logIndex %i\n", logIndex );
+//			common.Printf( "Consistency failure on logIndex %i\n", logIndex );
 //			Stop();
 //			return;
 //		}
@@ -2815,7 +2829,7 @@ idSessionLocal::IsMultiplayer
 //		if ( !idStr::Icmp( args.Argv(0), "map" ) ) {
 //			// get current player states
 //			for ( int i = 0 ; i < numClients ; i++ ) {
-//				mapSpawnData.persistentPlayerInfo[i] = game->GetPersistentPlayerInfo( i );
+//				mapSpawnData.persistentPlayerInfo[i] = game.GetPersistentPlayerInfo( i );
 //			}
 //			// clear the devmap key on serverinfo, so player spawns
 //			// won't get the map testing items
@@ -2831,9 +2845,9 @@ idSessionLocal::IsMultiplayer
 //			UnloadMap();
 //			SetGUI(guiRestartMenu, NULL);
 //		} else if ( !idStr::Icmp( args.Argv(0), "disconnect" ) ) {
-//			cmdSystem->BufferCommandText( CMD_EXEC_INSERT, "stoprecording ; disconnect" );
+//			cmdSystem.BufferCommandText( CMD_EXEC_INSERT, "stoprecording ; disconnect" );
 //		} else if ( !idStr::Icmp( args.Argv(0), "endOfDemo" ) ) {
-//			cmdSystem->BufferCommandText( CMD_EXEC_NOW, "endOfDemo" );
+//			cmdSystem.BufferCommandText( CMD_EXEC_NOW, "endOfDemo" );
 //		}
 //	}
 //}
@@ -2848,78 +2862,78 @@ idSessionLocal::IsMultiplayer
 //*/
 //void idSessionLocal::Init() {
 //
-//	common->Printf( "-------- Initializing Session --------\n" );
+//	common.Printf( "-------- Initializing Session --------\n" );
 //
-//	cmdSystem->AddCommand( "writePrecache", Sess_WritePrecache_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "writes precache commands" );
+//	cmdSystem.AddCommand( "writePrecache", Sess_WritePrecache_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "writes precache commands" );
 //
 //#ifndef	ID_DEDICATED
-//	cmdSystem->AddCommand( "map", Session_Map_f, CMD_FL_SYSTEM, "loads a map", idCmdSystem::ArgCompletion_MapName );
-//	cmdSystem->AddCommand( "devmap", Session_DevMap_f, CMD_FL_SYSTEM, "loads a map in developer mode", idCmdSystem::ArgCompletion_MapName );
-//	cmdSystem->AddCommand( "testmap", Session_TestMap_f, CMD_FL_SYSTEM, "tests a map", idCmdSystem::ArgCompletion_MapName );
+//	cmdSystem.AddCommand( "map", Session_Map_f, CMD_FL_SYSTEM, "loads a map", idCmdSystem::ArgCompletion_MapName );
+//	cmdSystem.AddCommand( "devmap", Session_DevMap_f, CMD_FL_SYSTEM, "loads a map in developer mode", idCmdSystem::ArgCompletion_MapName );
+//	cmdSystem.AddCommand( "testmap", Session_TestMap_f, CMD_FL_SYSTEM, "tests a map", idCmdSystem::ArgCompletion_MapName );
 //
-//	cmdSystem->AddCommand( "writeCmdDemo", Session_WriteCmdDemo_f, CMD_FL_SYSTEM, "writes a command demo" );
-//	cmdSystem->AddCommand( "playCmdDemo", Session_PlayCmdDemo_f, CMD_FL_SYSTEM, "plays back a command demo" );
-//	cmdSystem->AddCommand( "timeCmdDemo", Session_TimeCmdDemo_f, CMD_FL_SYSTEM, "times a command demo" );
-//	cmdSystem->AddCommand( "exitCmdDemo", Session_ExitCmdDemo_f, CMD_FL_SYSTEM, "exits a command demo" );
-//	cmdSystem->AddCommand( "aviCmdDemo", Session_AVICmdDemo_f, CMD_FL_SYSTEM, "writes AVIs for a command demo" );
-//	cmdSystem->AddCommand( "aviGame", Session_AVIGame_f, CMD_FL_SYSTEM, "writes AVIs for the current game" );
+//	cmdSystem.AddCommand( "writeCmdDemo", Session_WriteCmdDemo_f, CMD_FL_SYSTEM, "writes a command demo" );
+//	cmdSystem.AddCommand( "playCmdDemo", Session_PlayCmdDemo_f, CMD_FL_SYSTEM, "plays back a command demo" );
+//	cmdSystem.AddCommand( "timeCmdDemo", Session_TimeCmdDemo_f, CMD_FL_SYSTEM, "times a command demo" );
+//	cmdSystem.AddCommand( "exitCmdDemo", Session_ExitCmdDemo_f, CMD_FL_SYSTEM, "exits a command demo" );
+//	cmdSystem.AddCommand( "aviCmdDemo", Session_AVICmdDemo_f, CMD_FL_SYSTEM, "writes AVIs for a command demo" );
+//	cmdSystem.AddCommand( "aviGame", Session_AVIGame_f, CMD_FL_SYSTEM, "writes AVIs for the current game" );
 //
-//	cmdSystem->AddCommand( "recordDemo", Session_RecordDemo_f, CMD_FL_SYSTEM, "records a demo" );
-//	cmdSystem->AddCommand( "stopRecording", Session_StopRecordingDemo_f, CMD_FL_SYSTEM, "stops demo recording" );
-//	cmdSystem->AddCommand( "playDemo", Session_PlayDemo_f, CMD_FL_SYSTEM, "plays back a demo", idCmdSystem::ArgCompletion_DemoName );
-//	cmdSystem->AddCommand( "timeDemo", Session_TimeDemo_f, CMD_FL_SYSTEM, "times a demo", idCmdSystem::ArgCompletion_DemoName );
-//	cmdSystem->AddCommand( "timeDemoQuit", Session_TimeDemoQuit_f, CMD_FL_SYSTEM, "times a demo and quits", idCmdSystem::ArgCompletion_DemoName );
-//	cmdSystem->AddCommand( "aviDemo", Session_AVIDemo_f, CMD_FL_SYSTEM, "writes AVIs for a demo", idCmdSystem::ArgCompletion_DemoName );
-//	cmdSystem->AddCommand( "compressDemo", Session_CompressDemo_f, CMD_FL_SYSTEM, "compresses a demo file", idCmdSystem::ArgCompletion_DemoName );
+//	cmdSystem.AddCommand( "recordDemo", Session_RecordDemo_f, CMD_FL_SYSTEM, "records a demo" );
+//	cmdSystem.AddCommand( "stopRecording", Session_StopRecordingDemo_f, CMD_FL_SYSTEM, "stops demo recording" );
+//	cmdSystem.AddCommand( "playDemo", Session_PlayDemo_f, CMD_FL_SYSTEM, "plays back a demo", idCmdSystem::ArgCompletion_DemoName );
+//	cmdSystem.AddCommand( "timeDemo", Session_TimeDemo_f, CMD_FL_SYSTEM, "times a demo", idCmdSystem::ArgCompletion_DemoName );
+//	cmdSystem.AddCommand( "timeDemoQuit", Session_TimeDemoQuit_f, CMD_FL_SYSTEM, "times a demo and quits", idCmdSystem::ArgCompletion_DemoName );
+//	cmdSystem.AddCommand( "aviDemo", Session_AVIDemo_f, CMD_FL_SYSTEM, "writes AVIs for a demo", idCmdSystem::ArgCompletion_DemoName );
+//	cmdSystem.AddCommand( "compressDemo", Session_CompressDemo_f, CMD_FL_SYSTEM, "compresses a demo file", idCmdSystem::ArgCompletion_DemoName );
 //#endif
 //
-//	cmdSystem->AddCommand( "disconnect", Session_Disconnect_f, CMD_FL_SYSTEM, "disconnects from a game" );
+//	cmdSystem.AddCommand( "disconnect", Session_Disconnect_f, CMD_FL_SYSTEM, "disconnects from a game" );
 //
 //#ifdef ID_DEMO_BUILD
-//	cmdSystem->AddCommand( "endOfDemo", Session_EndOfDemo_f, CMD_FL_SYSTEM, "ends the demo version of the game" );
+//	cmdSystem.AddCommand( "endOfDemo", Session_EndOfDemo_f, CMD_FL_SYSTEM, "ends the demo version of the game" );
 //#endif
 //
-//	cmdSystem->AddCommand( "demoShot", Session_DemoShot_f, CMD_FL_SYSTEM, "writes a screenshot for a demo" );
-//	cmdSystem->AddCommand( "testGUI", Session_TestGUI_f, CMD_FL_SYSTEM, "tests a gui" );
+//	cmdSystem.AddCommand( "demoShot", Session_DemoShot_f, CMD_FL_SYSTEM, "writes a screenshot for a demo" );
+//	cmdSystem.AddCommand( "testGUI", Session_TestGUI_f, CMD_FL_SYSTEM, "tests a gui" );
 //
 //#ifndef	ID_DEDICATED
-//	cmdSystem->AddCommand( "saveGame", SaveGame_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "saves a game" );
-//	cmdSystem->AddCommand( "loadGame", LoadGame_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "loads a game", idCmdSystem::ArgCompletion_SaveGame );
+//	cmdSystem.AddCommand( "saveGame", SaveGame_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "saves a game" );
+//	cmdSystem.AddCommand( "loadGame", LoadGame_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "loads a game", idCmdSystem::ArgCompletion_SaveGame );
 //#endif
 //
-//	cmdSystem->AddCommand( "takeViewNotes", TakeViewNotes_f, CMD_FL_SYSTEM, "take notes about the current map from the current view" );
-//	cmdSystem->AddCommand( "takeViewNotes2", TakeViewNotes2_f, CMD_FL_SYSTEM, "extended take view notes" );
+//	cmdSystem.AddCommand( "takeViewNotes", TakeViewNotes_f, CMD_FL_SYSTEM, "take notes about the current map from the current view" );
+//	cmdSystem.AddCommand( "takeViewNotes2", TakeViewNotes2_f, CMD_FL_SYSTEM, "extended take view notes" );
 //
-//	cmdSystem->AddCommand( "rescanSI", Session_RescanSI_f, CMD_FL_SYSTEM, "internal - rescan serverinfo cvars and tell game" );
+//	cmdSystem.AddCommand( "rescanSI", Session_RescanSI_f, CMD_FL_SYSTEM, "internal - rescan serverinfo cvars and tell game" );
 //
-//	cmdSystem->AddCommand( "promptKey", Session_PromptKey_f, CMD_FL_SYSTEM, "prompt and sets the CD Key" );
+//	cmdSystem.AddCommand( "promptKey", Session_PromptKey_f, CMD_FL_SYSTEM, "prompt and sets the CD Key" );
 //
-//	cmdSystem->AddCommand( "hitch", Session_Hitch_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "hitches the game" );
+//	cmdSystem.AddCommand( "hitch", Session_Hitch_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "hitches the game" );
 //
 //	// the same idRenderWorld will be used for all games
 //	// and demos, insuring that level specific models
 //	// will be freed
-//	rw = renderSystem->AllocRenderWorld();
-//	sw = soundSystem->AllocSoundWorld( rw );
+//	rw = renderSystem.AllocRenderWorld();
+//	sw = soundSystem.AllocSoundWorld( rw );
 //
-//	menuSoundWorld = soundSystem->AllocSoundWorld( rw );
+//	menuSoundWorld = soundSystem.AllocSoundWorld( rw );
 //
 //	// we have a single instance of the main menu
 //#ifndef ID_DEMO_BUILD
-//	guiMainMenu = uiManager->FindGui( "guis/mainmenu.gui", true, false, true );
+//	guiMainMenu = uiManager.FindGui( "guis/mainmenu.gui", true, false, true );
 //#else
-//	guiMainMenu = uiManager->FindGui( "guis/demo_mainmenu.gui", true, false, true );
+//	guiMainMenu = uiManager.FindGui( "guis/demo_mainmenu.gui", true, false, true );
 //#endif
-//	guiMainMenu_MapList = uiManager->AllocListGUI();
-//	guiMainMenu_MapList->Config( guiMainMenu, "mapList" );
+//	guiMainMenu_MapList = uiManager.AllocListGUI();
+//	guiMainMenu_MapList.Config( guiMainMenu, "mapList" );
 //	idAsyncNetwork::client.serverList.GUIConfig( guiMainMenu, "serverList" );
-//	guiRestartMenu = uiManager->FindGui( "guis/restart.gui", true, false, true );
-//	guiGameOver = uiManager->FindGui( "guis/gameover.gui", true, false, true );
-//	guiMsg = uiManager->FindGui( "guis/msg.gui", true, false, true );
-//	guiTakeNotes = uiManager->FindGui( "guis/takeNotes.gui", true, false, true );
-//	guiIntro = uiManager->FindGui( "guis/intro.gui", true, false, true );
+//	guiRestartMenu = uiManager.FindGui( "guis/restart.gui", true, false, true );
+//	guiGameOver = uiManager.FindGui( "guis/gameover.gui", true, false, true );
+//	guiMsg = uiManager.FindGui( "guis/msg.gui", true, false, true );
+//	guiTakeNotes = uiManager.FindGui( "guis/takeNotes.gui", true, false, true );
+//	guiIntro = uiManager.FindGui( "guis/intro.gui", true, false, true );
 //
-//	whiteMaterial = declManager->FindMaterial( "_white" );
+//	whiteMaterial = declManager.FindMaterial( "_white" );
 //
 //	guiInGame = NULL;
 //	guiTest = NULL;
@@ -2929,8 +2943,8 @@ idSessionLocal::IsMultiplayer
 //
 //	ReadCDKey();
 //
-//	common->Printf( "session initialized\n" );
-//	common->Printf( "--------------------------------------\n" );
+//	common.Printf( "session initialized\n" );
+//	common.Printf( "--------------------------------------\n" );
 //}
 //
 ///*
@@ -2961,9 +2975,9 @@ idSessionLocal::IsMultiplayer
 //*/
 //void idSessionLocal::SetPlayingSoundWorld() {
 //	if ( guiActive && ( guiActive == guiMainMenu || guiActive == guiIntro || guiActive == guiLoading || ( guiActive == guiMsg && !mapSpawned ) ) ) {
-//		soundSystem->SetPlayingSoundWorld( menuSoundWorld );
+//		soundSystem.SetPlayingSoundWorld( menuSoundWorld );
 //	} else {
-//		soundSystem->SetPlayingSoundWorld( sw );
+//		soundSystem.SetPlayingSoundWorld( sw );
 //	}
 //}
 //
@@ -2992,28 +3006,28 @@ idSessionLocal::IsMultiplayer
 //	cdkey_state = CDKEY_UNKNOWN;
 //
 //	filename = "../" BASE_GAMEDIR "/" CDKEY_FILE;
-//	f = fileSystem->OpenExplicitFileRead( fileSystem->RelativePathToOSPath( filename, "fs_savepath" ) );
+//	f = fileSystem.OpenExplicitFileRead( fileSystem.RelativePathToOSPath( filename, "fs_savepath" ) );
 //	if ( !f ) {
-//		common->Printf( "Couldn't read %s.\n", filename.c_str() );
+//		common.Printf( "Couldn't read %s.\n", filename.c_str() );
 //		cdkey[ 0 ] = '\0';
 //	} else {
 //		memset( buffer, 0, sizeof(buffer) );
-//		f->Read( buffer, CDKEY_BUF_LEN - 1 );
-//		fileSystem->CloseFile( f );
+//		f.Read( buffer, CDKEY_BUF_LEN - 1 );
+//		fileSystem.CloseFile( f );
 //		idStr::Copynz( cdkey, buffer, CDKEY_BUF_LEN );
 //	}
 //
 //	xpkey_state = CDKEY_UNKNOWN;
 //
 //	filename = "../" BASE_GAMEDIR "/" XPKEY_FILE;
-//	f = fileSystem->OpenExplicitFileRead( fileSystem->RelativePathToOSPath( filename, "fs_savepath" ) );
+//	f = fileSystem.OpenExplicitFileRead( fileSystem.RelativePathToOSPath( filename, "fs_savepath" ) );
 //	if ( !f ) {
-//		common->Printf( "Couldn't read %s.\n", filename.c_str() );
+//		common.Printf( "Couldn't read %s.\n", filename.c_str() );
 //		xpkey[ 0 ] = '\0';
 //	} else {
 //		memset( buffer, 0, sizeof(buffer) );
-//		f->Read( buffer, CDKEY_BUF_LEN - 1 );
-//		fileSystem->CloseFile( f );
+//		f.Read( buffer, CDKEY_BUF_LEN - 1 );
+//		fileSystem.CloseFile( f );
 //		idStr::Copynz( xpkey, buffer, CDKEY_BUF_LEN );
 //	}
 //}
@@ -3031,24 +3045,24 @@ idSessionLocal::IsMultiplayer
 //	filename = "../" BASE_GAMEDIR "/" CDKEY_FILE;
 //	// OpenFileWrite advertises creating directories to the path if needed, but that won't work with a '..' in the path
 //	// occasionally on windows, but mostly on Linux and OSX, the fs_savepath/base may not exist in full
-//	OSPath = fileSystem->BuildOSPath( cvarSystem->GetCVarString( "fs_savepath" ), BASE_GAMEDIR, CDKEY_FILE );
-//	fileSystem->CreateOSPath( OSPath );
-//	f = fileSystem->OpenFileWrite( filename );
+//	OSPath = fileSystem.BuildOSPath( cvarSystem.GetCVarString( "fs_savepath" ), BASE_GAMEDIR, CDKEY_FILE );
+//	fileSystem.CreateOSPath( OSPath );
+//	f = fileSystem.OpenFileWrite( filename );
 //	if ( !f ) {
-//		common->Printf( "Couldn't write %s.\n", filename.c_str() );
+//		common.Printf( "Couldn't write %s.\n", filename.c_str() );
 //		return;
 //	}
-//	f->Printf( "%s%s", cdkey, CDKEY_TEXT );
-//	fileSystem->CloseFile( f );
+//	f.Printf( "%s%s", cdkey, CDKEY_TEXT );
+//	fileSystem.CloseFile( f );
 //
 //	filename = "../" BASE_GAMEDIR "/" XPKEY_FILE;
-//	f = fileSystem->OpenFileWrite( filename );
+//	f = fileSystem.OpenFileWrite( filename );
 //	if ( !f ) {
-//		common->Printf( "Couldn't write %s.\n", filename.c_str() );
+//		common.Printf( "Couldn't write %s.\n", filename.c_str() );
 //		return;
 //	}
-//	f->Printf( "%s%s", xpkey, CDKEY_TEXT );
-//	fileSystem->CloseFile( f );
+//	f.Printf( "%s%s", xpkey, CDKEY_TEXT );
+//	fileSystem.CloseFile( f );
 //}
 //
 ///*
@@ -3102,10 +3116,10 @@ idSessionLocal::IsMultiplayer
 //	authMsg.Empty();
 //	if ( idAsyncNetwork::client.SendAuthCheck( cdkey_state == CDKEY_CHECKING ? cdkey : NULL, xpkey_state == CDKEY_CHECKING ? xpkey : NULL ) ) {		
 //		authEmitTimeout = Sys_Milliseconds() + CDKEY_AUTH_TIMEOUT;
-//		common->DPrintf( "authing with the master..\n" );
+//		common.DPrintf( "authing with the master..\n" );
 //	} else {
 //		// net is not available
-//		common->DPrintf( "sendAuthCheck failed\n" );
+//		common.DPrintf( "sendAuthCheck failed\n" );
 //		if ( cdkey_state == CDKEY_CHECKING ) {
 //			cdkey_state = CDKEY_OK;
 //		}
@@ -3144,7 +3158,7 @@ idSessionLocal::IsMultiplayer
 //	idStr::Copynz( l_chk[1], key + CDKEY_BUF_LEN * 2 + 7, 3 );
 //	idStr::ToUpper( l_chk[1] );
 //
-//	if ( fileSystem->HasD3XP() ) {
+//	if ( fileSystem.HasD3XP() ) {
 //		imax = 2;
 //	} else {
 //		imax = 1;
@@ -3182,7 +3196,7 @@ idSessionLocal::IsMultiplayer
 //	// set the keys, don't send a game auth if we are net connecting
 //	idStr::Copynz( cdkey, lkey[0], CDKEY_BUF_LEN );
 //	netConnect ? cdkey_state = CDKEY_OK : cdkey_state = CDKEY_CHECKING;
-//	if ( fileSystem->HasD3XP() ) {
+//	if ( fileSystem.HasD3XP() ) {
 //		idStr::Copynz( xpkey, lkey[1], CDKEY_BUF_LEN );
 //		netConnect ? xpkey_state = CDKEY_OK : xpkey_state = CDKEY_CHECKING;
 //	} else {
@@ -3225,7 +3239,7 @@ idSessionLocal::IsMultiplayer
 //		}
 //	}
 //	if ( xpkey_state == CDKEY_UNKNOWN ) {
-//		if ( fileSystem->HasD3XP() ) {
+//		if ( fileSystem.HasD3XP() ) {
 //			if ( strlen( xpkey ) != CDKEY_BUF_LEN -1 ) {
 //				xpkey_state = CDKEY_INVALID;
 //			} else {
@@ -3277,7 +3291,7 @@ idSessionLocal::IsMultiplayer
 //		authWaitBox = false;
 //	}
 //	if ( !valid ) {
-//		common->DPrintf( "auth key is invalid\n" );
+//		common.DPrintf( "auth key is invalid\n" );
 //		authMsg = auth_msg;
 //		if ( cdkey_state == CDKEY_CHECKING ) {
 //			cdkey_state = CDKEY_INVALID;
@@ -3286,7 +3300,7 @@ idSessionLocal::IsMultiplayer
 //			xpkey_state = CDKEY_INVALID;
 //		}
 //	} else {
-//		common->DPrintf( "client is authed in\n" );
+//		common.DPrintf( "client is authed in\n" );
 //		if ( cdkey_state == CDKEY_CHECKING ) {
 //			cdkey_state = CDKEY_OK;
 //		}

@@ -204,12 +204,12 @@
 //
 //
 class renderView_t {
-//	// player views will set this to a non-zero integer for model suppress / allow
-//	// subviews (mirrors, cameras, etc) will always clear it to zero
-//	int						viewID;
-//
-//	// sized from 0 to SCREEN_WIDTH / SCREEN_HEIGHT (640/480), not actual resolution
-//	int						x, y, width, height;
+	// player views will set this to a non-zero integer for model suppress / allow
+	// subviews (mirrors, cameras, etc) will always clear it to zero
+	int						viewID;
+
+	// sized from 0 to SCREEN_WIDTH / SCREEN_HEIGHT (640/480), not actual resolution
+	int						x, y, width, height;
 //
 //	float					fov_x, fov_y;
 //	idVec3					vieworg;
