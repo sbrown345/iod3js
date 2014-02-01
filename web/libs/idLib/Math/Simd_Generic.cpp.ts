@@ -610,16 +610,16 @@ idSIMD_Generic::MinMax
 //	UNROLL1(OPER)
 //#undef OPER
 //}
-//
-///*
-//================
-//idSIMD_Generic::Memcpy
-//================
-//*/
-//void VPCALL idSIMD_Generic::Memcpy( void *dst, const void *src, const int count ) {
-//	memcpy( dst, src, count );
-//}
-//
+
+/*
+================
+idSIMD_Generic::Memcpy
+================
+*/
+	static Memcpy ( dst: ArrayBufferView, src: ArrayBufferView, count: number ): void {
+		memcpy( dst, src, count );
+	}
+
 ///*
 //================
 //idSIMD_Generic::Memset

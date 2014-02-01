@@ -29,25 +29,32 @@
 ////#ifndef __HEAP_H__
 ////#define __HEAP_H__
 
-/////*
-////===============================================================================
+/*
+===============================================================================
 
-////	Memory Management
+	Memory Management
 
-////	This is a replacement for the compiler heap code (i.e. "C" malloc() and
-////	free() calls). On average 2.5-3.0 times faster than MSVC malloc()/free().
-////	Worst case performance is 1.65 times faster and best case > 70 times.
+	This is a replacement for the compiler heap code (i.e. "C" malloc() and
+	free() calls). On average 2.5-3.0 times faster than MSVC malloc()/free().
+	Worst case performance is 1.65 times faster and best case > 70 times.
  
-////===============================================================================
-////*/
+===============================================================================
+*/
 
 
-////typedef struct {
-////	int		num;
-////	int		minSize;
-////	int		maxSize;
-////	int		totalSize;
-////} memoryStats_t;
+class memoryStats_t {
+	num: number; //int		
+	minSize: number; //int		
+	maxSize: number; //int		
+	totalSize: number; //int	
+
+	constructor ( num = 0, minSize = 0, maxSize=0, totalSize = 0 ) {
+		this.num = num;
+		this.minSize = minSize;
+		this.maxSize = maxSize;
+		this.totalSize = totalSize;
+	}
+}
 
 
 ////void		Mem_Init( void );

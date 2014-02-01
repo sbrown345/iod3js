@@ -38,8 +38,8 @@ enum vertBlockTag_t{
 };
 
 class vertCache_t {
-	vbo: number; //	GLuint
-	virtMem: ArrayBuffer;//*	virtMem;			// only one of vbo / virtMem will be set					   //	void			
+	vbo: WebGLBuffer; //	GLuint
+	virtMem: Uint8Array;//*	virtMem;			// only one of vbo / virtMem will be set					   //	void			
 	indexBuffer: boolean; // holds indexes instead of vertexes						   //	bool			
 	//
 	offset: number; //	intptr_t		

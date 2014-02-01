@@ -131,6 +131,10 @@ function Mem_Free ( arg: any ) {
     
 }
 
+function malloc ( size: number ): ArrayBuffer {
+	return new ArrayBuffer( size );
+}
+
 class FILE {
 
     constructor ( arrayBuffer: ArrayBuffer ) {

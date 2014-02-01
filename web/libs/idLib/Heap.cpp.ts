@@ -37,11 +37,11 @@
 //////	#define CRASH_ON_STATIC_ALLOCATION
 ////#endif
 
-//////===============================================================
-//////
-//////	idHeap
-//////
-//////===============================================================
+//===============================================================
+//
+//	idHeap
+//
+//===============================================================
 
 ////#define SMALL_HEADER_SIZE		( (int) ( sizeof( byte ) + sizeof( byte ) ) )
 ////#define MEDIUM_HEADER_SIZE		( (int) ( sizeof( mediumHeapEntry_s ) + sizeof( byte ) ) )
@@ -52,7 +52,7 @@
 ////#define MEDIUM_SMALLEST_SIZE	( ALIGN_SIZE( 256 ) + ALIGN_SIZE( MEDIUM_HEADER_SIZE ) )
 
 
-////class idHeap {
+class idHeap {
 
 ////public:
 ////					idHeap( void );
@@ -119,7 +119,7 @@
 ////	dword			pageRequests;					// page requests
 ////	dword			OSAllocs;						// number of allocs made to the OS
 
-////	int				c_heapAllocRunningCount;
+	c_heapAllocRunningCount = 0;//	int
 
 ////	void			*defragBlock;					// a single huge block that can be allocated
 ////													// at startup, then freed when needed
@@ -140,7 +140,6 @@
 
 ////	void			ReleaseSwappedPages( void );
 ////	void			FreePageReal( idHeap::page_s *p );
-////};
 
 
 /////*
@@ -169,7 +168,7 @@
 ////	mediumLastFreePage	= NULL;
 ////	mediumFirstUsedPage	= NULL;
 
-////	c_heapAllocRunningCount = 0;
+////	this.c_heapAllocRunningCount = 0;
 ////}
 
 /////*
@@ -253,29 +252,29 @@
 ////	idLib::common.Printf( "Allocated a %i mb defrag block\n", size / (1024*1024) );
 ////}
 
-/////*
-////================
-////idHeap::Allocate
-////================
-////*/
-////void *idHeap::Allocate( const dword bytes ) {
-////	if ( !bytes ) {
-////		return NULL;
-////	}
-////	c_heapAllocRunningCount++;
+/*
+================
+idHeap::Allocate
+================
+*/
+	Allocate ( /*const dword*/ bytes: number ): ArrayBuffer {
+		if ( !bytes ) {
+			return null;
+		}
+		this.c_heapAllocRunningCount++;
 
-////#if USE_LIBC_MALLOC
-////	return malloc( bytes );
-////#else
-////	if ( !(bytes & ~255) ) {
-////		return SmallAllocate( bytes );
-////	}
-////	if ( !(bytes & ~32767) ) {
-////		return MediumAllocate( bytes );
-////	}
-////	return LargeAllocate( bytes );
-////#endif
-////}
+//#if USE_LIBC_MALLOC
+		return malloc( bytes );
+//#else
+//	if ( !(bytes & ~255) ) {
+//		return SmallAllocate( bytes );
+//	}
+//	if ( !(bytes & ~32767) ) {
+//		return MediumAllocate( bytes );
+//	}
+//	return LargeAllocate( bytes );
+//#endif
+	}
 
 /////*
 ////================
@@ -286,7 +285,7 @@
 ////	if ( !p ) {
 ////		return;
 ////	}
-////	c_heapAllocRunningCount--;
+////	this.c_heapAllocRunningCount--;
 
 ////#if USE_LIBC_MALLOC
 ////	free( p );
@@ -350,29 +349,29 @@
 ////	free( (void *) *((int *) (( (byte *) p ) - 4)) );
 ////}
 
-/////*
-////================
-////idHeap::Msize
+/*
+================
+idHeap::Msize
 
-////  returns size of allocated memory block
-////  p	= pointer to memory block
-////  Notes:	size may not be the same as the size in the original
-////			allocation request (due to block alignment reasons).
-////================
-////*/
-////dword idHeap::Msize( void *p ) {
+  returns size of allocated memory block
+  p	= pointer to memory block
+  Notes:	size may not be the same as the size in the original
+			allocation request (due to block alignment reasons).
+================
+*/
+	Msize ( /*void **/p: ArrayBuffer ): number {
 
-////	if ( !p ) {
-////		return 0;
-////	}
+		if ( !p ) {
+			return 0;
+		}
 
-////#if USE_LIBC_MALLOC
-////	#ifdef _WIN32
-////		return _msize( p );
-////	#else
-////		return 0;
-////	#endif
-////#else
+//#if USE_LIBC_MALLOC
+//	#ifdef _WIN32
+		return p.byteLength; //_msize( p );
+//	#else
+//		return 0;
+//	#endif
+//////#else
 ////	switch( ((byte *)(p))[-1] ) {
 ////		case SMALL_ALLOC: {
 ////			return SMALL_ALIGN( ((byte *)(p))[-SMALL_HEADER_SIZE] * ALIGN );
@@ -389,7 +388,7 @@
 ////		}
 ////	}
 ////#endif
-////}
+	}
 
 /////*
 ////================
@@ -417,7 +416,7 @@
 ////	for ( pg = mediumFirstFreePage; pg; pg = pg.next ) {
 ////		idLib::common.Printf( "%p  bytes %-8d  (partially used by medium heap)\n", pg.data, pg.dataSize );
 ////	}
-	
+
 ////	for ( pg = largeFirstUsedPage; pg; pg = pg.next ) {
 ////		idLib::common.Printf( "%p  bytes %-8d  (fully used by large heap)\n", pg.data, pg.dataSize );
 ////	}
@@ -500,7 +499,7 @@
 ////	p.next = NULL;
 
 ////	pagesAllocated++;
-	
+
 ////	return p;
 ////}
 
@@ -648,7 +647,7 @@
 ////		}
 ////		best.next	= nw;
 ////		best.size	-= sizeNeeded;
-		
+
 ////		p.largestFree = best.size;
 ////	}
 ////	else {
@@ -713,7 +712,7 @@
 ////		}
 
 ////		mediumFirstFreePage		= p;
-		
+
 ////		p.largestFree	= pageSize;
 ////		p.firstFree	= (void *)p.data;
 
@@ -824,18 +823,18 @@
 ////		p.largestFree	= e.size;
 ////		e.freeBlock	= 1;				// mark block as free
 ////	}
-			
+
 ////	mediumHeapEntry_s *next = e.next;
 
 ////	// if the next block is free we can merge
 ////	if ( next && next.freeBlock ) {
 ////		e.size += next.size;
 ////		e.next = next.next;
-		
+
 ////		if ( next.next ) {
 ////			next.next.prev = e;
 ////		}
-		
+
 ////		if ( next.prevFree ) {
 ////			next.prevFree.nextFree = next.nextFree;
 ////		}
@@ -868,7 +867,7 @@
 ////		if ( e.nextFree ) {
 ////			e.nextFree.prevFree = e.prevFree;
 ////		}
-		
+
 ////		e.nextFree = (mediumHeapEntry_s *)p.firstFree;
 ////		e.prevFree = NULL;
 ////		if ( e.nextFree ) {
@@ -975,18 +974,21 @@
 ////	FreePage(pg);
 ////}
 
-//////===============================================================
-//////
-//////	memory allocation all in one place
-//////
-//////===============================================================
+
+}
+
+//===============================================================
+//
+//	memory allocation all in one place
+//
+//===============================================================
 
 ////#undef new
 
-////static idHeap *			mem_heap = NULL;
-////static memoryStats_t	mem_total_allocs = { 0, 0x0fffffff, -1, 0 };
-////static memoryStats_t	mem_frame_allocs;
-////static memoryStats_t	mem_frame_frees;
+var mem_heap:idHeap = null;
+var mem_total_allocs = new memoryStats_t( 0, 0x0fffffff, -1, 0 );
+var mem_frame_allocs = new memoryStats_t;
+var mem_frame_frees = new memoryStats_t;
 
 /////*
 ////==================
@@ -1019,31 +1021,31 @@
 ////	stats = mem_total_allocs;
 ////}
 
-/////*
-////==================
-////Mem_UpdateStats
-////==================
-////*/
-////void Mem_UpdateStats( memoryStats_t &stats, int size ) {
-////	stats.num++;
-////	if ( size < stats.minSize ) {
-////		stats.minSize = size;
-////	}
-////	if ( size > stats.maxSize ) {
-////		stats.maxSize = size;
-////	}
-////	stats.totalSize += size;
-////}
+/*
+==================
+Mem_UpdateStats
+==================
+*/
+function Mem_UpdateStats ( stats: memoryStats_t, /*int */size: number ): void {
+	stats.num++;
+	if ( size < stats.minSize ) {
+		stats.minSize = size;
+	}
+	if ( size > stats.maxSize ) {
+		stats.maxSize = size;
+	}
+	stats.totalSize += size;
+}
 
-/////*
-////==================
-////Mem_UpdateAllocStats
-////==================
-////*/
-////void Mem_UpdateAllocStats( int size ) {
-////	Mem_UpdateStats( mem_frame_allocs, size );
-////	Mem_UpdateStats( mem_total_allocs, size );
-////}
+/*
+==================
+Mem_UpdateAllocStats
+==================
+*/
+function Mem_UpdateAllocStats ( /*int*/ size: number ): void {
+	Mem_UpdateStats( mem_frame_allocs, size );
+	Mem_UpdateStats( mem_total_allocs, size );
+}
 
 /////*
 ////==================
@@ -1059,25 +1061,25 @@
 
 ////#ifndef ID_DEBUG_MEMORY
 
-/////*
-////==================
-////Mem_Alloc
-////==================
-////*/
-////void *Mem_Alloc( const int size ) {
-////	if ( !size ) {
-////		return NULL;
-////	}
-////	if ( !mem_heap ) {
-////#ifdef CRASH_ON_STATIC_ALLOCATION
-////		*((int*)0x0) = 1;
-////#endif
-////		return malloc( size );
-////	}
-////	void *mem = mem_heap.Allocate( size );
-////	Mem_UpdateAllocStats( mem_heap.Msize( mem ) );
-////	return mem;
-////}
+/*
+==================
+Mem_Alloc
+==================
+*/
+function Mem_Alloc ( /*const int */size: number ): ArrayBuffer {
+	if ( !size ) {
+		return null;
+	}
+	if ( !mem_heap ) {
+//#ifdef CRASH_ON_STATIC_ALLOCATION
+//		*((int*)0x0) = 1;
+//#endif
+		return malloc( size );
+	}
+	var /*void **/mem = mem_heap.Allocate( size );
+	Mem_UpdateAllocStats( mem_heap.Msize( mem ) );
+	return mem;
+}
 
 /////*
 ////==================

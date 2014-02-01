@@ -29,9 +29,9 @@ If you have questions concerning this license or the applicable additional terms
 #include "../idlib/precompiled.h"
 #pragma hdrstop
 
-#ifndef USE_LIBC_MALLOC
+//#ifndef USE_LIBC_MALLOC
 	#define USE_LIBC_MALLOC		0
-#endif
+//#endif
 
 #ifndef CRASH_ON_STATIC_ALLOCATION
 //	#define CRASH_ON_STATIC_ALLOCATION

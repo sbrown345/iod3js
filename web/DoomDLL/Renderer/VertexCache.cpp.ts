@@ -332,7 +332,7 @@ Alloc(/*void **/data:Uint8Array, /*int */size:number, /*vertCache_t ***/buffer:R
 			block.next.prev = block;
 			block.prev.next = block;
 
-			glGenBuffers(1, block.vbo);
+			block.vbo = glGenBuffers(1);
 		}
 	}
 
@@ -356,7 +356,7 @@ Alloc(/*void **/data:Uint8Array, /*int */size:number, /*vertCache_t ***/buffer:R
 	this.staticAllocTotal += block.size;
 
 	// this will be set to zero when it is purged
-	block.user = buffer;
+	block.user = buffer.$;
 	buffer.$ = block;
 
 	// allocation doesn't imply used-for-drawing, because at level
@@ -381,7 +381,8 @@ Alloc(/*void **/data:Uint8Array, /*int */size:number, /*vertCache_t ***/buffer:R
 			}
 		}
 	} else {
-		block.virtMem = Mem_Alloc(size);
+		todoThrow ( );
+		block.virtMem = new Uint8Array(Mem_Alloc(size));
 		SIMDProcessor.Memcpy(block.virtMem, data, size);
 	}
 }
@@ -575,7 +576,7 @@ idVertexCache::EndFrame
 	}
 
 	// free all the frame temp headers
-	vertCache_t	*block = this.dynamicHeaders.next;
+	var block = this.dynamicHeaders.next;
 
 	if (block != this.dynamicHeaders) {
 		block.prev = this.freeDynamicHeaders;
