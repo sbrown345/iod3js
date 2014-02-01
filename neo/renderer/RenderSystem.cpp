@@ -272,6 +272,7 @@ See if some cvars that we watch have changed
 =============
 */
 static void R_CheckCvars( void ) {
+#ifndef JS_CHANGES
 	globalImages->CheckCvars();
 
 	// gamma stuff
@@ -283,6 +284,7 @@ static void R_CheckCvars( void ) {
 
 	// check for changes to logging state
 	GLimp_EnableLogging( r_logFile.GetInteger() != 0 );
+#endif
 }
 
 /*

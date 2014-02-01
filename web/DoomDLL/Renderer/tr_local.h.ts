@@ -661,6 +661,14 @@ class tmu_t {
 	currentCubeMap: number; //int		
 	texEnv: number; //int		
 	textureType: textureType_t;
+
+	init ( ): void {
+		this.current2DMap = 0;
+		this.current3DMap = 0;
+		this.currentCubeMap = 0;
+		this.texEnv = 0;
+		this.textureType = textureType_t.TT_DISABLED;
+	}
 }
 
 var MAX_MULTITEXTURE_UNITS =	8;
@@ -674,9 +682,20 @@ class glstate_t {
 	forceGlState: boolean; // the next GL_State will ignore glStateBits and set everything
 
 	currentProgram: shaderProgram_t;
+
+	init ( ): void {
+		clearStructArray( this.tmu );
+		this.currenttmu = 0;
+
+		this.faceCulling = 0;
+		this.glStateBits = 0;
+		this.forceGlState = false;
+
+		this.currentProgram = null;
+	}
 }
 
-////typedef struct {
+class backEndCounters_t	{
 ////	int		c_surfaces;
 ////	int		c_shaders;
 ////	int		c_vertexes;
@@ -698,14 +717,14 @@ class glstate_t {
 
 ////	float	maxLightValue;	// for light scale
 ////	int		msec;			// total msec for backend run
-////} backEndCounters_t;
+};
 
 ////// all state modified by the back end is separated
 ////// from the front end state
 class backEndState_t {
 ////	int					frameCount;		// used to track all images used in a frame
 ////	const viewDef_t	*	viewDef;
-////	backEndCounters_t	pc;
+	pc: backEndCounters_t;
 
 ////	const viewEntity_t *currentSpace;		// for detecting when a matrix must change
 ////	idScreenRect		currentScissor;
@@ -733,7 +752,7 @@ class backEndState_t {
 	constructor ( ) {
 		////	int					frameCount;		// used to track all images used in a frame
 		////	const viewDef_t	*	viewDef;
-		////	backEndCounters_t	pc;
+		this.pc = new backEndCounters_t;
 
 		////	const viewEntity_t *currentSpace;		// for detecting when a matrix must change
 		////	idScreenRect		currentScissor;

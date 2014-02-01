@@ -403,7 +403,9 @@ var glGetAttribLocation = <( program: WebGLProgram, name: string ) => number> gl
 var glUniform1i = <( location: WebGLUniformLocation, x: number ) => void>gl.uniform1i.bind( gl );
 var glBindBuffer = <(target: number, buffer: WebGLBuffer) => void>gl.bindBuffer.bind(gl);
 var glGenBuffers = <( size: number ) => WebGLBuffer > gl.createBuffer.bind( gl );
+var glClearDepthf = <( depth: number ) => void> gl.clearDepth.bind( gl );
 
 var glBufferData = ( target: number, size: number, data: ArrayBufferView, usage: number ): void => {
 	gl.bufferData.call( gl, target, data, usage );
 };
+

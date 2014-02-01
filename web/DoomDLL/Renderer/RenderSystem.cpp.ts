@@ -650,26 +650,26 @@ R_InitOpenGL(): void {
 GL_CheckErrors
 ==================
 */
-static GL_CheckErrors():void {
-    var/*int		*/err:number;
-		var s = "";//char	s[64];
-	var i:number;
+	static GL_CheckErrors ( ): void {
+		var /*int		*/err: number;
+		var s = ""; //char	s[64];
+		var i: number;
 
-	// check for up to 10 errors pending
-	for ( i = 0 ; i < 10 ; i++ ) {
-		err = glGetError();
-		if ( err == GL_NO_ERROR ) {
-			return;
-		}
-		switch( err ) {
+		// check for up to 10 errors pending
+		for ( i = 0; i < 10; i++ ) {
+			err = glGetError ( );
+			if ( err == GL_NO_ERROR ) {
+				return;
+			}
+			switch ( err ) {
 			case GL_INVALID_ENUM:
-				s = "GL_INVALID_ENUM" ;
+				s = "GL_INVALID_ENUM";
 				break;
 			case GL_INVALID_VALUE:
-				s = "GL_INVALID_VALUE" ;
+				s = "GL_INVALID_VALUE";
 				break;
 			case GL_INVALID_OPERATION:
-				s = "GL_INVALID_OPERATION" ;
+				s = "GL_INVALID_OPERATION";
 				break;
 //#if !defined(GL_ES_VERSION_2_0)
 //			case GL_STACK_OVERFLOW:
@@ -683,15 +683,15 @@ static GL_CheckErrors():void {
 				s = "GL_OUT_OF_MEMORY";
 				break;
 			default:
-				s = err.toString ( );//idStr.snPrintf( s, sizeof(s), "%i", err);
+				s = err.toString ( ); //idStr.snPrintf( s, sizeof(s), "%i", err);
 				break;
-		}
+			}
 
-		if ( !r_ignoreGLErrors.GetBool() ) {
-			common.Printf( "GL_CheckErrors: %s\n", s );
+			if ( !r_ignoreGLErrors.GetBool ( ) ) {
+				common.Printf( "GL_CheckErrors: %s\n", s );
+			}
 		}
 	}
-}
 
 /////*
 ////=====================
@@ -2225,119 +2225,119 @@ idRenderSystemLocal::GetScreenHeight
 ////idRenderSystem	*renderSystem = &tr;
 
 
-/////*
-////=====================
-////R_PerformanceCounters
+/*
+=====================
+R_PerformanceCounters
 
-////This prints both front and back end counters, so it should
-////only be called when the back end thread is idle.
-////=====================
-////*/
-////static void R_PerformanceCounters( void ) {
-////	if ( r_showPrimitives.GetInteger() != 0 ) {
-		
-////		float megaBytes = globalImages.SumOfUsedImages() / ( 1024*1024.0 );
+This prints both front and back end counters, so it should
+only be called when the back end thread is idle.
+=====================
+*/
+	static R_PerformanceCounters ( ): void {
+		todo ( );
+		//if ( r_showPrimitives.GetInteger() != 0 ) {
 
-////		if ( r_showPrimitives.GetInteger() > 1 ) {
-////			common.Printf( "v:%i ds:%i t:%i/%i v:%i/%i st:%i sv:%i image:%5.1f MB\n",
-////				tr.pc.c_numViews,
-////				backEnd.pc.c_drawElements + backEnd.pc.c_shadowElements,
-////				backEnd.pc.c_drawIndexes / 3,
-////				( backEnd.pc.c_drawIndexes - backEnd.pc.c_drawRefIndexes ) / 3,
-////				backEnd.pc.c_drawVertexes,
-////				( backEnd.pc.c_drawVertexes - backEnd.pc.c_drawRefVertexes ),
-////				backEnd.pc.c_shadowIndexes / 3,
-////				backEnd.pc.c_shadowVertexes,
-////				megaBytes
-////				);
-////		} else {
-////			common.Printf( "views:%i draws:%i tris:%i (shdw:%i) (vbo:%i) image:%5.1f MB\n",
-////				tr.pc.c_numViews,
-////				backEnd.pc.c_drawElements + backEnd.pc.c_shadowElements,
-////				( backEnd.pc.c_drawIndexes + backEnd.pc.c_shadowIndexes ) / 3,
-////				backEnd.pc.c_shadowIndexes / 3,
-////				backEnd.pc.c_vboIndexes / 3,
-////				megaBytes
-////				);
-////		}
-////	}
+		//	float megaBytes = globalImages.SumOfUsedImages() / ( 1024*1024.0 );
 
-////	if ( r_showDynamic.GetBool() ) {
-////		common.Printf( "callback:%i md5:%i dfrmVerts:%i dfrmTris:%i tangTris:%i guis:%i\n",
-////			tr.pc.c_entityDefCallbacks,
-////			tr.pc.c_generateMd5,
-////			tr.pc.c_deformedVerts,
-////			tr.pc.c_deformedIndexes/3,
-////			tr.pc.c_tangentIndexes/3,
-////			tr.pc.c_guiSurfs
-////			); 
-////	}
+		//	if ( r_showPrimitives.GetInteger() > 1 ) {
+		//		common.Printf( "v:%i ds:%i t:%i/%i v:%i/%i st:%i sv:%i image:%5.1f MB\n",
+		//			tr.pc.c_numViews,
+		//			backEnd.pc.c_drawElements + backEnd.pc.c_shadowElements,
+		//			backEnd.pc.c_drawIndexes / 3,
+		//			( backEnd.pc.c_drawIndexes - backEnd.pc.c_drawRefIndexes ) / 3,
+		//			backEnd.pc.c_drawVertexes,
+		//			( backEnd.pc.c_drawVertexes - backEnd.pc.c_drawRefVertexes ),
+		//			backEnd.pc.c_shadowIndexes / 3,
+		//			backEnd.pc.c_shadowVertexes,
+		//			megaBytes
+		//			);
+		//	} else {
+		//		common.Printf( "views:%i draws:%i tris:%i (shdw:%i) (vbo:%i) image:%5.1f MB\n",
+		//			tr.pc.c_numViews,
+		//			backEnd.pc.c_drawElements + backEnd.pc.c_shadowElements,
+		//			( backEnd.pc.c_drawIndexes + backEnd.pc.c_shadowIndexes ) / 3,
+		//			backEnd.pc.c_shadowIndexes / 3,
+		//			backEnd.pc.c_vboIndexes / 3,
+		//			megaBytes
+		//			);
+		//	}
+		//}
 
-////	if ( r_showCull.GetBool() ) {
-////		common.Printf( "%i sin %i sclip  %i sout %i bin %i bout\n",
-////			tr.pc.c_sphere_cull_in, tr.pc.c_sphere_cull_clip, tr.pc.c_sphere_cull_out, 
-////			tr.pc.c_box_cull_in, tr.pc.c_box_cull_out );
-////	}
-	
-////	if ( r_showAlloc.GetBool() ) {
-////		common.Printf( "alloc:%i free:%i\n", tr.pc.c_alloc, tr.pc.c_free );
-////	}
+		//if ( r_showDynamic.GetBool() ) {
+		//	common.Printf( "callback:%i md5:%i dfrmVerts:%i dfrmTris:%i tangTris:%i guis:%i\n",
+		//		tr.pc.c_entityDefCallbacks,
+		//		tr.pc.c_generateMd5,
+		//		tr.pc.c_deformedVerts,
+		//		tr.pc.c_deformedIndexes/3,
+		//		tr.pc.c_tangentIndexes/3,
+		//		tr.pc.c_guiSurfs
+		//		); 
+		//}
 
-////	if ( r_showInteractions.GetBool() ) {
-////		common.Printf( "createInteractions:%i createLightTris:%i createShadowVolumes:%i\n",
-////			tr.pc.c_createInteractions, tr.pc.c_createLightTris, tr.pc.c_createShadowVolumes );
-//// 	}
-////	if ( r_showDefs.GetBool() ) {
-////		common.Printf( "viewEntities:%i  shadowEntities:%i  viewLights:%i\n", tr.pc.c_visibleViewEntities,
-////			tr.pc.c_shadowViewEntities, tr.pc.c_viewLights );
-////	}
-////	if ( r_showUpdates.GetBool() ) {
-////		common.Printf( "entityUpdates:%i  entityRefs:%i  lightUpdates:%i  lightRefs:%i\n", 
-////			tr.pc.c_entityUpdates, tr.pc.c_entityReferences,
-////			tr.pc.c_lightUpdates, tr.pc.c_lightReferences );
-////	}
-////	if ( r_showMemory.GetBool() ) {
-////		int	m1 = frameData ? frameData.memoryHighwater : 0;
-////		common.Printf( "frameData: %i (%i)\n", R_CountFrameData(), m1 );
-////	}
-////	if ( r_showLightScale.GetBool() ) {
-////		common.Printf( "lightScale: %f\n", backEnd.pc.maxLightValue );
-////	}
+		//if ( r_showCull.GetBool() ) {
+		//	common.Printf( "%i sin %i sclip  %i sout %i bin %i bout\n",
+		//		tr.pc.c_sphere_cull_in, tr.pc.c_sphere_cull_clip, tr.pc.c_sphere_cull_out, 
+		//		tr.pc.c_box_cull_in, tr.pc.c_box_cull_out );
+		//}
 
-////	memset( &tr.pc, 0, sizeof( tr.pc ) );
-////	memset( &backEnd.pc, 0, sizeof( backEnd.pc ) );
-////}
+		//if ( r_showAlloc.GetBool() ) {
+		//	common.Printf( "alloc:%i free:%i\n", tr.pc.c_alloc, tr.pc.c_free );
+		//}
+
+		//if ( r_showInteractions.GetBool() ) {
+		//	common.Printf( "createInteractions:%i createLightTris:%i createShadowVolumes:%i\n",
+		//		tr.pc.c_createInteractions, tr.pc.c_createLightTris, tr.pc.c_createShadowVolumes );
+		//}
+		//if ( r_showDefs.GetBool() ) {
+		//	common.Printf( "viewEntities:%i  shadowEntities:%i  viewLights:%i\n", tr.pc.c_visibleViewEntities,
+		//		tr.pc.c_shadowViewEntities, tr.pc.c_viewLights );
+		//}
+		//if ( r_showUpdates.GetBool() ) {
+		//	common.Printf( "entityUpdates:%i  entityRefs:%i  lightUpdates:%i  lightRefs:%i\n", 
+		//		tr.pc.c_entityUpdates, tr.pc.c_entityReferences,
+		//		tr.pc.c_lightUpdates, tr.pc.c_lightReferences );
+		//}
+		//if ( r_showMemory.GetBool() ) {
+		//	int	m1 = frameData ? frameData.memoryHighwater : 0;
+		//	common.Printf( "frameData: %i (%i)\n", R_CountFrameData(), m1 );
+		//}
+		//if ( r_showLightScale.GetBool() ) {
+		//	common.Printf( "lightScale: %f\n", backEnd.pc.maxLightValue );
+		//}
+
+		tr.pc.init ( ); //memset( &tr.pc, 0, sizeof( tr.pc ) );
+		backEnd.pc.init ( ); //memset( &backEnd.pc, 0, sizeof( backEnd.pc ) );
+	}
 
 
+/*
+====================
+R_IssueRenderCommands
 
-/////*
-////====================
-////R_IssueRenderCommands
+Called by R_EndFrame each frame
+====================
+*/
+	static R_IssueRenderCommands ( ): void {
+		if ( frameData.cmdHead.commandId == renderCommand_t.RC_NOP
+			&& !frameData.cmdHead.next ) {
+			// nothing to issue
+			return;
+		}
 
-////Called by R_EndFrame each frame
-////====================
-////*/
-////static void R_IssueRenderCommands( void ) {
-////	if ( frameData.cmdHead.commandId == RC_NOP
-////		&& !frameData.cmdHead.next ) {
-////		// nothing to issue
-////		return;
-////	}
+		// r_skipBackEnd allows the entire time of the back end
+		// to be removed from performance measurements, although
+		// nothing will be drawn to the screen.  If the prints
+		// are going to a file, or r_skipBackEnd is later disabled,
+		// usefull data can be received.
 
-////	// r_skipBackEnd allows the entire time of the back end
-////	// to be removed from performance measurements, although
-////	// nothing will be drawn to the screen.  If the prints
-////	// are going to a file, or r_skipBackEnd is later disabled,
-////	// usefull data can be received.
+		// r_skipRender is usually more usefull, because it will still
+		// draw 2D graphics
+		if ( !r_skipBackEnd.GetBool ( ) ) {
+			RB_ExecuteBackEndCommands( frameData.cmdHead );
+		}
 
-////	// r_skipRender is usually more usefull, because it will still
-////	// draw 2D graphics
-////	if ( !r_skipBackEnd.GetBool() ) {
-////		RB_ExecuteBackEndCommands( frameData.cmdHead );
-////	}
-
-////	R_ClearCommandChain();
-////}
+		idRenderSystem.R_ClearCommandChain ( );
+	}
 
 /*
 ============
@@ -2455,26 +2455,27 @@ have multiple views if a mirror, portal, or dynamic texture is present.
 ////	*cmd = tr.lockSurfacesCmd;
 ////}
 
-/////*
-////=============
-////R_CheckCvars
+/*
+=============
+R_CheckCvars
 
-////See if some cvars that we watch have changed
-////=============
-////*/
-////static void R_CheckCvars( void ) {
-////	globalImages.CheckCvars();
+See if some cvars that we watch have changed
+=============
+*/
+	static R_CheckCvars ( ): void {
+		todo ( );
+		//globalImages.CheckCvars();
 
-////	// gamma stuff
-////	if ( r_gamma.IsModified() || r_brightness.IsModified() ) {
-////		r_gamma.ClearModified();
-////		r_brightness.ClearModified();
-////		R_SetColorMappings();
-////	}
+		//// gamma stuff
+		//if ( r_gamma.IsModified() || r_brightness.IsModified() ) {
+		//	r_gamma.ClearModified();
+		//	r_brightness.ClearModified();
+		//	R_SetColorMappings();
+		//}
 
-////	// check for changes to logging state
-////	GLimp_EnableLogging( r_logFile.GetInteger() != 0 );
-////}
+		//// check for changes to logging state
+		//GLimp_EnableLogging( r_logFile.GetInteger() != 0 );
+	}
 
 /////*
 ////=============
@@ -2862,50 +2863,51 @@ EndFrame( /*int **/frontEndMsec:R<number>, /*int **/backEndMsec:R<number> ):void
 	if ( !glConfig.isInitialized ) {
 		return;
 	}
+	
+	// close any gui drawing
+	this.guiModel.EmitFullScreen();
+	this.guiModel.Clear();
+
+	// save out timing information
+	if ( frontEndMsec ) {
+		frontEndMsec.$ = pc.frontEndMsec;
+	}
+	if ( backEndMsec ) {
+		backEndMsec.$ = backEnd.pc.msec;
+	}
+
+	// print any other statistics and clear all of them
+	idRenderSystem.R_PerformanceCounters();
+
+	// check for dynamic changes that require some initialization
+	idRenderSystem.R_CheckCvars();
+
+    // check for errors
+	idRenderSystem.GL_CheckErrors();
+
+	// add the swapbuffers command
+	cmd = < emptyCommand_t>this.R_GetCommandBuffer( /*sizeof( *cmd ) */null );
+	cmd.commandId = renderCommand_t.RC_SWAP_BUFFERS;
+
+	// start the back end up again with the new command list
+	idRenderSystem.R_IssueRenderCommands();
+
+	// use the other buffers next frame, because another CPU
+	// may still be rendering into the current buffers
+	R_ToggleSmpFrame();
+
+	// we can now release the vertexes used this frame
+	vertexCache.EndFrame();
+
+	if (session.writeDemo) {
+		todoThrow ( );
+		//session.writeDemo.WriteInt( DS_RENDER );
+		//session.writeDemo.WriteInt( DC_END_FRAME );
+		//if ( r_showDemo.GetBool() ) {
+		//	common.Printf( "write DC_END_FRAME\n" );
+		//}
+	}
 	todoThrow();
-////	// close any gui drawing
-////	this.guiModel.EmitFullScreen();
-////	this.guiModel.Clear();
-
-////	// save out timing information
-////	if ( frontEndMsec ) {
-////		*frontEndMsec = pc.frontEndMsec;
-////	}
-////	if ( backEndMsec ) {
-////		*backEndMsec = backEnd.pc.msec;
-////	}
-
-////	// print any other statistics and clear all of them
-////	R_PerformanceCounters();
-
-////	// check for dynamic changes that require some initialization
-////	R_CheckCvars();
-
-////    // check for errors
-////	GL_CheckErrors();
-
-////	// add the swapbuffers command
-////	cmd = (emptyCommand_t *)R_GetCommandBuffer( sizeof( *cmd ) );
-////	cmd.commandId = RC_SWAP_BUFFERS;
-
-////	// start the back end up again with the new command list
-////	R_IssueRenderCommands();
-
-////	// use the other buffers next frame, because another CPU
-////	// may still be rendering into the current buffers
-////	R_ToggleSmpFrame();
-
-////	// we can now release the vertexes used this frame
-////	vertexCache.EndFrame();
-
-////	if ( session.writeDemo ) {
-////		session.writeDemo.WriteInt( DS_RENDER );
-////		session.writeDemo.WriteInt( DC_END_FRAME );
-////		if ( r_showDemo.GetBool() ) {
-////			common.Printf( "write DC_END_FRAME\n" );
-////		}
-////	}
-
 }
 
 /*

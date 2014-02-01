@@ -40,94 +40,94 @@ var backEnd:backEndState_t;
 ////	exit(0);
 ////}
 
-/////*
-////======================
-////RB_SetDefaultGLState
+/*
+======================
+RB_SetDefaultGLState
 
-////This should initialize all GL state that any part of the entire program
-////may touch, including the editor.
-////======================
-////*/
-////void RB_SetDefaultGLState(void)
-////{
-////	int		i;
+This should initialize all GL state that any part of the entire program
+may touch, including the editor.
+======================
+*/
+function RB_SetDefaultGLState():void
+{
+	var/*int		*/i:number;
 
-////	RB_LogComment("--- R_SetDefaultGLState ---\n");
+	RB_LogComment("--- R_SetDefaultGLState ---\n");
 
-////	//
-////	// make sure our GL state vector is set correctly
-////	//
-////	memset(&backEnd.glState, 0, sizeof(backEnd.glState));
-////	backEnd.glState.forceGlState = true;
+	//
+	// make sure our GL state vector is set correctly
+	//
+	backEnd.glState.init ( );
+	backEnd.glState.forceGlState = true;
 
-////	GL_UseProgram(NULL);
+	GL_UseProgram(null);
 
-////	glClearDepthf(1.0f);
-////	glClear(GL_DEPTH_BUFFER_BIT);
-////#if !defined(GL_ES_VERSION_2_0)
-////	glColor4f(1,1,1,1);
-////#endif
+	glClearDepthf(1.0);
+	glClear(GL_DEPTH_BUFFER_BIT);
+//#if !defined(GL_ES_VERSION_2_0)
+//	glColor4f(1,1,1,1);
+//#endif
 
-////	glColorMask(1, 1, 1, 1);
+	glColorMask(1, 1, 1, 1);
 
-////	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 
-////	glEnable(GL_BLEND);
-////	glEnable(GL_SCISSOR_TEST);
-////	glEnable(GL_CULL_FACE);
-////#if !defined(GL_ES_VERSION_2_0)
-////	glDisable(GL_LIGHTING);
-////#endif
-////	glDisable(GL_STENCIL_TEST);
+	glEnable(GL_BLEND);
+	glEnable(GL_SCISSOR_TEST);
+	glEnable(GL_CULL_FACE);
+//#if !defined(GL_ES_VERSION_2_0)
+//	glDisable(GL_LIGHTING);
+//#endif
+	glDisable(GL_STENCIL_TEST);
 
-////	glDepthMask(GL_TRUE);
-////	glDepthFunc(GL_ALWAYS);
+	glDepthMask(GL_TRUE);
+	glDepthFunc(GL_ALWAYS);
 
-////	glCullFace(GL_FRONT_AND_BACK);
-////#if !defined(GL_ES_VERSION_2_0)
-////	glShadeModel(GL_SMOOTH);
-////#endif
+	glCullFace(GL_FRONT_AND_BACK);
+//#if !defined(GL_ES_VERSION_2_0)
+//	glShadeModel(GL_SMOOTH);
+//#endif
 
-////	if (r_useScissor.GetBool()) {
-////		glScissor(0, 0, glConfig.vidWidth, glConfig.vidHeight);
-////	}
+	if (r_useScissor.GetBool()) {
+		glScissor(0, 0, glConfig.vidWidth, glConfig.vidHeight);
+	}
 
-////#if !defined(GL_ES_VERSION_2_0)
-////	for (i = glConfig.maxTextureUnits - 1 ; i >= 0 ; i--) {
-////		GL_SelectTexture(i);
+//#if !defined(GL_ES_VERSION_2_0)
+//	for (i = glConfig.maxTextureUnits - 1 ; i >= 0 ; i--) {
+//		GL_SelectTexture(i);
 
-////		glDisable(GL_TEXTURE_2D);
+//		glDisable(GL_TEXTURE_2D);
 
-////		if (glConfig.texture3DAvailable) {
-////			glDisable(GL_TEXTURE_3D);
-////		}
+//		if (glConfig.texture3DAvailable) {
+//			glDisable(GL_TEXTURE_3D);
+//		}
 
-////		if (glConfig.cubeMapAvailable) {
-////			glDisable(GL_TEXTURE_CUBE_MAP);
-////		}
-////	}
-////#endif
-////}
+//		if (glConfig.cubeMapAvailable) {
+//			glDisable(GL_TEXTURE_CUBE_MAP);
+//		}
+//	}
+//#endif
+}
 
 
-/////*
-////====================
-////RB_LogComment
-////====================
-////*/
-////void RB_LogComment(const char *comment, ...)
-////{
-////	va_list marker;
+/*
+====================
+RB_LogComment
+====================
+*/
+function RB_LogComment(comment:string, ...args:any[]):void
+{
+	//va_list marker;
 
-////	if (!tr.logFile) {
-////		return;
-////	}
-
-////	fprintf(tr.logFile, "// ");
-////	va_start(marker, comment);
-////	vfprintf(tr.logFile, comment, marker);
-////	va_end(marker);
-////}
+	if (!tr.logFile) {
+		return;
+	}
+todoThrow ( );
+	//fprintf(tr.logFile, "// ");
+	//va_start(marker, comment);
+	//vfprintf(tr.logFile, comment, marker);
+	//va_end(marker);
+}
 
 
 //////=============================================================================
@@ -613,11 +613,11 @@ function GL_UseProgram ( program: shaderProgram_t ): void {
 ////		if (sscanf(r_clear.GetString(), "%f %f %f", &c[0], &c[1], &c[2]) == 3) {
 ////			glClearColor(c[0], c[1], c[2], 1);
 ////		} else if (r_clear.GetInteger() == 2) {
-////			glClearColor(0.0, 0.0,  0.0, 1.0f);
+////			glClearColor(0.0, 0.0,  0.0, 1.0);
 ////		} else if (r_showOverDraw.GetBool()) {
-////			glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+////			glClearColor(1.0, 1.0, 1.0, 1.0);
 ////		} else {
-////			glClearColor(0.4f, 0.0, 0.25f, 1.0f);
+////			glClearColor(0.4f, 0.0, 0.25f, 1.0);
 ////		}
 
 ////		glClear(GL_COLOR_BUFFER_BIT);
@@ -663,8 +663,8 @@ function GL_UseProgram ( program: shaderProgram_t ): void {
 
 ////		// show in proportional size in mode 2
 ////		if (r_showImages.GetInteger() == 2) {
-////			w *= image.uploadWidth / 512.0f;
-////			h *= image.uploadHeight / 512.0f;
+////			w *= image.uploadWidth / 512.0;
+////			h *= image.uploadHeight / 512.0;
 ////		}
 
 ////		image.Bind();
@@ -738,74 +738,74 @@ function GL_UseProgram ( program: shaderProgram_t ): void {
 ////	}
 ////}
 
-/////*
-////====================
-////RB_ExecuteBackEndCommands
+/*
+====================
+RB_ExecuteBackEndCommands
 
-////This function will be called syncronously if running without
-////smp extensions, or asyncronously by another thread.
-////====================
-////*/
-////int		backEndStartTime, backEndFinishTime;
-////void RB_ExecuteBackEndCommands(const emptyCommand_t *cmds)
-////{
-////	// r_debugRenderToTexture
-////	int	c_draw3d = 0, c_draw2d = 0, c_setBuffers = 0, c_swapBuffers = 0, c_copyRenders = 0;
+This function will be called syncronously if running without
+smp extensions, or asyncronously by another thread.
+====================
+*/
+var /*int		*/backEndStartTime: number, backEndFinishTime: number;
+function RB_ExecuteBackEndCommands(cmds:emptyCommand_t):void 
+{
+	// r_debugRenderToTexture
+	var /*int	*/c_draw3d = 0, c_draw2d = 0, c_setBuffers = 0, c_swapBuffers = 0, c_copyRenders = 0;
 
-////	if (cmds.commandId == RC_NOP && !cmds.next) {
-////		return;
-////	}
+	if (cmds.commandId == renderCommand_t.RC_NOP && !cmds.next) {
+		return;
+	}
 
-////	backEndStartTime = Sys_Milliseconds();
+	backEndStartTime = Sys_Milliseconds();
 
-////	// needed for editor rendering
-////	RB_SetDefaultGLState();
+	// needed for editor rendering
+	RB_SetDefaultGLState();
 
-////	// upload any image loads that have completed
-////	globalImages.CompleteBackgroundImageLoads();
+	// upload any image loads that have completed
+	globalImages.CompleteBackgroundImageLoads();
 
-////	for (; cmds ; cmds = (const emptyCommand_t *)cmds.next) {
-////		switch (cmds.commandId) {
-////			case RC_NOP:
-////				break;
-////			case RC_DRAW_VIEW:
-////				RB_DrawView(cmds);
+	for (; cmds ; cmds = (const emptyCommand_t *)cmds.next) {
+		switch (cmds.commandId) {
+			case renderCommand_t.RC_NOP:
+				break;
+			case RC_DRAW_VIEW:
+				RB_DrawView(cmds);
 
-////				if (((const drawSurfsCommand_t *)cmds).viewDef.viewEntitys) {
-////					c_draw3d++;
-////				} else {
-////					c_draw2d++;
-////				}
+				if (((const drawSurfsCommand_t *)cmds).viewDef.viewEntitys) {
+					c_draw3d++;
+				} else {
+					c_draw2d++;
+				}
 
-////				break;
-////			case RC_SET_BUFFER:
-////				RB_SetBuffer(cmds);
-////				c_setBuffers++;
-////				break;
-////			case RC_SWAP_BUFFERS:
-////				RB_SwapBuffers(cmds);
-////				c_swapBuffers++;
-////				break;
-////			case RC_COPY_RENDER:
-////				RB_CopyRender(cmds);
-////				c_copyRenders++;
-////				break;
-////			default:
-////				common.Error("RB_ExecuteBackEndCommands: bad commandId");
-////				break;
-////		}
-////	}
+				break;
+			case RC_SET_BUFFER:
+				RB_SetBuffer(cmds);
+				c_setBuffers++;
+				break;
+			case RC_SWAP_BUFFERS:
+				RB_SwapBuffers(cmds);
+				c_swapBuffers++;
+				break;
+			case RC_COPY_RENDER:
+				RB_CopyRender(cmds);
+				c_copyRenders++;
+				break;
+			default:
+				common.Error("RB_ExecuteBackEndCommands: bad commandId");
+				break;
+		}
+	}
 
-////	// go back to the default texture so the editor doesn't mess up a bound image
-////	glBindTexture(GL_TEXTURE_2D, 0);
-////	backEnd.glState.tmu[0].current2DMap = -1;
+	// go back to the default texture so the editor doesn't mess up a bound image
+	glBindTexture(GL_TEXTURE_2D, 0);
+	backEnd.glState.tmu[0].current2DMap = -1;
 
-////	// stop rendering on this thread
-////	backEndFinishTime = Sys_Milliseconds();
-////	backEnd.pc.msec = backEndFinishTime - backEndStartTime;
+	// stop rendering on this thread
+	backEndFinishTime = Sys_Milliseconds();
+	backEnd.pc.msec = backEndFinishTime - backEndStartTime;
 
-////	if (r_debugRenderToTexture.GetInteger() == 1) {
-////		common.Printf("3d: %i, 2d: %i, SetBuf: %i, SwpBuf: %i, CpyRenders: %i, CpyFrameBuf: %i\n", c_draw3d, c_draw2d, c_setBuffers, c_swapBuffers, c_copyRenders, backEnd.c_copyFrameBuffer);
-////		backEnd.c_copyFrameBuffer = 0;
-////	}
-////}
+	if (r_debugRenderToTexture.GetInteger() == 1) {
+		common.Printf("3d: %i, 2d: %i, SetBuf: %i, SwpBuf: %i, CpyRenders: %i, CpyFrameBuf: %i\n", c_draw3d, c_draw2d, c_setBuffers, c_swapBuffers, c_copyRenders, backEnd.c_copyFrameBuffer);
+		backEnd.c_copyFrameBuffer = 0;
+	}
+}
