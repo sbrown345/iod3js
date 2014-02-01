@@ -134,7 +134,6 @@
 /// <reference path="libs/idlib/lib.h.ts" />
 /// <reference path="libs/idlib/lib.cpp.ts" />
 // Text
-/// <reference path="libs/idlib/text/cmdargs.h.ts" />
 /// <reference path="libs/idlib/text/cmdargs.cpp.ts" />
 /// <reference path="libs/idlib/text/lexer.h.ts" />
 /// <reference path="libs/idlib/text/lexer.cpp.ts" />

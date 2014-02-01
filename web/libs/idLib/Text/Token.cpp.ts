@@ -109,10 +109,6 @@ class idToken extends idStr {
     ////};
     ////
 	
-	constructor ( ) {
-		super ( );
-	}
-
 	clone ( ): idToken {
 		var cloned = new idToken ( );
 		cloned.type = this.type;
@@ -128,6 +124,10 @@ class idToken extends idStr {
 		cloned.data = this.data;
 		cloned.len = this.len;
 		return cloned;
+	}
+
+	constructor ( text: string=null ) {
+		super( text );
 	}
 
 	////

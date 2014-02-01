@@ -29,6 +29,52 @@
 ////#include "../idlib/precompiled.h"
 ////#pragma hdrstop
 
+
+
+/////*
+////===============================================================================
+
+////	Command arguments.
+
+////===============================================================================
+////*/
+
+class idCmdArgs {
+	////public:
+	////							idCmdArgs( void ) { argc = 0; }
+	////							idCmdArgs( const char *text, bool keepAsStrings ) { TokenizeString( text, keepAsStrings ); }
+
+	////	void					operator=( const idCmdArgs &args );
+
+	////							// The functions that execute commands get their parameters with these functions.
+	////	int						Argc( void ) const { return argc; }
+	////							// Argv() will return an empty string, not NULL if arg >= argc.
+	////	const char *			Argv( int arg ) const { return ( arg >= 0 && arg < argc ) ? argv[arg] : ""; }
+	////							// Returns a single string containing argv(start) to argv(end)
+	////							// escapeArgs is a fugly way to put the string back into a state ready to tokenize again
+	////	const char *			Args( int start = 1, int end = -1, bool escapeArgs = false ) const;
+
+	////							// Takes a null terminated string and breaks the string up into arg tokens.
+	////							// Does not need to be /n terminated.
+	////							// Set keepAsStrings to true to only seperate tokens from whitespace and comments, ignoring punctuation
+	////	void					TokenizeString( const char *text, bool keepAsStrings );
+
+	////	void					AppendArg( const char *text );
+	////	void					Clear( void ) { argc = 0; }
+	////	const char **			GetArgs( int *argc );
+
+	////private:
+	static MAX_COMMAND_ARGS = 64;
+	static MAX_COMMAND_STRING = 2 * MAX_STRING_CHARS;
+
+	argc=0;								// number of arguments					   //	int						
+	argv = new Array<Uint8Array>(idCmdArgs.MAX_COMMAND_ARGS);			// points into tokenized	   //	char *					
+	tokenized = new Uint8Array(idCmdArgs.MAX_COMMAND_STRING);		// will have 0 bytes inserted		   //	char					
+
+
+////#endif /* !__CMDARGS_H__ */
+
+
 /////*
 ////============
 ////idCmdArgs::operator=
@@ -37,9 +83,9 @@
 ////void idCmdArgs::operator=( const idCmdArgs &args ) {
 ////	int i;
 
-////	argc = args.argc;
+////	this.argc = args.argc;
 ////	memcpy( tokenized, args.tokenized, MAX_COMMAND_STRING );
-////	for ( i = 0; i < argc; i++ ) {
+////	for ( i = 0; i < this.argc; i++ ) {
 ////		argv[ i ] = tokenized + ( args.argv[ i ] - args.tokenized );
 ////	}
 ////}
@@ -54,9 +100,9 @@
 ////	int		i;
 
 ////	if ( end < 0 ) {
-////		end = argc - 1;
-////	} else if ( end >= argc ) {
-////		end = argc - 1;
+////		end = this.argc - 1;
+////	} else if ( end >= this.argc ) {
+////		end = this.argc - 1;
 ////	}
 ////	cmd_args[0] = '\0';
 ////	if ( escapeArgs ) {
@@ -93,81 +139,81 @@
 ////	return cmd_args;
 ////}
 
-/////*
-////============
-////idCmdArgs::TokenizeString
+/*
+============
+idCmdArgs::TokenizeString
 
-////Parses the given string into command line tokens.
-////The text is copied to a separate buffer and 0 characters
-////are inserted in the appropriate place. The argv array
-////will point into this temporary buffer.
-////============
-////*/
-////void idCmdArgs::TokenizeString( const char *text, bool keepAsStrings ) {
-////	idLexer		lex;
-////	idToken		token, number;
-////	int			len, totalLen;
+Parses the given string into command line tokens.
+The text is copied to a separate buffer and 0 characters
+are inserted in the appropriate place. The argv array
+will point into this temporary buffer.
+============
+*/
+	TokenizeString ( text: string, keepAsStrings: boolean ): void {
+		var lex = new idLexer;
+		var token = new R( new idToken ), $number = new R( new idToken ( ) );
+		var /*int*/len: number, totalLen: number;
 
-////	// clear previous args
-////	argc = 0;
+		// clear previous args
+		this.argc = 0;
 
-////	if ( !text ) {
-////		return;
-////	}
+		if ( !text ) {
+			return;
+		}
 
-////	lex.LoadMemory( text, strlen( text ), "idCmdSystemLocal::TokenizeString" );
-////	lex.SetFlags( lexerFlags_t.LEXFL_NOERRORS
-////				| lexerFlags_t.LEXFL_NOWARNINGS
-////				| lexerFlags_t.LEXFL_NOSTRINGCONCAT
-////				| lexerFlags_t.LEXFL_ALLOWPATHNAMES
-////				| lexerFlags_t.NOSTRINGESCAPECHARS
-////				| lexerFlags_t.LEXFL_ALLOWIPADDRESSES | ( keepAsStrings ? lexerFlags_t.LEXFL_ONLYSTRINGS : 0 ) );
+		lex.LoadMemory( text, strlen( text ), "idCmdSystemLocal::TokenizeString" );
+		lex.SetFlags( lexerFlags_t.LEXFL_NOERRORS
+			| lexerFlags_t.LEXFL_NOWARNINGS
+			| lexerFlags_t.LEXFL_NOSTRINGCONCAT
+			| lexerFlags_t.LEXFL_ALLOWPATHNAMES
+			| lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS
+			| lexerFlags_t.LEXFL_ALLOWIPADDRESSES | ( keepAsStrings ? lexerFlags_t.LEXFL_ONLYSTRINGS : 0 ) );
 
-////	totalLen = 0;
+		totalLen = 0;
 
-////	while ( 1 ) {
-////		if ( argc == MAX_COMMAND_ARGS ) {
-////			return;			// this is usually something malicious
-////		}
+		while ( 1 ) {
+			if ( this.argc == idCmdArgs.MAX_COMMAND_ARGS ) {
+				return; // this is usually something malicious
+			}
 
-////		if ( !lex.ReadToken( &token ) ) {
-////			return;
-////		}
+			if ( !lex.ReadToken( token ) ) {
+				return;
+			}
 
-////		// check for negative numbers
-////		if ( !keepAsStrings && ( token == "-" ) ) {
-////			if ( lex.CheckTokenType( TT_NUMBER, 0, &number ) ) {
-////				token = "-" + number;
-////			}
-////		}
+			// check for negative numbers
+			if ( !keepAsStrings && ( token.$.data == "-" ) ) {
+				if ( lex.CheckTokenType( TT_NUMBER, 0, $number ) ) {
+					token.$ = new idToken( "-" + $number.$.data );
+				}
+			}
 
-////		// check for cvar expansion
-////		if ( token == "$" ) {
-////			if ( !lex.ReadToken( &token ) ) {
-////				return;
-////			}
-////			if ( idLib::cvarSystem ) {
-////				token = idLib::cvarSystem.GetCVarString( token.c_str() );
-////			} else {
-////				token = "<unknown>";
-////			}
-////		}
+			// check for cvar expansion
+			if ( token.$.data == "$" ) {
+				if ( !lex.ReadToken( token ) ) {
+					return;
+				}
+				if ( /*idLib::*/cvarSystem ) {
+					token.$ = new idToken( /*idLib::*/cvarSystem.GetCVarString( token.$.c_str ( ) ) );
+				} else {
+					token.$ = new idToken( "<unknown>" );
+				}
+			}
 
-////		len = token.Length();
+			len = token.$.Length ( );
 
-////		if ( totalLen + len + 1 > sizeof( tokenized ) ) {
-////			return;			// this is usually something malicious
-////		}
+			if ( totalLen + len + 1 > sizeof( this.tokenized ) ) {
+				return; // this is usually something malicious
+			}
 
-////		// regular token
-////		argv[argc] = tokenized + totalLen;
-////		argc++;
+			// regular token
+			this.argv[this.argc] = this.tokenized.subarray( totalLen ); //tokenized + totalLen;
+			this.argc++;
 
-////		idStr.Copynz( tokenized + totalLen, token.c_str(), sizeof( tokenized ) - totalLen );
+			idStr.Copynz( this.tokenized.subarray( totalLen ) /*tokenized + totalLen*/, token.$.c_str ( ), idCmdArgs.MAX_COMMAND_STRING /*sizeof( tokenized )*/ - totalLen );
 
-////		totalLen += len + 1;
-////	}
-////}
+			totalLen += len + 1;
+		}
+	}
 
 /////*
 ////============
@@ -175,14 +221,14 @@
 ////============
 ////*/
 ////void idCmdArgs::AppendArg( const char *text ) {
-////	if ( !argc ) {
-////		argc = 1;
-////		argv[ 0 ] = tokenized;
+////	if ( !this.argc ) {
+////		this.argc = 1;
+////		this.argv[ 0 ] = tokenized;
 ////		idStr.Copynz( tokenized, text, sizeof( tokenized ) );
 ////	} else {
-////		argv[ argc ] = argv[ argc-1 ] + strlen( argv[ argc-1 ] ) + 1;
-////		idStr.Copynz( argv[ argc ], text, sizeof( tokenized ) - ( argv[ argc ] - tokenized ) );
-////		argc++;
+////		this.argv[ this.argc ] = this.argv[ this.argc-1 ] + strlen( this.argv[ this.argc-1 ] ) + 1;
+////		idStr.Copynz( this.argv[ this.argc ], text, sizeof( tokenized ) - ( this.argv[ this.argc ] - tokenized ) );
+////		this.argc++;
 ////	}
 ////}
 
@@ -191,8 +237,10 @@
 ////idCmdArgs::GetArgs
 ////============
 ////*/
-////const char **idCmdArgs::GetArgs( int *_argc ) {
-////	*_argc = argc;
-////	return (const char **)&argv[0];
+////const char **idCmdArgs::GetArgs( int *_this.this.argc ) {
+////	*_argc = this.argc;
+////	return (const char **)&this.argv[0];
 ////}
+
+};
 

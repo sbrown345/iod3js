@@ -2040,7 +2040,7 @@ void idRenderSystemLocal::InitOpenGL( void ) {
 		err = glGetError();
 		if ( err != GL_NO_ERROR ) {
 			common->Printf( "glGetError() = 0x%x\n", err );
-		}
+		}	
 	}
 }
 

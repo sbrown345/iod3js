@@ -1084,27 +1084,27 @@ class idLexer {
 	////	return 0;
 	////}
 
-	/////*
-	////================
-	////idLexer::CheckTokenType
-	////================
-	////*/
-	////int idLexer::CheckTokenType( int type, int subtype, token:R<idToken> ) {
-	////	var tok = new idToken;
+	/*
+	================
+	idLexer::CheckTokenType
+	================
+	*/
+	/*int */CheckTokenType( /*int */type: number, /*int */subtype: number, token: R<idToken>): number {
+		var tok = new R(new idToken);
 
-	////	if ( !ReadToken( &tok ) ) {
-	////		return 0;
-	////	}
-	////	// if the type matches
-	////	if (tok.type == type && (tok.subtype & subtype) == subtype) {
-	////		token.$ = tok;
-	////		return 1;
-	////	}
-	////	// unread token
-	////	script_p = this.lastScript_p;
-	////	this.line = this.lastline;
-	////	return 0;
-	////}
+		if ( !this.ReadToken( tok ) ) {
+			return 0;
+		}
+		// if the type matches
+		if (tok.$.type == type && (tok.$.subtype & subtype) == subtype) {
+			token.$ = tok.$.clone();
+			return 1;
+		}
+		// unread token
+		this.script_p = this.lastScript_p;
+		this.line = this.lastline;
+		return 0;
+	}
 
 	/////*
 	////================

@@ -1257,110 +1257,110 @@ idImageManager.prototype.R_ListImages_f = function ( args: idCmdArgs ): void {
 
 };
 
-/////*
-////==================
-////SetNormalPalette
+/*
+==================
+SetNormalPalette
 
-////Create a 256 color palette to be used by compressed normal maps
-////==================
-////*/
-////void idImageManager::SetNormalPalette( void ) {
-////	int		i, j;
-////	idVec3	v;
-////	var/*float*/t;
-////	//byte temptable[768];
-////	byte	*temptable = compressedPalette;
-////	int		compressedToOriginal[16];
+Create a 256 color palette to be used by compressed normal maps
+==================
+*/
+idImageManager.prototype.SetNormalPalette = function ( ): void {
+	var /*int		*/i: number, j: number;
+	var v = new idVec3;
+	var /*float*/t = 0.0;
+	//byte temptable[768];
+	var temptable = <Uint8Array>this.compressedPalette;
+	var compressedToOriginal = Int32Array( 16 );
 
-////	// make an ad-hoc separable compression mapping scheme
-////	for ( i = 0 ; i < 8 ; i++ ) {
-////		var/*float*/f, y;
+	// make an ad-hoc separable compression mapping scheme
+	for ( i = 0; i < 8; i++ ) {
+		var /*float*/f: number, y: number;
 
-////		f = ( i + 1 ) / 8.5;
-////		y = idMath::Sqrt( 1.0 - f * f );
-////		y = 1.0 - y;
+		f = ( i + 1 ) / 8.5;
+		y = idMath.Sqrt( 1.0 - f * f );
+		y = 1.0 - y;
 
-////		compressedToOriginal[7-i] = 127 - (int)( y * 127 + 0.5 );
-////		compressedToOriginal[8+i] = 128 + (int)( y * 127 + 0.5 );
-////	}
+		compressedToOriginal[7 - i] = 127 - int( y * 127 + 0.5 );
+		compressedToOriginal[8 + i] = 128 + int( y * 127 + 0.5 );
+	}
 
-////	for ( i = 0 ; i < 256 ; i++ ) {
-////		if ( i <= compressedToOriginal[0] ) {
-////			originalToCompressed[i] = 0;
-////		} else if ( i >= compressedToOriginal[15] ) {
-////			originalToCompressed[i] = 15;
-////		} else {
-////			for ( j = 0 ; j < 14 ; j++ ) {
-////				if ( i <= compressedToOriginal[j+1] ) {
-////					break;
-////				}
-////			}
-////			if ( i - compressedToOriginal[j] < compressedToOriginal[j+1] - i ) {
-////				originalToCompressed[i] = j;
-////			} else {
-////				originalToCompressed[i] = j + 1;
-////			}
-////		}
-////	}
+	for ( i = 0; i < 256; i++ ) {
+		if ( i <= compressedToOriginal[0] ) {
+			this.originalToCompressed[i] = 0;
+		} else if ( i >= compressedToOriginal[15] ) {
+			this.originalToCompressed[i] = 15;
+		} else {
+			for ( j = 0; j < 14; j++ ) {
+				if ( i <= compressedToOriginal[j + 1] ) {
+					break;
+				}
+			}
+			if ( i - compressedToOriginal[j] < compressedToOriginal[j + 1] - i ) {
+				this.originalToCompressed[i] = j;
+			} else {
+				this.originalToCompressed[i] = j + 1;
+			}
+		}
+	}
 
-////#if 0
-////	for ( i = 0; i < 16; i++ ) {
-////		for ( j = 0 ; j < 16 ; j++ ) {
+//#if 0
+//	for ( i = 0; i < 16; i++ ) {
+//		for ( j = 0 ; j < 16 ; j++ ) {
 
-////			v[0] = ( i - 7.5 ) / 8;
-////			v[1] = ( j - 7.5 ) / 8;
+//			v[0] = ( i - 7.5 ) / 8;
+//			v[1] = ( j - 7.5 ) / 8;
 
-////			t = 1.0 - ( v[0]*v[0] + v[1]*v[1] );
-////			if ( t < 0 ) {
-////				t = 0;
-////			}
-////			v[2] = idMath::Sqrt( t );
+//			t = 1.0 - ( v[0]*v[0] + v[1]*v[1] );
+//			if ( t < 0 ) {
+//				t = 0;
+//			}
+//			v[2] = idMath.Sqrt( t );
 
-////			temptable[(i*16+j)*3+0] = 128 + floor( 127 * v[0] + 0.5 );
-////			temptable[(i*16+j)*3+1] = 128 + floor( 127 * v[1] );
-////			temptable[(i*16+j)*3+2] = 128 + floor( 127 * v[2] );
-////		}
-////	}
-////#else
-////	for ( i = 0; i < 16; i++ ) {
-////		for ( j = 0 ; j < 16 ; j++ ) {
+//			temptable[(i*16+j)*3+0] = 128 + floor( 127 * v[0] + 0.5 );
+//			temptable[(i*16+j)*3+1] = 128 + floor( 127 * v[1] );
+//			temptable[(i*16+j)*3+2] = 128 + floor( 127 * v[2] );
+//		}
+//	}
+//#else
+	for ( i = 0; i < 16; i++ ) {
+		for ( j = 0; j < 16; j++ ) {
 
-////			v[0] = ( compressedToOriginal[i] - 127.5 ) / 128;
-////			v[1] = ( compressedToOriginal[j] - 127.5 ) / 128;
+			v[0] = ( compressedToOriginal[i] - 127.5 ) / 128;
+			v[1] = ( compressedToOriginal[j] - 127.5 ) / 128;
 
-////			t = 1.0 - ( v[0]*v[0] + v[1]*v[1] );
-////			if ( t < 0 ) {
-////				t = 0;
-////			}
-////			v[2] = idMath::Sqrt( t );
+			t = 1.0 - ( v[0] * v[0] + v[1] * v[1] );
+			if ( t < 0 ) {
+				t = 0;
+			}
+			v[2] = idMath.Sqrt( t );
 
-////			temptable[(i*16+j)*3+0] = (byte)(128 + floor( 127 * v[0] + 0.5 ));
-////			temptable[(i*16+j)*3+1] = (byte)(128 + floor( 127 * v[1] ));
-////			temptable[(i*16+j)*3+2] = (byte)(128 + floor( 127 * v[2] ));
-////		}
-////	}
-////#endif
+			temptable[( i * 16 + j ) * 3 + 0] = /*(byte)*/( 128 + floor( 127 * v[0] + 0.5 ) );
+			temptable[( i * 16 + j ) * 3 + 1] = /*(byte)*/( 128 + floor( 127 * v[1] ) );
+			temptable[( i * 16 + j ) * 3 + 2] = /*(byte)*/( 128 + floor( 127 * v[2] ) );
+		}
+	}
+//#endif
 
-////	// color 255 will be the "nullnormal" color for no reflection
-////	temptable[255*3+0] =
-////	temptable[255*3+1] =
-////	temptable[255*3+2] = 128;
+	// color 255 will be the "nullnormal" color for no reflection
+	temptable[255 * 3 + 0] =
+		temptable[255 * 3 + 1] =
+		temptable[255 * 3 + 2] = 128;
 
-////	if ( !glConfig.sharedTexturePaletteAvailable ) {
-////		return;
-////	}
+	if ( !glConfig.sharedTexturePaletteAvailable ) {
+		return;
+	}
 
-////#if !defined(GL_ES_VERSION_2_0)
-////	glColorTableEXT( GL_SHARED_TEXTURE_PALETTE_EXT,
-////					   GL_RGB,
-////					   256,
-////					   GL_RGB,
-////					   GL_UNSIGNED_BYTE,
-////					   temptable );
+//#if !defined(GL_ES_VERSION_2_0)
+//	glColorTableEXT( GL_SHARED_TEXTURE_PALETTE_EXT,
+//					   GL_RGB,
+//					   256,
+//					   GL_RGB,
+//					   GL_UNSIGNED_BYTE,
+//					   temptable );
 
-////	glEnable( GL_SHARED_TEXTURE_PALETTE_EXT );
-////#endif
-////}
+//	glEnable( GL_SHARED_TEXTURE_PALETTE_EXT );
+//#endif
+};
 
 /*
 ==============
@@ -1639,14 +1639,14 @@ ReloadAllImages
 ===============
 */
 idImageManager.prototype.ReloadAllImages = function ( ): void {
-	var args: idCmdArgs;
-	todoThrow ( );
+	var args = new idCmdArgs;
 
-	//// build the compressed normal map palette
-	//SetNormalPalette();
 
-	//args.TokenizeString( "reloadImages reload", false );
-	//R_ReloadImages_f( args );
+	// build the compressed normal map palette
+	this.SetNormalPalette();
+
+	args.TokenizeString( "reloadImages reload", false );
+	this.R_ReloadImages_f( args );
 };
 
 /*

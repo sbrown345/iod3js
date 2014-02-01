@@ -326,10 +326,10 @@ class idImageManager {
 
 
 
-    R_ReloadImages_f(image:idImage):void{throw "placeholder";}
+	R_ReloadImages_f(args: idCmdArgs):void{throw "placeholder";}
     //R_QsortImageSizes(/*?*/):void {throw "placeholder";}
     R_ListImages_f(args:idCmdArgs):void {throw "placeholder";}
-    //SetNormalPalette():void {throw "placeholder";}
+    SetNormalPalette():void {throw "placeholder";}
     R_CombineCubeImages_f(args:idCmdArgs):void {throw "placeholder";} 
 
 
@@ -428,8 +428,8 @@ class idImageManager {
 
     insideLevelLoad:boolean;			// don't actually load images now
 
-    originalToCompressed:Uint8Array/*[256]*/;	// maps normal maps to 8 bit textures
-    compressedPalette:Uint8Array/*[768]*/;		// the palette that normal maps use
+    originalToCompressed = new Uint8Array(256);	// maps normal maps to 8 bit textures
+    compressedPalette = new Uint8Array(768);		// the palette that normal maps use
 
     // default filter modes for images
     /*GLenum		*/	textureMinFilter:number;
