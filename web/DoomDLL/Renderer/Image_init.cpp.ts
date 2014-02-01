@@ -877,134 +877,135 @@ idImageManager.prototype.R_QuadraticImage = function ( image: idImage ): void {
 ////} filterName_t;
 
 
-/////*
-////===============
-////ChangeTextureFilter
+///*
+//===============
+//ChangeTextureFilter
 
-////This resets filtering on all loaded images
-////New images will automatically pick up the current values.
-////===============
-////*/
-////void idImageManager::ChangeTextureFilter( void ) {
-////	int		i;
-////	idImage	*glt;
-////	const char	*string;
-////static filterName_t textureFilters[] = {
-////	{"GL_LINEAR_MIPMAP_NEAREST", GL_LINEAR_MIPMAP_NEAREST, GL_LINEAR},
-////	{"GL_LINEAR_MIPMAP_LINEAR", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR},
-////	{"GL_NEAREST", GL_NEAREST, GL_NEAREST},
-////	{"GL_LINEAR", GL_LINEAR, GL_LINEAR},
-////	{"GL_NEAREST_MIPMAP_NEAREST", GL_NEAREST_MIPMAP_NEAREST, GL_NEAREST},
-////	{"GL_NEAREST_MIPMAP_LINEAR", GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST}
-////};
+//This resets filtering on all loaded images
+//New images will automatically pick up the current values.
+//===============
+//*/
+//void idImageManager::ChangeTextureFilter( void ) {
+//	int		i;
+//	idImage	*glt;
+//	const char	*string;
+//static filterName_t textureFilters[] = {
+//	{"GL_LINEAR_MIPMAP_NEAREST", GL_LINEAR_MIPMAP_NEAREST, GL_LINEAR},
+//	{"GL_LINEAR_MIPMAP_LINEAR", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR},
+//	{"GL_NEAREST", GL_NEAREST, GL_NEAREST},
+//	{"GL_LINEAR", GL_LINEAR, GL_LINEAR},
+//	{"GL_NEAREST_MIPMAP_NEAREST", GL_NEAREST_MIPMAP_NEAREST, GL_NEAREST},
+//	{"GL_NEAREST_MIPMAP_LINEAR", GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST}
+//};
 
-////	// if these are changed dynamically, it will force another ChangeTextureFilter
-////	image_filter.ClearModified();
-////	image_anisotropy.ClearModified();
-////	image_lodbias.ClearModified();
+//	// if these are changed dynamically, it will force another ChangeTextureFilter
+//	image_filter.ClearModified();
+//	image_anisotropy.ClearModified();
+//	image_lodbias.ClearModified();
 
-////	string = image_filter.GetString();
-////	for ( i = 0; i < 6; i++ ) {
-////		if ( !idStr::Icmp( textureFilters[i].name, string ) ) {
-////			break;
-////		}
-////	}
+//	string = image_filter.GetString();
+//	for ( i = 0; i < 6; i++ ) {
+//		if ( !idStr.Icmp( textureFilters[i].name, string ) ) {
+//			break;
+//		}
+//	}
 
-////	if ( i == 6 ) {
-////		common.Warning( "bad r_textureFilter: '%s'", string);
-////		// default to LINEAR_MIPMAP_NEAREST
-////		i = 0;
-////	}
+//	if ( i == 6 ) {
+//		common.Warning( "bad r_textureFilter: '%s'", string);
+//		// default to LINEAR_MIPMAP_NEAREST
+//		i = 0;
+//	}
 
-////	// set the values for future images
-////	textureMinFilter = textureFilters[i].minimize;
-////	textureMaxFilter = textureFilters[i].maximize;
-////	textureAnisotropy = image_anisotropy.GetFloat();
-////	if ( textureAnisotropy < 1 ) {
-////		textureAnisotropy = 1;
-////	} else if ( textureAnisotropy > glConfig.maxTextureAnisotropy ) {
-////		textureAnisotropy = glConfig.maxTextureAnisotropy;
-////	}
-////	textureLODBias = image_lodbias.GetFloat();
+//	// set the values for future images
+//	textureMinFilter = textureFilters[i].minimize;
+//	textureMaxFilter = textureFilters[i].maximize;
+//	textureAnisotropy = image_anisotropy.GetFloat();
+//	if ( textureAnisotropy < 1 ) {
+//		textureAnisotropy = 1;
+//	} else if ( textureAnisotropy > glConfig.maxTextureAnisotropy ) {
+//		textureAnisotropy = glConfig.maxTextureAnisotropy;
+//	}
+//	textureLODBias = image_lodbias.GetFloat();
 
-////	// change all the existing mipmap texture objects with default filtering
+//	// change all the existing mipmap texture objects with default filtering
 
-////	for ( i = 0 ; i < images.Num() ; i++ ) {
-////		unsigned int	texEnum = GL_TEXTURE_2D;
+//	for ( i = 0 ; i < images.Num() ; i++ ) {
+//		unsigned int	texEnum = GL_TEXTURE_2D;
 
-////		glt = images[ i ];
+//		glt = images[ i ];
 
-////		switch( glt.type ) {
-////		case TT_2D:
-////			texEnum = GL_TEXTURE_2D;
-////			break;
-////#if !defined(GL_ES_VERSION_2_0)
-////		case TT_3D:
-////			texEnum = GL_TEXTURE_3D;
-////			break;
-////#endif
-////		case textureType_t.TT_CUBIC:
-////			texEnum = GL_TEXTURE_CUBE_MAP;
-////			break;
-////		}
+//		switch( glt.type ) {
+//		case TT_2D:
+//			texEnum = GL_TEXTURE_2D;
+//			break;
+//#if !defined(GL_ES_VERSION_2_0)
+//		case TT_3D:
+//			texEnum = GL_TEXTURE_3D;
+//			break;
+//#endif
+//		case textureType_t.TT_CUBIC:
+//			texEnum = GL_TEXTURE_CUBE_MAP;
+//			break;
+//		}
 
-////		// make sure we don't start a background load
-////		if ( glt.texnum == idImage::TEXTURE_NOT_LOADED ) {
-////			continue;
-////		}
-////		glt.Bind();
-////		if ( glt.filter == textureFilter_t.TF_DEFAULT ) {
-////			glTexParameterf(texEnum, GL_TEXTURE_MIN_FILTER, globalImages.textureMinFilter );
-////			glTexParameterf(texEnum, GL_TEXTURE_MAG_FILTER, globalImages.textureMaxFilter );
-////		}
-////		if ( glConfig.anisotropicAvailable ) {
-////			glTexParameterf(texEnum, GL_TEXTURE_MAX_ANISOTROPY_EXT, globalImages.textureAnisotropy );
-////		}	
-////#if !defined(GL_ES_VERSION_2_0)
-////		if ( glConfig.textureLODBiasAvailable ) {
-////			glTexParameterf(texEnum, GL_TEXTURE_LOD_BIAS_EXT, globalImages.textureLODBias );
-////		}
-////#endif
-////	}
-////}
+//		// make sure we don't start a background load
+//		if ( glt.texnum == idImage::TEXTURE_NOT_LOADED ) {
+//			continue;
+//		}
+//		glt.Bind();
+//		if ( glt.filter == textureFilter_t.TF_DEFAULT ) {
+//			glTexParameterf(texEnum, GL_TEXTURE_MIN_FILTER, globalImages.textureMinFilter );
+//			glTexParameterf(texEnum, GL_TEXTURE_MAG_FILTER, globalImages.textureMaxFilter );
+//		}
+//		if ( glConfig.anisotropicAvailable ) {
+//			glTexParameterf(texEnum, GL_TEXTURE_MAX_ANISOTROPY_EXT, globalImages.textureAnisotropy );
+//		}	
+//#if !defined(GL_ES_VERSION_2_0)
+//		if ( glConfig.textureLODBiasAvailable ) {
+//			glTexParameterf(texEnum, GL_TEXTURE_LOD_BIAS_EXT, globalImages.textureLODBias );
+//		}
+//#endif
+//	}
+//}
 
-/////*
-////===============
-////idImage::Reload
-////===============
-////*/
-////void idImage::Reload( bool checkPrecompressed, bool force ) {
-////	// always regenerate functional images
-////	if ( generatorFunction ) {
-////		common.DPrintf( "regenerating %s.\n", imgName.c_str() );
-////		generatorFunction( this );
-////		return;
-////	}
+/*
+===============
+idImage::Reload
+===============
+*/
+idImage.prototype.Reload = function ( checkPrecompressed: boolean, force: boolean ): void {
+	notNeeded( "// check for changed timestamp on disk and reload if necessary" );
+	//// always regenerate functional images
+	//if ( this.generatorFunction ) {
+	//	common.DPrintf("regenerating %s.\n", this.imgName.c_str() );
+	//	this.generatorFunction( this );
+	//	return;
+	//}
 
-////	// check file times
-////	if ( !force ) {
-////		ID_TIME_T	current;
+	//// check file times
+	//if ( !force ) {
+	//	var/*ID_TIME_T	*/current = new R<Number>();
 
-////		if ( cubeFiles != cubeFiles_t.CF_2D ) {
-////			R_LoadCubeImages( imgName, cubeFiles, NULL, NULL, &current );
-////		} else {
-////			// get the current values
-////			R_LoadImageProgram( imgName, NULL, NULL, NULL, &current );
-////		}
-////		if ( current <= timestamp ) {
-////			return;
-////		}
-////	}
+	//	if (this.cubeFiles != cubeFiles_t.CF_2D ) {
+	//		R_LoadCubeImages(this.imgName, cubeFiles, null, null, current );
+	//	} else {
+	//		// get the current values
+	//		R_LoadImageProgram(this.imgName, null, null, null, current );
+	//	}
+	//	if (current.$ <= this.timestamp ) {
+	//		return;
+	//	}
+	//}
 
-////	common.DPrintf( "reloading %s.\n", imgName.c_str() );
+	//common.DPrintf( "reloading %s.\n", imgName.c_str() );
 
-////	PurgeImage();
+	//this.PurgeImage();
 
-////	// force no precompressed image check, which will cause it to be reloaded
-////	// from source, and another precompressed file generated.
-////	// Load is from the front end, so the back end must be synced
-////	ActuallyLoadImage( checkPrecompressed, false );
-////}
+	//// force no precompressed image check, which will cause it to be reloaded
+	//// from source, and another precompressed file generated.
+	//// Load is from the front end, so the back end must be synced
+	//this.ActuallyLoadImage( checkPrecompressed, false );
+};
 
 /*
 ===============
@@ -1018,23 +1019,23 @@ New r_texturesize/r_texturedepth variables will take effect on reload
 reloadImages <all>
 ===============
 */
-idImageManager.prototype.R_ReloadImages_f = function ( args: idCmdArgs ): void {
-    todoThrow ( );
-    //int		i;
-    //idImage	*image;
-    //bool	all;
-    //bool	checkPrecompressed;
+idImageManager.prototype.R_ReloadImages_f = function (args: idCmdArgs): void {
+	notNeeded ( );
+    //var /*int		*/i:number;
+	//var image: idImage;
+    //var all:boolean;
+    //var checkPrecompressed: boolean;
 
     //// this probably isn't necessary...
-    //globalImages.ChangeTextureFilter();
+	//notNeeded( "globalImages.ChangeTextureFilter();" );
 
     //all = false;
     //checkPrecompressed = false;		// if we are doing this as a vid_restart, look for precompressed like normal
 
     //if ( args.Argc() == 2 ) {
-    //	if ( !idStr::Icmp( args.Argv(1), "all" ) ) {
+    //	if ( !idStr.Icmp( args.Argv(1), "all" ) ) {
     //		all = true;
-    //	} else if ( !idStr::Icmp( args.Argv(1), "reload" ) ) {
+    //	} else if ( !idStr.Icmp( args.Argv(1), "reload" ) ) {
     //		all = true;
     //		checkPrecompressed = true;
     //	} else {
@@ -1072,7 +1073,7 @@ idImageManager.prototype.R_ReloadImages_f = function ( args: idCmdArgs ): void {
 ////	if ( ea.size < eb.size ) {
 ////		return 1;
 ////	}
-////	return idStr::Icmp( ea.image.imgName, eb.image.imgName );
+////	return idStr.Icmp( ea.image.imgName, eb.image.imgName );
 ////}
 
 /*
@@ -1102,28 +1103,28 @@ idImageManager.prototype.R_ListImages_f = function ( args: idCmdArgs ): void {
 //	if ( args.Argc() == 1 ) {
 
 //	} else if ( args.Argc() == 2 ) {
-//		if ( idStr::Icmp( args.Argv( 1 ), "uncompressed" ) == 0 ) {
+//		if ( idStr.Icmp( args.Argv( 1 ), "uncompressed" ) == 0 ) {
 //			uncompressedOnly = true;
-//		} else if ( idStr::Icmp( args.Argv( 1 ), "sorted" ) == 0 ) {
+//		} else if ( idStr.Icmp( args.Argv( 1 ), "sorted" ) == 0 ) {
 //			sorted = true;
-//		} else if ( idStr::Icmp( args.Argv( 1 ), "partial" ) == 0 ) {
+//		} else if ( idStr.Icmp( args.Argv( 1 ), "partial" ) == 0 ) {
 //			partial = true;
-//		} else if ( idStr::Icmp( args.Argv( 1 ), "unloaded" ) == 0 ) {
+//		} else if ( idStr.Icmp( args.Argv( 1 ), "unloaded" ) == 0 ) {
 //			unloaded = true;
-//		} else if ( idStr::Icmp( args.Argv( 1 ), "cached" ) == 0 ) {
+//		} else if ( idStr.Icmp( args.Argv( 1 ), "cached" ) == 0 ) {
 //			cached = true;
-//		} else if ( idStr::Icmp( args.Argv( 1 ), "uncached" ) == 0 ) {
+//		} else if ( idStr.Icmp( args.Argv( 1 ), "uncached" ) == 0 ) {
 //			uncached = true;
-//		} else if ( idStr::Icmp( args.Argv( 1 ), "tagged" ) == 0 ) {
+//		} else if ( idStr.Icmp( args.Argv( 1 ), "tagged" ) == 0 ) {
 //			matchTag = 1;
-//		} else if ( idStr::Icmp( args.Argv( 1 ), "duplicated" ) == 0 ) {
+//		} else if ( idStr.Icmp( args.Argv( 1 ), "duplicated" ) == 0 ) {
 //			duplicated = true;
-//		} else if ( idStr::Icmp( args.Argv( 1 ), "touched" ) == 0 ) {
+//		} else if ( idStr.Icmp( args.Argv( 1 ), "touched" ) == 0 ) {
 //			touched = true;
-//		} else if ( idStr::Icmp( args.Argv( 1 ), "classify" ) == 0 ) {
+//		} else if ( idStr.Icmp( args.Argv( 1 ), "classify" ) == 0 ) {
 //			byClassification = true;
 //			sorted = true;
-//		} else if ( idStr::Icmp( args.Argv( 1 ), "oversized" ) == 0 ) {
+//		} else if ( idStr.Icmp( args.Argv( 1 ), "oversized" ) == 0 ) {
 //			byClassification = true;
 //			sorted = true;
 //			overSized = true;
@@ -1177,7 +1178,7 @@ idImageManager.prototype.R_ListImages_f = function ( args: idCmdArgs ): void {
 //		if ( duplicated ) {
 //			int j;
 //			for ( j = i+1 ; j < globalImages.images.Num() ; j++ ) {
-//				if ( idStr::Icmp( image.imgName, globalImages.images[ j ].imgName ) == 0 ) {
+//				if ( idStr.Icmp( image.imgName, globalImages.images[ j ].imgName ) == 0 ) {
 //					break;
 //				}
 //			}
@@ -1595,7 +1596,7 @@ idImageManager.prototype.ImageFromFile = function ( _name: string, filter: textu
 ////	idImage	*image;
 ////	int hash;
 
-////	if ( !_name || !_name[0] || idStr::Icmp( _name, "default" ) == 0 || idStr::Icmp( _name, "_default" ) == 0 ) {
+////	if ( !_name || !_name[0] || idStr.Icmp( _name, "default" ) == 0 || idStr.Icmp( _name, "_default" ) == 0 ) {
 ////		declManager.MediaPrint( "DEFAULTED\n" );
 ////		return globalImages.defaultImage;
 ////	}
@@ -1615,7 +1616,7 @@ idImageManager.prototype.ImageFromFile = function ( _name: string, filter: textu
 ////		}
 ////	}
 
-////	return NULL;
+////	return null;
 ////}
 
 /////*
@@ -1679,7 +1680,7 @@ idImageManager.prototype.R_CombineCubeImages_f = function ( args: idCmdArgs ): v
     //		sprintf( filename, "%s%i%04i.tga", baseName.c_str(), orderRemap[side], frameNum );
 
     //		common.Printf( "reading %s\n", filename );
-    //		R_LoadImage( filename, &pics[side], &width, &height, NULL, true );
+    //		R_LoadImage( filename, &pics[side], &width, &height, null, true );
 
     //		if ( !pics[side] ) {
     //			common.Printf( "not found.\n" );
@@ -1798,8 +1799,8 @@ idImageManager.prototype.R_CombineCubeImages_f = function ( args: idCmdArgs ): v
 ////		// remove it from the cached list
 ////		check.cacheUsageNext.cacheUsagePrev = check.cacheUsagePrev;
 ////		check.cacheUsagePrev.cacheUsageNext = check.cacheUsageNext;
-////		check.cacheUsageNext = NULL;
-////		check.cacheUsagePrev = NULL;
+////		check.cacheUsageNext = null;
+////		check.cacheUsagePrev = null;
 ////	}
 ////}
 
@@ -1811,7 +1812,7 @@ idImageManager.prototype.R_CombineCubeImages_f = function ( args: idCmdArgs ): v
 ////==================
 ////*/
 ////void idImageManager::CompleteBackgroundImageLoads() {
-////	idImage	*remainingList = NULL;
+////	idImage	*remainingList = null;
 ////	idImage	*next;
 
 ////	for ( idImage *image = backgroundImageLoads ; image ; image = next ) {
@@ -2079,7 +2080,7 @@ idImageManager.prototype.Init = function ( ): void {
 ////	idFile *batchFile;
 ////	if ( removeDups ) {
 ////		ddsList.Clear();
-////		char *buffer = NULL;
+////		char *buffer = null;
 ////		fileSystem.ReadFile( "makedds.bat", (void**)&buffer );
 ////		if ( buffer ) {
 ////			idStr str = buffer;

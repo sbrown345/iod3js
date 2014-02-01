@@ -47,9 +47,9 @@ class idCmdArgs {
 	////	void					operator=( const idCmdArgs &args );
 
 	////							// The functions that execute commands get their parameters with these functions.
-	////	int						Argc( void ) const { return argc; }
-	////							// Argv() will return an empty string, not NULL if arg >= argc.
-	////	const char *			Argv( int arg ) const { return ( arg >= 0 && arg < argc ) ? argv[arg] : ""; }
+	Argc(): number { return this.argc; }
+	// Argv() will return an empty string, not NULL if arg >= argc.
+	Argv ( /*int*/ arg: number ): string { return ( arg >= 0 && arg < this.argc ) ? this.argv[arg].toString ( ) : ""; }
 	////							// Returns a single string containing argv(start) to argv(end)
 	////							// escapeArgs is a fugly way to put the string back into a state ready to tokenize again
 	////	const char *			Args( int start = 1, int end = -1, bool escapeArgs = false ) const;

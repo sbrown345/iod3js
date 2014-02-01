@@ -180,7 +180,7 @@ class idImage {
 //						textureFilter_t filter, bool allowDownSize, 
 //						textureRepeat_t repeat, textureDepth_t minDepth );
 //#endif
-GenerateCubeImage( /*const byte *pic[6]*/pic:Uint8Array[], /*int*/ size: number,
+	GenerateCubeImage( /*const byte *pic[6]*/pic:Uint8Array[], /*int*/ size: number,
 	filterParm: textureFilter_t, allowDownSizeParm: boolean,
 	depthParm: textureDepth_t):void { throw "placeholder"; }
 
@@ -200,7 +200,7 @@ GenerateCubeImage( /*const byte *pic[6]*/pic:Uint8Array[], /*int*/ size: number,
 //	void		Print() const;
 
 //	// check for changed timestamp on disk and reload if necessary
-//	void		Reload( bool checkPrecompressed, bool force );
+	Reload( checkPrecompressed:boolean, force :boolean):void { throw "placeholder"; }
 
 //	void		AddReference()				{ refCount++; };
 
@@ -420,9 +420,9 @@ class idImageManager {
 
 	AllocImage(name: string): idImage { throw "placeholder"; }
     ////	void				SetNormalPalette();
-    ////	void				ChangeTextureFilter();
+	ChangeTextureFilter ( ): void { throw "placeholder"; }
 
-    images:idList<idImage>;
+	images:idList<idImage>;
     ddsList:idStrList;
     ddsHash:idHashIndex;
 

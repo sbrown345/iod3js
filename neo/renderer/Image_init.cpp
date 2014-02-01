@@ -1062,6 +1062,7 @@ reloadImages <all>
 ===============
 */
 void R_ReloadImages_f( const idCmdArgs &args ) {
+#ifndef JS_CHANGES
 	int		i;
 	idImage	*image;
 	bool	all;
@@ -1089,6 +1090,7 @@ void R_ReloadImages_f( const idCmdArgs &args ) {
 		image = globalImages->images[ i ];
 		image->Reload( checkPrecompressed, all );
 	}
+#endif
 }
 
 typedef struct {
