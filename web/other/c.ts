@@ -125,6 +125,10 @@ function qsort ( base: any[], num: number, size: number, compar: ( a: any, b: an
 	}
 }
 
+function timeGetTime ( ): number {
+	return +new Date;
+}
+
 var printf = console.log.bind(console);
 
 function Mem_Free ( arg: any ) {

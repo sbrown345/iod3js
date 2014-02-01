@@ -37,42 +37,42 @@
 //===============================================================================
 //*/
 //
-//#define PROC_FILE_EXT				"proc"
-//#define	PROC_FILE_ID				"mapProcFile003"
-//
-//// shader parms
-//const int MAX_GLOBAL_SHADER_PARMS	= 12;
-//
-//const int SHADERPARM_RED			= 0;
-//const int SHADERPARM_GREEN			= 1;
-//const int SHADERPARM_BLUE			= 2;
-//const int SHADERPARM_ALPHA			= 3;
-//const int SHADERPARM_TIMESCALE		= 3;
-//const int SHADERPARM_TIMEOFFSET		= 4;
-//const int SHADERPARM_DIVERSITY		= 5;	// random between 0.0 and 1.0 for some effects (muzzle flashes, etc)
-//const int SHADERPARM_MODE			= 7;	// for selecting which shader passes to enable
-//const int SHADERPARM_TIME_OF_DEATH	= 7;	// for the monster skin-burn-away effect enable and time offset
-//
-//// model parms
-//const int SHADERPARM_MD5_SKINSCALE	= 8;	// for scaling vertex offsets on md5 models (jack skellington effect)
-//
-//const int SHADERPARM_MD3_FRAME		= 8;
-//const int SHADERPARM_MD3_LASTFRAME	= 9;
-//const int SHADERPARM_MD3_BACKLERP	= 10;
-//
-//const int SHADERPARM_BEAM_END_X		= 8;	// for _beam models
-//const int SHADERPARM_BEAM_END_Y		= 9;
-//const int SHADERPARM_BEAM_END_Z		= 10;
-//const int SHADERPARM_BEAM_WIDTH		= 11;
-//
-//const int SHADERPARM_SPRITE_WIDTH		= 8;
-//const int SHADERPARM_SPRITE_HEIGHT		= 9;
-//
-//const int SHADERPARM_PARTICLE_STOPTIME = 8;	// don't spawn any more particles after this time
-//
-//// guis
-//const int MAX_RENDERENTITY_GUI		= 3;
-//
+var PROC_FILE_EXT = "proc";
+var PROC_FILE_ID = "mapProcFile003";
+
+// shader parms
+var MAX_GLOBAL_SHADER_PARMS	= 12;
+
+var SHADERPARM_RED			= 0;
+var SHADERPARM_GREEN			= 1;
+var SHADERPARM_BLUE			= 2;
+var SHADERPARM_ALPHA			= 3;
+var SHADERPARM_TIMESCALE		= 3;
+var SHADERPARM_TIMEOFFSET		= 4;
+var SHADERPARM_DIVERSITY		= 5;	// random between 0.0 and 1.0 for some effects (muzzle flashes, etc)
+var SHADERPARM_MODE			= 7;	// for selecting which shader passes to enable
+var SHADERPARM_TIME_OF_DEATH	= 7;	// for the monster skin-burn-away effect enable and time offset
+
+// model parms
+var SHADERPARM_MD5_SKINSCALE	= 8;	// for scaling vertex offsets on md5 models (jack skellington effect)
+
+var SHADERPARM_MD3_FRAME		= 8;
+var SHADERPARM_MD3_LASTFRAME	= 9;
+var SHADERPARM_MD3_BACKLERP	= 10;
+
+var SHADERPARM_BEAM_END_X		= 8;	// for _beam models
+var SHADERPARM_BEAM_END_Y		= 9;
+var SHADERPARM_BEAM_END_Z		= 10;
+var SHADERPARM_BEAM_WIDTH		= 11;
+
+var SHADERPARM_SPRITE_WIDTH		= 8;
+var SHADERPARM_SPRITE_HEIGHT		= 9;
+
+var SHADERPARM_PARTICLE_STOPTIME = 8;	// don't spawn any more particles after this time
+
+// guis
+var MAX_RENDERENTITY_GUI		= 3;
+
 //
 //typedef bool(*deferredEntityCallback_t)( renderEntity_s *, const renderView_s * );
 //
@@ -206,22 +206,22 @@
 class renderView_t {
 	// player views will set this to a non-zero integer for model suppress / allow
 	// subviews (mirrors, cameras, etc) will always clear it to zero
-	int						viewID;
+	viewID:number; //0
 
 	// sized from 0 to SCREEN_WIDTH / SCREEN_HEIGHT (640/480), not actual resolution
-	int						x, y, width, height;
-//
-//	float					fov_x, fov_y;
-//	idVec3					vieworg;
-//	idMat3					viewaxis;			// transformation matrix, view looks down the positive X axis
-//
-//	bool					cramZNear;			// for cinematics, we want to set ZNear much lower
-//	bool					forceUpdate;		// for an update 
-//
-//	// time in milliseconds for shader effects and other time dependent rendering issues
-//	int						time;
-//	float					shaderParms[MAX_GLOBAL_SHADER_PARMS];		// can be used in any way by shader
-//	const idMaterial		*globalMaterial;							// used to override everything draw
+	x: number; y:number ;width:number ;height:number;//int						
+
+	fov_x:number; fov_y:number;//float					
+	vieworg = new idVec3;
+	viewaxis = new idMat3;			// transformation matrix, view looks down the positive X axis
+
+	cramZNear: boolean;			// for cinematics, we want to set ZNear much lower
+	forceUpdate:boolean;		// for an update 
+
+	// time in milliseconds for shader effects and other time dependent rendering issues
+	time:number//int;
+	shaderParms = new Float32Array(MAX_GLOBAL_SHADER_PARMS);		// can be used in any way by shader
+	globalMaterial: idMaterial;							// used to override everything draw
 };
 //
 //
@@ -252,7 +252,7 @@ class renderView_t {
 //} modelTrace_t;
 //
 //
-//static const int NUM_PORTAL_ATTRIBUTES = 3;
+var NUM_PORTAL_ATTRIBUTES = 3;
 //
 //typedef enum {
 //	PS_BLOCK_NONE = 0,

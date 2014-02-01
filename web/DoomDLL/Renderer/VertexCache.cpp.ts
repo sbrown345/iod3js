@@ -447,79 +447,79 @@ idVertexCache::Free
 		//	this.deferredFreeList.next.prev = block;
 		//	this.deferredFreeList.next = block;
 	}
-//
-///*
-//===========
-//idVertexCache::AllocFrameTemp
-//
-//A frame temp allocation must never be allowed to fail due to overflow.
-//We can't simply sync with the GPU and overwrite what we have, because
-//there may still be future references to dynamically created surfaces.
-//===========
-//*/
-//vertCache_t	*idVertexCache::AllocFrameTemp(void *data, int size)
-//{
-//	vertCache_t	*block;
-//
-//	if (size <= 0) {
-//		common.Error("idVertexCache::AllocFrameTemp: size = %i\n", size);
-//	}
-//
-//	if (this.dynamicAllocThisFrame + size > this.frameBytes) {
-//		// if we don't have enough room in the temp block, allocate a static block,
-//		// but immediately free it so it will get freed at the next frame
-//		this.tempOverflow = true;
-//		Alloc(data, size, &block);
-//		Free(block);
-//		return block;
-//	}
-//
-//	// this data is just going on the shared dynamic list
-//
-//	// if we don't have any remaining unused headers, allocate some more
-//	if (this.freeDynamicHeaders.next == &this.freeDynamicHeaders) {
-//
-//		for (int i = 0; i < EXPAND_HEADERS; i++) {
-//			block = this.headerAllocator.Alloc();
-//			block.next = this.freeDynamicHeaders.next;
-//			block.prev = &this.freeDynamicHeaders;
-//			block.next.prev = block;
-//			block.prev.next = block;
-//		}
-//	}
-//
-//	// move it from the freeDynamicHeaders list to the dynamicHeaders list
-//	block = this.freeDynamicHeaders.next;
-//	block.next.prev = block.prev;
-//	block.prev.next = block.next;
-//	block.next = this.dynamicHeaders.next;
-//	block.prev = &this.dynamicHeaders;
-//	block.next.prev = block;
-//	block.prev.next = block;
-//
-//	block.size = size;
-//	block.tag = TAG_TEMP;
-//	block.indexBuffer = false;
-//	block.offset = this.dynamicAllocThisFrame;
-//	this.dynamicAllocThisFrame += block.size;
-//	this.dynamicCountThisFrame++;
-//	block.user = NULL;
-//	block.frameUsed = 0;
-//
-//	// copy the data
-//	block.virtMem = this.tempBuffers[this.listNum].virtMem;
-//	block.vbo = this.tempBuffers[this.listNum].vbo;
-//
-//	if (block.vbo) {
-//		glBindBuffer(GL_ARRAY_BUFFER, block.vbo);
-//		glBufferSubData(GL_ARRAY_BUFFER, block.offset, (GLsizei)size, data);
-//	} else {
-//		SIMDProcessor.Memcpy((byte *)block.virtMem + block.offset, data, size);
-//	}
-//
-//	return block;
-//}
-//
+
+/*
+===========
+idVertexCache::AllocFrameTemp
+
+A frame temp allocation must never be allowed to fail due to overflow.
+We can't simply sync with the GPU and overwrite what we have, because
+there may still be future references to dynamically created surfaces.
+===========
+*/
+AllocFrameTemp(/*void * */data:any, /*int*/ size:number):vertCache_t	
+{
+	var block: vertCache_t;
+
+	if (size <= 0) {
+		common.Error("idVertexCache::AllocFrameTemp: size = %i\n", size);
+	}
+	todoThrow ( );
+	//if (this.dynamicAllocThisFrame + size > this.frameBytes) {
+	//	// if we don't have enough room in the temp block, allocate a static block,
+	//	// but immediately free it so it will get freed at the next frame
+	//	this.tempOverflow = true;
+	//	Alloc(data, size, &block);
+	//	Free(block);
+	//	return block;
+	//}
+
+	//// this data is just going on the shared dynamic list
+
+	//// if we don't have any remaining unused headers, allocate some more
+	//if (this.freeDynamicHeaders.next == &this.freeDynamicHeaders) {
+
+	//	for (int i = 0; i < EXPAND_HEADERS; i++) {
+	//		block = this.headerAllocator.Alloc();
+	//		block.next = this.freeDynamicHeaders.next;
+	//		block.prev = &this.freeDynamicHeaders;
+	//		block.next.prev = block;
+	//		block.prev.next = block;
+	//	}
+	//}
+
+	//// move it from the freeDynamicHeaders list to the dynamicHeaders list
+	//block = this.freeDynamicHeaders.next;
+	//block.next.prev = block.prev;
+	//block.prev.next = block.next;
+	//block.next = this.dynamicHeaders.next;
+	//block.prev = &this.dynamicHeaders;
+	//block.next.prev = block;
+	//block.prev.next = block;
+
+	//block.size = size;
+	//block.tag = TAG_TEMP;
+	//block.indexBuffer = false;
+	//block.offset = this.dynamicAllocThisFrame;
+	//this.dynamicAllocThisFrame += block.size;
+	//this.dynamicCountThisFrame++;
+	//block.user = NULL;
+	//block.frameUsed = 0;
+
+	//// copy the data
+	//block.virtMem = this.tempBuffers[this.listNum].virtMem;
+	//block.vbo = this.tempBuffers[this.listNum].vbo;
+
+	//if (block.vbo) {
+	//	glBindBuffer(GL_ARRAY_BUFFER, block.vbo);
+	//	glBufferSubData(GL_ARRAY_BUFFER, block.offset, (GLsizei)size, data);
+	//} else {
+	//	SIMDProcessor.Memcpy((byte *)block.virtMem + block.offset, data, size);
+	//}
+
+	return block;
+}
+
 /*
 ===========
 idVertexCache::EndFrame

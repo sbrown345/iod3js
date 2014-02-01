@@ -795,9 +795,9 @@ static Fabs( /*float */f:number ):number {
 ////	return floorf( f + 0.5 );
 ////}
 
-////ID_INLINE int idMath::Ftoi( float f ) {
-////	return (int) f;
-////}
+	static Ftoi ( /*float */f: number ): number {
+		return /*(int)*/ int( f );
+	}
 
 ////ID_INLINE int idMath::FtoiFast( float f ) {
 ////#ifdef _WIN32

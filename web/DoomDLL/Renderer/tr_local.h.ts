@@ -54,8 +54,8 @@ var /*float */FOG_ENTER = ( FOG_ENTER_SIZE + 1.0 ) / ( FOG_ENTER_SIZE * 2 );
 // to keep it compact, instead of just using the idBounds class
 class idScreenRect {
 //public:
-	//short		x1, y1, x2, y2;							// inclusive pixel bounds inside viewport
-    //float       zmin, zmax;								// for depth bounds test
+	x1: number; y1: number; x2: number; y2: number;			// inclusive pixel bounds inside viewport			  short		
+	zmin: number; zmax: number;								// for depth bounds test						  float      
 
 	//void		Clear();								// clear to backwards values
 	//void		AddPoint( float x, float y );			// adds a point
@@ -64,7 +64,12 @@ class idScreenRect {
 	//void		Union( const idScreenRect &rect );
 	//bool		Equals( const idScreenRect &rect ) const;
 	//bool		IsEmpty() const;
-};
+
+	init ( ):void {
+		this.x1 = 0; this.y1 = 0; this.x2 = 0; this.y2 = 0;
+		this.zmin = 0; this.zmax = 0;							
+	}
+}
 
 ////idScreenRect R_ScreenRectFromViewFrustumBounds( const idBounds &bounds );
 ////void R_ShowColoredScreenRect( const idScreenRect &rect, int colorIndex );
@@ -100,28 +105,28 @@ class idScreenRect {
 ////#include "Interaction.h"
 
 
-////// drawSurf_t structures command the back end to render surfaces
-////// a given srfTriangles_t may be used with multiple viewEntity_t,
-////// as when viewed in a subview or multiple viewport render, or
-////// with multiple shaders when skinned, or, possibly with multiple
-////// lights, although currently each lighting interaction creates
-////// unique srfTriangles_t
+// drawSurf_t structures command the back end to render surfaces
+// a given srfTriangles_t may be used with multiple viewEntity_t,
+// as when viewed in a subview or multiple viewport render, or
+// with multiple shaders when skinned, or, possibly with multiple
+// lights, although currently each lighting interaction creates
+// unique srfTriangles_t
 
-////// drawSurf_t are always allocated and freed every frame, they are never cached
-////static const int	DSF_VIEW_INSIDE_SHADOW	= 1;
+// drawSurf_t are always allocated and freed every frame, they are never cached
+var	DSF_VIEW_INSIDE_SHADOW	= 1;
 
-////typedef struct drawSurf_s {
-////	const srfTriangles_t	*geo;
-////	const struct viewEntity_s *space;
-////	const idMaterial		*material;	// may be NULL for shadow volumes
-////	float					sort;		// material.sort, modified by gui / entity sort offsets
-////	const float				*shaderRegisters;	// evaluated and adjusted for referenceShaders
-////	const struct drawSurf_s	*nextOnLight;	// viewLight chains
-////	idScreenRect			scissorRect;	// for scissor clipping, local inside renderView viewport
-////	int						dsFlags;			// DSF_VIEW_INSIDE_SHADOW, etc
-////	struct vertCache_s		*dynamicTexCoords;	// float * in vertex cache memory
-////	// specular directions for non vertex program cards, skybox texcoords, etc
-////} drawSurf_t;
+class drawSurf_t {
+	//const srfTriangles_t	*geo;
+	//const struct viewEntity_s *space;
+	//const idMaterial		*material;	// may be NULL for shadow volumes
+	//float					sort;		// material.sort, modified by gui / entity sort offsets
+	//const float				*shaderRegisters;	// evaluated and adjusted for referenceShaders
+	//const struct drawSurf_s	*nextOnLight;	// viewLight chains
+	//idScreenRect			scissorRect;	// for scissor clipping, local inside renderView viewport
+	//int						dsFlags;			// DSF_VIEW_INSIDE_SHADOW, etc
+	//struct vertCache_s		*dynamicTexCoords;	// float * in vertex cache memory
+	//// specular directions for non vertex program cards, skybox texcoords, etc
+};
 
 
 ////typedef struct {
@@ -362,17 +367,33 @@ class /*viewEntity_s*/viewEntity_t {
 	/*float				*/modelMatrix:Float32Array/*[16]*/;		// local coords to global coords
 	/*float				*/modelViewMatrix:Float32Array/*[16]*/;	// local coords to eye coords
 
-	constructor ( ) {
+	constructor() {
+		this.next = null;
+		this.entityDef = null;
 		this.scissorRect = new idScreenRect;
 		this.weaponDepthHack = false;
 		this.modelDepthHack = 0;
 		this.modelMatrix = new Float32Array(16);
 		this.modelViewMatrix = new Float32Array(16);
 	}
+
+	init(): void {
+		this.next = null;
+		this.entityDef = null;
+		this.scissorRect.init ( );
+		this.weaponDepthHack = false;
+		this.modelDepthHack = 0;
+		for (var i = 0; i < this.modelMatrix.length; i++ ) {
+			this.modelMatrix[i] = 0;
+		}
+		for (var i = 0; i < this.modelMatrix.length; i++ ) {
+			this.modelViewMatrix[i] = 0;
+		}
+	}
 }
 
 
-////const int	MAX_CLIP_PLANES	= 1;				// we may expand this to six for some subview issues
+	var MAX_CLIP_PLANES	= 1;				// we may expand this to six for some subview issues
 
 // viewDefs are allocated on the frame temporary stack memory
 class viewDef_t {
@@ -428,7 +449,7 @@ class viewDef_t {
 	// of 2D rendering, which we can optimize in certain ways.  A 2D view will
 	// not have any viewEntities
 
-	frustum = newStructArra<idPlane>(idPlane,5);				// positive sides face outward, [4] is the front clip plane
+	frustum = newStructArray<idPlane>(idPlane,5);				// positive sides face outward, [4] is the front clip plane
 	viewFrustum: idFrustum;
 
 	areaNum=0;//int				// -1 = not in a valid area

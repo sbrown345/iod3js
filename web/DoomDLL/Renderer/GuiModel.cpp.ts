@@ -156,52 +156,52 @@ Clear():void {
 ////	}
 ////}
 
-/////*
-////================
-////EmitSurface
-////================
-////*/
-////void idGuiModel::EmitSurface( guiModelSurface_t *surf, float modelMatrix[16], float modelViewMatrix[16], bool depthHack ) {
-////	srfTriangles_t	*tri;
+/*
+================
+EmitSurface
+================
+*/
+	EmitSurface(surf: guiModelSurface_t, modelMatrix:Float32Array/*[16]*/,  modelViewMatrix:Float32Array/*[16]*/, depthHack :boolean):void {
+		var tri: srfTriangles_t;
 
-////	if ( surf.numVerts == 0 ) {
-////		return;		// nothing in the surface
-////	}
+	if ( surf.numVerts == 0 ) {
+		return;		// nothing in the surface
+	}
 
-////	// copy verts and indexes
-////	tri = (srfTriangles_t *)R_ClearedFrameAlloc( sizeof( *tri ) );
+	// copy verts and indexes
+	tri = R_ClearedFrameAlloc<srfTriangles_t>( srfTriangles_t, null );
 
-////	tri.numIndexes = surf.numIndexes;
-////	tri.numVerts = surf.numVerts;
-////	tri.indexes = (glIndex_t *)R_FrameAlloc( tri.numIndexes * sizeof( tri.indexes[0] ) );
-////	memcpy( tri.indexes, &indexes[surf.firstIndex], tri.numIndexes * sizeof( tri.indexes[0] ) );
+	tri.numIndexes = surf.numIndexes;
+	tri.numVerts = surf.numVerts;
+	tri.indexes = R_FrameAllocTypedArray<Int32Array>( Int32Array, tri.numIndexes ); // (glIndex_t *)R_FrameAlloc( tri.numIndexes * sizeof( tri.indexes[0] ) );
+	memcpy( tri.indexes, this.indexes[surf.firstIndex], tri.numIndexes * sizeofSingleItem( tri.indexes ) );
 
-////	// we might be able to avoid copying these and just let them reference the list vars
-////	// but some things, like deforms and recursive
-////	// guis, need to access the verts in cpu space, not just through the vertex range
-////	tri.verts = (idDrawVert *)R_FrameAlloc( tri.numVerts * sizeof( tri.verts[0] ) );
-////	memcpy( tri.verts, &verts[surf.firstVert], tri.numVerts * sizeof( tri.verts[0] ) );
+	// we might be able to avoid copying these and just let them reference the list vars
+	// but some things, like deforms and recursive
+	// guis, need to access the verts in cpu space, not just through the vertex range
+	tri.verts = R_FrameAllocStructArray<idDrawVert>( idDrawVert, tri.numVerts );
+	memcpyStruct( tri.verts, this.verts[surf.firstVert], tri.numVerts, idDrawVert.typeInfo );
 
-////	// move the verts to the vertex cache
-////	tri.ambientCache = vertexCache.AllocFrameTemp( tri.verts, tri.numVerts * sizeof( tri.verts[0] ) );
+	// move the verts to the vertex cache
+	tri.ambientCache = vertexCache.AllocFrameTemp( tri.verts, tri.numVerts /** sizeof( tri.verts[0] ) */);
 
-////	// if we are out of vertex cache, don't create the surface
-////	if ( !tri.ambientCache ) {
-////		return;
-////	}
+	// if we are out of vertex cache, don't create the surface
+	if ( !tri.ambientCache ) {
+		return;
+	}
+		todoThrow ( );
+		//var renderEntity = new renderEntity_t;//memset( &renderEntity, 0, sizeof( renderEntity ) );
+		//renderEntity.init ( );
+		//memcpy( renderEntity.shaderParms, surf.color, sizeof( surf.color ) );
 
-////	renderEntity_t renderEntity;
-////	memset( &renderEntity, 0, sizeof( renderEntity ) );
-////	memcpy( renderEntity.shaderParms, surf.color, sizeof( surf.color ) );
+		//var/*viewEntity_t **/guiSpace = /*(viewEntity_t *)*/R_ClearedFrameAlloc < viewEntity_t >( sizeof( *guiSpace ) );
+		//memcpy( guiSpace.modelMatrix, modelMatrix, sizeof( guiSpace.modelMatrix ) );
+		//memcpy( guiSpace.modelViewMatrix, modelViewMatrix, sizeof( guiSpace.modelViewMatrix ) );
+		//guiSpace.weaponDepthHack = depthHack;
 
-////	viewEntity_t *guiSpace = (viewEntity_t *)R_ClearedFrameAlloc( sizeof( *guiSpace ) );
-////	memcpy( guiSpace.modelMatrix, modelMatrix, sizeof( guiSpace.modelMatrix ) );
-////	memcpy( guiSpace.modelViewMatrix, modelViewMatrix, sizeof( guiSpace.modelViewMatrix ) );
-////	guiSpace.weaponDepthHack = depthHack;
-
-////	// add the surface, which might recursively create another gui
-////	R_AddDrawSurf( tri, guiSpace, &renderEntity, surf.material, tr.viewDef.scissor );
-////}
+		//// add the surface, which might recursively create another gui
+		//R_AddDrawSurf( tri, guiSpace, &renderEntity, surf.material, tr.viewDef.scissor );
+	}
 
 /////*
 ////====================
@@ -242,7 +242,7 @@ EmitFullScreen( ):void {
 		viewDef.renderView.width = SCREEN_WIDTH;
 		viewDef.renderView.height = SCREEN_HEIGHT;
 
-		tr.RenderViewToViewport( &viewDef.renderView, &viewDef.viewport );
+		tr.RenderViewToViewport( viewDef.renderView, viewDef.viewport );
 
 		viewDef.scissor.x1 = 0;
 		viewDef.scissor.y1 = 0;
@@ -282,21 +282,21 @@ EmitFullScreen( ):void {
 	viewDef.worldSpace.modelViewMatrix[15] = 1.0;
 
 	viewDef.maxDrawSurfs = this.surfaces.Num();
-	viewDef.drawSurfs = (drawSurf_t **)R_FrameAlloc( viewDef.maxDrawSurfs * sizeof( viewDef.drawSurfs[0] ) );
+	viewDef.drawSurfs = R_FrameAllocStructArray<drawSurf_t>( drawSurf_t,viewDef.maxDrawSurfs);
 	viewDef.numDrawSurfs = 0;
 
 	var oldViewDef = tr.viewDef;
 	tr.viewDef = viewDef;
 
 	// add the surfaces to this view
-	for ( int i = 0 ; i < this.surfaces.Num() ; i++ ) {
-		EmitSurface( this.surfaces[i], viewDef.worldSpace.modelMatrix, viewDef.worldSpace.modelViewMatrix, false );
+	for ( var i = 0 ; i < this.surfaces.Num() ; i++ ) {
+		this.EmitSurface( this.surfaces[i], viewDef.worldSpace.modelMatrix, viewDef.worldSpace.modelViewMatrix, false );
 	}
 
 	tr.viewDef = oldViewDef;
 
 	// add the command to draw this view
-	R_AddDrawViewCmd( viewDef );
+	idRenderSystem.R_AddDrawViewCmd( viewDef );
 }
 
 /*

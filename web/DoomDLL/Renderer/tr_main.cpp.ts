@@ -363,6 +363,19 @@ The memory is NOT zero filled.
 Should part of this be inlined in a macro?
 ================
 */
+function R_FrameAllocStructArray<T> ( type: any, arraySize: number ):Array<T> {
+	todo( "R_FrameAlloc ??" );
+	for ( var i = 0; i < arraySize; i++ ) {
+
+	}
+	return newStructArray<T>( type, arraySize );
+}
+
+function R_FrameAllocTypedArray<T> ( type: any, arraySize: number ):T {
+	todo( "R_FrameAlloc ??" );
+	return new type ( );
+}
+
 function R_FrameAlloc<T>(type: any /*int bytes */) {
 	todo("R_FrameAlloc ??");
 	return <T>new type;
@@ -417,7 +430,7 @@ function R_FrameAlloc<T>(type: any /*int bytes */) {
 R_ClearedFrameAlloc
 ==================
 */
-function R_ClearedFrameAlloc<T> ( type: any, /*int */bytes: number ): T {
+function R_ClearedFrameAlloc<T> ( type: any, /*int */bytes__Unused: number ): T {
 	return <T>new type;
 	//void	*r;
 

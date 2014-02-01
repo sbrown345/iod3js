@@ -140,6 +140,7 @@
 /// <reference path="libs/idlib/text/str.h.ts" />
 /// <reference path="libs/idlib/text/token.cpp.ts" />
 // BV
+/// <reference path="libs/idlib/bv/frustum.cpp.ts" />
 /// <reference path="libs/idlib/bv/bounds.h.ts" />
 // Containers
 /// <reference path="libs/idlib/containers/hashindex.h.ts" />
@@ -189,6 +190,9 @@
 //#include "../framework/UsercmdGen.h"
 /// <reference path="doomdll/framework/usercmdgen.h.ts" />
 /// <reference path="doomdll/framework/usercmdgen.cpp.ts" />
+
+/// <reference path="doomdll/framework/eventloop.cpp.ts" />
+
 
 // decls
 //#include "../framework/DeclManager.h"

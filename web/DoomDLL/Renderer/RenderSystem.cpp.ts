@@ -2339,25 +2339,25 @@ idRenderSystemLocal::GetScreenHeight
 ////	R_ClearCommandChain();
 ////}
 
-/////*
-////============
-////R_GetCommandBuffer
+/*
+============
+R_GetCommandBuffer
 
-////Returns memory for a command buffer (stretchPicCommand_t, 
-////drawSurfsCommand_t, etc) and links it to the end of the
-////current command chain.
-////============
-////*/
-////void *R_GetCommandBuffer( int bytes ) {
-////	emptyCommand_t	*cmd;
+Returns memory for a command buffer (stretchPicCommand_t, 
+drawSurfsCommand_t, etc) and links it to the end of the
+current command chain.
+============
+*/
+	R_GetCommandBuffer ( /*int */bytes: number ): any {
+		var cmd: emptyCommand_t;
 
-////	cmd = (emptyCommand_t *)R_FrameAlloc( bytes );
-////	cmd.next = NULL;
-////	frameData.cmdTail.next = &cmd.commandId;
-////	frameData.cmdTail = cmd;
+		cmd = /*(emptyCommand_t *)*/R_FrameAlloc<emptyCommand_t>( emptyCommand_t /*, bytes */ );
+		cmd.next = null;
+		frameData.cmdTail.next = /*&*/cmd.commandId;
+		frameData.cmdTail = cmd;
 
-////	return (void *)cmd;
-////}
+		return /*(void *)*/cmd;
+	}
 
 
 /*
@@ -2388,31 +2388,31 @@ and by R_ToggleSmpFrame
 ////	common.Printf( "view:%p surfs:%i\n", parms, parms.numDrawSurfs );
 ////}
 
-/////*
-////=============
-////R_AddDrawViewCmd
+/*
+=============
+R_AddDrawViewCmd
 
-////This is the main 3D rendering command.  A single scene may
-////have multiple views if a mirror, portal, or dynamic texture is present.
-////=============
-////*/
-////void	R_AddDrawViewCmd( viewDef_t *parms ) {
-////	drawSurfsCommand_t	*cmd;
+This is the main 3D rendering command.  A single scene may
+have multiple views if a mirror, portal, or dynamic texture is present.
+=============
+*/
+	static R_AddDrawViewCmd ( parms: viewDef_t ): void {
+		var cmd: drawSurfsCommand_t;
+		todoThrow ( );
+		//cmd = (drawSurfsCommand_t *)R_GetCommandBuffer( sizeof( *cmd ) );
+		//cmd.commandId = RC_DRAW_VIEW;
 
-////	cmd = (drawSurfsCommand_t *)R_GetCommandBuffer( sizeof( *cmd ) );
-////	cmd.commandId = RC_DRAW_VIEW;
+		//cmd.viewDef = parms;
 
-////	cmd.viewDef = parms;
+		//if ( parms.viewEntitys ) {
+		//	// save the command for r_lockSurfaces debugging
+		//	tr.lockSurfacesCmd = *cmd;
+		//}
 
-////	if ( parms.viewEntitys ) {
-////		// save the command for r_lockSurfaces debugging
-////		tr.lockSurfacesCmd = *cmd;
-////	}
+		//tr.pc.c_numViews++;
 
-////	tr.pc.c_numViews++;
-
-////	R_ViewStatistics( parms );
-////}
+		//R_ViewStatistics( parms );
+	}
 
 
 //////=================================================================================
@@ -2823,20 +2823,20 @@ BeginFrame( /*int */windowWidth:number, /*int */windowHeight:number ):void {
 //	this.primaryWorld = NULL;
 
 	// set the time for shader effects in 2D rendering
-	this.frameShaderTime = this.eventLoop.Milliseconds() * 0.001;
+	this.frameShaderTime = eventLoop.Milliseconds() * 0.001;
 
 	//
 	// draw buffer stuff
 	//
-	cmd = (setBufferCommand_t *)R_GetCommandBuffer( sizeof( *cmd ) );
-	cmd.commandId = RC_SET_BUFFER;
+	cmd = <setBufferCommand_t>this.R_GetCommandBuffer( /*sizeof( *cmd ) */null);
+	cmd.commandId = renderCommand_t.RC_SET_BUFFER;
 	cmd.frameCount = this.frameCount;
 
 	if ( r_frontBuffer.GetBool() ) {
 		cmd.buffer = /*(int)*/GL_FRONT;
 	} else {
 		cmd.buffer = /*(int)*/GL_BACK;
-	}	todoThrow ( );
+	}	
 }
 
 ////void idRenderSystemLocal::WriteDemoPics() {
@@ -2908,38 +2908,38 @@ EndFrame( /*int **/frontEndMsec:R<number>, /*int **/backEndMsec:R<number> ):void
 
 }
 
-/////*
-////=====================
-////RenderViewToViewport
+/*
+=====================
+RenderViewToViewport
 
-////Converts from SCREEN_WIDTH / SCREEN_HEIGHT coordinates to current cropped pixel coordinates
-////=====================
-////*/
-////void idRenderSystemLocal::RenderViewToViewport( const renderView_t *renderView, idScreenRect *viewport ) {
-////	renderCrop_t	*rc = &this.renderCrops[this.currentRenderCrop];
+Converts from SCREEN_WIDTH / SCREEN_HEIGHT coordinates to current cropped pixel coordinates
+=====================
+*/
+	RenderViewToViewport ( renderView: renderView_t, viewport: idScreenRect ): void {
+		var rc = this.renderCrops[this.currentRenderCrop];
 
-////	float wRatio = (float)rc.width / SCREEN_WIDTH;
-////	float hRatio = (float)rc.height / SCREEN_HEIGHT;
+		var /*float */wRatio = /*(float)*/rc.width / SCREEN_WIDTH;
+		var /*float */hRatio = /*(float)*/rc.height / SCREEN_HEIGHT;
 
-////	viewport.x1 = idMath::Ftoi( rc.x + renderView.x * wRatio );
-////	viewport.x2 = idMath::Ftoi( rc.x + floor( ( renderView.x + renderView.width ) * wRatio + 0.5f ) - 1 );
-////	viewport.y1 = idMath::Ftoi( ( rc.y + rc.height ) - floor( ( renderView.y + renderView.height ) * hRatio + 0.5f ) );
-////	viewport.y2 = idMath::Ftoi( ( rc.y + rc.height ) - floor( renderView.y * hRatio + 0.5f ) - 1 );
-////}
+		viewport.x1 = idMath.Ftoi( rc.x + renderView.x * wRatio );
+		viewport.x2 = idMath.Ftoi( rc.x + floor( ( renderView.x + renderView.width ) * wRatio + 0.5 ) - 1 );
+		viewport.y1 = idMath.Ftoi( ( rc.y + rc.height ) - floor( ( renderView.y + renderView.height ) * hRatio + 0.5 ) );
+		viewport.y2 = idMath.Ftoi( ( rc.y + rc.height ) - floor( renderView.y * hRatio + 0.5 ) - 1 );
+	}
 
-////static int RoundDownToPowerOfTwo( int v ) {
-////	int	i;
+	static RoundDownToPowerOfTwo ( /*int */v: number ): number {
+		var /*int	*/i: number;
 
-////	for ( i = 0 ; i < 20 ; i++ ) {
-////		if ( ( 1 << i ) == v ) {
-////			return v;
-////		}
-////		if ( ( 1 << i ) > v ) {
-////			return 1 << ( i-1 );
-////		}
-////	}
-////	return 1<<i;
-////}
+		for ( i = 0; i < 20; i++ ) {
+			if ( ( 1 << i ) == v ) {
+				return v;
+			}
+			if ( ( 1 << i ) > v ) {
+				return 1 << ( i - 1 );
+			}
+		}
+		return 1 << i;
+	}
 
 /*
 ================
@@ -2950,7 +2950,7 @@ so if you specify a power of two size for a texture copy, it may be shrunk
 down, but still valid.
 ================
 */
-	CropRenderSize( /*int*/ width: number, /*int */height: number, makePowerOfTwo: boolean, forceDimensions: boolean):void {
+	CropRenderSize( /*int*/ width: number, /*int */height: number, makePowerOfTwo = false, forceDimensions = false):void {
 	if ( !glConfig.isInitialized ) {
 		return;
 	}
@@ -2963,12 +2963,13 @@ down, but still valid.
 		common.Error( "CropRenderSize: bad sizes" );
 	}
 
-	if ( session.writeDemo ) {
-		session.writeDemo.WriteInt( DS_RENDER );
-		session.writeDemo.WriteInt( DC_CROP_RENDER );
-		session.writeDemo.WriteInt( width );
-		session.writeDemo.WriteInt( height );
-		session.writeDemo.WriteInt( makePowerOfTwo );
+		if (session.writeDemo) {
+			todoThrow ( );
+		//session.writeDemo.WriteInt( DS_RENDER );
+		//session.writeDemo.WriteInt( DC_CROP_RENDER );
+		//session.writeDemo.WriteInt( width );
+		//session.writeDemo.WriteInt( height );
+		//session.writeDemo.WriteInt( makePowerOfTwo );
 
 		if ( r_showDemo.GetBool() ) {
 			common.Printf( "write DC_CROP_RENDER\n" );
@@ -2983,7 +2984,7 @@ down, but still valid.
 	renderView.height = height;
 
 	var r: idScreenRect;
-	RenderViewToViewport( &renderView, &r );
+	this.RenderViewToViewport( renderView, r );
 
 	width = r.x2 - r.x1 + 1;
 	height = r.y2 - r.y1 + 1;
@@ -2996,8 +2997,8 @@ down, but still valid.
 
 	// if makePowerOfTwo, drop to next lower power of two after scaling to physical pixels
 	if ( makePowerOfTwo ) {
-		width = RoundDownToPowerOfTwo( width );
-		height = RoundDownToPowerOfTwo( height );
+		width = idRenderSystem.RoundDownToPowerOfTwo( width );
+		height = idRenderSystem.RoundDownToPowerOfTwo( height );
 		// FIXME: megascreenshots with offset viewports don't work right with this yet
 	}
 

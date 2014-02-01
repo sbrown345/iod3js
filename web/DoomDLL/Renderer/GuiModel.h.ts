@@ -29,7 +29,7 @@
 
 class guiModelSurface_t {
 	/*const idMaterial	*/  material:idMaterial;
-	/*float				*/  color:number[/*4*/];
+	/*float				*/  color:Float32Array/*[4]*/;
 	/*int				*/	firstVert:number;
 	/*int				*/	numVerts:number;
 	/*int				*/	firstIndex:number;
@@ -37,7 +37,7 @@ class guiModelSurface_t {
 
     constructor() {
         this.material = new idMaterial;
-        this.color = [0, 0, 0, 0];
+        this.color = new Float32Array(4);
         this.firstVert = 0;
         this.numVerts = 0;
         this.firstIndex = 0;

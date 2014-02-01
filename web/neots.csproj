@@ -59,12 +59,15 @@
     <Content Include="DoomDLL\Framework\DeclTable.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Framework\DemoFile.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Framework\DemoFile.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\EventLoop.cpp.ts" />
     <Content Include="DoomDLL\Framework\File.cpp.ts" />
     <Content Include="DoomDLL\Framework\File.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\draw_common.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\draw_glsl.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\Interaction.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\Interaction.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Sys\win_shared.cpp.ts" />
+    <TypeScriptCompile Include="libs\idLib\BV\Frustum.cpp.ts" />
     <Content Include="other\files.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.h.ts" />
