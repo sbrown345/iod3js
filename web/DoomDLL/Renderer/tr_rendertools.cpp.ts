@@ -2400,58 +2400,58 @@ function RB_ShowOverdraw ( ): void {
 //#endif
 //}
 //
-///*
-//=================
-//RB_RenderDebugTools
-//=================
-//*/
-//void RB_RenderDebugTools( drawSurf_t **drawSurfs, int numDrawSurfs ) {
-//	// don't do anything if this was a 2D rendering
-//	if ( !backEnd.viewDef.viewEntitys ) {
-//		return;
-//	}
-//
-//	RB_LogComment( "---------- RB_RenderDebugTools ----------\n" );
-//
-//	GL_State( GLS_DEFAULT );
-//	backEnd.currentScissor = backEnd.viewDef.scissor;
-//	glScissor( backEnd.viewDef.viewport.x1 + backEnd.currentScissor.x1, 
-//		backEnd.viewDef.viewport.y1 + backEnd.currentScissor.y1,
-//		backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
-//		backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
-//
-//
-//	RB_ShowLightCount();
-//	RB_ShowShadowCount();
-//	RB_ShowTexturePolarity( drawSurfs, numDrawSurfs );
-//	RB_ShowTangentSpace( drawSurfs, numDrawSurfs );
-//	RB_ShowVertexColor( drawSurfs, numDrawSurfs );
-//	RB_ShowTris( drawSurfs, numDrawSurfs );
-//	RB_ShowUnsmoothedTangents( drawSurfs, numDrawSurfs );
-//	RB_ShowSurfaceInfo( drawSurfs, numDrawSurfs );
-//	RB_ShowEdges( drawSurfs, numDrawSurfs );
-//	RB_ShowNormals( drawSurfs, numDrawSurfs );
-//	RB_ShowViewEntitys( backEnd.viewDef.viewEntitys );
-//	RB_ShowLights();
-//	RB_ShowTextureVectors( drawSurfs, numDrawSurfs );
-//	RB_ShowDominantTris( drawSurfs, numDrawSurfs );
-//	if ( r_testGamma.GetInteger() > 0 ) {	// test here so stack check isn't so damn slow on debug builds
-//		RB_TestGamma();
-//	}
-//	if ( r_testGammaBias.GetInteger() > 0 ) {
-//		RB_TestGammaBias();
-//	}
-//	RB_TestImage();
-//	RB_ShowPortals();
-//	RB_ShowSilhouette();
-//	RB_ShowDepthBuffer();
-//	RB_ShowIntensity();
-//	RB_ShowDebugLines();
-//	RB_ShowDebugText();
-//	RB_ShowDebugPolygons();
-//	RB_ShowTrace( drawSurfs, numDrawSurfs );
-//}
-//
+/*
+=================
+RB_RenderDebugTools
+=================
+*/
+function RB_RenderDebugTools ( drawSurfs: drawSurf_t[], /*int */numDrawSurfs: number ): void {
+	// don't do anything if this was a 2D rendering
+	if ( !backEnd.viewDef.viewEntitys ) {
+		return;
+	}
+	todoThrow ( );
+	//RB_LogComment( "---------- RB_RenderDebugTools ----------\n" );
+
+	//GL_State( GLS_DEFAULT );
+	//backEnd.currentScissor = backEnd.viewDef.scissor;
+	//glScissor( backEnd.viewDef.viewport.x1 + backEnd.currentScissor.x1, 
+	//	backEnd.viewDef.viewport.y1 + backEnd.currentScissor.y1,
+	//	backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
+	//	backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
+
+
+	//RB_ShowLightCount();
+	//RB_ShowShadowCount();
+	//RB_ShowTexturePolarity( drawSurfs, numDrawSurfs );
+	//RB_ShowTangentSpace( drawSurfs, numDrawSurfs );
+	//RB_ShowVertexColor( drawSurfs, numDrawSurfs );
+	//RB_ShowTris( drawSurfs, numDrawSurfs );
+	//RB_ShowUnsmoothedTangents( drawSurfs, numDrawSurfs );
+	//RB_ShowSurfaceInfo( drawSurfs, numDrawSurfs );
+	//RB_ShowEdges( drawSurfs, numDrawSurfs );
+	//RB_ShowNormals( drawSurfs, numDrawSurfs );
+	//RB_ShowViewEntitys( backEnd.viewDef.viewEntitys );
+	//RB_ShowLights();
+	//RB_ShowTextureVectors( drawSurfs, numDrawSurfs );
+	//RB_ShowDominantTris( drawSurfs, numDrawSurfs );
+	//if ( r_testGamma.GetInteger() > 0 ) {	// test here so stack check isn't so damn slow on debug builds
+	//	RB_TestGamma();
+	//}
+	//if ( r_testGammaBias.GetInteger() > 0 ) {
+	//	RB_TestGammaBias();
+	//}
+	//RB_TestImage();
+	//RB_ShowPortals();
+	//RB_ShowSilhouette();
+	//RB_ShowDepthBuffer();
+	//RB_ShowIntensity();
+	//RB_ShowDebugLines();
+	//RB_ShowDebugText();
+	//RB_ShowDebugPolygons();
+	//RB_ShowTrace( drawSurfs, numDrawSurfs );
+}
+
 ///*
 //=================
 //RB_ShutdownDebugTools

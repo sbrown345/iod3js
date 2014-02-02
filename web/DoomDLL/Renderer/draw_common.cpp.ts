@@ -756,8 +756,8 @@ function RB_STD_T_RenderShaderPasses ( surf: drawSurf_t ): void {
 	var ac = <idDrawVert >vertexCache.Position( tri.ambientCache );
 	GL_EnableVertexAttribArray( shaderProgram_indexes.attr_Vertex /*offsetof(shaderProgram_t, attr_Vertex)*/ );
 	GL_EnableVertexAttribArray( shaderProgram_indexes.attr_TexCoord /*offsetof(shaderProgram_t, attr_TexCoord)*/ );
-	GL_VertexAttribPointer( shaderProgram_indexes.attr_Vertex /*offsetof(shaderProgram_t, attr_Vertex)*/, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac && ac.xyz.ToFloatPtr ( ) );
-	GL_VertexAttribPointer( shaderProgram_indexes.attr_TexCoord /*offsetof(shaderProgram_t, attr_TexCoord)*/, 2, GL_FLOAT, false, sizeof( idDrawVert ), ac && ac.st.ToFloatPtr ( ) /*reinterpret_cast<void *>(&ac.st)*/ );
+	GL_VertexAttribPointer( shaderProgram_indexes.attr_Vertex /*offsetof(shaderProgram_t, attr_Vertex)*/, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac );
+	GL_VertexAttribPointer( shaderProgram_indexes.attr_TexCoord /*offsetof(shaderProgram_t, attr_TexCoord)*/, 2, GL_FLOAT, false, sizeof( idDrawVert ), ac );
 
 	for ( stage = 0; stage < shader.GetNumStages ( ); stage++ ) {
 		pStage = shader.GetStage( stage );
@@ -1554,34 +1554,34 @@ function RB_STD_DrawShaderPasses(drawSurfs: drawSurf_t[], /*int */numDrawSurfs :
 //#endif
 //}
 //
-//
-///*
-//==================
-//RB_STD_FogAllLights
-//==================
-//*/
-//void RB_STD_FogAllLights( void ) {
-////#warning
+
+/*
+==================
+RB_STD_FogAllLights
+==================
+*/
+function RB_STD_FogAllLights ( ): void {
+//#warning
 //#if !defined(GL_ES_VERSION_2_0)
 //	viewLight_t	*vLight;
-//
+
 //	if ( r_skipFogLights.GetBool() || r_showOverDraw.GetInteger() != 0 
 //		 || backEnd.viewDef.isXraySubview /* dont fog in xray mode*/
 //		 ) {
 //		return;
 //	}
-//
+
 //	RB_LogComment( "---------- RB_STD_FogAllLights ----------\n" );
-//
+
 //	glDisable( GL_STENCIL_TEST );
-//
+
 //	for ( vLight = backEnd.viewDef.viewLights ; vLight ; vLight = vLight.next ) {
 //		backEnd.vLight = vLight;
-//
+
 //		if ( !vLight.lightShader.IsFogLight() && !vLight.lightShader.IsBlendLight() ) {
 //			continue;
 //		}
-//
+
 //#if 0 // _D3XP disabled that
 //		if ( r_ignore.GetInteger() ) {
 //			// we use the stencil buffer to guarantee that no pixels will be
@@ -1595,18 +1595,18 @@ function RB_STD_DrawShaderPasses(drawSurfs: drawSurf_t[], /*int */numDrawSurfs :
 //					backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
 //			}
 //			glClear( GL_STENCIL_BUFFER_BIT );
-//
+
 //			glEnable( GL_STENCIL_TEST );
-//
+
 //			// only pass on the cleared stencil values
 //			glStencilFunc( GL_EQUAL, 128, 255 );
-//
+
 //			// when we pass the stencil test and depth test and are going to draw,
 //			// increment the stencil buffer so we don't ever draw on that pixel again
 //			glStencilOp( GL_KEEP, GL_KEEP, GL_INCR );
 //		}
 //#endif
-//
+
 //		if ( vLight.lightShader.IsFogLight() ) {
 //			RB_FogPass( vLight.globalInteractions, vLight.localInteractions );
 //		} else if ( vLight.lightShader.IsBlendLight() ) {
@@ -1614,10 +1614,10 @@ function RB_STD_DrawShaderPasses(drawSurfs: drawSurf_t[], /*int */numDrawSurfs :
 //		}
 //		glDisable( GL_STENCIL_TEST );
 //	}
-//
+
 //	glEnable( GL_STENCIL_TEST );
 //#endif
-//}
+}
 //
 //=========================================================================================
 
@@ -1741,15 +1741,16 @@ function RB_STD_DrawView ( ): void {
 
 	// now draw any non-light dependent shading passes
 	var /*int	*/processed = RB_STD_DrawShaderPasses( drawSurfs, numDrawSurfs );
-	todoThrow ( );
-//	// fob and blend lights
-//	RB_STD_FogAllLights();
 
-//	// now draw any post-processing effects using _currentRender
-//	if ( processed < numDrawSurfs ) {
-//		RB_STD_DrawShaderPasses( drawSurfs+processed, numDrawSurfs-processed );
-//	}
+	// fob and blend lights
+	RB_STD_FogAllLights();
 
-//	RB_RenderDebugTools( drawSurfs, numDrawSurfs );
+	// now draw any post-processing effects using _currentRender
+	if (processed < numDrawSurfs) {
+		todoThrow ( );
+		//RB_STD_DrawShaderPasses( drawSurfs+processed, numDrawSurfs-processed );
+	}
+
+	RB_RenderDebugTools( drawSurfs, numDrawSurfs );
 
 }
