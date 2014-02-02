@@ -33,12 +33,12 @@ var glArrayElement = ( ...args: any[]) => { todoThrow ( ); };
 var glBegin = ( ...args: any[]) => { todoThrow ( ); };
 var glBindTexture = ( ...args: any[]) => { todoThrow ( ); };
 var glBitmap = ( ...args: any[]) => { todoThrow ( ); };
-var glBlendFunc = ( ...args: any[]) => { todoThrow ( ); };
+var glBlendFunc = <( sfactor: number, dfactor: number ) => void> gl.blendFunc.bind( gl );
 var glCallList = ( ...args: any[]) => { todoThrow ( ); };
 var glCallLists = ( ...args: any[]) => { todoThrow ( ); };
 var glClear = <( mask: number ) => void > gl.clear.bind( gl );
 var glClearAccum = ( ...args: any[]) => { todoThrow ( ); };
-var glClearColor = ( ...args: any[]) => { todoThrow ( ); };
+var glClearColor = <( red: number, green: number, blue: number, alpha: number ) => void > gl.clearColor.bind( gl );
 var glClearDepth = ( ...args: any[]) => { todoThrow ( ); };
 var glClearIndex = ( ...args: any[]) => { todoThrow ( ); };
 var glClearStencil = ( ...args: any[]) => { todoThrow ( ); };
@@ -361,7 +361,7 @@ var glVertex4iv = ( ...args: any[]) => { todoThrow ( ); };
 var glVertex4s = ( ...args: any[]) => { todoThrow ( ); };
 var glVertex4sv = ( ...args: any[]) => { todoThrow ( ); };
 var glVertexPointer = ( ...args: any[]) => { todoThrow ( ); };
-var glViewport = ( ...args: any[]) => { todoThrow ( ); }; 
+var glViewport = < ( x: number, y: number, width: number, height: number ) => void > gl.viewport.bind( gl );
 
 //#ifdef GLX_VERSION_1_1 // catch all for any GLX-aware situation
 //var  glXChooseVisual glXChooseVisual
@@ -409,4 +409,3 @@ var glBufferSubData = <( target: number, offset: number, data: ArrayBufferView )
 var glBufferData = ( target: number, size: number, data: ArrayBufferView, usage: number ): void => {
 	gl.bufferData.call( gl, target, data, usage );
 };
-

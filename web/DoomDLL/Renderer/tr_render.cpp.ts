@@ -507,51 +507,51 @@
 //}
 //
 //
-///*
-//=================
-//RB_BeginDrawingView
-//
-//Any mirrored or portaled views have already been drawn, so prepare
-//to actually render the visible surfaces for this view
-//=================
-//*/
-//void RB_BeginDrawingView (void) {
-//	// set the modelview matrix for the viewer
-//
-//	// set the window clipping
-//	glViewport( tr.viewportOffset[0] + backEnd.viewDef.viewport.x1, 
-//		tr.viewportOffset[1] + backEnd.viewDef.viewport.y1, 
-//		backEnd.viewDef.viewport.x2 + 1 - backEnd.viewDef.viewport.x1,
-//		backEnd.viewDef.viewport.y2 + 1 - backEnd.viewDef.viewport.y1 );
-//
-//	// the scissor may be smaller than the viewport for subviews
-//	glScissor( tr.viewportOffset[0] + backEnd.viewDef.viewport.x1 + backEnd.viewDef.scissor.x1, 
-//		tr.viewportOffset[1] + backEnd.viewDef.viewport.y1 + backEnd.viewDef.scissor.y1, 
-//		backEnd.viewDef.scissor.x2 + 1 - backEnd.viewDef.scissor.x1,
-//		backEnd.viewDef.scissor.y2 + 1 - backEnd.viewDef.scissor.y1 );
-//	backEnd.currentScissor = backEnd.viewDef.scissor;
-//
-//	// ensures that depth writes are enabled for the depth clear
-//	GL_State( GLS_DEFAULT );
-//
-//	// we don't have to clear the depth / stencil buffer for 2D rendering
-//	if ( backEnd.viewDef.viewEntitys ) {
-//		glStencilMask( 0xff );
-//		// some cards may have 7 bit stencil buffers, so don't assume this
-//		// should be 128
-//		glClearStencil( 1<<(glConfig.stencilBits-1) );
-//		glClear( GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
-//		glEnable( GL_DEPTH_TEST );
-//	} else {
-//		glDisable( GL_DEPTH_TEST );
-//		glDisable( GL_STENCIL_TEST );
-//	}
-//
-//	backEnd.glState.faceCulling = -1;		// force face culling to set next time
-//	GL_Cull( CT_FRONT_SIDED );
-//
-//}
-//
+/*
+=================
+RB_BeginDrawingView
+
+Any mirrored or portaled views have already been drawn, so prepare
+to actually render the visible surfaces for this view
+=================
+*/
+function RB_BeginDrawingView ():void {
+	// set the modelview matrix for the viewer
+
+	// set the window clipping
+	glViewport( tr.viewportOffset[0] + backEnd.viewDef.viewport.x1, 
+		tr.viewportOffset[1] + backEnd.viewDef.viewport.y1, 
+		backEnd.viewDef.viewport.x2 + 1 - backEnd.viewDef.viewport.x1,
+		backEnd.viewDef.viewport.y2 + 1 - backEnd.viewDef.viewport.y1 );
+
+	// the scissor may be smaller than the viewport for subviews
+	glScissor( tr.viewportOffset[0] + backEnd.viewDef.viewport.x1 + backEnd.viewDef.scissor.x1, 
+		tr.viewportOffset[1] + backEnd.viewDef.viewport.y1 + backEnd.viewDef.scissor.y1, 
+		backEnd.viewDef.scissor.x2 + 1 - backEnd.viewDef.scissor.x1,
+		backEnd.viewDef.scissor.y2 + 1 - backEnd.viewDef.scissor.y1 );
+	backEnd.currentScissor.equals(backEnd.viewDef.scissor);
+
+	// ensures that depth writes are enabled for the depth clear
+	GL_State( GLS_DEFAULT );
+
+	// we don't have to clear the depth / stencil buffer for 2D rendering
+	if ( backEnd.viewDef.viewEntitys ) {
+		glStencilMask( 0xff );
+		// some cards may have 7 bit stencil buffers, so don't assume this
+		// should be 128
+		glClearStencil( 1<<(glConfig.stencilBits-1) );
+		glClear( GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
+		glEnable( GL_DEPTH_TEST );
+	} else {
+		glDisable( GL_DEPTH_TEST );
+		glDisable( GL_STENCIL_TEST );
+	}
+
+	backEnd.glState.faceCulling = -1;		// force face culling to set next time
+	GL_Cull( cullType_t.CT_FRONT_SIDED );
+
+}
+
 ///*
 //==================
 //R_SetDrawInteractions

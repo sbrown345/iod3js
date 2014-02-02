@@ -426,9 +426,9 @@ class viewDef_t {
 	// mirror intersects a portal, and the initialViewAreaOrigin is on
 	// a different side than the renderView.viewOrg is.
 
-	sSubview:boolean;				// true if this view is not the main view
-	sMirror:boolean;				// the portal is a mirror, invert the face culling
-	sXraySubview:boolean;
+	isSubview:boolean;				// true if this view is not the main view
+	isMirror:boolean;				// the portal is a mirror, invert the face culling
+	isXraySubview:boolean;
 
 	isEditor:boolean;
 

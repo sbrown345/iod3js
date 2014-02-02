@@ -306,44 +306,43 @@ function GL_UseProgram ( program: shaderProgram_t ): void {
 ////	GL_CheckErrors();
 ////}
 
-/////*
-////====================
-////GL_Cull
+/*
+====================
+GL_Cull
 
-////This handles the flipping needed when the view being
-////rendered is a mirored view.
-////====================
-////*/
-////void GL_Cull(int cullType)
-////{
-////	if (backEnd.glState.faceCulling == cullType) {
-////		return;
-////	}
+This handles the flipping needed when the view being
+rendered is a mirored view.
+====================
+*/
+function GL_Cull ( /*int */cullType: cullType_t ): void {
+	if ( backEnd.glState.faceCulling == cullType ) {
+		return;
+	}
 
-////	if (cullType == CT_TWO_SIDED) {
-////		glDisable(GL_CULL_FACE);
-////	} else  {
-////		if (backEnd.glState.faceCulling == CT_TWO_SIDED) {
-////			glEnable(GL_CULL_FACE);
-////		}
+	if ( cullType == cullType_t.CT_TWO_SIDED ) {
+		glDisable( GL_CULL_FACE );
+	} else {
+		if ( backEnd.glState.faceCulling == cullType_t.CT_TWO_SIDED ) {
+			glEnable( GL_CULL_FACE );
+		}
 
-////		if (cullType == CT_BACK_SIDED) {
-////			if (backEnd.viewDef.isMirror) {
-////				glCullFace(GL_FRONT);
-////			} else {
-////				glCullFace(GL_BACK);
-////			}
-////		} else {
-////			if (backEnd.viewDef.isMirror) {
-////				glCullFace(GL_BACK);
-////			} else {
-////				glCullFace(GL_FRONT);
-////			}
-////		}
-////	}
+		if ( cullType == cullType_t.CT_BACK_SIDED ) {
+			if ( backEnd.viewDef.isMirror ) {
+				glCullFace( GL_FRONT );
+			} else {
+				glCullFace( GL_BACK );
+			}
+		} else {
+			if ( backEnd.viewDef.isMirror ) {
+				glCullFace( GL_BACK );
+			} else {
+				glCullFace( GL_FRONT );
+			}
+		}
+	}
 
-////	backEnd.glState.faceCulling = cullType;
-////}
+	backEnd.glState.faceCulling = cullType;
+}
 
 /////*
 ////=================
@@ -358,186 +357,183 @@ function GL_UseProgram ( program: shaderProgram_t ): void {
 ////	backEnd.glState.forceGlState = true;
 ////}
 
-/////*
-////====================
-////GL_State
+/*
+====================
+GL_State
 
-////This routine is responsible for setting the most commonly changed state
-////====================
-////*/
-////void GL_State(int stateBits)
-////{
-////	int	diff;
+This routine is responsible for setting the most commonly changed state
+====================
+*/
+function GL_State ( /*int */stateBits: number ): void {
+	var /*int	*/diff: number;
 
-////	if (!r_useStateCaching.GetBool() || backEnd.glState.forceGlState) {
-////		// make sure everything is set all the time, so we
-////		// can see if our delta checking is screwing up
-////		diff = -1;
-////		backEnd.glState.forceGlState = false;
-////	} else {
-////		diff = stateBits ^ backEnd.glState.glStateBits;
+	if ( !r_useStateCaching.GetBool ( ) || backEnd.glState.forceGlState ) {
+		// make sure everything is set all the time, so we
+		// can see if our delta checking is screwing up
+		diff = -1;
+		backEnd.glState.forceGlState = false;
+	} else {
+		diff = stateBits ^ backEnd.glState.glStateBits;
 
-////		if (!diff) {
-////			return;
-////		}
-////	}
+		if ( !diff ) {
+			return;
+		}
+	}
 
-////	//
-////	// check depthFunc bits
-////	//
-////	if (diff & (GLS_DEPTHFUNC_EQUAL | GLS_DEPTHFUNC_LESS | GLS_DEPTHFUNC_ALWAYS)) {
-////		if (stateBits & GLS_DEPTHFUNC_EQUAL) {
-////			glDepthFunc(GL_EQUAL);
-////		} else if (stateBits & GLS_DEPTHFUNC_ALWAYS) {
-////			glDepthFunc(GL_ALWAYS);
-////		} else {
-////			glDepthFunc(GL_LEQUAL);
-////		}
-////	}
-
-
-////	//
-////	// check blend bits
-////	//
-////	if (diff & (GLS_SRCBLEND_BITS | GLS_DSTBLEND_BITS)) {
-////		GLenum srcFactor, dstFactor;
-
-////		switch (stateBits & GLS_SRCBLEND_BITS) {
-////			case GLS_SRCBLEND_ZERO:
-////				srcFactor = GL_ZERO;
-////				break;
-////			case GLS_SRCBLEND_ONE:
-////				srcFactor = GL_ONE;
-////				break;
-////			case GLS_SRCBLEND_DST_COLOR:
-////				srcFactor = GL_DST_COLOR;
-////				break;
-////			case GLS_SRCBLEND_ONE_MINUS_DST_COLOR:
-////				srcFactor = GL_ONE_MINUS_DST_COLOR;
-////				break;
-////			case GLS_SRCBLEND_SRC_ALPHA:
-////				srcFactor = GL_SRC_ALPHA;
-////				break;
-////			case GLS_SRCBLEND_ONE_MINUS_SRC_ALPHA:
-////				srcFactor = GL_ONE_MINUS_SRC_ALPHA;
-////				break;
-////			case GLS_SRCBLEND_DST_ALPHA:
-////				srcFactor = GL_DST_ALPHA;
-////				break;
-////			case GLS_SRCBLEND_ONE_MINUS_DST_ALPHA:
-////				srcFactor = GL_ONE_MINUS_DST_ALPHA;
-////				break;
-////			case GLS_SRCBLEND_ALPHA_SATURATE:
-////				srcFactor = GL_SRC_ALPHA_SATURATE;
-////				break;
-////			default:
-////				srcFactor = GL_ONE;		// to get warning to shut up
-////				common.Error("GL_State: invalid src blend state bits\n");
-////				break;
-////		}
-
-////		switch (stateBits & GLS_DSTBLEND_BITS) {
-////			case GLS_DSTBLEND_ZERO:
-////				dstFactor = GL_ZERO;
-////				break;
-////			case GLS_DSTBLEND_ONE:
-////				dstFactor = GL_ONE;
-////				break;
-////			case GLS_DSTBLEND_SRC_COLOR:
-////				dstFactor = GL_SRC_COLOR;
-////				break;
-////			case GLS_DSTBLEND_ONE_MINUS_SRC_COLOR:
-////				dstFactor = GL_ONE_MINUS_SRC_COLOR;
-////				break;
-////			case GLS_DSTBLEND_SRC_ALPHA:
-////				dstFactor = GL_SRC_ALPHA;
-////				break;
-////			case GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA:
-////				dstFactor = GL_ONE_MINUS_SRC_ALPHA;
-////				break;
-////			case GLS_DSTBLEND_DST_ALPHA:
-////				dstFactor = GL_DST_ALPHA;
-////				break;
-////			case GLS_DSTBLEND_ONE_MINUS_DST_ALPHA:
-////				dstFactor = GL_ONE_MINUS_DST_ALPHA;
-////				break;
-////			default:
-////				dstFactor = GL_ONE;		// to get warning to shut up
-////				common.Error("GL_State: invalid dst blend state bits\n");
-////				break;
-////		}
-
-////		glBlendFunc(srcFactor, dstFactor);
-////	}
-
-////	//
-////	// check depthmask
-////	//
-////	if (diff & GLS_DEPTHMASK) {
-////		if (stateBits & GLS_DEPTHMASK) {
-////			glDepthMask(GL_FALSE);
-////		} else {
-////			glDepthMask(GL_TRUE);
-////		}
-////	}
-
-////	//
-////	// check colormask
-////	//
-////	if (diff & (GLS_REDMASK|GLS_GREENMASK|GLS_BLUEMASK|GLS_ALPHAMASK)) {
-////		GLboolean		r, g, b, a;
-////		r = (stateBits & GLS_REDMASK) ? 0 : 1;
-////		g = (stateBits & GLS_GREENMASK) ? 0 : 1;
-////		b = (stateBits & GLS_BLUEMASK) ? 0 : 1;
-////		a = (stateBits & GLS_ALPHAMASK) ? 0 : 1;
-////		glColorMask(r, g, b, a);
-////	}
-
-////	//
-////	// fill/line mode
-////	//
-////#if !defined(GL_ES_VERSION_2_0)
-////	if (diff & GLS_POLYMODE_LINE) {
-////		if (stateBits & GLS_POLYMODE_LINE) {
-////			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-////		} else {
-////			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-////		}
-////	}
-////#endif
-
-////	//
-////	// alpha test
-////	//
-////#if !defined(GL_ES_VERSION_2_0)
-////	if (diff & GLS_ATEST_BITS) {
-////		switch (stateBits & GLS_ATEST_BITS) {
-////			case 0:
-////				glDisable(GL_ALPHA_TEST);
-////				break;
-////			case GLS_ATEST_EQ_255:
-////				glEnable(GL_ALPHA_TEST);
-////				glAlphaFunc(GL_EQUAL, 1);
-////				break;
-////			case GLS_ATEST_LT_128:
-////				glEnable(GL_ALPHA_TEST);
-////				glAlphaFunc(GL_LESS, 0.5);
-////				break;
-////			case GLS_ATEST_GE_128:
-////				glEnable(GL_ALPHA_TEST);
-////				glAlphaFunc(GL_GEQUAL, 0.5);
-////				break;
-////			default:
-////				assert(0);
-////				break;
-////		}
-////	}
-////#endif
-
-////	backEnd.glState.glStateBits = stateBits;
-////}
+	//
+	// check depthFunc bits
+	//
+	if ( diff & ( GLS_DEPTHFUNC_EQUAL | GLS_DEPTHFUNC_LESS | GLS_DEPTHFUNC_ALWAYS ) ) {
+		if ( stateBits & GLS_DEPTHFUNC_EQUAL ) {
+			glDepthFunc( GL_EQUAL );
+		} else if ( stateBits & GLS_DEPTHFUNC_ALWAYS ) {
+			glDepthFunc( GL_ALWAYS );
+		} else {
+			glDepthFunc( GL_LEQUAL );
+		}
+	}
 
 
+	//
+	// check blend bits
+	//
+	if ( diff & ( GLS_SRCBLEND_BITS | GLS_DSTBLEND_BITS ) ) {
+		var /*GLenum */srcFactor: number, dstFactor: number;
+
+		switch ( stateBits & GLS_SRCBLEND_BITS ) {
+		case GLS_SRCBLEND_ZERO:
+			srcFactor = GL_ZERO;
+			break;
+		case GLS_SRCBLEND_ONE:
+			srcFactor = GL_ONE;
+			break;
+		case GLS_SRCBLEND_DST_COLOR:
+			srcFactor = GL_DST_COLOR;
+			break;
+		case GLS_SRCBLEND_ONE_MINUS_DST_COLOR:
+			srcFactor = GL_ONE_MINUS_DST_COLOR;
+			break;
+		case GLS_SRCBLEND_SRC_ALPHA:
+			srcFactor = GL_SRC_ALPHA;
+			break;
+		case GLS_SRCBLEND_ONE_MINUS_SRC_ALPHA:
+			srcFactor = GL_ONE_MINUS_SRC_ALPHA;
+			break;
+		case GLS_SRCBLEND_DST_ALPHA:
+			srcFactor = GL_DST_ALPHA;
+			break;
+		case GLS_SRCBLEND_ONE_MINUS_DST_ALPHA:
+			srcFactor = GL_ONE_MINUS_DST_ALPHA;
+			break;
+		case GLS_SRCBLEND_ALPHA_SATURATE:
+			srcFactor = GL_SRC_ALPHA_SATURATE;
+			break;
+		default:
+			srcFactor = GL_ONE; // to get warning to shut up
+			common.Error( "GL_State: invalid src blend state bits\n" );
+			break;
+		}
+
+		switch ( stateBits & GLS_DSTBLEND_BITS ) {
+		case GLS_DSTBLEND_ZERO:
+			dstFactor = GL_ZERO;
+			break;
+		case GLS_DSTBLEND_ONE:
+			dstFactor = GL_ONE;
+			break;
+		case GLS_DSTBLEND_SRC_COLOR:
+			dstFactor = GL_SRC_COLOR;
+			break;
+		case GLS_DSTBLEND_ONE_MINUS_SRC_COLOR:
+			dstFactor = GL_ONE_MINUS_SRC_COLOR;
+			break;
+		case GLS_DSTBLEND_SRC_ALPHA:
+			dstFactor = GL_SRC_ALPHA;
+			break;
+		case GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA:
+			dstFactor = GL_ONE_MINUS_SRC_ALPHA;
+			break;
+		case GLS_DSTBLEND_DST_ALPHA:
+			dstFactor = GL_DST_ALPHA;
+			break;
+		case GLS_DSTBLEND_ONE_MINUS_DST_ALPHA:
+			dstFactor = GL_ONE_MINUS_DST_ALPHA;
+			break;
+		default:
+			dstFactor = GL_ONE; // to get warning to shut up
+			common.Error( "GL_State: invalid dst blend state bits\n" );
+			break;
+		}
+
+		glBlendFunc( srcFactor, dstFactor );
+	}
+
+	//
+	// check depthmask
+	//
+	if ( diff & GLS_DEPTHMASK ) {
+		if ( stateBits & GLS_DEPTHMASK ) {
+			glDepthMask( GL_FALSE );
+		} else {
+			glDepthMask( GL_TRUE );
+		}
+	}
+
+	//
+	// check colormask
+	//
+	if ( diff & ( GLS_REDMASK | GLS_GREENMASK | GLS_BLUEMASK | GLS_ALPHAMASK ) ) {
+		var /*GLboolean		*/r: boolean, g: boolean, b: boolean, a: boolean;
+		r = !!( ( stateBits & GLS_REDMASK ) ? 0 : 1 );
+		g = !!( ( stateBits & GLS_GREENMASK ) ? 0 : 1 );
+		b = !!( ( stateBits & GLS_BLUEMASK ) ? 0 : 1 );
+		a = !!( ( stateBits & GLS_ALPHAMASK ) ? 0 : 1 );
+		glColorMask( r, g, b, a );
+	}
+
+	//
+	// fill/line mode
+	//
+//#if !defined(GL_ES_VERSION_2_0)
+//	if (diff & GLS_POLYMODE_LINE) {
+//		if (stateBits & GLS_POLYMODE_LINE) {
+//			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+//		} else {
+//			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+//		}
+//	}
+//#endif
+
+	//
+	// alpha test
+	//
+//#if !defined(GL_ES_VERSION_2_0)
+//	if (diff & GLS_ATEST_BITS) {
+//		switch (stateBits & GLS_ATEST_BITS) {
+//			case 0:
+//				glDisable(GL_ALPHA_TEST);
+//				break;
+//			case GLS_ATEST_EQ_255:
+//				glEnable(GL_ALPHA_TEST);
+//				glAlphaFunc(GL_EQUAL, 1);
+//				break;
+//			case GLS_ATEST_LT_128:
+//				glEnable(GL_ALPHA_TEST);
+//				glAlphaFunc(GL_LESS, 0.5);
+//				break;
+//			case GLS_ATEST_GE_128:
+//				glEnable(GL_ALPHA_TEST);
+//				glAlphaFunc(GL_GEQUAL, 0.5);
+//				break;
+//			default:
+//				assert(0);
+//				break;
+//		}
+//	}
+//#endif
+
+	backEnd.glState.glStateBits = stateBits;
+}
 
 
 /////*

@@ -1712,10 +1712,10 @@ function RB_STD_DrawView( ):void {
 
 	drawSurfs = backEnd.viewDef.drawSurfs;//(drawSurf_t **)&backEnd.viewDef.drawSurfs[0];
 	numDrawSurfs = backEnd.viewDef.numDrawSurfs;
-	todoThrow ( );
-//	// clear the z buffer, set the projection matrix, etc
-//	RB_BeginDrawingView();
 
+	// clear the z buffer, set the projection matrix, etc
+	RB_BeginDrawingView();
+	todoThrow ( );
 //	// decide how much overbrighting we are going to do
 //	RB_DetermineLightScale();
 
