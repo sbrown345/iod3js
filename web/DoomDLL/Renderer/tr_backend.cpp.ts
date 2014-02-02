@@ -130,35 +130,34 @@ todoThrow ( );
 }
 
 
-//////=============================================================================
+//=============================================================================
 
 
-/////*
-////====================
-////GL_SelectTexture
-////====================
-////*/
-////void GL_SelectTexture(int unit)
-////{
-////	if (backEnd.glState.currenttmu == unit) {
-////		return;
-////	}
+/*
+====================
+GL_SelectTexture
+====================
+*/
+function GL_SelectTexture ( /*int */unit: number ): void {
+	if ( backEnd.glState.currenttmu == unit ) {
+		return;
+	}
 
-////#if 0
-////	if (unit < 0 || unit >= glConfig.maxTextureUnits && unit >= glConfig.maxTextureImageUnits) {
-////		common.Warning("GL_SelectTexture: unit = %i", unit);
-////		return;
-////	}
-////#endif
+//#if 0
+//	if (unit < 0 || unit >= glConfig.maxTextureUnits && unit >= glConfig.maxTextureImageUnits) {
+//		common.Warning("GL_SelectTexture: unit = %i", unit);
+//		return;
+//	}
+//#endif
 
-////	glActiveTexture(GL_TEXTURE0 + unit);
-////#if !defined(GL_ES_VERSION_2_0)
-////	glClientActiveTexture(GL_TEXTURE0 + unit);
-////#endif
-////	RB_LogComment("glActiveTextureARB( %i );\nglClientActiveTextureARB( %i );\n", unit, unit);
+	glActiveTexture( GL_TEXTURE0 + unit );
+//#if !defined(GL_ES_VERSION_2_0)
+//	glClientActiveTexture(GL_TEXTURE0 + unit);
+//#endif
+	RB_LogComment( "glActiveTextureARB( %i );\nglClientActiveTextureARB( %i );\n", unit, unit );
 
-////	backEnd.glState.currenttmu = unit;
-////}
+	backEnd.glState.currenttmu = unit;
+}
 
 /*
 ====================
@@ -194,90 +193,89 @@ function GL_UseProgram ( program: shaderProgram_t ): void {
 ////	GL_CheckErrors();
 ////}
 
-/////*
-////====================
-////GL_Uniform4fv
-////====================
-////*/
-////void GL_Uniform4fv(GLint location, const GLfloat *value)
-////{
-////	if (!backEnd.glState.currentProgram) {
-////		common.Printf("GL_Uniform4fv: no current program object\n");
-////		__builtin_trap();
-////		return;
-////	}
+/*
+====================
+GL_Uniform4fv
+====================
+*/
+function GL_Uniform4fv ( /*GLint */location: string, /*const GLfloat **/value: Float32Array ): void {
+	if ( !backEnd.glState.currentProgram ) {
+		common.Printf( "GL_Uniform4fv: no current program object\n" );
+		__builtin_trap ( );
+		return;
+	}
 
-////	glUniform4fv(*(GLint *)((char *)backEnd.glState.currentProgram + location), 1, value);
+	glUniform4fv( backEnd.glState.currentProgram[location] /**(GLint *)((char *)backEnd.glState.currentProgram + location), 1*/, value );
 
-////	GL_CheckErrors();
-////}
+	idRenderSystem.GL_CheckErrors ( );
+}
 
 
-/////*
-////====================
-////GL_UniformMatrix4fv
-////====================
-////*/
-////void GL_UniformMatrix4fv(GLint location, const GLfloat *value)
-////{
-////	if (!backEnd.glState.currentProgram) {
-////		common.Printf("GL_Uniform4fv: no current program object\n");
-////		__builtin_trap();
-////		return;
-////	}
+/*
+====================
+GL_UniformMatrix4fv
+====================
+*/
+function GL_UniformMatrix4fv(/*GLint*/ location:string, value:Float32Array): void
+{
+	if (!backEnd.glState.currentProgram) {
+		common.Printf("GL_Uniform4fv: no current program object\n");
+		__builtin_trap();
+		return;
+	}
 
-////	glUniformMatrix4fv(*(GLint *)((char *)backEnd.glState.currentProgram + location), 1, GL_FALSE, value);
+	glUniformMatrix4fv(backEnd.glState.currentProgram[location] , /**(GLint *)((char *)backEnd.glState.currentProgram + location), 1,*/ GL_FALSE, value);
 
-////	GL_CheckErrors();
-////}
+	idRenderSystem.GL_CheckErrors();
+}
 
-/////*
-////====================
-////GL_EnableVertexAttribArray
-////====================
-////*/
-////void GL_EnableVertexAttribArray(GLuint index)
-////{
-////	if (!backEnd.glState.currentProgram) {
-////		common.Printf("GL_EnableVertexAttribArray: no current program object\n");
-////		__builtin_trap();
-////		return;
-////	}
+/*
+====================
+GL_EnableVertexAttribArray
+====================
+*/
+function GL_EnableVertexAttribArray(/*GLuint*/ index:number):void
+{
+	if (!backEnd.glState.currentProgram) {
+		common.Printf("GL_EnableVertexAttribArray: no current program object\n");
+		__builtin_trap();
+		return;
+	}
 
-////	if ((*(GLint *)((char *)backEnd.glState.currentProgram + index)) == -1) {
-////		common.Printf("GL_EnableVertexAttribArray: unbound attribute index\n");
-////		__builtin_trap();
-////		return;
-////	}
+	//if ((*(GLint *)((char *)backEnd.glState.currentProgram + index)) == -1) {
+	//	common.Printf("GL_EnableVertexAttribArray: unbound attribute index\n");
+	//	__builtin_trap();
+	//	return;
+	//}
 
-////	glEnableVertexAttribArray(*(GLint *)((char *)backEnd.glState.currentProgram + index));
+	glEnableVertexAttribArray(index/**(GLint *)((char *)backEnd.glState.currentProgram + index)*/);
 
-////	GL_CheckErrors();
-////}
+	idRenderSystem.GL_CheckErrors();
+}
 
-/////*
-////====================
-////GL_DisableVertexAttribArray
-////====================
-////*/
-////void GL_DisableVertexAttribArray(GLuint index)
-////{
-////	if (!backEnd.glState.currentProgram) {
-////		common.Printf("GL_DisableVertexAttribArray: no current program object\n");
-////		__builtin_trap();
-////		return;
-////	}
+/*
+====================
+GL_DisableVertexAttribArray
+====================
+*/
+function GL_DisableVertexAttribArray(/*GLuint */index:number):void
+{
+	if (!backEnd.glState.currentProgram) {
+		common.Printf("GL_DisableVertexAttribArray: no current program object\n");
+		__builtin_trap();
+		return;
+	}
 
-////	if ((*(GLint *)((char *)backEnd.glState.currentProgram + index)) == -1) {
-////		common.Printf("GL_DisableVertexAttribArray: unbound attribute index\n");
-////		__builtin_trap();
-////		return;
-////	}
+	//if ((*(GLint *)((char *)backEnd.glState.currentProgram + index)) == -1) {
+	//	common.Printf("GL_DisableVertexAttribArray: unbound attribute index\n");
+	//	__builtin_trap();
+	//	return;
+	//}
 
-////	glDisableVertexAttribArray(*(GLint *)((char *)backEnd.glState.currentProgram + index));
+	glDisableVertexAttribArray(index/**(GLint *)((char *)backEnd.glState.currentProgram + index)*/);
 
-////	GL_CheckErrors();
-////}
+	idRenderSystem.GL_CheckErrors();
+}
 
 /////*
 ////====================

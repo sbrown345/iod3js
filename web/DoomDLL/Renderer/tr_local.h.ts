@@ -78,6 +78,111 @@ class idScreenRect {
 		this.zmin = other.zmin;
 		this.zmax = other.zmax;
 	}
+
+	
+///*
+//======================
+//idScreenRect::Clear
+//======================
+//*/
+//void idScreenRect::Clear() {
+//	x1 = y1 = 32000;
+//	x2 = y2 = -32000;
+//	zmin = 0.0; zmax = 1.0f;
+//}
+//
+///*
+//======================
+//idScreenRect::AddPoint
+//======================
+//*/
+//void idScreenRect::AddPoint( float x, float y ) {
+//	int	ix = idMath::FtoiFast( x );
+//	int iy = idMath::FtoiFast( y );
+//
+//	if ( ix < x1 ) {
+//		x1 = ix;
+//	}
+//	if ( ix > x2 ) {
+//		x2 = ix;
+//	}
+//	if ( iy < y1 ) {
+//		y1 = iy;
+//	}
+//	if ( iy > y2 ) {
+//		y2 = iy;
+//	}
+//}
+//
+///*
+//======================
+//idScreenRect::Expand
+//======================
+//*/
+//void idScreenRect::Expand() {
+//	x1--;
+//	y1--;
+//	x2++;
+//	y2++;
+//}
+//
+///*
+//======================
+//idScreenRect::Intersect
+//======================
+//*/
+//void idScreenRect::Intersect( const idScreenRect &rect ) {
+//	if ( rect.x1 > x1 ) {
+//		x1 = rect.x1;
+//	}
+//	if ( rect.x2 < x2 ) {
+//		x2 = rect.x2;
+//	}
+//	if ( rect.y1 > y1 ) {
+//		y1 = rect.y1;
+//	}
+//	if ( rect.y2 < y2 ) {
+//		y2 = rect.y2;
+//	}
+//}
+//
+///*
+//======================
+//idScreenRect::Union
+//======================
+//*/
+//void idScreenRect::Union( const idScreenRect &rect ) {
+//	if ( rect.x1 < x1 ) {
+//		x1 = rect.x1;
+//	}
+//	if ( rect.x2 > x2 ) {
+//		x2 = rect.x2;
+//	}
+//	if ( rect.y1 < y1 ) {
+//		y1 = rect.y1;
+//	}
+//	if ( rect.y2 > y2 ) {
+//		y2 = rect.y2;
+//	}
+//}
+//
+/*
+======================
+idScreenRect::Equals
+======================
+*/
+	Equals ( rect: idScreenRect ): boolean {
+		return ( this.x1 === rect.x1 && this.x2 === rect.x2 && this.y1 === rect.y1 && this.y2 === rect.y2 );
+	}
+//
+///*
+//======================
+//idScreenRect::IsEmpty
+//======================
+//*/
+//bool idScreenRect::IsEmpty() const {
+//	return ( x1 > x2 || y1 > y2 );
+//}
 }
 
 ////idScreenRect R_ScreenRectFromViewFrustumBounds( const idBounds &bounds );
@@ -312,43 +417,68 @@ class idRenderEntityLocal extends idRenderEntity {
 // a viewLight may exist even without any surfaces, and may be relevent for fogging,
 // but should never exist if its volume does not intersect the view frustum
 class viewLight_t {
-////	struct viewLight_s *	next;
+	next: viewLight_t;
 
-////	// back end should NOT reference the lightDef, because it can change when running SMP
-////	idRenderLightLocal *	lightDef;
+	// back end should NOT reference the lightDef, because it can change when running SMP
+	lightDef: idRenderLightLocal;
 
-////	// for scissor clipping, local inside renderView viewport
-////	// scissorRect.Empty() is true if the viewEntity_t was never actually
-////	// seen through any portals
-////	idScreenRect			scissorRect;
+	// for scissor clipping, local inside renderView viewport
+	// scissorRect.Empty() is true if the viewEntity_t was never actually
+	// seen through any portals
+	scissorRect = new idScreenRect;
 
-////	// if the view isn't inside the light, we can use the non-reversed
-////	// shadow drawing, avoiding the draws of the front and rear caps
-////	bool					viewInsideLight;
+	// if the view isn't inside the light, we can use the non-reversed
+	// shadow drawing, avoiding the draws of the front and rear caps
+	viewInsideLight: boolean;
 
-////	// true if globalLightOrigin is inside the view frustum, even if it may
-////	// be obscured by geometry.  This allows us to skip shadows from non-visible objects
-////	bool					viewSeesGlobalLightOrigin;	
+	// true if globalLightOrigin is inside the view frustum, even if it may
+	// be obscured by geometry.  This allows us to skip shadows from non-visible objects
+	viewSeesGlobalLightOrigin: boolean;
 
-////	// if !viewInsideLight, the corresponding bit for each of the shadowFrustum
-////	// projection planes that the view is on the negative side of will be set,
-////	// allowing us to skip drawing the projected caps of shadows if we can't see the face
-////	int						viewSeesShadowPlaneBits;
+	// if !viewInsideLight, the corresponding bit for each of the shadowFrustum
+	// projection planes that the view is on the negative side of will be set,
+	// allowing us to skip drawing the projected caps of shadows if we can't see the face
+	viewSeesShadowPlaneBits: number; //int
 
-////	idVec3					globalLightOrigin;			// global light origin used by backend
-////	idPlane					lightProject[4];			// light project used by backend
-////	idPlane					fogPlane;					// fog plane for backend fog volume rendering
-////	const srfTriangles_t *	frustumTris;				// light frustum for backend fog volume rendering
-////	const idMaterial *		lightShader;				// light shader used by backend
-////	const float	*			shaderRegisters;			// shader registers used by backend
-////	idImage *				falloffImage;				// falloff image used by backend
+	globalLightOrigin = new idVec3; // global light origin used by backend				//idVec3					
+	lightProject = newStructArray<idPlane>( idPlane, 4 ); // light project used by backend					//idPlane					
+	fogPlane = new idPlane; // fog plane for backend fog volume rendering		//idPlane					
+	frustumTris: srfTriangles_t; // light frustum for backend fog volume rendering	//const srfTriangles_t *	
+	lightShader: idMaterial; // light shader used by backend						//const idMaterial *		
+	shaderRegisters: number; // shader registers used by backend					//const float	*			
+	falloffImage: idImageManager; // falloff image used by backend					//idImage *				
 
-////	const struct drawSurf_s	*globalShadows;				// shadow everything
-////	const struct drawSurf_s	*localInteractions;			// don't get local shadows
-////	const struct drawSurf_s	*localShadows;				// don't shadow local Surfaces
-////	const struct drawSurf_s	*globalInteractions;		// get shadows from everything
-////	const struct drawSurf_s	*translucentInteractions;	// get shadows from everything
-};
+	globalShadows: drawSurf_t; // shadow everything
+	localInteractions: drawSurf_t; // don't get local shadows
+	localShadows: drawSurf_t; // don't shadow local Surfaces
+	globalInteractions: drawSurf_t; // get shadows from everything
+	translucentInteractions: drawSurf_t; // get shadows from everything
+
+	constructor ( ) {
+		this.init ( );
+	}
+
+	init ( ): void {
+		this.next = null;
+		this.lightDef = null;
+		this.scissorRect.init ( );
+		this.viewInsideLight = false;
+		this.viewSeesGlobalLightOrigin = false;
+		this.viewSeesShadowPlaneBits = 0;
+		this.globalLightOrigin.init ( );
+		clearStructArray( this.lightProject );
+		this.fogPlane.init ( );
+		this.frustumTris = null;
+		this.lightShader = null;
+		this.shaderRegisters = 0;
+		this.falloffImage = null;
+		this.globalShadows = null;
+		this.localInteractions = null;
+		this.localShadows = null;
+		this.globalInteractions = null;
+		this.translucentInteractions = null;
+	}
+}
 
 
 // a viewEntity is created whenever a idRenderEntityLocal is considered for inclusion
@@ -772,10 +902,10 @@ class backEndState_t {
 	lightTextureMatrix = new Float32Array( 16 ); // only if lightStage.texture.hasMatrix
 	lightColor = new Float32Array( 4 ); // evaluation of current light's color stage
 
-	lightScale: number; // Every light color calaculation will be multiplied by this,
+	lightScale: number/*float*/; // Every light color calaculation will be multiplied by this,
 	// which will guarantee that the result is < tr.backEndRendererMaxLight
 	// A card with high dynamic range will have this set to 1.0
-	overBright: number; // The amount that all light interactions must be multiplied by
+	overBright: number /*float*/; // The amount that all light interactions must be multiplied by
 	// with post processing to get the desired total light level.
 	// A high dynamic range card will have this set to 1.0.
 
@@ -1585,6 +1715,15 @@ class shaderProgram_t {
 			this.u_vertexParm[i] = null;
 		}
 	}
+}
+
+enum shaderProgram_indexes {
+	attr_TexCoord=8,
+	attr_Tangent=9,
+	attr_Bitangent=10,
+	attr_Normal=11,
+	attr_Vertex=12,
+	attr_Color=13,
 }
 
 

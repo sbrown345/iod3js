@@ -2731,10 +2731,10 @@ CheckForConstantRegisters():void {
 
 //	void				ReloadImages( bool force ) const;
 
-//						// returns number of stages this material contains
-//	const int			GetNumStages( void ) const { return this.numStages; }
+	// returns number of stages this material contains
+	GetNumStages ( ): number { return this.numStages; }
 
-						// get a specific stage
+	// get a specific stage
 	GetStage( /*const int */index: number):shaderStage_t{ assert(index >= 0 && index < this.numStages); return this.stages[index]; }
 
 //						// get the first bump map stage, or NULL if not present.
@@ -2954,8 +2954,8 @@ GetNumRegisters():number { return this.numRegisters; }
 //						// to be called.  If NULL is returned, EvaluateRegisters must be used.
 //	const float *		ConstantRegisters() const;
 
-//	bool				SuppressInSubview() const				{ return suppressInSubview; };
-//	bool				IsPortalSky() const						{ return portalSky; };
+	SuppressInSubview ( ): boolean { return this.suppressInSubview; }
+	IsPortalSky ( ): boolean { return this.portalSky; }
 //	void				AddReference();
 
 ////private:

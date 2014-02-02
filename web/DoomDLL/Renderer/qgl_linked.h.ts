@@ -280,7 +280,7 @@ var glScalef = ( ...args: any[]) => { todoThrow ( ); };
 var glScissor = <( x: number, y: number, width: number, height: number ) => void>gl.scissor.bind( gl );
 var glSelectBuffer = ( ...args: any[]) => { todoThrow ( ); };
 var glShadeModel = ( ...args: any[]) => { todoThrow ( ); };
-var glStencilFunc = ( ...args: any[]) => { todoThrow ( ); };
+var glStencilFunc = <( func: number, ref: number, mask: number ) => void> gl.stencilFunc.bind( gl );
 var glStencilMask = ( ...args: any[]) => { todoThrow ( ); };
 var glStencilOp = ( ...args: any[]) => { todoThrow ( ); };
 var glTexCoord1d = ( ...args: any[]) => { todoThrow ( ); };
@@ -405,6 +405,11 @@ var glBindBuffer = <(target: number, buffer: WebGLBuffer) => void>gl.bindBuffer.
 var glGenBuffers = <( size: number ) => WebGLBuffer > gl.createBuffer.bind( gl );
 var glClearDepthf = <( depth: number ) => void> gl.clearDepth.bind( gl );
 var glBufferSubData = <( target: number, offset: number, data: ArrayBufferView ) => void> gl.bufferSubData.bind( gl );
+var glActiveTexture = <( texture: number ) => void> gl.activeTexture.bind( gl );
+var glEnableVertexAttribArray = <( index: number ) => void> gl.enableVertexAttribArray.bind( gl );
+var glDisableVertexAttribArray = <( index: number ) => void> gl.disableVertexAttribArray.bind( gl );
+var glUniform4fv = <( location: WebGLUniformLocation, v: Float32Array ) => void> gl.uniform4fv.bind( gl );
+var glUniformMatrix4fv = <( location: WebGLUniformLocation, transpose: boolean, value: Float32Array ) => void>gl.uniformMatrix4fv.bind( gl );
 
 var glBufferData = ( target: number, size: number, data: ArrayBufferView, usage: number ): void => {
 	gl.bufferData.call( gl, target, data, usage );

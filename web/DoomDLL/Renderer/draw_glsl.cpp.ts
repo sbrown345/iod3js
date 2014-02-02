@@ -233,91 +233,91 @@ var depthFillShader = new shaderProgram_t;
 //}
 //
 //
-///*
-//==================
-//RB_GLSL_DrawInteractions
-//==================
-//*/
-//void RB_GLSL_DrawInteractions(void)
-//{
-//	viewLight_t		*vLight;
-//	const idMaterial	*lightShader;
-//
-//	GL_SelectTexture(0);
-//	/*
-//	GL_DisableVertexAttribArray(offsetof(shaderProgram_t, attr_TexCoord));
-//	*/
-//
-//	//
-//	// for each light, perform adding and shadowing
-//	//
-//	for (vLight = backEnd.viewDef.viewLights ; vLight ; vLight = vLight.next) {
-//		backEnd.vLight = vLight;
-//
-//		// do fogging later
-//		if (vLight.lightShader.IsFogLight()) {
-//			continue;
-//		}
-//
-//		if (vLight.lightShader.IsBlendLight()) {
-//			continue;
-//		}
-//
-//		if (!vLight.localInteractions && !vLight.globalInteractions
-//		    && !vLight.translucentInteractions) {
-//			continue;
-//		}
-//
-//		lightShader = vLight.lightShader;
-//
-//		// clear the stencil buffer if needed
-//		if (vLight.globalShadows || vLight.localShadows) {
-//			backEnd.currentScissor = vLight.scissorRect;
-//
-//			if (r_useScissor.GetBool()) {
-//				glScissor(backEnd.viewDef.viewport.x1 + backEnd.currentScissor.x1,
-//				          backEnd.viewDef.viewport.y1 + backEnd.currentScissor.y1,
-//				          backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
-//				          backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1);
-//			}
-//
-//			glClear(GL_STENCIL_BUFFER_BIT);
-//		} else {
-//			// no shadows, so no need to read or write the stencil buffer
-//			// we might in theory want to use GL_ALWAYS instead of disabling
-//			// completely, to satisfy the invarience rules
-//			glStencilFunc(GL_ALWAYS, 128, 255);
-//		}
-//
-//		GL_UseProgram(&shadowShader);
-//		RB_StencilShadowPass(vLight.globalShadows);
-//		RB_GLSL_CreateDrawInteractions(vLight.localInteractions);
-//		GL_UseProgram(&shadowShader);
-//		RB_StencilShadowPass(vLight.localShadows);
-//		RB_GLSL_CreateDrawInteractions(vLight.globalInteractions);
-//		GL_UseProgram(NULL);	// if there weren't any globalInteractions, it would have stayed on
-//
-//		// translucent surfaces never get stencil shadowed
-//		if (r_skipTranslucent.GetBool()) {
-//			continue;
-//		}
-//
-//		glStencilFunc(GL_ALWAYS, 128, 255);
-//
-//		backEnd.depthFunc = GLS_DEPTHFUNC_LESS;
-//		RB_GLSL_CreateDrawInteractions(vLight.translucentInteractions);
-//
-//		backEnd.depthFunc = GLS_DEPTHFUNC_EQUAL;
-//	}
-//
-//	// disable stencil shadow test
-//	glStencilFunc(GL_ALWAYS, 128, 255);
-//
-//	GL_SelectTexture(0);
-//	/*
-//	GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_TexCoord));
-//	*/
-//}
+/*
+==================
+RB_GLSL_DrawInteractions
+==================
+*/
+function RB_GLSL_DrawInteractions():void
+{
+	var vLight: viewLight_t;
+	var lightShaderL: idMaterial;
+
+	GL_SelectTexture(0);
+	/*
+	GL_DisableVertexAttribArray(offsetof(shaderProgram_t, attr_TexCoord));
+	*/
+
+	//
+	// for each light, perform adding and shadowing
+	//
+	for (vLight = backEnd.viewDef.viewLights ; vLight ; vLight = vLight.next) {
+		backEnd.vLight = vLight;
+		todoThrow ( );
+		//// do fogging later
+		//if (vLight.lightShader.IsFogLight()) {
+		//	continue;
+		//}
+
+		//if (vLight.lightShader.IsBlendLight()) {
+		//	continue;
+		//}
+
+		//if (!vLight.localInteractions && !vLight.globalInteractions
+		//    && !vLight.translucentInteractions) {
+		//	continue;
+		//}
+
+		//lightShader = vLight.lightShader;
+
+		//// clear the stencil buffer if needed
+		//if (vLight.globalShadows || vLight.localShadows) {
+		//	backEnd.currentScissor = vLight.scissorRect;
+
+		//	if (r_useScissor.GetBool()) {
+		//		glScissor(backEnd.viewDef.viewport.x1 + backEnd.currentScissor.x1,
+		//		          backEnd.viewDef.viewport.y1 + backEnd.currentScissor.y1,
+		//		          backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
+		//		          backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1);
+		//	}
+
+		//	glClear(GL_STENCIL_BUFFER_BIT);
+		//} else {
+		//	// no shadows, so no need to read or write the stencil buffer
+		//	// we might in theory want to use GL_ALWAYS instead of disabling
+		//	// completely, to satisfy the invarience rules
+		//	glStencilFunc(GL_ALWAYS, 128, 255);
+		//}
+
+		//GL_UseProgram(&shadowShader);
+		//RB_StencilShadowPass(vLight.globalShadows);
+		//RB_GLSL_CreateDrawInteractions(vLight.localInteractions);
+		//GL_UseProgram(&shadowShader);
+		//RB_StencilShadowPass(vLight.localShadows);
+		//RB_GLSL_CreateDrawInteractions(vLight.globalInteractions);
+		//GL_UseProgram(NULL);	// if there weren't any globalInteractions, it would have stayed on
+
+		//// translucent surfaces never get stencil shadowed
+		//if (r_skipTranslucent.GetBool()) {
+		//	continue;
+		//}
+
+		//glStencilFunc(GL_ALWAYS, 128, 255);
+
+		//backEnd.depthFunc = GLS_DEPTHFUNC_LESS;
+		//RB_GLSL_CreateDrawInteractions(vLight.translucentInteractions);
+
+		//backEnd.depthFunc = GLS_DEPTHFUNC_EQUAL;
+	}
+
+	// disable stencil shadow test
+	glStencilFunc(GL_ALWAYS, 128, 255);
+
+	GL_SelectTexture(0);
+	/*
+	GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_TexCoord));
+	*/
+}
 
 //===================================================================================
 
@@ -392,12 +392,12 @@ function R_LinkGLSLShader ( shaderProgram: shaderProgram_t, needsAttributes: boo
 	glAttachShader( shaderProgram.program, shaderProgram.fragmentShader );
 
 	if ( needsAttributes ) {
-		glBindAttribLocation( shaderProgram.program, 8, "attr_TexCoord" );
-		glBindAttribLocation( shaderProgram.program, 9, "attr_Tangent" );
-		glBindAttribLocation( shaderProgram.program, 10, "attr_Bitangent" );
-		glBindAttribLocation( shaderProgram.program, 11, "attr_Normal" );
-		glBindAttribLocation( shaderProgram.program, 12, "attr_Vertex" );
-		glBindAttribLocation( shaderProgram.program, 13, "attr_Color" );
+		glBindAttribLocation( shaderProgram.program, /*8*/shaderProgram_indexes.attr_TexCoord, "attr_TexCoord" );
+		glBindAttribLocation( shaderProgram.program, /*9*/ shaderProgram_indexes.attr_Tangent, "attr_Tangent" );
+		glBindAttribLocation( shaderProgram.program, /*10*/ shaderProgram_indexes.attr_Bitangent, "attr_Bitangent" );
+		glBindAttribLocation( shaderProgram.program, /*11*/shaderProgram_indexes.attr_Normal, "attr_Normal" );
+		glBindAttribLocation( shaderProgram.program, /*12*/ shaderProgram_indexes.attr_Vertex, "attr_Vertex" );
+		glBindAttribLocation(shaderProgram.program, /*13*/ shaderProgram_indexes.attr_Color, "attr_Color" );
 	}
 
 	glLinkProgram( shaderProgram.program );

@@ -523,20 +523,20 @@
 //	GL_DisableVertexAttribArray(offsetof(shaderProgram_t, attr_TexCoord));
 //}
 //
-///*
-//=====================
-//RB_STD_FillDepthBuffer
-//
-//If we are rendering a subview with a near clip plane, use a second texture
-//to force the alpha test to fail when behind that clip plane
-//=====================
-//*/
-//void RB_STD_FillDepthBuffer( drawSurf_t **drawSurfs, int numDrawSurfs ) {
-//	// if we are just doing 2D rendering, no need to fill the depth buffer
-//	if ( !backEnd.viewDef.viewEntitys ) {
-//		return;
-//	}
-//
+/*
+=====================
+RB_STD_FillDepthBuffer
+
+If we are rendering a subview with a near clip plane, use a second texture
+to force the alpha test to fail when behind that clip plane
+=====================
+*/
+function RB_STD_FillDepthBuffer ( drawSurfs: drawSurf_t[], /*int */numDrawSurfs: number ): void {
+	// if we are just doing 2D rendering, no need to fill the depth buffer
+	if ( !backEnd.viewDef.viewEntitys ) {
+		return;
+	}
+	todoThrow ( );
 //	RB_LogComment( "---------- RB_STD_FillDepthBuffer ----------\n" );
 //
 //	GL_UseProgram(&depthFillShader);
@@ -582,27 +582,27 @@
 //	GL_DisableVertexAttribArray(offsetof(shaderProgram_t, attr_TexCoord));
 //
 //	GL_UseProgram(NULL);
-//}
-//
-///*
-//=============================================================================================
-//
-//SHADER PASSES
-//
-//=============================================================================================
-//*/
-//
-///*
-//==================
-//RB_SetProgramEnvironment
-//
-//Sets variables that can be used by all vertex programs
-//==================
-//*/
-//void RB_SetProgramEnvironment( void ) {
-//	float	parm[4];
-//	int		pot;
-//
+}
+
+/*
+=============================================================================================
+
+SHADER PASSES
+
+=============================================================================================
+*/
+
+/*
+==================
+RB_SetProgramEnvironment
+
+Sets variables that can be used by all vertex programs
+==================
+*/
+function RB_SetProgramEnvironment( ):void {
+	var parm = new Float32Array(4);
+	var /*int		*/pot: number;
+
 //#if 0
 //	// screen power of two correction factor, one pixel in so we don't get a bilerp
 //	// of an uncopied pixel
@@ -613,7 +613,7 @@
 //	} else {
 //		parm[0] = (float)(w-1) / pot;
 //	}
-//
+
 //	int	 h = backEnd.viewDef.viewport.y2 - backEnd.viewDef.viewport.y1 + 1;
 //	pot = globalImages.currentRenderImage.uploadHeight;
 //	if ( h == pot ) {
@@ -621,176 +621,175 @@
 //	} else {
 //		parm[1] = (float)(h-1) / pot;
 //	}
-//
+
 //	parm[2] = 0;
 //	parm[3] = 1;
 //	glProgramEnvParameter4fvARB( GL_VERTEX_PROGRAM_ARB, 0, parm );
 //#else
-//	// screen power of two correction factor, assuming the copy to _currentRender
-//	// also copied an extra row and column for the bilerp
-//	int	 w = backEnd.viewDef.viewport.x2 - backEnd.viewDef.viewport.x1 + 1;
-//	pot = globalImages.currentRenderImage.uploadWidth;
-//	parm[0] = (float)w / pot;
-//
-//	int	 h = backEnd.viewDef.viewport.y2 - backEnd.viewDef.viewport.y1 + 1;
-//	pot = globalImages.currentRenderImage.uploadHeight;
-//	parm[1] = (float)h / pot;
-//
-//	parm[2] = 0;
-//	parm[3] = 1;
-//	GL_Uniform4fv(offsetof(shaderProgram_t, nonPowerOfTwo), parm);
+	// screen power of two correction factor, assuming the copy to _currentRender
+	// also copied an extra row and column for the bilerp
+	var/*int	 */w = backEnd.viewDef.viewport.x2 - backEnd.viewDef.viewport.x1 + 1;
+	pot = globalImages.currentRenderImage.uploadWidth;
+	parm[0] = /*(float)*/w / pot;
+
+	var/*int	 */h = backEnd.viewDef.viewport.y2 - backEnd.viewDef.viewport.y1 + 1;
+	pot = globalImages.currentRenderImage.uploadHeight;
+	parm[1] = /*(float)*/h / pot;
+	parm[2] = 0;
+	parm[3] = 1;
+	GL_Uniform4fv("nonPowerOfTwo" /*offsetof(shaderProgram_t, nonPowerOfTwo)*/, parm);
 //#endif
-//
-//	// window coord to 0.0 to 1.0 conversion
-//	parm[0] = 1.0 / w;
-//	parm[1] = 1.0 / h;
-//	parm[2] = 0;
-//	parm[3] = 1;
-//	GL_Uniform4fv(offsetof(shaderProgram_t, windowCoords), parm);
-//
-//	//
-//	// set eye position in global space
-//	//
-//	parm[0] = backEnd.viewDef.renderView.vieworg[0];
-//	parm[1] = backEnd.viewDef.renderView.vieworg[1];
-//	parm[2] = backEnd.viewDef.renderView.vieworg[2];
-//	parm[3] = 1.0;
-//	GL_UniformMatrix4fv(offsetof(shaderProgram_t, eyeOrigin), parm);
-//}
-//
-///*
-//==================
-//RB_SetProgramEnvironmentSpace
-//
-//Sets variables related to the current space that can be used by all vertex programs
-//==================
-//*/
-//void RB_SetProgramEnvironmentSpace(void)
-//{
-//	const struct viewEntity_s *space = backEnd.currentSpace;
-//
-//	// set eye position in local space
-//	float	parm[4];
-//	R_GlobalPointToLocal(space.modelMatrix, backEnd.viewDef.renderView.vieworg, *(idVec3 *)parm);
-//	parm[3] = 1.0;
-//	GL_Uniform4fv(offsetof(shaderProgram_t, localEyeOrigin), parm);
-//
-//	// we need the model matrix without it being combined with the view matrix
-//	// so we can transform local vectors to global coordinates
-//	GL_UniformMatrix4fv(offsetof(shaderProgram_t, modelMatrix), space.modelMatrix);
-//
-//	// set the modelview matrix for the viewer
-//	float	mat[16];
-//	myGlMultMatrix(space.modelViewMatrix, backEnd.viewDef.projectionMatrix, mat);
-//	GL_UniformMatrix4fv(offsetof(shaderProgram_t, modelViewProjectionMatrix), mat);
-//}
-//
-///*
-//==================
-//RB_STD_T_RenderShaderPasses
-//
-//This is also called for the generated 2D rendering
-//==================
-//*/
-//void RB_STD_T_RenderShaderPasses( const drawSurf_t *surf ) {
-//	int			stage;
-//	const idMaterial	*shader;
-//	const shaderStage_t *pStage;
-//	const float	*regs;
-//	float		color[4];
-//	const srfTriangles_t	*tri;
-//
-//	tri = surf.geo;
-//	shader = surf.material;
-//
-//	if ( !shader.HasAmbient() ) {
-//		return;
-//	}
-//
-//	if ( shader.IsPortalSky() ) {
-//		return;
-//	}
-//
-//	// change the matrix if needed
-//	if ( surf.space != backEnd.currentSpace ) {
-//		backEnd.currentSpace = surf.space;
-//		RB_SetProgramEnvironmentSpace();
-//	}
-//
-//	// change the scissor if needed
-//	if ( r_useScissor.GetBool() && !backEnd.currentScissor.Equals( surf.scissorRect ) ) {
-//		backEnd.currentScissor = surf.scissorRect;
-//		glScissor( backEnd.viewDef.viewport.x1 + backEnd.currentScissor.x1, 
-//			backEnd.viewDef.viewport.y1 + backEnd.currentScissor.y1,
-//			backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
-//			backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
-//	}
-//
-//	// some deforms may disable themselves by setting numIndexes = 0
-//	if ( !tri.numIndexes ) {
-//		return;
-//	}
-//
-//	if ( !tri.ambientCache ) {
-//		common.Printf( "RB_T_RenderShaderPasses: !tri.ambientCache\n" );
-//		return;
-//	}
-//
-//	// get the expressions for conditionals / color / texcoords
-//	regs = surf.shaderRegisters;
-//
-//	// set face culling appropriately
-//	GL_Cull( shader.GetCullType() );
-//
-//	// set polygon offset if necessary
-//	if ( shader.TestMaterialFlag(MF_POLYGONOFFSET) ) {
-//		glEnable( GL_POLYGON_OFFSET_FILL );
-//		glPolygonOffset( r_offsetFactor.GetFloat(), r_offsetUnits.GetFloat() * shader.GetPolygonOffset() );
-//	}
-//	
-//	if ( surf.space.weaponDepthHack ) {
-//		RB_EnterWeaponDepthHack(surf);
-//	}
-//
-//	if ( surf.space.modelDepthHack != 0.0f ) {
-//		RB_EnterModelDepthHack( surf);
-//	}
-//
-//	idDrawVert *ac = (idDrawVert *)vertexCache.Position( tri.ambientCache );
-//	GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_Vertex));
-//	GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_TexCoord));
-//	GL_VertexAttribPointer(offsetof(shaderProgram_t, attr_Vertex), 3, GL_FLOAT, false, sizeof(idDrawVert), ac.xyz.ToFloatPtr());
-//	GL_VertexAttribPointer(offsetof(shaderProgram_t, attr_TexCoord), 2, GL_FLOAT, false, sizeof(idDrawVert), reinterpret_cast<void *>(&ac.st));
-//
+
+	// window coord to 0.0 to 1.0 conversion
+	parm[0] = 1.0 / w;
+	parm[1] = 1.0 / h;
+	parm[2] = 0;
+	parm[3] = 1;
+	GL_Uniform4fv("windowCoords" /*offsetof(shaderProgram_t, windowCoords)*/, parm);
+
+	//
+	// set eye position in global space
+	//
+	parm[0] = backEnd.viewDef.renderView.vieworg[0];
+	parm[1] = backEnd.viewDef.renderView.vieworg[1];
+	parm[2] = backEnd.viewDef.renderView.vieworg[2];
+	parm[3] = 1.0;
+	GL_UniformMatrix4fv("eyeOrigin"/*offsetof(shaderProgram_t, eyeOrigin)*/, parm);
+}
+
+/*
+==================
+RB_SetProgramEnvironmentSpace
+
+Sets variables related to the current space that can be used by all vertex programs
+==================
+*/
+function RB_SetProgramEnvironmentSpace ( ): void {
+	var space: viewEntity_t = backEnd.currentSpace;
+
+	// set eye position in local space
+	var parm = new Float32Array( 4 );
+	R_GlobalPointToLocal( space.modelMatrix, backEnd.viewDef.renderView.vieworg, <idVec3><any>parm );
+	parm[3] = 1.0;
+	GL_Uniform4fv( "localEyeOrigin" /*offsetof(shaderProgram_t, localEyeOrigin)*/, parm );
+
+	// we need the model matrix without it being combined with the view matrix
+	// so we can transform local vectors to global coordinates
+	GL_UniformMatrix4fv( "modelMatrix" /*offsetof(shaderProgram_t, modelMatrix)*/, space.modelMatrix );
+
+	// set the modelview matrix for the viewer
+	var mat = new Float32Array( 16 );
+	myGlMultMatrix( space.modelViewMatrix, backEnd.viewDef.projectionMatrix, mat );
+	GL_UniformMatrix4fv( "modelViewProjectionMatrix" /*offsetof(shaderProgram_t, modelViewProjectionMatrix)*/, mat );
+}
+
+/*
+==================
+RB_STD_T_RenderShaderPasses
+
+This is also called for the generated 2D rendering
+==================
+*/
+function RB_STD_T_RenderShaderPasses(surf: drawSurf_t):void {
+	var/*int			*/stage:number;
+	var shader: idMaterial;
+	var pStage: shaderStage_t ;
+	var regs:Float32Array;
+	var color = new Float32Array( 4 );
+	var tri: srfTriangles_t	;
+
+	tri = surf.geo;
+	shader = surf.material;
+
+	if ( !shader.HasAmbient() ) {
+		return;
+	}
+
+	if ( shader.IsPortalSky() ) {
+		return;
+	}
+
+	// change the matrix if needed
+	if ( surf.space != backEnd.currentSpace ) {
+		backEnd.currentSpace = surf.space;
+		RB_SetProgramEnvironmentSpace();
+	}
+
+	// change the scissor if needed
+	if ( r_useScissor.GetBool() && !backEnd.currentScissor.Equals( surf.scissorRect ) ) {
+		backEnd.currentScissor = surf.scissorRect;
+		glScissor( backEnd.viewDef.viewport.x1 + backEnd.currentScissor.x1, 
+			backEnd.viewDef.viewport.y1 + backEnd.currentScissor.y1,
+			backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
+			backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
+	}
+
+	// some deforms may disable themselves by setting numIndexes = 0
+	if ( !tri.numIndexes ) {
+		return;
+	}
+
+	if ( !tri.ambientCache ) {
+		common.Printf( "RB_T_RenderShaderPasses: !tri.ambientCache\n" );
+		return;
+	}
+
+	// get the expressions for conditionals / color / texcoords
+	regs = surf.shaderRegisters;
+
+	// set face culling appropriately
+	GL_Cull( shader.GetCullType() );
+
+	// set polygon offset if necessary
+	if (shader.TestMaterialFlag(materialFlags_t.MF_POLYGONOFFSET) ) {
+		glEnable( GL_POLYGON_OFFSET_FILL );
+		glPolygonOffset( r_offsetFactor.GetFloat(), r_offsetUnits.GetFloat() * shader.GetPolygonOffset() );
+	}
+	todoThrow ( );	
+	//if ( surf.space.weaponDepthHack ) {
+	//	RB_EnterWeaponDepthHack(surf);
+	//}
+
+	//if ( surf.space.modelDepthHack != 0.0 ) {
+	//	RB_EnterModelDepthHack( surf);
+	//}
+
+	//var ac = <idDrawVert >vertexCache.Position( tri.ambientCache );
+	//GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_Vertex));
+	//GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_TexCoord));
+
+	//GL_VertexAttribPointer("attr_Vertex"/*offsetof(shaderProgram_t, attr_Vertex)*/, 3, GL_FLOAT, false, sizeof(idDrawVert), ac.xyz.ToFloatPtr());
+//	GL_VertexAttribPointer("attr_TexCoord"/*offsetof(shaderProgram_t, attr_TexCoord)*/, 2, GL_FLOAT, false, sizeof(idDrawVert), reinterpret_cast<void *>(&ac.st));
+
 //	for ( stage = 0; stage < shader.GetNumStages() ; stage++ ) {		
 //		pStage = shader.GetStage(stage);
-//
+
 //		// check the enable condition
 //		if ( regs[ pStage.conditionRegister ] == 0 ) {
 //			continue;
 //		}
-//
+
 //		// skip the stages involved in lighting
 //		if ( pStage.lighting != SL_AMBIENT ) {
 //			continue;
 //		}
-//
+
 //		// skip if the stage is ( GL_ZERO, GL_ONE ), which is used for some alpha masks
 //		if ( ( pStage.drawStateBits & (GLS_SRCBLEND_BITS|GLS_DSTBLEND_BITS) ) == ( GLS_SRCBLEND_ZERO | GLS_DSTBLEND_ONE ) ) {
 //			continue;
 //		}
-//
+
 //		// see if we are a new-style stage
-//		newShaderStage_t *newStage = pStage.newStage;
+//		var newStage: newShaderStage_t = pStage.newStage;
 //		if ( newStage ) {
 //			//--------------------------
 //			//
 //			// new style stages
 //			//
 //			//--------------------------
-//
+
 //			// completely skip the stage if we don't have the capability
-//			if ( tr.backEndRenderer != BE_ARB2 ) {
+//			if (tr.backEndRenderer != backEndName_t .BE_ARB2 ) {
 //				continue;
 //			}
 //			if ( r_skipNewAmbient.GetBool() ) {
@@ -800,233 +799,234 @@
 //			GL_VertexAttribPointer(offsetof(shaderProgram_t, attr_Tangent), 3, GL_FLOAT, false, sizeof(idDrawVert), ac.tangents[0].ToFloatPtr());
 //			GL_VertexAttribPointer(offsetof(shaderProgram_t, attr_Bitangent), 3, GL_FLOAT, false, sizeof(idDrawVert), ac.tangents[1].ToFloatPtr());
 //			GL_VertexAttribPointer(offsetof(shaderProgram_t, attr_Normal), 3, GL_FLOAT, false, sizeof(idDrawVert), ac.normal.ToFloatPtr());
-//
+
 //			GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_Color));	// gl_Color
 //			GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_Tangent));
 //			GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_Bitangent));
 //			GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_Normal));
-//
+
 //			GL_State( pStage.drawStateBits );
-//
-//#if !defined(GL_ES_VERSION_2_0)
-//			glBindProgramARB( GL_VERTEX_PROGRAM_ARB, newStage.vertexProgram );
-//			glEnable( GL_VERTEX_PROGRAM_ARB );
-//
-//			// megaTextures bind a lot of images and set a lot of parameters
-//			if ( newStage.megaTexture ) {
-//				newStage.megaTexture.SetMappingForSurface( tri );
-//				idVec3	localViewer;
-//				R_GlobalPointToLocal( surf.space.modelMatrix, backEnd.viewDef.renderView.vieworg, localViewer );
-//				newStage.megaTexture.BindForViewOrigin( localViewer );
-//			}
-//
-//			for ( int i = 0 ; i < newStage.numVertexParms ; i++ ) {
-//				float	parm[4];
-//				parm[0] = regs[ newStage.vertexParms[i][0] ];
-//				parm[1] = regs[ newStage.vertexParms[i][1] ];
-//				parm[2] = regs[ newStage.vertexParms[i][2] ];
-//				parm[3] = regs[ newStage.vertexParms[i][3] ];
-//				glProgramLocalParameter4fvARB( GL_VERTEX_PROGRAM_ARB, i, parm );
-//			}
-//
-//			for ( int i = 0 ; i < newStage.numFragmentProgramImages ; i++ ) {
-//				if ( newStage.fragmentProgramImages[i] ) {
-//					GL_SelectTexture( i );
-//					newStage.fragmentProgramImages[i].Bind();
-//				}
-//			}
-//			glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, newStage.fragmentProgram );
-//			glEnable( GL_FRAGMENT_PROGRAM_ARB );
-//#endif
-//
+
+////#if !defined(GL_ES_VERSION_2_0)
+////			glBindProgramARB( GL_VERTEX_PROGRAM_ARB, newStage.vertexProgram );
+////			glEnable( GL_VERTEX_PROGRAM_ARB );
+
+////			// megaTextures bind a lot of images and set a lot of parameters
+////			if ( newStage.megaTexture ) {
+////				newStage.megaTexture.SetMappingForSurface( tri );
+////				idVec3	localViewer;
+////				R_GlobalPointToLocal( surf.space.modelMatrix, backEnd.viewDef.renderView.vieworg, localViewer );
+////				newStage.megaTexture.BindForViewOrigin( localViewer );
+////			}
+
+////			for ( int i = 0 ; i < newStage.numVertexParms ; i++ ) {
+////				float	parm[4];
+////				parm[0] = regs[ newStage.vertexParms[i][0] ];
+////				parm[1] = regs[ newStage.vertexParms[i][1] ];
+////				parm[2] = regs[ newStage.vertexParms[i][2] ];
+////				parm[3] = regs[ newStage.vertexParms[i][3] ];
+////				glProgramLocalParameter4fvARB( GL_VERTEX_PROGRAM_ARB, i, parm );
+////			}
+
+////			for ( int i = 0 ; i < newStage.numFragmentProgramImages ; i++ ) {
+////				if ( newStage.fragmentProgramImages[i] ) {
+////					GL_SelectTexture( i );
+////					newStage.fragmentProgramImages[i].Bind();
+////				}
+////			}
+////			glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, newStage.fragmentProgram );
+////			glEnable( GL_FRAGMENT_PROGRAM_ARB );
+////#endif
+
 //			// draw it
 //			RB_DrawElementsWithCounters( tri );
-//
-//#if !defined(GL_ES_VERSION_2_0)
-//			for ( int i = 1 ; i < newStage.numFragmentProgramImages ; i++ ) {
-//				if ( newStage.fragmentProgramImages[i] ) {
-//					GL_SelectTexture( i );
-//					globalImages.BindNull();
-//				}
-//			}
-//			if ( newStage.megaTexture ) {
-//				newStage.megaTexture.Unbind();
-//			}
-//
-//			GL_SelectTexture( 0 );
-//
-//			glDisable( GL_VERTEX_PROGRAM_ARB );
-//			glDisable( GL_FRAGMENT_PROGRAM_ARB );
-//			// Fixme: Hack to get around an apparent bug in ATI drivers.  Should remove as soon as it gets fixed.
-//			glBindProgramARB( GL_VERTEX_PROGRAM_ARB, 0 );
-//#endif
-//
-//			GL_DisableVertexAttribArray(offsetof(shaderProgram_t, attr_Color));	// gl_Color
-//			GL_DisableVertexAttribArray(offsetof(shaderProgram_t, attr_Tangent));
-//			GL_DisableVertexAttribArray(offsetof(shaderProgram_t, attr_Bitangent));
-//			GL_DisableVertexAttribArray(offsetof(shaderProgram_t, attr_Normal));
+
+////#if !defined(GL_ES_VERSION_2_0)
+////			for ( int i = 1 ; i < newStage.numFragmentProgramImages ; i++ ) {
+////				if ( newStage.fragmentProgramImages[i] ) {
+////					GL_SelectTexture( i );
+////					globalImages.BindNull();
+////				}
+////			}
+////			if ( newStage.megaTexture ) {
+////				newStage.megaTexture.Unbind();
+////			}
+
+////			GL_SelectTexture( 0 );
+
+////			glDisable( GL_VERTEX_PROGRAM_ARB );
+////			glDisable( GL_FRAGMENT_PROGRAM_ARB );
+////			// Fixme: Hack to get around an apparent bug in ATI drivers.  Should remove as soon as it gets fixed.
+////			glBindProgramARB( GL_VERTEX_PROGRAM_ARB, 0 );
+////#endif
+
+//			GL_DisableVertexAttribArray("attr_Color" /*offsetof(shaderProgram_t, attr_Color)*/);	// gl_Color
+//			GL_DisableVertexAttribArray("attr_Tangent"/*offsetof(shaderProgram_t, attr_Tangent)*/);
+//			GL_DisableVertexAttribArray("attr_Bitangent"/*offsetof(shaderProgram_t, attr_Bitangent)*/);
+//			GL_DisableVertexAttribArray("attr_Normal",/*offsetof(shaderProgram_t, attr_Normal)*/);
 //			continue;
 //		}
-//
+
 //		//--------------------------
 //		//
 //		// old style stages
 //		//
 //		//--------------------------
-//
+
 //		// set the color
 //		color[0] = regs[ pStage.color.registers[0] ];
 //		color[1] = regs[ pStage.color.registers[1] ];
 //		color[2] = regs[ pStage.color.registers[2] ];
 //		color[3] = regs[ pStage.color.registers[3] ];
-//
+
 //		// skip the entire stage if an add would be black
 //		if ( ( pStage.drawStateBits & (GLS_SRCBLEND_BITS|GLS_DSTBLEND_BITS) ) == ( GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE ) 
 //			&& color[0] <= 0 && color[1] <= 0 && color[2] <= 0 ) {
 //			continue;
 //		}
-//
+
 //		// skip the entire stage if a blend would be completely transparent
 //		if ( ( pStage.drawStateBits & (GLS_SRCBLEND_BITS|GLS_DSTBLEND_BITS) ) == ( GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA )
 //			&& color[3] <= 0 ) {
 //			continue;
 //		}
-//
+
 //		// select the vertex color source
 //		if (pStage.vertexColor != SVC_IGNORE) {
 //			GL_VertexAttribPointer(offsetof(shaderProgram_t, attr_Color), 4, GL_UNSIGNED_BYTE, false, sizeof(idDrawVert), (void *)&ac.color);
 //			GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_Color));
 //		}
-//
-//		static const float zero[4] = { 0, 0, 0, 0 };
-//		static const float one[4] = { 1, 1, 1, 1 };
-//		static const float negOne[4] = { -1, -1, -1, -1 };
-//
+
+//		var /*static const float*/ zero = new Float32Array([ 0, 0, 0, 0 ]);
+//		var /*static const float*/ one = new Float32Array([1, 1, 1, 1]);
+//		var /*static const float*/ negOne = new Float32Array([-1, -1, -1, -1]);
+
 //		switch (pStage.vertexColor) {
-//			case SVC_IGNORE:
-//				GL_Uniform4fv(offsetof(shaderProgram_t, colorModulate), zero);
-//				GL_Uniform4fv(offsetof(shaderProgram_t, colorAdd), one);
+//			case stageVertexColor_t.SVC_IGNORE:
+//				GL_Uniform4fv("colorModulate" /*offsetof(shaderProgram_t, colorModulate)*/, zero);
+//				GL_Uniform4fv("colorAdd"/*offsetof(shaderProgram_t, colorAdd)*/, one);
 //				break;
-//			case SVC_MODULATE:
-//				GL_Uniform4fv(offsetof(shaderProgram_t, colorModulate), one);
-//				GL_Uniform4fv(offsetof(shaderProgram_t, colorAdd), zero);
+//			case stageVertexColor_t.SVC_MODULATE:
+//				GL_Uniform4fv("colorModulate"/*offsetof(shaderProgram_t, colorModulate)*/, one);
+//				GL_Uniform4fv("colorAdd"/*offsetof(shaderProgram_t, colorAdd)*/, zero);
 //				break;
-//			case SVC_INVERSE_MODULATE:
-//				GL_Uniform4fv(offsetof(shaderProgram_t, colorModulate), negOne);
-//				GL_Uniform4fv(offsetof(shaderProgram_t, colorAdd), one);
+//			case stageVertexColor_t.SVC_INVERSE_MODULATE:
+//				GL_Uniform4fv("colorModulate"/*offsetof(shaderProgram_t, colorModulate)*/, negOne);
+//				GL_Uniform4fv("colorAdd"/*offsetof(shaderProgram_t, colorAdd)*/, one);
 //				break;
 //		}
-//
-//		GL_Uniform4fv(offsetof(shaderProgram_t, glColor), color);
-//
+
+//		GL_Uniform4fv("glColor"/*offsetof(shaderProgram_t, glColor)*/, color);
+
 //		// bind the texture
 //		RB_BindVariableStageImage( &pStage.texture, regs );
-//
+
 //		// set the state
 //		GL_State( pStage.drawStateBits );
-//		
+		
 //		RB_PrepareStageTexturing( pStage, surf, ac );
-//
+
 //		// draw it
 //		RB_DrawElementsWithCounters( tri );
-//
+
 //		RB_FinishStageTexturing( pStage, surf, ac );
-//		
-//		if (pStage.vertexColor != SVC_IGNORE) {
-//			GL_DisableVertexAttribArray(offsetof(shaderProgram_t, attr_Color));
+		
+//		if (pStage.vertexColor != stageVertexColor_t.SVC_IGNORE) {
+//			GL_DisableVertexAttribArray("attr_Color"/*offsetof(shaderProgram_t, attr_Color)*/);
 //		}
 //	}
-//
-//	GL_DisableVertexAttribArray(offsetof(shaderProgram_t, attr_Vertex));
-//	GL_DisableVertexAttribArray(offsetof(shaderProgram_t, attr_TexCoord));
-//
+
+//	GL_DisableVertexAttribArray(shaderProgram_indexes.attr_Vertex/* offsetof(shaderProgram_t, attr_Vertex)*/);
+//	GL_DisableVertexAttribArray(shaderProgram_indexes.attr_TexCoord/* offsetof(shaderProgram_t, attr_TexCoord)*/);
+
 //	// reset polygon offset
-//	if ( shader.TestMaterialFlag(MF_POLYGONOFFSET) ) {
+//	if (shader.TestMaterialFlag(materialFlags_t.MF_POLYGONOFFSET) ) {
 //		glDisable( GL_POLYGON_OFFSET_FILL );
 //	}
-//	if ( surf.space.weaponDepthHack || surf.space.modelDepthHack != 0.0f ) {
+//	if ( surf.space.weaponDepthHack || surf.space.modelDepthHack != 0.0 ) {
 //		RB_LeaveDepthHack(surf);
 //	}
-//}
-//
-///*
-//=====================
-//RB_STD_DrawShaderPasses
-//
-//Draw non-light dependent passes
-//=====================
-//*/
-//int RB_STD_DrawShaderPasses( drawSurf_t **drawSurfs, int numDrawSurfs ) {
-//	int				i;
-//
-//	// only obey skipAmbient if we are rendering a view
-//	if ( backEnd.viewDef.viewEntitys && r_skipAmbient.GetBool() ) {
-//		return numDrawSurfs;
-//	}
-//
-//	RB_LogComment( "---------- RB_STD_DrawShaderPasses ----------\n" );
-//
-//	// if we are about to draw the first surface that needs
-//	// the rendering in a texture, copy it over
-//	if ( drawSurfs[0].material.GetSort() >= SS_POST_PROCESS ) {
-//		if ( r_skipPostProcess.GetBool() ) {
-//			return 0;
-//		}
-//
-//		// only dump if in a 3d view
-//		if ( backEnd.viewDef.viewEntitys && tr.backEndRenderer == BE_ARB2 ) {
-//			globalImages.currentRenderImage.CopyFramebuffer( backEnd.viewDef.viewport.x1,
-//				backEnd.viewDef.viewport.y1,  backEnd.viewDef.viewport.x2 -  backEnd.viewDef.viewport.x1 + 1,
-//				backEnd.viewDef.viewport.y2 -  backEnd.viewDef.viewport.y1 + 1, true );
-//		}
-//		backEnd.currentRenderCopied = true;
-//	}
-//
-//	GL_UseProgram(&defaultShader);
-//
-//	GL_SelectTexture( 1 );
-//	globalImages.BindNull();
-//
-//	GL_SelectTexture( 0 );
-//	GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_TexCoord));
-//
-//	RB_SetProgramEnvironment();
-//
-//	// we don't use RB_RenderDrawSurfListWithFunction()
-//	// because we want to defer the matrix load because many
-//	// surfaces won't draw any ambient passes
-//	backEnd.currentSpace = NULL;
-//	for (i = 0  ; i < numDrawSurfs ; i++ ) {
-//		if ( drawSurfs[i].material.SuppressInSubview() ) {
-//			continue;
-//		}
-//
-//		if ( backEnd.viewDef.isXraySubview && drawSurfs[i].space.entityDef ) {
-//			if ( drawSurfs[i].space.entityDef.parms.xrayIndex != 2 ) {
-//				continue;
-//			}
-//		}
-//
-//		// we need to draw the post process shaders after we have drawn the fog lights
-//		if ( drawSurfs[i].material.GetSort() >= SS_POST_PROCESS
-//			&& !backEnd.currentRenderCopied ) {
-//			break;
-//		}
-//
-//		RB_STD_T_RenderShaderPasses( drawSurfs[i] );
-//	}
-//
-//	GL_Cull(CT_FRONT_SIDED);
+}
+
+/*
+=====================
+RB_STD_DrawShaderPasses
+
+Draw non-light dependent passes
+=====================
+*/
+function RB_STD_DrawShaderPasses(drawSurfs: drawSurf_t[], /*int */numDrawSurfs :number):number {
+	var /*int				*/i:number;
+
+	// only obey skipAmbient if we are rendering a view
+	if ( backEnd.viewDef.viewEntitys && r_skipAmbient.GetBool() ) {
+		return numDrawSurfs;
+	}
+
+	RB_LogComment( "---------- RB_STD_DrawShaderPasses ----------\n" );
+
+	// if we are about to draw the first surface that needs
+	// the rendering in a texture, copy it over
+	if (drawSurfs[0].material.GetSort() >= materialSort_t.SS_POST_PROCESS ) {
+		if ( r_skipPostProcess.GetBool() ) {
+			return 0;
+		}
+
+		// only dump if in a 3d view
+		if (backEnd.viewDef.viewEntitys && tr.backEndRenderer == backEndName_t.BE_ARB2 ) {
+			globalImages.currentRenderImage.CopyFramebuffer( backEnd.viewDef.viewport.x1,
+				backEnd.viewDef.viewport.y1,  backEnd.viewDef.viewport.x2 -  backEnd.viewDef.viewport.x1 + 1,
+				backEnd.viewDef.viewport.y2 -  backEnd.viewDef.viewport.y1 + 1, true );
+		}
+		backEnd.currentRenderCopied = true;
+	}
+
+	GL_UseProgram(defaultShader);
+
+	GL_SelectTexture( 1 );
+	globalImages.BindNull();
+
+	GL_SelectTexture( 0 );
+	GL_EnableVertexAttribArray( shaderProgram_indexes.attr_TexCoord /*offsetof( shaderProgram_t, attr_TexCoord )*/ );
+
+	RB_SetProgramEnvironment();
+
+	// we don't use RB_RenderDrawSurfListWithFunction()
+	// because we want to defer the matrix load because many
+	// surfaces won't draw any ambient passes
+	backEnd.currentSpace = null;
+	for (i = 0  ; i < numDrawSurfs ; i++ ) {
+		if ( drawSurfs[i].material.SuppressInSubview() ) {
+			continue;
+		}
+
+		if ( backEnd.viewDef.isXraySubview && drawSurfs[i].space.entityDef ) {
+			if ( drawSurfs[i].space.entityDef.parms.xrayIndex != 2 ) {
+				continue;
+			}
+		}
+
+		// we need to draw the post process shaders after we have drawn the fog lights
+		if (drawSurfs[i].material.GetSort() >= materialSort_t.SS_POST_PROCESS
+			&& !backEnd.currentRenderCopied ) {
+			break;
+		}
+		
+		RB_STD_T_RenderShaderPasses( drawSurfs[i] );
+	}
+
+	GL_Cull(cullType_t.CT_FRONT_SIDED);
 //#if !defined(GL_ES_VERSION_2_0)
 //	glColor4f(1, 1, 1, 1);
 //#endif
-//
-//	GL_DisableVertexAttribArray(offsetof(shaderProgram_t, attr_TexCoord));
-//
-//	GL_UseProgram(NULL);
-//
-//	return i;
-//}
+
+
+	GL_DisableVertexAttribArray( shaderProgram_indexes.attr_TexCoord /*offsetof(shaderProgram_t, attr_TexCoord)*/ );
+
+	GL_UseProgram(null);
+
+	return i;
+}
 //
 //
 //
@@ -1053,7 +1053,7 @@
 //		idVec4 localLight;
 //
 //		R_GlobalPointToLocal(surf.space.modelMatrix, backEnd.vLight.globalLightOrigin, localLight.ToVec3());
-//		localLight.w = 0.0f;
+//		localLight.w = 0.0;
 //		GL_Uniform4fv(offsetof(shaderProgram_t, localLightOrigin), localLight.ToFloatPtr());
 //
 //		// set the modelview matrix for the viewer
@@ -1621,22 +1621,22 @@
 //#endif
 //}
 //
-////=========================================================================================
-//
-///*
-//==================
-//RB_STD_LightScale
-//
-//Perform extra blending passes to multiply the entire buffer by
-//a floating point value
-//==================
-//*/
-//void RB_STD_LightScale( void ) {
-////#warning
+//=========================================================================================
+
+/*
+==================
+RB_STD_LightScale
+
+Perform extra blending passes to multiply the entire buffer by
+a floating point value
+==================
+*/
+function RB_STD_LightScale ( ): void {
+//#warning
 //#if !defined(GL_ES_VERSION_2_0)
 //	float	v, f;
 //
-//	if ( backEnd.overBright == 1.0f ) {
+//	if ( backEnd.overBright == 1.0 ) {
 //		return;
 //	}
 //
@@ -1692,8 +1692,8 @@
 //	glMatrixMode( GL_MODELVIEW );
 //	GL_Cull( CT_FRONT_SIDED );
 //#endif
-//}
-//
+}
+
 //=========================================================================================
 
 /*
@@ -1702,48 +1702,48 @@ RB_STD_DrawView
 
 =============
 */
-function RB_STD_DrawView( ):void {
+function RB_STD_DrawView ( ): void {
 	var drawSurfs: drawSurf_t[];
-	var /*int*/numDrawSurfs:number;
+	var /*int*/numDrawSurfs: number;
 
 	RB_LogComment( "---------- RB_STD_DrawView ----------\n" );
 
 	backEnd.depthFunc = GLS_DEPTHFUNC_EQUAL;
 
-	drawSurfs = backEnd.viewDef.drawSurfs;//(drawSurf_t **)&backEnd.viewDef.drawSurfs[0];
+	drawSurfs = backEnd.viewDef.drawSurfs; //(drawSurf_t **)&backEnd.viewDef.drawSurfs[0];
 	numDrawSurfs = backEnd.viewDef.numDrawSurfs;
 
 	// clear the z buffer, set the projection matrix, etc
-	RB_BeginDrawingView();
-	todoThrow ( );
-//	// decide how much overbrighting we are going to do
-//	RB_DetermineLightScale();
+	RB_BeginDrawingView ( );
 
-//	// fill the depth buffer and clear color buffer to black except on
-//	// subviews
-//	RB_STD_FillDepthBuffer( drawSurfs, numDrawSurfs );
+	// decide how much overbrighting we are going to do
+	RB_DetermineLightScale ( );
 
-//	// main light renderer
-//	switch( tr.backEndRenderer ) {
+	// fill the depth buffer and clear color buffer to black except on
+	// subviews
+	RB_STD_FillDepthBuffer( drawSurfs, numDrawSurfs );
+
+	// main light renderer
+	switch ( tr.backEndRenderer ) {
 ////#if 0
 ////	case backEndName_t.BE_ARB2:
 ////		RB_ARB2_DrawInteractions();
 ////		break;
 ////#endif
-//		case backEndName_t.BE_GLSL:
-//		RB_GLSL_DrawInteractions();
-//		break;
-//	}
+	case backEndName_t.BE_GLSL:
+		RB_GLSL_DrawInteractions ( );
+		break;
+	}
 
-//	// disable stencil shadow test
-//	glStencilFunc( GL_ALWAYS, 128, 255 );
+	// disable stencil shadow test
+	glStencilFunc( GL_ALWAYS, 128, 255 );
 
-//	// uplight the entire screen to crutch up not having better blending range
-//	RB_STD_LightScale();
+	// uplight the entire screen to crutch up not having better blending range
+	RB_STD_LightScale ( );
 
-//	// now draw any non-light dependent shading passes
-//	var/*int	*/processed = RB_STD_DrawShaderPasses( drawSurfs, numDrawSurfs );
-
+	// now draw any non-light dependent shading passes
+	var /*int	*/processed = RB_STD_DrawShaderPasses( drawSurfs, numDrawSurfs );
+	todoThrow ( );
 //	// fob and blend lights
 //	RB_STD_FogAllLights();
 

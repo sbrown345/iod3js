@@ -194,3 +194,8 @@ class P {
 		this.idx = indexOffset;
 	}
 }
+
+
+function __builtin_trap ( ): void {
+	throw "exit(0);";
+}

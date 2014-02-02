@@ -38,110 +38,9 @@
 //#endif
 //
 ////====================================================================
-//
-///*
-//======================
-//idScreenRect::Clear
-//======================
-//*/
-//void idScreenRect::Clear() {
-//	x1 = y1 = 32000;
-//	x2 = y2 = -32000;
-//	zmin = 0.0; zmax = 1.0f;
-//}
-//
-///*
-//======================
-//idScreenRect::AddPoint
-//======================
-//*/
-//void idScreenRect::AddPoint( float x, float y ) {
-//	int	ix = idMath::FtoiFast( x );
-//	int iy = idMath::FtoiFast( y );
-//
-//	if ( ix < x1 ) {
-//		x1 = ix;
-//	}
-//	if ( ix > x2 ) {
-//		x2 = ix;
-//	}
-//	if ( iy < y1 ) {
-//		y1 = iy;
-//	}
-//	if ( iy > y2 ) {
-//		y2 = iy;
-//	}
-//}
-//
-///*
-//======================
-//idScreenRect::Expand
-//======================
-//*/
-//void idScreenRect::Expand() {
-//	x1--;
-//	y1--;
-//	x2++;
-//	y2++;
-//}
-//
-///*
-//======================
-//idScreenRect::Intersect
-//======================
-//*/
-//void idScreenRect::Intersect( const idScreenRect &rect ) {
-//	if ( rect.x1 > x1 ) {
-//		x1 = rect.x1;
-//	}
-//	if ( rect.x2 < x2 ) {
-//		x2 = rect.x2;
-//	}
-//	if ( rect.y1 > y1 ) {
-//		y1 = rect.y1;
-//	}
-//	if ( rect.y2 < y2 ) {
-//		y2 = rect.y2;
-//	}
-//}
-//
-///*
-//======================
-//idScreenRect::Union
-//======================
-//*/
-//void idScreenRect::Union( const idScreenRect &rect ) {
-//	if ( rect.x1 < x1 ) {
-//		x1 = rect.x1;
-//	}
-//	if ( rect.x2 > x2 ) {
-//		x2 = rect.x2;
-//	}
-//	if ( rect.y1 < y1 ) {
-//		y1 = rect.y1;
-//	}
-//	if ( rect.y2 > y2 ) {
-//		y2 = rect.y2;
-//	}
-//}
-//
-///*
-//======================
-//idScreenRect::Equals
-//======================
-//*/
-//bool idScreenRect::Equals( const idScreenRect &rect ) const {
-//	return ( x1 == rect.x1 && x2 == rect.x2 && y1 == rect.y1 && y2 == rect.y2 );
-//}
-//
-///*
-//======================
-//idScreenRect::IsEmpty
-//======================
-//*/
-//bool idScreenRect::IsEmpty() const {
-//	return ( x1 > x2 || y1 > y2 );
-//}
+
+// moved idScreenRect funcs to tr_local.h.ts
+
 //
 ///*
 //======================
@@ -536,14 +435,14 @@ function R_ClearedFrameAlloc<T> ( type: any, /*int */bytes__Unused: number ): T 
 //		+ in[2] * modelMatrix[11] + modelMatrix[15];
 //}
 //
-function R_GlobalPointToLocal( /*const float*/ modelMatrix:Float32Array/*[16]*/, $in:idVec3, out :idVec3 ) :void{
+function R_GlobalPointToLocal( /*const float*/ modelMatrix: Float32Array /*[16]*/, $in: idVec3, out: idVec3 ): void {
 	var temp = new idVec3;
-	todoThrow ( );
-	//VectorSubtract( $in, modelMatrix[12], temp );
 
-	//out[0] = DotProduct( temp, &modelMatrix[0] );
-	//out[1] = DotProduct( temp, &modelMatrix[4] );
-	//out[2] = DotProduct( temp, &modelMatrix[8] );
+	VectorSubtract( $in, modelMatrix.subarray(12), temp );
+
+	out[0] = DotProduct( temp, modelMatrix );
+	out[1] = DotProduct( temp, modelMatrix.subarray(4) );
+	out[2] = DotProduct( temp, modelMatrix.subarray(8) );
 }
 //
 //void R_LocalVectorToGlobal( const float modelMatrix[16], const idVec3 &in, idVec3 &out ) {
@@ -791,26 +690,26 @@ function R_GlobalPointToLocal( /*const float*/ modelMatrix:Float32Array/*[16]*/,
 //	normalized[2] = clip[2] / clip[3];
 //}
 //
-//
-///*
-//==========================
-//myGlMultMatrix
-//==========================
-//*/
-//void myGlMultMatrix( const float a[16], const float b[16], float out[16] ) {
-//	int		i, j;
-//
-//	for ( i = 0 ; i < 4 ; i++ ) {
-//		for ( j = 0 ; j < 4 ; j++ ) {
-//			out[ i * 4 + j ] =
-//				a [ i * 4 + 0 ] * b [ 0 * 4 + j ]
-//				+ a [ i * 4 + 1 ] * b [ 1 * 4 + j ]
-//				+ a [ i * 4 + 2 ] * b [ 2 * 4 + j ]
-//				+ a [ i * 4 + 3 ] * b [ 3 * 4 + j ];
-//		}
-//	}
-//}
-//
+
+/*
+==========================
+myGlMultMatrix
+==========================
+*/
+function myGlMultMatrix ( a: Float32Array /*[16]*/, b: Float32Array /*[16]*/, out: Float32Array /*[16]*/ ): void {
+	var /*int		*/i: number, j: number;
+
+	for ( i = 0; i < 4; i++ ) {
+		for ( j = 0; j < 4; j++ ) {
+			out[i * 4 + j] =
+				a[i * 4 + 0] * b[0 * 4 + j]
+				+ a[i * 4 + 1] * b[1 * 4 + j]
+				+ a[i * 4 + 2] * b[2 * 4 + j]
+				+ a[i * 4 + 3] * b[3 * 4 + j];
+		}
+	}
+}
+
 ///*
 //================
 //R_TransposeGLMatrix

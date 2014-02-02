@@ -184,11 +184,11 @@ class idImage {
 	filterParm: textureFilter_t, allowDownSizeParm: boolean,
 	depthParm: textureDepth_t):void { throw "placeholder"; }
 
-//	void		CopyFramebuffer( int x, int y, int width, int height, bool useOversizedBuffer );
+	CopyFramebuffer(/*int */x:number, /*int */y:number, /*int */width:number, /*int */height:number, useOversizedBuffer:boolean): void { throw "placeholder"; }
 
-//	void		CopyDepthbuffer( int x, int y, int width, int height );
+//	void		CopyDepthbuffer(/*int */x:number, /*int */y:number, /*int */width:number, /*int */height:number);
 
-//	void		UploadScratch( const byte *pic, int width, int height );
+//	void		UploadScratch( const byte *pic, /*int */width:number, /*int */height:number );
 
 //	// just for resource tracking
 //	void		SetClassification( int tag );
@@ -320,7 +320,7 @@ class idImageManager {
     R_AlphaNotchImage(image:idImage):void {throw "placeholder";}
     R_FogImage(image:idImage):void {throw "placeholder";}
     R_FogEnterImage(image:idImage):void {throw "placeholder";}
-    makeNormalizeVectorCubeMap(image:idImage):void {throw "placeholder";}
+    //makeNormalizeVectorCubeMap(image:idImage):void {throw "placeholder";} // moved to global func
     R_CreateNoFalloffImage(image:idImage):void {throw "placeholder";}
     R_QuadraticImage(image:idImage):void {throw "placeholder";}
 
@@ -370,8 +370,8 @@ class idImageManager {
     // reloads all apropriate images after a vid_restart
 	ReloadAllImages ( ): void { throw "placeholder"; }
 
-	////	// disable the active texture unit
-    ////	void				BindNull();
+	// disable the active texture unit
+	BindNull(): void { throw "placeholder"; }
 
     ////	// Mark all file based images as currently unused,
     ////	// but don't free anything.  Calls to ImageFromFile() will

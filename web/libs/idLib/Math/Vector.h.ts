@@ -2165,20 +2165,20 @@ class idVec5 {
 ////}
 
 
-/////*
-////===============================================================================
+/*
+===============================================================================
 
-////	Old 3D vector macros, should no longer be used.
+	Old 3D vector macros, should no longer be used.
 
-////===============================================================================
-////*/
+===============================================================================
+*/
 
-////#define DotProduct( a, b)			((a)[0]*(b)[0]+(a)[1]*(b)[1]+(a)[2]*(b)[2])
-////#define VectorSubtract( a, b, c )	((c)[0]=(a)[0]-(b)[0],(c)[1]=(a)[1]-(b)[1],(c)[2]=(a)[2]-(b)[2])
-////#define VectorAdd( a, b, c )		((c)[0]=(a)[0]+(b)[0],(c)[1]=(a)[1]+(b)[1],(c)[2]=(a)[2]+(b)[2])
-////#define	VectorScale( v, s, o )		((o)[0]=(v)[0]*(s),(o)[1]=(v)[1]*(s),(o)[2]=(v)[2]*(s))
-////#define	VectorMA( v, s, b, o )		((o)[0]=(v)[0]+(b)[0]*(s),(o)[1]=(v)[1]+(b)[1]*(s),(o)[2]=(v)[2]+(b)[2]*(s))
-////#define VectorCopy( a, b )			((b)[0]=(a)[0],(b)[1]=(a)[1],(b)[2]=(a)[2])
+function DotProduct ( a: any, b: any ): number { return ( ( a )[0] * ( b )[0] + ( a )[1] * ( b )[1] + ( a )[2] * ( b )[2] ); }
+function VectorSubtract(a: any, b: any, c: any): void { ((c)[0] = (a)[0] - (b)[0], (c)[1] = (a)[1] - (b)[1], (c)[2] = (a)[2] - (b)[2]); }
+function VectorAdd(a: any, b: any, c: any): void { ((c)[0] = (a)[0] + (b)[0], (c)[1] = (a)[1] + (b)[1], (c)[2] = (a)[2] + (b)[2]); }
+function VectorScale(v: any, s: any, o: any): void { ((o)[0] = (v)[0] * (s), (o)[1] = (v)[1] * (s), (o)[2] = (v)[2] * (s)); }
+function VectorMA(v: any, s: any, b: any, o: any): void { ((o)[0] = (v)[0] + (b)[0] * (s), (o)[1] = (v)[1] + (b)[1] * (s), (o)[2] = (v)[2] + (b)[2] * (s)); }
+function VectorCopy(a: any, b: any): void { ((b)[0] = (a)[0], (b)[1] = (a)[1], (b)[2] = (a)[2]); }
 
 
 ////#endif /* !__MATH_VECTOR_H__ */

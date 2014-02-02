@@ -334,18 +334,18 @@ idImageManager.prototype.R_BorderClampImage = function ( image: idImage ): void 
 ////#endif
 };
 
-//idImageManager.prototype.R_RGBA8Image = function ( image: idImage ): void {
-//////	byte	data[DEFAULT_SIZE][DEFAULT_SIZE][4];
+function R_RGBA8Image ( image: idImage ): void {
+	var data = $3dArray<Uint8Array>( Uint8Array, DEFAULT_SIZE, DEFAULT_SIZE, 4 );
 
-//////	memset( data, 0, sizeof( data ) );
-//////	data[0][0][0] = 16;
-//////	data[0][0][1] = 32;
-//////	data[0][0][2] = 48;
-//////	data[0][0][3] = 96;
+//	memset( data, 0, sizeof( data ) );
+	data[0][0][0] = 16;
+	data[0][0][1] = 32;
+	data[0][0][2] = 48;
+	data[0][0][3] = 96;
 
-//////	image.GenerateImage( (byte *)data, DEFAULT_SIZE, DEFAULT_SIZE, 
-//////		textureFilter_t.TF_DEFAULT, false, textureRepeat_t.TR_REPEAT, textureDepth_t.TD_HIGH_QUALITY );
-//};
+	image.GenerateImage( flatten3DArray<Uint8Array>( Uint8Array, data ), DEFAULT_SIZE, DEFAULT_SIZE,
+		textureFilter_t.TF_DEFAULT, false, textureRepeat_t.TR_REPEAT, textureDepth_t.TD_HIGH_QUALITY );
+}
 
 //idImageManager.prototype.R_RGB8Image = function ( image: idImage ): void {
 //////	byte	data[DEFAULT_SIZE][DEFAULT_SIZE][4];
@@ -1878,28 +1878,28 @@ idImageManager.prototype.CompleteBackgroundImageLoads = function ( ) {
 ////	return total;
 ////}
 
-/////*
-////===============
-////BindNull
-////===============
-////*/
-////void idImageManager::BindNull() {
-////	tmu_t			*tmu;
+/*
+===============
+BindNull
+===============
+*/
+idImageManager.prototype.BindNull = function ( ): void {
+	var tmu: tmu_t;
 
-////	tmu = &backEnd.glState.tmu[backEnd.glState.currenttmu];
+	tmu = /*&*/backEnd.glState.tmu[backEnd.glState.currenttmu];
 
-////	RB_LogComment( "BindNull()\n" );
-////#if !defined(GL_ES_VERSION_2_0)
-////	if ( tmu.textureType == textureType_t.TT_CUBIC ) {
-////		glDisable( GL_TEXTURE_CUBE_MAP_EXT );
-////	} else if ( tmu.textureType == TT_3D ) {
-////		glDisable( GL_TEXTURE_3D );
-////	} else if ( tmu.textureType == TT_2D ) {
-////		glDisable( GL_TEXTURE_2D );
-////	}
-////	tmu.textureType = textureType_t.TT_DISABLED;
-////#endif
-////}
+	RB_LogComment( "BindNull()\n" );
+//#if !defined(GL_ES_VERSION_2_0)
+//	if ( tmu.textureType == textureType_t.TT_CUBIC ) {
+//		glDisable( GL_TEXTURE_CUBE_MAP_EXT );
+//	} else if ( tmu.textureType == TT_3D ) {
+//		glDisable( GL_TEXTURE_3D );
+//	} else if ( tmu.textureType == TT_2D ) {
+//		glDisable( GL_TEXTURE_2D );
+//	}
+//	tmu.textureType = textureType_t.TT_DISABLED;
+//#endif
+};
 
 /*
 ===============
@@ -1908,50 +1908,49 @@ Init
 */
 idImageManager.prototype.Init = function ( ): void {
 
-    this.imageHashTable = []; //memset(imageHashTable, 0, sizeof(imageHashTable));
+	this.imageHashTable = []; //memset(imageHashTable, 0, sizeof(imageHashTable));
 
-    this.images.Resize( 1024, 1024 );
+	this.images.Resize( 1024, 1024 );
 
-    // clear the cached LRU
-    this.cacheLRU.cacheUsageNext = this.cacheLRU;
-    this.cacheLRU.cacheUsagePrev = this.cacheLRU;
+	// clear the cached LRU
+	this.cacheLRU.cacheUsageNext = this.cacheLRU;
+	this.cacheLRU.cacheUsagePrev = this.cacheLRU;
 
-    // set default texture filter modes
-    todo( "ChangeTextureFilter();" );
+	// set default texture filter modes
+	todo( "ChangeTextureFilter();" );
 
-    // create built in images
-    this.defaultImage = this.ImageFromFunction( "_default", this.R_DefaultImage );
-    this.whiteImage = this.ImageFromFunction( "_white", this.R_WhiteImage );
-    this.blackImage = this.ImageFromFunction( "_black", this.R_BlackImage );
-    this.borderClampImage = this.ImageFromFunction( "_borderClamp", this.R_BorderClampImage );
-    this.flatNormalMap = this.ImageFromFunction( "_flat", this.R_FlatNormalImage );
-    this.ambientNormalMap = this.ImageFromFunction( "_ambient", this.R_AmbientNormalImage );
-    this.specularTableImage = this.ImageFromFunction( "_specularTable", this.R_SpecularTableImage );
-    this.specular2DTableImage = this.ImageFromFunction( "_specular2DTable", this.R_Specular2DTableImage );
-    this.rampImage = this.ImageFromFunction( "_ramp", this.R_RampImage );
-    this.alphaRampImage = this.ImageFromFunction( "_alphaRamp", this.R_RampImage );
-    this.alphaNotchImage = this.ImageFromFunction( "_alphaNotch", this.R_AlphaNotchImage );
-    this.fogImage = this.ImageFromFunction( "_fog", this.R_FogImage );
-    this.fogEnterImage = this.ImageFromFunction( "_fogEnter", this.R_FogEnterImage );
-    this.normalCubeMapImage = this.ImageFromFunction( "_normalCubeMap", makeNormalizeVectorCubeMap );
-    this.noFalloffImage = this.ImageFromFunction( "_noFalloff", this.R_CreateNoFalloffImage );
-    this.ImageFromFunction( "_quadratic", this.R_QuadraticImage );
+	// create built in images
+	this.defaultImage = this.ImageFromFunction( "_default", this.R_DefaultImage );
+	this.whiteImage = this.ImageFromFunction( "_white", this.R_WhiteImage );
+	this.blackImage = this.ImageFromFunction( "_black", this.R_BlackImage );
+	this.borderClampImage = this.ImageFromFunction( "_borderClamp", this.R_BorderClampImage );
+	this.flatNormalMap = this.ImageFromFunction( "_flat", this.R_FlatNormalImage );
+	this.ambientNormalMap = this.ImageFromFunction( "_ambient", this.R_AmbientNormalImage );
+	this.specularTableImage = this.ImageFromFunction( "_specularTable", this.R_SpecularTableImage );
+	this.specular2DTableImage = this.ImageFromFunction( "_specular2DTable", this.R_Specular2DTableImage );
+	this.rampImage = this.ImageFromFunction( "_ramp", this.R_RampImage );
+	this.alphaRampImage = this.ImageFromFunction( "_alphaRamp", this.R_RampImage );
+	this.alphaNotchImage = this.ImageFromFunction( "_alphaNotch", this.R_AlphaNotchImage );
+	this.fogImage = this.ImageFromFunction( "_fog", this.R_FogImage );
+	this.fogEnterImage = this.ImageFromFunction( "_fogEnter", this.R_FogEnterImage );
+	this.normalCubeMapImage = this.ImageFromFunction( "_normalCubeMap", makeNormalizeVectorCubeMap );
+	this.noFalloffImage = this.ImageFromFunction( "_noFalloff", this.R_CreateNoFalloffImage );
+	this.ImageFromFunction( "_quadratic", this.R_QuadraticImage );
 
-    // cinematicImage is used for cinematic drawing
-    // scratchImage is used for screen wipes/doublevision etc..
-    todo( "cinematic images" );
-    //cinematicImage = ImageFromFunction("_cinematic", R_RGBA8Image );
-    //scratchImage = ImageFromFunction("_scratch", R_RGBA8Image );
-    //scratchImage2 = ImageFromFunction("_scratch2", R_RGBA8Image );
-    //accumImage = ImageFromFunction("_accum", R_RGBA8Image );
-    //scratchCubeMapImage = ImageFromFunction("_scratchCubeMap", makeNormalizeVectorCubeMap );
-    //currentRenderImage = ImageFromFunction("_currentRender", R_RGBA8Image );
+	// cinematicImage is used for cinematic drawing
+	// scratchImage is used for screen wipes/doublevision etc..
+	this.cinematicImage = this.ImageFromFunction( "_cinematic", R_RGBA8Image );
+	this.scratchImage = this.ImageFromFunction( "_scratch", R_RGBA8Image );
+	this.scratchImage2 = this.ImageFromFunction( "_scratch2", R_RGBA8Image );
+	this.accumImage = this.ImageFromFunction( "_accum", R_RGBA8Image );
+	this.scratchCubeMapImage = this.ImageFromFunction( "_scratchCubeMap", makeNormalizeVectorCubeMap );
+	this.currentRenderImage = this.ImageFromFunction( "_currentRender", R_RGBA8Image );
 
-    cmdSystem.AddCommand( "reloadImages", this.R_ReloadImages_f, CMD_FL_RENDERER, "reloads images" );
-    cmdSystem.AddCommand( "listImages", this.R_ListImages_f, CMD_FL_RENDERER, "lists images" );
-    cmdSystem.AddCommand( "combineCubeImages", this.R_CombineCubeImages_f, CMD_FL_RENDERER, "combines six images for roq compression" );
+	cmdSystem.AddCommand( "reloadImages", this.R_ReloadImages_f, CMD_FL_RENDERER, "reloads images" );
+	cmdSystem.AddCommand( "listImages", this.R_ListImages_f, CMD_FL_RENDERER, "lists images" );
+	cmdSystem.AddCommand( "combineCubeImages", this.R_CombineCubeImages_f, CMD_FL_RENDERER, "combines six images for roq compression" );
 
-    // should forceLoadImages be here?
+	// should forceLoadImages be here?
 }; /////*
 ////===============
 ////Shutdown
