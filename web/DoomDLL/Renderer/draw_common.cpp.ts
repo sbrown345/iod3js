@@ -73,126 +73,126 @@
 //	lightProject[1][3] = final[7];
 //}
 //
-///*
-//================
-//RB_PrepareStageTexturing
-//================
-//*/
-//void RB_PrepareStageTexturing( const shaderStage_t *pStage,  const drawSurf_t *surf, idDrawVert *ac ) {
-//	// set privatePolygonOffset if necessary
-//	if ( pStage.privatePolygonOffset ) {
-//		glEnable( GL_POLYGON_OFFSET_FILL );
-//		glPolygonOffset( r_offsetFactor.GetFloat(), r_offsetUnits.GetFloat() * pStage.privatePolygonOffset );
-//	}
-//
-//	// set the texture matrix if needed
-//	//if ( pStage.texture.hasMatrix ) {
-//		RB_LoadShaderTextureMatrix( surf.shaderRegisters, &pStage.texture );
-//	//}
-//
-//	// texgens
-//	if ( pStage.texture.texgen == TG_DIFFUSE_CUBE ) {
-//		glTexCoordPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ac.normal.ToFloatPtr() );
-//	}
-//	if ( pStage.texture.texgen == TG_SKYBOX_CUBE || pStage.texture.texgen == TG_WOBBLESKY_CUBE ) {
-//		glTexCoordPointer( 3, GL_FLOAT, 0, vertexCache.Position( surf.dynamicTexCoords ) );
-//	}
-//
+/*
+================
+RB_PrepareStageTexturing
+================
+*/
+function RB_PrepareStageTexturing ( pStage: shaderStage_t, surf: drawSurf_t, ac: idDrawVert ): void {
+	// set privatePolygonOffset if necessary
+	if ( pStage.privatePolygonOffset ) {
+		glEnable( GL_POLYGON_OFFSET_FILL );
+		glPolygonOffset( r_offsetFactor.GetFloat ( ), r_offsetUnits.GetFloat ( ) * pStage.privatePolygonOffset );
+	}
+
+	// set the texture matrix if needed
+	//if ( pStage.texture.hasMatrix ) {
+	RB_LoadShaderTextureMatrix( surf.shaderRegisters,  pStage.texture );
+	//}
+
+	// texgens
+	if ( pStage.texture.texgen == texgen_t.TG_DIFFUSE_CUBE ) {
+		glTexCoordPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ac.normal.ToFloatPtr ( ) );
+	}
+	if ( pStage.texture.texgen == texgen_t.TG_SKYBOX_CUBE || pStage.texture.texgen == texgen_t.TG_WOBBLESKY_CUBE ) {
+		glTexCoordPointer( 3, GL_FLOAT, 0, vertexCache.Position( surf.dynamicTexCoords ) );
+	}
+
 //#if !defined(GL_ES_VERSION_2_0)
 //	if ( pStage.texture.texgen == TG_SCREEN ) {
 //		glEnable( GL_TEXTURE_GEN_S );
 //		glEnable( GL_TEXTURE_GEN_T );
 //		glEnable( GL_TEXTURE_GEN_Q );
-//
+
 //		float	mat[16], plane[4];
 //		myGlMultMatrix( surf.space.modelViewMatrix, backEnd.viewDef.projectionMatrix, mat );
-//
+
 //		plane[0] = mat[0];
 //		plane[1] = mat[4];
 //		plane[2] = mat[8];
 //		plane[3] = mat[12];
 //		glTexGenfv( GL_S, GL_OBJECT_PLANE, plane );
-//
+
 //		plane[0] = mat[1];
 //		plane[1] = mat[5];
 //		plane[2] = mat[9];
 //		plane[3] = mat[13];
 //		glTexGenfv( GL_T, GL_OBJECT_PLANE, plane );
-//
+
 //		plane[0] = mat[3];
 //		plane[1] = mat[7];
 //		plane[2] = mat[11];
 //		plane[3] = mat[15];
 //		glTexGenfv( GL_Q, GL_OBJECT_PLANE, plane );
 //	}
-//
+
 //	if ( pStage.texture.texgen == TG_SCREEN2 ) {
 //		glEnable( GL_TEXTURE_GEN_S );
 //		glEnable( GL_TEXTURE_GEN_T );
 //		glEnable( GL_TEXTURE_GEN_Q );
-//
+
 //		float	mat[16], plane[4];
 //		myGlMultMatrix( surf.space.modelViewMatrix, backEnd.viewDef.projectionMatrix, mat );
-//
+
 //		plane[0] = mat[0];
 //		plane[1] = mat[4];
 //		plane[2] = mat[8];
 //		plane[3] = mat[12];
 //		glTexGenfv( GL_S, GL_OBJECT_PLANE, plane );
-//
+
 //		plane[0] = mat[1];
 //		plane[1] = mat[5];
 //		plane[2] = mat[9];
 //		plane[3] = mat[13];
 //		glTexGenfv( GL_T, GL_OBJECT_PLANE, plane );
-//
+
 //		plane[0] = mat[3];
 //		plane[1] = mat[7];
 //		plane[2] = mat[11];
 //		plane[3] = mat[15];
 //		glTexGenfv( GL_Q, GL_OBJECT_PLANE, plane );
 //	}
-//
+
 //	if ( pStage.texture.texgen == TG_GLASSWARP ) {
 //		if ( tr.backEndRenderer == BE_ARB2 ) {
 //			glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, FPROG_GLASSWARP );
 //			glEnable( GL_FRAGMENT_PROGRAM_ARB );
-//
+
 //			GL_SelectTexture( 2 );
 //			globalImages.scratchImage.Bind();
-//
+
 //			GL_SelectTexture( 1 );
 //			globalImages.scratchImage2.Bind();
-//
+
 //			glEnable( GL_TEXTURE_GEN_S );
 //			glEnable( GL_TEXTURE_GEN_T );
 //			glEnable( GL_TEXTURE_GEN_Q );
-//
+
 //			float	mat[16], plane[4];
 //			myGlMultMatrix( surf.space.modelViewMatrix, backEnd.viewDef.projectionMatrix, mat );
-//
+
 //			plane[0] = mat[0];
 //			plane[1] = mat[4];
 //			plane[2] = mat[8];
 //			plane[3] = mat[12];
 //			glTexGenfv( GL_S, GL_OBJECT_PLANE, plane );
-//
+
 //			plane[0] = mat[1];
 //			plane[1] = mat[5];
 //			plane[2] = mat[9];
 //			plane[3] = mat[13];
 //			glTexGenfv( GL_T, GL_OBJECT_PLANE, plane );
-//
+
 //			plane[0] = mat[3];
 //			plane[1] = mat[7];
 //			plane[2] = mat[11];
 //			plane[3] = mat[15];
 //			glTexGenfv( GL_Q, GL_OBJECT_PLANE, plane );
-//
+
 //			GL_SelectTexture( 0 );
 //		}
 //	}
-//
+
 //	if ( pStage.texture.texgen == TG_REFLECT_CUBE ) {
 //		if ( tr.backEndRenderer == BE_ARB2 ) {
 //			// see if there is also a bump map specified
@@ -202,17 +202,17 @@
 //				GL_SelectTexture( 1 );
 //				bumpStage.texture.image.Bind();
 //				GL_SelectTexture( 0 );
-//
+
 //				glNormalPointer( GL_FLOAT, sizeof( idDrawVert ), ac.normal.ToFloatPtr() );
 //				glVertexAttribPointerARB( 10, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac.tangents[1].ToFloatPtr() );
 //				glVertexAttribPointerARB( 9, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac.tangents[0].ToFloatPtr() );
-//
+
 //				glEnableVertexAttribArrayARB( 9 );
 //				glEnableVertexAttribArrayARB( 10 );
 //				glEnableClientState( GL_NORMAL_ARRAY );
-//
+
 //				// Program env 5, 6, 7, 8 have been set in RB_SetProgramEnvironmentSpace
-//
+
 //				glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, FPROG_BUMPY_ENVIRONMENT );
 //				glEnable( GL_FRAGMENT_PROGRAM_ARB );
 //				glBindProgramARB( GL_VERTEX_PROGRAM_ARB, VPROG_BUMPY_ENVIRONMENT );
@@ -221,7 +221,7 @@
 //				// per-pixel reflection mapping without a normal map
 //				glNormalPointer( GL_FLOAT, sizeof( idDrawVert ), ac.normal.ToFloatPtr() );
 //				glEnableClientState( GL_NORMAL_ARRAY );
-//
+
 //				glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, FPROG_ENVIRONMENT );
 //				glEnable( GL_FRAGMENT_PROGRAM_ARB );
 //				glBindProgramARB( GL_VERTEX_PROGRAM_ARB, VPROG_ENVIRONMENT );
@@ -236,34 +236,34 @@
 //			glTexGenf( GL_R, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP_EXT );
 //			glEnableClientState( GL_NORMAL_ARRAY );
 //			glNormalPointer( GL_FLOAT, sizeof( idDrawVert ), ac.normal.ToFloatPtr() );
-//
+
 //			glMatrixMode( GL_TEXTURE );
 //			float	mat[16];
-//
+
 //			R_TransposeGLMatrix( backEnd.viewDef.worldSpace.modelViewMatrix, mat );
-//
+
 //			glLoadMatrixf( mat );
 //			glMatrixMode( GL_MODELVIEW );
 //		}
 //	}
 //#endif
-//}
-//
-///*
-//================
-//RB_FinishStageTexturing
-//================
-//*/
-//void RB_FinishStageTexturing( const shaderStage_t *pStage, const drawSurf_t *surf, idDrawVert *ac ) {
-//	// unset privatePolygonOffset if necessary
-//	if ( pStage.privatePolygonOffset && !surf.material.TestMaterialFlag(MF_POLYGONOFFSET) ) {
-//		glDisable( GL_POLYGON_OFFSET_FILL );
-//	}
-//	if ( pStage.texture.texgen == TG_DIFFUSE_CUBE || pStage.texture.texgen == TG_SKYBOX_CUBE
-//		|| pStage.texture.texgen == TG_WOBBLESKY_CUBE ) {
-//		glTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), (void *)&ac.st );
-//	}
-//
+}
+
+/*
+================
+RB_FinishStageTexturing
+================
+*/
+function RB_FinishStageTexturing ( pStage: shaderStage_t, surf: drawSurf_t, ac: idDrawVert ): void {
+	// unset privatePolygonOffset if necessary
+	if ( pStage.privatePolygonOffset && !surf.material.TestMaterialFlag( materialFlags_t.MF_POLYGONOFFSET ) ) {
+		glDisable( GL_POLYGON_OFFSET_FILL );
+	}
+	if ( pStage.texture.texgen == texgen_t.TG_DIFFUSE_CUBE || pStage.texture.texgen == texgen_t.TG_SKYBOX_CUBE
+		|| pStage.texture.texgen == texgen_t.TG_WOBBLESKY_CUBE ) {
+		glTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), /*(void *)&*/ac.st );
+	}
+
 //#if !defined(GL_ES_VERSION_2_0)
 //	if ( pStage.texture.texgen == TG_SCREEN ) {
 //		glDisable( GL_TEXTURE_GEN_S );
@@ -275,12 +275,12 @@
 //		glDisable( GL_TEXTURE_GEN_T );
 //		glDisable( GL_TEXTURE_GEN_Q );
 //	}
-//
+
 //	if ( pStage.texture.texgen == TG_GLASSWARP ) {
 //		if ( tr.backEndRenderer == BE_ARB2 ) {
 //			GL_SelectTexture( 2 );
 //			globalImages.BindNull();
-//
+
 //			GL_SelectTexture( 1 );
 //			if ( pStage.texture.hasMatrix ) {
 //				RB_LoadShaderTextureMatrix( surf.shaderRegisters, &pStage.texture );
@@ -293,7 +293,7 @@
 //			GL_SelectTexture( 0 );
 //		}
 //	}
-//
+
 //	if ( pStage.texture.texgen == TG_REFLECT_CUBE ) {
 //		if ( tr.backEndRenderer == BE_ARB2 ) {
 //			// see if there is also a bump map specified
@@ -303,13 +303,13 @@
 //				GL_SelectTexture( 1 );
 //				globalImages.BindNull();
 //				GL_SelectTexture( 0 );
-//
+
 //				glDisableVertexAttribArrayARB( 9 );
 //				glDisableVertexAttribArrayARB( 10 );
 //			} else {
 //				// per-pixel reflection mapping without bump mapping
 //			}
-//
+
 //			glDisableClientState( GL_NORMAL_ARRAY );
 //			glDisable( GL_FRAGMENT_PROGRAM_ARB );
 //			glDisable( GL_VERTEX_PROGRAM_ARB );
@@ -323,21 +323,21 @@
 //			glTexGenf( GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR );
 //			glTexGenf( GL_R, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR );
 //			glDisableClientState( GL_NORMAL_ARRAY );
-//
+
 //			glMatrixMode( GL_TEXTURE );
 //			glLoadIdentity();
 //			glMatrixMode( GL_MODELVIEW );
 //		}
 //	}
-//
+
 //	if ( pStage.texture.hasMatrix ) {
 //		glMatrixMode( GL_TEXTURE );
 //		glLoadIdentity();
 //		glMatrixMode( GL_MODELVIEW );
 //	}
 //#endif
-//}
-//
+}
+
 ///*
 //=============================================================================================
 //
@@ -690,35 +690,35 @@ RB_STD_T_RenderShaderPasses
 This is also called for the generated 2D rendering
 ==================
 */
-function RB_STD_T_RenderShaderPasses(surf: drawSurf_t):void {
-	var/*int			*/stage:number;
+function RB_STD_T_RenderShaderPasses ( surf: drawSurf_t ): void {
+	var /*int			*/stage: number;
 	var shader: idMaterial;
-	var pStage: shaderStage_t ;
-	var regs:Float32Array;
+	var pStage: shaderStage_t;
+	var regs: Float32Array;
 	var color = new Float32Array( 4 );
-	var tri: srfTriangles_t	;
+	var tri: srfTriangles_t;
 
 	tri = surf.geo;
 	shader = surf.material;
 
-	if ( !shader.HasAmbient() ) {
+	if ( !shader.HasAmbient ( ) ) {
 		return;
 	}
 
-	if ( shader.IsPortalSky() ) {
+	if ( shader.IsPortalSky ( ) ) {
 		return;
 	}
 
 	// change the matrix if needed
 	if ( surf.space != backEnd.currentSpace ) {
 		backEnd.currentSpace = surf.space;
-		RB_SetProgramEnvironmentSpace();
+		RB_SetProgramEnvironmentSpace ( );
 	}
 
 	// change the scissor if needed
-	if ( r_useScissor.GetBool() && !backEnd.currentScissor.Equals( surf.scissorRect ) ) {
+	if ( r_useScissor.GetBool ( ) && !backEnd.currentScissor.Equals( surf.scissorRect ) ) {
 		backEnd.currentScissor = surf.scissorRect;
-		glScissor( backEnd.viewDef.viewport.x1 + backEnd.currentScissor.x1, 
+		glScissor( backEnd.viewDef.viewport.x1 + backEnd.currentScissor.x1,
 			backEnd.viewDef.viewport.y1 + backEnd.currentScissor.y1,
 			backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
 			backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
@@ -738,12 +738,12 @@ function RB_STD_T_RenderShaderPasses(surf: drawSurf_t):void {
 	regs = surf.shaderRegisters;
 
 	// set face culling appropriately
-	GL_Cull( shader.GetCullType() );
+	GL_Cull( shader.GetCullType ( ) );
 
 	// set polygon offset if necessary
-	if (shader.TestMaterialFlag(materialFlags_t.MF_POLYGONOFFSET) ) {
+	if ( shader.TestMaterialFlag( materialFlags_t.MF_POLYGONOFFSET ) ) {
 		glEnable( GL_POLYGON_OFFSET_FILL );
-		glPolygonOffset( r_offsetFactor.GetFloat(), r_offsetUnits.GetFloat() * shader.GetPolygonOffset() );
+		glPolygonOffset( r_offsetFactor.GetFloat ( ), r_offsetUnits.GetFloat ( ) * shader.GetPolygonOffset ( ) );
 	}
 	if ( surf.space.weaponDepthHack ) {
 		todoThrow( "RB_EnterWeaponDepthHack(surf);" );
@@ -754,197 +754,196 @@ function RB_STD_T_RenderShaderPasses(surf: drawSurf_t):void {
 	}
 
 	var ac = <idDrawVert >vertexCache.Position( tri.ambientCache );
-	GL_EnableVertexAttribArray(shaderProgram_indexes.attr_Vertex/*offsetof(shaderProgram_t, attr_Vertex)*/);
-	GL_EnableVertexAttribArray(shaderProgram_indexes.attr_TexCoord/*offsetof(shaderProgram_t, attr_TexCoord)*/);
-	
-	GL_VertexAttribPointer(shaderProgram_indexes.attr_Vertex/*offsetof(shaderProgram_t, attr_Vertex)*/, 3, GL_FLOAT, false, sizeof(idDrawVert), ac.xyz.ToFloatPtr());
-	GL_VertexAttribPointer(shaderProgram_indexes.attr_TexCoord/*offsetof(shaderProgram_t, attr_TexCoord)*/, 2, GL_FLOAT, false, sizeof(idDrawVert), ac/*reinterpret_cast<void *>(&ac.st)*/);
-	todoThrow();
-//	for ( stage = 0; stage < shader.GetNumStages() ; stage++ ) {		
-//		pStage = shader.GetStage(stage);
+	GL_EnableVertexAttribArray( shaderProgram_indexes.attr_Vertex /*offsetof(shaderProgram_t, attr_Vertex)*/ );
+	GL_EnableVertexAttribArray( shaderProgram_indexes.attr_TexCoord /*offsetof(shaderProgram_t, attr_TexCoord)*/ );
+	GL_VertexAttribPointer( shaderProgram_indexes.attr_Vertex /*offsetof(shaderProgram_t, attr_Vertex)*/, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac && ac.xyz.ToFloatPtr ( ) );
+	GL_VertexAttribPointer( shaderProgram_indexes.attr_TexCoord /*offsetof(shaderProgram_t, attr_TexCoord)*/, 2, GL_FLOAT, false, sizeof( idDrawVert ), ac && ac.st.ToFloatPtr ( ) /*reinterpret_cast<void *>(&ac.st)*/ );
 
-//		// check the enable condition
-//		if ( regs[ pStage.conditionRegister ] == 0 ) {
-//			continue;
-//		}
+	for ( stage = 0; stage < shader.GetNumStages ( ); stage++ ) {
+		pStage = shader.GetStage( stage );
 
-//		// skip the stages involved in lighting
-//		if ( pStage.lighting != SL_AMBIENT ) {
-//			continue;
-//		}
+		// check the enable condition
+		if ( regs[pStage.conditionRegister] == 0 ) {
+			continue;
+		}
 
-//		// skip if the stage is ( GL_ZERO, GL_ONE ), which is used for some alpha masks
-//		if ( ( pStage.drawStateBits & (GLS_SRCBLEND_BITS|GLS_DSTBLEND_BITS) ) == ( GLS_SRCBLEND_ZERO | GLS_DSTBLEND_ONE ) ) {
-//			continue;
-//		}
+		// skip the stages involved in lighting
+		if ( pStage.lighting != stageLighting_t.SL_AMBIENT ) {
+			continue;
+		}
 
-//		// see if we are a new-style stage
-//		var newStage: newShaderStage_t = pStage.newStage;
-//		if ( newStage ) {
-//			//--------------------------
-//			//
-//			// new style stages
-//			//
-//			//--------------------------
+		// skip if the stage is ( GL_ZERO, GL_ONE ), which is used for some alpha masks
+		if ( ( pStage.drawStateBits & ( GLS_SRCBLEND_BITS | GLS_DSTBLEND_BITS ) ) == ( GLS_SRCBLEND_ZERO | GLS_DSTBLEND_ONE ) ) {
+			continue;
+		}
 
-//			// completely skip the stage if we don't have the capability
-//			if (tr.backEndRenderer != backEndName_t .BE_ARB2 ) {
-//				continue;
+		// see if we are a new-style stage
+		var newStage: newShaderStage_t = pStage.newStage;
+		if ( newStage ) {
+			//--------------------------
+			//
+			// new style stages
+			//
+			//--------------------------
+
+			// completely skip the stage if we don't have the capability
+			if ( tr.backEndRenderer != backEndName_t.BE_ARB2 ) {
+				continue;
+			}
+			if ( r_skipNewAmbient.GetBool ( ) ) {
+				continue;
+			}
+			GL_VertexAttribPointer( shaderProgram_indexes.attr_Color /* offsetof(shaderProgram_t, attr_Color)*/, 4, GL_UNSIGNED_BYTE, false, sizeof( idDrawVert ), /*(void *)&*/ac.color );
+			GL_VertexAttribPointer( shaderProgram_indexes.attr_Tangent /*offsetof(shaderProgram_t, attr_Tangent)*/, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac.tangents[0].ToFloatPtr ( ) );
+			GL_VertexAttribPointer( shaderProgram_indexes.attr_Bitangent /*offsetof(shaderProgram_t, attr_Bitangent)*/, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac.tangents[1].ToFloatPtr ( ) );
+			GL_VertexAttribPointer( shaderProgram_indexes.attr_Normal /*offsetof(shaderProgram_t, attr_Normal)*/, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac.normal.ToFloatPtr ( ) );
+
+			GL_EnableVertexAttribArray( shaderProgram_indexes.attr_Color /*offsetof(shaderProgram_t, attr_Color)*/ ); // gl_Color
+			GL_EnableVertexAttribArray( shaderProgram_indexes.attr_Tangent /*offsetof(shaderProgram_t, attr_Tangent)*/ );
+			GL_EnableVertexAttribArray( shaderProgram_indexes.attr_Bitangent /*offsetof(shaderProgram_t, attr_Bitangent)*/ );
+			GL_EnableVertexAttribArray( shaderProgram_indexes.attr_Normal /*offsetof(shaderProgram_t, attr_Normal)*/ );
+
+			GL_State( pStage.drawStateBits );
+
+//#if !defined(GL_ES_VERSION_2_0)
+//			glBindProgramARB( GL_VERTEX_PROGRAM_ARB, newStage.vertexProgram );
+//			glEnable( GL_VERTEX_PROGRAM_ARB );
+
+//			// megaTextures bind a lot of images and set a lot of parameters
+//			if ( newStage.megaTexture ) {
+//				newStage.megaTexture.SetMappingForSurface( tri );
+//				idVec3	localViewer;
+//				R_GlobalPointToLocal( surf.space.modelMatrix, backEnd.viewDef.renderView.vieworg, localViewer );
+//				newStage.megaTexture.BindForViewOrigin( localViewer );
 //			}
-//			if ( r_skipNewAmbient.GetBool() ) {
-//				continue;
+
+//			for ( int i = 0 ; i < newStage.numVertexParms ; i++ ) {
+//				float	parm[4];
+//				parm[0] = regs[ newStage.vertexParms[i][0] ];
+//				parm[1] = regs[ newStage.vertexParms[i][1] ];
+//				parm[2] = regs[ newStage.vertexParms[i][2] ];
+//				parm[3] = regs[ newStage.vertexParms[i][3] ];
+//				glProgramLocalParameter4fvARB( GL_VERTEX_PROGRAM_ARB, i, parm );
 //			}
-//			GL_VertexAttribPointer(offsetof(shaderProgram_t, attr_Color), 4, GL_UNSIGNED_BYTE, false, sizeof(idDrawVert), (void *)&ac.color);
-//			GL_VertexAttribPointer(offsetof(shaderProgram_t, attr_Tangent), 3, GL_FLOAT, false, sizeof(idDrawVert), ac.tangents[0].ToFloatPtr());
-//			GL_VertexAttribPointer(offsetof(shaderProgram_t, attr_Bitangent), 3, GL_FLOAT, false, sizeof(idDrawVert), ac.tangents[1].ToFloatPtr());
-//			GL_VertexAttribPointer(offsetof(shaderProgram_t, attr_Normal), 3, GL_FLOAT, false, sizeof(idDrawVert), ac.normal.ToFloatPtr());
 
-//			GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_Color));	// gl_Color
-//			GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_Tangent));
-//			GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_Bitangent));
-//			GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_Normal));
+//			for ( int i = 0 ; i < newStage.numFragmentProgramImages ; i++ ) {
+//				if ( newStage.fragmentProgramImages[i] ) {
+//					GL_SelectTexture( i );
+//					newStage.fragmentProgramImages[i].Bind();
+//				}
+//			}
+//			glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, newStage.fragmentProgram );
+//			glEnable( GL_FRAGMENT_PROGRAM_ARB );
+//#endif
 
-//			GL_State( pStage.drawStateBits );
+			// draw it
+			RB_DrawElementsWithCounters( tri );
 
-////#if !defined(GL_ES_VERSION_2_0)
-////			glBindProgramARB( GL_VERTEX_PROGRAM_ARB, newStage.vertexProgram );
-////			glEnable( GL_VERTEX_PROGRAM_ARB );
+//#if !defined(GL_ES_VERSION_2_0)
+//			for ( int i = 1 ; i < newStage.numFragmentProgramImages ; i++ ) {
+//				if ( newStage.fragmentProgramImages[i] ) {
+//					GL_SelectTexture( i );
+//					globalImages.BindNull();
+//				}
+//			}
+//			if ( newStage.megaTexture ) {
+//				newStage.megaTexture.Unbind();
+//			}
 
-////			// megaTextures bind a lot of images and set a lot of parameters
-////			if ( newStage.megaTexture ) {
-////				newStage.megaTexture.SetMappingForSurface( tri );
-////				idVec3	localViewer;
-////				R_GlobalPointToLocal( surf.space.modelMatrix, backEnd.viewDef.renderView.vieworg, localViewer );
-////				newStage.megaTexture.BindForViewOrigin( localViewer );
-////			}
+//			GL_SelectTexture( 0 );
 
-////			for ( int i = 0 ; i < newStage.numVertexParms ; i++ ) {
-////				float	parm[4];
-////				parm[0] = regs[ newStage.vertexParms[i][0] ];
-////				parm[1] = regs[ newStage.vertexParms[i][1] ];
-////				parm[2] = regs[ newStage.vertexParms[i][2] ];
-////				parm[3] = regs[ newStage.vertexParms[i][3] ];
-////				glProgramLocalParameter4fvARB( GL_VERTEX_PROGRAM_ARB, i, parm );
-////			}
+//			glDisable( GL_VERTEX_PROGRAM_ARB );
+//			glDisable( GL_FRAGMENT_PROGRAM_ARB );
+//			// Fixme: Hack to get around an apparent bug in ATI drivers.  Should remove as soon as it gets fixed.
+//			glBindProgramARB( GL_VERTEX_PROGRAM_ARB, 0 );
+//#endif
 
-////			for ( int i = 0 ; i < newStage.numFragmentProgramImages ; i++ ) {
-////				if ( newStage.fragmentProgramImages[i] ) {
-////					GL_SelectTexture( i );
-////					newStage.fragmentProgramImages[i].Bind();
-////				}
-////			}
-////			glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, newStage.fragmentProgram );
-////			glEnable( GL_FRAGMENT_PROGRAM_ARB );
-////#endif
+			GL_DisableVertexAttribArray( shaderProgram_indexes.attr_Color /*offsetof(shaderProgram_t, attr_Color)*/ ); // gl_Color
+			GL_DisableVertexAttribArray( shaderProgram_indexes.attr_Tangent /*offsetof(shaderProgram_t, attr_Tangent)*/ );
+			GL_DisableVertexAttribArray( shaderProgram_indexes.attr_Bitangent /*offsetof(shaderProgram_t, attr_Bitangent)*/ );
+			GL_DisableVertexAttribArray( shaderProgram_indexes.attr_Normal /*offsetof(shaderProgram_t, attr_Normal)*/ );
+			continue;
+		}
 
-//			// draw it
-//			RB_DrawElementsWithCounters( tri );
+		//--------------------------
+		//
+		// old style stages
+		//
+		//--------------------------
 
-////#if !defined(GL_ES_VERSION_2_0)
-////			for ( int i = 1 ; i < newStage.numFragmentProgramImages ; i++ ) {
-////				if ( newStage.fragmentProgramImages[i] ) {
-////					GL_SelectTexture( i );
-////					globalImages.BindNull();
-////				}
-////			}
-////			if ( newStage.megaTexture ) {
-////				newStage.megaTexture.Unbind();
-////			}
+		// set the color
+		color[0] = regs[pStage.color.registers[0]];
+		color[1] = regs[pStage.color.registers[1]];
+		color[2] = regs[pStage.color.registers[2]];
+		color[3] = regs[pStage.color.registers[3]];
 
-////			GL_SelectTexture( 0 );
+		// skip the entire stage if an add would be black
+		if ( ( pStage.drawStateBits & ( GLS_SRCBLEND_BITS | GLS_DSTBLEND_BITS ) ) == ( GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE )
+			&& color[0] <= 0 && color[1] <= 0 && color[2] <= 0 ) {
+			continue;
+		}
 
-////			glDisable( GL_VERTEX_PROGRAM_ARB );
-////			glDisable( GL_FRAGMENT_PROGRAM_ARB );
-////			// Fixme: Hack to get around an apparent bug in ATI drivers.  Should remove as soon as it gets fixed.
-////			glBindProgramARB( GL_VERTEX_PROGRAM_ARB, 0 );
-////#endif
+		// skip the entire stage if a blend would be completely transparent
+		if ( ( pStage.drawStateBits & ( GLS_SRCBLEND_BITS | GLS_DSTBLEND_BITS ) ) == ( GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA )
+			&& color[3] <= 0 ) {
+			continue;
+		}
 
-//			GL_DisableVertexAttribArray("attr_Color" /*offsetof(shaderProgram_t, attr_Color)*/);	// gl_Color
-//			GL_DisableVertexAttribArray("attr_Tangent"/*offsetof(shaderProgram_t, attr_Tangent)*/);
-//			GL_DisableVertexAttribArray("attr_Bitangent"/*offsetof(shaderProgram_t, attr_Bitangent)*/);
-//			GL_DisableVertexAttribArray("attr_Normal",/*offsetof(shaderProgram_t, attr_Normal)*/);
-//			continue;
-//		}
+		// select the vertex color source
+		if ( pStage.vertexColor != stageVertexColor_t.SVC_IGNORE ) {
+			GL_VertexAttribPointer( shaderProgram_indexes.attr_Color /* offsetof(shaderProgram_t, attr_Color)*/, 4, GL_UNSIGNED_BYTE, false, sizeof( idDrawVert ), /*(void *)&*/ac.color );
+			GL_EnableVertexAttribArray( shaderProgram_indexes.attr_Color /* offsetof(shaderProgram_t, attr_Color)*/ );
+		}
 
-//		//--------------------------
-//		//
-//		// old style stages
-//		//
-//		//--------------------------
+		var /*static const float*/ zero = new Float32Array( [0, 0, 0, 0] );
+		var /*static const float*/ one = new Float32Array( [1, 1, 1, 1] );
+		var /*static const float*/ negOne = new Float32Array( [-1, -1, -1, -1] );
 
-//		// set the color
-//		color[0] = regs[ pStage.color.registers[0] ];
-//		color[1] = regs[ pStage.color.registers[1] ];
-//		color[2] = regs[ pStage.color.registers[2] ];
-//		color[3] = regs[ pStage.color.registers[3] ];
+		switch ( pStage.vertexColor ) {
+		case stageVertexColor_t.SVC_IGNORE:
+			GL_Uniform4fv( "colorModulate" /*offsetof(shaderProgram_t, colorModulate)*/, zero );
+			GL_Uniform4fv( "colorAdd" /*offsetof(shaderProgram_t, colorAdd)*/, one );
+			break;
+		case stageVertexColor_t.SVC_MODULATE:
+			GL_Uniform4fv( "colorModulate" /*offsetof(shaderProgram_t, colorModulate)*/, one );
+			GL_Uniform4fv( "colorAdd" /*offsetof(shaderProgram_t, colorAdd)*/, zero );
+			break;
+		case stageVertexColor_t.SVC_INVERSE_MODULATE:
+			GL_Uniform4fv( "colorModulate" /*offsetof(shaderProgram_t, colorModulate)*/, negOne );
+			GL_Uniform4fv( "colorAdd" /*offsetof(shaderProgram_t, colorAdd)*/, one );
+			break;
+		}
 
-//		// skip the entire stage if an add would be black
-//		if ( ( pStage.drawStateBits & (GLS_SRCBLEND_BITS|GLS_DSTBLEND_BITS) ) == ( GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE ) 
-//			&& color[0] <= 0 && color[1] <= 0 && color[2] <= 0 ) {
-//			continue;
-//		}
+		GL_Uniform4fv( "glColor" /*offsetof(shaderProgram_t, glColor)*/, color );
 
-//		// skip the entire stage if a blend would be completely transparent
-//		if ( ( pStage.drawStateBits & (GLS_SRCBLEND_BITS|GLS_DSTBLEND_BITS) ) == ( GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA )
-//			&& color[3] <= 0 ) {
-//			continue;
-//		}
+		// bind the texture
+		RB_BindVariableStageImage( pStage.texture, regs );
 
-//		// select the vertex color source
-//		if (pStage.vertexColor != SVC_IGNORE) {
-//			GL_VertexAttribPointer(offsetof(shaderProgram_t, attr_Color), 4, GL_UNSIGNED_BYTE, false, sizeof(idDrawVert), (void *)&ac.color);
-//			GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_Color));
-//		}
+		// set the state
+		GL_State( pStage.drawStateBits );
 
-//		var /*static const float*/ zero = new Float32Array([ 0, 0, 0, 0 ]);
-//		var /*static const float*/ one = new Float32Array([1, 1, 1, 1]);
-//		var /*static const float*/ negOne = new Float32Array([-1, -1, -1, -1]);
+		RB_PrepareStageTexturing( pStage, surf, ac );
 
-//		switch (pStage.vertexColor) {
-//			case stageVertexColor_t.SVC_IGNORE:
-//				GL_Uniform4fv("colorModulate" /*offsetof(shaderProgram_t, colorModulate)*/, zero);
-//				GL_Uniform4fv("colorAdd"/*offsetof(shaderProgram_t, colorAdd)*/, one);
-//				break;
-//			case stageVertexColor_t.SVC_MODULATE:
-//				GL_Uniform4fv("colorModulate"/*offsetof(shaderProgram_t, colorModulate)*/, one);
-//				GL_Uniform4fv("colorAdd"/*offsetof(shaderProgram_t, colorAdd)*/, zero);
-//				break;
-//			case stageVertexColor_t.SVC_INVERSE_MODULATE:
-//				GL_Uniform4fv("colorModulate"/*offsetof(shaderProgram_t, colorModulate)*/, negOne);
-//				GL_Uniform4fv("colorAdd"/*offsetof(shaderProgram_t, colorAdd)*/, one);
-//				break;
-//		}
+		// draw it
+		RB_DrawElementsWithCounters( tri );
 
-//		GL_Uniform4fv("glColor"/*offsetof(shaderProgram_t, glColor)*/, color);
+		RB_FinishStageTexturing( pStage, surf, ac );
 
-//		// bind the texture
-//		RB_BindVariableStageImage( &pStage.texture, regs );
+		if ( pStage.vertexColor != stageVertexColor_t.SVC_IGNORE ) {
+			GL_DisableVertexAttribArray( shaderProgram_indexes.attr_Color /* offsetof(shaderProgram_t, attr_Color)*/ );
+		}
+	}
 
-//		// set the state
-//		GL_State( pStage.drawStateBits );
+	GL_DisableVertexAttribArray( shaderProgram_indexes.attr_Vertex /* offsetof(shaderProgram_t, attr_Vertex)*/ );
+	GL_DisableVertexAttribArray( shaderProgram_indexes.attr_TexCoord /* offsetof(shaderProgram_t, attr_TexCoord)*/ );
 
-//		RB_PrepareStageTexturing( pStage, surf, ac );
-
-//		// draw it
-//		RB_DrawElementsWithCounters( tri );
-
-//		RB_FinishStageTexturing( pStage, surf, ac );
-
-//		if (pStage.vertexColor != stageVertexColor_t.SVC_IGNORE) {
-//			GL_DisableVertexAttribArray("attr_Color"/*offsetof(shaderProgram_t, attr_Color)*/);
-//		}
-//	}
-
-//	GL_DisableVertexAttribArray(shaderProgram_indexes.attr_Vertex/* offsetof(shaderProgram_t, attr_Vertex)*/);
-//	GL_DisableVertexAttribArray(shaderProgram_indexes.attr_TexCoord/* offsetof(shaderProgram_t, attr_TexCoord)*/);
-
-//	// reset polygon offset
-//	if (shader.TestMaterialFlag(materialFlags_t.MF_POLYGONOFFSET) ) {
-//		glDisable( GL_POLYGON_OFFSET_FILL );
-//	}
-//	if ( surf.space.weaponDepthHack || surf.space.modelDepthHack != 0.0 ) {
-//		RB_LeaveDepthHack(surf);
-//	}
+	// reset polygon offset
+	if ( shader.TestMaterialFlag( materialFlags_t.MF_POLYGONOFFSET ) ) {
+		glDisable( GL_POLYGON_OFFSET_FILL );
+	}
+	if ( surf.space.weaponDepthHack || surf.space.modelDepthHack != 0.0 ) {
+		todoThrow( "RB_LeaveDepthHack(surf);" );
+	}
 }
 
 /*

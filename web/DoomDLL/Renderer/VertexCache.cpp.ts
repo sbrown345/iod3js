@@ -196,41 +196,39 @@ vertex buffer object
 The vertex buffer object will be bound
 ==============
 */
-Position(buffer:vertCache_t):any
-{
-	if (!buffer || buffer.tag == vertBlockTag_t.TAG_FREE) {
-		common.FatalError("idVertexCache::Position: bad vertCache_t");
-	}
+	Position ( buffer: vertCache_t ): any {
+		if ( !buffer || buffer.tag == vertBlockTag_t.TAG_FREE ) {
+			common.FatalError( "idVertexCache::Position: bad vertCache_t" );
+		}
 
-	// the vertex object just uses an offset
-	if (buffer.vbo) {
-		if (r_showVertexCache.GetInteger() == 2) {
-			if (buffer.tag == vertBlockTag_t.TAG_TEMP) {
-				common.Printf("GL_ARRAY_BUFFER = %i + %i (%i bytes)\n", buffer.vbo, buffer.offset, buffer.size);
-			} else {
-				common.Printf("GL_ARRAY_BUFFER = %i (%i bytes)\n", buffer.vbo, buffer.size);
+		// the vertex object just uses an offset
+		if ( buffer.vbo ) {
+			if ( r_showVertexCache.GetInteger ( ) == 2 ) {
+				if ( buffer.tag == vertBlockTag_t.TAG_TEMP ) {
+					common.Printf( "GL_ARRAY_BUFFER = %i + %i (%i bytes)\n", buffer.vbo, buffer.offset, buffer.size );
+				} else {
+					common.Printf( "GL_ARRAY_BUFFER = %i (%i bytes)\n", buffer.vbo, buffer.size );
+				}
 			}
+
+			if ( buffer.indexBuffer ) {
+				glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, buffer.vbo );
+			} else {
+				glBindBuffer( GL_ARRAY_BUFFER, buffer.vbo );
+			}
+
+			todo( "may want to pass back object with ref?" );
+			return buffer.offset;  //return (void *)buffer->offset;  
 		}
 
-		if (buffer.indexBuffer) {
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer.vbo);
-		} else {
-			glBindBuffer(GL_ARRAY_BUFFER, buffer.vbo);
-		}
-
-		todo( "may want to pass back object with ref?" );
-		return /*(void *)*/<any>buffer/*.offset*/;
+		todoThrow ( );
+		//// virtual memory is a real pointer
+		//return (void *)((byte *)buffer.virtMem + buffer.offset);
 	}
 
-	todoThrow ( );
-	//// virtual memory is a real pointer
-	//return (void *)((byte *)buffer.virtMem + buffer.offset);
-}
-
-//void idVertexCache::UnbindIndex()
-//{
-//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-//}
+	UnbindIndex ( ): void {
+		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, null );
+	}
 //
 //
 ////================================================================================
@@ -459,7 +457,7 @@ We can't simply sync with the GPU and overwrite what we have, because
 there may still be future references to dynamically created surfaces.
 ===========
 */
-	AllocFrameTemp ( /*void * */data: any, /*int*/ size: number ): vertCache_t {
+	AllocFrameTemp( /*void * */dataBuffer: any, dataObject:any,/*int*/ size: number ): vertCache_t {
 		var block: vertCache_t;
 
 		if ( size <= 0 ) {
@@ -514,9 +512,11 @@ there may still be future references to dynamically created surfaces.
 
 		if ( block.vbo ) {
 			glBindBuffer( GL_ARRAY_BUFFER, block.vbo );
-			glBufferSubData( GL_ARRAY_BUFFER, block.offset, /*(GLsizei)size,*/ data );
+			glBufferSubData(GL_ARRAY_BUFFER, block.offset, /*(GLsizei)size,*/ dataBuffer);
+			//block.offsetObj = dataObject; // attempt to get data ready for "return (void *)buffer->offset;" in idVertexCache::Position
+			//block.offsetObjBuffer = dataBuffer;
 		} else {
-			SIMDProcessor.Memcpy( /*(byte *)*/block.virtMem.subarray( block.offset ), data, size );
+			SIMDProcessor.Memcpy( /*(byte *)*/block.virtMem.subarray(block.offset), dataBuffer, size );
 		}
 
 		return block;

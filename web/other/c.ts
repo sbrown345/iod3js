@@ -197,5 +197,9 @@ class P {
 
 
 function __builtin_trap ( ): void {
-	throw "exit(0);";
+	exit(0);
+}
+
+function exit (code:number ): void {
+	throw "exit(" + code + ");";
 }

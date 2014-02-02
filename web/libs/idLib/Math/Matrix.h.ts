@@ -411,7 +411,7 @@ class idMat3 {
 //	friend idMat3	SkewSymmetric( idVec3 const &src );
 //
 //private:
-	mat:idVec3[ /*3 */];
+	mat = newStructArray<idVec3>(idVec3, 3)
 //
 //extern idMat3 mat3_zero;
 //extern idMat3 mat3_identity;
@@ -424,9 +424,6 @@ class idMat3 {
 		this.mat[2].equals( other.mat[2] );
 	}
 
-	constructor ( ) {
-		this.mat = newStructArray<idVec3>( idVec3, 3 );
-	}
 
 //
 //ID_INLINE idMat3::idMat3( const idVec3 &x, const idVec3 &y, const idVec3 &z ) {
@@ -780,13 +777,13 @@ var mat3_zero = new idMat3();
 var mat3_identity = new idMat3();
 var mat3_default = mat3_identity;
 
-////===============================================================
-////
-////	idMat4 - 4x4 matrix
-////
-////===============================================================
+//===============================================================
 //
-//class idMat4 {
+//	idMat4 - 4x4 matrix
+//
+//===============================================================
+
+class idMat4 {
 //public:
 //					idMat4( void );
 //					explicit idMat4( const idVec4 &x, const idVec4 &y, const idVec4 &z, const idVec4 &w );
@@ -848,7 +845,8 @@ var mat3_default = mat3_identity;
 //	const char *	ToString( int precision = 2 ) const;
 //
 //private:
-//	idVec4			mat[ 4 ];
+	mat = newStructArray<idVec4>( idVec4, 4 )
+
 //};
 //
 //extern idMat4 mat4_zero;
@@ -1169,10 +1167,19 @@ var mat3_default = mat3_identity;
 //	return mat[0].ToFloatPtr();
 //}
 //
-//ID_INLINE float *idMat4::ToFloatPtr( void ) {
-//	return mat[0].ToFloatPtr();
-//}
-//
+	ToFloatPtr ( ): Float32Array {
+		return new Float32Array( [
+			this.mat[0][0], this.mat[0][1], this.mat[0][2], this.mat[0][3],
+			this.mat[1][0], this.mat[1][1], this.mat[1][2], this.mat[1][3],
+			this.mat[2][0], this.mat[2][1], this.mat[2][2], this.mat[2][3],
+			this.mat[3][0], this.mat[3][1], this.mat[3][2], this.mat[3][3]
+		] );
+	}
+}
+
+var mat4_zero = new idMat4();
+var mat4_identity = new idMat4();
+var mat4_default = mat4_identity;
 //
 ////===============================================================
 ////

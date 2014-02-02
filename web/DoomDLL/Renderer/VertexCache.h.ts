@@ -43,6 +43,8 @@ class vertCache_t {
 	indexBuffer: boolean = false; // holds indexes instead of vertexes						   //	bool			
 	//
 	offset: number = 0; //	intptr_t		
+	offsetObj :any; // keep a ref to retreive later
+	offsetObjBuffer :ArrayBuffer; // keep a ref to retreive later
 	size: number = 0; // may be larger than the amount asked for, due				   //	int				
 	// to round up and minimum fragment sizes					   //					
 	tag: number = 0; // a tag of 0 is a free block								   //	int				

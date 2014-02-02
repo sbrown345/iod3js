@@ -1271,7 +1271,7 @@ idImageManager.prototype.SetNormalPalette = function ( ): void {
 	var /*float*/t = 0.0;
 	//byte temptable[768];
 	var temptable = <Uint8Array>this.compressedPalette;
-	var compressedToOriginal = Int32Array( 16 );
+	var compressedToOriginal = new Int32Array( 16 );
 
 	// make an ad-hoc separable compression mapping scheme
 	for ( i = 0; i < 8; i++ ) {

@@ -135,7 +135,7 @@ void *idVertexCache::Position(vertCache_t *buffer)
 		} else {
 			glBindBuffer(GL_ARRAY_BUFFER, buffer->vbo);
 		}
-
+		assert((void *)buffer->offset==0);
 		return (void *)buffer->offset;
 	}
 

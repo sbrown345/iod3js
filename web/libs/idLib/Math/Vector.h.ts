@@ -78,7 +78,7 @@ class idVec2 {
 
 		return this;
 	}
-
+	
 ////					idVec2( void );
 ////					explicit idVec2( const float x, const float y );
 
@@ -326,9 +326,9 @@ class idVec2 {
 ////	return &x;
 ////}
 
-////ID_INLINE float *idVec2::ToFloatPtr( void ) {
-////	return &x;
-////}
+	ToFloatPtr ( ): Float32Array {
+		return new Float32Array( [this.x, this.y] );
+	}
 }
 
 
@@ -788,9 +788,9 @@ class idVec3 {
 ////	return *reinterpret_cast<idVec2 *>(this);
 ////}
 
-	ToFloatPtr(): idVec3 {
-		todoThrow ( );
-		return this;
+	ToFloatPtr(): Float32Array {
+		//return <Float32Array><any>this;
+		return new Float32Array([this.x, this.y, this.z]); 
 	}
 
 ////ID_INLINE float *idVec3::ToFloatPtr( void ) {

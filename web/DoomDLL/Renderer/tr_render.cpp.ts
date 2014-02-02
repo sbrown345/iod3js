@@ -38,49 +38,49 @@
 //*/
 //
 //
-//
-///*
-//================
-//RB_DrawElementsWithCounters
-//================
-//*/
-//void RB_DrawElementsWithCounters( const srfTriangles_t *tri ) {
-//	if (!backEnd.glState.currentProgram) {
-//		common.Printf("RB_DrawElementsWithCounters: no current program object\n");
-//		//__builtin_trap();
-//		exit(0);
-//		return;
-//	}
-//
-//	backEnd.pc.c_drawElements++;
-//	backEnd.pc.c_drawIndexes += tri.numIndexes;
-//	backEnd.pc.c_drawVertexes += tri.numVerts;
-//
-//	if ( tri.ambientSurface != NULL  ) {
-//		if ( tri.indexes == tri.ambientSurface.indexes ) {
-//			backEnd.pc.c_drawRefIndexes += tri.numIndexes;
-//		}
-//		if ( tri.verts == tri.ambientSurface.verts ) {
-//			backEnd.pc.c_drawRefVertexes += tri.numVerts;
-//		}
-//	}
-//
-//	if ( tri.indexCache && r_useIndexBuffers.GetBool() ) {
-//		glDrawElements( GL_TRIANGLES, 
-//						r_singleTriangle.GetBool() ? 3 : tri.numIndexes,
-//						GL_INDEX_TYPE,
-//						(int *)vertexCache.Position( tri.indexCache ) );
-//		backEnd.pc.c_vboIndexes += tri.numIndexes;
-//	} else {
-//		if ( r_useIndexBuffers.GetBool() ) {
-//			vertexCache.UnbindIndex();
-//		}
-//		glDrawElements( GL_TRIANGLES, 
-//						r_singleTriangle.GetBool() ? 3 : tri.numIndexes,
-//						GL_INDEX_TYPE,
-//						tri.indexes );
-//	}
-//}
+
+/*
+================
+RB_DrawElementsWithCounters
+================
+*/
+function RB_DrawElementsWithCounters(tri: srfTriangles_t  ): void {
+	if (!backEnd.glState.currentProgram) {
+		common.Printf("RB_DrawElementsWithCounters: no current program object\n");
+		//__builtin_trap();
+		exit(0);
+		return;
+	}
+
+	backEnd.pc.c_drawElements++;
+	backEnd.pc.c_drawIndexes += tri.numIndexes;
+	backEnd.pc.c_drawVertexes += tri.numVerts;
+
+	if ( tri.ambientSurface != null  ) {
+		if ( tri.indexes == tri.ambientSurface.indexes ) {
+			backEnd.pc.c_drawRefIndexes += tri.numIndexes;
+		}
+		if ( tri.verts == tri.ambientSurface.verts ) {
+			backEnd.pc.c_drawRefVertexes += tri.numVerts;
+		}
+	}
+
+	if ( tri.indexCache && r_useIndexBuffers.GetBool() ) {
+		glDrawElements( GL_TRIANGLES, 
+						r_singleTriangle.GetBool() ? 3 : tri.numIndexes,
+						GL_INDEX_TYPE,
+			<number>vertexCache.Position(tri.indexCache) /*/*(int *)#1#<Int32Array>vertexCache.Position( tri.indexCache ) */);
+		backEnd.pc.c_vboIndexes += tri.numIndexes;
+	} else {
+		if ( r_useIndexBuffers.GetBool() ) {
+			vertexCache.UnbindIndex();
+		}
+		glDrawElements( GL_TRIANGLES, 
+						r_singleTriangle.GetBool() ? 3 : tri.numIndexes,
+						GL_INDEX_TYPE,
+						tri.indexes[0] );
+	}
+}
 //
 ///*
 //================
@@ -314,95 +314,95 @@
 //	}
 //}
 //
-///*
-//======================
-//RB_GetShaderTextureMatrix
-//======================
-//*/
-//void RB_GetShaderTextureMatrix(const float *shaderRegisters,
-//                               const textureStage_t *texture, float matrix[16])
-//{
-//	matrix[0] = shaderRegisters[ texture.matrix[0][0] ];
-//	matrix[1] = shaderRegisters[ texture.matrix[0][1] ];
-//	matrix[2] = 0;
-//	matrix[3] = shaderRegisters[ texture.matrix[0][2] ];
-//
-//	// we attempt to keep scrolls from generating incredibly large texture values, but
-//	// center rotations and center scales can still generate offsets that need to be > 1
-//	if (matrix[3] < -40 || matrix[3] > 40) {
-//		matrix[3] -= (int)matrix[3];
-//	}
-//
-//	matrix[4] = shaderRegisters[ texture.matrix[1][0] ];
-//	matrix[5] = shaderRegisters[ texture.matrix[1][1] ];
-//	matrix[6] = 0;
-//	matrix[7] = shaderRegisters[ texture.matrix[1][2] ];
-//
-//	if (matrix[7] < -40 || matrix[7] > 40) {
-//		matrix[7] -= (int)matrix[7];
-//	}
-//
-//	matrix[8] = 0;
-//	matrix[9] = 0;
-//	matrix[10] = 1;
-//	matrix[11] = 0;
-//
-//	matrix[12] = 0;
-//	matrix[13] = 0;
-//	matrix[14] = 0;
-//	matrix[15] = 1;
-//}
-//
-///*
-//======================
-//RB_LoadShaderTextureMatrix
-//======================
-//*/
-//void RB_LoadShaderTextureMatrix(const float *shaderRegisters, const textureStage_t *texture)
-//{
-//	float	matrix[16];
-//
-//	if (texture.hasMatrix) {
-//		RB_GetShaderTextureMatrix(shaderRegisters, texture, matrix);
-//		GL_UniformMatrix4fv(offsetof(shaderProgram_t, textureMatrix), matrix);
-//	} else {
-//		GL_UniformMatrix4fv(offsetof(shaderProgram_t, textureMatrix), mat4_identity.ToFloatPtr());
-//	}
-//}
-//
-///*
-//======================
-//RB_BindVariableStageImage
-//
-//Handles generating a cinematic frame if needed
-//======================
-//*/
-//void RB_BindVariableStageImage( const textureStage_t *texture, const float *shaderRegisters ) {
-//	if ( texture.cinematic ) {
-//		cinData_t	cin;
-//
-//		if ( r_skipDynamicTextures.GetBool() ) {
-//			globalImages.defaultImage.Bind();
-//			return;
-//		}
-//
-//		// offset time by shaderParm[7] (FIXME: make the time offset a parameter of the shader?)
-//		// We make no attempt to optimize for multiple identical cinematics being in view, or
-//		// for cinematics going at a lower framerate than the renderer.
-//		cin = texture.cinematic.ImageForTime( (int)(1000 * ( backEnd.viewDef.floatTime + backEnd.viewDef.renderView.shaderParms[11] ) ) );
-//
-//		if ( cin.image ) {
-//			globalImages.cinematicImage.UploadScratch( cin.image, cin.imageWidth, cin.imageHeight );
-//		} else {
-//			globalImages.blackImage.Bind();
-//		}
-//	} else {
-//		//FIXME: see why image is invalid
-//		if (texture.image) {
-//			texture.image.Bind();
-//		}
-//	}
-//}
+/*
+======================
+RB_GetShaderTextureMatrix
+======================
+*/
+function RB_GetShaderTextureMatrix ( shaderRegisters: Float32Array,
+	texture: textureStage_t, matrix: Float32Array /*[16]*/ ): void {
+	todoThrow ( );
+	//matrix[0] = shaderRegisters[ texture.matrix[0][0] ];
+	//matrix[1] = shaderRegisters[ texture.matrix[0][1] ];
+	//matrix[2] = 0;
+	//matrix[3] = shaderRegisters[ texture.matrix[0][2] ];
+
+	//// we attempt to keep scrolls from generating incredibly large texture values, but
+	//// center rotations and center scales can still generate offsets that need to be > 1
+	//if (matrix[3] < -40 || matrix[3] > 40) {
+	//	matrix[3] -= (int)matrix[3];
+	//}
+
+	//matrix[4] = shaderRegisters[ texture.matrix[1][0] ];
+	//matrix[5] = shaderRegisters[ texture.matrix[1][1] ];
+	//matrix[6] = 0;
+	//matrix[7] = shaderRegisters[ texture.matrix[1][2] ];
+
+	//if (matrix[7] < -40 || matrix[7] > 40) {
+	//	matrix[7] -= (int)matrix[7];
+	//}
+
+	//matrix[8] = 0;
+	//matrix[9] = 0;
+	//matrix[10] = 1;
+	//matrix[11] = 0;
+
+	//matrix[12] = 0;
+	//matrix[13] = 0;
+	//matrix[14] = 0;
+	//matrix[15] = 1;
+}
+
+/*
+======================
+RB_LoadShaderTextureMatrix
+======================
+*/
+function RB_LoadShaderTextureMatrix ( shaderRegisters: Float32Array, texture: textureStage_t ): void {
+	var matrix = new Float32Array( 16 );
+
+	if ( texture.hasMatrix ) {
+		RB_GetShaderTextureMatrix( shaderRegisters, texture, matrix );
+		GL_UniformMatrix4fv( "textureMatrix"/*offsetof( shaderProgram_t, textureMatrix )*/, matrix );
+	} else {
+		GL_UniformMatrix4fv( "textureMatrix"/*offsetof( shaderProgram_t, textureMatrix )*/, mat4_identity.ToFloatPtr ( ) );
+	}
+}
+
+/*
+======================
+RB_BindVariableStageImage
+
+Handles generating a cinematic frame if needed
+======================
+*/
+function RB_BindVariableStageImage ( texture: textureStage_t, shaderRegisters: Float32Array ): void {
+	if ( texture.cinematic ) {
+		todoThrow ( );
+		//	var cin: cinData_t;
+
+		//	if ( r_skipDynamicTextures.GetBool() ) {
+		//		globalImages.defaultImage.Bind();
+		//		return;
+		//	}
+
+		//	// offset time by shaderParm[7] (FIXME: make the time offset a parameter of the shader?)
+		//	// We make no attempt to optimize for multiple identical cinematics being in view, or
+		//	// for cinematics going at a lower framerate than the renderer.
+		//	cin = texture.cinematic.ImageForTime( (int)(1000 * ( backEnd.viewDef.floatTime + backEnd.viewDef.renderView.shaderParms[11] ) ) );
+
+		//	if ( cin.image ) {
+		//		globalImages.cinematicImage.UploadScratch( cin.image, cin.imageWidth, cin.imageHeight );
+		//	} else {
+		//		globalImages.blackImage.Bind();
+		//	}
+		//} else {
+		//	//FIXME: see why image is invalid
+		//	if (texture.image) {
+		//		texture.image.Bind();
+		//	}
+	}
+}
 //
 //
 ///*

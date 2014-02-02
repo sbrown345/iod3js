@@ -192,7 +192,7 @@ R_SkyboxTexGen
 */
 function R_SkyboxTexGen(surf: drawSurf_t, viewOrg: idVec3):void {
 	var i:number;
-	var localViewOrigin = new idVec3	;
+	var localViewOrigin = new idVec3;
 
 	R_GlobalPointToLocal( surf.space.modelMatrix, viewOrg, localViewOrigin );
 
@@ -206,8 +206,8 @@ function R_SkyboxTexGen(surf: drawSurf_t, viewOrg: idVec3):void {
 		texCoords[i][1] = verts[i].xyz[1] - localViewOrigin[1];
 		texCoords[i][2] = verts[i].xyz[2] - localViewOrigin[2];
 	}
-
-	surf.dynamicTexCoords = vertexCache.AllocFrameTemp( texCoords, size );
+	todoThrow ( );
+	//surf.dynamicTexCoords = vertexCache.AllocFrameTemp( texCoords, size );
 }
 //
 ///*

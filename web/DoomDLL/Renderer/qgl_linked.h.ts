@@ -93,7 +93,7 @@ var glDisable = <( cap: number ) => void>gl.disable.bind( gl );
 var glDisableClientState = ( ...args: any[]) => { todoThrow ( ); };
 var glDrawArrays = ( ...args: any[]) => { todoThrow ( ); };
 var glDrawBuffer = ( ...args: any[]) => { todoThrow ( ); };
-var glDrawElements = ( ...args: any[]) => { todoThrow ( ); };
+var glDrawElements = <( mode: number, count: number, type: number, offset: number ) => void>gl.drawElements.bind( gl );
 var glDrawPixels = ( ...args: any[]) => { todoThrow ( ); };
 var glEdgeFlag = ( ...args: any[]) => { todoThrow ( ); };
 var glEdgeFlagPointer = ( ...args: any[]) => { todoThrow ( ); };
