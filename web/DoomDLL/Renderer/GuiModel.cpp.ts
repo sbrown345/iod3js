@@ -177,7 +177,7 @@ EmitSurface
 		for ( var i = 0; i < tri.numIndexes; i++ ) {
 			tri.indexes[i] = this.indexes[surf.firstIndex + i];
 		}
-		console.error( "something not right here, tri.verts has wrong numbers?" );
+		
 		// we might be able to avoid copying these and just let them reference the list vars
 		// but some things, like deforms and recursive
 		// guis, need to access the verts in cpu space, not just through the vertex range

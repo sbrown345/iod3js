@@ -160,7 +160,7 @@ class idImage {
 //	// automatically enables or disables cube mapping or texture3D
 //	// May perform file loading if the image was not preloaded.
 //	// May start a background image read.
-//	void		Bind();
+	Bind ( ): void { throw "placeholder"; }
 
 //	// for use with fragment programs, doesn't change any enable2D/3D/cube states
 //	void		BindFragment();

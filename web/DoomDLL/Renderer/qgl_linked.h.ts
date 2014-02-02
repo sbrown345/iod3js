@@ -374,8 +374,6 @@ var glViewport = < ( x: number, y: number, width: number, height: number ) => vo
 
 // missing ones
 var glCreateShader = <(type: number) => WebGLShader> gl.createShader.bind(gl);
-//var glShaderSource = <(shader: WebGLShader, source: string) => void> gl.shaderSource.bind(gl);
-//var glCompileShader = <( shader: WebGLShader ) => void>gl.compileShader.bind( gl );
 var glShaderSource = (shader: WebGLShader, source: string) => {
 	// for now keep track of required shader changes here
 	source = source.replace( "#version 100", "" );

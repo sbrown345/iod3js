@@ -601,7 +601,7 @@ R_InitOpenGL(): void {
 	glConfig.vendor_string = /*(const char *)*/glGetString(GL_VENDOR);
 	glConfig.renderer_string =/* (const char *)*/glGetString(GL_RENDERER);
 	glConfig.version_string = /*(const char *)*/glGetString(GL_VERSION);
-	glConfig.extensions_string = /*(const char *)*/glGetString(GL_EXTENSIONS);
+	todo( "glConfig.extensions_string = /*(const char *)*/glGetString(GL_EXTENSIONS);" );
 
 	// OpenGL driver constants
 	glConfig.maxTextureSize = glGetIntegerv(GL_MAX_TEXTURE_SIZE);

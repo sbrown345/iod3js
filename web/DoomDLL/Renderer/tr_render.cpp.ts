@@ -396,11 +396,11 @@ function RB_BindVariableStageImage ( texture: textureStage_t, shaderRegisters: F
 		//	} else {
 		//		globalImages.blackImage.Bind();
 		//	}
-		//} else {
-		//	//FIXME: see why image is invalid
-		//	if (texture.image) {
-		//		texture.image.Bind();
-		//	}
+	} else {
+		//FIXME: see why image is invalid
+		if ( texture.image ) {
+			texture.image.Bind ( );
+		}
 	}
 }
 //

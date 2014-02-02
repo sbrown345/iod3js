@@ -862,14 +862,14 @@ GenerateCubeImage
 Non-square cube sides are not allowed
 ====================
 */
-idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic:Uint8Array[], /*int*/ size: number,
+idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic: Uint8Array[], /*int*/ size: number,
 	filterParm: textureFilter_t, allowDownSizeParm: boolean,
-	depthParm: textureDepth_t): void {
-	var/*int	*/		scaled_width: number, scaled_height: number;
-	var/*int	*/		width: number, height: number;
-	var/*int	*/		i:number;
+	depthParm: textureDepth_t ): void {
+	var /*int	*/ scaled_width: number, scaled_height: number;
+	var /*int	*/ width: number, height: number;
+	var /*int	*/ i: number;
 
-	this.PurgeImage();
+	this.PurgeImage ( );
 
 	this.filter = filterParm;
 	this.allowDownSize = allowDownSizeParm;
@@ -893,7 +893,7 @@ idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic:Uint8
 
 	// generate the texture number
 	var $texnum = new R( this.texnum );
-	glGenTextures(1, $texnum);
+	glGenTextures( 1, $texnum );
 	this.textnum = $texnum.$;
 
 	// select proper internal format before we resample
@@ -903,28 +903,28 @@ idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic:Uint8
 	scaled_width = width;
 	scaled_height = height;
 
-		this.uploadHeight = scaled_height;
-		this.uploadWidth = scaled_width;
+	this.uploadHeight = scaled_height;
+	this.uploadWidth = scaled_width;
 
-		this.Bind();
+	this.Bind ( );
 
 	// no other clamp mode makes sense
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+	glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 
 	// set the minimize / maximize filtering
-	switch( this.filter ) {
+	switch ( this.filter ) {
 	case textureFilter_t.TF_DEFAULT:
-		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, globalImages.textureMinFilter );
-		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, globalImages.textureMaxFilter );
+		glTexParameterf( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, globalImages.textureMinFilter );
+		glTexParameterf( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, globalImages.textureMaxFilter );
 		break;
 	case textureFilter_t.TF_LINEAR:
-		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+		glTexParameterf( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+		glTexParameterf( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 		break;
 	case textureFilter_t.TF_NEAREST:
-		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+		glTexParameterf( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+		glTexParameterf( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 		break;
 	default:
 		common.FatalError( "R_CreateImage: bad texture filter" );
@@ -932,31 +932,31 @@ idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic:Uint8
 
 	// upload the base level
 	// FIXME: support GL_COLOR_INDEX8_EXT?
-	for ( i = 0 ; i < 6 ; i++ ) {
-		glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X+i, 0, this.internalFormat, scaled_width, scaled_height, 0, 
+	for ( i = 0; i < 6; i++ ) {
+		glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, this.internalFormat, scaled_width, scaled_height, 0,
 			GL_RGBA, GL_UNSIGNED_BYTE, pic[i] );
 	}
 
 
 	// create and upload the mip map levels
-	var/*int		*/miplevel:number;
-	var shrunk = new Array<Uint8Array>( 6 );//byte	*shrunk[6];
+	var /*int		*/miplevel: number;
+	var shrunk = new Array<Uint8Array>( 6 ); //byte	*shrunk[6];
 
-	for ( i = 0 ; i < 6 ; i++ ) {
+	for ( i = 0; i < 6; i++ ) {
 		shrunk[i] = R_MipMap( pic[i], scaled_width, scaled_height, false );
 	}
 
 	miplevel = 1;
 	while ( scaled_width > 1 ) {
-		for ( i = 0 ; i < 6 ; i++ ) {
-			var	shrunken:Uint8Array;
+		for ( i = 0; i < 6; i++ ) {
+			var shrunken: Uint8Array;
 
-			glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X+i, miplevel, this.internalFormat, 
-				scaled_width / 2, scaled_height / 2, 0, 
+			glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, miplevel, this.internalFormat,
+				scaled_width / 2, scaled_height / 2, 0,
 				GL_RGBA, GL_UNSIGNED_BYTE, shrunk[i] );
 
 			if ( scaled_width > 2 ) {
-				shrunken = R_MipMap(shrunk[i], scaled_width / 2 | 0, scaled_height / 2 | 0, false );
+				shrunken = R_MipMap( shrunk[i], scaled_width / 2 | 0, scaled_height / 2 | 0, false );
 			} else {
 				shrunken = null;
 			}
@@ -971,7 +971,7 @@ idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic:Uint8
 	}
 
 	// see if we messed anything up
-	this.GL_CheckErrors();
+	this.GL_CheckErrors ( );
 };
 
 
@@ -1683,100 +1683,100 @@ idImage.prototype.PurgeImage = function ( ): void {
 	}
 };
 
-/////*
-////==============
-////Bind
+/*
+==============
+Bind
 
-////Automatically enables 2D mapping, cube mapping, or 3D texturing if needed
-////==============
-////*/
-////void idImage::Bind() {
-////	if ( tr.logFile ) {
-////		RB_LogComment( "idImage::Bind( %s )\n", this.imgName.c_str() );
-////	}
+Automatically enables 2D mapping, cube mapping, or 3D texturing if needed
+==============
+*/
+idImage.prototype.Bind = function ( ): void {
+	if ( tr.logFile ) {
+		RB_LogComment( "idImage::Bind( %s )\n", this.imgName.c_str ( ) );
+	}
 
-////	// if this is an image that we are caching, move it to the front of the LRU chain
-////	if ( partialImage ) {
-////		if ( cacheUsageNext ) {
-////			// unlink from old position
-////			cacheUsageNext.cacheUsagePrev = cacheUsagePrev;
-////			cacheUsagePrev.cacheUsageNext = cacheUsageNext;
-////		}
-////		// link in at the head of the list
-////		cacheUsageNext = globalImages.cacheLRU.cacheUsageNext;
-////		cacheUsagePrev = &globalImages.cacheLRU;
+	// if this is an image that we are caching, move it to the front of the LRU chain
+	if ( this.partialImage ) {
+		if ( this.cacheUsageNext ) {
+			// unlink from old position
+			this.cacheUsageNext.cacheUsagePrev = this.cacheUsagePrev;
+			this.cacheUsagePrev.cacheUsageNext = this.cacheUsageNext;
+		}
+		// link in at the head of the list
+		this.cacheUsageNext = globalImages.cacheLRU.cacheUsageNext;
+		this.cacheUsagePrev = globalImages.cacheLRU;
 
-////		cacheUsageNext.cacheUsagePrev = this;
-////		cacheUsagePrev.cacheUsageNext = this;
-////	}
+		this.cacheUsageNext.cacheUsagePrev = this;
+		this.cacheUsagePrev.cacheUsageNext = this;
+	}
 
-////	// load the image if necessary (FIXME: not SMP safe!)
-////	if ( this.texnum == idImage.TEXTURE_NOT_LOADED ) {
-////		if ( partialImage ) {
-////			// if we have a partial image, go ahead and use that
-////			this.partialImage.Bind();
+	// load the image if necessary (FIXME: not SMP safe!)
+	if ( this.texnum == idImage.TEXTURE_NOT_LOADED ) {
+		if ( this.partialImage ) {
+			// if we have a partial image, go ahead and use that
+			this.partialImage.Bind ( );
 
-////			// start a background load of the full thing if it isn't already in the queue
-////			if ( !backgroundLoadInProgress ) {
-////				StartBackgroundImageLoad();
-////			}
-////			return;
-////		}
+			// start a background load of the full thing if it isn't already in the queue
+			if ( !this.backgroundLoadInProgress ) {
+				this.StartBackgroundImageLoad ( );
+			}
+			return;
+		}
 
-////		// load the image on demand here, which isn't our normal game operating mode
-////		ActuallyLoadImage( true, true );	// check for precompressed, load is from back end
-////	}
+		// load the image on demand here, which isn't our normal game operating mode
+		this.ActuallyLoadImage( true, true ); // check for precompressed, load is from back end
+	}
 
 
-////	// bump our statistic counters
-////	frameUsed = backEnd.frameCount;
-////	bindCount++;
+	// bump our statistic counters
+	this.frameUsed = backEnd.frameCount;
+	this.bindCount++;
 
-////	tmu_t			*tmu = &backEnd.glState.tmu[backEnd.glState.currenttmu];
+	var tmu = backEnd.glState.tmu[backEnd.glState.currenttmu];
 
-////	// enable or disable apropriate texture modes
-////	if ( tmu.textureType != type && ( backEnd.glState.currenttmu <	glConfig.maxTextureUnits ) ) {
-////#if !defined(GL_ES_VERSION_2_0)
-////		if ( tmu.textureType == textureType_t.TT_CUBIC ) {
-////			glDisable( GL_TEXTURE_CUBE_MAP );
-////		} else if ( tmu.textureType == TT_3D ) {
-////			glDisable( GL_TEXTURE_3D );
-////		} else if ( tmu.textureType == TT_2D ) {
-////			glDisable( GL_TEXTURE_2D );
-////		}
+	// enable or disable apropriate texture modes
+	if ( tmu.textureType != this.type && ( backEnd.glState.currenttmu < glConfig.maxTextureUnits ) ) {
+//#if !defined(GL_ES_VERSION_2_0)
+//		if ( tmu.textureType == textureType_t.TT_CUBIC ) {
+//			glDisable( GL_TEXTURE_CUBE_MAP );
+//		} else if ( tmu.textureType == TT_3D ) {
+//			glDisable( GL_TEXTURE_3D );
+//		} else if ( tmu.textureType == TT_2D ) {
+//			glDisable( GL_TEXTURE_2D );
+//		}
 
-////		if ( type == textureType_t.TT_CUBIC ) {
-////			glEnable( GL_TEXTURE_CUBE_MAPT );
-////		} else if ( type == TT_3D ) {
-////			glEnable( GL_TEXTURE_3D );
-////		} else if ( type == TT_2D ) {
-////			glEnable( GL_TEXTURE_2D );
-////		}
-////#endif
-////		tmu.textureType = type;
-////	}
+//		if ( type == textureType_t.TT_CUBIC ) {
+//			glEnable( GL_TEXTURE_CUBE_MAPT );
+//		} else if ( type == TT_3D ) {
+//			glEnable( GL_TEXTURE_3D );
+//		} else if ( type == TT_2D ) {
+//			glEnable( GL_TEXTURE_2D );
+//		}
+//#endif
+		tmu.textureType = this.type;
+	}
 
-////	// bind the texture
-////	if ( type == TT_2D ) {
-////		if ( tmu.current2DMap != this.texnum ) {
-////			tmu.current2DMap = this.texnum;
-////			glBindTexture( GL_TEXTURE_2D, this.texnum );
-////		}
-////	} else if ( type == textureType_t.TT_CUBIC ) {
-////		if ( tmu.currentCubeMap != this.texnum ) {
-////			tmu.currentCubeMap = this.texnum;
-////			glBindTexture( GL_TEXTURE_CUBE_MAP, this.texnum );
-////		}
-////	} 
-////#if !defined(GL_ES_VERSION_2_0)
-////	else if ( type == TT_3D ) {
-////		if ( tmu.current3DMap != this.texnum ) {
-////			tmu.current3DMap = this.texnum;
-////			glBindTexture( GL_TEXTURE_3D, this.texnum );
-////		}
-////	}
-////#endif
-////}
+	// bind the texture
+	if ( this.type == textureType_t.TT_2D ) {
+		if ( tmu.current2DMap != this.texnum ) {
+			tmu.current2DMap = this.texnum;
+			glBindTexture( GL_TEXTURE_2D, this.texnum );
+		}
+	} else if ( this.type == textureType_t.TT_CUBIC ) {
+		if ( tmu.currentCubeMap != this.texnum ) {
+			tmu.currentCubeMap = this.texnum;
+			glBindTexture( GL_TEXTURE_CUBE_MAP, this.texnum );
+		}
+	}
+//#if !defined(GL_ES_VERSION_2_0)
+//	else if ( type == TT_3D ) {
+//		if ( tmu.current3DMap != this.texnum ) {
+//			tmu.current3DMap = this.texnum;
+//			glBindTexture( GL_TEXTURE_3D, this.texnum );
+//		}
+//	}
+//#endif
+};
 
 /////*
 ////==============
