@@ -679,31 +679,30 @@ function	RB_SetBuffer(/*const void **/data:any):void
 ////}
 
 
-/////*
-////=============
-////RB_SwapBuffers
+/*
+=============
+RB_SwapBuffers
 
-////=============
-////*/
-////const void	RB_SwapBuffers(const void *data)
-////{
-////	// texture swapping test
-////	if (r_showImages.GetInteger() != 0) {
-////		RB_ShowImages();
-////	}
+=============
+*/
+function RB_SwapBuffers ( /*const void **/data: any ): void {
+	// texture swapping test
+	if ( r_showImages.GetInteger ( ) != 0 ) {
+		todoThrow( "RB_ShowImages ( );" );
+	}
 
-////	// force a gl sync if requested
-////	if (r_finish.GetBool()) {
-////		glFinish();
-////	}
+	// force a gl sync if requested
+	if ( r_finish.GetBool ( ) ) {
+		glFinish ( );
+	}
 
-////	RB_LogComment("***************** RB_SwapBuffers *****************\n\n\n");
+	RB_LogComment( "***************** RB_SwapBuffers *****************\n\n\n" );
 
-////	// don't flip if drawing to front buffer
-////	if (!r_frontBuffer.GetBool()) {
-////		GLimp_SwapBuffers();
-////	}
-////}
+	// don't flip if drawing to front buffer
+	if ( !r_frontBuffer.GetBool ( ) ) {
+		GLimp_SwapBuffers ( );
+	}
+}
 
 /////*
 ////=============
@@ -774,9 +773,8 @@ function RB_ExecuteBackEndCommands(cmds:emptyCommand_t):void
 				c_setBuffers++;
 				break;
 			case renderCommand_t.RC_SWAP_BUFFERS:
-				todoThrow ( );
-				//RB_SwapBuffers(cmds);
-				//c_swapBuffers++;
+				RB_SwapBuffers(cmds);
+				c_swapBuffers++;
 				break;
 			case renderCommand_t.RC_COPY_RENDER:
 				todoThrow();
@@ -790,7 +788,7 @@ function RB_ExecuteBackEndCommands(cmds:emptyCommand_t):void
 	}
 
 	// go back to the default texture so the editor doesn't mess up a bound image
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, null);
 	backEnd.glState.tmu[0].current2DMap = -1;
 
 	// stop rendering on this thread

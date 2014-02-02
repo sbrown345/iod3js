@@ -75,6 +75,7 @@
     <TypeScriptCompile Include="DoomDLL\Renderer\tr_light.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\tr_lightrun.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\tr_deform.cpp.ts" />
+    <Content Include="log.aspx" />
     <Content Include="other\files.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.h.ts" />

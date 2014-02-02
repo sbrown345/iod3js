@@ -170,9 +170,9 @@ var r_showDemo= new idCVar( "r_showDemo", "0", CVAR_RENDERER | CVAR_BOOL, "repor
 var r_showDynamic= new idCVar( "r_showDynamic", "0", CVAR_RENDERER | CVAR_BOOL, "report stats on dynamic surface generation" );
 var r_showLightScale= new idCVar( "r_showLightScale", "0", CVAR_RENDERER | CVAR_BOOL, "report the scale factor applied to drawing for overbrights" );
 var r_showDefs= new idCVar( "r_showDefs", "0", CVAR_RENDERER | CVAR_BOOL, "report the number of modeDefs and lightDefs in view" );
-//var r_showTrace= new idCVar( "r_showTrace", "0", CVAR_RENDERER | CVAR_INTEGER, "show the intersection of an eye trace with the world", idCmdSystem.ArgCompletion_Integer<0,2> );
+//var r_showTrace = new idCVar( "r_showTrace", "0", CVAR_RENDERER | CVAR_INTEGER, "show the intersection of an eye trace with the world", ArgCompletion_Integer_Template( 0, 2 ) );
 var r_showIntensity= new idCVar( "r_showIntensity", "0", CVAR_RENDERER | CVAR_BOOL, "draw the screen colors based on intensity, red = 0, green = 128, blue = 255" );
-//var r_showImages= new idCVar( "r_showImages", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = show all images instead of rendering, 2 = show in proportional size", 0, 2, ArgCompletion_Integer_Template(0,2));
+var r_showImages= new idCVar( "r_showImages", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = show all images instead of rendering, 2 = show in proportional size", 0, 2, ArgCompletion_Integer_Template(0,2));
 var r_showSmp= new idCVar( "r_showSmp", "0", CVAR_RENDERER | CVAR_BOOL, "show which end = new idCVar(front or back) is blocking" );
 //var r_showLights= new idCVar( "r_showLights", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = just print volumes numbers, highlighting ones covering the view, 2 = also draw planes of each volume, 3 = also draw edges of each volume", 0, 3, idCmdSystem::ArgCompletion_Integer<0,3> );
 //var r_showShadows= new idCVar( "r_showShadows", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = visualize the stencil shadow volumes, 2 = draw filled in", 0, 3, idCmdSystem::ArgCompletion_Integer<0,3> );

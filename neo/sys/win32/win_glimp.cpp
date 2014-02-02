@@ -1184,9 +1184,11 @@ void GLimp_SwapBuffers( void ) {
 	if ( r_swapInterval.IsModified() ) {
 		r_swapInterval.ClearModified();
 
-		if ( wglSwapIntervalEXT ) {
+#ifndef JS_CHANGES
+		if (wglSwapIntervalEXT) {
 			wglSwapIntervalEXT( r_swapInterval.GetInteger() );
 		}
+#endif
 	}
 
 	eglSwapBuffers( eglDisplay, eglSurface );

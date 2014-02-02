@@ -1170,31 +1170,31 @@ function GLimp_Init(parms: glimpParms_t ):boolean {
 ////	// shutdown QGL subsystem
 ////	QGL_Shutdown();
 ////}
-////
-////
-/////*
-////=====================
-////GLimp_SwapBuffers
-////=====================
-////*/
-////void GLimp_SwapBuffers( void ) {
-////	//
-////	// wglSwapinterval is a windows-private extension,
-////	// so we must check for it here instead of portably
-////	//
-////	if ( r_swapInterval.IsModified() ) {
-////		r_swapInterval.ClearModified();
-////
-////		if ( wglSwapIntervalEXT ) {
-////			wglSwapIntervalEXT( r_swapInterval.GetInteger() );
-////		}
-////	}
-////
-////	eglSwapBuffers( eglDisplay, eglSurface );
-////
-//////Sys_DebugPrintf( "*** SwapBuffers() ***\n" );
-////}
-////
+
+
+/*
+=====================
+GLimp_SwapBuffers
+=====================
+*/
+function GLimp_SwapBuffers ( ): void {
+	//
+	// wglSwapinterval is a windows-private extension,
+	// so we must check for it here instead of portably
+	//
+	if ( r_swapInterval.IsModified ( ) ) {
+		r_swapInterval.ClearModified ( );
+
+		//if ( wglSwapIntervalEXT ) {
+		//	wglSwapIntervalEXT( r_swapInterval.GetInteger ( ) );
+		//}
+	}
+
+	gl.flush();//?? //eglSwapBuffers( eglDisplay, eglSurface );
+
+//Sys_DebugPrintf( "*** SwapBuffers() ***\n" );
+}
+
 /////*
 ////===========================================================
 ////

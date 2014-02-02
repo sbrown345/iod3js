@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" ValidateRequest="false" %>
 <%@ Import Namespace="System.IO" %>
 <%
     var postedData = Request.Form["string"];
