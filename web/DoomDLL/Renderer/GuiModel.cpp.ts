@@ -194,18 +194,18 @@ EmitSurface
 		if ( !tri.ambientCache ) {
 			return;
 		}
-		todoThrow ( );
-		//var renderEntity = new renderEntity_t;//memset( &renderEntity, 0, sizeof( renderEntity ) );
-		//renderEntity.init ( );
-		//memcpy( renderEntity.shaderParms, surf.color, sizeof( surf.color ) );
+	
+		var renderEntity = new renderEntity_t;//memset( &renderEntity, 0, sizeof( renderEntity ) );
+		renderEntity.init ( );
+		memcpy( renderEntity.shaderParms, surf.color, sizeof( surf.color ) );
 
-		//var/*viewEntity_t **/guiSpace = /*(viewEntity_t *)*/R_ClearedFrameAlloc < viewEntity_t >( sizeof( *guiSpace ) );
-		//memcpy( guiSpace.modelMatrix, modelMatrix, sizeof( guiSpace.modelMatrix ) );
-		//memcpy( guiSpace.modelViewMatrix, modelViewMatrix, sizeof( guiSpace.modelViewMatrix ) );
-		//guiSpace.weaponDepthHack = depthHack;
+		var /*viewEntity_t **/guiSpace = /*(viewEntity_t *)*/R_ClearedFrameAlloc<viewEntity_t>( viewEntity_t, /* sizeof( *guiSpace )*/null );
+		memcpy( guiSpace.modelMatrix, modelMatrix, sizeof( guiSpace.modelMatrix ) );
+		memcpy( guiSpace.modelViewMatrix, modelViewMatrix, sizeof( guiSpace.modelViewMatrix ) );
+		guiSpace.weaponDepthHack = depthHack;
 
-		//// add the surface, which might recursively create another gui
-		//R_AddDrawSurf( tri, guiSpace, &renderEntity, surf.material, tr.viewDef.scissor );
+		// add the surface, which might recursively create another gui
+		R_AddDrawSurf( tri, guiSpace, renderEntity, surf.material, tr.viewDef.scissor );
 	}
 
 /////*

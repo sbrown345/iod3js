@@ -77,81 +77,119 @@ var MAX_RENDERENTITY_GUI		= 3;
 //typedef bool(*deferredEntityCallback_t)( renderEntity_s *, const renderView_s * );
 //
 //
-//typedef struct renderEntity_s {
-//	idRenderModel *			hModel;				// this can only be null if callback is set
-//
-//	int						entityNum;
-//	int						bodyId;
-//
-//	// Entities that are expensive to generate, like skeletal models, can be
-//	// deferred until their bounds are found to be in view, in the frustum
-//	// of a shadowing light that is in view, or contacted by a trace / overlay test.
-//	// This is also used to do visual cueing on items in the view
-//	// The renderView may be NULL if the callback is being issued for a non-view related
-//	// source.
-//	// The callback function should clear renderEntity->callback if it doesn't
-//	// want to be called again next time the entity is referenced (ie, if the
-//	// callback has now made the entity valid until the next updateEntity)
-//	idBounds				bounds;					// only needs to be set for deferred models and md5s
-//	deferredEntityCallback_t	callback;
-//
-//	void *					callbackData;			// used for whatever the callback wants
-//
-//	// player bodies and possibly player shadows should be suppressed in views from
-//	// that player's eyes, but will show up in mirrors and other subviews
-//	// security cameras could suppress their model in their subviews if we add a way
-//	// of specifying a view number for a remoteRenderMap view
-//	int						suppressSurfaceInViewID;
-//	int						suppressShadowInViewID;
-//
-//	// world models for the player and weapons will not cast shadows from view weapon
-//	// muzzle flashes
-//	int						suppressShadowInLightID;
-//
-//	// if non-zero, the surface and shadow (if it casts one)
-//	// will only show up in the specific view, ie: player weapons
-//	int						allowSurfaceInViewID;
-//
-//	// positioning
-//	// axis rotation vectors must be unit length for many
-//	// R_LocalToGlobal functions to work, so don't scale models!
-//	// axis vectors are [0] = forward, [1] = left, [2] = up
-//	idVec3					origin;
-//	idMat3					axis;
-//
-//	// texturing
-//	const idMaterial *		customShader;			// if non-0, all surfaces will use this
-//	const idMaterial *		referenceShader;		// used so flares can reference the proper light shader
-//	const idDeclSkin *		customSkin;				// 0 for no remappings
-//	class idSoundEmitter *	referenceSound;			// for shader sound tables, allowing effects to vary with sounds
-//	float					shaderParms[ MAX_ENTITY_SHADER_PARMS ];	// can be used in any way by shader or model generation
-//
-//	// networking: see WriteGUIToSnapshot / ReadGUIFromSnapshot
-//	class idUserInterface * gui[ MAX_RENDERENTITY_GUI ];
-//
-//	struct renderView_s	*	remoteRenderView;		// any remote camera surfaces will use this
-//
-//	int						numJoints;
-//	idJointMat *			joints;					// array of joints that will modify vertices.
-//													// NULL if non-deformable model.  NOT freed by renderer
-//
-//	float					modelDepthHack;			// squash depth range so particle effects don't clip into walls
-//
-//	// options to override surface shader flags (replace with material parameters?)
-//	bool					noSelfShadow;			// cast shadows onto other objects,but not self
-//	bool					noShadow;				// no shadow at all
-//
-//	bool					noDynamicInteractions;	// don't create any light / shadow interactions after
-//													// the level load is completed.  This is a performance hack
-//													// for the gigantic outdoor meshes in the monorail map, so
-//													// all the lights in the moving monorail don't touch the meshes
-//
-//	bool					weaponDepthHack;		// squash depth range so view weapons don't poke into walls
-//													// this automatically implies noShadow
-//	int						forceUpdate;			// force an update (NOTE: not a bool to keep this struct a multiple of 4 bytes)
-//	int						timeGroup;
-//	int						xrayIndex;
-//} renderEntity_t;
+class renderEntity_t {
+	hModel: idRenderModel;				// this can only be null if callback is set
+
+	entityNum: number;			  //int						
+	bodyId: number;				  //int						
+
+	// Entities that are expensive to generate, like skeletal models, can be
+	// deferred until their bounds are found to be in view, in the frustum
+	// of a shadowing light that is in view, or contacted by a trace / overlay test.
+	// This is also used to do visual cueing on items in the view
+	// The renderView may be NULL if the callback is being issued for a non-view related
+	// source.
+	// The callback function should clear renderEntity->callback if it doesn't
+	// want to be called again next time the entity is referenced (ie, if the
+	// callback has now made the entity valid until the next updateEntity)
+	bounds = new idBounds;					// only needs to be set for deferred models and md5s
+	callback: (renderEntity:renderEntity_t, renderView: renderView_t)=>boolean /*deferredEntityCallback_t*/;
+
+	callbackData:any;	// used for whatever the callback wants
+
+	// player bodies and possibly player shadows should be suppressed in views from
+	// that player's eyes, but will show up in mirrors and other subviews
+	// security cameras could suppress their model in their subviews if we add a way
+	// of specifying a view number for a remoteRenderMap view
+	suppressSurfaceInViewID: number;   //int
+	suppressShadowInViewID: number;	   //int
+
+	// world models for the player and weapons will not cast shadows from view weapon
+	// muzzle flashes
+	suppressShadowInLightID: number;//int
+
+	// if non-zero, the surface and shadow (if it casts one)
+	// will only show up in the specific view, ie: player weapons
+	allowSurfaceInViewID:number; //int
+
+	// positioning
+	// axis rotation vectors must be unit length for many
+	// R_LocalToGlobal functions to work, so don't scale models!
+	// axis vectors are [0] = forward, [1] = left, [2] = up
+	origin = new idVec3;
+	axis = new idMat3;
+
+	// texturing
+	customShader: idMaterial;			// if non-0, all surfaces will use this											  //const idMaterial *		
+	referenceShader: idMaterial;		// used so flares can reference the proper light shader							  //const idMaterial *		
+	customSkin: idDeclSkin;				// 0 for no remappings															  //const idDeclSkin *		
+	referenceSound: idSoundEmitter;			// for shader sound tables, allowing effects to vary with sounds				  //class idSoundEmitter *	
+	shaderParms = new Float32Array(MAX_ENTITY_SHADER_PARMS) // can be used in any way by shader or model generation			  //float					
+
+	// networking: see WriteGUIToSnapshot / ReadGUIFromSnapshot
+	gui:idUserInterface;//[MAX_RENDERENTITY_GUI];																	//class idUserInterface * 
+	//
+	remoteRenderView:renderView_t;		// any remote camera surfaces will use this								//struct renderView_s	*	
+	//
+	numJoints:number;																						//int						
+	joints: idJointMat;					// array of joints that will modify vertices.							//idJointMat *			
+	// NULL if non-deformable model.  NOT freed by renderer					//						
+	//
+	modelDepthHack:number;			// squash depth range so particle effects don't clip into walls			//float					
+
+	// options to override surface shader flags (replace with material parameters?)
+	noSelfShadow: boolean;			// cast shadows onto other objects,but not self											   //bool					
+	noShadow: boolean;				// no shadow at all																		   //bool					
+																														//
+	noDynamicInteractions: boolean;	// don't create any light / shadow interactions after									   //bool					
+							// the level load is completed.  This is a performance hack								   //						
+							// for the gigantic outdoor meshes in the monorail map, so								   //						
+							// all the lights in the moving monorail don't touch the meshes							   //						
+																														//
+	weaponDepthHack: boolean;		// squash depth range so view weapons don't poke into walls								   //bool					
+							// this automatically implies noShadow													   //						
+	forceUpdate:number;			// force an update (NOTE: not a bool to keep this struct a multiple of 4 bytes)			   //int						
+	timeGroup: number;																										   //int						
+	xrayIndex: number;																										   //int						
+
+	constructor ( ) {
+		this.init ( );
+	}
+
+	init ( ): void {
+		this.hModel = null;
+		this.entityNum = 0;
+		this.bodyId = 0;
+		this.bounds.Zero ( );
+		this.callback = null;
+		this.callbackData = null;
+		this.suppressSurfaceInViewID = 0;
+		this.suppressShadowInViewID = 0;
+		this.suppressShadowInLightID = 0;
+		this.allowSurfaceInViewID = 0;
+		this.origin.Zero ( );
+		this.axis.Identity ( );
+		this.customShader = new idMaterial;
+		this.referenceShader = new idMaterial;
+		this.customSkin = new idDeclSkin;
+		this.referenceSound = new idSoundEmitter;
+		for ( var i = 0; i < this.shaderParms.length; i++ ) {
+			this.shaderParms[i] = 0;
+		}
+		this.gui = null;
+		this.remoteRenderView = null;
+		this.numJoints = 0;
+		this.joints = null;
+		this.modelDepthHack = 0;
+		this.noSelfShadow = false;
+		this.noShadow = false;;
+		this.noDynamicInteractions = false;
+		this.weaponDepthHack = false;
+		this.forceUpdate = 0;
+		this.timeGroup = 0;
+		this.xrayIndex = 0;
+	}
+};																													   
 //
 //
 //typedef struct renderLight_s {

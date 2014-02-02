@@ -2465,22 +2465,22 @@ EvaluateRegisters( /*float **/registers:Float32Array, /*const float */shaderParm
 
 }
 
-/////*
-////=============
-////idMaterial::Texgen
-////=============
-////*/
-////texgen_t idMaterial::Texgen() const {
-////	if ( this.stages ) {
-////		for ( int i = 0; i < this.numStages; i++ ) {
-////			if ( this.stages[ i ].texture.texgen != texgen_t.TG_EXPLICIT ) {
-////				return this.stages[ i ].texture.texgen;
-////			}
-////		}
-////	}
-	
-////	return texgen_t.TG_EXPLICIT;
-////}
+/*
+=============
+idMaterial::Texgen
+=============
+*/
+	Texgen ( ): texgen_t {
+		if ( this.stages ) {
+			for ( var i = 0; i < this.numStages; i++ ) {
+				if ( this.stages[i].texture.texgen != texgen_t.TG_EXPLICIT ) {
+					return this.stages[i].texture.texgen;
+				}
+			}
+		}
+
+		return texgen_t.TG_EXPLICIT;
+	}
 
 /////*
 ////=============
@@ -2554,17 +2554,17 @@ EvaluateRegisters( /*float **/registers:Float32Array, /*const float */shaderParm
 ////	}
 ////}
 
-/////*
-////=============
-////idMaterial::ConstantRegisters
-////=============
-////*/
-////const float *idMaterial::ConstantRegisters() const {
-////	if ( !r_useConstantMaterials.GetBool() ) {
-////		return NULL;
-////	}
-////	return this.constantRegisters;
-////}
+/*
+=============
+idMaterial::ConstantRegisters
+=============
+*/
+	ConstantRegisters ( ): Float32Array {
+		if ( !r_useConstantMaterials.GetBool ( ) ) {
+			return null;
+		}
+		return this.constantRegisters;
+	}
 
 /*
 ==================
@@ -2733,8 +2733,8 @@ CheckForConstantRegisters():void {
 //						// returns number of stages this material contains
 //	const int			GetNumStages( void ) const { return this.numStages; }
 
-//						// get a specific stage
-//	const shaderStage_t *GetStage( const int index ) const { assert(index >= 0 && index < this.numStages); return &this.stages[index]; }
+						// get a specific stage
+	GetStage( /*const int */index: number):shaderStage_t{ assert(index >= 0 && index < this.numStages); return this.stages[index]; }
 
 //						// get the first bump map stage, or NULL if not present.
 //						// used for bumpy-specular
@@ -3030,19 +3030,19 @@ GetNumRegisters():number { return this.numRegisters; }
 	/*int					*/numOps:number;
 	/*expOp_t *			*/ops: expOp_t[];				// evaluate to make expressionRegisters
 
-	/*int					*/numRegisters:number;																			
+	/*int					*/numRegisters:number = 0;																			
 	/*float *				*/expressionRegisters:Float32Array;
 
 	/*float *				*/constantRegisters:Float32Array;	// NULL if ops ever reference globalParms or entityParms
 
-	/*int					*/numStages:number;
-	/*int					*/numAmbientStages:number;
+	/*int					*/numStages:number = 0;
+	/*int					*/numAmbientStages:number = 0;
 
 	/*shaderStage_t *		*/stages: shaderStage_t[] ;
 
 	/*struct mtrParsingData_s	**/pd: mtrParsingData_t;			// only used during parsing
 
-	/*float				*/surfaceArea:number;		// only for listSurfaceAreas
+	/*float				*/surfaceArea:number = 0;		// only for listSurfaceAreas
 
 	// we defer loading of the editor image until it is asked for, so the game doesn't load up
 	// all the invisible and uncompressed images.
@@ -3053,7 +3053,7 @@ GetNumRegisters():number { return this.numRegisters; }
 
 	/*bool				*/suppressInSubview:boolean;
 	/*bool				*/portalSky:boolean;
-	/*int					*/refCount:number;
+	/*int					*/refCount:number = 0;
 };
 
 

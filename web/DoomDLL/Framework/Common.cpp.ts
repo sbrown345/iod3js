@@ -106,7 +106,7 @@ var com_videoRam = new idCVar( "com_videoRam", "64", CVAR_INTEGER | CVAR_SYSTEM 
 ////#endif
 
 ////#ifdef __DOOM_DLL__
-////idGame *		game = NULL;
+var game: idGame = null;
 ////idGameEdit *	gameEdit = NULL;
 ////#endif
 

@@ -163,6 +163,7 @@
 // Geometry
 /// <reference path="libs/idlib/geometry/drawvert.h.ts" />
 /// <reference path="libs/idlib/geometry/winding.h.ts" />
+/// <reference path="libs/idlib/geometry/jointtransform.h.ts" />
 
 // Libs root
 /// <reference path="libs/langdict.cpp.ts" />
@@ -283,6 +284,9 @@
 /// <reference path="doomdll/renderer/draw_glsl.cpp.ts" />
 /// <reference path="doomdll/renderer/tr_render.cpp.ts" />
 /// <reference path="doomdll/renderer/tr_rendertools.cpp.ts" />
+/// <reference path="doomdll/renderer/tr_light.cpp.ts" />
+/// <reference path="doomdll/renderer/tr_lightrun.cpp.ts" />
+/// <reference path="doomdll/renderer/tr_deform.cpp.ts" />
 
 //// sound engine
 //#include "../sound/sound.h"
@@ -312,6 +316,7 @@
 //#else
 //#include "../game/Game.h"
 //#endif
+/// <reference path="dlls/game/game.h.ts" />
 /// <reference path="dlls/game/game_local.h.ts" />
 /// <reference path="dlls/game/game_local.cpp.ts" />
 /// <reference path="dlls/game/script/script_compiler.h.ts" />

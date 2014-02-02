@@ -116,17 +116,17 @@ class idScreenRect {
 var	DSF_VIEW_INSIDE_SHADOW	= 1;
 
 class drawSurf_t {
-	//const srfTriangles_t	*geo;
-	//const struct viewEntity_s *space;
-	//const idMaterial		*material;	// may be NULL for shadow volumes
-	//float					sort;		// material.sort, modified by gui / entity sort offsets
-	//const float				*shaderRegisters;	// evaluated and adjusted for referenceShaders
-	//const struct drawSurf_s	*nextOnLight;	// viewLight chains
-	//idScreenRect			scissorRect;	// for scissor clipping, local inside renderView viewport
-	//int						dsFlags;			// DSF_VIEW_INSIDE_SHADOW, etc
-	//struct vertCache_s		*dynamicTexCoords;	// float * in vertex cache memory
-	//// specular directions for non vertex program cards, skybox texcoords, etc
-};
+	geo: srfTriangles_t;																		   //const srfTriangles_t
+	space: viewEntity_t;																		   //const struct viewEntity_s
+	material: idMaterial;	// may be NULL for shadow volumes								   //const idMaterial			
+	sort:number;		// material.sort, modified by gui / entity sort offsets			   //float
+	shaderRegisters:Float32Array;	// evaluated and adjusted for referenceShaders			   //const float
+	nextOnLight: drawSurf_t;	// viewLight chains											   //const struct drawSurf_s		
+	scissorRect: idScreenRect;	// for scissor clipping, local inside renderView viewport	   //idScreenRect				
+	dsFlags:number;			// DSF_VIEW_INSIDE_SHADOW, etc							   //int
+	dynamicTexCoords:vertCache_t;	// float * in vertex cache memory						   //struct vertCache_s			
+	// specular directions for non vertex program cards, skybox texcoords, etc	   //
+}
 
 
 ////typedef struct {
@@ -255,7 +255,7 @@ class idRenderEntityLocal extends idRenderEntity {
 ////	virtual void			ProjectOverlay( const idPlane localTextureAxis[2], const idMaterial *material );
 ////	virtual void			RemoveDecals();
 
-////	renderEntity_t			parms;
+	parms = new renderEntity_t;
 
 ////	float					modelMatrix[16];		// this is just a rearrangement of parms.axis and parms.origin
 
@@ -272,7 +272,7 @@ class idRenderEntityLocal extends idRenderEntity {
 ////													// dynamicModel if this doesn't == tr.viewCount
 ////	idRenderModel *			cachedDynamicModel;
 
-////	idBounds				referenceBounds;		// the local bounds used to place entityRefs, either from parms or a model
+	referenceBounds = new idBounds;		// the local bounds used to place entityRefs, either from parms or a model
 
 ////	// a viewEntity_t is created whenever a idRenderEntityLocal is considered for inclusion
 ////	// in a given view, even if it turns out to not be visible

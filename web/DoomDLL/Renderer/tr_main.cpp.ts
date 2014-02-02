@@ -536,15 +536,15 @@ function R_ClearedFrameAlloc<T> ( type: any, /*int */bytes__Unused: number ): T 
 //		+ in[2] * modelMatrix[11] + modelMatrix[15];
 //}
 //
-//void R_GlobalPointToLocal( const float modelMatrix[16], const idVec3 &in, idVec3 &out ) {
-//	idVec3	temp;
-//
-//	VectorSubtract( in, &modelMatrix[12], temp );
-//
-//	out[0] = DotProduct( temp, &modelMatrix[0] );
-//	out[1] = DotProduct( temp, &modelMatrix[4] );
-//	out[2] = DotProduct( temp, &modelMatrix[8] );
-//}
+function R_GlobalPointToLocal( /*const float*/ modelMatrix:Float32Array/*[16]*/, $in:idVec3, out :idVec3 ) :void{
+	var temp = new idVec3;
+	todoThrow ( );
+	//VectorSubtract( $in, modelMatrix[12], temp );
+
+	//out[0] = DotProduct( temp, &modelMatrix[0] );
+	//out[1] = DotProduct( temp, &modelMatrix[4] );
+	//out[2] = DotProduct( temp, &modelMatrix[8] );
+}
 //
 //void R_LocalVectorToGlobal( const float modelMatrix[16], const idVec3 &in, idVec3 &out ) {
 //	out[0] = in[0] * modelMatrix[0] + in[1] * modelMatrix[4]

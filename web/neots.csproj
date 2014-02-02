@@ -16,6 +16,7 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="dlls\Game\Game.h.ts" />
     <Content Include="dlls\Game\Game_local.cpp.ts" />
     <Content Include="dlls\Game\Game_local.h.ts" />
     <TypeScriptCompile Include="dlls\Game\Script\Script_Compiler.cpp.ts" />
@@ -70,6 +71,10 @@
     <TypeScriptCompile Include="libs\idLib\BV\Frustum.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\tr_render.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\tr_rendertools.cpp.ts" />
+    <TypeScriptCompile Include="libs\idLib\Geometry\JointTransform.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\tr_light.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\tr_lightrun.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\tr_deform.cpp.ts" />
     <Content Include="other\files.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.h.ts" />
