@@ -455,8 +455,8 @@ DrawStretchPic
 
 				//memcpy( &verts[numVerts], dverts, vertCount * sizeof( verts[0] ) );
 				for ( var k = 0; k < vertCount; k++ ) {
-					if ( !this.verts[k] ) {
-						this.verts[k] = new idDrawVert ( );
+					if ( !this.verts[numVerts + k] ) {
+						this.verts[numVerts + k] = new idDrawVert ( );
 					}
 					this.verts[numVerts + k].equals( dverts[k] );
 				}

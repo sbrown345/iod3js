@@ -477,7 +477,7 @@ Returns a register index
 
 ////	if ( !token.Icmp( "time" ) ) {
 ////		this.pd.registersAreConstant = false;
-////		return EXP_REG_TIME;
+////		return expRegister_t.EXP_REG_TIME;
 ////	}
 ////	if ( !token.Icmp( "parm0" ) ) {
 ////		this.pd.registersAreConstant = false;
@@ -2368,102 +2368,103 @@ then all expressions are evaluated, leaving the material registers
 set to their apropriate values.
 ===============
 */
-EvaluateRegisters( /*float **/registers:Float32Array, /*const float */shaderParms:Float32Array/*[MAX_ENTITY_SHADER_PARMS]*/,
-	view: viewDef_t, soundEmitter: idSoundEmitter ):void {
-////	int		i, b;
-////	expOp_t	*op;
+	EvaluateRegisters ( /*float **/registers: Float32Array, /*const float */shaderParms: Float32Array /*[MAX_ENTITY_SHADER_PARMS]*/,
+		view: viewDef_t, soundEmitter: idSoundEmitter ): void {
+		var /*int		*/i: number, b: number;
+		var op: expOp_t;
 
-////	// copy the material constants
-////	for ( i = expRegister_t.EXP_REG_NUM_PREDEFINED ; i < this.numRegisters ; i++ ) {
-////		registers[i] = expressionRegisters[i];
-////	}
+		// copy the material constants
+		for ( i = expRegister_t.EXP_REG_NUM_PREDEFINED; i < this.numRegisters; i++ ) {
+			registers[i] = this.expressionRegisters[i];
+		}
 
-////	// copy the local and global parameters
-////	registers[EXP_REG_TIME] = view.floatTime;
-////	registers[EXP_REG_PARM0] = shaderParms[0];
-////	registers[EXP_REG_PARM1] = shaderParms[1];
-////	registers[EXP_REG_PARM2] = shaderParms[2];
-////	registers[EXP_REG_PARM3] = shaderParms[3];
-////	registers[EXP_REG_PARM4] = shaderParms[4];
-////	registers[EXP_REG_PARM5] = shaderParms[5];
-////	registers[EXP_REG_PARM6] = shaderParms[6];
-////	registers[EXP_REG_PARM7] = shaderParms[7];
-////	registers[EXP_REG_PARM8] = shaderParms[8];
-////	registers[EXP_REG_PARM9] = shaderParms[9];
-////	registers[EXP_REG_PARM10] = shaderParms[10];
-////	registers[EXP_REG_PARM11] = shaderParms[11];
-////	registers[EXP_REG_GLOBAL0] = view.renderView.shaderParms[0];
-////	registers[EXP_REG_GLOBAL1] = view.renderView.shaderParms[1];
-////	registers[EXP_REG_GLOBAL2] = view.renderView.shaderParms[2];
-////	registers[EXP_REG_GLOBAL3] = view.renderView.shaderParms[3];
-////	registers[EXP_REG_GLOBAL4] = view.renderView.shaderParms[4];
-////	registers[EXP_REG_GLOBAL5] = view.renderView.shaderParms[5];
-////	registers[EXP_REG_GLOBAL6] = view.renderView.shaderParms[6];
-////	registers[EXP_REG_GLOBAL7] = view.renderView.shaderParms[7];
+		// copy the local and global parameters
+		registers[expRegister_t.EXP_REG_TIME] = view.floatTime;
+		registers[expRegister_t.EXP_REG_PARM0] = shaderParms[0];
+		registers[expRegister_t.EXP_REG_PARM1] = shaderParms[1];
+		registers[expRegister_t.EXP_REG_PARM2] = shaderParms[2];
+		registers[expRegister_t.EXP_REG_PARM3] = shaderParms[3];
+		registers[expRegister_t.EXP_REG_PARM4] = shaderParms[4];
+		registers[expRegister_t.EXP_REG_PARM5] = shaderParms[5];
+		registers[expRegister_t.EXP_REG_PARM6] = shaderParms[6];
+		registers[expRegister_t.EXP_REG_PARM7] = shaderParms[7];
+		registers[expRegister_t.EXP_REG_PARM8] = shaderParms[8];
+		registers[expRegister_t.EXP_REG_PARM9] = shaderParms[9];
+		registers[expRegister_t.EXP_REG_PARM10] = shaderParms[10];
+		registers[expRegister_t.EXP_REG_PARM11] = shaderParms[11];
+		registers[expRegister_t.EXP_REG_GLOBAL0] = view.renderView.shaderParms[0];
+		registers[expRegister_t.EXP_REG_GLOBAL1] = view.renderView.shaderParms[1];
+		registers[expRegister_t.EXP_REG_GLOBAL2] = view.renderView.shaderParms[2];
+		registers[expRegister_t.EXP_REG_GLOBAL3] = view.renderView.shaderParms[3];
+		registers[expRegister_t.EXP_REG_GLOBAL4] = view.renderView.shaderParms[4];
+		registers[expRegister_t.EXP_REG_GLOBAL5] = view.renderView.shaderParms[5];
+		registers[expRegister_t.EXP_REG_GLOBAL6] = view.renderView.shaderParms[6];
+		registers[expRegister_t.EXP_REG_GLOBAL7] = view.renderView.shaderParms[7];
 
-////	op = ops;
-////	for ( i = 0 ; i < this.numOps ; i++, op++ ) {
-////		switch( op.opType ) {
-////		case expOpType_t.OP_TYPE_ADD:
-////			registers[op.c] = registers[op.a] + registers[op.b];
-////			break;
-////		case expOpType_t.OP_TYPE_SUBTRACT:
-////			registers[op.c] = registers[op.a] - registers[op.b];
-////			break;
-////		case expOpType_t.OP_TYPE_MULTIPLY:
-////			registers[op.c] = registers[op.a] * registers[op.b];
-////			break;
-////		case OP_TYPE_DIVIDE:
-////			registers[op.c] = registers[op.a] / registers[op.b];
-////			break;
-////		case OP_TYPE_MOD:
-////			b = (int)registers[op.b];
-////			b = b != 0 ? b : 1;
-////			registers[op.c] = (int)registers[op.a] % b;
-////			break;
-////		case expOpType_t.OP_TYPE_TABLE:
-////			{
-////				const idDeclTable *table = static_cast<const idDeclTable *>( declManager.DeclByIndex( DECL_TABLE, op.a ) );
-////				registers[op.c] = table.TableLookup( registers[op.b] );
-////			}
-////			break;
-////		case expOpType_t.OP_TYPE_SOUND:
-////			if ( soundEmitter ) {
-////				registers[op.c] = soundEmitter.CurrentAmplitude();
-////			} else {
-////				registers[op.c] = 0;
-////			}
-////			break;
-////		case OP_TYPE_GT:
-////			registers[op.c] = registers[ op.a ] > registers[op.b];
-////			break;
-////		case OP_TYPE_GE:
-////			registers[op.c] = registers[ op.a ] >= registers[op.b];
-////			break;
-////		case OP_TYPE_LT:
-////			registers[op.c] = registers[ op.a ] < registers[op.b];
-////			break;
-////		case OP_TYPE_LE:
-////			registers[op.c] = registers[ op.a ] <= registers[op.b];
-////			break;
-////		case OP_TYPE_EQ:
-////			registers[op.c] = registers[ op.a ] == registers[op.b];
-////			break;
-////		case OP_TYPE_NE:
-////			registers[op.c] = registers[ op.a ] != registers[op.b];
-////			break;
-////		case expOpType_t.OP_TYPE_AND:
-////			registers[op.c] = registers[ op.a ] && registers[op.b];
-////			break;
-////		case expOpType_t.OP_TYPE_OR:
-////			registers[op.c] = registers[ op.a ] || registers[op.b];
-////			break;
-////		default:
-////			common.FatalError( "R_EvaluateExpression: bad opcode" );
-////		}
-////	}
-
-}
+		var opIdx = 0;
+		for ( i = 0; i < this.numOps; i++, op = this.ops[++opIdx] ) {
+			switch ( op.opType ) {
+			case expOpType_t.OP_TYPE_ADD:
+				registers[op.c] = registers[op.a] + registers[op.b];
+				break;
+			case expOpType_t.OP_TYPE_SUBTRACT:
+				registers[op.c] = registers[op.a] - registers[op.b];
+				break;
+			case expOpType_t.OP_TYPE_MULTIPLY:
+				registers[op.c] = registers[op.a] * registers[op.b];
+				break;
+			case expOpType_t.OP_TYPE_DIVIDE:
+				registers[op.c] = registers[op.a] / registers[op.b];
+				break;
+			case expOpType_t.OP_TYPE_MOD:
+				b = int( registers[op.b] );
+				b = b != 0 ? b : 1;
+				registers[op.c] = int( registers[op.a] % b );
+				break;
+			case expOpType_t.OP_TYPE_TABLE:
+				{
+					todoThrow ( );
+					//const idDeclTable *table = static_cast<const idDeclTable *>( declManager.DeclByIndex( DECL_TABLE, op.a ) );
+					//registers[op.c] = table.TableLookup( registers[op.b] );
+				}
+				break;
+			case expOpType_t.OP_TYPE_SOUND:
+				if ( soundEmitter ) {
+					todoThrow ( );
+					//registers[op.c] = soundEmitter.CurrentAmplitude();
+				} else {
+					registers[op.c] = 0;
+				}
+				break;
+			case expOpType_t.OP_TYPE_GT:
+				registers[op.c] = ( registers[op.a] > registers[op.b] ) ? 1 : 0;
+				break;
+			case expOpType_t.OP_TYPE_GE:
+				registers[op.c] = ( registers[op.a] >= registers[op.b] ) ? 1 : 0;
+				break;
+			case expOpType_t.OP_TYPE_LT:
+				registers[op.c] = ( registers[op.a] < registers[op.b] ) ? 1 : 0;
+				break;
+			case expOpType_t.OP_TYPE_LE:
+				registers[op.c] = ( registers[op.a] <= registers[op.b] ) ? 1 : 0;
+				break;
+			case expOpType_t.OP_TYPE_EQ:
+				registers[op.c] = ( registers[op.a] == registers[op.b] ) ? 1 : 0;
+				break;
+			case expOpType_t.OP_TYPE_NE:
+				registers[op.c] = ( registers[op.a] != registers[op.b] ) ? 1 : 0;
+				break;
+			case expOpType_t.OP_TYPE_AND:
+				registers[op.c] = ( registers[op.a] && registers[op.b] ) ? 1 : 0;
+				break;
+			case expOpType_t.OP_TYPE_OR:
+				registers[op.c] = ( registers[op.a] || registers[op.b] ) ? 1 : 0;
+				break;
+			default:
+				common.FatalError( "R_EvaluateExpression: bad opcode" );
+			}
+		}
+	}
 
 /*
 =============

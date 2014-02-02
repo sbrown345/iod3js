@@ -201,7 +201,7 @@ idLangDict::GetString
 		var hashKey = this.GetHashKey( str );
 		for ( var i = this.hash.First( hashKey ); i != -1; i = this.hash.Next( i ) ) {
 			if ( this.args[i].key.Cmp( str ) == 0 ) {
-				return this.args[i].value;
+				return this.args[i].value.data;
 			}
 		}
 

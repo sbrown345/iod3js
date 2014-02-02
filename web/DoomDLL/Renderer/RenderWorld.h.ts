@@ -169,10 +169,10 @@ class renderEntity_t {
 		this.allowSurfaceInViewID = 0;
 		this.origin.Zero ( );
 		this.axis.Identity ( );
-		this.customShader = new idMaterial;
-		this.referenceShader = new idMaterial;
-		this.customSkin = new idDeclSkin;
-		this.referenceSound = new idSoundEmitter;
+		this.customShader = null;
+		this.referenceShader = null;
+		this.customSkin = null;
+		this.referenceSound = null;
 		for ( var i = 0; i < this.shaderParms.length; i++ ) {
 			this.shaderParms[i] = 0;
 		}

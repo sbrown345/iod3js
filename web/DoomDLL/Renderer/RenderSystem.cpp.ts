@@ -2613,7 +2613,9 @@ to a fixed color.
 Coordinates are at 640 by 480 virtual resolution
 ==================
 */
-	DrawSmallStringExt ( /*int */x: number, /*int */y: number, $string: string, setColor: idVec4, forceColor: boolean, material: idMaterial ): void {
+	DrawSmallStringExt( /*int */x: number, /*int */y: number, $string: string, setColor: idVec4, forceColor: boolean, material: idMaterial): void {
+		assert( typeof $string === "string" );
+
 		var color: idVec4;
 		var s: number;
 		var /*int*/xx: number;
@@ -2824,7 +2826,7 @@ BeginFrame( /*int */windowWidth:number, /*int */windowHeight:number ):void {
 //	this.primaryWorld = NULL;
 
 	// set the time for shader effects in 2D rendering
-	this.frameShaderTime = eventLoop.Milliseconds() * 0.001;
+	this.frameShaderTime = eventLoop.Milliseconds() * 0.001; //TODO: this seems to start at 0, check this
 
 	//
 	// draw buffer stuff

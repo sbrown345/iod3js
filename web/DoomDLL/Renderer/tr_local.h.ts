@@ -69,6 +69,15 @@ class idScreenRect {
 		this.x1 = 0; this.y1 = 0; this.x2 = 0; this.y2 = 0;
 		this.zmin = 0; this.zmax = 0;							
 	}
+
+	equals ( other: idScreenRect ): void {
+		this.x1 = other.x1;
+		this.y1 = other.y1;
+		this.x2 = other.x2;
+		this.y2 = other.y2;
+		this.zmin = other.zmin;
+		this.zmax = other.zmax;
+	}
 }
 
 ////idScreenRect R_ScreenRectFromViewFrustumBounds( const idBounds &bounds );
@@ -122,7 +131,7 @@ class drawSurf_t {
 	sort:number;		// material.sort, modified by gui / entity sort offsets			   //float
 	shaderRegisters:Float32Array;	// evaluated and adjusted for referenceShaders			   //const float
 	nextOnLight: drawSurf_t;	// viewLight chains											   //const struct drawSurf_s		
-	scissorRect: idScreenRect;	// for scissor clipping, local inside renderView viewport	   //idScreenRect				
+	scissorRect = new idScreenRect;	// for scissor clipping, local inside renderView viewport	   //idScreenRect				
 	dsFlags:number;			// DSF_VIEW_INSIDE_SHADOW, etc							   //int
 	dynamicTexCoords:vertCache_t;	// float * in vertex cache memory						   //struct vertCache_s			
 	// specular directions for non vertex program cards, skybox texcoords, etc	   //

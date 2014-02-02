@@ -2927,12 +2927,13 @@ idCommonLocal::Init
 idCommonLocal::InitGame
 =================
 */
-/*idCommonLocal::*/InitGame( ):void {
+/*idCommonLocal::*/
+	InitGame ( ): void {
 ////	// initialize the file system
 ////	fileSystem.Init();
 
-	// initialize the declaration manager
-	declManager.Init();
+		// initialize the declaration manager
+		declManager.Init ( );
 
 ////	// force r_fullscreen 0 if running a tool
 ////	CheckToolMode();
@@ -2945,29 +2946,29 @@ idCommonLocal::InitGame
 ////		file = fileSystem.OpenFileWrite( CONFIG_SPEC );
 ////		fileSystem.CloseFile( file );
 ////	}
-	
+
 ////	idCmdArgs args;
 ////	if ( sysDetect ) {
 ////		SetMachineSpec();
 ////		Com_ExecMachineSpec_f( args );
 ////	}
 
-	// initialize the renderSystem data structures, but don't start OpenGL yet
-	renderSystem.Init();
+		// initialize the renderSystem data structures, but don't start OpenGL yet
+		renderSystem.Init ( );
 
-	// initialize string database right off so we can use it for loading messages
-	this.InitLanguageDict ( );
+		// initialize string database right off so we can use it for loading messages
+		this.InitLanguageDict ( );
 
-	this.PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04344" ) );
+		this.PrintLoadingMessage( common.GetLanguageDict ( ).GetString( "#str_04344" ) );
 
 
-	// load the font, etc
-	$console.LoadGraphics();
+		// load the font, etc
+		$console.LoadGraphics ( );
 
-	// init journalling, etc
-	//eventLoop.Init();
+		// init journalling, etc
+		//eventLoop.Init();
 
-	this.PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04345" ) );
+		this.PrintLoadingMessage( common.GetLanguageDict ( ).GetString( "#str_04345" ) );
 
 ////	// exec the startup scripts
 ////	cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "exec editor.cfg\n" );
@@ -2991,43 +2992,43 @@ idCommonLocal::InitGame
 ////	// if any archived cvars are modified after this, we will trigger a writing of the config file
 ////	cvarSystem.ClearModifiedFlags( CVAR_ARCHIVE );
 
-	// cvars are initialized, but not the rendering system. Allow preference startup dialog
-	Sys_DoPreferences();
-	
-	// init the user command input code
-	usercmdGen.Init();
-	
-	this.PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04346" ) );
+		// cvars are initialized, but not the rendering system. Allow preference startup dialog
+		Sys_DoPreferences ( );
+
+		// init the user command input code
+		usercmdGen.Init ( );
+
+		this.PrintLoadingMessage( common.GetLanguageDict ( ).GetString( "#str_04346" ) );
 
 ////	// start the sound system, but don't do any hardware operations yet
 ////	soundSystem.Init();
 
 ////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04347" ) );
 
-	// init async network
-	idAsyncNetwork.Init();
+		// init async network
+		idAsyncNetwork.Init ( );
 
 ////#ifdef	ID_DEDICATED
 ////	idAsyncNetwork::server.InitPort();
-	cvarSystem.SetCVarBool( "s_noSound", true );
+		cvarSystem.SetCVarBool( "s_noSound", true );
 ////#else
 ////	if ( idAsyncNetwork::serverDedicated.GetInteger() == 1 ) {
 ////		idAsyncNetwork::server.InitPort();
 ////		cvarSystem.SetCVarBool( "s_noSound", true );
 ////	} else {
-////		// init OpenGL, which will open a window and connect sound and input hardware
-////		PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04348" ) );
-	this.InitRenderSystem();
+		// init OpenGL, which will open a window and connect sound and input hardware
+		this.PrintLoadingMessage( common.GetLanguageDict ( ).GetString( "#str_04348" ) );
+		this.InitRenderSystem ( );
 ////	}
 ////#endif
 
-	this.PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04349" ) );
+		this.PrintLoadingMessage( common.GetLanguageDict ( ).GetString( "#str_04349" ) );
 
-	// initialize the user interfaces
-	uiManager.Init();
-	todoThrow();
-	// startup the script debugger
-	// DebuggerServerInit();
+		// initialize the user interfaces
+		uiManager.Init ( );
+		todoThrow ( );
+		// startup the script debugger
+		// DebuggerServerInit();
 
 ////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04350" ) );
 
