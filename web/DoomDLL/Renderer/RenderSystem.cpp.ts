@@ -2353,7 +2353,7 @@ current command chain.
 
 		cmd = /*(emptyCommand_t *)*/R_FrameAlloc<emptyCommand_t>( emptyCommand_t /*, bytes */ );
 		cmd.next = null;
-		frameData.cmdTail.next = /*&*/cmd.commandId;
+		frameData.cmdTail.next = cmd;/*&cmd.commandId*/
 		frameData.cmdTail = cmd;
 
 		return /*(void *)*/cmd;
