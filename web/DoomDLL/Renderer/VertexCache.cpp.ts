@@ -185,46 +185,48 @@ idVertexCache::ActuallyFree
 	block.prev.next = block;
 }
 
-	///*
-//==============
-//idVertexCache::Position
-//
-//this will be a real pointer with virtual memory,
-//but it will be an int offset cast to a pointer with
-//vertex buffer object
-//
-//The vertex buffer object will be bound
-//==============
-//*/
-//void *idVertexCache::Position(vertCache_t *buffer)
-//{
-//	if (!buffer || buffer.tag == TAG_FREE) {
-//		common.FatalError("idVertexCache::Position: bad vertCache_t");
-//	}
-//
-//	// the vertex object just uses an offset
-//	if (buffer.vbo) {
-//		if (r_showVertexCache.GetInteger() == 2) {
-//			if (buffer.tag == TAG_TEMP) {
-//				common.Printf("GL_ARRAY_BUFFER = %i + %i (%i bytes)\n", buffer.vbo, buffer.offset, buffer.size);
-//			} else {
-//				common.Printf("GL_ARRAY_BUFFER = %i (%i bytes)\n", buffer.vbo, buffer.size);
-//			}
-//		}
-//
-//		if (buffer.indexBuffer) {
-//			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer.vbo);
-//		} else {
-//			glBindBuffer(GL_ARRAY_BUFFER, buffer.vbo);
-//		}
-//
-//		return (void *)buffer.offset;
-//	}
-//
-//	// virtual memory is a real pointer
-//	return (void *)((byte *)buffer.virtMem + buffer.offset);
-//}
-//
+/*
+==============
+idVertexCache::Position
+
+this will be a real pointer with virtual memory,
+but it will be an int offset cast to a pointer with
+vertex buffer object
+
+The vertex buffer object will be bound
+==============
+*/
+Position(buffer:vertCache_t):any
+{
+	if (!buffer || buffer.tag == vertBlockTag_t.TAG_FREE) {
+		common.FatalError("idVertexCache::Position: bad vertCache_t");
+	}
+
+	// the vertex object just uses an offset
+	if (buffer.vbo) {
+		if (r_showVertexCache.GetInteger() == 2) {
+			if (buffer.tag == vertBlockTag_t.TAG_TEMP) {
+				common.Printf("GL_ARRAY_BUFFER = %i + %i (%i bytes)\n", buffer.vbo, buffer.offset, buffer.size);
+			} else {
+				common.Printf("GL_ARRAY_BUFFER = %i (%i bytes)\n", buffer.vbo, buffer.size);
+			}
+		}
+
+		if (buffer.indexBuffer) {
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer.vbo);
+		} else {
+			glBindBuffer(GL_ARRAY_BUFFER, buffer.vbo);
+		}
+
+		todo( "may want to pass back object with ref?" );
+		return /*(void *)*/<any>buffer/*.offset*/;
+	}
+
+	todoThrow ( );
+	//// virtual memory is a real pointer
+	//return (void *)((byte *)buffer.virtMem + buffer.offset);
+}
+
 //void idVertexCache::UnbindIndex()
 //{
 //	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

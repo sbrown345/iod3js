@@ -788,9 +788,10 @@ class idVec3 {
 ////	return *reinterpret_cast<idVec2 *>(this);
 ////}
 
-////ID_INLINE const float *idVec3::ToFloatPtr( void ) const {
-////	return &x;
-////}
+	ToFloatPtr(): idVec3 {
+		todoThrow ( );
+		return this;
+	}
 
 ////ID_INLINE float *idVec3::ToFloatPtr( void ) {
 ////	return &x;

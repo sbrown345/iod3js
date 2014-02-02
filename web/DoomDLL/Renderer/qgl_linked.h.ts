@@ -410,6 +410,7 @@ var glEnableVertexAttribArray = <( index: number ) => void> gl.enableVertexAttri
 var glDisableVertexAttribArray = <( index: number ) => void> gl.disableVertexAttribArray.bind( gl );
 var glUniform4fv = <( location: WebGLUniformLocation, v: Float32Array ) => void> gl.uniform4fv.bind( gl );
 var glUniformMatrix4fv = <( location: WebGLUniformLocation, transpose: boolean, value: Float32Array ) => void>gl.uniformMatrix4fv.bind( gl );
+var glVertexAttribPointer = <( indx: number, size: number, type: number, normalized: boolean, stride: number, offset: number ) => void>gl.vertexAttribPointer.bind( gl );
 
 var glBufferData = ( target: number, size: number, data: ArrayBufferView, usage: number ): void => {
 	gl.bufferData.call( gl, target, data, usage );

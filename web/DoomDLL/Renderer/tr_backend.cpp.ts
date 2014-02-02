@@ -190,7 +190,7 @@ function GL_UseProgram ( program: shaderProgram_t ): void {
 
 ////	glUniform1fv(*(GLint *)((char *)backEnd.glState.currentProgram + location), 1, value);
 
-////	GL_CheckErrors();
+////	idRenderSystem.GL_CheckErrors();
 ////}
 
 /*
@@ -234,7 +234,7 @@ function GL_UniformMatrix4fv(/*GLint*/ location:string, value:Float32Array): voi
 GL_EnableVertexAttribArray
 ====================
 */
-function GL_EnableVertexAttribArray(/*GLuint*/ index:number):void
+function GL_EnableVertexAttribArray(/*GLuint*/ index: shaderProgram_indexes):void
 {
 	if (!backEnd.glState.currentProgram) {
 		common.Printf("GL_EnableVertexAttribArray: no current program object\n");
@@ -258,7 +258,7 @@ function GL_EnableVertexAttribArray(/*GLuint*/ index:number):void
 GL_DisableVertexAttribArray
 ====================
 */
-function GL_DisableVertexAttribArray(/*GLuint */index:number):void
+function GL_DisableVertexAttribArray(/*GLuint */index: shaderProgram_indexes):void
 {
 	if (!backEnd.glState.currentProgram) {
 		common.Printf("GL_DisableVertexAttribArray: no current program object\n");
@@ -277,32 +277,30 @@ function GL_DisableVertexAttribArray(/*GLuint */index:number):void
 	idRenderSystem.GL_CheckErrors();
 }
 
-/////*
-////====================
-////GL_VertexAttribPointer
-////====================
-////*/
-////void GL_VertexAttribPointer(GLuint index, GLint size, GLenum type,
-////			    GLboolean normalized, GLsizei stride,
-////			    const GLvoid *pointer)
-////{
-////	if (!backEnd.glState.currentProgram) {
-////		common.Printf("GL_VertexAttribPointer: no current program object\n");
-////		__builtin_trap();
-////		return;
-////	}
+/*
+====================
+GL_VertexAttribPointer
+====================
+*/
+function GL_VertexAttribPointer ( /*GLuint */index: shaderProgram_indexes, /*GLint */size: number, /*GLenum */type: number,
+	normalized: boolean, /*GLsizei */stride: number, /*const GLvoid **/pointer: any ): void {
+	if ( !backEnd.glState.currentProgram ) {
+		common.Printf( "GL_VertexAttribPointer: no current program object\n" );
+		__builtin_trap ( );
+		return;
+	}
 
-////	if ((*(GLint *)((char *)backEnd.glState.currentProgram + index)) == -1) {
-////		common.Printf("GL_VertexAttribPointer: unbound attribute index\n");
-////		__builtin_trap();
-////		return;
-////	}
+	//if ((*(GLint *)((char *)backEnd.glState.currentProgram + index)) == -1) {
+	//	common.Printf("GL_VertexAttribPointer: unbound attribute index\n");
+	//	__builtin_trap();
+	//	return;
+	//}
 
-////	glVertexAttribPointer(*(GLint *)((char *)backEnd.glState.currentProgram + index),
-////	                      size, type, normalized, stride, pointer);
+	glVertexAttribPointer( index /**(GLint *)((char *)backEnd.glState.currentProgram + index)*/,
+		size, type, normalized, stride, pointer );
 
-////	GL_CheckErrors();
-////}
+	idRenderSystem.GL_CheckErrors ( );
+}
 
 /*
 ====================

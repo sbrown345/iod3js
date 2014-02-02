@@ -745,22 +745,21 @@ function RB_STD_T_RenderShaderPasses(surf: drawSurf_t):void {
 		glEnable( GL_POLYGON_OFFSET_FILL );
 		glPolygonOffset( r_offsetFactor.GetFloat(), r_offsetUnits.GetFloat() * shader.GetPolygonOffset() );
 	}
-	todoThrow ( );	
-	//if ( surf.space.weaponDepthHack ) {
-	//	RB_EnterWeaponDepthHack(surf);
-	//}
+	if ( surf.space.weaponDepthHack ) {
+		todoThrow( "RB_EnterWeaponDepthHack(surf);" );
+	}
 
-	//if ( surf.space.modelDepthHack != 0.0 ) {
-	//	RB_EnterModelDepthHack( surf);
-	//}
+	if ( surf.space.modelDepthHack != 0.0 ) {
+		todoThrow( "RB_EnterModelDepthHack( surf);" );
+	}
 
-	//var ac = <idDrawVert >vertexCache.Position( tri.ambientCache );
-	//GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_Vertex));
-	//GL_EnableVertexAttribArray(offsetof(shaderProgram_t, attr_TexCoord));
-
-	//GL_VertexAttribPointer("attr_Vertex"/*offsetof(shaderProgram_t, attr_Vertex)*/, 3, GL_FLOAT, false, sizeof(idDrawVert), ac.xyz.ToFloatPtr());
-//	GL_VertexAttribPointer("attr_TexCoord"/*offsetof(shaderProgram_t, attr_TexCoord)*/, 2, GL_FLOAT, false, sizeof(idDrawVert), reinterpret_cast<void *>(&ac.st));
-
+	var ac = <idDrawVert >vertexCache.Position( tri.ambientCache );
+	GL_EnableVertexAttribArray(shaderProgram_indexes.attr_Vertex/*offsetof(shaderProgram_t, attr_Vertex)*/);
+	GL_EnableVertexAttribArray(shaderProgram_indexes.attr_TexCoord/*offsetof(shaderProgram_t, attr_TexCoord)*/);
+	
+	GL_VertexAttribPointer(shaderProgram_indexes.attr_Vertex/*offsetof(shaderProgram_t, attr_Vertex)*/, 3, GL_FLOAT, false, sizeof(idDrawVert), ac.xyz.ToFloatPtr());
+	GL_VertexAttribPointer(shaderProgram_indexes.attr_TexCoord/*offsetof(shaderProgram_t, attr_TexCoord)*/, 2, GL_FLOAT, false, sizeof(idDrawVert), ac/*reinterpret_cast<void *>(&ac.st)*/);
+	todoThrow();
 //	for ( stage = 0; stage < shader.GetNumStages() ; stage++ ) {		
 //		pStage = shader.GetStage(stage);
 
@@ -923,14 +922,14 @@ function RB_STD_T_RenderShaderPasses(surf: drawSurf_t):void {
 
 //		// set the state
 //		GL_State( pStage.drawStateBits );
-		
+
 //		RB_PrepareStageTexturing( pStage, surf, ac );
 
 //		// draw it
 //		RB_DrawElementsWithCounters( tri );
 
 //		RB_FinishStageTexturing( pStage, surf, ac );
-		
+
 //		if (pStage.vertexColor != stageVertexColor_t.SVC_IGNORE) {
 //			GL_DisableVertexAttribArray("attr_Color"/*offsetof(shaderProgram_t, attr_Color)*/);
 //		}
