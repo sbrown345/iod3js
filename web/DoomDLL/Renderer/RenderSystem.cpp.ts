@@ -2348,7 +2348,7 @@ drawSurfsCommand_t, etc) and links it to the end of the
 current command chain.
 ============
 */
-	R_GetCommandBuffer ( /*int */bytes: number ): any {
+	static R_GetCommandBuffer ( /*int */bytes: number ): any {
 		var cmd: emptyCommand_t;
 
 		cmd = /*(emptyCommand_t *)*/R_FrameAlloc<emptyCommand_t>( emptyCommand_t /*, bytes */ );
@@ -2375,18 +2375,18 @@ and by R_ToggleSmpFrame
 		frameData.cmdHead.next = null;
 	}
 
-/////*
-////=================
-////R_ViewStatistics
-////=================
-////*/
-////static void R_ViewStatistics( viewDef_t *parms ) {
-////	// report statistics about this view
-////	if ( !r_showSurfaces.GetBool() ) {
-////		return;
-////	}
-////	common.Printf( "view:%p surfs:%i\n", parms, parms.numDrawSurfs );
-////}
+/*
+=================
+R_ViewStatistics
+=================
+*/
+	static R_ViewStatistics ( parms: viewDef_t ): void {
+		// report statistics about this view
+		if ( !r_showSurfaces.GetBool ( ) ) {
+			return;
+		}
+		common.Printf( "view:%p surfs:%i\n", parms, parms.numDrawSurfs );
+	}
 
 /*
 =============
@@ -2398,20 +2398,21 @@ have multiple views if a mirror, portal, or dynamic texture is present.
 */
 	static R_AddDrawViewCmd ( parms: viewDef_t ): void {
 		var cmd: drawSurfsCommand_t;
-		todoThrow ( );
-		//cmd = (drawSurfsCommand_t *)R_GetCommandBuffer( sizeof( *cmd ) );
-		//cmd.commandId = RC_DRAW_VIEW;
 
-		//cmd.viewDef = parms;
+		cmd = <drawSurfsCommand_t >this.R_GetCommandBuffer( null /*sizeof( *cmd ) */ );
+		cmd.commandId = renderCommand_t.RC_DRAW_VIEW;
 
-		//if ( parms.viewEntitys ) {
-		//	// save the command for r_lockSurfaces debugging
-		//	tr.lockSurfacesCmd = *cmd;
-		//}
+		cmd.viewDef = parms;
 
-		//tr.pc.c_numViews++;
+		if ( parms.viewEntitys ) {
+			// save the command for r_lockSurfaces debugging
+			todoThrow ( );
+			//tr.lockSurfacesCmd = *cmd;
+		}
 
-		//R_ViewStatistics( parms );
+		tr.pc.c_numViews++;
+
+		idRenderSystem.R_ViewStatistics( parms );
 	}
 
 
@@ -2831,7 +2832,7 @@ BeginFrame( /*int */windowWidth:number, /*int */windowHeight:number ):void {
 	//
 	// draw buffer stuff
 	//
-	cmd = <setBufferCommand_t>this.R_GetCommandBuffer( /*sizeof( *cmd ) */null);
+	cmd = <setBufferCommand_t>idRenderSystem.R_GetCommandBuffer( /*sizeof( *cmd ) */null);
 	cmd.commandId = renderCommand_t.RC_SET_BUFFER;
 	cmd.frameCount = this.frameCount;
 
@@ -2888,7 +2889,7 @@ EndFrame( /*int **/frontEndMsec:R<number>, /*int **/backEndMsec:R<number> ):void
 	idRenderSystem.GL_CheckErrors();
 
 	// add the swapbuffers command
-	cmd = < emptyCommand_t>this.R_GetCommandBuffer( /*sizeof( *cmd ) */null );
+	cmd = < emptyCommand_t>idRenderSystem.R_GetCommandBuffer( /*sizeof( *cmd ) */null );
 	cmd.commandId = renderCommand_t.RC_SWAP_BUFFERS;
 
 	// start the back end up again with the new command list
@@ -2909,7 +2910,6 @@ EndFrame( /*int **/frontEndMsec:R<number>, /*int **/backEndMsec:R<number> ):void
 		//	common.Printf( "write DC_END_FRAME\n" );
 		//}
 	}
-	todoThrow();
 }
 
 /*

@@ -519,17 +519,17 @@ enum renderCommand_t {
 };
 
 class emptyCommand_t {
-	commandId: renderCommand_t; next: renderCommand_t;
+	commandId: renderCommand_t = renderCommand_t.RC_NOP; next: any;
 };
 
 class setBufferCommand_t {
-	commandId: renderCommand_t; next: renderCommand_t;
+	commandId: renderCommand_t = renderCommand_t.RC_NOP; next: any; 
 	/*GLenum	*/buffer:number;
 	/*int		*/frameCount:number;
 };
 
 class drawSurfsCommand_t {
-	commandId:renderCommand_t; next: renderCommand_t;
+	commandId: renderCommand_t = renderCommand_t.RC_NOP; next: any; 
 	viewDef: viewDef_t;
 };
 
@@ -704,44 +704,72 @@ class glstate_t {
 	}
 }
 
-class backEndCounters_t	{
-	c_surfaces:number;										   //	int		
-	c_shaders:number;										   //	int		
-	c_vertexes:number;										   //	int		
-	c_indexes:number;		// one set per pass				   //	int		
-	c_totalIndexes:number;	// counting all passes			   //	int		
+class backEndCounters_t {
+	c_surfaces: number; //	int		
+	c_shaders: number; //	int		
+	c_vertexes: number; //	int		
+	c_indexes: number; // one set per pass				   //	int		
+	c_totalIndexes: number; // counting all passes			   //	int		
 
-	c_drawElements:number;									   //	int		
-	c_drawIndexes:number;									   //	int		
-	c_drawVertexes:number;									   //	int		
-	c_drawRefIndexes:number;									   //	int		
-	c_drawRefVertexes:number;								   //	int		
+	c_drawElements: number; //	int		
+	c_drawIndexes: number; //	int		
+	c_drawVertexes: number; //	int		
+	c_drawRefIndexes: number; //	int		
+	c_drawRefVertexes: number; //	int		
 
-	c_shadowElements:number;									   //	int		
-	c_shadowIndexes:number;									   //	int		
-	c_shadowVertexes:number;									   //	int		
+	c_shadowElements: number; //	int		
+	c_shadowIndexes: number; //	int		
+	c_shadowVertexes: number; //	int		
 
-	c_vboIndexes:number;										   //	int		
-	c_overDraw:number;										   //	float	
+	c_vboIndexes: number; //	int		
+	c_overDraw: number; //	float	
 
-	maxLightValue:number;	// for light scale				   //	float	
-	msec:number;			// total msec for backend run		   //	int		
-};
+	maxLightValue: number; // for light scale				   //	float	
+	msec: number; // total msec for backend run		   //	int		
+
+	constructor ( ) {
+		this.init ( );
+	}
+
+	init ( ): void {
+		this.c_surfaces = 0;
+		this.c_shaders = 0;
+		this.c_vertexes = 0;
+		this.c_indexes = 0;
+		this.c_totalIndexes = 0;
+
+		this.c_drawElements = 0;
+		this.c_drawIndexes = 0;
+		this.c_drawVertexes = 0;
+		this.c_drawRefIndexes = 0;
+		this.c_drawRefVertexes = 0;
+
+		this.c_shadowElements = 0;
+		this.c_shadowIndexes = 0;
+		this.c_shadowVertexes = 0;
+
+		this.c_vboIndexes = 0;
+		this.c_overDraw = 0.0;
+
+		this.maxLightValue = 0.0;
+		this.msec = 0;
+	}
+}
 
 ////// all state modified by the back end is separated
 ////// from the front end state
 class backEndState_t {
 	frameCount: number; // used to track all images used in a frame//	int					
 	viewDef: viewDef_t;
-	pc: backEndCounters_t;
+	pc = new backEndCounters_t;
 
 	currentSpace: viewEntity_t=null; // for detecting when a matrix must change
-	currentScissor: idScreenRect;
+	currentScissor = new idScreenRect;
 	// for scissor clipping, local inside renderView viewport
 
 	vLight: viewLight_t = null;
 	depthFunc: number //	int					;			// GLS_DEPTHFUNC_EQUAL, or GLS_DEPTHFUNC_LESS for translucent
-	lightTextureMatri = new Float32Array( 16 ); // only if lightStage.texture.hasMatrix
+	lightTextureMatrix = new Float32Array( 16 ); // only if lightStage.texture.hasMatrix
 	lightColor = new Float32Array( 4 ); // evaluation of current light's color stage
 
 	lightScale: number; // Every light color calaculation will be multiplied by this,
@@ -754,42 +782,33 @@ class backEndState_t {
 	currentRenderCopied: boolean; // true if any material has already referenced _currentRender
 
 	// our OpenGL state deltas
-	glState: glstate_t;
+	glState = new glstate_t;
 
 	c_copyFrameBuffer: number; //int
 
 	constructor ( ) {
-		////	int					frameCount;		// used to track all images used in a frame
-		////	const viewDef_t	*	viewDef;
-		this.pc = new backEndCounters_t;
+		this.init ( );
+	}
 
-		////	const viewEntity_t *currentSpace;		// for detecting when a matrix must change
-		////	idScreenRect		currentScissor;
-		////	// for scissor clipping, local inside renderView viewport
-
-		////	viewLight_t *		vLight;
-		////	int					depthFunc;			// GLS_DEPTHFUNC_EQUAL, or GLS_DEPTHFUNC_LESS for translucent
-		////	float				lightTextureMatrix[16];	// only if lightStage.texture.hasMatrix
-		////	float				lightColor[4];		// evaluation of current light's color stage
-
-		////	float				lightScale;			// Every light color calaculation will be multiplied by this,
-		////											// which will guarantee that the result is < tr.backEndRendererMaxLight
-		////											// A card with high dynamic range will have this set to 1.0
-		////	float				overBright;			// The amount that all light interactions must be multiplied by
-		////											// with post processing to get the desired total light level.
-		////											// A high dynamic range card will have this set to 1.0.
-
-		////	bool				currentRenderCopied;	// true if any material has already referenced _currentRender
-
-		// our OpenGL state deltas
-		this.glState = new glstate_t;
-
-////	int					c_copyFrameBuffer;
+	init ( ): void {
+		this.frameCount = 0;
+		this.viewDef = null;
+		this.pc.init ( );
+		this.currentSpace = null;
+		this.currentScissor.init ( );
+		this.vLight = null;
+		this.depthFunc = 0;
+		zeroArray( this.lightTextureMatrix );
+		zeroArray( this.lightColor );
+		this.lightScale = 0.0;
+		this.overBright = 0.0;
+		this.currentRenderCopied = false;
+		this.glState.init ( );
+		this.c_copyFrameBuffer = 0;
 	}
 }
 
-
-var MAX_GUI_SURFACES	= 1024;		// default size of the drawSurfs list for guis, will
+var MAX_GUI_SURFACES = 1024;		// default size of the drawSurfs list for guis, will
 										// be automatically expanded as needed
 enum backEndName_t {
 	BE_ARB2,

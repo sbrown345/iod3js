@@ -60,6 +60,14 @@ function memcpy(destination: ArrayBufferView, source: ArrayBufferView, count: nu
 //	}
 //}
 
+function zeroArray ( array: ArrayBufferView ): void;
+function zeroArray ( array: number[] ): void;
+function zeroArray ( array: any ): void {
+	for ( var i = 0; i < array.length; i++ ) {
+		array[i] = 0;
+	}
+}
+
 function memset ( arr: ArrayBufferView, value: number, num: number ): void {
     //assert.uint8(value).int32(num);
     var startIndex = 0;
