@@ -1832,7 +1832,7 @@ idImageManager.prototype.CompleteBackgroundImageLoads = function ( ) {
 			remainingList = image;
 		}
 	}
-	if ( this.image_showBackgroundLoads.GetBool ( ) ) {
+	if ( idImageManager.image_showBackgroundLoads.GetBool ( ) ) {
 		if ( this.numActiveBackgroundImageLoads != CompleteBackgroundImageLoads_prev ) {
 			CompleteBackgroundImageLoads_prev = this.numActiveBackgroundImageLoads;
 			common.Printf( "background Loads: %i\n", this.numActiveBackgroundImageLoads );

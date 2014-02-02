@@ -139,6 +139,17 @@ function timeGetTime ( ): number {
 
 var printf = console.log.bind(console);
 
+var _sscanf = window["sscanf"];
+var sscanf = function ( s: string, format: string ): any[] {
+	var array = _sscanf( s, format );
+	var arrayWithoutNulls: any[] = [];
+	for ( var i = 0; i < array.length && array[i] !== null && array[i] !== undefined; i++ ) {
+		arrayWithoutNulls[i] = array[i];
+	}
+
+	return arrayWithoutNulls;
+};
+
 function Mem_Free ( arg: any ) {
     
 }

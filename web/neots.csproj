@@ -179,7 +179,6 @@
     <TypeScriptCompile Include="other\gl2.h.ts" />
     <TypeScriptCompile Include="other\WebGL.d.ts" />
     <Content Include="utils\logging.ts" />
-    <TypeScriptCompile Include="utils\sscanf.d.ts" />
     <TypeScriptCompile Include="utils\sprintf.d.ts" />
     <Content Include="utils\helpers.ts" />
     <TypeScriptCompile Include="_references.ts" />

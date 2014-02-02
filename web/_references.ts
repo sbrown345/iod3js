@@ -1,5 +1,4 @@
 /// <reference path="utils/sprintf.d.ts" />
-/// <reference path="utils/sscanf.d.ts" />
 /// <reference path="other/webgl.d.ts" />
 
 /// <reference path="utils/types.ts" />
