@@ -871,102 +871,109 @@ idImageManager.prototype.R_QuadraticImage = function ( image: idImage ): void {
 //=====================================================================
 
 
-////typedef struct {
-////	char *name;
-////	int	minimize, maximize;
-////} filterName_t;
+class filterName_t {
+	name: string;
+	minimize: number;
+	maximize: number;
+	constructor ( name: string, minimize: number, maximize: number ) {
+		this.name = name;
+		this.minimize = minimize;
+		this.maximize = maximize;
+	}
+}
 
 
-///*
-//===============
-//ChangeTextureFilter
+/*
+===============
+ChangeTextureFilter
 
-//This resets filtering on all loaded images
-//New images will automatically pick up the current values.
-//===============
-//*/
-//void idImageManager::ChangeTextureFilter( void ) {
-//	int		i;
-//	idImage	*glt;
-//	const char	*string;
-//static filterName_t textureFilters[] = {
-//	{"GL_LINEAR_MIPMAP_NEAREST", GL_LINEAR_MIPMAP_NEAREST, GL_LINEAR},
-//	{"GL_LINEAR_MIPMAP_LINEAR", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR},
-//	{"GL_NEAREST", GL_NEAREST, GL_NEAREST},
-//	{"GL_LINEAR", GL_LINEAR, GL_LINEAR},
-//	{"GL_NEAREST_MIPMAP_NEAREST", GL_NEAREST_MIPMAP_NEAREST, GL_NEAREST},
-//	{"GL_NEAREST_MIPMAP_LINEAR", GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST}
-//};
+This resets filtering on all loaded images
+New images will automatically pick up the current values.
+===============
+*/
+var textureFilters = [
+	new filterName_t( "GL_LINEAR_MIPMAP_NEAREST", GL_LINEAR_MIPMAP_NEAREST, GL_LINEAR ),
+	new filterName_t( "GL_LINEAR_MIPMAP_LINEAR", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR ),
+	new filterName_t( "GL_NEAREST", GL_NEAREST, GL_NEAREST ),
+	new filterName_t( "GL_LINEAR", GL_LINEAR, GL_LINEAR ),
+	new filterName_t( "GL_NEAREST_MIPMAP_NEAREST", GL_NEAREST_MIPMAP_NEAREST, GL_NEAREST ),
+	new filterName_t( "GL_NEAREST_MIPMAP_LINEAR", GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST )
+];
 
-//	// if these are changed dynamically, it will force another ChangeTextureFilter
-//	image_filter.ClearModified();
-//	image_anisotropy.ClearModified();
-//	image_lodbias.ClearModified();
+idImageManager.prototype.ChangeTextureFilter = function ( ): void {
+	var /*int		*/i: number;
+	var glt: idImage;
+	var $string: string;
 
-//	string = image_filter.GetString();
-//	for ( i = 0; i < 6; i++ ) {
-//		if ( !idStr.Icmp( textureFilters[i].name, string ) ) {
-//			break;
-//		}
-//	}
+	// if these are changed dynamically, it will force another ChangeTextureFilter
+	idImageManager.image_filter.ClearModified ( );
+	idImageManager.image_anisotropy.ClearModified ( );
+	idImageManager.image_lodbias.ClearModified ( );
 
-//	if ( i == 6 ) {
-//		common.Warning( "bad r_textureFilter: '%s'", string);
-//		// default to LINEAR_MIPMAP_NEAREST
-//		i = 0;
-//	}
+	$string = idImageManager.image_filter.GetString ( );
+	for ( i = 0; i < 6; i++ ) {
+		if ( !idStr.Icmp( textureFilters[i].name, $string ) ) {
+			break;
+		}
+	}
 
-//	// set the values for future images
-//	textureMinFilter = textureFilters[i].minimize;
-//	textureMaxFilter = textureFilters[i].maximize;
-//	textureAnisotropy = image_anisotropy.GetFloat();
-//	if ( textureAnisotropy < 1 ) {
-//		textureAnisotropy = 1;
-//	} else if ( textureAnisotropy > glConfig.maxTextureAnisotropy ) {
-//		textureAnisotropy = glConfig.maxTextureAnisotropy;
-//	}
-//	textureLODBias = image_lodbias.GetFloat();
+	if ( i == 6 ) {
+		common.Warning( "bad r_textureFilter: '%s'", $string );
+		// default to LINEAR_MIPMAP_NEAREST
+		i = 0;
+	}
 
-//	// change all the existing mipmap texture objects with default filtering
+	// set the values for future images
+	this.textureMinFilter = textureFilters[i].minimize;
+	this.textureMaxFilter = textureFilters[i].maximize;
+	this.textureAnisotropy = idImageManager.image_anisotropy.GetFloat ( );
+	if ( this.textureAnisotropy < 1 ) {
+		this.textureAnisotropy = 1;
+	} else if ( this.textureAnisotropy > glConfig.maxTextureAnisotropy ) {
+		this.textureAnisotropy = glConfig.maxTextureAnisotropy;
+	}
+	this.textureLODBias = idImageManager.image_lodbias.GetFloat ( );
 
-//	for ( i = 0 ; i < images.Num() ; i++ ) {
-//		unsigned int	texEnum = GL_TEXTURE_2D;
+	// change all the existing mipmap texture objects with default filtering
 
-//		glt = images[ i ];
+	for ( i = 0; i < this.images.Num ( ); i++ ) {
+		var /*unsigned int	*/texEnum = GL_TEXTURE_2D;
 
-//		switch( glt.type ) {
-//		case TT_2D:
-//			texEnum = GL_TEXTURE_2D;
-//			break;
+		glt = this.images[i];
+
+		switch ( glt.type ) {
+		case textureType_t.TT_2D:
+			texEnum = GL_TEXTURE_2D;
+			break;
 //#if !defined(GL_ES_VERSION_2_0)
 //		case TT_3D:
 //			texEnum = GL_TEXTURE_3D;
 //			break;
 //#endif
-//		case textureType_t.TT_CUBIC:
-//			texEnum = GL_TEXTURE_CUBE_MAP;
-//			break;
-//		}
+		case textureType_t.TT_CUBIC:
+			texEnum = GL_TEXTURE_CUBE_MAP;
+			break;
+		}
 
-//		// make sure we don't start a background load
-//		if ( glt.texnum == idImage::TEXTURE_NOT_LOADED ) {
-//			continue;
-//		}
-//		glt.Bind();
-//		if ( glt.filter == textureFilter_t.TF_DEFAULT ) {
-//			glTexParameterf(texEnum, GL_TEXTURE_MIN_FILTER, globalImages.textureMinFilter );
-//			glTexParameterf(texEnum, GL_TEXTURE_MAG_FILTER, globalImages.textureMaxFilter );
-//		}
-//		if ( glConfig.anisotropicAvailable ) {
-//			glTexParameterf(texEnum, GL_TEXTURE_MAX_ANISOTROPY_EXT, globalImages.textureAnisotropy );
-//		}	
+		// make sure we don't start a background load
+		if ( glt.texnum == idImage.TEXTURE_NOT_LOADED ) {
+			continue;
+		}
+		glt.Bind ( );
+		if ( glt.filter == textureFilter_t.TF_DEFAULT ) {
+			glTexParameterf( texEnum, GL_TEXTURE_MIN_FILTER, globalImages.textureMinFilter );
+			glTexParameterf( texEnum, GL_TEXTURE_MAG_FILTER, globalImages.textureMaxFilter );
+		}
+		if ( glConfig.anisotropicAvailable ) {
+			glTexParameterf( texEnum, GL_TEXTURE_MAX_ANISOTROPY_EXT, globalImages.textureAnisotropy );
+		}
 //#if !defined(GL_ES_VERSION_2_0)
 //		if ( glConfig.textureLODBiasAvailable ) {
 //			glTexParameterf(texEnum, GL_TEXTURE_LOD_BIAS_EXT, globalImages.textureLODBias );
 //		}
 //#endif
-//	}
-//}
+	}
+};
 
 /*
 ===============
@@ -1917,7 +1924,7 @@ idImageManager.prototype.Init = function ( ): void {
 	this.cacheLRU.cacheUsagePrev = this.cacheLRU;
 
 	// set default texture filter modes
-	todo( "ChangeTextureFilter();" );
+	this.ChangeTextureFilter();
 
 	// create built in images
 	this.defaultImage = this.ImageFromFunction( "_default", this.R_DefaultImage );

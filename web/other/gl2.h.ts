@@ -55,7 +55,8 @@ canvas.width = 640;
 canvas.height = 480;
 
 
-
+// missing const:
+var GL_TEXTURE_MAX_ANISOTROPY_EXT = 0x84FE;
 
 
 

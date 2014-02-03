@@ -48,12 +48,12 @@ var GL_RGB5 = GL_RGBA;
 ////}
 ////#endif
 
-////int MakePowerOfTwo( int num ) {
-////	int		pot;
-////	for (pot = 1 ; pot < num ; pot<<=1) {
-////	}
-////	return pot;
-////}
+function /*int*/MakePowerOfTwo ( /*int */num:number ): number {
+	var /*int		*/pot: number;
+	for ( pot = 1; pot < num; pot <<= 1 ) {
+	}
+	return pot;
+}
 
 /////*
 ////================
@@ -383,122 +383,122 @@ This may need to scan six cube map images
 ////#endif
 }
 
-/////*
-////==================
-////SetImageFilterAndRepeat
-////==================
-////*/
-////void idImage::SetImageFilterAndRepeat() const {
-////	// set the minimize / maximize filtering
-////	switch( filter ) {
-////	case textureFilter_t.TF_DEFAULT:
-////		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, globalImages.textureMinFilter );
-////		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, globalImages.textureMaxFilter );
-////		break;
-////	case textureFilter_t.TF_LINEAR:
-////		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-////		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-////		break;
-////	case textureFilter_t.TF_NEAREST:
-////		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-////		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-////		break;
-////	default:
-////		common.FatalError( "R_CreateImage: bad texture filter" );
-////	}
+/*
+==================
+SetImageFilterAndRepeat
+==================
+*/
+idImage.prototype.SetImageFilterAndRepeat = function ( ): void {
+	// set the minimize / maximize filtering
+	switch ( this.filter ) {
+	case textureFilter_t.TF_DEFAULT:
+		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, globalImages.textureMinFilter );
+		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, globalImages.textureMaxFilter );
+		break;
+	case textureFilter_t.TF_LINEAR:
+		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+		break;
+	case textureFilter_t.TF_NEAREST:
+		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+		break;
+	default:
+		common.FatalError( "R_CreateImage: bad texture filter" );
+	}
 
-////#if !defined(GL_ES_VERSION_2_0)
-////	if ( glConfig.anisotropicAvailable ) {
-////		// only do aniso filtering on mip mapped images
-////		if ( filter == textureFilter_t.TF_DEFAULT ) {
-////			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, globalImages.textureAnisotropy );
-////		} else {
-////			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1 );
-////		}
-////	}
-////#endif
+//#if !defined(GL_ES_VERSION_2_0)
+//	if ( glConfig.anisotropicAvailable ) {
+//		// only do aniso filtering on mip mapped images
+//		if ( filter == textureFilter_t.TF_DEFAULT ) {
+//			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, globalImages.textureAnisotropy );
+//		} else {
+//			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1 );
+//		}
+//	}
+//#endif
 
-////#if !defined(GL_ES_VERSION_2_0)
-////	if ( glConfig.textureLODBiasAvailable ) {
-////		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS_EXT, globalImages.textureLODBias );
-////	}
-////#endif
+//#if !defined(GL_ES_VERSION_2_0)
+//	if ( glConfig.textureLODBiasAvailable ) {
+//		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS_EXT, globalImages.textureLODBias );
+//	}
+//#endif
 
-////	// set the wrap/clamp modes
-////	switch( repeat ) {
-////	case textureRepeat_t.TR_REPEAT:
-////		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-////		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-////		break;
-////	case textureRepeat_t.TR_CLAMP_TO_BORDER:
-////	case textureRepeat_t.TR_CLAMP_TO_ZERO:
-////	case textureRepeat_t.TR_CLAMP_TO_ZERO_ALPHA:
-////	case TR_CLAMP:
-////		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-////		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-////		break;
-////	default:
-////		common.FatalError( "R_CreateImage: bad texture repeat" );
-////	}
-////}
+	// set the wrap/clamp modes
+	switch ( this.repeat ) {
+	case textureRepeat_t.TR_REPEAT:
+		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+		break;
+	case textureRepeat_t.TR_CLAMP_TO_BORDER:
+	case textureRepeat_t.TR_CLAMP_TO_ZERO:
+	case textureRepeat_t.TR_CLAMP_TO_ZERO_ALPHA:
+	case textureRepeat_t.TR_CLAMP:
+		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+		break;
+	default:
+		common.FatalError( "R_CreateImage: bad texture repeat" );
+	}
+};
 
-/////*
-////================
-////idImage::Downsize
-////helper function that takes the current width/height and might make them smaller
-////================
-////*/
-////void idImage::GetDownsize( int &scaled_width, int &scaled_height ) const {
-////	int size = 0;
+/*
+================
+idImage::Downsize
+helper function that takes the current width/height and might make them smaller
+================
+*/
+idImage.prototype.GetDownsize = function ( /*int &*/scaled_width: R<number>, /*int &*/scaled_height: R<number> ): void {
+	var /*int */size = 0;
 
-////	// perform optional picmip operation to save texture memory
-////	if ( this.depth == textureDepth_t.TD_SPECULAR && globalImages.image_downSizeSpecular.GetInteger() ) {
-////		size = globalImages.image_downSizeSpecularLimit.GetInteger();
-////		if ( size == 0 ) {
-////			size = 64;
-////		}
-////	} else if ( this.depth == textureDepth_t.TD_BUMP && globalImages.image_downSizeBump.GetInteger() ) {
-////		size = globalImages.image_downSizeBumpLimit.GetInteger();
-////		if ( size == 0 ) {
-////			size = 64;
-////		}
-////	} else if ( ( allowDownSize || globalImages.image_forceDownSize.GetBool() ) && globalImages.image_downSize.GetInteger() ) {
-////		size = globalImages.image_downSizeLimit.GetInteger();
-////		if ( size == 0 ) {
-////			size = 256;
-////		}
-////	}
+	// perform optional picmip operation to save texture memory
+	if ( this.depth == textureDepth_t.TD_SPECULAR && idImageManager.image_downSizeSpecular.GetInteger ( ) ) {
+		size = idImageManager.image_downSizeSpecularLimit.GetInteger ( );
+		if ( size == 0 ) {
+			size = 64;
+		}
+	} else if ( this.depth == textureDepth_t.TD_BUMP && idImageManager.image_downSizeBump.GetInteger ( ) ) {
+		size = idImageManager.image_downSizeBumpLimit.GetInteger ( );
+		if ( size == 0 ) {
+			size = 64;
+		}
+	} else if ( ( this.allowDownSize || idImageManager.image_forceDownSize.GetBool ( ) ) && idImageManager.image_downSize.GetInteger ( ) ) {
+		size = idImageManager.image_downSizeLimit.GetInteger ( );
+		if ( size == 0 ) {
+			size = 256;
+		}
+	}
 
-////	if ( size > 0 ) {
-////		while ( scaled_width > size || scaled_height > size ) {
-////			if ( scaled_width > 1 ) {
-////				scaled_width >>= 1;
-////			}
-////			if ( scaled_height > 1 ) {
-////				scaled_height >>= 1;
-////			}
-////		}
-////	}
+	if ( size > 0 ) {
+		while ( scaled_width.$ > size || scaled_height.$ > size ) {
+			if ( scaled_width.$ > 1 ) {
+				scaled_width.$ >>= 1;
+			}
+			if ( scaled_height.$ > 1 ) {
+				scaled_height.$ >>= 1;
+			}
+		}
+	}
 
-////	// clamp to minimum size
-////	if ( scaled_width < 1 ) {
-////		scaled_width = 1;
-////	}
-////	if ( scaled_height < 1 ) {
-////		scaled_height = 1;
-////	}
+	// clamp to minimum size
+	if ( scaled_width.$ < 1 ) {
+		scaled_width.$ = 1;
+	}
+	if ( scaled_height.$ < 1 ) {
+		scaled_height.$ = 1;
+	}
 
-////	// clamp size to the hardware specific upper limit
-////	// scale both axis down equally so we don't have to
-////	// deal with a half mip resampling
-////	// This causes a 512*256 texture to sample down to
-////	// 256*128 on a voodoo3, even though it could be 256*256
-////	while ( scaled_width > glConfig.maxTextureSize
-////		|| scaled_height > glConfig.maxTextureSize ) {
-////		scaled_width >>= 1;
-////		scaled_height >>= 1;
-////	}
-////}
+	// clamp size to the hardware specific upper limit
+	// scale both axis down equally so we don't have to
+	// deal with a half mip resampling
+	// This causes a 512*256 texture to sample down to
+	// 256*128 on a voodoo3, even though it could be 256*256
+	while ( scaled_width.$ > glConfig.maxTextureSize
+		|| scaled_height.$ > glConfig.maxTextureSize ) {
+		scaled_width.$ >>= 1;
+		scaled_height.$ >>= 1;
+	}
+};
 
 /*
 ================
@@ -529,15 +529,15 @@ There is no way to specify explicit mip map levels
 
 ================
 */
-idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number, /*int */height:number, 
-					   /*textureFilter_t*/ filterParm:number, /*bool */allowDownSizeParm:boolean, 
-					   /*textureRepeat_t */repeatParm:number, depthParm:textureDepth_t ):void {
-	var preserveBorder:boolean;
-	var /*byte		**/scaledBuffer:Uint8Array;
-	var /*int			*/scaled_width:number, scaled_height:number;
-	var /*byte		**/shrunk:Uint8Array;
+idImage.prototype.GenerateImage = function ( pic: Uint8Array, /*int */width: number, /*int */height: number,
+	/*textureFilter_t*/ filterParm: number, /*bool */allowDownSizeParm: boolean,
+	/*textureRepeat_t */repeatParm: number, depthParm: textureDepth_t ): void {
+	var preserveBorder: boolean;
+	var /*byte		**/scaledBuffer: Uint8Array;
+	var /*int			*/scaled_width: number, scaled_height: number;
+	var /*byte		**/shrunk: Uint8Array;
 
-	this.PurgeImage();
+	this.PurgeImage ( );
 
 	this.filter = filterParm;
 	this.allowDownSize = allowDownSizeParm;
@@ -551,177 +551,184 @@ idImage.prototype.GenerateImage = function( pic:Uint8Array, /*int */width:number
 	if ( !glConfig.isInitialized ) {
 		return;
 	}
-    todoThrow ( );
-//	// don't let mip mapping smear the texture into the clamped border
-//	if ( repeat == textureRepeat_t.TR_CLAMP_TO_ZERO ) {
-//		preserveBorder = true;
-//	} else {
-//		preserveBorder = false;
-//	}
 
-//	// make sure it is a power of 2
-//	scaled_width = MakePowerOfTwo( width );
-//	scaled_height = MakePowerOfTwo( height );
+	// don't let mip mapping smear the texture into the clamped border
+	if ( this.repeat == textureRepeat_t.TR_CLAMP_TO_ZERO ) {
+		preserveBorder = true;
+	} else {
+		preserveBorder = false;
+	}
 
-//	if ( scaled_width != width || scaled_height != height ) {
-//		common.Error( "R_CreateImage: not a power of 2 image" );
-//	}
+	// make sure it is a power of 2
+	scaled_width = MakePowerOfTwo( width );
+	scaled_height = MakePowerOfTwo( height );
 
-//	// Optionally modify our width/height based on options/hardware
-//	GetDownsize( scaled_width, scaled_height );
+	if ( scaled_width != width || scaled_height != height ) {
+		common.Error( "R_CreateImage: not a power of 2 image" );
+	}
 
-//	scaledBuffer = NULL;
+	// Optionally modify our width/height based on options/hardware
+	var $scaled_width = new R(scaled_width );
+	var $scaled_height = new R( scaled_height );
+	this.GetDownsize($scaled_width, $scaled_height);
+	scaled_width = $scaled_width.$;
+	scaled_height = $scaled_height.$;
 
-//	// generate the texture number
-//	glGenTextures( 1, &this.texnum );
+	scaledBuffer = null;
 
-//	// select proper internal format before we resample
-//	internalFormat = SelectInternalFormat( &pic, 1, width, height, this.depth );
+	// generate the texture number
+	this.texnum = glGenTextures( /*1, &this.texnum */ );
 
-//	// copy or resample data as appropriate for first MIP level
-//	if ( ( scaled_width == width ) && ( scaled_height == height ) ) {
-//		// we must copy even if unchanged, because the border zeroing
-//		// would otherwise modify const data
-//		scaledBuffer = (byte *)R_StaticAlloc( sizeof( unsigned ) * scaled_width * scaled_height );
-//		memcpy (scaledBuffer, pic, width*height*4);
-//	} else {
-//		// resample down as needed (FIXME: this doesn't seem like it resamples anymore!)
-//		// scaledBuffer = R_ResampleTexture( pic, width, height, width >>= 1, height >>= 1 );
-//		scaledBuffer = R_MipMap( pic, width, height, preserveBorder );
-//		width >>= 1;
-//		height >>= 1;
-//		if ( width < 1 ) {
-//			width = 1;
-//		}
-//		if ( height < 1 ) {
-//			height = 1;
-//		}
+	// select proper internal format before we resample
+	this.internalFormat = SelectInternalFormat( /*&*/ <any>pic, 1, width, height, this.depth );
 
-//		while ( width > scaled_width || height > scaled_height ) {
-//			shrunk = R_MipMap( scaledBuffer, width, height, preserveBorder );
-//			R_StaticFree( scaledBuffer );
-//			scaledBuffer = shrunk;
+	// copy or resample data as appropriate for first MIP level
+	if ( ( scaled_width == width ) && ( scaled_height == height ) ) {
+		// we must copy even if unchanged, because the border zeroing
+		// would otherwise modify const data
+		scaledBuffer = /*(byte *)*/R_StaticAlloc( /*sizeof( unsigned ) **/4 * scaled_width * scaled_height );
+		memcpy( scaledBuffer, pic, width * height * 4 );
+	} else {
+		// resample down as needed (FIXME: this doesn't seem like it resamples anymore!)
+		// scaledBuffer = R_ResampleTexture( pic, width, height, width >>= 1, height >>= 1 );
+		scaledBuffer = R_MipMap( pic, width, height, preserveBorder );
+		width >>= 1;
+		height >>= 1;
+		if ( width < 1 ) {
+			width = 1;
+		}
+		if ( height < 1 ) {
+			height = 1;
+		}
 
-//			width >>= 1;
-//			height >>= 1;
-//			if ( width < 1 ) {
-//				width = 1;
-//			}
-//			if ( height < 1 ) {
-//				height = 1;
-//			}
-//		}
+		while ( width > scaled_width || height > scaled_height ) {
+			shrunk = R_MipMap( scaledBuffer, width, height, preserveBorder );
+			R_StaticFree( scaledBuffer );
+			scaledBuffer = shrunk;
 
-//		// one might have shrunk down below the target size
-//		scaled_width = width;
-//		scaled_height = height;
-//	}
+			width >>= 1;
+			height >>= 1;
+			if ( width < 1 ) {
+				width = 1;
+			}
+			if ( height < 1 ) {
+				height = 1;
+			}
+		}
 
-//	uploadHeight = scaled_height;
-//	uploadWidth = scaled_width;
-//	type = TT_2D;
+		// one might have shrunk down below the target size
+		scaled_width = width;
+		scaled_height = height;
+	}
 
-//	// zero the border if desired, allowing clamped projection textures
-//	// even after picmip resampling or careless artists.
-//	if ( repeat == textureRepeat_t.TR_CLAMP_TO_ZERO ) {
-//		byte	rgba[4];
+	this.uploadHeight = scaled_height;
+	this.uploadWidth = scaled_width;
+	this.type = textureType_t.TT_2D;
 
-//		rgba[0] = rgba[1] = rgba[2] = 0;
-//		rgba[3] = 255;
-//		R_SetBorderTexels( (byte *)scaledBuffer, width, height, rgba );
-//	}
-//	if ( repeat == textureRepeat_t.TR_CLAMP_TO_ZERO_ALPHA ) {
-//		byte	rgba[4];
+	// zero the border if desired, allowing clamped projection textures
+	// even after picmip resampling or careless artists.
+	if ( this.repeat == textureRepeat_t.TR_CLAMP_TO_ZERO ) {
+		var rgba = new Uint8Array( 4 );
 
-//		rgba[0] = rgba[1] = rgba[2] = 255;
-//		rgba[3] = 0;
-//		R_SetBorderTexels( (byte *)scaledBuffer, width, height, rgba );
-//	}
+		rgba[0] = rgba[1] = rgba[2] = 0;
+		rgba[3] = 255;
+		R_SetBorderTexels( /*(byte *)*/scaledBuffer, width, height, rgba );
+	}
+	if ( this.repeat == textureRepeat_t.TR_CLAMP_TO_ZERO_ALPHA ) {
+		var rgba = new Uint8Array( 4 );
 
-//	if ( generatorFunction == NULL && ( this.depth == textureDepth_t.TD_BUMP && globalImages.image_writeNormalTGA.GetBool() || this.depth != textureDepth_t.TD_BUMP && globalImages.image_writeTGA.GetBool() ) ) {
-//		// Optionally write out the texture to a .tga
-//		char filename[MAX_IMAGE_NAME];
-//		ImageProgramStringToCompressedFileName( this.imgName, filename );
-//		char *ext = strrchr(filename, '.');
-//		if ( ext ) {
-//			strcpy( ext, ".tga" );
-//			R_WriteTGA( filename, scaledBuffer, scaled_width, scaled_height, false );
-//		}
-//	}
+		rgba[0] = rgba[1] = rgba[2] = 255;
+		rgba[3] = 0;
+		R_SetBorderTexels( /*(byte *)*/scaledBuffer, width, height, rgba );
+	}
 
-//	// swap the red and alpha for rxgb support
-//	// do this even on tga normal maps so we only have to use
-//	// one fragment program
-//	// if the image is precompressed ( either in palletized mode or true rxgb mode )
-//	// then it is loaded above and the swap never happens here
-//	if ( this.depth == textureDepth_t.TD_BUMP && globalImages.image_useNormalCompression.GetInteger() != 1 ) {
-//		for ( int i = 0; i < scaled_width * scaled_height * 4; i += 4 ) {
-//			scaledBuffer[ i + 3 ] = scaledBuffer[ i ];
-//			scaledBuffer[ i ] = 0;
-//		}
-//	}
+	if ( this.generatorFunction == null && ( this.depth == textureDepth_t.TD_BUMP && idImageManager.image_writeNormalTGA.GetBool ( ) || this.depth != textureDepth_t.TD_BUMP && idImageManager.image_writeTGA.GetBool ( ) ) ) {
+		// Optionally write out the texture to a .tga
+		var filename = ""; //char filename[MAX_IMAGE_NAME];
+		todoThrow( "ImageProgramStringToCompressedFileName " );
+		//this.ImageProgramStringToCompressedFileName( this.imgName, filename );
+		//var ext = strrchr( filename, '.' );
+		//if ( ext ) {
+		//	strcpy( ext, ".tga" );
+		//	todoThrow ( );
+		//	//R_WriteTGA( filename, scaledBuffer, scaled_width, scaled_height, false );
+		//}
+	}
 
-//	// upload the main image level
-//	Bind();
+	// swap the red and alpha for rxgb support
+	// do this even on tga normal maps so we only have to use
+	// one fragment program
+	// if the image is precompressed ( either in palletized mode or true rxgb mode )
+	// then it is loaded above and the swap never happens here
+	if ( this.depth == textureDepth_t.TD_BUMP && idImageManager.image_useNormalCompression.GetInteger ( ) != 1 ) {
+		for ( var i = 0; i < scaled_width * scaled_height * 4; i += 4 ) {
+			scaledBuffer[i + 3] = scaledBuffer[i];
+			scaledBuffer[i] = 0;
+		}
+	}
 
-////#if !defined(GL_ES_VERSION_2_0)
-////	if ( internalFormat == GL_COLOR_INDEX8_EXT ) {
-////		UploadCompressedNormalMap( scaled_width, scaled_height, scaledBuffer, 0 );
-////	} else 
-////#endif
-//	{
-//		glTexImage2D( GL_TEXTURE_2D, 0, internalFormat, scaled_width, scaled_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, scaledBuffer );
-//	}
+	// upload the main image level
+	this.Bind ( );
 
-//	// create and upload the mip map levels, which we do in all cases, even if we don't think they are needed
-//	var/*int		*/miplevel:number;
+//#if !defined(GL_ES_VERSION_2_0)
+//	if ( internalFormat == GL_COLOR_INDEX8_EXT ) {
+//		UploadCompressedNormalMap( scaled_width, scaled_height, scaledBuffer, 0 );
+//	} else 
+//#endif
+	{
+		glTexImage2D( GL_TEXTURE_2D, 0, this.internalFormat, scaled_width, scaled_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, scaledBuffer );
+	}
 
-//	miplevel = 0;
-//	while ( scaled_width > 1 || scaled_height > 1 ) {
-//		// preserve the border after mip map unless repeating
-//		shrunk = R_MipMap( scaledBuffer, scaled_width, scaled_height, preserveBorder );
-//		R_StaticFree( scaledBuffer );
-//		scaledBuffer = shrunk;
+	// create and upload the mip map levels, which we do in all cases, even if we don't think they are needed
+	var /*int		*/miplevel: number;
 
-//		scaled_width >>= 1;
-//		scaled_height >>= 1;
-//		if ( scaled_width < 1 ) {
-//			scaled_width = 1;
-//		}
-//		if ( scaled_height < 1 ) {
-//			scaled_height = 1;
-//		}
-//		miplevel++;
+	miplevel = 0;
+	while ( scaled_width > 1 || scaled_height > 1 ) {
+		// preserve the border after mip map unless repeating
+		shrunk = R_MipMap( scaledBuffer, scaled_width, scaled_height, preserveBorder );
+		R_StaticFree( scaledBuffer );
+		scaledBuffer = shrunk;
 
-//		// this is a visualization tool that shades each mip map
-//		// level with a different color so you can see the
-//		// rasterizer's texture level selection algorithm
-//		// Changing the color doesn't help with lumminance/alpha/intensity formats...
-//		if ( this.depth == textureDepth_t.TD_DIFFUSE && globalImages.image_colorMipLevels.GetBool() ) {
-//			R_BlendOverTexture( (byte *)scaledBuffer, scaled_width * scaled_height, mipBlendColors[miplevel] );
-//		}
+		scaled_width >>= 1;
+		scaled_height >>= 1;
+		if ( scaled_width < 1 ) {
+			scaled_width = 1;
+		}
+		if ( scaled_height < 1 ) {
+			scaled_height = 1;
+		}
+		miplevel++;
 
-//		// upload the mip map
-////#if !defined(GL_ES_VERSION_2_0)
-////		if ( internalFormat == GL_COLOR_INDEX8_EXT ) {
-////			UploadCompressedNormalMap( scaled_width, scaled_height, scaledBuffer, miplevel );
-////		} else 
-////#endif
-//		{
-//			glTexImage2D( GL_TEXTURE_2D, miplevel, internalFormat, scaled_width, scaled_height, 
-//				0, GL_RGBA, GL_UNSIGNED_BYTE, scaledBuffer );
-//		}
-//	}
+		// this is a visualization tool that shades each mip map
+		// level with a different color so you can see the
+		// rasterizer's texture level selection algorithm
+		// Changing the color doesn't help with lumminance/alpha/intensity formats...
+		if ( this.depth == textureDepth_t.TD_DIFFUSE && idImageManager.image_colorMipLevels.GetBool ( ) ) {
+			todoThrow ( );
+			//R_BlendOverTexture( /*(byte *)*/scaledBuffer, scaled_width * scaled_height, mipBlendColors[miplevel] );
+		}
 
-//	if ( scaledBuffer != 0 ) {
-//		R_StaticFree( scaledBuffer );
-//	}
+		// upload the mip map
+//#if !defined(GL_ES_VERSION_2_0)
+//		if ( internalFormat == GL_COLOR_INDEX8_EXT ) {
+//			UploadCompressedNormalMap( scaled_width, scaled_height, scaledBuffer, miplevel );
+//		} else 
+//#endif
+		{
+			glTexImage2D( GL_TEXTURE_2D, miplevel, this.internalFormat, scaled_width, scaled_height,
+				0, GL_RGBA, GL_UNSIGNED_BYTE, scaledBuffer );
+		}
+	}
 
-//	SetImageFilterAndRepeat();
+	if ( scaledBuffer != null ) {
+		R_StaticFree( scaledBuffer );
+	}
 
-//	// see if we messed anything up
-//	GL_CheckErrors();
-}
+	this.SetImageFilterAndRepeat ( );
+
+	// see if we messed anything up
+	idRenderSystem.GL_CheckErrors ( );
+};
 
 ////#if !defined(GL_ES_VERSION_2_0)
 /////*
@@ -892,9 +899,7 @@ idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic: Uint
 	width = height = size;
 
 	// generate the texture number
-	var $texnum = new R( this.texnum );
-	glGenTextures( 1, $texnum );
-	this.textnum = $texnum.$;
+	this.textnum = glGenTextures ( );
 
 	// select proper internal format before we resample
 	this.internalFormat = this.SelectInternalFormat( pic, 6, width, height, this.depth );
@@ -975,44 +980,44 @@ idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic: Uint
 };
 
 
-/////*
-////================
-////ImageProgramStringToFileCompressedFileName
-////================
-////*/
-////void idImage::ImageProgramStringToCompressedFileName( const char *imageProg, char *fileName ) const {
-////	const char	*s;
-////	char	*f;
+/*
+================
+ImageProgramStringToFileCompressedFileName
+================
+*/
+idImage.prototype.ImageProgramStringToCompressedFileName = function ( imageProg: string, fileName: string ) {
+	var /*const char	**/s: string;
+	var /*char	**/f: string;
+	todoThrow ( );
+	//strcpy( fileName, "dds/" );
+	//f = fileName + strlen( fileName );
 
-////	strcpy( fileName, "dds/" );
-////	f = fileName + strlen( fileName );
+	//int depth = 0;
 
-////	int depth = 0;
-
-////	// convert all illegal characters to underscores
-////	// this could conceivably produce a duplicated mapping, but we aren't going to worry about it
-////	for ( s = imageProg ; *s ; s++ ) {
-////		if ( *s == '/' || *s == '\\' || *s == '(') {
-////			if ( depth < 4 ) {
-////				*f = '/';
-////				depth ++;
-////			} else {
-////				*f = ' ';
-////			}
-////			f++;
-////		} else if ( *s == '<' || *s == '>' || *s == ':' || *s == '|' || *s == '"' || *s == '.' ) {
-////			*f = '_';
-////			f++;
-////		} else if ( *s == ' ' && *(f-1) == '/' ) {	// ignore a space right after a slash
-////		} else if ( *s == ')' || *s == ',' ) {		// always ignore these
-////		} else {
-////			*f = *s;
-////			f++;
-////		}
-////	}
-////	*f++ = 0;
-////	strcat( fileName, ".dds" );
-////}
+	//// convert all illegal characters to underscores
+	//// this could conceivably produce a duplicated mapping, but we aren't going to worry about it
+	//for ( s = imageProg ; *s ; s++ ) {
+	//	if ( *s == '/' || *s == '\\' || *s == '(') {
+	//		if ( depth < 4 ) {
+	//			*f = '/';
+	//			depth ++;
+	//		} else {
+	//			*f = ' ';
+	//		}
+	//		f++;
+	//	} else if ( *s == '<' || *s == '>' || *s == ':' || *s == '|' || *s == '"' || *s == '.' ) {
+	//		*f = '_';
+	//		f++;
+	//	} else if ( *s == ' ' && *(f-1) == '/' ) {	// ignore a space right after a slash
+	//	} else if ( *s == ')' || *s == ',' ) {		// always ignore these
+	//	} else {
+	//		*f = *s;
+	//		f++;
+	//	}
+	//}
+	//*f++ = 0;
+	//strcat( fileName, ".dds" );
+};
 
 /////*
 ////==================
@@ -1644,7 +1649,7 @@ idImage.prototype.ActuallyLoadImage = function( checkForPrecompressed:boolean, f
 		// may not be strictly necessary, but some code uses it, so let's leave it in
 		this.imageHash = MD4_BlockChecksum(pic, width.$ * height.$ * 4 );
 
-		this.GenerateImage(pic, width.$, height.$, this.filter, this.allowDownSize, this.repeat, this.depth );
+		this.GenerateImage(pic.$, width.$, height.$, this.filter, this.allowDownSize, this.repeat, this.depth );
 		//this.timestamp = this.timestamp; //??
 		this.precompressedFile = false;
 

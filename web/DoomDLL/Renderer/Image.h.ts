@@ -204,11 +204,11 @@ class idImage {
 
 //	void		AddReference()				{ refCount++; };
 
-////==========================================================
+//==========================================================
 
-//	void		GetDownsize( int &scaled_width, int &scaled_height ) const;
+	GetDownsize ( /*int &*/scaled_width: R<number>, /*int &*/scaled_height: R<number> ): void { throw "placeholder"; }
 	MakeDefault(): void { throw "placeholder";}	// fill with a grid pattern
-//	void		SetImageFilterAndRepeat() const;
+	SetImageFilterAndRepeat(): void { throw "placeholder"; }
 	ShouldImageBePartialCached():boolean { throw "placeholder"; }
 //	void		WritePrecompressedImage();
 	CheckPrecompressedImage( fullLoad: boolean ):boolean { throw "placeholder"; }
@@ -219,12 +219,12 @@ class idImage {
 //	void		UploadCompressedNormalMap( int width, int height, const byte *rgba, int mipLevel );
 //	GLenum		SelectInternalFormat( const byte **dataPtrs, int numDataPtrs, int width, int height,
 //									 textureDepth_t minimumDepth ) const;
-//	void		ImageProgramStringToCompressedFileName( const char *imageProg, char *fileName ) const;
+	ImageProgramStringToCompressedFileName(imageProg: string, fileName: string): void { throw "placeholder"; }
 //	int			NumLevelsForImageSize( int width, int height ) const;
 
 	// data commonly accessed is grouped here
 	static TEXTURE_NOT_LOADED:number = -1;
-/*	GLuint				*/texnum:number;					// gl texture binding, will be TEXTURE_NOT_LOADED if not loaded
+	/*	GLuint				*/texnum: WebGLTexture;					// gl texture binding, will be TEXTURE_NOT_LOADED if not loaded
 	type: textureType_t;
 	/*	int					*/frameUsed: number;				// for texture usage in frame statistics
 /*	int					*/bindCount:number;			// incremented each bind
@@ -236,7 +236,7 @@ class idImage {
 	bgl:backgroundDownload_t;
 	bglNext: idImage;				// linked from tr.backgroundImageLoads
 
-//	// parameters that define this image
+	// parameters that define this image
 	imgName:idStr;								// game path, including extension (except for cube maps), may be an image program
 	generatorFunction:(image:idImage)=> void;	// NULL for files
 	allowDownSize:boolean;			// this also doubles as a don't-partially-load flag

@@ -130,45 +130,45 @@ function R_ResampleTexture( /*const byte **/$in: Uint8Array, /*int */inwidth: nu
 ////}
 
 
-/////*
-////===============
-////R_SetBorderTexels
+/*
+===============
+R_SetBorderTexels
 
-////===============
-////*/
-////void R_SetBorderTexels( byte *inBase, int width, int height, const byte border[4] ) {
-////	int		i;
-////	byte	*out;
+===============
+*/
+function R_SetBorderTexels ( /*byte **/inBase: Uint8Array, /*int */width: number, /*int */height: number, /*const byte */border: Uint8Array /*[4]*/ ): void {
+	var /*int		*/i: number;
+	var out: number;
 
-////	out = inBase;
-////	for (i=0 ; i<height ; i++, out+=width*4) {
-////		out[0] = border[0];
-////		out[1] = border[1];
-////		out[2] = border[2];
-////		out[3] = border[3];
-////	}
-////	out = inBase+(width-1)*4;
-////	for (i=0 ; i<height ; i++, out+=width*4) {
-////		out[0] = border[0];
-////		out[1] = border[1];
-////		out[2] = border[2];
-////		out[3] = border[3];
-////	}
-////	out = inBase;
-////	for (i=0 ; i<width ; i++, out+=4) {
-////		out[0] = border[0];
-////		out[1] = border[1];
-////		out[2] = border[2];
-////		out[3] = border[3];
-////	}
-////	out = inBase+width*4*(height-1);
-////	for (i=0 ; i<width ; i++, out+=4) {
-////		out[0] = border[0];
-////		out[1] = border[1];
-////		out[2] = border[2];
-////		out[3] = border[3];
-////	}
-////}
+	out = 0;
+	for ( i = 0; i < height; i++, out += width * 4 ) {
+		inBase[out + 0] = border[0];
+		inBase[out + 1] = border[1];
+		inBase[out + 2] = border[2];
+		inBase[out + 3] = border[3];
+	}
+	out = ( width - 1 ) * 4;
+	for ( i = 0; i < height; i++, out += width * 4 ) {
+		inBase[out + 0] = border[0];
+		inBase[out + 1] = border[1];
+		inBase[out + 2] = border[2];
+		inBase[out + 3] = border[3];
+	}
+	out = 0;
+	for ( i = 0; i < width; i++, out += 4 ) {
+		inBase[out + 0] = border[0];
+		inBase[out + 1] = border[1];
+		inBase[out + 2] = border[2];
+		inBase[out + 3] = border[3];
+	}
+	out = width * 4 * ( height - 1 );
+	for ( i = 0; i < width; i++, out += 4 ) {
+		inBase[out + 0] = border[0];
+		inBase[out + 1] = border[1];
+		inBase[out + 2] = border[2];
+		inBase[out + 3] = border[3];
+	}
+}
 
 /*
 ===============
@@ -395,75 +395,74 @@ will result in a slight shrinking of the texture as it mips, but better than
 smeared clamps...
 ================
 */
-function R_MipMap($in: Uint8Array, /*int */width: number, /*int */height: number, preserveBorder: boolean): Uint8Array {
-	todoThrow ( );
-////	int		i:number, j:number;
-////	const byte	*in_p;
+function R_MipMap ( $in: Uint8Array, /*int */width: number, /*int */height: number, preserveBorder: boolean ): Uint8Array {
+	var /*int		*/i: number, j: number;
+	var /*const byte	**/in_p: number;
 	var out: Uint8Array, out_p: number;
-////	int		row:number;
-////	byte	border[4];
-	var /*int		*/newWidth: number, newHeight:number;
+	var /*int		*/row: number;
+	var border = new Uint8Array( 4 );
+	var /*int		*/newWidth: number, newHeight: number;
 
-////	if ( width < 1 || height < 1 || ( width + height == 2 ) ) {
-////		common.FatalError( "R_MipMap called with size %i,%i", width, height );
-////	}
+	if ( width < 1 || height < 1 || ( width + height == 2 ) ) {
+		common.FatalError( "R_MipMap called with size %i,%i", width, height );
+	}
 
-////	border[0] = $in[0];
-////	border[1] = $in[1];
-////	border[2] = $in[2];
-////	border[3] = $in[3];
+	border[0] = $in[0];
+	border[1] = $in[1];
+	border[2] = $in[2];
+	border[3] = $in[3];
 
-////	row = width * 4;
+	row = width * 4;
 
-////	newWidth = width >> 1;
-////	newHeight = height >> 1;
-////	if ( !newWidth ) {
-////		newWidth = 1;
-////	}
-////	if ( !newHeight ) {
-////		newHeight = 1;
-////	}
+	newWidth = width >> 1;
+	newHeight = height >> 1;
+	if ( !newWidth ) {
+		newWidth = 1;
+	}
+	if ( !newHeight ) {
+		newHeight = 1;
+	}
 	out = new Uint8Array( newWidth * newHeight * 4 );
-	out_p = 0;//out;
+	out_p = 0; //out;
 
-////	in_p = $in;
+	in_p = 0; // $in;
 
-////	width >>= 1;
-////	height >>= 1;
+	width >>= 1;
+	height >>= 1;
 
-////	if ( width == 0 || height == 0 ) {
-////		width += height;	// get largest
-////		if ( preserveBorder ) {
-////			for (i=0 ; i<width ; i++, out_p+=4 ) {
-////				out_p[0] = border[0];
-////				out_p[1] = border[1];
-////				out_p[2] = border[2];
-////				out_p[3] = border[3];
-////			}
-////		} else {
-////			for (i=0 ; i<width ; i++, out_p+=4, in_p+=8 ) {
-////				out_p[0] = ( in_p[0] + in_p[4] )>>1;
-////				out_p[1] = ( in_p[1] + in_p[5] )>>1;
-////				out_p[2] = ( in_p[2] + in_p[6] )>>1;
-////				out_p[3] = ( in_p[3] + in_p[7] )>>1;
-////			}
-////		}
-////		return out;
-////	}
+	if ( width == 0 || height == 0 ) {
+		width += height; // get largest
+		if ( preserveBorder ) {
+			for ( i = 0; i < width; i++, out_p += 4 ) {
+				out[out_p + 0] = border[0];
+				out[out_p + 1] = border[1];
+				out[out_p + 2] = border[2];
+				out[out_p + 3] = border[3];
+			}
+		} else {
+			for ( i = 0; i < width; i++, out_p += 4, in_p += 8 ) {
+				out[out_p + 0] = ( $in[in_p + 0] + $in[in_p + 4] ) >> 1;
+				out[out_p + 1] = ( $in[in_p + 1] + $in[in_p + 5] ) >> 1;
+				out[out_p + 2] = ( $in[in_p + 2] + $in[in_p + 6] ) >> 1;
+				out[out_p + 3] = ( $in[in_p + 3] + $in[in_p + 7] ) >> 1;
+			}
+		}
+		return out;
+	}
 
-////	for (i=0 ; i<height ; i++, in_p+=row) {
-////		for (j=0 ; j<width ; j++, out_p+=4, in_p+=8) {
-////			out_p[0] = (in_p[0] + in_p[4] + in_p[row+0] + in_p[row+4])>>2;
-////			out_p[1] = (in_p[1] + in_p[5] + in_p[row+1] + in_p[row+5])>>2;
-////			out_p[2] = (in_p[2] + in_p[6] + in_p[row+2] + in_p[row+6])>>2;
-////			out_p[3] = (in_p[3] + in_p[7] + in_p[row+3] + in_p[row+7])>>2;
-////		}
-////	}
+	for ( i = 0; i < height; i++, in_p += row ) {
+		for ( j = 0; j < width; j++, out_p += 4, in_p += 8 ) {
+			out[out_p + 0] = ( $in[in_p + 0] + $in[in_p + 4] + $in[in_p + row + 0] + $in[in_p + row + 4] ) >> 2;
+			out[out_p + 1] = ( $in[in_p + 1] + $in[in_p + 5] + $in[in_p + row + 1] + $in[in_p + row + 5] ) >> 2;
+			out[out_p + 2] = ( $in[in_p + 2] + $in[in_p + 6] + $in[in_p + row + 2] + $in[in_p + row + 6] ) >> 2;
+			out[out_p + 3] = ( $in[in_p + 3] + $in[in_p + 7] + $in[in_p + row + 3] + $in[in_p + row + 7] ) >> 2;
+		}
+	}
 
-////	// copy the old border texel back around if desired
-////	if ( preserveBorder ) {
-////		R_SetBorderTexels( out, width, height, border );
-////	}
+	// copy the old border texel back around if desired
+	if ( preserveBorder ) {
+		R_SetBorderTexels( out, width, height, border );
+	}
 
 	return out;
 }
