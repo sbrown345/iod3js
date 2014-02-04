@@ -1146,8 +1146,6 @@ var MAX_RENDER_CROPS = 8;
 ////extern idCVar r_usePortals;				// 1 = use portals to perform area culling, otherwise draw everything
 ////extern idCVar r_useStateCaching;		// avoid redundant state changes in GL_*() calls
 ////extern idCVar r_useCombinerDisplayLists;// if 1, put all nvidia register combiner programming in display lists
-////extern idCVar r_useVertexBuffers;		// if 0, don't use ARB_vertex_buffer_object for vertexes
-////extern idCVar r_useIndexBuffers;		// if 0, don't use ARB_vertex_buffer_object for indexes
 ////extern idCVar r_useEntityCallbacks;		// if 0, issue the callback immediately at update time, rather than defering
 ////extern idCVar r_lightAllBackFaces;		// light all the back faces, even when they would be shadowed
 ////extern idCVar r_useDepthBoundsTest;     // use depth bounds test to reduce shadow fill

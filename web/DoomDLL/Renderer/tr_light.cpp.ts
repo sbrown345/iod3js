@@ -973,7 +973,7 @@ function R_SkyboxTexGen(surf: drawSurf_t, viewOrg: idVec3):void {
 //			// touch the shadow surface so it won't get purged
 //			vertexCache.Touch( tri.shadowCache );
 //
-//			if ( !tri.indexCache && r_useIndexBuffers.GetBool() ) {
+//			if ( !tri.indexCache ) {
 //				vertexCache.Alloc( tri.indexes, tri.numIndexes * sizeof( tri.indexes[0] ), &tri.indexCache, true );
 //			}
 //			if ( tri.indexCache ) {

@@ -68,9 +68,6 @@ var r_useTwoSidedStencil = new idCVar( "r_useTwoSidedStencil", "1", CVAR_RENDERE
 var r_useDeferredTangents = new idCVar( "r_useDeferredTangents", "1", CVAR_RENDERER | CVAR_BOOL, "defer tangents calculations after deform" );
 var r_useCachedDynamicModels = new idCVar( "r_useCachedDynamicModels", "1", CVAR_RENDERER | CVAR_BOOL, "cache snapshots of dynamic models" );
 
-var r_useVertexBuffers = new idCVar( "r_useVertexBuffers", "1", CVAR_RENDERER | CVAR_INTEGER, "use ARB_vertex_buffer_object for vertexes", 0, 1, ArgCompletion_Integer_Template( 0, 1 ) );
-var r_useIndexBuffers = new idCVar( "r_useIndexBuffers", "0", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_INTEGER, "use ARB_vertex_buffer_object for indexes", 0, 1, ArgCompletion_Integer_Template( 0, 1 ) );
-
 var r_useStateCaching = new idCVar( "r_useStateCaching", "1", CVAR_RENDERER | CVAR_BOOL, "avoid redundant state changes in GL_* = new idCVar() calls" );
 var r_useInfiniteFarZ = new idCVar( "r_useInfiniteFarZ", "1", CVAR_RENDERER | CVAR_BOOL, "use the no-far-clip-plane trick" );
 

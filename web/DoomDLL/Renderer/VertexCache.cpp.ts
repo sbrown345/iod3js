@@ -63,9 +63,9 @@ class idVertexCache {
 //	// created at level load time even if a frame hasn't passed yet.
 //	// These allocations can be purged, which will zero the pointer.
 //	void			Alloc( void *data, int bytes, vertCache_t **buffer, bool indexBuffer = false );
-//
-//	// This will be a real pointer with virtual memory,
-//	// but it will be an int offset cast to a pointer of ARB_vertex_buffer_object
+		
+	//// if you need to draw something without an indexCache, this
+	//// must be called to reset GL_ELEMENT_ARRAY_BUFFER_ARB
 //	void *			Position( vertCache_t *buffer );
 //
 //	// if r_useIndexBuffers is enabled, but you need to draw something without
@@ -113,8 +113,6 @@ class idVertexCache {
 
 	currentFrame = 0;			// for purgable block tracking												//	int				
 	listNum = 0;				// currentFrame % NUM_VERTEX_FRAMES, determines which tempBuffers to use	//	int				
-
-	virtualMemory:boolean;			// not fast stuff
 
 	allocatingTempBuffer:boolean;	// force GL_STREAM_DRAW_ARB
 //

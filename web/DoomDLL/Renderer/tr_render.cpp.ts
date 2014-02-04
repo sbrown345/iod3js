@@ -65,16 +65,14 @@ function RB_DrawElementsWithCounters(tri: srfTriangles_t  ): void {
 		}
 	}
 
-	if ( tri.indexCache && r_useIndexBuffers.GetBool() ) {
+	if ( tri.indexCache ) {
 		glDrawElements( GL_TRIANGLES, 
 						r_singleTriangle.GetBool() ? 3 : tri.numIndexes,
 						GL_INDEX_TYPE,
 			<number>vertexCache.Position(tri.indexCache) /*/*(int *)#1#<Int32Array>vertexCache.Position( tri.indexCache ) */);
 		backEnd.pc.c_vboIndexes += tri.numIndexes;
 	} else {
-		if ( r_useIndexBuffers.GetBool() ) {
-			vertexCache.UnbindIndex();
-		}
+		vertexCache.UnbindIndex();
 		glDrawElements( GL_TRIANGLES, 
 						r_singleTriangle.GetBool() ? 3 : tri.numIndexes,
 						GL_INDEX_TYPE,
@@ -108,9 +106,7 @@ function RB_DrawElementsWithCounters(tri: srfTriangles_t  ): void {
 //						(int *)vertexCache.Position( tri.indexCache ) );
 //		backEnd.pc.c_vboIndexes += numIndexes;
 //	} else {
-//		if ( r_useIndexBuffers.GetBool() ) {
-//			vertexCache.UnbindIndex();
-//		}
+//		vertexCache.UnbindIndex();
 //		glDrawElements( GL_TRIANGLES, 
 //						r_singleTriangle.GetBool() ? 3 : numIndexes,
 //						GL_INDEX_TYPE,
