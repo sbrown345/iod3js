@@ -1872,7 +1872,6 @@ void idRenderSystemLocal::Clear( void ) {
 	tiledViewport[0] = 0;
 	tiledViewport[1] = 0;
 	backEndRenderer = BE_BAD;
-	backEndRendererHasVertexPrograms = false;
 	backEndRendererMaxLight = 1.0f;
 	ambientLightVector.Zero();
 	sortOffset = 0;

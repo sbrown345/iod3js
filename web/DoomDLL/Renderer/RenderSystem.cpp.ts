@@ -1962,7 +1962,6 @@ Clear( ) {
 	this.viewportOffset = [0, 0];
 	this.tiledViewport = [0, 0];
 	this.backEndRenderer = backEndName_t.BE_BAD;
-	this.backEndRendererHasVertexPrograms = false;
 	this.backEndRendererMaxLight = 1.0;
 	this.ambientLightVector = new idVec4();
 	this.ambientLightVector.Zero();
@@ -2730,8 +2729,6 @@ SetBackEndRenderer():void {
 		return;
 	}
 
-	var oldVPstate = this.backEndRendererHasVertexPrograms;
-
 	this.backEndRenderer = backEndName_t.BE_BAD;
 
 	if ( idStr.Icmp( r_renderer.GetString(), "glsl" ) == 0 ) {
@@ -2740,32 +2737,19 @@ SetBackEndRenderer():void {
 		}
 	}
 
-	this.backEndRendererHasVertexPrograms = false;
 	this.backEndRendererMaxLight = 1.0;
 
 	switch( this.backEndRenderer ) {
 		case backEndName_t.BE_ARB2:
 		common.Printf( "using ARB2 renderSystem\n" );
-		this.backEndRendererHasVertexPrograms = true;
 		this.backEndRendererMaxLight = 999;
 		break;
 		case backEndName_t.BE_GLSL:
 		common.Printf( "using GLSL renderSystem\n" );
-		this.backEndRendererHasVertexPrograms = true;
 		this.backEndRendererMaxLight = 999;
 		break;
 	default:
 		common.FatalError( "SetbackEndRenderer: bad back end" );
-	}
-
-	// clear the vertex cache if we are changing between
-	// using vertex programs and not, because specular and
-	// shadows will be different data
-	if ( oldVPstate != this.backEndRendererHasVertexPrograms ) {
-		vertexCache.PurgeAll();
-		if ( this.primaryWorld ) {
-			this.primaryWorld.FreeInteractions();
-		}
 	}
 
 	r_renderer.ClearModified();

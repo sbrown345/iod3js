@@ -15540,7 +15540,6 @@ void VPCALL idSIMD_SSE::NormalizeTangents( idDrawVert *verts, const int numVerts
 	}
 }
 
-
 /*
 ============
 idSIMD_SSE::CreateSpecularTextureCoords
