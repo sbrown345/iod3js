@@ -6,7 +6,7 @@ JavaScript Debug Helpers
 ===============================================================================
 */
 var LOG_TO_CONSOLE = false;
-var SKIP_ALL_LOGGING = false;
+var SKIP_ALL_LOGGING = true;
 
 var DEBUG_LOG_MODE = true;
 function isd(v: boolean): boolean { return DEBUG_LOG_MODE && v; }

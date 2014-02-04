@@ -9,7 +9,7 @@
 
 	1124 constants
 	122 enums
-	509 classes/structs/unions
+	508 classes/structs/unions
 	36 templates
 	6 max inheritance level for 'idPlayer'
 
@@ -4171,11 +4171,6 @@ static classVariableInfo_t dominantTri_t_typeInfo[] = {
 	{ NULL, 0 }
 };
 
-static classVariableInfo_t lightingCache_t_typeInfo[] = {
-	{ "idVec3", "localLightVector", (int)(&((lightingCache_t *)0)->localLightVector), sizeof( ((lightingCache_t *)0)->localLightVector ) },
-	{ NULL, 0 }
-};
-
 static classVariableInfo_t shadowCache_t_typeInfo[] = {
 	{ "idVec4", "xyz", (int)(&((shadowCache_t *)0)->xyz), sizeof( ((shadowCache_t *)0)->xyz ) },
 	{ NULL, 0 }
@@ -4210,7 +4205,6 @@ static classVariableInfo_t srfTriangles_t_typeInfo[] = {
 	{ "srfTriangles_s *", "nextDeferredFree", (int)(&((srfTriangles_t *)0)->nextDeferredFree), sizeof( ((srfTriangles_t *)0)->nextDeferredFree ) },
 	{ "vertCache_s *", "indexCache", (int)(&((srfTriangles_t *)0)->indexCache), sizeof( ((srfTriangles_t *)0)->indexCache ) },
 	{ "vertCache_s *", "ambientCache", (int)(&((srfTriangles_t *)0)->ambientCache), sizeof( ((srfTriangles_t *)0)->ambientCache ) },
-	{ "vertCache_s *", "lightingCache", (int)(&((srfTriangles_t *)0)->lightingCache), sizeof( ((srfTriangles_t *)0)->lightingCache ) },
 	{ "vertCache_s *", "shadowCache", (int)(&((srfTriangles_t *)0)->shadowCache), sizeof( ((srfTriangles_t *)0)->shadowCache ) },
 	{ NULL, 0 }
 };
@@ -4963,11 +4957,11 @@ static classVariableInfo_t frameLookup_t_typeInfo[] = {
 	{ NULL, 0 }
 };
 
-static classVariableInfo_t class_254_class_254_typeInfo[] = {
-//	{ "const idSoundShader *", "soundShader", (int)(&((class_254::class_254 *)0)->soundShader), sizeof( ((class_254::class_254 *)0)->soundShader ) },
-//	{ "const function_t *", "function", (int)(&((class_254::class_254 *)0)->function), sizeof( ((class_254::class_254 *)0)->function ) },
-//	{ "const idDeclSkin *", "skin", (int)(&((class_254::class_254 *)0)->skin), sizeof( ((class_254::class_254 *)0)->skin ) },
-//	{ "int", "index", (int)(&((class_254::class_254 *)0)->index), sizeof( ((class_254::class_254 *)0)->index ) },
+static classVariableInfo_t class_253_class_253_typeInfo[] = {
+//	{ "const idSoundShader *", "soundShader", (int)(&((class_253::class_253 *)0)->soundShader), sizeof( ((class_253::class_253 *)0)->soundShader ) },
+//	{ "const function_t *", "function", (int)(&((class_253::class_253 *)0)->function), sizeof( ((class_253::class_253 *)0)->function ) },
+//	{ "const idDeclSkin *", "skin", (int)(&((class_253::class_253 *)0)->skin), sizeof( ((class_253::class_253 *)0)->skin ) },
+//	{ "int", "index", (int)(&((class_253::class_253 *)0)->index), sizeof( ((class_253::class_253 *)0)->index ) },
 	{ NULL, 0 }
 };
 
@@ -8074,7 +8068,6 @@ static classTypeInfo_t classTypeInfo[] = {
 	{ "idMaterial", "idDecl", sizeof(idMaterial), idMaterial_typeInfo },
 	{ "silEdge_t", "", sizeof(silEdge_t), silEdge_t_typeInfo },
 	{ "dominantTri_t", "", sizeof(dominantTri_t), dominantTri_t_typeInfo },
-	{ "lightingCache_t", "", sizeof(lightingCache_t), lightingCache_t_typeInfo },
 	{ "shadowCache_t", "", sizeof(shadowCache_t), shadowCache_t_typeInfo },
 	{ "srfTriangles_t", "", sizeof(srfTriangles_t), srfTriangles_t_typeInfo },
 	{ "modelSurface_t", "", sizeof(modelSurface_t), modelSurface_t_typeInfo },
@@ -8155,7 +8148,7 @@ static classTypeInfo_t classTypeInfo[] = {
 	{ "jointInfo_t", "", sizeof(jointInfo_t), jointInfo_t_typeInfo },
 	{ "jointMod_t", "", sizeof(jointMod_t), jointMod_t_typeInfo },
 	{ "frameLookup_t", "", sizeof(frameLookup_t), frameLookup_t_typeInfo },
-//	{ "class_254::class_254", "", sizeof(class_254::class_254), class_254_class_254_typeInfo },
+//	{ "class_253::class_253", "", sizeof(class_253::class_253), class_253_class_253_typeInfo },
 	{ "frameCommand_t", "", sizeof(frameCommand_t), frameCommand_t_typeInfo },
 	{ "animFlags_t", "", sizeof(animFlags_t), animFlags_t_typeInfo },
 	{ "idModelExport", "", sizeof(idModelExport), idModelExport_typeInfo },

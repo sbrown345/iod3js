@@ -12,9 +12,9 @@ function todoUnimportant(reason?: string): void {
 
 function todoThrow(message: string = ""): any {
 	dlogFlush ( );
-    debugger;
+    //debugger;
     console.error("todo \n" + message);
-    throw "!";
+    //throw "!";
 }
 
 // track all temp hardcoded stuff

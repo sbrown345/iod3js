@@ -11,9 +11,11 @@
         <script src="utils/sscanf.js"></script>
         <script src="doom3.js"></script>
         <script>
-            var commandLine = "+set com_allowConsole 1 +set si_pure 0 +set r_renderer glsl +set r_fullscreen 0  +set com_forceGenericSIMD 1";
-            commandLine += "+map " + ( window.location.search ? window.location.search.substr( 1 ) : "game/demo_mars_city1" );
-            WinMain( null, null, commandLine, commandLine.split( " " ).length );
+            setTimeout( function ( ) {
+                var commandLine = "+set com_allowConsole 1 +set si_pure 0 +set r_renderer glsl +set r_fullscreen 0  +set com_forceGenericSIMD 1";
+                commandLine += "+map " + ( window.location.search ? window.location.search.substr( 1 ) : "game/demo_mars_city1" );
+                WinMain( null, null, commandLine, commandLine.split( " " ).length );
+            }, 2000 );
         </script>
     </body>
 </html>

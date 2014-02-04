@@ -78,7 +78,7 @@ function RB_DrawElementsWithCounters(tri: srfTriangles_t  ): void {
 		glDrawElements( GL_TRIANGLES, 
 						r_singleTriangle.GetBool() ? 3 : tri.numIndexes,
 						GL_INDEX_TYPE,
-						tri.indexes[0] );
+						tri.indexes[0]/* * 2 */ );
 	}
 }
 //

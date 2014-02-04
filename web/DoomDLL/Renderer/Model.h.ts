@@ -48,12 +48,12 @@
 // to support the large models that renderBump loads, they need to be 32 bits
 //#if 1
 
-var GL_INDEX_TYPE = GL_UNSIGNED_INT;
+//var GL_INDEX_TYPE = GL_UNSIGNED_INT;
 //typedef int glIndex_t;
 
 ////#else
 
-////#define GL_INDEX_TYPE		GL_UNSIGNED_SHORT
+var GL_INDEX_TYPE = GL_UNSIGNED_SHORT;
 ////typedef short glIndex_t;
 
 ////#endif
@@ -88,11 +88,6 @@ class dominantTri_t {
 		this.v3 = 0;
 		this.normalizationScale = new Float32Array( 3 );
 	}
-} ;
-
-class lightingCache_t {
-	localLightVector: idVec3;		// this is the statically computed vector to the light
-														// in texture space for cards without vertex programs
 } ;
 
 class shadowCache_t {
@@ -154,7 +149,6 @@ class srfTriangles_t {
 	// data in vertex object space, not directly readable by the CPU
 	indexCache: vertCache_t; // int
 	ambientCache: vertCache_t; // idDrawVert
-	lightingCache: vertCache_t; // lightingCache_t
 	shadowCache: vertCache_t; // shadowCache_t
 
 	constructor ( ) {
@@ -211,7 +205,6 @@ class srfTriangles_t {
 
 		this.indexCache = null;
 		this.ambientCache = null;
-		this.lightingCache = null;
 		this.shadowCache = null;
 	}
 

@@ -31,7 +31,7 @@ var glAlphaFunc = ( ...args: any[]) => { todoThrow ( ); };
 var glAreTexturesResident = ( ...args: any[]) => { todoThrow ( ); };
 var glArrayElement = ( ...args: any[]) => { todoThrow ( ); };
 var glBegin = ( ...args: any[]) => { todoThrow ( ); };
-var		glBindTexture = <( target: number, texture: WebGLTexture ) => void> gl.bindTexture.bind( gl );
+var	glBindTexture = <( target: number, texture: WebGLTexture ) => void> gl.bindTexture.bind( gl );
 var glBitmap = ( ...args: any[]) => { todoThrow ( ); };
 var glBlendFunc = <( sfactor: number, dfactor: number ) => void> gl.blendFunc.bind( gl );
 var glCallList = ( ...args: any[]) => { todoThrow ( ); };

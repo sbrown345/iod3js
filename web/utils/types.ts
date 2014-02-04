@@ -88,7 +88,6 @@ function newStructArray<T>($class: any, count: number): T[] {
         array[i] = new $class();
     }
 
-    array[-1] = new $class(); // various places check for a -1 which doesn't crash C. (this probably breaks v8 perf opt)
     return array;
 }
 

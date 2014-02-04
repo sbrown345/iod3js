@@ -1127,32 +1127,17 @@ void idInteraction::AddActiveInteraction( void ) {
 					lightTris->ambientCache = tri->ambientCache;
 
 					// touch the ambient surface so it won't get purged
-					vertexCache.Touch( lightTris->ambientCache );
+					vertexCache.Touch(lightTris->ambientCache);
 
-					// regenerate the lighting cache (for non-vertex program cards) if it has been purged
-					if ( !lightTris->lightingCache ) {
-						if ( !R_CreateLightingCache( entityDef, lightDef, lightTris ) ) {
-							// skip if we are out of vertex memory
-							continue;
-						}
-					}
-					// touch the light surface so it won't get purged
-					// (vertex program cards won't have a light cache at all)
-					if ( lightTris->lightingCache ) {
-						vertexCache.Touch( lightTris->lightingCache );
-					}
-
-					if ( !lightTris->indexCache && r_useIndexBuffers.GetBool() ) {
-						vertexCache.Alloc( lightTris->indexes, lightTris->numIndexes * sizeof( lightTris->indexes[0] ), &lightTris->indexCache, true );
-					}
-					if ( lightTris->indexCache ) {
-						vertexCache.Touch( lightTris->indexCache );
+					if (!lightTris->indexCache) {
+						vertexCache.Alloc(lightTris->indexes, lightTris->numIndexes * sizeof(lightTris->indexes[0]), &lightTris->indexCache, true);
+						vertexCache.Touch(lightTris->indexCache);
 					}
 
 					// add the surface to the light list
 
 					const idMaterial *shader = sint->shader;
-					R_GlobalShaderOverride( &shader );
+					R_GlobalShaderOverride(&shader);
 
 					// there will only be localSurfaces if the light casts shadows and
 					// there are surfaces with NOSELFSHADOW

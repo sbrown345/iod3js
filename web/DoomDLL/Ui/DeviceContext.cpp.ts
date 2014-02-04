@@ -133,8 +133,8 @@ class idDeviceContext {
 	//	void				SetFontByScale( float scale );
 	//	void				Clear( void );
 	//
-	cursorImages: idMaterial[/*CURSOR_COUNT*/];			//	*const idMaterial
-	scrollBarImages: idMaterial[/*SCROLLBAR_COUNT*/];	//	*const idMaterial
+	cursorImages = newStructArray<idMaterial>(idMaterial, CURSOR_COUNT);
+	scrollBarImages = newStructArray<idMaterial>(idMaterial, SCROLLBAR_COUNT);
 	whiteImage: idMaterial;								//	*const idMaterial
 	activeFont: fontInfoEx_t;							//	*fontInfoEx_t
 	useFont: fontInfo_t;								//	*fontInfo_t			
