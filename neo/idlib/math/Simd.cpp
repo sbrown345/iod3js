@@ -4071,7 +4071,6 @@ void idSIMD::Test_f( const idCmdArgs &args ) {
 	TestDeriveTangents();
 	TestDeriveUnsmoothedTangents();
 	TestNormalizeTangents();
-	TestGetSpecularTextureCoords();
 	TestCreateShadowCache();
 
 	idLib::common->Printf("====================================\n" );
