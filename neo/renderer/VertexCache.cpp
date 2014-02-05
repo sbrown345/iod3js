@@ -116,6 +116,7 @@ The vertex buffer object will be bound
 */
 void *idVertexCache::Position(vertCache_t *buffer)
 {
+	dlog(DEBUG_RENDER_METHODS, "Position\n");
 	if (!buffer || buffer->tag == TAG_FREE) {
 		common->FatalError("idVertexCache::Position: bad vertCache_t");
 	}
@@ -132,8 +133,11 @@ void *idVertexCache::Position(vertCache_t *buffer)
 
 		if (buffer->indexBuffer) {
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->vbo);
-		} else {
+			dlog(DEBUG_RENDER_METHODS, "Position glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, buffer.vbo );\n");
+		}
+		else {
 			glBindBuffer(GL_ARRAY_BUFFER, buffer->vbo);
+			dlog(DEBUG_RENDER_METHODS, "Position glBindBuffer( GL_ARRAY_BUFFER, buffer.vbo );\n");
 		}
 
 		return (void *)buffer->offset;
@@ -145,6 +149,7 @@ void *idVertexCache::Position(vertCache_t *buffer)
 
 void idVertexCache::UnbindIndex()
 {
+	dlog(DEBUG_RENDER_METHODS, "UnbindIndex glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, null );\n");
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
@@ -228,6 +233,7 @@ void idVertexCache::Alloc(void *data, int size, vertCache_t **buffer, bool index
 {
 	vertCache_t	*block;
 
+	dlog(DEBUG_RENDER_METHODS, "Alloc\n");
 	if (size <= 0) {
 		common->Error("idVertexCache::Alloc: size = %i\n", size);
 	}
@@ -282,9 +288,11 @@ void idVertexCache::Alloc(void *data, int size, vertCache_t **buffer, bool index
 	// copy the data
 	if (block->vbo) {
 		if (indexBuffer) {
+			dlog(DEBUG_RENDER_METHODS, "Alloc glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, block->vbo);\n");
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, block->vbo);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei)size, data, GL_STATIC_DRAW);
 		} else {
+			dlog(DEBUG_RENDER_METHODS, "Alloc glBindBuffer(GL_ARRAY_BUFFER, block.vbo);\n");
 			glBindBuffer(GL_ARRAY_BUFFER, block->vbo);
 
 			if (allocatingTempBuffer) {
@@ -375,6 +383,7 @@ vertCache_t	*idVertexCache::AllocFrameTemp(void *data, int size)
 {
 	vertCache_t	*block;
 
+	dlog(DEBUG_RENDER_METHODS, "AllocFrameTemp\n");
 	if (size <= 0) {
 		common->Error("idVertexCache::AllocFrameTemp: size = %i\n", size);
 	}
@@ -425,6 +434,7 @@ vertCache_t	*idVertexCache::AllocFrameTemp(void *data, int size)
 	block->vbo = tempBuffers[listNum]->vbo;
 
 	if (block->vbo) {
+		dlog(DEBUG_RENDER_METHODS, "AllocFrameTemp glBindBuffer(GL_ARRAY_BUFFER, block->vbo);\n");
 		glBindBuffer(GL_ARRAY_BUFFER, block->vbo);
 		glBufferSubData(GL_ARRAY_BUFFER, block->offset, (GLsizei)size, data);
 	} else {
@@ -441,6 +451,7 @@ idVertexCache::EndFrame
 */
 void idVertexCache::EndFrame()
 {
+	dlog(DEBUG_RENDER_METHODS, "EndFrame\n");
 	// display debug information
 	if (r_showVertexCache.GetBool()) {
 		int	staticUseCount = 0;
@@ -475,6 +486,8 @@ void idVertexCache::EndFrame()
 	// unbind vertex buffers
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	dlog(DEBUG_RENDER_METHODS, "EndFrame glBindBuffer(GL_ARRAY_BUFFER, 0);\n");
+	dlog(DEBUG_RENDER_METHODS, "EndFrame glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);\n");
 
 	currentFrame = tr.frameCount;
 	listNum = currentFrame % NUM_VERTEX_FRAMES;

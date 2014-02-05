@@ -909,7 +909,7 @@ int idLexer::ReadToken( idToken *token ) {
 	}
 
 	// succesfully read a token
-	dlog(DEBUG_Lexer, "t: %s\n", token->data);
+	//dlog(DEBUG_Lexer, "t: %s\n", token->data);
 	return 1;
 }
 

@@ -195,6 +195,7 @@ The vertex buffer object will be bound
 ==============
 */
 	Position ( buffer: vertCache_t ): any {
+		dlog(DEBUG_RENDER_METHODS, "Position\n");
 		if ( !buffer || buffer.tag == vertBlockTag_t.TAG_FREE ) {
 			common.FatalError( "idVertexCache::Position: bad vertCache_t" );
 		}
@@ -211,7 +212,9 @@ The vertex buffer object will be bound
 
 			if ( buffer.indexBuffer ) {
 				glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, buffer.vbo );
+				dlog(DEBUG_RENDER_METHODS, "Position glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, buffer.vbo );\n");
 			} else {
+				dlog(DEBUG_RENDER_METHODS, "Position glBindBuffer( GL_ARRAY_BUFFER, buffer.vbo );\n");
 				glBindBuffer( GL_ARRAY_BUFFER, buffer.vbo );
 			}
 
@@ -225,6 +228,7 @@ The vertex buffer object will be bound
 	}
 
 	UnbindIndex ( ): void {
+		dlog(DEBUG_RENDER_METHODS, "UnbindIndex glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, null );\n");
 		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, null );
 	}
 //
@@ -312,6 +316,7 @@ Alloc(/*void **/data:Uint8Array, /*int */size:number, /*vertCache_t ***/buffer:R
 {
 	var block: vertCache_t;
 
+	dlog(DEBUG_RENDER_METHODS, "Alloc\n");
 	if (size <= 0) {
 		common.Error("idVertexCache::Alloc: size = %i\n", size);
 	}
@@ -366,9 +371,11 @@ Alloc(/*void **/data:Uint8Array, /*int */size:number, /*vertCache_t ***/buffer:R
 	// copy the data
 	if (block.vbo) {
 		if (indexBuffer) {
+			dlog(DEBUG_RENDER_METHODS, "Alloc glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, block->vbo);\n");
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, block.vbo);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, /*(GLsizei)*/size, data, GL_STATIC_DRAW);
 		} else {
+			dlog(DEBUG_RENDER_METHODS, "Alloc glBindBuffer(GL_ARRAY_BUFFER, block.vbo);\n");
 			glBindBuffer(GL_ARRAY_BUFFER, block.vbo);
 
 			if (this.allocatingTempBuffer) {
@@ -458,6 +465,7 @@ there may still be future references to dynamically created surfaces.
 	AllocFrameTemp( /*void * */dataBuffer: any, dataObject:any,/*int*/ size: number ): vertCache_t {
 		var block: vertCache_t;
 
+		dlog(DEBUG_RENDER_METHODS, "AllocFrameTemp\n");
 		if ( size <= 0 ) {
 			common.Error( "idVertexCache::AllocFrameTemp: size = %i\n", size );
 		}
@@ -509,6 +517,7 @@ there may still be future references to dynamically created surfaces.
 		block.vbo = this.tempBuffers[this.listNum].vbo;
 
 		if ( block.vbo ) {
+			dlog(DEBUG_RENDER_METHODS, "AllocFrameTemp glBindBuffer(GL_ARRAY_BUFFER, block->vbo);\n");
 			glBindBuffer( GL_ARRAY_BUFFER, block.vbo );
 			glBufferSubData(GL_ARRAY_BUFFER, block.offset, /*(GLsizei)size,*/ dataBuffer);
 			//block.offsetObj = dataObject; // attempt to get data ready for "return (void *)buffer->offset;" in idVertexCache::Position
@@ -526,6 +535,7 @@ idVertexCache::EndFrame
 ===========
 */
 	EndFrame ( ): void {
+		dlog(DEBUG_RENDER_METHODS, "EndFrame\n");
 		// display debug information
 		if ( r_showVertexCache.GetBool ( ) ) {
 			var /*int	*/staticUseCount = 0;
@@ -559,7 +569,9 @@ idVertexCache::EndFrame
 
 		// unbind vertex buffers
 		glBindBuffer( GL_ARRAY_BUFFER, null );
-		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, null );
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, null);
+		dlog(DEBUG_RENDER_METHODS, "EndFrame glBindBuffer(GL_ARRAY_BUFFER, 0);\n");
+		dlog(DEBUG_RENDER_METHODS, "EndFrame glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);\n");
 
 		this.currentFrame = tr.frameCount;
 		this.listNum = this.currentFrame % NUM_VERTEX_FRAMES;

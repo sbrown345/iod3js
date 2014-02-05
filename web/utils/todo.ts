@@ -14,7 +14,7 @@ function todoThrow(message: string = ""): any {
 	dlogFlush ( );
     //debugger;
     console.error("todo \n" + message);
-    //throw "!";
+    throw "!";
 }
 
 // track all temp hardcoded stuff

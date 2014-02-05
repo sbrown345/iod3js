@@ -19,7 +19,7 @@ declare module WebGLDebugUtils {
 }
 
 function logGLCall(functionName: string, args: any[]): void {
-	console.error("gl." + functionName + "(" +
+	console.info("gl." + functionName + "(" +
 		WebGLDebugUtils.glFunctionArgsToString(functionName, args) + ")");
 }
 

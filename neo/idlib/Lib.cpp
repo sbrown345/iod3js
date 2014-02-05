@@ -596,7 +596,7 @@ void AssertFailed( const char *file, int line, const char *expression ) {
 //#define DEBUG_Lexer isd(1)
 
 void dlog(bool log, char *format, ...) {
-	if (1/*log todo: cant be changing headers all the time*/) {
+	if (log) {
 		va_list argptr;
 		va_start(argptr, format);
 		//vfprintf(stderr, format, argptr);

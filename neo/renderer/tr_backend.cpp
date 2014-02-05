@@ -766,6 +766,7 @@ void RB_ExecuteBackEndCommands(const emptyCommand_t *cmds)
 	globalImages->CompleteBackgroundImageLoads();
 
 	for (; cmds ; cmds = (const emptyCommand_t *)cmds->next) {
+		dlog(DEBUG_RENDER_METHODS, "RB_ExecuteBackEndCommands %i\n", cmds->commandId);
 		switch (cmds->commandId) {
 			case RC_NOP:
 				break;

@@ -1639,7 +1639,6 @@ This is called once for static surfaces, and every frame for deforming surfaces
 Builds tangents, normals, and face planes
 ==================
 */
-const int DEBUG_R_DeriveTangents = 1;
 void R_DeriveTangents( srfTriangles_t *tri, bool allocFacePlanes ) {
 	int				i;
 	idPlane			*planes;

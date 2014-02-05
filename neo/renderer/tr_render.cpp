@@ -52,6 +52,7 @@ void RB_DrawElementsWithCounters( const srfTriangles_t *tri ) {
 		return;
 	}
 
+	dlog(DEBUG_RENDER_METHODS, "RB_DrawElementsWithCounters\n");
 	backEnd.pc.c_drawElements++;
 	backEnd.pc.c_drawIndexes += tri->numIndexes;
 	backEnd.pc.c_drawVertexes += tri->numVerts;
@@ -73,7 +74,8 @@ void RB_DrawElementsWithCounters( const srfTriangles_t *tri ) {
 		backEnd.pc.c_vboIndexes += tri->numIndexes;
 	} else {
 		vertexCache.UnbindIndex();
-		glDrawElements( GL_TRIANGLES, 
+		dlog(DEBUG_RENDER_METHODS, "RB_DrawElementsWithCounters glDrawElements indexes: %i\n", r_singleTriangle.GetBool() ? 3 : tri->numIndexes);
+		glDrawElements(GL_TRIANGLES,
 						r_singleTriangle.GetBool() ? 3 : tri->numIndexes,
 						GL_INDEX_TYPE,
 						tri->indexes );

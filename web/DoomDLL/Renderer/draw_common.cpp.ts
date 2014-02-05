@@ -760,6 +760,7 @@ function RB_STD_T_RenderShaderPasses ( surf: drawSurf_t ): void {
 	GL_VertexAttribPointer( shaderProgram_indexes.attr_TexCoord /*offsetof(shaderProgram_t, attr_TexCoord)*/, 2, GL_FLOAT, false, sizeof( idDrawVert ), ac );
 
 	for ( stage = 0; stage < shader.GetNumStages ( ); stage++ ) {
+		dlog(DEBUG_RENDER_METHODS, "RB_STD_T_RenderShaderPasses stage %i\n", stage);
 		pStage = shader.GetStage( stage );
 
 		// check the enable condition

@@ -755,6 +755,7 @@ function RB_ExecuteBackEndCommands(cmds:emptyCommand_t):void
 	globalImages.CompleteBackgroundImageLoads();
 
 	for (; cmds; cmds = (</*emptyCommand_t   ????*/any>cmds).next) {
+		dlog(DEBUG_RENDER_METHODS, "RB_ExecuteBackEndCommands %i\n", cmds.commandId);
 		switch (cmds.commandId) {
 			case renderCommand_t.RC_NOP:
 				break;
