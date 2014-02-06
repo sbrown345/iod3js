@@ -227,9 +227,11 @@ The vertex buffer object will be bound
 		//return (void *)((byte *)buffer.virtMem + buffer.offset);
 	}
 
-	UnbindIndex ( ): void {
-		dlog(DEBUG_RENDER_METHODS, "UnbindIndex glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, null );\n");
-		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, null );
+	UnbindIndex(): void {
+		if ( todoBindBuffersNull ) {
+			dlog( DEBUG_RENDER_METHODS, "UnbindIndex glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, null );\n" );
+			glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, null );
+		}
 	}
 //
 //
@@ -568,10 +570,12 @@ idVertexCache::EndFrame
 //#endif
 
 		// unbind vertex buffers
-		glBindBuffer( GL_ARRAY_BUFFER, null );
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, null);
-		dlog(DEBUG_RENDER_METHODS, "EndFrame glBindBuffer(GL_ARRAY_BUFFER, 0);\n");
-		dlog(DEBUG_RENDER_METHODS, "EndFrame glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);\n");
+		if ( todoBindBuffersNull ) {
+			glBindBuffer( GL_ARRAY_BUFFER, null );
+			glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, null );
+			dlog(DEBUG_RENDER_METHODS, "EndFrame glBindBuffer(GL_ARRAY_BUFFER, 0);\n");
+			dlog(DEBUG_RENDER_METHODS, "EndFrame glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);\n");
+		}
 
 		this.currentFrame = tr.frameCount;
 		this.listNum = this.currentFrame % NUM_VERTEX_FRAMES;

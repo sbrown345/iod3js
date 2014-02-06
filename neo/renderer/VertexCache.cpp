@@ -149,8 +149,10 @@ void *idVertexCache::Position(vertCache_t *buffer)
 
 void idVertexCache::UnbindIndex()
 {
+#ifndef JS_CHANGES
 	dlog(DEBUG_RENDER_METHODS, "UnbindIndex glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, null );\n");
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+#endif
 }
 
 
@@ -484,11 +486,12 @@ void idVertexCache::EndFrame()
 #endif
 
 	// unbind vertex buffers
+#ifndef JS_CHANGES
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	dlog(DEBUG_RENDER_METHODS, "EndFrame glBindBuffer(GL_ARRAY_BUFFER, 0);\n");
 	dlog(DEBUG_RENDER_METHODS, "EndFrame glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);\n");
-
+#endif
 	currentFrame = tr.frameCount;
 	listNum = currentFrame % NUM_VERTEX_FRAMES;
 	staticAllocThisFrame = 0;

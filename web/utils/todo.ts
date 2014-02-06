@@ -36,3 +36,5 @@ function path(location: string) : void {
 interface Error {
     stack: string;
 }
+
+var todoBindBuffersNull = false;
