@@ -13,7 +13,7 @@ function isd(v: boolean): boolean { return DEBUG_LOG_MODE && v; }
 
 var DEBUG_WEBGL_UTIL = isd( true );
 var DEBUG_RENDER_METHODS = isd( true );
-var DEBUG_APPEND_TEXTURES_TO_BODY = isd( true );
+var DEBUG_APPEND_TEXTURES_TO_BODY = isd( false );
 var DEBUG_RegisterDeclFolder = isd( false );
 var DEBUG_Lexer = isd( false );
 var DEBUG_DeriveTangents = isd( false );
@@ -81,9 +81,9 @@ function logTexture(image: idImage, text:string, width: number, height: number, 
 		can.title = text;
 		document.body.appendChild( can );
 
-		var originalImage = <HTMLImageElement>document.createElement( "img" );
-		originalImage.src = "demo/" + image.imgName.data + ".tga";
-		document.body.appendChild( originalImage );
+		//var originalImage = <HTMLImageElement>document.createElement( "img" );
+		//originalImage.src = "demo/" + image.imgName.data + ".tga";
+		//document.body.appendChild( originalImage );
 
 		var br = <HTMLBRElement>document.createElement( "br" );
 		document.body.appendChild( br );
