@@ -13,6 +13,7 @@ function isd(v: boolean): boolean { return DEBUG_LOG_MODE && v; }
 
 var DEBUG_WEBGL_UTIL = isd( true );
 var DEBUG_RENDER_METHODS = isd( true );
+var DEBUG_APPEND_TEXTURES_TO_BODY = isd( true );
 var DEBUG_RegisterDeclFolder = isd( false );
 var DEBUG_Lexer = isd( false );
 var DEBUG_DeriveTangents = isd( false );
@@ -61,4 +62,30 @@ function sendTextNew(text: string, append: boolean): void {
 	xhr.open("POST", "log.aspx", false);
 	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xhr.send(body);
+}
+
+function logTexture(image: idImage, text:string, width: number, height: number, data: Uint8Array ): void {
+	if ( DEBUG_APPEND_TEXTURES_TO_BODY ) {
+		var can = <HTMLCanvasElement>document.createElement( "canvas" ),
+			ctx = can.getContext( '2d' );
+		can.width = width;
+		can.height = height;
+		var img = ctx.createImageData( width, height );
+		for ( var i = 0; i < img.data.length; i++ ) {
+			img.data[i] = data[i];
+		}
+		ctx.putImageData( img, 0, 0 );
+		console.log(text);
+		//console.image(can.toDataURL());
+
+		can.title = text;
+		document.body.appendChild( can );
+
+		var originalImage = <HTMLImageElement>document.createElement( "img" );
+		originalImage.src = "demo/" + image.imgName.data + ".tga";
+		document.body.appendChild( originalImage );
+
+		var br = <HTMLBRElement>document.createElement( "br" );
+		document.body.appendChild( br );
+	}
 }

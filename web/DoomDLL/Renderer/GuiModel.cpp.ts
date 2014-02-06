@@ -188,7 +188,7 @@ EmitSurface
 		}
 		// move the verts to the vertex cache
 		var dataBuffer = idDrawVert.toArrayBuffer(tri.verts, tri.numVerts); // attempt to get data ready for "return (void *)buffer->offset;" in idVertexCache::Position
-		tri.ambientCache = vertexCache.AllocFrameTemp(dataBuffer, tri.verts, tri.numVerts * idDrawVert.size /** sizeof( tri.verts[0] ) */ );
+		tri.ambientCache = vertexCache.AllocFrameTemp(new Uint8Array(dataBuffer), tri.verts, tri.numVerts * idDrawVert.size /** sizeof( tri.verts[0] ) */ );
 
 		// if we are out of vertex cache, don't create the surface
 		if ( !tri.ambientCache ) {

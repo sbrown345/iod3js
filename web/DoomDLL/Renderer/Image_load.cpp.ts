@@ -676,7 +676,8 @@ idImage.prototype.GenerateImage = function ( pic: Uint8Array, /*int */width: num
 //	} else 
 //#endif
 	{
-		glTexImage2D( GL_TEXTURE_2D, 0, this.internalFormat, scaled_width, scaled_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, scaledBuffer );
+		glTexImage2D(GL_TEXTURE_2D, 0, this.internalFormat, scaled_width, scaled_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, scaledBuffer);
+		logTexture( this, "GenerateImage", scaled_width, scaled_height, scaledBuffer );
 	}
 
 	// create and upload the mip map levels, which we do in all cases, even if we don't think they are needed
@@ -717,6 +718,7 @@ idImage.prototype.GenerateImage = function ( pic: Uint8Array, /*int */width: num
 		{
 			glTexImage2D( GL_TEXTURE_2D, miplevel, this.internalFormat, scaled_width, scaled_height,
 				0, GL_RGBA, GL_UNSIGNED_BYTE, scaledBuffer );
+			logTexture( this, "GenerateImage scaled", scaled_width, scaled_height, scaledBuffer );
 		}
 	}
 
@@ -940,6 +942,7 @@ idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic: Uint
 	for ( i = 0; i < 6; i++ ) {
 		glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, this.internalFormat, scaled_width, scaled_height, 0,
 			GL_RGBA, GL_UNSIGNED_BYTE, pic[i] );
+		logTexture(this, "GenerateCubeImage upload the base level", scaled_width, scaled_height, pic[i]);
 	}
 
 
@@ -957,8 +960,9 @@ idImage.prototype.GenerateCubeImage = function ( /*const byte *pic[6]*/pic: Uint
 			var shrunken: Uint8Array;
 
 			glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, miplevel, this.internalFormat,
-				scaled_width / 2, scaled_height / 2, 0,
+				int(scaled_width / 2), int(scaled_height / 2), 0,
 				GL_RGBA, GL_UNSIGNED_BYTE, shrunk[i] );
+			logTexture(this, "GenerateCubeImage shrunken", scaled_width, scaled_height, shrunk[i]);
 
 			if ( scaled_width > 2 ) {
 				shrunken = R_MipMap( shrunk[i], scaled_width / 2 | 0, scaled_height / 2 | 0, false );

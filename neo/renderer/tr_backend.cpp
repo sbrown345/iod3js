@@ -208,6 +208,7 @@ void GL_Uniform4fv(GLint location, const GLfloat *value)
 		return;
 	}
 
+	dlog(DEBUG_RENDER_METHODS, "GL_Uniform4fv location: %i\n", location);
 	glUniform4fv(*(GLint *)((char *)backEnd.glState.currentProgram + location), 1, value);
 
 	GL_CheckErrors();
@@ -227,6 +228,7 @@ void GL_UniformMatrix4fv(GLint location, const GLfloat *value)
 		return;
 	}
 
+	dlog(DEBUG_RENDER_METHODS, "GL_UniformMatrix4fv location: %i\n", location);
 	glUniformMatrix4fv(*(GLint *)((char *)backEnd.glState.currentProgram + location), 1, GL_FALSE, value);
 
 	GL_CheckErrors();
@@ -301,6 +303,7 @@ void GL_VertexAttribPointer(GLuint index, GLint size, GLenum type,
 		return;
 	}
 
+	dlog(DEBUG_RENDER_METHODS, "glVertexAttribPointer index: %u size: %u type: %i normalized: %i, stride: %i\n", *(GLint *)((char *)backEnd.glState.currentProgram + index), size, type, normalized, stride);
 	glVertexAttribPointer(*(GLint *)((char *)backEnd.glState.currentProgram + index),
 	                      size, type, normalized, stride, pointer);
 
