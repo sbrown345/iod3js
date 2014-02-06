@@ -2517,7 +2517,7 @@ idSIMD_Generic::DeriveTangents
 	In the process the triangle planes are calculated as well.
 ============
 */
-	static DeriveTangents ( planes: idPlane[], verts: idDrawVert[], /*const int */numVerts: number, /*const int **/indexes: Int32Array, /*const int */numIndexes: number ): void {
+	static DeriveTangents ( planes: idPlane[], verts: idDrawVert[], /*const int */numVerts: number, /*const int **/indexes: Int16Array, /*const int */numIndexes: number ): void {
 		var /*int */i: number;
 
 		var used = new Array<boolean>( numVerts ); //:bool[];//bool *used = (bool *)_alloca16( numVerts * sizeof( used[0] ) );

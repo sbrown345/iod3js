@@ -370,6 +370,20 @@ class idDynamicAlloc<T> {
 		return newStructArray<T>( this.type, num ); //Mem_Alloc16( num * sizeof( type ) );
 	}
 
+	AllocInt16Array ( /*const int */num: number ): Int16Array {
+		this.numAllocs++;
+		if ( num <= 0 ) {
+			return null;
+		}
+		this.numUsedBlocks++;
+		this.usedBlockMemory += num; //* sizeof( type );
+		if ( this["type"] !== window["Int16Array"] ) {
+			throw "use Alloc() instead";
+		}
+
+		return <any>( new Int16Array( num ) );
+	}
+
 	AllocInt32Array ( /*const int */num: number ): Int32Array {
 		this.numAllocs++;
 		if ( num <= 0 ) {

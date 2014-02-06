@@ -66,7 +66,8 @@ function RB_DrawElementsWithCounters(tri: srfTriangles_t  ): void {
 		}
 	}
 
-	if ( tri.indexCache ) {
+	if (tri.indexCache) {
+		todoThrow( "bind new buffer etc ELEMENT_ARRAY_BUFFER" );
 		glDrawElements( GL_TRIANGLES, 
 						r_singleTriangle.GetBool() ? 3 : tri.numIndexes,
 						GL_INDEX_TYPE,
@@ -74,11 +75,16 @@ function RB_DrawElementsWithCounters(tri: srfTriangles_t  ): void {
 		backEnd.pc.c_vboIndexes += tri.numIndexes;
 	} else {
 		vertexCache.UnbindIndex();
+
+		var indexBuffer = gl.createBuffer();
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, tri.indexes, gl.STATIC_DRAW); // todo: could put this into glDrawElements fn
+
 		dlog(DEBUG_RENDER_METHODS, "RB_DrawElementsWithCounters glDrawElements indexes: %i\n", r_singleTriangle.GetBool() ? 3 : tri.numIndexes);
 		glDrawElements( GL_TRIANGLES, 
 						r_singleTriangle.GetBool() ? 3 : tri.numIndexes,
 						GL_INDEX_TYPE,
-						tri.indexes[0] * 2 );
+						0 );
 	}
 }
 //

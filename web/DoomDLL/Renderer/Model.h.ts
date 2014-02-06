@@ -113,9 +113,9 @@ class srfTriangles_t {
 	verts: idDrawVert[]; // vertices, allocated with special allocator												idDrawVert *				
 
 	numIndexes: number; // for shadows, this has both front and rear end caps and silhouette planes					int							
-	indexes: Int32Array; // indexes, allocated with special allocator												glIndex_t *					
+	indexes: Int16Array; // indexes, allocated with special allocator												glIndex_t *					
 
-	silIndexes: Int32Array; // indexes changed to be the first vertex with same XYZ, ignoring normal and texcoords		glIndex_t *					
+	silIndexes: Int16Array; // indexes changed to be the first vertex with same XYZ, ignoring normal and texcoords		glIndex_t *					
 
 	numMirroredVerts: number; // this many verts at the end of the vert list are tangent mirrors							int							
 	mirroredVerts: Int32Array; // tri.mirroredVerts[0] is the mirror of tri.numVerts - tri.numMirroredVerts + 0			int *						

@@ -173,7 +173,7 @@ EmitSurface
 
 		tri.numIndexes = surf.numIndexes;
 		tri.numVerts = surf.numVerts;
-		tri.indexes = R_FrameAllocTypedArray<Int32Array>( Int32Array, tri.numIndexes ); // (glIndex_t *)R_FrameAlloc( tri.numIndexes * sizeof( tri.indexes[0] ) );
+		tri.indexes = R_FrameAllocTypedArray<Int16Array>(Int16Array, tri.numIndexes ); // (glIndex_t *)R_FrameAlloc( tri.numIndexes * sizeof( tri.indexes[0] ) );
 		for ( var i = 0; i < tri.numIndexes; i++ ) {
 			tri.indexes[i] = this.indexes[surf.firstIndex + i];
 		}

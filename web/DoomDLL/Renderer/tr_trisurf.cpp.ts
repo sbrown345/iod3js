@@ -138,10 +138,10 @@ var srfTrianglesAllocator = idBlockAlloc_template<srfTriangles_t>( srfTriangles_
 //var triDupVertAllocator;		 //static idDynamicBlockAlloc<int, 1<<16, 1<<10>				
 //#else
 var triVertexAllocator = idDynamicAlloc_template<idDrawVert>( idDrawVert, 1 << 20, 1 << 10 );
-var triIndexAllocator = idDynamicAlloc_template<Int32Array>( Int32Array, 1 << 18, 1 << 10 );
+var triIndexAllocator = idDynamicAlloc_template<Int16Array>( Int16Array, 1 << 18, 1 << 10 );
 var triShadowVertexAllocator = idDynamicAlloc_template<shadowCache_t>( shadowCache_t, 1 << 18, 1 << 10 );
 var triPlaneAllocator = idDynamicAlloc_template<idPlane>( idPlane, 1 << 17, 1 << 10 );
-var triSilIndexAllocator = idDynamicAlloc_template<Int32Array>(Int32Array, 1 << 17, 1 << 10 );
+var triSilIndexAllocator = idDynamicAlloc_template<Int16Array>(Int16Array, 1 << 17, 1 << 10 );
 var triSilEdgeAllocator = idDynamicAlloc_template<silEdge_t>( silEdge_t, 1 << 17, 1 << 10 );
 var triDominantTrisAllocator = idDynamicAlloc_template<dominantTri_t>(dominantTri_t, 1 << 16, 1 << 10);
 var triMirroredVertAllocator = idDynamicAlloc_template<Int32Array>(Int32Array, 1 << 16, 1 << 10);
@@ -560,7 +560,7 @@ R_AllocStaticTriSurfIndexes
 */
 function R_AllocStaticTriSurfIndexes(tri: srfTriangles_t, /*int */numIndexes:number ):void {
 	assert( tri.indexes == null );
-	tri.indexes = triIndexAllocator.AllocInt32Array( numIndexes );
+	tri.indexes = triIndexAllocator.AllocInt16Array( numIndexes );
 }
 
 ///*
@@ -771,7 +771,7 @@ function R_CreateSilIndexes ( tri: srfTriangles_t ): void {
 	remap = R_CreateSilRemap( tri );
 
 	// remap indexes to the first one
-	tri.silIndexes = triSilIndexAllocator.AllocInt32Array( tri.numIndexes );
+	tri.silIndexes = triSilIndexAllocator.AllocInt16Array( tri.numIndexes );
 	for ( i = 0; i < tri.numIndexes; i++ ) {
 		tri.silIndexes[i] = remap[tri.indexes[i]];
 	}
