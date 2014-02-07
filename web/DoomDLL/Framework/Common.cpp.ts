@@ -468,7 +468,7 @@ A raw string should NEVER be passed as fmt, because of "%f" type crashers.
 */
 	Printf ( /*const char **/ fmt: string, ...args: any[] ): void {
 		var argArr = args.slice( 0 );
-		argArr.unshift( fmt );
+		argArr.unshift( fmt.trim() );
 		console.log.apply( console, argArr );
 	}
 

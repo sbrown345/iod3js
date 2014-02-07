@@ -379,7 +379,7 @@ var glShaderSource = (shader: WebGLShader, source: string) => {
 	source = source.replace( "#version 100", "" );
 	source = source.replace("vec3 lightProjection", "//todo: vec3 lightProjection" ); // todo: replace with a call to texture2D and some different args
 	source = source.replace("color *= NdotL * lightProjection;", "color *= NdotL;// * lightProjection;" );
-	console.log( "shader source: \n" + source );
+	//console.log( "shader source: \n" + source );
 	gl.shaderSource.call( gl, shader, source );
 };
 var glCompileShader = ( shader: WebGLShader): void => {

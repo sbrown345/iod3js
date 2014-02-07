@@ -78,7 +78,7 @@ function RB_DrawElementsWithCounters(tri: srfTriangles_t  ): void {
 
 		var indexBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, tri.indexes, gl.STATIC_DRAW); // todo: could put this into glDrawElements fn
+		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, tri.indexes, gl.STATIC_DRAW); //but isn't this called eaerlier???? in Alloc
 
 		dlog(DEBUG_RENDER_METHODS, "RB_DrawElementsWithCounters glDrawElements indexes: %i\n", r_singleTriangle.GetBool() ? 3 : tri.numIndexes);
 		glDrawElements( GL_TRIANGLES, 
