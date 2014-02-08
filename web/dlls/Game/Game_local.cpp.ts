@@ -55,70 +55,71 @@
 ////idRenderWorld *				gameRenderWorld = NULL;		// all drawing is done to this world
 ////idSoundWorld *				gameSoundWorld = NULL;		// all audio goes to this world
 
-////static gameExport_t			gameExport;
+var gameExport = new gameExport_t;
 
 ////// global animation lib
 ////idAnimManager				animationLib;
 
 ////// the rest of the engine will only reference the "game" variable, while all local aspects stay hidden
-////idGameLocal					gameLocal;
-////idGame *					game = &gameLocal;	// statically pointed at an idGameLocal
+var gameLocal = new idGameLocal;
+var game:idGame = gameLocal;	// statically pointed at an idGameLocal
 
 ////const char *idGameLocal::sufaceTypeNames[ MAX_SURFACE_TYPES ] = {
 ////	"none",	"metal", "stone", "flesh", "wood", "cardboard", "liquid", "glass", "plastic",
 ////	"ricochet", "surftype10", "surftype11", "surftype12", "surftype13", "surftype14", "surftype15"
 ////};
 
-/////*
-////===========
-////GetGameAPI
-////============
-////*/
-////#if __MWERKS__
-////#pragma export on
-////#endif
-////#if __GNUC__ >= 4
-////#pragma GCC visibility push(default)
-////#endif
-////extern "C" gameExport_t *GetGameAPI( gameImport_t *import ) {
-////#if __MWERKS__
-////#pragma export off
-////#endif
+/*
+===========
+GetGameAPI
+============
+*/
+//#if __MWERKS__
+//#pragma export on
+//#endif
+//#if __GNUC__ >= 4
+//#pragma GCC visibility push(default)
+//#endif
+//extern "C" gameExport_t *GetGameAPI( gameImport_t *import ) {
+//#if __MWERKS__
+//#pragma export off
+//#endif
+function GetGameAPI ( $import: gameImport_t ) {
+	if ( $import.version == GAME_API_VERSION ) {
+		// already ref this stuff...
 
-////	if ( import.version == GAME_API_VERSION ) {
+		// set interface pointers used by the game
+		//sys							= $import.sys;
+		//common						= $import.common;
+		//cmdSystem					= $import.cmdSystem;
+		//cvarSystem					= $import.cvarSystem;
+		//fileSystem					= $import.fileSystem;
+		//networkSystem				= $import.networkSystem;
+		//renderSystem				= $import.renderSystem;
+		//soundSystem					= $import.soundSystem;
+		//renderModelManager			= $import.renderModelManager;
+		//uiManager					= $import.uiManager;
+		//declManager					= $import.declManager;
+		//AASFileManager				= $import.AASFileManager;
+		//collisionModelManager		= $import.collisionModelManager;
+	}
 
-////		// set interface pointers used by the game
-////		sys							= import.sys;
-////		common						= import.common;
-////		cmdSystem					= import.cmdSystem;
-////		cvarSystem					= import.cvarSystem;
-////		fileSystem					= import.fileSystem;
-////		networkSystem				= import.networkSystem;
-////		renderSystem				= import.renderSystem;
-////		soundSystem					= import.soundSystem;
-////		renderModelManager			= import.renderModelManager;
-////		uiManager					= import.uiManager;
-////		declManager					= import.declManager;
-////		AASFileManager				= import.AASFileManager;
-////		collisionModelManager		= import.collisionModelManager;
-////	}
+	// set interface pointers used by idLib
+	//idLib::sys					= sys;
+	//idLib::common				= common;
+	//idLib::cvarSystem			= cvarSystem;
+	//idLib::fileSystem			= fileSystem;
 
-////	// set interface pointers used by idLib
-////	idLib::sys					= sys;
-////	idLib::common				= common;
-////	idLib::cvarSystem			= cvarSystem;
-////	idLib::fileSystem			= fileSystem;
+	// setup export interface
+	gameExport.version = GAME_API_VERSION;
+	gameExport.game = game;
+	todo( "gameExport.gameEdit = gameEdit;" );
 
-////	// setup export interface
-////	gameExport.version = GAME_API_VERSION;
-////	gameExport.game = game;
-////	gameExport.gameEdit = gameEdit;
-
-////	return &gameExport;
-////}
-////#if __GNUC__ >= 4
-////#pragma GCC visibility pop
-////#endif
+	return gameExport;
+}
+//#if __GNUC__ >= 4
+//#pragma GCC visibility pop
+//#endif
 
 /////*
 ////===========
@@ -243,85 +244,85 @@
 ////	memset( lagometer, 0, sizeof( lagometer ) );
 ////}
 
-/////*
-////===========
-////idGameLocal::Init
+/*
+===========
+idGameLocal::Init
 
-////  initialize the game object, only happens once at startup, not each level load
-////============
-////*/
-////void idGameLocal::Init( void ) {
-////	const idDict *dict;
-////	idAAS *aas;
+  initialize the game object, only happens once at startup, not each level load
+============
+*/
+idGameLocal.prototype.Init = function ( ): void {
+	var dict: idDict;
+	var aas: idAAS;
 
-////#ifndef GAME_DLL
+//#ifndef GAME_DLL
 
-////	TestGameAPI();
+//	TestGameAPI();
 
-////#else
+//#else
 
-////	// initialize idLib
-////	idLib::Init();
+	// initialize idLib
+	//idLib::Init();
 
-////	// register static cvars declared in the game
-////	idCVar::RegisterStaticVars();
+	// register static cvars declared in the game
+	todoMaybeGameDLL( "idCVar::RegisterStaticVars();" );
 
-////	// initialize processor specific SIMD
-////	idSIMD::InitProcessor( "game", com_forceGenericSIMD.GetBool() );
+	// initialize processor specific SIMD
+	//idSIMD::InitProcessor( "game", com_forceGenericSIMD.GetBool() );
 
-////#endif
+//#endif
 
-////	Printf( "--------- Initializing Game ----------\n" );
-////	Printf( "gamename: %s\n", GAME_VERSION );
-////	Printf( "gamedate: %s\n", __DATE__ );
+	this.Printf( "--------- Initializing Game ----------\n" );
+	this.Printf( "gamename: %s\n", GAME_VERSION );
+	this.Printf( "gamedate: %s\n", __DATE__ );
 
-////	// register game specific decl types
-////	declManager.RegisterDeclType( "model",				DECL_MODELDEF,		idDeclAllocator<idDeclModelDef> );
-////	declManager.RegisterDeclType( "export",			declType_t.DECL_MODELEXPORT,	idDeclAllocator<idDecl> );
+	// register game specific decl types
+	declManager.RegisterDeclType( "model", declType_t.DECL_MODELDEF, idDeclAllocator<idDeclModelDef>( idDeclModelDef ) );
+	declManager.RegisterDeclType("export", declType_t.DECL_MODELEXPORT, idDeclAllocator<idDecl>(idDecl) );
 
-////	// register game specific decl folders
-////	declManager.RegisterDeclFolder( "def",				".def",				DECL_ENTITYDEF );
-////	declManager.RegisterDeclFolder( "fx",				".fx",				DECL_FX );
-////	declManager.RegisterDeclFolder( "particles",		".prt",				DECL_PARTICLE );
-////	declManager.RegisterDeclFolder( "af",				".af",				DECL_AF );
-////	declManager.RegisterDeclFolder( "newpdas",			".pda",				DECL_PDA );
+	// register game specific decl folders
+	declManager.RegisterDeclFolder("def", ".def", declType_t.DECL_ENTITYDEF );
+	declManager.RegisterDeclFolder("fx", ".fx", declType_t.DECL_FX );
+	declManager.RegisterDeclFolder("particles", ".prt", declType_t. DECL_PARTICLE );
+	declManager.RegisterDeclFolder("af", ".af", declType_t. DECL_AF );
+	declManager.RegisterDeclFolder("newpdas", ".pda", declType_t. DECL_PDA );
+	todoThrow ( );
+	//cmdSystem.AddCommand( "listModelDefs", idListDecls_f<DECL_MODELDEF>, CMD_FL_SYSTEM|CMD_FL_GAME, "lists model defs" );
+	//cmdSystem.AddCommand( "printModelDefs", idPrintDecls_f<DECL_MODELDEF>, CMD_FL_SYSTEM|CMD_FL_GAME, "prints a model def", idCmdSystem::ArgCompletion_Decl<DECL_MODELDEF> );
 
-////	cmdSystem.AddCommand( "listModelDefs", idListDecls_f<DECL_MODELDEF>, CMD_FL_SYSTEM|CMD_FL_GAME, "lists model defs" );
-////	cmdSystem.AddCommand( "printModelDefs", idPrintDecls_f<DECL_MODELDEF>, CMD_FL_SYSTEM|CMD_FL_GAME, "prints a model def", idCmdSystem::ArgCompletion_Decl<DECL_MODELDEF> );
+	//Clear();
 
-////	Clear();
+	//idEvent::Init();
+	//idClass::Init();
 
-////	idEvent::Init();
-////	idClass::Init();
+	//InitConsoleCommands();
 
-////	InitConsoleCommands();
+	//// load default scripts
+	//program.Startup( SCRIPT_DEFAULT );
 
-////	// load default scripts
-////	program.Startup( SCRIPT_DEFAULT );
-	
-////	smokeParticles = new idSmokeParticles;
+	//smokeParticles = new idSmokeParticles;
 
-////	// set up the aas
-////	dict = FindEntityDefDict( "aas_types" );
-////	if ( !dict ) {
-////		Error( "Unable to find entityDef for 'aas_types'" );
-////	}
+	//// set up the aas
+	//dict = FindEntityDefDict( "aas_types" );
+	//if ( !dict ) {
+	//	Error( "Unable to find entityDef for 'aas_types'" );
+	//}
 
-////	// allocate space for the aas
-////	const idKeyValue *kv = dict.MatchPrefix( "type" );
-////	while( kv != NULL ) {
-////		aas = idAAS::Alloc();
-////		aasList.Append( aas );
-////		aasNames.Append( kv.GetValue() );
-////		kv = dict.MatchPrefix( "type", kv );
-////	}
+	//// allocate space for the aas
+	//const idKeyValue *kv = dict.MatchPrefix( "type" );
+	//while( kv != NULL ) {
+	//	aas = idAAS::Alloc();
+	//	aasList.Append( aas );
+	//	aasNames.Append( kv.GetValue() );
+	//	kv = dict.MatchPrefix( "type", kv );
+	//}
 
-////	gamestate = GAMESTATE_NOMAP;
+	//gamestate = GAMESTATE_NOMAP;
 
-////	Printf( "...%d aas types\n", aasList.Num() );
-////	Printf( "game initialized.\n" );
-////	Printf( "--------------------------------------\n" );
-////}
+	//Printf( "...%d aas types\n", aasList.Num() );
+	//Printf( "game initialized.\n" );
+	//Printf( "--------------------------------------\n" );
+};
 
 /////*
 ////===========
@@ -601,21 +602,16 @@
 ////	persistentPlayerInfo[ clientNum ] = playerInfo;
 ////}
 
-/////*
-////============
-////idGameLocal::Printf
-////============
-////*/
-////void idGameLocal::Printf( const char *fmt, ... ) const {
-////	va_list		argptr;
-////	char		text[MAX_STRING_CHARS];
-
-////	va_start( argptr, fmt );
-////	idStr::vsnPrintf( text, sizeof( text ), fmt, argptr );
-////	va_end( argptr );
-
-////	common.Printf( "%s", text );
-////}
+/*
+============
+idGameLocal::Printf
+============
+*/
+idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args: any[] ): void {
+	var argArr = args.slice( 0 );
+	argArr.unshift( fmt.trim ( ) );
+	console.log.apply( console, argArr );
+};
 
 /////*
 ////============

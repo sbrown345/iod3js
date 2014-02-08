@@ -2626,74 +2626,74 @@ idCommonLocal::PrintLoadingMessage
 ////	}
 ////}
 
-/////*
-////=================
-////idCommonLocal::LoadGameDLL
-////=================
-////*/
-////void idCommonLocal::LoadGameDLL( void ) {
-////#ifdef __DOOM_DLL__
-////	char			dllPath[ MAX_OSPATH ];
+/*
+=================
+idCommonLocal::LoadGameDLL
+=================
+*/
+LoadGameDLL( ):void {
+//#ifdef __DOOM_DLL__
+	//char			dllPath[ MAX_OSPATH ];
 
-////	gameImport_t	gameImport;
-////	gameExport_t	gameExport;
-////	GetGameAPI_t	GetGameAPI;
+	var gameImport = new gameImport_t;
+	var gameExport = new gameExport_t;
+	//var GetGameAPI: ( ) => gameExport_t;
 
-////	fileSystem.FindDLL( "game", dllPath, true );
+	//fileSystem.FindDLL( "game", dllPath, true );
 
-////	if ( !dllPath[ 0 ] ) {
-////		common.FatalError( "couldn't find game dynamic library" );
-////		return;
-////	}
-////	common.DPrintf( "Loading game DLL: '%s'\n", dllPath );
-////	gameDLL = sys.DLL_Load( dllPath );
-////	if ( !gameDLL ) {
-////		common.FatalError( "couldn't load game dynamic library" );
-////		return;
-////	}
+	//if ( !dllPath[ 0 ] ) {
+	//	common.FatalError( "couldn't find game dynamic library" );
+	//	return;
+	//}
+	//common.DPrintf( "Loading game DLL: '%s'\n", dllPath );
+	//gameDLL = sys.DLL_Load( dllPath );
+	//if ( !gameDLL ) {
+	//	common.FatalError( "couldn't load game dynamic library" );
+	//	return;
+	//}
 
-////	GetGameAPI = (GetGameAPI_t) Sys_DLL_GetProcAddress( gameDLL, "GetGameAPI" );
-////	if ( !GetGameAPI ) {
-////		Sys_DLL_Unload( gameDLL );
-////		gameDLL = NULL;
-////		common.FatalError( "couldn't find game DLL API" );
-////		return;
-////	}
+	//GetGameAPI = (GetGameAPI_t) Sys_DLL_GetProcAddress( gameDLL, "GetGameAPI" );
+	//if ( !GetGameAPI ) {
+	//	Sys_DLL_Unload( gameDLL );
+	//	gameDLL = NULL;
+	//	common.FatalError( "couldn't find game DLL API" );
+	//	return;
+	//}
 
-////	gameImport.version					= GAME_API_VERSION;
-////	gameImport.sys						= ::sys;
-////	gameImport.common					= ::common;
-////	gameImport.cmdSystem				= ::cmdSystem;
-////	gameImport.cvarSystem				= ::cvarSystem;
-////	gameImport.fileSystem				= ::fileSystem;
-////	gameImport.networkSystem			= ::networkSystem;
-////	gameImport.renderSystem				= ::renderSystem;
-////	gameImport.soundSystem				= ::soundSystem;
-////	gameImport.renderModelManager		= ::renderModelManager;
-////	gameImport.uiManager				= ::uiManager;
-////	gameImport.declManager				= ::declManager;
-////	gameImport.AASFileManager			= ::AASFileManager;
-////	gameImport.collisionModelManager	= ::collisionModelManager;
+	gameImport.version					= GAME_API_VERSION;
+	todo( "gameImport.sys						= sys;" );
+	gameImport.common					= common;
+	gameImport.cmdSystem				= cmdSystem;
+	gameImport.cvarSystem				= cvarSystem;
+	gameImport.fileSystem				= fileSystem;
+	todo( "gameImport.networkSystem			= networkSystem;" );
+	gameImport.renderSystem				= renderSystem;
+	todo( "gameImport.soundSystem				= soundSystem;" );
+	gameImport.renderModelManager		= renderModelManager;
+	gameImport.uiManager				= uiManager;
+	gameImport.declManager				= declManager;
+	todo( "gameImport.AASFileManager = AASFileManager;" );
+	todo( "gameImport.collisionModelManager = collisionModelManager;" );
 
-////	gameExport							= *GetGameAPI( &gameImport );
+	gameExport							= GetGameAPI( gameImport );
 
-////	if ( gameExport.version != GAME_API_VERSION ) {
-////		Sys_DLL_Unload( gameDLL );
-////		gameDLL = NULL;
-////		common.FatalError( "wrong game DLL API version" );
-////		return;
-////	}
+	if ( gameExport.version != GAME_API_VERSION ) {
+		//Sys_DLL_Unload( gameDLL );
+		//gameDLL = NULL;
+		common.FatalError( "wrong game DLL API version" );
+		return;
+	}
 
-////	game								= gameExport.game;
-////	gameEdit							= gameExport.gameEdit;
+	game								= gameExport.game;
+	todo( "gameEdit							= gameExport.gameEdit;" );
 
-////#endif
+//#endif
 
-////	// initialize the game object
-////	if ( game != NULL ) {
-////		game.Init();
-////	}
-////}
+	// initialize the game object
+	if ( game != null ) {
+		game.Init();
+	}
+}
 
 /////*
 ////=================
@@ -3026,15 +3026,15 @@ idCommonLocal::InitGame
 
 		// initialize the user interfaces
 		uiManager.Init ( );
-		todoThrow ( );
+
 		// startup the script debugger
 		// DebuggerServerInit();
 
-////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04350" ) );
+	this.PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04350" ) );
 
-////	// load the game dll
-////	LoadGameDLL();
-
+	// load the game dll
+	this.LoadGameDLL();
+		todoThrow();
 ////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04351" ) );
 
 ////	// init the session

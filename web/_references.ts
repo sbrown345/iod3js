@@ -11,7 +11,6 @@
 
 /// <reference path="other/gl2.h.ts" />
 
-
 // precompiled.h
 ///*
 //===========================================================================
@@ -165,6 +164,8 @@
 /// <reference path="libs/idlib/geometry/jointtransform.h.ts" />
 
 // Libs root
+/// <reference path="libs/idlib/dict.cpp.ts" />
+
 /// <reference path="libs/langdict.cpp.ts" />
 
 //// framework
@@ -318,6 +319,23 @@
 /// <reference path="dlls/game/game.h.ts" />
 /// <reference path="dlls/game/game_local.h.ts" />
 /// <reference path="dlls/game/game_local.cpp.ts" />
+/// <reference path="dlls/game/ai/aas.h.ts" />
+/// <reference path="dlls/game/ai/aas_local.h.ts" />
+/// <reference path="dlls/game/ai/aas.cpp.ts" />
+/// <reference path="dlls/game/ai/aas_debug.cpp.ts" />
+/// <reference path="dlls/game/ai/aas_pathing.cpp.ts" />
+/// <reference path="dlls/game/ai/aas_routing.cpp.ts" />
+/// <reference path="dlls/game/ai/ai.h.ts" />
+/// <reference path="dlls/game/ai/ai.cpp.ts" />
+/// <reference path="dlls/game/ai/ai_events.cpp.ts" />
+/// <reference path="dlls/game/ai/ai_pathing.cpp.ts" />
+/// <reference path="dlls/game/ai/ai_vagary.cpp.ts" />
+/// <reference path="dlls/game/animation/anim.h.ts" />
+/// <reference path="dlls/game/animation/anim.cpp.ts" />
+/// <reference path="dlls/game/animation/anim_blend.cpp.ts" />
+/// <reference path="dlls/game/animation/anim_import.cpp.ts" />
+/// <reference path="dlls/game/animation/anim_testmodel.h.ts" />
+/// <reference path="dlls/game/animation/anim_testmodel.cpp.ts" />
 /// <reference path="dlls/game/script/script_compiler.h.ts" />
 /// <reference path="dlls/game/script/script_compiler.cpp.ts" />
 /// <reference path="dlls/game/script/script_interpreter.h.ts" />

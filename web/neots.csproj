@@ -17,6 +17,23 @@
   </PropertyGroup>
   <ItemGroup>
     <TypeScriptCompile Include="dlls\Game\Game.h.ts" />
+    <TypeScriptCompile Include="dlls\Game\Animation\Anim.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\Animation\Anim.h.ts" />
+    <TypeScriptCompile Include="dlls\Game\Animation\Anim_Blend.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\Animation\Anim_Import.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\Animation\Anim_Testmodel.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\Animation\Anim_Testmodel.h.ts" />
+    <TypeScriptCompile Include="dlls\Game\AI\AAS.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\AI\AAS.h.ts" />
+    <TypeScriptCompile Include="dlls\Game\AI\AAS_debug.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\AI\AAS_local.h.ts" />
+    <TypeScriptCompile Include="dlls\Game\AI\AAS_pathing.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\AI\AAS_routing.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\AI\AI.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\AI\AI.h.ts" />
+    <TypeScriptCompile Include="dlls\Game\AI\AI_events.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\AI\AI_pathing.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\AI\AI_Vagary.cpp.ts" />
     <Content Include="dlls\Game\Game_local.cpp.ts" />
     <Content Include="dlls\Game\Game_local.h.ts" />
     <TypeScriptCompile Include="dlls\Game\Script\Script_Compiler.cpp.ts" />
@@ -76,6 +93,7 @@
     <TypeScriptCompile Include="DoomDLL\Renderer\tr_lightrun.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\tr_deform.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Sys\sys_local.cpp.ts" />
+    <TypeScriptCompile Include="libs\idLib\Dict.cpp.ts" />
     <Content Include="log.aspx" />
     <Content Include="other\files.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.cpp.ts" />
@@ -208,7 +226,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>24738</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

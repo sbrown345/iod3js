@@ -10,6 +10,9 @@ function notNeeded(reason?: string) {
 function todoUnimportant(reason?: string): void {
 }
 
+function todoMaybeGameDLL(reason?: string): void {
+}
+
 function todoThrow(message: string = ""): any {
 	dlogFlush ( );
     //debugger;

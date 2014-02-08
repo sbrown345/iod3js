@@ -74,7 +74,7 @@ class idGame {
 //	virtual						~idGame() {}
 //
 //	// Initialize the game for the first time.
-//	virtual void				Init( void ) = 0;
+	Init ( ): void {throw "placeholder";}
 //
 //	// Shut down the entire game.
 //	virtual void				Shutdown( void ) = 0;
@@ -190,7 +190,7 @@ class idGame {
 //	virtual bool				DownloadRequest( const char *IP, const char *guid, const char *paks, char urls[ MAX_STRING_CHARS ] ) = 0;
 //
 //	virtual void				GetMapLoadingGUI( char gui[ MAX_STRING_CHARS ] ) = 0;
-};
+	};
 //
 //extern idGame *					game;
 //
@@ -309,43 +309,41 @@ class idGame {
 //
 //extern idGameEdit *				gameEdit;
 //
-//
-///*
-//===============================================================================
-//
-//	Game API.
-//
-//===============================================================================
-//*/
-//
-//const int GAME_API_VERSION		= 8;
-//
-//typedef struct {
-//
-//	int							version;				// API version
-//	idSys *						sys;					// non-portable system services
-//	idCommon *					common;					// common
-//	idCmdSystem *				cmdSystem;				// console command system
-//	idCVarSystem *				cvarSystem;				// console variable system
-//	idFileSystem *				fileSystem;				// file system
-//	idNetworkSystem *			networkSystem;			// network system
-//	idRenderSystem *			renderSystem;			// render system
-//	idSoundSystem *				soundSystem;			// sound system
-//	idRenderModelManager *		renderModelManager;		// render model manager
-//	idUserInterfaceManager *	uiManager;				// user interface manager
-//	idDeclManager *				declManager;			// declaration manager
-//	idAASFileManager *			AASFileManager;			// AAS file manager
-//	idCollisionModelManager *	collisionModelManager;	// collision model manager
-//
-//} gameImport_t;
-//
-//typedef struct {
-//
-//	int							version;				// API version
-//	idGame *					game;					// interface to run the game
+
+/*
+===============================================================================
+
+	Game API.
+
+===============================================================================
+*/
+
+var GAME_API_VERSION		= 8;
+
+class gameImport_t {
+	version: number; // API version						  					
+	//sys: idSys;					// non-portable system services		  /
+	common: idCommon; // common							
+	cmdSystem: idCmdSystem; // console command system			
+	cvarSystem: idCVarSystem; // console variable system		
+	fileSystem: idFileSystem; // file system					
+	//networkSystem: idNetworkSystem;			// network system				
+	renderSystem: idRenderSystem; // render system				
+	//soundSystem: idSoundSystem;			// sound system						
+	renderModelManager: idRenderModelManager; // render model manager
+	uiManager: idUserInterfaceManager; // user interface manager
+	declManager: idDeclManager; // declaration manager				 
+	//AASFileManager: idAASFileManager;			// AAS file manager			
+	//collisionModelManager: idCollisionModelManager;	// collision model manager
+}
+
+
+class gameExport_t {
+	version:number;				// API version
+	game:idGame;					// interface to run the game
 //	idGameEdit *				gameEdit;				// interface for in-game editing
-//
-//} gameExport_t;
+}
+
 //
 //extern "C" {
 //typedef gameExport_t * (*GetGameAPI_t)( gameImport_t *import );

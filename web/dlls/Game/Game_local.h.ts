@@ -58,8 +58,8 @@
 ////extern idRenderWorld *				gameRenderWorld;
 ////extern idSoundWorld *				gameSoundWorld;
 
-////// the "gameversion" client command will print this plus compile date
-////#define	GAME_VERSION		"baseDOOM-1"
+// the "gameversion" client command will print this plus compile date
+var GAME_VERSION = "baseDOOM-1";
 
 ////// classes used by idGameLocal
 ////class idEntity;
@@ -78,12 +78,12 @@
 ////class idEditEntities;
 ////class idLocationEntity;
 
-////#define	MAX_CLIENTS				32
-////#define	GENTITYNUM_BITS			12
-////#define	MAX_GENTITIES			(1<<GENTITYNUM_BITS)
-////#define	ENTITYNUM_NONE			(MAX_GENTITIES-1)
-////#define	ENTITYNUM_WORLD			(MAX_GENTITIES-2)
-////#define	ENTITYNUM_MAX_NORMAL	(MAX_GENTITIES-2)
+var	MAX_CLIENTS			=	32
+var	GENTITYNUM_BITS		=	12
+var	MAX_GENTITIES		=	(1<<GENTITYNUM_BITS)
+var	ENTITYNUM_NONE		=	(MAX_GENTITIES-1)
+var	ENTITYNUM_WORLD		=	(MAX_GENTITIES-2)
+var	ENTITYNUM_MAX_NORMAL=	(MAX_GENTITIES-2)
 
 //////============================================================================
 
@@ -237,9 +237,9 @@
 ////	int						spawnId;
 ////};
 
-//////============================================================================
+//============================================================================
 
-////class idGameLocal : public idGame {
+class idGameLocal extends idGame {
 ////public:
 ////	idDict					serverInfo;				// all the tunable parameters, like numclients, etc
 ////	int						numClients;				// pulled from serverInfo and verified
@@ -317,7 +317,7 @@
 
 ////							idGameLocal();
 
-////	virtual void			Init( void );
+		Init( ):void { throw "placeholder"; }
 ////	virtual void			Shutdown( void );
 ////	virtual void			SetLocalClient( int clientNum );
 ////	virtual void			ThrottleUserInfo( void );
@@ -359,7 +359,7 @@
 
 ////	// ---------------------- Public idGameLocal Interface -------------------
 
-////	void					Printf( const char *fmt, ... ) const id_attribute((format(printf,2,3)));
+	Printf ( /*const char **/ fmt: string, ...args: any[] ): void { throw "placeholder"; }
 ////	void					DPrintf( const char *fmt, ... ) const id_attribute((format(printf,2,3)));
 ////	void					Warning( const char *fmt, ... ) const id_attribute((format(printf,2,3)));
 ////	void					DWarning( const char *fmt, ... ) const id_attribute((format(printf,2,3)));
@@ -571,7 +571,7 @@
 ////	void					UpdateLagometer( int aheadOfServer, int dupeUsercmds );
 
 ////	void					GetMapLoadingGUI( char gui[ MAX_STRING_CHARS ] );
-////};
+};
 
 //////============================================================================
 
