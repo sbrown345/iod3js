@@ -356,24 +356,50 @@ static void R_LoadGLSLShader(const char *name, shaderProgram_t *shaderProgram, G
 		return;
 	}
 
+#ifdef JS_CHANGES
+	idStr shaderStr = buffer;
+	shaderStr.Replace("#version 100", "");
+	shaderStr.Replace("vec3 lightProjection", "//todo: vec3 lightProjection");
+	shaderStr.Replace("color *= NdotL * lightProjection;", "color *= NdotL;// * lightProjection;");
+	char	*jsBuffer;
+	jsBuffer = (char *)_alloca(strlen(shaderStr.c_str()) + 1);
+	strcpy(jsBuffer, shaderStr.c_str());
 	switch (type) {
-		case GL_VERTEX_SHADER:
-			// create vertex shader
-			shaderProgram->vertexShader = glCreateShader(GL_VERTEX_SHADER);
-			glShaderSource(shaderProgram->vertexShader, 1, (const GLchar **)&buffer, 0);
-			glCompileShader(shaderProgram->vertexShader);
-			break;
-		case GL_FRAGMENT_SHADER:
-			// create fragment shader
-			shaderProgram->fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-			glShaderSource(shaderProgram->fragmentShader, 1, (const GLchar **)&buffer, 0);
-			glCompileShader(shaderProgram->fragmentShader);
-			break;
-		default:
-			common->Printf("R_LoadGLSLShader: no type\n");
-			return;
+	case GL_VERTEX_SHADER:
+		// create vertex shader
+		shaderProgram->vertexShader = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(shaderProgram->vertexShader, 1, (const GLchar **)&jsBuffer, 0);
+		glCompileShader(shaderProgram->vertexShader);
+		break;
+	case GL_FRAGMENT_SHADER:
+		// create fragment shader
+		shaderProgram->fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(shaderProgram->fragmentShader, 1, (const GLchar **)&jsBuffer, 0);
+		glCompileShader(shaderProgram->fragmentShader);
+		break;
+	default:
+		common->Printf("R_LoadGLSLShader: no type\n");
+		return;
 	}
-
+#else
+	switch (type) {
+	case GL_VERTEX_SHADER:
+		// create vertex shader
+		shaderProgram->vertexShader = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(shaderProgram->vertexShader, 1, (const GLchar **)&buffer, 0);5
+		glCompileShader(shaderProgram->vertexShader);
+		break;
+	case GL_FRAGMENT_SHADER:
+		// create fragment shader
+		shaderProgram->fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(shaderProgram->fragmentShader, 1, (const GLchar **)&buffer, 0);
+		glCompileShader(shaderProgram->fragmentShader);
+		break;
+	default:
+		common->Printf("R_LoadGLSLShader: no type\n");
+		return;
+	}
+#endif
 	common->Printf("\n");
 }
 
