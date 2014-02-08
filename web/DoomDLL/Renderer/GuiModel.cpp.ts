@@ -369,98 +369,107 @@ DrawStretchPic
 		if ( !glConfig.isInitialized ) {
 			return;
 		}
-			if ( !( dverts && dindexes && vertCount && indexCount && hShader ) ) {
-				return;
+		if ( !( dverts && dindexes && vertCount && indexCount && hShader ) ) {
+			return;
+		}
+
+		// break the current surface if we are changing to a new material
+		if ( hShader != this.surf.material ) {
+			if ( this.surf.numVerts ) {
+				this.AdvanceSurf();
+			}
+			/*const_cast<idMaterial *>(hShader)*/
+			hShader.EnsureNotPurged ( ); // in case it was a gui item started before a level change
+			this.surf.material = hShader;
+		}
+
+		// add the verts and indexes to the current surface
+
+		if ( clip ) {
+			var i: number, j: number;
+			todoThrow( "winding indexer" );
+			// FIXME:	this is grim stuff, and should be rewritten if we have any significant
+			//			number of guis asking for clipping
+			var w = new idFixedWinding;
+			for ( i = 0; i < indexCount; i += 3 ) {
+				w.Clear ( );
+				w.AddPoint( new idVec5( dverts[dindexes[i]].xyz.x, dverts[dindexes[i]].xyz.y, dverts[dindexes[i]].xyz.z, dverts[dindexes[i]].st.x, dverts[dindexes[i]].st.y ) );
+				w.AddPoint( new idVec5( dverts[dindexes[i + 1]].xyz.x, dverts[dindexes[i + 1]].xyz.y, dverts[dindexes[i + 1]].xyz.z, dverts[dindexes[i + 1]].st.x, dverts[dindexes[i + 1]].st.y ) );
+				w.AddPoint( new idVec5( dverts[dindexes[i + 2]].xyz.x, dverts[dindexes[i + 2]].xyz.y, dverts[dindexes[i + 2]].xyz.z, dverts[dindexes[i + 2]].st.x, dverts[dindexes[i + 2]].st.y ) );
+
+				for ( j = 0; j < 3; j++ ) {
+					if ( w[j].x < min_x || w[j].x > max_x ||
+						w[j].y < min_y || w[j].y > max_y ) {
+						break;
+					}
+				}
+				if ( j < 3 ) {
+					var p = new idPlane;
+					p.Normal ( ).y = p.Normal ( ).z = 0.0;
+					p.Normal ( ).x = 1.0;
+					p.SetDist( min_x );
+					w.ClipInPlace( p );
+					p.Normal ( ).y = p.Normal ( ).z = 0.0;
+					p.Normal ( ).x = -1.0;
+					p.SetDist( -max_x );
+					w.ClipInPlace( p );
+					p.Normal ( ).x = p.Normal ( ).z = 0.0;
+					p.Normal ( ).y = 1.0;
+					p.SetDist( min_y );
+					w.ClipInPlace( p );
+					p.Normal ( ).x = p.Normal ( ).z = 0.0;
+					p.Normal ( ).y = -1.0;
+					p.SetDist( -max_y );
+					w.ClipInPlace( p );
+				}
+
+				var numVerts = this.verts.Num ( );
+				this.verts.SetNum( numVerts + w.GetNumPoints ( ), false );
+				for ( j = 0; j < w.GetNumPoints ( ); j++ ) {
+					var dv: idDrawVert = this.verts[numVerts + j];
+
+					dv.xyz.x = w[j].x;
+					dv.xyz.y = w[j].y;
+					dv.xyz.z = w[j].z;
+					dv.st.x = w[j].s;
+					dv.st.y = w[j].t;
+					dv.normal.Set( 0, 0, 1 );
+					dv.tangents[0].Set( 1, 0, 0 );
+					dv.tangents[1].Set( 0, 1, 0 );
+				}
+				this.surf.numVerts += w.GetNumPoints ( );
+
+				for ( j = 2; j < w.GetNumPoints ( ); j++ ) {
+					this.indexes.Append( numVerts - this.surf.firstVert );
+					this.indexes.Append( numVerts + j - 1 - this.surf.firstVert );
+					this.indexes.Append( numVerts + j - this.surf.firstVert );
+					this.surf.numIndexes += 3;
+				}
 			}
 
-			// break the current surface if we are changing to a new material
-			if ( hShader != this.surf.material ) {
-				if ( this.surf.numVerts ) {
-					todoThrow( "AdvanceSurf();" );
-				}
-				/*const_cast<idMaterial *>(hShader)*/hShader.EnsureNotPurged();	// in case it was a gui item started before a level change
-				this.surf.material = hShader;
+		} else {
+
+			var numVerts = this.verts.Num ( );
+			var numIndexes = this.indexes.Num ( );
+
+			this.verts.AssureSize( numVerts + vertCount );
+			this.indexes.AssureSize( numIndexes + indexCount );
+
+			this.surf.numVerts += vertCount;
+			this.surf.numIndexes += indexCount;
+
+			for ( var i = 0; i < indexCount; i++ ) {
+				this.indexes[numIndexes + i] = numVerts + dindexes[i] - this.surf.firstVert;
 			}
 
-			// add the verts and indexes to the current surface
-
-			if ( clip ) {
-				var i: number, j: number;
-				todoThrow( "winding indexer" );
-				// FIXME:	this is grim stuff, and should be rewritten if we have any significant
-				//			number of guis asking for clipping
-				var w = new idFixedWinding;
-				for ( i = 0; i < indexCount; i += 3 ) {
-					w.Clear();
-					w.AddPoint(new idVec5(dverts[dindexes[i]].xyz.x, dverts[dindexes[i]].xyz.y, dverts[dindexes[i]].xyz.z, dverts[dindexes[i]].st.x, dverts[dindexes[i]].st.y));
-					w.AddPoint(new idVec5(dverts[dindexes[i+1]].xyz.x, dverts[dindexes[i+1]].xyz.y, dverts[dindexes[i+1]].xyz.z, dverts[dindexes[i+1]].st.x, dverts[dindexes[i+1]].st.y));
-					w.AddPoint(new idVec5(dverts[dindexes[i+2]].xyz.x, dverts[dindexes[i+2]].xyz.y, dverts[dindexes[i+2]].xyz.z, dverts[dindexes[i+2]].st.x, dverts[dindexes[i+2]].st.y));
-
-					for ( j = 0; j < 3; j++ ) {
-						if ( w[j].x < min_x || w[j].x > max_x ||
-							w[j].y < min_y || w[j].y > max_y ) {
-							break;
-						}
-					}
-					if ( j < 3 ) {
-						var p = new idPlane;
-						p.Normal().y = p.Normal().z = 0.0; p.Normal().x = 1.0; p.SetDist( min_x );
-						w.ClipInPlace( p );
-						p.Normal().y = p.Normal().z = 0.0; p.Normal().x = -1.0; p.SetDist( -max_x );
-						w.ClipInPlace( p );
-						p.Normal().x = p.Normal().z = 0.0; p.Normal().y = 1.0; p.SetDist( min_y );
-						w.ClipInPlace( p );
-						p.Normal().x = p.Normal().z = 0.0; p.Normal().y = -1.0; p.SetDist( -max_y );
-						w.ClipInPlace( p );
-					}
-
-					var	numVerts = this.verts.Num();
-					this.verts.SetNum( numVerts + w.GetNumPoints(), false );
-					for ( j = 0 ; j < w.GetNumPoints() ; j++ ) {
-						var dv: idDrawVert = this.verts[numVerts+j];
-
-						dv.xyz.x = w[j].x;
-						dv.xyz.y = w[j].y;
-						dv.xyz.z = w[j].z;
-						dv.st.x = w[j].s;
-						dv.st.y = w[j].t;
-						dv.normal.Set(0, 0, 1);
-						dv.tangents[0].Set(1, 0, 0);
-						dv.tangents[1].Set(0, 1, 0);
-					}
-					this.surf.numVerts += w.GetNumPoints();
-
-					for ( j = 2; j < w.GetNumPoints(); j++ ) {
-						this.indexes.Append(numVerts - this.surf.firstVert);
-						this.indexes.Append(numVerts + j - 1 - this.surf.firstVert);
-						this.indexes.Append( numVerts + j - this.surf.firstVert );
-						this.surf.numIndexes += 3;
-					}
+			//memcpy( &verts[numVerts], dverts, vertCount * sizeof( verts[0] ) );
+			for ( var k = 0; k < vertCount; k++ ) {
+				if ( !this.verts[numVerts + k] ) {
+					this.verts[numVerts + k] = new idDrawVert ( );
 				}
-
-			} else {
-
-				var numVerts = this.verts.Num();
-				var numIndexes = this.indexes.Num();
-
-				this.verts.AssureSize( numVerts + vertCount );
-				this.indexes.AssureSize( numIndexes + indexCount );
-
-				this.surf.numVerts += vertCount;
-				this.surf.numIndexes += indexCount;
-
-				for ( var i = 0; i < indexCount; i++ ) {
-					this.indexes[numIndexes + i] = numVerts + dindexes[i] - this.surf.firstVert;
-				}
-
-				//memcpy( &verts[numVerts], dverts, vertCount * sizeof( verts[0] ) );
-				for ( var k = 0; k < vertCount; k++ ) {
-					if ( !this.verts[numVerts + k] ) {
-						this.verts[numVerts + k] = new idDrawVert ( );
-					}
-					this.verts[numVerts + k].equals( dverts[k] );
-				}
+				this.verts[numVerts + k].equals( dverts[k] );
 			}
+		}
 	}
 
 /*

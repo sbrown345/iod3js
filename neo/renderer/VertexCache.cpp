@@ -386,6 +386,12 @@ vertCache_t	*idVertexCache::AllocFrameTemp(void *data, int size)
 	vertCache_t	*block;
 
 	dlog(DEBUG_RENDER_METHODS, "AllocFrameTemp\n");
+	//if (DEBUG_RENDER_METHODS) {
+	//	for (int j = 0; j < size; j++) {
+	//		dlog(DEBUG_RENDER_METHODS, "%i: %u\n", j, ((unsigned char *)data)[j]);
+	//	}
+	//}
+
 	if (size <= 0) {
 		common->Error("idVertexCache::AllocFrameTemp: size = %i\n", size);
 	}

@@ -65,6 +65,10 @@ class idScreenRect {
 	//bool		Equals( const idScreenRect &rect ) const;
 	//bool		IsEmpty() const;
 
+	constructor ( ) {
+		this.init ( );
+	}
+
 	init ( ):void {
 		this.x1 = 0; this.y1 = 0; this.x2 = 0; this.y2 = 0;
 		this.zmin = 0; this.zmax = 0;							

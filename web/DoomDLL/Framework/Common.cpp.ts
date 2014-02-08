@@ -2421,8 +2421,9 @@ idCommonLocal::PrintLoadingMessage
 		}
 		renderSystem.BeginFrame( renderSystem.GetScreenWidth ( ), renderSystem.GetScreenHeight ( ) );
 		renderSystem.DrawStretchPicFloats( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 1, 1, declManager.FindMaterial( "splashScreen" ) );
-		var len = strlen( msg );
-		renderSystem.DrawSmallStringExt( ( 640 - len * SMALLCHAR_WIDTH ) / 2, 410, msg, new idVec4( 0.0, 0.81, 0.94, 1.0 ), true, declManager.FindMaterial( "textures/bigchars" ) );
+		var len = strlen(msg);
+		console.log( "todo: DrawSmallStringExt text" );
+		//renderSystem.DrawSmallStringExt( ( 640 - len * SMALLCHAR_WIDTH ) / 2, 410, msg, new idVec4( 0.0, 0.81, 0.94, 1.0 ), true, declManager.FindMaterial( "textures/bigchars" ) );
 		renderSystem.EndFrame( null, null );
 	}
 

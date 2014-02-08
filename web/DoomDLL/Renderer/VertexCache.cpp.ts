@@ -469,7 +469,13 @@ there may still be future references to dynamically created surfaces.
 	AllocFrameTemp ( /*void * */dataBuffer: any, dataObject: any, /*int*/ size: number ): vertCache_t {
 		var block: vertCache_t;
 
-		dlog( DEBUG_RENDER_METHODS, "AllocFrameTemp\n" );
+		dlog(DEBUG_RENDER_METHODS, "AllocFrameTemp\n");
+		//if ( DEBUG_RENDER_METHODS ) {
+		//	for ( var j = 0; j < size; j++ ) {
+		//		dlog( DEBUG_RENDER_METHODS, "%i: %u\n", j, dataBuffer[j] );
+		//	}
+		//}
+
 		if ( size <= 0 ) {
 			common.Error( "idVertexCache::AllocFrameTemp: size = %i\n", size );
 		}
