@@ -11,7 +11,7 @@ var SKIP_ALL_LOGGING = false;
 var DEBUG_LOG_MODE = true;
 function isd(v: boolean): boolean { return DEBUG_LOG_MODE && v; }
 
-var DEBUG_WEBGL_UTIL = isd( true );
+var DEBUG_WEBGL_UTIL = isd( false );
 var DEBUG_RENDER_METHODS = isd( true );
 var DEBUG_APPEND_TEXTURES_TO_BODY = isd( false );
 var DEBUG_RegisterDeclFolder = isd( false );
