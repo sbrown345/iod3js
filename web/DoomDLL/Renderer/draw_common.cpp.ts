@@ -78,7 +78,7 @@
 RB_PrepareStageTexturing
 ================
 */
-function RB_PrepareStageTexturing ( pStage: shaderStage_t, surf: drawSurf_t, ac: idDrawVert ): void {
+function RB_PrepareStageTexturing ( pStage: shaderStage_t, surf: drawSurf_t, ac: number ): void {
 	// set privatePolygonOffset if necessary
 	if ( pStage.privatePolygonOffset ) {
 		glEnable( GL_POLYGON_OFFSET_FILL );
@@ -92,7 +92,7 @@ function RB_PrepareStageTexturing ( pStage: shaderStage_t, surf: drawSurf_t, ac:
 
 	// texgens
 	if ( pStage.texture.texgen == texgen_t.TG_DIFFUSE_CUBE ) {
-		glTexCoordPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ac.normal.ToFloatPtr ( ) );
+		glTexCoordPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ac/*ac.normal.ToFloatPtr ( )*/ );
 	}
 	if ( pStage.texture.texgen == texgen_t.TG_SKYBOX_CUBE || pStage.texture.texgen == texgen_t.TG_WOBBLESKY_CUBE ) {
 		glTexCoordPointer( 3, GL_FLOAT, 0, vertexCache.Position( surf.dynamicTexCoords ) );
@@ -254,14 +254,14 @@ function RB_PrepareStageTexturing ( pStage: shaderStage_t, surf: drawSurf_t, ac:
 RB_FinishStageTexturing
 ================
 */
-function RB_FinishStageTexturing ( pStage: shaderStage_t, surf: drawSurf_t, ac: idDrawVert ): void {
+function RB_FinishStageTexturing ( pStage: shaderStage_t, surf: drawSurf_t, ac: number ): void {
 	// unset privatePolygonOffset if necessary
 	if ( pStage.privatePolygonOffset && !surf.material.TestMaterialFlag( materialFlags_t.MF_POLYGONOFFSET ) ) {
 		glDisable( GL_POLYGON_OFFSET_FILL );
 	}
 	if ( pStage.texture.texgen == texgen_t.TG_DIFFUSE_CUBE || pStage.texture.texgen == texgen_t.TG_SKYBOX_CUBE
 		|| pStage.texture.texgen == texgen_t.TG_WOBBLESKY_CUBE ) {
-		glTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), /*(void *)&*/ac.st );
+		glTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), ac + 12 /*(void *)&ac->st*/ );
 	}
 
 //#if !defined(GL_ES_VERSION_2_0)
@@ -753,11 +753,11 @@ function RB_STD_T_RenderShaderPasses ( surf: drawSurf_t ): void {
 		todoThrow( "RB_EnterModelDepthHack( surf);" );
 	}
 
-	var ac = <idDrawVert >vertexCache.Position( tri.ambientCache );
+	var ac = <number>vertexCache.Position( tri.ambientCache );
 	GL_EnableVertexAttribArray( shaderProgram_indexes.attr_Vertex /*offsetof(shaderProgram_t, attr_Vertex)*/ );
 	GL_EnableVertexAttribArray( shaderProgram_indexes.attr_TexCoord /*offsetof(shaderProgram_t, attr_TexCoord)*/ );
 	GL_VertexAttribPointer( shaderProgram_indexes.attr_Vertex /*offsetof(shaderProgram_t, attr_Vertex)*/, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac );
-	GL_VertexAttribPointer( shaderProgram_indexes.attr_TexCoord /*offsetof(shaderProgram_t, attr_TexCoord)*/, 2, GL_FLOAT, false, sizeof( idDrawVert ), ac );
+	GL_VertexAttribPointer( shaderProgram_indexes.attr_TexCoord /*offsetof(shaderProgram_t, attr_TexCoord)*/, 2, GL_FLOAT, false, sizeof( idDrawVert ), ac + 12 /*reinterpret_cast<void *>(&ac->st)*/ );
 
 	for ( stage = 0; stage < shader.GetNumStages ( ); stage++ ) {
 		dlog(DEBUG_RENDER_METHODS, "RB_STD_T_RenderShaderPasses stage %i\n", stage);
@@ -794,10 +794,10 @@ function RB_STD_T_RenderShaderPasses ( surf: drawSurf_t ): void {
 			if ( r_skipNewAmbient.GetBool ( ) ) {
 				continue;
 			}
-			GL_VertexAttribPointer( shaderProgram_indexes.attr_Color /* offsetof(shaderProgram_t, attr_Color)*/, 4, GL_UNSIGNED_BYTE, false, sizeof( idDrawVert ), /*(void *)&*/ac.color );
-			GL_VertexAttribPointer( shaderProgram_indexes.attr_Tangent /*offsetof(shaderProgram_t, attr_Tangent)*/, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac.tangents[0].ToFloatPtr ( ) );
-			GL_VertexAttribPointer( shaderProgram_indexes.attr_Bitangent /*offsetof(shaderProgram_t, attr_Bitangent)*/, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac.tangents[1].ToFloatPtr ( ) );
-			GL_VertexAttribPointer( shaderProgram_indexes.attr_Normal /*offsetof(shaderProgram_t, attr_Normal)*/, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac.normal.ToFloatPtr ( ) );
+			GL_VertexAttribPointer(shaderProgram_indexes.attr_Color /* offsetof(shaderProgram_t, attr_Color)*/, 4, GL_UNSIGNED_BYTE, false, sizeof(idDrawVert), ac +  56 /*(void *)&ac->color*/ );
+			GL_VertexAttribPointer(shaderProgram_indexes.attr_Tangent /*offsetof(shaderProgram_t, attr_Tangent)*/, 3, GL_FLOAT, false, sizeof(idDrawVert), ac + 32 /*ac->tangents[0].ToFloatPtr()*/ );
+			GL_VertexAttribPointer(shaderProgram_indexes.attr_Bitangent /*offsetof(shaderProgram_t, attr_Bitangent)*/, 3, GL_FLOAT, false, sizeof(idDrawVert), ac + 44 /*ac->tangents[1].ToFloatPtr()*/ );
+			GL_VertexAttribPointer(shaderProgram_indexes.attr_Normal /*offsetof(shaderProgram_t, attr_Normal)*/, 3, GL_FLOAT, false, sizeof(idDrawVert), ac + 20 /*ac->normal.ToFloatPtr()*/ );
 
 			GL_EnableVertexAttribArray( shaderProgram_indexes.attr_Color /*offsetof(shaderProgram_t, attr_Color)*/ ); // gl_Color
 			GL_EnableVertexAttribArray( shaderProgram_indexes.attr_Tangent /*offsetof(shaderProgram_t, attr_Tangent)*/ );
@@ -892,7 +892,7 @@ function RB_STD_T_RenderShaderPasses ( surf: drawSurf_t ): void {
 
 		// select the vertex color source
 		if ( pStage.vertexColor != stageVertexColor_t.SVC_IGNORE ) {
-			GL_VertexAttribPointer( shaderProgram_indexes.attr_Color /* offsetof(shaderProgram_t, attr_Color)*/, 4, GL_UNSIGNED_BYTE, false, sizeof( idDrawVert ), /*(void *)&*/ac.color );
+			GL_VertexAttribPointer(shaderProgram_indexes.attr_Color /* offsetof(shaderProgram_t, attr_Color)*/, 4, GL_UNSIGNED_BYTE, false, sizeof(idDrawVert), 56/*(void *)&ac->color*/ );
 			GL_EnableVertexAttribArray( shaderProgram_indexes.attr_Color /* offsetof(shaderProgram_t, attr_Color)*/ );
 		}
 
