@@ -88,48 +88,87 @@ class /*glconfig_s*/glconfig_t {
 };
 
 
-////// font support 
-////const int GLYPH_START			= 0;
-////const int GLYPH_END				= 255;
-////const int GLYPH_CHARSTART		= 32;
-////const int GLYPH_CHAREND			= 127;
-////const int GLYPHS_PER_FONT		= GLYPH_END - GLYPH_START + 1;
+// font support 
+var GLYPH_START			= 0;
+var GLYPH_END				= 255;
+var GLYPH_CHARSTART		= 32;
+var GLYPH_CHAREND			= 127;
+var GLYPHS_PER_FONT		= GLYPH_END - GLYPH_START + 1;
 
-////typedef struct {
-////	int					height;			// number of scan lines
-////	int					top;			// top of glyph in buffer
-////	int					bottom;			// bottom of glyph in buffer
-////	int					pitch;			// width for copying
-////	int					xSkip;			// x adjustment
-////	int					imageWidth;		// width of actual image
-////	int					imageHeight;	// height of actual image
-////	float				s;				// x offset in image where glyph starts
-////	float				t;				// y offset in image where glyph starts
-////	float				s2;
-////	float				t2;
-////	const idMaterial *	glyph;			// shader with the glyph
-////	char				shaderName[32];
-////} glyphInfo_t;
+class glyphInfo_t {
+	height: number; // number of scan lines					//int					
+	top: number; // top of glyph in buffer				//int					
+	bottom: number; // bottom of glyph in buffer			//int					
+	pitch: number; // width for copying					//int					
+	xSkip: number; // x adjustment							//int					
+	imageWidth: number; // width of actual image				//int					
+	imageHeight: number; // height of actual image				//int					
+	s: number; // x offset in image where glyph starts	//float				
+	t: number; // y offset in image where glyph starts	//float				
+	s2: number; //float				
+	t2: number; //float				
+	glyph: idMaterial; // shader with the glyph				//const idMaterial *	
+	shaderName = new Uint8Array( 32 ); //char				
+
+	init ( ): void {
+		this.height = 0;
+		this.top = 0;
+		this.bottom = 0;
+		this.pitch = 0;
+		this.xSkip = 0;
+		this.imageWidth = 0;
+		this.imageHeight = 0;
+		this.s = 0.0;
+		this.t = 0.0;
+		this.s2 = 0.0;
+		this.t2 = 0.0;
+		this.glyph = null;
+		memset( this.shaderName, 0, this.shaderName.length );
+	}
+}
 
 class fontInfo_t {
-	//glyphInfo_t			glyphs [GLYPHS_PER_FONT];
-	//float				glyphScale;
-	//char				name[64];
+	static size = 20548;
+
+	glyphs = newStructArray<glyphInfo_t>( glyphInfo_t, GLYPHS_PER_FONT );
+	glyphScale: number /*float*/;
+	name = new Uint8Array(64); //char
+
+	init(): void {
+		clearStructArray(this.glyphs);
+		this.glyphScale = 0.0;
+		memset( this.name, 0, this.name.length );
+	}
 }
 
 class fontInfoEx_t {
-//	fontInfo_t			fontInfoSmall;
-//	fontInfo_t			fontInfoMedium;
-//	fontInfo_t			fontInfoLarge;
-//	int					maxHeight;
-//	int					maxWidth;
-//	int					maxHeightSmall;
-//	int					maxWidthSmall;
-//	int					maxHeightMedium;
-//	int					maxWidthMedium;
-//	int					maxHeightLarge;
-//	int					maxWidthLarge;
-//	char				name[64];
+	fontInfoSmall = new fontInfo_t;
+	fontInfoMedium = new fontInfo_t;
+	fontInfoLarge = new fontInfo_t;
+	maxHeight: number; //int					
+	maxWidth: number; //int					
+	maxHeightSmall: number; //int					
+	maxWidthSmall: number; //int					
+	maxHeightMedium: number; //int					
+	maxWidthMedium: number; //int					
+	maxHeightLarge: number; //int					
+	maxWidthLarge: number; //int					
+	name = new Uint8Array( 64 ); //char		
+
+	init ( ): void {
+		this.fontInfoSmall.init ( );
+		this.fontInfoMedium.init ( );
+		this.fontInfoLarge.init ( );
+		this.maxHeight = 0;
+		this.maxWidth = 0;
+		this.maxHeightSmall = 0;
+		this.maxWidthSmall = 0;
+		this.maxHeightMedium = 0;
+		this.maxWidthMedium = 0;
+		this.maxHeightLarge = 0;
+		this.maxWidthLarge = 0;
+		this.name = new Uint8Array( 64 ); //char		
+	}
 }
 
 var SMALLCHAR_WIDTH		= 8;

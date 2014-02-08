@@ -2470,7 +2470,6 @@ idStr::snPrintf
 ================
 */
 	static snPrintf ( dest: Uint8Array, /*int */size: number, fmt: string, ...args: any[] ): number {
-		todoThrow ( );
 		var /*int */len: number;
 
 		var buffer = vsprintf( fmt, args );

@@ -57,11 +57,19 @@ function toupper(s: string): string {
 	return s.toUpperCase();
 }
 
+// don't use subarray!
 function memcpy(destination: ArrayBufferView, source: ArrayBufferView, count: number): void {
 	var sourceArray = new Uint8Array(destination.buffer);
 	var destArray = new Uint8Array(source.buffer);
 	for (var i = 0; i < count; i++) {
 		sourceArray[i] = destArray[i];
+	}
+}
+
+// can use subarray
+function memcpyUint8Array(destination: ArrayBufferView, source: Uint8Array, count: number): void {
+	for (var i = 0; i < count; i++) {
+		destination[i] = source[i];
 	}
 }
 
