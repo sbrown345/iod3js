@@ -754,6 +754,7 @@ function RB_STD_T_RenderShaderPasses ( surf: drawSurf_t ): void {
 	}
 
 	var ac = <number>vertexCache.Position( tri.ambientCache );
+	dlog(DEBUG_RENDER_METHODS, "ac %i\n", ac);
 	GL_EnableVertexAttribArray( shaderProgram_indexes.attr_Vertex /*offsetof(shaderProgram_t, attr_Vertex)*/ );
 	GL_EnableVertexAttribArray( shaderProgram_indexes.attr_TexCoord /*offsetof(shaderProgram_t, attr_TexCoord)*/ );
 	GL_VertexAttribPointer( shaderProgram_indexes.attr_Vertex /*offsetof(shaderProgram_t, attr_Vertex)*/, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac );

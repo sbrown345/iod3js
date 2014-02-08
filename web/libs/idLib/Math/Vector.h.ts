@@ -932,6 +932,13 @@ class idVec4 {
 		this.w = w;
 	}
 
+	equals ( other: idVec4 ) {
+		this.x = other.x;
+		this.y = other.y;
+		this.z = other.z;
+		this.w = other.w;
+	}
+
 ////					idVec4( void );
 ////					explicit idVec4( const float x, const float y, const float z, const float w );
 

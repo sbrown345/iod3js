@@ -106,8 +106,8 @@
 //	idVec2			mat[ 2 ];
 //};
 //
-//extern idMat2 mat2_zero;
-//extern idMat2 mat2_identity;
+//idMat2 mat2_zero(idVec2(0, 0), idVec2(0, 0));
+//idMat2 mat2_identity(idVec2(1, 0), idVec2(0, 1));
 //#define mat2_default	mat2_identity
 //
 //ID_INLINE idMat2::idMat2( void ) {
@@ -418,19 +418,22 @@ class idMat3 {
 //#define mat3_default	mat3_identity
 //
 
+	constructor()
+	constructor(x: idVec3, y: idVec3, z: idVec3) 
+	constructor(x?: idVec3, y?: idVec3, z?: idVec3) {
+		if( x && y && z ) {
+			this.mat[ 0 ].x = x.x; this.mat[ 0 ].y = x.y; this.mat[ 0 ].z = x.z;
+			this.mat[ 1 ].x = y.x; this.mat[ 1 ].y = y.y; this.mat[ 1 ].z = y.z;
+			this.mat[2].x = z.x; this.mat[2].y = z.y; this.mat[2].z = z.z;
+		}
+	}
+
 	equals ( other: idMat3 ) {
 		this.mat[0].equals( other.mat[0] );
 		this.mat[1].equals( other.mat[1] );
 		this.mat[2].equals( other.mat[2] );
 	}
 
-
-//
-//ID_INLINE idMat3::idMat3( const idVec3 &x, const idVec3 &y, const idVec3 &z ) {
-//	mat[ 0 ].x = x.x; mat[ 0 ].y = x.y; mat[ 0 ].z = x.z;
-//	mat[ 1 ].x = y.x; mat[ 1 ].y = y.y; mat[ 1 ].z = y.z;
-//	mat[ 2 ].x = z.x; mat[ 2 ].y = z.y; mat[ 2 ].z = z.z;
-//}
 //
 //ID_INLINE idMat3::idMat3( const float xx, const float xy, const float xz, const float yx, const float yy, const float yz, const float zx, const float zy, const float zz ) {
 //	mat[ 0 ].x = xx; mat[ 0 ].y = xy; mat[ 0 ].z = xz;
@@ -774,7 +777,7 @@ Identity(  ):void {
 };
 
 var mat3_zero = new idMat3();
-var mat3_identity = new idMat3();
+var mat3_identity = new idMat3( new idVec3( 1, 0, 0 ), new idVec3( 0, 1, 0 ), new idVec3( 0, 0, 1 ) );
 var mat3_default = mat3_identity;
 
 //===============================================================
@@ -862,6 +865,18 @@ class idMat4 {
 //	mat[ 2 ] = z;
 //	mat[ 3 ] = w;
 //}
+
+	constructor ( )
+	constructor ( x: idVec4, y: idVec4, z: idVec4, w: idVec4 )
+	constructor ( x?: idVec4, y?: idVec4, z?: idVec4, w?: idVec4 ) {
+		if ( x && y && z && w ) {
+			this.mat[0].equals( x );
+			this.mat[1].equals( y );
+			this.mat[2].equals( z );
+			this.mat[3].equals( w );
+		}
+	}
+
 //
 //ID_INLINE idMat4::idMat4( const float xx, const float xy, const float xz, const float xw,
 //							const float yx, const float yy, const float yz, const float yw,
@@ -1178,7 +1193,7 @@ class idMat4 {
 }
 
 var mat4_zero = new idMat4();
-var mat4_identity = new idMat4();
+var mat4_identity = new idMat4( new idVec4( 1, 0, 0, 0 ), new idVec4( 0, 1, 0, 0 ), new idVec4( 0, 0, 1, 0 ), new idVec4( 0, 0, 0, 1 ) );
 var mat4_default = mat4_identity;
 //
 ////===============================================================
