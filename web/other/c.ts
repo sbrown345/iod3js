@@ -32,6 +32,19 @@ function strncpy(destination: Uint8Array, source: string, numChars: number): Uin
 	return destination;
 }
 
+function strcmp(str1: string, str2: string): number {
+	//assert.isString(str1).isString(str2);
+	if (str1 == str2) {
+		return 0;
+	}
+
+	if (str1 > str2) {
+		return 1;
+	}
+
+	return -1;
+}
+
 function isdigit ( c: string ): number {
     return ( c >= "0" && c <= "9" ) ? 1 : 0;
 }

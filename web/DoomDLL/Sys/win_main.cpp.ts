@@ -1398,8 +1398,8 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 ////		InitializeCriticalSection( &win32.criticalSections[i] );
 ////	}
 
-////	// get the initial time base
-////	Sys_Milliseconds();
+	// get the initial time base
+	Sys_Milliseconds();
 
 ////#ifdef DEBUG
 ////	// disable the painfully slow MS heap check every 1024 allocs

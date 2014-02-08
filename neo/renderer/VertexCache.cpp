@@ -560,4 +560,9 @@ void idVertexCache::List(void)
 	common->Printf("%5i active static headers\n", numActive);
 	common->Printf("%5i free static headers\n", numFreeStaticHeaders);
 	common->Printf("%5i free dynamic headers\n", numFreeDynamicHeaders);
+	dlog(DEBUG_RENDER_METHODS, "%i megs working set\n", r_vertexBufferMegs.GetInteger());
+	dlog(DEBUG_RENDER_METHODS, "%i dynamic temp buffers of %ik\n", NUM_VERTEX_FRAMES, frameBytes / 1024);
+	dlog(DEBUG_RENDER_METHODS, "%5i active static headers\n", numActive);
+	dlog(DEBUG_RENDER_METHODS, "%5i free static headers\n", numFreeStaticHeaders);
+	dlog(DEBUG_RENDER_METHODS, "%5i free dynamic headers\n", numFreeDynamicHeaders);
 }

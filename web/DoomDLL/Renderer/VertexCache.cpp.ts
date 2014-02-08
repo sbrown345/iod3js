@@ -47,6 +47,10 @@ function R_ListVertexCache_f ( args: idCmdArgs ): void {
 	vertexCache.List ( );
 }
 
+function DEUBG_VertexCache ( args: idCmdArgs ): void {
+	vertexCache.List ( );
+}
+
 
 class idVertexCache {
 //public:
@@ -63,7 +67,7 @@ class idVertexCache {
 //	// created at level load time even if a frame hasn't passed yet.
 //	// These allocations can be purged, which will zero the pointer.
 //	void			Alloc( void *data, int bytes, vertCache_t **buffer, bool indexBuffer = false );
-		
+
 	//// if you need to draw something without an indexCache, this
 	//// must be called to reset GL_ELEMENT_ARRAY_BUFFER_ARB
 //	void *			Position( vertCache_t *buffer );
@@ -103,85 +107,84 @@ class idVertexCache {
 //	static idCVar	r_showVertexCache;
 //	static idCVar	r_vertexBufferMegs;
 //
-	staticCountTotal = 0;											   //	int				
-	staticAllocTotal = 0;		// for end of frame purging			   //	int				
+	staticCountTotal = 0; //	int				
+	staticAllocTotal = 0; // for end of frame purging			   //	int				
 
-	staticAllocThisFrame = 0;	// debug counter		 //	int				
-	staticCountThisFrame = 0;							 //	int				
-	dynamicAllocThisFrame = 0;							 //	int				
-	dynamicCountThisFrame = 0;							 //	int				
+	staticAllocThisFrame = 0; // debug counter		 //	int				
+	staticCountThisFrame = 0; //	int				
+	dynamicAllocThisFrame = 0; //	int				
+	dynamicCountThisFrame = 0; //	int				
 
-	currentFrame = 0;			// for purgable block tracking												//	int				
-	listNum = 0;				// currentFrame % NUM_VERTEX_FRAMES, determines which tempBuffers to use	//	int				
+	currentFrame = 0; // for purgable block tracking												//	int				
+	listNum = 0; // currentFrame % NUM_VERTEX_FRAMES, determines which tempBuffers to use	//	int				
 
-	allocatingTempBuffer:boolean;	// force GL_STREAM_DRAW_ARB
+	allocatingTempBuffer: boolean; // force GL_STREAM_DRAW_ARB
 //
-	tempBuffers = newStructArray<vertCache_t>(vertCache_t, NUM_VERTEX_FRAMES);		// allocated at startup
-	tempOverflow:boolean;			// had to alloc a temp in static memory
+	tempBuffers = newStructArray<vertCache_t>( vertCache_t, NUM_VERTEX_FRAMES ); // allocated at startup
+	tempOverflow: boolean; // had to alloc a temp in static memory
 
-	headerAllocator = idBlockAlloc_template<vertCache_t>(vertCache_t, 1024);
+	headerAllocator = idBlockAlloc_template<vertCache_t>( vertCache_t, 1024 );
 
-	freeStaticHeaders = new vertCache_t;		// head of doubly linked list
-	freeDynamicHeaders = new vertCache_t;		// head of doubly linked list
-	dynamicHeaders = new vertCache_t;			// head of doubly linked list
-	deferredFreeList = new vertCache_t;		// head of doubly linked list
-	staticHeaders = new vertCache_t;			// head of doubly linked list in MRU order,
+	freeStaticHeaders = new vertCache_t; // head of doubly linked list
+	freeDynamicHeaders = new vertCache_t; // head of doubly linked list
+	dynamicHeaders = new vertCache_t; // head of doubly linked list
+	deferredFreeList = new vertCache_t; // head of doubly linked list
+	staticHeaders = new vertCache_t; // head of doubly linked list in MRU order,
 //											// staticHeaders.next is most recently used
 
-	frameBytes = 0;				// for each of NUM_VERTEX_FRAMES frames//	int				
+	frameBytes = 0; // for each of NUM_VERTEX_FRAMES frames//	int				
 
 	/*
 ==============
 idVertexCache::ActuallyFree
 ==============
 */
-	ActuallyFree(block: vertCache_t ):void
-{
-	if (!block) {
-		common.Error("idVertexCache Free: NULL pointer");
-	}
+	ActuallyFree ( block: vertCache_t ): void {
+		if ( !block ) {
+			common.Error( "idVertexCache Free: NULL pointer" );
+		}
 
-	if (block.user) {
-		// let the owner know we have purged it
-		block.user = null;
-	}
+		if ( block.user ) {
+			// let the owner know we have purged it
+			block.user = null;
+		}
 
-	// temp blocks are in a shared space that won't be freed
-	if (block.tag != vertBlockTag_t.TAG_TEMP) {
-		this.staticAllocTotal -= block.size;
-		this.staticCountTotal--;
+		// temp blocks are in a shared space that won't be freed
+		if ( block.tag != vertBlockTag_t.TAG_TEMP ) {
+			this.staticAllocTotal -= block.size;
+			this.staticCountTotal--;
 
-		if (block.vbo) {
+			if ( block.vbo ) {
 //#if 0		// this isn't really necessary, it will be reused soon enough
 //			// filling with zero length data is the equivalent of freeing
 //			glBindBuffer(GL_ARRAY_BUFFER, block.vbo);
 //			glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_DYNAMIC_DRAW);
 //#endif
-		} else if (block.virtMem) {
-			Mem_Free(block.virtMem);
-			block.virtMem = null;
+			} else if ( block.virtMem ) {
+				Mem_Free( block.virtMem );
+				block.virtMem = null;
+			}
 		}
-	}
 
-	block.tag = vertBlockTag_t.TAG_FREE;		// mark as free
+		block.tag = vertBlockTag_t.TAG_FREE; // mark as free
 
-	// unlink stick it back on the free list
-	block.next.prev = block.prev;
-	block.prev.next = block.next;
+		// unlink stick it back on the free list
+		block.next.prev = block.prev;
+		block.prev.next = block.next;
 
 //#if 1
-	// stick it on the front of the free list so it will be reused immediately
-	block.next = this.freeStaticHeaders.next;
-	block.prev = this.freeStaticHeaders;
+		// stick it on the front of the free list so it will be reused immediately
+		block.next = this.freeStaticHeaders.next;
+		block.prev = this.freeStaticHeaders;
 //#else
 //	// stick it on the back of the free list so it won't be reused soon (just for debugging)
 //	block.next = &this.freeStaticHeaders;
 //	block.prev = this.freeStaticHeaders.prev;
 //#endif
 
-	block.next.prev = block;
-	block.prev.next = block;
-}
+		block.next.prev = block;
+		block.prev.next = block;
+	}
 
 /*
 ==============
@@ -195,7 +198,7 @@ The vertex buffer object will be bound
 ==============
 */
 	Position ( buffer: vertCache_t ): any {
-		dlog(DEBUG_RENDER_METHODS, "Position\n");
+		dlog( DEBUG_RENDER_METHODS, "Position\n" );
 		if ( !buffer || buffer.tag == vertBlockTag_t.TAG_FREE ) {
 			common.FatalError( "idVertexCache::Position: bad vertCache_t" );
 		}
@@ -212,14 +215,14 @@ The vertex buffer object will be bound
 
 			if ( buffer.indexBuffer ) {
 				glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, buffer.vbo );
-				dlog(DEBUG_RENDER_METHODS, "Position glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, buffer.vbo );\n");
+				dlog( DEBUG_RENDER_METHODS, "Position glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, buffer.vbo );\n" );
 			} else {
-				dlog(DEBUG_RENDER_METHODS, "Position glBindBuffer( GL_ARRAY_BUFFER, buffer.vbo );\n");
+				dlog( DEBUG_RENDER_METHODS, "Position glBindBuffer( GL_ARRAY_BUFFER, buffer.vbo );\n" );
 				glBindBuffer( GL_ARRAY_BUFFER, buffer.vbo );
 			}
 
 			todo( "may want to pass back object with ref?" );
-			return buffer.offset;  //return (void *)buffer->offset;  
+			return buffer.offset; //return (void *)buffer->offset;  
 		}
 
 		todoThrow ( );
@@ -227,7 +230,7 @@ The vertex buffer object will be bound
 		//return (void *)((byte *)buffer.virtMem + buffer.offset);
 	}
 
-	UnbindIndex(): void {
+	UnbindIndex ( ): void {
 		if ( todoBindBuffersNull ) {
 			dlog( DEBUG_RENDER_METHODS, "UnbindIndex glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, null );\n" );
 			glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, null );
@@ -245,9 +248,9 @@ idVertexCache::Init
 
 	Init ( ): void {
 		cmdSystem.AddCommand( "listVertexCache", R_ListVertexCache_f, CMD_FL_RENDERER, "lists vertex cache" );
-		
-		if (r_vertexBufferMegs.GetInteger() < 8) {
-			r_vertexBufferMegs.SetInteger(8);
+
+		if ( r_vertexBufferMegs.GetInteger ( ) < 8 ) {
+			r_vertexBufferMegs.SetInteger( 8 );
 		}
 
 		// initialize the cache memory blocks
@@ -261,14 +264,14 @@ idVertexCache::Init
 		this.frameBytes = FRAME_MEMORY_BYTES;
 		this.staticAllocTotal = 0;
 
-		var junk = new Uint8Array( this.frameBytes );//byte	*junk = (byte *)Mem_Alloc(this.frameBytes);
+		var junk = new Uint8Array( this.frameBytes ); //byte	*junk = (byte *)Mem_Alloc(this.frameBytes);
 
 		var $tempBuffer = new R<vertCache_t> ( );
-		for (var i = 0 ; i < NUM_VERTEX_FRAMES ; i++) {
-			this.allocatingTempBuffer = true;	// force the alloc to use GL_STREAM_DRAW
+		for ( var i = 0; i < NUM_VERTEX_FRAMES; i++ ) {
+			this.allocatingTempBuffer = true; // force the alloc to use GL_STREAM_DRAW
 
 			$tempBuffer.$ = this.tempBuffers[i];
-			this.Alloc(junk, this.frameBytes, $tempBuffer);
+			this.Alloc( junk, this.frameBytes, $tempBuffer );
 			this.tempBuffers[i] = $tempBuffer.$;
 
 			this.allocatingTempBuffer = false;
@@ -278,9 +281,9 @@ idVertexCache::Init
 			this.tempBuffers[i].prev.next = this.tempBuffers[i].next;
 		}
 
-		Mem_Free(junk);
+		Mem_Free( junk );
 
-		this.EndFrame();
+		this.EndFrame ( );
 	}
 
 /*
@@ -314,84 +317,83 @@ the cached data isn't valid
 idVertexCache::Alloc
 ===========
 */
-Alloc(/*void **/data:Uint8Array, /*int */size:number, /*vertCache_t ***/buffer:R<vertCache_t>, indexBuffer = false):void
-{
-	var block: vertCache_t;
+	Alloc ( /*void **/data: Uint8Array, /*int */size: number, /*vertCache_t ***/buffer: R<vertCache_t>, indexBuffer = false ): void {
+		var block: vertCache_t;
 
-	dlog(DEBUG_RENDER_METHODS, "Alloc\n");
-	if (size <= 0) {
-		common.Error("idVertexCache::Alloc: size = %i\n", size);
-	}
-
-	// if we can't find anything, it will be NULL
-	buffer.$ = null;
-
-	// if we don't have any remaining unused headers, allocate some more
-	if (this.freeStaticHeaders.next == this.freeStaticHeaders) {
-
-		for (var i = 0; i < EXPAND_HEADERS; i++) {
-			block = this.headerAllocator.Alloc();
-			block.next = this.freeStaticHeaders.next;
-			block.prev = this.freeStaticHeaders;
-			block.next.prev = block;
-			block.prev.next = block;
-
-			block.vbo = glGenBuffers(1);
+		dlog( DEBUG_RENDER_METHODS, "Alloc\n" );
+		if ( size <= 0 ) {
+			common.Error( "idVertexCache::Alloc: size = %i\n", size );
 		}
-	}
 
-	// move it from the freeStaticHeaders list to the staticHeaders list
-	block = this.freeStaticHeaders.next;
-	block.next.prev = block.prev;
-	block.prev.next = block.next;
-	block.next = this.staticHeaders.next;
-	block.prev = this.staticHeaders;
-	block.next.prev = block;
-	block.prev.next = block;
+		// if we can't find anything, it will be NULL
+		buffer.$ = null;
 
-	block.size = size;
-	block.offset = 0;
-	block.tag = vertBlockTag_t.TAG_USED;
+		// if we don't have any remaining unused headers, allocate some more
+		if ( this.freeStaticHeaders.next == this.freeStaticHeaders ) {
 
-	// save data for debugging
-	this.staticAllocThisFrame += block.size;
-	this.staticCountThisFrame++;
-	this.staticCountTotal++;
-	this.staticAllocTotal += block.size;
+			for ( var i = 0; i < EXPAND_HEADERS; i++ ) {
+				block = this.headerAllocator.Alloc ( );
+				block.next = this.freeStaticHeaders.next;
+				block.prev = this.freeStaticHeaders;
+				block.next.prev = block;
+				block.prev.next = block;
 
-	// this will be set to zero when it is purged
-	block.user = buffer.$;
-	buffer.$ = block;
-
-	// allocation doesn't imply used-for-drawing, because at level
-	// load time lots of things may be created, but they aren't
-	// referenced by the GPU yet, and can be purged if needed.
-	block.frameUsed = this.currentFrame - NUM_VERTEX_FRAMES;
-
-	block.indexBuffer = indexBuffer;
-
-	// copy the data
-	if (block.vbo) {
-		if (indexBuffer) {
-			dlog(DEBUG_RENDER_METHODS, "Alloc glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, block->vbo);\n");
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, block.vbo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, /*(GLsizei)*/size, data, GL_STATIC_DRAW);
-		} else {
-			dlog(DEBUG_RENDER_METHODS, "Alloc glBindBuffer(GL_ARRAY_BUFFER, block.vbo);\n");
-			glBindBuffer(GL_ARRAY_BUFFER, block.vbo);
-
-			if (this.allocatingTempBuffer) {
-				glBufferData(GL_ARRAY_BUFFER, /*(GLsizei)*/size, data, GL_STREAM_DRAW);
-			} else {
-				glBufferData(GL_ARRAY_BUFFER, /*(GLsizei)*/size, data, GL_STATIC_DRAW);
+				block.vbo = glGenBuffers( 1 );
 			}
 		}
-	} else {
-		todoThrow ( );
-		block.virtMem = new Uint8Array(Mem_Alloc(size));
-		SIMDProcessor.Memcpy(block.virtMem, data, size);
+
+		// move it from the freeStaticHeaders list to the staticHeaders list
+		block = this.freeStaticHeaders.next;
+		block.next.prev = block.prev;
+		block.prev.next = block.next;
+		block.next = this.staticHeaders.next;
+		block.prev = this.staticHeaders;
+		block.next.prev = block;
+		block.prev.next = block;
+
+		block.size = size;
+		block.offset = 0;
+		block.tag = vertBlockTag_t.TAG_USED;
+
+		// save data for debugging
+		this.staticAllocThisFrame += block.size;
+		this.staticCountThisFrame++;
+		this.staticCountTotal++;
+		this.staticAllocTotal += block.size;
+
+		// this will be set to zero when it is purged
+		block.user = buffer.$;
+		buffer.$ = block;
+
+		// allocation doesn't imply used-for-drawing, because at level
+		// load time lots of things may be created, but they aren't
+		// referenced by the GPU yet, and can be purged if needed.
+		block.frameUsed = this.currentFrame - NUM_VERTEX_FRAMES;
+
+		block.indexBuffer = indexBuffer;
+
+		// copy the data
+		if ( block.vbo ) {
+			if ( indexBuffer ) {
+				dlog( DEBUG_RENDER_METHODS, "Alloc glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, block->vbo);\n" );
+				glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, block.vbo );
+				glBufferData( GL_ELEMENT_ARRAY_BUFFER, /*(GLsizei)*/size, data, GL_STATIC_DRAW );
+			} else {
+				dlog( DEBUG_RENDER_METHODS, "Alloc glBindBuffer(GL_ARRAY_BUFFER, block.vbo);\n" );
+				glBindBuffer( GL_ARRAY_BUFFER, block.vbo );
+
+				if ( this.allocatingTempBuffer ) {
+					glBufferData( GL_ARRAY_BUFFER, /*(GLsizei)*/size, data, GL_STREAM_DRAW );
+				} else {
+					glBufferData( GL_ARRAY_BUFFER, /*(GLsizei)*/size, data, GL_STATIC_DRAW );
+				}
+			}
+		} else {
+			todoThrow ( );
+			block.virtMem = new Uint8Array( Mem_Alloc( size ) );
+			SIMDProcessor.Memcpy( block.virtMem, data, size );
+		}
 	}
-}
 //
 	///*
 //===========
@@ -464,10 +466,10 @@ We can't simply sync with the GPU and overwrite what we have, because
 there may still be future references to dynamically created surfaces.
 ===========
 */
-	AllocFrameTemp( /*void * */dataBuffer: any, dataObject:any,/*int*/ size: number ): vertCache_t {
+	AllocFrameTemp ( /*void * */dataBuffer: any, dataObject: any, /*int*/ size: number ): vertCache_t {
 		var block: vertCache_t;
 
-		dlog(DEBUG_RENDER_METHODS, "AllocFrameTemp\n");
+		dlog( DEBUG_RENDER_METHODS, "AllocFrameTemp\n" );
 		if ( size <= 0 ) {
 			common.Error( "idVertexCache::AllocFrameTemp: size = %i\n", size );
 		}
@@ -519,13 +521,13 @@ there may still be future references to dynamically created surfaces.
 		block.vbo = this.tempBuffers[this.listNum].vbo;
 
 		if ( block.vbo ) {
-			dlog(DEBUG_RENDER_METHODS, "AllocFrameTemp glBindBuffer(GL_ARRAY_BUFFER, block->vbo);\n");
+			dlog( DEBUG_RENDER_METHODS, "AllocFrameTemp glBindBuffer(GL_ARRAY_BUFFER, block->vbo);\n" );
 			glBindBuffer( GL_ARRAY_BUFFER, block.vbo );
-			glBufferSubData(GL_ARRAY_BUFFER, block.offset, /*(GLsizei)size,*/ dataBuffer);
+			glBufferSubData( GL_ARRAY_BUFFER, block.offset, /*(GLsizei)size,*/ dataBuffer );
 			//block.offsetObj = dataObject; // attempt to get data ready for "return (void *)buffer->offset;" in idVertexCache::Position
 			//block.offsetObjBuffer = dataBuffer;
 		} else {
-			SIMDProcessor.Memcpy( /*(byte *)*/block.virtMem.subarray(block.offset), dataBuffer, size );
+			SIMDProcessor.Memcpy( /*(byte *)*/block.virtMem.subarray( block.offset ), dataBuffer, size );
 		}
 
 		return block;
@@ -537,7 +539,7 @@ idVertexCache::EndFrame
 ===========
 */
 	EndFrame ( ): void {
-		dlog(DEBUG_RENDER_METHODS, "EndFrame\n");
+		dlog( DEBUG_RENDER_METHODS, "EndFrame\n" );
 		// display debug information
 		if ( r_showVertexCache.GetBool ( ) ) {
 			var /*int	*/staticUseCount = 0;
@@ -573,8 +575,8 @@ idVertexCache::EndFrame
 		if ( todoBindBuffersNull ) {
 			glBindBuffer( GL_ARRAY_BUFFER, null );
 			glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, null );
-			dlog(DEBUG_RENDER_METHODS, "EndFrame glBindBuffer(GL_ARRAY_BUFFER, 0);\n");
-			dlog(DEBUG_RENDER_METHODS, "EndFrame glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);\n");
+			dlog( DEBUG_RENDER_METHODS, "EndFrame glBindBuffer(GL_ARRAY_BUFFER, 0);\n" );
+			dlog( DEBUG_RENDER_METHODS, "EndFrame glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);\n" );
 		}
 
 		this.currentFrame = tr.frameCount;
@@ -609,42 +611,46 @@ idVertexCache::List
 =============
 */
 	List ( ): void {
-		todoThrow ( );
-		//int	numActive = 0;
-		//int	numDeferred = 0;
-		//int frameStatic = 0;
-		//int	totalStatic = 0;
-		//int	deferredSpace = 0;
+		var /*int*/ numActive = 0;
+		var /*int*/ numDeferred = 0;
+		var /*int*/ frameStatic = 0;
+		var /*int*/ totalStatic = 0;
+		var /*int*/ deferredSpace = 0;
 
-		//vertCache_t *block;
+		var block: vertCache_t;
 
-		//for (block = this.staticHeaders.next ; block != &this.staticHeaders ; block = block.next) {
-		//	numActive++;
+		for ( block = this.staticHeaders.next; block != this.staticHeaders; block = block.next ) {
+			numActive++;
 
-		//	totalStatic += block.size;
+			totalStatic += block.size;
 
-		//	if (block.frameUsed == this.currentFrame) {
-		//		frameStatic += block.size;
-		//	}
-		//}
+			if ( block.frameUsed == this.currentFrame ) {
+				frameStatic += block.size;
+			}
+		}
 
-		//int	numFreeStaticHeaders = 0;
+		var /*int	*/numFreeStaticHeaders = 0;
 
-		//for (block = this.freeStaticHeaders.next ; block != &this.freeStaticHeaders ; block = block.next) {
-		//	numFreeStaticHeaders++;
-		//}
+		for ( block = this.freeStaticHeaders.next; block !=  this.freeStaticHeaders; block = block.next ) {
+			numFreeStaticHeaders++;
+		}
 
-		//int	numFreeDynamicHeaders = 0;
+		var /*int	*/numFreeDynamicHeaders = 0;
 
-		//for (block = this.freeDynamicHeaders.next ; block != &this.freeDynamicHeaders ; block = block.next) {
-		//	numFreeDynamicHeaders++;
-		//}
+		for ( block = this.freeDynamicHeaders.next; block !=  this.freeDynamicHeaders; block = block.next ) {
+			numFreeDynamicHeaders++;
+		}
 
-		//common.Printf("%i megs working set\n", r_vertexBufferMegs.GetInteger());
-		//common.Printf("%i dynamic temp buffers of %ik\n", NUM_VERTEX_FRAMES, this.frameBytes / 1024);
-		//common.Printf("%5i active static headers\n", numActive);
-		//common.Printf("%5i free static headers\n", numFreeStaticHeaders);
-		//common.Printf("%5i free dynamic headers\n", numFreeDynamicHeaders);
+		common.Printf( "%i megs working set\n", r_vertexBufferMegs.GetInteger ( ) );
+		common.Printf( "%i dynamic temp buffers of %ik\n", NUM_VERTEX_FRAMES, this.frameBytes / 1024 );
+		common.Printf( "%5i active static headers\n", numActive );
+		common.Printf( "%5i free static headers\n", numFreeStaticHeaders );
+		common.Printf( "%5i free dynamic headers\n", numFreeDynamicHeaders );
+		dlog(DEBUG_RENDER_METHODS, "%i megs working set\n", r_vertexBufferMegs.GetInteger());
+		dlog(DEBUG_RENDER_METHODS, "%i dynamic temp buffers of %ik\n", NUM_VERTEX_FRAMES, this.frameBytes / 1024);
+		dlog(DEBUG_RENDER_METHODS, "%5i active static headers\n", numActive);
+		dlog(DEBUG_RENDER_METHODS, "%5i free static headers\n", numFreeStaticHeaders);
+		dlog(DEBUG_RENDER_METHODS, "%5i free dynamic headers\n", numFreeDynamicHeaders );
 	}
 }
 

@@ -215,32 +215,32 @@ will point into this temporary buffer.
 		}
 	}
 
-/////*
-////============
-////idCmdArgs::AppendArg
-////============
-////*/
-////void idCmdArgs::AppendArg( const char *text ) {
-////	if ( !this.argc ) {
-////		this.argc = 1;
-////		this.argv[ 0 ] = tokenized;
-////		idStr.Copynz( tokenized, text, sizeof( tokenized ) );
-////	} else {
-////		this.argv[ this.argc ] = this.argv[ this.argc-1 ] + strlen( this.argv[ this.argc-1 ] ) + 1;
-////		idStr.Copynz( this.argv[ this.argc ], text, sizeof( tokenized ) - ( this.argv[ this.argc ] - tokenized ) );
-////		this.argc++;
-////	}
-////}
+/*
+============
+idCmdArgs::AppendArg
+============
+*/
+	AppendArg ( /*const char **/text: string ): void {
+		if ( !this.argc ) {
+			this.argc = 1;
+			this.argv[0] = this.tokenized;
+			idStr.Copynz( this.tokenized, text, sizeof( this.tokenized ) );
+		} else {
+			this.argv[this.argc] = new Uint8Array( idCmdArgs.MAX_COMMAND_STRING );
+			idStr.Copynz( this.argv[this.argc], text, idCmdArgs.MAX_COMMAND_STRING );
+			this.argc++;
+		}
+	}
 
-/////*
-////============
-////idCmdArgs::GetArgs
-////============
-////*/
-////const char **idCmdArgs::GetArgs( int *_this.this.argc ) {
-////	*_argc = this.argc;
-////	return (const char **)&this.argv[0];
-////}
+/*
+============
+idCmdArgs::GetArgs
+============
+*/
+	GetArgs ( _argc: R<number> ): Uint8Array[] {
+		_argc.$ = this.argc;
+		return this.argv;
+	}
 
 };
 

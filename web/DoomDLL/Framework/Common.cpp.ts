@@ -1,5 +1,3 @@
-
-
 /////*
 ////===========================================================================
 
@@ -192,8 +190,8 @@ class idCommon {
 ////	int							rd_buffersize;
 ////	void						(*rd_flush)( const char *buffer );
 
-////	idStr						warningCaption;
-////	idStrList					warningList;
+	warningCaption = new idStr;
+	warningList = new idStrList;
 ////	idStrList					errorList;
 
 ////	int							gameDLL;
@@ -577,15 +575,15 @@ Warning( /*const char **/ fmt:string, ...args: any[] ):void {
 ////	}
 ////}
 
-/////*
-////==================
-////idCommonLocal::ClearWarnings
-////==================
-////*/
-////void idCommonLocal::ClearWarnings( const char *reason ) {
-////	warningCaption = reason;
-////	warningList.Clear();
-////}
+/*
+==================
+idCommonLocal::ClearWarnings
+==================
+*/
+	ClearWarnings ( reason: string ): void {
+		this.warningCaption.equals(reason);
+		this.warningList.Clear ( );
+	}
 
 /////*
 ////==================
@@ -807,50 +805,50 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////}
 
 
-/////*
-////============================================================================
+/*
+============================================================================
 
-////COMMAND LINE FUNCTIONS
+COMMAND LINE FUNCTIONS
 
-////+ characters separate the commandLine string into multiple console
-////command lines.
++ characters separate the commandLine string into multiple console
+command lines.
 
-////All of these are valid:
+All of these are valid:
 
-////doom +set test blah +map test
-////doom set test blah+map test
-////doom set test blah + map test
+doom +set test blah +map test
+doom set test blah+map test
+doom set test blah + map test
 
-////============================================================================
-////*/
+============================================================================
+*/
 
-////#define		MAX_CONSOLE_LINES	32
-////int			com_numConsoleLines;
-////idCmdArgs	com_consoleLines[MAX_CONSOLE_LINES];
+	MAX_CONSOLE_LINES = 32;
+/*int			*/com_numConsoleLines:number;
+	com_consoleLines = newStructArray<idCmdArgs>(idCmdArgs, this.MAX_CONSOLE_LINES);
 
-/////*
-////==================
-////idCommonLocal::ParseCommandLine
-////==================
-////*/
-////void idCommonLocal::ParseCommandLine( int argc, const char **argv ) {
-////	int i, current_count;
+/*
+==================
+idCommonLocal::ParseCommandLine
+==================
+*/
+	ParseCommandLine ( /*int*/ argc: number, /*const char ***/argv: Uint8Array[] ): void {
+		var /*int */i: number, current_count: number;
 
-////	com_numConsoleLines = 0;
-////	current_count = 0;
-////	// API says no program path
-////	for ( i = 0; i < argc; i++ ) {
-////		if ( argv[ i ][ 0 ] == '+' ) {
-////			com_numConsoleLines++;
-////			com_consoleLines[ com_numConsoleLines-1 ].AppendArg( argv[ i ] + 1 );
-////		} else {
-////			if ( !com_numConsoleLines ) {
-////				com_numConsoleLines++;
-////			}
-////			com_consoleLines[ com_numConsoleLines-1 ].AppendArg( argv[ i ] );
-////		}
-////	}
-////}
+		this.com_numConsoleLines = 0;
+		current_count = 0;
+		// API says no program path
+		for ( i = 0; i < argc; i++ ) {
+			if ( argv[i][0] == '+'.charCodeAt( 0 ) ) {
+				this.com_numConsoleLines++;
+				this.com_consoleLines[this.com_numConsoleLines - 1].AppendArg(argv[i].subarray(1).toString() );
+			} else {
+				if ( !this.com_numConsoleLines ) {
+					this.com_numConsoleLines++;
+				}
+				this.com_consoleLines[this.com_numConsoleLines - 1].AppendArg( argv[i].toString ( ) );
+			}
+		}
+	}
 
 /////*
 ////==================
@@ -921,46 +919,46 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////	}
 ////}
 
-/////*
-////==================
-////idCommonLocal::StartupVariable
+/*
+==================
+idCommonLocal::StartupVariable
 
-////Searches for command line parameters that are set commands.
-////If match is not NULL, only that cvar will be looked for.
-////That is necessary because cddir and basedir need to be set
-////before the filesystem is started, but all other sets should
-////be after execing the config and default.
-////==================
-////*/
-////void idCommonLocal::StartupVariable( const char *match, bool once ) {
-////	int			i;
-////	const char *s;
+Searches for command line parameters that are set commands.
+If match is not NULL, only that cvar will be looked for.
+That is necessary because cddir and basedir need to be set
+before the filesystem is started, but all other sets should
+be after execing the config and default.
+==================
+*/
+	StartupVariable ( match: string, once: boolean ): void {
+		var /*int			*/i: number;
+		var /*const char **/s: string;
 
-////	i = 0;
-////	while (	i < com_numConsoleLines ) {
-////		if ( strcmp( com_consoleLines[ i ].Argv( 0 ), "set" ) ) {
-////			i++;
-////			continue;
-////		}
+		i = 0;
+		while ( i < this.com_numConsoleLines ) {
+			if ( strcmp( this.com_consoleLines[i].Argv( 0 ), "set" ) ) {
+				i++;
+				continue;
+			}
 
-////		s = com_consoleLines[ i ].Argv(1);
+			s = this.com_consoleLines[i].Argv( 1 );
 
-////		if ( !match || !idStr::Icmp( s, match ) ) {
-////			cvarSystem.SetCVarString( s, com_consoleLines[ i ].Argv( 2 ) );
-////			if ( once ) {
-////				// kill the line
-////				int j = i + 1;
-////				while ( j < com_numConsoleLines ) {
-////					com_consoleLines[ j - 1 ] = com_consoleLines[ j ];
-////					j++;
-////				}
-////				com_numConsoleLines--;
-////				continue;
-////			}
-////		}
-////		i++;
-////	}
-////}
+			if ( !match || !idStr.Icmp( s, match ) ) {
+				cvarSystem.SetCVarString( s, this.com_consoleLines[i].Argv( 2 ) );
+				if ( once ) {
+					// kill the line
+					var /*int */j = i + 1;
+					while ( j < this.com_numConsoleLines ) {
+						this.com_consoleLines[j - 1] = this.com_consoleLines[j];
+						j++;
+					}
+					this.com_numConsoleLines--;
+					continue;
+				}
+			}
+			i++;
+		}
+	}
 
 /////*
 ////==================
@@ -2766,7 +2764,7 @@ idCommonLocal::PrintLoadingMessage
 idCommonLocal::Init
 =================
 */
-/*idCommonLocal::Init*/Init( /*int*/ argc: number, /*const char ***/argv: string, /*const char **/cmdline: string ): void {
+/*idCommonLocal::Init*/Init( /*int*/ argc: number, /*const char ***/argv: Uint8Array[], /*const char **/cmdline: string ): void {
 ////try {
 ////		// set interface pointers used by idLib
 ////		idLib::sys			= sys;
@@ -2780,17 +2778,19 @@ idCommonLocal::Init
 		// initialize idStr
 		idStr.Init ( );
 
-////		// clear warning buffer
-////		ClearWarnings( GAME_NAME " initialization" );
+		// clear warning buffer
+		this.ClearWarnings( GAME_NAME + " initialization" );
 		
-////		// parse command line options
-////		idCmdArgs args;
-////		if ( cmdline ) {
-////			// tokenize if the OS doesn't do it for us
-////			args.TokenizeString( cmdline, true );
-////			argv = args.GetArgs( &argc );
-////		}
-////		ParseCommandLine( argc, argv );
+		// parse command line options
+		var args = new idCmdArgs;
+		if ( cmdline ) {
+			// tokenize if the OS doesn't do it for us
+			args.TokenizeString(cmdline, true);
+			var $argc = new R( argc );
+			argv = args.GetArgs($argc);
+			argc = $argc.$;
+		}
+		this.ParseCommandLine( argc, argv );
 
 		// init console command system
 		cmdSystem.Init();
@@ -2798,8 +2798,8 @@ idCommonLocal::Init
 		// init CVar system
 		cvarSystem.Init();
 
-////		// start file logging right away, before early console or whatever
-////		StartupVariable( "win_outputDebugString", false );
+		// start file logging right away, before early console or whatever
+		this.StartupVariable( "win_outputDebugString", false );
 
 		// register all static CVars
         idCVar.RegisterStaticVars(); // don'try need to do because this is for registering vars in different DLLs?
@@ -2819,8 +2819,8 @@ idCommonLocal::Init
 ////		// initialize networking
 ////		Sys_InitNetworking();
 
-////		// override cvars from command line
-////		StartupVariable( NULL, false );
+		// override cvars from command line
+		this.StartupVariable( null, false );
 
 ////		if ( !idAsyncNetwork::serverDedicated.GetInteger() && Sys_AlreadyRunning() ) {
 ////			Sys_Quit();
@@ -2966,7 +2966,7 @@ idCommonLocal::InitGame
 		$console.LoadGraphics ( );
 
 		// init journalling, etc
-		//eventLoop.Init();
+		eventLoop.Init();
 
 		this.PrintLoadingMessage( common.GetLanguageDict ( ).GetString( "#str_04345" ) );
 

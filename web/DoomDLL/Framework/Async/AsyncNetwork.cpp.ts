@@ -35,8 +35,8 @@ class idAsyncNetwork {
 	static IsActive ( ): boolean { return ( idAsyncNetwork.server.IsActive ( ) || idAsyncNetwork.client.IsActive ( ) ); }
 
 
-	static server: idAsyncServer;
-	static client: idAsyncClient;
+	static server = new idAsyncServer;
+	static client = new idAsyncClient;
 //
 	static verbose: idCVar;
 	static allowCheats: idCVar;

@@ -335,73 +335,82 @@ class idRenderSystem {
 ////	return true;
 ////}
 
-/////*
-////==================
-////R_CheckPortableExtensions
+/*
+==================
+R_CheckPortableExtensions
 
-////==================
-////*/
-////static void R_CheckPortableExtensions(void)
-////{
-////	glConfig.glVersion = atof(glConfig.version_string);
+==================
+*/
+static R_CheckPortableExtensions():void
+{
+	// hardcode to match c:
+	glConfig.glVersion = 0;
+	glConfig.maxTextureUnits = 8;
+	glConfig.maxTextureCoords = 16384;
+	glConfig.maxTextureImageUnits = 8;
+	tr.stencilIncr = GL_INCR_WRAP;
+	tr.stencilDecr = GL_DECR_WRAP;
+
+	// original:
+//	glConfig.glVersion = atof(glConfig.version_string);
 ////#if !defined(GL_ES_VERSION_2_0)
 ////	if (!glConfig.glVersion >= 3.0) {
 ////		common.Error(common.GetLanguageDict().GetString("#str_06780"));
 ////	}
 ////#endif
 
-////	// GL_ARB_multitexture
-////	glConfig.multitextureAvailable = R_CheckExtension("GL_ARB_multitexture");
+//	// GL_ARB_multitexture
+//	glConfig.multitextureAvailable = R_CheckExtension("GL_ARB_multitexture");
 
 ////#if !defined(GL_ES_VERSION_2_0)
 ////	if (glConfig.multitextureAvailable)
 ////#endif
-////	{
+//	{
 ////#if !defined(GL_ES_VERSION_2_0)
 ////		glGetIntegerv(GL_MAX_TEXTURE_UNITS_ARB, (GLint *)&glConfig.maxTextureUnits);
 ////#else
-////		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, (GLint *)&glConfig.maxTextureUnits);
+//		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, (GLint *)&glConfig.maxTextureUnits);
 ////#endif
 
-////		if (glConfig.maxTextureUnits > MAX_MULTITEXTURE_UNITS) {
-////			glConfig.maxTextureUnits = MAX_MULTITEXTURE_UNITS;
-////		}
+//		if (glConfig.maxTextureUnits > MAX_MULTITEXTURE_UNITS) {
+//			glConfig.maxTextureUnits = MAX_MULTITEXTURE_UNITS;
+//		}
 
-////		if (glConfig.maxTextureUnits < 2) {
-////			glConfig.multitextureAvailable = false;	// shouldn't ever happen
-////		}
+//		if (glConfig.maxTextureUnits < 2) {
+//			glConfig.multitextureAvailable = false;	// shouldn't ever happen
+//		}
 
 ////#if !defined(GL_ES_VERSION_2_0)
 ////		glGetIntegerv(GL_MAX_TEXTURE_COORDS_ARB, (GLint *)&glConfig.maxTextureCoords);
 ////		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS_ARB, (GLint *)&glConfig.maxTextureImageUnits);
 ////#else
-////		glGetIntegerv(GL_MAX_TEXTURE_SIZE, (GLint *)&glConfig.maxTextureCoords);
-////		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, (GLint *)&glConfig.maxTextureImageUnits);
+//		glGetIntegerv(GL_MAX_TEXTURE_SIZE, (GLint *)&glConfig.maxTextureCoords);
+//		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, (GLint *)&glConfig.maxTextureImageUnits);
 ////#endif
-////	}
+//	}
 
-////	// GL_ARB_texture_env_combine
-////	glConfig.textureEnvCombineAvailable = R_CheckExtension("GL_ARB_texture_env_combine");
+//	// GL_ARB_texture_env_combine
+//	glConfig.textureEnvCombineAvailable = R_CheckExtension("GL_ARB_texture_env_combine");
 
-////	// GL_ARB_texture_cube_map
-////	glConfig.cubeMapAvailable = R_CheckExtension("GL_ARB_texture_cube_map");
+//	// GL_ARB_texture_cube_map
+//	glConfig.cubeMapAvailable = R_CheckExtension("GL_ARB_texture_cube_map");
 
-////	// GL_ARB_texture_env_dot3
-////	glConfig.envDot3Available = R_CheckExtension("GL_ARB_texture_env_dot3");
+//	// GL_ARB_texture_env_dot3
+//	glConfig.envDot3Available = R_CheckExtension("GL_ARB_texture_env_dot3");
 
-////	// GL_ARB_texture_env_add
-////	glConfig.textureEnvAddAvailable = R_CheckExtension("GL_ARB_texture_env_add");
+//	// GL_ARB_texture_env_add
+//	glConfig.textureEnvAddAvailable = R_CheckExtension("GL_ARB_texture_env_add");
 
-////	// GL_ARB_texture_non_power_of_two
-////	glConfig.textureNonPowerOfTwoAvailable = R_CheckExtension("GL_ARB_texture_non_power_of_two");
+//	// GL_ARB_texture_non_power_of_two
+//	glConfig.textureNonPowerOfTwoAvailable = R_CheckExtension("GL_ARB_texture_non_power_of_two");
 
-////	// GL_ARB_texture_compression + GL_S3_s3tc
-////	// DRI drivers may have GL_ARB_texture_compression but no GL_EXT_texture_compression_s3tc
-////	if (R_CheckExtension("GL_ARB_texture_compression") && R_CheckExtension("GL_EXT_texture_compression_s3tc")) {
-////		glConfig.textureCompressionAvailable = true;
-////	} else {
-////		glConfig.textureCompressionAvailable = false;
-////	}
+//	// GL_ARB_texture_compression + GL_S3_s3tc
+//	// DRI drivers may have GL_ARB_texture_compression but no GL_EXT_texture_compression_s3tc
+//	if (R_CheckExtension("GL_ARB_texture_compression") && R_CheckExtension("GL_EXT_texture_compression_s3tc")) {
+//		glConfig.textureCompressionAvailable = true;
+//	} else {
+//		glConfig.textureCompressionAvailable = false;
+//	}
 
 ////#if !defined(GL_ES_VERSION_2_0)
 ////	// GL_EXT_texture_filter_anisotropic
@@ -415,42 +424,42 @@ class idRenderSystem {
 ////	}
 ////#endif
 
-////	// GL_EXT_texture_lod_bias
-////	// The actual extension is broken as specificed, storing the state in the texture unit instead
-////	// of the texture object.  The behavior in GL 1.4 is the behavior we use.
-////	if (glConfig.glVersion >= 1.4 || R_CheckExtension("GL_EXT_texture_lod")) {
-////		common.Printf("...using %s\n", "GL_1.4_texture_lod_bias");
-////		glConfig.textureLODBiasAvailable = true;
-////	} else {
-////		common.Printf("X..%s not found\n", "GL_1.4_texture_lod_bias");
-////		glConfig.textureLODBiasAvailable = false;
-////	}
+//	// GL_EXT_texture_lod_bias
+//	// The actual extension is broken as specificed, storing the state in the texture unit instead
+//	// of the texture object.  The behavior in GL 1.4 is the behavior we use.
+//	if (glConfig.glVersion >= 1.4 || R_CheckExtension("GL_EXT_texture_lod")) {
+//		common.Printf("...using %s\n", "GL_1.4_texture_lod_bias");
+//		glConfig.textureLODBiasAvailable = true;
+//	} else {
+//		common.Printf("X..%s not found\n", "GL_1.4_texture_lod_bias");
+//		glConfig.textureLODBiasAvailable = false;
+//	}
 
-////	// GL_EXT_shared_texture_palette
-////	glConfig.sharedTexturePaletteAvailable = R_CheckExtension("GL_EXT_shared_texture_palette");
+//	// GL_EXT_shared_texture_palette
+//	glConfig.sharedTexturePaletteAvailable = R_CheckExtension("GL_EXT_shared_texture_palette");
 
-////	// GL_EXT_texture3D (not currently used for anything)
-////	glConfig.texture3DAvailable = R_CheckExtension("GL_EXT_texture3D");
+//	// GL_EXT_texture3D (not currently used for anything)
+//	glConfig.texture3DAvailable = R_CheckExtension("GL_EXT_texture3D");
 
-////	// EXT_stencil_wrap
-////	tr.stencilIncr = GL_INCR_WRAP;
-////	tr.stencilDecr = GL_DECR_WRAP;
+//	// EXT_stencil_wrap
+//	tr.stencilIncr = GL_INCR_WRAP;
+//	tr.stencilDecr = GL_DECR_WRAP;
 
-////	// ARB_vertex_buffer_object
-////	glConfig.ARBVertexBufferObjectAvailable = R_CheckExtension("GL_ARB_vertex_buffer_object");
+//	// ARB_vertex_buffer_object
+//	glConfig.ARBVertexBufferObjectAvailable = R_CheckExtension("GL_ARB_vertex_buffer_object");
 
-////	// ARB_vertex_program
-////	glConfig.ARBVertexProgramAvailable = R_CheckExtension("GL_ARB_vertex_program");
+//	// ARB_vertex_program
+//	glConfig.ARBVertexProgramAvailable = R_CheckExtension("GL_ARB_vertex_program");
 
-////	// ARB_fragment_program
-////	if (r_inhibitFragmentProgram.GetBool()) {
-////		glConfig.ARBFragmentProgramAvailable = false;
-////	} else {
-////		glConfig.ARBFragmentProgramAvailable = R_CheckExtension("GL_ARB_fragment_program");
-////	}
+//	// ARB_fragment_program
+//	if (r_inhibitFragmentProgram.GetBool()) {
+//		glConfig.ARBFragmentProgramAvailable = false;
+//	} else {
+//		glConfig.ARBFragmentProgramAvailable = R_CheckExtension("GL_ARB_fragment_program");
+//	}
 
-////	// GL_ARB_shading_language_100
-////	glConfig.GLSLAvailable = R_CheckExtension("GL_ARB_shading_language_100");
+//	// GL_ARB_shading_language_100
+//	glConfig.GLSLAvailable = R_CheckExtension("GL_ARB_shading_language_100");
 
 ////#if !defined(GL_ES_VERSION_2_0)
 ////	// GL_EXT_depth_bounds_test
@@ -460,7 +469,7 @@ class idRenderSystem {
 ////		qglDepthBoundsEXT = (void (GL_APIENTRY *)(GLclampd, GLclampd))GLimp_ExtensionPointer("glDepthBoundsEXT");
 ////	}
 ////#endif
-////}
+}
 
 /*
 ====================
@@ -610,8 +619,8 @@ R_InitOpenGL(): void {
 
 	glConfig.isInitialized = true;
 
-//	// recheck all the extensions (FIXME: this might be dangerous)
-//	R_CheckPortableExtensions();
+	// recheck all the extensions (FIXME: this might be dangerous)
+	idRenderSystem.R_CheckPortableExtensions();
 
 //	// parse our vertex and fragment programs, possibly disably support for
 //	// one of the paths if there was an error
@@ -630,6 +639,9 @@ R_InitOpenGL(): void {
 
 	// allocate the vertex array range or vertex objects
 	vertexCache.Init();
+	if ( DEBUG_RENDER_METHODS ) {
+		vertexCache.List();
+	}
 	
 	// select which renderSystem we are going to use
 	r_renderer.SetModified();

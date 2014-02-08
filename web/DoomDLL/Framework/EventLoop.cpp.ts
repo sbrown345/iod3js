@@ -54,7 +54,7 @@ class idEventLoop {
 	//	int				JournalLevel( void ) const;
 	
 	// Journal file.
-	com_journalFile:idFile;
+	com_journalFile: idFile;
 	com_journalDataFile: idFile;
 	
 	//private:
@@ -74,7 +74,7 @@ class idEventLoop {
 	//#include "../idlib/precompiled.h"
 	//#pragma hdrstop
 	//
-	//idCVar idEventLoop::com_journal( "com_journal", "0", CVAR_INIT|CVAR_SYSTEM, "1 = record journal, 2 = play back journal", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
+	static com_journal = new idCVar( "com_journal", "0", CVAR_INIT|CVAR_SYSTEM, "1 = record journal, 2 = play back journal", 0, 2, ArgCompletion_Integer_Template(0,2) );
 	//
 	//
 	//
@@ -108,15 +108,15 @@ class idEventLoop {
 	//
 	//	// either get an event from the system or the journal file
 	//	if ( com_journal.GetInteger() == 2 ) {
-	//		r = com_journalFile->Read( &ev, sizeof(ev) );
+	//		r = com_journalFile.Read( &ev, sizeof(ev) );
 	//		if ( r != sizeof(ev) ) {
-	//			common->FatalError( "Error reading from journal file" );
+	//			common.FatalError( "Error reading from journal file" );
 	//		}
 	//		if ( ev.evPtrLength ) {
 	//			ev.evPtr = Mem_ClearedAlloc( ev.evPtrLength );
-	//			r = com_journalFile->Read( ev.evPtr, ev.evPtrLength );
+	//			r = com_journalFile.Read( ev.evPtr, ev.evPtrLength );
 	//			if ( r != ev.evPtrLength ) {
-	//				common->FatalError( "Error reading from journal file" );
+	//				common.FatalError( "Error reading from journal file" );
 	//			}
 	//		}
 	//	} else {
@@ -124,14 +124,14 @@ class idEventLoop {
 	//
 	//		// write the journal value out if needed
 	//		if ( com_journal.GetInteger() == 1 ) {
-	//			r = com_journalFile->Write( &ev, sizeof(ev) );
+	//			r = com_journalFile.Write( &ev, sizeof(ev) );
 	//			if ( r != sizeof(ev) ) {
-	//				common->FatalError( "Error writing to journal file" );
+	//				common.FatalError( "Error writing to journal file" );
 	//			}
 	//			if ( ev.evPtrLength ) {
-	//				r = com_journalFile->Write( ev.evPtr, ev.evPtrLength );
+	//				r = com_journalFile.Write( ev.evPtr, ev.evPtrLength );
 	//				if ( r != ev.evPtrLength ) {
-	//					common->FatalError( "Error writing to journal file" );
+	//					common.FatalError( "Error writing to journal file" );
 	//				}
 	//			}
 	//		}
@@ -156,11 +156,11 @@ class idEventLoop {
 	//		// don't print the warning constantly, or it can give time for more...
 	//		if ( !printedWarning ) {
 	//			printedWarning = true;
-	//			common->Printf( "WARNING: Com_PushEvent overflow\n" );
+	//			common.Printf( "WARNING: Com_PushEvent overflow\n" );
 	//		}
 	//
-	//		if ( ev->evPtr ) {
-	//			Mem_Free( ev->evPtr );
+	//		if ( ev.evPtr ) {
+	//			Mem_Free( ev.evPtr );
 	//		}
 	//		com_pushedEventsTail++;
 	//	} else {
@@ -197,10 +197,10 @@ class idEventLoop {
 	//
 	//	if ( ev.evType == SE_CONSOLE ) {
 	//		// from a text console outside the game window
-	//		cmdSystem->BufferCommandText( CMD_EXEC_APPEND, (char *)ev.evPtr );
-	//		cmdSystem->BufferCommandText( CMD_EXEC_APPEND, "\n" );
+	//		cmdSystem.BufferCommandText( CMD_EXEC_APPEND, (char *)ev.evPtr );
+	//		cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "\n" );
 	//	} else {
-	//		session->ProcessEvent( &ev );
+	//		session.ProcessEvent( &ev );
 	//	}
 	//
 	//	// free any block data
@@ -221,7 +221,7 @@ class idEventLoop {
 	//
 	//		if ( commandExecution ) {
 	//			// execute any bound commands before processing another event
-	//			cmdSystem->ExecuteCommandBuffer();
+	//			cmdSystem.ExecuteCommandBuffer();
 	//		}
 	//
 	//		ev = GetEvent();
@@ -236,35 +236,37 @@ class idEventLoop {
 	//	return 0;	// never reached
 	//}
 	//
-	///*
-	//=============
-	//idEventLoop::Init
-	//=============
-	//*/
-	//void idEventLoop::Init( void ) {
-	//
-	//	initialTimeOffset = Sys_Milliseconds();
-	//
-	//	common->StartupVariable( "journal", false );
-	//
-	//	if ( com_journal.GetInteger() == 1 ) {
-	//		common->Printf( "Journaling events\n" );
-	//		com_journalFile = fileSystem->OpenFileWrite( "journal.dat" );
-	//		com_journalDataFile = fileSystem->OpenFileWrite( "journaldata.dat" );
-	//	} else if ( com_journal.GetInteger() == 2 ) {
-	//		common->Printf( "Replaying journaled events\n" );
-	//		com_journalFile = fileSystem->OpenFileRead( "journal.dat" );
-	//		com_journalDataFile = fileSystem->OpenFileRead( "journaldata.dat" );
-	//	}
-	//
-	//	if ( !com_journalFile || !com_journalDataFile ) {
-	//		com_journal.SetInteger( 0 );
-	//		com_journalFile = 0;
-	//		com_journalDataFile = 0;
-	//		common->Printf( "Couldn't open journal files\n" );
-	//	}
-	//}
-	//
+	/*
+	=============
+	idEventLoop::Init
+	=============
+	*/
+	Init ( ): void {
+
+		this.initialTimeOffset = Sys_Milliseconds ( );
+
+		common.StartupVariable( "journal", false );
+
+		if ( idEventLoop.com_journal.GetInteger ( ) == 1 ) {
+			todoThrow ( );
+			//common.Printf( "Journaling events\n" );
+			//this.com_journalFile = fileSystem.OpenFileWrite("journal.dat");
+			//this.com_journalDataFile = fileSystem.OpenFileWrite( "journaldata.dat" );
+		} else if ( idEventLoop.com_journal.GetInteger ( ) == 2 ) {
+			todoThrow ( );
+			//common.Printf( "Replaying journaled events\n" );
+			//this.com_journalFile = fileSystem.OpenFileRead("journal.dat");
+			//this.com_journalDataFile = fileSystem.OpenFileRead( "journaldata.dat" );
+		}
+
+		if ( !this.com_journalFile || !this.com_journalDataFile ) {
+			idEventLoop.com_journal.SetInteger( 0 );
+			this.com_journalFile = null;
+			this.com_journalDataFile = null;
+			common.Printf( "Couldn't open journal files\n" );
+		}
+	}
+
 	///*
 	//=============
 	//idEventLoop::Shutdown
@@ -272,11 +274,11 @@ class idEventLoop {
 	//*/
 	//void idEventLoop::Shutdown( void ) {
 	//	if ( com_journalFile ) {
-	//		fileSystem->CloseFile( com_journalFile );
+	//		fileSystem.CloseFile( com_journalFile );
 	//		com_journalFile = NULL;
 	//	}
 	//	if ( com_journalDataFile ) {
-	//		fileSystem->CloseFile( com_journalDataFile );
+	//		fileSystem.CloseFile( com_journalDataFile );
 	//		com_journalDataFile = NULL;
 	//	}
 	//}

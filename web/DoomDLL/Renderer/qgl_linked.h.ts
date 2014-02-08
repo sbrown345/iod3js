@@ -411,5 +411,6 @@ var glUniformMatrix4fv = <( location: WebGLUniformLocation, transpose: boolean, 
 var glVertexAttribPointer = <( indx: number, size: number, type: number, normalized: boolean, stride: number, offset: number ) => void>gl.vertexAttribPointer.bind( gl );
 
 var glBufferData = ( target: number, size: number, data: ArrayBufferView, usage: number ): void => {
+	assert( size === data.byteLength );
 	gl.bufferData.call( gl, target, data, usage );
 };

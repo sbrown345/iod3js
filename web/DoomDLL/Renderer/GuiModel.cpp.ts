@@ -35,7 +35,7 @@ If you have questions concerning this license or the applicable additional terms
 
 class idGuiModel {
 //public:
-	surf = new guiModelSurface_t();
+	surf: guiModelSurface_t;
 	surfaces = new idList<guiModelSurface_t>(guiModelSurface_t);
 	indexes: idList<number> = new idList<number>(Number);
 	verts: idList<idDrawVert> = new idList<idDrawVert>(idDrawVert);

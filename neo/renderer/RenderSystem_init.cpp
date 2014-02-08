@@ -538,6 +538,11 @@ void R_InitOpenGL(void)
 
 	// allocate the vertex array range or vertex objects
 	vertexCache.Init();
+#ifdef JS_CHANGES
+	if (DEBUG_RENDER_METHODS) {
+		vertexCache.List();
+	}
+#endif
 
 	// select which renderSystem we are going to use
 	r_renderer.SetModified();
@@ -1559,7 +1564,7 @@ R_SetColorMappings
 ===============
 */
 void R_SetColorMappings( void ) {
-#ifdef JS_CHANGES
+#ifndef JS_CHANGES
 	int		i, j;
 	float	g, b;
 	int		inf;

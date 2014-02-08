@@ -1191,50 +1191,51 @@ FreeData( ):void {
 	this.data = null;
 }
 
-/////*
-////============
-////idStr::operator=
-////============
-////*/
-////void idStr::operator=( const char *text ) {
-////	int l;
-////	int diff;
-////	int i;
+/*
+============
+idStr::operator=
+============
+*/
+	equals ( text: string ): void {
+		var l: number /*int*/;
+		//int diff;
+		//int i;
 
-////	if ( !text ) {
-////		// safe behaviour if NULL
-////		EnsureAlloced( 1, false );
-////		this.data[ 0 ] = '\0';
-////		len = 0;
-////		return;
-////	}
+		//if ( !text ) {
+		//	// safe behaviour if NULL
+		//	EnsureAlloced( 1, false );
+		//	this.data[ 0 ] = '\0';
+		//	len = 0;
+		//	return;
+		//}
 
-////	if ( text == this.data ) {
-////		return; // copying same thing
-////	}
+		//if ( text == this.data ) {
+		//	return; // copying same thing
+		//}
 
-////	// check if we're aliasing
-////	if ( text >= this.data && text <= this.data + len ) {
-////		diff = text - this.data;
+		//// check if we're aliasing
+		//if ( text >= this.data && text <= this.data + len ) {
+		//	diff = text - this.data;
 
-////		assert( strlen( text ) < (unsigned)len );
+		//	assert( strlen( text ) < (unsigned)len );
 
-////		for ( i = 0; text[ i ]; i++ ) {
-////			this.data[ i ] = text[ i ];
-////		}
+		//	for ( i = 0; text[ i ]; i++ ) {
+		//		this.data[ i ] = text[ i ];
+		//	}
 
-////		this.data[ i ] = '\0';
+		//	this.data[ i ] = '\0';
 
-////		len -= diff;
+		//	len -= diff;
 
-////		return;
-////	}
+		//	return;
+		//}
 
-////	l = strlen( text );
-////	EnsureAlloced( l + 1, false );
-////	strcpy( this.data, text );
-////	len = l;
-////}
+		l = strlen( text );
+		//EnsureAlloced( l + 1, false );
+		//strcpy( this.data, text );
+		this.data = text;
+		this.len = l;
+	}
 
 /*
 ============
