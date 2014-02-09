@@ -286,15 +286,15 @@ idGameLocal.prototype.Init = function ( ): void {
 	declManager.RegisterDeclFolder("particles", ".prt", declType_t. DECL_PARTICLE );
 	declManager.RegisterDeclFolder("af", ".af", declType_t. DECL_AF );
 	declManager.RegisterDeclFolder("newpdas", ".pda", declType_t. DECL_PDA );
+
+	cmdSystem.AddCommand("listModelDefs", idListDecls_f(declType_t.DECL_MODELDEF), CMD_FL_SYSTEM|CMD_FL_GAME, "lists model defs" );
+	cmdSystem.AddCommand("printModelDefs", idPrintDecls_f(declType_t.DECL_MODELDEF), CMD_FL_SYSTEM | CMD_FL_GAME, "prints a model def", ArgCompletion_Decl_Template(declType_t.DECL_MODELDEF) /*idCmdSystem::ArgCompletion_Decl<DECL_MODELDEF>*/ );
+
+	this.Clear();
+
+	idEvent::Init();
+	idClass::Init();
 	todoThrow ( );
-	//cmdSystem.AddCommand( "listModelDefs", idListDecls_f<DECL_MODELDEF>, CMD_FL_SYSTEM|CMD_FL_GAME, "lists model defs" );
-	//cmdSystem.AddCommand( "printModelDefs", idPrintDecls_f<DECL_MODELDEF>, CMD_FL_SYSTEM|CMD_FL_GAME, "prints a model def", idCmdSystem::ArgCompletion_Decl<DECL_MODELDEF> );
-
-	//Clear();
-
-	//idEvent::Init();
-	//idClass::Init();
-
 	//InitConsoleCommands();
 
 	//// load default scripts

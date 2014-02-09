@@ -324,13 +324,14 @@ class idDeclManager {
 
 
 //template< declType_t type >
-//ID_INLINE void idListDecls_f( const idCmdArgs &args ) {
-//	declManager.ListType( args, type );
-//}
+function idListDecls_f ( type: any ): ( args: idCmdArgs ) => void {
+	return ( args: idCmdArgs ) => { declManager.ListType( args, type ); };
+}
 
-////template< declType_t type >
-////ID_INLINE void idPrintDecls_f( const idCmdArgs &args ) {
-////	declManager.PrintType( args, type );
-////}
+//template< declType_t type >
+function idPrintDecls_f ( type: any ): ( args: idCmdArgs ) => void {
+	return ( args: idCmdArgs ) => { declManager.PrintType( args, type ); };
+}
+
 
 ////#endif /* !__DECLMANAGER_H__ */

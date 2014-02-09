@@ -235,8 +235,8 @@ class idDeclManagerLocal extends idDeclManager {
 //	virtual const idDecl*		FindDeclWithoutParsing( declType_t type, const char *name, bool makeDefault = true ):idDecl{throw "placeholder";}
 //	virtual void				ReloadFile( const char* filename, bool force ):void{throw "placeholder";}
 
-//	virtual void				ListType( const idCmdArgs &args, declType_t type ):void{throw "placeholder";}
-//	virtual void				PrintType( const idCmdArgs &args, declType_t type ):void{throw "placeholder";}
+	ListType ( args: idCmdArgs, type: declType_t ): void { throw "placeholder"; }
+	PrintType ( args: idCmdArgs, type: declType_t ): void { throw "placeholder"; }
 
 //	virtual idDecl *			CreateNewDecl( declType_t type, const char *name, const char *fileName ):idDecl{throw "placeholder";}
 
@@ -1240,23 +1240,24 @@ idDeclManagerLocal.prototype.FindType = function ( type: declType_t, name: strin
 ////	return decl.self;
 ////}
 
-/////*
-////===================
-////idDeclManagerLocal::ListType
+/*
+===================
+idDeclManagerLocal::ListType
 
-////list*
-////Lists decls currently referenced
+list*
+Lists decls currently referenced
 
-////list* ever
-////Lists decls that have been referenced at least once since app launched
+list* ever
+Lists decls that have been referenced at least once since app launched
 
-////list* all
-////Lists every decl declared, even if it hasn't been referenced or parsed
+list* all
+Lists every decl declared, even if it hasn't been referenced or parsed
 
-////FIXME: alphabetized, wildcards?
-////===================
-////*/
-////void idDeclManagerLocal::ListType( const idCmdArgs &args, declType_t type ) {
+FIXME: alphabetized, wildcards?
+===================
+*/
+idDeclManagerLocal.prototype.ListType = function ( args: idCmdArgs, type: declType_t ): void {
+	todoThrow ( );
 ////	bool all, ever;
 
 ////	if ( !idStr::Icmp( args.Argv( 1 ), "all" ) ) {
@@ -1308,14 +1309,15 @@ idDeclManagerLocal.prototype.FindType = function ( type: declType_t, name: strin
 
 ////	common.Printf( "--------------------\n" );
 ////	common.Printf( "%i of %i %s\n", printed, count, this.declTypes[type].typeName.c_str() );
-////}
+};
 
-/////*
-////===================
-////idDeclManagerLocal::PrintType
-////===================
-////*/
-////void idDeclManagerLocal::PrintType( const idCmdArgs &args, declType_t type ) {
+/*
+===================
+idDeclManagerLocal::PrintType
+===================
+*/
+idDeclManagerLocal.prototype.PrintType = function ( args: idCmdArgs, type: declType_t ): void {
+	todoThrow ( );
 ////	// individual decl types may use additional command parameters
 ////	if ( args.Argc() < 2 ) {
 ////		common.Printf( "USAGE: Print<decl type> <decl name> [type specific parms]\n" );
@@ -1365,7 +1367,8 @@ idDeclManagerLocal.prototype.FindType = function ( type: declType_t, name: strin
 ////	if ( decl.self != NULL ) {
 ////		decl.self.Print();
 ////	}
-////}
+
+};
 
 /////*
 ////===================

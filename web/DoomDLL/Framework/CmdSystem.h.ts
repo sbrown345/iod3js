@@ -165,7 +165,17 @@ function ArgCompletion_String_Template (strings: string[] ):( /*const idCmdArgs 
 		//}
 	}
 }
+function ArgCompletion_Decl_Template ( type: declType_t ): ( /*const idCmdArgs &*/args: idCmdArgs, callback: ( s: string ) => void ) => void {
+	return function ( args: idCmdArgs, callback: ( s: string ) => void ): void {
+		todoThrow( "ArgCompletion_String_Template return func todo" );
+		ArgCompletion_Decl( type, args, callback );
+	};
 
+	function ArgCompletion_Decl(type: declType_t, /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
+		todoThrow ( );
+		//cmdSystem.ArgCompletion_DeclName(args, callback, type);
+	}
+}
 
 //template<int type> ID_STATIC_TEMPLATE ID_INLINE void idCmdSystem::ArgCompletion_Decl( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
 //	cmdSystem.ArgCompletion_DeclName( args, callback, type );
