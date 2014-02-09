@@ -215,8 +215,8 @@ idGameLocal.prototype.Clear = function ( ): void {
 	this.lastAIAlertTime = 0;
 	this.spawnArgs.Clear ( );
 	this.gravity.Set( 0, 0, -1 );
-	this.playerPVS.h = -1 >>> 0; //(unsigned int)-1;
-	this.playerConnectedAreas.h = -1 >>> 0; //(unsigned int)-1;
+	this.playerPVS.h = -1 >>> 0;
+	this.playerConnectedAreas.h = -1 >>> 0;
 	this.gamestate = gameState_t.GAMESTATE_UNINITIALIZED;
 	this.skipCinematic = false;
 	this.influenceActive = false;
@@ -236,11 +236,10 @@ idGameLocal.prototype.Clear = function ( ): void {
 	this.lastGUIEnt = null;
 	this.lastGUI = 0;
 
-	memset( this.clientEntityStates, 0, sizeof( this.clientEntityStates ) );
+	//memset( this.clientEntityStates, 0, sizeof( this.clientEntityStates ) );
 	for ( var k = 0; k < this.clientEntityStates.length; k++ ) {
 		for ( var l = 0; l < this.clientEntityStates[k].length; l++ ) {
 			this.clientEntityStates[k][l] = null;
-			todoThrow( " or //this.clientEntityStates[k][l].init ( ); ?????" );
 		}
 	}
 
@@ -305,10 +304,10 @@ idGameLocal.prototype.Init = function ( ): void {
 
 	this.Clear();
 
-	idEvent.Init(); todoThrow();
-	//idClass.Init();
+	idEvent.Init();
+	idClass.Init();
 	//InitConsoleCommands();
-
+ todoThrow();
 	//// load default scripts
 	//program.Startup( SCRIPT_DEFAULT );
 

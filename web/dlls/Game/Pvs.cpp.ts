@@ -38,24 +38,24 @@
 ////	byte *				canSee;		// bit set for all portals that can be seen through this passage
 ////} pvsPassage_t;
 ////
-////
-////typedef struct pvsPortal_s {
-////	int					areaNum;	// area this portal leads to
-////	idWinding *			w;			// winding goes counter clockwise seen from the area this portal is part of
-////	idBounds			bounds;		// winding bounds
-////	idPlane				plane;		// winding plane, normal points towards the area this portal leads to
-////	pvsPassage_t *		passages;	// passages to portals in the area this portal leads to
-////	bool				done;		// true if pvs is calculated for this portal
-////	byte *				vis;		// PVS for this portal
-////	byte *				mightSee;	// used during construction
-////} pvsPortal_t;
-////
-////
-////typedef struct pvsArea_s {
+
+class pvsPortal_t {
+//	int					areaNum;	// area this portal leads to
+//	idWinding *			w;			// winding goes counter clockwise seen from the area this portal is part of
+//	idBounds			bounds;		// winding bounds
+//	idPlane				plane;		// winding plane, normal points towards the area this portal leads to
+//	pvsPassage_t *		passages;	// passages to portals in the area this portal leads to
+//	bool				done;		// true if pvs is calculated for this portal
+//	byte *				vis;		// PVS for this portal
+//	byte *				mightSee;	// used during construction
+};
+
+
+class pvsArea_t {
 ////	int					numPortals;	// number of portals in this area
 ////	idBounds			bounds;		// bounds of the whole area
 ////	pvsPortal_t **		portals;	// array with pointers to the portals of this area
-////} pvsArea_t;
+};
 ////
 ////
 ////typedef struct pvsStack_s {
@@ -79,22 +79,22 @@ class pvsHandle_t {
 	i:number;			// index to current pvs			int					
 	h:number;			// handle for current pvs       unsigned int		
 } ;
-////
-////
-////typedef struct pvsCurrent_s {
-////	pvsHandle_t			handle;		// current pvs handle
-////	byte *				pvs;		// current pvs bit string
-////} pvsCurrent_t;
-////
-////#define MAX_CURRENT_PVS		8		// must be a power of 2
-////
-////typedef enum {
-////	PVS_NORMAL = 0,	// PVS through portals taking portal states into account
-////	PVS_ALL_PORTALS_OPEN = 1,	// PVS through portals assuming all portals are open
-////	PVS_CONNECTED_AREAS = 2		// PVS considering all topologically connected areas visible
-////} pvsType_t;
-////
-////
+
+
+class pvsCurrent_t {
+	handle = new pvsHandle_t;		// current pvs handle
+	pvs:Uint8Array;		// current pvs bit string
+} ;
+
+var MAX_CURRENT_PVS = 8;		// must be a power of 2
+
+enum pvsType_t{
+	PVS_NORMAL = 0,	// PVS through portals taking portal states into account
+	PVS_ALL_PORTALS_OPEN = 1,	// PVS through portals assuming all portals are open
+	PVS_CONNECTED_AREAS = 2		// PVS considering all topologically connected areas visible
+};
+
+
 class idPVS {
 ////public:
 ////	idPVS(void);
@@ -129,20 +129,20 @@ class idPVS {
 ////#endif
 ////
 ////private:
-////	int					numAreas;
-////	int					numPortals;
-////	bool *				connectedAreas;
-////	int *				areaQueue;
-////	byte *				areaPVS;
-////	// current PVS for a specific source possibly taking portal states (open/closed) into account
-////	mutable pvsCurrent_t currentPVS[MAX_CURRENT_PVS];
-////	// used to create PVS
-////	int					portalVisBytes;
-////	int					portalVisLongs;
-////	int					areaVisBytes;
-////	int					areaVisLongs;
-////	struct pvsPortal_s *pvsPortals;
-////	struct pvsArea_s *	pvsAreas;
+	numAreas:number;					 ////	int					
+	numPortals:number;					 ////	int					
+	connectedAreas:boolean[];				 ////	bool *				
+	areaQueue:Int32Array;					 ////	int *				
+	areaPVS:Uint8Array;					 ////	byte *				
+	// current PVS for a specific source possibly taking portal states (open/closed) into account
+	currentPVS = newStructArray<pvsCurrent_t>(pvsCurrent_t ,MAX_CURRENT_PVS);
+	// used to create PVS
+	portalVisBytes:number;		 ////	int					
+	portalVisLongs:number;		 ////	int					
+	areaVisBytes:number;		 ////	int					
+	areaVisLongs:number;		 ////	int					
+	pvsPortals: pvsPortal_t[];			 ////	struct pvsPortal_s *
+	pvsAreas: pvsArea_t[];			 ////	struct pvsArea_s *	
 ////
 ////private:
 ////	int					GetPortalCount(void) const;
@@ -952,32 +952,32 @@ class idPVS {
 ////	}
 ////}
 ////
-/////*
-////================
-////idPVS::Shutdown
-////================
-////*/
-////void idPVS::Shutdown( void ) {
-////	if ( connectedAreas ) {
-////		delete connectedAreas;
-////		connectedAreas = NULL;
-////	}
-////	if ( areaQueue ) {
-////		delete areaQueue;
-////		areaQueue = NULL;
-////	}
-////	if ( areaPVS ) {
-////		delete areaPVS;
-////		areaPVS = NULL;
-////	}
-////	if ( currentPVS ) {
-////		for ( int i = 0; i < MAX_CURRENT_PVS; i++ ) {
-////			delete currentPVS[i].pvs;
-////			currentPVS[i].pvs = NULL;
-////		}
-////	}
-////}
-////
+/*
+================
+idPVS::Shutdown
+================
+*/
+	Shutdown ( ): void {
+		if ( this.connectedAreas ) {
+			//delete connectedAreas;
+			this.connectedAreas = null;
+		}
+		if ( this.areaQueue ) {
+			//delete areaQueue;
+			this.areaQueue = null;
+		}
+		if ( this.areaPVS ) {
+			//delete areaPVS;
+			this.areaPVS = null;
+		}
+		if ( this.currentPVS ) {
+			for ( var i = 0; i < MAX_CURRENT_PVS; i++ ) {
+				//delete currentPVS[i].pvs;
+				this.currentPVS[i].pvs = null;
+			}
+		}
+	}
+
 /////*
 ////================
 ////idPVS::GetConnectedAreas

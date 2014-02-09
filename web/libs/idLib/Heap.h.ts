@@ -262,16 +262,16 @@ class idBlockAlloc<T> {
 ////}
 
 ////template<class type, int blockSize>
-////void idBlockAlloc<type,blockSize>::Shutdown( void ) {
-////	while( blocks ) {
-////		block_t *block = blocks;
-////		blocks = blocks.next;
-////		delete block;
-////	}
-////	blocks = NULL;
-////	free = NULL;
-////	total = active = 0;
-////}
+	Shutdown ( ): void {
+		while ( this.blocks ) {
+			var block = this.blocks;
+			this.blocks = this.blocks.next;
+			delete block;
+		}
+		this.blocks = null;
+		this.free = null;
+		this.total = this.active = 0;
+	}
 
 };
 

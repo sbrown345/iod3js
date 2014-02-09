@@ -88,24 +88,46 @@
 //
 class usercmd_t {
 //public:
-//	int			gameFrame;						// frame number
-//	int			gameTime;						// game time
-//	int			duplicateCount;					// duplication count for networking
-//	byte		buttons;						// buttons
-//	signed char	forwardmove;					// forward/backward movement
-//	signed char	rightmove;						// left/right movement
-//	signed char	upmove;							// up/down movement
-//	short		angles[3];						// view angles
-//	short		mx;								// mouse delta x
-//	short		my;								// mouse delta y
-//	signed char impulse;						// impulse command
-//	byte		flags;							// additional flags
-//	int			sequence;						// just for debugging
+	gameFrame: number; // frame number								   //	int			
+	gameTime: number; // game time								   //	int			
+	duplicateCount: number; // duplication count for networking			   //	int			
+	buttons: number; // buttons									   //	byte		
+	forwardmove: number; // forward/backward movement				   //	signed char	
+	rightmove: number; // left/right movement						   //	signed char	
+	upmove: number; // up/down movement							   //	signed char	
+	angles = new Int8Array( 3 ); // view angles								   //	short		
+	mx: number; // mouse delta x							   //	short		
+	my: number; // mouse delta y							   //	short		
+	impulse: number; // impulse command							   //	signed char 
+	flags: number; // additional flags							   //	byte		
+	sequence: number; // just for debugging						   //	int			
 //
 //public:
 //	void		ByteSwap();						// on big endian systems, byte swap the shorts and ints
 //	bool		operator==( const usercmd_t &rhs ) const;
-};
+	constructor ( ) {
+		this.init ( );
+	}
+
+	init ( ): void {
+		this.gameFrame = 0;
+		this.gameTime = 0;
+		this.duplicateCount = 0;
+		this.buttons = 0;
+		this.forwardmove = 0;
+		this.rightmove = 0;
+		this.upmove = 0;
+		this.angles[0] = 1;
+		this.angles[1] = 1;
+		this.angles[2] = 1;
+		this.mx = 0;
+		this.my = 0;
+		this.impulse = 0;
+		this.flags = 0;
+		this.sequence = 0;
+	}
+}
+
 //
 //typedef enum {
 //	INHIBIT_SESSION = 0,

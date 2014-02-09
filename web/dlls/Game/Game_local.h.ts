@@ -129,9 +129,9 @@ class snapshot_t {
 ////	struct snapshot_s *		next;
 };
 
-////const int MAX_EVENT_PARAM_SIZE		= 128;
+var  MAX_EVENT_PARAM_SIZE		= 128;
 
-////typedef struct entityNetEvent_s {
+class entityNetEvent_t {
 ////	int						spawnId;
 ////	int						event;
 ////	int						time;
@@ -139,7 +139,7 @@ class snapshot_t {
 ////	byte					paramsBuf[MAX_EVENT_PARAM_SIZE];
 ////	struct entityNetEvent_s	*next;
 ////	struct entityNetEvent_s *prev;
-////} entityNetEvent_t;
+};
 
 ////enum {
 ////	GAME_RELIABLE_MESSAGE_INIT_DECL_REMAP,
@@ -198,17 +198,17 @@ class idEventQueue {
 ////	void					Free( entityNetEvent_t *event );
 ////	void					Shutdown();
 
-////	void					Init();
+	Init():void { throw "placeholder"; }
 ////	void					Enqueue( entityNetEvent_t* event, outOfOrderBehaviour_t oooBehaviour );
 ////	entityNetEvent_t *		Dequeue( void );
 ////	entityNetEvent_t *		RemoveLast( void );
 
 ////	entityNetEvent_t *		Start( void ) { return start; }
 
-////private:
-////	entityNetEvent_t *					start;
-////	entityNetEvent_t *					end;
-////	idBlockAlloc<entityNetEvent_t,32>	eventAllocator;
+	////private:
+	start: entityNetEvent_t;
+	end: entityNetEvent_t;
+	eventAllocator = idBlockAlloc_template<entityNetEvent_t>(entityNetEvent_t, 32);
 };
 
 //============================================================================
@@ -267,9 +267,9 @@ class idGameLocal extends idGame {
 ////	idProgram				program;				// currently loaded script and data space
 	frameCommandThread: idThread;
 
-	clip: idClip;					// collision detection
+	clip = new idClip;					// collision detection
 ////	idPush					push;					// geometric pushing
-	pvs: idPVS;					// potential visible set
+	pvs = new idPVS;					// potential visible set
 
 	testmodel: idTestModel ;				// for development testing of models
 	testFx: idEntityFx;					// for development testing of fx

@@ -201,30 +201,29 @@ idHashIndex::Add
         this.hash[h] = index;
     }
 
-/////*
-////================
-////idHashIndex::Remove
-////================
-////*/
-////ID_INLINE void idHashIndex::Remove( const int key, const int index ) {
-////	int k = key & this.hashMask;
+/*
+================
+idHashIndex::Remove
+================
+*/
+	Remove ( /*const int */key: number, /*const int */index: number ): void {
+		var /*int */k = key & this.hashMask;
 
-////	if ( this.hash == idHashIndex.INVALID_INDEX ) {
-////		return;
-////	}
-////	if ( this.hash[k] == index ) {
-////		this.hash[k] = this.indexChain[index];
-////	}
-////	else {
-////		for ( int i = this.hash[k]; i != -1; i = this.indexChain[i] ) {
-////			if ( this.indexChain[i] == index ) {
-////				this.indexChain[i] = this.indexChain[index];
-////				break;
-////			}
-////		}
-////	}
-////	this.indexChain[index] = -1;
-////}
+		if ( this.hash == idHashIndex.INVALID_INDEX ) {
+			return;
+		}
+		if ( this.hash[k] == index ) {
+			this.hash[k] = this.indexChain[index];
+		} else {
+			for ( var /*int */i = this.hash[k]; i != -1; i = this.indexChain[i] ) {
+				if ( this.indexChain[i] == index ) {
+					this.indexChain[i] = this.indexChain[index];
+					break;
+				}
+			}
+		}
+		this.indexChain[index] = -1;
+	}
 
 /*
 ================
@@ -282,42 +281,42 @@ idHashIndex::Next
 ////	Add( key, index );
 ////}
 
-/////*
-////================
-////idHashIndex::RemoveIndex
-////================
-////*/
-////ID_INLINE void idHashIndex::RemoveIndex( const int key, const int index ) {
-////	int i, max;
+/*
+================
+idHashIndex::RemoveIndex
+================
+*/
+	RemoveIndex ( /*const int */key: number, /*const int */index: number ): void {
+		var /*int */i: number, max: number;
 
-////	Remove( key, index );
-////	if ( this.hash != idHashIndex.INVALID_INDEX ) {
-////		max = index;
-////		for ( i = 0; i < this.hashSize; i++ ) {
-////			if ( this.hash[i] >= index ) {
-////				if ( this.hash[i] > max ) {
-////					max = this.hash[i];
-////				}
-////				this.hash[i]--;
-////			}
-////		}
-////		for ( i = 0; i < this.indexSize; i++ ) {
-////			if ( this.indexChain[i] >= index ) {
-////				if ( this.indexChain[i] > max ) {
-////					max = this.indexChain[i];
-////				}
-////				this.indexChain[i]--;
-////			}
-////		}
-////		for ( i = index; i < max; i++ ) {
-////			this.indexChain[i] = this.indexChain[i+1];
-////		}
-////		this.indexChain[max] = -1;
-////	}
-////}
+		this.Remove( key, index );
+		if ( this.hash != idHashIndex.INVALID_INDEX ) {
+			max = index;
+			for ( i = 0; i < this.hashSize; i++ ) {
+				if ( this.hash[i] >= index ) {
+					if ( this.hash[i] > max ) {
+						max = this.hash[i];
+					}
+					this.hash[i]--;
+				}
+			}
+			for ( i = 0; i < this.indexSize; i++ ) {
+				if ( this.indexChain[i] >= index ) {
+					if ( this.indexChain[i] > max ) {
+						max = this.indexChain[i];
+					}
+					this.indexChain[i]--;
+				}
+			}
+			for ( i = index; i < max; i++ ) {
+				this.indexChain[i] = this.indexChain[i + 1];
+			}
+			this.indexChain[max] = -1;
+		}
+	}
 
 
-    Clear ( ):void
+	Clear ( ):void
     Clear ( /*const int*/ newHashSize: number, /*int */newIndexSize: number ) :void
     Clear ( newHashSize?: number,newIndexSize?: number ):void {
         if ( arguments.length == 0 ) {

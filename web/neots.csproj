@@ -59,7 +59,6 @@
     <TypeScriptCompile Include="dlls\Game\Script\Script_Thread.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\Script\Script_Thread.h.ts" />
     <TypeScriptCompile Include="dlls\Game\Physics\Clip.cpp.ts" />
-    <TypeScriptCompile Include="dlls\Game\Physics\Clip.h.ts" />
     <TypeScriptCompile Include="dlls\Game\Pvs.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\Misc.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\Misc.h.ts" />
@@ -67,6 +66,7 @@
     <TypeScriptCompile Include="dlls\Game\MultiplayerGame.h.ts" />
     <TypeScriptCompile Include="dlls\Game\WorldSpawn.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\SmokeParticles.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\Game_network.cpp.ts" />
     <Content Include="DoomDLL\Framework\CmdSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\CmdSystem.h.ts" />
     <Content Include="DoomDLL\Framework\Common.cpp.ts" />
@@ -121,6 +121,7 @@
     <TypeScriptCompile Include="libs\idLib\Math\Random.h.ts" />
     <TypeScriptCompile Include="libs\idLib\MapFile.cpp.ts" />
     <TypeScriptCompile Include="libs\idLib\MapFile.h.ts" />
+    <TypeScriptCompile Include="libs\idLib\Containers\StrPool.h.ts" />
     <Content Include="log.aspx" />
     <Content Include="other\files.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.cpp.ts" />

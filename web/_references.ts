@@ -146,6 +146,7 @@
 /// <reference path="libs/idlib/containers/list.h.ts" />
 /// <reference path="libs/idlib/containers/linklist.h.ts" />
 /// <reference path="libs/idlib/containers/strlist.h.ts" />
+/// <reference path="libs/idlib/containers/strpool.h.ts" />
 // Math
 /// <reference path="libs/idlib/math/vector.h.ts" />
 /// <reference path="libs/idlib/math/vector.cpp.ts" />
@@ -342,7 +343,6 @@
 /// <reference path="dlls/game/animation/anim_import.cpp.ts" />
 /// <reference path="dlls/game/animation/anim_testmodel.h.ts" />
 /// <reference path="dlls/game/animation/anim_testmodel.cpp.ts" />
-/// <reference path="dlls/game/physics/clip.h.ts" />
 /// <reference path="dlls/game/physics/clip.cpp.ts" />
 /// <reference path="dlls/game/script/script_compiler.h.ts" />
 /// <reference path="dlls/game/script/script_compiler.cpp.ts" />

@@ -782,34 +782,34 @@ Append( obj:type ):number {
 //	return index;
 //}
 
-///*
-//================
-//idList<type>::RemoveIndex
+/*
+================
+idList<type>::RemoveIndex
 
-//Removes the element at the specified index and moves all data following the element down to fill in the gap.
-//The number of elements in the list is reduced by one.  Returns false if the index is outside the bounds of the list.
-//Note that the element is not destroyed, so any memory used by it may not be freed until the destruction of the list.
-//================
-//*/
+Removes the element at the specified index and moves all data following the element down to fill in the gap.
+The number of elements in the list is reduced by one.  Returns false if the index is outside the bounds of the list.
+Note that the element is not destroyed, so any memory used by it may not be freed until the destruction of the list.
+================
+*/
 //template< class type >
-//ID_INLINE bool idList<type>::RemoveIndex( int index ) {
-//	int i;
+	RemoveIndex ( /*int */index: number ): boolean {
+		var /*int */i: number;
 
-//	assert( this.list != NULL );
-//	assert( index >= 0 );
-//	assert( index < this.num );
+		assert( this.list != null );
+		assert( index >= 0 );
+		assert( index < this.num );
 
-//	if ( ( index < 0 ) || ( index >= this.num ) ) {
-//		return false;
-//	}
+		if ( ( index < 0 ) || ( index >= this.num ) ) {
+			return false;
+		}
 
-//	this.num--;
-//	for( i = index; i < this.num; i++ ) {
-//		this.list[ i ] = this.list[ i + 1 ];
-//	}
+		this.num--;
+		for ( i = index; i < this.num; i++ ) {
+			this.list[i] = this.list[i + 1];
+		}
 
-//	return true;
-//}
+		return true;
+	}
 
 ///*
 //================

@@ -33,39 +33,39 @@
 ////idStrPool		idDict::globalValues;
 
 
-/////*
-////===============================================================================
-////
-////Key/value dictionary
-////
-////This is a dictionary class that tracks an arbitrary number of key / value
-////pair combinations. It is used for map entity spawning, GUI state management,
-////and other things.
-////
-////Keys are compared case-insensitive.
-////
-////Does not allocate memory until the first key/value pair is added.
-////
-////===============================================================================
-////*/
-////
-////class idKeyValue {
-////	friend class idDict;
-////
-////public:
-////	const idStr &		GetKey( void ) const { return *key; }
-////	const idStr &		GetValue( void ) const { return *value; }
-////
-////	size_t				Allocated( void ) const { return key->Allocated() + value->Allocated(); }
-////	size_t				Size( void ) const { return sizeof( *this ) + key->Size() + value->Size(); }
-////
-////	bool				operator==( const idKeyValue &kv ) const { return ( key == kv.key && value == kv.value ); }
-////
-////private:
-////	const idPoolStr *	key;
-////	const idPoolStr *	value;
-////};
-////
+/*
+===============================================================================
+
+Key/value dictionary
+
+This is a dictionary class that tracks an arbitrary number of key / value
+pair combinations. It is used for map entity spawning, GUI state management,
+and other things.
+
+Keys are compared case-insensitive.
+
+Does not allocate memory until the first key/value pair is added.
+
+===============================================================================
+*/
+
+class idKeyValue {
+//	friend class idDict;
+
+//public:
+//	const idStr &		GetKey( void ) const { return *key; }
+//	const idStr &		GetValue( void ) const { return *value; }
+
+//	size_t				Allocated( void ) const { return key->Allocated() + value->Allocated(); }
+//	size_t				Size( void ) const { return sizeof( *this ) + key->Size() + value->Size(); }
+
+//	bool				operator==( const idKeyValue &kv ) const { return ( key == kv.key && value == kv.value ); }
+
+//private:
+//	const idPoolStr *	key;
+//	const idPoolStr *	value;
+};
+
 class idDict {
 ////public:
 ////						idDict( void );
@@ -156,11 +156,11 @@ class idDict {
 ////	static void			ListValues_f( const idCmdArgs &args );
 ////
 ////private:
-////	idList<idKeyValue>	args;
-////	idHashIndex			argHash;
-////
-////	static idStrPool	globalKeys;
-////	static idStrPool	globalValues;
+	args = new idList<idKeyValue>(idKeyValue);
+	argHash = new idHashIndex;
+
+	static globalKeys = new idStrPool;
+	static globalValues  = new idStrPool;
 ////};
 ////
 ////
@@ -323,7 +323,7 @@ class idDict {
 ////	argHash = other.argHash;
 ////
 ////	for ( i = 0; i < args.Num(); i++ ) {
-////		args[i].key = globalKeys.CopyString( args[i].key );
+////		args[i].key = idDict.globalKeys.CopyString( args[i].key );
 ////		args[i].value = globalValues.CopyString( args[i].value );
 ////	}
 ////
@@ -364,7 +364,7 @@ class idDict {
 ////			args[found[i]].value = globalValues.CopyString( other.args[i].value );
 ////			globalValues.FreeString( oldValue );
 ////		} else {
-////			kv.key = globalKeys.CopyString( other.args[i].key );
+////			kv.key = idDict.globalKeys.CopyString( other.args[i].key );
 ////			kv.value = globalValues.CopyString( other.args[i].value );
 ////			argHash.Add( argHash.GenerateKey( kv.GetKey(), false ), args.Append( kv ) );
 ////		}
@@ -385,7 +385,7 @@ class idDict {
 ////		return;
 ////	}
 ////
-////	if ( other.args.Num() && other.args[0].key->GetPool() != &globalKeys ) {
+////	if ( other.args.Num() && other.args[0].key->GetPool() != &idDict.globalKeys ) {
 ////		common->FatalError( "idDict::TransferKeyValues: can't transfer values across a DLL boundary" );
 ////		return;
 ////	}
@@ -456,29 +456,29 @@ class idDict {
 ////		def = &dict->args[i];
 ////		kv = FindKey( def->GetKey() );
 ////		if ( !kv ) {
-////			newkv.key = globalKeys.CopyString( def->key );
+////			newkv.key = idDict.globalKeys.CopyString( def->key );
 ////			newkv.value = globalValues.CopyString( def->value );
 ////			argHash.Add( argHash.GenerateKey( newkv.GetKey(), false ), args.Append( newkv ) );
 ////		}
 ////	}
 ////}
 ////
-/////*
-////================
-////idDict::Clear
-////================
-////*/
-////void idDict::Clear( void ) {
-////	int i;
-////
-////	for( i = 0; i < args.Num(); i++ ) {
-////		globalKeys.FreeString( args[i].key );
-////		globalValues.FreeString( args[i].value );
-////	}
-////
-////	args.Clear();
-////	argHash.Free();
-////}
+/*
+================
+idDict::Clear
+================
+*/
+	Clear ( ): void {
+		var /*int */i: number;
+
+		for ( i = 0; i < this.args.Num ( ); i++ ) {
+			idDict.globalKeys.FreeString( this.args[i].key );
+			idDict.globalValues.FreeString( this.args[i].value );
+		}
+
+		this.args.Clear ( );
+		this.argHash.Free ( );
+	}
 ////
 /////*
 ////================
@@ -554,11 +554,11 @@ class idDict {
 ////	if ( i != -1 ) {
 ////		// first set the new value and then free the old value to allow proper self copying
 ////		const idPoolStr *oldValue = args[i].value;
-////		args[i].value = globalValues.AllocString( value );
-////		globalValues.FreeString( oldValue );
+////		args[i].value = idDict.globalValues.AllocString( value );
+////		idDict.globalValues.FreeString( oldValue );
 ////	} else {
-////		kv.key = globalKeys.AllocString( key );
-////		kv.value = globalValues.AllocString( value );
+////		kv.key = idDict.globalKeys.AllocString( key );
+////		kv.value = idDict.globalValues.AllocString( value );
 ////		argHash.Add( argHash.GenerateKey( kv.GetKey(), false ), args.Append( kv ) );
 ////	}
 ////}
@@ -769,8 +769,8 @@ class idDict {
 ////	hash = argHash.GenerateKey( key, false );
 ////	for ( i = argHash.First( hash ); i != -1; i = argHash.Next( i ) ) {
 ////		if ( args[i].GetKey().Icmp( key ) == 0 ) {
-////			globalKeys.FreeString( args[i].key );
-////			globalValues.FreeString( args[i].value );
+////			idDict.globalKeys.FreeString( args[i].key );
+////			idDict.globalValues.FreeString( args[i].value );
 ////			args.RemoveIndex( i );
 ////			argHash.RemoveIndex( hash, i );
 ////			break;
@@ -895,8 +895,8 @@ class idDict {
 ////================
 ////*/
 ////void idDict::Init( void ) {
-////	globalKeys.SetCaseSensitive( false );
-////	globalValues.SetCaseSensitive( true );
+////	idDict.globalKeys.SetCaseSensitive( false );
+////	idDict.globalValues.SetCaseSensitive( true );
 ////}
 ////
 /////*
@@ -905,8 +905,8 @@ class idDict {
 ////================
 ////*/
 ////void idDict::Shutdown( void ) {
-////	globalKeys.Clear();
-////	globalValues.Clear();
+////	idDict.globalKeys.Clear();
+////	idDict.globalValues.Clear();
 ////}
 ////
 /////*
@@ -915,8 +915,8 @@ class idDict {
 ////================
 ////*/
 ////void idDict::ShowMemoryUsage_f( const idCmdArgs &args ) {
-////	idLib::common->Printf( "%5d KB in %d keys\n", globalKeys.Size() >> 10, globalKeys.Num() );
-////	idLib::common->Printf( "%5d KB in %d values\n", globalValues.Size() >> 10, globalValues.Num() );
+////	idLib::common->Printf( "%5d KB in %d keys\n", idDict.globalKeys.Size() >> 10, idDict.globalKeys.Num() );
+////	idLib::common->Printf( "%5d KB in %d values\n", idDict.globalValues.Size() >> 10, idDict.globalValues.Num() );
 ////}
 ////
 /////*
@@ -939,8 +939,8 @@ class idDict {
 ////	int i;
 ////	idList<const idPoolStr *> keyStrings;
 ////
-////	for ( i = 0; i < globalKeys.Num(); i++ ) {
-////		keyStrings.Append( globalKeys[i] );
+////	for ( i = 0; i < idDict.globalKeys.Num(); i++ ) {
+////		keyStrings.Append( idDict.globalKeys[i] );
 ////	}
 ////	keyStrings.Sort();
 ////	for ( i = 0; i < keyStrings.Num(); i++ ) {
@@ -958,8 +958,8 @@ class idDict {
 ////	int i;
 ////	idList<const idPoolStr *> valueStrings;
 ////
-////	for ( i = 0; i < globalValues.Num(); i++ ) {
-////		valueStrings.Append( globalValues[i] );
+////	for ( i = 0; i < idDict.globalValues.Num(); i++ ) {
+////		valueStrings.Append( idDict.globalValues[i] );
 ////	}
 ////	valueStrings.Sort();
 ////	for ( i = 0; i < valueStrings.Num(); i++ ) {
