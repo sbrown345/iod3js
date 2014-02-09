@@ -126,6 +126,25 @@ incorrect.  Use this on concrete classes only.
 	}																								\
 idEventFunc<nameofclass> nameofclass::eventCallbacks[] = {
 
+//
+//idTypeInfo idTarget_LockDoor::Type( "idTarget_LockDoor", "idTarget",									
+//	( idEventFunc<idClass> * )idTarget_LockDoor::eventCallbacks,	idTarget_LockDoor::CreateInstance, ( void ( idClass::* )( void ) )&idTarget_LockDoor::Spawn,	
+//	( void ( idClass::* )( idSaveGame * ) const )&idTarget_LockDoor::Save, ( void ( idClass::* )( idRestoreGame * ) )&idTarget_LockDoor::Restore );	
+//idClass *idTarget_LockDoor::CreateInstance( void ) {													
+//	try {																						
+//		idTarget_LockDoor *ptr = new idTarget_LockDoor;											
+//		ptr->FindUninitializedMemory();															
+//		return ptr;																				
+//	}																							
+//	catch( idAllocError & ) {																	
+//		return NULL;																			
+//	}																							
+//}																								
+//idTypeInfo *idTarget_LockDoor::GetType( void ) const {											
+//	return &( idTarget_LockDoor::Type );														
+//}																								
+//idEventFunc<idTarget_LockDoor> idTarget_LockDoor::eventCallbacks[] = {
+
 /*
 ================
 ABSTRACT_PROTOTYPE

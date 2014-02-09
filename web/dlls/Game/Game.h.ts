@@ -29,19 +29,19 @@
 //#ifndef __GAME_H__
 //#define __GAME_H__
 //
-///*
-//===============================================================================
-//
-//	Public game interface with methods to run the game.
-//
-//===============================================================================
-//*/
-//
-//// default scripts
-//#define SCRIPT_DEFAULTDEFS			"script/doom_defs.script"
-//#define SCRIPT_DEFAULT				"script/doom_main.script"
-//#define SCRIPT_DEFAULTFUNC			"doom_main"
-//
+/*
+===============================================================================
+
+	Public game interface with methods to run the game.
+
+===============================================================================
+*/
+
+// default scripts
+var SCRIPT_DEFAULTDEFS = "script/doom_defs.script";
+var SCRIPT_DEFAULT = "script/doom_main.script";
+var SCRIPT_DEFAULTFUNC = "doom_main";
+
 //typedef struct {
 //	char		sessionCommand[MAX_STRING_CHARS];	// "map", "disconnect", "victory", etc
 //	int			consistencyHash;					// used to check for network game divergence

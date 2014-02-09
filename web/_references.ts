@@ -143,8 +143,10 @@
 /// <reference path="libs/idlib/bv/bounds.h.ts" />
 // Containers
 /// <reference path="libs/idlib/containers/hashindex.h.ts" />
+/// <reference path="libs/idlib/containers/hierarchy.h.ts" />
 /// <reference path="libs/idlib/containers/list.h.ts" />
 /// <reference path="libs/idlib/containers/linklist.h.ts" />
+/// <reference path="libs/idlib/containers/staticlist.h.ts" />
 /// <reference path="libs/idlib/containers/strlist.h.ts" />
 /// <reference path="libs/idlib/containers/strpool.h.ts" />
 // Math
@@ -172,7 +174,17 @@
 /// <reference path="libs/idlib/mapfile.h.ts" />
 /// <reference path="libs/idlib/mapfile.cpp.ts" />
 
-//// framework
+// framework
+/// <reference path="doomdll/cm/collisionmodel.h.ts" />
+/// <reference path="doomdll/cm/collisionmodel_local.h.ts" />
+/// <reference path="doomdll/cm/collisionmodel_translate.cpp.ts" />
+/// <reference path="doomdll/cm/collisionmodel_contacts.cpp.ts" />
+/// <reference path="doomdll/cm/collisionmodel_contents.cpp.ts" />
+/// <reference path="doomdll/cm/collisionmodel_debug.cpp.ts" />
+/// <reference path="doomdll/cm/collisionmodel_files.cpp.ts" />
+/// <reference path="doomdll/cm/collisionmodel_load.cpp.ts" />
+/// <reference path="doomdll/cm/collisionmodel_rotate.cpp.ts" />
+/// <reference path="doomdll/cm/collisionmodel_trace.cpp.ts" />
 //#include "../framework/BuildVersion.h"
 //#include "../framework/BuildDefines.h"
 /// <reference path="doomdll/framework/licensee.h.ts" />
@@ -321,9 +333,10 @@
 //#include "../game/Game.h"
 //#endif
 
-/// <reference path="dlls/game/gamesys/class.h.ts" />
 /// <reference path="dlls/game/gamesys/class.cpp.ts" />
 /// <reference path="dlls/game/gamesys/event.cpp.ts" />
+/// <reference path="dlls/game/gamesys/syscvar.cpp.ts" />
+/// <reference path="dlls/game/gamesys/syscmds.cpp.ts" />
 /// <reference path="dlls/game/entity.h.ts" />
 /// <reference path="dlls/game/entity.cpp.ts" />
 /// <reference path="dlls/game/ai/aas.h.ts" />

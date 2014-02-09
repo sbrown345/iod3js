@@ -147,12 +147,13 @@ var MAX_STRING_CHARS = 1024;		// max length of a string
 function assert( X:any ):void { if ( X ) { } else AssertFailed( "__FILE__", (new Error)["lineNumber"], "#X" ); }
 ////#endif
 
-////class idException {
-////public:
-////	char error[MAX_STRING_CHARS];
+class idException {
+	public error: string
 
-////	idException( const char *text = "" ) { size_t length = strlen(text); if (length > MAX_STRING_CHARS-1) length = MAX_STRING_CHARS-1; strncpy( error, text, length ); }
-////};
+	idException ( text = "" ) {
+		this.error = text.substring( 0, MAX_STRING_CHARS );
+	}
+}
 
 ////// move from Math.h to keep gcc happy
 ////template<class T> ID_INLINE T	Max( T x, T y ) { return ( x > y ) ? x : y; }

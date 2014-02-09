@@ -78,12 +78,12 @@ var GAME_VERSION = "baseDOOM-1";
 ////class idEditEntities;
 ////class idLocationEntity;
 
-var	MAX_CLIENTS			=	32
-var	GENTITYNUM_BITS		=	12
-var	MAX_GENTITIES		=	(1<<GENTITYNUM_BITS)
-var	ENTITYNUM_NONE		=	(MAX_GENTITIES-1)
-var	ENTITYNUM_WORLD		=	(MAX_GENTITIES-2)
-var	ENTITYNUM_MAX_NORMAL=	(MAX_GENTITIES-2)
+var MAX_CLIENTS = 32;
+var GENTITYNUM_BITS = 12;
+var MAX_GENTITIES = ( 1 << GENTITYNUM_BITS );
+var ENTITYNUM_NONE = ( MAX_GENTITIES - 1 );
+var ENTITYNUM_WORLD = ( MAX_GENTITIES - 2 );
+var ENTITYNUM_MAX_NORMAL = ( MAX_GENTITIES - 2 );
 
 //////============================================================================
 
@@ -200,8 +200,8 @@ class idEventQueue {
 
 	Init():void { throw "placeholder"; }
 ////	void					Enqueue( entityNetEvent_t* event, outOfOrderBehaviour_t oooBehaviour );
-////	entityNetEvent_t *		Dequeue( void );
-////	entityNetEvent_t *		RemoveLast( void );
+////	entityNetEvent_t *		Dequeue( ):void { throw "placeholder"; }
+////	entityNetEvent_t *		RemoveLast( ):void { throw "placeholder"; }
 
 ////	entityNetEvent_t *		Start( void ) { return start; }
 
@@ -264,7 +264,7 @@ class idGameLocal extends idGame {
 
 	random = new idRandom;					// random number generator used throughout the game
 
-////	idProgram				program;				// currently loaded script and data space
+	program = new idProgram;				// currently loaded script and data space
 	frameCommandThread: idThread;
 
 	clip = new idClip;					// collision detection
@@ -523,26 +523,26 @@ class idGameLocal extends idGame {
 ////							// returns true if the entity shouldn't be spawned at all in this game type or difficulty level
 ////	bool					InhibitEntitySpawn( idDict &spawnArgs );
 ////							// spawn entities from the map file
-////	void					SpawnMapEntities( void );
+////	void					SpawnMapEntities( ):void { throw "placeholder"; }
 ////							// commons used by init, shutdown, and restart
-////	void					MapPopulate( void );
+////	void					MapPopulate( ):void { throw "placeholder"; }
 ////	void					MapClear( bool clearClients );
 
 ////	pvsHandle_t				GetClientPVS( idPlayer *player, pvsType_t type );
-////	void					SetupPlayerPVS( void );
-////	void					FreePlayerPVS( void );
-////	void					UpdateGravity( void );
-////	void					SortActiveEntityList( void );
-////	void					ShowTargets( void );
-////	void					RunDebugInfo( void );
+////	void					SetupPlayerPVS( ):void { throw "placeholder"; }
+////	void					FreePlayerPVS( ):void { throw "placeholder"; }
+////	void					UpdateGravity( ):void { throw "placeholder"; }
+////	void					SortActiveEntityList( ):void { throw "placeholder"; }
+////	void					ShowTargets( ):void { throw "placeholder"; }
+////	void					RunDebugInfo( ):void { throw "placeholder"; }
 
-////	void					InitScriptForMap( void );
+////	void					InitScriptForMap( ):void { throw "placeholder"; }
 
-////	void					InitConsoleCommands( void );
-////	void					ShutdownConsoleCommands( void );
+	InitConsoleCommands( ):void { throw "placeholder"; }
+	ShutdownConsoleCommands ( ): void { throw "placeholder"; }
 
-////	void					InitAsyncNetwork( void );
-////	void					ShutdownAsyncNetwork( void );
+////	void					InitAsyncNetwork( ):void { throw "placeholder"; }
+////	void					ShutdownAsyncNetwork( ):void { throw "placeholder"; }
 ////	void					InitLocalClient( int clientNum );
 ////	void					InitClientDeclRemap( int clientNum );
 ////	void					ServerSendDeclRemapToClient( int clientNum, declType_t type, int index );
@@ -551,15 +551,15 @@ class idGameLocal extends idGame {
 ////	void					WriteGameStateToSnapshot( idBitMsgDelta &msg ) const;
 ////	void					ReadGameStateFromSnapshot( const idBitMsgDelta &msg );
 ////	void					NetworkEventWarning( const entityNetEvent_t *event, const char *fmt, ... ) id_attribute((format(printf,3,4)));
-////	void					ServerProcessEntityNetworkEventQueue( void );
-////	void					ClientProcessEntityNetworkEventQueue( void );
+////	void					ServerProcessEntityNetworkEventQueue( ):void { throw "placeholder"; }
+////	void					ClientProcessEntityNetworkEventQueue( ):void { throw "placeholder"; }
 ////	void					ClientShowSnapshot( int clientNum ) const;
 ////							// call after any change to serverInfo. Will update various quick-access flags
-////	void					UpdateServerInfoFlags( void );
-////	void					RandomizeInitialSpawns( void );
+////	void					UpdateServerInfoFlags( ):void { throw "placeholder"; }
+////	void					RandomizeInitialSpawns( ):void { throw "placeholder"; }
 ////	static int				sortSpawnPoints( const void *ptr1, const void *ptr2 );
 
-////	void					DumpOggSounds( void );
+////	void					DumpOggSounds( ):void { throw "placeholder"; }
 ////	void					GetShakeSounds( const idDict *dict );
 
 ////	void					SelectTimeGroup( int timeGroup );

@@ -306,11 +306,11 @@ idGameLocal.prototype.Init = function ( ): void {
 
 	idEvent.Init();
 	idClass.Init();
-	//InitConsoleCommands();
- todoThrow();
-	//// load default scripts
-	//program.Startup( SCRIPT_DEFAULT );
+	this.InitConsoleCommands();
 
+	// load default scripts
+	this.program.Startup( SCRIPT_DEFAULT );
+ todoThrow();
 	//smokeParticles = new idSmokeParticles;
 
 	//// set up the aas
@@ -376,7 +376,7 @@ idGameLocal.prototype.Init = function ( ): void {
 ////	idForce::ClearForceList();
 
 ////	// free the program data
-////	program.FreeData();
+////	this.program.FreeData();
 
 ////	// delete the .map file
 ////	delete mapFile;
@@ -456,7 +456,7 @@ idGameLocal.prototype.Init = function ( ): void {
 ////	// write out complete object list
 ////	savegame.WriteObjectList();
 
-////	program.Save( &savegame );
+////	this.program.Save( &savegame );
 
 ////	savegame.WriteInt( g_skill.GetInteger() );
 
@@ -982,7 +982,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 
 ////	gamestate = GAMESTATE_STARTUP;
 
-////	program.Restart();
+////	this.program.Restart();
 
 ////	InitScriptForMap();
 
@@ -1089,10 +1089,10 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////	}
 
 ////	Printf( "map cycle script: '%s'\n", g_mapCycle.GetString() );
-////	func = program.FindFunction( "mapcycle::cycle" );
+////	func = this.program.FindFunction( "mapcycle::cycle" );
 ////	if ( !func ) {
-////		program.CompileFile( g_mapCycle.GetString() );
-////		func = program.FindFunction( "mapcycle::cycle" );
+////		this.program.CompileFile( g_mapCycle.GetString() );
+////		func = this.program.FindFunction( "mapcycle::cycle" );
 ////	}
 ////	if ( !func ) {
 ////		Printf( "Couldn't find mapcycle::cycle\n" );
@@ -1229,12 +1229,12 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////	savegame.CreateObjects();
 
 ////	// Load the idProgram, also checking to make sure scripting hasn't changed since the savegame
-////	if ( program.Restore( &savegame ) == false ) {
+////	if ( this.program.Restore( &savegame ) == false ) {
 
 ////		// Abort the load process, and let the session know so that it can restart the level
 ////		// with the player persistent data.
 ////		savegame.DeleteObjects();
-////		program.Restart();
+////		this.program.Restart();
 
 ////		return false;
 ////	}
@@ -1485,7 +1485,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////	MapClear( true );
 
 ////	// reset the script to the state it was before the map was started
-////	program.Restart();
+////	this.program.Restart();
 
 ////	if ( smokeParticles ) {
 ////		smokeParticles.Shutdown();
@@ -1814,7 +1814,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////	frameCommandThread.SetThreadName( "frameCommands" );
 
 ////	// run the main game script function (not the level specific main)
-////	const function_t *func = program.FindFunction( SCRIPT_DEFAULTFUNC );
+////	const function_t *func = this.program.FindFunction( SCRIPT_DEFAULTFUNC );
 ////	if ( func != NULL ) {
 ////		idThread *thread = new idThread( func );
 ////		if ( thread.Start() ) {
@@ -3073,7 +3073,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////	// check if we should call a script function to spawn
 ////	spawnArgs.GetString( "spawnfunc", NULL, &spawn );
 ////	if ( spawn ) {
-////		const function_t *func = program.FindFunction( spawn );
+////		const function_t *func = this.program.FindFunction( spawn );
 ////		if ( !func ) {
 ////			Warning( "Could not spawn '%s'.  Script function '%s' not found%s.", classname, spawn, error.c_str() );
 ////			return false;

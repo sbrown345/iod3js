@@ -36,7 +36,6 @@
     <TypeScriptCompile Include="dlls\Game\AI\AI_Vagary.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\GameSys\Event.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\GameSys\Class.cpp.ts" />
-    <TypeScriptCompile Include="dlls\Game\GameSys\Class.h.ts" />
     <TypeScriptCompile Include="dlls\Game\Entity.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\Entity.h.ts" />
     <TypeScriptCompile Include="dlls\Game\Fx.cpp.ts" />
@@ -48,6 +47,8 @@
     <TypeScriptCompile Include="dlls\Game\Actor.h.ts" />
     <TypeScriptCompile Include="dlls\Game\AFEntity.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\AFEntity.h.ts" />
+    <TypeScriptCompile Include="dlls\Game\GameSys\SysCmds.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\GameSys\SysCvar.cpp.ts" />
     <Content Include="dlls\Game\Game_local.cpp.ts" />
     <Content Include="dlls\Game\Game_local.h.ts" />
     <TypeScriptCompile Include="dlls\Game\Script\Script_Compiler.cpp.ts" />
@@ -57,7 +58,6 @@
     <TypeScriptCompile Include="dlls\Game\Script\Script_Program.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\Script\Script_Program.h.ts" />
     <TypeScriptCompile Include="dlls\Game\Script\Script_Thread.cpp.ts" />
-    <TypeScriptCompile Include="dlls\Game\Script\Script_Thread.h.ts" />
     <TypeScriptCompile Include="dlls\Game\Physics\Clip.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\Pvs.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\Misc.cpp.ts" />
@@ -67,6 +67,16 @@
     <TypeScriptCompile Include="dlls\Game\WorldSpawn.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\SmokeParticles.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\Game_network.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\CM\CollisionModel.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\CM\CollisionModel_contacts.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\CM\CollisionModel_contents.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\CM\CollisionModel_debug.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\CM\CollisionModel_files.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\CM\CollisionModel_load.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\CM\CollisionModel_local.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\CM\CollisionModel_rotate.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\CM\CollisionModel_trace.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\CM\CollisionModel_translate.cpp.ts" />
     <Content Include="DoomDLL\Framework\CmdSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\CmdSystem.h.ts" />
     <Content Include="DoomDLL\Framework\Common.cpp.ts" />
@@ -122,6 +132,8 @@
     <TypeScriptCompile Include="libs\idLib\MapFile.cpp.ts" />
     <TypeScriptCompile Include="libs\idLib\MapFile.h.ts" />
     <TypeScriptCompile Include="libs\idLib\Containers\StrPool.h.ts" />
+    <TypeScriptCompile Include="libs\idLib\Containers\Hierarchy.h.ts" />
+    <TypeScriptCompile Include="libs\idLib\Containers\StaticList.h.ts" />
     <Content Include="log.aspx" />
     <Content Include="other\files.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.cpp.ts" />

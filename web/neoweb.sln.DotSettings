@@ -20,6 +20,40 @@
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3DE9A189F2018744B37F525312048259/Shortcut/@EntryValue">tp</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3DE9A189F2018744B37F525312048259/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3DE9A189F2018744B37F525312048259/Text/@EntryValue">{throw "placeholder";}</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/Shortcut/@EntryValue">END_CLASS</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/Text/@EntryValue">new idEventFunc&lt;idTarget_LockDoor&gt;( null, null) };</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Shortcut/@EntryValue">CLASS_DECLARATION</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Text/@EntryValue">// todo&#xD;
+&#xD;
+idTypeInfo idTarget_LockDoor::Type( "idTarget_LockDoor", "idTarget",									&#xD;
+	( idEventFunc&lt;idClass&gt; * )idTarget_LockDoor::eventCallbacks,	idTarget_LockDoor::CreateInstance, ( void ( idClass::* )( void ) )&amp;idTarget_LockDoor::Spawn,	&#xD;
+	( void ( idClass::* )( idSaveGame * ) const )&amp;idTarget_LockDoor::Save, ( void ( idClass::* )( idRestoreGame * ) )&amp;idTarget_LockDoor::Restore );	&#xD;
+idClass *idTarget_LockDoor::CreateInstance( void ) {													&#xD;
+	try {																						&#xD;
+		idTarget_LockDoor *ptr = new idTarget_LockDoor;											&#xD;
+		ptr-&gt;FindUninitializedMemory();															&#xD;
+		return ptr;																				&#xD;
+	}																							&#xD;
+	catch( idAllocError &amp; ) {																	&#xD;
+		return NULL;																			&#xD;
+	}																							&#xD;
+}																								&#xD;
+idTypeInfo *idTarget_LockDoor::GetType( void ) const {											&#xD;
+	return &amp;( idTarget_LockDoor::Type );														&#xD;
+}																								&#xD;
+idEventFunc&lt;idTarget_LockDoor&gt; idTarget_LockDoor::eventCallbacks[] = {</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DB4D0F71255A5B439A684F56668E63EA/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DB4D0F71255A5B439A684F56668E63EA/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DB4D0F71255A5B439A684F56668E63EA/Reformat/@EntryValue">True</s:Boolean>

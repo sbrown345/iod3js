@@ -196,8 +196,261 @@
 //int					idThread::threadIndex = 0;
 //idList<idThread *>	idThread::threadList;
 //trace_t				idThread::trace;
-//
-///*
+
+class idThread extends idClass {
+	//private:
+	static currentThread: idThread;
+	//
+	//	idThread					*waitingForThread;
+	//	int							waitingFor;
+	//	int							waitingUntil;
+	//	idInterpreter				interpreter;
+	//
+	//	idDict						spawnArgs;
+	//								
+	//	int 						threadNum;
+	//	idStr 						threadName;
+	//
+	//	int							lastExecuteTime;
+	//	int							creationTime;
+	//
+	//	bool						manualControl;
+	//
+	static threadIndex:number /*int*/;
+	static threadList = new idList<idThread>(idThread);
+	
+	static trace = new trace_t;
+	
+	//	void						Init( void );
+	//	void						Pause( void );
+	//
+	//	void						Event_Execute( void );
+	//	void						Event_SetThreadName( const char *name );
+	//
+	//	//
+	//	// script callable Events
+	//	//
+	//	void						Event_TerminateThread( int num );
+	//	void						Event_Pause( void );
+	//	void						Event_Wait( float time );
+	//	void						Event_WaitFrame( void );
+	//	void						Event_WaitFor( idEntity *ent );
+	//	void						Event_WaitForThread( int num );
+	//	void						Event_Print( const char *text );
+	//	void						Event_PrintLn( const char *text );
+	//	void						Event_Say( const char *text );
+	//	void						Event_Assert( float value );
+	//	void						Event_Trigger( idEntity *ent );
+	//	void						Event_SetCvar( const char *name, const char *value ) const;
+	//	void						Event_GetCvar( const char *name ) const;
+	//	void						Event_Random( float range ) const;
+	//	void						Event_GetTime( void );
+	//	void						Event_KillThread( const char *name );
+	//	void						Event_GetEntity( const char *name );
+	//	void						Event_Spawn( const char *classname );
+	//	void						Event_CopySpawnArgs( idEntity *ent );
+	//	void						Event_SetSpawnArg( const char *key, const char *value );
+	//	void						Event_SpawnString( const char *key, const char *defaultvalue );
+	//	void						Event_SpawnFloat( const char *key, float defaultvalue );
+	//	void						Event_SpawnVector( const char *key, idVec3 &defaultvalue );
+	//	void						Event_ClearPersistantArgs( void );
+	//	void 						Event_SetPersistantArg( const char *key, const char *value );
+	//	void 						Event_GetPersistantString( const char *key );
+	//	void 						Event_GetPersistantFloat( const char *key );
+	//	void 						Event_GetPersistantVector( const char *key );
+	//	void						Event_AngToForward( idAngles &ang );
+	//	void						Event_AngToRight( idAngles &ang );
+	//	void						Event_AngToUp( idAngles &ang );
+	//	void						Event_GetSine( float angle );
+	//	void						Event_GetCosine( float angle );
+	//	void						Event_GetSquareRoot( float theSquare );
+	//	void						Event_VecNormalize( idVec3 &vec );
+	//	void						Event_VecLength( idVec3 &vec );
+	//	void						Event_VecDotProduct( idVec3 &vec1, idVec3 &vec2 );
+	//	void						Event_VecCrossProduct( idVec3 &vec1, idVec3 &vec2 );
+	//	void						Event_VecToAngles( idVec3 &vec );
+	//	void						Event_OnSignal( int signal, idEntity *ent, const char *func );
+	//	void						Event_ClearSignalThread( int signal, idEntity *ent );
+	//	void						Event_SetCamera( idEntity *ent );
+	//	void						Event_FirstPerson( void );
+	//	void						Event_Trace( const idVec3 &start, const idVec3 &end, const idVec3 &mins, const idVec3 &maxs, int contents_mask, idEntity *passEntity );
+	//	void						Event_TracePoint( const idVec3 &start, const idVec3 &end, int contents_mask, idEntity *passEntity );
+	//	void						Event_GetTraceFraction( void );
+	//	void						Event_GetTraceEndPos( void );
+	//	void						Event_GetTraceNormal( void );
+	//	void						Event_GetTraceEntity( void );
+	//	void						Event_GetTraceJoint( void );
+	//	void						Event_GetTraceBody( void );
+	//	void						Event_FadeIn( idVec3 &color, float time );
+	//	void						Event_FadeOut( idVec3 &color, float time );
+	//	void						Event_FadeTo( idVec3 &color, float alpha, float time );
+	//	void						Event_SetShaderParm( int parmnum, float value );
+	//	void						Event_StartMusic( const char *name );
+	//	void						Event_Warning( const char *text );
+	//	void						Event_Error( const char *text );
+	//	void 						Event_StrLen( const char *string );
+	//	void 						Event_StrLeft( const char *string, int num );
+	//	void 						Event_StrRight( const char *string, int num );
+	//	void 						Event_StrSkip( const char *string, int num );
+	//	void 						Event_StrMid( const char *string, int start, int num );
+	//	void						Event_StrToFloat( const char *string );
+	//	void						Event_RadiusDamage( const idVec3 &origin, idEntity *inflictor, idEntity *attacker, idEntity *ignore, const char *damageDefName, float dmgPower );
+	//	void						Event_IsClient( void );
+	//	void 						Event_IsMultiplayer( void );
+	//	void 						Event_GetFrameTime( void );
+	//	void 						Event_GetTicsPerSecond( void );
+	//	void						Event_CacheSoundShader( const char *soundName );
+	//	void						Event_DebugLine( const idVec3 &color, const idVec3 &start, const idVec3 &end, const float lifetime );
+	//	void						Event_DebugArrow( const idVec3 &color, const idVec3 &start, const idVec3 &end, const int size, const float lifetime );
+	//	void						Event_DebugCircle( const idVec3 &color, const idVec3 &origin, const idVec3 &dir, const float radius, const int numSteps, const float lifetime );
+	//	void						Event_DebugBounds( const idVec3 &color, const idVec3 &mins, const idVec3 &maxs, const float lifetime );
+	//	void						Event_DrawText( const char *text, const idVec3 &origin, float scale, const idVec3 &color, const int align, const float lifetime );
+	//	void						Event_InfluenceActive( void );
+	//
+	//public:							
+	//								CLASS_PROTOTYPE( idThread );
+	//								
+	//								idThread();
+	//								idThread( idEntity *self, const function_t *func );
+	//								idThread( const function_t *func );
+	//								idThread( idInterpreter *source, const function_t *func, int args );
+	//								idThread( idInterpreter *source, idEntity *self, const function_t *func, int args );
+	//
+	//	virtual						~idThread();
+	//
+	//								// tells the thread manager not to delete this thread when it ends
+	//	void						ManualDelete( void );
+	//
+	//	// save games
+	//	void						Save( idSaveGame *savefile ) const;				// archives object for save game file
+	//	void						Restore( idRestoreGame *savefile );				// unarchives object from save game file
+	//
+	//	void						EnableDebugInfo( void ) { interpreter.debug = true; };
+	//	void						DisableDebugInfo( void ) { interpreter.debug = false; };
+	//
+	//	void						WaitMS( int time );
+	//	void						WaitSec( float time );
+	//	void						WaitFrame( void );
+	//								
+	//								// NOTE: If this is called from within a event called by this thread, the function arguments will be invalid after calling this function.
+	//	void						CallFunction( const function_t	*func, bool clearStack );
+	//
+	//								// NOTE: If this is called from within a event called by this thread, the function arguments will be invalid after calling this function.
+	//	void						CallFunction( idEntity *obj, const function_t *func, bool clearStack );
+	//
+	//	void						DisplayInfo();
+	//	static idThread				*GetThread( int num );
+	//	static void					ListThreads_f( const idCmdArgs &args );
+	//	static void					Restart( void );
+	//	static void					ObjectMoveDone( int threadnum, idEntity *obj );
+	//								
+	//	static idList<idThread*>&	GetThreads ( void );
+	//	
+	//	bool						IsDoneProcessing ( void );
+	//	bool						IsDying			 ( void );	
+	//								
+	//	void						End( void );
+	//	static void					KillThread( const char *name );
+	//	static void					KillThread( int num );
+	//	bool						Execute( void );
+	//	void						ManualControl( void ) { manualControl = true; CancelEvents( &EV_Thread_Execute ); };
+	//	void						DoneProcessing( void ) { interpreter.doneProcessing = true; };
+	//	void						ContinueProcessing( void ) { interpreter.doneProcessing = false; };
+	//	bool						ThreadDying( void ) { return interpreter.threadDying; };
+	//	void						EndThread( void ) { interpreter.threadDying = true; };
+	//	bool						IsWaiting( void );
+	//	void						ClearWaitFor( void );
+	//	bool						IsWaitingFor( idEntity *obj );
+	//	void						ObjectMoveDone( idEntity *obj );
+	//	void						ThreadCallback( idThread *thread );
+	//	void						DelayedStart( int delay );
+	//	bool						Start( void );
+	//	idThread					*WaitingOnThread( void );
+	//	void						SetThreadNum( int num );
+	//	int 						GetThreadNum( void );
+	//	void						SetThreadName( const char *name );
+	//	const char					*GetThreadName( void );
+	//
+	//	void						Error( const char *fmt, ... ) const id_attribute((format(printf,2,3)));
+	//	void						Warning( const char *fmt, ... ) const id_attribute((format(printf,2,3)));
+	//								
+	//	static idThread				*CurrentThread( void );
+	//	static int					CurrentThreadNum( void );
+	//	static bool					BeginMultiFrameEvent( idEntity *ent, const idEventDef *event );
+	//	static void					EndMultiFrameEvent( idEntity *ent, const idEventDef *event );
+	//
+	//	static void					ReturnString( const char *text );
+	//	static void					ReturnFloat( float value );
+	//	static void					ReturnInt( int value );
+	//	static void					ReturnVector( idVec3 const &vec );
+	//	static void					ReturnEntity( idEntity *ent );
+	//};
+	//
+	///*
+	//================
+	//idThread::WaitingOnThread
+	//================
+	//*/
+	//ID_INLINE idThread *idThread::WaitingOnThread( void ) {
+	//	return waitingForThread;
+	//}
+	//
+	///*
+	//================
+	//idThread::SetThreadNum
+	//================
+	//*/
+	//ID_INLINE void idThread::SetThreadNum( int num ) {
+	//	threadNum = num;
+	//}
+	//
+	///*
+	//================
+	//idThread::GetThreadNum
+	//================
+	//*/
+	//ID_INLINE int idThread::GetThreadNum( void ) {
+	//	return threadNum;
+	//}
+	//
+	///*
+	//================
+	//idThread::GetThreadName
+	//================
+	//*/
+	//ID_INLINE const char *idThread::GetThreadName( void ) {
+	//	return threadName.c_str();
+	//}
+	//
+	///*
+	//================
+	//idThread::GetThreads
+	//================
+	//*/
+	//ID_INLINE idList<idThread*>& idThread::GetThreads ( void ) {
+	//	return idThread.threadList;
+	//}	
+	//
+	///*
+	//================
+	//idThread::IsDoneProcessing
+	//================
+	//*/
+	//ID_INLINE bool idThread::IsDoneProcessing ( void ) {
+	//	return interpreter.doneProcessing;
+	//}
+	//
+	///*
+	//================
+	//idThread::IsDying
+	//================
+	//*/
+	//ID_INLINE bool idThread::IsDying ( void ) {
+	//	return interpreter.threadDying;
+	//}
+	//
+	//#endif /* !__SCRIPT_THREAD_H__ */
+	///*
 //================
 //idThread::CurrentThread
 //================
@@ -206,7 +459,7 @@
 //	return currentThread;
 //}
 //
-///*
+	///*
 //================
 //idThread::CurrentThreadNum
 //================
@@ -219,7 +472,7 @@
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::BeginMultiFrameEvent
 //================
@@ -231,7 +484,7 @@
 //	return currentThread->interpreter.BeginMultiFrameEvent( ent, event );
 //}
 //
-///*
+	///*
 //================
 //idThread::EndMultiFrameEvent
 //================
@@ -243,7 +496,7 @@
 //	currentThread->interpreter.EndMultiFrameEvent( ent, event );
 //}
 //
-///*
+	///*
 //================
 //idThread::idThread
 //================
@@ -256,7 +509,7 @@
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::idThread
 //================
@@ -272,7 +525,7 @@
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::idThread
 //================
@@ -288,7 +541,7 @@
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::idThread
 //================
@@ -301,7 +554,7 @@
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::idThread
 //================
@@ -317,7 +570,7 @@
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::~idThread
 //================
@@ -330,10 +583,10 @@
 //	if ( g_debugScript.GetBool() ) {
 //		gameLocal.Printf( "%d: end thread (%d) '%s'\n", gameLocal.time, threadNum, threadName.c_str() );
 //	}
-//	threadList.Remove( this );
-//	n = threadList.Num();
+//	idThread.threadList.Remove( this );
+//	n = idThread.threadList.Num();
 //	for( i = 0; i < n; i++ ) {
-//		thread = threadList[ i ];
+//		thread = idThread.threadList[ i ];
 //		if ( thread->WaitingOnThread() == this ) {
 //			thread->ThreadCallback( this );
 //		}
@@ -344,7 +597,7 @@
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::ManualDelete
 //================
@@ -353,7 +606,7 @@
 //	interpreter.terminateOnExit = false;
 //}
 //
-///*
+	///*
 //================
 //idThread::Save
 //================
@@ -379,7 +632,7 @@
 //	savefile->WriteBool( manualControl );
 //}
 //
-///*
+	///*
 //================
 //idThread::Restore
 //================
@@ -402,7 +655,7 @@
 //	savefile->ReadBool( manualControl );
 //}
 //
-///*
+	///*
 //================
 //idThread::Init
 //================
@@ -417,7 +670,7 @@
 //	} while( GetThread( threadIndex ) );
 //
 //	threadNum = threadIndex;
-//	threadList.Append( this );
+//	idThread.threadList.Append( this );
 //	
 //	creationTime = gameLocal.time;
 //	lastExecuteTime = 0;
@@ -428,7 +681,7 @@
 //	interpreter.SetThread( this );
 //}
 //
-///*
+	///*
 //================
 //idThread::GetThread
 //================
@@ -438,9 +691,9 @@
 //	int			n;
 //	idThread	*thread;
 //
-//	n = threadList.Num();
+//	n = idThread.threadList.Num();
 //	for( i = 0; i < n; i++ ) {
-//		thread = threadList[ i ];
+//		thread = idThread.threadList[ i ];
 //		if ( thread->GetThreadNum() == num ) {
 //			return thread;
 //		}
@@ -449,7 +702,7 @@
 //	return NULL;
 //}
 //
-///*
+	///*
 //================
 //idThread::DisplayInfo
 //================
@@ -488,7 +741,7 @@
 //	gameLocal.Printf( "\n" );
 //}
 //
-///*
+	///*
 //================
 //idThread::ListThreads_f
 //================
@@ -497,38 +750,38 @@
 //	int	i;
 //	int	n;
 //
-//	n = threadList.Num();
+//	n = idThread.threadList.Num();
 //	for( i = 0; i < n; i++ ) {
-//		//threadList[ i ]->DisplayInfo();
-//		gameLocal.Printf( "%3i: %-20s : %s(%d)\n", threadList[ i ]->threadNum, threadList[ i ]->threadName.c_str(), threadList[ i ]->interpreter.CurrentFile(), threadList[ i ]->interpreter.CurrentLine() );
+//		//idThread.threadList[ i ]->DisplayInfo();
+//		gameLocal.Printf( "%3i: %-20s : %s(%d)\n", idThread.threadList[ i ]->threadNum, idThread.threadList[ i ]->threadName.c_str(), idThread.threadList[ i ]->interpreter.CurrentFile(), idThread.threadList[ i ]->interpreter.CurrentLine() );
 //	}
 //	gameLocal.Printf( "%d active threads\n\n", n );
 //}
 //
-///*
-//================
-//idThread::Restart
-//================
-//*/
-//void idThread::Restart( void ) {
-//	int	i;
-//	int	n;
+/*
+================
+idThread::Restart
+================
+*/
+Restart( ):void {
+	var/*int	*/i:number;
+	var/*int	*/n: number;
+
+	// reset the threadIndex
+	idThread.threadIndex = 0;
+
+	idThread.currentThread = null;
+	n = idThread.threadList.Num();
+	for( i = n - 1; i >= 0; i-- ) {
+		delete idThread.threadList[ i ];
+	}
+	idThread.threadList.Clear();
+
+	idThread.trace.init ( );
+	idThread.trace.c.entityNum = ENTITYNUM_NONE;
+}
 //
-//	// reset the threadIndex
-//	threadIndex = 0;
-//
-//	currentThread = NULL;
-//	n = threadList.Num();
-//	for( i = n - 1; i >= 0; i-- ) {
-//		delete threadList[ i ];
-//	}
-//	threadList.Clear();
-//
-//	memset( &trace, 0, sizeof( trace ) );
-//	trace.c.entityNum = ENTITYNUM_NONE;
-//}
-//
-///*
+	///*
 //================
 //idThread::DelayedStart
 //================
@@ -541,7 +794,7 @@
 //	PostEventMS( &EV_Thread_Execute, delay );
 //}
 //
-///*
+	///*
 //================
 //idThread::Start
 //================
@@ -555,7 +808,7 @@
 //	return result;
 //}
 //
-///*
+	///*
 //================
 //idThread::SetThreadName
 //================
@@ -564,7 +817,7 @@
 //	threadName = name;
 //}
 //
-///*
+	///*
 //================
 //idThread::ObjectMoveDone
 //================
@@ -582,7 +835,7 @@
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::End
 //================
@@ -593,7 +846,7 @@
 //	interpreter.threadDying	= true;
 //}
 //
-///*
+	///*
 //================
 //idThread::KillThread
 //================
@@ -614,16 +867,16 @@
 //	}
 //
 //	// kill only those threads whose name matches name
-//	num = threadList.Num();
+//	num = idThread.threadList.Num();
 //	for( i = 0; i < num; i++ ) {
-//		thread = threadList[ i ];
+//		thread = idThread.threadList[ i ];
 //		if ( !idStr::Cmpn( thread->GetThreadName(), name, len ) ) {
 //			thread->End();
 //		}
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::KillThread
 //================
@@ -638,7 +891,7 @@
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::Execute
 //================
@@ -675,7 +928,7 @@
 //	return done;
 //}
 //
-///*
+	///*
 //================
 //idThread::IsWaiting
 //
@@ -694,7 +947,7 @@
 //	return false;
 //}
 //
-///*
+	///*
 //================
 //idThread::CallFunction
 //
@@ -706,7 +959,7 @@
 //	interpreter.EnterFunction( func, clearStack );
 //}
 //
-///*
+	///*
 //================
 //idThread::CallFunction
 //
@@ -719,7 +972,7 @@
 //	interpreter.EnterObjectFunction( self, func, clearStack );
 //}
 //
-///*
+	///*
 //================
 //idThread::ClearWaitFor
 //================
@@ -730,7 +983,7 @@
 //	waitingUntil		= 0;
 //}
 //
-///*
+	///*
 //================
 //idThread::IsWaitingFor
 //================
@@ -740,7 +993,7 @@
 //	return waitingFor == obj->entityNumber;
 //}
 //
-///*
+	///*
 //================
 //idThread::ObjectMoveDone
 //================
@@ -754,7 +1007,7 @@
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::ThreadCallback
 //================
@@ -770,7 +1023,7 @@
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_SetThreadName
 //================
@@ -779,7 +1032,7 @@
 //	SetThreadName( name );
 //}
 //
-///*
+	///*
 //================
 //idThread::Error
 //================
@@ -795,7 +1048,7 @@
 //	interpreter.Error( text );
 //}
 //
-///*
+	///*
 //================
 //idThread::Warning
 //================
@@ -811,7 +1064,7 @@
 //	interpreter.Warning( text );
 //}
 //
-///*
+	///*
 //================
 //idThread::ReturnString
 //================
@@ -820,7 +1073,7 @@
 //	gameLocal.program.ReturnString( text );
 //}
 //
-///*
+	///*
 //================
 //idThread::ReturnFloat
 //================
@@ -829,7 +1082,7 @@
 //	gameLocal.program.ReturnFloat( value );
 //}
 //
-///*
+	///*
 //================
 //idThread::ReturnInt
 //================
@@ -840,7 +1093,7 @@
 //	gameLocal.program.ReturnFloat( value );
 //}
 //
-///*
+	///*
 //================
 //idThread::ReturnVector
 //================
@@ -849,7 +1102,7 @@
 //	gameLocal.program.ReturnVector( vec );
 //}
 //
-///*
+	///*
 //================
 //idThread::ReturnEntity
 //================
@@ -858,7 +1111,7 @@
 //	gameLocal.program.ReturnEntity( ent );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_Execute
 //================
@@ -867,7 +1120,7 @@
 //	Execute();
 //}
 //
-///*
+	///*
 //================
 //idThread::Pause
 //================
@@ -877,7 +1130,7 @@
 //	interpreter.doneProcessing = true;
 //}
 //
-///*
+	///*
 //================
 //idThread::WaitMS
 //================
@@ -887,7 +1140,7 @@
 //	waitingUntil = gameLocal.time + time;
 //}
 //
-///*
+	///*
 //================
 //idThread::WaitSec
 //================
@@ -896,7 +1149,7 @@
 //	WaitMS( SEC2MS( time ) );
 //}
 //
-///*
+	///*
 //================
 //idThread::WaitFrame
 //================
@@ -911,13 +1164,13 @@
 //	}
 //}
 //
-///***********************************************************************
+	///***********************************************************************
 //
 //  Script callable events  
 //	
 //***********************************************************************/
 //
-///*
+	///*
 //================
 //idThread::Event_TerminateThread
 //================
@@ -929,7 +1182,7 @@
 //	KillThread( num );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_Pause
 //================
@@ -938,7 +1191,7 @@
 //	Pause();
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_Wait
 //================
@@ -947,7 +1200,7 @@
 //	WaitSec( time );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_WaitFrame
 //================
@@ -956,7 +1209,7 @@
 //	WaitFrame();
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_WaitFor
 //================
@@ -971,7 +1224,7 @@
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_WaitForThread
 //================
@@ -991,7 +1244,7 @@
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_Print
 //================
@@ -1000,7 +1253,7 @@
 //	gameLocal.Printf( "%s", text );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_PrintLn
 //================
@@ -1009,7 +1262,7 @@
 //	gameLocal.Printf( "%s\n", text );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_Say
 //================
@@ -1018,7 +1271,7 @@
 //	cmdSystem->BufferCommandText( CMD_EXEC_NOW, va( "say \"%s\"", text ) );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_Assert
 //================
@@ -1027,7 +1280,7 @@
 //	assert( value );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_Trigger
 //================
@@ -1040,7 +1293,7 @@
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_SetCvar
 //================
@@ -1049,7 +1302,7 @@
 //	cvarSystem->SetCVarString( name, value );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_GetCvar
 //================
@@ -1058,7 +1311,7 @@
 //	ReturnString( cvarSystem->GetCVarString( name ) );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_Random
 //================
@@ -1070,7 +1323,7 @@
 //	ReturnFloat( range * result );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_GetTime
 //================
@@ -1079,7 +1332,7 @@
 //	ReturnFloat( MS2SEC( gameLocal.realClientTime ) );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_KillThread
 //================
@@ -1088,7 +1341,7 @@
 //	KillThread( name );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_GetEntity
 //================
@@ -1111,7 +1364,7 @@
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_Spawn
 //================
@@ -1125,7 +1378,7 @@
 //	spawnArgs.Clear();
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_CopySpawnArgs
 //================
@@ -1134,7 +1387,7 @@
 //	spawnArgs.Copy( ent->spawnArgs );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_SetSpawnArg
 //================
@@ -1143,7 +1396,7 @@
 //	spawnArgs.Set( key, value );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_SpawnString
 //================
@@ -1155,7 +1408,7 @@
 //	ReturnString( result );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_SpawnFloat
 //================
@@ -1167,7 +1420,7 @@
 //	ReturnFloat( result );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_SpawnVector
 //================
@@ -1179,7 +1432,7 @@
 //	ReturnVector( result );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_ClearPersistantArgs
 //================
@@ -1189,7 +1442,7 @@
 //}
 //
 //
-///*
+	///*
 //================
 //idThread::Event_SetPersistantArg
 //================
@@ -1198,7 +1451,7 @@
 //	gameLocal.persistentLevelInfo.Set( key, value );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_GetPersistantString
 //================
@@ -1210,7 +1463,7 @@
 //	ReturnString( result );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_GetPersistantFloat
 //================
@@ -1222,7 +1475,7 @@
 //	ReturnFloat( result );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_GetPersistantVector
 //================
@@ -1234,7 +1487,7 @@
 //	ReturnVector( result );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_AngToForward
 //================
@@ -1243,7 +1496,7 @@
 //	ReturnVector( ang.ToForward() );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_AngToRight
 //================
@@ -1255,7 +1508,7 @@
 //	ReturnVector( vec );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_AngToUp
 //================
@@ -1267,7 +1520,7 @@
 //	ReturnVector( vec );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_GetSine
 //================
@@ -1276,7 +1529,7 @@
 //	ReturnFloat( idMath::Sin( DEG2RAD( angle ) ) );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_GetCosine
 //================
@@ -1285,7 +1538,7 @@
 //	ReturnFloat( idMath::Cos( DEG2RAD( angle ) ) );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_GetSquareRoot
 //================
@@ -1294,7 +1547,7 @@
 //	ReturnFloat( idMath::Sqrt( theSquare ) );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_VecNormalize
 //================
@@ -1307,7 +1560,7 @@
 //	ReturnVector( n );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_VecLength
 //================
@@ -1316,7 +1569,7 @@
 //	ReturnFloat( vec.Length() );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_VecDotProduct
 //================
@@ -1325,7 +1578,7 @@
 //	ReturnFloat( vec1 * vec2 );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_VecCrossProduct
 //================
@@ -1334,7 +1587,7 @@
 //	ReturnVector( vec1.Cross( vec2 ) );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_VecToAngles
 //================
@@ -1344,7 +1597,7 @@
 //	ReturnVector( idVec3( ang[0], ang[1], ang[2] ) );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_OnSignal
 //================
@@ -1370,7 +1623,7 @@
 //	ent->SetSignal( ( signalNum_t )signal, this, function );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_ClearSignalThread
 //================
@@ -1387,7 +1640,7 @@
 //	ent->ClearSignalThread( ( signalNum_t )signal, this );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_SetCamera
 //================
@@ -1406,7 +1659,7 @@
 //	gameLocal.SetCamera( ( idCamera * )ent );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_FirstPerson
 //================
@@ -1415,100 +1668,100 @@
 //	gameLocal.SetCamera( NULL );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_Trace
 //================
 //*/
 //void idThread::Event_Trace( const idVec3 &start, const idVec3 &end, const idVec3 &mins, const idVec3 &maxs, int contents_mask, idEntity *passEntity ) {
 //	if ( mins == vec3_origin && maxs == vec3_origin ) {
-//		gameLocal.clip.TracePoint( trace, start, end, contents_mask, passEntity );
+//		gameLocal.clip.TracePoint( idThread.trace, start, end, contents_mask, passEntity );
 //	} else {
-//		gameLocal.clip.TraceBounds( trace, start, end, idBounds( mins, maxs ), contents_mask, passEntity );
+//		gameLocal.clip.TraceBounds( idThread.trace, start, end, idBounds( mins, maxs ), contents_mask, passEntity );
 //	}
-//	ReturnFloat( trace.fraction );
+//	ReturnFloat( idThread.trace.fraction );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_TracePoint
 //================
 //*/
 //void idThread::Event_TracePoint( const idVec3 &start, const idVec3 &end, int contents_mask, idEntity *passEntity ) {
-//	gameLocal.clip.TracePoint( trace, start, end, contents_mask, passEntity );
-//	ReturnFloat( trace.fraction );
+//	gameLocal.clip.TracePoint( idThread.trace, start, end, contents_mask, passEntity );
+//	ReturnFloat( idThread.trace.fraction );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_GetTraceFraction
 //================
 //*/
 //void idThread::Event_GetTraceFraction( void ) {
-//	ReturnFloat( trace.fraction );
+//	ReturnFloat( idThread.trace.fraction );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_GetTraceEndPos
 //================
 //*/
 //void idThread::Event_GetTraceEndPos( void ) {
-//	ReturnVector( trace.endpos );
+//	ReturnVector( idThread.trace.endpos );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_GetTraceNormal
 //================
 //*/
 //void idThread::Event_GetTraceNormal( void ) {
-//	if ( trace.fraction < 1.0f ) {
-//		ReturnVector( trace.c.normal );
+//	if ( idThread.trace.fraction < 1.0f ) {
+//		ReturnVector( idThread.trace.c.normal );
 //	} else {
 //		ReturnVector( vec3_origin );
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_GetTraceEntity
 //================
 //*/
 //void idThread::Event_GetTraceEntity( void ) {
-//	if ( trace.fraction < 1.0f ) {
-//		ReturnEntity( gameLocal.entities[ trace.c.entityNum ] );
+//	if ( idThread.trace.fraction < 1.0f ) {
+//		ReturnEntity( gameLocal.entities[ idThread.trace.c.entityNum ] );
 //	} else {
 //		ReturnEntity( ( idEntity * )NULL );
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_GetTraceJoint
 //================
 //*/
 //void idThread::Event_GetTraceJoint( void ) {
-//	if ( trace.fraction < 1.0f && trace.c.id < 0 ) {
-//		idAFEntity_Base *af = static_cast<idAFEntity_Base *>( gameLocal.entities[ trace.c.entityNum ] );
+//	if ( idThread.trace.fraction < 1.0f && idThread.trace.c.id < 0 ) {
+//		idAFEntity_Base *af = static_cast<idAFEntity_Base *>( gameLocal.entities[ idThread.trace.c.entityNum ] );
 //		if ( af && af->IsType( idAFEntity_Base::Type ) && af->IsActiveAF() ) {
-//			ReturnString( af->GetAnimator()->GetJointName( CLIPMODEL_ID_TO_JOINT_HANDLE( trace.c.id ) ) );
+//			ReturnString( af->GetAnimator()->GetJointName( CLIPMODEL_ID_TO_JOINT_HANDLE( idThread.trace.c.id ) ) );
 //			return;
 //		}
 //	}
 //	ReturnString( "" );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_GetTraceBody
 //================
 //*/
 //void idThread::Event_GetTraceBody( void ) {
-//	if ( trace.fraction < 1.0f && trace.c.id < 0 ) {
-//		idAFEntity_Base *af = static_cast<idAFEntity_Base *>( gameLocal.entities[ trace.c.entityNum ] );
+//	if ( idThread.trace.fraction < 1.0f && idThread.trace.c.id < 0 ) {
+//		idAFEntity_Base *af = static_cast<idAFEntity_Base *>( gameLocal.entities[ idThread.trace.c.entityNum ] );
 //		if ( af && af->IsType( idAFEntity_Base::Type ) && af->IsActiveAF() ) {
-//			int bodyId = af->BodyForClipModelId( trace.c.id );
+//			int bodyId = af->BodyForClipModelId( idThread.trace.c.id );
 //			idAFBody *body = af->GetAFPhysics()->GetBody( bodyId );
 //			if ( body ) {
 //				ReturnString( body->GetName() );
@@ -1519,7 +1772,7 @@
 //	ReturnString( "" );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_FadeIn
 //================
@@ -1535,7 +1788,7 @@
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_FadeOut
 //================
@@ -1551,7 +1804,7 @@
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_FadeTo
 //================
@@ -1567,7 +1820,7 @@
 //	}
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_SetShaderParm
 //================
@@ -1580,7 +1833,7 @@
 //	gameLocal.globalShaderParms[ parmnum ] = value;
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_StartMusic
 //================
@@ -1589,7 +1842,7 @@
 //	gameSoundWorld->PlayShaderDirectly( text );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_Warning
 //================
@@ -1598,7 +1851,7 @@
 //	Warning( "%s", text );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_Error
 //================
@@ -1607,7 +1860,7 @@
 //	Error( "%s", text );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_StrLen
 //================
@@ -1619,7 +1872,7 @@
 //	idThread::ReturnInt( len );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_StrLeft
 //================
@@ -1642,7 +1895,7 @@
 //	idThread::ReturnString( result );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_StrRight 
 //================
@@ -1664,7 +1917,7 @@
 //	idThread::ReturnString( string + len - num );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_StrSkip
 //================
@@ -1686,7 +1939,7 @@
 //	idThread::ReturnString( string + num );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_StrMid
 //================
@@ -1715,7 +1968,7 @@
 //	idThread::ReturnString( result );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_StrToFloat( const char *string )
 //================
@@ -1727,7 +1980,7 @@
 //	idThread::ReturnFloat( result );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_RadiusDamage
 //================
@@ -1736,7 +1989,7 @@
 //	gameLocal.RadiusDamage( origin, inflictor, attacker, ignore, ignore, damageDefName, dmgPower );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_IsClient
 //================
@@ -1745,7 +1998,7 @@
 //	idThread::ReturnFloat( gameLocal.isClient );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_IsMultiplayer
 //================
@@ -1754,7 +2007,7 @@
 //	idThread::ReturnFloat( gameLocal.isMultiplayer );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_GetFrameTime
 //================
@@ -1763,7 +2016,7 @@
 //	idThread::ReturnFloat( MS2SEC( gameLocal.msec ) );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_GetTicsPerSecond
 //================
@@ -1772,7 +2025,7 @@
 //	idThread::ReturnFloat( USERCMD_HZ );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_CacheSoundShader
 //================
@@ -1781,7 +2034,7 @@
 //	declManager->FindSound( soundName );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_DebugLine
 //================
@@ -1790,7 +2043,7 @@
 //	gameRenderWorld->DebugLine( idVec4( color.x, color.y, color.z, 0.0 ), start, end, SEC2MS( lifetime ) );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_DebugArrow
 //================
@@ -1799,7 +2052,7 @@
 //	gameRenderWorld->DebugArrow( idVec4( color.x, color.y, color.z, 0.0 ), start, end, size, SEC2MS( lifetime ) );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_DebugCircle
 //================
@@ -1808,7 +2061,7 @@
 //	gameRenderWorld->DebugCircle( idVec4( color.x, color.y, color.z, 0.0 ), origin, dir, radius, numSteps, SEC2MS( lifetime ) );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_DebugBounds
 //================
@@ -1817,7 +2070,7 @@
 //	gameRenderWorld->DebugBounds( idVec4( color.x, color.y, color.z, 0.0 ), idBounds( mins, maxs ), vec3_origin, SEC2MS( lifetime ) );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_DrawText
 //================
@@ -1826,7 +2079,7 @@
 //	gameRenderWorld->DrawText( text, origin, scale, idVec4( color.x, color.y, color.z, 0.0 ), gameLocal.GetLocalPlayer()->viewAngles.ToMat3(), align, SEC2MS( lifetime ) );
 //}
 //
-///*
+	///*
 //================
 //idThread::Event_InfluenceActive
 //================
@@ -1841,3 +2094,4 @@
 //		idThread::ReturnInt( false );
 //	}
 //}
+}
