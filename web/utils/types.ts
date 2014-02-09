@@ -72,6 +72,13 @@ var uint32 = function (v: number): number {
     return v >>> 0;
 };
 
+var reinterpret_cast_float_to_int_floatArray = new Float32Array(1);
+var reinterpret_cast_float_to_int_intArray = new Int32Array(reinterpret_cast_float_to_int_floatArray.buffer );
+function reinterpret_cast_float_to_int ( v: number ):number {
+	reinterpret_cast_float_to_int_floatArray[0] = v;
+	return reinterpret_cast_float_to_int_intArray[0];
+}
+
 function atoi ( s: string ): number {
     return parseInt( s ) || 0;
 }

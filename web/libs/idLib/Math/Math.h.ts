@@ -715,13 +715,12 @@ static Sqrt( /*float */x:number):number {
 ////	int r; for( r = x; y > 1; y-- ) { r *= x; } return r;
 ////}
 
-	static ILog2_Float(/*float */f: number): number {
-		todoThrow ( );
-		return 99999999999999999999999;
-		//return ( ( (*reinterpret_cast<int *>(&f)) >> IEEE_FLT_MANTISSA_BITS ) & ( ( 1 << IEEE_FLT_EXPONENT_BITS ) - 1 ) ) - IEEE_FLT_EXPONENT_BIAS;
+	static ILog2_Float ( /*float */f: number ): number {
+		return ( ( reinterpret_cast_float_to_int( f ) >> IEEE_FLT_MANTISSA_BITS ) & ( ( 1 << IEEE_FLT_EXPONENT_BITS ) - 1 ) ) - IEEE_FLT_EXPONENT_BIAS;
 	}
 
 ////ID_INLINE int idMath::ILog2( int i ) {
+	/// check its an int...
 ////	return ILog2( (float)i );
 ////}
 
