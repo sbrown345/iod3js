@@ -319,9 +319,12 @@
 //#else
 //#include "../game/Game.h"
 //#endif
-/// <reference path="dlls/game/game.h.ts" />
-/// <reference path="dlls/game/game_local.h.ts" />
-/// <reference path="dlls/game/game_local.cpp.ts" />
+
+/// <reference path="dlls/game/gamesys/class.h.ts" />
+/// <reference path="dlls/game/gamesys/class.cpp.ts" />
+/// <reference path="dlls/game/gamesys/event.cpp.ts" />
+/// <reference path="dlls/game/entity.h.ts" />
+/// <reference path="dlls/game/entity.cpp.ts" />
 /// <reference path="dlls/game/ai/aas.h.ts" />
 /// <reference path="dlls/game/ai/aas_local.h.ts" />
 /// <reference path="dlls/game/ai/aas.cpp.ts" />
@@ -339,9 +342,6 @@
 /// <reference path="dlls/game/animation/anim_import.cpp.ts" />
 /// <reference path="dlls/game/animation/anim_testmodel.h.ts" />
 /// <reference path="dlls/game/animation/anim_testmodel.cpp.ts" />
-/// <reference path="dlls/game/gamesys/class.h.ts" />
-/// <reference path="dlls/game/gamesys/class.cpp.ts" />
-/// <reference path="dlls/game/gamesys/event.cpp.ts" />
 /// <reference path="dlls/game/physics/clip.h.ts" />
 /// <reference path="dlls/game/physics/clip.cpp.ts" />
 /// <reference path="dlls/game/script/script_compiler.h.ts" />
@@ -352,12 +352,10 @@
 /// <reference path="dlls/game/script/script_program.cpp.ts" />
 /// <reference path="dlls/game/script/script_thread.h.ts" />
 /// <reference path="dlls/game/script/script_thread.cpp.ts" />
-/// <reference path="dlls/game/actor.h.ts" />
-/// <reference path="dlls/game/actor.cpp.ts" />
 /// <reference path="dlls/game/afentity.h.ts" />
 /// <reference path="dlls/game/afentity.cpp.ts" />
-/// <reference path="dlls/game/entity.h.ts" />
-/// <reference path="dlls/game/entity.cpp.ts" />
+/// <reference path="dlls/game/actor.h.ts" />
+/// <reference path="dlls/game/actor.cpp.ts" />
 /// <reference path="dlls/game/camera.h.ts" />
 /// <reference path="dlls/game/camera.cpp.ts" />
 /// <reference path="dlls/game/fx.cpp.ts" />
@@ -370,6 +368,10 @@
 /// <reference path="dlls/game/pvs.cpp.ts" />
 /// <reference path="dlls/game/smokeparticles.cpp.ts" />
 /// <reference path="dlls/game/worldspawn.cpp.ts" />
+
+/// <reference path="dlls/game/game.h.ts" />
+/// <reference path="dlls/game/game_local.h.ts" />
+/// <reference path="dlls/game/game_local.cpp.ts" />
 
 //-----------------------------------------------------
 
