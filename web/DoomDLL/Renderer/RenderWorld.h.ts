@@ -291,18 +291,18 @@ class renderView_t {
 //
 //
 var NUM_PORTAL_ATTRIBUTES = 3;
-//
-//typedef enum {
-//	PS_BLOCK_NONE = 0,
-//
-//	PS_BLOCK_VIEW = 1,
-//	PS_BLOCK_LOCATION = 2,		// game map location strings often stop in hallways
-//	PS_BLOCK_AIR = 4,			// windows between pressurized and unpresurized areas
-//
-//	PS_BLOCK_ALL = (1<<NUM_PORTAL_ATTRIBUTES)-1
-//} portalConnection_t;
-//
-//
+
+enum portalConnection_t{
+	PS_BLOCK_NONE = 0,
+
+	PS_BLOCK_VIEW = 1,
+	PS_BLOCK_LOCATION = 2,		// game map location strings often stop in hallways
+	PS_BLOCK_AIR = 4,			// windows between pressurized and unpresurized areas
+
+	PS_BLOCK_ALL = (1<<NUM_PORTAL_ATTRIBUTES)-1
+};
+
+
 class idRenderWorld {
 //public:
 //	virtual					~idRenderWorld() {};

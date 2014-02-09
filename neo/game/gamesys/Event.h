@@ -95,8 +95,11 @@ private:
 
 	idLinkList<idEvent>			eventNode;
 
+#ifdef JS_CHANGES
+	static idDynamicAlloc<byte, 16 * 1024, 256> eventDataAllocator;
+#else
 	static idDynamicBlockAlloc<byte, 16 * 1024, 256> eventDataAllocator;
-
+#endif
 
 public:
 	static bool					initialized;

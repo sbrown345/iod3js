@@ -29,20 +29,20 @@
 ////#ifndef __GAME_LOCAL_H__
 ////#define	__GAME_LOCAL_H__
 
-/////*
-////===============================================================================
+/*
+===============================================================================
 
-////	Local implementation of the public game interface.
+	Local implementation of the public game interface.
 
-////===============================================================================
-////*/
+===============================================================================
+*/
 
-////#define LAGO_IMG_WIDTH 64
-////#define LAGO_IMG_HEIGHT 64
-////#define LAGO_WIDTH	64
-////#define LAGO_HEIGHT	44
-////#define LAGO_MATERIAL	"textures/sfx/lagometer"
-////#define LAGO_IMAGE		"textures/sfx/lagometer.tga"
+var LAGO_IMG_WIDTH = 64;
+var LAGO_IMG_HEIGHT = 64;
+var LAGO_WIDTH = 64;
+var LAGO_HEIGHT = 44;
+var LAGO_MATERIAL = "textures/sfx/lagometer";
+var LAGO_IMAGE = "textures/sfx/lagometer.tga";
 
 ////// if set to 1 the server sends the client PVS with snapshots and the client compares against what it sees
 ////#ifndef ASYNC_WRITE_PVS
@@ -108,26 +108,26 @@ var	ENTITYNUM_MAX_NORMAL=	(MAX_GENTITIES-2)
 ////#include "Pvs.h"
 ////#include "MultiplayerGame.h"
 
-//////============================================================================
+//============================================================================
 
-////const int MAX_GAME_MESSAGE_SIZE		= 8192;
-////const int MAX_ENTITY_STATE_SIZE		= 512;
-////const int ENTITY_PVS_SIZE			= ((MAX_GENTITIES+31)>>5);
-////const int NUM_RENDER_PORTAL_BITS	= idMath::BitsForInteger( PS_BLOCK_ALL );
+var MAX_GAME_MESSAGE_SIZE		= 8192;
+var MAX_ENTITY_STATE_SIZE		= 512;
+var ENTITY_PVS_SIZE			= ((MAX_GENTITIES+31)>>5);
+var NUM_RENDER_PORTAL_BITS = idMath.BitsForInteger( portalConnection_t.PS_BLOCK_ALL );
 
-////typedef struct entityState_s {
-////	int						entityNumber;
-////	idBitMsg				state;
-////	byte					stateBuf[MAX_ENTITY_STATE_SIZE];
-////	struct entityState_s *	next;
-////} entityState_t;
+class entityState_t {
+	//int						entityNumber;
+	//idBitMsg				state;
+	//byte					stateBuf[MAX_ENTITY_STATE_SIZE];
+	//struct entityState_s *	next;
+}
 
-////typedef struct snapshot_s {
+class snapshot_t {
 ////	int						sequence;
 ////	entityState_t *			firstEntityState;
 ////	int						pvs[ENTITY_PVS_SIZE];
 ////	struct snapshot_s *		next;
-////} snapshot_t;
+};
 
 ////const int MAX_EVENT_PARAM_SIZE		= 128;
 
@@ -169,22 +169,22 @@ var	ENTITYNUM_MAX_NORMAL=	(MAX_GENTITIES-2)
 ////	GAME_RELIABLE_MESSAGE_EVENT
 ////};
 
-////typedef enum {
-////	GAMESTATE_UNINITIALIZED,		// prior to Init being called
-////	GAMESTATE_NOMAP,				// no map loaded
-////	GAMESTATE_STARTUP,				// inside InitFromNewMap().  spawning map entities.
-////	GAMESTATE_ACTIVE,				// normal gameplay
-////	GAMESTATE_SHUTDOWN				// inside MapShutdown().  clearing memory.
-////} gameState_t;
+enum gameState_t{
+	GAMESTATE_UNINITIALIZED,		// prior to Init being called
+	GAMESTATE_NOMAP,				// no map loaded
+	GAMESTATE_STARTUP,				// inside InitFromNewMap().  spawning map entities.
+	GAMESTATE_ACTIVE,				// normal gameplay
+	GAMESTATE_SHUTDOWN				// inside MapShutdown().  clearing memory.
+};
 
 ////typedef struct {
 ////	idEntity	*ent;
 ////	int			dist;
 ////} spawnSpot_t;
 
-//////============================================================================
+//============================================================================
 
-////class idEventQueue {
+class idEventQueue {
 ////public:
 ////	typedef enum {
 ////		OUTOFORDER_IGNORE,
@@ -209,12 +209,12 @@ var	ENTITYNUM_MAX_NORMAL=	(MAX_GENTITIES-2)
 ////	entityNetEvent_t *					start;
 ////	entityNetEvent_t *					end;
 ////	idBlockAlloc<entityNetEvent_t,32>	eventAllocator;
-////};
+};
 
-//////============================================================================
+//============================================================================
 
 ////template< class type >
-////class idEntityPtr {
+class idEntityPtr<type> {
 ////public:
 ////							idEntityPtr();
 
@@ -235,83 +235,83 @@ var	ENTITYNUM_MAX_NORMAL=	(MAX_GENTITIES-2)
 
 ////private:
 ////	int						spawnId;
-////};
+};
 
 //============================================================================
 
 class idGameLocal extends idGame {
 ////public:
-////	idDict					serverInfo;				// all the tunable parameters, like numclients, etc
-////	int						numClients;				// pulled from serverInfo and verified
-////	idDict					userInfo[MAX_CLIENTS];	// client specific settings
-////	usercmd_t				usercmds[MAX_CLIENTS];	// client input commands
-////	idDict					persistentPlayerInfo[MAX_CLIENTS];
-////	idEntity *				entities[MAX_GENTITIES];// index to entities
-////	int						spawnIds[MAX_GENTITIES];// for use in idEntityPtr
-////	int						firstFreeIndex;			// first free index in the entities array
-////	int						num_entities;			// current number <= MAX_GENTITIES
-////	idHashIndex				entityHash;				// hash table to quickly find entities by name
-////	idWorldspawn *			world;					// world entity
-////	idLinkList<idEntity>	spawnedEntities;		// all spawned entities
-////	idLinkList<idEntity>	activeEntities;			// all thinking entities (idEntity::thinkFlags != 0)
-////	int						numEntitiesToDeactivate;// number of entities that became inactive in current frame
-////	bool					sortPushers;			// true if active lists needs to be reordered to place pushers at the front
-////	bool					sortTeamMasters;		// true if active lists needs to be reordered to place physics team masters before their slaves
-////	idDict					persistentLevelInfo;	// contains args that are kept around between levels
+	serverInfo = new idDict;							// all the tunable parameters, like numclients, etc
+/*int*/numClients:number;								// pulled from serverInfo and verified
+	userInfo = newStructArray<idDict>(idDict,MAX_CLIENTS);	// client specific settings
+	usercmds = newStructArray<usercmd_t>(usercmd_t,MAX_CLIENTS);	// client input commands
+	persistentPlayerInfo = newStructArray<idDict>(idDict, MAX_CLIENTS);
+	entities = new Array <idEntity>(MAX_GENTITIES);// index to entities
+	spawnIds = new Int32Array(MAX_GENTITIES);// for use in idEntityPtr
+	firstFreeIndex:number;			// first free index in the entities array	////	int	
+	num_entities:number;			// current number <= MAX_GENTITIES			////	int	
+	entityHash = new idHashIndex;				// hash table to quickly find entities by name
+	world: idWorldspawn;					// world entity
+	spawnedEntities = new idLinkList <idEntity>();		// all spawned entities
+	activeEntities = new idLinkList <idEntity>();			// all thinking entities (idEntity::thinkFlags != 0)
+/*int*/numEntitiesToDeactivate:number;// number of entities that became inactive in current frame
+	sortPushers:boolean;			// true if active lists needs to be reordered to place pushers at the front
+	sortTeamMasters:boolean;		// true if active lists needs to be reordered to place physics team masters before their slaves
+	persistentLevelInfo = new idDict();	// contains args that are kept around between levels
 
-////	// can be used to automatically effect every material in the world that references globalParms
-////	float					globalShaderParms[ MAX_GLOBAL_SHADER_PARMS ];	
+	// can be used to automatically effect every material in the world that references globalParms
+	globalShaderParms = new Float32Array( MAX_GLOBAL_SHADER_PARMS );	
 
-////	idRandom				random;					// random number generator used throughout the game
+	random = new idRandom;					// random number generator used throughout the game
 
 ////	idProgram				program;				// currently loaded script and data space
-////	idThread *				frameCommandThread;
+	frameCommandThread: idThread;
 
-////	idClip					clip;					// collision detection
+	clip: idClip;					// collision detection
 ////	idPush					push;					// geometric pushing
-////	idPVS					pvs;					// potential visible set
+	pvs: idPVS;					// potential visible set
 
-////	idTestModel *			testmodel;				// for development testing of models
-////	idEntityFx *			testFx;					// for development testing of fx
+	testmodel: idTestModel ;				// for development testing of models
+	testFx: idEntityFx;					// for development testing of fx
 
-////	idStr					sessionCommand;			// a target_sessionCommand can set this to return something to the session 
+	sessionCommand = new idStr;			// a target_sessionCommand can set this to return something to the session 
 
 ////	idMultiplayerGame		mpGame;					// handles rules for standard dm
 
-////	idSmokeParticles *		smokeParticles;			// global smoke trails
-////	idEditEntities *		editEntities;			// in game editing
+	smokeParticles: idSmokeParticles;			// global smoke trails
+	editEntities: idEditEntities;			// in game editing
 
-////	int						cinematicSkipTime;		// don't allow skipping cinemetics until this time has passed so player doesn't skip out accidently from a firefight
-////	int						cinematicStopTime;		// cinematics have several camera changes, so keep track of when we stop them so that we don't reset cinematicSkipTime unnecessarily
-////	int						cinematicMaxSkipTime;	// time to end cinematic when skipping.  there's a possibility of an infinite loop if the map isn't set up right.
-////	bool					inCinematic;			// game is playing cinematic (player controls frozen)
-////	bool					skipCinematic;
+	cinematicSkipTime:number /*int*/;		// don't allow skipping cinemetics until this time has passed so player doesn't skip out accidently from a firefight
+	cinematicStopTime: number/*int*/;		// cinematics have several camera changes, so keep track of when we stop them so that we don't reset cinematicSkipTime unnecessarily
+	cinematicMaxSkipTime: number/*int*/;	// time to end cinematic when skipping.  there's a possibility of an infinite loop if the map isn't set up right.
+	inCinematic:boolean;			// game is playing cinematic (player controls frozen)
+	skipCinematic:boolean;
 
-////													// are kept up to date with changes to serverInfo
-////	int						framenum;
-////	int						previousTime;			// time in msec of last frame
-////	int						time;					// in msec
+														// are kept up to date with changes to serverInfo
+	framenum:number /*int*/;
+	previousTime:number /*int*/;			// time in msec of last frame
+	time:number /*int*/;					// in msec
 ////	static const int		msec = USERCMD_MSEC;	// time since last update in milliseconds
 
-////	int						vacuumAreaNum;			// -1 if level doesn't have any outside areas
+	vacuumAreaNum:number/*int*/;			// -1 if level doesn't have any outside areas
 
-////	gameType_t				gameType;
-////	bool					isMultiplayer;			// set if the game is run in multiplayer mode
-////	bool					isServer;				// set if the game is run for a dedicated or listen server
-////	bool					isClient;				// set if the game is run for a client
+	gameType: gameType_t;
+	isMultiplayer:boolean;			// set if the game is run in multiplayer mode
+	isServer:boolean;				// set if the game is run for a dedicated or listen server
+	isClient:boolean;				// set if the game is run for a client
 ////													// discriminates between the RunFrame path and the ClientPrediction path
 ////													// NOTE: on a listen server, isClient is false
-////	int						localClientNum;			// number of the local client. MP: -1 on a dedicated
-////	idLinkList<idEntity>	snapshotEntities;		// entities from the last snapshot
-////	int						realClientTime;			// real client time
-////	bool					isNewFrame;				// true if this is a new game frame, not a rerun due to prediction
-////	float					clientSmoothing;		// smoothing of other clients in the view
-////	int						entityDefBits;			// bits required to store an entity def number
+	localClientNum:number /*int*/;			// number of the local client. MP: -1 on a dedicated
+	snapshotEntities = new idLinkList <idEntity>();		// entities from the last snapshot
+	realClientTime:number /*int*/;			// real client time
+	isNewFrame:boolean;				// true if this is a new game frame, not a rerun due to prediction
+	clientSmoothing:number/*float*/;		// smoothing of other clients in the view
+	entityDefBits:number /*int*/;			// bits required to store an entity def number
 
 ////	static const char *		sufaceTypeNames[ MAX_SURFACE_TYPES ];	// text names for surface types
 
-////	idEntityPtr<idEntity>	lastGUIEnt;				// last entity with a GUI, used by Cmd_NextGUI_f
-////	int						lastGUI;				// last GUI on the lastGUIEnt
+	lastGUIEnt = new idEntityPtr<idEntity>();				// last entity with a GUI, used by Cmd_NextGUI_f
+	lastGUI:number /*int*/;				// last GUI on the lastGUIEnt
 
 ////	// ---------------------- Public idGame Interface -------------------
 
@@ -357,13 +357,13 @@ class idGameLocal extends idGame {
 
 ////	virtual bool			DownloadRequest( const char *IP, const char *guid, const char *paks, char urls[ MAX_STRING_CHARS ] );
 
-////	// ---------------------- Public idGameLocal Interface -------------------
+	// ---------------------- Public idGameLocal Interface -------------------
 
 	Printf ( /*const char **/ fmt: string, ...args: any[] ): void { throw "placeholder"; }
-////	void					DPrintf( const char *fmt, ... ) const id_attribute((format(printf,2,3)));
-////	void					Warning( const char *fmt, ... ) const id_attribute((format(printf,2,3)));
-////	void					DWarning( const char *fmt, ... ) const id_attribute((format(printf,2,3)));
-////	void					Error( const char *fmt, ... ) const id_attribute((format(printf,2,3)));
+	DPrintf(fmt: string, ...args: any[]): void { throw "placeholder"; }
+	Warning(fmt: string, ...args: any[]): void { throw "placeholder"; }
+	DWarning(fmt: string, ...args: any[]): void { throw "placeholder"; }
+	Error(fmt: string, ...args: any[]): void { throw "placeholder"; }
 
 ////							// Initializes all map variables common to both save games and spawned games
 ////	void					LoadMap( const char *mapName, int randseed );
@@ -468,58 +468,58 @@ class idGameLocal extends idGame {
 ////	bool					NeedRestart();
 
 ////private:
-////	const static int		INITIAL_SPAWN_COUNT = 1;
+	static INITIAL_SPAWN_COUNT = 1;
 
-////	idStr					mapFileName;			// name of the map, empty string if no map loaded
-////	idMapFile *				mapFile;				// will be NULL during the game unless in-game editing is used
-////	bool					mapCycleLoaded;
+	mapFileName = new idStr();			// name of the map, empty string if no map loaded
+	mapFile:idMapFile;				// will be NULL during the game unless in-game editing is used
+	mapCycleLoaded:boolean;
 
-////	int						spawnCount;
-////	int						mapSpawnCount;			// it's handy to know which entities are part of the map
+	spawnCount:number/*int*/;
+	mapSpawnCount:number/*int*/;			// it's handy to know which entities are part of the map
 
-////	idLocationEntity **		locationEntities;		// for location names, etc
+	locationEntities: Array<idLocationEntity>;		// for location names, etc //idLocationEntity **	
 
-////	idCamera *				camera;
-////	const idMaterial *		globalMaterial;			// for overriding everything
+	camera: idCamera;
+	globalMaterial: idMaterial;			// for overriding everything
 
-////	idList<idAAS *>			aasList;				// area system
-////	idStrList				aasNames;
+	aasList = new idList<idAAS>(idAAS);				// area system
+	aasNames = new idStrList;
 
-////	idEntityPtr<idActor>	lastAIAlertEntity;
-////	int						lastAIAlertTime;
+	lastAIAlertEntity = new idEntityPtr<idActor>();
+	lastAIAlertTime:number/*int*/;
 
-////	idDict					spawnArgs;				// spawn args used during entity spawning  FIXME: shouldn't be necessary anymore
+	spawnArgs = new idDict;				// spawn args used during entity spawning  FIXME: shouldn't be necessary anymore
 
-////	pvsHandle_t				playerPVS;				// merged pvs of all players
-////	pvsHandle_t				playerConnectedAreas;	// all areas connected to any player area
+	playerPVS = new pvsHandle_t;				// merged pvs of all players
+	playerConnectedAreas = new pvsHandle_t;	// all areas connected to any player area
 
-////	idVec3					gravity;				// global gravity vector
-////	gameState_t				gamestate;				// keeps track of whether we're spawning, shutting down, or normal gameplay
-////	bool					influenceActive;		// true when a phantasm is happening
-////	int						nextGibTime;
+	gravity = new idVec3;				// global gravity vector
+	gamestate: gameState_t;				// keeps track of whether we're spawning, shutting down, or normal gameplay
+	influenceActive:boolean;		// true when a phantasm is happening
+	nextGibTime:number/*int*/;
 
 ////	idList<int>				clientDeclRemap[MAX_CLIENTS][DECL_MAX_TYPES];
 
-////	entityState_t *			clientEntityStates[MAX_CLIENTS][MAX_GENTITIES];
-////	int						clientPVS[MAX_CLIENTS][ENTITY_PVS_SIZE];
-////	snapshot_t *			clientSnapshots[MAX_CLIENTS];
+	clientEntityStates: entityState_t[][] = multiDimEmptyArray<entityState_t>(MAX_CLIENTS, MAX_GENTITIES);
+	clientPVS = multiDimArray<Int32Array>(Int32Array, MAX_CLIENTS,ENTITY_PVS_SIZE);
+	clientSnapshots = new Array < snapshot_t >(MAX_CLIENTS);
 ////	idBlockAlloc<entityState_t,256>entityStateAllocator;
 ////	idBlockAlloc<snapshot_t,64>snapshotAllocator;
 
-////	idEventQueue			eventQueue;
-////	idEventQueue			savedEventQueue;
+	eventQueue = new idEventQueue;
+	savedEventQueue = new idEventQueue;
 
 ////	idStaticList<spawnSpot_t, MAX_GENTITIES> spawnSpots;
 ////	idStaticList<idEntity *, MAX_GENTITIES> initialSpots;
-////	int						currentInitialSpot;
+////	int						currentInitialSpot:number/*int*/;
 
-////	idDict					newInfo;
+	newInfo = new idDict();
 
 ////	idStrList				shakeSounds;
 
-////	byte					lagometer[ LAGO_IMG_HEIGHT ][ LAGO_IMG_WIDTH ][ 4 ];
+	lagometer = $3dArray(Uint8Array, LAGO_IMG_HEIGHT , LAGO_IMG_WIDTH , 4 );
 
-////	void					Clear( void );
+	Clear ( ): void { throw "placeholder"; }
 ////							// returns true if the entity shouldn't be spawned at all in this game type or difficulty level
 ////	bool					InhibitEntitySpawn( idDict &spawnArgs );
 ////							// spawn entities from the map file

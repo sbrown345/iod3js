@@ -77,20 +77,20 @@ function INTSIGNBITNOTSET(i:number):number	{throw "convert this";}
 ////#define	FLOAT_IS_DENORMAL(x)	(((*(const unsigned long *)&x) & 0x7f800000) == 0x00000000 && \
 ////								 ((*(const unsigned long *)&x) & 0x007fffff) != 0x00000000 )
 
-////#define IEEE_FLT_MANTISSA_BITS	23
-////#define IEEE_FLT_EXPONENT_BITS	8
-////#define IEEE_FLT_EXPONENT_BIAS	127
-////#define IEEE_FLT_SIGN_BIT		31
+var IEEE_FLT_MANTISSA_BITS	=23
+var IEEE_FLT_EXPONENT_BITS	=8
+var IEEE_FLT_EXPONENT_BIAS	=127
+var IEEE_FLT_SIGN_BIT		=31
 
-////#define IEEE_DBL_MANTISSA_BITS	52
-////#define IEEE_DBL_EXPONENT_BITS	11
-////#define IEEE_DBL_EXPONENT_BIAS	1023
-////#define IEEE_DBL_SIGN_BIT		63
+var IEEE_DBL_MANTISSA_BITS	=52
+var IEEE_DBL_EXPONENT_BITS	=11
+var IEEE_DBL_EXPONENT_BIAS	=1023
+var IEEE_DBL_SIGN_BIT		=63
 
-////#define IEEE_DBLE_MANTISSA_BITS	63
-////#define IEEE_DBLE_EXPONENT_BITS	15
-////#define IEEE_DBLE_EXPONENT_BIAS	0
-////#define IEEE_DBLE_SIGN_BIT		79
+var IEEE_DBLE_MANTISSA_BITS	=63
+var IEEE_DBLE_EXPONENT_BITS	=15
+var IEEE_DBLE_EXPONENT_BIAS	=0
+var IEEE_DBLE_SIGN_BIT		=79
 
 ////template<class T> ID_INLINE int	MaxIndex( T x, T y ) { return  ( x > y ) ? 0 : 1; }
 ////template<class T> ID_INLINE int	MinIndex( T x, T y ) { return ( x < y ) ? 0 : 1; }
@@ -715,9 +715,11 @@ static Sqrt( /*float */x:number):number {
 ////	int r; for( r = x; y > 1; y-- ) { r *= x; } return r;
 ////}
 
-////ID_INLINE int idMath::ILog2( float f ) {
-////	return ( ( (*reinterpret_cast<int *>(&f)) >> IEEE_FLT_MANTISSA_BITS ) & ( ( 1 << IEEE_FLT_EXPONENT_BITS ) - 1 ) ) - IEEE_FLT_EXPONENT_BIAS;
-////}
+	static ILog2_Float(/*float */f: number): number {
+		todoThrow ( );
+		return 99999999999999999999999;
+		//return ( ( (*reinterpret_cast<int *>(&f)) >> IEEE_FLT_MANTISSA_BITS ) & ( ( 1 << IEEE_FLT_EXPONENT_BITS ) - 1 ) ) - IEEE_FLT_EXPONENT_BIAS;
+	}
 
 ////ID_INLINE int idMath::ILog2( int i ) {
 ////	return ILog2( (float)i );
@@ -727,9 +729,9 @@ static Sqrt( /*float */x:number):number {
 ////	return ILog2( f ) + 1;
 ////}
 
-////ID_INLINE int idMath::BitsForInteger( int i ) {
-////	return ILog2( (float)i ) + 1;
-////}
+	static BitsForInteger ( /*int */i: number ): number {
+		return idMath.ILog2_Float( /*(float)*/i ) + 1;
+	}
 
 ////ID_INLINE int idMath::MaskForFloatSign( float f ) {
 ////	return ( (*reinterpret_cast<int *>(&f)) >> 31 );

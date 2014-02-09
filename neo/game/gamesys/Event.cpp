@@ -219,7 +219,12 @@ static idEvent EventPool[ MAX_EVENTS ];
 
 bool idEvent::initialized = false;
 
+#ifdef JS_CHANGES
+idDynamicAlloc<byte, 16 * 1024, 256>	idEvent::eventDataAllocator;
+#else
 idDynamicBlockAlloc<byte, 16 * 1024, 256>	idEvent::eventDataAllocator;
+#endif
+
 
 /*
 ================

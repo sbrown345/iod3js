@@ -29,15 +29,15 @@
 //#ifndef __ANIM_TESTMODEL_H__
 //#define __ANIM_TESTMODEL_H__
 //
-///*
-//==============================================================================================
-//
-//	idTestModel
-//
-//==============================================================================================
-//*/
-//
-//class idTestModel : public idAnimatedEntity {
+/*
+==============================================================================================
+
+	idTestModel
+
+==============================================================================================
+*/
+
+class idTestModel extends idAnimatedEntity {
 //public:
 //	CLASS_PROTOTYPE( idTestModel );
 //
@@ -90,6 +90,6 @@
 //	virtual void			Think( void );
 //
 //	void					Event_Footstep( void );
-//};
+};
 //
 //#endif /* !__ANIM_TESTMODEL_H__*/

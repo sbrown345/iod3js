@@ -147,102 +147,115 @@ function GetGameAPI ( $import: gameImport_t ) {
 ////	testExport = *GetGameAPI( &testImport );
 ////}
 
-/////*
-////===========
-////idGameLocal::idGameLocal
-////============
-////*/
-////idGameLocal::idGameLocal() {
-////	Clear();
-////}
+///*
+//===========
+//idGameLocal::idGameLocal
+//============
+//*/
+//constructor() {
+//	this.Clear();
+//}
 
-/////*
-////===========
-////idGameLocal::Clear
-////============
-////*/
-////void idGameLocal::Clear( void ) {
-////	int i;
+/*
+===========
+idGameLocal::Clear
+============
+*/
+idGameLocal.prototype.Clear = function ( ): void {
+	var /*int */i: number;
 
-////	serverInfo.Clear();
-////	numClients = 0;
-////	for ( i = 0; i < MAX_CLIENTS; i++ ) {
-////		userInfo[i].Clear();
-////		persistentPlayerInfo[i].Clear();
-////	}
-////	memset( usercmds, 0, sizeof( usercmds ) );
-////	memset( entities, 0, sizeof( entities ) );
-////	memset( spawnIds, -1, sizeof( spawnIds ) );
-////	firstFreeIndex = 0;
-////	num_entities = 0;
-////	spawnedEntities.Clear();
-////	activeEntities.Clear();
-////	numEntitiesToDeactivate = 0;
-////	sortPushers = false;
-////	sortTeamMasters = false;
-////	persistentLevelInfo.Clear();
-////	memset( globalShaderParms, 0, sizeof( globalShaderParms ) );
-////	random.SetSeed( 0 );
-////	world = NULL;
-////	frameCommandThread = NULL;
-////	testmodel = NULL;
-////	testFx = NULL;
-////	clip.Shutdown();
-////	pvs.Shutdown();
-////	sessionCommand.Clear();
-////	locationEntities = NULL;
-////	smokeParticles = NULL;
-////	editEntities = NULL;
-////	entityHash.Clear( 1024, MAX_GENTITIES );
-////	inCinematic = false;
-////	cinematicSkipTime = 0;
-////	cinematicStopTime = 0;
-////	cinematicMaxSkipTime = 0;
-////	framenum = 0;
-////	previousTime = 0;
-////	time = 0;
-////	vacuumAreaNum = 0;
-////	mapFileName.Clear();
-////	mapFile = NULL;
-////	spawnCount = INITIAL_SPAWN_COUNT;
-////	mapSpawnCount = 0;
-////	camera = NULL;
-////	aasList.Clear();
-////	aasNames.Clear();
-////	lastAIAlertEntity = NULL;
-////	lastAIAlertTime = 0;
-////	spawnArgs.Clear();
-////	gravity.Set( 0, 0, -1 );
-////	playerPVS.h = (unsigned int)-1;
-////	playerConnectedAreas.h = (unsigned int)-1;
-////	gamestate = GAMESTATE_UNINITIALIZED;
-////	skipCinematic = false;
-////	influenceActive = false;
+	this.serverInfo.Clear ( );
+	this.numClients = 0;
+	for ( i = 0; i < MAX_CLIENTS; i++ ) {
+		this.userInfo[i].Clear ( );
+		this.persistentPlayerInfo[i].Clear ( );
+	}
+	clearStructArray( this.usercmds );
+	for ( var j = 0; j < this.entities.length; j++ ) {
+		this.entities[j] = null;
+	}
+	memset( this.spawnIds, -1, sizeof( this.spawnIds ) );
+	this.firstFreeIndex = 0;
+	this.num_entities = 0;
+	this.spawnedEntities.Clear ( );
+	this.activeEntities.Clear ( );
+	this.numEntitiesToDeactivate = 0;
+	this.sortPushers = false;
+	this.sortTeamMasters = false;
+	this.persistentLevelInfo.Clear ( );
+	memset( this.globalShaderParms, 0, sizeof( this.globalShaderParms ) );
+	this.random.SetSeed( 0 );
+	this.world = null;
+	this.frameCommandThread = null;
+	this.testmodel = null;
+	this.testFx = null;
+	this.clip.Shutdown ( );
+	this.pvs.Shutdown ( );
+	this.sessionCommand.Clear ( );
+	this.locationEntities = null;
+	this.smokeParticles = null;
+	this.editEntities = null;
+	this.entityHash.Clear( 1024, MAX_GENTITIES );
+	this.inCinematic = false;
+	this.cinematicSkipTime = 0;
+	this.cinematicStopTime = 0;
+	this.cinematicMaxSkipTime = 0;
+	this.framenum = 0;
+	this.previousTime = 0;
+	this.time = 0;
+	this.vacuumAreaNum = 0;
+	this.mapFileName.Clear ( );
+	this.mapFile = null;
+	this.spawnCount = idGameLocal.INITIAL_SPAWN_COUNT;
+	this.mapSpawnCount = 0;
+	this.camera = null;
+	this.aasList.Clear ( );
+	this.aasNames.Clear ( );
+	this.lastAIAlertEntity = null;
+	this.lastAIAlertTime = 0;
+	this.spawnArgs.Clear ( );
+	this.gravity.Set( 0, 0, -1 );
+	this.playerPVS.h = -1 >>> 0; //(unsigned int)-1;
+	this.playerConnectedAreas.h = -1 >>> 0; //(unsigned int)-1;
+	this.gamestate = gameState_t.GAMESTATE_UNINITIALIZED;
+	this.skipCinematic = false;
+	this.influenceActive = false;
 
-////	localClientNum = 0;
-////	isMultiplayer = false;
-////	isServer = false;
-////	isClient = false;
-////	realClientTime = 0;
-////	isNewFrame = true;
-////	clientSmoothing = 0.1f;
-////	entityDefBits = 0;
+	this.localClientNum = 0;
+	this.isMultiplayer = false;
+	this.isServer = false;
+	this.isClient = false;
+	this.realClientTime = 0;
+	this.isNewFrame = true;
+	this.clientSmoothing = 0.1;
+	this.entityDefBits = 0;
 
-////	nextGibTime = 0;
-////	globalMaterial = NULL;
-////	newInfo.Clear();
-////	lastGUIEnt = NULL;
-////	lastGUI = 0;
+	this.nextGibTime = 0;
+	this.globalMaterial = null;
+	this.newInfo.Clear ( );
+	this.lastGUIEnt = null;
+	this.lastGUI = 0;
 
-////	memset( clientEntityStates, 0, sizeof( clientEntityStates ) );
-////	memset( clientPVS, 0, sizeof( clientPVS ) );
-////	memset( clientSnapshots, 0, sizeof( clientSnapshots ) );
+	memset( this.clientEntityStates, 0, sizeof( this.clientEntityStates ) );
+	for ( var k = 0; k < this.clientEntityStates.length; k++ ) {
+		for ( var l = 0; l < this.clientEntityStates[k].length; l++ ) {
+			this.clientEntityStates[k][l] = null;
+			todoThrow( " or //this.clientEntityStates[k][l].init ( ); ?????" );
+		}
+	}
 
-////	eventQueue.Init();
-////	savedEventQueue.Init();
+	for ( var m = 0; m < this.clientPVS; m++ ) {
+		memset( this.clientPVS[m], 0, this.clientPVS[m] );
+	}
+	for ( var n = 0; n < this.clientSnapshots; n++ ) {
+		this.clientSnapshots[n] = null;
+	}
 
-////	memset( lagometer, 0, sizeof( lagometer ) );
-////}
+	this.eventQueue.Init ( );
+	this.savedEventQueue.Init ( );
+
+	memset3DArray( this.lagometer, 0 );
+};
 
 /*
 ===========
@@ -292,9 +305,8 @@ idGameLocal.prototype.Init = function ( ): void {
 
 	this.Clear();
 
-	idEvent::Init();
-	idClass::Init();
-	todoThrow ( );
+	idEvent.Init(); todoThrow();
+	//idClass.Init();
 	//InitConsoleCommands();
 
 	//// load default scripts
@@ -449,11 +461,11 @@ idGameLocal.prototype.Init = function ( ): void {
 
 ////	savegame.WriteInt( g_skill.GetInteger() );
 
-////	savegame.WriteDict( &serverInfo );
+////	savegame.WriteDict( &this.serverInfo );
 
-////	savegame.WriteInt( numClients );
-////	for( i = 0; i < numClients; i++ ) {
-////		savegame.WriteDict( &userInfo[ i ] );
+////	savegame.WriteInt( this.numClients );
+////	for( i = 0; i < this.numClients; i++ ) {
+////		savegame.WriteDict( &this.userInfo[ i ] );
 ////		savegame.WriteUsercmd( usercmds[ i ] );
 ////		savegame.WriteDict( &persistentPlayerInfo[ i ] );
 ////	}
@@ -681,27 +693,28 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////	}
 ////}
 
-/////*
-////============
-////idGameLocal::Error
-////============
-////*/
-////void idGameLocal::Error( const char *fmt, ... ) const {
-////	va_list		argptr;
-////	char		text[MAX_STRING_CHARS];
-////	idThread *	thread;
+/*
+============
+idGameLocal::Error
+============
+*/
+idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
+	todoThrow ( );
+	//va_list		argptr;
+	//char		text[MAX_STRING_CHARS];
+	//idThread *	thread;
 
-////	va_start( argptr, fmt );
-////	idStr::vsnPrintf( text, sizeof( text ), fmt, argptr );
-////	va_end( argptr );
+	//va_start( argptr, fmt );
+	//idStr::vsnPrintf( text, sizeof( text ), fmt, argptr );
+	//va_end( argptr );
 
-////	thread = idThread::CurrentThread();
-////	if ( thread ) {
-////		thread.Error( "%s", text );
-////	} else {
-////		common.Error( "%s", text );
-////	}
-////}
+	//thread = idThread::CurrentThread();
+	//if ( thread ) {
+	//	thread.Error( "%s", text );
+	//} else {
+	//	common.Error( "%s", text );
+	//}
+};
 
 /////*
 ////===============
@@ -746,13 +759,13 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////		if ( canModify ) {
 
 ////			// don't let numeric nicknames, it can be exploited to go around kick and ban commands from the server
-////			if ( idStr::IsNumeric( this.userInfo[ clientNum ].GetString( "ui_name" ) ) ) {
+////			if ( idStr::IsNumeric( userInfo[ clientNum ].GetString( "ui_name" ) ) ) {
 ////				idGameLocal::userInfo[ clientNum ].Set( "ui_name", va( "%s_", idGameLocal::userInfo[ clientNum ].GetString( "ui_name" ) ) );
 ////				modifiedInfo = true;
 ////			}
 		
 ////			// don't allow dupe nicknames
-////			for ( i = 0; i < numClients; i++ ) {
+////			for ( i = 0; i < this.numClients; i++ ) {
 ////				if ( i == clientNum ) {
 ////					continue;
 ////				}
@@ -792,7 +805,7 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////*/
 ////const idDict* idGameLocal::GetUserInfo( int clientNum ) {
 ////	if ( entities[ clientNum ] && entities[ clientNum ].IsType( idPlayer::Type ) ) {
-////		return &userInfo[ clientNum ];
+////		return &this.userInfo[ clientNum ];
 ////	}
 ////	return NULL;
 ////}
@@ -806,7 +819,7 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////	idBitMsg	outMsg;
 ////	byte		msgBuf[MAX_GAME_MESSAGE_SIZE];
 
-////	serverInfo = _serverInfo;
+////	this.serverInfo = _serverInfo;
 ////	UpdateServerInfoFlags();
 
 ////	if ( !isClient ) {
@@ -852,13 +865,13 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////	// load the collision map
 ////	collisionModelManager.LoadMap( mapFile );
 
-////	numClients = 0;
+////	this.numClients = 0;
 
 ////	// initialize all entities for this game
 ////	memset( entities, 0, sizeof( entities ) );
 ////	memset( usercmds, 0, sizeof( usercmds ) );
 ////	memset( spawnIds, -1, sizeof( spawnIds ) );
-////	spawnCount = INITIAL_SPAWN_COUNT;
+////	spawnCount = idGameLocal.INITIAL_SPAWN_COUNT;
 	
 ////	spawnedEntities.Clear();
 ////	activeEntities.Clear();
@@ -966,7 +979,7 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////	// the spawnCount is reset to zero temporarily to spawn the map entities with the same spawnId
 ////	// if we don't do that, network clients are confused and don't show any map entities
 ////	latchSpawnCount = spawnCount;
-////	spawnCount = INITIAL_SPAWN_COUNT;
+////	spawnCount = idGameLocal.INITIAL_SPAWN_COUNT;
 
 ////	gamestate = GAMESTATE_STARTUP;
 
@@ -1010,7 +1023,7 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////		newInfo = *cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO );
 ////		for ( i = 0; i < newInfo.GetNumKeyVals(); i++ ) {
 ////			keyval = newInfo.GetKeyVal( i );
-////			keyval2 = serverInfo.FindKey( keyval.GetKey() );
+////			keyval2 = this.serverInfo.FindKey( keyval.GetKey() );
 ////			if ( !keyval2 ) {
 ////				break;
 ////			}
@@ -1027,7 +1040,7 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////			outMsg.Init( msgBuf, sizeof( msgBuf ) );
 ////			outMsg.WriteByte( GAME_RELIABLE_MESSAGE_RESTART );
 ////			outMsg.WriteBits( 1, 1 );
-////			outMsg.WriteDeltaDict( serverInfo, NULL );
+////			outMsg.WriteDeltaDict( this.serverInfo, NULL );
 ////			networkSystem.ServerSendReliableMessage( -1, outMsg );
 
 ////			LocalMapRestart();
@@ -1093,7 +1106,7 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////	newInfo = *cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO );
 ////	for ( i = 0; i < newInfo.GetNumKeyVals(); i++ ) {
 ////		keyval = newInfo.GetKeyVal( i );
-////		keyval2 = serverInfo.FindKey( keyval.GetKey() );
+////		keyval2 = this.serverInfo.FindKey( keyval.GetKey() );
 ////		if ( !keyval2 || keyval.GetValue().Cmp( keyval2.GetValue() ) ) {
 ////			break;
 ////		}
@@ -1252,9 +1265,9 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////	savegame.ReadDict( &si );
 ////	SetServerInfo( si );
 
-////	savegame.ReadInt( numClients );
-////	for( i = 0; i < numClients; i++ ) {
-////		savegame.ReadDict( &userInfo[ i ] );
+////	savegame.ReadInt( this.numClients );
+////	for( i = 0; i < this.numClients; i++ ) {
+////		savegame.ReadDict( &this.userInfo[ i ] );
 ////		savegame.ReadUsercmd( usercmds[ i ] );
 ////		savegame.ReadDict( &persistentPlayerInfo[ i ] );
 ////	}
@@ -1836,8 +1849,8 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////		Error( "'%s' spawned the player as a '%s'.  Player spawnclass must be a subclass of idPlayer.", args.GetString( "classname" ), ent.GetClassname() );
 ////	}
 
-////	if ( clientNum >= numClients ) {
-////		numClients = clientNum + 1;
+////	if ( clientNum >= this.numClients ) {
+////		this.numClients = clientNum + 1;
 ////	}
 
 ////	mpGame.SpawnPlayer( clientNum );
@@ -1849,7 +1862,7 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////================
 ////*/
 ////idPlayer *idGameLocal::GetClientByNum( int current ) const {
-////	if ( current < 0 || current >= numClients ) {
+////	if ( current < 0 || current >= this.numClients ) {
 ////		current = 0;
 ////	}
 ////	if ( entities[current] ) {
@@ -1866,10 +1879,10 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////idPlayer *idGameLocal::GetClientByName( const char *name ) const {
 ////	int i;
 ////	idEntity *ent;
-////	for ( i = 0 ; i < numClients ; i++ ) {
+////	for ( i = 0 ; i < this.numClients ; i++ ) {
 ////		ent = entities[ i ];
 ////		if ( ent && ent.IsType( idPlayer::Type ) ) {
-////			if ( idStr::IcmpNoColor( name, userInfo[ i ].GetString( "ui_name" ) ) == 0 ) {
+////			if ( idStr::IcmpNoColor( name, this.userInfo[ i ].GetString( "ui_name" ) ) == 0 ) {
 ////				return static_cast<idPlayer *>( ent );
 ////			}
 ////		}
@@ -1909,8 +1922,8 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////	int i, current;
 
 ////	current = 0;
-////	for ( i = 0; i < numClients; i++) {
-////		current = ( _current + i + 1 ) % numClients;
+////	for ( i = 0; i < this.numClients; i++) {
+////		current = ( _current + i + 1 ) % this.numClients;
 ////		if ( entities[ current ] && entities[ current ].IsType( idPlayer::Type ) ) {
 ////			return current;
 ////		}
@@ -1968,7 +1981,7 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////	pvsHandle_t	otherPVS, newPVS;
 
 ////	playerPVS.i = -1;
-////	for ( i = 0; i < numClients; i++ ) {
+////	for ( i = 0; i < this.numClients; i++ ) {
 ////		ent = entities[i];
 ////		if ( !ent || !ent.IsType( idPlayer::Type ) ) {
 ////			continue;
@@ -2172,7 +2185,7 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////		gameRenderWorld.DebugClearLines( time + 1 );
 
 ////		// set the user commands for this frame
-////		memcpy( usercmds, clientCmds, numClients * sizeof( usercmds[ 0 ] ) );
+////		memcpy( usercmds, clientCmds, this.numClients * sizeof( usercmds[ 0 ] ) );
 
 ////		if ( player ) {
 ////			player.Think();
@@ -2210,7 +2223,7 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////		gameRenderWorld.DebugClearPolygons( time );
 
 ////		// set the user commands for this frame
-////		memcpy( usercmds, clientCmds, numClients * sizeof( usercmds[ 0 ] ) );
+////		memcpy( usercmds, clientCmds, this.numClients * sizeof( usercmds[ 0 ] ) );
 
 ////		// free old smoke particles
 ////		smokeParticles.FreeSmokes();
@@ -3880,7 +3893,7 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////		cvarSystem.SetCVarFloat( "r_znear", 1.0f );
 		
 ////		// hide all the player models
-////		for( i = 0; i < numClients; i++ ) {
+////		for( i = 0; i < this.numClients; i++ ) {
 ////			if ( entities[ i ] ) {
 ////				client = static_cast< idPlayer* >( entities[ i ] );
 ////				client.EnterCinematic();
@@ -3924,7 +3937,7 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////		cvarSystem.SetCVarFloat( "r_znear", 3.0f );
 
 ////		// show all the player models
-////		for( i = 0; i < numClients; i++ ) {
+////		for( i = 0; i < this.numClients; i++ ) {
 ////			if ( entities[ i ] ) {
 ////				idPlayer *client = static_cast< idPlayer* >( entities[ i ] );
 ////				client.ExitCinematic();
@@ -4210,23 +4223,23 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 ////*/
 ////void idGameLocal::UpdateServerInfoFlags() {
 ////	gameType = GAME_SP;
-////	if ( ( idStr::Icmp( serverInfo.GetString( "si_gameType" ), "deathmatch" ) == 0 ) ) {
+////	if ( ( idStr::Icmp( this.serverInfo.GetString( "si_gameType" ), "deathmatch" ) == 0 ) ) {
 ////		gameType = GAME_DM;
-////	} else if ( ( idStr::Icmp( serverInfo.GetString( "si_gameType" ), "Tourney" ) == 0 ) ) {
+////	} else if ( ( idStr::Icmp( this.serverInfo.GetString( "si_gameType" ), "Tourney" ) == 0 ) ) {
 ////		gameType = GAME_TOURNEY;
-////	} else if ( ( idStr::Icmp( serverInfo.GetString( "si_gameType" ), "Team DM" ) == 0 ) ) {
+////	} else if ( ( idStr::Icmp( this.serverInfo.GetString( "si_gameType" ), "Team DM" ) == 0 ) ) {
 ////		gameType = GAME_TDM;
-////	} else if ( ( idStr::Icmp( serverInfo.GetString( "si_gameType" ), "Last Man" ) == 0 ) ) {
+////	} else if ( ( idStr::Icmp( this.serverInfo.GetString( "si_gameType" ), "Last Man" ) == 0 ) ) {
 ////		gameType = GAME_LASTMAN;
 ////	}
 ////	if ( gameType == GAME_LASTMAN ) {
-////		if ( !serverInfo.GetInt( "si_warmup" ) ) {
+////		if ( !this.serverInfo.GetInt( "si_warmup" ) ) {
 ////			common.Warning( "Last Man Standing - forcing warmup on" );
-////			serverInfo.SetInt( "si_warmup", 1 );
+////			this.serverInfo.SetInt( "si_warmup", 1 );
 ////		}
-////		if ( serverInfo.GetInt( "si_fraglimit" ) <= 0 ) {
+////		if ( this.serverInfo.GetInt( "si_fraglimit" ) <= 0 ) {
 ////			common.Warning( "Last Man Standing - setting fraglimit 1" );
-////			serverInfo.SetInt( "si_fraglimit", 1 );
+////			this.serverInfo.SetInt( "si_fraglimit", 1 );
 ////		}
 ////	}
 ////}
@@ -4308,7 +4321,7 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 
 ////	for ( int i = 0; i < newInfo.GetNumKeyVals(); i++ ) {
 ////		keyval = newInfo.GetKeyVal( i );
-////		keyval2 = serverInfo.FindKey( keyval.GetKey() );
+////		keyval2 = this.serverInfo.FindKey( keyval.GetKey() );
 ////		if ( !keyval2 ) {
 ////			return true;
 ////		}

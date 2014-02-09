@@ -109,6 +109,14 @@ function multiDimArray <T>(arrayClass: any, num: number, arrLength: number): T[]
     return multiDimArray;
 }
 
+function multiDimEmptyArray <T>(dim1Len: number, dim2Len: number): T[][] {
+    var multiDimArray = new Array(dim1Len);
+    for (var i = 0; i < dim1Len; i++) {
+        multiDimArray[i] = new Array<T>(dim2Len);
+    }
+    return multiDimArray;
+}
+
 function $3dArray <T>(arrayClass: any, d1: number, d2: number, d3: number):Array<Array<T>> {
     var array = new Array(d1);
     for (var i = 0; i < d1; i++) {

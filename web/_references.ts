@@ -144,6 +144,7 @@
 // Containers
 /// <reference path="libs/idlib/containers/hashindex.h.ts" />
 /// <reference path="libs/idlib/containers/list.h.ts" />
+/// <reference path="libs/idlib/containers/linklist.h.ts" />
 /// <reference path="libs/idlib/containers/strlist.h.ts" />
 // Math
 /// <reference path="libs/idlib/math/vector.h.ts" />
@@ -154,6 +155,7 @@
 /// <reference path="libs/idlib/math/matrix.cpp.ts" />
 /// <reference path="libs/idlib/math/plane.h.ts" />
 /// <reference path="libs/idlib/math/simd_generic.cpp.ts" />
+/// <reference path="libs/idlib/math/random.h.ts" />
 // Hashing
 /// <reference path="libs/idlib/hashing/crc32.cpp.ts" />
 /// <reference path="libs/idlib/hashing/md4.cpp.ts" />
@@ -165,8 +167,9 @@
 
 // Libs root
 /// <reference path="libs/idlib/dict.cpp.ts" />
-
-/// <reference path="libs/langdict.cpp.ts" />
+/// <reference path="libs/idlib/langdict.cpp.ts" />
+/// <reference path="libs/idlib/mapfile.h.ts" />
+/// <reference path="libs/idlib/mapfile.cpp.ts" />
 
 //// framework
 //#include "../framework/BuildVersion.h"
@@ -336,6 +339,11 @@
 /// <reference path="dlls/game/animation/anim_import.cpp.ts" />
 /// <reference path="dlls/game/animation/anim_testmodel.h.ts" />
 /// <reference path="dlls/game/animation/anim_testmodel.cpp.ts" />
+/// <reference path="dlls/game/gamesys/class.h.ts" />
+/// <reference path="dlls/game/gamesys/class.cpp.ts" />
+/// <reference path="dlls/game/gamesys/event.cpp.ts" />
+/// <reference path="dlls/game/physics/clip.h.ts" />
+/// <reference path="dlls/game/physics/clip.cpp.ts" />
 /// <reference path="dlls/game/script/script_compiler.h.ts" />
 /// <reference path="dlls/game/script/script_compiler.cpp.ts" />
 /// <reference path="dlls/game/script/script_interpreter.h.ts" />
@@ -344,8 +352,26 @@
 /// <reference path="dlls/game/script/script_program.cpp.ts" />
 /// <reference path="dlls/game/script/script_thread.h.ts" />
 /// <reference path="dlls/game/script/script_thread.cpp.ts" />
+/// <reference path="dlls/game/actor.h.ts" />
+/// <reference path="dlls/game/actor.cpp.ts" />
+/// <reference path="dlls/game/afentity.h.ts" />
+/// <reference path="dlls/game/afentity.cpp.ts" />
+/// <reference path="dlls/game/entity.h.ts" />
+/// <reference path="dlls/game/entity.cpp.ts" />
+/// <reference path="dlls/game/camera.h.ts" />
+/// <reference path="dlls/game/camera.cpp.ts" />
+/// <reference path="dlls/game/fx.cpp.ts" />
+/// <reference path="dlls/game/gameedit.h.ts" />
+/// <reference path="dlls/game/gameedit.cpp.ts" />
+/// <reference path="dlls/game/misc.h.ts" />
+/// <reference path="dlls/game/misc.cpp.ts" />
+/// <reference path="dlls/game/multiplayergame.h.ts" />
+/// <reference path="dlls/game/multiplayergame.cpp.ts" />
+/// <reference path="dlls/game/pvs.cpp.ts" />
+/// <reference path="dlls/game/smokeparticles.cpp.ts" />
+/// <reference path="dlls/game/worldspawn.cpp.ts" />
 
-////-----------------------------------------------------
+//-----------------------------------------------------
 
 //#ifndef _D3SDK
 

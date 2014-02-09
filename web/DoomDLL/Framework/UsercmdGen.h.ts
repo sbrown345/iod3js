@@ -86,7 +86,7 @@
 //// usercmd_t->flags
 //const int UCF_IMPULSE_SEQUENCE	= 0x0001;		// toggled every time an impulse command is sent
 //
-//class usercmd_t {
+class usercmd_t {
 //public:
 //	int			gameFrame;						// frame number
 //	int			gameTime;						// game time
@@ -105,7 +105,7 @@
 //public:
 //	void		ByteSwap();						// on big endian systems, byte swap the shorts and ints
 //	bool		operator==( const usercmd_t &rhs ) const;
-//};
+};
 //
 //typedef enum {
 //	INHIBIT_SESSION = 0,

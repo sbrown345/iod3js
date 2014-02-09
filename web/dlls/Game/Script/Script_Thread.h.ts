@@ -74,7 +74,7 @@
 //extern const idEventDef EV_Thread_FadeTo;
 //extern const idEventDef EV_Thread_Restart;
 //
-//class idThread : public idClass {
+class idThread extends idClass {
 //private:
 //	static idThread				*currentThread;
 //
@@ -263,7 +263,7 @@
 //	static void					ReturnEntity( idEntity *ent );
 //};
 //
-///*
+	///*
 //================
 //idThread::WaitingOnThread
 //================
@@ -272,7 +272,7 @@
 //	return waitingForThread;
 //}
 //
-///*
+	///*
 //================
 //idThread::SetThreadNum
 //================
@@ -281,7 +281,7 @@
 //	threadNum = num;
 //}
 //
-///*
+	///*
 //================
 //idThread::GetThreadNum
 //================
@@ -290,7 +290,7 @@
 //	return threadNum;
 //}
 //
-///*
+	///*
 //================
 //idThread::GetThreadName
 //================
@@ -299,7 +299,7 @@
 //	return threadName.c_str();
 //}
 //
-///*
+	///*
 //================
 //idThread::GetThreads
 //================
@@ -308,7 +308,7 @@
 //	return threadList;
 //}	
 //
-///*
+	///*
 //================
 //idThread::IsDoneProcessing
 //================
@@ -317,7 +317,7 @@
 //	return interpreter.doneProcessing;
 //}
 //
-///*
+	///*
 //================
 //idThread::IsDying
 //================
@@ -327,3 +327,4 @@
 //}
 //
 //#endif /* !__SCRIPT_THREAD_H__ */
+}
