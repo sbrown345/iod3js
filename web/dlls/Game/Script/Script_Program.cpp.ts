@@ -173,18 +173,18 @@ class idVarDefName {
 	name = new idStr;
 	defs:idVarDef;
 //};
-	///*
-//============
-//idVarDefName::AddDef
-//============
-//*/
-//void idVarDefName::AddDef( idVarDef *def ) {
-//	assert( def.next == null );
-//	def.name = this;
-//	def.next = defs;
-//	defs = def;
-//}
-//
+	/*
+============
+idVarDefName::AddDef
+============
+*/
+	AddDef ( def: idVarDef ): void {
+		assert( def.next == null );
+		def.name = this;
+		def.next = this.defs;
+		this.defs = def;
+	}
+
 	///*
 //============
 //idVarDefName::RemoveDef
@@ -784,7 +784,7 @@ idProgram::AllocDef
 */
 	AllocDef ( type: idTypeDef, name: string, scope: idVarDef, constant: boolean ): idVarDef {
 		var def: idVarDef;
-		var element: idStr;
+		var element: string;
 		var def_x: idVarDef;
 		var def_y: idVarDef;
 		var def_z: idVarDef;
@@ -808,40 +808,40 @@ idProgram::AllocDef
 				def.value.stackOffset	= scope.value.functionPtr.locals;
 				def.initialized		= initialized_t.stackVariable;
 				scope.value.functionPtr.locals += type.Size();
-			} else if ( scope.TypeDef().Inherits( type_object ) ) {
-				var newtype = new idTypeDef	( etype_t.ev_field, null, "float field", 0, type_float );
+			} else if ( scope.TypeDef ( ).Inherits( type_object ) ) {
+				var newtype = new idTypeDef( etype_t.ev_field, null, "float field", 0, type_float );
 				var type: idTypeDef = this.GetType( newtype, true );
 
 				// set the value to the variable's position in the object
-				def.value.ptrOffset = scope.TypeDef().Size();
+				def.value.ptrOffset = scope.TypeDef ( ).Size ( );
 
 				// make automatic defs for the vectors elements
 				// origin can be accessed as origin_x, origin_y, and origin_z
-				element.equals( sprintf( "%s_x", def.Name ( ) ) );
-				def_x = this.AllocDef(type, element.data, scope, constant );
+				element = sprintf( "%s_x", def.Name ( ) );
+				def_x = this.AllocDef( type, element, scope, constant );
 
-				element.equals( sprintf( "%s_y", def.Name ( ) ) );
-				def_y = this.AllocDef(type, element.data, scope, constant );
-				def_y.value.ptrOffset = def_x.value.ptrOffset + type_float.Size();
+				element = sprintf( "%s_y", def.Name ( ) );
+				def_y = this.AllocDef( type, element, scope, constant );
+				def_y.value.ptrOffset = def_x.value.ptrOffset + type_float.Size ( );
 
-				element.equals( sprintf( "%s_z", def.Name ( ) ) );
-				def_z = this.AllocDef( type, element.data, scope, constant );
-				def_z.value.ptrOffset = def_y.value.ptrOffset + type_float.Size();
+				element = sprintf( "%s_z", def.Name ( ) );
+				def_z = this.AllocDef( type, element, scope, constant );
+				def_z.value.ptrOffset = def_y.value.ptrOffset + type_float.Size ( );
 			} else {
 				// make automatic defs for the vectors elements
 				// origin can be accessed as origin_x, origin_y, and origin_z
-				element.equals( sprintf( "%s_x", def.Name ( ) ) );
-				def_x = this.AllocDef(type_float, element.data, scope, constant );
+				element = sprintf( "%s_x", def.Name ( ) );
+				def_x = this.AllocDef( type_float, element, scope, constant );
 
-				element.equals( sprintf( "%s_y", def.Name ( ) ) );
-				def_y = this.AllocDef(type_float, element.data, scope, constant );
+				element = sprintf( "%s_y", def.Name ( ) );
+				def_y = this.AllocDef( type_float, element, scope, constant );
 
-				element.equals( sprintf( "%s_z", def.Name ( ) ) );
-				def_z = this.AllocDef(type_float, element.data, scope, constant );
+				element = sprintf( "%s_z", def.Name ( ) );
+				def_z = this.AllocDef( type_float, element, scope, constant );
 
 				// point the vector def to the x coordinate
-				def.value			= def_x.value;
-				def.initialized	= def_x.initialized;
+				def.value = def_x.value;
+				def.initialized = def_x.initialized;
 			}
 		} else if ( scope.TypeDef().Inherits( type_object ) ) {
 			//
@@ -868,13 +868,14 @@ idProgram::AllocDef
 			//
 			// global variable
 			//
-			def.value.bytePtr = this.variables[ this.numVariables ];
+			def.value.bytePtr = this.variables[ this.numVariables ]; todo("check this");
 			this.numVariables += def.TypeDef().Size();
 			if ( this.numVariables > sizeof( this.variables ) ) {
 				throw new idCompileError( va( "Exceeded global memory size (%d bytes)", sizeof( this.variables ) ) );
 			}
-	todoThrow ( );
+			todo( "this memset thing..." );
 			//memset( def.value.bytePtr, 0, def.TypeDef().Size() );
+			def.value.bytePtr = 0;
 		}
 
 		return def;
@@ -1144,7 +1145,7 @@ called before compiling a batch of files, clears the pr struct
 
 		this.FreeData ( );
 
-		try {
+		//try {
 			// make the first statement a return for a "NULL" function
 			statement = this.AllocStatement ( );
 			statement.linenumber = 0;
@@ -1159,15 +1160,17 @@ called before compiling a batch of files, clears the pr struct
 
 			// define the return def
 			this.returnDef = this.AllocDef( type_vector, "<RETURN>", def_namespace, false );
-			todoThrow ( );
-			//// define the return def for strings
-			//this.returnStringDef = this.AllocDef( &type_string, "<RETURN>", &def_namespace, false );
 
-			//// define the sys object
-			//this.sysDef = this.AllocDef( &type_void, "sys", &def_namespace, true );
-		} catch ( err /*: idCompileError*/ ) {
-			gameLocal.Error( "%s", err.error );
-		}
+			// define the return def for strings
+			this.returnStringDef = this.AllocDef( type_string, "<RETURN>", def_namespace, false );
+
+			// define the sys object
+			this.sysDef = this.AllocDef(type_void, "sys", def_namespace, true);
+
+			todo( "add back in try catch?" );
+		//} catch ( err /*: idCompileError*/ ) {
+		//	gameLocal.Error( "%s", err.error );
+		//}
 	}
 
 	///*
