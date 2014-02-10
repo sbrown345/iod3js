@@ -36,7 +36,88 @@ var INT_PRIORITY = 2;
 var NOT_PRIORITY = 5;
 var TILDE_PRIORITY = 5;
 var TOP_PRIORITY = 7;
-//
+
+
+class idCompiler {
+	//private:
+	//	static bool		punctuationValid[ 256 ];
+	//	static char		*punctuation[];
+	//
+	//	idParser		parser;
+	//	idParser		*parserPtr;
+	//	idToken			token;
+	//					
+	//	idTypeDef		*immediateType;
+	//	eval_t			immediate;
+	//					
+	//	bool			eof;
+	//	bool			console;
+	//	bool			callthread;
+	//	int				braceDepth;
+	//	int				loopDepth;
+	//	int				currentLineNumber;
+	//	int				currentFileNumber;
+	//	int				errorCount;
+	//					
+	//	idVarDef		*scope;				// the function being parsed, or NULL
+	//	const idVarDef	*basetype;			// for accessing fields
+	//
+	//	float			Divide( float numerator, float denominator );
+	//	void			Error( const char *error, ... ) const id_attribute((format(printf,2,3)));
+	//	void			Warning( const char *message, ... ) const id_attribute((format(printf,2,3)));
+	//	idVarDef		*OptimizeOpcode( const opcode_t *op, idVarDef *var_a, idVarDef *var_b );
+	//	idVarDef		*EmitOpcode( const opcode_t *op, idVarDef *var_a, idVarDef *var_b );
+	//	idVarDef		*EmitOpcode( int op, idVarDef *var_a, idVarDef *var_b );
+	//	bool			EmitPush( idVarDef *expression, const idTypeDef *funcArg );
+	//	void			NextToken( void );
+	//	void			ExpectToken( const char *string );
+	//	bool			CheckToken( const char *string );
+	//	void			ParseName( idStr &name );
+	//	void			SkipOutOfFunction( void );
+	//	void			SkipToSemicolon( void );
+	//	idTypeDef		*CheckType( void );
+	//	idTypeDef		*ParseType( void );
+	//	idVarDef		*FindImmediate( const idTypeDef *type, const eval_t *eval, const char *string ) const;
+	//	idVarDef		*GetImmediate( idTypeDef *type, const eval_t *eval, const char *string );
+	//	idVarDef		*VirtualFunctionConstant( idVarDef *func );
+	//	idVarDef		*SizeConstant( int size );
+	//	idVarDef		*JumpConstant( int value );
+	//	idVarDef		*JumpDef( int jumpfrom, int jumpto );
+	//	idVarDef		*JumpTo( int jumpto );
+	//	idVarDef		*JumpFrom( int jumpfrom );
+	//	idVarDef		*ParseImmediate( void );
+	//	idVarDef		*EmitFunctionParms( int op, idVarDef *func, int startarg, int startsize, idVarDef *object );
+	//	idVarDef		*ParseFunctionCall( idVarDef *func );
+	//	idVarDef		*ParseObjectCall( idVarDef *object, idVarDef *func );
+	//	idVarDef		*ParseEventCall( idVarDef *object, idVarDef *func );
+	//	idVarDef		*ParseSysObjectCall( idVarDef *func );
+	//	idVarDef		*LookupDef( const char *name, const idVarDef *baseobj );
+	//	idVarDef		*ParseValue( void );
+	//	idVarDef		*GetTerm( void );
+	//	bool			TypeMatches( etype_t type1, etype_t type2 ) const;
+	//	idVarDef		*GetExpression( int priority );
+	//	idTypeDef		*GetTypeForEventArg( char argType );
+	//	void			PatchLoop( int start, int continuePos );
+	//	void			ParseReturnStatement( void );
+	//	void			ParseWhileStatement( void );
+	//	void			ParseForStatement( void );
+	//	void			ParseDoWhileStatement( void );
+	//	void			ParseIfStatement( void );
+	//	void			ParseStatement( void );
+	//	void			ParseObjectDef( const char *objname );
+	//	idTypeDef		*ParseFunction( idTypeDef *returnType, const char *name );
+	//	void			ParseFunctionDef( idTypeDef *returnType, const char *name );
+	//	void			ParseVariableDef( idTypeDef *type, const char *name );
+	//	void			ParseEventDef( idTypeDef *type, const char *name );
+	//	void			ParseDefs( void );
+	//	void			ParseNamespace( idVarDef *newScope );
+	//
+	//public :
+	//	static opcode_t	opcodes[];
+	//
+	//					idCompiler();
+	//	void			CompileFile( const char *text, const char *filename, bool console );
+
 //bool idCompiler::punctuationValid[ 256 ];
 //char *idCompiler::punctuation[] = {
 //	"+=", "-=", "*=", "/=", "%=", "&=", "|=", "++", "--",
@@ -238,7 +319,7 @@ var TOP_PRIORITY = 7;
 //	}
 //}
 //
-///*
+	///*
 //============
 //idCompiler::Error
 //
@@ -256,7 +337,7 @@ var TOP_PRIORITY = 7;
 //	throw idCompileError( string );
 //}
 //
-///*
+	///*
 //============
 //idCompiler::Warning
 //
@@ -274,7 +355,7 @@ var TOP_PRIORITY = 7;
 //	parserPtr->Warning( "%s", string );
 //}
 //
-///*
+	///*
 //============
 //idCompiler::VirtualFunctionConstant
 //
@@ -293,7 +374,7 @@ var TOP_PRIORITY = 7;
 //	return GetImmediate( &type_virtualfunction, &eval, "" );
 //}
 //
-///*
+	///*
 //============
 //idCompiler::SizeConstant
 //
@@ -308,7 +389,7 @@ var TOP_PRIORITY = 7;
 //	return GetImmediate( &type_argsize, &eval, "" );
 //}
 //
-///*
+	///*
 //============
 //idCompiler::JumpConstant
 //
@@ -323,7 +404,7 @@ var TOP_PRIORITY = 7;
 //	return GetImmediate( &type_jumpoffset, &eval, "" );
 //}
 //
-///*
+	///*
 //============
 //idCompiler::JumpDef
 //
@@ -334,7 +415,7 @@ var TOP_PRIORITY = 7;
 //	return JumpConstant( jumpto - jumpfrom );
 //}
 //
-///*
+	///*
 //============
 //idCompiler::JumpTo
 //
@@ -345,7 +426,7 @@ var TOP_PRIORITY = 7;
 //	return JumpDef( gameLocal.program.NumStatements(), jumpto );
 //}
 //
-///*
+	///*
 //============
 //idCompiler::JumpFrom
 //
@@ -356,7 +437,7 @@ var TOP_PRIORITY = 7;
 //	return JumpDef( jumpfrom, gameLocal.program.NumStatements() );
 //}
 //
-///*
+	///*
 //============
 //idCompiler::Divide
 //============
@@ -370,7 +451,7 @@ var TOP_PRIORITY = 7;
 //	return numerator / denominator;
 //}
 //
-///*
+	///*
 //============
 //idCompiler::FindImmediate
 //
@@ -450,7 +531,7 @@ var TOP_PRIORITY = 7;
 //	return NULL;
 //}
 //
-///*
+	///*
 //============
 //idCompiler::GetImmediate
 //
@@ -476,7 +557,7 @@ var TOP_PRIORITY = 7;
 //	return def;
 //}
 //
-///*
+	///*
 //============
 //idCompiler::OptimizeOpcode
 //
@@ -561,7 +642,7 @@ var TOP_PRIORITY = 7;
 //	return GetImmediate( type, &c, "" );
 //}
 //
-///*
+	///*
 //============
 //idCompiler::EmitOpcode
 //
@@ -611,7 +692,7 @@ var TOP_PRIORITY = 7;
 //	return var_c;
 //}
 //
-///*
+	///*
 //============
 //idCompiler::EmitOpcode
 //
@@ -622,7 +703,7 @@ var TOP_PRIORITY = 7;
 //	return EmitOpcode( &opcodes[ op ], var_a, var_b );
 //}
 //
-///*
+	///*
 //============
 //idCompiler::EmitPush
 //
@@ -654,7 +735,7 @@ var TOP_PRIORITY = 7;
 //	return true;
 //}
 //
-///*
+	///*
 //==============
 //idCompiler::NextToken
 //
@@ -760,7 +841,7 @@ var TOP_PRIORITY = 7;
 //	}
 //}
 //
-///*
+	///*
 //=============
 //idCompiler::ExpectToken
 //
@@ -776,7 +857,7 @@ var TOP_PRIORITY = 7;
 //	NextToken();
 //}
 //
-///*
+	///*
 //=============
 //idCompiler::CheckToken
 //
@@ -794,7 +875,7 @@ var TOP_PRIORITY = 7;
 //	return true;
 //}
 //
-///*
+	///*
 //============
 //idCompiler::ParseName
 //
@@ -810,7 +891,7 @@ var TOP_PRIORITY = 7;
 //	NextToken();
 //}
 //
-///*
+	///*
 //============
 //idCompiler::SkipOutOfFunction
 //
@@ -825,7 +906,7 @@ var TOP_PRIORITY = 7;
 //	NextToken();
 //}
 //
-///*
+	///*
 //============
 //idCompiler::SkipToSemicolon
 //
@@ -842,7 +923,7 @@ var TOP_PRIORITY = 7;
 //	} while( !eof );
 //}
 //
-///*
+	///*
 //============
 //idCompiler::CheckType
 //
@@ -880,7 +961,7 @@ var TOP_PRIORITY = 7;
 //	return type;
 //}
 //
-///*
+	///*
 //============
 //idCompiler::ParseType
 //
@@ -908,7 +989,7 @@ var TOP_PRIORITY = 7;
 //	return type;
 //}
 //
-///*
+	///*
 //============
 //idCompiler::ParseImmediate
 //
@@ -924,7 +1005,7 @@ var TOP_PRIORITY = 7;
 //	return def;
 //}
 //
-///*
+	///*
 //============
 //idCompiler::EmitFunctionParms
 //============
@@ -1047,7 +1128,7 @@ var TOP_PRIORITY = 7;
 //	return resultDef;
 //}
 //
-///*
+	///*
 //============
 //idCompiler::ParseFunctionCall
 //============
@@ -1089,7 +1170,7 @@ var TOP_PRIORITY = 7;
 //	}
 //}
 //
-///*
+	///*
 //============
 //idCompiler::ParseObjectCall
 //============
@@ -1104,7 +1185,7 @@ var TOP_PRIORITY = 7;
 //	}
 //}
 //
-///*
+	///*
 //============
 //idCompiler::ParseEventCall
 //============
@@ -1131,7 +1212,7 @@ var TOP_PRIORITY = 7;
 //	return EmitFunctionParms( OP_EVENTCALL, funcDef, 0, type_object.Size(), NULL );
 //}
 //
-///*
+	///*
 //============
 //idCompiler::ParseSysObjectCall
 //============
@@ -1156,7 +1237,7 @@ var TOP_PRIORITY = 7;
 //	return EmitFunctionParms( OP_SYSCALL, funcDef, 0, 0, NULL );
 //}
 //
-///*
+	///*
 //============
 //idCompiler::LookupDef
 //============
@@ -1245,7 +1326,7 @@ var TOP_PRIORITY = 7;
 //	return def;
 //}
 //
-///*
+	///*
 //============
 //idCompiler::ParseValue
 //
@@ -1296,7 +1377,7 @@ var TOP_PRIORITY = 7;
 //	return def;
 //}
 //
-///*
+	///*
 //============
 //idCompiler::GetTerm
 //============
@@ -1436,7 +1517,7 @@ var TOP_PRIORITY = 7;
 //	return ParseValue();
 //}
 //
-///*
+	///*
 //==============
 //idCompiler::TypeMatches
 //==============
@@ -1457,7 +1538,7 @@ var TOP_PRIORITY = 7;
 //	return false;
 //}
 //
-///*
+	///*
 //==============
 //idCompiler::GetExpression
 //==============
@@ -1647,7 +1728,7 @@ var TOP_PRIORITY = 7;
 //	return e;
 //}
 //
-///*
+	///*
 //================
 //idCompiler::PatchLoop
 //================
@@ -1668,7 +1749,7 @@ var TOP_PRIORITY = 7;
 //	}
 //}
 //
-///*
+	///*
 //================
 //idCompiler::ParseReturnStatement
 //================
@@ -1724,7 +1805,7 @@ var TOP_PRIORITY = 7;
 //	EmitOpcode( OP_RETURN, 0, 0 );
 //}
 //	
-///*
+	///*
 //================
 //idCompiler::ParseWhileStatement
 //================
@@ -1760,7 +1841,7 @@ var TOP_PRIORITY = 7;
 //	loopDepth--;
 //}
 //
-///*
+	///*
 //================
 //idCompiler::ParseForStatement
 //
@@ -1866,7 +1947,7 @@ var TOP_PRIORITY = 7;
 //	loopDepth--;
 //}
 //
-///*
+	///*
 //================
 //idCompiler::ParseDoWhileStatement
 //================
@@ -1893,7 +1974,7 @@ var TOP_PRIORITY = 7;
 //	loopDepth--;
 //}
 //
-///*
+	///*
 //================
 //idCompiler::ParseIfStatement
 //================
@@ -1924,7 +2005,7 @@ var TOP_PRIORITY = 7;
 //	}
 //}
 //
-///*
+	///*
 //============
 //idCompiler::ParseStatement
 //============
@@ -1995,7 +2076,7 @@ var TOP_PRIORITY = 7;
 //	ExpectToken(";");
 //}
 //
-///*
+	///*
 //================
 //idCompiler::ParseObjectDef
 //================
@@ -2076,7 +2157,7 @@ var TOP_PRIORITY = 7;
 //	ExpectToken( ";" );
 //}
 //
-///*
+	///*
 //============
 //idCompiler::ParseFunction
 //
@@ -2106,7 +2187,7 @@ var TOP_PRIORITY = 7;
 //	return gameLocal.program.GetType( newtype, true );
 //}
 //
-///*
+	///*
 //================
 //idCompiler::ParseFunctionDef
 //================
@@ -2255,7 +2336,7 @@ var TOP_PRIORITY = 7;
 //	scope = oldscope;
 //}
 //
-///*
+	///*
 //================
 //idCompiler::ParseVariableDef
 //================
@@ -2341,7 +2422,7 @@ var TOP_PRIORITY = 7;
 //	}
 //}
 //
-///*
+	///*
 //================
 //idCompiler::GetTypeForEventArg
 //================
@@ -2390,7 +2471,7 @@ var TOP_PRIORITY = 7;
 //	return type;
 //}
 //
-///*
+	///*
 //================
 //idCompiler::ParseEventDef
 //================
@@ -2475,7 +2556,7 @@ var TOP_PRIORITY = 7;
 //	}
 //}
 //
-///*
+	///*
 //================
 //idCompiler::ParseDefs
 //
@@ -2535,7 +2616,7 @@ var TOP_PRIORITY = 7;
 //	}
 //}
 //
-///*
+	///*
 //================
 //idCompiler::ParseNamespace
 //
@@ -2564,86 +2645,88 @@ var TOP_PRIORITY = 7;
 //	scope = oldscope;
 //}
 //
-///*
-//============
-//idCompiler::CompileFile
-//
-//compiles the 0 terminated text, adding definitions to the program structure
-//============
-//*/
-//void idCompiler::CompileFile( const char *text, const char *filename, bool toConsole ) {
-//	idTimer compile_time;
-//	bool error;
-//
-//	compile_time.Start();
-//
-//	scope				= &def_namespace;
-//	basetype			= NULL;
-//	callthread			= false;
-//	loopDepth			= 0;
-//	eof					= false;
-//	braceDepth			= 0;
-//	immediateType		= NULL;
-//	currentLineNumber	= 0;
-//	console				= toConsole;
-//	
-//	memset( &immediate, 0, sizeof( immediate ) );
-//
-//	parser.SetFlags( lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS );
-//	parser.LoadMemory( text, strlen( text ), filename );
-//	parserPtr = &parser;
-//
-//	// unread tokens to include script defines
-//	token = SCRIPT_DEFAULTDEFS;
-//	token.type = TT_STRING;
-//	token.subtype = token.Length();
-//	token.line = token.linesCrossed = 0;
-//	parser.UnreadToken( &token );
-//
-//	token = "include";
-//	token.type = TT_NAME;
-//	token.subtype = token.Length();
-//	token.line = token.linesCrossed = 0;
-//	parser.UnreadToken( &token );
-//
-//	token = "#";
-//	token.type = TT_PUNCTUATION;
-//	token.subtype = P_PRECOMP;
-//	token.line = token.linesCrossed = 0;
-//	parser.UnreadToken( &token );
-//
-//	// init the current token line to be the first line so that currentLineNumber is set correctly in NextToken
-//	token.line = 1;
-//
-//	error = false;
-//	try {
-//		// read first token
-//		NextToken();
-//		while( !eof && !error ) {
-//			// parse from global namespace
-//			ParseNamespace( &def_namespace );
-//		}
-//	}
-//		
-//	catch( idCompileError &err ) {
-//		idStr error;
-//
-//		if ( console ) {
-//			// don't print line number of an error if were calling script from the console using the "script" command
-//			sprintf( error, "Error: %s\n", err.error );
-//		} else {
-//			sprintf( error, "Error: file %s, line %d: %s\n", gameLocal.program.GetFilename( currentFileNumber ), currentLineNumber, err.error );
-//		}
-//
-//		parser.FreeSource();
-//
-//		throw idCompileError( error );
-//	}
-//
-//	parser.FreeSource();
-//
-//	compile_time.Stop();
-//	if ( !toConsole ) {
-//		gameLocal.Printf( "Compiled '%s': %.1f ms\n", filename, compile_time.Milliseconds() );
-//	}
-//}
+/*
+============
+idCompiler::CompileFile
+
+compiles the 0 terminated text, adding definitions to the program structure
+============
+*/
+	CompileFile ( text: string, filename: string, toConsole: boolean ): void {
+		todoThrow ( );
+		//idTimer compile_time;
+		//bool error;
+
+		//compile_time.Start();
+
+		//scope				= &def_namespace;
+		//basetype			= NULL;
+		//callthread			= false;
+		//loopDepth			= 0;
+		//eof					= false;
+		//braceDepth			= 0;
+		//immediateType		= NULL;
+		//currentLineNumber	= 0;
+		//console				= toConsole;
+
+		//memset( &immediate, 0, sizeof( immediate ) );
+
+		//parser.SetFlags( lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS );
+		//parser.LoadMemory( text, strlen( text ), filename );
+		//parserPtr = &parser;
+
+		//// unread tokens to include script defines
+		//token = SCRIPT_DEFAULTDEFS;
+		//token.type = TT_STRING;
+		//token.subtype = token.Length();
+		//token.line = token.linesCrossed = 0;
+		//parser.UnreadToken( &token );
+
+		//token = "include";
+		//token.type = TT_NAME;
+		//token.subtype = token.Length();
+		//token.line = token.linesCrossed = 0;
+		//parser.UnreadToken( &token );
+
+		//token = "#";
+		//token.type = TT_PUNCTUATION;
+		//token.subtype = P_PRECOMP;
+		//token.line = token.linesCrossed = 0;
+		//parser.UnreadToken( &token );
+
+		//// init the current token line to be the first line so that currentLineNumber is set correctly in NextToken
+		//token.line = 1;
+
+		//error = false;
+		//try {
+		//	// read first token
+		//	NextToken();
+		//	while( !eof && !error ) {
+		//		// parse from global namespace
+		//		ParseNamespace( &def_namespace );
+		//	}
+		//}
+
+		//catch( idCompileError &err ) {
+		//	idStr error;
+
+		//	if ( console ) {
+		//		// don't print line number of an error if were calling script from the console using the "script" command
+		//		sprintf( error, "Error: %s\n", err.error );
+		//	} else {
+		//		sprintf( error, "Error: file %s, line %d: %s\n", gameLocal.program.GetFilename( currentFileNumber ), currentLineNumber, err.error );
+		//	}
+
+		//	parser.FreeSource();
+
+		//	throw idCompileError( error );
+		//}
+
+		//parser.FreeSource();
+
+		//compile_time.Stop();
+		//if ( !toConsole ) {
+		//	gameLocal.Printf( "Compiled '%s': %.1f ms\n", filename, compile_time.Milliseconds() );
+		//}
+	}
+}

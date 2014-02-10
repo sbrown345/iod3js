@@ -807,20 +807,20 @@ class idVarDef {
 	Name ( ): string {
 		return this.name.Name ( );
 	}
-	//
-	///*
-	//============
-	//idVarDef::GlobalName
-	//============
-	//*/
-	//const char *idVarDef::GlobalName( void ) const {
-	//	if ( scope != &def_namespace ) {
-	//		return va( "%s::%s", scope.GlobalName(), name.Name() );
-	//	} else {
-	//		return name.Name();
-	//	}
-	//}
-	//
+	
+	/*
+	============
+	idVarDef::GlobalName
+	============
+	*/
+	GlobalName ( ): string {
+		if ( this.scope != def_namespace ) {
+			return va( "%s::%s", this.scope.GlobalName ( ), this.name.Name ( ) );
+		} else {
+			return this.name.Name ( );
+		}
+	}
+
 	///*
 	//============
 	//idVarDef::DepthOfScope

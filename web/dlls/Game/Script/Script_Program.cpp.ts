@@ -897,7 +897,7 @@ idProgram::AllocDef
 //	bestDepth = 0;
 //	bestDef = null;
 //	for( def = GetDefList( name ); def != null; def = def.Next() ) {
-//		if ( def.scope.Type() == ev_namespace ) {
+//		if ( def.scope.Type() == etype_t.ev_namespace ) {
 //			depth = def.DepthOfScope( scope );
 //			if ( !depth ) {
 //				// not in the same namespace
@@ -1028,7 +1028,7 @@ idProgram::AllocDef
 //
 //		// skip past the ::
 //		start = pos + 2;
-//	} while( def.Type() == ev_namespace );
+//	} while( def.Type() == etype_t.ev_namespace );
 //
 //	idStr funcName = fullname.Right( fullname.Length() - start );
 //	def = GetDef( null, funcName, namespaceDef );
@@ -1316,51 +1316,51 @@ Called after all files are compiled to check for errors
 //	gameLocal.Printf( " Thread size: %d bytes\n\n", sizeof( idThread ) );
 //}
 //
-	///*
-//================
-//idProgram::CompileText
-//================
-//*/
-//bool idProgram::CompileText( const char *source, const char *text, bool console ) {
-//	idCompiler	compiler;
-//	int			i;
-//	idVarDef	*def;
-//	idStr		ospath;
-//
-//	// use a full os path for GetFilenum since it calls OSPathToRelativePath to convert filenames from the parser
-//	ospath = fileSystem.RelativePathToOSPath( source );
-//	filenum = GetFilenum( ospath );
-//
-//	try {
-//		compiler.CompileFile( text, filename, console );
-//
-//		// check to make sure all functions prototyped have code
-//		for( i = 0; i < varDefs.Num(); i++ ) {
-//			def = varDefs[ i ];
-//			if ( ( def.Type() == etype_t.ev_function ) && ( ( def.scope.Type() == ev_namespace ) || def.scope.TypeDef().Inherits( &type_object ) ) ) {
-//				if ( !def.value.functionPtr.eventdef && !def.value.functionPtr.firstStatement ) {
-//					throw idCompileError( va( "function %s was not defined\n", def.GlobalName() ) );
-//				}
-//			}
-//		}
-//	}
-//	
-//	catch( idCompileError &err ) {
-//		if ( console ) {
-//			gameLocal.Printf( "%s\n", err.error );
-//			return false;
-//		} else {
-//			gameLocal.Error( "%s\n", err.error );
-//		}
-//	};
-//
-//	if ( !console ) {
-//		CompileStats();
-//	}
-//
-//	return true;
-//}
-//
+/*
+================
+idProgram::CompileText
+================
+*/
+CompileText( source:string, text:string, console :boolean):boolean {
+	var compiler = new idCompiler;
+	var/*int			*/i:number;
+	var def: idVarDef	;
+	var ospath: idStr;
+
+	// use a full os path for GetFilenum since it calls OSPathToRelativePath to convert filenames from the parser
+	ospath = fileSystem.RelativePathToOSPath( source );
+	this.filenum = this.GetFilenum( ospath.data );
+
+	try {
+		compiler.CompileFile(text, this.filename, console );
+
+		// check to make sure all functions prototyped have code
+		for (i = 0; i < this.varDefs.Num(); i++ ) {
+			def = this.varDefs[ i ];
+			if ( ( def.Type() == etype_t.ev_function ) && ( ( def.scope.Type() == etype_t.ev_namespace ) || def.scope.TypeDef().Inherits( &type_object ) ) ) {
+				if ( !def.value.functionPtr.eventdef && !def.value.functionPtr.firstStatement ) {
+					throw new idCompileError( va( "function %s was not defined\n", def.GlobalName() ) );
+				}
+			}
+		}
+	}
+	
+	catch( /*idCompileError &*/err ) {
+		if ( console ) {
+			gameLocal.Printf( "%s\n", err.error );
+			return false;
+		} else {
+			gameLocal.Error( "%s\n", err.error );
+		}
+	};
+
+	if ( !console ) {
+		this.CompileStats();
+	}
+
+	return true;
+}
+
 	///*
 //================
 //idProgram::CompileFunction
@@ -1388,16 +1388,16 @@ idProgram::CompileFile
 ================
 */
 	CompileFile ( filename: string ): void {
+
+		var src = new R<Uint8Array> ( );
+		var result: boolean;
+
+		if ( fileSystem.ReadFile( filename, src, null ) < 0 ) {
+			gameLocal.Error( "Couldn't load %s\n", filename );
+		}
+
+		result = this.CompileText( filename, src.$.toString(), false );
 		todoThrow ( );
-		//char *src;
-		//bool result;
-
-		//if ( fileSystem.ReadFile( filename, ( void ** )&src, null ) < 0 ) {
-		//	gameLocal.Error( "Couldn't load %s\n", filename );
-		//}
-
-		//result = CompileText( filename, src, false );
-
 		//fileSystem.FreeFile( src );
 
 		//if ( g_disasm.GetBool() ) {
@@ -1406,7 +1406,7 @@ idProgram::CompileFile
 
 		//if ( !result ) {
 		//	gameLocal.Error( "Compile failed in file %s.", filename );
-		//}
+		//}	
 	}
 
 /*
@@ -1641,33 +1641,34 @@ idProgram::Startup
 //		variables[ i ] = variableDefaults[ i ];
 //	}
 //}
-//
-	///*
-//================
-//idProgram::GetFilenum
-//================
-//*/
-//int idProgram::GetFilenum( const char *name ) {
-//	if ( filename == name ) {
-//		return filenum;
-//	}
-//
-//	idStr strippedName;
-//	strippedName = fileSystem.OSPathToRelativePath( name );
-//	if ( !strippedName.Length() ) {
-//		// not off the base path so just use the full path
-//		filenum = fileList.AddUnique( name );
-//	} else {
-//		filenum = fileList.AddUnique( strippedName );
-//	}
-//
-//	// save the unstripped name so that we don't have to strip the incoming name every time we call GetFilenum
-//	filename = name;
-//
-//	return filenum;
-//}
-//
-	///*
+
+/*
+================
+idProgram::GetFilenum
+================
+*/
+GetFilenum( name: string):number
+{
+	if ( this.filename.data == name ) {
+		return this.filenum;
+	}
+
+	var strippedName: idStr;
+	strippedName = fileSystem.OSPathToRelativePath( name );
+	if ( !strippedName.Length ( ) ) {
+		// not off the base path so just use the full path
+		this.filenum = this.fileList.AddUnique( name );
+	} else {
+		this.filenum = this.fileList.AddUnique( strippedName );
+	}
+
+	// save the unstripped name so that we don't have to strip the incoming name every time we call GetFilenum
+	this.filename.equals( name );
+
+	return this.filenum;
+}
+
+///*
 //================
 //idProgram::idProgram
 //================
