@@ -28,7 +28,7 @@
 //#ifndef __SCRIPT_COMPILER_H__
 //#define __SCRIPT_COMPILER_H__
 //
-//const char * const RESULT_STRING = "<RESULT>";
+var RESULT_STRING = "<RESULT>";
 //
 //typedef struct opcode_s {
 //	char		*name;

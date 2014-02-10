@@ -211,20 +211,23 @@ defined in script.
 ***********************************************************************/
 
 class varEval_t {
+	// possibly first version of these pointers might be just getters that point to the same memory location?
+	
+
 	//idScriptObject			**objectPtrPtr;
-	//char					*stringPtr;
-	//float					*floatPtr;
-	//idVec3					*vectorPtr;
-	//function_t				*functionPtr;
-	//int 					*intPtr;
-	//byte					*bytePtr;
-	//int 					*entityNumberPtr;
-	//int						virtualFunction;
-	//int						jumpOffset;
-	//int						stackOffset;		// offset in stack for local variables
-	//int						argSize;
+	stringPtr:string;//char					
+	floatPtr:number;//float					
+	vectorPtr: idVec3;
+	functionPtr: function_t; 
+	intPtr: number;				 //int
+	bytePtr: number;				 //byte
+	entityNumberPtr:number;		 //int 					
+	virtualFunction:number;											 //int						
+	jumpOffset: number;													 //int						
+	stackOffset: number;		// offset in stack for local variables	 //int						
+	argSize:number;	//int
 	//varEval_s				*evalPtr;
-	//int						ptrOffset;
+	ptrOffset:number;//int	
 
 	constructor ( ) {
 		this.init ( );
@@ -304,42 +307,43 @@ class idTypeDef {
 idTypeDef::idTypeDef
 ================
 */
-	constructor(etype: etype_t, edef: idVarDef, ename: string, /*int */esize: number, aux: idTypeDef) {
-		this.name = new idStr(ename);
-		this.type = etype;
-		this.def = edef;
-		this.size = esize;
-		this.auxType = aux;
+	constructor ( other: idTypeDef )
+	constructor ( etype: etype_t, edef: idVarDef, ename: string, /*int */esize: number, aux: idTypeDef )
+	constructor ( other_or_etype: any, edef?: idVarDef, ename?: string, /*int */esize?: number, aux?: idTypeDef ) {
+		if ( arguments.length == 1 ) {
+			var other = other_or_etype;
 
-		this.parmTypes.SetGranularity(1);
-		this.parmNames.SetGranularity(1);
-		this.functions.SetGranularity(1);
+			this.equals( other );
+		} else {
+			var etype = other_or_etype;
+
+			this.name = new idStr( ename );
+			this.type = etype;
+			this.def = edef;
+			this.size = esize;
+			this.auxType = aux;
+
+			this.parmTypes.SetGranularity( 1 );
+			this.parmNames.SetGranularity( 1 );
+			this.functions.SetGranularity( 1 );
+		}
 	}
 
-	///*
-	//================
-	//idTypeDef::idTypeDef
-	//================
-	//*/
-	//idTypeDef::idTypeDef( const idTypeDef &other ) {
-	//	*this = other;
-	//}
-	//
-	///*
-	//================
-	//idTypeDef::operator=
-	//================
-	//*/
-	//void idTypeDef::operator=( const idTypeDef& other ) {
-	//	type		= other.type;
-	//	def			= other.def;
-	//	name		= other.name;
-	//	size		= other.size;
-	//	auxType		= other.auxType;
-	//	parmTypes	= other.parmTypes;
-	//	parmNames	= other.parmNames;
-	//	functions	= other.functions;
-	//}
+	/*
+	================
+	idTypeDef::operator=
+	================
+	*/
+	equals ( other: idTypeDef ): void {
+		this.type = other.type;
+		this.def = other.def;
+		this.name = other.name;
+		this.size = other.size;
+		this.auxType = other.auxType;
+		this.parmTypes = other.parmTypes;
+		this.parmNames = other.parmNames;
+		this.functions = other.functions;
+	}
 	//
 	///*
 	//================
@@ -357,33 +361,33 @@ idTypeDef::idTypeDef
 	//
 	//	return memsize;
 	//}
-	//
-	///*
-	//================
-	//idTypeDef::Inherits
-	//
-	//Returns true if basetype is an ancestor of this type.
-	//================
-	//*/
-	//bool idTypeDef::Inherits( const idTypeDef *basetype ) const {
-	//	idTypeDef *superType;
-	//
-	//	if ( type != ev_object ) {
-	//		return false;
-	//	}
-	//
-	//	if ( this == basetype ) {
-	//		return true;
-	//	}
-	//	for( superType = auxType; superType != NULL; superType = superType.auxType ) {
-	//		if ( superType == basetype ) {
-	//			return true;
-	//		}
-	//	}
-	//
-	//	return false;
-	//}
-	//
+	
+	/*
+	================
+	idTypeDef::Inherits
+	
+	Returns true if basetype is an ancestor of this type.
+	================
+	*/
+	Inherits ( basetype: idTypeDef ): boolean {
+		var superType: idTypeDef;
+
+		if ( this.type != etype_t.ev_object ) {
+			return false;
+		}
+
+		if ( this == basetype ) {
+			return true;
+		}
+		for ( superType = this.auxType; superType != null; superType = superType.auxType ) {
+			if ( superType == basetype ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	///*
 	//================
 	//idTypeDef::MatchesType
@@ -501,32 +505,32 @@ idTypeDef::idTypeDef
 	//	name = newname;
 	//}
 	//
-	///*
-	//================
-	//idTypeDef::Name
-	//================
-	//*/
-	//const char *idTypeDef::Name( void ) const {
-	//	return name;
-	//}
-	//
-	///*
-	//================
-	//idTypeDef::Type
-	//================
-	//*/
-	//etype_t idTypeDef::Type( void ) const {
-	//	return type;
-	//}
-	//
-	///*
-	//================
-	//idTypeDef::Size
-	//================
-	//*/
-	//size_t idTypeDef::Size( void ) const {
-	//	return size;
-	//}
+	/*
+	================
+	idTypeDef::Name
+	================
+	*/
+	Name ( ): string {
+		return this.name.data;
+	}
+
+	/*
+	================
+	idTypeDef::Type
+	================
+	*/
+	Type ( ): etype_t {
+		return this.type;
+	}
+	
+	/*
+	================
+	idTypeDef::Size
+	================
+	*/
+	Size ( ): number {
+		return this.size;
+	}
 	//
 	///*
 	//================
@@ -573,20 +577,20 @@ idTypeDef::idTypeDef
 	//	auxType = returntype;
 	//}
 	//
-	///*
-	//================
-	//idTypeDef::FieldType
-	//
-	//If type is a field, then returns it's type
-	//================
-	//*/
-	//idTypeDef *idTypeDef::FieldType( void ) const {
-	//	if ( type != ev_field ) {
-	//		throw idCompileError( "idTypeDef::FieldType: tried to get field type on non-field type" );
-	//	}
-	//
-	//	return auxType;
-	//}
+	/*
+	================
+	idTypeDef::FieldType
+	
+	If type is a field, then returns it's type
+	================
+	*/
+	FieldType ( ): idTypeDef {
+		if ( this.type != etype_t.ev_field ) {
+			throw new idCompileError( "idTypeDef::FieldType: tried to get field type on non-field type" );
+		}
+
+		return this.auxType;
+	}
 	//
 	///*
 	//================
@@ -596,7 +600,7 @@ idTypeDef::idTypeDef
 	//================
 	//*/
 	//void idTypeDef::SetFieldType( idTypeDef *fieldtype ) {
-	//	if ( type != ev_field ) {
+	//	if ( type != etype_t.ev_field ) {
 	//		throw idCompileError( "idTypeDef::SetFieldType: tried to set return type on non-function type" );
 	//	}
 	//
@@ -749,9 +753,9 @@ class idVarDef {
 	//	const char *			GlobalName( void ) const;
 	//
 	//	void					SetTypeDef( idTypeDef *_type ) { typeDef = _type; }
-	//	idTypeDef *				TypeDef( void ) const { return typeDef; }
-	//	etype_t					Type( void ) const { return ( typeDef != NULL ) ? typeDef->Type() : ev_void; }
-	//
+	TypeDef ( ): idTypeDef { return this.typeDef; }
+	Type ( ): etype_t { return ( this.typeDef != null ) ? this.typeDef.Type ( ) : etype_t.ev_void; }
+	
 	//	int						DepthOfScope( const idVarDef *otherScope ) const;
 	//
 	//	void					SetFunction( function_t *func );
@@ -795,14 +799,14 @@ class idVarDef {
 	//	}
 	//}
 	//
-	///*
-	//============
-	//idVarDef::Name
-	//============
-	//*/
-	//const char *idVarDef::Name( void ) const {
-	//	return name.Name();
-	//}
+	/*
+	============
+	idVarDef::Name
+	============
+	*/
+	Name ( ): string {
+		return this.name.Name ( );
+	}
 	//
 	///*
 	//============
@@ -877,7 +881,7 @@ class idVarDef {
 	//	switch( typeDef.Type() ) {
 	//	case ev_pointer :
 	//	case ev_boolean :
-	//	case ev_field :
+	//	case etype_t.ev_field :
 	//		*value.intPtr = _value._int;
 	//		break;
 	//
@@ -974,7 +978,7 @@ class idVarDef {
 	//		}
 	//		break;
 	//
-	//	case ev_field :
+	//	case etype_t.ev_field :
 	//		file.Printf( "field %d", value.ptrOffset );
 	//		break;
 	//
@@ -1018,7 +1022,7 @@ class idVarDef {
 	//				file.Printf( "%d", *value.intPtr );
 	//				break;
 	//			}
-	//		} else if ( initialized == stackVariable ) {
+	//		} else if ( initialized == initialized_t.stackVariable ) {
 	//			file.Printf( "stack[%d]", value.stackOffset );
 	//		} else {
 	//			file.Printf( "global[%d]", num );
