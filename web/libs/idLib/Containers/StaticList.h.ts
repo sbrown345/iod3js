@@ -76,15 +76,16 @@ class idStaticList<type> {
 ////
 ////private:
 	num:number/*int*/;
-////	type 				list[ size ];
+	list: type[];
 
 	type:any;
 	size:number;
 
-	constructor(type: any, size : number) {
+	constructor ( type: any, size: number ) {
 		this.type = type;
 		this.size = size;
 		this.num = 0;
+		this.list = newStructArray<type>( this.type, this.size );
 	}
 
 ////
@@ -107,18 +108,17 @@ class idStaticList<type> {
 ////ID_INLINE idStaticList<type,size>::~idStaticList( void ) {
 ////}
 ////
-/////*
-////================
-////idStaticList<type,size>::Clear
-////
-////Sets the number of elements in the list to 0.  Assumes that type automatically handles freeing up memory.
-////================
-////*/
-////template<class type,int size>
-////ID_INLINE void idStaticList<type,size>::Clear( void ) {
-////	num	= 0;
-////}
-////
+/*
+================
+idStaticList<type,size>::Clear
+
+Sets the number of elements in the list to 0.  Assumes that type automatically handles freeing up memory.
+================
+*/
+	Clear ( ): void {
+		this.num = 0;
+	}
+
 /////*
 ////================
 ////idStaticList<type,size>::DeleteContents
@@ -147,29 +147,27 @@ class idStaticList<type> {
 ////	}
 ////}
 ////
-/////*
-////================
-////idStaticList<type,size>::Num
-////
-////Returns the number of elements currently contained in the list.
-////================
-////*/
-////template<class type,int size>
-////ID_INLINE int idStaticList<type,size>::Num( void ) const {
-////	return num;
-////}
-////
-/////*
-////================
-////idStaticList<type,size>::Num
-////
-////Returns the maximum number of elements in the list.
-////================
-////*/
-////template<class type,int size>
-////ID_INLINE int idStaticList<type,size>::Max( void ) const {
-////	return size;
-////}
+/*
+================
+idStaticList<type,size>::Num
+
+Returns the number of elements currently contained in the list.
+================
+*/
+	Num ( ): number {
+		return this.num;
+	}
+
+/*
+================
+idStaticList<type,size>::Num
+
+Returns the maximum number of elements in the list.
+================
+*/
+	Max ( ): number {
+		return this.size;
+	}
 ////
 /////*
 ////================
@@ -200,21 +198,20 @@ class idStaticList<type> {
 ////ID_INLINE size_t idStaticList<type,size>::MemoryUsed( void ) const {
 ////	return num * sizeof( list[ 0 ] );
 ////}
-////
-/////*
-////================
-////idStaticList<type,size>::SetNum
-////
-////Set number of elements in list.
-////================
-////*/
-////template<class type,int size>
-////ID_INLINE void idStaticList<type,size>::SetNum( int newnum ) {
-////	assert( newnum >= 0 );
-////	assert( newnum <= size );
-////	num = newnum;
-////}
-////
+
+/*
+================
+idStaticList<type,size>::SetNum
+
+Set number of elements in list.
+================
+*/
+	SetNum ( /*int */newnum: number ): void {
+		assert( newnum >= 0 );
+		assert( newnum <= this.size );
+		this.num = newnum;
+	}
+
 /////*
 ////================
 ////idStaticList<type,size>::operator[] const
@@ -278,23 +275,22 @@ class idStaticList<type> {
 ////ID_INLINE const type *idStaticList<type,size>::Ptr( void ) const {
 ////	return &list[ 0 ];
 ////}
-////
-/////*
-////================
-////idStaticList<type,size>::Alloc
-////
-////Returns a pointer to a new data element at the end of the list.
-////================
-////*/
-////template<class type,int size>
-////ID_INLINE type *idStaticList<type,size>::Alloc( void ) {
-////	if ( num >= size ) {
-////		return NULL;
-////	}
-////
-////	return &list[ num++ ];
-////}
-////
+
+/*
+================
+idStaticList<type,size>::Alloc
+
+Returns a pointer to a new data element at the end of the list.
+================
+*/
+	Alloc ( ): type {
+		if ( this.num >= this.size ) {
+			return null;
+		}
+
+		return this.list[this.num++];
+	}
+
 /////*
 ////================
 ////idStaticList<type,size>::Append

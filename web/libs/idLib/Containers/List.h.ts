@@ -154,33 +154,32 @@ Clear ():void {
     this.size	= 0;
 }
 
-///*
-//================
-//idList<type>::DeleteContents
+/*
+================
+idList<type>::DeleteContents
 
-//Calls the destructor of all elements in the list.  Conditionally frees up memory used by the list.
-//Note that this only works on lists containing pointers to objects and will cause a compiler error
-//if called with non-pointers.  Since the list was not responsible for allocating the object, it has
-//no information on whether the object still exists or not, so care must be taken to ensure that
-//the pointers are still valid when this function is called.  Function will set all pointers in the
-//list to NULL.
-//================
-//*/
-//template< class type >
-//ID_INLINE void idList<type>::DeleteContents( bool clear ) {
-//	int i;
+Calls the destructor of all elements in the list.  Conditionally frees up memory used by the list.
+Note that this only works on lists containing pointers to objects and will cause a compiler error
+if called with non-pointers.  Since the list was not responsible for allocating the object, it has
+no information on whether the object still exists or not, so care must be taken to ensure that
+the pointers are still valid when this function is called.  Function will set all pointers in the
+list to NULL.
+================
+*/
+	DeleteContents ( clear: boolean ): void {
+		var i: number;
 
-//	for( i = 0; i < num; i++ ) {
-//		delete this.list[ i ];
-////		this.list[ i ] = NULL;
-//	}
+		for ( i = 0; i < this.num; i++ ) {
+			delete this.list[i];
+			this.list[i] = null;
+		}
 
-//	if ( clear ) {
-//		Clear();
-//	} else {
-//		memset( this.list, 0, this.size * sizeof( type ) );
-//	}
-//}
+		if ( clear ) {
+			this.Clear ( );
+		} else {
+			//memset( this.list, 0, this.size * sizeof( type ) );
+		}
+	}
 
 ///*
 //================

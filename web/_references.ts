@@ -336,7 +336,6 @@
 /// <reference path="dlls/game/gamesys/class.cpp.ts" />
 /// <reference path="dlls/game/gamesys/event.cpp.ts" />
 /// <reference path="dlls/game/gamesys/syscvar.cpp.ts" />
-/// <reference path="dlls/game/gamesys/syscmds.cpp.ts" />
 /// <reference path="dlls/game/entity.h.ts" />
 /// <reference path="dlls/game/entity.cpp.ts" />
 /// <reference path="dlls/game/ai/aas.h.ts" />
@@ -363,7 +362,6 @@
 /// <reference path="dlls/game/script/script_interpreter.cpp.ts" />
 /// <reference path="dlls/game/script/script_program.h.ts" />
 /// <reference path="dlls/game/script/script_program.cpp.ts" />
-/// <reference path="dlls/game/script/script_thread.h.ts" />
 /// <reference path="dlls/game/script/script_thread.cpp.ts" />
 /// <reference path="dlls/game/afentity.h.ts" />
 /// <reference path="dlls/game/afentity.cpp.ts" />
@@ -385,6 +383,8 @@
 /// <reference path="dlls/game/game.h.ts" />
 /// <reference path="dlls/game/game_local.h.ts" />
 /// <reference path="dlls/game/game_local.cpp.ts" />
+
+/// <reference path="dlls/game/gamesys/syscmds.cpp.ts" />
 
 //-----------------------------------------------------
 

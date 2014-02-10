@@ -763,23 +763,23 @@ class idThread extends idClass {
 idThread::Restart
 ================
 */
-Restart( ):void {
-	var/*int	*/i:number;
-	var/*int	*/n: number;
+	static Restart ( ): void {
+		var /*int	*/i: number;
+		var /*int	*/n: number;
 
-	// reset the threadIndex
-	idThread.threadIndex = 0;
+		// reset the threadIndex
+		idThread.threadIndex = 0;
 
-	idThread.currentThread = null;
-	n = idThread.threadList.Num();
-	for( i = n - 1; i >= 0; i-- ) {
-		delete idThread.threadList[ i ];
+		idThread.currentThread = null;
+		n = idThread.threadList.Num ( );
+		for ( i = n - 1; i >= 0; i-- ) {
+			delete idThread.threadList[i];
+		}
+		idThread.threadList.Clear ( );
+
+		idThread.trace.init ( );
+		idThread.trace.c.entityNum = ENTITYNUM_NONE;
 	}
-	idThread.threadList.Clear();
-
-	idThread.trace.init ( );
-	idThread.trace.c.entityNum = ENTITYNUM_NONE;
-}
 //
 	///*
 //================

@@ -150,7 +150,7 @@ function assert( X:any ):void { if ( X ) { } else AssertFailed( "__FILE__", (new
 class idException {
 	public error: string
 
-	idException ( text = "" ) {
+	constructor ( text = "" ) {
 		this.error = text.substring( 0, MAX_STRING_CHARS );
 	}
 }

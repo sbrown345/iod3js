@@ -149,11 +149,66 @@ class function_t {
 
 ///***********************************************************************
 //
-//  idTypeDef
+//idTypeDef
+//
+//Contains type information for variables and functions.
 //
 //***********************************************************************/
 //
-///*
+class idTypeDef {
+//private:
+//	etype_t						type;
+//	idStr 						name;
+//	size_t						size;
+//
+//	// function types are more complex
+//	idTypeDef					*auxType;					// return type
+//	idList<idTypeDef *>			parmTypes;
+//	idStrList					parmNames;
+//	idList<const function_t *>	functions;
+//
+//public:
+//	idVarDef					*def;						// a def that points to this type
+//
+//						idTypeDef( const idTypeDef &other );
+//						idTypeDef( etype_t etype, idVarDef *edef, const char *ename, int esize, idTypeDef *aux );
+//	void				operator=( const idTypeDef& other );
+//	size_t				Allocated( void ) const;
+//
+//	bool				Inherits( const idTypeDef *basetype ) const;
+//	bool				MatchesType( const idTypeDef &matchtype ) const;
+//	bool				MatchesVirtualFunction( const idTypeDef &matchfunc ) const;
+//	void				AddFunctionParm( idTypeDef *parmtype, const char *name );
+//	void				AddField( idTypeDef *fieldtype, const char *name );
+//
+//	void				SetName( const char *newname );
+//	const char			*Name( void ) const;
+//
+//	etype_t				Type( void ) const;
+//	size_t				Size( void ) const;
+//
+//	idTypeDef			*SuperClass( void ) const;
+//	
+//	idTypeDef			*ReturnType( void ) const;
+//	void				SetReturnType( idTypeDef *type );
+//
+//	idTypeDef			*FieldType( void ) const;
+//	void				SetFieldType( idTypeDef *type );
+//
+//	idTypeDef			*PointerType( void ) const;
+//	void				SetPointerType( idTypeDef *type );
+//
+//	int					NumParameters( void ) const;
+//	idTypeDef			*GetParmType( int parmNumber ) const;
+//	const char			*GetParmName( int parmNumber ) const;
+//
+//	int					NumFunctions( void ) const;
+//	int					GetFunctionNumber( const function_t *func ) const;
+//	const function_t	*GetFunction( int funcNumber ) const;
+//	void				AddFunction( const function_t *func );
+//};*******************************************************************/
+//
+	///*
 //================
 //idTypeDef::idTypeDef
 //================
@@ -170,7 +225,7 @@ class function_t {
 //	functions.SetGranularity( 1 );
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::idTypeDef
 //================
@@ -179,7 +234,7 @@ class function_t {
 //	*this = other;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::operator=
 //================
@@ -195,7 +250,7 @@ class function_t {
 //	functions	= other.functions;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::Allocated
 //================
@@ -212,7 +267,7 @@ class function_t {
 //	return memsize;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::Inherits
 //
@@ -238,7 +293,7 @@ class function_t {
 //	return false;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::MatchesType
 //
@@ -269,7 +324,7 @@ class function_t {
 //	return true;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::MatchesVirtualFunction
 //
@@ -306,7 +361,7 @@ class function_t {
 //	return true;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::AddFunctionParm
 //
@@ -323,7 +378,7 @@ class function_t {
 //	parmName = name;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::AddField
 //
@@ -346,7 +401,7 @@ class function_t {
 //	}
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::SetName
 //================
@@ -355,7 +410,7 @@ class function_t {
 //	name = newname;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::Name
 //================
@@ -364,7 +419,7 @@ class function_t {
 //	return name;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::Type
 //================
@@ -373,7 +428,7 @@ class function_t {
 //	return type;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::Size
 //================
@@ -382,7 +437,7 @@ class function_t {
 //	return size;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::SuperClass
 //
@@ -397,7 +452,7 @@ class function_t {
 //	return auxType;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::ReturnType
 //
@@ -412,7 +467,7 @@ class function_t {
 //	return auxType;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::SetReturnType
 //
@@ -427,7 +482,7 @@ class function_t {
 //	auxType = returntype;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::FieldType
 //
@@ -442,7 +497,7 @@ class function_t {
 //	return auxType;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::SetFieldType
 //
@@ -457,7 +512,7 @@ class function_t {
 //	auxType = fieldtype;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::PointerType
 //
@@ -472,7 +527,7 @@ class function_t {
 //	return auxType;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::SetPointerType
 //
@@ -487,7 +542,7 @@ class function_t {
 //	auxType = pointertype;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::NumParameters
 //================
@@ -496,7 +551,7 @@ class function_t {
 //	return parmTypes.Num();
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::GetParmType
 //================
@@ -507,7 +562,7 @@ class function_t {
 //	return parmTypes[ parmNumber ];
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::GetParmName
 //================
@@ -518,7 +573,7 @@ class function_t {
 //	return parmNames[ parmNumber ];
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::NumFunctions
 //================
@@ -527,7 +582,7 @@ class function_t {
 //	return functions.Num();
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::GetFunctionNumber
 //================
@@ -543,7 +598,7 @@ class function_t {
 //	return -1;
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::GetFunction
 //================
@@ -554,7 +609,7 @@ class function_t {
 //	return functions[ funcNumber ];
 //}
 //
-///*
+	///*
 //================
 //idTypeDef::AddFunction
 //================
@@ -572,14 +627,58 @@ class function_t {
 //	}
 //	functions.Append( func );
 //}
-//
+
+}
+
 ///***********************************************************************
 //
 //  idVarDef
 //
 //***********************************************************************/
-//
-///*
+
+class idVarDef {
+	//	friend class idVarDefName;
+	//
+	//public:
+	//	int						num;	
+	//	varEval_t				value;
+	//	idVarDef *				scope; 			// function, namespace, or object the var was defined in
+	//	int						numUsers;		// number of users if this is a constant
+	//
+	//	typedef enum {
+	//		uninitialized, initializedVariable, initializedConstant, stackVariable
+	//	} initialized_t;
+	//
+	//	initialized_t			initialized;
+	//
+	//public:
+	//							idVarDef( idTypeDef *typeptr = NULL );
+	//							~idVarDef();
+	//
+	//	const char *			Name( void ) const;
+	//	const char *			GlobalName( void ) const;
+	//
+	//	void					SetTypeDef( idTypeDef *_type ) { typeDef = _type; }
+	//	idTypeDef *				TypeDef( void ) const { return typeDef; }
+	//	etype_t					Type( void ) const { return ( typeDef != NULL ) ? typeDef->Type() : ev_void; }
+	//
+	//	int						DepthOfScope( const idVarDef *otherScope ) const;
+	//
+	//	void					SetFunction( function_t *func );
+	//	void					SetObject( idScriptObject *object );
+	//	void					SetValue( const eval_t &value, bool constant );
+	//	void					SetString( const char *string, bool constant );
+	//
+	//	idVarDef *				Next( void ) const { return next; }		// next var def with same name
+	//
+	//	void					PrintInfo( idFile *file, int instructionPointer ) const;
+	//
+	//private:
+	//	idTypeDef *				typeDef;
+	//	idVarDefName *			name;		// name of this var
+	//	idVarDef *				next;		// next var with the same name
+
+	///*
 //================
 //idVarDef::idVarDef()
 //================
@@ -595,7 +694,7 @@ class function_t {
 //	next		= NULL;
 //}
 //
-///*
+	///*
 //============
 //idVarDef::~idVarDef
 //============
@@ -606,7 +705,7 @@ class function_t {
 //	}
 //}
 //
-///*
+	///*
 //============
 //idVarDef::Name
 //============
@@ -615,7 +714,7 @@ class function_t {
 //	return name.Name();
 //}
 //
-///*
+	///*
 //============
 //idVarDef::GlobalName
 //============
@@ -628,7 +727,7 @@ class function_t {
 //	}
 //}
 //
-///*
+	///*
 //============
 //idVarDef::DepthOfScope
 //============
@@ -648,7 +747,7 @@ class function_t {
 //	return 0;
 //}
 //
-///*
+	///*
 //============
 //idVarDef::SetFunction
 //============
@@ -660,7 +759,7 @@ class function_t {
 //	value.functionPtr = func;
 //}
 //
-///*
+	///*
 //============
 //idVarDef::SetObject
 //============
@@ -672,7 +771,7 @@ class function_t {
 //	*value.objectPtrPtr = object;
 //}
 //
-///*
+	///*
 //============
 //idVarDef::SetValue
 //============
@@ -736,7 +835,7 @@ class function_t {
 //	}
 //}
 //
-///*
+	///*
 //============
 //idVarDef::SetString
 //============
@@ -752,7 +851,7 @@ class function_t {
 //	idStr.Copynz( value.stringPtr, string, MAX_STRING_LEN );
 //}
 //
-///*
+	///*
 //============
 //idVarDef::PrintInfo
 //============
@@ -837,14 +936,30 @@ class function_t {
 //		break;
 //	}
 //}
+}
+
+/***********************************************************************
+
+  idVarDefName
+
+***********************************************************************/
+
+class idVarDefName {
+//public:
+//							idVarDefName( void ) { defs = NULL; }
+//							idVarDefName( const char *n ) { name = n; defs = NULL; }
 //
-///***********************************************************************
+//	const char *			Name( void ) const { return name; }
+//	idVarDef *				GetDefs( void ) const { return defs; }
 //
-//  idVarDef
+//	void					AddDef( idVarDef *def );
+//	void					RemoveDef( idVarDef *def );
 //
-//***********************************************************************/
-//
-///*
+//private:
+//	idStr					name;
+//	idVarDef *				defs;
+//};
+	///*
 //============
 //idVarDefName::AddDef
 //============
@@ -856,7 +971,7 @@ class function_t {
 //	defs = def;
 //}
 //
-///*
+	///*
 //============
 //idVarDefName::RemoveDef
 //============
@@ -875,6 +990,8 @@ class function_t {
 //	def.next = NULL;
 //	def.name = NULL;
 //}
+}
+
 //
 ///***********************************************************************
 //
@@ -1150,16 +1267,16 @@ class idProgram {
 
 	numVariables:number/*int*/;
 	variables = new Uint8Array(MAX_GLOBALS);
-//	variableDefaults = new idStaticList<byte,MAX_GLOBALS>;
+	variableDefaults = new idStaticList</*byte*/number>(Number, MAX_GLOBALS);
 	functions = new idStaticList<function_t>(function_t,MAX_FUNCS);
 	statements = new idStaticList<statement_t>(statement_t,MAX_STATEMENTS);
 	types = new idList<idTypeDef>(idTypeDef);
 	varDefNames = new idList<idVarDefName>(idVarDefName);
 	varDefNameHash = new idHashIndex;
 	varDefs = new idList<idVarDef>	(idVarDef);
-//
-//	sysDef:idVarDef;
-//
+
+	sysDef:idVarDef;
+
 	top_functions: number;	   //	int											
 	top_statements: number;	   //	int											
 	top_types: number;		   //	int											
@@ -1451,103 +1568,104 @@ class idProgram {
 idProgram::AllocDef
 ============
 */
-idVarDef *idProgram::AllocDef( idTypeDef *type, const char *name, idVarDef *scope, bool constant ) {
-	idVarDef	*def;
-	idStr		element;
-	idVarDef	*def_x;
-	idVarDef	*def_y;
-	idVarDef	*def_z;
+	AllocDef ( type: idTypeDef, name: string, scope: idVarDef, constant: boolean ): idVarDef {
+		var def: idVarDef;
+		var element: idStr;
+		var def_x: idVarDef;
+		var def_y: idVarDef;
+		var def_z: idVarDef;
+		todoThrow();
 
-	// allocate a new def
-	def = new idVarDef( type );
-	def.scope		= scope;
-	def.numUsers	= 1;
-	def.num		= varDefs.Append( def );
+		// allocate a new def
+		//def = new idVarDef( type );
+		//def.scope		= scope;
+		//def.numUsers	= 1;
+		//def.num		= varDefs.Append( def );
 
-	// add the def to the list with defs with this name and set the name pointer
-	AddDefToNameList( def, name );
+		//// add the def to the list with defs with this name and set the name pointer
+		//AddDefToNameList( def, name );
 
-	if ( ( type.Type() == ev_vector ) || ( ( type.Type() == ev_field ) && ( type.FieldType().Type() == ev_vector ) ) ) {
-		//
-		// vector
-		//
-		if ( !strcmp( name, RESULT_STRING ) ) {
-			// <RESULT> vector defs don't need the _x, _y and _z components
-			assert( scope.Type() == ev_function );
-			def.value.stackOffset	= scope.value.functionPtr.locals;
-			def.initialized		= idVarDef::stackVariable;
-			scope.value.functionPtr.locals += type.Size();
-		} else if ( scope.TypeDef().Inherits( &type_object ) ) {
-			idTypeDef	newtype( ev_field, NULL, "float field", 0, &type_float );
-			idTypeDef	*type = GetType( newtype, true );
+		//if ( ( type.Type() == ev_vector ) || ( ( type.Type() == ev_field ) && ( type.FieldType().Type() == ev_vector ) ) ) {
+		//	//
+		//	// vector
+		//	//
+		//	if ( !strcmp( name, RESULT_STRING ) ) {
+		//		// <RESULT> vector defs don't need the _x, _y and _z components
+		//		assert( scope.Type() == ev_function );
+		//		def.value.stackOffset	= scope.value.functionPtr.locals;
+		//		def.initialized		= idVarDef::stackVariable;
+		//		scope.value.functionPtr.locals += type.Size();
+		//	} else if ( scope.TypeDef().Inherits( &type_object ) ) {
+		//		idTypeDef	newtype( ev_field, NULL, "float field", 0, &type_float );
+		//		idTypeDef	*type = GetType( newtype, true );
 
-			// set the value to the variable's position in the object
-			def.value.ptrOffset = scope.TypeDef().Size();
+		//		// set the value to the variable's position in the object
+		//		def.value.ptrOffset = scope.TypeDef().Size();
 
-			// make automatic defs for the vectors elements
-			// origin can be accessed as origin_x, origin_y, and origin_z
-			sprintf( element, "%s_x", def.Name() );
-			def_x = AllocDef( type, element, scope, constant );
+		//		// make automatic defs for the vectors elements
+		//		// origin can be accessed as origin_x, origin_y, and origin_z
+		//		sprintf( element, "%s_x", def.Name() );
+		//		def_x = AllocDef( type, element, scope, constant );
 
-			sprintf( element, "%s_y", def.Name() );
-			def_y = AllocDef( type, element, scope, constant );
-			def_y.value.ptrOffset = def_x.value.ptrOffset + type_float.Size();
+		//		sprintf( element, "%s_y", def.Name() );
+		//		def_y = AllocDef( type, element, scope, constant );
+		//		def_y.value.ptrOffset = def_x.value.ptrOffset + type_float.Size();
 
-			sprintf( element, "%s_z", def.Name() );
-			def_z = AllocDef( type, element, scope, constant );
-			def_z.value.ptrOffset = def_y.value.ptrOffset + type_float.Size();
-		} else {
-			// make automatic defs for the vectors elements
-			// origin can be accessed as origin_x, origin_y, and origin_z
-			sprintf( element, "%s_x", def.Name() );
-			def_x = AllocDef( &type_float, element, scope, constant );
+		//		sprintf( element, "%s_z", def.Name() );
+		//		def_z = AllocDef( type, element, scope, constant );
+		//		def_z.value.ptrOffset = def_y.value.ptrOffset + type_float.Size();
+		//	} else {
+		//		// make automatic defs for the vectors elements
+		//		// origin can be accessed as origin_x, origin_y, and origin_z
+		//		sprintf( element, "%s_x", def.Name() );
+		//		def_x = AllocDef( &type_float, element, scope, constant );
 
-			sprintf( element, "%s_y", def.Name() );
-			def_y = AllocDef( &type_float, element, scope, constant );
+		//		sprintf( element, "%s_y", def.Name() );
+		//		def_y = AllocDef( &type_float, element, scope, constant );
 
-			sprintf( element, "%s_z", def.Name() );
-			def_z = AllocDef( &type_float, element, scope, constant );
+		//		sprintf( element, "%s_z", def.Name() );
+		//		def_z = AllocDef( &type_float, element, scope, constant );
 
-			// point the vector def to the x coordinate
-			def.value			= def_x.value;
-			def.initialized	= def_x.initialized;
-		}
-	} else if ( scope.TypeDef().Inherits( &type_object ) ) {
-		//
-		// object variable
-		//
-		// set the value to the variable's position in the object
-		def.value.ptrOffset = scope.TypeDef().Size();
-	} else if ( scope.Type() == ev_function ) {
-		//
-		// stack variable
-		//
-		// since we don't know how many local variables there are,
-		// we have to have them go backwards on the stack
-		def.value.stackOffset	= scope.value.functionPtr.locals;
-		def.initialized		= idVarDef::stackVariable;
+		//		// point the vector def to the x coordinate
+		//		def.value			= def_x.value;
+		//		def.initialized	= def_x.initialized;
+		//	}
+		//} else if ( scope.TypeDef().Inherits( &type_object ) ) {
+		//	//
+		//	// object variable
+		//	//
+		//	// set the value to the variable's position in the object
+		//	def.value.ptrOffset = scope.TypeDef().Size();
+		//} else if ( scope.Type() == ev_function ) {
+		//	//
+		//	// stack variable
+		//	//
+		//	// since we don't know how many local variables there are,
+		//	// we have to have them go backwards on the stack
+		//	def.value.stackOffset	= scope.value.functionPtr.locals;
+		//	def.initialized		= idVarDef::stackVariable;
 
-		if ( type.Inherits( &type_object ) ) {
-			// objects only have their entity number on the stack, not the entire object
-			scope.value.functionPtr.locals += type_object.Size();
-		} else {
-			scope.value.functionPtr.locals += type.Size();
-		}
-	} else {
-		//
-		// global variable
-		//
-		def.value.bytePtr = &variables[ numVariables ];
-		numVariables += def.TypeDef().Size();
-		if ( numVariables > sizeof( variables ) ) {
-			throw idCompileError( va( "Exceeded global memory size (%d bytes)", sizeof( variables ) ) );
-		}
+		//	if ( type.Inherits( &type_object ) ) {
+		//		// objects only have their entity number on the stack, not the entire object
+		//		scope.value.functionPtr.locals += type_object.Size();
+		//	} else {
+		//		scope.value.functionPtr.locals += type.Size();
+		//	}
+		//} else {
+		//	//
+		//	// global variable
+		//	//
+		//	def.value.bytePtr = &variables[ numVariables ];
+		//	numVariables += def.TypeDef().Size();
+		//	if ( numVariables > sizeof( variables ) ) {
+		//		throw idCompileError( va( "Exceeded global memory size (%d bytes)", sizeof( variables ) ) );
+		//	}
 
-		memset( def.value.bytePtr, 0, def.TypeDef().Size() );
+		//	memset( def.value.bytePtr, 0, def.TypeDef().Size() );
+		//}
+
+		return def;
 	}
-
-	return def;
-}
 
 	///*
 //============
@@ -1808,38 +1926,36 @@ idProgram::BeginCompilation
 called before compiling a batch of files, clears the pr struct
 ==============
 */
-BeginCompilation( ):void {
-	var statement = new statement_t	;
+	BeginCompilation ( ): void {
+		var statement = new statement_t;
 
-	this.FreeData();
+		this.FreeData ( );
 
-	try {
-		// make the first statement a return for a "NULL" function
-		statement = this.AllocStatement();
-		statement.linenumber	= 0;
-		statement.file 		= 0;
-		statement.op			= op.OP_RETURN;
-		statement.a			= NULL;
-		statement.b			= NULL;
-		statement.c			= NULL;
+		try {
+			// make the first statement a return for a "NULL" function
+			statement = this.AllocStatement ( );
+			statement.linenumber = 0;
+			statement.file = 0;
+			statement.op = op.OP_RETURN;
+			statement.a = NULL;
+			statement.b = NULL;
+			statement.c = NULL;
 
-		// define NULL
-		//AllocDef( &type_void, "<NULL>", &def_namespace, true );
+			// define NULL
+			//AllocDef( &type_void, "<NULL>", &def_namespace, true );
+			todoThrow ( );
+			//// define the return def
+			//this.returnDef = this.AllocDef( &type_vector, "<RETURN>", &def_namespace, false );
 
-		// define the return def
-		this.returnDef = this.AllocDef( &type_vector, "<RETURN>", &def_namespace, false );
+			//// define the return def for strings
+			//this.returnStringDef = this.AllocDef( &type_string, "<RETURN>", &def_namespace, false );
 
-		// define the return def for strings
-		this.returnStringDef = this.AllocDef( &type_string, "<RETURN>", &def_namespace, false );
-
-		// define the sys object
-		this.sysDef = this.AllocDef( &type_void, "sys", &def_namespace, true );
+			//// define the sys object
+			//this.sysDef = this.AllocDef( &type_void, "sys", &def_namespace, true );
+		} catch ( err /*: idCompileError*/ ) {
+			gameLocal.Error( "%s", err.error );
+		}
 	}
-
-	catch (err: idCompileError) {
-		gameLocal.Error( "%s", err.error );
-	}
-}
 
 	///*
 //==============
@@ -1904,30 +2020,30 @@ BeginCompilation( ):void {
 //	fileSystem.CloseFile( file );
 //}
 //
-	///*
-//==============
-//idProgram::FinishCompilation
-//
-//Called after all files are compiled to check for errors
-//==============
-//*/
-//void idProgram::FinishCompilation( void ) {
-//	int	i;
-//
-//	top_functions	= functions.Num();
-//	top_statements	= statements.Num();
-//	top_types		= types.Num();
-//	top_defs		= varDefs.Num();
-//	top_files		= fileList.Num();
-//
-//	variableDefaults.Clear();
-//	variableDefaults.SetNum( numVariables );
-//
-//	for( i = 0; i < numVariables; i++ ) {
-//		variableDefaults[ i ] = variables[ i ];
-//	}
-//}
-//
+/*
+==============
+idProgram::FinishCompilation
+
+Called after all files are compiled to check for errors
+==============
+*/
+	FinishCompilation ( ): void {
+		var i: number;
+
+		this.top_functions = this.functions.Num ( );
+		this.top_statements = this.statements.Num ( );
+		this.top_types = this.types.Num ( );
+		this.top_defs = this.varDefs.Num ( );
+		this.top_files = this.fileList.Num ( );
+
+		this.variableDefaults.Clear ( );
+		this.variableDefaults.SetNum( this.numVariables );
+
+		for ( i = 0; i < this.numVariables; i++ ) {
+			this.variableDefaults[i] = this.variables[i];
+		}
+	}
+
 	///*
 //==============
 //idProgram::CompileStats
@@ -2049,32 +2165,33 @@ BeginCompilation( ):void {
 //
 //	return FindFunction( functionName );
 //}
-//
-	///*
-//================
-//idProgram::CompileFile
-//================
-//*/
-//void idProgram::CompileFile( const char *filename ) {
-//	char *src;
-//	bool result;
-//
-//	if ( fileSystem.ReadFile( filename, ( void ** )&src, NULL ) < 0 ) {
-//		gameLocal.Error( "Couldn't load %s\n", filename );
-//	}
-//
-//	result = CompileText( filename, src, false );
-//
-//	fileSystem.FreeFile( src );
-//
-//	if ( g_disasm.GetBool() ) {
-//		Disassemble();
-//	}
-//
-//	if ( !result ) {
-//		gameLocal.Error( "Compile failed in file %s.", filename );
-//	}
-//}
+
+	/*
+================
+idProgram::CompileFile
+================
+*/
+	CompileFile ( filename: string ): void {
+		todoThrow ( );
+		//char *src;
+		//bool result;
+
+		//if ( fileSystem.ReadFile( filename, ( void ** )&src, NULL ) < 0 ) {
+		//	gameLocal.Error( "Couldn't load %s\n", filename );
+		//}
+
+		//result = CompileText( filename, src, false );
+
+		//fileSystem.FreeFile( src );
+
+		//if ( g_disasm.GetBool() ) {
+		//	Disassemble();
+		//}
+
+		//if ( !result ) {
+		//	gameLocal.Error( "Compile failed in file %s.", filename );
+		//}
+	}
 
 /*
 ================
