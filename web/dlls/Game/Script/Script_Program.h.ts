@@ -48,16 +48,26 @@ enum etype_t{
 	ev_error = -1, ev_void, ev_scriptevent, ev_namespace, ev_string, ev_float, ev_vector, ev_entity, ev_field, ev_function, ev_virtualfunction, ev_pointer, ev_object, ev_jumpoffset, ev_argsize, ev_boolean
 }
 
-//
-//typedef union eval_s {
-//	const char			*stringPtr;
-//	float				_float;
-//	float				vector[ 3 ];
-//	function_t			*function;
-//	int 				_int;
-//	int 				entity;
-//} eval_t;
-//
+
+class eval_t {
+	//const char			*stringPtr;
+	//float				_float;
+	//float				vector[ 3 ];
+	//function_t			*function;
+	//int 				_int;
+	//int 				entity;
+
+	private val = new ArrayBuffer(12);
+	private uint8s = new Uint8Array(this.val);
+	private int32s = new Uint32Array(this.val);
+
+	init ( ):void {
+		this.int32s[0] = 0;
+		this.int32s[1] = 0;
+		this.int32s[2] = 0;
+	}
+};
+
 //
 ///***********************************************************************
 //

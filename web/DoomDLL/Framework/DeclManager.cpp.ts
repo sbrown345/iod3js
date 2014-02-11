@@ -632,7 +632,7 @@ var/*int */c_savedMemory = 0;
     var buffer = new R < Uint8Array>( );
 	var /*int			*/length:number, size: number;
 	var /*int			*/sourceLine:number;
-	var name: idStr;
+	var name = new idStr;
 	var newDecl: idDeclLocal;
 	var reparse:boolean;
 
@@ -726,7 +726,7 @@ var/*int */c_savedMemory = 0;
 			continue;
 		}
 
-		name = token.$.clone();
+		name.equals( token.$.data );
 
 		assert( src.buffer.indexOf( "<!DOCTYPE html" ) === -1 );
 

@@ -152,7 +152,7 @@ class idLexer {
 	/*int *			*/
 	nextpunctuation: Int32Array; // next punctuation in chain
 	/*idToken		*/
-	token: idToken; // available token
+	token = new idToken; // available token
 	/*idLexer *		*/
 	next: idLexer; // next script in a chain
 	/*bool			*/
@@ -161,9 +161,9 @@ class idLexer {
 	/*static char		*/
 	baseFolder: string /*[ 256 ]*/; // base folder to load files from
 
-	////ID_INLINE const char *idLexer::GetFileName( void ) {
-	////	return this.filename;
-	////}
+	GetFileName ( ): string {
+		return this.filename.data;
+	}
 
 	GetFileOffset ( ): number {
 		return this.script_p; // - this.buffer;
@@ -315,19 +315,17 @@ class idLexer {
 	idLexer::SetPunctuations
 	================
 	*/
-	SetPunctuations(p:punctuation_t[] ):void {
-	//#ifdef PUNCTABLE
-		if (p) {
+	SetPunctuations ( p: punctuation_t[] ): void {
+		//#ifdef PUNCTABLE
+		if ( p ) {
 			this.CreatePunctuationTable( p );
-		}
-		else {
+		} else {
 			this.CreatePunctuationTable( default_punctuations );
 		}
-	//#endif //PUNCTABLE
-		if (p) {
+		//#endif //PUNCTABLE
+		if ( p ) {
 			this.punctuations = p;
-		}
-		else {
+		} else {
 			this.punctuations = default_punctuations;
 		}
 	}
@@ -1649,60 +1647,65 @@ class idLexer {
 	////	return this.line - idLexer::lastline;
 	////}
 
-	/////*
-	////================
-	////idLexer::LoadFile
-	////================
-	////*/
-	////int idLexer::LoadFile( const char *filename, bool OSPath ) {
-	////	idFile *fp;
-	////	idStr pathname;
-	////	int length;
-	////	char *buf;
+	/*
+	================
+	idLexer::LoadFile
+	================
+	*/
+	/*int*/ LoadFile( filename:string, OSPath :boolean):number {
+		//var fp: idFile;
+		//var pathname = new idStr;
+		//var/*int */length:number;
+		//var buf;
 
-	////	if ( this.loaded ) {
-	////		idLib::common.Error("idLexer::LoadFile: another script already loaded");
-	////		return false;
-	////	}
+		if ( this.loaded ) {
+			common.Error("idLexer::LoadFile: another script already loaded");
+			return /*false*/0;
+		}
 
-	////	if ( !OSPath && ( baseFolder[0] != '\0' ) ) {// TODO: WATCH OUT HERE
-	////		pathname = va( "%s/%s", baseFolder, filename );
-	////	} else {
-	////		pathname = filename;
-	////	}
-	////	if ( OSPath ) {
-	////		fp = idLib::fileSystem.OpenExplicitFileRead( pathname );
-	////	} else {
-	////		fp = idLib::fileSystem.OpenFileRead( pathname );
-	////	}
-	////	if ( !fp ) {
-	////		return false;
-	////	}
-	////	length = fp.Length();
-	////	buf = (char *) Mem_Alloc( length + 1 );
-	////	buf[length] = '\0';// TODO: WATCH OUT HERE
-	////	fp.Read( buf, length );
-	////	idLexer::fileTime = fp.Timestamp();
-	////	this.filename = fp.GetFullPath();
-	////	idLib::fileSystem.CloseFile( fp );
+		//if ( !OSPath && ( baseFolder[0] != '\0' ) ) {// TODO: WATCH OUT HERE
+		//	pathname.equals( va( "%s/%s", this.baseFolder, filename ));
+		//} else {
+		//	pathname = filename;
+		//}
+		//if ( OSPath ) {
+		//	fp = fileSystem.OpenExplicitFileRead( pathname );
+		//} else {
+		//	fp = fileSystem.OpenFileRead( pathname );
+		//}
+		//if ( !fp ) {
+		//	return /*false*/0;
+		//}
+		//length = fp.Length();
+		//buf = (char *) Mem_Alloc( length + 1 );
+		//buf[length] = '\0';// TODO: WATCH OUT HERE
+		//fp.Read( buf, length );
+		//this.fileTime = fp.Timestamp();
+		//this.filename = fp.GetFullPath();
+		//idLib::fileSystem.CloseFile( fp );
 
-	////	this.buffer = buf;
-	////	idLexer::length = length;
-	////	// pointer in script buffer
-	////	this.script_p = 0;//idLexer::buffer;
-	////	// pointer in script buffer before reading token
-	////	idLexer::lastScript_p = 0;//idLexer::buffer;
-	////	// pointer to end of script buffer
-	////	idLexer::end_p = this.buffer.length;//&(idLexer::buffer[length]);
 
-	////	this.tokenavailable = 0;
-	////	this.line = 1;
-	////	idLexer::lastline = 1;
-	////	this.allocated = true;
-	////	this.loaded = true;
+		var buf = new R<Uint8Array>();
+		length = fileSystem.ReadFile( filename, buf, new R( 0 ) );
 
-	////	return true;
-	////}
+
+		this.buffer = buf.$.toString();
+		this.length = length;
+		// pointer in script buffer
+		this.script_p = 0;//idLexer::buffer;
+		// pointer in script buffer before reading token
+		this.lastScript_p = 0;//idLexer::buffer;
+		// pointer to end of script buffer
+		this.end_p = this.buffer.length;//&(idLexer::buffer[length]);
+
+		this.tokenavailable = 0;
+		this.line = 1;
+		this.lastline = 1;
+		this.allocated = 1/*true*/;
+		this.loaded = 1/*true*/;
+
+		return /*true*/1;
+	}
 
 	/*
     ================
@@ -1764,95 +1767,63 @@ FreeSource( ):void {
 	this.loaded = 0;
 }
 
-/////*
-////================
-////idLexer::idLexer
-////================
-////*/
-////idLexer::idLexer( void ) {
-////	this.loaded = false;
-////	this.filename = "";
-////	this.flags = 0;
-////	idLexer::SetPunctuations( NULL );
-////	this.allocated = false;
-////	idLexer::fileTime = 0;
-////	idLexer::length = 0;
-////	this.line = 0;
-////	idLexer::lastline = 0;
-////	this.tokenavailable = 0;
-////	this.token = new idToken();
-////	idLexer::next = NULL;
-////	idLexer::hadError = false;
-////}
-
-	constructor(flags:number = 0) {
-		this.loaded = 0/*false*/;
-		this.filename = new idStr("");
-		this.flags = flags;
-		this.SetPunctuations(null);
-		this.allocated = 0/*false*/;
-		this.fileTime = 0;
-		this.length = 0;
-		this.line = 0;
-		this.lastline = 0;
-		this.tokenavailable = 0;
-		this.token = new idToken();
-		this.next = null;
-		this.hadError = false;
+	constructor ( )
+	constructor ( flags: number /*int*/ )
+	constructor ( filename: string, /*int */flags: number, OSPath: boolean )
+	constructor ( /*const char **/ptr: string, /*int */length: number, name: string, /*int*/ flags: number )
+	constructor ( a1?: any, a2?: any, a3?: any, a4?: any ) {
+		if ( arguments.length == 0 ) {
+			this.loaded = 0;
+			this.filename.equals( "" );
+			this.flags = 0;
+			this.SetPunctuations( null );
+			this.allocated = 0;
+			this.fileTime = 0;
+			this.length = 0;
+			this.line = 0;
+			this.lastline = 0;
+			this.tokenavailable = 0;
+			this.token.equals( "" );
+			this.next = null;
+			this.hadError = false;
+		} else if ( arguments.length == 1 ) {
+			var flags = a1;
+			this.loaded = 0;
+			this.filename.equals( "" );
+			this.flags = flags;
+			this.SetPunctuations( null );
+			this.allocated = 0;
+			this.fileTime = 0;
+			this.length = 0;
+			this.line = 0;
+			this.lastline = 0;
+			this.tokenavailable = 0;
+			this.token.equals( "" );
+			this.next = null;
+			this.hadError = false;
+		} else if ( arguments.length == 3 ) {
+			var filename = a1, flags = a2, OSPath = a3;
+			this.loaded = 0;
+			this.flags = flags;
+			this.SetPunctuations( null );
+			this.allocated = 0;
+			this.token.equals( "" );
+			this.next = null;
+			this.hadError = false;
+			this.LoadFile( filename, OSPath );
+		} else if ( arguments.length == 4 ) {
+			var ptr = a1, length: number = a2, name: string = a3, flags = a4;
+			this.loaded = 0;
+			this.flags = flags;
+			this.SetPunctuations( null );
+			this.allocated = 0;
+			this.token.equals( "" );
+			this.next = null;
+			this.hadError = false;
+			this.LoadMemory( ptr, length, name );
+		}
 	}
 
-/////*
-////================
-////idLexer::idLexer
-////================
-////*/
-////idLexer::idLexer( int flags ) {
-////	this.loaded = false;
-////	this.filename = "";
-////	this.flags = flags;
-////	idLexer::SetPunctuations( NULL );
-////	this.allocated = false;
-////	idLexer::fileTime = 0;
-////	idLexer::length = 0;
-////	this.line = 0;
-////	idLexer::lastline = 0;
-////	this.tokenavailable = 0;
-////	this.token = new idToken();
-////	idLexer::next = NULL;
-////	idLexer::hadError = false;
-////}
-
-/////*
-////================
-////idLexer::idLexer
-////================
-////*/
-////idLexer::idLexer( const char *filename, int flags, bool OSPath ) {
-////	this.loaded = false;
-////	this.flags = flags;
-////	idLexer::SetPunctuations( NULL );
-////	this.allocated = false;
-////	this.token = new idToken();
-////	idLexer::next = NULL;
-////	idLexer::hadError = false;
-////	idLexer::LoadFile( filename, OSPath );
-////}
-
-/////*
-////================
-////idLexer::idLexer
-////================
-////*/
-////idLexer::idLexer( const char *ptr, int length, const char *name, int flags ) {
-////	this.loaded = false;
-////	this.flags = flags;
-////	idLexer::SetPunctuations( NULL );
-////	this.allocated = false;
-////	this.token = new idToken();
-////	idLexer::next = NULL;
-////	idLexer::hadError = false;
-////	idLexer::LoadMemory( ptr, length, name );
-////}
 
 /////*
 ////================

@@ -116,6 +116,7 @@ var S_COLOR_BLACK				="^9";
 class idStr {
 
 	constructor ( );
+	constructor ( str: idStr );
 	constructor ( str: boolean );
 	constructor ( str: string );
 	constructor ( str: number );

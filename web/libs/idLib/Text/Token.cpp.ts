@@ -109,25 +109,29 @@ class idToken extends idStr {
     ////};
     ////
 	
-	clone ( ): idToken {
-		var cloned = new idToken ( );
-		cloned.type = this.type;
-		cloned.subtype = this.subtype;
-		cloned.line = this.line;
-		cloned.linesCrossed = this.linesCrossed;
-		cloned.flags = this.flags;
-		cloned.intvalue = this.intvalue;
-		cloned.floatvalue = this.floatvalue;
-		cloned.whiteSpaceStart_p = this.whiteSpaceStart_p;
-		cloned.whiteSpaceEnd_p = this.whiteSpaceEnd_p;
-		cloned.next = this.next;
-		cloned.data = this.data;
-		cloned.len = this.len;
-		return cloned;
+	constructor ( )
+	constructor ( text: idToken )
+	constructor ( text: string )
+	constructor(arg: any = null) {
+		if ( arg instanceof idToken ) {
+			idToken.copy( this, arg );
+		}
+		super( arg );
 	}
 
-	constructor ( text: string=null ) {
-		super( text );
+	static copy ( dest: idToken, src: idToken ): void {
+		dest.type = src.type;
+		dest.subtype = src.subtype;
+		dest.line = src.line;
+		dest.linesCrossed = src.linesCrossed;
+		dest.flags = src.flags;
+		dest.intvalue = src.intvalue;
+		dest.floatvalue = src.floatvalue;
+		dest.whiteSpaceStart_p = src.whiteSpaceStart_p;
+		dest.whiteSpaceEnd_p = src.whiteSpaceEnd_p;
+		dest.next = src.next;
+		dest.data = src.data;
+		dest.len = src.len;
 	}
 
 	////

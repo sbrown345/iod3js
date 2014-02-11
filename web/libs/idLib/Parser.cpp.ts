@@ -50,19 +50,19 @@
 ////#define INDENT_ELIF				0x0004
 ////#define INDENT_IFDEF			0x0008
 ////#define INDENT_IFNDEF			0x0010
-////
-////// macro definitions
-////typedef struct define_s {
-////	char *			name;						// define name
-////	int				flags;						// define flags
-////	int				builtin;					// > 0 if builtin define
-////	int				numparms;					// number of define parameters
-////	idToken *		parms;						// define parameters
-////	idToken *		tokens;						// macro tokens (possibly containing parm tokens)
-////	struct define_s	*next;						// next defined macro in a list
-////	struct define_s	*hashnext;					// next define in the hash chain
-////} define_t;
-////
+
+// macro definitions
+class define_t {
+	//char *			name;						// define name
+	//int				flags;						// define flags
+	//int				builtin;					// > 0 if builtin define
+	//int				numparms;					// number of define parameters
+	//idToken *		parms;						// define parameters
+	//idToken *		tokens;						// macro tokens (possibly containing parm tokens)
+	//struct define_s	*next;						// next defined macro in a list
+	//struct define_s	*hashnext;					// next define in the hash chain
+} ;
+
 ////// indents used for conditional compilation directives:
 ////// #if, #else, #elif, #ifdef, #ifndef
 ////typedef struct indent_s {
@@ -77,13 +77,13 @@
 ////#endif /* !__PARSER_H__ */
 
 
-////
-//////#define DEBUG_EVAL
-////#define MAX_DEFINEPARMS				128
-////#define DEFINEHASHSIZE				2048
-////
-////#define TOKEN_FL_RECURSIVE_DEFINE	1
-////
+
+//#define DEBUG_EVAL
+var MAX_DEFINEPARMS			=	128
+var DEFINEHASHSIZE			=	2048
+
+var TOKEN_FL_RECURSIVE_DEFINE = 1;
+
 ////define_t * idParser::globaldefines;
 
 
@@ -193,19 +193,19 @@ class idParser {
 ////	static void		SetBaseFolder( const char *path );
 ////
 ////private:
-////	int				loaded;						// set when a source file is loaded from file or memory
-////	idStr			filename;					// file name of the script
-////	idStr			includepath;				// path to include files
-////	bool			OSPath;						// true if the file was loaded from an OS path
-////	const punctuation_t *punctuations;			// punctuations to use
-////	int				flags;						// flags used for script parsing
-////	idLexer *		scriptstack;				// stack with scripts of the source
-////	idToken *		tokens;						// tokens to read first
-////	define_t *		defines;					// list with macro definitions
-////	define_t **		definehash;					// hash chain with defines
+		loaded:number/*int*/;						// set when a source file is loaded from file or memory
+		filename = new idStr;					// file name of the script
+		includepath = new idStr;				// path to include files
+		OSPath:boolean;						// true if the file was loaded from an OS path
+		punctuations: punctuation_t[];			// punctuations to use
+		flags:number/*int*/;						// flags used for script parsing
+		scriptstack:idLexer;						// stack with scripts of the source
+		tokens: idToken;						// tokens to read first
+		defines:define_t ;					// list with macro definitions
+		definehash:define_t[];					// hash chain with defines
 ////	indent_t *		indentstack;				// stack with indents
-////	int				skip;						// > 0 if skipping conditional code
-////	const char*		marker_p;
+		skip:number/*int*/;						// > 0 if skipping conditional code
+		marker_p:number;//	const char*		
 ////
 ////	static define_t *globaldefines;				// list with global defines added to every source loaded
 ////
@@ -257,19 +257,18 @@ class idParser {
 ////	int				DollarDirective_evalfloat( void );
 ////	int				ReadDollarDirective( void );
 ////};
-////
-////ID_INLINE const char *idParser::GetFileName( void ) const {
-////	if ( idParser::scriptstack ) {
-////		return idParser::scriptstack.GetFileName();
-////	}
-////	else {
-////		return "";
-////	}
-////}
-////
+
+	GetFileName ( ): string {
+		if ( this.scriptstack ) {
+			return this.scriptstack.GetFileName ( );
+		} else {
+			return "";
+		}
+	}
+
 ////ID_INLINE const int idParser::GetFileOffset( void ) const {
-////	if ( idParser::scriptstack ) {
-////		return idParser::scriptstack.GetFileOffset();
+////	if ( this.scriptstack ) {
+////		return this.scriptstack.GetFileOffset();
 ////	}
 ////	else {
 ////		return 0;
@@ -277,8 +276,8 @@ class idParser {
 ////}
 ////
 ////ID_INLINE const ID_TIME_T idParser::GetFileTime( void ) const {
-////	if ( idParser::scriptstack ) {
-////		return idParser::scriptstack.GetFileTime();
+////	if ( this.scriptstack ) {
+////		return this.scriptstack.GetFileTime();
 ////	}
 ////	else {
 ////		return 0;
@@ -286,8 +285,8 @@ class idParser {
 ////}
 ////
 ////ID_INLINE const int idParser::GetLineNum( void ) const {
-////	if ( idParser::scriptstack ) {
-////		return idParser::scriptstack.GetLineNum();
+////	if ( this.scriptstack ) {
+////		return this.scriptstack.GetLineNum();
 ////	}
 ////	else {
 ////		return 0;
@@ -579,8 +578,8 @@ class idParser {
 ////	va_start(ap, str);
 ////	vsprintf(text, str, ap);
 ////	va_end(ap);
-////	if ( idParser::scriptstack ) {
-////		idParser::scriptstack.Error( text );
+////	if ( this.scriptstack ) {
+////		this.scriptstack.Error( text );
 ////	}
 ////}
 ////
@@ -596,8 +595,8 @@ class idParser {
 ////	va_start(ap, str);
 ////	vsprintf(text, str, ap);
 ////	va_end(ap);
-////	if ( idParser::scriptstack ) {
-////		idParser::scriptstack.Warning( text );
+////	if ( this.scriptstack ) {
+////		this.scriptstack.Warning( text );
 ////	}
 ////}
 ////
@@ -611,7 +610,7 @@ class idParser {
 ////
 ////	indent = (indent_t *) Mem_Alloc(sizeof(indent_t));
 ////	indent.type = type;
-////	indent.script = idParser::scriptstack;
+////	indent.script = this.scriptstack;
 ////	indent.skip = (skip != 0);
 ////	idParser::skip += indent.skip;
 ////	indent.next = idParser::indentstack;
@@ -633,7 +632,7 @@ class idParser {
 ////	if (!indent) return;
 ////
 ////	// must be an indent from the current script
-////	if (idParser::indentstack.script != idParser::scriptstack) {
+////	if (idParser::indentstack.script != this.scriptstack) {
 ////		return;
 ////	}
 ////
@@ -652,15 +651,15 @@ class idParser {
 ////void idParser::PushScript( idLexer *script ) {
 ////	idLexer *s;
 ////
-////	for ( s = idParser::scriptstack; s; s = s.next ) {
+////	for ( s = this.scriptstack; s; s = s.next ) {
 ////		if ( !idStr::Icmp(s.GetFileName(), script.GetFileName()) ) {
 ////			idParser::Warning( "'%s' recursively included", script.GetFileName() );
 ////			return;
 ////		}
 ////	}
 ////	//push the script on the script stack
-////	script.next = idParser::scriptstack;
-////	idParser::scriptstack = script;
+////	script.next = this.scriptstack;
+////	this.scriptstack = script;
 ////}
 ////
 /////*
@@ -673,7 +672,7 @@ class idParser {
 ////	idLexer *script;
 ////	int type, skip, changedScript;
 ////
-////	if ( !idParser::scriptstack ) {
+////	if ( !this.scriptstack ) {
 ////		idLib::common.FatalError( "idParser::ReadSourceToken: not loaded" );
 ////		return false;
 ////	}
@@ -681,7 +680,7 @@ class idParser {
 ////	// if there's no token already available
 ////	while( !idParser::tokens ) {
 ////		// if there's a token to read from the script
-////		if ( idParser::scriptstack.ReadToken( token ) ) {
+////		if ( this.scriptstack.ReadToken( token ) ) {
 ////			token.linesCrossed += changedScript;
 ////
 ////			// set the marker based on the start of the token read in
@@ -691,21 +690,21 @@ class idParser {
 ////			return true;
 ////		}
 ////		// if at the end of the script
-////		if ( idParser::scriptstack.EndOfFile() ) {
+////		if ( this.scriptstack.EndOfFile() ) {
 ////			// remove all indents of the script
-////			while( idParser::indentstack && idParser::indentstack.script == idParser::scriptstack ) {
+////			while( idParser::indentstack && idParser::indentstack.script == this.scriptstack ) {
 ////				idParser::Warning( "missing #endif" );
 ////				idParser::PopIndent( &type, &skip );
 ////			}
 ////			changedScript = 1;
 ////		}
 ////		// if this was the initial script
-////		if ( !idParser::scriptstack.next ) {
+////		if ( !this.scriptstack.next ) {
 ////			return false;
 ////		}
 ////		// remove the script and return to the previous one
-////		script = idParser::scriptstack;
-////		idParser::scriptstack = idParser::scriptstack.next;
+////		script = this.scriptstack;
+////		this.scriptstack = this.scriptstack.next;
 ////		delete script;
 ////	}
 ////	// copy the already available token
@@ -716,20 +715,20 @@ class idParser {
 ////	delete t;
 ////	return true;
 ////}
-////
-/////*
-////================
-////idParser::UnreadSourceToken
-////================
-////*/
-////int idParser::UnreadSourceToken( idToken *token ) {
-////	idToken *t;
-////
-////	t = new idToken(token);
-////	t.next = idParser::tokens;
-////	idParser::tokens = t;
-////	return true;
-////}
+
+/*
+================
+idParser::UnreadSourceToken
+================
+*/
+	UnreadSourceToken ( token: R<idToken> ): number {
+		var t: idToken;
+
+		t = new idToken( token.$ );
+		t.next = this.tokens;
+		this.tokens = t;
+		return 1/*true*/;
+	}
 ////
 /////*
 ////================
@@ -951,7 +950,7 @@ class idParser {
 ////			break;
 ////		}
 ////		case BUILTIN_FILE: {
-////			(*token) = idParser::scriptstack.GetFileName();
+////			(*token) = this.scriptstack.GetFileName();
 ////			token.type = TT_NAME;
 ////			token.subtype = token.Length();
 ////			token.line = deftoken.line;
@@ -1242,7 +1241,7 @@ class idParser {
 ////			idParser::Error( "#include without file name between < >" );
 ////			return false;
 ////		}
-////		if ( idParser::flags & LEXFL_NOBASEINCLUDES ) {
+////		if ( this.flags & LEXFL_NOBASEINCLUDES ) {
 ////			return true;
 ////		}
 ////		script = new idLexer;
@@ -1259,7 +1258,7 @@ class idParser {
 ////		idParser::Error( "file '%s' not found", path.c_str() );
 ////		return false;
 ////	}
-////	script.SetFlags( idParser::flags );
+////	script.SetFlags( this.flags );
 ////	script.SetPunctuations( idParser::punctuations );
 ////	idParser::PushScript( script );
 ////	return true;
@@ -1896,11 +1895,11 @@ class idParser {
 ////		v2 = v.next;
 ////#ifdef DEBUG_EVAL
 ////		if (integer) {
-////			Log_Write("operator %s, value1 = %d", idParser::scriptstack.getPunctuationFromId(o.op), v1.intvalue);
+////			Log_Write("operator %s, value1 = %d", this.scriptstack.getPunctuationFromId(o.op), v1.intvalue);
 ////			if (v2) Log_Write("value2 = %d", v2.intvalue);
 ////		}
 ////		else {
-////			Log_Write("operator %s, value1 = %f", idParser::scriptstack.getPunctuationFromId(o.op), v1.floatvalue);
+////			Log_Write("operator %s, value1 = %f", this.scriptstack.getPunctuationFromId(o.op), v1.floatvalue);
 ////			if (v2) Log_Write("value2 = %f", v2.floatvalue);
 ////		}
 ////#endif //DEBUG_EVAL
@@ -2341,7 +2340,7 @@ class idParser {
 ////void idParser::UnreadSignToken( void ) {
 ////	idToken token;
 ////
-////	token.line = idParser::scriptstack.GetLineNum();
+////	token.line = this.scriptstack.GetLineNum();
 ////	token.whiteSpaceStart_p = NULL;
 ////	token.whiteSpaceEnd_p = NULL;
 ////	token.linesCrossed = 0;
@@ -2366,7 +2365,7 @@ class idParser {
 ////		return false;
 ////	}
 ////
-////	token.line = idParser::scriptstack.GetLineNum();
+////	token.line = this.scriptstack.GetLineNum();
 ////	token.whiteSpaceStart_p = NULL;
 ////	token.whiteSpaceEnd_p = NULL;
 ////	token.linesCrossed = 0;
@@ -2396,7 +2395,7 @@ class idParser {
 ////		return false;
 ////	}
 ////
-////	token.line = idParser::scriptstack.GetLineNum();
+////	token.line = this.scriptstack.GetLineNum();
 ////	token.whiteSpaceStart_p = NULL;
 ////	token.whiteSpaceEnd_p = NULL;
 ////	token.linesCrossed = 0;
@@ -2505,7 +2504,7 @@ class idParser {
 ////		return false;
 ////	}
 ////
-////	token.line = idParser::scriptstack.GetLineNum();
+////	token.line = this.scriptstack.GetLineNum();
 ////	token.whiteSpaceStart_p = NULL;
 ////	token.whiteSpaceEnd_p = NULL;
 ////	token.linesCrossed = 0;
@@ -2537,7 +2536,7 @@ class idParser {
 ////		return false;
 ////	}
 ////
-////	token.line = idParser::scriptstack.GetLineNum();
+////	token.line = this.scriptstack.GetLineNum();
 ////	token.whiteSpaceStart_p = NULL;
 ////	token.whiteSpaceEnd_p = NULL;
 ////	token.linesCrossed = 0;
@@ -2586,71 +2585,71 @@ class idParser {
 ////	idParser::UnreadSourceToken( &token );
 ////	return false;
 ////}
-////
-/////*
-////================
-////idParser::ReadToken
-////================
-////*/
-////int idParser::ReadToken( idToken *token ) {
-////	define_t *define;
-////
-////	while(1) {
-////		if ( !idParser::ReadSourceToken( token ) ) {
-////			return false;
-////		}
-////		// check for precompiler directives
-////		if ( token.type == TT_PUNCTUATION && (*token)[0] == '#' && (*token)[1] == '\0' ) {
-////			// read the precompiler directive
-////			if ( !idParser::ReadDirective() ) {
-////				return false;
-////			}
-////			continue;
-////		}
-////		// if skipping source because of conditional compilation
-////		if ( idParser::skip ) {
-////			continue;
-////		}
-////		// recursively concatenate strings that are behind each other still resolving defines
-////		if ( token.type == TT_STRING && !(idParser::scriptstack.GetFlags() & LEXFL_NOSTRINGCONCAT) ) {
-////			idToken newtoken;
-////			if ( idParser::ReadToken( &newtoken ) ) {
-////				if ( newtoken.type == TT_STRING ) {
-////					token.Append( newtoken.c_str() );
-////				}
-////				else {
-////					idParser::UnreadSourceToken( &newtoken );
-////				}
-////			}
-////		}
-////		//
-////		if ( !(idParser::scriptstack.GetFlags() & LEXFL_NODOLLARPRECOMPILE) ) {
-////			// check for special precompiler directives
-////			if ( token.type == TT_PUNCTUATION && (*token)[0] == '$' && (*token)[1] == '\0' ) {
-////				// read the precompiler directive
-////				if ( idParser::ReadDollarDirective() ) {
-////					continue;
-////				}
-////			}
-////		}
-////		// if the token is a name
-////		if ( token.type == TT_NAME && !( token.flags & TOKEN_FL_RECURSIVE_DEFINE ) ) {
-////			// check if the name is a define macro
-////			define = FindHashedDefine( idParser::definehash, token.c_str() );
-////			// if it is a define macro
-////			if ( define ) {
-////				// expand the defined macro
-////				if ( !idParser::ExpandDefineIntoSource( token, define ) ) {
-////					return false;
-////				}
-////				continue;
-////			}
-////		}
-////		// found a token
-////		return true;
-////	}
-////}
-////
+
+/*
+================
+idParser::ReadToken
+================
+*/
+	ReadToken(token: R<idToken >):number {
+		var define: define_t ;
+
+	while(1) {
+		if ( !this.ReadSourceToken( token ) ) {
+			return 0/*false*/;
+		}
+		// check for precompiler directives
+		if (token.$.type == TT_PUNCTUATION && token.$.data[0] == '#' && !token.$.data[1] /*== '\0'*/ ) {
+			// read the precompiler directive
+			if ( !this.ReadDirective() ) {
+				return 0/*false*/;
+			}
+			continue;
+		}
+		// if skipping source because of conditional compilation
+		if (this.skip ) {
+			continue;
+		}
+		// recursively concatenate strings that are behind each other still resolving defines
+		if (token.$.type == TT_STRING && !(this.scriptstack.GetFlags() & lexerFlags_t.LEXFL_NOSTRINGCONCAT) ) {
+			var newtoken = new R(new idToken);
+			if ( this.ReadToken( newtoken ) ) {
+				if ( newtoken.$.type == TT_STRING ) {
+					token.$.Append( newtoken.$.c_str() );
+				}
+				else {
+					this.UnreadSourceToken( newtoken );
+				}
+			}
+		}
+		//
+		if (!(this.scriptstack.GetFlags() & lexerFlags_t.LEXFL_NODOLLARPRECOMPILE) ) {
+			// check for special precompiler directives
+			if (token.$.type == TT_PUNCTUATION && token.$.data[0] == '$' && !token.$.data[1]/* == '\0'*/ ) {
+				// read the precompiler directive
+				if ( this.ReadDollarDirective() ) {
+					continue;
+				}
+			}
+		}
+		// if the token is a name
+		if (token.$.type == TT_NAME && !( token.$.flags & TOKEN_FL_RECURSIVE_DEFINE ) ) {
+			// check if the name is a define macro
+			define = this.FindHashedDefine( this.definehash, token.$.c_str() );
+			// if it is a define macro
+			if ( define ) {
+				// expand the defined macro
+				if ( !this.ExpandDefineIntoSource( token, define ) ) {
+					return 0/*false*/;
+				}
+				continue;
+			}
+		}
+		// found a token
+		return 1/*true*/;
+	}
+}
+
 /////*
 ////================
 ////idParser::ExpectTokenString
@@ -2994,14 +2993,14 @@ class idParser {
 ////	return out.c_str();
 ////}
 ////
-/////*
-////================
-////idParser::UnreadToken
-////================
-////*/
-////void idParser::UnreadToken( idToken *token ) {
-////	idParser::UnreadSourceToken( token );
-////}
+/*
+================
+idParser::UnreadToken
+================
+*/
+	UnreadToken ( token: R<idToken> ): void {
+		this.UnreadSourceToken( token );
+	}
 ////
 /////*
 ////================
@@ -3239,27 +3238,27 @@ class idParser {
 ////	idParser::punctuations = p;
 ////}
 ////
-/////*
-////================
-////idParser::SetFlags
-////================
-////*/
-////void idParser::SetFlags( int flags ) {
-////	idLexer *s;
-////
-////	idParser::flags = flags;
-////	for ( s = idParser::scriptstack; s; s = s.next ) {
-////		s.SetFlags( flags );
-////	}
-////}
-////
+/*
+================
+idParser::SetFlags
+================
+*/
+	SetFlags ( /*int*/ flags: number ) {
+		var s: idLexer;
+
+		this.flags = flags;
+		for ( s = this.scriptstack; s; s = s.next ) {
+			s.SetFlags( flags );
+		}
+	}
+
 /////*
 ////================
 ////idParser::GetFlags
 ////================
 ////*/
 ////int idParser::GetFlags( void ) const {
-////	return idParser::flags;
+////	return this.flags;
 ////}
 ////
 /////*
@@ -3270,7 +3269,7 @@ class idParser {
 ////int idParser::LoadFile( const char *filename, bool OSPath ) {
 ////	idLexer *script;
 ////
-////	if ( idParser::loaded ) {
+////	if ( this.loaded ) {
 ////		idLib::common.FatalError("idParser::loadFile: another source already loaded");
 ////		return false;
 ////	}
@@ -3279,16 +3278,16 @@ class idParser {
 ////		delete script;
 ////		return false;
 ////	}
-////	script.SetFlags( idParser::flags );
+////	script.SetFlags( this.flags );
 ////	script.SetPunctuations( idParser::punctuations );
 ////	script.next = NULL;
 ////	idParser::OSPath = OSPath;
 ////	idParser::filename = filename;
-////	idParser::scriptstack = script;
+////	this.scriptstack = script;
 ////	idParser::tokens = NULL;
 ////	idParser::indentstack = NULL;
 ////	idParser::skip = 0;
-////	idParser::loaded = true;
+////	this.loaded = true;
 ////
 ////	if ( !idParser::definehash ) {
 ////		idParser::defines = NULL;
@@ -3297,42 +3296,42 @@ class idParser {
 ////	}
 ////	return true;
 ////}
-////
-/////*
-////================
-////idParser::LoadMemory
-////================
-////*/
-////int idParser::LoadMemory(const char *ptr, int length, const char *name ) {
-////	idLexer *script;
-////
-////	if ( idParser::loaded ) {
-////		idLib::common.FatalError("idParser::loadMemory: another source already loaded");
-////		return false;
-////	}
-////	script = new idLexer( ptr, length, name );
-////	if ( !script.IsLoaded() ) {
-////		delete script;
-////		return false;
-////	}
-////	script.SetFlags( idParser::flags );
-////	script.SetPunctuations( idParser::punctuations );
-////	script.next = NULL;
-////	idParser::filename = name;
-////	idParser::scriptstack = script;
-////	idParser::tokens = NULL;
-////	idParser::indentstack = NULL;
-////	idParser::skip = 0;
-////	idParser::loaded = true;
-////
-////	if ( !idParser::definehash ) {
-////		idParser::defines = NULL;
-////		idParser::definehash = (define_t **) Mem_ClearedAlloc( DEFINEHASHSIZE * sizeof(define_t *) );
-////		idParser::AddGlobalDefinesToSource();
-////	}
-////	return true;
-////}
-////
+
+/*
+================
+idParser::LoadMemory
+================
+*/
+LoadMemory(/*const char **/ptr:string, /*int */length:number, /*const char **/name :string):number {
+	var script: idLexer;
+
+	if ( this.loaded ) {
+		common.FatalError("idParser::loadMemory: another source already loaded");
+		return 0/*false*/;
+	}
+	script = new idLexer( ptr, length, name );
+	if ( !script.IsLoaded() ) {
+		delete script;
+		return 0/*false*/;
+	}
+	script.SetFlags( this.flags );
+	script.SetPunctuations( this.punctuations );
+	script.next = null;
+	this.filename = name;
+	this.scriptstack = script;
+	this.tokens = null;
+	this.indentstack = null;
+	this.skip = 0;
+	this.loaded = true;
+
+	if (!this.definehash ) {
+		this.defines = null;
+		this.definehash = new Array <define_t>( DEFINEHASHSIZE ); //(define_t **) Mem_ClearedAlloc( DEFINEHASHSIZE * sizeof(define_t *) );
+		this.AddGlobalDefinesToSource();
+	}
+	return 1/*true*/;
+}
+
 /////*
 ////================
 ////idParser::FreeSource

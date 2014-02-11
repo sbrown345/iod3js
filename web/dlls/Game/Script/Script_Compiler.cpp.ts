@@ -45,10 +45,10 @@ class idCompiler {
 	//
 	parser = new idParser;
 	parserPtr:idParser;
-	token:idToken;
+	token = new R(new idToken);
 	
 	immediateType: idTypeDef;
-	immediate = neweval_t;
+	immediate = new eval_t;
 	
 	eof:boolean;
 	console:boolean;
@@ -294,49 +294,50 @@ class idCompiler {
 //	// make sure we have the right # of opcodes in the table
 //	assert( ( sizeof( opcodes ) / sizeof( opcodes[ 0 ] ) ) == ( NUM_OPCODES + 1 ) );
 //
-//	eof	= true;
-//	parserPtr = &parser;
+//	this.eof	= true;
+//	this.parserPtr = &parser;
 //
 //	this.callthread			= false;
-//	loopDepth			= 0;
-//	eof					= false;
-//	braceDepth			= 0;
+//	this.loopDepth			= 0;
+//	this.eof					= false;
+//	this.braceDepth			= 0;
 //	immediateType		= NULL;
 //	this.basetype			= NULL;
-//	currentLineNumber	= 0;
-//	currentFileNumber	= 0;
+//	this.currentLineNumber	= 0;
+//	this.currentFileNumber	= 0;
 //	errorCount			= 0;
-//	console				= false;
+//	this.console				= false;
 //	this.scope				= &def_namespace;
 //
 //	memset( &immediate, 0, sizeof( immediate ) );
 //	memset( punctuationValid, 0, sizeof( punctuationValid ) );
 //	for( ptr = punctuation; *ptr != NULL; ptr++ ) {
-//		id = parserPtr.GetPunctuationId( *ptr );
+//		id = this.parserPtr.GetPunctuationId( *ptr );
 //		if ( ( id >= 0 ) && ( id < 256 ) ) {
 //			punctuationValid[ id ] = true;
 //		}
 //	}
 //}
 //
-	///*
-//============
-//idCompiler::Error
-//
-//Aborts the current file load
-//============
-//*/
-//void idCompiler::Error( const char *message, ... ) const {
-//	va_list	argptr;
-//	char	string[ 1024 ];
-//
-//	va_start( argptr, message );
-//	vsprintf( string, message, argptr );
-//	va_end( argptr );
-//
-//	throw idCompileError( string );
-//}
-//
+	/*
+============
+idCompiler::Error
+
+Aborts the current file load
+============
+*/
+	Error ( message: string, ...args: any[] ): void {
+		todoThrow( message );
+		//va_list	argptr;
+		//char	string[ 1024 ];
+
+		//va_start( argptr, message );
+		//vsprintf( string, message, argptr );
+		//va_end( argptr );
+
+		//throw new idCompileError( string );
+	}
+
 	///*
 //============
 //idCompiler::Warning
@@ -352,7 +353,7 @@ class idCompiler {
 //	vsprintf( string, message, argptr );
 //	va_end( argptr );
 //
-//	parserPtr.Warning( "%s", string );
+//	this.parserPtr.Warning( "%s", string );
 //}
 //
 	///*
@@ -666,8 +667,8 @@ class idCompiler {
 //	}
 //	
 //	statement = gameLocal.program.AllocStatement();
-//	statement.linenumber	= currentLineNumber;
-//	statement.file 		= currentFileNumber;
+//	statement.linenumber	= this.currentLineNumber;
+//	statement.file 		= this.currentFileNumber;
 //	
 //	if ( ( op.type_c == &def_void ) || op.rightAssociative ) {
 //		// ifs, gotos, and assignments don't need vars allocated
@@ -735,112 +736,112 @@ class idCompiler {
 //	return true;
 //}
 //
-	///*
-//==============
-//idCompiler::NextToken
-//
-//Sets token, immediateType, and possibly immediate
-//==============
-//*/
-//void idCompiler::NextToken( void ) {
-//	int i;
-//
-//	// reset our type
-//	immediateType = NULL;
-//	memset( &immediate, 0, sizeof( immediate ) );
-//
-//	// Save the token's line number and filename since when we emit opcodes the current 
-//	// token is always the next one to be read 
-//	currentLineNumber = token.line;
-//	currentFileNumber = gameLocal.program.GetFilenum( parserPtr.GetFileName() );
-//
-//	if ( !parserPtr.ReadToken( &token ) ) {
-//		eof = true;
-//		return;
-//	}
-//
-//	if ( currentFileNumber != gameLocal.program.GetFilenum( parserPtr.GetFileName() ) ) {
-//		if ( ( braceDepth > 0 ) && ( token != "}" ) ) {
-//			// missing a closing brace.  try to give as much info as possible.
-//			if ( this.scope.Type() == ev_function ) {
-//				Error( "Unexpected end of file inside function '%s'.  Missing closing braces.", this.scope.Name() );
-//			} else if ( this.scope.Type() == ev_object ) {
-//				Error( "Unexpected end of file inside object '%s'.  Missing closing braces.", this.scope.Name() );
-//			} else if ( this.scope.Type() == ev_namespace ) {
-//				Error( "Unexpected end of file inside namespace '%s'.  Missing closing braces.", this.scope.Name() );
-//			} else {
-//				Error( "Unexpected end of file inside braced section" );
-//			}
-//		}
-//	}
-//
-//	switch( token.type ) {
-//	case TT_STRING:
-//		// handle quoted strings as a unit
-//		immediateType = &type_string;
-//		return;
-//
-//	case TT_LITERAL: {
-//		// handle quoted vectors as a unit
-//		immediateType = &type_vector;
-//		idLexer lex( token, token.Length(), parserPtr.GetFileName(), LEXFL_NOERRORS );
-//		idToken token2;
-//		for( i = 0; i < 3; i++ ) {
-//			if ( !lex.ReadToken( &token2 ) ) {
-//				Error( "Couldn't read vector. '%s' is not in the form of 'x y z'", token.c_str() );
-//			}
-//			if ( token2.type == TT_PUNCTUATION && token2 == "-" ) {
-//				if ( !lex.CheckTokenType( TT_NUMBER, 0, &token2 ) ) {
-//					Error( "expected a number following '-' but found '%s' in vector '%s'", token2.c_str(), token.c_str() );
-//				}
-//				immediate.vector[ i ] = -token2.GetFloatValue();
-//			} else if ( token2.type == TT_NUMBER ) {
-//				immediate.vector[ i ] = token2.GetFloatValue();
-//			} else {
-//				Error( "vector '%s' is not in the form of 'x y z'.  expected float value, found '%s'", token.c_str(), token2.c_str() );
-//			}
-//		}
-//		return;
-//	}
-//
-//	case TT_NUMBER:
-//		immediateType = &type_float;
-//		immediate._float = token.GetFloatValue();
-//		return;
-//
-//	case TT_PUNCTUATION:
-//		// entity names
-//		if ( token == "$" ) {
-//			immediateType = &type_entity;
-//			parserPtr.ReadToken( &token );
-//			return;
-//		}
-//
-//		if ( token == "{" ) {
-//			braceDepth++;
-//			return;
-//		}
-//
-//		if ( token == "}" ) {
-//			braceDepth--;
-//			return;
-//		}
-//
-//		if ( punctuationValid[ token.subtype ] ) {
-//			return;
-//		}
-//
-//		Error( "Unknown punctuation '%s'", token.c_str() );
-//		break;
-//
-//	case TT_NAME:
-//		return;
-//
-//	default:
-//		Error( "Unknown token '%s'", token.c_str() );
-//	}
-//}
-//
+/*
+==============
+idCompiler::NextToken
+
+Sets token, immediateType, and possibly immediate
+==============
+*/
+NextToken( ):void {
+	var /*int */i:number;
+
+	// reset our type
+	this.immediateType = null;
+	this.immediate.init ( );
+
+	// Save the token's line number and filename since when we emit opcodes the current 
+	// token is always the next one to be read 
+	this.currentLineNumber = this.token.$.line;
+	this.currentFileNumber = gameLocal.program.GetFilenum( this.parserPtr.GetFileName() );
+
+	if ( !this.parserPtr.ReadToken( this.token ) ) {
+		this.eof = true;
+		return;
+	}
+
+	if ( this.currentFileNumber != gameLocal.program.GetFilenum( this.parserPtr.GetFileName() ) ) {
+		if ( ( this.braceDepth > 0 ) && ( this.token.$.data != "}" ) ) {
+			// missing a closing brace.  try to give as much info as possible.
+			if (this.scope.Type() == etype_t.ev_function ) {
+				this.Error( "Unexpected end of file inside function '%s'.  Missing closing braces.", this.scope.Name() );
+			} else if (this.scope.Type() == etype_t.ev_object ) {
+				this.Error( "Unexpected end of file inside object '%s'.  Missing closing braces.", this.scope.Name() );
+			} else if (this.scope.Type() == etype_t.ev_namespace ) {
+				this.Error( "Unexpected end of file inside namespace '%s'.  Missing closing braces.", this.scope.Name() );
+			} else {
+				this.Error( "Unexpected end of file inside braced section" );
+			}
+		}
+	}
+
+	switch( this.token.$.type ) {
+	case TT_STRING:
+		// handle quoted strings as a unit
+		this.immediateType = type_string;
+		return;
+
+	case TT_LITERAL: {
+		// handle quoted vectors as a unit
+		this.immediateType = type_vector;
+		var lex = new idLexer(this.token.$, this.token.$.Length(), this.parserPtr.GetFileName(), lexerFlags_t.LEXFL_NOERRORS );
+		var token2 = new R(idToken);
+		for( i = 0; i < 3; i++ ) {
+			if ( !lex.ReadToken( token2 ) ) {
+				this.Error( "Couldn't read vector. '%s' is not in the form of 'x y z'", this.token.$.c_str() );
+			}
+			if ( token2.type == TT_PUNCTUATION && token2.$.data == "-" ) {
+				if ( !lex.CheckTokenType( TT_NUMBER, 0, token2 ) ) {
+					this.Error( "expected a number following '-' but found '%s' in vector '%s'", token2.$.c_str(), this.token.$.c_str() );
+				}
+				this.immediate.vector[ i ] = -token2.GetFloatValue();
+			} else if ( token2.type == TT_NUMBER ) {
+				this.immediate.vector[ i ] = token2.GetFloatValue();
+			} else {
+				this.Error( "vector '%s' is not in the form of 'x y z'.  expected float value, found '%s'", this.token.$.c_str(), token2.c_str() );
+			}
+		}
+		return;
+	}
+
+	case TT_NUMBER:
+		this.immediateType = type_float;
+		this.immediate._float = this.token.$.GetFloatValue();
+		return;
+
+	case TT_PUNCTUATION:
+		// entity names
+		if ( this.token.$.data == "$" ) {
+			this.immediateType = type_entity;
+			this.parserPtr.ReadToken( this.token );
+			return;
+		}
+
+		if ( this.token.$.data == "{" ) {
+			this.braceDepth++;
+			return;
+		}
+
+		if (this.token.$.data == "}" ) {
+			this.braceDepth--;
+			return;
+		}
+
+		if ( this.punctuationValid[ this.token.$.subtype ] ) {
+			return;
+		}
+
+		Error( "Unknown punctuation '%s'", this.token.$.c_str() );
+		break;
+
+	case TT_NAME:
+		return;
+
+	default:
+		Error( "Unknown token '%s'", this.token.$.c_str() );
+	}
+}
+
 	///*
 //=============
 //idCompiler::ExpectToken
@@ -850,8 +851,8 @@ class idCompiler {
 //=============
 //*/
 //void idCompiler::ExpectToken( const char *string ) {
-//	if ( token != string ) {
-//		Error( "expected '%s', found '%s'", string, token.c_str() );
+//	if ( this.token != string ) {
+//		Error( "expected '%s', found '%s'", string, this.token.$.c_str() );
 //	}
 //
 //	NextToken();
@@ -866,7 +867,7 @@ class idCompiler {
 //=============
 //*/
 //bool idCompiler::CheckToken( const char *string ) {
-//	if ( token != string ) {
+//	if ( this.token != string ) {
 //		return false;
 //	}
 //		
@@ -883,11 +884,11 @@ class idCompiler {
 //============
 //*/
 //void idCompiler::ParseName( idStr &name ) {
-//	if ( token.type != TT_NAME ) {
-//		Error( "'%s' is not a name", token.c_str() );
+//	if ( this.token.$.type != TT_NAME ) {
+//		Error( "'%s' is not a name", this.token.$.c_str() );
 //	}
 //
-//	name = token;
+//	name = this.token.$;
 //	NextToken();
 //}
 //
@@ -899,9 +900,9 @@ class idCompiler {
 //============
 //*/
 //void idCompiler::SkipOutOfFunction( void ) {
-//	while( braceDepth ) {
-//		parserPtr.SkipBracedSection( false );
-//		braceDepth--;
+//	while( this.braceDepth ) {
+//		this.parserPtr.SkipBracedSection( false );
+//		this.braceDepth--;
 //	}
 //	NextToken();
 //}
@@ -933,26 +934,26 @@ class idCompiler {
 //idTypeDef *idCompiler::CheckType( void ) {
 //	idTypeDef *type;
 //	
-//	if ( token == "float" ) {
+//	if ( this.token == "float" ) {
 //		type = &type_float;
-//	} else if ( token == "vector" ) {
+//	} else if ( this.token == "vector" ) {
 //		type = &type_vector;
-//	} else if ( token == "entity" ) {
+//	} else if ( this.token == "entity" ) {
 //		type = &type_entity;
-//	} else if ( token == "string" ) {
+//	} else if ( this.token == "string" ) {
 //		type = &type_string;
-//	} else if ( token == "void" ) {
+//	} else if ( this.token == "void" ) {
 //		type = &type_void;
-//	} else if ( token == "object" ) {
+//	} else if ( this.token == "object" ) {
 //		type = &type_object;
-//	} else if ( token == "boolean" ) {
+//	} else if ( this.token == "boolean" ) {
 //		type = &type_boolean;
-//	} else if ( token == "namespace" ) {
+//	} else if ( this.token == "namespace" ) {
 //		type = &type_namespace;
-//	} else if ( token == "scriptEvent" ) {
+//	} else if ( this.token == "scriptEvent" ) {
 //		type = &type_scriptevent;
 //	} else {
-//		type = gameLocal.program.FindType( token.c_str() );
+//		type = gameLocal.program.FindType( this.token.$.c_str() );
 //		if ( type && !type.Inherits( &type_object ) ) {
 //			type = NULL;
 //		}
@@ -973,7 +974,7 @@ class idCompiler {
 //	
 //	type = CheckType();
 //	if ( !type ) {
-//		Error( "\"%s\" is not a type", token.c_str() );
+//		Error( "\"%s\" is not a type", this.token.$.c_str() );
 //	}
 //
 //	if ( ( type == &type_scriptevent ) && ( this.scope != &def_namespace ) ) {
@@ -999,7 +1000,7 @@ class idCompiler {
 //idVarDef *idCompiler::ParseImmediate( void ) {
 //	idVarDef *def;
 //
-//	def = GetImmediate( immediateType, &immediate, token.c_str() );
+//	def = GetImmediate( this.immediateType, &immediate, this.token.$.c_str() );
 //	NextToken();
 //
 //	return def;
@@ -1338,16 +1339,16 @@ class idCompiler {
 //	idVarDef	*namespaceDef;
 //	idStr		name;
 //	
-//	if ( immediateType == &type_entity ) {
+//	if ( this.immediateType == &type_entity ) {
 //		// if an immediate entity ($-prefaced name) then create or lookup a def for it.
 //		// when entities are spawned, they'll lookup the def and point it to them.
-//		def = gameLocal.program.GetDef( &type_entity, "$" + token, &def_namespace );
+//		def = gameLocal.program.GetDef( &type_entity, "$" + this.token, &def_namespace );
 //		if ( !def ) {
-//			def = gameLocal.program.AllocDef( &type_entity, "$" + token, &def_namespace, true );
+//			def = gameLocal.program.AllocDef( &type_entity, "$" + this.token, &def_namespace, true );
 //		}
 //		NextToken();
 //		return def;
-//	} else if ( immediateType ) {
+//	} else if ( this.immediateType ) {
 //		// if the token is an immediate, allocate a constant for it
 //		return ParseImmediate();
 //	}
@@ -1386,7 +1387,7 @@ class idCompiler {
 //	idVarDef	*e;
 //	int 		op;
 //	
-//	if ( !immediateType && CheckToken( "~" ) ) {
+//	if ( !this.immediateType && CheckToken( "~" ) ) {
 //		e = GetExpression( TILDE_PRIORITY );
 //		switch( e.Type() ) {
 //		case ev_float :
@@ -1404,7 +1405,7 @@ class idCompiler {
 //		return EmitOpcode( op, e, 0 );
 //	}
 //
-//	if ( !immediateType && CheckToken( "!" ) ) {
+//	if ( !this.immediateType && CheckToken( "!" ) ) {
 //		e = GetExpression( NOT_PRIORITY );
 //		switch( e.Type() ) {
 //		case ev_boolean :
@@ -1450,12 +1451,12 @@ class idCompiler {
 //	}
 //
 //	// check for negation operator
-//	if ( !immediateType && CheckToken( "-" ) ) {
+//	if ( !this.immediateType && CheckToken( "-" ) ) {
 //		// constants are directly negated without an instruction
-//		if ( immediateType == &type_float ) {
+//		if ( this.immediateType == &type_float ) {
 //			immediate._float = -immediate._float;
 //			return ParseImmediate();
-//		} else if ( immediateType == &type_vector ) {
+//		} else if ( this.immediateType == &type_vector ) {
 //			immediate.vector[0] = -immediate.vector[0];
 //			immediate.vector[1] = -immediate.vector[1];
 //			immediate.vector[2] = -immediate.vector[2];
@@ -1507,7 +1508,7 @@ class idCompiler {
 //		return gameLocal.program.returnDef;
 //	}
 //	
-//	if ( !immediateType && CheckToken( "(" ) ) {
+//	if ( !this.immediateType && CheckToken( "(" ) ) {
 //		e = GetExpression( TOP_PRIORITY );
 //		ExpectToken( ")" );
 //
@@ -1558,7 +1559,7 @@ class idCompiler {
 //	}
 //		
 //	e = GetExpression( priority - 1 );
-//	if ( token == ";" ) {
+//	if ( this.token == ";" ) {
 //		// save us from searching through the opcodes unneccesarily
 //		return e;
 //	}
@@ -1569,7 +1570,7 @@ class idCompiler {
 //		}
 //
 //		// has to be a punctuation
-//		if ( immediateType ) {
+//		if ( this.immediateType ) {
 //			break;
 //		}
 //
@@ -1815,7 +1816,7 @@ class idCompiler {
 //	int			patch1;
 //	int			patch2;
 //
-//	loopDepth++;
+//	this.loopDepth++;
 //
 //	ExpectToken( "(" );
 //	
@@ -1838,7 +1839,7 @@ class idCompiler {
 //	// fixup breaks and continues
 //	PatchLoop( patch2, patch2 );
 //
-//	loopDepth--;
+//	this.loopDepth--;
 //}
 //
 	///*
@@ -1888,7 +1889,7 @@ class idCompiler {
 //	int			patch3;
 //	int			patch4;
 //
-//	loopDepth++;
+//	this.loopDepth++;
 //
 //	start = gameLocal.program.NumStatements();
 //
@@ -1944,7 +1945,7 @@ class idCompiler {
 //	// fixup breaks and continues
 //	PatchLoop( start, patch2 );
 //
-//	loopDepth--;
+//	this.loopDepth--;
 //}
 //
 	///*
@@ -1956,7 +1957,7 @@ class idCompiler {
 //	idVarDef	*e;
 //	int			patch1;
 //
-//	loopDepth++;
+//	this.loopDepth++;
 //
 //	patch1 = gameLocal.program.NumStatements();
 //	ParseStatement();
@@ -1971,7 +1972,7 @@ class idCompiler {
 //	// fixup breaks and continues
 //	PatchLoop( patch1, patch1 );
 //
-//	loopDepth--;
+//	this.loopDepth--;
 //}
 //
 	///*
@@ -2387,21 +2388,21 @@ class idCompiler {
 //		} else {
 //			// global variables can only be initialized with immediate values
 //			negate = false;
-//			if ( token.type == TT_PUNCTUATION && token == "-" ) {
+//			if ( this.token.$.type == TT_PUNCTUATION && this.token == "-" ) {
 //				negate = true;
 //				NextToken();
-//				if ( immediateType != &type_float ) {
+//				if ( this.immediateType != &type_float ) {
 //					Error( "wrong immediate type for '-' on variable '%s'", name );
 //				}
 //			}
 //
-//			if ( immediateType != type ) {
+//			if ( this.immediateType != type ) {
 //				Error( "wrong immediate type for '%s'", name );
 //			}
 //
 //			// global variables are initialized at start up
 //			if ( type == &type_string ) {
-//				def.SetString( token, false );
+//				def.SetString( this.token.$, false );
 //			} else {
 //				if ( negate ) {
 //					immediate._float = -immediate._float;
@@ -2661,67 +2662,67 @@ compiles the 0 terminated text, adding definitions to the program structure
 		this.scope				= def_namespace;
 		this.basetype			= null;
 		this.callthread			= false;
-		loopDepth			= 0;
-		eof					= false;
-		braceDepth			= 0;
-		immediateType		= NULL;
-		currentLineNumber	= 0;
-		console				= toConsole;
+		this.loopDepth			= 0;
+		this.eof					= false;
+		this.braceDepth			= 0;
+		this.immediateType		= null;
+		this.currentLineNumber	= 0;
+		this.console				= toConsole;
 
-		memset( &immediate, 0, sizeof( immediate ) );
+		this.immediate.init ( );
 
-		parser.SetFlags( lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS );
-		parser.LoadMemory( text, strlen( text ), filename );
-		parserPtr = &parser;
+		this.parser.SetFlags( lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS );
+		this.parser.LoadMemory( text, strlen( text ), filename );
+		this.parserPtr = this.parser;
 
 		// unread tokens to include script defines
-		token = SCRIPT_DEFAULTDEFS;
-		token.type = TT_STRING;
-		token.subtype = token.Length();
-		token.line = token.linesCrossed = 0;
-		parser.UnreadToken( &token );
+		this.token.$.equals(SCRIPT_DEFAULTDEFS);
+		this.token.$.type = TT_STRING;
+		this.token.$.subtype = this.token.$.Length();
+		this.token.$.line = this.token.$.linesCrossed = 0;
+		this.parser.UnreadToken( this.token );
 
-		token = "include";
-		token.type = TT_NAME;
-		token.subtype = token.Length();
-		token.line = token.linesCrossed = 0;
-		parser.UnreadToken( &token );
+		this.token.$.equals("include");
+		this.token.$.type = TT_NAME;
+		this.token.$.subtype = this.token.$.Length();
+		this.token.$.line = this.token.$.linesCrossed = 0;
+		this.parser.UnreadToken( this.token );
 
-		token = "#";
-		token.type = TT_PUNCTUATION;
-		token.subtype = P_PRECOMP;
-		token.line = token.linesCrossed = 0;
-		parser.UnreadToken( &token );
+		this.token.$.equals( "#" );
+		this.token.$.type = TT_PUNCTUATION;
+		this.token.$.subtype = P_PRECOMP;
+		this.token.$.line = this.token.$.linesCrossed = 0;
+		this.parser.UnreadToken( this.token );
 
 		// init the current token line to be the first line so that currentLineNumber is set correctly in NextToken
-		token.line = 1;
+		this.token.$.line = 1;
 
 		error = false;
 		//try {
 			// read first token
-			NextToken();
-			while( !eof && !error ) {
+			this.NextToken();
+			while( !this.eof && !error ) {
 				// parse from global namespace
-				ParseNamespace( &def_namespace );
+				this.ParseNamespace( def_namespace );
 			}
 		//}
 
 		//catch( idCompileError &err ) {
 		//	idStr error;
 
-		//	if ( console ) {
+		//	if ( this.console ) {
 		//		// don't print line number of an error if were calling script from the console using the "script" command
 		//		sprintf( error, "Error: %s\n", err.error );
 		//	} else {
-		//		sprintf( error, "Error: file %s, line %d: %s\n", gameLocal.program.GetFilename( currentFileNumber ), currentLineNumber, err.error );
+		//		sprintf( error, "Error: file %s, line %d: %s\n", gameLocal.program.GetFilename( this.currentFileNumber ), this.currentLineNumber, err.error );
 		//	}
 
-		//	parser.FreeSource();
+		//	this.parser.FreeSource();
 
 		//	throw idCompileError( error );
 		//}
 
-		parser.FreeSource();
+		this.parser.FreeSource();
 
 		compile_time.Stop();
 		if ( !toConsole ) {
