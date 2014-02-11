@@ -36,9 +36,44 @@ var sysLanguageNames = [
 ];
 //
 var sys_lang = new idCVar( "sys_lang", "english", CVAR_SYSTEM | CVAR_ARCHIVE, "", sysLanguageNames, ArgCompletion_String_Template( sysLanguageNames ) );
-//
-//idSysLocal			sysLocal;
-//idSys *				sys = &sysLocal;
+
+
+class idSysLocal/* extends idSys*/ {
+	//public:
+	//virtual void DebugPrintf( const char * fmt, ... ) id_attribute((format(printf, 2, 3)));
+	//virtual void DebugVPrintf( const char * fmt, va_list arg );
+
+	//virtual double			GetClockTicks( void );
+	//virtual double			ClockTicksPerSecond( void );
+	//virtual cpuid_t			GetProcessorId( void );
+	//virtual const char * GetProcessorString( void );
+	//virtual const char * FPU_GetState( void );
+	//virtual bool			FPU_StackIsEmpty( void );
+	//virtual void FPU_SetFTZ(bool enable);
+	//virtual void FPU_SetDAZ(bool enable);
+
+	//virtual void FPU_EnableExceptions(int exceptions);
+
+	//virtual void GetCallStack(address_t * callStack, const int callStackSize);
+	//virtual const char * GetCallStackStr( const address_t * callStack, const int callStackSize );
+	//virtual const char * GetCallStackCurStr(int depth);
+	//virtual void ShutdownSymbols( void );
+
+	//virtual bool			LockMemory( void * ptr, int bytes);
+	//virtual bool			UnlockMemory( void * ptr, int bytes);
+
+	//virtual int				DLL_Load( const char * dllName );
+	//virtual void * DLL_GetProcAddress(int dllHandle, const char * procName);
+	//virtual void DLL_Unload(int dllHandle);
+	//virtual void DLL_GetFileName( const char * baseName, char * dllName, int maxLength );
+
+	//virtual sysEvent_t		GenerateMouseButtonEvent(int button, bool down);
+	//virtual sysEvent_t		GenerateMouseMoveEvent(int deltax, int deltay);
+
+	//virtual void OpenURL( const char * url, bool quit );
+	//virtual void StartProcess( const char * exeName, bool quit );
+
+
 //
 //void idSysLocal::DebugPrintf( const char *fmt, ... ) {
 //	va_list argptr;
@@ -52,9 +87,9 @@ var sys_lang = new idCVar( "sys_lang", "english", CVAR_SYSTEM | CVAR_ARCHIVE, ""
 //	Sys_DebugVPrintf( fmt, arg );
 //}
 //
-//double idSysLocal::GetClockTicks( void ) {
-//	return Sys_GetClockTicks();
-//}
+	static GetClockTicks ( ): number {
+		return Sys_GetClockTicks ( );
+	}
 //
 //double idSysLocal::ClockTicksPerSecond( void ) {
 //	return Sys_ClockTicksPerSecond();
@@ -155,7 +190,11 @@ var sys_lang = new idCVar( "sys_lang", "english", CVAR_SYSTEM | CVAR_ARCHIVE, ""
 //void idSysLocal::FPU_EnableExceptions( int exceptions ) {
 //	Sys_FPU_EnableExceptions( exceptions );
 //}
-//
+
+
+}
+
+
 ///*
 //=================
 //Sys_TimeStampToStr
@@ -208,3 +247,8 @@ var sys_lang = new idCVar( "sys_lang", "english", CVAR_SYSTEM | CVAR_ARCHIVE, ""
 //	return timeString;
 //}
 //
+
+
+
+var sysLocal = new idSysLocal;
+var sys/*: idSys*/ = sysLocal;

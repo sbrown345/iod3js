@@ -653,31 +653,20 @@ class idStr {
 ////	return *this;
 ////}
 
-////ID_INLINE bool operator==( const idStr &a, const idStr &b ) {
-////	return ( !idStr::Cmp( a.data, b.data ) );
-////}
+	equalsEquals ( other: idStr ): boolean
+	equalsEquals ( other: string ): boolean
+	equalsEquals ( other: any ): boolean {
+		return idStr.equalsEquals( this, other );
+	}
 
-////ID_INLINE bool operator==( const idStr &a, const char *b ) {
-////	assert( b );
-////	return ( !idStr::Cmp( a.data, b ) );
-////}
-
-////ID_INLINE bool operator==( const char *a, const idStr &b ) {
-////	assert( a );
-////	return ( !idStr::Cmp( a, b.data ) );
-////}
-
-////ID_INLINE bool operator!=( const idStr &a, const idStr &b ) {
-////	return !( a == b );
-////}
-
-////ID_INLINE bool operator!=( const idStr &a, const char *b ) {
-////	return !( a == b );
-////}
-
-////ID_INLINE bool operator!=( const char *a, const idStr &b ) {
-////	return !( a == b );
-////}
+	static equalsEquals ( a: idStr, b: idStr ): boolean
+	static equalsEquals ( a: idStr, b: string ): boolean
+	static equalsEquals ( a: string, b: idStr ): boolean
+	static equalsEquals ( a: any, b: any ): boolean {
+		var aStr: string = idStr.getString( a ),
+			bStr: string = idStr.getString( b );
+		return aStr === bStr;
+	}
 
 	Cmp ( text: string ): number;
 	Cmp ( text: idStr ): number;

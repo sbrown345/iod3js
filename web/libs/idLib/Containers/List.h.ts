@@ -676,45 +676,47 @@ Append( obj:type ):number {
 
 // moved Append list next to Append item
 
-///*
-//================
-//idList<type>::AddUnique
+/*
+================
+idList<type>::AddUnique
 
-//Adds the data to the list if it doesn't already exist.  Returns the index of the data in the list.
-//================
-//*/
+Adds the data to the list if it doesn't already exist.  Returns the index of the data in the list.
+================
+*/
 //template< class type >
-//ID_INLINE int idList<type>::AddUnique( type const & obj ) {
-//	int index;
+	AddUnique ( obj: type ): number {
+		var /*int */index: number;
 
-//	index = FindIndex( obj );
-//	if ( index < 0 ) {
-//		index = Append( obj );
-//	}
+		index = this.FindIndex( obj );
+		if ( index < 0 ) {
+			index = this.Append( obj );
+		}
 
-//	return index;
-//}
+		return index;
+	}
 
-///*
-//================
-//idList<type>::FindIndex
+/*
+================
+idList<type>::FindIndex
 
-//Searches for the specified data in the list and returns it's index.  Returns -1 if the data is not found.
-//================
-//*/
+Searches for the specified data in the list and returns it's index.  Returns -1 if the data is not found.
+================
+*/
 //template< class type >
-//ID_INLINE int idList<type>::FindIndex( type const & obj ) const {
-//	int i;
+	FindIndex ( obj: type ): number {
+		var /*int */i: number;
 
-//	for( i = 0; i < this.num; i++ ) {
-//		if ( this.list[ i ] == obj ) {
-//			return i;
-//		}
-//	}
+		for ( i = 0; i < this.num; i++ ) {
+			//if ( this.list[i] == obj ) { 
+			// maybe check if it's got the method equalsEquals first?
+			if ( this.list[i].equalsEquals(obj) ) {
+				return i;
+			}
+		}
 
-//	// Not found
-//	return -1;
-//}
+		// Not found
+		return -1;
+	}
 
 ///*
 //================

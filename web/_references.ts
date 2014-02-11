@@ -122,6 +122,7 @@
 
 // non-portable system services
 /// <reference path="doomdll/sys/sys_public.h.ts" />
+/// <reference path="doomdll/sys/win_cpu.cpp.ts" />
 /// <reference path="doomdll/sys/win_glimp.cpp.ts" />
 /// <reference path="doomdll/sys/win_input.cpp.ts" />
 /// <reference path="doomdll/sys/win_main.cpp.ts" />
@@ -173,6 +174,8 @@
 /// <reference path="libs/idlib/langdict.cpp.ts" />
 /// <reference path="libs/idlib/mapfile.h.ts" />
 /// <reference path="libs/idlib/mapfile.cpp.ts" />
+/// <reference path="libs/idlib/parser.cpp.ts" />
+/// <reference path="libs/idlib/timer.h.ts" />
 
 // framework
 /// <reference path="doomdll/cm/collisionmodel.h.ts" />

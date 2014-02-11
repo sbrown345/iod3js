@@ -43,24 +43,24 @@ class idCompiler {
 	//	static bool		punctuationValid[ 256 ];
 	//	static char		*punctuation[];
 	//
-	//	idParser		parser;
-	//	idParser		*parserPtr;
-	//	idToken			token;
-	//					
-	//	idTypeDef		*immediateType;
-	//	eval_t			immediate;
-	//					
-	//	bool			eof;
-	//	bool			console;
-	//	bool			callthread;
-	//	int				braceDepth;
-	//	int				loopDepth;
-	//	int				currentLineNumber;
-	//	int				currentFileNumber;
-	//	int				errorCount;
-	//					
-	//	idVarDef		*scope;				// the function being parsed, or NULL
-	//	const idVarDef	*basetype;			// for accessing fields
+	parser = new idParser;
+	parserPtr:idParser;
+	token:idToken;
+	
+	immediateType: idTypeDef;
+	immediate = neweval_t;
+	
+	eof:boolean;
+	console:boolean;
+	callthread:boolean;
+	braceDepth: number;			 //	int				
+	loopDepth: number;			 //	int				
+	currentLineNumber: number;	 //	int				
+	currentFileNumber: number;	 //	int				
+	errorCount: number;			 //	int				
+					
+	scope: idVarDef;				// the function being parsed, or NULL
+	basetype: idVarDef;			// for accessing fields
 	//
 	//	float			Divide( float numerator, float denominator );
 	//	void			Error( const char *error, ... ) const id_attribute((format(printf,2,3)));
@@ -297,22 +297,22 @@ class idCompiler {
 //	eof	= true;
 //	parserPtr = &parser;
 //
-//	callthread			= false;
+//	this.callthread			= false;
 //	loopDepth			= 0;
 //	eof					= false;
 //	braceDepth			= 0;
 //	immediateType		= NULL;
-//	basetype			= NULL;
+//	this.basetype			= NULL;
 //	currentLineNumber	= 0;
 //	currentFileNumber	= 0;
 //	errorCount			= 0;
 //	console				= false;
-//	scope				= &def_namespace;
+//	this.scope				= &def_namespace;
 //
 //	memset( &immediate, 0, sizeof( immediate ) );
 //	memset( punctuationValid, 0, sizeof( punctuationValid ) );
 //	for( ptr = punctuation; *ptr != NULL; ptr++ ) {
-//		id = parserPtr->GetPunctuationId( *ptr );
+//		id = parserPtr.GetPunctuationId( *ptr );
 //		if ( ( id >= 0 ) && ( id < 256 ) ) {
 //			punctuationValid[ id ] = true;
 //		}
@@ -352,7 +352,7 @@ class idCompiler {
 //	vsprintf( string, message, argptr );
 //	va_end( argptr );
 //
-//	parserPtr->Warning( "%s", string );
+//	parserPtr.Warning( "%s", string );
 //}
 //
 	///*
@@ -366,9 +366,9 @@ class idCompiler {
 //	eval_t eval;
 //
 //	memset( &eval, 0, sizeof( eval ) );
-//	eval._int = func->scope->TypeDef()->GetFunctionNumber( func->value.functionPtr );
+//	eval._int = func.scope.TypeDef().GetFunctionNumber( func.value.functionPtr );
 //	if ( eval._int < 0 ) {
-//		Error( "Function '%s' not found in scope '%s'", func->Name(), func->scope->Name() );
+//		Error( "Function '%s' not found in scope '%s'", func.Name(), func.scope.Name() );
 //	}
 //    
 //	return GetImmediate( &type_virtualfunction, &eval, "" );
@@ -462,62 +462,62 @@ class idCompiler {
 //	idVarDef	*def;
 //	etype_t		etype;
 //
-//	etype = type->Type();
+//	etype = type.Type();
 //
 //	// check for a constant with the same value
-//	for( def = gameLocal.program.GetDefList( "<IMMEDIATE>" ); def != NULL; def = def->Next() ) {
-//		if ( def->TypeDef() != type ) {
+//	for( def = gameLocal.program.GetDefList( "<IMMEDIATE>" ); def != NULL; def = def.Next() ) {
+//		if ( def.TypeDef() != type ) {
 //			continue;
 //		}
 //
 //		switch( etype ) {
 //		case ev_field :
-//			if ( *def->value.intPtr == eval->_int ) {
+//			if ( *def.value.intPtr == eval._int ) {
 //				return def;
 //			}
 //			break;
 //
 //		case ev_argsize :
-//			if ( def->value.argSize == eval->_int ) {
+//			if ( def.value.argSize == eval._int ) {
 //				return def;
 //			}
 //			break;
 //
 //		case ev_jumpoffset :
-//			if ( def->value.jumpOffset == eval->_int ) {
+//			if ( def.value.jumpOffset == eval._int ) {
 //				return def;
 //			}
 //			break;
 //
 //		case ev_entity :
-//			if ( *def->value.intPtr == eval->entity ) {
+//			if ( *def.value.intPtr == eval.entity ) {
 //				return def;
 //			}
 //			break;
 //
 //		case ev_string :
-//			if ( idStr::Cmp( def->value.stringPtr, string ) == 0 ) {
+//			if ( idStr::Cmp( def.value.stringPtr, string ) == 0 ) {
 //				return def;
 //			}
 //			break;
 //
 //		case ev_float :
-//			if ( *def->value.floatPtr == eval->_float ) {
+//			if ( *def.value.floatPtr == eval._float ) {
 //				return def;
 //			}
 //			break;
 //
 //		case ev_virtualfunction :
-//			if ( def->value.virtualFunction == eval->_int ) {
+//			if ( def.value.virtualFunction == eval._int ) {
 //				return def;
 //			}
 //			break;
 //
 //
 //		case ev_vector :
-//			if ( ( def->value.vectorPtr->x == eval->vector[ 0 ] ) && 
-//				( def->value.vectorPtr->y == eval->vector[ 1 ] ) && 
-//				( def->value.vectorPtr->z == eval->vector[ 2 ] ) ) {
+//			if ( ( def.value.vectorPtr.x == eval.vector[ 0 ] ) && 
+//				( def.value.vectorPtr.y == eval.vector[ 1 ] ) && 
+//				( def.value.vectorPtr.z == eval.vector[ 2 ] ) ) {
 //				return def;
 //			}
 //			break;
@@ -543,14 +543,14 @@ class idCompiler {
 //
 //	def = FindImmediate( type, eval, string );
 //	if ( def ) {
-//		def->numUsers++;
+//		def.numUsers++;
 //	} else {
 //		// allocate a new def
 //		def = gameLocal.program.AllocDef( type, "<IMMEDIATE>", &def_namespace, true );
-//		if ( type->Type() == ev_string ) {
-//			def->SetString( string, true );
+//		if ( type.Type() == ev_string ) {
+//			def.SetString( string, true );
 //		} else {
-//			def->SetValue( *eval, true );
+//			def.SetValue( *eval, true );
 //		}
 //	}
 //
@@ -568,10 +568,10 @@ class idCompiler {
 //	eval_t		c;
 //	idTypeDef	*type;
 //
-//	if ( var_a && var_a->initialized != idVarDef::initializedConstant ) {
+//	if ( var_a && var_a.initialized != idVarDef::initializedConstant ) {
 //		return NULL;
 //	}
-//	if ( var_b && var_b->initialized != idVarDef::initializedConstant ) {
+//	if ( var_b && var_b.initialized != idVarDef::initializedConstant ) {
 //		return NULL;
 //	}
 //
@@ -579,46 +579,46 @@ class idCompiler {
 //
 //	memset( &c, 0, sizeof( c ) );
 //	switch( op - opcodes ) {
-//		case OP_ADD_F:		c._float = *var_a->value.floatPtr + *var_b->value.floatPtr; type = &type_float; break;
-//		case OP_ADD_V:		vec_c = *var_a->value.vectorPtr + *var_b->value.vectorPtr; type = &type_vector; break;
-//		case OP_SUB_F:		c._float = *var_a->value.floatPtr - *var_b->value.floatPtr; type = &type_float; break;
-//		case OP_SUB_V:		vec_c = *var_a->value.vectorPtr - *var_b->value.vectorPtr; type = &type_vector; break;
-//		case OP_MUL_F:		c._float = *var_a->value.floatPtr * *var_b->value.floatPtr; type = &type_float; break;
-//		case OP_MUL_V:		c._float = *var_a->value.vectorPtr * *var_b->value.vectorPtr; type = &type_float; break;
-//		case OP_MUL_FV:		vec_c = *var_b->value.vectorPtr * *var_a->value.floatPtr; type = &type_vector; break;
-//		case OP_MUL_VF:		vec_c = *var_a->value.vectorPtr * *var_b->value.floatPtr; type = &type_vector; break;
-//		case OP_DIV_F:		c._float = Divide( *var_a->value.floatPtr, *var_b->value.floatPtr ); type = &type_float; break;
-//		case OP_MOD_F:		c._float = (int)*var_a->value.floatPtr % (int)*var_b->value.floatPtr; type = &type_float; break;
-//		case OP_BITAND:		c._float = ( int )*var_a->value.floatPtr & ( int )*var_b->value.floatPtr; type = &type_float; break;
-//		case OP_BITOR:		c._float = ( int )*var_a->value.floatPtr | ( int )*var_b->value.floatPtr; type = &type_float; break;
-//		case OP_GE:			c._float = *var_a->value.floatPtr >= *var_b->value.floatPtr; type = &type_float; break;
-//		case OP_LE:			c._float = *var_a->value.floatPtr <= *var_b->value.floatPtr; type = &type_float; break;
-//		case OP_GT:			c._float = *var_a->value.floatPtr > *var_b->value.floatPtr; type = &type_float; break;
-//		case OP_LT:			c._float = *var_a->value.floatPtr < *var_b->value.floatPtr; type = &type_float; break;
-//		case OP_AND:		c._float = *var_a->value.floatPtr && *var_b->value.floatPtr; type = &type_float; break;
-//		case OP_OR:			c._float = *var_a->value.floatPtr || *var_b->value.floatPtr; type = &type_float; break;
-//		case OP_NOT_BOOL:	c._int = !*var_a->value.intPtr; type = &type_boolean; break;
-//		case OP_NOT_F:		c._float = !*var_a->value.floatPtr; type = &type_float; break;
-//		case OP_NOT_V:		c._float = !var_a->value.vectorPtr->x && !var_a->value.vectorPtr->y && !var_a->value.vectorPtr->z; type = &type_float; break;
-//		case OP_NEG_F:		c._float = -*var_a->value.floatPtr; type = &type_float; break;
-//		case OP_NEG_V:		vec_c = -*var_a->value.vectorPtr; type = &type_vector; break;
-//		case OP_INT_F:		c._float = ( int )*var_a->value.floatPtr; type = &type_float; break;
-//		case OP_EQ_F:		c._float = ( *var_a->value.floatPtr == *var_b->value.floatPtr ); type = &type_float; break;
-//		case OP_EQ_V:		c._float = var_a->value.vectorPtr->Compare( *var_b->value.vectorPtr ); type = &type_float; break;
-//		case OP_EQ_E:		c._float = ( *var_a->value.intPtr == *var_b->value.intPtr ); type = &type_float; break;
-//		case OP_NE_F:		c._float = ( *var_a->value.floatPtr != *var_b->value.floatPtr ); type = &type_float; break;
-//		case OP_NE_V:		c._float = !var_a->value.vectorPtr->Compare( *var_b->value.vectorPtr ); type = &type_float; break;
-//		case OP_NE_E:		c._float = ( *var_a->value.intPtr != *var_b->value.intPtr ); type = &type_float; break;
-//		case OP_UADD_F:		c._float = *var_b->value.floatPtr + *var_a->value.floatPtr; type = &type_float; break;
-//		case OP_USUB_F:		c._float = *var_b->value.floatPtr - *var_a->value.floatPtr; type = &type_float; break;
-//		case OP_UMUL_F:		c._float = *var_b->value.floatPtr * *var_a->value.floatPtr; type = &type_float; break;
-//		case OP_UDIV_F:		c._float = Divide( *var_b->value.floatPtr, *var_a->value.floatPtr ); type = &type_float; break;
-//		case OP_UMOD_F:		c._float = ( int ) *var_b->value.floatPtr % ( int )*var_a->value.floatPtr; type = &type_float; break;
-//		case OP_UOR_F:		c._float = ( int )*var_b->value.floatPtr | ( int )*var_a->value.floatPtr; type = &type_float; break;
-//		case OP_UAND_F: 	c._float = ( int )*var_b->value.floatPtr & ( int )*var_a->value.floatPtr; type = &type_float; break;
-//		case OP_UINC_F:		c._float = *var_a->value.floatPtr + 1; type = &type_float; break;
-//		case OP_UDEC_F:		c._float = *var_a->value.floatPtr - 1; type = &type_float; break;
-//		case OP_COMP_F:		c._float = ( float )~( int )*var_a->value.floatPtr; type = &type_float; break;
+//		case OP_ADD_F:		c._float = *var_a.value.floatPtr + *var_b.value.floatPtr; type = &type_float; break;
+//		case OP_ADD_V:		vec_c = *var_a.value.vectorPtr + *var_b.value.vectorPtr; type = &type_vector; break;
+//		case OP_SUB_F:		c._float = *var_a.value.floatPtr - *var_b.value.floatPtr; type = &type_float; break;
+//		case OP_SUB_V:		vec_c = *var_a.value.vectorPtr - *var_b.value.vectorPtr; type = &type_vector; break;
+//		case OP_MUL_F:		c._float = *var_a.value.floatPtr * *var_b.value.floatPtr; type = &type_float; break;
+//		case OP_MUL_V:		c._float = *var_a.value.vectorPtr * *var_b.value.vectorPtr; type = &type_float; break;
+//		case OP_MUL_FV:		vec_c = *var_b.value.vectorPtr * *var_a.value.floatPtr; type = &type_vector; break;
+//		case OP_MUL_VF:		vec_c = *var_a.value.vectorPtr * *var_b.value.floatPtr; type = &type_vector; break;
+//		case OP_DIV_F:		c._float = Divide( *var_a.value.floatPtr, *var_b.value.floatPtr ); type = &type_float; break;
+//		case OP_MOD_F:		c._float = (int)*var_a.value.floatPtr % (int)*var_b.value.floatPtr; type = &type_float; break;
+//		case OP_BITAND:		c._float = ( int )*var_a.value.floatPtr & ( int )*var_b.value.floatPtr; type = &type_float; break;
+//		case OP_BITOR:		c._float = ( int )*var_a.value.floatPtr | ( int )*var_b.value.floatPtr; type = &type_float; break;
+//		case OP_GE:			c._float = *var_a.value.floatPtr >= *var_b.value.floatPtr; type = &type_float; break;
+//		case OP_LE:			c._float = *var_a.value.floatPtr <= *var_b.value.floatPtr; type = &type_float; break;
+//		case OP_GT:			c._float = *var_a.value.floatPtr > *var_b.value.floatPtr; type = &type_float; break;
+//		case OP_LT:			c._float = *var_a.value.floatPtr < *var_b.value.floatPtr; type = &type_float; break;
+//		case OP_AND:		c._float = *var_a.value.floatPtr && *var_b.value.floatPtr; type = &type_float; break;
+//		case OP_OR:			c._float = *var_a.value.floatPtr || *var_b.value.floatPtr; type = &type_float; break;
+//		case OP_NOT_BOOL:	c._int = !*var_a.value.intPtr; type = &type_boolean; break;
+//		case OP_NOT_F:		c._float = !*var_a.value.floatPtr; type = &type_float; break;
+//		case OP_NOT_V:		c._float = !var_a.value.vectorPtr.x && !var_a.value.vectorPtr.y && !var_a.value.vectorPtr.z; type = &type_float; break;
+//		case OP_NEG_F:		c._float = -*var_a.value.floatPtr; type = &type_float; break;
+//		case OP_NEG_V:		vec_c = -*var_a.value.vectorPtr; type = &type_vector; break;
+//		case OP_INT_F:		c._float = ( int )*var_a.value.floatPtr; type = &type_float; break;
+//		case OP_EQ_F:		c._float = ( *var_a.value.floatPtr == *var_b.value.floatPtr ); type = &type_float; break;
+//		case OP_EQ_V:		c._float = var_a.value.vectorPtr.Compare( *var_b.value.vectorPtr ); type = &type_float; break;
+//		case OP_EQ_E:		c._float = ( *var_a.value.intPtr == *var_b.value.intPtr ); type = &type_float; break;
+//		case OP_NE_F:		c._float = ( *var_a.value.floatPtr != *var_b.value.floatPtr ); type = &type_float; break;
+//		case OP_NE_V:		c._float = !var_a.value.vectorPtr.Compare( *var_b.value.vectorPtr ); type = &type_float; break;
+//		case OP_NE_E:		c._float = ( *var_a.value.intPtr != *var_b.value.intPtr ); type = &type_float; break;
+//		case OP_UADD_F:		c._float = *var_b.value.floatPtr + *var_a.value.floatPtr; type = &type_float; break;
+//		case OP_USUB_F:		c._float = *var_b.value.floatPtr - *var_a.value.floatPtr; type = &type_float; break;
+//		case OP_UMUL_F:		c._float = *var_b.value.floatPtr * *var_a.value.floatPtr; type = &type_float; break;
+//		case OP_UDIV_F:		c._float = Divide( *var_b.value.floatPtr, *var_a.value.floatPtr ); type = &type_float; break;
+//		case OP_UMOD_F:		c._float = ( int ) *var_b.value.floatPtr % ( int )*var_a.value.floatPtr; type = &type_float; break;
+//		case OP_UOR_F:		c._float = ( int )*var_b.value.floatPtr | ( int )*var_a.value.floatPtr; type = &type_float; break;
+//		case OP_UAND_F: 	c._float = ( int )*var_b.value.floatPtr & ( int )*var_a.value.floatPtr; type = &type_float; break;
+//		case OP_UINC_F:		c._float = *var_a.value.floatPtr + 1; type = &type_float; break;
+//		case OP_UDEC_F:		c._float = *var_a.value.floatPtr - 1; type = &type_float; break;
+//		case OP_COMP_F:		c._float = ( float )~( int )*var_a.value.floatPtr; type = &type_float; break;
 //		default:			type = NULL; break;
 //	}
 //
@@ -627,14 +627,14 @@ class idCompiler {
 //	}
 //
 //	if ( var_a ) {
-//		var_a->numUsers--;
-//		if ( var_a->numUsers <= 0 ) {
+//		var_a.numUsers--;
+//		if ( var_a.numUsers <= 0 ) {
 //			gameLocal.program.FreeDef( var_a, NULL );
 //		}
 //	}
 //	if ( var_b ) {
-//		var_b->numUsers--;
-//		if ( var_b->numUsers <= 0 ) {
+//		var_b.numUsers--;
+//		if ( var_b.numUsers <= 0 ) {
 //			gameLocal.program.FreeDef( var_b, NULL );
 //		}
 //	}
@@ -658,34 +658,34 @@ class idCompiler {
 //		return var_c;
 //	}
 //
-//	if ( var_a && !strcmp( var_a->Name(), RESULT_STRING ) ) {
-//		var_a->numUsers++;
+//	if ( var_a && !strcmp( var_a.Name(), RESULT_STRING ) ) {
+//		var_a.numUsers++;
 //	}
-//	if ( var_b && !strcmp( var_b->Name(), RESULT_STRING ) ) {
-//		var_b->numUsers++;
+//	if ( var_b && !strcmp( var_b.Name(), RESULT_STRING ) ) {
+//		var_b.numUsers++;
 //	}
 //	
 //	statement = gameLocal.program.AllocStatement();
-//	statement->linenumber	= currentLineNumber;
-//	statement->file 		= currentFileNumber;
+//	statement.linenumber	= currentLineNumber;
+//	statement.file 		= currentFileNumber;
 //	
-//	if ( ( op->type_c == &def_void ) || op->rightAssociative ) {
+//	if ( ( op.type_c == &def_void ) || op.rightAssociative ) {
 //		// ifs, gotos, and assignments don't need vars allocated
 //		var_c = NULL;
 //	} else {
 //		// allocate result space
 //		// try to reuse result defs as much as possible
-//		var_c = gameLocal.program.FindFreeResultDef( op->type_c->TypeDef(), RESULT_STRING, scope, var_a, var_b );
+//		var_c = gameLocal.program.FindFreeResultDef( op.type_c.TypeDef(), RESULT_STRING, scope, var_a, var_b );
 //		// set user count back to 1, a result def needs to be used twice before it can be reused
-//		var_c->numUsers = 1;
+//		var_c.numUsers = 1;
 //	}
 //
-//	statement->op	= op - opcodes;
-//	statement->a	= var_a;
-//	statement->b	= var_b;
-//	statement->c	= var_c;
+//	statement.op	= op - opcodes;
+//	statement.a	= var_a;
+//	statement.b	= var_b;
+//	statement.c	= var_c;
 //
-//	if ( op->rightAssociative ) {
+//	if ( op.rightAssociative ) {
 //		return var_a;
 //	}
 //
@@ -715,15 +715,15 @@ class idCompiler {
 //	opcode_t *out;
 //
 //	out = NULL;
-//	for( op = &opcodes[ OP_PUSH_F ]; op->name && !strcmp( op->name, "<PUSH>" ); op++ ) {
-//		if ( ( funcArg->Type() == op->type_a->Type() ) && ( expression->Type() == op->type_b->Type() ) ) {
+//	for( op = &opcodes[ OP_PUSH_F ]; op.name && !strcmp( op.name, "<PUSH>" ); op++ ) {
+//		if ( ( funcArg.Type() == op.type_a.Type() ) && ( expression.Type() == op.type_b.Type() ) ) {
 //			out = op;
 //			break;
 //		}
 //	}
 //
 //	if ( !out ) {
-//		if ( ( expression->TypeDef() != funcArg ) && !expression->TypeDef()->Inherits( funcArg ) ) {
+//		if ( ( expression.TypeDef() != funcArg ) && !expression.TypeDef().Inherits( funcArg ) ) {
 //			return false;
 //		}
 //
@@ -752,22 +752,22 @@ class idCompiler {
 //	// Save the token's line number and filename since when we emit opcodes the current 
 //	// token is always the next one to be read 
 //	currentLineNumber = token.line;
-//	currentFileNumber = gameLocal.program.GetFilenum( parserPtr->GetFileName() );
+//	currentFileNumber = gameLocal.program.GetFilenum( parserPtr.GetFileName() );
 //
-//	if ( !parserPtr->ReadToken( &token ) ) {
+//	if ( !parserPtr.ReadToken( &token ) ) {
 //		eof = true;
 //		return;
 //	}
 //
-//	if ( currentFileNumber != gameLocal.program.GetFilenum( parserPtr->GetFileName() ) ) {
+//	if ( currentFileNumber != gameLocal.program.GetFilenum( parserPtr.GetFileName() ) ) {
 //		if ( ( braceDepth > 0 ) && ( token != "}" ) ) {
 //			// missing a closing brace.  try to give as much info as possible.
-//			if ( scope->Type() == ev_function ) {
-//				Error( "Unexpected end of file inside function '%s'.  Missing closing braces.", scope->Name() );
-//			} else if ( scope->Type() == ev_object ) {
-//				Error( "Unexpected end of file inside object '%s'.  Missing closing braces.", scope->Name() );
-//			} else if ( scope->Type() == ev_namespace ) {
-//				Error( "Unexpected end of file inside namespace '%s'.  Missing closing braces.", scope->Name() );
+//			if ( this.scope.Type() == ev_function ) {
+//				Error( "Unexpected end of file inside function '%s'.  Missing closing braces.", this.scope.Name() );
+//			} else if ( this.scope.Type() == ev_object ) {
+//				Error( "Unexpected end of file inside object '%s'.  Missing closing braces.", this.scope.Name() );
+//			} else if ( this.scope.Type() == ev_namespace ) {
+//				Error( "Unexpected end of file inside namespace '%s'.  Missing closing braces.", this.scope.Name() );
 //			} else {
 //				Error( "Unexpected end of file inside braced section" );
 //			}
@@ -783,7 +783,7 @@ class idCompiler {
 //	case TT_LITERAL: {
 //		// handle quoted vectors as a unit
 //		immediateType = &type_vector;
-//		idLexer lex( token, token.Length(), parserPtr->GetFileName(), LEXFL_NOERRORS );
+//		idLexer lex( token, token.Length(), parserPtr.GetFileName(), LEXFL_NOERRORS );
 //		idToken token2;
 //		for( i = 0; i < 3; i++ ) {
 //			if ( !lex.ReadToken( &token2 ) ) {
@@ -812,7 +812,7 @@ class idCompiler {
 //		// entity names
 //		if ( token == "$" ) {
 //			immediateType = &type_entity;
-//			parserPtr->ReadToken( &token );
+//			parserPtr.ReadToken( &token );
 //			return;
 //		}
 //
@@ -900,7 +900,7 @@ class idCompiler {
 //*/
 //void idCompiler::SkipOutOfFunction( void ) {
 //	while( braceDepth ) {
-//		parserPtr->SkipBracedSection( false );
+//		parserPtr.SkipBracedSection( false );
 //		braceDepth--;
 //	}
 //	NextToken();
@@ -953,7 +953,7 @@ class idCompiler {
 //		type = &type_scriptevent;
 //	} else {
 //		type = gameLocal.program.FindType( token.c_str() );
-//		if ( type && !type->Inherits( &type_object ) ) {
+//		if ( type && !type.Inherits( &type_object ) ) {
 //			type = NULL;
 //		}
 //	}
@@ -976,11 +976,11 @@ class idCompiler {
 //		Error( "\"%s\" is not a type", token.c_str() );
 //	}
 //
-//	if ( ( type == &type_scriptevent ) && ( scope != &def_namespace ) ) {
+//	if ( ( type == &type_scriptevent ) && ( this.scope != &def_namespace ) ) {
 //		Error( "scriptEvents can only defined in the global namespace" );
 //	}
 //
-//	if ( ( type == &type_namespace ) && ( scope->Type() != ev_namespace ) ) {
+//	if ( ( type == &type_namespace ) && ( this.scope.Type() != ev_namespace ) ) {
 //		Error( "A namespace may only be defined globally, or within another namespace" );
 //	}
 //
@@ -1020,9 +1020,9 @@ class idCompiler {
 //	int 			size;
 //	int				resultOp;
 //
-//	type = func->TypeDef();
-//	if ( func->Type() != ev_function ) {
-//		Error( "'%s' is not a function", func->Name() );
+//	type = func.TypeDef();
+//	if ( func.Type() != ev_function ) {
+//		Error( "'%s' is not a function", func.Name() );
 //	}
 //
 //	// copy the parameters to the global parameter variables
@@ -1030,21 +1030,21 @@ class idCompiler {
 //	size = startsize;
 //	if ( !CheckToken( ")" ) ) {
 //		do {
-//			if ( arg >= type->NumParameters() ) {
+//			if ( arg >= type.NumParameters() ) {
 //				Error( "too many parameters" );
 //			}
 //
 //			e = GetExpression( TOP_PRIORITY );
 //
-//			funcArg = type->GetParmType( arg );
+//			funcArg = type.GetParmType( arg );
 //			if ( !EmitPush( e, funcArg ) ) {
-//				Error( "type mismatch on parm %i of call to '%s'", arg + 1, func->Name() );
+//				Error( "type mismatch on parm %i of call to '%s'", arg + 1, func.Name() );
 //			}
 //
-//			if ( funcArg->Type() == ev_object ) {
+//			if ( funcArg.Type() == ev_object ) {
 //				size += type_object.Size();
 //			} else {
-//				size += funcArg->Size();
+//				size += funcArg.Size();
 //			}
 //
 //			arg++;
@@ -1053,8 +1053,8 @@ class idCompiler {
 //		ExpectToken( ")" );
 //	}
 //
-//	if ( arg < type->NumParameters() ) {
-//		Error( "too few parameters for function '%s'", func->Name() );
+//	if ( arg < type.NumParameters() ) {
+//		Error( "too few parameters for function '%s'", func.Name() );
 //	}
 //
 //	if ( op == OP_CALL ) {
@@ -1064,21 +1064,21 @@ class idCompiler {
 //
 //		// need arg size seperate since script object may be NULL
 //		statement_t &statement = gameLocal.program.GetStatement( gameLocal.program.NumStatements() - 1 );
-//		statement.c = SizeConstant( func->value.functionPtr->parmTotal );
+//		statement.c = SizeConstant( func.value.functionPtr.parmTotal );
 //	} else {
 //		EmitOpcode( op, func, SizeConstant( size ) );
 //	}
 //
 //	// we need to copy off the result into a temporary result location, so figure out the opcode
-//	returnType = type->ReturnType();
-//	if ( returnType->Type() == ev_string ) {
+//	returnType = type.ReturnType();
+//	if ( returnType.Type() == ev_string ) {
 //		resultOp = OP_STORE_S;
 //		returnDef = gameLocal.program.returnStringDef;
 //	} else {
-//		gameLocal.program.returnDef->SetTypeDef( returnType );
+//		gameLocal.program.returnDef.SetTypeDef( returnType );
 //		returnDef = gameLocal.program.returnDef;
 //
-//		switch( returnType->Type() ) {
+//		switch( returnType.Type() ) {
 //		case ev_void :
 //			resultOp = OP_STORE_F;
 //			break;
@@ -1106,12 +1106,12 @@ class idCompiler {
 //		default :
 //			// shut up compiler
 //			resultOp = OP_STORE_OBJ;
-//			Error( "Invalid return type for function '%s'", func->Name() );
+//			Error( "Invalid return type for function '%s'", func.Name() );
 //			break;
 //		}
 //	}
 //
-//	if ( returnType->Type() == ev_void ) {
+//	if ( returnType.Type() == ev_void ) {
 //		// don't need result space since there's no result, so just return the normal result def.
 //		return returnDef;
 //	}
@@ -1119,9 +1119,9 @@ class idCompiler {
 //	// allocate result space
 //	// try to reuse result defs as much as possible
 //	statement_t &statement = gameLocal.program.GetStatement( gameLocal.program.NumStatements() - 1 );
-//	idVarDef *resultDef = gameLocal.program.FindFreeResultDef( returnType, RESULT_STRING, scope, statement.a, statement.b );
+//	idVarDef *resultDef = gameLocal.program.FindFreeResultDef( returnType, RESULT_STRING, this.scope, statement.a, statement.b );
 //	// set user count back to 0, a result def needs to be used twice before it can be reused
-//	resultDef->numUsers = 0;
+//	resultDef.numUsers = 0;
 //
 //	EmitOpcode( resultOp, returnDef, resultDef );
 //
@@ -1136,26 +1136,26 @@ class idCompiler {
 //idVarDef *idCompiler::ParseFunctionCall( idVarDef *funcDef ) {
 //	assert( funcDef );
 //
-//	if ( funcDef->Type() != ev_function ) {
-//		Error( "'%s' is not a function", funcDef->Name() );
+//	if ( funcDef.Type() != ev_function ) {
+//		Error( "'%s' is not a function", funcDef.Name() );
 //	}
 //
-//	if ( funcDef->initialized == idVarDef::uninitialized ) {
-//		Error( "Function '%s' has not been defined yet", funcDef->GlobalName() );
+//	if ( funcDef.initialized == idVarDef::uninitialized ) {
+//		Error( "Function '%s' has not been defined yet", funcDef.GlobalName() );
 //	}
 //
-//	assert( funcDef->value.functionPtr );
-//	if ( callthread ) {
-//		if ( ( funcDef->initialized != idVarDef::uninitialized ) && funcDef->value.functionPtr->eventdef ) {
+//	assert( funcDef.value.functionPtr );
+//	if ( this.callthread ) {
+//		if ( ( funcDef.initialized != idVarDef::uninitialized ) && funcDef.value.functionPtr.eventdef ) {
 //			Error( "Built-in functions cannot be called as threads" );
 //		}
-//		callthread = false;
+//		this.callthread = false;
 //		return EmitFunctionParms( OP_THREAD, funcDef, 0, 0, NULL );
 //	} else {
-//		if ( ( funcDef->initialized != idVarDef::uninitialized ) && funcDef->value.functionPtr->eventdef ) {
-//			if ( ( scope->Type() != ev_namespace ) && ( scope->scope->Type() == ev_object ) ) {
+//		if ( ( funcDef.initialized != idVarDef::uninitialized ) && funcDef.value.functionPtr.eventdef ) {
+//			if ( ( this.scope.Type() != ev_namespace ) && ( this.scope.scope.Type() == ev_object ) ) {
 //				// get the local object pointer
-//				idVarDef *thisdef = gameLocal.program.GetDef( scope->scope->TypeDef(), "self", scope );
+//				idVarDef *thisdef = gameLocal.program.GetDef( this.scope.scope.TypeDef(), "self", this.scope );
 //				if ( !thisdef ) {
 //					Error( "No 'self' within scope" );
 //				}
@@ -1176,9 +1176,9 @@ class idCompiler {
 //============
 //*/
 //idVarDef *idCompiler::ParseObjectCall( idVarDef *object, idVarDef *func ) {
-//	EmitPush( object, object->TypeDef() );
-//	if ( callthread ) {
-//		callthread = false;
+//	EmitPush( object, object.TypeDef() );
+//	if ( this.callthread ) {
+//		this.callthread = false;
 //		return EmitFunctionParms( OP_OBJTHREAD, func, 1, type_object.Size(), object );
 //	} else {
 //		return EmitFunctionParms( OP_OBJECTCALL, func, 1, 0, object );
@@ -1191,22 +1191,22 @@ class idCompiler {
 //============
 //*/
 //idVarDef *idCompiler::ParseEventCall( idVarDef *object, idVarDef *funcDef ) {
-//	if ( callthread ) {
+//	if ( this.callthread ) {
 //		Error( "Cannot call built-in functions as a thread" );
 //	}
 //
-//	if ( funcDef->Type() != ev_function ) {
-//		Error( "'%s' is not a function", funcDef->Name() );
+//	if ( funcDef.Type() != ev_function ) {
+//		Error( "'%s' is not a function", funcDef.Name() );
 //	}
 //
-//	if ( !funcDef->value.functionPtr->eventdef ) {
-//		Error( "\"%s\" cannot be called with object notation", funcDef->Name() );
+//	if ( !funcDef.value.functionPtr.eventdef ) {
+//		Error( "\"%s\" cannot be called with object notation", funcDef.Name() );
 //	}
 //
-//	if ( object->Type() == ev_object ) {
+//	if ( object.Type() == ev_object ) {
 //		EmitPush( object, &type_entity );
 //	} else {
-//		EmitPush( object, object->TypeDef() );
+//		EmitPush( object, object.TypeDef() );
 //	}
 //
 //	return EmitFunctionParms( OP_EVENTCALL, funcDef, 0, type_object.Size(), NULL );
@@ -1218,20 +1218,20 @@ class idCompiler {
 //============
 //*/
 //idVarDef *idCompiler::ParseSysObjectCall( idVarDef *funcDef ) {
-//	if ( callthread ) {
+//	if ( this.callthread ) {
 //		Error( "Cannot call built-in functions as a thread" );
 //	}
 //
-//	if ( funcDef->Type() != ev_function ) {
-//		Error( "'%s' is not a function", funcDef->Name() );
+//	if ( funcDef.Type() != ev_function ) {
+//		Error( "'%s' is not a function", funcDef.Name() );
 //	}
 //
-//	if ( !funcDef->value.functionPtr->eventdef ) {
-//		Error( "\"%s\" cannot be called with object notation", funcDef->Name() );
+//	if ( !funcDef.value.functionPtr.eventdef ) {
+//		Error( "\"%s\" cannot be called with object notation", funcDef.Name() );
 //	}
 //
-//	if ( !idThread::Type.RespondsTo( *funcDef->value.functionPtr->eventdef ) ) {
-//		Error( "\"%s\" is not callable as a 'sys' function", funcDef->Name() );
+//	if ( !idThread::Type.RespondsTo( *funcDef.value.functionPtr.eventdef ) ) {
+//		Error( "\"%s\" is not callable as a 'sys' function", funcDef.Name() );
 //	}
 //
 //	return EmitFunctionParms( OP_SYSCALL, funcDef, 0, 0, NULL );
@@ -1250,11 +1250,11 @@ class idCompiler {
 //	opcode_t	*op;
 //
 //	// check if we're accessing a field
-//	if ( baseobj && ( baseobj->Type() == ev_object ) ) {
+//	if ( baseobj && ( baseobj.Type() == ev_object ) ) {
 //		const idVarDef *tdef;
 //
 //		def = NULL;
-//		for( tdef = baseobj; tdef != &def_object; tdef = tdef->TypeDef()->SuperClass()->def ) {
+//		for( tdef = baseobj; tdef != &def_object; tdef = tdef.TypeDef().SuperClass().def ) {
 //			def = gameLocal.program.GetDef( NULL, name, tdef );
 //			if ( def ) {
 //				break;
@@ -1262,24 +1262,24 @@ class idCompiler {
 //		}
 //	} else {
 //		// first look through the defs in our scope
-//		def = gameLocal.program.GetDef( NULL, name, scope );
+//		def = gameLocal.program.GetDef( NULL, name, this.scope );
 //		if ( !def ) {
 //			// if we're in a member function, check types local to the object
-//			if ( ( scope->Type() != ev_namespace ) && ( scope->scope->Type() == ev_object ) ) {
+//			if ( ( this.scope.Type() != ev_namespace ) && ( this.scope.scope.Type() == ev_object ) ) {
 //				// get the local object pointer
-//				idVarDef *thisdef = gameLocal.program.GetDef( scope->scope->TypeDef(), "self", scope );
+//				idVarDef *thisdef = gameLocal.program.GetDef( this.scope.scope.TypeDef(), "self", this.scope );
 //
-//				field = LookupDef( name, scope->scope->TypeDef()->def );
+//				field = LookupDef( name, this.scope.scope.TypeDef().def );
 //				if ( !field ) {
 //					Error( "Unknown value \"%s\"", name );
 //				}
 //
 //				// type check
-//				type_b = field->Type();
-//				if ( field->Type() == ev_function ) {
-//					type_c = field->TypeDef()->ReturnType()->Type();
+//				type_b = field.Type();
+//				if ( field.Type() == ev_function ) {
+//					type_c = field.TypeDef().ReturnType().Type();
 //				} else {
-//					type_c = field->TypeDef()->FieldType()->Type();	// field access gets type from field
+//					type_c = field.TypeDef().FieldType().Type();	// field access gets type from field
 //	                if ( CheckToken( "++" ) ) {
 //						if ( type_c != ev_float ) {
 //							Error( "Invalid type for ++" );
@@ -1296,16 +1296,16 @@ class idCompiler {
 //				}
 //
 //				op = &opcodes[ OP_INDIRECT_F ];
-//				while( ( op->type_a->Type() != ev_object ) 
-//					|| ( type_b != op->type_b->Type() ) || ( type_c != op->type_c->Type() ) ) {
-//					if ( ( op->priority == FUNCTION_PRIORITY ) && ( op->type_a->Type() == ev_object ) && ( op->type_c->Type() == ev_void ) && 
-//						( type_c != op->type_c->Type() ) ) {
+//				while( ( op.type_a.Type() != ev_object ) 
+//					|| ( type_b != op.type_b.Type() ) || ( type_c != op.type_c.Type() ) ) {
+//					if ( ( op.priority == FUNCTION_PRIORITY ) && ( op.type_a.Type() == ev_object ) && ( op.type_c.Type() == ev_void ) && 
+//						( type_c != op.type_c.Type() ) ) {
 //						// catches object calls that return a value
 //						break;
 //					}
 //					op++;
-//					if ( !op->name || strcmp( op->name, "." ) ) {
-//						Error( "no valid opcode to access type '%s'", field->TypeDef()->SuperClass()->Name() );
+//					if ( !op.name || strcmp( op.name, "." ) ) {
+//						Error( "no valid opcode to access type '%s'", field.TypeDef().SuperClass().Name() );
 //					}
 //				}
 //
@@ -1317,7 +1317,7 @@ class idCompiler {
 //					def = EmitOpcode( op, thisdef, field );
 //
 //					// field access gets type from field
-//					def->SetTypeDef( field->TypeDef()->FieldType() );
+//					def.SetTypeDef( field.TypeDef().FieldType() );
 //				}
 //			}
 //		}
@@ -1353,25 +1353,25 @@ class idCompiler {
 //	}
 //
 //	ParseName( name );
-//	def = LookupDef( name, basetype );
+//	def = LookupDef( name, this.basetype );
 //	if ( !def ) {
-//		if ( basetype ) {
-//			Error( "%s is not a member of %s", name.c_str(), basetype->TypeDef()->Name() );
+//		if ( this.basetype ) {
+//			Error( "%s is not a member of %s", name.c_str(), this.basetype.TypeDef().Name() );
 //		} else {
 //			Error( "Unknown value \"%s\"", name.c_str() );
 //		}
 //	// if namespace, then look up the variable in that namespace
-//	} else if ( def->Type() == ev_namespace ) {
-//		while( def->Type() == ev_namespace ) {
+//	} else if ( def.Type() == ev_namespace ) {
+//		while( def.Type() == ev_namespace ) {
 //			ExpectToken( "::" );
 //			ParseName( name );
 //			namespaceDef = def;
 //			def = gameLocal.program.GetDef( NULL, name, namespaceDef );
 //			if ( !def ) {
-//				Error( "Unknown value \"%s::%s\"", namespaceDef->GlobalName(), name.c_str() );
+//				Error( "Unknown value \"%s::%s\"", namespaceDef.GlobalName(), name.c_str() );
 //			}
 //		}
-//		//def = LookupDef( name, basetype );
+//		//def = LookupDef( name, this.basetype );
 //	}
 //
 //	return def;
@@ -1388,7 +1388,7 @@ class idCompiler {
 //	
 //	if ( !immediateType && CheckToken( "~" ) ) {
 //		e = GetExpression( TILDE_PRIORITY );
-//		switch( e->Type() ) {
+//		switch( e.Type() ) {
 //		case ev_float :
 //			op = OP_COMP_F;
 //			break;
@@ -1406,7 +1406,7 @@ class idCompiler {
 //
 //	if ( !immediateType && CheckToken( "!" ) ) {
 //		e = GetExpression( NOT_PRIORITY );
-//		switch( e->Type() ) {
+//		switch( e.Type() ) {
 //		case ev_boolean :
 //			op = OP_NOT_BOOL;
 //			break;
@@ -1462,7 +1462,7 @@ class idCompiler {
 //			return ParseImmediate();
 //		} else {
 //			e = GetExpression( NOT_PRIORITY );
-//			switch( e->Type() ) {
+//			switch( e.Type() ) {
 //			case ev_float :
 //				op = OP_NEG_F;
 //				break;
@@ -1485,7 +1485,7 @@ class idCompiler {
 //		ExpectToken( "(" );
 //
 //		e = GetExpression( INT_PRIORITY );
-//		if ( e->Type() != ev_float ) {
+//		if ( e.Type() != ev_float ) {
 //			Error( "type mismatch for int()" );
 //		}
 //
@@ -1495,15 +1495,15 @@ class idCompiler {
 //	}
 //	
 //	if ( CheckToken( "thread" ) ) {
-//		callthread = true;
+//		this.callthread = true;
 //		e = GetExpression( FUNCTION_PRIORITY );
 //
-//		if ( callthread ) {
+//		if ( this.callthread ) {
 //			Error( "Invalid thread call" );
 //		}
 //
 //		// threads return the thread number
-//		gameLocal.program.returnDef->SetTypeDef( &type_float );
+//		gameLocal.program.returnDef.SetTypeDef( &type_float );
 //		return gameLocal.program.returnDef;
 //	}
 //	
@@ -1573,40 +1573,40 @@ class idCompiler {
 //			break;
 //		}
 //
-//		for( op = opcodes; op->name; op++ ) {
-//			if ( ( op->priority == priority ) && CheckToken( op->name ) ) {
+//		for( op = opcodes; op.name; op++ ) {
+//			if ( ( op.priority == priority ) && CheckToken( op.name ) ) {
 //				break;
 //			}
 //		}
 //
-//		if ( !op->name ) {
+//		if ( !op.name ) {
 //			// next token isn't at this priority level
 //			break;
 //		}
 //
 //		// unary operators act only on the left operand
-//		if ( op->type_b == &def_void ) {
+//		if ( op.type_b == &def_void ) {
 //			e = EmitOpcode( op, e, 0 );
 //			return e;
 //		}
 //
 //		// preserve our base type
-//		oldtype = basetype;
+//		oldtype = this.basetype;
 //
 //		// field access needs scope from object
-//		if ( ( op->name[ 0 ] == '.' ) && e->TypeDef()->Inherits( &type_object ) ) {
+//		if ( ( op.name[ 0 ] == '.' ) && e.TypeDef().Inherits( &type_object ) ) {
 //			// save off what type this field is part of
-//			basetype = e->TypeDef()->def;
+//			this.basetype = e.TypeDef().def;
 //		}
 //
-//		if ( op->rightAssociative ) {
+//		if ( op.rightAssociative ) {
 //			// if last statement is an indirect, change it to an address of
 //			if ( gameLocal.program.NumStatements() > 0 ) {
 //				statement_t &statement = gameLocal.program.GetStatement( gameLocal.program.NumStatements() - 1 );
 //				if ( ( statement.op >= OP_INDIRECT_F ) && ( statement.op < OP_ADDRESS ) ) {
 //					statement.op = OP_ADDRESS;
-//					type_pointer.SetPointerType( e->TypeDef() );
-//					e->SetTypeDef( &type_pointer );
+//					type_pointer.SetPointerType( e.TypeDef() );
+//					e.SetTypeDef( &type_pointer );
 //				}
 //			}
 //
@@ -1616,18 +1616,18 @@ class idCompiler {
 //		}
 //
 //		// restore type
-//		basetype = oldtype;
+//		this.basetype = oldtype;
 //			
 //		// type check
-//		type_a = e->Type();
-//		type_b = e2->Type();
+//		type_a = e.Type();
+//		type_b = e2.Type();
 //
 //		// field access gets type from field
-//		if ( op->name[ 0 ] == '.' ) {
-//			if ( ( e2->Type() == ev_function ) && e2->TypeDef()->ReturnType() ) {
-//				type_c = e2->TypeDef()->ReturnType()->Type();
-//			} else if ( e2->TypeDef()->FieldType() ) {
-//				type_c = e2->TypeDef()->FieldType()->Type();
+//		if ( op.name[ 0 ] == '.' ) {
+//			if ( ( e2.Type() == ev_function ) && e2.TypeDef().ReturnType() ) {
+//				type_c = e2.TypeDef().ReturnType().Type();
+//			} else if ( e2.TypeDef().FieldType() ) {
+//				type_c = e2.TypeDef().FieldType().Type();
 //			} else {
 //				// not a field
 //				type_c = ev_error;
@@ -1637,15 +1637,15 @@ class idCompiler {
 //		}
 //
 //		oldop = op;
-//		while( !TypeMatches( type_a, op->type_a->Type() ) || !TypeMatches( type_b, op->type_b->Type() ) ||
-//			( ( type_c != ev_void ) && !TypeMatches( type_c, op->type_c->Type() ) ) ) {
-//			if ( ( op->priority == FUNCTION_PRIORITY ) && TypeMatches( type_a, op->type_a->Type() ) && TypeMatches( type_b, op->type_b->Type() ) ) {
+//		while( !TypeMatches( type_a, op.type_a.Type() ) || !TypeMatches( type_b, op.type_b.Type() ) ||
+//			( ( type_c != ev_void ) && !TypeMatches( type_c, op.type_c.Type() ) ) ) {
+//			if ( ( op.priority == FUNCTION_PRIORITY ) && TypeMatches( type_a, op.type_a.Type() ) && TypeMatches( type_b, op.type_b.Type() ) ) {
 //				break;
 //			}
 //
 //			op++;
-//			if ( !op->name || strcmp( op->name, oldop->name ) ) {
-//				Error( "type mismatch for '%s'", oldop->name );
+//			if ( !op.name || strcmp( op.name, oldop.name ) ) {
+//				Error( "type mismatch for '%s'", oldop.name );
 //			}
 //		}
 //
@@ -1657,7 +1657,7 @@ class idCompiler {
 //
 //		case OP_OBJECTCALL :
 //			ExpectToken( "(" );
-//			if ( ( e2->initialized != idVarDef::uninitialized ) && e2->value.functionPtr->eventdef ) {
+//			if ( ( e2.initialized != idVarDef::uninitialized ) && e2.value.functionPtr.eventdef ) {
 //				e = ParseEventCall( e, e2 );
 //			} else {
 //				e = ParseObjectCall( e, e2 );
@@ -1666,7 +1666,7 @@ class idCompiler {
 //		
 //		case OP_EVENTCALL :
 //			ExpectToken( "(" );
-//			if ( ( e2->initialized != idVarDef::uninitialized ) && e2->value.functionPtr->eventdef ) {
+//			if ( ( e2.initialized != idVarDef::uninitialized ) && e2.value.functionPtr.eventdef ) {
 //				e = ParseEventCall( e, e2 );
 //			} else {
 //				e = ParseObjectCall( e, e2 );
@@ -1674,36 +1674,36 @@ class idCompiler {
 //			break;
 //
 //		default:
-//			if ( callthread ) {
+//			if ( this.callthread ) {
 //				Error( "Expecting function call after 'thread'" );
 //			}
 //
-//			if ( ( type_a == ev_pointer ) && ( type_b != e->TypeDef()->PointerType()->Type() ) ) {
+//			if ( ( type_a == ev_pointer ) && ( type_b != e.TypeDef().PointerType().Type() ) ) {
 //				// FIXME: need to make a general case for this
-//				if ( ( op - opcodes == OP_STOREP_F ) && ( e->TypeDef()->PointerType()->Type() == ev_boolean ) ) {
+//				if ( ( op - opcodes == OP_STOREP_F ) && ( e.TypeDef().PointerType().Type() == ev_boolean ) ) {
 //					// copy from float to boolean pointer
 //					op = &opcodes[ OP_STOREP_FTOBOOL ];
-//				} else if ( ( op - opcodes == OP_STOREP_BOOL ) && ( e->TypeDef()->PointerType()->Type() == ev_float ) ) {
+//				} else if ( ( op - opcodes == OP_STOREP_BOOL ) && ( e.TypeDef().PointerType().Type() == ev_float ) ) {
 //					// copy from boolean to float pointer
 //					op = &opcodes[ OP_STOREP_BOOLTOF ];
-//				} else if ( ( op - opcodes == OP_STOREP_F ) && ( e->TypeDef()->PointerType()->Type() == ev_string ) ) {
+//				} else if ( ( op - opcodes == OP_STOREP_F ) && ( e.TypeDef().PointerType().Type() == ev_string ) ) {
 //					// copy from float to string pointer
 //					op = &opcodes[ OP_STOREP_FTOS ];
-//				} else if ( ( op - opcodes == OP_STOREP_BOOL ) && ( e->TypeDef()->PointerType()->Type() == ev_string ) ) {
+//				} else if ( ( op - opcodes == OP_STOREP_BOOL ) && ( e.TypeDef().PointerType().Type() == ev_string ) ) {
 //					// copy from boolean to string pointer
 //					op = &opcodes[ OP_STOREP_BTOS ];
-//				} else if ( ( op - opcodes == OP_STOREP_V ) && ( e->TypeDef()->PointerType()->Type() == ev_string ) ) {
+//				} else if ( ( op - opcodes == OP_STOREP_V ) && ( e.TypeDef().PointerType().Type() == ev_string ) ) {
 //					// copy from vector to string pointer
 //					op = &opcodes[ OP_STOREP_VTOS ];
-//				} else if ( ( op - opcodes == OP_STOREP_ENT ) && ( e->TypeDef()->PointerType()->Type() == ev_object ) ) {
+//				} else if ( ( op - opcodes == OP_STOREP_ENT ) && ( e.TypeDef().PointerType().Type() == ev_object ) ) {
 //					// store an entity into an object pointer
 //					op = &opcodes[ OP_STOREP_OBJENT ];
 //				} else {
-//					Error( "type mismatch for '%s'", op->name );
+//					Error( "type mismatch for '%s'", op.name );
 //				}
 //			}
 //			
-//			if ( op->rightAssociative ) {
+//			if ( op.rightAssociative ) {
 //				e = EmitOpcode( op, e2, e );
 //			} else {
 //				e = EmitOpcode( op, e, e2 );
@@ -1714,12 +1714,12 @@ class idCompiler {
 //				// so that we can do a type check during run time since we don't know what type the script object is at compile time because it
 //				// comes from an entity
 //				statement_t &statement = gameLocal.program.GetStatement( gameLocal.program.NumStatements() - 1 );
-//				statement.c = type_pointer.PointerType()->def;
+//				statement.c = type_pointer.PointerType().def;
 //			}
 //
 //			// field access gets type from field
 //			if ( type_c != ev_void ) {
-//				e->SetTypeDef( e2->TypeDef()->FieldType() );
+//				e.SetTypeDef( e2.TypeDef().FieldType() );
 //			}
 //			break;
 //		}
@@ -1739,12 +1739,12 @@ class idCompiler {
 //
 //	pos = &gameLocal.program.GetStatement( start );
 //	for( i = start; i < gameLocal.program.NumStatements(); i++, pos++ ) {
-//		if ( pos->op == OP_BREAK ) {
-//			pos->op = OP_GOTO;
-//			pos->a = JumpFrom( i );
-//		} else if ( pos->op == OP_CONTINUE ) {
-//			pos->op = OP_GOTO;
-//			pos->a = JumpDef( i, continuePos );
+//		if ( pos.op == OP_BREAK ) {
+//			pos.op = OP_GOTO;
+//			pos.a = JumpFrom( i );
+//		} else if ( pos.op == OP_CONTINUE ) {
+//			pos.op = OP_GOTO;
+//			pos.a = JumpDef( i, continuePos );
 //		}
 //	}
 //}
@@ -1761,7 +1761,7 @@ class idCompiler {
 //	opcode_t	*op;
 //
 //	if ( CheckToken( ";" ) ) {
-//		if ( scope->TypeDef()->ReturnType()->Type() != ev_void ) {
+//		if ( this.scope.TypeDef().ReturnType().Type() != ev_void ) {
 //			Error( "expecting return value" );
 //		}
 //
@@ -1772,34 +1772,34 @@ class idCompiler {
 //	e = GetExpression( TOP_PRIORITY );
 //	ExpectToken( ";" );
 //
-//	type_a = e->Type();
-//	type_b = scope->TypeDef()->ReturnType()->Type();
+//	type_a = e.Type();
+//	type_b = this.scope.TypeDef().ReturnType().Type();
 //
 //	if ( TypeMatches( type_a, type_b ) ) {
 //		EmitOpcode( OP_RETURN, e, 0 );
 //		return;
 //	}
 //
-//	for( op = opcodes; op->name; op++ ) {
-//		if ( !strcmp( op->name, "=" ) ) {
+//	for( op = opcodes; op.name; op++ ) {
+//		if ( !strcmp( op.name, "=" ) ) {
 //			break;
 //		}
 //	}
 //
-//	assert( op->name );
+//	assert( op.name );
 //
-//	while( !TypeMatches( type_a, op->type_a->Type() ) || !TypeMatches( type_b, op->type_b->Type() ) ) {
+//	while( !TypeMatches( type_a, op.type_a.Type() ) || !TypeMatches( type_b, op.type_b.Type() ) ) {
 //		op++;
-//		if ( !op->name || strcmp( op->name, "=" ) ) {
+//		if ( !op.name || strcmp( op.name, "=" ) ) {
 //			Error( "type mismatch for return value" );
 //		}
 //	}
 //
-//	idTypeDef *returnType = scope->TypeDef()->ReturnType();
-//	if ( returnType->Type() == ev_string ) {
+//	idTypeDef *returnType = this.scope.TypeDef().ReturnType();
+//	if ( returnType.Type() == ev_string ) {
 //		EmitOpcode( op, e, gameLocal.program.returnStringDef );
 //	} else {
-//		gameLocal.program.returnDef->SetTypeDef( returnType );
+//		gameLocal.program.returnDef.SetTypeDef( returnType );
 //		EmitOpcode( op, e, gameLocal.program.returnDef );
 //	}
 //	EmitOpcode( OP_RETURN, 0, 0 );
@@ -1823,7 +1823,7 @@ class idCompiler {
 //	e = GetExpression( TOP_PRIORITY );
 //	ExpectToken( ")" );
 //
-//	if ( ( e->initialized == idVarDef::initializedConstant ) && ( *e->value.intPtr != 0 ) ) {
+//	if ( ( e.initialized == idVarDef::initializedConstant ) && ( *e.value.intPtr != 0 ) ) {
 //		//FIXME: we can completely skip generation of this code in the opposite case
 //		ParseStatement();
 //		EmitOpcode( OP_GOTO, JumpTo( patch2 ), 0 );
@@ -2093,8 +2093,8 @@ class idCompiler {
 //	int			num;
 //	int			i;
 //
-//	oldscope = scope;
-//	if ( scope->Type() != ev_namespace ) {
+//	oldscope = this.scope;
+//	if ( this.scope.Type() != ev_namespace ) {
 //		Error( "Objects cannot be defined within functions or other objects" );
 //	}
 //
@@ -2108,20 +2108,20 @@ class idCompiler {
 //		parentType = &type_object;
 //	} else {
 //		parentType = ParseType();
-//		if ( !parentType->Inherits( &type_object ) ) {
+//		if ( !parentType.Inherits( &type_object ) ) {
 //			Error( "Objects may only inherit from objects." );
 //		}
 //	}
 //	
-//	objtype = gameLocal.program.AllocType( ev_object, NULL, objname, parentType == &type_object ? 0 : parentType->Size(), parentType );
-//	objtype->def = gameLocal.program.AllocDef( objtype, objname, scope, true );
-//	scope = objtype->def;
+//	objtype = gameLocal.program.AllocType( ev_object, NULL, objname, parentType == &type_object ? 0 : parentType.Size(), parentType );
+//	objtype.def = gameLocal.program.AllocDef( objtype, objname, this.scope, true );
+//	this.scope = objtype.def;
 //
 //	// inherit all the functions
-//	num = parentType->NumFunctions();
-//	for( i = 0; i < parentType->NumFunctions(); i++ ) {
-//		const function_t *func = parentType->GetFunction( i );
-//		objtype->AddFunction( func );
+//	num = parentType.NumFunctions();
+//	for( i = 0; i < parentType.NumFunctions(); i++ ) {
+//		const function_t *func = parentType.GetFunction( i );
+//		objtype.AddFunction( func );
 //	}
 //
 //	ExpectToken( "{" );
@@ -2135,7 +2135,7 @@ class idCompiler {
 //		fieldtype = ParseType();
 //		newtype.SetFieldType( fieldtype );
 //
-//		fieldname = va( "%s field", fieldtype->Name() );
+//		fieldname = va( "%s field", fieldtype.Name() );
 //		newtype.SetName( fieldname );
 //
 //		ParseName( name );
@@ -2145,14 +2145,14 @@ class idCompiler {
 //			ParseFunctionDef( newtype.FieldType(), name );
 //		} else {
 //			type = gameLocal.program.GetType( newtype, true );
-//			assert( !type->def );
-//			gameLocal.program.AllocDef( type, name, scope, true );
-//			objtype->AddField( type, name );
+//			assert( !type.def );
+//			gameLocal.program.AllocDef( type, name, this.scope, true );
+//			objtype.AddField( type, name );
 //			ExpectToken( ";" );
 //		}
 //	} while( !CheckToken( "}" ) );
 //
-//	scope = oldscope;
+//	this.scope = oldscope;
 //
 //	ExpectToken( ";" );
 //}
@@ -2168,9 +2168,9 @@ class idCompiler {
 //	idTypeDef	newtype( ev_function, NULL, name, type_function.Size(), returnType );
 //	idTypeDef	*type;
 //	
-//	if ( scope->Type() != ev_namespace ) {
+//	if ( this.scope.Type() != ev_namespace ) {
 //		// create self pointer
-//		newtype.AddFunctionParm( scope->TypeDef(), "self" );
+//		newtype.AddFunctionParm( this.scope.TypeDef(), "self" );
 //	}
 //
 //	if ( !CheckToken( ")" ) ) {
@@ -2203,25 +2203,25 @@ class idCompiler {
 //	function_t		*func;
 //	statement_t		*pos;
 //
-//	if ( ( scope->Type() != ev_namespace ) && !scope->TypeDef()->Inherits( &type_object ) ) {
+//	if ( ( this.scope.Type() != ev_namespace ) && !scope.TypeDef().Inherits( &type_object ) ) {
 //		Error( "Functions may not be defined within other functions" );
 //	}
 //
 //	type = ParseFunction( returnType, name );
-//	def = gameLocal.program.GetDef( type, name, scope );
+//	def = gameLocal.program.GetDef( type, name, this.scope );
 //	if ( !def ) {
-//		def = gameLocal.program.AllocDef( type, name, scope, true );
-//		type->def = def;
+//		def = gameLocal.program.AllocDef( type, name, this.scope, true );
+//		type.def = def;
 //
 //		func = &gameLocal.program.AllocFunction( def );
-//		if ( scope->TypeDef()->Inherits( &type_object ) ) {
-//			scope->TypeDef()->AddFunction( func );
+//		if ( this.scope.TypeDef().Inherits( &type_object ) ) {
+//			this.scope.TypeDef().AddFunction( func );
 //		}
 //	} else {
-//		func = def->value.functionPtr;
+//		func = def.value.functionPtr;
 //		assert( func );
-//		if ( func->firstStatement ) {
-//			Error( "%s redeclared", def->GlobalName() );
+//		if ( func.firstStatement ) {
+//			Error( "%s redeclared", def.GlobalName() );
 //		}
 //	}
 //
@@ -2233,39 +2233,39 @@ class idCompiler {
 //	}
 //
 //	// calculate stack space used by parms
-//	numParms = type->NumParameters();
-//	func->parmSize.SetNum( numParms );
+//	numParms = type.NumParameters();
+//	func.parmSize.SetNum( numParms );
 //	for( i = 0; i < numParms; i++ ) {
-//		parmType = type->GetParmType( i );
-//		if ( parmType->Inherits( &type_object ) ) {
-//			func->parmSize[ i ] = type_object.Size();
+//		parmType = type.GetParmType( i );
+//		if ( parmType.Inherits( &type_object ) ) {
+//			func.parmSize[ i ] = type_object.Size();
 //		} else {
-//			func->parmSize[ i ] = parmType->Size();
+//			func.parmSize[ i ] = parmType.Size();
 //		}
-//		func->parmTotal += func->parmSize[ i ];
+//		func.parmTotal += func.parmSize[ i ];
 //	}
 //
 //	// define the parms
 //	for( i = 0; i < numParms; i++ ) {
-//		if ( gameLocal.program.GetDef( type->GetParmType( i ), type->GetParmName( i ), def ) ) {
-//			Error( "'%s' defined more than once in function parameters", type->GetParmName( i ) );
+//		if ( gameLocal.program.GetDef( type.GetParmType( i ), type.GetParmName( i ), def ) ) {
+//			Error( "'%s' defined more than once in function parameters", type.GetParmName( i ) );
 //		}
-//		parm = gameLocal.program.AllocDef( type->GetParmType( i ), type->GetParmName( i ), def, false );
+//		parm = gameLocal.program.AllocDef( type.GetParmType( i ), type.GetParmName( i ), def, false );
 //	}
 //
-//	oldscope = scope;
-//	scope = def;
+//	oldscope = this.scope;
+//	this.scope = def;
 //
-//	func->firstStatement = gameLocal.program.NumStatements();
+//	func.firstStatement = gameLocal.program.NumStatements();
 //
 //	// check if we should call the super class constructor
-//	if ( oldscope->TypeDef()->Inherits( &type_object ) && !idStr::Icmp( name, "init" ) ) {
+//	if ( oldscope.TypeDef().Inherits( &type_object ) && !idStr::Icmp( name, "init" ) ) {
 //		idTypeDef *superClass;
 //		function_t *constructorFunc = NULL;
 //
 //		// find the superclass constructor
-//		for( superClass = oldscope->TypeDef()->SuperClass(); superClass != &type_object; superClass = superClass->SuperClass() ) {
-//			constructorFunc = gameLocal.program.FindFunction( va( "%s::init", superClass->Name() ) );
+//		for( superClass = oldscope.TypeDef().SuperClass(); superClass != &type_object; superClass = superClass.SuperClass() ) {
+//			constructorFunc = gameLocal.program.FindFunction( va( "%s::init", superClass.Name() ) );
 //			if ( constructorFunc ) {
 //				break;
 //			}
@@ -2273,10 +2273,10 @@ class idCompiler {
 //
 //		// emit the call to the constructor
 //		if ( constructorFunc ) {
-//			idVarDef *selfDef = gameLocal.program.GetDef( type->GetParmType( 0 ), type->GetParmName( 0 ), def );
+//			idVarDef *selfDef = gameLocal.program.GetDef( type.GetParmType( 0 ), type.GetParmName( 0 ), def );
 //			assert( selfDef );
-//			EmitPush( selfDef, selfDef->TypeDef() );
-//			EmitOpcode( &opcodes[ OP_CALL ], constructorFunc->def, 0 );
+//			EmitPush( selfDef, selfDef.TypeDef() );
+//			EmitOpcode( &opcodes[ OP_CALL ], constructorFunc.def, 0 );
 //		}
 //	}
 //
@@ -2286,42 +2286,42 @@ class idCompiler {
 //	}
 //
 //	// check if we should call the super class destructor
-//	if ( oldscope->TypeDef()->Inherits( &type_object ) && !idStr::Icmp( name, "destroy" ) ) {
+//	if ( oldscope.TypeDef().Inherits( &type_object ) && !idStr::Icmp( name, "destroy" ) ) {
 //		idTypeDef *superClass;
 //		function_t *destructorFunc = NULL;
 //
 //		// find the superclass destructor
-//		for( superClass = oldscope->TypeDef()->SuperClass(); superClass != &type_object; superClass = superClass->SuperClass() ) {
-//			destructorFunc = gameLocal.program.FindFunction( va( "%s::destroy", superClass->Name() ) );
+//		for( superClass = oldscope.TypeDef().SuperClass(); superClass != &type_object; superClass = superClass.SuperClass() ) {
+//			destructorFunc = gameLocal.program.FindFunction( va( "%s::destroy", superClass.Name() ) );
 //			if ( destructorFunc ) {
 //				break;
 //			}
 //		}
 //
 //		if ( destructorFunc ) {
-//			if ( func->firstStatement < gameLocal.program.NumStatements() ) {
+//			if ( func.firstStatement < gameLocal.program.NumStatements() ) {
 //				// change all returns to point to the call to the destructor
-//				pos = &gameLocal.program.GetStatement( func->firstStatement );
-//				for( i = func->firstStatement; i < gameLocal.program.NumStatements(); i++, pos++ ) {
-//					if ( pos->op == OP_RETURN ) {
-//						pos->op = OP_GOTO;
-//						pos->a = JumpDef( i, gameLocal.program.NumStatements() );
+//				pos = &gameLocal.program.GetStatement( func.firstStatement );
+//				for( i = func.firstStatement; i < gameLocal.program.NumStatements(); i++, pos++ ) {
+//					if ( pos.op == OP_RETURN ) {
+//						pos.op = OP_GOTO;
+//						pos.a = JumpDef( i, gameLocal.program.NumStatements() );
 //					}
 //				}
 //			}
 //
 //			// emit the call to the destructor
-//			idVarDef *selfDef = gameLocal.program.GetDef( type->GetParmType( 0 ), type->GetParmName( 0 ), def );
+//			idVarDef *selfDef = gameLocal.program.GetDef( type.GetParmType( 0 ), type.GetParmName( 0 ), def );
 //			assert( selfDef );
-//			EmitPush( selfDef, selfDef->TypeDef() );
-//			EmitOpcode( &opcodes[ OP_CALL ], destructorFunc->def, 0 );
+//			EmitPush( selfDef, selfDef.TypeDef() );
+//			EmitOpcode( &opcodes[ OP_CALL ], destructorFunc.def, 0 );
 //		}
 //	}
 //
 //// Disabled code since it caused a function to fall through to the next function when last statement is in the form "if ( x ) { return; }"
 //#if 0
 //	// don't bother adding a return opcode if the "return" statement was used.
-//	if ( ( func->firstStatement == gameLocal.program.NumStatements() ) || ( gameLocal.program.GetStatement( gameLocal.program.NumStatements() - 1 ).op != OP_RETURN ) ) {
+//	if ( ( func.firstStatement == gameLocal.program.NumStatements() ) || ( gameLocal.program.GetStatement( gameLocal.program.NumStatements() - 1 ).op != OP_RETURN ) ) {
 //		// emit an end of statements opcode
 //		EmitOpcode( OP_RETURN, 0, 0 );
 //	}
@@ -2331,9 +2331,9 @@ class idCompiler {
 //#endif
 //
 //	// record the number of statements in the function
-//	func->numStatements = gameLocal.program.NumStatements() - func->firstStatement;
+//	func.numStatements = gameLocal.program.NumStatements() - func.firstStatement;
 //
-//	scope = oldscope;
+//	this.scope = oldscope;
 //}
 //
 	///*
@@ -2345,41 +2345,41 @@ class idCompiler {
 //	idVarDef	*def, *def2;
 //	bool		negate;
 //
-//	def = gameLocal.program.GetDef( type, name, scope );
+//	def = gameLocal.program.GetDef( type, name, this.scope );
 //	if ( def ) {
 //		Error( "%s redeclared", name );
 //	}
 //	
-//	def = gameLocal.program.AllocDef( type, name, scope, false );
+//	def = gameLocal.program.AllocDef( type, name, this.scope, false );
 //
 //	// check for an initialization
 //	if ( CheckToken( "=" ) ) {
 //		// if a local variable in a function then write out interpreter code to initialize variable
-//		if ( scope->Type() == ev_function ) {
+//		if ( this.scope.Type() == ev_function ) {
 //			def2 = GetExpression( TOP_PRIORITY );
-//			if ( ( type == &type_float ) && ( def2->TypeDef() == &type_float ) ) {
+//			if ( ( type == &type_float ) && ( def2.TypeDef() == &type_float ) ) {
 //				EmitOpcode( OP_STORE_F, def2, def );
-//			} else if ( ( type == &type_vector ) && ( def2->TypeDef() == &type_vector ) ) {
+//			} else if ( ( type == &type_vector ) && ( def2.TypeDef() == &type_vector ) ) {
 //				EmitOpcode( OP_STORE_V, def2, def );
-//			} else if ( ( type == &type_string ) && ( def2->TypeDef() == &type_string ) ) {
+//			} else if ( ( type == &type_string ) && ( def2.TypeDef() == &type_string ) ) {
 //				EmitOpcode( OP_STORE_S, def2, def );
-//			} else if ( ( type == &type_entity ) && ( ( def2->TypeDef() == &type_entity ) || ( def2->TypeDef()->Inherits( &type_object ) ) ) ) {
+//			} else if ( ( type == &type_entity ) && ( ( def2.TypeDef() == &type_entity ) || ( def2.TypeDef().Inherits( &type_object ) ) ) ) {
 //				EmitOpcode( OP_STORE_ENT, def2, def );
-//			} else if ( ( type->Inherits( &type_object ) ) && ( def2->TypeDef() == &type_entity ) ) {
+//			} else if ( ( type.Inherits( &type_object ) ) && ( def2.TypeDef() == &type_entity ) ) {
 //				EmitOpcode( OP_STORE_OBJENT, def2, def );
-//			} else if ( ( type->Inherits( &type_object ) ) && ( def2->TypeDef()->Inherits( type ) ) ) {
+//			} else if ( ( type.Inherits( &type_object ) ) && ( def2.TypeDef().Inherits( type ) ) ) {
 //				EmitOpcode( OP_STORE_OBJ, def2, def );
-//			} else if ( ( type == &type_boolean ) && ( def2->TypeDef() == &type_boolean ) ) {
+//			} else if ( ( type == &type_boolean ) && ( def2.TypeDef() == &type_boolean ) ) {
 //				EmitOpcode( OP_STORE_BOOL, def2, def );
-//			} else if ( ( type == &type_string ) && ( def2->TypeDef() == &type_float ) ) {
+//			} else if ( ( type == &type_string ) && ( def2.TypeDef() == &type_float ) ) {
 //				EmitOpcode( OP_STORE_FTOS, def2, def );
-//			} else if ( ( type == &type_string ) && ( def2->TypeDef() == &type_boolean ) ) {
+//			} else if ( ( type == &type_string ) && ( def2.TypeDef() == &type_boolean ) ) {
 //				EmitOpcode( OP_STORE_BTOS, def2, def );
-//			} else if ( ( type == &type_string ) && ( def2->TypeDef() == &type_vector ) ) {
+//			} else if ( ( type == &type_string ) && ( def2.TypeDef() == &type_vector ) ) {
 //				EmitOpcode( OP_STORE_VTOS, def2, def );
-//			} else if ( ( type == &type_boolean ) && ( def2->TypeDef() == &type_float ) ) {
+//			} else if ( ( type == &type_boolean ) && ( def2.TypeDef() == &type_float ) ) {
 //				EmitOpcode( OP_STORE_FTOBOOL, def2, def );
-//			} else if ( ( type == &type_float ) && ( def2->TypeDef() == &type_boolean ) ) {
+//			} else if ( ( type == &type_float ) && ( def2.TypeDef() == &type_boolean ) ) {
 //				EmitOpcode( OP_STORE_BOOLTOF, def2, def );
 //			} else {
 //				Error( "bad initialization for '%s'", name );
@@ -2401,23 +2401,23 @@ class idCompiler {
 //
 //			// global variables are initialized at start up
 //			if ( type == &type_string ) {
-//				def->SetString( token, false );
+//				def.SetString( token, false );
 //			} else {
 //				if ( negate ) {
 //					immediate._float = -immediate._float;
 //				}
-//				def->SetValue( immediate, false );
+//				def.SetValue( immediate, false );
 //			}
 //			NextToken();
 //		}
 //	} else if ( type == &type_string ) {
 //		// local strings on the stack are initialized in the interpreter
-//		if ( scope->Type() != ev_function ) {
-//			def->SetString( "", false );
+//		if ( this.scope.Type() != ev_function ) {
+//			def.SetString( "", false );
 //		}
-//	} else if ( type->Inherits( &type_object ) ) {
-//		if ( scope->Type() != ev_function ) {
-//			def->SetObject( NULL );
+//	} else if ( type.Inherits( &type_object ) ) {
+//		if ( this.scope.Type() != ev_function ) {
+//			def.SetObject( NULL );
 //		}
 //	}
 //}
@@ -2492,19 +2492,19 @@ class idCompiler {
 //	}
 //
 //	// set the return type
-//	expectedType = GetTypeForEventArg( ev->GetReturnType() );
+//	expectedType = GetTypeForEventArg( ev.GetReturnType() );
 //	if ( !expectedType ) {
-//		Error( "Invalid return type '%c' in definition of '%s' event.", ev->GetReturnType(), name );
+//		Error( "Invalid return type '%c' in definition of '%s' event.", ev.GetReturnType(), name );
 //	}
 //	if ( returnType != expectedType ) {
-//		Error( "Return type doesn't match internal return type '%s'", expectedType->Name() );
+//		Error( "Return type doesn't match internal return type '%s'", expectedType.Name() );
 //	}
 //
 //	idTypeDef newtype( ev_function, NULL, name, type_function.Size(), returnType );
 //
 //	ExpectToken( "(" );
 //
-//	format = ev->GetArgFormat();
+//	format = ev.GetArgFormat();
 //	num = strlen( format );
 //	for( i = 0; i < num; i++ ) {
 //		expectedType = GetTypeForEventArg( format[ i ] );
@@ -2516,7 +2516,7 @@ class idCompiler {
 //		ParseName( parmName );
 //		if ( argType != expectedType ) {
 //			Error( "The type of parm %d ('%s') does not match the internal type '%s' in definition of '%s' event.", 
-//				i + 1, parmName.c_str(), expectedType->Name(), name );
+//				i + 1, parmName.c_str(), expectedType.Name(), name );
 //		}
 //
 //		newtype.AddFunctionParm( argType, "" );
@@ -2535,20 +2535,20 @@ class idCompiler {
 //
 //	type = gameLocal.program.FindType( name );
 //	if ( type ) {
-//		if ( !newtype.MatchesType( *type ) || ( type->def->value.functionPtr->eventdef != ev ) ) {
+//		if ( !newtype.MatchesType( *type ) || ( type.def.value.functionPtr.eventdef != ev ) ) {
 //			Error( "Type mismatch on redefinition of '%s'", name );
 //		}
 //	} else {
 //		type = gameLocal.program.AllocType( newtype );
-//		type->def = gameLocal.program.AllocDef( type, name, &def_namespace, true );
+//		type.def = gameLocal.program.AllocDef( type, name, &def_namespace, true );
 //
-//		function_t &func	= gameLocal.program.AllocFunction( type->def );
+//		function_t &func	= gameLocal.program.AllocFunction( type.def );
 //		func.eventdef		= ev;
 //		func.parmSize.SetNum( num );
 //		for( i = 0; i < num; i++ ) {
 //			argType = newtype.GetParmType( i );
-//			func.parmTotal		+= argType->Size();
-//			func.parmSize[ i ]	= argType->Size();
+//			func.parmTotal		+= argType.Size();
+//			func.parmSize[ i ]	= argType.Size();
 //		}
 //
 //		// mark the parms as local
@@ -2585,23 +2585,23 @@ class idCompiler {
 //	ParseName( name );
 //
 //	if ( type == &type_namespace ) {
-//		def = gameLocal.program.GetDef( type, name, scope );
+//		def = gameLocal.program.GetDef( type, name, this.scope );
 //		if ( !def ) {
-//			def = gameLocal.program.AllocDef( type, name, scope, true );
+//			def = gameLocal.program.AllocDef( type, name, this.scope, true );
 //		}
 //		ParseNamespace( def );
 //	} else if ( CheckToken( "::" ) ) {
-//		def = gameLocal.program.GetDef( NULL, name, scope );
+//		def = gameLocal.program.GetDef( NULL, name, this.scope );
 //		if ( !def ) {
 //			Error( "Unknown object name '%s'", name.c_str() );
 //		}
 //		ParseName( name );
-//		oldscope = scope;
-//		scope = def;
+//		oldscope = this.scope;
+//		this.scope = def;
 //
 //		ExpectToken( "(" );
 //		ParseFunctionDef( type, name.c_str() );
-//		scope = oldscope;
+//		this.scope = oldscope;
 //	} else if ( type == &type_object ) {
 //		ParseObjectDef( name.c_str() );
 //	} else if ( CheckToken( "(" ) ) {		// check for a function prototype or declaraction
@@ -2626,14 +2626,14 @@ class idCompiler {
 //void idCompiler::ParseNamespace( idVarDef *newScope ) {
 //	idVarDef *oldscope;
 //
-//	oldscope = scope;
+//	oldscope = this.scope;
 //	if ( newScope != &def_namespace ) {
 //		ExpectToken( "{" );
 //	}
 //
 //	while( !eof ) {
-//		scope		= newScope;
-//		callthread	= false;
+//		this.scope		= newScope;
+//		this.callthread	= false;
 //
 //		if ( ( newScope != &def_namespace ) && CheckToken( "}" ) ) {
 //			break;
@@ -2642,7 +2642,7 @@ class idCompiler {
 //		ParseDefs();
 //	}
 //
-//	scope = oldscope;
+//	this.scope = oldscope;
 //}
 //
 /*
@@ -2653,58 +2653,57 @@ compiles the 0 terminated text, adding definitions to the program structure
 ============
 */
 	CompileFile ( text: string, filename: string, toConsole: boolean ): void {
-		todoThrow ( );
-		//idTimer compile_time;
-		//bool error;
+		var compile_time = new idTimer;
+		var error:boolean;
 
-		//compile_time.Start();
+		compile_time.Start();
 
-		//scope				= &def_namespace;
-		//basetype			= NULL;
-		//callthread			= false;
-		//loopDepth			= 0;
-		//eof					= false;
-		//braceDepth			= 0;
-		//immediateType		= NULL;
-		//currentLineNumber	= 0;
-		//console				= toConsole;
+		this.scope				= def_namespace;
+		this.basetype			= null;
+		this.callthread			= false;
+		loopDepth			= 0;
+		eof					= false;
+		braceDepth			= 0;
+		immediateType		= NULL;
+		currentLineNumber	= 0;
+		console				= toConsole;
 
-		//memset( &immediate, 0, sizeof( immediate ) );
+		memset( &immediate, 0, sizeof( immediate ) );
 
-		//parser.SetFlags( lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS );
-		//parser.LoadMemory( text, strlen( text ), filename );
-		//parserPtr = &parser;
+		parser.SetFlags( lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS );
+		parser.LoadMemory( text, strlen( text ), filename );
+		parserPtr = &parser;
 
-		//// unread tokens to include script defines
-		//token = SCRIPT_DEFAULTDEFS;
-		//token.type = TT_STRING;
-		//token.subtype = token.Length();
-		//token.line = token.linesCrossed = 0;
-		//parser.UnreadToken( &token );
+		// unread tokens to include script defines
+		token = SCRIPT_DEFAULTDEFS;
+		token.type = TT_STRING;
+		token.subtype = token.Length();
+		token.line = token.linesCrossed = 0;
+		parser.UnreadToken( &token );
 
-		//token = "include";
-		//token.type = TT_NAME;
-		//token.subtype = token.Length();
-		//token.line = token.linesCrossed = 0;
-		//parser.UnreadToken( &token );
+		token = "include";
+		token.type = TT_NAME;
+		token.subtype = token.Length();
+		token.line = token.linesCrossed = 0;
+		parser.UnreadToken( &token );
 
-		//token = "#";
-		//token.type = TT_PUNCTUATION;
-		//token.subtype = P_PRECOMP;
-		//token.line = token.linesCrossed = 0;
-		//parser.UnreadToken( &token );
+		token = "#";
+		token.type = TT_PUNCTUATION;
+		token.subtype = P_PRECOMP;
+		token.line = token.linesCrossed = 0;
+		parser.UnreadToken( &token );
 
-		//// init the current token line to be the first line so that currentLineNumber is set correctly in NextToken
-		//token.line = 1;
+		// init the current token line to be the first line so that currentLineNumber is set correctly in NextToken
+		token.line = 1;
 
-		//error = false;
+		error = false;
 		//try {
-		//	// read first token
-		//	NextToken();
-		//	while( !eof && !error ) {
-		//		// parse from global namespace
-		//		ParseNamespace( &def_namespace );
-		//	}
+			// read first token
+			NextToken();
+			while( !eof && !error ) {
+				// parse from global namespace
+				ParseNamespace( &def_namespace );
+			}
 		//}
 
 		//catch( idCompileError &err ) {
@@ -2722,11 +2721,11 @@ compiles the 0 terminated text, adding definitions to the program structure
 		//	throw idCompileError( error );
 		//}
 
-		//parser.FreeSource();
+		parser.FreeSource();
 
-		//compile_time.Stop();
-		//if ( !toConsole ) {
-		//	gameLocal.Printf( "Compiled '%s': %.1f ms\n", filename, compile_time.Milliseconds() );
-		//}
+		compile_time.Stop();
+		if ( !toConsole ) {
+			gameLocal.Printf( "Compiled '%s': %.1f ms\n", filename, compile_time.Milliseconds() );
+		}
 	}
 }

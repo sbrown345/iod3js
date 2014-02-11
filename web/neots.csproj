@@ -134,6 +134,9 @@
     <TypeScriptCompile Include="libs\idLib\Containers\StrPool.h.ts" />
     <TypeScriptCompile Include="libs\idLib\Containers\Hierarchy.h.ts" />
     <TypeScriptCompile Include="libs\idLib\Containers\StaticList.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Sys\win_cpu.cpp.ts" />
+    <TypeScriptCompile Include="libs\idLib\Parser.cpp.ts" />
+    <Content Include="libs\idLib\Timer.h.ts" />
     <Content Include="log.aspx" />
     <Content Include="other\files.ts" />
     <Content Include="DoomDLL\Framework\FileSystem.cpp.ts" />
