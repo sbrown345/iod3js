@@ -29,21 +29,31 @@
 //#define __SCRIPT_COMPILER_H__
 //
 var RESULT_STRING = "<RESULT>";
-//
-//typedef struct opcode_s {
-//	char		*name;
-//	char		*opname;
-//	int			priority;
-//	bool		rightAssociative;
-//	idVarDef	*type_a;
-//	idVarDef	*type_b;
-//	idVarDef	*type_c;
-//} opcode_t;
-//
-//// These opcodes are no longer necessary:
-//// OP_PUSH_OBJ:
-//// OP_PUSH_OBJENT:
-//
+
+class opcode_t {
+	name: string;
+	opname: string;
+	priority: number;
+	rightAssociative: boolean;
+	type_a: idVarDef;
+	type_b: idVarDef;
+	type_c: idVarDef;
+
+	constructor ( name: string, opname: string, priority: number, rightAssociative: boolean, type_a: idVarDef, type_b: idVarDef, type_c: idVarDef ) {
+		this.name = name;
+		this.opname = opname;
+		this.priority = priority;
+		this.rightAssociative = rightAssociative;
+		this.type_a = type_a;
+		this.type_b = type_b;
+		this.type_c = type_c;
+	}
+}
+
+// These opcodes are no longer necessary:
+// OP_PUSH_OBJ:
+// OP_PUSH_OBJENT:
+
 enum op {
 	OP_RETURN,
 

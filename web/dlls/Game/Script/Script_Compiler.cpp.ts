@@ -40,8 +40,8 @@ var TOP_PRIORITY = 7;
 
 class idCompiler {
 	//private:
-	//	static bool		punctuationValid[ 256 ];
-	//	static char		*punctuation[];
+	//static punctuationValid = new Array<Boolean>(256);
+	//static punctuation = string[];
 	//
 	parser = new idParser;
 	parserPtr:idParser;
@@ -118,169 +118,169 @@ class idCompiler {
 	//					idCompiler();
 	//	void			CompileFile( const char *text, const char *filename, bool console );
 
-//bool idCompiler::punctuationValid[ 256 ];
-//char *idCompiler::punctuation[] = {
-//	"+=", "-=", "*=", "/=", "%=", "&=", "|=", "++", "--",
-//	"&&", "||", "<=", ">=", "==", "!=", "::", ";",  ",",
-//	"~",  "!",  "*",  "/",  "%",  "(",   ")",  "-", "+",
-//	"=",  "[",  "]",  ".",  "<",  ">" ,  "&",  "|", ":",  NULL
-//};
-//
-//opcode_t idCompiler::opcodes[] = {
-//	{ "<RETURN>", "RETURN", -1, false, &def_void, &def_void, &def_void },
-//		
-//	{ "++", "UINC_F", 1, true, &def_float, &def_void, &def_void },
-//	{ "++", "UINCP_F", 1, true, &def_object, &def_field, &def_float },
-//	{ "--", "UDEC_F", 1, true, &def_float, &def_void, &def_void },
-//	{ "--", "UDECP_F", 1, true, &def_object, &def_field, &def_float },
-//
-//	{ "~", "COMP_F", -1, false, &def_float, &def_void, &def_float },
-//	
-//	{ "*", "MUL_F", 3, false, &def_float, &def_float, &def_float },
-//	{ "*", "MUL_V", 3, false, &def_vector, &def_vector, &def_float },
-//	{ "*", "MUL_FV", 3, false, &def_float, &def_vector, &def_vector },
-//	{ "*", "MUL_VF", 3, false, &def_vector, &def_float, &def_vector },
-//	
-//	{ "/", "DIV", 3, false, &def_float, &def_float, &def_float },
-//	{ "%", "MOD_F",	3, false, &def_float, &def_float, &def_float },
-//	
-//	{ "+", "ADD_F", 4, false, &def_float, &def_float, &def_float },
-//	{ "+", "ADD_V", 4, false, &def_vector, &def_vector, &def_vector },
-//	{ "+", "ADD_S", 4, false, &def_string, &def_string, &def_string },
-//	{ "+", "ADD_FS", 4, false, &def_float, &def_string, &def_string },
-//	{ "+", "ADD_SF", 4, false, &def_string, &def_float, &def_string },
-//	{ "+", "ADD_VS", 4, false, &def_vector, &def_string, &def_string },
-//	{ "+", "ADD_SV", 4, false, &def_string, &def_vector, &def_string },
-//	
-//	{ "-", "SUB_F", 4, false, &def_float, &def_float, &def_float },
-//	{ "-", "SUB_V", 4, false, &def_vector, &def_vector, &def_vector },
-//	
-//	{ "==", "EQ_F", 5, false, &def_float, &def_float, &def_float },
-//	{ "==", "EQ_V", 5, false, &def_vector, &def_vector, &def_float },
-//	{ "==", "EQ_S", 5, false, &def_string, &def_string, &def_float },
-//	{ "==", "EQ_E", 5, false, &def_entity, &def_entity, &def_float },
-//	{ "==", "EQ_EO", 5, false, &def_entity, &def_object, &def_float },
-//	{ "==", "EQ_OE", 5, false, &def_object, &def_entity, &def_float },
-//	{ "==", "EQ_OO", 5, false, &def_object, &def_object, &def_float },
-//	
-//	{ "!=", "NE_F", 5, false, &def_float, &def_float, &def_float },
-//	{ "!=", "NE_V", 5, false, &def_vector, &def_vector, &def_float },
-//	{ "!=", "NE_S", 5, false, &def_string, &def_string, &def_float },
-//    { "!=", "NE_E", 5, false, &def_entity, &def_entity, &def_float },
-//	{ "!=", "NE_EO", 5, false, &def_entity, &def_object, &def_float },
-//	{ "!=", "NE_OE", 5, false, &def_object, &def_entity, &def_float },
-//	{ "!=", "NE_OO", 5, false, &def_object, &def_object, &def_float },
-//	
-//	{ "<=", "LE", 5, false, &def_float, &def_float, &def_float },
-//	{ ">=", "GE", 5, false, &def_float, &def_float, &def_float },
-//	{ "<", "LT", 5, false, &def_float, &def_float, &def_float },
-//	{ ">", "GT", 5, false, &def_float, &def_float, &def_float },
-//	
-//	{ ".", "INDIRECT_F", 1, false, &def_object, &def_field, &def_float },
-//	{ ".", "INDIRECT_V", 1, false, &def_object, &def_field, &def_vector },
-//	{ ".", "INDIRECT_S", 1, false, &def_object, &def_field, &def_string },
-//	{ ".", "INDIRECT_E", 1, false, &def_object, &def_field, &def_entity },
-//	{ ".", "INDIRECT_BOOL", 1, false, &def_object, &def_field, &def_boolean },
-//	{ ".", "INDIRECT_OBJ", 1, false, &def_object, &def_field, &def_object },
-//
-//	{ ".", "ADDRESS", 1, false, &def_entity, &def_field, &def_pointer },
-//
-//	{ ".", "EVENTCALL", 2, false, &def_entity, &def_function, &def_void },
-//	{ ".", "OBJECTCALL", 2, false, &def_object, &def_function, &def_void },
-//	{ ".", "SYSCALL", 2, false, &def_void, &def_function, &def_void },
-//
-//	{ "=", "STORE_F", 6, true, &def_float, &def_float, &def_float },
-//	{ "=", "STORE_V", 6, true, &def_vector, &def_vector, &def_vector },
-//	{ "=", "STORE_S", 6, true, &def_string, &def_string, &def_string },
-//	{ "=", "STORE_ENT", 6, true, &def_entity, &def_entity, &def_entity },
-//	{ "=", "STORE_BOOL", 6, true, &def_boolean, &def_boolean, &def_boolean },
-//	{ "=", "STORE_OBJENT", 6, true, &def_object, &def_entity, &def_object },
-//	{ "=", "STORE_OBJ", 6, true, &def_object, &def_object, &def_object },
-//	{ "=", "STORE_OBJENT", 6, true, &def_entity, &def_object, &def_object },
-//	
-//	{ "=", "STORE_FTOS", 6, true, &def_string, &def_float, &def_string },
-//	{ "=", "STORE_BTOS", 6, true, &def_string, &def_boolean, &def_string },
-//	{ "=", "STORE_VTOS", 6, true, &def_string, &def_vector, &def_string },
-//	{ "=", "STORE_FTOBOOL", 6, true, &def_boolean, &def_float, &def_boolean },
-//	{ "=", "STORE_BOOLTOF", 6, true, &def_float, &def_boolean, &def_float },
-//
-//	{ "=", "STOREP_F", 6, true, &def_pointer, &def_float, &def_float },
-//	{ "=", "STOREP_V", 6, true, &def_pointer, &def_vector, &def_vector },
-//	{ "=", "STOREP_S", 6, true, &def_pointer, &def_string, &def_string },
-//	{ "=", "STOREP_ENT", 6, true, &def_pointer, &def_entity, &def_entity },
-//	{ "=", "STOREP_FLD", 6, true, &def_pointer, &def_field, &def_field },
-//	{ "=", "STOREP_BOOL", 6, true, &def_pointer, &def_boolean, &def_boolean },
-//	{ "=", "STOREP_OBJ", 6, true, &def_pointer, &def_object, &def_object },
-//	{ "=", "STOREP_OBJENT", 6, true, &def_pointer, &def_object, &def_object },
-//
-//	{ "<=>", "STOREP_FTOS", 6, true, &def_pointer, &def_float, &def_string },
-//	{ "<=>", "STOREP_BTOS", 6, true, &def_pointer, &def_boolean, &def_string },
-//	{ "<=>", "STOREP_VTOS", 6, true, &def_pointer, &def_vector, &def_string },
-//	{ "<=>", "STOREP_FTOBOOL", 6, true, &def_pointer, &def_float, &def_boolean },
-//	{ "<=>", "STOREP_BOOLTOF", 6, true, &def_pointer, &def_boolean, &def_float },
-//	
-//	{ "*=", "UMUL_F", 6, true, &def_float, &def_float, &def_void },
-//	{ "*=", "UMUL_V", 6, true, &def_vector, &def_float, &def_void },
-//	{ "/=", "UDIV_F", 6, true, &def_float, &def_float, &def_void },
-//	{ "/=", "UDIV_V", 6, true, &def_vector, &def_float, &def_void },
-//	{ "%=", "UMOD_F", 6, true, &def_float, &def_float, &def_void },
-//	{ "+=", "UADD_F", 6, true, &def_float, &def_float, &def_void },
-//	{ "+=", "UADD_V", 6, true, &def_vector, &def_vector, &def_void },
-//	{ "-=", "USUB_F", 6, true, &def_float, &def_float, &def_void },
-//	{ "-=", "USUB_V", 6, true, &def_vector, &def_vector, &def_void },
-//	{ "&=", "UAND_F", 6, true, &def_float, &def_float, &def_void },
-//	{ "|=", "UOR_F", 6, true, &def_float, &def_float, &def_void },
-//	
-//	{ "!", "NOT_BOOL", -1, false, &def_boolean, &def_void, &def_float },
-//	{ "!", "NOT_F", -1, false, &def_float, &def_void, &def_float },
-//	{ "!", "NOT_V", -1, false, &def_vector, &def_void, &def_float },
-//	{ "!", "NOT_S", -1, false, &def_vector, &def_void, &def_float },
-//	{ "!", "NOT_ENT", -1, false, &def_entity, &def_void, &def_float },
-//
-//	{ "<NEG_F>", "NEG_F", -1, false, &def_float, &def_void, &def_float },
-//	{ "<NEG_V>", "NEG_V", -1, false, &def_vector, &def_void, &def_vector },
-//
-//	{ "int", "INT_F", -1, false, &def_float, &def_void, &def_float },
-//	
-//	{ "<IF>", "IF", -1, false, &def_float, &def_jumpoffset, &def_void },
-//	{ "<IFNOT>", "IFNOT", -1, false, &def_float, &def_jumpoffset, &def_void },
-//	
-//	// calls returns REG_RETURN
-//	{ "<CALL>", "CALL", -1, false, &def_function, &def_argsize, &def_void },
-//	{ "<THREAD>", "THREAD", -1, false, &def_function, &def_argsize, &def_void },
-//	{ "<THREAD>", "OBJTHREAD", -1, false, &def_function, &def_argsize, &def_void },
-//	
-//	{ "<PUSH>", "PUSH_F", -1, false, &def_float, &def_float, &def_void },
-//	{ "<PUSH>", "PUSH_V", -1, false, &def_vector, &def_vector, &def_void },
-//	{ "<PUSH>", "PUSH_S", -1, false, &def_string, &def_string, &def_void },
-//	{ "<PUSH>", "PUSH_ENT", -1, false, &def_entity, &def_entity, &def_void },
-//	{ "<PUSH>", "PUSH_OBJ", -1, false, &def_object, &def_object, &def_void },
-//	{ "<PUSH>", "PUSH_OBJENT", -1, false, &def_entity, &def_object, &def_void },
-//	{ "<PUSH>", "PUSH_FTOS", -1, false, &def_string, &def_float, &def_void },
-//	{ "<PUSH>", "PUSH_BTOF", -1, false, &def_float, &def_boolean, &def_void },
-//	{ "<PUSH>", "PUSH_FTOB", -1, false, &def_boolean, &def_float, &def_void },
-//	{ "<PUSH>", "PUSH_VTOS", -1, false, &def_string, &def_vector, &def_void },
-//	{ "<PUSH>", "PUSH_BTOS", -1, false, &def_string, &def_boolean, &def_void },
-//	
-//	{ "<GOTO>", "GOTO", -1, false, &def_jumpoffset, &def_void, &def_void },
-//	
-//	{ "&&", "AND", 7, false, &def_float, &def_float, &def_float },
-//	{ "&&", "AND_BOOLF", 7, false, &def_boolean, &def_float, &def_float },
-//	{ "&&", "AND_FBOOL", 7, false, &def_float, &def_boolean, &def_float },
-//	{ "&&", "AND_BOOLBOOL", 7, false, &def_boolean, &def_boolean, &def_float },
-//	{ "||", "OR", 7, false, &def_float, &def_float, &def_float },
-//	{ "||", "OR_BOOLF", 7, false, &def_boolean, &def_float, &def_float },
-//	{ "||", "OR_FBOOL", 7, false, &def_float, &def_boolean, &def_float },
-//	{ "||", "OR_BOOLBOOL", 7, false, &def_boolean, &def_boolean, &def_float },
-//	
-//	{ "&", "BITAND", 3, false, &def_float, &def_float, &def_float },
-//	{ "|", "BITOR", 3, false, &def_float, &def_float, &def_float },
-//
-//	{ "<BREAK>", "BREAK", -1, false, &def_float, &def_void, &def_void },
-//	{ "<CONTINUE>", "CONTINUE", -1, false, &def_float, &def_void, &def_void },
-//
-//	{ NULL }
-//};
+	static punctuationValid = new Array<Boolean>(256);
+	static punctuation = [
+	"+=", "-=", "*=", "/=", "%=", "&=", "|=", "++", "--",
+	"&&", "||", "<=", ">=", "==", "!=", "::", ";",  ",",
+	"~",  "!",  "*",  "/",  "%",  "(",   ")",  "-", "+",
+	"=",  "[",  "]",  ".",  "<",  ">" ,  "&",  "|", ":",  null
+];
+
+static opcodes = [
+	new opcode_t( "<RETURN>", "RETURN", -1, false, def_void, def_void, def_void ),
+		
+	new opcode_t( "++", "UINC_F", 1, true, def_float, def_void, def_void ),
+	new opcode_t( "++", "UINCP_F", 1, true, def_object, def_field, def_float ),
+	new opcode_t( "--", "UDEC_F", 1, true, def_float, def_void, def_void ),
+	new opcode_t( "--", "UDECP_F", 1, true, def_object, def_field, def_float ),
+
+	new opcode_t( "~", "COMP_F", -1, false, def_float, def_void, def_float ),
+	
+	new opcode_t( "*", "MUL_F", 3, false, def_float, def_float, def_float ),
+	new opcode_t( "*", "MUL_V", 3, false, def_vector, def_vector, def_float ),
+	new opcode_t( "*", "MUL_FV", 3, false, def_float, def_vector, def_vector ),
+	new opcode_t( "*", "MUL_VF", 3, false, def_vector, def_float, def_vector ),
+	
+	new opcode_t( "/", "DIV", 3, false, def_float, def_float, def_float ),
+	new opcode_t( "%", "MOD_F",	3, false, def_float, def_float, def_float ),
+	
+	new opcode_t( "+", "ADD_F", 4, false, def_float, def_float, def_float ),
+	new opcode_t( "+", "ADD_V", 4, false, def_vector, def_vector, def_vector ),
+	new opcode_t( "+", "ADD_S", 4, false, def_string, def_string, def_string ),
+	new opcode_t( "+", "ADD_FS", 4, false, def_float, def_string, def_string ),
+	new opcode_t( "+", "ADD_SF", 4, false, def_string, def_float, def_string ),
+	new opcode_t( "+", "ADD_VS", 4, false, def_vector, def_string, def_string ),
+	new opcode_t( "+", "ADD_SV", 4, false, def_string, def_vector, def_string ),
+	
+	new opcode_t( "-", "SUB_F", 4, false, def_float, def_float, def_float ),
+	new opcode_t( "-", "SUB_V", 4, false, def_vector, def_vector, def_vector ),
+	
+	new opcode_t( "==", "EQ_F", 5, false, def_float, def_float, def_float ),
+	new opcode_t( "==", "EQ_V", 5, false, def_vector, def_vector, def_float ),
+	new opcode_t( "==", "EQ_S", 5, false, def_string, def_string, def_float ),
+	new opcode_t( "==", "EQ_E", 5, false, def_entity, def_entity, def_float ),
+	new opcode_t( "==", "EQ_EO", 5, false, def_entity, def_object, def_float ),
+	new opcode_t( "==", "EQ_OE", 5, false, def_object, def_entity, def_float ),
+	new opcode_t( "==", "EQ_OO", 5, false, def_object, def_object, def_float ),
+	
+	new opcode_t( "!=", "NE_F", 5, false, def_float, def_float, def_float ),
+	new opcode_t( "!=", "NE_V", 5, false, def_vector, def_vector, def_float ),
+	new opcode_t( "!=", "NE_S", 5, false, def_string, def_string, def_float ),
+    new opcode_t( "!=", "NE_E", 5, false, def_entity, def_entity, def_float ),
+	new opcode_t( "!=", "NE_EO", 5, false, def_entity, def_object, def_float ),
+	new opcode_t( "!=", "NE_OE", 5, false, def_object, def_entity, def_float ),
+	new opcode_t( "!=", "NE_OO", 5, false, def_object, def_object, def_float ),
+	
+	new opcode_t( "<=", "LE", 5, false, def_float, def_float, def_float ),
+	new opcode_t( ">=", "GE", 5, false, def_float, def_float, def_float ),
+	new opcode_t( "<", "LT", 5, false, def_float, def_float, def_float ),
+	new opcode_t( ">", "GT", 5, false, def_float, def_float, def_float ),
+	
+	new opcode_t( ".", "INDIRECT_F", 1, false, def_object, def_field, def_float ),
+	new opcode_t( ".", "INDIRECT_V", 1, false, def_object, def_field, def_vector ),
+	new opcode_t( ".", "INDIRECT_S", 1, false, def_object, def_field, def_string ),
+	new opcode_t( ".", "INDIRECT_E", 1, false, def_object, def_field, def_entity ),
+	new opcode_t( ".", "INDIRECT_BOOL", 1, false, def_object, def_field, def_boolean ),
+	new opcode_t( ".", "INDIRECT_OBJ", 1, false, def_object, def_field, def_object ),
+
+	new opcode_t( ".", "ADDRESS", 1, false, def_entity, def_field, def_pointer ),
+
+	new opcode_t( ".", "EVENTCALL", 2, false, def_entity, def_function, def_void ),
+	new opcode_t( ".", "OBJECTCALL", 2, false, def_object, def_function, def_void ),
+	new opcode_t( ".", "SYSCALL", 2, false, def_void, def_function, def_void ),
+
+	new opcode_t( "=", "STORE_F", 6, true, def_float, def_float, def_float ),
+	new opcode_t( "=", "STORE_V", 6, true, def_vector, def_vector, def_vector ),
+	new opcode_t( "=", "STORE_S", 6, true, def_string, def_string, def_string ),
+	new opcode_t( "=", "STORE_ENT", 6, true, def_entity, def_entity, def_entity ),
+	new opcode_t( "=", "STORE_BOOL", 6, true, def_boolean, def_boolean, def_boolean ),
+	new opcode_t( "=", "STORE_OBJENT", 6, true, def_object, def_entity, def_object ),
+	new opcode_t( "=", "STORE_OBJ", 6, true, def_object, def_object, def_object ),
+	new opcode_t( "=", "STORE_OBJENT", 6, true, def_entity, def_object, def_object ),
+	
+	new opcode_t( "=", "STORE_FTOS", 6, true, def_string, def_float, def_string ),
+	new opcode_t( "=", "STORE_BTOS", 6, true, def_string, def_boolean, def_string ),
+	new opcode_t( "=", "STORE_VTOS", 6, true, def_string, def_vector, def_string ),
+	new opcode_t( "=", "STORE_FTOBOOL", 6, true, def_boolean, def_float, def_boolean ),
+	new opcode_t( "=", "STORE_BOOLTOF", 6, true, def_float, def_boolean, def_float ),
+
+	new opcode_t( "=", "STOREP_F", 6, true, def_pointer, def_float, def_float ),
+	new opcode_t( "=", "STOREP_V", 6, true, def_pointer, def_vector, def_vector ),
+	new opcode_t( "=", "STOREP_S", 6, true, def_pointer, def_string, def_string ),
+	new opcode_t( "=", "STOREP_ENT", 6, true, def_pointer, def_entity, def_entity ),
+	new opcode_t( "=", "STOREP_FLD", 6, true, def_pointer, def_field, def_field ),
+	new opcode_t( "=", "STOREP_BOOL", 6, true, def_pointer, def_boolean, def_boolean ),
+	new opcode_t( "=", "STOREP_OBJ", 6, true, def_pointer, def_object, def_object ),
+	new opcode_t( "=", "STOREP_OBJENT", 6, true, def_pointer, def_object, def_object ),
+
+	new opcode_t( "<=>", "STOREP_FTOS", 6, true, def_pointer, def_float, def_string ),
+	new opcode_t( "<=>", "STOREP_BTOS", 6, true, def_pointer, def_boolean, def_string ),
+	new opcode_t( "<=>", "STOREP_VTOS", 6, true, def_pointer, def_vector, def_string ),
+	new opcode_t( "<=>", "STOREP_FTOBOOL", 6, true, def_pointer, def_float, def_boolean ),
+	new opcode_t( "<=>", "STOREP_BOOLTOF", 6, true, def_pointer, def_boolean, def_float ),
+	
+	new opcode_t( "*=", "UMUL_F", 6, true, def_float, def_float, def_void ),
+	new opcode_t( "*=", "UMUL_V", 6, true, def_vector, def_float, def_void ),
+	new opcode_t( "/=", "UDIV_F", 6, true, def_float, def_float, def_void ),
+	new opcode_t( "/=", "UDIV_V", 6, true, def_vector, def_float, def_void ),
+	new opcode_t( "%=", "UMOD_F", 6, true, def_float, def_float, def_void ),
+	new opcode_t( "+=", "UADD_F", 6, true, def_float, def_float, def_void ),
+	new opcode_t( "+=", "UADD_V", 6, true, def_vector, def_vector, def_void ),
+	new opcode_t( "-=", "USUB_F", 6, true, def_float, def_float, def_void ),
+	new opcode_t( "-=", "USUB_V", 6, true, def_vector, def_vector, def_void ),
+	new opcode_t( "&=", "UAND_F", 6, true, def_float, def_float, def_void ),
+	new opcode_t( "|=", "UOR_F", 6, true, def_float, def_float, def_void ),
+	
+	new opcode_t( "!", "NOT_BOOL", -1, false, def_boolean, def_void, def_float ),
+	new opcode_t( "!", "NOT_F", -1, false, def_float, def_void, def_float ),
+	new opcode_t( "!", "NOT_V", -1, false, def_vector, def_void, def_float ),
+	new opcode_t( "!", "NOT_S", -1, false, def_vector, def_void, def_float ),
+	new opcode_t( "!", "NOT_ENT", -1, false, def_entity, def_void, def_float ),
+
+	new opcode_t( "<NEG_F>", "NEG_F", -1, false, def_float, def_void, def_float ),
+	new opcode_t( "<NEG_V>", "NEG_V", -1, false, def_vector, def_void, def_vector ),
+
+	new opcode_t( "int", "INT_F", -1, false, def_float, def_void, def_float ),
+	
+	new opcode_t( "<IF>", "IF", -1, false, def_float, def_jumpoffset, def_void ),
+	new opcode_t( "<IFNOT>", "IFNOT", -1, false, def_float, def_jumpoffset, def_void ),
+	
+	// calls returns REG_RETURN
+	new opcode_t( "<CALL>", "CALL", -1, false, def_function, def_argsize, def_void ),
+	new opcode_t( "<THREAD>", "THREAD", -1, false, def_function, def_argsize, def_void ),
+	new opcode_t( "<THREAD>", "OBJTHREAD", -1, false, def_function, def_argsize, def_void ),
+	
+	new opcode_t( "<PUSH>", "PUSH_F", -1, false, def_float, def_float, def_void ),
+	new opcode_t( "<PUSH>", "PUSH_V", -1, false, def_vector, def_vector, def_void ),
+	new opcode_t( "<PUSH>", "PUSH_S", -1, false, def_string, def_string, def_void ),
+	new opcode_t( "<PUSH>", "PUSH_ENT", -1, false, def_entity, def_entity, def_void ),
+	new opcode_t( "<PUSH>", "PUSH_OBJ", -1, false, def_object, def_object, def_void ),
+	new opcode_t( "<PUSH>", "PUSH_OBJENT", -1, false, def_entity, def_object, def_void ),
+	new opcode_t( "<PUSH>", "PUSH_FTOS", -1, false, def_string, def_float, def_void ),
+	new opcode_t( "<PUSH>", "PUSH_BTOF", -1, false, def_float, def_boolean, def_void ),
+	new opcode_t( "<PUSH>", "PUSH_FTOB", -1, false, def_boolean, def_float, def_void ),
+	new opcode_t( "<PUSH>", "PUSH_VTOS", -1, false, def_string, def_vector, def_void ),
+	new opcode_t( "<PUSH>", "PUSH_BTOS", -1, false, def_string, def_boolean, def_void ),
+	
+	new opcode_t( "<GOTO>", "GOTO", -1, false, def_jumpoffset, def_void, def_void ),
+	
+	new opcode_t( "&&", "AND", 7, false, def_float, def_float, def_float ),
+	new opcode_t( "&&", "AND_BOOLF", 7, false, def_boolean, def_float, def_float ),
+	new opcode_t( "&&", "AND_FBOOL", 7, false, def_float, def_boolean, def_float ),
+	new opcode_t( "&&", "AND_BOOLBOOL", 7, false, def_boolean, def_boolean, def_float ),
+	new opcode_t( "||", "OR", 7, false, def_float, def_float, def_float ),
+	new opcode_t( "||", "OR_BOOLF", 7, false, def_boolean, def_float, def_float ),
+	new opcode_t( "||", "OR_FBOOL", 7, false, def_float, def_boolean, def_float ),
+	new opcode_t( "||", "OR_BOOLBOOL", 7, false, def_boolean, def_boolean, def_float ),
+	
+	new opcode_t( "&", "BITAND", 3, false, def_float, def_float, def_float ),
+	new opcode_t( "|", "BITOR", 3, false, def_float, def_float, def_float ),
+
+	new opcode_t( "<BREAK>", "BREAK", -1, false, def_float, def_void, def_void ),
+	new opcode_t( "<CONTINUE>", "CONTINUE", -1, false, def_float, def_void, def_void ),
+
+	null//new opcode_t(null,null,null,null,null,null,null)
+];
 //
 ///*
 //================
