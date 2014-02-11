@@ -1,4 +1,4 @@
-﻿var fileList = [
+﻿var allFiles = [
 "config.spec",
 "default.cfg",
 "demo files for debugging original",

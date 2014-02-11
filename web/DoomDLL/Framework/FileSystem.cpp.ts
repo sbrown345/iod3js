@@ -1619,18 +1619,18 @@ When 'sort' is true only the new files added to the list are sorted.
         //	}
         //}
 
-	    for ( var i = 0; i < fileList.length; i++ ) {
-		    if ( fileList[i].indexOf( relativePath + "\\" ) === 0 ) {
+	    for ( var i = 0; i < allFiles.length; i++ ) {
+		    if ( allFiles[i].indexOf( relativePath + "\\" ) === 0 ) {
 			    //list.Append(fileList[i].substr( pathLength );
 
 			    var isValidExtension = false;
 			    for ( var j = 0; j < extensions.Num ( ); j++ ) {
-				    if ( fileList[i].endsWith( extensions[j].data ) ) {
+				    if ( allFiles[i].endsWith( extensions[j].data ) ) {
 					    isValidExtension = true;
 				    }
 			    }
 			    if ( isValidExtension ) {
-				    this.AddUnique( fileList[i].substr( pathLength ), list, hashIndex );
+				    this.AddUnique( allFiles[i].substr( pathLength ), list, hashIndex );
 			    }
 		    }
 	    }
