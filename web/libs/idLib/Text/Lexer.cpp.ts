@@ -119,7 +119,7 @@ class idLexer {
 	/*int			*/
 	loaded: number; // set when a script file is loaded from file or memory
 	/*idStr			*/
-	filename: idStr; // file name of the script
+	filename = new idStr; // file name of the script
 	/*int			*/
 	allocated: number; // true if buffer memory was allocated
 	/*const char *	*/

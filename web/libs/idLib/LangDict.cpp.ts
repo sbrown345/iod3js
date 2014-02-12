@@ -31,8 +31,8 @@
 
 class idLangKeyValue {
 //public:
-	key:idStr;
-	value: idStr;
+	key = new idStr;
+	value = new idStr;
 };
 
 class idLangDict {
