@@ -118,7 +118,7 @@ class idCompiler {
 	//					idCompiler();
 	//	void			CompileFile( const char *text, const char *filename, bool console );
 
-	static punctuationValid = new Array<Boolean>(256);
+	static punctuationValid = new Array<boolean>(256);
 	static punctuation = [
 	"+=", "-=", "*=", "/=", "%=", "&=", "|=", "++", "--",
 	"&&", "||", "<=", ">=", "==", "!=", "::", ";",  ",",
@@ -369,7 +369,7 @@ Aborts the current file load
 //	memset( &eval, 0, sizeof( eval ) );
 //	eval._int = func.scope.TypeDef().GetFunctionNumber( func.value.functionPtr );
 //	if ( eval._int < 0 ) {
-//		Error( "Function '%s' not found in scope '%s'", func.Name(), func.scope.Name() );
+//		this.Error( "Function '%s' not found in scope '%s'", func.Name(), func.scope.Name() );
 //	}
 //    
 //	return GetImmediate( &type_virtualfunction, &eval, "" );
@@ -445,7 +445,7 @@ Aborts the current file load
 //*/
 //ID_INLINE float idCompiler::Divide( float numerator, float denominator ) {
 //	if ( denominator == 0 ) {
-//		Error( "Divide by zero" );
+//		this.Error( "Divide by zero" );
 //		return 0;
 //	}
 //
@@ -524,7 +524,7 @@ Aborts the current file load
 //			break;
 //
 //		default :
-//			Error( "weird immediate type" );
+//			this.Error( "weird immediate type" );
 //			break;
 //		}
 //	}
@@ -784,21 +784,23 @@ NextToken( ):void {
 	case TT_LITERAL: {
 		// handle quoted vectors as a unit
 		this.immediateType = type_vector;
-		var lex = new idLexer(this.token.$, this.token.$.Length(), this.parserPtr.GetFileName(), lexerFlags_t.LEXFL_NOERRORS );
-		var token2 = new R(idToken);
+		var lex = new idLexer(this.token.$.data, this.token.$.Length(), this.parserPtr.GetFileName(), lexerFlags_t.LEXFL_NOERRORS );
+		var token2 = new R(new idToken);
 		for( i = 0; i < 3; i++ ) {
 			if ( !lex.ReadToken( token2 ) ) {
 				this.Error( "Couldn't read vector. '%s' is not in the form of 'x y z'", this.token.$.c_str() );
 			}
-			if ( token2.type == TT_PUNCTUATION && token2.$.data == "-" ) {
+			if ( token2.$.type == TT_PUNCTUATION && token2.$.data == "-" ) {
 				if ( !lex.CheckTokenType( TT_NUMBER, 0, token2 ) ) {
 					this.Error( "expected a number following '-' but found '%s' in vector '%s'", token2.$.c_str(), this.token.$.c_str() );
 				}
-				this.immediate.vector[ i ] = -token2.GetFloatValue();
-			} else if ( token2.type == TT_NUMBER ) {
-				this.immediate.vector[ i ] = token2.GetFloatValue();
+				todoThrow ( );
+				//this.immediate.vector[ i ] = -token2.$.GetFloatValue();
+			} else if ( token2.$.type == TT_NUMBER ) {
+				todoThrow();
+				//this.immediate.vector[i] = token2.$.GetFloatValue ( );
 			} else {
-				this.Error( "vector '%s' is not in the form of 'x y z'.  expected float value, found '%s'", this.token.$.c_str(), token2.c_str() );
+				this.Error( "vector '%s' is not in the form of 'x y z'.  expected float value, found '%s'", this.token.$.c_str(), token2.$.c_str() );
 			}
 		}
 		return;
@@ -827,55 +829,55 @@ NextToken( ):void {
 			return;
 		}
 
-		if ( this.punctuationValid[ this.token.$.subtype ] ) {
+		if ( idCompiler.punctuationValid[ this.token.$.subtype ] ) {
 			return;
 		}
 
-		Error( "Unknown punctuation '%s'", this.token.$.c_str() );
+		this.Error( "Unknown punctuation '%s'", this.token.$.c_str() );
 		break;
 
 	case TT_NAME:
 		return;
 
 	default:
-		Error( "Unknown token '%s'", this.token.$.c_str() );
+		this.Error( "Unknown token '%s'", this.token.$.c_str() );
 	}
 }
 
-	///*
-//=============
-//idCompiler::ExpectToken
-//
-//Issues an Error if the current token isn't equal to string
-//Gets the next token
-//=============
-//*/
-//void idCompiler::ExpectToken( const char *string ) {
-//	if ( this.token != string ) {
-//		Error( "expected '%s', found '%s'", string, this.token.$.c_str() );
-//	}
-//
-//	NextToken();
-//}
-//
-	///*
-//=============
-//idCompiler::CheckToken
-//
-//Returns true and gets the next token if the current token equals string
-//Returns false and does nothing otherwise
-//=============
-//*/
-//bool idCompiler::CheckToken( const char *string ) {
-//	if ( this.token != string ) {
-//		return false;
-//	}
-//		
-//	NextToken();
-//	
-//	return true;
-//}
-//
+/*
+=============
+idCompiler::ExpectToken
+
+Issues an Error if the current token isn't equal to string
+Gets the next token
+=============
+*/
+	ExpectToken ( $string: string ): void {
+		if ( this.token.$.data != $string ) {
+			this.Error( "expected '%s', found '%s'", $string, this.token.$.c_str ( ) );
+		}
+
+		this.NextToken ( );
+	}
+
+/*
+=============
+idCompiler::CheckToken
+
+Returns true and gets the next token if the current token equals string
+Returns false and does nothing otherwise
+=============
+*/
+	CheckToken ( $string: string ): boolean {
+		if ( this.token.$.data != $string ) {
+			return false;
+		}
+
+		this.NextToken ( );
+
+		return true;
+	}
+
 	///*
 //============
 //idCompiler::ParseName
@@ -885,11 +887,11 @@ NextToken( ):void {
 //*/
 //void idCompiler::ParseName( idStr &name ) {
 //	if ( this.token.$.type != TT_NAME ) {
-//		Error( "'%s' is not a name", this.token.$.c_str() );
+//		this.Error( "'%s' is not a name", this.token.$.c_str() );
 //	}
 //
 //	name = this.token.$;
-//	NextToken();
+//	this.NextToken();
 //}
 //
 	///*
@@ -904,7 +906,7 @@ NextToken( ):void {
 //		this.parserPtr.SkipBracedSection( false );
 //		this.braceDepth--;
 //	}
-//	NextToken();
+//	this.NextToken();
 //}
 //
 	///*
@@ -920,8 +922,8 @@ NextToken( ):void {
 //			return;
 //		}
 //
-//		NextToken();
-//	} while( !eof );
+//		this.NextToken();
+//	} while( !this.eof );
 //}
 //
 	///*
@@ -974,18 +976,18 @@ NextToken( ):void {
 //	
 //	type = CheckType();
 //	if ( !type ) {
-//		Error( "\"%s\" is not a type", this.token.$.c_str() );
+//		this.Error( "\"%s\" is not a type", this.token.$.c_str() );
 //	}
 //
 //	if ( ( type == &type_scriptevent ) && ( this.scope != &def_namespace ) ) {
-//		Error( "scriptEvents can only defined in the global namespace" );
+//		this.Error( "scriptEvents can only defined in the global namespace" );
 //	}
 //
 //	if ( ( type == &type_namespace ) && ( this.scope.Type() != ev_namespace ) ) {
-//		Error( "A namespace may only be defined globally, or within another namespace" );
+//		this.Error( "A namespace may only be defined globally, or within another namespace" );
 //	}
 //
-//	NextToken();
+//	this.NextToken();
 //	
 //	return type;
 //}
@@ -1001,7 +1003,7 @@ NextToken( ):void {
 //	idVarDef *def;
 //
 //	def = GetImmediate( this.immediateType, &immediate, this.token.$.c_str() );
-//	NextToken();
+//	this.NextToken();
 //
 //	return def;
 //}
@@ -1023,7 +1025,7 @@ NextToken( ):void {
 //
 //	type = func.TypeDef();
 //	if ( func.Type() != ev_function ) {
-//		Error( "'%s' is not a function", func.Name() );
+//		this.Error( "'%s' is not a function", func.Name() );
 //	}
 //
 //	// copy the parameters to the global parameter variables
@@ -1032,14 +1034,14 @@ NextToken( ):void {
 //	if ( !CheckToken( ")" ) ) {
 //		do {
 //			if ( arg >= type.NumParameters() ) {
-//				Error( "too many parameters" );
+//				this.Error( "too many parameters" );
 //			}
 //
 //			e = GetExpression( TOP_PRIORITY );
 //
 //			funcArg = type.GetParmType( arg );
 //			if ( !EmitPush( e, funcArg ) ) {
-//				Error( "type mismatch on parm %i of call to '%s'", arg + 1, func.Name() );
+//				this.Error( "type mismatch on parm %i of call to '%s'", arg + 1, func.Name() );
 //			}
 //
 //			if ( funcArg.Type() == ev_object ) {
@@ -1051,11 +1053,11 @@ NextToken( ):void {
 //			arg++;
 //		} while( CheckToken( "," ) );
 //	
-//		ExpectToken( ")" );
+//		this.ExpectToken( ")" );
 //	}
 //
 //	if ( arg < type.NumParameters() ) {
-//		Error( "too few parameters for function '%s'", func.Name() );
+//		this.Error( "too few parameters for function '%s'", func.Name() );
 //	}
 //
 //	if ( op == OP_CALL ) {
@@ -1107,7 +1109,7 @@ NextToken( ):void {
 //		default :
 //			// shut up compiler
 //			resultOp = OP_STORE_OBJ;
-//			Error( "Invalid return type for function '%s'", func.Name() );
+//			this.Error( "Invalid return type for function '%s'", func.Name() );
 //			break;
 //		}
 //	}
@@ -1138,17 +1140,17 @@ NextToken( ):void {
 //	assert( funcDef );
 //
 //	if ( funcDef.Type() != ev_function ) {
-//		Error( "'%s' is not a function", funcDef.Name() );
+//		this.Error( "'%s' is not a function", funcDef.Name() );
 //	}
 //
 //	if ( funcDef.initialized == idVarDef::uninitialized ) {
-//		Error( "Function '%s' has not been defined yet", funcDef.GlobalName() );
+//		this.Error( "Function '%s' has not been defined yet", funcDef.GlobalName() );
 //	}
 //
 //	assert( funcDef.value.functionPtr );
 //	if ( this.callthread ) {
 //		if ( ( funcDef.initialized != idVarDef::uninitialized ) && funcDef.value.functionPtr.eventdef ) {
-//			Error( "Built-in functions cannot be called as threads" );
+//			this.Error( "Built-in functions cannot be called as threads" );
 //		}
 //		this.callthread = false;
 //		return EmitFunctionParms( OP_THREAD, funcDef, 0, 0, NULL );
@@ -1158,12 +1160,12 @@ NextToken( ):void {
 //				// get the local object pointer
 //				idVarDef *thisdef = gameLocal.program.GetDef( this.scope.scope.TypeDef(), "self", this.scope );
 //				if ( !thisdef ) {
-//					Error( "No 'self' within scope" );
+//					this.Error( "No 'self' within scope" );
 //				}
 //
 //				return ParseEventCall( thisdef, funcDef );
 //			} else {
-//				Error( "Built-in functions cannot be called without an object" );
+//				this.Error( "Built-in functions cannot be called without an object" );
 //			}
 //		}
 //
@@ -1193,15 +1195,15 @@ NextToken( ):void {
 //*/
 //idVarDef *idCompiler::ParseEventCall( idVarDef *object, idVarDef *funcDef ) {
 //	if ( this.callthread ) {
-//		Error( "Cannot call built-in functions as a thread" );
+//		this.Error( "Cannot call built-in functions as a thread" );
 //	}
 //
 //	if ( funcDef.Type() != ev_function ) {
-//		Error( "'%s' is not a function", funcDef.Name() );
+//		this.Error( "'%s' is not a function", funcDef.Name() );
 //	}
 //
 //	if ( !funcDef.value.functionPtr.eventdef ) {
-//		Error( "\"%s\" cannot be called with object notation", funcDef.Name() );
+//		this.Error( "\"%s\" cannot be called with object notation", funcDef.Name() );
 //	}
 //
 //	if ( object.Type() == ev_object ) {
@@ -1220,19 +1222,19 @@ NextToken( ):void {
 //*/
 //idVarDef *idCompiler::ParseSysObjectCall( idVarDef *funcDef ) {
 //	if ( this.callthread ) {
-//		Error( "Cannot call built-in functions as a thread" );
+//		this.Error( "Cannot call built-in functions as a thread" );
 //	}
 //
 //	if ( funcDef.Type() != ev_function ) {
-//		Error( "'%s' is not a function", funcDef.Name() );
+//		this.Error( "'%s' is not a function", funcDef.Name() );
 //	}
 //
 //	if ( !funcDef.value.functionPtr.eventdef ) {
-//		Error( "\"%s\" cannot be called with object notation", funcDef.Name() );
+//		this.Error( "\"%s\" cannot be called with object notation", funcDef.Name() );
 //	}
 //
 //	if ( !idThread::Type.RespondsTo( *funcDef.value.functionPtr.eventdef ) ) {
-//		Error( "\"%s\" is not callable as a 'sys' function", funcDef.Name() );
+//		this.Error( "\"%s\" is not callable as a 'sys' function", funcDef.Name() );
 //	}
 //
 //	return EmitFunctionParms( OP_SYSCALL, funcDef, 0, 0, NULL );
@@ -1272,7 +1274,7 @@ NextToken( ):void {
 //
 //				field = LookupDef( name, this.scope.scope.TypeDef().def );
 //				if ( !field ) {
-//					Error( "Unknown value \"%s\"", name );
+//					this.Error( "Unknown value \"%s\"", name );
 //				}
 //
 //				// type check
@@ -1283,13 +1285,13 @@ NextToken( ):void {
 //					type_c = field.TypeDef().FieldType().Type();	// field access gets type from field
 //	                if ( CheckToken( "++" ) ) {
 //						if ( type_c != ev_float ) {
-//							Error( "Invalid type for ++" );
+//							this.Error( "Invalid type for ++" );
 //						}
 //						def = EmitOpcode( OP_UINCP_F, thisdef, field );
 //						return def;
 //					} else if ( CheckToken( "--" ) ) {
 //						if ( type_c != ev_float ) {
-//							Error( "Invalid type for --" );
+//							this.Error( "Invalid type for --" );
 //						}
 //						def = EmitOpcode( OP_UDECP_F, thisdef, field );
 //						return def;
@@ -1306,12 +1308,12 @@ NextToken( ):void {
 //					}
 //					op++;
 //					if ( !op.name || strcmp( op.name, "." ) ) {
-//						Error( "no valid opcode to access type '%s'", field.TypeDef().SuperClass().Name() );
+//						this.Error( "no valid opcode to access type '%s'", field.TypeDef().SuperClass().Name() );
 //					}
 //				}
 //
 //				if ( ( op - opcodes ) == OP_OBJECTCALL ) {
-//					ExpectToken( "(" );
+//					this.ExpectToken( "(" );
 //					def = ParseObjectCall( thisdef, field );
 //				} else {
 //					// emit the conversion opcode
@@ -1346,7 +1348,7 @@ NextToken( ):void {
 //		if ( !def ) {
 //			def = gameLocal.program.AllocDef( &type_entity, "$" + this.token, &def_namespace, true );
 //		}
-//		NextToken();
+//		this.NextToken();
 //		return def;
 //	} else if ( this.immediateType ) {
 //		// if the token is an immediate, allocate a constant for it
@@ -1357,19 +1359,19 @@ NextToken( ):void {
 //	def = LookupDef( name, this.basetype );
 //	if ( !def ) {
 //		if ( this.basetype ) {
-//			Error( "%s is not a member of %s", name.c_str(), this.basetype.TypeDef().Name() );
+//			this.Error( "%s is not a member of %s", name.c_str(), this.basetype.TypeDef().Name() );
 //		} else {
-//			Error( "Unknown value \"%s\"", name.c_str() );
+//			this.Error( "Unknown value \"%s\"", name.c_str() );
 //		}
 //	// if namespace, then look up the variable in that namespace
 //	} else if ( def.Type() == ev_namespace ) {
 //		while( def.Type() == ev_namespace ) {
-//			ExpectToken( "::" );
+//			this.ExpectToken( "::" );
 //			ParseName( name );
 //			namespaceDef = def;
 //			def = gameLocal.program.GetDef( NULL, name, namespaceDef );
 //			if ( !def ) {
-//				Error( "Unknown value \"%s::%s\"", namespaceDef.GlobalName(), name.c_str() );
+//				this.Error( "Unknown value \"%s::%s\"", namespaceDef.GlobalName(), name.c_str() );
 //			}
 //		}
 //		//def = LookupDef( name, this.basetype );
@@ -1398,7 +1400,7 @@ NextToken( ):void {
 //			// shut up compiler
 //			op = OP_COMP_F;
 //
-//			Error( "type mismatch for ~" );
+//			this.Error( "type mismatch for ~" );
 //			break;
 //		}
 //
@@ -1432,7 +1434,7 @@ NextToken( ):void {
 //			// shut up compiler
 //			op = OP_NOT_F;
 //
-//			Error( "Invalid type for !" );
+//			this.Error( "Invalid type for !" );
 //			break;
 //
 //		case ev_object :
@@ -1443,7 +1445,7 @@ NextToken( ):void {
 //			// shut up compiler
 //			op = OP_NOT_F;
 //
-//			Error( "type mismatch for !" );
+//			this.Error( "type mismatch for !" );
 //			break;
 //		}
 //
@@ -1475,7 +1477,7 @@ NextToken( ):void {
 //				// shut up compiler
 //				op = OP_NEG_F;
 //
-//				Error( "type mismatch for -" );
+//				this.Error( "type mismatch for -" );
 //				break;
 //			}
 //			return EmitOpcode( &opcodes[ op ], e, 0 );
@@ -1483,14 +1485,14 @@ NextToken( ):void {
 //	}
 //	
 //	if ( CheckToken( "int" ) ) {
-//		ExpectToken( "(" );
+//		this.ExpectToken( "(" );
 //
 //		e = GetExpression( INT_PRIORITY );
 //		if ( e.Type() != ev_float ) {
-//			Error( "type mismatch for int()" );
+//			this.Error( "type mismatch for int()" );
 //		}
 //
-//		ExpectToken( ")" );
+//		this.ExpectToken( ")" );
 //
 //		return EmitOpcode( OP_INT_F, e, 0 );
 //	}
@@ -1500,7 +1502,7 @@ NextToken( ):void {
 //		e = GetExpression( FUNCTION_PRIORITY );
 //
 //		if ( this.callthread ) {
-//			Error( "Invalid thread call" );
+//			this.Error( "Invalid thread call" );
 //		}
 //
 //		// threads return the thread number
@@ -1510,7 +1512,7 @@ NextToken( ):void {
 //	
 //	if ( !this.immediateType && CheckToken( "(" ) ) {
 //		e = GetExpression( TOP_PRIORITY );
-//		ExpectToken( ")" );
+//		this.ExpectToken( ")" );
 //
 //		return e;
 //	}
@@ -1646,18 +1648,18 @@ NextToken( ):void {
 //
 //			op++;
 //			if ( !op.name || strcmp( op.name, oldop.name ) ) {
-//				Error( "type mismatch for '%s'", oldop.name );
+//				this.Error( "type mismatch for '%s'", oldop.name );
 //			}
 //		}
 //
 //		switch( op - opcodes ) {
 //		case OP_SYSCALL :
-//			ExpectToken( "(" );
+//			this.ExpectToken( "(" );
 //			e = ParseSysObjectCall( e2 );
 //			break;
 //
 //		case OP_OBJECTCALL :
-//			ExpectToken( "(" );
+//			this.ExpectToken( "(" );
 //			if ( ( e2.initialized != idVarDef::uninitialized ) && e2.value.functionPtr.eventdef ) {
 //				e = ParseEventCall( e, e2 );
 //			} else {
@@ -1666,7 +1668,7 @@ NextToken( ):void {
 //			break;
 //		
 //		case OP_EVENTCALL :
-//			ExpectToken( "(" );
+//			this.ExpectToken( "(" );
 //			if ( ( e2.initialized != idVarDef::uninitialized ) && e2.value.functionPtr.eventdef ) {
 //				e = ParseEventCall( e, e2 );
 //			} else {
@@ -1676,7 +1678,7 @@ NextToken( ):void {
 //
 //		default:
 //			if ( this.callthread ) {
-//				Error( "Expecting function call after 'thread'" );
+//				this.Error( "Expecting function call after 'thread'" );
 //			}
 //
 //			if ( ( type_a == ev_pointer ) && ( type_b != e.TypeDef().PointerType().Type() ) ) {
@@ -1700,7 +1702,7 @@ NextToken( ):void {
 //					// store an entity into an object pointer
 //					op = &opcodes[ OP_STOREP_OBJENT ];
 //				} else {
-//					Error( "type mismatch for '%s'", op.name );
+//					this.Error( "type mismatch for '%s'", op.name );
 //				}
 //			}
 //			
@@ -1763,7 +1765,7 @@ NextToken( ):void {
 //
 //	if ( CheckToken( ";" ) ) {
 //		if ( this.scope.TypeDef().ReturnType().Type() != ev_void ) {
-//			Error( "expecting return value" );
+//			this.Error( "expecting return value" );
 //		}
 //
 //		EmitOpcode( OP_RETURN, 0, 0 );
@@ -1771,7 +1773,7 @@ NextToken( ):void {
 //	}
 //
 //	e = GetExpression( TOP_PRIORITY );
-//	ExpectToken( ";" );
+//	this.ExpectToken( ";" );
 //
 //	type_a = e.Type();
 //	type_b = this.scope.TypeDef().ReturnType().Type();
@@ -1792,7 +1794,7 @@ NextToken( ):void {
 //	while( !TypeMatches( type_a, op.type_a.Type() ) || !TypeMatches( type_b, op.type_b.Type() ) ) {
 //		op++;
 //		if ( !op.name || strcmp( op.name, "=" ) ) {
-//			Error( "type mismatch for return value" );
+//			this.Error( "type mismatch for return value" );
 //		}
 //	}
 //
@@ -1818,11 +1820,11 @@ NextToken( ):void {
 //
 //	this.loopDepth++;
 //
-//	ExpectToken( "(" );
+//	this.ExpectToken( "(" );
 //	
 //	patch2 = gameLocal.program.NumStatements();
 //	e = GetExpression( TOP_PRIORITY );
-//	ExpectToken( ")" );
+//	this.ExpectToken( ")" );
 //
 //	if ( ( e.initialized == idVarDef::initializedConstant ) && ( *e.value.intPtr != 0 ) ) {
 //		//FIXME: we can completely skip generation of this code in the opposite case
@@ -1893,7 +1895,7 @@ NextToken( ):void {
 //
 //	start = gameLocal.program.NumStatements();
 //
-//	ExpectToken( "(" );
+//	this.ExpectToken( "(" );
 //	
 //	// init
 //	if ( !CheckToken( ";" ) ) {
@@ -1901,14 +1903,14 @@ NextToken( ):void {
 //			GetExpression( TOP_PRIORITY );
 //		} while( CheckToken( "," ) );
 //
-//		ExpectToken( ";" );
+//		this.ExpectToken( ";" );
 //	}
 //
 //	// condition
 //	patch2 = gameLocal.program.NumStatements();
 //
 //	e = GetExpression( TOP_PRIORITY );
-//	ExpectToken( ";" );
+//	this.ExpectToken( ";" );
 //
 //	//FIXME: add check for constant expression
 //	patch1 = gameLocal.program.NumStatements();
@@ -1925,7 +1927,7 @@ NextToken( ):void {
 //			GetExpression( TOP_PRIORITY );
 //		} while( CheckToken( "," ) );
 //		
-//		ExpectToken( ")" );
+//		this.ExpectToken( ")" );
 //
 //		// goto patch4
 //		EmitOpcode( OP_GOTO, JumpTo( patch4 ), 0 );
@@ -1961,11 +1963,11 @@ NextToken( ):void {
 //
 //	patch1 = gameLocal.program.NumStatements();
 //	ParseStatement();
-//	ExpectToken( "while" );
-//	ExpectToken( "(" );
+//	this.ExpectToken( "while" );
+//	this.ExpectToken( "(" );
 //	e = GetExpression( TOP_PRIORITY );
-//	ExpectToken( ")" );
-//	ExpectToken( ";" );
+//	this.ExpectToken( ")" );
+//	this.ExpectToken( ";" );
 //
 //	EmitOpcode( OP_IF, e, JumpTo( patch1 ) );
 //
@@ -1985,9 +1987,9 @@ NextToken( ):void {
 //	int			patch1;
 //	int			patch2;
 //
-//	ExpectToken( "(" );
+//	this.ExpectToken( "(" );
 //	e = GetExpression( TOP_PRIORITY );
-//	ExpectToken( ")" );
+//	this.ExpectToken( ")" );
 //
 //	//FIXME: add check for constant expression
 //	patch1 = gameLocal.program.NumStatements();
@@ -2046,18 +2048,18 @@ NextToken( ):void {
 //	}
 //
 //	if ( CheckToken( "break" ) ) {
-//		ExpectToken( ";" );
+//		this.ExpectToken( ";" );
 //		if ( !loopDepth ) {
-//			Error( "cannot break outside of a loop" );
+//			this.Error( "cannot break outside of a loop" );
 //		}
 //		EmitOpcode( OP_BREAK, 0, 0 );
 //		return;
 //	}
 //
 //	if ( CheckToken( "continue" ) ) {
-//		ExpectToken( ";" );
+//		this.ExpectToken( ";" );
 //		if ( !loopDepth ) {
-//			Error( "cannot contine outside of a loop" );
+//			this.Error( "cannot contine outside of a loop" );
 //		}
 //		EmitOpcode( OP_CONTINUE, 0, 0 );
 //		return;
@@ -2074,7 +2076,7 @@ NextToken( ):void {
 //	}
 //
 //	GetExpression( TOP_PRIORITY );
-//	ExpectToken(";");
+//	this.ExpectToken(";");
 //}
 //
 	///*
@@ -2096,12 +2098,12 @@ NextToken( ):void {
 //
 //	oldscope = this.scope;
 //	if ( this.scope.Type() != ev_namespace ) {
-//		Error( "Objects cannot be defined within functions or other objects" );
+//		this.Error( "Objects cannot be defined within functions or other objects" );
 //	}
 //
 //	// make sure it doesn't exist before we create it
 //	if ( gameLocal.program.FindType( objname ) != NULL ) {
-//		Error( "'%s' : redefinition; different basic types", objname );
+//		this.Error( "'%s' : redefinition; different basic types", objname );
 //	}
 //
 //	// base type
@@ -2110,7 +2112,7 @@ NextToken( ):void {
 //	} else {
 //		parentType = ParseType();
 //		if ( !parentType.Inherits( &type_object ) ) {
-//			Error( "Objects may only inherit from objects." );
+//			this.Error( "Objects may only inherit from objects." );
 //		}
 //	}
 //	
@@ -2125,7 +2127,7 @@ NextToken( ):void {
 //		objtype.AddFunction( func );
 //	}
 //
-//	ExpectToken( "{" );
+//	this.ExpectToken( "{" );
 //
 //	do {
 //		if ( CheckToken( ";" ) ) {
@@ -2149,13 +2151,13 @@ NextToken( ):void {
 //			assert( !type.def );
 //			gameLocal.program.AllocDef( type, name, this.scope, true );
 //			objtype.AddField( type, name );
-//			ExpectToken( ";" );
+//			this.ExpectToken( ";" );
 //		}
 //	} while( !CheckToken( "}" ) );
 //
 //	this.scope = oldscope;
 //
-//	ExpectToken( ";" );
+//	this.ExpectToken( ";" );
 //}
 //
 	///*
@@ -2182,7 +2184,7 @@ NextToken( ):void {
 //			newtype.AddFunctionParm( type, parmName );
 //		} while( CheckToken( "," ) );
 //
-//		ExpectToken( ")" );
+//		this.ExpectToken( ")" );
 //	}
 //
 //	return gameLocal.program.GetType( newtype, true );
@@ -2205,7 +2207,7 @@ NextToken( ):void {
 //	statement_t		*pos;
 //
 //	if ( ( this.scope.Type() != ev_namespace ) && !scope.TypeDef().Inherits( &type_object ) ) {
-//		Error( "Functions may not be defined within other functions" );
+//		this.Error( "Functions may not be defined within other functions" );
 //	}
 //
 //	type = ParseFunction( returnType, name );
@@ -2222,14 +2224,14 @@ NextToken( ):void {
 //		func = def.value.functionPtr;
 //		assert( func );
 //		if ( func.firstStatement ) {
-//			Error( "%s redeclared", def.GlobalName() );
+//			this.Error( "%s redeclared", def.GlobalName() );
 //		}
 //	}
 //
 //	// check if this is a prototype or declaration
 //	if ( !CheckToken( "{" ) ) {
 //		// it's just a prototype, so get the ; and move on
-//		ExpectToken( ";" );
+//		this.ExpectToken( ";" );
 //		return;
 //	}
 //
@@ -2249,7 +2251,7 @@ NextToken( ):void {
 //	// define the parms
 //	for( i = 0; i < numParms; i++ ) {
 //		if ( gameLocal.program.GetDef( type.GetParmType( i ), type.GetParmName( i ), def ) ) {
-//			Error( "'%s' defined more than once in function parameters", type.GetParmName( i ) );
+//			this.Error( "'%s' defined more than once in function parameters", type.GetParmName( i ) );
 //		}
 //		parm = gameLocal.program.AllocDef( type.GetParmType( i ), type.GetParmName( i ), def, false );
 //	}
@@ -2348,7 +2350,7 @@ NextToken( ):void {
 //
 //	def = gameLocal.program.GetDef( type, name, this.scope );
 //	if ( def ) {
-//		Error( "%s redeclared", name );
+//		this.Error( "%s redeclared", name );
 //	}
 //	
 //	def = gameLocal.program.AllocDef( type, name, this.scope, false );
@@ -2383,21 +2385,21 @@ NextToken( ):void {
 //			} else if ( ( type == &type_float ) && ( def2.TypeDef() == &type_boolean ) ) {
 //				EmitOpcode( OP_STORE_BOOLTOF, def2, def );
 //			} else {
-//				Error( "bad initialization for '%s'", name );
+//				this.Error( "bad initialization for '%s'", name );
 //			}
 //		} else {
 //			// global variables can only be initialized with immediate values
 //			negate = false;
 //			if ( this.token.$.type == TT_PUNCTUATION && this.token == "-" ) {
 //				negate = true;
-//				NextToken();
+//				this.NextToken();
 //				if ( this.immediateType != &type_float ) {
-//					Error( "wrong immediate type for '-' on variable '%s'", name );
+//					this.Error( "wrong immediate type for '-' on variable '%s'", name );
 //				}
 //			}
 //
 //			if ( this.immediateType != type ) {
-//				Error( "wrong immediate type for '%s'", name );
+//				this.Error( "wrong immediate type for '%s'", name );
 //			}
 //
 //			// global variables are initialized at start up
@@ -2409,7 +2411,7 @@ NextToken( ):void {
 //				}
 //				def.SetValue( immediate, false );
 //			}
-//			NextToken();
+//			this.NextToken();
 //		}
 //	} else if ( type == &type_string ) {
 //		// local strings on the stack are initialized in the interpreter
@@ -2489,34 +2491,34 @@ NextToken( ):void {
 //
 //	ev = idEventDef::FindEvent( name );
 //	if ( !ev ) {
-//		Error( "Unknown event '%s'", name );
+//		this.Error( "Unknown event '%s'", name );
 //	}
 //
 //	// set the return type
 //	expectedType = GetTypeForEventArg( ev.GetReturnType() );
 //	if ( !expectedType ) {
-//		Error( "Invalid return type '%c' in definition of '%s' event.", ev.GetReturnType(), name );
+//		this.Error( "Invalid return type '%c' in definition of '%s' event.", ev.GetReturnType(), name );
 //	}
 //	if ( returnType != expectedType ) {
-//		Error( "Return type doesn't match internal return type '%s'", expectedType.Name() );
+//		this.Error( "Return type doesn't match internal return type '%s'", expectedType.Name() );
 //	}
 //
 //	idTypeDef newtype( ev_function, NULL, name, type_function.Size(), returnType );
 //
-//	ExpectToken( "(" );
+//	this.ExpectToken( "(" );
 //
 //	format = ev.GetArgFormat();
 //	num = strlen( format );
 //	for( i = 0; i < num; i++ ) {
 //		expectedType = GetTypeForEventArg( format[ i ] );
 //		if ( !expectedType || ( expectedType == &type_void ) ) {
-//			Error( "Invalid parameter '%c' in definition of '%s' event.", format[ i ], name );
+//			this.Error( "Invalid parameter '%c' in definition of '%s' event.", format[ i ], name );
 //		}
 //
 //		argType = ParseType();
 //		ParseName( parmName );
 //		if ( argType != expectedType ) {
-//			Error( "The type of parm %d ('%s') does not match the internal type '%s' in definition of '%s' event.", 
+//			this.Error( "The type of parm %d ('%s') does not match the internal type '%s' in definition of '%s' event.", 
 //				i + 1, parmName.c_str(), expectedType.Name(), name );
 //		}
 //
@@ -2524,20 +2526,20 @@ NextToken( ):void {
 //
 //		if ( i < num - 1 ) {
 //			if ( CheckToken( ")" ) ) {
-//				Error( "Too few parameters for event definition.  Internal definition has %d parameters.", num );
+//				this.Error( "Too few parameters for event definition.  Internal definition has %d parameters.", num );
 //			}
-//			ExpectToken( "," );
+//			this.ExpectToken( "," );
 //		}
 //	}
 //	if ( !CheckToken( ")" ) ) {
-//		Error( "Too many parameters for event definition.  Internal definition has %d parameters.", num );
+//		this.Error( "Too many parameters for event definition.  Internal definition has %d parameters.", num );
 //	}
-//	ExpectToken( ";" );
+//	this.ExpectToken( ";" );
 //
 //	type = gameLocal.program.FindType( name );
 //	if ( type ) {
 //		if ( !newtype.MatchesType( *type ) || ( type.def.value.functionPtr.eventdef != ev ) ) {
-//			Error( "Type mismatch on redefinition of '%s'", name );
+//			this.Error( "Type mismatch on redefinition of '%s'", name );
 //		}
 //	} else {
 //		type = gameLocal.program.AllocType( newtype );
@@ -2557,14 +2559,15 @@ NextToken( ):void {
 //	}
 //}
 //
-	///*
-//================
-//idCompiler::ParseDefs
-//
-//Called at the outer layer and when a local statement is hit
-//================
-//*/
-//void idCompiler::ParseDefs( void ) {
+	/*
+================
+idCompiler::ParseDefs
+
+Called at the outer layer and when a local statement is hit
+================
+*/
+	ParseDefs ( ): void {
+		todoThrow ( );
 //	idStr 		name;
 //	idTypeDef	*type;
 //	idVarDef	*def;
@@ -2594,13 +2597,13 @@ NextToken( ):void {
 //	} else if ( CheckToken( "::" ) ) {
 //		def = gameLocal.program.GetDef( NULL, name, this.scope );
 //		if ( !def ) {
-//			Error( "Unknown object name '%s'", name.c_str() );
+//			this.Error( "Unknown object name '%s'", name.c_str() );
 //		}
 //		ParseName( name );
 //		oldscope = this.scope;
 //		this.scope = def;
 //
-//		ExpectToken( "(" );
+//		this.ExpectToken( "(" );
 //		ParseFunctionDef( type, name.c_str() );
 //		this.scope = oldscope;
 //	} else if ( type == &type_object ) {
@@ -2613,39 +2616,39 @@ NextToken( ):void {
 //			ParseName( name );
 //			ParseVariableDef( type, name.c_str() );
 //		}
-//		ExpectToken( ";" );
+//		this.ExpectToken( ";" );
 //	}
-//}
-//
-	///*
-//================
-//idCompiler::ParseNamespace
-//
-//Parses anything within a namespace definition
-//================
-//*/
-//void idCompiler::ParseNamespace( idVarDef *newScope ) {
-//	idVarDef *oldscope;
-//
-//	oldscope = this.scope;
-//	if ( newScope != &def_namespace ) {
-//		ExpectToken( "{" );
-//	}
-//
-//	while( !eof ) {
-//		this.scope		= newScope;
-//		this.callthread	= false;
-//
-//		if ( ( newScope != &def_namespace ) && CheckToken( "}" ) ) {
-//			break;
-//		}
-//
-//		ParseDefs();
-//	}
-//
-//	this.scope = oldscope;
-//}
-//
+	}
+
+/*
+================
+idCompiler::ParseNamespace
+
+Parses anything within a namespace definition
+================
+*/
+	ParseNamespace ( newScope: idVarDef ): void {
+		var oldscope: idVarDef;
+
+		oldscope = this.scope;
+		if ( newScope != def_namespace ) {
+			this.ExpectToken( "{" );
+		}
+
+		while ( !this.eof ) {
+			this.scope = newScope;
+			this.callthread = false;
+
+			if ( ( newScope != def_namespace ) && this.CheckToken( "}" ) ) {
+				break;
+			}
+
+			this.ParseDefs ( );
+		}
+
+		this.scope = oldscope;
+	}
+
 /*
 ============
 idCompiler::CompileFile

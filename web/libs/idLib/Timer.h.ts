@@ -180,20 +180,18 @@ idTimer::Stop
 ////	assert( this.state == timerState.TS_STOPPED );
 ////	return this.clockTicks;
 ////}
-////
-/////*
-////=================
-////idTimer::Milliseconds
-////=================
-////*/
-////ID_INLINE double idTimer::Milliseconds( void ) const {
-////	assert( this.state == timerState.TS_STOPPED );
-////	return this.clockTicks / ( idLib::sys.ClockTicksPerSecond() * 0.001 );
-////}
-////
-////
-////
-////
+
+/*
+=================
+idTimer::Milliseconds
+=================
+*/
+	Milliseconds ( ): /*double*/ number {
+		assert( this.state == timerState.TS_STOPPED );
+		return this.clockTicks/* / ( sys.ClockTicksPerSecond ( ) * 0.001 )*/;
+	}
+
+
 /*
 =================
 idTimer::InitBaseClockTicks

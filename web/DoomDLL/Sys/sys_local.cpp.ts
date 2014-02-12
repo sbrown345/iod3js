@@ -87,13 +87,14 @@ class idSysLocal/* extends idSys*/ {
 //	Sys_DebugVPrintf( fmt, arg );
 //}
 //
-	static GetClockTicks ( ): number {
+	GetClockTicks ( ): number {
 		return Sys_GetClockTicks ( );
 	}
 //
-//double idSysLocal::ClockTicksPerSecond( void ) {
-//	return Sys_ClockTicksPerSecond();
-//}
+	ClockTicksPerSecond(): number {
+		todo ( );
+		return 3392000000;//Sys_ClockTicksPerSecond ( );
+	}
 //
 //cpuid_t idSysLocal::GetProcessorId( void ) {
 //	return Sys_GetProcessorId();

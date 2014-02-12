@@ -57,6 +57,25 @@ class eval_t {
 	//int 				_int;
 	//int 				entity;
 
+	get _float(): number { todoThrow();  return this[1]; }
+	set _float ( value: number ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		todoThrow ( );
+	}
+
+
+	get $function(): function_t { todoThrow();  return this[1]; }
+	set $function(value: function_t ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		todoThrow ( );
+	}
+
+
+
 	private val = new ArrayBuffer(12);
 	private uint8s = new Uint8Array(this.val);
 	private int32s = new Uint32Array(this.val);

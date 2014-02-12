@@ -1095,7 +1095,8 @@ class idLexer {
 		}
 		// if the type matches
 		if (tok.$.type == type && (tok.$.subtype & subtype) == subtype) {
-			token.$ = tok.$.clone();
+			todoThrow( "shoudl the following be token.$.equals(tok) ?" );
+			//token.$ = tok.$.clone();
 			return 1;
 		}
 		// unread token
@@ -1629,14 +1630,14 @@ class idLexer {
 	////	this.token = new idToken();
 	////}
 
-	/////*
-	////================
-	////idLexer::EndOfFile
-	////================
-	////*/
-	////int idLexer::EndOfFile( void ) {
-	////	return this.script_p >= idLexer::end_p;
-	////}
+	/*
+	================
+	idLexer::EndOfFile
+	================
+	*/
+	EndOfFile ( ): number {
+		return this.script_p >= this.end_p ? 1 : 0;
+	}
 
 	/////*
 	////================
@@ -1769,8 +1770,8 @@ FreeSource( ):void {
 
 	constructor ( )
 	constructor ( flags: number /*int*/ )
-	constructor ( filename: string, /*int */flags: number, OSPath: boolean )
-	constructor ( /*const char **/ptr: string, /*int */length: number, name: string, /*int*/ flags: number )
+	constructor(filename: string, /*int */flags: number, OSPath: boolean )
+	constructor( /*const char **/ptr: string, /*int */length: number, name: string, /*int*/ flags: number )
 	constructor ( a1?: any, a2?: any, a3?: any, a4?: any ) {
 		if ( arguments.length == 0 ) {
 			this.loaded = 0;
