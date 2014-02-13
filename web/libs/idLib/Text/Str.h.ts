@@ -1866,26 +1866,27 @@ DefaultFileExtension( extension:string ):idStr {
 ////	}
 ////}
 
-/////*
-////==================
-////idStr::StripFilename
-////==================
-////*/
-////idStr &idStr::StripFilename( void ) {
-////	int pos;
+/*
+==================
+idStr::StripFilename
+==================
+*/
+	StripFilename ( ): idStr {
+		todoThrow ( );
+		//int pos;
 
-////	pos = Length() - 1;
-////	while( ( pos > 0 ) && ( ( *this )[ pos ] != '/' ) && ( ( *this )[ pos ] != '\\' ) ) {
-////		pos--;
-////	}
+		//pos = Length() - 1;
+		//while( ( pos > 0 ) && ( ( *this )[ pos ] != '/' ) && ( ( *this )[ pos ] != '\\' ) ) {
+		//	pos--;
+		//}
 
-////	if ( pos < 0 ) {
-////		pos = 0;
-////	}
+		//if ( pos < 0 ) {
+		//	pos = 0;
+		//}
 
-////	CapLength( pos );
-////	return *this;
-////}
+		//CapLength( pos );
+		return this;
+	}
 
 /////*
 ////==================
