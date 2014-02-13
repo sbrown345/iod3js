@@ -3169,6 +3169,9 @@ separate file or a ZIP file.
 		xhr["overrideMimeType"]('text/plain; charset=x-user-defined');
 		xhr.open('GET', "/demo/" + relativePath, false);
 		xhr.send();
+		if ( xhr.status !== 200 ) {
+			return null;
+		}
 
 		if (typeof VBArray !== "undefined") { // debugging in VS
 			var data = new VBArray(xhr.responseBody).toArray();

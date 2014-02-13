@@ -42,11 +42,11 @@
 ////typedef idList<idStr*> idStrPtrList;
 //var idStrPtr = idStr;
 
-class idStrList  extends idList<idStr>{
+class idStrList extends idList<idStr> {
 
-    constructor() {
-        super(String);
-    }
+	constructor ( ) {
+		super( String );
+	}
 
 /////*
 ////================
@@ -137,23 +137,22 @@ class idStrList  extends idList<idStr>{
 ////	}
 ////}
 
-/////*
-////================
-////idStrList::Size
-////================
-////*/
-////template<>
-////ID_INLINE size_t idStrList::Size( void ) const {
-////	size_t s;
-////	int i;
+/*
+================
+idStrList::Size
+================
+*/
+	Size ( ): number {
+		var s: number;
+		var i: number;
 
-////	s = sizeof( *this );
-////	for( i = 0; i < Num(); i++ ) {
-////		s += ( *this )[ i ].Size();
-////	}
+		s = sizeof( this );
+		for ( i = 0; i < this.Num ( ); i++ ) {
+			s += this[i].Size ( );
+		}
 
-////	return s;
-////}
+		return s;
+	}
 
 }
 

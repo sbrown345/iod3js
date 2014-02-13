@@ -1844,7 +1844,6 @@ void idProgram::CompileFile( const char *filename ) {
 	}
 
 	result = CompileText( filename, src, false );
-
 	fileSystem->FreeFile( src );
 
 	if ( g_disasm.GetBool() ) {

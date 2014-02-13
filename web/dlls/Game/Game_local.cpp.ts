@@ -310,7 +310,7 @@ idGameLocal.prototype.Init = function ( ): void {
 
 	// load default scripts
 	this.program.Startup( SCRIPT_DEFAULT );
- todoThrow();
+ todoThrow("it doesnt hit NextToken");
 	//smokeParticles = new idSmokeParticles;
 
 	//// set up the aas
@@ -624,25 +624,19 @@ idGameLocal.prototype.Printf = function ( /*const char **/ fmt: string, ...args:
 	console.log.apply( console, argArr );
 };
 
-/////*
-////============
-////idGameLocal::DPrintf
-////============
-////*/
-////void idGameLocal::DPrintf( const char *fmt, ... ) const {
-////	va_list		argptr;
-////	char		text[MAX_STRING_CHARS];
-
-////	if ( !developer.GetBool() ) {
-////		return;
-////	}
-
-////	va_start( argptr, fmt );
-////	idStr::vsnPrintf( text, sizeof( text ), fmt, argptr );
-////	va_end( argptr );
-
-////	common.Printf( "%s", text );
-////}
+/*
+============
+idGameLocal::DPrintf
+============
+*/
+idGameLocal.prototype.DPrintf = function ( /*const char **/ fmt: string, ...args: any[] ): void {
+	if ( !developer.GetBool ( ) ) {
+		return;
+	}
+	var argArr = args.slice( 0 );
+	argArr.unshift( fmt.trim ( ) );
+	console.log.apply( console, argArr );
+};
 
 /////*
 ////============

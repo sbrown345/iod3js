@@ -345,7 +345,7 @@ class idStr {
 /*		char *				*/
 	data: string;
 
-////	int					alloced;
+	alloced:number/*int*/;
 ////	char				baseBuffer[ STR_ALLOC_BASE ];
 
 ////	void				Init( void );										// initialize string using base buffer
@@ -510,10 +510,9 @@ class idStr {
 ////ID_INLINE idStr::~idStr( void ) {
 ////	FreeData();
 ////}
-
-////ID_INLINE size_t idStr::Size( void ) const {
-////	return sizeof( *this ) + Allocated();
-////}
+	Size ( ): number {
+		return this.data.length; //sizeof( *this ) + Allocated();
+	}
 
 	c_str ( ): string {
 		return this.data;
@@ -725,13 +724,13 @@ class idStr {
 		return this.data.length; //this.len;
 	}
 
-////ID_INLINE int idStr::Allocated( void ) const {
-////	if ( this.data != baseBuffer ) {
-////		return alloced;
-////	} else {
-////		return 0;
-////	}
-////}
+	Allocated ( ): number {
+		//if ( this.data != this.baseBuffer ) {
+		//	return this.alloced;
+		//} else {
+			return 0;
+		//}
+	}
 
 	Empty ( ): void {
 		this.EnsureAlloced( 1 );

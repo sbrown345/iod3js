@@ -162,24 +162,24 @@ idTimer::Stop
 		this.state = timerState.TS_STOPPED;
 	}
 
-/////*
-////=================
-////idTimer::Clear
-////=================
-////*/
-////ID_INLINE void idTimer::Clear( void ) {
-////	this.clockTicks = 0.0;
-////}
-////
-/////*
-////=================
-////idTimer::ClockTicks
-////=================
-////*/
-////ID_INLINE double idTimer::ClockTicks( void ) const {
-////	assert( this.state == timerState.TS_STOPPED );
-////	return this.clockTicks;
-////}
+/*
+=================
+idTimer::Clear
+=================
+*/
+	Clear ( ): void {
+		this.clockTicks = 0.0;
+	}
+
+/*
+=================
+idTimer::ClockTicks
+=================
+*/
+	ClockTicks ( ): number {
+		assert( this.state == timerState.TS_STOPPED );
+		return this.clockTicks;
+	}
 
 /*
 =================
@@ -198,23 +198,22 @@ idTimer::InitBaseClockTicks
 =================
 */
 	InitBaseClockTicks ( ): void {
-		todoThrow ( );
-		//idTimer timer;
-		//double ct, b;
-		//int i;
+		var timer = new idTimer;
+		var /*double */ct: number, b: number;
+		var /*int */i: number;
 
-		//idTimer.base = 0.0;
-		//b = -1.0;
-		//for (i = 0; i < 1000; i++) {
-		//	timer.Clear();
-		//	timer.Start();
-		//	timer.Stop();
-		//	ct = timer.ClockTicks();
-		//	if (b < 0.0 || ct < b) {
-		//		b = ct;
-		//	}
-		//}
-		//idTimer.base = b;
+		idTimer.base = 0.0;
+		b = -1.0;
+		for ( i = 0; i < 1000; i++ ) {
+			timer.Clear ( );
+			timer.Start ( );
+			timer.Stop ( );
+			ct = timer.ClockTicks ( );
+			if ( b < 0.0 || ct < b ) {
+				b = ct;
+			}
+		}
+		idTimer.base = b;
 	}
 }
 /////*
@@ -285,17 +284,17 @@ idTimer::InitBaseClockTicks
 ////	}
 ////	return -1;
 ////}
-////
+
 /////*
 ////=================
 ////idTimerReport::Clear
 ////=================
 ////*/
-////void idTimerReport::Clear() {
-////	timers.DeleteContents(true);
-////	names.Clear();
-////	reportName.Clear();
-////}
+////Clear() :void{
+////	this.timers.DeleteContents(true);
+////	this.names.Clear();
+////	this.reportName.Clear();
+
 ////
 /////*
 ////=================

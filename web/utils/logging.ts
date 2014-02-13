@@ -12,12 +12,13 @@ var DEBUG_LOG_MODE = true;
 function isd(v: boolean): boolean { return DEBUG_LOG_MODE && v; }
 
 var DEBUG_WEBGL_UTIL = isd( false );
-var DEBUG_RENDER_METHODS = isd( true );
+var DEBUG_RENDER_METHODS = isd( false );
 var DEBUG_APPEND_TEXTURES_TO_BODY = isd( false );
 var DEBUG_RegisterDeclFolder = isd( false );
 var DEBUG_Lexer = isd( false );
 var DEBUG_DeriveTangents = isd( false );
 var DEBUG_R_DeriveTangents = isd( false );
+var DEBUG_COMPILER = isd( true );
 
 function dlog(log: boolean, format: string, ...args: any[]) {
 	if (!log || SKIP_ALL_LOGGING) return;

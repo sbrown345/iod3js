@@ -693,6 +693,8 @@ void idCompiler::NextToken( void ) {
 		}
 	}
 
+	dlog(DEBUG_COMPILER, "NextToken - type: %i, data: %s, line: %i\n", token.type, token.c_str(), token.line);
+
 	switch( token.type ) {
 	case TT_STRING:
 		// handle quoted strings as a unit
@@ -2575,6 +2577,7 @@ void idCompiler::CompileFile( const char *text, const char *filename, bool toCon
 	idTimer compile_time;
 	bool error;
 
+	dlog(DEBUG_COMPILER, "CompileFile - filename: %s\n", filename);
 	compile_time.Start();
 
 	scope				= &def_namespace;

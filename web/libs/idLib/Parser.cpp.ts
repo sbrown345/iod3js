@@ -708,11 +708,15 @@ idParser::ReadSourceToken
 			delete script;
 		}
 		// copy the already available token
-		token.$ = this.tokens;
+		token.$.equals(this.tokens);
 		// remove the token from the source
-		t = this.tokens;
-		this.tokens = this.tokens.next;
-		delete t;
+		//t = this.tokens;
+		if ( !this.tokens.next ) {
+			this.tokens = null;
+		} else {
+			this.tokens.equals( this.tokens.next );
+		}
+
 		return 1 /*true*/;
 	}
 
@@ -1193,8 +1197,8 @@ idParser::Directive_include
 */
 	/*int*/Directive_include(): number {
 	var script: idLexer;
-		var token = new R( new idToken );
-	var path = new idStr ;
+	var token = new R( new idToken );
+	var path = new idStr;
 
 	if ( !this.ReadSourceToken( token ) ) {
 		this.Error( "#include without file name" );

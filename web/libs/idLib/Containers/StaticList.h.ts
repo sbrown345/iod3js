@@ -189,15 +189,15 @@ Returns the maximum number of elements in the list.
 ////	return sizeof( idStaticList<type,size> ) + Allocated();
 ////}
 ////
-/////*
-////================
-////idStaticList<type,size>::Num
-////================
-////*/
-////template<class type,int size>
-////ID_INLINE size_t idStaticList<type,size>::MemoryUsed( void ) const {
-////	return num * sizeof( list[ 0 ] );
-////}
+/*
+================
+idStaticList<type,size>::Num
+================
+*/
+	MemoryUsed(): number {
+		todo ( );
+		return this.num;//* sizeof( this.list[0] ); 
+	}
 
 /*
 ================

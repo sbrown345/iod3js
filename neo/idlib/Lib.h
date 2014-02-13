@@ -171,11 +171,12 @@ JavaScript Debug Helpers
 #define DEBUG_LOG_MODE 1
 //#define isd(v) DEBUG_LOG_MODE && v
 
-#define DEBUG_RENDER_METHODS 1//isd(1)
+#define DEBUG_RENDER_METHODS 0//isd(1)
 #define DEBUG_RegisterDeclFolder 0//isd(0)
 #define DEBUG_Lexer 0//isd(0)
 #define DEBUG_DeriveTangents 0//isd(0)
 #define DEBUG_R_DeriveTangents 0//isd(0)
+#define DEBUG_COMPILER 1//isd(0)
 
 void dlog(bool log, char *format, ...);
 

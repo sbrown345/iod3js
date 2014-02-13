@@ -82,15 +82,15 @@ class function_t {
 //private:
 	name = new idStr;
 //public:
-//	const idEventDef	*eventdef;
-//	idVarDef			*def;
-//	const idTypeDef		*type;
+	eventdef: idEventDef;
+	def: idVarDef;
+	type: idTypeDef;
 	firstStatement:number;											//	int 				
 	numStatements: number;											//	int 				
 	parmTotal: number;												//	int 				
 	locals: number; 			// total ints of parms + locals		//	int 				
 	filenum: number; 			// source file defined in			//	int					
-//	idList<int>			parmSize;
+	parmSize = new	idList<number>(Number);
 
 	///*
 //================
@@ -1260,62 +1260,63 @@ Called after all files are compiled to check for errors
 		}
 	}
 
-	///*
-//==============
-//idProgram::CompileStats
-//
-//called after all files are compiled to report memory usage.
-//==============
-//*/
-//void idProgram::CompileStats( void ) {
-//	int	memused;
-//	int	memallocated;
-//	int	numdefs;
-//	int	stringspace;
-//	int funcMem;
-//	int	i;
-//
-//	gameLocal.Printf( "---------- Compile stats ----------\n" );
-//	gameLocal.DPrintf( "Files loaded:\n" );
-//
-//	stringspace = 0;
-//	for( i = 0; i < fileList.Num(); i++ ) {
-//		gameLocal.DPrintf( "   %s\n", fileList[ i ].c_str() );
-//		stringspace += fileList[ i ].Allocated();
-//	}
-//	stringspace += fileList.Size();
-//
-//	numdefs = varDefs.Num();
-//	memused = varDefs.Num() * sizeof( idVarDef );
-//	memused += types.Num() * sizeof( idTypeDef );
-//	memused += stringspace;
-//
-//	for( i = 0; i < types.Num(); i++ ) {
-//		memused += types[ i ].Allocated();
-//	}
-//
-//	funcMem = functions.MemoryUsed();
-//	for( i = 0; i < functions.Num(); i++ ) {
-//		funcMem += functions[ i ].Allocated();
-//	}
-//
-//	memallocated = funcMem + memused + sizeof( idProgram );
-//
-//	memused += statements.MemoryUsed();
-//	memused += functions.MemoryUsed();	// name and filename of functions are shared, so no need to include them
-//	memused += sizeof( variables );
-//
-//	gameLocal.Printf( "\nMemory usage:\n" );
-//	gameLocal.Printf( "     Strings: %d, %d bytes\n", fileList.Num(), stringspace );
-//	gameLocal.Printf( "  Statements: %d, %d bytes\n", statements.Num(), statements.MemoryUsed() );
-//	gameLocal.Printf( "   Functions: %d, %d bytes\n", functions.Num(), funcMem );
-//	gameLocal.Printf( "   Variables: %d bytes\n", numVariables );
-//	gameLocal.Printf( "    Mem used: %d bytes\n", memused );
-//	gameLocal.Printf( " Static data: %d bytes\n", sizeof( idProgram ) );
-//	gameLocal.Printf( "   Allocated: %d bytes\n", memallocated );
-//	gameLocal.Printf( " Thread size: %d bytes\n\n", sizeof( idThread ) );
-//}
-//
+/*
+==============
+idProgram::CompileStats
+
+called after all files are compiled to report memory usage.
+==============
+*/
+	CompileStats(): void {
+		todo ( "a lot of this is pointless" );
+		var /*int*/ memused: number;
+		var /*int*/ memallocated: number;
+		var /*int*/ numdefs: number;
+		var /*int*/ stringspace: number;
+		var /*int*/ funcMem: number;
+		var /*int*/ i: number;
+
+		gameLocal.Printf( "---------- Compile stats ----------\n" );
+		gameLocal.DPrintf( "Files loaded:\n" );
+
+		stringspace = 0;
+		for ( i = 0; i < this.fileList.Num ( ); i++ ) {
+			gameLocal.DPrintf( "   %s\n", this.fileList[i].c_str ( ) );
+			stringspace += this.fileList[i].Allocated ( );
+		}
+		stringspace += this.fileList.Size ( );
+
+		numdefs = this.varDefs.Num ( );
+		memused = this.varDefs.Num ( );//* sizeof( idVarDef );
+		memused += this.types.Num ( );//* sizeof( idTypeDef );
+		memused += stringspace;
+
+		for ( i = 0; i < this.types.Num ( ); i++ ) {
+			memused += this.types[i].Allocated ( );
+		}
+
+		funcMem = this.functions.MemoryUsed ( );
+		for ( i = 0; i < this.functions.Num ( ); i++ ) {
+			funcMem += this.functions[i].Allocated ( );
+		}
+
+		memallocated = funcMem + memused;// + sizeof( idProgram );
+
+		memused += this.statements.MemoryUsed ( );
+		memused += this.functions.MemoryUsed ( ); // name and filename of functions are shared, so no need to include them
+		memused += sizeof( this.variables );
+
+		gameLocal.Printf( "\nMemory usage:\n" );
+		gameLocal.Printf( "     Strings: %d, %d bytes\n", this.fileList.Num ( ), stringspace );
+		gameLocal.Printf( "  Statements: %d, %d bytes\n", this.statements.Num ( ), this.statements.MemoryUsed ( ) );
+		gameLocal.Printf( "   Functions: %d, %d bytes\n", this.functions.Num ( ), funcMem );
+		gameLocal.Printf( "   Variables: %d bytes\n", this.numVariables );
+		gameLocal.Printf( "    Mem used: %d bytes\n", memused );
+		//gameLocal.Printf( " Static data: %d bytes\n", sizeof( idProgram ) );
+		gameLocal.Printf( "   Allocated: %d bytes\n", memallocated );
+		//gameLocal.Printf( " Thread size: %d bytes\n\n", sizeof( idThread ) );
+	}
+
 /*
 ================
 idProgram::CompileText
@@ -1323,36 +1324,35 @@ idProgram::CompileText
 */
 CompileText( source:string, text:string, console :boolean):boolean {
 	var compiler = new idCompiler;
-	var/*int			*/i:number;
-	var def: idVarDef	;
-	var ospath: idStr;
+	var/*int*/i:number;
+	var def: idVarDef;
+	var ospath = new idStr;
 
 	// use a full os path for GetFilenum since it calls OSPathToRelativePath to convert filenames from the parser
-	ospath = fileSystem.RelativePathToOSPath( source );
+	ospath.equals(source);//fileSystem.RelativePathToOSPath( source );
 	this.filenum = this.GetFilenum( ospath.data );
 
-	try {
-		compiler.CompileFile(text, this.filename, console );
-
+	//try {
+		compiler.CompileFile(text, this.filename.data, console );
 		// check to make sure all functions prototyped have code
 		for (i = 0; i < this.varDefs.Num(); i++ ) {
 			def = this.varDefs[ i ];
-			if ( ( def.Type() == etype_t.ev_function ) && ( ( def.scope.Type() == etype_t.ev_namespace ) || def.scope.TypeDef().Inherits( &type_object ) ) ) {
+			if ((def.Type() == etype_t.ev_function) && ((def.scope.Type() == etype_t.ev_namespace) || def.scope.TypeDef().Inherits( type_object ))) {
 				if ( !def.value.functionPtr.eventdef && !def.value.functionPtr.firstStatement ) {
 					throw new idCompileError( va( "function %s was not defined\n", def.GlobalName() ) );
 				}
 			}
 		}
-	}
+	//}
 	
-	catch( /*idCompileError &*/err ) {
-		if ( console ) {
-			gameLocal.Printf( "%s\n", err.error );
-			return false;
-		} else {
-			gameLocal.Error( "%s\n", err.error );
-		}
-	};
+	//catch( /*idCompileError &*/err ) {
+	//	if ( console ) {
+	//		gameLocal.Printf( "%s\n", err.error );
+	//		return false;
+	//	} else {
+	//		gameLocal.Error( "%s\n", err.error );
+	//	}
+	//};
 
 	if ( !console ) {
 		this.CompileStats();
@@ -1397,16 +1397,15 @@ idProgram::CompileFile
 		}
 
 		result = this.CompileText( filename, src.$.toString(), false );
-		todoThrow ( );
-		//fileSystem.FreeFile( src );
+		fileSystem.FreeFile( src.$ );
 
-		//if ( g_disasm.GetBool() ) {
-		//	Disassemble();
-		//}
+		if ( g_disasm.GetBool() ) {
+			todoThrow( "Disassemble();" );
+		}
 
-		//if ( !result ) {
-		//	gameLocal.Error( "Compile failed in file %s.", filename );
-		//}	
+		if ( !result ) {
+			gameLocal.Error( "Compile failed in file %s.", filename );
+		}	
 	}
 
 /*
@@ -1653,11 +1652,11 @@ GetFilenum( name: string):number
 		return this.filenum;
 	}
 
-	var strippedName: idStr;
-	strippedName = fileSystem.OSPathToRelativePath( name );
+	var strippedName = new idStr;
+	strippedName.equals( name );// = fileSystem.OSPathToRelativePath( name );
 	if ( !strippedName.Length ( ) ) {
 		// not off the base path so just use the full path
-		this.filenum = this.fileList.AddUnique( name );
+		this.filenum = this.fileList.AddUnique( new idStr( name ) );
 	} else {
 		this.filenum = this.fileList.AddUnique( strippedName );
 	}

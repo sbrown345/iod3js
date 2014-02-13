@@ -748,6 +748,8 @@ Sets token, immediateType, and possibly immediate
 			}
 		}
 
+		dlog( DEBUG_COMPILER, "NextToken - type: %i, data: %s, line: %i\n", this.token.$.type, this.token.$.data, this.token.$.line );
+
 		switch ( this.token.$.type ) {
 		case TT_STRING:
 			// handle quoted strings as a unit
@@ -2634,6 +2636,7 @@ compiles the 0 terminated text, adding definitions to the program structure
 		var compile_time = new idTimer;
 		var error: boolean;
 
+		dlog(DEBUG_COMPILER, "CompileFile - filename: %s\n", filename );
 		compile_time.Start ( );
 
 		this.scope = def_namespace;

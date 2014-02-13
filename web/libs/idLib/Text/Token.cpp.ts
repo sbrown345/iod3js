@@ -110,7 +110,7 @@ class idToken extends idStr {
     ////
 	
 	constructor ( )
-	constructor ( text: idToken )
+	constructor ( token: idToken )
 	constructor ( text: string )
 	constructor(arg: any = null) {
 		if ( arg instanceof idToken ) {
@@ -132,6 +132,21 @@ class idToken extends idStr {
 		dest.next = src.next;
 		dest.data = src.data;
 		dest.len = src.len;
+	}
+
+	equals ( token: idToken ): void
+	equals ( token: idStr ): void
+	equals ( text: string ): void
+	equals ( arg: any ): void {
+		if ( typeof arg === "string" ) {
+			super.equals( arg );
+		} else if ( arg instanceof idToken ) {
+			idToken.copy( this, arg );
+		} else if ( arg instanceof idStr ) {
+			super.equals( arg.data );
+		} else {
+			todoThrow ( );
+		}
 	}
 
 	////

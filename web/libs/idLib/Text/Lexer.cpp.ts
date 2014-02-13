@@ -1688,7 +1688,9 @@ class idLexer {
 
 		var buf = new R<Uint8Array>();
 		length = fileSystem.ReadFile( filename, buf, new R( 0 ) );
-
+		if (length === -1 ) {
+			return /*false*/0;
+		}
 
 		this.buffer = buf.$.toString();
 		this.length = length;
