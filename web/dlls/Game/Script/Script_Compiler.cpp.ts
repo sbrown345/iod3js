@@ -44,23 +44,23 @@ class idCompiler {
 	//static punctuation = string[];
 	//
 	parser = new idParser;
-	parserPtr:idParser;
-	token = new R(new idToken);
-	
+	parserPtr: idParser;
+	token = new R( new idToken );
+
 	immediateType: idTypeDef;
 	immediate = new eval_t;
-	
-	eof:boolean;
-	console:boolean;
-	callthread:boolean;
-	braceDepth: number;			 //	int				
-	loopDepth: number;			 //	int				
-	currentLineNumber: number;	 //	int				
-	currentFileNumber: number;	 //	int				
-	errorCount: number;			 //	int				
-					
-	scope: idVarDef;				// the function being parsed, or NULL
-	basetype: idVarDef;			// for accessing fields
+
+	eof: boolean;
+	console: boolean;
+	callthread: boolean;
+	braceDepth: number; //	int				
+	loopDepth: number; //	int				
+	currentLineNumber: number; //	int				
+	currentFileNumber: number; //	int				
+	errorCount: number; //	int				
+
+	scope: idVarDef; // the function being parsed, or NULL
+	basetype: idVarDef; // for accessing fields
 	//
 	//	float			Divide( float numerator, float denominator );
 	//	void			Error( const char *error, ... ) const id_attribute((format(printf,2,3)));
@@ -118,169 +118,142 @@ class idCompiler {
 	//					idCompiler();
 	//	void			CompileFile( const char *text, const char *filename, bool console );
 
-	static punctuationValid = new Array<boolean>(256);
+	static punctuationValid = new Array<boolean>( 256 );
 	static punctuation = [
-	"+=", "-=", "*=", "/=", "%=", "&=", "|=", "++", "--",
-	"&&", "||", "<=", ">=", "==", "!=", "::", ";",  ",",
-	"~",  "!",  "*",  "/",  "%",  "(",   ")",  "-", "+",
-	"=",  "[",  "]",  ".",  "<",  ">" ,  "&",  "|", ":",  null
-];
+		"+=", "-=", "*=", "/=", "%=", "&=", "|=", "++", "--",
+		"&&", "||", "<=", ">=", "==", "!=", "::", ";", ",",
+		"~", "!", "*", "/", "%", "(", ")", "-", "+",
+		"=", "[", "]", ".", "<", ">", "&", "|", ":", null
+	];
 
-static opcodes = [
-	new opcode_t( "<RETURN>", "RETURN", -1, false, def_void, def_void, def_void ),
-		
-	new opcode_t( "++", "UINC_F", 1, true, def_float, def_void, def_void ),
-	new opcode_t( "++", "UINCP_F", 1, true, def_object, def_field, def_float ),
-	new opcode_t( "--", "UDEC_F", 1, true, def_float, def_void, def_void ),
-	new opcode_t( "--", "UDECP_F", 1, true, def_object, def_field, def_float ),
+	static opcodes = [
+		new opcode_t( "<RETURN>", "RETURN", -1, false, def_void, def_void, def_void ),
+		new opcode_t( "++", "UINC_F", 1, true, def_float, def_void, def_void ),
+		new opcode_t( "++", "UINCP_F", 1, true, def_object, def_field, def_float ),
+		new opcode_t( "--", "UDEC_F", 1, true, def_float, def_void, def_void ),
+		new opcode_t( "--", "UDECP_F", 1, true, def_object, def_field, def_float ),
+		new opcode_t( "~", "COMP_F", -1, false, def_float, def_void, def_float ),
+		new opcode_t( "*", "MUL_F", 3, false, def_float, def_float, def_float ),
+		new opcode_t( "*", "MUL_V", 3, false, def_vector, def_vector, def_float ),
+		new opcode_t( "*", "MUL_FV", 3, false, def_float, def_vector, def_vector ),
+		new opcode_t( "*", "MUL_VF", 3, false, def_vector, def_float, def_vector ),
+		new opcode_t( "/", "DIV", 3, false, def_float, def_float, def_float ),
+		new opcode_t( "%", "MOD_F", 3, false, def_float, def_float, def_float ),
+		new opcode_t( "+", "ADD_F", 4, false, def_float, def_float, def_float ),
+		new opcode_t( "+", "ADD_V", 4, false, def_vector, def_vector, def_vector ),
+		new opcode_t( "+", "ADD_S", 4, false, def_string, def_string, def_string ),
+		new opcode_t( "+", "ADD_FS", 4, false, def_float, def_string, def_string ),
+		new opcode_t( "+", "ADD_SF", 4, false, def_string, def_float, def_string ),
+		new opcode_t( "+", "ADD_VS", 4, false, def_vector, def_string, def_string ),
+		new opcode_t( "+", "ADD_SV", 4, false, def_string, def_vector, def_string ),
+		new opcode_t( "-", "SUB_F", 4, false, def_float, def_float, def_float ),
+		new opcode_t( "-", "SUB_V", 4, false, def_vector, def_vector, def_vector ),
+		new opcode_t( "==", "EQ_F", 5, false, def_float, def_float, def_float ),
+		new opcode_t( "==", "EQ_V", 5, false, def_vector, def_vector, def_float ),
+		new opcode_t( "==", "EQ_S", 5, false, def_string, def_string, def_float ),
+		new opcode_t( "==", "EQ_E", 5, false, def_entity, def_entity, def_float ),
+		new opcode_t( "==", "EQ_EO", 5, false, def_entity, def_object, def_float ),
+		new opcode_t( "==", "EQ_OE", 5, false, def_object, def_entity, def_float ),
+		new opcode_t( "==", "EQ_OO", 5, false, def_object, def_object, def_float ),
+		new opcode_t( "!=", "NE_F", 5, false, def_float, def_float, def_float ),
+		new opcode_t( "!=", "NE_V", 5, false, def_vector, def_vector, def_float ),
+		new opcode_t( "!=", "NE_S", 5, false, def_string, def_string, def_float ),
+		new opcode_t( "!=", "NE_E", 5, false, def_entity, def_entity, def_float ),
+		new opcode_t( "!=", "NE_EO", 5, false, def_entity, def_object, def_float ),
+		new opcode_t( "!=", "NE_OE", 5, false, def_object, def_entity, def_float ),
+		new opcode_t( "!=", "NE_OO", 5, false, def_object, def_object, def_float ),
+		new opcode_t( "<=", "LE", 5, false, def_float, def_float, def_float ),
+		new opcode_t( ">=", "GE", 5, false, def_float, def_float, def_float ),
+		new opcode_t( "<", "LT", 5, false, def_float, def_float, def_float ),
+		new opcode_t( ">", "GT", 5, false, def_float, def_float, def_float ),
+		new opcode_t( ".", "INDIRECT_F", 1, false, def_object, def_field, def_float ),
+		new opcode_t( ".", "INDIRECT_V", 1, false, def_object, def_field, def_vector ),
+		new opcode_t( ".", "INDIRECT_S", 1, false, def_object, def_field, def_string ),
+		new opcode_t( ".", "INDIRECT_E", 1, false, def_object, def_field, def_entity ),
+		new opcode_t( ".", "INDIRECT_BOOL", 1, false, def_object, def_field, def_boolean ),
+		new opcode_t( ".", "INDIRECT_OBJ", 1, false, def_object, def_field, def_object ),
+		new opcode_t( ".", "ADDRESS", 1, false, def_entity, def_field, def_pointer ),
+		new opcode_t( ".", "EVENTCALL", 2, false, def_entity, def_function, def_void ),
+		new opcode_t( ".", "OBJECTCALL", 2, false, def_object, def_function, def_void ),
+		new opcode_t( ".", "SYSCALL", 2, false, def_void, def_function, def_void ),
+		new opcode_t( "=", "STORE_F", 6, true, def_float, def_float, def_float ),
+		new opcode_t( "=", "STORE_V", 6, true, def_vector, def_vector, def_vector ),
+		new opcode_t( "=", "STORE_S", 6, true, def_string, def_string, def_string ),
+		new opcode_t( "=", "STORE_ENT", 6, true, def_entity, def_entity, def_entity ),
+		new opcode_t( "=", "STORE_BOOL", 6, true, def_boolean, def_boolean, def_boolean ),
+		new opcode_t( "=", "STORE_OBJENT", 6, true, def_object, def_entity, def_object ),
+		new opcode_t( "=", "STORE_OBJ", 6, true, def_object, def_object, def_object ),
+		new opcode_t( "=", "STORE_OBJENT", 6, true, def_entity, def_object, def_object ),
+		new opcode_t( "=", "STORE_FTOS", 6, true, def_string, def_float, def_string ),
+		new opcode_t( "=", "STORE_BTOS", 6, true, def_string, def_boolean, def_string ),
+		new opcode_t( "=", "STORE_VTOS", 6, true, def_string, def_vector, def_string ),
+		new opcode_t( "=", "STORE_FTOBOOL", 6, true, def_boolean, def_float, def_boolean ),
+		new opcode_t( "=", "STORE_BOOLTOF", 6, true, def_float, def_boolean, def_float ),
+		new opcode_t( "=", "STOREP_F", 6, true, def_pointer, def_float, def_float ),
+		new opcode_t( "=", "STOREP_V", 6, true, def_pointer, def_vector, def_vector ),
+		new opcode_t( "=", "STOREP_S", 6, true, def_pointer, def_string, def_string ),
+		new opcode_t( "=", "STOREP_ENT", 6, true, def_pointer, def_entity, def_entity ),
+		new opcode_t( "=", "STOREP_FLD", 6, true, def_pointer, def_field, def_field ),
+		new opcode_t( "=", "STOREP_BOOL", 6, true, def_pointer, def_boolean, def_boolean ),
+		new opcode_t( "=", "STOREP_OBJ", 6, true, def_pointer, def_object, def_object ),
+		new opcode_t( "=", "STOREP_OBJENT", 6, true, def_pointer, def_object, def_object ),
+		new opcode_t( "<=>", "STOREP_FTOS", 6, true, def_pointer, def_float, def_string ),
+		new opcode_t( "<=>", "STOREP_BTOS", 6, true, def_pointer, def_boolean, def_string ),
+		new opcode_t( "<=>", "STOREP_VTOS", 6, true, def_pointer, def_vector, def_string ),
+		new opcode_t( "<=>", "STOREP_FTOBOOL", 6, true, def_pointer, def_float, def_boolean ),
+		new opcode_t( "<=>", "STOREP_BOOLTOF", 6, true, def_pointer, def_boolean, def_float ),
+		new opcode_t( "*=", "UMUL_F", 6, true, def_float, def_float, def_void ),
+		new opcode_t( "*=", "UMUL_V", 6, true, def_vector, def_float, def_void ),
+		new opcode_t( "/=", "UDIV_F", 6, true, def_float, def_float, def_void ),
+		new opcode_t( "/=", "UDIV_V", 6, true, def_vector, def_float, def_void ),
+		new opcode_t( "%=", "UMOD_F", 6, true, def_float, def_float, def_void ),
+		new opcode_t( "+=", "UADD_F", 6, true, def_float, def_float, def_void ),
+		new opcode_t( "+=", "UADD_V", 6, true, def_vector, def_vector, def_void ),
+		new opcode_t( "-=", "USUB_F", 6, true, def_float, def_float, def_void ),
+		new opcode_t( "-=", "USUB_V", 6, true, def_vector, def_vector, def_void ),
+		new opcode_t( "&=", "UAND_F", 6, true, def_float, def_float, def_void ),
+		new opcode_t( "|=", "UOR_F", 6, true, def_float, def_float, def_void ),
+		new opcode_t( "!", "NOT_BOOL", -1, false, def_boolean, def_void, def_float ),
+		new opcode_t( "!", "NOT_F", -1, false, def_float, def_void, def_float ),
+		new opcode_t( "!", "NOT_V", -1, false, def_vector, def_void, def_float ),
+		new opcode_t( "!", "NOT_S", -1, false, def_vector, def_void, def_float ),
+		new opcode_t( "!", "NOT_ENT", -1, false, def_entity, def_void, def_float ),
+		new opcode_t( "<NEG_F>", "NEG_F", -1, false, def_float, def_void, def_float ),
+		new opcode_t( "<NEG_V>", "NEG_V", -1, false, def_vector, def_void, def_vector ),
+		new opcode_t( "int", "INT_F", -1, false, def_float, def_void, def_float ),
+		new opcode_t( "<IF>", "IF", -1, false, def_float, def_jumpoffset, def_void ),
+		new opcode_t( "<IFNOT>", "IFNOT", -1, false, def_float, def_jumpoffset, def_void ),
 
-	new opcode_t( "~", "COMP_F", -1, false, def_float, def_void, def_float ),
-	
-	new opcode_t( "*", "MUL_F", 3, false, def_float, def_float, def_float ),
-	new opcode_t( "*", "MUL_V", 3, false, def_vector, def_vector, def_float ),
-	new opcode_t( "*", "MUL_FV", 3, false, def_float, def_vector, def_vector ),
-	new opcode_t( "*", "MUL_VF", 3, false, def_vector, def_float, def_vector ),
-	
-	new opcode_t( "/", "DIV", 3, false, def_float, def_float, def_float ),
-	new opcode_t( "%", "MOD_F",	3, false, def_float, def_float, def_float ),
-	
-	new opcode_t( "+", "ADD_F", 4, false, def_float, def_float, def_float ),
-	new opcode_t( "+", "ADD_V", 4, false, def_vector, def_vector, def_vector ),
-	new opcode_t( "+", "ADD_S", 4, false, def_string, def_string, def_string ),
-	new opcode_t( "+", "ADD_FS", 4, false, def_float, def_string, def_string ),
-	new opcode_t( "+", "ADD_SF", 4, false, def_string, def_float, def_string ),
-	new opcode_t( "+", "ADD_VS", 4, false, def_vector, def_string, def_string ),
-	new opcode_t( "+", "ADD_SV", 4, false, def_string, def_vector, def_string ),
-	
-	new opcode_t( "-", "SUB_F", 4, false, def_float, def_float, def_float ),
-	new opcode_t( "-", "SUB_V", 4, false, def_vector, def_vector, def_vector ),
-	
-	new opcode_t( "==", "EQ_F", 5, false, def_float, def_float, def_float ),
-	new opcode_t( "==", "EQ_V", 5, false, def_vector, def_vector, def_float ),
-	new opcode_t( "==", "EQ_S", 5, false, def_string, def_string, def_float ),
-	new opcode_t( "==", "EQ_E", 5, false, def_entity, def_entity, def_float ),
-	new opcode_t( "==", "EQ_EO", 5, false, def_entity, def_object, def_float ),
-	new opcode_t( "==", "EQ_OE", 5, false, def_object, def_entity, def_float ),
-	new opcode_t( "==", "EQ_OO", 5, false, def_object, def_object, def_float ),
-	
-	new opcode_t( "!=", "NE_F", 5, false, def_float, def_float, def_float ),
-	new opcode_t( "!=", "NE_V", 5, false, def_vector, def_vector, def_float ),
-	new opcode_t( "!=", "NE_S", 5, false, def_string, def_string, def_float ),
-    new opcode_t( "!=", "NE_E", 5, false, def_entity, def_entity, def_float ),
-	new opcode_t( "!=", "NE_EO", 5, false, def_entity, def_object, def_float ),
-	new opcode_t( "!=", "NE_OE", 5, false, def_object, def_entity, def_float ),
-	new opcode_t( "!=", "NE_OO", 5, false, def_object, def_object, def_float ),
-	
-	new opcode_t( "<=", "LE", 5, false, def_float, def_float, def_float ),
-	new opcode_t( ">=", "GE", 5, false, def_float, def_float, def_float ),
-	new opcode_t( "<", "LT", 5, false, def_float, def_float, def_float ),
-	new opcode_t( ">", "GT", 5, false, def_float, def_float, def_float ),
-	
-	new opcode_t( ".", "INDIRECT_F", 1, false, def_object, def_field, def_float ),
-	new opcode_t( ".", "INDIRECT_V", 1, false, def_object, def_field, def_vector ),
-	new opcode_t( ".", "INDIRECT_S", 1, false, def_object, def_field, def_string ),
-	new opcode_t( ".", "INDIRECT_E", 1, false, def_object, def_field, def_entity ),
-	new opcode_t( ".", "INDIRECT_BOOL", 1, false, def_object, def_field, def_boolean ),
-	new opcode_t( ".", "INDIRECT_OBJ", 1, false, def_object, def_field, def_object ),
-
-	new opcode_t( ".", "ADDRESS", 1, false, def_entity, def_field, def_pointer ),
-
-	new opcode_t( ".", "EVENTCALL", 2, false, def_entity, def_function, def_void ),
-	new opcode_t( ".", "OBJECTCALL", 2, false, def_object, def_function, def_void ),
-	new opcode_t( ".", "SYSCALL", 2, false, def_void, def_function, def_void ),
-
-	new opcode_t( "=", "STORE_F", 6, true, def_float, def_float, def_float ),
-	new opcode_t( "=", "STORE_V", 6, true, def_vector, def_vector, def_vector ),
-	new opcode_t( "=", "STORE_S", 6, true, def_string, def_string, def_string ),
-	new opcode_t( "=", "STORE_ENT", 6, true, def_entity, def_entity, def_entity ),
-	new opcode_t( "=", "STORE_BOOL", 6, true, def_boolean, def_boolean, def_boolean ),
-	new opcode_t( "=", "STORE_OBJENT", 6, true, def_object, def_entity, def_object ),
-	new opcode_t( "=", "STORE_OBJ", 6, true, def_object, def_object, def_object ),
-	new opcode_t( "=", "STORE_OBJENT", 6, true, def_entity, def_object, def_object ),
-	
-	new opcode_t( "=", "STORE_FTOS", 6, true, def_string, def_float, def_string ),
-	new opcode_t( "=", "STORE_BTOS", 6, true, def_string, def_boolean, def_string ),
-	new opcode_t( "=", "STORE_VTOS", 6, true, def_string, def_vector, def_string ),
-	new opcode_t( "=", "STORE_FTOBOOL", 6, true, def_boolean, def_float, def_boolean ),
-	new opcode_t( "=", "STORE_BOOLTOF", 6, true, def_float, def_boolean, def_float ),
-
-	new opcode_t( "=", "STOREP_F", 6, true, def_pointer, def_float, def_float ),
-	new opcode_t( "=", "STOREP_V", 6, true, def_pointer, def_vector, def_vector ),
-	new opcode_t( "=", "STOREP_S", 6, true, def_pointer, def_string, def_string ),
-	new opcode_t( "=", "STOREP_ENT", 6, true, def_pointer, def_entity, def_entity ),
-	new opcode_t( "=", "STOREP_FLD", 6, true, def_pointer, def_field, def_field ),
-	new opcode_t( "=", "STOREP_BOOL", 6, true, def_pointer, def_boolean, def_boolean ),
-	new opcode_t( "=", "STOREP_OBJ", 6, true, def_pointer, def_object, def_object ),
-	new opcode_t( "=", "STOREP_OBJENT", 6, true, def_pointer, def_object, def_object ),
-
-	new opcode_t( "<=>", "STOREP_FTOS", 6, true, def_pointer, def_float, def_string ),
-	new opcode_t( "<=>", "STOREP_BTOS", 6, true, def_pointer, def_boolean, def_string ),
-	new opcode_t( "<=>", "STOREP_VTOS", 6, true, def_pointer, def_vector, def_string ),
-	new opcode_t( "<=>", "STOREP_FTOBOOL", 6, true, def_pointer, def_float, def_boolean ),
-	new opcode_t( "<=>", "STOREP_BOOLTOF", 6, true, def_pointer, def_boolean, def_float ),
-	
-	new opcode_t( "*=", "UMUL_F", 6, true, def_float, def_float, def_void ),
-	new opcode_t( "*=", "UMUL_V", 6, true, def_vector, def_float, def_void ),
-	new opcode_t( "/=", "UDIV_F", 6, true, def_float, def_float, def_void ),
-	new opcode_t( "/=", "UDIV_V", 6, true, def_vector, def_float, def_void ),
-	new opcode_t( "%=", "UMOD_F", 6, true, def_float, def_float, def_void ),
-	new opcode_t( "+=", "UADD_F", 6, true, def_float, def_float, def_void ),
-	new opcode_t( "+=", "UADD_V", 6, true, def_vector, def_vector, def_void ),
-	new opcode_t( "-=", "USUB_F", 6, true, def_float, def_float, def_void ),
-	new opcode_t( "-=", "USUB_V", 6, true, def_vector, def_vector, def_void ),
-	new opcode_t( "&=", "UAND_F", 6, true, def_float, def_float, def_void ),
-	new opcode_t( "|=", "UOR_F", 6, true, def_float, def_float, def_void ),
-	
-	new opcode_t( "!", "NOT_BOOL", -1, false, def_boolean, def_void, def_float ),
-	new opcode_t( "!", "NOT_F", -1, false, def_float, def_void, def_float ),
-	new opcode_t( "!", "NOT_V", -1, false, def_vector, def_void, def_float ),
-	new opcode_t( "!", "NOT_S", -1, false, def_vector, def_void, def_float ),
-	new opcode_t( "!", "NOT_ENT", -1, false, def_entity, def_void, def_float ),
-
-	new opcode_t( "<NEG_F>", "NEG_F", -1, false, def_float, def_void, def_float ),
-	new opcode_t( "<NEG_V>", "NEG_V", -1, false, def_vector, def_void, def_vector ),
-
-	new opcode_t( "int", "INT_F", -1, false, def_float, def_void, def_float ),
-	
-	new opcode_t( "<IF>", "IF", -1, false, def_float, def_jumpoffset, def_void ),
-	new opcode_t( "<IFNOT>", "IFNOT", -1, false, def_float, def_jumpoffset, def_void ),
-	
-	// calls returns REG_RETURN
-	new opcode_t( "<CALL>", "CALL", -1, false, def_function, def_argsize, def_void ),
-	new opcode_t( "<THREAD>", "THREAD", -1, false, def_function, def_argsize, def_void ),
-	new opcode_t( "<THREAD>", "OBJTHREAD", -1, false, def_function, def_argsize, def_void ),
-	
-	new opcode_t( "<PUSH>", "PUSH_F", -1, false, def_float, def_float, def_void ),
-	new opcode_t( "<PUSH>", "PUSH_V", -1, false, def_vector, def_vector, def_void ),
-	new opcode_t( "<PUSH>", "PUSH_S", -1, false, def_string, def_string, def_void ),
-	new opcode_t( "<PUSH>", "PUSH_ENT", -1, false, def_entity, def_entity, def_void ),
-	new opcode_t( "<PUSH>", "PUSH_OBJ", -1, false, def_object, def_object, def_void ),
-	new opcode_t( "<PUSH>", "PUSH_OBJENT", -1, false, def_entity, def_object, def_void ),
-	new opcode_t( "<PUSH>", "PUSH_FTOS", -1, false, def_string, def_float, def_void ),
-	new opcode_t( "<PUSH>", "PUSH_BTOF", -1, false, def_float, def_boolean, def_void ),
-	new opcode_t( "<PUSH>", "PUSH_FTOB", -1, false, def_boolean, def_float, def_void ),
-	new opcode_t( "<PUSH>", "PUSH_VTOS", -1, false, def_string, def_vector, def_void ),
-	new opcode_t( "<PUSH>", "PUSH_BTOS", -1, false, def_string, def_boolean, def_void ),
-	
-	new opcode_t( "<GOTO>", "GOTO", -1, false, def_jumpoffset, def_void, def_void ),
-	
-	new opcode_t( "&&", "AND", 7, false, def_float, def_float, def_float ),
-	new opcode_t( "&&", "AND_BOOLF", 7, false, def_boolean, def_float, def_float ),
-	new opcode_t( "&&", "AND_FBOOL", 7, false, def_float, def_boolean, def_float ),
-	new opcode_t( "&&", "AND_BOOLBOOL", 7, false, def_boolean, def_boolean, def_float ),
-	new opcode_t( "||", "OR", 7, false, def_float, def_float, def_float ),
-	new opcode_t( "||", "OR_BOOLF", 7, false, def_boolean, def_float, def_float ),
-	new opcode_t( "||", "OR_FBOOL", 7, false, def_float, def_boolean, def_float ),
-	new opcode_t( "||", "OR_BOOLBOOL", 7, false, def_boolean, def_boolean, def_float ),
-	
-	new opcode_t( "&", "BITAND", 3, false, def_float, def_float, def_float ),
-	new opcode_t( "|", "BITOR", 3, false, def_float, def_float, def_float ),
-
-	new opcode_t( "<BREAK>", "BREAK", -1, false, def_float, def_void, def_void ),
-	new opcode_t( "<CONTINUE>", "CONTINUE", -1, false, def_float, def_void, def_void ),
-
-	null//new opcode_t(null,null,null,null,null,null,null)
-];
+		// calls returns REG_RETURN
+		new opcode_t( "<CALL>", "CALL", -1, false, def_function, def_argsize, def_void ),
+		new opcode_t( "<THREAD>", "THREAD", -1, false, def_function, def_argsize, def_void ),
+		new opcode_t( "<THREAD>", "OBJTHREAD", -1, false, def_function, def_argsize, def_void ),
+		new opcode_t( "<PUSH>", "PUSH_F", -1, false, def_float, def_float, def_void ),
+		new opcode_t( "<PUSH>", "PUSH_V", -1, false, def_vector, def_vector, def_void ),
+		new opcode_t( "<PUSH>", "PUSH_S", -1, false, def_string, def_string, def_void ),
+		new opcode_t( "<PUSH>", "PUSH_ENT", -1, false, def_entity, def_entity, def_void ),
+		new opcode_t( "<PUSH>", "PUSH_OBJ", -1, false, def_object, def_object, def_void ),
+		new opcode_t( "<PUSH>", "PUSH_OBJENT", -1, false, def_entity, def_object, def_void ),
+		new opcode_t( "<PUSH>", "PUSH_FTOS", -1, false, def_string, def_float, def_void ),
+		new opcode_t( "<PUSH>", "PUSH_BTOF", -1, false, def_float, def_boolean, def_void ),
+		new opcode_t( "<PUSH>", "PUSH_FTOB", -1, false, def_boolean, def_float, def_void ),
+		new opcode_t( "<PUSH>", "PUSH_VTOS", -1, false, def_string, def_vector, def_void ),
+		new opcode_t( "<PUSH>", "PUSH_BTOS", -1, false, def_string, def_boolean, def_void ),
+		new opcode_t( "<GOTO>", "GOTO", -1, false, def_jumpoffset, def_void, def_void ),
+		new opcode_t( "&&", "AND", 7, false, def_float, def_float, def_float ),
+		new opcode_t( "&&", "AND_BOOLF", 7, false, def_boolean, def_float, def_float ),
+		new opcode_t( "&&", "AND_FBOOL", 7, false, def_float, def_boolean, def_float ),
+		new opcode_t( "&&", "AND_BOOLBOOL", 7, false, def_boolean, def_boolean, def_float ),
+		new opcode_t( "||", "OR", 7, false, def_float, def_float, def_float ),
+		new opcode_t( "||", "OR_BOOLF", 7, false, def_boolean, def_float, def_float ),
+		new opcode_t( "||", "OR_FBOOL", 7, false, def_float, def_boolean, def_float ),
+		new opcode_t( "||", "OR_BOOLBOOL", 7, false, def_boolean, def_boolean, def_float ),
+		new opcode_t( "&", "BITAND", 3, false, def_float, def_float, def_float ),
+		new opcode_t( "|", "BITOR", 3, false, def_float, def_float, def_float ),
+		new opcode_t( "<BREAK>", "BREAK", -1, false, def_float, def_void, def_void ),
+		new opcode_t( "<CONTINUE>", "CONTINUE", -1, false, def_float, def_void, def_void ),
+		null //new opcode_t(null,null,null,null,null,null,null)
+	];
 //
 ///*
 //================
@@ -743,106 +716,107 @@ idCompiler::NextToken
 Sets token, immediateType, and possibly immediate
 ==============
 */
-NextToken( ):void {
-	var /*int */i:number;
+	NextToken ( ): void {
+		var /*int */i: number;
 
-	// reset our type
-	this.immediateType = null;
-	this.immediate.init ( );
+		// reset our type
+		this.immediateType = null;
+		this.immediate.init ( );
 
-	// Save the token's line number and filename since when we emit opcodes the current 
-	// token is always the next one to be read 
-	this.currentLineNumber = this.token.$.line;
-	this.currentFileNumber = gameLocal.program.GetFilenum( this.parserPtr.GetFileName() );
+		// Save the token's line number and filename since when we emit opcodes the current 
+		// token is always the next one to be read 
+		this.currentLineNumber = this.token.$.line;
+		this.currentFileNumber = gameLocal.program.GetFilenum( this.parserPtr.GetFileName ( ) );
 
-	if ( !this.parserPtr.ReadToken( this.token ) ) {
-		this.eof = true;
-		return;
-	}
-
-	if ( this.currentFileNumber != gameLocal.program.GetFilenum( this.parserPtr.GetFileName() ) ) {
-		if ( ( this.braceDepth > 0 ) && ( this.token.$.data != "}" ) ) {
-			// missing a closing brace.  try to give as much info as possible.
-			if (this.scope.Type() == etype_t.ev_function ) {
-				this.Error( "Unexpected end of file inside function '%s'.  Missing closing braces.", this.scope.Name() );
-			} else if (this.scope.Type() == etype_t.ev_object ) {
-				this.Error( "Unexpected end of file inside object '%s'.  Missing closing braces.", this.scope.Name() );
-			} else if (this.scope.Type() == etype_t.ev_namespace ) {
-				this.Error( "Unexpected end of file inside namespace '%s'.  Missing closing braces.", this.scope.Name() );
-			} else {
-				this.Error( "Unexpected end of file inside braced section" );
-			}
+		if ( !this.parserPtr.ReadToken( this.token ) ) {
+			this.eof = true;
+			return;
 		}
-	}
 
-	switch( this.token.$.type ) {
-	case TT_STRING:
-		// handle quoted strings as a unit
-		this.immediateType = type_string;
-		return;
-
-	case TT_LITERAL: {
-		// handle quoted vectors as a unit
-		this.immediateType = type_vector;
-		var lex = new idLexer(this.token.$.data, this.token.$.Length(), this.parserPtr.GetFileName(), lexerFlags_t.LEXFL_NOERRORS );
-		var token2 = new R(new idToken);
-		for( i = 0; i < 3; i++ ) {
-			if ( !lex.ReadToken( token2 ) ) {
-				this.Error( "Couldn't read vector. '%s' is not in the form of 'x y z'", this.token.$.c_str() );
-			}
-			if ( token2.$.type == TT_PUNCTUATION && token2.$.data == "-" ) {
-				if ( !lex.CheckTokenType( TT_NUMBER, 0, token2 ) ) {
-					this.Error( "expected a number following '-' but found '%s' in vector '%s'", token2.$.c_str(), this.token.$.c_str() );
+		if ( this.currentFileNumber != gameLocal.program.GetFilenum( this.parserPtr.GetFileName ( ) ) ) {
+			if ( ( this.braceDepth > 0 ) && ( this.token.$.data != "}" ) ) {
+				// missing a closing brace.  try to give as much info as possible.
+				if ( this.scope.Type ( ) == etype_t.ev_function ) {
+					this.Error( "Unexpected end of file inside function '%s'.  Missing closing braces.", this.scope.Name ( ) );
+				} else if ( this.scope.Type ( ) == etype_t.ev_object ) {
+					this.Error( "Unexpected end of file inside object '%s'.  Missing closing braces.", this.scope.Name ( ) );
+				} else if ( this.scope.Type ( ) == etype_t.ev_namespace ) {
+					this.Error( "Unexpected end of file inside namespace '%s'.  Missing closing braces.", this.scope.Name ( ) );
+				} else {
+					this.Error( "Unexpected end of file inside braced section" );
 				}
-				todoThrow ( );
-				//this.immediate.vector[ i ] = -token2.$.GetFloatValue();
-			} else if ( token2.$.type == TT_NUMBER ) {
-				todoThrow();
-				//this.immediate.vector[i] = token2.$.GetFloatValue ( );
-			} else {
-				this.Error( "vector '%s' is not in the form of 'x y z'.  expected float value, found '%s'", this.token.$.c_str(), token2.$.c_str() );
 			}
 		}
-		return;
+
+		switch ( this.token.$.type ) {
+		case TT_STRING:
+			// handle quoted strings as a unit
+			this.immediateType = type_string;
+			return;
+
+		case TT_LITERAL:
+		{
+			// handle quoted vectors as a unit
+			this.immediateType = type_vector;
+			var lex = new idLexer( this.token.$.data, this.token.$.Length ( ), this.parserPtr.GetFileName ( ), lexerFlags_t.LEXFL_NOERRORS );
+			var token2 = new R( new idToken );
+			for ( i = 0; i < 3; i++ ) {
+				if ( !lex.ReadToken( token2 ) ) {
+					this.Error( "Couldn't read vector. '%s' is not in the form of 'x y z'", this.token.$.c_str ( ) );
+				}
+				if ( token2.$.type == TT_PUNCTUATION && token2.$.data == "-" ) {
+					if ( !lex.CheckTokenType( TT_NUMBER, 0, token2 ) ) {
+						this.Error( "expected a number following '-' but found '%s' in vector '%s'", token2.$.c_str ( ), this.token.$.c_str ( ) );
+					}
+					todoThrow ( );
+					//this.immediate.vector[ i ] = -token2.$.GetFloatValue();
+				} else if ( token2.$.type == TT_NUMBER ) {
+					todoThrow ( );
+					//this.immediate.vector[i] = token2.$.GetFloatValue ( );
+				} else {
+					this.Error( "vector '%s' is not in the form of 'x y z'.  expected float value, found '%s'", this.token.$.c_str ( ), token2.$.c_str ( ) );
+				}
+			}
+			return;
+		}
+
+		case TT_NUMBER:
+			this.immediateType = type_float;
+			this.immediate._float = this.token.$.GetFloatValue ( );
+			return;
+
+		case TT_PUNCTUATION:
+			// entity names
+			if ( this.token.$.data == "$" ) {
+				this.immediateType = type_entity;
+				this.parserPtr.ReadToken( this.token );
+				return;
+			}
+
+			if ( this.token.$.data == "{" ) {
+				this.braceDepth++;
+				return;
+			}
+
+			if ( this.token.$.data == "}" ) {
+				this.braceDepth--;
+				return;
+			}
+
+			if ( idCompiler.punctuationValid[this.token.$.subtype] ) {
+				return;
+			}
+
+			this.Error( "Unknown punctuation '%s'", this.token.$.c_str ( ) );
+			break;
+
+		case TT_NAME:
+			return;
+
+		default:
+			this.Error( "Unknown token '%s'", this.token.$.c_str ( ) );
+		}
 	}
-
-	case TT_NUMBER:
-		this.immediateType = type_float;
-		this.immediate._float = this.token.$.GetFloatValue();
-		return;
-
-	case TT_PUNCTUATION:
-		// entity names
-		if ( this.token.$.data == "$" ) {
-			this.immediateType = type_entity;
-			this.parserPtr.ReadToken( this.token );
-			return;
-		}
-
-		if ( this.token.$.data == "{" ) {
-			this.braceDepth++;
-			return;
-		}
-
-		if (this.token.$.data == "}" ) {
-			this.braceDepth--;
-			return;
-		}
-
-		if ( idCompiler.punctuationValid[ this.token.$.subtype ] ) {
-			return;
-		}
-
-		this.Error( "Unknown punctuation '%s'", this.token.$.c_str() );
-		break;
-
-	case TT_NAME:
-		return;
-
-	default:
-		this.Error( "Unknown token '%s'", this.token.$.c_str() );
-	}
-}
 
 /*
 =============
@@ -2658,19 +2632,19 @@ compiles the 0 terminated text, adding definitions to the program structure
 */
 	CompileFile ( text: string, filename: string, toConsole: boolean ): void {
 		var compile_time = new idTimer;
-		var error:boolean;
+		var error: boolean;
 
-		compile_time.Start();
+		compile_time.Start ( );
 
-		this.scope				= def_namespace;
-		this.basetype			= null;
-		this.callthread			= false;
-		this.loopDepth			= 0;
-		this.eof					= false;
-		this.braceDepth			= 0;
-		this.immediateType		= null;
-		this.currentLineNumber	= 0;
-		this.console				= toConsole;
+		this.scope = def_namespace;
+		this.basetype = null;
+		this.callthread = false;
+		this.loopDepth = 0;
+		this.eof = false;
+		this.braceDepth = 0;
+		this.immediateType = null;
+		this.currentLineNumber = 0;
+		this.console = toConsole;
 
 		this.immediate.init ( );
 
@@ -2679,15 +2653,15 @@ compiles the 0 terminated text, adding definitions to the program structure
 		this.parserPtr = this.parser;
 
 		// unread tokens to include script defines
-		this.token.$.equals(SCRIPT_DEFAULTDEFS);
+		this.token.$.equals( SCRIPT_DEFAULTDEFS );
 		this.token.$.type = TT_STRING;
-		this.token.$.subtype = this.token.$.Length();
+		this.token.$.subtype = this.token.$.Length ( );
 		this.token.$.line = this.token.$.linesCrossed = 0;
 		this.parser.UnreadToken( this.token );
 
-		this.token.$.equals("include");
+		this.token.$.equals( "include" );
 		this.token.$.type = TT_NAME;
-		this.token.$.subtype = this.token.$.Length();
+		this.token.$.subtype = this.token.$.Length ( );
 		this.token.$.line = this.token.$.linesCrossed = 0;
 		this.parser.UnreadToken( this.token );
 
@@ -2702,12 +2676,12 @@ compiles the 0 terminated text, adding definitions to the program structure
 
 		error = false;
 		//try {
-			// read first token
-			this.NextToken();
-			while( !this.eof && !error ) {
-				// parse from global namespace
-				this.ParseNamespace( def_namespace );
-			}
+		// read first token
+		this.NextToken ( );
+		while ( !this.eof && !error ) {
+			// parse from global namespace
+			this.ParseNamespace( def_namespace );
+		}
 		//}
 
 		//catch( idCompileError &err ) {
@@ -2725,11 +2699,11 @@ compiles the 0 terminated text, adding definitions to the program structure
 		//	throw idCompileError( error );
 		//}
 
-		this.parser.FreeSource();
+		this.parser.FreeSource ( );
 
-		compile_time.Stop();
+		compile_time.Stop ( );
 		if ( !toConsole ) {
-			gameLocal.Printf( "Compiled '%s': %.1f ms\n", filename, compile_time.Milliseconds() );
+			gameLocal.Printf( "Compiled '%s': %.1f ms\n", filename, compile_time.Milliseconds ( ) );
 		}
 	}
 }

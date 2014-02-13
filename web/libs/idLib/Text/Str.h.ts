@@ -883,13 +883,13 @@ class idStr {
 ////	return idStr::LengthWithoutColors( this.data );
 ////}
 
-////ID_INLINE void idStr::CapLength( int newlen ) {
-////	if ( len <= newlen ) {
-////		return;
-////	}
-////	this.data[ newlen ] = 0;
-////	len = newlen;
-////}
+	CapLength ( /*int */newlen: number ): void {
+		if ( this.len <= newlen ) {
+			return;
+		}
+		this.data = this.data.substring( 0, newlen );
+		this.len = newlen;
+	}
 
 ////ID_INLINE void idStr::Fill( const char ch, int newlen ) {
 ////	EnsureAlloced( newlen + 1 );
@@ -1872,19 +1872,18 @@ idStr::StripFilename
 ==================
 */
 	StripFilename ( ): idStr {
-		todoThrow ( );
-		//int pos;
+		var /*int */pos: number;
 
-		//pos = Length() - 1;
-		//while( ( pos > 0 ) && ( ( *this )[ pos ] != '/' ) && ( ( *this )[ pos ] != '\\' ) ) {
-		//	pos--;
-		//}
+		pos = this.Length ( ) - 1;
+		while ( ( pos > 0 ) && ( ( this.data )[pos] != '/' ) && ( ( this.data )[pos] != '\\' ) ) {
+			pos--;
+		}
 
-		//if ( pos < 0 ) {
-		//	pos = 0;
-		//}
+		if ( pos < 0 ) {
+			pos = 0;
+		}
 
-		//CapLength( pos );
+		this.CapLength( pos );
 		return this;
 	}
 

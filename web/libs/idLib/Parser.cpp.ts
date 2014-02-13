@@ -262,7 +262,7 @@ class idParser {
 		}
 	}
 
-////ID_INLINE const /*int*/GetFileOffset( ) const {
+////ID_INLINE const /*int*/GetFileOffset( ) :number{
 ////	if ( this.scriptstack ) {
 ////		return this.scriptstack.GetFileOffset();
 ////	}
@@ -271,7 +271,7 @@ class idParser {
 ////	}
 ////}
 ////
-////ID_INLINE const ID_TIME_T idParser::GetFileTime( ) const {
+////ID_INLINE const ID_TIME_T idParser::GetFileTime( ):number {
 ////	if ( this.scriptstack ) {
 ////		return this.scriptstack.GetFileTime();
 ////	}
@@ -280,7 +280,7 @@ class idParser {
 ////	}
 ////}
 ////
-////ID_INLINE const /*int*/GetLineNum( ) const {
+////ID_INLINE const /*int*/GetLineNum( ):number {
 ////	if ( this.scriptstack ) {
 ////		return this.scriptstack.GetLineNum();
 ////	}
@@ -303,7 +303,7 @@ class idParser {
 ////idParser::AddGlobalDefine
 ////================
 ////*/
-/////*int*/AddGlobalDefine( $string:string ) {
+/////*int*/AddGlobalDefine( $string:string ):number {
 ////	define_t *define;
 ////
 ////	define = idParser::DefineFromString(string);
@@ -320,7 +320,7 @@ class idParser {
 ////idParser::RemoveGlobalDefine
 ////================
 ////*/
-/////*int*/RemoveGlobalDefine( const char *name ) {
+/////*int*/RemoveGlobalDefine( const char *name ) :number{
 ////	define_t *d, *prev;
 ////
 ////	for ( prev = NULL, d = idParser.globaldefines; d; prev = d, d = d.next ) {
@@ -463,7 +463,7 @@ FindHashedDefine
 ////idParser::FindDefineParm
 ////================
 ////*/
-/////*int*/FindDefineParm( define_t *define, const char *name ) {
+/////*int*/FindDefineParm( define_t *define, const char *name ):number {
 ////	idToken *p;
 ////	int i;
 ////
@@ -735,7 +735,7 @@ idParser::UnreadSourceToken
 ////idParser::ReadDefineParms
 ////================
 ////*/
-/////*int*/ReadDefineParms( define_t *define, idToken **parms, int maxparms ) {
+/////*int*/ReadDefineParms( define_t *define, idToken **parms, int maxparms ):number {
 ////	define_t *newdefine;
 ////	idToken token, *t, *last;
 ////	int i, done, lastcomma, numparms, indent;
@@ -831,7 +831,7 @@ idParser::UnreadSourceToken
 ////idParser::StringizeTokens
 ////================
 ////*/
-/////*int*/StringizeTokens( idToken *tokens, idToken *token ) {
+/////*int*/StringizeTokens( idToken *tokens, idToken *token ):number {
 ////	idToken *t;
 ////
 ////	token.type = TT_STRING;
@@ -849,7 +849,7 @@ idParser::UnreadSourceToken
 ////idParser::MergeTokens
 ////================
 ////*/
-/////*int*/MergeTokens( idToken *t1, idToken *t2 ) {
+/////*int*/MergeTokens( idToken *t1, idToken *t2 ):number {
 ////	// merging of a name with a name or number
 ////	if ( t1.type == TT_NAME && (t2.type == TT_NAME || (t2.type == TT_NUMBER && !(t2.subtype & TT_FLOAT))) ) {
 ////		t1.Append( t2.c_str() );
@@ -927,7 +927,7 @@ idParser::UnreadSourceToken
 ////idParser::ExpandBuiltinDefine
 ////================
 ////*/
-/////*int*/ExpandBuiltinDefine( idToken *deftoken, define_t *define, idToken **firsttoken, idToken **lasttoken ) {
+/////*int*/ExpandBuiltinDefine( idToken *deftoken, define_t *define, idToken **firsttoken, idToken **lasttoken ):number {
 ////	idToken *token;
 ////	ID_TIME_T t;
 ////	char *curtime;
@@ -1191,7 +1191,7 @@ line only if a backslash '\' is found
 idParser::Directive_include
 ================
 */
-/*int*/Directive_include( ) {
+	/*int*/Directive_include(): number {
 	var script: idLexer;
 		var token = new R( new idToken );
 	var path = new idStr ;
@@ -1272,7 +1272,7 @@ idParser::Directive_undef
 ================
 */
 /*int*/
-	Directive_undef ( ) {
+	Directive_undef(): number {
 		var token = new R( new idToken );
 		var define: define_t, lastdefine: define_t;
 		var /*int */hash: number;
@@ -1431,7 +1431,7 @@ idParser::Directive_define
 ////idParser::AddDefine
 ////================
 ////*/
-/////*int*/AddDefine( $string:string ) {
+/////*int*/AddDefine( $string:string ):number{
 ////	define_t *define;
 ////
 ////	define = DefineFromString( string );
@@ -1506,7 +1506,7 @@ idParser::Directive_else
 ================
 */
 /*int*/
-	Directive_else ( ) {
+	Directive_else ( ) :number{
 		var /*int */type = new R( 0 ), skip = new R( 0 );
 
 		this.PopIndent( type, skip );
@@ -1528,7 +1528,7 @@ idParser::Directive_endif
 ================
 */
 /*int*/
-	Directive_endif ( ) {
+	Directive_endif(): number {
 		var /*int */type = new R( 0 ), skip = new R( 0 );
 
 		this.PopIndent( type, skip );
@@ -1625,7 +1625,7 @@ idParser::Directive_endif
 ////
 ////#define FreeOperator(op)
 ////
-/////*int*/EvaluateTokens( idToken *tokens, signed long int *intvalue, double *floatvalue, int integer ) {
+/////*int*/EvaluateTokens( idToken *tokens, signed long int *intvalue, double *floatvalue, int integer ):number {
 ////	operator_t *o, *firstoperator, *lastoperator;
 ////	value_t *v, *firstvalue, *lastvalue, *v1, *v2;
 ////	idToken *t;
@@ -2142,7 +2142,7 @@ idParser::Evaluate
 ////idParser::DollarEvaluate
 ////================
 ////*/
-/////*int*/DollarEvaluate( signed long int *intvalue, double *floatvalue, int integer) {
+/////*int*/DollarEvaluate( signed long int *intvalue, double *floatvalue, int integer):number {
 ////	int indent, defined = false;
 ////	idToken token, *firsttoken, *lasttoken;
 ////	idToken *t, *nexttoken;
@@ -2297,7 +2297,7 @@ idParser::Directive_error
 ================
 */
 /*int*/
-	Directive_error ( ) {
+	Directive_error(): number {
 		var token = new R( new idToken );
 
 		if ( !this.ReadLine( token ) || token.$.type != TT_STRING ) {
@@ -2313,7 +2313,7 @@ idParser::Directive_error
 idParser::Directive_warning
 ================
 */
-/*int*/Directive_warning( ) {
+	/*int*/Directive_warning(): number {
 	var token = new R( new idToken );
 
 	if ( !this.ReadLine( token) || token.$.type != TT_STRING ) {
@@ -2651,7 +2651,7 @@ idParser::ReadToken
 ////idParser::ExpectTokenString
 ////================
 ////*/
-/////*int*/ExpectTokenString( $string:string ) {
+/////*int*/ExpectTokenString( $string:string ):number {
 ////	idToken token;
 ////
 ////	if ( !idParser::ReadToken( &token ) ) {
@@ -2671,7 +2671,7 @@ idParser::ReadToken
 ////idParser::ExpectTokenType
 ////================
 ////*/
-/////*int*/ExpectTokenType( int type, int subtype, idToken *token ) {
+/////*int*/ExpectTokenType( int type, int subtype, idToken *token ) :number{
 ////	idStr str;
 ////
 ////	if ( !idParser::ReadToken( token ) ) {
@@ -2725,7 +2725,7 @@ idParser::ReadToken
 ////idParser::ExpectAnyToken
 ////================
 ////*/
-/////*int*/ExpectAnyToken( idToken *token ) {
+/////*int*/ExpectAnyToken( idToken *token ):number {
 ////	if (!idParser::ReadToken( token )) {
 ////		this.Error( "couldn't read expected token" );
 ////		return 0/*false*/;
@@ -2740,7 +2740,7 @@ idParser::ReadToken
 ////idParser::CheckTokenString
 ////================
 ////*/
-/////*int*/CheckTokenString( $string:string ) {
+/////*int*/CheckTokenString( $string:string ):number {
 ////	idToken tok;
 ////
 ////	if ( !ReadToken( &tok ) ) {
@@ -2760,7 +2760,7 @@ idParser::ReadToken
 ////idParser::CheckTokenType
 ////================
 ////*/
-/////*int*/CheckTokenType( int type, int subtype, idToken *token ) {
+/////*int*/CheckTokenType( int type, int subtype, idToken *token ):number {
 ////	idToken tok;
 ////
 ////	if ( !ReadToken( &tok ) ) {
@@ -2781,7 +2781,7 @@ idParser::ReadToken
 ////idParser::PeekTokenString
 ////================
 ////*/
-/////*int*/PeekTokenString( $string:string ) {
+/////*int*/PeekTokenString( $string:string ):number {
 ////	idToken tok;
 ////
 ////	if ( !ReadToken( &tok ) ) {
@@ -2802,7 +2802,7 @@ idParser::ReadToken
 ////idParser::PeekTokenType
 ////================
 ////*/
-/////*int*/PeekTokenType( int type, int subtype, idToken *token ) {
+/////*int*/PeekTokenType( int type, int subtype, idToken *token ):number {
 ////	idToken tok;
 ////
 ////	if ( !ReadToken( &tok ) ) {
@@ -2824,7 +2824,7 @@ idParser::ReadToken
 ////idParser::SkipUntilString
 ////================
 ////*/
-/////*int*/SkipUntilString( $string:string ) {
+/////*int*/SkipUntilString( $string:string ):number {
 ////	idToken token;
 ////
 ////	while(idParser::ReadToken( &token )) {
@@ -2840,7 +2840,7 @@ idParser::ReadToken
 ////idParser::SkipRestOfLine
 ////================
 ////*/
-/////*int*/SkipRestOfLine( ) {
+/////*int*/SkipRestOfLine( ):number {
 ////	idToken token;
 ////
 ////	while(idParser::ReadToken( &token )) {
@@ -2860,7 +2860,7 @@ idParser::ReadToken
 ////Internal brace depths are properly skipped.
 ////=================
 ////*/
-/////*int*/SkipBracedSection( bool parseFirstBrace ) {
+/////*int*/SkipBracedSection( bool parseFirstBrace ):number {
 ////	idToken token;
 ////	int depth;
 ////
@@ -3003,7 +3003,7 @@ idParser::UnreadToken
 ////idParser::ReadTokenOnLine
 ////================
 ////*/
-/////*int*/ReadTokenOnLine( idToken *token ) {
+/////*int*/ReadTokenOnLine( idToken *token ):number {
 ////	idToken tok;
 ////
 ////	if (!idParser::ReadToken( &tok )) {
@@ -3024,7 +3024,7 @@ idParser::UnreadToken
 ////idParser::ParseInt
 ////================
 ////*/
-/////*int*/ParseInt( ) {
+/////*int*/ParseInt( ):number {
 ////	idToken token;
 ////
 ////	if ( !idParser::ReadToken( &token ) ) {
@@ -3083,7 +3083,7 @@ idParser::UnreadToken
 ////idParser::Parse1DMatrix
 ////================
 ////*/
-/////*int*/Parse1DMatrix( int x, float *m ) {
+/////*int*/Parse1DMatrix( int x, float *m ):number {
 ////	int i;
 ////
 ////	if ( !idParser::ExpectTokenString( "(" ) ) {
@@ -3105,7 +3105,7 @@ idParser::UnreadToken
 ////idParser::Parse2DMatrix
 ////================
 ////*/
-/////*int*/Parse2DMatrix( int y, int x, float *m ) {
+/////*int*/Parse2DMatrix( int y, int x, float *m ):number {
 ////	int i;
 ////
 ////	if ( !idParser::ExpectTokenString( "(" ) ) {
@@ -3129,7 +3129,7 @@ idParser::UnreadToken
 ////idParser::Parse3DMatrix
 ////================
 ////*/
-/////*int*/Parse3DMatrix( int z, int y, int x, float *m ) {
+/////*int*/Parse3DMatrix( int z, int y, int x, float *m ):number {
 ////	int i;
 ////
 ////	if ( !idParser::ExpectTokenString( "(" ) ) {
@@ -3153,7 +3153,7 @@ idParser::UnreadToken
 ////idParser::GetLastWhiteSpace
 ////================
 ////*/
-/////*int*/GetLastWhiteSpace( idStr &whiteSpace ) const {
+/////*int*/GetLastWhiteSpace( idStr &whiteSpace ):number {
 ////	if ( this.scriptstack ) {
 ////		this.scriptstack.GetLastWhiteSpace( whiteSpace );
 ////	} else {
@@ -3239,7 +3239,7 @@ idParser::UnreadToken
 idParser::SetFlags
 ================
 */
-	SetFlags ( /*int*/ flags: number ) {
+	SetFlags( /*int*/ flags: number): void {
 		var s: idLexer;
 
 		this.flags = flags;
@@ -3248,21 +3248,21 @@ idParser::SetFlags
 		}
 	}
 
-/////*
-////================
-////idParser::GetFlags
-////================
-////*/
-/////*int*/GetFlags( ) const {
-////	return this.flags;
-////}
-////
+/*
+================
+idParser::GetFlags
+================
+*/
+/*int*/GetFlags( ):number {
+	return this.flags;
+}
+
 /////*
 ////================
 ////idParser::LoadFile
 ////================
 ////*/
-/////*int*/LoadFile( const char *filename, bool OSPath ) {
+/////*int*/LoadFile( const char *filename, bool OSPath ):number {
 ////	idLexer *script;
 ////
 ////	if ( this.loaded ) {
@@ -3403,7 +3403,7 @@ FreeSource( keepDefines = false ):void {
 ////idParser::GetPunctuationId
 ////================
 ////*/
-/////*int*/GetPunctuationId( const char *p ) {
+/////*int*/GetPunctuationId( const char *p ):number {
 ////	int i;
 ////
 ////	if ( !this.punctuations ) {
