@@ -411,9 +411,9 @@
 //#include "../framework/KeyInput.h"
 //#include "../framework/EditField.h"
 //#include "../framework/Console.h"
+/// <reference path="doomdll/framework/EditField.cpp.ts" />
 /// <reference path="doomdll/framework/console.h.ts" />
 /// <reference path="doomdll/framework/console.cpp.ts" />
-/// <reference path="doomdll/framework/EditField.cpp.ts" />
 /// <reference path="doomdll/framework/KeyInput.cpp.ts" />
 //#include "../framework/DemoFile.h"
 //#include "../framework/Session.h"

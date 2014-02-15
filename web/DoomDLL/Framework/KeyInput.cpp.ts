@@ -470,7 +470,7 @@ class idKeyInput {
 idKeyInput::ArgCompletion_KeyName
 ===================
 */
-	ArgCompletion_KeyName_Template ( args: idCmdArgs, callback: ( s: string ) => void ) {
+	static ArgCompletion_KeyName_Template ( args: idCmdArgs, callback: ( s: string ) => void ) {
 		return function ArgCompletion_KeyName ( args: idCmdArgs, callback: ( s: string ) => void ) {
 			todoThrow ( );
 			//keyname_t *kn;
@@ -491,7 +491,7 @@ idKeyInput::ArgCompletion_KeyName
 ////idKeyInput::GetOverstrikeMode
 ////===================
 ////*/
-////bool idKeyInput::GetOverstrikeMode( void ) {
+////static GetOverstrikeMode( void ):boolean {
 ////	return key_overstrikeMode;
 ////}
 ////
@@ -500,7 +500,7 @@ idKeyInput::ArgCompletion_KeyName
 ////idKeyInput::SetOverstrikeMode
 ////===================
 ////*/
-////void idKeyInput::SetOverstrikeMode( bool state ) {
+////static SetOverstrikeMode( bool state ):void {
 ////	key_overstrikeMode = state;
 ////}
 ////
@@ -509,7 +509,7 @@ idKeyInput::ArgCompletion_KeyName
 ////idKeyInput::IsDown
 ////===================
 ////*/
-////bool idKeyInput::IsDown( int keynum ) {
+////static IsDown( int keynum ):boolean {
 ////	if ( keynum == -1 ) {
 ////		return false;
 ////	}
@@ -529,7 +529,7 @@ the K_* names are matched up.
 to be configured even if they don't have defined names.
 ===================
 */
-	StringToKeyNum ( str: string ): number {
+	static StringToKeyNum ( str: string ): number {
 		var kn: number;
 
 		if ( !str || !str[0] ) {
@@ -582,7 +582,7 @@ to be configured even if they don't have defined names.
 ////given keynum.
 ////===================
 ////*/
-////const char *idKeyInput::KeyNumToString( int keynum, bool localized ) {
+////static KeyNumToString( int keynum, bool localized ):string {
 ////	keyname_t	*kn;	
 ////	static	char	tinystr[5];
 ////	int			i, j;
@@ -653,7 +653,7 @@ to be configured even if they don't have defined names.
 idKeyInput::SetBinding
 ===================
 */
-	SetBinding ( /*int */keynum: number, binding: string ): void {
+	static SetBinding ( /*int */keynum: number, binding: string ): void {
 		if ( keynum == -1 ) {
 			return;
 		}
@@ -678,7 +678,7 @@ idKeyInput::SetBinding
 ////idKeyInput::GetBinding
 ////===================
 ////*/
-////const char *idKeyInput::GetBinding( int keynum ) {
+////static GetBinding( int keynum ):string {
 ////	if ( keynum == -1 ) {
 ////		return "";
 ////	}
@@ -691,7 +691,7 @@ idKeyInput::SetBinding
 ////idKeyInput::GetUsercmdAction
 ////===================
 ////*/
-////int idKeyInput::GetUsercmdAction( int keynum ) {
+////static GetUsercmdAction( int keynum ):number {
 ////	return keys[ keynum ].usercmdAction;
 ////}
 ////
@@ -700,7 +700,7 @@ idKeyInput::SetBinding
 Key_Unbind_f
 ===================
 */
-	Key_Unbind_f ( args: idCmdArgs ): void {
+	static Key_Unbind_f ( args: idCmdArgs ): void {
 		var b: number;
 
 		if ( args.Argc ( ) != 2 ) {
@@ -708,14 +708,14 @@ Key_Unbind_f
 			return;
 		}
 
-		b = this.StringToKeyNum( args.Argv( 1 ) );
+		b = idKeyInput.StringToKeyNum( args.Argv( 1 ) );
 		if ( b == -1 ) {
 			// If it wasn't a key, it could be a command
-			if ( !this.UnbindBinding( args.Argv( 1 ) ) ) {
+			if (!idKeyInput.UnbindBinding( args.Argv( 1 ) ) ) {
 				common.Printf( "\"%s\" isn't a valid key\n", args.Argv( 1 ) );
 			}
 		} else {
-			this.SetBinding( b, "" );
+			idKeyInput.SetBinding( b, "" );
 		}
 	}
 
@@ -724,11 +724,11 @@ Key_Unbind_f
 Key_Unbindall_f
 ===================
 */
-	Key_Unbindall_f ( args: idCmdArgs ): void {
+	static Key_Unbindall_f ( args: idCmdArgs ): void {
 		var i: number;
 
 		for ( i = 0; i < MAX_KEYS; i++ ) {
-			this.SetBinding( i, "" );
+			idKeyInput.SetBinding( i, "" );
 		}
 	}
 /*
@@ -736,7 +736,7 @@ Key_Unbindall_f
 Key_Bind_f
 ===================
 */
-	Key_Bind_f ( args: idCmdArgs ): void {
+	static Key_Bind_f ( args: idCmdArgs ): void {
 		var /*int*/i: number, c: number, b: number;
 		var cmd = ""; //[MAX_STRING_CHARS];
 
@@ -746,7 +746,7 @@ Key_Bind_f
 			common.Printf( "bind <key> [command] : attach a command to a key\n" );
 			return;
 		}
-		b = this.StringToKeyNum( args.Argv( 1 ) );
+		b = idKeyInput.StringToKeyNum( args.Argv( 1 ) );
 		if ( b == -1 ) {
 			common.Printf( "\"%s\" isn't a valid key\n", args.Argv( 1 ) );
 			return;
@@ -770,7 +770,7 @@ Key_Bind_f
 			}
 		}
 
-		this.SetBinding( b, cmd );
+		idKeyInput.SetBinding( b, cmd );
 	}
 
 /*
@@ -780,7 +780,7 @@ Key_BindUnBindTwo_f
 binds keynum to bindcommand and unbinds if there are already two binds on the key
 ============
 */
-	Key_BindUnBindTwo_f ( args: idCmdArgs ): void {
+	static Key_BindUnBindTwo_f ( args: idCmdArgs ): void {
 		todoThrow ( );
 		//int c = args.Argc();
 		//if ( c < 3 ) {
@@ -790,9 +790,9 @@ binds keynum to bindcommand and unbinds if there are already two binds on the ke
 		//int key = atoi( args.Argv( 1 ) );
 		//idStr bind = args.Argv( 2 );
 		//if ( idKeyInput::NumBinds( bind ) >= 2 && !idKeyInput::KeyIsBoundTo( key, bind ) ) {
-		//	this.UnbindBinding( bind );
+		//	idKeyInput.UnbindBinding( bind );
 		//}
-		//this.SetBinding( key, bind );
+		//idKeyInput.SetBinding( key, bind );
 	}
 
 
@@ -804,7 +804,7 @@ binds keynum to bindcommand and unbinds if there are already two binds on the ke
 ////Writes lines containing "bind key value"
 ////============
 ////*/
-////void idKeyInput::WriteBindings( idFile *f ) {
+////static WriteBindings( idFile *f ):void {
 ////	int		i;
 ////
 ////	f.Printf( "unbindall\n" );
@@ -828,12 +828,12 @@ binds keynum to bindcommand and unbinds if there are already two binds on the ke
 Key_ListBinds_f
 ============
 */
-	Key_ListBinds_f ( args: idCmdArgs ): void {
+	static Key_ListBinds_f ( args: idCmdArgs ): void {
 		var i: number;
 		todoThrow ( );
 		//for ( i = 0; i < MAX_KEYS; i++ ) {
 		//	if ( keys[i].binding.Length ( ) ) {
-		//		common.Printf( "%s \"%s\"\n", this.KeyNumToString( i, false ), keys[i].binding.c_str ( ) );
+		//		common.Printf( "%s \"%s\"\n", idKeyInput.KeyNumToString( i, false ), keys[i].binding.c_str ( ) );
 		//	}
 		//}
 	}
@@ -844,7 +844,7 @@ Key_ListBinds_f
 ////returns the localized name of the key for the binding
 ////============
 ////*/
-////const char *idKeyInput::KeysFromBinding( const char *bind ) {
+////static KeysFromBinding( const char *bind ):string {
 ////	var i:number;
 ////	static char keyName[MAX_STRING_CHARS];
 ////
@@ -872,8 +872,8 @@ Key_ListBinds_f
 ////returns the binding for the localized name of the key
 ////============
 ////*/
-////const char *idKeyInput::BindingFromKey( const char *key ) {
-////	const int keyNum = this.StringToKeyNum( key );
+////static BindingFromKey( const char *key ):string {
+////	const int keyNum = idKeyInput.StringToKeyNum( key );
 ////	if ( keyNum<0 || keyNum >= MAX_KEYS ) {
 ////		return NULL;
 ////	}
@@ -885,14 +885,14 @@ Key_ListBinds_f
 idKeyInput::UnbindBinding
 ============
 */
-	UnbindBinding ( binding: string ): boolean {
+	static UnbindBinding ( binding: string ): boolean {
 		var unbound = false;
 		var i: number;
 
 		if ( binding /*&& *binding*/ ) {
 			for ( i = 0; i < MAX_KEYS; i++ ) {
 				if ( keys[i].binding.Icmp( binding ) == 0 ) {
-					this.SetBinding( i, "" );
+					idKeyInput.SetBinding( i, "" );
 					unbound = true;
 				}
 			}
@@ -905,7 +905,7 @@ idKeyInput::UnbindBinding
 ////idKeyInput::NumBinds
 ////============
 ////*/
-////int idKeyInput::NumBinds( const char *binding ) {
+////static /*int */idKeyInput::NumBinds( const char *binding ):number {
 ////	int i, count = 0;
 ////
 ////	if ( binding && *binding ) {
@@ -923,7 +923,7 @@ idKeyInput::UnbindBinding
 ////idKeyInput::KeyIsBountTo
 ////============
 ////*/
-////bool idKeyInput::KeyIsBoundTo( int keynum, const char *binding ) {
+////static KeyIsBoundTo( int keynum, const char *binding ):boolean {
 ////	if ( keynum >= 0 && keynum < MAX_KEYS ) {
 ////		return ( keys[keynum].binding.Icmp( binding ) == 0 );
 ////	}
@@ -938,7 +938,7 @@ idKeyInput::UnbindBinding
 ////Called by the system for both key up and key down events
 ////===================
 ////*/
-////void idKeyInput::PreliminaryKeyEvent( int keynum, bool down ) {
+////static PreliminaryKeyEvent( int keynum, bool down ):void {
 ////	keys[keynum].down = down;
 ////
 ////#ifdef ID_DOOM_LEGACY
@@ -963,7 +963,7 @@ idKeyInput::UnbindBinding
 ////idKeyInput::ExecKeyBinding
 ////=================
 ////*/
-////bool idKeyInput::ExecKeyBinding( int keynum ) {
+////static ExecKeyBinding( int keynum ):boolean {
 ////	// commands that are used by the async thread
 ////	// don't add text
 ////	if ( keys[keynum].usercmdAction ) {
@@ -983,7 +983,7 @@ idKeyInput::UnbindBinding
 ////idKeyInput::ClearStates
 ////===================
 ////*/
-////void idKeyInput::ClearStates( void ) {
+////static ClearStates( ):void {
 ////	var i:number;
 ////
 ////	for ( i = 0; i < MAX_KEYS; i++ ) {
@@ -1002,16 +1002,16 @@ idKeyInput::UnbindBinding
 idKeyInput::Init
 ===================
 */
-	Init ( ): void {
+	static Init ( ): void {
 
 		keys = newStructArray<idKey>( idKey, MAX_KEYS );
 
 		// register our functions
-		cmdSystem.AddCommand("bind", this.Key_Bind_f, cmdFlags_t. CMD_FL_SYSTEM, "binds a command to a key", this.ArgCompletion_KeyName_Template );
-		cmdSystem.AddCommand("bindunbindtwo", this.Key_BindUnBindTwo_f, cmdFlags_t.CMD_FL_SYSTEM, "binds a key but unbinds it first if there are more than two binds" );
-		cmdSystem.AddCommand("unbind", this.Key_Unbind_f, cmdFlags_t.CMD_FL_SYSTEM, "unbinds any command from a key", this.ArgCompletion_KeyName_Template);
-		cmdSystem.AddCommand("unbindall", this.Key_Unbindall_f, cmdFlags_t.CMD_FL_SYSTEM, "unbinds any commands from all keys");
-		cmdSystem.AddCommand("listBinds", this.Key_ListBinds_f, cmdFlags_t.CMD_FL_SYSTEM, "lists key bindings" );
+		cmdSystem.AddCommand("bind", idKeyInput.Key_Bind_f, cmdFlags_t.CMD_FL_SYSTEM, "binds a command to a key", idKeyInput.ArgCompletion_KeyName_Template );
+		cmdSystem.AddCommand("bindunbindtwo", idKeyInput.Key_BindUnBindTwo_f, cmdFlags_t.CMD_FL_SYSTEM, "binds a key but unbinds it first if there are more than two binds" );
+		cmdSystem.AddCommand("unbind", idKeyInput.Key_Unbind_f, cmdFlags_t.CMD_FL_SYSTEM, "unbinds any command from a key", idKeyInput.ArgCompletion_KeyName_Template);
+		cmdSystem.AddCommand("unbindall", idKeyInput.Key_Unbindall_f, cmdFlags_t.CMD_FL_SYSTEM, "unbinds any commands from all keys");
+		cmdSystem.AddCommand("listBinds", idKeyInput.Key_ListBinds_f, cmdFlags_t.CMD_FL_SYSTEM, "lists key bindings" );
 	}
 ////
 /////*
@@ -1019,7 +1019,7 @@ idKeyInput::Init
 ////idKeyInput::Shutdown
 ////===================
 ////*/
-////void idKeyInput::Shutdown( void ) {
+////static Shutdown( void ):void {
 ////	delete [] keys;
 ////	keys = NULL;
 ////}

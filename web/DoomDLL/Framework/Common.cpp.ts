@@ -2808,10 +2808,10 @@ idCommonLocal::Init
 ////		Printf( "%s\n", version.string );
 
 		// initialize key input/binding, done early so bind command exists
-        todo("idKeyInput::Init();");
+        idKeyInput.Init();
 
-////		// init the console so we can take prints
-////		console.Init();
+		// init the console so we can take prints
+		$console.Init();
 
 ////		// get architecture info
 ////		Sys_Init();
