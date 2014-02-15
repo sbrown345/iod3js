@@ -1843,7 +1843,7 @@ void idProgram::CompileFile( const char *filename ) {
 		gameLocal.Error( "Couldn't load %s\n", filename );
 	}
 
-	dlog(DEBUG_COMPILER, "CompileFile: %s\n", filename);
+	dlog(DEBUG_COMPILER, "idProgram::CompileFile: %s\n", filename);
 
 	result = CompileText(filename, src, false);
 	fileSystem->FreeFile( src );

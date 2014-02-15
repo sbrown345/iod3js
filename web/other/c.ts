@@ -46,6 +46,16 @@ function strcmp(str1: string, str2: string): number {
 	return -1;
 }
 
+function strchr ( str: Uint8Array, character: number ): Uint8Array {
+	for ( var i = 0; i < str.length; i++ ) {
+		if ( str[i] === character ) {
+			return str.subarray( i );
+		}
+	}
+
+	return null;
+}
+
 function isdigit ( c: string ): number {
     return ( c >= "0" && c <= "9" ) ? 1 : 0;
 }

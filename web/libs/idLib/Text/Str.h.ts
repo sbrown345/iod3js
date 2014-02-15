@@ -686,7 +686,7 @@ class idStr {
 	Icmp ( text: string ): number;
 	Icmp ( text: idStr ): number;
 	Icmp ( text: any ): number {
-		assert( text );
+		assert( text !== null && text !== undefined );
 		return idStr.Icmp( this, text );
 	}
 

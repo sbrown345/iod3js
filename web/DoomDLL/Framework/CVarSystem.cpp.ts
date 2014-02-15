@@ -548,15 +548,15 @@ class idCVarSystem {
 
 		this.modifiedFlags = 0;
 
-		cmdSystem.AddCommand("toggle", this.Toggle_f, cmdFlags_t.CMD_FL_SYSTEM, "toggles a cvar");
-		cmdSystem.AddCommand("set", this.Set_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar");
-		cmdSystem.AddCommand("sets", this.SetS_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as server info");
-		cmdSystem.AddCommand("setu", this.SetU_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as user info");
-		cmdSystem.AddCommand("sett", this.SetT_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as tool");
-		cmdSystem.AddCommand("seta", this.SetA_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as archive");
-		cmdSystem.AddCommand("reset", this.Reset_f, cmdFlags_t.CMD_FL_SYSTEM, "resets a cvar");
-		cmdSystem.AddCommand("listCvars", this.List_f, cmdFlags_t.CMD_FL_SYSTEM, "lists cvars");
-		cmdSystem.AddCommand("cvar_restart", this.Restart_f, cmdFlags_t.CMD_FL_SYSTEM, "restart the cvar system");
+		cmdSystem.AddCommand("toggle", idCVarSystem.Toggle_f, cmdFlags_t.CMD_FL_SYSTEM, "toggles a cvar");
+		cmdSystem.AddCommand("set", idCVarSystem.Set_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar");
+		cmdSystem.AddCommand("sets", idCVarSystem.SetS_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as server info");
+		cmdSystem.AddCommand("setu", idCVarSystem.SetU_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as user info");
+		cmdSystem.AddCommand("sett", idCVarSystem.SetT_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as tool");
+		cmdSystem.AddCommand("seta", idCVarSystem.SetA_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as archive");
+		cmdSystem.AddCommand("reset", idCVarSystem.Reset_f, cmdFlags_t.CMD_FL_SYSTEM, "resets a cvar");
+		cmdSystem.AddCommand("listCvars", idCVarSystem.List_f, cmdFlags_t.CMD_FL_SYSTEM, "lists cvars");
+		cmdSystem.AddCommand("cvar_restart", idCVarSystem.Restart_f, cmdFlags_t.CMD_FL_SYSTEM, "restart the cvar system");
 
 		this.initialized = true;
 	}
@@ -875,7 +875,7 @@ class idCVarSystem {
 	idCVarSystemLocal::Toggle_f
 	============
 	*/
-	Toggle_f( /*const */ args: idCmdArgs): void {
+	static Toggle_f( /*const */ args: idCmdArgs): void {
 		todoThrow();
 		//int argc, i;
 		//float current, set;
@@ -936,7 +936,7 @@ class idCVarSystem {
 	idCVarSystemLocal::Set_f
 	============
 	*/
-	Set_f( /*const */ args: idCmdArgs): void {
+	static Set_f( /*const */ args: idCmdArgs): void {
 		var str: string;
 
 		str = args.Args(2, args.Argc() - 1);
@@ -948,11 +948,11 @@ class idCVarSystem {
 	idCVarSystemLocal::SetS_f
 	============
 	*/
-	SetS_f( /*const */ args: idCmdArgs): void {
+	static SetS_f( /*const */ args: idCmdArgs): void {
 		todoThrow();
 		var cvar: idInternalCVar;
 
-		this.Set_f(args);
+		idCVarSystem.Set_f(args);
 		cvar = localCVarSystem.FindInternal(args.Argv(1));
 		if (!cvar) {
 			return;
@@ -965,10 +965,10 @@ class idCVarSystem {
 	idCVarSystemLocal::SetU_f
 	============
 	*/
-	SetU_f( /*const */ args: idCmdArgs): void {
+	static SetU_f( /*const */ args: idCmdArgs): void {
 		var cvar: idInternalCVar;
 
-		this.Set_f(args);
+		idCVarSystem.Set_f(args);
 		cvar = localCVarSystem.FindInternal(args.Argv(1));
 		if (!cvar) {
 			return;
@@ -981,10 +981,10 @@ class idCVarSystem {
 	idCVarSystemLocal::SetT_f
 	============
 	*/
-	SetT_f( /*const */ args: idCmdArgs): void {
+	static SetT_f( /*const */ args: idCmdArgs): void {
 		var cvar: idInternalCVar;
 
-		this.Set_f(args);
+		idCVarSystem.Set_f(args);
 		cvar = localCVarSystem.FindInternal(args.Argv(1));
 		if (!cvar) {
 			return;
@@ -997,10 +997,10 @@ class idCVarSystem {
 	idCVarSystemLocal::SetA_f
 	============
 	*/
-	SetA_f( /*const */ args: idCmdArgs): void {
+	static SetA_f( /*const */ args: idCmdArgs): void {
 		var cvar: idInternalCVar;
 
-		this.Set_f(args);
+		idCVarSystem.Set_f(args);
 		cvar = localCVarSystem.FindInternal(args.Argv(1));
 		if (!cvar) {
 			return;
@@ -1017,7 +1017,7 @@ class idCVarSystem {
 	idCVarSystemLocal::Reset_f
 	============
 	*/
-	Reset_f( /*const */ args: idCmdArgs): void {
+	static Reset_f( /*const */ args: idCmdArgs): void {
 		todoThrow();
 		//var cvar: idInternalCVar;
 
@@ -1040,7 +1040,7 @@ class idCVarSystem {
 	*/
 	//// NOTE: the const wonkyness is required to make msvc happy
 	//template<>
-	//ID_INLINE int idListSortCompare( const idInternalCVar * const *a, const idInternalCVar * const *b ) {
+	//static idListSortCompare( const idInternalCVar * const *a, const idInternalCVar * const *b ):number {
 	//    todoThrow();
 	//	return idStr.Icmp( (*a).GetName(), (*b).GetName() );
 	//}
@@ -1205,7 +1205,7 @@ class idCVarSystem {
 	idCVarSystemLocal::List_f
 	============
 	*/
-	List_f( /*const */ args: idCmdArgs): void {
+	static List_f( /*const */ args: idCmdArgs): void {
 		todoThrow();
 		//ListByFlags( args, CVAR_ALL );
 	}
@@ -1215,7 +1215,7 @@ class idCVarSystem {
 	idCVarSystemLocal::Restart_f
 	============
 	*/
-	Restart_f( /*const */ args: idCmdArgs): void {
+	static Restart_f( /*const */ args: idCmdArgs): void {
 		todoThrow();
 		//int i, hash;
 		//var cvar: idInternalCVar;

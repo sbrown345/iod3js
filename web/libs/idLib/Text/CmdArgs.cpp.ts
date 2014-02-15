@@ -104,46 +104,45 @@ idCmdArgs::Args
 //static char cmd_args[MAX_COMMAND_STRING];
 	Args ( /*int*/ start = 1, /*int*/ end = -1, escapeArgs = false ): string {
 		var /*int		*/i: number;
-		todoThrow ( );
-		return "todo: idCmdArgs::Args";
-		//if ( end < 0 ) {
-		//	end = this.argc - 1;
-		//} else if ( end >= this.argc ) {
-		//	end = this.argc - 1;
-		//}
-		//var cmd_args[0] = '\0';
-		//if ( escapeArgs ) {
-		//	strcat( cmd_args, "\"" );
-		//}
-		//for ( i = start; i <= end; i++ ) {
-		//	if ( i > start ) {
-		//		if ( escapeArgs ) {
-		//			strcat( cmd_args, "\" \"" );
-		//		} else {
-		//			strcat( cmd_args, " " );
-		//		}
-		//	}
-		//	if ( escapeArgs && strchr( argv[i], '\\' ) ) {
-		//		char *p = argv[i];
-		//		while ( *p != '\0' ) {
-		//			if ( *p == '\\' ) {
-		//				strcat( cmd_args, "\\\\" );
-		//			} else {
-		//				int l = strlen( cmd_args );
-		//				cmd_args[ l ] = *p;
-		//				cmd_args[ l+1 ] = '\0';
-		//			}
-		//			p++;
-		//		}
-		//	} else {
-		//		strcat( cmd_args, argv[i] );
-		//	}
-		//}
-		//if ( escapeArgs ) {
-		//	strcat( cmd_args, "\"" );
-		//}
+		if ( end < 0 ) {
+			end = this.argc - 1;
+		} else if ( end >= this.argc ) {
+			end = this.argc - 1;
+		}
+		var cmd_args = "";
+		if ( escapeArgs ) {
+			cmd_args += "\"";
+		}
+		for ( i = start; i <= end; i++ ) {
+			if ( i > start ) {
+				if ( escapeArgs ) {
+					cmd_args += "\" \"";
+				} else {
+					cmd_args += " ";
+				}
+			}
+			if ( escapeArgs && strchr( this.argv[i], '\\'.charCodeAt( 0 ) ) ) {
+				var p = 0; //this.argv[i];
+				while ( this.argv[i][p] /*!= '\0'*/ ) {
+					if ( this.argv[i][p] == '\\'.charCodeAt( 0 ) ) {
+						cmd_args += "\\\\";
+					} else {
+						var l = strlen( cmd_args );
+						todoThrow ( );
+						//cmd_args[ l ] = this.argv[i][p];
+						//cmd_args[ l+1 ] = '\0';
+					}
+					p++;
+				}
+			} else {
+				cmd_args += this.argv[i].toString ( );
+			}
+		}
+		if ( escapeArgs ) {
+			cmd_args += "\"";
+		}
 
-		//return cmd_args;
+		return cmd_args;
 	}
 
 /*

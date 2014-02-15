@@ -2577,7 +2577,7 @@ void idCompiler::CompileFile( const char *text, const char *filename, bool toCon
 	idTimer compile_time;
 	bool error;
 
-	dlog(DEBUG_COMPILER, "CompileFile - filename: %s\n", filename);
+	dlog(DEBUG_COMPILER, "idCompiler::CompileFile - filename: %s\n", filename);
 	compile_time.Start();
 
 	scope				= &def_namespace;
