@@ -63,207 +63,211 @@
 //}
 //
 //
-//const int KEY_MOVESPEED	= 127;
-//
-//typedef enum {
-//	UB_NONE,
-//
-//	UB_UP,
-//	UB_DOWN,
-//	UB_LEFT,
-//	UB_RIGHT,
-//	UB_FORWARD,
-//	UB_BACK,
-//	UB_LOOKUP,
-//	UB_LOOKDOWN,
-//	UB_STRAFE,
-//	UB_MOVELEFT,
-//	UB_MOVERIGHT,
-//
-//	UB_BUTTON0,
-//	UB_BUTTON1,
-//	UB_BUTTON2,
-//	UB_BUTTON3,
-//	UB_BUTTON4,
-//	UB_BUTTON5,
-//	UB_BUTTON6,
-//	UB_BUTTON7,
-//
-//	UB_ATTACK,
-//	UB_SPEED,
-//	UB_ZOOM,
-//	UB_SHOWSCORES,
-//	UB_MLOOK,
-//
-//	UB_IMPULSE0,
-//	UB_IMPULSE1,
-//	UB_IMPULSE2,
-//	UB_IMPULSE3,
-//	UB_IMPULSE4,
-//	UB_IMPULSE5,
-//	UB_IMPULSE6,
-//	UB_IMPULSE7,
-//	UB_IMPULSE8,
-//	UB_IMPULSE9,
-//	UB_IMPULSE10,
-//	UB_IMPULSE11,
-//	UB_IMPULSE12,
-//	UB_IMPULSE13,
-//	UB_IMPULSE14,
-//	UB_IMPULSE15,
-//	UB_IMPULSE16,
-//	UB_IMPULSE17,
-//	UB_IMPULSE18,
-//	UB_IMPULSE19,
-//	UB_IMPULSE20,
-//	UB_IMPULSE21,
-//	UB_IMPULSE22,
-//	UB_IMPULSE23,
-//	UB_IMPULSE24,
-//	UB_IMPULSE25,
-//	UB_IMPULSE26,
-//	UB_IMPULSE27,
-//	UB_IMPULSE28,
-//	UB_IMPULSE29,
-//	UB_IMPULSE30,
-//	UB_IMPULSE31,
-//	UB_IMPULSE32,
-//	UB_IMPULSE33,
-//	UB_IMPULSE34,
-//	UB_IMPULSE35,
-//	UB_IMPULSE36,
-//	UB_IMPULSE37,
-//	UB_IMPULSE38,
-//	UB_IMPULSE39,
-//	UB_IMPULSE40,
-//	UB_IMPULSE41,
-//	UB_IMPULSE42,
-//	UB_IMPULSE43,
-//	UB_IMPULSE44,
-//	UB_IMPULSE45,
-//	UB_IMPULSE46,
-//	UB_IMPULSE47,
-//	UB_IMPULSE48,
-//	UB_IMPULSE49,
-//	UB_IMPULSE50,
-//	UB_IMPULSE51,
-//	UB_IMPULSE52,
-//	UB_IMPULSE53,
-//	UB_IMPULSE54,
-//	UB_IMPULSE55,
-//	UB_IMPULSE56,
-//	UB_IMPULSE57,
-//	UB_IMPULSE58,
-//	UB_IMPULSE59,
-//	UB_IMPULSE60,
-//	UB_IMPULSE61,
-//	UB_IMPULSE62,
-//	UB_IMPULSE63,
-//
-//	UB_MAX_BUTTONS
-//} usercmdButton_t;
-//
-//typedef struct {
-//	const char *string;
-//	usercmdButton_t	button;
-//} userCmdString_t;
-//
-//userCmdString_t	userCmdStrings[] = {
-//	{ "_moveUp",		UB_UP },
-//	{ "_moveDown",		UB_DOWN },
-//	{ "_left",			UB_LEFT },
-//	{ "_right",			UB_RIGHT },
-//	{ "_forward",		UB_FORWARD },
-//	{ "_back",			UB_BACK },
-//	{ "_lookUp",		UB_LOOKUP },
-//	{ "_lookDown",		UB_LOOKDOWN },
-//	{ "_strafe",		UB_STRAFE },
-//	{ "_moveLeft",		UB_MOVELEFT },
-//	{ "_moveRight",		UB_MOVERIGHT },
-//
-//	{ "_attack",		UB_ATTACK },
-//	{ "_speed",			UB_SPEED },
-//	{ "_zoom",			UB_ZOOM },
-//	{ "_showScores",	UB_SHOWSCORES },
-//	{ "_mlook",			UB_MLOOK },
-//
-//	{ "_button0",		UB_BUTTON0 },
-//	{ "_button1",		UB_BUTTON1 },
-//	{ "_button2",		UB_BUTTON2 },
-//	{ "_button3",		UB_BUTTON3 },
-//	{ "_button4",		UB_BUTTON4 },
-//	{ "_button5",		UB_BUTTON5 },
-//	{ "_button6",		UB_BUTTON6 },
-//	{ "_button7",		UB_BUTTON7 },
-//
-//	{ "_impulse0",		UB_IMPULSE0 },
-//	{ "_impulse1",		UB_IMPULSE1 },
-//	{ "_impulse2",		UB_IMPULSE2 },
-//	{ "_impulse3",		UB_IMPULSE3 },
-//	{ "_impulse4",		UB_IMPULSE4 },
-//	{ "_impulse5",		UB_IMPULSE5 },
-//	{ "_impulse6",		UB_IMPULSE6 },
-//	{ "_impulse7",		UB_IMPULSE7 },
-//	{ "_impulse8",		UB_IMPULSE8 },
-//	{ "_impulse9",		UB_IMPULSE9 },
-//	{ "_impulse10",		UB_IMPULSE10 },
-//	{ "_impulse11",		UB_IMPULSE11 },
-//	{ "_impulse12",		UB_IMPULSE12 },
-//	{ "_impulse13",		UB_IMPULSE13 },
-//	{ "_impulse14",		UB_IMPULSE14 },
-//	{ "_impulse15",		UB_IMPULSE15 },
-//	{ "_impulse16",		UB_IMPULSE16 },
-//	{ "_impulse17",		UB_IMPULSE17 },
-//	{ "_impulse18",		UB_IMPULSE18 },
-//	{ "_impulse19",		UB_IMPULSE19 },
-//	{ "_impulse20",		UB_IMPULSE20 },
-//	{ "_impulse21",		UB_IMPULSE21 },
-//	{ "_impulse22",		UB_IMPULSE22 },
-//	{ "_impulse23",		UB_IMPULSE23 },
-//	{ "_impulse24",		UB_IMPULSE24 },
-//	{ "_impulse25",		UB_IMPULSE25 },
-//	{ "_impulse26",		UB_IMPULSE26 },
-//	{ "_impulse27",		UB_IMPULSE27 },
-//	{ "_impulse28",		UB_IMPULSE28 },
-//	{ "_impulse29",		UB_IMPULSE29 },
-//	{ "_impulse30",		UB_IMPULSE30 },
-//	{ "_impulse31",		UB_IMPULSE31 },
-//	{ "_impulse32",		UB_IMPULSE32 },
-//	{ "_impulse33",		UB_IMPULSE33 },
-//	{ "_impulse34",		UB_IMPULSE34 },
-//	{ "_impulse35",		UB_IMPULSE35 },
-//	{ "_impulse36",		UB_IMPULSE36 },
-//	{ "_impulse37",		UB_IMPULSE37 },
-//	{ "_impulse38",		UB_IMPULSE38 },
-//	{ "_impulse39",		UB_IMPULSE39 },
-//	{ "_impulse40",		UB_IMPULSE40 },
-//	{ "_impulse41",		UB_IMPULSE41 },
-//	{ "_impulse42",		UB_IMPULSE42 },
-//	{ "_impulse43",		UB_IMPULSE43 },
-//	{ "_impulse44",		UB_IMPULSE44 },
-//	{ "_impulse45",		UB_IMPULSE45 },
-//	{ "_impulse46",		UB_IMPULSE46 },
-//	{ "_impulse47",		UB_IMPULSE47 },
-//	{ "_impulse48",		UB_IMPULSE48 },
-//	{ "_impulse49",		UB_IMPULSE49 },
-//	{ "_impulse50",		UB_IMPULSE50 },
-//	{ "_impulse51",		UB_IMPULSE51 },
-//	{ "_impulse52",		UB_IMPULSE52 },
-//	{ "_impulse53",		UB_IMPULSE53 },
-//	{ "_impulse54",		UB_IMPULSE54 },
-//	{ "_impulse55",		UB_IMPULSE55 },
-//	{ "_impulse56",		UB_IMPULSE56 },
-//	{ "_impulse57",		UB_IMPULSE57 },
-//	{ "_impulse58",		UB_IMPULSE58 },
-//	{ "_impulse59",		UB_IMPULSE59 },
-//	{ "_impulse60",		UB_IMPULSE60 },
-//	{ "_impulse61",		UB_IMPULSE61 },
-//	{ "_impulse62",		UB_IMPULSE62 },
-//	{ "_impulse63",		UB_IMPULSE63 },
-//
-//	{ NULL,				UB_NONE },
-//};
-//
+var KEY_MOVESPEED	= 127;
+
+enum usercmdButton_t{
+	UB_NONE,
+
+	UB_UP,
+	UB_DOWN,
+	UB_LEFT,
+	UB_RIGHT,
+	UB_FORWARD,
+	UB_BACK,
+	UB_LOOKUP,
+	UB_LOOKDOWN,
+	UB_STRAFE,
+	UB_MOVELEFT,
+	UB_MOVERIGHT,
+
+	UB_BUTTON0,
+	UB_BUTTON1,
+	UB_BUTTON2,
+	UB_BUTTON3,
+	UB_BUTTON4,
+	UB_BUTTON5,
+	UB_BUTTON6,
+	UB_BUTTON7,
+
+	UB_ATTACK,
+	UB_SPEED,
+	UB_ZOOM,
+	UB_SHOWSCORES,
+	UB_MLOOK,
+
+	UB_IMPULSE0,
+	UB_IMPULSE1,
+	UB_IMPULSE2,
+	UB_IMPULSE3,
+	UB_IMPULSE4,
+	UB_IMPULSE5,
+	UB_IMPULSE6,
+	UB_IMPULSE7,
+	UB_IMPULSE8,
+	UB_IMPULSE9,
+	UB_IMPULSE10,
+	UB_IMPULSE11,
+	UB_IMPULSE12,
+	UB_IMPULSE13,
+	UB_IMPULSE14,
+	UB_IMPULSE15,
+	UB_IMPULSE16,
+	UB_IMPULSE17,
+	UB_IMPULSE18,
+	UB_IMPULSE19,
+	UB_IMPULSE20,
+	UB_IMPULSE21,
+	UB_IMPULSE22,
+	UB_IMPULSE23,
+	UB_IMPULSE24,
+	UB_IMPULSE25,
+	UB_IMPULSE26,
+	UB_IMPULSE27,
+	UB_IMPULSE28,
+	UB_IMPULSE29,
+	UB_IMPULSE30,
+	UB_IMPULSE31,
+	UB_IMPULSE32,
+	UB_IMPULSE33,
+	UB_IMPULSE34,
+	UB_IMPULSE35,
+	UB_IMPULSE36,
+	UB_IMPULSE37,
+	UB_IMPULSE38,
+	UB_IMPULSE39,
+	UB_IMPULSE40,
+	UB_IMPULSE41,
+	UB_IMPULSE42,
+	UB_IMPULSE43,
+	UB_IMPULSE44,
+	UB_IMPULSE45,
+	UB_IMPULSE46,
+	UB_IMPULSE47,
+	UB_IMPULSE48,
+	UB_IMPULSE49,
+	UB_IMPULSE50,
+	UB_IMPULSE51,
+	UB_IMPULSE52,
+	UB_IMPULSE53,
+	UB_IMPULSE54,
+	UB_IMPULSE55,
+	UB_IMPULSE56,
+	UB_IMPULSE57,
+	UB_IMPULSE58,
+	UB_IMPULSE59,
+	UB_IMPULSE60,
+	UB_IMPULSE61,
+	UB_IMPULSE62,
+	UB_IMPULSE63,
+
+	UB_MAX_BUTTONS
+};
+
+class userCmdString_t {
+	constructor($string: string, button: usercmdButton_t) {
+		this.$string = $string;
+		this.button = button;
+	}
+	$string: string;
+	button: usercmdButton_t;
+}
+
+var userCmdStrings = [
+	new userCmdString_t( "_moveUp",			usercmdButton_t.UB_UP ),
+	new userCmdString_t( "_moveDown",		usercmdButton_t.UB_DOWN ),
+	new userCmdString_t( "_left",			usercmdButton_t.UB_LEFT ),
+	new userCmdString_t( "_right",			usercmdButton_t.UB_RIGHT ),
+	new userCmdString_t( "_forward",		usercmdButton_t.UB_FORWARD ),
+	new userCmdString_t( "_back",			usercmdButton_t.UB_BACK ),
+	new userCmdString_t( "_lookUp",			usercmdButton_t.UB_LOOKUP ),
+	new userCmdString_t( "_lookDown",		usercmdButton_t.UB_LOOKDOWN ),
+	new userCmdString_t( "_strafe",			usercmdButton_t.UB_STRAFE ),
+	new userCmdString_t( "_moveLeft",		usercmdButton_t.UB_MOVELEFT ),
+	new userCmdString_t( "_moveRight",		usercmdButton_t.UB_MOVERIGHT ),
+
+	new userCmdString_t( "_attack",			usercmdButton_t.UB_ATTACK ),
+	new userCmdString_t( "_speed",			usercmdButton_t.UB_SPEED ),
+	new userCmdString_t( "_zoom",			usercmdButton_t.UB_ZOOM ),
+	new userCmdString_t( "_showScores",		usercmdButton_t.UB_SHOWSCORES ),
+	new userCmdString_t( "_mlook",			usercmdButton_t.UB_MLOOK ),
+
+	new userCmdString_t( "_button0",		usercmdButton_t.UB_BUTTON0 ),
+	new userCmdString_t( "_button1",		usercmdButton_t.UB_BUTTON1 ),
+	new userCmdString_t( "_button2",		usercmdButton_t.UB_BUTTON2 ),
+	new userCmdString_t( "_button3",		usercmdButton_t.UB_BUTTON3 ),
+	new userCmdString_t( "_button4",		usercmdButton_t.UB_BUTTON4 ),
+	new userCmdString_t( "_button5",		usercmdButton_t.UB_BUTTON5 ),
+	new userCmdString_t( "_button6",		usercmdButton_t.UB_BUTTON6 ),
+	new userCmdString_t( "_button7",		usercmdButton_t.UB_BUTTON7 ),
+
+	new userCmdString_t( "_impulse0",		usercmdButton_t.UB_IMPULSE0 ),
+	new userCmdString_t( "_impulse1",		usercmdButton_t.UB_IMPULSE1 ),
+	new userCmdString_t( "_impulse2",		usercmdButton_t.UB_IMPULSE2 ),
+	new userCmdString_t( "_impulse3",		usercmdButton_t.UB_IMPULSE3 ),
+	new userCmdString_t( "_impulse4",		usercmdButton_t.UB_IMPULSE4 ),
+	new userCmdString_t( "_impulse5",		usercmdButton_t.UB_IMPULSE5 ),
+	new userCmdString_t( "_impulse6",		usercmdButton_t.UB_IMPULSE6 ),
+	new userCmdString_t( "_impulse7",		usercmdButton_t.UB_IMPULSE7 ),
+	new userCmdString_t( "_impulse8",		usercmdButton_t.UB_IMPULSE8 ),
+	new userCmdString_t( "_impulse9",		usercmdButton_t.UB_IMPULSE9 ),
+	new userCmdString_t( "_impulse10",		usercmdButton_t.UB_IMPULSE10 ),
+	new userCmdString_t( "_impulse11",		usercmdButton_t.UB_IMPULSE11 ),
+	new userCmdString_t( "_impulse12",		usercmdButton_t.UB_IMPULSE12 ),
+	new userCmdString_t( "_impulse13",		usercmdButton_t.UB_IMPULSE13 ),
+	new userCmdString_t( "_impulse14",		usercmdButton_t.UB_IMPULSE14 ),
+	new userCmdString_t( "_impulse15",		usercmdButton_t.UB_IMPULSE15 ),
+	new userCmdString_t( "_impulse16",		usercmdButton_t.UB_IMPULSE16 ),
+	new userCmdString_t( "_impulse17",		usercmdButton_t.UB_IMPULSE17 ),
+	new userCmdString_t( "_impulse18",		usercmdButton_t.UB_IMPULSE18 ),
+	new userCmdString_t( "_impulse19",		usercmdButton_t.UB_IMPULSE19 ),
+	new userCmdString_t( "_impulse20",		usercmdButton_t.UB_IMPULSE20 ),
+	new userCmdString_t( "_impulse21",		usercmdButton_t.UB_IMPULSE21 ),
+	new userCmdString_t( "_impulse22",		usercmdButton_t.UB_IMPULSE22 ),
+	new userCmdString_t( "_impulse23",		usercmdButton_t.UB_IMPULSE23 ),
+	new userCmdString_t( "_impulse24",		usercmdButton_t.UB_IMPULSE24 ),
+	new userCmdString_t( "_impulse25",		usercmdButton_t.UB_IMPULSE25 ),
+	new userCmdString_t( "_impulse26",		usercmdButton_t.UB_IMPULSE26 ),
+	new userCmdString_t( "_impulse27",		usercmdButton_t.UB_IMPULSE27 ),
+	new userCmdString_t( "_impulse28",		usercmdButton_t.UB_IMPULSE28 ),
+	new userCmdString_t( "_impulse29",		usercmdButton_t.UB_IMPULSE29 ),
+	new userCmdString_t( "_impulse30",		usercmdButton_t.UB_IMPULSE30 ),
+	new userCmdString_t( "_impulse31",		usercmdButton_t.UB_IMPULSE31 ),
+	new userCmdString_t( "_impulse32",		usercmdButton_t.UB_IMPULSE32 ),
+	new userCmdString_t( "_impulse33",		usercmdButton_t.UB_IMPULSE33 ),
+	new userCmdString_t( "_impulse34",		usercmdButton_t.UB_IMPULSE34 ),
+	new userCmdString_t( "_impulse35",		usercmdButton_t.UB_IMPULSE35 ),
+	new userCmdString_t( "_impulse36",		usercmdButton_t.UB_IMPULSE36 ),
+	new userCmdString_t( "_impulse37",		usercmdButton_t.UB_IMPULSE37 ),
+	new userCmdString_t( "_impulse38",		usercmdButton_t.UB_IMPULSE38 ),
+	new userCmdString_t( "_impulse39",		usercmdButton_t.UB_IMPULSE39 ),
+	new userCmdString_t( "_impulse40",		usercmdButton_t.UB_IMPULSE40 ),
+	new userCmdString_t( "_impulse41",		usercmdButton_t.UB_IMPULSE41 ),
+	new userCmdString_t( "_impulse42",		usercmdButton_t.UB_IMPULSE42 ),
+	new userCmdString_t( "_impulse43",		usercmdButton_t.UB_IMPULSE43 ),
+	new userCmdString_t( "_impulse44",		usercmdButton_t.UB_IMPULSE44 ),
+	new userCmdString_t( "_impulse45",		usercmdButton_t.UB_IMPULSE45 ),
+	new userCmdString_t( "_impulse46",		usercmdButton_t.UB_IMPULSE46 ),
+	new userCmdString_t( "_impulse47",		usercmdButton_t.UB_IMPULSE47 ),
+	new userCmdString_t( "_impulse48",		usercmdButton_t.UB_IMPULSE48 ),
+	new userCmdString_t( "_impulse49",		usercmdButton_t.UB_IMPULSE49 ),
+	new userCmdString_t( "_impulse50",		usercmdButton_t.UB_IMPULSE50 ),
+	new userCmdString_t( "_impulse51",		usercmdButton_t.UB_IMPULSE51 ),
+	new userCmdString_t( "_impulse52",		usercmdButton_t.UB_IMPULSE52 ),
+	new userCmdString_t( "_impulse53",		usercmdButton_t.UB_IMPULSE53 ),
+	new userCmdString_t( "_impulse54",		usercmdButton_t.UB_IMPULSE54 ),
+	new userCmdString_t( "_impulse55",		usercmdButton_t.UB_IMPULSE55 ),
+	new userCmdString_t( "_impulse56",		usercmdButton_t.UB_IMPULSE56 ),
+	new userCmdString_t( "_impulse57",		usercmdButton_t.UB_IMPULSE57 ),
+	new userCmdString_t( "_impulse58",		usercmdButton_t.UB_IMPULSE58 ),
+	new userCmdString_t( "_impulse59",		usercmdButton_t.UB_IMPULSE59 ),
+	new userCmdString_t( "_impulse60",		usercmdButton_t.UB_IMPULSE60 ),
+	new userCmdString_t( "_impulse61",		usercmdButton_t.UB_IMPULSE61 ),
+	new userCmdString_t( "_impulse62",		usercmdButton_t.UB_IMPULSE62 ),
+	new userCmdString_t( "_impulse63",		usercmdButton_t.UB_IMPULSE63 ),
+
+	new userCmdString_t( null,				usercmdButton_t.UB_NONE )
+];
+
 // class buttonState_t {
 // public:
 //	int		on;
@@ -364,22 +368,22 @@ class idUsercmdGenLocal extends idUsercmdGen {
 //	buttonState_t	toggled_run;
 //	buttonState_t	toggled_zoom;
 //
-//	int				buttonState[UB_MAX_BUTTONS];
-//	bool			keyState[K_LAST_KEY];
-//
-//	int				inhibitCommands;	// true when in console or menu locally
-//	int				lastCommandTime;
-//
+	buttonState = new Int32Array(usercmdButton_t.UB_MAX_BUTTONS);
+	keyState = new Array<boolean>(keyNum_t.K_LAST_KEY);
+
+	inhibitCommands:boolean;	// true when in console or menu locally		  //int				
+	lastCommandTime: number;												  //int				
+
 	initialized: boolean;
 //
 //	usercmd_t		cmd;		// the current cmd being built
 //	usercmd_t		buffered[MAX_BUFFERED_USERCMD];
 //
 //	int				continuousMouseX, continuousMouseY;	// for gui event generatioin, never zerod
-//	int				mouseButton;						// for gui event generatioin
-//	bool			mouseDown;
+	mouseButton:number;						// for gui event generatioin //	int				
+	mouseDown:boolean;
 //
-//	int				mouseDx, mouseDy;	// added to by mouse events
+	mouseDx:number; mouseDy:number;	// added to by mouse events //int
 //	int				joystickAxis[MAX_JOYSTICK_AXIS];	// set by joystick events
 //
 //	static idCVar	in_yawSpeed;
@@ -805,26 +809,26 @@ class idUsercmdGenLocal extends idUsercmdGen {
 //	impulse = cmd.impulse;
 //
 //}
-//
-////=====================================================================
-//
-//
-///*
-//================
-//idUsercmdGenLocal::CommandStringUsercmdData
-//
-//Returns the button if the command string is used by the async usercmd generator.
-//================
-//*/
-//int	idUsercmdGenLocal::CommandStringUsercmdData( const char *cmdString ) {
-//	for ( userCmdString_t *ucs = userCmdStrings ; ucs->string ; ucs++ ) {
-//		if ( idStr::Icmp( cmdString, ucs->string ) == 0 ) {
-//			return ucs->button;
-//		}
-//	}
-//	return UB_NONE;
-//}
-//
+
+//=====================================================================
+
+
+/*
+================
+idUsercmdGenLocal::CommandStringUsercmdData
+
+Returns the button if the command string is used by the async usercmd generator.
+================
+*/
+	CommandStringUsercmdData ( cmdString: string ): number {
+		for ( var ucs = 0; userCmdStrings[ucs].$string; ucs++ ) {
+			if ( idStr.Icmp( cmdString, userCmdStrings[ucs].$string ) == 0 ) {
+				return userCmdStrings[ucs].button;
+			}
+		}
+		return usercmdButton_t.UB_NONE;
+	}
+
 /*
 ================
 idUsercmdGenLocal::Init
@@ -860,23 +864,25 @@ idUsercmdGenLocal::Init
 //void idUsercmdGenLocal::Shutdown( void ) {
 //	initialized = false;
 //}
-//
-///*
-//================
-//idUsercmdGenLocal::Clear
-//================
-//*/
-//void idUsercmdGenLocal::Clear( void ) {
-//	// clears all key states 
-//	memset( buttonState, 0, sizeof( buttonState ) );
-//	memset( keyState, false, sizeof( keyState ) );
-//
-//	inhibitCommands = false;
-//
-//	mouseDx = mouseDy = 0;
-//	mouseButton = 0;
-//	mouseDown = false;
-//}
+
+/*
+================
+idUsercmdGenLocal::Clear
+================
+*/
+	Clear ( ): void {
+		// clears all key states 
+		memset( this.buttonState, 0, sizeof( this.buttonState ) );
+		for ( var i = 0; i < this.keyState.length; i++ ) {
+			this.keyState[i] = false;
+		}
+
+		this.inhibitCommands = false;
+
+		this.mouseDx = this.mouseDy = 0;
+		this.mouseButton = 0;
+		this.mouseDown = false;
+	}
 //
 ///*
 //================
@@ -900,13 +906,13 @@ idUsercmdGenLocal::Init
 //	// it is in the async code and com_ticNumber hasn't been updated yet,
 //	// but all other code should never ask for anything > com_ticNumber
 //	if ( ticNumber > com_ticNumber+1 ) {
-//		common->Error( "idUsercmdGenLocal::TicCmd ticNumber > com_ticNumber" );
+//		common.Error( "idUsercmdGenLocal::TicCmd ticNumber > com_ticNumber" );
 //	}
 //
 //	if ( ticNumber <= com_ticNumber - MAX_BUFFERED_USERCMD ) {
 //		// this can happen when something in the game code hitches badly, allowing the
 //		// async code to overflow the buffers
-//		//common->Printf( "warning: idUsercmdGenLocal::TicCmd ticNumber <= com_ticNumber - MAX_BUFFERED_USERCMD\n" );
+//		//common.Printf( "warning: idUsercmdGenLocal::TicCmd ticNumber <= com_ticNumber - MAX_BUFFERED_USERCMD\n" );
 //	}
 //
 //	return buffered[ ticNumber & (MAX_BUFFERED_USERCMD-1) ];

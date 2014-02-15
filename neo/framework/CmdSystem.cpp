@@ -478,9 +478,11 @@ void idCmdSystemLocal::ExecuteTokenizedString( const idCmdArgs &args ) {
 		if ( idStr::Icmp( args.Argv( 0 ), cmd->name ) == 0 ) {
 			// rearrange the links so that the command will be
 			// near the head of the list next time it is used
+#ifndef JS_CHANGES
 			*prev = cmd->next;
 			cmd->next = commands;
 			commands = cmd;
+#endif
 
 			if ( ( cmd->flags & (CMD_FL_CHEAT|CMD_FL_TOOL) ) && session && session->IsMultiplayer() && !cvarSystem->GetCVarBool( "net_allowCheats" ) ) {
 				common->Printf( "Command '%s' not valid in multiplayer mode.\n", cmd->name );

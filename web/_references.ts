@@ -435,6 +435,8 @@
 /// <reference path="doomdll/framework/async/networksystem.cpp.ts" />
 /// <reference path="doomdll/framework/async/serverscan.cpp.ts" />
 
+/// <reference path="doomdll/framework/KeyInput.cpp.ts" />
+
 //// The editor entry points are always declared, but may just be
 //// stubbed out on non-windows platforms.
 //#include "../tools/edit_public.h"
