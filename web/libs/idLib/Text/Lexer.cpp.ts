@@ -969,8 +969,8 @@ class idLexer {
 			return 0;
 		}
 		// succesfully read a token
-		dlog(DEBUG_Lexer, "RT: %s\n", token.$.data);
-		dlog(DEBUG_COMPILER, "RT : %s\n", token.$.data);
+		dlog(DEBUG_Lexer, "RT: %i, %s\n", this.line , token.$.data);
+		dlog(DEBUG_COMPILER, "RT: %i, %s\n", this.line , token.$.data);
 		return 1;
 	}
 
@@ -1708,6 +1708,7 @@ class idLexer {
 		this.allocated = 1/*true*/;
 		this.loaded = 1/*true*/;
 
+		dlog(DEBUG_COMPILER, "LoadFile: %s\n", filename);
 		return /*true*/1;
 	}
 

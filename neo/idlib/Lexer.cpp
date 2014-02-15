@@ -909,8 +909,8 @@ int idLexer::ReadToken( idToken *token ) {
 	}
 
 	// succesfully read a token
-	//dlog(DEBUG_Lexer, "RT: %s\n", token->data);
-	dlog(DEBUG_COMPILER, "RT: %s\n", token->data);
+	//dlog(DEBUG_Lexer, RT: %i, %s\n", line,, token->data);
+	dlog(DEBUG_COMPILER, "RT: %i, %s\n", line, token->data);
 	return 1;
 }
 
@@ -1638,6 +1638,7 @@ int idLexer::LoadFile( const char *filename, bool OSPath ) {
 	idLexer::allocated = true;
 	idLexer::loaded = true;
 
+	dlog(DEBUG_COMPILER, "LoadFile: %s\n", filename);
 	return true;
 }
 
