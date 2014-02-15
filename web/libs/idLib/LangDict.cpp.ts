@@ -123,6 +123,8 @@ Load( fileName:string, clear:boolean /* _D3XP */ ) {
 		// let whoever called us deal with the failure (so sys_lang can be reset)
 		return false;
 	}
+
+	// todo: read unicode e.g. é becomes Ã©
 	src.LoadMemory(buffer.$.toString(), /*strlen( buffer )*/buffer.$.length, fileName );
 	if ( !src.IsLoaded() ) {
 		return false;

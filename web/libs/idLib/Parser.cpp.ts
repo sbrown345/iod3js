@@ -676,7 +676,7 @@ idParser::ReadSourceToken
 			common.FatalError( "idParser::ReadSourceToken: not loaded" );
 			return 0 /*false*/;
 		}
-		dlog(DEBUG_COMPILER, "ReadSourceToken data: %s\n", token.$.c_str());
+
 		changedScript = 0;
 		// if there's no token already available
 		while ( !this.tokens ) {

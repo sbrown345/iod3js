@@ -825,8 +825,6 @@ int idLexer::ReadToken( idToken *token ) {
 		return 0;
 	}
 
-	dlog(DEBUG_COMPILER, "ReadToken data: %s\n", token->c_str());
-
 	// if there is a token available (from unreadToken)
 	if ( tokenavailable ) {
 		tokenavailable = 0;
@@ -911,7 +909,8 @@ int idLexer::ReadToken( idToken *token ) {
 	}
 
 	// succesfully read a token
-	//dlog(DEBUG_Lexer, "t: %s\n", token->data);
+	//dlog(DEBUG_Lexer, "RT: %s\n", token->data);
+	dlog(DEBUG_COMPILER, "RT: %s\n", token->data);
 	return 1;
 }
 
