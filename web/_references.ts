@@ -413,6 +413,8 @@
 //#include "../framework/Console.h"
 /// <reference path="doomdll/framework/console.h.ts" />
 /// <reference path="doomdll/framework/console.cpp.ts" />
+/// <reference path="doomdll/framework/EditField.cpp.ts" />
+/// <reference path="doomdll/framework/KeyInput.cpp.ts" />
 //#include "../framework/DemoFile.h"
 //#include "../framework/Session.h"
 /// <reference path="doomdll/framework/session.h.ts" />
@@ -435,7 +437,6 @@
 /// <reference path="doomdll/framework/async/networksystem.cpp.ts" />
 /// <reference path="doomdll/framework/async/serverscan.cpp.ts" />
 
-/// <reference path="doomdll/framework/KeyInput.cpp.ts" />
 
 //// The editor entry points are always declared, but may just be
 //// stubbed out on non-windows platforms.

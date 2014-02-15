@@ -86,12 +86,12 @@ class idConsoleLocal extends idConsole {
 	keyCatching:boolean;
 //
 //	short				text[CON_TEXTSIZE];
-//	int					current;		// line where next message will be printed
-//	int					x;				// offset in current line for next print
-//	int					display;		// bottom of console displays this line
-//	int					lastKeyEvent;	// time of last key event for scroll delay
-//	int					nextKeyEvent;	// keyboard repeat rate
-//
+	current:number;		// line where next message will be printed		int					
+	x: number;				// offset in current line for next print		int					
+	display: number;		// bottom of console displays this line			int					
+	lastKeyEvent: number;	// time of last key event for scroll delay		int					
+	nextKeyEvent: number;	// keyboard repeat rate							int					
+
 //	float				displayFrac;	// approaches finalFrac at scr_conspeed
 //	float				finalFrac;		// 0.0 to 1.0 lines of console to display
 //	int					fracTime;		// time of last displayFrac update
@@ -102,13 +102,13 @@ class idConsoleLocal extends idConsole {
 //									// for transparent notify lines
 //	idVec4				color;
 //
-//	idEditField			historyEditLines[COMMAND_HISTORY];
+	historyEditLines = newStructArray<idEditField>(idEditField,COMMAND_HISTORY);
 //
 //	int					nextHistoryLine;// the last line in the history buffer, not masked
 //	int					historyLine;	// the line being displayed from history buffer
 //									// will be <= nextHistoryLine
 //
-//	idEditField			consoleField;
+	consoleField = new idEditField;
 //
 //	static idCVar		con_speed;
 //	static idCVar		con_notifyTime;
@@ -373,7 +373,7 @@ idConsoleLocal::Init
 		}
 
 		cmdSystem.AddCommand( "clear", idConsoleLocal.Con_Clear_f, cmdFlags_t.CMD_FL_SYSTEM, "clears the console" );
-		cmdSystem.AddCommand( "conDump", this.Con_Dump_f, cmdFlags_t.CMD_FL_SYSTEM, "dumps the console text to a file" );
+		cmdSystem.AddCommand( "conDump", idConsoleLocal.Con_Dump_f, cmdFlags_t.CMD_FL_SYSTEM, "dumps the console text to a file" );
 	}
 
 ///*

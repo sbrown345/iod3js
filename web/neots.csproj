@@ -111,6 +111,7 @@
     <TypeScriptCompile Include="DoomDLL\Framework\DemoFile.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Framework\DemoFile.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Framework\EventLoop.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\EditField.cpp.ts" />
     <Content Include="DoomDLL\Framework\File.cpp.ts" />
     <Content Include="DoomDLL\Framework\File.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\draw_common.cpp.ts" />
