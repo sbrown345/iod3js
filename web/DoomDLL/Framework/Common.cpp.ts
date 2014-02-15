@@ -823,7 +823,7 @@ doom set test blah + map test
 */
 
 	MAX_CONSOLE_LINES = 32;
-/*int			*/com_numConsoleLines:number;
+/*int*/com_numConsoleLines:number;
 	com_consoleLines = newStructArray<idCmdArgs>(idCmdArgs, this.MAX_CONSOLE_LINES);
 
 /*
@@ -859,26 +859,26 @@ idCommonLocal::ParseCommandLine
 ////	com_numConsoleLines = 0;
 ////}
 
-/////*
-////==================
-////idCommonLocal::SafeMode
+/*
+==================
+idCommonLocal::SafeMode
 
-////Check for "safe" on the command line, which will
-////skip loading of config file (DoomConfig.cfg)
-////==================
-////*/
-////bool idCommonLocal::SafeMode( void ) {
-////	int			i;
+Check for "safe" on the command line, which will
+skip loading of config file (DoomConfig.cfg)
+==================
+*/
+SafeMode( ):boolean {
+	var/*int*/i:number;
 
-////	for ( i = 0 ; i < com_numConsoleLines ; i++ ) {
-////		if ( !idStr::Icmp( com_consoleLines[ i ].Argv(0), "safe" )
-////			|| !idStr::Icmp( com_consoleLines[ i ].Argv(0), "cvar_restart" ) ) {
-////			com_consoleLines[ i ].Clear();
-////			return true;
-////		}
-////	}
-////	return false;
-////}
+	for ( i = 0 ; i < this.com_numConsoleLines ; i++ ) {
+		if ( !idStr.Icmp( this.com_consoleLines[ i ].Argv(0), "safe" )
+			|| !idStr.Icmp( this.com_consoleLines[ i ].Argv(0), "cvar_restart" ) ) {
+			this.com_consoleLines[ i ].Clear();
+			return true;
+		}
+	}
+	return false;
+}
 
 /////*
 ////==================
@@ -892,26 +892,26 @@ idCommonLocal::ParseCommandLine
 ////	int			i;
 
 ////	for ( i = 0 ; i < com_numConsoleLines ; i++ ) {
-////		if ( !idStr::Icmp( com_consoleLines[ i ].Argv(0), "guieditor" ) ) {
+////		if ( !idStr.Icmp( this.com_consoleLines[ i ].Argv(0), "guieditor" ) ) {
 ////			com_editors |= EDITOR_GUI;
 ////		}
-////		else if ( !idStr::Icmp( com_consoleLines[ i ].Argv(0), "debugger" ) ) {
+////		else if ( !idStr.Icmp( this.com_consoleLines[ i ].Argv(0), "debugger" ) ) {
 ////			com_editors |= EDITOR_DEBUGGER;
 ////		}
-////		else if ( !idStr::Icmp( com_consoleLines[ i ].Argv(0), "editor" ) ) {
+////		else if ( !idStr.Icmp( this.com_consoleLines[ i ].Argv(0), "editor" ) ) {
 ////			com_editors |= EDITOR_RADIANT;
 ////		}
 ////		// Nerve: Add support for the material editor
-////		else if ( !idStr::Icmp( com_consoleLines[ i ].Argv(0), "materialEditor" ) ) {
+////		else if ( !idStr.Icmp( this.com_consoleLines[ i ].Argv(0), "materialEditor" ) ) {
 ////			com_editors |= EDITOR_MATERIAL;
 ////		}
 		
-////		if ( !idStr::Icmp( com_consoleLines[ i ].Argv(0), "renderbump" )
-////			|| !idStr::Icmp( com_consoleLines[ i ].Argv(0), "editor" )
-////			|| !idStr::Icmp( com_consoleLines[ i ].Argv(0), "guieditor" )
-////			|| !idStr::Icmp( com_consoleLines[ i ].Argv(0), "debugger" )
-////			|| !idStr::Icmp( com_consoleLines[ i ].Argv(0), "dmap" )
-////			|| !idStr::Icmp( com_consoleLines[ i ].Argv(0), "materialEditor" )
+////		if ( !idStr.Icmp( this.com_consoleLines[ i ].Argv(0), "renderbump" )
+////			|| !idStr.Icmp( this.com_consoleLines[ i ].Argv(0), "editor" )
+////			|| !idStr.Icmp( this.com_consoleLines[ i ].Argv(0), "guieditor" )
+////			|| !idStr.Icmp( this.com_consoleLines[ i ].Argv(0), "debugger" )
+////			|| !idStr.Icmp( this.com_consoleLines[ i ].Argv(0), "dmap" )
+////			|| !idStr.Icmp( this.com_consoleLines[ i ].Argv(0), "materialEditor" )
 ////			) {
 ////			cvarSystem.SetCVarBool( "r_fullscreen", false );
 ////			return;
@@ -978,16 +978,16 @@ be after execing the config and default.
 ////	added = false;
 ////	// quote every token, so args with semicolons can work
 ////	for ( i = 0; i < com_numConsoleLines; i++ ) {
-////		if ( !com_consoleLines[i].Argc() ) {
+////		if ( !this.com_consoleLines[i].Argc() ) {
 ////			continue;
 ////		}
 
 ////		// set commands won't override menu startup
-////		if ( idStr::Icmpn( com_consoleLines[i].Argv(0), "set", 3 ) ) {
+////		if ( idStr::Icmpn( this.com_consoleLines[i].Argv(0), "set", 3 ) ) {
 ////			added = true;
 ////		}
 ////		// directly as tokenized so nothing gets screwed
-////		cmdSystem.BufferCommandArgs( CMD_EXEC_APPEND, com_consoleLines[i] );
+////		cmdSystem.BufferCommandArgs( CMD_EXEC_APPEND, this.com_consoleLines[i] );
 ////	}
 
 ////	return added;
@@ -1561,7 +1561,7 @@ be after execing the config and default.
 ////		return;
 ////	}
 
-////	if ( args.Argc() > 1 && idStr::Icmp( args.Argv( 1 ), "menu" ) == 0 ) {
+////	if ( args.Argc() > 1 && idStr.Icmp( args.Argv( 1 ), "menu" ) == 0 ) {
 ////		menu = true;
 ////	}
 
@@ -1604,7 +1604,7 @@ idCommonLocal::GetLanguageDict
 ////		temp = (*list)[i];
 ////		temp = temp.Right(temp.Length()-strlen("strings/"));
 ////		temp = temp.Left(lang.Length());
-////		if(idStr::Icmp(temp, lang) != 0) {
+////		if(idStr.Icmp(temp, lang) != 0) {
 ////			list.RemoveIndex(i);
 ////			i--;
 ////		}
@@ -2042,12 +2042,12 @@ InitLanguageDict( ):void {
 ////	bool dictUpdate = false;
 ////	bool write = false;
 
-////	if ( idStr::Icmp( args.Argv(1), "count" ) == 0 ) {
+////	if ( idStr.Icmp( args.Argv(1), "count" ) == 0 ) {
 ////		count = true;
-////	} else if ( idStr::Icmp( args.Argv(1), "dictupdate" ) == 0 ) {
+////	} else if ( idStr.Icmp( args.Argv(1), "dictupdate" ) == 0 ) {
 ////		count = true;
 ////		dictUpdate = true;
-////	} else if ( idStr::Icmp( args.Argv(1), "all" ) == 0 ) {
+////	} else if ( idStr.Icmp( args.Argv(1), "all" ) == 0 ) {
 ////		count = true;
 ////		dictUpdate = true;
 ////		write = true;
@@ -2116,7 +2116,7 @@ InitLanguageDict( ):void {
 ////	}
 
 ////	idFileList *files;
-////	if ( idStr::Icmp( args.Argv(1), "all" ) == 0 ) {
+////	if ( idStr.Icmp( args.Argv(1), "all" ) == 0 ) {
 ////		idStr game = cvarSystem.GetCVarString( "fs_game" );
 ////		if(game.Length()) {
 ////			files = fileSystem.ListFilesTree( "guis", "*.gui", true, game );
@@ -2970,27 +2970,27 @@ idCommonLocal::InitGame
 
 		this.PrintLoadingMessage( common.GetLanguageDict ( ).GetString( "#str_04345" ) );
 
-////	// exec the startup scripts
-////	cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "exec editor.cfg\n" );
-////	cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "exec default.cfg\n" );
+		// exec the startup scripts
+		cmdSystem.BufferCommandText( cmdExecution_t.CMD_EXEC_APPEND, "exec editor.cfg\n" );
+		cmdSystem.BufferCommandText( cmdExecution_t.CMD_EXEC_APPEND, "exec default.cfg\n" );
 
-////	// skip the config file if "safe" is on the command line
-////	if ( !SafeMode() ) {
-////		cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "exec " CONFIG_FILE "\n" );
-////	}
-////	cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "exec autoexec.cfg\n" );
+		// skip the config file if "safe" is on the command line
+		if ( !this.SafeMode() ) {
+			cmdSystem.BufferCommandText(cmdExecution_t.CMD_EXEC_APPEND, "exec " + CONFIG_FILE + "\n" );
+		}
+		cmdSystem.BufferCommandText(cmdExecution_t.CMD_EXEC_APPEND, "exec autoexec.cfg\n" );
 
-////	// reload the language dictionary now that we've loaded config files
-////	cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "reloadLanguage\n" );
+		// reload the language dictionary now that we've loaded config files
+		cmdSystem.BufferCommandText(cmdExecution_t.CMD_EXEC_APPEND, "reloadLanguage\n" );
 
-//	// run cfg execution
-//	cmdSystem.ExecuteCommandBuffer();
+		// run cfg execution
+		cmdSystem.ExecuteCommandBuffer();
 
-////	// re-override anything from the config files with command line args
-////	StartupVariable( NULL, false );
+		// re-override anything from the config files with command line args
+		this.StartupVariable( null, false );
 
-////	// if any archived cvars are modified after this, we will trigger a writing of the config file
-////	cvarSystem.ClearModifiedFlags( CVAR_ARCHIVE );
+		// if any archived cvars are modified after this, we will trigger a writing of the config file
+		cvarSystem.ClearModifiedFlags( CVAR_ARCHIVE );
 
 		// cvars are initialized, but not the rendering system. Allow preference startup dialog
 		Sys_DoPreferences ( );

@@ -1069,33 +1069,33 @@ timestamp can be NULL if not required
         // it from the journal file
         //if ( strstr( relativePath, ".cfg" ) == relativePath + strlen( relativePath ) - 4 ) {
         if ( relativePath.endsWith( ".cfg" ) ) {
-            todoThrow ( );
-            //isConfig = true;
-            //if ( eventLoop && eventLoop.JournalLevel() == 2 ) {
-            //	int		r;
+            isConfig = true;
+            if ( eventLoop && eventLoop.JournalLevel() == 2 ) {
+				todoThrow();
+            	//int		r;
 
-            //	this.loadCount++;
-            //	this.loadStack++;
+            	//this.loadCount++;
+            	//this.loadStack++;
 
-            //	common.DPrintf( "Loading %s from journal file.\n", relativePath );
-            //	len = 0;
-            //	r = eventLoop.com_journalDataFile.Read( &len, sizeof( len ) );
-            //	if ( r != sizeof( len ) ) {
-            //		*buffer = NULL;
-            //		return -1;
-            //	}
-            //	buf = (byte *)Mem_ClearedAlloc(len+1);
-            //	*buffer = buf;
-            //	r = eventLoop.com_journalDataFile.Read( buf, len );
-            //	if ( r != len ) {
-            //		common.FatalError( "Read from journalDataFile failed" );
-            //	}
+            	//common.DPrintf( "Loading %s from journal file.\n", relativePath );
+            	//len = 0;
+            	//r = eventLoop.com_journalDataFile.Read( &len, sizeof( len ) );
+            	//if ( r != sizeof( len ) ) {
+            	//	*buffer = NULL;
+            	//	return -1;
+            	//}
+            	//buf = (byte *)Mem_ClearedAlloc(len+1);
+            	//*buffer = buf;
+            	//r = eventLoop.com_journalDataFile.Read( buf, len );
+            	//if ( r != len ) {
+            	//	common.FatalError( "Read from journalDataFile failed" );
+            	//}
 
-            //	// guarantee that it will have a trailing 0 for string operations
-            //	buf[len] = 0;
+            	//// guarantee that it will have a trailing 0 for string operations
+            	//buf[len] = 0;
 
-            //	return len;
-            //}
+            	//return len;
+            }
         } else {
             isConfig = false;
         }

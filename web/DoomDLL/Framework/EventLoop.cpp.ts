@@ -52,16 +52,17 @@ class idEventLoop {
 	//
 	//					// Returns the journal level, 1 = record, 2 = play back.
 	//	int				JournalLevel( void ) const;
-	
+
 	// Journal file.
 	com_journalFile: idFile;
 	com_journalDataFile: idFile;
-	
+
 	//private:
 	//					// all events will have this subtracted from their time
-	initialTimeOffset:number;	//	int				
+	initialTimeOffset: number; //	int				
 	//
-	com_pushedEventsHead:number; com_pushedEventsTail:number;//	int				
+	com_pushedEventsHead: number;
+	com_pushedEventsTail: number; //	int				
 	//	sysEvent_t		com_pushedEvents[MAX_PUSHED_EVENTS];
 	//
 	//	static idCVar	com_journal;
@@ -74,7 +75,7 @@ class idEventLoop {
 	//#include "../idlib/precompiled.h"
 	//#pragma hdrstop
 	//
-	static com_journal = new idCVar( "com_journal", "0", CVAR_INIT|CVAR_SYSTEM, "1 = record journal, 2 = play back journal", 0, 2, ArgCompletion_Integer_Template(0,2) );
+	static com_journal = new idCVar( "com_journal", "0", CVAR_INIT | CVAR_SYSTEM, "1 = record journal, 2 = play back journal", 0, 2, ArgCompletion_Integer_Template( 0, 2 ) );
 	//
 	//
 	//
@@ -83,12 +84,12 @@ class idEventLoop {
 	idEventLoop::idEventLoop
 	=================
 	*/
-	constructor() {
+	constructor ( ) {
 		this.com_journalFile = null;
 		this.com_journalDataFile = null;
 		this.initialTimeOffset = 0;
 	}
-	
+
 	///*
 	//=================
 	//idEventLoop::~idEventLoop
@@ -107,7 +108,7 @@ class idEventLoop {
 	//	sysEvent_t	ev;
 	//
 	//	// either get an event from the system or the journal file
-	//	if ( com_journal.GetInteger() == 2 ) {
+	//	if ( idEventLoop.com_journal.GetInteger() == 2 ) {
 	//		r = com_journalFile.Read( &ev, sizeof(ev) );
 	//		if ( r != sizeof(ev) ) {
 	//			common.FatalError( "Error reading from journal file" );
@@ -123,7 +124,7 @@ class idEventLoop {
 	//		ev = Sys_GetEvent();
 	//
 	//		// write the journal value out if needed
-	//		if ( com_journal.GetInteger() == 1 ) {
+	//		if ( idEventLoop.com_journal.GetInteger() == 1 ) {
 	//			r = com_journalFile.Write( &ev, sizeof(ev) );
 	//			if ( r != sizeof(ev) ) {
 	//				common.FatalError( "Error writing to journal file" );
@@ -290,9 +291,9 @@ class idEventLoop {
 	Can be used for profiling, but will be journaled accurately
 	================
 	*/
-	Milliseconds(): number {
+	Milliseconds ( ): number {
 		//#if 1	// FIXME!
-		return Sys_Milliseconds() - this.initialTimeOffset;
+		return Sys_Milliseconds ( ) - this.initialTimeOffset;
 		//#else
 		//	sysEvent_t	ev;
 
@@ -309,14 +310,14 @@ class idEventLoop {
 		//#endif
 	}
 
-	///*
-//================
-//idEventLoop::JournalLevel
-//================
-//*/
-//int idEventLoop::JournalLevel( void ) const {
-//	return com_journal.GetInteger();
-//}
+/*
+================
+idEventLoop::JournalLevel
+================
+*/
+	JournalLevel ( ): number {
+		return idEventLoop.com_journal.GetInteger ( );
+	}
 }
 
 

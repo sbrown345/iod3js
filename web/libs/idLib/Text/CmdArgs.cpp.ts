@@ -40,9 +40,15 @@
 ////*/
 
 class idCmdArgs {
-	////public:
-	////							idCmdArgs( void ) { argc = 0; }
-	////							idCmdArgs( const char *text, bool keepAsStrings ) { TokenizeString( text, keepAsStrings ); }
+	//public:
+	constructor ( )
+	constructor ( text: string, keepAsStrings: boolean )
+	constructor ( text?: string, keepAsStrings?: boolean ) {
+		this.argc = 0;
+		if ( arguments.length === 2 ) {
+			this.TokenizeString( text, keepAsStrings );
+		}
+	}
 
 	////	void					operator=( const idCmdArgs &args );
 
@@ -60,7 +66,7 @@ class idCmdArgs {
 	////	void					TokenizeString( const char *text, bool keepAsStrings );
 
 	////	void					AppendArg( const char *text );
-	////	void					Clear( void ) { argc = 0; }
+	Clear ( ): void { this.argc = 0; }
 	////	const char **			GetArgs( int *argc );
 
 	////private:
@@ -90,54 +96,55 @@ class idCmdArgs {
 ////	}
 ////}
 
-/////*
-////============
-////idCmdArgs::Args
-////============
-////*/
-////const char *idCmdArgs::Args(  int start, int end, bool escapeArgs ) const {
-////	static char cmd_args[MAX_COMMAND_STRING];
-////	int		i;
+/*
+============
+idCmdArgs::Args
+============
+*/
+//static char cmd_args[MAX_COMMAND_STRING];
+	Args ( /*int*/ start = 1, /*int*/ end = -1, escapeArgs = false ): string {
+		var /*int		*/i: number;
+		todoThrow ( );
+		return "todo: idCmdArgs::Args";
+		//if ( end < 0 ) {
+		//	end = this.argc - 1;
+		//} else if ( end >= this.argc ) {
+		//	end = this.argc - 1;
+		//}
+		//var cmd_args[0] = '\0';
+		//if ( escapeArgs ) {
+		//	strcat( cmd_args, "\"" );
+		//}
+		//for ( i = start; i <= end; i++ ) {
+		//	if ( i > start ) {
+		//		if ( escapeArgs ) {
+		//			strcat( cmd_args, "\" \"" );
+		//		} else {
+		//			strcat( cmd_args, " " );
+		//		}
+		//	}
+		//	if ( escapeArgs && strchr( argv[i], '\\' ) ) {
+		//		char *p = argv[i];
+		//		while ( *p != '\0' ) {
+		//			if ( *p == '\\' ) {
+		//				strcat( cmd_args, "\\\\" );
+		//			} else {
+		//				int l = strlen( cmd_args );
+		//				cmd_args[ l ] = *p;
+		//				cmd_args[ l+1 ] = '\0';
+		//			}
+		//			p++;
+		//		}
+		//	} else {
+		//		strcat( cmd_args, argv[i] );
+		//	}
+		//}
+		//if ( escapeArgs ) {
+		//	strcat( cmd_args, "\"" );
+		//}
 
-////	if ( end < 0 ) {
-////		end = this.argc - 1;
-////	} else if ( end >= this.argc ) {
-////		end = this.argc - 1;
-////	}
-////	cmd_args[0] = '\0';
-////	if ( escapeArgs ) {
-////		strcat( cmd_args, "\"" );
-////	}
-////	for ( i = start; i <= end; i++ ) {
-////		if ( i > start ) {
-////			if ( escapeArgs ) {
-////				strcat( cmd_args, "\" \"" );
-////			} else {
-////				strcat( cmd_args, " " );
-////			}
-////		}
-////		if ( escapeArgs && strchr( argv[i], '\\' ) ) {
-////			char *p = argv[i];
-////			while ( *p != '\0' ) {
-////				if ( *p == '\\' ) {
-////					strcat( cmd_args, "\\\\" );
-////				} else {
-////					int l = strlen( cmd_args );
-////					cmd_args[ l ] = *p;
-////					cmd_args[ l+1 ] = '\0';
-////				}
-////				p++;
-////			}
-////		} else {
-////			strcat( cmd_args, argv[i] );
-////		}
-////	}
-////	if ( escapeArgs ) {
-////		strcat( cmd_args, "\"" );
-////	}
-
-////	return cmd_args;
-////}
+		//return cmd_args;
+	}
 
 /*
 ============

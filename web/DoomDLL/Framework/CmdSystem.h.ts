@@ -57,12 +57,12 @@ var CMD_FL_ALL				= -1,
     CMD_FL_TOOL				= BIT(5);	// tool command
 //} cmdFlags_t;
 
-//// parameters for command buffer stuffing
-//typedef enum {
-//	CMD_EXEC_NOW,						// don't return until completed
-//	CMD_EXEC_INSERT,					// insert at current position, but don't run yet
-//	CMD_EXEC_APPEND						// add to end of the command buffer (normal case)
-//} cmdExecution_t;
+// parameters for command buffer stuffing
+enum cmdExecution_t {
+	CMD_EXEC_NOW,						// don't return until completed
+	CMD_EXEC_INSERT,					// insert at current position, but don't run yet
+	CMD_EXEC_APPEND						// add to end of the command buffer (normal case)
+}
 
 //// command function
 //typedef void (*cmdFunction_t)( const idCmdArgs &args );

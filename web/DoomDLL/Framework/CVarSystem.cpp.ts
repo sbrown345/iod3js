@@ -704,33 +704,33 @@ idCVarSystemLocal::GetCVarInteger
 //	return 0.0;
 //}
 
-///*
-//============
-//idCVarSystemLocal::Command
-//============
-//*/
-//bool /*idCVarSystemLocal::*/Command( const idCmdArgs &args ) {
-//	idInternalCVar *internal;
+/*
+============
+idCVarSystemLocal::Command
+============
+*/
+	Command ( args: idCmdArgs ): boolean {
+		var internal: idInternalCVar;
 
-//	internal = FindInternal( args.Argv( 0 ) );
+		internal = this.FindInternal( args.Argv( 0 ) );
 
-//	if ( internal == NULL ) {
-//		return false;
-//	}
+		if ( internal == null ) {
+			return false;
+		}
 
-//	if ( args.Argc() == 1 ) {
-//		// print the variable
-//		common.Printf( "\"%s\" is:\"%s\"" S_COLOR_WHITE " default:\"%s\"\n",
-//					internal.nameString.c_str(), internal.valueString.c_str(), internal.resetString.c_str() );
-//		if ( idStr.Length( internal.GetDescription() ) > 0 ) {
-//			common.Printf( S_COLOR_WHITE "%s\n", internal.GetDescription() );
-//		}
-//	} else {
-//		// set the value
-//		internal.Set( args.Args(), false, false );
-//	}
-//	return true;
-//}
+		if ( args.Argc ( ) == 1 ) {
+			// print the variable
+			common.Printf( "\"%s\" is:\"%s\"" + S_COLOR_WHITE + " default:\"%s\"\n",
+				internal.nameString.c_str ( ), internal.valueString.c_str ( ), internal.resetString.c_str ( ) );
+			if ( idStr.Length( internal.GetDescription ( ) ) > 0 ) {
+				common.Printf( S_COLOR_WHITE + "%s\n", internal.GetDescription ( ) );
+			}
+		} else {
+			// set the value
+			internal.Set( args.Args ( ), false, false );
+		}
+		return true;
+	}
 
 ///*
 //============
@@ -773,23 +773,23 @@ SetModifiedFlags( /*int */flags:number ):void {
 	this.modifiedFlags |= flags;
 }
 
-///*
-//============
-//idCVarSystemLocal::GetModifiedFlags
-//============
-//*/
-//int /*idCVarSystemLocal::*/GetModifiedFlags( void ) const {
-//	return this.modifiedFlags;
-//}
+/*
+============
+idCVarSystemLocal::GetModifiedFlags
+============
+*/
+	GetModifiedFlags ( ): number {
+		return this.modifiedFlags;
+	}
 
-///*
-//============
-//idCVarSystemLocal::ClearModifiedFlags
-//============
-//*/
-//void /*idCVarSystemLocal::*/ClearModifiedFlags( int flags ) {
-//	this.modifiedFlags &= ~flags;
-//}
+/*
+============
+idCVarSystemLocal::ClearModifiedFlags
+============
+*/
+	ClearModifiedFlags ( /*int */flags: number ): void {
+		this.modifiedFlags &= ~flags;
+	}
 
 ///*
 //============

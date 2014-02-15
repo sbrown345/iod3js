@@ -84,20 +84,20 @@ class /*idCmdSystemLocal*/ idCmdSystem {
 ////	void					SetWait( int numFrames ) { wait = numFrames; }
 ////	commandDef_t *			GetCommands( void ) const { return commands; }
 
-////private:
-////	static const int		MAX_CMD_BUFFER = 0x10000;
+//private:
+	static MAX_CMD_BUFFER = 0x10000;
 
     commands: commandDef_t; ////	commandDef_t *			commands;
 
-////	int						wait;
-/*int*/						textLength:number;
-////	byte					textBuf[MAX_CMD_BUFFER];
+	wait: number/*int*/;
+	textLength: number/*int*/;
+	textBuf = "";//new Uint8Array(idCmdSystem.MAX_CMD_BUFFER);
 
     completionString:string /*idStr*/;
 ////	idStrList				completionParms;
 
-////	// piggybacks on the text buffer, avoids tokenize again and screwing it up
-////	idList<idCmdArgs>		tokenizedCmds;
+	// piggybacks on the text buffer, avoids tokenize again and screwing it up
+	tokenizedCmds = new idList<idCmdArgs>(idCmdArgs);
 
 ////	// a command stored to be executed after a reloadEngine and all associated commands have been processed
 ////	idCmdArgs				postReload;
@@ -132,7 +132,7 @@ class /*idCmdSystemLocal*/ idCmdSystem {
 ////// NOTE: the const wonkyness is required to make msvc happy
 ////template<>
 ////ID_INLINE int idListSortCompare( const commandDef_t * const *a, const commandDef_t * const *b ) {
-////	return idStr::Icmp( (*a).name, (*b).name );
+////	return idStr.Icmp( (*a).name, (*b).name );
 ////}
 
 ////void idCmdSystemLocal::ListByFlags( const idCmdArgs &args, cmdFlags_t flags ) {
@@ -235,30 +235,29 @@ ToolList_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
 idCmdSystemLocal::Exec_f
 ===============
 */
-Exec_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
-    todoThrow();
-	////char *	f;
-	////int		len;
-	////idStr	filename;
+	Exec_f ( /*const idCmdArgs &*/args: idCmdArgs ): void {
+		var f = new R<Uint8Array> ( );
+		var /*int*/len: number;
+		var filename = new idStr;
 
-	////if ( args.Argc () != 2 ) {
-	////	common.Printf( "exec <filename> : execute a script file\n" );
-	////	return;
-	////}
+		if ( args.Argc ( ) != 2 ) {
+			common.Printf( "exec <filename> : execute a script file\n" );
+			return;
+		}
 
-	////filename = args.Argv(1);
-	////filename.DefaultFileExtension( ".cfg" );
-	////len = fileSystem.ReadFile( filename, reinterpret_cast<void **>(&f), NULL );
-	////if ( !f ) {
-	////	common.Printf( "couldn't exec %s\n", args.Argv(1) );
-	////	return;
-	////}
-	////common.Printf( "execing %s\n", args.Argv(1) );
-	
-	////cmdSystemLocal.BufferCommandText( CMD_EXEC_INSERT, f );
+		filename.equals( args.Argv( 1 ) );
+		filename.DefaultFileExtension( ".cfg" );
+		len = fileSystem.ReadFile( filename.data, /* reinterpret_cast<void **>(&f)*/f, null );
+		if ( !f.$ ) {
+			common.Printf( "couldn't exec %s\n", args.Argv( 1 ) );
+			return;
+		}
+		common.Printf( "execing %s\n", args.Argv( 1 ) );
 
-	////fileSystem.FreeFile( f );
-}
+		cmdSystemLocal.BufferCommandText( cmdExecution_t.CMD_EXEC_INSERT, f.$.toString() );
+
+		fileSystem.FreeFile( f.$ );
+	}
 
 /*
 ===============
@@ -267,19 +266,19 @@ idCmdSystemLocal::Vstr_f
 Inserts the current value of a cvar as command text
 ===============
 */
-Vstr_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
-    todoThrow();
-	////const char *v;
+	Vstr_f ( /*const idCmdArgs &*/args: idCmdArgs ): void {
+		todoThrow ( );
+		////const char *v;
 
-	////if ( args.Argc () != 2 ) {
-	////	common.Printf( "vstr <variablename> : execute a variable command\n" );
-	////	return;
-	////}
+		////if ( args.Argc () != 2 ) {
+		////	common.Printf( "vstr <variablename> : execute a variable command\n" );
+		////	return;
+		////}
 
-	////v = cvarSystem.GetCVarString( args.Argv( 1 ) );
+		////v = cvarSystem.GetCVarString( args.Argv( 1 ) );
 
-	////cmdSystemLocal.BufferCommandText( CMD_EXEC_APPEND, va( "%s\n", v ) );
-}
+		////cmdSystemLocal.BufferCommandText( CMD_EXEC_APPEND, va( "%s\n", v ) );
+	}
 
 /*
 ===============
@@ -370,7 +369,7 @@ Init(): void  {
 
 ////	completionString.Clear();
 ////	completionParms.Clear();
-////	tokenizedCmds.Clear();
+////	this.tokenizedCmds.Clear();
 ////	postReload.Clear();
 ////}
 
@@ -411,7 +410,7 @@ AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:id
 ////	commandDef_t *cmd, **last;
 
 ////	for ( last = &commands, cmd = *last; cmd; cmd = *last ) {
-////		if ( idStr::Cmp( cmdName, cmd.name ) == 0 ) {
+////		if ( idStr.Cmp( cmdName, cmd.name ) == 0 ) {
 ////			*last = cmd.next;
 ////			Mem_Free( cmd.name );
 ////			Mem_Free( cmd.description );
@@ -470,145 +469,149 @@ AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:id
 ////		if ( !cmd.argCompletion ) {
 ////			continue;
 ////		}
-////		if ( idStr::Icmp( args.Argv( 0 ), cmd.name ) == 0 ) {
+////		if ( idStr.Icmp( args.Argv( 0 ), cmd.name ) == 0 ) {
 ////			cmd.argCompletion( args, callback );
 ////			break;
 ////		}
 ////	}
 ////}
 
-/////*
-////============
-////idCmdSystemLocal::ExecuteTokenizedString
-////============
-////*/
-////void idCmdSystemLocal::ExecuteTokenizedString( /*const idCmdArgs &*/args:idCmdArgs ) {	
-////	commandDef_t *cmd, **prev;
-	
-////	// execute the command line
-////	if ( !args.Argc() ) {
-////		return;		// no tokens
-////	}
+/*
+============
+idCmdSystemLocal::ExecuteTokenizedString
+============
+*/
+	ExecuteTokenizedString ( /*const idCmdArgs &*/args: idCmdArgs ): void {
+		var cmd: commandDef_t, prev: commandDef_t;
 
-////	// check registered command functions	
-////	for ( prev = &commands; *prev; prev = &cmd.next ) {
-////		cmd = *prev;
-////		if ( idStr::Icmp( args.Argv( 0 ), cmd.name ) == 0 ) {
-////			// rearrange the links so that the command will be
-////			// near the head of the list next time it is used
-////			*prev = cmd.next;
-////			cmd.next = commands;
-////			commands = cmd;
+		// execute the command line
+		if ( !args.Argc ( ) ) {
+			return; // no tokens
+		}
 
-////			if ( ( cmd.flags & (CMD_FL_CHEAT|CMD_FL_TOOL) ) && session && session.IsMultiplayer() && !cvarSystem.GetCVarBool( "net_allowCheats" ) ) {
-////				common.Printf( "Command '%s' not valid in multiplayer mode.\n", cmd.name );
-////				return;
-////			}
-////			// perform the action
-////			if ( !cmd.function ) {
-////				break;
-////			} else {
-////				cmd.function( args );
-////			}
-////			return;
-////		}
-////	}
-	
-////	// check cvars
-////	if ( cvarSystem.Command( args ) ) {
-////		return;
-////	}
+		// check registered command functions	
+		for ( prev = this.commands; prev; prev = cmd.next ) {
+			cmd = prev;
+			if ( idStr.Icmp( args.Argv( 0 ), cmd.name ) == 0 ) {
+				// rearrange the links so that the command will be
+				// near the head of the list next time it is used
+				prev = cmd.next;
+				cmd.next = this.commands;
+				this.commands = cmd;
 
-////	common.Printf( "Unknown command '%s'\n", args.Argv( 0 ) );
-////}
+				if ( ( cmd.flags & ( CMD_FL_CHEAT | CMD_FL_TOOL ) ) && session && session.IsMultiplayer ( ) && !cvarSystem.GetCVarBool( "net_allowCheats" ) ) {
+					common.Printf( "Command '%s' not valid in multiplayer mode.\n", cmd.name );
+					return;
+				}
+				// perform the action
+				if ( !cmd.$function ) {
+					break;
+				} else {
+					cmd.$function( args );
+				}
+				return;
+			}
+		}
 
-/////*
-////============
-////idCmdSystemLocal::ExecuteCommandText
+		// check cvars
+		if ( cvarSystem.Command( args ) ) {
+			return;
+		}
 
-////Tokenizes, then executes.
-////============
-////*/
-////void idCmdSystemLocal::ExecuteCommandText( const char *text ) {	
-////	ExecuteTokenizedString( idCmdArgs( text, false ) );
-////}
+		common.Printf( "Unknown command '%s'\n", args.Argv( 0 ) );
+	}
 
-/////*
-////============
-////idCmdSystemLocal::InsertCommandText
+/*
+============
+idCmdSystemLocal::ExecuteCommandText
 
-////Adds command text immediately after the current command
-////Adds a \n to the text
-////============
-////*/
-////void idCmdSystemLocal::InsertCommandText( const char *text ) {
-////	int		len;
-////	int		i;
+Tokenizes, then executes.
+============
+*/
+	ExecuteCommandText ( text: string ): void {
+		this.ExecuteTokenizedString( new idCmdArgs( text, false ) );
+	}
 
-////	len = strlen( text ) + 1;
-////	if ( len + textLength > (int)sizeof( textBuf ) ) {
-////		common.Printf( "idCmdSystemLocal::InsertText: buffer overflow\n" );
-////		return;
-////	}
+/*
+============
+idCmdSystemLocal::InsertCommandText
 
-////	// move the existing command text
-////	for ( i = textLength - 1; i >= 0; i-- ) {
-////		textBuf[ i + len ] = textBuf[ i ];
-////	}
+Adds command text immediately after the current command
+Adds a \n to the text
+============
+*/
+	InsertCommandText ( text: string ): void {
+		var len: number;
+		var i: number;
 
-////	// copy the new text in
-////	memcpy( textBuf, text, len - 1 );
+		len = strlen( text ) + 1;
+		//if ( len + this.textLength > /*(int)*/ sizeof( this.textBuf ) ) {
+		//	common.Printf( "idCmdSystemLocal::InsertText: buffer overflow\n" );
+		//	return;
+		//}
 
-////	// add a \n
-////	textBuf[ len - 1 ] = '\n';
+		//// move the existing command text
+		//for ( i = this.textLength - 1; i >= 0; i-- ) {
+		//	this.textBuf[i + len] = this.textBuf[i];
+		//}
 
-////	textLength += len;
-////}
+		//// copy the new text in
+		//memcpy( this.textBuf, text.toUint8Array ( ), len - 1 );
 
-/////*
-////============
-////idCmdSystemLocal::AppendCommandText
+		//// add a \n
+		//this.textBuf[len - 1] = '\n'.charCodeAt( 0 );
 
-////Adds command text at the end of the buffer, does NOT add a final \n
-////============
-////*/
-////void idCmdSystemLocal::AppendCommandText( const char *text ) {
-////	int l;
-	
-////	l = strlen( text );
+		this.textBuf += text;
+		this.textBuf += '\n';
 
-////	if ( textLength + l >= (int)sizeof( textBuf ) ) {
-////		common.Printf( "idCmdSystemLocal::AppendText: buffer overflow\n" );
-////		return;
-////	}
-////	memcpy( textBuf + textLength, text, l );
-////	textLength += l;
-////}
+		this.textLength += len;
+	}
 
-/////*
-////============
-////idCmdSystemLocal::BufferCommandText
-////============
-////*/
-////void idCmdSystemLocal::BufferCommandText( cmdExecution_t exec, const char *text ) {
-////	switch( exec ) {
-////		case CMD_EXEC_NOW: {
-////			ExecuteCommandText( text );
-////			break;
-////		}
-////		case CMD_EXEC_INSERT: {
-////			InsertCommandText( text );
-////			break;
-////		}
-////		case CMD_EXEC_APPEND: {
-////			AppendCommandText( text );
-////			break;
-////		}
-////		default: {
-////			common.FatalError( "idCmdSystemLocal::BufferCommandText: bad exec type" );
-////		}
-////	}
-////}
+/*
+============
+idCmdSystemLocal::AppendCommandText
+
+Adds command text at the end of the buffer, does NOT add a final \n
+============
+*/
+	AppendCommandText ( text: string ): void {
+		var/*int */l:number;
+
+		l = strlen( text );
+
+		//if ( this.textLength + l >= /*(int)*/sizeof( textBuf ) ) {
+		//	common.Printf( "idCmdSystemLocal::AppendText: buffer overflow\n" );
+		//	return;
+		//}
+		//memcpy( textBuf + this.textLength, text, l );
+		this.textBuf += text;
+		this.textLength += l;
+	}
+
+/*
+============
+idCmdSystemLocal::BufferCommandText
+============
+*/
+BufferCommandText(exec:cmdExecution_t, text :string) :void {
+	switch( exec ) {
+		case cmdExecution_t.CMD_EXEC_NOW: {
+			this.ExecuteCommandText( text );
+			break;
+		}
+		case cmdExecution_t.CMD_EXEC_INSERT: {
+			this.InsertCommandText( text );
+			break;
+		}
+		case cmdExecution_t.CMD_EXEC_APPEND: {
+			this.AppendCommandText( text );
+			break;
+		}
+		default: {
+			common.FatalError( "idCmdSystemLocal::BufferCommandText: bad exec type" );
+		}
+	}
+}
 
 /////*
 ////============
@@ -623,7 +626,7 @@ AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:id
 ////		}
 ////		case CMD_EXEC_APPEND: {
 ////			AppendCommandText( "_execTokenized\n" );
-////			tokenizedCmds.Append( args );
+////			this.tokenizedCmds.Append( args );
 ////			break;
 ////		}
 ////		default: {
@@ -632,66 +635,66 @@ AddCommand( /*const char **/cmdName:string, /*cmdFunction_t*/ $function:(args:id
 ////	}
 ////}
 
-/////*
-////============
-////idCmdSystemLocal::ExecuteCommandBuffer
-////============
-////*/
-////void idCmdSystemLocal::ExecuteCommandBuffer( void ) {
-////	int			i;
-////	char *		text;
-////	int			quotes;
-////	idCmdArgs	args;
+/*
+============
+idCmdSystemLocal::ExecuteCommandBuffer
+============
+*/
+	ExecuteCommandBuffer ( ): void {
+		var /*int*/i:number;
+		var text: string;
+		var /*int*/quotes:number;
+		var args = new idCmdArgs;
 
-////	while( textLength ) {
+		while( this.textLength ) {
 
-////		if ( wait )	{
-////			// skip out while text still remains in buffer, leaving it for next frame
-////			wait--;
-////			break;
-////		}
+			if ( this.wait )	{
+				// skip out while text still remains in buffer, leaving it for next frame
+				this.wait--;
+				break;
+			}
 
-////		// find a \n or ; line break
-////		text = (char *)textBuf;
+			// find a \n or ; line break
+			text = this.textBuf;
 
-////		quotes = 0;
-////		for ( i = 0; i < textLength; i++ ) {
-////			if ( text[i] == '"' ) {
-////				quotes++;
-////			}
-////			if ( !( quotes & 1 ) &&  text[i] == ';' ) {
-////				break;	// don't break if inside a quoted string
-////			}
-////			if ( text[i] == '\n' || text[i] == '\r' ) {
-////				break;
-////			}
-////		}
-			
-////		text[i] = 0;
+			quotes = 0;
+			for ( i = 0; i < this.textLength; i++ ) {
+				if ( text[i] == '"' ) {
+					quotes++;
+				}
+				if ( !( quotes & 1 ) &&  text[i] == ';' ) {
+					break;	// don't break if inside a quoted string
+				}
+				if ( text[i] == '\n' || text[i] == '\r' ) {
+					break;
+				}
+			}
 
-////		if ( !idStr::Cmp( text, "_execTokenized" ) ) {
-////			args = tokenizedCmds[ 0 ];
-////			tokenizedCmds.RemoveIndex( 0 );
-////		} else {
-////			args.TokenizeString( text, false );
-////		}
+			text = text.substr( 0, i );//text[i] = 0;
 
-////		// delete the text from the command buffer and move remaining commands down
-////		// this is necessary because commands (exec) can insert data at the
-////		// beginning of the text buffer
+			if ( !idStr.Cmp( text, "_execTokenized" ) ) {
+				args = this.tokenizedCmds[ 0 ];
+				this.tokenizedCmds.RemoveIndex( 0 );
+			} else {
+				args.TokenizeString( text, false );
+			}
 
-////		if ( i == textLength ) {
-////			textLength = 0;
-////		} else {
-////			i++;
-////			textLength -= i;
-////			memmove( text, text+i, textLength );
-////		}
+			// delete the text from the command buffer and move remaining commands down
+			// this is necessary because commands (exec) can insert data at the
+			// beginning of the text buffer
 
-////		// execute the command line that we have already tokenized
-////		ExecuteTokenizedString( args );
-////	}
-////}
+			if ( i == this.textLength ) {
+				this.textLength = 0;
+			} else {
+				i++;
+				this.textLength -= i;
+				this.textBuf = this.textBuf.substr( i );//memmove( text, text+i, this.textLength );
+			}
+
+			// execute the command line that we have already tokenized
+			this.ExecuteTokenizedString( args );
+		}
+	}
 
 /////*
 ////============
