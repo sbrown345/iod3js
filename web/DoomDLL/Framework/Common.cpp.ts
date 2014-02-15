@@ -1159,7 +1159,7 @@ be after execing the config and default.
 ////  we can start the editor dynamically, but we won't ever get back
 ////==================
 ////*/
-////static void Com_Editor_f( const idCmdArgs &args ) {
+////static void Com_Editor_f( args:idCmdArgs ) {
 ////	RadiantInit();
 ////}
 
@@ -1168,7 +1168,7 @@ be after execing the config and default.
 ////Com_ScriptDebugger_f
 ////=============
 ////*/
-////static void Com_ScriptDebugger_f( const idCmdArgs &args ) {
+////static void Com_ScriptDebugger_f( args:idCmdArgs ) {
 ////	// Make sure it wasnt on the command line
 ////	if ( !( com_editors & EDITOR_DEBUGGER ) ) {
 ////		common.Printf( "Script debugger is currently disabled\n" );
@@ -1181,7 +1181,7 @@ be after execing the config and default.
 ////Com_EditGUIs_f
 ////=============
 ////*/
-////static void Com_EditGUIs_f( const idCmdArgs &args ) {
+////static void Com_EditGUIs_f( args:idCmdArgs ) {
 ////	GUIEditorInit();
 ////}
 
@@ -1190,7 +1190,7 @@ be after execing the config and default.
 ////Com_MaterialEditor_f
 ////=============
 ////*/
-////static void Com_MaterialEditor_f( const idCmdArgs &args ) {
+////static void Com_MaterialEditor_f( args:idCmdArgs ) {
 ////	// Turn off sounds
 ////	soundSystem.SetMute( true );
 ////	MaterialEditorInit();
@@ -1204,7 +1204,7 @@ be after execing the config and default.
 ////This prints out memory debugging data
 ////============
 ////*/
-////static void PrintMemInfo_f( const idCmdArgs &args ) {
+////static void PrintMemInfo_f( args:idCmdArgs ) {
 ////	MemInfo_t mi;
 
 ////	memset( &mi, 0, sizeof( mi ) );
@@ -1244,7 +1244,7 @@ be after execing the config and default.
 ////Com_EditLights_f
 ////==================
 ////*/
-////static void Com_EditLights_f( const idCmdArgs &args ) {
+////static void Com_EditLights_f( args:idCmdArgs ) {
 ////	LightEditorInit( NULL );
 ////	cvarSystem.SetCVarInteger( "g_editEntityMode", 1 );
 ////}
@@ -1254,7 +1254,7 @@ be after execing the config and default.
 ////Com_EditSounds_f
 ////==================
 ////*/
-////static void Com_EditSounds_f( const idCmdArgs &args ) {
+////static void Com_EditSounds_f( args:idCmdArgs ) {
 ////	SoundEditorInit( NULL );
 ////	cvarSystem.SetCVarInteger( "g_editEntityMode", 2 );
 ////}
@@ -1264,7 +1264,7 @@ be after execing the config and default.
 ////Com_EditDecls_f
 ////==================
 ////*/
-////static void Com_EditDecls_f( const idCmdArgs &args ) {
+////static void Com_EditDecls_f( args:idCmdArgs ) {
 ////	DeclBrowserInit( NULL );
 ////}
 
@@ -1273,7 +1273,7 @@ be after execing the config and default.
 ////Com_EditAFs_f
 ////==================
 ////*/
-////static void Com_EditAFs_f( const idCmdArgs &args ) {
+////static void Com_EditAFs_f( args:idCmdArgs ) {
 ////	AFEditorInit( NULL );
 ////}
 
@@ -1282,7 +1282,7 @@ be after execing the config and default.
 ////Com_EditParticles_f
 ////==================
 ////*/
-////static void Com_EditParticles_f( const idCmdArgs &args ) {
+////static void Com_EditParticles_f( args:idCmdArgs ) {
 ////	ParticleEditorInit( NULL );
 ////}
 
@@ -1291,7 +1291,7 @@ be after execing the config and default.
 ////Com_EditScripts_f
 ////==================
 ////*/
-////static void Com_EditScripts_f( const idCmdArgs &args ) {
+////static void Com_EditScripts_f( args:idCmdArgs ) {
 ////	ScriptEditorInit( NULL );
 ////}
 
@@ -1300,7 +1300,7 @@ be after execing the config and default.
 ////Com_EditPDAs_f
 ////==================
 ////*/
-////static void Com_EditPDAs_f( const idCmdArgs &args ) {
+////static void Com_EditPDAs_f( args:idCmdArgs ) {
 ////	PDAEditorInit( NULL );
 ////}
 ////#endif // ID_ALLOW_TOOLS
@@ -1312,7 +1312,7 @@ be after execing the config and default.
 ////Just throw a fatal error to test error shutdown procedures.
 ////==================
 ////*/
-////static void Com_Error_f( const idCmdArgs &args ) {
+////static void Com_Error_f( args:idCmdArgs ) {
 ////	if ( !com_developer.GetBool() ) {
 ////		commonLocal.Printf( "error may only be used in developer mode\n" );
 ////		return;
@@ -1332,7 +1332,7 @@ be after execing the config and default.
 ////Just freeze in place for a given number of seconds to test error recovery.
 ////==================
 ////*/
-////static void Com_Freeze_f( const idCmdArgs &args ) {
+////static void Com_Freeze_f( args:idCmdArgs ) {
 ////	float	s;
 ////	int		start, now;
 
@@ -1365,7 +1365,7 @@ be after execing the config and default.
 ////A way to force a bus error for development reasons
 ////=================
 ////*/
-////static void Com_Crash_f( const idCmdArgs &args ) {
+////static void Com_Crash_f( args:idCmdArgs ) {
 ////	if ( !com_developer.GetBool() ) {
 ////		commonLocal.Printf( "crash may only be used in developer mode\n" );
 ////		return;
@@ -1379,7 +1379,7 @@ be after execing the config and default.
 ////Com_Quit_f
 ////=================
 ////*/
-////static void Com_Quit_f( const idCmdArgs &args ) {
+////static void Com_Quit_f( args:idCmdArgs ) {
 ////	commonLocal.Quit();
 ////}
 
@@ -1390,7 +1390,7 @@ be after execing the config and default.
 ////Write the config file to a specific name
 ////===============
 ////*/
-////void Com_WriteConfig_f( const idCmdArgs &args ) {
+////void Com_WriteConfig_f( args:idCmdArgs ) {
 ////	idStr	filename;
 
 ////	if ( args.Argc() != 2 ) {
@@ -1409,7 +1409,7 @@ be after execing the config and default.
 ////Com_SetMachineSpecs_f
 ////=================
 ////*/
-////void Com_SetMachineSpec_f( const idCmdArgs &args ) {
+////void Com_SetMachineSpec_f( args:idCmdArgs ) {
 ////	commonLocal.SetMachineSpec();
 ////}
 
@@ -1422,7 +1422,7 @@ be after execing the config and default.
 ////void OSX_GetVideoCard( int& outVendorId, int& outDeviceId );
 ////bool OSX_GetCPUIdentification( int& cpuId, bool& oldArchitecture );
 ////#endif
-////void Com_ExecMachineSpec_f( const idCmdArgs &args ) {
+////void Com_ExecMachineSpec_f( args:idCmdArgs ) {
 ////	if ( com_machineSpec.GetInteger() == 3 ) {
 ////		cvarSystem.SetCVarInteger( "image_anisotropy", 1, CVAR_ARCHIVE );
 ////		cvarSystem.SetCVarInteger( "image_lodbias", 0, CVAR_ARCHIVE );
@@ -1554,7 +1554,7 @@ be after execing the config and default.
 ////Com_ReloadEngine_f
 ////=================
 ////*/
-////void Com_ReloadEngine_f( const idCmdArgs &args ) {
+////void Com_ReloadEngine_f( args:idCmdArgs ) {
 ////	bool menu = false;
 
 ////	if ( !commonLocal.IsInitialized() ) {
@@ -2030,7 +2030,7 @@ ReloadLanguage_f
 ////LocalizeMaps_f
 ////=================
 ////*/
-////void Com_LocalizeMaps_f( const idCmdArgs &args ) {
+////void Com_LocalizeMaps_f( args:idCmdArgs ) {
 ////	if ( args.Argc() < 2 ) {
 ////		common.Printf( "Usage: localizeMaps <count | dictupdate | all> <map>\n" );
 ////		return;
@@ -2100,7 +2100,7 @@ ReloadLanguage_f
 ////LocalizeGuis_f
 ////=================
 ////*/
-////void Com_LocalizeGuis_f( const idCmdArgs &args ) {
+////void Com_LocalizeGuis_f( args:idCmdArgs ) {
 
 ////	if ( args.Argc() != 2 ) {
 ////		common.Printf( "Usage: localizeGuis <all | gui>\n" );
@@ -2145,7 +2145,7 @@ ReloadLanguage_f
 ////	strTable.Save( filename );
 ////}
 
-////void Com_LocalizeGuiParmsTest_f( const idCmdArgs &args ) {
+////void Com_LocalizeGuiParmsTest_f( args:idCmdArgs ) {
 
 ////	common.SetRefreshOnPrint( true );
 
@@ -2192,7 +2192,7 @@ ReloadLanguage_f
 ////}
 
 
-////void Com_LocalizeMapsTest_f( const idCmdArgs &args ) {
+////void Com_LocalizeMapsTest_f( args:idCmdArgs ) {
 
 ////	ListHash listHash;
 ////	LoadMapLocalizeData(listHash);
@@ -2280,7 +2280,7 @@ ReloadLanguage_f
 ////Com_StartBuild_f
 ////=================
 ////*/
-////void Com_StartBuild_f( const idCmdArgs &args ) {
+////void Com_StartBuild_f( args:idCmdArgs ) {
 ////	globalImages.StartBuild();
 ////}
 
@@ -2289,7 +2289,7 @@ ReloadLanguage_f
 ////Com_FinishBuild_f
 ////=================
 ////*/
-////void Com_FinishBuild_f( const idCmdArgs &args ) {
+////void Com_FinishBuild_f( args:idCmdArgs ) {
 ////	if ( game ) {
 ////		game.CacheDictionaryMedia( NULL );
 ////	}
@@ -2301,7 +2301,7 @@ ReloadLanguage_f
 ////Com_Help_f
 ////==============
 ////*/
-////void Com_Help_f( const idCmdArgs &args ) {
+////void Com_Help_f( args:idCmdArgs ) {
 ////	common.Printf( "\nCommonly used commands:\n" );
 ////	common.Printf( "  spawnServer      - start the server.\n" );
 ////	common.Printf( "  disconnect       - shut down the server.\n" );

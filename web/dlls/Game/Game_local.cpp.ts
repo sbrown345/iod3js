@@ -1047,7 +1047,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////idGameLocal::MapRestart_f
 ////===================
 ////*/
-////void idGameLocal::MapRestart_f( const idCmdArgs &args ) {
+////void idGameLocal::MapRestart_f( args:idCmdArgs ) {
 ////	if ( !gameLocal.isMultiplayer || gameLocal.isClient ) {
 ////		common.Printf( "server is not running - use spawnServer\n" );
 ////		cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "spawnServer\n" );
@@ -1112,7 +1112,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////idGameLocal::NextMap_f
 ////===================
 ////*/
-////void idGameLocal::NextMap_f( const idCmdArgs &args ) {
+////void idGameLocal::NextMap_f( args:idCmdArgs ) {
 ////	if ( !gameLocal.isMultiplayer || gameLocal.isClient ) {
 ////		common.Printf( "server is not running\n" );
 ////		return;
@@ -1888,7 +1888,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////idGameLocal::GetClientByCmdArgs
 ////================
 ////*/
-////idPlayer *idGameLocal::GetClientByCmdArgs( const idCmdArgs &args ) const {
+////idPlayer *idGameLocal::GetClientByCmdArgs( args:idCmdArgs ) const {
 ////	idPlayer *player;
 ////	idStr client = args.Argv( 1 );
 ////	if ( !client.Length() ) {

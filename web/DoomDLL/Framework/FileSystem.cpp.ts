@@ -1912,7 +1912,7 @@ idFileSystemLocal::FreeFileList
 ////idFileSystemLocal::Dir_f
 ////================
 ////*/
-////void idFileSystemLocal::Dir_f( const idCmdArgs &args ) {
+////void idFileSystemLocal::Dir_f( args:idCmdArgs ) {
 ////	idStr		relativePath;
 ////	idStr		extension;
 ////	idFileList *fileList;
@@ -1955,7 +1955,7 @@ idFileSystemLocal::FreeFileList
 ////idFileSystemLocal::DirTree_f
 ////================
 ////*/
-////void idFileSystemLocal::DirTree_f( const idCmdArgs &args ) {
+////void idFileSystemLocal::DirTree_f( args:idCmdArgs ) {
 ////	idStr		relativePath;
 ////	idStr		extension;
 ////	idFileList *fileList;
@@ -1998,7 +1998,7 @@ idFileSystemLocal::FreeFileList
 ////idFileSystemLocal::Path_f
 ////============
 ////*/
-////void idFileSystemLocal::Path_f( const idCmdArgs &args ) {
+////void idFileSystemLocal::Path_f( args:idCmdArgs ) {
 ////	searchpath_t *sp;
 ////	int i;
 ////	idStr status;
@@ -2074,7 +2074,7 @@ idFileSystemLocal::FreeFileList
 ////arbitrary files furing an "fs_copyfiles 1" run.
 ////============
 ////*/
-////void idFileSystemLocal::TouchFile_f( const idCmdArgs &args ) {
+////void idFileSystemLocal::TouchFile_f( args:idCmdArgs ) {
 ////	idFile *f;
 ////
 ////	if ( args.Argc() != 2 ) {
@@ -2095,7 +2095,7 @@ idFileSystemLocal::FreeFileList
 ////Takes a text file and touches every file in it, use one file per line.
 ////============
 ////*/
-////void idFileSystemLocal::TouchFileList_f( const idCmdArgs &args ) {
+////void idFileSystemLocal::TouchFileList_f( args:idCmdArgs ) {
 ////	
 ////	if ( args.Argc() != 2 ) {
 ////		common.Printf( "Usage: touchFileList <filename>\n" );

@@ -86,7 +86,7 @@ class idCmdArgs {
 ////idCmdArgs::operator=
 ////============
 ////*/
-////void idCmdArgs::operator=( const idCmdArgs &args ) {
+////void idCmdArgs::operator=( args:idCmdArgs ) {
 ////	int i;
 
 ////	this.argc = args.argc;

@@ -68,7 +68,7 @@
 //Session_RescanSI_f
 //=================
 //*/
-//void Session_RescanSI_f( const idCmdArgs &args ) {
+//void Session_RescanSI_f( args:idCmdArgs ) {
 //	sessLocal.mapSpawnData.serverInfo = *cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO );
 //	if ( game && idAsyncNetwork::server.IsActive() ) {
 //		game.SetServerInfo( sessLocal.mapSpawnData.serverInfo );
@@ -82,7 +82,7 @@
 //Restart the server on a different map
 //==================
 //*/
-//static void Session_Map_f( const idCmdArgs &args ) {
+//static void Session_Map_f( args:idCmdArgs ) {
 //	idStr		map, string;
 //	findFile_t	ff;
 //	idCmdArgs	rl_args;
@@ -123,7 +123,7 @@
 //Restart the server on a different map in developer mode
 //==================
 //*/
-//static void Session_DevMap_f( const idCmdArgs &args ) {
+//static void Session_DevMap_f( args:idCmdArgs ) {
 //	idStr map, string;
 //	findFile_t	ff;
 //	idCmdArgs	rl_args;	
@@ -162,7 +162,7 @@
 //Session_TestMap_f
 //==================
 //*/
-//static void Session_TestMap_f( const idCmdArgs &args ) {
+//static void Session_TestMap_f( args:idCmdArgs ) {
 //	idStr map, string;
 //
 //	map = args.Argv(1);
@@ -185,7 +185,7 @@
 //Sess_WritePrecache_f
 //==================
 //*/
-//static void Sess_WritePrecache_f( const idCmdArgs &args ) {
+//static void Sess_WritePrecache_f( args:idCmdArgs ) {
 //	if ( args.Argc() != 2 ) {
 //		common.Printf( "USAGE: writePrecache <execFile>\n" );
 //		return;
@@ -236,7 +236,7 @@ class idSession {
 //Session_PromptKey_f
 //===================
 //*/
-//static void Session_PromptKey_f( const idCmdArgs &args ) {
+//static void Session_PromptKey_f( args:idCmdArgs ) {
 //	const char	*retkey;
 //	bool		valid[ 2 ];
 //	static bool recursed = false;
@@ -563,7 +563,7 @@ idSessionLocal::IsMultiplayer
 //Session_TestGUI_f
 //================
 //*/
-//static void Session_TestGUI_f( const idCmdArgs &args ) {
+//static void Session_TestGUI_f( args:idCmdArgs ) {
 //	sessLocal.TestGUI( args.Argv(1) );
 //}
 //
@@ -605,7 +605,7 @@ idSessionLocal::IsMultiplayer
 //Session_DemoShot_f
 //================
 //*/
-//static void Session_DemoShot_f( const idCmdArgs &args ) {
+//static void Session_DemoShot_f( args:idCmdArgs ) {
 //	if ( args.Argc() != 2 ) {
 //		idStr filename = FindUnusedFileName( "demos/shot%03i.demo" );
 //		sessLocal.DemoShot( filename );
@@ -619,7 +619,7 @@ idSessionLocal::IsMultiplayer
 //Session_RecordDemo_f
 //================
 //*/
-//static void Session_RecordDemo_f( const idCmdArgs &args ) {
+//static void Session_RecordDemo_f( args:idCmdArgs ) {
 //	if ( args.Argc() != 2 ) {
 //		idStr filename = FindUnusedFileName( "demos/demo%03i.demo" );
 //		sessLocal.StartRecordingRenderDemo( filename );
@@ -633,7 +633,7 @@ idSessionLocal::IsMultiplayer
 //Session_CompressDemo_f
 //================
 //*/
-//static void Session_CompressDemo_f( const idCmdArgs &args ) {
+//static void Session_CompressDemo_f( args:idCmdArgs ) {
 //	if ( args.Argc() == 2 ) {
 //		sessLocal.CompressDemoFile( "2", args.Argv(1) );
 //	} else if ( args.Argc() == 3 ) {
@@ -648,7 +648,7 @@ idSessionLocal::IsMultiplayer
 //Session_StopRecordingDemo_f
 //================
 //*/
-//static void Session_StopRecordingDemo_f( const idCmdArgs &args ) {
+//static void Session_StopRecordingDemo_f( args:idCmdArgs ) {
 //	sessLocal.StopRecordingRenderDemo();
 //}
 //
@@ -657,7 +657,7 @@ idSessionLocal::IsMultiplayer
 //Session_PlayDemo_f
 //================
 //*/
-//static void Session_PlayDemo_f( const idCmdArgs &args ) {
+//static void Session_PlayDemo_f( args:idCmdArgs ) {
 //	if ( args.Argc() >= 2 ) {
 //		sessLocal.StartPlayingRenderDemo( va( "demos/%s", args.Argv(1) ) );
 //	}
@@ -668,7 +668,7 @@ idSessionLocal::IsMultiplayer
 //Session_TimeDemo_f
 //================
 //*/
-//static void Session_TimeDemo_f( const idCmdArgs &args ) {
+//static void Session_TimeDemo_f( args:idCmdArgs ) {
 //	if ( args.Argc() >= 2 ) {
 //		sessLocal.TimeRenderDemo( va( "demos/%s", args.Argv(1) ), ( args.Argc() > 2 ) );
 //	}
@@ -679,7 +679,7 @@ idSessionLocal::IsMultiplayer
 //Session_TimeDemoQuit_f
 //================
 //*/
-//static void Session_TimeDemoQuit_f( const idCmdArgs &args ) {
+//static void Session_TimeDemoQuit_f( args:idCmdArgs ) {
 //	sessLocal.TimeRenderDemo( va( "demos/%s", args.Argv(1) ) );
 //	if ( sessLocal.timeDemo == TD_YES ) {
 //		// this allows hardware vendors to automate some testing
@@ -692,7 +692,7 @@ idSessionLocal::IsMultiplayer
 //Session_AVIDemo_f
 //================
 //*/
-//static void Session_AVIDemo_f( const idCmdArgs &args ) {
+//static void Session_AVIDemo_f( args:idCmdArgs ) {
 //	sessLocal.AVIRenderDemo( va( "demos/%s", args.Argv(1) ) );
 //}
 //
@@ -701,7 +701,7 @@ idSessionLocal::IsMultiplayer
 //Session_AVIGame_f
 //================
 //*/
-//static void Session_AVIGame_f( const idCmdArgs &args ) {
+//static void Session_AVIGame_f( args:idCmdArgs ) {
 //	sessLocal.AVIGame( args.Argv(1) );
 //}
 //
@@ -710,7 +710,7 @@ idSessionLocal::IsMultiplayer
 //Session_AVICmdDemo_f
 //================
 //*/
-//static void Session_AVICmdDemo_f( const idCmdArgs &args ) {
+//static void Session_AVICmdDemo_f( args:idCmdArgs ) {
 //	sessLocal.AVICmdDemo( args.Argv(1) );
 //}
 //
@@ -719,7 +719,7 @@ idSessionLocal::IsMultiplayer
 //Session_WriteCmdDemo_f
 //================
 //*/
-//static void Session_WriteCmdDemo_f( const idCmdArgs &args ) {
+//static void Session_WriteCmdDemo_f( args:idCmdArgs ) {
 //	if ( args.Argc() == 1 ) {
 //		idStr	filename = FindUnusedFileName( "demos/cmdDemo%03i.cdemo" );
 //		sessLocal.WriteCmdDemo( filename );
@@ -735,7 +735,7 @@ idSessionLocal::IsMultiplayer
 //Session_PlayCmdDemo_f
 //================
 //*/
-//static void Session_PlayCmdDemo_f( const idCmdArgs &args ) {
+//static void Session_PlayCmdDemo_f( args:idCmdArgs ) {
 //	sessLocal.StartPlayingCmdDemo( args.Argv(1) );
 //}
 //
@@ -744,7 +744,7 @@ idSessionLocal::IsMultiplayer
 //Session_TimeCmdDemo_f
 //================
 //*/
-//static void Session_TimeCmdDemo_f( const idCmdArgs &args ) {
+//static void Session_TimeCmdDemo_f( args:idCmdArgs ) {
 //	sessLocal.TimeCmdDemo( args.Argv(1) );
 //}
 //
@@ -753,7 +753,7 @@ idSessionLocal::IsMultiplayer
 //Session_Disconnect_f
 //================
 //*/
-//static void Session_Disconnect_f( const idCmdArgs &args ) {
+//static void Session_Disconnect_f( args:idCmdArgs ) {
 //	sessLocal.Stop();
 //	sessLocal.StartMenu();
 //	if ( soundSystem ) {
@@ -767,7 +767,7 @@ idSessionLocal::IsMultiplayer
 //Session_EndOfDemo_f
 //================
 //*/
-//static void Session_EndOfDemo_f( const idCmdArgs &args ) {
+//static void Session_EndOfDemo_f( args:idCmdArgs ) {
 //	sessLocal.Stop();
 //	sessLocal.StartMenu();
 //	if ( soundSystem ) {
@@ -784,7 +784,7 @@ idSessionLocal::IsMultiplayer
 //Session_ExitCmdDemo_f
 //================
 //*/
-//static void Session_ExitCmdDemo_f( const idCmdArgs &args ) {
+//static void Session_ExitCmdDemo_f( args:idCmdArgs ) {
 //	if ( !sessLocal.cmdDemoFile ) {
 //		common.Printf( "not reading from a cmdDemo\n" );
 //		return;
@@ -1750,7 +1750,7 @@ idSessionLocal::IsMultiplayer
 //LoadGame_f
 //===============
 //*/
-//void LoadGame_f( const idCmdArgs &args ) {
+//void LoadGame_f( args:idCmdArgs ) {
 //	console.Close();
 //	if ( args.Argc() < 2 || idStr::Icmp(args.Argv(1), "quick" ) == 0 ) {
 //		idStr saveName = common.GetLanguageDict().GetString( "#str_07178" );
@@ -1765,7 +1765,7 @@ idSessionLocal::IsMultiplayer
 //SaveGame_f
 //===============
 //*/
-//void SaveGame_f( const idCmdArgs &args ) {
+//void SaveGame_f( args:idCmdArgs ) {
 //	if ( args.Argc() < 2 || idStr::Icmp( args.Argv(1), "quick" ) == 0 ) {
 //		idStr saveName = common.GetLanguageDict().GetString( "#str_07178" );
 //		if ( sessLocal.SaveGame( saveName ) ) {
@@ -1783,7 +1783,7 @@ idSessionLocal::IsMultiplayer
 //TakeViewNotes_f
 //===============
 //*/
-//void TakeViewNotes_f( const idCmdArgs &args ) {
+//void TakeViewNotes_f( args:idCmdArgs ) {
 //	const char *p = ( args.Argc() > 1 ) ? args.Argv( 1 ) : "";
 //	sessLocal.TakeNotes( p );
 //}
@@ -1793,7 +1793,7 @@ idSessionLocal::IsMultiplayer
 //TakeViewNotes2_f
 //===============
 //*/
-//void TakeViewNotes2_f( const idCmdArgs &args ) {
+//void TakeViewNotes2_f( args:idCmdArgs ) {
 //	const char *p = ( args.Argc() > 1 ) ? args.Argv( 1 ) : "";
 //	sessLocal.TakeNotes( p, true );
 //}
@@ -1850,7 +1850,7 @@ idSessionLocal::IsMultiplayer
 //Session_Hitch_f
 //===============
 //*/
-//void Session_Hitch_f( const idCmdArgs &args ) {
+//void Session_Hitch_f( args:idCmdArgs ) {
 //	idSoundWorld *sw = soundSystem.GetPlayingSoundWorld();
 //	if ( sw ) {
 //		soundSystem.SetMute(true);

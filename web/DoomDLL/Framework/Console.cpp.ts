@@ -32,18 +32,18 @@
 //void SCR_DrawTextLeftAlign( float &y, const char *text, ... ) id_attribute((format(printf,2,3)));
 //void SCR_DrawTextRightAlign( float &y, const char *text, ... ) id_attribute((format(printf,2,3)));
 //
-//#define	LINE_WIDTH				78
-//#define	NUM_CON_TIMES			4
-//#define	CON_TEXTSIZE			0x30000
-//#define	TOTAL_LINES				(CON_TEXTSIZE / LINE_WIDTH)
-//#define CONSOLE_FIRSTREPEAT		200
-//#define CONSOLE_REPEAT			100
-//
-//#define	COMMAND_HISTORY			64
-//
-//// the console will query the cvar and command systems for
-//// command completion information
-//
+var	LINE_WIDTH				=78
+var	NUM_CON_TIMES			=4
+var	CON_TEXTSIZE			=0x30000
+var	TOTAL_LINES				=(CON_TEXTSIZE / LINE_WIDTH)
+var CONSOLE_FIRSTREPEAT		=200
+var CONSOLE_REPEAT			=100
+
+var COMMAND_HISTORY = 64;
+
+// the console will query the cvar and command systems for
+// command completion information
+
 class idConsoleLocal extends idConsole {
 //public:
 //	virtual	void		Init( void );
@@ -81,9 +81,9 @@ class idConsoleLocal extends idConsole {
 //	void				SetDisplayFraction( float frac );
 //	void				UpdateDisplayFraction( void );
 //
-//	//============================
-//
-//	bool				keyCatching;
+	//============================
+
+	keyCatching:boolean;
 //
 //	short				text[CON_TEXTSIZE];
 //	int					current;		// line where next message will be printed
@@ -129,7 +129,7 @@ class idConsoleLocal extends idConsole {
 //
 //
 //
-	///*
+///*
 //=============================================================================
 //
 //	Misc stats
@@ -137,7 +137,7 @@ class idConsoleLocal extends idConsole {
 //=============================================================================
 //*/
 //
-	///*
+///*
 //==================
 //SCR_DrawTextLeftAlign
 //==================
@@ -152,7 +152,7 @@ class idConsoleLocal extends idConsole {
 //	y += SMALLCHAR_HEIGHT + 4;
 //}
 //
-	///*
+///*
 //==================
 //SCR_DrawTextRightAlign
 //==================
@@ -170,7 +170,7 @@ class idConsoleLocal extends idConsole {
 //
 //
 //
-	///*
+///*
 //==================
 //SCR_DrawFPS
 //==================
@@ -215,7 +215,7 @@ class idConsoleLocal extends idConsole {
 //	return y + BIGCHAR_HEIGHT + 4;
 //}
 //
-	///*
+///*
 //==================
 //SCR_DrawMemoryUsage
 //==================
@@ -234,7 +234,7 @@ class idConsoleLocal extends idConsole {
 //	return y;
 //}
 //
-	///*
+///*
 //==================
 //SCR_DrawAsyncStats
 //==================
@@ -288,7 +288,7 @@ class idConsoleLocal extends idConsole {
 //	return y;
 //}
 //
-	///*
+///*
 //==================
 //SCR_DrawSoundDecoders
 //==================
@@ -318,63 +318,65 @@ class idConsoleLocal extends idConsole {
 //	return y;
 //}
 //
-////=========================================================================
-//
-	///*
-//==============
-//Con_Clear_f
-//==============
-//*/
-//static void Con_Clear_f( const idCmdArgs &args ) {
-//	localConsole.Clear();
-//}
-//
-	///*
-//==============
-//Con_Dump_f
-//==============
-//*/
-//static void Con_Dump_f( const idCmdArgs &args ) {
-//	if ( args.Argc() != 2 ) {
-//		common.Printf( "usage: conDump <filename>\n" );
-//		return;
-//	}
-//
-//	idStr fileName = args.Argv(1);
-//	fileName.DefaultFileExtension(".txt");
-//
-//	common.Printf( "Dumped console text to %s.\n", fileName.c_str() );
-//
-//	localConsole.Dump( fileName.c_str() );
-//}
-//
-	///*
-//==============
-//idConsoleLocal::Init
-//==============
-//*/
-//void idConsoleLocal::Init( void ) {
-//	int		i;
-//
-//	keyCatching = false;
-//
-//	lastKeyEvent = -1;
-//	nextKeyEvent = CONSOLE_FIRSTREPEAT;
-//
-//	consoleField.Clear();
-//
-//	consoleField.SetWidthInChars( LINE_WIDTH );
-//
-//	for ( i = 0 ; i < COMMAND_HISTORY ; i++ ) {
-//		historyEditLines[i].Clear();
-//		historyEditLines[i].SetWidthInChars( LINE_WIDTH );
-//	}
-//
-//	cmdSystem.AddCommand( "clear", Con_Clear_f, CMD_FL_SYSTEM, "clears the console" );
-//	cmdSystem.AddCommand( "conDump", Con_Dump_f, CMD_FL_SYSTEM, "dumps the console text to a file" );
-//}
-//
-	///*
+//=========================================================================
+
+	/*
+==============
+Con_Clear_f
+==============
+*/
+	static Con_Clear_f ( args: idCmdArgs ) {
+		todoThrow ( );
+		//localConsole.Clear ( );
+	}
+
+/*
+==============
+Con_Dump_f
+==============
+*/
+	static Con_Dump_f ( args: idCmdArgs ): void {
+		todoThrow ( );
+		//if ( args.Argc() != 2 ) {
+		//	common.Printf( "usage: conDump <filename>\n" );
+		//	return;
+		//}
+
+		//idStr fileName = args.Argv(1);
+		//fileName.DefaultFileExtension(".txt");
+
+		//common.Printf( "Dumped console text to %s.\n", fileName.c_str() );
+
+		//localConsole.Dump( fileName.c_str() );
+	}
+
+/*
+==============
+idConsoleLocal::Init
+==============
+*/
+	Init ( ): void {
+		var i: number;
+
+		this.keyCatching = false;
+
+		this.lastKeyEvent = -1;
+		this.nextKeyEvent = CONSOLE_FIRSTREPEAT;
+
+		this.consoleField.Clear ( );
+
+		this.consoleField.SetWidthInChars( LINE_WIDTH );
+
+		for ( i = 0; i < COMMAND_HISTORY; i++ ) {
+			this.historyEditLines[i].Clear ( );
+			this.historyEditLines[i].SetWidthInChars( LINE_WIDTH );
+		}
+
+		cmdSystem.AddCommand( "clear", idConsoleLocal.Con_Clear_f, cmdFlags_t.CMD_FL_SYSTEM, "clears the console" );
+		cmdSystem.AddCommand( "conDump", this.Con_Dump_f, cmdFlags_t.CMD_FL_SYSTEM, "dumps the console text to a file" );
+	}
+
+///*
 //==============
 //idConsoleLocal::Shutdown
 //==============
@@ -414,7 +416,7 @@ the renderSystem is initialized
 //================
 //*/
 //void	idConsoleLocal::ClearNotifyLines() {
-//	int		i;
+//	var i:number;
 //
 //	for ( i = 0 ; i < NUM_CON_TIMES ; i++ ) {
 //		times[i] = 0;
@@ -439,7 +441,7 @@ the renderSystem is initialized
 //================
 //*/
 //void idConsoleLocal::Clear() {
-//	int		i;
+//	var i:number;
 //
 //	for ( i = 0 ; i < CON_TEXTSIZE ; i++ ) {
 //		text[i] = (idStr::ColorIndex(C_COLOR_CYAN)<<8) | ' ';
@@ -820,7 +822,7 @@ the renderSystem is initialized
 //===============
 //*/
 //void idConsoleLocal::Linefeed() {
-//	int		i;
+//	var i:number;
 //
 //	// mark time for transparent overlay
 //	if ( current >= 0 ) {
@@ -978,7 +980,7 @@ the renderSystem is initialized
 //void idConsoleLocal::DrawNotify() {
 //	int		x, v;
 //	short	*text_p;
-//	int		i;
+//	var i:number;
 //	int		time;
 //	int		currentColor;
 //

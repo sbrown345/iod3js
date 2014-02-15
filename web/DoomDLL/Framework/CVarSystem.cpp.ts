@@ -414,7 +414,7 @@ class idCVarSystem {
 ////	virtual int				GetCVarInteger( const char *name ) const;
 ////	virtual float			GetCVarFloat( const char *name ) const;
 
-////	virtual bool			Command( const idCmdArgs &args );
+////	virtual bool			Command( args:idCmdArgs );
 
 ////	virtual void			CommandCompletion( void(*callback)( const char *s ) );
 ////	virtual void			ArgCompletion( const char *cmdString, void(*callback)( const char *s ) );
@@ -445,15 +445,15 @@ class idCVarSystem {
 
 ////private:
 ////	static void				Toggle_f( const idCmdArgs &args );
-////	static void				Set_f( const idCmdArgs &args );
-////	static void				SetS_f( const idCmdArgs &args );
-////	static void				SetU_f( const idCmdArgs &args );
-////	static void				SetT_f( const idCmdArgs &args );
-////	static void				SetA_f( const idCmdArgs &args );
-////	static void				Reset_f( const idCmdArgs &args );
+////	static void				Set_f( args:idCmdArgs );
+////	static void				SetS_f( args:idCmdArgs );
+////	static void				SetU_f( args:idCmdArgs );
+////	static void				SetT_f( args:idCmdArgs );
+////	static void				SetA_f( args:idCmdArgs );
+////	static void				Reset_f( args:idCmdArgs );
 ////	static void				ListByFlags( const idCmdArgs &args, cvarFlags_t flags );
-////	static void				List_f( const idCmdArgs &args );
-////	static void				Restart_f( const idCmdArgs &args );
+////	static void				List_f( args:idCmdArgs );
+////	static void				Restart_f( args:idCmdArgs );
 
 
 ////idDict						idCVarSystemLocal::moveCVarsToDict;

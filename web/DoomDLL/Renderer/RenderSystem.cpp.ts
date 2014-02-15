@@ -709,7 +709,7 @@ GL_CheckErrors
 ////Reload the material displayed by r_showSurfaceInfo
 ////=====================
 ////*/
-////static void R_ReloadSurface_f( const idCmdArgs &args ) {
+////static void R_ReloadSurface_f( args:idCmdArgs ) {
 ////	modelTrace_t mt;
 ////	idVec3 start, end;
 	
@@ -736,7 +736,7 @@ GL_CheckErrors
 ////R_ListModes_f
 ////==============
 ////*/
-////static void R_ListModes_f( const idCmdArgs &args ) {
+////static void R_ListModes_f( args:idCmdArgs ) {
 ////	int i;
 
 ////	common.Printf( "\n" );
@@ -757,7 +757,7 @@ GL_CheckErrors
 ////testimage <filename>
 ////=============
 ////*/
-////void R_TestImage_f( const idCmdArgs &args ) {
+////void R_TestImage_f( args:idCmdArgs ) {
 ////	int imageNum;
 
 ////	if ( tr.testVideo ) {
@@ -787,7 +787,7 @@ GL_CheckErrors
 ////Plays the cinematic file in a testImage
 ////=============
 ////*/
-////void R_TestVideo_f( const idCmdArgs &args ) {
+////void R_TestVideo_f( args:idCmdArgs ) {
 ////	if ( tr.testVideo ) {
 ////		delete tr.testVideo;
 ////		tr.testVideo = NULL;
@@ -860,7 +860,7 @@ GL_CheckErrors
 ////Prints a list of the materials sorted by surface area
 ////===================
 ////*/
-////void R_ReportSurfaceAreas_f( const idCmdArgs &args ) {
+////void R_ReportSurfaceAreas_f( args:idCmdArgs ) {
 ////	int		i, count;
 ////	idMaterial	**list;
 
@@ -894,7 +894,7 @@ GL_CheckErrors
 ////Checks for images with the same hash value and does a better comparison
 ////===================
 ////*/
-////void R_ReportImageDuplication_f( const idCmdArgs &args ) {
+////void R_ReportImageDuplication_f( args:idCmdArgs ) {
 ////	int		i, j;
 
 ////	common.Printf( "Images with duplicated contents:\n" );
@@ -1023,7 +1023,7 @@ GL_CheckErrors
 ////R_Benchmark_f
 ////================
 ////*/
-////void R_Benchmark_f( const idCmdArgs &args ) {
+////void R_Benchmark_f( args:idCmdArgs ) {
 ////	float	fps, msec;
 ////	renderView_t	view;
 
@@ -1274,7 +1274,7 @@ GL_CheckErrors
 ////================== 
 ////*/ 
 ////#define	MAX_BLENDS	256	// to keep the accumulation in shorts
-////void R_ScreenShot_f( const idCmdArgs &args ) {
+////void R_ScreenShot_f( args:idCmdArgs ) {
 ////	static int lastNumber = 0;
 ////	idStr checkname;
 
@@ -1381,7 +1381,7 @@ GL_CheckErrors
 ////Saves out env/<basename>_ft.tga, etc
 ////================== 
 ////*/  
-////void R_EnvShot_f( const idCmdArgs &args ) {
+////void R_EnvShot_f( args:idCmdArgs ) {
 ////	idStr		fullname;
 ////	const char	*baseName;
 ////	int			i;
@@ -1522,7 +1522,7 @@ GL_CheckErrors
 ////Saves out env/<basename>_amb_ft.tga, etc
 ////================== 
 ////*/  
-////void R_MakeAmbientMap_f( const idCmdArgs &args ) {
+////void R_MakeAmbientMap_f( args:idCmdArgs ) {
 ////	idStr fullname;
 ////	const char	*baseName;
 ////	int			i;
@@ -1701,7 +1701,7 @@ R_SetColorMappings
 ////GfxInfo_f
 ////================
 ////*/
-////void GfxInfo_f( const idCmdArgs &args ) {
+////void GfxInfo_f( args:idCmdArgs ) {
 ////	const char *fsstrings[] =
 ////	{
 ////		"windowed",
@@ -1757,7 +1757,7 @@ R_SetColorMappings
 ////R_VidRestart_f
 ////=================
 ////*/
-////void R_VidRestart_f( const idCmdArgs &args ) {
+////void R_VidRestart_f( args:idCmdArgs ) {
 ////	int	err;
 
 ////	// if OpenGL isn't started, do nothing
@@ -1871,7 +1871,7 @@ R_InitMaterials( ):void {
 ////Keybinding command
 ////=================
 ////*/
-////static void R_SizeUp_f( const idCmdArgs &args ) {
+////static void R_SizeUp_f( args:idCmdArgs ) {
 ////	if ( r_screenFraction.GetInteger() + 10 > 100 ) {
 ////		r_screenFraction.SetInteger( 100 );
 ////	} else {
@@ -1887,7 +1887,7 @@ R_InitMaterials( ):void {
 ////Keybinding command
 ////=================
 ////*/
-////static void R_SizeDown_f( const idCmdArgs &args ) {
+////static void R_SizeDown_f( args:idCmdArgs ) {
 ////	if ( r_screenFraction.GetInteger() - 10 < 10 ) {
 ////		r_screenFraction.SetInteger( 10 );
 ////	} else {
@@ -1903,7 +1903,7 @@ R_InitMaterials( ):void {
 ////  this is called from the main thread
 ////===============
 ////*/
-////void R_TouchGui_f( const idCmdArgs &args ) {
+////void R_TouchGui_f( args:idCmdArgs ) {
 ////	const char	*gui = args.Argv( 1 );
 
 ////	if ( !gui[0] ) {
