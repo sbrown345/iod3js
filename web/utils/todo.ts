@@ -14,7 +14,8 @@ function todoMaybeGameDLL(reason?: string): void {
 }
 
 function todoThrow(message: string = ""): any {
-	dlogFlush ( );
+	dlogFlush();
+	console.log( idFileSystemLocal.tempFilesForWriting );
     //debugger;
     console.error("todo \n" + message);
     throw "!";

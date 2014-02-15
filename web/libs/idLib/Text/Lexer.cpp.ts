@@ -969,10 +969,13 @@ class idLexer {
 			return 0;
 		}
 		// succesfully read a token
-		dlog(DEBUG_Lexer, "RT: %i, %s\n", this.line , token.$.data);
-		dlog(DEBUG_COMPILER, "RT: %i, %s\n", this.line , token.$.data);
+		//dlog(DEBUG_Lexer, "RT: %i, %s\n", this.line , token.$.data);
+		dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", RTCount, line, token.data);
+		idLexer.RTCount++;
 		return 1;
 	}
+
+	static RTCount = 0;
 
 	/*
 	================

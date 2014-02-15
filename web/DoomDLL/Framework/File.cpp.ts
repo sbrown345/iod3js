@@ -1104,7 +1104,7 @@ Properly handles partial writes
 =================
 */
 idFile_Permanent.prototype.Write = function ( /*const void **/buffer: Uint8Array, /*int */len: number ): number {
-	idFileSystemLocal.tempFilesForWriting[this.name] += buffer.toString();
+	idFileSystemLocal.tempFilesForWriting[this.name.data] += buffer.toString();
 	//int		block, remaining;
 	//int		written;
 	//byte *	buf;
