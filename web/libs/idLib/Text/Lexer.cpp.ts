@@ -885,11 +885,13 @@ class idLexer {
 			common.Error( "idLexer::ReadToken: no file loaded" );
 			return 0;
 		}
+
+		dlog(DEBUG_COMPILER, "ReadToken data: %s\n", token.$.c_str());
 		
 		// if there is a token available (from unreadToken)
 		if ( this.tokenavailable ) {
 			this.tokenavailable = 0;
-			token.$ = this.token;
+			token.$.equals( this.token );
 			return 1;
 		}
 		// save script pointer
