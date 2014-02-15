@@ -1024,10 +1024,10 @@ class idStr {
 		return c.toUpperCase ( );
 	}
 
-////ID_INLINE bool idStr::CharIsPrintable( int c ) {
-////	// test for regular ascii and western European high-ascii chars
-////	return ( c >= 0x20 && c <= 0x7E ) || ( c >= 0xA1 && c <= 0xFF );
-////}
+	static CharIsPrintable ( /*int */c: string ): boolean {
+		// test for regular ascii and western European high-ascii chars
+		return ( c.charCodeAt( 0 ) >= 0x20 && c.charCodeAt( 0 ) <= 0x7E ) || ( c.charCodeAt( 0 ) >= 0xA1 && c.charCodeAt( 0 ) <= 0xFF );
+	}
 
 ////ID_INLINE bool idStr::CharIsLower( int c ) {
 ////	// test for regular ascii and western European high-ascii chars

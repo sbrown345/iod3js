@@ -73,7 +73,7 @@ class idFile {
 ////							// Go back to the beginning of the file.
 ////	virtual void			Rewind( void );
 ////							// Like fprintf.
-////	virtual int				Printf( const char *fmt, ... ) id_attribute((format(printf,2,3)));
+	Printf ( fmt: string, ...args: any[] ): number { throw "placeholder"; } //id_attribute((format(printf,2,3)));
 ////							// Like fprintf but with argument pointer
 ////	virtual int				VPrintf( const char *fmt, va_list arg );
 ////							// Write a string with high precision floating point numbers to the file.
@@ -193,7 +193,7 @@ class idFile_Permanent extends idFile {
 ////	virtual const char *	GetName( void ) { return name.c_str(); }
 ////	virtual const char *	GetFullPath( void ) { return fullPath.c_str(); }
 ////	virtual int				Read( void *buffer, int len );
-////	virtual int				Write( const void *buffer, int len );
+	Write( buffer:Uint8Array, /*int */len:number ) { throw "placeholder"; }
     //Length ( ):number { throw "placeholder"; }
 
     //Timestamp ( ): number /*ID_TIME_T*/ { throw "placeholder"; }
@@ -207,12 +207,12 @@ class idFile_Permanent extends idFile {
 ////	FILE *					GetFilePtr( void ) { return o; }
 ////
 //private:
-	/*idStr					*/name:idStr;			// relative path of the file - relative path
-	/*idStr					*/fullPath:idStr;		// full file path - OS path
+	name = new idStr;			// relative path of the file - relative path
+	fullPath = new idStr;		// full file path - OS path
 	/*int					*/	mode:number;			// open mode
 	/*int					*/	fileSize:number;		// size of the file
-	/*FILE *				*/	o:FILE;				// file handle
-	/*bool					*/handleSync:boolean;		// true if written data is immediately flushed
+	o:FILE;				// file handle
+	handleSync:boolean;		// true if written data is immediately flushed
 };
 ////
 ////

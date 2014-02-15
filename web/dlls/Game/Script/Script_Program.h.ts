@@ -208,8 +208,8 @@ class eval_t {
 //***********************************************************************/
 //
 //typedef idScriptVariable<int, ev_boolean, int>				idScriptBool;
-//typedef idScriptVariable<float, ev_float, float>			idScriptFloat;
-//typedef idScriptVariable<float, ev_float, int>				idScriptInt;
+//typedef idScriptVariable<float, etype_t.ev_float, float>			idScriptFloat;
+//typedef idScriptVariable<float, etype_t.ev_float, int>				idScriptInt;
 //typedef idScriptVariable<idVec3, ev_vector, idVec3>			idScriptVector;
 //typedef idScriptVariable<idStr, ev_string, const char *>	idScriptString;
 
@@ -493,7 +493,7 @@ idTypeDef::idTypeDef
 	//================
 	//*/
 	//void idTypeDef::AddFunctionParm( idTypeDef *parmtype, const char *name ) {
-	//	if ( type != ev_function ) {
+	//	if ( type != etype_t.ev_function ) {
 	//		throw idCompileError( "idTypeDef::AddFunctionParm : tried to add parameter on non-function type" );
 	//	}
 	//
@@ -584,7 +584,7 @@ idTypeDef::idTypeDef
 	//================
 	//*/
 	//idTypeDef *idTypeDef::ReturnType( void ) const {
-	//	if ( type != ev_function ) {
+	//	if ( type != etype_t.ev_function ) {
 	//		throw idCompileError( "idTypeDef::ReturnType: tried to get return type on non-function type" );
 	//	}
 	//
@@ -599,7 +599,7 @@ idTypeDef::idTypeDef
 	//================
 	//*/
 	//void idTypeDef::SetReturnType( idTypeDef *returntype ) {
-	//	if ( type != ev_function ) {
+	//	if ( type != etype_t.ev_function ) {
 	//		throw idCompileError( "idTypeDef::SetReturnType: tried to set return type on non-function type" );
 	//	}
 	//
@@ -762,14 +762,15 @@ idTypeDef::idTypeDef
 enum initialized_t {
 	uninitialized, initializedVariable, initializedConstant, stackVariable
 }
+
 class idVarDef {
 	//	friend class idVarDefName;
 
 	//public:
-	num: number/*int*/;
+	num: number /*int*/;
 	value = new varEval_t;
-	scope: idVarDef; 			// function, namespace, or object the var was defined in
-	numUsers: number/*int*/;		// number of users if this is a constant
+	scope: idVarDef; // function, namespace, or object the var was defined in
+	numUsers: number /*int*/; // number of users if this is a constant
 
 
 	initialized: initialized_t;
@@ -784,7 +785,7 @@ class idVarDef {
 	//	void					SetTypeDef( idTypeDef *_type ) { typeDef = _type; }
 	TypeDef ( ): idTypeDef { return this.typeDef; }
 	Type ( ): etype_t { return ( this.typeDef != null ) ? this.typeDef.Type ( ) : etype_t.ev_void; }
-	
+
 	//	int						DepthOfScope( const idVarDef *otherScope ) const;
 	//
 	//	void					SetFunction( function_t *func );
@@ -798,21 +799,21 @@ class idVarDef {
 	//
 	//private:
 	typeDef: idTypeDef;
-	name: idVarDefName;		// name of this var
-	next: idVarDef;		// next var with the same name
+	name: idVarDefName; // name of this var
+	next: idVarDef; // next var with the same name
 
 	/*
 	================
 	idVarDef::idVarDef()
 	================
 	*/
-	constructor(typeptr: idTypeDef) {
+	constructor ( typeptr: idTypeDef ) {
 		this.typeDef = typeptr;
 		this.num = 0;
 		this.scope = null;
 		this.numUsers = 0;
 		this.initialized = initialized_t.uninitialized;
-		this.value.init();
+		this.value.init ( );
 		this.name = null;
 		this.next = null;
 	}
@@ -836,7 +837,7 @@ class idVarDef {
 	Name ( ): string {
 		return this.name.Name ( );
 	}
-	
+
 	/*
 	============
 	idVarDef::GlobalName
@@ -878,7 +879,7 @@ class idVarDef {
 	//void idVarDef::SetFunction( function_t *func ) {
 	//	assert( typeDef );
 	//	initialized = initializedConstant;
-	//	assert( typeDef.Type() == ev_function );
+	//	assert( typeDef.Type() == etype_t.ev_function );
 	//	value.functionPtr = func;
 	//}
 	//
@@ -914,11 +915,11 @@ class idVarDef {
 	//		*value.intPtr = _value._int;
 	//		break;
 	//
-	//	case ev_jumpoffset :
+	//	case etype_t.ev_jumpoffset :
 	//		value.jumpOffset = _value._int;
 	//		break;
 	//
-	//	case ev_argsize :
+	//	case etype_t.ev_argsize :
 	//		value.argSize = _value._int;
 	//		break;
 	//
@@ -926,25 +927,25 @@ class idVarDef {
 	//		*value.entityNumberPtr = _value.entity;
 	//		break;
 	//
-	//	case ev_string :
+	//	case etype_t.ev_string :
 	//		idStr.Copynz( value.stringPtr, _value.stringPtr, MAX_STRING_LEN );
 	//		break;
 	//
-	//	case ev_float :
+	//	case etype_t.ev_float :
 	//		*value.floatPtr = _value._float;
 	//		break;
 	//
-	//	case ev_vector :
+	//	case etype_t.ev_vector :
 	//		value.vectorPtr.x = _value.vector[ 0 ];
 	//		value.vectorPtr.y = _value.vector[ 1 ];
 	//		value.vectorPtr.z = _value.vector[ 2 ];
 	//		break;
 	//
-	//	case ev_function :
+	//	case etype_t.ev_function :
 	//		value.functionPtr = _value.function;
 	//		break;
 	//
-	//	case ev_virtualfunction :
+	//	case etype_t.ev_virtualfunction :
 	//		value.virtualFunction = _value._int;
 	//		break;
 	//
@@ -970,95 +971,95 @@ class idVarDef {
 	//		initialized = initializedVariable;
 	//	}
 	//	
-	//	assert( typeDef && ( typeDef.Type() == ev_string ) );
+	//	assert( typeDef && ( typeDef.Type() == etype_t.ev_string ) );
 	//	idStr.Copynz( value.stringPtr, string, MAX_STRING_LEN );
 	//}
 	//
-	///*
-	//============
-	//idVarDef::PrintInfo
-	//============
-	//*/
-	//void idVarDef::PrintInfo( idFile *file, int instructionPointer ) const {
-	//	statement_t	*jumpst;
-	//	int			jumpto;
-	//	etype_t		etype;
-	//	int			i;
-	//	int			len;
-	//	const char	*ch;
-	//
-	//	if ( initialized == initializedConstant ) {
-	//		file.Printf( "const " );
-	//	}
-	//
-	//	etype = typeDef.Type();
-	//	switch( etype ) {
-	//	case ev_jumpoffset :
-	//		jumpto = instructionPointer + value.jumpOffset;
-	//		jumpst = &gameLocal.program.GetStatement( jumpto );
-	//		file.Printf( "address %d [%s(%d)]", jumpto, gameLocal.program.GetFilename( jumpst.file ), jumpst.linenumber );
-	//		break;
-	//
-	//	case ev_function :
-	//		if ( value.functionPtr.eventdef ) {
-	//			file.Printf( "event %s", GlobalName() );
-	//		} else {
-	//			file.Printf( "function %s", GlobalName() );
-	//		}
-	//		break;
-	//
-	//	case etype_t.ev_field :
-	//		file.Printf( "field %d", value.ptrOffset );
-	//		break;
-	//
-	//	case ev_argsize:
-	//		file.Printf( "args %d", value.argSize );
-	//		break;
-	//
-	//	default:
-	//		file.Printf( "%s ", typeDef.Name() );
-	//		if ( initialized == initializedConstant ) {
-	//			switch( etype ) {
-	//			case ev_string :
-	//				file.Printf( "\"" );
-	//				len = strlen( value.stringPtr );
-	//				ch = value.stringPtr;
-	//				for( i = 0; i < len; i++, ch++ ) {
-	//					if ( idStr::CharIsPrintable( *ch ) ) {
-	//						file.Printf( "%c", *ch );
-	//					} else if ( *ch == '\n' ) {
-	//						file.Printf( "\\n" );
-	//					} else {
-	//						file.Printf( "\\x%.2x", static_cast<int>( *ch ) );
-	//					}
-	//				}
-	//				file.Printf( "\"" );
-	//				break;
-	//
-	//			case ev_vector :
-	//				file.Printf( "'%s'", value.vectorPtr.ToString() );
-	//				break;
-	//
-	//			case ev_float :
-	//                file.Printf( "%f", *value.floatPtr );
-	//				break;
-	//
-	//			case ev_virtualfunction :
-	//				file.Printf( "vtable[ %d ]", value.virtualFunction );
-	//				break;
-	//
-	//			default :
-	//				file.Printf( "%d", *value.intPtr );
-	//				break;
-	//			}
-	//		} else if ( initialized == initialized_t.stackVariable ) {
-	//			file.Printf( "stack[%d]", value.stackOffset );
-	//		} else {
-	//			file.Printf( "global[%d]", num );
-	//		}
-	//		break;
-	//	}
-	//}
+	/*
+	============
+	idVarDef::PrintInfo
+	============
+	*/
+	PrintInfo ( file: idFile, /*int */instructionPointer: number ): void {
+		var jumpst: statement_t;
+		var jumpto: number; // int;
+		var etype: etype_t;
+		var i: number; //int			
+		var len: number; //int			
+		var ch: number;
+
+		if ( this.initialized == initialized_t.initializedConstant ) {
+			file.Printf( "const " );
+		}
+
+		etype = this.typeDef.Type ( );
+		switch ( etype ) {
+		case etype_t.ev_jumpoffset:
+			jumpto = instructionPointer + this.value.jumpOffset;
+			jumpst = gameLocal.program.GetStatement( jumpto );
+			file.Printf( "address %d [%s(%d)]", jumpto, gameLocal.program.GetFilename( jumpst.file ), jumpst.linenumber );
+			break;
+
+		case etype_t.ev_function:
+			if ( this.value.functionPtr.eventdef ) {
+				file.Printf( "event %s", this.GlobalName ( ) );
+			} else {
+				file.Printf( "function %s", this.GlobalName ( ) );
+			}
+			break;
+
+		case etype_t.ev_field:
+			file.Printf( "field %d", this.value.ptrOffset );
+			break;
+
+		case etype_t.ev_argsize:
+			file.Printf( "args %d", this.value.argSize );
+			break;
+
+		default:
+			file.Printf( "%s ", this.typeDef.Name ( ) );
+			if ( this.initialized == initialized_t.initializedConstant ) {
+				switch ( etype ) {
+				case etype_t.ev_string:
+					file.Printf( "\"" );
+					len = strlen( this.value.stringPtr );
+					ch = 0; //this.value.stringPtr;
+					for ( i = 0; i < len; i++, ch++ ) {
+						if ( idStr.CharIsPrintable( this.value.stringPtr[ch] ) ) {
+							file.Printf( "%c", this.value.stringPtr[ch] );
+						} else if ( this.value.stringPtr[ch] == '\n' ) {
+							file.Printf( "\\n" );
+						} else {
+							file.Printf( "\\x%.2x", this.value.stringPtr.charCodeAt( ch ) /*static_cast<int>( this.value.stringPtr[ch] )*/ );
+						}
+					}
+					file.Printf( "\"" );
+					break;
+
+				case etype_t.ev_vector:
+					file.Printf( "'%s'", this.value.vectorPtr.ToString ( ) );
+					break;
+
+				case etype_t.ev_float:
+					file.Printf( "%f", /***/this.value.floatPtr /*todo: value*/ );
+					break;
+
+				case etype_t.ev_virtualfunction:
+					file.Printf( "vtable[ %d ]", this.value.virtualFunction );
+					break;
+
+				default:
+					file.Printf( "%d", /***/this.value.intPtr /*todo: value*/ );
+					break;
+				}
+			} else if ( this.initialized == initialized_t.stackVariable ) {
+				file.Printf( "stack[%d]", this.value.stackOffset );
+			} else {
+				file.Printf( "global[%d]", this.num );
+			}
+			break;
+		}
+	}
 }
 
 //

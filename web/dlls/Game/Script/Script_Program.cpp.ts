@@ -92,7 +92,7 @@ class function_t {
 	filenum: number; 			// source file defined in			//	int					
 	parmSize = new	idList<number>(Number);
 
-	///*
+///*
 //================
 //function_t::function_t
 //================
@@ -101,7 +101,7 @@ class function_t {
 //	Clear();
 //}
 //
-	///*
+///*
 //================
 //function_t::Allocated
 //================
@@ -110,7 +110,7 @@ class function_t {
 //	return name.Allocated() + parmSize.Allocated();
 //}
 //
-	///*
+///*
 //================
 //function_t::SetName
 //================
@@ -119,16 +119,16 @@ class function_t {
 //	this.name = name;
 //}
 //
-	///*
-//================
-//function_t::Name
-//================
-//*/
-//const char *function_t::Name( void ) const {
-//	return name;
-//}
-//
-	///*
+/*
+================
+function_t::Name
+================
+*/
+	Name ( ): string {
+		return this.name.data;
+	}
+
+///*
 //================
 //function_t::Clear
 //================
@@ -185,7 +185,7 @@ idVarDefName::AddDef
 		this.defs = def;
 	}
 
-	///*
+///*
 //============
 //idVarDefName::RemoveDef
 //============
@@ -563,16 +563,16 @@ class idProgram {
 //	int											NumFilenames( void ) { return fileList.Num( ); }
 //};
 //
-	///*
-//================
-//idProgram::GetStatement
-//================
-//*/
-//ID_INLINE statement_t &idProgram::GetStatement( int index ) {
-//	return statements[ index ];
-//}
-//
-	///*
+	/*
+================
+idProgram::GetStatement
+================
+*/
+	GetStatement ( /*int */index: number ): statement_t {
+		return this.statements[index];
+	}
+
+///*
 //================
 //idProgram::GetFunction
 //================
@@ -581,7 +581,7 @@ class idProgram {
 //	return &functions[ index ];
 //}
 //
-	///*
+///*
 //================
 //idProgram::GetFunctionIndex
 //================
@@ -590,7 +590,7 @@ class idProgram {
 //	return func - &functions[0];
 //}
 //
-	///*
+///*
 //================
 //idProgram::GetReturnedInteger
 //================
@@ -599,7 +599,7 @@ class idProgram {
 //	return *returnDef.value.intPtr;
 //}
 //
-	///*
+///*
 //================
 //idProgram::ReturnFloat
 //================
@@ -608,7 +608,7 @@ class idProgram {
 //	*returnDef.value.floatPtr = value;
 //}
 //
-	///*
+///*
 //================
 //idProgram::ReturnInteger
 //================
@@ -617,7 +617,7 @@ class idProgram {
 //	*returnDef.value.intPtr = value;
 //}
 //
-	///*
+///*
 //================
 //idProgram::ReturnVector
 //================
@@ -626,7 +626,7 @@ class idProgram {
 //	*returnDef.value.vectorPtr = vec;
 //}
 //
-	///*
+///*
 //================
 //idProgram::ReturnString
 //================
@@ -635,16 +635,16 @@ class idProgram {
 //	idStr.Copynz( returnStringDef.value.stringPtr, string, MAX_STRING_LEN );
 //}
 //
-	///*
-//================
-//idProgram::GetFilename
-//================
-//*/
-//ID_INLINE const char *idProgram::GetFilename( int num ) {
-//	return fileList[ num ];
-//}
+/*
+================
+idProgram::GetFilename
+================
+*/
+	GetFilename ( /*int */num: number ): string {
+		return this.fileList[num];
+	}
 //
-	///*
+///*
 //================
 //idProgram::GetLineNumberForStatement
 //================
@@ -653,7 +653,7 @@ class idProgram {
 //	return statements[ index ].linenumber;
 //}
 //
-	///*
+///*
 //================
 //idProgram::GetFilenameForStatement
 //================
@@ -678,7 +678,7 @@ idProgram::AllocType
 		return newtype;
 	}
 
-	///*
+///*
 //============
 //idProgram::AllocType
 //============
@@ -739,7 +739,7 @@ a new one and copies it out.
 //	return null;
 //}
 //
-	///*
+///*
 //============
 //idProgram::GetDefList
 //============
@@ -881,7 +881,7 @@ idProgram::AllocDef
 		return def;
 	}
 
-	///*
+///*
 //============
 //idProgram::GetDef
 //
@@ -924,7 +924,7 @@ idProgram::AllocDef
 //	return bestDef;
 //}
 //
-	///*
+///*
 //============
 //idProgram::FreeDef
 //============
@@ -963,7 +963,7 @@ idProgram::AllocDef
 //	delete def;
 //}
 //
-	///*
+///*
 //============
 //idProgram::FindFreeResultDef
 //============
@@ -990,7 +990,7 @@ idProgram::AllocDef
 //	return this.AllocDef( type, name, scope, false );
 //}
 //
-	///*
+///*
 //================
 //idProgram::FindFunction
 //
@@ -1045,7 +1045,7 @@ idProgram::AllocDef
 //	return null;
 //}
 //
-	///*
+///*
 //================
 //idProgram::FindFunction
 //
@@ -1071,7 +1071,7 @@ idProgram::AllocDef
 //	return null;
 //}
 //
-	///*
+///*
 //================
 //idProgram::AllocFunction
 //================
@@ -1099,7 +1099,7 @@ idProgram::AllocDef
 //	return func;
 //}
 //
-	///*
+///*
 //================
 //idProgram::SetEntity
 //================
@@ -1173,69 +1173,69 @@ called before compiling a batch of files, clears the pr struct
 		//}
 	}
 
-	///*
-//==============
-//idProgram::DisassembleStatement
-//==============
-//*/
-//void idProgram::DisassembleStatement( idFile *file, int instructionPointer ) const {
-//	opcode_t			*op;
-//	const statement_t	*statement;
-//
-//	statement = &statements[ instructionPointer ];
-//	op = &idCompiler::opcodes[ statement.op ];
-//	file.Printf( "%20s(%d):\t%6d: %15s\t", fileList[ statement.file ].c_str(), statement.linenumber, instructionPointer, op.opname );
-//
-//	if ( statement.a ) {
-//		file.Printf( "\ta: " );
-//		statement.a.PrintInfo( file, instructionPointer );
-//	}
-//
-//	if ( statement.b ) {
-//		file.Printf( "\tb: " );
-//		statement.b.PrintInfo( file, instructionPointer );
-//	}
-//
-//	if ( statement.c ) {
-//		file.Printf( "\tc: " );
-//		statement.c.PrintInfo( file, instructionPointer );
-//	}
-//
-//	file.Printf( "\n" );
-//}
-//
-	///*
-//==============
-//idProgram::Disassemble
-//==============
-//*/
-//void idProgram::Disassemble( void ) const {
-//	int					i;
-//	int					instructionPointer;
-//	const function_t	*func;
-//	idFile				*file;
-//
-//	file = fileSystem.OpenFileByMode( "script/disasm.txt", FS_WRITE );
-//
-//	for( i = 0; i < functions.Num(); i++ ) {
-//		func = &functions[ i ];
-//		if ( func.eventdef ) {
-//			// skip eventdefs
-//			continue;
-//		}
-//
-//		file.Printf( "\nfunction %s() %d stack used, %d parms, %d locals {\n", func.Name(), func.locals, func.parmTotal, func.locals - func.parmTotal );
-//
-//		for( instructionPointer = 0; instructionPointer < func.numStatements; instructionPointer++ ) {
-//			DisassembleStatement( file, func.firstStatement + instructionPointer );
-//		}
-//	
-//		file.Printf( "}\n" );
-//	}
-//
-//	fileSystem.CloseFile( file );
-//}
-//
+/*
+==============
+idProgram::DisassembleStatement
+==============
+*/
+	DisassembleStatement ( file: idFile, /*int */instructionPointer: number ): void {
+		var op: opcode_t;
+		var statement: statement_t;
+
+		statement = this.statements[instructionPointer];
+		op = idCompiler.opcodes[statement.op];
+		file.Printf( "%20s(%d):\t%6d: %15s\t", this.fileList[statement.file].c_str ( ), statement.linenumber, instructionPointer, op.opname );
+
+		if ( statement.a ) {
+			file.Printf( "\ta: " );
+			statement.a.PrintInfo( file, instructionPointer );
+		}
+
+		if ( statement.b ) {
+			file.Printf( "\tb: " );
+			statement.b.PrintInfo( file, instructionPointer );
+		}
+
+		if ( statement.c ) {
+			file.Printf( "\tc: " );
+			statement.c.PrintInfo( file, instructionPointer );
+		}
+
+		file.Printf( "\n" );
+	}
+
+/*
+==============
+idProgram::Disassemble
+==============
+*/
+	Disassemble ( ): void {
+		var i: number;
+		var instructionPointer: number;
+		var func: function_t;
+		var file: idFile;
+
+		file = fileSystem.OpenFileByMode( "script/disasm.txt", fsMode_t.FS_WRITE );
+
+		for ( i = 0; i < this.functions.Num ( ); i++ ) {
+			func = this.functions[i];
+			if ( func.eventdef ) {
+				// skip eventdefs
+				continue;
+			}
+
+			file.Printf( "\nfunction %s() %d stack used, %d parms, %d locals {\n", func.Name ( ), func.locals, func.parmTotal, func.locals - func.parmTotal );
+
+			for ( instructionPointer = 0; instructionPointer < func.numStatements; instructionPointer++ ) {
+				this.DisassembleStatement( file, func.firstStatement + instructionPointer );
+			}
+
+			file.Printf( "}\n" );
+		}
+
+		fileSystem.CloseFile( file );
+	}
+
 /*
 ==============
 idProgram::FinishCompilation
@@ -1361,7 +1361,7 @@ CompileText( source:string, text:string, console :boolean):boolean {
 	return true;
 }
 
-	///*
+///*
 //================
 //idProgram::CompileFunction
 //================
@@ -1382,7 +1382,7 @@ CompileText( source:string, text:string, console :boolean):boolean {
 //	return FindFunction( functionName );
 //}
 
-	/*
+/*
 ================
 idProgram::CompileFile
 ================
@@ -1396,11 +1396,13 @@ idProgram::CompileFile
 			gameLocal.Error( "Couldn't load %s\n", filename );
 		}
 
+		dlog(DEBUG_COMPILER, "idProgram::CompileFile: %s\n", filename);
+
 		result = this.CompileText( filename, src.$.toString(), false );
 		fileSystem.FreeFile( src.$ );
 
 		if ( g_disasm.GetBool() ) {
-			todoThrow( "Disassemble();" );
+			this.Disassemble();
 		}
 
 		if ( !result ) {
@@ -1474,7 +1476,7 @@ idProgram::Startup
 		this.FinishCompilation ( );
 	}
 
-	///*
+///*
 //================
 //idProgram::Save
 //================
@@ -1507,7 +1509,7 @@ idProgram::Startup
 //	savefile.WriteInt( checksum );
 //}
 //
-	///*
+///*
 //================
 //idProgram::Restore
 //================
@@ -1546,7 +1548,7 @@ idProgram::Startup
 //	return result;
 //}
 //
-	///*
+///*
 //================
 //idProgram::CalculateChecksum
 //================
@@ -1598,7 +1600,7 @@ idProgram::Startup
 //	return result;
 //}
 //
-	///*
+///*
 //==============
 //idProgram::Restart
 //
@@ -1676,7 +1678,7 @@ GetFilenum( name: string):number
 //	FreeData();
 //}
 //
-	///*
+///*
 //================
 //idProgram::~idProgram
 //================
@@ -1685,7 +1687,7 @@ GetFilenum( name: string):number
 //	FreeData();
 //}
 //
-	///*
+///*
 //================
 //idProgram::ReturnEntity
 //================

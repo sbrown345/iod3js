@@ -3453,52 +3453,62 @@ idFileSystemLocal::OpenFileRead
         return this.OpenFileReadFlags( relativePath, FSFLAG_SEARCH_DIRS | FSFLAG_SEARCH_PAKS, NULL, allowCopyFiles, gamedir );
     }
 
-/////*
-////===========
-////idFileSystemLocal::OpenFileWrite
-////===========
-////*/
-////idFile *idFileSystemLocal::OpenFileWrite( const char *relativePath, const char *basePath ) {
-////	const char *path;
-////	idStr OSpath;
-////	idFile_Permanent *f;
-////
-////	if ( !searchPaths ) {
-////		common.FatalError( "Filesystem call made without initialization\n" );
-////	}
-////
-////	path = cvarSystem.GetCVarString( basePath );
-////	if ( !path[0] ) {
-////		path = fs_savepath.GetString();
-////	}
-////
-////	OSpath = BuildOSPath( path, gameFolder, relativePath );
-////
-////	if ( fs_debug.GetInteger() ) {
-////		common.Printf( "idFileSystem::OpenFileWrite: %s\n", OSpath.c_str() );
-////	}
-////
-////	// if the dir we are writing to is in our current list, it will be outdated
-////	// so just flush everything
-////	ClearDirCache();
-////
-////	common.DPrintf( "writing to: %s\n", OSpath.c_str() );
-////	CreateOSPath( OSpath );
-////
-////	f = new idFile_Permanent();
-////	f.o = OpenOSFile( OSpath, "wb" );
-////	if ( !f.o ) {
-////		delete f;
-////		return NULL;
-////	}
-////	f.name = relativePath;
-////	f.fullPath = OSpath;
-////	f.mode = ( 1 << fsMode_t.FS_WRITE );
-////	f.handleSync = false;
-////	f.fileSize = 0;
-////
-////	return f;
-////}
+/*
+===========
+idFileSystemLocal::OpenFileWrite
+===========
+*/
+	static tempFilesForWriting = {};
+
+	OpenFileWrite ( relativePath: string, basePath: string = "fs_savepath" ): idFile {
+		//const char *path;
+		//idStr OSpath;
+		//idFile_Permanent *f;
+
+		//if ( !searchPaths ) {
+		//	common.FatalError( "Filesystem call made without initialization\n" );
+		//}
+
+		//path = cvarSystem.GetCVarString( basePath );
+		//if ( !path[0] ) {
+		//	path = fs_savepath.GetString();
+		//}
+
+		//OSpath = BuildOSPath( path, gameFolder, relativePath );
+
+		//if ( fs_debug.GetInteger() ) {
+		//	common.Printf( "idFileSystem::OpenFileWrite: %s\n", OSpath.c_str() );
+		//}
+
+		//// if the dir we are writing to is in our current list, it will be outdated
+		//// so just flush everything
+		//ClearDirCache();
+
+		//common.DPrintf( "writing to: %s\n", OSpath.c_str() );
+		//CreateOSPath( OSpath );
+
+		//f = new idFile_Permanent();
+		//f.o = OpenOSFile( OSpath, "wb" );
+		//if ( !f.o ) {
+		//	delete f;
+		//	return NULL;
+		//}
+		//f.name = relativePath;
+		//f.fullPath = OSpath;
+		//f.mode = ( 1 << fsMode_t.FS_WRITE );
+		//f.handleSync = false;
+		//f.fileSize = 0;
+
+
+		idFileSystemLocal.tempFilesForWriting[relativePath] = "";
+		var f = new idFile_Permanent ( );
+		f.name.equals( relativePath );
+		f.fullPath.equals( relativePath ); //this.OSpath;
+		f.mode = ( 1 << fsMode_t.FS_WRITE );
+		f.handleSync = false;
+		f.fileSize = 0;
+		return f;
+	}
 ////
 /////*
 ////===========
@@ -3607,26 +3617,28 @@ idFileSystemLocal::OpenFileRead
 ////
 ////	return f;
 ////}
-////
-/////*
-////================
-////idFileSystemLocal::OpenFileByMode
-////================
-////*/
-////idFile *idFileSystemLocal::OpenFileByMode( const char *relativePath, fsMode_t mode ) {
-////	if ( mode == fsMode_t.FS_READ ) {
-////		return OpenFileRead( relativePath );
-////	}
-////	if ( mode == fsMode_t.FS_WRITE ) {
-////		return OpenFileWrite( relativePath );
-////	}
-////	if ( mode == fsMode_t.FS_APPEND ) {
-////		return OpenFileAppend( relativePath, true );
-////	}
-////	common.FatalError( "idFileSystemLocal::OpenFileByMode: bad mode" );
-////	return NULL;
-////}
-////
+
+/*
+================
+idFileSystemLocal::OpenFileByMode
+================
+*/
+	OpenFileByMode ( relativePath: string, mode: fsMode_t ): idFile {
+		if ( mode == fsMode_t.FS_READ ) {
+			return this.OpenFileRead( relativePath );
+		}
+		if ( mode == fsMode_t.FS_WRITE ) {
+			return this.OpenFileWrite( relativePath );
+		}
+		if (mode == fsMode_t.FS_APPEND) {
+			todoThrow ( );
+			//return this.OpenFileAppend( relativePath, true );
+		}
+		common.FatalError( "idFileSystemLocal::OpenFileByMode: bad mode" );
+		return null;
+	}
+
+
 /*
 ==============
 idFileSystemLocal::CloseFile

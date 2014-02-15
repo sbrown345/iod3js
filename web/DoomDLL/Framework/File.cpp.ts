@@ -252,26 +252,28 @@
 ////	Seek( 0, FS_SEEK_SET );
 ////}
 ////
-/////*
-////=================
-////idFile::Printf
-////=================
-////*/
-////int idFile::Printf( const char *fmt, ... ) {
-////	char buf[MAX_PRINT_MSG];
-////	int length;
-////	va_list argptr;
-////
-////	va_start( argptr, fmt );
-////	length = idStr::vsnPrintf( buf, MAX_PRINT_MSG-1, fmt, argptr );
-////	va_end( argptr );
-////
-////	// so notepad formats the lines correctly
-////  	idStr	work( buf );
-//// 	work.Replace( "\n", "\r\n" );
-////  
-////  	return Write( work.c_str(), work.Length() );
-////}
+/*
+=================
+idFile::Printf
+=================
+*/
+idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
+	//char buf[MAX_PRINT_MSG];
+	//int length;
+	//va_list argptr;
+
+	//va_start( argptr, fmt );
+	//length = idStr::vsnPrintf( buf, MAX_PRINT_MSG-1, fmt, argptr );
+	//va_end( argptr );
+
+	//// so notepad formats the lines correctly
+	//idStr	work( buf );
+	//work.Replace( "\n", "\r\n" );
+
+	var work = new idStr( vsprintf( fmt, args ) );
+
+	return this.Write( work, work.Length ( ) );
+};
 ////
 /////*
 ////=================
@@ -1094,59 +1096,60 @@ Properly handles partial reads
     return len;
 };
 
-/////*
-////=================
-////idFile_Permanent::Write
-////
-////Properly handles partial writes
-////=================
-////*/
-////int idFile_Permanent::Write( const void *buffer, int len ) {
-////	int		block, remaining;
-////	int		written;
-////	byte *	buf;
-////	int		tries;
-////
-////	if ( !( mode & ( 1 << fsMode_t.FS_WRITE ) ) ) {
-////		common.FatalError( "idFile_Permanent::Write: %s not opened in write mode", name.c_str() );
-////		return 0;
-////	}
-////
-////	if ( !o ) {
-////		return 0;
-////	}
-////
-////	buf = (byte *)buffer;
-////
-////	remaining = len;
-////	tries = 0;
-////	while( remaining ) {
-////		block = remaining;
-////		written = fwrite( buf, 1, block, o );
-////		if ( written == 0 ) {
-////			if ( !tries ) {
-////				tries = 1;
-////			}
-////			else {
-////				common.Printf( "idFile_Permanent::Write: 0 bytes written to %s\n", name.c_str() );
-////				return 0;
-////			}
-////		}
-////
-////		if ( written == -1 ) {
-////			common.Printf( "idFile_Permanent::Write: -1 bytes written to %s\n", name.c_str() );
-////			return 0;
-////		}
-////
-////		remaining -= written;
-////		buf += written;
-////		fileSize += written;
-////	}
-////	if ( handleSync ) {
-////		fflush( o );
-////	}
-////	return len;
-////}
+/*
+=================
+idFile_Permanent::Write
+
+Properly handles partial writes
+=================
+*/
+idFile_Permanent.prototype.Write = function ( /*const void **/buffer: Uint8Array, /*int */len: number ): number {
+	idFileSystemLocal.tempFilesForWriting[this.name] += buffer.toString();
+	//int		block, remaining;
+	//int		written;
+	//byte *	buf;
+	//int		tries;
+
+	//if ( !( mode & ( 1 << fsMode_t.FS_WRITE ) ) ) {
+	//	common.FatalError( "idFile_Permanent::Write: %s not opened in write mode", name.c_str() );
+	//	return 0;
+	//}
+
+	//if ( !o ) {
+	//	return 0;
+	//}
+
+	//buf = (byte *)buffer;
+
+	//remaining = len;
+	//tries = 0;
+	//while( remaining ) {
+	//	block = remaining;
+	//	written = fwrite( buf, 1, block, o );
+	//	if ( written == 0 ) {
+	//		if ( !tries ) {
+	//			tries = 1;
+	//		}
+	//		else {
+	//			common.Printf( "idFile_Permanent::Write: 0 bytes written to %s\n", name.c_str() );
+	//			return 0;
+	//		}
+	//	}
+
+	//	if ( written == -1 ) {
+	//		common.Printf( "idFile_Permanent::Write: -1 bytes written to %s\n", name.c_str() );
+	//		return 0;
+	//	}
+
+	//	remaining -= written;
+	//	buf += written;
+	//	fileSize += written;
+	//}
+	//if ( handleSync ) {
+	//	fflush( o );
+	//}
+	return len;
+};
 ////
 /////*
 ////=================
