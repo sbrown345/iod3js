@@ -2636,7 +2636,7 @@ compiles the 0 terminated text, adding definitions to the program structure
 		var compile_time = new idTimer;
 		var error: boolean;
 
-		dlog(DEBUG_COMPILER, "CompileFile - filename: %s\n", filename );
+		dlog(DEBUG_COMPILER, "idCompiler::CompileFile - filename: %s\n", filename );
 		compile_time.Start ( );
 
 		this.scope = def_namespace;

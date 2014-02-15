@@ -391,860 +391,856 @@ idInternalCVar::InternalSetFloat
 */
 
 class idCVarSystem {
-////public:
-////							idCVarSystemLocal( void );
+	////public:
+	////							idCVarSystemLocal( void );
 
-////	virtual					~idCVarSystemLocal( void ) {}
+	////	virtual					~idCVarSystemLocal( void ) {}
 
-////	virtual void			Init( void );
-////	virtual void			Shutdown( void );
-////	virtual bool			IsInitialized( void ) const;
+	////	virtual void			Init( void );
+	////	virtual void			Shutdown( void );
+	////	virtual bool			IsInitialized( void ) const;
 
-    //Register( cvar:idCVar ):void;
+	//Register( cvar:idCVar ):void;
 
-////	virtual idCVar *		Find( const char *name );
+	////	virtual idCVar *		Find( const char *name );
 
-////	virtual void			SetCVarString( const char *name, const char *value, int flags = 0 );
-////	virtual void			SetCVarBool( const char *name, const bool value, int flags = 0 );
-////	virtual void			SetCVarInteger( const char *name, const int value, int flags = 0 );
-////	virtual void			SetCVarFloat( const char *name, const float value, int flags = 0 );
+	////	virtual void			SetCVarString( const char *name, const char *value, int flags = 0 );
+	////	virtual void			SetCVarBool( const char *name, const bool value, int flags = 0 );
+	////	virtual void			SetCVarInteger( const char *name, const int value, int flags = 0 );
+	////	virtual void			SetCVarFloat( const char *name, const float value, int flags = 0 );
 
-////	virtual const char *	GetCVarString( const char *name ) const;
-////	virtual bool			GetCVarBool( const char *name ) const;
-////	virtual int				GetCVarInteger( const char *name ) const;
-////	virtual float			GetCVarFloat( const char *name ) const;
+	////	virtual const char *	GetCVarString( const char *name ) const;
+	////	virtual bool			GetCVarBool( const char *name ) const;
+	////	virtual int				GetCVarInteger( const char *name ) const;
+	////	virtual float			GetCVarFloat( const char *name ) const;
 
-////	virtual bool			Command( args:idCmdArgs );
+	////	virtual bool			Command( args:idCmdArgs );
 
-////	virtual void			CommandCompletion( void(*callback)( const char *s ) );
-////	virtual void			ArgCompletion( const char *cmdString, void(*callback)( const char *s ) );
+	////	virtual void			CommandCompletion( void(*callback)( const char *s ) );
+	////	virtual void			ArgCompletion( const char *cmdString, void(*callback)( const char *s ) );
 
-////	virtual void			SetModifiedFlags( int flags );
-////	virtual int				GetModifiedFlags( void ) const;
-////	virtual void			ClearModifiedFlags( int flags );
+	////	virtual void			SetModifiedFlags( int flags );
+	////	virtual int				GetModifiedFlags( void ) const;
+	////	virtual void			ClearModifiedFlags( int flags );
 
-////	virtual void			ResetFlaggedVariables( int flags );
-////	virtual void			RemoveFlaggedAutoCompletion( int flags );
-////	virtual void			WriteFlaggedVariables( int flags, const char *setCmd, idFile *f ) const;
+	////	virtual void			ResetFlaggedVariables( int flags );
+	////	virtual void			RemoveFlaggedAutoCompletion( int flags );
+	////	virtual void			WriteFlaggedVariables( int flags, const char *setCmd, idFile *f ) const;
 
-////	virtual const idDict *	MoveCVarsToDict( int flags ) const;
-////	virtual void			SetCVarsFromDict( const idDict &dict );
+	////	virtual const idDict *	MoveCVarsToDict( int flags ) const;
+	////	virtual void			SetCVarsFromDict( const idDict &dict );
 
-////	void					RegisterInternal( idCVar *cvar );
-////	idInternalCVar *		FindInternal( const char *name ) const;
-////	void					SetInternal( const char *name, const char *value, int flags );
+	////	void					RegisterInternal( idCVar *cvar );
+	////	idInternalCVar *		FindInternal( const char *name ) const;
+	////	void					SetInternal( const char *name, const char *value, int flags );
 
-////private:
-                                initialized:boolean;
-/*idList<idInternalCVar*>	*/  cvars:idList<idInternalCVar>;
-/*	idHashIndex				*/  cvarHash:idHashIndex;
-        						modifiedFlags:number;
-////							// use a static dictionary to MoveCVarsToDict can be used from game
-////	static idDict			moveCVarsToDict;
-
-
-////private:
-////	static void				Toggle_f( const idCmdArgs &args );
-////	static void				Set_f( args:idCmdArgs );
-////	static void				SetS_f( args:idCmdArgs );
-////	static void				SetU_f( args:idCmdArgs );
-////	static void				SetT_f( args:idCmdArgs );
-////	static void				SetA_f( args:idCmdArgs );
-////	static void				Reset_f( args:idCmdArgs );
-////	static void				ListByFlags( const idCmdArgs &args, cvarFlags_t flags );
-////	static void				List_f( args:idCmdArgs );
-////	static void				Restart_f( args:idCmdArgs );
+	////private:
+	initialized: boolean;
+	/*idList<idInternalCVar*>	*/  cvars: idList<idInternalCVar>;
+	/*	idHashIndex				*/  cvarHash: idHashIndex;
+	modifiedFlags: number;
+	////							// use a static dictionary to MoveCVarsToDict can be used from game
+	////	static idDict			moveCVarsToDict;
 
 
-////idDict						idCVarSystemLocal::moveCVarsToDict;
+	////private:
+	////	static void				Toggle_f( const idCmdArgs &args );
+	////	static void				Set_f( args:idCmdArgs );
+	////	static void				SetS_f( args:idCmdArgs );
+	////	static void				SetU_f( args:idCmdArgs );
+	////	static void				SetT_f( args:idCmdArgs );
+	////	static void				SetA_f( args:idCmdArgs );
+	////	static void				Reset_f( args:idCmdArgs );
+	////	static void				ListByFlags( const idCmdArgs &args, cvarFlags_t flags );
+	////	static void				List_f( args:idCmdArgs );
+	////	static void				Restart_f( args:idCmdArgs );
 
-////#define NUM_COLUMNS				77		// 78 - 1
-////#define NUM_NAME_CHARS			33
-////#define NUM_DESCRIPTION_CHARS	( NUM_COLUMNS - NUM_NAME_CHARS )
-////#define FORMAT_STRING			"%-32s "
 
-	constructor ( ) {
+	////idDict						idCVarSystemLocal::moveCVarsToDict;
+
+	////#define NUM_COLUMNS				77		// 78 - 1
+	////#define NUM_NAME_CHARS			33
+	////#define NUM_DESCRIPTION_CHARS	( NUM_COLUMNS - NUM_NAME_CHARS )
+	////#define FORMAT_STRING			"%-32s "
+
+	constructor() {
 		this.initialized = false;
-		this.cvars = new idList<idInternalCVar> ( idInternalCVar );
-		this.cvarHash = new idHashIndex ( );
+		this.cvars = new idList<idInternalCVar>(idInternalCVar);
+		this.cvarHash = new idHashIndex();
 		this.modifiedFlags = 0;
 	}
 
-////const char *CreateColumn( const char *text, int columnWidth, const char *indent, idStr &string ) {
-////	int i, lastLine;
+	////const char *CreateColumn( const char *text, int columnWidth, const char *indent, idStr &string ) {
+	////	int i, lastLine;
 
-////	string.Clear();
-////	for ( lastLine = i = 0; text[i] != '\0'; i++ ) {
-////		if ( i - lastLine >= columnWidth || text[i] == '\n' ) {
-////			while( i > 0 && text[i] > ' ' && text[i] != '/' && text[i] != ',' && text[i] != '\\' ) {
-////				i--;
-////			}
-////			while( lastLine < i ) {
-////				string.Append( text[lastLine++] );
-////			}
-////			string.Append( indent );
-////			lastLine++;
-////		}
-////	}
-////	while( lastLine < i ) {
-////		string.Append( text[lastLine++] );
-////	}
-////	return string.c_str();
-////}
+	////	string.Clear();
+	////	for ( lastLine = i = 0; text[i] != '\0'; i++ ) {
+	////		if ( i - lastLine >= columnWidth || text[i] == '\n' ) {
+	////			while( i > 0 && text[i] > ' ' && text[i] != '/' && text[i] != ',' && text[i] != '\\' ) {
+	////				i--;
+	////			}
+	////			while( lastLine < i ) {
+	////				string.Append( text[lastLine++] );
+	////			}
+	////			string.Append( indent );
+	////			lastLine++;
+	////		}
+	////	}
+	////	while( lastLine < i ) {
+	////		string.Append( text[lastLine++] );
+	////	}
+	////	return string.c_str();
+	////}
 
-/*
-============
-idCVarSystemLocal::FindInternal
-============
-*/
-FindInternal( /*const char **/name:string ):idInternalCVar {
-	var/*int */hash = this.cvarHash.GenerateKey( name, false );
-	for ( var/*int */i = this.cvarHash.First( hash ); i != -1; i = this.cvarHash.Next( i ) ) {
-		if ( this.cvars[i].nameString.Icmp( name ) == 0 ) {
-			return this.cvars[i];
+	/*
+	============
+	idCVarSystemLocal::FindInternal
+	============
+	*/
+	FindInternal( /*const char **/name: string): idInternalCVar {
+		var/*int */hash = this.cvarHash.GenerateKey(name, false);
+		for (var/*int */i = this.cvarHash.First(hash); i != -1; i = this.cvarHash.Next(i)) {
+			if (this.cvars[i].nameString.Icmp(name) == 0) {
+				return this.cvars[i];
+			}
 		}
+		return /*NULL*/null;
 	}
-	return /*NULL*/null;
-}
 
-/*
-============
-idCVarSystemLocal::SetInternal
-============
-*/
-	SetInternal ( name: string, value: string, /*int */flags: number ): void {
+	/*
+	============
+	idCVarSystemLocal::SetInternal
+	============
+	*/
+	SetInternal(name: string, value: string, /*int */flags: number): void {
 		var /*int */hash: number;
 		var internal: idInternalCVar;
 
-		internal = this.FindInternal( name );
+		internal = this.FindInternal(name);
 
-		if ( internal ) {
-			internal.InternalSetString( value );
+		if (internal) {
+			internal.InternalSetString(value);
 			internal.flags |= flags & ~CVAR_STATIC;
-			internal.UpdateCheat ( );
+			internal.UpdateCheat();
 		} else {
-			internal = new idInternalCVar( name, value, flags );
-			hash = this.cvarHash.GenerateKey( internal.nameString.c_str ( ), false );
-			this.cvarHash.Add(hash, this.cvars.Append( internal ) );
+			internal = new idInternalCVar(name, value, flags);
+			hash = this.cvarHash.GenerateKey(internal.nameString.c_str(), false);
+			this.cvarHash.Add(hash, this.cvars.Append(internal));
 		}
 	}
 
-///*
-//============
-//idCVarSystemLocal::idCVarSystemLocal
-//============
-//*/
-//idCVarSystemLocal::idCVarSystemLocal( void ) {
-//initialized = false;
-//modifiedFlags = 0;
-//}
+	///*
+	//============
+	//idCVarSystemLocal::idCVarSystemLocal
+	//============
+	//*/
+	//idCVarSystemLocal::idCVarSystemLocal( void ) {
+	//initialized = false;
+	//modifiedFlags = 0;
+	//}
 
-/*
-============
-idCVarSystemLocal::Init
-============
-*/
-Init( ):void {
+	/*
+	============
+	idCVarSystemLocal::Init
+	============
+	*/
+	Init(): void {
 
-	this.modifiedFlags = 0;
+		this.modifiedFlags = 0;
 
-	cmdSystem.AddCommand( "toggle", this.Toggle_f, cmdFlags_t.CMD_FL_SYSTEM, "toggles a cvar" );
-	cmdSystem.AddCommand( "set", this.Set_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar" );
-	cmdSystem.AddCommand( "sets", this.SetS_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as server info" );
-	cmdSystem.AddCommand( "setu", this.SetU_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as user info" );
-	cmdSystem.AddCommand( "sett", this.SetT_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as tool" );
-	cmdSystem.AddCommand( "seta", this.SetA_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as archive" );
-	cmdSystem.AddCommand( "reset", this.Reset_f, cmdFlags_t.CMD_FL_SYSTEM, "resets a cvar" );
-	cmdSystem.AddCommand( "listCvars", this.List_f, cmdFlags_t.CMD_FL_SYSTEM, "lists cvars" );
-	cmdSystem.AddCommand( "cvar_restart", this.Restart_f, cmdFlags_t.CMD_FL_SYSTEM, "restart the cvar system" );
+		cmdSystem.AddCommand("toggle", this.Toggle_f, cmdFlags_t.CMD_FL_SYSTEM, "toggles a cvar");
+		cmdSystem.AddCommand("set", this.Set_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar");
+		cmdSystem.AddCommand("sets", this.SetS_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as server info");
+		cmdSystem.AddCommand("setu", this.SetU_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as user info");
+		cmdSystem.AddCommand("sett", this.SetT_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as tool");
+		cmdSystem.AddCommand("seta", this.SetA_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as archive");
+		cmdSystem.AddCommand("reset", this.Reset_f, cmdFlags_t.CMD_FL_SYSTEM, "resets a cvar");
+		cmdSystem.AddCommand("listCvars", this.List_f, cmdFlags_t.CMD_FL_SYSTEM, "lists cvars");
+		cmdSystem.AddCommand("cvar_restart", this.Restart_f, cmdFlags_t.CMD_FL_SYSTEM, "restart the cvar system");
 
-	this.initialized = true;
-}
-
-///*
-//============
-//idCVarSystemLocal::Shutdown
-//============
-//*/
-//void /*idCVarSystemLocal::*/Shutdown( void ) {
-//	cvars.DeleteContents( true );
-//	cvarHash.Free();
-//	moveCVarsToDict.Clear();
-//	this.initialized = false;
-//}
-
-/*
-============
-idCVarSystemLocal::IsInitialized
-============
-*/
-IsInitialized( ):boolean {
-	return this.initialized;
-}
-
-/*
-============
-idCVarSystemLocal::Register
-============
-*/
-Register( cvar:idCVar ):void {
-	var/*int */hash:number;
-	var internal:idInternalCVar;
-
-	cvar.SetInternalVar( cvar );
-
-	internal = this.FindInternal( cvar.GetName() );
-
-	if ( internal ) {
-		internal.Update( cvar );
-	} else {
-		internal = new idInternalCVar( cvar );
-		hash = this.cvarHash.GenerateKey( internal.nameString.c_str(), false );
-		this.cvarHash.Add( hash, this.cvars.Append( internal ) );
+		this.initialized = true;
 	}
 
-	cvar.SetInternalVar( internal );
-}
+	///*
+	//============
+	//idCVarSystemLocal::Shutdown
+	//============
+	//*/
+	//void /*idCVarSystemLocal::*/Shutdown( void ) {
+	//	cvars.DeleteContents( true );
+	//	cvarHash.Free();
+	//	moveCVarsToDict.Clear();
+	//	this.initialized = false;
+	//}
 
-/*
-============
-idCVarSystemLocal::Find
-============
-*/
-	Find ( name: string ): idCVar {
-		return this.FindInternal( name );
+	/*
+	============
+	idCVarSystemLocal::IsInitialized
+	============
+	*/
+	IsInitialized(): boolean {
+		return this.initialized;
 	}
 
-/*
-============
-idCVarSystemLocal::SetCVarString
-============
-*/
-	SetCVarString ( name: string, value: string, /*int */flags = 0 ): void {
-		this.SetInternal( name, value, flags );
+	/*
+	============
+	idCVarSystemLocal::Register
+	============
+	*/
+	Register(cvar: idCVar): void {
+		var/*int */hash: number;
+		var internal: idInternalCVar;
+
+		cvar.SetInternalVar(cvar);
+
+		internal = this.FindInternal(cvar.GetName());
+
+		if (internal) {
+			internal.Update(cvar);
+		} else {
+			internal = new idInternalCVar(cvar);
+			hash = this.cvarHash.GenerateKey(internal.nameString.c_str(), false);
+			this.cvarHash.Add(hash, this.cvars.Append(internal));
+		}
+
+		cvar.SetInternalVar(internal);
 	}
 
-/*
-============
-idCVarSystemLocal::SetCVarBool
-============
-*/
-	SetCVarBool ( name: string, value: boolean, /*int */flags: number = 0 ): void {
-		this.SetInternal( name, new idStr( value ).toString ( ), flags );
-	}
-/*
-
-============
-idCVarSystemLocal::SetCVarInteger
-============
-*/
-	SetCVarInteger ( name: string, /*const int */value: number, /*int */flags = 0 ): void {
-		this.SetInternal( name, new idStr( value ).toString ( ), flags );
+	/*
+	============
+	idCVarSystemLocal::Find
+	============
+	*/
+	Find(name: string): idCVar {
+		return this.FindInternal(name);
 	}
 
-/*
-============
-idCVarSystemLocal::SetCVarFloat
-============
-*/
-	SetCVarFloat ( name: string, /*const float */value: number, /*int */flags = 0 ): void {
-		this.SetInternal( name, new idStr( value ).toString(), flags );
+	/*
+	============
+	idCVarSystemLocal::SetCVarString
+	============
+	*/
+	SetCVarString(name: string, value: string, /*int */flags = 0): void {
+		this.SetInternal(name, value, flags);
 	}
 
-/*
-============
-idCVarSystemLocal::GetCVarString
-============
-*/
-	GetCVarString ( name: string ): string {
-		var internal = this.FindInternal( name );
-		if ( internal ) {
-			return internal.GetString ( );
+	/*
+	============
+	idCVarSystemLocal::SetCVarBool
+	============
+	*/
+	SetCVarBool(name: string, value: boolean, /*int */flags: number = 0): void {
+		this.SetInternal(name, new idStr(value).toString(), flags);
+	}
+	/*
+
+	============
+	idCVarSystemLocal::SetCVarInteger
+	============
+	*/
+	SetCVarInteger(name: string, /*const int */value: number, /*int */flags = 0): void {
+		this.SetInternal(name, new idStr(value).toString(), flags);
+	}
+
+	/*
+	============
+	idCVarSystemLocal::SetCVarFloat
+	============
+	*/
+	SetCVarFloat(name: string, /*const float */value: number, /*int */flags = 0): void {
+		this.SetInternal(name, new idStr(value).toString(), flags);
+	}
+
+	/*
+	============
+	idCVarSystemLocal::GetCVarString
+	============
+	*/
+	GetCVarString(name: string): string {
+		var internal = this.FindInternal(name);
+		if (internal) {
+			return internal.GetString();
 		}
 		return "";
 	}
 
-/*
-============
-idCVarSystemLocal::GetCVarBool
-============
-*/
-	GetCVarBool ( name: string ): boolean {
-		var internal = this.FindInternal( name );
-		if ( internal ) {
-			return internal.GetBool ( );
+	/*
+	============
+	idCVarSystemLocal::GetCVarBool
+	============
+	*/
+	GetCVarBool(name: string): boolean {
+		var internal = this.FindInternal(name);
+		if (internal) {
+			return internal.GetBool();
 		}
 		return false;
 	}
 
-/*
-============
-idCVarSystemLocal::GetCVarInteger
-============
-*/
-/*int */
-	GetCVarInteger ( name: string ): number {
-		var internal = this.FindInternal( name );
-		if ( internal ) {
-			return internal.GetInteger ( );
+	/*
+	============
+	idCVarSystemLocal::GetCVarInteger
+	============
+	*/
+	/*int */
+	GetCVarInteger(name: string): number {
+		var internal = this.FindInternal(name);
+		if (internal) {
+			return internal.GetInteger();
 		}
 		return 0;
 	}
 
-///*
-//============
-//idCVarSystemLocal::GetCVarFloat
-//============
-//*/
-//float /*idCVarSystemLocal::*/GetCVarFloat( name:string ) const {
-//	idInternalCVar *internal = FindInternal( name );
-//	if ( internal ) {
-//		return internal.GetFloat();
-//	}
-//	return 0.0;
-//}
+	///*
+	//============
+	//idCVarSystemLocal::GetCVarFloat
+	//============
+	//*/
+	//float /*idCVarSystemLocal::*/GetCVarFloat( name:string ) const {
+	//	idInternalCVar *internal = FindInternal( name );
+	//	if ( internal ) {
+	//		return internal.GetFloat();
+	//	}
+	//	return 0.0;
+	//}
 
-/*
-============
-idCVarSystemLocal::Command
-============
-*/
-	Command ( args: idCmdArgs ): boolean {
+	/*
+	============
+	idCVarSystemLocal::Command
+	============
+	*/
+	Command(args: idCmdArgs): boolean {
 		var internal: idInternalCVar;
 
-		internal = this.FindInternal( args.Argv( 0 ) );
+		internal = this.FindInternal(args.Argv(0));
 
-		if ( internal == null ) {
+		if (internal == null) {
 			return false;
 		}
 
-		if ( args.Argc ( ) == 1 ) {
+		if (args.Argc() == 1) {
 			// print the variable
-			common.Printf( "\"%s\" is:\"%s\"" + S_COLOR_WHITE + " default:\"%s\"\n",
-				internal.nameString.c_str ( ), internal.valueString.c_str ( ), internal.resetString.c_str ( ) );
-			if ( idStr.Length( internal.GetDescription ( ) ) > 0 ) {
-				common.Printf( S_COLOR_WHITE + "%s\n", internal.GetDescription ( ) );
+			common.Printf("\"%s\" is:\"%s\"" + S_COLOR_WHITE + " default:\"%s\"\n",
+				internal.nameString.c_str(), internal.valueString.c_str(), internal.resetString.c_str());
+			if (idStr.Length(internal.GetDescription()) > 0) {
+				common.Printf(S_COLOR_WHITE + "%s\n", internal.GetDescription());
 			}
 		} else {
 			// set the value
-			internal.Set( args.Args ( ), false, false );
+			internal.Set(args.Args(), false, false);
 		}
 		return true;
 	}
 
-///*
-//============
-//idCVarSystemLocal::CommandCompletion
-//============
-//*/
-//void /*idCVarSystemLocal::*/CommandCompletion( void(*callback)( const char *s ) ) {
-//	for( int i = 0; i < cvars.Num(); i++ ) {
-//		callback( cvars[i].GetName() );
-//	}
-//}
-
-///*
-//============
-//idCVarSystemLocal::ArgCompletion
-//============
-//*/
-//void /*idCVarSystemLocal::*/ArgCompletion( const char *cmdString, void(*callback)( const char *s ) ) {
-//	idCmdArgs args;
-
-//	args.TokenizeString( cmdString, false );
-
-//	for( int i = 0; i < cvars.Num(); i++ ) {
-//		if ( !cvars[i].valueCompletion ) {
-//			continue;
-//		}
-//		if ( idStr.Icmp( args.Argv( 0 ), cvars[i].nameString.c_str() ) == 0 ) {
-//			cvars[i].valueCompletion( args, callback );
-//			break;
-//		}
-//	}
-//}
-
-/*
-============
-idCVarSystemLocal::SetModifiedFlags
-============
-*/
-SetModifiedFlags( /*int */flags:number ):void {
-	this.modifiedFlags |= flags;
-}
-
-/*
-============
-idCVarSystemLocal::GetModifiedFlags
-============
-*/
-	GetModifiedFlags ( ): number {
-		return this.modifiedFlags;
-	}
-
-/*
-============
-idCVarSystemLocal::ClearModifiedFlags
-============
-*/
-	ClearModifiedFlags ( /*int */flags: number ): void {
-		this.modifiedFlags &= ~flags;
-	}
-
-///*
-//============
-//idCVarSystemLocal::ResetFlaggedVariables
-//============
-//*/
-//void /*idCVarSystemLocal::*/ResetFlaggedVariables( int flags ) {
-//	for( int i = 0; i < cvars.Num(); i++ ) {
-//		idInternalCVar *cvar = cvars[i];
-//		if ( cvar.GetFlags() & flags ) {
-//			cvar.Set( NULL, true, true );
-//		}
-//	}
-//}
-
-///*
-//============
-//idCVarSystemLocal::RemoveFlaggedAutoCompletion
-//============
-//*/
-//void /*idCVarSystemLocal::*/RemoveFlaggedAutoCompletion( int flags ) {
-//	for( int i = 0; i < cvars.Num(); i++ ) {
-//		idInternalCVar *cvar = cvars[i];
-//		if ( cvar.GetFlags() & flags ) {
-//			cvar.valueCompletion = NULL;
-//		}
-//	}
-//}
-
-/*
-============
-idCVarSystemLocal::WriteFlaggedVariables
-
-Appends lines containing "set variable value" for all variables
-with the "flags" flag set to true.
-============
-*/
-//void /*idCVarSystemLocal::*/WriteFlaggedVariables( int flags, const char *setCmd, idFile *f ) const {
-//	for( int i = 0; i < cvars.Num(); i++ ) {
-//		idInternalCVar *cvar = cvars[i];
-//		if ( cvar.GetFlags() & flags ) {
-//			f.Printf( "%s %s \"%s\"\n", setCmd, cvar.GetName(), cvar.GetString() );
-//		}
-//	}
-//}
-
-///*
-//============
-//idCVarSystemLocal::MoveCVarsToDict
-//============
-//*/
-//const idDict* /*idCVarSystemLocal::*/MoveCVarsToDict( int flags ) const {
-//	moveCVarsToDict.Clear();
-//	for( int i = 0; i < cvars.Num(); i++ ) {
-//		idCVar *cvar = cvars[i];
-//		if ( cvar.GetFlags() & flags ) {
-//			moveCVarsToDict.Set( cvar.GetName(), cvar.GetString() );
-//		}
-//	}
-//	return &moveCVarsToDict;
-//}
-
-///*
-//============
-//idCVarSystemLocal::SetCVarsFromDict
-//============
-//*/
-//function /*idCVarSystemLocal::*/SetCVarsFromDict( const idDict &dict ) {
-//    todoThrow();
-//	//idInternalCVar *internal;
-
-//	//for( int i = 0; i < dict.GetNumKeyVals(); i++ ) {
-//	//	const idKeyValue *kv = dict.GetKeyVal( i );
-//	//	internal = FindInternal( kv.GetKey() );
-//	//	if ( internal ) {
-//	//		internal.InternalServerSetString( kv.GetValue() );
-//	//	}
-//	//}
-//}
-
-/*
-============
-idCVarSystemLocal::Toggle_f
-============
-*/
-Toggle_f( /*const */ args:idCmdArgs  ):void {
-    todoThrow();
-	//int argc, i;
-	//float current, set;
-	//const char *text;
-
-	//argc = args.Argc();
-	//if ( argc < 2 ) {
-	//	common.Printf ("usage:\n"
-	//		"   toggle <variable>  - toggles between 0 and 1\n"
-	//		"   toggle <variable> <value> - toggles between 0 and <value>\n"
-	//		"   toggle <variable> [string 1] [string 2]...[string n] - cycles through all strings\n");
-	//	return;
+	///*
+	//============
+	//idCVarSystemLocal::CommandCompletion
+	//============
+	//*/
+	//void /*idCVarSystemLocal::*/CommandCompletion( void(*callback)( const char *s ) ) {
+	//	for( int i = 0; i < cvars.Num(); i++ ) {
+	//		callback( cvars[i].GetName() );
+	//	}
 	//}
 
-	//idInternalCVar *cvar = localCVarSystem.FindInternal( args.Argv( 1 ) );
+	///*
+	//============
+	//idCVarSystemLocal::ArgCompletion
+	//============
+	//*/
+	//void /*idCVarSystemLocal::*/ArgCompletion( const char *cmdString, void(*callback)( const char *s ) ) {
+	//	idCmdArgs args;
 
-	//if ( cvar == NULL ) {
-	//	common.Warning( "Toggle_f: cvar \"%s\" not found", args.Argv( 1 ) );
-	//	return;
-	//}
+	//	args.TokenizeString( cmdString, false );
 
-	//if ( argc > 3 ) {
-	//	// cycle through multiple values
-	//	text = cvar.GetString();
-	//	for( i = 2; i < argc; i++ ) {
-	//		if ( !idStr.Icmp( text, args.Argv( i ) ) ) {
-	//			// point to next value
-	//			i++;
+	//	for( int i = 0; i < cvars.Num(); i++ ) {
+	//		if ( !cvars[i].valueCompletion ) {
+	//			continue;
+	//		}
+	//		if ( idStr.Icmp( args.Argv( 0 ), cvars[i].nameString.c_str() ) == 0 ) {
+	//			cvars[i].valueCompletion( args, callback );
 	//			break;
 	//		}
 	//	}
-	//	if ( i >= argc ) {
-	//		i = 2;
+	//}
+
+	/*
+	============
+	idCVarSystemLocal::SetModifiedFlags
+	============
+	*/
+	SetModifiedFlags( /*int */flags: number): void {
+		this.modifiedFlags |= flags;
+	}
+
+	/*
+	============
+	idCVarSystemLocal::GetModifiedFlags
+	============
+	*/
+	GetModifiedFlags(): number {
+		return this.modifiedFlags;
+	}
+
+	/*
+	============
+	idCVarSystemLocal::ClearModifiedFlags
+	============
+	*/
+	ClearModifiedFlags( /*int */flags: number): void {
+		this.modifiedFlags &= ~flags;
+	}
+
+	///*
+	//============
+	//idCVarSystemLocal::ResetFlaggedVariables
+	//============
+	//*/
+	//void /*idCVarSystemLocal::*/ResetFlaggedVariables( int flags ) {
+	//	for( int i = 0; i < cvars.Num(); i++ ) {
+	//		idInternalCVar *cvar = cvars[i];
+	//		if ( cvar.GetFlags() & flags ) {
+	//			cvar.Set( NULL, true, true );
+	//		}
 	//	}
+	//}
 
-	//	common.Printf( "set %s = %s\n", args.Argv(1), args.Argv( i ) );
-	//	cvar.Set( va("%s", args.Argv( i ) ), false, false );
-	//} else {
-	//	// toggle between 0 and 1
-	//	current = cvar.GetFloat();
-	//	if ( argc == 3 ) {
-	//		set = atof( args.Argv( 2 ) );
-	//	} else {
-	//		set = 1.0f;
+	///*
+	//============
+	//idCVarSystemLocal::RemoveFlaggedAutoCompletion
+	//============
+	//*/
+	//void /*idCVarSystemLocal::*/RemoveFlaggedAutoCompletion( int flags ) {
+	//	for( int i = 0; i < cvars.Num(); i++ ) {
+	//		idInternalCVar *cvar = cvars[i];
+	//		if ( cvar.GetFlags() & flags ) {
+	//			cvar.valueCompletion = NULL;
+	//		}
 	//	}
-	//	if ( current == 0.0 ) {
-	//		current = set;
-	//	} else {
-	//		current = 0.0;
+	//}
+
+	/*
+	============
+	idCVarSystemLocal::WriteFlaggedVariables
+
+	Appends lines containing "set variable value" for all variables
+	with the "flags" flag set to true.
+	============
+	*/
+	//void /*idCVarSystemLocal::*/WriteFlaggedVariables( int flags, const char *setCmd, idFile *f ) const {
+	//	for( int i = 0; i < cvars.Num(); i++ ) {
+	//		idInternalCVar *cvar = cvars[i];
+	//		if ( cvar.GetFlags() & flags ) {
+	//			f.Printf( "%s %s \"%s\"\n", setCmd, cvar.GetName(), cvar.GetString() );
+	//		}
 	//	}
-	//	common.Printf( "set %s = %f\n", args.Argv(1), current );
-	//	cvar.Set( idStr( current ), false, false );
-	//}
-}
-
-/*
-============
-idCVarSystemLocal::Set_f
-============
-*/
-Set_f( /*const */ args:idCmdArgs  ):void {
-    todoThrow();
-	//const char *str;
-
-	//str = args.Args( 2, args.Argc() - 1 );
-	//localCVarSystem.SetCVarString( args.Argv(1), str );
-}
-
-/*
-============
-idCVarSystemLocal::SetS_f
-============
-*/
-SetS_f( /*const */ args:idCmdArgs  ):void {
-    todoThrow();
-	//idInternalCVar *cvar;
-
-	//Set_f( args );
-	//cvar = localCVarSystem.FindInternal( args.Argv( 1 ) );
-	//if ( !cvar ) {
-	//	return;
-	//}
-	//cvar.flags |= CVAR_SERVERINFO | CVAR_ARCHIVE;
-}
-
-/*
-============
-idCVarSystemLocal::SetU_f
-============
-*/
-SetU_f( /*const */ args:idCmdArgs  ):void {
-    todoThrow();
-	//idInternalCVar *cvar;
-
-	//Set_f( args );
-	//cvar = localCVarSystem.FindInternal( args.Argv( 1 ) );
-	//if ( !cvar ) {
-	//	return;
-	//}
-	//cvar.flags |= CVAR_USERINFO | CVAR_ARCHIVE;
-}
-
-/*
-============
-idCVarSystemLocal::SetT_f
-============
-*/
-SetT_f( /*const */ args:idCmdArgs  ):void {
-    todoThrow();
-	//idInternalCVar *cvar;
-
-	//Set_f( args );
-	//cvar = localCVarSystem.FindInternal( args.Argv( 1 ) );
-	//if ( !cvar ) {
-	//	return;
-	//}
-	//cvar.flags |= CVAR_TOOL;
-}
-
-/*
-============
-idCVarSystemLocal::SetA_f
-============
-*/
-SetA_f( /*const */ args:idCmdArgs  ):void {
-    todoThrow();
-//	idInternalCVar *cvar;
-
-//	Set_f( args );
-//	cvar = localCVarSystem.FindInternal( args.Argv( 1 ) );
-//	if ( !cvar ) {
-//		return;
-//	}
-
-//	// FIXME: enable this for ship, so mods can store extra data
-//	// but during development we don't want obsolete cvars to continue
-//	// to be saved
-////	cvar.flags |= CVAR_ARCHIVE;
-}
-
-/*
-============
-idCVarSystemLocal::Reset_f
-============
-*/
-Reset_f( /*const */ args:idCmdArgs  ):void {
-    todoThrow();
-	//idInternalCVar *cvar;
-
-	//if ( args.Argc() != 2 ) {
-	//	common.Printf ("usage: reset <variable>\n");
-	//	return;
-	//}
-	//cvar = localCVarSystem.FindInternal( args.Argv( 1 ) );
-	//if ( !cvar ) {
-	//	return;
 	//}
 
-	//cvar.Reset();
-}
-
-/*
-============
-idCVarSystemLocal::ListByFlags
-============
-*/
-//// NOTE: the const wonkyness is required to make msvc happy
-//template<>
-//ID_INLINE int idListSortCompare( const idInternalCVar * const *a, const idInternalCVar * const *b ) {
-//    todoThrow();
-//	return idStr.Icmp( (*a).GetName(), (*b).GetName() );
-//}
-
-//function idCVarSystemLocal::ListByFlags( const idCmdArgs &args, cvarFlags_t flags ) {
-//    todoThrow();
-//	//int i, argNum;
-//	//idStr match, indent, string;
-//	//const idInternalCVar *cvar;
-//	//idList<const idInternalCVar *>cvarList;
-
-//	//enum {
-//	//	SHOW_VALUE,
-//	//	SHOW_DESCRIPTION,
-//	//	SHOW_TYPE,
-//	//	SHOW_FLAGS
-//	//} show;
-
-//	//argNum = 1;
-//	//show = SHOW_VALUE;
-
-//	//if ( idStr.Icmp( args.Argv( argNum ), "-" ) == 0 || idStr.Icmp( args.Argv( argNum ), "/" ) == 0 ) {
-//	//	if ( idStr.Icmp( args.Argv( argNum + 1 ), "help" ) == 0 || idStr.Icmp( args.Argv( argNum + 1 ), "?" ) == 0 ) {
-//	//		argNum = 3;
-//	//		show = SHOW_DESCRIPTION;
-//	//	} else if ( idStr.Icmp( args.Argv( argNum + 1 ), "type" ) == 0 || idStr.Icmp( args.Argv( argNum + 1 ), "range" ) == 0 ) {
-//	//		argNum = 3;
-//	//		show = SHOW_TYPE;
-//	//	} else if ( idStr.Icmp( args.Argv( argNum + 1 ), "flags" ) == 0 ) {
-//	//		argNum = 3;
-//	//		show = SHOW_FLAGS;
-//	//	}
-//	//}
-
-//	//if ( args.Argc() > argNum ) {
-//	//	match = args.Args( argNum, -1 );
-//	//	match.Replace( " ", "" );
-//	//} else {
-//	//	match = "";
-//	//}
-
-//	//for ( i = 0; i < localCVarSystem.cvars.Num(); i++ ) {
-//	//	cvar = localCVarSystem.cvars[i];
-
-//	//	if ( !( cvar.GetFlags() & flags ) ) {
-//	//		continue;
-//	//	}
-
-//	//	if ( match.Length() && !cvar.nameString.Filter( match, false ) ) {
-//	//		continue;
-//	//	}
-
-//	//	cvarList.Append( cvar );
-//	//}
-
-//	//cvarList.Sort();
-
-//	//switch( show ) {
-//	//	case SHOW_VALUE: {
-//	//		for ( i = 0; i < cvarList.Num(); i++ ) {
-//	//			cvar = cvarList[i];
-//	//			common.Printf( FORMAT_STRING S_COLOR_WHITE "\"%s\"\n", cvar.nameString.c_str(), cvar.valueString.c_str() );
-//	//		}
-//	//		break;
-//	//	}
-//	//	case SHOW_DESCRIPTION: {
-//	//		indent.Fill( ' ', NUM_NAME_CHARS );
-//	//		indent.Insert( "\n", 0 );
-
-//	//		for ( i = 0; i < cvarList.Num(); i++ ) {
-//	//			cvar = cvarList[i];
-//	//			common.Printf( FORMAT_STRING S_COLOR_WHITE "%s\n", cvar.nameString.c_str(), CreateColumn( cvar.GetDescription(), NUM_DESCRIPTION_CHARS, indent, string ) );
-//	//		}
-//	//		break;
-//	//	}
-//	//	case SHOW_TYPE: {
-//	//		for ( i = 0; i < cvarList.Num(); i++ ) {
-//	//			cvar = cvarList[i];
-//	//			if ( cvar.GetFlags() & CVAR_BOOL ) {
-//	//				common.Printf( FORMAT_STRING S_COLOR_CYAN "bool\n", cvar.GetName() );
-//	//			} else if ( cvar.GetFlags() & CVAR_INTEGER ) {
-//	//				if ( cvar.GetMinValue() < cvar.GetMaxValue() ) {
-//	//					common.Printf( FORMAT_STRING S_COLOR_GREEN "int " S_COLOR_WHITE "[%d, %d]\n", cvar.GetName(), (int) cvar.GetMinValue(), (int) cvar.GetMaxValue() );
-//	//				} else {
-//	//					common.Printf( FORMAT_STRING S_COLOR_GREEN "int\n", cvar.GetName() );
-//	//				}
-//	//			} else if ( cvar.GetFlags() & CVAR_FLOAT ) {
-//	//				if ( cvar.GetMinValue() < cvar.GetMaxValue() ) {
-//	//					common.Printf( FORMAT_STRING S_COLOR_RED "float " S_COLOR_WHITE "[%s, %s]\n", cvar.GetName(), idStr( cvar.GetMinValue() ).c_str(), idStr( cvar.GetMaxValue() ).c_str() );
-//	//				} else {
-//	//					common.Printf( FORMAT_STRING S_COLOR_RED "float\n", cvar.GetName() );
-//	//				}
-//	//			} else if ( cvar.GetValueStrings() ) {
-//	//				common.Printf( FORMAT_STRING S_COLOR_WHITE "string " S_COLOR_WHITE "[", cvar.GetName() );
-//	//				for ( int j = 0; cvar.GetValueStrings()[j] != NULL; j++ ) {
-//	//					if ( j ) {
-//	//						common.Printf( S_COLOR_WHITE ", %s", cvar.GetValueStrings()[j] );
-//	//					} else {
-//	//						common.Printf( S_COLOR_WHITE "%s", cvar.GetValueStrings()[j] );
-//	//					}
-//	//				}
-//	//				common.Printf( S_COLOR_WHITE "]\n" );
-//	//			} else {
-//	//				common.Printf( FORMAT_STRING S_COLOR_WHITE "string\n", cvar.GetName() );
-//	//			}
-//	//		}
-//	//		break;
-//	//	}
-//	//	case SHOW_FLAGS: {
-//	//		for ( i = 0; i < cvarList.Num(); i++ ) {
-//	//			cvar = cvarList[i];
-//	//			common.Printf( FORMAT_STRING, cvar.GetName() );
-//	//			string = "";
-//	//			if ( cvar.GetFlags() & CVAR_BOOL ) {
-//	//				string += S_COLOR_CYAN "B ";
-//	//			} else if ( cvar.GetFlags() & CVAR_INTEGER ) {
-//	//				string += S_COLOR_GREEN "I ";
-//	//			} else if ( cvar.GetFlags() & CVAR_FLOAT ) {
-//	//				string += S_COLOR_RED "F ";
-//	//			} else {
-//	//				string += S_COLOR_WHITE "S ";
-//	//			}
-//	//			if ( cvar.GetFlags() & CVAR_SYSTEM ) {
-//	//				string += S_COLOR_WHITE "SYS  ";
-//	//			} else if ( cvar.GetFlags() & CVAR_RENDERER ) {
-//	//				string += S_COLOR_WHITE "RNDR ";
-//	//			} else if ( cvar.GetFlags() & CVAR_SOUND ) {
-//	//				string += S_COLOR_WHITE "SND  ";
-//	//			} else if ( cvar.GetFlags() & CVAR_GUI ) {
-//	//				string += S_COLOR_WHITE "GUI  ";
-//	//			} else if ( cvar.GetFlags() & CVAR_GAME ) {
-//	//				string += S_COLOR_WHITE "GAME ";
-//	//			} else if ( cvar.GetFlags() & CVAR_TOOL ) {
-//	//				string += S_COLOR_WHITE "TOOL ";
-//	//			} else {
-//	//				string += S_COLOR_WHITE "     ";
-//	//			}
-//	//			string += ( cvar.GetFlags() & CVAR_USERINFO ) ?	"UI "	: "   ";
-//	//			string += ( cvar.GetFlags() & CVAR_SERVERINFO ) ?	"SI "	: "   ";
-//	//			string += ( cvar.GetFlags() & CVAR_STATIC ) ?		"ST "	: "   ";
-//	//			string += ( cvar.GetFlags() & CVAR_CHEAT ) ?		"CH "	: "   ";
-//	//			string += ( cvar.GetFlags() & CVAR_INIT ) ?		"IN "	: "   ";
-//	//			string += ( cvar.GetFlags() & CVAR_ROM ) ?			"RO "	: "   ";
-//	//			string += ( cvar.GetFlags() & CVAR_ARCHIVE ) ?		"AR "	: "   ";
-//	//			string += ( cvar.GetFlags() & CVAR_MODIFIED ) ?	"MO "	: "   ";
-//	//			string += "\n";
-//	//			common.Printf( string );
-//	//		}
-//	//		break;
-//	//	}
-//	//}
-
-//	//common.Printf( "\n%i cvars listed\n\n", cvarList.Num() );
-//	//common.Printf(	"listCvar [search string]          = list cvar values\n"
-//	//			"listCvar -help [search string]    = list cvar descriptions\n"
-//	//			"listCvar -type [search string]    = list cvar types\n"
-//	//			"listCvar -flags [search string]   = list cvar flags\n" );
-//}
-
-/*
-============
-idCVarSystemLocal::List_f
-============
-*/
-List_f( /*const */ args:idCmdArgs  ):void {
-    todoThrow();
-	//ListByFlags( args, CVAR_ALL );
-}
-
-/*
-============
-idCVarSystemLocal::Restart_f
-============
-*/
-Restart_f( /*const */ args:idCmdArgs  ):void {
-    todoThrow();
-	//int i, hash;
-	//idInternalCVar *cvar;
-
-	//for ( i = 0; i < localCVarSystem.cvars.Num(); i++ ) {
-	//	cvar = localCVarSystem.cvars[i];
-
-	//	// don't mess with rom values
-	//	if ( cvar.flags & ( CVAR_ROM | CVAR_INIT ) ) {
-	//		continue;
+	///*
+	//============
+	//idCVarSystemLocal::MoveCVarsToDict
+	//============
+	//*/
+	//const idDict* /*idCVarSystemLocal::*/MoveCVarsToDict( int flags ) const {
+	//	moveCVarsToDict.Clear();
+	//	for( int i = 0; i < cvars.Num(); i++ ) {
+	//		idCVar *cvar = cvars[i];
+	//		if ( cvar.GetFlags() & flags ) {
+	//			moveCVarsToDict.Set( cvar.GetName(), cvar.GetString() );
+	//		}
 	//	}
-
-	//	// throw out any variables the user created
-	//	if ( !( cvar.flags & CVAR_STATIC ) ) {
-	//		hash = localCVarSystem.cvarHash.GenerateKey( cvar.nameString, false );
-	//		delete cvar;
-	//		localCVarSystem.cvars.RemoveIndex( i );
-	//		localCVarSystem.cvarHash.RemoveIndex( hash, i );
-	//		i--;
-	//		continue;
-	//	}
-
-	//	cvar.Reset();
+	//	return &moveCVarsToDict;
 	//}
-}
+
+	///*
+	//============
+	//idCVarSystemLocal::SetCVarsFromDict
+	//============
+	//*/
+	//function /*idCVarSystemLocal::*/SetCVarsFromDict( const idDict &dict ) {
+	//    todoThrow();
+	//	//idInternalCVar *internal;
+
+	//	//for( int i = 0; i < dict.GetNumKeyVals(); i++ ) {
+	//	//	const idKeyValue *kv = dict.GetKeyVal( i );
+	//	//	internal = FindInternal( kv.GetKey() );
+	//	//	if ( internal ) {
+	//	//		internal.InternalServerSetString( kv.GetValue() );
+	//	//	}
+	//	//}
+	//}
+
+	/*
+	============
+	idCVarSystemLocal::Toggle_f
+	============
+	*/
+	Toggle_f( /*const */ args: idCmdArgs): void {
+		todoThrow();
+		//int argc, i;
+		//float current, set;
+		//const char *text;
+
+		//argc = args.Argc();
+		//if ( argc < 2 ) {
+		//	common.Printf ("usage:\n"
+		//		"   toggle <variable>  - toggles between 0 and 1\n"
+		//		"   toggle <variable> <value> - toggles between 0 and <value>\n"
+		//		"   toggle <variable> [string 1] [string 2]...[string n] - cycles through all strings\n");
+		//	return;
+		//}
+
+		//idInternalCVar *cvar = localCVarSystem.FindInternal( args.Argv( 1 ) );
+
+		//if ( cvar == NULL ) {
+		//	common.Warning( "Toggle_f: cvar \"%s\" not found", args.Argv( 1 ) );
+		//	return;
+		//}
+
+		//if ( argc > 3 ) {
+		//	// cycle through multiple values
+		//	text = cvar.GetString();
+		//	for( i = 2; i < argc; i++ ) {
+		//		if ( !idStr.Icmp( text, args.Argv( i ) ) ) {
+		//			// point to next value
+		//			i++;
+		//			break;
+		//		}
+		//	}
+		//	if ( i >= argc ) {
+		//		i = 2;
+		//	}
+
+		//	common.Printf( "set %s = %s\n", args.Argv(1), args.Argv( i ) );
+		//	cvar.Set( va("%s", args.Argv( i ) ), false, false );
+		//} else {
+		//	// toggle between 0 and 1
+		//	current = cvar.GetFloat();
+		//	if ( argc == 3 ) {
+		//		set = atof( args.Argv( 2 ) );
+		//	} else {
+		//		set = 1.0f;
+		//	}
+		//	if ( current == 0.0 ) {
+		//		current = set;
+		//	} else {
+		//		current = 0.0;
+		//	}
+		//	common.Printf( "set %s = %f\n", args.Argv(1), current );
+		//	cvar.Set( idStr( current ), false, false );
+		//}
+	}
+
+	/*
+	============
+	idCVarSystemLocal::Set_f
+	============
+	*/
+	Set_f( /*const */ args: idCmdArgs): void {
+		var str: string;
+
+		str = args.Args(2, args.Argc() - 1);
+		localCVarSystem.SetCVarString(args.Argv(1), str);
+	}
+
+	/*
+	============
+	idCVarSystemLocal::SetS_f
+	============
+	*/
+	SetS_f( /*const */ args: idCmdArgs): void {
+		todoThrow();
+		var cvar: idInternalCVar;
+
+		this.Set_f(args);
+		cvar = localCVarSystem.FindInternal(args.Argv(1));
+		if (!cvar) {
+			return;
+		}
+		cvar.flags |= CVAR_SERVERINFO | CVAR_ARCHIVE;
+	}
+
+	/*
+	============
+	idCVarSystemLocal::SetU_f
+	============
+	*/
+	SetU_f( /*const */ args: idCmdArgs): void {
+		var cvar: idInternalCVar;
+
+		this.Set_f(args);
+		cvar = localCVarSystem.FindInternal(args.Argv(1));
+		if (!cvar) {
+			return;
+		}
+		cvar.flags |= CVAR_USERINFO | CVAR_ARCHIVE;
+	}
+
+	/*
+	============
+	idCVarSystemLocal::SetT_f
+	============
+	*/
+	SetT_f( /*const */ args: idCmdArgs): void {
+		var cvar: idInternalCVar;
+
+		this.Set_f(args);
+		cvar = localCVarSystem.FindInternal(args.Argv(1));
+		if (!cvar) {
+			return;
+		}
+		cvar.flags |= CVAR_TOOL;
+	}
+
+	/*
+	============
+	idCVarSystemLocal::SetA_f
+	============
+	*/
+	SetA_f( /*const */ args: idCmdArgs): void {
+		var cvar: idInternalCVar;
+
+		this.Set_f(args);
+		cvar = localCVarSystem.FindInternal(args.Argv(1));
+		if (!cvar) {
+			return;
+		}
+
+		// FIXME: enable this for ship, so mods can store extra data
+		// but during development we don't want obsolete cvars to continue
+		// to be saved
+		//	cvar.flags |= CVAR_ARCHIVE;
+	}
+
+	/*
+	============
+	idCVarSystemLocal::Reset_f
+	============
+	*/
+	Reset_f( /*const */ args: idCmdArgs): void {
+		todoThrow();
+		//var cvar: idInternalCVar;
+
+		//if ( args.Argc() != 2 ) {
+		//	common.Printf ("usage: reset <variable>\n");
+		//	return;
+		//}
+		//cvar = localCVarSystem.FindInternal( args.Argv( 1 ) );
+		//if ( !cvar ) {
+		//	return;
+		//}
+
+		//cvar.Reset();
+	}
+
+	/*
+	============
+	idCVarSystemLocal::ListByFlags
+	============
+	*/
+	//// NOTE: the const wonkyness is required to make msvc happy
+	//template<>
+	//ID_INLINE int idListSortCompare( const idInternalCVar * const *a, const idInternalCVar * const *b ) {
+	//    todoThrow();
+	//	return idStr.Icmp( (*a).GetName(), (*b).GetName() );
+	//}
+
+	//function idCVarSystemLocal::ListByFlags( const idCmdArgs &args, cvarFlags_t flags ) {
+	//    todoThrow();
+	//	//int i, argNum;
+	//	//idStr match, indent, string;
+	//	//const var cvar: idInternalCVar;
+	//	//idList<const idInternalCVar *>cvarList;
+
+	//	//enum {
+	//	//	SHOW_VALUE,
+	//	//	SHOW_DESCRIPTION,
+	//	//	SHOW_TYPE,
+	//	//	SHOW_FLAGS
+	//	//} show;
+
+	//	//argNum = 1;
+	//	//show = SHOW_VALUE;
+
+	//	//if ( idStr.Icmp( args.Argv( argNum ), "-" ) == 0 || idStr.Icmp( args.Argv( argNum ), "/" ) == 0 ) {
+	//	//	if ( idStr.Icmp( args.Argv( argNum + 1 ), "help" ) == 0 || idStr.Icmp( args.Argv( argNum + 1 ), "?" ) == 0 ) {
+	//	//		argNum = 3;
+	//	//		show = SHOW_DESCRIPTION;
+	//	//	} else if ( idStr.Icmp( args.Argv( argNum + 1 ), "type" ) == 0 || idStr.Icmp( args.Argv( argNum + 1 ), "range" ) == 0 ) {
+	//	//		argNum = 3;
+	//	//		show = SHOW_TYPE;
+	//	//	} else if ( idStr.Icmp( args.Argv( argNum + 1 ), "flags" ) == 0 ) {
+	//	//		argNum = 3;
+	//	//		show = SHOW_FLAGS;
+	//	//	}
+	//	//}
+
+	//	//if ( args.Argc() > argNum ) {
+	//	//	match = args.Args( argNum, -1 );
+	//	//	match.Replace( " ", "" );
+	//	//} else {
+	//	//	match = "";
+	//	//}
+
+	//	//for ( i = 0; i < localCVarSystem.cvars.Num(); i++ ) {
+	//	//	cvar = localCVarSystem.cvars[i];
+
+	//	//	if ( !( cvar.GetFlags() & flags ) ) {
+	//	//		continue;
+	//	//	}
+
+	//	//	if ( match.Length() && !cvar.nameString.Filter( match, false ) ) {
+	//	//		continue;
+	//	//	}
+
+	//	//	cvarList.Append( cvar );
+	//	//}
+
+	//	//cvarList.Sort();
+
+	//	//switch( show ) {
+	//	//	case SHOW_VALUE: {
+	//	//		for ( i = 0; i < cvarList.Num(); i++ ) {
+	//	//			cvar = cvarList[i];
+	//	//			common.Printf( FORMAT_STRING S_COLOR_WHITE "\"%s\"\n", cvar.nameString.c_str(), cvar.valueString.c_str() );
+	//	//		}
+	//	//		break;
+	//	//	}
+	//	//	case SHOW_DESCRIPTION: {
+	//	//		indent.Fill( ' ', NUM_NAME_CHARS );
+	//	//		indent.Insert( "\n", 0 );
+
+	//	//		for ( i = 0; i < cvarList.Num(); i++ ) {
+	//	//			cvar = cvarList[i];
+	//	//			common.Printf( FORMAT_STRING S_COLOR_WHITE "%s\n", cvar.nameString.c_str(), CreateColumn( cvar.GetDescription(), NUM_DESCRIPTION_CHARS, indent, string ) );
+	//	//		}
+	//	//		break;
+	//	//	}
+	//	//	case SHOW_TYPE: {
+	//	//		for ( i = 0; i < cvarList.Num(); i++ ) {
+	//	//			cvar = cvarList[i];
+	//	//			if ( cvar.GetFlags() & CVAR_BOOL ) {
+	//	//				common.Printf( FORMAT_STRING S_COLOR_CYAN "bool\n", cvar.GetName() );
+	//	//			} else if ( cvar.GetFlags() & CVAR_INTEGER ) {
+	//	//				if ( cvar.GetMinValue() < cvar.GetMaxValue() ) {
+	//	//					common.Printf( FORMAT_STRING S_COLOR_GREEN "int " S_COLOR_WHITE "[%d, %d]\n", cvar.GetName(), (int) cvar.GetMinValue(), (int) cvar.GetMaxValue() );
+	//	//				} else {
+	//	//					common.Printf( FORMAT_STRING S_COLOR_GREEN "int\n", cvar.GetName() );
+	//	//				}
+	//	//			} else if ( cvar.GetFlags() & CVAR_FLOAT ) {
+	//	//				if ( cvar.GetMinValue() < cvar.GetMaxValue() ) {
+	//	//					common.Printf( FORMAT_STRING S_COLOR_RED "float " S_COLOR_WHITE "[%s, %s]\n", cvar.GetName(), idStr( cvar.GetMinValue() ).c_str(), idStr( cvar.GetMaxValue() ).c_str() );
+	//	//				} else {
+	//	//					common.Printf( FORMAT_STRING S_COLOR_RED "float\n", cvar.GetName() );
+	//	//				}
+	//	//			} else if ( cvar.GetValueStrings() ) {
+	//	//				common.Printf( FORMAT_STRING S_COLOR_WHITE "string " S_COLOR_WHITE "[", cvar.GetName() );
+	//	//				for ( int j = 0; cvar.GetValueStrings()[j] != NULL; j++ ) {
+	//	//					if ( j ) {
+	//	//						common.Printf( S_COLOR_WHITE ", %s", cvar.GetValueStrings()[j] );
+	//	//					} else {
+	//	//						common.Printf( S_COLOR_WHITE "%s", cvar.GetValueStrings()[j] );
+	//	//					}
+	//	//				}
+	//	//				common.Printf( S_COLOR_WHITE "]\n" );
+	//	//			} else {
+	//	//				common.Printf( FORMAT_STRING S_COLOR_WHITE "string\n", cvar.GetName() );
+	//	//			}
+	//	//		}
+	//	//		break;
+	//	//	}
+	//	//	case SHOW_FLAGS: {
+	//	//		for ( i = 0; i < cvarList.Num(); i++ ) {
+	//	//			cvar = cvarList[i];
+	//	//			common.Printf( FORMAT_STRING, cvar.GetName() );
+	//	//			string = "";
+	//	//			if ( cvar.GetFlags() & CVAR_BOOL ) {
+	//	//				string += S_COLOR_CYAN "B ";
+	//	//			} else if ( cvar.GetFlags() & CVAR_INTEGER ) {
+	//	//				string += S_COLOR_GREEN "I ";
+	//	//			} else if ( cvar.GetFlags() & CVAR_FLOAT ) {
+	//	//				string += S_COLOR_RED "F ";
+	//	//			} else {
+	//	//				string += S_COLOR_WHITE "S ";
+	//	//			}
+	//	//			if ( cvar.GetFlags() & CVAR_SYSTEM ) {
+	//	//				string += S_COLOR_WHITE "SYS  ";
+	//	//			} else if ( cvar.GetFlags() & CVAR_RENDERER ) {
+	//	//				string += S_COLOR_WHITE "RNDR ";
+	//	//			} else if ( cvar.GetFlags() & CVAR_SOUND ) {
+	//	//				string += S_COLOR_WHITE "SND  ";
+	//	//			} else if ( cvar.GetFlags() & CVAR_GUI ) {
+	//	//				string += S_COLOR_WHITE "GUI  ";
+	//	//			} else if ( cvar.GetFlags() & CVAR_GAME ) {
+	//	//				string += S_COLOR_WHITE "GAME ";
+	//	//			} else if ( cvar.GetFlags() & CVAR_TOOL ) {
+	//	//				string += S_COLOR_WHITE "TOOL ";
+	//	//			} else {
+	//	//				string += S_COLOR_WHITE "     ";
+	//	//			}
+	//	//			string += ( cvar.GetFlags() & CVAR_USERINFO ) ?	"UI "	: "   ";
+	//	//			string += ( cvar.GetFlags() & CVAR_SERVERINFO ) ?	"SI "	: "   ";
+	//	//			string += ( cvar.GetFlags() & CVAR_STATIC ) ?		"ST "	: "   ";
+	//	//			string += ( cvar.GetFlags() & CVAR_CHEAT ) ?		"CH "	: "   ";
+	//	//			string += ( cvar.GetFlags() & CVAR_INIT ) ?		"IN "	: "   ";
+	//	//			string += ( cvar.GetFlags() & CVAR_ROM ) ?			"RO "	: "   ";
+	//	//			string += ( cvar.GetFlags() & CVAR_ARCHIVE ) ?		"AR "	: "   ";
+	//	//			string += ( cvar.GetFlags() & CVAR_MODIFIED ) ?	"MO "	: "   ";
+	//	//			string += "\n";
+	//	//			common.Printf( string );
+	//	//		}
+	//	//		break;
+	//	//	}
+	//	//}
+
+	//	//common.Printf( "\n%i cvars listed\n\n", cvarList.Num() );
+	//	//common.Printf(	"listCvar [search string]          = list cvar values\n"
+	//	//			"listCvar -help [search string]    = list cvar descriptions\n"
+	//	//			"listCvar -type [search string]    = list cvar types\n"
+	//	//			"listCvar -flags [search string]   = list cvar flags\n" );
+	//}
+
+	/*
+	============
+	idCVarSystemLocal::List_f
+	============
+	*/
+	List_f( /*const */ args: idCmdArgs): void {
+		todoThrow();
+		//ListByFlags( args, CVAR_ALL );
+	}
+
+	/*
+	============
+	idCVarSystemLocal::Restart_f
+	============
+	*/
+	Restart_f( /*const */ args: idCmdArgs): void {
+		todoThrow();
+		//int i, hash;
+		//var cvar: idInternalCVar;
+
+		//for ( i = 0; i < localCVarSystem.cvars.Num(); i++ ) {
+		//	cvar = localCVarSystem.cvars[i];
+
+		//	// don't mess with rom values
+		//	if ( cvar.flags & ( CVAR_ROM | CVAR_INIT ) ) {
+		//		continue;
+		//	}
+
+		//	// throw out any variables the user created
+		//	if ( !( cvar.flags & CVAR_STATIC ) ) {
+		//		hash = localCVarSystem.cvarHash.GenerateKey( cvar.nameString, false );
+		//		delete cvar;
+		//		localCVarSystem.cvars.RemoveIndex( i );
+		//		localCVarSystem.cvarHash.RemoveIndex( hash, i );
+		//		i--;
+		//		continue;
+		//	}
+
+		//	cvar.Reset();
+		//}
+	}
 
 
 }
