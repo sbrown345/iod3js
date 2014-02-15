@@ -1580,47 +1580,47 @@ Absolutely every image goes through this path
 On exit, the idImage will have a valid OpenGL texture number that can be bound
 ===============
 */
-idImage.prototype.ActuallyLoadImage = function( checkForPrecompressed:boolean, fromBackEnd:boolean ):void {
-	var/*int		*/width = new R(0), height = new R(0);
-    var /*byte	**/pic = new R<Uint8Array>();
-	dlog(true, "ActuallyLoadImage: %s\n", this.imgName.c_str());
+idImage.prototype.ActuallyLoadImage = function ( checkForPrecompressed: boolean, fromBackEnd: boolean ): void {
+	var /*int		*/width = new R( 0 ), height = new R( 0 );
+	var /*byte	**/pic = new R<Uint8Array> ( );
+	dlog( true, "ActuallyLoadImage: %s\n", this.imgName.c_str ( ) );
 	// this is the ONLY place generatorFunction will ever be called
 	if ( this.generatorFunction ) {
 		this.generatorFunction( this );
 		return;
 	}
-    
+
 	// if we are a partial image, we are only going to load from a compressed file
 	if ( this.isPartialImage ) {
 		if ( this.CheckPrecompressedImage( false ) ) {
 			return;
 		}
 		// this is an error -- the partial image failed to load
-		this.MakeDefault();
+		this.MakeDefault ( );
 		return;
 	}
 
 	//
 	// load the image from disk
 	//
-	if (this.cubeFiles != cubeFiles_t.CF_2D ) {
-		var pics = new Array<Uint8Array>( 6 );//	*pics[6];
+	if ( this.cubeFiles != cubeFiles_t.CF_2D ) {
+		var pics = new Array<Uint8Array>( 6 ); //	*pics[6];
 
 		// we don't check for pre-compressed cube images currently
-		var $timestamp = new R(this.timestamp);
+		var $timestamp = new R( this.timestamp );
 		R_LoadCubeImages( this.imgName, this.cubeFiles, pics, width, $timestamp );
 		this.timestamp = $timestamp.$;
 
 		if ( pics[0] == null ) {
-			common.Warning( "Couldn't load cube image: %s", this.imgName.c_str() );
-			this.MakeDefault();
+			common.Warning( "Couldn't load cube image: %s", this.imgName.c_str ( ) );
+			this.MakeDefault ( );
 			return;
 		}
 
 		this.GenerateCubeImage( /*(const byte **)*/pics, width, this.filter, this.allowDownSize, this.depth );
 		this.precompressedFile = false;
 
-		for ( var i = 0 ; i < 6 ; i++ ) {
+		for ( var i = 0; i < 6; i++ ) {
 			if ( pics[i] ) {
 				R_StaticFree( pics[i] );
 			}
@@ -1628,7 +1628,7 @@ idImage.prototype.ActuallyLoadImage = function( checkForPrecompressed:boolean, f
 	} else {
 		// see if we have a pre-generated image file that is
 		// already image processed and compressed
-		if ( checkForPrecompressed && idImageManager.image_usePrecompressedTextures.GetBool() ) {
+		if ( checkForPrecompressed && idImageManager.image_usePrecompressedTextures.GetBool ( ) ) {
 			if ( this.CheckPrecompressedImage( true ) ) {
 				// we got the precompressed image
 				return;
@@ -1638,22 +1638,22 @@ idImage.prototype.ActuallyLoadImage = function( checkForPrecompressed:boolean, f
 
 		var $timestamp = new R( this.timestamp );
 		var $depth = new R( this.depth );
-		R_LoadImageProgram(this.imgName.data, pic, width, height, $timestamp, $depth);
+		R_LoadImageProgram( this.imgName.data, pic, width, height, $timestamp, $depth );
 		this.timestamp = $timestamp.$;
 		this.depth = $depth.$;
 
 		if ( pic.$ == null ) {
-			common.Warning( "Couldn't load image: %s", this.imgName.c_str() );
-			this.MakeDefault();
+			common.Warning( "Couldn't load image: %s", this.imgName.c_str ( ) );
+			this.MakeDefault ( );
 			return;
 		}
 
 		// build a hash for checking duplicate image files
 		// NOTE: takes about 10% of image load times (SD)
 		// may not be strictly necessary, but some code uses it, so let's leave it in
-		this.imageHash = MD4_BlockChecksum(pic, width.$ * height.$ * 4 );
+		this.imageHash = MD4_BlockChecksum( pic, width.$ * height.$ * 4 );
 
-		this.GenerateImage(pic.$, width.$, height.$, this.filter, this.allowDownSize, this.repeat, this.depth );
+		this.GenerateImage( pic.$, width.$, height.$, this.filter, this.allowDownSize, this.repeat, this.depth );
 		//this.timestamp = this.timestamp; //??
 		this.precompressedFile = false;
 
@@ -1662,7 +1662,7 @@ idImage.prototype.ActuallyLoadImage = function( checkForPrecompressed:boolean, f
 		// write out the precompressed version of this file if needed
 		//this.WritePrecompressedImage();
 	}
-}
+};
 
 //=========================================================================================================
 

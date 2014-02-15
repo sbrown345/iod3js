@@ -562,8 +562,7 @@ Adds a \n to the text
 		//// add a \n
 		//this.textBuf[len - 1] = '\n'.charCodeAt( 0 );
 
-		this.textBuf += text;
-		this.textBuf += '\n';
+		this.textBuf = text + "\n" + this.textBuf;
 
 		this.textLength += len;
 	}
