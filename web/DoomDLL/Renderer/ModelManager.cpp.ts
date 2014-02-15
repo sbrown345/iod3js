@@ -210,10 +210,10 @@ idRenderModelManagerLocal::Init
 =================
 */
 Init ():void {
-	cmdSystem.AddCommand( "listModels", this.ListModels_f, CMD_FL_RENDERER, "lists all models" );
-	cmdSystem.AddCommand( "printModel", this.PrintModel_f, CMD_FL_RENDERER, "prints model info", ArgCompletion_ModelName );
-	cmdSystem.AddCommand( "reloadModels", this.ReloadModels_f, CMD_FL_RENDERER|CMD_FL_CHEAT, "reloads models" );
-	cmdSystem.AddCommand( "touchModel", this.TouchModel_f, CMD_FL_RENDERER, "touches a model", ArgCompletion_ModelName );
+	cmdSystem.AddCommand( "listModels", this.ListModels_f, cmdFlags_t.CMD_FL_RENDERER, "lists all models" );
+	cmdSystem.AddCommand( "printModel", this.PrintModel_f, cmdFlags_t.CMD_FL_RENDERER, "prints model info", ArgCompletion_ModelName );
+	cmdSystem.AddCommand( "reloadModels", this.ReloadModels_f, cmdFlags_t.CMD_FL_RENDERER|cmdFlags_t.CMD_FL_CHEAT, "reloads models" );
+	cmdSystem.AddCommand( "touchModel", this.TouchModel_f, cmdFlags_t.CMD_FL_RENDERER, "touches a model", ArgCompletion_ModelName );
 
 	this.insideLevelLoad = false;
 

@@ -630,11 +630,11 @@ R_InitOpenGL(): void {
 	R_GLSL_Init();
 
 ////#if !defined(GL_ES_VERSION_2_0)
-////	cmdSystem.AddCommand("reloadARBprograms", R_ReloadARBPrograms_f, CMD_FL_RENDERER, "reloads ARB programs");
+////	cmdSystem.AddCommand("reloadARBprograms", R_ReloadARBPrograms_f, cmdFlags_t.CMD_FL_RENDERER, "reloads ARB programs");
 ////	R_ReloadARBPrograms_f(idCmdArgs());
 ////#endif
 
-	cmdSystem.AddCommand("reloadGLSLprograms", R_ReloadGLSLPrograms_f, CMD_FL_RENDERER, "reloads GLSL programs");
+	cmdSystem.AddCommand("reloadGLSLprograms", R_ReloadGLSLPrograms_f, cmdFlags_t.CMD_FL_RENDERER, "reloads GLSL programs");
 	R_ReloadGLSLPrograms_f(new idCmdArgs());
 
 	// allocate the vertex array range or vertex objects
@@ -1932,32 +1932,32 @@ R_InitCommands
 */
 R_InitCommands( ):void {
 //#if !defined(GL_ES_VERSION_2_0)
-//	cmdSystem.AddCommand( "MakeMegaTexture", idMegaTexture::MakeMegaTexture_f, CMD_FL_RENDERER|CMD_FL_CHEAT, "processes giant images" );
+//	cmdSystem.AddCommand( "MakeMegaTexture", idMegaTexture::MakeMegaTexture_f, cmdFlags_t.CMD_FL_RENDERER|CMD_FL_CHEAT, "processes giant images" );
 //#endif
     todo();
-	//cmdSystem.AddCommand( "sizeUp", R_SizeUp_f, CMD_FL_RENDERER, "makes the rendered view larger" );
-	//cmdSystem.AddCommand( "sizeDown", R_SizeDown_f, CMD_FL_RENDERER, "makes the rendered view smaller" );
-	//cmdSystem.AddCommand( "reloadGuis", R_ReloadGuis_f, CMD_FL_RENDERER, "reloads guis" );
-	//cmdSystem.AddCommand( "listGuis", R_ListGuis_f, CMD_FL_RENDERER, "lists guis" );
-	//cmdSystem.AddCommand( "touchGui", R_TouchGui_f, CMD_FL_RENDERER, "touches a gui" );
-	//cmdSystem.AddCommand( "screenshot", R_ScreenShot_f, CMD_FL_RENDERER, "takes a screenshot" );
-	//cmdSystem.AddCommand( "envshot", R_EnvShot_f, CMD_FL_RENDERER, "takes an environment shot" );
-	//cmdSystem.AddCommand( "makeAmbientMap", R_MakeAmbientMap_f, CMD_FL_RENDERER|CMD_FL_CHEAT, "makes an ambient map" );
-	//cmdSystem.AddCommand( "benchmark", R_Benchmark_f, CMD_FL_RENDERER, "benchmark" );
-	//cmdSystem.AddCommand( "gfxInfo", GfxInfo_f, CMD_FL_RENDERER, "show graphics info" );
-	//cmdSystem.AddCommand( "modulateLights", R_ModulateLights_f, CMD_FL_RENDERER | CMD_FL_CHEAT, "modifies shader parms on all lights" );
-	//cmdSystem.AddCommand( "testImage", R_TestImage_f, CMD_FL_RENDERER | CMD_FL_CHEAT, "displays the given image centered on screen", idCmdSystem::ArgCompletion_ImageName );
-	//cmdSystem.AddCommand( "testVideo", R_TestVideo_f, CMD_FL_RENDERER | CMD_FL_CHEAT, "displays the given cinematic", idCmdSystem::ArgCompletion_VideoName );
-	//cmdSystem.AddCommand( "reportSurfaceAreas", R_ReportSurfaceAreas_f, CMD_FL_RENDERER, "lists all used materials sorted by surface area" );
-	//cmdSystem.AddCommand( "reportImageDuplication", R_ReportImageDuplication_f, CMD_FL_RENDERER, "checks all referenced images for duplications" );
-	//cmdSystem.AddCommand( "regenerateWorld", R_RegenerateWorld_f, CMD_FL_RENDERER, "regenerates all interactions" );
-	//cmdSystem.AddCommand( "showInteractionMemory", R_ShowInteractionMemory_f, CMD_FL_RENDERER, "shows memory used by interactions" );
-	//cmdSystem.AddCommand( "showTriSurfMemory", R_ShowTriSurfMemory_f, CMD_FL_RENDERER, "shows memory used by triangle surfaces" );
-	//cmdSystem.AddCommand( "vid_restart", R_VidRestart_f, CMD_FL_RENDERER, "restarts renderSystem" );
-	//cmdSystem.AddCommand( "listRenderEntityDefs", R_ListRenderEntityDefs_f, CMD_FL_RENDERER, "lists the entity defs" );
-	//cmdSystem.AddCommand( "listRenderLightDefs", R_ListRenderLightDefs_f, CMD_FL_RENDERER, "lists the light defs" );
-	//cmdSystem.AddCommand( "listModes", R_ListModes_f, CMD_FL_RENDERER, "lists all video modes" );
-	//cmdSystem.AddCommand( "reloadSurface", R_ReloadSurface_f, CMD_FL_RENDERER, "reloads the decl and images for selected surface" );
+	//cmdSystem.AddCommand( "sizeUp", R_SizeUp_f, cmdFlags_t.CMD_FL_RENDERER, "makes the rendered view larger" );
+	//cmdSystem.AddCommand( "sizeDown", R_SizeDown_f, cmdFlags_t.CMD_FL_RENDERER, "makes the rendered view smaller" );
+	//cmdSystem.AddCommand( "reloadGuis", R_ReloadGuis_f, cmdFlags_t.CMD_FL_RENDERER, "reloads guis" );
+	//cmdSystem.AddCommand( "listGuis", R_ListGuis_f, cmdFlags_t.CMD_FL_RENDERER, "lists guis" );
+	//cmdSystem.AddCommand( "touchGui", R_TouchGui_f, cmdFlags_t.CMD_FL_RENDERER, "touches a gui" );
+	//cmdSystem.AddCommand( "screenshot", R_ScreenShot_f, cmdFlags_t.CMD_FL_RENDERER, "takes a screenshot" );
+	//cmdSystem.AddCommand( "envshot", R_EnvShot_f, cmdFlags_t.CMD_FL_RENDERER, "takes an environment shot" );
+	//cmdSystem.AddCommand( "makeAmbientMap", R_MakeAmbientMap_f, cmdFlags_t.CMD_FL_RENDERER|CMD_FL_CHEAT, "makes an ambient map" );
+	//cmdSystem.AddCommand( "benchmark", R_Benchmark_f, cmdFlags_t.CMD_FL_RENDERER, "benchmark" );
+	//cmdSystem.AddCommand( "gfxInfo", GfxInfo_f, cmdFlags_t.CMD_FL_RENDERER, "show graphics info" );
+	//cmdSystem.AddCommand( "modulateLights", R_ModulateLights_f, cmdFlags_t.CMD_FL_RENDERER | CMD_FL_CHEAT, "modifies shader parms on all lights" );
+	//cmdSystem.AddCommand( "testImage", R_TestImage_f, cmdFlags_t.CMD_FL_RENDERER | CMD_FL_CHEAT, "displays the given image centered on screen", idCmdSystem::ArgCompletion_ImageName );
+	//cmdSystem.AddCommand( "testVideo", R_TestVideo_f, cmdFlags_t.CMD_FL_RENDERER | CMD_FL_CHEAT, "displays the given cinematic", idCmdSystem::ArgCompletion_VideoName );
+	//cmdSystem.AddCommand( "reportSurfaceAreas", R_ReportSurfaceAreas_f, cmdFlags_t.CMD_FL_RENDERER, "lists all used materials sorted by surface area" );
+	//cmdSystem.AddCommand( "reportImageDuplication", R_ReportImageDuplication_f, cmdFlags_t.CMD_FL_RENDERER, "checks all referenced images for duplications" );
+	//cmdSystem.AddCommand( "regenerateWorld", R_RegenerateWorld_f, cmdFlags_t.CMD_FL_RENDERER, "regenerates all interactions" );
+	//cmdSystem.AddCommand( "showInteractionMemory", R_ShowInteractionMemory_f, cmdFlags_t.CMD_FL_RENDERER, "shows memory used by interactions" );
+	//cmdSystem.AddCommand( "showTriSurfMemory", R_ShowTriSurfMemory_f, cmdFlags_t.CMD_FL_RENDERER, "shows memory used by triangle surfaces" );
+	//cmdSystem.AddCommand( "vid_restart", R_VidRestart_f, cmdFlags_t.CMD_FL_RENDERER, "restarts renderSystem" );
+	//cmdSystem.AddCommand( "listRenderEntityDefs", R_ListRenderEntityDefs_f, cmdFlags_t.CMD_FL_RENDERER, "lists the entity defs" );
+	//cmdSystem.AddCommand( "listRenderLightDefs", R_ListRenderLightDefs_f, cmdFlags_t.CMD_FL_RENDERER, "lists the light defs" );
+	//cmdSystem.AddCommand( "listModes", R_ListModes_f, cmdFlags_t.CMD_FL_RENDERER, "lists all video modes" );
+	//cmdSystem.AddCommand( "reloadSurface", R_ReloadSurface_f, cmdFlags_t.CMD_FL_RENDERER, "reloads the decl and images for selected surface" );
 }
 
 /*

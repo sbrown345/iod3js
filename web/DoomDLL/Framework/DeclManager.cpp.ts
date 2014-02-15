@@ -851,43 +851,43 @@ idDeclManagerLocal.prototype.Init = function( ):void {
 	this.RegisterDeclFolder("sound", ".sndshd", declType_t.DECL_SOUND);
 
 	// add console commands
-	cmdSystem.AddCommand( "listDecls", this.ListDecls_f, CMD_FL_SYSTEM, "lists all decls" );
+	cmdSystem.AddCommand("listDecls", this.ListDecls_f, cmdFlags_t.CMD_FL_SYSTEM, "lists all decls" );
 
-	cmdSystem.AddCommand( "reloadDecls", this.ReloadDecls_f, CMD_FL_SYSTEM, "reloads decls" );
-	cmdSystem.AddCommand( "touch", this.TouchDecl_f, CMD_FL_SYSTEM, "touches a decl" );
+	cmdSystem.AddCommand("reloadDecls", this.ReloadDecls_f, cmdFlags_t.CMD_FL_SYSTEM, "reloads decls" );
+	cmdSystem.AddCommand("touch", this.TouchDecl_f, cmdFlags_t.CMD_FL_SYSTEM, "touches a decl" );
 	
     todo( "list decals" );
-	//cmdSystem.AddCommand( "listTables", idListDecls_f<DECL_TABLE>, CMD_FL_SYSTEM, "lists tables", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	//cmdSystem.AddCommand( "listMaterials", idListDecls_f<DECL_MATERIAL>, CMD_FL_SYSTEM, "lists materials", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	//cmdSystem.AddCommand( "listSkins", idListDecls_f<DECL_SKIN>, CMD_FL_SYSTEM, "lists skins", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	//cmdSystem.AddCommand( "listSoundShaders", idListDecls_f<DECL_SOUND>, CMD_FL_SYSTEM, "lists sound shaders", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listTables", idListDecls_f<DECL_TABLE>, cmdFlags_t.CMD_FL_SYSTEM, "lists tables", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listMaterials", idListDecls_f<DECL_MATERIAL>, cmdFlags_t.CMD_FL_SYSTEM, "lists materials", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listSkins", idListDecls_f<DECL_SKIN>, cmdFlags_t.CMD_FL_SYSTEM, "lists skins", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listSoundShaders", idListDecls_f<DECL_SOUND>, cmdFlags_t.CMD_FL_SYSTEM, "lists sound shaders", idCmdSystem::ArgCompletion_String<listDeclStrings> );
 
-	//cmdSystem.AddCommand( "listEntityDefs", idListDecls_f<DECL_ENTITYDEF>, CMD_FL_SYSTEM, "lists entity defs", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	//cmdSystem.AddCommand( "listFX", idListDecls_f<DECL_FX>, CMD_FL_SYSTEM, "lists FX systems", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	//cmdSystem.AddCommand( "listParticles", idListDecls_f<DECL_PARTICLE>, CMD_FL_SYSTEM, "lists particle systems", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	//cmdSystem.AddCommand( "listAF", idListDecls_f<DECL_AF>, CMD_FL_SYSTEM, "lists articulated figures", idCmdSystem::ArgCompletion_String<listDeclStrings>);
+	//cmdSystem.AddCommand( "listEntityDefs", idListDecls_f<DECL_ENTITYDEF>, cmdFlags_t.CMD_FL_SYSTEM, "lists entity defs", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listFX", idListDecls_f<DECL_FX>, cmdFlags_t.CMD_FL_SYSTEM, "lists FX systems", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listParticles", idListDecls_f<DECL_PARTICLE>, cmdFlags_t.CMD_FL_SYSTEM, "lists particle systems", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listAF", idListDecls_f<DECL_AF>, cmdFlags_t.CMD_FL_SYSTEM, "lists articulated figures", idCmdSystem::ArgCompletion_String<listDeclStrings>);
 
-	//cmdSystem.AddCommand( "listPDAs", idListDecls_f<DECL_PDA>, CMD_FL_SYSTEM, "lists PDAs", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	//cmdSystem.AddCommand( "listEmails", idListDecls_f<DECL_EMAIL>, CMD_FL_SYSTEM, "lists Emails", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	//cmdSystem.AddCommand( "listVideos", idListDecls_f<DECL_VIDEO>, CMD_FL_SYSTEM, "lists Videos", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	//cmdSystem.AddCommand( "listAudios", idListDecls_f<DECL_AUDIO>, CMD_FL_SYSTEM, "lists Audios", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listPDAs", idListDecls_f<DECL_PDA>, cmdFlags_t.CMD_FL_SYSTEM, "lists PDAs", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listEmails", idListDecls_f<DECL_EMAIL>, cmdFlags_t.CMD_FL_SYSTEM, "lists Emails", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listVideos", idListDecls_f<DECL_VIDEO>, cmdFlags_t.CMD_FL_SYSTEM, "lists Videos", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+	//cmdSystem.AddCommand( "listAudios", idListDecls_f<DECL_AUDIO>, cmdFlags_t.CMD_FL_SYSTEM, "lists Audios", idCmdSystem::ArgCompletion_String<listDeclStrings> );
 
-	//cmdSystem.AddCommand( "printTable", idPrintDecls_f<DECL_TABLE>, CMD_FL_SYSTEM, "prints a table", idCmdSystem::ArgCompletion_Decl<DECL_TABLE> );
-	//cmdSystem.AddCommand( "printMaterial", idPrintDecls_f<DECL_MATERIAL>, CMD_FL_SYSTEM, "prints a material", idCmdSystem::ArgCompletion_Decl<DECL_MATERIAL> );
-	//cmdSystem.AddCommand( "printSkin", idPrintDecls_f<DECL_SKIN>, CMD_FL_SYSTEM, "prints a skin", idCmdSystem::ArgCompletion_Decl<DECL_SKIN> );
-	//cmdSystem.AddCommand( "printSoundShader", idPrintDecls_f<DECL_SOUND>, CMD_FL_SYSTEM, "prints a sound shader", idCmdSystem::ArgCompletion_Decl<DECL_SOUND> );
+	//cmdSystem.AddCommand( "printTable", idPrintDecls_f<DECL_TABLE>, cmdFlags_t.CMD_FL_SYSTEM, "prints a table", idCmdSystem::ArgCompletion_Decl<DECL_TABLE> );
+	//cmdSystem.AddCommand( "printMaterial", idPrintDecls_f<DECL_MATERIAL>, cmdFlags_t.CMD_FL_SYSTEM, "prints a material", idCmdSystem::ArgCompletion_Decl<DECL_MATERIAL> );
+	//cmdSystem.AddCommand( "printSkin", idPrintDecls_f<DECL_SKIN>, cmdFlags_t.CMD_FL_SYSTEM, "prints a skin", idCmdSystem::ArgCompletion_Decl<DECL_SKIN> );
+	//cmdSystem.AddCommand( "printSoundShader", idPrintDecls_f<DECL_SOUND>, cmdFlags_t.CMD_FL_SYSTEM, "prints a sound shader", idCmdSystem::ArgCompletion_Decl<DECL_SOUND> );
 
-	//cmdSystem.AddCommand( "printEntityDef", idPrintDecls_f<DECL_ENTITYDEF>, CMD_FL_SYSTEM, "prints an entity def", idCmdSystem::ArgCompletion_Decl<DECL_ENTITYDEF> );
-	//cmdSystem.AddCommand( "printFX", idPrintDecls_f<DECL_FX>, CMD_FL_SYSTEM, "prints an FX system", idCmdSystem::ArgCompletion_Decl<DECL_FX> );
-	//cmdSystem.AddCommand( "printParticle", idPrintDecls_f<DECL_PARTICLE>, CMD_FL_SYSTEM, "prints a particle system", idCmdSystem::ArgCompletion_Decl<DECL_PARTICLE> );
-	//cmdSystem.AddCommand( "printAF", idPrintDecls_f<DECL_AF>, CMD_FL_SYSTEM, "prints an articulated figure", idCmdSystem::ArgCompletion_Decl<DECL_AF> );
+	//cmdSystem.AddCommand( "printEntityDef", idPrintDecls_f<DECL_ENTITYDEF>, cmdFlags_t.CMD_FL_SYSTEM, "prints an entity def", idCmdSystem::ArgCompletion_Decl<DECL_ENTITYDEF> );
+	//cmdSystem.AddCommand( "printFX", idPrintDecls_f<DECL_FX>, cmdFlags_t.CMD_FL_SYSTEM, "prints an FX system", idCmdSystem::ArgCompletion_Decl<DECL_FX> );
+	//cmdSystem.AddCommand( "printParticle", idPrintDecls_f<DECL_PARTICLE>, cmdFlags_t.CMD_FL_SYSTEM, "prints a particle system", idCmdSystem::ArgCompletion_Decl<DECL_PARTICLE> );
+	//cmdSystem.AddCommand( "printAF", idPrintDecls_f<DECL_AF>, cmdFlags_t.CMD_FL_SYSTEM, "prints an articulated figure", idCmdSystem::ArgCompletion_Decl<DECL_AF> );
 
-	//cmdSystem.AddCommand( "printPDA", idPrintDecls_f<DECL_PDA>, CMD_FL_SYSTEM, "prints an PDA", idCmdSystem::ArgCompletion_Decl<DECL_PDA> );
-	//cmdSystem.AddCommand( "printEmail", idPrintDecls_f<DECL_EMAIL>, CMD_FL_SYSTEM, "prints an Email", idCmdSystem::ArgCompletion_Decl<DECL_EMAIL> );
-	//cmdSystem.AddCommand( "printVideo", idPrintDecls_f<DECL_VIDEO>, CMD_FL_SYSTEM, "prints a Audio", idCmdSystem::ArgCompletion_Decl<DECL_VIDEO> );
-	//cmdSystem.AddCommand( "printAudio", idPrintDecls_f<DECL_AUDIO>, CMD_FL_SYSTEM, "prints an Video", idCmdSystem::ArgCompletion_Decl<DECL_AUDIO> );
+	//cmdSystem.AddCommand( "printPDA", idPrintDecls_f<DECL_PDA>, cmdFlags_t.CMD_FL_SYSTEM, "prints an PDA", idCmdSystem::ArgCompletion_Decl<DECL_PDA> );
+	//cmdSystem.AddCommand( "printEmail", idPrintDecls_f<DECL_EMAIL>, cmdFlags_t.CMD_FL_SYSTEM, "prints an Email", idCmdSystem::ArgCompletion_Decl<DECL_EMAIL> );
+	//cmdSystem.AddCommand( "printVideo", idPrintDecls_f<DECL_VIDEO>, cmdFlags_t.CMD_FL_SYSTEM, "prints a Audio", idCmdSystem::ArgCompletion_Decl<DECL_VIDEO> );
+	//cmdSystem.AddCommand( "printAudio", idPrintDecls_f<DECL_AUDIO>, cmdFlags_t.CMD_FL_SYSTEM, "prints an Video", idCmdSystem::ArgCompletion_Decl<DECL_AUDIO> );
 
-	//cmdSystem.AddCommand( "listHuffmanFrequencies", ListHuffmanFrequencies_f, CMD_FL_SYSTEM, "lists decl text character frequencies" );
+	//cmdSystem.AddCommand( "listHuffmanFrequencies", ListHuffmanFrequencies_f, cmdFlags_t.CMD_FL_SYSTEM, "lists decl text character frequencies" );
 
 	common.Printf( "------------------------------\n" );
 };

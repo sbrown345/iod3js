@@ -548,15 +548,15 @@ Init( ):void {
 
 	this.modifiedFlags = 0;
 
-	cmdSystem.AddCommand( "toggle", this.Toggle_f, CMD_FL_SYSTEM, "toggles a cvar" );
-	cmdSystem.AddCommand( "set", this.Set_f, CMD_FL_SYSTEM, "sets a cvar" );
-	cmdSystem.AddCommand( "sets", this.SetS_f, CMD_FL_SYSTEM, "sets a cvar and flags it as server info" );
-	cmdSystem.AddCommand( "setu", this.SetU_f, CMD_FL_SYSTEM, "sets a cvar and flags it as user info" );
-	cmdSystem.AddCommand( "sett", this.SetT_f, CMD_FL_SYSTEM, "sets a cvar and flags it as tool" );
-	cmdSystem.AddCommand( "seta", this.SetA_f, CMD_FL_SYSTEM, "sets a cvar and flags it as archive" );
-	cmdSystem.AddCommand( "reset", this.Reset_f, CMD_FL_SYSTEM, "resets a cvar" );
-	cmdSystem.AddCommand( "listCvars", this.List_f, CMD_FL_SYSTEM, "lists cvars" );
-	cmdSystem.AddCommand( "cvar_restart", this.Restart_f, CMD_FL_SYSTEM, "restart the cvar system" );
+	cmdSystem.AddCommand( "toggle", this.Toggle_f, cmdFlags_t.CMD_FL_SYSTEM, "toggles a cvar" );
+	cmdSystem.AddCommand( "set", this.Set_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar" );
+	cmdSystem.AddCommand( "sets", this.SetS_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as server info" );
+	cmdSystem.AddCommand( "setu", this.SetU_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as user info" );
+	cmdSystem.AddCommand( "sett", this.SetT_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as tool" );
+	cmdSystem.AddCommand( "seta", this.SetA_f, cmdFlags_t.CMD_FL_SYSTEM, "sets a cvar and flags it as archive" );
+	cmdSystem.AddCommand( "reset", this.Reset_f, cmdFlags_t.CMD_FL_SYSTEM, "resets a cvar" );
+	cmdSystem.AddCommand( "listCvars", this.List_f, cmdFlags_t.CMD_FL_SYSTEM, "lists cvars" );
+	cmdSystem.AddCommand( "cvar_restart", this.Restart_f, cmdFlags_t.CMD_FL_SYSTEM, "restart the cvar system" );
 
 	this.initialized = true;
 }

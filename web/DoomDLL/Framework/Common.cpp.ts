@@ -529,22 +529,22 @@ idCommonLocal::Warning
 prints WARNING %s and adds the warning message to a queue to be printed later on
 ==================
 */
-Warning( /*const char **/ fmt:string, ...args: any[] ):void {
-    console.warn( fmt, args );
-    //va_list		argptr;
-    //char		msg[MAX_PRINT_MSG_SIZE];
+	Warning ( /*const char **/ fmt: string, ...args: any[] ): void {
+		console.warn( fmt, args );
+		//va_list		argptr;
+		//char		msg[MAX_PRINT_MSG_SIZE];
 
-    //va_start( argptr, fmt );
-    //idStr::vsnPrintf( msg, sizeof(msg), fmt, argptr );
-    //va_end( argptr );
-    //msg[sizeof(msg)-1] = 0;
+		//va_start( argptr, fmt );
+		//idStr::vsnPrintf( msg, sizeof(msg), fmt, argptr );
+		//va_end( argptr );
+		//msg[sizeof(msg)-1] = 0;
 
-    //Printf( S_COLOR_YELLOW "WARNING: " S_COLOR_RED "%s\n", msg );
+		//Printf( S_COLOR_YELLOW "WARNING: " S_COLOR_RED "%s\n", msg );
 
-    //if ( warningList.Num() < MAX_WARNING_LIST ) {
-    //	warningList.AddUnique( msg );
-    //}
-}
+		//if ( warningList.Num() < MAX_WARNING_LIST ) {
+		//	warningList.AddUnique( msg );
+		//}
+	}
 
 /////*
 ////==================
@@ -1818,14 +1818,14 @@ InitLanguageDict( ):void {
 ////	}
 ////}
 
-/////*
-////=================
-////ReloadLanguage_f
-////=================
-////*/
-////void Com_ReloadLanguage_f( const idCmdArgs &args ) {
-////	commonLocal.InitLanguageDict();
-////}
+/*
+=================
+ReloadLanguage_f
+=================
+*/
+	Com_ReloadLanguage_f ( args: idCmdArgs ): void {
+		commonLocal.InitLanguageDict ( );
+	}
 
 ////typedef idHashTable<idStrList> ListHash;
 ////void LoadMapLocalizeData(ListHash& listHash) {
@@ -2323,21 +2323,21 @@ InitLanguageDict( ):void {
 ////	common.Printf( "See mapcycle.scriptcfg for an example of a mapcyle script.\n\n" );
 ////}
 
-/////*
-////=================
-////idCommonLocal::InitCommands
-////=================
-////*/
-////void idCommonLocal::InitCommands( void ) {
-////	cmdSystem.AddCommand( "error", Com_Error_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "causes an error" );
-////	cmdSystem.AddCommand( "crash", Com_Crash_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "causes a crash" );
-////	cmdSystem.AddCommand( "freeze", Com_Freeze_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "freezes the game for a number of seconds" );
-////	cmdSystem.AddCommand( "quit", Com_Quit_f, CMD_FL_SYSTEM, "quits the game" );
-////	cmdSystem.AddCommand( "exit", Com_Quit_f, CMD_FL_SYSTEM, "exits the game" );
-////	cmdSystem.AddCommand( "writeConfig", Com_WriteConfig_f, CMD_FL_SYSTEM, "writes a config file" );
-////	cmdSystem.AddCommand( "reloadEngine", Com_ReloadEngine_f, CMD_FL_SYSTEM, "reloads the engine down to including the file system" );
-////	cmdSystem.AddCommand( "setMachineSpec", Com_SetMachineSpec_f, CMD_FL_SYSTEM, "detects system capabilities and sets com_machineSpec to appropriate value" );
-////	cmdSystem.AddCommand( "execMachineSpec", Com_ExecMachineSpec_f, CMD_FL_SYSTEM, "execs the appropriate config files and sets cvars based on com_machineSpec" );
+/*
+=================
+idCommonLocal::InitCommands
+=================
+*/
+	InitCommands ( ): void {
+	//cmdSystem.AddCommand( "error", Com_Error_f, CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "causes an error" );
+	//cmdSystem.AddCommand( "crash", Com_Crash_f, CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "causes a crash" );
+	//cmdSystem.AddCommand( "freeze", Com_Freeze_f, CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "freezes the game for a number of seconds" );
+	//cmdSystem.AddCommand( "quit", Com_Quit_f, CMD_FL_SYSTEM, "quits the game" );
+	//cmdSystem.AddCommand( "exit", Com_Quit_f, CMD_FL_SYSTEM, "exits the game" );
+	//cmdSystem.AddCommand( "writeConfig", Com_WriteConfig_f, CMD_FL_SYSTEM, "writes a config file" );
+	//cmdSystem.AddCommand( "reloadEngine", Com_ReloadEngine_f, CMD_FL_SYSTEM, "reloads the engine down to including the file system" );
+	//cmdSystem.AddCommand( "setMachineSpec", Com_SetMachineSpec_f, CMD_FL_SYSTEM, "detects system capabilities and sets com_machineSpec to appropriate value" );
+	//cmdSystem.AddCommand( "execMachineSpec", Com_ExecMachineSpec_f, CMD_FL_SYSTEM, "execs the appropriate config files and sets cvars based on com_machineSpec" );
 
 ////#if	!defined( ID_DEMO_BUILD ) && !defined( ID_DEDICATED )
 ////	// compilers
@@ -2367,34 +2367,34 @@ InitLanguageDict( ):void {
 ////	cmdSystem.AddCommand( "materialEditor", Com_MaterialEditor_f, CMD_FL_TOOL, "launches the Material Editor" );
 ////#endif
 
-////	cmdSystem.AddCommand( "printMemInfo", PrintMemInfo_f, CMD_FL_SYSTEM, "prints memory debugging data" );
+	//cmdSystem.AddCommand( "printMemInfo", PrintMemInfo_f, CMD_FL_SYSTEM, "prints memory debugging data" );
 
-////	// idLib commands
-////	cmdSystem.AddCommand( "memoryDump", Mem_Dump_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "creates a memory dump" );
-////	cmdSystem.AddCommand( "memoryDumpCompressed", Mem_DumpCompressed_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "creates a compressed memory dump" );
-////	cmdSystem.AddCommand( "showStringMemory", idStr::ShowMemoryUsage_f, CMD_FL_SYSTEM, "shows memory used by strings" );
-////	cmdSystem.AddCommand( "showDictMemory", idDict::ShowMemoryUsage_f, CMD_FL_SYSTEM, "shows memory used by dictionaries" );
-////	cmdSystem.AddCommand( "listDictKeys", idDict::ListKeys_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "lists all keys used by dictionaries" );
-////	cmdSystem.AddCommand( "listDictValues", idDict::ListValues_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "lists all values used by dictionaries" );
-////	cmdSystem.AddCommand( "testSIMD", idSIMD::Test_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "test SIMD code" );
+	// idLib commands
+	//cmdSystem.AddCommand( "memoryDump", Mem_Dump_f, CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "creates a memory dump" );
+	//cmdSystem.AddCommand( "memoryDumpCompressed", Mem_DumpCompressed_f, CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "creates a compressed memory dump" );
+	//cmdSystem.AddCommand( "showStringMemory", idStr::ShowMemoryUsage_f, CMD_FL_SYSTEM, "shows memory used by strings" );
+	//cmdSystem.AddCommand( "showDictMemory", idDict::ShowMemoryUsage_f, CMD_FL_SYSTEM, "shows memory used by dictionaries" );
+	//cmdSystem.AddCommand( "listDictKeys", idDict::ListKeys_f, CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "lists all keys used by dictionaries" );
+	//cmdSystem.AddCommand( "listDictValues", idDict::ListValues_f, CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "lists all values used by dictionaries" );
+	//cmdSystem.AddCommand( "testSIMD", idSIMD::Test_f, CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "test SIMD code" );
 
-////	// localization
-////	cmdSystem.AddCommand( "localizeGuis", Com_LocalizeGuis_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "localize guis" );
-////	cmdSystem.AddCommand( "localizeMaps", Com_LocalizeMaps_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "localize maps" );
-////	cmdSystem.AddCommand( "reloadLanguage", Com_ReloadLanguage_f, CMD_FL_SYSTEM, "reload language dict" );
+	// localization
+	//cmdSystem.AddCommand( "localizeGuis", Com_LocalizeGuis_f, CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "localize guis" );
+	//cmdSystem.AddCommand( "localizeMaps", Com_LocalizeMaps_f, CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "localize maps" );
+		cmdSystem.AddCommand( "reloadLanguage", this.Com_ReloadLanguage_f, cmdFlags_t.CMD_FL_SYSTEM, "reload language dict" );
 
-////	//D3XP Localization
-////	cmdSystem.AddCommand( "localizeGuiParmsTest", Com_LocalizeGuiParmsTest_f, CMD_FL_SYSTEM, "Create test files that show gui parms localized and ignored." );
-////	cmdSystem.AddCommand( "localizeMapsTest", Com_LocalizeMapsTest_f, CMD_FL_SYSTEM, "Create test files that shows which strings will be localized." );
+	////D3XP Localization
+	//cmdSystem.AddCommand( "localizeGuiParmsTest", Com_LocalizeGuiParmsTest_f, CMD_FL_SYSTEM, "Create test files that show gui parms localized and ignored." );
+	//cmdSystem.AddCommand( "localizeMapsTest", Com_LocalizeMapsTest_f, CMD_FL_SYSTEM, "Create test files that shows which strings will be localized." );
 
-////	// build helpers
-////	cmdSystem.AddCommand( "startBuild", Com_StartBuild_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "prepares to make a build" );
-////	cmdSystem.AddCommand( "finishBuild", Com_FinishBuild_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "finishes the build process" );
+	//// build helpers
+	//cmdSystem.AddCommand( "startBuild", Com_StartBuild_f, CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "prepares to make a build" );
+	//cmdSystem.AddCommand( "finishBuild", Com_FinishBuild_f, CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "finishes the build process" );
 
 ////#ifdef ID_DEDICATED
 ////	cmdSystem.AddCommand( "help", Com_Help_f, CMD_FL_SYSTEM, "shows help" );
 ////#endif
-////}
+	}
 
 /*
 =================
@@ -2830,7 +2830,7 @@ idCommonLocal::Init
 ////		InitSIMD();
 
 		// init commands
-        todo("InitCommands();");
+        this.InitCommands();
 
 ////#ifdef ID_WRITE_VERSION
 ////		config_compressor = idCompressor::AllocArithmetic();
@@ -3110,5 +3110,5 @@ idCommonLocal::InitGame
 ////}
 }
 
-//var commonLocal = new idCommon();
-var common = new idCommon();
+var commonLocal = new idCommon();
+var common = commonLocal;

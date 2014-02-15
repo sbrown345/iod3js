@@ -46,16 +46,16 @@
 //===============================================================================
 //*/
 
-//// command flags
-//typedef enum {
-var CMD_FL_ALL				= -1,
+// command flags
+enum cmdFlags_t{
+	CMD_FL_ALL				= -1,
     CMD_FL_CHEAT			= BIT(0),	// command is considered a cheat
     CMD_FL_SYSTEM			= BIT(1),	// system command
     CMD_FL_RENDERER			= BIT(2),	// renderer command
     CMD_FL_SOUND			= BIT(3),	// sound command
     CMD_FL_GAME				= BIT(4),	// game command
-    CMD_FL_TOOL				= BIT(5);	// tool command
-//} cmdFlags_t;
+    CMD_FL_TOOL				= BIT(5)	// tool command
+}
 
 // parameters for command buffer stuffing
 enum cmdExecution_t {

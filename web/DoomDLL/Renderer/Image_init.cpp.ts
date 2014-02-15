@@ -1953,9 +1953,9 @@ idImageManager.prototype.Init = function ( ): void {
 	this.scratchCubeMapImage = this.ImageFromFunction( "_scratchCubeMap", makeNormalizeVectorCubeMap );
 	this.currentRenderImage = this.ImageFromFunction( "_currentRender", R_RGBA8Image );
 
-	cmdSystem.AddCommand( "reloadImages", this.R_ReloadImages_f, CMD_FL_RENDERER, "reloads images" );
-	cmdSystem.AddCommand( "listImages", this.R_ListImages_f, CMD_FL_RENDERER, "lists images" );
-	cmdSystem.AddCommand( "combineCubeImages", this.R_CombineCubeImages_f, CMD_FL_RENDERER, "combines six images for roq compression" );
+	cmdSystem.AddCommand( "reloadImages", this.R_ReloadImages_f, cmdFlags_t.CMD_FL_RENDERER, "reloads images" );
+	cmdSystem.AddCommand( "listImages", this.R_ListImages_f, cmdFlags_t.CMD_FL_RENDERER, "lists images" );
+	cmdSystem.AddCommand( "combineCubeImages", this.R_CombineCubeImages_f, cmdFlags_t.CMD_FL_RENDERER, "combines six images for roq compression" );
 
 	// should forceLoadImages be here?
 }; /////*

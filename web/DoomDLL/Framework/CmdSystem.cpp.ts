@@ -187,7 +187,7 @@ idCmdSystemLocal::SystemList_f
 */
 SystemList_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
     todoThrow();
-	//idCmdSystemLocal::ListByFlags( args, CMD_FL_SYSTEM );
+	//idCmdSystemLocal::ListByFlags( args, cmdFlags_t.CMD_FL_SYSTEM );
 }
 
 /*
@@ -197,7 +197,7 @@ idCmdSystemLocal::RendererList_f
 */
 RendererList_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
     todoThrow();
-	//idCmdSystemLocal::ListByFlags( args, CMD_FL_RENDERER );
+	//idCmdSystemLocal::ListByFlags( args, cmdFlags_t.CMD_FL_RENDERER );
 }
 
 /*
@@ -335,17 +335,17 @@ idCmdSystemLocal::Init
 */
 Init(): void  {
 
-	this.AddCommand( "listCmds", this.List_f, CMD_FL_SYSTEM, "lists commands" );
-	this.AddCommand( "listSystemCmds", this.SystemList_f, CMD_FL_SYSTEM, "lists system commands" );
-	this.AddCommand( "listRendererCmds", this.RendererList_f, CMD_FL_SYSTEM, "lists renderer commands" );
-	this.AddCommand( "listSoundCmds", this.SoundList_f, CMD_FL_SYSTEM, "lists sound commands" );
-	this.AddCommand( "listGameCmds", this.GameList_f, CMD_FL_SYSTEM, "lists game commands" );
-	this.AddCommand( "listToolCmds", this.ToolList_f, CMD_FL_SYSTEM, "lists tool commands" );
-	this.AddCommand( "exec", this.Exec_f, CMD_FL_SYSTEM, "executes a config file", ArgCompletion_ConfigName );
-	this.AddCommand( "vstr", this.Vstr_f, CMD_FL_SYSTEM, "inserts the current value of a cvar as command text" );
-	this.AddCommand( "echo", this.Echo_f, CMD_FL_SYSTEM, "prints text" );
-	this.AddCommand( "parse", this.Parse_f, CMD_FL_SYSTEM, "prints tokenized string" );
-	this.AddCommand( "wait", this.Wait_f, CMD_FL_SYSTEM, "delays remaining buffered commands one or more frames" );
+	this.AddCommand("listCmds", this.List_f, cmdFlags_t.CMD_FL_SYSTEM, "lists commands" );
+	this.AddCommand( "listSystemCmds", this.SystemList_f, cmdFlags_t.CMD_FL_SYSTEM, "lists system commands" );
+	this.AddCommand( "listRendererCmds", this.RendererList_f, cmdFlags_t.CMD_FL_SYSTEM, "lists renderer commands" );
+	this.AddCommand( "listSoundCmds", this.SoundList_f, cmdFlags_t.CMD_FL_SYSTEM, "lists sound commands" );
+	this.AddCommand( "listGameCmds", this.GameList_f, cmdFlags_t.CMD_FL_SYSTEM, "lists game commands" );
+	this.AddCommand( "listToolCmds", this.ToolList_f, cmdFlags_t.CMD_FL_SYSTEM, "lists tool commands" );
+	this.AddCommand( "exec", this.Exec_f, cmdFlags_t.CMD_FL_SYSTEM, "executes a config file", ArgCompletion_ConfigName );
+	this.AddCommand( "vstr", this.Vstr_f, cmdFlags_t.CMD_FL_SYSTEM, "inserts the current value of a cvar as command text" );
+	this.AddCommand( "echo", this.Echo_f, cmdFlags_t.CMD_FL_SYSTEM, "prints text" );
+	this.AddCommand( "parse", this.Parse_f, cmdFlags_t.CMD_FL_SYSTEM, "prints tokenized string" );
+	this.AddCommand( "wait", this.Wait_f, cmdFlags_t.CMD_FL_SYSTEM, "delays remaining buffered commands one or more frames" );
 
 	this.completionString = "*";
 
@@ -495,11 +495,12 @@ idCmdSystemLocal::ExecuteTokenizedString
 			if ( idStr.Icmp( args.Argv( 0 ), cmd.name ) == 0 ) {
 				// rearrange the links so that the command will be
 				// near the head of the list next time it is used
-				prev = cmd.next;
-				cmd.next = this.commands;
-				this.commands = cmd;
+				todo( "following 3 lines (make sure no inf loop)" );
+				//prev = cmd.next;
+				//cmd.next = this.commands;
+				//this.commands = cmd;
 
-				if ( ( cmd.flags & ( CMD_FL_CHEAT | CMD_FL_TOOL ) ) && session && session.IsMultiplayer ( ) && !cvarSystem.GetCVarBool( "net_allowCheats" ) ) {
+				if ( ( cmd.flags & ( cmdFlags_t.CMD_FL_CHEAT | cmdFlags_t.CMD_FL_TOOL ) ) && session && session.IsMultiplayer ( ) && !cvarSystem.GetCVarBool( "net_allowCheats" ) ) {
 					common.Printf( "Command '%s' not valid in multiplayer mode.\n", cmd.name );
 					return;
 				}

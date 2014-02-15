@@ -299,8 +299,8 @@ idGameLocal.prototype.Init = function ( ): void {
 	declManager.RegisterDeclFolder("af", ".af", declType_t. DECL_AF );
 	declManager.RegisterDeclFolder("newpdas", ".pda", declType_t. DECL_PDA );
 
-	cmdSystem.AddCommand("listModelDefs", idListDecls_f(declType_t.DECL_MODELDEF), CMD_FL_SYSTEM|CMD_FL_GAME, "lists model defs" );
-	cmdSystem.AddCommand("printModelDefs", idPrintDecls_f(declType_t.DECL_MODELDEF), CMD_FL_SYSTEM | CMD_FL_GAME, "prints a model def", ArgCompletion_Decl_Template(declType_t.DECL_MODELDEF) /*idCmdSystem::ArgCompletion_Decl<DECL_MODELDEF>*/ );
+	cmdSystem.AddCommand("listModelDefs", idListDecls_f(declType_t.DECL_MODELDEF), cmdFlags_t.CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_GAME, "lists model defs" );
+	cmdSystem.AddCommand("printModelDefs", idPrintDecls_f(declType_t.DECL_MODELDEF), cmdFlags_t.CMD_FL_SYSTEM | cmdFlags_t.CMD_FL_GAME, "prints a model def", ArgCompletion_Decl_Template(declType_t.DECL_MODELDEF) /*idCmdSystem::ArgCompletion_Decl<DECL_MODELDEF>*/ );
 
 	this.Clear();
 

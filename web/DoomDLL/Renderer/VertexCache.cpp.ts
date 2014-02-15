@@ -247,7 +247,7 @@ idVertexCache::Init
 */
 
 	Init ( ): void {
-		cmdSystem.AddCommand( "listVertexCache", R_ListVertexCache_f, CMD_FL_RENDERER, "lists vertex cache" );
+		cmdSystem.AddCommand( "listVertexCache", R_ListVertexCache_f, cmdFlags_t.CMD_FL_RENDERER, "lists vertex cache" );
 
 		if ( r_vertexBufferMegs.GetInteger ( ) < 8 ) {
 			r_vertexBufferMegs.SetInteger( 8 );
