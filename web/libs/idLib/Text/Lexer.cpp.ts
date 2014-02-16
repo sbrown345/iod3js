@@ -1002,7 +1002,7 @@ class idLexer {
 	================
 	*/
 	/*int */ExpectTokenType( /*int */type: number, /*int */subtype: number, token: R<idToken> ):number {
-		var str: idStr;
+		var str = new idStr;
 
 		if ( !this.ReadToken( token ) ) {
 			this.Error( "couldn't read expected token" );
@@ -1011,12 +1011,12 @@ class idLexer {
 
 		if (token.$.type != type ) {
 			switch( type ) {
-				case TT_STRING: str = new idStr("string"); break;
-				case TT_LITERAL: str = new idStr("literal"); break;
-				case TT_NUMBER: str = new idStr("number"); break;
-				case TT_NAME: str = new idStr("name"); break;
-				case TT_PUNCTUATION: str = new idStr("punctuation"); break;
-				default: str = new idStr("unknown type"); break;
+				case TT_STRING: str.equals("string"); break;
+				case TT_LITERAL: str.equals("literal"); break;
+				case TT_NUMBER: str.equals("number"); break;
+				case TT_NAME: str.equals("name"); break;
+				case TT_PUNCTUATION: str.equals("punctuation"); break;
+				default: str.equals("unknown type"); break;
 			}
 			this.Error( "expected a %s but found '%s'", str.c_str(), token.$.c_str() );
 			return 0;
@@ -1024,10 +1024,10 @@ class idLexer {
 		if (token.$.type == TT_NUMBER ) {
 			if ((token.$.subtype & subtype) != subtype ) {
 				str.Clear();
-				if (subtype & TT_DECIMAL) str = new idStr("decimal ");
-				if (subtype & TT_HEX) str = new idStr("hex ");
-				if (subtype & TT_OCTAL) str = new idStr("octal ");
-				if (subtype & TT_BINARY) str = new idStr("binary ");
+				if (subtype & TT_DECIMAL) str.equals("decimal ");
+				if (subtype & TT_HEX) str.equals("hex ");
+				if (subtype & TT_OCTAL) str.equals("octal ");
+				if (subtype & TT_BINARY) str.equals("binary ");
 				if (subtype & TT_UNSIGNED) str.Append("unsigned ");
 				if (subtype & TT_LONG) str.Append("long ");
 				if (subtype & TT_FLOAT) str.Append("float ");
