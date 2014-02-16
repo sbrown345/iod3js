@@ -2633,31 +2633,31 @@ CheckForConstantRegisters():void {
 ////	return sizeof( idMaterial );
 ////}
 
-/////*
-////===================
-////idMaterial::SetDefaultText
-////===================
-////*/
-////bool idMaterial::SetDefaultText( void ) {
-////	// if there exists an image with the same name
-////	if ( 1 ) { //fileSystem.ReadFile( this.GetName(), NULL ) != -1 ) {
-////		char generated[2048];
-////		idStr::snPrintf( generated, sizeof( generated ), 
-////						"material %s // IMPLICITLY GENERATED\n"
-////						"{\n"
-////						"{\n"
-////						"blend blend\n"
-////						"colored\n"
-////						"map \"%s\"\n"
-////						"clamp\n"
-////						"}\n"
-////						"}\n", this.GetName(), this.GetName() );
-////		SetText( generated );
-////		return true;
-////	} else {
-////		return false;
-////	}
-////}
+/*
+===================
+idMaterial::SetDefaultText
+===================
+*/
+	SetDefaultText ( ): boolean {
+		// if there exists an image with the same name
+		if ( 1 ) { //fileSystem.ReadFile( this.GetName(), NULL ) != -1 ) {
+			var generated = new Uint8Array( 2048 );
+			idStr.snPrintf( generated, sizeof( generated ),
+				"material %s // IMPLICITLY GENERATED\n" +
+				"{\n" +
+				"{\n" +
+				"blend blend\n" +
+				"colored\n" +
+				"map \"%s\"\n" +
+				"clamp\n" +
+				"}\n" +
+				"}\n", this.GetName ( ), this.GetName ( ) );
+			this.SetText( generated );
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 /////*
 ////===================

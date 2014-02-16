@@ -114,7 +114,7 @@ class idDeclBase {
 	GetFileName( ):string { throw "placeholder"; }
 ////	virtual void			GetText( char *text ) const = 0;
 ////	virtual int				GetTextLength( void ) const = 0;
-////	virtual void			SetText( const char *text ) = 0;
+	SetText ( text: Uint8Array ): void { throw "placeholder"; }
 ////	virtual bool			ReplaceSourceFileText( void ) = 0;
 ////	virtual bool			SourceFileChanged( void ) const = 0;
 	MakeDefault(): void { throw "placeholder"; }
@@ -176,8 +176,8 @@ class idDecl {
 ////							// Returns the length of the decl text.
 ////	int						GetTextLength( void ) const { return this.base.GetTextLength(); }
 
-////							// Sets new decl text.
-////	void					SetText( const char *text ) { this.base.SetText( text ); }
+							// Sets new decl text.
+	SetText ( text: Uint8Array ): void { this.base.SetText( text ); }
 
 ////							// Saves out new text for the decl.
 ////							// Used by decl editors to replace the decl text in the source file.

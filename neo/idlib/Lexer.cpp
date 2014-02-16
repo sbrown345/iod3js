@@ -812,6 +812,8 @@ int idLexer::ReadPunctuation( idToken *token ) {
 	return 0;
 }
 
+static int RTCount = 0;
+
 /*
 ================
 idLexer::ReadToken
@@ -915,7 +917,6 @@ int idLexer::ReadToken( idToken *token ) {
 	return 1;
 }
 
-static int RTCount = 0;
 
 /*
 ================

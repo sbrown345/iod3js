@@ -952,8 +952,20 @@ class idStr {
 ////	return idStr::CheckExtension( this.data, ext );
 ////}
 
-	static Length ( s: string ): number {
-		return s.length;
+	static Length ( s: string ): number
+	static Length ( s: Uint8Array ): number
+	static Length ( s: any ): number {
+		if ( typeof s === "string" ) {
+			return s.length;
+		}
+		var i: number;
+		for ( i = 0; i < s.length; i++ ) {
+			if ( s[i] === 0 ) {
+				return i;
+			}
+		}
+
+		return i;
 	}
 
 ////ID_INLINE char *idStr::ToLower( char *s ) {

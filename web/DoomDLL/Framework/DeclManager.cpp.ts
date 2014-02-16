@@ -101,7 +101,7 @@ class idDeclLocal extends idDeclBase {
 /*	virtual size_t				*/Size( ):number {throw "placeholder";}
 /*	virtual void				*/GetText( text:Uint8Array):void{}
 /*	virtual int					*/GetTextLength( ):number {throw "placeholder";}
-/*	virtual void				*/SetText( text:string ):void{throw "placeholder";}
+/*	virtual void				*/SetText( text:Uint8Array ):void{throw "placeholder";}
 /*	virtual bool				*/ReplaceSourceFileText( ):boolean{throw "placeholder";}
 /*	virtual bool				*/SourceFileChanged( ):boolean{throw "placeholder";}
 /*	virtual void				*/MakeDefault(): void { throw "placeholder"; }
@@ -1556,6 +1556,7 @@ idDeclManagerLocal.prototype.MediaPrint = function ( fmt:string, ...args: any[] 
 /////********************************************************************/
 
 idDeclManagerLocal.prototype.FindMaterial = function ( name: string, makeDefault: boolean = true ): idMaterial {
+	dlog( DEBUG_COMPILER, "FindMaterial: %s\n", name );
     return this.FindType( declType_t.DECL_MATERIAL, name, makeDefault );
 //	return static_cast<const idMaterial *>( FindType( declType_t.DECL_MATERIAL, name, makeDefault ) );
 };
@@ -1725,7 +1726,7 @@ This finds or creats the decl, but does not cause a parse.  This is only used in
 ===================
 */
 idDeclManagerLocal.prototype.FindTypeWithoutParsing = function ( type: declType_t, name: string, makeDefault: boolean = true ): idDeclLocal {
-    var /*int */typeIndex = int( this.type );
+    var /*int */typeIndex = int( type );
     var /*int */i: number, hash: number;
 
     if ( typeIndex < 0 || typeIndex >= this.declTypes.Num ( ) || this.declTypes[typeIndex] == NULL ) {
@@ -1755,7 +1756,7 @@ idDeclManagerLocal.prototype.FindTypeWithoutParsing = function ( type: declType_
 
     var decl = new idDeclLocal;
     decl.self = /*NULL*/null;
-    decl.name = new idStr( canonicalName );
+	decl.name.equals( canonicalName.toString ( ) );
     decl.type = type;
     decl.declState = declState_t.DS_UNPARSED;
     decl.textSource = /*NULL*/null;
@@ -1906,14 +1907,14 @@ idDeclLocal.prototype.GetTextLength = function ( ): number {
 	return this.textLength;
 };
 
-/////*
-////=================
-////idDeclLocal::SetText
-////=================
-////*/
-////void idDeclLocal::SetText( const char *text ) {
-////	SetTextLocal( text, idStr::Length( text ) );
-////}
+/*
+=================
+idDeclLocal::SetText
+=================
+*/
+idDeclLocal.prototype.SetText = function ( text: Uint8Array ): void {
+	this.SetTextLocal( text, idStr.Length( text ) );
+};
 
 /*
 =================
@@ -2205,7 +2206,7 @@ idDeclLocal.prototype.ParseLocal = function ( ): void {
 
 	// free generated text
 	if ( generatedDefaultText ) {
-		this.Mem_Free( this.textSource );
+		Mem_Free( this.textSource );
 		this.textSource = 0;
 		this.textLength = 0;
 	}
