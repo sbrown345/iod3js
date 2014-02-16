@@ -192,12 +192,12 @@ class idToken extends idStr {
     GetIntValue( ):number {
     	return /*(int) */this.GetUnsignedLongValue() | 0;
     }
-    ////
-    ////ID_INLINE int idToken::WhiteSpaceBeforeToken( void ) const {
-    ////	return ( whiteSpaceEnd_p > whiteSpaceStart_p );
-    ////}
-    ////
-    AppendDirty( /*const char */a:string ):void {
+
+	WhiteSpaceBeforeToken ( ): number {
+		return ( this.whiteSpaceEnd_p > this.whiteSpaceStart_p ) ? 1 : 0;
+	}
+
+	AppendDirty( /*const char */a:string ):void {
     	//EnsureAlloced( len + 2, true );
     	//data[len++] = a;
 	    this.data += a;
@@ -347,14 +347,14 @@ class idToken extends idStr {
     	this.subtype |= TT_VALUESVALID;
     }
 
-    /////*
-    ////================
-    ////idToken::ClearTokenWhiteSpace
-    ////================
-    ////*/
-    ////void idToken::ClearTokenWhiteSpace( void ) {
-    ////	whiteSpaceStart_p = NULL;
-    ////	whiteSpaceEnd_p = NULL;
-    ////	linesCrossed = 0;
-    ////}
+    /*
+    ================
+    idToken::ClearTokenWhiteSpace
+    ================
+    */
+	ClearTokenWhiteSpace ( ): void {
+		this.whiteSpaceStart_p = NULL;
+		this.whiteSpaceEnd_p = NULL;
+		this.linesCrossed = 0;
+	}
 }

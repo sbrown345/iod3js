@@ -457,26 +457,27 @@ FindHashedDefine
 ////	}
 ////	return NULL;
 ////}
-////
-/////*
-////================
-////idParser::FindDefineParm
-////================
-////*/
-/////*int*/FindDefineParm( define_t *define, const char *name ):number {
-////	idToken *p;
-////	int i;
-////
-////	i = 0;
-////	for ( p = define.parms; p; p = p.next ) {
-////		if ( (*p) == name ) {
-////			return i;
-////		}
-////		i++;
-////	}
-////	return -1;
-////}
-////
+
+/*
+================
+idParser::FindDefineParm
+================
+*/
+	/*int*/
+	FindDefineParm ( define: define_t, name: string ): number {
+		var p: idToken;
+		var i: number;
+
+		i = 0;
+		for ( p = define.parms; p; p = p.next ) {
+			if ( p.data == name ) {
+				return i;
+			}
+			i++;
+		}
+		return -1;
+	}
+
 /*
 ================
 idParser::CopyDefine
@@ -732,9 +733,9 @@ idParser::UnreadSourceToken
 		t = new idToken( token.$ );
 		t.next = this.tokens;
 		this.tokens = t;
-		return 1/*true*/;
+		return 1 /*true*/;
 	}
-////
+
 /////*
 ////================
 ////idParser::ReadDefineParms
@@ -1318,118 +1319,118 @@ idParser::Directive_undef
 idParser::Directive_define
 ================
 */
-	/*int*/Directive_define():number {
-		todoThrow ( );
-	//idToken token, *t, *last;
-	//define_t *define;
+	/*int*/
+	Directive_define ( ): number {
+		var token = new R( new idToken ), t = new R( new idToken ), last = new R( new idToken );
+		var define: define_t;
 
-	//if (!this.ReadLine( &token )) {
-	//	this.Error( "#define without name" );
-	//	return 0/*false*/;
-	//}
-	//if (token.type != TT_NAME) {
-	//	this.UnreadSourceToken( &token );
-	//	this.Error( "expected name after #define, found '%s'", token.c_str() );
-	//	return 0/*false*/;
-	//}
-	//// check if the define already exists
-	//define = FindHashedDefine(this.definehash, token.c_str());
-	//if (define) {
-	//	if (define.flags & DEFINE_FIXED) {
-	//		this.Error( "can't redefine '%s'", token.c_str() );
-	//		return 0/*false*/;
-	//	}
-	//	this.Warning( "redefinition of '%s'", token.c_str() );
-	//	// unread the define name before executing the #undef directive
-	//	this.UnreadSourceToken( &token );
-	//	if (!idParser::Directive_undef())
-	//		return 0/*false*/;
-	//	// if the define was not removed (define.flags & DEFINE_FIXED)
-	//	define = FindHashedDefine(this.definehash, token.c_str());
-	//}
-	//// allocate define
-	//define = (define_t *) Mem_ClearedAlloc(sizeof(define_t) + token.Length() + 1);
-	//define.name = (char *) define + sizeof(define_t);
-	//strcpy(define.name, token.c_str());
-	//// add the define to the source
-	//AddDefineToHash(define, this.definehash);
-	//// if nothing is defined, just return
-	//if ( !this.ReadLine( &token ) ) {
-	//	return 1/*true*/;
-	//}
-	//// if it is a define with parameters
-	//if ( token.WhiteSpaceBeforeToken() == 0 && token == "(" ) {
-	//	// read the define parameters
-	//	last = NULL;
-	//	if ( !idParser::CheckTokenString(")") ) {
-	//		while(1) {
-	//			if ( !this.ReadLine( &token ) ) {
-	//				this.Error( "expected define parameter" );
-	//				return 0/*false*/;
-	//			}
-	//			// if it isn't a name
-	//			if (token.type != TT_NAME) {
-	//				this.Error( "invalid define parameter" );
-	//				return 0/*false*/;
-	//			}
+		if ( !this.ReadLine( token ) ) {
+			this.Error( "#define without name" );
+			return 0 /*false*/;
+		}
+		if ( token.$.type != TT_NAME ) {
+			this.UnreadSourceToken( token );
+			this.Error( "expected name after #define, found '%s'", token.$.c_str ( ) );
+			return 0 /*false*/;
+		}
+		// check if the define already exists
+		define = this.FindHashedDefine( this.definehash, token.$.c_str ( ) );
+		if ( define ) {
+			if ( define.flags & DEFINE_FIXED ) {
+				this.Error( "can't redefine '%s'", token.$.c_str ( ) );
+				return 0 /*false*/;
+			}
+			this.Warning( "redefinition of '%s'", token.$.c_str ( ) );
+			// unread the define name before executing the #undef directive
+			this.UnreadSourceToken( token );
+			if ( !this.Directive_undef ( ) )
+				return 0 /*false*/;
+			// if the define was not removed (define.flags & DEFINE_FIXED)
+			define = this.FindHashedDefine( this.definehash, token.$.c_str ( ) );
+		}
+		// allocate define
+		define = new define_t; //(define_t *) Mem_ClearedAlloc(sizeof(define_t) + token.$.Length() + 1);
+		//define.name = (char *) define + sizeof(define_t);
+		//strcpy(define.name, token.$.c_str());
+		define.name = token.$.c_str ( );
+		// add the define to the source
+		this.AddDefineToHash( define, this.definehash );
+		// if nothing is defined, just return
+		if ( !this.ReadLine( token ) ) {
+			return 1 /*true*/;
+		}
+		// if it is a define with parameters
+		if ( token.$.WhiteSpaceBeforeToken ( ) == 0 && token.$.data == "(" ) {
+			// read the define parameters
+			last.$ = null;
+			if ( !this.CheckTokenString( ")" ) ) {
+				while ( 1 ) {
+					if ( !this.ReadLine( token ) ) {
+						this.Error( "expected define parameter" );
+						return 0 /*false*/;
+					}
+					// if it isn't a name
+					if ( token.$.type != TT_NAME ) {
+						this.Error( "invalid define parameter" );
+						return 0 /*false*/;
+					}
 
-	//			if (FindDefineParm(define, token.c_str()) >= 0) {
-	//				this.Error( "two the same define parameters" );
-	//				return 0/*false*/;
-	//			}
-	//			// add the define parm
-	//			t = new idToken(token);
-	//			t.ClearTokenWhiteSpace();
-	//			t.next = NULL;
-	//			if (last) last.next = t;
-	//			else define.parms = t;
-	//			last = t;
-	//			define.numparms++;
-	//			// read next token
-	//			if (!this.ReadLine( &token )) {
-	//				this.Error( "define parameters not terminated" );
-	//				return 0/*false*/;
-	//			}
+					if ( this.FindDefineParm( define, token.$.c_str ( ) ) >= 0 ) {
+						this.Error( "two the same define parameters" );
+						return 0 /*false*/;
+					}
+					// add the define parm
+					t.$ = new idToken( token.$ );
+					t.$.ClearTokenWhiteSpace ( );
+					t.$.next = null;
+					if ( last.$ ) last.$.next = t.$;
+					else define.parms = t.$;
+					last.$ = t.$;
+					define.numparms++;
+					// read next token
+					if ( !this.ReadLine( token ) ) {
+						this.Error( "define parameters not terminated" );
+						return 0 /*false*/;
+					}
 
-	//			if ( token == ")" ) {
-	//				break;
-	//			}
-	//			// then it must be a comma
-	//			if ( token != "," ) {
-	//				this.Error( "define not terminated" );
-	//				return 0/*false*/;
-	//			}
-	//		}
-	//	}
-	//	if ( !this.ReadLine( &token ) ) {
-	//		return 1/*true*/;
-	//	}
-	//}
-	//// read the defined stuff
-	//last = NULL;
-	//do
-	//{
-	//	t = new idToken(token);
-	//	if ( t.type == TT_NAME && !strcmp( t.c_str(), define.name ) ) {
-	//		t.flags |= TOKEN_FL_RECURSIVE_DEFINE;
-	//		this.Warning( "recursive define (removed recursion)" );
-	//	}
-	//	t.ClearTokenWhiteSpace();
-	//	t.next = NULL;
-	//	if ( last ) last.next = t;
-	//	else define.tokens = t;
-	//	last = t;
-	//} while( this.ReadLine( &token ) );
+					if ( token.$.data == ")" ) {
+						break;
+					}
+					// then it must be a comma
+					if ( token.$.data != "," ) {
+						this.Error( "define not terminated" );
+						return 0 /*false*/;
+					}
+				}
+			}
+			if ( !this.ReadLine( token ) ) {
+				return 1 /*true*/;
+			}
+		}
+		// read the defined stuff
+		last.$ = null;
+		do {
+			t.$ = new idToken( token.$ );
+			if ( t.$.type == TT_NAME && !strcmp( t.$.c_str ( ), define.name ) ) {
+				t.$.flags |= TOKEN_FL_RECURSIVE_DEFINE;
+				this.Warning( "recursive define (removed recursion)" );
+			}
+			t.$.ClearTokenWhiteSpace ( );
+			t.$.next = null;
+			if ( last.$ ) last.$.next = t.$;
+			else define.tokens = t.$;
+			last.$ = t.$;
+		} while ( this.ReadLine( token ) );
 
-	//if ( last ) {
-	//	// check for merge operators at the beginning or end
-	//	if ( (*define.tokens) == "##" || (*last) == "##" ) {
-	//		this.Error( "define with misplaced ##" );
-	//		return 0/*false*/;
-	//	}
-	//}
-	return 1/*true*/;
-}
+		if ( last.$ ) {
+			// check for merge operators at the beginning or end
+			if ( ( define.tokens.data ) == "##" || ( last.$.data ) == "##" ) {
+				this.Error( "define with misplaced ##" );
+				return 0 /*false*/;
+			}
+		}
+		return 1 /*true*/;
+	}
 
 /////*
 ////================
@@ -2740,26 +2741,27 @@ idParser::ReadToken
 ////	}
 ////}
 ////
-/////*
-////================
-////idParser::CheckTokenString
-////================
-////*/
-/////*int*/CheckTokenString( $string:string ):number {
-////	idToken tok;
-////
-////	if ( !ReadToken( &tok ) ) {
-////		return 0/*false*/;
-////	}
-////	//if the token is available
-////	if ( tok == string ) {
-////		return 1/*true*/;
-////	}
-////
-////	UnreadSourceToken( &tok );
-////	return 0/*false*/;
-////}
-////
+/*
+================
+idParser::CheckTokenString
+================
+*/
+/*int*/
+	CheckTokenString ( $string: string ): number {
+		var tok = new R( new idToken );
+
+		if ( !this.ReadToken( tok ) ) {
+			return 0 /*false*/;
+		}
+		//if the token is available
+		if ( tok.$.data == $string ) {
+			return 1 /*true*/;
+		}
+
+		this.UnreadSourceToken( tok );
+		return 0 /*false*/;
+	}
+
 /////*
 ////================
 ////idParser::CheckTokenType
