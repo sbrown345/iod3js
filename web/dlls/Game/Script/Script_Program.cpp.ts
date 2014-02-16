@@ -115,7 +115,7 @@ class function_t {
 //function_t::SetName
 //================
 //*/
-//void function_t::SetName( const char *name ) {
+//void function_t::SetName( name:string ) {
 //	this.name = name;
 //}
 //
@@ -407,7 +407,7 @@ idVarDefName::AddDef
 //idScriptObject::GetFunction
 //============
 //*/
-//const function_t *idScriptObject::GetFunction( const char *name ) const {
+//const function_t *idScriptObject::GetFunction( name:string ) const {
 //	const function_t *func;
 //
 //	if ( type == &type_object ) {
@@ -423,7 +423,7 @@ idVarDefName::AddDef
 //idScriptObject::GetVariable
 //============
 //*/
-//byte *idScriptObject::GetVariable( const char *name, etype_t etype ) const {
+//byte *idScriptObject::GetVariable( name:string, etype_t etype ) const {
 //	int				i;
 //	int				pos;
 //	const idTypeDef	*t;
@@ -718,44 +718,44 @@ a new one and copies it out.
 		return this.AllocType( type );
 	}
 
-///*
-//============
-//idProgram::FindType
-//
-//Returns a preexisting complex type that matches the name, or returns NULL if not found
-//============
-//*/
-//idTypeDef *idProgram::FindType( const char *name ) {
-//	idTypeDef	*check;
-//	int			i;
-//
-//	for( i = types.Num() - 1; i >= 0; i-- ) {
-//		check = types[ i ];
-//		if ( !strcmp( check.Name(), name ) ) {
-//			return check;
-//		}
-//	}
-//
-//	return null;
-//}
-//
-///*
-//============
-//idProgram::GetDefList
-//============
-//*/
-//idVarDef *idProgram::GetDefList( const char *name ) const {
-//	int i, hash;
-//
-//	hash = varDefNameHash.GenerateKey( name, true );
-//	for ( i = varDefNameHash.First( hash ); i != -1; i = varDefNameHash.Next( i ) ) {
-//		if ( idStr::Cmp( varDefNames[i].Name(), name ) == 0 ) {
-//			return varDefNames[i].GetDefs();
-//		}
-//	}
-//	return null;
-//}
-//
+/*
+============
+idProgram::FindType
+
+Returns a preexisting complex type that matches the name, or returns NULL if not found
+============
+*/
+	FindType ( name: string ): idTypeDef {
+		var check: idTypeDef;
+		var i: number;
+
+		for ( i = this.types.Num ( ) - 1; i >= 0; i-- ) {
+			check = this.types[i];
+			if ( !strcmp( check.Name ( ), name ) ) {
+				return check;
+			}
+		}
+
+		return null;
+	}
+
+/*
+============
+idProgram::GetDefList
+============
+*/
+	GetDefList ( name: string ): idVarDef {
+		var /*int */i: number, hash: number;
+
+		hash = this.varDefNameHash.GenerateKey( name, true );
+		for ( i = this.varDefNameHash.First( hash ); i != -1; i = this.varDefNameHash.Next( i ) ) {
+			if ( idStr.Cmp( this.varDefNames[i].Name ( ), name ) == 0 ) {
+				return this.varDefNames[i].GetDefs ( );
+			}
+		}
+		return null;
+	}
+
 /*
 ============
 idProgram::AddDefToNameList
@@ -881,48 +881,48 @@ idProgram::AllocDef
 		return def;
 	}
 
-///*
-//============
-//idProgram::GetDef
-//
-//If type is NULL, it will match any type
-//============
-//*/
-//idVarDef *idProgram::GetDef( const idTypeDef *type, const char *name, const idVarDef *scope ) const {
-//	idVarDef		*def;
-//	idVarDef		*bestDef;
-//	int				bestDepth;
-//	int				depth;
-//
-//	bestDepth = 0;
-//	bestDef = null;
-//	for( def = GetDefList( name ); def != null; def = def.Next() ) {
-//		if ( def.scope.Type() == etype_t.ev_namespace ) {
-//			depth = def.DepthOfScope( scope );
-//			if ( !depth ) {
-//				// not in the same namespace
-//				continue;
-//			}
-//		} else if ( def.scope != scope ) {
-//			// in a different function
-//			continue;
-//		} else {
-//			depth = 1;
-//		}
-//
-//		if ( !bestDef || ( depth < bestDepth ) ) {
-//			bestDepth = depth;
-//			bestDef = def;
-//		}
-//	}
-//
-//	// see if the name is already in use for another type
-//	if ( bestDef && type && ( bestDef.TypeDef() != type ) ) {
-//		throw idCompileError( va( "Type mismatch on redeclaration of %s", name ) );
-//	}
-//
-//	return bestDef;
-//}
+/*
+============
+idProgram::GetDef
+
+If type is NULL, it will match any type
+============
+*/
+	GetDef ( type: idTypeDef, name: string, scope: idVarDef ): idVarDef {
+		var def: idVarDef;
+		var bestDef: idVarDef;
+		var bestDepth: number;
+		var depth: number;
+
+		bestDepth = 0;
+		bestDef = null;
+		for ( def = this.GetDefList( name ); def != null; def = def.Next ( ) ) {
+			if ( def.scope.Type ( ) == etype_t.ev_namespace ) {
+				depth = def.DepthOfScope( scope );
+				if ( !depth ) {
+					// not in the same namespace
+					continue;
+				}
+			} else if ( def.scope != scope ) {
+				// in a different function
+				continue;
+			} else {
+				depth = 1;
+			}
+
+			if ( !bestDef || ( depth < bestDepth ) ) {
+				bestDepth = depth;
+				bestDef = def;
+			}
+		}
+
+		// see if the name is already in use for another type
+		if ( bestDef && type && ( bestDef.TypeDef ( ) != type ) ) {
+			throw new idCompileError( va( "Type mismatch on redeclaration of %s", name ) );
+		}
+
+		return bestDef;
+	}
 //
 ///*
 //============
@@ -968,7 +968,7 @@ idProgram::AllocDef
 //idProgram::FindFreeResultDef
 //============
 //*/
-//idVarDef *idProgram::FindFreeResultDef( idTypeDef *type, const char *name, idVarDef *scope, const idVarDef *a, const idVarDef *b ) {
+//idVarDef *idProgram::FindFreeResultDef( idTypeDef *type, name:string, idVarDef *scope, const idVarDef *a, const idVarDef *b ) {
 //	idVarDef *def;
 //	
 //	for( def = GetDefList( name ); def != null; def = def.Next() ) {
@@ -1001,7 +1001,7 @@ idProgram::AllocDef
 //Returns >0 if function found.
 //================
 //*/
-//function_t *idProgram::FindFunction( const char *name ) const {
+//function_t *idProgram::FindFunction( name:string ) const {
 //	int			start;
 //	int			pos;
 //	idVarDef	*namespaceDef;
@@ -1055,7 +1055,7 @@ idProgram::AllocDef
 //Returns >0 if function found.
 //================
 //*/
-//function_t *idProgram::FindFunction( const char *name, const idTypeDef *type ) const {
+//function_t *idProgram::FindFunction( name:string, const idTypeDef *type ) const {
 //	const idVarDef	*tdef;
 //	const idVarDef	*def;
 //
@@ -1104,7 +1104,7 @@ idProgram::AllocDef
 //idProgram::SetEntity
 //================
 //*/
-//void idProgram::SetEntity( const char *name, idEntity *ent ) {
+//void idProgram::SetEntity( name:string, idEntity *ent ) {
 //	idVarDef	*def;
 //	idStr		defName( "$" );
 //

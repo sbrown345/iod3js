@@ -3173,7 +3173,7 @@ separate file or a ZIP file.
 			return null;
 		}
 
-		if (typeof VBArray !== "undefined") { // debugging in VS
+		if (typeof VBArray !== "undefined") { // IE
 			var data = new VBArray(xhr.responseBody).toArray();
 			var buf = new ArrayBuffer(data.length);
 			var dest = new Uint8Array(buf);

@@ -793,7 +793,7 @@ class idVarDef {
 	//	void					SetValue( const eval_t &value, bool constant );
 	//	void					SetString( const char *string, bool constant );
 	//
-	//	idVarDef *				Next( void ) const { return next; }		// next var def with same name
+	Next ( ): idVarDef { return this.next; } // next var def with same name
 	//
 	//	void					PrintInfo( idFile *file, int instructionPointer ) const;
 	//
@@ -851,26 +851,26 @@ class idVarDef {
 		}
 	}
 
-	///*
-	//============
-	//idVarDef::DepthOfScope
-	//============
-	//*/
-	//int idVarDef::DepthOfScope( const idVarDef *otherScope ) const {
-	//	const idVarDef *def;
-	//	int depth;
-	//
-	//	depth = 1;
-	//	for( def = otherScope; def != NULL; def = def.scope ) {
-	//		if ( def == scope ) {
-	//			return depth;
-	//		}
-	//		depth++;
-	//	}
-	//
-	//	return 0;
-	//}
-	//
+	/*
+	============
+	idVarDef::DepthOfScope
+	============
+	*/
+	DepthOfScope ( otherScope: idVarDef ): number {
+		var def: idVarDef;
+		var depth: number;
+
+		depth = 1;
+		for ( def = otherScope; def != null; def = def.scope ) {
+			if ( def == this.scope ) {
+				return depth;
+			}
+			depth++;
+		}
+
+		return 0;
+	}
+
 	///*
 	//============
 	//idVarDef::SetFunction

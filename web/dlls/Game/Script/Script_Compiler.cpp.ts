@@ -311,7 +311,7 @@ Aborts the current file load
 		//throw new idCompileError( string );
 	}
 
-	///*
+///*
 //============
 //idCompiler::Warning
 //
@@ -329,7 +329,7 @@ Aborts the current file load
 //	this.parserPtr.Warning( "%s", string );
 //}
 //
-	///*
+///*
 //============
 //idCompiler::VirtualFunctionConstant
 //
@@ -345,10 +345,10 @@ Aborts the current file load
 //		this.Error( "Function '%s' not found in scope '%s'", func.Name(), func.scope.Name() );
 //	}
 //    
-//	return GetImmediate( &type_virtualfunction, &eval, "" );
+//	return GetImmediate( type_virtualfunction, &eval, "" );
 //}
 //
-	///*
+///*
 //============
 //idCompiler::SizeConstant
 //
@@ -360,10 +360,10 @@ Aborts the current file load
 //
 //	memset( &eval, 0, sizeof( eval ) );
 //	eval._int = size;
-//	return GetImmediate( &type_argsize, &eval, "" );
+//	return GetImmediate( type_argsize, &eval, "" );
 //}
 //
-	///*
+///*
 //============
 //idCompiler::JumpConstant
 //
@@ -375,10 +375,10 @@ Aborts the current file load
 //
 //	memset( &eval, 0, sizeof( eval ) );
 //	eval._int = value;
-//	return GetImmediate( &type_jumpoffset, &eval, "" );
+//	return GetImmediate( type_jumpoffset, &eval, "" );
 //}
 //
-	///*
+///*
 //============
 //idCompiler::JumpDef
 //
@@ -389,7 +389,7 @@ Aborts the current file load
 //	return JumpConstant( jumpto - jumpfrom );
 //}
 //
-	///*
+///*
 //============
 //idCompiler::JumpTo
 //
@@ -400,7 +400,7 @@ Aborts the current file load
 //	return JumpDef( gameLocal.program.NumStatements(), jumpto );
 //}
 //
-	///*
+///*
 //============
 //idCompiler::JumpFrom
 //
@@ -411,7 +411,7 @@ Aborts the current file load
 //	return JumpDef( jumpfrom, gameLocal.program.NumStatements() );
 //}
 //
-	///*
+///*
 //============
 //idCompiler::Divide
 //============
@@ -425,7 +425,7 @@ Aborts the current file load
 //	return numerator / denominator;
 //}
 //
-	///*
+///*
 //============
 //idCompiler::FindImmediate
 //
@@ -505,7 +505,7 @@ Aborts the current file load
 //	return NULL;
 //}
 //
-	///*
+///*
 //============
 //idCompiler::GetImmediate
 //
@@ -531,7 +531,7 @@ Aborts the current file load
 //	return def;
 //}
 //
-	///*
+///*
 //============
 //idCompiler::OptimizeOpcode
 //
@@ -553,46 +553,46 @@ Aborts the current file load
 //
 //	memset( &c, 0, sizeof( c ) );
 //	switch( op - opcodes ) {
-//		case OP_ADD_F:		c._float = *var_a.value.floatPtr + *var_b.value.floatPtr; type = &type_float; break;
-//		case OP_ADD_V:		vec_c = *var_a.value.vectorPtr + *var_b.value.vectorPtr; type = &type_vector; break;
-//		case OP_SUB_F:		c._float = *var_a.value.floatPtr - *var_b.value.floatPtr; type = &type_float; break;
-//		case OP_SUB_V:		vec_c = *var_a.value.vectorPtr - *var_b.value.vectorPtr; type = &type_vector; break;
-//		case OP_MUL_F:		c._float = *var_a.value.floatPtr * *var_b.value.floatPtr; type = &type_float; break;
-//		case OP_MUL_V:		c._float = *var_a.value.vectorPtr * *var_b.value.vectorPtr; type = &type_float; break;
-//		case OP_MUL_FV:		vec_c = *var_b.value.vectorPtr * *var_a.value.floatPtr; type = &type_vector; break;
-//		case OP_MUL_VF:		vec_c = *var_a.value.vectorPtr * *var_b.value.floatPtr; type = &type_vector; break;
-//		case OP_DIV_F:		c._float = Divide( *var_a.value.floatPtr, *var_b.value.floatPtr ); type = &type_float; break;
-//		case OP_MOD_F:		c._float = (int)*var_a.value.floatPtr % (int)*var_b.value.floatPtr; type = &type_float; break;
-//		case OP_BITAND:		c._float = ( int )*var_a.value.floatPtr & ( int )*var_b.value.floatPtr; type = &type_float; break;
-//		case OP_BITOR:		c._float = ( int )*var_a.value.floatPtr | ( int )*var_b.value.floatPtr; type = &type_float; break;
-//		case OP_GE:			c._float = *var_a.value.floatPtr >= *var_b.value.floatPtr; type = &type_float; break;
-//		case OP_LE:			c._float = *var_a.value.floatPtr <= *var_b.value.floatPtr; type = &type_float; break;
-//		case OP_GT:			c._float = *var_a.value.floatPtr > *var_b.value.floatPtr; type = &type_float; break;
-//		case OP_LT:			c._float = *var_a.value.floatPtr < *var_b.value.floatPtr; type = &type_float; break;
-//		case OP_AND:		c._float = *var_a.value.floatPtr && *var_b.value.floatPtr; type = &type_float; break;
-//		case OP_OR:			c._float = *var_a.value.floatPtr || *var_b.value.floatPtr; type = &type_float; break;
-//		case OP_NOT_BOOL:	c._int = !*var_a.value.intPtr; type = &type_boolean; break;
-//		case OP_NOT_F:		c._float = !*var_a.value.floatPtr; type = &type_float; break;
-//		case OP_NOT_V:		c._float = !var_a.value.vectorPtr.x && !var_a.value.vectorPtr.y && !var_a.value.vectorPtr.z; type = &type_float; break;
-//		case OP_NEG_F:		c._float = -*var_a.value.floatPtr; type = &type_float; break;
-//		case OP_NEG_V:		vec_c = -*var_a.value.vectorPtr; type = &type_vector; break;
-//		case OP_INT_F:		c._float = ( int )*var_a.value.floatPtr; type = &type_float; break;
-//		case OP_EQ_F:		c._float = ( *var_a.value.floatPtr == *var_b.value.floatPtr ); type = &type_float; break;
-//		case OP_EQ_V:		c._float = var_a.value.vectorPtr.Compare( *var_b.value.vectorPtr ); type = &type_float; break;
-//		case OP_EQ_E:		c._float = ( *var_a.value.intPtr == *var_b.value.intPtr ); type = &type_float; break;
-//		case OP_NE_F:		c._float = ( *var_a.value.floatPtr != *var_b.value.floatPtr ); type = &type_float; break;
-//		case OP_NE_V:		c._float = !var_a.value.vectorPtr.Compare( *var_b.value.vectorPtr ); type = &type_float; break;
-//		case OP_NE_E:		c._float = ( *var_a.value.intPtr != *var_b.value.intPtr ); type = &type_float; break;
-//		case OP_UADD_F:		c._float = *var_b.value.floatPtr + *var_a.value.floatPtr; type = &type_float; break;
-//		case OP_USUB_F:		c._float = *var_b.value.floatPtr - *var_a.value.floatPtr; type = &type_float; break;
-//		case OP_UMUL_F:		c._float = *var_b.value.floatPtr * *var_a.value.floatPtr; type = &type_float; break;
-//		case OP_UDIV_F:		c._float = Divide( *var_b.value.floatPtr, *var_a.value.floatPtr ); type = &type_float; break;
-//		case OP_UMOD_F:		c._float = ( int ) *var_b.value.floatPtr % ( int )*var_a.value.floatPtr; type = &type_float; break;
-//		case OP_UOR_F:		c._float = ( int )*var_b.value.floatPtr | ( int )*var_a.value.floatPtr; type = &type_float; break;
-//		case OP_UAND_F: 	c._float = ( int )*var_b.value.floatPtr & ( int )*var_a.value.floatPtr; type = &type_float; break;
-//		case OP_UINC_F:		c._float = *var_a.value.floatPtr + 1; type = &type_float; break;
-//		case OP_UDEC_F:		c._float = *var_a.value.floatPtr - 1; type = &type_float; break;
-//		case OP_COMP_F:		c._float = ( float )~( int )*var_a.value.floatPtr; type = &type_float; break;
+//		case OP_ADD_F:		c._float = *var_a.value.floatPtr + *var_b.value.floatPtr; type = type_float; break;
+//		case OP_ADD_V:		vec_c = *var_a.value.vectorPtr + *var_b.value.vectorPtr; type = type_vector; break;
+//		case OP_SUB_F:		c._float = *var_a.value.floatPtr - *var_b.value.floatPtr; type = type_float; break;
+//		case OP_SUB_V:		vec_c = *var_a.value.vectorPtr - *var_b.value.vectorPtr; type = type_vector; break;
+//		case OP_MUL_F:		c._float = *var_a.value.floatPtr * *var_b.value.floatPtr; type = type_float; break;
+//		case OP_MUL_V:		c._float = *var_a.value.vectorPtr * *var_b.value.vectorPtr; type = type_float; break;
+//		case OP_MUL_FV:		vec_c = *var_b.value.vectorPtr * *var_a.value.floatPtr; type = type_vector; break;
+//		case OP_MUL_VF:		vec_c = *var_a.value.vectorPtr * *var_b.value.floatPtr; type = type_vector; break;
+//		case OP_DIV_F:		c._float = Divide( *var_a.value.floatPtr, *var_b.value.floatPtr ); type = type_float; break;
+//		case OP_MOD_F:		c._float = (int)*var_a.value.floatPtr % (int)*var_b.value.floatPtr; type = type_float; break;
+//		case OP_BITAND:		c._float = ( int )*var_a.value.floatPtr & ( int )*var_b.value.floatPtr; type = type_float; break;
+//		case OP_BITOR:		c._float = ( int )*var_a.value.floatPtr | ( int )*var_b.value.floatPtr; type = type_float; break;
+//		case OP_GE:			c._float = *var_a.value.floatPtr >= *var_b.value.floatPtr; type = type_float; break;
+//		case OP_LE:			c._float = *var_a.value.floatPtr <= *var_b.value.floatPtr; type = type_float; break;
+//		case OP_GT:			c._float = *var_a.value.floatPtr > *var_b.value.floatPtr; type = type_float; break;
+//		case OP_LT:			c._float = *var_a.value.floatPtr < *var_b.value.floatPtr; type = type_float; break;
+//		case OP_AND:		c._float = *var_a.value.floatPtr && *var_b.value.floatPtr; type = type_float; break;
+//		case OP_OR:			c._float = *var_a.value.floatPtr || *var_b.value.floatPtr; type = type_float; break;
+//		case OP_NOT_BOOL:	c._int = !*var_a.value.intPtr; type = type_boolean; break;
+//		case OP_NOT_F:		c._float = !*var_a.value.floatPtr; type = type_float; break;
+//		case OP_NOT_V:		c._float = !var_a.value.vectorPtr.x && !var_a.value.vectorPtr.y && !var_a.value.vectorPtr.z; type = type_float; break;
+//		case OP_NEG_F:		c._float = -*var_a.value.floatPtr; type = type_float; break;
+//		case OP_NEG_V:		vec_c = -*var_a.value.vectorPtr; type = type_vector; break;
+//		case OP_INT_F:		c._float = ( int )*var_a.value.floatPtr; type = type_float; break;
+//		case OP_EQ_F:		c._float = ( *var_a.value.floatPtr == *var_b.value.floatPtr ); type = type_float; break;
+//		case OP_EQ_V:		c._float = var_a.value.vectorPtr.Compare( *var_b.value.vectorPtr ); type = type_float; break;
+//		case OP_EQ_E:		c._float = ( *var_a.value.intPtr == *var_b.value.intPtr ); type = type_float; break;
+//		case OP_NE_F:		c._float = ( *var_a.value.floatPtr != *var_b.value.floatPtr ); type = type_float; break;
+//		case OP_NE_V:		c._float = !var_a.value.vectorPtr.Compare( *var_b.value.vectorPtr ); type = type_float; break;
+//		case OP_NE_E:		c._float = ( *var_a.value.intPtr != *var_b.value.intPtr ); type = type_float; break;
+//		case OP_UADD_F:		c._float = *var_b.value.floatPtr + *var_a.value.floatPtr; type = type_float; break;
+//		case OP_USUB_F:		c._float = *var_b.value.floatPtr - *var_a.value.floatPtr; type = type_float; break;
+//		case OP_UMUL_F:		c._float = *var_b.value.floatPtr * *var_a.value.floatPtr; type = type_float; break;
+//		case OP_UDIV_F:		c._float = Divide( *var_b.value.floatPtr, *var_a.value.floatPtr ); type = type_float; break;
+//		case OP_UMOD_F:		c._float = ( int ) *var_b.value.floatPtr % ( int )*var_a.value.floatPtr; type = type_float; break;
+//		case OP_UOR_F:		c._float = ( int )*var_b.value.floatPtr | ( int )*var_a.value.floatPtr; type = type_float; break;
+//		case OP_UAND_F: 	c._float = ( int )*var_b.value.floatPtr & ( int )*var_a.value.floatPtr; type = type_float; break;
+//		case OP_UINC_F:		c._float = *var_a.value.floatPtr + 1; type = type_float; break;
+//		case OP_UDEC_F:		c._float = *var_a.value.floatPtr - 1; type = type_float; break;
+//		case OP_COMP_F:		c._float = ( float )~( int )*var_a.value.floatPtr; type = type_float; break;
 //		default:			type = NULL; break;
 //	}
 //
@@ -616,7 +616,7 @@ Aborts the current file load
 //	return GetImmediate( type, &c, "" );
 //}
 //
-	///*
+///*
 //============
 //idCompiler::EmitOpcode
 //
@@ -666,7 +666,7 @@ Aborts the current file load
 //	return var_c;
 //}
 //
-	///*
+///*
 //============
 //idCompiler::EmitOpcode
 //
@@ -677,7 +677,7 @@ Aborts the current file load
 //	return EmitOpcode( &opcodes[ op ], var_a, var_b );
 //}
 //
-	///*
+///*
 //============
 //idCompiler::EmitPush
 //
@@ -854,23 +854,23 @@ Returns false and does nothing otherwise
 		return true;
 	}
 
-	///*
-//============
-//idCompiler::ParseName
-//
-//Checks to see if the current token is a valid name
-//============
-//*/
-//void idCompiler::ParseName( idStr &name ) {
-//	if ( this.token.$.type != TT_NAME ) {
-//		this.Error( "'%s' is not a name", this.token.$.c_str() );
-//	}
-//
-//	name = this.token.$;
-//	this.NextToken();
-//}
-//
-	///*
+/*
+============
+idCompiler::ParseName
+
+Checks to see if the current token is a valid name
+============
+*/
+	ParseName ( name: idStr ): void {
+		if ( this.token.$.type != TT_NAME ) {
+			this.Error( "'%s' is not a name", this.token.$.c_str ( ) );
+		}
+
+		name.equals( this.token.$.data );
+		this.NextToken ( );
+	}
+
+///*
 //============
 //idCompiler::SkipOutOfFunction
 //
@@ -885,7 +885,7 @@ Returns false and does nothing otherwise
 //	this.NextToken();
 //}
 //
-	///*
+///*
 //============
 //idCompiler::SkipToSemicolon
 //
@@ -894,81 +894,81 @@ Returns false and does nothing otherwise
 //*/
 //void idCompiler::SkipToSemicolon( void ) {
 //	do {
-//		if ( CheckToken( ";" ) ) {
+//		if ( this.CheckToken( ";" ) ) {
 //			return;
 //		}
 //
 //		this.NextToken();
 //	} while( !this.eof );
 //}
-//
-	///*
-//============
-//idCompiler::CheckType
-//
-//Parses a variable type, including functions types
-//============
-//*/
-//idTypeDef *idCompiler::CheckType( void ) {
-//	idTypeDef *type;
-//	
-//	if ( this.token == "float" ) {
-//		type = &type_float;
-//	} else if ( this.token == "vector" ) {
-//		type = &type_vector;
-//	} else if ( this.token == "entity" ) {
-//		type = &type_entity;
-//	} else if ( this.token == "string" ) {
-//		type = &type_string;
-//	} else if ( this.token == "void" ) {
-//		type = &type_void;
-//	} else if ( this.token == "object" ) {
-//		type = &type_object;
-//	} else if ( this.token == "boolean" ) {
-//		type = &type_boolean;
-//	} else if ( this.token == "namespace" ) {
-//		type = &type_namespace;
-//	} else if ( this.token == "scriptEvent" ) {
-//		type = &type_scriptevent;
-//	} else {
-//		type = gameLocal.program.FindType( this.token.$.c_str() );
-//		if ( type && !type.Inherits( &type_object ) ) {
-//			type = NULL;
-//		}
-//	}
-//	
-//	return type;
-//}
-//
-	///*
-//============
-//idCompiler::ParseType
-//
-//Parses a variable type, including functions types
-//============
-//*/
-//idTypeDef *idCompiler::ParseType( void ) {
-//	idTypeDef *type;
-//	
-//	type = CheckType();
-//	if ( !type ) {
-//		this.Error( "\"%s\" is not a type", this.token.$.c_str() );
-//	}
-//
-//	if ( ( type == &type_scriptevent ) && ( this.scope != &def_namespace ) ) {
-//		this.Error( "scriptEvents can only defined in the global namespace" );
-//	}
-//
-//	if ( ( type == &type_namespace ) && ( this.scope.Type() != ev_namespace ) ) {
-//		this.Error( "A namespace may only be defined globally, or within another namespace" );
-//	}
-//
-//	this.NextToken();
-//	
-//	return type;
-//}
-//
-	///*
+
+/*
+============
+idCompiler::CheckType
+
+Parses a variable type, including functions types
+============
+*/
+	CheckType ( ): idTypeDef {
+		var type: idTypeDef;
+
+		if ( this.token.$.data == "float" ) {
+			type = type_float;
+		} else if ( this.token.$.data == "vector" ) {
+			type = type_vector;
+		} else if ( this.token.$.data == "entity" ) {
+			type = type_entity;
+		} else if ( this.token.$.data == "string" ) {
+			type = type_string;
+		} else if ( this.token.$.data == "void" ) {
+			type = type_void;
+		} else if ( this.token.$.data == "object" ) {
+			type = type_object;
+		} else if ( this.token.$.data == "boolean" ) {
+			type = type_boolean;
+		} else if ( this.token.$.data == "namespace" ) {
+			type = type_namespace;
+		} else if ( this.token.$.data == "scriptEvent" ) {
+			type = type_scriptevent;
+		} else {
+			type = gameLocal.program.FindType( this.token.$.c_str ( ) );
+			if ( type && !type.Inherits( type_object ) ) {
+				type = null;
+			}
+		}
+
+		return type;
+	}
+
+/*
+============
+idCompiler::ParseType
+
+Parses a variable type, including functions types
+============
+*/
+	ParseType ( ): idTypeDef {
+		var type: idTypeDef;
+
+		type = this.CheckType ( );
+		if ( !type ) {
+			this.Error( "\"%s\" is not a type", this.token.$.c_str ( ) );
+		}
+
+		if ( ( type == type_scriptevent ) && ( this.scope != def_namespace ) ) {
+			this.Error( "scriptEvents can only defined in the global namespace" );
+		}
+
+		if ( ( type == type_namespace ) && ( this.scope.Type ( ) != etype_t.ev_namespace ) ) {
+			this.Error( "A namespace may only be defined globally, or within another namespace" );
+		}
+
+		this.NextToken ( );
+
+		return type;
+	}
+
+///*
 //============
 //idCompiler::ParseImmediate
 //
@@ -984,7 +984,7 @@ Returns false and does nothing otherwise
 //	return def;
 //}
 //
-	///*
+///*
 //============
 //idCompiler::EmitFunctionParms
 //============
@@ -1007,7 +1007,7 @@ Returns false and does nothing otherwise
 //	// copy the parameters to the global parameter variables
 //	arg = startarg;
 //	size = startsize;
-//	if ( !CheckToken( ")" ) ) {
+//	if ( !this.CheckToken( ")" ) ) {
 //		do {
 //			if ( arg >= type.NumParameters() ) {
 //				this.Error( "too many parameters" );
@@ -1027,7 +1027,7 @@ Returns false and does nothing otherwise
 //			}
 //
 //			arg++;
-//		} while( CheckToken( "," ) );
+//		} while( this.CheckToken( "," ) );
 //	
 //		this.ExpectToken( ")" );
 //	}
@@ -1107,7 +1107,7 @@ Returns false and does nothing otherwise
 //	return resultDef;
 //}
 //
-	///*
+///*
 //============
 //idCompiler::ParseFunctionCall
 //============
@@ -1132,7 +1132,7 @@ Returns false and does nothing otherwise
 //		return EmitFunctionParms( OP_THREAD, funcDef, 0, 0, NULL );
 //	} else {
 //		if ( ( funcDef.initialized != idVarDef::uninitialized ) && funcDef.value.functionPtr.eventdef ) {
-//			if ( ( this.scope.Type() != ev_namespace ) && ( this.scope.scope.Type() == ev_object ) ) {
+//			if ( ( this.scope.Type() != etype_t.etype_t.ev_namespace ) && ( this.scope.scope.Type() == ev_object ) ) {
 //				// get the local object pointer
 //				idVarDef *thisdef = gameLocal.program.GetDef( this.scope.scope.TypeDef(), "self", this.scope );
 //				if ( !thisdef ) {
@@ -1149,7 +1149,7 @@ Returns false and does nothing otherwise
 //	}
 //}
 //
-	///*
+///*
 //============
 //idCompiler::ParseObjectCall
 //============
@@ -1164,7 +1164,7 @@ Returns false and does nothing otherwise
 //	}
 //}
 //
-	///*
+///*
 //============
 //idCompiler::ParseEventCall
 //============
@@ -1183,7 +1183,7 @@ Returns false and does nothing otherwise
 //	}
 //
 //	if ( object.Type() == ev_object ) {
-//		EmitPush( object, &type_entity );
+//		EmitPush( object, type_entity );
 //	} else {
 //		EmitPush( object, object.TypeDef() );
 //	}
@@ -1191,7 +1191,7 @@ Returns false and does nothing otherwise
 //	return EmitFunctionParms( OP_EVENTCALL, funcDef, 0, type_object.Size(), NULL );
 //}
 //
-	///*
+///*
 //============
 //idCompiler::ParseSysObjectCall
 //============
@@ -1216,12 +1216,12 @@ Returns false and does nothing otherwise
 //	return EmitFunctionParms( OP_SYSCALL, funcDef, 0, 0, NULL );
 //}
 //
-	///*
+///*
 //============
 //idCompiler::LookupDef
 //============
 //*/
-//idVarDef *idCompiler::LookupDef( const char *name, const idVarDef *baseobj ) {
+//idVarDef *idCompiler::LookupDef( name:string, const idVarDef *baseobj ) {
 //	idVarDef	*def;
 //	idVarDef	*field;
 //	etype_t		type_b;
@@ -1244,7 +1244,7 @@ Returns false and does nothing otherwise
 //		def = gameLocal.program.GetDef( NULL, name, this.scope );
 //		if ( !def ) {
 //			// if we're in a member function, check types local to the object
-//			if ( ( this.scope.Type() != ev_namespace ) && ( this.scope.scope.Type() == ev_object ) ) {
+//			if ( ( this.scope.Type() != etype_t.etype_t.ev_namespace ) && ( this.scope.scope.Type() == ev_object ) ) {
 //				// get the local object pointer
 //				idVarDef *thisdef = gameLocal.program.GetDef( this.scope.scope.TypeDef(), "self", this.scope );
 //
@@ -1259,13 +1259,13 @@ Returns false and does nothing otherwise
 //					type_c = field.TypeDef().ReturnType().Type();
 //				} else {
 //					type_c = field.TypeDef().FieldType().Type();	// field access gets type from field
-//	                if ( CheckToken( "++" ) ) {
+//	                if ( this.CheckToken( "++" ) ) {
 //						if ( type_c != ev_float ) {
 //							this.Error( "Invalid type for ++" );
 //						}
 //						def = EmitOpcode( OP_UINCP_F, thisdef, field );
 //						return def;
-//					} else if ( CheckToken( "--" ) ) {
+//					} else if ( this.CheckToken( "--" ) ) {
 //						if ( type_c != ev_float ) {
 //							this.Error( "Invalid type for --" );
 //						}
@@ -1305,7 +1305,7 @@ Returns false and does nothing otherwise
 //	return def;
 //}
 //
-	///*
+///*
 //============
 //idCompiler::ParseValue
 //
@@ -1317,12 +1317,12 @@ Returns false and does nothing otherwise
 //	idVarDef	*namespaceDef;
 //	idStr		name;
 //	
-//	if ( this.immediateType == &type_entity ) {
+//	if ( this.immediateType == type_entity ) {
 //		// if an immediate entity ($-prefaced name) then create or lookup a def for it.
 //		// when entities are spawned, they'll lookup the def and point it to them.
-//		def = gameLocal.program.GetDef( &type_entity, "$" + this.token, &def_namespace );
+//		def = gameLocal.program.GetDef( type_entity, "$" + this.token, &def_namespace );
 //		if ( !def ) {
-//			def = gameLocal.program.AllocDef( &type_entity, "$" + this.token, &def_namespace, true );
+//			def = gameLocal.program.AllocDef( type_entity, "$" + this.token, &def_namespace, true );
 //		}
 //		this.NextToken();
 //		return def;
@@ -1331,7 +1331,7 @@ Returns false and does nothing otherwise
 //		return ParseImmediate();
 //	}
 //
-//	ParseName( name );
+//	this.ParseName( name );
 //	def = LookupDef( name, this.basetype );
 //	if ( !def ) {
 //		if ( this.basetype ) {
@@ -1340,10 +1340,10 @@ Returns false and does nothing otherwise
 //			this.Error( "Unknown value \"%s\"", name.c_str() );
 //		}
 //	// if namespace, then look up the variable in that namespace
-//	} else if ( def.Type() == ev_namespace ) {
-//		while( def.Type() == ev_namespace ) {
+//	} else if ( def.Type() == etype_t.etype_t.ev_namespace ) {
+//		while( def.Type() == etype_t.etype_t.ev_namespace ) {
 //			this.ExpectToken( "::" );
-//			ParseName( name );
+//			this.ParseName( name );
 //			namespaceDef = def;
 //			def = gameLocal.program.GetDef( NULL, name, namespaceDef );
 //			if ( !def ) {
@@ -1356,7 +1356,7 @@ Returns false and does nothing otherwise
 //	return def;
 //}
 //
-	///*
+///*
 //============
 //idCompiler::GetTerm
 //============
@@ -1365,7 +1365,7 @@ Returns false and does nothing otherwise
 //	idVarDef	*e;
 //	int 		op;
 //	
-//	if ( !this.immediateType && CheckToken( "~" ) ) {
+//	if ( !this.immediateType && this.CheckToken( "~" ) ) {
 //		e = GetExpression( TILDE_PRIORITY );
 //		switch( e.Type() ) {
 //		case ev_float :
@@ -1383,7 +1383,7 @@ Returns false and does nothing otherwise
 //		return EmitOpcode( op, e, 0 );
 //	}
 //
-//	if ( !this.immediateType && CheckToken( "!" ) ) {
+//	if ( !this.immediateType && this.CheckToken( "!" ) ) {
 //		e = GetExpression( NOT_PRIORITY );
 //		switch( e.Type() ) {
 //		case ev_boolean :
@@ -1429,12 +1429,12 @@ Returns false and does nothing otherwise
 //	}
 //
 //	// check for negation operator
-//	if ( !this.immediateType && CheckToken( "-" ) ) {
+//	if ( !this.immediateType && this.CheckToken( "-" ) ) {
 //		// constants are directly negated without an instruction
-//		if ( this.immediateType == &type_float ) {
+//		if ( this.immediateType == type_float ) {
 //			immediate._float = -immediate._float;
 //			return ParseImmediate();
-//		} else if ( this.immediateType == &type_vector ) {
+//		} else if ( this.immediateType == type_vector ) {
 //			immediate.vector[0] = -immediate.vector[0];
 //			immediate.vector[1] = -immediate.vector[1];
 //			immediate.vector[2] = -immediate.vector[2];
@@ -1460,7 +1460,7 @@ Returns false and does nothing otherwise
 //		}
 //	}
 //	
-//	if ( CheckToken( "int" ) ) {
+//	if ( this.CheckToken( "int" ) ) {
 //		this.ExpectToken( "(" );
 //
 //		e = GetExpression( INT_PRIORITY );
@@ -1473,7 +1473,7 @@ Returns false and does nothing otherwise
 //		return EmitOpcode( OP_INT_F, e, 0 );
 //	}
 //	
-//	if ( CheckToken( "thread" ) ) {
+//	if ( this.CheckToken( "thread" ) ) {
 //		this.callthread = true;
 //		e = GetExpression( FUNCTION_PRIORITY );
 //
@@ -1482,11 +1482,11 @@ Returns false and does nothing otherwise
 //		}
 //
 //		// threads return the thread number
-//		gameLocal.program.returnDef.SetTypeDef( &type_float );
+//		gameLocal.program.returnDef.SetTypeDef( type_float );
 //		return gameLocal.program.returnDef;
 //	}
 //	
-//	if ( !this.immediateType && CheckToken( "(" ) ) {
+//	if ( !this.immediateType && this.CheckToken( "(" ) ) {
 //		e = GetExpression( TOP_PRIORITY );
 //		this.ExpectToken( ")" );
 //
@@ -1496,7 +1496,7 @@ Returns false and does nothing otherwise
 //	return ParseValue();
 //}
 //
-	///*
+///*
 //==============
 //idCompiler::TypeMatches
 //==============
@@ -1517,7 +1517,7 @@ Returns false and does nothing otherwise
 //	return false;
 //}
 //
-	///*
+///*
 //==============
 //idCompiler::GetExpression
 //==============
@@ -1543,7 +1543,7 @@ Returns false and does nothing otherwise
 //	}
 //
 //	while( true ) {
-//		if ( ( priority == FUNCTION_PRIORITY ) && CheckToken( "(" ) ) {
+//		if ( ( priority == FUNCTION_PRIORITY ) && this.CheckToken( "(" ) ) {
 //			return ParseFunctionCall( e );
 //		}
 //
@@ -1553,7 +1553,7 @@ Returns false and does nothing otherwise
 //		}
 //
 //		for( op = opcodes; op.name; op++ ) {
-//			if ( ( op.priority == priority ) && CheckToken( op.name ) ) {
+//			if ( ( op.priority == priority ) && this.CheckToken( op.name ) ) {
 //				break;
 //			}
 //		}
@@ -1573,7 +1573,7 @@ Returns false and does nothing otherwise
 //		oldtype = this.basetype;
 //
 //		// field access needs scope from object
-//		if ( ( op.name[ 0 ] == '.' ) && e.TypeDef().Inherits( &type_object ) ) {
+//		if ( ( op.name[ 0 ] == '.' ) && e.TypeDef().Inherits( type_object ) ) {
 //			// save off what type this field is part of
 //			this.basetype = e.TypeDef().def;
 //		}
@@ -1585,7 +1585,7 @@ Returns false and does nothing otherwise
 //				if ( ( statement.op >= OP_INDIRECT_F ) && ( statement.op < OP_ADDRESS ) ) {
 //					statement.op = OP_ADDRESS;
 //					type_pointer.SetPointerType( e.TypeDef() );
-//					e.SetTypeDef( &type_pointer );
+//					e.SetTypeDef( type_pointer );
 //				}
 //			}
 //
@@ -1707,7 +1707,7 @@ Returns false and does nothing otherwise
 //	return e;
 //}
 //
-	///*
+///*
 //================
 //idCompiler::PatchLoop
 //================
@@ -1728,7 +1728,7 @@ Returns false and does nothing otherwise
 //	}
 //}
 //
-	///*
+///*
 //================
 //idCompiler::ParseReturnStatement
 //================
@@ -1739,7 +1739,7 @@ Returns false and does nothing otherwise
 //	etype_t 	type_b;
 //	opcode_t	*op;
 //
-//	if ( CheckToken( ";" ) ) {
+//	if ( this.CheckToken( ";" ) ) {
 //		if ( this.scope.TypeDef().ReturnType().Type() != ev_void ) {
 //			this.Error( "expecting return value" );
 //		}
@@ -1784,7 +1784,7 @@ Returns false and does nothing otherwise
 //	EmitOpcode( OP_RETURN, 0, 0 );
 //}
 //	
-	///*
+///*
 //================
 //idCompiler::ParseWhileStatement
 //================
@@ -1820,7 +1820,7 @@ Returns false and does nothing otherwise
 //	this.loopDepth--;
 //}
 //
-	///*
+///*
 //================
 //idCompiler::ParseForStatement
 //
@@ -1874,10 +1874,10 @@ Returns false and does nothing otherwise
 //	this.ExpectToken( "(" );
 //	
 //	// init
-//	if ( !CheckToken( ";" ) ) {
+//	if ( !this.CheckToken( ";" ) ) {
 //		do {
 //			GetExpression( TOP_PRIORITY );
-//		} while( CheckToken( "," ) );
+//		} while( this.CheckToken( "," ) );
 //
 //		this.ExpectToken( ";" );
 //	}
@@ -1893,7 +1893,7 @@ Returns false and does nothing otherwise
 //	EmitOpcode( OP_IFNOT, e, 0 );
 //
 //	// counter
-//	if ( !CheckToken( ")" ) ) {
+//	if ( !this.CheckToken( ")" ) ) {
 //		patch3 = gameLocal.program.NumStatements();
 //		EmitOpcode( OP_IF, e, 0 );
 //
@@ -1901,7 +1901,7 @@ Returns false and does nothing otherwise
 //		patch2 = gameLocal.program.NumStatements();
 //		do {
 //			GetExpression( TOP_PRIORITY );
-//		} while( CheckToken( "," ) );
+//		} while( this.CheckToken( "," ) );
 //		
 //		this.ExpectToken( ")" );
 //
@@ -1926,7 +1926,7 @@ Returns false and does nothing otherwise
 //	this.loopDepth--;
 //}
 //
-	///*
+///*
 //================
 //idCompiler::ParseDoWhileStatement
 //================
@@ -1953,7 +1953,7 @@ Returns false and does nothing otherwise
 //	this.loopDepth--;
 //}
 //
-	///*
+///*
 //================
 //idCompiler::ParseIfStatement
 //================
@@ -1973,7 +1973,7 @@ Returns false and does nothing otherwise
 //
 //	ParseStatement();
 //	
-//	if ( CheckToken( "else" ) ) {
+//	if ( this.CheckToken( "else" ) ) {
 //		patch2 = gameLocal.program.NumStatements();
 //		EmitOpcode( OP_GOTO, 0, 0 );
 //		gameLocal.program.GetStatement( patch1 ).b = JumpFrom( patch1 );
@@ -1984,46 +1984,46 @@ Returns false and does nothing otherwise
 //	}
 //}
 //
-	///*
+///*
 //============
 //idCompiler::ParseStatement
 //============
 //*/
 //void idCompiler::ParseStatement( void ) {
-//	if ( CheckToken( ";" ) ) {
+//	if ( this.CheckToken( ";" ) ) {
 //		// skip semicolons, which are harmless and ok syntax
 //		return;
 //	}
 //
-//	if ( CheckToken( "{" ) ) {
+//	if ( this.CheckToken( "{" ) ) {
 //		do {
 //			ParseStatement();
-//		} while( !CheckToken( "}" ) );
+//		} while( !this.CheckToken( "}" ) );
 //
 //		return;
 //	} 
 //
-//	if ( CheckToken( "return" ) ) {
+//	if ( this.CheckToken( "return" ) ) {
 //		ParseReturnStatement();
 //		return;
 //	}
 //	
-//	if ( CheckToken( "while" ) ) {
+//	if ( this.CheckToken( "while" ) ) {
 //		ParseWhileStatement();
 //		return;
 //	}
 //
-//	if ( CheckToken( "for" ) ) {
+//	if ( this.CheckToken( "for" ) ) {
 //		ParseForStatement();
 //		return;
 //	}
 //
-//	if ( CheckToken( "do" ) ) {
+//	if ( this.CheckToken( "do" ) ) {
 //		ParseDoWhileStatement();
 //		return;
 //	}
 //
-//	if ( CheckToken( "break" ) ) {
+//	if ( this.CheckToken( "break" ) ) {
 //		this.ExpectToken( ";" );
 //		if ( !loopDepth ) {
 //			this.Error( "cannot break outside of a loop" );
@@ -2032,7 +2032,7 @@ Returns false and does nothing otherwise
 //		return;
 //	}
 //
-//	if ( CheckToken( "continue" ) ) {
+//	if ( this.CheckToken( "continue" ) ) {
 //		this.ExpectToken( ";" );
 //		if ( !loopDepth ) {
 //			this.Error( "cannot contine outside of a loop" );
@@ -2046,7 +2046,7 @@ Returns false and does nothing otherwise
 //		return;
 //	}
 //
-//	if ( CheckToken( "if" ) ) {
+//	if ( this.CheckToken( "if" ) ) {
 //		ParseIfStatement();
 //		return;
 //	}
@@ -2055,12 +2055,13 @@ Returns false and does nothing otherwise
 //	this.ExpectToken(";");
 //}
 //
-	///*
-//================
-//idCompiler::ParseObjectDef
-//================
-//*/
-//void idCompiler::ParseObjectDef( const char *objname ) {
+/*
+================
+idCompiler::ParseObjectDef
+================
+*/
+	ParseObjectDef ( objname: string ): void {
+		todoThrow ( );
 //	idTypeDef	*objtype;
 //	idTypeDef	*type;
 //	idTypeDef	*parentType;
@@ -2073,7 +2074,7 @@ Returns false and does nothing otherwise
 //	int			i;
 //
 //	oldscope = this.scope;
-//	if ( this.scope.Type() != ev_namespace ) {
+//	if ( this.scope.Type() != etype_t.etype_t.ev_namespace ) {
 //		this.Error( "Objects cannot be defined within functions or other objects" );
 //	}
 //
@@ -2083,16 +2084,16 @@ Returns false and does nothing otherwise
 //	}
 //
 //	// base type
-//	if ( !CheckToken( ":" ) ) {
-//		parentType = &type_object;
+//	if ( !this.CheckToken( ":" ) ) {
+//		parentType = type_object;
 //	} else {
-//		parentType = ParseType();
-//		if ( !parentType.Inherits( &type_object ) ) {
+//		parentType = this.ParseType();
+//		if ( !parentType.Inherits( type_object ) ) {
 //			this.Error( "Objects may only inherit from objects." );
 //		}
 //	}
 //	
-//	objtype = gameLocal.program.AllocType( ev_object, NULL, objname, parentType == &type_object ? 0 : parentType.Size(), parentType );
+//	objtype = gameLocal.program.AllocType( ev_object, NULL, objname, parentType == type_object ? 0 : parentType.Size(), parentType );
 //	objtype.def = gameLocal.program.AllocDef( objtype, objname, this.scope, true );
 //	this.scope = objtype.def;
 //
@@ -2106,22 +2107,22 @@ Returns false and does nothing otherwise
 //	this.ExpectToken( "{" );
 //
 //	do {
-//		if ( CheckToken( ";" ) ) {
+//		if ( this.CheckToken( ";" ) ) {
 //			// skip semicolons, which are harmless and ok syntax
 //			continue;
 //		}
 //
-//		fieldtype = ParseType();
+//		fieldtype = this.ParseType();
 //		newtype.SetFieldType( fieldtype );
 //
 //		fieldname = va( "%s field", fieldtype.Name() );
 //		newtype.SetName( fieldname );
 //
-//		ParseName( name );
+//		this.ParseName( name );
 //
 //		// check for a function prototype or declaraction
-//		if ( CheckToken( "(" ) ) {
-//			ParseFunctionDef( newtype.FieldType(), name );
+//		if ( this.CheckToken( "(" ) ) {
+//			this.ParseFunctionDef( newtype.FieldType(), name );
 //		} else {
 //			type = gameLocal.program.GetType( newtype, true );
 //			assert( !type.def );
@@ -2129,49 +2130,50 @@ Returns false and does nothing otherwise
 //			objtype.AddField( type, name );
 //			this.ExpectToken( ";" );
 //		}
-//	} while( !CheckToken( "}" ) );
+//	} while( !this.CheckToken( "}" ) );
 //
 //	this.scope = oldscope;
 //
 //	this.ExpectToken( ";" );
-//}
+	}
 //
-	///*
+///*
 //============
 //idCompiler::ParseFunction
 //
 //parse a function type
 //============
 //*/
-//idTypeDef *idCompiler::ParseFunction( idTypeDef *returnType, const char *name ) {
+//idTypeDef *idCompiler::ParseFunction( idTypeDef *returnType, name:string ) {
 //	idTypeDef	newtype( ev_function, NULL, name, type_function.Size(), returnType );
 //	idTypeDef	*type;
 //	
-//	if ( this.scope.Type() != ev_namespace ) {
+//	if ( this.scope.Type() != etype_t.ev_namespace ) {
 //		// create self pointer
 //		newtype.AddFunctionParm( this.scope.TypeDef(), "self" );
 //	}
 //
-//	if ( !CheckToken( ")" ) ) {
+//	if ( !this.CheckToken( ")" ) ) {
 //		idStr parmName;
 //		do {
-//			type = ParseType();
-//			ParseName( parmName );
+//			type = this.ParseType();
+//			this.ParseName( parmName );
 //			newtype.AddFunctionParm( type, parmName );
-//		} while( CheckToken( "," ) );
+//		} while( this.CheckToken( "," ) );
 //
 //		this.ExpectToken( ")" );
 //	}
 //
 //	return gameLocal.program.GetType( newtype, true );
 //}
-//
-	///*
-//================
-//idCompiler::ParseFunctionDef
-//================
-//*/
-//void idCompiler::ParseFunctionDef( idTypeDef *returnType, const char *name ) {
+
+/*
+================
+idCompiler::ParseFunctionDef
+================
+*/
+	ParseFunctionDef ( returnType: idTypeDef, name: string ): void {
+		todoThrow ( );
 //	idTypeDef		*type;
 //	idVarDef		*def;
 //	const idVarDef	*parm;
@@ -2182,7 +2184,7 @@ Returns false and does nothing otherwise
 //	function_t		*func;
 //	statement_t		*pos;
 //
-//	if ( ( this.scope.Type() != ev_namespace ) && !scope.TypeDef().Inherits( &type_object ) ) {
+//	if ( ( this.scope.Type() != etype_t.ev_namespace ) && !scope.TypeDef().Inherits( type_object ) ) {
 //		this.Error( "Functions may not be defined within other functions" );
 //	}
 //
@@ -2193,7 +2195,7 @@ Returns false and does nothing otherwise
 //		type.def = def;
 //
 //		func = &gameLocal.program.AllocFunction( def );
-//		if ( this.scope.TypeDef().Inherits( &type_object ) ) {
+//		if ( this.scope.TypeDef().Inherits( type_object ) ) {
 //			this.scope.TypeDef().AddFunction( func );
 //		}
 //	} else {
@@ -2205,7 +2207,7 @@ Returns false and does nothing otherwise
 //	}
 //
 //	// check if this is a prototype or declaration
-//	if ( !CheckToken( "{" ) ) {
+//	if ( !this.CheckToken( "{" ) ) {
 //		// it's just a prototype, so get the ; and move on
 //		this.ExpectToken( ";" );
 //		return;
@@ -2216,7 +2218,7 @@ Returns false and does nothing otherwise
 //	func.parmSize.SetNum( numParms );
 //	for( i = 0; i < numParms; i++ ) {
 //		parmType = type.GetParmType( i );
-//		if ( parmType.Inherits( &type_object ) ) {
+//		if ( parmType.Inherits( type_object ) ) {
 //			func.parmSize[ i ] = type_object.Size();
 //		} else {
 //			func.parmSize[ i ] = parmType.Size();
@@ -2238,12 +2240,12 @@ Returns false and does nothing otherwise
 //	func.firstStatement = gameLocal.program.NumStatements();
 //
 //	// check if we should call the super class constructor
-//	if ( oldscope.TypeDef().Inherits( &type_object ) && !idStr::Icmp( name, "init" ) ) {
+//	if ( oldscope.TypeDef().Inherits( type_object ) && !idStr::Icmp( name, "init" ) ) {
 //		idTypeDef *superClass;
 //		function_t *constructorFunc = NULL;
 //
 //		// find the superclass constructor
-//		for( superClass = oldscope.TypeDef().SuperClass(); superClass != &type_object; superClass = superClass.SuperClass() ) {
+//		for( superClass = oldscope.TypeDef().SuperClass(); superClass != type_object; superClass = superClass.SuperClass() ) {
 //			constructorFunc = gameLocal.program.FindFunction( va( "%s::init", superClass.Name() ) );
 //			if ( constructorFunc ) {
 //				break;
@@ -2260,17 +2262,17 @@ Returns false and does nothing otherwise
 //	}
 //
 //	// parse regular statements
-//	while( !CheckToken( "}" ) ) {
+//	while( !this.CheckToken( "}" ) ) {
 //		ParseStatement();
 //	}
 //
 //	// check if we should call the super class destructor
-//	if ( oldscope.TypeDef().Inherits( &type_object ) && !idStr::Icmp( name, "destroy" ) ) {
+//	if ( oldscope.TypeDef().Inherits( type_object ) && !idStr::Icmp( name, "destroy" ) ) {
 //		idTypeDef *superClass;
 //		function_t *destructorFunc = NULL;
 //
 //		// find the superclass destructor
-//		for( superClass = oldscope.TypeDef().SuperClass(); superClass != &type_object; superClass = superClass.SuperClass() ) {
+//		for( superClass = oldscope.TypeDef().SuperClass(); superClass != type_object; superClass = superClass.SuperClass() ) {
 //			destructorFunc = gameLocal.program.FindFunction( va( "%s::destroy", superClass.Name() ) );
 //			if ( destructorFunc ) {
 //				break;
@@ -2313,14 +2315,15 @@ Returns false and does nothing otherwise
 //	func.numStatements = gameLocal.program.NumStatements() - func.firstStatement;
 //
 //	this.scope = oldscope;
-//}
-//
-	///*
-//================
-//idCompiler::ParseVariableDef
-//================
-//*/
-//void idCompiler::ParseVariableDef( idTypeDef *type, const char *name ) {
+	}
+
+/*
+================
+idCompiler::ParseVariableDef
+================
+*/
+	ParseVariableDef ( type: idTypeDef, name: string ): void {
+		todoThrow ( );
 //	idVarDef	*def, *def2;
 //	bool		negate;
 //
@@ -2332,33 +2335,33 @@ Returns false and does nothing otherwise
 //	def = gameLocal.program.AllocDef( type, name, this.scope, false );
 //
 //	// check for an initialization
-//	if ( CheckToken( "=" ) ) {
+//	if ( this.CheckToken( "=" ) ) {
 //		// if a local variable in a function then write out interpreter code to initialize variable
 //		if ( this.scope.Type() == ev_function ) {
 //			def2 = GetExpression( TOP_PRIORITY );
-//			if ( ( type == &type_float ) && ( def2.TypeDef() == &type_float ) ) {
+//			if ( ( type == type_float ) && ( def2.TypeDef() == type_float ) ) {
 //				EmitOpcode( OP_STORE_F, def2, def );
-//			} else if ( ( type == &type_vector ) && ( def2.TypeDef() == &type_vector ) ) {
+//			} else if ( ( type == type_vector ) && ( def2.TypeDef() == type_vector ) ) {
 //				EmitOpcode( OP_STORE_V, def2, def );
-//			} else if ( ( type == &type_string ) && ( def2.TypeDef() == &type_string ) ) {
+//			} else if ( ( type == type_string ) && ( def2.TypeDef() == type_string ) ) {
 //				EmitOpcode( OP_STORE_S, def2, def );
-//			} else if ( ( type == &type_entity ) && ( ( def2.TypeDef() == &type_entity ) || ( def2.TypeDef().Inherits( &type_object ) ) ) ) {
+//			} else if ( ( type == type_entity ) && ( ( def2.TypeDef() == type_entity ) || ( def2.TypeDef().Inherits( type_object ) ) ) ) {
 //				EmitOpcode( OP_STORE_ENT, def2, def );
-//			} else if ( ( type.Inherits( &type_object ) ) && ( def2.TypeDef() == &type_entity ) ) {
+//			} else if ( ( type.Inherits( type_object ) ) && ( def2.TypeDef() == type_entity ) ) {
 //				EmitOpcode( OP_STORE_OBJENT, def2, def );
-//			} else if ( ( type.Inherits( &type_object ) ) && ( def2.TypeDef().Inherits( type ) ) ) {
+//			} else if ( ( type.Inherits( type_object ) ) && ( def2.TypeDef().Inherits( type ) ) ) {
 //				EmitOpcode( OP_STORE_OBJ, def2, def );
-//			} else if ( ( type == &type_boolean ) && ( def2.TypeDef() == &type_boolean ) ) {
+//			} else if ( ( type == type_boolean ) && ( def2.TypeDef() == type_boolean ) ) {
 //				EmitOpcode( OP_STORE_BOOL, def2, def );
-//			} else if ( ( type == &type_string ) && ( def2.TypeDef() == &type_float ) ) {
+//			} else if ( ( type == type_string ) && ( def2.TypeDef() == type_float ) ) {
 //				EmitOpcode( OP_STORE_FTOS, def2, def );
-//			} else if ( ( type == &type_string ) && ( def2.TypeDef() == &type_boolean ) ) {
+//			} else if ( ( type == type_string ) && ( def2.TypeDef() == type_boolean ) ) {
 //				EmitOpcode( OP_STORE_BTOS, def2, def );
-//			} else if ( ( type == &type_string ) && ( def2.TypeDef() == &type_vector ) ) {
+//			} else if ( ( type == type_string ) && ( def2.TypeDef() == type_vector ) ) {
 //				EmitOpcode( OP_STORE_VTOS, def2, def );
-//			} else if ( ( type == &type_boolean ) && ( def2.TypeDef() == &type_float ) ) {
+//			} else if ( ( type == type_boolean ) && ( def2.TypeDef() == type_float ) ) {
 //				EmitOpcode( OP_STORE_FTOBOOL, def2, def );
-//			} else if ( ( type == &type_float ) && ( def2.TypeDef() == &type_boolean ) ) {
+//			} else if ( ( type == type_float ) && ( def2.TypeDef() == type_boolean ) ) {
 //				EmitOpcode( OP_STORE_BOOLTOF, def2, def );
 //			} else {
 //				this.Error( "bad initialization for '%s'", name );
@@ -2369,7 +2372,7 @@ Returns false and does nothing otherwise
 //			if ( this.token.$.type == TT_PUNCTUATION && this.token == "-" ) {
 //				negate = true;
 //				this.NextToken();
-//				if ( this.immediateType != &type_float ) {
+//				if ( this.immediateType != type_float ) {
 //					this.Error( "wrong immediate type for '-' on variable '%s'", name );
 //				}
 //			}
@@ -2379,7 +2382,7 @@ Returns false and does nothing otherwise
 //			}
 //
 //			// global variables are initialized at start up
-//			if ( type == &type_string ) {
+//			if ( type == type_string ) {
 //				def.SetString( this.token.$, false );
 //			} else {
 //				if ( negate ) {
@@ -2389,19 +2392,19 @@ Returns false and does nothing otherwise
 //			}
 //			this.NextToken();
 //		}
-//	} else if ( type == &type_string ) {
+//	} else if ( type == type_string ) {
 //		// local strings on the stack are initialized in the interpreter
 //		if ( this.scope.Type() != ev_function ) {
 //			def.SetString( "", false );
 //		}
-//	} else if ( type.Inherits( &type_object ) ) {
+//	} else if ( type.Inherits( type_object ) ) {
 //		if ( this.scope.Type() != ev_function ) {
 //			def.SetObject( NULL );
 //		}
 //	}
-//}
-//
-	///*
+	}
+
+///*
 //================
 //idCompiler::GetTypeForEventArg
 //================
@@ -2412,28 +2415,28 @@ Returns false and does nothing otherwise
 //	switch( argType ) {
 //	case D_EVENT_INTEGER :
 //		// this will get converted to int by the interpreter
-//		type = &type_float;
+//		type = type_float;
 //		break;
 //
 //	case D_EVENT_FLOAT :
-//		type = &type_float;
+//		type = type_float;
 //		break;
 //
 //	case D_EVENT_VECTOR :
-//		type = &type_vector;
+//		type = type_vector;
 //		break;
 //
 //	case D_EVENT_STRING :
-//		type = &type_string;
+//		type = type_string;
 //		break;
 //
 //	case D_EVENT_ENTITY :
 //	case D_EVENT_ENTITY_NULL :
-//		type = &type_entity;
+//		type = type_entity;
 //		break;
 //
 //	case D_EVENT_VOID :
-//		type = &type_void;
+//		type = type_void;
 //		break;
 //
 //	case D_EVENT_TRACE :
@@ -2449,93 +2452,94 @@ Returns false and does nothing otherwise
 //	
 //	return type;
 //}
-//
-	///*
-//================
-//idCompiler::ParseEventDef
-//================
-//*/
-//void idCompiler::ParseEventDef( idTypeDef *returnType, const char *name ) {
-//	const idTypeDef	*expectedType;
-//	idTypeDef		*argType;
-//	idTypeDef		*type;
-//	int 			i;
-//	int				num;
-//	const char		*format;
-//	const idEventDef *ev;
-//	idStr			parmName;
-//
-//	ev = idEventDef::FindEvent( name );
-//	if ( !ev ) {
-//		this.Error( "Unknown event '%s'", name );
-//	}
-//
-//	// set the return type
-//	expectedType = GetTypeForEventArg( ev.GetReturnType() );
-//	if ( !expectedType ) {
-//		this.Error( "Invalid return type '%c' in definition of '%s' event.", ev.GetReturnType(), name );
-//	}
-//	if ( returnType != expectedType ) {
-//		this.Error( "Return type doesn't match internal return type '%s'", expectedType.Name() );
-//	}
-//
-//	idTypeDef newtype( ev_function, NULL, name, type_function.Size(), returnType );
-//
-//	this.ExpectToken( "(" );
-//
-//	format = ev.GetArgFormat();
-//	num = strlen( format );
-//	for( i = 0; i < num; i++ ) {
-//		expectedType = GetTypeForEventArg( format[ i ] );
-//		if ( !expectedType || ( expectedType == &type_void ) ) {
-//			this.Error( "Invalid parameter '%c' in definition of '%s' event.", format[ i ], name );
-//		}
-//
-//		argType = ParseType();
-//		ParseName( parmName );
-//		if ( argType != expectedType ) {
-//			this.Error( "The type of parm %d ('%s') does not match the internal type '%s' in definition of '%s' event.", 
-//				i + 1, parmName.c_str(), expectedType.Name(), name );
-//		}
-//
-//		newtype.AddFunctionParm( argType, "" );
-//
-//		if ( i < num - 1 ) {
-//			if ( CheckToken( ")" ) ) {
-//				this.Error( "Too few parameters for event definition.  Internal definition has %d parameters.", num );
-//			}
-//			this.ExpectToken( "," );
-//		}
-//	}
-//	if ( !CheckToken( ")" ) ) {
-//		this.Error( "Too many parameters for event definition.  Internal definition has %d parameters.", num );
-//	}
-//	this.ExpectToken( ";" );
-//
-//	type = gameLocal.program.FindType( name );
-//	if ( type ) {
-//		if ( !newtype.MatchesType( *type ) || ( type.def.value.functionPtr.eventdef != ev ) ) {
-//			this.Error( "Type mismatch on redefinition of '%s'", name );
-//		}
-//	} else {
-//		type = gameLocal.program.AllocType( newtype );
-//		type.def = gameLocal.program.AllocDef( type, name, &def_namespace, true );
-//
-//		function_t &func	= gameLocal.program.AllocFunction( type.def );
-//		func.eventdef		= ev;
-//		func.parmSize.SetNum( num );
-//		for( i = 0; i < num; i++ ) {
-//			argType = newtype.GetParmType( i );
-//			func.parmTotal		+= argType.Size();
-//			func.parmSize[ i ]	= argType.Size();
-//		}
-//
-//		// mark the parms as local
-//		func.locals	= func.parmTotal;
-//	}
-//}
-//
-	/*
+
+/*
+================
+idCompiler::ParseEventDef
+================
+*/
+	ParseEventDef ( returnType: idTypeDef, name: string ): void {
+		todoThrow ( );
+		//const idTypeDef	*expectedType;
+		//idTypeDef		*argType;
+		//idTypeDef		*type;
+		//int 			i;
+		//int				num;
+		//const char		*format;
+		//const idEventDef *ev;
+		//idStr			parmName;
+
+		//ev = idEventDef::FindEvent( name );
+		//if ( !ev ) {
+		//	this.Error( "Unknown event '%s'", name );
+		//}
+
+		//// set the return type
+		//expectedType = GetTypeForEventArg( ev.GetReturnType() );
+		//if ( !expectedType ) {
+		//	this.Error( "Invalid return type '%c' in definition of '%s' event.", ev.GetReturnType(), name );
+		//}
+		//if ( returnType != expectedType ) {
+		//	this.Error( "Return type doesn't match internal return type '%s'", expectedType.Name() );
+		//}
+
+		//idTypeDef newtype( ev_function, NULL, name, type_function.Size(), returnType );
+
+		//this.ExpectToken( "(" );
+
+		//format = ev.GetArgFormat();
+		//num = strlen( format );
+		//for( i = 0; i < num; i++ ) {
+		//	expectedType = GetTypeForEventArg( format[ i ] );
+		//	if ( !expectedType || ( expectedType == type_void ) ) {
+		//		this.Error( "Invalid parameter '%c' in definition of '%s' event.", format[ i ], name );
+		//	}
+
+		//	argType = this.ParseType();
+		//	this.ParseName( parmName );
+		//	if ( argType != expectedType ) {
+		//		this.Error( "The type of parm %d ('%s') does not match the internal type '%s' in definition of '%s' event.", 
+		//			i + 1, parmName.c_str(), expectedType.Name(), name );
+		//	}
+
+		//	newtype.AddFunctionParm( argType, "" );
+
+		//	if ( i < num - 1 ) {
+		//		if ( this.CheckToken( ")" ) ) {
+		//			this.Error( "Too few parameters for event definition.  Internal definition has %d parameters.", num );
+		//		}
+		//		this.ExpectToken( "," );
+		//	}
+		//}
+		//if ( !this.CheckToken( ")" ) ) {
+		//	this.Error( "Too many parameters for event definition.  Internal definition has %d parameters.", num );
+		//}
+		//this.ExpectToken( ";" );
+
+		//type = gameLocal.program.FindType( name );
+		//if ( type ) {
+		//	if ( !newtype.MatchesType( *type ) || ( type.def.value.functionPtr.eventdef != ev ) ) {
+		//		this.Error( "Type mismatch on redefinition of '%s'", name );
+		//	}
+		//} else {
+		//	type = gameLocal.program.AllocType( newtype );
+		//	type.def = gameLocal.program.AllocDef( type, name, &def_namespace, true );
+
+		//	function_t &func	= gameLocal.program.AllocFunction( type.def );
+		//	func.eventdef		= ev;
+		//	func.parmSize.SetNum( num );
+		//	for( i = 0; i < num; i++ ) {
+		//		argType = newtype.GetParmType( i );
+		//		func.parmTotal		+= argType.Size();
+		//		func.parmSize[ i ]	= argType.Size();
+		//	}
+
+		//	// mark the parms as local
+		//	func.locals	= func.parmTotal;
+		//}
+	}
+
+/*
 ================
 idCompiler::ParseDefs
 
@@ -2543,57 +2547,56 @@ Called at the outer layer and when a local statement is hit
 ================
 */
 	ParseDefs ( ): void {
-		todoThrow ( );
-//	idStr 		name;
-//	idTypeDef	*type;
-//	idVarDef	*def;
-//	idVarDef	*oldscope;
-//
-//	if ( CheckToken( ";" ) ) {
-//		// skip semicolons, which are harmless and ok syntax
-//		return;
-//	}
-//
-//	type = ParseType();
-//	if ( type == &type_scriptevent ) {
-//		type = ParseType();
-//		ParseName( name );
-//		ParseEventDef( type, name );
-//		return;
-//	}
-//    
-//	ParseName( name );
-//
-//	if ( type == &type_namespace ) {
-//		def = gameLocal.program.GetDef( type, name, this.scope );
-//		if ( !def ) {
-//			def = gameLocal.program.AllocDef( type, name, this.scope, true );
-//		}
-//		ParseNamespace( def );
-//	} else if ( CheckToken( "::" ) ) {
-//		def = gameLocal.program.GetDef( NULL, name, this.scope );
-//		if ( !def ) {
-//			this.Error( "Unknown object name '%s'", name.c_str() );
-//		}
-//		ParseName( name );
-//		oldscope = this.scope;
-//		this.scope = def;
-//
-//		this.ExpectToken( "(" );
-//		ParseFunctionDef( type, name.c_str() );
-//		this.scope = oldscope;
-//	} else if ( type == &type_object ) {
-//		ParseObjectDef( name.c_str() );
-//	} else if ( CheckToken( "(" ) ) {		// check for a function prototype or declaraction
-//		ParseFunctionDef( type, name.c_str() );
-//	} else {
-//		ParseVariableDef( type, name.c_str() );
-//		while( CheckToken( "," ) ) {
-//			ParseName( name );
-//			ParseVariableDef( type, name.c_str() );
-//		}
-//		this.ExpectToken( ";" );
-//	}
+		var name = new idStr;
+		var type: idTypeDef;
+		var def: idVarDef;
+		var oldscope: idVarDef;
+
+		if ( this.CheckToken( ";" ) ) {
+			// skip semicolons, which are harmless and ok syntax
+			return;
+		}
+
+		type = this.ParseType ( );
+		if ( type == type_scriptevent ) {
+			type = this.ParseType ( );
+			this.ParseName( name );
+			this.ParseEventDef( type, name.data );
+			return;
+		}
+
+		this.ParseName( name );
+
+		if ( type == type_namespace ) {
+			def = gameLocal.program.GetDef( type, name.data, this.scope );
+			if ( !def ) {
+				def = gameLocal.program.AllocDef(type, name.data, this.scope, true );
+			}
+			this.ParseNamespace( def );
+		} else if ( this.CheckToken( "::" ) ) {
+			def = gameLocal.program.GetDef( null, name.data, this.scope );
+			if ( !def ) {
+				this.Error( "Unknown object name '%s'", name.c_str ( ) );
+			}
+			this.ParseName( name );
+			oldscope = this.scope;
+			this.scope = def;
+
+			this.ExpectToken( "(" );
+			this.ParseFunctionDef( type, name.c_str ( ) );
+			this.scope = oldscope;
+		} else if ( type == type_object ) {
+			this.ParseObjectDef( name.c_str ( ) );
+		} else if ( this.CheckToken( "(" ) ) { // check for a function prototype or declaraction
+			this.ParseFunctionDef( type, name.c_str ( ) );
+		} else {
+			this.ParseVariableDef( type, name.c_str ( ) );
+			while ( this.CheckToken( "," ) ) {
+				this.ParseName( name );
+				this.ParseVariableDef( type, name.c_str ( ) );
+			}
+			this.ExpectToken( ";" );
+		}
 	}
 
 /*
