@@ -1724,7 +1724,7 @@ class idLexer {
 	LoadMemory ( /*const char **/ptr: string, /*int */length: number, /*const char **/name: string, /*int */startLine: number = 1 ): number {
 		if ( this.loaded ) {
 			common.Error( "idLexer::LoadMemory: another script already loaded" );
-			return 1 /*false*/;
+			return 0 /*false*/;
 		}
 
 		assert( typeof ptr === "string" );

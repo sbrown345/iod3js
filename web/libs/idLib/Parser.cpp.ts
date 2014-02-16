@@ -612,7 +612,7 @@ idParser::PushIndent
 		indent.type = type;
 		indent.script = this.scriptstack;
 		indent.skip = ( skip != 0 ) ? 1 : 0;
-		skip += indent.skip;
+		this.skip += indent.skip;
 		indent.next = this.indentstack;
 		this.indentstack = indent;
 	}
@@ -685,7 +685,7 @@ idParser::ReadSourceToken
 				token.$.linesCrossed += changedScript;
 
 				// set the marker based on the start of the token read in
-				if ( !this.marker_p ) {
+				if ( this.marker_p === null || this.marker_p === undefined) {
 					this.marker_p = token.$.whiteSpaceEnd_p;
 				}
 				return 1 /*true*/;
@@ -1483,7 +1483,7 @@ idParser::Directive_if_def
 		d = this.FindHashedDefine( this.definehash, token.$.c_str ( ) );
 		skip = ( type == INDENT_IFDEF ) == ( d == null ) ? 1 : 0;
 		this.PushIndent( type, skip );
-		return 0 /*true*/;
+		return 1 /*true*/;
 	}
 
 /*
