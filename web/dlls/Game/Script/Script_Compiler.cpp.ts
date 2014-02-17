@@ -522,7 +522,7 @@ Aborts the current file load
 //		def.numUsers++;
 //	} else {
 //		// allocate a new def
-//		def = gameLocal.program.AllocDef( type, "<IMMEDIATE>", &def_namespace, true );
+//		def = gameLocal.program.AllocDef( type, "<IMMEDIATE>", def_namespace, true );
 //		if ( type.Type() == ev_string ) {
 //			def.SetString( string, true );
 //		} else {
@@ -1002,7 +1002,7 @@ Parses a variable type, including functions types
 //	int				resultOp;
 //
 //	type = func.TypeDef();
-//	if ( func.Type() != ev_function ) {
+//	if ( func.Type() != etype_t.ev_function ) {
 //		this.Error( "'%s' is not a function", func.Name() );
 //	}
 //
@@ -1117,7 +1117,7 @@ Parses a variable type, including functions types
 //idVarDef *idCompiler::ParseFunctionCall( idVarDef *funcDef ) {
 //	assert( funcDef );
 //
-//	if ( funcDef.Type() != ev_function ) {
+//	if ( funcDef.Type() != etype_t.ev_function ) {
 //		this.Error( "'%s' is not a function", funcDef.Name() );
 //	}
 //
@@ -1176,7 +1176,7 @@ Parses a variable type, including functions types
 //		this.Error( "Cannot call built-in functions as a thread" );
 //	}
 //
-//	if ( funcDef.Type() != ev_function ) {
+//	if ( funcDef.Type() != etype_t.ev_function ) {
 //		this.Error( "'%s' is not a function", funcDef.Name() );
 //	}
 //
@@ -1203,7 +1203,7 @@ Parses a variable type, including functions types
 //		this.Error( "Cannot call built-in functions as a thread" );
 //	}
 //
-//	if ( funcDef.Type() != ev_function ) {
+//	if ( funcDef.Type() != etype_t.ev_function ) {
 //		this.Error( "'%s' is not a function", funcDef.Name() );
 //	}
 //
@@ -1257,7 +1257,7 @@ Parses a variable type, including functions types
 //
 //				// type check
 //				type_b = field.Type();
-//				if ( field.Type() == ev_function ) {
+//				if ( field.Type() == etype_t.ev_function ) {
 //					type_c = field.TypeDef().ReturnType().Type();
 //				} else {
 //					type_c = field.TypeDef().FieldType().Type();	// field access gets type from field
@@ -1322,9 +1322,9 @@ Parses a variable type, including functions types
 //	if ( this.immediateType == type_entity ) {
 //		// if an immediate entity ($-prefaced name) then create or lookup a def for it.
 //		// when entities are spawned, they'll lookup the def and point it to them.
-//		def = gameLocal.program.GetDef( type_entity, "$" + this.token, &def_namespace );
+//		def = gameLocal.program.GetDef( type_entity, "$" + this.token, def_namespace );
 //		if ( !def ) {
-//			def = gameLocal.program.AllocDef( type_entity, "$" + this.token, &def_namespace, true );
+//			def = gameLocal.program.AllocDef( type_entity, "$" + this.token, def_namespace, true );
 //		}
 //		this.NextToken();
 //		return def;
@@ -1408,7 +1408,7 @@ Parses a variable type, including functions types
 //			op = OP_NOT_ENT;
 //			break;
 //
-//		case ev_function :
+//		case etype_t.ev_function :
 //			// shut up compiler
 //			op = OP_NOT_F;
 //
@@ -1605,7 +1605,7 @@ Parses a variable type, including functions types
 //
 //		// field access gets type from field
 //		if ( op.name[ 0 ] == '.' ) {
-//			if ( ( e2.Type() == ev_function ) && e2.TypeDef().ReturnType() ) {
+//			if ( ( e2.Type() == etype_t.ev_function ) && e2.TypeDef().ReturnType() ) {
 //				type_c = e2.TypeDef().ReturnType().Type();
 //			} else if ( e2.TypeDef().FieldType() ) {
 //				type_c = e2.TypeDef().FieldType().Type();
@@ -2147,7 +2147,7 @@ idCompiler::ParseObjectDef
 //============
 //*/
 //idTypeDef *idCompiler::ParseFunction( idTypeDef *returnType, name:string ) {
-//	idTypeDef	newtype( ev_function, NULL, name, type_function.Size(), returnType );
+//	idTypeDef	newtype( etype_t.ev_function, NULL, name, type_function.Size(), returnType );
 //	idTypeDef	*type;
 //	
 //	if ( this.scope.Type() != etype_t.ev_namespace ) {
@@ -2339,7 +2339,7 @@ idCompiler::ParseVariableDef
 //	// check for an initialization
 //	if ( this.CheckToken( "=" ) ) {
 //		// if a local variable in a function then write out interpreter code to initialize variable
-//		if ( this.scope.Type() == ev_function ) {
+//		if ( this.scope.Type() == etype_t.ev_function ) {
 //			def2 = GetExpression( TOP_PRIORITY );
 //			if ( ( type == type_float ) && ( def2.TypeDef() == type_float ) ) {
 //				EmitOpcode( OP_STORE_F, def2, def );
@@ -2396,64 +2396,64 @@ idCompiler::ParseVariableDef
 //		}
 //	} else if ( type == type_string ) {
 //		// local strings on the stack are initialized in the interpreter
-//		if ( this.scope.Type() != ev_function ) {
+//		if ( this.scope.Type() != etype_t.ev_function ) {
 //			def.SetString( "", false );
 //		}
 //	} else if ( type.Inherits( type_object ) ) {
-//		if ( this.scope.Type() != ev_function ) {
+//		if ( this.scope.Type() != etype_t.ev_function ) {
 //			def.SetObject( NULL );
 //		}
 //	}
 	}
 
-///*
-//================
-//idCompiler::GetTypeForEventArg
-//================
-//*/
-//idTypeDef *idCompiler::GetTypeForEventArg( char argType ) {
-//	idTypeDef *type;
-//
-//	switch( argType ) {
-//	case D_EVENT_INTEGER :
-//		// this will get converted to int by the interpreter
-//		type = type_float;
-//		break;
-//
-//	case D_EVENT_FLOAT :
-//		type = type_float;
-//		break;
-//
-//	case D_EVENT_VECTOR :
-//		type = type_vector;
-//		break;
-//
-//	case D_EVENT_STRING :
-//		type = type_string;
-//		break;
-//
-//	case D_EVENT_ENTITY :
-//	case D_EVENT_ENTITY_NULL :
-//		type = type_entity;
-//		break;
-//
-//	case D_EVENT_VOID :
-//		type = type_void;
-//		break;
-//
-//	case D_EVENT_TRACE :
-//		// This data type isn't available from script
-//		type = NULL;
-//		break;
-//
-//	default:
-//		// probably a typo
-//		type = NULL;
-//		break;
-//	}
-//	
-//	return type;
-//}
+/*
+================
+idCompiler::GetTypeForEventArg
+================
+*/
+	GetTypeForEventArg ( argType: number /*char*/ ): idTypeDef {
+		var type: idTypeDef;
+
+		switch ( argType ) {
+		case D_EVENT_INTEGER:
+			// this will get converted to int by the interpreter
+			type = type_float;
+			break;
+
+		case D_EVENT_FLOAT:
+			type = type_float;
+			break;
+
+		case D_EVENT_VECTOR:
+			type = type_vector;
+			break;
+
+		case D_EVENT_STRING:
+			type = type_string;
+			break;
+
+		case D_EVENT_ENTITY:
+		case D_EVENT_ENTITY_NULL:
+			type = type_entity;
+			break;
+
+		case D_EVENT_VOID:
+			type = type_void;
+			break;
+
+		case D_EVENT_TRACE:
+			// This data type isn't available from script
+			type = null;
+			break;
+
+		default:
+			// probably a typo
+			type = null;
+			break;
+		}
+
+		return type;
+	}
 
 /*
 ================
@@ -2461,84 +2461,83 @@ idCompiler::ParseEventDef
 ================
 */
 	ParseEventDef ( returnType: idTypeDef, name: string ): void {
-		todoThrow ( );
-		//const idTypeDef	*expectedType;
-		//idTypeDef		*argType;
-		//idTypeDef		*type;
-		//int 			i;
-		//int				num;
-		//const char		*format;
-		//const idEventDef *ev;
-		//idStr			parmName;
+		var expectedType: idTypeDef;
+		var argType: idTypeDef;
+		var type: idTypeDef;
+		var i:number;
+		var num:number;
+		var format:string;
+		var ev:idEventDef;
+		var parmName = new idStr;
 
-		//ev = idEventDef::FindEvent( name );
-		//if ( !ev ) {
-		//	this.Error( "Unknown event '%s'", name );
-		//}
+		ev = idEventDef.FindEvent( name );
+		if ( !ev ) {
+			this.Error( "Unknown event '%s'", name );
+		}
 
-		//// set the return type
-		//expectedType = GetTypeForEventArg( ev.GetReturnType() );
-		//if ( !expectedType ) {
-		//	this.Error( "Invalid return type '%c' in definition of '%s' event.", ev.GetReturnType(), name );
-		//}
-		//if ( returnType != expectedType ) {
-		//	this.Error( "Return type doesn't match internal return type '%s'", expectedType.Name() );
-		//}
+		// set the return type
+		expectedType = this.GetTypeForEventArg( ev.GetReturnType() );
+		if ( !expectedType ) {
+			this.Error( "Invalid return type '%c' in definition of '%s' event.", ev.GetReturnType(), name );
+		}
+		if ( returnType != expectedType ) {
+			this.Error( "Return type doesn't match internal return type '%s'", expectedType.Name() );
+		}
 
-		//idTypeDef newtype( ev_function, NULL, name, type_function.Size(), returnType );
+		var newtype = new idTypeDef( etype_t.ev_function, null, name, type_function.Size(), returnType );
 
-		//this.ExpectToken( "(" );
+		this.ExpectToken( "(" );
 
-		//format = ev.GetArgFormat();
-		//num = strlen( format );
-		//for( i = 0; i < num; i++ ) {
-		//	expectedType = GetTypeForEventArg( format[ i ] );
-		//	if ( !expectedType || ( expectedType == type_void ) ) {
-		//		this.Error( "Invalid parameter '%c' in definition of '%s' event.", format[ i ], name );
-		//	}
+		format = ev.GetArgFormat();
+		num = strlen( format );
+		for( i = 0; i < num; i++ ) {
+			expectedType = this.GetTypeForEventArg( format.charCodeAt( i ) );
+			if ( !expectedType || ( expectedType == type_void ) ) {
+				this.Error( "Invalid parameter '%c' in definition of '%s' event.", format[ i ], name );
+			}
 
-		//	argType = this.ParseType();
-		//	this.ParseName( parmName );
-		//	if ( argType != expectedType ) {
-		//		this.Error( "The type of parm %d ('%s') does not match the internal type '%s' in definition of '%s' event.", 
-		//			i + 1, parmName.c_str(), expectedType.Name(), name );
-		//	}
+			argType = this.ParseType();
+			this.ParseName( parmName );
+			if ( argType != expectedType ) {
+				this.Error( "The type of parm %d ('%s') does not match the internal type '%s' in definition of '%s' event.", 
+					i + 1, parmName.c_str(), expectedType.Name(), name );
+			}
 
-		//	newtype.AddFunctionParm( argType, "" );
+			newtype.AddFunctionParm( argType, "" );
 
-		//	if ( i < num - 1 ) {
-		//		if ( this.CheckToken( ")" ) ) {
-		//			this.Error( "Too few parameters for event definition.  Internal definition has %d parameters.", num );
-		//		}
-		//		this.ExpectToken( "," );
-		//	}
-		//}
-		//if ( !this.CheckToken( ")" ) ) {
-		//	this.Error( "Too many parameters for event definition.  Internal definition has %d parameters.", num );
-		//}
-		//this.ExpectToken( ";" );
+			if ( i < num - 1 ) {
+				if ( this.CheckToken( ")" ) ) {
+					this.Error( "Too few parameters for event definition.  Internal definition has %d parameters.", num );
+				}
+				this.ExpectToken( "," );
+			}
+		}
+		if ( !this.CheckToken( ")" ) ) {
+			this.Error( "Too many parameters for event definition.  Internal definition has %d parameters.", num );
+		}
+		this.ExpectToken( ";" );
 
-		//type = gameLocal.program.FindType( name );
-		//if ( type ) {
-		//	if ( !newtype.MatchesType( *type ) || ( type.def.value.functionPtr.eventdef != ev ) ) {
-		//		this.Error( "Type mismatch on redefinition of '%s'", name );
-		//	}
-		//} else {
-		//	type = gameLocal.program.AllocType( newtype );
-		//	type.def = gameLocal.program.AllocDef( type, name, &def_namespace, true );
+		type = gameLocal.program.FindType( name );
+		if ( type ) {
+			if ( !newtype.MatchesType( type ) || ( type.def.value.functionPtr.eventdef != ev ) ) {
+				this.Error( "Type mismatch on redefinition of '%s'", name );
+			}
+		} else {
+			type = gameLocal.program.AllocType( newtype );
+			type.def = gameLocal.program.AllocDef( type, name, def_namespace, true );
 
-		//	function_t &func	= gameLocal.program.AllocFunction( type.def );
-		//	func.eventdef		= ev;
-		//	func.parmSize.SetNum( num );
-		//	for( i = 0; i < num; i++ ) {
-		//		argType = newtype.GetParmType( i );
-		//		func.parmTotal		+= argType.Size();
-		//		func.parmSize[ i ]	= argType.Size();
-		//	}
+			var func	= gameLocal.program.AllocFunction( type.def );
+			func.eventdef		= ev;
+			func.parmSize.SetNum( num );
+			for( i = 0; i < num; i++ ) {
+				argType = newtype.GetParmType( i );
+				func.parmTotal		+= argType.Size();
+				func.parmSize[ i ]	= argType.Size();
+			}
 
-		//	// mark the parms as local
-		//	func.locals	= func.parmTotal;
-		//}
+			// mark the parms as local
+			func.locals	= func.parmTotal;
+		}
 	}
 
 /*

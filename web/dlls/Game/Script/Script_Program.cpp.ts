@@ -109,16 +109,16 @@ class function_t {
 //size_t function_t::Allocated( void ) const {
 //	return name.Allocated() + parmSize.Allocated();
 //}
-//
-///*
-//================
-//function_t::SetName
-//================
-//*/
-//void function_t::SetName( name:string ) {
-//	this.name = name;
-//}
-//
+
+/*
+================
+function_t::SetName
+================
+*/
+	SetName ( name: string ): void {
+		this.name.equals( name );
+	}
+
 /*
 ================
 function_t::Name
@@ -1070,35 +1070,35 @@ If type is NULL, it will match any type
 //
 //	return null;
 //}
-//
-///*
-//================
-//idProgram::AllocFunction
-//================
-//*/
-//function_t &idProgram::AllocFunction( idVarDef *def ) {
-//	if ( functions.Num() >= functions.Max() ) {
-//		throw idCompileError( va( "Exceeded maximum allowed number of functions (%d)", functions.Max() ) );
-//	}
-//
-//	// fill in the dfunction
-//	function_t &func	= *functions.Alloc();
-//	func.eventdef		= null;
-//	func.def			= def;
-//	func.type			= def.TypeDef();
-//	func.firstStatement	= 0;
-//	func.numStatements	= 0;
-//	func.parmTotal		= 0;
-//	func.locals			= 0;
-//	func.filenum		= filenum;
-//	func.parmSize.SetGranularity( 1 );
-//	func.SetName( def.GlobalName() );
-//
-//	def.SetFunction( &func );
-//
-//	return func;
-//}
-//
+
+/*
+================
+idProgram::AllocFunction
+================
+*/
+	AllocFunction ( def: idVarDef ): function_t {
+		if ( this.functions.Num ( ) >= this.functions.Max ( ) ) {
+			throw new idCompileError( va( "Exceeded maximum allowed number of functions (%d)", this.functions.Max ( ) ) );
+		}
+
+		// fill in the dfunction
+		var func = this.functions.Alloc ( );
+		func.eventdef = null;
+		func.def = def;
+		func.type = def.TypeDef ( );
+		func.firstStatement = 0;
+		func.numStatements = 0;
+		func.parmTotal = 0;
+		func.locals = 0;
+		func.filenum = this.filenum;
+		func.parmSize.SetGranularity( 1 );
+		func.SetName( def.GlobalName ( ) );
+
+		def.SetFunction( func );
+
+		return func;
+	}
+
 ///*
 //================
 //idProgram::SetEntity

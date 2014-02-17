@@ -417,37 +417,37 @@ idTypeDef::idTypeDef
 		return false;
 	}
 
-	///*
-	//================
-	//idTypeDef::MatchesType
-	//
-	//Returns true if both types' base types and parameters match
-	//================
-	//*/
-	//bool idTypeDef::MatchesType( const idTypeDef &matchtype ) const {
-	//	int i;
-	//
-	//	if ( this == &matchtype ) {
-	//		return true;
-	//	}
-	//
-	//	if ( ( type != matchtype.type ) || ( auxType != matchtype.auxType ) ) {
-	//		return false;
-	//	}
-	//
-	//	if ( parmTypes.Num() != matchtype.parmTypes.Num() ) {
-	//		return false;
-	//	}
-	//
-	//	for( i = 0; i < matchtype.parmTypes.Num(); i++ ) {
-	//		if ( parmTypes[ i ] != matchtype.parmTypes[ i ] ) {
-	//			return false;
-	//		}
-	//	}
-	//
-	//	return true;
-	//}
-	//
+	/*
+	================
+	idTypeDef::MatchesType
+	
+	Returns true if both types' base types and parameters match
+	================
+	*/
+	MatchesType ( matchtype: idTypeDef ): boolean {
+		var /*int */i: number;
+
+		if ( this == matchtype ) {
+			return true;
+		}
+
+		if ( ( this.type != matchtype.type ) || ( this.auxType != matchtype.auxType ) ) {
+			return false;
+		}
+
+		if ( this.parmTypes.Num ( ) != matchtype.parmTypes.Num ( ) ) {
+			return false;
+		}
+
+		for ( i = 0; i < matchtype.parmTypes.Num ( ); i++ ) {
+			if ( this.parmTypes[i] != matchtype.parmTypes[i] ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	///*
 	//================
 	//idTypeDef::MatchesVirtualFunction
@@ -484,23 +484,23 @@ idTypeDef::idTypeDef
 	//
 	//	return true;
 	//}
-	//
-	///*
-	//================
-	//idTypeDef::AddFunctionParm
-	//
-	//Adds a new parameter for a function type.
-	//================
-	//*/
-	//void idTypeDef::AddFunctionParm( idTypeDef *parmtype, const char *name ) {
-	//	if ( type != etype_t.ev_function ) {
-	//		throw idCompileError( "idTypeDef::AddFunctionParm : tried to add parameter on non-function type" );
-	//	}
-	//
-	//	parmTypes.Append( parmtype );
-	//	idStr &parmName = parmNames.Alloc();
-	//	parmName = name;
-	//}
+	
+	/*
+	================
+	idTypeDef::AddFunctionParm
+	
+	Adds a new parameter for a function type.
+	================
+	*/
+	AddFunctionParm ( parmtype: idTypeDef, name: string ): void {
+		if ( this.type != etype_t.ev_function ) {
+			throw new idCompileError( "idTypeDef::AddFunctionParm : tried to add parameter on non-function type" );
+		}
+
+		this.parmTypes.Append( parmtype );
+		var parmName = this.parmNames.Alloc ( );
+		parmName.equals( name );
+	}
 	//
 	///*
 	//================
@@ -675,17 +675,17 @@ idTypeDef::idTypeDef
 	//	return parmTypes.Num();
 	//}
 	//
-	///*
-	//================
-	//idTypeDef::GetParmType
-	//================
-	//*/
-	//idTypeDef *idTypeDef::GetParmType( int parmNumber ) const {
-	//	assert( parmNumber >= 0 );
-	//	assert( parmNumber < parmTypes.Num() );
-	//	return parmTypes[ parmNumber ];
-	//}
-	//
+	/*
+	================
+	idTypeDef::GetParmType
+	================
+	*/
+	GetParmType ( /*int */parmNumber: number ): idTypeDef {
+		assert( parmNumber >= 0 );
+		assert( parmNumber < this.parmTypes.Num ( ) );
+		return this.parmTypes[parmNumber];
+	}
+
 	///*
 	//================
 	//idTypeDef::GetParmName
@@ -871,18 +871,18 @@ class idVarDef {
 		return 0;
 	}
 
-	///*
-	//============
-	//idVarDef::SetFunction
-	//============
-	//*/
-	//void idVarDef::SetFunction( function_t *func ) {
-	//	assert( typeDef );
-	//	initialized = initializedConstant;
-	//	assert( typeDef.Type() == etype_t.ev_function );
-	//	value.functionPtr = func;
-	//}
-	//
+	/*
+	============
+	idVarDef::SetFunction
+	============
+	*/
+	SetFunction ( func: function_t ): void {
+		assert( this.typeDef );
+		this.initialized = initialized_t.initializedConstant;
+		assert( this.typeDef.Type ( ) == etype_t.ev_function );
+		this.value.functionPtr = func;
+	}
+
 	///*
 	//============
 	//idVarDef::SetObject

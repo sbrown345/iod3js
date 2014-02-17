@@ -61,18 +61,18 @@ var eventErrorMsg = ""; //[ 128 ];
 ////#ifndef __SYS_EVENT_H__
 ////#define __SYS_EVENT_H__
 ////
-////#define D_EVENT_MAXARGS				8			// if changed, enable the CREATE_EVENT_CODE define in Event.cpp to generate switch statement for idClass::ProcessEventArgPtr.
-////// running the game will then generate c:\doom\base\events.txt, the contents of which should be copied into the switch statement.
-////
-////#define D_EVENT_VOID				( ( char )0 )
-////#define D_EVENT_INTEGER				'd'
-////#define D_EVENT_FLOAT				'f'
-////#define D_EVENT_VECTOR				'v'
-////#define D_EVENT_STRING				's'
-////#define D_EVENT_ENTITY				'e'
-////#define	D_EVENT_ENTITY_NULL			'E'			// event can handle NULL entity pointers
-////#define D_EVENT_TRACE				't'
-////
+var D_EVENT_MAXARGS = 8;			// if changed, enable the CREATE_EVENT_CODE define in Event.cpp to generate switch statement for idClass::ProcessEventArgPtr.
+// running the game will then generate c:\doom\base\events.txt, the contents of which should be copied into the switch statement.
+
+var D_EVENT_VOID = 0;
+var D_EVENT_INTEGER = 'd'.charCodeAt(0);
+var D_EVENT_FLOAT = 'f'.charCodeAt(0);
+var D_EVENT_VECTOR = 'v'.charCodeAt(0);
+var D_EVENT_STRING = 's'.charCodeAt(0);
+var D_EVENT_ENTITY = 'e'.charCodeAt(0);
+var D_EVENT_ENTITY_NULL = 'E'.charCodeAt(0);	// event can handle NULL entity pointers
+var D_EVENT_TRACE = 't'.charCodeAt(0);
+
 var MAX_EVENTS = 4096;
 ////
 ////class idClass;
@@ -80,17 +80,17 @@ var MAX_EVENTS = 4096;
 ////
 class idEventDef {
 ////private:
-////	const char					*name;
-////	const char					*formatspec;
-////	unsigned int				formatspecIndex;
-////	int							returnType;
-////	int							numargs;
-////	size_t						argsize;
-////	int							argOffset[D_EVENT_MAXARGS];
-////	int							eventnum;
-////	const idEventDef *			next;
-////
-////	static idEventDef *			eventDefList[MAX_EVENTS];
+	name:string;
+	formatspec:string;
+	formatspecIndex:number;						 //unsigned int
+	returnType:number;							 //int							
+	numargs:number;								 //int							
+	argsize:number;								 //size_t						
+	argOffset = new Int32Array(D_EVENT_MAXARGS); //int							
+	eventnum:number;							 //int							
+	next:idEventDef;
+
+	static eventDefList = new Array<idEventDef>(MAX_EVENTS);
 	static numEventDefs:number;
 ////
 ////public:
@@ -112,25 +112,25 @@ class idEventDef {
 ////
 ////class idSaveGame;
 ////class idRestoreGame;
-////
-/////*
-////================
-////idEventDef::GetName
-////================
-////*/
-////ID_INLINE const char *idEventDef::GetName(void) const {
-////	return name;
-////}
-////
-/////*
-////================
-////idEventDef::GetArgFormat
-////================
-////*/
-////ID_INLINE const char *idEventDef::GetArgFormat(void) const {
-////	return formatspec;
-////}
-////
+
+/*
+================
+idEventDef::GetName
+================
+*/
+	GetName ( ): string {
+		return this.name;
+	}
+
+/*
+================
+idEventDef::GetArgFormat
+================
+*/
+	GetArgFormat ( ): string {
+		return this.formatspec;
+	}
+
 /////*
 ////================
 ////idEventDef::GetFormatspecIndex
@@ -139,34 +139,34 @@ class idEventDef {
 ////ID_INLINE unsigned int idEventDef::GetFormatspecIndex(void) const {
 ////	return formatspecIndex;
 ////}
-////
-/////*
-////================
-////idEventDef::GetReturnType
-////================
-////*/
-////ID_INLINE char idEventDef::GetReturnType(void) const {
-////	return returnType;
-////}
-////
-/////*
-////================
-////idEventDef::GetNumArgs
-////================
-////*/
-////ID_INLINE int idEventDef::GetNumArgs(void) const {
-////	return numargs;
-////}
-////
-/////*
-////================
-////idEventDef::GetArgSize
-////================
-////*/
-////ID_INLINE size_t idEventDef::GetArgSize(void) const {
-////	return argsize;
-////}
-////
+
+/*
+================
+idEventDef::GetReturnType
+================
+*/
+	GetReturnType ( ): number {
+		return this.returnType;
+	}
+
+/*
+================
+idEventDef::GetNumArgs
+================
+*/
+	GetNumArgs ( ): number {
+		return this.numargs;
+	}
+
+/*
+================
+idEventDef::GetArgSize
+================
+*/
+	GetArgSize ( ): number {
+		return this.argsize;
+	}
+
 /////*
 ////================
 ////idEventDef::GetArgOffset
@@ -208,9 +208,9 @@ class idEventDef {
 ////		formatspec = "";
 ////	}
 ////	
-////	this->name = command;
-////	this->formatspec = formatspec;
-////	this->returnType = returnType;
+////	this.name = command;
+////	this.formatspec = formatspec;
+////	this.returnType = returnType;
 ////
 ////	numargs = strlen( formatspec );
 ////	assert( numargs <= D_EVENT_MAXARGS );
@@ -272,22 +272,22 @@ class idEventDef {
 ////	eventnum = numEventDefs;
 ////	for( i = 0; i < eventnum; i++ ) {
 ////		ev = eventDefList[ i ];
-////		if ( strcmp( command, ev->name ) == 0 ) {
-////			if ( strcmp( formatspec, ev->formatspec ) != 0 ) {
+////		if ( strcmp( command, ev.name ) == 0 ) {
+////			if ( strcmp( formatspec, ev.formatspec ) != 0 ) {
 ////				eventError = true;
 ////				sprintf( eventErrorMsg, "idEvent '%s' defined twice with same name but differing format strings ('%s'!='%s').",
-////					command, formatspec, ev->formatspec );
+////					command, formatspec, ev.formatspec );
 ////				return;
 ////			}
 ////
-////			if ( ev->returnType != returnType ) {
+////			if ( ev.returnType != returnType ) {
 ////				eventError = true;
 ////				sprintf( eventErrorMsg, "idEvent '%s' defined twice with same name but differing return types ('%c'!='%c').",
-////					command, returnType, ev->returnType );
+////					command, returnType, ev.returnType );
 ////				return;
 ////			}
 ////			// Don't bother putting the duplicate event in list.
-////			eventnum = ev->eventnum;
+////			eventnum = ev.eventnum;
 ////			return;
 ////		}
 ////	}
@@ -320,30 +320,30 @@ idEventDef::NumEventCommands
 ////const idEventDef *idEventDef::GetEventCommand( int eventnum ) {
 ////	return eventDefList[ eventnum ];
 ////}
-////
-/////*
-////================
-////idEventDef::FindEvent
-////================
-////*/
-////const idEventDef *idEventDef::FindEvent( const char *name ) {
-////	idEventDef	*ev;
-////	int			num;
-////	int			i;
-////
-////	assert( name );
-////
-////	num = numEventDefs;
-////	for( i = 0; i < num; i++ ) {
-////		ev = eventDefList[ i ];
-////		if ( strcmp( name, ev->name ) == 0 ) {
-////			return ev;
-////		}
-////	}
-////
-////	return NULL;
-////}
-	
+
+/*
+================
+idEventDef::FindEvent
+================
+*/
+	static FindEvent ( name: string ): idEventDef {
+		var ev: idEventDef; //idEventDef	
+		var num: number; //int			
+		var i: number; //int			
+
+		assert( name );
+
+		num = idEventDef.numEventDefs;
+		for ( i = 0; i < num; i++ ) {
+			ev = idEventDef.eventDefList[i];
+			if ( strcmp( name, ev.name ) == 0 ) {
+				return ev;
+			}
+		}
+
+		return null;
+	}
+
 }
 
 /***********************************************************************
@@ -436,67 +436,67 @@ class idEvent {
 ////	}
 ////
 ////	ev = FreeEvents.Next();
-////	ev->eventNode.Remove();
+////	ev.eventNode.Remove();
 ////
-////	ev->eventdef = evdef;
+////	ev.eventdef = evdef;
 ////
-////	if ( numargs != evdef->GetNumArgs() ) {
-////		gameLocal.Error( "idEvent::Alloc : Wrong number of args for '%s' event.", evdef->GetName() );
+////	if ( numargs != evdef.GetNumArgs() ) {
+////		gameLocal.Error( "idEvent::Alloc : Wrong number of args for '%s' event.", evdef.GetName() );
 ////	}
 ////
-////	size = evdef->GetArgSize();
+////	size = evdef.GetArgSize();
 ////	if ( size ) {
-////		ev->data = eventDataAllocator.Alloc( size );
-////		memset( ev->data, 0, size );
+////		ev.data = eventDataAllocator.Alloc( size );
+////		memset( ev.data, 0, size );
 ////	} else {
-////		ev->data = NULL;
+////		ev.data = NULL;
 ////	}
 ////
-////	format = evdef->GetArgFormat();
+////	format = evdef.GetArgFormat();
 ////	for( i = 0; i < numargs; i++ ) {
 ////		arg = va_arg( args, idEventArg * );
-////		if ( format[ i ] != arg->type ) {
+////		if ( format[ i ] != arg.type ) {
 ////			// when NULL is passed in for an entity, it gets cast as an integer 0, so don't give an error when it happens
-////			if ( !( ( ( format[ i ] == D_EVENT_TRACE ) || ( format[ i ] == D_EVENT_ENTITY ) ) && ( arg->type == 'd' ) && ( arg->value == 0 ) ) ) {
-////				gameLocal.Error( "idEvent::Alloc : Wrong type passed in for arg # %d on '%s' event.", i, evdef->GetName() );
+////			if ( !( ( ( format[ i ] == D_EVENT_TRACE ) || ( format[ i ] == D_EVENT_ENTITY ) ) && ( arg.type == 'd' ) && ( arg.value == 0 ) ) ) {
+////				gameLocal.Error( "idEvent::Alloc : Wrong type passed in for arg # %d on '%s' event.", i, evdef.GetName() );
 ////			}
 ////		}
 ////
-////		dataPtr = &ev->data[ evdef->GetArgOffset( i ) ];
+////		dataPtr = &ev.data[ evdef.GetArgOffset( i ) ];
 ////
 ////		switch( format[ i ] ) {
 ////		case D_EVENT_FLOAT :
 ////		case D_EVENT_INTEGER :
-////			*reinterpret_cast<int *>( dataPtr ) = arg->value;
+////			*reinterpret_cast<int *>( dataPtr ) = arg.value;
 ////			break;
 ////
 ////		case D_EVENT_VECTOR :
-////			if ( arg->value ) {
-////				*reinterpret_cast<idVec3 *>( dataPtr ) = *reinterpret_cast<const idVec3 *>( arg->value );
+////			if ( arg.value ) {
+////				*reinterpret_cast<idVec3 *>( dataPtr ) = *reinterpret_cast<const idVec3 *>( arg.value );
 ////			}
 ////			break;
 ////
 ////		case D_EVENT_STRING :
-////			if ( arg->value ) {
-////				idStr::Copynz( reinterpret_cast<char *>( dataPtr ), reinterpret_cast<const char *>( arg->value ), MAX_STRING_LEN );
+////			if ( arg.value ) {
+////				idStr::Copynz( reinterpret_cast<char *>( dataPtr ), reinterpret_cast<const char *>( arg.value ), MAX_STRING_LEN );
 ////			}
 ////			break;
 ////
 ////		case D_EVENT_ENTITY :
 ////		case D_EVENT_ENTITY_NULL :
-////			*reinterpret_cast< idEntityPtr<idEntity> * >( dataPtr ) = reinterpret_cast<idEntity *>( arg->value );
+////			*reinterpret_cast< idEntityPtr<idEntity> * >( dataPtr ) = reinterpret_cast<idEntity *>( arg.value );
 ////			break;
 ////
 ////		case D_EVENT_TRACE :
-////			if ( arg->value ) {
+////			if ( arg.value ) {
 ////				*reinterpret_cast<bool *>( dataPtr ) = true;
-////				*reinterpret_cast<trace_t *>( dataPtr + sizeof( bool ) ) = *reinterpret_cast<const trace_t *>( arg->value );
+////				*reinterpret_cast<trace_t *>( dataPtr + sizeof( bool ) ) = *reinterpret_cast<const trace_t *>( arg.value );
 ////
 ////				// save off the material as a string since the pointer won't be valid in save games.
 ////				// since we save off the entire trace_t structure, if the material is NULL here,
 ////				// it will be NULL when we process it, so we don't need to save off anything in that case.
-////				if ( reinterpret_cast<const trace_t *>( arg->value )->c.material ) {
-////					materialName = reinterpret_cast<const trace_t *>( arg->value )->c.material->GetName();
+////				if ( reinterpret_cast<const trace_t *>( arg.value ).c.material ) {
+////					materialName = reinterpret_cast<const trace_t *>( arg.value ).c.material.GetName();
 ////					idStr::Copynz( reinterpret_cast<char *>( dataPtr + sizeof( bool ) + sizeof( trace_t ) ), materialName, MAX_STRING_LEN );
 ////				}
 ////			} else {
@@ -505,7 +505,7 @@ class idEvent {
 ////			break;
 ////
 ////		default :
-////			gameLocal.Error( "idEvent::Alloc : Invalid arg format '%s' string for '%s' event.", format, evdef->GetName() );
+////			gameLocal.Error( "idEvent::Alloc : Invalid arg format '%s' string for '%s' event.", format, evdef.GetName() );
 ////			break;
 ////		}
 ////	}
@@ -523,21 +523,21 @@ class idEvent {
 ////	const char	*format;
 ////	idEventArg	*arg;
 ////
-////	format = evdef->GetArgFormat();
-////	if ( numargs != evdef->GetNumArgs() ) {
-////		gameLocal.Error( "idEvent::CopyArgs : Wrong number of args for '%s' event.", evdef->GetName() );
+////	format = evdef.GetArgFormat();
+////	if ( numargs != evdef.GetNumArgs() ) {
+////		gameLocal.Error( "idEvent::CopyArgs : Wrong number of args for '%s' event.", evdef.GetName() );
 ////	}
 ////
 ////	for( i = 0; i < numargs; i++ ) {
 ////		arg = va_arg( args, idEventArg * );
-////		if ( format[ i ] != arg->type ) {
+////		if ( format[ i ] != arg.type ) {
 ////			// when NULL is passed in for an entity, it gets cast as an integer 0, so don't give an error when it happens
-////			if ( !( ( ( format[ i ] == D_EVENT_TRACE ) || ( format[ i ] == D_EVENT_ENTITY ) ) && ( arg->type == 'd' ) && ( arg->value == 0 ) ) ) {
-////				gameLocal.Error( "idEvent::CopyArgs : Wrong type passed in for arg # %d on '%s' event.", i, evdef->GetName() );
+////			if ( !( ( ( format[ i ] == D_EVENT_TRACE ) || ( format[ i ] == D_EVENT_ENTITY ) ) && ( arg.type == 'd' ) && ( arg.value == 0 ) ) ) {
+////				gameLocal.Error( "idEvent::CopyArgs : Wrong type passed in for arg # %d on '%s' event.", i, evdef.GetName() );
 ////			}
 ////		}
 ////
-////		data[ i ] = arg->value;
+////		data[ i ] = arg.value;
 ////	}
 ////}
 
@@ -578,17 +578,17 @@ idEvent::Free
 ////	typeinfo = type;
 ////
 ////	// wraps after 24 days...like I care. ;)
-////	this->time = gameLocal.time + time;
+////	this.time = gameLocal.time + time;
 ////
 ////	eventNode.Remove();
 ////
 ////	event = EventQueue.Next();
-////	while( ( event != NULL ) && ( this->time >= event->time ) ) {
-////		event = event->eventNode.Next();
+////	while( ( event != NULL ) && ( this.time >= event.time ) ) {
+////		event = event.eventNode.Next();
 ////	}
 ////
 ////	if ( event ) {
-////		eventNode.InsertBefore( event->eventNode );
+////		eventNode.InsertBefore( event.eventNode );
 ////	} else {
 ////		eventNode.AddToEnd( EventQueue );
 ////	}
@@ -608,10 +608,10 @@ idEvent::Free
 ////	}
 ////
 ////	for( event = EventQueue.Next(); event != NULL; event = next ) {
-////		next = event->eventNode.Next();
-////		if ( event->object == obj ) {
-////			if ( !evdef || ( evdef == event->eventdef ) ) {
-////				event->Free();
+////		next = event.eventNode.Next();
+////		if ( event.object == obj ) {
+////			if ( !evdef || ( evdef == event.eventdef ) ) {
+////				event.Free();
 ////			}
 ////		}
 ////	}
@@ -662,17 +662,17 @@ static ClearEventList( ):void {
 ////		event = EventQueue.Next();
 ////		assert( event );
 ////
-////		if ( event->time > gameLocal.time ) {
+////		if ( event.time > gameLocal.time ) {
 ////			break;
 ////		}
 ////
 ////		// copy the data into the local args array and set up pointers
-////		ev = event->eventdef;
-////		formatspec = ev->GetArgFormat();
-////		numargs = ev->GetNumArgs();
+////		ev = event.eventdef;
+////		formatspec = ev.GetArgFormat();
+////		numargs = ev.GetNumArgs();
 ////		for( i = 0; i < numargs; i++ ) {
-////			offset = ev->GetArgOffset( i );
-////			data = event->data;
+////			offset = ev.GetArgOffset( i );
+////			data = event.data;
 ////			switch( formatspec[ i ] ) {
 ////			case D_EVENT_FLOAT :
 ////			case D_EVENT_INTEGER :
@@ -689,7 +689,7 @@ static ClearEventList( ):void {
 ////
 ////			case D_EVENT_ENTITY :
 ////			case D_EVENT_ENTITY_NULL :
-////				*reinterpret_cast<idEntity **>( &args[ i ] ) = reinterpret_cast< idEntityPtr<idEntity> * >( &data[ offset ] )->GetEntity();
+////				*reinterpret_cast<idEntity **>( &args[ i ] ) = reinterpret_cast< idEntityPtr<idEntity> * >( &data[ offset ] ).GetEntity();
 ////				break;
 ////
 ////			case D_EVENT_TRACE :
@@ -697,10 +697,10 @@ static ClearEventList( ):void {
 ////				if ( *reinterpret_cast<bool *>( &data[ offset ] ) ) {
 ////					*tracePtr = reinterpret_cast<trace_t *>( &data[ offset + sizeof( bool ) ] );
 ////
-////					if ( ( *tracePtr )->c.material != NULL ) {
+////					if ( ( *tracePtr ).c.material != NULL ) {
 ////						// look up the material name to get the material pointer
 ////						materialName = reinterpret_cast<const char *>( &data[ offset + sizeof( bool ) + sizeof( trace_t ) ] );
-////						( *tracePtr )->c.material = declManager->FindMaterial( materialName, true );
+////						( *tracePtr ).c.material = declManager.FindMaterial( materialName, true );
 ////					}
 ////				} else {
 ////					*tracePtr = NULL;
@@ -708,26 +708,26 @@ static ClearEventList( ):void {
 ////				break;
 ////
 ////			default:
-////				gameLocal.Error( "idEvent::ServiceEvents : Invalid arg format '%s' string for '%s' event.", formatspec, ev->GetName() );
+////				gameLocal.Error( "idEvent::ServiceEvents : Invalid arg format '%s' string for '%s' event.", formatspec, ev.GetName() );
 ////			}
 ////		}
 ////
 ////		// the event is removed from its list so that if then object
 ////		// is deleted, the event won't be freed twice
-////		event->eventNode.Remove();
-////		assert( event->object );
-////		event->object->ProcessEventArgPtr( ev, args );
+////		event.eventNode.Remove();
+////		assert( event.object );
+////		event.object.ProcessEventArgPtr( ev, args );
 ////
 ////#if 0
 ////		// event functions may never leave return values on the FPU stack
 ////		// enable this code to check if any event call left values on the FPU stack
-////		if ( !sys->FPU_StackIsEmpty() ) {
-////			gameLocal.Error( "idEvent::ServiceEvents %d: %s left a value on the FPU stack\n", num, ev->GetName() );
+////		if ( !sys.FPU_StackIsEmpty() ) {
+////			gameLocal.Error( "idEvent::ServiceEvents %d: %s left a value on the FPU stack\n", num, ev.GetName() );
 ////		}
 ////#endif
 ////
 ////		// return the event to the free list
-////		event->Free();
+////		event.Free();
 ////
 ////		// Don't allow ourselves to stay in here too long.  An abnormally high number
 ////		// of events being processed is evidence of an infinite loop of events.
@@ -806,36 +806,36 @@ static Init( ):void {
 ////	bool validTrace;
 ////	const char	*format;
 ////
-////	savefile->WriteInt( EventQueue.Num() );
+////	savefile.WriteInt( EventQueue.Num() );
 ////
 ////	event = EventQueue.Next();
 ////	while( event != NULL ) {
-////		savefile->WriteInt( event->time );
-////		savefile->WriteString( event->eventdef->GetName() );
-////		savefile->WriteString( event->typeinfo->classname );
-////		savefile->WriteObject( event->object );
-////		savefile->WriteInt( event->eventdef->GetArgSize() );
-////		format = event->eventdef->GetArgFormat();
-////		for ( i = 0, size = 0; i < event->eventdef->GetNumArgs(); ++i) {
-////			dataPtr = &event->data[ event->eventdef->GetArgOffset( i ) ];
+////		savefile.WriteInt( event.time );
+////		savefile.WriteString( event.eventdef.GetName() );
+////		savefile.WriteString( event.typeinfo.classname );
+////		savefile.WriteObject( event.object );
+////		savefile.WriteInt( event.eventdef.GetArgSize() );
+////		format = event.eventdef.GetArgFormat();
+////		for ( i = 0, size = 0; i < event.eventdef.GetNumArgs(); ++i) {
+////			dataPtr = &event.data[ event.eventdef.GetArgOffset( i ) ];
 ////			switch( format[ i ] ) {
 ////				case D_EVENT_FLOAT :
-////					savefile->WriteFloat( *reinterpret_cast<float *>( dataPtr ) );
+////					savefile.WriteFloat( *reinterpret_cast<float *>( dataPtr ) );
 ////					size += sizeof( float );
 ////					break;
 ////				case D_EVENT_INTEGER :
 ////				case D_EVENT_ENTITY :
 ////				case D_EVENT_ENTITY_NULL :
-////					savefile->WriteInt( *reinterpret_cast<int *>( dataPtr ) );
+////					savefile.WriteInt( *reinterpret_cast<int *>( dataPtr ) );
 ////					size += sizeof( int );
 ////					break;
 ////				case D_EVENT_VECTOR :
-////					savefile->WriteVec3( *reinterpret_cast<idVec3 *>( dataPtr ) );
+////					savefile.WriteVec3( *reinterpret_cast<idVec3 *>( dataPtr ) );
 ////					size += sizeof( idVec3 );
 ////					break;
 ////				case D_EVENT_TRACE :
 ////					validTrace = *reinterpret_cast<bool *>( dataPtr );
-////					savefile->WriteBool( validTrace );
+////					savefile.WriteBool( validTrace );
 ////					size += sizeof( bool );
 ////					if ( validTrace ) {
 ////						size += sizeof( trace_t );
@@ -844,7 +844,7 @@ static Init( ):void {
 ////						if ( t.c.material ) {
 ////							size += MAX_STRING_LEN;
 ////							str = reinterpret_cast<char *>( dataPtr + sizeof( bool ) + sizeof( trace_t ) );
-////							savefile->Write( str, MAX_STRING_LEN );
+////							savefile.Write( str, MAX_STRING_LEN );
 ////						}
 ////					}
 ////					break;
@@ -852,8 +852,8 @@ static Init( ):void {
 ////					break;
 ////			}
 ////		}
-////		assert( size == event->eventdef->GetArgSize() );
-////		event = event->eventNode.Next();
+////		assert( size == event.eventdef.GetArgSize() );
+////		event = event.eventNode.Next();
 ////	}
 ////}
 ////
@@ -870,7 +870,7 @@ static Init( ):void {
 ////	idEvent	*event;
 ////	const char	*format;
 ////
-////	savefile->ReadInt( num );
+////	savefile.ReadInt( num );
 ////
 ////	for ( i = 0; i < num; i++ ) {
 ////		if ( FreeEvents.IsListEmpty() ) {
@@ -878,55 +878,55 @@ static Init( ):void {
 ////		}
 ////
 ////		event = FreeEvents.Next();
-////		event->eventNode.Remove();
-////		event->eventNode.AddToEnd( EventQueue );
+////		event.eventNode.Remove();
+////		event.eventNode.AddToEnd( EventQueue );
 ////
-////		savefile->ReadInt( event->time );
+////		savefile.ReadInt( event.time );
 ////
 ////		// read the event name
-////		savefile->ReadString( name );
-////		event->eventdef = idEventDef::FindEvent( name );
-////		if ( !event->eventdef ) {
-////			savefile->Error( "idEvent::Restore: unknown event '%s'", name.c_str() );
+////		savefile.ReadString( name );
+////		event.eventdef = idEventDef::FindEvent( name );
+////		if ( !event.eventdef ) {
+////			savefile.Error( "idEvent::Restore: unknown event '%s'", name.c_str() );
 ////		}
 ////
 ////		// read the classtype
-////		savefile->ReadString( name );
-////		event->typeinfo = idClass::GetClass( name );
-////		if ( !event->typeinfo ) {
-////			savefile->Error( "idEvent::Restore: unknown class '%s' on event '%s'", name.c_str(), event->eventdef->GetName() );
+////		savefile.ReadString( name );
+////		event.typeinfo = idClass::GetClass( name );
+////		if ( !event.typeinfo ) {
+////			savefile.Error( "idEvent::Restore: unknown class '%s' on event '%s'", name.c_str(), event.eventdef.GetName() );
 ////		}
 ////
-////		savefile->ReadObject( event->object );
+////		savefile.ReadObject( event.object );
 ////
 ////		// read the args
-////		savefile->ReadInt( argsize );
-////		if ( ((size_t)argsize) != event->eventdef->GetArgSize() ) {
-////			savefile->Error( "idEvent::Restore: arg size (%d) doesn't match saved arg size(%d) on event '%s'", event->eventdef->GetArgSize(), argsize, event->eventdef->GetName() );
+////		savefile.ReadInt( argsize );
+////		if ( ((size_t)argsize) != event.eventdef.GetArgSize() ) {
+////			savefile.Error( "idEvent::Restore: arg size (%d) doesn't match saved arg size(%d) on event '%s'", event.eventdef.GetArgSize(), argsize, event.eventdef.GetName() );
 ////		}
 ////		if ( argsize ) {
-////			event->data = eventDataAllocator.Alloc( argsize );
-////			format = event->eventdef->GetArgFormat();
+////			event.data = eventDataAllocator.Alloc( argsize );
+////			format = event.eventdef.GetArgFormat();
 ////			assert( format );
-////			for ( j = 0, size = 0; j < event->eventdef->GetNumArgs(); ++j) {
-////				dataPtr = &event->data[ event->eventdef->GetArgOffset( j ) ];
+////			for ( j = 0, size = 0; j < event.eventdef.GetNumArgs(); ++j) {
+////				dataPtr = &event.data[ event.eventdef.GetArgOffset( j ) ];
 ////				switch( format[ j ] ) {
 ////					case D_EVENT_FLOAT :
-////						savefile->ReadFloat( *reinterpret_cast<float *>( dataPtr ) );
+////						savefile.ReadFloat( *reinterpret_cast<float *>( dataPtr ) );
 ////						size += sizeof( float );
 ////						break;
 ////					case D_EVENT_INTEGER :
 ////					case D_EVENT_ENTITY :
 ////					case D_EVENT_ENTITY_NULL :
-////						savefile->ReadInt( *reinterpret_cast<int *>( dataPtr ) );
+////						savefile.ReadInt( *reinterpret_cast<int *>( dataPtr ) );
 ////						size += sizeof( int );
 ////						break;
 ////					case D_EVENT_VECTOR :
-////						savefile->ReadVec3( *reinterpret_cast<idVec3 *>( dataPtr ) );
+////						savefile.ReadVec3( *reinterpret_cast<idVec3 *>( dataPtr ) );
 ////						size += sizeof( idVec3 );
 ////						break;
 ////					case D_EVENT_TRACE :
-////						savefile->ReadBool( *reinterpret_cast<bool *>( dataPtr ) );
+////						savefile.ReadBool( *reinterpret_cast<bool *>( dataPtr ) );
 ////						size += sizeof( bool );
 ////						if ( *reinterpret_cast<bool *>( dataPtr ) ) {
 ////							size += sizeof( trace_t );
@@ -935,7 +935,7 @@ static Init( ):void {
 ////							if ( t.c.material ) {
 ////								size += MAX_STRING_LEN;
 ////								str = reinterpret_cast<char *>( dataPtr + sizeof( bool ) + sizeof( trace_t ) );
-////								savefile->Read( str, MAX_STRING_LEN );
+////								savefile.Read( str, MAX_STRING_LEN );
 ////							}
 ////						}
 ////						break;
@@ -943,9 +943,9 @@ static Init( ):void {
 ////						break;
 ////				}
 ////			}
-////			assert( size == event->eventdef->GetArgSize() );
+////			assert( size == event.eventdef.GetArgSize() );
 ////		} else {
-////			event->data = NULL;
+////			event.data = NULL;
 ////		}
 ////	}
 ////}
@@ -959,19 +959,19 @@ static Init( ):void {
 //// ================
 //// */
 ////void idEvent::RestoreTrace( idRestoreGame *savefile, trace_t &trace ) {
-////	savefile->ReadFloat( trace.fraction );
-////	savefile->ReadVec3( trace.endpos );
-////	savefile->ReadMat3( trace.endAxis );
-////	savefile->ReadInt( (int&)trace.c.type );
-////	savefile->ReadVec3( trace.c.point );
-////	savefile->ReadVec3( trace.c.normal );
-////	savefile->ReadFloat( trace.c.dist );
-////	savefile->ReadInt( trace.c.contents );
-////	savefile->ReadInt( (int&)trace.c.material );
-////	savefile->ReadInt( trace.c.contents );
-////	savefile->ReadInt( trace.c.modelFeature );
-////	savefile->ReadInt( trace.c.trmFeature );
-////	savefile->ReadInt( trace.c.id );
+////	savefile.ReadFloat( trace.fraction );
+////	savefile.ReadVec3( trace.endpos );
+////	savefile.ReadMat3( trace.endAxis );
+////	savefile.ReadInt( (int&)trace.c.type );
+////	savefile.ReadVec3( trace.c.point );
+////	savefile.ReadVec3( trace.c.normal );
+////	savefile.ReadFloat( trace.c.dist );
+////	savefile.ReadInt( trace.c.contents );
+////	savefile.ReadInt( (int&)trace.c.material );
+////	savefile.ReadInt( trace.c.contents );
+////	savefile.ReadInt( trace.c.modelFeature );
+////	savefile.ReadInt( trace.c.trmFeature );
+////	savefile.ReadInt( trace.c.id );
 ////}
 ////
 /////*
@@ -983,19 +983,19 @@ static Init( ):void {
 ////================
 //// */
 ////void idEvent::SaveTrace( idSaveGame *savefile, const trace_t &trace ) {
-////	savefile->WriteFloat( trace.fraction );
-////	savefile->WriteVec3( trace.endpos );
-////	savefile->WriteMat3( trace.endAxis );
-////	savefile->WriteInt( trace.c.type );
-////	savefile->WriteVec3( trace.c.point );
-////	savefile->WriteVec3( trace.c.normal );
-////	savefile->WriteFloat( trace.c.dist );
-////	savefile->WriteInt( trace.c.contents );
-////	savefile->WriteInt( (int&)trace.c.material );
-////	savefile->WriteInt( trace.c.contents );
-////	savefile->WriteInt( trace.c.modelFeature );
-////	savefile->WriteInt( trace.c.trmFeature );
-////	savefile->WriteInt( trace.c.id );
+////	savefile.WriteFloat( trace.fraction );
+////	savefile.WriteVec3( trace.endpos );
+////	savefile.WriteMat3( trace.endAxis );
+////	savefile.WriteInt( trace.c.type );
+////	savefile.WriteVec3( trace.c.point );
+////	savefile.WriteVec3( trace.c.normal );
+////	savefile.WriteFloat( trace.c.dist );
+////	savefile.WriteInt( trace.c.contents );
+////	savefile.WriteInt( (int&)trace.c.material );
+////	savefile.WriteInt( trace.c.contents );
+////	savefile.WriteInt( trace.c.modelFeature );
+////	savefile.WriteInt( trace.c.trmFeature );
+////	savefile.WriteInt( trace.c.id );
 ////}
 ////
 ////
@@ -1015,13 +1015,13 @@ static Init( ):void {
 ////	idStr string2;
 ////	idFile *file;
 ////
-////	file = fileSystem->OpenFileWrite( "Callbacks.cpp" );
+////	file = fileSystem.OpenFileWrite( "Callbacks.cpp" );
 ////
-////	file->Printf( "// generated file - see CREATE_EVENT_CODE\n\n" );
+////	file.Printf( "// generated file - see CREATE_EVENT_CODE\n\n" );
 ////
 ////	for( i = 1; i <= D_EVENT_MAXARGS; i++ ) {
 ////
-////		file->Printf( "\t/*******************************************************\n\n\t\t%d args\n\n\t*******************************************************/\n\n", i );
+////		file.Printf( "\t/*******************************************************\n\n\t\t%d args\n\n\t*******************************************************/\n\n", i );
 ////
 ////		for ( j = 0; j < ( 1 << i ); j++ ) {
 ////			for ( k = 0; k < i; k++ ) {
@@ -1047,13 +1047,13 @@ static Init( ):void {
 ////				}
 ////			}
 ////
-////			file->Printf( "\tcase %d :\n\t\ttypedef void ( idClass::*eventCallback_%s_t )( %s );\n", ( 1 << ( i + D_EVENT_MAXARGS ) ) + j, argString, string1.c_str() );
-////			file->Printf( "\t\t( this->*( eventCallback_%s_t )callback )( %s );\n\t\tbreak;\n\n", argString, string2.c_str() );
+////			file.Printf( "\tcase %d :\n\t\ttypedef void ( idClass::*eventCallback_%s_t )( %s );\n", ( 1 << ( i + D_EVENT_MAXARGS ) ) + j, argString, string1.c_str() );
+////			file.Printf( "\t\t( this.*( eventCallback_%s_t )callback )( %s );\n\t\tbreak;\n\n", argString, string2.c_str() );
 ////
 ////		}
 ////	}
 ////
-////	fileSystem->CloseFile( file );
+////	fileSystem.CloseFile( file );
 ////}
 ////
 ////#endif

@@ -536,25 +536,25 @@ AssureSize ( /*int */newSize: number ): void {
 //	return this.list;
 //}
 
-///*
-//================
-//idList<type>::Alloc
+/*
+================
+idList<type>::Alloc
 
-//Returns a reference to a new data element at the end of the list.
-//================
-//*/
+Returns a reference to a new data element at the end of the list.
+================
+*/
 //template< class type >
-//ID_INLINE type &idList<type>::Alloc( void ) {
-//	if ( !this.list ) {
-//		Resize( this.granularity );
-//	}
+	Alloc ( ): type {
+		if ( !this.list ) {
+			this.Resize( this.granularity );
+		}
 
-//	if ( this.num == this.size ) {
-//		Resize( this.size + this.granularity );
-//	}
+		if ( this.num == this.size ) {
+			this.Resize( this.size + this.granularity );
+		}
 
-//	return this.list[ this.num++ ];
-//}
+		return this.list[this.num++];
+	}
 
 ///*
 //================
