@@ -113,13 +113,17 @@ function short(buf: Uint8Array, ptr: number): number {
 	return buf[ptr] + (buf[ptr + 1] << 8);
 }
 
+function float ( ) {
+	
+}
+
 function sizeof(obj: any) : number {
     if(typeof obj === "number") {
         debugger;
         throw "cannot get size of number type";
     }
 
-	if ( obj === int) {
+	if (obj === int || obj === float) {
 		return 4;
 	}
 

@@ -174,7 +174,7 @@ idEventDef::GetArgSize
 ////*/
 ////ID_INLINE int idEventDef::GetArgOffset(int arg) const {
 ////	assert((arg >= 0) && (arg < D_EVENT_MAXARGS));
-////	return argOffset[arg];
+////	return this.argOffset[arg];
 ////}
 ////
 /////*
@@ -188,121 +188,121 @@ idEventDef::GetArgSize
 ////
 ////#endif /* !__SYS_EVENT_H__ */
 ////
-////
-/////*
-////================
-////idEventDef::idEventDef
-////================
-////*/
-////idEventDef::idEventDef( const char *command, const char *formatspec, char returnType ) {
-////	idEventDef		*ev;
-////	int				i;
-////	unsigned int	bits;
-////
-////	assert( command );
-////	assert( !idEvent::initialized );
-////
-////	// Allow NULL to indicate no args, but always store it as ""
-////	// so we don't have to check for it.
-////	if ( !formatspec ) {
-////		formatspec = "";
-////	}
-////	
-////	this.name = command;
-////	this.formatspec = formatspec;
-////	this.returnType = returnType;
-////
-////	numargs = strlen( formatspec );
-////	assert( numargs <= D_EVENT_MAXARGS );
-////	if ( numargs > D_EVENT_MAXARGS ) {
-////		eventError = true;
-////		sprintf( eventErrorMsg, "idEventDef::idEventDef : Too many args for '%s' event.", name );
-////		return;
-////	}
-////
-////	// make sure the format for the args is valid, calculate the formatspecindex, and the offsets for each arg
-////	bits = 0;
-////	argsize = 0;
-////	memset( argOffset, 0, sizeof( argOffset ) );
-////	for( i = 0; i < numargs; i++ ) {
-////		argOffset[ i ] = argsize;
-////		switch( formatspec[ i ] ) {
-////		case D_EVENT_FLOAT :
-////			bits |= 1 << i;
-////			argsize += sizeof( float );
-////			break;
-////
-////		case D_EVENT_INTEGER :
-////			argsize += sizeof( int );
-////			break;
-////
-////		case D_EVENT_VECTOR :
-////			argsize += sizeof( idVec3 );
-////			break;
-////
-////		case D_EVENT_STRING :
-////			argsize += MAX_STRING_LEN;
-////			break;
-////
-////		case D_EVENT_ENTITY :
-////			argsize += sizeof( idEntityPtr<idEntity> );
-////			break;
-////
-////		case D_EVENT_ENTITY_NULL :
-////			argsize += sizeof( idEntityPtr<idEntity> );
-////			break;
-////
-////		case D_EVENT_TRACE :
-////			argsize += sizeof( trace_t ) + MAX_STRING_LEN + sizeof( bool );
-////			break;
-////
-////		default :
-////			eventError = true;
-////			sprintf( eventErrorMsg, "idEventDef::idEventDef : Invalid arg format '%s' string for '%s' event.", formatspec, name );
-////			return;
-////			break;
-////		}
-////	}
-////
-////	// calculate the formatspecindex
-////	formatspecIndex = ( 1 << ( numargs + D_EVENT_MAXARGS ) ) | bits;
-////
-////	// go through the list of defined events and check for duplicates
-////	// and mismatched format strings
-////	eventnum = numEventDefs;
-////	for( i = 0; i < eventnum; i++ ) {
-////		ev = eventDefList[ i ];
-////		if ( strcmp( command, ev.name ) == 0 ) {
-////			if ( strcmp( formatspec, ev.formatspec ) != 0 ) {
-////				eventError = true;
-////				sprintf( eventErrorMsg, "idEvent '%s' defined twice with same name but differing format strings ('%s'!='%s').",
-////					command, formatspec, ev.formatspec );
-////				return;
-////			}
-////
-////			if ( ev.returnType != returnType ) {
-////				eventError = true;
-////				sprintf( eventErrorMsg, "idEvent '%s' defined twice with same name but differing return types ('%c'!='%c').",
-////					command, returnType, ev.returnType );
-////				return;
-////			}
-////			// Don't bother putting the duplicate event in list.
-////			eventnum = ev.eventnum;
-////			return;
-////		}
-////	}
-////
-////	ev = this;
-////
-////	if ( numEventDefs >= MAX_EVENTS ) {
-////		eventError = true;
-////		sprintf( eventErrorMsg, "numEventDefs >= MAX_EVENTS" );
-////		return;
-////	}
-////	eventDefList[numEventDefs] = ev;
-////	numEventDefs++;
-////}
-////
+
+/*
+================
+idEventDef::idEventDef
+================
+*/
+	constructor ( command: string, formatspec: string, /*char */returnType: number ) {
+		var ev: idEventDef;
+		var i: number;
+		var bits: number; //unsigned int	
+
+		assert( command );
+		assert( !idEvent.initialized );
+
+		// Allow NULL to indicate no args, but always store it as ""
+		// so we don't have to check for it.
+		if ( !formatspec ) {
+			formatspec = "";
+		}
+
+		this.name = command;
+		this.formatspec = formatspec;
+		this.returnType = returnType;
+
+		this.numargs = strlen( formatspec );
+		assert( this.numargs <= D_EVENT_MAXARGS );
+		if ( this.numargs > D_EVENT_MAXARGS ) {
+			eventError = true;
+			sprintf( eventErrorMsg, "idEventDef::idEventDef : Too many args for '%s' event.", name );
+			return;
+		}
+
+		// make sure the format for the args is valid, calculate the formatspecindex, and the offsets for each arg
+		bits = 0;
+		this.argsize = 0;
+		memset( this.argOffset, 0, sizeof( this.argOffset ) );
+		for ( i = 0; i < this.numargs; i++ ) {
+			this.argOffset[i] = this.argsize;
+			switch ( formatspec.charCodeAt( i ) ) {
+			case D_EVENT_FLOAT:
+				bits |= 1 << i;
+				this.argsize += sizeof( float );
+				break;
+
+			case D_EVENT_INTEGER:
+				this.argsize += sizeof( int );
+				break;
+
+			case D_EVENT_VECTOR:
+				this.argsize += sizeof( idVec3 );
+				break;
+
+			case D_EVENT_STRING:
+				this.argsize += MAX_STRING_LEN;
+				break;
+
+			case D_EVENT_ENTITY:
+				this.argsize += sizeof( 4 /*idEntityPtr<idEntity>*/ );
+				break;
+
+			case D_EVENT_ENTITY_NULL:
+				this.argsize += sizeof( 4 /*idEntityPtr<idEntity>*/ );
+				break;
+
+			case D_EVENT_TRACE:
+				this.argsize += sizeof( trace_t ) + MAX_STRING_LEN + 1 /*sizeof( bool )*/;
+				break;
+
+			default:
+				eventError = true;
+				sprintf( eventErrorMsg, "idEventDef::idEventDef : Invalid arg format '%s' string for '%s' event.", formatspec, name );
+				return;
+				break;
+			}
+		}
+
+		// calculate the formatspecindex
+		this.formatspecIndex = ( 1 << ( this.numargs + D_EVENT_MAXARGS ) ) | bits;
+
+		// go through the list of defined events and check for duplicates
+		// and mismatched format strings
+		this.eventnum = idEventDef.numEventDefs;
+		for ( i = 0; i < this.eventnum; i++ ) {
+			ev = idEventDef.eventDefList[i];
+			if ( strcmp( command, ev.name ) == 0 ) {
+				if ( strcmp( formatspec, ev.formatspec ) != 0 ) {
+					eventError = true;
+					sprintf( eventErrorMsg, "idEvent '%s' defined twice with same name but differing format strings ('%s'!='%s').",
+						command, formatspec, ev.formatspec );
+					return;
+				}
+
+				if ( ev.returnType != returnType ) {
+					eventError = true;
+					sprintf( eventErrorMsg, "idEvent '%s' defined twice with same name but differing return types ('%c'!='%c').",
+						command, returnType, ev.returnType );
+					return;
+				}
+				// Don't bother putting the duplicate event in list.
+				this.eventnum = ev.eventnum;
+				return;
+			}
+		}
+
+		ev = this;
+
+		if ( idEventDef.numEventDefs >= MAX_EVENTS ) {
+			eventError = true;
+			sprintf( eventErrorMsg, "numEventDefs >= MAX_EVENTS" );
+			return;
+		}
+		idEventDef.eventDefList[idEventDef.numEventDefs] = ev;
+		idEventDef.numEventDefs++;
+	}
+
 /*
 ================
 idEventDef::NumEventCommands
