@@ -253,21 +253,21 @@ class idLexer {
 		return "unkown punctuation";
 	}
 
-	/////*
-	////================
-	////idLexer::GetPunctuationId
-	////================
-	////*/
-	////int idLexer::GetPunctuationId( const char *p ) {
-	////	int i;
+	/*
+	================
+	idLexer::GetPunctuationId
+	================
+	*/
+	GetPunctuationId ( p: string ): number {
+		var i: number;
 
-	////	for (i = 0; this.punctuations[i].p; i++) {
-	////		if ( !strcmp(this.punctuations[i].p, p) ) {
-	////			return this.punctuations[i].n;
-	////		}
-	////	}
-	////	return 0;
-	////}
+		for ( i = 0; this.punctuations[i].p; i++ ) {
+			if ( !strcmp( this.punctuations[i].p, p ) ) {
+				return this.punctuations[i].n;
+			}
+		}
+		return 0;
+	}
 
 	/*
 	================
@@ -837,7 +837,7 @@ class idLexer {
 		{
 			punc = this.punctuations[n];
 	//#else
-	//	int i;
+	//	var i:number;
 
 	//	for (i = 0; this.punctuations[i].p; i++) {
 	//		punc = &this.punctuations[i];
@@ -970,7 +970,7 @@ class idLexer {
 		}
 		// succesfully read a token
 		//dlog(DEBUG_Lexer, "RT: %i, %s\n", this.line , token.$.data);
-		//if ( idLexer.RTCount >= 495493 ) debugger;
+		if ( idLexer.RTCount == 1147 ) debugger;
 		dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", idLexer.RTCount, this.line, token.$.data);
 		idLexer.RTCount++;
 		return 1;
@@ -1368,7 +1368,7 @@ class idLexer {
 	////================
 	////*/
 	////int idLexer::Parse1DMatrix( int x, float *m ) {
-	////	int i;
+	////	var i:number;
 
 	////	if ( !idLexer::ExpectTokenString( "(" ) ) {
 	////		return false;
@@ -1390,7 +1390,7 @@ class idLexer {
 	////================
 	////*/
 	////int idLexer::Parse2DMatrix( int y, int x, float *m ) {
-	////	int i;
+	////	var i:number;
 
 	////	if ( !idLexer::ExpectTokenString( "(" ) ) {
 	////		return false;
@@ -1414,7 +1414,7 @@ class idLexer {
 	////================
 	////*/
 	////int idLexer::Parse3DMatrix( int z, int y, int x, float *m ) {
-	////	int i;
+	////	var i:number;
 
 	////	if ( !idLexer::ExpectTokenString( "(" ) ) {
 	////		return false;

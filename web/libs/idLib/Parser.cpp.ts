@@ -382,7 +382,7 @@ class idParser {
 ////================
 ////* /
 ////static void PC_PrintDefineHashTable(define_t **definehash) {
-////	int i;
+////	var i:number;
 ////	define_t *d;
 ////
 ////	for (i = 0; i < DEFINEHASHSIZE; i++) {
@@ -883,7 +883,7 @@ idParser::UnreadSourceToken
 ////================
 ////*/
 ////void idParser::AddBuiltinDefines( ) {
-////	int i;
+////	var i:number;
 ////	define_t *define;
 ////	struct builtin
 ////	{
@@ -918,7 +918,7 @@ idParser::UnreadSourceToken
 ////================
 ////*/
 ////define_t *idParser::CopyFirstDefine( ) {
-////	int i;
+////	var i:number;
 ////
 ////	for ( i = 0; i < DEFINEHASHSIZE; i++ ) {
 ////		if ( this.definehash[i] ) {
@@ -3091,7 +3091,7 @@ idParser::UnreadToken
 ////================
 ////*/
 /////*int*/Parse1DMatrix( int x, float *m ):number {
-////	int i;
+////	var i:number;
 ////
 ////	if ( !idParser::ExpectTokenString( "(" ) ) {
 ////		return 0/*false*/;
@@ -3113,7 +3113,7 @@ idParser::UnreadToken
 ////================
 ////*/
 /////*int*/Parse2DMatrix( int y, int x, float *m ):number {
-////	int i;
+////	var i:number;
 ////
 ////	if ( !idParser::ExpectTokenString( "(" ) ) {
 ////		return 0/*false*/;
@@ -3137,7 +3137,7 @@ idParser::UnreadToken
 ////================
 ////*/
 /////*int*/Parse3DMatrix( int z, int y, int x, float *m ):number {
-////	int i;
+////	var i:number;
 ////
 ////	if ( !idParser::ExpectTokenString( "(" ) ) {
 ////		return 0/*false*/;
@@ -3390,7 +3390,7 @@ FreeSource( keepDefines = false ):void {
 ////================
 ////*/
 ////const char *idParser::GetPunctuationFromId( int id ) {
-////	int i;
+////	var i:number;
 ////
 ////	if ( !this.punctuations ) {
 ////		idLexer lex;
@@ -3404,28 +3404,29 @@ FreeSource( keepDefines = false ):void {
 ////	}
 ////	return "unkown punctuation";
 ////}
-////
-/////*
-////================
-////idParser::GetPunctuationId
-////================
-////*/
-/////*int*/GetPunctuationId( const char *p ):number {
-////	int i;
-////
-////	if ( !this.punctuations ) {
-////		idLexer lex;
-////		return lex.GetPunctuationId( p );
-////	}
-////
-////	for (i = 0; this.punctuations[i].p; i++) {
-////		if ( !strcmp(this.punctuations[i].p, p) ) {
-////			return this.punctuations[i].n;
-////		}
-////	}
-////	return 0;
-////}
-////
+
+/*
+================
+idParser::GetPunctuationId
+================
+*/
+/*int*/
+	GetPunctuationId ( p: string ): number {
+		var i: number;
+
+		if ( !this.punctuations ) {
+			var lex = new idLexer;
+			return lex.GetPunctuationId( p );
+		}
+
+		for ( i = 0; this.punctuations[i].p; i++ ) {
+			if ( !strcmp( this.punctuations[i].p, p ) ) {
+				return this.punctuations[i].n;
+			}
+		}
+		return 0;
+	}
+
 /////*
 ////================
 ////idParser::idParser

@@ -254,44 +254,46 @@ class idCompiler {
 		new opcode_t( "<CONTINUE>", "CONTINUE", -1, false, def_float, def_void, def_void ),
 		null //new opcode_t(null,null,null,null,null,null,null)
 	];
-//
-///*
-//================
-//idCompiler::idCompiler()
-//================
-//*/
-//idCompiler::idCompiler() {
-//	char	**ptr;
-//	int		id;
-//
-//	// make sure we have the right # of opcodes in the table
-//	assert( ( sizeof( opcodes ) / sizeof( opcodes[ 0 ] ) ) == ( NUM_OPCODES + 1 ) );
-//
-//	this.eof	= true;
-//	this.parserPtr = &parser;
-//
-//	this.callthread			= false;
-//	this.loopDepth			= 0;
-//	this.eof					= false;
-//	this.braceDepth			= 0;
-//	immediateType		= NULL;
-//	this.basetype			= NULL;
-//	this.currentLineNumber	= 0;
-//	this.currentFileNumber	= 0;
-//	errorCount			= 0;
-//	this.console				= false;
-//	this.scope				= &def_namespace;
-//
-//	memset( &immediate, 0, sizeof( immediate ) );
-//	memset( punctuationValid, 0, sizeof( punctuationValid ) );
-//	for( ptr = punctuation; *ptr != NULL; ptr++ ) {
-//		id = this.parserPtr.GetPunctuationId( *ptr );
-//		if ( ( id >= 0 ) && ( id < 256 ) ) {
-//			punctuationValid[ id ] = true;
-//		}
-//	}
-//}
-//
+
+/*
+================
+idCompiler::idCompiler()
+================
+*/
+constructor() {
+	var ptr:number;
+	var id:number;
+
+	// make sure we have the right # of opcodes in the table
+	//assert((sizeof(idCompiler.opcodes) / sizeof(idCompiler.  opcodes/*[ 0 ]*/ ) ) == ( op.NUM_OPCODES + 1 ) );
+
+	this.eof	= true;
+	this.parserPtr = this.parser;
+
+	this.callthread			= false;
+	this.loopDepth			= 0;
+	this.eof				= false;
+	this.braceDepth			= 0;
+	this.immediateType		= null;
+	this.basetype			= null;
+	this.currentLineNumber	= 0;
+	this.currentFileNumber	= 0;
+	this.errorCount			= 0;
+	this.console			= false;
+	this.scope				= def_namespace;
+
+	this.immediate.init ( );
+	for (var i = 0; i < idCompiler.punctuationValid.length; i++ ) {
+		idCompiler.punctuationValid[i] = false;
+	}
+	for ( ptr = 0; idCompiler.punctuation[ptr]; ptr++ ) {
+		id = this.parserPtr.GetPunctuationId( idCompiler.punctuation[ptr] );
+		if ( ( id >= 0 ) && ( id < 256 ) ) {
+			idCompiler.punctuationValid[id] = true;
+		}
+	}
+}
+
 	/*
 ============
 idCompiler::Error
