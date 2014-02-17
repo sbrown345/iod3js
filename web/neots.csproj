@@ -49,6 +49,7 @@
     <TypeScriptCompile Include="dlls\Game\AFEntity.h.ts" />
     <TypeScriptCompile Include="dlls\Game\GameSys\SysCmds.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\GameSys\SysCvar.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\GameSys\SaveGame.cpp.ts" />
     <Content Include="dlls\Game\Game_local.cpp.ts" />
     <Content Include="dlls\Game\Game_local.h.ts" />
     <TypeScriptCompile Include="dlls\Game\Script\Script_Compiler.cpp.ts" />

@@ -150,14 +150,18 @@ class idEntity extends idClass {
 ////
 ////public:
 ////	ABSTRACT_PROTOTYPE( idEntity );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idEntity>[];
 ////
 ////							idEntity();
 ////							~idEntity();
 ////
-////	void					Spawn( void );
-////
-////	void					Save( idSaveGame *savefile ) const;
-////	void					Restore( idRestoreGame *savefile );
+	Spawn( ):void { throw "placeholder"; }
+
+	Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+	Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
 ////	const char *			GetEntityDefName( void ) const;
 ////	void					SetName( const char *name );

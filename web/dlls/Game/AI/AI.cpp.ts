@@ -4888,20 +4888,39 @@
 ////
 ////	return true;
 ////}
-////
-/////***********************************************************************
-////
-////idCombatNode
-////
-////***********************************************************************/
-////
-////const idEventDef EV_CombatNode_MarkUsed( "markUsed" );
-////
-////CLASS_DECLARATION( idEntity, idCombatNode )
-////	EVENT( EV_CombatNode_MarkUsed,				idCombatNode::Event_MarkUsed )
-////	EVENT( EV_Activate,							idCombatNode::Event_Activate )
-////END_CLASS
-////
+
+/***********************************************************************
+
+idCombatNode
+
+***********************************************************************/
+
+var EV_CombatNode_MarkUsed = new idEventDef( "markUsed" );
+
+idEntity.Type = new idTypeInfo( "idEntity", "idCombatNode",
+	idEntity.eventCallbacks, idEntity.CreateInstance, idEntity.prototype.Spawn,
+	idEntity.prototype.Save, idEntity.prototype.Restore );
+
+idEntity.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idEntity;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idEntity.prototype.GetType = function ( ): idTypeInfo {
+	return ( idEntity.Type );
+};
+
+idEntity.eventCallbacks = [
+	new idEventFunc( EV_CombatNode_MarkUsed, idCombatNode.prototype.Event_MarkUsed ),
+	new idEventFunc( EV_Activate, idCombatNode.prototype.Event_Activate )
+];
+
+
 /////*
 ////=====================
 ////idCombatNode::idCombatNode

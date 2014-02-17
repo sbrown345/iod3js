@@ -162,8 +162,8 @@ class idTypeInfo {
 ////initialized in any order, the constructor must handle the case that subclasses
 ////are initialized before superclasses.
 ////================
-	constructor() {
-		todoThrow ( );
+	constructor ( classname: string, superclass: string, eventCallbacks: idEventFunc<idClass>[], CreateInstance: ( ) => idClass,
+		Spawn: ( ) => void, Save: ( savefile: idSaveGame ) => void, Restore: ( savefile: idRestoreGame ) => void ) {
 ////idTypeInfo::idTypeInfo( const char *classname, const char *superclass, idEventFunc<idClass> *eventCallbacks, idClass *( *CreateInstance )( void ), 
 ////	void ( idClass::*Spawn )( void ), void ( idClass::*Save )( idSaveGame *savefile ) const, void ( idClass::*Restore )( idRestoreGame *savefile ) ) {
 ////
@@ -419,13 +419,17 @@ incorrect.  Use this on concrete classes only.
 ////
 ////typedef void ( idClass::*classSpawnFunc_t )( void );
 ////
-////class idSaveGame;
+////class idSaveGame;	
 ////class idRestoreGame;
 ////
 class idClass {
 	////public:
 	////	ABSTRACT_PROTOTYPE( idClass );
-	////
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idClass>;
+
 	////#ifdef ID_REDIRECT_NEWDELETE
 	////#undef new
 	////#endif
@@ -561,27 +565,27 @@ class idClass {
 ////
 ////	return cls.Spawn;
 ////}
-////
-/////*
-////================
-////idClass::FindUninitializedMemory
-////================
-////*/
-////void idClass::FindUninitializedMemory( void ) {
-////#ifdef ID_DEBUG_UNINITIALIZED_MEMORY
-////	unsigned long *ptr = ( ( unsigned long * )this ) - 1;
-////	int size = *ptr;
-////	assert( ( size & 3 ) == 0 );
-////	size >>= 2;
-////	for ( int i = 0; i < size; i++ ) {
-////		if ( ptr[i] == 0xcdcdcdcd ) {
-////			const char *varName = GetTypeVariableName( GetClassname(), i << 2 );
-////			gameLocal.Warning( "type '%s' has uninitialized variable %s (offset %d)", GetClassname(), varName, i << 2 );
-////		}
-////	}
-////#endif
-////}
-////
+
+/*
+================
+idClass::FindUninitializedMemory
+================
+*/
+	FindUninitializedMemory ( ): void {
+//#ifdef ID_DEBUG_UNINITIALIZED_MEMORY
+//	unsigned long *ptr = ( ( unsigned long * )this ) - 1;
+//	int size = *ptr;
+//	assert( ( size & 3 ) == 0 );
+//	size >>= 2;
+//	for ( int i = 0; i < size; i++ ) {
+//		if ( ptr[i] == 0xcdcdcdcd ) {
+//			const char *varName = GetTypeVariableName( GetClassname(), i << 2 );
+//			gameLocal.Warning( "type '%s' has uninitialized variable %s (offset %d)", GetClassname(), varName, i << 2 );
+//		}
+//	}
+//#endif
+	}
+
 /////*
 ////================
 ////idClass::Spawn

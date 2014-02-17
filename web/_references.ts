@@ -338,6 +338,7 @@
 
 /// <reference path="dlls/game/gamesys/class.cpp.ts" />
 /// <reference path="dlls/game/gamesys/event.cpp.ts" />
+/// <reference path="dlls/game/gamesys/savegame.cpp.ts" />
 /// <reference path="dlls/game/gamesys/syscvar.cpp.ts" />
 /// <reference path="dlls/game/entity.h.ts" />
 /// <reference path="dlls/game/entity.cpp.ts" />

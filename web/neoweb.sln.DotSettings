@@ -28,6 +28,32 @@
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/Shortcut/@EntryValue">END_CLASS</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/Text/@EntryValue">new idEventFunc&lt;idTarget_LockDoor&gt;( null, null) };</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=A2190E5D63134142B9D30855DCBC012B/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=A2190E5D63134142B9D30855DCBC012B/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=A2190E5D63134142B9D30855DCBC012B/Field/=event/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=A2190E5D63134142B9D30855DCBC012B/Field/=event/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=A2190E5D63134142B9D30855DCBC012B/Field/=function/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=A2190E5D63134142B9D30855DCBC012B/Field/=function/Order/@EntryValue">1</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=A2190E5D63134142B9D30855DCBC012B/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=A2190E5D63134142B9D30855DCBC012B/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=A2190E5D63134142B9D30855DCBC012B/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=A2190E5D63134142B9D30855DCBC012B/Shortcut/@EntryValue">EVENT</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=A2190E5D63134142B9D30855DCBC012B/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=A2190E5D63134142B9D30855DCBC012B/Text/@EntryValue">new idEventFunc( $event$, $function$ ),</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=ADA9CC4F4F6FAA4EAF5979F8196884D7/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=ADA9CC4F4F6FAA4EAF5979F8196884D7/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=ADA9CC4F4F6FAA4EAF5979F8196884D7/Description/@EntryValue">This macro must be included in the definition of any abstract subclass of idClass. It prototypes variables used in class instanciation and type checking. Use this on single inheritance abstract classes only.</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=ADA9CC4F4F6FAA4EAF5979F8196884D7/Field/=nameofclass/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=ADA9CC4F4F6FAA4EAF5979F8196884D7/Field/=nameofclass/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=ADA9CC4F4F6FAA4EAF5979F8196884D7/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=ADA9CC4F4F6FAA4EAF5979F8196884D7/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=ADA9CC4F4F6FAA4EAF5979F8196884D7/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=ADA9CC4F4F6FAA4EAF5979F8196884D7/Shortcut/@EntryValue">ABSTRACT_PROTOTYPE</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=ADA9CC4F4F6FAA4EAF5979F8196884D7/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=ADA9CC4F4F6FAA4EAF5979F8196884D7/Text/@EntryValue">static	Type:idTypeInfo;						&#xD;
+static	CreateInstance( ): idClass {throw "placeholder";}&#xD;
+GetType( ):idTypeInfo {throw "placeholder";}&#xD;
+static	eventCallbacks: idEventFunc&lt;$nameofclass$&gt;[];</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Reformat/@EntryValue">True</s:Boolean>

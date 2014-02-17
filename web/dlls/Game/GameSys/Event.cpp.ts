@@ -194,7 +194,7 @@ idEventDef::GetArgSize
 idEventDef::idEventDef
 ================
 */
-	constructor ( command: string, formatspec: string, /*char */returnType: number ) {
+	constructor ( command: string, formatspec: string = null, /*char */returnType = 0) {
 		var ev: idEventDef;
 		var i: number;
 		var bits: number; //unsigned int	
