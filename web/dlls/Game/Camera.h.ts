@@ -62,8 +62,8 @@ class idCamera extends idEntity {
 ////							idCameraView();
 ////
 ////	// save games
-////	void					Save( idSaveGame *savefile ) const;				// archives object for save game file
-////	void					Restore( idRestoreGame *savefile );				// unarchives object from save game file
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }				// archives object for save game file
+////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }				// unarchives object from save game file
 ////
 ////	void					Spawn( );
 ////	virtual void			GetViewParms( renderView_t *view );
@@ -102,8 +102,8 @@ class idCamera extends idEntity {
 ////							~idCameraAnim();
 ////
 ////	// save games
-////	void					Save( idSaveGame *savefile ) const;				// archives object for save game file
-////	void					Restore( idRestoreGame *savefile );				// unarchives object from save game file
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }				// archives object for save game file
+////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }				// unarchives object from save game file
 ////
 ////	void					Spawn( void );
 ////	virtual void			GetViewParms( renderView_t *view );

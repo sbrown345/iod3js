@@ -507,7 +507,7 @@ class idProgram {
 //												~idProgram();
 //
 //	// save games
-//	void										Save( idSaveGame *savefile ) const;
+//	void										Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	bool										Restore( idRestoreGame *savefile );
 //	int											CalculateChecksum( void ) const;		// Used to insure program code has not
 //																						//    changed between savegames

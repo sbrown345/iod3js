@@ -76,8 +76,8 @@
 //
 //	void				Spawn( void );
 //
-//	void				Save( idSaveGame *savefile ) const;
-//	void				Restore( idRestoreGame *savefile );
+//	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //	virtual bool		ClientReceiveEvent( int event, int time, const idBitMsg &msg );
 //
@@ -107,8 +107,8 @@
 //
 //	void				Spawn( void );
 //
-//	void				Save( idSaveGame *savefile ) const;
-//	void				Restore( idRestoreGame *savefile );
+//	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //	virtual void		Think( void );
 //
@@ -155,8 +155,8 @@
 //
 //						idDamagable( void );
 //
-//	void				Save( idSaveGame *savefile ) const;
-//	void				Restore( idRestoreGame *savefile );
+//	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //	void				Spawn( void );
 //	void				Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location );
@@ -231,8 +231,8 @@
 //public:
 //	CLASS_PROTOTYPE( idForceField );
 //
-//	void				Save( idSaveGame *savefile ) const;
-//	void				Restore( idRestoreGame *savefile );
+//	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //	void				Spawn( void );
 //
@@ -264,8 +264,8 @@
 //							idAnimated();
 //							~idAnimated();
 //
-//	void					Save( idSaveGame *savefile ) const;
-//	void					Restore( idRestoreGame *savefile );
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //	void					Spawn( void );
 //	virtual bool			LoadAF( void );
@@ -307,8 +307,8 @@
 //
 //						idStaticEntity( void );
 //
-//	void				Save( idSaveGame *savefile ) const;
-//	void				Restore( idRestoreGame *savefile );
+//	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //	void				Spawn( void );
 //	void				ShowEditingDialog( void );
@@ -347,8 +347,8 @@
 //
 //						idFuncEmitter( void );
 //
-//	void				Save( idSaveGame *savefile ) const;
-//	void				Restore( idRestoreGame *savefile );
+//	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //	void				Spawn( void );
 //	void				Event_Activate( idEntity *activator );
@@ -378,8 +378,8 @@
 //
 //	void					Spawn( void );
 //
-//	void					Save( idSaveGame *savefile ) const;
-//	void					Restore( idRestoreGame *savefile );
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //	virtual void			Think( void );
 //	void					Event_Activate( idEntity *activator );
@@ -427,8 +427,8 @@
 //
 //	void				Spawn( void );
 //
-//	void				Save( idSaveGame *savefile ) const;
-//	void				Restore( idRestoreGame *savefile );
+//	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //	virtual void		Think( void );
 //
@@ -474,8 +474,8 @@ class idLocationEntity extends idEntity {
 //
 //	void				Spawn( void );
 //
-//	void				Save( idSaveGame *savefile ) const;
-//	void				Restore( idRestoreGame *savefile );
+//	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //	void				Event_Activate( idEntity *activator );	
 //
@@ -509,8 +509,8 @@ class idLocationEntity extends idEntity {
 //
 //	void				Spawn( void );
 //
-//	void				Save( idSaveGame *savefile ) const;
-//	void				Restore( idRestoreGame *savefile );
+//	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //	virtual void		Think( void );
 //
@@ -547,8 +547,8 @@ class idLocationEntity extends idEntity {
 //
 //	void				Spawn( void );
 //
-//	void				Save( idSaveGame *savefile ) const;
-//	void				Restore( idRestoreGame *savefile );
+//	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //private:
 //	void				Event_Touch( idEntity *other, trace_t *trace );
@@ -574,8 +574,8 @@ class idLocationEntity extends idEntity {
 //
 //	void					Spawn( void );
 //
-//	void					Save( idSaveGame *savefile ) const;
-//	void					Restore( idRestoreGame *savefile );
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //private:
 //	idPhysics_Parametric	physicsObj;
@@ -602,8 +602,8 @@ class idLocationEntity extends idEntity {
 //
 //	void				Spawn( void );
 //
-//	void				Save( idSaveGame *savefile ) const;
-//	void				Restore( idRestoreGame *savefile );
+//	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //	virtual void		Think( void );
 //
@@ -637,8 +637,8 @@ class idLocationEntity extends idEntity {
 //
 //	void				Spawn( void );
 //
-//	void				Save( idSaveGame *savefile ) const;
-//	void				Restore( idRestoreGame *savefile );
+//	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //private:
 //	qhandle_t			portal;
@@ -663,8 +663,8 @@ class idLocationEntity extends idEntity {
 //
 //	void				Spawn( void );
 //
-//	void				Save( idSaveGame *savefile ) const;
-//	void				Restore( idRestoreGame *savefile );
+//	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //private:
 //	bool				state;
@@ -688,8 +688,8 @@ class idLocationEntity extends idEntity {
 //
 //	void				Spawn( void );
 //
-//	void				Save( idSaveGame *savefile ) const;
-//	void				Restore( idRestoreGame *savefile );
+//	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //private:
 //	bool				state;
@@ -714,8 +714,8 @@ class idLocationEntity extends idEntity {
 //
 //	void				Spawn( void );
 //
-//	void				Save( idSaveGame *savefile ) const;
-//	void				Restore( idRestoreGame *savefile );
+//	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //private:
 //	float				time;
@@ -740,8 +740,8 @@ class idLocationEntity extends idEntity {
 //
 //	void				Spawn( void );
 //
-//	void				Save( idSaveGame *savefile ) const;
-//	void				Restore( idRestoreGame *savefile );
+//	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+//	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //	virtual void		Think( void );
 //

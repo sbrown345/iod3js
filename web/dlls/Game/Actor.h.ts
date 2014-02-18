@@ -66,8 +66,8 @@
 ////							idAnimState();
 ////							~idAnimState();
 ////
-////	void					Save( idSaveGame *savefile ) const;
-////	void					Restore( idRestoreGame *savefile );
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
 ////	void					Init( idActor *owner, idAnimator *_animator, int animchannel );
 ////	void					Shutdown( void );
@@ -122,8 +122,8 @@ class idActor extends idAFEntity_Gibbable {
 ////	void					Spawn( void );
 ////	virtual void			Restart( void );
 ////
-////	void					Save( idSaveGame *savefile ) const;
-////	void					Restore( idRestoreGame *savefile );
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
 ////	virtual void			Hide( void );
 ////	virtual void			Show( void );

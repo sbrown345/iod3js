@@ -219,8 +219,8 @@ class idEntityPtr<type> {
 ////							idEntityPtr();
 
 ////	// save games
-////	void					Save( idSaveGame *savefile ) const;					// archives object for save game file
-////	void					Restore( idRestoreGame *savefile );					// unarchives object from save game file
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }					// archives object for save game file
+////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }					// unarchives object from save game file
 
 ////	idEntityPtr<type> &		operator=( type *ent );
 

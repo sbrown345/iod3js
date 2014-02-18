@@ -83,7 +83,7 @@
 //						idInterpreter();
 //
 //	// save games
-//	void				Save( idSaveGame *savefile ) const;				// archives object for save game file
+//	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }				// archives object for save game file
 //	void				Restore( idRestoreGame *savefile );				// unarchives object from save game file
 //
 //	void				SetThread( idThread *pThread );

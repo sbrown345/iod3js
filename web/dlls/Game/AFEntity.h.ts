@@ -101,8 +101,8 @@
 ////
 ////	void					Spawn( void );
 ////
-////	void					Save( idSaveGame *savefile ) const;
-////	void					Restore( idRestoreGame *savefile );
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
 ////	void					SetBody( idEntity *bodyEnt, const char *headModel, jointHandle_t attachJoint );
 ////	void					ClearBody( void );
@@ -152,8 +152,8 @@ class idAFEntity_Base extends idAnimatedEntity {
 ////
 ////	void					Spawn( void );
 ////
-////	void					Save( idSaveGame *savefile ) const;
-////	void					Restore( idRestoreGame *savefile );
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
 ////	virtual void			Think( void );
 ////	virtual void			GetImpactInfo( idEntity *ent, int id, const idVec3 &point, impactInfo_t *info );
@@ -218,8 +218,8 @@ class idAFEntity_Gibbable extends idAFEntity_Base {
 ////							~idAFEntity_Gibbable( void );
 ////
 ////	void					Spawn( void );
-////	void					Save( idSaveGame *savefile ) const;
-////	void					Restore( idRestoreGame *savefile );
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////	virtual void			Present( void );
 ////	virtual	void			Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &dir, const char *damageDefName, const float damageScale, const int location );
 ////	virtual void			SpawnGibs( const idVec3 &dir, const char *damageDefName );
@@ -252,8 +252,8 @@ class idAFEntity_Gibbable extends idAFEntity_Base {
 ////
 ////	void					Spawn( void );
 ////
-////	void					Save( idSaveGame *savefile ) const;
-////	void					Restore( idRestoreGame *savefile );
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
 ////	virtual void			Think( void );
 ////	void					KeepRunningPhysics( void ) { keepRunningPhysics = true; }
@@ -282,8 +282,8 @@ class idAFEntity_Gibbable extends idAFEntity_Base {
 ////
 ////	void					Spawn( void );
 ////
-////	void					Save( idSaveGame *savefile ) const;
-////	void					Restore( idRestoreGame *savefile );
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
 ////	void					SetupHead( void );
 ////
@@ -429,8 +429,8 @@ class idAFEntity_Gibbable extends idAFEntity_Base {
 ////							~idAFEntity_SteamPipe( void );
 ////
 ////	void					Spawn( void );
-////	void					Save( idSaveGame *savefile ) const;
-////	void					Restore( idRestoreGame *savefile );
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
 ////	virtual void			Think( void );
 ////
@@ -461,8 +461,8 @@ class idAFEntity_Gibbable extends idAFEntity_Base {
 ////							idAFEntity_ClawFourFingers( void );
 ////
 ////	void					Spawn( void );
-////	void					Save( idSaveGame *savefile ) const;
-////	void					Restore( idRestoreGame *savefile );
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
 ////private:
 ////	idAFConstraint_Hinge *	fingers[4];

@@ -100,8 +100,8 @@ class idClipModel {
 ////	void					LoadModel( const idTraceModel &trm );
 ////	void					LoadModel( const int renderModelHandle );
 ////
-////	void					Save( idSaveGame *savefile ) const;
-////	void					Restore( idRestoreGame *savefile );
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
 ////	void					Link( idClip &clp );				// must have been linked with an entity and id before
 ////	void					Link( idClip &clp, idEntity *ent, int newId, const idVec3 &newOrigin, const idMat3 &newAxis, int renderModelHandle = -1 );

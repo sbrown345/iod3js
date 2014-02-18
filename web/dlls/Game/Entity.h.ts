@@ -485,8 +485,8 @@ class idAnimatedEntity extends idEntity {
 ////							idAnimatedEntity();
 ////							~idAnimatedEntity();
 ////
-////	void					Save( idSaveGame *savefile ) const;
-////	void					Restore( idRestoreGame *savefile );
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
 ////	virtual void			ClientPredictionThink( void );
 ////	virtual void			Think( void );

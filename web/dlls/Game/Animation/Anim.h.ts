@@ -410,7 +410,7 @@ class idDeclModelDef extends idDecl {
 //
 //public:
 //								idAnimBlend();
-//	void						Save( idSaveGame *savefile ) const;
+//	void						Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void						Restore( idRestoreGame *savefile, const idDeclModelDef *modelDef );
 //	const char					*AnimName( void ) const;
 //	const char					*AnimFullName( void ) const;
@@ -485,7 +485,7 @@ class idDeclModelDef extends idDecl {
 //	size_t						Allocated( void ) const;
 //	size_t						Size( void ) const;
 //
-//	void						Save( idSaveGame *savefile ) const;					// archives object for save game file
+//	void						Save ( savefile: idSaveGame ): void { throw "placeholder"; }					// archives object for save game file
 //	void						Restore( idRestoreGame *savefile );					// unarchives object from save game file
 //
 //	void						SetEntity( idEntity *ent );

@@ -66,9 +66,9 @@ class idEventFunc<Type> {
 ////// added & so gcc could compile this
 ////#define EVENT( event, function )	{ &( event ), ( void ( idClass::* )( void ) )( &function ) },
 ////#define END_CLASS					{ NULL, NULL } };
-////
-////
-////class idEventArg {
+
+
+class idEventArg {
 ////public:
 ////	int			type;
 ////	int			value;
@@ -81,8 +81,8 @@ class idEventFunc<Type> {
 ////	idEventArg( const char *data )				{ type = D_EVENT_STRING; value = reinterpret_cast<int>( data ); };
 ////	idEventArg( const class idEntity *data )	{ type = D_EVENT_ENTITY; value = reinterpret_cast<int>( data ); };
 ////	idEventArg( const struct trace_s *data )	{ type = D_EVENT_TRACE; value = reinterpret_cast<int>( data ); };
-////};
-////
+};
+
 ////class idAllocError : public idException {
 ////public:
 ////	idAllocError( const char *text = "" ) : idException( text ) {}
@@ -455,43 +455,43 @@ class idClass {
 	////	const char *				GetSuperclass( void ) const;
 	////	void						FindUninitializedMemory( void );
 	//
-	//	void						Save( idSaveGame *savefile ) const {};
-	//	void						Restore( idRestoreGame *savefile ) {};
+	Save ( savefile: idSaveGame ): void {}
+	Restore ( savefile: idRestoreGame ): void {}
 	////
 	////	bool						RespondsTo( const idEventDef &ev ) const;
 	////
-	////	bool						PostEventMS( const idEventDef *ev, int time );
-	////	bool						PostEventMS( const idEventDef *ev, int time, idEventArg arg1 );
-	////	bool						PostEventMS( const idEventDef *ev, int time, idEventArg arg1, idEventArg arg2 );
-	////	bool						PostEventMS( const idEventDef *ev, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3 );
-	////	bool						PostEventMS( const idEventDef *ev, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4 );
-	////	bool						PostEventMS( const idEventDef *ev, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5 );
-	////	bool						PostEventMS( const idEventDef *ev, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 );
-	////	bool						PostEventMS( const idEventDef *ev, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 );
-	////	bool						PostEventMS( const idEventDef *ev, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 );
+	////	bool						PostEventMS( ev: idEventDef, int time );
+	////	bool						PostEventMS( ev: idEventDef, int time, idEventArg arg1 );
+	////	bool						PostEventMS( ev: idEventDef, int time, idEventArg arg1, idEventArg arg2 );
+	////	bool						PostEventMS( ev: idEventDef, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3 );
+	////	bool						PostEventMS( ev: idEventDef, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4 );
+	////	bool						PostEventMS( ev: idEventDef, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5 );
+	////	bool						PostEventMS( ev: idEventDef, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 );
+	////	bool						PostEventMS( ev: idEventDef, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 );
+	////	bool						PostEventMS( ev: idEventDef, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 );
 	////
-	////	bool						PostEventSec( const idEventDef *ev, float time );
-	////	bool						PostEventSec( const idEventDef *ev, float time, idEventArg arg1 );
-	////	bool						PostEventSec( const idEventDef *ev, float time, idEventArg arg1, idEventArg arg2 );
-	////	bool						PostEventSec( const idEventDef *ev, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3 );
-	////	bool						PostEventSec( const idEventDef *ev, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4 );
-	////	bool						PostEventSec( const idEventDef *ev, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5 );
-	////	bool						PostEventSec( const idEventDef *ev, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 );
-	////	bool						PostEventSec( const idEventDef *ev, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 );
-	////	bool						PostEventSec( const idEventDef *ev, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 );
+	////	bool						PostEventSec( ev: idEventDef, float time );
+	////	bool						PostEventSec( ev: idEventDef, float time, idEventArg arg1 );
+	////	bool						PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2 );
+	////	bool						PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3 );
+	////	bool						PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4 );
+	////	bool						PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5 );
+	////	bool						PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 );
+	////	bool						PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 );
+	////	bool						PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 );
 	////
-	////	bool						ProcessEvent( const idEventDef *ev );
-	////	bool						ProcessEvent( const idEventDef *ev, idEventArg arg1 );
-	////	bool						ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2 );
-	////	bool						ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2, idEventArg arg3 );
-	////	bool						ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4 );
-	////	bool						ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5 );
-	////	bool						ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 );
-	////	bool						ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 );
-	////	bool						ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 );
+	////	bool						ProcessEvent( ev: idEventDef );
+	////	bool						ProcessEvent( ev: idEventDef, idEventArg arg1 );
+	////	bool						ProcessEvent( ev: idEventDef, idEventArg arg1, idEventArg arg2 );
+	////	bool						ProcessEvent( ev: idEventDef, idEventArg arg1, idEventArg arg2, idEventArg arg3 );
+	////	bool						ProcessEvent( ev: idEventDef, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4 );
+	////	bool						ProcessEvent( ev: idEventDef, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5 );
+	////	bool						ProcessEvent( ev: idEventDef, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 );
+	////	bool						ProcessEvent( ev: idEventDef, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 );
+	////	bool						ProcessEvent( ev: idEventDef, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 );
 	////
-	////	bool						ProcessEventArgPtr( const idEventDef *ev, int *data );
-	////	void						CancelEvents( const idEventDef *ev );
+	////	bool						ProcessEventArgPtr( ev: idEventDef, int *data );
+	////	void						CancelEvents( ev: idEventDef );
 	////
 	////	void						Event_Remove( void );
 	////
@@ -509,8 +509,8 @@ class idClass {
 	////private:
 	////	classSpawnFunc_t			CallSpawnFunc( idTypeInfo *cls );
 	////
-	////	bool						PostEventArgs( const idEventDef *ev, int time, int numargs, ... );
-	////	bool						ProcessEventArgs( const idEventDef *ev, int numargs, ... );
+	////	bool						PostEventArgs( ev: idEventDef, int time, int numargs, ... );
+	////	bool						ProcessEventArgs( ev: idEventDef, int numargs, ... );
 	////
 	////	void						Event_SafeRemove( void );
 	////
@@ -583,13 +583,13 @@ idClass::FindUninitializedMemory
 //#endif
 	}
 
-/////*
-////================
-////idClass::Spawn
-////================
-////*/
-////void idClass::Spawn( void ) {
-////}
+/*
+================
+idClass::Spawn
+================
+*/
+	Spawn ( ): void {
+	}
 ////
 /////*
 ////================
@@ -902,16 +902,17 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::CancelEvents
 ////================
 ////*/
-////void idClass::CancelEvents( const idEventDef *ev ) {
+////void idClass::CancelEvents( ev: idEventDef ) {
 ////	idEvent::CancelEvents( this, ev );
 ////}
-////
-/////*
-////================
-////idClass::PostEventArgs
-////================
-////*/
-////bool idClass::PostEventArgs( const idEventDef *ev, int time, int numargs, ... ) {
+
+/*
+================
+idClass::PostEventArgs
+================
+*/
+	PostEventArgs( ev: idEventDef, /*int */time: number, /*int */numargs:number, ...args:any[] ):boolean {
+		todoThrow();
 ////	idTypeInfo	*c;
 ////	idEvent		*event;
 ////	va_list		args;
@@ -941,33 +942,33 @@ so it must be called as idClass::GetClass( classname )
 ////
 ////	event.Schedule( this, c, time );
 ////
-////	return true;
-////}
+	return true;
+}
+
+/*
+================
+idClass::PostEventMS
+================
+*/
+	PostEventMS ( ev: idEventDef, /*int */time: number ): boolean {
+		return this.PostEventArgs( ev, time, 0 );
+	}
+
+/*
+================
+idClass::PostEventMS
+================
+*/
+	//PostEventMS ( ev: idEventDef, /*int */time: number, arg1: idEventArg ): boolean {
+	//	return this.PostEventArgs( ev, time, 1, arg1 );
+	//}
 ////
 /////*
 ////================
 ////idClass::PostEventMS
 ////================
 ////*/
-////bool idClass::PostEventMS( const idEventDef *ev, int time ) {
-////	return PostEventArgs( ev, time, 0 );
-////}
-////
-/////*
-////================
-////idClass::PostEventMS
-////================
-////*/
-////bool idClass::PostEventMS( const idEventDef *ev, int time, idEventArg arg1 ) {
-////	return PostEventArgs( ev, time, 1, &arg1 );
-////}
-////
-/////*
-////================
-////idClass::PostEventMS
-////================
-////*/
-////bool idClass::PostEventMS( const idEventDef *ev, int time, idEventArg arg1, idEventArg arg2 ) {
+////bool idClass::PostEventMS( ev: idEventDef, /*int */time:number, idEventArg arg1, idEventArg arg2 ): boolean  {
 ////	return PostEventArgs( ev, time, 2, &arg1, &arg2 );
 ////}
 ////
@@ -976,7 +977,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::PostEventMS
 ////================
 ////*/
-////bool idClass::PostEventMS( const idEventDef *ev, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3 ) {
+////bool idClass::PostEventMS( ev: idEventDef, /*int */time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3 ): boolean  {
 ////	return PostEventArgs( ev, time, 3, &arg1, &arg2, &arg3 );
 ////}
 ////
@@ -985,7 +986,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::PostEventMS
 ////================
 ////*/
-////bool idClass::PostEventMS( const idEventDef *ev, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4 ) {
+////bool idClass::PostEventMS( ev: idEventDef, /*int */time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4 ): boolean  {
 ////	return PostEventArgs( ev, time, 4, &arg1, &arg2, &arg3, &arg4 );
 ////}
 ////
@@ -994,7 +995,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::PostEventMS
 ////================
 ////*/
-////bool idClass::PostEventMS( const idEventDef *ev, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5 ) {
+////bool idClass::PostEventMS( ev: idEventDef, /*int */time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5 ): boolean  {
 ////	return PostEventArgs( ev, time, 5, &arg1, &arg2, &arg3, &arg4, &arg5 );
 ////}
 ////
@@ -1003,7 +1004,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::PostEventMS
 ////================
 ////*/
-////bool idClass::PostEventMS( const idEventDef *ev, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 ) {
+////bool idClass::PostEventMS( ev: idEventDef, /*int */time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 ): boolean  {
 ////	return PostEventArgs( ev, time, 6, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6 );
 ////}
 ////
@@ -1012,7 +1013,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::PostEventMS
 ////================
 ////*/
-////bool idClass::PostEventMS( const idEventDef *ev, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 ) {
+////bool idClass::PostEventMS( ev: idEventDef, /*int */time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 ): boolean  {
 ////	return PostEventArgs( ev, time, 7, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6, &arg7 );
 ////}
 ////
@@ -1021,7 +1022,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::PostEventMS
 ////================
 ////*/
-////bool idClass::PostEventMS( const idEventDef *ev, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 ) {
+////bool idClass::PostEventMS( ev: idEventDef, /*int */time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 ): boolean  {
 ////	return PostEventArgs( ev, time, 8, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8 );
 ////}
 ////
@@ -1030,7 +1031,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::PostEventSec
 ////================
 ////*/
-////bool idClass::PostEventSec( const idEventDef *ev, float time ) {
+////bool idClass::PostEventSec( ev: idEventDef, float time ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 0 );
 ////}
 ////
@@ -1039,7 +1040,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::PostEventSec
 ////================
 ////*/
-////bool idClass::PostEventSec( const idEventDef *ev, float time, idEventArg arg1 ) {
+////bool idClass::PostEventSec( ev: idEventDef, float time, idEventArg arg1 ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 1, &arg1 );
 ////}
 ////
@@ -1048,7 +1049,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::PostEventSec
 ////================
 ////*/
-////bool idClass::PostEventSec( const idEventDef *ev, float time, idEventArg arg1, idEventArg arg2 ) {
+////bool idClass::PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2 ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 2, &arg1, &arg2 );
 ////}
 ////
@@ -1057,7 +1058,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::PostEventSec
 ////================
 ////*/
-////bool idClass::PostEventSec( const idEventDef *ev, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3 ) {
+////bool idClass::PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3 ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 3, &arg1, &arg2, &arg3 );
 ////}
 ////
@@ -1066,7 +1067,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::PostEventSec
 ////================
 ////*/
-////bool idClass::PostEventSec( const idEventDef *ev, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4 ) {
+////bool idClass::PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4 ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 4, &arg1, &arg2, &arg3, &arg4 );
 ////}
 ////
@@ -1075,7 +1076,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::PostEventSec
 ////================
 ////*/
-////bool idClass::PostEventSec( const idEventDef *ev, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5 ) {
+////bool idClass::PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5 ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 5, &arg1, &arg2, &arg3, &arg4, &arg5 );
 ////}
 ////
@@ -1084,7 +1085,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::PostEventSec
 ////================
 ////*/
-////bool idClass::PostEventSec( const idEventDef *ev, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 ) {
+////bool idClass::PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 6, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6 );
 ////}
 ////
@@ -1093,7 +1094,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::PostEventSec
 ////================
 ////*/
-////bool idClass::PostEventSec( const idEventDef *ev, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 ) {
+////bool idClass::PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 7, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6, &arg7 );
 ////}
 ////
@@ -1102,7 +1103,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::PostEventSec
 ////================
 ////*/
-////bool idClass::PostEventSec( const idEventDef *ev, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 ) {
+////bool idClass::PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 8, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8 );
 ////}
 ////
@@ -1111,7 +1112,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::ProcessEventArgs
 ////================
 ////*/
-////bool idClass::ProcessEventArgs( const idEventDef *ev, int numargs, ... ) {
+////bool idClass::ProcessEventArgs( ev: idEventDef, int numargs, ... ): boolean  {
 ////	idTypeInfo	*c;
 ////	int			num;
 ////	int			data[ D_EVENT_MAXARGS ];
@@ -1141,7 +1142,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::ProcessEvent
 ////================
 ////*/
-////bool idClass::ProcessEvent( const idEventDef *ev ) {
+////bool idClass::ProcessEvent( ev: idEventDef ): boolean  {
 ////	return ProcessEventArgs( ev, 0 );
 ////}
 ////
@@ -1150,7 +1151,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::ProcessEvent
 ////================
 ////*/
-////bool idClass::ProcessEvent( const idEventDef *ev, idEventArg arg1 ) {
+////bool idClass::ProcessEvent( ev: idEventDef, idEventArg arg1 ): boolean  {
 ////	return ProcessEventArgs( ev, 1, &arg1 );
 ////}
 ////
@@ -1159,7 +1160,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::ProcessEvent
 ////================
 ////*/
-////bool idClass::ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2 ) {
+////bool idClass::ProcessEvent( ev: idEventDef, idEventArg arg1, idEventArg arg2 ): boolean  {
 ////	return ProcessEventArgs( ev, 2, &arg1, &arg2 );
 ////}
 ////
@@ -1168,7 +1169,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::ProcessEvent
 ////================
 ////*/
-////bool idClass::ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2, idEventArg arg3 ) {
+////bool idClass::ProcessEvent( ev: idEventDef, idEventArg arg1, idEventArg arg2, idEventArg arg3 ): boolean  {
 ////	return ProcessEventArgs( ev, 3, &arg1, &arg2, &arg3 );
 ////}
 ////
@@ -1177,7 +1178,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::ProcessEvent
 ////================
 ////*/
-////bool idClass::ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4 ) {
+////bool idClass::ProcessEvent( ev: idEventDef, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4 ): boolean  {
 ////	return ProcessEventArgs( ev, 4, &arg1, &arg2, &arg3, &arg4 );
 ////}
 ////
@@ -1186,7 +1187,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::ProcessEvent
 ////================
 ////*/
-////bool idClass::ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5 ) {
+////bool idClass::ProcessEvent( ev: idEventDef, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5 ): boolean  {
 ////	return ProcessEventArgs( ev, 5, &arg1, &arg2, &arg3, &arg4, &arg5 );
 ////}
 ////
@@ -1195,7 +1196,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::ProcessEvent
 ////================
 ////*/
-////bool idClass::ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 ) {
+////bool idClass::ProcessEvent( ev: idEventDef, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 ): boolean  {
 ////	return ProcessEventArgs( ev, 6, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6 );
 ////}
 ////
@@ -1204,7 +1205,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::ProcessEvent
 ////================
 ////*/
-////bool idClass::ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 ) {
+////bool idClass::ProcessEvent( ev: idEventDef, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 ): boolean  {
 ////	return ProcessEventArgs( ev, 7, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6, &arg7 );
 ////}
 ////
@@ -1213,7 +1214,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::ProcessEvent
 ////================
 ////*/
-////bool idClass::ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 ) {
+////bool idClass::ProcessEvent( ev: idEventDef, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 ): boolean  {
 ////	return ProcessEventArgs( ev, 8, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8 );
 ////}
 ////
@@ -1222,7 +1223,7 @@ so it must be called as idClass::GetClass( classname )
 ////idClass::ProcessEventArgPtr
 ////================
 ////*/
-////bool idClass::ProcessEventArgPtr( const idEventDef *ev, int *data ) {
+////bool idClass::ProcessEventArgPtr( ev: idEventDef, int *data ): boolean  {
 ////	idTypeInfo	*c;
 ////	int			num;
 ////	eventCallback_t	callback;
@@ -1325,24 +1326,25 @@ so it must be called as idClass::GetClass( classname )
 ////	return true;
 ////}
 ////
-/////*
-////================
-////idClass::Event_Remove
-////================
-////*/
-////void idClass::Event_Remove( void ) {
-////	delete this;
-////}
-////
-/////*
-////================
-////idClass::Event_SafeRemove
-////================
-////*/
-////void idClass::Event_SafeRemove( void ) {
-////	// Forces the remove to be done at a safe time
-////	PostEventMS( &EV_Remove, 0 );
-////}
+/*
+================
+idClass::Event_Remove
+================
+*/
+	Event_Remove ( ): void {
+		todoThrow( "erm?" );
+		delete this;
+	}
+
+/*
+================
+idClass::Event_SafeRemove
+================
+*/
+	Event_SafeRemove ( ): void {
+		// Forces the remove to be done at a safe time
+		this.PostEventMS(  EV_Remove, 0 );
+	}
 
 	/////*
 	////================

@@ -171,8 +171,8 @@
 ////public:
 ////							idMoveState();
 ////
-////	void					Save( idSaveGame *savefile ) const;
-////	void					Restore( idRestoreGame *savefile );
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
 ////	moveType_t				moveType;
 ////	moveCommand_t			moveCommand;
@@ -243,8 +243,8 @@
 ////							idAI();
 ////							~idAI();
 ////
-////	void					Save( idSaveGame *savefile ) const;
-////	void					Restore( idRestoreGame *savefile );
+//Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
 ////	void					Spawn( void );
 ////	void					HeardSound( idEntity *ent, const char *action );
@@ -669,8 +669,8 @@ class idCombatNode extends idEntity {
 
 	//					idCombatNode();
 
-	//void				Save( idSaveGame *savefile ) const;
-	//void				Restore( idRestoreGame *savefile );
+	//void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+	//void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 
 	//void				Spawn( void );
 	//bool				IsDisabled( void ) const;
