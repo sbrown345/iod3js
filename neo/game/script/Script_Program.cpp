@@ -1919,7 +1919,7 @@ void idProgram::Startup( const char *defaultScript ) {
 	if ( defaultScript && *defaultScript ) {
 		CompileFile( defaultScript );
 	}
-	exit(0);
+	
 	FinishCompilation();
 }
 

@@ -433,7 +433,7 @@ class idClass {
 	static Type: idTypeInfo;
 	static CreateInstance ( ): idClass { throw "placeholder"; }
 	GetType ( ): idTypeInfo { throw "placeholder"; }
-	static eventCallbacks: idEventFunc<idClass>;
+	static eventCallbacks: idEventFunc<idClass>[];
 
 	////#ifdef ID_REDIRECT_NEWDELETE
 	////#undef new
