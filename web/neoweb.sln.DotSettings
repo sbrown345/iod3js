@@ -28,6 +28,34 @@
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/Shortcut/@EntryValue">END_CLASS</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/Text/@EntryValue">new idEventFunc&lt;idTarget_LockDoor&gt;( null, null) };</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8D9F2BF90A1B9C4EAE2704E584FB9FF9/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8D9F2BF90A1B9C4EAE2704E584FB9FF9/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8D9F2BF90A1B9C4EAE2704E584FB9FF9/Description/@EntryValue">This macro must be included in the code to properly initialize variables used in type checking.  It also defines the list of events that the class responds to.  Take special care to ensure that the proper superclass is indicated or the run-time tyep information will be incorrect.  Use this on abstract classes only.</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8D9F2BF90A1B9C4EAE2704E584FB9FF9/Field/=nameofclass/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8D9F2BF90A1B9C4EAE2704E584FB9FF9/Field/=nameofclass/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8D9F2BF90A1B9C4EAE2704E584FB9FF9/Field/=nameofsuperclass/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8D9F2BF90A1B9C4EAE2704E584FB9FF9/Field/=nameofsuperclass/Order/@EntryValue">1</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8D9F2BF90A1B9C4EAE2704E584FB9FF9/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8D9F2BF90A1B9C4EAE2704E584FB9FF9/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8D9F2BF90A1B9C4EAE2704E584FB9FF9/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8D9F2BF90A1B9C4EAE2704E584FB9FF9/Shortcut/@EntryValue">ABSTRACT_DECLARATION</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8D9F2BF90A1B9C4EAE2704E584FB9FF9/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8D9F2BF90A1B9C4EAE2704E584FB9FF9/Text/@EntryValue">$nameofclass$.CreateInstance = function ( ): idClass {&#xD;
+	gameLocal.Error( "Cannot instanciate abstract class %s.", $nameofclass$ );	&#xD;
+	return null;&#xD;
+};																	&#xD;
+&#xD;
+$nameofclass$.prototype.GetType = function ( ): idTypeInfo {&#xD;
+	return ( $nameofclass$.Type );&#xD;
+};&#xD;
+&#xD;
+$nameofclass$.eventCallbacks = [&#xD;
+];&#xD;
+&#xD;
+$nameofclass$.Type = new idTypeInfo( "$nameofclass$", "$nameofsuperclass$",&#xD;
+	$nameofclass$.eventCallbacks, $nameofclass$.CreateInstance, $nameofclass$.prototype.Spawn,&#xD;
+	$nameofclass$.prototype.Save, $nameofclass$.prototype.Restore );&#xD;
+</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=A2190E5D63134142B9D30855DCBC012B/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=A2190E5D63134142B9D30855DCBC012B/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=A2190E5D63134142B9D30855DCBC012B/Field/=event/@KeyIndexDefined">True</s:Boolean>
@@ -80,6 +108,7 @@ $nameofclass$.prototype.GetType = function ( ): idTypeInfo {&#xD;
 };&#xD;
 &#xD;
 $nameofclass$.eventCallbacks = [&#xD;
+];&#xD;
 &#xD;
 $nameofclass$.Type = new idTypeInfo( "$nameofclass$", "$nameofsuperclass$",&#xD;
 	$nameofclass$.eventCallbacks, $nameofclass$.CreateInstance, $nameofclass$.prototype.Spawn,&#xD;

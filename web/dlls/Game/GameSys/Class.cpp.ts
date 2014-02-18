@@ -454,9 +454,9 @@ class idClass {
 	////	const char *				GetClassname( void ) const;
 	////	const char *				GetSuperclass( void ) const;
 	////	void						FindUninitializedMemory( void );
-	////
-	////	void						Save( idSaveGame *savefile ) const {};
-	////	void						Restore( idRestoreGame *savefile ) {};
+	//
+	//	void						Save( idSaveGame *savefile ) const {};
+	//	void						Restore( idRestoreGame *savefile ) {};
 	////
 	////	bool						RespondsTo( const idEventDef &ev ) const;
 	////
@@ -522,15 +522,7 @@ class idClass {
 	static numobjects:number = 0;
 
 
-////
-////const idEventDef EV_Remove( "<immediateremove>", NULL );
-////const idEventDef EV_SafeRemove( "remove", NULL );
-////
-////ABSTRACT_DECLARATION( NULL, idClass )
-////	EVENT( EV_Remove,				idClass::Event_Remove )
-////	EVENT( EV_SafeRemove,			idClass::Event_SafeRemove )
-////END_CLASS
-////
+
 ////// alphabetical order
 ////idList<idTypeInfo *>	idClass::types;
 ////// typenum order
@@ -1382,3 +1374,25 @@ so it must be called as idClass::GetClass( classname )
 	////
 	////#endif /* !__SYS_CLASS_H__ */
 }
+
+var EV_Remove = new idEventDef( "<immediateremove>", null );
+var EV_SafeRemove = new idEventDef("remove", null );
+
+//ABSTRACT_DECLARATION( NULL, idClass )
+idClass.CreateInstance = function ( ): idClass {
+	gameLocal.Error( "Cannot instanciate abstract class %s.", idClass );
+	return null;
+};
+
+idClass.prototype.GetType = function ( ): idTypeInfo {
+	return ( idClass.Type );
+};
+
+idClass.eventCallbacks = [
+	new idEventFunc( EV_Remove, idClass.prototype.Event_Remove ),
+	new idEventFunc( EV_SafeRemove, idClass.prototype.Event_SafeRemove ),
+];
+
+idClass.Type = new idTypeInfo( "idClass", "null",
+	idClass.eventCallbacks, idClass.CreateInstance, idClass.prototype.Spawn,
+	idClass.prototype.Save, idClass.prototype.Restore );
