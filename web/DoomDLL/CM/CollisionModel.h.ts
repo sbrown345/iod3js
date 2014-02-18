@@ -94,6 +94,8 @@ class trace_t {
 	endAxis = new idMat3;		// final axis of trace model								   //idMat3					
 	c = new contactInfo_t;				// contact information, only valid if fraction < 1.0		   //contactInfo_t			
 
+	static size = 108;
+
 	constructor ( ) {
 		this.init ( );
 	}

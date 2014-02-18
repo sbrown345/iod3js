@@ -91,7 +91,7 @@ class idEventDef {
 	next:idEventDef;
 
 	static eventDefList = new Array<idEventDef>(MAX_EVENTS);
-	static numEventDefs:number;
+	static numEventDefs = 0; 
 ////
 ////public:
 ////	idEventDef(const char *command, const char *formatspec = NULL, char returnType = 0);
@@ -245,11 +245,11 @@ idEventDef::idEventDef
 				break;
 
 			case D_EVENT_ENTITY:
-				this.argsize += sizeof( 4 /*idEntityPtr<idEntity>*/ );
+				this.argsize += 4; //sizeof(idEntityPtr < idEntity>);
 				break;
 
 			case D_EVENT_ENTITY_NULL:
-				this.argsize += sizeof( 4 /*idEntityPtr<idEntity>*/ );
+				this.argsize += 4; //sizeof(idEntityPtr < idEntity>);
 				break;
 
 			case D_EVENT_TRACE:

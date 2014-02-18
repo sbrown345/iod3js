@@ -339,6 +339,8 @@ class idVec2 {
 //===============================================================
 
 class idVec3 {
+	static size = 12;
+
 //public:	
 	//x:number;	  //float			
 	//y:number;	  //float			
