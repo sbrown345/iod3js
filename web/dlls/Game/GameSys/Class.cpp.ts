@@ -100,15 +100,15 @@ var classHierarchy = new idHierarchy<idTypeInfo> ( );
 var/*int*/ eventCallbackMemory	= 0;
 
 class idTypeInfo {
-	////public:
-	////	const char *				classname;
-	////	const char *				superclass;
-	////	idClass *					( *CreateInstance )( void );
-	////	void						( idClass::*Spawn )( void );
-	////	void						( idClass::*Save )( idSaveGame *savefile ) const;
-	////	void						( idClass::*Restore )( idRestoreGame *savefile );
-	////
-	////	idEventFunc<idClass> *		eventCallbacks;
+	//public:
+	classname:string;
+	superclass: string;
+	CreateInstance: () => idClass;
+	Spawn:()=>void;////	void						( idClass::*Spawn )( void );
+	Save: (savefile: idSaveGame) => void;
+	Restore: (savefile: idRestoreGame) => void;
+	
+	eventCallbacks: idEventFunc<idClass>[];
 	eventMap: ( ) => void /*eventCallback_t*/;
 	$super: idTypeInfo;
 	next: idTypeInfo;
@@ -171,44 +171,44 @@ class idTypeInfo {
 		Spawn: ( ) => void, Save: ( savefile: idSaveGame ) => void, Restore: ( savefile: idRestoreGame ) => void ) {
 ////idTypeInfo::idTypeInfo( const char *classname, const char *superclass, idEventFunc<idClass> *eventCallbacks, idClass *( *CreateInstance )( void ), 
 ////	void ( idClass::*Spawn )( void ), void ( idClass::*Save )( idSaveGame *savefile ) const, void ( idClass::*Restore )( idRestoreGame *savefile ) ) {
-////
-////	idTypeInfo *type;
-////	idTypeInfo **insert;
-////
-////	this.classname			= classname;
-////	this.superclass		= superclass;
-////	this.eventCallbacks	= eventCallbacks;
-////	this.eventMap			= NULL;
-////	this.Spawn				= Spawn;
-////	this.Save				= Save;
-////	this.Restore			= Restore;
-////	this.CreateInstance	= CreateInstance;
-////	this.$super				= idClass::GetClass( superclass );
-////	this.freeEventMap		= false;
-////	typeNum					= 0;
-////	lastChild				= 0;
-////
-////	// Check if any subclasses were initialized before their superclass
-////	for( type = typelist; type != NULL; type = type.next ) {
-////		if ( ( type.$super == NULL ) && !idStr::Cmp( type.superclass, this.classname ) && 
-////			idStr::Cmp( type.classname, "idClass" ) ) {
-////			type.$super	= this;
-////		}
-////	}
-////
-////	// Insert sorted
-////	for ( insert = &typelist; *insert; insert = &(*insert).next ) {
-////		assert( idStr::Cmp( classname, (*insert).classname ) );
-////		if ( idStr::Cmp( classname, (*insert).classname ) < 0 ) {
-////			next = *insert;
-////			*insert = this;
-////			break;
-////		}
-////	}
-////	if ( !*insert ) {
-////		*insert = this;
-////		next = NULL;
-////	}
+
+		var type: idTypeInfo;
+		var /****/insert = new R<idTypeInfo> ( );
+
+		this.classname = classname;
+		this.superclass = superclass;
+		this.eventCallbacks = eventCallbacks;
+		this.eventMap = null;
+		this.Spawn = Spawn;
+		this.Save = Save;
+		this.Restore = Restore;
+		this.CreateInstance = CreateInstance;
+		this.$super = idClass.GetClass( superclass );
+		this.freeEventMap = false;
+		this.typeNum = 0;
+		this.lastChild = 0;
+
+		// Check if any subclasses were initialized before their superclass
+		for ( type = typelist; type /*!= NULL*/; type = type.next ) {
+			if ( ( type.$super == null ) && !idStr.Cmp( type.superclass, this.classname ) &&
+				idStr.Cmp( type.classname, "idClass" ) ) {
+				type.$super = this;
+			}
+		}
+
+		// Insert sorted
+		for ( insert.$ = typelist; insert.$; insert.$ = ( insert.$ ).next ) {
+			assert( idStr.Cmp( classname, ( insert.$ ).classname ) );
+			if ( idStr.Cmp( classname, ( insert.$ ).classname ) < 0 ) {
+				this.next = insert.$;
+				insert.$ = this;
+				break;
+			}
+		}
+		if ( !insert.$ ) {
+			insert.$ = this;
+			this.next = null;
+		}
 	}
 ////
 /////*
@@ -502,7 +502,7 @@ class idClass {
 	////	static void					DisplayInfo_f( const idCmdArgs &args );
 	////	static void					ListClasses_f( const idCmdArgs &args );
 	////	static idClass *			CreateInstance( const char *name );
-	////	static int					GetNumTypes( void ) { return types.Num(); }
+	////	static int					GetNumTypes( void ) { return idClass.types.Num(); }
 	////	static int					GetTypeNumBits( void ) { return idClass.typeNumBits; }
 	////	static idTypeInfo *			GetType( int num );
 	////
@@ -631,12 +631,12 @@ idClass::FindUninitializedMemory
 ////	gameLocal.Printf( "%-24s %-24s %-6s %-6s\n", "Classname", "Superclass", "Type", "Subclasses" );
 ////	gameLocal.Printf( "----------------------------------------------------------------------\n" );
 ////
-////	for( i = 0; i < types.Num(); i++ ) {
-////		type = types[ i ];
+////	for( i = 0; i < idClass.types.Num(); i++ ) {
+////		type = idClass.types[ i ];
 ////		gameLocal.Printf( "%-24s %-24s %6d %6d\n", type.classname, type.superclass, type.typeNum, type.lastChild - type.typeNum );
 ////	}
 ////
-////	gameLocal.Printf( "...%d classes", types.Num() );
+////	gameLocal.Printf( "...%d classes", idClass.types.Num() );
 ////}
 ////
 /////*
@@ -811,49 +811,50 @@ once during the execution of the program or DLL.
 ////        Mem_Free( p );
 ////	}
 ////}
-////
-/////*
-////================
-////idClass::GetClass
-////
-////Returns the idTypeInfo for the name of the class passed in.  This is a static function
-////so it must be called as idClass::GetClass( classname )
-////================
-////*/
-////idTypeInfo *idClass::GetClass( const char *name ) {
-////	idTypeInfo	*c;
-////	int			order;
-////	int			mid;
-////	int			min;
-////	int			max;
-////
-////	if ( !idClass.initialized ) {
-////		// idClass::Init hasn't been called yet, so do a slow lookup
-////		for( c = typelist; c != NULL; c = c.next ) {
-////			if ( !idStr::Cmp( c.classname, name ) ) {
-////				return c;
-////			}
-////		}
-////	} else {
-////		// do a binary search through the list of types
-////		min = 0;
-////		max = types.Num() - 1;
-////		while( min <= max ) {
-////			mid = ( min + max ) / 2;
-////			c = types[ mid ];
-////			order = idStr::Cmp( c.classname, name );
-////			if ( !order ) {
-////				return c;
-////			} else if ( order > 0 ) {
-////				max = mid - 1;
-////			} else {
-////				min = mid + 1;
-////			}
-////		}
-////	}
-////
-////	return NULL;
-////}
+
+/*
+================
+idClass::GetClass
+
+Returns the idTypeInfo for the name of the class passed in.  This is a static function
+so it must be called as idClass::GetClass( classname )
+================
+*/
+	static GetClass ( name: string ): idTypeInfo {
+		var c: idTypeInfo;
+		var order: number; //int			
+		var mid: number; //int			
+		var min: number; //int			
+		var max: number; //int			
+
+		if ( !idClass.initialized ) {
+			// idClass::Init hasn't been called yet, so do a slow lookup
+			for ( c = typelist; c /*!= NULL*/; c = c.next ) {
+				if ( !idStr.Cmp( c.classname, name ) ) {
+					return c;
+				}
+			}
+		} else {
+			// do a binary search through the list of types
+			min = 0;
+			max = idClass.types.Num ( ) - 1;
+			while ( min <= max ) {
+				mid = ( min + max ) / 2;
+				c = idClass.types[mid];
+				order = idStr.Cmp( c.classname, name );
+				if ( !order ) {
+					return c;
+				} else if ( order > 0 ) {
+					max = mid - 1;
+				} else {
+					min = mid + 1;
+				}
+			}
+		}
+
+		return null;
+	}
+
 ////
 /////*
 ////================
@@ -869,7 +870,7 @@ once during the execution of the program or DLL.
 ////				return c;
 ////			}
 ////		}
-////	} else if ( ( typeNum >= 0 ) && ( typeNum < types.Num() ) ) {
+////	} else if ( ( typeNum >= 0 ) && ( typeNum < idClass.types.Num() ) ) {
 ////		return typenums[ typeNum ];
 ////	}
 ////
