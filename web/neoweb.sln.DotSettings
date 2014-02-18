@@ -56,30 +56,34 @@ GetType( ):idTypeInfo {throw "placeholder";}&#xD;
 static	eventCallbacks: idEventFunc&lt;$nameofclass$&gt;[];</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Field/=nameofclass/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Field/=nameofclass/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Field/=nameofsuperclass/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Field/=nameofsuperclass/Order/@EntryValue">1</s:Int64>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Reformat/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/@KeyIndexDefined">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Shortcut/@EntryValue">CLASS_DECLARATION</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
-	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Text/@EntryValue">// todo&#xD;
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=BB5939C4197E35438F4C2497BF7E01B7/Text/@EntryValue">$nameofclass$.Type = new idTypeInfo( "$nameofclass$", "$nameofsuperclass$",&#xD;
+	$nameofclass$.eventCallbacks, $nameofclass$.CreateInstance, $nameofclass$.prototype.Spawn,&#xD;
+	$nameofclass$.prototype.Save, $nameofclass$.prototype.Restore );&#xD;
 &#xD;
-idTypeInfo idTarget_LockDoor::Type( "idTarget_LockDoor", "idTarget",									&#xD;
-	( idEventFunc&lt;idClass&gt; * )idTarget_LockDoor::eventCallbacks,	idTarget_LockDoor::CreateInstance, ( void ( idClass::* )( void ) )&amp;idTarget_LockDoor::Spawn,	&#xD;
-	( void ( idClass::* )( idSaveGame * ) const )&amp;idTarget_LockDoor::Save, ( void ( idClass::* )( idRestoreGame * ) )&amp;idTarget_LockDoor::Restore );	&#xD;
-idClass *idTarget_LockDoor::CreateInstance( void ) {													&#xD;
-	try {																						&#xD;
-		idTarget_LockDoor *ptr = new idTarget_LockDoor;											&#xD;
-		ptr-&gt;FindUninitializedMemory();															&#xD;
-		return ptr;																				&#xD;
-	}																							&#xD;
-	catch( idAllocError &amp; ) {																	&#xD;
-		return NULL;																			&#xD;
-	}																							&#xD;
-}																								&#xD;
-idTypeInfo *idTarget_LockDoor::GetType( void ) const {											&#xD;
-	return &amp;( idTarget_LockDoor::Type );														&#xD;
-}																								&#xD;
-idEventFunc&lt;idTarget_LockDoor&gt; idTarget_LockDoor::eventCallbacks[] = {</s:String>
+$nameofclass$.CreateInstance = function ( ): idClass {&#xD;
+	try {&#xD;
+		var ptr = new $nameofclass$;&#xD;
+		ptr.FindUninitializedMemory ( );&#xD;
+		return ptr;&#xD;
+	} catch ( e ) {&#xD;
+		return null;&#xD;
+	}&#xD;
+};&#xD;
+&#xD;
+$nameofclass$.prototype.GetType = function ( ): idTypeInfo {&#xD;
+	return ( $nameofclass$.Type );&#xD;
+};&#xD;
+&#xD;
+$nameofclass$.eventCallbacks = [</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DB4D0F71255A5B439A684F56668E63EA/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DB4D0F71255A5B439A684F56668E63EA/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DB4D0F71255A5B439A684F56668E63EA/Reformat/@EntryValue">True</s:Boolean>

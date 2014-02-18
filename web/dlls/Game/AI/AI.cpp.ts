@@ -4897,13 +4897,13 @@ idCombatNode
 
 var EV_CombatNode_MarkUsed = new idEventDef( "markUsed" );
 
-idEntity.Type = new idTypeInfo( "idEntity", "idCombatNode",
-	idEntity.eventCallbacks, idEntity.CreateInstance, idEntity.prototype.Spawn,
-	idEntity.prototype.Save, idEntity.prototype.Restore );
+idCombatNode.Type = new idTypeInfo( "idCombatNode", "idEntity",
+	idCombatNode.eventCallbacks, idCombatNode.CreateInstance, idCombatNode.prototype.Spawn,
+	idCombatNode.prototype.Save, idCombatNode.prototype.Restore );
 
-idEntity.CreateInstance = function ( ): idClass {
+idCombatNode.CreateInstance = function ( ): idClass {
 	try {
-		var ptr = new idEntity;
+		var ptr = new idCombatNode;
 		ptr.FindUninitializedMemory ( );
 		return ptr;
 	} catch ( e ) {
@@ -4911,11 +4911,11 @@ idEntity.CreateInstance = function ( ): idClass {
 	}
 };
 
-idEntity.prototype.GetType = function ( ): idTypeInfo {
-	return ( idEntity.Type );
+idCombatNode.prototype.GetType = function ( ): idTypeInfo {
+	return ( idCombatNode.Type );
 };
 
-idEntity.eventCallbacks = [
+idCombatNode.eventCallbacks = [
 	new idEventFunc( EV_CombatNode_MarkUsed, idCombatNode.prototype.Event_MarkUsed ),
 	new idEventFunc( EV_Activate, idCombatNode.prototype.Event_Activate )
 ];
