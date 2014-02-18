@@ -30,82 +30,82 @@
 ////#pragma hdrstop
 ////
 ////#include "Game_local.h"
-////
-/////*
-////===============================================================================
-////
-////	idEntity
-////
-////===============================================================================
-////*/
-////
-////// overridable events
-////const idEventDef EV_PostSpawn( "<postspawn>", NULL );
-////const idEventDef EV_FindTargets( "<findTargets>", NULL );
-////const idEventDef EV_Touch( "<touch>", "et" );
-////const idEventDef EV_GetName( "getName", NULL, 's' );
-////const idEventDef EV_SetName( "setName", "s" );
-////const idEventDef EV_Activate( "activate", "e" );
-////const idEventDef EV_ActivateTargets( "activateTargets", "e" );
-////const idEventDef EV_NumTargets( "numTargets", NULL, 'f' );
-////const idEventDef EV_GetTarget( "getTarget", "f", 'e' );
-////const idEventDef EV_RandomTarget( "randomTarget", "s", 'e' );
-////const idEventDef EV_Bind( "bind", "e" );
-////const idEventDef EV_BindPosition( "bindPosition", "e" );
-////const idEventDef EV_BindToJoint( "bindToJoint", "esf" );
-////const idEventDef EV_Unbind( "unbind", NULL );
-////const idEventDef EV_RemoveBinds( "removeBinds" );
-////const idEventDef EV_SpawnBind( "<spawnbind>", NULL );
-////const idEventDef EV_SetOwner( "setOwner", "e" );
-////const idEventDef EV_SetModel( "setModel", "s" );
-////const idEventDef EV_SetSkin( "setSkin", "s" );
-////const idEventDef EV_GetWorldOrigin( "getWorldOrigin", NULL, 'v' );
-////const idEventDef EV_SetWorldOrigin( "setWorldOrigin", "v" );
-////const idEventDef EV_GetOrigin( "getOrigin", NULL, 'v' );
-////const idEventDef EV_SetOrigin( "setOrigin", "v" );
-////const idEventDef EV_GetAngles( "getAngles", NULL, 'v' );
-////const idEventDef EV_SetAngles( "setAngles", "v" );
-////const idEventDef EV_GetLinearVelocity( "getLinearVelocity", NULL, 'v' );
-////const idEventDef EV_SetLinearVelocity( "setLinearVelocity", "v" );
-////const idEventDef EV_GetAngularVelocity( "getAngularVelocity", NULL, 'v' );
-////const idEventDef EV_SetAngularVelocity( "setAngularVelocity", "v" );
-////const idEventDef EV_GetSize( "getSize", NULL, 'v' );
-////const idEventDef EV_SetSize( "setSize", "vv" );
-////const idEventDef EV_GetMins( "getMins", NULL, 'v' );
-////const idEventDef EV_GetMaxs( "getMaxs", NULL, 'v' );
-////const idEventDef EV_IsHidden( "isHidden", NULL, 'd' );
-////const idEventDef EV_Hide( "hide", NULL );
-////const idEventDef EV_Show( "show", NULL );
-////const idEventDef EV_Touches( "touches", "E", 'd' );
-////const idEventDef EV_ClearSignal( "clearSignal", "d" );
-////const idEventDef EV_GetShaderParm( "getShaderParm", "d", 'f' );
-////const idEventDef EV_SetShaderParm( "setShaderParm", "df" );
-////const idEventDef EV_SetShaderParms( "setShaderParms", "ffff" );
-////const idEventDef EV_SetColor( "setColor", "fff" );
-////const idEventDef EV_GetColor( "getColor", NULL, 'v' );
-////const idEventDef EV_CacheSoundShader( "cacheSoundShader", "s" );
-////const idEventDef EV_StartSoundShader( "startSoundShader", "sd", 'f' );
-////const idEventDef EV_StartSound( "startSound", "sdd", 'f' );
-////const idEventDef EV_StopSound( "stopSound", "dd" );
-////const idEventDef EV_FadeSound( "fadeSound", "dff" );
-////const idEventDef EV_SetGuiParm( "setGuiParm", "ss" );
-////const idEventDef EV_SetGuiFloat( "setGuiFloat", "sf" );
-////const idEventDef EV_GetNextKey( "getNextKey", "ss", 's' );
-////const idEventDef EV_SetKey( "setKey", "ss" );
-////const idEventDef EV_GetKey( "getKey", "s", 's' );
-////const idEventDef EV_GetIntKey( "getIntKey", "s", 'f' );
-////const idEventDef EV_GetFloatKey( "getFloatKey", "s", 'f' );
-////const idEventDef EV_GetVectorKey( "getVectorKey", "s", 'v' );
-////const idEventDef EV_GetEntityKey( "getEntityKey", "s", 'e' );
-////const idEventDef EV_RestorePosition( "restorePosition" );
-////const idEventDef EV_UpdateCameraTarget( "<updateCameraTarget>", NULL );
-////const idEventDef EV_DistanceTo( "distanceTo", "E", 'f' );
-////const idEventDef EV_DistanceToPoint( "distanceToPoint", "v", 'f' );
-////const idEventDef EV_StartFx( "startFx", "s" );
-////const idEventDef EV_HasFunction( "hasFunction", "s", 'd' );
-////const idEventDef EV_CallFunction( "callFunction", "s" );
-////const idEventDef EV_SetNeverDormant( "setNeverDormant", "d" );
-////
+
+/*
+===============================================================================
+
+	idEntity
+
+===============================================================================
+*/
+
+// overridable events
+var EV_PostSpawn = new idEventDef( "<postspawn>", null );
+var EV_FindTargets = new idEventDef( "<findTargets>", null );
+var EV_Touch = new idEventDef( "<touch>", "et" );
+var EV_GetName = new idEventDef( "getName", null, 's' );
+var EV_SetName = new idEventDef( "setName", "s" );
+var EV_Activate = new idEventDef( "activate", "e" );
+var EV_ActivateTargets = new idEventDef( "activateTargets", "e" );
+var EV_NumTargets = new idEventDef( "numTargets", null, 'f' );
+var EV_GetTarget = new idEventDef( "getTarget", "f", 'e' );
+var EV_RandomTarget = new idEventDef( "randomTarget", "s", 'e' );
+var EV_Bind = new idEventDef( "bind", "e" );
+var EV_BindPosition = new idEventDef( "bindPosition", "e" );
+var EV_BindToJoint = new idEventDef( "bindToJoint", "esf" );
+var EV_Unbind = new idEventDef( "unbind", null );
+var EV_RemoveBinds = new idEventDef( "removeBinds" );
+var EV_SpawnBind = new idEventDef( "<spawnbind>", null );
+var EV_SetOwner = new idEventDef( "setOwner", "e" );
+var EV_SetModel = new idEventDef( "setModel", "s" );
+var EV_SetSkin = new idEventDef( "setSkin", "s" );
+var EV_GetWorldOrigin = new idEventDef( "getWorldOrigin", null, 'v' );
+var EV_SetWorldOrigin = new idEventDef( "setWorldOrigin", "v" );
+var EV_GetOrigin = new idEventDef( "getOrigin", null, 'v' );
+var EV_SetOrigin = new idEventDef( "setOrigin", "v" );
+var EV_GetAngles = new idEventDef( "getAngles", null, 'v' );
+var EV_SetAngles = new idEventDef( "setAngles", "v" );
+var EV_GetLinearVelocity = new idEventDef( "getLinearVelocity", null, 'v' );
+var EV_SetLinearVelocity = new idEventDef( "setLinearVelocity", "v" );
+var EV_GetAngularVelocity = new idEventDef( "getAngularVelocity", null, 'v' );
+var EV_SetAngularVelocity = new idEventDef( "setAngularVelocity", "v" );
+var EV_GetSize = new idEventDef( "getSize", null, 'v' );
+var EV_SetSize = new idEventDef( "setSize", "vv" );
+var EV_GetMins = new idEventDef( "getMins", null, 'v' );
+var EV_GetMaxs = new idEventDef( "getMaxs", null, 'v' );
+var EV_IsHidden = new idEventDef( "isHidden", null, 'd' );
+var EV_Hide = new idEventDef( "hide", null );
+var EV_Show = new idEventDef( "show", null );
+var EV_Touches = new idEventDef( "touches", "E", 'd' );
+var EV_ClearSignal = new idEventDef( "clearSignal", "d" );
+var EV_GetShaderParm = new idEventDef( "getShaderParm", "d", 'f' );
+var EV_SetShaderParm = new idEventDef( "setShaderParm", "df" );
+var EV_SetShaderParms = new idEventDef( "setShaderParms", "ffff" );
+var EV_SetColor = new idEventDef( "setColor", "fff" );
+var EV_GetColor = new idEventDef( "getColor", null, 'v' );
+var EV_CacheSoundShader = new idEventDef( "cacheSoundShader", "s" );
+var EV_StartSoundShader = new idEventDef( "startSoundShader", "sd", 'f' );
+var EV_StartSound = new idEventDef( "startSound", "sdd", 'f' );
+var EV_StopSound = new idEventDef( "stopSound", "dd" );
+var EV_FadeSound = new idEventDef( "fadeSound", "dff" );
+var EV_SetGuiParm = new idEventDef( "setGuiParm", "ss" );
+var EV_SetGuiFloat = new idEventDef( "setGuiFloat", "sf" );
+var EV_GetNextKey = new idEventDef( "getNextKey", "ss", 's' );
+var EV_SetKey = new idEventDef( "setKey", "ss" );
+var EV_GetKey = new idEventDef( "getKey", "s", 's' );
+var EV_GetIntKey = new idEventDef( "getIntKey", "s", 'f' );
+var EV_GetFloatKey = new idEventDef( "getFloatKey", "s", 'f' );
+var EV_GetVectorKey = new idEventDef( "getVectorKey", "s", 'v' );
+var EV_GetEntityKey = new idEventDef( "getEntityKey", "s", 'e' );
+var EV_RestorePosition = new idEventDef( "restorePosition" );
+var EV_UpdateCameraTarget = new idEventDef( "<updateCameraTarget>", null );
+var EV_DistanceTo = new idEventDef( "distanceTo", "E", 'f' );
+var EV_DistanceToPoint = new idEventDef( "distanceToPoint", "v", 'f' );
+var EV_StartFx = new idEventDef( "startFx", "s" );
+var EV_HasFunction = new idEventDef( "hasFunction", "s", 'd' );
+var EV_CallFunction = new idEventDef( "callFunction", "s" );
+var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
+
 ////ABSTRACT_DECLARATION( idClass, idEntity )
 ////	EVENT( EV_GetName,				idEntity::Event_GetName )
 ////	EVENT( EV_SetName,				idEntity::Event_SetName )

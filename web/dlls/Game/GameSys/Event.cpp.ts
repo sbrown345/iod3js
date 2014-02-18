@@ -64,14 +64,14 @@ var eventErrorMsg = ""; //[ 128 ];
 var D_EVENT_MAXARGS = 8;			// if changed, enable the CREATE_EVENT_CODE define in Event.cpp to generate switch statement for idClass::ProcessEventArgPtr.
 // running the game will then generate c:\doom\base\events.txt, the contents of which should be copied into the switch statement.
 
-var D_EVENT_VOID = 0;
-var D_EVENT_INTEGER = 'd'.charCodeAt(0);
-var D_EVENT_FLOAT = 'f'.charCodeAt(0);
-var D_EVENT_VECTOR = 'v'.charCodeAt(0);
-var D_EVENT_STRING = 's'.charCodeAt(0);
-var D_EVENT_ENTITY = 'e'.charCodeAt(0);
-var D_EVENT_ENTITY_NULL = 'E'.charCodeAt(0);	// event can handle NULL entity pointers
-var D_EVENT_TRACE = 't'.charCodeAt(0);
+var D_EVENT_VOID = '\0';
+var D_EVENT_INTEGER = 'd';
+var D_EVENT_FLOAT = 'f';
+var D_EVENT_VECTOR = 'v';
+var D_EVENT_STRING = 's';
+var D_EVENT_ENTITY = 'e';
+var D_EVENT_ENTITY_NULL = 'E';	// event can handle NULL entity pointers
+var D_EVENT_TRACE = 't';
 
 var MAX_EVENTS = 4096;
 ////
@@ -83,7 +83,7 @@ class idEventDef {
 	name:string;
 	formatspec:string;
 	formatspecIndex:number;						 //unsigned int
-	returnType:number;							 //int							
+	returnType:string;							 //int							
 	numargs:number;								 //int							
 	argsize:number;								 //size_t						
 	argOffset = new Int32Array(D_EVENT_MAXARGS); //int							
@@ -145,7 +145,7 @@ idEventDef::GetArgFormat
 idEventDef::GetReturnType
 ================
 */
-	GetReturnType ( ): number {
+	GetReturnType ( ): string {
 		return this.returnType;
 	}
 
@@ -194,7 +194,7 @@ idEventDef::GetArgSize
 idEventDef::idEventDef
 ================
 */
-	constructor ( command: string, formatspec: string = null, /*char */returnType = 0) {
+	constructor ( command: string, formatspec: string = null, /*char */returnType = "\0") {
 		var ev: idEventDef;
 		var i: number;
 		var bits: number; //unsigned int	
@@ -226,7 +226,7 @@ idEventDef::idEventDef
 		memset( this.argOffset, 0, sizeof( this.argOffset ) );
 		for ( i = 0; i < this.numargs; i++ ) {
 			this.argOffset[i] = this.argsize;
-			switch ( formatspec.charCodeAt( i ) ) {
+			switch ( formatspec[i] ) {
 			case D_EVENT_FLOAT:
 				bits |= 1 << i;
 				this.argsize += sizeof( float );

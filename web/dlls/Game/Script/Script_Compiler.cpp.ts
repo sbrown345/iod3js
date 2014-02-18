@@ -2411,7 +2411,7 @@ idCompiler::ParseVariableDef
 idCompiler::GetTypeForEventArg
 ================
 */
-	GetTypeForEventArg ( argType: number /*char*/ ): idTypeDef {
+	GetTypeForEventArg ( argType: string /*char*/ ): idTypeDef {
 		var type: idTypeDef;
 
 		switch ( argType ) {
@@ -2491,7 +2491,7 @@ idCompiler::ParseEventDef
 		format = ev.GetArgFormat();
 		num = strlen( format );
 		for( i = 0; i < num; i++ ) {
-			expectedType = this.GetTypeForEventArg( format.charCodeAt( i ) );
+			expectedType = this.GetTypeForEventArg( format[i] );
 			if ( !expectedType || ( expectedType == type_void ) ) {
 				this.Error( "Invalid parameter '%c' in definition of '%s' event.", format[ i ], name );
 			}

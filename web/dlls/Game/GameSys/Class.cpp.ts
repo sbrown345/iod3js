@@ -54,8 +54,13 @@
 ////
 ////template< class Type >
 class idEventFunc<Type> {
+	constructor ( event: idEventDef, $function: any /*( ) => void  ?????????????*/ ) {
+		this.event = event;
+		this.$function = $function;
+	}
+
 	event: idEventDef;
-	eventCallback_t: () => void;
+	$function: ( ...args: any[] /*????*/ ) => void; //eventCallback_t  - typedef void ( idClass::*eventCallback_t )( void ); ?????
 }
 
 ////// added & so gcc could compile this

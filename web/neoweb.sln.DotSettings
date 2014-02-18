@@ -127,4 +127,18 @@ set $NAME$ ( value: number ) {&#xD;
 		throw 'Undefined value';&#xD;
 	}&#xD;
 	this[$INDEX$] = value;&#xD;
-}</s:String></wpf:ResourceDictionary>
+}</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=FD81B55BFEBC804AA69187C8B40999CC/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=FD81B55BFEBC804AA69187C8B40999CC/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=FD81B55BFEBC804AA69187C8B40999CC/Description/@EntryValue">This macro must be included in the definition of any subclass of idClass. It prototypes variables used in class instanciation and type checking. Use this on single inheritance concrete classes only.</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=FD81B55BFEBC804AA69187C8B40999CC/Field/=nameofclass/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=FD81B55BFEBC804AA69187C8B40999CC/Field/=nameofclass/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=FD81B55BFEBC804AA69187C8B40999CC/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=FD81B55BFEBC804AA69187C8B40999CC/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=FD81B55BFEBC804AA69187C8B40999CC/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=FD81B55BFEBC804AA69187C8B40999CC/Shortcut/@EntryValue">CLASS_PROTOTYPE</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=FD81B55BFEBC804AA69187C8B40999CC/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=FD81B55BFEBC804AA69187C8B40999CC/Text/@EntryValue">static	Type:idTypeInfo;						&#xD;
+static	CreateInstance( ): idClass {throw "placeholder";}&#xD;
+GetType( ):idTypeInfo {throw "placeholder";}&#xD;
+static	eventCallbacks: idEventFunc&lt;$nameofclass$&gt;[];</s:String></wpf:ResourceDictionary>

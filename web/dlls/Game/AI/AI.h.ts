@@ -659,33 +659,37 @@
 ////	void					Event_GetReachableEntityPosition( idEntity *ent );
 ////};
 ////
-////class idCombatNode : public idEntity {
-////public:
-////	CLASS_PROTOTYPE( idCombatNode );
-////
-////						idCombatNode();
-////
-////	void				Save( idSaveGame *savefile ) const;
-////	void				Restore( idRestoreGame *savefile );
-////
-////	void				Spawn( void );
-////	bool				IsDisabled( void ) const;
-////	bool				EntityInView( idActor *actor, const idVec3 &pos );
-////	static void			DrawDebugInfo( void );
-////
-////private:
-////	float				min_dist;
-////	float				max_dist;
-////	float				cone_dist;
-////	float				min_height;
-////	float				max_height;
-////	idVec3				cone_left;
-////	idVec3				cone_right;
-////	idVec3				offset;
-////	bool				disabled;
-////
-////	void				Event_Activate( idEntity *activator );
-////	void				Event_MarkUsed( void );
-////};
-////
+class idCombatNode extends idEntity {
+//public:
+	//CLASS_PROTOTYPE( idCombatNode );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idCombatNode>[];
+
+	//					idCombatNode();
+
+	//void				Save( idSaveGame *savefile ) const;
+	//void				Restore( idRestoreGame *savefile );
+
+	//void				Spawn( void );
+	//bool				IsDisabled( void ) const;
+	//bool				EntityInView( idActor *actor, const idVec3 &pos );
+	//static void			DrawDebugInfo( void );
+
+//private:
+	//float				min_dist;
+	//float				max_dist;
+	//float				cone_dist;
+	//float				min_height;
+	//float				max_height;
+	//idVec3			cone_left;
+	//idVec3			cone_right;
+	//idVec3			offset;
+	//bool				disabled;
+
+	Event_Activate ( activator: idEntity ): void { throw "placeholder"; }
+	Event_MarkUsed ( ): void { throw "placeholder"; }
+};
+
 ////#endif /* !__AI_H__ */
