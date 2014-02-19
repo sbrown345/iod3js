@@ -218,17 +218,17 @@
 ////	
 ////	gameLocal.CalcFov( fov, view->fov_x, view->fov_y );
 ////}
-////
-/////*
-////===============================================================================
-////
-////  idCameraAnim
-////
-////===============================================================================
-////*/
-////
-////const idEventDef EV_Camera_Start( "start", NULL );
-////const idEventDef EV_Camera_Stop( "stop", NULL );
+
+/*
+===============================================================================
+
+  idCameraAnim
+
+===============================================================================
+*/
+
+var EV_Camera_Start = new idEventDef( "start", null );
+var EV_Camera_Stop = new idEventDef( "stop", null );
 ////
 ////CLASS_DECLARATION( idCamera, idCameraAnim )
 ////	EVENT( EV_Thread_SetCallback,	idCameraAnim::Event_SetCallback )

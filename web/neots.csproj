@@ -80,6 +80,11 @@
     <TypeScriptCompile Include="DoomDLL\CM\CollisionModel_translate.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\Item.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\Item.h.ts" />
+    <TypeScriptCompile Include="dlls\Game\Light.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\Mover.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\Mover.h.ts" />
+    <TypeScriptCompile Include="dlls\Game\Moveable.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\Moveable.h.ts" />
     <Content Include="DoomDLL\Framework\CmdSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\CmdSystem.h.ts" />
     <Content Include="DoomDLL\Framework\Common.cpp.ts" />

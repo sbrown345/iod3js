@@ -504,17 +504,17 @@
 ////	}
 ////}
 ////
-////
-/////*
-////===============================================================================
-////
-////  idAFEntity_Base
-////
-////===============================================================================
-////*/
-////
-////const idEventDef EV_SetConstraintPosition( "SetConstraintPosition", "sv" );
-////
+
+/*
+===============================================================================
+
+  idAFEntity_Base
+
+===============================================================================
+*/
+
+var EV_SetConstraintPosition = new idEventDef( "SetConstraintPosition", "sv" );
+
 ////CLASS_DECLARATION( idAnimatedEntity, idAFEntity_Base )
 ////	EVENT( EV_SetConstraintPosition,	idAFEntity_Base::Event_SetConstraintPosition )
 ////END_CLASS
@@ -934,16 +934,16 @@
 ////	af.SetConstraintPosition( name, pos );
 ////}
 ////
-/////*
-////===============================================================================
-////
-////idAFEntity_Gibbable
-////
-////===============================================================================
-////*/
-////
-////const idEventDef EV_Gib( "gib", "s" );
-////const idEventDef EV_Gibbed( "<gibbed>" );
+/*
+===============================================================================
+
+idAFEntity_Gibbable
+
+===============================================================================
+*/
+
+var EV_Gib = new idEventDef(  "gib", "s" );
+var EV_Gibbed = new idEventDef(  "<gibbed>" );
 ////
 ////CLASS_DECLARATION( idAFEntity_Base, idAFEntity_Gibbable )
 ////	EVENT( EV_Gib,		idAFEntity_Gibbable::Event_Gib )
@@ -2392,18 +2392,18 @@
 ////
 ////	idAFEntity_Base::Think();
 ////}
-////
-////
-/////*
-////===============================================================================
-////
-////  idAFEntity_ClawFourFingers
-////
-////===============================================================================
-////*/
-////
-////const idEventDef EV_SetFingerAngle( "setFingerAngle", "f" );
-////const idEventDef EV_StopFingers( "stopFingers" );
+
+
+/*
+===============================================================================
+
+  idAFEntity_ClawFourFingers
+
+===============================================================================
+*/
+
+var EV_SetFingerAngle = new idEventDef(  "setFingerAngle", "f" );
+var EV_StopFingers = new idEventDef(  "stopFingers" );
 ////
 ////CLASS_DECLARATION( idAFEntity_Base, idAFEntity_ClawFourFingers )
 ////	EVENT( EV_SetFingerAngle,		idAFEntity_ClawFourFingers::Event_SetFingerAngle )

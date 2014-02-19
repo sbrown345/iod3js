@@ -60,15 +60,15 @@
 ////	// this just holds dict information
 ////}
 ////
-/////*
-////===============================================================================
-////
-////	idPlayerStart
-////
-////===============================================================================
-////*/
-////
-////const idEventDef EV_TeleportStage( "<TeleportStage>", "e" );
+/*
+===============================================================================
+
+	idPlayerStart
+
+===============================================================================
+*/
+
+var EV_TeleportStage= new idEventDef( "<TeleportStage>", "e" );
 ////
 ////CLASS_DECLARATION( idEntity, idPlayerStart )
 ////	EVENT( EV_Activate,			idPlayerStart::Event_TeleportPlayer )
@@ -410,16 +410,16 @@
 ////	path = RandomPath( this, NULL );
 ////	idThread::ReturnEntity( path );
 ////}
-////
-/////*
-////===============================================================================
-////
-////  idDamagable
-////	
-////===============================================================================
-////*/
-////
-////const idEventDef EV_RestoreDamagable( "<RestoreDamagable>" );
+
+/*
+===============================================================================
+
+  idDamagable
+	
+===============================================================================
+*/
+
+var EV_RestoreDamagable= new idEventDef( "<RestoreDamagable>" );
 ////
 ////CLASS_DECLARATION( idEntity, idDamagable )
 ////	EVENT( EV_Activate,			idDamagable::Event_BecomeBroken )
@@ -730,15 +730,15 @@
 ////	PostEventMS( &EV_PostSpawn, 0 );
 ////}
 ////
-/////*
-////===============================================================================
-////
-////  idForceField
-////	
-////===============================================================================
-////*/
-////
-////const idEventDef EV_Toggle( "Toggle", NULL );
+/*
+===============================================================================
+
+  idForceField
+	
+===============================================================================
+*/
+
+var EV_Toggle = new idEventDef( "Toggle", null );
 ////
 ////CLASS_DECLARATION( idEntity, idForceField )
 ////	EVENT( EV_Activate,		idForceField::Event_Activate )
@@ -870,19 +870,19 @@
 ////}
 ////
 ////
-/////*
-////===============================================================================
-////
-////	idAnimated
-////
-////===============================================================================
-////*/
-////
-////const idEventDef EV_Animated_Start( "<start>" );
-////const idEventDef EV_LaunchMissiles( "launchMissiles", "ssssdf" );
-////const idEventDef EV_LaunchMissilesUpdate( "<launchMissiles>", "dddd" );
-////const idEventDef EV_AnimDone( "<AnimDone>", "d" );
-////const idEventDef EV_StartRagdoll( "startRagdoll" );
+/*
+===============================================================================
+
+	idAnimated
+
+===============================================================================
+*/
+
+var EV_Animated_Start= new idEventDef( "<start>" );
+var EV_LaunchMissiles= new idEventDef( "launchMissiles", "ssssdf" );
+var EV_LaunchMissilesUpdate= new idEventDef( "<launchMissiles>", "dddd" );
+var EV_AnimDone= new idEventDef( "<AnimDone>", "d" );
+var EV_StartRagdoll= new idEventDef( "startRagdoll" );
 ////
 ////CLASS_DECLARATION( idAFEntity_Gibbable, idAnimated )
 ////	EVENT( EV_Activate,				idAnimated::Event_Activate )
@@ -1671,18 +1671,18 @@
 ////		UpdateVisuals();
 ////	}
 ////}
-////
-////
-/////*
-////===============================================================================
-////
-////idFuncSplat
-////
-////===============================================================================
-////*/
-////
-////
-////const idEventDef EV_Splat( "<Splat>" );
+
+
+/*
+===============================================================================
+
+idFuncSplat
+
+===============================================================================
+*/
+
+
+var EV_Splat= new idEventDef( "<Splat>" );
 ////CLASS_DECLARATION( idFuncEmitter, idFuncSplat )
 ////EVENT( EV_Activate,		idFuncSplat::Event_Activate )
 ////EVENT( EV_Splat,		idFuncSplat::Event_Splat )
@@ -2792,17 +2792,17 @@
 ////
 ////
 ////
-/////*
-////===============================================================================
-////
-////idFuncRadioChatter
-////
-////===============================================================================
-////*/
-////
-////const idEventDef EV_ResetRadioHud( "<resetradiohud>", "e" );
-////
-////
+/*
+===============================================================================
+
+idFuncRadioChatter
+
+===============================================================================
+*/
+
+var EV_ResetRadioHud= new idEventDef( "<resetradiohud>", "e" );
+
+
 ////CLASS_DECLARATION( idEntity, idFuncRadioChatter )
 ////EVENT( EV_Activate,				idFuncRadioChatter::Event_Activate )
 ////EVENT( EV_ResetRadioHud,		idFuncRadioChatter::Event_ResetRadioHud )

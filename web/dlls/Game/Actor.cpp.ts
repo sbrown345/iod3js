@@ -313,53 +313,53 @@
 ////
 ////	return true;
 ////}
-////
-/////***********************************************************************
-////
-////	idActor
-////
-////***********************************************************************/
-////
-////const idEventDef AI_EnableEyeFocus( "enableEyeFocus" );
-////const idEventDef AI_DisableEyeFocus( "disableEyeFocus" );
-////const idEventDef EV_Footstep( "footstep" );
-////const idEventDef EV_FootstepLeft( "leftFoot" );
-////const idEventDef EV_FootstepRight( "rightFoot" );
-////const idEventDef EV_EnableWalkIK( "EnableWalkIK" );
-////const idEventDef EV_DisableWalkIK( "DisableWalkIK" );
-////const idEventDef EV_EnableLegIK( "EnableLegIK", "d" );
-////const idEventDef EV_DisableLegIK( "DisableLegIK", "d" );
-////const idEventDef AI_StopAnim( "stopAnim", "dd" );
-////const idEventDef AI_PlayAnim( "playAnim", "ds", 'd' );
-////const idEventDef AI_PlayCycle( "playCycle", "ds", 'd' );
-////const idEventDef AI_IdleAnim( "idleAnim", "ds", 'd' );
-////const idEventDef AI_SetSyncedAnimWeight( "setSyncedAnimWeight", "ddf" );
-////const idEventDef AI_SetBlendFrames( "setBlendFrames", "dd" );
-////const idEventDef AI_GetBlendFrames( "getBlendFrames", "d", 'd' );
-////const idEventDef AI_AnimState( "animState", "dsd" );
-////const idEventDef AI_GetAnimState( "getAnimState", "d", 's' );
-////const idEventDef AI_InAnimState( "inAnimState", "ds", 'd' );
-////const idEventDef AI_FinishAction( "finishAction", "s" );
-////const idEventDef AI_AnimDone( "animDone", "dd", 'd' );
-////const idEventDef AI_OverrideAnim( "overrideAnim", "d" );
-////const idEventDef AI_EnableAnim( "enableAnim", "dd" );
-////const idEventDef AI_PreventPain( "preventPain", "f" );
-////const idEventDef AI_DisablePain( "disablePain" );
-////const idEventDef AI_EnablePain( "enablePain" );
-////const idEventDef AI_GetPainAnim( "getPainAnim", NULL, 's' );
-////const idEventDef AI_SetAnimPrefix( "setAnimPrefix", "s" );
-////const idEventDef AI_HasAnim( "hasAnim", "ds", 'f' );
-////const idEventDef AI_CheckAnim( "checkAnim", "ds" );
-////const idEventDef AI_ChooseAnim( "chooseAnim", "ds", 's' );
-////const idEventDef AI_AnimLength( "animLength", "ds", 'f' );
-////const idEventDef AI_AnimDistance( "animDistance", "ds", 'f' );
-////const idEventDef AI_HasEnemies( "hasEnemies", NULL, 'd' );
-////const idEventDef AI_NextEnemy( "nextEnemy", "E", 'e' );
-////const idEventDef AI_ClosestEnemyToPoint( "closestEnemyToPoint", "v", 'e' );
-////const idEventDef AI_SetNextState( "setNextState", "s" );
-////const idEventDef AI_SetState( "setState", "s" );
-////const idEventDef AI_GetState( "getState", NULL, 's' );
-////const idEventDef AI_GetHead( "getHead", NULL, 'e' );
+
+/***********************************************************************
+
+	idActor
+
+***********************************************************************/
+
+var AI_EnableEyeFocus = new idEventDef(  "enableEyeFocus" );
+var AI_DisableEyeFocus = new idEventDef(  "disableEyeFocus" );
+var EV_Footstep = new idEventDef(  "footstep" );
+var EV_FootstepLeft = new idEventDef(  "leftFoot" );
+var EV_FootstepRight = new idEventDef(  "rightFoot" );
+var EV_EnableWalkIK = new idEventDef(  "EnableWalkIK" );
+var EV_DisableWalkIK = new idEventDef(  "DisableWalkIK" );
+var EV_EnableLegIK = new idEventDef(  "EnableLegIK", "d" );
+var EV_DisableLegIK = new idEventDef(  "DisableLegIK", "d" );
+var AI_StopAnim = new idEventDef(  "stopAnim", "dd" );
+var AI_PlayAnim = new idEventDef(  "playAnim", "ds", 'd' );
+var AI_PlayCycle = new idEventDef(  "playCycle", "ds", 'd' );
+var AI_IdleAnim = new idEventDef(  "idleAnim", "ds", 'd' );
+var AI_SetSyncedAnimWeight = new idEventDef(  "setSyncedAnimWeight", "ddf" );
+var AI_SetBlendFrames = new idEventDef(  "setBlendFrames", "dd" );
+var AI_GetBlendFrames = new idEventDef(  "getBlendFrames", "d", 'd' );
+var AI_AnimState = new idEventDef(  "animState", "dsd" );
+var AI_GetAnimState = new idEventDef(  "getAnimState", "d", 's' );
+var AI_InAnimState = new idEventDef(  "inAnimState", "ds", 'd' );
+var AI_FinishAction = new idEventDef(  "finishAction", "s" );
+var AI_AnimDone = new idEventDef(  "animDone", "dd", 'd' );
+var AI_OverrideAnim = new idEventDef(  "overrideAnim", "d" );
+var AI_EnableAnim = new idEventDef(  "enableAnim", "dd" );
+var AI_PreventPain = new idEventDef(  "preventPain", "f" );
+var AI_DisablePain = new idEventDef(  "disablePain" );
+var AI_EnablePain = new idEventDef(  "enablePain" );
+var AI_GetPainAnim = new idEventDef(  "getPainAnim", null, 's' );
+var AI_SetAnimPrefix = new idEventDef(  "setAnimPrefix", "s" );
+var AI_HasAnim = new idEventDef(  "hasAnim", "ds", 'f' );
+var AI_CheckAnim = new idEventDef(  "checkAnim", "ds" );
+var AI_ChooseAnim = new idEventDef(  "chooseAnim", "ds", 's' );
+var AI_AnimLength = new idEventDef(  "animLength", "ds", 'f' );
+var AI_AnimDistance = new idEventDef(  "animDistance", "ds", 'f' );
+var AI_HasEnemies = new idEventDef(  "hasEnemies", null, 'd' );
+var AI_NextEnemy = new idEventDef(  "nextEnemy", "E", 'e' );
+var AI_ClosestEnemyToPoint = new idEventDef(  "closestEnemyToPoint", "v", 'e' );
+var AI_SetNextState = new idEventDef(  "setNextState", "s" );
+var AI_SetState = new idEventDef(  "setState", "s" );
+var AI_GetState = new idEventDef(  "getState", null, 's' );
+var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////
 ////CLASS_DECLARATION( idAFEntity_Gibbable, idActor )
 ////	EVENT( AI_EnableEyeFocus,			idActor::Event_EnableEyeFocus )

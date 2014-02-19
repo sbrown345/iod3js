@@ -30,18 +30,18 @@
 ////#pragma hdrstop
 ////
 ////#include "Game_local.h"
-////
-/////*
-////===============================================================================
-////
-////	idEntityFx
-////
-////===============================================================================
-////*/
-////
-////const idEventDef EV_Fx_KillFx( "_killfx" );
-////const idEventDef EV_Fx_Action( "_fxAction", "e" );		// implemented by subclasses
-////
+
+/*
+===============================================================================
+
+	idEntityFx
+
+===============================================================================
+*/
+
+var EV_Fx_KillFx= new idEventDef( "_killfx" );
+var EV_Fx_Action= new idEventDef( "_fxAction", "e" );		// implemented by subclasses
+
 ////CLASS_DECLARATION( idEntity, idEntityFx )
 ////EVENT( EV_Activate,	   	idEntityFx::Event_Trigger )
 ////EVENT( EV_Fx_KillFx,	idEntityFx::Event_ClearFx )

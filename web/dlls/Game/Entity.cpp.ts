@@ -4847,21 +4847,21 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////	return false;
 ////}
 ////
-/////*
-////===============================================================================
-////
-////  idAnimatedEntity
-////
-////===============================================================================
-////*/
-////
-////const idEventDef EV_GetJointHandle( "getJointHandle", "s", 'd' );
-////const idEventDef EV_ClearAllJoints( "clearAllJoints" );
-////const idEventDef EV_ClearJoint( "clearJoint", "d" );
-////const idEventDef EV_SetJointPos( "setJointPos", "ddv" );
-////const idEventDef EV_SetJointAngle( "setJointAngle", "ddv" );
-////const idEventDef EV_GetJointPos( "getJointPos", "d", 'v' );
-////const idEventDef EV_GetJointAngle( "getJointAngle", "d", 'v' );
+/*
+===============================================================================
+
+  idAnimatedEntity
+
+===============================================================================
+*/
+
+var EV_GetJointHandle= new idEventDef( "getJointHandle", "s", 'd' );
+var EV_ClearAllJoints= new idEventDef( "clearAllJoints" );
+var EV_ClearJoint= new idEventDef( "clearJoint", "d" );
+var EV_SetJointPos= new idEventDef( "setJointPos", "ddv" );
+var EV_SetJointAngle= new idEventDef( "setJointAngle", "ddv" );
+var EV_GetJointPos= new idEventDef( "getJointPos", "d", 'v' );
+var EV_GetJointAngle= new idEventDef( "getJointAngle", "d", 'v' );
 ////
 ////CLASS_DECLARATION( idEntity, idAnimatedEntity )
 ////	EVENT( EV_GetJointHandle,		idAnimatedEntity::Event_GetJointHandle )
