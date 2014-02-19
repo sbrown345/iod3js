@@ -448,43 +448,44 @@ idTypeDef::idTypeDef
 		return true;
 	}
 
-	///*
-	//================
-	//idTypeDef::MatchesVirtualFunction
-	//
-	//Returns true if both functions' base types and parameters match
-	//================
-	//*/
-	//bool idTypeDef::MatchesVirtualFunction( const idTypeDef &matchfunc ) const {
-	//	int i;
-	//
-	//	if ( this == &matchfunc ) {
-	//		return true;
-	//	}
-	//
-	//	if ( ( type != matchfunc.type ) || ( auxType != matchfunc.auxType ) ) {
-	//		return false;
-	//	}
-	//
-	//	if ( parmTypes.Num() != matchfunc.parmTypes.Num() ) {
-	//		return false;
-	//	}
-	//
-	//	if ( parmTypes.Num() > 0 ) {
-	//		if ( !parmTypes[ 0 ].Inherits( matchfunc.parmTypes[ 0 ] ) ) {
-	//			return false;
-	//		}
-	//	}
-	//
-	//	for( i = 1; i < matchfunc.parmTypes.Num(); i++ ) {
-	//		if ( parmTypes[ i ] != matchfunc.parmTypes[ i ] ) {
-	//			return false;
-	//		}
-	//	}
-	//
-	//	return true;
-	//}
+	/*
+	================
+	idTypeDef::MatchesVirtualFunction
 	
+	Returns true if both functions' base types and parameters match
+	================
+	*/
+	MatchesVirtualFunction ( matchfunc: idTypeDef ): boolean {
+		todoThrow ( );
+
+		//int i;
+		//if ( this == &matchfunc ) {
+		//	return true;
+		//}
+
+		//if ( ( type != matchfunc.type ) || ( auxType != matchfunc.auxType ) ) {
+		//	return false;
+		//}
+
+		//if ( parmTypes.Num() != matchfunc.parmTypes.Num() ) {
+		//	return false;
+		//}
+
+		//if ( parmTypes.Num() > 0 ) {
+		//	if ( !parmTypes[ 0 ].Inherits( matchfunc.parmTypes[ 0 ] ) ) {
+		//		return false;
+		//	}
+		//}
+
+		//for( i = 1; i < matchfunc.parmTypes.Num(); i++ ) {
+		//	if ( parmTypes[ i ] != matchfunc.parmTypes[ i ] ) {
+		//		return false;
+		//	}
+		//}
+
+		return true;
+	}
+
 	/*
 	================
 	idTypeDef::AddFunctionParm
@@ -560,22 +561,22 @@ idTypeDef::idTypeDef
 	Size ( ): number {
 		return this.size;
 	}
-	//
-	///*
-	//================
-	//idTypeDef::SuperClass
-	//
-	//If type is an object, then returns the object's superclass
-	//================
-	//*/
-	//idTypeDef *idTypeDef::SuperClass( void ) const {
-	//	if ( type != ev_object ) {
-	//		throw idCompileError( "idTypeDef::SuperClass : tried to get superclass of a non-object type" );
-	//	}
-	//
-	//	return auxType;
-	//}
-	//
+	
+	/*
+	================
+	idTypeDef::SuperClass
+	
+	If type is an object, then returns the object's superclass
+	================
+	*/
+	SuperClass ( ): idTypeDef {
+		if ( this.type != etype_t.ev_object ) {
+			throw new idCompileError( "idTypeDef::SuperClass : tried to get superclass of a non-object type" );
+		}
+
+		return this.auxType;
+	}
+
 	///*
 	//================
 	//idTypeDef::ReturnType
@@ -666,15 +667,15 @@ idTypeDef::idTypeDef
 	//	auxType = pointertype;
 	//}
 	//
-	///*
-	//================
-	//idTypeDef::NumParameters
-	//================
-	//*/
-	//int idTypeDef::NumParameters( void ) const {
-	//	return parmTypes.Num();
-	//}
-	//
+	/*
+	================
+	idTypeDef::NumParameters
+	================
+	*/
+	NumParameters ( ): number {
+		return this.parmTypes.Num ( );
+	}
+
 	/*
 	================
 	idTypeDef::GetParmType
@@ -686,17 +687,17 @@ idTypeDef::idTypeDef
 		return this.parmTypes[parmNumber];
 	}
 
-	///*
-	//================
-	//idTypeDef::GetParmName
-	//================
-	//*/
-	//const char *idTypeDef::GetParmName( int parmNumber ) const {
-	//	assert( parmNumber >= 0 );
-	//	assert( parmNumber < parmTypes.Num() );
-	//	return parmNames[ parmNumber ];
-	//}
-	//
+	/*
+	================
+	idTypeDef::GetParmName
+	================
+	*/
+	GetParmName ( /*int */parmNumber: number ): string {
+		assert( parmNumber >= 0 );
+		assert( parmNumber < this.parmTypes.Num ( ) );
+		return this.parmNames[parmNumber];
+	}
+	
 	///*
 	//================
 	//idTypeDef::NumFunctions
@@ -732,25 +733,25 @@ idTypeDef::idTypeDef
 	//	assert( funcNumber < functions.Num() );
 	//	return functions[ funcNumber ];
 	//}
-	//
-	///*
-	//================
-	//idTypeDef::AddFunction
-	//================
-	//*/
-	//void idTypeDef::AddFunction( const function_t *func ) {
-	//	int i;
-	//
-	//	for( i = 0; i < functions.Num(); i++ ) {
-	//		if ( !strcmp( functions[ i ].def.Name(), func.def.Name() ) ) {
-	//			if ( func.def.TypeDef().MatchesVirtualFunction( *functions[ i ].def.TypeDef() ) ) {
-	//				functions[ i ] = func;
-	//				return;
-	//			}
-	//		}
-	//	}
-	//	functions.Append( func );
-	//}
+	
+	/*
+	================
+	idTypeDef::AddFunction
+	================
+	*/
+	AddFunction ( func: function_t ): void {
+		var i: number;
+
+		for ( i = 0; i < this.functions.Num ( ); i++ ) {
+			if ( !strcmp( this.functions[i].def.Name ( ), func.def.Name ( ) ) ) {
+				if ( func.def.TypeDef ( ).MatchesVirtualFunction( this.functions[i].def.TypeDef ( ) ) ) {
+					this.functions[i] = func;
+					return;
+				}
+			}
+		}
+		this.functions.Append( func );
+	}
 
 }
 
@@ -949,7 +950,7 @@ class idVarDef {
 	//		value.virtualFunction = _value._int;
 	//		break;
 	//
-	//	case ev_object :
+	//	case etype_t.ev_object :
 	//		*value.entityNumberPtr = _value.entity;
 	//		break;
 	//

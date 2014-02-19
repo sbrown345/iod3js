@@ -550,7 +550,7 @@ class idProgram {
 //
 //	statement_t									*AllocStatement( void );
 //	statement_t									&GetStatement( int index );
-//	int											NumStatements( void ) { return statements.Num(); }
+	NumStatements ( ) { return this.statements.Num ( ); }
 //
 //	int 										GetReturnedInteger( void );
 //
@@ -989,62 +989,63 @@ If type is NULL, it will match any type
 //
 //	return this.AllocDef( type, name, scope, false );
 //}
-//
-///*
-//================
-//idProgram::FindFunction
-//
-//Searches for the specified function in the currently loaded script.  A full namespace should be
-//specified if not in the global namespace.
-//
-//Returns 0 if function not found.
-//Returns >0 if function found.
-//================
-//*/
-//function_t *idProgram::FindFunction( name:string ) const {
-//	int			start;
-//	int			pos;
-//	idVarDef	*namespaceDef;
-//	idVarDef	*def;
-//
-//	assert( name );
-//
-//	idStr fullname = name;
-//	start = 0;
-//	namespaceDef = &def_namespace;
-//	do {
-//		pos = fullname.Find( "::", true, start );
-//		if ( pos < 0 ) {
-//			break;
-//		}
-//
-//		idStr namespaceName = fullname.Mid( start, pos - start );
-//		def = GetDef( null, namespaceName, namespaceDef );
-//		if ( !def ) {
-//			// couldn't find namespace
-//			return null;
-//		}
-//		namespaceDef = def;
-//
-//		// skip past the ::
-//		start = pos + 2;
-//	} while( def.Type() == etype_t.ev_namespace );
-//
-//	idStr funcName = fullname.Right( fullname.Length() - start );
-//	def = GetDef( null, funcName, namespaceDef );
-//	if ( !def ) {
-//		// couldn't find function
-//		return null;
-//	}
-//
-//	if ( ( def.Type() == etype_t.ev_function ) && ( def.value.functionPtr.eventdef == null ) ) {
-//		return def.value.functionPtr;
-//	}
-//
-//	// is not a function, or is an eventdef
-//	return null;
-//}
-//
+
+/*
+================
+idProgram::FindFunction
+
+Searches for the specified function in the currently loaded script.  A full namespace should be
+specified if not in the global namespace.
+
+Returns 0 if function not found.
+Returns >0 if function found.
+================
+*/
+	FindFunction ( name: string ): function_t {
+		todoThrow ( );
+		//int			start;
+		//int			pos;
+		//idVarDef	*namespaceDef;
+		//idVarDef	*def;
+
+		//assert( name );
+
+		//idStr fullname = name;
+		//start = 0;
+		//namespaceDef = &def_namespace;
+		//do {
+		//	pos = fullname.Find( "::", true, start );
+		//	if ( pos < 0 ) {
+		//		break;
+		//	}
+
+		//	idStr namespaceName = fullname.Mid( start, pos - start );
+		//	def = GetDef( null, namespaceName, namespaceDef );
+		//	if ( !def ) {
+		//		// couldn't find namespace
+		//		return null;
+		//	}
+		//	namespaceDef = def;
+
+		//	// skip past the ::
+		//	start = pos + 2;
+		//} while( def.Type() == etype_t.ev_namespace );
+
+		//idStr funcName = fullname.Right( fullname.Length() - start );
+		//def = GetDef( null, funcName, namespaceDef );
+		//if ( !def ) {
+		//	// couldn't find function
+		//	return null;
+		//}
+
+		//if ( ( def.Type() == etype_t.ev_function ) && ( def.value.functionPtr.eventdef == null ) ) {
+		//	return def.value.functionPtr;
+		//}
+
+		//// is not a function, or is an eventdef
+		return null;
+	}
+
 ///*
 //================
 //idProgram::FindFunction
