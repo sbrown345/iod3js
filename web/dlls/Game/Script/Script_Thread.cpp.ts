@@ -31,86 +31,86 @@
 //
 //#include "../Game_local.h"
 //
-//const idEventDef EV_Thread_Execute( "<execute>", NULL );
-//const idEventDef EV_Thread_SetCallback( "<script_setcallback>", NULL );
+var EV_Thread_Execute = new idEventDef("<execute>", null );
+var EV_Thread_SetCallback = new idEventDef("<script_setcallback>", null );
 //																	
-//// script callable events
-//const idEventDef EV_Thread_TerminateThread( "terminate", "d" );
-//const idEventDef EV_Thread_Pause( "pause", NULL );
-//const idEventDef EV_Thread_Wait( "wait", "f" );
-//const idEventDef EV_Thread_WaitFrame( "waitFrame" );
-//const idEventDef EV_Thread_WaitFor( "waitFor", "e" );
-//const idEventDef EV_Thread_WaitForThread( "waitForThread", "d" );
-//const idEventDef EV_Thread_Print( "print", "s" );
-//const idEventDef EV_Thread_PrintLn( "println", "s" );
-//const idEventDef EV_Thread_Say( "say", "s" );
-//const idEventDef EV_Thread_Assert( "assert", "f" );
-//const idEventDef EV_Thread_Trigger( "trigger", "e" );
-//const idEventDef EV_Thread_SetCvar( "setcvar", "ss" );
-//const idEventDef EV_Thread_GetCvar( "getcvar", "s", 's' );
-//const idEventDef EV_Thread_Random( "random", "f", 'f' );
-//const idEventDef EV_Thread_GetTime( "getTime", NULL, 'f' );
-//const idEventDef EV_Thread_KillThread( "killthread", "s" );
-//const idEventDef EV_Thread_SetThreadName( "threadname", "s" );
-//const idEventDef EV_Thread_GetEntity( "getEntity", "s", 'e' );
-//const idEventDef EV_Thread_Spawn( "spawn", "s", 'e' );
-//const idEventDef EV_Thread_CopySpawnArgs( "copySpawnArgs", "e" );
-//const idEventDef EV_Thread_SetSpawnArg( "setSpawnArg", "ss" );
-//const idEventDef EV_Thread_SpawnString( "SpawnString", "ss", 's' );
-//const idEventDef EV_Thread_SpawnFloat( "SpawnFloat", "sf", 'f' );
-//const idEventDef EV_Thread_SpawnVector( "SpawnVector", "sv", 'v' );
-//const idEventDef EV_Thread_ClearPersistantArgs( "clearPersistantArgs" );
-//const idEventDef EV_Thread_SetPersistantArg( "setPersistantArg", "ss" );
-//const idEventDef EV_Thread_GetPersistantString( "getPersistantString", "s", 's' );
-//const idEventDef EV_Thread_GetPersistantFloat( "getPersistantFloat", "s", 'f' );
-//const idEventDef EV_Thread_GetPersistantVector( "getPersistantVector", "s", 'v' );
-//const idEventDef EV_Thread_AngToForward( "angToForward", "v", 'v' );
-//const idEventDef EV_Thread_AngToRight( "angToRight", "v", 'v' );
-//const idEventDef EV_Thread_AngToUp( "angToUp", "v", 'v' );
-//const idEventDef EV_Thread_Sine( "sin", "f", 'f' );
-//const idEventDef EV_Thread_Cosine( "cos", "f", 'f' );
-//const idEventDef EV_Thread_SquareRoot( "sqrt", "f", 'f' );
-//const idEventDef EV_Thread_Normalize( "vecNormalize", "v", 'v' );
-//const idEventDef EV_Thread_VecLength( "vecLength", "v", 'f' );
-//const idEventDef EV_Thread_VecDotProduct( "DotProduct", "vv", 'f' );
-//const idEventDef EV_Thread_VecCrossProduct( "CrossProduct", "vv", 'v' );
-//const idEventDef EV_Thread_VecToAngles( "VecToAngles", "v", 'v' );
-//const idEventDef EV_Thread_OnSignal( "onSignal", "des" );
-//const idEventDef EV_Thread_ClearSignal( "clearSignalThread", "de" );
-//const idEventDef EV_Thread_SetCamera( "setCamera", "e" );
-//const idEventDef EV_Thread_FirstPerson( "firstPerson", NULL );
-//const idEventDef EV_Thread_Trace( "trace", "vvvvde", 'f' );
-//const idEventDef EV_Thread_TracePoint( "tracePoint", "vvde", 'f' );
-//const idEventDef EV_Thread_GetTraceFraction( "getTraceFraction", NULL, 'f' );
-//const idEventDef EV_Thread_GetTraceEndPos( "getTraceEndPos", NULL, 'v' );
-//const idEventDef EV_Thread_GetTraceNormal( "getTraceNormal", NULL, 'v' );
-//const idEventDef EV_Thread_GetTraceEntity( "getTraceEntity", NULL, 'e' );
-//const idEventDef EV_Thread_GetTraceJoint( "getTraceJoint", NULL, 's' );
-//const idEventDef EV_Thread_GetTraceBody( "getTraceBody", NULL, 's' );
-//const idEventDef EV_Thread_FadeIn( "fadeIn", "vf" );
-//const idEventDef EV_Thread_FadeOut( "fadeOut", "vf" );
-//const idEventDef EV_Thread_FadeTo( "fadeTo", "vff" );
-//const idEventDef EV_Thread_StartMusic( "music", "s" );
-//const idEventDef EV_Thread_Error( "error", "s" );
-//const idEventDef EV_Thread_Warning( "warning", "s" );
-//const idEventDef EV_Thread_StrLen( "strLength", "s", 'd' );
-//const idEventDef EV_Thread_StrLeft( "strLeft", "sd", 's' );
-//const idEventDef EV_Thread_StrRight( "strRight", "sd", 's' );
-//const idEventDef EV_Thread_StrSkip( "strSkip", "sd", 's' );
-//const idEventDef EV_Thread_StrMid( "strMid", "sdd", 's' );
-//const idEventDef EV_Thread_StrToFloat( "strToFloat", "s", 'f' );
-//const idEventDef EV_Thread_RadiusDamage( "radiusDamage", "vEEEsf" );
-//const idEventDef EV_Thread_IsClient( "isClient", NULL, 'f' );
-//const idEventDef EV_Thread_IsMultiplayer( "isMultiplayer", NULL, 'f' );
-//const idEventDef EV_Thread_GetFrameTime( "getFrameTime", NULL, 'f' );
-//const idEventDef EV_Thread_GetTicsPerSecond( "getTicsPerSecond", NULL, 'f' );
-//const idEventDef EV_Thread_DebugLine( "debugLine", "vvvf" );
-//const idEventDef EV_Thread_DebugArrow( "debugArrow", "vvvdf" );
-//const idEventDef EV_Thread_DebugCircle( "debugCircle", "vvvfdf" );
-//const idEventDef EV_Thread_DebugBounds( "debugBounds", "vvvf" );
-//const idEventDef EV_Thread_DrawText( "drawText", "svfvdf" );
-//const idEventDef EV_Thread_InfluenceActive( "influenceActive", NULL, 'd' );
-//
+// script callable events
+var EV_Thread_TerminateThread = new idEventDef( "terminate", "d" );
+var EV_Thread_Pause = new idEventDef( "pause", null );
+var EV_Thread_Wait = new idEventDef( "wait", "f" );
+var EV_Thread_WaitFrame = new idEventDef( "waitFrame" );
+var EV_Thread_WaitFor = new idEventDef( "waitFor", "e" );
+var EV_Thread_WaitForThread = new idEventDef( "waitForThread", "d" );
+var EV_Thread_Print = new idEventDef( "print", "s" );
+var EV_Thread_PrintLn = new idEventDef( "println", "s" );
+var EV_Thread_Say = new idEventDef( "say", "s" );
+var EV_Thread_Assert = new idEventDef( "assert", "f" );
+var EV_Thread_Trigger = new idEventDef( "trigger", "e" );
+var EV_Thread_SetCvar = new idEventDef( "setcvar", "ss" );
+var EV_Thread_GetCvar = new idEventDef( "getcvar", "s", 's' );
+var EV_Thread_Random = new idEventDef( "random", "f", 'f' );
+var EV_Thread_GetTime = new idEventDef( "getTime", null, 'f' );
+var EV_Thread_KillThread = new idEventDef( "killthread", "s" );
+var EV_Thread_SetThreadName = new idEventDef( "threadname", "s" );
+var EV_Thread_GetEntity = new idEventDef( "getEntity", "s", 'e' );
+var EV_Thread_Spawn = new idEventDef( "spawn", "s", 'e' );
+var EV_Thread_CopySpawnArgs = new idEventDef( "copySpawnArgs", "e" );
+var EV_Thread_SetSpawnArg = new idEventDef( "setSpawnArg", "ss" );
+var EV_Thread_SpawnString = new idEventDef( "SpawnString", "ss", 's' );
+var EV_Thread_SpawnFloat = new idEventDef( "SpawnFloat", "sf", 'f' );
+var EV_Thread_SpawnVector = new idEventDef( "SpawnVector", "sv", 'v' );
+var EV_Thread_ClearPersistantArgs = new idEventDef( "clearPersistantArgs" );
+var EV_Thread_SetPersistantArg = new idEventDef( "setPersistantArg", "ss" );
+var EV_Thread_GetPersistantString = new idEventDef( "getPersistantString", "s", 's' );
+var EV_Thread_GetPersistantFloat = new idEventDef( "getPersistantFloat", "s", 'f' );
+var EV_Thread_GetPersistantVector = new idEventDef( "getPersistantVector", "s", 'v' );
+var EV_Thread_AngToForward = new idEventDef( "angToForward", "v", 'v' );
+var EV_Thread_AngToRight = new idEventDef( "angToRight", "v", 'v' );
+var EV_Thread_AngToUp = new idEventDef( "angToUp", "v", 'v' );
+var EV_Thread_Sine = new idEventDef( "sin", "f", 'f' );
+var EV_Thread_Cosine = new idEventDef( "cos", "f", 'f' );
+var EV_Thread_SquareRoot = new idEventDef( "sqrt", "f", 'f' );
+var EV_Thread_Normalize = new idEventDef( "vecNormalize", "v", 'v' );
+var EV_Thread_VecLength = new idEventDef( "vecLength", "v", 'f' );
+var EV_Thread_VecDotProduct = new idEventDef( "DotProduct", "vv", 'f' );
+var EV_Thread_VecCrossProduct = new idEventDef( "CrossProduct", "vv", 'v' );
+var EV_Thread_VecToAngles = new idEventDef( "VecToAngles", "v", 'v' );
+var EV_Thread_OnSignal = new idEventDef( "onSignal", "des" );
+var EV_Thread_ClearSignal = new idEventDef( "clearSignalThread", "de" );
+var EV_Thread_SetCamera = new idEventDef( "setCamera", "e" );
+var EV_Thread_FirstPerson = new idEventDef( "firstPerson", null );
+var EV_Thread_Trace = new idEventDef( "trace", "vvvvde", 'f' );
+var EV_Thread_TracePoint = new idEventDef( "tracePoint", "vvde", 'f' );
+var EV_Thread_GetTraceFraction = new idEventDef( "getTraceFraction", null, 'f' );
+var EV_Thread_GetTraceEndPos = new idEventDef( "getTraceEndPos", null, 'v' );
+var EV_Thread_GetTraceNormal = new idEventDef( "getTraceNormal", null, 'v' );
+var EV_Thread_GetTraceEntity = new idEventDef( "getTraceEntity", null, 'e' );
+var EV_Thread_GetTraceJoint = new idEventDef( "getTraceJoint", null, 's' );
+var EV_Thread_GetTraceBody = new idEventDef( "getTraceBody", null, 's' );
+var EV_Thread_FadeIn = new idEventDef( "fadeIn", "vf" );
+var EV_Thread_FadeOut = new idEventDef( "fadeOut", "vf" );
+var EV_Thread_FadeTo = new idEventDef( "fadeTo", "vff" );
+var EV_Thread_StartMusic = new idEventDef( "music", "s" );
+var EV_Thread_Error = new idEventDef( "error", "s" );
+var EV_Thread_Warning = new idEventDef( "warning", "s" );
+var EV_Thread_StrLen = new idEventDef( "strLength", "s", 'd' );
+var EV_Thread_StrLeft = new idEventDef( "strLeft", "sd", 's' );
+var EV_Thread_StrRight = new idEventDef( "strRight", "sd", 's' );
+var EV_Thread_StrSkip = new idEventDef( "strSkip", "sd", 's' );
+var EV_Thread_StrMid = new idEventDef( "strMid", "sdd", 's' );
+var EV_Thread_StrToFloat = new idEventDef( "strToFloat", "s", 'f' );
+var EV_Thread_RadiusDamage = new idEventDef( "radiusDamage", "vEEEsf" );
+var EV_Thread_IsClient = new idEventDef( "isClient", null, 'f' );
+var EV_Thread_IsMultiplayer = new idEventDef( "isMultiplayer", null, 'f' );
+var EV_Thread_GetFrameTime = new idEventDef( "getFrameTime", null, 'f' );
+var EV_Thread_GetTicsPerSecond = new idEventDef( "getTicsPerSecond", null, 'f' );
+var EV_Thread_DebugLine = new idEventDef( "debugLine", "vvvf" );
+var EV_Thread_DebugArrow = new idEventDef( "debugArrow", "vvvdf" );
+var EV_Thread_DebugCircle = new idEventDef( "debugCircle", "vvvfdf" );
+var EV_Thread_DebugBounds = new idEventDef( "debugBounds", "vvvf" );
+var EV_Thread_DrawText = new idEventDef( "drawText", "svfvdf" );
+var EV_Thread_InfluenceActive = new idEventDef( "influenceActive", null, 'd' );
+
 //CLASS_DECLARATION( idClass, idThread )
 //	EVENT( EV_Thread_Execute,				idThread::Event_Execute )
 //	EVENT( EV_Thread_TerminateThread,		idThread::Event_TerminateThread )
@@ -386,7 +386,7 @@ class idThread extends idClass {
 	//	static void					ReturnEntity( idEntity *ent );
 	//};
 	//
-	///*
+///*
 	//================
 	//idThread::WaitingOnThread
 	//================
@@ -395,7 +395,7 @@ class idThread extends idClass {
 	//	return waitingForThread;
 	//}
 	//
-	///*
+///*
 	//================
 	//idThread::SetThreadNum
 	//================
@@ -404,7 +404,7 @@ class idThread extends idClass {
 	//	threadNum = num;
 	//}
 	//
-	///*
+///*
 	//================
 	//idThread::GetThreadNum
 	//================
@@ -413,7 +413,7 @@ class idThread extends idClass {
 	//	return threadNum;
 	//}
 	//
-	///*
+///*
 	//================
 	//idThread::GetThreadName
 	//================
@@ -422,7 +422,7 @@ class idThread extends idClass {
 	//	return threadName.c_str();
 	//}
 	//
-	///*
+///*
 	//================
 	//idThread::GetThreads
 	//================
@@ -431,7 +431,7 @@ class idThread extends idClass {
 	//	return idThread.threadList;
 	//}	
 	//
-	///*
+///*
 	//================
 	//idThread::IsDoneProcessing
 	//================
@@ -440,7 +440,7 @@ class idThread extends idClass {
 	//	return interpreter.doneProcessing;
 	//}
 	//
-	///*
+///*
 	//================
 	//idThread::IsDying
 	//================
@@ -450,7 +450,7 @@ class idThread extends idClass {
 	//}
 	//
 	//#endif /* !__SCRIPT_THREAD_H__ */
-	///*
+///*
 //================
 //idThread::CurrentThread
 //================
@@ -459,7 +459,7 @@ class idThread extends idClass {
 //	return currentThread;
 //}
 //
-	///*
+///*
 //================
 //idThread::CurrentThreadNum
 //================
@@ -472,7 +472,7 @@ class idThread extends idClass {
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::BeginMultiFrameEvent
 //================
@@ -484,7 +484,7 @@ class idThread extends idClass {
 //	return currentThread->interpreter.BeginMultiFrameEvent( ent, event );
 //}
 //
-	///*
+///*
 //================
 //idThread::EndMultiFrameEvent
 //================
@@ -496,7 +496,7 @@ class idThread extends idClass {
 //	currentThread->interpreter.EndMultiFrameEvent( ent, event );
 //}
 //
-	///*
+///*
 //================
 //idThread::idThread
 //================
@@ -509,7 +509,7 @@ class idThread extends idClass {
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::idThread
 //================
@@ -525,7 +525,7 @@ class idThread extends idClass {
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::idThread
 //================
@@ -541,7 +541,7 @@ class idThread extends idClass {
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::idThread
 //================
@@ -554,7 +554,7 @@ class idThread extends idClass {
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::idThread
 //================
@@ -570,7 +570,7 @@ class idThread extends idClass {
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::~idThread
 //================
@@ -597,7 +597,7 @@ class idThread extends idClass {
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::ManualDelete
 //================
@@ -606,7 +606,7 @@ class idThread extends idClass {
 //	interpreter.terminateOnExit = false;
 //}
 //
-	///*
+///*
 //================
 //idThread::Save
 //================
@@ -632,7 +632,7 @@ class idThread extends idClass {
 //	savefile->WriteBool( manualControl );
 //}
 //
-	///*
+///*
 //================
 //idThread::Restore
 //================
@@ -655,7 +655,7 @@ class idThread extends idClass {
 //	savefile->ReadBool( manualControl );
 //}
 //
-	///*
+///*
 //================
 //idThread::Init
 //================
@@ -681,7 +681,7 @@ class idThread extends idClass {
 //	interpreter.SetThread( this );
 //}
 //
-	///*
+///*
 //================
 //idThread::GetThread
 //================
@@ -702,7 +702,7 @@ class idThread extends idClass {
 //	return NULL;
 //}
 //
-	///*
+///*
 //================
 //idThread::DisplayInfo
 //================
@@ -741,7 +741,7 @@ class idThread extends idClass {
 //	gameLocal.Printf( "\n" );
 //}
 //
-	///*
+///*
 //================
 //idThread::ListThreads_f
 //================
@@ -781,7 +781,7 @@ idThread::Restart
 		idThread.trace.c.entityNum = ENTITYNUM_NONE;
 	}
 //
-	///*
+///*
 //================
 //idThread::DelayedStart
 //================
@@ -794,7 +794,7 @@ idThread::Restart
 //	PostEventMS( &EV_Thread_Execute, delay );
 //}
 //
-	///*
+///*
 //================
 //idThread::Start
 //================
@@ -808,7 +808,7 @@ idThread::Restart
 //	return result;
 //}
 //
-	///*
+///*
 //================
 //idThread::SetThreadName
 //================
@@ -817,7 +817,7 @@ idThread::Restart
 //	threadName = name;
 //}
 //
-	///*
+///*
 //================
 //idThread::ObjectMoveDone
 //================
@@ -835,7 +835,7 @@ idThread::Restart
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::End
 //================
@@ -846,7 +846,7 @@ idThread::Restart
 //	interpreter.threadDying	= true;
 //}
 //
-	///*
+///*
 //================
 //idThread::KillThread
 //================
@@ -876,7 +876,7 @@ idThread::Restart
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::KillThread
 //================
@@ -891,7 +891,7 @@ idThread::Restart
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::Execute
 //================
@@ -928,7 +928,7 @@ idThread::Restart
 //	return done;
 //}
 //
-	///*
+///*
 //================
 //idThread::IsWaiting
 //
@@ -947,7 +947,7 @@ idThread::Restart
 //	return false;
 //}
 //
-	///*
+///*
 //================
 //idThread::CallFunction
 //
@@ -959,7 +959,7 @@ idThread::Restart
 //	interpreter.EnterFunction( func, clearStack );
 //}
 //
-	///*
+///*
 //================
 //idThread::CallFunction
 //
@@ -972,7 +972,7 @@ idThread::Restart
 //	interpreter.EnterObjectFunction( self, func, clearStack );
 //}
 //
-	///*
+///*
 //================
 //idThread::ClearWaitFor
 //================
@@ -983,7 +983,7 @@ idThread::Restart
 //	waitingUntil		= 0;
 //}
 //
-	///*
+///*
 //================
 //idThread::IsWaitingFor
 //================
@@ -993,7 +993,7 @@ idThread::Restart
 //	return waitingFor == obj->entityNumber;
 //}
 //
-	///*
+///*
 //================
 //idThread::ObjectMoveDone
 //================
@@ -1007,7 +1007,7 @@ idThread::Restart
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::ThreadCallback
 //================
@@ -1023,7 +1023,7 @@ idThread::Restart
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_SetThreadName
 //================
@@ -1032,7 +1032,7 @@ idThread::Restart
 //	SetThreadName( name );
 //}
 //
-	///*
+///*
 //================
 //idThread::Error
 //================
@@ -1048,7 +1048,7 @@ idThread::Restart
 //	interpreter.Error( text );
 //}
 //
-	///*
+///*
 //================
 //idThread::Warning
 //================
@@ -1064,7 +1064,7 @@ idThread::Restart
 //	interpreter.Warning( text );
 //}
 //
-	///*
+///*
 //================
 //idThread::ReturnString
 //================
@@ -1073,7 +1073,7 @@ idThread::Restart
 //	gameLocal.program.ReturnString( text );
 //}
 //
-	///*
+///*
 //================
 //idThread::ReturnFloat
 //================
@@ -1082,7 +1082,7 @@ idThread::Restart
 //	gameLocal.program.ReturnFloat( value );
 //}
 //
-	///*
+///*
 //================
 //idThread::ReturnInt
 //================
@@ -1093,7 +1093,7 @@ idThread::Restart
 //	gameLocal.program.ReturnFloat( value );
 //}
 //
-	///*
+///*
 //================
 //idThread::ReturnVector
 //================
@@ -1102,7 +1102,7 @@ idThread::Restart
 //	gameLocal.program.ReturnVector( vec );
 //}
 //
-	///*
+///*
 //================
 //idThread::ReturnEntity
 //================
@@ -1111,7 +1111,7 @@ idThread::Restart
 //	gameLocal.program.ReturnEntity( ent );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_Execute
 //================
@@ -1120,7 +1120,7 @@ idThread::Restart
 //	Execute();
 //}
 //
-	///*
+///*
 //================
 //idThread::Pause
 //================
@@ -1130,7 +1130,7 @@ idThread::Restart
 //	interpreter.doneProcessing = true;
 //}
 //
-	///*
+///*
 //================
 //idThread::WaitMS
 //================
@@ -1140,7 +1140,7 @@ idThread::Restart
 //	waitingUntil = gameLocal.time + time;
 //}
 //
-	///*
+///*
 //================
 //idThread::WaitSec
 //================
@@ -1149,7 +1149,7 @@ idThread::Restart
 //	WaitMS( SEC2MS( time ) );
 //}
 //
-	///*
+///*
 //================
 //idThread::WaitFrame
 //================
@@ -1164,13 +1164,13 @@ idThread::Restart
 //	}
 //}
 //
-	///***********************************************************************
+///***********************************************************************
 //
 //  Script callable events  
 //	
 //***********************************************************************/
 //
-	///*
+///*
 //================
 //idThread::Event_TerminateThread
 //================
@@ -1182,7 +1182,7 @@ idThread::Restart
 //	KillThread( num );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_Pause
 //================
@@ -1191,7 +1191,7 @@ idThread::Restart
 //	Pause();
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_Wait
 //================
@@ -1200,7 +1200,7 @@ idThread::Restart
 //	WaitSec( time );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_WaitFrame
 //================
@@ -1209,7 +1209,7 @@ idThread::Restart
 //	WaitFrame();
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_WaitFor
 //================
@@ -1224,7 +1224,7 @@ idThread::Restart
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_WaitForThread
 //================
@@ -1244,7 +1244,7 @@ idThread::Restart
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_Print
 //================
@@ -1253,7 +1253,7 @@ idThread::Restart
 //	gameLocal.Printf( "%s", text );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_PrintLn
 //================
@@ -1262,7 +1262,7 @@ idThread::Restart
 //	gameLocal.Printf( "%s\n", text );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_Say
 //================
@@ -1271,7 +1271,7 @@ idThread::Restart
 //	cmdSystem->BufferCommandText( CMD_EXEC_NOW, va( "say \"%s\"", text ) );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_Assert
 //================
@@ -1280,7 +1280,7 @@ idThread::Restart
 //	assert( value );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_Trigger
 //================
@@ -1293,7 +1293,7 @@ idThread::Restart
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_SetCvar
 //================
@@ -1302,7 +1302,7 @@ idThread::Restart
 //	cvarSystem->SetCVarString( name, value );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_GetCvar
 //================
@@ -1311,7 +1311,7 @@ idThread::Restart
 //	ReturnString( cvarSystem->GetCVarString( name ) );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_Random
 //================
@@ -1323,7 +1323,7 @@ idThread::Restart
 //	ReturnFloat( range * result );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_GetTime
 //================
@@ -1332,7 +1332,7 @@ idThread::Restart
 //	ReturnFloat( MS2SEC( gameLocal.realClientTime ) );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_KillThread
 //================
@@ -1341,7 +1341,7 @@ idThread::Restart
 //	KillThread( name );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_GetEntity
 //================
@@ -1364,7 +1364,7 @@ idThread::Restart
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_Spawn
 //================
@@ -1378,7 +1378,7 @@ idThread::Restart
 //	spawnArgs.Clear();
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_CopySpawnArgs
 //================
@@ -1387,7 +1387,7 @@ idThread::Restart
 //	spawnArgs.Copy( ent->spawnArgs );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_SetSpawnArg
 //================
@@ -1396,7 +1396,7 @@ idThread::Restart
 //	spawnArgs.Set( key, value );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_SpawnString
 //================
@@ -1408,7 +1408,7 @@ idThread::Restart
 //	ReturnString( result );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_SpawnFloat
 //================
@@ -1420,7 +1420,7 @@ idThread::Restart
 //	ReturnFloat( result );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_SpawnVector
 //================
@@ -1432,7 +1432,7 @@ idThread::Restart
 //	ReturnVector( result );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_ClearPersistantArgs
 //================
@@ -1442,7 +1442,7 @@ idThread::Restart
 //}
 //
 //
-	///*
+///*
 //================
 //idThread::Event_SetPersistantArg
 //================
@@ -1451,7 +1451,7 @@ idThread::Restart
 //	gameLocal.persistentLevelInfo.Set( key, value );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_GetPersistantString
 //================
@@ -1463,7 +1463,7 @@ idThread::Restart
 //	ReturnString( result );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_GetPersistantFloat
 //================
@@ -1475,7 +1475,7 @@ idThread::Restart
 //	ReturnFloat( result );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_GetPersistantVector
 //================
@@ -1487,7 +1487,7 @@ idThread::Restart
 //	ReturnVector( result );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_AngToForward
 //================
@@ -1496,7 +1496,7 @@ idThread::Restart
 //	ReturnVector( ang.ToForward() );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_AngToRight
 //================
@@ -1508,7 +1508,7 @@ idThread::Restart
 //	ReturnVector( vec );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_AngToUp
 //================
@@ -1520,7 +1520,7 @@ idThread::Restart
 //	ReturnVector( vec );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_GetSine
 //================
@@ -1529,7 +1529,7 @@ idThread::Restart
 //	ReturnFloat( idMath::Sin( DEG2RAD( angle ) ) );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_GetCosine
 //================
@@ -1538,7 +1538,7 @@ idThread::Restart
 //	ReturnFloat( idMath::Cos( DEG2RAD( angle ) ) );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_GetSquareRoot
 //================
@@ -1547,7 +1547,7 @@ idThread::Restart
 //	ReturnFloat( idMath::Sqrt( theSquare ) );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_VecNormalize
 //================
@@ -1560,7 +1560,7 @@ idThread::Restart
 //	ReturnVector( n );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_VecLength
 //================
@@ -1569,7 +1569,7 @@ idThread::Restart
 //	ReturnFloat( vec.Length() );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_VecDotProduct
 //================
@@ -1578,7 +1578,7 @@ idThread::Restart
 //	ReturnFloat( vec1 * vec2 );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_VecCrossProduct
 //================
@@ -1587,7 +1587,7 @@ idThread::Restart
 //	ReturnVector( vec1.Cross( vec2 ) );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_VecToAngles
 //================
@@ -1597,7 +1597,7 @@ idThread::Restart
 //	ReturnVector( idVec3( ang[0], ang[1], ang[2] ) );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_OnSignal
 //================
@@ -1623,7 +1623,7 @@ idThread::Restart
 //	ent->SetSignal( ( signalNum_t )signal, this, function );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_ClearSignalThread
 //================
@@ -1640,7 +1640,7 @@ idThread::Restart
 //	ent->ClearSignalThread( ( signalNum_t )signal, this );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_SetCamera
 //================
@@ -1659,7 +1659,7 @@ idThread::Restart
 //	gameLocal.SetCamera( ( idCamera * )ent );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_FirstPerson
 //================
@@ -1668,7 +1668,7 @@ idThread::Restart
 //	gameLocal.SetCamera( NULL );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_Trace
 //================
@@ -1682,7 +1682,7 @@ idThread::Restart
 //	ReturnFloat( idThread.trace.fraction );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_TracePoint
 //================
@@ -1692,7 +1692,7 @@ idThread::Restart
 //	ReturnFloat( idThread.trace.fraction );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_GetTraceFraction
 //================
@@ -1701,7 +1701,7 @@ idThread::Restart
 //	ReturnFloat( idThread.trace.fraction );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_GetTraceEndPos
 //================
@@ -1710,7 +1710,7 @@ idThread::Restart
 //	ReturnVector( idThread.trace.endpos );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_GetTraceNormal
 //================
@@ -1723,7 +1723,7 @@ idThread::Restart
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_GetTraceEntity
 //================
@@ -1736,7 +1736,7 @@ idThread::Restart
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_GetTraceJoint
 //================
@@ -1752,7 +1752,7 @@ idThread::Restart
 //	ReturnString( "" );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_GetTraceBody
 //================
@@ -1772,7 +1772,7 @@ idThread::Restart
 //	ReturnString( "" );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_FadeIn
 //================
@@ -1788,7 +1788,7 @@ idThread::Restart
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_FadeOut
 //================
@@ -1804,7 +1804,7 @@ idThread::Restart
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_FadeTo
 //================
@@ -1820,7 +1820,7 @@ idThread::Restart
 //	}
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_SetShaderParm
 //================
@@ -1833,7 +1833,7 @@ idThread::Restart
 //	gameLocal.globalShaderParms[ parmnum ] = value;
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_StartMusic
 //================
@@ -1842,7 +1842,7 @@ idThread::Restart
 //	gameSoundWorld->PlayShaderDirectly( text );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_Warning
 //================
@@ -1851,7 +1851,7 @@ idThread::Restart
 //	Warning( "%s", text );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_Error
 //================
@@ -1860,7 +1860,7 @@ idThread::Restart
 //	Error( "%s", text );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_StrLen
 //================
@@ -1872,7 +1872,7 @@ idThread::Restart
 //	idThread::ReturnInt( len );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_StrLeft
 //================
@@ -1895,7 +1895,7 @@ idThread::Restart
 //	idThread::ReturnString( result );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_StrRight 
 //================
@@ -1917,7 +1917,7 @@ idThread::Restart
 //	idThread::ReturnString( string + len - num );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_StrSkip
 //================
@@ -1939,7 +1939,7 @@ idThread::Restart
 //	idThread::ReturnString( string + num );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_StrMid
 //================
@@ -1968,7 +1968,7 @@ idThread::Restart
 //	idThread::ReturnString( result );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_StrToFloat( const char *string )
 //================
@@ -1980,7 +1980,7 @@ idThread::Restart
 //	idThread::ReturnFloat( result );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_RadiusDamage
 //================
@@ -1989,7 +1989,7 @@ idThread::Restart
 //	gameLocal.RadiusDamage( origin, inflictor, attacker, ignore, ignore, damageDefName, dmgPower );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_IsClient
 //================
@@ -1998,7 +1998,7 @@ idThread::Restart
 //	idThread::ReturnFloat( gameLocal.isClient );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_IsMultiplayer
 //================
@@ -2007,7 +2007,7 @@ idThread::Restart
 //	idThread::ReturnFloat( gameLocal.isMultiplayer );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_GetFrameTime
 //================
@@ -2016,7 +2016,7 @@ idThread::Restart
 //	idThread::ReturnFloat( MS2SEC( gameLocal.msec ) );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_GetTicsPerSecond
 //================
@@ -2025,7 +2025,7 @@ idThread::Restart
 //	idThread::ReturnFloat( USERCMD_HZ );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_CacheSoundShader
 //================
@@ -2034,7 +2034,7 @@ idThread::Restart
 //	declManager->FindSound( soundName );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_DebugLine
 //================
@@ -2043,7 +2043,7 @@ idThread::Restart
 //	gameRenderWorld->DebugLine( idVec4( color.x, color.y, color.z, 0.0 ), start, end, SEC2MS( lifetime ) );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_DebugArrow
 //================
@@ -2052,7 +2052,7 @@ idThread::Restart
 //	gameRenderWorld->DebugArrow( idVec4( color.x, color.y, color.z, 0.0 ), start, end, size, SEC2MS( lifetime ) );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_DebugCircle
 //================
@@ -2061,7 +2061,7 @@ idThread::Restart
 //	gameRenderWorld->DebugCircle( idVec4( color.x, color.y, color.z, 0.0 ), origin, dir, radius, numSteps, SEC2MS( lifetime ) );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_DebugBounds
 //================
@@ -2070,7 +2070,7 @@ idThread::Restart
 //	gameRenderWorld->DebugBounds( idVec4( color.x, color.y, color.z, 0.0 ), idBounds( mins, maxs ), vec3_origin, SEC2MS( lifetime ) );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_DrawText
 //================
@@ -2079,7 +2079,7 @@ idThread::Restart
 //	gameRenderWorld->DrawText( text, origin, scale, idVec4( color.x, color.y, color.z, 0.0 ), gameLocal.GetLocalPlayer()->viewAngles.ToMat3(), align, SEC2MS( lifetime ) );
 //}
 //
-	///*
+///*
 //================
 //idThread::Event_InfluenceActive
 //================

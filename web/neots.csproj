@@ -78,6 +78,8 @@
     <TypeScriptCompile Include="DoomDLL\CM\CollisionModel_rotate.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\CM\CollisionModel_trace.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\CM\CollisionModel_translate.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\Item.cpp.ts" />
+    <TypeScriptCompile Include="dlls\Game\Item.h.ts" />
     <Content Include="DoomDLL\Framework\CmdSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\CmdSystem.h.ts" />
     <Content Include="DoomDLL\Framework\Common.cpp.ts" />
