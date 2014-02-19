@@ -45,7 +45,7 @@
 class idStrList extends idList<idStr> {
 
 	constructor ( ) {
-		super( String );
+		super( idStr, true );
 	}
 
 /////*

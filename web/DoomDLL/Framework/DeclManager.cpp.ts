@@ -663,7 +663,7 @@ var/*int */c_savedMemory = 0;
 
 	this.fileSize = length;
 
-//	// scan through, identifying each individual declaration
+	// scan through, identifying each individual declaration
 	while( 1 ) {
 
 		startMarker = src.GetFileOffset();
@@ -992,7 +992,7 @@ idDeclManagerLocal.prototype.RegisterDeclType = function ( typeName: string, typ
     declType.allocator = allocator;
 
     if ( /*(int)*/type + 1 > this.declTypes.Num ( ) ) {
-        this.declTypes.AssureSize( /*(int)*/type + 1, NULL );
+        this.declTypes.AssureSize( /*(int)*/type + 1, null );
     }
     this.declTypes[type] = declType;
 };
@@ -1113,7 +1113,7 @@ idDeclManagerLocal::GetDeclNameFromType
 idDeclManagerLocal.prototype.GetDeclNameFromType = function ( type: declType_t ): string {
 	var /*int */typeIndex = /*(int)*/type;
 
-	if ( typeIndex < 0 || typeIndex >= this.declTypes.Num ( ) || this.declTypes[typeIndex] == NULL ) {
+	if ( typeIndex < 0 || typeIndex >= this.declTypes.Num ( ) || this.declTypes[typeIndex] == null ) {
 		common.FatalError( "idDeclManager::GetDeclNameFromType: bad type: %i", typeIndex );
 	}
 	return this.declTypes[typeIndex].typeName;
@@ -1729,7 +1729,7 @@ idDeclManagerLocal.prototype.FindTypeWithoutParsing = function ( type: declType_
     var /*int */typeIndex = int( type );
     var /*int */i: number, hash: number;
 
-    if ( typeIndex < 0 || typeIndex >= this.declTypes.Num ( ) || this.declTypes[typeIndex] == NULL ) {
+    if ( typeIndex < 0 || typeIndex >= this.declTypes.Num ( ) || this.declTypes[typeIndex] == null ) {
         common.FatalError( "idDeclManager::FindTypeWithoutParsing: bad type: %i", typeIndex );
     }
 
