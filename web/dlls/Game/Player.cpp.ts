@@ -60,24 +60,24 @@
 ////// minimum speed to bob and play run/walk animations at
 ////const float MIN_BOB_SPEED = 5.0f;
 ////
-////const idEventDef EV_Player_GetButtons( "getButtons", NULL, 'd' );
-////const idEventDef EV_Player_GetMove( "getMove", NULL, 'v' );
-////const idEventDef EV_Player_GetViewAngles( "getViewAngles", NULL, 'v' );
-////const idEventDef EV_Player_StopFxFov( "stopFxFov" );
-////const idEventDef EV_Player_EnableWeapon( "enableWeapon" );
-////const idEventDef EV_Player_DisableWeapon( "disableWeapon" );
-////const idEventDef EV_Player_GetCurrentWeapon( "getCurrentWeapon", NULL, 's' );
-////const idEventDef EV_Player_GetPreviousWeapon( "getPreviousWeapon", NULL, 's' );
-////const idEventDef EV_Player_SelectWeapon( "selectWeapon", "s" );
-////const idEventDef EV_Player_GetWeaponEntity( "getWeaponEntity", NULL, 'e' );
-////const idEventDef EV_Player_OpenPDA( "openPDA" );
-////const idEventDef EV_Player_InPDA( "inPDA", NULL, 'd' );
-////const idEventDef EV_Player_ExitTeleporter( "exitTeleporter" );
-////const idEventDef EV_Player_StopAudioLog( "stopAudioLog" );
-////const idEventDef EV_Player_HideTip( "hideTip" );
-////const idEventDef EV_Player_LevelTrigger( "levelTrigger" );
-////const idEventDef EV_SpectatorTouch( "spectatorTouch", "et" );
-////const idEventDef EV_Player_GetIdealWeapon( "getIdealWeapon", NULL, 's' );
+var EV_Player_GetButtons = new idEventDef( "getButtons", null, 'd' );
+var EV_Player_GetMove = new idEventDef( "getMove", null, 'v' );
+var EV_Player_GetViewAngles = new idEventDef( "getViewAngles", null, 'v' );
+var EV_Player_StopFxFov = new idEventDef( "stopFxFov" );
+var EV_Player_EnableWeapon = new idEventDef( "enableWeapon" );
+var EV_Player_DisableWeapon = new idEventDef( "disableWeapon" );
+var EV_Player_GetCurrentWeapon = new idEventDef( "getCurrentWeapon", null, 's' );
+var EV_Player_GetPreviousWeapon = new idEventDef( "getPreviousWeapon", null, 's' );
+var EV_Player_SelectWeapon = new idEventDef( "selectWeapon", "s" );
+var EV_Player_GetWeaponEntity = new idEventDef( "getWeaponEntity", null, 'e' );
+var EV_Player_OpenPDA = new idEventDef( "openPDA" );
+var EV_Player_InPDA = new idEventDef( "inPDA", null, 'd' );
+var EV_Player_ExitTeleporter = new idEventDef( "exitTeleporter" );
+var EV_Player_StopAudioLog = new idEventDef( "stopAudioLog" );
+var EV_Player_HideTip = new idEventDef( "hideTip" );
+var EV_Player_LevelTrigger = new idEventDef( "levelTrigger" );
+var EV_SpectatorTouch = new idEventDef( "spectatorTouch", "et" );
+var EV_Player_GetIdealWeapon = new idEventDef( "getIdealWeapon", null, 's' );
 ////
 ////CLASS_DECLARATION( idActor, idPlayer )
 ////	EVENT( EV_Player_GetButtons,			idPlayer::Event_GetButtons )

@@ -39,9 +39,9 @@
 ////===============================================================================
 ////*/
 ////
-////const idEventDef EV_Speaker_On( "On", NULL );
-////const idEventDef EV_Speaker_Off( "Off", NULL );
-////const idEventDef EV_Speaker_Timer( "<timer>", NULL );
+var EV_Speaker_On = new idEventDef( "On", null );
+var EV_Speaker_Off = new idEventDef("Off", null );
+var EV_Speaker_Timer = new idEventDef("<timer>", null );
 ////
 ////CLASS_DECLARATION( idEntity, idSound )
 ////	EVENT( EV_Activate,				idSound::Event_Trigger )

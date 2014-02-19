@@ -44,10 +44,10 @@
 ////static const float BOUNCE_SOUND_MIN_VELOCITY	= 200.0f;
 ////static const float BOUNCE_SOUND_MAX_VELOCITY	= 400.0f;
 ////
-////const idEventDef EV_Explode( "<explode>", NULL );
-////const idEventDef EV_Fizzle( "<fizzle>", NULL );
-////const idEventDef EV_RadiusDamage( "<radiusdmg>", "e" );
-////const idEventDef EV_GetProjectileState( "getProjectileState", NULL, 'd' );
+var EV_Explode = new idEventDef( "<explode>", null );
+var EV_Fizzle = new idEventDef( "<fizzle>", null );
+var EV_RadiusDamage = new idEventDef( "<radiusdmg>", "e" );
+var EV_GetProjectileState = new idEventDef( "getProjectileState", null, 'd' );
 ////
 ////CLASS_DECLARATION( idEntity, idProjectile )
 ////	EVENT( EV_Explode,				idProjectile::Event_Explode )
@@ -1664,7 +1664,7 @@
 ////
 ////===============================================================================
 ////*/
-////const idEventDef EV_RemoveBeams( "<removeBeams>", NULL );
+var EV_RemoveBeams = new idEventDef( "<removeBeams>", null );
 ////
 ////CLASS_DECLARATION( idProjectile, idBFGProjectile )
 ////	EVENT( EV_RemoveBeams,		idBFGProjectile::Event_RemoveBeams )

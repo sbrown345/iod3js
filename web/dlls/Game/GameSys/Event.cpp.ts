@@ -317,7 +317,7 @@ idEventDef::NumEventCommands
 ////idEventDef::GetEventCommand
 ////================
 ////*/
-////const idEventDef *idEventDef::GetEventCommand( int eventnum ) {
+//// *idEventDef::GetEventCommand( int eventnum ) {
 ////	return eventDefList[ eventnum ];
 ////}
 

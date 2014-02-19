@@ -47,8 +47,8 @@
 ////	void	Event_ThrowObjectAtEnemy( idEntity *ent, float speed );
 ////};
 ////
-////const idEventDef AI_Vagary_ChooseObjectToThrow( "vagary_ChooseObjectToThrow", "vvfff", 'e' );
-////const idEventDef AI_Vagary_ThrowObjectAtEnemy( "vagary_ThrowObjectAtEnemy", "ef" );
+var AI_Vagary_ChooseObjectToThrow = new idEventDef( "vagary_ChooseObjectToThrow", "vvfff", 'e' );
+var AI_Vagary_ThrowObjectAtEnemy = new idEventDef( "vagary_ThrowObjectAtEnemy", "ef" );
 ////
 ////CLASS_DECLARATION( idAI, idAI_Vagary )
 ////	EVENT( AI_Vagary_ChooseObjectToThrow,	idAI_Vagary::Event_ChooseObjectToThrow )

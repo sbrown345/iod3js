@@ -62,13 +62,13 @@
 ////	GetViewParms( rv );
 ////	return rv;
 ////}
-////
-/////***********************************************************************
-////
-////  idCameraView
-////
-////***********************************************************************/
-////const idEventDef EV_Camera_SetAttachments( "<getattachments>", NULL );
+
+/***********************************************************************
+
+  idCameraView
+
+***********************************************************************/
+var EV_Camera_SetAttachments = new idEventDef( "<getattachments>", null );
 ////
 ////CLASS_DECLARATION( idCamera, idCameraView )
 ////	EVENT( EV_Activate,				idCameraView::Event_Activate )

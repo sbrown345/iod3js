@@ -45,11 +45,11 @@
 	
 ////***********************************************************************/
 
-////const idEventDef EV_SecurityCam_ReverseSweep( "<reverseSweep>" );
-////const idEventDef EV_SecurityCam_ContinueSweep( "<continueSweep>" );
-////const idEventDef EV_SecurityCam_Pause( "<pause>" );
-////const idEventDef EV_SecurityCam_Alert( "<alert>" );
-////const idEventDef EV_SecurityCam_AddLight( "<addLight>" );
+var EV_SecurityCam_ReverseSweep = new idEventDef( "<reverseSweep>" );
+var EV_SecurityCam_ContinueSweep = new idEventDef( "<continueSweep>" );
+var EV_SecurityCam_Pause = new idEventDef( "<pause>" );
+var EV_SecurityCam_Alert = new idEventDef( "<alert>" );
+var EV_SecurityCam_AddLight = new idEventDef( "<addLight>" );
 
 ////CLASS_DECLARATION( idEntity, idSecurityCamera )
 ////	EVENT( EV_SecurityCam_ReverseSweep,		idSecurityCamera::Event_ReverseSweep )
