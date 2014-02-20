@@ -32,37 +32,37 @@
 //#include "../Game_local.h"
 
 // simple types.  function types are dynamically allocated
-var type_void = new idTypeDef(etype_t.ev_void, def_void, "void", 0, null);
-var	type_scriptevent= new idTypeDef(etype_t.ev_scriptevent, def_scriptevent, "scriptevent", /* sizeof( void *)*/4, null);
-var	type_namespace= new idTypeDef(etype_t.ev_namespace, def_namespace, "namespace", /* sizeof( void *)*/4, null);
-var	type_string= new idTypeDef(etype_t.ev_string, def_string, "string", MAX_STRING_LEN, null);
-var	type_float= new idTypeDef(etype_t.ev_float, def_float, "float", /*sizeof(float)*/4, null);
-var	type_vector= new idTypeDef(etype_t.ev_vector, def_vector, "vector", /*sizeof(idVec3)*/12, null);
-var	type_entity= new idTypeDef(etype_t.ev_entity, def_entity, "entity", /*sizeof( int *)*/4, null);					// stored as entity number pointer
-var	type_field= new idTypeDef(etype_t.ev_field, def_field, "field", /* sizeof( void *)*/4, null);
-var	type_function= new idTypeDef(etype_t.ev_function, def_function, "function", /* sizeof( void *)*/4, type_void);
-var	type_virtualfunction= new idTypeDef(etype_t.ev_virtualfunction, def_virtualfunction, "virtual function", /*sizeof(int)*/4, null);
-var	type_pointer= new idTypeDef(etype_t.ev_pointer, def_pointer, "pointer", /* sizeof( void *)*/4, null);
-var	type_object= new idTypeDef(etype_t.ev_object, def_object, "object", /*sizeof( int *)*/4, null);					// stored as entity number pointer
-var	type_jumpoffset= new idTypeDef(etype_t.ev_jumpoffset, def_jumpoffset, "<jump>", /*sizeof(int)*/4, null);		// only used for jump opcodes
-var	type_argsize= new idTypeDef(etype_t.ev_argsize, def_argsize, "<argsize>", /*sizeof(int)*/4, null);				// only used for function call and thread opcodes
-var	type_boolean= new idTypeDef(etype_t.ev_boolean, def_boolean, "boolean", /*sizeof(int)*/4, null);
+var type_void  = new idTypeDef(etype_t.ev_void, def_void, "void", 0, null);
+var	type_scriptevent = new idTypeDef(etype_t.ev_scriptevent, def_scriptevent, "scriptevent", /* sizeof( void *)*/4, null);
+var	type_namespace = new idTypeDef(etype_t.ev_namespace, def_namespace, "namespace", /* sizeof( void *)*/4, null);
+var	type_string = new idTypeDef(etype_t.ev_string, def_string, "string", MAX_STRING_LEN, null);
+var	type_float = new idTypeDef(etype_t.ev_float, def_float, "float", /*sizeof(float)*/4, null);
+var	type_vector = new idTypeDef(etype_t.ev_vector, def_vector, "vector", /*sizeof(idVec3)*/12, null);
+var	type_entity = new idTypeDef(etype_t.ev_entity, def_entity, "entity", /*sizeof( int *)*/4, null);					// stored as entity number pointer
+var	type_field = new idTypeDef(etype_t.ev_field, def_field, "field", /* sizeof( void *)*/4, null);
+var	type_function = new idTypeDef(etype_t.ev_function, def_function, "function", /* sizeof( void *)*/4, type_void);
+var	type_virtualfunction = new idTypeDef(etype_t.ev_virtualfunction, def_virtualfunction, "virtual function", /*sizeof(int)*/4, null);
+var	type_pointer = new idTypeDef(etype_t.ev_pointer, def_pointer, "pointer", /* sizeof( void *)*/4, null);
+var	type_object = new idTypeDef(etype_t.ev_object, def_object, "object", /*sizeof( int *)*/4, null);					// stored as entity number pointer
+var	type_jumpoffset = new idTypeDef(etype_t.ev_jumpoffset, def_jumpoffset, "<jump>", /*sizeof(int)*/4, null);		// only used for jump opcodes
+var	type_argsize = new idTypeDef(etype_t.ev_argsize, def_argsize, "<argsize>", /*sizeof(int)*/4, null);				// only used for function call and thread opcodes
+var	type_boolean = new idTypeDef(etype_t.ev_boolean, def_boolean, "boolean", /*sizeof(int)*/4, null);
 
-var	def_void= new idVarDef( type_void );
-var	def_scriptevent= new idVarDef( type_scriptevent );
-var	def_namespace= new idVarDef( type_namespace );
-var	def_string= new idVarDef( type_string );
-var	def_float= new idVarDef( type_float );
-var	def_vector= new idVarDef( type_vector );
-var	def_entity= new idVarDef( type_entity );
-var	def_field= new idVarDef( type_field );
-var	def_function= new idVarDef( type_function );
-var	def_virtualfunction= new idVarDef( type_virtualfunction );
-var	def_pointer= new idVarDef( type_pointer );
-var	def_object= new idVarDef( type_object );
-var	def_jumpoffset= new idVarDef( type_jumpoffset );		// only used for jump opcodes
-var	def_argsize= new idVarDef( type_argsize );
-var	def_boolean= new idVarDef( type_boolean );
+var	def_void = new idVarDef( type_void );
+var	def_scriptevent = new idVarDef( type_scriptevent );
+var	def_namespace = new idVarDef( type_namespace );
+var	def_string = new idVarDef( type_string );
+var	def_float = new idVarDef( type_float );
+var	def_vector = new idVarDef( type_vector );
+var	def_entity = new idVarDef( type_entity );
+var	def_field = new idVarDef( type_field );
+var	def_function = new idVarDef( type_function );
+var	def_virtualfunction = new idVarDef( type_virtualfunction );
+var	def_pointer = new idVarDef( type_pointer );
+var	def_object = new idVarDef( type_object );
+var	def_jumpoffset = new idVarDef( type_jumpoffset );		// only used for jump opcodes
+var	def_argsize = new idVarDef( type_argsize );
+var	def_boolean = new idVarDef( type_boolean );
 //
 ///***********************************************************************
 //
@@ -929,7 +929,7 @@ If type is NULL, it will match any type
 //idProgram::FreeDef
 //============
 //*/
-//void idProgram::FreeDef( idVarDef *def, const idVarDef *scope ) {
+//void idProgram::FreeDef( idVarDef *def, const scope:idVarDef ) {
 //	idVarDef *e;
 //	int i;
 //
@@ -963,32 +963,32 @@ If type is NULL, it will match any type
 //	delete def;
 //}
 //
-///*
-//============
-//idProgram::FindFreeResultDef
-//============
-//*/
-//idVarDef *idProgram::FindFreeResultDef( idTypeDef *type, name:string, idVarDef *scope, const idVarDef *a, const idVarDef *b ) {
-//	idVarDef *def;
-//	
-//	for( def = GetDefList( name ); def != null; def = def.Next() ) {
-//		if ( def == a || def == b ) {
-//			continue;
-//		}
-//		if ( def.TypeDef() != type ) {
-//			continue;
-//		}
-//		if ( def.scope != scope ) {
-//			continue;
-//		}
-//		if ( def.numUsers <= 1 ) {
-//			continue;
-//		}
-//		return def;
-//	}
-//
-//	return this.AllocDef( type, name, scope, false );
-//}
+/*
+============
+idProgram::FindFreeResultDef
+============
+*/
+	FindFreeResultDef ( type: idTypeDef, name: string, scope: idVarDef, a: idVarDef, b: idVarDef ): idVarDef {
+		var def: idVarDef;
+
+		for ( def = this.GetDefList( name ); def != null; def = def.Next ( ) ) {
+			if ( def == a || def == b ) {
+				continue;
+			}
+			if ( def.TypeDef ( ) != type ) {
+				continue;
+			}
+			if ( def.scope != scope ) {
+				continue;
+			}
+			if ( def.numUsers <= 1 ) {
+				continue;
+			}
+			return def;
+		}
+
+		return this.AllocDef( type, name, scope, false );
+	}
 
 /*
 ================

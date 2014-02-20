@@ -167,25 +167,25 @@ idEventDef::GetArgSize
 		return this.argsize;
 	}
 
-/////*
-////================
-////idEventDef::GetArgOffset
-////================
-////*/
-////ID_INLINE int idEventDef::GetArgOffset(int arg) const {
-////	assert((arg >= 0) && (arg < D_EVENT_MAXARGS));
-////	return this.argOffset[arg];
-////}
-////
-/////*
-////================
-////idEventDef::GetEventNum
-////================
-////*/
-////ID_INLINE int idEventDef::GetEventNum(void) const {
-////	return eventnum;
-////}
-////
+/*
+================
+idEventDef::GetArgOffset
+================
+*/
+	GetArgOffset ( /*int */arg: number ): number {
+		assert( ( arg >= 0 ) && ( arg < D_EVENT_MAXARGS ) );
+		return this.argOffset[arg];
+	}
+
+/*
+================
+idEventDef::GetEventNum
+================
+*/
+	GetEventNum ( ): number {
+		return this.eventnum;
+	}
+
 ////#endif /* !__SYS_EVENT_H__ */
 ////
 

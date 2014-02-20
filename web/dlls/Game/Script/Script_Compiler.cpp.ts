@@ -37,6 +37,7 @@ var NOT_PRIORITY = 5;
 var TILDE_PRIORITY = 5;
 var TOP_PRIORITY = 7;
 
+assert(def_void); // ensure this is defined for idCompiler.opcodes
 
 class idCompiler {
 	//private:
@@ -331,40 +332,36 @@ Aborts the current file load
 //	this.parserPtr.Warning( "%s", string );
 //}
 //
-///*
-//============
-//idCompiler::VirtualFunctionConstant
-//
-//Creates a def for an index into a virtual function table
-//============
-//*/
-//ID_INLINE idVarDef *idCompiler::VirtualFunctionConstant( idVarDef *func ) {
-//	eval_t eval;
-//
-//	memset( &eval, 0, sizeof( eval ) );
-//	eval._int = func.scope.TypeDef().GetFunctionNumber( func.value.functionPtr );
-//	if ( eval._int < 0 ) {
-//		this.Error( "Function '%s' not found in scope '%s'", func.Name(), func.scope.Name() );
-//	}
-//    
-//	return GetImmediate( type_virtualfunction, &eval, "" );
-//}
-//
-///*
-//============
-//idCompiler::SizeConstant
-//
-//Creates a def for a size constant
-//============
-//*/
-//ID_INLINE idVarDef *idCompiler::SizeConstant( int size ) {
-//	eval_t eval;
-//
-//	memset( &eval, 0, sizeof( eval ) );
-//	eval._int = size;
-//	return GetImmediate( type_argsize, &eval, "" );
-//}
-//
+/*
+============
+idCompiler::VirtualFunctionConstant
+
+Creates a def for an index into a virtual function table
+============
+*/
+	VirtualFunctionConstant(func: idVarDef): idVarDef {
+	var eval = new eval_t ( );
+	eval._int = func.scope.TypeDef().GetFunctionNumber( func.value.functionPtr );
+	if ( eval._int < 0 ) {
+		this.Error( "Function '%s' not found in scope '%s'", func.Name(), func.scope.Name() );
+	}
+    
+	return this.GetImmediate( type_virtualfunction, eval, "" );
+}
+
+/*
+============
+idCompiler::SizeConstant
+
+Creates a def for a size constant
+============
+*/
+	SizeConstant ( /*int */size: number ): idVarDef {
+		var eval = new eval_t;
+		eval._int = size;
+		return this.GetImmediate( type_argsize, eval, "" );
+	}
+
 /*
 ============
 idCompiler::JumpConstant
@@ -986,238 +983,238 @@ Looks for a preexisting constant
 		return def;
 	}
 
-///*
-//============
-//idCompiler::EmitFunctionParms
-//============
-//*/
-//idVarDef *idCompiler::EmitFunctionParms( int op, idVarDef *func, int startarg, int startsize, idVarDef *object ) {
-//	idVarDef		*e;
-//	const idTypeDef	*type;
-//	const idTypeDef	*funcArg;
-//	idVarDef		*returnDef;
-//	idTypeDef		*returnType;
-//	int 			arg;
-//	int 			size;
-//	int				resultOp;
-//
-//	type = func.TypeDef();
-//	if ( func.Type() != etype_t.ev_function ) {
-//		this.Error( "'%s' is not a function", func.Name() );
-//	}
-//
-//	// copy the parameters to the global parameter variables
-//	arg = startarg;
-//	size = startsize;
-//	if ( !this.CheckToken( ")" ) ) {
-//		do {
-//			if ( arg >= type.NumParameters() ) {
-//				this.Error( "too many parameters" );
-//			}
-//
-//			e = this.GetExpression( TOP_PRIORITY );
-//
-//			funcArg = type.GetParmType( arg );
-//			if ( !this.EmitPush( e, funcArg ) ) {
-//				this.Error( "type mismatch on parm %i of call to '%s'", arg + 1, func.Name() );
-//			}
-//
-//			if ( funcArg.Type() == etype_t.ev_object ) {
-//				size += type_object.Size();
-//			} else {
-//				size += funcArg.Size();
-//			}
-//
-//			arg++;
-//		} while( this.CheckToken( "," ) );
-//	
-//		this.ExpectToken( ")" );
-//	}
-//
-//	if ( arg < type.NumParameters() ) {
-//		this.Error( "too few parameters for function '%s'", func.Name() );
-//	}
-//
-//	if ( op == opc.OP_CALL ) {
-//		this.EmitOpcode( op, func, 0 );
-//	} else if ( ( op == opc.OP_OBJECTCALL ) || ( op == opc.OP_OBJTHREAD ) ) {
-//		this.EmitOpcode( op, object, VirtualFunctionConstant( func ) );
-//
-//		// need arg size seperate since script object may be NULL
-//		statement_t &statement = gameLocal.program.GetStatement( gameLocal.program.NumStatements() - 1 );
-//		statement.c = SizeConstant( func.value.functionPtr.parmTotal );
-//	} else {
-//		this.EmitOpcode( op, func, SizeConstant( size ) );
-//	}
-//
-//	// we need to copy off the result into a temporary result location, so figure out the opcode
-//	returnType = type.ReturnType();
-//	if ( returnType.Type() == etype_t.ev_string ) {
-//		resultOp = opc.OP_STORE_S;
-//		returnDef = gameLocal.program.returnStringDef;
-//	} else {
-//		gameLocal.program.returnDef.SetTypeDef( returnType );
-//		returnDef = gameLocal.program.returnDef;
-//
-//		switch( returnType.Type() ) {
-//		case etype_t.ev_void :
-//			resultOp = opc.OP_STORE_F;
-//			break;
-//
-//		case etype_t.ev_boolean :
-//			resultOp = opc.OP_STORE_BOOL;
-//			break;
-//
-//		case etype_t.ev_float :
-//			resultOp = opc.OP_STORE_F;
-//			break;
-//
-//		case etype_t.ev_vector :
-//			resultOp = opc.OP_STORE_V;
-//			break;
-//
-//		case etype_t.ev_entity :
-//			resultOp = opc.OP_STORE_ENT;
-//			break;
-//
-//		case etype_t.ev_object :
-//			resultOp = opc.OP_STORE_OBJ;
-//			break;
-//
-//		default :
-//			// shut up compiler
-//			resultOp = opc.OP_STORE_OBJ;
-//			this.Error( "Invalid return type for function '%s'", func.Name() );
-//			break;
-//		}
-//	}
-//
-//	if ( returnType.Type() == etype_t.ev_void ) {
-//		// don't need result space since there's no result, so just return the normal result def.
-//		return returnDef;
-//	}
-//
-//	// allocate result space
-//	// try to reuse result defs as much as possible
-//	statement_t &statement = gameLocal.program.GetStatement( gameLocal.program.NumStatements() - 1 );
-//	idVarDef *resultDef = gameLocal.program.FindFreeResultDef( returnType, RESULT_STRING, this.scope, statement.a, statement.b );
-//	// set user count back to 0, a result def needs to be used twice before it can be reused
-//	resultDef.numUsers = 0;
-//
-//	this.EmitOpcode( resultOp, returnDef, resultDef );
-//
-//	return resultDef;
-//}
-//
-///*
-//============
-//idCompiler::ParseFunctionCall
-//============
-//*/
-//idVarDef *idCompiler::ParseFunctionCall( idVarDef *funcDef ) {
-//	assert( funcDef );
-//
-//	if ( funcDef.Type() != etype_t.ev_function ) {
-//		this.Error( "'%s' is not a function", funcDef.Name() );
-//	}
-//
-//	if ( funcDef.initialized == idVarDef::uninitialized ) {
-//		this.Error( "Function '%s' has not been defined yet", funcDef.GlobalName() );
-//	}
-//
-//	assert( funcDef.value.functionPtr );
-//	if ( this.callthread ) {
-//		if ( ( funcDef.initialized != idVarDef::uninitialized ) && funcDef.value.functionPtr.eventdef ) {
-//			this.Error( "Built-in functions cannot be called as threads" );
-//		}
-//		this.callthread = false;
-//		return EmitFunctionParms( opc.OP_THREAD, funcDef, 0, 0, NULL );
-//	} else {
-//		if ( ( funcDef.initialized != idVarDef::uninitialized ) && funcDef.value.functionPtr.eventdef ) {
-//			if ( ( this.scope.Type() != etype_t.ev_namespace ) && ( this.scope.scope.Type() == etype_t.ev_object ) ) {
-//				// get the local object pointer
-//				idVarDef *thisdef = gameLocal.program.GetDef( this.scope.scope.TypeDef(), "self", this.scope );
-//				if ( !thisdef ) {
-//					this.Error( "No 'self' within scope" );
-//				}
-//
-//				return ParseEventCall( thisdef, funcDef );
-//			} else {
-//				this.Error( "Built-in functions cannot be called without an object" );
-//			}
-//		}
-//
-//		return EmitFunctionParms( opc.OP_CALL, funcDef, 0, 0, NULL );
-//	}
-//}
-//
-///*
-//============
-//idCompiler::ParseObjectCall
-//============
-//*/
-//idVarDef *idCompiler::ParseObjectCall( idVarDef *object, idVarDef *func ) {
-//	this.EmitPush( object, object.TypeDef() );
-//	if ( this.callthread ) {
-//		this.callthread = false;
-//		return EmitFunctionParms( opc.OP_OBJTHREAD, func, 1, type_object.Size(), object );
-//	} else {
-//		return EmitFunctionParms( opc.OP_OBJECTCALL, func, 1, 0, object );
-//	}
-//}
-//
-///*
-//============
-//idCompiler::ParseEventCall
-//============
-//*/
-//idVarDef *idCompiler::ParseEventCall( idVarDef *object, idVarDef *funcDef ) {
-//	if ( this.callthread ) {
-//		this.Error( "Cannot call built-in functions as a thread" );
-//	}
-//
-//	if ( funcDef.Type() != etype_t.ev_function ) {
-//		this.Error( "'%s' is not a function", funcDef.Name() );
-//	}
-//
-//	if ( !funcDef.value.functionPtr.eventdef ) {
-//		this.Error( "\"%s\" cannot be called with object notation", funcDef.Name() );
-//	}
-//
-//	if ( object.Type() == etype_t.ev_object ) {
-//		this.EmitPush( object, type_entity );
-//	} else {
-//		this.EmitPush( object, object.TypeDef() );
-//	}
-//
-//	return EmitFunctionParms( opc.OP_EVENTCALL, funcDef, 0, type_object.Size(), NULL );
-//}
-//
-///*
-//============
-//idCompiler::ParseSysObjectCall
-//============
-//*/
-//idVarDef *idCompiler::ParseSysObjectCall( idVarDef *funcDef ) {
-//	if ( this.callthread ) {
-//		this.Error( "Cannot call built-in functions as a thread" );
-//	}
-//
-//	if ( funcDef.Type() != etype_t.ev_function ) {
-//		this.Error( "'%s' is not a function", funcDef.Name() );
-//	}
-//
-//	if ( !funcDef.value.functionPtr.eventdef ) {
-//		this.Error( "\"%s\" cannot be called with object notation", funcDef.Name() );
-//	}
-//
-//	if ( !idThread::Type.RespondsTo( *funcDef.value.functionPtr.eventdef ) ) {
-//		this.Error( "\"%s\" is not callable as a 'sys' function", funcDef.Name() );
-//	}
-//
-//	return EmitFunctionParms( opc.OP_SYSCALL, funcDef, 0, 0, NULL );
-//}
-//
+/*
+============
+idCompiler::EmitFunctionParms
+============
+*/
+	EmitFunctionParms ( /*int*/ op: number, func: idVarDef, /*int */startarg: number, /*int */startsize: number, object: idVarDef ): idVarDef {
+		var e: idVarDef;
+		var type: idTypeDef;
+		var funcArg: idTypeDef;
+		var returnDef: idVarDef;
+		var returnType: idTypeDef;
+		var arg: number; //int 			
+		var size: number; //int 			
+		var resultOp: number; //int				
+
+		type = func.TypeDef ( );
+		if ( func.Type ( ) != etype_t.ev_function ) {
+			this.Error( "'%s' is not a function", func.Name ( ) );
+		}
+
+		// copy the parameters to the global parameter variables
+		arg = startarg;
+		size = startsize;
+		if ( !this.CheckToken( ")" ) ) {
+			do {
+				if ( arg >= type.NumParameters ( ) ) {
+					this.Error( "too many parameters" );
+				}
+
+				e = this.GetExpression( TOP_PRIORITY );
+
+				funcArg = type.GetParmType( arg );
+				if ( !this.EmitPush( e, funcArg ) ) {
+					this.Error( "type mismatch on parm %i of call to '%s'", arg + 1, func.Name ( ) );
+				}
+
+				if ( funcArg.Type ( ) == etype_t.ev_object ) {
+					size += type_object.Size ( );
+				} else {
+					size += funcArg.Size ( );
+				}
+
+				arg++;
+			} while ( this.CheckToken( "," ) );
+
+			this.ExpectToken( ")" );
+		}
+
+		if ( arg < type.NumParameters ( ) ) {
+			this.Error( "too few parameters for function '%s'", func.Name ( ) );
+		}
+
+		if ( op == opc.OP_CALL ) {
+			this.EmitOpcode_FromOpNumber( op, func, /*0*/null );
+		} else if ( ( op == opc.OP_OBJECTCALL ) || ( op == opc.OP_OBJTHREAD ) ) {
+			this.EmitOpcode_FromOpNumber( op, object, this.VirtualFunctionConstant( func ) );
+
+			// need arg size seperate since script object may be NULL
+			var statement = gameLocal.program.GetStatement( gameLocal.program.NumStatements ( ) - 1 );
+			statement.c = this.SizeConstant( func.value.functionPtr.parmTotal );
+		} else {
+			this.EmitOpcode_FromOpNumber( op, func, this.SizeConstant( size ) );
+		}
+
+		// we need to copy off the result into a temporary result location, so figure out the opcode
+		returnType = type.ReturnType ( );
+		if ( returnType.Type ( ) == etype_t.ev_string ) {
+			resultOp = opc.OP_STORE_S;
+			returnDef = gameLocal.program.returnStringDef;
+		} else {
+			gameLocal.program.returnDef.SetTypeDef( returnType );
+			returnDef = gameLocal.program.returnDef;
+
+			switch ( returnType.Type ( ) ) {
+			case etype_t.ev_void:
+				resultOp = opc.OP_STORE_F;
+				break;
+
+			case etype_t.ev_boolean:
+				resultOp = opc.OP_STORE_BOOL;
+				break;
+
+			case etype_t.ev_float:
+				resultOp = opc.OP_STORE_F;
+				break;
+
+			case etype_t.ev_vector:
+				resultOp = opc.OP_STORE_V;
+				break;
+
+			case etype_t.ev_entity:
+				resultOp = opc.OP_STORE_ENT;
+				break;
+
+			case etype_t.ev_object:
+				resultOp = opc.OP_STORE_OBJ;
+				break;
+
+			default:
+				// shut up compiler
+				resultOp = opc.OP_STORE_OBJ;
+				this.Error( "Invalid return type for function '%s'", func.Name ( ) );
+				break;
+			}
+		}
+
+		if ( returnType.Type ( ) == etype_t.ev_void ) {
+			// don't need result space since there's no result, so just return the normal result def.
+			return returnDef;
+		}
+
+		// allocate result space
+		// try to reuse result defs as much as possible
+		var statement = gameLocal.program.GetStatement( gameLocal.program.NumStatements ( ) - 1 );
+		var resultDef = gameLocal.program.FindFreeResultDef( returnType, RESULT_STRING, this.scope, statement.a, statement.b );
+		// set user count back to 0, a result def needs to be used twice before it can be reused
+		resultDef.numUsers = 0;
+
+		this.EmitOpcode_FromOpNumber( resultOp, returnDef, resultDef );
+
+		return resultDef;
+	}
+
+/*
+============
+idCompiler::ParseFunctionCall
+============
+*/
+	ParseFunctionCall(funcDef: idVarDef): idVarDef {
+	assert( funcDef );
+
+	if ( funcDef.Type() != etype_t.ev_function ) {
+		this.Error( "'%s' is not a function", funcDef.Name() );
+	}
+
+	if ( funcDef.initialized == initialized_t.uninitialized ) {
+		this.Error( "Function '%s' has not been defined yet", funcDef.GlobalName() );
+	}
+
+	assert( funcDef.value.functionPtr );
+	if ( this.callthread ) {
+		if ( ( funcDef.initialized != initialized_t.uninitialized ) && funcDef.value.functionPtr.eventdef ) {
+			this.Error( "Built-in functions cannot be called as threads" );
+		}
+		this.callthread = false;
+		return this.EmitFunctionParms(opc.OP_THREAD, funcDef, 0, 0, null );
+	} else {
+		if ( ( funcDef.initialized != initialized_t.uninitialized ) && funcDef.value.functionPtr.eventdef ) {
+			if ( ( this.scope.Type() != etype_t.ev_namespace ) && ( this.scope.scope.Type() == etype_t.ev_object ) ) {
+				// get the local object pointer
+				var /***/thisdef = gameLocal.program.GetDef( this.scope.scope.TypeDef(), "self", this.scope );
+				if ( !thisdef ) {
+					this.Error( "No 'self' within scope" );
+				}
+
+				return this.ParseEventCall( thisdef, funcDef );
+			} else {
+				this.Error( "Built-in functions cannot be called without an object" );
+			}
+		}
+
+		return this.EmitFunctionParms(opc.OP_CALL, funcDef, 0, 0, null );
+	}
+}
+
+/*
+============
+idCompiler::ParseObjectCall
+============
+*/
+	ParseObjectCall ( object: idVarDef, func: idVarDef ): idVarDef {
+		this.EmitPush( object, object.TypeDef ( ) );
+		if ( this.callthread ) {
+			this.callthread = false;
+			return this.EmitFunctionParms( opc.OP_OBJTHREAD, func, 1, type_object.Size ( ), object );
+		} else {
+			return this.EmitFunctionParms( opc.OP_OBJECTCALL, func, 1, 0, object );
+		}
+	}
+
+/*
+============
+idCompiler::ParseEventCall
+============
+*/
+	ParseEventCall ( object: idVarDef, funcDef: idVarDef ): idVarDef {
+		if ( this.callthread ) {
+			this.Error( "Cannot call built-in functions as a thread" );
+		}
+
+		if ( funcDef.Type ( ) != etype_t.ev_function ) {
+			this.Error( "'%s' is not a function", funcDef.Name ( ) );
+		}
+
+		if ( !funcDef.value.functionPtr.eventdef ) {
+			this.Error( "\"%s\" cannot be called with object notation", funcDef.Name ( ) );
+		}
+
+		if ( object.Type ( ) == etype_t.ev_object ) {
+			this.EmitPush( object, type_entity );
+		} else {
+			this.EmitPush( object, object.TypeDef ( ) );
+		}
+
+		return this.EmitFunctionParms(opc.OP_EVENTCALL, funcDef, 0, type_object.Size(), null );
+	}
+
+/*
+============
+idCompiler::ParseSysObjectCall
+============
+*/
+	ParseSysObjectCall ( funcDef: idVarDef ): idVarDef {
+		if ( this.callthread ) {
+			this.Error( "Cannot call built-in functions as a thread" );
+		}
+
+		if ( funcDef.Type ( ) != etype_t.ev_function ) {
+			this.Error( "'%s' is not a function", funcDef.Name ( ) );
+		}
+
+		if ( !funcDef.value.functionPtr.eventdef ) {
+			this.Error( "\"%s\" cannot be called with object notation", funcDef.Name ( ) );
+		}
+
+		if ( !idThread.Type.RespondsTo( funcDef.value.functionPtr.eventdef ) ) {
+			this.Error( "\"%s\" is not callable as a 'sys' function", funcDef.Name ( ) );
+		}
+
+		return this.EmitFunctionParms( opc.OP_SYSCALL, funcDef, 0, 0, null );
+	}
+
 /*
 ============
 idCompiler::LookupDef
@@ -1498,26 +1495,26 @@ idCompiler::GetTerm
 		return this.ParseValue ( );
 	}
 
-///*
-//==============
-//idCompiler::TypeMatches
-//==============
-//*/
-//bool idCompiler::TypeMatches( etype_t type1, etype_t type2 ) const {
-//	if ( type1 == type2 ) {
-//		return true;
-//	}
-//
-//	//if ( ( type1 == etype_t.ev_entity ) && ( type2 == etype_t.ev_object ) ) {
-//	//	return true;
-//	//}
-//		
-//	//if ( ( type2 == etype_t.ev_entity ) && ( type1 == etype_t.ev_object ) ) {
-//	//	return true;
-//	//}
-//
-//	return false;
-//}
+/*
+==============
+idCompiler::TypeMatches
+==============
+*/
+	TypeMatches ( type1: etype_t, type2: etype_t ): boolean {
+		if ( type1 == type2 ) {
+			return true;
+		}
+
+		//if ( ( type1 == etype_t.ev_entity ) && ( type2 == etype_t.ev_object ) ) {
+		//	return true;
+		//}
+
+		//if ( ( type2 == etype_t.ev_entity ) && ( type1 == etype_t.ev_object ) ) {
+		//	return true;
+		//}
+
+		return false;
+	}
 
 /*
 ==============
@@ -1525,7 +1522,7 @@ idCompiler::GetExpression
 ==============
 */
 	GetExpression ( /*int */priority: number ): idVarDef {
-		var op: opcode_t;
+		var op: opcode_t, opIdx = 0;
 		var oldop: opcode_t;
 		var e: idVarDef;
 		var e2: idVarDef;
@@ -1535,7 +1532,7 @@ idCompiler::GetExpression
 		var type_c: etype_t;
 
 		if ( priority == 0 ) {
-			return this.GetTerm();
+			return this.GetTerm ( );
 		}
 		e = this.GetExpression( priority - 1 );
 		if ( this.token.$.data == ";" ) {
@@ -1543,168 +1540,167 @@ idCompiler::GetExpression
 			return e;
 		}
 
-		todoThrow();
-		//while( true ) {
-		//	if ( ( priority == FUNCTION_PRIORITY ) && this.CheckToken( "(" ) ) {
-		//		return ParseFunctionCall( e );
-		//	}
+		while ( true ) {
+			if ( ( priority == FUNCTION_PRIORITY ) && this.CheckToken( "(" ) ) {
+				return this.ParseFunctionCall( e );
+			}
 
-		//	// has to be a punctuation
-		//	if ( this.immediateType ) {
-		//		break;
-		//	}
+			// has to be a punctuation
+			if ( this.immediateType ) {
+				break;
+			}
 
-		//	for( op = idCompiler.opcodes; op.name; op++ ) {
-		//		if ( ( op.priority == priority ) && this.CheckToken( op.name ) ) {
-		//			break;
-		//		}
-		//	}
+			for ( op = idCompiler.opcodes[opIdx]; op.name; op = idCompiler.opcodes[++opIdx] ) {
+				if ( ( op.priority == priority ) && this.CheckToken( op.name ) ) {
+					break;
+				}
+			}
 
-		//	if ( !op.name ) {
-		//		// next token isn't at this priority level
-		//		break;
-		//	}
+			if ( !op.name ) {
+				// next token isn't at this priority level
+				break;
+			}
 
-		//	// unary operators act only on the left operand
-		//	if ( op.type_b == &def_void ) {
-		//		e = this.EmitOpcode( op, e, 0 );
-		//		return e;
-		//	}
+			// unary operators act only on the left operand
+			if ( op.type_b == def_void ) {
+				e = this.EmitOpcode( op, e, null /*0*/ );
+				return e;
+			}
 
-		//	// preserve our base type
-		//	oldtype = this.basetype;
+			// preserve our base type
+			oldtype = this.basetype;
 
-		//	// field access needs scope from object
-		//	if ( ( op.name[ 0 ] == '.' ) && e.TypeDef().Inherits( type_object ) ) {
-		//		// save off what type this field is part of
-		//		this.basetype = e.TypeDef().def;
-		//	}
+			// field access needs scope from object
+			if ( ( op.name[0] == '.' ) && e.TypeDef ( ).Inherits( type_object ) ) {
+				// save off what type this field is part of
+				this.basetype = e.TypeDef ( ).def;
+			}
 
-		//	if ( op.rightAssociative ) {
-		//		// if last statement is an indirect, change it to an address of
-		//		if ( gameLocal.program.NumStatements() > 0 ) {
-		//			statement_t &statement = gameLocal.program.GetStatement( gameLocal.program.NumStatements() - 1 );
-		//			if ( ( statement.op >= opc.OP_INDIRECT_F ) && ( statement.op < opc.OP_ADDRESS ) ) {
-		//				statement.op = opc.OP_ADDRESS;
-		//				type_pointer.SetPointerType( e.TypeDef() );
-		//				e.SetTypeDef( type_pointer );
-		//			}
-		//		}
+			if ( op.rightAssociative ) {
+				// if last statement is an indirect, change it to an address of
+				if ( gameLocal.program.NumStatements ( ) > 0 ) {
+					var statement: statement_t = gameLocal.program.GetStatement( gameLocal.program.NumStatements ( ) - 1 );
+					if ( ( statement.op >= opc.OP_INDIRECT_F ) && ( statement.op < opc.OP_ADDRESS ) ) {
+						statement.op = opc.OP_ADDRESS;
+						type_pointer.SetPointerType( e.TypeDef ( ) );
+						e.SetTypeDef( type_pointer );
+					}
+				}
 
-		//		e2 = this.GetExpression( priority );
-		//	} else {
-		//		e2 = this.GetExpression( priority - 1 );
-		//	}
+				e2 = this.GetExpression( priority );
+			} else {
+				e2 = this.GetExpression( priority - 1 );
+			}
 
-		//	// restore type
-		//	this.basetype = oldtype;
+			// restore type
+			this.basetype = oldtype;
 
-		//	// type check
-		//	type_a = e.Type();
-		//	type_b = e2.Type();
+			// type check
+			type_a = e.Type ( );
+			type_b = e2.Type ( );
 
-		//	// field access gets type from field
-		//	if ( op.name[ 0 ] == '.' ) {
-		//		if ( ( e2.Type() == etype_t.ev_function ) && e2.TypeDef().ReturnType() ) {
-		//			type_c = e2.TypeDef().ReturnType().Type();
-		//		} else if ( e2.TypeDef().FieldType() ) {
-		//			type_c = e2.TypeDef().FieldType().Type();
-		//		} else {
-		//			// not a field
-		//			type_c = etype_t.ev_error;
-		//		}
-		//	} else {
-		//		type_c = etype_t.ev_void;
-		//	}
+			// field access gets type from field
+			if ( op.name[0] == '.' ) {
+				if ( ( e2.Type ( ) == etype_t.ev_function ) && e2.TypeDef ( ).ReturnType ( ) ) {
+					type_c = e2.TypeDef ( ).ReturnType ( ).Type ( );
+				} else if ( e2.TypeDef ( ).FieldType ( ) ) {
+					type_c = e2.TypeDef ( ).FieldType ( ).Type ( );
+				} else {
+					// not a field
+					type_c = etype_t.ev_error;
+				}
+			} else {
+				type_c = etype_t.ev_void;
+			}
 
-		//	oldop = op;
-		//	while( !TypeMatches( type_a, op.type_a.Type() ) || !TypeMatches( type_b, op.type_b.Type() ) ||
-		//		( ( type_c != etype_t.ev_void ) && !TypeMatches( type_c, op.type_c.Type() ) ) ) {
-		//		if ( ( op.priority == FUNCTION_PRIORITY ) && TypeMatches( type_a, op.type_a.Type() ) && TypeMatches( type_b, op.type_b.Type() ) ) {
-		//			break;
-		//		}
+			oldop = op;
+			while ( !this.TypeMatches( type_a, op.type_a.Type ( ) ) || !this.TypeMatches( type_b, op.type_b.Type ( ) ) ||
+			( ( type_c != etype_t.ev_void ) && !this.TypeMatches( type_c, op.type_c.Type ( ) ) ) ) {
+				if ( ( op.priority == FUNCTION_PRIORITY ) && this.TypeMatches( type_a, op.type_a.Type ( ) ) && this.TypeMatches( type_b, op.type_b.Type ( ) ) ) {
+					break;
+				}
 
-		//		op++;
-		//		if ( !op.name || strcmp( op.name, oldop.name ) ) {
-		//			this.Error( "type mismatch for '%s'", oldop.name );
-		//		}
-		//	}
+				op = idCompiler.opcodes[++opIdx];
+				if ( !op.name || strcmp( op.name, oldop.name ) ) {
+					this.Error( "type mismatch for '%s'", oldop.name );
+				}
+			}
 
-		//	switch( op - idCompiler.opcodes ) {
-		//	case opc.OP_SYSCALL :
-		//		this.ExpectToken( "(" );
-		//		e = ParseSysObjectCall( e2 );
-		//		break;
+			switch ( opIdx /* - idCompiler.opcodes */ ) {
+			case opc.OP_SYSCALL:
+				this.ExpectToken( "(" );
+				e = this.ParseSysObjectCall( e2 );
+				break;
 
-		//	case opc.OP_OBJECTCALL :
-		//		this.ExpectToken( "(" );
-		//		if ( ( e2.initialized != idVarDef::uninitialized ) && e2.value.functionPtr.eventdef ) {
-		//			e = ParseEventCall( e, e2 );
-		//		} else {
-		//			e = this.ParseObjectCall( e, e2 );
-		//		}
-		//		break;
+			case opc.OP_OBJECTCALL:
+				this.ExpectToken( "(" );
+				if ( ( e2.initialized != initialized_t.uninitialized ) && e2.value.functionPtr.eventdef ) {
+					e = this.ParseEventCall( e, e2 );
+				} else {
+					e = this.ParseObjectCall( e, e2 );
+				}
+				break;
 
-		//	case opc.OP_EVENTCALL :
-		//		this.ExpectToken( "(" );
-		//		if ( ( e2.initialized != idVarDef::uninitialized ) && e2.value.functionPtr.eventdef ) {
-		//			e = ParseEventCall( e, e2 );
-		//		} else {
-		//			e = this.ParseObjectCall( e, e2 );
-		//		}
-		//		break;
+			case opc.OP_EVENTCALL:
+				this.ExpectToken( "(" );
+				if ( ( e2.initialized != initialized_t.uninitialized ) && e2.value.functionPtr.eventdef ) {
+					e = this.ParseEventCall( e, e2 );
+				} else {
+					e = this.ParseObjectCall( e, e2 );
+				}
+				break;
 
-		//	default:
-		//		if ( this.callthread ) {
-		//			this.Error( "Expecting function call after 'thread'" );
-		//		}
+			default:
+				if ( this.callthread ) {
+					this.Error( "Expecting function call after 'thread'" );
+				}
 
-		//		if ( ( type_a == etype_t.ev_pointer ) && ( type_b != e.TypeDef().PointerType().Type() ) ) {
-		//			// FIXME: need to make a general case for this
-		//			if ( ( op - idCompiler.opcodes == opc.OP_STOREP_F ) && ( e.TypeDef().PointerType().Type() == etype_t.ev_boolean ) ) {
-		//				// copy from float to boolean pointer
-		//				op = &idCompiler.opcodes[ opc.OP_STOREP_FTOBOOL ];
-		//			} else if ( ( op - idCompiler.opcodes == opc.OP_STOREP_BOOL ) && ( e.TypeDef().PointerType().Type() == etype_t.ev_float ) ) {
-		//				// copy from boolean to float pointer
-		//				op = &idCompiler.opcodes[ opc.OP_STOREP_BOOLTOF ];
-		//			} else if ( ( op - idCompiler.opcodes == opc.OP_STOREP_F ) && ( e.TypeDef().PointerType().Type() == etype_t.ev_string ) ) {
-		//				// copy from float to string pointer
-		//				op = &idCompiler.opcodes[ opc.OP_STOREP_FTOS ];
-		//			} else if ( ( op - idCompiler.opcodes == opc.OP_STOREP_BOOL ) && ( e.TypeDef().PointerType().Type() == etype_t.ev_string ) ) {
-		//				// copy from boolean to string pointer
-		//				op = &idCompiler.opcodes[ opc.OP_STOREP_BTOS ];
-		//			} else if ( ( op - idCompiler.opcodes == opc.OP_STOREP_V ) && ( e.TypeDef().PointerType().Type() == etype_t.ev_string ) ) {
-		//				// copy from vector to string pointer
-		//				op = &idCompiler.opcodes[ opc.OP_STOREP_VTOS ];
-		//			} else if ( ( op - idCompiler.opcodes == opc.OP_STOREP_ENT ) && ( e.TypeDef().PointerType().Type() == etype_t.ev_object ) ) {
-		//				// store an entity into an object pointer
-		//				op = &idCompiler.opcodes[ opc.OP_STOREP_OBJENT ];
-		//			} else {
-		//				this.Error( "type mismatch for '%s'", op.name );
-		//			}
-		//		}
+				if ( ( type_a == etype_t.ev_pointer ) && ( type_b != e.TypeDef ( ).PointerType ( ).Type ( ) ) ) {
+					// FIXME: need to make a general case for this
+					if ( ( /*op - idCompiler.opcodes*/opIdx == opc.OP_STOREP_F ) && ( e.TypeDef ( ).PointerType ( ).Type ( ) == etype_t.ev_boolean ) ) {
+						// copy from float to boolean pointer
+						op = idCompiler.opcodes[opIdx = opc.OP_STOREP_FTOBOOL];
+					} else if ( ( /*op - idCompiler.opcodes*/opIdx == opc.OP_STOREP_BOOL ) && ( e.TypeDef ( ).PointerType ( ).Type ( ) == etype_t.ev_float ) ) {
+						// copy from boolean to float pointer
+						op = idCompiler.opcodes[opIdx = opc.OP_STOREP_BOOLTOF];
+					} else if ( ( /*op - idCompiler.opcodes*/opIdx == opc.OP_STOREP_F ) && ( e.TypeDef ( ).PointerType ( ).Type ( ) == etype_t.ev_string ) ) {
+						// copy from float to string pointer
+						op = idCompiler.opcodes[opIdx = opc.OP_STOREP_FTOS];
+					} else if ( ( /*op - idCompiler.opcodes*/opIdx == opc.OP_STOREP_BOOL ) && ( e.TypeDef ( ).PointerType ( ).Type ( ) == etype_t.ev_string ) ) {
+						// copy from boolean to string pointer
+						op = idCompiler.opcodes[opIdx = opc.OP_STOREP_BTOS];
+					} else if ( ( /*op - idCompiler.opcodes*/opIdx == opc.OP_STOREP_V ) && ( e.TypeDef ( ).PointerType ( ).Type ( ) == etype_t.ev_string ) ) {
+						// copy from vector to string pointer
+						op = idCompiler.opcodes[opIdx = opc.OP_STOREP_VTOS];
+					} else if ( ( /*op - idCompiler.opcodes*/opIdx == opc.OP_STOREP_ENT ) && ( e.TypeDef ( ).PointerType ( ).Type ( ) == etype_t.ev_object ) ) {
+						// store an entity into an object pointer
+						op = idCompiler.opcodes[opIdx = opc.OP_STOREP_OBJENT];
+					} else {
+						this.Error( "type mismatch for '%s'", op.name );
+					}
+				}
 
-		//		if ( op.rightAssociative ) {
-		//			e = this.EmitOpcode( op, e2, e );
-		//		} else {
-		//			e = this.EmitOpcode( op, e, e2 );
-		//		}
+				if ( op.rightAssociative ) {
+					e = this.EmitOpcode( op, e2, e );
+				} else {
+					e = this.EmitOpcode( op, e, e2 );
+				}
 
-		//		if ( op - idCompiler.opcodes == opc.OP_STOREP_OBJENT ) {
-		//			// statement.b points to type_pointer, which is just a temporary that gets its type reassigned, so we store the real type in statement.c
-		//			// so that we can do a type check during run time since we don't know what type the script object is at compile time because it
-		//			// comes from an entity
-		//			statement_t &statement = gameLocal.program.GetStatement( gameLocal.program.NumStatements() - 1 );
-		//			statement.c = type_pointer.PointerType().def;
-		//		}
+				if ( /*op - idCompiler.opcodes*/opIdx == opc.OP_STOREP_OBJENT ) {
+					// statement.b points to type_pointer, which is just a temporary that gets its type reassigned, so we store the real type in statement.c
+					// so that we can do a type check during run time since we don't know what type the script object is at compile time because it
+					// comes from an entity
+					var statement = gameLocal.program.GetStatement( gameLocal.program.NumStatements ( ) - 1 );
+					statement.c = type_pointer.PointerType ( ).def;
+				}
 
-		//		// field access gets type from field
-		//		if ( type_c != etype_t.ev_void ) {
-		//			e.SetTypeDef( e2.TypeDef().FieldType() );
-		//		}
-		//		break;
-		//	}
-		//}
+				// field access gets type from field
+				if ( type_c != etype_t.ev_void ) {
+					e.SetTypeDef( e2.TypeDef ( ).FieldType ( ) );
+				}
+				break;
+			}
+		}
 
 		return e;
 	}
@@ -1757,7 +1753,7 @@ idCompiler::ParseReturnStatement
 	//type_a = e.Type();
 	//type_b = this.scope.TypeDef().ReturnType().Type();
 
-	//if ( TypeMatches( type_a, type_b ) ) {
+	//if ( this.TypeMatches( type_a, type_b ) ) {
 	//	this.EmitOpcode( opc.OP_RETURN, e, 0 );
 	//	return;
 	//}
@@ -1770,7 +1766,7 @@ idCompiler::ParseReturnStatement
 
 	//assert( op.name );
 
-	//while( !TypeMatches( type_a, op.type_a.Type() ) || !TypeMatches( type_b, op.type_b.Type() ) ) {
+	//while( !this.TypeMatches( type_a, op.type_a.Type() ) || !this.TypeMatches( type_b, op.type_b.Type() ) ) {
 	//	op++;
 	//	if ( !op.name || strcmp( op.name, "=" ) ) {
 	//		this.Error( "type mismatch for return value" );

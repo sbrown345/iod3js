@@ -410,9 +410,9 @@ idTypeDef::idTypeDef
 	//*/
 	//size_t idTypeDef::Allocated( void ) const {
 	//	size_t memsize;
-	//	int i;
+	//	var i:number;
 	//
-	//	memsize = name.Allocated() + parmTypes.Allocated() + parmNames.Allocated() + functions.Allocated();
+	//	memsize = name.Allocated() + parmTypes.Allocated() + parmNames.Allocated() + this.functions.Allocated();
 	//	for( i = 0; i < parmTypes.Num(); i++ ) {
 	//		memsize += parmNames[ i ].Allocated();
 	//	}
@@ -487,12 +487,12 @@ idTypeDef::idTypeDef
 	MatchesVirtualFunction ( matchfunc: idTypeDef ): boolean {
 		todoThrow ( );
 
-		//int i;
+		//var i:number;
 		//if ( this == &matchfunc ) {
 		//	return true;
 		//}
 
-		//if ( ( type != matchfunc.type ) || ( auxType != matchfunc.auxType ) ) {
+		//if ( ( type != matchfunc.type ) || ( this.auxType != matchfunc.auxType ) ) {
 		//	return false;
 		//}
 
@@ -633,7 +633,7 @@ idTypeDef::idTypeDef
 	//		throw new idCompileError( "idTypeDef::SetReturnType: tried to set return type on non-function type" );
 	//	}
 	//
-	//	auxType = returntype;
+	//	this.auxType = returntype;
 	//}
 	//
 	/*
@@ -650,52 +650,52 @@ idTypeDef::idTypeDef
 
 		return this.auxType;
 	}
-	//
-	///*
-	//================
-	//idTypeDef::SetFieldType
-	//
-	//If type is a field, then sets the function's return type
-	//================
-	//*/
-	//void idTypeDef::SetFieldType( idTypeDef *fieldtype ) {
-	//	if ( type != etype_t.ev_field ) {
-	//		throw new idCompileError( "idTypeDef::SetFieldType: tried to set return type on non-function type" );
-	//	}
-	//
-	//	auxType = fieldtype;
-	//}
-	//
-	///*
-	//================
-	//idTypeDef::PointerType
-	//
-	//If type is a pointer, then returns the type it points to
-	//================
-	//*/
-	//idTypeDef *idTypeDef::PointerType( void ) const {
-	//	if ( type != etype_t.ev_pointer ) {
-	//		throw new idCompileError( "idTypeDef::PointerType: tried to get pointer type on non-pointer" );
-	//	}
-	//
-	//	return auxType;
-	//}
-	//
-	///*
-	//================
-	//idTypeDef::SetPointerType
-	//
-	//If type is a pointer, then sets the pointer's type
-	//================
-	//*/
-	//void idTypeDef::SetPointerType( idTypeDef *pointertype ) {
-	//	if ( type != etype_t.ev_pointer ) {
-	//		throw new idCompileError( "idTypeDef::SetPointerType: tried to set type on non-pointer" );
-	//	}
-	//
-	//	auxType = pointertype;
-	//}
-	//
+	
+	/*
+	================
+	idTypeDef::SetFieldType
+	
+	If type is a field, then sets the function's return type
+	================
+	*/
+	SetFieldType ( fieldtype: idTypeDef ): void {
+		if ( this.type != etype_t.ev_field ) {
+			throw new idCompileError( "idTypeDef::SetFieldType: tried to set return type on non-function type" );
+		}
+
+		this.auxType = fieldtype;
+	}
+
+	/*
+	================
+	idTypeDef::PointerType
+	
+	If type is a pointer, then returns the type it points to
+	================
+	*/
+	PointerType ( ): idTypeDef {
+		if ( this.type != etype_t.ev_pointer ) {
+			throw new idCompileError( "idTypeDef::PointerType: tried to get pointer type on non-pointer" );
+		}
+
+		return this.auxType;
+	}
+
+	/*
+	================
+	idTypeDef::SetPointerType
+	
+	If type is a pointer, then sets the pointer's type
+	================
+	*/
+	SetPointerType ( pointertype: idTypeDef ): void {
+		if ( this.type != etype_t.ev_pointer ) {
+			throw new idCompileError( "idTypeDef::SetPointerType: tried to set type on non-pointer" );
+		}
+
+		this.auxType = pointertype;
+	}
+
 	/*
 	================
 	idTypeDef::NumParameters
@@ -727,42 +727,42 @@ idTypeDef::idTypeDef
 		return this.parmNames[parmNumber];
 	}
 	
-	///*
-	//================
-	//idTypeDef::NumFunctions
-	//================
-	//*/
-	//int idTypeDef::NumFunctions( void ) const {
-	//	return functions.Num();
-	//}
-	//
-	///*
-	//================
-	//idTypeDef::GetFunctionNumber
-	//================
-	//*/
-	//int idTypeDef::GetFunctionNumber( const function_t *func ) const {
-	//	int i;
-	//
-	//	for( i = 0; i < functions.Num(); i++ ) {
-	//		if ( functions[ i ] == func ) {
-	//			return i;
-	//		}
-	//	}
-	//	return -1;
-	//}
-	//
-	///*
-	//================
-	//idTypeDef::GetFunction
-	//================
-	//*/
-	//const function_t *idTypeDef::GetFunction( int funcNumber ) const {
-	//	assert( funcNumber >= 0 );
-	//	assert( funcNumber < functions.Num() );
-	//	return functions[ funcNumber ];
-	//}
+	/*
+	================
+	idTypeDef::NumFunctions
+	================
+	*/
+	NumFunctions ( ): number {
+		return this.functions.Num ( );
+	}
+
+	/*
+	================
+	idTypeDef::GetFunctionNumber
+	================
+	*/
+	GetFunctionNumber(func: function_t ) :number{
+		var i:number;
 	
+		for( i = 0; i < this.functions.Num(); i++ ) {
+			if ( this.functions[ i ] == func ) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	/*
+	================
+	idTypeDef::GetFunction
+	================
+	*/
+	GetFunction ( /*int*/ funcNumber: number ): function_t {
+		assert( funcNumber >= 0 );
+		assert( funcNumber < this.functions.Num ( ) );
+		return this.functions[funcNumber];
+	}
+
 	/*
 	================
 	idTypeDef::AddFunction

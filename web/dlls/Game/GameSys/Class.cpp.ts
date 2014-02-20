@@ -141,21 +141,21 @@ class idTypeInfo {
 	////ID_INLINE bool idTypeInfo::IsType( const idTypeInfo &type ) const {
 	////	return ( ( typeNum >= type.typeNum ) && ( typeNum <= type.lastChild ) );
 	////}
-	////
-	/////*
-	////================
-	////idTypeInfo::RespondsTo
-	////================
-	////*/
-	////ID_INLINE bool idTypeInfo::RespondsTo( const idEventDef &ev ) const {
-	////	assert( idEvent::initialized );
-	////	if ( !eventMap[ ev.GetEventNum() ] ) {
-	////		// we don't respond to this event
-	////		return false;
-	////	}
-	////
-	////	return true;
-	////}
+	
+	/*
+	================
+	idTypeInfo::RespondsTo
+	================
+	*/
+	RespondsTo ( ev: idEventDef ): boolean {
+		assert( idEvent.initialized );
+		if ( !this.eventMap[ev.GetEventNum ( )] ) {
+			// we don't respond to this event
+			return false;
+		}
+
+		return true;
+	}
 
 /////*
 ////================
