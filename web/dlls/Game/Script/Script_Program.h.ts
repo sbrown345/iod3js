@@ -55,7 +55,15 @@ class eval_t {
 	//float				vector[ 3 ];
 	//function_t			*function;
 	//int 				_int;
-	//int 				entity;
+	//int  entity;
+
+	get stringPtr(): string { todoThrow();  return this[1]; }
+	set stringPtr(value: string ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		todoThrow ( );
+	}
 
 	get _float(): number { todoThrow();  return this[1]; }
 	set _float ( value: number ) {
@@ -64,7 +72,14 @@ class eval_t {
 		}
 		todoThrow ( );
 	}
-
+	
+	get vector(): idVec3 { todoThrow();  return this[1]; }
+	set vector(value: idVec3 ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		todoThrow ( );
+	}
 
 	get $function(): function_t { todoThrow();  return this[1]; }
 	set $function(value: function_t ) {
@@ -74,7 +89,21 @@ class eval_t {
 		todoThrow ( );
 	}
 
+	get _int(): number { todoThrow(); return this[1]; }
+	set _int(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		todoThrow();
+	}
 
+	get entity(): number { todoThrow();  return this[1]; }
+	set entity ( value: number ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		todoThrow ( );
+	}
 
 	private val = new ArrayBuffer(12);
 	private uint8s = new Uint8Array(this.val);
@@ -511,8 +540,8 @@ idTypeDef::idTypeDef
 	//================
 	//*/
 	//void idTypeDef::AddField( idTypeDef *fieldtype, const char *name ) {
-	//	if ( type != ev_object ) {
-	//		throw idCompileError( "idTypeDef::AddField : tried to add field to non-object type" );
+	//	if ( type != etype_t.ev_object ) {
+	//		throw new idCompileError( "idTypeDef::AddField : tried to add field to non-object type" );
 	//	}
 	//
 	//	parmTypes.Append( fieldtype );
@@ -577,21 +606,21 @@ idTypeDef::idTypeDef
 		return this.auxType;
 	}
 
-	///*
-	//================
-	//idTypeDef::ReturnType
-	//
-	//If type is a function, then returns the function's return type
-	//================
-	//*/
-	//idTypeDef *idTypeDef::ReturnType( void ) const {
-	//	if ( type != etype_t.ev_function ) {
-	//		throw idCompileError( "idTypeDef::ReturnType: tried to get return type on non-function type" );
-	//	}
-	//
-	//	return auxType;
-	//}
-	//
+	/*
+	================
+	idTypeDef::ReturnType
+	
+	If type is a function, then returns the function's return type
+	================
+	*/
+	ReturnType ( ): idTypeDef {
+		if ( this.type != etype_t.ev_function ) {
+			throw new idCompileError( "idTypeDef::ReturnType: tried to get return type on non-function type" );
+		}
+
+		return this.auxType;
+	}
+	
 	///*
 	//================
 	//idTypeDef::SetReturnType
@@ -601,7 +630,7 @@ idTypeDef::idTypeDef
 	//*/
 	//void idTypeDef::SetReturnType( idTypeDef *returntype ) {
 	//	if ( type != etype_t.ev_function ) {
-	//		throw idCompileError( "idTypeDef::SetReturnType: tried to set return type on non-function type" );
+	//		throw new idCompileError( "idTypeDef::SetReturnType: tried to set return type on non-function type" );
 	//	}
 	//
 	//	auxType = returntype;
@@ -631,7 +660,7 @@ idTypeDef::idTypeDef
 	//*/
 	//void idTypeDef::SetFieldType( idTypeDef *fieldtype ) {
 	//	if ( type != etype_t.ev_field ) {
-	//		throw idCompileError( "idTypeDef::SetFieldType: tried to set return type on non-function type" );
+	//		throw new idCompileError( "idTypeDef::SetFieldType: tried to set return type on non-function type" );
 	//	}
 	//
 	//	auxType = fieldtype;
@@ -645,8 +674,8 @@ idTypeDef::idTypeDef
 	//================
 	//*/
 	//idTypeDef *idTypeDef::PointerType( void ) const {
-	//	if ( type != ev_pointer ) {
-	//		throw idCompileError( "idTypeDef::PointerType: tried to get pointer type on non-pointer" );
+	//	if ( type != etype_t.ev_pointer ) {
+	//		throw new idCompileError( "idTypeDef::PointerType: tried to get pointer type on non-pointer" );
 	//	}
 	//
 	//	return auxType;
@@ -660,8 +689,8 @@ idTypeDef::idTypeDef
 	//================
 	//*/
 	//void idTypeDef::SetPointerType( idTypeDef *pointertype ) {
-	//	if ( type != ev_pointer ) {
-	//		throw idCompileError( "idTypeDef::SetPointerType: tried to set type on non-pointer" );
+	//	if ( type != etype_t.ev_pointer ) {
+	//		throw new idCompileError( "idTypeDef::SetPointerType: tried to set type on non-pointer" );
 	//	}
 	//
 	//	auxType = pointertype;
@@ -783,7 +812,7 @@ class idVarDef {
 	//	const char *			Name( void ) const;
 	//	const char *			GlobalName( void ) const;
 	//
-	//	void					SetTypeDef( idTypeDef *_type ) { typeDef = _type; }
+	SetTypeDef ( _type: idTypeDef ): void { this.typeDef = _type; }
 	TypeDef ( ): idTypeDef { return this.typeDef; }
 	Type ( ): etype_t { return ( this.typeDef != null ) ? this.typeDef.Type ( ) : etype_t.ev_void; }
 
@@ -893,89 +922,95 @@ class idVarDef {
 	//	assert( typeDef );
 	//	initialized = initialized;
 	//	assert( typeDef.Inherits( &type_object ) );
-	//	*value.objectPtrPtr = object;
+	//	*this.value.objectPtrPtr = object;
 	//}
 	//
-	///*
-	//============
-	//idVarDef::SetValue
-	//============
-	//*/
-	//void idVarDef::SetValue( const eval_t &_value, bool constant ) {
-	//	assert( typeDef );
-	//	if ( constant ) {
-	//		initialized = initializedConstant;
-	//	} else {
-	//		initialized = initializedVariable;
-	//	}
-	//
-	//	switch( typeDef.Type() ) {
-	//	case ev_pointer :
-	//	case ev_boolean :
-	//	case etype_t.ev_field :
-	//		*value.intPtr = _value._int;
-	//		break;
-	//
-	//	case etype_t.ev_jumpoffset :
-	//		value.jumpOffset = _value._int;
-	//		break;
-	//
-	//	case etype_t.ev_argsize :
-	//		value.argSize = _value._int;
-	//		break;
-	//
-	//	case ev_entity :
-	//		*value.entityNumberPtr = _value.entity;
-	//		break;
-	//
-	//	case etype_t.ev_string :
-	//		idStr.Copynz( value.stringPtr, _value.stringPtr, MAX_STRING_LEN );
-	//		break;
-	//
-	//	case etype_t.ev_float :
-	//		*value.floatPtr = _value._float;
-	//		break;
-	//
-	//	case etype_t.ev_vector :
-	//		value.vectorPtr.x = _value.vector[ 0 ];
-	//		value.vectorPtr.y = _value.vector[ 1 ];
-	//		value.vectorPtr.z = _value.vector[ 2 ];
-	//		break;
-	//
-	//	case etype_t.ev_function :
-	//		value.functionPtr = _value.function;
-	//		break;
-	//
-	//	case etype_t.ev_virtualfunction :
-	//		value.virtualFunction = _value._int;
-	//		break;
-	//
-	//	case etype_t.ev_object :
-	//		*value.entityNumberPtr = _value.entity;
-	//		break;
-	//
-	//	default :
-	//		throw idCompileError( va( "weird type on '%s'", Name() ) );
-	//		break;
-	//	}
-	//}
-	//
-	///*
-	//============
-	//idVarDef::SetString
-	//============
-	//*/
-	//void idVarDef::SetString( const char *string, bool constant ) {
-	//	if ( constant ) {
-	//		initialized = initializedConstant;
-	//	} else {
-	//		initialized = initializedVariable;
-	//	}
-	//	
-	//	assert( typeDef && ( typeDef.Type() == etype_t.ev_string ) );
-	//	idStr.Copynz( value.stringPtr, string, MAX_STRING_LEN );
-	//}
-	//
+	/*
+	============
+	idVarDef::SetValue
+	============
+	*/
+	SetValue ( _value: eval_t, constant: boolean ): void {
+		assert( this.typeDef );
+		if ( constant ) {
+			this.initialized = initialized_t.initializedConstant;
+		} else {
+			this.initialized = initialized_t.initializedVariable;
+		}
+
+		switch ( this.typeDef.Type ( ) ) {
+		case etype_t.ev_pointer:
+		case etype_t.ev_boolean:
+		case etype_t.ev_field:
+			/***/
+			this.value.intPtr = _value._int;
+			break;
+
+		case etype_t.ev_jumpoffset:
+			this.value.jumpOffset = _value._int;
+			break;
+
+		case etype_t.ev_argsize:
+			this.value.argSize = _value._int;
+			break;
+
+		case etype_t.ev_entity:
+			/***/
+			this.value.entityNumberPtr = _value.entity;
+			break;
+
+		case etype_t.ev_string:
+			todoThrow ( );
+			//idStr.Copynz( this.value.stringPtr, _value.stringPtr, MAX_STRING_LEN );
+			break;
+
+		case etype_t.ev_float:
+			/***/
+			this.value.floatPtr = _value._float;
+			break;
+
+		case etype_t.ev_vector:
+			this.value.vectorPtr.x = _value.vector[0];
+			this.value.vectorPtr.y = _value.vector[1];
+			this.value.vectorPtr.z = _value.vector[2];
+			break;
+
+		case etype_t.ev_function:
+			this.value.functionPtr = _value.$function;
+			break;
+
+		case etype_t.ev_virtualfunction:
+			this.value.virtualFunction = _value._int;
+			break;
+
+		case etype_t.ev_object:
+			/***/
+			this.value.entityNumberPtr = _value.entity;
+			break;
+
+		default:
+			throw new idCompileError( va( "weird type on '%s'", this.Name ( ) ) );
+			break;
+		}
+	}
+
+	/*
+	============
+	idVarDef::SetString
+	============
+	*/
+	SetString ( $string: string, constant: boolean ): void {
+		if ( constant ) {
+			this.initialized = initialized_t.initializedConstant;
+		} else {
+			this.initialized = initialized_t.initializedVariable;
+		}
+
+		assert(this.typeDef && (this.typeDef.Type() == etype_t.ev_string));
+		todoThrow ( );
+		//idStr.Copynz( this.value.stringPtr, $string, MAX_STRING_LEN );
+	}
+
 	/*
 	============
 	idVarDef::PrintInfo
