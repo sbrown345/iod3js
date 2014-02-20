@@ -65,12 +65,12 @@ class eval_t {
 		todoThrow ( );
 	}
 
-	get _float(): number { todoThrow();  return this[1]; }
+	get _float(): number { todoThrow();  return this.float32s[0]; }
 	set _float ( value: number ) {
 		if ( value === undefined ) {
 			throw 'Undefined value';
 		}
-		todoThrow ( );
+		this.float32s[0] = value;
 	}
 	
 	get vector(): idVec3 { todoThrow();  return this[1]; }
@@ -89,12 +89,12 @@ class eval_t {
 		todoThrow ( );
 	}
 
-	get _int(): number { todoThrow(); return this[1]; }
+	get _int(): number { todoThrow(); return this.int32s[0]; }
 	set _int(value: number) {
 		if (value === undefined) {
 			throw 'Undefined value';
 		}
-		todoThrow();
+		this.int32s[0] = value;
 	}
 
 	get entity(): number { todoThrow();  return this[1]; }
@@ -108,6 +108,7 @@ class eval_t {
 	private val = new ArrayBuffer(12);
 	private uint8s = new Uint8Array(this.val);
 	private int32s = new Uint32Array(this.val);
+	private float32s = new Float32Array(this.val);
 
 	init ( ):void {
 		this.int32s[0] = 0;
