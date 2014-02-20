@@ -1228,7 +1228,7 @@ idCompiler::LookupDef
 	var field: idVarDef;
 	var type_b: etype_t;
 	var type_c: etype_t	;
-	var op: opcode_t;
+	var $op: opcode_t;
 
 	// check if we're accessing a field
 	if ( baseobj && ( baseobj.Type() == etype_t.ev_object ) ) {
@@ -1276,7 +1276,7 @@ idCompiler::LookupDef
 					}
 				}
 				todoThrow ( );
-				//op = idCompiler.opcodes[ op.OP_INDIRECT_F ];
+				//$op = idCompiler.opcodes[ op.OP_INDIRECT_F ];
 				//while( ( op.type_a.Type() != etype_t.ev_object ) 
 				//	|| ( type_b != op.type_b.Type() ) || ( type_c != op.type_c.Type() ) ) {
 				//	if ( ( op.priority == FUNCTION_PRIORITY ) && ( op.type_a.Type() == etype_t.ev_object ) && ( op.type_c.Type() == etype_t.ev_void ) && 
@@ -1365,69 +1365,69 @@ idCompiler::GetTerm
 */
 	GetTerm ( ): idVarDef {
 		var e: idVarDef;
-		var /*int*/op: number;
+		var /*int*/$op: number;
 
 		if ( !this.immediateType && this.CheckToken( "~" ) ) {
 			e = this.GetExpression( TILDE_PRIORITY );
 			switch ( e.Type ( ) ) {
 			case etype_t.ev_float:
-				op = <number><any>op.OP_COMP_F;
+				$op = op.OP_COMP_F;
 				break;
 
 			default:
 				// shut up compiler
-				op = <number>op.OP_COMP_F;
+				$op = op.OP_COMP_F;
 
 				this.Error( "type mismatch for ~" );
 				break;
 			}
 
-			return this.EmitOpcode_FromOpNumber( op, e, null /*0*/ );
+			return this.EmitOpcode_FromOpNumber( $op, e, null /*0*/ );
 		}
 
 		if ( !this.immediateType && this.CheckToken( "!" ) ) {
 			e = this.GetExpression( NOT_PRIORITY );
 			switch ( e.Type ( ) ) {
 			case etype_t.ev_boolean:
-				op = op.OP_NOT_BOOL;
+				$op = op.OP_NOT_BOOL;
 				break;
 
 			case etype_t.ev_float:
-				op = op.OP_NOT_F;
+				$op = op.OP_NOT_F;
 				break;
 
 			case etype_t.ev_string:
-				op = op.OP_NOT_S;
+				$op = op.OP_NOT_S;
 				break;
 
 			case etype_t.ev_vector:
-				op = op.OP_NOT_V;
+				$op = op.OP_NOT_V;
 				break;
 
 			case etype_t.ev_entity:
-				op = op.OP_NOT_ENT;
+				$op = op.OP_NOT_ENT;
 				break;
 
 			case etype_t.ev_function:
 				// shut up compiler
-				op = op.OP_NOT_F;
+				$op = op.OP_NOT_F;
 
 				this.Error( "Invalid type for !" );
 				break;
 
 			case etype_t.ev_object:
-				op = op.OP_NOT_ENT;
+				$op = op.OP_NOT_ENT;
 				break;
 
 			default:
 				// shut up compiler
-				op = op.OP_NOT_F;
+				$op = op.OP_NOT_F;
 
 				this.Error( "type mismatch for !" );
 				break;
 			}
 
-			return this.EmitOpcode_FromOpNumber( op, e, null /*0*/ );
+			return this.EmitOpcode_FromOpNumber( $op, e, null /*0*/ );
 		}
 
 		// check for negation operator
@@ -1445,20 +1445,20 @@ idCompiler::GetTerm
 				e = this.GetExpression( NOT_PRIORITY );
 				switch ( e.Type ( ) ) {
 				case etype_t.ev_float:
-					op = op.OP_NEG_F;
+					$op = op.OP_NEG_F;
 					break;
 
 				case etype_t.ev_vector:
-					op = op.OP_NEG_V;
+					$op = op.OP_NEG_V;
 					break;
 				default:
 					// shut up compiler
-					op = op.OP_NEG_F;
+					$op = op.OP_NEG_F;
 
 					this.Error( "type mismatch for -" );
 					break;
 				}
-				return this.EmitOpcode( idCompiler.opcodes[op], e, null /*0*/ );
+				return this.EmitOpcode( idCompiler.opcodes[$op], e, null /*0*/ );
 			}
 		}
 

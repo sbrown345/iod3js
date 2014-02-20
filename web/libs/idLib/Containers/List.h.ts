@@ -90,10 +90,12 @@ class idList<type> {
 	private granularity:number;         //int				
 	private list:any; // reference itself		
     private type:any;
+	private initEmptyOnResize: boolean; // new up when Resizing/Allocating. this makes it work with a list of references and classes/structs (otherwise idList<R<idDeclType>> this is a bit overkill)
 
-    constructor(type:any, newgranularity:number = 16) {
+    constructor(type:any, initEmptyOnResize = false, newgranularity:number = 16) {
         assert(typeof type !== "number"); // new type arg not to be confused with newgranularity
         this.type = type;
+		this.initEmptyOnResize = initEmptyOnResize;
         this.num = 0;
         this.size = 0;
         this.granularity = newgranularity;
@@ -329,12 +331,19 @@ Resize (/* int */newsize:number, /*int */newgranularity?:number):void {
     if( arguments.length === 2 ) {
 	    assert( newgranularity > 0 );
 	    this.granularity = newgranularity;
-    }
-
+	}
+	
 	// free up the list if no data is being reserved
 	if ( newsize <= 0 ) {
 		this.Clear();
 		return;
+	}
+
+	if (arguments.length === 1) {
+		if (newsize == this.size) {
+			// not changing the size, so just exit
+			return;
+		}
 	}
 
 	//temp	= this.list;
@@ -343,16 +352,14 @@ Resize (/* int */newsize:number, /*int */newgranularity?:number):void {
 		this.num = this.size;
 	}
 
-	//// copy the old list into our new one
-	//this.list = new Array( this.size );
-	//for( i = 0; i < this.num; i++ ) {
-	//	this.list[ i ] = temp[ i ];
-	//}
-
-	//// delete the old list if it exists
-	//if ( temp ) {
-	//	delete temp;
-	//}
+	// init any new ones
+	if ( this.initEmptyOnResize ) {
+		for ( i = 0; i < this.size; i++ ) {
+			if ( !this[i] ) {
+				this[i] = new this.type;
+			}
+		}
+	}
 }
 
 
@@ -365,53 +372,49 @@ Makes sure the list has at least the given number of elements.
 */
 //template< class type >
 //ID_INLINE void idList<type>::
-AssureSize ( /*int */newSize: number ): void {
-    var /*int */newNum = newSize;
+	AssureSize( /*int */newSize: number, initValue: type = null): void {
+		if ( arguments.length == 1 ) {
+			var /*int */newNum = newSize;
 
-    if ( newSize > this.size ) {
+			if ( newSize > this.size ) {
 
-        if ( this.granularity == 0 ) { // this is a hack to fix our memset classes
-            this.granularity = 16;
-        }
+				if ( this.granularity == 0 ) { // this is a hack to fix our memset classes
+					this.granularity = 16;
+				}
 
-        newSize += this.granularity - 1;
-        newSize -= newSize % this.granularity;
-        this.Resize( newSize );
-    }
+				newSize += this.granularity - 1;
+				newSize -= newSize % this.granularity;
+				this.Resize( newSize );
+			}
 
-    this.num = newNum;
-}
+			this.num = newNum;
+		} else {
+			//Makes sure the list has at least the given number of elements and initialize any elements not yet initialized.
+			var /*int */newNum = newSize;
 
-///*
-//================
-//idList<type>::AssureSize
+			if ( newSize > this.size ) {
 
-//Makes sure the list has at least the given number of elements and initialize any elements not yet initialized.
-//================
-//*/
-//template< class type >
-//ID_INLINE void idList<type>::AssureSize( int newSize, const type &initValue ) {
-//	int newNum = newSize;
+				if ( this.granularity == 0 ) { // this is a hack to fix our memset classes
+					this.granularity = 16;
+				}
 
-//	if ( newSize > this.size ) {
+				newSize += this.granularity - 1;
+				newSize -= newSize % this.granularity;
+				this.num = this.size;
+				this.Resize( newSize );
 
-//		if ( this.granularity == 0 ) {	// this is a hack to fix our memset classes
-//			this.granularity = 16;
-//		}
+				for (var i = this.num; i < newSize; i++) {
+					if ( initValue ) {
+						todoThrow( "may need to clone?" );
+					}
+					this.list[i] = initValue;
+				}
+			}
 
-//		newSize += this.granularity - 1;
-//		newSize -= newSize % this.granularity;
-//		this.num = this.size;
-//		Resize( newSize );
-
-//		for ( int i = this.num; i < newSize; i++ ) {
-//			this.list[i] = initValue;
-//		}
-//	}
-
-//	this.num = newNum;
-//}
-
+			this.num = newNum;
+		}
+	}
+	
 ///*
 //================
 //idList<type>::AssureSizeAlloc
@@ -545,7 +548,7 @@ Returns a reference to a new data element at the end of the list.
 */
 //template< class type >
 	Alloc ( ): type {
-		if ( !this.list ) {
+		if ( !this[0] /*.list*/ ) {
 			this.Resize( this.granularity );
 		}
 
@@ -567,7 +570,7 @@ Returns a reference to a new data element at the end of the list.
 //*/
 //template< class type >
 //ID_INLINE int idList<type>::Append( type const & obj ) {
-//	if ( !this.list ) {
+//	if ( !this[0] /*.list*/ ) {
 //		Resize( this.granularity );
 //	}
 
@@ -599,7 +602,7 @@ Returns a reference to a new data element at the end of the list.
 //*/
 //template< class type >
 //ID_INLINE int idList<type>::Append( const idList<type> &other ) {
-//	if ( !this.list ) {
+//	if ( !this[0] /*.list*/ ) {
 //		if ( this.granularity == 0 ) {	// this is a hack to fix our memset classes
 //			this.granularity = 16;
 //		}
@@ -614,7 +617,7 @@ Returns a reference to a new data element at the end of the list.
 //	return Num();
 //}
 Append( obj:type ):number {
-	if ( !this.list ) {
+	if ( !this[0] /*.list*/ ) {
 		this.Resize( this.granularity );
 	}
 
@@ -646,7 +649,7 @@ Append( obj:type ):number {
 //*/
 //template< class type >
 //ID_INLINE int idList<type>::Insert( type const & obj, int index ) {
-//	if ( !this.list ) {
+//	if ( !this[0] /*.list*/ ) {
 //		Resize( this.granularity );
 //	}
 
@@ -847,7 +850,7 @@ Sort( compare:(a:string,b:string)=>number ):void
 Sort( compare:(a:any,b:any)=>number ):void {*/
 
 Sort( compare:(a:idStr,b:idStr)=>number ):void {
-	if ( !this.list ) {
+	if ( !this[0] /*.list*/ ) {
 		return;
 	}
 	//typedef int cmp_c(const void *, const void *);
@@ -870,7 +873,7 @@ Sort( compare:(a:idStr,b:idStr)=>number ):void {
 //*/
 //template< class type >
 //ID_INLINE void idList<type>::SortSubSection( int startIndex, int endIndex, cmp_t *compare ) {
-//	if ( !this.list ) {
+//	if ( !this[0] /*.list*/ ) {
 //		return;
 //	}
 //	if ( startIndex < 0 ) {
