@@ -529,91 +529,91 @@ returns an existing immediate with the same value, or allocates a new one
 		return def;
 	}
 
-///*
-//============
-//idCompiler::OptimizeOpcode
-//
-//try to optimize when the operator works on constants only
-//============
-//*/
-//idVarDef *idCompiler::OptimizeOpcode( const opcode_t *op, idVarDef *var_a, idVarDef *var_b ) {
-//	eval_t		c;
-//	idTypeDef	*type;
-//
-//	if ( var_a && var_a.initialized != idVarDef::initializedConstant ) {
-//		return NULL;
-//	}
-//	if ( var_b && var_b.initialized != idVarDef::initializedConstant ) {
-//		return NULL;
-//	}
-//
-//	idVec3 &vec_c = *reinterpret_cast<idVec3 *>( &c.vector[ 0 ] );
-//
-//	memset( &c, 0, sizeof( c ) );
-//	switch( op - idCompiler.opcodes ) {
-//		case opc.OP_ADD_F:		c._float = *var_a.value.floatPtr + *var_b.value.floatPtr; type = type_float; break;
-//		case opc.OP_ADD_V:		vec_c = *var_a.value.vectorPtr + *var_b.value.vectorPtr; type = type_vector; break;
-//		case opc.OP_SUB_F:		c._float = *var_a.value.floatPtr - *var_b.value.floatPtr; type = type_float; break;
-//		case opc.OP_SUB_V:		vec_c = *var_a.value.vectorPtr - *var_b.value.vectorPtr; type = type_vector; break;
-//		case opc.OP_MUL_F:		c._float = *var_a.value.floatPtr * *var_b.value.floatPtr; type = type_float; break;
-//		case opc.OP_MUL_V:		c._float = *var_a.value.vectorPtr * *var_b.value.vectorPtr; type = type_float; break;
-//		case opc.OP_MUL_FV:		vec_c = *var_b.value.vectorPtr * *var_a.value.floatPtr; type = type_vector; break;
-//		case opc.OP_MUL_VF:		vec_c = *var_a.value.vectorPtr * *var_b.value.floatPtr; type = type_vector; break;
-//		case opc.OP_DIV_F:		c._float = Divide( *var_a.value.floatPtr, *var_b.value.floatPtr ); type = type_float; break;
-//		case opc.OP_MOD_F:		c._float = (int)*var_a.value.floatPtr % (int)*var_b.value.floatPtr; type = type_float; break;
-//		case opc.OP_BITAND:		c._float = ( int )*var_a.value.floatPtr & ( int )*var_b.value.floatPtr; type = type_float; break;
-//		case opc.OP_BITOR:		c._float = ( int )*var_a.value.floatPtr | ( int )*var_b.value.floatPtr; type = type_float; break;
-//		case opc.OP_GE:			c._float = *var_a.value.floatPtr >= *var_b.value.floatPtr; type = type_float; break;
-//		case opc.OP_LE:			c._float = *var_a.value.floatPtr <= *var_b.value.floatPtr; type = type_float; break;
-//		case opc.OP_GT:			c._float = *var_a.value.floatPtr > *var_b.value.floatPtr; type = type_float; break;
-//		case opc.OP_LT:			c._float = *var_a.value.floatPtr < *var_b.value.floatPtr; type = type_float; break;
-//		case opc.OP_AND:		c._float = *var_a.value.floatPtr && *var_b.value.floatPtr; type = type_float; break;
-//		case opc.OP_OR:			c._float = *var_a.value.floatPtr || *var_b.value.floatPtr; type = type_float; break;
-//		case opc.OP_NOT_BOOL:	c._int = !*var_a.value.intPtr; type = type_boolean; break;
-//		case opc.OP_NOT_F:		c._float = !*var_a.value.floatPtr; type = type_float; break;
-//		case opc.OP_NOT_V:		c._float = !var_a.value.vectorPtr.x && !var_a.value.vectorPtr.y && !var_a.value.vectorPtr.z; type = type_float; break;
-//		case opc.OP_NEG_F:		c._float = -*var_a.value.floatPtr; type = type_float; break;
-//		case opc.OP_NEG_V:		vec_c = -*var_a.value.vectorPtr; type = type_vector; break;
-//		case opc.OP_INT_F:		c._float = ( int )*var_a.value.floatPtr; type = type_float; break;
-//		case opc.OP_EQ_F:		c._float = ( *var_a.value.floatPtr == *var_b.value.floatPtr ); type = type_float; break;
-//		case opc.OP_EQ_V:		c._float = var_a.value.vectorPtr.Compare( *var_b.value.vectorPtr ); type = type_float; break;
-//		case opc.OP_EQ_E:		c._float = ( *var_a.value.intPtr == *var_b.value.intPtr ); type = type_float; break;
-//		case opc.OP_NE_F:		c._float = ( *var_a.value.floatPtr != *var_b.value.floatPtr ); type = type_float; break;
-//		case opc.OP_NE_V:		c._float = !var_a.value.vectorPtr.Compare( *var_b.value.vectorPtr ); type = type_float; break;
-//		case opc.OP_NE_E:		c._float = ( *var_a.value.intPtr != *var_b.value.intPtr ); type = type_float; break;
-//		case opc.OP_UADD_F:		c._float = *var_b.value.floatPtr + *var_a.value.floatPtr; type = type_float; break;
-//		case opc.OP_USUB_F:		c._float = *var_b.value.floatPtr - *var_a.value.floatPtr; type = type_float; break;
-//		case opc.OP_UMUL_F:		c._float = *var_b.value.floatPtr * *var_a.value.floatPtr; type = type_float; break;
-//		case opc.OP_UDIV_F:		c._float = Divide( *var_b.value.floatPtr, *var_a.value.floatPtr ); type = type_float; break;
-//		case opc.OP_UMOD_F:		c._float = ( int ) *var_b.value.floatPtr % ( int )*var_a.value.floatPtr; type = type_float; break;
-//		case opc.OP_UOR_F:		c._float = ( int )*var_b.value.floatPtr | ( int )*var_a.value.floatPtr; type = type_float; break;
-//		case opc.OP_UAND_F: 	c._float = ( int )*var_b.value.floatPtr & ( int )*var_a.value.floatPtr; type = type_float; break;
-//		case opc.OP_UINC_F:		c._float = *var_a.value.floatPtr + 1; type = type_float; break;
-//		case opc.OP_UDEC_F:		c._float = *var_a.value.floatPtr - 1; type = type_float; break;
-//		case opc.OP_COMP_F:		c._float = ( float )~( int )*var_a.value.floatPtr; type = type_float; break;
-//		default:			type = NULL; break;
-//	}
-//
-//	if ( !type ) {
-//		return NULL;
-//	}
-//
-//	if ( var_a ) {
-//		var_a.numUsers--;
-//		if ( var_a.numUsers <= 0 ) {
-//			gameLocal.program.FreeDef( var_a, NULL );
-//		}
-//	}
-//	if ( var_b ) {
-//		var_b.numUsers--;
-//		if ( var_b.numUsers <= 0 ) {
-//			gameLocal.program.FreeDef( var_b, NULL );
-//		}
-//	}
-//
-//	return GetImmediate( type, &c, "" );
-//}
-//
+/*
+============
+idCompiler::OptimizeOpcode
+
+try to optimize when the operator works on constants only
+============
+*/
+	OptimizeOpcode ( op: opcode_t, var_a: idVarDef, var_b: idVarDef ): idVarDef {
+		var c: eval_t;
+		var type: idTypeDef;
+
+		if ( var_a && var_a.initialized != initialized_t.initializedConstant ) {
+			return null;
+		}
+		if ( var_b && var_b.initialized != initialized_t.initializedConstant ) {
+			return null;
+		}
+		todoThrow ( );
+		//idVec3 &vec_c = *reinterpret_cast<idVec3 *>( &c.vector[ 0 ] );
+
+		//memset( &c, 0, sizeof( c ) );
+		//switch( op - idCompiler.opcodes ) {
+		//	case opc.OP_ADD_F:		c._float = *var_a.value.floatPtr + *var_b.value.floatPtr; type = type_float; break;
+		//	case opc.OP_ADD_V:		vec_c = *var_a.value.vectorPtr + *var_b.value.vectorPtr; type = type_vector; break;
+		//	case opc.OP_SUB_F:		c._float = *var_a.value.floatPtr - *var_b.value.floatPtr; type = type_float; break;
+		//	case opc.OP_SUB_V:		vec_c = *var_a.value.vectorPtr - *var_b.value.vectorPtr; type = type_vector; break;
+		//	case opc.OP_MUL_F:		c._float = *var_a.value.floatPtr * *var_b.value.floatPtr; type = type_float; break;
+		//	case opc.OP_MUL_V:		c._float = *var_a.value.vectorPtr * *var_b.value.vectorPtr; type = type_float; break;
+		//	case opc.OP_MUL_FV:		vec_c = *var_b.value.vectorPtr * *var_a.value.floatPtr; type = type_vector; break;
+		//	case opc.OP_MUL_VF:		vec_c = *var_a.value.vectorPtr * *var_b.value.floatPtr; type = type_vector; break;
+		//	case opc.OP_DIV_F:		c._float = Divide( *var_a.value.floatPtr, *var_b.value.floatPtr ); type = type_float; break;
+		//	case opc.OP_MOD_F:		c._float = (int)*var_a.value.floatPtr % (int)*var_b.value.floatPtr; type = type_float; break;
+		//	case opc.OP_BITAND:		c._float = ( int )*var_a.value.floatPtr & ( int )*var_b.value.floatPtr; type = type_float; break;
+		//	case opc.OP_BITOR:		c._float = ( int )*var_a.value.floatPtr | ( int )*var_b.value.floatPtr; type = type_float; break;
+		//	case opc.OP_GE:			c._float = *var_a.value.floatPtr >= *var_b.value.floatPtr; type = type_float; break;
+		//	case opc.OP_LE:			c._float = *var_a.value.floatPtr <= *var_b.value.floatPtr; type = type_float; break;
+		//	case opc.OP_GT:			c._float = *var_a.value.floatPtr > *var_b.value.floatPtr; type = type_float; break;
+		//	case opc.OP_LT:			c._float = *var_a.value.floatPtr < *var_b.value.floatPtr; type = type_float; break;
+		//	case opc.OP_AND:		c._float = *var_a.value.floatPtr && *var_b.value.floatPtr; type = type_float; break;
+		//	case opc.OP_OR:			c._float = *var_a.value.floatPtr || *var_b.value.floatPtr; type = type_float; break;
+		//	case opc.OP_NOT_BOOL:	c._int = !*var_a.value.intPtr; type = type_boolean; break;
+		//	case opc.OP_NOT_F:		c._float = !*var_a.value.floatPtr; type = type_float; break;
+		//	case opc.OP_NOT_V:		c._float = !var_a.value.vectorPtr.x && !var_a.value.vectorPtr.y && !var_a.value.vectorPtr.z; type = type_float; break;
+		//	case opc.OP_NEG_F:		c._float = -*var_a.value.floatPtr; type = type_float; break;
+		//	case opc.OP_NEG_V:		vec_c = -*var_a.value.vectorPtr; type = type_vector; break;
+		//	case opc.OP_INT_F:		c._float = ( int )*var_a.value.floatPtr; type = type_float; break;
+		//	case opc.OP_EQ_F:		c._float = ( *var_a.value.floatPtr == *var_b.value.floatPtr ); type = type_float; break;
+		//	case opc.OP_EQ_V:		c._float = var_a.value.vectorPtr.Compare( *var_b.value.vectorPtr ); type = type_float; break;
+		//	case opc.OP_EQ_E:		c._float = ( *var_a.value.intPtr == *var_b.value.intPtr ); type = type_float; break;
+		//	case opc.OP_NE_F:		c._float = ( *var_a.value.floatPtr != *var_b.value.floatPtr ); type = type_float; break;
+		//	case opc.OP_NE_V:		c._float = !var_a.value.vectorPtr.Compare( *var_b.value.vectorPtr ); type = type_float; break;
+		//	case opc.OP_NE_E:		c._float = ( *var_a.value.intPtr != *var_b.value.intPtr ); type = type_float; break;
+		//	case opc.OP_UADD_F:		c._float = *var_b.value.floatPtr + *var_a.value.floatPtr; type = type_float; break;
+		//	case opc.OP_USUB_F:		c._float = *var_b.value.floatPtr - *var_a.value.floatPtr; type = type_float; break;
+		//	case opc.OP_UMUL_F:		c._float = *var_b.value.floatPtr * *var_a.value.floatPtr; type = type_float; break;
+		//	case opc.OP_UDIV_F:		c._float = Divide( *var_b.value.floatPtr, *var_a.value.floatPtr ); type = type_float; break;
+		//	case opc.OP_UMOD_F:		c._float = ( int ) *var_b.value.floatPtr % ( int )*var_a.value.floatPtr; type = type_float; break;
+		//	case opc.OP_UOR_F:		c._float = ( int )*var_b.value.floatPtr | ( int )*var_a.value.floatPtr; type = type_float; break;
+		//	case opc.OP_UAND_F: 	c._float = ( int )*var_b.value.floatPtr & ( int )*var_a.value.floatPtr; type = type_float; break;
+		//	case opc.OP_UINC_F:		c._float = *var_a.value.floatPtr + 1; type = type_float; break;
+		//	case opc.OP_UDEC_F:		c._float = *var_a.value.floatPtr - 1; type = type_float; break;
+		//	case opc.OP_COMP_F:		c._float = ( float )~( int )*var_a.value.floatPtr; type = type_float; break;
+		//	default:			type = NULL; break;
+		//}
+
+		//if ( !type ) {
+		//	return NULL;
+		//}
+
+		//if ( var_a ) {
+		//	var_a.numUsers--;
+		//	if ( var_a.numUsers <= 0 ) {
+		//		gameLocal.program.FreeDef( var_a, NULL );
+		//	}
+		//}
+		//if ( var_b ) {
+		//	var_b.numUsers--;
+		//	if ( var_b.numUsers <= 0 ) {
+		//		gameLocal.program.FreeDef( var_b, NULL );
+		//	}
+		//}
+
+		return this.GetImmediate( type, /*&*/c, "" );
+	}
+
 /*
 ============
 idCompiler::EmitOpcode
@@ -624,42 +624,48 @@ Emits a primitive statement, returning the var it places it's value in
 	EmitOpcode ( op: opcode_t, var_a: idVarDef, var_b: idVarDef ): idVarDef {
 		var statement: statement_t;
 		var var_c: idVarDef;
-		todoThrow ( );
-		//var_c = OptimizeOpcode( op, var_a, var_b );
-		//if ( var_c ) {
-		//	return var_c;
-		//}
 
-		//if ( var_a && !strcmp( var_a.Name(), RESULT_STRING ) ) {
-		//	var_a.numUsers++;
-		//}
-		//if ( var_b && !strcmp( var_b.Name(), RESULT_STRING ) ) {
-		//	var_b.numUsers++;
-		//}
+		var_c = this.OptimizeOpcode( op, var_a, var_b );
+		if ( var_c ) {
+			return var_c;
+		}
 
-		//statement = gameLocal.program.AllocStatement();
-		//statement.linenumber	= this.currentLineNumber;
-		//statement.file 		= this.currentFileNumber;
+		if ( var_a && !strcmp( var_a.Name ( ), RESULT_STRING ) ) {
+			var_a.numUsers++;
+		}
+		if ( var_b && !strcmp( var_b.Name ( ), RESULT_STRING ) ) {
+			var_b.numUsers++;
+		}
 
-		//if ( ( op.type_c == &def_void ) || op.rightAssociative ) {
-		//	// ifs, gotos, and assignments don't need vars allocated
-		//	var_c = NULL;
-		//} else {
-		//	// allocate result space
-		//	// try to reuse result defs as much as possible
-		//	var_c = gameLocal.program.FindFreeResultDef( op.type_c.TypeDef(), RESULT_STRING, scope, var_a, var_b );
-		//	// set user count back to 1, a result def needs to be used twice before it can be reused
-		//	var_c.numUsers = 1;
-		//}
+		statement = gameLocal.program.AllocStatement ( );
+		statement.linenumber = this.currentLineNumber;
+		statement.file = this.currentFileNumber;
 
-		//statement.op	= op - idCompiler.opcodes;
-		//statement.a	= var_a;
-		//statement.b	= var_b;
-		//statement.c	= var_c;
+		if ( ( op.type_c == def_void ) || op.rightAssociative ) {
+			// ifs, gotos, and assignments don't need vars allocated
+			var_c = null;
+		} else {
+			// allocate result space
+			// try to reuse result defs as much as possible
+			var_c = gameLocal.program.FindFreeResultDef( op.type_c.TypeDef ( ), RESULT_STRING, this.scope, var_a, var_b );
+			// set user count back to 1, a result def needs to be used twice before it can be reused
+			var_c.numUsers = 1;
+		}
 
-		//if ( op.rightAssociative ) {
-		//	return var_a;
-		//}
+		for ( var i = 0; i < idCompiler.opcodes.length; i++ ) {
+			if ( op == idCompiler.opcodes[i] ) {
+				//statement.op = op - idCompiler.opcodes;
+				statement.op = i;
+				break;
+			}
+		}
+		statement.a = var_a;
+		statement.b = var_b;
+		statement.c = var_c;
+
+		if ( op.rightAssociative ) {
+			return var_a;
+		}
 
 		return var_c;
 	}
@@ -683,27 +689,26 @@ Emits an opcode to push the variable onto the stack.
 ============
 */
 	EmitPush ( expression: idVarDef, funcArg: idTypeDef ): boolean {
-		todoThrow ( );
-		//opcode_t *op;
-		//opcode_t *out;
+		var op: opcode_t, opIdx: number;
+		var out: opcode_t;
 
-		//out = NULL;
-		//for( op = &idCompiler.opcodes[ opc.OP_PUSH_F ]; op.name && !strcmp( op.name, "<PUSH>" ); op++ ) {
-		//	if ( ( funcArg.Type() == op.type_a.Type() ) && ( expression.Type() == op.type_b.Type() ) ) {
-		//		out = op;
-		//		break;
-		//	}
-		//}
+		out = null;
+		for ( op = idCompiler.opcodes[opIdx = opc.OP_PUSH_F]; op.name && !strcmp( op.name, "<PUSH>" ); op = idCompiler.opcodes[++opIdx] ) {
+			if ( ( funcArg.Type ( ) == op.type_a.Type ( ) ) && ( expression.Type ( ) == op.type_b.Type ( ) ) ) {
+				out = op;
+				break;
+			}
+		}
 
-		//if ( !out ) {
-		//	if ( ( expression.TypeDef() != funcArg ) && !expression.TypeDef().Inherits( funcArg ) ) {
-		//		return false;
-		//	}
+		if ( !out ) {
+			if ( ( expression.TypeDef ( ) != funcArg ) && !expression.TypeDef ( ).Inherits( funcArg ) ) {
+				return false;
+			}
 
-		//	out = &idCompiler.opcodes[ opc.OP_PUSH_ENT ];
-		//}
+			out = idCompiler.opcodes[opc.OP_PUSH_ENT];
+		}
 
-		//this.EmitOpcode( out, expression, 0 );
+		this.EmitOpcode( out, expression, /*0*/null );
 
 		return true;
 	}

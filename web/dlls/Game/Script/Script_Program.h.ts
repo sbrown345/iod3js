@@ -65,7 +65,7 @@ class eval_t {
 		todoThrow ( );
 	}
 
-	get _float(): number { todoThrow();  return this.float32s[0]; }
+	get _float(): number { return this.float32s[0]; }
 	set _float ( value: number ) {
 		if ( value === undefined ) {
 			throw 'Undefined value';
@@ -89,7 +89,7 @@ class eval_t {
 		todoThrow ( );
 	}
 
-	get _int(): number { todoThrow(); return this.int32s[0]; }
+	get _int(): number { return this.int32s[0]; }
 	set _int(value: number) {
 		if (value === undefined) {
 			throw 'Undefined value';
