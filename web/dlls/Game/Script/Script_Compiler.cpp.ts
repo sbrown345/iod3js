@@ -554,46 +554,46 @@ returns an existing immediate with the same value, or allocates a new one
 //
 //	memset( &c, 0, sizeof( c ) );
 //	switch( op - idCompiler.opcodes ) {
-//		case op.OP_ADD_F:		c._float = *var_a.value.floatPtr + *var_b.value.floatPtr; type = type_float; break;
-//		case op.OP_ADD_V:		vec_c = *var_a.value.vectorPtr + *var_b.value.vectorPtr; type = type_vector; break;
-//		case op.OP_SUB_F:		c._float = *var_a.value.floatPtr - *var_b.value.floatPtr; type = type_float; break;
-//		case op.OP_SUB_V:		vec_c = *var_a.value.vectorPtr - *var_b.value.vectorPtr; type = type_vector; break;
-//		case op.OP_MUL_F:		c._float = *var_a.value.floatPtr * *var_b.value.floatPtr; type = type_float; break;
-//		case op.OP_MUL_V:		c._float = *var_a.value.vectorPtr * *var_b.value.vectorPtr; type = type_float; break;
-//		case op.OP_MUL_FV:		vec_c = *var_b.value.vectorPtr * *var_a.value.floatPtr; type = type_vector; break;
-//		case op.OP_MUL_VF:		vec_c = *var_a.value.vectorPtr * *var_b.value.floatPtr; type = type_vector; break;
-//		case op.OP_DIV_F:		c._float = Divide( *var_a.value.floatPtr, *var_b.value.floatPtr ); type = type_float; break;
-//		case op.OP_MOD_F:		c._float = (int)*var_a.value.floatPtr % (int)*var_b.value.floatPtr; type = type_float; break;
-//		case op.OP_BITAND:		c._float = ( int )*var_a.value.floatPtr & ( int )*var_b.value.floatPtr; type = type_float; break;
-//		case op.OP_BITOR:		c._float = ( int )*var_a.value.floatPtr | ( int )*var_b.value.floatPtr; type = type_float; break;
-//		case op.OP_GE:			c._float = *var_a.value.floatPtr >= *var_b.value.floatPtr; type = type_float; break;
-//		case op.OP_LE:			c._float = *var_a.value.floatPtr <= *var_b.value.floatPtr; type = type_float; break;
-//		case op.OP_GT:			c._float = *var_a.value.floatPtr > *var_b.value.floatPtr; type = type_float; break;
-//		case op.OP_LT:			c._float = *var_a.value.floatPtr < *var_b.value.floatPtr; type = type_float; break;
-//		case op.OP_AND:		c._float = *var_a.value.floatPtr && *var_b.value.floatPtr; type = type_float; break;
-//		case op.OP_OR:			c._float = *var_a.value.floatPtr || *var_b.value.floatPtr; type = type_float; break;
-//		case op.OP_NOT_BOOL:	c._int = !*var_a.value.intPtr; type = type_boolean; break;
-//		case op.OP_NOT_F:		c._float = !*var_a.value.floatPtr; type = type_float; break;
-//		case op.OP_NOT_V:		c._float = !var_a.value.vectorPtr.x && !var_a.value.vectorPtr.y && !var_a.value.vectorPtr.z; type = type_float; break;
-//		case op.OP_NEG_F:		c._float = -*var_a.value.floatPtr; type = type_float; break;
-//		case op.OP_NEG_V:		vec_c = -*var_a.value.vectorPtr; type = type_vector; break;
-//		case op.OP_INT_F:		c._float = ( int )*var_a.value.floatPtr; type = type_float; break;
-//		case op.OP_EQ_F:		c._float = ( *var_a.value.floatPtr == *var_b.value.floatPtr ); type = type_float; break;
-//		case op.OP_EQ_V:		c._float = var_a.value.vectorPtr.Compare( *var_b.value.vectorPtr ); type = type_float; break;
-//		case op.OP_EQ_E:		c._float = ( *var_a.value.intPtr == *var_b.value.intPtr ); type = type_float; break;
-//		case op.OP_NE_F:		c._float = ( *var_a.value.floatPtr != *var_b.value.floatPtr ); type = type_float; break;
-//		case op.OP_NE_V:		c._float = !var_a.value.vectorPtr.Compare( *var_b.value.vectorPtr ); type = type_float; break;
-//		case op.OP_NE_E:		c._float = ( *var_a.value.intPtr != *var_b.value.intPtr ); type = type_float; break;
-//		case op.OP_UADD_F:		c._float = *var_b.value.floatPtr + *var_a.value.floatPtr; type = type_float; break;
-//		case op.OP_USUB_F:		c._float = *var_b.value.floatPtr - *var_a.value.floatPtr; type = type_float; break;
-//		case op.OP_UMUL_F:		c._float = *var_b.value.floatPtr * *var_a.value.floatPtr; type = type_float; break;
-//		case op.OP_UDIV_F:		c._float = Divide( *var_b.value.floatPtr, *var_a.value.floatPtr ); type = type_float; break;
-//		case op.OP_UMOD_F:		c._float = ( int ) *var_b.value.floatPtr % ( int )*var_a.value.floatPtr; type = type_float; break;
-//		case op.OP_UOR_F:		c._float = ( int )*var_b.value.floatPtr | ( int )*var_a.value.floatPtr; type = type_float; break;
-//		case op.OP_UAND_F: 	c._float = ( int )*var_b.value.floatPtr & ( int )*var_a.value.floatPtr; type = type_float; break;
-//		case op.OP_UINC_F:		c._float = *var_a.value.floatPtr + 1; type = type_float; break;
-//		case op.OP_UDEC_F:		c._float = *var_a.value.floatPtr - 1; type = type_float; break;
-//		case op.OP_COMP_F:		c._float = ( float )~( int )*var_a.value.floatPtr; type = type_float; break;
+//		case opc.OP_ADD_F:		c._float = *var_a.value.floatPtr + *var_b.value.floatPtr; type = type_float; break;
+//		case opc.OP_ADD_V:		vec_c = *var_a.value.vectorPtr + *var_b.value.vectorPtr; type = type_vector; break;
+//		case opc.OP_SUB_F:		c._float = *var_a.value.floatPtr - *var_b.value.floatPtr; type = type_float; break;
+//		case opc.OP_SUB_V:		vec_c = *var_a.value.vectorPtr - *var_b.value.vectorPtr; type = type_vector; break;
+//		case opc.OP_MUL_F:		c._float = *var_a.value.floatPtr * *var_b.value.floatPtr; type = type_float; break;
+//		case opc.OP_MUL_V:		c._float = *var_a.value.vectorPtr * *var_b.value.vectorPtr; type = type_float; break;
+//		case opc.OP_MUL_FV:		vec_c = *var_b.value.vectorPtr * *var_a.value.floatPtr; type = type_vector; break;
+//		case opc.OP_MUL_VF:		vec_c = *var_a.value.vectorPtr * *var_b.value.floatPtr; type = type_vector; break;
+//		case opc.OP_DIV_F:		c._float = Divide( *var_a.value.floatPtr, *var_b.value.floatPtr ); type = type_float; break;
+//		case opc.OP_MOD_F:		c._float = (int)*var_a.value.floatPtr % (int)*var_b.value.floatPtr; type = type_float; break;
+//		case opc.OP_BITAND:		c._float = ( int )*var_a.value.floatPtr & ( int )*var_b.value.floatPtr; type = type_float; break;
+//		case opc.OP_BITOR:		c._float = ( int )*var_a.value.floatPtr | ( int )*var_b.value.floatPtr; type = type_float; break;
+//		case opc.OP_GE:			c._float = *var_a.value.floatPtr >= *var_b.value.floatPtr; type = type_float; break;
+//		case opc.OP_LE:			c._float = *var_a.value.floatPtr <= *var_b.value.floatPtr; type = type_float; break;
+//		case opc.OP_GT:			c._float = *var_a.value.floatPtr > *var_b.value.floatPtr; type = type_float; break;
+//		case opc.OP_LT:			c._float = *var_a.value.floatPtr < *var_b.value.floatPtr; type = type_float; break;
+//		case opc.OP_AND:		c._float = *var_a.value.floatPtr && *var_b.value.floatPtr; type = type_float; break;
+//		case opc.OP_OR:			c._float = *var_a.value.floatPtr || *var_b.value.floatPtr; type = type_float; break;
+//		case opc.OP_NOT_BOOL:	c._int = !*var_a.value.intPtr; type = type_boolean; break;
+//		case opc.OP_NOT_F:		c._float = !*var_a.value.floatPtr; type = type_float; break;
+//		case opc.OP_NOT_V:		c._float = !var_a.value.vectorPtr.x && !var_a.value.vectorPtr.y && !var_a.value.vectorPtr.z; type = type_float; break;
+//		case opc.OP_NEG_F:		c._float = -*var_a.value.floatPtr; type = type_float; break;
+//		case opc.OP_NEG_V:		vec_c = -*var_a.value.vectorPtr; type = type_vector; break;
+//		case opc.OP_INT_F:		c._float = ( int )*var_a.value.floatPtr; type = type_float; break;
+//		case opc.OP_EQ_F:		c._float = ( *var_a.value.floatPtr == *var_b.value.floatPtr ); type = type_float; break;
+//		case opc.OP_EQ_V:		c._float = var_a.value.vectorPtr.Compare( *var_b.value.vectorPtr ); type = type_float; break;
+//		case opc.OP_EQ_E:		c._float = ( *var_a.value.intPtr == *var_b.value.intPtr ); type = type_float; break;
+//		case opc.OP_NE_F:		c._float = ( *var_a.value.floatPtr != *var_b.value.floatPtr ); type = type_float; break;
+//		case opc.OP_NE_V:		c._float = !var_a.value.vectorPtr.Compare( *var_b.value.vectorPtr ); type = type_float; break;
+//		case opc.OP_NE_E:		c._float = ( *var_a.value.intPtr != *var_b.value.intPtr ); type = type_float; break;
+//		case opc.OP_UADD_F:		c._float = *var_b.value.floatPtr + *var_a.value.floatPtr; type = type_float; break;
+//		case opc.OP_USUB_F:		c._float = *var_b.value.floatPtr - *var_a.value.floatPtr; type = type_float; break;
+//		case opc.OP_UMUL_F:		c._float = *var_b.value.floatPtr * *var_a.value.floatPtr; type = type_float; break;
+//		case opc.OP_UDIV_F:		c._float = Divide( *var_b.value.floatPtr, *var_a.value.floatPtr ); type = type_float; break;
+//		case opc.OP_UMOD_F:		c._float = ( int ) *var_b.value.floatPtr % ( int )*var_a.value.floatPtr; type = type_float; break;
+//		case opc.OP_UOR_F:		c._float = ( int )*var_b.value.floatPtr | ( int )*var_a.value.floatPtr; type = type_float; break;
+//		case opc.OP_UAND_F: 	c._float = ( int )*var_b.value.floatPtr & ( int )*var_a.value.floatPtr; type = type_float; break;
+//		case opc.OP_UINC_F:		c._float = *var_a.value.floatPtr + 1; type = type_float; break;
+//		case opc.OP_UDEC_F:		c._float = *var_a.value.floatPtr - 1; type = type_float; break;
+//		case opc.OP_COMP_F:		c._float = ( float )~( int )*var_a.value.floatPtr; type = type_float; break;
 //		default:			type = NULL; break;
 //	}
 //
@@ -691,7 +691,7 @@ Emits an opcode to push the variable onto the stack.
 		//opcode_t *out;
 
 		//out = NULL;
-		//for( op = &idCompiler.opcodes[ op.OP_PUSH_F ]; op.name && !strcmp( op.name, "<PUSH>" ); op++ ) {
+		//for( op = &idCompiler.opcodes[ opc.OP_PUSH_F ]; op.name && !strcmp( op.name, "<PUSH>" ); op++ ) {
 		//	if ( ( funcArg.Type() == op.type_a.Type() ) && ( expression.Type() == op.type_b.Type() ) ) {
 		//		out = op;
 		//		break;
@@ -703,7 +703,7 @@ Emits an opcode to push the variable onto the stack.
 		//		return false;
 		//	}
 
-		//	out = &idCompiler.opcodes[ op.OP_PUSH_ENT ];
+		//	out = &idCompiler.opcodes[ opc.OP_PUSH_ENT ];
 		//}
 
 		//this.EmitOpcode( out, expression, 0 );
@@ -1038,9 +1038,9 @@ Looks for a preexisting constant
 //		this.Error( "too few parameters for function '%s'", func.Name() );
 //	}
 //
-//	if ( op == op.OP_CALL ) {
+//	if ( op == opc.OP_CALL ) {
 //		this.EmitOpcode( op, func, 0 );
-//	} else if ( ( op == op.OP_OBJECTCALL ) || ( op == op.OP_OBJTHREAD ) ) {
+//	} else if ( ( op == opc.OP_OBJECTCALL ) || ( op == opc.OP_OBJTHREAD ) ) {
 //		this.EmitOpcode( op, object, VirtualFunctionConstant( func ) );
 //
 //		// need arg size seperate since script object may be NULL
@@ -1053,7 +1053,7 @@ Looks for a preexisting constant
 //	// we need to copy off the result into a temporary result location, so figure out the opcode
 //	returnType = type.ReturnType();
 //	if ( returnType.Type() == etype_t.ev_string ) {
-//		resultOp = op.OP_STORE_S;
+//		resultOp = opc.OP_STORE_S;
 //		returnDef = gameLocal.program.returnStringDef;
 //	} else {
 //		gameLocal.program.returnDef.SetTypeDef( returnType );
@@ -1061,32 +1061,32 @@ Looks for a preexisting constant
 //
 //		switch( returnType.Type() ) {
 //		case etype_t.ev_void :
-//			resultOp = op.OP_STORE_F;
+//			resultOp = opc.OP_STORE_F;
 //			break;
 //
 //		case etype_t.ev_boolean :
-//			resultOp = op.OP_STORE_BOOL;
+//			resultOp = opc.OP_STORE_BOOL;
 //			break;
 //
 //		case etype_t.ev_float :
-//			resultOp = op.OP_STORE_F;
+//			resultOp = opc.OP_STORE_F;
 //			break;
 //
 //		case etype_t.ev_vector :
-//			resultOp = op.OP_STORE_V;
+//			resultOp = opc.OP_STORE_V;
 //			break;
 //
 //		case etype_t.ev_entity :
-//			resultOp = op.OP_STORE_ENT;
+//			resultOp = opc.OP_STORE_ENT;
 //			break;
 //
 //		case etype_t.ev_object :
-//			resultOp = op.OP_STORE_OBJ;
+//			resultOp = opc.OP_STORE_OBJ;
 //			break;
 //
 //		default :
 //			// shut up compiler
-//			resultOp = op.OP_STORE_OBJ;
+//			resultOp = opc.OP_STORE_OBJ;
 //			this.Error( "Invalid return type for function '%s'", func.Name() );
 //			break;
 //		}
@@ -1131,7 +1131,7 @@ Looks for a preexisting constant
 //			this.Error( "Built-in functions cannot be called as threads" );
 //		}
 //		this.callthread = false;
-//		return EmitFunctionParms( op.OP_THREAD, funcDef, 0, 0, NULL );
+//		return EmitFunctionParms( opc.OP_THREAD, funcDef, 0, 0, NULL );
 //	} else {
 //		if ( ( funcDef.initialized != idVarDef::uninitialized ) && funcDef.value.functionPtr.eventdef ) {
 //			if ( ( this.scope.Type() != etype_t.ev_namespace ) && ( this.scope.scope.Type() == etype_t.ev_object ) ) {
@@ -1147,7 +1147,7 @@ Looks for a preexisting constant
 //			}
 //		}
 //
-//		return EmitFunctionParms( op.OP_CALL, funcDef, 0, 0, NULL );
+//		return EmitFunctionParms( opc.OP_CALL, funcDef, 0, 0, NULL );
 //	}
 //}
 //
@@ -1160,9 +1160,9 @@ Looks for a preexisting constant
 //	this.EmitPush( object, object.TypeDef() );
 //	if ( this.callthread ) {
 //		this.callthread = false;
-//		return EmitFunctionParms( op.OP_OBJTHREAD, func, 1, type_object.Size(), object );
+//		return EmitFunctionParms( opc.OP_OBJTHREAD, func, 1, type_object.Size(), object );
 //	} else {
-//		return EmitFunctionParms( op.OP_OBJECTCALL, func, 1, 0, object );
+//		return EmitFunctionParms( opc.OP_OBJECTCALL, func, 1, 0, object );
 //	}
 //}
 //
@@ -1190,7 +1190,7 @@ Looks for a preexisting constant
 //		this.EmitPush( object, object.TypeDef() );
 //	}
 //
-//	return EmitFunctionParms( op.OP_EVENTCALL, funcDef, 0, type_object.Size(), NULL );
+//	return EmitFunctionParms( opc.OP_EVENTCALL, funcDef, 0, type_object.Size(), NULL );
 //}
 //
 ///*
@@ -1215,7 +1215,7 @@ Looks for a preexisting constant
 //		this.Error( "\"%s\" is not callable as a 'sys' function", funcDef.Name() );
 //	}
 //
-//	return EmitFunctionParms( op.OP_SYSCALL, funcDef, 0, 0, NULL );
+//	return EmitFunctionParms( opc.OP_SYSCALL, funcDef, 0, 0, NULL );
 //}
 //
 /*
@@ -1265,18 +1265,18 @@ idCompiler::LookupDef
 						if ( type_c != etype_t.ev_float ) {
 							this.Error( "Invalid type for ++" );
 						}
-						def = this.EmitOpcode_FromOpNumber( op.OP_UINCP_F, thisdef, field );
+						def = this.EmitOpcode_FromOpNumber( opc.OP_UINCP_F, thisdef, field );
 						return def;
 					} else if ( this.CheckToken( "--" ) ) {
 						if ( type_c != etype_t.ev_float ) {
 							this.Error( "Invalid type for --" );
 						}
-						def = this.EmitOpcode_FromOpNumber( op.OP_UDECP_F, thisdef, field );
+						def = this.EmitOpcode_FromOpNumber( opc.OP_UDECP_F, thisdef, field );
 						return def;
 					}
 				}
 				todoThrow ( );
-				//$op = idCompiler.opcodes[ op.OP_INDIRECT_F ];
+				//$op = idCompiler.opcodes[ opc.OP_INDIRECT_F ];
 				//while( ( op.type_a.Type() != etype_t.ev_object ) 
 				//	|| ( type_b != op.type_b.Type() ) || ( type_c != op.type_c.Type() ) ) {
 				//	if ( ( op.priority == FUNCTION_PRIORITY ) && ( op.type_a.Type() == etype_t.ev_object ) && ( op.type_c.Type() == etype_t.ev_void ) && 
@@ -1290,7 +1290,7 @@ idCompiler::LookupDef
 				//	}
 				//}
 
-				//if ( ( op - idCompiler.opcodes ) == op.OP_OBJECTCALL ) {
+				//if ( ( op - idCompiler.opcodes ) == opc.OP_OBJECTCALL ) {
 				//	this.ExpectToken( "(" );
 				//	def = this.ParseObjectCall( thisdef, field );
 				//} else {
@@ -1371,12 +1371,12 @@ idCompiler::GetTerm
 			e = this.GetExpression( TILDE_PRIORITY );
 			switch ( e.Type ( ) ) {
 			case etype_t.ev_float:
-				$op = op.OP_COMP_F;
+				$op = opc.OP_COMP_F;
 				break;
 
 			default:
 				// shut up compiler
-				$op = op.OP_COMP_F;
+				$op = opc.OP_COMP_F;
 
 				this.Error( "type mismatch for ~" );
 				break;
@@ -1389,39 +1389,39 @@ idCompiler::GetTerm
 			e = this.GetExpression( NOT_PRIORITY );
 			switch ( e.Type ( ) ) {
 			case etype_t.ev_boolean:
-				$op = op.OP_NOT_BOOL;
+				$op = opc.OP_NOT_BOOL;
 				break;
 
 			case etype_t.ev_float:
-				$op = op.OP_NOT_F;
+				$op = opc.OP_NOT_F;
 				break;
 
 			case etype_t.ev_string:
-				$op = op.OP_NOT_S;
+				$op = opc.OP_NOT_S;
 				break;
 
 			case etype_t.ev_vector:
-				$op = op.OP_NOT_V;
+				$op = opc.OP_NOT_V;
 				break;
 
 			case etype_t.ev_entity:
-				$op = op.OP_NOT_ENT;
+				$op = opc.OP_NOT_ENT;
 				break;
 
 			case etype_t.ev_function:
 				// shut up compiler
-				$op = op.OP_NOT_F;
+				$op = opc.OP_NOT_F;
 
 				this.Error( "Invalid type for !" );
 				break;
 
 			case etype_t.ev_object:
-				$op = op.OP_NOT_ENT;
+				$op = opc.OP_NOT_ENT;
 				break;
 
 			default:
 				// shut up compiler
-				$op = op.OP_NOT_F;
+				$op = opc.OP_NOT_F;
 
 				this.Error( "type mismatch for !" );
 				break;
@@ -1445,15 +1445,15 @@ idCompiler::GetTerm
 				e = this.GetExpression( NOT_PRIORITY );
 				switch ( e.Type ( ) ) {
 				case etype_t.ev_float:
-					$op = op.OP_NEG_F;
+					$op = opc.OP_NEG_F;
 					break;
 
 				case etype_t.ev_vector:
-					$op = op.OP_NEG_V;
+					$op = opc.OP_NEG_V;
 					break;
 				default:
 					// shut up compiler
-					$op = op.OP_NEG_F;
+					$op = opc.OP_NEG_F;
 
 					this.Error( "type mismatch for -" );
 					break;
@@ -1472,7 +1472,7 @@ idCompiler::GetTerm
 
 			this.ExpectToken( ")" );
 
-			return this.EmitOpcode_FromOpNumber( op.OP_INT_F, e, null /*0*/ );
+			return this.EmitOpcode_FromOpNumber( opc.OP_INT_F, e, null /*0*/ );
 		}
 
 		if ( this.CheckToken( "thread" ) ) {
@@ -1584,8 +1584,8 @@ idCompiler::GetExpression
 		//		// if last statement is an indirect, change it to an address of
 		//		if ( gameLocal.program.NumStatements() > 0 ) {
 		//			statement_t &statement = gameLocal.program.GetStatement( gameLocal.program.NumStatements() - 1 );
-		//			if ( ( statement.op >= op.OP_INDIRECT_F ) && ( statement.op < op.OP_ADDRESS ) ) {
-		//				statement.op = op.OP_ADDRESS;
+		//			if ( ( statement.op >= opc.OP_INDIRECT_F ) && ( statement.op < opc.OP_ADDRESS ) ) {
+		//				statement.op = opc.OP_ADDRESS;
 		//				type_pointer.SetPointerType( e.TypeDef() );
 		//				e.SetTypeDef( type_pointer );
 		//			}
@@ -1631,12 +1631,12 @@ idCompiler::GetExpression
 		//	}
 
 		//	switch( op - idCompiler.opcodes ) {
-		//	case op.OP_SYSCALL :
+		//	case opc.OP_SYSCALL :
 		//		this.ExpectToken( "(" );
 		//		e = ParseSysObjectCall( e2 );
 		//		break;
 
-		//	case op.OP_OBJECTCALL :
+		//	case opc.OP_OBJECTCALL :
 		//		this.ExpectToken( "(" );
 		//		if ( ( e2.initialized != idVarDef::uninitialized ) && e2.value.functionPtr.eventdef ) {
 		//			e = ParseEventCall( e, e2 );
@@ -1645,7 +1645,7 @@ idCompiler::GetExpression
 		//		}
 		//		break;
 
-		//	case op.OP_EVENTCALL :
+		//	case opc.OP_EVENTCALL :
 		//		this.ExpectToken( "(" );
 		//		if ( ( e2.initialized != idVarDef::uninitialized ) && e2.value.functionPtr.eventdef ) {
 		//			e = ParseEventCall( e, e2 );
@@ -1661,24 +1661,24 @@ idCompiler::GetExpression
 
 		//		if ( ( type_a == etype_t.ev_pointer ) && ( type_b != e.TypeDef().PointerType().Type() ) ) {
 		//			// FIXME: need to make a general case for this
-		//			if ( ( op - idCompiler.opcodes == op.OP_STOREP_F ) && ( e.TypeDef().PointerType().Type() == etype_t.ev_boolean ) ) {
+		//			if ( ( op - idCompiler.opcodes == opc.OP_STOREP_F ) && ( e.TypeDef().PointerType().Type() == etype_t.ev_boolean ) ) {
 		//				// copy from float to boolean pointer
-		//				op = &idCompiler.opcodes[ op.OP_STOREP_FTOBOOL ];
-		//			} else if ( ( op - idCompiler.opcodes == op.OP_STOREP_BOOL ) && ( e.TypeDef().PointerType().Type() == etype_t.ev_float ) ) {
+		//				op = &idCompiler.opcodes[ opc.OP_STOREP_FTOBOOL ];
+		//			} else if ( ( op - idCompiler.opcodes == opc.OP_STOREP_BOOL ) && ( e.TypeDef().PointerType().Type() == etype_t.ev_float ) ) {
 		//				// copy from boolean to float pointer
-		//				op = &idCompiler.opcodes[ op.OP_STOREP_BOOLTOF ];
-		//			} else if ( ( op - idCompiler.opcodes == op.OP_STOREP_F ) && ( e.TypeDef().PointerType().Type() == etype_t.ev_string ) ) {
+		//				op = &idCompiler.opcodes[ opc.OP_STOREP_BOOLTOF ];
+		//			} else if ( ( op - idCompiler.opcodes == opc.OP_STOREP_F ) && ( e.TypeDef().PointerType().Type() == etype_t.ev_string ) ) {
 		//				// copy from float to string pointer
-		//				op = &idCompiler.opcodes[ op.OP_STOREP_FTOS ];
-		//			} else if ( ( op - idCompiler.opcodes == op.OP_STOREP_BOOL ) && ( e.TypeDef().PointerType().Type() == etype_t.ev_string ) ) {
+		//				op = &idCompiler.opcodes[ opc.OP_STOREP_FTOS ];
+		//			} else if ( ( op - idCompiler.opcodes == opc.OP_STOREP_BOOL ) && ( e.TypeDef().PointerType().Type() == etype_t.ev_string ) ) {
 		//				// copy from boolean to string pointer
-		//				op = &idCompiler.opcodes[ op.OP_STOREP_BTOS ];
-		//			} else if ( ( op - idCompiler.opcodes == op.OP_STOREP_V ) && ( e.TypeDef().PointerType().Type() == etype_t.ev_string ) ) {
+		//				op = &idCompiler.opcodes[ opc.OP_STOREP_BTOS ];
+		//			} else if ( ( op - idCompiler.opcodes == opc.OP_STOREP_V ) && ( e.TypeDef().PointerType().Type() == etype_t.ev_string ) ) {
 		//				// copy from vector to string pointer
-		//				op = &idCompiler.opcodes[ op.OP_STOREP_VTOS ];
-		//			} else if ( ( op - idCompiler.opcodes == op.OP_STOREP_ENT ) && ( e.TypeDef().PointerType().Type() == etype_t.ev_object ) ) {
+		//				op = &idCompiler.opcodes[ opc.OP_STOREP_VTOS ];
+		//			} else if ( ( op - idCompiler.opcodes == opc.OP_STOREP_ENT ) && ( e.TypeDef().PointerType().Type() == etype_t.ev_object ) ) {
 		//				// store an entity into an object pointer
-		//				op = &idCompiler.opcodes[ op.OP_STOREP_OBJENT ];
+		//				op = &idCompiler.opcodes[ opc.OP_STOREP_OBJENT ];
 		//			} else {
 		//				this.Error( "type mismatch for '%s'", op.name );
 		//			}
@@ -1690,7 +1690,7 @@ idCompiler::GetExpression
 		//			e = this.EmitOpcode( op, e, e2 );
 		//		}
 
-		//		if ( op - idCompiler.opcodes == op.OP_STOREP_OBJENT ) {
+		//		if ( op - idCompiler.opcodes == opc.OP_STOREP_OBJENT ) {
 		//			// statement.b points to type_pointer, which is just a temporary that gets its type reassigned, so we store the real type in statement.c
 		//			// so that we can do a type check during run time since we don't know what type the script object is at compile time because it
 		//			// comes from an entity
@@ -1720,11 +1720,11 @@ idCompiler::GetExpression
 //
 //	pos = &gameLocal.program.GetStatement( start );
 //	for( i = start; i < gameLocal.program.NumStatements(); i++, pos++ ) {
-//		if ( pos.op == op.OP_BREAK ) {
-//			pos.op = op.OP_GOTO;
+//		if ( pos.op == opc.OP_BREAK ) {
+//			pos.op = opc.OP_GOTO;
 //			pos.a = JumpFrom( i );
-//		} else if ( pos.op == op.OP_CONTINUE ) {
-//			pos.op = op.OP_GOTO;
+//		} else if ( pos.op == opc.OP_CONTINUE ) {
+//			pos.op = opc.OP_GOTO;
 //			pos.a = JumpDef( i, continuePos );
 //		}
 //	}
@@ -1747,7 +1747,7 @@ idCompiler::ParseReturnStatement
 	//		this.Error( "expecting return value" );
 	//	}
 
-	//	this.EmitOpcode( op.OP_RETURN, 0, 0 );
+	//	this.EmitOpcode( opc.OP_RETURN, 0, 0 );
 	//	return;
 	//}
 
@@ -1758,7 +1758,7 @@ idCompiler::ParseReturnStatement
 	//type_b = this.scope.TypeDef().ReturnType().Type();
 
 	//if ( TypeMatches( type_a, type_b ) ) {
-	//	this.EmitOpcode( op.OP_RETURN, e, 0 );
+	//	this.EmitOpcode( opc.OP_RETURN, e, 0 );
 	//	return;
 	//}
 
@@ -1784,7 +1784,7 @@ idCompiler::ParseReturnStatement
 	//	gameLocal.program.returnDef.SetTypeDef( returnType );
 	//	this.EmitOpcode( op, e, gameLocal.program.returnDef );
 	//}
-	//this.EmitOpcode(op.OP_RETURN, null/*0*/, null/*0*/ );
+	//this.EmitOpcode(opc.OP_RETURN, null/*0*/, null/*0*/ );
 }
 	
 /*
@@ -1809,12 +1809,12 @@ idCompiler::ParseWhileStatement
 		//if ( ( e.initialized == idVarDef::initializedConstant ) && ( *e.value.intPtr != 0 ) ) {
 		//	//FIXME: we can completely skip generation of this code in the opposite case
 		//	this.ParseStatement();
-		//	this.EmitOpcode( op.OP_GOTO, JumpTo( patch2 ), 0 );
+		//	this.EmitOpcode( opc.OP_GOTO, JumpTo( patch2 ), 0 );
 		//} else {
 		//	patch1 = gameLocal.program.NumStatements();
-		//    this.EmitOpcode( op.OP_IFNOT, e, 0 );
+		//    this.EmitOpcode( opc.OP_IFNOT, e, 0 );
 		//	this.ParseStatement();
-		//	this.EmitOpcode( op.OP_GOTO, JumpTo( patch2 ), 0 );
+		//	this.EmitOpcode( opc.OP_GOTO, JumpTo( patch2 ), 0 );
 		//	gameLocal.program.GetStatement( patch1 ).b = JumpFrom( patch1 );
 		//}
 
@@ -1895,12 +1895,12 @@ end:
 
 		////FIXME: add check for constant expression
 		//patch1 = gameLocal.program.NumStatements();
-		//this.EmitOpcode( op.OP_IFNOT, e, 0 );
+		//this.EmitOpcode( opc.OP_IFNOT, e, 0 );
 
 		//// counter
 		//if ( !this.CheckToken( ")" ) ) {
 		//	patch3 = gameLocal.program.NumStatements();
-		//	this.EmitOpcode( op.OP_IF, e, 0 );
+		//	this.EmitOpcode( opc.OP_IF, e, 0 );
 
 		//	patch4 = patch2;
 		//	patch2 = gameLocal.program.NumStatements();
@@ -1911,7 +1911,7 @@ end:
 		//	this.ExpectToken( ")" );
 
 		//	// goto patch4
-		//	this.EmitOpcode( op.OP_GOTO, JumpTo( patch4 ), 0 );
+		//	this.EmitOpcode( opc.OP_GOTO, JumpTo( patch4 ), 0 );
 
 		//	// fixup patch3
 		//	gameLocal.program.GetStatement( patch3 ).b = JumpFrom( patch3 );
@@ -1920,7 +1920,7 @@ end:
 		//this.ParseStatement();
 
 		//// goto patch2
-		//this.EmitOpcode( op.OP_GOTO, JumpTo( patch2 ), 0 );
+		//this.EmitOpcode( opc.OP_GOTO, JumpTo( patch2 ), 0 );
 
 		//// fixup patch1
 		//gameLocal.program.GetStatement( patch1 ).b = JumpFrom( patch1 );
@@ -1951,7 +1951,7 @@ idCompiler::ParseDoWhileStatement
 		//this.ExpectToken( ")" );
 		//this.ExpectToken( ";" );
 
-		//this.EmitOpcode( op.OP_IF, e, JumpTo( patch1 ) );
+		//this.EmitOpcode( opc.OP_IF, e, JumpTo( patch1 ) );
 
 		//// fixup breaks and continues
 		//PatchLoop( patch1, patch1 );
@@ -1976,13 +1976,13 @@ idCompiler::ParseIfStatement
 
 		////FIXME: add check for constant expression
 		//patch1 = gameLocal.program.NumStatements();
-		//this.EmitOpcode( op.OP_IFNOT, e, 0 );
+		//this.EmitOpcode( opc.OP_IFNOT, e, 0 );
 
 		//this.ParseStatement();
 
 		//if ( this.CheckToken( "else" ) ) {
 		//	patch2 = gameLocal.program.NumStatements();
-		//	this.EmitOpcode( op.OP_GOTO, 0, 0 );
+		//	this.EmitOpcode( opc.OP_GOTO, 0, 0 );
 		//	gameLocal.program.GetStatement( patch1 ).b = JumpFrom( patch1 );
 		//	this.ParseStatement();
 		//	gameLocal.program.GetStatement( patch2 ).a = JumpFrom( patch2 );
@@ -2035,7 +2035,7 @@ idCompiler::ParseStatement
 			if ( !this.loopDepth ) {
 				this.Error( "cannot break outside of a loop" );
 			}
-			this.EmitOpcode_FromOpNumber(op.OP_BREAK, null/*0*/, null/*0*/ );
+			this.EmitOpcode_FromOpNumber(opc.OP_BREAK, null/*0*/, null/*0*/ );
 			return;
 		}
 
@@ -2044,7 +2044,7 @@ idCompiler::ParseStatement
 			if ( !this.loopDepth ) {
 				this.Error( "cannot contine outside of a loop" );
 			}
-			this.EmitOpcode_FromOpNumber(op.OP_CONTINUE, null/*0*/, null/*0*/ );
+			this.EmitOpcode_FromOpNumber(opc.OP_CONTINUE, null/*0*/, null/*0*/ );
 			return;
 		}
 
@@ -2263,7 +2263,7 @@ idCompiler::ParseFunctionDef
 				var selfDef: idVarDef = gameLocal.program.GetDef( type.GetParmType( 0 ), type.GetParmName( 0 ), def );
 				assert( selfDef );
 				this.EmitPush( selfDef, selfDef.TypeDef ( ) );
-				this.EmitOpcode( idCompiler.opcodes[op.OP_CALL], constructorFunc.def, null /*0*/ );
+				this.EmitOpcode( idCompiler.opcodes[opc.OP_CALL], constructorFunc.def, null /*0*/ );
 			}
 		}
 
@@ -2291,8 +2291,8 @@ idCompiler::ParseFunctionDef
 					todoThrow ( );
 					//pos = gameLocal.program.GetStatement( func.firstStatement );
 					//for ( i = func.firstStatement; i < gameLocal.program.NumStatements ( ); i++, pos++ ) {
-					//	if ( pos.op == op.OP_RETURN ) {
-					//		pos.op = op.OP_GOTO;
+					//	if ( pos.op == opc.OP_RETURN ) {
+					//		pos.op = opc.OP_GOTO;
 					//		pos.a = this.JumpDef( i, gameLocal.program.NumStatements ( ) );
 					//	}
 					//}
@@ -2302,20 +2302,20 @@ idCompiler::ParseFunctionDef
 				var selfDef: idVarDef = gameLocal.program.GetDef( type.GetParmType( 0 ), type.GetParmName( 0 ), def );
 				assert( selfDef );
 				this.EmitPush( selfDef, selfDef.TypeDef ( ) );
-				this.EmitOpcode( idCompiler.opcodes[op.OP_CALL], destructorFunc.def, null /*0*/ );
+				this.EmitOpcode( idCompiler.opcodes[opc.OP_CALL], destructorFunc.def, null /*0*/ );
 			}
 		}
 
 // Disabled code since it caused a function to fall through to the next function when last statement is in the form "if ( x ) { return; }"
 //#if 0
 //	// don't bother adding a return opcode if the "return" statement was used.
-//	if ( ( func.firstStatement == gameLocal.program.NumStatements() ) || ( gameLocal.program.GetStatement( gameLocal.program.NumStatements() - 1 ).op != op.OP_RETURN ) ) {
+//	if ( ( func.firstStatement == gameLocal.program.NumStatements() ) || ( gameLocal.program.GetStatement( gameLocal.program.NumStatements() - 1 ).op != opc.OP_RETURN ) ) {
 //		// emit an end of statements opcode
-//		this.EmitOpcode( op.OP_RETURN, 0, 0 );
+//		this.EmitOpcode( opc.OP_RETURN, 0, 0 );
 //	}
 //#else
 		// always emit the return opcode
-		this.EmitOpcode_FromOpNumber( op.OP_RETURN, null /*0*/, null /*0*/ );
+		this.EmitOpcode_FromOpNumber( opc.OP_RETURN, null /*0*/, null /*0*/ );
 //#endif
 
 		// record the number of statements in the function
@@ -2347,29 +2347,29 @@ idCompiler::ParseVariableDef
 //		if ( this.scope.Type() == etype_t.ev_function ) {
 //			def2 = this.GetExpression( TOP_PRIORITY );
 //			if ( ( type == type_float ) && ( def2.TypeDef() == type_float ) ) {
-//				EmitOpcode( op.OP_STORE_F, def2, def );
+//				EmitOpcode( opc.OP_STORE_F, def2, def );
 //			} else if ( ( type == type_vector ) && ( def2.TypeDef() == type_vector ) ) {
-//				EmitOpcode( op.OP_STORE_V, def2, def );
+//				EmitOpcode( opc.OP_STORE_V, def2, def );
 //			} else if ( ( type == type_string ) && ( def2.TypeDef() == type_string ) ) {
-//				EmitOpcode( op.OP_STORE_S, def2, def );
+//				EmitOpcode( opc.OP_STORE_S, def2, def );
 //			} else if ( ( type == type_entity ) && ( ( def2.TypeDef() == type_entity ) || ( def2.TypeDef().Inherits( type_object ) ) ) ) {
-//				EmitOpcode( op.OP_STORE_ENT, def2, def );
+//				EmitOpcode( opc.OP_STORE_ENT, def2, def );
 //			} else if ( ( type.Inherits( type_object ) ) && ( def2.TypeDef() == type_entity ) ) {
-//				EmitOpcode( op.OP_STORE_OBJENT, def2, def );
+//				EmitOpcode( opc.OP_STORE_OBJENT, def2, def );
 //			} else if ( ( type.Inherits( type_object ) ) && ( def2.TypeDef().Inherits( type ) ) ) {
-//				EmitOpcode( op.OP_STORE_OBJ, def2, def );
+//				EmitOpcode( opc.OP_STORE_OBJ, def2, def );
 //			} else if ( ( type == type_boolean ) && ( def2.TypeDef() == type_boolean ) ) {
-//				EmitOpcode( op.OP_STORE_BOOL, def2, def );
+//				EmitOpcode( opc.OP_STORE_BOOL, def2, def );
 //			} else if ( ( type == type_string ) && ( def2.TypeDef() == type_float ) ) {
-//				EmitOpcode( op.OP_STORE_FTOS, def2, def );
+//				EmitOpcode( opc.OP_STORE_FTOS, def2, def );
 //			} else if ( ( type == type_string ) && ( def2.TypeDef() == type_boolean ) ) {
-//				EmitOpcode( op.OP_STORE_BTOS, def2, def );
+//				EmitOpcode( opc.OP_STORE_BTOS, def2, def );
 //			} else if ( ( type == type_string ) && ( def2.TypeDef() == type_vector ) ) {
-//				EmitOpcode( op.OP_STORE_VTOS, def2, def );
+//				EmitOpcode( opc.OP_STORE_VTOS, def2, def );
 //			} else if ( ( type == type_boolean ) && ( def2.TypeDef() == type_float ) ) {
-//				EmitOpcode( op.OP_STORE_FTOBOOL, def2, def );
+//				EmitOpcode( opc.OP_STORE_FTOBOOL, def2, def );
 //			} else if ( ( type == type_float ) && ( def2.TypeDef() == type_boolean ) ) {
-//				EmitOpcode( op.OP_STORE_BOOLTOF, def2, def );
+//				EmitOpcode( opc.OP_STORE_BOOLTOF, def2, def );
 //			} else {
 //				this.Error( "bad initialization for '%s'", name );
 //			}

@@ -1151,7 +1151,7 @@ called before compiling a batch of files, clears the pr struct
 			statement = this.AllocStatement ( );
 			statement.linenumber = 0;
 			statement.file = 0;
-			statement.op = op.OP_RETURN;
+			statement.op = opc.OP_RETURN;
 			statement.a = null;
 			statement.b = null;
 			statement.c = null;

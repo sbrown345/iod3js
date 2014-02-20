@@ -54,7 +54,7 @@ class opcode_t {
 // OP_PUSH_OBJ:
 // OP_PUSH_OBJENT:
 
-enum op {
+enum opc {
 	OP_RETURN,
 
 	OP_UINC_F,
