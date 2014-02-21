@@ -98,7 +98,7 @@ class idEventArg {
 ***********************************************************************/
 
 // this is the head of a singly linked list of all the idTypes
-var typelist: idTypeInfo = null; // todo: CLASS_DECLARATION maros set these up, but if this is only for debugging leave this for now
+var typelist = new R<idTypeInfo>(); // todo: CLASS_DECLARATION maros set these up, but if this is only for debugging leave this for now
 var classHierarchy = new idHierarchy<idTypeInfo> ( );
 var/*int*/ eventCallbackMemory	= 0;
 
@@ -175,8 +175,8 @@ class idTypeInfo {
 ////idTypeInfo::idTypeInfo( const char *classname, const char *superclass, idEventFunc<idClass> *eventCallbacks, idClass *( *CreateInstance )( void ), 
 ////	void ( idClass::*Spawn )( void ), void ( idClass::*Save )( idSaveGame *savefile ) const, void ( idClass::*Restore )( idRestoreGame *savefile ) ) {
 
-		var type: idTypeInfo;
-		var /****/insert = new R<idTypeInfo> ( );
+		var type: R<idTypeInfo>;
+		var insert: R<R<idTypeInfo>>;
 
 		this.classname = classname;
 		this.superclass = superclass;
@@ -192,24 +192,24 @@ class idTypeInfo {
 		this.lastChild = 0;
 
 		// Check if any subclasses were initialized before their superclass
-		for ( type = typelist; type /*!= NULL*/; type = type.next ) {
-			if ( ( type.$super == null ) && !idStr.Cmp( type.superclass, this.classname ) &&
-				idStr.Cmp( type.classname, "idClass" ) ) {
-				type.$super = this;
+		for ( type = typelist; type.$ /*!= NULL*/; type.$ = type.$.next ) {
+			if ( ( type.$.$super == null ) && !idStr.Cmp( type.$.superclass, this.classname ) &&
+				idStr.Cmp( type.$.classname, "idClass" ) ) {
+				type.$.$super = this;
 			}
 		}
 
 		// Insert sorted
-		for ( insert.$ = typelist; insert.$; insert.$ = ( insert.$ ).next ) {
-			assert( idStr.Cmp( classname, ( insert.$ ).classname ) );
-			if ( idStr.Cmp( classname, ( insert.$ ).classname ) < 0 ) {
-				this.next = insert.$;
-				insert.$ = this;
+		for ( insert = new R( typelist ); insert.$.$; insert.$ = new R( ( insert.$ ).$.next ) ) {
+			assert( idStr.Cmp( classname, ( insert.$ ).$.classname ) );
+			if ( idStr.Cmp( classname, ( insert.$ ).$.classname ) < 0 ) {
+				this.next = insert.$.$;
+				insert.$.$ = this;
 				break;
 			}
 		}
-		if ( !insert.$ ) {
-			insert.$ = this;
+		if ( !insert.$.$ ) {
+			insert.$.$ = this;
 			this.next = null;
 		}
 	}
@@ -674,7 +674,8 @@ once during the execution of the program or DLL.
 		}
 
 		// init the event callback tables for all the classes
-		for ( c = typelist; c != null; c = c.next ) {
+		assert( typelist );
+		for ( c = typelist.$; c != null; c = c.next ) {
 			c.Init ( );
 		}
 
@@ -696,7 +697,7 @@ once during the execution of the program or DLL.
 		idClass.typenums.SetGranularity(1);
 		idClass.typenums.SetNum( num );
 		num = 0;
-		for ( c = typelist; c != null; c = c.next, num++ ) {
+		for ( c = typelist.$; c != null; c = c.next, num++ ) {
 			idClass.types[num] = c;
 			idClass.typenums[c.typeNum] = c;
 		}
@@ -824,7 +825,7 @@ so it must be called as idClass::GetClass( classname )
 
 		if ( !idClass.initialized ) {
 			// idClass::Init hasn't been called yet, so do a slow lookup
-			for ( c = typelist; c /*!= NULL*/; c = c.next ) {
+			for ( c = typelist.$; c /*!= NULL*/; c = c.next ) {
 				if ( !idStr.Cmp( c.classname, name ) ) {
 					return c;
 				}
