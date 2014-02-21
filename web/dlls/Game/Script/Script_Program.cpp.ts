@@ -923,46 +923,46 @@ If type is NULL, it will match any type
 
 		return bestDef;
 	}
-//
-///*
-//============
-//idProgram::FreeDef
-//============
-//*/
-//void idProgram::FreeDef( idVarDef *def, const scope:idVarDef ) {
-//	idVarDef *e;
-//	int i;
-//
-//	if ( def.Type() == etype_t.ev_vector ) {
-//		idStr name;
-//
-//		sprintf( name, "%s_x", def.Name() );
-//		e = GetDef( null, name, scope );
-//		if ( e ) {
-//			FreeDef( e, scope );
-//		}
-//
-//		sprintf( name, "%s_y", def.Name() );
-//		e = GetDef( null, name, scope );
-//		if ( e ) {
-//			FreeDef( e, scope );
-//		}
-//
-//		sprintf( name, "%s_z", def.Name() );
-//		e = GetDef( null, name, scope );
-//		if ( e ) {
-//			FreeDef( e, scope );
-//		}
-//	}
-//
-//	varDefs.RemoveIndex( def.num );
-//	for( i = def.num; i < varDefs.Num(); i++ ) {
-//		varDefs[ i ].num = i;
-//	}
-//
-//	delete def;
-//}
-//
+
+/*
+============
+idProgram::FreeDef
+============
+*/
+	FreeDef ( def: idVarDef, scope: idVarDef ): void {
+		var e: idVarDef;
+		var i: number;
+
+		if ( def.Type ( ) == etype_t.ev_vector ) {
+			var name = new idStr;
+
+			name.equals( def.Name ( ) + "_x" ); //sprintf( name, "%s_x", def.Name() );
+			e = this.GetDef( null, name.data, scope );
+			if ( e ) {
+				this.FreeDef( e, scope );
+			}
+
+			name.equals( def.Name ( ) + "_y" ); ////sprintf( name, "%s_y", def.Name() );
+			e = this.GetDef(null, name.data, scope );
+			if ( e ) {
+				this.FreeDef( e, scope );
+			}
+
+			name.equals( def.Name ( ) + "_z" ); ////sprintf( name, "%s_z", def.Name() );
+			e = this.GetDef(null, name.data, scope );
+			if ( e ) {
+				this.FreeDef( e, scope );
+			}
+		}
+
+		this.varDefs.RemoveIndex( def.num );
+		for ( i = def.num; i < this.varDefs.Num ( ); i++ ) {
+			this.varDefs[i].num = i;
+		}
+
+		delete def;
+	}
+
 /*
 ============
 idProgram::FindFreeResultDef

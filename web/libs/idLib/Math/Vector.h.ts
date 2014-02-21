@@ -567,9 +567,9 @@ class idVec3 {
 ////	return *this;
 ////}
 
-////ID_INLINE bool idVec3::Compare( const idVec3 &a ) const {
-////	return ( ( this.x == a.x ) && ( this.y == a.y ) && ( this.z == a.z ) );
-////}
+	Compare ( a: idVec3 ): boolean {
+		return ( ( this.x == a.x ) && ( this.y == a.y ) && ( this.z == a.z ) );
+	}
 
 ////ID_INLINE bool idVec3::Compare( const idVec3 &a, const float epsilon ) const {
 ////	if ( idMath::Fabs( this.x - a.x ) > epsilon ) {
