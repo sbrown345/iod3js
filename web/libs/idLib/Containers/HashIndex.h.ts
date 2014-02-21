@@ -382,23 +382,27 @@ idHashIndex::SetGranularity
 idHashIndex::GenerateKey
 ================
 */
-    GenerateKey ( $string: any, caseSensitive: boolean = true): number {
-        $string = idStr.getIdStr( $string );
-        if ( caseSensitive ) {
-            return ( idStr.Hash( $string ) & this.hashMask );
-        } else {
-            return ( idStr.IHash( $string ) & this.hashMask );
-        }
-    }
+	GenerateKey ( $string: string ): number
+	GenerateKey ( $string: idStr ): number
+	GenerateKey ( $string: string, caseSensitive: boolean ): number
+	GenerateKey ( $string: idStr, caseSensitive: boolean ): number
+	GenerateKey ( $string: any, caseSensitive: boolean = true ): number {
+		$string = idStr.getIdStr( $string );
+		if ( caseSensitive ) {
+			return ( idStr.Hash( $string ) & this.hashMask );
+		} else {
+			return ( idStr.IHash( $string ) & this.hashMask );
+		}
+	}
 
-/////*
-////================
-////idHashIndex::GenerateKey
-////================
-////*/
-////ID_INLINE int idHashIndex::GenerateKey( const idVec3 &v ) const {
-////	return ( (((int) v[0]) + ((int) v[1]) + ((int) v[2])) & this.hashMask );
-////}
+/*
+================
+idHashIndex::GenerateKey
+================
+*/
+	GenerateKeyFromVector( v:idVec3  ):number {
+		return ( ( ( /*(int)*/ v[0] ) + ( /*(int)*/ v[1] ) + ( /*(int)*/ v[2] ) ) & this.hashMask );
+	}
 
 /*
 ================

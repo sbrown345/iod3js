@@ -730,7 +730,7 @@ function R_CreateSilRemap ( tri: srfTriangles_t ): Int32Array {
 		v1 = tri.verts[i];
 
 		// see if there is an earlier vert that it can map to
-		hashKey = hash.GenerateKey( v1.xyz );
+		hashKey = hash.GenerateKeyFromVector( v1.xyz );
 		for ( j = hash.First( hashKey ); j >= 0; j = hash.Next( j ) ) {
 			v2 = tri.verts[j];
 			if ( v2.xyz[0] == v1.xyz[0]
@@ -760,8 +760,8 @@ the edge count by about 20% on Q3 models
 =================
 */
 function R_CreateSilIndexes ( tri: srfTriangles_t ): void {
-	var /*int		*/i:number;
-	var /*int		*/remap: Int32Array;
+	var /*int*/i:number;
+	var /*int*/remap: Int32Array;
 
 	if ( tri.silIndexes ) {
 		triSilIndexAllocator.Free( tri.silIndexes );

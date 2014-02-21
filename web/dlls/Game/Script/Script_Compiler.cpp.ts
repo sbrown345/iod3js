@@ -548,7 +548,7 @@ try to optimize when the operator works on constants only
 ============
 */
 	OptimizeOpcode ( op: opcode_t, var_a: idVarDef, var_b: idVarDef ): idVarDef {
-		var c: eval_t;
+		var c = new eval_t;
 		var type: idTypeDef;
 
 		if ( var_a && var_a.initialized != initialized_t.initializedConstant ) {
@@ -558,7 +558,7 @@ try to optimize when the operator works on constants only
 			return null;
 		}
 
-		var vec_c = c.vector; //idVec3 &vec_c = *reinterpret_cast<idVec3 *>( &c.vector[ 0 ] );
+		var vec_c = new idVec3(c.vector); //idVec3 &vec_c = *reinterpret_cast<idVec3 *>( &c.vector[ 0 ] );
 
 		c.init ( );//memset( &c, 0, sizeof( c ) );
 		switch (idCompiler.GetOpCodeIndex(op) ) {

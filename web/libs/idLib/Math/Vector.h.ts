@@ -346,43 +346,57 @@ class idVec3 {
 	//y:number;	  //float			
 	//z: number;  //float		
 
-	get x ( ): number { return this[0]; }
+	values: Float32Array;
+	
+	get x ( ): number { return this.values[0]; }
 
 	set x ( value: number ) {
 		if ( value === undefined ) {
 			throw 'Undefined value';
 		}
-		this[0] = value;
+		this.values[0] = value;
 	}
 
-	get y ( ): number { return this[1]; }
+	get y(): number { return this.values[1]; }
 
 	set y ( value: number ) {
 		if ( value === undefined ) {
 			throw 'Undefined value';
 		}
-		this[1] = value;
+		this.values[1] = value;
 	}
 
-	get z ( ): number { return this[2]; }
+	get z(): number { return this.values[2]; }
 
 	set z ( value: number ) {
 		if ( value === undefined ) {
 			throw 'Undefined value';
 		}
-		this[2] = value;
+		this.values[2] = value;
 	}
 
-	constructor ( x= 0.0, y= 0.0, z= 0.0 ) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	constructor ( )
+	constructor ( array: Float32Array )
+	constructor ( x: number, y: number, z: number )
+	constructor ( xOrArray?: any, y?: number, z?: number ) {
+		if ( !( xOrArray instanceof Float32Array ) ) {
+			this.values = new Float32Array( 3 );
+			this.x = xOrArray || 0.0;
+			this.y = y || 0.0;
+			this.z = z || 0.0;
+		} else {
+			this.values = xOrArray;
+		}
 	}
 
-	copy ( ):idVec3 {
+	toString ( ): string {
+		return "idVec3(" + this.x + "," + this.y + "," + this.z + ")";
+	}
+
+	copy ( ): idVec3 {
 		return new idVec3( this.x, this.y, this.z );
 	}
-	
+
 ////					idVec3( void );
 ////					explicit idVec3( const float x, const float y, const float z );
 
@@ -877,6 +891,58 @@ class idVec3 {
 		return va("x: %f, y: %f, z:%f", this.x, this.y, this.z);
 	}
 };
+
+// todo: maybe it should extend Float32Array. underlying values can be changed by swapping the buffer?
+Object.defineProperty(idVec3.prototype, "0", {
+	get: function (): number {
+		return this.values[0];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.x = value;
+	},
+	enumerable: false,
+	configurable: false
+});
+
+Object.defineProperty(idVec3.prototype, "1", {
+	get: function (): number {
+		return this.values[1];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.y = value;
+	},
+	enumerable: false,
+	configurable: false
+});
+
+Object.defineProperty(idVec3.prototype, "2", {
+	get: function (): number {
+		return this.values[2];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.z = value;
+	},
+	enumerable: false,
+	configurable: false
+});
 
 //===============================================================
 //

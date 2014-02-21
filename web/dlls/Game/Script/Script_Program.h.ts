@@ -57,47 +57,56 @@ class eval_t {
 	//int 				_int;
 	//int  entity;
 
-	get stringPtr(): string { todoThrow();  return this[1]; }
-	set stringPtr(value: string ) {
+	get stringPtr ( ): string {
+		todoThrow ( );
+		return this[1];
+	}
+	set stringPtr ( value: string ) {
 		if ( value === undefined ) {
 			throw 'Undefined value';
 		}
 		todoThrow ( );
 	}
 
-	get _float(): number { return this.float32s[0]; }
+	get _float ( ): number { return this.float32s[0]; }
 	set _float ( value: number ) {
 		if ( value === undefined ) {
 			throw 'Undefined value';
 		}
 		this.float32s[0] = value;
 	}
-	
-	get vector(): idVec3 { todoThrow();  return this[1]; }
-	set vector(value: idVec3 ) {
+
+	get vector ( ): Float32Array { return this.float32s; }
+	//set vector(value: Float32Array) {
+	//	if ( value === undefined ) {
+	//		throw 'Undefined value';
+	//	}
+	//	todoThrow( "need to set this? It would breakl the other ones...maybe use the array buffer on this.val??" );
+	//}
+
+	get $function ( ): function_t {
+		todoThrow ( );
+		return this[1];
+	}
+	set $function ( value: function_t ) {
 		if ( value === undefined ) {
 			throw 'Undefined value';
 		}
 		todoThrow ( );
 	}
 
-	get $function(): function_t { todoThrow();  return this[1]; }
-	set $function(value: function_t ) {
+	get _int ( ): number { return this.int32s[0]; }
+	set _int ( value: number ) {
 		if ( value === undefined ) {
-			throw 'Undefined value';
-		}
-		todoThrow ( );
-	}
-
-	get _int(): number { return this.int32s[0]; }
-	set _int(value: number) {
-		if (value === undefined) {
 			throw 'Undefined value';
 		}
 		this.int32s[0] = value;
 	}
 
-	get entity(): number { todoThrow();  return this[1]; }
+	get entity ( ): number {
+		todoThrow ( );
+		return this[1];
+	}
 	set entity ( value: number ) {
 		if ( value === undefined ) {
 			throw 'Undefined value';
@@ -105,17 +114,17 @@ class eval_t {
 		todoThrow ( );
 	}
 
-	private val = new ArrayBuffer(12);
-	private uint8s = new Uint8Array(this.val);
-	private int32s = new Uint32Array(this.val);
-	private float32s = new Float32Array(this.val);
+	private val = new ArrayBuffer( 12 );
+	private uint8s = new Uint8Array( this.val );
+	private int32s = new Uint32Array( this.val );
+	private float32s = new Float32Array( this.val );
 
-	init ( ):void {
+	init ( ): void {
 		this.int32s[0] = 0;
 		this.int32s[1] = 0;
 		this.int32s[2] = 0;
 	}
-};
+}
 
 //
 ///***********************************************************************

@@ -240,8 +240,8 @@ class idPlane {
 	//	return *reinterpret_cast<const idVec3 *>(&a);
 	//}
 	//
-	/*ID_INLINE idVec3 &idPlane::*/Normal( val:idVec3 =null):idVec3 {
-		return new idVec3( this.a );
+	/*ID_INLINE idVec3 &idPlane::*/Normal():idVec3 {
+		return new idVec3(this.a, this.b, this.c); // reinterpret_cast (may want to pass by ref?)
 	}
 	//
 	//ID_INLINE float idPlane::Normalize( bool fixDegenerate ) {
