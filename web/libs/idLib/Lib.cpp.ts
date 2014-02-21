@@ -244,21 +244,23 @@ idLib::Init
 ////#endif
 ////}
 
-/////*
-////===============
-////idLib::Error
-////===============
-////*/
-////void idLib::Error( const char *fmt, ... ) {
-////	va_list		argptr;
-////	char		text[MAX_STRING_CHARS];
+/*
+===============
+idLib::Error
+===============
+*/
+	static Error ( fmt: string, ...args: any[] ): void {
+		todoThrow ( )
+		';'
+		//va_list		argptr;
+		//char		text[MAX_STRING_CHARS];
 
-////	va_start( argptr, fmt );
-////	idStr::vsnPrintf( text, sizeof( text ), fmt, argptr );
-////	va_end( argptr );
+		//va_start( argptr, fmt );
+		//idStr::vsnPrintf( text, sizeof( text ), fmt, argptr );
+		//va_end( argptr );
 
-////	common.Error( "%s", text );
-////}
+		//common.Error( "%s", text );
+	}
 
 /////*
 ////===============

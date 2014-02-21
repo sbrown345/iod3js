@@ -112,7 +112,7 @@ class idTypeInfo {
 	Restore: (savefile: idRestoreGame) => void;
 	
 	eventCallbacks: idEventFunc<idClass>[];
-	eventMap: ( ) => void /*eventCallback_t*/;
+	eventMap: Array<( ) => void>; /*eventCallback_t*/
 	$super: idTypeInfo;
 	next: idTypeInfo;
 	freeEventMap: boolean; ////	bool						
@@ -232,79 +232,81 @@ table for fast lookups of event functions.  Should only be called once.
 ================
 */
 	Init ( ): void {
-		todoThrow ( );
-		//var c:idTypeInfo;			 		
-		//var def:idEventFunc<idClass>;	
-		//var ev:number;			 //int						
-		//var i:number;			 //int						
-		//var $set:boolean[];	
-		//var num:number;		 //int						
+		var c: idTypeInfo;
+		var def: Array<idEventFunc<idClass>>;
+		var ev: number; //int						
+		var i: number; //int						
+		var $set: boolean[];
+		var num: number; //int						
 
-		//if ( this.eventMap ) {
-		//	// we've already been initialized by a subclass
-		//	return;
-		//}
+		if ( this.eventMap ) {
+			// we've already been initialized by a subclass
+			return;
+		}
 
-		//// make sure our superclass is initialized first
-		//if ( this.$super && !this.$super.eventMap ) {
-		//	this.$super.Init();
-		//}
+		// make sure our superclass is initialized first
+		if ( this.$super && !this.$super.eventMap ) {
+			this.$super.Init ( );
+		}
 
-		//// add to our node hierarchy
-		//if ( this.$super ) {
-		//	this.node.ParentTo( this.$super.node );
-		//} else {
-		//	this.node.ParentTo( classHierarchy );
-		//}
-		//this.node.SetOwner( this );
+		// add to our node hierarchy
+		if ( this.$super ) {
+			this.node.ParentTo( this.$super.node );
+		} else {
+			this.node.ParentTo( classHierarchy );
+		}
+		this.node.SetOwner( this );
 
-		//// keep track of the number of children below each class
-		//for( c = this.$super; c != null; c = c.this.$super ) {
-		//	c.lastChild++;
-		//}
+		// keep track of the number of children below each class
+		for ( c = this.$super; c != null; c = c.$super ) {
+			c.lastChild++;
+		}
 
-		//// if we're not adding any new event callbacks, we can just use our superclass's table
-		//if ( ( !eventCallbacks || !eventCallbacks.event ) && this.$super ) {
-		//	eventMap = this.$super.eventMap;
-		//	return;
-		//}
+		// if we're not adding any new event callbacks, we can just use our superclass's table
+		if ( ( !this.eventCallbacks || !this.eventCallbacks[0].event ) && this.$super ) {
+			this.eventMap = this.$super.eventMap;
+			return;
+		}
 
-		//// set a flag so we know to delete the eventMap table
-		//freeEventMap = true;
+		// set a flag so we know to delete the eventMap table
+		this.freeEventMap = true;
 
-		//// Allocate our new table.  It has to have as many entries as there
-		//// are events.  NOTE: could save some space by keeping track of the maximum
-		//// event that the class responds to and doing range checking.
-		//num = idEventDef::NumEventCommands();
-		//eventMap = new eventCallback_t[ num ];
-		//memset( eventMap, 0, sizeof( eventCallback_t ) * num );
-		//eventCallbackMemory += sizeof( eventCallback_t ) * num;
+		// Allocate our new table.  It has to have as many entries as there
+		// are events.  NOTE: could save some space by keeping track of the maximum
+		// event that the class responds to and doing range checking.
+		num = idEventDef.NumEventCommands ( );
+		this.eventMap = new Array<( ) => void>( num );
+		//memset( this.eventMap, 0, sizeof( eventCallback_t ) * num );
+		eventCallbackMemory += 4 * num; // sizeof( eventCallback_t ) * num;
 
-		//// allocate temporary memory for flags so that the subclass's event callbacks
-		//// override the superclass's event callback
-		//$set = new bool[ num ];
+		// allocate temporary memory for flags so that the subclass's event callbacks
+		// override the superclass's event callback
+		$set = new Array<boolean>( num );
 		//memset( $set, 0, sizeof( bool ) * num );
+		for ( var j = 0; j < $set.length; j++ ) {
+			$set[j] = false;
+		}
 
-		//// go through the inheritence order and copies the event callback function into
-		//// a list indexed by the event number.  This allows fast lookups of
-		//// event functions.
-		//for( c = this; c != NULL; c = c.this.$super ) {
-		//	def = c.eventCallbacks;
-		//	if ( !def ) {
-		//		continue;
-		//	}
+		// go through the inheritence order and copies the event callback function into
+		// a list indexed by the event number.  This allows fast lookups of
+		// event functions.
+		for ( c = this; c != null; c = c.$super ) {
+			def = c.eventCallbacks;
+			if ( !def ) {
+				continue;
+			}
 
-		//	// go through each entry until we hit the NULL terminator
-		//	for( i = 0; def[ i ].event != NULL; i++ )	{
-		//		ev = def[ i ].event.GetEventNum();
+			// go through each entry until we hit the NULL terminator
+			for ( i = 0; def[i].event /*!= null*/; i++ ) {
+				ev = def[i].event.GetEventNum ( );
 
-		//		if ( $set[ ev ] ) {
-		//			continue;
-		//		}
-		//		$set[ ev ] = true;
-		//		eventMap[ ev ] = def[ i ].function;
-		//	}
-		//}
+				if ( $set[ev] ) {
+					continue;
+				}
+				$set[ev] = true;
+				this.eventMap[ev] = def[i].$function;
+			}
+		}
 
 		//delete[] $set;
 	}
@@ -320,11 +322,11 @@ table for fast lookups of event functions.  Should only be called once.
 ////*/
 ////void idTypeInfo::Shutdown() {
 ////	// free up the memory used for event lookups
-////	if ( eventMap ) {
+////	if ( this.eventMap ) {
 ////		if ( freeEventMap ) {
-////			delete[] eventMap;
+////			delete[] this.eventMap;
 ////		}
-////		eventMap = NULL;
+////		this.eventMap = NULL;
 ////	}
 ////	typeNum = 0;
 ////	lastChild = 0;
