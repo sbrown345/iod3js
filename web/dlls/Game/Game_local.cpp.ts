@@ -1869,7 +1869,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////idGameLocal::GetClientByName
 ////================
 ////*/
-////idPlayer *idGameLocal::GetClientByName( const char *name ) const {
+////idPlayer *idGameLocal::GetClientByName( name:string ) const {
 ////	int i;
 ////	idEntity *ent;
 ////	for ( i = 0 ; i < this.numClients ; i++ ) {
@@ -2027,7 +2027,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////  should only be called during entity thinking and event handling
 ////================
 ////*/
-////bool idGameLocal::InPlayerPVS( idEntity *ent ) const {
+////bool idGameLocal::InPlayerPVS( ent: idEntity ) const {
 ////	if ( playerPVS.i == -1 ) {
 ////		return false;
 ////	}
@@ -2041,7 +2041,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////  should only be called during entity thinking and event handling
 ////================
 ////*/
-////bool idGameLocal::InPlayerConnectedArea( idEntity *ent ) const {
+////bool idGameLocal::InPlayerConnectedArea( ent: idEntity ) const {
 ////	if ( playerConnectedAreas.i == -1 ) {
 ////		return false;
 ////	}
@@ -2555,7 +2555,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////idGameLocal::CallFrameCommand
 ////================
 ////*/
-////void idGameLocal::CallFrameCommand( idEntity *ent, const function_t *frameCommand ) {
+////void idGameLocal::CallFrameCommand( ent: idEntity, const function_t *frameCommand ) {
 ////	frameCommandThread.CallFunction( ent, frameCommand, true );
 ////	frameCommandThread.Execute();
 ////}
@@ -2565,7 +2565,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////idGameLocal::CallObjectFrameCommand
 ////================
 ////*/
-////void idGameLocal::CallObjectFrameCommand( idEntity *ent, const char *frameCommand ) {
+////void idGameLocal::CallObjectFrameCommand( ent: idEntity, const char *frameCommand ) {
 ////	const function_t *func;
 
 ////	func = ent.scriptObject.GetFunction( frameCommand );
@@ -2806,7 +2806,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////idGameLocal::GetAAS
 ////==================
 ////*/
-////idAAS *idGameLocal::GetAAS( const char *name ) const {
+////idAAS *idGameLocal::GetAAS( name:string ) const {
 ////	int i;
 
 ////	for ( i = 0; i < aasNames.Num(); i++ ) {
@@ -2915,7 +2915,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////idGameLocal::RegisterEntity
 ////===================
 ////*/
-////void idGameLocal::RegisterEntity( idEntity *ent ) {
+////void idGameLocal::RegisterEntity( ent: idEntity ) {
 ////	int spawn_entnum;
 
 ////	if ( spawnCount >= ( 1 << ( 32 - GENTITYNUM_BITS ) ) ) {
@@ -2948,7 +2948,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////idGameLocal::UnregisterEntity
 ////===================
 ////*/
-////void idGameLocal::UnregisterEntity( idEntity *ent ) {
+////void idGameLocal::UnregisterEntity( ent: idEntity ) {
 ////	assert( ent );
 
 ////	if ( editEntities ) {
@@ -3086,7 +3086,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////idGameLocal::FindEntityDef
 ////================
 ////*/
-////const idDeclEntityDef *idGameLocal::FindEntityDef( const char *name, bool makeDefault ) const {
+////const idDeclEntityDef *idGameLocal::FindEntityDef( name:string, bool makeDefault ) const {
 ////	const idDecl *decl = NULL;
 ////	if ( isMultiplayer ) {
 ////		decl = declManager.FindType( DECL_ENTITYDEF, va( "%s_mp", name ), false );
@@ -3102,7 +3102,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////idGameLocal::FindEntityDefDict
 ////================
 ////*/
-////const idDict *idGameLocal::FindEntityDefDict( const char *name, bool makeDefault ) const {
+////const idDict *idGameLocal::FindEntityDefDict( name:string, bool makeDefault ) const {
 ////	const idDeclEntityDef *decl = FindEntityDef( name, makeDefault );
 ////	return decl ? &decl.dict : NULL;
 ////}
@@ -3235,35 +3235,35 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////	Printf( "...%i entities spawned, %i inhibited\n\n", num, inhibit );
 ////}
 
-/////*
-////================
-////idGameLocal::AddEntityToHash
-////================
-////*/
-////void idGameLocal::AddEntityToHash( const char *name, idEntity *ent ) {
-////	if ( FindEntity( name ) ) {
-////		Error( "Multiple entities named '%s'", name );
-////	}
-////	entityHash.Add( entityHash.GenerateKey( name, true ), ent.entityNumber );
-////}
+/*
+================
+idGameLocal::AddEntityToHash
+================
+*/
+idGameLocal.prototype.AddEntityToHash = function ( name: string, ent: idEntity ) {
+	if ( this.FindEntity( name ) ) {
+		 this.Error( "Multiple entities named '%s'", name );
+	}
+	this.entityHash.Add( this.entityHash.GenerateKey( name, true ), ent.entityNumber );
+};
 
-/////*
-////================
-////idGameLocal::RemoveEntityFromHash
-////================
-////*/
-////bool idGameLocal::RemoveEntityFromHash( const char *name, idEntity *ent ) {
-////	int hash, i;
+/*
+================
+idGameLocal::RemoveEntityFromHash
+================
+*/
+idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEntity ): boolean {
+	var /*int */hash: number, i: number;
 
-////	hash = entityHash.GenerateKey( name, true );
-////	for ( i = entityHash.First( hash ); i != -1; i = entityHash.Next( i ) ) {
-////		if ( entities[i] && entities[i] == ent && entities[i].name.Icmp( name ) == 0 ) {
-////			entityHash.Remove( hash, i );
-////			return true;
-////		}
-////	}
-////	return false;
-////}
+	hash = this.entityHash.GenerateKey( name, true );
+	for ( i = this.entityHash.First( hash ); i != -1; i = this.entityHash.Next( i ) ) {
+		if ( this.entities[i] && this.entities[i] == ent && this.entities[i].name.Icmp( name ) == 0 ) {
+			this.entityHash.Remove( hash, i );
+			return true;
+		}
+	}
+	return false;
+};
 
 /////*
 ////================
@@ -3339,7 +3339,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////Returns the entity whose name matches the specified string.
 ////=============
 ////*/
-////idEntity *idGameLocal::FindEntity( const char *name ) const {
+////idEntity *idGameLocal::FindEntity( name:string ) const {
 ////	int hash, i;
 
 ////	hash = entityHash.GenerateKey( name, true );
@@ -3442,7 +3442,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////If catch_teleport, this only marks teleport players for death on exit
 ////=================
 ////*/
-////void idGameLocal::KillBox( idEntity *ent, bool catch_teleport ) {
+////void idGameLocal::KillBox( ent: idEntity, bool catch_teleport ) {
 ////	int			i;
 ////	int			num;
 ////	idEntity *	hit;
@@ -3516,7 +3516,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////idGameLocal::AlertAI
 ////============
 ////*/
-////void idGameLocal::AlertAI( idEntity *ent ) {
+////void idGameLocal::AlertAI( ent: idEntity ) {
 ////	if ( ent && ent.IsType( idActor::Type ) ) {
 ////		// alert them for the next frame
 ////		lastAIAlertTime = time + msec;

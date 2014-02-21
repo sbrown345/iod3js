@@ -106,72 +106,87 @@ var EV_HasFunction = new idEventDef( "hasFunction", "s", 'd' );
 var EV_CallFunction = new idEventDef( "callFunction", "s" );
 var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 
-////ABSTRACT_DECLARATION( idClass, idEntity )
-////	EVENT( EV_GetName,				idEntity::Event_GetName )
-////	EVENT( EV_SetName,				idEntity::Event_SetName )
-////	EVENT( EV_FindTargets,			idEntity::Event_FindTargets )
-////	EVENT( EV_ActivateTargets,		idEntity::Event_ActivateTargets )
-////	EVENT( EV_NumTargets,			idEntity::Event_NumTargets )
-////	EVENT( EV_GetTarget,			idEntity::Event_GetTarget )
-////	EVENT( EV_RandomTarget,			idEntity::Event_RandomTarget )
-////	EVENT( EV_BindToJoint,			idEntity::Event_BindToJoint )
-////	EVENT( EV_RemoveBinds,			idEntity::Event_RemoveBinds )
-////	EVENT( EV_Bind,					idEntity::Event_Bind )
-////	EVENT( EV_BindPosition,			idEntity::Event_BindPosition )
-////	EVENT( EV_Unbind,				idEntity::Event_Unbind )
-////	EVENT( EV_SpawnBind,			idEntity::Event_SpawnBind )
-////	EVENT( EV_SetOwner,				idEntity::Event_SetOwner )
-////	EVENT( EV_SetModel,				idEntity::Event_SetModel )
-////	EVENT( EV_SetSkin,				idEntity::Event_SetSkin )
-////	EVENT( EV_GetShaderParm,		idEntity::Event_GetShaderParm )
-////	EVENT( EV_SetShaderParm,		idEntity::Event_SetShaderParm )
-////	EVENT( EV_SetShaderParms,		idEntity::Event_SetShaderParms )
-////	EVENT( EV_SetColor,				idEntity::Event_SetColor )
-////	EVENT( EV_GetColor,				idEntity::Event_GetColor )
-////	EVENT( EV_IsHidden,				idEntity::Event_IsHidden )
-////	EVENT( EV_Hide,					idEntity::Event_Hide )
-////	EVENT( EV_Show,					idEntity::Event_Show )
-////	EVENT( EV_CacheSoundShader,		idEntity::Event_CacheSoundShader )
-////	EVENT( EV_StartSoundShader,		idEntity::Event_StartSoundShader )
-////	EVENT( EV_StartSound,			idEntity::Event_StartSound )
-////	EVENT( EV_StopSound,			idEntity::Event_StopSound )
-////	EVENT( EV_FadeSound,			idEntity::Event_FadeSound )
-////	EVENT( EV_GetWorldOrigin,		idEntity::Event_GetWorldOrigin )
-////	EVENT( EV_SetWorldOrigin,		idEntity::Event_SetWorldOrigin )
-////	EVENT( EV_GetOrigin,			idEntity::Event_GetOrigin )
-////	EVENT( EV_SetOrigin,			idEntity::Event_SetOrigin )
-////	EVENT( EV_GetAngles,			idEntity::Event_GetAngles )
-////	EVENT( EV_SetAngles,			idEntity::Event_SetAngles )
-////	EVENT( EV_GetLinearVelocity,	idEntity::Event_GetLinearVelocity )
-////	EVENT( EV_SetLinearVelocity,	idEntity::Event_SetLinearVelocity )
-////	EVENT( EV_GetAngularVelocity,	idEntity::Event_GetAngularVelocity )
-////	EVENT( EV_SetAngularVelocity,	idEntity::Event_SetAngularVelocity )
-////	EVENT( EV_GetSize,				idEntity::Event_GetSize )
-////	EVENT( EV_SetSize,				idEntity::Event_SetSize )
-////	EVENT( EV_GetMins,				idEntity::Event_GetMins)
-////	EVENT( EV_GetMaxs,				idEntity::Event_GetMaxs )
-////	EVENT( EV_Touches,				idEntity::Event_Touches )
-////	EVENT( EV_SetGuiParm, 			idEntity::Event_SetGuiParm )
-////	EVENT( EV_SetGuiFloat, 			idEntity::Event_SetGuiFloat )
-////	EVENT( EV_GetNextKey,			idEntity::Event_GetNextKey )
-////	EVENT( EV_SetKey,				idEntity::Event_SetKey )
-////	EVENT( EV_GetKey,				idEntity::Event_GetKey )
-////	EVENT( EV_GetIntKey,			idEntity::Event_GetIntKey )
-////	EVENT( EV_GetFloatKey,			idEntity::Event_GetFloatKey )
-////	EVENT( EV_GetVectorKey,			idEntity::Event_GetVectorKey )
-////	EVENT( EV_GetEntityKey,			idEntity::Event_GetEntityKey )
-////	EVENT( EV_RestorePosition,		idEntity::Event_RestorePosition )
-////	EVENT( EV_UpdateCameraTarget,	idEntity::Event_UpdateCameraTarget )
-////	EVENT( EV_DistanceTo,			idEntity::Event_DistanceTo )
-////	EVENT( EV_DistanceToPoint,		idEntity::Event_DistanceToPoint )
-////	EVENT( EV_StartFx,				idEntity::Event_StartFx )
-////	EVENT( EV_Thread_WaitFrame,		idEntity::Event_WaitFrame )
-////	EVENT( EV_Thread_Wait,			idEntity::Event_Wait )
-////	EVENT( EV_HasFunction,			idEntity::Event_HasFunction )
-////	EVENT( EV_CallFunction,			idEntity::Event_CallFunction )
-////	EVENT( EV_SetNeverDormant,		idEntity::Event_SetNeverDormant )
-////END_CLASS
-////
+//ABSTRACT_DECLARATION(idClass, idEntity)
+
+idClass.CreateInstance = function ( ): idClass {
+	gameLocal.Error( "Cannot instanciate abstract class %s.", idClass );
+	return null;
+};
+
+idClass.prototype.GetType = function ( ): idTypeInfo {
+	return ( idClass.Type );
+};
+
+idClass.eventCallbacks = [
+	EVENT(EV_GetName, idEntity.prototype.Event_GetName),
+	EVENT(EV_SetName, idEntity.prototype.Event_SetName),
+	EVENT(EV_FindTargets, idEntity.prototype.Event_FindTargets),
+	EVENT(EV_ActivateTargets, idEntity.prototype.Event_ActivateTargets),
+	EVENT(EV_NumTargets, idEntity.prototype.Event_NumTargets),
+	EVENT(EV_GetTarget, idEntity.prototype.Event_GetTarget),
+	EVENT(EV_RandomTarget, idEntity.prototype.Event_RandomTarget),
+	EVENT(EV_BindToJoint, idEntity.prototype.Event_BindToJoint),
+	EVENT(EV_RemoveBinds, idEntity.prototype.Event_RemoveBinds),
+	EVENT(EV_Bind, idEntity.prototype.Event_Bind),
+	EVENT(EV_BindPosition, idEntity.prototype.Event_BindPosition),
+	EVENT(EV_Unbind, idEntity.prototype.Event_Unbind),
+	EVENT(EV_SpawnBind, idEntity.prototype.Event_SpawnBind),
+	EVENT(EV_SetOwner, idEntity.prototype.Event_SetOwner),
+	EVENT(EV_SetModel, idEntity.prototype.Event_SetModel),
+	EVENT(EV_SetSkin, idEntity.prototype.Event_SetSkin),
+	EVENT(EV_GetShaderParm, idEntity.prototype.Event_GetShaderParm),
+	EVENT(EV_SetShaderParm, idEntity.prototype.Event_SetShaderParm),
+	EVENT(EV_SetShaderParms, idEntity.prototype.Event_SetShaderParms),
+	EVENT(EV_SetColor, idEntity.prototype.Event_SetColor),
+	EVENT(EV_GetColor, idEntity.prototype.Event_GetColor),
+	EVENT(EV_IsHidden, idEntity.prototype.Event_IsHidden),
+	EVENT(EV_Hide, idEntity.prototype.Event_Hide),
+	EVENT(EV_Show, idEntity.prototype.Event_Show),
+	EVENT(EV_CacheSoundShader, idEntity.prototype.Event_CacheSoundShader),
+	EVENT(EV_StartSoundShader, idEntity.prototype.Event_StartSoundShader),
+	EVENT(EV_StartSound, idEntity.prototype.Event_StartSound),
+	EVENT(EV_StopSound, idEntity.prototype.Event_StopSound),
+	EVENT(EV_FadeSound, idEntity.prototype.Event_FadeSound),
+	EVENT(EV_GetWorldOrigin, idEntity.prototype.Event_GetWorldOrigin),
+	EVENT(EV_SetWorldOrigin, idEntity.prototype.Event_SetWorldOrigin),
+	EVENT(EV_GetOrigin, idEntity.prototype.Event_GetOrigin),
+	EVENT(EV_SetOrigin, idEntity.prototype.Event_SetOrigin),
+	EVENT(EV_GetAngles, idEntity.prototype.Event_GetAngles),
+	EVENT(EV_SetAngles, idEntity.prototype.Event_SetAngles),
+	EVENT(EV_GetLinearVelocity, idEntity.prototype.Event_GetLinearVelocity),
+	EVENT(EV_SetLinearVelocity, idEntity.prototype.Event_SetLinearVelocity),
+	EVENT(EV_GetAngularVelocity, idEntity.prototype.Event_GetAngularVelocity),
+	EVENT(EV_SetAngularVelocity, idEntity.prototype.Event_SetAngularVelocity),
+	EVENT(EV_GetSize, idEntity.prototype.Event_GetSize),
+	EVENT(EV_SetSize, idEntity.prototype.Event_SetSize),
+	EVENT(EV_GetMins, idEntity.prototype.Event_GetMins),
+	EVENT(EV_GetMaxs, idEntity.prototype.Event_GetMaxs),
+	EVENT(EV_Touches, idEntity.prototype.Event_Touches),
+	EVENT(EV_SetGuiParm, idEntity.prototype.Event_SetGuiParm),
+	EVENT(EV_SetGuiFloat, idEntity.prototype.Event_SetGuiFloat),
+	EVENT(EV_GetNextKey, idEntity.prototype.Event_GetNextKey),
+	EVENT(EV_SetKey, idEntity.prototype.Event_SetKey),
+	EVENT(EV_GetKey, idEntity.prototype.Event_GetKey),
+	EVENT(EV_GetIntKey, idEntity.prototype.Event_GetIntKey),
+	EVENT(EV_GetFloatKey, idEntity.prototype.Event_GetFloatKey),
+	EVENT(EV_GetVectorKey, idEntity.prototype.Event_GetVectorKey),
+	EVENT(EV_GetEntityKey, idEntity.prototype.Event_GetEntityKey),
+	EVENT(EV_RestorePosition, idEntity.prototype.Event_RestorePosition),
+	EVENT(EV_UpdateCameraTarget, idEntity.prototype.Event_UpdateCameraTarget),
+	EVENT(EV_DistanceTo, idEntity.prototype.Event_DistanceTo),
+	EVENT(EV_DistanceToPoint, idEntity.prototype.Event_DistanceToPoint),
+	EVENT(EV_StartFx, idEntity.prototype.Event_StartFx),
+	EVENT(EV_Thread_WaitFrame, idEntity.prototype.Event_WaitFrame),
+	EVENT(EV_Thread_Wait, idEntity.prototype.Event_Wait),
+	EVENT(EV_HasFunction, idEntity.prototype.Event_HasFunction),
+	EVENT(EV_CallFunction, idEntity.prototype.Event_CallFunction),
+	EVENT(EV_SetNeverDormant, idEntity.prototype.Event_SetNeverDormant)
+];
+
+idClass.Type = new idTypeInfo( "idClass", "idEntity",
+	idClass.eventCallbacks, idClass.CreateInstance, idClass.prototype.Spawn,
+	idClass.prototype.Save, idClass.prototype.Restore );
+
 /////*
 ////================
 ////UpdateGuiParms
@@ -358,7 +373,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////first need copied over to spawnArgs
 ////===============
 ////*/
-////void idEntity::UpdateChangeableSpawnArgs( const idDict *source ) {
+////idEntity.prototype.UpdateChangeableSpawnArgs( const idDict *source ) {
 ////	int i;
 ////	const char *target;
 ////
@@ -427,7 +442,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::FixupLocalizedStrings
 ////================
 ////*/
-////void idEntity::FixupLocalizedStrings() {
+////idEntity.prototype.FixupLocalizedStrings() {
 ////	for ( int i = 0; i < spawnArgs.GetNumKeyVals(); i++ ) {
 ////		const idKeyValue *kv = spawnArgs.GetKeyVal( i );
 ////		if ( idStr::Cmpn( kv->GetValue(), STRTABLE_ID, STRTABLE_ID_LENGTH ) == 0 ){
@@ -441,7 +456,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Spawn
 ////================
 ////*/
-////void idEntity::Spawn( void ) {
+////idEntity.prototype.Spawn( ):void {
 ////	int					i;
 ////	const char			*temp;
 ////	idVec3				origin;
@@ -562,7 +577,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::~idEntity
 ////================
 ////*/
-////idEntity::~idEntity( void ) {
+////idEntity::~idEntity( ):void {
 ////
 ////	if ( gameLocal.GameState() != GAMESTATE_SHUTDOWN && !gameLocal.isClient && fl.networkSync && entityNumber >= MAX_CLIENTS ) {
 ////		idBitMsg	msg;
@@ -614,7 +629,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Save
 ////================
 ////*/
-////void idEntity::Save( idSaveGame *savefile ) const {
+////idEntity.prototype.Save( idSaveGame *savefile ) const {
 ////	int i, j;
 ////
 ////	savefile->WriteInt( entityNumber );
@@ -684,7 +699,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Restore
 ////================
 ////*/
-////void idEntity::Restore( idRestoreGame *savefile ) {
+////idEntity.prototype.Restore( idRestoreGame *savefile ) {
 ////	int			i, j;
 ////	int			num;
 ////	idStr		funcname;
@@ -770,40 +785,40 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetEntityDefName
 ////================
 ////*/
-////const char * idEntity::GetEntityDefName( void ) const {
+////const char * idEntity::GetEntityDefName( ):void const {
 ////	if ( entityDefNumber < 0 ) {
 ////		return "*unknown*";
 ////	}
 ////	return declManager->DeclByIndex( DECL_ENTITYDEF, entityDefNumber, false )->GetName();
 ////}
 ////
-/////*
-////================
-////idEntity::SetName
-////================
-////*/
-////void idEntity::SetName( const char *newname ) {
-////	if ( name.Length() ) {
-////		gameLocal.RemoveEntityFromHash( name.c_str(), this );
-////		gameLocal.program.SetEntity( name, NULL );
-////	}
-////
-////	name = newname;
-////	if ( name.Length() ) {
-////		if ( ( name == "NULL" ) || ( name == "null_entity" ) ) {
-////			gameLocal.Error( "Cannot name entity '%s'.  '%s' is reserved for script.", name.c_str(), name.c_str() );
-////		}
-////		gameLocal.AddEntityToHash( name.c_str(), this );
-////		gameLocal.program.SetEntity( name, this );
-////	}
-////}
-////
+/*
+================
+idEntity::SetName
+================
+*/
+idEntity.prototype.SetName = function ( newname: string ): void {
+	if ( this.name.Length ( ) ) {
+		gameLocal.RemoveEntityFromHash( this.name.c_str ( ), this );
+		gameLocal.program.SetEntity( this.name, null );
+	}
+
+	this.name.equals( newname );
+	if ( this.name.Length ( ) ) {
+		if ( ( this.name.data == "NULL" ) || ( this.name.data == "null_entity" ) ) {
+			gameLocal.Error( "Cannot name entity '%s'.  '%s' is reserved for script.", this.name.c_str ( ), this.name.c_str ( ) );
+		}
+		gameLocal.AddEntityToHash( this.name.c_str ( ), this );
+		gameLocal.program.SetEntity( this.name, this );
+	}
+};
+
 /////*
 ////================
 ////idEntity::GetName
 ////================
 ////*/
-////const char * idEntity::GetName( void ) const {
+////const char * idEntity::GetName( ):void const {
 ////	return name.c_str();
 ////}
 ////
@@ -819,7 +834,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Think
 ////================
 ////*/
-////void idEntity::Think( void ) {
+////idEntity.prototype.Think( ):void {
 ////	RunPhysics();
 ////	Present();
 ////}
@@ -832,7 +847,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////off from the player can skip all of their work
 ////================
 ////*/
-////bool idEntity::DoDormantTests( void ) {
+////bool idEntity::DoDormantTests( ):void {
 ////
 ////	if ( fl.neverDormant ) {
 ////		return false;
@@ -874,7 +889,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////off from the player can skip all of their work
 ////================
 ////*/
-////bool idEntity::CheckDormant( void ) {
+////bool idEntity::CheckDormant( ):void {
 ////	bool dormant;
 ////	
 ////	dormant = DoDormantTests();
@@ -896,7 +911,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////called when entity becomes dormant
 ////================
 ////*/
-////void idEntity::DormantBegin( void ) {
+////idEntity.prototype.DormantBegin( ):void {
 ////}
 ////
 /////*
@@ -906,7 +921,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////called when entity wakes from being dormant
 ////================
 ////*/
-////void idEntity::DormantEnd( void ) {
+////idEntity.prototype.DormantEnd( ):void {
 ////}
 ////
 /////*
@@ -914,7 +929,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::IsActive
 ////================
 ////*/
-////bool idEntity::IsActive( void ) const {
+////bool idEntity::IsActive( ):void const {
 ////	return activeNode.InList();
 ////}
 ////
@@ -923,7 +938,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::BecomeActive
 ////================
 ////*/
-////void idEntity::BecomeActive( int flags ) {
+////idEntity.prototype.BecomeActive( int flags ) {
 ////	if ( ( flags & TH_PHYSICS ) ) {
 ////		// enable the team master if this entity is part of a physics team
 ////		if ( teamMaster && teamMaster != this ) {
@@ -953,7 +968,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::BecomeInactive
 ////================
 ////*/
-////void idEntity::BecomeInactive( int flags ) {
+////idEntity.prototype.BecomeInactive( int flags ) {
 ////	if ( ( flags & TH_PHYSICS ) ) {
 ////		// may only disable physics on a team master if no team members are running physics or bound to a joints
 ////		if ( teamMaster == this ) {
@@ -995,7 +1010,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::SetShaderParm
 ////================
 ////*/
-////void idEntity::SetShaderParm( int parmnum, float value ) {
+////idEntity.prototype.SetShaderParm( int parmnum, float value ) {
 ////	if ( ( parmnum < 0 ) || ( parmnum >= MAX_ENTITY_SHADER_PARMS ) ) {
 ////		gameLocal.Warning( "shader parm index (%d) out of range", parmnum );
 ////		return;
@@ -1010,7 +1025,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::SetColor
 ////================
 ////*/
-////void idEntity::SetColor( float red, float green, float blue ) {
+////idEntity.prototype.SetColor( float red, float green, float blue ) {
 ////	renderEntity.shaderParms[ SHADERPARM_RED ]		= red;
 ////	renderEntity.shaderParms[ SHADERPARM_GREEN ]	= green;
 ////	renderEntity.shaderParms[ SHADERPARM_BLUE ]		= blue;
@@ -1022,7 +1037,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::SetColor
 ////================
 ////*/
-////void idEntity::SetColor( const idVec3 &color ) {
+////idEntity.prototype.SetColor( const idVec3 &color ) {
 ////	SetColor( color[ 0 ], color[ 1 ], color[ 2 ] );
 ////	UpdateVisuals();
 ////}
@@ -1032,7 +1047,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetColor
 ////================
 ////*/
-////void idEntity::GetColor( idVec3 &out ) const {
+////idEntity.prototype.GetColor( idVec3 &out ) const {
 ////	out[ 0 ] = renderEntity.shaderParms[ SHADERPARM_RED ];
 ////	out[ 1 ] = renderEntity.shaderParms[ SHADERPARM_GREEN ];
 ////	out[ 2 ] = renderEntity.shaderParms[ SHADERPARM_BLUE ];
@@ -1043,7 +1058,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::SetColor
 ////================
 ////*/
-////void idEntity::SetColor( const idVec4 &color ) {
+////idEntity.prototype.SetColor( const idVec4 &color ) {
 ////	renderEntity.shaderParms[ SHADERPARM_RED ]		= color[ 0 ];
 ////	renderEntity.shaderParms[ SHADERPARM_GREEN ]	= color[ 1 ];
 ////	renderEntity.shaderParms[ SHADERPARM_BLUE ]		= color[ 2 ];
@@ -1056,7 +1071,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetColor
 ////================
 ////*/
-////void idEntity::GetColor( idVec4 &out ) const {
+////idEntity.prototype.GetColor( idVec4 &out ) const {
 ////	out[ 0 ] = renderEntity.shaderParms[ SHADERPARM_RED ];
 ////	out[ 1 ] = renderEntity.shaderParms[ SHADERPARM_GREEN ];
 ////	out[ 2 ] = renderEntity.shaderParms[ SHADERPARM_BLUE ];
@@ -1068,7 +1083,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::UpdateAnimationControllers
 ////================
 ////*/
-////bool idEntity::UpdateAnimationControllers( void ) {
+////bool idEntity::UpdateAnimationControllers( ):void {
 ////	// any ragdoll and IK animation controllers should be updated here
 ////	return false;
 ////}
@@ -1078,7 +1093,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::SetModel
 ////================
 ////*/
-////void idEntity::SetModel( const char *modelname ) {
+////idEntity.prototype.SetModel( const char *modelname ) {
 ////	assert( modelname );
 ////
 ////	FreeModelDef();
@@ -1106,7 +1121,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::SetSkin
 ////================
 ////*/
-////void idEntity::SetSkin( const idDeclSkin *skin ) {
+////idEntity.prototype.SetSkin( const idDeclSkin *skin ) {
 ////	renderEntity.customSkin = skin;
 ////	UpdateVisuals();
 ////}
@@ -1116,7 +1131,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetSkin
 ////================
 ////*/
-////const idDeclSkin *idEntity::GetSkin( void ) const {
+////const idDeclSkin *idEntity::GetSkin( ):void const {
 ////	return renderEntity.customSkin;
 ////}
 ////
@@ -1125,7 +1140,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::FreeModelDef
 ////================
 ////*/
-////void idEntity::FreeModelDef( void ) {
+////idEntity.prototype.FreeModelDef( ):void {
 ////	if ( modelDefHandle != -1 ) {
 ////		gameRenderWorld->FreeEntityDef( modelDefHandle );
 ////		modelDefHandle = -1;
@@ -1137,7 +1152,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::FreeLightDef
 ////================
 ////*/
-////void idEntity::FreeLightDef( void ) {
+////idEntity.prototype.FreeLightDef( ):void {
 ////}
 ////
 /////*
@@ -1145,7 +1160,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::IsHidden
 ////================
 ////*/
-////bool idEntity::IsHidden( void ) const {
+////bool idEntity::IsHidden( ):void const {
 ////	return fl.hidden;
 ////}
 ////
@@ -1154,7 +1169,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Hide
 ////================
 ////*/
-////void idEntity::Hide( void ) {
+////idEntity.prototype.Hide( ):void {
 ////	if ( !IsHidden() ) {
 ////		fl.hidden = true;
 ////		FreeModelDef();
@@ -1167,7 +1182,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Show
 ////================
 ////*/
-////void idEntity::Show( void ) {
+////idEntity.prototype.Show( ):void {
 ////	if ( IsHidden() ) {
 ////		fl.hidden = false;
 ////		UpdateVisuals();
@@ -1179,7 +1194,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::UpdateModelTransform
 ////================
 ////*/
-////void idEntity::UpdateModelTransform( void ) {
+////idEntity.prototype.UpdateModelTransform( ):void {
 ////	idVec3 origin;
 ////	idMat3 axis;
 ////
@@ -1197,7 +1212,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::UpdateModel
 ////================
 ////*/
-////void idEntity::UpdateModel( void ) {
+////idEntity.prototype.UpdateModel( ):void {
 ////	UpdateModelTransform();
 ////
 ////	// check if the entity has an MD5 model
@@ -1219,7 +1234,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::UpdateVisuals
 ////================
 ////*/
-////void idEntity::UpdateVisuals( void ) {
+////idEntity.prototype.UpdateVisuals( ):void {
 ////	UpdateModel();
 ////	UpdateSound();
 ////}
@@ -1229,7 +1244,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::UpdatePVSAreas
 ////================
 ////*/
-////void idEntity::UpdatePVSAreas( void ) {
+////idEntity.prototype.UpdatePVSAreas( ):void {
 ////	int localNumPVSAreas, localPVSAreas[32];
 ////	idBounds modelAbsBounds;
 ////	int i;
@@ -1257,7 +1272,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::UpdatePVSAreas
 ////================
 ////*/
-////void idEntity::UpdatePVSAreas( const idVec3 &pos ) {
+////idEntity.prototype.UpdatePVSAreas( const idVec3 &pos ) {
 ////	int i;
 ////
 ////	numPVSAreas = gameLocal.pvs.GetPVSAreas( idBounds( pos ), PVSAreas, MAX_PVS_AREAS );
@@ -1272,7 +1287,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetNumPVSAreas
 ////================
 ////*/
-////int idEntity::GetNumPVSAreas( void ) {
+////int idEntity::GetNumPVSAreas( ):void {
 ////	if ( numPVSAreas < 0 ) {
 ////		UpdatePVSAreas();
 ////	}
@@ -1284,7 +1299,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetPVSAreas
 ////================
 ////*/
-////const int *idEntity::GetPVSAreas( void ) {
+////const int *idEntity::GetPVSAreas( ):void {
 ////	if ( numPVSAreas < 0 ) {
 ////		UpdatePVSAreas();
 ////	}
@@ -1296,7 +1311,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::ClearPVSAreas
 ////================
 ////*/
-////void idEntity::ClearPVSAreas( void ) {
+////idEntity.prototype.ClearPVSAreas( ):void {
 ////	numPVSAreas = -1;
 ////}
 ////
@@ -1327,7 +1342,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::ProjectOverlay
 ////==============
 ////*/
-////void idEntity::ProjectOverlay( const idVec3 &origin, const idVec3 &dir, float size, const char *material ) {
+////idEntity.prototype.ProjectOverlay( const idVec3 &origin, const idVec3 &dir, float size, const char *material ) {
 ////	float s, c;
 ////	idMat3 axis, axistemp;
 ////	idVec3 localOrigin, localAxis[2];
@@ -1380,7 +1395,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////Present is called to allow entities to generate refEntities, lights, etc for the renderer.
 ////================
 ////*/
-////void idEntity::Present( void ) {
+////idEntity.prototype.Present( ):void {
 ////
 ////	if ( !gameLocal.isNewFrame ) {
 ////		return;
@@ -1415,7 +1430,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetRenderEntity
 ////================
 ////*/
-////renderEntity_t *idEntity::GetRenderEntity( void ) {
+////renderEntity_t *idEntity::GetRenderEntity( ):void {
 ////	return &renderEntity;
 ////}
 ////
@@ -1424,7 +1439,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetModelDefHandle
 ////================
 ////*/
-////int idEntity::GetModelDefHandle( void ) {
+////int idEntity::GetModelDefHandle( ):void {
 ////	return modelDefHandle;
 ////}
 ////
@@ -1471,7 +1486,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////Subclasses will be responsible for allocating animator.
 ////================
 ////*/
-////idAnimator *idEntity::GetAnimator( void ) {
+////idAnimator *idEntity::GetAnimator( ):void {
 ////	return NULL;
 ////}
 ////
@@ -1482,7 +1497,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////This is used by remote camera views to look from an entity
 ////=============
 ////*/
-////renderView_t *idEntity::GetRenderView( void ) {
+////renderView_t *idEntity::GetRenderView( ):void {
 ////	if ( !renderView ) {
 ////		renderView = new renderView_t;
 ////	}
@@ -1518,7 +1533,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////Used for playing chatter sounds on monsters.
 ////================
 ////*/
-////bool idEntity::CanPlayChatterSounds( void ) const {
+////bool idEntity::CanPlayChatterSounds( ):void const {
 ////	return true;
 ////}
 ////
@@ -1618,7 +1633,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::StopSound
 ////================
 ////*/
-////void idEntity::StopSound( const s_channelType channel, bool broadcast ) {
+////idEntity.prototype.StopSound( const s_channelType channel, bool broadcast ) {
 ////	if ( !gameLocal.isNewFrame ) {
 ////		return;
 ////	}
@@ -1645,7 +1660,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////  Must be called before starting a new sound.
 ////================
 ////*/
-////void idEntity::SetSoundVolume( float volume ) {
+////idEntity.prototype.SetSoundVolume( float volume ) {
 ////	refSound.parms.volume = volume;
 ////}
 ////
@@ -1654,7 +1669,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::UpdateSound
 ////================
 ////*/
-////void idEntity::UpdateSound( void ) {
+////idEntity.prototype.UpdateSound( ):void {
 ////	if ( refSound.referenceSound ) {
 ////		idVec3 origin;
 ////		idMat3 axis;
@@ -1674,7 +1689,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetListenerId
 ////================
 ////*/
-////int idEntity::GetListenerId( void ) const {
+////int idEntity::GetListenerId( ):void const {
 ////	return refSound.listenerId;
 ////}
 ////
@@ -1683,7 +1698,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetSoundEmitter
 ////================
 ////*/
-////idSoundEmitter *idEntity::GetSoundEmitter( void ) const {
+////idSoundEmitter *idEntity::GetSoundEmitter( ):void const {
 ////	return refSound.referenceSound;
 ////}
 ////
@@ -1692,7 +1707,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::FreeSoundEmitter
 ////================
 ////*/
-////void idEntity::FreeSoundEmitter( bool immediate ) {
+////idEntity.prototype.FreeSoundEmitter( bool immediate ) {
 ////	if ( refSound.referenceSound ) {
 ////		refSound.referenceSound->Free( immediate );
 ////		refSound.referenceSound = NULL;
@@ -1710,7 +1725,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::PreBind
 ////================
 ////*/
-////void idEntity::PreBind( void ) {
+////idEntity.prototype.PreBind( ):void {
 ////}
 ////
 /////*
@@ -1718,7 +1733,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::PostBind
 ////================
 ////*/
-////void idEntity::PostBind( void ) {
+////idEntity.prototype.PostBind( ):void {
 ////}
 ////
 /////*
@@ -1726,7 +1741,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::PreUnbind
 ////================
 ////*/
-////void idEntity::PreUnbind( void ) {
+////idEntity.prototype.PreUnbind( ):void {
 ////}
 ////
 /////*
@@ -1734,7 +1749,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::PostUnbind
 ////================
 ////*/
-////void idEntity::PostUnbind( void ) {
+////idEntity.prototype.PostUnbind( ):void {
 ////}
 ////
 /////*
@@ -1775,7 +1790,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::FinishBind
 ////================
 ////*/
-////void idEntity::FinishBind( void ) {
+////idEntity.prototype.FinishBind( ):void {
 ////
 ////	// set the master on the physics object
 ////	physics->SetMaster( bindMaster, fl.bindOrientated );
@@ -1801,7 +1816,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////  bind relative to the visual position of the master
 ////================
 ////*/
-////void idEntity::Bind( idEntity *master, bool orientated ) {
+////idEntity.prototype.Bind( idEntity *master, bool orientated ) {
 ////
 ////	if ( !InitBind( master ) ) {
 ////		return;
@@ -1826,7 +1841,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////  bind relative to a joint of the md5 model used by the master
 ////================
 ////*/
-////void idEntity::BindToJoint( idEntity *master, const char *jointname, bool orientated ) {
+////idEntity.prototype.BindToJoint( idEntity *master, const char *jointname, bool orientated ) {
 ////	jointHandle_t	jointnum;
 ////	idAnimator		*masterAnimator;
 ////
@@ -1864,7 +1879,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////  bind relative to a joint of the md5 model used by the master
 ////================
 ////*/
-////void idEntity::BindToJoint( idEntity *master, jointHandle_t jointnum, bool orientated ) {
+////idEntity.prototype.BindToJoint( idEntity *master, jointHandle_t jointnum, bool orientated ) {
 ////
 ////	if ( !InitBind( master ) ) {
 ////		return;
@@ -1889,7 +1904,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////  bind relative to a collision model used by the physics of the master
 ////================
 ////*/
-////void idEntity::BindToBody( idEntity *master, int bodyId, bool orientated ) {
+////idEntity.prototype.BindToBody( idEntity *master, int bodyId, bool orientated ) {
 ////
 ////	if ( !InitBind( master ) ) {
 ////		return;
@@ -1916,7 +1931,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Unbind
 ////================
 ////*/
-////void idEntity::Unbind( void ) {
+////idEntity.prototype.Unbind( ):void {
 ////	idEntity *	prev;
 ////	idEntity *	next;
 ////	idEntity *	last;
@@ -2006,7 +2021,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::RemoveBinds
 ////================
 ////*/
-////void idEntity::RemoveBinds( void ) {
+////idEntity.prototype.RemoveBinds( ):void {
 ////	idEntity *ent;
 ////	idEntity *next;
 ////
@@ -2025,7 +2040,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::IsBound
 ////================
 ////*/
-////bool idEntity::IsBound( void ) const {
+////bool idEntity::IsBound( ):void const {
 ////	if ( bindMaster ) {
 ////		return true;
 ////	}
@@ -2058,7 +2073,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetBindMaster
 ////================
 ////*/
-////idEntity *idEntity::GetBindMaster( void ) const {
+////idEntity *idEntity::GetBindMaster( ):void const {
 ////	return bindMaster;
 ////}
 ////
@@ -2067,7 +2082,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetBindJoint
 ////================
 ////*/
-////jointHandle_t idEntity::GetBindJoint( void ) const {
+////jointHandle_t idEntity::GetBindJoint( ):void const {
 ////	return bindJoint;
 ////}
 ////
@@ -2076,7 +2091,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetBindBody
 ////================
 ////*/
-////int idEntity::GetBindBody( void ) const {
+////int idEntity::GetBindBody( ):void const {
 ////	return bindBody;
 ////}
 ////
@@ -2085,7 +2100,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetTeamMaster
 ////================
 ////*/
-////idEntity *idEntity::GetTeamMaster( void ) const {
+////idEntity *idEntity::GetTeamMaster( ):void const {
 ////	return teamMaster;
 ////}
 ////
@@ -2094,7 +2109,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetNextTeamEntity
 ////================
 ////*/
-////idEntity *idEntity::GetNextTeamEntity( void ) const {
+////idEntity *idEntity::GetNextTeamEntity( ):void const {
 ////	return teamChain;
 ////}
 ////
@@ -2103,7 +2118,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::ConvertLocalToWorldTransform
 ////=====================
 ////*/
-////void idEntity::ConvertLocalToWorldTransform( idVec3 &offset, idMat3 &axis ) {
+////idEntity.prototype.ConvertLocalToWorldTransform( idVec3 &offset, idMat3 &axis ) {
 ////	UpdateModelTransform();
 ////
 ////	offset = renderEntity.origin + offset * renderEntity.axis;
@@ -2256,7 +2271,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetWorldVelocities
 ////================
 ////*/
-////void idEntity::GetWorldVelocities( idVec3 &linearVelocity, idVec3 &angularVelocity ) const {
+////idEntity.prototype.GetWorldVelocities( idVec3 &linearVelocity, idVec3 &angularVelocity ) const {
 ////
 ////	linearVelocity = physics->GetLinearVelocity();
 ////	angularVelocity = physics->GetAngularVelocity();
@@ -2282,7 +2297,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::JoinTeam
 ////================
 ////*/
-////void idEntity::JoinTeam( idEntity *teammember ) {
+////idEntity.prototype.JoinTeam( idEntity *teammember ) {
 ////	idEntity *ent;
 ////	idEntity *master;
 ////	idEntity *prev;
@@ -2352,7 +2367,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::QuitTeam
 ////================
 ////*/
-////void idEntity::QuitTeam( void ) {
+////idEntity.prototype.QuitTeam( ):void {
 ////	idEntity *ent;
 ////
 ////	if ( !teamMaster ) {
@@ -2406,7 +2421,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::InitDefaultPhysics
 ////================
 ////*/
-////void idEntity::InitDefaultPhysics( const idVec3 &origin, const idMat3 &axis ) {
+////idEntity.prototype.InitDefaultPhysics( const idVec3 &origin, const idMat3 &axis ) {
 ////	const char *temp;
 ////	idClipModel *clipModel = NULL;
 ////
@@ -2479,7 +2494,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::SetPhysics
 ////================
 ////*/
-////void idEntity::SetPhysics( idPhysics *phys ) {
+////idEntity.prototype.SetPhysics( idPhysics *phys ) {
 ////	// clear any contacts the current physics object has
 ////	if ( physics ) {
 ////		physics->ClearContacts();
@@ -2501,7 +2516,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::RestorePhysics
 ////================
 ////*/
-////void idEntity::RestorePhysics( idPhysics *phys ) {
+////idEntity.prototype.RestorePhysics( idPhysics *phys ) {
 ////	assert( phys != NULL );
 ////	// restore physics pointer
 ////	physics = phys;
@@ -2512,7 +2527,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetPhysics
 ////================
 ////*/
-////idPhysics *idEntity::GetPhysics( void ) const {
+////idPhysics *idEntity::GetPhysics( ):void const {
 ////	return physics;
 ////}
 ////
@@ -2521,7 +2536,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::RunPhysics
 ////================
 ////*/
-////bool idEntity::RunPhysics( void ) {
+////bool idEntity::RunPhysics( ):void {
 ////	int			i, reachedTime, startTime, endTime;
 ////	idEntity *	part, *blockedPart, *blockingEntity = NULL;
 ////	trace_t		results;
@@ -2664,7 +2679,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::UpdateFromPhysics
 ////================
 ////*/
-////void idEntity::UpdateFromPhysics( bool moveBack ) {
+////idEntity.prototype.UpdateFromPhysics( bool moveBack ) {
 ////
 ////	if ( IsType( idActor::Type ) ) {
 ////		idActor *actor = static_cast<idActor *>( this );
@@ -2689,7 +2704,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::SetOrigin
 ////================
 ////*/
-////void idEntity::SetOrigin( const idVec3 &org ) {
+////idEntity.prototype.SetOrigin( const idVec3 &org ) {
 ////
 ////	GetPhysics()->SetOrigin( org );
 ////
@@ -2701,7 +2716,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::SetAxis
 ////================
 ////*/
-////void idEntity::SetAxis( const idMat3 &axis ) {
+////idEntity.prototype.SetAxis( const idMat3 &axis ) {
 ////
 ////	if ( GetPhysics()->IsType( idPhysics_Actor::Type ) ) {
 ////		static_cast<idActor *>(this)->viewAxis = axis;
@@ -2717,7 +2732,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::SetAngles
 ////================
 ////*/
-////void idEntity::SetAngles( const idAngles &ang ) {
+////idEntity.prototype.SetAngles( const idAngles &ang ) {
 ////	SetAxis( ang.ToMat3() );
 ////}
 ////
@@ -2783,7 +2798,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetImpactInfo
 ////================
 ////*/
-////void idEntity::GetImpactInfo( idEntity *ent, int id, const idVec3 &point, impactInfo_t *info ) {
+////idEntity.prototype.GetImpactInfo( idEntity *ent, int id, const idVec3 &point, impactInfo_t *info ) {
 ////	GetPhysics()->GetImpactInfo( id, point, info );
 ////}
 ////
@@ -2792,7 +2807,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::ApplyImpulse
 ////================
 ////*/
-////void idEntity::ApplyImpulse( idEntity *ent, int id, const idVec3 &point, const idVec3 &impulse ) {
+////idEntity.prototype.ApplyImpulse( idEntity *ent, int id, const idVec3 &point, const idVec3 &impulse ) {
 ////	GetPhysics()->ApplyImpulse( id, point, impulse );
 ////}
 ////
@@ -2801,7 +2816,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::AddForce
 ////================
 ////*/
-////void idEntity::AddForce( idEntity *ent, int id, const idVec3 &point, const idVec3 &force ) {
+////idEntity.prototype.AddForce( idEntity *ent, int id, const idVec3 &point, const idVec3 &force ) {
 ////	GetPhysics()->AddForce( id, point, force );
 ////}
 ////
@@ -2810,7 +2825,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::ActivatePhysics
 ////================
 ////*/
-////void idEntity::ActivatePhysics( idEntity *ent ) {
+////idEntity.prototype.ActivatePhysics( idEntity *ent ) {
 ////	GetPhysics()->Activate();
 ////}
 ////
@@ -2819,7 +2834,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::IsAtRest
 ////================
 ////*/
-////bool idEntity::IsAtRest( void ) const {
+////bool idEntity::IsAtRest( ):void const {
 ////	return GetPhysics()->IsAtRest();
 ////}
 ////
@@ -2828,7 +2843,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetRestStartTime
 ////================
 ////*/
-////int idEntity::GetRestStartTime( void ) const {
+////int idEntity::GetRestStartTime( ):void const {
 ////	return GetPhysics()->GetRestStartTime();
 ////}
 ////
@@ -2837,7 +2852,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::AddContactEntity
 ////================
 ////*/
-////void idEntity::AddContactEntity( idEntity *ent ) {
+////idEntity.prototype.AddContactEntity( idEntity *ent ) {
 ////	GetPhysics()->AddContactEntity( ent );
 ////}
 ////
@@ -2846,7 +2861,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::RemoveContactEntity
 ////================
 ////*/
-////void idEntity::RemoveContactEntity( idEntity *ent ) {
+////idEntity.prototype.RemoveContactEntity( idEntity *ent ) {
 ////	GetPhysics()->RemoveContactEntity( ent );
 ////}
 ////
@@ -2945,7 +2960,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////callback function for when another entity received damage from this entity.  damage can be adjusted and returned to the caller.
 ////================
 ////*/
-////void idEntity::DamageFeedback( idEntity *victim, idEntity *inflictor, int &damage ) {
+////idEntity.prototype.DamageFeedback( idEntity *victim, idEntity *inflictor, int &damage ) {
 ////	// implemented in subclasses
 ////}
 ////
@@ -2966,7 +2981,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////
 ////============
 ////*/
-////void idEntity::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &dir, 
+////idEntity.prototype.Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &dir, 
 ////					  const char *damageDefName, const float damageScale, const int location ) {
 ////	if ( !fl.takedamage ) {
 ////		return;
@@ -3009,7 +3024,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::AddDamageEffect
 ////================
 ////*/
-////void idEntity::AddDamageEffect( const trace_t &collision, const idVec3 &velocity, const char *damageDefName ) {
+////idEntity.prototype.AddDamageEffect( const trace_t &collision, const idVec3 &velocity, const char *damageDefName ) {
 ////	const char *sound, *decal, *key;
 ////
 ////	const idDeclEntityDef *def = gameLocal.FindEntityDef( damageDefName, false );
@@ -3064,7 +3079,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////This is a virtual function that subclasses are expected to implement.
 ////============
 ////*/
-////void idEntity::Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location ) {
+////idEntity.prototype.Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location ) {
 ////}
 ////
 ////
@@ -3082,7 +3097,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////Overridden by subclasses that need to spawn the script object themselves.
 ////================
 ////*/
-////bool idEntity::ShouldConstructScriptObjectAtSpawn( void ) const {
+////bool idEntity::ShouldConstructScriptObjectAtSpawn( ):void const {
 ////	return true;
 ////}
 ////
@@ -3094,7 +3109,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////Can be overridden by subclasses when a thread doesn't need to be allocated.
 ////================
 ////*/
-////idThread *idEntity::ConstructScriptObject( void ) {
+////idThread *idEntity::ConstructScriptObject( ):void {
 ////	idThread *thread;
 ////	const function_t *constructor;
 ////
@@ -3128,7 +3143,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////Not called during idGameLocal::MapShutdown.
 ////================
 ////*/
-////void idEntity::DeconstructScriptObject( void ) {
+////idEntity.prototype.DeconstructScriptObject( ):void {
 ////	idThread		*thread;
 ////	const function_t *destructor;
 ////
@@ -3167,7 +3182,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::SetSignal
 ////================
 ////*/
-////void idEntity::SetSignal( signalNum_t signalnum, idThread *thread, const function_t *function ) {
+////idEntity.prototype.SetSignal( signalNum_t signalnum, idThread *thread, const function_t *function ) {
 ////	int			i;
 ////	int			num;
 ////	signal_t	sig;
@@ -3204,7 +3219,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::ClearSignal
 ////================
 ////*/
-////void idEntity::ClearSignal( idThread *thread, signalNum_t signalnum ) {
+////idEntity.prototype.ClearSignal( idThread *thread, signalNum_t signalnum ) {
 ////	assert( thread );
 ////	if ( ( signalnum < 0 ) || ( signalnum >= NUM_SIGNALS ) ) {
 ////		gameLocal.Error( "Signal out of range" );
@@ -3222,7 +3237,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::ClearSignalThread
 ////================
 ////*/
-////void idEntity::ClearSignalThread( signalNum_t signalnum, idThread *thread ) {
+////idEntity.prototype.ClearSignalThread( signalNum_t signalnum, idThread *thread ) {
 ////	int	i;
 ////	int	num;
 ////	int	threadnum;
@@ -3253,7 +3268,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Signal
 ////================
 ////*/
-////void idEntity::Signal( signalNum_t signalnum ) {
+////idEntity.prototype.Signal( signalNum_t signalnum ) {
 ////	int			i;
 ////	int			num;
 ////	signal_t	sigs[ MAX_SIGNAL_THREADS ];
@@ -3291,7 +3306,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::SignalEvent
 ////================
 ////*/
-////void idEntity::SignalEvent( idThread *thread, signalNum_t signalnum ) {
+////idEntity.prototype.SignalEvent( idThread *thread, signalNum_t signalnum ) {
 ////	if ( ( signalnum < 0 ) || ( signalnum >= NUM_SIGNALS ) ) {
 ////		gameLocal.Error( "Signal out of range" );
 ////	}
@@ -3315,7 +3330,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::TriggerGuis
 ////================
 ////*/
-////void idEntity::TriggerGuis( void ) {
+////idEntity.prototype.TriggerGuis( ):void {
 ////	int i;
 ////	for ( i = 0; i < MAX_RENDERENTITY_GUI; i++ ) {
 ////		if ( renderEntity.gui[ i ] ) {
@@ -3506,7 +3521,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////have been spawned when the entity is created at map load time, we have to wait
 ////===============
 ////*/
-////void idEntity::FindTargets( void ) {
+////idEntity.prototype.FindTargets( ):void {
 ////	int			i;
 ////
 ////	// targets can be a list of multiple names
@@ -3525,7 +3540,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::RemoveNullTargets
 ////================
 ////*/
-////void idEntity::RemoveNullTargets( void ) {
+////idEntity.prototype.RemoveNullTargets( ):void {
 ////	int i;
 ////
 ////	for( i = targets.Num() - 1; i >= 0; i-- ) {
@@ -3542,7 +3557,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////"activator" should be set to the entity that initiated the firing.
 ////==============================
 ////*/
-////void idEntity::ActivateTargets( idEntity *activator ) const {
+////idEntity.prototype.ActivateTargets( idEntity *activator ) const {
 ////	idEntity	*ent;
 ////	int			i, j;
 ////	
@@ -3574,7 +3589,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Teleport
 ////================
 ////*/
-////void idEntity::Teleport( const idVec3 &origin, const idAngles &angles, idEntity *destination ) {
+////idEntity.prototype.Teleport( const idVec3 &origin, const idAngles &angles, idEntity *destination ) {
 ////	GetPhysics()->SetOrigin( origin );
 ////	GetPhysics()->SetAxis( angles.ToMat3() );
 ////
@@ -3588,7 +3603,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////  Activate all trigger entities touched at the current position.
 ////============
 ////*/
-////bool idEntity::TouchTriggers( void ) const {
+////bool idEntity::TouchTriggers( ):void const {
 ////	int				i, numClipModels, numEntities;
 ////	idClipModel *	cm;
 ////	idClipModel *	clipModels[ MAX_GENTITIES ];
@@ -3643,7 +3658,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::GetSpline
 ////================
 ////*/
-////idCurve_Spline<idVec3> *idEntity::GetSpline( void ) const {
+////idCurve_Spline<idVec3> *idEntity::GetSpline( ):void const {
 ////	int i, numPoints, t;
 ////	const idKeyValue *kv;
 ////	idLexer lex;
@@ -3688,42 +3703,42 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::ShowEditingDialog
 ////===============
 ////*/
-////void idEntity::ShowEditingDialog( void ) {
+////idEntity.prototype.ShowEditingDialog( ):void {
 ////}
-////
-/////***********************************************************************
-////
-////   Events
-////	
-////***********************************************************************/
-////
-/////*
-////================
-////idEntity::Event_GetName
-////================
-////*/
-////void idEntity::Event_GetName( void ) {
-////	idThread::ReturnString( name.c_str() );
-////}
-////
-/////*
-////================
-////idEntity::Event_SetName
-////================
-////*/
-////void idEntity::Event_SetName( const char *newname ) {
-////	SetName( newname );
-////}
-////
-/////*
-////===============
-////idEntity::Event_FindTargets
-////===============
-////*/
-////void idEntity::Event_FindTargets( void ) {
-////	FindTargets();
-////}
-////
+
+/***********************************************************************
+
+   Events
+	
+***********************************************************************/
+
+/*
+================
+idEntity::Event_GetName
+================
+*/
+idEntity.prototype.Event_GetName = function ( ): void {
+	idThread.ReturnString( this.name.c_str ( ) );
+};
+
+/*
+================
+idEntity::Event_SetName
+================
+*/
+idEntity.prototype.Event_SetName = function ( newname: string ): void {
+	this.SetName( newname );
+};
+
+/*
+===============
+idEntity::Event_FindTargets
+===============
+*/
+idEntity.prototype.Event_FindTargets = function ( ): void {
+	this.FindTargets ( );
+};
+
 /////*
 ////============
 ////idEntity::Event_ActivateTargets
@@ -3732,7 +3747,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////event to delay activating targets.
 ////============
 ////*/
-////void idEntity::Event_ActivateTargets( idEntity *activator ) {
+////idEntity.prototype.Event_ActivateTargets( idEntity *activator ) {
 ////	ActivateTargets( activator );
 ////}
 ////
@@ -3741,7 +3756,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_NumTargets
 ////================
 ////*/
-////void idEntity::Event_NumTargets( void ) {
+////idEntity.prototype.Event_NumTargets( ):void {
 ////	idThread::ReturnFloat( targets.Num() );
 ////}
 ////
@@ -3750,7 +3765,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_GetTarget
 ////================
 ////*/
-////void idEntity::Event_GetTarget( float index ) {
+////idEntity.prototype.Event_GetTarget( float index ) {
 ////	int i;
 ////
 ////	i = ( int )index;
@@ -3766,7 +3781,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_RandomTarget
 ////================
 ////*/
-////void idEntity::Event_RandomTarget( const char *ignore ) {
+////idEntity.prototype.Event_RandomTarget( const char *ignore ) {
 ////	int			num;
 ////	idEntity	*ent;
 ////	int			i;
@@ -3807,7 +3822,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_BindToJoint
 ////================
 ////*/
-////void idEntity::Event_BindToJoint( idEntity *master, const char *jointname, float orientated ) {
+////idEntity.prototype.Event_BindToJoint( idEntity *master, const char *jointname, float orientated ) {
 ////	BindToJoint( master, jointname, ( orientated != 0.0f ) );
 ////}
 ////
@@ -3816,7 +3831,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_RemoveBinds
 ////================
 ////*/
-////void idEntity::Event_RemoveBinds( void ) {
+////idEntity.prototype.Event_RemoveBinds( ):void {
 ////	RemoveBinds();
 ////}
 ////
@@ -3825,7 +3840,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_Bind
 ////================
 ////*/
-////void idEntity::Event_Bind( idEntity *master ) {
+////idEntity.prototype.Event_Bind( idEntity *master ) {
 ////	Bind( master, true );
 ////}
 ////
@@ -3834,7 +3849,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_BindPosition
 ////================
 ////*/
-////void idEntity::Event_BindPosition( idEntity *master ) {
+////idEntity.prototype.Event_BindPosition( idEntity *master ) {
 ////	Bind( master, false );
 ////}
 ////
@@ -3843,7 +3858,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_Unbind
 ////================
 ////*/
-////void idEntity::Event_Unbind( void ) {
+////idEntity.prototype.Event_Unbind( ):void {
 ////	Unbind();
 ////}
 ////
@@ -3852,7 +3867,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_SpawnBind
 ////================
 ////*/
-////void idEntity::Event_SpawnBind( void ) {
+////idEntity.prototype.Event_SpawnBind( ):void {
 ////	idEntity		*parent;
 ////	const char		*bind, *joint, *bindanim;
 ////	jointHandle_t	bindJoint;
@@ -3923,7 +3938,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_SetOwner
 ////================
 ////*/
-////void idEntity::Event_SetOwner( idEntity *owner ) {
+////idEntity.prototype.Event_SetOwner( idEntity *owner ) {
 ////	int i;
 ////
 ////	for ( i = 0; i < GetPhysics()->GetNumClipModels(); i++ ) {
@@ -3936,7 +3951,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_SetModel
 ////================
 ////*/
-////void idEntity::Event_SetModel( const char *modelname ) {
+////idEntity.prototype.Event_SetModel( const char *modelname ) {
 ////	SetModel( modelname );
 ////}
 ////
@@ -3945,7 +3960,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_SetSkin
 ////================
 ////*/
-////void idEntity::Event_SetSkin( const char *skinname ) {
+////idEntity.prototype.Event_SetSkin( const char *skinname ) {
 ////	renderEntity.customSkin = declManager->FindSkin( skinname );
 ////	UpdateVisuals();
 ////}
@@ -3955,7 +3970,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_GetShaderParm
 ////================
 ////*/
-////void idEntity::Event_GetShaderParm( int parmnum ) {
+////idEntity.prototype.Event_GetShaderParm( int parmnum ) {
 ////	if ( ( parmnum < 0 ) || ( parmnum >= MAX_ENTITY_SHADER_PARMS ) ) {
 ////		gameLocal.Error( "shader parm index (%d) out of range", parmnum );
 ////	}
@@ -3968,7 +3983,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_SetShaderParm
 ////================
 ////*/
-////void idEntity::Event_SetShaderParm( int parmnum, float value ) {
+////idEntity.prototype.Event_SetShaderParm( int parmnum, float value ) {
 ////	SetShaderParm( parmnum, value );
 ////}
 ////
@@ -3977,7 +3992,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_SetShaderParms
 ////================
 ////*/
-////void idEntity::Event_SetShaderParms( float parm0, float parm1, float parm2, float parm3 ) {
+////idEntity.prototype.Event_SetShaderParms( float parm0, float parm1, float parm2, float parm3 ) {
 ////	renderEntity.shaderParms[ SHADERPARM_RED ]		= parm0;
 ////	renderEntity.shaderParms[ SHADERPARM_GREEN ]	= parm1;
 ////	renderEntity.shaderParms[ SHADERPARM_BLUE ]		= parm2;
@@ -3991,7 +4006,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_SetColor
 ////================
 ////*/
-////void idEntity::Event_SetColor( float red, float green, float blue ) {
+////idEntity.prototype.Event_SetColor( float red, float green, float blue ) {
 ////	SetColor( red, green, blue );
 ////}
 ////
@@ -4000,7 +4015,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_GetColor
 ////================
 ////*/
-////void idEntity::Event_GetColor( void ) {
+////idEntity.prototype.Event_GetColor( ):void {
 ////	idVec3 out;
 ////
 ////	GetColor( out );
@@ -4012,7 +4027,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_IsHidden
 ////================
 ////*/
-////void idEntity::Event_IsHidden( void ) {
+////idEntity.prototype.Event_IsHidden( ):void {
 ////	idThread::ReturnInt( fl.hidden );
 ////}
 ////
@@ -4021,7 +4036,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_Hide
 ////================
 ////*/
-////void idEntity::Event_Hide( void ) {
+////idEntity.prototype.Event_Hide( ):void {
 ////	Hide();
 ////}
 ////
@@ -4030,7 +4045,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_Show
 ////================
 ////*/
-////void idEntity::Event_Show( void ) {
+////idEntity.prototype.Event_Show( ):void {
 ////	Show();
 ////}
 ////
@@ -4039,7 +4054,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_CacheSoundShader
 ////================
 ////*/
-////void idEntity::Event_CacheSoundShader( const char *soundName ) {
+////idEntity.prototype.Event_CacheSoundShader( const char *soundName ) {
 ////	declManager->FindSound( soundName );
 ////}
 ////
@@ -4048,7 +4063,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_StartSoundShader
 ////================
 ////*/
-////void idEntity::Event_StartSoundShader( const char *soundName, int channel ) {
+////idEntity.prototype.Event_StartSoundShader( const char *soundName, int channel ) {
 ////	int length;
 ////
 ////	StartSoundShader( declManager->FindSound( soundName ), (s_channelType)channel, 0, false, &length );
@@ -4060,7 +4075,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_StopSound
 ////================
 ////*/
-////void idEntity::Event_StopSound( int channel, int netSync ) {
+////idEntity.prototype.Event_StopSound( int channel, int netSync ) {
 ////	StopSound( channel, ( netSync != 0 ) );
 ////}
 ////
@@ -4069,7 +4084,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_StartSound 
 ////================
 ////*/
-////void idEntity::Event_StartSound( const char *soundName, int channel, int netSync ) {
+////idEntity.prototype.Event_StartSound( const char *soundName, int channel, int netSync ) {
 ////	int time;
 ////	
 ////	StartSound( soundName, ( s_channelType )channel, 0, ( netSync != 0 ), &time );
@@ -4081,7 +4096,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_FadeSound
 ////================
 ////*/
-////void idEntity::Event_FadeSound( int channel, float to, float over ) {
+////idEntity.prototype.Event_FadeSound( int channel, float to, float over ) {
 ////	if ( refSound.referenceSound ) {
 ////		refSound.referenceSound->FadeSound( channel, to, over );
 ////	}
@@ -4092,7 +4107,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_GetWorldOrigin
 ////================
 ////*/
-////void idEntity::Event_GetWorldOrigin( void ) {
+////idEntity.prototype.Event_GetWorldOrigin( ):void {
 ////	idThread::ReturnVector( GetPhysics()->GetOrigin() );
 ////}
 ////
@@ -4101,7 +4116,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_SetWorldOrigin
 ////================
 ////*/
-////void idEntity::Event_SetWorldOrigin( idVec3 const &org ) {
+////idEntity.prototype.Event_SetWorldOrigin( idVec3 const &org ) {
 ////	idVec3 neworg = GetLocalCoordinates( org );
 ////	SetOrigin( neworg );
 ////}
@@ -4111,7 +4126,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_SetOrigin
 ////================
 ////*/
-////void idEntity::Event_SetOrigin( idVec3 const &org ) {
+////idEntity.prototype.Event_SetOrigin( idVec3 const &org ) {
 ////	SetOrigin( org );
 ////}
 ////
@@ -4120,7 +4135,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_GetOrigin
 ////================
 ////*/
-////void idEntity::Event_GetOrigin( void ) {
+////idEntity.prototype.Event_GetOrigin( ):void {
 ////	idThread::ReturnVector( GetLocalCoordinates( GetPhysics()->GetOrigin() ) );
 ////}
 ////
@@ -4129,7 +4144,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_SetAngles
 ////================
 ////*/
-////void idEntity::Event_SetAngles( idAngles const &ang ) {
+////idEntity.prototype.Event_SetAngles( idAngles const &ang ) {
 ////	SetAngles( ang );
 ////}
 ////
@@ -4138,7 +4153,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_GetAngles
 ////================
 ////*/
-////void idEntity::Event_GetAngles( void ) {
+////idEntity.prototype.Event_GetAngles( ):void {
 ////	idAngles ang = GetPhysics()->GetAxis().ToAngles();
 ////	idThread::ReturnVector( idVec3( ang[0], ang[1], ang[2] ) );
 ////}
@@ -4148,7 +4163,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_SetLinearVelocity
 ////================
 ////*/
-////void idEntity::Event_SetLinearVelocity( const idVec3 &velocity ) {
+////idEntity.prototype.Event_SetLinearVelocity( const idVec3 &velocity ) {
 ////	GetPhysics()->SetLinearVelocity( velocity );
 ////}
 ////
@@ -4157,7 +4172,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_GetLinearVelocity
 ////================
 ////*/
-////void idEntity::Event_GetLinearVelocity( void ) {
+////idEntity.prototype.Event_GetLinearVelocity( ):void {
 ////	idThread::ReturnVector( GetPhysics()->GetLinearVelocity() );
 ////}
 ////
@@ -4166,7 +4181,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_SetAngularVelocity
 ////================
 ////*/
-////void idEntity::Event_SetAngularVelocity( const idVec3 &velocity ) {
+////idEntity.prototype.Event_SetAngularVelocity( const idVec3 &velocity ) {
 ////	GetPhysics()->SetAngularVelocity( velocity );
 ////}
 ////
@@ -4175,7 +4190,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_GetAngularVelocity
 ////================
 ////*/
-////void idEntity::Event_GetAngularVelocity( void ) {
+////idEntity.prototype.Event_GetAngularVelocity( ):void {
 ////	idThread::ReturnVector( GetPhysics()->GetAngularVelocity() );
 ////}
 ////
@@ -4184,7 +4199,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_SetSize
 ////================
 ////*/
-////void idEntity::Event_SetSize( idVec3 const &mins, idVec3 const &maxs ) {
+////idEntity.prototype.Event_SetSize( idVec3 const &mins, idVec3 const &maxs ) {
 ////	GetPhysics()->SetClipBox( idBounds( mins, maxs ), 1.0f );
 ////}
 ////
@@ -4193,7 +4208,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_GetSize
 ////================
 ////*/
-////void idEntity::Event_GetSize( void ) {
+////idEntity.prototype.Event_GetSize( ):void {
 ////	idBounds bounds;
 ////
 ////	bounds = GetPhysics()->GetBounds();
@@ -4205,7 +4220,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_GetMins
 ////================
 ////*/
-////void idEntity::Event_GetMins( void ) {
+////idEntity.prototype.Event_GetMins( ):void {
 ////	idThread::ReturnVector( GetPhysics()->GetBounds()[0] );
 ////}
 ////
@@ -4214,7 +4229,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_GetMaxs
 ////================
 ////*/
-////void idEntity::Event_GetMaxs( void ) {
+////idEntity.prototype.Event_GetMaxs( ):void {
 ////	idThread::ReturnVector( GetPhysics()->GetBounds()[1] );
 ////}
 ////
@@ -4223,7 +4238,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_Touches
 ////================
 ////*/
-////void idEntity::Event_Touches( idEntity *ent ) {
+////idEntity.prototype.Event_Touches( idEntity *ent ) {
 ////	if ( !ent ) {
 ////		idThread::ReturnInt( false );
 ////		return;
@@ -4240,7 +4255,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_SetGuiParm
 ////================
 ////*/
-////void idEntity::Event_SetGuiParm( const char *key, const char *val ) {
+////idEntity.prototype.Event_SetGuiParm( const char *key, const char *val ) {
 ////	for ( int i = 0; i < MAX_RENDERENTITY_GUI; i++ ) {
 ////		if ( renderEntity.gui[ i ] ) {
 ////			if ( idStr::Icmpn( key, "gui_", 4 ) == 0 ) {
@@ -4257,7 +4272,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_SetGuiParm
 ////================
 ////*/
-////void idEntity::Event_SetGuiFloat( const char *key, float f ) {
+////idEntity.prototype.Event_SetGuiFloat( const char *key, float f ) {
 ////	for ( int i = 0; i < MAX_RENDERENTITY_GUI; i++ ) {
 ////		if ( renderEntity.gui[ i ] ) {
 ////			renderEntity.gui[ i ]->SetStateString( key, va( "%f", f ) );
@@ -4271,7 +4286,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_GetNextKey
 ////================
 ////*/
-////void idEntity::Event_GetNextKey( const char *prefix, const char *lastMatch ) {
+////idEntity.prototype.Event_GetNextKey( const char *prefix, const char *lastMatch ) {
 ////	const idKeyValue *kv;
 ////	const idKeyValue *previous;
 ////
@@ -4294,7 +4309,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_SetKey
 ////================
 ////*/
-////void idEntity::Event_SetKey( const char *key, const char *value ) {
+////idEntity.prototype.Event_SetKey( const char *key, const char *value ) {
 ////	spawnArgs.Set( key, value );
 ////}
 ////
@@ -4303,7 +4318,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_GetKey
 ////================
 ////*/
-////void idEntity::Event_GetKey( const char *key ) {
+////idEntity.prototype.Event_GetKey( const char *key ) {
 ////	const char *value;
 ////
 ////	spawnArgs.GetString( key, "", &value );
@@ -4315,7 +4330,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_GetIntKey
 ////================
 ////*/
-////void idEntity::Event_GetIntKey( const char *key ) {
+////idEntity.prototype.Event_GetIntKey( const char *key ) {
 ////	int value;
 ////
 ////	spawnArgs.GetInt( key, "0", value );
@@ -4329,7 +4344,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_GetFloatKey
 ////================
 ////*/
-////void idEntity::Event_GetFloatKey( const char *key ) {
+////idEntity.prototype.Event_GetFloatKey( const char *key ) {
 ////	float value;
 ////
 ////	spawnArgs.GetFloat( key, "0", value );
@@ -4341,7 +4356,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_GetVectorKey
 ////================
 ////*/
-////void idEntity::Event_GetVectorKey( const char *key ) {
+////idEntity.prototype.Event_GetVectorKey( const char *key ) {
 ////	idVec3 value;
 ////
 ////	spawnArgs.GetVector( key, "0 0 0", value );
@@ -4353,7 +4368,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_GetEntityKey
 ////================
 ////*/
-////void idEntity::Event_GetEntityKey( const char *key ) {
+////idEntity.prototype.Event_GetEntityKey( const char *key ) {
 ////	idEntity *ent;
 ////	const char *entname;
 ////
@@ -4375,7 +4390,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_RestorePosition
 ////================
 ////*/
-////void idEntity::Event_RestorePosition( void ) {
+////idEntity.prototype.Event_RestorePosition( ):void {
 ////	idVec3		org;
 ////	idAngles	angles;
 ////	idMat3		axis;
@@ -4413,7 +4428,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_UpdateCameraTarget
 ////================
 ////*/
-////void idEntity::Event_UpdateCameraTarget( void ) {
+////idEntity.prototype.Event_UpdateCameraTarget( ):void {
 ////	const char *target;
 ////	const idKeyValue *kv;
 ////	idVec3 dir;
@@ -4444,7 +4459,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_DistanceTo
 ////================
 ////*/
-////void idEntity::Event_DistanceTo( idEntity *ent ) {
+////idEntity.prototype.Event_DistanceTo( idEntity *ent ) {
 ////	if ( !ent ) {
 ////		// just say it's really far away
 ////		idThread::ReturnFloat( MAX_WORLD_SIZE );
@@ -4459,7 +4474,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_DistanceToPoint
 ////================
 ////*/
-////void idEntity::Event_DistanceToPoint( const idVec3 &point ) {
+////idEntity.prototype.Event_DistanceToPoint( const idVec3 &point ) {
 ////	float dist = ( GetPhysics()->GetOrigin() - point ).LengthFast();
 ////	idThread::ReturnFloat( dist );
 ////}
@@ -4469,7 +4484,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_StartFx
 ////================
 ////*/
-////void idEntity::Event_StartFx( const char *fx ) {
+////idEntity.prototype.Event_StartFx( const char *fx ) {
 ////	idEntityFx::StartFx( fx, NULL, NULL, this, true );
 ////}
 ////
@@ -4478,7 +4493,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_WaitFrame
 ////================
 ////*/
-////void idEntity::Event_WaitFrame( void ) {
+////idEntity.prototype.Event_WaitFrame( ):void {
 ////	idThread *thread;
 ////	
 ////	thread = idThread::CurrentThread();
@@ -4492,7 +4507,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_Wait
 ////=====================
 ////*/
-////void idEntity::Event_Wait( float time ) {
+////idEntity.prototype.Event_Wait( float time ) {
 ////	idThread *thread = idThread::CurrentThread();
 ////
 ////	if ( !thread ) {
@@ -4507,7 +4522,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_HasFunction
 ////=====================
 ////*/
-////void idEntity::Event_HasFunction( const char *name ) {
+////idEntity.prototype.Event_HasFunction( const char *name ) {
 ////	const function_t *func;
 ////
 ////	func = scriptObject.GetFunction( name );
@@ -4523,7 +4538,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_CallFunction
 ////=====================
 ////*/
-////void idEntity::Event_CallFunction( const char *funcname ) {
+////idEntity.prototype.Event_CallFunction( const char *funcname ) {
 ////	const function_t *func;
 ////	idThread *thread;
 ////
@@ -4553,7 +4568,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::Event_SetNeverDormant
 ////================
 ////*/
-////void idEntity::Event_SetNeverDormant( int enable ) {
+////idEntity.prototype.Event_SetNeverDormant( int enable ) {
 ////	fl.neverDormant	= ( enable != 0 );
 ////	dormantStart = 0;
 ////}
@@ -4569,7 +4584,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::ClientPredictionThink
 ////================
 ////*/
-////void idEntity::ClientPredictionThink( void ) {
+////idEntity.prototype.ClientPredictionThink( ):void {
 ////	RunPhysics();
 ////	Present();
 ////}
@@ -4579,7 +4594,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::WriteBindToSnapshot
 ////================
 ////*/
-////void idEntity::WriteBindToSnapshot( idBitMsgDelta &msg ) const {
+////idEntity.prototype.WriteBindToSnapshot( idBitMsgDelta &msg ) const {
 ////	int bindInfo;
 ////
 ////	if ( bindMaster ) {
@@ -4603,7 +4618,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::ReadBindFromSnapshot
 ////================
 ////*/
-////void idEntity::ReadBindFromSnapshot( const idBitMsgDelta &msg ) {
+////idEntity.prototype.ReadBindFromSnapshot( const idBitMsgDelta &msg ) {
 ////	int bindInfo, bindEntityNum, bindPos;
 ////	bool bindOrientated;
 ////	idEntity *master;
@@ -4640,7 +4655,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::WriteColorToSnapshot
 ////================
 ////*/
-////void idEntity::WriteColorToSnapshot( idBitMsgDelta &msg ) const {
+////idEntity.prototype.WriteColorToSnapshot( idBitMsgDelta &msg ) const {
 ////	idVec4 color;
 ////
 ////	color[0] = renderEntity.shaderParms[ SHADERPARM_RED ];
@@ -4655,7 +4670,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::ReadColorFromSnapshot
 ////================
 ////*/
-////void idEntity::ReadColorFromSnapshot( const idBitMsgDelta &msg ) {
+////idEntity.prototype.ReadColorFromSnapshot( const idBitMsgDelta &msg ) {
 ////	idVec4 color;
 ////
 ////	UnpackColor( msg.ReadLong(), color );
@@ -4670,7 +4685,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::WriteGUIToSnapshot
 ////================
 ////*/
-////void idEntity::WriteGUIToSnapshot( idBitMsgDelta &msg ) const {
+////idEntity.prototype.WriteGUIToSnapshot( idBitMsgDelta &msg ) const {
 ////	// no need to loop over MAX_RENDERENTITY_GUI at this time
 ////	if ( renderEntity.gui[ 0 ] ) {
 ////		msg.WriteByte( renderEntity.gui[ 0 ]->State().GetInt( "networkState" ) );
@@ -4684,7 +4699,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::ReadGUIFromSnapshot
 ////================
 ////*/
-////void idEntity::ReadGUIFromSnapshot( const idBitMsgDelta &msg ) {
+////idEntity.prototype.ReadGUIFromSnapshot( const idBitMsgDelta &msg ) {
 ////	int state;
 ////	idUserInterface *gui;
 ////	state = msg.ReadByte( );
@@ -4701,7 +4716,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::WriteToSnapshot
 ////================
 ////*/
-////void idEntity::WriteToSnapshot( idBitMsgDelta &msg ) const {
+////idEntity.prototype.WriteToSnapshot( idBitMsgDelta &msg ) const {
 ////}
 ////
 /////*
@@ -4709,7 +4724,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::ReadFromSnapshot
 ////================
 ////*/
-////void idEntity::ReadFromSnapshot( const idBitMsgDelta &msg ) {
+////idEntity.prototype.ReadFromSnapshot( const idBitMsgDelta &msg ) {
 ////}
 ////
 /////*
@@ -4720,7 +4735,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////   always receive the events nomatter what time they join the game.
 ////================
 ////*/
-////void idEntity::ServerSendEvent( int eventId, const idBitMsg *msg, bool saveEvent, int excludeClient ) const {
+////idEntity.prototype.ServerSendEvent( int eventId, const idBitMsg *msg, bool saveEvent, int excludeClient ) const {
 ////	idBitMsg	outMsg;
 ////	byte		msgBuf[MAX_GAME_MESSAGE_SIZE];
 ////
@@ -4762,7 +4777,7 @@ var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 ////idEntity::ClientSendEvent
 ////================
 ////*/
-////void idEntity::ClientSendEvent( int eventId, const idBitMsg *msg ) const {
+////idEntity.prototype.ClientSendEvent( int eventId, const idBitMsg *msg ) const {
 ////	idBitMsg	outMsg;
 ////	byte		msgBuf[MAX_GAME_MESSAGE_SIZE];
 ////
@@ -4938,7 +4953,7 @@ var EV_GetJointAngle= new idEventDef( "getJointAngle", "d", 'v' );
 ////idAnimatedEntity::ClientPredictionThink
 ////================
 ////*/
-////void idAnimatedEntity::ClientPredictionThink( void ) {
+////void idAnimatedEntity::ClientPredictionThink( ):void {
 ////	RunPhysics();
 ////	UpdateAnimation();
 ////	Present();
@@ -4949,7 +4964,7 @@ var EV_GetJointAngle= new idEventDef( "getJointAngle", "d", 'v' );
 ////idAnimatedEntity::Think
 ////================
 ////*/
-////void idAnimatedEntity::Think( void ) {
+////void idAnimatedEntity::Think( ):void {
 ////	RunPhysics();
 ////	UpdateAnimation();
 ////	Present();
@@ -4961,7 +4976,7 @@ var EV_GetJointAngle= new idEventDef( "getJointAngle", "d", 'v' );
 ////idAnimatedEntity::UpdateAnimation
 ////================
 ////*/
-////void idAnimatedEntity::UpdateAnimation( void ) {
+////void idAnimatedEntity::UpdateAnimation( ):void {
 ////	// don't do animations if they're not enabled
 ////	if ( !( thinkFlags & TH_ANIMATE ) ) {
 ////		return;
@@ -5002,7 +5017,7 @@ var EV_GetJointAngle= new idEventDef( "getJointAngle", "d", 'v' );
 ////idAnimatedEntity::GetAnimator
 ////================
 ////*/
-////idAnimator *idAnimatedEntity::GetAnimator( void ) {
+////idAnimator *idAnimatedEntity::GetAnimator( ):void {
 ////	return &animator;
 ////}
 ////
@@ -5138,7 +5153,7 @@ var EV_GetJointAngle= new idEventDef( "getJointAngle", "d", 'v' );
 ////idAnimatedEntity::GetDefaultSurfaceType
 ////==============
 ////*/
-////int	idAnimatedEntity::GetDefaultSurfaceType( void ) const {
+////int	idAnimatedEntity::GetDefaultSurfaceType( ):void const {
 ////	return SURFTYPE_METAL;
 ////}
 ////
@@ -5223,7 +5238,7 @@ var EV_GetJointAngle= new idEventDef( "getJointAngle", "d", 'v' );
 ////idAnimatedEntity::UpdateDamageEffects
 ////==============
 ////*/
-////void idAnimatedEntity::UpdateDamageEffects( void ) {
+////void idAnimatedEntity::UpdateDamageEffects( ):void {
 ////	damageEffect_t	*de, **prev;
 ////
 ////	// free any that have timed out
@@ -5311,7 +5326,7 @@ var EV_GetJointAngle= new idEventDef( "getJointAngle", "d", 'v' );
 ////removes any custom transforms on all joints
 ////================
 ////*/
-////void idAnimatedEntity::Event_ClearAllJoints( void ) {
+////void idAnimatedEntity::Event_ClearAllJoints( ):void {
 ////	animator.ClearAllJoints();
 ////}
 ////

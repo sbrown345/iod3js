@@ -626,15 +626,16 @@ idProgram::GetStatement
 //	*returnDef.value.vectorPtr = vec;
 //}
 //
-///*
-//================
-//idProgram::ReturnString
-//================
-//*/
-//ID_INLINE void idProgram::ReturnString( const char *string ) {
-//	idStr.Copynz( returnStringDef.value.stringPtr, string, MAX_STRING_LEN );
-//}
-//
+/*
+================
+idProgram::ReturnString
+================
+*/
+	ReturnString($string: string): void {
+		todoThrow ( );
+		//idStr.Copynz( this.returnStringDef.value.stringPtr, $string, MAX_STRING_LEN );
+	}
+
 /*
 ================
 idProgram::GetFilename
@@ -1100,29 +1101,29 @@ idProgram::AllocFunction
 		return func;
 	}
 
-///*
-//================
-//idProgram::SetEntity
-//================
-//*/
-//void idProgram::SetEntity( name:string, idEntity *ent ) {
-//	idVarDef	*def;
-//	idStr		defName( "$" );
-//
-//	defName += name;
-//
-//	def = GetDef( &type_entity, defName, &def_namespace );
-//	if ( def && ( def.initialized != initialized_t.stackVariable ) ) {
-//		// 0 is reserved for NULL entity
-//		if ( !ent ) {
-//			*def.value.entityNumberPtr = 0;
-//		} else {
-//			*def.value.entityNumberPtr = ent.entityNumber + 1;
-//		}
-//	}
-//}
-//
-	/*
+/*
+================
+idProgram::SetEntity
+================
+*/
+	SetEntity ( name: string, ent: idEntity ): void {
+		var def: idVarDef;
+		var defName = new idStr( "$" );
+
+		defName.Append( name );
+
+		def = this.GetDef( type_entity, defName.data, def_namespace );
+		if ( def && ( def.initialized != initialized_t.stackVariable ) ) {
+			// 0 is reserved for NULL entity
+			if ( !ent ) {
+				def.value.entityNumberPtr = 0;
+			} else {
+				def.value.entityNumberPtr = ent.entityNumber + 1;
+			}
+		}
+	}
+
+/*
 ================
 idProgram::AllocStatement
 ================

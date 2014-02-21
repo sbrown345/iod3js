@@ -379,7 +379,7 @@ class idGameLocal extends idGame {
 
 ////	int						NumAAS( void ) const;
 ////	idAAS *					GetAAS( int num ) const;
-////	idAAS *					GetAAS( const char *name ) const;
+////	idAAS *					GetAAS( name:string ) const;
 ////	void					SetAASAreaState( const idBounds &bounds, const int areaContents, bool closed );
 ////	aasHandle_t				AddAASObstacle( const idBounds &bounds );
 ////	void					RemoveAASObstacle( const aasHandle_t handle );
@@ -390,29 +390,29 @@ class idGameLocal extends idGame {
 ////	gameState_t				GameState( void ) const;
 ////	idEntity *				SpawnEntityType( const idTypeInfo &classdef, const idDict *args = NULL, bool bIsClientReadSnapshot = false );
 ////	bool					SpawnEntityDef( const idDict &args, idEntity **ent = NULL, bool setDefaults = true );
-////	int						GetSpawnId( const idEntity *ent ) const;
+////	int						GetSpawnId( const ent: idEntity ) const;
 
-////	const idDeclEntityDef *	FindEntityDef( const char *name, bool makeDefault = true ) const;
-////	const idDict *			FindEntityDefDict( const char *name, bool makeDefault = true ) const;
+////	const idDeclEntityDef *	FindEntityDef( name:string, bool makeDefault = true ) const;
+////	const idDict *			FindEntityDefDict( name:string, bool makeDefault = true ) const;
 
-////	void					RegisterEntity( idEntity *ent );
-////	void					UnregisterEntity( idEntity *ent );
+////	void					RegisterEntity( ent: idEntity );
+////	void					UnregisterEntity( ent: idEntity );
 
 ////	bool					RequirementMet( idEntity *activator, const idStr &requires, int removeItem );
 
-////	void					AlertAI( idEntity *ent );
+////	void					AlertAI( ent: idEntity );
 ////	idActor *				GetAlertEntity( void );
 
-////	bool					InPlayerPVS( idEntity *ent ) const;
-////	bool					InPlayerConnectedArea( idEntity *ent ) const;
+////	bool					InPlayerPVS( ent: idEntity ) const;
+////	bool					InPlayerConnectedArea( ent: idEntity ) const;
 
 ////	void					SetCamera( idCamera *cam );
 ////	idCamera *				GetCamera( void ) const;
 ////	bool					SkipCinematic( void );
 ////	void					CalcFov( float base_fov, float &fov_x, float &fov_y ) const;
 
-////	void					AddEntityToHash( const char *name, idEntity *ent );
-////	bool					RemoveEntityFromHash( const char *name, idEntity *ent );
+	AddEntityToHash ( name: string, ent: idEntity ): void { throw "placeholder"; }
+	RemoveEntityFromHash ( name: string, ent: idEntity ): boolean { throw "placeholder"; }
 ////	int						GetTargets( const idDict &args, idList< idEntityPtr<idEntity> > &list, const char *ref ) const;
 
 ////							// returns the master entity of a trace.  for example, if the trace entity is the player's head, it will return the player.
@@ -420,11 +420,11 @@ class idGameLocal extends idGame {
 
 ////	static void				ArgCompletion_EntityName( const idCmdArgs &args, void(*callback)( const char *s ) );
 ////	idEntity *				FindTraceEntity( idVec3 start, idVec3 end, const idTypeInfo &c, const idEntity *skip ) const;
-////	idEntity *				FindEntity( const char *name ) const;
+////	idEntity *				FindEntity( name:string ) const;
 ////	idEntity *				FindEntityUsingDef( idEntity *from, const char *match ) const;
 ////	int						EntitiesWithinRadius( const idVec3 org, float radius, idEntity **entityList, int maxCount ) const;
 
-////	void					KillBox( idEntity *ent, bool catch_teleport = false );
+////	void					KillBox( ent: idEntity, bool catch_teleport = false );
 ////	void					RadiusDamage( const idVec3 &origin, idEntity *inflictor, idEntity *attacker, idEntity *ignoreDamage, idEntity *ignorePush, const char *damageDefName, float dmgPower = 1.0f );
 ////	void					RadiusPush( const idVec3 &origin, const float radius, const float push, const idEntity *inflictor, const idEntity *ignore, float inflictorScale, const bool quake );
 ////	void					RadiusPushClipModel( const idVec3 &origin, const float push, const idClipModel *clipModel );
@@ -432,8 +432,8 @@ class idGameLocal extends idGame {
 ////	void					ProjectDecal( const idVec3 &origin, const idVec3 &dir, float depth, bool parallel, float size, const char *material, float angle = 0 );
 ////	void					BloodSplat( const idVec3 &origin, const idVec3 &dir, float size, const char *material );
 
-////	void					CallFrameCommand( idEntity *ent, const function_t *frameCommand );
-////	void					CallObjectFrameCommand( idEntity *ent, const char *frameCommand );
+////	void					CallFrameCommand( ent: idEntity, const function_t *frameCommand );
+////	void					CallObjectFrameCommand( ent: idEntity, const char *frameCommand );
 
 ////	const idVec3 &			GetGravity( void ) const;
 
@@ -444,7 +444,7 @@ class idGameLocal extends idGame {
 
 ////	int						GetNextClientNum( int current ) const;
 ////	idPlayer *				GetClientByNum( int current ) const;
-////	idPlayer *				GetClientByName( const char *name ) const;
+////	idPlayer *				GetClientByName( name:string ) const;
 ////	idPlayer *				GetClientByCmdArgs( const idCmdArgs &args ) const;
 
 ////	idPlayer *				GetLocalPlayer() const;
@@ -454,8 +454,8 @@ class idGameLocal extends idGame {
 ////	idEntity *				SelectInitialSpawnPoint( idPlayer *player );
 
 ////	void					SetPortalState( qhandle_t portal, int blockingBits );
-////	void					SaveEntityNetworkEvent( const idEntity *ent, int event, const idBitMsg *msg );
-////	void					ServerSendChatMessage( int to, const char *name, const char *text );
+////	void					SaveEntityNetworkEvent( const ent: idEntity, int event, const idBitMsg *msg );
+////	void					ServerSendChatMessage( int to, name:string, const char *text );
 ////	int						ServerRemapDecl( int clientNum, declType_t type, int index );
 ////	int						ClientRemapDecl( declType_t type, int index );
 

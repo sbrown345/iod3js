@@ -1064,21 +1064,21 @@ idThread::Restart
 //	interpreter.Warning( text );
 //}
 //
-///*
-//================
-//idThread::ReturnString
-//================
-//*/
-//void idThread::ReturnString( const char *text ) {
-//	gameLocal.program.ReturnString( text );
-//}
-//
+/*
+================
+idThread::ReturnString
+================
+*/
+	static ReturnString ( text: string ): void {
+		gameLocal.program.ReturnString( text );
+	}
+
 ///*
 //================
 //idThread::ReturnFloat
 //================
 //*/
-//void idThread::ReturnFloat( float value ) {
+//static ReturnFloat( float value ):void {
 //	gameLocal.program.ReturnFloat( value );
 //}
 //
@@ -1087,7 +1087,7 @@ idThread::Restart
 //idThread::ReturnInt
 //================
 //*/
-//void idThread::ReturnInt( int value ) {
+//static ReturnInt( int value ) :void{
 //	// true integers aren't supported in the compiler,
 //	// so int values are stored as floats
 //	gameLocal.program.ReturnFloat( value );
@@ -1098,7 +1098,7 @@ idThread::Restart
 //idThread::ReturnVector
 //================
 //*/
-//void idThread::ReturnVector( idVec3 const &vec ) {
+// static ReturnVector( idVec3 const &vec ):void {
 //	gameLocal.program.ReturnVector( vec );
 //}
 //
@@ -1107,7 +1107,7 @@ idThread::Restart
 //idThread::ReturnEntity
 //================
 //*/
-//void idThread::ReturnEntity( idEntity *ent ) {
+//static ReturnEntity( idEntity *ent ):void {
 //	gameLocal.program.ReturnEntity( ent );
 //}
 //

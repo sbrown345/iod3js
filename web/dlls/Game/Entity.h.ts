@@ -108,8 +108,8 @@ class idEntity extends idClass {
 ////public:
 ////	static const int		MAX_PVS_AREAS = 4;
 ////
-////	int						entityNumber;			// index into the entity list
-////	int						entityDefNumber;		// index into the entity def list
+	entityNumber: number;		// index into the entity list		//	int						
+	entityDefNumber:number;		// index into the entity def list	//	int						
 ////
 ////	idLinkList<idEntity>	spawnNode;				// for being linked into spawnedEntities list
 ////	idLinkList<idEntity>	activeNode;				// for being linked into activeEntities list
@@ -158,13 +158,13 @@ class idEntity extends idClass {
 ////							idEntity();
 ////							~idEntity();
 ////
-	Spawn( ):void { throw "placeholder"; }
+	Spawn ( ): void { throw "placeholder"; }
 
 	Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 	Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
 ////	const char *			GetEntityDefName( void ) const;
-////	void					SetName( const char *name );
+	SetName ( name: string ): void { throw "placeholder"; }
 ////	const char *			GetName( void ) const;
 ////	virtual void			UpdateChangeableSpawnArgs( const idDict *source );
 ////
@@ -396,70 +396,71 @@ class idEntity extends idClass {
 ////	void					UpdatePVSAreas( void );
 ////
 ////	// events
-////	void					Event_GetName( void );
-////	void					Event_SetName( const char *name );
-////	void					Event_FindTargets( void );
-////	void					Event_ActivateTargets( idEntity *activator );
-////	void					Event_NumTargets( void );
-////	void					Event_GetTarget( float index );
-////	void					Event_RandomTarget( const char *ignore );
-////	void					Event_Bind( idEntity *master );
-////	void					Event_BindPosition( idEntity *master );
-////	void					Event_BindToJoint( idEntity *master, const char *jointname, float orientated );
-////	void					Event_Unbind( void );
-////	void					Event_RemoveBinds( void );
-////	void					Event_SpawnBind( void );
-////	void					Event_SetOwner( idEntity *owner );
-////	void					Event_SetModel( const char *modelname );
-////	void					Event_SetSkin( const char *skinname );
-////	void					Event_GetShaderParm( int parmnum );
-////	void					Event_SetShaderParm( int parmnum, float value );
-////	void					Event_SetShaderParms( float parm0, float parm1, float parm2, float parm3 );
-////	void					Event_SetColor( float red, float green, float blue );
-////	void					Event_GetColor( void );
-////	void					Event_IsHidden( void );
-////	void					Event_Hide( void );
-////	void					Event_Show( void );
-////	void					Event_CacheSoundShader( const char *soundName );
-////	void					Event_StartSoundShader( const char *soundName, int channel );
-////	void					Event_StopSound( int channel, int netSync );
-////	void					Event_StartSound( const char *soundName, int channel, int netSync );
-////	void					Event_FadeSound( int channel, float to, float over );
-////	void					Event_GetWorldOrigin( void );
-////	void					Event_SetWorldOrigin( idVec3 const &org );
-////	void					Event_GetOrigin( void );
-////	void					Event_SetOrigin( const idVec3 &org );
-////	void					Event_GetAngles( void );
-////	void					Event_SetAngles( const idAngles &ang );
-////	void					Event_SetLinearVelocity( const idVec3 &velocity );
-////	void					Event_GetLinearVelocity( void );
-////	void					Event_SetAngularVelocity( const idVec3 &velocity );
-////	void					Event_GetAngularVelocity( void );
-////	void					Event_SetSize( const idVec3 &mins, const idVec3 &maxs );
-////	void					Event_GetSize( void );
-////	void					Event_GetMins( void );
-////	void					Event_GetMaxs( void );
-////	void					Event_Touches( idEntity *ent );
-////	void					Event_SetGuiParm( const char *key, const char *val );
-////	void					Event_SetGuiFloat( const char *key, float f );
-////	void					Event_GetNextKey( const char *prefix, const char *lastMatch );
-////	void					Event_SetKey( const char *key, const char *value );
-////	void					Event_GetKey( const char *key );
-////	void					Event_GetIntKey( const char *key );
-////	void					Event_GetFloatKey( const char *key );
-////	void					Event_GetVectorKey( const char *key );
-////	void					Event_GetEntityKey( const char *key );
-////	void					Event_RestorePosition( void );
-////	void					Event_UpdateCameraTarget( void );
-////	void					Event_DistanceTo( idEntity *ent );
-////	void					Event_DistanceToPoint( const idVec3 &point );
-////	void					Event_StartFx( const char *fx );
-////	void					Event_WaitFrame( void );
-////	void					Event_Wait( float time );
-////	void					Event_HasFunction( const char *name );
-////	void					Event_CallFunction( const char *name );
-////	void					Event_SetNeverDormant( int enable );
+	Event_GetName ( ): void { throw "placeholder"; }
+	Event_SetName ( name: string ): void { throw "placeholder"; }
+	Event_FindTargets ( ): void { throw "placeholder"; }
+	Event_ActivateTargets ( activator: idEntity ): void { throw "placeholder"; }
+	Event_NumTargets ( ): void { throw "placeholder"; }
+	Event_GetTarget ( /*float*/ index: number ): void { throw "placeholder"; }
+	Event_RandomTarget ( ignore: string ): void { throw "placeholder"; }
+	Event_Bind ( master: idEntity ): void { throw "placeholder"; }
+	Event_BindPosition ( master: idEntity ): void { throw "placeholder"; }
+	Event_BindToJoint ( master: idEntity, jointname: string, /*float*/ orientated: number ): void { throw "placeholder"; }
+	Event_Unbind ( ): void { throw "placeholder"; }
+	Event_RemoveBinds ( ): void { throw "placeholder"; }
+	Event_SpawnBind ( ): void { throw "placeholder"; }
+	Event_SetOwner ( owner: idEntity ): void { throw "placeholder"; }
+	Event_SetModel ( modelname: string ): void { throw "placeholder"; }
+	Event_SetSkin ( skinname: string ): void { throw "placeholder"; }
+	Event_GetShaderParm ( /*int*/ parmnum: number ): void { throw "placeholder"; }
+	Event_SetShaderParm ( /*int*/ parmnum: number, /*float*/ value: number ): void { throw "placeholder"; }
+	Event_SetShaderParms ( /*float*/ parm0: number, /*float*/ parm1: number, /*float*/ parm2: number, /*float*/ parm3: number ): void { throw "placeholder"; }
+	Event_SetColor ( /*float*/ red: number, /*float*/ green: number, /*float*/ blue: number ): void { throw "placeholder"; }
+	Event_GetColor ( ): void { throw "placeholder"; }
+	Event_IsHidden ( ): void { throw "placeholder"; }
+	Event_Hide ( ): void { throw "placeholder"; }
+	Event_Show ( ): void { throw "placeholder"; }
+	Event_CacheSoundShader ( soundName: string ): void { throw "placeholder"; }
+	Event_StartSoundShader ( soundName: string, /*int*/ channel: number ): void { throw "placeholder"; }
+	Event_StopSound ( /*int*/ channel: number, /*int*/ netSync: number ): void { throw "placeholder"; }
+	Event_StartSound ( soundName: string, /*int*/ channel: number, /*int*/ netSync: number ): void { throw "placeholder"; }
+	Event_FadeSound ( /*int*/ channel: number, /*float*/ to: number, /*float*/ over: number ): void { throw "placeholder"; }
+	Event_GetWorldOrigin ( ): void { throw "placeholder"; }
+	Event_SetWorldOrigin ( org: idVec3 ): void { throw "placeholder"; }
+	Event_GetOrigin ( ): void { throw "placeholder"; }
+	Event_SetOrigin ( org: idVec3 ): void { throw "placeholder"; }
+	Event_GetAngles ( ): void { throw "placeholder"; }
+	Event_SetAngles ( ang: idAngles ): void { throw "placeholder"; }
+	Event_SetLinearVelocity ( velocity: idVec3 ): void { throw "placeholder"; }
+	Event_GetLinearVelocity ( ): void { throw "placeholder"; }
+	Event_SetAngularVelocity ( velocity: idVec3 ): void { throw "placeholder"; }
+	Event_GetAngularVelocity ( ): void { throw "placeholder"; }
+	Event_SetSize ( mins: idVec3, maxs: idVec3 ): void { throw "placeholder"; }
+	Event_GetSize ( ): void { throw "placeholder"; }
+	Event_GetMins ( ): void { throw "placeholder"; }
+	Event_GetMaxs ( ): void { throw "placeholder"; }
+	Event_Touches ( ent: idEntity ): void { throw "placeholder"; }
+	Event_SetGuiParm ( key: string, val: string ): void { throw "placeholder"; }
+	Event_SetGuiFloat ( key: string, /*float*/ f: number ): void { throw "placeholder"; }
+	Event_GetNextKey ( prefix: string, lastMatch: string ): void { throw "placeholder"; }
+	Event_SetKey ( key: string, value: string ): void { throw "placeholder"; }
+	Event_GetKey ( key: string ): void { throw "placeholder"; }
+	Event_GetIntKey ( key: string ): void { throw "placeholder"; }
+	Event_GetFloatKey ( key: string ): void { throw "placeholder"; }
+	Event_GetVectorKey ( key: string ): void { throw "placeholder"; }
+	Event_GetEntityKey ( key: string ): void { throw "placeholder"; }
+	Event_RestorePosition ( ): void { throw "placeholder"; }
+	Event_UpdateCameraTarget ( ): void { throw "placeholder"; }
+	Event_DistanceTo ( ent: idEntity ): void { throw "placeholder"; }
+	Event_DistanceToPoint ( point: idVec3 ): void { throw "placeholder"; }
+	Event_StartFx ( fx: string ): void { throw "placeholder"; }
+	Event_WaitFrame ( ): void { throw "placeholder"; }
+	Event_Wait ( /*float*/ time: number ): void { throw "placeholder"; }
+	Event_HasFunction ( name: string ): void { throw "placeholder"; }
+	Event_CallFunction ( name: string ): void { throw "placeholder"; }
+	Event_SetNeverDormant ( /*int*/ enable: number ): void { throw "placeholder"; }
 };
+
 ////
 /////*
 ////===============================================================================

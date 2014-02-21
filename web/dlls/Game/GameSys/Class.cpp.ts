@@ -63,9 +63,12 @@ class idEventFunc<Type> {
 	$function: ( ...args: any[] /*????*/ ) => void; //eventCallback_t  - typedef void ( idClass::*eventCallback_t )( void ); ?????
 }
 
-////// added & so gcc could compile this
+// added & so gcc could compile this
 ////#define EVENT( event, function )	{ &( event ), ( void ( idClass::* )( void ) )( &function ) },
-////#define END_CLASS					{ NULL, NULL } };
+function EVENT(event: idEventDef, $function: any): idEventFunc<any>{
+	return new idEventFunc( event, $function );
+}
+////#define END_CLASS					{ NULL, NULL } };	
 
 
 class idEventArg {
