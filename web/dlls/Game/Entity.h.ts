@@ -517,13 +517,13 @@ class idAnimatedEntity extends idEntity {
 ////	damageEffect_t *		damageEffects;
 ////
 ////private:
-////	void					Event_GetJointHandle( const char *jointname );
-////	void 					Event_ClearAllJoints( void );
-////	void 					Event_ClearJoint( jointHandle_t jointnum );
-////	void 					Event_SetJointPos( jointHandle_t jointnum, jointModTransform_t transform_type, const idVec3 &pos );
-////	void 					Event_SetJointAngle( jointHandle_t jointnum, jointModTransform_t transform_type, const idAngles &angles );
-////	void 					Event_GetJointPos( jointHandle_t jointnum );
-////	void 					Event_GetJointAngle( jointHandle_t jointnum );
+////	void					Event_GetJointHandle( const char *jointname ): void { throw "placeholder"; }
+////	void 					Event_ClearAllJoints( void ): void { throw "placeholder"; }
+////	void 					Event_ClearJoint( jointHandle_t jointnum ): void { throw "placeholder"; }
+////	void 					Event_SetJointPos( jointHandle_t jointnum, jointModTransform_t transform_type, const idVec3 &pos ): void { throw "placeholder"; }
+////	void 					Event_SetJointAngle( jointHandle_t jointnum, jointModTransform_t transform_type, const idAngles &angles ): void { throw "placeholder"; }
+////	void 					Event_GetJointPos( jointHandle_t jointnum ): void { throw "placeholder"; }
+////	void 					Event_GetJointAngle( jointHandle_t jointnum ): void { throw "placeholder"; }
 };
 ////
 ////#endif /* !__GAME_ENTITY_H__ */

@@ -122,11 +122,11 @@
 ////
 ////	void					AddDefaultDamageEffect( const trace_t &collision, const idVec3 &velocity );
 ////
-////	void					Event_Explode( void );
-////	void					Event_Fizzle( void );
-////	void					Event_RadiusDamage( idEntity *ignore );
-////	void					Event_Touch( idEntity *other, trace_t *trace );
-////	void					Event_GetProjectileState( void );
+////	void					Event_Explode( void ): void { throw "placeholder"; }
+////	void					Event_Fizzle( void ): void { throw "placeholder"; }
+////	void					Event_RadiusDamage( idEntity *ignore ): void { throw "placeholder"; }
+////	void					Event_Touch( idEntity *other, trace_t *trace ): void { throw "placeholder"; }
+////	void					Event_GetProjectileState( void ): void { throw "placeholder"; }
 ////};
 ////
 ////class idGuidedProjectile : public idProjectile {
@@ -219,9 +219,9 @@
 ////	int						nextDamageTime;
 ////	idStr					damageFreq;
 ////
-////	void					FreeBeams();
-////	void					Event_RemoveBeams();
-////	void					ApplyDamage();
+////	void					FreeBeams(): void { throw "placeholder"; }
+////	void					Event_RemoveBeams(): void { throw "placeholder"; }
+////	void					ApplyDamage(): void { throw "placeholder"; }
 ////};
 ////
 /////*
@@ -262,8 +262,8 @@
 ////	const idSoundShader *	sndBounce;
 ////
 ////
-////	void					Event_Explode( void );
-////	void					Event_Fizzle( void );
+////	void					Event_Explode( void ): void { throw "placeholder"; }
+////	void					Event_Fizzle( void ): void { throw "placeholder"; }
 ////};
 ////
 ////#endif /* !__GAME_PROJECTILE_H__ */

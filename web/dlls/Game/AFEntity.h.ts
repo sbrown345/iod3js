@@ -30,22 +30,25 @@
 ////#define __GAME_AFENTITY_H__
 ////
 ////
-/////*
-////===============================================================================
-////
-////idMultiModelAF
-////
-////Entity using multiple separate visual models animated with a single
-////articulated figure. Only used for debugging!
-////
-////===============================================================================
-////*/
-////const int GIB_DELAY = 200;  // only gib this often to keep performace hits when blowing up several mobs
-////
-////class idMultiModelAF : public idEntity {
+/*
+===============================================================================
+
+idMultiModelAF
+
+Entity using multiple separate visual models animated with a single
+articulated figure. Only used for debugging!
+
+===============================================================================
+*/
+var GIB_DELAY = 200;  // only gib this often to keep performace hits when blowing up several mobs
+
+class idMultiModelAF extends idEntity {
 ////public:
-////	CLASS_PROTOTYPE( idMultiModelAF );
-////
+//	CLASS_PROTOTYPE( idMultiModelAF );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idMultiModelAF>[];
 ////	void					Spawn( void );
 ////							~idMultiModelAF( void );
 ////
@@ -60,7 +63,7 @@
 ////private:
 ////	idList<idRenderModel *>	modelHandles;
 ////	idList<int>				modelDefHandles;
-////};
+};
 ////
 ////
 /////*
@@ -73,28 +76,36 @@
 ////===============================================================================
 ////*/
 ////
-////class idChain : public idMultiModelAF {
+class idChain extends idMultiModelAF {
 ////public:
 ////	CLASS_PROTOTYPE( idChain );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idChain>[];
 ////
 ////	void					Spawn( void );
 ////
 ////protected:
 ////	void					BuildChain( const idStr &name, const idVec3 &origin, float linkLength, float linkWidth, float density, int numLinks, bool bindToWorld = true );
-////};
-////
-////
-/////*
-////===============================================================================
-////
-////idAFAttachment
-////
-////===============================================================================
-////*/
-////
-////class idAFAttachment : public idAnimatedEntity {
+};
+
+
+/*
+===============================================================================
+
+idAFAttachment
+
+===============================================================================
+*/
+
+class idAFAttachment extends  idAnimatedEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idAFAttachment );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idAFAttachment>[];
 ////
 ////							idAFAttachment( void );
 ////	virtual					~idAFAttachment( void );
@@ -132,8 +143,8 @@
 ////	idClipModel *			combatModel;	// render model for hit detection of head
 ////	int						idleAnim;
 ////	jointHandle_t			attachJoint;
-////};
-////
+};
+
 
 /*
 ===============================================================================
@@ -146,6 +157,10 @@ idAFEntity_Base
 class idAFEntity_Base extends idAnimatedEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idAFEntity_Base );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idAFEntity_Base>[];
 ////
 ////							idAFEntity_Base( void );
 ////	virtual					~idAFEntity_Base( void );
@@ -196,7 +211,7 @@ class idAFEntity_Base extends idAnimatedEntity {
 ////	idMat3					spawnAxis;		// rotation axis used when spawned
 ////	int						nextSoundTime;	// next time this can make a sound
 ////
-////	void					Event_SetConstraintPosition( const char *name, const idVec3 &pos );
+////	void					Event_SetConstraintPosition( const char *name, const idVec3 &pos ): void { throw "placeholder"; }
 };
 ////
 /////*
@@ -213,6 +228,10 @@ class idAFEntity_Base extends idAnimatedEntity {
 class idAFEntity_Gibbable extends idAFEntity_Base {
 ////public:
 ////	CLASS_PROTOTYPE( idAFEntity_Gibbable );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idAFEntity_Gibbable>[];
 ////
 ////							idAFEntity_Gibbable( void );
 ////							~idAFEntity_Gibbable( void );
@@ -232,20 +251,25 @@ class idAFEntity_Gibbable extends idAFEntity_Base {
 ////	virtual void			Gib( const idVec3 &dir, const char *damageDefName );
 ////	void					InitSkeletonModel( void );
 ////
-////	void					Event_Gib( const char *damageDefName );
+////	void					Event_Gib( const char *damageDefName ): void { throw "placeholder"; }
 };
-////
-/////*
-////===============================================================================
-////
-////	idAFEntity_Generic
-////
-////===============================================================================
-////*/
-////
-////class idAFEntity_Generic : public idAFEntity_Gibbable {
+
+/*
+===============================================================================
+
+	idAFEntity_Generic
+
+===============================================================================
+*/
+
+class idAFEntity_Generic extends  idAFEntity_Gibbable
+{
 ////public:
 ////	CLASS_PROTOTYPE( idAFEntity_Generic );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idAFEntity_Generic>[];
 ////
 ////							idAFEntity_Generic( void );
 ////							~idAFEntity_Generic( void );
@@ -259,23 +283,27 @@ class idAFEntity_Gibbable extends idAFEntity_Base {
 ////	void					KeepRunningPhysics( void ) { keepRunningPhysics = true; }
 ////
 ////private:
-////	void					Event_Activate( idEntity *activator );
+////	void					Event_Activate( idEntity *activator ): void { throw "placeholder"; }
 ////
 ////	bool					keepRunningPhysics;
-////};
-////
-////
-/////*
-////===============================================================================
-////
-////idAFEntity_WithAttachedHead
-////
-////===============================================================================
-////*/
-////
-////class idAFEntity_WithAttachedHead : public idAFEntity_Gibbable {
+};
+
+
+/*
+===============================================================================
+
+idAFEntity_WithAttachedHead
+
+===============================================================================
+*/
+
+class idAFEntity_WithAttachedHead extends  idAFEntity_Gibbable {
 ////public:
 ////	CLASS_PROTOTYPE( idAFEntity_WithAttachedHead );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idAFEntity_WithAttachedHead>[];
 ////
 ////							idAFEntity_WithAttachedHead();
 ////							~idAFEntity_WithAttachedHead();
@@ -302,22 +330,26 @@ class idAFEntity_Gibbable extends idAFEntity_Base {
 ////private:
 ////	idEntityPtr<idAFAttachment>	head;
 ////
-////	void					Event_Gib( const char *damageDefName );
-////	void					Event_Activate( idEntity *activator );
-////};
-////
-////
-/////*
-////===============================================================================
-////
-////idAFEntity_Vehicle
-////
-////===============================================================================
-////*/
-////
-////class idAFEntity_Vehicle : public idAFEntity_Base {
+////	void					Event_Gib( const char *damageDefName ): void { throw "placeholder"; }
+////	void					Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+};
+
+
+/*
+===============================================================================
+
+idAFEntity_Vehicle
+
+===============================================================================
+*/
+
+class idAFEntity_Vehicle extends idAFEntity_Base {
 ////public:
 ////	CLASS_PROTOTYPE( idAFEntity_Vehicle );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idAFEntity_Vehicle>[];
 ////
 ////							idAFEntity_Vehicle( void );
 ////
@@ -334,20 +366,24 @@ class idAFEntity_Gibbable extends idAFEntity_Base {
 ////	const idDeclParticle *	dustSmoke;
 ////
 ////	float					GetSteerAngle( void );
-////};
-////
-////
-/////*
-////===============================================================================
-////
-////idAFEntity_VehicleSimple
-////
-////===============================================================================
-////*/
-////
-////class idAFEntity_VehicleSimple : public idAFEntity_Vehicle {
+};
+
+
+/*
+===============================================================================
+
+idAFEntity_VehicleSimple
+
+===============================================================================
+*/
+
+class idAFEntity_VehicleSimple extends idAFEntity_Vehicle {
 ////public:
 ////	CLASS_PROTOTYPE( idAFEntity_VehicleSimple );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idAFEntity_VehicleSimple>[];
 ////
 ////							idAFEntity_VehicleSimple( void );
 ////							~idAFEntity_VehicleSimple( void );
@@ -360,20 +396,24 @@ class idAFEntity_Gibbable extends idAFEntity_Base {
 ////	idAFConstraint_Suspension *	suspension[4];
 ////	jointHandle_t			wheelJoints[4];
 ////	float					wheelAngles[4];
-////};
-////
-////
-/////*
-////===============================================================================
-////
-////idAFEntity_VehicleFourWheels
-////
-////===============================================================================
-////*/
-////
-////class idAFEntity_VehicleFourWheels : public idAFEntity_Vehicle {
+};
+
+
+/*
+===============================================================================
+
+idAFEntity_VehicleFourWheels
+
+===============================================================================
+*/
+
+class idAFEntity_VehicleFourWheels extends idAFEntity_Vehicle {
 ////public:
 ////	CLASS_PROTOTYPE( idAFEntity_VehicleFourWheels );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idAFEntity_VehicleFourWheels>[];
 ////
 ////							idAFEntity_VehicleFourWheels( void );
 ////
@@ -385,20 +425,24 @@ class idAFEntity_Gibbable extends idAFEntity_Base {
 ////	idAFConstraint_Hinge *	steering[2];
 ////	jointHandle_t			wheelJoints[4];
 ////	float					wheelAngles[4];
-////};
-////
-////
-/////*
-////===============================================================================
-////
-////idAFEntity_VehicleSixWheels
-////
-////===============================================================================
-////*/
-////
-////class idAFEntity_VehicleSixWheels : public idAFEntity_Vehicle {
+};
+
+
+/*
+===============================================================================
+
+idAFEntity_VehicleSixWheels
+
+===============================================================================
+*/
+
+class idAFEntity_VehicleSixWheels extends idAFEntity_Vehicle {
 ////public:
 ////	CLASS_PROTOTYPE( idAFEntity_VehicleSixWheels );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idAFEntity_VehicleSixWheels>[];
 ////
 ////							idAFEntity_VehicleSixWheels( void );
 ////
@@ -410,20 +454,24 @@ class idAFEntity_Gibbable extends idAFEntity_Base {
 ////	idAFConstraint_Hinge *	steering[4];
 ////	jointHandle_t			wheelJoints[6];
 ////	float					wheelAngles[6];
-////};
-////
-////
-/////*
-////===============================================================================
-////
-////idAFEntity_SteamPipe
-////
-////===============================================================================
-////*/
-////
-////class idAFEntity_SteamPipe : public idAFEntity_Base {
+};
+
+
+/*
+===============================================================================
+
+idAFEntity_SteamPipe
+
+===============================================================================
+*/
+
+class idAFEntity_SteamPipe extends idAFEntity_Base {
 ////public:
 ////	CLASS_PROTOTYPE( idAFEntity_SteamPipe );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idAFEntity_SteamPipe>[];
 ////
 ////							idAFEntity_SteamPipe( void );
 ////							~idAFEntity_SteamPipe( void );
@@ -443,20 +491,24 @@ class idAFEntity_Gibbable extends idAFEntity_Base {
 ////	qhandle_t				steamModelDefHandle;
 ////
 ////	void					InitSteamRenderEntity( void );
-////};
-////
-////
-/////*
-////===============================================================================
-////
-////idAFEntity_ClawFourFingers
-////
-////===============================================================================
-////*/
-////
-////class idAFEntity_ClawFourFingers : public idAFEntity_Base {
+};
+
+
+/*
+===============================================================================
+
+idAFEntity_ClawFourFingers
+
+===============================================================================
+*/
+
+class idAFEntity_ClawFourFingers extends idAFEntity_Base {
 ////public:
 ////	CLASS_PROTOTYPE( idAFEntity_ClawFourFingers );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idAFEntity_ClawFourFingers>[];
 ////
 ////							idAFEntity_ClawFourFingers( void );
 ////
@@ -467,8 +519,8 @@ class idAFEntity_Gibbable extends idAFEntity_Base {
 ////private:
 ////	idAFConstraint_Hinge *	fingers[4];
 ////
-////	void					Event_SetFingerAngle( float angle );
-////	void					Event_StopFingers( void );
-////};
+////	void					Event_SetFingerAngle( float angle ): void { throw "placeholder"; }
+////	void					Event_StopFingers( void ): void { throw "placeholder"; }
+};
 ////
 ////#endif /* !__GAME_AFENTITY_H__ */

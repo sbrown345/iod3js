@@ -665,24 +665,24 @@
 ////
 ////	void					UseVehicle( void );
 ////
-////	void					Event_GetButtons( void );
-////	void					Event_GetMove( void );
-////	void					Event_GetViewAngles( void );
-////	void					Event_StopFxFov( void );
-////	void					Event_EnableWeapon( void );
-////	void					Event_DisableWeapon( void );
-////	void					Event_GetCurrentWeapon( void );
-////	void					Event_GetPreviousWeapon( void );
-////	void					Event_SelectWeapon( const char *weaponName );
-////	void					Event_GetWeaponEntity( void );
-////	void					Event_OpenPDA( void );
-////	void					Event_PDAAvailable( void );
-////	void					Event_InPDA( void );
-////	void					Event_ExitTeleporter( void );
-////	void					Event_HideTip( void );
-////	void					Event_LevelTrigger( void );
-////	void					Event_Gibbed( void );
-////	void					Event_GetIdealWeapon( void );
+////	void					Event_GetButtons( void ): void { throw "placeholder"; }
+////	void					Event_GetMove( void ): void { throw "placeholder"; }
+////	void					Event_GetViewAngles( void ): void { throw "placeholder"; }
+////	void					Event_StopFxFov( void ): void { throw "placeholder"; }
+////	void					Event_EnableWeapon( void ): void { throw "placeholder"; }
+////	void					Event_DisableWeapon( void ): void { throw "placeholder"; }
+////	void					Event_GetCurrentWeapon( void ): void { throw "placeholder"; }
+////	void					Event_GetPreviousWeapon( void ): void { throw "placeholder"; }
+////	void					Event_SelectWeapon( const char *weaponName ): void { throw "placeholder"; }
+////	void					Event_GetWeaponEntity( void ): void { throw "placeholder"; }
+////	void					Event_OpenPDA( void ): void { throw "placeholder"; }
+////	void					Event_PDAAvailable( void ): void { throw "placeholder"; }
+////	void					Event_InPDA( void ): void { throw "placeholder"; }
+////	void					Event_ExitTeleporter( void ): void { throw "placeholder"; }
+////	void					Event_HideTip( void ): void { throw "placeholder"; }
+////	void					Event_LevelTrigger( void ): void { throw "placeholder"; }
+////	void					Event_Gibbed( void ): void { throw "placeholder"; }
+////	void					Event_GetIdealWeapon( void ): void { throw "placeholder"; }
 ////};
 ////
 ////ID_INLINE bool idPlayer::IsReady( void ) {

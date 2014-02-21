@@ -311,43 +311,43 @@
 ////	void					UpdateFlashPosition( void );
 ////
 ////	// script events
-////	void					Event_Clear( void );
-////	void					Event_GetOwner( void );
-////	void					Event_WeaponState( const char *statename, int blendFrames );
-////	void					Event_SetWeaponStatus( float newStatus );
-////	void					Event_WeaponReady( void );
-////	void					Event_WeaponOutOfAmmo( void );
-////	void					Event_WeaponReloading( void );
-////	void					Event_WeaponHolstered( void );
-////	void					Event_WeaponRising( void );
-////	void					Event_WeaponLowering( void );
-////	void					Event_UseAmmo( int amount );
-////	void					Event_AddToClip( int amount );
-////	void					Event_AmmoInClip( void );
-////	void					Event_AmmoAvailable( void );
-////	void					Event_TotalAmmoCount( void );
-////	void					Event_ClipSize( void );
-////	void					Event_PlayAnim( int channel, const char *animname );
-////	void					Event_PlayCycle( int channel, const char *animname );
-////	void					Event_AnimDone( int channel, int blendFrames );
-////	void					Event_SetBlendFrames( int channel, int blendFrames );
-////	void					Event_GetBlendFrames( int channel );
-////	void					Event_Next( void );
-////	void					Event_SetSkin( const char *skinname );
-////	void					Event_Flashlight( int enable );
-////	void					Event_GetLightParm( int parmnum );
-////	void					Event_SetLightParm( int parmnum, float value );
-////	void					Event_SetLightParms( float parm0, float parm1, float parm2, float parm3 );
-////	void					Event_LaunchProjectiles( int num_projectiles, float spread, float fuseOffset, float launchPower, float dmgPower );
-////	void					Event_CreateProjectile( void );
-////	void					Event_EjectBrass( void );
-////	void					Event_Melee( void );
-////	void					Event_GetWorldModel( void );
-////	void					Event_AllowDrop( int allow );
-////	void					Event_AutoReload( void );
-////	void					Event_NetReload( void );
-////	void					Event_IsInvisible( void );
-////	void					Event_NetEndReload( void );
+////	void					Event_Clear( void ): void { throw "placeholder"; }
+////	void					Event_GetOwner( void ): void { throw "placeholder"; }
+////	void					Event_WeaponState( const char *statename, int blendFrames ): void { throw "placeholder"; }
+////	void					Event_SetWeaponStatus( float newStatus ): void { throw "placeholder"; }
+////	void					Event_WeaponReady( void ): void { throw "placeholder"; }
+////	void					Event_WeaponOutOfAmmo( void ): void { throw "placeholder"; }
+////	void					Event_WeaponReloading( void ): void { throw "placeholder"; }
+////	void					Event_WeaponHolstered( void ): void { throw "placeholder"; }
+////	void					Event_WeaponRising( void ): void { throw "placeholder"; }
+////	void					Event_WeaponLowering( void ): void { throw "placeholder"; }
+////	void					Event_UseAmmo( int amount ): void { throw "placeholder"; }
+////	void					Event_AddToClip( int amount ): void { throw "placeholder"; }
+////	void					Event_AmmoInClip( void ): void { throw "placeholder"; }
+////	void					Event_AmmoAvailable( void ): void { throw "placeholder"; }
+////	void					Event_TotalAmmoCount( void ): void { throw "placeholder"; }
+////	void					Event_ClipSize( void ): void { throw "placeholder"; }
+////	void					Event_PlayAnim( int channel, const char *animname ): void { throw "placeholder"; }
+////	void					Event_PlayCycle( int channel, const char *animname ): void { throw "placeholder"; }
+////	void					Event_AnimDone( int channel, int blendFrames ): void { throw "placeholder"; }
+////	void					Event_SetBlendFrames( int channel, int blendFrames ): void { throw "placeholder"; }
+////	void					Event_GetBlendFrames( int channel ): void { throw "placeholder"; }
+////	void					Event_Next( void ): void { throw "placeholder"; }
+////	void					Event_SetSkin( const char *skinname ): void { throw "placeholder"; }
+////	void					Event_Flashlight( int enable ): void { throw "placeholder"; }
+////	void					Event_GetLightParm( int parmnum ): void { throw "placeholder"; }
+////	void					Event_SetLightParm( int parmnum, float value ): void { throw "placeholder"; }
+////	void					Event_SetLightParms( float parm0, float parm1, float parm2, float parm3 ): void { throw "placeholder"; }
+////	void					Event_LaunchProjectiles( int num_projectiles, float spread, float fuseOffset, float launchPower, float dmgPower ): void { throw "placeholder"; }
+////	void					Event_CreateProjectile( void ): void { throw "placeholder"; }
+////	void					Event_EjectBrass( void ): void { throw "placeholder"; }
+////	void					Event_Melee( void ): void { throw "placeholder"; }
+////	void					Event_GetWorldModel( void ): void { throw "placeholder"; }
+////	void					Event_AllowDrop( int allow ): void { throw "placeholder"; }
+////	void					Event_AutoReload( void ): void { throw "placeholder"; }
+////	void					Event_NetReload( void ): void { throw "placeholder"; }
+////	void					Event_IsInvisible( void ): void { throw "placeholder"; }
+////	void					Event_NetEndReload( void ): void { throw "placeholder"; }
 ////};
 ////
 ////ID_INLINE bool idWeapon::IsLinked( void ) {

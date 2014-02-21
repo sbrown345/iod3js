@@ -38,9 +38,13 @@
 ////===============================================================================
 ////*/
 ////
-////class idItem : public idEntity {
+class idItem extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idItem );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idItem>[];
 ////
 ////							idItem();
 ////	virtual					~idItem();
@@ -87,17 +91,21 @@
 ////
 ////	bool					UpdateRenderEntity( renderEntity_s *renderEntity, const renderView_t *renderView ) const;
 ////	static bool				ModelCallback( renderEntity_s *renderEntity, const renderView_t *renderView );
-////
-////	void					Event_DropToFloor( void );
-////	void					Event_Touch( idEntity *other, trace_t *trace );
-////	void					Event_Trigger( idEntity *activator );
-////	void					Event_Respawn( void );
-////	void					Event_RespawnFx( void );
-////};
-////
-////class idItemPowerup : public idItem {
+
+	Event_DropToFloor ( ): void { throw "placeholder"; }
+	Event_Touch( other: idEntity, trace: trace_t ): void { throw "placeholder"; }
+	Event_Trigger(activator: idEntity): void { throw "placeholder"; }
+	Event_Respawn( ): void { throw "placeholder"; }
+	Event_RespawnFx( ): void { throw "placeholder"; }
+};
+
+class idItemPowerup extends idItem {
 ////public:
 ////	CLASS_PROTOTYPE( idItemPowerup );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idItemPowerup>[];
 ////
 ////							idItemPowerup();
 ////
@@ -110,11 +118,15 @@
 ////private:
 ////	int						time;
 ////	int						type;
-////};
-////
-////class idObjective : public idItem {
+};
+
+class idObjective extends idItem {
 ////public:
 ////	CLASS_PROTOTYPE( idObjective );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idObjective>[];
 ////
 ////							idObjective();
 ////
@@ -126,30 +138,42 @@
 ////private:
 ////	idVec3					playerPos;
 ////
-////	void					Event_Trigger( idEntity *activator );
-////	void					Event_HideObjective( idEntity *e );
-////	void					Event_GetPlayerPos();
-////	void					Event_CamShot();
-////};
-////
-////class idVideoCDItem : public idItem {
+////	void					Event_Trigger( idEntity *activator ): void { throw "placeholder"; }
+////	void					Event_HideObjective( idEntity *e ): void { throw "placeholder"; }
+////	void					Event_GetPlayerPos(): void { throw "placeholder"; }
+////	void					Event_CamShot(): void { throw "placeholder"; }
+};
+
+class idVideoCDItem extends idItem {
 ////public:
 ////	CLASS_PROTOTYPE( idVideoCDItem );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idVideoCDItem>[];
 ////
 ////	void					Spawn();
 ////	virtual bool			GiveToPlayer( idPlayer *player );
-////};
-////
-////class idPDAItem : public idItem {
+};
+
+class idPDAItem extends idItem {
 ////public:
 ////	CLASS_PROTOTYPE( idPDAItem );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idPDAItem>[];
 ////
 ////	virtual bool			GiveToPlayer( idPlayer *player );
-////};
-////
-////class idMoveableItem : public idItem {
+};
+
+class idMoveableItem extends idItem {
 ////public:
 ////	CLASS_PROTOTYPE( idMoveableItem );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idMoveableItem>[];
 ////
 ////							idMoveableItem();
 ////	virtual					~idMoveableItem();
@@ -175,39 +199,51 @@
 ////
 ////	void					Gib( const idVec3 &dir, const char *damageDefName );
 ////
-////	void					Event_DropToFloor( void );
-////	void					Event_Gib( const char *damageDefName );
-////};
-////
-////class idMoveablePDAItem : public idMoveableItem {
+////	void					Event_DropToFloor( void ): void { throw "placeholder"; }
+////	void					Event_Gib( const char *damageDefName ): void { throw "placeholder"; }
+};
+
+class idMoveablePDAItem extends idMoveableItem {
 ////public:
 ////	CLASS_PROTOTYPE( idMoveablePDAItem );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idMoveablePDAItem>[];
 ////
 ////	virtual bool			GiveToPlayer( idPlayer *player );
-////};
-////
-/////*
-////===============================================================================
-////
-////  Item removers.
-////
-////===============================================================================
-////*/
-////
-////class idItemRemover : public idEntity {
+};
+
+/*
+===============================================================================
+
+  Item removers.
+
+===============================================================================
+*/
+
+class idItemRemover extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idItemRemover );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idItemRemover>[];
 ////
 ////	void					Spawn();
 ////	void					RemoveItem( idPlayer *player );
 ////
 ////private:
-////	void					Event_Trigger( idEntity *activator );
-////};
-////
-////class idObjectiveComplete : public idItemRemover {
+////	void					Event_Trigger( idEntity *activator ): void { throw "placeholder"; }
+};
+
+class idObjectiveComplete extends idItemRemover {
 ////public:
 ////	CLASS_PROTOTYPE( idObjectiveComplete );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idObjectiveComplete>[];
 ////
 ////							idObjectiveComplete();
 ////
@@ -219,9 +255,9 @@
 ////private:
 ////	idVec3					playerPos;
 ////
-////	void					Event_Trigger( idEntity *activator );
-////	void					Event_HideObjective( idEntity *e );
-////	void					Event_GetPlayerPos();
-////};
-////
+	Event_Trigger(activator: idEntity): void { throw "placeholder"; }
+	Event_HideObjective(e: idEntity): void { throw "placeholder"; }
+	Event_GetPlayerPos(): void { throw "placeholder"; }
+};
+
 ////#endif /* !__GAME_ITEM_H__ */

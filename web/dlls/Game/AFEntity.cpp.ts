@@ -32,16 +32,37 @@
 ////#include "Game_local.h"
 ////
 ////
-/////*
-////===============================================================================
-////
-////  idMultiModelAF
-////
-////===============================================================================
-////*/
-////
-////CLASS_DECLARATION( idEntity, idMultiModelAF )
-////END_CLASS
+/*
+===============================================================================
+
+  idMultiModelAF
+
+===============================================================================
+*/
+
+//CLASS_DECLARATION(idEntity, idMultiModelAF)
+idMultiModelAF.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idMultiModelAF;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idMultiModelAF.prototype.GetType = function ( ): idTypeInfo {
+	return ( idMultiModelAF.Type );
+};
+
+idMultiModelAF.eventCallbacks = [
+];
+
+idMultiModelAF.Type = new idTypeInfo( "idMultiModelAF", "idEntity",
+	idMultiModelAF.eventCallbacks, idMultiModelAF.CreateInstance, idMultiModelAF.prototype.Spawn,
+	idMultiModelAF.prototype.Save, idMultiModelAF.prototype.Restore );
+
+//END_CLASS
 ////
 /////*
 ////================

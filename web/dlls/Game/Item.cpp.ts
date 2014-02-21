@@ -47,13 +47,34 @@ var EV_GetPlayerPos= new idEventDef( "<getplayerpos>" );
 var EV_HideObjective= new idEventDef( "<hideobjective>", "e" );
 var EV_CamShot= new idEventDef( "<camshot>" );
 
+
 ////CLASS_DECLARATION( idEntity, idItem )
-////	EVENT( EV_DropToFloor,		idItem::Event_DropToFloor )
-////	EVENT( EV_Touch,			idItem::Event_Touch )
-////	EVENT( EV_Activate,			idItem::Event_Trigger )
-////	EVENT( EV_RespawnItem,		idItem::Event_Respawn )
-////	EVENT( EV_RespawnFx,		idItem::Event_RespawnFx )
-////END_CLASS
+idItem.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idItem;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idItem.prototype.GetType = function ( ): idTypeInfo {
+	return ( idItem.Type );
+};
+
+idItem.eventCallbacks = [
+	EVENT(EV_DropToFloor, idItem.prototype.Event_DropToFloor),
+	EVENT(EV_Touch, idItem.prototype.Event_Touch),
+	EVENT(EV_Activate, idItem.prototype.Event_Trigger),
+	EVENT(EV_RespawnItem, idItem.prototype.Event_Respawn),
+	EVENT(EV_RespawnFx, idItem.prototype.Event_RespawnFx)
+];
+
+idItem.Type = new idTypeInfo( "idItem", "idEntity",
+	idItem.eventCallbacks, idItem.CreateInstance, idItem.prototype.Spawn,
+	idItem.prototype.Save, idItem.prototype.Restore );
+
 ////
 ////
 /////*
@@ -565,23 +586,43 @@ var EV_CamShot= new idEventDef( "<camshot>" );
 ////		idEntityFx::StartFx( sfx, NULL, NULL, this, true );
 ////	}
 ////}
-////
-/////*
-////===============================================================================
-////
-////  idItemPowerup
-////
-////===============================================================================
-////*/
-////
-/////*
-////===============
-////idItemPowerup
-////===============
-////*/
-////
-////CLASS_DECLARATION( idItem, idItemPowerup )
-////END_CLASS
+
+/*
+===============================================================================
+
+  idItemPowerup
+
+===============================================================================
+*/
+
+/*
+===============
+idItemPowerup
+===============
+*/
+
+//CLASS_DECLARATION( idItem, idItemPowerup )
+idItemPowerup.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idItemPowerup;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idItemPowerup.prototype.GetType = function ( ): idTypeInfo {
+	return ( idItemPowerup.Type );
+};
+
+idItemPowerup.eventCallbacks = [
+];
+
+idItemPowerup.Type = new idTypeInfo( "idItemPowerup", "idItem",
+	idItemPowerup.eventCallbacks, idItemPowerup.CreateInstance, idItemPowerup.prototype.Spawn,
+	idItemPowerup.prototype.Save, idItemPowerup.prototype.Restore );
+
 ////
 /////*
 ////================

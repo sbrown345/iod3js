@@ -114,15 +114,15 @@
 
 ////	idPhysics_Parametric	physicsObj;
 
-////	void					Event_OpenPortal( void );
-////	void					Event_ClosePortal( void );
-////	void					Event_PartBlocked( idEntity *blockingEntity );
+////	void					Event_OpenPortal( void ): void { throw "placeholder"; }
+////	void					Event_ClosePortal( void ): void { throw "placeholder"; }
+////	void					Event_PartBlocked( idEntity *blockingEntity ): void { throw "placeholder"; }
 
-////	void					MoveToPos( const idVec3 &pos);
-////	void					UpdateMoveSound( moveStage_t stage );
-////	void					UpdateRotationSound( moveStage_t stage );
-////	void					SetGuiStates( const char *state );
-////	void					FindGuiTargets( void );
+////	void					MoveToPos( const idVec3 &pos): void { throw "placeholder"; }
+////	void					UpdateMoveSound( moveStage_t stage ): void { throw "placeholder"; }
+////	void					UpdateRotationSound( moveStage_t stage ): void { throw "placeholder"; }
+////	void					SetGuiStates( const char *state ): void { throw "placeholder"; }
+////	void					FindGuiTargets( void ): void { throw "placeholder"; }
 ////	void					SetGuiState( const char *key, const char *val ) const;
 
 ////	virtual void			DoneMoving( void );
@@ -157,42 +157,42 @@
 ////	void					VectorForDir( float dir, idVec3 &vec );
 ////	idCurve_Spline<idVec3> *GetSpline( idEntity *splineEntity ) const;
 
-////	void					Event_SetCallback( void );	
-////	void					Event_TeamBlocked( idEntity *blockedPart, idEntity *blockingEntity );
-////	void					Event_StopMoving( void );
-////	void					Event_StopRotating( void );
-////	void					Event_UpdateMove( void );
-////	void					Event_UpdateRotation( void );
-////	void					Event_SetMoveSpeed( float speed );
-////	void					Event_SetMoveTime( float time );
-////	void					Event_SetDecelerationTime( float time );
-////	void					Event_SetAccellerationTime( float time );
-////	void					Event_MoveTo( idEntity *ent );
-////	void					Event_MoveToPos( idVec3 &pos );
-////	void					Event_MoveDir( float angle, float distance );
-////	void					Event_MoveAccelerateTo( float speed, float time );
-////	void					Event_MoveDecelerateTo( float speed, float time );
-////	void					Event_RotateDownTo( int axis, float angle );
-////	void					Event_RotateUpTo( int axis, float angle );
-////	void					Event_RotateTo( idAngles &angles );
-////	void					Event_Rotate( idAngles &angles );
-////	void					Event_RotateOnce( idAngles &angles );
-////	void					Event_Bob( float speed, float phase, idVec3 &depth );
-////	void					Event_Sway( float speed, float phase, idAngles &depth );
-////	void					Event_SetAccelSound( const char *sound );
-////	void					Event_SetDecelSound( const char *sound );
-////	void					Event_SetMoveSound( const char *sound );
-////	void					Event_FindGuiTargets( void );
-////	void					Event_InitGuiTargets( void );
-////	void					Event_EnableSplineAngles( void );
-////	void					Event_DisableSplineAngles( void );
-////	void					Event_RemoveInitialSplineAngles( void );
-////	void					Event_StartSpline( idEntity *splineEntity );
-////	void					Event_StopSpline( void );
-////	void					Event_Activate( idEntity *activator );
-////	void					Event_PostRestore( int start, int total, int accel, int decel, int useSplineAng );
-////	void					Event_IsMoving( void );
-////	void					Event_IsRotating( void );
+////	void					Event_SetCallback( void ): void { throw "placeholder"; }	
+////	void					Event_TeamBlocked( idEntity *blockedPart, idEntity *blockingEntity ): void { throw "placeholder"; }
+////	void					Event_StopMoving( void ): void { throw "placeholder"; }
+////	void					Event_StopRotating( void ): void { throw "placeholder"; }
+////	void					Event_UpdateMove( void ): void { throw "placeholder"; }
+////	void					Event_UpdateRotation( void ): void { throw "placeholder"; }
+////	void					Event_SetMoveSpeed( float speed ): void { throw "placeholder"; }
+////	void					Event_SetMoveTime( float time ): void { throw "placeholder"; }
+////	void					Event_SetDecelerationTime( float time ): void { throw "placeholder"; }
+////	void					Event_SetAccellerationTime( float time ): void { throw "placeholder"; }
+////	void					Event_MoveTo( idEntity *ent ): void { throw "placeholder"; }
+////	void					Event_MoveToPos( idVec3 &pos ): void { throw "placeholder"; }
+////	void					Event_MoveDir( float angle, float distance ): void { throw "placeholder"; }
+////	void					Event_MoveAccelerateTo( float speed, float time ): void { throw "placeholder"; }
+////	void					Event_MoveDecelerateTo( float speed, float time ): void { throw "placeholder"; }
+////	void					Event_RotateDownTo( int axis, float angle ): void { throw "placeholder"; }
+////	void					Event_RotateUpTo( int axis, float angle ): void { throw "placeholder"; }
+////	void					Event_RotateTo( idAngles &angles ): void { throw "placeholder"; }
+////	void					Event_Rotate( idAngles &angles ): void { throw "placeholder"; }
+////	void					Event_RotateOnce( idAngles &angles ): void { throw "placeholder"; }
+////	void					Event_Bob( float speed, float phase, idVec3 &depth ): void { throw "placeholder"; }
+////	void					Event_Sway( float speed, float phase, idAngles &depth ): void { throw "placeholder"; }
+////	void					Event_SetAccelSound( const char *sound ): void { throw "placeholder"; }
+////	void					Event_SetDecelSound( const char *sound ): void { throw "placeholder"; }
+////	void					Event_SetMoveSound( const char *sound ): void { throw "placeholder"; }
+////	void					Event_FindGuiTargets( void ): void { throw "placeholder"; }
+////	void					Event_InitGuiTargets( void ): void { throw "placeholder"; }
+////	void					Event_EnableSplineAngles( void ): void { throw "placeholder"; }
+////	void					Event_DisableSplineAngles( void ): void { throw "placeholder"; }
+////	void					Event_RemoveInitialSplineAngles( void ): void { throw "placeholder"; }
+////	void					Event_StartSpline( idEntity *splineEntity ): void { throw "placeholder"; }
+////	void					Event_StopSpline( void ): void { throw "placeholder"; }
+////	void					Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+////	void					Event_PostRestore( int start, int total, int accel, int decel, int useSplineAng ): void { throw "placeholder"; }
+////	void					Event_IsMoving( void ): void { throw "placeholder"; }
+////	void					Event_IsRotating( void ): void { throw "placeholder"; }
 ////};
 
 ////class idSplinePath : public idEntity {
@@ -416,22 +416,22 @@
 ////	void					GetLocalTriggerPosition( const idClipModel *trigger );
 ////	void					CalcTriggerBounds( float size, idBounds &bounds );
 
-////	void					Event_Reached_BinaryMover( void );
-////	void					Event_TeamBlocked( idEntity *blockedEntity, idEntity *blockingEntity );
-////	void					Event_PartBlocked( idEntity *blockingEntity );
-////	void					Event_Touch( idEntity *other, trace_t *trace );
-////	void					Event_Activate( idEntity *activator );
-////	void					Event_StartOpen( void );
-////	void					Event_SpawnDoorTrigger( void );
-////	void					Event_SpawnSoundTrigger( void );
-////	void					Event_Close( void );
-////	void					Event_Open( void );
-////	void					Event_Lock( int f );
-////	void					Event_IsOpen( void );
-////	void					Event_Locked( void );
-////	void					Event_SpectatorTouch( idEntity *other, trace_t *trace );
-////	void					Event_OpenPortal( void );
-////	void					Event_ClosePortal( void );
+////	void					Event_Reached_BinaryMover( void ): void { throw "placeholder"; }
+////	void					Event_TeamBlocked( idEntity *blockedEntity, idEntity *blockingEntity ): void { throw "placeholder"; }
+////	void					Event_PartBlocked( idEntity *blockingEntity ): void { throw "placeholder"; }
+////	void					Event_Touch( idEntity *other, trace_t *trace ): void { throw "placeholder"; }
+////	void					Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+////	void					Event_StartOpen( void ): void { throw "placeholder"; }
+////	void					Event_SpawnDoorTrigger( void ): void { throw "placeholder"; }
+////	void					Event_SpawnSoundTrigger( void ): void { throw "placeholder"; }
+////	void					Event_Close( void ): void { throw "placeholder"; }
+////	void					Event_Open( void ): void { throw "placeholder"; }
+////	void					Event_Lock( int f ): void { throw "placeholder"; }
+////	void					Event_IsOpen( void ): void { throw "placeholder"; }
+////	void					Event_Locked( void ): void { throw "placeholder"; }
+////	void					Event_SpectatorTouch( idEntity *other, trace_t *trace ): void { throw "placeholder"; }
+////	void					Event_OpenPortal( void ): void { throw "placeholder"; }
+////	void					Event_ClosePortal( void ): void { throw "placeholder"; }
 ////};
 
 ////class idPlat : public idMover_Binary {
@@ -458,9 +458,9 @@
 ////	void					GetLocalTriggerPosition( const idClipModel *trigger );
 ////	void					SpawnPlatTrigger( idVec3 &pos );
 
-////	void					Event_TeamBlocked( idEntity *blockedEntity, idEntity *blockingEntity );
-////	void					Event_PartBlocked( idEntity *blockingEntity );
-////	void					Event_Touch( idEntity *other, trace_t *trace );
+////	void					Event_TeamBlocked( idEntity *blockedEntity, idEntity *blockingEntity ): void { throw "placeholder"; }
+////	void					Event_PartBlocked( idEntity *blockingEntity ): void { throw "placeholder"; }
+////	void					Event_Touch( idEntity *other, trace_t *trace ): void { throw "placeholder"; }
 ////};
 
 
@@ -492,8 +492,8 @@
 ////	idPhysics_Parametric	physicsObj;
 ////	float					damage;
 
-////	void					Event_TeamBlocked( idEntity *blockedEntity, idEntity *blockingEntity );
-////	void					Event_PartBlocked( idEntity *blockingEntity );
+////	void					Event_TeamBlocked( idEntity *blockedEntity, idEntity *blockingEntity ): void { throw "placeholder"; }
+////	void					Event_PartBlocked( idEntity *blockingEntity ): void { throw "placeholder"; }
 ////};
 
 ////class idRotater : public idMover_Periodic {
@@ -544,7 +544,7 @@
 ////	void					Spawn( void );
 
 ////private:
-////	void					Event_Activate( idEntity *activator );
+////	void					Event_Activate( idEntity *activator ): void { throw "placeholder"; }
 ////};
 
 ////#endif /* !__GAME_MOVER_H__ */

@@ -274,46 +274,46 @@ class idActor extends idAFEntity_Gibbable {
 ////	void					SetupHead( void );
 ////	void					PlayFootStepSound( void );
 ////
-////	void					Event_EnableEyeFocus( void );
-////	void					Event_DisableEyeFocus( void );
-////	void					Event_Footstep( void );
-////	void					Event_EnableWalkIK( void );
-////	void					Event_DisableWalkIK( void );
-////	void					Event_EnableLegIK( int num );
-////	void					Event_DisableLegIK( int num );
-////	void					Event_SetAnimPrefix( const char *name );
-////	void					Event_LookAtEntity( idEntity *ent, float duration );
-////	void					Event_PreventPain( float duration );
-////	void					Event_DisablePain( void );
-////	void					Event_EnablePain( void );
-////	void					Event_GetPainAnim( void );
-////	void					Event_StopAnim( int channel, int frames );
-////	void					Event_PlayAnim( int channel, const char *name );
-////	void					Event_PlayCycle( int channel, const char *name );
-////	void					Event_IdleAnim( int channel, const char *name );
-////	void					Event_SetSyncedAnimWeight( int channel, int anim, float weight );
-////	void					Event_OverrideAnim( int channel );
-////	void					Event_EnableAnim( int channel, int blendFrames );
-////	void					Event_SetBlendFrames( int channel, int blendFrames );
-////	void					Event_GetBlendFrames( int channel );
-////	void					Event_AnimState( int channel, const char *name, int blendFrames );
-////	void					Event_GetAnimState( int channel );
-////	void					Event_InAnimState( int channel, const char *name );
-////	void					Event_FinishAction( const char *name );
-////	void					Event_AnimDone( int channel, int blendFrames );
-////	void					Event_HasAnim( int channel, const char *name );
-////	void					Event_CheckAnim( int channel, const char *animname );
-////	void					Event_ChooseAnim( int channel, const char *animname );
-////	void					Event_AnimLength( int channel, const char *animname );
-////	void					Event_AnimDistance( int channel, const char *animname );
-////	void					Event_HasEnemies( void );
-////	void					Event_NextEnemy( idEntity *ent );
-////	void					Event_ClosestEnemyToPoint( const idVec3 &pos );
-////	void					Event_StopSound( int channel, int netsync );
-////	void					Event_SetNextState( const char *name );
-////	void					Event_SetState( const char *name );
-////	void					Event_GetState( void );
-////	void					Event_GetHead( void );
+	Event_EnableEyeFocus ( ): void { throw "placeholder"; }
+	Event_DisableEyeFocus ( ): void { throw "placeholder"; }
+	Event_Footstep ( ): void { throw "placeholder"; }
+	Event_EnableWalkIK ( ): void { throw "placeholder"; }
+	Event_DisableWalkIK ( ): void { throw "placeholder"; }
+	Event_EnableLegIK ( /*int*/ num: number ): void { throw "placeholder"; }
+	Event_DisableLegIK ( /*int*/ num: number ): void { throw "placeholder"; }
+	Event_SetAnimPrefix ( name: string ): void { throw "placeholder"; }
+	Event_LookAtEntity ( ent: idEntity, /*float*/ duration: number ): void { throw "placeholder"; }
+	Event_PreventPain ( /*float*/ duration: number ): void { throw "placeholder"; }
+	Event_DisablePain ( ): void { throw "placeholder"; }
+	Event_EnablePain ( ): void { throw "placeholder"; }
+	Event_GetPainAnim ( ): void { throw "placeholder"; }
+	Event_StopAnim ( /*int*/ channel: number, /*int*/ frames: number ): void { throw "placeholder"; }
+	Event_PlayAnim ( /*int*/ channel: number, name: string ): void { throw "placeholder"; }
+	Event_PlayCycle ( /*int*/ channel: number, name: string ): void { throw "placeholder"; }
+	Event_IdleAnim ( /*int*/ channel: number, name: string ): void { throw "placeholder"; }
+	Event_SetSyncedAnimWeight ( /*int*/ channel: number, /*int*/ anim: number, /*float*/ weight: number ): void { throw "placeholder"; }
+	Event_OverrideAnim ( /*int*/ channel: number ): void { throw "placeholder"; }
+	Event_EnableAnim ( /*int*/ channel: number, /*int*/ blendFrames: number ): void { throw "placeholder"; }
+	Event_SetBlendFrames ( /*int*/ channel: number, /*int*/ blendFrames: number ): void { throw "placeholder"; }
+	Event_GetBlendFrames ( /*int*/ channel: number ): void { throw "placeholder"; }
+	Event_AnimState ( /*int*/ channel: number, name: string, /*int*/ blendFrames: number ): void { throw "placeholder"; }
+	Event_GetAnimState ( /*int*/ channel: number ): void { throw "placeholder"; }
+	Event_InAnimState ( /*int*/ channel: number, name: string ): void { throw "placeholder"; }
+	Event_FinishAction ( name: string ): void { throw "placeholder"; }
+	Event_AnimDone ( /*int*/ channel: number, /*int*/ blendFrames: number ): void { throw "placeholder"; }
+	Event_HasAnim ( /*int*/ channel: number, name: string ): void { throw "placeholder"; }
+	Event_CheckAnim ( /*int*/ channel: number, animname: string ): void { throw "placeholder"; }
+	Event_ChooseAnim ( /*int*/ channel: number, animname: string ): void { throw "placeholder"; }
+	Event_AnimLength ( /*int*/ channel: number, animname: string ): void { throw "placeholder"; }
+	Event_AnimDistance ( /*int*/ channel: number, animname: string ): void { throw "placeholder"; }
+	Event_HasEnemies ( ): void { throw "placeholder"; }
+	Event_NextEnemy ( ent: idEntity ): void { throw "placeholder"; }
+	Event_ClosestEnemyToPoint ( pos: idVec3 ): void { throw "placeholder"; }
+	Event_StopSound ( /*int*/ channel: number, /*int*/ netsync: number ): void { throw "placeholder"; }
+	Event_SetNextState ( name: string ): void { throw "placeholder"; }
+	Event_SetState ( name: string ): void { throw "placeholder"; }
+	Event_GetState ( ): void { throw "placeholder"; }
+	Event_GetHead ( ): void { throw "placeholder"; }
 };
 ////
 ////#endif /* !__GAME_ACTOR_H__ */

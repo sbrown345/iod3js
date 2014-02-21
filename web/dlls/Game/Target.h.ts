@@ -388,12 +388,12 @@
 ////	void				Save( idSaveGame *savefile ) const;
 ////	void				Restore( idRestoreGame *savefile );
 ////
-////	void				Think( void );
+////	void				Think( void ): void { throw "placeholder"; }
 ////
 ////private:
 ////	idInterpolate<int>	fovSetting;
 ////
-////	void				Event_Activate( idEntity *activator );
+////	void				Event_Activate( idEntity *activator ): void { throw "placeholder"; }
 ////};
 ////
 ////
@@ -485,9 +485,9 @@
 ////private:
 ////	idVec3				playerPos;
 ////
-////	void				Event_Activate( idEntity *activator );
-////	void				Event_TipOff( void );
-////	void				Event_GetPlayerPos( void );
+////	void				Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+////	void				Event_TipOff( void ): void { throw "placeholder"; }
+////	void				Event_GetPlayerPos( void ): void { throw "placeholder"; }
 ////};
 ////
 /////*
@@ -501,7 +501,7 @@
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_GiveSecurity );
 ////private:
-////	void				Event_Activate( idEntity *activator );
+////	void				Event_Activate( idEntity *activator ): void { throw "placeholder"; }
 ////};
 ////
 ////
@@ -516,7 +516,7 @@
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_RemoveWeapons );
 ////private:
-////	void				Event_Activate( idEntity *activator );
+////	void				Event_Activate( idEntity *activator ): void { throw "placeholder"; }
 ////};
 ////
 ////
@@ -531,7 +531,7 @@
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_LevelTrigger );
 ////private:
-////	void				Event_Activate( idEntity *activator );
+////	void				Event_Activate( idEntity *activator ): void { throw "placeholder"; }
 ////};
 ////
 /////*
@@ -545,7 +545,7 @@
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_EnableStamina );
 ////private:
-////	void				Event_Activate( idEntity *activator );
+////	void				Event_Activate( idEntity *activator ): void { throw "placeholder"; }
 ////};
 ////
 /////*
@@ -559,8 +559,8 @@
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_FadeSoundClass );
 ////private:
-////	void				Event_Activate( idEntity *activator );
-////	void				Event_RestoreVolume();
+////	void				Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+////	void				Event_RestoreVolume(): void { throw "placeholder"; }
 ////};
 ////
 ////

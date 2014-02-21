@@ -54,14 +54,14 @@
 ////	void				Save( idSaveGame *savefile ) const;
 ////	void				Restore( idRestoreGame *savefile );
 ////
-////	virtual void		Enable( void );
-////	virtual void		Disable( void );
+////	virtual void		Enable( void ): void { throw "placeholder"; }
+////	virtual void		Disable( void ): void { throw "placeholder"; }
 ////
 ////protected:
 ////	void				CallScript( void ) const;
 ////
-////	void				Event_Enable( void );
-////	void				Event_Disable( void );
+////	void				Event_Enable( void ): void { throw "placeholder"; }
+////	void				Event_Disable( void ): void { throw "placeholder"; }
 ////
 ////	const function_t *	scriptFunction;
 ////};
@@ -99,11 +99,11 @@
 ////	bool				triggerFirst;
 ////	bool				triggerWithSelf;
 ////
-////	bool				CheckFacing( idEntity *activator );
-////	void				TriggerAction( idEntity *activator );
-////	void				Event_TriggerAction( idEntity *activator );
-////	void				Event_Trigger( idEntity *activator );
-////	void				Event_Touch( idEntity *other, trace_t *trace );
+////	bool				CheckFacing( idEntity *activator ): void { throw "placeholder"; }
+////	void				TriggerAction( idEntity *activator ): void { throw "placeholder"; }
+////	void				Event_TriggerAction( idEntity *activator ): void { throw "placeholder"; }
+////	void				Event_Trigger( idEntity *activator ): void { throw "placeholder"; }
+////	void				Event_Touch( idEntity *other, trace_t *trace ): void { throw "placeholder"; }
 ////};
 ////
 ////
@@ -135,10 +135,10 @@
 ////	bool				triggerFirst;
 ////	idStr				entityName;
 ////
-////	void				TriggerAction( idEntity *activator );
-////	void				Event_TriggerAction( idEntity *activator );
-////	void				Event_Trigger( idEntity *activator );
-////	void				Event_Touch( idEntity *other, trace_t *trace );
+////	void				TriggerAction( idEntity *activator ): void { throw "placeholder"; }
+////	void				Event_TriggerAction( idEntity *activator ): void { throw "placeholder"; }
+////	void				Event_Trigger( idEntity *activator ): void { throw "placeholder"; }
+////	void				Event_Touch( idEntity *other, trace_t *trace ): void { throw "placeholder"; }
 ////};
 ////
 /////*
@@ -171,8 +171,8 @@
 ////	idStr				onName;
 ////	idStr				offName;
 ////
-////	void				Event_Timer( void );
-////	void				Event_Use( idEntity *activator );
+////	void				Event_Timer( void ): void { throw "placeholder"; }
+////	void				Event_Use( idEntity *activator ): void { throw "placeholder"; }
 ////};
 ////
 ////
@@ -200,8 +200,8 @@
 ////	int					count;
 ////	float				delay;
 ////
-////	void				Event_Trigger( idEntity *activator );
-////	void				Event_TriggerAction( idEntity *activator );
+////	void				Event_Trigger( idEntity *activator ): void { throw "placeholder"; }
+////	void				Event_TriggerAction( idEntity *activator ): void { throw "placeholder"; }
 ////};
 ////
 ////
@@ -229,8 +229,8 @@
 ////	float				delay;
 ////	int					nextTime;
 ////
-////	void				Event_Touch( idEntity *other, trace_t *trace );
-////	void				Event_Toggle( idEntity *activator );
+////	void				Event_Touch( idEntity *other, trace_t *trace ): void { throw "placeholder"; }
+////	void				Event_Toggle( idEntity *activator ): void { throw "placeholder"; }
 ////};
 ////
 ////
@@ -248,7 +248,7 @@
 ////	CLASS_PROTOTYPE( idTrigger_Fade );
 ////
 ////private:
-////	void				Event_Trigger( idEntity *activator );
+////	void				Event_Trigger( idEntity *activator ): void { throw "placeholder"; }
 ////};
 ////
 ////
@@ -281,7 +281,7 @@
 ////private:
 ////	idClipModel *		clipModel;
 ////
-////	void				Event_Trigger( idEntity *activator );
+////	void				Event_Trigger( idEntity *activator ): void { throw "placeholder"; }
 ////};
 ////
 ////#endif /* !__GAME_TRIGGER_H__ */

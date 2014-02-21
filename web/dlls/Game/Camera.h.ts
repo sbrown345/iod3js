@@ -70,8 +70,8 @@ class idCamera extends idEntity {
 ////	virtual void			Stop( void );
 ////
 ////protected:
-////	void					Event_Activate( idEntity *activator );
-////	void					Event_SetAttachments();
+////	void					Event_Activate( idEntity *activator );: void { throw "placeholder"; }
+////	void					Event_SetAttachments();: void { throw "placeholder"; }
 ////	void					SetAttachment( idEntity **e, const char *p );
 ////	float					fov;
 ////	idEntity				*attachedTo;
@@ -122,11 +122,11 @@ class idCamera extends idEntity {
 ////	void					Stop( void );
 ////	void					Think( void );
 ////
-////	void					LoadAnim( void );
-////	void					Event_Start( void );
-////	void					Event_Stop( void );
-////	void					Event_SetCallback( void );
-////	void					Event_Activate( idEntity *activator );
+////	void					LoadAnim( void ): void { throw "placeholder"; }
+////	void					Event_Start( void ): void { throw "placeholder"; }
+////	void					Event_Stop( void ): void { throw "placeholder"; }
+////	void					Event_SetCallback( void ): void { throw "placeholder"; }
+////	void					Event_Activate( idEntity *activator ): void { throw "placeholder"; }
 ////};
 ////
 ////#endif /* !__GAME_CAMERA_H__ */

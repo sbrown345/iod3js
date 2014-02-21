@@ -4897,6 +4897,8 @@ idCombatNode
 
 var EV_CombatNode_MarkUsed = new idEventDef( "markUsed" );
 
+//CLASS_DECLARATION(idEntity, idCombatNode)
+
 idCombatNode.CreateInstance = function ( ): idClass {
 	try {
 		var ptr = new idCombatNode;
@@ -4919,6 +4921,7 @@ idCombatNode.eventCallbacks = [
 idCombatNode.Type = new idTypeInfo( "idCombatNode", "idEntity",
 	idCombatNode.eventCallbacks, idCombatNode.CreateInstance, idCombatNode.prototype.Spawn,
 	idCombatNode.prototype.Save, idCombatNode.prototype.Restore );
+
 
 /////*
 ////=====================

@@ -123,8 +123,8 @@
 ////	void						CreateFractures( const idRenderModel *renderModel );
 ////	void						FindNeighbours( void );
 
-////	void						Event_Activate( idEntity *activator );
-////	void						Event_Touch( idEntity *other, trace_t *trace );
+////	void						Event_Activate( idEntity *activator );: void { throw "placeholder"; }
+////	void						Event_Touch( idEntity *other, trace_t *trace );: void { throw "placeholder"; }
 ////};
 
 ////#endif /* !__GAME_BRITTLEFRACTURE_H__ */

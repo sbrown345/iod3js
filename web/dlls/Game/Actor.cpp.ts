@@ -70,20 +70,20 @@
 ////*/
 ////void idAnimState::Save( idSaveGame *savefile ) const {
 ////
-////	savefile->WriteObject( self );
+////	savefile.WriteObject( self );
 ////
 ////	// Save the entity owner of the animator
-////	savefile->WriteObject( animator->GetEntity() );
+////	savefile.WriteObject( animator.GetEntity() );
 ////
-////	savefile->WriteObject( thread );
+////	savefile.WriteObject( thread );
 ////
-////	savefile->WriteString( state );
+////	savefile.WriteString( state );
 ////
-////	savefile->WriteInt( animBlendFrames );
-////	savefile->WriteInt( lastAnimBlendFrames );
-////	savefile->WriteInt( channel );
-////	savefile->WriteBool( idleAnim );
-////	savefile->WriteBool( disabled );
+////	savefile.WriteInt( animBlendFrames );
+////	savefile.WriteInt( lastAnimBlendFrames );
+////	savefile.WriteInt( channel );
+////	savefile.WriteBool( idleAnim );
+////	savefile.WriteBool( disabled );
 ////}
 ////
 /////*
@@ -92,23 +92,23 @@
 ////=====================
 ////*/
 ////void idAnimState::Restore( idRestoreGame *savefile ) {
-////	savefile->ReadObject( reinterpret_cast<idClass *&>( self ) );
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( self ) );
 ////
 ////	idEntity *animowner;
-////	savefile->ReadObject( reinterpret_cast<idClass *&>( animowner ) );
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( animowner ) );
 ////	if ( animowner ) {
-////		animator = animowner->GetAnimator();
+////		animator = animowner.GetAnimator();
 ////	}
 ////
-////	savefile->ReadObject( reinterpret_cast<idClass *&>( thread ) );
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( thread ) );
 ////
-////	savefile->ReadString( state );
+////	savefile.ReadString( state );
 ////
-////	savefile->ReadInt( animBlendFrames );
-////	savefile->ReadInt( lastAnimBlendFrames );
-////	savefile->ReadInt( channel );
-////	savefile->ReadBool( idleAnim );
-////	savefile->ReadBool( disabled );
+////	savefile.ReadInt( animBlendFrames );
+////	savefile.ReadInt( lastAnimBlendFrames );
+////	savefile.ReadInt( channel );
+////	savefile.ReadBool( idleAnim );
+////	savefile.ReadBool( disabled );
 ////}
 ////
 /////*
@@ -125,10 +125,10 @@
 ////
 ////	if ( !thread ) {
 ////		thread = new idThread();
-////		thread->ManualDelete();
+////		thread.ManualDelete();
 ////	}
-////	thread->EndThread();
-////	thread->ManualControl();
+////	thread.EndThread();
+////	thread.ManualControl();
 ////}
 ////
 /////*
@@ -149,25 +149,25 @@
 ////void idAnimState::SetState( const char *statename, int blendFrames ) {
 ////	const function_t *func;
 ////
-////	func = self->scriptObject.GetFunction( statename );
+////	func = self.scriptObject.GetFunction( statename );
 ////	if ( !func ) {
 ////		assert( 0 );
-////		gameLocal.Error( "Can't find function '%s' in object '%s'", statename, self->scriptObject.GetTypeName() );
+////		gameLocal.Error( "Can't find function '%s' in object '%s'", statename, self.scriptObject.GetTypeName() );
 ////	}
 ////
 ////	state = statename;
 ////	disabled = false;
 ////	animBlendFrames = blendFrames;
 ////	lastAnimBlendFrames = blendFrames;
-////	thread->CallFunction( self, func, true );
+////	thread.CallFunction( self, func, true );
 ////
 ////	animBlendFrames = blendFrames;
 ////	lastAnimBlendFrames = blendFrames;
 ////	disabled = false;
 ////	idleAnim = false;
 ////
-////	if ( ai_debugScript.GetInteger() == self->entityNumber ) {
-////		gameLocal.Printf( "%d: %s: Animstate: %s\n", gameLocal.time, self->name.c_str(), state.c_str() );
+////	if ( ai_debugScript.GetInteger() == self.entityNumber ) {
+////		gameLocal.Printf( "%d: %s: Animstate: %s\n", gameLocal.time, self.name.c_str(), state.c_str() );
 ////	}
 ////}
 ////
@@ -178,7 +178,7 @@
 ////*/
 ////void idAnimState::StopAnim( int frames ) {
 ////	animBlendFrames = 0;
-////	animator->Clear( channel, gameLocal.time, FRAME2MS( frames ) );
+////	animator.Clear( channel, gameLocal.time, FRAME2MS( frames ) );
 ////}
 ////
 /////*
@@ -188,7 +188,7 @@
 ////*/
 ////void idAnimState::PlayAnim( int anim ) {
 ////	if ( anim ) {
-////		animator->PlayAnim( channel, anim, gameLocal.time, FRAME2MS( animBlendFrames ) );
+////		animator.PlayAnim( channel, anim, gameLocal.time, FRAME2MS( animBlendFrames ) );
 ////	}
 ////	animBlendFrames = 0;
 ////}
@@ -200,7 +200,7 @@
 ////*/
 ////void idAnimState::CycleAnim( int anim ) {
 ////	if ( anim ) {
-////		animator->CycleAnim( channel, anim, gameLocal.time, FRAME2MS( animBlendFrames ) );
+////		animator.CycleAnim( channel, anim, gameLocal.time, FRAME2MS( animBlendFrames ) );
 ////	}
 ////	animBlendFrames = 0;
 ////}
@@ -231,7 +231,7 @@
 ////bool idAnimState::AnimDone( int blendFrames ) const {
 ////	int animDoneTime;
 ////	
-////	animDoneTime = animator->CurrentAnim( channel )->GetEndTime();
+////	animDoneTime = animator.CurrentAnim( channel ).GetEndTime();
 ////	if ( animDoneTime < 0 ) {
 ////		// playing a cycle
 ////		return false;
@@ -261,7 +261,7 @@
 ////
 ////	memset( &flags, 0, sizeof( flags ) );
 ////	if ( !disabled && !AnimDone( 0 ) ) {
-////		flags = animator->GetAnimFlags( animator->CurrentAnim( channel )->AnimNum() );
+////		flags = animator.GetAnimFlags( animator.CurrentAnim( channel ).AnimNum() );
 ////	}
 ////
 ////	return flags;
@@ -303,13 +303,13 @@
 ////		return false;
 ////	}
 ////
-////	if ( ai_debugScript.GetInteger() == self->entityNumber ) {
-////		thread->EnableDebugInfo();
+////	if ( ai_debugScript.GetInteger() == self.entityNumber ) {
+////		thread.EnableDebugInfo();
 ////	} else {
-////		thread->DisableDebugInfo();
+////		thread.DisableDebugInfo();
 ////	}
 ////
-////	thread->Execute();
+////	thread.Execute();
 ////
 ////	return true;
 ////}
@@ -360,50 +360,72 @@ var AI_SetNextState = new idEventDef(  "setNextState", "s" );
 var AI_SetState = new idEventDef(  "setState", "s" );
 var AI_GetState = new idEventDef(  "getState", null, 's' );
 var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
-////
-////CLASS_DECLARATION( idAFEntity_Gibbable, idActor )
-////	EVENT( AI_EnableEyeFocus,			idActor::Event_EnableEyeFocus )
-////	EVENT( AI_DisableEyeFocus,			idActor::Event_DisableEyeFocus )
-////	EVENT( EV_Footstep,					idActor::Event_Footstep )
-////	EVENT( EV_FootstepLeft,				idActor::Event_Footstep )
-////	EVENT( EV_FootstepRight,			idActor::Event_Footstep )
-////	EVENT( EV_EnableWalkIK,				idActor::Event_EnableWalkIK )
-////	EVENT( EV_DisableWalkIK,			idActor::Event_DisableWalkIK )
-////	EVENT( EV_EnableLegIK,				idActor::Event_EnableLegIK )
-////	EVENT( EV_DisableLegIK,				idActor::Event_DisableLegIK )
-////	EVENT( AI_PreventPain,				idActor::Event_PreventPain )
-////	EVENT( AI_DisablePain,				idActor::Event_DisablePain )
-////	EVENT( AI_EnablePain,				idActor::Event_EnablePain )
-////	EVENT( AI_GetPainAnim,				idActor::Event_GetPainAnim )
-////	EVENT( AI_SetAnimPrefix,			idActor::Event_SetAnimPrefix )
-////	EVENT( AI_StopAnim,					idActor::Event_StopAnim )
-////	EVENT( AI_PlayAnim,					idActor::Event_PlayAnim )
-////	EVENT( AI_PlayCycle,				idActor::Event_PlayCycle )
-////	EVENT( AI_IdleAnim,					idActor::Event_IdleAnim )
-////	EVENT( AI_SetSyncedAnimWeight,		idActor::Event_SetSyncedAnimWeight )
-////	EVENT( AI_SetBlendFrames,			idActor::Event_SetBlendFrames )
-////	EVENT( AI_GetBlendFrames,			idActor::Event_GetBlendFrames )
-////	EVENT( AI_AnimState,				idActor::Event_AnimState )
-////	EVENT( AI_GetAnimState,				idActor::Event_GetAnimState )
-////	EVENT( AI_InAnimState,				idActor::Event_InAnimState )
-////	EVENT( AI_FinishAction,				idActor::Event_FinishAction )
-////	EVENT( AI_AnimDone,					idActor::Event_AnimDone )
-////	EVENT( AI_OverrideAnim,				idActor::Event_OverrideAnim )
-////	EVENT( AI_EnableAnim,				idActor::Event_EnableAnim )
-////	EVENT( AI_HasAnim,					idActor::Event_HasAnim )
-////	EVENT( AI_CheckAnim,				idActor::Event_CheckAnim )
-////	EVENT( AI_ChooseAnim,				idActor::Event_ChooseAnim )
-////	EVENT( AI_AnimLength,				idActor::Event_AnimLength )
-////	EVENT( AI_AnimDistance,				idActor::Event_AnimDistance )
-////	EVENT( AI_HasEnemies,				idActor::Event_HasEnemies )
-////	EVENT( AI_NextEnemy,				idActor::Event_NextEnemy )
-////	EVENT( AI_ClosestEnemyToPoint,		idActor::Event_ClosestEnemyToPoint )
-////	EVENT( EV_StopSound,				idActor::Event_StopSound )
-////	EVENT( AI_SetNextState,				idActor::Event_SetNextState )
-////	EVENT( AI_SetState,					idActor::Event_SetState )
-////	EVENT( AI_GetState,					idActor::Event_GetState )
-////	EVENT( AI_GetHead,					idActor::Event_GetHead )
-////END_CLASS
+
+//CLASS_DECLARATION( idAFEntity_Gibbable, idActor )
+idActor.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idActor;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idActor.prototype.GetType = function ( ): idTypeInfo {
+	return ( idActor.Type );
+};
+
+idActor.eventCallbacks = [
+	EVENT( AI_EnableEyeFocus,			idActor.prototype.Event_EnableEyeFocus ),
+	EVENT( AI_DisableEyeFocus,			idActor.prototype.Event_DisableEyeFocus ),
+	EVENT( EV_Footstep,					idActor.prototype.Event_Footstep ),
+	EVENT( EV_FootstepLeft,				idActor.prototype.Event_Footstep ),
+	EVENT( EV_FootstepRight,			idActor.prototype.Event_Footstep ),
+	EVENT( EV_EnableWalkIK,				idActor.prototype.Event_EnableWalkIK ),
+	EVENT( EV_DisableWalkIK,			idActor.prototype.Event_DisableWalkIK ),
+	EVENT( EV_EnableLegIK,				idActor.prototype.Event_EnableLegIK ),
+	EVENT( EV_DisableLegIK,				idActor.prototype.Event_DisableLegIK ),
+	EVENT( AI_PreventPain,				idActor.prototype.Event_PreventPain ),
+	EVENT( AI_DisablePain,				idActor.prototype.Event_DisablePain ),
+	EVENT( AI_EnablePain,				idActor.prototype.Event_EnablePain ),
+	EVENT( AI_GetPainAnim,				idActor.prototype.Event_GetPainAnim ),
+	EVENT( AI_SetAnimPrefix,			idActor.prototype.Event_SetAnimPrefix ),
+	EVENT( AI_StopAnim,					idActor.prototype.Event_StopAnim ),
+	EVENT( AI_PlayAnim,					idActor.prototype.Event_PlayAnim ),
+	EVENT( AI_PlayCycle,				idActor.prototype.Event_PlayCycle ),
+	EVENT( AI_IdleAnim,					idActor.prototype.Event_IdleAnim ),
+	EVENT( AI_SetSyncedAnimWeight,		idActor.prototype.Event_SetSyncedAnimWeight ),
+	EVENT( AI_SetBlendFrames,			idActor.prototype.Event_SetBlendFrames ),
+	EVENT( AI_GetBlendFrames,			idActor.prototype.Event_GetBlendFrames ),
+	EVENT( AI_AnimState,				idActor.prototype.Event_AnimState ),
+	EVENT( AI_GetAnimState,				idActor.prototype.Event_GetAnimState ),
+	EVENT( AI_InAnimState,				idActor.prototype.Event_InAnimState ),
+	EVENT( AI_FinishAction,				idActor.prototype.Event_FinishAction ),
+	EVENT( AI_AnimDone,					idActor.prototype.Event_AnimDone ),
+	EVENT( AI_OverrideAnim,				idActor.prototype.Event_OverrideAnim ),
+	EVENT( AI_EnableAnim,				idActor.prototype.Event_EnableAnim ),
+	EVENT( AI_HasAnim,					idActor.prototype.Event_HasAnim ),
+	EVENT( AI_CheckAnim,				idActor.prototype.Event_CheckAnim ),
+	EVENT( AI_ChooseAnim,				idActor.prototype.Event_ChooseAnim ),
+	EVENT( AI_AnimLength,				idActor.prototype.Event_AnimLength ),
+	EVENT( AI_AnimDistance,				idActor.prototype.Event_AnimDistance ),
+	EVENT( AI_HasEnemies,				idActor.prototype.Event_HasEnemies ),
+	EVENT( AI_NextEnemy,				idActor.prototype.Event_NextEnemy ),
+	EVENT( AI_ClosestEnemyToPoint,		idActor.prototype.Event_ClosestEnemyToPoint ),
+	EVENT( EV_StopSound,				idActor.prototype.Event_StopSound ),
+	EVENT( AI_SetNextState,				idActor.prototype.Event_SetNextState ),
+	EVENT( AI_SetState,					idActor.prototype.Event_SetState ),
+	EVENT( AI_GetState,					idActor.prototype.Event_GetState ),
+	EVENT( AI_GetHead,					idActor.prototype.Event_GetHead )
+];
+
+idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
+	idActor.eventCallbacks, idActor.CreateInstance, idActor.prototype.Spawn,
+	idActor.prototype.Save, idActor.prototype.Restore);
+
+
+
 ////
 /////*
 ////=====================
@@ -473,15 +495,15 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	combatModel = NULL;
 ////
 ////	if ( head.GetEntity() ) {
-////		head.GetEntity()->ClearBody();
-////		head.GetEntity()->PostEventMS( &EV_Remove, 0 );
+////		head.GetEntity().ClearBody();
+////		head.GetEntity().PostEventMS( &EV_Remove, 0 );
 ////	}
 ////
 ////	// remove any attached entities
 ////	for( i = 0; i < attachments.Num(); i++ ) {
 ////		ent = attachments[ i ].ent.GetEntity();
 ////		if ( ent ) {
-////			ent->PostEventMS( &EV_Remove, 0 );
+////			ent.PostEventMS( &EV_Remove, 0 );
 ////		}
 ////	}
 ////
@@ -509,7 +531,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////
 ////	spawnArgs.GetBool( "use_combat_bbox", "0", use_combat_bbox );	
 ////
-////	viewAxis = GetPhysics()->GetAxis();
+////	viewAxis = GetPhysics().GetAxis();
 ////
 ////	spawnArgs.GetFloat( "fov", "90", fovDegrees );
 ////	SetFOV( fovDegrees );
@@ -533,7 +555,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	while ( kv ) {
 ////		idDict args;
 ////
-////		args.Set( "classname", kv->GetValue().c_str() );
+////		args.Set( "classname", kv.GetValue().c_str() );
 ////
 ////		// make items non-touchable so the player can't take them out of the character's hands
 ////		args.Set( "no_touch", "1" );
@@ -543,7 +565,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////		
 ////		gameLocal.SpawnEntityDef( args, &ent );
 ////		if ( !ent ) {
-////			gameLocal.Error( "Couldn't spawn '%s' to attach to entity '%s'", kv->GetValue().c_str(), name.c_str() );
+////			gameLocal.Error( "Couldn't spawn '%s' to attach to entity '%s'", kv.GetValue().c_str(), name.c_str() );
 ////		} else {
 ////			Attach( ent );
 ////		}
@@ -559,7 +581,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	idEntity *headEnt = head.GetEntity();
 ////	idAnimator *headAnimator;
 ////	if ( headEnt ) {
-////		headAnimator = headEnt->GetAnimator();
+////		headAnimator = headEnt.GetAnimator();
 ////	} else {
 ////		headAnimator = &animator;
 ////	}
@@ -567,12 +589,12 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	if ( headEnt ) {
 ////		// set up the list of joints to copy to the head
 ////		for( kv = spawnArgs.MatchPrefix( "copy_joint", NULL ); kv != NULL; kv = spawnArgs.MatchPrefix( "copy_joint", kv ) ) {
-////			if ( kv->GetValue() == "" ) {
+////			if ( kv.GetValue() == "" ) {
 ////				// probably clearing out inherited key, so skip it
 ////				continue;
 ////			}
 ////
-////			jointName = kv->GetKey();
+////			jointName = kv.GetKey();
 ////			if ( jointName.StripLeadingOnce( "copy_joint_world " ) ) {
 ////				copyJoint.mod = JOINTMOD_WORLD_OVERRIDE;
 ////			} else {
@@ -586,8 +608,8 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////				continue;
 ////			}
 ////
-////			jointName = kv->GetValue();
-////			copyJoint.to = headAnimator->GetJointHandle( jointName );
+////			jointName = kv.GetValue();
+////			copyJoint.to = headAnimator.GetJointHandle( jointName );
 ////			if ( copyJoint.to == INVALID_JOINT ) {
 ////				gameLocal.Warning( "Unknown copy_joint '%s' on head of entity %s", jointName.c_str(), name.c_str() );
 ////				continue;
@@ -598,25 +620,25 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	}
 ////
 ////	// set up blinking
-////	blink_anim = headAnimator->GetAnim( "blink" );
+////	blink_anim = headAnimator.GetAnim( "blink" );
 ////	blink_time = 0;	// it's ok to blink right away
 ////	blink_min = SEC2MS( spawnArgs.GetFloat( "blink_min", "0.5" ) );
 ////	blink_max = SEC2MS( spawnArgs.GetFloat( "blink_max", "8" ) );
 ////
 ////	// set up the head anim if necessary
-////	int headAnim = headAnimator->GetAnim( "def_head" );
+////	int headAnim = headAnimator.GetAnim( "def_head" );
 ////	if ( headAnim ) {
 ////		if ( headEnt ) {
-////            headAnimator->CycleAnim( ANIMCHANNEL_ALL, headAnim, gameLocal.time, 0 );
+////            headAnimator.CycleAnim( ANIMCHANNEL_ALL, headAnim, gameLocal.time, 0 );
 ////		} else {
-////			headAnimator->CycleAnim( ANIMCHANNEL_HEAD, headAnim, gameLocal.time, 0 );
+////			headAnimator.CycleAnim( ANIMCHANNEL_HEAD, headAnim, gameLocal.time, 0 );
 ////		}
 ////	}
 ////
 ////	if ( spawnArgs.GetString( "sound_bone", "", jointName ) ) {
 ////		soundJoint = animator.GetJointHandle( jointName );
 ////		if ( soundJoint == INVALID_JOINT ) {
-////			gameLocal.Warning( "idAnimated '%s' at (%s): cannot find joint '%s' for sound playback", name.c_str(), GetPhysics()->GetOrigin().ToString(0), jointName.c_str() );
+////			gameLocal.Warning( "idAnimated '%s' at (%s): cannot find joint '%s' for sound playback", name.c_str(), GetPhysics().GetOrigin().ToString(0), jointName.c_str() );
 ////		}
 ////	}
 ////
@@ -684,13 +706,13 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////		idDict	args;
 ////		sndKV = spawnArgs.MatchPrefix( "snd_", NULL );
 ////		while( sndKV ) {
-////			args.Set( sndKV->GetKey(), sndKV->GetValue() );
+////			args.Set( sndKV.GetKey(), sndKV.GetValue() );
 ////			sndKV = spawnArgs.MatchPrefix( "snd_", sndKV );
 ////		}
 ////
 ////		headEnt = static_cast<idAFAttachment *>( gameLocal.SpawnEntityType( idAFAttachment::Type, &args ) );
-////		headEnt->SetName( va( "%s_head", name.c_str() ) );
-////		headEnt->SetBody( this, headModel, damageJoint );
+////		headEnt.SetName( va( "%s_head", name.c_str() ) );
+////		headEnt.SetBody( this, headModel, damageJoint );
 ////		head = headEnt;
 ////
 ////		idVec3		origin;
@@ -700,9 +722,9 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////		animator.GetJointTransform( joint, gameLocal.time, origin, axis );
 ////		origin = renderEntity.origin + ( origin + modelOffset ) * renderEntity.axis;
 ////		attach.ent = headEnt;
-////		headEnt->SetOrigin( origin );
-////		headEnt->SetAxis( renderEntity.axis );
-////		headEnt->BindToJoint( this, joint, true );
+////		headEnt.SetOrigin( origin );
+////		headEnt.SetAxis( renderEntity.axis );
+////		headEnt.BindToJoint( this, joint, true );
 ////	}
 ////}
 ////
@@ -723,20 +745,20 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////		return;
 ////	}
 ////
-////	headAnimator = headEnt->GetAnimator();
+////	headAnimator = headEnt.GetAnimator();
 ////
 ////	// copy the animation from the body to the head
 ////	for( i = 0; i < copyJoints.Num(); i++ ) {
 ////		if ( copyJoints[ i ].mod == JOINTMOD_WORLD_OVERRIDE ) {
-////			mat = headEnt->GetPhysics()->GetAxis().Transpose();
+////			mat = headEnt.GetPhysics().GetAxis().Transpose();
 ////			GetJointWorldTransform( copyJoints[ i ].from, gameLocal.time, pos, axis );
-////			pos -= headEnt->GetPhysics()->GetOrigin();
-////			headAnimator->SetJointPos( copyJoints[ i ].to, copyJoints[ i ].mod, pos * mat );
-////			headAnimator->SetJointAxis( copyJoints[ i ].to, copyJoints[ i ].mod, axis * mat );
+////			pos -= headEnt.GetPhysics().GetOrigin();
+////			headAnimator.SetJointPos( copyJoints[ i ].to, copyJoints[ i ].mod, pos * mat );
+////			headAnimator.SetJointAxis( copyJoints[ i ].to, copyJoints[ i ].mod, axis * mat );
 ////		} else {
 ////			animator.GetJointLocalTransform( copyJoints[ i ].from, gameLocal.time, pos, axis );
-////			headAnimator->SetJointPos( copyJoints[ i ].to, copyJoints[ i ].mod, pos );
-////			headAnimator->SetJointAxis( copyJoints[ i ].to, copyJoints[ i ].mod, axis );
+////			headAnimator.SetJointPos( copyJoints[ i ].to, copyJoints[ i ].mod, pos );
+////			headAnimator.SetJointAxis( copyJoints[ i ].to, copyJoints[ i ].mod, axis );
 ////		}
 ////	}
 ////}
@@ -763,105 +785,105 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	idActor *ent;
 ////	int i;
 ////
-////	savefile->WriteInt( team );
-////	savefile->WriteInt( rank );
-////	savefile->WriteMat3( viewAxis );
+////	savefile.WriteInt( team );
+////	savefile.WriteInt( rank );
+////	savefile.WriteMat3( viewAxis );
 ////
-////	savefile->WriteInt( enemyList.Num() );
-////	for ( ent = enemyList.Next(); ent != NULL; ent = ent->enemyNode.Next() ) {
-////		savefile->WriteObject( ent );
+////	savefile.WriteInt( enemyList.Num() );
+////	for ( ent = enemyList.Next(); ent != NULL; ent = ent.enemyNode.Next() ) {
+////		savefile.WriteObject( ent );
 ////	}
 ////
-////	savefile->WriteFloat( fovDot );
-////	savefile->WriteVec3( eyeOffset );
-////	savefile->WriteVec3( modelOffset );
-////	savefile->WriteAngles( deltaViewAngles );
+////	savefile.WriteFloat( fovDot );
+////	savefile.WriteVec3( eyeOffset );
+////	savefile.WriteVec3( modelOffset );
+////	savefile.WriteAngles( deltaViewAngles );
 ////
-////	savefile->WriteInt( pain_debounce_time );
-////	savefile->WriteInt( pain_delay );
-////	savefile->WriteInt( pain_threshold );
+////	savefile.WriteInt( pain_debounce_time );
+////	savefile.WriteInt( pain_delay );
+////	savefile.WriteInt( pain_threshold );
 ////
-////	savefile->WriteInt( damageGroups.Num() );
+////	savefile.WriteInt( damageGroups.Num() );
 ////	for( i = 0; i < damageGroups.Num(); i++ ) {
-////		savefile->WriteString( damageGroups[ i ] );
+////		savefile.WriteString( damageGroups[ i ] );
 ////	}
 ////
-////	savefile->WriteInt( damageScale.Num() );
+////	savefile.WriteInt( damageScale.Num() );
 ////	for( i = 0; i < damageScale.Num(); i++ ) {
-////		savefile->WriteFloat( damageScale[ i ] );
+////		savefile.WriteFloat( damageScale[ i ] );
 ////	}
 ////
-////	savefile->WriteBool( use_combat_bbox );
+////	savefile.WriteBool( use_combat_bbox );
 ////	head.Save( savefile );
 ////
-////	savefile->WriteInt( copyJoints.Num() );
+////	savefile.WriteInt( copyJoints.Num() );
 ////	for( i = 0; i < copyJoints.Num(); i++ ) {
-////		savefile->WriteInt( copyJoints[i].mod );
-////		savefile->WriteJoint( copyJoints[i].from );
-////		savefile->WriteJoint( copyJoints[i].to );
+////		savefile.WriteInt( copyJoints[i].mod );
+////		savefile.WriteJoint( copyJoints[i].from );
+////		savefile.WriteJoint( copyJoints[i].to );
 ////	}
 ////
-////	savefile->WriteJoint( leftEyeJoint );
-////	savefile->WriteJoint( rightEyeJoint );
-////	savefile->WriteJoint( soundJoint );
+////	savefile.WriteJoint( leftEyeJoint );
+////	savefile.WriteJoint( rightEyeJoint );
+////	savefile.WriteJoint( soundJoint );
 ////
 ////	walkIK.Save( savefile );
 ////
-////	savefile->WriteString( animPrefix );
-////	savefile->WriteString( painAnim );
+////	savefile.WriteString( animPrefix );
+////	savefile.WriteString( painAnim );
 ////
-////	savefile->WriteInt( blink_anim );
-////	savefile->WriteInt( blink_time );
-////	savefile->WriteInt( blink_min );
-////	savefile->WriteInt( blink_max );
+////	savefile.WriteInt( blink_anim );
+////	savefile.WriteInt( blink_time );
+////	savefile.WriteInt( blink_min );
+////	savefile.WriteInt( blink_max );
 ////
 ////	// script variables
-////	savefile->WriteObject( scriptThread );
+////	savefile.WriteObject( scriptThread );
 ////
-////	savefile->WriteString( waitState );
+////	savefile.WriteString( waitState );
 ////
 ////	headAnim.Save( savefile );
 ////	torsoAnim.Save( savefile );
 ////	legsAnim.Save( savefile );
 ////
-////	savefile->WriteBool( allowPain );
-////	savefile->WriteBool( allowEyeFocus );
+////	savefile.WriteBool( allowPain );
+////	savefile.WriteBool( allowEyeFocus );
 ////
-////	savefile->WriteInt( painTime );
+////	savefile.WriteInt( painTime );
 ////
-////	savefile->WriteInt( attachments.Num() );
+////	savefile.WriteInt( attachments.Num() );
 ////	for ( i = 0; i < attachments.Num(); i++ ) {
 ////		attachments[i].ent.Save( savefile );
-////		savefile->WriteInt( attachments[i].channel );
+////		savefile.WriteInt( attachments[i].channel );
 ////	}
 ////
-////	savefile->WriteBool( finalBoss );
+////	savefile.WriteBool( finalBoss );
 ////
 ////	idToken token;
 ////
 ////	//FIXME: this is unneccesary
 ////	if ( state ) {
-////		idLexer src( state->Name(), idStr::Length( state->Name() ), "idAI::Save" );
+////		idLexer src( state.Name(), idStr::Length( state.Name() ), "idAI::Save" );
 ////
 ////		src.ReadTokenOnLine( &token );
 ////		src.ExpectTokenString( "::" );
 ////		src.ReadTokenOnLine( &token );
 ////
-////		savefile->WriteString( token );
+////		savefile.WriteString( token );
 ////	} else {
-////		savefile->WriteString( "" );
+////		savefile.WriteString( "" );
 ////	}
 ////
 ////	if ( idealState ) {
-////		idLexer src( idealState->Name(), idStr::Length( idealState->Name() ), "idAI::Save" );
+////		idLexer src( idealState.Name(), idStr::Length( idealState.Name() ), "idAI::Save" );
 ////
 ////		src.ReadTokenOnLine( &token );
 ////		src.ExpectTokenString( "::" );
 ////		src.ReadTokenOnLine( &token );
 ////
-////		savefile->WriteString( token );
+////		savefile.WriteString( token );
 ////	} else {
-////		savefile->WriteString( "" );
+////		savefile.WriteString( "" );
 ////	}
 ////
 ////}
@@ -877,98 +899,98 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	int i, num;
 ////	idActor *ent;
 ////
-////	savefile->ReadInt( team );
-////	savefile->ReadInt( rank );
-////	savefile->ReadMat3( viewAxis );
+////	savefile.ReadInt( team );
+////	savefile.ReadInt( rank );
+////	savefile.ReadMat3( viewAxis );
 ////
-////	savefile->ReadInt( num );
+////	savefile.ReadInt( num );
 ////	for ( i = 0; i < num; i++ ) {
-////		savefile->ReadObject( reinterpret_cast<idClass *&>( ent ) );
+////		savefile.ReadObject( reinterpret_cast<idClass *&>( ent ) );
 ////		assert( ent );
 ////		if ( ent ) {
-////			ent->enemyNode.AddToEnd( enemyList );
+////			ent.enemyNode.AddToEnd( enemyList );
 ////		}
 ////	}
 ////
-////	savefile->ReadFloat( fovDot );
-////	savefile->ReadVec3( eyeOffset );
-////	savefile->ReadVec3( modelOffset );
-////	savefile->ReadAngles( deltaViewAngles );
+////	savefile.ReadFloat( fovDot );
+////	savefile.ReadVec3( eyeOffset );
+////	savefile.ReadVec3( modelOffset );
+////	savefile.ReadAngles( deltaViewAngles );
 ////
-////	savefile->ReadInt( pain_debounce_time );
-////	savefile->ReadInt( pain_delay );
-////	savefile->ReadInt( pain_threshold );
+////	savefile.ReadInt( pain_debounce_time );
+////	savefile.ReadInt( pain_delay );
+////	savefile.ReadInt( pain_threshold );
 ////
-////	savefile->ReadInt( num );
+////	savefile.ReadInt( num );
 ////	damageGroups.SetGranularity( 1 );
 ////	damageGroups.SetNum( num );
 ////	for( i = 0; i < num; i++ ) {
-////		savefile->ReadString( damageGroups[ i ] );
+////		savefile.ReadString( damageGroups[ i ] );
 ////	}
 ////
-////	savefile->ReadInt( num );
+////	savefile.ReadInt( num );
 ////	damageScale.SetNum( num );
 ////	for( i = 0; i < num; i++ ) {
-////		savefile->ReadFloat( damageScale[ i ] );
+////		savefile.ReadFloat( damageScale[ i ] );
 ////	}
 ////
-////	savefile->ReadBool( use_combat_bbox );
+////	savefile.ReadBool( use_combat_bbox );
 ////	head.Restore( savefile );
 ////
-////	savefile->ReadInt( num );
+////	savefile.ReadInt( num );
 ////	copyJoints.SetNum( num );
 ////	for( i = 0; i < num; i++ ) {
 ////		int val;
-////		savefile->ReadInt( val );
+////		savefile.ReadInt( val );
 ////		copyJoints[i].mod = static_cast<jointModTransform_t>( val );
-////		savefile->ReadJoint( copyJoints[i].from );
-////		savefile->ReadJoint( copyJoints[i].to );
+////		savefile.ReadJoint( copyJoints[i].from );
+////		savefile.ReadJoint( copyJoints[i].to );
 ////	}
 ////
-////	savefile->ReadJoint( leftEyeJoint );
-////	savefile->ReadJoint( rightEyeJoint );
-////	savefile->ReadJoint( soundJoint );
+////	savefile.ReadJoint( leftEyeJoint );
+////	savefile.ReadJoint( rightEyeJoint );
+////	savefile.ReadJoint( soundJoint );
 ////
 ////	walkIK.Restore( savefile );
 ////
-////	savefile->ReadString( animPrefix );
-////	savefile->ReadString( painAnim );
+////	savefile.ReadString( animPrefix );
+////	savefile.ReadString( painAnim );
 ////
-////	savefile->ReadInt( blink_anim );
-////	savefile->ReadInt( blink_time );
-////	savefile->ReadInt( blink_min );
-////	savefile->ReadInt( blink_max );
+////	savefile.ReadInt( blink_anim );
+////	savefile.ReadInt( blink_time );
+////	savefile.ReadInt( blink_min );
+////	savefile.ReadInt( blink_max );
 ////
-////	savefile->ReadObject( reinterpret_cast<idClass *&>( scriptThread ) );
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( scriptThread ) );
 ////
-////	savefile->ReadString( waitState );
+////	savefile.ReadString( waitState );
 ////
 ////	headAnim.Restore( savefile );
 ////	torsoAnim.Restore( savefile );
 ////	legsAnim.Restore( savefile );
 ////
-////	savefile->ReadBool( allowPain );
-////	savefile->ReadBool( allowEyeFocus );
+////	savefile.ReadBool( allowPain );
+////	savefile.ReadBool( allowEyeFocus );
 ////
-////	savefile->ReadInt( painTime );
+////	savefile.ReadInt( painTime );
 ////
-////	savefile->ReadInt( num );
+////	savefile.ReadInt( num );
 ////	for ( i = 0; i < num; i++ ) {
 ////		idAttachInfo &attach = attachments.Alloc();
 ////		attach.ent.Restore( savefile );
-////		savefile->ReadInt( attach.channel );
+////		savefile.ReadInt( attach.channel );
 ////	}
 ////
-////	savefile->ReadBool( finalBoss );
+////	savefile.ReadBool( finalBoss );
 ////
 ////	idStr statename;
 ////
-////	savefile->ReadString( statename );
+////	savefile.ReadString( statename );
 ////	if ( statename.Length() > 0 ) {
 ////		state = GetScriptFunction( statename );
 ////	}
 ////
-////	savefile->ReadString( statename );
+////	savefile.ReadString( statename );
 ////	if ( statename.Length() > 0 ) {
 ////		idealState = GetScriptFunction( statename );
 ////	}
@@ -985,15 +1007,15 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////
 ////	idAFEntity_Base::Hide();
 ////	if ( head.GetEntity() ) {
-////		head.GetEntity()->Hide();
+////		head.GetEntity().Hide();
 ////	}
 ////
 ////	for( ent = GetNextTeamEntity(); ent != NULL; ent = next ) {
-////		next = ent->GetNextTeamEntity();
-////		if ( ent->GetBindMaster() == this ) {
-////			ent->Hide();
-////			if ( ent->IsType( idLight::Type ) ) {
-////				static_cast<idLight *>( ent )->Off();
+////		next = ent.GetNextTeamEntity();
+////		if ( ent.GetBindMaster() == this ) {
+////			ent.Hide();
+////			if ( ent.IsType( idLight::Type ) ) {
+////				static_cast<idLight *>( ent ).Off();
 ////			}
 ////		}
 ////	}
@@ -1011,14 +1033,14 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////
 ////	idAFEntity_Base::Show();
 ////	if ( head.GetEntity() ) {
-////		head.GetEntity()->Show();
+////		head.GetEntity().Show();
 ////	}
 ////	for( ent = GetNextTeamEntity(); ent != NULL; ent = next ) {
-////		next = ent->GetNextTeamEntity();
-////		if ( ent->GetBindMaster() == this ) {
-////			ent->Show();
-////			if ( ent->IsType( idLight::Type ) ) {
-////				static_cast<idLight *>( ent )->On();
+////		next = ent.GetNextTeamEntity();
+////		if ( ent.GetBindMaster() == this ) {
+////			ent.Show();
+////			if ( ent.IsType( idLight::Type ) ) {
+////				static_cast<idLight *>( ent ).On();
 ////			}
 ////		}
 ////	}
@@ -1046,10 +1068,10 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	idEntity::ProjectOverlay( origin, dir, size, material );
 ////
 ////	for( ent = GetNextTeamEntity(); ent != NULL; ent = next ) {
-////		next = ent->GetNextTeamEntity();
-////		if ( ent->GetBindMaster() == this ) {
-////			if ( ent->fl.takedamage && ent->spawnArgs.GetBool( "bleed" ) ) {
-////				ent->ProjectOverlay( origin, dir, size, material );
+////		next = ent.GetNextTeamEntity();
+////		if ( ent.GetBindMaster() == this ) {
+////			if ( ent.fl.takedamage && ent.spawnArgs.GetBool( "bleed" ) ) {
+////				ent.ProjectOverlay( origin, dir, size, material );
 ////			}
 ////		}
 ////	}
@@ -1084,30 +1106,30 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	idEntity *headEnt = head.GetEntity();
 ////	if ( headEnt ) {
 ////		jointname = spawnArgs.GetString( "bone_leftEye" );
-////		leftEyeJoint = headEnt->GetAnimator()->GetJointHandle( jointname );
+////		leftEyeJoint = headEnt.GetAnimator().GetJointHandle( jointname );
 ////
 ////		jointname = spawnArgs.GetString( "bone_rightEye" );
-////		rightEyeJoint = headEnt->GetAnimator()->GetJointHandle( jointname );
+////		rightEyeJoint = headEnt.GetAnimator().GetJointHandle( jointname );
 ////
 ////		// set up the eye height.  check if it's specified in the def.
 ////		if ( !spawnArgs.GetFloat( "eye_height", "0", eyeOffset.z ) ) {
 ////			// if not in the def, then try to base it off the idle animation
-////			int anim = headEnt->GetAnimator()->GetAnim( "idle" );
+////			int anim = headEnt.GetAnimator().GetAnim( "idle" );
 ////			if ( anim && ( leftEyeJoint != INVALID_JOINT ) ) {
 ////				idVec3 pos;
 ////				idMat3 axis;
-////				headEnt->GetAnimator()->PlayAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, 0 );
-////				headEnt->GetAnimator()->GetJointTransform( leftEyeJoint, gameLocal.time, pos, axis );
-////				headEnt->GetAnimator()->ClearAllAnims( gameLocal.time, 0 );
-////				headEnt->GetAnimator()->ForceUpdate();
-////				pos += headEnt->GetPhysics()->GetOrigin() - GetPhysics()->GetOrigin();
+////				headEnt.GetAnimator().PlayAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, 0 );
+////				headEnt.GetAnimator().GetJointTransform( leftEyeJoint, gameLocal.time, pos, axis );
+////				headEnt.GetAnimator().ClearAllAnims( gameLocal.time, 0 );
+////				headEnt.GetAnimator().ForceUpdate();
+////				pos += headEnt.GetPhysics().GetOrigin() - GetPhysics().GetOrigin();
 ////				eyeOffset = pos + modelOffset;
 ////			} else {
 ////				// just base it off the bounding box size
-////				eyeOffset.z = GetPhysics()->GetBounds()[ 1 ].z - 6;
+////				eyeOffset.z = GetPhysics().GetBounds()[ 1 ].z - 6;
 ////			}
 ////		}
-////		headAnim.Init( this, headEnt->GetAnimator(), ANIMCHANNEL_ALL );
+////		headAnim.Init( this, headEnt.GetAnimator(), ANIMCHANNEL_ALL );
 ////	} else {
 ////		jointname = spawnArgs.GetString( "bone_leftEye" );
 ////		leftEyeJoint = animator.GetJointHandle( jointname );
@@ -1129,7 +1151,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////				eyeOffset = pos + modelOffset;
 ////			} else {
 ////				// just base it off the bounding box size
-////				eyeOffset.z = GetPhysics()->GetBounds()[ 1 ].z - 6;
+////				eyeOffset.z = GetPhysics().GetBounds()[ 1 ].z - 6;
 ////			}
 ////		}
 ////		headAnim.Init( this, &animator, ANIMCHANNEL_HEAD );
@@ -1154,7 +1176,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////
 ////	idEntity *headEnt = head.GetEntity();
 ////	if ( headEnt ) {
-////		headEnt->GetAnimator()->PlayAnim( ANIMCHANNEL_EYELIDS, blink_anim, gameLocal.time, 1 );
+////		headEnt.GetAnimator().PlayAnim( ANIMCHANNEL_EYELIDS, blink_anim, gameLocal.time, 1 );
 ////	} else {
 ////		animator.PlayAnim( ANIMCHANNEL_EYELIDS, blink_anim, gameLocal.time, 1 );
 ////	}
@@ -1189,7 +1211,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////		origin += modelOffset;
 ////		axis = viewAxis;
 ////	} else {
-////		origin = GetPhysics()->GetGravityNormal() * -eyeOffset.z;
+////		origin = GetPhysics().GetGravityNormal() * -eyeOffset.z;
 ////		axis.Identity();
 ////	}
 ////	return true;
@@ -1212,8 +1234,8 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	legsAnim.Shutdown();
 ////
 ////	if ( scriptThread ) {
-////		scriptThread->EndThread();
-////		scriptThread->PostEventMS( &EV_Remove, 0 );
+////		scriptThread.EndThread();
+////		scriptThread.PostEventMS( &EV_Remove, 0 );
 ////		delete scriptThread;
 ////		scriptThread = NULL;
 ////	}
@@ -1250,11 +1272,11 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	if ( !scriptThread ) {
 ////		// create script thread
 ////		scriptThread = new idThread();
-////		scriptThread->ManualDelete();
-////		scriptThread->ManualControl();
-////		scriptThread->SetThreadName( name.c_str() );
+////		scriptThread.ManualDelete();
+////		scriptThread.ManualControl();
+////		scriptThread.SetThreadName( name.c_str() );
 ////	} else {
-////		scriptThread->EndThread();
+////		scriptThread.EndThread();
 ////	}
 ////	
 ////	// call script object's constructor
@@ -1267,7 +1289,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	scriptObject.ClearObject();
 ////
 ////	// just set the current function on the script.  we'll execute in the subclasses.
-////	scriptThread->CallFunction( this, constructor, true );
+////	scriptThread.CallFunction( this, constructor, true );
 ////
 ////	return scriptThread;
 ////}
@@ -1282,7 +1304,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////
 ////	func = scriptObject.GetFunction( funcname );
 ////	if ( !func ) {
-////		scriptThread->Error( "Unknown function '%s' in '%s'", funcname, scriptObject.GetTypeName() );
+////		scriptThread.Error( "Unknown function '%s' in '%s'", funcname, scriptObject.GetTypeName() );
 ////	}
 ////
 ////	return func;
@@ -1299,12 +1321,12 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	}
 ////
 ////	if ( ai_debugScript.GetInteger() == entityNumber ) {
-////		gameLocal.Printf( "%d: %s: State: %s\n", gameLocal.time, name.c_str(), newState->Name() );
+////		gameLocal.Printf( "%d: %s: State: %s\n", gameLocal.time, name.c_str(), newState.Name() );
 ////	}
 ////
 ////	state = newState;
 ////	idealState = state;
-////	scriptThread->CallFunction( this, state, true );
+////	scriptThread.CallFunction( this, state, true );
 ////}
 ////
 /////*
@@ -1328,9 +1350,9 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	int	i;
 ////
 ////	if ( ai_debugScript.GetInteger() == entityNumber ) {
-////		scriptThread->EnableDebugInfo();
+////		scriptThread.EnableDebugInfo();
 ////	} else {
-////		scriptThread->DisableDebugInfo();
+////		scriptThread.DisableDebugInfo();
 ////	}
 ////
 ////	// a series of state changes can happen in a single frame.
@@ -1341,18 +1363,18 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////		}
 ////
 ////		// don't call script until it's done waiting
-////		if ( scriptThread->IsWaiting() ) {
+////		if ( scriptThread.IsWaiting() ) {
 ////			break;
 ////		}
 ////        
-////		scriptThread->Execute();
+////		scriptThread.Execute();
 ////		if ( idealState == state ) {
 ////			break;
 ////		}
 ////	}
 ////
 ////	if ( i == 20 ) {
-////		scriptThread->Warning( "idActor::UpdateScript: exited loop to prevent lockup" );
+////		scriptThread.Warning( "idActor::UpdateScript: exited loop to prevent lockup" );
 ////	}
 ////}
 ////
@@ -1395,7 +1417,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////=====================
 ////*/
 ////idVec3 idActor::EyeOffset( void ) const {
-////	return GetPhysics()->GetGravityNormal() * -eyeOffset.z;
+////	return GetPhysics().GetGravityNormal() * -eyeOffset.z;
 ////}
 ////
 /////*
@@ -1404,7 +1426,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////=====================
 ////*/
 ////idVec3 idActor::GetEyePosition( void ) const {
-////	return GetPhysics()->GetOrigin() + ( GetPhysics()->GetGravityNormal() * -eyeOffset.z );
+////	return GetPhysics().GetOrigin() + ( GetPhysics().GetGravityNormal() * -eyeOffset.z );
 ////}
 ////
 /////*
@@ -1433,7 +1455,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	delta = pos - GetEyePosition();
 ////
 ////	// get our gravity normal
-////	const idVec3 &gravityDir = GetPhysics()->GetGravityNormal();
+////	const idVec3 &gravityDir = GetPhysics().GetGravityNormal();
 ////
 ////	// infinite vertical vision, so project it onto our orientation plane
 ////	delta -= gravityDir * ( gravityDir * delta );
@@ -1454,14 +1476,14 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	idVec3		eye;
 ////	idVec3		toPos;
 ////
-////	if ( ent->IsHidden() ) {
+////	if ( ent.IsHidden() ) {
 ////		return false;
 ////	}
 ////
-////	if ( ent->IsType( idActor::Type ) ) {
-////		toPos = ( ( idActor * )ent )->GetEyePosition();
+////	if ( ent.IsType( idActor::Type ) ) {
+////		toPos = ( ( idActor * )ent ).GetEyePosition();
 ////	} else {
-////		toPos = ent->GetPhysics()->GetOrigin();
+////		toPos = ent.GetPhysics().GetOrigin();
 ////	}
 ////
 ////	if ( useFov && !CheckFOV( toPos ) ) {
@@ -1504,7 +1526,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////*/
 ////void idActor::GetAIAimTargets( const idVec3 &lastSightPos, idVec3 &headPos, idVec3 &chestPos ) {
 ////	headPos = lastSightPos + EyeOffset();
-////	chestPos = ( headPos + lastSightPos + GetPhysics()->GetBounds().GetCenter() ) * 0.5f;
+////	chestPos = ( headPos + lastSightPos + GetPhysics().GetBounds().GetCenter() ) * 0.5f;
 ////}
 ////
 /////*
@@ -1514,8 +1536,8 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////*/
 ////renderView_t *idActor::GetRenderView() {
 ////	renderView_t *rv = idEntity::GetRenderView();
-////	rv->viewaxis = viewAxis;
-////	rv->vieworg = GetEyePosition();
+////	rv.viewaxis = viewAxis;
+////	rv.vieworg = GetEyePosition();
 ////	return rv;
 ////}
 ////
@@ -1535,15 +1557,15 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////
 ////	if ( !use_combat_bbox ) {
 ////		if ( combatModel ) {
-////			combatModel->Unlink();
-////			combatModel->LoadModel( modelDefHandle );
+////			combatModel.Unlink();
+////			combatModel.LoadModel( modelDefHandle );
 ////		} else {
 ////			combatModel = new idClipModel( modelDefHandle );
 ////		}
 ////
 ////		headEnt = head.GetEntity();
 ////		if ( headEnt ) {
-////			headEnt->SetCombatModel();
+////			headEnt.SetCombatModel();
 ////		}
 ////	}
 ////}
@@ -1570,11 +1592,11 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	}
 ////
 ////	if ( combatModel ) {
-////		combatModel->Link( gameLocal.clip, this, 0, renderEntity.origin, renderEntity.axis, modelDefHandle );
+////		combatModel.Link( gameLocal.clip, this, 0, renderEntity.origin, renderEntity.axis, modelDefHandle );
 ////	}
 ////	headEnt = head.GetEntity();
 ////	if ( headEnt ) {
-////		headEnt->LinkCombat();
+////		headEnt.LinkCombat();
 ////	}
 ////}
 ////
@@ -1587,11 +1609,11 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	idAFAttachment *headEnt;
 ////
 ////	if ( combatModel ) {
-////		combatModel->Unlink();
+////		combatModel.Unlink();
 ////	}
 ////	headEnt = head.GetEntity();
 ////	if ( headEnt ) {
-////		headEnt->UnlinkCombat();
+////		headEnt.UnlinkCombat();
 ////	}
 ////}
 ////
@@ -1616,7 +1638,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	}
 ////
 ////	// disable the monster bounding box
-////	GetPhysics()->DisableClip();
+////	GetPhysics().DisableClip();
 ////
 ////	// start using the AF
 ////	af.StartFromCurrentPose( spawnArgs.GetInt( "velocityTime", "0" ) );
@@ -1625,21 +1647,21 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	slomoEnd = MS2SEC( gameLocal.time ) + spawnArgs.GetFloat( "ragdoll_slomoEnd", "0.8" );
 ////
 ////	// do the first part of the death in slow motion
-////	af.GetPhysics()->SetTimeScaleRamp( slomoStart, slomoEnd );
+////	af.GetPhysics().SetTimeScaleRamp( slomoStart, slomoEnd );
 ////
 ////	jointFrictionDent = spawnArgs.GetFloat( "ragdoll_jointFrictionDent", "0.1" );
 ////	jointFrictionDentStart = MS2SEC( gameLocal.time ) + spawnArgs.GetFloat( "ragdoll_jointFrictionStart", "0.2" );
 ////	jointFrictionDentEnd = MS2SEC( gameLocal.time ) + spawnArgs.GetFloat( "ragdoll_jointFrictionEnd", "1.2" );
 ////
 ////	// set joint friction dent
-////	af.GetPhysics()->SetJointFrictionDent( jointFrictionDent, jointFrictionDentStart, jointFrictionDentEnd );
+////	af.GetPhysics().SetJointFrictionDent( jointFrictionDent, jointFrictionDentStart, jointFrictionDentEnd );
 ////
 ////	contactFrictionDent = spawnArgs.GetFloat( "ragdoll_contactFrictionDent", "0.1" );
 ////	contactFrictionDentStart = MS2SEC( gameLocal.time ) + spawnArgs.GetFloat( "ragdoll_contactFrictionStart", "1.0" );
 ////	contactFrictionDentEnd = MS2SEC( gameLocal.time ) + spawnArgs.GetFloat( "ragdoll_contactFrictionEnd", "2.0" );
 ////
 ////	// set contact friction dent
-////	af.GetPhysics()->SetContactFrictionDent( contactFrictionDent, contactFrictionDentStart, contactFrictionDentEnd );
+////	af.GetPhysics().SetContactFrictionDent( contactFrictionDent, contactFrictionDentStart, contactFrictionDentEnd );
 ////
 ////	// drop any items the actor is holding
 ////	idMoveableItem::DropItems( this, "death", NULL );
@@ -1696,8 +1718,8 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	// remove any attached entities
 ////	for( i = 0; i < attachments.Num(); i++ ) {
 ////		ent = attachments[ i ].ent.GetEntity();
-////		if ( ent && ent->spawnArgs.GetBool( "remove" ) ) {
-////			ent->PostEventMS( &EV_Remove, 0 );
+////		if ( ent && ent.spawnArgs.GetBool( "remove" ) ) {
+////			ent.PostEventMS( &EV_Remove, 0 );
 ////		}
 ////	}
 ////}
@@ -1716,25 +1738,25 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	idAngles		angleOffset;
 ////	idVec3			originOffset;
 ////
-////	jointName = ent->spawnArgs.GetString( "joint" );
+////	jointName = ent.spawnArgs.GetString( "joint" );
 ////	joint = animator.GetJointHandle( jointName );
 ////	if ( joint == INVALID_JOINT ) {
-////		gameLocal.Error( "Joint '%s' not found for attaching '%s' on '%s'", jointName.c_str(), ent->GetClassname(), name.c_str() );
+////		gameLocal.Error( "Joint '%s' not found for attaching '%s' on '%s'", jointName.c_str(), ent.GetClassname(), name.c_str() );
 ////	}
 ////
-////	angleOffset = ent->spawnArgs.GetAngles( "angles" );
-////	originOffset = ent->spawnArgs.GetVector( "origin" );
+////	angleOffset = ent.spawnArgs.GetAngles( "angles" );
+////	originOffset = ent.spawnArgs.GetVector( "origin" );
 ////
 ////	attach.channel = animator.GetChannelForJoint( joint );
 ////	GetJointWorldTransform( joint, gameLocal.time, origin, axis );
 ////	attach.ent = ent;
 ////
-////	ent->SetOrigin( origin + originOffset * renderEntity.axis );
+////	ent.SetOrigin( origin + originOffset * renderEntity.axis );
 ////	idMat3 rotate = angleOffset.ToMat3();
 ////	idMat3 newAxis = rotate * axis;
-////	ent->SetAxis( newAxis );
-////	ent->BindToJoint( this, joint, true );
-////	ent->cinematic = cinematic;
+////	ent.SetAxis( newAxis );
+////	ent.BindToJoint( this, joint, true );
+////	ent.cinematic = cinematic;
 ////}
 ////
 /////*
@@ -1743,8 +1765,8 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////================
 ////*/
 ////void idActor::Teleport( const idVec3 &origin, const idAngles &angles, idEntity *destination ) {
-////	GetPhysics()->SetOrigin( origin + idVec3( 0, 0, CM_CLIP_EPSILON ) );
-////	GetPhysics()->SetLinearVelocity( vec3_origin );
+////	GetPhysics().SetOrigin( origin + idVec3( 0, 0, CM_CLIP_EPSILON ) );
+////	GetPhysics().SetLinearVelocity( vec3_origin );
 ////
 ////	viewAxis = angles.ToMat3();
 ////
@@ -1782,8 +1804,8 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////bool idActor::HasEnemies( void ) const {
 ////	idActor *ent;
 ////
-////	for( ent = enemyList.Next(); ent != NULL; ent = ent->enemyNode.Next() ) {
-////		if ( !ent->fl.hidden ) {
+////	for( ent = enemyList.Next(); ent != NULL; ent = ent.enemyNode.Next() ) {
+////		if ( !ent.fl.hidden ) {
 ////			return true;
 ////		}
 ////	}
@@ -1805,11 +1827,11 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////
 ////	bestDistSquared = idMath::INFINITY;
 ////	bestEnt = NULL;
-////	for( ent = enemyList.Next(); ent != NULL; ent = ent->enemyNode.Next() ) {
-////		if ( ent->fl.hidden ) {
+////	for( ent = enemyList.Next(); ent != NULL; ent = ent.enemyNode.Next() ) {
+////		if ( ent.fl.hidden ) {
 ////			continue;
 ////		}
-////		delta = ent->GetPhysics()->GetOrigin() - pos;
+////		delta = ent.GetPhysics().GetOrigin() - pos;
 ////		distSquared = delta.LengthSqr();
 ////		if ( distSquared < bestDistSquared ) {
 ////			bestEnt = ent;
@@ -1831,10 +1853,10 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////
 ////	int most = -9999;
 ////	bestEnt = NULL;
-////	for( ent = enemyList.Next(); ent != NULL; ent = ent->enemyNode.Next() ) {
-////		if ( !ent->fl.hidden && ( ent->health > most ) ) {
+////	for( ent = enemyList.Next(); ent != NULL; ent = ent.enemyNode.Next() ) {
+////		if ( !ent.fl.hidden && ( ent.health > most ) ) {
 ////			bestEnt = ent;
-////			most = ent->health;
+////			most = ent.health;
 ////		}
 ////	}
 ////	return bestEnt;
@@ -1864,14 +1886,14 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////		return;
 ////	}
 ////	
-////	size = aas->GetSettings()->boundingBoxes[0][1];
+////	size = aas.GetSettings().boundingBoxes[0][1];
 ////	bounds[0] = -size;
 ////	size.z = 32.0f;
 ////	bounds[1] = size;
 ////
-////	areaNum = aas->PointReachableAreaNum( pos, bounds, AREA_REACHABLE_WALK );
+////	areaNum = aas.PointReachableAreaNum( pos, bounds, AREA_REACHABLE_WALK );
 ////	if ( areaNum ) {
-////		aas->PushPointIntoAreaNum( areaNum, pos );
+////		aas.PushPointIntoAreaNum( areaNum, pos );
 ////	}
 ////}
 ////
@@ -2027,20 +2049,20 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////		if ( !head.GetEntity() ) {
 ////			return 0;
 ////		}
-////		animatorPtr = head.GetEntity()->GetAnimator();
+////		animatorPtr = head.GetEntity().GetAnimator();
 ////	} else {
 ////		animatorPtr = &animator;
 ////	}
 ////
 ////	if ( animPrefix.Length() ) {
 ////		temp = va( "%s_%s", animPrefix.c_str(), animname );
-////		anim = animatorPtr->GetAnim( temp );
+////		anim = animatorPtr.GetAnim( temp );
 ////		if ( anim ) {
 ////			return anim;
 ////		}
 ////	}
 ////
-////	anim = animatorPtr->GetAnim( animname );
+////	anim = animatorPtr.GetAnim( animname );
 ////
 ////	return anim;
 ////}
@@ -2063,40 +2085,40 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	if ( channel == ANIMCHANNEL_HEAD ) {
 ////		headEnt = head.GetEntity();
 ////		if ( headEnt ) {
-////			headAnimator = headEnt->GetAnimator();
+////			headAnimator = headEnt.GetAnimator();
 ////			syncAnim = animator.CurrentAnim( syncToChannel );
 ////			if ( syncAnim ) {
-////				anim = headAnimator->GetAnim( syncAnim->AnimFullName() );
+////				anim = headAnimator.GetAnim( syncAnim.AnimFullName() );
 ////				if ( !anim ) {
-////					anim = headAnimator->GetAnim( syncAnim->AnimName() );
+////					anim = headAnimator.GetAnim( syncAnim.AnimName() );
 ////				}
 ////				if ( anim ) {
-////					cycle = animator.CurrentAnim( syncToChannel )->GetCycleCount();
-////					starttime = animator.CurrentAnim( syncToChannel )->GetStartTime();
-////					headAnimator->PlayAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, blendTime );
-////					headAnimator->CurrentAnim( ANIMCHANNEL_ALL )->SetCycleCount( cycle );
-////					headAnimator->CurrentAnim( ANIMCHANNEL_ALL )->SetStartTime( starttime );
+////					cycle = animator.CurrentAnim( syncToChannel ).GetCycleCount();
+////					starttime = animator.CurrentAnim( syncToChannel ).GetStartTime();
+////					headAnimator.PlayAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, blendTime );
+////					headAnimator.CurrentAnim( ANIMCHANNEL_ALL ).SetCycleCount( cycle );
+////					headAnimator.CurrentAnim( ANIMCHANNEL_ALL ).SetStartTime( starttime );
 ////				} else {
-////					headEnt->PlayIdleAnim( blendTime );
+////					headEnt.PlayIdleAnim( blendTime );
 ////				}
 ////			}
 ////		}
 ////	} else if ( syncToChannel == ANIMCHANNEL_HEAD ) {
 ////		headEnt = head.GetEntity();
 ////		if ( headEnt ) {
-////			headAnimator = headEnt->GetAnimator();
-////			syncAnim = headAnimator->CurrentAnim( ANIMCHANNEL_ALL );
+////			headAnimator = headEnt.GetAnimator();
+////			syncAnim = headAnimator.CurrentAnim( ANIMCHANNEL_ALL );
 ////			if ( syncAnim ) {
-////				anim = GetAnim( channel, syncAnim->AnimFullName() );
+////				anim = GetAnim( channel, syncAnim.AnimFullName() );
 ////				if ( !anim ) {
-////					anim = GetAnim( channel, syncAnim->AnimName() );
+////					anim = GetAnim( channel, syncAnim.AnimName() );
 ////				}
 ////				if ( anim ) {
-////					cycle = headAnimator->CurrentAnim( ANIMCHANNEL_ALL )->GetCycleCount();
-////					starttime = headAnimator->CurrentAnim( ANIMCHANNEL_ALL )->GetStartTime();
+////					cycle = headAnimator.CurrentAnim( ANIMCHANNEL_ALL ).GetCycleCount();
+////					starttime = headAnimator.CurrentAnim( ANIMCHANNEL_ALL ).GetStartTime();
 ////					animator.PlayAnim( channel, anim, gameLocal.time, blendTime );
-////					animator.CurrentAnim( channel )->SetCycleCount( cycle );
-////					animator.CurrentAnim( channel )->SetStartTime( starttime );
+////					animator.CurrentAnim( channel ).SetCycleCount( cycle );
+////					animator.CurrentAnim( channel ).SetStartTime( starttime );
 ////				}
 ////			}
 ////		}
@@ -2127,7 +2149,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	}
 ////	idAFEntity_Gibbable::Gib( dir, damageDefName );
 ////	if ( head.GetEntity() ) {
-////		head.GetEntity()->Hide();
+////		head.GetEntity().Hide();
 ////	}
 ////	StopSound( SND_CHANNEL_VOICE, false );
 ////}
@@ -2165,7 +2187,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////		attacker = gameLocal.world;
 ////	}
 ////
-////	if ( finalBoss && !inflictor->IsType( idSoulCubeMissile::Type ) ) {
+////	if ( finalBoss && !inflictor.IsType( idSoulCubeMissile::Type ) ) {
 ////		return;
 ////	}
 ////
@@ -2174,11 +2196,11 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////		gameLocal.Error( "Unknown damageDef '%s'", damageDefName );
 ////	}
 ////
-////	int	damage = damageDef->GetInt( "damage" ) * damageScale;
+////	int	damage = damageDef.GetInt( "damage" ) * damageScale;
 ////	damage = GetDamageForLocation( damage, location );
 ////
 ////	// inform the attacker that they hit someone
-////	attacker->DamageFeedback( this, inflictor, damage );
+////	attacker.DamageFeedback( this, inflictor, damage );
 ////	if ( damage > 0 ) {
 ////		health -= damage;
 ////		if ( health <= 0 ) {
@@ -2186,7 +2208,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////				health = -999;
 ////			}
 ////			Killed( inflictor, attacker, damage, dir, location );
-////			if ( ( health < -20 ) && spawnArgs.GetBool( "gib" ) && damageDef->GetBool( "gib" ) ) {
+////			if ( ( health < -20 ) && spawnArgs.GetBool( "gib" ) && damageDef.GetBool( "gib" ) ) {
 ////				Gib( dir, damageDefName );
 ////			}
 ////		} else {
@@ -2325,9 +2347,9 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	damageGroups.SetNum( animator.NumJoints() );
 ////	arg = spawnArgs.MatchPrefix( "damage_zone ", NULL );
 ////	while ( arg ) {
-////		groupname = arg->GetKey();
+////		groupname = arg.GetKey();
 ////		groupname.Strip( "damage_zone " );
-////		animator.GetJointList( arg->GetValue(), jointList );
+////		animator.GetJointList( arg.GetValue(), jointList );
 ////		for( i = 0; i < jointList.Num(); i++ ) {
 ////			jointnum = jointList[ i ];
 ////			damageGroups[ jointnum ] = groupname;
@@ -2345,8 +2367,8 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	// set the percentage on damage zones
 ////	arg = spawnArgs.MatchPrefix( "damage_scale ", NULL );
 ////	while ( arg ) {
-////		scale = atof( arg->GetValue() );
-////		groupname = arg->GetKey();
+////		scale = atof( arg.GetValue() );
+////		groupname = arg.GetKey();
 ////		groupname.Strip( "damage_scale " );
 ////		for( i = 0; i < damageScale.Num(); i++ ) {
 ////			if ( damageGroups[ i ] == groupname ) {
@@ -2399,20 +2421,20 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	const char *sound = NULL;
 ////	const idMaterial *material;
 ////
-////	if ( !GetPhysics()->HasGroundContacts() ) {
+////	if ( !GetPhysics().HasGroundContacts() ) {
 ////		return;
 ////	}
 ////
 ////	// start footstep sound based on material type
-////	material = GetPhysics()->GetContact( 0 ).material;
+////	material = GetPhysics().GetContact( 0 ).material;
 ////	if ( material != NULL ) {
-////		sound = spawnArgs.GetString( va( "snd_footstep_%s", gameLocal.sufaceTypeNames[ material->GetSurfaceType() ] ) );
+////		sound = spawnArgs.GetString( va( "snd_footstep_%s", gameLocal.sufaceTypeNames[ material.GetSurfaceType() ] ) );
 ////	}
 ////	if ( *sound == '\0' ) {
 ////		sound = spawnArgs.GetString( "snd_footstep" );
 ////	}
 ////	if ( *sound != '\0' ) {
-////		StartSoundShader( declManager->FindSound( sound ), SND_CHANNEL_BODY, 0, false, NULL );
+////		StartSoundShader( declManager.FindSound( sound ), SND_CHANNEL_BODY, 0, false, NULL );
 ////	}
 ////}
 ////
@@ -2436,7 +2458,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	
 ////	idEntity *headEnt = head.GetEntity();
 ////	if ( headEnt ) {
-////		headEnt->GetAnimator()->Clear( ANIMCHANNEL_EYELIDS, gameLocal.time, FRAME2MS( 2 ) );
+////		headEnt.GetAnimator().Clear( ANIMCHANNEL_EYELIDS, gameLocal.time, FRAME2MS( 2 ) );
 ////	} else {
 ////		animator.Clear( ANIMCHANNEL_EYELIDS, gameLocal.time, FRAME2MS( 2 ) );
 ////	}
@@ -2834,34 +2856,34 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	switch( channel ) {
 ////	case ANIMCHANNEL_HEAD :
 ////		if ( headEnt ) {
-////			animator.CurrentAnim( ANIMCHANNEL_ALL )->SetSyncedAnimWeight( anim, weight );
+////			animator.CurrentAnim( ANIMCHANNEL_ALL ).SetSyncedAnimWeight( anim, weight );
 ////		} else {
-////			animator.CurrentAnim( ANIMCHANNEL_HEAD )->SetSyncedAnimWeight( anim, weight );
+////			animator.CurrentAnim( ANIMCHANNEL_HEAD ).SetSyncedAnimWeight( anim, weight );
 ////		}
 ////		if ( torsoAnim.IsIdle() ) {
-////			animator.CurrentAnim( ANIMCHANNEL_TORSO )->SetSyncedAnimWeight( anim, weight );
+////			animator.CurrentAnim( ANIMCHANNEL_TORSO ).SetSyncedAnimWeight( anim, weight );
 ////			if ( legsAnim.IsIdle() ) {
-////				animator.CurrentAnim( ANIMCHANNEL_LEGS )->SetSyncedAnimWeight( anim, weight );
+////				animator.CurrentAnim( ANIMCHANNEL_LEGS ).SetSyncedAnimWeight( anim, weight );
 ////			}
 ////		}
 ////		break;
 ////
 ////	case ANIMCHANNEL_TORSO :
-////		animator.CurrentAnim( ANIMCHANNEL_TORSO )->SetSyncedAnimWeight( anim, weight );
+////		animator.CurrentAnim( ANIMCHANNEL_TORSO ).SetSyncedAnimWeight( anim, weight );
 ////		if ( legsAnim.IsIdle() ) {
-////			animator.CurrentAnim( ANIMCHANNEL_LEGS )->SetSyncedAnimWeight( anim, weight );
+////			animator.CurrentAnim( ANIMCHANNEL_LEGS ).SetSyncedAnimWeight( anim, weight );
 ////		}
 ////		if ( headEnt && headAnim.IsIdle() ) {
-////			animator.CurrentAnim( ANIMCHANNEL_ALL )->SetSyncedAnimWeight( anim, weight );
+////			animator.CurrentAnim( ANIMCHANNEL_ALL ).SetSyncedAnimWeight( anim, weight );
 ////		}
 ////		break;
 ////
 ////	case ANIMCHANNEL_LEGS :
-////		animator.CurrentAnim( ANIMCHANNEL_LEGS )->SetSyncedAnimWeight( anim, weight );
+////		animator.CurrentAnim( ANIMCHANNEL_LEGS ).SetSyncedAnimWeight( anim, weight );
 ////		if ( torsoAnim.IsIdle() ) {
-////			animator.CurrentAnim( ANIMCHANNEL_TORSO )->SetSyncedAnimWeight( anim, weight );
+////			animator.CurrentAnim( ANIMCHANNEL_TORSO ).SetSyncedAnimWeight( anim, weight );
 ////			if ( headEnt && headAnim.IsIdle() ) {
-////				animator.CurrentAnim( ANIMCHANNEL_ALL )->SetSyncedAnimWeight( anim, weight );
+////				animator.CurrentAnim( ANIMCHANNEL_ALL ).SetSyncedAnimWeight( anim, weight );
 ////			}
 ////		}
 ////		break;
@@ -3097,7 +3119,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	if ( anim ) {
 ////		if ( channel == ANIMCHANNEL_HEAD ) {
 ////			if ( head.GetEntity() ) {
-////				idThread::ReturnString( head.GetEntity()->GetAnimator()->AnimFullName( anim ) );
+////				idThread::ReturnString( head.GetEntity().GetAnimator().AnimFullName( anim ) );
 ////				return;
 ////			}
 ////		} else {
@@ -3121,7 +3143,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	if ( anim ) {
 ////		if ( channel == ANIMCHANNEL_HEAD ) {
 ////			if ( head.GetEntity() ) {
-////				idThread::ReturnFloat( MS2SEC( head.GetEntity()->GetAnimator()->AnimLength( anim ) ) );
+////				idThread::ReturnFloat( MS2SEC( head.GetEntity().GetAnimator().AnimLength( anim ) ) );
 ////				return;
 ////			}
 ////		} else {
@@ -3145,7 +3167,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	if ( anim ) {
 ////		if ( channel == ANIMCHANNEL_HEAD ) {
 ////			if ( head.GetEntity() ) {
-////				idThread::ReturnFloat( head.GetEntity()->GetAnimator()->TotalMovementDelta( anim ).Length() );
+////				idThread::ReturnFloat( head.GetEntity().GetAnimator().TotalMovementDelta( anim ).Length() );
 ////				return;
 ////			}
 ////		} else {
@@ -3180,18 +3202,18 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	if ( !ent || ( ent == this ) ) {
 ////		actor = enemyList.Next();
 ////	} else {
-////		if ( !ent->IsType( idActor::Type ) ) {
-////			gameLocal.Error( "'%s' cannot be an enemy", ent->name.c_str() );
+////		if ( !ent.IsType( idActor::Type ) ) {
+////			gameLocal.Error( "'%s' cannot be an enemy", ent.name.c_str() );
 ////		}
 ////
 ////		actor = static_cast<idActor *>( ent );
-////		if ( actor->enemyNode.ListHead() != &enemyList ) {
-////			gameLocal.Error( "'%s' is not in '%s' enemy list", actor->name.c_str(), name.c_str() );
+////		if ( actor.enemyNode.ListHead() != &enemyList ) {
+////			gameLocal.Error( "'%s' is not in '%s' enemy list", actor.name.c_str(), name.c_str() );
 ////		}
 ////	}
 ////
-////	for( ; actor != NULL; actor = actor->enemyNode.Next() ) {
-////		if ( !actor->fl.hidden ) {
+////	for( ; actor != NULL; actor = actor.enemyNode.Next() ) {
+////		if ( !actor.fl.hidden ) {
 ////			idThread::ReturnEntity( actor );
 ////			return;
 ////		}
@@ -3219,7 +3241,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	if ( channel == SND_CHANNEL_VOICE ) {
 ////		idEntity *headEnt = head.GetEntity();
 ////		if ( headEnt ) {
-////			headEnt->StopSound( channel, ( netSync != 0 ) );
+////			headEnt.StopSound( channel, ( netSync != 0 ) );
 ////		}
 ////	}
 ////	StopSound( channel, ( netSync != 0 ) );
@@ -3247,7 +3269,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////	if ( idealState == state ) {
 ////		state = NULL;
 ////	}
-////	scriptThread->DoneProcessing();
+////	scriptThread.DoneProcessing();
 ////}
 ////
 /////*
@@ -3257,7 +3279,7 @@ var AI_GetHead = new idEventDef(  "getHead", null, 'e' );
 ////*/
 ////void idActor::Event_GetState( void ) {
 ////	if ( state ) {
-////		idThread::ReturnString( state->Name() );
+////		idThread::ReturnString( state.Name() );
 ////	} else {
 ////		idThread::ReturnString( "" );
 ////	}
