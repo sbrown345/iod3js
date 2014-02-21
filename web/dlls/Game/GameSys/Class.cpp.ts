@@ -176,7 +176,7 @@ class idTypeInfo {
 ////	void ( idClass::*Spawn )( void ), void ( idClass::*Save )( idSaveGame *savefile ) const, void ( idClass::*Restore )( idRestoreGame *savefile ) ) {
 
 		var type: R<idTypeInfo>;
-		var insert: R<R<idTypeInfo>>;
+		var insert: R<idTypeInfo>;
 
 		this.classname = classname;
 		this.superclass = superclass;
@@ -200,16 +200,16 @@ class idTypeInfo {
 		}
 
 		// Insert sorted
-		for ( insert = new R( typelist ); insert.$.$; insert.$ = new R( ( insert.$ ).$.next ) ) {
-			assert( idStr.Cmp( classname, ( insert.$ ).$.classname ) );
-			if ( idStr.Cmp( classname, ( insert.$ ).$.classname ) < 0 ) {
-				this.next = insert.$.$;
-				insert.$.$ = this;
+		for ( insert = typelist; insert.$; insert.$ = ( insert.$ ).next ) {
+			assert( idStr.Cmp( classname, ( insert.$ ).classname ) );
+			if ( idStr.Cmp( classname, ( insert.$ ).classname ) < 0 ) {
+				this.next = insert.$;
+				insert.$ = this;
 				break;
 			}
 		}
-		if ( !insert.$.$ ) {
-			insert.$.$ = this;
+		if ( !insert.$ ) {
+			insert.$ = this;
 			this.next = null;
 		}
 	}
