@@ -236,7 +236,7 @@
 ////	int					PVSAreas[ idEntity::MAX_PVS_AREAS ];
 ////};
 ////
-////class idAI : public idActor {
+class idAI extends idActor {
 ////public:
 ////	CLASS_PROTOTYPE( idAI );
 ////
@@ -529,136 +529,136 @@
 ////	//
 ////	// ai/ai_events.cpp
 ////	//
-////	void					Event_Activate( idEntity *activator ): void { throw "placeholder"; }
-////	void					Event_Touch( idEntity *other, trace_t *trace ): void { throw "placeholder"; }
-////	void					Event_FindEnemy( int useFOV ): void { throw "placeholder"; }
-////	void					Event_FindEnemyAI( int useFOV ): void { throw "placeholder"; }
-////	void					Event_FindEnemyInCombatNodes( void ): void { throw "placeholder"; }
-////	void					Event_ClosestReachableEnemyOfEntity( idEntity *team_mate ): void { throw "placeholder"; }
-////	void					Event_HeardSound( int ignore_team ): void { throw "placeholder"; }
-////	void					Event_SetEnemy( idEntity *ent ): void { throw "placeholder"; }
-////	void					Event_ClearEnemy( void ): void { throw "placeholder"; }
-////	void					Event_MuzzleFlash( const char *jointname ): void { throw "placeholder"; }
-////	void					Event_CreateMissile( const char *jointname ): void { throw "placeholder"; }
-////	void					Event_AttackMissile( const char *jointname ): void { throw "placeholder"; }
-////	void					Event_FireMissileAtTarget( const char *jointname, const char *targetname ): void { throw "placeholder"; }
-////	void					Event_LaunchMissile( const idVec3 &muzzle, const idAngles &ang ): void { throw "placeholder"; }
-////	void					Event_AttackMelee( const char *meleeDefName ): void { throw "placeholder"; }
-////	void					Event_DirectDamage( idEntity *damageTarget, const char *damageDefName ): void { throw "placeholder"; }
-////	void					Event_RadiusDamageFromJoint( const char *jointname, const char *damageDefName ): void { throw "placeholder"; }
-////	void					Event_BeginAttack( const char *name ): void { throw "placeholder"; }
-////	void					Event_EndAttack( void ): void { throw "placeholder"; }
-////	void					Event_MeleeAttackToJoint( const char *jointname, const char *meleeDefName ): void { throw "placeholder"; }
-////	void					Event_RandomPath( void ): void { throw "placeholder"; }
-////	void					Event_CanBecomeSolid( void ): void { throw "placeholder"; }
-////	void					Event_BecomeSolid( void ): void { throw "placeholder"; }
-////	void					Event_BecomeNonSolid( void ): void { throw "placeholder"; }
-////	void					Event_BecomeRagdoll( void ): void { throw "placeholder"; }
-////	void					Event_StopRagdoll( void ): void { throw "placeholder"; }
-////	void					Event_SetHealth( float newHealth ): void { throw "placeholder"; }
-////	void					Event_GetHealth( void ): void { throw "placeholder"; }
-////	void					Event_AllowDamage( void ): void { throw "placeholder"; }
-////	void					Event_IgnoreDamage( void ): void { throw "placeholder"; }
-////	void					Event_GetCurrentYaw( void ): void { throw "placeholder"; }
-////	void					Event_TurnTo( float angle ): void { throw "placeholder"; }
-////	void					Event_TurnToPos( const idVec3 &pos ): void { throw "placeholder"; }
-////	void					Event_TurnToEntity( idEntity *ent ): void { throw "placeholder"; }
-////	void					Event_MoveStatus( void ): void { throw "placeholder"; }
-////	void					Event_StopMove( void ): void { throw "placeholder"; }
-////	void					Event_MoveToCover( void ): void { throw "placeholder"; }
-////	void					Event_MoveToEnemy( void ): void { throw "placeholder"; }
-////	void					Event_MoveToEnemyHeight( void ): void { throw "placeholder"; }
-////	void					Event_MoveOutOfRange( idEntity *entity, float range ): void { throw "placeholder"; }
-////	void					Event_MoveToAttackPosition( idEntity *entity, const char *attack_anim ): void { throw "placeholder"; }
-////	void					Event_MoveToEntity( idEntity *ent ): void { throw "placeholder"; }
-////	void					Event_MoveToPosition( const idVec3 &pos ): void { throw "placeholder"; }
-////	void					Event_SlideTo( const idVec3 &pos, float time ): void { throw "placeholder"; }
-////	void					Event_Wander( void ): void { throw "placeholder"; }
-////	void					Event_FacingIdeal( void ): void { throw "placeholder"; }
-////	void					Event_FaceEnemy( void ): void { throw "placeholder"; }
-////	void					Event_FaceEntity( idEntity *ent ): void { throw "placeholder"; }
-////	void					Event_WaitAction( const char *waitForState ): void { throw "placeholder"; }
-////	void					Event_GetCombatNode( void ): void { throw "placeholder"; }
-////	void					Event_EnemyInCombatCone( idEntity *ent, int use_current_enemy_location ): void { throw "placeholder"; }
-////	void					Event_WaitMove( void ): void { throw "placeholder"; }
-////	void					Event_GetJumpVelocity( const idVec3 &pos, float speed, float max_height ): void { throw "placeholder"; }
-////	void					Event_EntityInAttackCone( idEntity *ent ): void { throw "placeholder"; }
-////	void					Event_CanSeeEntity( idEntity *ent ): void { throw "placeholder"; }
-////	void					Event_SetTalkTarget( idEntity *target ): void { throw "placeholder"; }
-////	void					Event_GetTalkTarget( void ): void { throw "placeholder"; }
-////	void					Event_SetTalkState( int state ): void { throw "placeholder"; }
-////	void					Event_EnemyRange( void ): void { throw "placeholder"; }
-////	void					Event_EnemyRange2D( void ): void { throw "placeholder"; }
-////	void					Event_GetEnemy( void ): void { throw "placeholder"; }
-////	void					Event_GetEnemyPos( void ): void { throw "placeholder"; }
-////	void					Event_GetEnemyEyePos( void ): void { throw "placeholder"; }
-////	void					Event_PredictEnemyPos( float time ): void { throw "placeholder"; }
-////	void					Event_CanHitEnemy( void ): void { throw "placeholder"; }
-////	void					Event_CanHitEnemyFromAnim( const char *animname ): void { throw "placeholder"; }
-////	void					Event_CanHitEnemyFromJoint( const char *jointname ): void { throw "placeholder"; }
-////	void					Event_EnemyPositionValid( void ): void { throw "placeholder"; }
-////	void					Event_ChargeAttack( const char *damageDef ): void { throw "placeholder"; }
-////	void					Event_TestChargeAttack( void ): void { throw "placeholder"; }
-////	void					Event_TestAnimMoveTowardEnemy( const char *animname ): void { throw "placeholder"; }
-////	void					Event_TestAnimMove( const char *animname ): void { throw "placeholder"; }
-////	void					Event_TestMoveToPosition( const idVec3 &position ): void { throw "placeholder"; }
-////	void					Event_TestMeleeAttack( void ): void { throw "placeholder"; }
-////	void					Event_TestAnimAttack( const char *animname ): void { throw "placeholder"; }
-////	void					Event_Shrivel( float shirvel_time ): void { throw "placeholder"; }
-////	void					Event_Burn( void ): void { throw "placeholder"; }
-////	void					Event_PreBurn( void ): void { throw "placeholder"; }
-////	void					Event_ClearBurn( void ): void { throw "placeholder"; }
-////	void					Event_SetSmokeVisibility( int num, int on ): void { throw "placeholder"; }
-////	void					Event_NumSmokeEmitters( void ): void { throw "placeholder"; }
-////	void					Event_StopThinking( void ): void { throw "placeholder"; }
-////	void					Event_GetTurnDelta( void ): void { throw "placeholder"; }
-////	void					Event_GetMoveType( void ): void { throw "placeholder"; }
-////	void					Event_SetMoveType( int moveType ): void { throw "placeholder"; }
-////	void					Event_SaveMove( void ): void { throw "placeholder"; }
-////	void					Event_RestoreMove( void ): void { throw "placeholder"; }
-////	void					Event_AllowMovement( float flag ): void { throw "placeholder"; }
-////	void					Event_JumpFrame( void ): void { throw "placeholder"; }
-////	void					Event_EnableClip( void ): void { throw "placeholder"; }
-////	void					Event_DisableClip( void ): void { throw "placeholder"; }
-////	void					Event_EnableGravity( void ): void { throw "placeholder"; }
-////	void					Event_DisableGravity( void ): void { throw "placeholder"; }
-////	void					Event_EnableAFPush( void ): void { throw "placeholder"; }
-////	void					Event_DisableAFPush( void ): void { throw "placeholder"; }
-////	void					Event_SetFlySpeed( float speed ): void { throw "placeholder"; }
-////	void					Event_SetFlyOffset( int offset ): void { throw "placeholder"; }
-////	void					Event_ClearFlyOffset( void ): void { throw "placeholder"; }
-////	void					Event_GetClosestHiddenTarget( const char *type ): void { throw "placeholder"; }
-////	void					Event_GetRandomTarget( const char *type ): void { throw "placeholder"; }
-////	void					Event_TravelDistanceToPoint( const idVec3 &pos ): void { throw "placeholder"; }
-////	void					Event_TravelDistanceToEntity( idEntity *ent ): void { throw "placeholder"; }
-////	void					Event_TravelDistanceBetweenPoints( const idVec3 &source, const idVec3 &dest ): void { throw "placeholder"; }
-////	void					Event_TravelDistanceBetweenEntities( idEntity *source, idEntity *dest ): void { throw "placeholder"; }
-////	void					Event_LookAtEntity( idEntity *ent, float duration ): void { throw "placeholder"; }
-////	void					Event_LookAtEnemy( float duration ): void { throw "placeholder"; }
-////	void					Event_SetJointMod( int allowJointMod ): void { throw "placeholder"; }
-////	void					Event_ThrowMoveable( void ): void { throw "placeholder"; }
-////	void					Event_ThrowAF( void ): void { throw "placeholder"; }
-////	void					Event_SetAngles( idAngles const &ang ): void { throw "placeholder"; }
-////	void					Event_GetAngles( void ): void { throw "placeholder"; }
-////	void					Event_RealKill( void ): void { throw "placeholder"; }
-////	void					Event_Kill( void ): void { throw "placeholder"; }
-////	void					Event_WakeOnFlashlight( int enable ): void { throw "placeholder"; }
-////	void					Event_LocateEnemy( void ): void { throw "placeholder"; }
-////	void					Event_KickObstacles( idEntity *kickEnt, float force ): void { throw "placeholder"; }
-////	void					Event_GetObstacle( void ): void { throw "placeholder"; }
-////	void					Event_PushPointIntoAAS( const idVec3 &pos ): void { throw "placeholder"; }
-////	void					Event_GetTurnRate( void ): void { throw "placeholder"; }
-////	void					Event_SetTurnRate( float rate ): void { throw "placeholder"; }
-////	void					Event_AnimTurn( float angles ): void { throw "placeholder"; }
-////	void					Event_AllowHiddenMovement( int enable ): void { throw "placeholder"; }
-////	void					Event_TriggerParticles( const char *jointName ): void { throw "placeholder"; }
-////	void					Event_FindActorsInBounds( const idVec3 &mins, const idVec3 &maxs ): void { throw "placeholder"; }
-////	void 					Event_CanReachPosition( const idVec3 &pos ): void { throw "placeholder"; }
-////	void 					Event_CanReachEntity( idEntity *ent ): void { throw "placeholder"; }
-////	void					Event_CanReachEnemy( void ): void { throw "placeholder"; }
-////	void					Event_GetReachableEntityPosition( idEntity *ent ): void { throw "placeholder"; }
-////};
-////
+	Event_Activate( activator :idEntity): void { throw "placeholder"; }
+	Event_Touch( other:idEntity, trace :trace_t): void { throw "placeholder"; }
+	Event_FindEnemy( /*int*/ useFOV:number ): void { throw "placeholder"; }
+	Event_FindEnemyAI( /*int*/ useFOV:number ): void { throw "placeholder"; }
+	Event_FindEnemyInCombatNodes( ): void { throw "placeholder"; }
+	Event_ClosestReachableEnemyOfEntity(team_mate: idEntity): void { throw "placeholder"; }
+	Event_HeardSound( /*int*/ignore_team :number): void { throw "placeholder"; }
+	Event_SetEnemy( ent:idEntity ): void { throw "placeholder"; }
+	Event_ClearEnemy( ): void { throw "placeholder"; }
+	Event_MuzzleFlash( jointname:string ): void { throw "placeholder"; }
+	Event_CreateMissile( jointname:string ): void { throw "placeholder"; }
+	Event_AttackMissile( jointname:string ): void { throw "placeholder"; }
+	Event_FireMissileAtTarget(jointname: string, targetname:string ): void { throw "placeholder"; }
+	Event_LaunchMissile( muzzle:idVec3, ang:idAngles  ): void { throw "placeholder"; }
+	Event_AttackMelee(meleeDefName: string ): void { throw "placeholder"; }
+	Event_DirectDamage(damageTarget: idEntity , damageDefName: string ): void { throw "placeholder"; }
+	Event_RadiusDamageFromJoint(jointname: string, damageDefName: string ): void { throw "placeholder"; }
+	Event_BeginAttack(name: string ): void { throw "placeholder"; }
+	Event_EndAttack( ): void { throw "placeholder"; }
+	Event_MeleeAttackToJoint(jointname: string, meleeDefName: string ): void { throw "placeholder"; }
+	Event_RandomPath( ): void { throw "placeholder"; }
+	Event_CanBecomeSolid( ): void { throw "placeholder"; }
+	Event_BecomeSolid( ): void { throw "placeholder"; }
+	Event_BecomeNonSolid( ): void { throw "placeholder"; }
+	Event_BecomeRagdoll( ): void { throw "placeholder"; }
+	Event_StopRagdoll( ): void { throw "placeholder"; }
+	Event_SetHealth( /*float*/ newHealth:number ): void { throw "placeholder"; }
+	Event_GetHealth( ): void { throw "placeholder"; }
+	Event_AllowDamage( ): void { throw "placeholder"; }
+	Event_IgnoreDamage( ): void { throw "placeholder"; }
+	Event_GetCurrentYaw( ): void { throw "placeholder"; }
+	Event_TurnTo( /*float*/ angle :number): void { throw "placeholder"; }
+	Event_TurnToPos( pos:idVec3 ): void { throw "placeholder"; }
+	Event_TurnToEntity( ent:idEntity): void { throw "placeholder"; }
+	Event_MoveStatus( ): void { throw "placeholder"; }
+	Event_StopMove( ): void { throw "placeholder"; }
+	Event_MoveToCover( ): void { throw "placeholder"; }
+	Event_MoveToEnemy( ): void { throw "placeholder"; }
+	Event_MoveToEnemyHeight( ): void { throw "placeholder"; }
+	Event_MoveOutOfRange( entity:idEntity, /*float*/ range :number): void { throw "placeholder"; }
+	Event_MoveToAttackPosition(entity:idEntity, attack_anim:string ): void { throw "placeholder"; }
+	Event_MoveToEntity( ent:idEntity): void { throw "placeholder"; }
+	Event_MoveToPosition( pos:idVec3 ): void { throw "placeholder"; }
+	Event_SlideTo( pos:idVec3, /*float*/ time :number): void { throw "placeholder"; }
+	Event_Wander( ): void { throw "placeholder"; }
+	Event_FacingIdeal( ): void { throw "placeholder"; }
+	Event_FaceEnemy( ): void { throw "placeholder"; }
+	Event_FaceEntity( ent:idEntity): void { throw "placeholder"; }
+	Event_WaitAction( waitForState:string ): void { throw "placeholder"; }
+	Event_GetCombatNode( ): void { throw "placeholder"; }
+	Event_EnemyInCombatCone(ent: idEntity, /*int*/ use_current_enemy_location:number ): void { throw "placeholder"; }
+	Event_WaitMove( ): void { throw "placeholder"; }
+	Event_GetJumpVelocity( pos:idVec3, /*float*/ speed:number, /*float*/ max_height :number): void { throw "placeholder"; }
+	Event_EntityInAttackCone( ent:idEntity): void { throw "placeholder"; }
+	Event_CanSeeEntity( ent:idEntity): void { throw "placeholder"; }
+	Event_SetTalkTarget(target: idEntity): void { throw "placeholder"; }
+	Event_GetTalkTarget( ): void { throw "placeholder"; }
+	Event_SetTalkState( /*int*/ state :number): void { throw "placeholder"; }
+	Event_EnemyRange( ): void { throw "placeholder"; }
+	Event_EnemyRange2D( ): void { throw "placeholder"; }
+	Event_GetEnemy( ): void { throw "placeholder"; }
+	Event_GetEnemyPos( ): void { throw "placeholder"; }
+	Event_GetEnemyEyePos( ): void { throw "placeholder"; }
+	Event_PredictEnemyPos( /*float*/ time:number ): void { throw "placeholder"; }
+	Event_CanHitEnemy( ): void { throw "placeholder"; }
+	Event_CanHitEnemyFromAnim( animname:string ): void { throw "placeholder"; }
+	Event_CanHitEnemyFromJoint( jointname:string ): void { throw "placeholder"; }
+	Event_EnemyPositionValid( ): void { throw "placeholder"; }
+	Event_ChargeAttack( damageDef:string ): void { throw "placeholder"; }
+	Event_TestChargeAttack( ): void { throw "placeholder"; }
+	Event_TestAnimMoveTowardEnemy( animname:string ): void { throw "placeholder"; }
+	Event_TestAnimMove( animname:string ): void { throw "placeholder"; }
+	Event_TestMoveToPosition(position: idVec3): void { throw "placeholder"; }
+	Event_TestMeleeAttack( ): void { throw "placeholder"; }
+	Event_TestAnimAttack( animname:string ): void { throw "placeholder"; }
+	Event_Shrivel( /*float*/ shirvel_time:number ): void { throw "placeholder"; }
+	Event_Burn( ): void { throw "placeholder"; }
+	Event_PreBurn( ): void { throw "placeholder"; }
+	Event_ClearBurn( ): void { throw "placeholder"; }
+	Event_SetSmokeVisibility( /*int*/ num: number, /*int*/ on:number ): void { throw "placeholder"; }
+	Event_NumSmokeEmitters( ): void { throw "placeholder"; }
+	Event_StopThinking( ): void { throw "placeholder"; }
+	Event_GetTurnDelta( ): void { throw "placeholder"; }
+	Event_GetMoveType( ): void { throw "placeholder"; }
+	Event_SetMoveType( /*int*/ moveType: number ): void { throw "placeholder"; }
+	Event_SaveMove( ): void { throw "placeholder"; }
+	Event_RestoreMove( ): void { throw "placeholder"; }
+	Event_AllowMovement( /*float*/ flag:number ): void { throw "placeholder"; }
+	Event_JumpFrame( ): void { throw "placeholder"; }
+	Event_EnableClip( ): void { throw "placeholder"; }
+	Event_DisableClip( ): void { throw "placeholder"; }
+	Event_EnableGravity( ): void { throw "placeholder"; }
+	Event_DisableGravity( ): void { throw "placeholder"; }
+	Event_EnableAFPush( ): void { throw "placeholder"; }
+	Event_DisableAFPush( ): void { throw "placeholder"; }
+	Event_SetFlySpeed( /*float*/ speed:number ): void { throw "placeholder"; }
+	Event_SetFlyOffset( /*int*/ offset: number ): void { throw "placeholder"; }
+	Event_ClearFlyOffset( ): void { throw "placeholder"; }
+	Event_GetClosestHiddenTarget( type:string ): void { throw "placeholder"; }
+	Event_GetRandomTarget( type:string ): void { throw "placeholder"; }
+	Event_TravelDistanceToPoint( pos:idVec3 ): void { throw "placeholder"; }
+	Event_TravelDistanceToEntity( ent:idEntity): void { throw "placeholder"; }
+	Event_TravelDistanceBetweenPoints( source:idVec3, dest :idVec3): void { throw "placeholder"; }
+	Event_TravelDistanceBetweenEntities(source:idEntity, dest :idEntity): void { throw "placeholder"; }
+	Event_LookAtEntity(ent: idEntity, /*float*/ duration:number ): void { throw "placeholder"; }
+	Event_LookAtEnemy( /*float*/ duration:number ): void { throw "placeholder"; }
+	Event_SetJointMod( /*int*/ allowJointMod: number ): void { throw "placeholder"; }
+	Event_ThrowMoveable( ): void { throw "placeholder"; }
+	Event_ThrowAF( ): void { throw "placeholder"; }
+	Event_SetAngles( ang :idAngles): void { throw "placeholder"; }
+	Event_GetAngles( ): void { throw "placeholder"; }
+	Event_RealKill( ): void { throw "placeholder"; }
+	Event_Kill( ): void { throw "placeholder"; }
+	Event_WakeOnFlashlight( /*int*/ enable: number ): void { throw "placeholder"; }
+	Event_LocateEnemy( ): void { throw "placeholder"; }
+	Event_KickObstacles(kickEnt: idEntity, /*float*/ force:number ): void { throw "placeholder"; }
+	Event_GetObstacle( ): void { throw "placeholder"; }
+	Event_PushPointIntoAAS( pos:idVec3 ): void { throw "placeholder"; }
+	Event_GetTurnRate( ): void { throw "placeholder"; }
+	Event_SetTurnRate( /*float*/ rate:number ): void { throw "placeholder"; }
+	Event_AnimTurn( /*float*/ angles:number ): void { throw "placeholder"; }
+	Event_AllowHiddenMovement( /*int*/ enable: number ): void { throw "placeholder"; }
+	Event_TriggerParticles( jointName:string ): void { throw "placeholder"; }
+	Event_FindActorsInBounds( mins:idVec3, maxs:idVec3 ): void { throw "placeholder"; }
+	Event_CanReachPosition( pos:idVec3 ): void { throw "placeholder"; }
+	Event_CanReachEntity( ent:idEntity): void { throw "placeholder"; }
+	Event_CanReachEnemy( ): void { throw "placeholder"; }
+	Event_GetReachableEntityPosition( ent:idEntity): void { throw "placeholder"; }
+};
+
 class idCombatNode extends idEntity {
 //public:
 	//CLASS_PROTOTYPE( idCombatNode );

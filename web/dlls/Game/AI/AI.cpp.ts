@@ -4023,7 +4023,7 @@
 ////idAI::BeginAttack
 ////=====================
 ////*/
-////void idAI::BeginAttack( const char *name ) {
+////void idAI::BeginAttack( name:string ) {
 ////	attack = name;
 ////	lastAttackTime = gameLocal.time;
 ////}

@@ -210,7 +210,7 @@ idClass.Type = new idTypeInfo( "idClass", "idEntity",
 ////AddRenderGui
 ////================
 ////*/
-////void AddRenderGui( const char *name, idUserInterface **gui, const idDict *args ) {
+////void AddRenderGui( name:string, idUserInterface **gui, const idDict *args ) {
 ////	const idKeyValue *kv = args->MatchPrefix( "gui_parm", NULL );
 ////	*gui = uiManager->FindGui( name, true, ( kv != NULL ) );
 ////	UpdateGuiParms( *gui, args );
@@ -4522,7 +4522,7 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////idEntity::Event_HasFunction
 ////=====================
 ////*/
-////idEntity.prototype.Event_HasFunction( const char *name ) {
+////idEntity.prototype.Event_HasFunction( name:string ) {
 ////	const function_t *func;
 ////
 ////	func = scriptObject.GetFunction( name );

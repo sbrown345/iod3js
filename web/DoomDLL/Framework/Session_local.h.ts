@@ -138,8 +138,8 @@ class idSessionLocal extends idSession {
 //	void				StartNewGame( const char *mapName, bool devmap = false );
 //	void				PlayIntroGui();
 //
-//	void				LoadSession( const char *name );
-//	void				SaveSession( const char *name );
+//	void				LoadSession( name:string );
+//	void				SaveSession( name:string );
 //
 //	// called by Draw when the scene to scene wipe is still running
 //	void				DrawWipeModel();

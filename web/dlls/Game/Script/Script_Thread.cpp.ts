@@ -225,7 +225,7 @@ class idThread extends idClass {
 	//	void						Pause( void );
 	//
 	//	void						Event_Execute( void );
-	//	void						Event_SetThreadName( const char *name );
+	//	void						Event_SetThreadName( name:string );
 	//
 	//	//
 	//	// script callable Events
@@ -851,7 +851,7 @@ idThread::Restart
 //idThread::KillThread
 //================
 //*/
-//void idThread::KillThread( const char *name ) {
+//void idThread::KillThread( name:string ) {
 //	int			i;
 //	int			num;
 //	int			len;
@@ -1028,7 +1028,7 @@ idThread::Restart
 //idThread::Event_SetThreadName
 //================
 //*/
-//void idThread::Event_SetThreadName( const char *name ) {
+//void idThread::Event_SetThreadName( name:string ) {
 //	SetThreadName( name );
 //}
 //
@@ -1298,7 +1298,7 @@ idThread::ReturnString
 //idThread::Event_SetCvar
 //================
 //*/
-//void idThread::Event_SetCvar( const char *name, const char *value ) const {
+//void idThread::Event_SetCvar( name:string, const char *value ) const {
 //	cvarSystem->SetCVarString( name, value );
 //}
 //
@@ -1307,7 +1307,7 @@ idThread::ReturnString
 //idThread::Event_GetCvar
 //================
 //*/
-//void idThread::Event_GetCvar( const char *name ) const {
+//void idThread::Event_GetCvar( name:string ) const {
 //	ReturnString( cvarSystem->GetCVarString( name ) );
 //}
 //
@@ -1337,7 +1337,7 @@ idThread::ReturnString
 //idThread::Event_KillThread
 //================
 //*/
-//void idThread::Event_KillThread( const char *name ) {
+//void idThread::Event_KillThread( name:string ) {
 //	KillThread( name );
 //}
 //
@@ -1346,7 +1346,7 @@ idThread::ReturnString
 //idThread::Event_GetEntity
 //================
 //*/
-//void idThread::Event_GetEntity( const char *name ) {
+//void idThread::Event_GetEntity( name:string ) {
 //	int			entnum;
 //	idEntity	*ent;
 //

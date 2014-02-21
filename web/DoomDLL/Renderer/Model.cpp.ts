@@ -496,7 +496,7 @@ idRenderModelStatic.prototype.Surface = function ( surfaceNum: number ): modelSu
 ////idRenderModelStatic::GetJointHandle
 ////================
 ////*/
-////jointHandle_t idRenderModelStatic::GetJointHandle( const char *name ) const {
+////jointHandle_t idRenderModelStatic::GetJointHandle( name:string ) const {
 ////	return INVALID_JOINT;
 ////}
 

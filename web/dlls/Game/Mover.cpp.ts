@@ -1932,7 +1932,7 @@ var EV_GotoFloor= new idEventDef( "gotoFloor", "d" );
 ////idElevator::GetDoor
 ////================
 ////*/
-////idDoor *idElevator::GetDoor( const char *name ) {
+////idDoor *idElevator::GetDoor( name:string ) {
 ////	idEntity	*ent;
 ////	idEntity	*master;
 ////	idDoor		*doorEnt;

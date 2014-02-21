@@ -641,7 +641,7 @@ idClass::Spawn
 ////idClass::CreateInstance
 ////================
 ////*/
-////idClass *idClass::CreateInstance( const char *name ) {
+////idClass *idClass::CreateInstance( name:string ) {
 ////	const idTypeInfo	*type;
 ////	idClass				*obj;
 ////

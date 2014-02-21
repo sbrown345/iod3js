@@ -144,17 +144,37 @@ idMultiModelAF.Type = new idTypeInfo( "idMultiModelAF", "idEntity",
 ////	Present();
 ////}
 ////
-////
-/////*
-////===============================================================================
-////
-////  idChain
-////
-////===============================================================================
-////*/
-////
-////CLASS_DECLARATION( idMultiModelAF, idChain )
-////END_CLASS
+
+/*
+===============================================================================
+
+  idChain
+
+===============================================================================
+*/
+
+//CLASS_DECLARATION( idMultiModelAF, idChain )
+idChain.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idChain;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idChain.prototype.GetType = function ( ): idTypeInfo {
+	return ( idChain.Type );
+};
+
+idChain.eventCallbacks = [
+];
+
+idChain.Type = new idTypeInfo("idChain", "idMultiModelAF",
+	idChain.eventCallbacks, idChain.CreateInstance, idChain.prototype.Spawn,
+	idChain.prototype.Save, idChain.prototype.Restore );
+
 ////
 /////*
 ////================
@@ -254,15 +274,36 @@ idMultiModelAF.Type = new idTypeInfo( "idMultiModelAF", "idEntity",
 ////	BuildChain( "link", origin, linkLength, linkWidth, density, numLinks, !drop );
 ////}
 ////
-/////*
-////===============================================================================
-////
-////  idAFAttachment
-////
-////===============================================================================
-////*/
-////
-////CLASS_DECLARATION( idAnimatedEntity, idAFAttachment )
+/*
+===============================================================================
+
+  idAFAttachment
+
+===============================================================================
+*/
+
+//CLASS_DECLARATION( idAnimatedEntity, idAFAttachment )
+idAFAttachment.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idAFAttachment;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idAFAttachment.prototype.GetType = function ( ): idTypeInfo {
+	return ( idAFAttachment.Type );
+};
+
+idAFAttachment.eventCallbacks = [
+];
+
+idAFAttachment.Type = new idTypeInfo("idAFAttachment", "idAnimatedEntity",
+	idAFAttachment.eventCallbacks, idAFAttachment.CreateInstance, idAFAttachment.prototype.Spawn,
+	idAFAttachment.prototype.Save, idAFAttachment.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -537,11 +578,31 @@ idMultiModelAF.Type = new idTypeInfo( "idMultiModelAF", "idEntity",
 var EV_SetConstraintPosition = new idEventDef( "SetConstraintPosition", "sv" );
 
 ////CLASS_DECLARATION( idAnimatedEntity, idAFEntity_Base )
-////	EVENT( EV_SetConstraintPosition,	idAFEntity_Base::Event_SetConstraintPosition )
-////END_CLASS
-////
-////static const float BOUNCE_SOUND_MIN_VELOCITY	= 80.0f;
-////static const float BOUNCE_SOUND_MAX_VELOCITY	= 200.0f;
+idAFEntity_Base.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idAFEntity_Base;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idAFEntity_Base.prototype.GetType = function ( ): idTypeInfo {
+	return ( idAFEntity_Base.Type );
+};
+
+idAFEntity_Base.eventCallbacks = [
+	EVENT(EV_SetConstraintPosition, idAFEntity_Base.prototype.Event_SetConstraintPosition)
+];
+
+idAFEntity_Base.Type = new idTypeInfo("idAFEntity_Base", "idAnimatedEntity",
+	idAFEntity_Base.eventCallbacks, idAFEntity_Base.CreateInstance, idAFEntity_Base.prototype.Spawn,
+	idAFEntity_Base.prototype.Save, idAFEntity_Base.prototype.Restore );
+
+
+var BOUNCE_SOUND_MIN_VELOCITY	= 80.0;
+var BOUNCE_SOUND_MAX_VELOCITY	= 200.0;
 ////
 /////*
 ////================
@@ -951,7 +1012,7 @@ var EV_SetConstraintPosition = new idEventDef( "SetConstraintPosition", "sv" );
 ////idAFEntity_Base::Event_SetConstraintPosition
 ////================
 ////*/
-////void idAFEntity_Base::Event_SetConstraintPosition( const char *name, const idVec3 &pos ) {
+////void idAFEntity_Base::Event_SetConstraintPosition( name:string, const idVec3 &pos ) {
 ////	af.SetConstraintPosition( name, pos );
 ////}
 ////
@@ -967,10 +1028,29 @@ var EV_Gib = new idEventDef(  "gib", "s" );
 var EV_Gibbed = new idEventDef(  "<gibbed>" );
 ////
 ////CLASS_DECLARATION( idAFEntity_Base, idAFEntity_Gibbable )
-////	EVENT( EV_Gib,		idAFEntity_Gibbable::Event_Gib )
-////	EVENT( EV_Gibbed,	idAFEntity_Base::Event_Remove )
-////END_CLASS
-////
+idAFEntity_Gibbable.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idAFEntity_Gibbable;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idAFEntity_Gibbable.prototype.GetType = function ( ): idTypeInfo {
+	return ( idAFEntity_Gibbable.Type );
+};
+
+idAFEntity_Gibbable.eventCallbacks = [
+	EVENT( EV_Gib,		idAFEntity_Gibbable.prototype.Event_Gib),
+	EVENT(EV_Gibbed, idAFEntity_Base.prototype.Event_Remove)
+];
+
+idAFEntity_Gibbable.Type = new idTypeInfo("idAFEntity_Gibbable", "idAFEntity_Base",
+	idAFEntity_Gibbable.eventCallbacks, idAFEntity_Gibbable.CreateInstance, idAFEntity_Gibbable.prototype.Spawn,
+	idAFEntity_Gibbable.prototype.Save, idAFEntity_Gibbable.prototype.Restore );
+
 ////
 /////*
 ////================
@@ -1222,9 +1302,31 @@ var EV_Gibbed = new idEventDef(  "<gibbed>" );
 ////===============================================================================
 ////*/
 ////
-////CLASS_DECLARATION( idAFEntity_Gibbable, idAFEntity_Generic )
-////	EVENT( EV_Activate,			idAFEntity_Generic::Event_Activate )
-////END_CLASS
+//CLASS_DECLARATION( idAFEntity_Gibbable, idAFEntity_Generic )
+idAFEntity_Generic.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idAFEntity_Generic;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idAFEntity_Generic.prototype.GetType = function ( ): idTypeInfo {
+	return ( idAFEntity_Generic.Type );
+};
+
+idAFEntity_Generic.eventCallbacks = [
+	EVENT(EV_Activate, idAFEntity_Generic.prototype.Event_Activate)
+];
+
+idAFEntity_Generic.Type = new idTypeInfo("idAFEntity_Generic", "idAFEntity_Gibbable",
+	idAFEntity_Generic.eventCallbacks, idAFEntity_Generic.CreateInstance, idAFEntity_Generic.prototype.Spawn,
+	idAFEntity_Generic.prototype.Save, idAFEntity_Generic.prototype.Restore );
+
+//	
+//END_CLASS
 ////
 /////*
 ////================
@@ -1336,12 +1438,32 @@ var EV_Gibbed = new idEventDef(  "<gibbed>" );
 ////
 ////===============================================================================
 ////*/
-////
-////CLASS_DECLARATION( idAFEntity_Gibbable, idAFEntity_WithAttachedHead )
-////	EVENT( EV_Gib,				idAFEntity_WithAttachedHead::Event_Gib )
-////	EVENT( EV_Activate,			idAFEntity_WithAttachedHead::Event_Activate )
-////END_CLASS
-////
+
+//CLASS_DECLARATION( idAFEntity_Gibbable, idAFEntity_WithAttachedHead )
+idAFEntity_WithAttachedHead.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idAFEntity_WithAttachedHead;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idAFEntity_WithAttachedHead.prototype.GetType = function ( ): idTypeInfo {
+	return ( idAFEntity_WithAttachedHead.Type );
+};
+
+idAFEntity_WithAttachedHead.eventCallbacks = [
+	EVENT(EV_Gib, idAFEntity_WithAttachedHead.prototype.Event_Gib),
+	EVENT(EV_Activate, idAFEntity_WithAttachedHead.prototype.Event_Activate)
+];
+
+idAFEntity_WithAttachedHead.Type = new idTypeInfo("idAFEntity_WithAttachedHead", "idAFEntity_Gibbable",
+	idAFEntity_WithAttachedHead.eventCallbacks, idAFEntity_WithAttachedHead.CreateInstance, idAFEntity_WithAttachedHead.prototype.Spawn,
+	idAFEntity_WithAttachedHead.prototype.Save, idAFEntity_WithAttachedHead.prototype.Restore );
+
+
 /////*
 ////================
 ////idAFEntity_WithAttachedHead::idAFEntity_WithAttachedHead
@@ -1600,6 +1722,27 @@ var EV_Gibbed = new idEventDef(  "<gibbed>" );
 ////*/
 ////
 ////CLASS_DECLARATION( idAFEntity_Base, idAFEntity_Vehicle )
+idAFEntity_Vehicle.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idAFEntity_Vehicle;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idAFEntity_Vehicle.prototype.GetType = function ( ): idTypeInfo {
+	return ( idAFEntity_Vehicle.Type );
+};
+
+idAFEntity_Vehicle.eventCallbacks = [
+];
+
+idAFEntity_Vehicle.Type = new idTypeInfo("idAFEntity_Vehicle", "idAFEntity_Base",
+	idAFEntity_Vehicle.eventCallbacks, idAFEntity_Vehicle.CreateInstance, idAFEntity_Vehicle.prototype.Spawn,
+	idAFEntity_Vehicle.prototype.Save, idAFEntity_Vehicle.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -1716,6 +1859,28 @@ var EV_Gibbed = new idEventDef(  "<gibbed>" );
 ////*/
 ////
 ////CLASS_DECLARATION( idAFEntity_Vehicle, idAFEntity_VehicleSimple )
+idAFEntity_VehicleSimple.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idAFEntity_VehicleSimple;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idAFEntity_VehicleSimple.prototype.GetType = function ( ): idTypeInfo {
+	return ( idAFEntity_VehicleSimple.Type );
+};
+
+idAFEntity_VehicleSimple.eventCallbacks = [
+];
+
+idAFEntity_VehicleSimple.Type = new idTypeInfo("idAFEntity_VehicleSimple", "idAFEntity_Vehicle",
+	idAFEntity_VehicleSimple.eventCallbacks, idAFEntity_VehicleSimple.CreateInstance, idAFEntity_VehicleSimple.prototype.Spawn,
+	idAFEntity_VehicleSimple.prototype.Save, idAFEntity_VehicleSimple.prototype.Restore );
+
+
 ////END_CLASS
 ////
 /////*
@@ -1909,6 +2074,27 @@ var EV_Gibbed = new idEventDef(  "<gibbed>" );
 ////*/
 ////
 ////CLASS_DECLARATION( idAFEntity_Vehicle, idAFEntity_VehicleFourWheels )
+idAFEntity_VehicleFourWheels.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idAFEntity_VehicleFourWheels;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idAFEntity_VehicleFourWheels.prototype.GetType = function ( ): idTypeInfo {
+	return ( idAFEntity_VehicleFourWheels.Type );
+};
+
+idAFEntity_VehicleFourWheels.eventCallbacks = [
+];
+
+idAFEntity_VehicleFourWheels.Type = new idTypeInfo("idAFEntity_VehicleFourWheels", "idAFEntity_Vehicle",
+	idAFEntity_VehicleFourWheels.eventCallbacks, idAFEntity_VehicleFourWheels.CreateInstance, idAFEntity_VehicleFourWheels.prototype.Spawn,
+	idAFEntity_VehicleFourWheels.prototype.Save, idAFEntity_VehicleFourWheels.prototype.Restore );
+
 ////END_CLASS
 ////
 ////
@@ -2086,6 +2272,27 @@ var EV_Gibbed = new idEventDef(  "<gibbed>" );
 ////*/
 ////
 ////CLASS_DECLARATION( idAFEntity_Vehicle, idAFEntity_VehicleSixWheels )
+idAFEntity_VehicleSixWheels.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idAFEntity_VehicleSixWheels;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idAFEntity_VehicleSixWheels.prototype.GetType = function ( ): idTypeInfo {
+	return ( idAFEntity_VehicleSixWheels.Type );
+};
+
+idAFEntity_VehicleSixWheels.eventCallbacks = [
+];
+
+idAFEntity_VehicleSixWheels.Type = new idTypeInfo("idAFEntity_VehicleSixWheels", "idAFEntity_Vehicle",
+	idAFEntity_VehicleSixWheels.eventCallbacks, idAFEntity_VehicleSixWheels.CreateInstance, idAFEntity_VehicleSixWheels.prototype.Spawn,
+	idAFEntity_VehicleSixWheels.prototype.Save, idAFEntity_VehicleSixWheels.prototype.Restore );
+
 ////END_CLASS
 ////
 ////	/*
@@ -2276,6 +2483,27 @@ var EV_Gibbed = new idEventDef(  "<gibbed>" );
 ////*/
 ////
 ////CLASS_DECLARATION( idAFEntity_Base, idAFEntity_SteamPipe )
+idAFEntity_SteamPipe.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idAFEntity_SteamPipe;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idAFEntity_SteamPipe.prototype.GetType = function ( ): idTypeInfo {
+	return ( idAFEntity_SteamPipe.Type );
+};
+
+idAFEntity_SteamPipe.eventCallbacks = [
+];
+
+idAFEntity_SteamPipe.Type = new idTypeInfo("idAFEntity_SteamPipe", "idAFEntity_Base",
+	idAFEntity_SteamPipe.eventCallbacks, idAFEntity_SteamPipe.CreateInstance, idAFEntity_SteamPipe.prototype.Spawn,
+	idAFEntity_SteamPipe.prototype.Save, idAFEntity_SteamPipe.prototype.Restore );
+
 ////END_CLASS
 ////
 ////
@@ -2427,8 +2655,31 @@ var EV_SetFingerAngle = new idEventDef(  "setFingerAngle", "f" );
 var EV_StopFingers = new idEventDef(  "stopFingers" );
 ////
 ////CLASS_DECLARATION( idAFEntity_Base, idAFEntity_ClawFourFingers )
-////	EVENT( EV_SetFingerAngle,		idAFEntity_ClawFourFingers::Event_SetFingerAngle )
-////	EVENT( EV_StopFingers,			idAFEntity_ClawFourFingers::Event_StopFingers )
+idAFEntity_ClawFourFingers.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idAFEntity_ClawFourFingers;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idAFEntity_ClawFourFingers.prototype.GetType = function ( ): idTypeInfo {
+	return ( idAFEntity_ClawFourFingers.Type );
+};
+
+idAFEntity_ClawFourFingers.eventCallbacks = [
+	EVENT(EV_SetFingerAngle, idAFEntity_ClawFourFingers.prototype.Event_SetFingerAngle),
+	EVENT(EV_StopFingers, idAFEntity_ClawFourFingers.prototype.Event_StopFingers)
+];
+
+idAFEntity_ClawFourFingers.Type = new idTypeInfo("idAFEntity_ClawFourFingers", "idAFEntity_Base",
+	idAFEntity_ClawFourFingers.eventCallbacks, idAFEntity_ClawFourFingers.CreateInstance, idAFEntity_ClawFourFingers.prototype.Spawn,
+	idAFEntity_ClawFourFingers.prototype.Save, idAFEntity_ClawFourFingers.prototype.Restore );
+
+////	
+////	
 ////END_CLASS
 ////
 ////static const char *clawConstraintNames[] = {

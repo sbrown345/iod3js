@@ -3252,7 +3252,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Event_SetNextState
 ////=====================
 ////*/
-////void idActor::Event_SetNextState( const char *name ) {
+////void idActor::Event_SetNextState( name:string ) {
 ////	idealState = GetScriptFunction( name );
 ////	if ( idealState == state ) {
 ////		state = NULL;
@@ -3264,7 +3264,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Event_SetState
 ////=====================
 ////*/
-////void idActor::Event_SetState( const char *name ) {
+////void idActor::Event_SetState( name:string ) {
 ////	idealState = GetScriptFunction( name );
 ////	if ( idealState == state ) {
 ////		state = NULL;

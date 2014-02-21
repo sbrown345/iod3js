@@ -211,7 +211,7 @@ class idAFEntity_Base extends idAnimatedEntity {
 ////	idMat3					spawnAxis;		// rotation axis used when spawned
 ////	int						nextSoundTime;	// next time this can make a sound
 ////
-////	void					Event_SetConstraintPosition( const char *name, const idVec3 &pos ): void { throw "placeholder"; }
+	Event_SetConstraintPosition(name: string, pos: idVec3): void { throw "placeholder"; }
 };
 ////
 /////*
@@ -251,7 +251,7 @@ class idAFEntity_Gibbable extends idAFEntity_Base {
 ////	virtual void			Gib( const idVec3 &dir, const char *damageDefName );
 ////	void					InitSkeletonModel( void );
 ////
-////	void					Event_Gib( const char *damageDefName ): void { throw "placeholder"; }
+	Event_Gib( damageDefName :string): void { throw "placeholder"; }
 };
 
 /*
@@ -283,7 +283,7 @@ class idAFEntity_Generic extends  idAFEntity_Gibbable
 ////	void					KeepRunningPhysics( void ) { keepRunningPhysics = true; }
 ////
 ////private:
-////	void					Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+	Event_Activate(activator: idEntity): void { throw "placeholder"; }
 ////
 ////	bool					keepRunningPhysics;
 };
@@ -330,8 +330,8 @@ class idAFEntity_WithAttachedHead extends  idAFEntity_Gibbable {
 ////private:
 ////	idEntityPtr<idAFAttachment>	head;
 ////
-////	void					Event_Gib( const char *damageDefName ): void { throw "placeholder"; }
-////	void					Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+	Event_Gib( damageDefName:string ): void { throw "placeholder"; }
+	Event_Activate(activator: idEntity  ): void { throw "placeholder"; }
 };
 
 
@@ -519,8 +519,8 @@ class idAFEntity_ClawFourFingers extends idAFEntity_Base {
 ////private:
 ////	idAFConstraint_Hinge *	fingers[4];
 ////
-////	void					Event_SetFingerAngle( float angle ): void { throw "placeholder"; }
-////	void					Event_StopFingers( void ): void { throw "placeholder"; }
+	Event_SetFingerAngle( /*float*/ angle :number): void { throw "placeholder"; }
+	Event_StopFingers(  ): void { throw "placeholder"; }
 };
 ////
 ////#endif /* !__GAME_AFENTITY_H__ */

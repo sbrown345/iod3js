@@ -38,14 +38,14 @@
 ////
 ////#include "../Game_local.h"
 ////
-////class idAI_Vagary : public idAI {
+class idAI_Vagary extends idAI {
 ////public:
 ////	CLASS_PROTOTYPE( idAI_Vagary );
 ////
 ////private:
 ////	void	Event_ChooseObjectToThrow( const idVec3 &mins, const idVec3 &maxs, float speed, float minDist, float offset );
 ////	void	Event_ThrowObjectAtEnemy( idEntity *ent, float speed );
-////};
+};
 ////
 var AI_Vagary_ChooseObjectToThrow = new idEventDef( "vagary_ChooseObjectToThrow", "vvfff", 'e' );
 var AI_Vagary_ThrowObjectAtEnemy = new idEventDef( "vagary_ThrowObjectAtEnemy", "ef" );
