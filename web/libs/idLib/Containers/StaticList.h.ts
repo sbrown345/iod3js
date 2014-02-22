@@ -85,7 +85,10 @@ class idStaticList<type> {
 		this.type = type;
 		this.size = size;
 		this.num = 0;
-		this.list = newStructArray<type>( this.type, this.size );
+		this.list = <type[]><any>this;
+		for ( var i = 0; i < this.size; i++ ) {
+			this.list[i] = new this.type ( );
+		}
 	}
 
 ////

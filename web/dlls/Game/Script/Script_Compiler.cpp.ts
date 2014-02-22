@@ -650,7 +650,7 @@ Emits a primitive statement, returning the var it places it's value in
 
 		statement = gameLocal.program.AllocStatement ( );
 		statement.linenumber = this.currentLineNumber;
-		statement.file = this.currentFileNumber;
+		statement.file = this.currentFileNumber;dlog( DEBUG_COMPILER, "EmitOpcode currentFileNumber: %i\n", this.currentFileNumber );
 
 		if ( ( op.type_c == def_void ) || op.rightAssociative ) {
 			// ifs, gotos, and assignments don't need vars allocated
