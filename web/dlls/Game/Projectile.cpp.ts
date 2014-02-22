@@ -50,11 +50,32 @@ var EV_RadiusDamage = new idEventDef( "<radiusdmg>", "e" );
 var EV_GetProjectileState = new idEventDef( "getProjectileState", null, 'd' );
 ////
 ////CLASS_DECLARATION( idEntity, idProjectile )
-////	EVENT( EV_Explode,				idProjectile::Event_Explode )
-////	EVENT( EV_Fizzle,				idProjectile::Event_Fizzle )
-////	EVENT( EV_Touch,				idProjectile::Event_Touch )
-////	EVENT( EV_RadiusDamage,			idProjectile::Event_RadiusDamage )
-////	EVENT( EV_GetProjectileState,	idProjectile::Event_GetProjectileState )
+idProjectile.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new nameofclass;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+nameofclass.prototype.GetType = function ( ): idTypeInfo {
+	return ( nameofclass.Type );
+};
+
+nameofclass.eventCallbacks = [
+	EVENT( EV_Explode,				idProjectile.Event_Explode ),
+	EVENT( EV_Fizzle,				idProjectile.Event_Fizzle ),
+	EVENT( EV_Touch,				idProjectile.Event_Touch ),
+	EVENT( EV_RadiusDamage,			idProjectile.Event_RadiusDamage ),
+	EVENT( EV_GetProjectileState,	idProjectile.Event_GetProjectileState ),
+];
+
+nameofclass.Type = new idTypeInfo("nameofclass", "idEntity",
+	nameofclass.eventCallbacks, nameofclass.CreateInstance, nameofclass.prototype.Spawn,
+	nameofclass.prototype.Save, nameofclass.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -1223,6 +1244,27 @@ var EV_GetProjectileState = new idEventDef( "getProjectileState", null, 'd' );
 ////*/
 ////
 ////CLASS_DECLARATION( idProjectile, idGuidedProjectile )
+idGuidedProjectile.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idGuidedProjectile;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idGuidedProjectile.prototype.GetType = function ( ): idTypeInfo {
+	return ( idGuidedProjectile.Type );
+};
+
+idGuidedProjectile.eventCallbacks = [
+];
+
+idGuidedProjectile.Type = new idTypeInfo("idGuidedProjectile", "idProjectile",
+	idGuidedProjectile.eventCallbacks, idGuidedProjectile.CreateInstance, idGuidedProjectile.prototype.Spawn,
+	idGuidedProjectile.prototype.Save, idGuidedProjectile.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -1446,6 +1488,27 @@ var EV_GetProjectileState = new idEventDef( "getProjectileState", null, 'd' );
 ////*/
 ////
 ////CLASS_DECLARATION( idGuidedProjectile, idSoulCubeMissile )
+idSoulCubeMissile.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idSoulCubeMissile;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idSoulCubeMissile.prototype.GetType = function ( ): idTypeInfo {
+	return ( idSoulCubeMissile.Type );
+};
+
+idSoulCubeMissile.eventCallbacks = [
+];
+
+idSoulCubeMissile.Type = new idTypeInfo("idSoulCubeMissile", "idGuidedProjectile",
+	idSoulCubeMissile.eventCallbacks, idSoulCubeMissile.CreateInstance, idSoulCubeMissile.prototype.Spawn,
+	idSoulCubeMissile.prototype.Save, idSoulCubeMissile.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -1667,7 +1730,28 @@ var EV_GetProjectileState = new idEventDef( "getProjectileState", null, 'd' );
 var EV_RemoveBeams = new idEventDef( "<removeBeams>", null );
 ////
 ////CLASS_DECLARATION( idProjectile, idBFGProjectile )
-////	EVENT( EV_RemoveBeams,		idBFGProjectile::Event_RemoveBeams )
+idBFGProjectile.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idBFGProjectile;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idBFGProjectile.prototype.GetType = function ( ): idTypeInfo {
+	return ( idBFGProjectile.Type );
+};
+
+idBFGProjectile.eventCallbacks = [
+	EVENT( EV_RemoveBeams,		idBFGProjectile.prototype.Event_RemoveBeams )
+];
+
+idBFGProjectile.Type = new idTypeInfo("idBFGProjectile", "idProjectile",
+	idBFGProjectile.eventCallbacks, idBFGProjectile.CreateInstance, idBFGProjectile.prototype.Spawn,
+	idBFGProjectile.prototype.Save, idBFGProjectile.prototype.Restore );
+
 ////END_CLASS
 ////
 ////
@@ -2051,8 +2135,29 @@ var EV_RemoveBeams = new idEventDef( "<removeBeams>", null );
 ////*/
 ////
 ////CLASS_DECLARATION( idEntity, idDebris )
-////EVENT( EV_Explode,			idDebris::Event_Explode )
-////EVENT( EV_Fizzle,			idDebris::Event_Fizzle )
+idDebris.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idDebris;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idDebris.prototype.GetType = function ( ): idTypeInfo {
+	return ( idDebris.Type );
+};
+
+idDebris.eventCallbacks = [
+	EVENT( EV_Explode,			idDebris.prototype.Event_Explode ),
+	EVENT( EV_Fizzle,			idDebris.prototype.Event_Fizzle )
+];
+
+idDebris.Type = new idTypeInfo("idDebris", "idEntity",
+	idDebris.eventCallbacks, idDebris.CreateInstance, idDebris.prototype.Spawn,
+	idDebris.prototype.Save, idDebris.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*

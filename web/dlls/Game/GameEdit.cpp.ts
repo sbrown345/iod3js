@@ -31,16 +31,37 @@
 ////
 ////#include "Game_local.h"
 ////
-////
-/////*
-////===============================================================================
-////
-////	Ingame cursor.
-////
-////===============================================================================
-////*/
-////
+
+/*
+===============================================================================
+
+	Ingame cursor.
+
+===============================================================================
+*/
+
 ////CLASS_DECLARATION( idEntity, idCursor3D )
+idCursor3D.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idCursor3D;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idCursor3D.prototype.GetType = function ( ): idTypeInfo {
+	return ( idCursor3D.Type );
+};
+
+idCursor3D.eventCallbacks = [
+];
+
+idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
+	idCursor3D.eventCallbacks, idCursor3D.CreateInstance, idCursor3D.prototype.Spawn,
+	idCursor3D.prototype.Save, idCursor3D.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*

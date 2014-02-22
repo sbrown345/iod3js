@@ -44,10 +44,31 @@ var EV_Speaker_Off = new idEventDef("Off", null );
 var EV_Speaker_Timer = new idEventDef("<timer>", null );
 ////
 ////CLASS_DECLARATION( idEntity, idSound )
-////	EVENT( EV_Activate,				idSound::Event_Trigger )
-////	EVENT( EV_Speaker_On,			idSound::Event_On )
-////	EVENT( EV_Speaker_Off,			idSound::Event_Off )
-////	EVENT( EV_Speaker_Timer,		idSound::Event_Timer )
+idSound.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idSound;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idSound.prototype.GetType = function ( ): idTypeInfo {
+	return ( idSound.Type );
+};
+
+idSound.eventCallbacks = [
+	EVENT( EV_Activate,				idSound.prototype.Event_Trigger ),
+	EVENT( EV_Speaker_On,			idSound.prototype.Event_On ),
+	EVENT( EV_Speaker_Off,			idSound.prototype.Event_Off ),
+	EVENT( EV_Speaker_Timer,		idSound.prototype.Event_Timer )
+];
+
+idSound.Type = new idTypeInfo("idSound", "idEntity",
+	idSound.eventCallbacks, idSound.CreateInstance, idSound.prototype.Spawn,
+	idSound.prototype.Save, idSound.prototype.Restore );
+
 ////END_CLASS
 ////
 ////

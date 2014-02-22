@@ -52,11 +52,32 @@ var EV_SecurityCam_Alert = new idEventDef( "<alert>" );
 var EV_SecurityCam_AddLight = new idEventDef( "<addLight>" );
 
 ////CLASS_DECLARATION( idEntity, idSecurityCamera )
-////	EVENT( EV_SecurityCam_ReverseSweep,		idSecurityCamera::Event_ReverseSweep )
-////	EVENT( EV_SecurityCam_ContinueSweep,	idSecurityCamera::Event_ContinueSweep )
-////	EVENT( EV_SecurityCam_Pause,			idSecurityCamera::Event_Pause )
-////	EVENT( EV_SecurityCam_Alert,			idSecurityCamera::Event_Alert )
-////	EVENT( EV_SecurityCam_AddLight,			idSecurityCamera::Event_AddLight )
+idSecurityCamera.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idSecurityCamera;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idSecurityCamera.prototype.GetType = function ( ): idTypeInfo {
+	return ( idSecurityCamera.Type );
+};
+
+idSecurityCamera.eventCallbacks = [
+	EVENT( EV_SecurityCam_ReverseSweep,		idSecurityCamera.prototype.Event_ReverseSweep ),
+	EVENT( EV_SecurityCam_ContinueSweep,	idSecurityCamera.prototype.Event_ContinueSweep ),
+	EVENT( EV_SecurityCam_Pause,			idSecurityCamera.prototype.Event_Pause ),
+	EVENT( EV_SecurityCam_Alert,			idSecurityCamera.prototype.Event_Alert ),
+	EVENT( EV_SecurityCam_AddLight,			idSecurityCamera.prototype.Event_AddLight )
+];
+
+idSecurityCamera.Type = new idTypeInfo("idSecurityCamera", "idEntity",
+	idSecurityCamera.eventCallbacks, idSecurityCamera.CreateInstance, idSecurityCamera.prototype.Spawn,
+	idSecurityCamera.prototype.Save, idSecurityCamera.prototype.Restore );
+
 ////END_CLASS
 
 /////*

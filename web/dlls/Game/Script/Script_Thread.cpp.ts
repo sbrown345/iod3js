@@ -112,84 +112,105 @@ var EV_Thread_DrawText = new idEventDef( "drawText", "svfvdf" );
 var EV_Thread_InfluenceActive = new idEventDef( "influenceActive", null, 'd' );
 
 //CLASS_DECLARATION( idClass, idThread )
-//	EVENT( EV_Thread_Execute,				idThread::Event_Execute )
-//	EVENT( EV_Thread_TerminateThread,		idThread::Event_TerminateThread )
-//	EVENT( EV_Thread_Pause,					idThread::Event_Pause )
-//	EVENT( EV_Thread_Wait,					idThread::Event_Wait )
-//	EVENT( EV_Thread_WaitFrame,				idThread::Event_WaitFrame )
-//	EVENT( EV_Thread_WaitFor,				idThread::Event_WaitFor )
-//	EVENT( EV_Thread_WaitForThread,			idThread::Event_WaitForThread )
-//	EVENT( EV_Thread_Print,					idThread::Event_Print )
-//	EVENT( EV_Thread_PrintLn,				idThread::Event_PrintLn )
-//	EVENT( EV_Thread_Say,					idThread::Event_Say )
-//	EVENT( EV_Thread_Assert,				idThread::Event_Assert )
-//	EVENT( EV_Thread_Trigger,				idThread::Event_Trigger )
-//	EVENT( EV_Thread_SetCvar,				idThread::Event_SetCvar )
-//	EVENT( EV_Thread_GetCvar,				idThread::Event_GetCvar )
-//	EVENT( EV_Thread_Random,				idThread::Event_Random )
-//	EVENT( EV_Thread_GetTime,				idThread::Event_GetTime )
-//	EVENT( EV_Thread_KillThread,			idThread::Event_KillThread )
-//	EVENT( EV_Thread_SetThreadName,			idThread::Event_SetThreadName )
-//	EVENT( EV_Thread_GetEntity,				idThread::Event_GetEntity )
-//	EVENT( EV_Thread_Spawn,					idThread::Event_Spawn )
-//	EVENT( EV_Thread_CopySpawnArgs,			idThread::Event_CopySpawnArgs )
-//	EVENT( EV_Thread_SetSpawnArg,			idThread::Event_SetSpawnArg )
-//	EVENT( EV_Thread_SpawnString,			idThread::Event_SpawnString )
-//	EVENT( EV_Thread_SpawnFloat,			idThread::Event_SpawnFloat )
-//	EVENT( EV_Thread_SpawnVector,			idThread::Event_SpawnVector )
-//	EVENT( EV_Thread_ClearPersistantArgs,	idThread::Event_ClearPersistantArgs )
-//	EVENT( EV_Thread_SetPersistantArg,		idThread::Event_SetPersistantArg )
-//	EVENT( EV_Thread_GetPersistantString,	idThread::Event_GetPersistantString )
-//	EVENT( EV_Thread_GetPersistantFloat,	idThread::Event_GetPersistantFloat )
-//	EVENT( EV_Thread_GetPersistantVector,	idThread::Event_GetPersistantVector )
-//	EVENT( EV_Thread_AngToForward,			idThread::Event_AngToForward )
-//	EVENT( EV_Thread_AngToRight,			idThread::Event_AngToRight )
-//	EVENT( EV_Thread_AngToUp,				idThread::Event_AngToUp )
-//	EVENT( EV_Thread_Sine,					idThread::Event_GetSine )
-//	EVENT( EV_Thread_Cosine,				idThread::Event_GetCosine )
-//	EVENT( EV_Thread_SquareRoot,			idThread::Event_GetSquareRoot )
-//	EVENT( EV_Thread_Normalize,				idThread::Event_VecNormalize )
-//	EVENT( EV_Thread_VecLength,				idThread::Event_VecLength )
-//	EVENT( EV_Thread_VecDotProduct,			idThread::Event_VecDotProduct )
-//	EVENT( EV_Thread_VecCrossProduct,		idThread::Event_VecCrossProduct )
-//	EVENT( EV_Thread_VecToAngles,			idThread::Event_VecToAngles )
-//	EVENT( EV_Thread_OnSignal,				idThread::Event_OnSignal )
-//	EVENT( EV_Thread_ClearSignal,			idThread::Event_ClearSignalThread )
-//	EVENT( EV_Thread_SetCamera,				idThread::Event_SetCamera )
-//	EVENT( EV_Thread_FirstPerson,			idThread::Event_FirstPerson )
-//	EVENT( EV_Thread_Trace,					idThread::Event_Trace )
-//	EVENT( EV_Thread_TracePoint,			idThread::Event_TracePoint )
-//	EVENT( EV_Thread_GetTraceFraction,		idThread::Event_GetTraceFraction )
-//	EVENT( EV_Thread_GetTraceEndPos,		idThread::Event_GetTraceEndPos )
-//	EVENT( EV_Thread_GetTraceNormal,		idThread::Event_GetTraceNormal )
-//	EVENT( EV_Thread_GetTraceEntity,		idThread::Event_GetTraceEntity )
-//	EVENT( EV_Thread_GetTraceJoint,			idThread::Event_GetTraceJoint )
-//	EVENT( EV_Thread_GetTraceBody,			idThread::Event_GetTraceBody )
-//	EVENT( EV_Thread_FadeIn,				idThread::Event_FadeIn )
-//	EVENT( EV_Thread_FadeOut,				idThread::Event_FadeOut )
-//	EVENT( EV_Thread_FadeTo,				idThread::Event_FadeTo )
-//	EVENT( EV_SetShaderParm,				idThread::Event_SetShaderParm )
-//	EVENT( EV_Thread_StartMusic,			idThread::Event_StartMusic )
-//	EVENT( EV_Thread_Warning,				idThread::Event_Warning )
-//	EVENT( EV_Thread_Error,					idThread::Event_Error )
-//	EVENT( EV_Thread_StrLen,				idThread::Event_StrLen )
-//	EVENT( EV_Thread_StrLeft,				idThread::Event_StrLeft )
-//	EVENT( EV_Thread_StrRight,				idThread::Event_StrRight )
-//	EVENT( EV_Thread_StrSkip,				idThread::Event_StrSkip )
-//	EVENT( EV_Thread_StrMid,				idThread::Event_StrMid )
-//	EVENT( EV_Thread_StrToFloat,			idThread::Event_StrToFloat )
-//	EVENT( EV_Thread_RadiusDamage,			idThread::Event_RadiusDamage )
-//	EVENT( EV_Thread_IsClient,				idThread::Event_IsClient )
-//	EVENT( EV_Thread_IsMultiplayer,			idThread::Event_IsMultiplayer )
-//	EVENT( EV_Thread_GetFrameTime,			idThread::Event_GetFrameTime )
-//	EVENT( EV_Thread_GetTicsPerSecond,		idThread::Event_GetTicsPerSecond )
-//	EVENT( EV_CacheSoundShader,				idThread::Event_CacheSoundShader )
-//	EVENT( EV_Thread_DebugLine,				idThread::Event_DebugLine )
-//	EVENT( EV_Thread_DebugArrow,			idThread::Event_DebugArrow )
-//	EVENT( EV_Thread_DebugCircle,			idThread::Event_DebugCircle )
-//	EVENT( EV_Thread_DebugBounds,			idThread::Event_DebugBounds )
-//	EVENT( EV_Thread_DrawText,				idThread::Event_DrawText )
-//	EVENT( EV_Thread_InfluenceActive,		idThread::Event_InfluenceActive )
+idThread.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idThread;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idThread.prototype.GetType = function ( ): idTypeInfo {
+	return ( idThread.Type );
+};
+
+idThread.eventCallbacks = [
+	EVENT( EV_Thread_Execute,				idThread.prototype.Event_Execute ),
+	EVENT( EV_Thread_TerminateThread,		idThread.prototype.Event_TerminateThread ),
+	EVENT( EV_Thread_Pause,					idThread.prototype.Event_Pause ),
+	EVENT( EV_Thread_Wait,					idThread.prototype.Event_Wait ),
+	EVENT( EV_Thread_WaitFrame,				idThread.prototype.Event_WaitFrame ),
+	EVENT( EV_Thread_WaitFor,				idThread.prototype.Event_WaitFor ),
+	EVENT( EV_Thread_WaitForThread,			idThread.prototype.Event_WaitForThread ),
+	EVENT( EV_Thread_Print,					idThread.prototype.Event_Print ),
+	EVENT( EV_Thread_PrintLn,				idThread.prototype.Event_PrintLn ),
+	EVENT( EV_Thread_Say,					idThread.prototype.Event_Say ),
+	EVENT( EV_Thread_Assert,				idThread.prototype.Event_Assert ),
+	EVENT( EV_Thread_Trigger,				idThread.prototype.Event_Trigger ),
+	EVENT( EV_Thread_SetCvar,				idThread.prototype.Event_SetCvar ),
+	EVENT( EV_Thread_GetCvar,				idThread.prototype.Event_GetCvar ),
+	EVENT( EV_Thread_Random,				idThread.prototype.Event_Random ),
+	EVENT( EV_Thread_GetTime,				idThread.prototype.Event_GetTime ),
+	EVENT( EV_Thread_KillThread,			idThread.prototype.Event_KillThread ),
+	EVENT( EV_Thread_SetThreadName,			idThread.prototype.Event_SetThreadName ),
+	EVENT( EV_Thread_GetEntity,				idThread.prototype.Event_GetEntity ),
+	EVENT( EV_Thread_Spawn,					idThread.prototype.Event_Spawn ),
+	EVENT( EV_Thread_CopySpawnArgs,			idThread.prototype.Event_CopySpawnArgs ),
+	EVENT( EV_Thread_SetSpawnArg,			idThread.prototype.Event_SetSpawnArg ),
+	EVENT( EV_Thread_SpawnString,			idThread.prototype.Event_SpawnString ),
+	EVENT( EV_Thread_SpawnFloat,			idThread.prototype.Event_SpawnFloat ),
+	EVENT( EV_Thread_SpawnVector,			idThread.prototype.Event_SpawnVector ),
+	EVENT( EV_Thread_ClearPersistantArgs,	idThread.prototype.Event_ClearPersistantArgs ),
+	EVENT( EV_Thread_SetPersistantArg,		idThread.prototype.Event_SetPersistantArg ),
+	EVENT( EV_Thread_GetPersistantString,	idThread.prototype.Event_GetPersistantString ),
+	EVENT( EV_Thread_GetPersistantFloat,	idThread.prototype.Event_GetPersistantFloat ),
+	EVENT( EV_Thread_GetPersistantVector,	idThread.prototype.Event_GetPersistantVector ),
+	EVENT( EV_Thread_AngToForward,			idThread.prototype.Event_AngToForward ),
+	EVENT( EV_Thread_AngToRight,			idThread.prototype.Event_AngToRight ),
+	EVENT( EV_Thread_AngToUp,				idThread.prototype.Event_AngToUp ),
+	EVENT( EV_Thread_Sine,					idThread.prototype.Event_GetSine ),
+	EVENT( EV_Thread_Cosine,				idThread.prototype.Event_GetCosine ),
+	EVENT( EV_Thread_SquareRoot,			idThread.prototype.Event_GetSquareRoot ),
+	EVENT( EV_Thread_Normalize,				idThread.prototype.Event_VecNormalize ),
+	EVENT( EV_Thread_VecLength,				idThread.prototype.Event_VecLength ),
+	EVENT( EV_Thread_VecDotProduct,			idThread.prototype.Event_VecDotProduct ),
+	EVENT( EV_Thread_VecCrossProduct,		idThread.prototype.Event_VecCrossProduct ),
+	EVENT( EV_Thread_VecToAngles,			idThread.prototype.Event_VecToAngles ),
+	EVENT( EV_Thread_OnSignal,				idThread.prototype.Event_OnSignal ),
+	EVENT( EV_Thread_ClearSignal,			idThread.prototype.Event_ClearSignalThread ),
+	EVENT( EV_Thread_SetCamera,				idThread.prototype.Event_SetCamera ),
+	EVENT( EV_Thread_FirstPerson,			idThread.prototype.Event_FirstPerson ),
+	EVENT( EV_Thread_Trace,					idThread.prototype.Event_Trace ),
+	EVENT( EV_Thread_TracePoint,			idThread.prototype.Event_TracePoint ),
+	EVENT( EV_Thread_GetTraceFraction,		idThread.prototype.Event_GetTraceFraction ),
+	EVENT( EV_Thread_GetTraceEndPos,		idThread.prototype.Event_GetTraceEndPos ),
+	EVENT( EV_Thread_GetTraceNormal,		idThread.prototype.Event_GetTraceNormal ),
+	EVENT( EV_Thread_GetTraceEntity,		idThread.prototype.Event_GetTraceEntity ),
+	EVENT( EV_Thread_GetTraceJoint,			idThread.prototype.Event_GetTraceJoint ),
+	EVENT( EV_Thread_GetTraceBody,			idThread.prototype.Event_GetTraceBody ),
+	EVENT( EV_Thread_FadeIn,				idThread.prototype.Event_FadeIn ),
+	EVENT( EV_Thread_FadeOut,				idThread.prototype.Event_FadeOut ),
+	EVENT( EV_Thread_FadeTo,				idThread.prototype.Event_FadeTo ),
+	EVENT( EV_SetShaderParm,				idThread.prototype.Event_SetShaderParm ),
+	EVENT( EV_Thread_StartMusic,			idThread.prototype.Event_StartMusic ),
+	EVENT( EV_Thread_Warning,				idThread.prototype.Event_Warning ),
+	EVENT( EV_Thread_Error,					idThread.prototype.Event_Error ),
+	EVENT( EV_Thread_StrLen,				idThread.prototype.Event_StrLen ),
+	EVENT( EV_Thread_StrLeft,				idThread.prototype.Event_StrLeft ),
+	EVENT( EV_Thread_StrRight,				idThread.prototype.Event_StrRight ),
+	EVENT( EV_Thread_StrSkip,				idThread.prototype.Event_StrSkip ),
+	EVENT( EV_Thread_StrMid,				idThread.prototype.Event_StrMid ),
+	EVENT( EV_Thread_StrToFloat,			idThread.prototype.Event_StrToFloat ),
+	EVENT( EV_Thread_RadiusDamage,			idThread.prototype.Event_RadiusDamage ),
+	EVENT( EV_Thread_IsClient,				idThread.prototype.Event_IsClient ),
+	EVENT( EV_Thread_IsMultiplayer,			idThread.prototype.Event_IsMultiplayer ),
+	EVENT( EV_Thread_GetFrameTime,			idThread.prototype.Event_GetFrameTime ),
+	EVENT( EV_Thread_GetTicsPerSecond,		idThread.prototype.Event_GetTicsPerSecond ),
+	EVENT( EV_CacheSoundShader,				idThread.prototype.Event_CacheSoundShader ),
+	EVENT( EV_Thread_DebugLine,				idThread.prototype.Event_DebugLine ),
+	EVENT( EV_Thread_DebugArrow,			idThread.prototype.Event_DebugArrow ),
+	EVENT( EV_Thread_DebugCircle,			idThread.prototype.Event_DebugCircle ),
+	EVENT( EV_Thread_DebugBounds,			idThread.prototype.Event_DebugBounds ),
+	EVENT( EV_Thread_DrawText,				idThread.prototype.Event_DrawText ),
+	EVENT( EV_Thread_InfluenceActive,		idThread.prototype.Event_InfluenceActive )
+];
+
+idThread.Type = new idTypeInfo("idThread", "idClass",
+	idThread.eventCallbacks, idThread.CreateInstance, idThread.prototype.Spawn,
+	idThread.prototype.Save, idThread.prototype.Restore );
+
 //END_CLASS
 //
 //idThread			*idThread::currentThread = NULL;

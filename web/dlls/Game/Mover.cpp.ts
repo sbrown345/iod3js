@@ -90,45 +90,66 @@ var EV_IsMoving = new idEventDef( "isMoving", null, 'd' );
 var EV_IsRotating = new idEventDef( "isRotating", null, 'd' );
 
 ////CLASS_DECLARATION( idEntity, idMover )
-////	EVENT( EV_FindGuiTargets,		idMover::Event_FindGuiTargets )
-////	EVENT( EV_Thread_SetCallback,	idMover::Event_SetCallback )
-////	EVENT( EV_TeamBlocked,			idMover::Event_TeamBlocked )
-////	EVENT( EV_PartBlocked,			idMover::Event_PartBlocked )
-////	EVENT( EV_ReachedPos,			idMover::Event_UpdateMove )
-////	EVENT( EV_ReachedAng,			idMover::Event_UpdateRotation )
-////	EVENT( EV_PostRestore,			idMover::Event_PostRestore )
-////	EVENT( EV_StopMoving,			idMover::Event_StopMoving )
-////	EVENT( EV_StopRotating,			idMover::Event_StopRotating )
-////	EVENT( EV_Speed,				idMover::Event_SetMoveSpeed )
-////	EVENT( EV_Time,					idMover::Event_SetMoveTime )
-////	EVENT( EV_AccelTime,			idMover::Event_SetAccellerationTime )
-////	EVENT( EV_DecelTime,			idMover::Event_SetDecelerationTime )
-////	EVENT( EV_MoveTo,				idMover::Event_MoveTo )
-////	EVENT( EV_MoveToPos,			idMover::Event_MoveToPos )
-////	EVENT( EV_Move,					idMover::Event_MoveDir )
-////	EVENT( EV_MoveAccelerateTo,		idMover::Event_MoveAccelerateTo )
-////	EVENT( EV_MoveDecelerateTo,		idMover::Event_MoveDecelerateTo )
-////	EVENT( EV_RotateDownTo,			idMover::Event_RotateDownTo )
-////	EVENT( EV_RotateUpTo,			idMover::Event_RotateUpTo )
-////	EVENT( EV_RotateTo,				idMover::Event_RotateTo )
-////	EVENT( EV_Rotate,				idMover::Event_Rotate )
-////	EVENT( EV_RotateOnce,			idMover::Event_RotateOnce )
-////	EVENT( EV_Bob,					idMover::Event_Bob )
-////	EVENT( EV_Sway,					idMover::Event_Sway )
-////	EVENT( EV_Mover_OpenPortal,		idMover::Event_OpenPortal )
-////	EVENT( EV_Mover_ClosePortal,	idMover::Event_ClosePortal )
-////	EVENT( EV_AccelSound,			idMover::Event_SetAccelSound )
-////	EVENT( EV_DecelSound,			idMover::Event_SetDecelSound )
-////	EVENT( EV_MoveSound,			idMover::Event_SetMoveSound )
-////	EVENT( EV_Mover_InitGuiTargets,	idMover::Event_InitGuiTargets )
-////	EVENT( EV_EnableSplineAngles,	idMover::Event_EnableSplineAngles )
-////	EVENT( EV_DisableSplineAngles,	idMover::Event_DisableSplineAngles )
-////	EVENT( EV_RemoveInitialSplineAngles, idMover::Event_RemoveInitialSplineAngles )
-////	EVENT( EV_StartSpline,			idMover::Event_StartSpline )
-////	EVENT( EV_StopSpline,			idMover::Event_StopSpline )
-////	EVENT( EV_Activate,				idMover::Event_Activate )
-////	EVENT( EV_IsMoving,				idMover::Event_IsMoving )
-////	EVENT( EV_IsRotating,			idMover::Event_IsRotating )
+idMover.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idMover;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idMover.prototype.GetType = function ( ): idTypeInfo {
+	return ( idMover.Type );
+};
+
+idMover.eventCallbacks = [
+	EVENT( EV_FindGuiTargets,		idMover.prototype.Event_FindGuiTargets ),
+	EVENT( EV_Thread_SetCallback,	idMover.prototype.Event_SetCallback ),
+	EVENT( EV_TeamBlocked,			idMover.prototype.Event_TeamBlocked ),
+	EVENT( EV_PartBlocked,			idMover.prototype.Event_PartBlocked ),
+	EVENT( EV_ReachedPos,			idMover.prototype.Event_UpdateMove ),
+	EVENT( EV_ReachedAng,			idMover.prototype.Event_UpdateRotation ),
+	EVENT( EV_PostRestore,			idMover.prototype.Event_PostRestore ),
+	EVENT( EV_StopMoving,			idMover.prototype.Event_StopMoving ),
+	EVENT( EV_StopRotating,			idMover.prototype.Event_StopRotating ),
+	EVENT( EV_Speed,				idMover.prototype.Event_SetMoveSpeed ),
+	EVENT( EV_Time,					idMover.prototype.Event_SetMoveTime ),
+	EVENT( EV_AccelTime,			idMover.prototype.Event_SetAccellerationTime ),
+	EVENT( EV_DecelTime,			idMover.prototype.Event_SetDecelerationTime ),
+	EVENT( EV_MoveTo,				idMover.prototype.Event_MoveTo ),
+	EVENT( EV_MoveToPos,			idMover.prototype.Event_MoveToPos ),
+	EVENT( EV_Move,					idMover.prototype.Event_MoveDir ),
+	EVENT( EV_MoveAccelerateTo,		idMover.prototype.Event_MoveAccelerateTo ),
+	EVENT( EV_MoveDecelerateTo,		idMover.prototype.Event_MoveDecelerateTo ),
+	EVENT( EV_RotateDownTo,			idMover.prototype.Event_RotateDownTo ),
+	EVENT( EV_RotateUpTo,			idMover.prototype.Event_RotateUpTo ),
+	EVENT( EV_RotateTo,				idMover.prototype.Event_RotateTo ),
+	EVENT( EV_Rotate,				idMover.prototype.Event_Rotate ),
+	EVENT( EV_RotateOnce,			idMover.prototype.Event_RotateOnce ),
+	EVENT( EV_Bob,					idMover.prototype.Event_Bob ),
+	EVENT( EV_Sway,					idMover.prototype.Event_Sway ),
+	EVENT( EV_Mover_OpenPortal,		idMover.prototype.Event_OpenPortal ),
+	EVENT( EV_Mover_ClosePortal,	idMover.prototype.Event_ClosePortal ),
+	EVENT( EV_AccelSound,			idMover.prototype.Event_SetAccelSound ),
+	EVENT( EV_DecelSound,			idMover.prototype.Event_SetDecelSound ),
+	EVENT( EV_MoveSound,			idMover.prototype.Event_SetMoveSound ),
+	EVENT( EV_Mover_InitGuiTargets,	idMover.prototype.Event_InitGuiTargets ),
+	EVENT( EV_EnableSplineAngles,	idMover.prototype.Event_EnableSplineAngles ),
+	EVENT( EV_DisableSplineAngles,	idMover.prototype.Event_DisableSplineAngles ),
+	EVENT( EV_RemoveInitialSplineAngles, idMover.prototype.Event_RemoveInitialSplineAngles ),
+	EVENT( EV_StartSpline,			idMover.prototype.Event_StartSpline ),
+	EVENT( EV_StopSpline,			idMover.prototype.Event_StopSpline ),
+	EVENT( EV_Activate,				idMover.prototype.Event_Activate ),
+	EVENT( EV_IsMoving,				idMover.prototype.Event_IsMoving ),
+	EVENT( EV_IsRotating,			idMover.prototype.Event_IsRotating )
+];
+
+idMover.Type = new idTypeInfo("idMover", "idEntity",
+	idMover.eventCallbacks, idMover.CreateInstance, idMover.prototype.Spawn,
+	idMover.prototype.Save, idMover.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -1542,6 +1563,27 @@ var EV_IsRotating = new idEventDef( "isRotating", null, 'd' );
 ////*/
 ////
 ////CLASS_DECLARATION( idEntity, idSplinePath )
+idSplinePath.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idSplinePath;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idSplinePath.prototype.GetType = function ( ): idTypeInfo {
+	return ( idSplinePath.Type );
+};
+
+idSplinePath.eventCallbacks = [
+];
+
+idSplinePath.Type = new idTypeInfo("idSplinePath", "idEntity",
+	idSplinePath.eventCallbacks, idSplinePath.CreateInstance, idSplinePath.prototype.Spawn,
+	idSplinePath.prototype.Save, idSplinePath.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -1572,12 +1614,33 @@ var EV_PostArrival= new idEventDef( "postArrival", null );
 var EV_GotoFloor= new idEventDef( "gotoFloor", "d" );
 ////
 ////CLASS_DECLARATION( idMover, idElevator )
-////	EVENT( EV_Activate,				idElevator::Event_Activate )
-////	EVENT( EV_TeamBlocked,			idElevator::Event_TeamBlocked )
-////	EVENT( EV_PartBlocked,			idElevator::Event_PartBlocked )
-////	EVENT( EV_PostArrival,			idElevator::Event_PostFloorArrival )
-////	EVENT( EV_GotoFloor,			idElevator::Event_GotoFloor )
-////	EVENT( EV_Touch,				idElevator::Event_Touch )
+idElevator.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idElevator;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idElevator.prototype.GetType = function ( ): idTypeInfo {
+	return ( idElevator.Type );
+};
+
+idElevator.eventCallbacks = [
+	EVENT( EV_Activate,				idElevator.prototype.Event_Activate ),
+	EVENT( EV_TeamBlocked,			idElevator.prototype.Event_TeamBlocked ),
+	EVENT( EV_PartBlocked,			idElevator.prototype.Event_PartBlocked ),
+	EVENT( EV_PostArrival,			idElevator.prototype.Event_PostFloorArrival ),
+	EVENT( EV_GotoFloor,			idElevator.prototype.Event_GotoFloor ),
+	EVENT( EV_Touch,				idElevator.prototype.Event_Touch )
+];
+
+idElevator.Type = new idTypeInfo("idElevator", "idMover",
+	idElevator.eventCallbacks, idElevator.CreateInstance, idElevator.prototype.Spawn,
+	idElevator.prototype.Save, idElevator.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -2075,17 +2138,37 @@ var EV_Mover_Enable= new idEventDef( "enable", null );
 var EV_Mover_Disable= new idEventDef( "disable", null );
 ////
 ////CLASS_DECLARATION( idEntity, idMover_Binary )
-////	EVENT( EV_FindGuiTargets,			idMover_Binary::Event_FindGuiTargets )
-////	EVENT( EV_Thread_SetCallback,		idMover_Binary::Event_SetCallback )
-////	EVENT( EV_Mover_ReturnToPos1,		idMover_Binary::Event_ReturnToPos1 )
-////	EVENT( EV_Activate,					idMover_Binary::Event_Use_BinaryMover )
-////	EVENT( EV_ReachedPos,				idMover_Binary::Event_Reached_BinaryMover )
-////	EVENT( EV_Mover_MatchTeam,			idMover_Binary::Event_MatchActivateTeam )
-////	EVENT( EV_Mover_Enable,				idMover_Binary::Event_Enable )
-////	EVENT( EV_Mover_Disable,			idMover_Binary::Event_Disable )
-////	EVENT( EV_Mover_OpenPortal,			idMover_Binary::Event_OpenPortal )
-////	EVENT( EV_Mover_ClosePortal,		idMover_Binary::Event_ClosePortal )
-////	EVENT( EV_Mover_InitGuiTargets,		idMover_Binary::Event_InitGuiTargets )
+idMover_Binary.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idMover_Binary;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idMover_Binary.prototype.GetType = function ( ): idTypeInfo {
+	return ( idMover_Binary.Type );
+};
+
+idMover_Binary.eventCallbacks = [
+	EVENT( EV_FindGuiTargets,			idMover_Binary.prototype.Event_FindGuiTargets ),
+	EVENT( EV_Thread_SetCallback,		idMover_Binary.prototype.Event_SetCallback ),
+	EVENT( EV_Mover_ReturnToPos1,		idMover_Binary.prototype.Event_ReturnToPos1 ),
+	EVENT( EV_Activate,					idMover_Binary.prototype.Event_Use_BinaryMover ),
+	EVENT( EV_ReachedPos,				idMover_Binary.prototype.Event_Reached_BinaryMover ),
+	EVENT( EV_Mover_MatchTeam,			idMover_Binary.prototype.Event_MatchActivateTeam ),
+	EVENT( EV_Mover_Enable,				idMover_Binary.prototype.Event_Enable ),
+	EVENT( EV_Mover_Disable,			idMover_Binary.prototype.Event_Disable ),
+	EVENT( EV_Mover_OpenPortal,			idMover_Binary.prototype.Event_OpenPortal ),
+	EVENT( EV_Mover_ClosePortal,		idMover_Binary.prototype.Event_ClosePortal ),
+	EVENT( EV_Mover_InitGuiTargets,		idMover_Binary.prototype.Event_InitGuiTargets )
+];
+
+idMover_Binary.Type = new idTypeInfo("idMover_Binary", "idEntity",
+	idMover_Binary.eventCallbacks, idMover_Binary.CreateInstance, idMover_Binary.prototype.Spawn,
+	idMover_Binary.prototype.Save, idMover_Binary.prototype.Restore );
 ////END_CLASS
 ////
 /////*
@@ -3094,22 +3177,43 @@ var EV_Door_IsOpen = new idEventDef( "isOpen", null, 'f' );
 var EV_Door_IsLocked = new idEventDef( "isLocked", null, 'f' );
 
 ////CLASS_DECLARATION( idMover_Binary, idDoor )
-////	EVENT( EV_TeamBlocked,				idDoor::Event_TeamBlocked )
-////	EVENT( EV_PartBlocked,				idDoor::Event_PartBlocked )
-////	EVENT( EV_Touch,					idDoor::Event_Touch )
-////	EVENT( EV_Activate,					idDoor::Event_Activate )
-////	EVENT( EV_Door_StartOpen,			idDoor::Event_StartOpen )
-////	EVENT( EV_Door_SpawnDoorTrigger,	idDoor::Event_SpawnDoorTrigger )
-////	EVENT( EV_Door_SpawnSoundTrigger,	idDoor::Event_SpawnSoundTrigger )
-////	EVENT( EV_Door_Open,				idDoor::Event_Open )
-////	EVENT( EV_Door_Close,				idDoor::Event_Close )
-////	EVENT( EV_Door_Lock,				idDoor::Event_Lock )
-////	EVENT( EV_Door_IsOpen,				idDoor::Event_IsOpen )
-////	EVENT( EV_Door_IsLocked,			idDoor::Event_Locked )
-////	EVENT( EV_ReachedPos,				idDoor::Event_Reached_BinaryMover )
-////	EVENT( EV_SpectatorTouch,			idDoor::Event_SpectatorTouch )
-////	EVENT( EV_Mover_OpenPortal,			idDoor::Event_OpenPortal )
-////	EVENT( EV_Mover_ClosePortal,		idDoor::Event_ClosePortal )
+idDoor.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idDoor;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idDoor.prototype.GetType = function ( ): idTypeInfo {
+	return ( idDoor.Type );
+};
+
+idDoor.eventCallbacks = [
+	EVENT( EV_TeamBlocked,				idDoor.prototype.Event_TeamBlocked ),
+	EVENT( EV_PartBlocked,				idDoor.prototype.Event_PartBlocked ),
+	EVENT( EV_Touch,					idDoor.prototype.Event_Touch ),
+	EVENT( EV_Activate,					idDoor.prototype.Event_Activate ),
+	EVENT( EV_Door_StartOpen,			idDoor.prototype.Event_StartOpen ),
+	EVENT( EV_Door_SpawnDoorTrigger,	idDoor.prototype.Event_SpawnDoorTrigger ),
+	EVENT( EV_Door_SpawnSoundTrigger,	idDoor.prototype.Event_SpawnSoundTrigger ),
+	EVENT( EV_Door_Open,				idDoor.prototype.Event_Open ),
+	EVENT( EV_Door_Close,				idDoor.prototype.Event_Close ),
+	EVENT( EV_Door_Lock,				idDoor.prototype.Event_Lock ),
+	EVENT( EV_Door_IsOpen,				idDoor.prototype.Event_IsOpen ),
+	EVENT( EV_Door_IsLocked,			idDoor.prototype.Event_Locked ),
+	EVENT( EV_ReachedPos,				idDoor.prototype.Event_Reached_BinaryMover ),
+	EVENT( EV_SpectatorTouch,			idDoor.prototype.Event_SpectatorTouch ),
+	EVENT( EV_Mover_OpenPortal,			idDoor.prototype.Event_OpenPortal ),
+	EVENT( EV_Mover_ClosePortal,		idDoor.prototype.Event_ClosePortal ),
+];
+
+idDoor.Type = new idTypeInfo("idDoor", "idMover_Binary",
+	idDoor.eventCallbacks, idDoor.CreateInstance, idDoor.prototype.Spawn,
+	idDoor.prototype.Save, idDoor.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -3998,9 +4102,30 @@ var EV_Door_IsLocked = new idEventDef( "isLocked", null, 'f' );
 ////*/
 ////
 ////CLASS_DECLARATION( idMover_Binary, idPlat )
-////	EVENT( EV_Touch,			idPlat::Event_Touch )
-////	EVENT( EV_TeamBlocked,		idPlat::Event_TeamBlocked )
-////	EVENT( EV_PartBlocked,		idPlat::Event_PartBlocked )
+idPlat.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idPlat;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idPlat.prototype.GetType = function ( ): idTypeInfo {
+	return ( idPlat.Type );
+};
+
+idPlat.eventCallbacks = [
+	EVENT( EV_Touch,			idPlat.prototype.Event_Touch ),
+	EVENT( EV_TeamBlocked,		idPlat.prototype.Event_TeamBlocked ),
+	EVENT( EV_PartBlocked,		idPlat.prototype.Event_PartBlocked )
+];
+
+idPlat.Type = new idTypeInfo("idPlat", "idMover_Binary",
+	idPlat.eventCallbacks, idPlat.CreateInstance, idPlat.prototype.Spawn,
+	idPlat.prototype.Save, idPlat.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -4237,8 +4362,29 @@ var EV_Door_IsLocked = new idEventDef( "isLocked", null, 'f' );
 ////*/
 ////
 ////CLASS_DECLARATION( idEntity, idMover_Periodic )
-////	EVENT( EV_TeamBlocked,		idMover_Periodic::Event_TeamBlocked )
-////	EVENT( EV_PartBlocked,		idMover_Periodic::Event_PartBlocked )
+idMover_Periodic.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idMover_Periodic;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idMover_Periodic.prototype.GetType = function ( ): idTypeInfo {
+	return ( idMover_Periodic.Type );
+};
+
+idMover_Periodic.eventCallbacks = [
+	EVENT( EV_TeamBlocked,		idMover_Periodic.prototype.Event_TeamBlocked ),
+	EVENT( EV_PartBlocked,		idMover_Periodic.prototype.Event_PartBlocked )
+];
+
+idMover_Periodic.Type = new idTypeInfo( "idMover_Periodic", "idEntity",
+	idMover_Periodic.eventCallbacks, idMover_Periodic.CreateInstance, idMover_Periodic.prototype.Spawn,
+	idMover_Periodic.prototype.Save, idMover_Periodic.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -4352,7 +4498,28 @@ var EV_Door_IsLocked = new idEventDef( "isLocked", null, 'f' );
 ////*/
 ////
 ////CLASS_DECLARATION( idMover_Periodic, idRotater )
-////	EVENT( EV_Activate,			idRotater::Event_Activate )
+idRotater.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idRotater;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idRotater.prototype.GetType = function ( ): idTypeInfo {
+	return ( idRotater.Type );
+};
+
+idRotater.eventCallbacks = [
+	EVENT( EV_Activate,			idRotater.prototype.Event_Activate )
+];
+
+idRotater.Type = new idTypeInfo("idRotater", "idMover_Periodic",
+	idRotater.eventCallbacks, idRotater.CreateInstance, idRotater.prototype.Spawn,
+	idRotater.prototype.Save, idRotater.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -4451,6 +4618,27 @@ var EV_Door_IsLocked = new idEventDef( "isLocked", null, 'f' );
 ////*/
 ////
 ////CLASS_DECLARATION( idMover_Periodic, idBobber )
+idBobber.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idBobber;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idBobber.prototype.GetType = function ( ): idTypeInfo {
+	return ( idBobber.Type );
+};
+
+idBobber.eventCallbacks = [
+];
+
+idBobber.Type = new idTypeInfo("idBobber", "idMover_Periodic",
+	idBobber.eventCallbacks, idBobber.CreateInstance, idBobber.prototype.Spawn,
+	idBobber.prototype.Save, idBobber.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -4512,6 +4700,27 @@ var EV_Door_IsLocked = new idEventDef( "isLocked", null, 'f' );
 ////*/
 ////
 ////CLASS_DECLARATION( idMover_Periodic, idPendulum )
+idPendulum.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idPendulum;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idPendulum.prototype.GetType = function ( ): idTypeInfo {
+	return ( idPendulum.Type );
+};
+
+idPendulum.eventCallbacks = [
+];
+
+idPendulum.Type = new idTypeInfo("idPendulum", "idMover_Periodic",
+	idPendulum.eventCallbacks, idPendulum.CreateInstance, idPendulum.prototype.Spawn,
+	idPendulum.prototype.Save, idPendulum.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -4573,7 +4782,28 @@ var EV_Door_IsLocked = new idEventDef( "isLocked", null, 'f' );
 ////*/
 ////
 ////CLASS_DECLARATION( idMover_Periodic, idRiser )
-////EVENT( EV_Activate,				idRiser::Event_Activate )
+idRiser.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idRiser;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idRiser.prototype.GetType = function ( ): idTypeInfo {
+	return ( idRiser.Type );
+};
+
+idRiser.eventCallbacks = [
+	EVENT( EV_Activate,				idRiser.prototype.Event_Activate )
+];
+
+idRiser.Type = new idTypeInfo("idRiser", "idMover_Periodic",
+	idRiser.eventCallbacks, idRiser.CreateInstance, idRiser.prototype.Spawn,
+	idRiser.prototype.Save, idRiser.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*

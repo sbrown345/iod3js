@@ -44,8 +44,29 @@ var EV_Enable = new idEventDef( "enable", null );
 var EV_Disable = new idEventDef( "disable", null );
 
 ////CLASS_DECLARATION( idEntity, idTrigger )
-////	EVENT( EV_Enable,	idTrigger::Event_Enable )
-////	EVENT( EV_Disable,	idTrigger::Event_Disable )
+idTrigger.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idTrigger;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idTrigger.prototype.GetType = function ( ): idTypeInfo {
+	return ( idTrigger.Type );
+};
+
+idTrigger.eventCallbacks = [
+	EVENT( EV_Enable,	idTrigger.prototype.Event_Enable ),
+	EVENT( EV_Disable,	idTrigger.prototype.Event_Disable )
+];
+
+idTrigger.Type = new idTypeInfo("idTrigger", "idEntity",
+	idTrigger.eventCallbacks, idTrigger.CreateInstance, idTrigger.prototype.Spawn,
+	idTrigger.prototype.Save, idTrigger.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -246,9 +267,30 @@ var EV_Disable = new idEventDef( "disable", null );
 var EV_TriggerAction = new idEventDef( "<triggerAction>", "e" );
 ////
 ////CLASS_DECLARATION( idTrigger, idTrigger_Multi )
-////	EVENT( EV_Touch,			idTrigger_Multi::Event_Touch )
-////	EVENT( EV_Activate,			idTrigger_Multi::Event_Trigger )
-////	EVENT( EV_TriggerAction,	idTrigger_Multi::Event_TriggerAction )
+idTrigger_Multi.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idTrigger_Multi;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idTrigger_Multi.prototype.GetType = function ( ): idTypeInfo {
+	return ( idTrigger_Multi.Type );
+};
+
+idTrigger_Multi.eventCallbacks = [
+	EVENT( EV_Touch,			idTrigger_Multi.prototype.Event_Touch ),
+	EVENT( EV_Activate,			idTrigger_Multi.prototype.Event_Trigger ),
+	EVENT( EV_TriggerAction,	idTrigger_Multi.prototype.Event_TriggerAction )
+];
+
+idTrigger_Multi.Type = new idTypeInfo("idTrigger_Multi", "idTrigger",
+	idTrigger_Multi.eventCallbacks, idTrigger_Multi.CreateInstance, idTrigger_Multi.prototype.Spawn,
+	idTrigger_Multi.prototype.Save, idTrigger_Multi.prototype.Restore );
+
 ////END_CLASS
 ////
 ////
@@ -514,9 +556,30 @@ var EV_TriggerAction = new idEventDef( "<triggerAction>", "e" );
 ////*/
 ////
 ////CLASS_DECLARATION( idTrigger, idTrigger_EntityName )
-////	EVENT( EV_Touch,			idTrigger_EntityName::Event_Touch )
-////	EVENT( EV_Activate,			idTrigger_EntityName::Event_Trigger )
-////	EVENT( EV_TriggerAction,	idTrigger_EntityName::Event_TriggerAction )
+idTrigger_EntityName.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idTrigger_EntityName;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idTrigger_EntityName.prototype.GetType = function ( ): idTypeInfo {
+	return ( idTrigger_EntityName.Type );
+};
+
+idTrigger_EntityName.eventCallbacks = [
+	EVENT( EV_Touch,			idTrigger_EntityName.prototype.Event_Touch ),
+	EVENT( EV_Activate,			idTrigger_EntityName.prototype.Event_Trigger ),
+	EVENT( EV_TriggerAction,	idTrigger_EntityName.prototype.Event_TriggerAction )
+];
+
+idTrigger_EntityName.Type = new idTypeInfo("idTrigger_EntityName", "idTrigger",
+	idTrigger_EntityName.eventCallbacks, idTrigger_EntityName.CreateInstance, idTrigger_EntityName.prototype.Spawn,
+	idTrigger_EntityName.prototype.Save, idTrigger_EntityName.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -703,8 +766,29 @@ var EV_TriggerAction = new idEventDef( "<triggerAction>", "e" );
 var EV_Timer = new idEventDef( "<timer>", null );
 ////
 ////CLASS_DECLARATION( idTrigger, idTrigger_Timer )
-////	EVENT( EV_Timer,		idTrigger_Timer::Event_Timer )
-////	EVENT( EV_Activate,		idTrigger_Timer::Event_Use )
+idTrigger_Timer.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idTrigger_Timer;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idTrigger_Timer.prototype.GetType = function ( ): idTypeInfo {
+	return ( idTrigger_Timer.Type );
+};
+
+idTrigger_Timer.eventCallbacks = [
+	EVENT( EV_Timer,		idTrigger_Timer.prototype.Event_Timer ),
+	EVENT( EV_Activate,		idTrigger_Timer.prototype.Event_Use )
+];
+
+idTrigger_Timer.Type = new idTypeInfo("idTrigger_Timer", "idTrigger",
+	idTrigger_Timer.eventCallbacks, idTrigger_Timer.CreateInstance, idTrigger_Timer.prototype.Spawn,
+	idTrigger_Timer.prototype.Save, idTrigger_Timer.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -845,8 +929,29 @@ var EV_Timer = new idEventDef( "<timer>", null );
 ////*/
 ////
 ////CLASS_DECLARATION( idTrigger, idTrigger_Count )
-////	EVENT( EV_Activate,	idTrigger_Count::Event_Trigger )
-////	EVENT( EV_TriggerAction,	idTrigger_Count::Event_TriggerAction )
+idTrigger_Count.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idTrigger_Count;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idTrigger_Count.prototype.GetType = function ( ): idTypeInfo {
+	return ( idTrigger_Count.Type );
+};
+
+idTrigger_Count.eventCallbacks = [
+	EVENT( EV_Activate,	idTrigger_Count.prototype.Event_Trigger ),
+	EVENT( EV_TriggerAction,	idTrigger_Count.prototype.Event_TriggerAction )
+];
+
+idTrigger_Count.Type = new idTypeInfo("idTrigger_Count", "idTrigger",
+	idTrigger_Count.eventCallbacks, idTrigger_Count.CreateInstance, idTrigger_Count.prototype.Spawn,
+	idTrigger_Count.prototype.Save, idTrigger_Count.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -935,8 +1040,29 @@ var EV_Timer = new idEventDef( "<timer>", null );
 ////*/
 ////
 ////CLASS_DECLARATION( idTrigger, idTrigger_Hurt )
-////	EVENT( EV_Touch,		idTrigger_Hurt::Event_Touch )
-////	EVENT( EV_Activate,		idTrigger_Hurt::Event_Toggle )
+idTrigger_Hurt.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idTrigger_Hurt;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idTrigger_Hurt.prototype.GetType = function ( ): idTypeInfo {
+	return ( idTrigger_Hurt.Type );
+};
+
+idTrigger_Hurt.eventCallbacks = [
+	EVENT( EV_Touch,		idTrigger_Hurt.prototype.Event_Touch ),
+	EVENT( EV_Activate,		idTrigger_Hurt.prototype.Event_Toggle )
+];
+
+idTrigger_Hurt.Type = new idTypeInfo("idTrigger_Hurt", "idTrigger",
+	idTrigger_Hurt.eventCallbacks, idTrigger_Hurt.CreateInstance, idTrigger_Hurt.prototype.Spawn,
+	idTrigger_Hurt.prototype.Save, idTrigger_Hurt.prototype.Restore );
+
 ////END_CLASS
 ////
 ////
@@ -1026,7 +1152,28 @@ var EV_Timer = new idEventDef( "<timer>", null );
 ////*/
 ////
 ////CLASS_DECLARATION( idTrigger, idTrigger_Fade )
-////	EVENT( EV_Activate,		idTrigger_Fade::Event_Trigger )
+idTrigger_Fade.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idTrigger_Fade;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idTrigger_Fade.prototype.GetType = function ( ): idTypeInfo {
+	return ( idTrigger_Fade.Type );
+};
+
+idTrigger_Fade.eventCallbacks = [
+	EVENT( EV_Activate,		idTrigger_Fade.prototype.Event_Trigger )
+];
+
+idTrigger_Fade.Type = new idTypeInfo("idTrigger_Fade", "idTrigger",
+	idTrigger_Fade.eventCallbacks, idTrigger_Fade.CreateInstance, idTrigger_Fade.prototype.Spawn,
+	idTrigger_Fade.prototype.Save, idTrigger_Fade.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -1057,7 +1204,28 @@ var EV_Timer = new idEventDef( "<timer>", null );
 ////*/
 ////
 ////CLASS_DECLARATION( idTrigger, idTrigger_Touch )
-////	EVENT( EV_Activate,		idTrigger_Touch::Event_Trigger )
+idTrigger_Touch.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idTrigger_Touch;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idTrigger_Touch.prototype.GetType = function ( ): idTypeInfo {
+	return ( idTrigger_Touch.Type );
+};
+
+idTrigger_Touch.eventCallbacks = [
+	EVENT( EV_Activate,		idTrigger_Touch.prototype.Event_Trigger )
+];
+
+idTrigger_Touch.Type = new idTypeInfo("idTrigger_Touch", "idTrigger",
+	idTrigger_Touch.eventCallbacks, idTrigger_Touch.CreateInstance, idTrigger_Touch.prototype.Spawn,
+	idTrigger_Touch.prototype.Save, idTrigger_Touch.prototype.Restore );
+
 ////END_CLASS
 ////
 ////

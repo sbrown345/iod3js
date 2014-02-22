@@ -80,24 +80,45 @@ var EV_SpectatorTouch = new idEventDef( "spectatorTouch", "et" );
 var EV_Player_GetIdealWeapon = new idEventDef( "getIdealWeapon", null, 's' );
 ////
 ////CLASS_DECLARATION( idActor, idPlayer )
-////	EVENT( EV_Player_GetButtons,			idPlayer::Event_GetButtons )
-////	EVENT( EV_Player_GetMove,				idPlayer::Event_GetMove )
-////	EVENT( EV_Player_GetViewAngles,			idPlayer::Event_GetViewAngles )
-////	EVENT( EV_Player_StopFxFov,				idPlayer::Event_StopFxFov )
-////	EVENT( EV_Player_EnableWeapon,			idPlayer::Event_EnableWeapon )
-////	EVENT( EV_Player_DisableWeapon,			idPlayer::Event_DisableWeapon )
-////	EVENT( EV_Player_GetCurrentWeapon,		idPlayer::Event_GetCurrentWeapon )
-////	EVENT( EV_Player_GetPreviousWeapon,		idPlayer::Event_GetPreviousWeapon )
-////	EVENT( EV_Player_SelectWeapon,			idPlayer::Event_SelectWeapon )
-////	EVENT( EV_Player_GetWeaponEntity,		idPlayer::Event_GetWeaponEntity )
-////	EVENT( EV_Player_OpenPDA,				idPlayer::Event_OpenPDA )
-////	EVENT( EV_Player_InPDA,					idPlayer::Event_InPDA )
-////	EVENT( EV_Player_ExitTeleporter,		idPlayer::Event_ExitTeleporter )
-////	EVENT( EV_Player_StopAudioLog,			idPlayer::Event_StopAudioLog )
-////	EVENT( EV_Player_HideTip,				idPlayer::Event_HideTip )
-////	EVENT( EV_Player_LevelTrigger,			idPlayer::Event_LevelTrigger )
-////	EVENT( EV_Gibbed,						idPlayer::Event_Gibbed )
-////	EVENT( EV_Player_GetIdealWeapon,		idPlayer::Event_GetIdealWeapon )
+idPlayer.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idPlayer;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idPlayer.prototype.GetType = function ( ): idTypeInfo {
+	return ( idPlayer.Type );
+};
+
+idPlayer.eventCallbacks = [
+	EVENT( EV_Player_GetButtons,			idPlayer.prototype.Event_GetButtons ),
+	EVENT( EV_Player_GetMove,				idPlayer.prototype.Event_GetMove ),
+	EVENT( EV_Player_GetViewAngles,			idPlayer.prototype.Event_GetViewAngles ),
+	EVENT( EV_Player_StopFxFov,				idPlayer.prototype.Event_StopFxFov ),
+	EVENT( EV_Player_EnableWeapon,			idPlayer.prototype.Event_EnableWeapon ),
+	EVENT( EV_Player_DisableWeapon,			idPlayer.prototype.Event_DisableWeapon ),
+	EVENT( EV_Player_GetCurrentWeapon,		idPlayer.prototype.Event_GetCurrentWeapon ),
+	EVENT( EV_Player_GetPreviousWeapon,		idPlayer.prototype.Event_GetPreviousWeapon ),
+	EVENT( EV_Player_SelectWeapon,			idPlayer.prototype.Event_SelectWeapon ),
+	EVENT( EV_Player_GetWeaponEntity,		idPlayer.prototype.Event_GetWeaponEntity ),
+	EVENT( EV_Player_OpenPDA,				idPlayer.prototype.Event_OpenPDA ),
+	EVENT( EV_Player_InPDA,					idPlayer.prototype.Event_InPDA ),
+	EVENT( EV_Player_ExitTeleporter,		idPlayer.prototype.Event_ExitTeleporter ),
+	EVENT( EV_Player_StopAudioLog,			idPlayer.prototype.Event_StopAudioLog ),
+	EVENT( EV_Player_HideTip,				idPlayer.prototype.Event_HideTip ),
+	EVENT( EV_Player_LevelTrigger,			idPlayer.prototype.Event_LevelTrigger ),
+	EVENT( EV_Gibbed,						idPlayer.prototype.Event_Gibbed ),
+	EVENT( EV_Player_GetIdealWeapon,		idPlayer.prototype.Event_GetIdealWeapon ),
+];
+
+idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
+	idPlayer.eventCallbacks, idPlayer.CreateInstance, idPlayer.prototype.Spawn,
+	idPlayer.prototype.Save, idPlayer.prototype.Restore );
+
 ////END_CLASS
 ////
 ////const int MAX_RESPAWN_TIME = 10000;

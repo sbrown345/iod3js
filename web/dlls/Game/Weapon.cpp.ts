@@ -72,42 +72,63 @@ var EV_Weapon_NetEndReload = new idEventDef( "netEndReload" );
 ////// class def
 //////
 ////CLASS_DECLARATION( idAnimatedEntity, idWeapon )
-////	EVENT( EV_Weapon_Clear,						idWeapon::Event_Clear )
-////	EVENT( EV_Weapon_GetOwner,					idWeapon::Event_GetOwner )
-////	EVENT( EV_Weapon_State,						idWeapon::Event_WeaponState )
-////	EVENT( EV_Weapon_WeaponReady,				idWeapon::Event_WeaponReady )
-////	EVENT( EV_Weapon_WeaponOutOfAmmo,			idWeapon::Event_WeaponOutOfAmmo )
-////	EVENT( EV_Weapon_WeaponReloading,			idWeapon::Event_WeaponReloading )
-////	EVENT( EV_Weapon_WeaponHolstered,			idWeapon::Event_WeaponHolstered )
-////	EVENT( EV_Weapon_WeaponRising,				idWeapon::Event_WeaponRising )
-////	EVENT( EV_Weapon_WeaponLowering,			idWeapon::Event_WeaponLowering )
-////	EVENT( EV_Weapon_UseAmmo,					idWeapon::Event_UseAmmo )
-////	EVENT( EV_Weapon_AddToClip,					idWeapon::Event_AddToClip )
-////	EVENT( EV_Weapon_AmmoInClip,				idWeapon::Event_AmmoInClip )
-////	EVENT( EV_Weapon_AmmoAvailable,				idWeapon::Event_AmmoAvailable )
-////	EVENT( EV_Weapon_TotalAmmoCount,			idWeapon::Event_TotalAmmoCount )
-////	EVENT( EV_Weapon_ClipSize,					idWeapon::Event_ClipSize )
-////	EVENT( AI_PlayAnim,							idWeapon::Event_PlayAnim )
-////	EVENT( AI_PlayCycle,						idWeapon::Event_PlayCycle )
-////	EVENT( AI_SetBlendFrames,					idWeapon::Event_SetBlendFrames )
-////	EVENT( AI_GetBlendFrames,					idWeapon::Event_GetBlendFrames )
-////	EVENT( AI_AnimDone,							idWeapon::Event_AnimDone )
-////	EVENT( EV_Weapon_Next,						idWeapon::Event_Next )
-////	EVENT( EV_SetSkin,							idWeapon::Event_SetSkin )
-////	EVENT( EV_Weapon_Flashlight,				idWeapon::Event_Flashlight )
-////	EVENT( EV_Light_GetLightParm,				idWeapon::Event_GetLightParm )
-////	EVENT( EV_Light_SetLightParm,				idWeapon::Event_SetLightParm )
-////	EVENT( EV_Light_SetLightParms,				idWeapon::Event_SetLightParms )
-////	EVENT( EV_Weapon_LaunchProjectiles,			idWeapon::Event_LaunchProjectiles )
-////	EVENT( EV_Weapon_CreateProjectile,			idWeapon::Event_CreateProjectile )
-////	EVENT( EV_Weapon_EjectBrass,				idWeapon::Event_EjectBrass )
-////	EVENT( EV_Weapon_Melee,						idWeapon::Event_Melee )
-////	EVENT( EV_Weapon_GetWorldModel,				idWeapon::Event_GetWorldModel )
-////	EVENT( EV_Weapon_AllowDrop,					idWeapon::Event_AllowDrop )
-////	EVENT( EV_Weapon_AutoReload,				idWeapon::Event_AutoReload )
-////	EVENT( EV_Weapon_NetReload,					idWeapon::Event_NetReload )
-////	EVENT( EV_Weapon_IsInvisible,				idWeapon::Event_IsInvisible )
-////	EVENT( EV_Weapon_NetEndReload,				idWeapon::Event_NetEndReload )
+idWeapon.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idWeapon;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idWeapon.prototype.GetType = function ( ): idTypeInfo {
+	return ( idWeapon.Type );
+};
+
+idWeapon.eventCallbacks = [
+	EVENT( EV_Weapon_Clear,						idWeapon.prototype.Event_Clear ),
+	EVENT( EV_Weapon_GetOwner,					idWeapon.prototype.Event_GetOwner ),
+	EVENT( EV_Weapon_State,						idWeapon.prototype.Event_WeaponState ),
+	EVENT( EV_Weapon_WeaponReady,				idWeapon.prototype.Event_WeaponReady ),
+	EVENT( EV_Weapon_WeaponOutOfAmmo,			idWeapon.prototype.Event_WeaponOutOfAmmo ),
+	EVENT( EV_Weapon_WeaponReloading,			idWeapon.prototype.Event_WeaponReloading ),
+	EVENT( EV_Weapon_WeaponHolstered,			idWeapon.prototype.Event_WeaponHolstered ),
+	EVENT( EV_Weapon_WeaponRising,				idWeapon.prototype.Event_WeaponRising ),
+	EVENT( EV_Weapon_WeaponLowering,			idWeapon.prototype.Event_WeaponLowering ),
+	EVENT( EV_Weapon_UseAmmo,					idWeapon.prototype.Event_UseAmmo ),
+	EVENT( EV_Weapon_AddToClip,					idWeapon.prototype.Event_AddToClip ),
+	EVENT( EV_Weapon_AmmoInClip,				idWeapon.prototype.Event_AmmoInClip ),
+	EVENT( EV_Weapon_AmmoAvailable,				idWeapon.prototype.Event_AmmoAvailable ),
+	EVENT( EV_Weapon_TotalAmmoCount,			idWeapon.prototype.Event_TotalAmmoCount ),
+	EVENT( EV_Weapon_ClipSize,					idWeapon.prototype.Event_ClipSize ),
+	EVENT( AI_PlayAnim,							idWeapon.prototype.Event_PlayAnim ),
+	EVENT( AI_PlayCycle,						idWeapon.prototype.Event_PlayCycle ),
+	EVENT( AI_SetBlendFrames,					idWeapon.prototype.Event_SetBlendFrames ),
+	EVENT( AI_GetBlendFrames,					idWeapon.prototype.Event_GetBlendFrames ),
+	EVENT( AI_AnimDone,							idWeapon.prototype.Event_AnimDone ),
+	EVENT( EV_Weapon_Next,						idWeapon.prototype.Event_Next ),
+	EVENT( EV_SetSkin,							idWeapon.prototype.Event_SetSkin ),
+	EVENT( EV_Weapon_Flashlight,				idWeapon.prototype.Event_Flashlight ),
+	EVENT( EV_Light_GetLightParm,				idWeapon.prototype.Event_GetLightParm ),
+	EVENT( EV_Light_SetLightParm,				idWeapon.prototype.Event_SetLightParm ),
+	EVENT( EV_Light_SetLightParms,				idWeapon.prototype.Event_SetLightParms ),
+	EVENT( EV_Weapon_LaunchProjectiles,			idWeapon.prototype.Event_LaunchProjectiles ),
+	EVENT( EV_Weapon_CreateProjectile,			idWeapon.prototype.Event_CreateProjectile ),
+	EVENT( EV_Weapon_EjectBrass,				idWeapon.prototype.Event_EjectBrass ),
+	EVENT( EV_Weapon_Melee,						idWeapon.prototype.Event_Melee ),
+	EVENT( EV_Weapon_GetWorldModel,				idWeapon.prototype.Event_GetWorldModel ),
+	EVENT( EV_Weapon_AllowDrop,					idWeapon.prototype.Event_AllowDrop ),
+	EVENT( EV_Weapon_AutoReload,				idWeapon.prototype.Event_AutoReload ),
+	EVENT( EV_Weapon_NetReload,					idWeapon.prototype.Event_NetReload ),
+	EVENT( EV_Weapon_IsInvisible,				idWeapon.prototype.Event_IsInvisible ),
+	EVENT( EV_Weapon_NetEndReload,				idWeapon.prototype.Event_NetEndReload ),
+];
+
+idWeapon.Type = new idTypeInfo("idWeapon", "idAnimatedEntity",
+	idWeapon.eventCallbacks, idWeapon.CreateInstance, idWeapon.prototype.Spawn,
+	idWeapon.prototype.Save, idWeapon.prototype.Restore );
+
 ////END_CLASS
 ////
 /////***********************************************************************

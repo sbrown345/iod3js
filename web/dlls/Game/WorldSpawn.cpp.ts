@@ -69,10 +69,7 @@ class idWorldspawn extends idEntity {
 	////Every map should have exactly one worldspawn.
 	////================
 	////*/
-	////CLASS_DECLARATION( idEntity, idWorldspawn )
-	////	EVENT( EV_Remove,				idWorldspawn::Event_Remove )
-	////	EVENT( EV_SafeRemove,			idWorldspawn::Event_Remove )
-	////END_CLASS
+
 	////
 	/////*
 	////================
@@ -167,3 +164,30 @@ class idWorldspawn extends idEntity {
 	////	gameLocal.Error( "Tried to remove world" );
 	////}
 }
+
+
+////CLASS_DECLARATION( idEntity, idWorldspawn )
+idWorldspawn.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idWorldspawn;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idWorldspawn.prototype.GetType = function ( ): idTypeInfo {
+	return ( idWorldspawn.Type );
+};
+
+idWorldspawn.eventCallbacks = [
+	EVENT( EV_Remove,				idWorldspawn.prototype.Event_Remove ),
+	EVENT( EV_SafeRemove,			idWorldspawn.prototype.Event_Remove )
+];
+
+idWorldspawn.Type = new idTypeInfo("idWorldspawn", "idEntity",
+	idWorldspawn.eventCallbacks, idWorldspawn.CreateInstance, idWorldspawn.prototype.Spawn,
+	idWorldspawn.prototype.Save, idWorldspawn.prototype.Restore );
+
+////END_CLASS

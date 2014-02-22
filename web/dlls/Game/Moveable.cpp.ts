@@ -45,11 +45,32 @@ var EV_IsAtRest = new idEventDef( "isAtRest", null, 'd' );
 var EV_EnableDamage = new idEventDef( "enableDamage", "f" );
 ////
 ////CLASS_DECLARATION( idEntity, idMoveable )
-////	EVENT( EV_Activate,					idMoveable::Event_Activate )
-////	EVENT( EV_BecomeNonSolid,			idMoveable::Event_BecomeNonSolid )
-////	EVENT( EV_SetOwnerFromSpawnArgs,	idMoveable::Event_SetOwnerFromSpawnArgs )
-////	EVENT( EV_IsAtRest,					idMoveable::Event_IsAtRest )
-////	EVENT( EV_EnableDamage,				idMoveable::Event_EnableDamage )
+idMoveable.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idMoveable;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idMoveable.prototype.GetType = function ( ): idTypeInfo {
+	return ( idMoveable.Type );
+};
+
+idMoveable.eventCallbacks = [
+	EVENT( EV_Activate,					idMoveable.prototype.Event_Activate ),
+	EVENT( EV_BecomeNonSolid,			idMoveable.prototype.Event_BecomeNonSolid ),
+	EVENT( EV_SetOwnerFromSpawnArgs,	idMoveable.prototype.Event_SetOwnerFromSpawnArgs ),
+	EVENT( EV_IsAtRest,					idMoveable.prototype.Event_IsAtRest ),
+	EVENT( EV_EnableDamage,				idMoveable.prototype.Event_EnableDamage )
+];
+
+idMoveable.Type = new idTypeInfo( "idMoveable", "idEntity",
+	idMoveable.eventCallbacks, idMoveable.CreateInstance, idMoveable.prototype.Spawn,
+	idMoveable.prototype.Save, idMoveable.prototype.Restore );
+
 ////END_CLASS
 ////
 ////
@@ -545,6 +566,27 @@ var EV_EnableDamage = new idEventDef( "enableDamage", "f" );
 ////*/
 ////
 ////CLASS_DECLARATION( idMoveable, idBarrel )
+idBarrel.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idBarrel;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idBarrel.prototype.GetType = function ( ): idTypeInfo {
+	return ( idBarrel.Type );
+};
+
+idBarrel.eventCallbacks = [
+];
+
+idBarrel.Type = new idTypeInfo("idBarrel", "idMoveable",
+	idBarrel.eventCallbacks, idBarrel.CreateInstance, idBarrel.prototype.Spawn,
+	idBarrel.prototype.Save, idBarrel.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
@@ -730,10 +772,31 @@ var EV_Respawn = new idEventDef( "<respawn>" );
 var EV_TriggerTargets = new idEventDef( "<triggertargets>" );
 ////
 ////CLASS_DECLARATION( idBarrel, idExplodingBarrel )
-////	EVENT( EV_Activate,					idExplodingBarrel::Event_Activate )
-////	EVENT( EV_Respawn,					idExplodingBarrel::Event_Respawn )
-////	EVENT( EV_Explode,					idExplodingBarrel::Event_Explode )
-////	EVENT( EV_TriggerTargets,			idExplodingBarrel::Event_TriggerTargets )
+idExplodingBarrel.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idExplodingBarrel;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idExplodingBarrel.prototype.GetType = function ( ): idTypeInfo {
+	return ( idExplodingBarrel.Type );
+};
+
+idExplodingBarrel.eventCallbacks = [
+	EVENT( EV_Activate,					idExplodingBarrel.prototype.Event_Activate ),
+	EVENT( EV_Respawn,					idExplodingBarrel.prototype.Event_Respawn ),
+	EVENT( EV_Explode,					idExplodingBarrel.prototype.Event_Explode ),
+	EVENT( EV_TriggerTargets,			idExplodingBarrel.prototype.Event_TriggerTargets ),
+];
+
+idExplodingBarrel.Type = new idTypeInfo("idExplodingBarrel", "idBarrel",
+	idExplodingBarrel.eventCallbacks, idExplodingBarrel.CreateInstance, idExplodingBarrel.prototype.Spawn,
+	idExplodingBarrel.prototype.Save, idExplodingBarrel.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*
