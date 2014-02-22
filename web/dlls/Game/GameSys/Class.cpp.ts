@@ -119,7 +119,7 @@ class idTypeInfo {
 	typeNum: number; ////	int							
 	lastChild: number; ////	int							
 	////
-	node: idHierarchy<idTypeInfo>;
+	node = new idHierarchy<idTypeInfo>();
 	////
 	////								idTypeInfo( const char *classname, const char *superclass, 
 	////												idEventFunc<idClass> *eventCallbacks, idClass *( *CreateInstance )( void ), void ( idClass::*Spawn )( void ),
@@ -297,7 +297,7 @@ table for fast lookups of event functions.  Should only be called once.
 			}
 
 			// go through each entry until we hit the NULL terminator
-			for ( i = 0; def[i].event /*!= null*/; i++ ) {
+			for ( i = 0; def[i] && def[i].event /*!= null*/; i++ ) {
 				ev = def[i].event.GetEventNum ( );
 
 				if ( $set[ev] ) {
