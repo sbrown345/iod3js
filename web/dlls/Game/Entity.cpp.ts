@@ -107,17 +107,16 @@ var EV_CallFunction = new idEventDef( "callFunction", "s" );
 var EV_SetNeverDormant = new idEventDef( "setNeverDormant", "d" );
 
 //ABSTRACT_DECLARATION(idClass, idEntity)
-
-idClass.CreateInstance = function ( ): idClass {
-	gameLocal.Error( "Cannot instanciate abstract class %s.", idClass );
+idEntity.CreateInstance = function ( ): idClass {
+	gameLocal.Error( "Cannot instanciate abstract class %s.", idEntity );
 	return null;
 };
 
-idClass.prototype.GetType = function ( ): idTypeInfo {
-	return ( idClass.Type );
+idEntity.prototype.GetType = function ( ): idTypeInfo {
+	return ( idEntity.Type );
 };
 
-idClass.eventCallbacks = [
+idEntity.eventCallbacks = [
 	EVENT(EV_GetName, idEntity.prototype.Event_GetName),
 	EVENT(EV_SetName, idEntity.prototype.Event_SetName),
 	EVENT(EV_FindTargets, idEntity.prototype.Event_FindTargets),
@@ -183,9 +182,9 @@ idClass.eventCallbacks = [
 	EVENT(EV_SetNeverDormant, idEntity.prototype.Event_SetNeverDormant)
 ];
 
-idClass.Type = new idTypeInfo( "idClass", "idEntity",
-	idClass.eventCallbacks, idClass.CreateInstance, idClass.prototype.Spawn,
-	idClass.prototype.Save, idClass.prototype.Restore );
+idEntity.Type = new idTypeInfo( "idEntity", "idClass",
+	idEntity.eventCallbacks, idEntity.CreateInstance, idEntity.prototype.Spawn,
+	idEntity.prototype.Save, idEntity.prototype.Restore );
 
 /////*
 ////================

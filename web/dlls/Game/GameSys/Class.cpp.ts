@@ -98,7 +98,7 @@ class idEventArg {
 ***********************************************************************/
 
 // this is the head of a singly linked list of all the idTypes
-var typelist = new R<idTypeInfo>(); // todo: CLASS_DECLARATION maros set these up, but if this is only for debugging leave this for now
+var typelist: idTypeInfo; // todo: CLASS_DECLARATION maros set these up, but if this is only for debugging leave this for now
 var classHierarchy = new idHierarchy<idTypeInfo> ( );
 var/*int*/ eventCallbackMemory	= 0;
 
@@ -114,6 +114,7 @@ class idTypeInfo {
 	eventCallbacks: idEventFunc<idClass>[];
 	eventMap: Array<( ) => void>; /*eventCallback_t*/
 	$super: idTypeInfo;
+	prev: idTypeInfo;
 	next: idTypeInfo;
 	freeEventMap: boolean; ////	bool						
 	typeNum: number; ////	int							
@@ -175,8 +176,8 @@ class idTypeInfo {
 ////idTypeInfo::idTypeInfo( const char *classname, const char *superclass, idEventFunc<idClass> *eventCallbacks, idClass *( *CreateInstance )( void ), 
 ////	void ( idClass::*Spawn )( void ), void ( idClass::*Save )( idSaveGame *savefile ) const, void ( idClass::*Restore )( idRestoreGame *savefile ) ) {
 
-		var type: R<idTypeInfo>;
-		var insert: R<idTypeInfo>;
+		var type: idTypeInfo;
+		var insert: idTypeInfo;
 
 		this.classname = classname;
 		this.superclass = superclass;
@@ -192,28 +193,52 @@ class idTypeInfo {
 		this.lastChild = 0;
 
 		// Check if any subclasses were initialized before their superclass
-		for ( type = typelist; type.$ /*!= NULL*/; type.$ = type.$.next ) {
-			if ( ( type.$.$super == null ) && !idStr.Cmp( type.$.superclass, this.classname ) &&
-				idStr.Cmp( type.$.classname, "idClass" ) ) {
-				type.$.$super = this;
+		for ( type = typelist; type != null; type = type.next ) {
+			if ( ( type.$super == null ) && !idStr.Cmp( type.superclass, this.classname ) &&
+				idStr.Cmp( type.classname, "idClass" ) ) {
+				type.$super = this;
 			}
 		}
 
-		// Insert sorted
-		for ( insert = typelist; insert.$; insert.$ = ( insert.$ ).next ) {
-			assert( idStr.Cmp( classname, ( insert.$ ).classname ) );
-			if ( idStr.Cmp( classname, ( insert.$ ).classname ) < 0 ) {
-				this.next = insert.$;
-				insert.$ = this;
-				break;
-			}
-		}
-		if ( !insert.$ ) {
-			insert.$ = this;
-			this.next = null;
+		//// Insert sorted
+		//for ( insert = &typelist; *insert; insert = &(*insert)->next ) {
+		//	assert( idStr::Cmp( classname, (*insert)->classname ) );
+		//	if ( idStr::Cmp( classname, (*insert)->classname ) < 0 ) {
+		//		next = *insert;
+		//		*insert = this;
+		//		break;
+		//	}
+		//}
+		//if ( !*insert ) {
+		//	*insert = this;
+		//	next = NULL;
+		//}
+
+		todo( "do sorting code above instead of this hack below" );
+		if ( typelist == null ) {
+			typelist = this;
+		} else {
+			var lastNode = idTypeInfo.LastTypeListNode ( );
+			lastNode.next = this;
 		}
 	}
-////
+
+	static LastTypeListNode ( ): idTypeInfo {
+		var type: idTypeInfo;
+		for ( type = typelist; type.next != null; assert(type!=type.next), type = type.next ) {
+
+		}
+		return type;
+	}
+
+	static ReadTypeList ( ): string {
+		var output = "";
+		for ( var type = typelist; type != null; type = type.next ) {
+			output += type.classname + ", ";
+		}
+		return output;
+	}
+
 /////*
 ////================
 ////idTypeInfo::~idTypeInfo
@@ -263,14 +288,14 @@ table for fast lookups of event functions.  Should only be called once.
 		}
 
 		// if we're not adding any new event callbacks, we can just use our superclass's table
-		if ( ( !this.eventCallbacks || !this.eventCallbacks[0].event ) && this.$super ) {
+		if ( ( !this.eventCallbacks || !this.eventCallbacks[0] || !this.eventCallbacks[0].event ) && this.$super ) {
 			this.eventMap = this.$super.eventMap;
 			return;
 		}
 
 		// set a flag so we know to delete the eventMap table
 		this.freeEventMap = true;
-
+		
 		// Allocate our new table.  It has to have as many entries as there
 		// are events.  NOTE: could save some space by keeping track of the maximum
 		// event that the class responds to and doing range checking.
@@ -677,7 +702,7 @@ once during the execution of the program or DLL.
 
 		// init the event callback tables for all the classes
 		assert( typelist );
-		for ( c = typelist.$; c != null; c = c.next ) {
+		for ( c = typelist; c != null; c = c.next ) {
 			c.Init ( );
 		}
 
@@ -699,7 +724,7 @@ once during the execution of the program or DLL.
 		idClass.typenums.SetGranularity(1);
 		idClass.typenums.SetNum( num );
 		num = 0;
-		for ( c = typelist.$; c != null; c = c.next, num++ ) {
+		for ( c = typelist; c != null; c = c.next, num++ ) {
 			idClass.types[num] = c;
 			idClass.typenums[c.typeNum] = c;
 		}
@@ -827,7 +852,7 @@ so it must be called as idClass::GetClass( classname )
 
 		if ( !idClass.initialized ) {
 			// idClass::Init hasn't been called yet, so do a slow lookup
-			for ( c = typelist.$; c /*!= NULL*/; c = c.next ) {
+			for ( c = typelist; c /*!= NULL*/; c = c.next ) {
 				if ( !idStr.Cmp( c.classname, name ) ) {
 					return c;
 				}
@@ -1401,6 +1426,6 @@ idClass.eventCallbacks = [
 	new idEventFunc( EV_SafeRemove, idClass.prototype.Event_SafeRemove ),
 ];
 
-idClass.Type = new idTypeInfo( "idClass", "null",
+idClass.Type = new idTypeInfo( "idClass", null,
 	idClass.eventCallbacks, idClass.CreateInstance, idClass.prototype.Spawn,
 	idClass.prototype.Save, idClass.prototype.Restore );
