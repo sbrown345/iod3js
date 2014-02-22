@@ -126,17 +126,17 @@ class eval_t {
 	}
 }
 
-//
-///***********************************************************************
-//
-//idScriptObject
-//
-//In-game representation of objects in scripts.  Use the idScriptVariable template
-//(below) to access variables.
-//
-//***********************************************************************/
-//
-//class idScriptObject {
+
+/***********************************************************************
+
+idScriptObject
+
+In-game representation of objects in scripts.  Use the idScriptVariable template
+(below) to access variables.
+
+***********************************************************************/
+
+class idScriptObject {
 //private:
 //	idTypeDef					*type;
 //	
@@ -160,7 +160,7 @@ class eval_t {
 //	const function_t			*GetFunction( name:string ) const;
 //
 //	byte						*GetVariable( name:string, etype_t etype ) const;
-//};
+};
 //
 ///***********************************************************************
 //
@@ -282,7 +282,7 @@ class varEval_t {
 	// possibly first version of these pointers might be just getters that point to the same memory location?
 	
 
-	//idScriptObject			**objectPtrPtr;
+	/****/objectPtrPtr: R<idScriptObject> = new R<idScriptObject>();
 	stringPtr:string;//char					
 	floatPtr:number;//float					
 	vectorPtr: idVec3;
@@ -923,18 +923,18 @@ class idVarDef {
 		this.value.functionPtr = func;
 	}
 
-	///*
-	//============
-	//idVarDef::SetObject
-	//============
-	//*/
-	//void idVarDef::SetObject( idScriptObject *object ) {
-	//	assert( typeDef );
-	//	initialized = initialized;
-	//	assert( typeDef.Inherits( &type_object ) );
-	//	*this.value.objectPtrPtr = object;
-	//}
-	//
+	/*
+	============
+	idVarDef::SetObject
+	============
+	*/
+	SetObject(object:idScriptObject ):void {
+		assert( this.typeDef );
+		this.initialized = this.initialized; // ?? ok
+		assert( this.typeDef.Inherits( type_object ) );
+		/***/this.value.objectPtrPtr.$ = object;
+	}
+	
 	/*
 	============
 	idVarDef::SetValue

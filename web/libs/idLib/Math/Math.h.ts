@@ -829,8 +829,7 @@ static Fabs( /*float */f:number ):number {
 ////}
 
 	static /*unsigned long */Ftol( /*float */f: number): number {
-		todoThrow ( "not a long after this op.." );
-	return /*(unsigned long)*/ f >>> 0;
+		return Math.floor( f );
 }
 
 ////ID_INLINE unsigned long idMath::FtolFast( float f ) {

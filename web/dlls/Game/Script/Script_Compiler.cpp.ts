@@ -397,28 +397,28 @@ Creates a def for a relative jump from one code location to another
 	JumpDef ( /*int */jumpfrom: number, /*int */jumpto: number ): idVarDef {
 		return this.JumpConstant( jumpto - jumpfrom );
 	}
-//
-///*
-//============
-//idCompiler::JumpTo
-//
-//Creates a def for a relative jump from current code location
-//============
-//*/
-//ID_INLINE idVarDef *idCompiler::JumpTo( int jumpto ) {
-//	return JumpDef( gameLocal.program.NumStatements(), jumpto );
-//}
-//
-///*
-//============
-//idCompiler::JumpFrom
-//
-//Creates a def for a relative jump from code location to current code location
-//============
-//*/
-//ID_INLINE idVarDef *idCompiler::JumpFrom( int jumpfrom ) {
-//	return JumpDef( jumpfrom, gameLocal.program.NumStatements() );
-//}
+
+/*
+============
+idCompiler::JumpTo
+
+Creates a def for a relative jump from current code location
+============
+*/
+	JumpTo ( /*int*/ jumpto: number ): idVarDef {
+		return this.JumpDef( gameLocal.program.NumStatements ( ), jumpto );
+	}
+
+/*
+============
+idCompiler::JumpFrom
+
+Creates a def for a relative jump from code location to current code location
+============
+*/
+	JumpFrom ( /*int*/ jumpfrom: number ): idVarDef {
+		return this.JumpDef( jumpfrom, gameLocal.program.NumStatements ( ) );
+	}
 
 /*
 ============
@@ -1715,27 +1715,27 @@ idCompiler::GetExpression
 		return e;
 	}
 
-///*
-//================
-//idCompiler::PatchLoop
-//================
-//*/
-//void idCompiler::PatchLoop( int start, int continuePos ) {
-//	int			i;
-//	statement_t	*pos;
-//
-//	pos = &gameLocal.program.GetStatement( start );
-//	for( i = start; i < gameLocal.program.NumStatements(); i++, pos++ ) {
-//		if ( pos.op == opc.OP_BREAK ) {
-//			pos.op = opc.OP_GOTO;
-//			pos.a = JumpFrom( i );
-//		} else if ( pos.op == opc.OP_CONTINUE ) {
-//			pos.op = opc.OP_GOTO;
-//			pos.a = JumpDef( i, continuePos );
-//		}
-//	}
-//}
-//
+/*
+================
+idCompiler::PatchLoop
+================
+*/
+PatchLoop( /*int */start:number, /*int */continuePos :number):void {
+	var /*int*/i:number;
+	var pos: statement_t	;
+
+	pos = gameLocal.program.GetStatement( start );
+	for ( i = start; i < gameLocal.program.NumStatements ( ); i++, pos = gameLocal.program.GetStatement( i ) /*pos++*/ ) {
+		if ( pos.op == opc.OP_BREAK ) {
+			pos.op = opc.OP_GOTO;
+			pos.a = this.JumpFrom( i );
+		} else if ( pos.op == opc.OP_CONTINUE ) {
+			pos.op = opc.OP_GOTO;
+			pos.a = this.JumpDef( i, continuePos );
+		}
+	}
+}
+
 /*
 ================
 idCompiler::ParseReturnStatement
@@ -1943,26 +1943,25 @@ idCompiler::ParseDoWhileStatement
 ================
 */
 	ParseDoWhileStatement ( ): void {
-		todoThrow ( );
-		//idVarDef	*e;
-		//int			patch1;
+		var e: idVarDef;
+		var /*int*/patch1:number;
 
-		//this.loopDepth++;
+		this.loopDepth++;
 
-		//patch1 = gameLocal.program.NumStatements();
-		//this.ParseStatement();
-		//this.ExpectToken( "while" );
-		//this.ExpectToken( "(" );
-		//e = this.GetExpression( TOP_PRIORITY );
-		//this.ExpectToken( ")" );
-		//this.ExpectToken( ";" );
+		patch1 = gameLocal.program.NumStatements();
+		this.ParseStatement();
+		this.ExpectToken( "while" );
+		this.ExpectToken( "(" );
+		e = this.GetExpression( TOP_PRIORITY );
+		this.ExpectToken( ")" );
+		this.ExpectToken( ";" );
 
-		//this.EmitOpcode( opc.OP_IF, e, JumpTo( patch1 ) );
+		this.EmitOpcode_FromOpNumber(opc.OP_IF, e, this.JumpTo( patch1 ) );
 
-		//// fixup breaks and continues
-		//PatchLoop( patch1, patch1 );
+		// fixup breaks and continues
+		this.PatchLoop( patch1, patch1 );
 
-		//this.loopDepth--;
+		this.loopDepth--;
 	}
 
 /*
@@ -2336,85 +2335,84 @@ idCompiler::ParseVariableDef
 ================
 */
 	ParseVariableDef ( type: idTypeDef, name: string ): void {
-		todoThrow ( );
-//	idVarDef	*def, *def2;
-//	bool		negate;
-//
-//	def = gameLocal.program.GetDef( type, name, this.scope );
-//	if ( def ) {
-//		this.Error( "%s redeclared", name );
-//	}
-//	
-//	def = gameLocal.program.AllocDef( type, name, this.scope, false );
-//
-//	// check for an initialization
-//	if ( this.CheckToken( "=" ) ) {
-//		// if a local variable in a function then write out interpreter code to initialize variable
-//		if ( this.scope.Type() == etype_t.ev_function ) {
-//			def2 = this.GetExpression( TOP_PRIORITY );
-//			if ( ( type == type_float ) && ( def2.TypeDef() == type_float ) ) {
-//				EmitOpcode( opc.OP_STORE_F, def2, def );
-//			} else if ( ( type == type_vector ) && ( def2.TypeDef() == type_vector ) ) {
-//				EmitOpcode( opc.OP_STORE_V, def2, def );
-//			} else if ( ( type == type_string ) && ( def2.TypeDef() == type_string ) ) {
-//				EmitOpcode( opc.OP_STORE_S, def2, def );
-//			} else if ( ( type == type_entity ) && ( ( def2.TypeDef() == type_entity ) || ( def2.TypeDef().Inherits( type_object ) ) ) ) {
-//				EmitOpcode( opc.OP_STORE_ENT, def2, def );
-//			} else if ( ( type.Inherits( type_object ) ) && ( def2.TypeDef() == type_entity ) ) {
-//				EmitOpcode( opc.OP_STORE_OBJENT, def2, def );
-//			} else if ( ( type.Inherits( type_object ) ) && ( def2.TypeDef().Inherits( type ) ) ) {
-//				EmitOpcode( opc.OP_STORE_OBJ, def2, def );
-//			} else if ( ( type == type_boolean ) && ( def2.TypeDef() == type_boolean ) ) {
-//				EmitOpcode( opc.OP_STORE_BOOL, def2, def );
-//			} else if ( ( type == type_string ) && ( def2.TypeDef() == type_float ) ) {
-//				EmitOpcode( opc.OP_STORE_FTOS, def2, def );
-//			} else if ( ( type == type_string ) && ( def2.TypeDef() == type_boolean ) ) {
-//				EmitOpcode( opc.OP_STORE_BTOS, def2, def );
-//			} else if ( ( type == type_string ) && ( def2.TypeDef() == type_vector ) ) {
-//				EmitOpcode( opc.OP_STORE_VTOS, def2, def );
-//			} else if ( ( type == type_boolean ) && ( def2.TypeDef() == type_float ) ) {
-//				EmitOpcode( opc.OP_STORE_FTOBOOL, def2, def );
-//			} else if ( ( type == type_float ) && ( def2.TypeDef() == type_boolean ) ) {
-//				EmitOpcode( opc.OP_STORE_BOOLTOF, def2, def );
-//			} else {
-//				this.Error( "bad initialization for '%s'", name );
-//			}
-//		} else {
-//			// global variables can only be initialized with immediate values
-//			negate = false;
-//			if ( this.token.$.type == TT_PUNCTUATION && this.token == "-" ) {
-//				negate = true;
-//				this.NextToken();
-//				if ( this.immediateType != type_float ) {
-//					this.Error( "wrong immediate type for '-' on variable '%s'", name );
-//				}
-//			}
-//
-//			if ( this.immediateType != type ) {
-//				this.Error( "wrong immediate type for '%s'", name );
-//			}
-//
-//			// global variables are initialized at start up
-//			if ( type == type_string ) {
-//				def.SetString( this.token.$, false );
-//			} else {
-//				if ( negate ) {
-//					immediate._float = -immediate._float;
-//				}
-//				def.SetValue( immediate, false );
-//			}
-//			this.NextToken();
-//		}
-//	} else if ( type == type_string ) {
-//		// local strings on the stack are initialized in the interpreter
-//		if ( this.scope.Type() != etype_t.ev_function ) {
-//			def.SetString( "", false );
-//		}
-//	} else if ( type.Inherits( type_object ) ) {
-//		if ( this.scope.Type() != etype_t.ev_function ) {
-//			def.SetObject( NULL );
-//		}
-//	}
+		var def: idVarDef, def2: idVarDef;
+		var negate: boolean;
+
+		def = gameLocal.program.GetDef( type, name, this.scope );
+		if ( def ) {
+			this.Error( "%s redeclared", name );
+		}
+
+		def = gameLocal.program.AllocDef( type, name, this.scope, false );
+
+		// check for an initialization
+		if ( this.CheckToken( "=" ) ) {
+			// if a local variable in a function then write out interpreter code to initialize variable
+			if ( this.scope.Type ( ) == etype_t.ev_function ) {
+				def2 = this.GetExpression( TOP_PRIORITY );
+				if ( ( type == type_float ) && ( def2.TypeDef ( ) == type_float ) ) {
+					this.EmitOpcode_FromOpNumber( opc.OP_STORE_F, def2, def );
+				} else if ( ( type == type_vector ) && ( def2.TypeDef ( ) == type_vector ) ) {
+					this.EmitOpcode_FromOpNumber( opc.OP_STORE_V, def2, def );
+				} else if ( ( type == type_string ) && ( def2.TypeDef ( ) == type_string ) ) {
+					this.EmitOpcode_FromOpNumber( opc.OP_STORE_S, def2, def );
+				} else if ( ( type == type_entity ) && ( ( def2.TypeDef ( ) == type_entity ) || ( def2.TypeDef ( ).Inherits( type_object ) ) ) ) {
+					this.EmitOpcode_FromOpNumber( opc.OP_STORE_ENT, def2, def );
+				} else if ( ( type.Inherits( type_object ) ) && ( def2.TypeDef ( ) == type_entity ) ) {
+					this.EmitOpcode_FromOpNumber( opc.OP_STORE_OBJENT, def2, def );
+				} else if ( ( type.Inherits( type_object ) ) && ( def2.TypeDef ( ).Inherits( type ) ) ) {
+					this.EmitOpcode_FromOpNumber( opc.OP_STORE_OBJ, def2, def );
+				} else if ( ( type == type_boolean ) && ( def2.TypeDef ( ) == type_boolean ) ) {
+					this.EmitOpcode_FromOpNumber( opc.OP_STORE_BOOL, def2, def );
+				} else if ( ( type == type_string ) && ( def2.TypeDef ( ) == type_float ) ) {
+					this.EmitOpcode_FromOpNumber( opc.OP_STORE_FTOS, def2, def );
+				} else if ( ( type == type_string ) && ( def2.TypeDef ( ) == type_boolean ) ) {
+					this.EmitOpcode_FromOpNumber( opc.OP_STORE_BTOS, def2, def );
+				} else if ( ( type == type_string ) && ( def2.TypeDef ( ) == type_vector ) ) {
+					this.EmitOpcode_FromOpNumber( opc.OP_STORE_VTOS, def2, def );
+				} else if ( ( type == type_boolean ) && ( def2.TypeDef ( ) == type_float ) ) {
+					this.EmitOpcode_FromOpNumber( opc.OP_STORE_FTOBOOL, def2, def );
+				} else if ( ( type == type_float ) && ( def2.TypeDef ( ) == type_boolean ) ) {
+					this.EmitOpcode_FromOpNumber( opc.OP_STORE_BOOLTOF, def2, def );
+				} else {
+					this.Error( "bad initialization for '%s'", name );
+				}
+			} else {
+				// global variables can only be initialized with immediate values
+				negate = false;
+				if ( this.token.$.type == TT_PUNCTUATION && this.token.$.data == "-" ) {
+					negate = true;
+					this.NextToken ( );
+					if ( this.immediateType != type_float ) {
+						this.Error( "wrong immediate type for '-' on variable '%s'", name );
+					}
+				}
+
+				if ( this.immediateType != type ) {
+					this.Error( "wrong immediate type for '%s'", name );
+				}
+
+				// global variables are initialized at start up
+				if ( type == type_string ) {
+					def.SetString( this.token.$.data, false );
+				} else {
+					if ( negate ) {
+						this.immediate._float = -this.immediate._float;
+					}
+					def.SetValue( this.immediate, false );
+				}
+				this.NextToken ( );
+			}
+		} else if ( type == type_string ) {
+			// local strings on the stack are initialized in the interpreter
+			if ( this.scope.Type ( ) != etype_t.ev_function ) {
+				def.SetString( "", false );
+			}
+		} else if ( type.Inherits( type_object ) ) {
+			if ( this.scope.Type ( ) != etype_t.ev_function ) {
+				def.SetObject( null );
+			}
+		}
 	}
 
 /*
