@@ -404,7 +404,7 @@ enum surfaceFlags_t {
 ////	virtual size_t		Size( void ) const;
 ////	virtual bool		SetDefaultText( void );
 ////	virtual const char *DefaultDefinition( void ) const;
-////	virtual bool		Parse( const char *text, const int textLength );
+////	virtual bool		Parse( text:string, const int textLength );
 ////	virtual void		FreeData( void );
 ////	virtual void		Print( void ) const;
 
@@ -610,9 +610,9 @@ enum surfaceFlags_t {
 
 ////	void				CloseCinematic( void ) const;
 
-////	void				ResetCinematicTime( int time ) const;
+////	void				ResetCinematicTime( /*int*/time:number ) const;
 
-////	void				UpdateCinematic( int time ) const;
+////	void				UpdateCinematic( /*int*/time:number ) const;
 
 ////	//------------------------------------------------------------------
 

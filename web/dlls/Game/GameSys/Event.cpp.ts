@@ -382,7 +382,7 @@ class idEvent {
 ////	static void					CopyArgs(const idEventDef *evdef, int numargs, va_list args, int data[D_EVENT_MAXARGS]);
 ////
 ////	void						Free(void);
-////	void						Schedule(idClass *object, const idTypeInfo *cls, int time);
+////	void						Schedule(idClass *object, const idTypeInfo *cls, /*int*/time:number);
 ////	byte						*GetData(void);
 ////
 ////	static void					CancelEvents(const idClass *obj, const idEventDef *evdef = NULL);
@@ -566,7 +566,7 @@ idEvent::Free
 ////idEvent::Schedule
 ////================
 ////*/
-////void idEvent::Schedule( idClass *obj, const idTypeInfo *type, int time ) {
+////void idEvent::Schedule( idClass *obj, const idTypeInfo *type, /*int*/time:number ) {
 ////	idEvent *event;
 ////
 ////	assert( initialized );

@@ -34,17 +34,21 @@
 ////extern const idEventDef EV_ReachedPos;
 ////extern const idEventDef EV_ReachedAng;
 
-/////*
-////===============================================================================
+/*
+===============================================================================
 
-////  General movers.
+  General movers.
 
-////===============================================================================
-////*/
+===============================================================================
+*/
 
-////class idMover extends idEntity {
+class idMover extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idMover );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idMover>[];
 
 ////							idMover( void );
 
@@ -114,19 +118,19 @@
 
 ////	idPhysics_Parametric	physicsObj;
 
-////	void					Event_OpenPortal( void ): void { throw "placeholder"; }
-////	void					Event_ClosePortal( void ): void { throw "placeholder"; }
-////	void					Event_PartBlocked( idEntity *blockingEntity ): void { throw "placeholder"; }
+	Event_OpenPortal( ): void { throw "placeholder"; }
+	Event_ClosePortal( ): void { throw "placeholder"; }
+	Event_PartBlocked( blockingEntity:idEntity  ): void { throw "placeholder"; }
 
 ////	void					MoveToPos( pos:idVec3): void { throw "placeholder"; }
 ////	void					UpdateMoveSound( moveStage_t stage ): void { throw "placeholder"; }
 ////	void					UpdateRotationSound( moveStage_t stage ): void { throw "placeholder"; }
 ////	void					SetGuiStates( const char *state ): void { throw "placeholder"; }
-////	void					FindGuiTargets( void ): void { throw "placeholder"; }
+////	void					FindGuiTargets( ): void { throw "placeholder"; }
 ////	void					SetGuiState( const char *key, const char *val ) const;
 
-////	virtual void			DoneMoving( void );
-////	virtual void			DoneRotating( void );
+////	virtual void			DoneMoving( ): void {throw "placeholder";}
+////	virtual void			DoneRotating( ): void {throw "placeholder";}
 ////	virtual void			BeginMove( idThread *thread = NULL );
 ////	virtual void			BeginRotation( idThread *thread, bool stopwhendone );
 ////	moveState_t				move;
@@ -157,52 +161,56 @@
 ////	void					VectorForDir( float dir, idVec3 &vec );
 ////	idCurve_Spline<idVec3> *GetSpline( idEntity *splineEntity ) const;
 
-////	void					Event_SetCallback( void ): void { throw "placeholder"; }	
-////	void					Event_TeamBlocked( idEntity *blockedPart, idEntity *blockingEntity ): void { throw "placeholder"; }
-////	void					Event_StopMoving( void ): void { throw "placeholder"; }
-////	void					Event_StopRotating( void ): void { throw "placeholder"; }
-////	void					Event_UpdateMove( void ): void { throw "placeholder"; }
-////	void					Event_UpdateRotation( void ): void { throw "placeholder"; }
-////	void					Event_SetMoveSpeed( float speed ): void { throw "placeholder"; }
-////	void					Event_SetMoveTime( float time ): void { throw "placeholder"; }
-////	void					Event_SetDecelerationTime( float time ): void { throw "placeholder"; }
-////	void					Event_SetAccellerationTime( float time ): void { throw "placeholder"; }
-////	void					Event_MoveTo( idEntity *ent ): void { throw "placeholder"; }
-////	void					Event_MoveToPos( idVec3 &pos ): void { throw "placeholder"; }
-////	void					Event_MoveDir( float angle, float distance ): void { throw "placeholder"; }
-////	void					Event_MoveAccelerateTo( float speed, float time ): void { throw "placeholder"; }
-////	void					Event_MoveDecelerateTo( float speed, float time ): void { throw "placeholder"; }
-////	void					Event_RotateDownTo( int axis, float angle ): void { throw "placeholder"; }
-////	void					Event_RotateUpTo( int axis, float angle ): void { throw "placeholder"; }
-////	void					Event_RotateTo( idAngles &angles ): void { throw "placeholder"; }
-////	void					Event_Rotate( idAngles &angles ): void { throw "placeholder"; }
-////	void					Event_RotateOnce( idAngles &angles ): void { throw "placeholder"; }
-////	void					Event_Bob( float speed, float phase, idVec3 &depth ): void { throw "placeholder"; }
-////	void					Event_Sway( float speed, float phase, idAngles &depth ): void { throw "placeholder"; }
-////	void					Event_SetAccelSound( const char *sound ): void { throw "placeholder"; }
-////	void					Event_SetDecelSound( const char *sound ): void { throw "placeholder"; }
-////	void					Event_SetMoveSound( const char *sound ): void { throw "placeholder"; }
-////	void					Event_FindGuiTargets( void ): void { throw "placeholder"; }
-////	void					Event_InitGuiTargets( void ): void { throw "placeholder"; }
-////	void					Event_EnableSplineAngles( void ): void { throw "placeholder"; }
-////	void					Event_DisableSplineAngles( void ): void { throw "placeholder"; }
-////	void					Event_RemoveInitialSplineAngles( void ): void { throw "placeholder"; }
-////	void					Event_StartSpline( idEntity *splineEntity ): void { throw "placeholder"; }
-////	void					Event_StopSpline( void ): void { throw "placeholder"; }
-////	void					Event_Activate( activator:idEntity ): void { throw "placeholder"; }
-////	void					Event_PostRestore( int start, int total, int accel, int decel, int useSplineAng ): void { throw "placeholder"; }
-////	void					Event_IsMoving( void ): void { throw "placeholder"; }
-////	void					Event_IsRotating( void ): void { throw "placeholder"; }
-////};
+	Event_SetCallback( ): void { throw "placeholder"; }	
+	Event_TeamBlocked(blockedPart: idEntity, blockingEntity: idEntity ): void { throw "placeholder"; }
+	Event_StopMoving( ): void { throw "placeholder"; }
+	Event_StopRotating( ): void { throw "placeholder"; }
+	Event_UpdateMove( ): void { throw "placeholder"; }
+	Event_UpdateRotation( ): void { throw "placeholder"; }
+	Event_SetMoveSpeed( /*float*/speed:number ): void { throw "placeholder"; }
+	Event_SetMoveTime( /*float*/time:number ): void { throw "placeholder"; }
+	Event_SetDecelerationTime( /*float*/time:number ): void { throw "placeholder"; }
+	Event_SetAccellerationTime( /*float*/time:number ): void { throw "placeholder"; }
+	Event_MoveTo( ent:idEntity ): void { throw "placeholder"; }
+	Event_MoveToPos( pos:idVec3 ): void { throw "placeholder"; }
+	Event_MoveDir( /*float*/angle:number, /*float*/ distance :number): void { throw "placeholder"; }
+	Event_MoveAccelerateTo( /*float*/speed:number, /*float*/time:number ): void { throw "placeholder"; }
+	Event_MoveDecelerateTo( /*float*/speed:number, /*float*/time:number ): void { throw "placeholder"; }
+	Event_RotateDownTo( /*int*/axis:number, /*float*/angle:number ): void { throw "placeholder"; }
+	Event_RotateUpTo( /*int*/axis:number, /*float*/angle:number ): void { throw "placeholder"; }
+	Event_RotateTo( angles:idAngles ): void { throw "placeholder"; }
+	Event_Rotate( angles:idAngles ): void { throw "placeholder"; }
+	Event_RotateOnce( angles:idAngles ): void { throw "placeholder"; }
+	Event_Bob( /*float*/speed: number, /*float*/ phase: number, depth: idVec3): void { throw "placeholder"; }
+	Event_Sway( /*float*/speed: number, /*float*/ phase: number, depth: idAngles ): void { throw "placeholder"; }
+	Event_SetAccelSound( sound:string ): void { throw "placeholder"; }
+	Event_SetDecelSound( sound:string ): void { throw "placeholder"; }
+	Event_SetMoveSound( sound:string ): void { throw "placeholder"; }
+	Event_FindGuiTargets( ): void { throw "placeholder"; }
+	Event_InitGuiTargets( ): void { throw "placeholder"; }
+	Event_EnableSplineAngles( ): void { throw "placeholder"; }
+	Event_DisableSplineAngles( ): void { throw "placeholder"; }
+	Event_RemoveInitialSplineAngles( ): void { throw "placeholder"; }
+	Event_StartSpline(splineEntity: idEntity ): void { throw "placeholder"; }
+	Event_StopSpline( ): void { throw "placeholder"; }
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+	Event_PostRestore( /*int*/ start: number, /*int */total: number, /*int */accel: number, /*int */decel: number, /*int */useSplineAng: number ): void { throw "placeholder"; }
+	Event_IsMoving( ): void { throw "placeholder"; }
+	Event_IsRotating( ): void { throw "placeholder"; }
+};
 
-////class idSplinePath extends idEntity {
+class idSplinePath extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idSplinePath );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idSplinePath>[];
 
 ////							idSplinePath();
 
-////	void					Spawn( void );
-////};
+////	void					Spawn( ): void {throw "placeholder";}
+};
 
 
 ////struct floorInfo_s {
@@ -211,9 +219,13 @@
 ////	int						floor;
 ////};
 
-////class idElevator extends idMover {
+class idElevator extends idMover {
 ////public:
 ////	CLASS_PROTOTYPE( idElevator );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idElevator>[];
 
 ////							idElevator( void );
 
@@ -223,7 +235,7 @@
 ////	void					Restore( idRestoreGame *savefile );
 
 ////	virtual bool			HandleSingleGuiCommand( idEntity *entityGui, idLexer *src );
-////	void					Event_GotoFloor( int floor );
+	Event_GotoFloor(/*int*/ floor:number): void { throw "placeholder"; }
 ////	floorInfo_s *			GetFloorInfo( int floor );
 
 ////protected:
@@ -231,7 +243,7 @@
 ////	virtual void			BeginMove( idThread *thread = NULL );
 ////	void					SpawnTrigger( pos:idVec3 );
 ////	void					GetLocalTriggerPosition();
-////	void					Event_Touch( other:idEntity, trace:trace_t );
+	Event_Touch(other: idEntity, trace: trace_t): void { throw "placeholder"; }
 
 ////private:
 ////	typedef enum {
@@ -251,55 +263,59 @@
 ////	int						lastTouchTime;
 
 ////	class idDoor *			GetDoor( const char *name );
-////	void					Think( void );
-////	void					OpenInnerDoor( void );
+////	void					Think( ): void {throw "placeholder";}
+////	void					OpenInnerDoor( ): void {throw "placeholder";}
 ////	void					OpenFloorDoor( int floor );
-////	void					CloseAllDoors( void );
-////	void					DisableAllDoors( void );
-////	void					EnableProperDoors( void );
+////	void					CloseAllDoors( ): void {throw "placeholder";}
+////	void					DisableAllDoors( ): void {throw "placeholder";}
+////	void					EnableProperDoors( ): void {throw "placeholder";}
 
-////	void					Event_TeamBlocked( idEntity *blockedEntity, idEntity *blockingEntity );
-////	void					Event_Activate( activator:idEntity );
-////	void					Event_PostFloorArrival();
+	Event_TeamBlocked(blockedEntity: idEntity, blockingEntity: idEntity): void { throw "placeholder"; }
+	Event_Activate(activator: idEntity): void { throw "placeholder"; }
+	Event_PostFloorArrival(): void { throw "placeholder"; }
 
-////};
+};
 
 
-/////*
-////===============================================================================
+/*
+===============================================================================
 
-////  Binary movers.
+  Binary movers.
 
-////===============================================================================
-////*/
+===============================================================================
+*/
 
-////typedef enum {
-////	MOVER_POS1,
-////	MOVER_POS2,
-////	MOVER_1TO2,
-////	MOVER_2TO1
-////} moverState_t;
+enum moverState_t{
+	MOVER_POS1,
+	MOVER_POS2,
+	MOVER_1TO2,
+	MOVER_2TO1
+};
 
-////class idMover_Binary extends idEntity {
+class idMover_Binary extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idMover_Binary );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idMover_Binary>[];
 
 ////							idMover_Binary();
 ////							~idMover_Binary();
 
-////	void					Spawn( void );
+////	void					Spawn( ): void {throw "placeholder";}
 
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
 
-////	virtual void			PreBind( void );
-////	virtual void			PostBind( void );
+////	virtual void			PreBind( ): void {throw "placeholder";}
+////	virtual void			PostBind( ): void {throw "placeholder";}
 
 ////	void					Enable( bool b );
 ////	void					InitSpeed( idVec3 &mpos1, idVec3 &mpos2, float mspeed, float maccelTime, float mdecelTime );
 ////	void					InitTime( idVec3 &mpos1, idVec3 &mpos2, float mtime, float maccelTime, float mdecelTime );
-////	void					GotoPosition1( void );
-////	void					GotoPosition2( void );
+////	void					GotoPosition1( ): void {throw "placeholder";}
+////	void					GotoPosition2( ): void {throw "placeholder";}
 ////	void					Use_BinaryMover( activator:idEntity );
 ////	void					SetGuiStates( const char *state );
 ////	void					UpdateBuddies( int val );
@@ -307,7 +323,7 @@
 ////	idMover_Binary *		GetMoveMaster( void ) const { return moveMaster; }
 ////	void					BindTeam( idEntity *bindTo );
 ////	void					SetBlocked( bool b );
-////	bool					IsBlocked( void );
+////	bool					IsBlocked( ): void {throw "placeholder";}
 ////	idEntity *				GetActivator( void ) const;
 
 ////	virtual void			WriteToSnapshot( idBitMsgDelta &msg ) const;
@@ -343,55 +359,59 @@
 ////	bool					blocked;
 ////	idList< idEntityPtr<idEntity> >	guiTargets;
 
-////	void					MatchActivateTeam( moverState_t newstate, int time );
+////	void					MatchActivateTeam( moverState_t newstate, /*int*/time:number );
 ////	void					JoinActivateTeam( idMover_Binary *master );
 
 ////	void					UpdateMoverSound( moverState_t state );
-////	void					SetMoverState( moverState_t newstate, int time );
+////	void					SetMoverState( moverState_t newstate, /*int*/time:number );
 ////	moverState_t			GetMoverState( void ) const { return moverState; }
-////	void					FindGuiTargets( void );
+////	void					FindGuiTargets( ): void {throw "placeholder";}
 ////	void					SetGuiState( const char *key, const char *val ) const;
 
-////	void					Event_SetCallback( void );
-////	void					Event_ReturnToPos1( void );
-////	void					Event_Use_BinaryMover( activator:idEntity );
-////	void					Event_Reached_BinaryMover( void );
-////	void					Event_MatchActivateTeam( moverState_t newstate, int time );
-////	void					Event_Enable( void );
-////	void					Event_Disable( void );
-////	void					Event_OpenPortal( void );
-////	void					Event_ClosePortal( void );
-////	void					Event_FindGuiTargets( void );
-////	void					Event_InitGuiTargets( void );
+	Event_SetCallback( ): void {throw "placeholder";}
+	Event_ReturnToPos1( ): void {throw "placeholder";}
+	Event_Use_BinaryMover( activator:idEntity ) { throw "placeholder"; }
+	Event_Reached_BinaryMover( ): void {throw "placeholder";}
+	Event_MatchActivateTeam(newstate: moverState_t, /*int*/time:number ):void { throw "placeholder"; }
+	Event_Enable( ): void {throw "placeholder";}
+	Event_Disable( ): void {throw "placeholder";}
+	Event_OpenPortal( ): void {throw "placeholder";}
+	Event_ClosePortal( ): void {throw "placeholder";}
+	Event_FindGuiTargets( ): void {throw "placeholder";}
+	Event_InitGuiTargets( ): void {throw "placeholder";}
 
 ////	static void				GetMovedir( float dir, idVec3 &movedir );
-////};
+};
 
-////class idDoor extends idMover_Binary {
+class idDoor extends idMover_Binary {
 ////public:
 ////	CLASS_PROTOTYPE( idDoor );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idDoor>[];
 
 ////							idDoor( void );
 ////							~idDoor( void );
 
-////	void					Spawn( void );
+////	void					Spawn( ): void {throw "placeholder";}
 
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
 
-////	virtual void			Think( void );
-////	virtual void			PreBind( void );
-////	virtual void			PostBind( void );
-////	virtual void			Hide( void );
-////	virtual void			Show( void );
+////	virtual void			Think( ): void {throw "placeholder";}
+////	virtual void			PreBind( ): void {throw "placeholder";}
+////	virtual void			PostBind( ): void {throw "placeholder";}
+////	virtual void			Hide( ): void {throw "placeholder";}
+////	virtual void			Show( ): void {throw "placeholder";}
 
-////	bool					IsOpen( void );
-////	bool					IsNoTouch( void );
-////	int						IsLocked( void );
+////	bool					IsOpen( ): void {throw "placeholder";}
+////	bool					IsNoTouch( ): void {throw "placeholder";}
+////	int						IsLocked( ): void {throw "placeholder";}
 ////	void					Lock( int f );
 ////	void					Use( other:idEntity, activator:idEntity );
-////	void					Close( void );
-////	void					Open( void );
+////	void					Close( ): void {throw "placeholder";}
+////	void					Open( ): void {throw "placeholder";}
 ////	void					SetCompanion( idDoor *door );
 
 ////private:
@@ -416,39 +436,43 @@
 ////	void					GetLocalTriggerPosition( const idClipModel *trigger );
 ////	void					CalcTriggerBounds( float size, idBounds &bounds );
 
-////	void					Event_Reached_BinaryMover( void ): void { throw "placeholder"; }
-////	void					Event_TeamBlocked( idEntity *blockedEntity, idEntity *blockingEntity ): void { throw "placeholder"; }
-////	void					Event_PartBlocked( idEntity *blockingEntity ): void { throw "placeholder"; }
-////	void					Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
-////	void					Event_Activate( activator:idEntity ): void { throw "placeholder"; }
-////	void					Event_StartOpen( void ): void { throw "placeholder"; }
-////	void					Event_SpawnDoorTrigger( void ): void { throw "placeholder"; }
-////	void					Event_SpawnSoundTrigger( void ): void { throw "placeholder"; }
-////	void					Event_Close( void ): void { throw "placeholder"; }
-////	void					Event_Open( void ): void { throw "placeholder"; }
-////	void					Event_Lock( int f ): void { throw "placeholder"; }
-////	void					Event_IsOpen( void ): void { throw "placeholder"; }
-////	void					Event_Locked( void ): void { throw "placeholder"; }
-////	void					Event_SpectatorTouch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
-////	void					Event_OpenPortal( void ): void { throw "placeholder"; }
-////	void					Event_ClosePortal( void ): void { throw "placeholder"; }
-////};
+	Event_Reached_BinaryMover( ): void { throw "placeholder"; }
+	Event_TeamBlocked(blockedEntity: idEntity, blockingEntity: idEntity): void { throw "placeholder"; }
+	Event_PartBlocked(blockingEntity: idEntity ): void { throw "placeholder"; }
+	Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+	Event_StartOpen( ): void { throw "placeholder"; }
+	Event_SpawnDoorTrigger( ): void { throw "placeholder"; }
+	Event_SpawnSoundTrigger( ): void { throw "placeholder"; }
+	Event_Close( ): void { throw "placeholder"; }
+	Event_Open( ): void { throw "placeholder"; }
+	Event_Lock( /*int*/ f:number ): void { throw "placeholder"; }
+	Event_IsOpen( ): void { throw "placeholder"; }
+	Event_Locked( ): void { throw "placeholder"; }
+	Event_SpectatorTouch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
+	Event_OpenPortal( ): void { throw "placeholder"; }
+	Event_ClosePortal( ): void { throw "placeholder"; }
+};
 
-////class idPlat extends idMover_Binary {
+class idPlat extends idMover_Binary {
 ////public:
 ////	CLASS_PROTOTYPE( idPlat );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idPlat>[];
 
 ////							idPlat( void );
 ////							~idPlat( void );
 
-////	void					Spawn( void );
+////	void					Spawn( ): void {throw "placeholder";}
 
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
 
-////	virtual void			Think( void );
-////	virtual void			PreBind( void );
-////	virtual void			PostBind( void );
+////	virtual void			Think( ): void {throw "placeholder";}
+////	virtual void			PreBind( ): void {throw "placeholder";}
+////	virtual void			PostBind( ): void {throw "placeholder";}
 
 ////private:
 ////	idClipModel *			trigger;
@@ -456,25 +480,29 @@
 ////	idMat3					localTriggerAxis;
 
 ////	void					GetLocalTriggerPosition( const idClipModel *trigger );
-////	void					SpawnPlatTrigger( idVec3 &pos );
+////	void					SpawnPlatTrigger( pos:idVec3 );
 
-////	void					Event_TeamBlocked( idEntity *blockedEntity, idEntity *blockingEntity ): void { throw "placeholder"; }
-////	void					Event_PartBlocked( idEntity *blockingEntity ): void { throw "placeholder"; }
-////	void					Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
-////};
+	Event_TeamBlocked(blockedEntity: idEntity, blockingEntity: idEntity ): void { throw "placeholder"; }
+	Event_PartBlocked(blockingEntity: idEntity ): void { throw "placeholder"; }
+	Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
+};
 
 
-/////*
-////===============================================================================
+/*
+===============================================================================
 
-////  Special periodic movers.
+  Special periodic movers.
 
-////===============================================================================
-////*/
+===============================================================================
+*/
 
-////class idMover_Periodic extends idEntity {
+class idMover_Periodic extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idMover_Periodic );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idMover_Periodic>[];
 
 ////							idMover_Periodic( void );
 
@@ -483,7 +511,7 @@
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
 
-////	virtual void			Think( void );
+	Think( ): void {throw "placeholder";}
 
 ////	virtual void			WriteToSnapshot( idBitMsgDelta &msg ) const;
 ////	virtual void			ReadFromSnapshot( const idBitMsgDelta &msg );
@@ -492,17 +520,21 @@
 ////	idPhysics_Parametric	physicsObj;
 ////	float					damage;
 
-////	void					Event_TeamBlocked( idEntity *blockedEntity, idEntity *blockingEntity ): void { throw "placeholder"; }
-////	void					Event_PartBlocked( idEntity *blockingEntity ): void { throw "placeholder"; }
-////};
+	Event_TeamBlocked(blockedEntity:idEntity , blockingEntity:idEntity  ): void { throw "placeholder"; }
+	Event_PartBlocked( blockingEntity:idEntity  ): void { throw "placeholder"; }
+};
 
-////class idRotater extends idMover_Periodic {
+class idRotater extends idMover_Periodic {
 ////public:
 ////	CLASS_PROTOTYPE( idRotater );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idRotater>[];
 
 ////							idRotater( void );
 
-////	void					Spawn( void );
+////	void					Spawn( ): void {throw "placeholder";}
 
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
@@ -510,41 +542,51 @@
 ////private:
 ////	idEntityPtr<idEntity>	activatedBy;
 
-////	void					Event_Activate( activator:idEntity );
-////};
+	Event_Activate(activator: idEntity): void { throw "placeholder"; }
+};
 
-////class idBobber extends idMover_Periodic {
+class idBobber extends idMover_Periodic {
 ////public:
 ////	CLASS_PROTOTYPE( idBobber );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idBobber>[];
 
-////							idBobber( void );
-
-////	void					Spawn( void );
+////	void					Spawn( ): void {throw "placeholder";}
 
 ////private:
-////};
+};
 
-////class idPendulum extends idMover_Periodic {
+class idPendulum extends idMover_Periodic {
 ////public:
 ////	CLASS_PROTOTYPE( idPendulum );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idPendulum>[];
 
 ////							idPendulum( void );
 
 ////	void					Spawn( void );
 
 ////private:
-////};
+};
 
-////class idRiser extends idMover_Periodic {
+class idRiser extends idMover_Periodic {
 ////public:
 ////	CLASS_PROTOTYPE( idRiser );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idRiser>[];
 
 ////	idRiser( void );
 
 ////	void					Spawn( void );
 
 ////private:
-////	void					Event_Activate( activator:idEntity ): void { throw "placeholder"; }
-////};
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+};
 
 ////#endif /* !__GAME_MOVER_H__ */

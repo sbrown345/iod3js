@@ -242,94 +242,98 @@ class idThread extends idClass {
 	
 	static trace = new trace_t;
 	
-	//	void						Init( void );
-	//	void						Pause( void );
+	//	void						Init( );
+	//	void						Pause( );
 	//
-	//	void						Event_Execute( void );
+	//	void						Event_Execute( );
 	//	void						Event_SetThreadName( name:string );
 	//
 	//	//
 	//	// script callable Events
 	//	//
-	//	void						Event_TerminateThread( int num );
-	//	void						Event_Pause( void );
-	//	void						Event_Wait( float time );
-	//	void						Event_WaitFrame( void );
-	//	void						Event_WaitFor( ent:idEntity );
-	//	void						Event_WaitForThread( int num );
-	//	void						Event_Print( const char *text );
-	//	void						Event_PrintLn( const char *text );
-	//	void						Event_Say( const char *text );
-	//	void						Event_Assert( float value );
-	//	void						Event_Trigger( ent:idEntity );
-	//	void						Event_SetCvar( const char *name, const char *value ) const;
-	//	void						Event_GetCvar( const char *name ) const;
-	//	void						Event_Random( float range ) const;
-	//	void						Event_GetTime( void );
-	//	void						Event_KillThread( const char *name );
-	//	void						Event_GetEntity( const char *name );
-	//	void						Event_Spawn( const char *classname );
-	//	void						Event_CopySpawnArgs( ent:idEntity );
-	//	void						Event_SetSpawnArg( const char *key, const char *value );
-	//	void						Event_SpawnString( const char *key, const char *defaultvalue );
-	//	void						Event_SpawnFloat( const char *key, float defaultvalue );
-	//	void						Event_SpawnVector( const char *key, idVec3 &defaultvalue );
-	//	void						Event_ClearPersistantArgs( void );
-	//	void 						Event_SetPersistantArg( const char *key, const char *value );
-	//	void 						Event_GetPersistantString( const char *key );
-	//	void 						Event_GetPersistantFloat( const char *key );
-	//	void 						Event_GetPersistantVector( const char *key );
-	//	void						Event_AngToForward( idAngles &ang );
-	//	void						Event_AngToRight( idAngles &ang );
-	//	void						Event_AngToUp( idAngles &ang );
-	//	void						Event_GetSine( float angle );
-	//	void						Event_GetCosine( float angle );
-	//	void						Event_GetSquareRoot( float theSquare );
-	//	void						Event_VecNormalize( idVec3 &vec );
-	//	void						Event_VecLength( idVec3 &vec );
-	//	void						Event_VecDotProduct( idVec3 &vec1, idVec3 &vec2 );
-	//	void						Event_VecCrossProduct( idVec3 &vec1, idVec3 &vec2 );
-	//	void						Event_VecToAngles( idVec3 &vec );
-	//	void						Event_OnSignal( int signal, ent:idEntity, const char *func );
-	//	void						Event_ClearSignalThread( int signal, ent:idEntity );
-	//	void						Event_SetCamera( ent:idEntity );
-	//	void						Event_FirstPerson( void );
-	//	void						Event_Trace( const idVec3 &start, const idVec3 &end, mins:idVec3, maxs:idVec3, int contents_mask, idEntity *passEntity );
-	//	void						Event_TracePoint( const idVec3 &start, const idVec3 &end, int contents_mask, idEntity *passEntity );
-	//	void						Event_GetTraceFraction( void );
-	//	void						Event_GetTraceEndPos( void );
-	//	void						Event_GetTraceNormal( void );
-	//	void						Event_GetTraceEntity( void );
-	//	void						Event_GetTraceJoint( void );
-	//	void						Event_GetTraceBody( void );
-	//	void						Event_FadeIn( idVec3 &color, float time );
-	//	void						Event_FadeOut( idVec3 &color, float time );
-	//	void						Event_FadeTo( idVec3 &color, float alpha, float time );
-	//	void						Event_SetShaderParm( int parmnum, float value );
-	//	void						Event_StartMusic( const char *name );
-	//	void						Event_Warning( const char *text );
-	//	void						Event_Error( const char *text );
-	//	void 						Event_StrLen( const char *string );
-	//	void 						Event_StrLeft( const char *string, int num );
-	//	void 						Event_StrRight( const char *string, int num );
-	//	void 						Event_StrSkip( const char *string, int num );
-	//	void 						Event_StrMid( const char *string, int start, int num );
-	//	void						Event_StrToFloat( const char *string );
-	//	void						Event_RadiusDamage( const idVec3 &origin, idEntity *inflictor, idEntity *attacker, idEntity *ignore, const char *damageDefName, float dmgPower );
-	//	void						Event_IsClient( void );
-	//	void 						Event_IsMultiplayer( void );
-	//	void 						Event_GetFrameTime( void );
-	//	void 						Event_GetTicsPerSecond( void );
-	//	void						Event_CacheSoundShader( const char *soundName );
-	//	void						Event_DebugLine( const idVec3 &color, const idVec3 &start, const idVec3 &end, const float lifetime );
-	//	void						Event_DebugArrow( const idVec3 &color, const idVec3 &start, const idVec3 &end, const int size, const float lifetime );
-	//	void						Event_DebugCircle( const idVec3 &color, const idVec3 &origin, const idVec3 &dir, const float radius, const int numSteps, const float lifetime );
-	//	void						Event_DebugBounds( const idVec3 &color, mins:idVec3, maxs:idVec3, const float lifetime );
-	//	void						Event_DrawText( const char *text, const idVec3 &origin, float scale, const idVec3 &color, const int align, const float lifetime );
-	//	void						Event_InfluenceActive( void );
+	Event_TerminateThread( /*int*/ num:Number ):void{throw "placeholder";}
+	Event_Pause( ):void{throw "placeholder";}
+	Event_Wait( /*float*/time:number ):void{throw "placeholder";}
+	Event_WaitFrame( ):void{throw "placeholder";}
+	Event_WaitFor( ent:idEntity ):void{throw "placeholder";}
+	Event_WaitForThread( /*int*/num:number ):void{throw "placeholder";}
+	Event_Print( text:string ):void{throw "placeholder";}
+	Event_PrintLn( text:string ):void{throw "placeholder";}
+	Event_Say( text:string ):void{throw "placeholder";}
+	Event_Assert( float value ):void{throw "placeholder";}
+	Event_Trigger( ent:idEntity ):void{throw "placeholder";}
+	Event_SetCvar( const char *name, const char *value ) const;
+	Event_GetCvar( const char *name ) const;
+	Event_Random( float range ) const;
+	Event_GetTime( ):void{throw "placeholder";}
+	Event_KillThread( const char *name ):void{throw "placeholder";}
+	Event_GetEntity( const char *name ):void{throw "placeholder";}
+	Event_Spawn( const char *classname ):void{throw "placeholder";}
+	Event_CopySpawnArgs( ent:idEntity ):void{throw "placeholder";}
+	Event_SetSpawnArg( const char *key, const char *value ):void{throw "placeholder";}
+	Event_SpawnString( const char *key, const char *defaultvalue ):void{throw "placeholder";}
+	Event_SpawnFloat( const char *key, float defaultvalue ):void{throw "placeholder";}
+	Event_SpawnVector( const char *key, idVec3 &defaultvalue ):void{throw "placeholder";}
+	Event_ClearPersistantArgs( ):void{throw "placeholder";}
+	Event_SetPersistantArg( const char *key, const char *value ):void{throw "placeholder";}
+	Event_GetPersistantString( const char *key ):void{throw "placeholder";}
+	Event_GetPersistantFloat( const char *key ):void{throw "placeholder";}
+	Event_GetPersistantVector( const char *key ):void{throw "placeholder";}
+	Event_AngToForward( idAngles &ang ):void{throw "placeholder";}
+	Event_AngToRight( idAngles &ang ):void{throw "placeholder";}
+	Event_AngToUp( idAngles &ang ):void{throw "placeholder";}
+	Event_GetSine( /*float*/angle:number ):void{throw "placeholder";}
+	Event_GetCosine( /*float*/angle:number ):void{throw "placeholder";}
+	Event_GetSquareRoot( float theSquare ):void{throw "placeholder";}
+	Event_VecNormalize( idVec3 &vec ):void{throw "placeholder";}
+	Event_VecLength( idVec3 &vec ):void{throw "placeholder";}
+	Event_VecDotProduct( idVec3 &vec1, idVec3 &vec2 ):void{throw "placeholder";}
+	Event_VecCrossProduct( idVec3 &vec1, idVec3 &vec2 ):void{throw "placeholder";}
+	Event_VecToAngles( idVec3 &vec ):void{throw "placeholder";}
+	Event_OnSignal( int signal, ent:idEntity, const char *func ):void{throw "placeholder";}
+	Event_ClearSignalThread( int signal, ent:idEntity ):void{throw "placeholder";}
+	Event_SetCamera( ent:idEntity ):void{throw "placeholder";}
+	Event_FirstPerson( ):void{throw "placeholder";}
+	Event_Trace( const idVec3 &start, const idVec3 &end, mins:idVec3, maxs:idVec3, int contents_mask, idEntity *passEntity ):void{throw "placeholder";}
+	Event_TracePoint( const idVec3 &start, const idVec3 &end, int contents_mask, idEntity *passEntity ):void{throw "placeholder";}
+	Event_GetTraceFraction( ):void{throw "placeholder";}
+	Event_GetTraceEndPos( ):void{throw "placeholder";}
+	Event_GetTraceNormal( ):void{throw "placeholder";}
+	Event_GetTraceEntity( ):void{throw "placeholder";}
+	Event_GetTraceJoint( ):void{throw "placeholder";}
+	Event_GetTraceBody( ):void{throw "placeholder";}
+	Event_FadeIn( idVec3 &color, /*float*/time:number ):void{throw "placeholder";}
+	Event_FadeOut( idVec3 &color, /*float*/time:number ):void{throw "placeholder";}
+	Event_FadeTo( idVec3 &color, float alpha, /*float*/time:number ):void{throw "placeholder";}
+	Event_SetShaderParm( int parmnum, float value ):void{throw "placeholder";}
+	Event_StartMusic( const char *name ):void{throw "placeholder";}
+	Event_Warning( text:string ):void{throw "placeholder";}
+	Event_Error( text:string ):void{throw "placeholder";}
+	Event_StrLen( const char *string ):void{throw "placeholder";}
+	Event_StrLeft( const char *string, /*int*/num:number ):void{throw "placeholder";}
+	Event_StrRight( const char *string, /*int*/num:number ):void{throw "placeholder";}
+	Event_StrSkip( const char *string, /*int*/num:number ):void{throw "placeholder";}
+	Event_StrMid( const char *string, int start, /*int*/num:number ):void{throw "placeholder";}
+	Event_StrToFloat( const char *string ):void{throw "placeholder";}
+	Event_RadiusDamage( const idVec3 &origin, idEntity *inflictor, idEntity *attacker, idEntity *ignore, const char *damageDefName, float dmgPower ):void{throw "placeholder";}
+	Event_IsClient( ):void{throw "placeholder";}
+	Event_IsMultiplayer( ):void{throw "placeholder";}
+	Event_GetFrameTime( ):void{throw "placeholder";}
+	Event_GetTicsPerSecond( ):void{throw "placeholder";}
+	Event_CacheSoundShader( const char *soundName ):void{throw "placeholder";}
+	Event_DebugLine( color:idVec3, const idVec3 &start, const idVec3 &end, const float lifetime ):void{throw "placeholder";}
+	Event_DebugArrow( color:idVec3, const idVec3 &start, const idVec3 &end, const int size, const float lifetime ):void{throw "placeholder";}
+	Event_DebugCircle( color:idVec3, const idVec3 &origin, const idVec3 &dir, const float radius, const int numSteps, const float lifetime ):void{throw "placeholder";}
+	Event_DebugBounds( color:idVec3, mins:idVec3, maxs:idVec3, const float lifetime ):void{throw "placeholder";}
+	Event_DrawText( text:string, const idVec3 &origin, float scale, color:idVec3, const int align, const float lifetime ):void{throw "placeholder";}
+	Event_InfluenceActive( ):void{throw "placeholder";}
 	//
 	//public:							
 	//								CLASS_PROTOTYPE( idThread );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc < idThread>[];
 	//								
 	//								idThread();
 	//								idThread( idEntity *self, const function_t *func );
@@ -340,18 +344,18 @@ class idThread extends idClass {
 	//	virtual						~idThread();
 	//
 	//								// tells the thread manager not to delete this thread when it ends
-	//	void						ManualDelete( void );
+	//	void						ManualDelete( );
 	//
 	//	// save games
 	//	void						Save ( savefile: idSaveGame ): void { throw "placeholder"; }				// archives object for save game file
 	//	void						Restore( idRestoreGame *savefile );				// unarchives object from save game file
 	//
-	//	void						EnableDebugInfo( void ) { interpreter.debug = true; };
-	//	void						DisableDebugInfo( void ) { interpreter.debug = false; };
+	//	void						EnableDebugInfo( ) { interpreter.debug = true; };
+	//	void						DisableDebugInfo( ) { interpreter.debug = false; };
 	//
-	//	void						WaitMS( int time );
-	//	void						WaitSec( float time );
-	//	void						WaitFrame( void );
+	//	void						WaitMS( /*int*/time:number );
+	//	void						WaitSec( /*float*/time:number );
+	//	void						WaitFrame( );
 	//								
 	//								// NOTE: If this is called from within a event called by this thread, the function arguments will be invalid after calling this function.
 	//	void						CallFunction( const function_t	*func, bool clearStack );
@@ -360,47 +364,47 @@ class idThread extends idClass {
 	//	void						CallFunction( idEntity *obj, const function_t *func, bool clearStack );
 	//
 	//	void						DisplayInfo();
-	//	static idThread				*GetThread( int num );
+	//	static idThread				*GetThread( /*int*/num:number );
 	//	static void					ListThreads_f( const idCmdArgs &args );
-	//	static void					Restart( void );
+	//	static void					Restart( );
 	//	static void					ObjectMoveDone( int threadnum, idEntity *obj );
 	//								
-	//	static idList<idThread*>&	GetThreads ( void );
+	//	static idList<idThread*>&	GetThreads ( );
 	//	
-	//	bool						IsDoneProcessing ( void );
-	//	bool						IsDying			 ( void );	
+	//	bool						IsDoneProcessing ( );
+	//	bool						IsDying			 ( );	
 	//								
-	//	void						End( void );
+	//	void						End( );
 	//	static void					KillThread( const char *name );
-	//	static void					KillThread( int num );
-	//	bool						Execute( void );
-	//	void						ManualControl( void ) { manualControl = true; CancelEvents( &EV_Thread_Execute ); };
-	//	void						DoneProcessing( void ) { interpreter.doneProcessing = true; };
-	//	void						ContinueProcessing( void ) { interpreter.doneProcessing = false; };
-	//	bool						ThreadDying( void ) { return interpreter.threadDying; };
-	//	void						EndThread( void ) { interpreter.threadDying = true; };
-	//	bool						IsWaiting( void );
-	//	void						ClearWaitFor( void );
+	//	static void					KillThread( /*int*/num:number );
+	//	bool						Execute( );
+	//	void						ManualControl( ) { manualControl = true; CancelEvents( &EV_Thread_Execute ); };
+	//	void						DoneProcessing( ) { interpreter.doneProcessing = true; };
+	//	void						ContinueProcessing( ) { interpreter.doneProcessing = false; };
+	//	bool						ThreadDying( ) { return interpreter.threadDying; };
+	//	void						EndThread( ) { interpreter.threadDying = true; };
+	//	bool						IsWaiting( );
+	//	void						ClearWaitFor( );
 	//	bool						IsWaitingFor( idEntity *obj );
 	//	void						ObjectMoveDone( idEntity *obj );
 	//	void						ThreadCallback( idThread *thread );
 	//	void						DelayedStart( int delay );
-	//	bool						Start( void );
-	//	idThread					*WaitingOnThread( void );
-	//	void						SetThreadNum( int num );
-	//	int 						GetThreadNum( void );
+	//	bool						Start( );
+	//	idThread					*WaitingOnThread( );
+	//	void						SetThreadNum( /*int*/num:number );
+	//	int 						GetThreadNum( );
 	//	void						SetThreadName( const char *name );
-	//	const char					*GetThreadName( void );
+	//	const char					*GetThreadName( );
 	//
 	//	void						Error( const char *fmt, ... ) const id_attribute((format(printf,2,3)));
 	//	void						Warning( const char *fmt, ... ) const id_attribute((format(printf,2,3)));
 	//								
-	//	static idThread				*CurrentThread( void );
-	//	static int					CurrentThreadNum( void );
+	//	static idThread				*CurrentThread( );
+	//	static int					CurrentThreadNum( );
 	//	static bool					BeginMultiFrameEvent( ent:idEntity, const idEventDef *event );
 	//	static void					EndMultiFrameEvent( ent:idEntity, const idEventDef *event );
 	//
-	//	static void					ReturnString( const char *text );
+	//	static void					ReturnString( text:string );
 	//	static void					ReturnFloat( float value );
 	//	static void					ReturnInt( int value );
 	//	static void					ReturnVector( idVec3 const &vec );
@@ -412,7 +416,7 @@ class idThread extends idClass {
 	//idThread::WaitingOnThread
 	//================
 	//*/
-	//ID_INLINE idThread *idThread::WaitingOnThread( void ) {
+	//ID_INLINE idThread *idThread::WaitingOnThread( ) {
 	//	return waitingForThread;
 	//}
 	//
@@ -421,7 +425,7 @@ class idThread extends idClass {
 	//idThread::SetThreadNum
 	//================
 	//*/
-	//ID_INLINE void idThread::SetThreadNum( int num ) {
+	//ID_INLINE void idThread::SetThreadNum( /*int*/num:number ) {
 	//	threadNum = num;
 	//}
 	//
@@ -430,7 +434,7 @@ class idThread extends idClass {
 	//idThread::GetThreadNum
 	//================
 	//*/
-	//ID_INLINE int idThread::GetThreadNum( void ) {
+	//ID_INLINE int idThread::GetThreadNum( ) {
 	//	return threadNum;
 	//}
 	//
@@ -439,7 +443,7 @@ class idThread extends idClass {
 	//idThread::GetThreadName
 	//================
 	//*/
-	//ID_INLINE const char *idThread::GetThreadName( void ) {
+	//ID_INLINE const char *idThread::GetThreadName( ) {
 	//	return threadName.c_str();
 	//}
 	//
@@ -448,7 +452,7 @@ class idThread extends idClass {
 	//idThread::GetThreads
 	//================
 	//*/
-	//ID_INLINE idList<idThread*>& idThread::GetThreads ( void ) {
+	//ID_INLINE idList<idThread*>& idThread::GetThreads ( ) {
 	//	return idThread.threadList;
 	//}	
 	//
@@ -457,7 +461,7 @@ class idThread extends idClass {
 	//idThread::IsDoneProcessing
 	//================
 	//*/
-	//ID_INLINE bool idThread::IsDoneProcessing ( void ) {
+	//ID_INLINE bool idThread::IsDoneProcessing ( ) {
 	//	return interpreter.doneProcessing;
 	//}
 	//
@@ -466,7 +470,7 @@ class idThread extends idClass {
 	//idThread::IsDying
 	//================
 	//*/
-	//ID_INLINE bool idThread::IsDying ( void ) {
+	//ID_INLINE bool idThread::IsDying ( ) {
 	//	return interpreter.threadDying;
 	//}
 	//
@@ -476,7 +480,7 @@ class idThread extends idClass {
 //idThread::CurrentThread
 //================
 //*/
-//idThread *idThread::CurrentThread( void ) {
+//idThread *idThread::CurrentThread( ) {
 //	return currentThread;
 //}
 //
@@ -485,7 +489,7 @@ class idThread extends idClass {
 //idThread::CurrentThreadNum
 //================
 //*/
-//int idThread::CurrentThreadNum( void ) {
+//int idThread::CurrentThreadNum( ) {
 //	if ( currentThread ) {
 //		return currentThread->GetThreadNum();
 //	} else {
@@ -623,7 +627,7 @@ class idThread extends idClass {
 //idThread::ManualDelete
 //================
 //*/
-//void idThread::ManualDelete( void ) {
+//void idThread::ManualDelete( ) {
 //	interpreter.terminateOnExit = false;
 //}
 //
@@ -681,7 +685,7 @@ class idThread extends idClass {
 //idThread::Init
 //================
 //*/
-//void idThread::Init( void ) {
+//void idThread::Init( ) {
 //	// create a unique threadNum
 //	do {
 //		threadIndex++;
@@ -707,7 +711,7 @@ class idThread extends idClass {
 //idThread::GetThread
 //================
 //*/
-//idThread *idThread::GetThread( int num ) {
+//idThread *idThread::GetThread( /*int*/num:number ) {
 //	int			i;
 //	int			n;
 //	idThread	*thread;
@@ -728,7 +732,7 @@ class idThread extends idClass {
 //idThread::DisplayInfo
 //================
 //*/
-//void idThread::DisplayInfo( void ) {
+//void idThread::DisplayInfo( ) {
 //	gameLocal.Printf( 
 //		"%12i: '%s'\n"
 //		"        File: %s(%d)\n"
@@ -820,7 +824,7 @@ idThread::Restart
 //idThread::Start
 //================
 //*/
-//bool idThread::Start( void ) {
+//bool idThread::Start( ) {
 //	bool result;
 //
 //	CancelEvents( &EV_Thread_Execute );
@@ -861,7 +865,7 @@ idThread::Restart
 //idThread::End
 //================
 //*/
-//void idThread::End( void ) {
+//void idThread::End( ) {
 //	// Tell thread to die.  It will exit on its own.
 //	Pause();
 //	interpreter.threadDying	= true;
@@ -902,7 +906,7 @@ idThread::Restart
 //idThread::KillThread
 //================
 //*/
-//void idThread::KillThread( int num ) {
+//void idThread::KillThread( /*int*/num:number ) {
 //	idThread *thread;
 //
 //	thread = GetThread( num );
@@ -917,7 +921,7 @@ idThread::Restart
 //idThread::Execute
 //================
 //*/
-//bool idThread::Execute( void ) {
+//bool idThread::Execute( ) {
 //	idThread	*oldThread;
 //	bool		done;
 //
@@ -956,7 +960,7 @@ idThread::Restart
 //Checks if thread is still waiting for some event to occur.
 //================
 //*/
-//bool idThread::IsWaiting( void ) {
+//bool idThread::IsWaiting( ) {
 //	if ( waitingForThread || ( waitingFor != ENTITYNUM_NONE ) ) {
 //		return true;
 //	}
@@ -998,7 +1002,7 @@ idThread::Restart
 //idThread::ClearWaitFor
 //================
 //*/
-//void idThread::ClearWaitFor( void ) {
+//void idThread::ClearWaitFor( ) {
 //	waitingFor			= ENTITYNUM_NONE;
 //	waitingForThread	= NULL;
 //	waitingUntil		= 0;
@@ -1137,7 +1141,7 @@ idThread::ReturnString
 //idThread::Event_Execute
 //================
 //*/
-//void idThread::Event_Execute( void ) {
+//void idThread::Event_Execute( ) {
 //	Execute();
 //}
 //
@@ -1146,7 +1150,7 @@ idThread::ReturnString
 //idThread::Pause
 //================
 //*/
-//void idThread::Pause( void ) {
+//void idThread::Pause( ) {
 //	ClearWaitFor();
 //	interpreter.doneProcessing = true;
 //}
@@ -1156,7 +1160,7 @@ idThread::ReturnString
 //idThread::WaitMS
 //================
 //*/
-//void idThread::WaitMS( int time ) {
+//void idThread::WaitMS( /*int*/time:number ) {
 //	Pause();
 //	waitingUntil = gameLocal.time + time;
 //}
@@ -1166,7 +1170,7 @@ idThread::ReturnString
 //idThread::WaitSec
 //================
 //*/
-//void idThread::WaitSec( float time ) {
+//void idThread::WaitSec( /*float*/time:number ) {
 //	WaitMS( SEC2MS( time ) );
 //}
 //
@@ -1175,7 +1179,7 @@ idThread::ReturnString
 //idThread::WaitFrame
 //================
 //*/
-//void idThread::WaitFrame( void ) {
+//void idThread::WaitFrame( ) {
 //	Pause();
 //
 //	// manual control threads don't set waitingUntil so that they can be run again
@@ -1196,7 +1200,7 @@ idThread::ReturnString
 //idThread::Event_TerminateThread
 //================
 //*/
-//void idThread::Event_TerminateThread( int num ) {
+//void idThread::Event_TerminateThread( /*int*/num:number ) {
 //	idThread *thread;
 //
 //	thread = GetThread( num );
@@ -1208,7 +1212,7 @@ idThread::ReturnString
 //idThread::Event_Pause
 //================
 //*/
-//void idThread::Event_Pause( void ) {
+//void idThread::Event_Pause( ) {
 //	Pause();
 //}
 //
@@ -1217,7 +1221,7 @@ idThread::ReturnString
 //idThread::Event_Wait
 //================
 //*/
-//void idThread::Event_Wait( float time ) {
+//void idThread::Event_Wait( /*float*/time:number ) {
 //	WaitSec( time );
 //}
 //
@@ -1226,7 +1230,7 @@ idThread::ReturnString
 //idThread::Event_WaitFrame
 //================
 //*/
-//void idThread::Event_WaitFrame( void ) {
+//void idThread::Event_WaitFrame( ) {
 //	WaitFrame();
 //}
 //
@@ -1250,7 +1254,7 @@ idThread::ReturnString
 //idThread::Event_WaitForThread
 //================
 //*/
-//void idThread::Event_WaitForThread( int num ) {
+//void idThread::Event_WaitForThread( /*int*/num:number ) {
 //	idThread *thread;
 //
 //	thread = GetThread( num );
@@ -1270,7 +1274,7 @@ idThread::ReturnString
 //idThread::Event_Print
 //================
 //*/
-//void idThread::Event_Print( const char *text ) {
+//void idThread::Event_Print( text:string ) {
 //	gameLocal.Printf( "%s", text );
 //}
 //
@@ -1279,7 +1283,7 @@ idThread::ReturnString
 //idThread::Event_PrintLn
 //================
 //*/
-//void idThread::Event_PrintLn( const char *text ) {
+//void idThread::Event_PrintLn( text:string ) {
 //	gameLocal.Printf( "%s\n", text );
 //}
 //
@@ -1288,7 +1292,7 @@ idThread::ReturnString
 //idThread::Event_Say
 //================
 //*/
-//void idThread::Event_Say( const char *text ) {
+//void idThread::Event_Say( text:string ) {
 //	cmdSystem->BufferCommandText( CMD_EXEC_NOW, va( "say \"%s\"", text ) );
 //}
 //
@@ -1349,7 +1353,7 @@ idThread::ReturnString
 //idThread::Event_GetTime
 //================
 //*/
-//void idThread::Event_GetTime( void ) {
+//void idThread::Event_GetTime( ) {
 //	ReturnFloat( MS2SEC( gameLocal.realClientTime ) );
 //}
 //
@@ -1458,7 +1462,7 @@ idThread::ReturnString
 //idThread::Event_ClearPersistantArgs
 //================
 //*/
-//void idThread::Event_ClearPersistantArgs( void ) {
+//void idThread::Event_ClearPersistantArgs( ) {
 //	gameLocal.persistentLevelInfo.Clear();
 //}
 //
@@ -1546,7 +1550,7 @@ idThread::ReturnString
 //idThread::Event_GetSine
 //================
 //*/
-//void idThread::Event_GetSine( float angle ) {
+//void idThread::Event_GetSine( /*float*/angle:number ) {
 //	ReturnFloat( idMath::Sin( DEG2RAD( angle ) ) );
 //}
 //
@@ -1555,7 +1559,7 @@ idThread::ReturnString
 //idThread::Event_GetCosine
 //================
 //*/
-//void idThread::Event_GetCosine( float angle ) {
+//void idThread::Event_GetCosine( /*float*/angle:number ) {
 //	ReturnFloat( idMath::Cos( DEG2RAD( angle ) ) );
 //}
 //
@@ -1685,7 +1689,7 @@ idThread::ReturnString
 //idThread::Event_FirstPerson
 //================
 //*/
-//void idThread::Event_FirstPerson( void ) {
+//void idThread::Event_FirstPerson( ) {
 //	gameLocal.SetCamera( NULL );
 //}
 //
@@ -1718,7 +1722,7 @@ idThread::ReturnString
 //idThread::Event_GetTraceFraction
 //================
 //*/
-//void idThread::Event_GetTraceFraction( void ) {
+//void idThread::Event_GetTraceFraction( ) {
 //	ReturnFloat( idThread.trace.fraction );
 //}
 //
@@ -1727,7 +1731,7 @@ idThread::ReturnString
 //idThread::Event_GetTraceEndPos
 //================
 //*/
-//void idThread::Event_GetTraceEndPos( void ) {
+//void idThread::Event_GetTraceEndPos( ) {
 //	ReturnVector( idThread.trace.endpos );
 //}
 //
@@ -1736,7 +1740,7 @@ idThread::ReturnString
 //idThread::Event_GetTraceNormal
 //================
 //*/
-//void idThread::Event_GetTraceNormal( void ) {
+//void idThread::Event_GetTraceNormal( ) {
 //	if ( idThread.trace.fraction < 1.0f ) {
 //		ReturnVector( idThread.trace.c.normal );
 //	} else {
@@ -1749,7 +1753,7 @@ idThread::ReturnString
 //idThread::Event_GetTraceEntity
 //================
 //*/
-//void idThread::Event_GetTraceEntity( void ) {
+//void idThread::Event_GetTraceEntity( ) {
 //	if ( idThread.trace.fraction < 1.0f ) {
 //		ReturnEntity( gameLocal.entities[ idThread.trace.c.entityNum ] );
 //	} else {
@@ -1762,7 +1766,7 @@ idThread::ReturnString
 //idThread::Event_GetTraceJoint
 //================
 //*/
-//void idThread::Event_GetTraceJoint( void ) {
+//void idThread::Event_GetTraceJoint( ) {
 //	if ( idThread.trace.fraction < 1.0f && idThread.trace.c.id < 0 ) {
 //		idAFEntity_Base *af = static_cast<idAFEntity_Base *>( gameLocal.entities[ idThread.trace.c.entityNum ] );
 //		if ( af && af->IsType( idAFEntity_Base::Type ) && af->IsActiveAF() ) {
@@ -1778,7 +1782,7 @@ idThread::ReturnString
 //idThread::Event_GetTraceBody
 //================
 //*/
-//void idThread::Event_GetTraceBody( void ) {
+//void idThread::Event_GetTraceBody( ) {
 //	if ( idThread.trace.fraction < 1.0f && idThread.trace.c.id < 0 ) {
 //		idAFEntity_Base *af = static_cast<idAFEntity_Base *>( gameLocal.entities[ idThread.trace.c.entityNum ] );
 //		if ( af && af->IsType( idAFEntity_Base::Type ) && af->IsActiveAF() ) {
@@ -1798,7 +1802,7 @@ idThread::ReturnString
 //idThread::Event_FadeIn
 //================
 //*/
-//void idThread::Event_FadeIn( idVec3 &color, float time ) {
+//void idThread::Event_FadeIn( idVec3 &color, /*float*/time:number ) {
 //	idVec4		fadeColor;
 //	idPlayer	*player;
 //
@@ -1814,7 +1818,7 @@ idThread::ReturnString
 //idThread::Event_FadeOut
 //================
 //*/
-//void idThread::Event_FadeOut( idVec3 &color, float time ) {
+//void idThread::Event_FadeOut( idVec3 &color, /*float*/time:number ) {
 //	idVec4		fadeColor;
 //	idPlayer	*player;
 //
@@ -1830,7 +1834,7 @@ idThread::ReturnString
 //idThread::Event_FadeTo
 //================
 //*/
-//void idThread::Event_FadeTo( idVec3 &color, float alpha, float time ) {
+//void idThread::Event_FadeTo( idVec3 &color, float alpha, /*float*/time:number ) {
 //	idVec4		fadeColor;
 //	idPlayer	*player;
 //
@@ -1859,7 +1863,7 @@ idThread::ReturnString
 //idThread::Event_StartMusic
 //================
 //*/
-//void idThread::Event_StartMusic( const char *text ) {
+//void idThread::Event_StartMusic( text:string ) {
 //	gameSoundWorld->PlayShaderDirectly( text );
 //}
 //
@@ -1868,7 +1872,7 @@ idThread::ReturnString
 //idThread::Event_Warning
 //================
 //*/
-//void idThread::Event_Warning( const char *text ) {
+//void idThread::Event_Warning( text:string ) {
 //	Warning( "%s", text );
 //}
 //
@@ -1877,7 +1881,7 @@ idThread::ReturnString
 //idThread::Event_Error
 //================
 //*/
-//void idThread::Event_Error( const char *text ) {
+//void idThread::Event_Error( text:string ) {
 //	Error( "%s", text );
 //}
 //
@@ -1898,7 +1902,7 @@ idThread::ReturnString
 //idThread::Event_StrLeft
 //================
 //*/
-//void idThread::Event_StrLeft( const char *string, int num ) {
+//void idThread::Event_StrLeft( const char *string, /*int*/num:number ) {
 //	int len;
 //
 //	if ( num < 0 ) {
@@ -1921,7 +1925,7 @@ idThread::ReturnString
 //idThread::Event_StrRight 
 //================
 //*/
-//void idThread::Event_StrRight( const char *string, int num ) {
+//void idThread::Event_StrRight( const char *string, /*int*/num:number ) {
 //	int len;
 //
 //	if ( num < 0 ) {
@@ -1943,7 +1947,7 @@ idThread::ReturnString
 //idThread::Event_StrSkip
 //================
 //*/
-//void idThread::Event_StrSkip( const char *string, int num ) {
+//void idThread::Event_StrSkip( const char *string, /*int*/num:number ) {
 //	int len;
 //
 //	if ( num < 0 ) {
@@ -1965,7 +1969,7 @@ idThread::ReturnString
 //idThread::Event_StrMid
 //================
 //*/
-//void idThread::Event_StrMid( const char *string, int start, int num ) {
+//void idThread::Event_StrMid( const char *string, int start, /*int*/num:number ) {
 //	int len;
 //
 //	if ( num < 0 ) {
@@ -2015,7 +2019,7 @@ idThread::ReturnString
 //idThread::Event_IsClient
 //================
 //*/
-//void idThread::Event_IsClient( void ) { 
+//void idThread::Event_IsClient( ) { 
 //	idThread::ReturnFloat( gameLocal.isClient );
 //}
 //
@@ -2024,7 +2028,7 @@ idThread::ReturnString
 //idThread::Event_IsMultiplayer
 //================
 //*/
-//void idThread::Event_IsMultiplayer( void ) { 
+//void idThread::Event_IsMultiplayer( ) { 
 //	idThread::ReturnFloat( gameLocal.isMultiplayer );
 //}
 //
@@ -2033,7 +2037,7 @@ idThread::ReturnString
 //idThread::Event_GetFrameTime
 //================
 //*/
-//void idThread::Event_GetFrameTime( void ) { 
+//void idThread::Event_GetFrameTime( ) { 
 //	idThread::ReturnFloat( MS2SEC( gameLocal.msec ) );
 //}
 //
@@ -2042,7 +2046,7 @@ idThread::ReturnString
 //idThread::Event_GetTicsPerSecond
 //================
 //*/
-//void idThread::Event_GetTicsPerSecond( void ) { 
+//void idThread::Event_GetTicsPerSecond( ) { 
 //	idThread::ReturnFloat( USERCMD_HZ );
 //}
 //
@@ -2060,7 +2064,7 @@ idThread::ReturnString
 //idThread::Event_DebugLine
 //================
 //*/
-//void idThread::Event_DebugLine( const idVec3 &color, const idVec3 &start, const idVec3 &end, const float lifetime ) {
+//void idThread::Event_DebugLine( color:idVec3, const idVec3 &start, const idVec3 &end, const float lifetime ) {
 //	gameRenderWorld->DebugLine( idVec4( color.x, color.y, color.z, 0.0 ), start, end, SEC2MS( lifetime ) );
 //}
 //
@@ -2069,7 +2073,7 @@ idThread::ReturnString
 //idThread::Event_DebugArrow
 //================
 //*/
-//void idThread::Event_DebugArrow( const idVec3 &color, const idVec3 &start, const idVec3 &end, const int size, const float lifetime ) {
+//void idThread::Event_DebugArrow( color:idVec3, const idVec3 &start, const idVec3 &end, const int size, const float lifetime ) {
 //	gameRenderWorld->DebugArrow( idVec4( color.x, color.y, color.z, 0.0 ), start, end, size, SEC2MS( lifetime ) );
 //}
 //
@@ -2078,7 +2082,7 @@ idThread::ReturnString
 //idThread::Event_DebugCircle
 //================
 //*/
-//void idThread::Event_DebugCircle( const idVec3 &color, const idVec3 &origin, const idVec3 &dir, const float radius, const int numSteps, const float lifetime ) {
+//void idThread::Event_DebugCircle( color:idVec3, const idVec3 &origin, const idVec3 &dir, const float radius, const int numSteps, const float lifetime ) {
 //	gameRenderWorld->DebugCircle( idVec4( color.x, color.y, color.z, 0.0 ), origin, dir, radius, numSteps, SEC2MS( lifetime ) );
 //}
 //
@@ -2087,7 +2091,7 @@ idThread::ReturnString
 //idThread::Event_DebugBounds
 //================
 //*/
-//void idThread::Event_DebugBounds( const idVec3 &color, mins:idVec3, maxs:idVec3, const float lifetime ) {
+//void idThread::Event_DebugBounds( color:idVec3, mins:idVec3, maxs:idVec3, const float lifetime ) {
 //	gameRenderWorld->DebugBounds( idVec4( color.x, color.y, color.z, 0.0 ), idBounds( mins, maxs ), vec3_origin, SEC2MS( lifetime ) );
 //}
 //
@@ -2096,7 +2100,7 @@ idThread::ReturnString
 //idThread::Event_DrawText
 //================
 //*/
-//void idThread::Event_DrawText( const char *text, const idVec3 &origin, float scale, const idVec3 &color, const int align, const float lifetime ) {
+//void idThread::Event_DrawText( text:string, const idVec3 &origin, float scale, color:idVec3, const int align, const float lifetime ) {
 //	gameRenderWorld->DrawText( text, origin, scale, idVec4( color.x, color.y, color.z, 0.0 ), gameLocal.GetLocalPlayer()->viewAngles.ToMat3(), align, SEC2MS( lifetime ) );
 //}
 //
@@ -2105,7 +2109,7 @@ idThread::ReturnString
 //idThread::Event_InfluenceActive
 //================
 //*/
-//void idThread::Event_InfluenceActive( void ) {
+//void idThread::Event_InfluenceActive( ) {
 //	idPlayer *player;
 //
 //	player = gameLocal.GetLocalPlayer();

@@ -210,7 +210,7 @@ enum playerVote_t{
 ////	// called by idPlayer whenever it detects a team change (init or switch)
 ////	void			SwitchToTeam( int clientNum, int oldteam, int newteam );
 ////	bool			IsPureReady( void ) const;
-////	void			ProcessChatMessage( int clientNum, bool team, const char *name, const char *text, const char *sound );
+////	void			ProcessChatMessage( int clientNum, bool team, const char *name, text:string, sound:string );
 ////	void			ProcessVoiceChat( int clientNum, bool team, int index );
 ////
 ////	void			Precache( void );

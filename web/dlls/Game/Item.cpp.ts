@@ -469,7 +469,7 @@ idItem.Type = new idTypeInfo( "idItem", "idEntity",
 ////idItem::ClientReceiveEvent
 ////================
 ////*/
-////bool idItem::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
+////bool idItem::ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg ) {
 ////
 ////	switch( event ) {
 ////		case EVENT_PICKUP: {
@@ -1437,7 +1437,7 @@ idObjectiveComplete.prototype.GetType = function ( ): idTypeInfo {
 	return ( idObjectiveComplete.Type );
 };
 
-idObjectiveComplete.eventCallbacks = 
+idObjectiveComplete.eventCallbacks = [
 	EVENT( EV_Activate,			idObjectiveComplete.prototype.Event_Trigger ),
 	EVENT( EV_HideObjective,	idObjectiveComplete.prototype.Event_HideObjective ),
 	EVENT( EV_GetPlayerPos,		idObjectiveComplete.prototype.Event_GetPlayerPos )

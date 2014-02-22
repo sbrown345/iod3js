@@ -290,7 +290,7 @@ static Init( ):void {
 //idAsyncNetwork::DuplicateUsercmd
 //==================
 //*/
-//bool idAsyncNetwork::DuplicateUsercmd( const usercmd_t &previousUserCmd, usercmd_t &currentUserCmd, int frame, int time ) {
+//bool idAsyncNetwork::DuplicateUsercmd( const usercmd_t &previousUserCmd, usercmd_t &currentUserCmd, int frame, /*int*/time:number ) {
 //
 //	if ( currentUserCmd.gameTime <= previousUserCmd.gameTime ) {
 //

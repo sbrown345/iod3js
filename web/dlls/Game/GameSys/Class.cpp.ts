@@ -88,7 +88,7 @@ class idEventArg {
 
 ////class idAllocError extends idException {
 ////public:
-////	idAllocError( const char *text = "" ) : idException( text ) {}
+////	idAllocError( text:string = "" ) : idException( text ) {}
 ////};
 
 /***********************************************************************
@@ -465,25 +465,25 @@ class idClass {
 	////
 	////	bool						RespondsTo( const idEventDef &ev ) const;
 	////
-	////	bool						PostEventMS( ev: idEventDef, int time );
-	////	bool						PostEventMS( ev: idEventDef, int time, idEventArg arg1 );
-	////	bool						PostEventMS( ev: idEventDef, int time, idEventArg arg1, idEventArg arg2 );
-	////	bool						PostEventMS( ev: idEventDef, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3 );
-	////	bool						PostEventMS( ev: idEventDef, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4 );
-	////	bool						PostEventMS( ev: idEventDef, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5 );
-	////	bool						PostEventMS( ev: idEventDef, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 );
-	////	bool						PostEventMS( ev: idEventDef, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 );
-	////	bool						PostEventMS( ev: idEventDef, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 );
+	////	bool						PostEventMS( ev: idEventDef, /*int*/time:number );
+	////	bool						PostEventMS( ev: idEventDef, /*int*/time:number, idEventArg arg1 );
+	////	bool						PostEventMS( ev: idEventDef, /*int*/time:number, idEventArg arg1, idEventArg arg2 );
+	////	bool						PostEventMS( ev: idEventDef, /*int*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3 );
+	////	bool						PostEventMS( ev: idEventDef, /*int*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4 );
+	////	bool						PostEventMS( ev: idEventDef, /*int*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5 );
+	////	bool						PostEventMS( ev: idEventDef, /*int*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 );
+	////	bool						PostEventMS( ev: idEventDef, /*int*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 );
+	////	bool						PostEventMS( ev: idEventDef, /*int*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 );
 	////
-	////	bool						PostEventSec( ev: idEventDef, float time );
-	////	bool						PostEventSec( ev: idEventDef, float time, idEventArg arg1 );
-	////	bool						PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2 );
-	////	bool						PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3 );
-	////	bool						PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4 );
-	////	bool						PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5 );
-	////	bool						PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 );
-	////	bool						PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 );
-	////	bool						PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 );
+	////	bool						PostEventSec( ev: idEventDef, /*float*/time:number );
+	////	bool						PostEventSec( ev: idEventDef, /*float*/time:number, idEventArg arg1 );
+	////	bool						PostEventSec( ev: idEventDef, /*float*/time:number, idEventArg arg1, idEventArg arg2 );
+	////	bool						PostEventSec( ev: idEventDef, /*float*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3 );
+	////	bool						PostEventSec( ev: idEventDef, /*float*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4 );
+	////	bool						PostEventSec( ev: idEventDef, /*float*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5 );
+	////	bool						PostEventSec( ev: idEventDef, /*float*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 );
+	////	bool						PostEventSec( ev: idEventDef, /*float*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 );
+	////	bool						PostEventSec( ev: idEventDef, /*float*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 );
 	////
 	////	bool						ProcessEvent( ev: idEventDef );
 	////	bool						ProcessEvent( ev: idEventDef, idEventArg arg1 );
@@ -514,7 +514,7 @@ class idClass {
 	////private:
 	////	classSpawnFunc_t			CallSpawnFunc( idTypeInfo *cls );
 	////
-	////	bool						PostEventArgs( ev: idEventDef, int time, int numargs, ... );
+	////	bool						PostEventArgs( ev: idEventDef, /*int*/time:number, int numargs, ... );
 	////	bool						ProcessEventArgs( ev: idEventDef, int numargs, ... );
 	////
 	////	void						Event_SafeRemove( void );
@@ -1037,7 +1037,7 @@ idClass::PostEventMS
 ////idClass::PostEventSec
 ////================
 ////*/
-////bool idClass::PostEventSec( ev: idEventDef, float time ): boolean  {
+////bool idClass::PostEventSec( ev: idEventDef, /*float*/time:number ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 0 );
 ////}
 ////
@@ -1046,7 +1046,7 @@ idClass::PostEventMS
 ////idClass::PostEventSec
 ////================
 ////*/
-////bool idClass::PostEventSec( ev: idEventDef, float time, idEventArg arg1 ): boolean  {
+////bool idClass::PostEventSec( ev: idEventDef, /*float*/time:number, idEventArg arg1 ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 1, &arg1 );
 ////}
 ////
@@ -1055,7 +1055,7 @@ idClass::PostEventMS
 ////idClass::PostEventSec
 ////================
 ////*/
-////bool idClass::PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2 ): boolean  {
+////bool idClass::PostEventSec( ev: idEventDef, /*float*/time:number, idEventArg arg1, idEventArg arg2 ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 2, &arg1, &arg2 );
 ////}
 ////
@@ -1064,7 +1064,7 @@ idClass::PostEventMS
 ////idClass::PostEventSec
 ////================
 ////*/
-////bool idClass::PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3 ): boolean  {
+////bool idClass::PostEventSec( ev: idEventDef, /*float*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3 ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 3, &arg1, &arg2, &arg3 );
 ////}
 ////
@@ -1073,7 +1073,7 @@ idClass::PostEventMS
 ////idClass::PostEventSec
 ////================
 ////*/
-////bool idClass::PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4 ): boolean  {
+////bool idClass::PostEventSec( ev: idEventDef, /*float*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4 ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 4, &arg1, &arg2, &arg3, &arg4 );
 ////}
 ////
@@ -1082,7 +1082,7 @@ idClass::PostEventMS
 ////idClass::PostEventSec
 ////================
 ////*/
-////bool idClass::PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5 ): boolean  {
+////bool idClass::PostEventSec( ev: idEventDef, /*float*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5 ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 5, &arg1, &arg2, &arg3, &arg4, &arg5 );
 ////}
 ////
@@ -1091,7 +1091,7 @@ idClass::PostEventMS
 ////idClass::PostEventSec
 ////================
 ////*/
-////bool idClass::PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 ): boolean  {
+////bool idClass::PostEventSec( ev: idEventDef, /*float*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 6, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6 );
 ////}
 ////
@@ -1100,7 +1100,7 @@ idClass::PostEventMS
 ////idClass::PostEventSec
 ////================
 ////*/
-////bool idClass::PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 ): boolean  {
+////bool idClass::PostEventSec( ev: idEventDef, /*float*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 7, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6, &arg7 );
 ////}
 ////
@@ -1109,7 +1109,7 @@ idClass::PostEventMS
 ////idClass::PostEventSec
 ////================
 ////*/
-////bool idClass::PostEventSec( ev: idEventDef, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 ): boolean  {
+////bool idClass::PostEventSec( ev: idEventDef, /*float*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 8, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8 );
 ////}
 ////

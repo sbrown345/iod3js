@@ -228,7 +228,7 @@
 ////  Transforms the articulated figure to match the current animation pose of the given entity.
 ////================
 ////*/
-////void idAF::SetupPose( ent:idEntity, int time ) {
+////void idAF::SetupPose( ent:idEntity, /*int*/time:number ) {
 ////	int i;
 ////	idAFBody *body;
 ////	idVec3 origin;
@@ -281,7 +281,7 @@
 ////   and set the velocity relative to the previous pose.
 ////================
 ////*/
-////void idAF::ChangePose( ent:idEntity, int time ) {
+////void idAF::ChangePose( ent:idEntity, /*int*/time:number ) {
 ////	int i;
 ////	float invDelta;
 ////	idAFBody *body;

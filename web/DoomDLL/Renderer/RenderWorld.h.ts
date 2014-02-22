@@ -439,7 +439,7 @@ class idRenderWorld {
 //	//-------------- Debug Visualization  -----------------
 //
 //	// Line drawing for debug visualization
-//	virtual void			DebugClearLines( int time ) = 0;		// a time of 0 will clear all lines and text
+//	virtual void			DebugClearLines( /*int*/time:number ) = 0;		// a time of 0 will clear all lines and text
 //	virtual void			DebugLine( const idVec4 &color, const idVec3 &start, const idVec3 &end, const int lifetime = 0, const bool depthTest = false ) = 0;
 //	virtual void			DebugArrow( const idVec4 &color, const idVec3 &start, const idVec3 &end, int size, const int lifetime = 0 ) = 0;
 //	virtual void			DebugWinding( const idVec4 &color, const idWinding &w, const idVec3 &origin, const idMat3 &axis, const int lifetime = 0, const bool depthTest = false ) = 0;
@@ -452,11 +452,11 @@ class idRenderWorld {
 //	virtual void			DebugAxis( const idVec3 &origin, const idMat3 &axis ) = 0;
 //
 //	// Polygon drawing for debug visualization.
-//	virtual void			DebugClearPolygons( int time ) = 0;		// a time of 0 will clear all polygons
+//	virtual void			DebugClearPolygons( /*int*/time:number ) = 0;		// a time of 0 will clear all polygons
 //	virtual void			DebugPolygon( const idVec4 &color, const idWinding &winding, const int lifeTime = 0, const bool depthTest = false ) = 0;
 //
 //	// Text drawing for debug visualization.
-//	virtual void			DrawText( const char *text, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align = 1, const int lifetime = 0, bool depthTest = false ) = 0;
+//	virtual void			DrawText( text:string, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align = 1, const int lifetime = 0, bool depthTest = false ) = 0;
 };
 //
 //#endif /* !__RENDERWORLD_H__ */

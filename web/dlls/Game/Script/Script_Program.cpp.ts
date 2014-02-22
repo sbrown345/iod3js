@@ -514,8 +514,8 @@ class idProgram {
 //
 //	void										Startup( const char *defaultScript );
 //	void										Restart( void );
-//	bool										CompileText( const char *source, const char *text, bool console );
-//	const function_t							*CompileFunction( const char *functionName, const char *text );
+//	bool										CompileText( const char *source, text:string, bool console );
+//	const function_t							*CompileFunction( const char *functionName, text:string );
 //	void										CompileFile( const char *filename );
 //	void										BeginCompilation( void );
 //	void										FinishCompilation( void );
@@ -1368,7 +1368,7 @@ CompileText( source:string, text:string, console :boolean):boolean {
 //idProgram::CompileFunction
 //================
 //*/
-//const function_t *idProgram::CompileFunction( const char *functionName, const char *text ) {
+//const function_t *idProgram::CompileFunction( const char *functionName, text:string ) {
 //	bool result;
 //
 //	result = CompileText( functionName, text, false );

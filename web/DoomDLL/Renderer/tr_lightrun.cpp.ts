@@ -726,7 +726,7 @@
 //R_FreeEntityDefFadedDecals
 //===================
 //*/
-//void R_FreeEntityDefFadedDecals( idRenderEntityLocal *def, int time ) {
+//void R_FreeEntityDefFadedDecals( idRenderEntityLocal *def, /*int*/time:number ) {
 //	def->decals = idRenderModelDecal::RemoveFadedDecals( def->decals, time );
 //}
 //

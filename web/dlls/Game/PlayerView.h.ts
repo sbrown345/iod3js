@@ -74,9 +74,9 @@
 ////	// that with a warp model or in double vision mode
 ////	void				RenderPlayerView( idUserInterface *hud );
 ////
-////	void				Fade( idVec4 color, int time );
+////	void				Fade( idVec4 color, /*int*/time:number );
 ////
-////	void				Flash( idVec4 color, int time );
+////	void				Flash( idVec4 color, /*int*/time:number );
 ////
 ////	void				AddBloodSpray( float duration );
 ////

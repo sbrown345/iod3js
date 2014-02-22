@@ -28,33 +28,37 @@
 ////
 ////#ifndef __GAME_SOUND_H__
 ////#define __GAME_SOUND_H__
-////
-/////*
-////===============================================================================
-////
-////  Generic sound emitter.
-////
-////===============================================================================
-////*/
-////
-////class idSound extends idEntity {
+
+/*
+===============================================================================
+
+  Generic sound emitter.
+
+===============================================================================
+*/
+
+class idSound extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idSound );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idSound>[];
 ////
-////					idSound( void );
+////					idSound( );
 ////
 ////	void			Save( idSaveGame *savefile ) const;
 ////	void			Restore( idRestoreGame *savefile );
 ////
 ////	virtual void	UpdateChangeableSpawnArgs( const idDict *source );
 ////
-////	void			Spawn( void );
+////	void			Spawn( );
 ////
 ////	void			ToggleOnOff( other:idEntity, activator:idEntity );
-////	void			Think( void );
-////	void			SetSound( const char *sound, int channel = SND_CHANNEL_ANY );
+////	void			Think( );
+////	void			SetSound( sound:string, int channel = SND_CHANNEL_ANY );
 ////
-////	virtual void	ShowEditingDialog( void );
+////	virtual void	ShowEditingDialog( );
 ////
 ////private:
 ////	float			lastSoundVol;
@@ -66,11 +70,11 @@
 ////	idAngles		shakeRotate;
 ////	int				playingUntilTime;
 ////
-////	void			Event_Trigger( activator:idEntity );
-////	void			Event_Timer( void );
-////	void			Event_On( void );
-////	void			Event_Off( void );
+	Event_Trigger( activator:idEntity ):void { throw "placeholder"; }
+	Event_Timer(): void { throw "placeholder"; }
+	Event_On(): void { throw "placeholder"; }
+	Event_Off(): void { throw "placeholder"; }
 ////	void			DoSound( bool play );
-////};
+};
 ////
 ////#endif /* !__GAME_SOUND_H__ */

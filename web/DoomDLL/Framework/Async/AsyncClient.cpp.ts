@@ -559,7 +559,7 @@
 //idAsyncClient::DuplicateUsercmds
 //==================
 //*/
-//void idAsyncClient::DuplicateUsercmds( int frame, int time ) {
+//void idAsyncClient::DuplicateUsercmds( int frame, /*int*/time:number ) {
 //	int i, previousIndex, currentIndex;
 //
 //	previousIndex = ( frame - 1 ) & ( MAX_USERCMD_BACKUP - 1 );
@@ -640,7 +640,7 @@
 //idAsyncClient::SendPingResponseToServer
 //==================
 //*/
-//void idAsyncClient::SendPingResponseToServer( int time ) {
+//void idAsyncClient::SendPingResponseToServer( /*int*/time:number ) {
 //	idBitMsg	msg;
 //	byte		msgBuf[MAX_MESSAGE_SIZE];
 //
@@ -1753,7 +1753,7 @@
 //==================
 //*/
 //int idAsyncClient::UpdateTime( int clamp ) {
-//	int time, msec;
+//	/*int*/time:number, msec;
 //
 //	time = Sys_Milliseconds();
 //	msec = idMath::ClampInt( 0, clamp, time - realTime );

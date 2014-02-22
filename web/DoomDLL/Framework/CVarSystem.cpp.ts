@@ -470,7 +470,7 @@ class idCVarSystem {
 		this.modifiedFlags = 0;
 	}
 
-	////const char *CreateColumn( const char *text, int columnWidth, const char *indent, idStr &string ) {
+	////const char *CreateColumn( text:string, int columnWidth, const char *indent, idStr &string ) {
 	////	int i, lastLine;
 
 	////	string.Clear();
@@ -879,7 +879,7 @@ class idCVarSystem {
 		todoThrow();
 		//int argc, i;
 		//float current, set;
-		//const char *text;
+		//text:string;
 
 		//argc = args.Argc();
 		//if ( argc < 2 ) {

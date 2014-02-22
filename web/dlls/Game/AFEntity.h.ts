@@ -126,9 +126,9 @@ class idAFAttachment extends  idAnimatedEntity {
 ////
 ////	void					PlayIdleAnim( int blendTime );
 ////
-////	virtual void			GetImpactInfo( idEntity *ent, int id, const idVec3 &point, impactInfo_t *info );
-////	virtual void			ApplyImpulse( idEntity *ent, int id, const idVec3 &point, const idVec3 &impulse );
-////	virtual void			AddForce( idEntity *ent, int id, const idVec3 &point, const idVec3 &force );
+////	virtual void			GetImpactInfo( ent:idEntity, int id, const idVec3 &point, impactInfo_t *info );
+////	virtual void			ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse );
+////	virtual void			AddForce( ent:idEntity, int id, const idVec3 &point, const idVec3 &force );
 ////
 ////	virtual	void			Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &dir, const char *damageDefName, const float damageScale, const int location );
 ////	virtual void			AddDamageEffect( const trace_t &collision, const idVec3 &velocity, const char *damageDefName );
@@ -171,9 +171,9 @@ class idAFEntity_Base extends idAnimatedEntity {
 ////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
 ////	virtual void			Think( void );
-////	virtual void			GetImpactInfo( idEntity *ent, int id, const idVec3 &point, impactInfo_t *info );
-////	virtual void			ApplyImpulse( idEntity *ent, int id, const idVec3 &point, const idVec3 &impulse );
-////	virtual void			AddForce( idEntity *ent, int id, const idVec3 &point, const idVec3 &force );
+////	virtual void			GetImpactInfo( ent:idEntity, int id, const idVec3 &point, impactInfo_t *info );
+////	virtual void			ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse );
+////	virtual void			AddForce( ent:idEntity, int id, const idVec3 &point, const idVec3 &force );
 ////	virtual bool			Collide( const trace_t &collision, const idVec3 &velocity );
 ////	virtual bool			GetPhysicsToVisualTransform( idVec3 &origin, idMat3 &axis );
 ////	virtual bool			UpdateAnimationControllers( void );
@@ -201,7 +201,7 @@ class idAFEntity_Base extends idAnimatedEntity {
 ////
 ////	virtual void			ShowEditingDialog( void );
 ////
-////	static void				DropAFs( idEntity *ent, const char *type, idList<idEntity *> *list );
+////	static void				DropAFs( ent:idEntity, const char *type, idList<idEntity *> *list );
 ////
 ////protected:
 ////	idAF					af;				// articulated figure

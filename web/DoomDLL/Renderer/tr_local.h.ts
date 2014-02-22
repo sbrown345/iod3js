@@ -1496,7 +1496,7 @@ class glimpParms_t {
 ////void R_FreeEntityDefCachedDynamicModel( idRenderEntityLocal *def );
 ////void R_FreeEntityDefDecals( idRenderEntityLocal *def );
 ////void R_FreeEntityDefOverlay( idRenderEntityLocal *def );
-////void R_FreeEntityDefFadedDecals( idRenderEntityLocal *def, int time );
+////void R_FreeEntityDefFadedDecals( idRenderEntityLocal *def, /*int*/time:number );
 
 ////void R_CreateLightDefFogPortals( idRenderLightLocal *ldef );
 
@@ -1985,13 +1985,13 @@ enum shaderProgram_indexes {
 ////=============================================================
 ////*/
 
-////float RB_DrawTextLength( const char *text, float scale, int len );
-////void RB_AddDebugText( const char *text, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align, const int lifetime, const bool depthTest );
-////void RB_ClearDebugText( int time );
+////float RB_DrawTextLength( text:string, float scale, int len );
+////void RB_AddDebugText( text:string, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align, const int lifetime, const bool depthTest );
+////void RB_ClearDebugText( /*int*/time:number );
 ////void RB_AddDebugLine( const idVec4 &color, const idVec3 &start, const idVec3 &end, const int lifeTime, const bool depthTest );
-////void RB_ClearDebugLines( int time );
+////void RB_ClearDebugLines( /*int*/time:number );
 ////void RB_AddDebugPolygon( const idVec4 &color, const idWinding &winding, const int lifeTime, const bool depthTest );
-////void RB_ClearDebugPolygons( int time );
+////void RB_ClearDebugPolygons( /*int*/time:number );
 ////void RB_DrawBounds( const idBounds &bounds );
 ////void RB_ShowLights( drawSurf_t **drawSurfs, int numDrawSurfs );
 ////void RB_ShowLightCount( drawSurf_t **drawSurfs, int numDrawSurfs );

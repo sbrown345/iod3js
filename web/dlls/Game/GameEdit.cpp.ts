@@ -668,7 +668,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////		}
 ////
 ////		if ( textKey.Length() ) {
-////			const char *text = ent->spawnArgs.GetString( textKey );
+////			text:string = ent->spawnArgs.GetString( textKey );
 ////			if ( viewTextBounds.ContainsPoint( ent->GetPhysics()->GetOrigin() ) ) {
 ////				gameRenderWorld->DrawText( text, ent->GetPhysics()->GetOrigin() + idVec3(0, 0, 12), 0.25, colorWhite, axis, 1 );
 ////			}
@@ -982,7 +982,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////idGameEdit::PlayerGetViewAngles
 ////================
 ////*/
-////void idGameEdit::PlayerGetViewAngles( idAngles &angles ) const {
+////void idGameEdit::PlayerGetViewAngles( angles:idAngles ) const {
 ////	angles = gameLocal.GetLocalPlayer()->viewAngles;
 ////}
 ////

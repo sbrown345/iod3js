@@ -261,7 +261,7 @@ idSound.Type = new idTypeInfo("idSound", "idEntity",
 ////idSound::SetSound
 ////===============
 ////*/
-////void idSound::SetSound( const char *sound, int channel ) {
+////void idSound::SetSound( sound:string, int channel ) {
 ////	const idSoundShader *shader = declManager->FindSound( sound );
 ////	if ( shader != refSound.shader ) {
 ////		FreeSoundEmitter( true );

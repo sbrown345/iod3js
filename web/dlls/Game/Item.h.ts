@@ -67,7 +67,7 @@ class idItem extends idEntity {
 ////	};
 ////
 ////	virtual void			ClientPredictionThink( void );
-////	virtual bool			ClientReceiveEvent( int event, int time, const idBitMsg &msg );
+////	virtual bool			ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg );
 ////
 ////	// networking
 ////	virtual void			WriteToSnapshot( idBitMsgDelta &msg ) const;

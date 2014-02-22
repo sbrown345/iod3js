@@ -146,8 +146,8 @@ class idStr {
 ////						idStr( void );
 ////						idStr( const idStr &text );
 ////						idStr( const idStr &text, int start, int end );
-////						idStr( const char *text );
-////						idStr( const char *text, int start, int end );
+////						idStr( text:string );
+////						idStr( text:string, int start, int end );
 ////						explicit idStr( const bool b );
 ////						explicit idStr( const char c );
 ////						explicit idStr( const int i );
@@ -164,7 +164,7 @@ class idStr {
 ////	char &				operator[]( int index );
 
 ////	void				operator=( const idStr &text );
-////	void				operator=( const char *text );
+////	void				operator=( text:string );
 
 ////	friend idStr		operator+( const idStr &a, const idStr &b );
 ////	friend idStr		operator+( const idStr &a, const char *b );
@@ -195,22 +195,22 @@ class idStr {
 ////	friend bool			operator!=( const char *a, const idStr &b );
 
 ////						// case sensitive compare
-////	int					Cmp( const char *text ) const;
-////	int					Cmpn( const char *text, int n ) const;
-////	int					CmpPrefix( const char *text ) const;
+////	int					Cmp( text:string ) const;
+////	int					Cmpn( text:string, int n ) const;
+////	int					CmpPrefix( text:string ) const;
 
 ////						// case insensitive compare
-////	int					Icmp( const char *text ) const;
-////	int					Icmpn( const char *text, int n ) const;
-////	int					IcmpPrefix( const char *text ) const;
+////	int					Icmp( text:string ) const;
+////	int					Icmpn( text:string, int n ) const;
+////	int					IcmpPrefix( text:string ) const;
 
 ////						// case insensitive compare ignoring color
-////	int					IcmpNoColor( const char *text ) const;
+////	int					IcmpNoColor( text:string ) const;
 
 ////						// compares paths and makes sure folders come first
-////	int					IcmpPath( const char *text ) const;
-////	int					IcmpnPath( const char *text, int n ) const;
-////	int					IcmpPrefixPath( const char *text ) const;
+////	int					IcmpPath( text:string ) const;
+////	int					IcmpnPath( text:string, int n ) const;
+////	int					IcmpPrefixPath( text:string ) const;
 
 ////	int					Length( void ) const;
 ////	int					Allocated( void ) const;
@@ -219,10 +219,10 @@ class idStr {
 ////	void				Clear( void );
 ////	void				Append( const char a );
 ////	void				Append( const idStr &text );
-////	void				Append( const char *text );
-////	void				Append( const char *text, int len );
+////	void				Append( text:string );
+////	void				Append( text:string, int len );
 ////	void				Insert( const char a, int index );
-////	void				Insert( const char *text, int index );
+////	void				Insert( text:string, int index );
 ////	void				ToLower( void );
 ////	void				ToUpper( void );
 ////	bool				IsNumeric( void ) const;
@@ -235,7 +235,7 @@ class idStr {
 ////	void				Fill( const char ch, int newlen );
 
 ////	int					Find( const char c, int start = 0, int end = -1 ) const;
-////	int					Find( const char *text, bool casesensitive = true, int start = 0, int end = -1 ) const;
+////	int					Find( text:string, bool casesensitive = true, int start = 0, int end = -1 ) const;
 ////	bool				Filter( const char *filter, bool casesensitive ) const;
 ////	int					Last( const char c ) const;						// return the index to the last occurance of 'c', returns -1 if not found
 ////	const char *		Left( int len, idStr &result ) const;			// store the leftmost 'len' characters in the result
@@ -264,7 +264,7 @@ class idStr {
 ////	idStr &				StripAbsoluteFileExtension( void );				// remove any file extension looking from front (useful if there are multiple .'s)
 ////	idStr &				DefaultFileExtension( const char *extension );	// if there's no file extension use the default
 ////	idStr &				DefaultPath( const char *basepath );			// if there's no path use the default
-////	void				AppendPath( const char *text );					// append a partial path
+////	void				AppendPath( text:string );					// append a partial path
 ////	idStr &				StripFilename( void );							// remove the filename from a path
 ////	idStr &				StripPath( void );								// remove the path from the filename
 ////	void				ExtractFilePath( idStr &dest ) const;			// copy the file path to another string
@@ -295,7 +295,7 @@ class idStr {
 ////	static int			snPrintf( char *dest, int size, const char *fmt, ... ) id_attribute((format(printf,3,4)));
 ////	static int			vsnPrintf( char *dest, int size, const char *fmt, va_list argptr );
 ////	static int			FindChar( const char *str, const char c, int start = 0, int end = -1 );
-////	static int			FindText( const char *str, const char *text, bool casesensitive = true, int start = 0, int end = -1 );
+////	static int			FindText( const char *str, text:string, bool casesensitive = true, int start = 0, int end = -1 );
 ////	static bool			Filter( const char *filter, const char *name, bool casesensitive );
 ////	static void			StripMediaName( const char *name, idStr &mediaName );
 ////	static bool			CheckExtension( const char *name, const char *ext );
@@ -415,7 +415,7 @@ class idStr {
 ////	len = l;
 ////}
 
-////ID_INLINE idStr::idStr( const char *text ) {
+////ID_INLINE idStr::idStr( text:string ) {
 ////	int l;
 
 ////	Init();
@@ -427,7 +427,7 @@ class idStr {
 ////	}
 ////}
 
-////ID_INLINE idStr::idStr( const char *text, int start, int end ) {
+////ID_INLINE idStr::idStr( text:string, int start, int end ) {
 ////	int i;
 ////	int l = strlen( text );
 
@@ -678,7 +678,7 @@ class idStr {
 		return idStr.Cmpn( this.data, text, n );
 	}
 
-////ID_INLINE int idStr::CmpPrefix( const char *text ) const {
+////ID_INLINE int idStr::CmpPrefix( text:string ) const {
 ////	assert( text );
 ////	return idStr::Cmpn( this.data, text, strlen( text ) );
 ////}
@@ -690,17 +690,17 @@ class idStr {
 		return idStr.Icmp( this, text );
 	}
 
-////ID_INLINE int idStr::Icmpn( const char *text, int n ) const {
+////ID_INLINE int idStr::Icmpn( text:string, int n ) const {
 ////	assert( text );
 ////	return idStr::Icmpn( this.data, text, n );
 ////}
 
-////ID_INLINE int idStr::IcmpPrefix( const char *text ) const {
+////ID_INLINE int idStr::IcmpPrefix( text:string ) const {
 ////	assert( text );
 ////	return idStr::Icmpn( this.data, text, strlen( text ) );
 ////}
 
-////ID_INLINE int idStr::IcmpNoColor( const char *text ) const {
+////ID_INLINE int idStr::IcmpNoColor( text:string ) const {
 ////	assert( text );
 ////	return idStr::IcmpNoColor( this.data, text );
 ////}
@@ -710,12 +710,12 @@ class idStr {
 		return idStr.IcmpPath( this.data, text );
 	}
 
-////ID_INLINE int idStr::IcmpnPath( const char *text, int n ) const {
+////ID_INLINE int idStr::IcmpnPath( text:string, int n ) const {
 ////	assert( text );
 ////	return idStr::IcmpnPath( this.data, text, n );
 ////}
 
-////ID_INLINE int idStr::IcmpPrefixPath( const char *text ) const {
+////ID_INLINE int idStr::IcmpPrefixPath( text:string ) const {
 ////	assert( text );
 ////	return idStr::IcmpnPath( this.data, text, strlen( text ) );
 ////}
@@ -795,7 +795,7 @@ class idStr {
 
 	}
 
-////ID_INLINE void idStr::Append( const char *text, int l ) {
+////ID_INLINE void idStr::Append( text:string, int l ) {
 ////	int newLen;
 ////	int i;
 
@@ -828,7 +828,7 @@ class idStr {
 ////	len++;
 ////}
 
-////ID_INLINE void idStr::Insert( const char *text, int index ) {
+////ID_INLINE void idStr::Insert( text:string, int index ) {
 ////	int i, l;
 
 ////	if ( index < 0 ) {
@@ -1848,7 +1848,7 @@ DefaultFileExtension( extension:string ):idStr {
 ////idStr::AppendPath
 ////====================
 ////*/
-////void idStr::AppendPath( const char *text ) {
+////void idStr::AppendPath( text:string ) {
 ////	int pos;
 ////	int i = 0;
 

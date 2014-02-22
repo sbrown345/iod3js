@@ -73,7 +73,7 @@ class idCursor3D extends idEntity {
 ////
 ////	void					Clear();
 ////	void					Update( idPlayer *player );
-////	void					SetSelected( idEntity *ent );
+////	void					SetSelected( ent:idEntity );
 ////	idEntity *				GetSelected( void ) const { return selected.GetEntity(); }
 ////	void					DeleteSelected( void );
 ////	void					BindSelected( void );
@@ -109,11 +109,11 @@ class idEditEntities {
 ////public:
 ////							idEditEntities( void );
 ////	bool					SelectEntity( const idVec3 &origin, const idVec3 &dir, const idEntity *skip );
-////	void					AddSelectedEntity( idEntity *ent );
-////	void					RemoveSelectedEntity( idEntity *ent );
+////	void					AddSelectedEntity( ent:idEntity );
+////	void					RemoveSelectedEntity( ent:idEntity );
 ////	void					ClearSelectedEntities( void );
 ////	void					DisplayEntities( void );
-////	bool					EntityIsSelectable( idEntity *ent, idVec4 *color = NULL, idStr *text = NULL );
+////	bool					EntityIsSelectable( ent:idEntity, idVec4 *color = NULL, idStr *text = NULL );
 ////private:
 ////	int						nextSelectTime;
 ////	idList<selectedTypeInfo_t> selectableEntityClasses;

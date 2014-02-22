@@ -97,8 +97,8 @@
 //	void				Warning( char *fmt, ... ) const id_attribute((format(printf,2,3)));
 //	void				DisplayInfo( void ) const;
 //
-//	bool				BeginMultiFrameEvent( idEntity *ent, const idEventDef *event );
-//	void				EndMultiFrameEvent( idEntity *ent, const idEventDef *event );
+//	bool				BeginMultiFrameEvent( ent:idEntity, const idEventDef *event );
+//	void				EndMultiFrameEvent( ent:idEntity, const idEventDef *event );
 //	bool				MultiFrameEventInProgress( void ) const;
 //
 //	void				ThreadCall( idInterpreter *source, const function_t *func, int args );

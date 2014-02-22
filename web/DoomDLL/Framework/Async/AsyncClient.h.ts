@@ -181,10 +181,10 @@ class idAsyncClient {
 //
 //	void				Clear( void );
 //	void				ClearPendingPackets( void );
-//	void				DuplicateUsercmds( int frame, int time );
+//	void				DuplicateUsercmds( int frame, /*int*/time:number );
 //	void				SendUserInfoToServer( void );
 //	void				SendEmptyToServer( bool force = false, bool mapLoad = false );
-//	void				SendPingResponseToServer( int time );
+//	void				SendPingResponseToServer( /*int*/time:number );
 //	void				SendUsercmdsToServer( void );
 //	void				InitGame( int serverGameInitId, int serverGameFrame, int serverGameTime, const idDict &serverSI );
 //	void				ProcessUnreliableServerMessage( const idBitMsg &msg );

@@ -83,7 +83,7 @@ class idSoundShader extends idDecl {
 ////	virtual size_t			Size( void ) const;
 ////	virtual bool			SetDefaultText( void );
 ////	virtual const char *	DefaultDefinition( void ) const;
-////	virtual bool			Parse( const char *text, const int textLength );
+////	virtual bool			Parse( text:string, const int textLength );
 ////	virtual void			FreeData( void );
 ////	virtual void			List( void ) const;
 ////
@@ -209,7 +209,7 @@ class idSoundEmitter {
 ////	virtual idSoundEmitter *EmitterForIndex( int index ) = 0;
 ////
 ////	// query sound samples from all emitters reaching a given position
-////	virtual	float			CurrentShakeAmplitudeForPosition( const int time, const idVec3 &listenerPosition ) = 0;
+////	virtual	float			CurrentShakeAmplitudeForPosition( /*int*/time:number, const idVec3 &listenerPosition ) = 0;
 ////
 ////	// where is the camera/microphone
 ////	// listenerId allows listener-private and antiPrivate sounds to be filtered
@@ -253,7 +253,7 @@ class idSoundEmitter {
 ////	virtual void			ReadFromSaveGame( idFile *savefile ) = 0;
 ////
 ////	virtual void			SetSlowmo( bool active ) = 0;
-////	virtual void			SetSlowmoSpeed( float speed ) = 0;
+////	virtual void			SetSlowmoSpeed( /*float*/speed:number ) = 0;
 ////	virtual void			SetEnviroSuit( bool active ) = 0;
 ////};
 ////
@@ -300,10 +300,10 @@ class idSoundEmitter {
 ////	virtual bool			ShutdownHW( void ) = 0;
 ////
 ////	// asyn loop, called at 60Hz
-////	virtual int				AsyncUpdate( int time ) = 0;
+////	virtual int				AsyncUpdate( /*int*/time:number ) = 0;
 ////
 ////	// async loop, when the sound driver uses a write strategy
-////	virtual int				AsyncUpdateWrite( int time ) = 0;
+////	virtual int				AsyncUpdateWrite( /*int*/time:number ) = 0;
 ////
 ////	// it is a good idea to mute everything when starting a new level,
 ////	// because sounds may be started before a valid listener origin

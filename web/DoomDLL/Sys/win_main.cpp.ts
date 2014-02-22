@@ -729,7 +729,7 @@ var sys_cmdline: string;
 ////be freed by the game later.
 ////================
 ////*/
-////void Sys_QueEvent( int time, sysEventType_t type, int value, int value2, int ptrLength, void *ptr ) {
+////void Sys_QueEvent( /*int*/time:number, sysEventType_t type, int value, int value2, int ptrLength, void *ptr ) {
 ////	sysEvent_t	*ev;
 
 ////	ev = &eventQue[ eventHead & MASK_QUED_EVENTS ];

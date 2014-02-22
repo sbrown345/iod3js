@@ -930,7 +930,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_TurnTo
 ////=====================
 ////*/
-////void idAI::Event_TurnTo( float angle ) {
+////void idAI::Event_TurnTo( /*float*/angle:number ) {
 ////	TurnToward( angle );
 ////}
 ////
@@ -1063,7 +1063,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_SlideTo
 ////=====================
 ////*/
-////void idAI::Event_SlideTo( pos:idVec3, float time ) {
+////void idAI::Event_SlideTo( pos:idVec3, /*float*/time:number ) {
 ////	SlideToPosition( pos, time );
 ////}
 /////*
@@ -1420,7 +1420,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_PredictEnemyPos
 ////=====================
 ////*/
-////void idAI::Event_PredictEnemyPos( float time ) {
+////void idAI::Event_PredictEnemyPos( /*float*/time:number ) {
 ////	predictedPath_t path;
 ////	idActor *enemyEnt = enemy.GetEntity();
 ////
@@ -1692,7 +1692,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////
 ////	if ( ( path.endEvent == 0 ) || ( path.blockingEntity == enemyEnt ) ) {
 ////		idVec3 delta = end - physicsObj.GetOrigin();
-////		float time = delta.LengthFast();
+////		var /*float*/time:number = delta.LengthFast();
 ////		idThread::ReturnFloat( time );
 ////	} else {
 ////		idThread::ReturnFloat( 0.0f );
@@ -1889,7 +1889,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////*/
 ////void idAI::Event_SetSmokeVisibility( int num, int on ) {
 ////	int i;
-////	int time;
+////	/*int*/time:number;
 ////
 ////	if ( num >= particles.Num() ) {
 ////		gameLocal.Warning( "Particle #%d out of range (%d particles) on entity '%s'", num, particles.Num(), name.c_str() );
@@ -2169,7 +2169,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////	int	i;
 ////	var ent:idEntity
 ////	idEntity *bestEnt;
-////	float time;
+////	var /*float*/time:number;
 ////	float bestTime;
 ////	const idVec3 &org = physicsObj.GetOrigin();
 ////	idActor *enemyEnt = enemy.GetEntity();
@@ -2248,7 +2248,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////================
 ////*/
 ////void idAI::Event_TravelDistanceToPoint( pos:idVec3 ) {
-////	float time;
+////	var /*float*/time:number;
 ////
 ////	time = TravelDistance( physicsObj.GetOrigin(), pos );
 ////	idThread::ReturnFloat( time );
@@ -2260,7 +2260,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////================
 ////*/
 ////void idAI::Event_TravelDistanceToEntity( ent:idEntity ) {
-////	float time;
+////	var /*float*/time:number;
 ////
 ////	time = TravelDistance( physicsObj.GetOrigin(), ent->GetPhysics()->GetOrigin() );
 ////	idThread::ReturnFloat( time );
@@ -2272,7 +2272,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////================
 ////*/
 ////void idAI::Event_TravelDistanceBetweenPoints( const idVec3 &source, const idVec3 &dest ) {
-////	float time;
+////	var /*float*/time:number;
 ////
 ////	time = TravelDistance( source, dest );
 ////	idThread::ReturnFloat( time );
@@ -2284,7 +2284,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////================
 ////*/
 ////void idAI::Event_TravelDistanceBetweenEntities( idEntity *source, idEntity *dest ) {
-////	float time;
+////	var /*float*/time:number;
 ////
 ////	assert( source );
 ////	assert( dest );

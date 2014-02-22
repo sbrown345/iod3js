@@ -29,35 +29,39 @@
 ////#ifndef __GAME_MOVEABLE_H__
 ////#define __GAME_MOVEABLE_H__
 ////
-/////*
-////===============================================================================
-////
-////  Entity using rigid body physics.
-////
-////===============================================================================
-////*/
+/*
+===============================================================================
+
+  Entity using rigid body physics.
+
+===============================================================================
+*/
 ////
 ////extern const idEventDef EV_BecomeNonSolid;
 ////extern const idEventDef EV_IsAtRest;
 ////
-////class idMoveable extends idEntity {
+class idMoveable extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idMoveable );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idMoveable>[];
 ////
-////							idMoveable( void );
-////							~idMoveable( void );
+////							idMoveable( );
+////							~idMoveable( );
 ////
-////	void					Spawn( void );
+////	void					Spawn( );
 ////
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
 ////
-////	virtual void			Think( void );
+////	virtual void			Think( );
 ////
-////	virtual void			Hide( void );
-////	virtual void			Show( void );
+////	virtual void			Hide( );
+////	virtual void			Show( );
 ////
-////	bool					AllowStep( void ) const;
+////	bool					AllowStep( ) const;
 ////	void					EnableDamage( bool enable, float duration );
 ////	virtual bool			Collide( const trace_t &collision, const idVec3 &velocity );
 ////	virtual void			Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location );
@@ -81,43 +85,47 @@
 ////	int						nextDamageTime;			// next time the movable can hurt the player
 ////	int						nextSoundTime;			// next time the moveable can make a sound
 ////
-////	const idMaterial *		GetRenderModelMaterial( void ) const;
-////	void					BecomeNonSolid( void );
+////	const idMaterial *		GetRenderModelMaterial( ) const;
+////	void					BecomeNonSolid( );
 ////	void					InitInitialSpline( int startTime );
-////	bool					FollowInitialSplinePath( void );
+////	bool					FollowInitialSplinePath( );
 ////
-////	void					Event_Activate( activator:idEntity ): void { throw "placeholder"; }
-////	void					Event_BecomeNonSolid( void ): void { throw "placeholder"; }
-////	void					Event_SetOwnerFromSpawnArgs( void ): void { throw "placeholder"; }
-////	void					Event_IsAtRest( void ): void { throw "placeholder"; }
-////	void					Event_EnableDamage( float enable ): void { throw "placeholder"; }
-////};
-////
-////
-/////*
-////===============================================================================
-////
-////  A barrel using rigid body physics. The barrel has special handling of
-////  the view model orientation to make it look like it rolls instead of slides.
-////
-////===============================================================================
-////*/
-////
-////class idBarrel extends idMoveable {
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+	Event_BecomeNonSolid( ): void { throw "placeholder"; }
+	Event_SetOwnerFromSpawnArgs( ): void { throw "placeholder"; }
+	Event_IsAtRest( ): void { throw "placeholder"; }
+	Event_EnableDamage( /*float*/ enable :number): void { throw "placeholder"; }
+};
+
+
+/*
+===============================================================================
+
+  A barrel using rigid body physics. The barrel has special handling of
+  the view model orientation to make it look like it rolls instead of slides.
+
+===============================================================================
+*/
+
+class idBarrel extends idMoveable {
 ////
 ////public:
 ////	CLASS_PROTOTYPE( idBarrel );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idBarrel>[];
 ////							idBarrel();
 ////
-////	void					Spawn( void );
+////	void					Spawn( );
 ////
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
 ////
-////	void					BarrelThink( void );
-////	virtual void			Think( void );
+////	void					BarrelThink( );
+////	virtual void			Think( );
 ////	virtual bool			GetPhysicsToVisualTransform( idVec3 &origin, idMat3 &axis );
-////	virtual void			ClientPredictionThink( void );
+////	virtual void			ClientPredictionThink( );
 ////
 ////private:
 ////	float					radius;					// radius of barrel
@@ -126,39 +134,43 @@
 ////	idMat3					lastAxis;				// axis of the barrel the last think frame
 ////	float					additionalRotation;		// additional rotation of the barrel about it's axis
 ////	idMat3					additionalAxis;			// additional rotation axis
-////};
-////
-////
-/////*
-////===============================================================================
-////
-////  A barrel using rigid body physics and special handling of the view model
-////  orientation to make it look like it rolls instead of slides. The barrel
-////  can burn and explode when damaged.
-////
-////===============================================================================
-////*/
-////
-////class idExplodingBarrel extends idBarrel {
+};
+
+
+/*
+===============================================================================
+
+  A barrel using rigid body physics and special handling of the view model
+  orientation to make it look like it rolls instead of slides. The barrel
+  can burn and explode when damaged.
+
+===============================================================================
+*/
+
+class idExplodingBarrel extends idBarrel {
 ////public:
 ////	CLASS_PROTOTYPE( idExplodingBarrel );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idExplodingBarrel>[];
 ////
 ////							idExplodingBarrel();
 ////							~idExplodingBarrel();
 ////
-////	void					Spawn( void );
+////	void					Spawn( );
 ////
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
 ////
-////	virtual void			Think( void );
+////	virtual void			Think( );
 ////	virtual void			Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &dir, 
 ////								const char *damageDefName, const float damageScale, const int location );
 ////	virtual void			Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location );
 ////
 ////	virtual void			WriteToSnapshot( idBitMsgDelta &msg ) const;
 ////	virtual void			ReadFromSnapshot( const idBitMsgDelta &msg );
-////	virtual bool			ClientReceiveEvent( int event, int time, const idBitMsg &msg );
+////	virtual bool			ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg );
 ////
 ////	enum {
 ////		EVENT_EXPLODE = idEntity::EVENT_MAXEVENTS,
@@ -186,12 +198,12 @@
 ////
 ////	void					AddParticles( const char *name, bool burn );
 ////	void					AddLight( const char *name , bool burn );
-////	void					ExplodingEffects( void );
+////	void					ExplodingEffects( );
 ////
 ////	void					Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 ////	void					Event_Respawn(): void { throw "placeholder"; }
 ////	void					Event_Explode(): void { throw "placeholder"; }
 ////	void					Event_TriggerTargets(): void { throw "placeholder"; }
-////};
+};
 ////
 ////#endif /* !__GAME_MOVEABLE_H__ */

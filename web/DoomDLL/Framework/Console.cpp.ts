@@ -29,8 +29,8 @@
 //#include "../idlib/precompiled.h"
 //#pragma hdrstop
 //
-//void SCR_DrawTextLeftAlign( float &y, const char *text, ... ) id_attribute((format(printf,2,3)));
-//void SCR_DrawTextRightAlign( float &y, const char *text, ... ) id_attribute((format(printf,2,3)));
+//void SCR_DrawTextLeftAlign( float &y, text:string, ... ) id_attribute((format(printf,2,3)));
+//void SCR_DrawTextRightAlign( float &y, text:string, ... ) id_attribute((format(printf,2,3)));
 //
 var	LINE_WIDTH				=78
 var	NUM_CON_TIMES			=4
@@ -53,7 +53,7 @@ class idConsoleLocal extends idConsole {
 //	virtual	bool		Active( void );
 //	virtual	void		ClearNotifyLines( void );
 //	virtual	void		Close( void );
-//	virtual	void		Print( const char *text );
+//	virtual	void		Print( text:string );
 //	virtual	void		Draw( bool forceFullScreen );
 //
 //	void				Dump( const char *toFile );
@@ -142,7 +142,7 @@ class idConsoleLocal extends idConsole {
 //SCR_DrawTextLeftAlign
 //==================
 //*/
-//void SCR_DrawTextLeftAlign( float &y, const char *text, ... ) {
+//void SCR_DrawTextLeftAlign( float &y, text:string, ... ) {
 //	char string[MAX_STRING_CHARS];
 //	va_list argptr;
 //	va_start( argptr, text );
@@ -157,7 +157,7 @@ class idConsoleLocal extends idConsole {
 //SCR_DrawTextRightAlign
 //==================
 //*/
-//void SCR_DrawTextRightAlign( float &y, const char *text, ... ) {
+//void SCR_DrawTextRightAlign( float &y, text:string, ... ) {
 //	char string[MAX_STRING_CHARS];
 //	va_list argptr;
 //	va_start( argptr, text );

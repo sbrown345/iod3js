@@ -117,7 +117,7 @@ var MAX_STRING_CHARS = 1024;		// max length of a string
 ////extern	idVec4 colorDkGrey;
 
 ////// packs color floats in the range [0,1] into an integer
-////dword	PackColor( const idVec3 &color );
+////dword	PackColor( color:idVec3 );
 ////void	UnpackColor( const dword color, idVec3 &unpackedColor );
 ////dword	PackColor( const idVec4 &color );
 ////void	UnpackColor( const dword color, idVec4 &unpackedColor );

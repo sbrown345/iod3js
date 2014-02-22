@@ -61,11 +61,11 @@
 ////	void					Restore( idRestoreGame *savefile );
 ////
 ////	void					SetAnimator( idAnimator *a ) { animator = a; }
-////	bool					Load( idEntity *ent, const char *fileName );
+////	bool					Load( ent:idEntity, const char *fileName );
 ////	bool					IsLoaded( void ) const { return isLoaded && self != NULL; }
 ////	const char *			GetName( void ) const { return name.c_str(); }
-////	void					SetupPose( idEntity *ent, int time );
-////	void					ChangePose( idEntity *ent, int time );
+////	void					SetupPose( ent:idEntity, /*int*/time:number );
+////	void					ChangePose( ent:idEntity, /*int*/time:number );
 ////	int						EntitiesTouchingAF( afTouch_t touchList[ MAX_GENTITIES ] ) const;
 ////	void					Start( void );
 ////	void					StartFromCurrentPose( int inheritVelocityTime );
@@ -80,9 +80,9 @@
 ////	bool					UpdateAnimation( void );
 ////
 ////	void					GetPhysicsToVisualTransform( idVec3 &origin, idMat3 &axis ) const;
-////	void					GetImpactInfo( idEntity *ent, int id, const idVec3 &point, impactInfo_t *info );
-////	void					ApplyImpulse( idEntity *ent, int id, const idVec3 &point, const idVec3 &impulse );
-////	void					AddForce( idEntity *ent, int id, const idVec3 &point, const idVec3 &force );
+////	void					GetImpactInfo( ent:idEntity, int id, const idVec3 &point, impactInfo_t *info );
+////	void					ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse );
+////	void					AddForce( ent:idEntity, int id, const idVec3 &point, const idVec3 &force );
 ////	int						BodyForClipModelId( int id ) const;
 ////
 ////	void					SaveState( idDict &args ) const;

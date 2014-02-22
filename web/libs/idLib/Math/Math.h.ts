@@ -194,8 +194,8 @@ class idMath {
 ////	static int					ClampInt( int min, int max, int value );
 ////	static float				ClampFloat( float min, float max, float value );
 
-////	static float				AngleNormalize360( float angle );
-////	static float				AngleNormalize180( float angle );
+////	static float				AngleNormalize360( /*float*/angle:number );
+////	static float				AngleNormalize180( /*float*/angle:number );
 ////	static float				AngleDelta( float angle1, float angle2 );
 
 ////	static int					FloatToBits( float f, int exponentBits, int mantissaBits );
@@ -903,14 +903,14 @@ static Fabs( /*float */f:number ):number {
 ////	return value;
 ////}
 
-////ID_INLINE float idMath::AngleNormalize360( float angle ) {
+////ID_INLINE float idMath::AngleNormalize360( /*float*/angle:number ) {
 ////	if ( ( angle >= 360.0f ) || ( angle < 0.0 ) ) {
 ////		angle -= floor( angle / 360.0f ) * 360.0f;
 ////	}
 ////	return angle;
 ////}
 
-////ID_INLINE float idMath::AngleNormalize180( float angle ) {
+////ID_INLINE float idMath::AngleNormalize180( /*float*/angle:number ) {
 ////	angle = AngleNormalize360( angle );
 ////	if ( angle > 180.0f ) {
 ////		angle -= 360.0f;

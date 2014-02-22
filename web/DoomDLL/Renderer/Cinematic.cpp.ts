@@ -51,7 +51,7 @@
 //	virtual cinData_t		ImageForTime( int milliseconds );
 //	virtual int				AnimationLength();
 //	virtual void			Close();
-//	virtual void			ResetTime(int time);
+//	virtual void			ResetTime(/*int*/time:number);
 //
 //private:
 //	unsigned int			mcomp[256];
@@ -370,7 +370,7 @@
 //idCinematicLocal::ResetTime
 //==============
 //*/
-//void idCinematicLocal::ResetTime(int time) {
+//void idCinematicLocal::ResetTime(/*int*/time:number) {
 //	startTime = ( backEnd.viewDef ) ? 1000 * backEnd.viewDef->floatTime : -1;
 //	status = FMV_PLAY;
 //}

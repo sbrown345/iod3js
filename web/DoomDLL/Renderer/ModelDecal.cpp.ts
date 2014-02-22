@@ -386,7 +386,7 @@
 ////idRenderModelDecal::RemoveFadedDecals
 ////=====================
 ////*/
-////idRenderModelDecal *idRenderModelDecal::RemoveFadedDecals( idRenderModelDecal *decals, int time ) {
+////idRenderModelDecal *idRenderModelDecal::RemoveFadedDecals( idRenderModelDecal *decals, /*int*/time:number ) {
 ////	int i, j, minTime, newNumIndexes, newNumVerts;
 ////	int inUse[MAX_DECAL_VERTS];
 ////	decalInfo_t	decalInfo;

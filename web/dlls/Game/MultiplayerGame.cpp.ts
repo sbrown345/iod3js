@@ -2971,7 +2971,7 @@
 ////idMultiplayerGame::ProcessChatMessage
 ////================
 ////*/
-////void idMultiplayerGame::ProcessChatMessage( int clientNum, bool team, const char *name, const char *text, const char *sound ) {
+////void idMultiplayerGame::ProcessChatMessage( int clientNum, bool team, const char *name, text:string, sound:string ) {
 ////	idBitMsg	outMsg;
 ////	byte		msgBuf[ 256 ];
 ////	const char *prefix = NULL;

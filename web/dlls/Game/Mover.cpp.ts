@@ -458,7 +458,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::VectorForDir
 ////================
 ////*/
-////void idMover::VectorForDir( float angle, idVec3 &vec ) {
+////void idMover::VectorForDir( /*float*/angle:number, idVec3 &vec ) {
 ////	idAngles ang;
 ////
 ////	switch( ( int )angle ) {
@@ -1005,7 +1005,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::Event_TeamBlocked
 ////===============
 ////*/
-////void idMover::Event_TeamBlocked( idEntity *blockedEntity, idEntity *blockingEntity ) {
+////void idMover::Event_TeamBlocked(blockedEntity:idEntity , blockingEntity:idEntity  ) {
 ////	if ( g_debugMover.GetBool() ) {
 ////		gameLocal.Printf( "%d: '%s' stopped due to team member '%s' blocked by '%s'\n", gameLocal.time, name.c_str(), blockedEntity->name.c_str(), blockingEntity->name.c_str() );
 ////	}
@@ -1016,7 +1016,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::Event_PartBlocked
 ////===============
 ////*/
-////void idMover::Event_PartBlocked( idEntity *blockingEntity ) {
+////void idMover::Event_PartBlocked( blockingEntity:idEntity  ) {
 ////	if ( damage > 0.0f ) {
 ////		blockingEntity->Damage( this, this, vec3_origin, "damage_moverCrush", damage, INVALID_JOINT );
 ////	}
@@ -1044,7 +1044,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::Event_SetMoveTime
 ////================
 ////*/
-////void idMover::Event_SetMoveTime( float time ) {
+////void idMover::Event_SetMoveTime( /*float*/time:number ) {
 ////	if ( time <= 0 ) {
 ////		gameLocal.Error( "Cannot set time less than or equal to 0." );
 ////	}
@@ -1058,7 +1058,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::Event_SetAccellerationTime
 ////================
 ////*/
-////void idMover::Event_SetAccellerationTime( float time ) {
+////void idMover::Event_SetAccellerationTime( /*float*/time:number ) {
 ////	if ( time < 0 ) {
 ////		gameLocal.Error( "Cannot set acceleration time less than 0." );
 ////	}
@@ -1071,7 +1071,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::Event_SetDecelerationTime
 ////================
 ////*/
-////void idMover::Event_SetDecelerationTime( float time ) {
+////void idMover::Event_SetDecelerationTime( /*float*/time:number ) {
 ////	if ( time < 0 ) {
 ////		gameLocal.Error( "Cannot set deceleration time less than 0." );
 ////	}
@@ -1108,7 +1108,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::Event_MoveToPos
 ////================
 ////*/
-////void idMover::Event_MoveToPos( idVec3 &pos ) {
+////void idMover::Event_MoveToPos( pos:idVec3 ) {
 ////	MoveToPos( pos );
 ////}
 ////
@@ -1117,7 +1117,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::Event_MoveDir
 ////================
 ////*/
-////void idMover::Event_MoveDir( float angle, float distance ) {
+////void idMover::Event_MoveDir( /*float*/angle:number, float distance ) {
 ////	idVec3 dir;
 ////	idVec3 org;
 ////
@@ -1133,7 +1133,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::Event_MoveAccelerateTo
 ////================
 ////*/
-////void idMover::Event_MoveAccelerateTo( /*float*/ speed:number, float time ) {
+////void idMover::Event_MoveAccelerateTo( /*float*/ speed:number, /*float*/time:number ) {
 ////	float v;
 ////	idVec3 org, dir;
 ////	int at;
@@ -1176,7 +1176,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::Event_MoveDecelerateTo
 ////================
 ////*/
-////void idMover::Event_MoveDecelerateTo( /*float*/ speed:number, float time ) {
+////void idMover::Event_MoveDecelerateTo( /*float*/ speed:number, /*float*/time:number ) {
 ////	float v;
 ////	idVec3 org, dir;
 ////	int dt;
@@ -1219,7 +1219,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::Event_RotateDownTo
 ////================
 ////*/
-////void idMover::Event_RotateDownTo( int axis, float angle ) {
+////void idMover::Event_RotateDownTo( /*int*/axis:number, /*float*/angle:number ) {
 ////	idAngles ang;
 ////
 ////	if ( ( axis < 0 ) || ( axis > 2 ) ) {
@@ -1241,7 +1241,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::Event_RotateUpTo
 ////================
 ////*/
-////void idMover::Event_RotateUpTo( int axis, float angle ) {
+////void idMover::Event_RotateUpTo( /*int*/axis:number, /*float*/angle:number ) {
 ////	idAngles ang;
 ////
 ////	if ( ( axis < 0 ) || ( axis > 2 ) ) {
@@ -1263,7 +1263,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::Event_RotateTo
 ////================
 ////*/
-////void idMover::Event_RotateTo( idAngles &angles ) {
+////void idMover::Event_RotateTo( angles:idAngles ) {
 ////	dest_angles = angles;
 ////	BeginRotation( idThread::CurrentThread(), true );
 ////}
@@ -1273,7 +1273,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::Event_Rotate
 ////================
 ////*/
-////void idMover::Event_Rotate( idAngles &angles ) {
+////void idMover::Event_Rotate( angles:idAngles ) {
 ////	idAngles ang;
 ////
 ////	if ( rotate_thread ) {
@@ -1291,7 +1291,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::Event_RotateOnce
 ////================
 ////*/
-////void idMover::Event_RotateOnce( idAngles &angles ) {
+////void idMover::Event_RotateOnce( angles:idAngles ) {
 ////	idAngles ang;
 ////
 ////	if ( rotate_thread ) {
@@ -1363,7 +1363,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::Event_SetAccelSound
 ////================
 ////*/
-////void idMover::Event_SetAccelSound( const char *sound ) {
+////void idMover::Event_SetAccelSound( sound:string ) {
 //////	refSound.SetSound( "accel", sound );
 ////}
 ////
@@ -1372,7 +1372,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::Event_SetDecelSound
 ////================
 ////*/
-////void idMover::Event_SetDecelSound( const char *sound ) {
+////void idMover::Event_SetDecelSound( sound:string ) {
 //////	refSound.SetSound( "decel", sound );
 ////}
 ////
@@ -1381,7 +1381,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::Event_SetMoveSound
 ////================
 ////*/
-////void idMover::Event_SetMoveSound( const char *sound ) {
+////void idMover::Event_SetMoveSound( sound:string ) {
 //////	refSound.SetSound( "move", sound );
 ////}
 ////
@@ -1841,7 +1841,7 @@ idElevator.Type = new idTypeInfo("idElevator", "idMover",
 ////idElevator::Event_TeamBlocked
 ////================
 ////*/
-////void idElevator::Event_TeamBlocked( idEntity *blockedEntity, idEntity *blockingEntity ) {
+////void idElevator::Event_TeamBlocked(blockedEntity:idEntity , blockingEntity:idEntity  ) {
 ////	if ( blockedEntity == this ) {
 ////		Event_GotoFloor( lastFloor );
 ////	} else if ( blockedEntity && blockedEntity->IsType( idDoor::Type ) ) {
@@ -2449,7 +2449,7 @@ idMover_Binary.Type = new idTypeInfo("idMover_Binary", "idEntity",
 ////instead of an orientation.
 ////===============
 ////*/
-////void idMover_Binary::GetMovedir( float angle, idVec3 &movedir ) {
+////void idMover_Binary::GetMovedir( /*float*/angle:number, idVec3 &movedir ) {
 ////	if ( angle == -1 ) {
 ////		movedir.Set( 0, 0, 1 );
 ////	} else if ( angle == -2 ) {
@@ -2500,7 +2500,7 @@ idMover_Binary.Type = new idTypeInfo("idMover_Binary", "idEntity",
 ////idMover_Binary::SetMoverState
 ////===============
 ////*/
-////void idMover_Binary::SetMoverState( moverState_t newstate, int time ) {
+////void idMover_Binary::SetMoverState( moverState_t newstate, /*int*/time:number ) {
 ////	idVec3 	delta;
 ////
 ////	moverState = newstate;
@@ -2551,7 +2551,7 @@ idMover_Binary.Type = new idTypeInfo("idMover_Binary", "idEntity",
 ////in the same amount of time
 ////================
 ////*/
-////void idMover_Binary::MatchActivateTeam( moverState_t newstate, int time ) {
+////void idMover_Binary::MatchActivateTeam( moverState_t newstate, /*int*/time:number ) {
 ////	idMover_Binary *slave;
 ////
 ////	for ( slave = this; slave != NULL; slave = slave->activateChain ) {
@@ -2573,7 +2573,7 @@ idMover_Binary.Type = new idTypeInfo("idMover_Binary", "idEntity",
 ////idMover_Binary::Event_MatchActivateTeam
 ////================
 ////*/
-////void idMover_Binary::Event_MatchActivateTeam( moverState_t newstate, int time ) {
+////void idMover_Binary::Event_MatchActivateTeam( moverState_t newstate, /*int*/time:number ) {
 ////	MatchActivateTeam( newstate, time );
 ////}
 ////
@@ -3730,7 +3730,7 @@ idDoor.Type = new idTypeInfo("idDoor", "idMover_Binary",
 ////======================
 ////*/
 ////void idDoor::Event_StartOpen( void ) {
-////	float time;
+////	var /*float*/time:number;
 ////	var /*float*/ speed:number
 ////
 ////	// if "start_open", reverse position 1 and 2
@@ -3859,7 +3859,7 @@ idDoor.Type = new idTypeInfo("idDoor", "idMover_Binary",
 ////idDoor::Blocked_Door
 ////================
 ////*/
-////void idDoor::Event_TeamBlocked( idEntity *blockedEntity, idEntity *blockingEntity ) {
+////void idDoor::Event_TeamBlocked(blockedEntity:idEntity , blockingEntity:idEntity  ) {
 ////	SetBlocked( true );
 ////
 ////	if ( crusher ) {
@@ -3888,7 +3888,7 @@ idDoor.Type = new idTypeInfo("idDoor", "idMover_Binary",
 ////idDoor::Event_PartBlocked
 ////===============
 ////*/
-////void idDoor::Event_PartBlocked( idEntity *blockingEntity ) {
+////void idDoor::Event_PartBlocked( blockingEntity:idEntity  ) {
 ////	if ( damage > 0.0f ) {
 ////		blockingEntity->Damage( this, this, vec3_origin, "damage_moverCrush", damage, INVALID_JOINT );
 ////	}
@@ -4284,7 +4284,7 @@ idPlat.Type = new idTypeInfo("idPlat", "idMover_Binary",
 ////idPlat::SpawnPlatTrigger
 ////===============
 ////*/
-////void idPlat::SpawnPlatTrigger( idVec3 &pos ) {
+////void idPlat::SpawnPlatTrigger( pos:idVec3 ) {
 ////	idBounds		bounds;
 ////	idVec3			tmin;
 ////	idVec3			tmax;
@@ -4336,7 +4336,7 @@ idPlat.Type = new idTypeInfo("idPlat", "idMover_Binary",
 ////idPlat::Event_TeamBlocked
 ////================
 ////*/
-////void idPlat::Event_TeamBlocked( idEntity *blockedEntity, idEntity *blockingEntity ) {
+////void idPlat::Event_TeamBlocked(blockedEntity:idEntity , blockingEntity:idEntity  ) {
 ////	// reverse direction
 ////	Use_BinaryMover( activatedBy.GetEntity() );
 ////}
@@ -4346,7 +4346,7 @@ idPlat.Type = new idTypeInfo("idPlat", "idMover_Binary",
 ////idPlat::Event_PartBlocked
 ////===============
 ////*/
-////void idPlat::Event_PartBlocked( idEntity *blockingEntity ) {
+////void idPlat::Event_PartBlocked( blockingEntity:idEntity  ) {
 ////	if ( damage > 0.0f ) {
 ////		blockingEntity->Damage( this, this, vec3_origin, "damage_moverCrush", damage, INVALID_JOINT );
 ////	}
@@ -4450,7 +4450,7 @@ idMover_Periodic.Type = new idTypeInfo( "idMover_Periodic", "idEntity",
 ////idMover_Periodic::Event_TeamBlocked
 ////===============
 ////*/
-////void idMover_Periodic::Event_TeamBlocked( idEntity *blockedEntity, idEntity *blockingEntity ) {
+////void idMover_Periodic::Event_TeamBlocked(blockedEntity:idEntity , blockingEntity:idEntity  ) {
 ////}
 ////
 /////*
@@ -4458,7 +4458,7 @@ idMover_Periodic.Type = new idTypeInfo( "idMover_Periodic", "idEntity",
 ////idMover_Periodic::Event_PartBlocked
 ////===============
 ////*/
-////void idMover_Periodic::Event_PartBlocked( idEntity *blockingEntity ) {
+////void idMover_Periodic::Event_PartBlocked( blockingEntity:idEntity  ) {
 ////	if ( damage > 0.0f ) {
 ////		blockingEntity->Damage( this, this, vec3_origin, "damage_moverCrush", damage, INVALID_JOINT );
 ////	}

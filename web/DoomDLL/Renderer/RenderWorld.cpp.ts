@@ -1721,7 +1721,7 @@ idRenderWorldLocal.prototype.FreeInteractions = function ( ): void {
 //idRenderWorldLocal::DebugClearLines
 //====================
 //*/
-//void idRenderWorldLocal::DebugClearLines( int time ) {
+//void idRenderWorldLocal::DebugClearLines( /*int*/time:number ) {
 //	RB_ClearDebugLines( time );
 //	RB_ClearDebugText( time );
 //}
@@ -2005,7 +2005,7 @@ idRenderWorldLocal.prototype.FreeInteractions = function ( ): void {
 //idRenderWorldLocal::DebugClearPolygons
 //====================
 //*/
-//void idRenderWorldLocal::DebugClearPolygons( int time ) {
+//void idRenderWorldLocal::DebugClearPolygons( /*int*/time:number ) {
 //	RB_ClearDebugPolygons( time );
 //}
 //
@@ -2060,7 +2060,7 @@ idRenderWorldLocal.prototype.FreeInteractions = function ( ): void {
 //  returns the length of the given text
 //================
 //*/
-//float idRenderWorldLocal::DrawTextLength( const char *text, float scale, int len ) {
+//float idRenderWorldLocal::DrawTextLength( text:string, float scale, int len ) {
 //	return RB_DrawTextLength( text, scale, len );
 //}
 //
@@ -2072,7 +2072,7 @@ idRenderWorldLocal.prototype.FreeInteractions = function ( ): void {
 //  align can be 0-left, 1-center (default), 2-right
 //================
 //*/
-//void idRenderWorldLocal::DrawText( const char *text, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align, const int lifetime, const bool depthTest ) {
+//void idRenderWorldLocal::DrawText( text:string, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align, const int lifetime, const bool depthTest ) {
 //	RB_AddDebugText( text, origin, scale, color, viewAxis, align, lifetime, depthTest );
 //}
 //

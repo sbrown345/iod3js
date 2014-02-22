@@ -95,7 +95,7 @@ class idDeclFX extends idDecl {
 ////public:
 ////	virtual size_t			Size( void ) const;
 ////	virtual const char *	DefaultDefinition( void ) const;
-////	virtual bool			Parse( const char *text, const int textLength );
+////	virtual bool			Parse( text:string, const int textLength );
 ////	virtual void			FreeData( void );
 ////	virtual void			Print( void ) const;
 ////	virtual void			List( void ) const;
@@ -487,7 +487,7 @@ class idDeclFX extends idDecl {
 ////idDeclFX::Parse
 ////================
 ////*/
-////bool idDeclFX::Parse( const char *text, const int textLength ) {
+////bool idDeclFX::Parse( text:string, const int textLength ) {
 ////	idLexer src;
 ////	idToken token;
 ////

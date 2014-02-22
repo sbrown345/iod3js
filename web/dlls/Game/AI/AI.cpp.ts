@@ -1977,7 +1977,7 @@
 ////idAI::SlideToPosition
 ////=====================
 ////*/
-////bool idAI::SlideToPosition( pos:idVec3, float time ) {
+////bool idAI::SlideToPosition( pos:idVec3, /*float*/time:number ) {
 ////	StopMove( MOVE_STATUS_DONE );
 ////
 ////	move.moveDest		= pos;

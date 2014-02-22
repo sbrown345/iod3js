@@ -1876,7 +1876,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::GetAASLocation
 ////==============
 ////*/
-////void idActor::GetAASLocation( idAAS *aas, idVec3 &pos, int &areaNum ) const {
+////void idActor::GetAASLocation( idAAS *aas, pos:idVec3, int &areaNum ) const {
 ////	idVec3		size;
 ////	idBounds	bounds;
 ////

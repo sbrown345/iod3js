@@ -76,7 +76,7 @@
 //int				rb_numDebugPolygons = 0;
 //int				rb_debugPolygonTime = 0;
 //
-//static void RB_DrawText( const char *text, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align );
+//static void RB_DrawText( text:string, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align );
 //
 ///*
 //================
@@ -1706,7 +1706,7 @@ function RB_ShowOverdraw ( ): void {
 //RB_ClearDebugText
 //================
 //*/
-//void RB_ClearDebugText( int time ) {
+//void RB_ClearDebugText( /*int*/time:number ) {
 //#if !defined(GL_ES_VERSION_2_0)
 //	int			i;
 //	int			num;
@@ -1744,7 +1744,7 @@ function RB_ShowOverdraw ( ): void {
 //RB_AddDebugText
 //================
 //*/
-//void RB_AddDebugText( const char *text, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align, const int lifetime, const bool depthTest ) {
+//void RB_AddDebugText( text:string, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align, const int lifetime, const bool depthTest ) {
 //#if !defined(GL_ES_VERSION_2_0)
 //	debugText_t *debugText;
 //
@@ -1769,7 +1769,7 @@ function RB_ShowOverdraw ( ): void {
 //  returns the length of the given text
 //================
 //*/
-//float RB_DrawTextLength( const char *text, float scale, int len ) {
+//float RB_DrawTextLength( text:string, float scale, int len ) {
 //#if !defined(GL_ES_VERSION_2_0)
 //	int i, num, index, charIndex;
 //	float spacing, textLen = 0.0f;
@@ -1815,7 +1815,7 @@ function RB_ShowOverdraw ( ): void {
 //  align can be 0-left, 1-center (default), 2-right
 //================
 //*/
-//static void RB_DrawText( const char *text, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align ) {
+//static void RB_DrawText( text:string, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align ) {
 //#if !defined(GL_ES_VERSION_2_0)
 //	int i, j, len, num, index, charIndex, line;
 //	float textLen, spacing;
@@ -1949,7 +1949,7 @@ function RB_ShowOverdraw ( ): void {
 //RB_ClearDebugLines
 //================
 //*/
-//void RB_ClearDebugLines( int time ) {
+//void RB_ClearDebugLines( /*int*/time:number ) {
 //#if !defined(GL_ES_VERSION_2_0)
 //	int			i;
 //	int			num;
@@ -2071,7 +2071,7 @@ function RB_ShowOverdraw ( ): void {
 //RB_ClearDebugPolygons
 //================
 //*/
-//void RB_ClearDebugPolygons( int time ) {
+//void RB_ClearDebugPolygons( /*int*/time:number ) {
 //#if !defined(GL_ES_VERSION_2_0)
 //	int				i;
 //	int				num;

@@ -87,7 +87,7 @@ class idToken extends idStr {
     ////					~idToken( void );
     ////
     ////	void			operator=( const idStr& text );
-    ////	void			operator=( const char *text );
+    ////	void			operator=( text:string );
     ////
     ////	double			GetDoubleValue( void );				// double value of TT_NUMBER
     ////	float			GetFloatValue( void );				// float value of TT_NUMBER
@@ -157,7 +157,7 @@ class idToken extends idStr {
     ////ID_INLINE idToken::~idToken( void ) {
     ////}
     ////
-    ////ID_INLINE void idToken::operator=( const char *text) {
+    ////ID_INLINE void idToken::operator=( text:string) {
     ////	*static_cast<idStr *>(this) = text;
     ////}
     ////

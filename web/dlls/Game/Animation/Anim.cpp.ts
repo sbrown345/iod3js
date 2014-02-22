@@ -381,7 +381,7 @@
 //idMD5Anim::ConvertTimeToFrame
 //====================
 //*/
-//void idMD5Anim::ConvertTimeToFrame( int time, int cyclecount, frameBlend_t &frame ) const {
+//void idMD5Anim::ConvertTimeToFrame( /*int*/time:number, int cyclecount, frameBlend_t &frame ) const {
 //	int frameTime;
 //	int frameNum;
 //
@@ -431,7 +431,7 @@
 //idMD5Anim::GetOrigin
 //====================
 //*/
-//void idMD5Anim::GetOrigin( idVec3 &offset, int time, int cyclecount ) const {
+//void idMD5Anim::GetOrigin( idVec3 &offset, /*int*/time:number, int cyclecount ) const {
 //	frameBlend_t frame;
 //
 //	offset = baseFrame[ 0 ].t;
@@ -471,7 +471,7 @@
 //idMD5Anim::GetOriginRotation
 //====================
 //*/
-//void idMD5Anim::GetOriginRotation( idQuat &rotation, int time, int cyclecount ) const {
+//void idMD5Anim::GetOriginRotation( idQuat &rotation, /*int*/time:number, int cyclecount ) const {
 //	frameBlend_t	frame;
 //	int				animBits;
 //	
@@ -586,7 +586,7 @@
 //idMD5Anim::GetBounds
 //====================
 //*/
-//void idMD5Anim::GetBounds( idBounds &bnds, int time, int cyclecount ) const {
+//void idMD5Anim::GetBounds( idBounds &bnds, /*int*/time:number, int cyclecount ) const {
 //	frameBlend_t	frame;
 //	idVec3			offset;
 //

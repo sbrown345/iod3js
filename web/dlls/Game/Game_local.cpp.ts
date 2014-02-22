@@ -3779,7 +3779,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////idGameLocal::ProjectDecal
 ////===============
 ////*/
-////void idGameLocal::ProjectDecal( const idVec3 &origin, const idVec3 &dir, float depth, bool parallel, float size, const char *material, float angle ) {
+////void idGameLocal::ProjectDecal( const idVec3 &origin, const idVec3 &dir, float depth, bool parallel, float size, const char *material, /*float*/angle:number ) {
 ////	float s, c;
 ////	idMat3 axis, axistemp;
 ////	idFixedWinding winding;

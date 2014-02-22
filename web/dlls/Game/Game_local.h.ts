@@ -429,7 +429,7 @@ class idGameLocal extends idGame {
 ////	void					RadiusPush( const idVec3 &origin, const float radius, const float push, const idEntity *inflictor, const idEntity *ignore, float inflictorScale, const bool quake );
 ////	void					RadiusPushClipModel( const idVec3 &origin, const float push, const idClipModel *clipModel );
 
-////	void					ProjectDecal( const idVec3 &origin, const idVec3 &dir, float depth, bool parallel, float size, const char *material, float angle = 0 );
+////	void					ProjectDecal( const idVec3 &origin, const idVec3 &dir, float depth, bool parallel, float size, const char *material, /*float*/angle:number = 0 );
 ////	void					BloodSplat( const idVec3 &origin, const idVec3 &dir, float size, const char *material );
 
 ////	void					CallFrameCommand( ent: idEntity, const function_t *frameCommand );
@@ -455,7 +455,7 @@ class idGameLocal extends idGame {
 
 ////	void					SetPortalState( qhandle_t portal, int blockingBits );
 ////	void					SaveEntityNetworkEvent( const ent: idEntity, int event, const idBitMsg *msg );
-////	void					ServerSendChatMessage( int to, name:string, const char *text );
+////	void					ServerSendChatMessage( int to, name:string, text:string );
 ////	int						ServerRemapDecl( int clientNum, declType_t type, int index );
 ////	int						ClientRemapDecl( declType_t type, int index );
 
@@ -642,7 +642,7 @@ class idGameLocal extends idGame {
 
 ////class idGameError extends idException {
 ////public:
-////	idGameError( const char *text ) : idException( text ) {}
+////	idGameError( text:string ) : idException( text ) {}
 ////};
 
 //////============================================================================

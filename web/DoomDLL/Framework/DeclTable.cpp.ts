@@ -31,7 +31,7 @@ class idDeclTable extends idDecl {
 ////public:
 ////	virtual size_t			Size( void ) const;
 ////	virtual const char *	DefaultDefinition( void ) const;
-////	virtual bool			Parse( const char *text, const int textLength );
+////	virtual bool			Parse( text:string, const int textLength );
 ////	virtual void			FreeData( void );
 ////
 ////	float					TableLookup( float index ) const;
@@ -126,7 +126,7 @@ class idDeclTable extends idDecl {
 ////idDeclTable::Parse
 ////=================
 ////*/
-////bool idDeclTable::Parse( const char *text, const int textLength ) {
+////bool idDeclTable::Parse( text:string, const int textLength ) {
 ////	idLexer src;
 ////	idToken token;
 ////	float v;

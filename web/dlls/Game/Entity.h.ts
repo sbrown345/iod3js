@@ -191,7 +191,7 @@ class idEntity extends idClass {
 ////	const idDeclSkin *		GetSkin( ) const;
 ////	void					SetShaderParm( int parmnum, float value );
 ////	virtual void			SetColor( float red, float green, float blue );
-////	virtual void			SetColor( const idVec3 &color );
+////	virtual void			SetColor( color:idVec3 );
 ////	virtual void			GetColor( idVec3 &out ) const;
 ////	virtual void			SetColor( const idVec4 &color );
 ////	virtual void			GetColor( idVec4 &out ) const;
@@ -276,21 +276,21 @@ class idEntity extends idClass {
 ////							// called from the physics object when colliding, should return true if the physics simulation should stop
 ////	virtual bool			Collide( const trace_t &collision, const idVec3 &velocity );
 ////							// retrieves impact information, 'ent' is the entity retrieving the info
-////	virtual void			GetImpactInfo( idEntity *ent, int id, const idVec3 &point, impactInfo_t *info );
+////	virtual void			GetImpactInfo( ent:idEntity, int id, const idVec3 &point, impactInfo_t *info );
 ////							// apply an impulse to the physics object, 'ent' is the entity applying the impulse
-////	virtual void			ApplyImpulse( idEntity *ent, int id, const idVec3 &point, const idVec3 &impulse );
+////	virtual void			ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse );
 ////							// add a force to the physics object, 'ent' is the entity adding the force
-////	virtual void			AddForce( idEntity *ent, int id, const idVec3 &point, const idVec3 &force );
+////	virtual void			AddForce( ent:idEntity, int id, const idVec3 &point, const idVec3 &force );
 ////							// activate the physics object, 'ent' is the entity activating this entity
-////	virtual void			ActivatePhysics( idEntity *ent );
+////	virtual void			ActivatePhysics( ent:idEntity );
 ////							// returns true if the physics object is at rest
 ////	virtual bool			IsAtRest( ) const;
 ////							// returns the time the physics object came to rest
 ////	virtual int				GetRestStartTime( ) const;
 ////							// add a contact entity
-////	virtual void			AddContactEntity( idEntity *ent );
+////	virtual void			AddContactEntity( ent:idEntity );
 ////							// remove a touching entity
-////	virtual void			RemoveContactEntity( idEntity *ent );
+////	virtual void			RemoveContactEntity( ent:idEntity );
 ////
 ////	// damage
 ////							// returns true if this entity can be damaged from the given origin
@@ -342,8 +342,8 @@ class idEntity extends idClass {
 ////	virtual void			ClientPredictionThink( );
 ////	virtual void			WriteToSnapshot( idBitMsgDelta &msg ) const;
 ////	virtual void			ReadFromSnapshot( const idBitMsgDelta &msg );
-////	virtual bool			ServerReceiveEvent( int event, int time, const idBitMsg &msg );
-////	virtual bool			ClientReceiveEvent( int event, int time, const idBitMsg &msg );
+////	virtual bool			ServerReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg );
+////	virtual bool			ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg );
 ////
 ////	void					WriteBindToSnapshot( idBitMsgDelta &msg ) const;
 ////	void					ReadBindFromSnapshot( const idBitMsgDelta &msg );
@@ -505,7 +505,7 @@ class idAnimatedEntity extends idEntity {
 ////	void					AddLocalDamageEffect( jointHandle_t jointNum, const idVec3 &localPoint, const idVec3 &localNormal, const idVec3 &localDir, const idDeclEntityDef *def, const idMaterial *collisionMaterial );
 ////	void					UpdateDamageEffects( );
 ////
-////	virtual bool			ClientReceiveEvent( int event, int time, const idBitMsg &msg );
+////	virtual bool			ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg );
 ////
 ////	enum {
 ////		EVENT_ADD_DAMAGE_EFFECT = idEntity::EVENT_MAXEVENTS,

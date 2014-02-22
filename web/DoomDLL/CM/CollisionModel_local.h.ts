@@ -259,7 +259,7 @@
 ////	idVec3 origin;									// origin of rotation in model space
 ////	idVec3 axis;									// rotation axis in model space
 ////	idMat3 matrix;									// rotates axis of rotation to the z-axis
-////	float angle;									// angle for rotational collision
+////	/*float*/angle:number;									// angle for rotational collision
 ////	float maxTan;									// max tangent of half the positive angle used instead of fraction
 ////	float radius;									// rotation radius of trm start
 ////	idRotation modelVertexRotation;					// inverse rotation for model vertices
@@ -367,11 +367,11 @@
 ////											float &tanHalfAngle, float &dir );
 ////	void			RotateTrmEdgeThroughPolygon( cm_traceWork_t *tw, cm_polygon_t *poly, cm_trmEdge_t *trmEdge );
 ////	int				RotatePointThroughPlane( const cm_traceWork_t *tw, const idVec3 &point, const idPlane &plane,
-////											const float angle, const float minTan, float &tanHalfAngle );
+////											const /*float*/angle:number, const float minTan, float &tanHalfAngle );
 ////	int				PointFurthestFromPlane( const cm_traceWork_t *tw, const idVec3 &point, const idPlane &plane,
-////											const float angle, float &tanHalfAngle, float &dir );
+////											const /*float*/angle:number, float &tanHalfAngle, float &dir );
 ////	int				RotatePointThroughEpsilonPlane( const cm_traceWork_t *tw, const idVec3 &point, const idVec3 &endPoint,
-////											const idPlane &plane, const float angle, const idVec3 &origin,
+////											const idPlane &plane, const /*float*/angle:number, const idVec3 &origin,
 ////											float &tanHalfAngle, idVec3 &collisionPoint, idVec3 &endDir );
 ////	void			RotateTrmVertexThroughPolygon( cm_traceWork_t *tw, cm_polygon_t *poly, cm_trmVertex_t *v, int vertexNum);
 ////	void			RotateVertexThroughTrmPolygon( cm_traceWork_t *tw, cm_trmPolygon_t *trmpoly, cm_polygon_t *poly,

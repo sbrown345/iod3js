@@ -107,7 +107,7 @@
 //idAnim::SetAnim
 //=====================
 //*/
-//void idAnim::SetAnim( const idDeclModelDef *modelDef, const char *sourcename, const char *animname, int num, const idMD5Anim *md5anims[ ANIM_MaxSyncedAnims ] ) {
+//void idAnim::SetAnim( const idDeclModelDef *modelDef, const char *sourcename, const char *animname, /*int*/num:number, const idMD5Anim *md5anims[ ANIM_MaxSyncedAnims ] ) {
 //	int i;
 //
 //	this->modelDef = modelDef;
@@ -162,7 +162,7 @@
 //index 0 will never be NULL.  Any anim >= NumAnims will return NULL.
 //=====================
 //*/
-//const idMD5Anim *idAnim::MD5Anim( int num ) const {
+//const idMD5Anim *idAnim::MD5Anim( /*int*/num:number ) const {
 //	if ( anims == NULL || anims[0] == NULL ) { 
 //		return NULL;
 //	}
@@ -1233,7 +1233,7 @@
 //idAnimBlend::SetSyncedAnimWeight
 //=====================
 //*/
-//bool idAnimBlend::SetSyncedAnimWeight( int num, float weight ) {
+//bool idAnimBlend::SetSyncedAnimWeight( /*int*/num:number, float weight ) {
 //	const idAnim *anim = Anim();
 //	if ( !anim ) {
 //		return false;
@@ -1610,7 +1610,7 @@
 //=====================
 //*/
 //int idAnimBlend::AnimTime( int currentTime ) const {
-//	int time;
+//	/*int*/time:number;
 //	int length;
 //	const idAnim *anim = Anim();
 //
@@ -1825,7 +1825,7 @@
 //		blendWeight = weight;
 //		if ( channel != ANIMCHANNEL_ALL ) {
 //			const int *index = modelDef->GetChannelJoints( channel );
-//			const int num = modelDef->NumJointsOnChannel( channel );
+//			const /*int*/num:number = modelDef->NumJointsOnChannel( channel );
 //			for( i = 0; i < num; i++ ) {
 //				int j = index[i];
 //				blendFrame[j].t = jointFrame[j].t;
@@ -2545,7 +2545,7 @@
 //idDeclModelDef::Parse
 //================
 //*/
-//bool idDeclModelDef::Parse( const char *text, const int textLength ) {
+//bool idDeclModelDef::Parse( text:string, const int textLength ) {
 //	int					i;
 //	int					num;
 //	idStr				filename;
@@ -3128,7 +3128,7 @@
 //void idAnimator::Restore( idRestoreGame *savefile ) {
 //	int i;
 //	int j;
-//	int num;
+//	/*int*/num:number;
 //
 //	savefile->ReadModelDef( modelDef );
 //	savefile->ReadObject( reinterpret_cast<idClass *&>( entity ) );
@@ -3307,7 +3307,7 @@
 //idAnimator::SetEntity
 //=====================
 //*/
-//void idAnimator::SetEntity( idEntity *ent ) {
+//void idAnimator::SetEntity( ent:idEntity ) {
 //	entity = ent;
 //}
 //
@@ -3766,7 +3766,7 @@
 //idAnimator::GetOrigin
 //====================
 //*/
-//void idAnimator::GetOrigin( int currentTime, idVec3 &pos ) const {
+//void idAnimator::GetOrigin( int currentTime, pos:idVec3 ) const {
 //	int					i;
 //	const idAnimBlend	*blend;
 //	float				blendWeight;
@@ -3890,7 +3890,7 @@
 //idAnimator::FinishAFPose
 //=====================
 //*/
-//void idAnimator::FinishAFPose( int animNum, const idBounds &bounds, const int time ) {
+//void idAnimator::FinishAFPose( int animNum, const idBounds &bounds, /*int*/time:number ) {
 //	int					i, j;
 //	int					numJoints;
 //	int					parentNum;
@@ -4883,7 +4883,7 @@
 //idGameEdit::ANIM_CreateAnimFrame
 //=====================
 //*/
-//void idGameEdit::ANIM_CreateAnimFrame( const idRenderModel *model, const idMD5Anim *anim, int numJoints, idJointMat *joints, int time, const idVec3 &offset, bool remove_origin_offset ) {
+//void idGameEdit::ANIM_CreateAnimFrame( const idRenderModel *model, const idMD5Anim *anim, int numJoints, idJointMat *joints, /*int*/time:number, const idVec3 &offset, bool remove_origin_offset ) {
 //	int					i;
 //	frameBlend_t		frame;
 //	const idMD5Joint	*md5joints;

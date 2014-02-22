@@ -73,7 +73,7 @@ class idDeclParticle extends idDecl {
 ////
 ////	virtual size_t			Size( void ) const;
 ////	virtual const char *	DefaultDefinition( void ) const;
-////	virtual bool			Parse( const char *text, const int textLength );
+////	virtual bool			Parse( text:string, const int textLength );
 ////	virtual void			FreeData( void );
 ////
 ////	bool					Save( const char *fileName = NULL );
@@ -447,7 +447,7 @@ class idDeclParticle extends idDecl {
 ////idDeclParticle::Parse
 ////================
 ////*/
-////bool idDeclParticle::Parse( const char *text, const int textLength ) {
+////bool idDeclParticle::Parse( text:string, const int textLength ) {
 ////	idLexer src;
 ////	idToken	token;
 ////

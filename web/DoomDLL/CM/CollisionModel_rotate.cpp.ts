@@ -623,7 +623,7 @@
 ////================
 ////*/
 ////int idCollisionModelManagerLocal::RotatePointThroughPlane( const cm_traceWork_t *tw, const idVec3 &point, const idPlane &plane,
-////													const float angle, const float minTan, float &tanHalfAngle ) {
+////													const /*float*/angle:number, const float minTan, float &tanHalfAngle ) {
 ////	double v0, v1, v2, a, b, c, d, sqrtd, q, frac1, frac2;
 ////	idVec3 p, normal;
 ////
@@ -728,7 +728,7 @@
 ////================
 ////*/
 ////int idCollisionModelManagerLocal::PointFurthestFromPlane( const cm_traceWork_t *tw, const idVec3 &point, const idPlane &plane,
-////													const float angle, float &tanHalfAngle, float &dir ) {
+////													/*float*/angle:number, float &tanHalfAngle, float &dir ) {
 ////
 ////	double v1, v2, a, b, c, d, sqrtd, q, frac1, frac2;
 ////	idVec3 p, normal;
@@ -832,7 +832,7 @@
 ////================
 ////*/
 ////int idCollisionModelManagerLocal::RotatePointThroughEpsilonPlane( const cm_traceWork_t *tw, const idVec3 &point, const idVec3 &endPoint,
-////							const idPlane &plane, const float angle, const idVec3 &origin,
+////							const idPlane &plane, /*float*/angle:number, const idVec3 &origin,
 ////							float &tanHalfAngle, idVec3 &collisionPoint, idVec3 &endDir ) {
 ////	float d, dir, startTan;
 ////	idVec3 vec, startDir;

@@ -573,7 +573,7 @@
 ////parameter for this curve type.
 ////====================================================================== */
 
-////static float bez2_time( float x0, float x1, float x2, float x3, float time,
+////static float bez2_time( float x0, float x1, float x2, float x3, /*float*/time:number,
 ////   float *t0, float *t1 )
 ////{
 ////   float v, t;
@@ -599,7 +599,7 @@
 ////Interpolate the value of a BEZ2 curve.
 ////====================================================================== */
 
-////static float bez2( lwKey *key0, lwKey *key1, float time )
+////static float bez2( lwKey *key0, lwKey *key1, /*float*/time:number )
 ////{
 ////   float x, y, t, t0 = 0.0, t1 = 1.0f;
 
@@ -762,7 +762,7 @@
 ////envelope at that time.
 ////====================================================================== */
 
-////float evalEnvelope( lwEnvelope *env, float time )
+////float evalEnvelope( lwEnvelope *env, /*float*/time:number )
 ////{
 ////   lwKey *key0, *key1, *skey, *ekey;
 ////   float t, h1, h2, h3, h4, in, out, offset = 0.0;

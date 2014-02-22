@@ -593,7 +593,7 @@
 ////flashes the player view with the given color
 ////=================
 ////*/
-////void idPlayerView::Flash(idVec4 color, int time ) {
+////void idPlayerView::Flash(idVec4 color, /*int*/time:number ) {
 ////	Fade(idVec4(0, 0, 0, 0), time);
 ////	fadeFromColor = colorWhite;
 ////}
@@ -606,7 +606,7 @@
 ////assumes: color.w is 0 or 1
 ////=================
 ////*/
-////void idPlayerView::Fade( idVec4 color, int time ) {
+////void idPlayerView::Fade( idVec4 color, /*int*/time:number ) {
 ////
 ////	if ( !fadeTime ) {
 ////		fadeFromColor.Set( 0.0f, 0.0f, 0.0f, 1.0f - color[ 3 ] );

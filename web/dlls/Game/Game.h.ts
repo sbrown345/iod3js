@@ -248,7 +248,7 @@ class idGame {
 //	virtual const idMD5Anim *	ANIM_GetAnim( const char *fileName );
 //	virtual int					ANIM_GetLength( const idMD5Anim *anim );
 //	virtual int					ANIM_GetNumFrames( const idMD5Anim *anim );
-//	virtual void				ANIM_CreateAnimFrame( const idRenderModel *model, const idMD5Anim *anim, int numJoints, idJointMat *frame, int time, const idVec3 &offset, bool remove_origin_offset );
+//	virtual void				ANIM_CreateAnimFrame( const idRenderModel *model, const idMD5Anim *anim, int numJoints, idJointMat *frame, /*int*/time:number, const idVec3 &offset, bool remove_origin_offset );
 //	virtual idRenderModel *		ANIM_CreateMeshForAnim( idRenderModel *model, const char *classname, const char *animname, int frame, bool remove_origin_offset );
 //
 //	// Articulated Figure calls for AF editor and Radiant.
@@ -261,7 +261,7 @@ class idGame {
 //	// Entity selection.
 //	virtual void				ClearEntitySelection( void );
 //	virtual int					GetSelectedEntities( idEntity *list[], int max );
-//	virtual void				AddSelectedEntity( idEntity *ent );
+//	virtual void				AddSelectedEntity( ent:idEntity );
 //
 //	// Selection methods
 //	virtual void				TriggerSelected();
@@ -273,25 +273,25 @@ class idGame {
 //	virtual const char *		GetUniqueEntityName( const char *classname ) const;
 //
 //	// Entity methods.
-//	virtual void				EntityGetOrigin( idEntity *ent, idVec3 &org ) const;
-//	virtual void				EntityGetAxis( idEntity *ent, idMat3 &axis ) const;
-//	virtual void				EntitySetOrigin( idEntity *ent, const idVec3 &org );
-//	virtual void				EntitySetAxis( idEntity *ent, const idMat3 &axis );
-//	virtual void				EntityTranslate( idEntity *ent, const idVec3 &org );
-//	virtual const idDict *		EntityGetSpawnArgs( idEntity *ent ) const;
-//	virtual void				EntityUpdateChangeableSpawnArgs( idEntity *ent, const idDict *dict );
-//	virtual void				EntityChangeSpawnArgs( idEntity *ent, const idDict *newArgs );
-//	virtual void				EntityUpdateVisuals( idEntity *ent );
-//	virtual void				EntitySetModel( idEntity *ent, const char *val );
-//	virtual void				EntityStopSound( idEntity *ent );
-//	virtual void				EntityDelete( idEntity *ent );
-//	virtual void				EntitySetColor( idEntity *ent, const idVec3 color );
+//	virtual void				EntityGetOrigin( ent:idEntity, idVec3 &org ) const;
+//	virtual void				EntityGetAxis( ent:idEntity, idMat3 &axis ) const;
+//	virtual void				EntitySetOrigin( ent:idEntity, const idVec3 &org );
+//	virtual void				EntitySetAxis( ent:idEntity, const idMat3 &axis );
+//	virtual void				EntityTranslate( ent:idEntity, const idVec3 &org );
+//	virtual const idDict *		EntityGetSpawnArgs( ent:idEntity ) const;
+//	virtual void				EntityUpdateChangeableSpawnArgs( ent:idEntity, const idDict *dict );
+//	virtual void				EntityChangeSpawnArgs( ent:idEntity, const idDict *newArgs );
+//	virtual void				EntityUpdateVisuals( ent:idEntity );
+//	virtual void				EntitySetModel( ent:idEntity, const char *val );
+//	virtual void				EntityStopSound( ent:idEntity );
+//	virtual void				EntityDelete( ent:idEntity );
+//	virtual void				EntitySetColor( ent:idEntity, const idVec3 color );
 //
 //	// Player methods.
 //	virtual bool				PlayerIsValid() const;
 //	virtual void				PlayerGetOrigin( idVec3 &org ) const;
 //	virtual void				PlayerGetAxis( idMat3 &axis ) const;
-//	virtual void				PlayerGetViewAngles( idAngles &angles ) const;
+//	virtual void				PlayerGetViewAngles( angles:idAngles ) const;
 //	virtual void				PlayerGetEyePosition( idVec3 &org ) const;
 //
 //	// In game map editing support.

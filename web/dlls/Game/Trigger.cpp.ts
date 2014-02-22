@@ -418,7 +418,7 @@ idTrigger_Multi.Type = new idTypeInfo("idTrigger_Multi", "idTrigger",
 ////		}
 ////		idPlayer *player = static_cast< idPlayer* >( activator );
 ////		float dot = player->viewAngles.ToForward() * GetPhysics()->GetAxis()[0];
-////		float angle = RAD2DEG( idMath::ACos( dot ) );
+////		/*float*/angle:number = RAD2DEG( idMath::ACos( dot ) );
 ////		if ( angle  > spawnArgs.GetFloat( "angleLimit", "30" ) ) {
 ////			return false;
 ////		}

@@ -213,7 +213,7 @@
 //	int		index;
 //
 //	if ( log && fLog ) {
-//		const char *text = va( "%s > Reading hash string\n", logStr.c_str() );
+//		text:string = va( "%s > Reading hash string\n", logStr.c_str() );
 //		fLog->Write( text, strlen( text ) );
 //	} 
 //
@@ -247,7 +247,7 @@
 //*/
 //void idDemoFile::WriteHashString( const char *str ) {
 //	if ( log && fLog ) {
-//		const char *text = va( "%s > Writing hash string\n", logStr.c_str() );
+//		text:string = va( "%s > Writing hash string\n", logStr.c_str() );
 //		fLog->Write( text, strlen( text ) );
 //	}
 //	// see if it is already in the has table

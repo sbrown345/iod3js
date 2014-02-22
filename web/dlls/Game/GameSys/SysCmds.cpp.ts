@@ -1486,7 +1486,7 @@
 
 ////	idVec3	dir;
 ////	if ( args.Argc() == 3 ) {
-////		float angle = atof( args.Argv( 2 ) );
+////		/*float*/angle:number = atof( args.Argv( 2 ) );
 
 ////		idMath::SinCos( DEG2RAD( angle ), dir[1], dir[0] );
 ////		dir[2] = 0;

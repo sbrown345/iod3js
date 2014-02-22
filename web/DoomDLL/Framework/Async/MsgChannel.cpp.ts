@@ -312,7 +312,7 @@
 //idMsgChannel::ReadyToSend
 //=================
 //*/
-//bool idMsgChannel::ReadyToSend( const int time ) const {
+//bool idMsgChannel::ReadyToSend( /*int*/time:number ) const {
 //	int deltaTime;
 //
 //	if ( !maxRate ) {
@@ -411,7 +411,7 @@
 //  Sends one fragment of the current message.
 //=================
 //*/
-//void idMsgChannel::SendNextFragment( idPort &port, const int time ) {
+//void idMsgChannel::SendNextFragment( idPort &port, /*int*/time:number ) {
 //	idBitMsg	msg;
 //	byte		msgBuf[MAX_PACKETLEN];
 //	int			fragLength;
@@ -468,7 +468,7 @@
 //  A 0 length will still generate a packet.
 //================
 //*/
-//int idMsgChannel::SendMessage( idPort &port, const int time, const idBitMsg &msg ) {
+//int idMsgChannel::SendMessage( idPort &port, /*int*/time:number, const idBitMsg &msg ) {
 //	int totalLength;
 //
 //	if ( remoteAddress.type == NA_BAD ) {
@@ -536,7 +536,7 @@
 //  fragment of a multi-part message, the entire thing will be copied out.
 //=================
 //*/
-//bool idMsgChannel::Process( const netadr_t from, int time, idBitMsg &msg, int &sequence ) {
+//bool idMsgChannel::Process( const netadr_t from, /*int*/time:number, idBitMsg &msg, int &sequence ) {
 //	int			fragStart, fragLength, dropped;
 //	bool		fragmented;
 //	idBitMsg	fragMsg;
@@ -712,7 +712,7 @@
 //idMsgChannel::UpdateOutgoingRate
 //=================
 //*/
-//void idMsgChannel::UpdateOutgoingRate( const int time, const int size ) {
+//void idMsgChannel::UpdateOutgoingRate( /*int*/time:number, const int size ) {
 //	// update the outgoing rate control variables
 //	int deltaTime = time - lastSendTime;
 //	if ( deltaTime > 1000 ) {
@@ -742,7 +742,7 @@
 //idMsgChannel::UpdateIncomingRate
 //=================
 //*/
-//void idMsgChannel::UpdateIncomingRate( const int time, const int size ) {
+//void idMsgChannel::UpdateIncomingRate( /*int*/time:number, const int size ) {
 //	// update incoming rate variables
 //	if ( time - incomingRateTime > 1000 ) {
 //		incomingRateBytes -= incomingRateBytes * ( time - incomingRateTime - 1000 ) / 1000;
@@ -759,7 +759,7 @@
 //idMsgChannel::UpdatePacketLoss
 //=================
 //*/
-//void idMsgChannel::UpdatePacketLoss( const int time, const int numReceived, const int numDropped ) {
+//void idMsgChannel::UpdatePacketLoss( /*int*/time:number, const int numReceived, const int numDropped ) {
 //	// update incoming packet loss variables
 //	if ( time - incomingPacketLossTime > 5000 ) {
 //		float scale = ( time - incomingPacketLossTime - 5000 ) * ( 1.0f / 5000.0f );

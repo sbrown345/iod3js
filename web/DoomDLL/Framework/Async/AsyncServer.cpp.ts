@@ -657,7 +657,7 @@ class idAsyncServer {
 //idAsyncServer::DuplicateUsercmds
 //==================
 //*/
-//void idAsyncServer::DuplicateUsercmds( int frame, int time ) {
+//void idAsyncServer::DuplicateUsercmds( int frame, /*int*/time:number ) {
 //	int i, previousIndex, currentIndex;
 //
 //	previousIndex = ( frame - 1 ) & ( MAX_USERCMD_BACKUP - 1 );
@@ -2403,7 +2403,7 @@ class idAsyncServer {
 //==================
 //*/
 //int idAsyncServer::UpdateTime( int clamp ) {
-//	int time, msec;
+//	/*int*/time:number, msec;
 //
 //	time = Sys_Milliseconds();
 //	msec = idMath::ClampInt( 0, clamp, time - realTime );

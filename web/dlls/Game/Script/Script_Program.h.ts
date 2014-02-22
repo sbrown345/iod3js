@@ -263,7 +263,7 @@ display an error message with line and file info.
 
 class idCompileError extends idException {
 //public:
-	//idCompileError( const char *text ) : idException( text ) {}
+	//idCompileError( text:string ) : idException( text ) {}
 	constructor ( text: string ) {
 		super( text );
 	}

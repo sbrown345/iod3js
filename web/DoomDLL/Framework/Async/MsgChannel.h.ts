@@ -118,13 +118,13 @@
 //	float			GetIncomingPacketLoss( void ) const;
 //
 //					// Returns true if the channel is ready to send new data based on the maximum rate.
-//	bool			ReadyToSend( const int time ) const;
+//	bool			ReadyToSend( /*int*/time:number ) const;
 //
 //					// Sends an unreliable message, in order and without duplicates.
-//	int				SendMessage( idPort &port, const int time, const idBitMsg &msg );
+//	int				SendMessage( idPort &port, /*int*/time:number, const idBitMsg &msg );
 //
 //					// Sends the next fragment if the last message was too large to send at once.
-//	void			SendNextFragment( idPort &port, const int time );
+//	void			SendNextFragment( idPort &port, /*int*/time:number );
 //
 //					// Returns true if there are unsent fragments left.
 //	bool			UnsentFragmentsLeft( void ) const { return unsentFragments; }
@@ -133,7 +133,7 @@
 //					// is ready for further processing. In that case the read pointer of msg
 //					// points to the first byte ready for reading, and sequence is set to
 //					// the sequence number of the message.
-//	bool			Process( const netadr_t from, int time, idBitMsg &msg, int &sequence );
+//	bool			Process( const netadr_t from, /*int*/time:number, idBitMsg &msg, int &sequence );
 //
 //					// Sends a reliable message, in order and without duplicates.
 //	bool			SendReliableMessage( const idBitMsg &msg );
@@ -192,10 +192,10 @@
 //	void			WriteMessageData( idBitMsg &out, const idBitMsg &msg );
 //	bool			ReadMessageData( idBitMsg &out, const idBitMsg &msg );
 //
-//	void			UpdateOutgoingRate( const int time, const int size );
-//	void			UpdateIncomingRate( const int time, const int size );
+//	void			UpdateOutgoingRate( /*int*/time:number, const int size );
+//	void			UpdateIncomingRate( /*int*/time:number, const int size );
 //
-//	void			UpdatePacketLoss( const int time, const int numReceived, const int numDropped );
+//	void			UpdatePacketLoss( /*int*/time:number, const int numReceived, const int numDropped );
 //};
 //
 //#endif /* !__MSGCHANNEL_H__ */

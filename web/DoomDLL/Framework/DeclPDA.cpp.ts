@@ -61,7 +61,7 @@
 ////idDeclPDA::Parse
 ////================
 ////*/
-////bool idDeclPDA::Parse( const char *text, const int textLength ) {
+////bool idDeclPDA::Parse( text:string, const int textLength ) {
 ////	idLexer src;
 ////	idToken token;
 ////
@@ -478,7 +478,7 @@
 ////idDeclVideo::Parse
 ////================
 ////*/
-////bool idDeclVideo::Parse( const char *text, const int textLength ) {
+////bool idDeclVideo::Parse( text:string, const int textLength ) {
 ////	idLexer src;
 ////	idToken token;
 ////
@@ -592,7 +592,7 @@
 ////idDeclAudio::Parse
 ////================
 ////*/
-////bool idDeclAudio::Parse( const char *text, const int textLength ) {
+////bool idDeclAudio::Parse( text:string, const int textLength ) {
 ////	idLexer src;
 ////	idToken token;
 ////

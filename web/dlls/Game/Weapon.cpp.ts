@@ -2315,7 +2315,7 @@ idWeapon.Type = new idTypeInfo("idWeapon", "idAnimatedEntity",
 ////idWeapon::ClientReceiveEvent
 ////================
 ////*/
-////bool idWeapon::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
+////bool idWeapon::ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg ) {
 ////
 ////	switch( event ) {
 ////		case EVENT_RELOAD: {

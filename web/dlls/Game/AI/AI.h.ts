@@ -247,7 +247,7 @@ class idAI extends idActor {
 ////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
 ////	void					Spawn( );
-////	void					HeardSound( idEntity *ent, const char *action );
+////	void					HeardSound( ent:idEntity, const char *action );
 ////	idActor					*GetEnemy( ) const;
 ////	void					TalkTo( idActor *actor );
 ////	talkState_t				GetTalkState( ) const;
@@ -264,9 +264,9 @@ class idAI extends idActor {
 ////							// Frees any nodes used for the dynamic obstacle avoidance.
 ////	static void				FreeObstacleAvoidanceNodes( );
 ////							// Predicts movement, returns true if a stop event was triggered.
-////	static bool				PredictPath( const idEntity *ent, const idAAS *aas, const idVec3 &start, const idVec3 &velocity, int totalTime, int frameTime, int stopEvent, predictedPath_t &path );
+////	static bool				PredictPath( const ent:idEntity, const idAAS *aas, const idVec3 &start, const idVec3 &velocity, int totalTime, int frameTime, int stopEvent, predictedPath_t &path );
 ////							// Return true if the trajectory of the clip model is collision free.
-////	static bool				TestTrajectory( const idVec3 &start, const idVec3 &end, float zVel, float gravity, float time, float max_height, const idClipModel *clip, int clipmask, const idEntity *ignore, const idEntity *targetEntity, int drawtime );
+////	static bool				TestTrajectory( const idVec3 &start, const idVec3 &end, float zVel, float gravity, /*float*/time:number, float max_height, const idClipModel *clip, int clipmask, const idEntity *ignore, const idEntity *targetEntity, int drawtime );
 ////							// Finds the best collision free trajectory for a clip model.
 ////	static bool				PredictTrajectory( const idVec3 &firePos, const idVec3 &target, float projectileSpeed, const idVec3 &projGravity, const idClipModel *clip, int clipmask, float max_height, const idEntity *ignore, const idEntity *targetEntity, int drawtime, idVec3 &aimDir );
 ////
@@ -421,7 +421,7 @@ class idAI extends idActor {
 ////	virtual	void			DormantEnd( );		// called when entity wakes from being dormant
 ////	void					Think( );
 ////	void					Activate( activator:idEntity );
-////	int						ReactionTo( const idEntity *ent );
+////	int						ReactionTo( ent:idEntity );
 ////	bool					CheckForEnemy( );
 ////	void					EnemyDead( );
 ////	virtual bool			CanPlayChatterSounds( ) const;
@@ -434,7 +434,7 @@ class idAI extends idActor {
 ////	void					PlayCinematic( void );
 ////
 ////	// movement
-////	virtual void			ApplyImpulse( idEntity *ent, int id, const idVec3 &point, const idVec3 &impulse );
+////	virtual void			ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse );
 ////	void					GetMoveDelta( const idMat3 &oldaxis, const idMat3 &axis, idVec3 &delta );
 ////	void					CheckObstacleAvoidance( const idVec3 &goalPos, idVec3 &newPos );
 ////	void					DeadMove( void );
@@ -468,16 +468,16 @@ class idAI extends idActor {
 ////	// movement control
 ////	void					StopMove( moveStatus_t status );
 ////	bool					FaceEnemy( void );
-////	bool					FaceEntity( idEntity *ent );
+////	bool					FaceEntity( ent:idEntity );
 ////	bool					DirectMoveToPosition( pos:idVec3 );
 ////	bool					MoveToEnemyHeight( void );
 ////	bool					MoveOutOfRange( idEntity *entity, float range );
-////	bool					MoveToAttackPosition( idEntity *ent, int attack_anim );
+////	bool					MoveToAttackPosition( ent:idEntity, int attack_anim );
 ////	bool					MoveToEnemy( void );
-////	bool					MoveToEntity( idEntity *ent );
+////	bool					MoveToEntity( ent:idEntity );
 ////	bool					MoveToPosition( pos:idVec3 );
 ////	bool					MoveToCover( idEntity *entity, pos:idVec3 );
-////	bool					SlideToPosition( pos:idVec3, float time );
+////	bool					SlideToPosition( pos:idVec3, /*float*/time:number );
 ////	bool					WanderAround( void );
 ////	bool					StepDirection( float dir );
 ////	bool					NewWanderDir( const idVec3 &dest );
@@ -506,7 +506,7 @@ class idAI extends idActor {
 ////	void					RemoveProjectile( void );
 ////	idProjectile			*LaunchProjectile( jointname:string, idEntity *target, bool clampToAttackCone );
 ////	virtual void			DamageFeedback( idEntity *victim, idEntity *inflictor, int &damage );
-////	void					DirectDamage( const char *meleeDefName, idEntity *ent );
+////	void					DirectDamage( const char *meleeDefName, ent:idEntity );
 ////	bool					TestMelee( void ) const;
 ////	bool					AttackMelee( const char *meleeDefName );
 ////	void					BeginAttack( const char *name );

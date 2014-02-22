@@ -39,7 +39,7 @@ class idDeclEntityDef extends idDecl {
 
 //	virtual size_t			Size( void ) const;
 //	virtual const char *	DefaultDefinition() const;
-//	virtual bool			Parse( const char *text, const int textLength );
+//	virtual bool			Parse( text:string, const int textLength );
 //	virtual void			FreeData( void );
 //	virtual void			Print( void );
 ////#include "../idlib/precompiled.h"
@@ -69,7 +69,7 @@ class idDeclEntityDef extends idDecl {
 ////idDeclEntityDef::Parse
 ////================
 ////*/
-////bool idDeclEntityDef::Parse( const char *text, const int textLength ) {
+////bool idDeclEntityDef::Parse( text:string, const int textLength ) {
 ////	idLexer src;
 ////	idToken	token, token2;
 ////

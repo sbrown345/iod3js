@@ -114,7 +114,7 @@ class idRenderWorldLocal extends idRenderWorld {
 //	virtual bool			Trace( modelTrace_t &trace, const idVec3 &start, const idVec3 &end, const float radius, bool skipDynamic = true, bool skipPlayer = false ) const;
 //	virtual bool			FastWorldTrace( modelTrace_t &trace, const idVec3 &start, const idVec3 &end ) const;
 //
-//	virtual void			DebugClearLines( int time );
+//	virtual void			DebugClearLines( /*int*/time:number );
 //	virtual void			DebugLine( const idVec4 &color, const idVec3 &start, const idVec3 &end, const int lifetime = 0, const bool depthTest = false );
 //	virtual void			DebugArrow( const idVec4 &color, const idVec3 &start, const idVec3 &end, int size, const int lifetime = 0 );
 //	virtual void			DebugWinding( const idVec4 &color, const idWinding &w, const idVec3 &origin, const idMat3 &axis, const int lifetime = 0, const bool depthTest = false );
@@ -127,10 +127,10 @@ class idRenderWorldLocal extends idRenderWorld {
 //	virtual void			DebugScreenRect( const idVec4 &color, const idScreenRect &rect, const viewDef_t *viewDef, const int lifetime = 0 );
 //	virtual void			DebugAxis( const idVec3 &origin, const idMat3 &axis );
 //
-//	virtual void			DebugClearPolygons( int time );
+//	virtual void			DebugClearPolygons( /*int*/time:number );
 //	virtual void			DebugPolygon( const idVec4 &color, const idWinding &winding, const int lifeTime = 0, const bool depthTest = false );
 //
-//	virtual void			DrawText( const char *text, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align = 1, const int lifetime = 0, bool depthTest = false );
+//	virtual void			DrawText( text:string, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align = 1, const int lifetime = 0, bool depthTest = false );
 //
 //	//-----------------------
 //
@@ -246,7 +246,7 @@ class idRenderWorldLocal extends idRenderWorld {
 //
 //	void					BoundsInAreas_r( int nodeNum, const idBounds &bounds, int *areas, int *numAreas, int maxAreas ) const;
 //
-//	float					DrawTextLength( const char *text, float scale, int len = 0 );
+//	float					DrawTextLength( text:string, float scale, int len = 0 );
 //
 	FreeInteractions():void { throw "placeholder"; }
 //

@@ -1239,7 +1239,7 @@ idExplodingBarrel.Type = new idTypeInfo("idExplodingBarrel", "idBarrel",
 ////idExplodingBarrel::ClientReceiveEvent
 ////================
 ////*/
-////bool idExplodingBarrel::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
+////bool idExplodingBarrel::ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg ) {
 ////
 ////	switch( event ) {
 ////		case EVENT_EXPLODE: {

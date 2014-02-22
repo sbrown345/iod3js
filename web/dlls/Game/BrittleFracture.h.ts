@@ -71,12 +71,12 @@ class idBrittleFracture extends idEntity {
 
 ////	virtual void				Present( void );
 ////	Think():void{throw "placeholder";}
-////	virtual void				ApplyImpulse( idEntity *ent, int id, const idVec3 &point, const idVec3 &impulse );
-////	virtual void				AddForce( idEntity *ent, int id, const idVec3 &point, const idVec3 &force );
+////	virtual void				ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse );
+////	virtual void				AddForce( ent:idEntity, int id, const idVec3 &point, const idVec3 &force );
 ////	virtual void				AddDamageEffect( const trace_t &collision, const idVec3 &velocity, const char *damageDefName );
 ////	virtual void				Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location );
 
-////	void						ProjectDecal( const idVec3 &point, const idVec3 &dir, const int time, const char *damageDefName );
+////	void						ProjectDecal( const idVec3 &point, const idVec3 &dir, /*int*/time:number, const char *damageDefName );
 ////	bool						IsBroken( void ) const;
 
 ////	enum {
@@ -86,7 +86,7 @@ class idBrittleFracture extends idEntity {
 ////	};
 
 ////	virtual void				ClientPredictionThink( void );
-////	virtual bool				ClientReceiveEvent( int event, int time, const idBitMsg &msg );
+////	virtual bool				ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg );
 
 ////private:
 ////	// setttings
@@ -119,9 +119,9 @@ class idBrittleFracture extends idEntity {
 
 ////	void						AddShard( idClipModel *clipModel, idFixedWinding &w );
 ////	void						RemoveShard( int index );
-////	void						DropShard( shard_t *shard, const idVec3 &point, const idVec3 &dir, const float impulse, const int time );
-////	void						Shatter( const idVec3 &point, const idVec3 &impulse, const int time );
-////	void						DropFloatingIslands( const idVec3 &point, const idVec3 &impulse, const int time );
+////	void						DropShard( shard_t *shard, const idVec3 &point, const idVec3 &dir, const float impulse, /*int*/time:number );
+////	void						Shatter( const idVec3 &point, const idVec3 &impulse, /*int*/time:number );
+////	void						DropFloatingIslands( const idVec3 &point, const idVec3 &impulse, /*int*/time:number );
 ////	void						Break( void );
 ////	void						Fracture_r( idFixedWinding &w );
 ////	void						CreateFractures( const idRenderModel *renderModel );

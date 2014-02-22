@@ -217,7 +217,7 @@
 //	int					stats_max_index;
 //
 //	void				PrintOOB( const netadr_t to, int opcode, const char *string );
-//	void				DuplicateUsercmds( int frame, int time );
+//	void				DuplicateUsercmds( int frame, /*int*/time:number );
 //	void				ClearClient( int clientNum );
 //	void				InitClient( int clientNum, int clientId, int clientRate );
 //	void				InitLocalClient( int clientNum );

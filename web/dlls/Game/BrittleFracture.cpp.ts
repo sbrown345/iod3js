@@ -687,7 +687,7 @@ var SHARD_FADE_START	= 2000;
 ////idBrittleFracture::ProjectDecal
 ////================
 ////*/
-////void idBrittleFracture::ProjectDecal( const idVec3 &point, const idVec3 &dir, const int time, const char *damageDefName ) {
+////void idBrittleFracture::ProjectDecal( const idVec3 &point, const idVec3 &dir, const /*int*/time:number, const char *damageDefName ) {
 ////	int i, j, bits, clipBits;
 ////	float a, c, s;
 ////	idVec2 st[MAX_POINTS_ON_WINDING];
@@ -790,7 +790,7 @@ var SHARD_FADE_START	= 2000;
 ////idBrittleFracture::DropShard
 ////================
 ////*/
-////void idBrittleFracture::DropShard( shard_t *shard, const idVec3 &point, const idVec3 &dir, const float impulse, const int time ) {
+////void idBrittleFracture::DropShard( shard_t *shard, const idVec3 &point, const idVec3 &dir, const float impulse, const /*int*/time:number ) {
 ////	int i, j, clipModelId;
 ////	float dist, f;
 ////	idVec3 dir2, origin;
@@ -852,7 +852,7 @@ var SHARD_FADE_START	= 2000;
 ////idBrittleFracture::Shatter
 ////================
 ////*/
-////void idBrittleFracture::Shatter( const idVec3 &point, const idVec3 &impulse, const int time ) {
+////void idBrittleFracture::Shatter( const idVec3 &point, const idVec3 &impulse, const /*int*/time:number ) {
 ////	int i;
 ////	idVec3 dir;
 ////	shard_t *shard;
@@ -910,7 +910,7 @@ var SHARD_FADE_START	= 2000;
 ////idBrittleFracture::DropFloatingIslands
 ////================
 ////*/
-////void idBrittleFracture::DropFloatingIslands( const idVec3 &point, const idVec3 &impulse, const int time ) {
+////void idBrittleFracture::DropFloatingIslands( const idVec3 &point, const idVec3 &impulse, const /*int*/time:number ) {
 ////	int i, j, numIslands;
 ////	int queueStart, queueEnd;
 ////	shard_t *curShard, *nextShard, **queue;
@@ -1274,7 +1274,7 @@ var SHARD_FADE_START	= 2000;
 ////idBrittleFracture::ClientReceiveEvent
 ////================
 ////*/
-////bool idBrittleFracture::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
+////bool idBrittleFracture::ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg ) {
 ////	idVec3 point, dir;
 
 ////	switch( event ) {

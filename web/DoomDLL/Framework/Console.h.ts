@@ -64,7 +64,7 @@ class idConsole {
 	//	virtual void	Close( void ) = 0;
 	//
 	//	virtual void	Draw( bool forceFullScreen ) = 0;
-	//	virtual void	Print( const char *text ) = 0;
+	//	virtual void	Print( text:string ) = 0;
 };
 //
 //extern idConsole *	console;	// statically initialized to an idConsoleLocal

@@ -63,9 +63,9 @@ class idCmdArgs {
 	////							// Takes a null terminated string and breaks the string up into arg tokens.
 	////							// Does not need to be /n terminated.
 	////							// Set keepAsStrings to true to only seperate tokens from whitespace and comments, ignoring punctuation
-	////	void					TokenizeString( const char *text, bool keepAsStrings );
+	////	void					TokenizeString( text:string, bool keepAsStrings );
 
-	////	void					AppendArg( const char *text );
+	////	void					AppendArg( text:string );
 	Clear ( ): void { this.argc = 0; }
 	////	const char **			GetArgs( int *argc );
 

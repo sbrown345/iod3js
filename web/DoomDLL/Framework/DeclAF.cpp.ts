@@ -1427,7 +1427,7 @@ class idDeclAF {
 ////idDeclAF::Parse
 ////================
 ////*/
-////bool idDeclAF::Parse( const char *text, const int textLength ) {
+////bool idDeclAF::Parse( text:string, const int textLength ) {
 ////	int i, j;
 ////	idLexer src;
 ////	idToken token;

@@ -117,7 +117,7 @@ class idCompiler {
 	//	static opcode_t	opcodes[];
 	//
 	//					idCompiler();
-	//	void			CompileFile( const char *text, const char *filename, bool console );
+	//	void			CompileFile( text:string, const char *filename, bool console );
 
 	static punctuationValid = new Array<boolean>( 256 );
 	static punctuation = [

@@ -1037,7 +1037,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////idEntity::SetColor
 ////================
 ////*/
-////idEntity.prototype.SetColor( const idVec3 &color ) {
+////idEntity.prototype.SetColor( color:idVec3 ) {
 ////	SetColor( color[ 0 ], color[ 1 ], color[ 2 ] );
 ////	UpdateVisuals();
 ////}
@@ -4085,7 +4085,7 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////================
 ////*/
 ////idEntity.prototype.Event_StartSound( const char *soundName, int channel, int netSync ) {
-////	int time;
+////	/*int*/time:number;
 ////	
 ////	StartSound( soundName, ( s_channelType )channel, 0, ( netSync != 0 ), &time );
 ////	idThread::ReturnFloat( MS2SEC( time ) );
@@ -4507,7 +4507,7 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////idEntity::Event_Wait
 ////=====================
 ////*/
-////idEntity.prototype.Event_Wait( float time ) {
+////idEntity.prototype.Event_Wait( /*float*/time:number ) {
 ////	idThread *thread = idThread::CurrentThread();
 ////
 ////	if ( !thread ) {
@@ -4811,7 +4811,7 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////idEntity::ServerReceiveEvent
 ////================
 ////*/
-////bool idEntity::ServerReceiveEvent( int event, int time, const idBitMsg &msg ) {
+////bool idEntity::ServerReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg ) {
 ////	switch( event ) {
 ////		case 0: {
 ////		}
@@ -4826,7 +4826,7 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////idEntity::ClientReceiveEvent
 ////================
 ////*/
-////bool idEntity::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
+////bool idEntity::ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg ) {
 ////	int					index;
 ////	const idSoundShader	*shader;
 ////	s_channelType		channel;
@@ -5299,7 +5299,7 @@ idAnimatedEntity.Type = new idTypeInfo("idAnimatedEntity", "idEntity",
 ////idAnimatedEntity::ClientReceiveEvent
 ////================
 ////*/
-////bool idAnimatedEntity::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
+////bool idAnimatedEntity::ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg ) {
 ////	int damageDefIndex;
 ////	int materialIndex;
 ////	jointHandle_t jointNum;

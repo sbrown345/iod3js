@@ -31,18 +31,22 @@
 ////
 ////extern const idEventDef EV_Enable;
 ////extern const idEventDef EV_Disable;
-////
-/////*
-////===============================================================================
-////
-////  Trigger base.
-////
-////===============================================================================
-////*/
-////
-////class idTrigger extends idEntity {
+
+/*
+===============================================================================
+
+  Trigger base.
+
+===============================================================================
+*/
+
+class idTrigger extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idTrigger );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idTrigger>[];
 ////
 ////	static void			DrawDebugInfo( void );
 ////
@@ -64,20 +68,24 @@
 ////	void				Event_Disable( void ): void { throw "placeholder"; }
 ////
 ////	const function_t *	scriptFunction;
-////};
-////
-////
-/////*
-////===============================================================================
-////
-////  Trigger which can be activated multiple times.
-////
-////===============================================================================
-////*/
-////
-////class idTrigger_Multi extends idTrigger {
+};
+
+
+/*
+===============================================================================
+
+  Trigger which can be activated multiple times.
+
+===============================================================================
+*/
+
+class idTrigger_Multi extends idTrigger {
 ////public:
 ////	CLASS_PROTOTYPE( idTrigger_Multi );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idTrigger_Multi>[];
 ////
 ////						idTrigger_Multi( void );
 ////
@@ -104,25 +112,29 @@
 ////	void				Event_TriggerAction( activator:idEntity ): void { throw "placeholder"; }
 ////	void				Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
 ////	void				Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
-////};
-////
-////
-/////*
-////===============================================================================
-////
-////  Trigger which can only be activated by an entity with a specific name.
-////
-////===============================================================================
-////*/
-////
-////class idTrigger_EntityName extends idTrigger {
+};
+
+
+/*
+===============================================================================
+
+  Trigger which can only be activated by an entity with a specific name.
+
+===============================================================================
+*/
+
+class idTrigger_EntityName extends idTrigger {
 ////public:
 ////	CLASS_PROTOTYPE( idTrigger_EntityName );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idTrigger_EntityName>[];
 ////
 ////						idTrigger_EntityName( void );
 ////
-////	Save(savefile:idSaveGame):void{throw "placeholder";}
-////	Restore(savefile:idRestoreGame):void{throw "placeholder";}
+	Save(savefile:idSaveGame):void{throw "placeholder";}
+	Restore(savefile:idRestoreGame):void{throw "placeholder";}
 ////
 ////	Spawn():void{throw "placeholder";}
 ////
@@ -135,28 +147,32 @@
 ////	bool				triggerFirst;
 ////	idStr				entityName;
 ////
-////	void				TriggerAction( activator:idEntity ): void { throw "placeholder"; }
-////	void				Event_TriggerAction( activator:idEntity ): void { throw "placeholder"; }
-////	void				Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
-////	void				Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
-////};
-////
-/////*
-////===============================================================================
-////
-////  Trigger which repeatedly fires targets.
-////
-////===============================================================================
-////*/
-////
-////class idTrigger_Timer extends idTrigger {
+	TriggerAction( activator:idEntity ): void { throw "placeholder"; }
+	Event_TriggerAction( activator:idEntity ): void { throw "placeholder"; }
+	Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
+	Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
+};
+
+/*
+===============================================================================
+
+  Trigger which repeatedly fires targets.
+
+===============================================================================
+*/
+
+class idTrigger_Timer extends idTrigger {
 ////public:
 ////	CLASS_PROTOTYPE( idTrigger_Timer );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idTrigger_Timer>[];
 ////
 ////						idTrigger_Timer( void );
 ////
-////	Save(savefile:idSaveGame):void{throw "placeholder";}
-////	Restore(savefile:idRestoreGame):void{throw "placeholder";}
+	Save(savefile:idSaveGame):void{throw "placeholder";}
+	Restore(savefile:idRestoreGame):void{throw "placeholder";}
 ////
 ////	Spawn():void{throw "placeholder";}
 ////
@@ -171,99 +187,115 @@
 ////	idStr				onName;
 ////	idStr				offName;
 ////
-////	void				Event_Timer( void ): void { throw "placeholder"; }
-////	void				Event_Use( activator:idEntity ): void { throw "placeholder"; }
-////};
-////
-////
-/////*
-////===============================================================================
-////
-////  Trigger which fires targets after being activated a specific number of times.
-////
-////===============================================================================
-////*/
-////
-////class idTrigger_Count extends idTrigger {
+	Event_Timer( ): void { throw "placeholder"; }
+	Event_Use( activator:idEntity ): void { throw "placeholder"; }
+};
+
+
+/*
+===============================================================================
+
+  Trigger which fires targets after being activated a specific number of times.
+
+===============================================================================
+*/
+
+class idTrigger_Count extends idTrigger {
 ////public:
 ////	CLASS_PROTOTYPE( idTrigger_Count );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idTrigger_Count>[];
 ////
 ////						idTrigger_Count( void );
 ////
-////	Save(savefile:idSaveGame):void{throw "placeholder";}
-////	Restore(savefile:idRestoreGame):void{throw "placeholder";}
+	Save(savefile:idSaveGame):void{throw "placeholder";}
+	Restore(savefile:idRestoreGame):void{throw "placeholder";}
 ////
-////	Spawn():void{throw "placeholder";}
+	Spawn():void{throw "placeholder";}
 ////
 ////private:
 ////	int					goal;
 ////	int					count;
 ////	float				delay;
 ////
-////	void				Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
-////	void				Event_TriggerAction( activator:idEntity ): void { throw "placeholder"; }
-////};
-////
-////
-/////*
-////===============================================================================
-////
-////  Trigger which hurts touching entities.
-////
-////===============================================================================
-////*/
-////
-////class idTrigger_Hurt extends idTrigger {
+	Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
+	Event_TriggerAction( activator:idEntity ): void { throw "placeholder"; }
+};
+
+
+/*
+===============================================================================
+
+  Trigger which hurts touching entities.
+
+===============================================================================
+*/
+
+class idTrigger_Hurt extends idTrigger {
 ////public:
 ////	CLASS_PROTOTYPE( idTrigger_Hurt );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idTrigger_Hurt>[];
 ////
 ////						idTrigger_Hurt( void );
 ////
-////	Save(savefile:idSaveGame):void{throw "placeholder";}
-////	Restore(savefile:idRestoreGame):void{throw "placeholder";}
+	Save(savefile:idSaveGame):void{throw "placeholder";}
+	Restore(savefile:idRestoreGame):void{throw "placeholder";}
 ////
-////	Spawn():void{throw "placeholder";}
+	Spawn():void{throw "placeholder";}
 ////
 ////private:
 ////	bool				on;
 ////	float				delay;
 ////	int					nextTime;
 ////
-////	void				Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
-////	void				Event_Toggle( activator:idEntity ): void { throw "placeholder"; }
-////};
-////
-////
-/////*
-////===============================================================================
-////
-////  Trigger which fades the player view.
-////
-////===============================================================================
-////*/
-////
-////class idTrigger_Fade extends idTrigger {
+	Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
+	Event_Toggle( activator:idEntity ): void { throw "placeholder"; }
+};
+
+
+/*
+===============================================================================
+
+  Trigger which fades the player view.
+
+===============================================================================
+*/
+
+class idTrigger_Fade extends idTrigger {
 ////public:
 ////
 ////	CLASS_PROTOTYPE( idTrigger_Fade );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idTrigger_Fade>[];
 ////
 ////private:
-////	void				Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
-////};
-////
-////
-/////*
-////===============================================================================
-////
-////  Trigger which continuously tests whether other entities are touching it.
-////
-////===============================================================================
-////*/
-////
-////class idTrigger_Touch extends idTrigger {
+	Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
+};
+
+
+/*
+===============================================================================
+
+  Trigger which continuously tests whether other entities are touching it.
+
+===============================================================================
+*/
+
+class idTrigger_Touch extends idTrigger {
 ////public:
 ////
 ////	CLASS_PROTOTYPE( idTrigger_Touch );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idTrigger_Touch>[];
 ////
 ////						idTrigger_Touch( void );
 ////
@@ -281,7 +313,7 @@
 ////private:
 ////	idClipModel *		clipModel;
 ////
-////	void				Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
-////};
+	Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
+};
 ////
 ////#endif /* !__GAME_TRIGGER_H__ */

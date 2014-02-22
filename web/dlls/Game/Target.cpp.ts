@@ -454,7 +454,7 @@ idTarget_SetGlobalShaderTime.Type = new idTypeInfo("idTarget_SetGlobalShaderTime
 ////*/
 ////void idTarget_SetGlobalShaderTime::Event_Activate( activator:idEntity ) {
 ////	int parm = spawnArgs.GetInt( "globalParm" );
-////	float time = -MS2SEC( gameLocal.time );
+////	/*float*/time:number = -MS2SEC( gameLocal.time );
 ////	if ( parm >= 0 && parm < MAX_GLOBAL_SHADER_PARMS ) {
 ////		gameLocal.globalShaderParms[parm] = time;
 ////	}
@@ -762,7 +762,7 @@ idTarget_LightFadeIn.Type = new idTypeInfo("idTarget_LightFadeIn", "idTarget",
 ////	var ent:idEntity
 ////	idLight *light;
 ////	int i;
-////	float time;
+////	var /*float*/time:number;
 ////
 ////	if ( !targets.Num() ) {
 ////		return;
@@ -826,7 +826,7 @@ idTarget_LightFadeOut.Type = new idTypeInfo("idTarget_LightFadeOut", "idTarget",
 ////	var ent:idEntity
 ////	idLight *light;
 ////	int i;
-////	float time;
+////	var /*float*/time:number;
 ////
 ////	if ( !targets.Num() ) {
 ////		return;
@@ -1664,9 +1664,9 @@ idTarget_SetKeyVal.Type = new idTypeInfo("idTarget_SetKeyVal", "idTarget",
 ////*/
 ////
 ////CLASS_DECLARATION( idTarget, idTarget_SetFov )
-idTarget_SetFov	.CreateInstance = function ( ): idClass {
+idTarget_SetFov.CreateInstance = function ( ): idClass {
 	try {
-		var ptr = new nameofclass;
+		var ptr = new idTarget_SetFov;
 		ptr.FindUninitializedMemory ( );
 		return ptr;
 	} catch ( e ) {
@@ -1674,17 +1674,18 @@ idTarget_SetFov	.CreateInstance = function ( ): idClass {
 	}
 };
 
-nameofclass.prototype.GetType = function ( ): idTypeInfo {
-	return ( nameofclass.Type );
+idTarget_SetFov.prototype.GetType = function ( ): idTypeInfo {
+	return ( idTarget_SetFov.Type );
 };
 
-nameofclass.eventCallbacks = [
-	EVENT( EV_Activate,	idTarget_SetFov.prototype.Event_Activate )
+idTarget_SetFov.eventCallbacks = [
+	EVENT(EV_Activate, idTarget_SetFov.prototype.Event_Activate)
 ];
 
-nameofclass.Type = new idTypeInfo("nameofclass", "idTarget",
-	nameofclass.eventCallbacks, nameofclass.CreateInstance, nameofclass.prototype.Spawn,
-	nameofclass.prototype.Save, nameofclass.prototype.Restore );
+idTarget_SetFov.Type = new idTypeInfo("idTarget_SetFov", "idTarget",
+	idTarget_SetFov.eventCallbacks, idTarget_SetFov.CreateInstance, idTarget_SetFov.prototype.Spawn,
+	idTarget_SetFov.prototype.Save, idTarget_SetFov.prototype.Restore );
+
 
 ////END_CLASS
 ////

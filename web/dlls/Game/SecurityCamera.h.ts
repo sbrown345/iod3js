@@ -38,9 +38,13 @@
 ////*/
 ////
 ////
-////class idSecurityCamera extends idEntity {
+class idSecurityCamera extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idSecurityCamera );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idSecurityCamera>[];
 ////
 ////	void					Spawn( void );
 ////
@@ -92,6 +96,6 @@
 ////	void					Event_Pause( void );
 ////	void					Event_Alert( void );
 ////	void					Event_AddLight( void );
-////};
+};
 ////
 ////#endif /* !__GAME_SECURITYCAMERA_H__ */

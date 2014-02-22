@@ -879,7 +879,7 @@
 ////	mat[2][2] = z;
 ////}
 
-////void MA_BuildAxisRotation(idMat4& mat, float ang, int axis) {
+////void MA_BuildAxisRotation(idMat4& mat, float ang, /*int*/axis:number) {
 
 ////	float sinAng = idMath::Sin(ang);
 ////	float cosAng = idMath::Cos(ang);

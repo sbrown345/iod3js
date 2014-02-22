@@ -70,7 +70,7 @@ class /*idCmdSystemLocal*/ idCmdSystem {
 ////	virtual void			CommandCompletion( void(*callback)( const char *s ) );
 ////	virtual void			ArgCompletion( const char *cmdString, void(*callback)( const char *s ) );
 
-////	virtual void			BufferCommandText( cmdExecution_t exec, const char *text );
+////	virtual void			BufferCommandText( cmdExecution_t exec, text:string );
 ////	virtual void			ExecuteCommandBuffer( void );
 
 ////	virtual void			ArgCompletion_FolderExtension( const idCmdArgs &args, void(*callback)( const char *s ), const char *folder, bool stripFolder, ... );
@@ -104,9 +104,9 @@ class /*idCmdSystemLocal*/ idCmdSystem {
 
 ////private:	
 ////	void					ExecuteTokenizedString( const idCmdArgs &args );
-////	void					ExecuteCommandText( const char *text );
-////	void					InsertCommandText( const char *text );
-////	void					AppendCommandText( const char *text );
+////	void					ExecuteCommandText( text:string );
+////	void					InsertCommandText( text:string );
+////	void					AppendCommandText( text:string );
 
 ////	static void				ListByFlags( const idCmdArgs &args, cmdFlags_t flags );
 ////	static void				List_f( const idCmdArgs &args );

@@ -52,7 +52,7 @@ var EV_GetProjectileState = new idEventDef( "getProjectileState", null, 'd' );
 ////CLASS_DECLARATION( idEntity, idProjectile )
 idProjectile.CreateInstance = function ( ): idClass {
 	try {
-		var ptr = new nameofclass;
+		var ptr = new idProjectile;
 		ptr.FindUninitializedMemory ( );
 		return ptr;
 	} catch ( e ) {
@@ -60,21 +60,22 @@ idProjectile.CreateInstance = function ( ): idClass {
 	}
 };
 
-nameofclass.prototype.GetType = function ( ): idTypeInfo {
-	return ( nameofclass.Type );
+idProjectile.prototype.GetType = function ( ): idTypeInfo {
+	return ( idProjectile.Type );
 };
 
-nameofclass.eventCallbacks = [
+idProjectile.eventCallbacks = [
 	EVENT( EV_Explode,				idProjectile.Event_Explode ),
 	EVENT( EV_Fizzle,				idProjectile.Event_Fizzle ),
 	EVENT( EV_Touch,				idProjectile.Event_Touch ),
 	EVENT( EV_RadiusDamage,			idProjectile.Event_RadiusDamage ),
-	EVENT( EV_GetProjectileState,	idProjectile.Event_GetProjectileState ),
+	EVENT( EV_GetProjectileState,	idProjectile.Event_GetProjectileState )
 ];
 
-nameofclass.Type = new idTypeInfo("nameofclass", "idEntity",
-	nameofclass.eventCallbacks, nameofclass.CreateInstance, nameofclass.prototype.Spawn,
-	nameofclass.prototype.Save, nameofclass.prototype.Restore );
+idProjectile.Type = new idTypeInfo("idProjectile", "idEntity",
+	idProjectile.eventCallbacks, idProjectile.CreateInstance, idProjectile.prototype.Spawn,
+	idProjectile.prototype.Save, idProjectile.prototype.Restore );
+
 
 ////END_CLASS
 ////
@@ -1042,7 +1043,7 @@ nameofclass.Type = new idTypeInfo("nameofclass", "idEntity",
 ////=================
 ////*/
 ////bool idProjectile::ClientPredictionCollide( idEntity *soundEnt, const idDict &projectileDef, const trace_t &collision, const idVec3 &velocity, bool addDamageEffect ) {
-////	idEntity *ent;
+////	ent:idEntity;
 ////
 ////	// remove projectile when a 'noimpact' surface is hit
 ////	if ( collision.c.material && ( collision.c.material->GetSurfaceFlags() & SURF_NOIMPACT ) ) {
@@ -1209,7 +1210,7 @@ nameofclass.Type = new idTypeInfo("nameofclass", "idEntity",
 ////idProjectile::ClientReceiveEvent
 ////================
 ////*/
-////bool idProjectile::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
+////bool idProjectile::ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg ) {
 ////	trace_t collision;
 ////	idVec3 velocity;
 ////

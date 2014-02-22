@@ -403,7 +403,7 @@ class idAngles {
 ////*/
 ////idRotation idAngles::ToRotation( void ) const {
 ////	idVec3 vec;
-////	float angle, w;
+////	/*float*/angle:number, w;
 ////	float sx, cx, sy, cy, sz, cz;
 ////	float sxcy, cxcy, sxsy, cxsy;
 ////

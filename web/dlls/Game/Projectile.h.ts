@@ -39,29 +39,33 @@
 ////
 ////extern const idEventDef EV_Explode;
 ////
-////class idProjectile extends idEntity {
+class idProjectile extends idEntity {
 ////public :
 ////	CLASS_PROTOTYPE( idProjectile );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idProjectile>[];
 ////
 ////							idProjectile();
 ////	virtual					~idProjectile();
 ////
-////	void					Spawn( void );
+////	void					Spawn( );
 ////
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
 ////
 ////	void					Create( idEntity *owner, const idVec3 &start, const idVec3 &dir );
 ////	virtual void			Launch( const idVec3 &start, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire = 0.0f, const float launchPower = 1.0f, const float dmgPower = 1.0f );
-////	virtual void			FreeLightDef( void );
+////	virtual void			FreeLightDef( );
 ////
-////	idEntity *				GetOwner( void ) const;
+////	idEntity *				GetOwner( ) const;
 ////
-////	virtual void			Think( void );
+////	virtual void			Think( );
 ////	virtual void			Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location );
 ////	virtual bool			Collide( const trace_t &collision, const idVec3 &velocity );
 ////	virtual void			Explode( const trace_t &collision, idEntity *ignore );
-////	void					Fizzle( void );
+////	void					Fizzle( );
 ////
 ////	static idVec3			GetVelocity( const idDict *projectile );
 ////	static idVec3			GetGravity( const idDict *projectile );
@@ -73,10 +77,10 @@
 ////
 ////	static void				DefaultDamageEffect( idEntity *soundEnt, const idDict &projectileDef, const trace_t &collision, const idVec3 &velocity );
 ////	static bool				ClientPredictionCollide( idEntity *soundEnt, const idDict &projectileDef, const trace_t &collision, const idVec3 &velocity, bool addDamageEffect );
-////	virtual void			ClientPredictionThink( void );
+////	virtual void			ClientPredictionThink( );
 ////	virtual void			WriteToSnapshot( idBitMsgDelta &msg ) const;
 ////	virtual void			ReadFromSnapshot( const idBitMsgDelta &msg );
-////	virtual bool			ClientReceiveEvent( int event, int time, const idBitMsg &msg );
+////	virtual bool			ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg );
 ////
 ////protected:
 ////	idEntityPtr<idEntity>	owner;
@@ -122,25 +126,29 @@
 ////
 ////	void					AddDefaultDamageEffect( const trace_t &collision, const idVec3 &velocity );
 ////
-////	void					Event_Explode( void ): void { throw "placeholder"; }
-////	void					Event_Fizzle( void ): void { throw "placeholder"; }
+////	void					Event_Explode( ): void { throw "placeholder"; }
+////	void					Event_Fizzle( ): void { throw "placeholder"; }
 ////	void					Event_RadiusDamage( idEntity *ignore ): void { throw "placeholder"; }
 ////	void					Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
-////	void					Event_GetProjectileState( void ): void { throw "placeholder"; }
-////};
-////
-////class idGuidedProjectile extends idProjectile {
+////	void					Event_GetProjectileState( ): void { throw "placeholder"; }
+};
+
+class idGuidedProjectile extends idProjectile {
 ////public :
 ////	CLASS_PROTOTYPE( idGuidedProjectile );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idGuidedProjectile>[];
 ////
-////							idGuidedProjectile( void );
-////							~idGuidedProjectile( void );
+////							idGuidedProjectile( );
+////							~idGuidedProjectile( );
 ////
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
 ////
-////	void					Spawn( void );
-////	virtual void			Think( void );
+////	void					Spawn( );
+////	virtual void			Think( );
 ////	virtual void			Launch( const idVec3 &start, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire = 0.0f, const float launchPower = 1.0f, const float dmgPower = 1.0f );
 ////
 ////protected:
@@ -159,22 +167,26 @@
 ////	bool					unGuided;
 ////	float					burstDist;
 ////	float					burstVelocity;
-////};
-////
-////class idSoulCubeMissile extends idGuidedProjectile {
+};
+
+class idSoulCubeMissile extends idGuidedProjectile {
 ////public:
 ////	CLASS_PROTOTYPE ( idSoulCubeMissile );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idSoulCubeMissile>[];
 ////	~idSoulCubeMissile();
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
 ////
-////	void					Spawn( void );
-////	virtual void			Think( void );
+////	void					Spawn( );
+////	virtual void			Think( );
 ////	virtual void			Launch( const idVec3 &start, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire = 0.0f, const float power = 1.0f, const float dmgPower = 1.0f );
 ////
 ////protected:
 ////	virtual void			GetSeekPos( idVec3 &out );
-////	void					ReturnToOwner( void );
+////	void					ReturnToOwner( );
 ////	void					KillTarget( const idVec3 &dir );
 ////
 ////private:
@@ -195,11 +207,15 @@
 ////	idEntityPtr<idEntity>	target;
 ////	renderEntity_t			renderEntity;
 ////	qhandle_t				modelDefHandle;
-////};
-////
-////class idBFGProjectile extends idProjectile {
+};
+
+class idBFGProjectile extends idProjectile {
 ////public :
 ////	CLASS_PROTOTYPE( idBFGProjectile );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idBFGProjectile>[];
 ////
 ////							idBFGProjectile();
 ////							~idBFGProjectile();
@@ -207,8 +223,8 @@
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
 ////
-////	void					Spawn( void );
-////	virtual void			Think( void );
+////	void					Spawn( );
+////	virtual void			Think( );
 ////	virtual void			Launch( const idVec3 &start, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire = 0.0f, const float launchPower = 1.0f, const float dmgPower = 1.0f );
 ////	virtual void			Explode( const trace_t &collision, idEntity *ignore );
 ////
@@ -222,19 +238,23 @@
 ////	void					FreeBeams(): void { throw "placeholder"; }
 ////	void					Event_RemoveBeams(): void { throw "placeholder"; }
 ////	void					ApplyDamage(): void { throw "placeholder"; }
-////};
-////
-/////*
-////===============================================================================
-////
-////  idDebris
-////	
-////===============================================================================
-////*/
-////
-////class idDebris extends idEntity {
+};
+
+/*
+===============================================================================
+
+  idDebris
+	
+===============================================================================
+*/
+
+class idDebris extends idEntity {
 ////public :
 ////	CLASS_PROTOTYPE( idDebris );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idDebris>[];
 ////
 ////							idDebris();
 ////							~idDebris();
@@ -243,14 +263,14 @@
 ////	void					Save( idSaveGame *savefile ) const;					// archives object for save game file
 ////	void					Restore( idRestoreGame *savefile );					// unarchives object from save game file
 ////
-////	void					Spawn( void );
+////	void					Spawn( );
 ////
 ////	void					Create( idEntity *owner, const idVec3 &start, const idMat3 &axis );
-////	void					Launch( void );
-////	void					Think( void );
+////	void					Launch( );
+////	void					Think( );
 ////	void					Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location );
-////	void					Explode( void );
-////	void					Fizzle( void );
+////	void					Explode( );
+////	void					Fizzle( );
 ////	virtual bool			Collide( const trace_t &collision, const idVec3 &velocity );
 ////
 ////
@@ -262,8 +282,8 @@
 ////	const idSoundShader *	sndBounce;
 ////
 ////
-////	void					Event_Explode( void ): void { throw "placeholder"; }
-////	void					Event_Fizzle( void ): void { throw "placeholder"; }
-////};
+	Event_Explode( ): void { throw "placeholder"; }
+	Event_Fizzle( ): void { throw "placeholder"; }
+};
 ////
 ////#endif /* !__GAME_PROJECTILE_H__ */

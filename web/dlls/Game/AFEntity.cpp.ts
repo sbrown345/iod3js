@@ -2759,7 +2759,7 @@ idAFEntity_ClawFourFingers.Type = new idTypeInfo("idAFEntity_ClawFourFingers", "
 ////idAFEntity_ClawFourFingers::Event_SetFingerAngle
 ////================
 ////*/
-////void idAFEntity_ClawFourFingers::Event_SetFingerAngle( float angle ) {
+////void idAFEntity_ClawFourFingers::Event_SetFingerAngle( /*float*/angle:number ) {
 ////	int i;
 ////
 ////	for ( i = 0; i < 4; i++ ) {

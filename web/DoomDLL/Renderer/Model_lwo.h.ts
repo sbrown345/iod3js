@@ -611,7 +611,7 @@
 ////void lwFreeEnvelope( lwEnvelope *env );
 ////lwEnvelope *lwGetEnvelope( idFile *fp, int cksize );
 ////lwEnvelope *lwFindEnvelope( lwEnvelope *list, int index );
-////float lwEvalEnvelope( lwEnvelope *env, float time );
+////float lwEvalEnvelope( lwEnvelope *env, /*float*/time:number );
 
 /////* surface.c */
 

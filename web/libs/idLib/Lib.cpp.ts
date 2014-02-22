@@ -209,7 +209,7 @@ idLib::Init
 ////PackColor
 ////================
 ////*/
-////dword PackColor( const idVec3 &color ) {
+////dword PackColor( color:idVec3 ) {
 ////	dword dx, dy, dz;
 
 ////	dx = ColorFloatToByte( color.x );

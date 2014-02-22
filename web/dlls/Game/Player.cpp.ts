@@ -2149,7 +2149,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////use normal spawn selection.
 ////============
 ////*/
-////void idPlayer::SelectInitialSpawnPoint( idVec3 &origin, idAngles &angles ) {
+////void idPlayer::SelectInitialSpawnPoint( idVec3 &origin, angles:idAngles ) {
 ////	idEntity *spot;
 ////	idStr skin;
 ////
@@ -3035,7 +3035,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////idPlayer::GivePowerUp
 ////===============
 ////*/
-////bool idPlayer::GivePowerUp( int powerup, int time ) {
+////bool idPlayer::GivePowerUp( int powerup, /*int*/time:number ) {
 ////	const char *sound;
 ////	const char *skin;
 ////
@@ -3263,7 +3263,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////idPlayer::GiveObjective
 ////===============
 ////*/
-////void idPlayer::GiveObjective( const char *title, const char *text, const char *screenshot ) {
+////void idPlayer::GiveObjective( const char *title, text:string, const char *screenshot ) {
 ////	idObjectiveInfo info;
 ////	info.title = title;
 ////	info.text = text;
@@ -5914,7 +5914,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////idPlayer::GetAASLocation
 ////==============
 ////*/
-////void idPlayer::GetAASLocation( idAAS *aas, idVec3 &pos, int &areaNum ) const {
+////void idPlayer::GetAASLocation( idAAS *aas, pos:idVec3, int &areaNum ) const {
 ////	int i;
 ////
 ////	if ( aas != NULL ) {
@@ -7160,7 +7160,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////idPlayer::OffsetThirdPersonView
 ////===============
 ////*/
-////void idPlayer::OffsetThirdPersonView( float angle, float range, float height, bool clip ) {
+////void idPlayer::OffsetThirdPersonView( /*float*/angle:number, float range, float height, bool clip ) {
 ////	idVec3			view;
 ////	idVec3			focusAngles;
 ////	trace_t			trace;
@@ -7444,7 +7444,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////idPlayer::SetLastHitTime
 ////=============
 ////*/
-////void idPlayer::SetLastHitTime( int time ) {
+////void idPlayer::SetLastHitTime( /*int*/time:number ) {
 ////	idPlayer *aimed = NULL;
 ////
 ////	if ( time && lastHitTime != time ) {
@@ -8222,7 +8222,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////idPlayer::ServerReceiveEvent
 ////================
 ////*/
-////bool idPlayer::ServerReceiveEvent( int event, int time, const idBitMsg &msg ) {
+////bool idPlayer::ServerReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg ) {
 ////
 ////	if ( idEntity::ServerReceiveEvent( event, time, msg ) ) {
 ////		return true;
@@ -8245,7 +8245,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////idPlayer::ClientReceiveEvent
 ////================
 ////*/
-////bool idPlayer::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
+////bool idPlayer::ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg ) {
 ////	int powerup;
 ////	bool start;
 ////
@@ -8501,7 +8501,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////===============
 ////*/
 ////void idPlayer::UpdatePlayerIcons( void ) {
-////	int time = networkSystem->ServerGetClientTimeSinceLastPacket( entityNumber );
+////	/*int*/time:number = networkSystem->ServerGetClientTimeSinceLastPacket( entityNumber );
 ////	if ( time > cvarSystem->GetCVarInteger( "net_clientMaxPrediction" ) ) {
 ////		isLagged = true;
 ////	} else {

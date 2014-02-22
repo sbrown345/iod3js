@@ -256,10 +256,10 @@ enum jointModTransform_t{
 //	const char				*Name( ) const;
 //
 //	void					GetFrameBlend( int framenum, frameBlend_t &frame ) const;	// frame 1 is first frame
-//	void					ConvertTimeToFrame( int time, int cyclecount, frameBlend_t &frame ) const;
+//	void					ConvertTimeToFrame( /*int*/time:number, int cyclecount, frameBlend_t &frame ) const;
 //
 //	void					GetOrigin( idVec3 &offset, int currentTime, int cyclecount ) const;
-//	void					GetOriginRotation( idQuat &rotation, int time, int cyclecount ) const;
+//	void					GetOriginRotation( idQuat &rotation, /*int*/time:number, int cyclecount ) const;
 //	void					GetBounds( idBounds &bounds, int currentTime, int cyclecount ) const;
 //};
 //
@@ -296,11 +296,11 @@ enum jointModTransform_t{
 //	int							NumFrames( ) const;
 //	int							NumAnims( ) const;
 //	const idVec3				&TotalMovementDelta( ) const;
-//	bool						GetOrigin( idVec3 &offset, int animNum, int time, int cyclecount ) const;
+//	bool						GetOrigin( idVec3 &offset, int animNum, /*int*/time:number, int cyclecount ) const;
 //	bool						GetOriginRotation( idQuat &rotation, int animNum, int currentTime, int cyclecount ) const;
-//	bool						GetBounds( idBounds &bounds, int animNum, int time, int cyclecount ) const;
+//	bool						GetBounds( idBounds &bounds, int animNum, /*int*/time:number, int cyclecount ) const;
 //	const char					*AddFrameCommand( const class idDeclModelDef *modelDef, int framenum, idLexer &src, const idDict *def );
-//	void						CallFrameCommands( idEntity *ent, int from, int to ) const;
+//	void						CallFrameCommands( ent:idEntity, int from, int to ) const;
 //	bool						HasFrameCommands( ) const;
 //
 //								// returns first frame (zero based) that command occurs.  returns -1 if not found.
@@ -324,7 +324,7 @@ class idDeclModelDef extends idDecl {
 //
 //	virtual size_t				Size( ) const;
 //	virtual const char *		DefaultDefinition( ) const;
-//	virtual bool				Parse( const char *text, const int textLength );
+//	virtual bool				Parse( text:string, const int textLength );
 //	virtual void				FreeData( );
 //
 //	void						Touch( ) const;
@@ -398,7 +398,7 @@ class idDeclModelDef extends idDecl {
 //	friend class				idAnimator;
 //
 //	void						Reset( const idDeclModelDef *_modelDef );
-//	void						CallFrameCommands( idEntity *ent, int fromtime, int totime ) const;
+//	void						CallFrameCommands( ent:idEntity, int fromtime, int totime ) const;
 //	void						SetFrame( const idDeclModelDef *modelDef, int animnum, int frame, int currenttime, int blendtime );
 //	void						CycleAnim( const idDeclModelDef *modelDef, int animnum, int currenttime, int blendtime );
 //	void						PlayAnim( const idDeclModelDef *modelDef, int animnum, int currenttime, int blendtime );
@@ -488,7 +488,7 @@ class idDeclModelDef extends idDecl {
 //	void						Save ( savefile: idSaveGame ): void { throw "placeholder"; }					// archives object for save game file
 //	void						Restore( idRestoreGame *savefile );					// unarchives object from save game file
 //
-//	void						SetEntity( idEntity *ent );
+//	void						SetEntity( ent:idEntity );
 //	idEntity					*GetEntity( ) const ;
 //	void						RemoveOriginOffset( bool remove );
 //	bool						RemoveOrigin( ) const;
@@ -518,7 +518,7 @@ class idDeclModelDef extends idDecl {
 //	bool						FrameHasChanged( int animtime ) const;
 //	void						GetDelta( int fromtime, int totime, idVec3 &delta ) const;
 //	bool						GetDeltaRotation( int fromtime, int totime, idMat3 &delta ) const;
-//	void						GetOrigin( int currentTime, idVec3 &pos ) const;
+//	void						GetOrigin( int currentTime, pos:idVec3 ) const;
 //	bool						GetBounds( int currentTime, idBounds &bounds );
 //
 //	idAnimBlend					*CurrentAnim( int channelNum );
@@ -538,7 +538,7 @@ class idDeclModelDef extends idDecl {
 //
 //	void						InitAFPose( );
 //	void						SetAFPoseJointMod( const jointHandle_t jointNum, const AFJointModType_t mod, const idMat3 &axis, const idVec3 &origin );
-//	void						FinishAFPose( int animnum, const idBounds &bounds, const int time );
+//	void						FinishAFPose( int animnum, const idBounds &bounds, /*int*/time:number );
 //	void						SetAFPoseBlendWeight( float blendWeight );
 //	bool						BlendAFPose( idJointQuat *blendFrame ) const;
 //	void						ClearAFPose( );

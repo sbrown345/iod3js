@@ -107,8 +107,8 @@ class idEntityFx extends idEntity {
 ////
 ////	virtual void			Think();
 ////	void					Setup(const char *fx);
-////	void					Run(int time);
-////	void					Start(int time);
+////	void					Run(/*int*/time:number);
+////	void					Start(/*int*/time:number);
 ////	void					Stop(void);
 ////	const int				Duration(void);
 ////	const char *			EffectName(void);
@@ -122,12 +122,12 @@ class idEntityFx extends idEntity {
 ////	static idEntityFx *		StartFx(const char *fx, const idVec3 *useOrigin, const idMat3 *useAxis, ent:idEntity, bool bind);
 ////
 ////protected:
-	Event_Trigger(activator:idEntity):void { throw "placeholder"; };
+	Event_Trigger(activator:idEntity):void { throw "placeholder"; }
 	Event_ClearFx():void { throw "placeholder"; }
 ////
 ////	void					CleanUp(void);
 ////	void					CleanUpSingleAction(const idFXSingleAction& fxaction, idFXLocalAction& laction);
-////	void					ApplyFade(const idFXSingleAction& fxaction, idFXLocalAction& laction, const int time, const int actualStart);
+////	void					ApplyFade(const idFXSingleAction& fxaction, idFXLocalAction& laction, const /*int*/time:number, const int actualStart);
 ////
 ////	int						started;
 ////	int						nextTriggerTime;
@@ -331,7 +331,7 @@ class idEntityFx extends idEntity {
 ////idEntityFx::Start
 ////================
 ////*/
-////void idEntityFx::Start( int time ) {
+////void idEntityFx::Start( /*int*/time:number ) {
 ////	if ( !fxEffect ) {
 ////		return;
 ////	}
@@ -397,7 +397,7 @@ class idEntityFx extends idEntity {
 ////idEntityFx::ApplyFade
 ////================
 ////*/
-////void idEntityFx::ApplyFade( const idFXSingleAction& fxaction, idFXLocalAction& laction, const int time, const int actualStart ) {
+////void idEntityFx::ApplyFade( const idFXSingleAction& fxaction, idFXLocalAction& laction, const /*int*/time:number, const int actualStart ) {
 ////	if ( fxaction.fadeInTime || fxaction.fadeOutTime ) {
 ////		float fadePct = (float)( time - actualStart ) / ( 1000.0f * ( ( fxaction.fadeInTime != 0 ) ? fxaction.fadeInTime : fxaction.fadeOutTime ) );
 ////		if (fadePct > 1.0) {
@@ -425,7 +425,7 @@ class idEntityFx extends idEntity {
 ////idEntityFx::Run
 ////================
 ////*/
-////void idEntityFx::Run( int time ) {
+////void idEntityFx::Run( /*int*/time:number ) {
 ////	int ieff, j;
 ////	var ent:idEntity = NULL;
 ////	const idDict *projectileDef = NULL;
@@ -881,7 +881,7 @@ idTeleporter::Event_DoAction
 */
 	Event_DoAction ( activator: idEntity ): void {
 		todoThrow ( );
-		//float angle;
+		///*float*/angle:number;
 
 		//angle = spawnArgs.GetFloat( "angle" );
 		//idAngles a( 0, spawnArgs.GetFloat( "angle" ), 0 );

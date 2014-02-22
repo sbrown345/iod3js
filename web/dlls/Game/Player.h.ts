@@ -157,9 +157,9 @@
 ////	void					Save( idSaveGame *savefile ) const;					// archives object for save game file
 ////	void					Restore( idRestoreGame *savefile );					// unarchives object from save game file
 ////
-////	void					Clear( void );
+////	void					Clear( );
 ////	void					GivePowerUp( idPlayer *player, int powerup, int msec );
-////	void					ClearPowerUps( void );
+////	void					ClearPowerUps( );
 ////	void					GetPersistantData( idDict &dict );
 ////	void					RestoreInventory( idPlayer *owner, const idDict &dict );
 ////	bool					Give( idPlayer *owner, const idDict &spawnArgs, const char *statname, const char *value, int *idealWeapon, bool updateHud );
@@ -175,7 +175,7 @@
 ////	bool					UseAmmo( ammo_t type, int amount );
 ////	int						HasAmmo( const char *weapon_classname );			// looks up the ammo information for the weapon class first
 ////
-////	void					UpdateArmor( void );
+////	void					UpdateArmor( );
 ////
 ////	int						nextItemPickup;
 ////	int						nextItemNum;
@@ -194,7 +194,7 @@
 ////	idVec3	pos;
 ////} aasLocation_t;
 ////
-////class idPlayer extends idActor {
+class idPlayer extends idActor {
 ////public:
 ////	enum {
 ////		EVENT_IMPULSE = idEntity::EVENT_MAXEVENTS,
@@ -321,42 +321,42 @@
 ////							idPlayer();
 ////	virtual					~idPlayer();
 ////
-////	void					Spawn( void );
-////	void					Think( void );
+////	void					Spawn( );
+////	void					Think( );
 ////
 ////	// save games
 ////	void					Save( idSaveGame *savefile ) const;					// archives object for save game file
 ////	void					Restore( idRestoreGame *savefile );					// unarchives object from save game file
 ////
-////	virtual void			Hide( void );
-////	virtual void			Show( void );
+////	virtual void			Hide( );
+////	virtual void			Show( );
 ////
-////	void					Init( void );
-////	void					PrepareForRestart( void );
-////	virtual void			Restart( void );
-////	void					LinkScriptVariables( void );
-////	void					SetupWeaponEntity( void );
-////	void					SelectInitialSpawnPoint( idVec3 &origin, idAngles &angles );
-////	void					SpawnFromSpawnSpot( void );
+////	void					Init( );
+////	void					PrepareForRestart( );
+////	virtual void			Restart( );
+////	void					LinkScriptVariables( );
+////	void					SetupWeaponEntity( );
+////	void					SelectInitialSpawnPoint( idVec3 &origin, angles:idAngles );
+////	void					SpawnFromSpawnSpot( );
 ////	void					SpawnToPoint( const idVec3	&spawn_origin, const idAngles &spawn_angles );
-////	void					SetClipModel( void );	// spectator mode uses a different bbox size
+////	void					SetClipModel( );	// spectator mode uses a different bbox size
 ////
-////	void					SavePersistantInfo( void );
-////	void					RestorePersistantInfo( void );
+////	void					SavePersistantInfo( );
+////	void					RestorePersistantInfo( );
 ////	void					SetLevelTrigger( const char *levelName, const char *triggerName );
 ////
 ////	bool					UserInfoChanged( bool canModify );
-////	idDict *				GetUserInfo( void );
-////	bool					BalanceTDM( void );
+////	idDict *				GetUserInfo( );
+////	bool					BalanceTDM( );
 ////
-////	void					CacheWeapons( void );
+////	void					CacheWeapons( );
 ////
-////	void					EnterCinematic( void );
-////	void					ExitCinematic( void );
-////	bool					HandleESC( void );
-////	bool					SkipCinematic( void );
+////	void					EnterCinematic( );
+////	void					ExitCinematic( );
+////	bool					HandleESC( );
+////	bool					SkipCinematic( );
 ////
-////	void					UpdateConditions( void );
+////	void					UpdateConditions( );
 ////	void					SetViewAngles( angles:idAngles );
 ////
 ////							// delta view angles to allow movers to rotate the view of the player
@@ -364,7 +364,7 @@
 ////
 ////	virtual bool			Collide( const trace_t &collision, const idVec3 &velocity );
 ////
-////	virtual void			GetAASLocation( idAAS *aas, idVec3 &pos, int &areaNum ) const;
+////	virtual void			GetAASLocation( idAAS *aas, pos:idVec3, int &areaNum ) const;
 ////	virtual void			GetAIAimTargets( const idVec3 &lastSightPos, idVec3 &headPos, idVec3 &chestPos );
 ////	virtual void			DamageFeedback( idEntity *victim, idEntity *inflictor, int &damage );
 ////	void					CalcDamagePoints(  idEntity *inflictor, idEntity *attacker, const idDict *damageDef,
@@ -378,20 +378,20 @@
 ////	virtual void			Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location );
 ////	void					StartFxOnBone(const char *fx, const char *bone);
 ////
-////	renderView_t *			GetRenderView( void );
-////	void					CalculateRenderView( void );	// called every tic by player code
-////	void					CalculateFirstPersonView( void );
+////	renderView_t *			GetRenderView( );
+////	void					CalculateRenderView( );	// called every tic by player code
+////	void					CalculateFirstPersonView( );
 ////
 ////	void					DrawHUD( idUserInterface *hud );
 ////
 ////	void					WeaponFireFeedback( const idDict *weaponDef );
 ////
-////	float					DefaultFov( void ) const;
+////	float					DefaultFov( ) const;
 ////	float					CalcFov( bool honorZoom );
 ////	void					CalculateViewWeaponPos( idVec3 &origin, idMat3 &axis );
-////	idVec3					GetEyePosition( void ) const;
+////	idVec3					GetEyePosition( ) const;
 ////	void					GetViewPos( idVec3 &origin, idMat3 &axis ) const;
-////	void					OffsetThirdPersonView( float angle, float range, float height, bool clip );
+////	void					OffsetThirdPersonView( /*float*/angle:number, float range, float height, bool clip );
 ////
 ////	bool					Give( const char *statname, const char *value );
 ////	bool					GiveItem( idItem *item );
@@ -408,108 +408,108 @@
 ////	void					GiveVideo( const char *videoName, idDict *item );
 ////	void					GiveEmail( const char *emailName );
 ////	void					GiveSecurity( const char *security );
-////	void					GiveObjective( const char *title, const char *text, const char *screenshot );
+////	void					GiveObjective( const char *title, text:string, const char *screenshot );
 ////	void					CompleteObjective( const char *title );
 ////
-////	bool					GivePowerUp( int powerup, int time );
-////	void					ClearPowerUps( void );
+////	bool					GivePowerUp( int powerup, /*int*/time:number );
+////	void					ClearPowerUps( );
 ////	bool					PowerUpActive( int powerup ) const;
 ////	float					PowerUpModifier( int type );
 ////
 ////	int						SlotForWeapon( const char *weaponName );
-////	void					Reload( void );
-////	void					NextWeapon( void );
-////	void					NextBestWeapon( void );
-////	void					PrevWeapon( void );
+////	void					Reload( );
+////	void					NextWeapon( );
+////	void					NextBestWeapon( );
+////	void					PrevWeapon( );
 ////	void					SelectWeapon( int num, bool force );
 ////	void					DropWeapon( bool died ) ;
 ////	void					StealWeapon( idPlayer *player );
 ////	void					AddProjectilesFired( int count );
 ////	void					AddProjectileHits( int count );
-////	void					SetLastHitTime( int time );
-////	void					LowerWeapon( void );
-////	void					RaiseWeapon( void );
-////	void					WeaponLoweringCallback( void );
-////	void					WeaponRisingCallback( void );
+////	void					SetLastHitTime( /*int*/time:number );
+////	void					LowerWeapon( );
+////	void					RaiseWeapon( );
+////	void					WeaponLoweringCallback( );
+////	void					WeaponRisingCallback( );
 ////	void					RemoveWeapon( const char *weap );
-////	bool					CanShowWeaponViewmodel( void ) const;
+////	bool					CanShowWeaponViewmodel( ) const;
 ////
-////	void					AddAIKill( void );
+////	void					AddAIKill( );
 ////	void					SetSoulCubeProjectile( idProjectile *projectile );
 ////
 ////	void					AdjustHeartRate( int target, float timeInSecs, float delay, bool force );
-////	void					SetCurrentHeartRate( void );
-////	int						GetBaseHeartRate( void );
-////	void					UpdateAir( void );
+////	void					SetCurrentHeartRate( );
+////	int						GetBaseHeartRate( );
+////	void					UpdateAir( );
 ////
 ////	virtual bool			HandleSingleGuiCommand( idEntity *entityGui, idLexer *src );
-////	bool					GuiActive( void ) { return focusGUIent != NULL; }
+////	bool					GuiActive( ) { return focusGUIent != NULL; }
 ////
 ////	void					PerformImpulse( int impulse );
 ////	void					Spectate( bool spectate );
-////	void					TogglePDA( void );
-////	void					ToggleScoreboard( void );
+////	void					TogglePDA( );
+////	void					ToggleScoreboard( );
 ////	void					RouteGuiMouse( idUserInterface *gui );
-////	void					UpdateHud( void );
-////	const idDeclPDA *		GetPDA( void ) const;
+////	void					UpdateHud( );
+////	const idDeclPDA *		GetPDA( ) const;
 ////	const idDeclVideo *		GetVideo( int index );
 ////	void					SetInfluenceFov( float fov );
-////	void					SetInfluenceView( const char *mtr, const char *skinname, float radius, idEntity *ent );
+////	void					SetInfluenceView( const char *mtr, const char *skinname, float radius, ent:idEntity );
 ////	void					SetInfluenceLevel( int level );
-////	int						GetInfluenceLevel( void ) { return influenceActive; };
+////	int						GetInfluenceLevel( ) { return influenceActive; };
 ////	void					SetPrivateCameraView( idCamera *camView );
-////	idCamera *				GetPrivateCameraView( void ) const { return privateCameraView; }
+////	idCamera *				GetPrivateCameraView( ) const { return privateCameraView; }
 ////	void					StartFxFov( float duration  );
 ////	void					UpdateHudWeapon( bool flashWeapon = true );
 ////	void					UpdateHudStats( idUserInterface *hud );
 ////	void					UpdateHudAmmo( idUserInterface *hud );
-////	void					Event_StopAudioLog( void );
-////	void					StartAudioLog( void );
-////	void					StopAudioLog( void );
+////	void					Event_StopAudioLog( );
+////	void					StartAudioLog( );
+////	void					StopAudioLog( );
 ////	void					ShowTip( const char *title, const char *tip, bool autoHide );
-////	void					HideTip( void );
-////	bool					IsTipVisible( void ) { return tipUp; };
+////	void					HideTip( );
+////	bool					IsTipVisible( ) { return tipUp; };
 ////	void					ShowObjective( const char *obj );
-////	void					HideObjective( void );
+////	void					HideObjective( );
 ////
-////	virtual void			ClientPredictionThink( void );
+////	virtual void			ClientPredictionThink( );
 ////	virtual void			WriteToSnapshot( idBitMsgDelta &msg ) const;
 ////	virtual void			ReadFromSnapshot( const idBitMsgDelta &msg );
 ////	void					WritePlayerStateToSnapshot( idBitMsgDelta &msg ) const;
 ////	void					ReadPlayerStateFromSnapshot( const idBitMsgDelta &msg );
 ////
-////	virtual bool			ServerReceiveEvent( int event, int time, const idBitMsg &msg );
+////	virtual bool			ServerReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg );
 ////
 ////	virtual bool			GetPhysicsToVisualTransform( idVec3 &origin, idMat3 &axis );
 ////	virtual bool			GetPhysicsToSoundTransform( idVec3 &origin, idMat3 &axis );
 ////
-////	virtual bool			ClientReceiveEvent( int event, int time, const idBitMsg &msg );
-////	bool					IsReady( void );
-////	bool					IsRespawning( void );
-////	bool					IsInTeleport( void );
+////	virtual bool			ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg );
+////	bool					IsReady( );
+////	bool					IsRespawning( );
+////	bool					IsInTeleport( );
 ////
-////	idEntity				*GetInfluenceEntity( void ) { return influenceEntity; };
-////	const idMaterial		*GetInfluenceMaterial( void ) { return influenceMaterial; };
-////	float					GetInfluenceRadius( void ) { return influenceRadius; };
+////	idEntity				*GetInfluenceEntity( ) { return influenceEntity; };
+////	const idMaterial		*GetInfluenceMaterial( ) { return influenceMaterial; };
+////	float					GetInfluenceRadius( ) { return influenceRadius; };
 ////
 ////	// server side work for in/out of spectate. takes care of spawning it into the world as well
 ////	void					ServerSpectate( bool spectate );
 ////	// for very specific usage. != GetPhysics()
-////	idPhysics				*GetPlayerPhysics( void );
+////	idPhysics				*GetPlayerPhysics( );
 ////	void					TeleportDeath( int killer );
 ////	void					SetLeader( bool lead );
-////	bool					IsLeader( void );
+////	bool					IsLeader( );
 ////
 ////	void					UpdateSkinSetup( bool restart );
 ////
-////	bool					OnLadder( void ) const;
+////	bool					OnLadder( ) const;
 ////
-////	virtual	void			UpdatePlayerIcons( void );
-////	virtual	void			DrawPlayerIcons( void );
-////	virtual	void			HidePlayerIcons( void );
-////	bool					NeedsIcon( void );
+////	virtual	void			UpdatePlayerIcons( );
+////	virtual	void			DrawPlayerIcons( );
+////	virtual	void			HidePlayerIcons( );
+////	bool					NeedsIcon( );
 ////
-////	bool					SelfSmooth( void );
+////	bool					SelfSmooth( );
 ////	void					SetSelfSmooth( bool b );
 ////
 ////private:
@@ -627,77 +627,77 @@
 ////
 ////	void					LookAtKiller( idEntity *inflictor, idEntity *attacker );
 ////
-////	void					StopFiring( void );
-////	void					FireWeapon( void );
-////	void					Weapon_Combat( void );
-////	void					Weapon_NPC( void );
-////	void					Weapon_GUI( void );
-////	void					UpdateWeapon( void );
-////	void					UpdateSpectating( void );
+////	void					StopFiring( );
+////	void					FireWeapon( );
+////	void					Weapon_Combat( );
+////	void					Weapon_NPC( );
+////	void					Weapon_GUI( );
+////	void					UpdateWeapon( );
+////	void					UpdateSpectating( );
 ////	void					SpectateFreeFly( bool force );	// ignore the timeout to force when followed spec is no longer valid
-////	void					SpectateCycle( void );
-////	idAngles				GunTurningOffset( void );
-////	idVec3					GunAcceleratingOffset( void );
+////	void					SpectateCycle( );
+////	idAngles				GunTurningOffset( );
+////	idVec3					GunAcceleratingOffset( );
 ////
-////	void					UseObjects( void );
+////	void					UseObjects( );
 ////	void					CrashLand( const idVec3 &oldOrigin, const idVec3 &oldVelocity );
 ////	void					BobCycle( const idVec3 &pushVelocity );
-////	void					UpdateViewAngles( void );
-////	void					EvaluateControls( void );
-////	void					AdjustSpeed( void );
-////	void					AdjustBodyAngles( void );
-////	void					InitAASLocation( void );
-////	void					SetAASLocation( void );
-////	void					Move( void );
-////	void					UpdatePowerUps( void );
+////	void					UpdateViewAngles( );
+////	void					EvaluateControls( );
+////	void					AdjustSpeed( );
+////	void					AdjustBodyAngles( );
+////	void					InitAASLocation( );
+////	void					SetAASLocation( );
+////	void					Move( );
+////	void					UpdatePowerUps( );
 ////	void					UpdateDeathSkin( bool state_hitch );
 ////	void					ClearPowerup( int i );
-////	void					SetSpectateOrigin( void );
+////	void					SetSpectateOrigin( );
 ////
-////	void					ClearFocus( void );
-////	void					UpdateFocus( void );
-////	void					UpdateLocation( void );
-////	idUserInterface *		ActiveGui( void );
+////	void					ClearFocus( );
+////	void					UpdateFocus( );
+////	void					UpdateLocation( );
+////	idUserInterface *		ActiveGui( );
 ////	void					UpdatePDAInfo( bool updatePDASel );
 ////	int						AddGuiPDAData( const declType_t dataType, const char *listName, const idDeclPDA *src, idUserInterface *gui );
 ////	void					ExtractEmailInfo( const idStr &email, const char *scan, idStr &out );
-////	void					UpdateObjectiveInfo( void );
+////	void					UpdateObjectiveInfo( );
 ////
-////	void					UseVehicle( void );
+////	void					UseVehicle( );
 ////
-////	void					Event_GetButtons( void ): void { throw "placeholder"; }
-////	void					Event_GetMove( void ): void { throw "placeholder"; }
-////	void					Event_GetViewAngles( void ): void { throw "placeholder"; }
-////	void					Event_StopFxFov( void ): void { throw "placeholder"; }
-////	void					Event_EnableWeapon( void ): void { throw "placeholder"; }
-////	void					Event_DisableWeapon( void ): void { throw "placeholder"; }
-////	void					Event_GetCurrentWeapon( void ): void { throw "placeholder"; }
-////	void					Event_GetPreviousWeapon( void ): void { throw "placeholder"; }
-////	void					Event_SelectWeapon( const char *weaponName ): void { throw "placeholder"; }
-////	void					Event_GetWeaponEntity( void ): void { throw "placeholder"; }
-////	void					Event_OpenPDA( void ): void { throw "placeholder"; }
-////	void					Event_PDAAvailable( void ): void { throw "placeholder"; }
-////	void					Event_InPDA( void ): void { throw "placeholder"; }
-////	void					Event_ExitTeleporter( void ): void { throw "placeholder"; }
-////	void					Event_HideTip( void ): void { throw "placeholder"; }
-////	void					Event_LevelTrigger( void ): void { throw "placeholder"; }
-////	void					Event_Gibbed( void ): void { throw "placeholder"; }
-////	void					Event_GetIdealWeapon( void ): void { throw "placeholder"; }
-////};
+	Event_GetButtons( ): void { throw "placeholder"; }
+	Event_GetMove( ): void { throw "placeholder"; }
+	Event_GetViewAngles( ): void { throw "placeholder"; }
+	Event_StopFxFov( ): void { throw "placeholder"; }
+	Event_EnableWeapon( ): void { throw "placeholder"; }
+	Event_DisableWeapon( ): void { throw "placeholder"; }
+	Event_GetCurrentWeapon( ): void { throw "placeholder"; }
+	Event_GetPreviousWeapon( ): void { throw "placeholder"; }
+	Event_SelectWeapon( weaponName:string ): void { throw "placeholder"; }
+	Event_GetWeaponEntity( ): void { throw "placeholder"; }
+	Event_OpenPDA( ): void { throw "placeholder"; }
+	Event_PDAAvailable( ): void { throw "placeholder"; }
+	Event_InPDA( ): void { throw "placeholder"; }
+	Event_ExitTeleporter( ): void { throw "placeholder"; }
+	Event_HideTip( ): void { throw "placeholder"; }
+	Event_LevelTrigger( ): void { throw "placeholder"; }
+	Event_Gibbed( ): void { throw "placeholder"; }
+	Event_GetIdealWeapon( ): void { throw "placeholder"; }
+};
 ////
-////ID_INLINE bool idPlayer::IsReady( void ) {
+////ID_INLINE bool idPlayer::IsReady( ) {
 ////	return ready || forcedReady;
 ////}
 ////
-////ID_INLINE bool idPlayer::IsRespawning( void ) {
+////ID_INLINE bool idPlayer::IsRespawning( ) {
 ////	return respawning;
 ////}
 ////
-////ID_INLINE idPhysics* idPlayer::GetPlayerPhysics( void ) {
+////ID_INLINE idPhysics* idPlayer::GetPlayerPhysics( ) {
 ////	return &physicsObj;
 ////}
 ////
-////ID_INLINE bool idPlayer::IsInTeleport( void ) {
+////ID_INLINE bool idPlayer::IsInTeleport( ) {
 ////	return ( teleportEntity.GetEntity() != NULL );
 ////}
 ////
@@ -705,11 +705,11 @@
 ////	leader = lead;
 ////}
 ////
-////ID_INLINE bool idPlayer::IsLeader( void ) {
+////ID_INLINE bool idPlayer::IsLeader( ) {
 ////	return leader;
 ////}
 ////
-////ID_INLINE bool idPlayer::SelfSmooth( void ) {
+////ID_INLINE bool idPlayer::SelfSmooth( ) {
 ////	return selfSmooth;
 ////}
 ////

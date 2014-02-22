@@ -234,8 +234,8 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////		void			On(void);
 ////		void			Off(void);
 ////		void			Fade(const idVec4 &to, float fadeTime);
-////		void			FadeOut(float time);
-////		void			FadeIn(float time);
+////		void			FadeOut(/*float*/time:number);
+////		void			FadeIn(/*float*/time:number);
 ////		void			Killed(idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location);
 ////		void			BecomeBroken(activator:idEntity);
 ////		qhandle_t		GetLightDefHandle(void) const { return lightDefHandle; }
@@ -252,7 +252,7 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////		virtual void	ClientPredictionThink(void);
 ////		virtual void	WriteToSnapshot(idBitMsgDelta &msg) const;
 ////		virtual void	ReadFromSnapshot(const idBitMsgDelta &msg);
-////		virtual bool	ClientReceiveEvent(int event, int time, const idBitMsg &msg);
+////		virtual bool	ClientReceiveEvent(int event, /*int*/time:number, const idBitMsg &msg);
 ////
 ////	private:
 ////		renderLight_t	renderLight;				// light presented to the renderer
@@ -289,8 +289,8 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////		void			Event_Off(void);
 ////		void			Event_ToggleOnOff(activator:idEntity);
 ////		void			Event_SetSoundHandles(void);
-////		void			Event_FadeOut(float time);
-////		void			Event_FadeIn(float time);
+////		void			Event_FadeOut(/*float*/time:number);
+////		void			Event_FadeIn(/*float*/time:number);
 	};
 
 ////#endif /* !__GAME_LIGHT_H__ */
@@ -735,7 +735,7 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////idLight::FadeOut
 ////================
 ////*/
-////void idLight::FadeOut( float time ) {
+////void idLight::FadeOut( /*float*/time:number ) {
 ////	Fade( colorBlack, time );
 ////}
 ////
@@ -744,7 +744,7 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////idLight::FadeIn
 ////================
 ////*/
-////void idLight::FadeIn( float time ) {
+////void idLight::FadeIn( /*float*/time:number ) {
 ////	idVec3 color;
 ////	idVec4 color4;
 ////
@@ -1138,7 +1138,7 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////idLight::Event_FadeOut
 ////================
 ////*/
-////void idLight::Event_FadeOut( float time ) {
+////void idLight::Event_FadeOut( /*float*/time:number ) {
 ////	FadeOut( time );
 ////}
 ////
@@ -1147,7 +1147,7 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////idLight::Event_FadeIn
 ////================
 ////*/
-////void idLight::Event_FadeIn( float time ) {
+////void idLight::Event_FadeIn( /*float*/time:number ) {
 ////	FadeIn( time );
 ////}
 ////
@@ -1266,7 +1266,7 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////idLight::ClientReceiveEvent
 ////================
 ////*/
-////bool idLight::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
+////bool idLight::ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg ) {
 ////
 ////	switch( event ) {
 ////		case EVENT_BECOMEBROKEN: {

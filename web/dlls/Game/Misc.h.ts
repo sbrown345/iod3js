@@ -86,7 +86,7 @@ class idPlayerStart extends idEntity {
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
-//	virtual bool		ClientReceiveEvent( int event, int time, const idBitMsg &msg );
+//	virtual bool		ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg );
 //
 //private:
 //	int					teleportStage;
@@ -323,7 +323,7 @@ class idAnimated extends idAFEntity_Gibbable {
 //	void					Event_StartRagdoll( void ): void { throw "placeholder"; }
 //	void					Event_AnimDone( int animIndex ): void { throw "placeholder"; }
 //	void					Event_Footstep( void ): void { throw "placeholder"; }
-//	void					Event_LaunchMissiles( const char *projectilename, const char *sound, const char *launchjoint, const char *targetjoint, int numshots, int framedelay ): void { throw "placeholder"; }
+//	void					Event_LaunchMissiles( const char *projectilename, sound:string, const char *launchjoint, const char *targetjoint, int numshots, int framedelay ): void { throw "placeholder"; }
 //	void					Event_LaunchMissilesUpdate( int launchjoint, int targetjoint, int numshots, int framedelay ): void { throw "placeholder"; }
 };
 

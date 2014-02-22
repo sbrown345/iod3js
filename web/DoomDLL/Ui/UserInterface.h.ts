@@ -63,13 +63,13 @@ class idUserInterface {
 //
 //								// handles an event, can return an action string, the caller interprets
 //								// any return and acts accordingly
-//	virtual const char *		HandleEvent( const sysEvent_t *event, int time, bool *updateVisuals = NULL ) = 0;
+//	virtual const char *		HandleEvent( const sysEvent_t *event, /*int*/time:number, bool *updateVisuals = NULL ) = 0;
 //
 //								// handles a named event
 //	virtual void				HandleNamedEvent( const char *eventName ) = 0;
 //
 //								// repaints the ui
-//	virtual void				Redraw( int time ) = 0;
+//	virtual void				Redraw( /*int*/time:number ) = 0;
 //
 //								// repaints the cursor
 //	virtual void				DrawCursor() = 0;
@@ -93,13 +93,13 @@ class idUserInterface {
 //	virtual float				GetStateFloat( const char *varName, const char* defaultString = "0" ) const = 0;
 //
 //								// The state has changed and the gui needs to update from the state idDict.
-//	virtual void				StateChanged( int time, bool redraw = false ) = 0;
+//	virtual void				StateChanged( /*int*/time:number, bool redraw = false ) = 0;
 //
 //								// Activated the gui.
-//	virtual const char *		Activate( bool activate, int time ) = 0;
+//	virtual const char *		Activate( bool activate, /*int*/time:number ) = 0;
 //
 //								// Triggers the gui and runs the onTrigger scripts.
-//	virtual void				Trigger( int time ) = 0;
+//	virtual void				Trigger( /*int*/time:number ) = 0;
 //
 //	virtual	void				ReadFromDemoFile( class idDemoFile *f ) = 0;
 //	virtual	void				WriteToDemoFile( class idDemoFile *f ) = 0;

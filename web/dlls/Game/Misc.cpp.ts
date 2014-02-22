@@ -158,7 +158,7 @@ idPlayerStart.Type = new idTypeInfo( "idPlayerStart", "idEntity",
 ////idPlayerStart::ClientReceiveEvent
 ////================
 ////*/
-////bool idPlayerStart::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
+////bool idPlayerStart::ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg ) {
 ////	int entityNumber;
 ////
 ////	switch( event ) {
@@ -1484,7 +1484,7 @@ idAnimated.Type = new idTypeInfo("idAnimated", "idAFEntity_Gibbable",
 ////idAnimated::Event_LaunchMissiles
 ////=====================
 ////*/
-////void idAnimated::Event_LaunchMissiles( const char *projectilename, const char *sound, const char *launchjoint, const char *targetjoint, int numshots, int framedelay ) {
+////void idAnimated::Event_LaunchMissiles( const char *projectilename, sound:string, const char *launchjoint, const char *targetjoint, int numshots, int framedelay ) {
 ////	const idDict *	projectileDef;
 ////	jointHandle_t	launch;
 ////	jointHandle_t	target;
@@ -1970,7 +1970,7 @@ idFuncSplat.Type = new idTypeInfo("idFuncSplat", "idFuncEmitter",
 ////		if ( splat && *splat ) {
 ////			float size = spawnArgs.GetFloat( "splatSize", "128" );
 ////			float dist = spawnArgs.GetFloat( "splatDistance", "128" );
-////			float angle = spawnArgs.GetFloat( "splatAngle", "0" );
+////			/*float*/angle:number = spawnArgs.GetFloat( "splatAngle", "0" );
 ////			gameLocal.ProjectDecal( GetPhysics().GetOrigin(), GetPhysics().GetAxis()[2], dist, true, size, splat, angle );
 ////		}
 ////	}
@@ -3578,7 +3578,7 @@ idPhantomObjects.Type = new idTypeInfo( "idPhantomObjects", "idEntity",
 ////*/
 ////void idPhantomObjects::Event_Activate( activator:idEntity ) {
 ////	int i;
-////	float time;
+////	var /*float*/time:number;
 ////	float frac;
 ////	float scale;
 ////

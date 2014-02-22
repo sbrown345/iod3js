@@ -515,7 +515,7 @@ var declManager = declManagerLocal;
 ////HuffmanCompressText
 ////================
 ////*/
-////int HuffmanCompressText( const char *text, int textLength, byte *compressed, int maxCompressedSize ) {
+////int HuffmanCompressText( text:string, int textLength, byte *compressed, int maxCompressedSize ) {
 ////	int i, j;
 ////	idBitMsg msg;
 

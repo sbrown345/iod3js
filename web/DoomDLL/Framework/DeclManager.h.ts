@@ -121,7 +121,7 @@ class idDeclBase {
 	EverReferenced ( ): boolean /* = 0;*/ { throw "placeholder"; }
 	SetDefaultText ( ): boolean /* = 0;*/ { throw "placeholder"; }
 	DefaultDefinition ( ): string { throw "placeholder"; }
-////	virtual bool			Parse( const char *text, const int textLength ) = 0;
+////	virtual bool			Parse( text:string, const int textLength ) = 0;
 	FreeData ( ): void /* = 0;*/ { throw "placeholder"; }
 ////	virtual size_t			Size( void ) const = 0;
 ////	virtual void			List( void ) const = 0;
@@ -211,7 +211,7 @@ class idDecl {
 ////							// The manager will have called FreeData() before issuing a Parse().
 ////							// The subclass can call MakeDefault() internally at any point if
 ////							// there are parse errors.
-////	virtual bool			Parse( const char *text, const int textLength ) { return this.base.Parse( text, textLength ); }
+////	virtual bool			Parse( text:string, const int textLength ) { return this.base.Parse( text, textLength ); }
 
 ////							// Frees any pointers held by the subclass. This may be called before
 ////							// any Parse(), so the constructor must have set sane values. The decl will be

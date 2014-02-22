@@ -1346,7 +1346,7 @@
 ////idAI::TestTrajectory
 ////=====================
 ////*/
-////bool idAI::TestTrajectory( const idVec3 &start, const idVec3 &end, float zVel, float gravity, float time, float max_height, const idClipModel *clip, int clipmask, const idEntity *ignore, const idEntity *targetEntity, int drawtime ) {
+////bool idAI::TestTrajectory( const idVec3 &start, const idVec3 &end, float zVel, float gravity, /*float*/time:number, float max_height, const idClipModel *clip, int clipmask, const idEntity *ignore, const idEntity *targetEntity, int drawtime ) {
 ////	int i, numSegments;
 ////	float maxHeight, t, t2;
 ////	idVec3 points[5];

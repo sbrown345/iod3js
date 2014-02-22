@@ -78,7 +78,7 @@
 ////	void						CreateDecal( const idRenderModel *model, const decalProjectionInfo_t &localInfo );
 
 ////								// Remove decals that are completely faded away.
-////	static idRenderModelDecal *	RemoveFadedDecals( idRenderModelDecal *decals, int time );
+////	static idRenderModelDecal *	RemoveFadedDecals( idRenderModelDecal *decals, /*int*/time:number );
 
 ////								// Updates the vertex colors, removing any faded indexes,
 ////								// then copy the verts to temporary vertex cache and adds a drawSurf.

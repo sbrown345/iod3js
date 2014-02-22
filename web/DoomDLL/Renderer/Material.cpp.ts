@@ -2520,7 +2520,7 @@ idMaterial::Texgen
 ////idMaterial::UpdateCinematic
 ////=============
 ////*/
-////void idMaterial::UpdateCinematic( int time ) const {
+////void idMaterial::UpdateCinematic( /*int*/time:number ) const {
 ////	if ( !this.stages || !this.stages[0].texture.cinematic || !backEnd.viewDef ) {
 ////		return;
 ////	}
@@ -2547,7 +2547,7 @@ idMaterial::Texgen
 ////idMaterial::ResetCinematicTime
 ////=============
 ////*/
-////void idMaterial::ResetCinematicTime( int time ) const {
+////void idMaterial::ResetCinematicTime( /*int*/time:number ) const {
 ////	for( int i = 0; i < this.numStages; i++ ) {
 ////		if ( this.stages[i].texture.cinematic ) {
 ////			this.stages[i].texture.cinematic.ResetTime( time );
@@ -2717,7 +2717,7 @@ idMaterial::SetDefaultText
 //	virtual size_t		Size( void ) const;
 //	virtual bool		SetDefaultText( void );
 //	virtual const char *DefaultDefinition( void ) const;
-//	virtual bool		Parse( const char *text, const int textLength );
+//	virtual bool		Parse( text:string, const int textLength );
 //	virtual void		FreeData( void );
 //	virtual void		Print( void ) const;
 
@@ -2924,9 +2924,9 @@ idMaterial::SetDefaultText
 
 //	void				CloseCinematic( void ) const;
 
-//	void				ResetCinematicTime( int time ) const;
+//	void				ResetCinematicTime( /*int*/time:number ) const;
 
-//	void				UpdateCinematic( int time ) const;
+//	void				UpdateCinematic( /*int*/time:number ) const;
 
 //	//------------------------------------------------------------------
 

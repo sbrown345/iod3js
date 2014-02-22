@@ -90,7 +90,7 @@ enum cmdExecution_t {
 //	virtual void		ArgCompletion( const char *cmdString, void(*callback)( const char *s ) ) = 0;
 
 //						// Adds command text to the command buffer, does not add a final \n
-//	virtual void		BufferCommandText( cmdExecution_t exec, const char *text ) = 0;
+//	virtual void		BufferCommandText( cmdExecution_t exec, text:string ) = 0;
 //						// Pulls off \n \r or ; terminated lines of text from the command buffer and
 //						// executes the commands. Stops when the buffer is empty.
 //						// Normally called once per frame, but may be explicitly invoked.

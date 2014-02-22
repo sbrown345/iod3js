@@ -84,23 +84,23 @@ class idDeviceContext {
 	//	void				DrawMaterial(float x, float y, float w, float h, const idMaterial *mat, const idVec4 &color, float scalex = 1.0, float scaley = 1.0);
 	//	void				DrawRect(float x, float y, float width, float height, float size, const idVec4 &color);
 	//	void				DrawFilledRect(float x, float y, float width, float height, const idVec4 &color);
-	//	int					DrawText(const char *text, float textScale, int textAlign, idVec4 color, idRectangle rectDraw, bool wrap, int cursor = -1, bool calcOnly = false, idList<int> *breaks = NULL, int limit = 0 );
+	//	int					DrawText(text:string, float textScale, int textAlign, idVec4 color, idRectangle rectDraw, bool wrap, int cursor = -1, bool calcOnly = false, idList<int> *breaks = NULL, int limit = 0 );
 	//	void				DrawMaterialRect( float x, float y, float w, float h, float size, const idMaterial *mat, const idVec4 &color);
 	//	void				DrawStretchPic(float x, float y, float w, float h, float s0, float t0, float s1, float t1, const idMaterial *mat);
 	//
-	//	void				DrawMaterialRotated(float x, float y, float w, float h, const idMaterial *mat, const idVec4 &color, float scalex = 1.0, float scaley = 1.0, float angle = 0.0);
-	//	void				DrawStretchPicRotated(float x, float y, float w, float h, float s0, float t0, float s1, float t1, const idMaterial *mat, float angle = 0.0);
+	//	void				DrawMaterialRotated(float x, float y, float w, float h, const idMaterial *mat, const idVec4 &color, float scalex = 1.0, float scaley = 1.0, /*float*/angle:number = 0.0);
+	//	void				DrawStretchPicRotated(float x, float y, float w, float h, float s0, float t0, float s1, float t1, const idMaterial *mat, /*float*/angle:number = 0.0);
 	//
 	//	int					CharWidth( const char c, float scale );
-	//	int					TextWidth(const char *text, float scale, int limit);
-	//	int					TextHeight(const char *text, float scale, int limit);
+	//	int					TextWidth(text:string, float scale, int limit);
+	//	int					TextHeight(text:string, float scale, int limit);
 	//	int					MaxCharHeight(float scale);
 	//	int					MaxCharWidth(float scale);
 	//
 	//	int					FindFont( const char *name );
 	//	void				SetupFonts();
 	//
-	//	idRegion			*GetTextRegion(const char *text, float textScale, idRectangle rectDraw, float xStart, float yStart);
+	//	idRegion			*GetTextRegion(text:string, float textScale, idRectangle rectDraw, float xStart, float yStart);
 	//
 	//	void				SetSize(float width, float height);
 	//
@@ -128,7 +128,7 @@ class idDeviceContext {
 
 	
 	//private:
-	//	int					DrawText(float x, float y, float scale, idVec4 color, const char *text, float adjust, int limit, int style, int cursor = -1);
+	//	int					DrawText(float x, float y, float scale, idVec4 color, text:string, float adjust, int limit, int style, int cursor = -1);
 	//	void				PaintChar(float x,float y,float width,float height,float scale,float	s,float	t,float	s2,float t2,const idMaterial *hShader);
 	//	void				SetFontByScale( float scale );
 	//	void				Clear( void );
@@ -528,7 +528,7 @@ Init():void {
 //	DrawStretchPic( x, y, w, h, s0, t0, s1, t1, mat);
 //}
 //
-//void idDeviceContext::DrawMaterialRotated(float x, float y, float w, float h, const idMaterial *mat, const idVec4 &color, float scalex, float scaley, float angle) {
+//void idDeviceContext::DrawMaterialRotated(float x, float y, float w, float h, const idMaterial *mat, const idVec4 &color, float scalex, float scaley, /*float*/angle:number) {
 //	
 //	renderSystem.SetColor(color);
 //
@@ -575,7 +575,7 @@ Init():void {
 //	DrawStretchPicRotated( x, y, w, h, s0, t0, s1, t1, mat, angle);
 //}
 //
-//void idDeviceContext::DrawStretchPicRotated(float x, float y, float w, float h, float s1, float t1, float s2, float t2, const idMaterial *shader, float angle) {
+//void idDeviceContext::DrawStretchPicRotated(float x, float y, float w, float h, float s1, float t1, float s2, float t2, const idMaterial *shader, /*float*/angle:number) {
 //	
 //	idDrawVert verts[4];
 //	glIndex_t indexes[6];
@@ -799,7 +799,7 @@ Init():void {
 //	}
 //}
 //
-//int idDeviceContext::DrawText(float x, float y, float scale, idVec4 color, const char *text, float adjust, int limit, int style, int cursor) {
+//int idDeviceContext::DrawText(float x, float y, float scale, idVec4 color, text:string, float adjust, int limit, int style, int cursor) {
 //	int			len, count;
 //	idVec4		newColor;
 //	const glyphInfo_t *glyph;
@@ -888,7 +888,7 @@ Init():void {
 //	return idMath::FtoiFast( glyph.xSkip * useScale );
 //}
 //
-//int idDeviceContext::TextWidth( const char *text, float scale, int limit ) {
+//int idDeviceContext::TextWidth( text:string, float scale, int limit ) {
 //	int i, width;
 //
 //	SetFontByScale( scale );
@@ -919,7 +919,7 @@ Init():void {
 //	return idMath::FtoiFast( scale * useFont.glyphScale * width );
 //}
 //
-//int idDeviceContext::TextHeight(const char *text, float scale, int limit) {
+//int idDeviceContext::TextHeight(text:string, float scale, int limit) {
 //	int			len, count;
 //	float		max;
 //	glyphInfo_t *glyph;
@@ -977,7 +977,7 @@ Init():void {
 //}
 //
 //// this only supports left aligned text
-//idRegion *idDeviceContext::GetTextRegion(const char *text, float textScale, idRectangle rectDraw, float xStart, float yStart) {
+//idRegion *idDeviceContext::GetTextRegion(text:string, float textScale, idRectangle rectDraw, float xStart, float yStart) {
 //#if 0
 //	const char	*p, *textPtr, *newLinePtr;
 //	char		buff[1024];
@@ -1058,7 +1058,7 @@ Init():void {
 // 	PaintChar(x, y - yadj,glyph2.imageWidth,glyph2.imageHeight,useScale,glyph2.s,glyph2.t,glyph2.s2,glyph2.t2,glyph2.glyph);
 //}
 //
-//int idDeviceContext::DrawText( const char *text, float textScale, int textAlign, idVec4 color, idRectangle rectDraw, bool wrap, int cursor, bool calcOnly, idList<int> *breaks, int limit ) {
+//int idDeviceContext::DrawText( text:string, float textScale, int textAlign, idVec4 color, idRectangle rectDraw, bool wrap, int cursor, bool calcOnly, idList<int> *breaks, int limit ) {
 //	const char	*p, *textPtr, *newLinePtr;
 //	char		buff[1024];
 //	int			len, newLine, newLineWidth, count;

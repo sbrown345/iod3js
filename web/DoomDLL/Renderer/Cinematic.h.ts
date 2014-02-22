@@ -86,7 +86,7 @@ class idCinematic {
 //	virtual void		Close();
 //
 //	// closes the file and frees all allocated memory
-//	virtual void		ResetTime(int time);
+//	virtual void		ResetTime(/*int*/time:number);
 };
 //
 ///*
