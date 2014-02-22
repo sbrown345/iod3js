@@ -42,30 +42,6 @@
 var EV_Fx_KillFx= new idEventDef( "_killfx" );
 var EV_Fx_Action= new idEventDef( "_fxAction", "e" );		// implemented by subclasses
 
-////CLASS_DECLARATION( idEntity, idEntityFx )
-idEntityFx.CreateInstance = function ( ): idClass {
-	try {
-		var ptr = new idEntityFx;
-		ptr.FindUninitializedMemory ( );
-		return ptr;
-	} catch ( e ) {
-		return null;
-	}
-};
-
-idEntityFx.prototype.GetType = function ( ): idTypeInfo {
-	return ( idEntityFx.Type );
-};
-
-idEntityFx.eventCallbacks = [
-	EVENT( EV_Activate,	   	idEntityFx.prototype.Event_Trigger ),
-	EVENT( EV_Fx_KillFx,	idEntityFx.prototype.Event_ClearFx )
-];
-
-idEntityFx.Type = new idTypeInfo("idEntityFx", "idEntity",
-	idEntityFx.eventCallbacks, idEntityFx.CreateInstance, idEntityFx.prototype.Spawn,
-	idEntityFx.prototype.Save, idEntityFx.prototype.Restore );
-
 
 ////END_CLASS
 ////
@@ -858,6 +834,32 @@ class idEntityFx extends idEntity {
 ////	Present();
 ////}
 }
+
+////CLASS_DECLARATION( idEntity, idEntityFx )
+idEntityFx.CreateInstance = function (): idClass {
+	try {
+		var ptr = new idEntityFx;
+		ptr.FindUninitializedMemory();
+		return ptr;
+	} catch (e) {
+		return null;
+	}
+};
+
+idEntityFx.prototype.GetType = function (): idTypeInfo {
+	return (idEntityFx.Type);
+};
+
+idEntityFx.eventCallbacks = [
+	EVENT(EV_Activate, idEntityFx.prototype.Event_Trigger),
+	EVENT(EV_Fx_KillFx, idEntityFx.prototype.Event_ClearFx)
+];
+
+idEntityFx.Type = new idTypeInfo("idEntityFx", "idEntity",
+	idEntityFx.eventCallbacks, idEntityFx.CreateInstance, idEntityFx.prototype.Spawn,
+	idEntityFx.prototype.Save, idEntityFx.prototype.Restore);
+
+
 /*
 ===============================================================================
 
