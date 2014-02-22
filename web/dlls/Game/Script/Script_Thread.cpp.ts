@@ -245,8 +245,8 @@ class idThread extends idClass {
 	//	void						Init( );
 	//	void						Pause( );
 	//
-	//	void						Event_Execute( );
-	//	void						Event_SetThreadName( name:string );
+	Event_Execute(): void { throw "placeholder"; }
+	Event_SetThreadName(name: string): void { throw "placeholder"; }
 	//
 	//	//
 	//	// script callable Events
@@ -260,72 +260,72 @@ class idThread extends idClass {
 	Event_Print( text:string ):void{throw "placeholder";}
 	Event_PrintLn( text:string ):void{throw "placeholder";}
 	Event_Say( text:string ):void{throw "placeholder";}
-	Event_Assert( float value ):void{throw "placeholder";}
+	Event_Assert( /*float */value:number ):void{throw "placeholder";}
 	Event_Trigger( ent:idEntity ):void{throw "placeholder";}
-	Event_SetCvar( const char *name, const char *value ) const;
-	Event_GetCvar( const char *name ) const;
-	Event_Random( float range ) const;
+	Event_SetCvar(name: string, value: string): void { throw "placeholder"; }
+	Event_GetCvar(name: string): void { throw "placeholder"; }
+	Event_Random( /*float*/ range:number): void { throw "placeholder"; }
 	Event_GetTime( ):void{throw "placeholder";}
-	Event_KillThread( const char *name ):void{throw "placeholder";}
-	Event_GetEntity( const char *name ):void{throw "placeholder";}
-	Event_Spawn( const char *classname ):void{throw "placeholder";}
+	Event_KillThread( name:string ):void{throw "placeholder";}
+	Event_GetEntity( name:string ):void{throw "placeholder";}
+	Event_Spawn( classname:string ):void{throw "placeholder";}
 	Event_CopySpawnArgs( ent:idEntity ):void{throw "placeholder";}
-	Event_SetSpawnArg( const char *key, const char *value ):void{throw "placeholder";}
-	Event_SpawnString( const char *key, const char *defaultvalue ):void{throw "placeholder";}
-	Event_SpawnFloat( const char *key, float defaultvalue ):void{throw "placeholder";}
-	Event_SpawnVector( const char *key, idVec3 &defaultvalue ):void{throw "placeholder";}
+	Event_SetSpawnArg( key:string, value:string ):void{throw "placeholder";}
+	Event_SpawnString( key:string, defaultvalue:string ):void{throw "placeholder";}
+	Event_SpawnFloat(key: string, /*float*/ defaultvalue: number ):void{throw "placeholder";}
+	Event_SpawnVector( key:string, defaultvalue:idVec3 ):void{throw "placeholder";}
 	Event_ClearPersistantArgs( ):void{throw "placeholder";}
-	Event_SetPersistantArg( const char *key, const char *value ):void{throw "placeholder";}
-	Event_GetPersistantString( const char *key ):void{throw "placeholder";}
-	Event_GetPersistantFloat( const char *key ):void{throw "placeholder";}
-	Event_GetPersistantVector( const char *key ):void{throw "placeholder";}
-	Event_AngToForward( idAngles &ang ):void{throw "placeholder";}
-	Event_AngToRight( idAngles &ang ):void{throw "placeholder";}
-	Event_AngToUp( idAngles &ang ):void{throw "placeholder";}
+	Event_SetPersistantArg( key:string, value:string ):void{throw "placeholder";}
+	Event_GetPersistantString( key:string ):void{throw "placeholder";}
+	Event_GetPersistantFloat( key:string ):void{throw "placeholder";}
+	Event_GetPersistantVector( key:string ):void{throw "placeholder";}
+	Event_AngToForward( ang:idAngles ):void{throw "placeholder";}
+	Event_AngToRight( ang:idAngles ):void{throw "placeholder";}
+	Event_AngToUp( ang:idAngles ):void{throw "placeholder";}
 	Event_GetSine( /*float*/angle:number ):void{throw "placeholder";}
 	Event_GetCosine( /*float*/angle:number ):void{throw "placeholder";}
-	Event_GetSquareRoot( float theSquare ):void{throw "placeholder";}
-	Event_VecNormalize( idVec3 &vec ):void{throw "placeholder";}
-	Event_VecLength( idVec3 &vec ):void{throw "placeholder";}
-	Event_VecDotProduct( idVec3 &vec1, idVec3 &vec2 ):void{throw "placeholder";}
-	Event_VecCrossProduct( idVec3 &vec1, idVec3 &vec2 ):void{throw "placeholder";}
-	Event_VecToAngles( idVec3 &vec ):void{throw "placeholder";}
-	Event_OnSignal( int signal, ent:idEntity, const char *func ):void{throw "placeholder";}
-	Event_ClearSignalThread( int signal, ent:idEntity ):void{throw "placeholder";}
+	Event_GetSquareRoot( /*float*/ theSquare: number ):void{throw "placeholder";}
+	Event_VecNormalize( vec:idVec3 ):void{throw "placeholder";}
+	Event_VecLength( vec:idVec3 ):void{throw "placeholder";}
+	Event_VecDotProduct(vec1: idVec3, vec2: idVec3  ):void{throw "placeholder";}
+	Event_VecCrossProduct(vec1: idVec3, vec2: idVec3 ):void{throw "placeholder";}
+	Event_VecToAngles( vec:idVec3 ):void{throw "placeholder";}
+	Event_OnSignal( /*int*/ signal:number, ent:idEntity, func:string ):void{throw "placeholder";}
+	Event_ClearSignalThread( /*int*/ signal: number, ent:idEntity ):void{throw "placeholder";}
 	Event_SetCamera( ent:idEntity ):void{throw "placeholder";}
 	Event_FirstPerson( ):void{throw "placeholder";}
-	Event_Trace( const idVec3 &start, const idVec3 &end, mins:idVec3, maxs:idVec3, int contents_mask, idEntity *passEntity ):void{throw "placeholder";}
-	Event_TracePoint( const idVec3 &start, const idVec3 &end, int contents_mask, idEntity *passEntity ):void{throw "placeholder";}
+	Event_Trace(start: idVec3, end: idVec3, mins: idVec3, maxs: idVec3, /*int*/ contents_mask: number, passEntity: idEntity ):void{throw "placeholder";}
+	Event_TracePoint( start:idVec3, end:idVec3, /*int*/ contents_mask:number, passEntity:idEntity ):void{throw "placeholder";}
 	Event_GetTraceFraction( ):void{throw "placeholder";}
 	Event_GetTraceEndPos( ):void{throw "placeholder";}
 	Event_GetTraceNormal( ):void{throw "placeholder";}
 	Event_GetTraceEntity( ):void{throw "placeholder";}
 	Event_GetTraceJoint( ):void{throw "placeholder";}
 	Event_GetTraceBody( ):void{throw "placeholder";}
-	Event_FadeIn( idVec3 &color, /*float*/time:number ):void{throw "placeholder";}
-	Event_FadeOut( idVec3 &color, /*float*/time:number ):void{throw "placeholder";}
-	Event_FadeTo( idVec3 &color, float alpha, /*float*/time:number ):void{throw "placeholder";}
-	Event_SetShaderParm( int parmnum, float value ):void{throw "placeholder";}
-	Event_StartMusic( const char *name ):void{throw "placeholder";}
+	Event_FadeIn( color:idVec3, /*float*/time:number ):void{throw "placeholder";}
+	Event_FadeOut( color:idVec3, /*float*/time:number ):void{throw "placeholder";}
+	Event_FadeTo( color:idVec3, /*float*/ alpha:number, /*float*/time:number ):void{throw "placeholder";}
+	Event_SetShaderParm( /*int*/ parmnum:number, /*float*/ value:number ):void{throw "placeholder";}
+	Event_StartMusic( name:string ):void{throw "placeholder";}
 	Event_Warning( text:string ):void{throw "placeholder";}
 	Event_Error( text:string ):void{throw "placeholder";}
-	Event_StrLen( const char *string ):void{throw "placeholder";}
-	Event_StrLeft( const char *string, /*int*/num:number ):void{throw "placeholder";}
-	Event_StrRight( const char *string, /*int*/num:number ):void{throw "placeholder";}
-	Event_StrSkip( const char *string, /*int*/num:number ):void{throw "placeholder";}
-	Event_StrMid( const char *string, int start, /*int*/num:number ):void{throw "placeholder";}
-	Event_StrToFloat( const char *string ):void{throw "placeholder";}
-	Event_RadiusDamage( const idVec3 &origin, idEntity *inflictor, idEntity *attacker, idEntity *ignore, const char *damageDefName, float dmgPower ):void{throw "placeholder";}
+	Event_StrLen( $string:string ):void{throw "placeholder";}
+	Event_StrLeft( $string:string, /*int*/num:number ):void{throw "placeholder";}
+	Event_StrRight( $string:string, /*int*/num:number ):void{throw "placeholder";}
+	Event_StrSkip( $string:string, /*int*/num:number ):void{throw "placeholder";}
+	Event_StrMid( $string:string, /*int */start:number, /*int*/num:number ):void{throw "placeholder";}
+	Event_StrToFloat( $string:string ):void{throw "placeholder";}
+	Event_RadiusDamage(origin: idVec3, inflictor: idEntity, attacker: idEntity, ignore: idEntity , damageDefName:string, /*float*/ dmgPower:number ):void{throw "placeholder";}
 	Event_IsClient( ):void{throw "placeholder";}
 	Event_IsMultiplayer( ):void{throw "placeholder";}
 	Event_GetFrameTime( ):void{throw "placeholder";}
 	Event_GetTicsPerSecond( ):void{throw "placeholder";}
-	Event_CacheSoundShader( const char *soundName ):void{throw "placeholder";}
-	Event_DebugLine( color:idVec3, const idVec3 &start, const idVec3 &end, const float lifetime ):void{throw "placeholder";}
-	Event_DebugArrow( color:idVec3, const idVec3 &start, const idVec3 &end, const int size, const float lifetime ):void{throw "placeholder";}
-	Event_DebugCircle( color:idVec3, const idVec3 &origin, const idVec3 &dir, const float radius, const int numSteps, const float lifetime ):void{throw "placeholder";}
-	Event_DebugBounds( color:idVec3, mins:idVec3, maxs:idVec3, const float lifetime ):void{throw "placeholder";}
-	Event_DrawText( text:string, const idVec3 &origin, float scale, color:idVec3, const int align, const float lifetime ):void{throw "placeholder";}
+	Event_CacheSoundShader( soundName:string ):void{throw "placeholder";}
+	Event_DebugLine(color: idVec3, start: idVec3, end: idVec3, /*float*/ lifetime :number):void{throw "placeholder";}
+	Event_DebugArrow(color: idVec3, start: idVec3, end: idVec3, /*int*/ size:number,  /*float*/ lifetime:number ):void{throw "placeholder";}
+	Event_DebugCircle(color: idVec3, origin: idVec3, dir: idVec3 , /*float*/ radius:number,  /*int*/ numSteps:number, /*float*/ lifetime:number ):void{throw "placeholder";}
+	Event_DebugBounds( color:idVec3, mins:idVec3, maxs:idVec3, /*float*/ lifetime:number ):void{throw "placeholder";}
+	Event_DrawText(text: string, origin: idVec3, /*float*/ scale:number, color:idVec3,  /*int*/ align:number,  /*float*/ lifetime:number ):void{throw "placeholder";}
 	Event_InfluenceActive( ):void{throw "placeholder";}
 	//
 	//public:							
@@ -375,7 +375,7 @@ class idThread extends idClass {
 	//	bool						IsDying			 ( );	
 	//								
 	//	void						End( );
-	//	static void					KillThread( const char *name );
+	//	static void					KillThread( name:string );
 	//	static void					KillThread( /*int*/num:number );
 	//	bool						Execute( );
 	//	void						ManualControl( ) { manualControl = true; CancelEvents( &EV_Thread_Execute ); };
@@ -393,7 +393,7 @@ class idThread extends idClass {
 	//	idThread					*WaitingOnThread( );
 	//	void						SetThreadNum( /*int*/num:number );
 	//	int 						GetThreadNum( );
-	//	void						SetThreadName( const char *name );
+	//	void						SetThreadName( name:string );
 	//	const char					*GetThreadName( );
 	//
 	//	void						Error( const char *fmt, ... ) const id_attribute((format(printf,2,3)));
@@ -838,7 +838,7 @@ idThread::Restart
 //idThread::SetThreadName
 //================
 //*/
-//void idThread::SetThreadName( const char *name ) {
+//void idThread::SetThreadName( name:string ) {
 //	threadName = name;
 //}
 //
@@ -1323,7 +1323,7 @@ idThread::ReturnString
 //idThread::Event_SetCvar
 //================
 //*/
-//void idThread::Event_SetCvar( name:string, const char *value ) const {
+//void idThread::Event_SetCvar( name:string, value:string ) const {
 //	cvarSystem->SetCVarString( name, value );
 //}
 //
@@ -1417,7 +1417,7 @@ idThread::ReturnString
 //idThread::Event_SetSpawnArg
 //================
 //*/
-//void idThread::Event_SetSpawnArg( const char *key, const char *value ) {
+//void idThread::Event_SetSpawnArg( key:string, value:string ) {
 //	spawnArgs.Set( key, value );
 //}
 //
@@ -1426,7 +1426,7 @@ idThread::ReturnString
 //idThread::Event_SpawnString
 //================
 //*/
-//void idThread::Event_SpawnString( const char *key, const char *defaultvalue ) {
+//void idThread::Event_SpawnString( key:string, const char *defaultvalue ) {
 //	const char *result;
 //
 //	spawnArgs.GetString( key, defaultvalue, &result );
@@ -1438,7 +1438,7 @@ idThread::ReturnString
 //idThread::Event_SpawnFloat
 //================
 //*/
-//void idThread::Event_SpawnFloat( const char *key, float defaultvalue ) {
+//void idThread::Event_SpawnFloat( key:string, float defaultvalue ) {
 //	float result;
 //
 //	spawnArgs.GetFloat( key, va( "%f", defaultvalue ), result );
@@ -1450,7 +1450,7 @@ idThread::ReturnString
 //idThread::Event_SpawnVector
 //================
 //*/
-//void idThread::Event_SpawnVector( const char *key, idVec3 &defaultvalue ) {
+//void idThread::Event_SpawnVector( key:string, idVec3 &defaultvalue ) {
 //	idVec3 result;
 //
 //	spawnArgs.GetVector( key, va( "%f %f %f", defaultvalue.x, defaultvalue.y, defaultvalue.z ), result );
@@ -1472,7 +1472,7 @@ idThread::ReturnString
 //idThread::Event_SetPersistantArg
 //================
 //*/
-//void idThread::Event_SetPersistantArg( const char *key, const char *value ) {
+//void idThread::Event_SetPersistantArg( key:string, value:string ) {
 //	gameLocal.persistentLevelInfo.Set( key, value );
 //}
 //
@@ -1481,7 +1481,7 @@ idThread::ReturnString
 //idThread::Event_GetPersistantString
 //================
 //*/
-//void idThread::Event_GetPersistantString( const char *key ) {
+//void idThread::Event_GetPersistantString( key:string ) {
 //	const char *result;
 //
 //	gameLocal.persistentLevelInfo.GetString( key, "", &result );
@@ -1493,7 +1493,7 @@ idThread::ReturnString
 //idThread::Event_GetPersistantFloat
 //================
 //*/
-//void idThread::Event_GetPersistantFloat( const char *key ) {
+//void idThread::Event_GetPersistantFloat( key:string ) {
 //	float result;
 //
 //	gameLocal.persistentLevelInfo.GetFloat( key, "0", result );
@@ -1505,7 +1505,7 @@ idThread::ReturnString
 //idThread::Event_GetPersistantVector
 //================
 //*/
-//void idThread::Event_GetPersistantVector( const char *key ) {
+//void idThread::Event_GetPersistantVector( key:string ) {
 //	idVec3 result;
 //
 //	gameLocal.persistentLevelInfo.GetVector( key, "0 0 0", result );
@@ -1517,7 +1517,7 @@ idThread::ReturnString
 //idThread::Event_AngToForward
 //================
 //*/
-//void idThread::Event_AngToForward( idAngles &ang ) {
+//void idThread::Event_AngToForward( ang:idAngles ) {
 //	ReturnVector( ang.ToForward() );
 //}
 //
@@ -1526,7 +1526,7 @@ idThread::ReturnString
 //idThread::Event_AngToRight
 //================
 //*/
-//void idThread::Event_AngToRight( idAngles &ang ) {
+//void idThread::Event_AngToRight( ang:idAngles ) {
 //	idVec3 vec;
 //
 //	ang.ToVectors( NULL, &vec );
@@ -1538,7 +1538,7 @@ idThread::ReturnString
 //idThread::Event_AngToUp
 //================
 //*/
-//void idThread::Event_AngToUp( idAngles &ang ) {
+//void idThread::Event_AngToUp( ang:idAngles ) {
 //	idVec3 vec;
 //
 //	ang.ToVectors( NULL, NULL, &vec );
@@ -1577,7 +1577,7 @@ idThread::ReturnString
 //idThread::Event_VecNormalize
 //================
 //*/
-//void idThread::Event_VecNormalize( idVec3 &vec ) {
+//void idThread::Event_VecNormalize( vec:idVec3 ) {
 //	idVec3 n;
 //
 //	n = vec;
@@ -1590,7 +1590,7 @@ idThread::ReturnString
 //idThread::Event_VecLength
 //================
 //*/
-//void idThread::Event_VecLength( idVec3 &vec ) {
+//void idThread::Event_VecLength( vec:idVec3 ) {
 //	ReturnFloat( vec.Length() );
 //}
 //
@@ -1617,7 +1617,7 @@ idThread::ReturnString
 //idThread::Event_VecToAngles
 //================
 //*/
-//void idThread::Event_VecToAngles( idVec3 &vec ) {
+//void idThread::Event_VecToAngles( vec:idVec3 ) {
 //	idAngles ang = vec.ToAngles();
 //	ReturnVector( idVec3( ang[0], ang[1], ang[2] ) );
 //}
@@ -1698,7 +1698,7 @@ idThread::ReturnString
 //idThread::Event_Trace
 //================
 //*/
-//void idThread::Event_Trace( const idVec3 &start, const idVec3 &end, mins:idVec3, maxs:idVec3, int contents_mask, idEntity *passEntity ) {
+//void idThread::Event_Trace( start:idVec3, end:idVec3, mins:idVec3, maxs:idVec3, int contents_mask, passEntity:idEntity ) {
 //	if ( mins == vec3_origin && maxs == vec3_origin ) {
 //		gameLocal.clip.TracePoint( idThread.trace, start, end, contents_mask, passEntity );
 //	} else {
@@ -1712,7 +1712,7 @@ idThread::ReturnString
 //idThread::Event_TracePoint
 //================
 //*/
-//void idThread::Event_TracePoint( const idVec3 &start, const idVec3 &end, int contents_mask, idEntity *passEntity ) {
+//void idThread::Event_TracePoint( start:idVec3, end:idVec3, int contents_mask, passEntity:idEntity ) {
 //	gameLocal.clip.TracePoint( idThread.trace, start, end, contents_mask, passEntity );
 //	ReturnFloat( idThread.trace.fraction );
 //}
@@ -1802,7 +1802,7 @@ idThread::ReturnString
 //idThread::Event_FadeIn
 //================
 //*/
-//void idThread::Event_FadeIn( idVec3 &color, /*float*/time:number ) {
+//void idThread::Event_FadeIn( color:idVec3, /*float*/time:number ) {
 //	idVec4		fadeColor;
 //	idPlayer	*player;
 //
@@ -1818,7 +1818,7 @@ idThread::ReturnString
 //idThread::Event_FadeOut
 //================
 //*/
-//void idThread::Event_FadeOut( idVec3 &color, /*float*/time:number ) {
+//void idThread::Event_FadeOut( color:idVec3, /*float*/time:number ) {
 //	idVec4		fadeColor;
 //	idPlayer	*player;
 //
@@ -1834,7 +1834,7 @@ idThread::ReturnString
 //idThread::Event_FadeTo
 //================
 //*/
-//void idThread::Event_FadeTo( idVec3 &color, float alpha, /*float*/time:number ) {
+//void idThread::Event_FadeTo( color:idVec3, float alpha, /*float*/time:number ) {
 //	idVec4		fadeColor;
 //	idPlayer	*player;
 //
@@ -1890,7 +1890,7 @@ idThread::ReturnString
 //idThread::Event_StrLen
 //================
 //*/
-//void idThread::Event_StrLen( const char *string ) {
+//void idThread::Event_StrLen( $string:string ) {
 //	int len;
 //
 //	len = strlen( string );
@@ -1902,7 +1902,7 @@ idThread::ReturnString
 //idThread::Event_StrLeft
 //================
 //*/
-//void idThread::Event_StrLeft( const char *string, /*int*/num:number ) {
+//void idThread::Event_StrLeft( $string:string, /*int*/num:number ) {
 //	int len;
 //
 //	if ( num < 0 ) {
@@ -1925,7 +1925,7 @@ idThread::ReturnString
 //idThread::Event_StrRight 
 //================
 //*/
-//void idThread::Event_StrRight( const char *string, /*int*/num:number ) {
+//void idThread::Event_StrRight( $string:string, /*int*/num:number ) {
 //	int len;
 //
 //	if ( num < 0 ) {
@@ -1947,7 +1947,7 @@ idThread::ReturnString
 //idThread::Event_StrSkip
 //================
 //*/
-//void idThread::Event_StrSkip( const char *string, /*int*/num:number ) {
+//void idThread::Event_StrSkip( $string:string, /*int*/num:number ) {
 //	int len;
 //
 //	if ( num < 0 ) {
@@ -1969,7 +1969,7 @@ idThread::ReturnString
 //idThread::Event_StrMid
 //================
 //*/
-//void idThread::Event_StrMid( const char *string, int start, /*int*/num:number ) {
+//void idThread::Event_StrMid( $string:string, int start, /*int*/num:number ) {
 //	int len;
 //
 //	if ( num < 0 ) {
@@ -1998,7 +1998,7 @@ idThread::ReturnString
 //idThread::Event_StrToFloat( const char *string )
 //================
 //*/
-//void idThread::Event_StrToFloat( const char *string ) {
+//void idThread::Event_StrToFloat( $string:string ) {
 //	float result;
 //
 //	result = atof( string );
@@ -2064,7 +2064,7 @@ idThread::ReturnString
 //idThread::Event_DebugLine
 //================
 //*/
-//void idThread::Event_DebugLine( color:idVec3, const idVec3 &start, const idVec3 &end, const float lifetime ) {
+//void idThread::Event_DebugLine( color:idVec3, start:idVec3, end:idVec3, const float lifetime ) {
 //	gameRenderWorld->DebugLine( idVec4( color.x, color.y, color.z, 0.0 ), start, end, SEC2MS( lifetime ) );
 //}
 //
@@ -2073,7 +2073,7 @@ idThread::ReturnString
 //idThread::Event_DebugArrow
 //================
 //*/
-//void idThread::Event_DebugArrow( color:idVec3, const idVec3 &start, const idVec3 &end, const int size, const float lifetime ) {
+//void idThread::Event_DebugArrow( color:idVec3, start:idVec3, end:idVec3, const int size, const float lifetime ) {
 //	gameRenderWorld->DebugArrow( idVec4( color.x, color.y, color.z, 0.0 ), start, end, size, SEC2MS( lifetime ) );
 //}
 //

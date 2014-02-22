@@ -402,17 +402,17 @@ class idCVarSystem {
 
 	//Register( cvar:idCVar ):void;
 
-	////	virtual idCVar *		Find( const char *name );
+	////	virtual idCVar *		Find( name:string );
 
-	////	virtual void			SetCVarString( const char *name, const char *value, int flags = 0 );
-	////	virtual void			SetCVarBool( const char *name, const bool value, int flags = 0 );
-	////	virtual void			SetCVarInteger( const char *name, const int value, int flags = 0 );
-	////	virtual void			SetCVarFloat( const char *name, const float value, int flags = 0 );
+	////	virtual void			SetCVarString( name:string, value:string, int flags = 0 );
+	////	virtual void			SetCVarBool( name:string, const bool value, int flags = 0 );
+	////	virtual void			SetCVarInteger( name:string, const int value, int flags = 0 );
+	////	virtual void			SetCVarFloat( name:string, const float value, int flags = 0 );
 
-	////	virtual const char *	GetCVarString( const char *name ) const;
-	////	virtual bool			GetCVarBool( const char *name ) const;
-	////	virtual int				GetCVarInteger( const char *name ) const;
-	////	virtual float			GetCVarFloat( const char *name ) const;
+	////	virtual const char *	GetCVarString( name:string ) const;
+	////	virtual bool			GetCVarBool( name:string ) const;
+	////	virtual int				GetCVarInteger( name:string ) const;
+	////	virtual float			GetCVarFloat( name:string ) const;
 
 	////	virtual bool			Command( args:idCmdArgs );
 
@@ -431,8 +431,8 @@ class idCVarSystem {
 	////	virtual void			SetCVarsFromDict( const idDict &dict );
 
 	////	void					RegisterInternal( idCVar *cvar );
-	////	idInternalCVar *		FindInternal( const char *name ) const;
-	////	void					SetInternal( const char *name, const char *value, int flags );
+	////	idInternalCVar *		FindInternal( name:string ) const;
+	////	void					SetInternal( name:string, value:string, int flags );
 
 	////private:
 	initialized: boolean;

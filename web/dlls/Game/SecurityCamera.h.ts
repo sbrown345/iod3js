@@ -46,17 +46,17 @@ class idSecurityCamera extends idEntity {
 	GetType ( ): idTypeInfo { throw "placeholder"; }
 	static eventCallbacks: idEventFunc<idSecurityCamera>[];
 ////
-////	void					Spawn( void );
+////	void					Spawn( );
 ////
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
 ////
-////	virtual void			Think( void );
+////	virtual void			Think( );
 ////
 ////	virtual renderView_t *	GetRenderView();
 ////	virtual void			Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location );
 ////	virtual bool			Pain( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location );
-////	virtual void			Present( void );
+////	virtual void			Present( );
 ////
 ////
 ////private:
@@ -84,18 +84,18 @@ class idSecurityCamera extends idEntity {
 ////	idPhysics_RigidBody		physicsObj;
 ////	idTraceModel			trm;
 ////
-////	void					StartSweep( void );
-////	bool					CanSeePlayer( void );
+////	void					StartSweep( );
+////	bool					CanSeePlayer( );
 ////	void					SetAlertMode( int status );
-////	void					DrawFov( void );
-////	const idVec3			GetAxis( void ) const;
-////	float					SweepSpeed( void ) const;
+////	void					DrawFov( );
+////	const idVec3			GetAxis( ) const;
+////	float					SweepSpeed( ) const;
 ////
-////	void					Event_ReverseSweep( void );
-////	void					Event_ContinueSweep( void );
-////	void					Event_Pause( void );
-////	void					Event_Alert( void );
-////	void					Event_AddLight( void );
+	Event_ReverseSweep( ):void{throw "placeholder";}
+	Event_ContinueSweep( ):void{throw "placeholder";}
+	Event_Pause( ):void{throw "placeholder";}
+	Event_Alert( ):void{throw "placeholder";}
+	Event_AddLight( ):void{throw "placeholder";}
 };
 ////
 ////#endif /* !__GAME_SECURITYCAMERA_H__ */

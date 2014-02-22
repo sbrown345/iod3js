@@ -127,7 +127,7 @@ class idMover extends idEntity {
 ////	void					UpdateRotationSound( moveStage_t stage ): void { throw "placeholder"; }
 ////	void					SetGuiStates( const char *state ): void { throw "placeholder"; }
 ////	void					FindGuiTargets( ): void { throw "placeholder"; }
-////	void					SetGuiState( const char *key, const char *val ) const;
+////	void					SetGuiState( key:string, const char *val ) const;
 
 ////	virtual void			DoneMoving( ): void {throw "placeholder";}
 ////	virtual void			DoneRotating( ): void {throw "placeholder";}
@@ -158,7 +158,7 @@ class idMover extends idEntity {
 
 ////	idList< idEntityPtr<idEntity> >	guiTargets;
 
-////	void					VectorForDir( float dir, idVec3 &vec );
+////	void					VectorForDir( float dir, vec:idVec3 );
 ////	idCurve_Spline<idVec3> *GetSpline( idEntity *splineEntity ) const;
 
 	Event_SetCallback( ): void { throw "placeholder"; }	
@@ -262,7 +262,7 @@ class idElevator extends idMover {
 ////	int						returnFloor;
 ////	int						lastTouchTime;
 
-////	class idDoor *			GetDoor( const char *name );
+////	class idDoor *			GetDoor( name:string );
 ////	void					Think( ): void {throw "placeholder";}
 ////	void					OpenInnerDoor( ): void {throw "placeholder";}
 ////	void					OpenFloorDoor( int floor );

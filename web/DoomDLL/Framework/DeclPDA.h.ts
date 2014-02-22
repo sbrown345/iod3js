@@ -127,9 +127,9 @@ class idDeclPDA extends idDecl {
 ////	virtual void			Print( void ) const;
 ////	virtual void			List( void ) const;
 ////
-////	virtual void			AddVideo( const char *name, bool unique = true ) const;
-////	virtual void			AddAudio( const char *name, bool unique = true ) const;
-////	virtual void			AddEmail( const char *name, bool unique = true ) const;
+////	virtual void			AddVideo( name:string, bool unique = true ) const;
+////	virtual void			AddAudio( name:string, bool unique = true ) const;
+////	virtual void			AddEmail( name:string, bool unique = true ) const;
 ////	virtual void			RemoveAddedEmailsAndVideos() const;
 ////
 ////	virtual const int		GetNumVideos() const;

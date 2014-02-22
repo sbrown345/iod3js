@@ -48,6 +48,10 @@ World entity.
 class idWorldspawn extends idEntity {
 	////public:
 	////	CLASS_PROTOTYPE(idWorldspawn);
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idWorldspawn>[];
 	////
 	////	~idWorldspawn();
 	////
@@ -57,7 +61,7 @@ class idWorldspawn extends idEntity {
 	////	void			Restore(idRestoreGame *savefile);
 	////
 	////private:
-	////	void			Event_Remove(void);
+	Event_Remove(): void { throw "placeholder"; }
 	////};
 	////
 	////#endif /* !__GAME_WORLDSPAWN_H__ */

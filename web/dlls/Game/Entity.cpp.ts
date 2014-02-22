@@ -2136,7 +2136,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////convert coordinates.
 ////================
 ////*/
-////idVec3 idEntity::GetLocalVector( const idVec3 &vec ) const {
+////idVec3 idEntity::GetLocalVector( const vec:idVec3 ) const {
 ////	idVec3	pos;
 ////
 ////	if ( !bindMaster ) {
@@ -2160,7 +2160,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////object's local coordinates.
 ////================
 ////*/
-////idVec3 idEntity::GetLocalCoordinates( const idVec3 &vec ) const {
+////idVec3 idEntity::GetLocalCoordinates( vec:idVec3 ) const {
 ////	idVec3	pos;
 ////
 ////	if ( !bindMaster ) {
@@ -2187,7 +2187,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////convert coordinates.
 ////================
 ////*/
-////idVec3 idEntity::GetWorldVector( const idVec3 &vec ) const {
+////idVec3 idEntity::GetWorldVector( vec:idVec3 ) const {
 ////	idVec3	pos;
 ////
 ////	if ( !bindMaster ) {
@@ -2211,7 +2211,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////it into world coordinates.
 ////================
 ////*/
-////idVec3 idEntity::GetWorldCoordinates( const idVec3 &vec ) const {
+////idVec3 idEntity::GetWorldCoordinates( vec:idVec3 ) const {
 ////	idVec3	pos;
 ////
 ////	if ( !bindMaster ) {
@@ -2732,7 +2732,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////idEntity::SetAngles
 ////================
 ////*/
-////idEntity.prototype.SetAngles( const idAngles &ang ) {
+////idEntity.prototype.SetAngles( const ang:idAngles ) {
 ////	SetAxis( ang.ToMat3() );
 ////}
 ////
@@ -4255,7 +4255,7 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////idEntity::Event_SetGuiParm
 ////================
 ////*/
-////idEntity.prototype.Event_SetGuiParm( const char *key, const char *val ) {
+////idEntity.prototype.Event_SetGuiParm( key:string, const char *val ) {
 ////	for ( int i = 0; i < MAX_RENDERENTITY_GUI; i++ ) {
 ////		if ( renderEntity.gui[ i ] ) {
 ////			if ( idStr::Icmpn( key, "gui_", 4 ) == 0 ) {
@@ -4272,7 +4272,7 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////idEntity::Event_SetGuiParm
 ////================
 ////*/
-////idEntity.prototype.Event_SetGuiFloat( const char *key, float f ) {
+////idEntity.prototype.Event_SetGuiFloat( key:string, float f ) {
 ////	for ( int i = 0; i < MAX_RENDERENTITY_GUI; i++ ) {
 ////		if ( renderEntity.gui[ i ] ) {
 ////			renderEntity.gui[ i ]->SetStateString( key, va( "%f", f ) );
@@ -4309,7 +4309,7 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////idEntity::Event_SetKey
 ////================
 ////*/
-////idEntity.prototype.Event_SetKey( const char *key, const char *value ) {
+////idEntity.prototype.Event_SetKey( key:string, value:string ) {
 ////	spawnArgs.Set( key, value );
 ////}
 ////
@@ -4318,8 +4318,8 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////idEntity::Event_GetKey
 ////================
 ////*/
-////idEntity.prototype.Event_GetKey( const char *key ) {
-////	const char *value;
+////idEntity.prototype.Event_GetKey( key:string ) {
+////	var value:string;
 ////
 ////	spawnArgs.GetString( key, "", &value );
 ////	idThread::ReturnString( value );
@@ -4330,7 +4330,7 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////idEntity::Event_GetIntKey
 ////================
 ////*/
-////idEntity.prototype.Event_GetIntKey( const char *key ) {
+////idEntity.prototype.Event_GetIntKey( key:string ) {
 ////	int value;
 ////
 ////	spawnArgs.GetInt( key, "0", value );
@@ -4344,7 +4344,7 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////idEntity::Event_GetFloatKey
 ////================
 ////*/
-////idEntity.prototype.Event_GetFloatKey( const char *key ) {
+////idEntity.prototype.Event_GetFloatKey( key:string ) {
 ////	float value;
 ////
 ////	spawnArgs.GetFloat( key, "0", value );
@@ -4356,7 +4356,7 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////idEntity::Event_GetVectorKey
 ////================
 ////*/
-////idEntity.prototype.Event_GetVectorKey( const char *key ) {
+////idEntity.prototype.Event_GetVectorKey( key:string ) {
 ////	idVec3 value;
 ////
 ////	spawnArgs.GetVector( key, "0 0 0", value );
@@ -4368,7 +4368,7 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////idEntity::Event_GetEntityKey
 ////================
 ////*/
-////idEntity.prototype.Event_GetEntityKey( const char *key ) {
+////idEntity.prototype.Event_GetEntityKey( key:string ) {
 ////	var ent:idEntity
 ////	const char *entname;
 ////

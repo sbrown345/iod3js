@@ -83,7 +83,7 @@
 ////idAASLocal::AreaTravelTime
 ////============
 ////*/
-////unsigned short idAASLocal::AreaTravelTime( int areaNum, const idVec3 &start, const idVec3 &end ) const {
+////unsigned short idAASLocal::AreaTravelTime( int areaNum, start:idVec3, end:idVec3 ) const {
 ////	float dist;
 ////
 ////	dist = ( end - start ).Length();

@@ -245,10 +245,10 @@ class idEntity extends idClass {
 ////	idEntity *				GetTeamMaster( ) const;
 ////	idEntity *				GetNextTeamEntity( ) const;
 ////	void					ConvertLocalToWorldTransform( idVec3 &offset, idMat3 &axis );
-////	idVec3					GetLocalVector( const idVec3 &vec ) const;
-////	idVec3					GetLocalCoordinates( const idVec3 &vec ) const;
-////	idVec3					GetWorldVector( const idVec3 &vec ) const;
-////	idVec3					GetWorldCoordinates( const idVec3 &vec ) const;
+////	idVec3					GetLocalVector( const vec:idVec3 ) const;
+////	idVec3					GetLocalCoordinates( const vec:idVec3 ) const;
+////	idVec3					GetWorldVector( const vec:idVec3 ) const;
+////	idVec3					GetWorldCoordinates( const vec:idVec3 ) const;
 ////	bool					GetMasterPosition( idVec3 &masterOrigin, idMat3 &masterAxis ) const;
 ////	void					GetWorldVelocities( idVec3 &linearVelocity, idVec3 &angularVelocity ) const;
 ////
@@ -266,7 +266,7 @@ class idEntity extends idClass {
 ////							// set the axis of the physics object (relative to bindMaster if not NULL)
 ////	void					SetAxis( const idMat3 &axis );
 ////							// use angles to set the axis of the physics object (relative to bindMaster if not NULL)
-////	void					SetAngles( const idAngles &ang );
+////	void					SetAngles( const ang:idAngles );
 ////							// get the floor position underneath the physics object
 ////	bool					GetFloorPos( float max_dist, idVec3 &floorpos ) const;
 ////							// retrieves the transformation going from the physics origin/axis to the visual origin/axis
@@ -482,6 +482,10 @@ class idEntity extends idClass {
 class idAnimatedEntity extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idAnimatedEntity );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idAnimatedEntity>[];
 ////
 ////							idAnimatedEntity();
 ////							~idAnimatedEntity();

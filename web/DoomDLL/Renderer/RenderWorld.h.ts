@@ -409,13 +409,13 @@ class idRenderWorld {
 //	virtual guiPoint_t		GuiTrace( qhandle_t entityHandle, const idVec3 start, const idVec3 end ) const = 0;
 //
 //	// Traces vs the render model, possibly instantiating a dynamic version, and returns true if something was hit
-//	virtual bool			ModelTrace( modelTrace_t &trace, qhandle_t entityHandle, const idVec3 &start, const idVec3 &end, const float radius ) const = 0;
+//	virtual bool			ModelTrace( modelTrace_t &trace, qhandle_t entityHandle, start:idVec3, const idVec3 &end, const float radius ) const = 0;
 //
 //	// Traces vs the whole rendered world. FIXME: we need some kind of material flags.
-//	virtual bool			Trace( modelTrace_t &trace, const idVec3 &start, const idVec3 &end, const float radius, bool skipDynamic = true, bool skipPlayer = false ) const = 0;
+//	virtual bool			Trace( modelTrace_t &trace, start:idVec3, const idVec3 &end, const float radius, bool skipDynamic = true, bool skipPlayer = false ) const = 0;
 //
 //	// Traces vs the world model bsp tree.
-//	virtual bool			FastWorldTrace( modelTrace_t &trace, const idVec3 &start, const idVec3 &end ) const = 0;
+//	virtual bool			FastWorldTrace( modelTrace_t &trace, start:idVec3, const idVec3 &end ) const = 0;
 //
 //	//-------------- Demo Control  -----------------
 //
@@ -440,8 +440,8 @@ class idRenderWorld {
 //
 //	// Line drawing for debug visualization
 //	virtual void			DebugClearLines( /*int*/time:number ) = 0;		// a time of 0 will clear all lines and text
-//	virtual void			DebugLine( const idVec4 &color, const idVec3 &start, const idVec3 &end, const int lifetime = 0, const bool depthTest = false ) = 0;
-//	virtual void			DebugArrow( const idVec4 &color, const idVec3 &start, const idVec3 &end, int size, const int lifetime = 0 ) = 0;
+//	virtual void			DebugLine( const idVec4 &color, start:idVec3, const idVec3 &end, const int lifetime = 0, const bool depthTest = false ) = 0;
+//	virtual void			DebugArrow( const idVec4 &color, start:idVec3, end:idVec3, int size, const int lifetime = 0 ) = 0;
 //	virtual void			DebugWinding( const idVec4 &color, const idWinding &w, const idVec3 &origin, const idMat3 &axis, const int lifetime = 0, const bool depthTest = false ) = 0;
 //	virtual void			DebugCircle( const idVec4 &color, const idVec3 &origin, const idVec3 &dir, const float radius, const int numSteps, const int lifetime = 0, const bool depthTest = false ) = 0;
 //	virtual void			DebugSphere( const idVec4 &color, const idSphere &sphere, const int lifetime = 0, bool depthTest = false ) = 0;

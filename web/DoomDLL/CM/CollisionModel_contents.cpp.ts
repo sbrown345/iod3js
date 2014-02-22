@@ -475,7 +475,7 @@
 ////idCollisionModelManagerLocal::ContentsTrm
 ////==================
 ////*/
-////int idCollisionModelManagerLocal::ContentsTrm( trace_t *results, const idVec3 &start,
+////int idCollisionModelManagerLocal::ContentsTrm( trace_t *results, start:idVec3,
 ////									const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
 ////									cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis ) {
 ////	int i;
@@ -623,7 +623,7 @@
 ////idCollisionModelManagerLocal::Contents
 ////==================
 ////*/
-////int idCollisionModelManagerLocal::Contents( const idVec3 &start,
+////int idCollisionModelManagerLocal::Contents( start:idVec3,
 ////									const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
 ////									cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis ) {
 ////	trace_t results;

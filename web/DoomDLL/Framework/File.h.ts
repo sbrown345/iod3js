@@ -90,7 +90,7 @@ class idFile {
 ////	virtual int				ReadBool( bool &value );
 ////	virtual int				ReadString( idStr &string );
 ////	virtual int				ReadVec2( idVec2 &vec );
-////	virtual int				ReadVec3( idVec3 &vec );
+////	virtual int				ReadVec3( vec:idVec3 );
 ////	virtual int				ReadVec4( idVec4 &vec );
 ////	virtual int				ReadVec6( idVec6 &vec );
 ////	virtual int				ReadMat3( idMat3 &mat );
@@ -100,13 +100,13 @@ class idFile {
 ////	virtual int				WriteUnsignedInt( const unsigned int value );
 ////	virtual int				WriteShort( const short value );
 ////	virtual int				WriteUnsignedShort( unsigned short value );
-////	virtual int				WriteChar( const char value );
+////	virtual int				WriteChar( value:string );
 ////	virtual int				WriteUnsignedChar( const unsigned char value );
 ////	virtual int				WriteFloat( const float value );
 ////	virtual int				WriteBool( const bool value );
 ////	virtual int				WriteString( const char *string );
 ////	virtual int				WriteVec2( const idVec2 &vec );
-////	virtual int				WriteVec3( const idVec3 &vec );
+////	virtual int				WriteVec3( vec:idVec3 );
 ////	virtual int				WriteVec4( const idVec4 &vec );
 ////	virtual int				WriteVec6( const idVec6 &vec );
 ////	virtual int				WriteMat3( const idMat3 &mat );

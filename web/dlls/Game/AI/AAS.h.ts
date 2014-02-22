@@ -99,7 +99,7 @@ class idAAS {
 ////								// Returns the travel flags for traveling through the area.
 ////	virtual int					AreaTravelFlags( int areaNum ) const = 0;
 ////								// Trace through the areas and report the first collision.
-////	virtual bool				Trace( aasTrace_t &trace, const idVec3 &start, const idVec3 &end ) const = 0;
+////	virtual bool				Trace( aasTrace_t &trace, start:idVec3, end:idVec3 ) const = 0;
 ////								// Get a plane for a trace.
 ////	virtual const idPlane &		GetPlane( int planeNum ) const = 0;
 ////								// Get wall edges.

@@ -187,7 +187,7 @@ class idCVar {
     next:idCVar;					// next statically declared cvar           //	idCVar *				
 
 ////private:
-////	void					Init( const char *name, const char *value, int flags, const char *description,
+////	void					Init( const char *name, value:string, int flags, const char *description,
 ////									float valueMin, float valueMax, const char **valueStrings, argCompletion_t valueCompletion );
 
 	InternalSetString ( newValue: string ): void {}
@@ -198,7 +198,7 @@ class idCVar {
 	static staticVars:idCVar = new idCVar();
 //};
 
-////ID_INLINE idCVar::idCVar( const char *name, const char *value, int flags, const char *description,
+////ID_INLINE idCVar::idCVar( const char *name, value:string, int flags, const char *description,
 ////							argCompletion_t valueCompletion ) {
 ////	if ( !valueCompletion && ( flags & CVAR_BOOL ) ) {
 ////		valueCompletion = idCmdSystem::ArgCompletion_Boolean;
@@ -206,12 +206,12 @@ class idCVar {
 ////	Init( name, value, flags, description, 1, -1, NULL, valueCompletion );
 ////}
 
-////ID_INLINE idCVar::idCVar( const char *name, const char *value, int flags, const char *description,
+////ID_INLINE idCVar::idCVar( const char *name, value:string, int flags, const char *description,
 ////							float valueMin, float valueMax, argCompletion_t valueCompletion ) {
 ////	Init( name, value, flags, description, valueMin, valueMax, NULL, valueCompletion );
 ////}
 
-////ID_INLINE idCVar::idCVar( const char *name, const char *value, int flags, const char *description,
+////ID_INLINE idCVar::idCVar( const char *name, value:string, int flags, const char *description,
 ////							const char **valueStrings, argCompletion_t valueCompletion ) {
 ////	Init( name, value, flags, description, 1, -1, valueStrings, valueCompletion );
 ////}
@@ -287,7 +287,7 @@ class idCVar {
 ////	virtual idCVar *		Find( const char *name ) = 0;
 
 ////							// Sets the value of a CVar by name.
-////	virtual void			SetCVarString( const char *name, const char *value, int flags = 0 ) = 0;
+////	virtual void			SetCVarString( const char *name, value:string, int flags = 0 ) = 0;
 ////	virtual void			SetCVarBool( const char *name, const bool value, int flags = 0 ) = 0;
 ////	virtual void			SetCVarInteger( const char *name, const int value, int flags = 0 ) = 0;
 ////	virtual void			SetCVarFloat( const char *name, const float value, int flags = 0 ) = 0;

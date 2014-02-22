@@ -52,11 +52,11 @@ class idItem extends idEntity {
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
 ////
-////	void					Spawn( void );
+////	void					Spawn( );
 ////	void					GetAttributes( idDict &attributes );
 ////	virtual bool			GiveToPlayer( idPlayer *player );
 ////	virtual bool			Pickup( idPlayer *player );
-////	virtual void			Think( void );
+////	virtual void			Think( );
 ////	virtual void			Present();
 ////
 ////	enum {
@@ -66,7 +66,7 @@ class idItem extends idEntity {
 ////		EVENT_MAXEVENTS
 ////	};
 ////
-////	virtual void			ClientPredictionThink( void );
+////	virtual void			ClientPredictionThink( );
 ////	virtual bool			ClientReceiveEvent( int event, /*int*/time:number, const idBitMsg &msg );
 ////
 ////	// networking
@@ -136,12 +136,12 @@ class idObjective extends idItem {
 ////	void					Spawn();
 ////
 ////private:
-////	idVec3					playerPos;
-////
-////	void					Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
-////	void					Event_HideObjective( idEntity *e ): void { throw "placeholder"; }
-////	void					Event_GetPlayerPos(): void { throw "placeholder"; }
-////	void					Event_CamShot(): void { throw "placeholder"; }
+	playerPos = new idVec3;
+
+	Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
+	Event_HideObjective(e: idEntity ): void { throw "placeholder"; }
+	Event_GetPlayerPos(): void { throw "placeholder"; }
+	Event_CamShot(): void { throw "placeholder"; }
 };
 
 class idVideoCDItem extends idItem {
@@ -181,8 +181,8 @@ class idMoveableItem extends idItem {
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
 ////
-////	void					Spawn( void );
-////	virtual void			Think( void );
+////	void					Spawn( );
+////	virtual void			Think( );
 ////	virtual bool			Pickup( idPlayer *player );
 ////
 ////	static void				DropItems( idAnimatedEntity *ent, const char *type, idList<idEntity *> *list );
@@ -199,8 +199,8 @@ class idMoveableItem extends idItem {
 ////
 ////	void					Gib( const idVec3 &dir, const char *damageDefName );
 ////
-////	void					Event_DropToFloor( void ): void { throw "placeholder"; }
-////	void					Event_Gib( const char *damageDefName ): void { throw "placeholder"; }
+	Event_DropToFloor( ): void { throw "placeholder"; }
+	Event_Gib( damageDefName:string ): void { throw "placeholder"; }
 };
 
 class idMoveablePDAItem extends idMoveableItem {
@@ -234,7 +234,7 @@ class idItemRemover extends idEntity {
 ////	void					RemoveItem( idPlayer *player );
 ////
 ////private:
-////	void					Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
+	Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
 };
 
 class idObjectiveComplete extends idItemRemover {

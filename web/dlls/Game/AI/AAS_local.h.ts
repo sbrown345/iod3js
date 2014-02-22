@@ -99,7 +99,7 @@
 ////	virtual idVec3				AreaCenter( int areaNum ) const;
 ////	virtual int					AreaFlags( int areaNum ) const;
 ////	virtual int					AreaTravelFlags( int areaNum ) const;
-////	virtual bool				Trace( aasTrace_t &trace, const idVec3 &start, const idVec3 &end ) const;
+////	virtual bool				Trace( aasTrace_t &trace, start:idVec3, end:idVec3 ) const;
 ////	virtual const idPlane &		GetPlane( int planeNum ) const;
 ////	virtual int					GetWallEdges( int areaNum, const idBounds &bounds, int travelFlags, int *edges, int maxEdges ) const;
 ////	virtual void				SortWallEdges( int *edges, int numEdges ) const;
@@ -141,7 +141,7 @@
 ////private:	// routing
 ////	bool						SetupRouting( void );
 ////	void						ShutdownRouting( void );
-////	unsigned short				AreaTravelTime( int areaNum, const idVec3 &start, const idVec3 &end ) const;
+////	unsigned short				AreaTravelTime( int areaNum, start:idVec3, end:idVec3 ) const;
 ////	void						CalculateAreaTravelTimes( void );
 ////	void						DeleteAreaTravelTimes( void );
 ////	void						SetupRoutingCache( void );
@@ -168,8 +168,8 @@
 ////private:	// pathing
 ////	bool						EdgeSplitPoint( idVec3 &split, int edgeNum, const idPlane &plane ) const;
 ////	bool						FloorEdgeSplitPoint( idVec3 &split, int areaNum, const idPlane &splitPlane, const idPlane &frontPlane, bool closest ) const;
-////	idVec3						SubSampleWalkPath( int areaNum, const idVec3 &origin, const idVec3 &start, const idVec3 &end, int travelFlags, int &endAreaNum ) const;
-////	idVec3						SubSampleFlyPath( int areaNum, const idVec3 &origin, const idVec3 &start, const idVec3 &end, int travelFlags, int &endAreaNum ) const;
+////	idVec3						SubSampleWalkPath( int areaNum, const idVec3 &origin, start:idVec3, end:idVec3, int travelFlags, int &endAreaNum ) const;
+////	idVec3						SubSampleFlyPath( int areaNum, const idVec3 &origin, start:idVec3, end:idVec3, int travelFlags, int &endAreaNum ) const;
 ////
 ////private:	// debug
 ////	const idBounds &			DefaultSearchBounds( void ) const;

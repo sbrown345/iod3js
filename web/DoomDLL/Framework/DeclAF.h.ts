@@ -153,13 +153,13 @@
 ////
 ////	bool					Save( void );
 ////
-////	void					NewBody( const char *name );
+////	void					NewBody( name:string );
 ////	void					RenameBody( const char *oldName, const char *newName );
-////	void					DeleteBody( const char *name );
+////	void					DeleteBody( name:string );
 ////
-////	void					NewConstraint( const char *name );
+////	void					NewConstraint( name:string );
 ////	void					RenameConstraint( const char *oldName, const char *newName );
-////	void					DeleteConstraint( const char *name );
+////	void					DeleteConstraint( name:string );
 ////
 ////	static int				ContentsFromString( const char *str );
 ////	static const char *		ContentsToString( const int contents, idStr &str );

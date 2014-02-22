@@ -1590,7 +1590,7 @@ class idDeclAF {
 ////void idDeclAF::Finish( const getJointTransform_t GetJointTransform, const idJointMat *frame, void *model ) const {
 ////	int i;
 ////
-////	const char *name = GetName();
+////	name:string = GetName();
 ////	for ( i = 0; i < bodies.Num(); i++ ) {
 ////		idDeclAF_Body *body = bodies[i];
 ////		body->v1.Finish( name, GetJointTransform, frame, model );
@@ -1615,7 +1615,7 @@ class idDeclAF {
 ////idDeclAF::NewBody
 ////================
 ////*/
-////void idDeclAF::NewBody( const char *name ) {
+////void idDeclAF::NewBody( name:string ) {
 ////	idDeclAF_Body *body;
 ////
 ////	body = new idDeclAF_Body();
@@ -1658,7 +1658,7 @@ class idDeclAF {
 ////  all constraints that reference the body
 ////================
 ////*/
-////void idDeclAF::DeleteBody( const char *name ) {
+////void idDeclAF::DeleteBody( name:string ) {
 ////	int i;
 ////
 ////	for ( i = 0; i < bodies.Num(); i++ ) {
@@ -1683,7 +1683,7 @@ class idDeclAF {
 ////idDeclAF::NewConstraint
 ////================
 ////*/
-////void idDeclAF::NewConstraint( const char *name ) {
+////void idDeclAF::NewConstraint( name:string ) {
 ////	idDeclAF_Constraint *constraint;
 ////
 ////	constraint = new idDeclAF_Constraint;
@@ -1713,7 +1713,7 @@ class idDeclAF {
 ////idDeclAF::DeleteConstraint
 ////================
 ////*/
-////void idDeclAF::DeleteConstraint( const char *name ) {
+////void idDeclAF::DeleteConstraint( name:string ) {
 ////	int i;
 ////
 ////	for ( i = 0; i < constraints.Num(); i++ ) {

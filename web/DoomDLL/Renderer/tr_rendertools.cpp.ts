@@ -1982,7 +1982,7 @@ function RB_ShowOverdraw ( ): void {
 //RB_AddDebugLine
 //================
 //*/
-//void RB_AddDebugLine( const idVec4 &color, const idVec3 &start, const idVec3 &end, const int lifeTime, const bool depthTest ) {
+//void RB_AddDebugLine( const idVec4 &color, start:idVec3, end:idVec3, const int lifeTime, const bool depthTest ) {
 //#if !defined(GL_ES_VERSION_2_0)
 //	debugLine_t *line;
 //

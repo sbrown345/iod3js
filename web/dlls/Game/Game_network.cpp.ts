@@ -764,7 +764,7 @@
 ////idGameLocal::ServerSendChatMessage
 ////================
 ////*/
-////void idGameLocal::ServerSendChatMessage( int to, const char *name, text:string ) {
+////void idGameLocal::ServerSendChatMessage( int to, name:string, text:string ) {
 ////	idBitMsg outMsg;
 ////	byte msgBuf[ MAX_GAME_MESSAGE_SIZE ];
 ////

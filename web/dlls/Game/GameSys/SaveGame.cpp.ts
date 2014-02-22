@@ -90,7 +90,7 @@ class idSaveGame {
 	////	void					WriteBool(const bool value);
 	////	void					WriteString(const char *string);
 	////	void					WriteVec2(const idVec2 &vec);
-	////	void					WriteVec3(const idVec3 &vec);
+	////	void					WriteVec3(vec:idVec3);
 	////	void					WriteVec4(const idVec4 &vec);
 	////	void					WriteVec6(const idVec6 &vec);
 	////	void					WriteWinding(const idWinding &winding);
@@ -323,7 +323,7 @@ class idSaveGame {
 	////idSaveGame::WriteVec3
 	////================
 	////*/
-	////void idSaveGame::WriteVec3( const idVec3 &vec ) {
+	////void idSaveGame::WriteVec3( vec:idVec3 ) {
 	////	file.WriteVec3( vec );
 	////}
 	////
@@ -516,7 +516,7 @@ class idSaveGame {
 	////================
 	////*/
 	////void idSaveGame::WriteSoundShader( const idSoundShader *shader ) {
-	////	const char *name;
+	////	name:string;
 	////
 	////	if ( !shader ) {
 	////		WriteString( "" );
@@ -532,7 +532,7 @@ class idSaveGame {
 	////================
 	////*/
 	////void idSaveGame::WriteModel( const idRenderModel *model ) {
-	////	const char *name;
+	////	name:string;
 	////
 	////	if ( !model ) {
 	////		WriteString( "" );
@@ -548,7 +548,7 @@ class idSaveGame {
 	////================
 	////*/
 	////void idSaveGame::WriteUserInterface( const idUserInterface *ui, bool unique ) {
-	////	const char *name;
+	////	name:string;
 	////
 	////	if ( !ui ) {
 	////		WriteString( "" );
@@ -867,7 +867,7 @@ class idRestoreGame {
 	////	void					ReadBool(bool &value);
 	////	void					ReadString(idStr &string);
 	////	void					ReadVec2(idVec2 &vec);
-	////	void					ReadVec3(idVec3 &vec);
+	////	void					ReadVec3(vec:idVec3);
 	////	void					ReadVec4(idVec4 &vec);
 	////	void					ReadVec6(idVec6 &vec);
 	////	void					ReadWinding(idWinding &winding);
@@ -1145,7 +1145,7 @@ class idRestoreGame {
 	////idRestoreGame::ReadVec3
 	////================
 	////*/
-	////void idRestoreGame::ReadVec3( idVec3 &vec ) {
+	////void idRestoreGame::ReadVec3( vec:idVec3 ) {
 	////	file.ReadVec3( vec );
 	////}
 	////

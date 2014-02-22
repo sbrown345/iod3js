@@ -1988,7 +1988,7 @@ enum shaderProgram_indexes {
 ////float RB_DrawTextLength( text:string, float scale, int len );
 ////void RB_AddDebugText( text:string, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align, const int lifetime, const bool depthTest );
 ////void RB_ClearDebugText( /*int*/time:number );
-////void RB_AddDebugLine( const idVec4 &color, const idVec3 &start, const idVec3 &end, const int lifeTime, const bool depthTest );
+////void RB_AddDebugLine( const idVec4 &color, start:idVec3, end:idVec3, const int lifeTime, const bool depthTest );
 ////void RB_ClearDebugLines( /*int*/time:number );
 ////void RB_AddDebugPolygon( const idVec4 &color, const idWinding &winding, const int lifeTime, const bool depthTest );
 ////void RB_ClearDebugPolygons( /*int*/time:number );
@@ -2068,7 +2068,7 @@ enum shaderProgram_indexes {
 ////	int			indexes[3];
 ////} localTrace_t;
 
-////localTrace_t R_LocalTrace( const idVec3 &start, const idVec3 &end, const float radius, const srfTriangles_t *tri );
+////localTrace_t R_LocalTrace( start:idVec3, end:idVec3, const float radius, const srfTriangles_t *tri );
 ////void RB_ShowTrace( drawSurf_t **drawSurfs, int numDrawSurfs );
 
 /////*

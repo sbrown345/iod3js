@@ -423,7 +423,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 //// idFile::ReadVec3
 //// =================
 //// */
-////int idFile::ReadVec3( idVec3 &vec ) {
+////int idFile::ReadVec3( vec:idVec3 ) {
 ////	int result = Read( &vec, sizeof( vec ) );
 ////	LittleRevBytes( &vec, sizeof(float), sizeof(vec)/sizeof(float) );
 ////	return result;
@@ -545,7 +545,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 //// idFile::WriteString
 //// =================
 //// */
-////int idFile::WriteString( const char *value ) {
+////int idFile::WriteString( value:string ) {
 ////	int len;
 ////	
 ////	len = strlen( value );
@@ -569,7 +569,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 //// idFile::WriteVec3
 //// =================
 //// */
-////int idFile::WriteVec3( const idVec3 &vec ) {
+////int idFile::WriteVec3( vec:idVec3 ) {
 ////	idVec3 v = vec;
 ////	LittleRevBytes( &v, sizeof(float), sizeof(v)/sizeof(float) );
 ////	return Write( &v, sizeof( v ) );

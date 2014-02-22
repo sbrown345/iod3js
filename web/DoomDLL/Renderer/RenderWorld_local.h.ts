@@ -110,13 +110,13 @@ class idRenderWorldLocal extends idRenderWorld {
 //	virtual exitPortal_t	GetPortal( int areaNum, int portalNum );
 //
 //	virtual	guiPoint_t		GuiTrace( qhandle_t entityHandle, const idVec3 start, const idVec3 end ) const;
-//	virtual bool			ModelTrace( modelTrace_t &trace, qhandle_t entityHandle, const idVec3 &start, const idVec3 &end, const float radius ) const;
-//	virtual bool			Trace( modelTrace_t &trace, const idVec3 &start, const idVec3 &end, const float radius, bool skipDynamic = true, bool skipPlayer = false ) const;
-//	virtual bool			FastWorldTrace( modelTrace_t &trace, const idVec3 &start, const idVec3 &end ) const;
+//	virtual bool			ModelTrace( modelTrace_t &trace, qhandle_t entityHandle, const idVec3 &start, end:idVec3, const float radius ) const;
+//	virtual bool			Trace( modelTrace_t &trace, const idVec3 &start, end:idVec3, const float radius, bool skipDynamic = true, bool skipPlayer = false ) const;
+//	virtual bool			FastWorldTrace( modelTrace_t &trace, const idVec3 &start, end:idVec3 ) const;
 //
 //	virtual void			DebugClearLines( /*int*/time:number );
-//	virtual void			DebugLine( const idVec4 &color, const idVec3 &start, const idVec3 &end, const int lifetime = 0, const bool depthTest = false );
-//	virtual void			DebugArrow( const idVec4 &color, const idVec3 &start, const idVec3 &end, int size, const int lifetime = 0 );
+//	virtual void			DebugLine( const idVec4 &color, const idVec3 &start, end:idVec3, const int lifetime = 0, const bool depthTest = false );
+//	virtual void			DebugArrow( const idVec4 &color, start:idVec3, end:idVec3, int size, const int lifetime = 0 );
 //	virtual void			DebugWinding( const idVec4 &color, const idWinding &w, const idVec3 &origin, const idMat3 &axis, const int lifetime = 0, const bool depthTest = false );
 //	virtual void			DebugCircle( const idVec4 &color, const idVec3 &origin, const idVec3 &dir, const float radius, const int numSteps, const int lifetime = 0, const bool depthTest = false );
 //	virtual void			DebugSphere( const idVec4 &color, const idSphere &sphere, const int lifetime = 0, bool depthTest = false );

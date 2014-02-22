@@ -41,6 +41,10 @@
 class idCamera extends idEntity {
 ////public:
 ////	ABSTRACT_PROTOTYPE( idCamera );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idCamera>[];
 ////
 ////	void					Spawn( );
 ////	virtual void			GetViewParms( renderView_t *view ) = 0;
@@ -59,6 +63,10 @@ idCameraView
 class idCameraView extends idCamera {
 ////public:
 ////	CLASS_PROTOTYPE( idCameraView );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idCameraView>[];
 ////							idCameraView();
 ////
 ////	// save games
@@ -97,6 +105,10 @@ A camera which follows a path defined by an animation.
 class idCameraAnim extends idCamera {
 ////public:
 ////	CLASS_PROTOTYPE( idCameraAnim );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idCameraAnim>[];
 ////
 ////							idCameraAnim();
 ////							~idCameraAnim();

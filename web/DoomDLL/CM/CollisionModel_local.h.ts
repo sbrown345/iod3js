@@ -318,19 +318,19 @@
 ////	bool			GetModelPolygon( cmHandle_t model, int polygonNum, idFixedWinding &winding ) const;
 ////
 ////	// translates a trm and reports the first collision if any
-////	void			Translation( trace_t *results, const idVec3 &start, const idVec3 &end,
+////	void			Translation( trace_t *results, start:idVec3, const idVec3 &end,
 ////								const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
 ////								cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis );
 ////	// rotates a trm and reports the first collision if any
-////	void			Rotation( trace_t *results, const idVec3 &start, const idRotation &rotation,
+////	void			Rotation( trace_t *results, start:idVec3, const idRotation &rotation,
 ////								const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
 ////								cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis );
 ////	// returns the contents the trm is stuck in or 0 if the trm is in free space
-////	int				Contents( const idVec3 &start,
+////	int				Contents( start:idVec3,
 ////								const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
 ////								cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis );
 ////	// stores all contact points of the trm with the model, returns the number of contacts
-////	int				Contacts( contactInfo_t *contacts, const int maxContacts, const idVec3 &start, const idVec6 &dir, const float depth,
+////	int				Contacts( contactInfo_t *contacts, const int maxContacts, start:idVec3, const idVec6 &dir, const float depth,
 ////								const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
 ////								cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis );
 ////	// test collision detection
@@ -377,9 +377,9 @@
 ////	void			RotateVertexThroughTrmPolygon( cm_traceWork_t *tw, cm_trmPolygon_t *trmpoly, cm_polygon_t *poly,
 ////											cm_vertex_t *v, idVec3 &rotationOrigin );
 ////	bool			RotateTrmThroughPolygon( cm_traceWork_t *tw, cm_polygon_t *p );
-////	void			BoundsForRotation( const idVec3 &origin, const idVec3 &axis, const idVec3 &start, const idVec3 &end, idBounds &bounds );
+////	void			BoundsForRotation( const idVec3 &origin, const idVec3 &axis, start:idVec3, const idVec3 &end, idBounds &bounds );
 ////	void			Rotation180( trace_t *results, const idVec3 &rorg, const idVec3 &axis,
-////									const float startAngle, const float endAngle, const idVec3 &start,
+////									const float startAngle, const float endAngle, start:idVec3,
 ////									const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
 ////									cmHandle_t model, const idVec3 &origin, const idMat3 &modelAxis );
 ////
@@ -389,7 +389,7 @@
 ////	cm_node_t *		PointNode( const idVec3 &p, cm_model_t *model );
 ////	int				PointContents( const idVec3 p, cmHandle_t model );
 ////	int				TransformedPointContents( const idVec3 &p, cmHandle_t model, const idVec3 &origin, const idMat3 &modelAxis );
-////	int				ContentsTrm( trace_t *results, const idVec3 &start,
+////	int				ContentsTrm( trace_t *results, start:idVec3,
 ////									const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
 ////									cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis );
 ////
@@ -450,7 +450,7 @@
 ////	void			SetupHash(void);
 ////	void			ShutdownHash(void);
 ////	void			ClearHash( idBounds &bounds );
-////	int				HashVec(const idVec3 &vec);
+////	int				HashVec(vec:idVec3);
 ////	int				GetVertex( cm_model_t *model, const idVec3 &v, int *vertexNum );
 ////	int				GetEdge( cm_model_t *model, const idVec3 &v1, const idVec3 &v2, int *edgeNum, int v1num );
 ////	void			CreatePolygon( cm_model_t *model, idFixedWinding *w, const idPlane &plane, const idMaterial *material, int primitiveNum );
@@ -466,7 +466,7 @@
 ////	void			OptimizeArrays( cm_model_t *model );
 ////	void			FinishModel( cm_model_t *model );
 ////	void			BuildModels( const idMapFile *mapFile );
-////	cmHandle_t		FindModel( const char *name );
+////	cmHandle_t		FindModel( name:string );
 ////	cm_model_t *	CollisionModelForMapEntity( const idMapEntity *mapEnt );	// brush/patch model from .map
 ////	cm_model_t *	LoadRenderModel( const char *fileName );					// ASE/LWO models
 ////	bool			TrmFromModel_r( idTraceModel &trm, cm_node_t *node );
@@ -488,7 +488,7 @@
 ////	void			ParsePolygons( idLexer *src, cm_model_t *model );
 ////	void			ParseBrushes( idLexer *src, cm_model_t *model );
 ////	bool			ParseCollisionModel( idLexer *src );
-////	bool			LoadCollisionModelFile( const char *name, unsigned int mapFileCRC );
+////	bool			LoadCollisionModelFile( name:string, unsigned int mapFileCRC );
 ////
 ////private:			// CollisionMap_debug
 ////	int				ContentsFromString( const char *string ) const;

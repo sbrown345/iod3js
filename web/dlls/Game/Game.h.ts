@@ -267,9 +267,9 @@ class idGame {
 //	virtual void				TriggerSelected();
 //
 //	// Entity defs and spawning.
-//	virtual const idDict *		FindEntityDefDict( const char *name, bool makeDefault = true ) const;
+//	virtual const idDict *		FindEntityDefDict( name:string, bool makeDefault = true ) const;
 //	virtual void				SpawnEntityDef( const idDict &args, idEntity **ent );
-//	virtual idEntity *			FindEntity( const char *name ) const;
+//	virtual idEntity *			FindEntity( name:string ) const;
 //	virtual const char *		GetUniqueEntityName( const char *classname ) const;
 //
 //	// Entity methods.
@@ -295,15 +295,15 @@ class idGame {
 //	virtual void				PlayerGetEyePosition( idVec3 &org ) const;
 //
 //	// In game map editing support.
-//	virtual const idDict *		MapGetEntityDict( const char *name ) const;
+//	virtual const idDict *		MapGetEntityDict( name:string ) const;
 //	virtual void				MapSave( const char *path = NULL ) const;
-//	virtual void				MapSetEntityKeyVal( const char *name, const char *key, const char *val ) const ;
-//	virtual void				MapCopyDictToEntity( const char *name, const idDict *dict ) const;
+//	virtual void				MapSetEntityKeyVal( name:string, key:string, const char *val ) const ;
+//	virtual void				MapCopyDictToEntity( name:string, const idDict *dict ) const;
 //	virtual int					MapGetUniqueMatchingKeyVals( const char *key, const char *list[], const int max ) const;
 //	virtual void				MapAddEntity( const idDict *dict ) const;
 //	virtual int					MapGetEntitiesMatchingClassWithString( const char *classname, const char *match, const char *list[], const int max ) const;
-//	virtual void				MapRemoveEntity( const char *name ) const;
-//	virtual void				MapEntityTranslate( const char *name, const idVec3 &v ) const;
+//	virtual void				MapRemoveEntity( name:string ) const;
+//	virtual void				MapEntityTranslate( name:string, const idVec3 &v ) const;
 //
 //};
 //

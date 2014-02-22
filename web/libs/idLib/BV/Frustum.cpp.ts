@@ -781,7 +781,7 @@ class idFrustum {
 //  30 muls
 //============
 //*/
-//bool idFrustum::LocalLineIntersection( const idVec3 &start, const idVec3 &end ) const {
+//bool idFrustum::LocalLineIntersection( start:idVec3, end:idVec3 ) const {
 //	idVec3 dir;
 //	float d1, d2, fstart, fend, lstart, lend, f, x;
 //	float leftScale, upScale;
@@ -908,7 +908,7 @@ class idFrustum {
 //  If there was an intersection scale1 <= scale2
 //============
 //*/
-//bool idFrustum::LocalRayIntersection( const idVec3 &start, const idVec3 &dir, float &scale1, float &scale2 ) const {
+//bool idFrustum::LocalRayIntersection( start:idVec3, const idVec3 &dir, float &scale1, float &scale2 ) const {
 //	idVec3 end;
 //	float d1, d2, fstart, fend, lstart, lend, f, x;
 //	float leftScale, upScale;
@@ -1408,7 +1408,7 @@ class idFrustum {
 //  Returns true if the line intersects the box between the start and end point.
 //============
 //*/
-//bool idFrustum::LineIntersection( const idVec3 &start, const idVec3 &end ) const {
+//bool idFrustum::LineIntersection( start:idVec3, end:idVec3 ) const {
 //	return LocalLineIntersection( ( start - origin ) * axis.Transpose(), ( end - origin ) * axis.Transpose() );
 //}
 //
@@ -1421,7 +1421,7 @@ class idFrustum {
 //  If start is inside the frustum then scale1 < 0 and scale2 > 0.
 //============
 //*/
-//bool idFrustum::RayIntersection( const idVec3 &start, const idVec3 &dir, float &scale1, float &scale2 ) const {
+//bool idFrustum::RayIntersection( start:idVec3, const idVec3 &dir, float &scale1, float &scale2 ) const {
 //	if ( LocalRayIntersection( ( start - origin ) * axis.Transpose(), dir * axis.Transpose(), scale1, scale2 ) ) {
 //		return true;
 //	}
@@ -1946,7 +1946,7 @@ class idFrustum {
 //idFrustum::AddLocalLineToProjectionBoundsSetCull
 //============
 //*/
-//void idFrustum::AddLocalLineToProjectionBoundsSetCull( const idVec3 &start, const idVec3 &end, int &startCull, int &endCull, idBounds &bounds ) const {
+//void idFrustum::AddLocalLineToProjectionBoundsSetCull( start:idVec3, end:idVec3, int &startCull, int &endCull, idBounds &bounds ) const {
 //	idVec3 dir, p;
 //	float d1, d2, fstart, fend, lstart, lend, f;
 //	float leftScale, upScale;
@@ -2085,7 +2085,7 @@ class idFrustum {
 //idFrustum::AddLocalLineToProjectionBoundsUseCull
 //============
 //*/
-//void idFrustum::AddLocalLineToProjectionBoundsUseCull( const idVec3 &start, const idVec3 &end, int startCull, int endCull, idBounds &bounds ) const {
+//void idFrustum::AddLocalLineToProjectionBoundsUseCull( start:idVec3, end:idVec3, int startCull, int endCull, idBounds &bounds ) const {
 //	idVec3 dir, p;
 //	float d1, d2, fstart, fend, lstart, lend, f;
 //	float leftScale, upScale;
@@ -2212,7 +2212,7 @@ class idFrustum {
 //  If there was an intersection scale1 <= scale2
 //============
 //*/
-//bool idFrustum::BoundsRayIntersection( const idBounds &bounds, const idVec3 &start, const idVec3 &dir, float &scale1, float &scale2 ) const {
+//bool idFrustum::BoundsRayIntersection( const idBounds &bounds, start:idVec3, const idVec3 &dir, float &scale1, float &scale2 ) const {
 //	idVec3 end, p;
 //	float d1, d2, f;
 //	int i, startInside = 1;

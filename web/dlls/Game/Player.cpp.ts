@@ -242,7 +242,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	idDict	*item;
 ////	idStr	key;
 ////	const idKeyValue *kv;
-////	const char *name;
+////	name:string;
 ////
 ////	// armor
 ////	dict.SetInt( "armor", armor );
@@ -721,7 +721,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////idInventory::AddPickupName
 ////==============
 ////*/
-////void idInventory::AddPickupName( const char *name, const char *icon ) {
+////void idInventory::AddPickupName( name:string, const char *icon ) {
 ////	int num;
 ////
 ////	num = pickupItemNames.Num();
@@ -742,7 +742,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////idInventory::Give
 ////==============
 ////*/
-////bool idInventory::Give( idPlayer *owner, const idDict &spawnArgs, const char *statname, const char *value, int *idealWeapon, bool updateHud ) {
+////bool idInventory::Give( idPlayer *owner, const idDict &spawnArgs, const char *statname, value:string, int *idealWeapon, bool updateHud ) {
 ////	int						i;
 ////	const char				*pos;
 ////	const char				*end;
@@ -2859,7 +2859,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////idPlayer::Give
 ////===============
 ////*/
-////bool idPlayer::Give( const char *statname, const char *value ) {
+////bool idPlayer::Give( const char *statname, value:string ) {
 ////	int amount;
 ////
 ////	if ( AI_DEAD ) {
@@ -3415,7 +3415,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////idPlayer::FindInventoryItem
 ////===============
 ////*/
-////idDict *idPlayer::FindInventoryItem( const char *name ) {
+////idDict *idPlayer::FindInventoryItem( name:string ) {
 ////	for ( int i = 0; i < inventory.items.Num(); i++ ) {
 ////		const char *iname = inventory.items[i]->GetString( "inv_name" );
 ////		if ( iname && *iname ) {
@@ -3432,7 +3432,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////idPlayer::RemoveInventoryItem
 ////===============
 ////*/
-////void idPlayer::RemoveInventoryItem( const char *name ) {
+////void idPlayer::RemoveInventoryItem( name:string ) {
 ////	idDict *item = FindInventoryItem(name);
 ////	if ( item ) {
 ////		RemoveInventoryItem( item );

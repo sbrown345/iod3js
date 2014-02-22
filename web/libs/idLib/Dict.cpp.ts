@@ -94,48 +94,48 @@ class idDict {
 ////	size_t				Allocated( void ) const;
 ////	size_t				Size( void ) const { return sizeof( *this ) + Allocated(); }
 ////
-////	void				Set( const char *key, const char *value );
-////	void				SetFloat( const char *key, float val );
-////	void				SetInt( const char *key, int val );
-////	void				SetBool( const char *key, bool val );
-////	void				SetVector( const char *key, const idVec3 &val );
-////	void				SetVec2( const char *key, const idVec2 &val );
-////	void				SetVec4( const char *key, const idVec4 &val );
-////	void				SetAngles( const char *key, const idAngles &val );
-////	void				SetMatrix( const char *key, const idMat3 &val );
+////	void				Set( key:string, value:string );
+////	void				SetFloat( key:string, float val );
+////	void				SetInt( key:string, int val );
+////	void				SetBool( key:string, bool val );
+////	void				SetVector( key:string, const idVec3 &val );
+////	void				SetVec2( key:string, const idVec2 &val );
+////	void				SetVec4( key:string, const idVec4 &val );
+////	void				SetAngles( key:string, const idAngles &val );
+////	void				SetMatrix( key:string, const idMat3 &val );
 ////
 ////						// these return default values of 0.0, 0 and false
-////	const char *		GetString( const char *key, const char *defaultString = "" ) const;
-////	float				GetFloat( const char *key, const char *defaultString = "0" ) const;
-////	int					GetInt( const char *key, const char *defaultString = "0" ) const;
-////	bool				GetBool( const char *key, const char *defaultString = "0" ) const;
-////	idVec3				GetVector( const char *key, const char *defaultString = NULL ) const;
-////	idVec2				GetVec2( const char *key, const char *defaultString = NULL ) const;
-////	idVec4				GetVec4( const char *key, const char *defaultString = NULL ) const;
-////	idAngles			GetAngles( const char *key, const char *defaultString = NULL ) const;
-////	idMat3				GetMatrix( const char *key, const char *defaultString = NULL ) const;
+////	const char *		GetString( key:string, const char *defaultString = "" ) const;
+////	float				GetFloat( key:string, const char *defaultString = "0" ) const;
+////	int					GetInt( key:string, const char *defaultString = "0" ) const;
+////	bool				GetBool( key:string, const char *defaultString = "0" ) const;
+////	idVec3				GetVector( key:string, const char *defaultString = NULL ) const;
+////	idVec2				GetVec2( key:string, const char *defaultString = NULL ) const;
+////	idVec4				GetVec4( key:string, const char *defaultString = NULL ) const;
+////	idAngles			GetAngles( key:string, const char *defaultString = NULL ) const;
+////	idMat3				GetMatrix( key:string, const char *defaultString = NULL ) const;
 ////
-////	bool				GetString( const char *key, const char *defaultString, const char **out ) const;
-////	bool				GetString( const char *key, const char *defaultString, idStr &out ) const;
-////	bool				GetFloat( const char *key, const char *defaultString, float &out ) const;
-////	bool				GetInt( const char *key, const char *defaultString, int &out ) const;
-////	bool				GetBool( const char *key, const char *defaultString, bool &out ) const;
-////	bool				GetVector( const char *key, const char *defaultString, idVec3 &out ) const;
-////	bool				GetVec2( const char *key, const char *defaultString, idVec2 &out ) const;
-////	bool				GetVec4( const char *key, const char *defaultString, idVec4 &out ) const;
-////	bool				GetAngles( const char *key, const char *defaultString, idAngles &out ) const;
-////	bool				GetMatrix( const char *key, const char *defaultString, idMat3 &out ) const;
+////	bool				GetString( key:string, const char *defaultString, const char **out ) const;
+////	bool				GetString( key:string, const char *defaultString, idStr &out ) const;
+////	bool				GetFloat( key:string, const char *defaultString, float &out ) const;
+////	bool				GetInt( key:string, const char *defaultString, int &out ) const;
+////	bool				GetBool( key:string, const char *defaultString, bool &out ) const;
+////	bool				GetVector( key:string, const char *defaultString, idVec3 &out ) const;
+////	bool				GetVec2( key:string, const char *defaultString, idVec2 &out ) const;
+////	bool				GetVec4( key:string, const char *defaultString, idVec4 &out ) const;
+////	bool				GetAngles( key:string, const char *defaultString, idAngles &out ) const;
+////	bool				GetMatrix( key:string, const char *defaultString, idMat3 &out ) const;
 ////
 ////	int					GetNumKeyVals( void ) const;
 ////	const idKeyValue *	GetKeyVal( int index ) const;
 ////						// returns the key/value pair with the given key
 ////						// returns NULL if the key/value pair does not exist
-////	const idKeyValue *	FindKey( const char *key ) const;
+////	const idKeyValue *	FindKey( key:string ) const;
 ////						// returns the index to the key/value pair with the given key
 ////						// returns -1 if the key/value pair does not exist
-////	int					FindKeyIndex( const char *key ) const;
+////	int					FindKeyIndex( key:string ) const;
 ////						// delete the key/value pair with the given key
-////	void				Delete( const char *key );
+////	void				Delete( key:string );
 ////						// finds the next key/value pair with the given key prefix.
 ////						// lastMatch can be used to do additional searches past the first match.
 ////	const idKeyValue *	MatchPrefix( const char *prefix, const idKeyValue *lastMatch = NULL ) const;
@@ -189,39 +189,39 @@ class idDict {
 ////	}
 ////}
 ////
-////ID_INLINE void idDict::SetFloat( const char *key, float val ) {
+////ID_INLINE void idDict::SetFloat( key:string, float val ) {
 ////	Set( key, va( "%f", val ) );
 ////}
 ////
-////ID_INLINE void idDict::SetInt( const char *key, int val ) {
+////ID_INLINE void idDict::SetInt( key:string, int val ) {
 ////	Set( key, va( "%i", val ) );
 ////}
 ////
-////ID_INLINE void idDict::SetBool( const char *key, bool val ) {
+////ID_INLINE void idDict::SetBool( key:string, bool val ) {
 ////	Set( key, va( "%i", val ) );
 ////}
 ////
-////ID_INLINE void idDict::SetVector( const char *key, const idVec3 &val ) {
+////ID_INLINE void idDict::SetVector( key:string, const idVec3 &val ) {
 ////	Set( key, val.ToString() );
 ////}
 ////
-////ID_INLINE void idDict::SetVec4( const char *key, const idVec4 &val ) {
+////ID_INLINE void idDict::SetVec4( key:string, const idVec4 &val ) {
 ////	Set( key, val.ToString() );
 ////}
 ////
-////ID_INLINE void idDict::SetVec2( const char *key, const idVec2 &val ) {
+////ID_INLINE void idDict::SetVec2( key:string, const idVec2 &val ) {
 ////	Set( key, val.ToString() );
 ////}
 ////
-////ID_INLINE void idDict::SetAngles( const char *key, const idAngles &val ) {
+////ID_INLINE void idDict::SetAngles( key:string, const idAngles &val ) {
 ////	Set( key, val.ToString() );
 ////}
 ////
-////ID_INLINE void idDict::SetMatrix( const char *key, const idMat3 &val ) {
+////ID_INLINE void idDict::SetMatrix( key:string, const idMat3 &val ) {
 ////	Set( key, val.ToString() );
 ////}
 ////
-////ID_INLINE bool idDict::GetString( const char *key, const char *defaultString, const char **out ) const {
+////ID_INLINE bool idDict::GetString( key:string, const char *defaultString, const char **out ) const {
 ////	const idKeyValue *kv = FindKey( key );
 ////	if ( kv ) {
 ////		*out = kv->GetValue();
@@ -231,7 +231,7 @@ class idDict {
 ////	return false;
 ////}
 ////
-////ID_INLINE bool idDict::GetString( const char *key, const char *defaultString, idStr &out ) const {
+////ID_INLINE bool idDict::GetString( key:string, const char *defaultString, idStr &out ) const {
 ////	const idKeyValue *kv = FindKey( key );
 ////	if ( kv ) {
 ////		out = kv->GetValue();
@@ -241,7 +241,7 @@ class idDict {
 ////	return false;
 ////}
 ////
-////ID_INLINE const char *idDict::GetString( const char *key, const char *defaultString ) const {
+////ID_INLINE const char *idDict::GetString( key:string, const char *defaultString ) const {
 ////	const idKeyValue *kv = FindKey( key );
 ////	if ( kv ) {
 ////		return kv->GetValue();
@@ -249,43 +249,43 @@ class idDict {
 ////	return defaultString;
 ////}
 ////
-////ID_INLINE float idDict::GetFloat( const char *key, const char *defaultString ) const {
+////ID_INLINE float idDict::GetFloat( key:string, const char *defaultString ) const {
 ////	return atof( GetString( key, defaultString ) );
 ////}
 ////
-////ID_INLINE int idDict::GetInt( const char *key, const char *defaultString ) const {
+////ID_INLINE int idDict::GetInt( key:string, const char *defaultString ) const {
 ////	return atoi( GetString( key, defaultString ) );
 ////}
 ////
-////ID_INLINE bool idDict::GetBool( const char *key, const char *defaultString ) const {
+////ID_INLINE bool idDict::GetBool( key:string, const char *defaultString ) const {
 ////	return ( atoi( GetString( key, defaultString ) ) != 0 );
 ////}
 ////
-////ID_INLINE idVec3 idDict::GetVector( const char *key, const char *defaultString ) const {
+////ID_INLINE idVec3 idDict::GetVector( key:string, const char *defaultString ) const {
 ////	idVec3 out;
 ////	GetVector( key, defaultString, out );
 ////	return out;
 ////}
 ////
-////ID_INLINE idVec2 idDict::GetVec2( const char *key, const char *defaultString ) const {
+////ID_INLINE idVec2 idDict::GetVec2( key:string, const char *defaultString ) const {
 ////	idVec2 out;
 ////	GetVec2( key, defaultString, out );
 ////	return out;
 ////}
 ////
-////ID_INLINE idVec4 idDict::GetVec4( const char *key, const char *defaultString ) const {
+////ID_INLINE idVec4 idDict::GetVec4( key:string, const char *defaultString ) const {
 ////	idVec4 out;
 ////	GetVec4( key, defaultString, out );
 ////	return out;
 ////}
 ////
-////ID_INLINE idAngles idDict::GetAngles( const char *key, const char *defaultString ) const {
+////ID_INLINE idAngles idDict::GetAngles( key:string, const char *defaultString ) const {
 ////	idAngles out;
 ////	GetAngles( key, defaultString, out );
 ////	return out;
 ////}
 ////
-////ID_INLINE idMat3 idDict::GetMatrix( const char *key, const char *defaultString ) const {
+////ID_INLINE idMat3 idDict::GetMatrix( key:string, const char *defaultString ) const {
 ////	idMat3 out;
 ////	GetMatrix( key, defaultString, out );
 ////	return out;
@@ -542,7 +542,7 @@ idDict::Clear
 ////idDict::Set
 ////================
 ////*/
-////void idDict::Set( const char *key, const char *value ) {
+////void idDict::Set( key:string, value:string ) {
 ////	int i;
 ////	idKeyValue kv;
 ////
@@ -568,7 +568,7 @@ idDict::Clear
 ////idDict::GetFloat
 ////================
 ////*/
-////bool idDict::GetFloat( const char *key, const char *defaultString, float &out ) const {
+////bool idDict::GetFloat( key:string, const char *defaultString, float &out ) const {
 ////	const char	*s;
 ////	bool		found;
 ////
@@ -582,7 +582,7 @@ idDict::Clear
 ////idDict::GetInt
 ////================
 ////*/
-////bool idDict::GetInt( const char *key, const char *defaultString, int &out ) const {
+////bool idDict::GetInt( key:string, const char *defaultString, int &out ) const {
 ////	const char	*s;
 ////	bool		found;
 ////
@@ -596,7 +596,7 @@ idDict::Clear
 ////idDict::GetBool
 ////================
 ////*/
-////bool idDict::GetBool( const char *key, const char *defaultString, bool &out ) const {
+////bool idDict::GetBool( key:string, const char *defaultString, bool &out ) const {
 ////	const char	*s;
 ////	bool		found;
 ////
@@ -610,7 +610,7 @@ idDict::Clear
 ////idDict::GetAngles
 ////================
 ////*/
-////bool idDict::GetAngles( const char *key, const char *defaultString, idAngles &out ) const {
+////bool idDict::GetAngles( key:string, const char *defaultString, idAngles &out ) const {
 ////	bool		found;
 ////	const char	*s;
 ////	
@@ -629,7 +629,7 @@ idDict::Clear
 ////idDict::GetVector
 ////================
 ////*/
-////bool idDict::GetVector( const char *key, const char *defaultString, idVec3 &out ) const {
+////bool idDict::GetVector( key:string, const char *defaultString, idVec3 &out ) const {
 ////	bool		found;
 ////	const char	*s;
 ////	
@@ -648,7 +648,7 @@ idDict::Clear
 ////idDict::GetVec2
 ////================
 ////*/
-////bool idDict::GetVec2( const char *key, const char *defaultString, idVec2 &out ) const {
+////bool idDict::GetVec2( key:string, const char *defaultString, idVec2 &out ) const {
 ////	bool		found;
 ////	const char	*s;
 ////	
@@ -667,7 +667,7 @@ idDict::Clear
 ////idDict::GetVec4
 ////================
 ////*/
-////bool idDict::GetVec4( const char *key, const char *defaultString, idVec4 &out ) const {
+////bool idDict::GetVec4( key:string, const char *defaultString, idVec4 &out ) const {
 ////	bool		found;
 ////	const char	*s;
 ////	
@@ -686,7 +686,7 @@ idDict::Clear
 ////idDict::GetMatrix
 ////================
 ////*/
-////bool idDict::GetMatrix( const char *key, const char *defaultString, idMat3 &out ) const {
+////bool idDict::GetMatrix( key:string, const char *defaultString, idMat3 &out ) const {
 ////	const char	*s;
 ////	bool		found;
 ////		
@@ -718,7 +718,7 @@ idDict::Clear
 ////idDict::FindKey
 ////================
 ////*/
-////const idKeyValue *idDict::FindKey( const char *key ) const {
+////const idKeyValue *idDict::FindKey( key:string ) const {
 ////	int i, hash;
 ////
 ////	if ( key == NULL || key[0] == '\0' ) {
@@ -741,7 +741,7 @@ idDict::Clear
 ////idDict::FindKeyIndex
 ////================
 ////*/
-////int idDict::FindKeyIndex( const char *key ) const {
+////int idDict::FindKeyIndex( key:string ) const {
 ////
 ////	if ( key == NULL || key[0] == '\0' ) {
 ////		idLib::common->DWarning( "idDict::FindKeyIndex: empty key" );
@@ -763,7 +763,7 @@ idDict::Clear
 ////idDict::Delete
 ////================
 ////*/
-////void idDict::Delete( const char *key ) {
+////void idDict::Delete( key:string ) {
 ////	int hash, i;
 ////
 ////	hash = argHash.GenerateKey( key, false );

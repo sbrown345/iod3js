@@ -30,7 +30,7 @@
 ////#pragma hdrstop
 ////
 ////struct ParticleParmDesc {
-////	const char *name;
+////	name:string;
 ////	int count;
 ////	const char *desc;
 ////};
@@ -89,7 +89,7 @@ class idDeclParticle extends idDecl {
 ////	void					ParseParms( idLexer &src, float *parms, int maxParms );
 ////	void					ParseParametric( idLexer &src, idParticleParm *parm );
 ////	void					WriteStage( idFile *f, idParticleStage *stage );
-////	void					WriteParticleParm( idFile *f, idParticleParm *parm, const char *name );
+////	void					WriteParticleParm( idFile *f, idParticleParm *parm, name:string );
 
 /////*
 ////=================
@@ -533,7 +533,7 @@ class idDeclParticle extends idDecl {
 ////idDeclParticle::WriteParticleParm
 ////================
 ////*/
-////void idDeclParticle::WriteParticleParm( idFile *f, idParticleParm *parm, const char *name ) {
+////void idDeclParticle::WriteParticleParm( idFile *f, idParticleParm *parm, name:string ) {
 ////
 ////	f->WriteFloatString( "\t\t%s\t\t\t\t ", name );
 ////	if ( parm->table ) {

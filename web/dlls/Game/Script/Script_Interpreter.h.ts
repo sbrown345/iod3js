@@ -108,7 +108,7 @@
 //	bool				Execute( void );
 //	void				Reset( void );
 //
-//	bool				GetRegisterValue( const char *name, idStr &out, int scopeDepth );
+//	bool				GetRegisterValue( name:string, idStr &out, int scopeDepth );
 //	int					GetCallstackDepth( void ) const;
 //	const prstack_t		*GetCallstack( void ) const;
 //	const function_t	*GetCurrentFunction( void ) const;

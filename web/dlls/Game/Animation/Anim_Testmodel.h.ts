@@ -40,6 +40,10 @@
 class idTestModel extends idAnimatedEntity {
 //public:
 //	CLASS_PROTOTYPE( idTestModel );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idTestModel>[];	
 //
 //							idTestModel();
 //							~idTestModel();

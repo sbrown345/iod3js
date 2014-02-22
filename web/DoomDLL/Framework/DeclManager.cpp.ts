@@ -232,13 +232,13 @@ class idDeclManagerLocal extends idDeclManager {
 /*	virtual const idDecl *		*/FindType( type: declType_t, name:string, makeDefault:boolean = true ):idDecl { throw "placeholder"; }
 //	virtual const idDecl *		DeclByIndex( declType_t type, int index, bool forceParse = true ):idDecl{throw "placeholder";}
 
-//	virtual const idDecl*		FindDeclWithoutParsing( declType_t type, const char *name, bool makeDefault = true ):idDecl{throw "placeholder";}
+//	virtual const idDecl*		FindDeclWithoutParsing( declType_t type, name:string, bool makeDefault = true ):idDecl{throw "placeholder";}
 //	virtual void				ReloadFile( const char* filename, bool force ):void{throw "placeholder";}
 
 	ListType ( args: idCmdArgs, type: declType_t ): void { throw "placeholder"; }
 	PrintType ( args: idCmdArgs, type: declType_t ): void { throw "placeholder"; }
 
-//	virtual idDecl *			CreateNewDecl( declType_t type, const char *name, const char *fileName ):idDecl{throw "placeholder";}
+//	virtual idDecl *			CreateNewDecl( declType_t type, name:string, const char *fileName ):idDecl{throw "placeholder";}
 
 //	//BSM Added for the material editors rename capabilities
 //	virtual bool				RenameDecl( type:declType_t, oldName:string, newName:string ):boolean{throw "placeholder";}
@@ -247,8 +247,8 @@ class idDeclManagerLocal extends idDeclManager {
 //	virtual void				WritePrecacheCommands( idFile *f ):void{throw "placeholder";}
 
 /*	virtual const idMaterial *		*/FindMaterial( name:string, makeDefault:boolean = true):idMaterial{ throw "placeholder";}
-//	virtual const idDeclSkin *		FindSkin( const char *name, bool makeDefault = true ):idDeclSkin{throw "placeholder";}
-//	virtual const idSoundShader *	FindSound( const char *name, bool makeDefault = true ):idSoundShader{throw "placeholder";}
+//	virtual const idDeclSkin *		FindSkin( name:string, bool makeDefault = true ):idDeclSkin{throw "placeholder";}
+//	virtual const idSoundShader *	FindSound( name:string, bool makeDefault = true ):idSoundShader{throw "placeholder";}
 
 /*virtual const idMaterial *		*/MaterialByIndex(/* int */index:number, forceParse = true ):idMaterial{throw "placeholder";}
 ///*virtual const idDeclSkin *		*/SkinByIndex(/* int */index:number, forceParse = true ):idDeclSkin{throw "placeholder";}
@@ -1177,7 +1177,7 @@ idDeclManagerLocal.prototype.FindType = function ( type: declType_t, name: strin
 ////idDeclManagerLocal::FindDeclWithoutParsing
 ////===============
 ////*/
-////const idDecl* idDeclManagerLocal::FindDeclWithoutParsing( declType_t type, const char *name, bool makeDefault) {
+////const idDecl* idDeclManagerLocal::FindDeclWithoutParsing( declType_t type, name:string, bool makeDefault) {
 ////	idDeclLocal* decl;
 ////	decl = FindTypeWithoutParsing(type, name, makeDefault);
 ////	if(decl) {
@@ -1375,7 +1375,7 @@ idDeclManagerLocal.prototype.PrintType = function ( args: idCmdArgs, type: declT
 ////idDeclManagerLocal::CreateNewDecl
 ////===================
 ////*/
-////idDecl *idDeclManagerLocal::CreateNewDecl( declType_t type, const char *name, const char *_fileName ) {
+////idDecl *idDeclManagerLocal::CreateNewDecl( declType_t type, name:string, const char *_fileName ) {
 ////	int typeIndex = (int)type;
 ////	int i, hash;
 
@@ -1567,7 +1567,7 @@ idDeclManagerLocal.prototype.FindMaterial = function ( name: string, makeDefault
 
 /////********************************************************************/
 
-////const idDeclSkin *idDeclManagerLocal::FindSkin( const char *name, bool makeDefault ) {
+////const idDeclSkin *idDeclManagerLocal::FindSkin( name:string, bool makeDefault ) {
 ////	return static_cast<const idDeclSkin *>( FindType( DECL_SKIN, name, makeDefault ) );
 ////}
 
@@ -1577,7 +1577,7 @@ idDeclManagerLocal.prototype.FindMaterial = function ( name: string, makeDefault
 
 /////********************************************************************/
 
-////const idSoundShader *idDeclManagerLocal::FindSound( const char *name, bool makeDefault ) {
+////const idSoundShader *idDeclManagerLocal::FindSound( name:string, bool makeDefault ) {
 ////	return static_cast<const idSoundShader *>( FindType( DECL_SOUND, name, makeDefault ) );
 ////}
 

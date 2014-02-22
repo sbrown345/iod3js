@@ -347,7 +347,7 @@ class idMat3 {
 //	idVec3 &		operator[]( int index );
 //	idMat3			operator-() const;
 //	idMat3			operator*( const float a ) const;
-//	idVec3			operator*( const idVec3 &vec ) const;
+//	idVec3			operator*( vec:idVec3 ) const;
 //	idMat3			operator*( const idMat3 &a ) const;
 //	idMat3			operator+( const idMat3 &a ) const;
 //	idMat3			operator-( const idMat3 &a ) const;
@@ -357,8 +357,8 @@ class idMat3 {
 //	idMat3 &		operator-=( const idMat3 &a );
 //
 //	friend idMat3	operator*( const float a, const idMat3 &mat );
-//	friend idVec3	operator*( const idVec3 &vec, const idMat3 &mat );
-//	friend idVec3 &	operator*=( idVec3 &vec, const idMat3 &mat );
+//	friend idVec3	operator*( vec:idVec3, const idMat3 &mat );
+//	friend idVec3 &	operator*=( vec:idVec3, const idMat3 &mat );
 //
 //	bool			Compare( const idMat3 &a ) const;						// exact compare, no epsilon
 //	bool			Compare( const idMat3 &a, const float epsilon ) const;	// compare with epsilon
@@ -461,7 +461,7 @@ class idMat3 {
 //					-mat[2][0], -mat[2][1], -mat[2][2] );
 //}
 //
-//ID_INLINE idVec3 idMat3::operator*( const idVec3 &vec ) const {
+//ID_INLINE idVec3 idMat3::operator*( vec:idVec3 ) const {
 //	return idVec3(
 //		mat[ 0 ].x * vec.x + mat[ 1 ].x * vec.y + mat[ 2 ].x * vec.z,
 //		mat[ 0 ].y * vec.x + mat[ 1 ].y * vec.y + mat[ 2 ].y * vec.z,
@@ -555,7 +555,7 @@ class idMat3 {
 //    return *this;
 //}
 //
-//ID_INLINE idVec3 operator*( const idVec3 &vec, const idMat3 &mat ) {
+//ID_INLINE idVec3 operator*( vec:idVec3, const idMat3 &mat ) {
 //	return mat * vec;
 //}
 //
@@ -563,7 +563,7 @@ class idMat3 {
 //	return mat * a;
 //}
 //
-//ID_INLINE idVec3 &operator*=( idVec3 &vec, const idMat3 &mat ) {
+//ID_INLINE idVec3 &operator*=( vec:idVec3, const idMat3 &mat ) {
 //	float x = mat[ 0 ].x * vec.x + mat[ 1 ].x * vec.y + mat[ 2 ].x * vec.z;
 //	float y = mat[ 0 ].y * vec.x + mat[ 1 ].y * vec.y + mat[ 2 ].y * vec.z;
 //	vec.z = mat[ 0 ].z * vec.x + mat[ 1 ].z * vec.y + mat[ 2 ].z * vec.z;
@@ -801,7 +801,7 @@ class idMat4 {
 //	idVec4 &		operator[]( int index );
 //	idMat4			operator*( const float a ) const;
 //	idVec4			operator*( const idVec4 &vec ) const;
-//	idVec3			operator*( const idVec3 &vec ) const;
+//	idVec3			operator*( vec:idVec3 ) const;
 //	idMat4			operator*( const idMat4 &a ) const;
 //	idMat4			operator+( const idMat4 &a ) const;
 //	idMat4			operator-( const idMat4 &a ) const;
@@ -812,9 +812,9 @@ class idMat4 {
 //
 //	friend idMat4	operator*( const float a, const idMat4 &mat );
 //	friend idVec4	operator*( const idVec4 &vec, const idMat4 &mat );
-//	friend idVec3	operator*( const idVec3 &vec, const idMat4 &mat );
+//	friend idVec3	operator*( vec:idVec3, const idMat4 &mat );
 //	friend idVec4 &	operator*=( idVec4 &vec, const idMat4 &mat );
-//	friend idVec3 &	operator*=( idVec3 &vec, const idMat4 &mat );
+//	friend idVec3 &	operator*=( vec:idVec3, const idMat4 &mat );
 //
 //	bool			Compare( const idMat4 &a ) const;						// exact compare, no epsilon
 //	bool			Compare( const idMat4 &a, const float epsilon ) const;	// compare with epsilon
@@ -938,7 +938,7 @@ class idMat4 {
 //		mat[ 3 ].x * vec.x + mat[ 3 ].y * vec.y + mat[ 3 ].z * vec.z + mat[ 3 ].w * vec.w );
 //}
 //
-//ID_INLINE idVec3 idMat4::operator*( const idVec3 &vec ) const {
+//ID_INLINE idVec3 idMat4::operator*( vec:idVec3 ) const {
 //	float s = mat[ 3 ].x * vec.x + mat[ 3 ].y * vec.y + mat[ 3 ].z * vec.z + mat[ 3 ].w;
 //	if ( s == 0.0f ) {
 //		return idVec3( 0.0f, 0.0f, 0.0f );
@@ -1034,7 +1034,7 @@ class idMat4 {
 //	return mat * vec;
 //}
 //
-//ID_INLINE idVec3 operator*( const idVec3 &vec, const idMat4 &mat ) {
+//ID_INLINE idVec3 operator*( vec:idVec3, const idMat4 &mat ) {
 //	return mat * vec;
 //}
 //
@@ -1043,7 +1043,7 @@ class idMat4 {
 //	return vec;
 //}
 //
-//ID_INLINE idVec3 &operator*=( idVec3 &vec, const idMat4 &mat ) {
+//ID_INLINE idVec3 &operator*=( vec:idVec3, const idMat4 &mat ) {
 //	vec = mat * vec;
 //	return vec;
 //}

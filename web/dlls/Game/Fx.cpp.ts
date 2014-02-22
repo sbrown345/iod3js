@@ -96,6 +96,10 @@ idEntityFx.Type = new idTypeInfo("idEntityFx", "idEntity",
 class idEntityFx extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE(idEntityFx);
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idEntityFx>[];
 ////
 ////	idEntityFx();
 ////	virtual					~idEntityFx();

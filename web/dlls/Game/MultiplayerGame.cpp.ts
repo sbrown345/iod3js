@@ -355,7 +355,7 @@
 ////idMultiplayerGame::UpdateRankColor
 ////================
 ////*/
-////void idMultiplayerGame::UpdateRankColor( idUserInterface *gui, const char *mask, int i, const idVec3 &vec ) {
+////void idMultiplayerGame::UpdateRankColor( idUserInterface *gui, const char *mask, int i, vec:idVec3 ) {
 ////	for ( int j = 1; j < 4; j++ ) {
 ////		gui->SetStateFloat( va( mask, i, j ), vec[ j - 1 ] );
 ////	}
@@ -2527,7 +2527,7 @@
 ////idMultiplayerGame::ServerStartVote
 ////================
 ////*/
-////void idMultiplayerGame::ServerStartVote( int clientNum, vote_flags_t voteIndex, const char *value ) {
+////void idMultiplayerGame::ServerStartVote( int clientNum, vote_flags_t voteIndex, value:string ) {
 ////	int i;
 
 ////	assert( vote == VOTE_NONE );
@@ -2971,7 +2971,7 @@
 ////idMultiplayerGame::ProcessChatMessage
 ////================
 ////*/
-////void idMultiplayerGame::ProcessChatMessage( int clientNum, bool team, const char *name, text:string, sound:string ) {
+////void idMultiplayerGame::ProcessChatMessage( int clientNum, bool team, name:string, text:string, sound:string ) {
 ////	idBitMsg	outMsg;
 ////	byte		msgBuf[ 256 ];
 ////	const char *prefix = NULL;

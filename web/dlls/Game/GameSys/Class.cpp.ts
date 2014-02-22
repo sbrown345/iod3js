@@ -498,15 +498,15 @@ class idClass {
 	////	bool						ProcessEventArgPtr( ev: idEventDef, int *data );
 	////	void						CancelEvents( ev: idEventDef );
 	////
-	////	void						Event_Remove( void );
+	//Event_Remove( ):void { throw "placeholder"; }
 	////
 	////	// Static functions
 	////	static void					Init( void );
 	////	static void					Shutdown( void );
-	////	static idTypeInfo *			GetClass( const char *name );
+	////	static idTypeInfo *			GetClass( name:string );
 	////	static void					DisplayInfo_f( const idCmdArgs &args );
 	////	static void					ListClasses_f( const idCmdArgs &args );
-	////	static idClass *			CreateInstance( const char *name );
+	////	static idClass *			CreateInstance( name:string );
 	////	static int					GetNumTypes( void ) { return idClass.types.Num(); }
 	////	static int					GetTypeNumBits( void ) { return idClass.typeNumBits; }
 	////	static idTypeInfo *			GetType( int num );
@@ -517,7 +517,7 @@ class idClass {
 	////	bool						PostEventArgs( ev: idEventDef, /*int*/time:number, int numargs, ... );
 	////	bool						ProcessEventArgs( ev: idEventDef, int numargs, ... );
 	////
-	////	void						Event_SafeRemove( void );
+	//Event_SafeRemove(): void { throw "placeholder"; }
 	////
 	static initialized:boolean = false;
 	static types = new idList<idTypeInfo>(idTypeInfo);

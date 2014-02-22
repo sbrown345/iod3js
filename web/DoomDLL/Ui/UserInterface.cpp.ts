@@ -403,7 +403,7 @@ class idUserInterfaceLocal extends idUserInterface {
 //	state.Delete( varName );
 //}
 //
-//void idUserInterfaceLocal::SetStateString( const char *varName, const char *value ) {
+//void idUserInterfaceLocal::SetStateString( const char *varName, value:string ) {
 //	state.Set( varName, value );
 //}
 //

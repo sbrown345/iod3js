@@ -222,7 +222,7 @@ class idSoundEmitter {
 ////	virtual void			FadeSoundClasses( const int soundClass, const float to, const float over ) = 0;
 ////
 ////	// background music
-////	virtual	void			PlayShaderDirectly( const char *name, int channel = -1 ) = 0;
+////	virtual	void			PlayShaderDirectly( name:string, int channel = -1 ) = 0;
 ////
 ////	// dumps the current state and begins archiving commands
 ////	virtual void			StartWritingDemo( idDemoFile *demo ) = 0;
@@ -245,7 +245,7 @@ class idSoundEmitter {
 ////	// <path>_51center.raw, <path>_51lfe.raw, <path>_51backleft.raw, <path>_51backright.raw, 
 ////	// If only two channel mixing is enabled, the left and right .raw files will also be
 ////	// combined into a stereo .wav file.
-////	virtual void			AVIOpen( const char *path, const char *name ) = 0;
+////	virtual void			AVIOpen( const char *path, name:string ) = 0;
 ////	virtual void			AVIClose( void ) = 0;
 ////
 ////	// SaveGame / demo Support

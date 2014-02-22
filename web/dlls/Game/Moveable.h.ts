@@ -200,10 +200,10 @@ class idExplodingBarrel extends idBarrel {
 ////	void					AddLight( const char *name , bool burn );
 ////	void					ExplodingEffects( );
 ////
-////	void					Event_Activate( activator:idEntity ): void { throw "placeholder"; }
-////	void					Event_Respawn(): void { throw "placeholder"; }
-////	void					Event_Explode(): void { throw "placeholder"; }
-////	void					Event_TriggerTargets(): void { throw "placeholder"; }
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+	Event_Respawn(): void { throw "placeholder"; }
+	Event_Explode(): void { throw "placeholder"; }
+	Event_TriggerTargets(): void { throw "placeholder"; }
 };
 ////
 ////#endif /* !__GAME_MOVEABLE_H__ */

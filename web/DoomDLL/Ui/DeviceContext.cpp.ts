@@ -97,7 +97,7 @@ class idDeviceContext {
 	//	int					MaxCharHeight(float scale);
 	//	int					MaxCharWidth(float scale);
 	//
-	//	int					FindFont( const char *name );
+	//	int					FindFont( name:string );
 	//	void				SetupFonts();
 	//
 	//	idRegion			*GetTextRegion(text:string, float textScale, idRectangle rectDraw, float xStart, float yStart);

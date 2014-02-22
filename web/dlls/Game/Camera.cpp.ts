@@ -42,6 +42,22 @@
 ////*/
 ////
 ////ABSTRACT_DECLARATION( idEntity, idCamera )
+idCamera.CreateInstance = function ( ): idClass {
+	gameLocal.Error( "Cannot instanciate abstract class %s.", idCamera );
+	return null;
+};
+
+idCamera.prototype.GetType = function ( ): idTypeInfo {
+	return ( idCamera.Type );
+};
+
+idCamera.eventCallbacks = [
+];
+
+idCamera.Type = new idTypeInfo("idCamera", "idEntity",
+	idCamera.eventCallbacks, idCamera.CreateInstance, idCamera.prototype.Spawn,
+	idCamera.prototype.Save, idCamera.prototype.Restore );
+
 ////END_CLASS
 ////
 /////*

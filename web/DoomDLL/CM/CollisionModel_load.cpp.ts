@@ -2249,7 +2249,7 @@
 ////idCollisionModelManagerLocal::HashVec
 ////================
 ////*/
-////ID_INLINE int idCollisionModelManagerLocal::HashVec(const idVec3 &vec) {
+////ID_INLINE int idCollisionModelManagerLocal::HashVec(vec:idVec3) {
 ////	/*
 ////	int x, y;
 ////

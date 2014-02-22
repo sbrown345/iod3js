@@ -2168,7 +2168,7 @@
 //idDeclModelDef::FindJoint
 //====================
 //*/
-//const jointInfo_t *idDeclModelDef::FindJoint( const char *name ) const {
+//const jointInfo_t *idDeclModelDef::FindJoint( name:string ) const {
 //	int					i;
 //	const idMD5Joint	*joint;
 //
@@ -2777,7 +2777,7 @@
 //idDeclModelDef::HasAnim
 //=====================
 //*/
-//bool idDeclModelDef::HasAnim( const char *name ) const {
+//bool idDeclModelDef::HasAnim( name:string ) const {
 //	int	i;
 //
 //	// find any animations with same name
@@ -2806,7 +2806,7 @@
 //Gets the exact anim for the name, without randomization.
 //=====================
 //*/
-//int idDeclModelDef::GetSpecificAnim( const char *name ) const {
+//int idDeclModelDef::GetSpecificAnim( name:string ) const {
 //	int	i;
 //
 //	// find a specific animation
@@ -2838,7 +2838,7 @@
 //idDeclModelDef::GetAnim
 //=====================
 //*/
-//int idDeclModelDef::GetAnim( const char *name ) const {
+//int idDeclModelDef::GetAnim( name:string ) const {
 //	int				i;
 //	int				which;
 //	const int		MAX_ANIMS = 64;
@@ -3380,7 +3380,7 @@
 //idAnimator::GetAnim
 //=====================
 //*/
-//int idAnimator::GetAnim( const char *name ) const {
+//int idAnimator::GetAnim( name:string ) const {
 //	if ( !modelDef ) {
 //		return 0;
 //	}
@@ -3393,7 +3393,7 @@
 //idAnimator::HasAnim
 //=====================
 //*/
-//bool idAnimator::HasAnim( const char *name ) const {
+//bool idAnimator::HasAnim( name:string ) const {
 //	if ( !modelDef ) {
 //		return false;
 //	}
@@ -4481,7 +4481,7 @@
 //idAnimator::GetJointHandle
 //=====================
 //*/
-//jointHandle_t idAnimator::GetJointHandle( const char *name ) const {
+//jointHandle_t idAnimator::GetJointHandle( name:string ) const {
 //	if ( !modelDef || !modelDef->ModelHandle() ) {
 //		return INVALID_JOINT;
 //	}
@@ -4524,7 +4524,7 @@
 //idAnimator::GetFirstChild
 //=====================
 //*/
-//jointHandle_t idAnimator::GetFirstChild( const char *name ) const {
+//jointHandle_t idAnimator::GetFirstChild( name:string ) const {
 //	return GetFirstChild( GetJointHandle( name ) );
 //}
 //

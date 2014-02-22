@@ -92,7 +92,7 @@ class idCompiler {
 	//	idVarDef		*ParseObjectCall( idVarDef *object, idVarDef *func );
 	//	idVarDef		*ParseEventCall( idVarDef *object, idVarDef *func );
 	//	idVarDef		*ParseSysObjectCall( idVarDef *func );
-	//	idVarDef		*LookupDef( const char *name, const idVarDef *baseobj );
+	//	idVarDef		*LookupDef( name:string, const idVarDef *baseobj );
 	//	idVarDef		*ParseValue( void );
 	//	idVarDef		*GetTerm( void );
 	//	bool			TypeMatches( etype_t type1, etype_t type2 ) const;
@@ -106,10 +106,10 @@ class idCompiler {
 	//	void			ParseIfStatement( void );
 	//	void			this.ParseStatement( void );
 	//	void			ParseObjectDef( const char *objname );
-	//	idTypeDef		*ParseFunction( idTypeDef *returnType, const char *name );
-	//	void			ParseFunctionDef( idTypeDef *returnType, const char *name );
-	//	void			ParseVariableDef( idTypeDef *type, const char *name );
-	//	void			ParseEventDef( idTypeDef *type, const char *name );
+	//	idTypeDef		*ParseFunction( idTypeDef *returnType, name:string );
+	//	void			ParseFunctionDef( idTypeDef *returnType, name:string );
+	//	void			ParseVariableDef( idTypeDef *type, name:string );
+	//	void			ParseEventDef( idTypeDef *type, name:string );
 	//	void			ParseDefs( void );
 	//	void			ParseNamespace( idVarDef *newScope );
 	//

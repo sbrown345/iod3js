@@ -1426,7 +1426,7 @@
 ////are from the goal, so try to break the goals up into shorter distances.
 ////=====================
 ////*/
-////float idAI::TravelDistance( const idVec3 &start, const idVec3 &end ) const {
+////float idAI::TravelDistance( start:idVec3, end:idVec3 ) const {
 ////	int			fromArea;
 ////	int			toArea;
 ////	float		dist;

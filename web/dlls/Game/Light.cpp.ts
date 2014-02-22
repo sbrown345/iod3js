@@ -66,20 +66,20 @@ idLight.prototype.GetType = function ( ): idTypeInfo {
 };
 
 idLight.eventCallbacks = [
-	EVENT( EV_Light_SetShader,		idLight.Event_SetShader ),
-	EVENT( EV_Light_GetLightParm,	idLight.Event_GetLightParm ),
-	EVENT( EV_Light_SetLightParm,	idLight.Event_SetLightParm ),
-	EVENT( EV_Light_SetLightParms,	idLight.Event_SetLightParms ),
-	EVENT( EV_Light_SetRadiusXYZ,	idLight.Event_SetRadiusXYZ ),
-	EVENT( EV_Light_SetRadius,		idLight.Event_SetRadius ),
-	EVENT( EV_Hide,					idLight.Event_Hide ),
-	EVENT( EV_Show,					idLight.Event_Show ),
-	EVENT( EV_Light_On,				idLight.Event_On ),
-	EVENT( EV_Light_Off,			idLight.Event_Off ),
-	EVENT( EV_Activate,				idLight.Event_ToggleOnOff ),
-	EVENT( EV_PostSpawn,			idLight.Event_SetSoundHandles ),
-	EVENT( EV_Light_FadeOut,		idLight.Event_FadeOut ),
-	EVENT( EV_Light_FadeIn,			idLight.Event_FadeIn )
+	EVENT( EV_Light_SetShader,		idLight.prototype.Event_SetShader ),
+	EVENT( EV_Light_GetLightParm,	idLight.prototype.Event_GetLightParm ),
+	EVENT( EV_Light_SetLightParm,	idLight.prototype.Event_SetLightParm ),
+	EVENT( EV_Light_SetLightParms,	idLight.prototype.Event_SetLightParms ),
+	EVENT( EV_Light_SetRadiusXYZ,	idLight.prototype.Event_SetRadiusXYZ ),
+	EVENT( EV_Light_SetRadius,		idLight.prototype.Event_SetRadius ),
+	EVENT( EV_Hide,					idLight.prototype.Event_Hide ),
+	EVENT( EV_Show,					idLight.prototype.Event_Show ),
+	EVENT( EV_Light_On,				idLight.prototype.Event_On ),
+	EVENT( EV_Light_Off,			idLight.prototype.Event_Off ),
+	EVENT( EV_Activate,				idLight.prototype.Event_ToggleOnOff ),
+	EVENT( EV_PostSpawn,			idLight.prototype.Event_SetSoundHandles ),
+	EVENT( EV_Light_FadeOut,		idLight.prototype.Event_FadeOut ),
+	EVENT( EV_Light_FadeIn,			idLight.prototype.Event_FadeIn )
 ];
 
 idLight.Type = new idTypeInfo("idLight", "idEntity",
@@ -198,13 +198,13 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////	extern const idEventDef EV_Light_SetLightParm;
 ////	extern const idEventDef EV_Light_SetLightParms;
 ////
-	class idLight extends idEntity {
+class idLight extends idEntity {
 ////	public:
 ////		CLASS_PROTOTYPE(idLight);
-		static Type: idTypeInfo;
-		static CreateInstance ( ): idClass { throw "placeholder"; }
-		GetType ( ): idTypeInfo { throw "placeholder"; }
-		static eventCallbacks: idEventFunc<idLight>[];
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idLight>[];
 ////
 ////		idLight();
 ////		~idLight();
@@ -277,21 +277,21 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////		void			PresentLightDefChange(void);
 ////		void			PresentModelDefChange(void);
 ////
-////		void			Event_SetShader(const char *shadername);
-////		void			Event_GetLightParm(int parmnum);
-////		void			Event_SetLightParm(int parmnum, float value);
-////		void			Event_SetLightParms(float parm0, float parm1, float parm2, float parm3);
-////		void			Event_SetRadiusXYZ(float x, float y, float z);
-////		void			Event_SetRadius(float radius);
-////		void			Event_Hide(void);
-////		void			Event_Show(void);
-////		void			Event_On(void);
-////		void			Event_Off(void);
-////		void			Event_ToggleOnOff(activator:idEntity);
-////		void			Event_SetSoundHandles(void);
-////		void			Event_FadeOut(/*float*/time:number);
-////		void			Event_FadeIn(/*float*/time:number);
-	};
+	Event_SetShader ( shadername: string ): void { throw "placeholder"; }
+	Event_GetLightParm ( /*int*/ parmnum: number ): void { throw "placeholder"; }
+	Event_SetLightParm ( /*int*/ parmnum: number, /*float*/ value: number ): void { throw "placeholder"; }
+	Event_SetLightParms ( /*float*/ parm0: number, /*float*/ parm1: number, /*float*/ parm2: number, /*float*/ parm3: number ): void { throw "placeholder"; }
+	Event_SetRadiusXYZ ( /*float*/ x: number, /*float*/ y: number, /*float*/ z: number ): void { throw "placeholder"; }
+	Event_SetRadius ( /*float*/ radius: number ): void { throw "placeholder"; }
+	Event_Hide ( ): void { throw "placeholder"; }
+	Event_Show ( ): void { throw "placeholder"; }
+	Event_On ( ): void { throw "placeholder"; }
+	Event_Off ( ): void { throw "placeholder"; }
+	Event_ToggleOnOff ( activator: idEntity ): void { throw "placeholder"; }
+	Event_SetSoundHandles ( ): void { throw "placeholder"; }
+	Event_FadeOut ( /*float*/time: number ): void { throw "placeholder"; }
+	Event_FadeIn ( /*float*/time: number ): void { throw "placeholder"; }
+};
 
 ////#endif /* !__GAME_LIGHT_H__ */
 ////

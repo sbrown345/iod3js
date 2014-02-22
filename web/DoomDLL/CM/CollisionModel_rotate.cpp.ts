@@ -1209,7 +1209,7 @@
 ////  only for rotations < 180 degrees
 ////================
 ////*/
-////void idCollisionModelManagerLocal::BoundsForRotation( const idVec3 &origin, const idVec3 &axis, const idVec3 &start, const idVec3 &end, idBounds &bounds ) {
+////void idCollisionModelManagerLocal::BoundsForRotation( const idVec3 &origin, const idVec3 &axis, start:idVec3, end:idVec3, idBounds &bounds ) {
 ////	int i;
 ////	float radiusSqr;
 ////	idVec3 v1, v2;
@@ -1250,7 +1250,7 @@
 ////================
 ////*/
 ////void idCollisionModelManagerLocal::Rotation180( trace_t *results, const idVec3 &rorg, const idVec3 &axis,
-////										const float startAngle, const float endAngle, const idVec3 &start,
+////										const float startAngle, const float endAngle, start:idVec3,
 ////										const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
 ////										cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis ) {
 ////	int i, j, edgeNum;
@@ -1614,7 +1614,7 @@
 ////static int entered = 0;
 ////#endif
 ////
-////void idCollisionModelManagerLocal::Rotation( trace_t *results, const idVec3 &start, const idRotation &rotation,
+////void idCollisionModelManagerLocal::Rotation( trace_t *results, start:idVec3, const idRotation &rotation,
 ////										const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
 ////										cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis ) {
 ////	idVec3 tmp;

@@ -763,7 +763,7 @@
 ////static int entered = 0;
 ////#endif
 ////
-////void idCollisionModelManagerLocal::Translation( trace_t *results, const idVec3 &start, const idVec3 &end,
+////void idCollisionModelManagerLocal::Translation( trace_t *results, start:idVec3, end:idVec3,
 ////										const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
 ////										cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis ) {
 ////

@@ -157,9 +157,9 @@ class eval_t {
 //	const char					*GetTypeName( void ) const;
 //	const function_t			*GetConstructor( void ) const;
 //	const function_t			*GetDestructor( void ) const;
-//	const function_t			*GetFunction( const char *name ) const;
+//	const function_t			*GetFunction( name:string ) const;
 //
-//	byte						*GetVariable( const char *name, etype_t etype ) const;
+//	byte						*GetVariable( name:string, etype_t etype ) const;
 //};
 //
 ///***********************************************************************
@@ -181,7 +181,7 @@ class eval_t {
 //						idScriptVariable();
 //	bool				IsLinked( void ) const;
 //	void				Unlink( void );
-//	void				LinkTo( idScriptObject &obj, const char *name );
+//	void				LinkTo( idScriptObject &obj, name:string );
 //	idScriptVariable	&operator=( const returnType &value );
 //						operator returnType() const;
 //};
@@ -202,7 +202,7 @@ class eval_t {
 //}
 //
 //template<class type, etype_t etype, class returnType>
-//ID_INLINE void idScriptVariable<type, etype, returnType>::LinkTo( idScriptObject &obj, const char *name ) {
+//ID_INLINE void idScriptVariable<type, etype, returnType>::LinkTo( idScriptObject &obj, name:string ) {
 //	data = ( type * )obj.GetVariable( name, etype );
 //	if ( !data ) {
 //		gameError( "Missing '%s' field in script object '%s'", name, obj.GetTypeName() );
@@ -340,8 +340,8 @@ class idTypeDef {
 	//	bool				Inherits( const idTypeDef *basetype ) const;
 	//	bool				MatchesType( const idTypeDef &matchtype ) const;
 	//	bool				MatchesVirtualFunction( const idTypeDef &matchfunc ) const;
-	//	void				AddFunctionParm( idTypeDef *parmtype, const char *name );
-	//	void				AddField( idTypeDef *fieldtype, const char *name );
+	//	void				AddFunctionParm( idTypeDef *parmtype, name:string );
+	//	void				AddField( idTypeDef *fieldtype, name:string );
 	//
 	//	void				SetName( const char *newname );
 	//	const char			*Name( void ) const;
@@ -549,7 +549,7 @@ idTypeDef::idTypeDef
 	//Adds a new field to an object type.
 	//================
 	//*/
-	//void idTypeDef::AddField( idTypeDef *fieldtype, const char *name ) {
+	//void idTypeDef::AddField( idTypeDef *fieldtype, name:string ) {
 	//	if ( type != etype_t.ev_object ) {
 	//		throw new idCompileError( "idTypeDef::AddField : tried to add field to non-object type" );
 	//	}

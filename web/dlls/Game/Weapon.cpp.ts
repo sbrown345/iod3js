@@ -2184,7 +2184,7 @@ idWeapon.Type = new idTypeInfo("idWeapon", "idAnimatedEntity",
 ////		gameLocal.Error( "Could not find entity definition for 'ammo_names'\n" );
 ////	}
 ////
-////	const char *name = GetAmmoNameForNum( ammonum );
+////	name:string = GetAmmoNameForNum( ammonum );
 ////
 ////	if ( name && *name ) {
 ////		num = ammoDict->GetNumKeyVals();

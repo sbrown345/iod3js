@@ -65,11 +65,11 @@ idProjectile.prototype.GetType = function ( ): idTypeInfo {
 };
 
 idProjectile.eventCallbacks = [
-	EVENT( EV_Explode,				idProjectile.Event_Explode ),
-	EVENT( EV_Fizzle,				idProjectile.Event_Fizzle ),
-	EVENT( EV_Touch,				idProjectile.Event_Touch ),
-	EVENT( EV_RadiusDamage,			idProjectile.Event_RadiusDamage ),
-	EVENT( EV_GetProjectileState,	idProjectile.Event_GetProjectileState )
+	EVENT( EV_Explode,				idProjectile.prototype.Event_Explode ),
+	EVENT( EV_Fizzle,				idProjectile.prototype.Event_Fizzle ),
+	EVENT( EV_Touch,				idProjectile.prototype.Event_Touch ),
+	EVENT( EV_RadiusDamage,			idProjectile.prototype.Event_RadiusDamage ),
+	EVENT( EV_GetProjectileState,	idProjectile.prototype.Event_GetProjectileState )
 ];
 
 idProjectile.Type = new idTypeInfo("idProjectile", "idEntity",
@@ -212,7 +212,7 @@ idProjectile.Type = new idTypeInfo("idProjectile", "idEntity",
 ////idProjectile::Create
 ////================
 ////*/
-////void idProjectile::Create( idEntity *owner, const idVec3 &start, const idVec3 &dir ) {
+////void idProjectile::Create( idEntity *owner, start:idVec3, const idVec3 &dir ) {
 ////	idDict		args;
 ////	idStr		shaderName;
 ////	idVec3		light_color;
@@ -294,7 +294,7 @@ idProjectile.Type = new idTypeInfo("idProjectile", "idEntity",
 ////idProjectile::Launch
 ////=================
 ////*/
-////void idProjectile::Launch( const idVec3 &start, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire, const float launchPower, const float dmgPower ) {
+////void idProjectile::Launch( start:idVec3, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire, const float launchPower, const float dmgPower ) {
 ////	float			fuse;
 ////	float			startthrust;
 ////	float			endthrust;
@@ -1446,7 +1446,7 @@ idGuidedProjectile.Type = new idTypeInfo("idGuidedProjectile", "idProjectile",
 ////idGuidedProjectile::Launch
 ////=================
 ////*/
-////void idGuidedProjectile::Launch( const idVec3 &start, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire, const float launchPower, float dmgPower ) {
+////void idGuidedProjectile::Launch( start:idVec3, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire, const float launchPower, float dmgPower ) {
 ////	idProjectile::Launch( start, dir, pushVelocity, timeSinceFire, launchPower, dmgPower );
 ////	if ( owner.GetEntity() ) {
 ////		if ( owner.GetEntity()->IsType( idAI::Type ) ) {
@@ -1689,7 +1689,7 @@ idSoulCubeMissile.Type = new idTypeInfo("idSoulCubeMissile", "idGuidedProjectile
 ////idSoulCubeMissile::Launch
 ////=================
 ////*/
-////void idSoulCubeMissile::Launch( const idVec3 &start, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire, const float launchPower, float dmgPower ) {
+////void idSoulCubeMissile::Launch( start:idVec3, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire, const float launchPower, float dmgPower ) {
 ////	idVec3		newStart;
 ////	idVec3		offs;
 ////	idEntity	*ownerEnt;
@@ -1947,7 +1947,7 @@ idBFGProjectile.Type = new idTypeInfo("idBFGProjectile", "idProjectile",
 ////idBFGProjectile::Launch
 ////=================
 ////*/
-////void idBFGProjectile::Launch( const idVec3 &start, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire, const float power, const float dmgPower ) {
+////void idBFGProjectile::Launch( start:idVec3, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire, const float power, const float dmgPower ) {
 ////	idProjectile::Launch( start, dir, pushVelocity, 0.0f, power, dmgPower );
 ////
 ////	// dmgPower * radius is the target acquisition area
@@ -2177,7 +2177,7 @@ idDebris.Type = new idTypeInfo("idDebris", "idEntity",
 ////idDebris::Create
 ////================
 ////*/
-////void idDebris::Create( idEntity *owner, const idVec3 &start, const idMat3 &axis ) {
+////void idDebris::Create( idEntity *owner, start:idVec3, const idMat3 &axis ) {
 ////	Unbind();
 ////	GetPhysics()->SetOrigin( start );
 ////	GetPhysics()->SetAxis( axis );

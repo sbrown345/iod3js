@@ -239,6 +239,10 @@
 class idAI extends idActor {
 ////public:
 ////	CLASS_PROTOTYPE( idAI );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idAI>[];
 ////
 ////							idAI();
 ////							~idAI();
@@ -264,9 +268,9 @@ class idAI extends idActor {
 ////							// Frees any nodes used for the dynamic obstacle avoidance.
 ////	static void				FreeObstacleAvoidanceNodes( );
 ////							// Predicts movement, returns true if a stop event was triggered.
-////	static bool				PredictPath( const ent:idEntity, const idAAS *aas, const idVec3 &start, const idVec3 &velocity, int totalTime, int frameTime, int stopEvent, predictedPath_t &path );
+////	static bool				PredictPath( const ent:idEntity, const idAAS *aas, start:idVec3, const idVec3 &velocity, int totalTime, int frameTime, int stopEvent, predictedPath_t &path );
 ////							// Return true if the trajectory of the clip model is collision free.
-////	static bool				TestTrajectory( const idVec3 &start, const idVec3 &end, float zVel, float gravity, /*float*/time:number, float max_height, const idClipModel *clip, int clipmask, const idEntity *ignore, const idEntity *targetEntity, int drawtime );
+////	static bool				TestTrajectory( start:idVec3, end:idVec3, float zVel, float gravity, /*float*/time:number, float max_height, const idClipModel *clip, int clipmask, const idEntity *ignore, const idEntity *targetEntity, int drawtime );
 ////							// Finds the best collision free trajectory for a clip model.
 ////	static bool				PredictTrajectory( const idVec3 &firePos, const idVec3 &target, float projectileSpeed, const idVec3 &projGravity, const idClipModel *clip, int clipmask, float max_height, const idEntity *ignore, const idEntity *targetEntity, int drawtime, idVec3 &aimDir );
 ////
@@ -456,7 +460,7 @@ class idAI extends idActor {
 ////	// navigation
 ////	void					KickObstacles( const idVec3 &dir, float force, idEntity *alwaysKick );
 ////	bool					ReachedPos( pos:idVec3, const moveCommand_t moveCommand ) const;
-////	float					TravelDistance( const idVec3 &start, const idVec3 &end ) const;
+////	float					TravelDistance( start:idVec3, const idVec3 &end ) const;
 ////	int						PointReachableAreaNum( pos:idVec3, const float boundsScale = 2.0f ) const;
 ////	bool					PathToGoal( aasPath_t &path, int areaNum, const idVec3 &origin, int goalAreaNum, const idVec3 &goalOrigin ) const;
 ////	void					DrawRoute( void ) const;
@@ -509,7 +513,7 @@ class idAI extends idActor {
 ////	void					DirectDamage( const char *meleeDefName, ent:idEntity );
 ////	bool					TestMelee( void ) const;
 ////	bool					AttackMelee( const char *meleeDefName );
-////	void					BeginAttack( const char *name );
+////	void					BeginAttack( name:string );
 ////	void					EndAttack( void );
 ////	void					PushWithAF( void );
 ////

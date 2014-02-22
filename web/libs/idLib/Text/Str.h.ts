@@ -296,9 +296,9 @@ class idStr {
 ////	static int			vsnPrintf( char *dest, int size, const char *fmt, va_list argptr );
 ////	static int			FindChar( const char *str, const char c, int start = 0, int end = -1 );
 ////	static int			FindText( const char *str, text:string, bool casesensitive = true, int start = 0, int end = -1 );
-////	static bool			Filter( const char *filter, const char *name, bool casesensitive );
-////	static void			StripMediaName( const char *name, idStr &mediaName );
-////	static bool			CheckExtension( const char *name, const char *ext );
+////	static bool			Filter( const char *filter, name:string, bool casesensitive );
+////	static void			StripMediaName( name:string, idStr &mediaName );
+////	static bool			CheckExtension( name:string, const char *ext );
 ////	static const char *	FloatArrayToString( const float *array, const int length, const int precision );
 
 ////	// hash keys
@@ -1309,7 +1309,7 @@ returns -1 if not found otherwise the index of the text
 
 ////============
 ////*/
-////bool idStr::Filter( const char *filter, const char *name, bool casesensitive ) {
+////bool idStr::Filter( const char *filter, name:string, bool casesensitive ) {
 ////	idStr buf;
 ////	int i, found, index;
 
@@ -1419,7 +1419,7 @@ returns -1 if not found otherwise the index of the text
 ////  makes the string lower case, replaces backslashes with forward slashes, and removes extension
 ////=============
 ////*/
-////void idStr::StripMediaName( const char *name, idStr &mediaName ) {
+////void idStr::StripMediaName( name:string, idStr &mediaName ) {
 ////	char c;
 
 ////	mediaName.Empty();
@@ -1443,7 +1443,7 @@ returns -1 if not found otherwise the index of the text
 ////idStr::CheckExtension
 ////=============
 ////*/
-////bool idStr::CheckExtension( const char *name, const char *ext ) {
+////bool idStr::CheckExtension( name:string, const char *ext ) {
 ////	const char *s1 = name + Length( name ) - 1;
 ////	const char *s2 = ext + Length( ext ) - 1;
 ////	int c1, c2, d;

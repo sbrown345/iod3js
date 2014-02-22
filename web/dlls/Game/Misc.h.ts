@@ -79,7 +79,7 @@ class idPlayerStart extends idEntity {
 //		EVENT_MAXEVENTS
 //	};
 //
-//						idPlayerStart( void );
+//						idPlayerStart( );
 //
 	Spawn():void{throw "placeholder";}
 //
@@ -91,9 +91,9 @@ class idPlayerStart extends idEntity {
 //private:
 //	int					teleportStage;
 //
-//	void				Event_TeleportPlayer( activator:idEntity ): void { throw "placeholder"; }
-//	void				Event_TeleportStage( idEntity *player ): void { throw "placeholder"; }
-//	void				TeleportPlayer( idPlayer *player ): void { throw "placeholder"; }
+	Event_TeleportPlayer( activator:idEntity ): void { throw "placeholder"; }
+	Event_TeleportStage( player:idEntity ): void { throw "placeholder"; }
+	TeleportPlayer( player:idPlayer ): void { throw "placeholder"; }
 };
 
 
@@ -121,12 +121,12 @@ Spawn():void{throw "placeholder";}
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
-//	virtual void		Think( void );
+//	virtual void		Think( );
 //
 //private:
 //	bool				stay_on;
 //
-//	void				Event_Activate( activator:idEntity );
+	Event_Activate( activator:idEntity ):void { throw "placeholder"; }
 };
 
 
@@ -147,12 +147,12 @@ class idPathCorner extends idEntity {
 //
 	Spawn():void{throw "placeholder";}
 //
-//	static void			DrawDebugInfo( void );
+//	static void			DrawDebugInfo( );
 //
 //	static idPathCorner *RandomPath( const idEntity *source, const idEntity *ignore );
 //
 //private:
-//	void				Event_RandomPath( void );
+	Event_RandomPath(): void { throw "placeholder"; }
 };
 
 
@@ -172,7 +172,7 @@ class idDamagable extends idEntity {
 	GetType ( ): idTypeInfo { throw "placeholder"; }
 	static eventCallbacks: idEventFunc<idDamagable>[];
 //
-//						idDamagable( void );
+//						idDamagable( );
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -183,10 +183,10 @@ Spawn():void{throw "placeholder";}
 //private:
 //	int					count;
 //	int					nextTriggerTime;
-//
-//	void				BecomeBroken( activator:idEntity ): void { throw "placeholder"; }
-//	void				Event_BecomeBroken( activator:idEntity ): void { throw "placeholder"; }
-//	void				Event_RestoreDamagable( void ): void { throw "placeholder"; }
+
+	BecomeBroken( activator:idEntity ): void { throw "placeholder"; }
+	Event_BecomeBroken( activator:idEntity ): void { throw "placeholder"; }
+	Event_RestoreDamagable( ): void { throw "placeholder"; }
 };
 
 
@@ -209,7 +209,7 @@ class idExplodable extends idEntity {
 Spawn():void{throw "placeholder";}
 //
 //private:
-//	void				Event_Explode( activator:idEntity ): void { throw "placeholder"; }
+	Event_Explode( activator:idEntity ): void { throw "placeholder"; }
 };
 
 
@@ -231,7 +231,7 @@ class idSpring extends idEntity {
 //
 Spawn():void{throw "placeholder";}
 //
-//	virtual void		Think( void );
+//	virtual void		Think( );
 //
 //private:
 //	idEntity *			ent1;
@@ -242,7 +242,7 @@ Spawn():void{throw "placeholder";}
 //	idVec3				p2;
 //	idForce_Spring		spring;
 //
-//	void				Event_LinkSpring( void ): void { throw "placeholder"; }
+	Event_LinkSpring( ): void { throw "placeholder"; }
 };
 
 
@@ -267,16 +267,16 @@ class idForceField extends idEntity {
 //
 Spawn():void{throw "placeholder";}
 //
-//	virtual void		Think( void );
+//	virtual void		Think( );
 //
 //private:
 //	idForce_Field		forceField;
 //
-//	void				Toggle( void );
+//	void				Toggle( );
 //
-//	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
-//	void				Event_Toggle( void ): void { throw "placeholder"; }
-//	void				Event_FindTargets( void ): void { throw "placeholder"; }
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+	Event_Toggle( ): void { throw "placeholder"; }
+	Event_FindTargets( ): void { throw "placeholder"; }
 };
 
 
@@ -302,9 +302,9 @@ class idAnimated extends idAFEntity_Gibbable {
 //Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
-//	void					Spawn( void );
-//	virtual bool			LoadAF( void );
-//	bool					StartRagdoll( void );
+//	void					Spawn( );
+//	virtual bool			LoadAF( );
+//	bool					StartRagdoll( );
 //	virtual bool			GetPhysicsToSoundTransform( idVec3 &origin, idMat3 &axis );
 //
 //private:
@@ -316,15 +316,15 @@ class idAnimated extends idAFEntity_Gibbable {
 //	idEntityPtr<idEntity>	activator;
 //	bool					activated;
 //
-//	void					PlayNextAnim( void );
+//	void					PlayNextAnim( );
 //
-//	void					Event_Activate( activator:idEntity ): void { throw "placeholder"; }	
-//	void					Event_Start( void ): void { throw "placeholder"; }
-//	void					Event_StartRagdoll( void ): void { throw "placeholder"; }
-//	void					Event_AnimDone( int animIndex ): void { throw "placeholder"; }
-//	void					Event_Footstep( void ): void { throw "placeholder"; }
-//	void					Event_LaunchMissiles( const char *projectilename, sound:string, const char *launchjoint, const char *targetjoint, int numshots, int framedelay ): void { throw "placeholder"; }
-//	void					Event_LaunchMissilesUpdate( int launchjoint, int targetjoint, int numshots, int framedelay ): void { throw "placeholder"; }
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }	
+	Event_Start( ): void { throw "placeholder"; }
+	Event_StartRagdoll( ): void { throw "placeholder"; }
+	Event_AnimDone( /*int */animIndex :number): void { throw "placeholder"; }
+	Event_Footstep( ): void { throw "placeholder"; }
+	Event_LaunchMissiles( projectilename:string, sound:string, launchjoint:string, targetjoint:string, /*int */numshots:number, /*int */framedelay :number): void { throw "placeholder"; }
+	Event_LaunchMissilesUpdate( /*int*/ launchjoint:number, /*int */targetjoint:number, /*int */numshots:number, /*int */framedelay :number): void { throw "placeholder"; }
 };
 
 
@@ -344,23 +344,23 @@ class idStaticEntity extends idEntity {
 	GetType ( ): idTypeInfo { throw "placeholder"; }
 	static eventCallbacks: idEventFunc<idStaticEntity>[];
 //
-//						idStaticEntity( void );
+//						idStaticEntity( );
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 Spawn():void{throw "placeholder";}
-//	void				ShowEditingDialog( void );
-//	virtual void		Hide( void );
-//	virtual void		Show( void );
+//	void				ShowEditingDialog( );
+//	virtual void		Hide( );
+//	virtual void		Show( );
 //	void				Fade( const idVec4 &to, float fadeTime );
-//	virtual void		Think( void );
+//	virtual void		Think( );
 //
 //	virtual void		WriteToSnapshot( idBitMsgDelta &msg ) const;
 //	virtual void		ReadFromSnapshot( const idBitMsgDelta &msg );
 //
 //private:
-//	void				Event_Activate( activator:idEntity );
+	Event_Activate(activator: idEntity): void { throw "placeholder"; }
 //
 //	int					spawnTime;
 //	bool				active;
@@ -388,13 +388,13 @@ class idFuncEmitter extends idStaticEntity {
 	GetType ( ): idTypeInfo { throw "placeholder"; }
 	static eventCallbacks: idEventFunc<idFuncEmitter>[];
 //
-//						idFuncEmitter( void );
+//						idFuncEmitter( );
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 Spawn():void{throw "placeholder";}
-//	void				Event_Activate( activator:idEntity );
+	Event_Activate(activator: idEntity): void { throw "placeholder"; }
 //
 //	virtual void		WriteToSnapshot( idBitMsgDelta &msg ) const;
 //	virtual void		ReadFromSnapshot( const idBitMsgDelta &msg );
@@ -423,13 +423,13 @@ class idFuncSmoke extends idEntity {
 //
 //							idFuncSmoke();
 //
-//	void					Spawn( void );
+//	void					Spawn( );
 //
 //Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
-//	virtual void			Think( void );
-//	void					Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+//	virtual void			Think( );
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 //
 //private:
 //	int						smokeTime;
@@ -454,13 +454,13 @@ class idFuncSplat extends idFuncEmitter {
 	GetType ( ): idTypeInfo { throw "placeholder"; }
 	static eventCallbacks: idEventFunc<idFuncSplat>[];
 //
-//	idFuncSplat( void );
+//	idFuncSplat( );
 //
 Spawn():void{throw "placeholder";}
 //
 //private:
-//	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
-//	void				Event_Splat(): void { throw "placeholder"; }
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+	Event_Splat(): void { throw "placeholder"; }
 };
 
 
@@ -485,7 +485,7 @@ Spawn():void{throw "placeholder";}
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
-//	virtual void		Think( void );
+//	virtual void		Think( );
 //
 //private:
 //	idStr				text;
@@ -511,7 +511,7 @@ class idLocationEntity extends idEntity {
 //
 Spawn():void{throw "placeholder";}
 //
-//	const char *		GetLocation( void ) const;
+//	const char *		GetLocation( ) const;
 //
 //private:
 };
@@ -537,14 +537,14 @@ class idVacuumSeparatorEntity extends idEntity {
 	GetType ( ): idTypeInfo { throw "placeholder"; }
 	static eventCallbacks: idEventFunc<idVacuumSeparatorEntity>[];
 //
-//						idVacuumSeparatorEntity( void );
+//						idVacuumSeparatorEntity( );
 //
 Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
-//	void				Event_Activate( activator:idEntity );	
+	Event_Activate(activator: idEntity): void { throw "placeholder"; }
 //
 //private:
 //	qhandle_t			portal;
@@ -587,19 +587,19 @@ Spawn():void{throw "placeholder";}
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
-//	virtual void		Think( void );
+//	virtual void		Think( );
 //
 //	void				SetMaster( idBeam *masterbeam );
 //	void				SetBeamTarget( const idVec3 &origin );
 //
-//	virtual void		Show( void );
+//	virtual void		Show( );
 //
 //	virtual void		WriteToSnapshot( idBitMsgDelta &msg ) const;
 //	virtual void		ReadFromSnapshot( const idBitMsgDelta &msg );
 //
 //private:
-//	void				Event_MatchTarget( void ): void { throw "placeholder"; }
-//	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+	Event_MatchTarget( ): void { throw "placeholder"; }
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 //
 //	idEntityPtr<idBeam>	target;
 //	idEntityPtr<idBeam>	master;
@@ -630,7 +630,7 @@ Spawn():void{throw "placeholder";}
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //private:
-//	void				Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
+	Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
 //
 //
 //	idRenderModelLiquid *model;
@@ -651,7 +651,7 @@ class idShaking extends idEntity {
 //
 //							idShaking();
 //
-//	void					Spawn( void );
+//	void					Spawn( );
 //
 //Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -660,8 +660,8 @@ class idShaking extends idEntity {
 //	idPhysics_Parametric	physicsObj;
 //	bool					active;
 //
-//	void					BeginShaking( void ): void { throw "placeholder"; }
-//	void					Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+//	void					BeginShaking( ): void { throw "placeholder"; }
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 };
 
 
@@ -688,7 +688,7 @@ Spawn():void{throw "placeholder";}
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
-//	virtual void		Think( void );
+//	virtual void		Think( );
 //
 //private:
 //	int					nextTriggerTime;
@@ -700,7 +700,7 @@ Spawn():void{throw "placeholder";}
 //	bool				disabled;
 //	float				shakeTime;
 //
-//	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 };
 
 
@@ -731,7 +731,7 @@ Spawn():void{throw "placeholder";}
 //	qhandle_t			portal;
 //	bool				state;
 //
-//	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 };
 
 /*
@@ -760,7 +760,7 @@ Spawn():void{throw "placeholder";}
 //private:
 //	bool				state;
 //
-//	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 };
 
 /*
@@ -789,7 +789,7 @@ Spawn():void{throw "placeholder";}
 //private:
 //	bool				state;
 //
-//	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 };
 
 
@@ -818,8 +818,8 @@ Spawn():void{throw "placeholder";}
 //
 //private:
 //	float				time;
-//	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
-//	void				Event_ResetRadioHud( activator:idEntity ): void { throw "placeholder"; }
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+	Event_ResetRadioHud( activator:idEntity ): void { throw "placeholder"; }
 };
 
 
@@ -846,12 +846,12 @@ Spawn():void{throw "placeholder";}
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
-//	virtual void		Think( void );
+//	virtual void		Think( );
 //
 //private:
-//	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
-//	void				Event_Throw( void ): void { throw "placeholder"; }
-//	void				Event_ShakeObject( idEntity *object, int starttime ): void { throw "placeholder"; }
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+	Event_Throw( ): void { throw "placeholder"; }
+	Event_ShakeObject(object: idEntity, /*int */starttime:number ): void { throw "placeholder"; }
 //
 //	int					end_time;
 //	float				throw_time;

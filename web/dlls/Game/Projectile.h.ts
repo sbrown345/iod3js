@@ -55,8 +55,8 @@ class idProjectile extends idEntity {
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
 ////
-////	void					Create( idEntity *owner, const idVec3 &start, const idVec3 &dir );
-////	virtual void			Launch( const idVec3 &start, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire = 0.0f, const float launchPower = 1.0f, const float dmgPower = 1.0f );
+////	void					Create( idEntity *owner, start:idVec3, const idVec3 &dir );
+////	virtual void			Launch( start:idVec3, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire = 0.0f, const float launchPower = 1.0f, const float dmgPower = 1.0f );
 ////	virtual void			FreeLightDef( );
 ////
 ////	idEntity *				GetOwner( ) const;
@@ -126,11 +126,11 @@ class idProjectile extends idEntity {
 ////
 ////	void					AddDefaultDamageEffect( const trace_t &collision, const idVec3 &velocity );
 ////
-////	void					Event_Explode( ): void { throw "placeholder"; }
-////	void					Event_Fizzle( ): void { throw "placeholder"; }
-////	void					Event_RadiusDamage( idEntity *ignore ): void { throw "placeholder"; }
-////	void					Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
-////	void					Event_GetProjectileState( ): void { throw "placeholder"; }
+	Event_Explode( ): void { throw "placeholder"; }
+	Event_Fizzle( ): void { throw "placeholder"; }
+	Event_RadiusDamage(ignore: idEntity ): void { throw "placeholder"; }
+	Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
+	Event_GetProjectileState( ): void { throw "placeholder"; }
 };
 
 class idGuidedProjectile extends idProjectile {
@@ -149,7 +149,7 @@ class idGuidedProjectile extends idProjectile {
 ////
 ////	void					Spawn( );
 ////	virtual void			Think( );
-////	virtual void			Launch( const idVec3 &start, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire = 0.0f, const float launchPower = 1.0f, const float dmgPower = 1.0f );
+////	virtual void			Launch( start:idVec3, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire = 0.0f, const float launchPower = 1.0f, const float dmgPower = 1.0f );
 ////
 ////protected:
 ////	float					speed;
@@ -182,7 +182,7 @@ class idSoulCubeMissile extends idGuidedProjectile {
 ////
 ////	void					Spawn( );
 ////	virtual void			Think( );
-////	virtual void			Launch( const idVec3 &start, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire = 0.0f, const float power = 1.0f, const float dmgPower = 1.0f );
+////	virtual void			Launch( start:idVec3, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire = 0.0f, const float power = 1.0f, const float dmgPower = 1.0f );
 ////
 ////protected:
 ////	virtual void			GetSeekPos( idVec3 &out );
@@ -225,7 +225,7 @@ class idBFGProjectile extends idProjectile {
 ////
 ////	void					Spawn( );
 ////	virtual void			Think( );
-////	virtual void			Launch( const idVec3 &start, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire = 0.0f, const float launchPower = 1.0f, const float dmgPower = 1.0f );
+////	virtual void			Launch( start:idVec3, const idVec3 &dir, const idVec3 &pushVelocity, const float timeSinceFire = 0.0f, const float launchPower = 1.0f, const float dmgPower = 1.0f );
 ////	virtual void			Explode( const trace_t &collision, idEntity *ignore );
 ////
 ////private:
@@ -235,9 +235,9 @@ class idBFGProjectile extends idProjectile {
 ////	int						nextDamageTime;
 ////	idStr					damageFreq;
 ////
-////	void					FreeBeams(): void { throw "placeholder"; }
-////	void					Event_RemoveBeams(): void { throw "placeholder"; }
-////	void					ApplyDamage(): void { throw "placeholder"; }
+	FreeBeams(): void { throw "placeholder"; }
+	Event_RemoveBeams(): void { throw "placeholder"; }
+	ApplyDamage(): void { throw "placeholder"; }
 };
 
 /*
@@ -265,7 +265,7 @@ class idDebris extends idEntity {
 ////
 ////	void					Spawn( );
 ////
-////	void					Create( idEntity *owner, const idVec3 &start, const idMat3 &axis );
+////	void					Create( idEntity *owner, start:idVec3, const idMat3 &axis );
 ////	void					Launch( );
 ////	void					Think( );
 ////	void					Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location );

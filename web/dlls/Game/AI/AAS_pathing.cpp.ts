@@ -249,7 +249,7 @@
 ////idAASLocal::SubSampleWalkPath
 ////============
 ////*/
-////idVec3 idAASLocal::SubSampleWalkPath( int areaNum, const idVec3 &origin, const idVec3 &start, const idVec3 &end, int travelFlags, int &endAreaNum ) const {
+////idVec3 idAASLocal::SubSampleWalkPath( int areaNum, const idVec3 &origin, start:idVec3, end:idVec3, int travelFlags, int &endAreaNum ) const {
 ////	int i, numSamples, curAreaNum;
 ////	idVec3 dir, point, nextPoint, endPos;
 ////
@@ -425,7 +425,7 @@
 ////idAASLocal::SubSampleFlyPath
 ////============
 ////*/
-////idVec3 idAASLocal::SubSampleFlyPath( int areaNum, const idVec3 &origin, const idVec3 &start, const idVec3 &end, int travelFlags, int &endAreaNum ) const {
+////idVec3 idAASLocal::SubSampleFlyPath( int areaNum, const idVec3 &origin, start:idVec3, end:idVec3, int travelFlags, int &endAreaNum ) const {
 ////	int i, numSamples, curAreaNum;
 ////	idVec3 dir, point, nextPoint, endPos;
 ////

@@ -111,9 +111,9 @@ class idPlane {
 	//	float			Distance( const idVec3 &v ) const;
 	//	int				Side( const idVec3 &v, const float epsilon = 0.0 ) const;
 	//
-	//	bool			LineIntersection( const idVec3 &start, const idVec3 &end ) const;
+	//	bool			LineIntersection( start:idVec3, end:idVec3 ) const;
 	//					// intersection point is start + dir * scale
-	//	bool			RayIntersection( const idVec3 &start, const idVec3 &dir, float &scale ) const;
+	//	bool			RayIntersection( start:idVec3, const idVec3 &dir, float &scale ) const;
 	//	bool			PlaneIntersection( const idPlane &plane, idVec3 &start, idVec3 &dir ) const;
 	//
 	//	int				GetDimension( void ) const;
@@ -341,7 +341,7 @@ class idPlane {
 	//	}
 	//}
 	//
-	//ID_INLINE bool idPlane::LineIntersection( const idVec3 &start, const idVec3 &end ) const {
+	//ID_INLINE bool idPlane::LineIntersection( start:idVec3, end:idVec3 ) const {
 	//	float d1, d2, fraction;
 	//
 	//	d1 = this.Normal() * start + d;
@@ -359,7 +359,7 @@ class idPlane {
 	//	return ( fraction >= 0.0 && fraction <= 1.0f );
 	//}
 	//
-	//ID_INLINE bool idPlane::RayIntersection( const idVec3 &start, const idVec3 &dir, float &scale ) const {
+	//ID_INLINE bool idPlane::RayIntersection( start:idVec3, const idVec3 &dir, float &scale ) const {
 	//	float d1, d2;
 	//
 	//	d1 = this.Normal() * start + d;

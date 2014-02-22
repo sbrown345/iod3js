@@ -144,19 +144,19 @@ class trace_t {
 ////	virtual bool			GetModelPolygon( cmHandle_t model, int polygonNum, idFixedWinding &winding ) const = 0;
 ////
 ////	// Translates a trace model and reports the first collision if any.
-////	virtual void			Translation( trace_t *results, const idVec3 &start, const idVec3 &end,
+////	virtual void			Translation( trace_t *results, start:idVec3, end:idVec3,
 ////								const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
 ////								cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis ) = 0;
 ////	// Rotates a trace model and reports the first collision if any.
-////	virtual void			Rotation( trace_t *results, const idVec3 &start, const idRotation &rotation,
+////	virtual void			Rotation( trace_t *results, start:idVec3, const idRotation &rotation,
 ////								const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
 ////								cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis ) = 0;
 ////	// Returns the contents touched by the trace model or 0 if the trace model is in free space.
-////	virtual int				Contents( const idVec3 &start,
+////	virtual int				Contents( start:idVec3,
 ////								const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
 ////								cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis ) = 0;
 ////	// Stores all contact points of the trace model with the model, returns the number of contacts.
-////	virtual int				Contacts( contactInfo_t *contacts, const int maxContacts, const idVec3 &start, const idVec6 &dir, const float depth,
+////	virtual int				Contacts( contactInfo_t *contacts, const int maxContacts, start:idVec3, const idVec6 &dir, const float depth,
 ////								const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
 ////								cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis ) = 0;
 ////

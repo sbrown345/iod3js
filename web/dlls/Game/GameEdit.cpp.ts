@@ -753,7 +753,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////idGameEdit::FindEntityDefDict
 ////================
 ////*/
-////const idDict *idGameEdit::FindEntityDefDict( const char *name, bool makeDefault ) const {
+////const idDict *idGameEdit::FindEntityDefDict( name:string, bool makeDefault ) const {
 ////	return gameLocal.FindEntityDefDict( name, makeDefault );
 ////}
 ////
@@ -771,7 +771,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////idGameEdit::FindEntity
 ////================
 ////*/
-////idEntity *idGameEdit::FindEntity( const char *name ) const {
+////idEntity *idGameEdit::FindEntity( name:string ) const {
 ////	return gameLocal.FindEntity( name ); 
 ////}
 ////
@@ -1001,7 +1001,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////idGameEdit::MapGetEntityDict
 ////================
 ////*/
-////const idDict *idGameEdit::MapGetEntityDict( const char *name ) const {
+////const idDict *idGameEdit::MapGetEntityDict( name:string ) const {
 ////	idMapFile *mapFile = gameLocal.GetLevelMap();
 ////	if ( mapFile && name && *name ) {
 ////		idMapEntity *mapent = mapFile->FindEntity( name );
@@ -1029,7 +1029,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////idGameEdit::MapSetEntityKeyVal
 ////================
 ////*/
-////void idGameEdit::MapSetEntityKeyVal( const char *name, const char *key, const char *val ) const {
+////void idGameEdit::MapSetEntityKeyVal( name:string, const char *key, const char *val ) const {
 ////	idMapFile *mapFile = gameLocal.GetLevelMap();
 ////	if ( mapFile && name && *name ) {
 ////		idMapEntity *mapent = mapFile->FindEntity( name );
@@ -1044,7 +1044,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////idGameEdit::MapCopyDictToEntity
 ////================
 ////*/
-////void idGameEdit::MapCopyDictToEntity( const char *name, const idDict *dict ) const {
+////void idGameEdit::MapCopyDictToEntity( name:string, const idDict *dict ) const {
 ////	idMapFile *mapFile = gameLocal.GetLevelMap();
 ////	if ( mapFile && name && *name ) {
 ////		idMapEntity *mapent = mapFile->FindEntity( name );
@@ -1102,7 +1102,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////idGameEdit::MapRemoveEntity
 ////================
 ////*/
-////void idGameEdit::MapRemoveEntity( const char *name ) const {
+////void idGameEdit::MapRemoveEntity( name:string ) const {
 ////	idMapFile *mapFile = gameLocal.GetLevelMap();
 ////	if ( mapFile ) {
 ////		idMapEntity *ent = mapFile->FindEntity( name );
@@ -1149,7 +1149,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////idGameEdit::MapEntityTranslate
 ////================
 ////*/
-////void idGameEdit::MapEntityTranslate( const char *name, const idVec3 &v ) const {
+////void idGameEdit::MapEntityTranslate( name:string, const idVec3 &v ) const {
 ////	idMapFile *mapFile = gameLocal.GetLevelMap();
 ////	if ( mapFile && name && *name ) {
 ////		idMapEntity *mapent = mapFile->FindEntity( name );

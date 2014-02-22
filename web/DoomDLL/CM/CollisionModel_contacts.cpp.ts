@@ -52,7 +52,7 @@
 ////idCollisionModelManagerLocal::Contacts
 ////==================
 ////*/
-////int idCollisionModelManagerLocal::Contacts( contactInfo_t *contacts, const int maxContacts, const idVec3 &start, const idVec6 &dir, const float depth,
+////int idCollisionModelManagerLocal::Contacts( contactInfo_t *contacts, const int maxContacts, start:idVec3, const idVec6 &dir, const float depth,
 ////								const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
 ////								cmHandle_t model, const idVec3 &origin, const idMat3 &modelAxis ) {
 ////	trace_t results;

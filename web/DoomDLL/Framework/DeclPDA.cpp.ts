@@ -185,7 +185,7 @@
 ////idDeclPDA::AddVideo
 ////=================
 ////*/
-////void idDeclPDA::AddVideo( const char *name, bool unique ) const {
+////void idDeclPDA::AddVideo( name:string, bool unique ) const {
 ////	if ( unique && ( videos.Find( name ) != NULL ) ) {
 ////		return;
 ////	}
@@ -201,7 +201,7 @@
 ////idDeclPDA::AddAudio
 ////=================
 ////*/
-////void idDeclPDA::AddAudio( const char *name, bool unique ) const {
+////void idDeclPDA::AddAudio( name:string, bool unique ) const {
 ////	if ( unique && ( audios.Find( name ) != NULL ) ) {
 ////		return;
 ////	}
@@ -217,7 +217,7 @@
 ////idDeclPDA::AddEmail
 ////=================
 ////*/
-////void idDeclPDA::AddEmail( const char *name, bool unique ) const {
+////void idDeclPDA::AddEmail( name:string, bool unique ) const {
 ////	if ( unique && ( emails.Find( name ) != NULL ) ) {
 ////		return;
 ////	}

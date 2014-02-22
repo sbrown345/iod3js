@@ -39,7 +39,7 @@
 ////==================
 ////*/
 ////float Cmd_GetFloatArg( const idCmdArgs &args, int &argNum ) {
-////	const char *value;
+////	var value:string;
 
 ////	value = args.Argv( argNum++ );
 ////	return atof( value );
@@ -771,7 +771,7 @@
 ////===================
 ////*/
 ////void Cmd_Spawn_f( const idCmdArgs &args ) {
-////	const char *key, *value;
+////	key:string, *value;
 ////	int			i;
 ////	float		yaw;
 ////	idVec3		org;
@@ -867,7 +867,7 @@
 ////void Cmd_TestLight_f( const idCmdArgs &args ) {
 ////	int			i;
 ////	idStr		filename;
-////	const char *key, *value, *name = NULL;
+////	key:string, *value, *name = NULL;
 ////	idPlayer *	player;
 ////	idDict		dict;
 
@@ -1098,7 +1098,7 @@
 ////*/
 ////static void Cmd_AddDebugLine_f( const idCmdArgs &args ) {
 ////	int i, argNum;
-////	const char *value;
+////	value:string;
 
 ////	if ( !gameLocal.CheatsOk() ) {
 ////		return;
@@ -1142,7 +1142,7 @@
 ////*/
 ////static void Cmd_RemoveDebugLine_f( const idCmdArgs &args ) {
 ////	int i, num;
-////	const char *value;
+////	var value:string;
 
 ////	if ( !gameLocal.CheatsOk() ) {
 ////		return;
@@ -1175,7 +1175,7 @@
 ////*/
 ////static void Cmd_BlinkDebugLine_f( const idCmdArgs &args ) {
 ////	int i, num;
-////	const char *value;
+////	var value:string;
 
 ////	if ( !gameLocal.CheatsOk() ) {
 ////		return;
@@ -1304,7 +1304,7 @@
 ////==================
 ////*/
 ////static void Cmd_CollisionModelInfo_f( const idCmdArgs &args ) {
-////	const char *value;
+////	var value:string;
 
 ////	if ( !gameLocal.CheatsOk() ) {
 ////		return;
@@ -1580,7 +1580,7 @@
 ////	idMapFile *mapFile = gameLocal.GetLevelMap();
 ////	idDict dict;
 ////	idStr mapName;
-////	const char *name = NULL;
+////	name:string = NULL;
 
 ////	player = gameLocal.GetLocalPlayer();
 ////	if ( !player || !gameLocal.CheatsOk() ) {

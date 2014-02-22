@@ -220,7 +220,7 @@
 ////idAASLocal::Trace
 ////============
 ////*/
-////bool idAASLocal::Trace( aasTrace_t &trace, const idVec3 &start, const idVec3 &end ) const {
+////bool idAASLocal::Trace( aasTrace_t &trace, start:idVec3, end:idVec3 ) const {
 ////	if ( !file ) {
 ////		trace.fraction = 0.0f;
 ////		trace.lastAreaNum = 0;

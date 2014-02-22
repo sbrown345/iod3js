@@ -1049,7 +1049,7 @@
 //idRenderWorldLocal::ModelTrace
 //===================
 //*/
-//bool idRenderWorldLocal::ModelTrace( modelTrace_t &trace, qhandle_t entityHandle, const idVec3 &start, const idVec3 &end, const float radius ) const {
+//bool idRenderWorldLocal::ModelTrace( modelTrace_t &trace, qhandle_t entityHandle, start:idVec3, end:idVec3, const float radius ) const {
 //	int i;
 //	bool collisionSurface;
 //	const modelSurface_t *surf;
@@ -1152,7 +1152,7 @@
 //	NULL
 //};
 //
-//bool idRenderWorldLocal::Trace( modelTrace_t &trace, const idVec3 &start, const idVec3 &end, const float radius, bool skipDynamic, bool skipPlayer /*_D3XP*/ ) const {
+//bool idRenderWorldLocal::Trace( modelTrace_t &trace, start:idVec3, end:idVec3, const float radius, bool skipDynamic, bool skipPlayer /*_D3XP*/ ) const {
 //	areaReference_t * ref;
 //	idRenderEntityLocal *def;
 //	portalArea_t * area;
@@ -1355,7 +1355,7 @@
 //idRenderWorldLocal::FastWorldTrace
 //==================
 //*/
-//bool idRenderWorldLocal::FastWorldTrace( modelTrace_t &results, const idVec3 &start, const idVec3 &end ) const {
+//bool idRenderWorldLocal::FastWorldTrace( modelTrace_t &results, start:idVec3, end:idVec3 ) const {
 //	memset( &results, 0, sizeof( modelTrace_t ) );
 //	results.fraction = 1.0f;
 //	if ( areaNodes != NULL ) {
@@ -1731,7 +1731,7 @@ idRenderWorldLocal.prototype.FreeInteractions = function ( ): void {
 //idRenderWorldLocal::DebugLine
 //====================
 //*/
-//void idRenderWorldLocal::DebugLine( const idVec4 &color, const idVec3 &start, const idVec3 &end, const int lifetime, const bool depthTest ) {
+//void idRenderWorldLocal::DebugLine( const idVec4 &color, start:idVec3, end:idVec3, const int lifetime, const bool depthTest ) {
 //	RB_AddDebugLine( color, start, end, lifetime, depthTest );
 //}
 //
@@ -1740,7 +1740,7 @@ idRenderWorldLocal.prototype.FreeInteractions = function ( ): void {
 //idRenderWorldLocal::DebugArrow
 //================
 //*/
-//void idRenderWorldLocal::DebugArrow( const idVec4 &color, const idVec3 &start, const idVec3 &end, int size, const int lifetime ) {
+//void idRenderWorldLocal::DebugArrow( const idVec4 &color, start:idVec3, const idVec3 &end, int size, const int lifetime ) {
 //	idVec3 forward, right, up, v1, v2;
 //	float a, s;
 //	int i;

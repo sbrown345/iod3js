@@ -84,9 +84,9 @@ class idBounds {
 
 //	bool			ContainsPoint( const idVec3 &p ) const;			// includes touching
 //	bool			IntersectsBounds( const idBounds &a ) const;	// includes touching
-//	bool			LineIntersection( const idVec3 &start, const idVec3 &end ) const;
+//	bool			LineIntersection( start:idVec3, end:idVec3 ) const;
 //					// intersection point is start + dir * scale
-//	bool			RayIntersection( const idVec3 &start, const idVec3 &dir, float &scale ) const;
+//	bool			RayIntersection( start:idVec3, const idVec3 &dir, float &scale ) const;
 
 //					// most tight bounds for the given transformed bounds
 //	void			FromTransformedBounds( const idBounds &bounds, const idVec3 &origin, const idMat3 &axis );
@@ -518,7 +518,7 @@ Zero( ):void {
 //Returns true if the line intersects the bounds between the start and end point.
 //============
 //*/
-//bool idBounds::LineIntersection(const idVec3 &start, const idVec3 &end) const {
+//bool idBounds::LineIntersection(start:idVec3, end:idVec3) const {
 //	float ld[3];
 //	idVec3 center = (b[0] + this.b[1]) * 0.5f;
 //	idVec3 extents = this.b[1] - center;
@@ -567,7 +567,7 @@ Zero( ):void {
 //If start is inside the bounds it is considered an intersection with scale = 0
 //============
 //*/
-//bool idBounds::RayIntersection(const idVec3 &start, const idVec3 &dir, float &scale) const {
+//bool idBounds::RayIntersection(start:idVec3, const idVec3 &dir, float &scale) const {
 //	int i, ax0, ax1, ax2, side, inside;
 //	float f;
 //	idVec3 hit;
@@ -700,7 +700,7 @@ Zero( ):void {
 //only for rotations < 180 degrees
 //================
 //*/
-//idBounds BoundsForPointRotation(const idVec3 &start, const idRotation &rotation) {
+//idBounds BoundsForPointRotation(start:idVec3, const idRotation &rotation) {
 //	int i;
 //	float radiusSqr;
 //	idVec3 v1, v2;

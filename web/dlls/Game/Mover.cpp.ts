@@ -458,7 +458,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////idMover::VectorForDir
 ////================
 ////*/
-////void idMover::VectorForDir( /*float*/angle:number, idVec3 &vec ) {
+////void idMover::VectorForDir( /*float*/angle:number, vec:idVec3 ) {
 ////	idAngles ang;
 ////
 ////	switch( ( int )angle ) {

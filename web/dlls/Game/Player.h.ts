@@ -162,14 +162,14 @@
 ////	void					ClearPowerUps( );
 ////	void					GetPersistantData( idDict &dict );
 ////	void					RestoreInventory( idPlayer *owner, const idDict &dict );
-////	bool					Give( idPlayer *owner, const idDict &spawnArgs, const char *statname, const char *value, int *idealWeapon, bool updateHud );
+////	bool					Give( idPlayer *owner, const idDict &spawnArgs, const char *statname, value:string, int *idealWeapon, bool updateHud );
 ////	void					Drop( const idDict &spawnArgs, const char *weapon_classname, int weapon_index );
 ////	ammo_t					AmmoIndexForAmmoClass( const char *ammo_classname ) const;
 ////	int						MaxAmmoForAmmoClass( idPlayer *owner, const char *ammo_classname ) const;
 ////	int						WeaponIndexForAmmoClass( const idDict & spawnArgs, const char *ammo_classname ) const;
 ////	ammo_t					AmmoIndexForWeaponClass( const char *weapon_classname, int *ammoRequired );
 ////	const char *			AmmoPickupNameForIndex( ammo_t ammonum ) const;
-////	void					AddPickupName( const char *name, const char *icon );
+////	void					AddPickupName( name:string, const char *icon );
 ////
 ////	int						HasAmmo( ammo_t type, int amount );
 ////	bool					UseAmmo( ammo_t type, int amount );
@@ -317,6 +317,10 @@ class idPlayer extends idActor {
 ////
 ////public:
 ////	CLASS_PROTOTYPE( idPlayer );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idPlayer>[];
 ////
 ////							idPlayer();
 ////	virtual					~idPlayer();
@@ -393,16 +397,16 @@ class idPlayer extends idActor {
 ////	void					GetViewPos( idVec3 &origin, idMat3 &axis ) const;
 ////	void					OffsetThirdPersonView( /*float*/angle:number, float range, float height, bool clip );
 ////
-////	bool					Give( const char *statname, const char *value );
+////	bool					Give( const char *statname, value:string );
 ////	bool					GiveItem( idItem *item );
-////	void					GiveItem( const char *name );
+////	void					GiveItem( name:string );
 ////	void					GiveHealthPool( float amt );
 ////	
 ////	bool					GiveInventoryItem( idDict *item );
 ////	void					RemoveInventoryItem( idDict *item );
-////	bool					GiveInventoryItem( const char *name );
-////	void					RemoveInventoryItem( const char *name );
-////	idDict *				FindInventoryItem( const char *name );
+////	bool					GiveInventoryItem( name:string );
+////	void					RemoveInventoryItem( name:string );
+////	idDict *				FindInventoryItem( name:string );
 ////
 ////	void					GivePDA( const char *pdaName, idDict *item );
 ////	void					GiveVideo( const char *videoName, idDict *item );
@@ -463,7 +467,7 @@ class idPlayer extends idActor {
 ////	void					UpdateHudWeapon( bool flashWeapon = true );
 ////	void					UpdateHudStats( idUserInterface *hud );
 ////	void					UpdateHudAmmo( idUserInterface *hud );
-////	void					Event_StopAudioLog( );
+	Event_StopAudioLog( ):void { throw "placeholder"; }
 ////	void					StartAudioLog( );
 ////	void					StopAudioLog( );
 ////	void					ShowTip( const char *title, const char *tip, bool autoHide );

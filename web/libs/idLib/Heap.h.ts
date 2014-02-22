@@ -59,7 +59,7 @@ class memoryStats_t {
 
 ////void		Mem_Init( void );
 ////void		Mem_Shutdown( void );
-////void		Mem_EnableLeakTest( const char *name );
+////void		Mem_EnableLeakTest( name:string );
 ////void		Mem_ClearFrameStats( void );
 ////void		Mem_GetFrameStats( memoryStats_t &allocs, memoryStats_t &frees );
 ////void		Mem_GetStats( memoryStats_t &stats );

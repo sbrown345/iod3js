@@ -114,9 +114,9 @@ class idWinding {
 //
 //	bool			PointInside( const idVec3 &normal, const idVec3 &point, const float epsilon ) const;
 //					// returns true if the line or ray intersects the winding
-//	bool			LineIntersection( const idPlane &windingPlane, const idVec3 &start, const idVec3 &end, bool backFaceCull = false ) const;
+//	bool			LineIntersection( const idPlane &windingPlane, start:idVec3, end:idVec3, bool backFaceCull = false ) const;
 //					// intersection point is start + dir * scale
-//	bool			RayIntersection( const idPlane &windingPlane, const idVec3 &start, const idVec3 &dir, float &scale, bool backFaceCull = false ) const;
+//	bool			RayIntersection( const idPlane &windingPlane, start:idVec3, const idVec3 &dir, float &scale, bool backFaceCull = false ) const;
 //
 //	static float	TriangleArea( const idVec3 &a, const idVec3 &b, const idVec3 &c );
 //
@@ -1648,7 +1648,7 @@ idWinding::ClipInPlace
 //idWinding::LineIntersection
 //=============
 //*/
-//bool idWinding::LineIntersection(const idPlane &windingPlane, const idVec3 &start, const idVec3 &end, bool backFaceCull) const {
+//bool idWinding::LineIntersection(const idPlane &windingPlane, start:idVec3, end:idVec3, bool backFaceCull) const {
 //	float front, back, frac;
 //	idVec3 mid;
 //
@@ -1688,7 +1688,7 @@ idWinding::ClipInPlace
 //idWinding::RayIntersection
 //=============
 //*/
-//bool idWinding::RayIntersection(const idPlane &windingPlane, const idVec3 &start, const idVec3 &dir, float &scale, bool backFaceCull) const {
+//bool idWinding::RayIntersection(const idPlane &windingPlane, start:idVec3, const idVec3 &dir, float &scale, bool backFaceCull) const {
 //	int i;
 //	bool side, lastside = false;
 //	idPluecker pl1, pl2;

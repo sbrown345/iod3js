@@ -334,13 +334,13 @@ class idDeclModelDef extends idDecl {
 //	void						SetupJoints( int *numJoints, idJointMat **jointList, idBounds &frameBounds, bool removeOriginOffset ) const;
 //	idRenderModel *				ModelHandle( ) const;
 //	void						GetJointList( jointnames:string, idList<jointHandle_t> &jointList ) const;
-//	const jointInfo_t *			FindJoint( const char *name ) const;
+//	const jointInfo_t *			FindJoint( name:string ) const;
 //
 //	int							NumAnims( ) const;
 //	const idAnim *				GetAnim( int index ) const;
-//	int							GetSpecificAnim( const char *name ) const;
-//	int							GetAnim( const char *name ) const;
-//	bool						HasAnim( const char *name ) const;
+//	int							GetSpecificAnim( name:string ) const;
+//	int							GetAnim( name:string ) const;
+//	bool						HasAnim( name:string ) const;
 //	const idDeclSkin *			GetSkin( ) const;
 //	const char *				GetModelName( ) const;
 //	const idList<jointInfo_t> &	Joints( ) const;
@@ -497,8 +497,8 @@ class idDeclModelDef extends idDecl {
 //
 //	int							NumAnims( ) const;
 //	const idAnim				*GetAnim( int index ) const;
-//	int							GetAnim( const char *name ) const;
-//	bool						HasAnim( const char *name ) const;
+//	int							GetAnim( name:string ) const;
+//	bool						HasAnim( name:string ) const;
 //
 //	void						ServiceAnims( int fromtime, int totime );
 //	bool						IsAnimating( int currentTime ) const;
@@ -506,7 +506,7 @@ class idDeclModelDef extends idDecl {
 //	void						GetJoints( int *numJoints, idJointMat **jointsPtr );
 //	int							NumJoints( ) const;
 //	jointHandle_t				GetFirstChild( jointnum:jointHandle_t ) const;
-//	jointHandle_t				GetFirstChild( const char *name ) const;
+//	jointHandle_t				GetFirstChild( name:string ) const;
 //
 //	idRenderModel				*SetModel( const char *modelname );
 //	idRenderModel				*ModelHandle( ) const;
@@ -545,7 +545,7 @@ class idDeclModelDef extends idDecl {
 //
 //	void						ClearAllAnims( int currentTime, int cleartime );
 //
-//	jointHandle_t				GetJointHandle( const char *name ) const;
+//	jointHandle_t				GetJointHandle( name:string ) const;
 //	const char *				GetJointName( jointHandle_t handle ) const;
 //	int							GetChannelForJoint( jointHandle_t joint ) const;
 //	bool						GetJointTransform( jointHandle_t jointHandle, int currenttime, idVec3 &offset, idMat3 &axis );
@@ -603,10 +603,10 @@ class idDeclModelDef extends idDecl {
 //	static bool					forceExport;
 //
 //	void						Shutdown( );
-//	idMD5Anim *					GetAnim( const char *name );
+//	idMD5Anim *					GetAnim( name:string );
 //	void						ReloadAnims( );
 //	void						ListAnims( ) const;
-//	int							JointIndex( const char *name );
+//	int							JointIndex( name:string );
 //	const char *				JointName( int index ) const;
 //
 //	void						ClearAnimsInUse( );

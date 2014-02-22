@@ -75,7 +75,7 @@ class function_t {
 //						function_t();
 //
 //	size_t				Allocated( void ) const;
-//	void				SetName( const char *name );
+//	void				SetName( name:string );
 //	const char			*Name( void ) const;
 //	void				Clear( void );
 //
@@ -524,29 +524,29 @@ class idProgram {
 //	void										FreeData( void );
 //
 //	const char									*GetFilename( int num );
-//	int											GetFilenum( const char *name );
+//	int											GetFilenum( name:string );
 //	int											GetLineNumberForStatement( int index );
 //	const char									*GetFilenameForStatement( int index );
 //
 //	idTypeDef									*AllocType( idTypeDef &type );
 //	idTypeDef									*AllocType( etype_t etype, idVarDef *edef, const char *ename, int esize, idTypeDef *aux );
 //	idTypeDef									*GetType( idTypeDef &type, bool allocate );
-//	idTypeDef									*FindType( const char *name );
+//	idTypeDef									*FindType( name:string );
 //
-//	idVarDef									*AllocDef( idTypeDef *type, const char *name, idVarDef *scope, bool constant );
-//	idVarDef									*GetDef( const idTypeDef *type, const char *name, const idVarDef *scope ) const;
+//	idVarDef									*AllocDef( idTypeDef *type, name:string, idVarDef *scope, bool constant );
+//	idVarDef									*GetDef( const idTypeDef *type, name:string, const idVarDef *scope ) const;
 //	void										FreeDef( idVarDef *d, const idVarDef *scope );
-//	idVarDef									*FindFreeResultDef( idTypeDef *type, const char *name, idVarDef *scope, const idVarDef *a, const idVarDef *b );
-//	idVarDef									*GetDefList( const char *name ) const;
-//	void										AddDefToNameList( idVarDef *def, const char *name );
+//	idVarDef									*FindFreeResultDef( idTypeDef *type, name:string, idVarDef *scope, const idVarDef *a, const idVarDef *b );
+//	idVarDef									*GetDefList( name:string ) const;
+//	void										AddDefToNameList( idVarDef *def, name:string );
 //
-//	function_t									*FindFunction( const char *name ) const;						// returns NULL if function not found
-//	function_t									*FindFunction( const char *name, const idTypeDef *type ) const;	// returns NULL if function not found
+//	function_t									*FindFunction( name:string ) const;						// returns NULL if function not found
+//	function_t									*FindFunction( name:string, const idTypeDef *type ) const;	// returns NULL if function not found
 //	function_t									&AllocFunction( idVarDef *def );
 //	function_t									*GetFunction( int index );
 //	int											GetFunctionIndex( const function_t *func );
 //
-//	void										SetEntity( const char *name, ent:idEntity );
+//	void										SetEntity( name:string, ent:idEntity );
 //
 //	statement_t									*AllocStatement( void );
 //	statement_t									&GetStatement( int index );

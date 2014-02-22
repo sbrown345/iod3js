@@ -279,9 +279,9 @@ class idDeclManager {
 ////							// If makeDefault is true, a default decl of appropriate type will be created
 ////							// if an explicit one isn't found. If makeDefault is false, NULL will be returned
 ////							// if the decl wasn't explcitly defined.
-////	virtual const idDecl *	FindType( declType_t type, const char *name, bool makeDefault = true ) = 0;
+////	virtual const idDecl *	FindType( declType_t type, name:string, bool makeDefault = true ) = 0;
 
-////	virtual const idDecl*	FindDeclWithoutParsing( declType_t type, const char *name, bool makeDefault = true ) = 0;
+////	virtual const idDecl*	FindDeclWithoutParsing( declType_t type, name:string, bool makeDefault = true ) = 0;
 
 ////	virtual void			ReloadFile( const char* filename, bool force ) = 0;
 
@@ -299,7 +299,7 @@ class idDeclManager {
 
 ////							// Creates a new default decl of the given type with the given name in
 ////							// the given file used by editors to create a new decls.
-////	virtual idDecl *		CreateNewDecl( declType_t type, const char *name, const char *fileName ) = 0;
+////	virtual idDecl *		CreateNewDecl( declType_t type, name:string, const char *fileName ) = 0;
 
 ////							// BSM - Added for the material editors rename capabilities
 ////	virtual bool			RenameDecl( declType_t type, const char* oldName, const char* newName ) = 0;
@@ -311,9 +311,9 @@ class idDeclManager {
 ////	virtual void			WritePrecacheCommands( idFile *f ) = 0;
 
 ////									// Convenience functions for specific types.
-////	virtual	const idMaterial *		FindMaterial( const char *name, bool makeDefault = true ) = 0;
-////	virtual const idDeclSkin *		FindSkin( const char *name, bool makeDefault = true ) = 0;
-////	virtual const idSoundShader *	FindSound( const char *name, bool makeDefault = true ) = 0;
+////	virtual	const idMaterial *		FindMaterial( name:string, bool makeDefault = true ) = 0;
+////	virtual const idDeclSkin *		FindSkin( name:string, bool makeDefault = true ) = 0;
+////	virtual const idSoundShader *	FindSound( name:string, bool makeDefault = true ) = 0;
 
 ////	virtual const idMaterial *		MaterialByIndex( int index, bool forceParse = true ) = 0;
 ////	virtual const idDeclSkin *		SkinByIndex( int index, bool forceParse = true ) = 0;

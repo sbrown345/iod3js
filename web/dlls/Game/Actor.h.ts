@@ -71,7 +71,7 @@
 ////
 ////	void					Init( idActor *owner, idAnimator *_animator, int animchannel );
 ////	void					Shutdown( void );
-////	void					SetState( const char *name, int blendFrames );
+////	void					SetState( name:string, int blendFrames );
 ////	void					StopAnim( int frames );
 ////	void					PlayAnim( int anim );
 ////	void					CycleAnim( int anim );
@@ -107,6 +107,10 @@
 class idActor extends idAFEntity_Gibbable {
 ////public:
 ////	CLASS_PROTOTYPE( idActor );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idActor>[];
 ////
 ////	int						team;
 ////	int						rank;				// monsters don't fight back if the attacker's rank is higher
@@ -195,11 +199,11 @@ class idActor extends idAFEntity_Gibbable {
 ////	virtual	renderView_t *	GetRenderView();	
 ////	
 ////							// animation state control
-////	int						GetAnim( int channel, const char *name );
+////	int						GetAnim( int channel, name:string );
 ////	void					UpdateAnimState( void );
-////	void					SetAnimState( int channel, const char *name, int blendFrames );
+////	void					SetAnimState( int channel, name:string, int blendFrames );
 ////	const char *			GetAnimState( int channel ) const;
-////	bool					InAnimState( int channel, const char *name ) const;
+////	bool					InAnimState( int channel, name:string ) const;
 ////	const char *			WaitState( void ) const;
 ////	void					SetWaitState( const char *_waitstate );
 ////	bool					AnimDone( int channel, int blendFrames ) const;

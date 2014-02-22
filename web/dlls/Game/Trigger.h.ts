@@ -64,8 +64,8 @@ class idTrigger extends idEntity {
 ////protected:
 ////	void				CallScript( void ) const;
 ////
-////	void				Event_Enable( void ): void { throw "placeholder"; }
-////	void				Event_Disable( void ): void { throw "placeholder"; }
+	Event_Enable( ): void { throw "placeholder"; }
+	Event_Disable( ): void { throw "placeholder"; }
 ////
 ////	const function_t *	scriptFunction;
 };
@@ -107,11 +107,11 @@ class idTrigger_Multi extends idTrigger {
 ////	bool				triggerFirst;
 ////	bool				triggerWithSelf;
 ////
-////	bool				CheckFacing( activator:idEntity ): void { throw "placeholder"; }
-////	void				TriggerAction( activator:idEntity ): void { throw "placeholder"; }
-////	void				Event_TriggerAction( activator:idEntity ): void { throw "placeholder"; }
-////	void				Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
-////	void				Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
+	CheckFacing( activator:idEntity ): boolean { throw "placeholder"; }
+	TriggerAction( activator:idEntity ): void { throw "placeholder"; }
+	Event_TriggerAction( activator:idEntity ): void { throw "placeholder"; }
+	Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
+	Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
 };
 
 

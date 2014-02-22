@@ -624,7 +624,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_LaunchMissile
 ////=====================
 ////*/
-////void idAI::Event_LaunchMissile( const idVec3 &org, const idAngles &ang ) {
+////void idAI::Event_LaunchMissile( const idVec3 &org, ang:idAngles ) {
 ////	idVec3		start;
 ////	trace_t		tr;
 ////	idBounds	projBounds;
