@@ -736,12 +736,13 @@ idParser::UnreadSourceToken
 		return 1 /*true*/;
 	}
 
-/////*
-////================
-////idParser::ReadDefineParms
-////================
-////*/
-/////*int*/ReadDefineParms( define_t *define, idToken **parms, int maxparms ):number {
+/*
+================
+idParser::ReadDefineParms
+================
+*/
+	/*int*/ReadDefineParms(define: define_t, /*idToken ***/parms: idToken[], /*int */maxparms: number): number {
+		todoThrow ( );
 ////	define_t *newdefine;
 ////	idToken token, *t, *last;
 ////	int i, done, lastcomma, numparms, indent;
@@ -809,7 +810,7 @@ idParser::UnreadSourceToken
 ////			else if ( token.type == TT_NAME ) {
 ////				newdefine = FindHashedDefine( this.definehash, token.c_str() );
 ////				if ( newdefine ) {
-////					if ( !idParser::ExpandDefineIntoSource( &token, newdefine ) ) {
+////					if ( !this.ExpandDefineIntoSource( &token, newdefine ) ) {
 ////						return 0/*false*/;
 ////					}
 ////					continue;
@@ -829,53 +830,55 @@ idParser::UnreadSourceToken
 ////		}
 ////		numparms++;
 ////	}
-////	return 1/*true*/;
-////}
-////
-/////*
-////================
-////idParser::StringizeTokens
-////================
-////*/
-/////*int*/StringizeTokens( idToken *tokens, idToken *token ):number {
-////	idToken *t;
-////
-////	token.type = TT_STRING;
-////	token.whiteSpaceStart_p = NULL;
-////	token.whiteSpaceEnd_p = NULL;
-////	(*token) = "";
-////	for ( t = this.tokens; t; t = t.next ) {
-////		token.Append( t.c_str() );
-////	}
-////	return 1/*true*/;
-////}
-////
-/////*
-////================
-////idParser::MergeTokens
-////================
-////*/
-/////*int*/MergeTokens( idToken *t1, idToken *t2 ):number {
-////	// merging of a name with a name or number
-////	if ( t1.type == TT_NAME && (t2.type == TT_NAME || (t2.type == TT_NUMBER && !(t2.subtype & TT_FLOAT))) ) {
-////		t1.Append( t2.c_str() );
-////		return 1/*true*/;
-////	}
-////	// merging of two strings
-////	if (t1.type == TT_STRING && t2.type == TT_STRING) {
-////		t1.Append( t2.c_str() );
-////		return 1/*true*/;
-////	}
-////	// merging of two numbers
-////	if ( t1.type == TT_NUMBER && t2.type == TT_NUMBER &&
-////			!(t1.subtype & (TT_HEX|TT_BINARY)) && !(t2.subtype & (TT_HEX|TT_BINARY)) &&
-////			(!(t1.subtype & TT_FLOAT) || !(t2.subtype & TT_FLOAT)) ) {
-////		t1.Append( t2.c_str() );
-////		return 1/*true*/;
-////	}
-////
-////	return 0/*false*/;
-////}
+	return 1/*true*/;
+}
+
+/*
+================
+idParser::StringizeTokens
+================
+*/
+	/*int*/
+	StringizeTokens ( tokens: idToken, token: R<idToken> ): number {
+		var t: idToken;
+		todoThrow ( );
+		token.$.type = TT_STRING;
+		token.$.whiteSpaceStart_p = NULL;
+		token.$.whiteSpaceEnd_p = NULL;
+		token.$ = new idToken( "" );//.equals( "" ); //(*token) = "";
+		for ( t = this.tokens; t; t = t.next ) {
+			token.$.Append( t.c_str ( ) );
+		}
+		return 1 /*true*/;
+	}
+
+/*
+================
+idParser::MergeTokens
+================
+*/
+	/*int*/
+	MergeTokens ( t1: idToken, t2: idToken ): number {
+		// merging of a name with a name or number
+		if ( t1.type == TT_NAME && ( t2.type == TT_NAME || ( t2.type == TT_NUMBER && !( t2.subtype & TT_FLOAT ) ) ) ) {
+			t1.Append( t2.c_str ( ) );
+			return 1 /*true*/;
+		}
+		// merging of two strings
+		if ( t1.type == TT_STRING && t2.type == TT_STRING ) {
+			t1.Append( t2.c_str ( ) );
+			return 1 /*true*/;
+		}
+		// merging of two numbers
+		if ( t1.type == TT_NUMBER && t2.type == TT_NUMBER &&
+			!( t1.subtype & ( TT_HEX | TT_BINARY ) ) && !( t2.subtype & ( TT_HEX | TT_BINARY ) ) &&
+			( !( t1.subtype & TT_FLOAT ) || !( t2.subtype & TT_FLOAT ) ) ) {
+			t1.Append( t2.c_str ( ) );
+			return 1 /*true*/;
+		}
+
+		return 0 /*false*/;
+	}
 ////
 /////*
 ////================
@@ -928,12 +931,13 @@ idParser::UnreadSourceToken
 ////	return NULL;
 ////}
 ////
-/////*
-////================
-////idParser::ExpandBuiltinDefine
-////================
-////*/
-/////*int*/ExpandBuiltinDefine( idToken *deftoken, define_t *define, idToken **firsttoken, idToken **lasttoken ):number {
+/*
+================
+idParser::ExpandBuiltinDefine
+================
+*/
+	/*int*/ExpandBuiltinDefine(deftoken: idToken, define: define_t, /*idToken ***/firsttoken: R<idToken>, /*idToken ***/lasttoken: R<idToken>): number {
+		todoThrow();
 ////	idToken *token;
 ////	ID_TIME_T t;
 ////	char *curtime;
@@ -1014,134 +1018,130 @@ idParser::UnreadSourceToken
 ////			break;
 ////		}
 ////	}
-////	return 1/*true*/;
-////}
-////
+	return 1/*true*/;
+}
+
 /*
 ================
 idParser::ExpandDefine
 ================
 */
 	ExpandDefine ( deftoken: idToken, define: define_t, firsttoken: R<idToken>, lasttoken: R<idToken> ): number {
-		todoThrow ( );
-////	idToken *parms[MAX_DEFINEPARMS], *dt, *pt, *t;
-////	idToken *t1, *t2, *first, *last, *nextpt, token;
-////	int parmnum, i;
-////
-////	// if it is a builtin define
-////	if ( define.builtin ) {
-////		return idParser::ExpandBuiltinDefine( deftoken, define, firsttoken, lasttoken );
-////	}
-////	// if the define has parameters
-////	if ( define.numparms ) {
-////		if ( !idParser::ReadDefineParms( define, parms, MAX_DEFINEPARMS ) ) {
-////			return 0/*false*/;
-////		}
-////#ifdef DEBUG_EVAL
-////		for ( i = 0; i < define.numparms; i++ ) {
-////			Log_Write("define parms %d:", i);
-////			for ( pt = parms[i]; pt; pt = pt.next ) {
-////				Log_Write( "%s", pt.c_str() );
-////			}
-////		}
-////#endif //DEBUG_EVAL
-////	}
-////	// empty list at first
-////	first = NULL;
-////	last = NULL;
-////	// create a list with tokens of the expanded define
-////	for ( dt = define.tokens; dt; dt = dt.next ) {
-////		parmnum = -1;
-////		// if the token is a name, it could be a define parameter
-////		if ( dt.type == TT_NAME ) {
-////			parmnum = FindDefineParm( define, dt.c_str() );
-////		}
-////		// if it is a define parameter
-////		if ( parmnum >= 0 ) {
-////			for ( pt = parms[parmnum]; pt; pt = pt.next ) {
-////				t = new idToken(pt);
-////				//add the token to the list
-////				t.next = NULL;
-////				if (last) last.next = t;
-////				else first = t;
-////				last = t;
-////			}
-////		}
-////		else {
-////			// if stringizing operator
-////			if ( (*dt) == "#" ) {
-////				// the stringizing operator must be followed by a define parameter
-////				if ( dt.next ) {
-////					parmnum = FindDefineParm( define, dt.next.c_str() );
-////				}
-////				else {
-////					parmnum = -1;
-////				}
-////
-////				if ( parmnum >= 0 ) {
-////					// step over the stringizing operator
-////					dt = dt.next;
-////					// stringize the define parameter tokens
-////					if ( !idParser::StringizeTokens( parms[parmnum], &token ) ) {
-////						this.Error( "can't stringize tokens" );
-////						return 0/*false*/;
-////					}
-////					t = new idToken(token);
-////					t.line = deftoken.line;
-////				}
-////				else {
-////					this.Warning( "stringizing operator without define parameter" );
-////					continue;
-////				}
-////			}
-////			else {
-////				t = new idToken(dt);
-////				t.line = deftoken.line;
-////			}
-////			// add the token to the list
-////			t.next = NULL;
-////// the token being read from the define list should use the line number of
-////// the original file, not the header file			
-////			t.line = deftoken.line;
-////
-////			if ( last ) last.next = t;
-////			else first = t;
-////			last = t;
-////		}
-////	}
-////	// check for the merging operator
-////	for ( t = first; t; ) {
-////		if ( t.next ) {
-////			// if the merging operator
-////			if ( (*t.next) == "##" ) {
-////				t1 = t;
-////				t2 = t.next.next;
-////				if ( t2 ) {
-////					if ( !idParser::MergeTokens( t1, t2 ) ) {
-////						this.Error( "can't merge '%s' with '%s'", t1.c_str(), t2.c_str() );
-////						return 0/*false*/;
-////					}
-////					delete t1.next;
-////					t1.next = t2.next;
-////					if ( t2 == last ) last = t1;
-////					delete t2;
-////					continue;
-////				}
-////			}
-////		}
-////		t = t.next;
-////	}
-////	// store the first and last token of the list
-////	*firsttoken = first;
-////	*lasttoken = last;
-////	// free all the parameter tokens
-////	for ( i = 0; i < define.numparms; i++ ) {
-////		for ( pt = parms[i]; pt; pt = nextpt ) {
-////			nextpt = pt.next;
-////			delete pt;
-////		}
-////	}
-////
+		var parms = new Array<idToken>( MAX_DEFINEPARMS ), dt: idToken, pt: idToken, t: idToken;
+		var t1: idToken, t2: idToken, first: idToken, last: idToken, nextpt: idToken, token = new R( new idToken );
+		var /*int */parmnum: number, i: number;
+
+		// if it is a builtin define
+		if ( define.builtin ) {
+			return this.ExpandBuiltinDefine( deftoken, define, firsttoken, lasttoken );
+		}
+		// if the define has parameters
+		if ( define.numparms ) {
+			if ( !this.ReadDefineParms( define, parms, MAX_DEFINEPARMS ) ) {
+				return 0 /*false*/;
+			}
+//#ifdef DEBUG_EVAL
+//		for ( i = 0; i < define.numparms; i++ ) {
+//			Log_Write("define parms %d:", i);
+//			for ( pt = parms[i]; pt; pt = pt.next ) {
+//				Log_Write( "%s", pt.c_str() );
+//			}
+//		}
+//#endif //DEBUG_EVAL
+		}
+		// empty list at first
+		first = null;
+		last = null;
+		// create a list with tokens of the expanded define
+		for ( dt = define.tokens; dt; dt = dt.next ) {
+			parmnum = -1;
+			// if the token is a name, it could be a define parameter
+			if ( dt.type == TT_NAME ) {
+				parmnum = this.FindDefineParm( define, dt.c_str ( ) );
+			}
+			// if it is a define parameter
+			if ( parmnum >= 0 ) {
+				for ( pt = parms[parmnum]; pt; pt = pt.next ) {
+					t = new idToken( pt );
+					//add the token to the list
+					t.next = null;
+					if ( last ) last.next = t;
+					else first = t;
+					last = t;
+				}
+			} else {
+				// if stringizing operator
+				if ( ( dt ).data == "#" ) {
+					// the stringizing operator must be followed by a define parameter
+					if ( dt.next ) {
+						parmnum = this.FindDefineParm( define, dt.next.c_str ( ) );
+					} else {
+						parmnum = -1;
+					}
+
+					if ( parmnum >= 0 ) {
+						// step over the stringizing operator
+						dt = dt.next;
+						// stringize the define parameter tokens
+						if ( !this.StringizeTokens( parms[parmnum], token ) ) {
+							this.Error( "can't stringize tokens" );
+							return 0 /*false*/;
+						}
+						t = new idToken( token.$ );
+						t.line = deftoken.line;
+					} else {
+						this.Warning( "stringizing operator without define parameter" );
+						continue;
+					}
+				} else {
+					t = new idToken( dt );
+					t.line = deftoken.line;
+				}
+				// add the token to the list
+				t.next = null;
+// the token being read from the define list should use the line number of
+// the original file, not the header file			
+				t.line = deftoken.line;
+
+				if ( last ) last.next = t;
+				else first = t;
+				last = t;
+			}
+		}
+		// check for the merging operator
+		for ( t = first; t; ) {
+			if ( t.next ) {
+				// if the merging operator
+				if ( ( t.next ).data == "##" ) {
+					t1 = t;
+					t2 = t.next.next;
+					if ( t2 ) {
+						if ( !this.MergeTokens( t1, t2 ) ) {
+							this.Error( "can't merge '%s' with '%s'", t1.c_str ( ), t2.c_str ( ) );
+							return 0 /*false*/;
+						}
+						delete t1.next;
+						t1.next = t2.next;
+						if ( t2 == last ) last = t1;
+						delete t2;
+						continue;
+					}
+				}
+			}
+			t = t.next;
+		}
+		// store the first and last token of the list
+		firsttoken.$ = first;
+		lasttoken.$ = last;
+		// free all the parameter tokens
+		for ( i = 0; i < define.numparms; i++ ) {
+			debugger;
+			for ( pt = parms[i]; pt; pt = nextpt ) {
+				nextpt = pt.next;
+				delete pt;
+			}
+		}
+
 		return 1 /*true*/;
 	}
 
@@ -1161,7 +1161,6 @@ idParser::ExpandDefineIntoSource
 			firsttoken.$.linesCrossed += deftoken.linesCrossed;
 			lasttoken.$.next = this.tokens;
 			this.tokens = firsttoken.$;
-			todoThrow( "should the above be this.tokens.equals(firsttoken.$) ??" );
 		}
 		return 1 /*true*/;
 	}
@@ -2102,7 +2101,7 @@ idParser::Evaluate
 ////					this.Error( "can't Evaluate '%s', not defined", token.c_str() );
 ////					return 0/*false*/;
 ////				}
-////				if ( !idParser::ExpandDefineIntoSource( &token, define ) ) {
+////				if ( !this.ExpandDefineIntoSource( &token, define ) ) {
 ////					return 0/*false*/;
 ////				}
 ////			}
@@ -2198,7 +2197,7 @@ idParser::Evaluate
 ////					this.Warning( "can't Evaluate '%s', not defined", token.c_str() );
 ////					return 0/*false*/;
 ////				}
-////				if ( !idParser::ExpandDefineIntoSource( &token, define ) ) {
+////				if ( !this.ExpandDefineIntoSource( &token, define ) ) {
 ////					return 0/*false*/;
 ////				}
 ////			}
