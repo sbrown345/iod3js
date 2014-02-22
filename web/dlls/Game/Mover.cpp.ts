@@ -535,7 +535,7 @@ var EV_IsRotating = new idEventDef( "isRotating", null, 'd' );
 ////void idMover::SetGuiState( const char *key, const char *val ) const {
 ////	gameLocal.Printf( "Setting %s to %s\n", key, val );
 ////	for( int i = 0; i < guiTargets.Num(); i++ ) {
-////		idEntity *ent = guiTargets[ i ].GetEntity();
+////		var ent:idEntity = guiTargets[ i ].GetEntity();
 ////		if ( ent ) {
 ////			for ( int j = 0; j < MAX_RENDERENTITY_GUI; j++ ) {
 ////				if ( ent->GetRenderEntity() && ent->GetRenderEntity()->gui[ j ] ) {
@@ -1009,7 +1009,7 @@ var EV_IsRotating = new idEventDef( "isRotating", null, 'd' );
 ////idMover::Event_SetMoveSpeed
 ////================
 ////*/
-////void idMover::Event_SetMoveSpeed( float speed ) {
+////void idMover::Event_SetMoveSpeed( /*float*/ speed:number ) {
 ////	if ( speed <= 0 ) {
 ////		gameLocal.Error( "Cannot set speed less than or equal to 0." );
 ////	}
@@ -1063,7 +1063,7 @@ var EV_IsRotating = new idEventDef( "isRotating", null, 'd' );
 ////idMover::Event_MoveTo
 ////================
 ////*/
-////void idMover::Event_MoveTo( idEntity *ent ) {
+////void idMover::Event_MoveTo( ent:idEntity ) {
 ////	if ( !ent ) {
 ////		gameLocal.Warning( "Entity not found" );
 ////	}
@@ -1112,7 +1112,7 @@ var EV_IsRotating = new idEventDef( "isRotating", null, 'd' );
 ////idMover::Event_MoveAccelerateTo
 ////================
 ////*/
-////void idMover::Event_MoveAccelerateTo( float speed, float time ) {
+////void idMover::Event_MoveAccelerateTo( /*float*/ speed:number, float time ) {
 ////	float v;
 ////	idVec3 org, dir;
 ////	int at;
@@ -1155,7 +1155,7 @@ var EV_IsRotating = new idEventDef( "isRotating", null, 'd' );
 ////idMover::Event_MoveDecelerateTo
 ////================
 ////*/
-////void idMover::Event_MoveDecelerateTo( float speed, float time ) {
+////void idMover::Event_MoveDecelerateTo( /*float*/ speed:number, float time ) {
 ////	float v;
 ////	idVec3 org, dir;
 ////	int dt;
@@ -1288,7 +1288,7 @@ var EV_IsRotating = new idEventDef( "isRotating", null, 'd' );
 ////idMover::Event_Bob
 ////================
 ////*/
-////void idMover::Event_Bob( float speed, float phase, idVec3 &depth ) {
+////void idMover::Event_Bob( /*float*/ speed:number, float phase, idVec3 &depth ) {
 ////	idVec3 org;
 ////
 ////	physicsObj.GetLocalOrigin( org );
@@ -1300,7 +1300,7 @@ var EV_IsRotating = new idEventDef( "isRotating", null, 'd' );
 ////idMover::Event_Sway
 ////================
 ////*/
-////void idMover::Event_Sway( float speed, float phase, idAngles &depth ) {
+////void idMover::Event_Sway( /*float*/ speed:number, float phase, idAngles &depth ) {
 ////	idAngles ang, angSpeed;
 ////	float duration;
 ////
@@ -1911,7 +1911,7 @@ var EV_GotoFloor= new idEventDef( "gotoFloor", "d" );
 ////	DisableAllDoors();
 ////	const idKeyValue *kv = spawnArgs.MatchPrefix( "statusGui" );
 ////	while( kv ) {
-////		idEntity *ent = gameLocal.FindEntity( kv->GetValue() );
+////		var ent:idEntity = gameLocal.FindEntity( kv->GetValue() );
 ////		if ( ent ) {
 ////			for ( int j = 0; j < MAX_RENDERENTITY_GUI; j++ ) {
 ////				if ( ent->GetRenderEntity() && ent->GetRenderEntity()->gui[ j ] ) {
@@ -1981,7 +1981,7 @@ var EV_GotoFloor= new idEventDef( "gotoFloor", "d" );
 ////	EnableProperDoors();
 ////	const idKeyValue *kv = spawnArgs.MatchPrefix( "statusGui" );
 ////	while( kv ) {
-////		idEntity *ent = gameLocal.FindEntity( kv->GetValue() );
+////		var ent:idEntity = gameLocal.FindEntity( kv->GetValue() );
 ////		if ( ent ) {
 ////			for ( int j = 0; j < MAX_RENDERENTITY_GUI; j++ ) {
 ////				if ( ent->GetRenderEntity() && ent->GetRenderEntity()->gui[ j ] ) {
@@ -2894,7 +2894,7 @@ var EV_Mover_Disable= new idEventDef( "disable", null );
 ////	int i;
 ////
 ////	for( i = 0; i < guiTargets.Num(); i++ ) {
-////		idEntity *ent = guiTargets[ i ].GetEntity();
+////		var ent:idEntity = guiTargets[ i ].GetEntity();
 ////		if ( ent ) {
 ////			for ( int j = 0; j < MAX_RENDERENTITY_GUI; j++ ) {
 ////				if ( ent->GetRenderEntity() && ent->GetRenderEntity()->gui[ j ] ) {
@@ -3004,7 +3004,7 @@ var EV_Mover_Disable= new idEventDef( "disable", null );
 ////		if ( b ) {
 ////			const idKeyValue *kv = slave->spawnArgs.MatchPrefix( "triggerBlocked" );
 ////			while( kv ) {
-////				idEntity *ent = gameLocal.FindEntity( kv->GetValue() );
+////				var ent:idEntity = gameLocal.FindEntity( kv->GetValue() );
 ////				if ( ent ) {
 ////					ent->PostEventMS( &EV_Activate, 0, moveMaster->GetActivator() );
 ////				}
@@ -3627,7 +3627,7 @@ var EV_Door_IsLocked = new idEventDef( "isLocked", null, 'f' );
 ////*/
 ////void idDoor::Event_StartOpen( void ) {
 ////	float time;
-////	float speed;
+////	var /*float*/ speed:number
 ////
 ////	// if "start_open", reverse position 1 and 2
 ////	pos1 = pos2;
@@ -3731,7 +3731,7 @@ var EV_Door_IsLocked = new idEventDef( "isLocked", null, 'f' );
 ////		SetBlocked( false );
 ////		const idKeyValue *kv = spawnArgs.MatchPrefix( "triggerClosed" );
 ////		while( kv ) {
-////			idEntity *ent = gameLocal.FindEntity( kv->GetValue() );
+////			var ent:idEntity = gameLocal.FindEntity( kv->GetValue() );
 ////			if ( ent ) {
 ////				ent->PostEventMS( &EV_Activate, 0, moveMaster->GetActivator() );
 ////			}
@@ -3740,7 +3740,7 @@ var EV_Door_IsLocked = new idEventDef( "isLocked", null, 'f' );
 ////	} else if ( moverState == MOVER_1TO2 ) {
 ////		const idKeyValue *kv = spawnArgs.MatchPrefix( "triggerOpened" );
 ////		while( kv ) {
-////			idEntity *ent = gameLocal.FindEntity( kv->GetValue() );
+////			var ent:idEntity = gameLocal.FindEntity( kv->GetValue() );
 ////			if ( ent ) {
 ////				ent->PostEventMS( &EV_Activate, 0, moveMaster->GetActivator() );
 ////			}

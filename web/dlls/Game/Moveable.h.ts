@@ -40,7 +40,7 @@
 ////extern const idEventDef EV_BecomeNonSolid;
 ////extern const idEventDef EV_IsAtRest;
 ////
-////class idMoveable : public idEntity {
+////class idMoveable extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idMoveable );
 ////
@@ -103,7 +103,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idBarrel : public idMoveable {
+////class idBarrel extends idMoveable {
 ////
 ////public:
 ////	CLASS_PROTOTYPE( idBarrel );
@@ -139,7 +139,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idExplodingBarrel : public idBarrel {
+////class idExplodingBarrel extends idBarrel {
 ////public:
 ////	CLASS_PROTOTYPE( idExplodingBarrel );
 ////

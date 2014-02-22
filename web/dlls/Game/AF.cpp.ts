@@ -228,7 +228,7 @@
 ////  Transforms the articulated figure to match the current animation pose of the given entity.
 ////================
 ////*/
-////void idAF::SetupPose( idEntity *ent, int time ) {
+////void idAF::SetupPose( ent:idEntity, int time ) {
 ////	int i;
 ////	idAFBody *body;
 ////	idVec3 origin;
@@ -281,7 +281,7 @@
 ////   and set the velocity relative to the previous pose.
 ////================
 ////*/
-////void idAF::ChangePose( idEntity *ent, int time ) {
+////void idAF::ChangePose( ent:idEntity, int time ) {
 ////	int i;
 ////	float invDelta;
 ////	idAFBody *body;
@@ -411,7 +411,7 @@
 ////idAF::GetImpactInfo
 ////================
 ////*/
-////void idAF::GetImpactInfo( idEntity *ent, int id, const idVec3 &point, impactInfo_t *info ) {
+////void idAF::GetImpactInfo( ent:idEntity, int id, const idVec3 &point, impactInfo_t *info ) {
 ////	SetupPose( self, gameLocal.time );
 ////	physicsObj.GetImpactInfo( BodyForClipModelId( id ), point, info );
 ////}
@@ -421,7 +421,7 @@
 ////idAF::ApplyImpulse
 ////================
 ////*/
-////void idAF::ApplyImpulse( idEntity *ent, int id, const idVec3 &point, const idVec3 &impulse ) {
+////void idAF::ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse ) {
 ////	SetupPose( self, gameLocal.time );
 ////	physicsObj.ApplyImpulse( BodyForClipModelId( id ), point, impulse );
 ////}
@@ -431,7 +431,7 @@
 ////idAF::AddForce
 ////================
 ////*/
-////void idAF::AddForce( idEntity *ent, int id, const idVec3 &point, const idVec3 &force ) {
+////void idAF::AddForce( ent:idEntity, int id, const idVec3 &point, const idVec3 &force ) {
 ////	SetupPose( self, gameLocal.time );
 ////	physicsObj.AddForce( BodyForClipModelId( id ), point, force );
 ////}
@@ -792,7 +792,7 @@
 ////idAF::Load
 ////================
 ////*/
-////bool idAF::Load( idEntity *ent, const char *fileName ) {
+////bool idAF::Load( ent:idEntity, const char *fileName ) {
 ////	int i, j;
 ////	const idDeclAF *file;
 ////	const idDeclModelDef *modelDef;

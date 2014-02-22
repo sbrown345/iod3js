@@ -186,7 +186,7 @@ var EV_TeleportStage= new idEventDef( "<TeleportStage>", "e" );
 ////	float pushVel = spawnArgs.GetFloat( "push", "300" );
 ////	float f = spawnArgs.GetFloat( "visualEffect", "0" );
 ////	const char *viewName = spawnArgs.GetString( "visualView", "" );
-////	idEntity *ent = viewName ? gameLocal.FindEntity( viewName ) : NULL;
+////	var ent:idEntity = viewName ? gameLocal.FindEntity( viewName ) : NULL;
 ////
 ////	if ( f && ent ) {
 ////		// place in private camera view for some time
@@ -355,7 +355,7 @@ var EV_TeleportStage= new idEventDef( "<TeleportStage>", "e" );
 ////=====================
 ////*/
 ////void idPathCorner::DrawDebugInfo( void ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idBounds bnds( idVec3( -4.0, -4.0f, -8.0f ), idVec3( 4.0, 4.0f, 64.0f ) );
 ////
 ////	for( ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
@@ -377,7 +377,7 @@ var EV_TeleportStage= new idEventDef( "<TeleportStage>", "e" );
 ////	int	i;
 ////	int	num;
 ////	int which;
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idPathCorner *path[ MAX_GENTITIES ];
 ////
 ////	num = 0;

@@ -293,7 +293,7 @@
 ////idDragEntity::SetSelected
 ////==============
 ////*/
-////void idDragEntity::SetSelected( idEntity *ent ) {
+////void idDragEntity::SetSelected( ent:idEntity ) {
 ////	selected = ent;
 ////	StopDrag();
 ////}
@@ -459,7 +459,7 @@
 ////idEditEntities::AddSelectedEntity
 ////=============
 ////*/
-////void idEditEntities::AddSelectedEntity(idEntity *ent) {
+////void idEditEntities::AddSelectedEntity(ent:idEntity) {
 ////	ent->fl.selected = true;
 ////	selectedEntities.AddUnique(ent);
 ////}
@@ -469,7 +469,7 @@
 ////idEditEntities::RemoveSelectedEntity
 ////==============
 ////*/
-////void idEditEntities::RemoveSelectedEntity( idEntity *ent ) {
+////void idEditEntities::RemoveSelectedEntity( ent:idEntity ) {
 ////    if ( selectedEntities.Find( ent ) ) {
 ////		selectedEntities.Remove( ent );
 ////	}
@@ -496,7 +496,7 @@
 ////idEditEntities::EntityIsSelectable
 ////=============
 ////*/
-////bool idEditEntities::EntityIsSelectable( idEntity *ent, idVec4 *color, idStr *text ) {
+////bool idEditEntities::EntityIsSelectable( ent:idEntity, idVec4 *color, idStr *text ) {
 ////	for ( int i = 0; i < selectableEntityClasses.Num(); i++ ) {
 ////		if ( ent->GetType() == selectableEntityClasses[i].typeInfo ) {
 ////			if ( text ) {
@@ -530,7 +530,7 @@
 ////=============
 ////*/
 ////void idEditEntities::DisplayEntities( void ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////
 ////	if ( !gameLocal.GetLocalPlayer() ) {
 ////		return;
@@ -675,7 +675,7 @@
 ////*/
 ////int idGameEdit::GetSelectedEntities( idEntity *list[], int max ) {
 ////	int num = 0;
-////	idEntity *ent;
+////	var ent:idEntity
 ////
 ////	for( ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent->spawnNode.Next() ) {
 ////		if ( ent->fl.selected ) {
@@ -694,7 +694,7 @@
 ////=============
 ////*/
 ////void idGameEdit::TriggerSelected() {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	for( ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent->spawnNode.Next() ) {
 ////		if ( ent->fl.selected ) {
 ////			ent->ProcessEvent( &EV_Activate, gameLocal.GetLocalPlayer() );
@@ -708,7 +708,7 @@
 ////================
 ////*/
 ////void idGameEdit::ClearEntitySelection() {
-////	idEntity *ent;
+////	var ent:idEntity
 ////
 ////	for( ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent->spawnNode.Next() ) {
 ////		ent->fl.selected = false;
@@ -721,7 +721,7 @@
 ////idGameEdit::AddSelectedEntity
 ////================
 ////*/
-////void idGameEdit::AddSelectedEntity( idEntity *ent ) {
+////void idGameEdit::AddSelectedEntity( ent:idEntity ) {
 ////	if ( ent ) {
 ////		gameLocal.editEntities->AddSelectedEntity( ent );
 ////	}
@@ -783,7 +783,7 @@
 ////idGameEdit::EntityGetOrigin
 ////================
 ////*/
-////void  idGameEdit::EntityGetOrigin( idEntity *ent, idVec3 &org ) const {
+////void  idGameEdit::EntityGetOrigin( ent:idEntity, idVec3 &org ) const {
 ////	if ( ent ) {
 ////		org = ent->GetPhysics()->GetOrigin();
 ////	}
@@ -794,7 +794,7 @@
 ////idGameEdit::EntityGetAxis
 ////================
 ////*/
-////void idGameEdit::EntityGetAxis( idEntity *ent, idMat3 &axis ) const {
+////void idGameEdit::EntityGetAxis( ent:idEntity, idMat3 &axis ) const {
 ////	if ( ent ) {
 ////		axis = ent->GetPhysics()->GetAxis();
 ////	}
@@ -805,7 +805,7 @@
 ////idGameEdit::EntitySetOrigin
 ////================
 ////*/
-////void idGameEdit::EntitySetOrigin( idEntity *ent, const idVec3 &org ) {
+////void idGameEdit::EntitySetOrigin( ent:idEntity, const idVec3 &org ) {
 ////	if ( ent ) {
 ////		ent->SetOrigin( org );
 ////	}
@@ -816,7 +816,7 @@
 ////idGameEdit::EntitySetAxis
 ////================
 ////*/
-////void idGameEdit::EntitySetAxis( idEntity *ent, const idMat3 &axis ) {
+////void idGameEdit::EntitySetAxis( ent:idEntity, const idMat3 &axis ) {
 ////	if ( ent ) {
 ////		ent->SetAxis( axis );
 ////	}
@@ -827,7 +827,7 @@
 ////idGameEdit::EntitySetColor
 ////================
 ////*/
-////void idGameEdit::EntitySetColor( idEntity *ent, const idVec3 color ) {
+////void idGameEdit::EntitySetColor( ent:idEntity, const idVec3 color ) {
 ////	if ( ent ) {
 ////		ent->SetColor( color );
 ////	}
@@ -838,7 +838,7 @@
 ////idGameEdit::EntityTranslate
 ////================
 ////*/
-////void idGameEdit::EntityTranslate( idEntity *ent, const idVec3 &org ) {
+////void idGameEdit::EntityTranslate( ent:idEntity, const idVec3 &org ) {
 ////	if ( ent ) {
 ////		ent->GetPhysics()->Translate( org );
 ////	}
@@ -849,7 +849,7 @@
 ////idGameEdit::EntityGetSpawnArgs
 ////================
 ////*/
-////const idDict *idGameEdit::EntityGetSpawnArgs( idEntity *ent ) const {
+////const idDict *idGameEdit::EntityGetSpawnArgs( ent:idEntity ) const {
 ////	if ( ent ) {
 ////		return &ent->spawnArgs;
 ////	}
@@ -861,7 +861,7 @@
 ////idGameEdit::EntityUpdateChangeableSpawnArgs
 ////================
 ////*/
-////void idGameEdit::EntityUpdateChangeableSpawnArgs( idEntity *ent, const idDict *dict ) {
+////void idGameEdit::EntityUpdateChangeableSpawnArgs( ent:idEntity, const idDict *dict ) {
 ////	if ( ent ) {
 ////		ent->UpdateChangeableSpawnArgs( dict );
 ////	}
@@ -872,7 +872,7 @@
 ////idGameEdit::EntityChangeSpawnArgs
 ////================
 ////*/
-////void idGameEdit::EntityChangeSpawnArgs( idEntity *ent, const idDict *newArgs ) {
+////void idGameEdit::EntityChangeSpawnArgs( ent:idEntity, const idDict *newArgs ) {
 ////	if ( ent ) {
 ////		for ( int i = 0 ; i < newArgs->GetNumKeyVals () ; i ++ ) {
 ////			const idKeyValue *kv = newArgs->GetKeyVal( i );
@@ -891,7 +891,7 @@
 ////idGameEdit::EntityUpdateVisuals
 ////================
 ////*/
-////void idGameEdit::EntityUpdateVisuals( idEntity *ent ) {
+////void idGameEdit::EntityUpdateVisuals( ent:idEntity ) {
 ////	if ( ent ) {
 ////		ent->UpdateVisuals();
 ////	}
@@ -902,7 +902,7 @@
 ////idGameEdit::EntitySetModel
 ////================
 ////*/
-////void idGameEdit::EntitySetModel( idEntity *ent, const char *val ) {
+////void idGameEdit::EntitySetModel( ent:idEntity, const char *val ) {
 ////	if ( ent ) {
 ////		ent->spawnArgs.Set( "model", val );
 ////		ent->SetModel( val );
@@ -914,7 +914,7 @@
 ////idGameEdit::EntityStopSound
 ////================
 ////*/
-////void idGameEdit::EntityStopSound( idEntity *ent ) {
+////void idGameEdit::EntityStopSound( ent:idEntity ) {
 ////	if ( ent ) {
 ////		ent->StopSound( SND_CHANNEL_ANY, false );
 ////	}
@@ -925,7 +925,7 @@
 ////idGameEdit::EntityDelete
 ////================
 ////*/
-////void idGameEdit::EntityDelete( idEntity *ent ) {
+////void idGameEdit::EntityDelete( ent:idEntity ) {
 ////	delete ent;
 ////}
 ////

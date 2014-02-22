@@ -419,7 +419,7 @@ idGameLocal.prototype.Init = function ( ): void {
 ////*/
 ////void idGameLocal::SaveGame( idFile *f ) {
 ////	int i;
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idEntity *link;
 
 ////	idSaveGame savegame( f );
@@ -1201,7 +1201,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////bool idGameLocal::InitFromSaveGame( const char *mapName, idRenderWorld *renderWorld, idSoundWorld *soundWorld, idFile *saveGameFile ) {
 ////	int i;
 ////	int num;
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idDict si;
 
 ////	if ( mapFileName.Length() ) {
@@ -1871,7 +1871,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////*/
 ////idPlayer *idGameLocal::GetClientByName( name:string ) const {
 ////	int i;
-////	idEntity *ent;
+////	var ent:idEntity
 ////	for ( i = 0 ; i < this.numClients ; i++ ) {
 ////		ent = entities[ i ];
 ////		if ( ent && ent.IsType( idPlayer::Type ) ) {
@@ -2054,7 +2054,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////================
 ////*/
 ////void idGameLocal::UpdateGravity( void ) {
-////	idEntity *ent;
+////	var ent:idEntity
 
 ////	if ( g_gravity.IsModified() ) {
 ////		if ( g_gravity.GetFloat() == 0.0 ) {
@@ -2093,7 +2093,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////================
 ////*/
 ////void idGameLocal::SortActiveEntityList( void ) {
-////	idEntity *ent, *next_ent, *master, *part;
+////	ent:idEntity, *next_ent, *master, *part;
 
 ////	// if the active entity list needs to be reordered to place physics team masters at the front
 ////	if ( sortTeamMasters ) {
@@ -2644,7 +2644,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////================
 ////*/
 ////void idGameLocal::RunDebugInfo( void ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idPlayer *player;
 
 ////	player = GetLocalPlayer();
@@ -3273,7 +3273,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////int idGameLocal::GetTargets( const idDict &args, idList< idEntityPtr<idEntity> > &list, const char *ref ) const {
 ////	int i, num, refLength;
 ////	const idKeyValue *arg;
-////	idEntity *ent;
+////	var ent:idEntity
 
 ////	list.Clear();
 
@@ -3390,7 +3390,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////=============
 ////*/
 ////idEntity *idGameLocal::FindTraceEntity( idVec3 start, idVec3 end, const idTypeInfo &c, const idEntity *skip ) const {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idEntity *bestEnt;
 ////	float scale;
 ////	float bestScale;
@@ -3419,7 +3419,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////================
 ////*/
 ////int idGameLocal::EntitiesWithinRadius( const idVec3 org, float radius, idEntity **entityList, int maxCount ) const {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idBounds bo( org );
 ////	int entCount = 0;
 
@@ -3654,7 +3654,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////	idVec3 dir;
 ////	idBounds bounds;
 ////	modelTrace_t result;
-////	idEntity *ent;
+////	var ent:idEntity
 ////	float scale;
 
 ////	dir.Set( 0.0, 0.0, 1.0f );
@@ -3857,7 +3857,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////*/
 ////void idGameLocal::SetCamera( idCamera *cam ) {
 ////	int i;
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idAI *ai;
 
 ////	// this should fix going into a cinematic when dead.. rare but happens
@@ -3987,7 +3987,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////======================
 ////*/
 ////void idGameLocal::SpreadLocations() {
-////	idEntity *ent;
+////	var ent:idEntity
 
 ////	// allocate the area table
 ////	int	numAreas = gameRenderWorld.NumAreas();
@@ -4101,7 +4101,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////void idGameLocal::RandomizeInitialSpawns( void ) {
 ////	spawnSpot_t	spot;
 ////	int i, j;
-////	idEntity *ent;
+////	var ent:idEntity
 
 ////	if ( !isMultiplayer || isClient ) {
 ////		return;

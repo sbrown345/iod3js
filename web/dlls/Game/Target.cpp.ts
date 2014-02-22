@@ -429,7 +429,7 @@
 ////================
 ////*/
 ////void idTarget_FadeEntity::Event_Activate( idEntity *activator ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	int i;
 ////
 ////	if ( !targets.Num() ) {
@@ -505,7 +505,7 @@
 ////================
 ////*/
 ////void idTarget_LightFadeIn::Event_Activate( idEntity *activator ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idLight *light;
 ////	int i;
 ////	float time;
@@ -548,7 +548,7 @@
 ////================
 ////*/
 ////void idTarget_LightFadeOut::Event_Activate( idEntity *activator ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idLight *light;
 ////	int i;
 ////	float time;
@@ -617,7 +617,7 @@
 ////				idDict d2;
 ////				d2.Copy( *dict );
 ////				d2.Set( "name", va( "givenitem_%i", giveNum++ ) );
-////				idEntity *ent = NULL;
+////				var ent:idEntity = NULL;
 ////				if ( gameLocal.SpawnEntityDef( d2, &ent ) && ent && ent->IsType( idItem::Type ) ) {
 ////					idItem *item = static_cast<idItem*>(ent);
 ////					item->GiveToPlayer( gameLocal.GetLocalPlayer() );
@@ -700,7 +700,7 @@
 ////*/
 ////void idTarget_SetModel::Event_Activate( idEntity *activator ) {
 ////	for( int i = 0; i < targets.Num(); i++ ) {
-////		idEntity *ent = targets[ i ].GetEntity();
+////		var ent:idEntity = targets[ i ].GetEntity();
 ////		if ( ent ) {
 ////			ent->SetModel( spawnArgs.GetString( "newmodel" ) );
 ////		}
@@ -931,7 +931,7 @@ var EV_ClearFlash = new idEventDef( "<ClearFlash>", "f" );
 ////	}
 ////
 ////	for( i = 0; i < listedEntities; i++ ) {
-////		idEntity *ent = entityList[ i ];
+////		var ent:idEntity = entityList[ i ];
 ////		if ( ent ) {
 ////			if ( lights && ent->IsType( idLight::Type ) && ent->spawnArgs.FindKey( "color_demonic" ) ) {
 ////				lightList.Append( ent->entityNumber );
@@ -964,7 +964,7 @@ var EV_ClearFlash = new idEventDef( "<ClearFlash>", "f" );
 ////*/
 ////void idTarget_SetInfluence::Event_Activate( idEntity *activator ) {
 ////	int i, j;
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idLight *light;
 ////	idSound *sound;
 ////	idStaticEntity *generic;
@@ -1142,7 +1142,7 @@ var EV_ClearFlash = new idEventDef( "<ClearFlash>", "f" );
 ////*/
 ////void idTarget_SetInfluence::Event_RestoreInfluence() {
 ////	int i, j;
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idLight *light;
 ////	idSound *sound;
 ////	idStaticEntity *generic;
@@ -1243,7 +1243,7 @@ var EV_ClearFlash = new idEventDef( "<ClearFlash>", "f" );
 ////void idTarget_SetKeyVal::Event_Activate( idEntity *activator ) {
 ////	int i;
 ////	idStr key, val;
-////	idEntity *ent;
+////	var ent:idEntity
 ////	const idKeyValue *kv;
 ////	int n;
 ////
@@ -1397,7 +1397,7 @@ var EV_ClearFlash = new idEventDef( "<ClearFlash>", "f" );
 ////*/
 ////void idTarget_LockDoor::Event_Activate( idEntity *activator ) {
 ////	int i;
-////	idEntity *ent;
+////	var ent:idEntity
 ////	int lock;
 ////
 ////	lock = spawnArgs.GetInt( "locked", "1" );

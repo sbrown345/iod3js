@@ -972,7 +972,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////	if ( ( flags & TH_PHYSICS ) ) {
 ////		// may only disable physics on a team master if no team members are running physics or bound to a joints
 ////		if ( teamMaster == this ) {
-////			for ( idEntity *ent = teamMaster->teamChain; ent; ent = ent->teamChain ) {
+////			for ( var ent:idEntity = teamMaster->teamChain; ent; ent = ent->teamChain ) {
 ////				if ( ( ent->thinkFlags & TH_PHYSICS ) || ( ( ent->bindMaster == this ) && ( ent->bindJoint != INVALID_JOINT ) ) ) {
 ////					flags &= ~TH_PHYSICS;
 ////					break;
@@ -1469,7 +1469,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////================
 ////*/
 ////bool idEntity::ModelCallback( renderEntity_s *renderEntity, const renderView_t *renderView ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////
 ////	ent = gameLocal.entities[ renderEntity->entityNum ];
 ////	if ( !ent ) {
@@ -2022,7 +2022,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////================
 ////*/
 ////idEntity.prototype.RemoveBinds( ):void {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idEntity *next;
 ////
 ////	for( ent = teamChain; ent != NULL; ent = next ) {
@@ -2053,7 +2053,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////================
 ////*/
 ////bool idEntity::IsBoundTo( idEntity *master ) const {
-////	idEntity *ent;
+////	var ent:idEntity
 ////
 ////	if ( !bindMaster ) {
 ////		return false;
@@ -2298,7 +2298,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////================
 ////*/
 ////idEntity.prototype.JoinTeam( idEntity *teammember ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idEntity *master;
 ////	idEntity *prev;
 ////	idEntity *next;
@@ -2368,7 +2368,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////================
 ////*/
 ////idEntity.prototype.QuitTeam( ):void {
-////	idEntity *ent;
+////	var ent:idEntity
 ////
 ////	if ( !teamMaster ) {
 ////		return;
@@ -2647,7 +2647,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////
 ////	// set pushed
 ////	for ( i = 0; i < gameLocal.push.GetNumPushedEntities(); i++ ) {
-////		idEntity *ent = gameLocal.push.GetPushedEntity( i );
+////		var ent:idEntity = gameLocal.push.GetPushedEntity( i );
 ////		ent->physics->SetPushed( endTime - startTime );
 ////	}
 ////
@@ -2798,7 +2798,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////idEntity::GetImpactInfo
 ////================
 ////*/
-////idEntity.prototype.GetImpactInfo( idEntity *ent, int id, const idVec3 &point, impactInfo_t *info ) {
+////idEntity.prototype.GetImpactInfo( ent:idEntity, int id, const idVec3 &point, impactInfo_t *info ) {
 ////	GetPhysics()->GetImpactInfo( id, point, info );
 ////}
 ////
@@ -2807,7 +2807,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////idEntity::ApplyImpulse
 ////================
 ////*/
-////idEntity.prototype.ApplyImpulse( idEntity *ent, int id, const idVec3 &point, const idVec3 &impulse ) {
+////idEntity.prototype.ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse ) {
 ////	GetPhysics()->ApplyImpulse( id, point, impulse );
 ////}
 ////
@@ -2816,7 +2816,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////idEntity::AddForce
 ////================
 ////*/
-////idEntity.prototype.AddForce( idEntity *ent, int id, const idVec3 &point, const idVec3 &force ) {
+////idEntity.prototype.AddForce( ent:idEntity, int id, const idVec3 &point, const idVec3 &force ) {
 ////	GetPhysics()->AddForce( id, point, force );
 ////}
 ////
@@ -2825,7 +2825,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////idEntity::ActivatePhysics
 ////================
 ////*/
-////idEntity.prototype.ActivatePhysics( idEntity *ent ) {
+////idEntity.prototype.ActivatePhysics( ent:idEntity ) {
 ////	GetPhysics()->Activate();
 ////}
 ////
@@ -2852,7 +2852,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////idEntity::AddContactEntity
 ////================
 ////*/
-////idEntity.prototype.AddContactEntity( idEntity *ent ) {
+////idEntity.prototype.AddContactEntity( ent:idEntity ) {
 ////	GetPhysics()->AddContactEntity( ent );
 ////}
 ////
@@ -2861,7 +2861,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////idEntity::RemoveContactEntity
 ////================
 ////*/
-////idEntity.prototype.RemoveContactEntity( idEntity *ent ) {
+////idEntity.prototype.RemoveContactEntity( ent:idEntity ) {
 ////	GetPhysics()->RemoveContactEntity( ent );
 ////}
 ////
@@ -3374,7 +3374,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////				if ( targets ) {
 ////					entityGui->ActivateTargets( this );
 ////				} else {
-////					idEntity *ent = gameLocal.FindEntity( token2 );
+////					var ent:idEntity = gameLocal.FindEntity( token2 );
 ////					if ( ent ) {
 ////						ent->Signal( SIG_TRIGGER );
 ////						ent->PostEventMS( &EV_Activate, 0, this );
@@ -3416,7 +3416,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////
 ////			if ( token.Icmp( "setkeyval" ) == 0 ) {
 ////				if ( src.ReadToken( &token2 ) && src.ReadToken(&token3) && src.ReadToken( &token4 ) ) {
-////					idEntity *ent = gameLocal.FindEntity( token2 );
+////					var ent:idEntity = gameLocal.FindEntity( token2 );
 ////					if ( ent ) {
 ////						ent->spawnArgs.Set( token3, token4 );
 ////						ent->UpdateChangeableSpawnArgs( NULL );
@@ -4238,7 +4238,7 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////idEntity::Event_Touches
 ////================
 ////*/
-////idEntity.prototype.Event_Touches( idEntity *ent ) {
+////idEntity.prototype.Event_Touches( ent:idEntity ) {
 ////	if ( !ent ) {
 ////		idThread::ReturnInt( false );
 ////		return;
@@ -4369,7 +4369,7 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////================
 ////*/
 ////idEntity.prototype.Event_GetEntityKey( const char *key ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	const char *entname;
 ////
 ////	if ( !spawnArgs.GetString( key, NULL, &entname ) ) {
@@ -4440,7 +4440,7 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////	if ( cameraTarget ) {
 ////		kv = cameraTarget->spawnArgs.MatchPrefix( "target", NULL );
 ////		while( kv ) {
-////			idEntity *ent = gameLocal.FindEntity( kv->GetValue() );
+////			var ent:idEntity = gameLocal.FindEntity( kv->GetValue() );
 ////			if ( ent && idStr::Icmp( ent->GetEntityDefName(), "target_null" ) == 0) {
 ////				dir = ent->GetPhysics()->GetOrigin() - cameraTarget->GetPhysics()->GetOrigin();
 ////				dir.Normalize();
@@ -4459,7 +4459,7 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////idEntity::Event_DistanceTo
 ////================
 ////*/
-////idEntity.prototype.Event_DistanceTo( idEntity *ent ) {
+////idEntity.prototype.Event_DistanceTo( ent:idEntity ) {
 ////	if ( !ent ) {
 ////		// just say it's really far away
 ////		idThread::ReturnFloat( MAX_WORLD_SIZE );

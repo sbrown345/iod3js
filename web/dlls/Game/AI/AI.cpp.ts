@@ -1545,7 +1545,7 @@
 ////Continually face the entity position.  MoveDone is always true in this case.
 ////=====================
 ////*/
-////bool idAI::FaceEntity( idEntity *ent ) {
+////bool idAI::FaceEntity( ent:idEntity ) {
 ////	if ( !ent ) {
 ////		StopMove( MOVE_STATUS_DEST_NOT_FOUND );
 ////		return false;
@@ -1700,7 +1700,7 @@
 ////idAI::MoveToEntity
 ////=====================
 ////*/
-////bool idAI::MoveToEntity( idEntity *ent ) {
+////bool idAI::MoveToEntity( ent:idEntity ) {
 ////	int			areaNum;
 ////	aasPath_t	path;
 ////	idVec3		pos;
@@ -1771,7 +1771,7 @@
 ////idAI::MoveOutOfRange
 ////=====================
 ////*/
-////bool idAI::MoveOutOfRange( idEntity *ent, float range ) {
+////bool idAI::MoveOutOfRange( ent:idEntity, float range ) {
 ////	int				areaNum;
 ////	aasObstacle_t	obstacle;
 ////	aasGoal_t		goal;
@@ -1828,7 +1828,7 @@
 ////idAI::MoveToAttackPosition
 ////=====================
 ////*/
-////bool idAI::MoveToAttackPosition( idEntity *ent, int attack_anim ) {
+////bool idAI::MoveToAttackPosition( ent:idEntity, int attack_anim ) {
 ////	int				areaNum;
 ////	aasObstacle_t	obstacle;
 ////	aasGoal_t		goal;
@@ -2495,7 +2495,7 @@
 ////idAI::ApplyImpulse
 ////================
 ////*/
-////void idAI::ApplyImpulse( idEntity *ent, int id, const idVec3 &point, const idVec3 &impulse ) {
+////void idAI::ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse ) {
 ////	// FIXME: Jim take a look at this and see if this is a reasonable thing to do
 ////	// instead of a spawnArg flag.. Sabaoth is the only slide monster ( and should be the only one for D3 )
 ////	// and we don't want him taking physics impulses as it can knock him off the path
@@ -3000,7 +3000,7 @@
 ////=====================
 ////*/
 ////void idAI::AdjustFlySpeed( idVec3 &vel ) {
-////	float speed;
+////	var /*float*/ speed:number
 ////
 ////	// apply dampening
 ////	vel -= vel * AI_FLY_DAMPENING * MS2SEC( gameLocal.msec );
@@ -3168,7 +3168,7 @@
 ////idAI::ReactionTo
 ////=====================
 ////*/
-////int idAI::ReactionTo( const idEntity *ent ) {
+////int idAI::ReactionTo( const ent:idEntity ) {
 ////
 ////	if ( ent->fl.hidden ) {
 ////		// ignore hidden entities
@@ -4043,7 +4043,7 @@
 ////=====================
 ////*/
 ////idProjectile *idAI::CreateProjectile( const idVec3 &pos, const idVec3 &dir ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	const char *clsname;
 ////
 ////	if ( !projectile.GetEntity() ) {
@@ -4232,7 +4232,7 @@
 ////that the view kick and knockback should go
 ////=====================
 ////*/
-////void idAI::DirectDamage( const char *meleeDefName, idEntity *ent ) {
+////void idAI::DirectDamage( const char *meleeDefName, ent:idEntity ) {
 ////	const idDict *meleeDef;
 ////	const char *p;
 ////	const idSoundShader *shader;
@@ -4414,7 +4414,7 @@
 ////	int i, j;
 ////	afTouch_t touchList[ MAX_GENTITIES ];
 ////	idEntity *pushed_ents[ MAX_GENTITIES ];
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idVec3 vel;
 ////	int num_pushed;
 ////

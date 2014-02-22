@@ -74,7 +74,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idIK_Walk : public idIK {
+////class idIK_Walk extends idIK {
 ////public:
 ////
 ////							idIK_Walk( void );
@@ -145,7 +145,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idIK_Reach : public idIK {
+////class idIK_Reach extends idIK {
 ////public:
 ////
 ////							idIK_Reach( void );

@@ -38,7 +38,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idCursor3D : public idEntity {
+////class idCursor3D extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idCursor3D );
 ////

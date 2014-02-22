@@ -195,7 +195,7 @@
 ////	int						anim;
 ////};
 ////
-////class idAASFindCover : public idAASCallback {
+////class idAASFindCover extends idAASCallback {
 ////public:
 ////						idAASFindCover( const idVec3 &hideFromPos );
 ////						~idAASFindCover();
@@ -207,7 +207,7 @@
 ////	int					PVSAreas[ idEntity::MAX_PVS_AREAS ];
 ////};
 ////
-////class idAASFindAreaOutOfRange : public idAASCallback {
+////class idAASFindAreaOutOfRange extends idAASCallback {
 ////public:
 ////						idAASFindAreaOutOfRange( const idVec3 &targetPos, float maxDist );
 ////
@@ -218,7 +218,7 @@
 ////	float				maxDistSqr;
 ////};
 ////
-////class idAASFindAttackPosition : public idAASCallback {
+////class idAASFindAttackPosition extends idAASCallback {
 ////public:
 ////						idAASFindAttackPosition( const idAI *self, const idMat3 &gravityAxis, idEntity *target, const idVec3 &targetPos, const idVec3 &fireOffset );
 ////						~idAASFindAttackPosition();

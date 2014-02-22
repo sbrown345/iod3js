@@ -39,7 +39,7 @@
 ////
 ////extern const idEventDef EV_Explode;
 ////
-////class idProjectile : public idEntity {
+////class idProjectile extends idEntity {
 ////public :
 ////	CLASS_PROTOTYPE( idProjectile );
 ////
@@ -129,7 +129,7 @@
 ////	void					Event_GetProjectileState( void ): void { throw "placeholder"; }
 ////};
 ////
-////class idGuidedProjectile : public idProjectile {
+////class idGuidedProjectile extends idProjectile {
 ////public :
 ////	CLASS_PROTOTYPE( idGuidedProjectile );
 ////
@@ -161,7 +161,7 @@
 ////	float					burstVelocity;
 ////};
 ////
-////class idSoulCubeMissile : public idGuidedProjectile {
+////class idSoulCubeMissile extends idGuidedProjectile {
 ////public:
 ////	CLASS_PROTOTYPE ( idSoulCubeMissile );
 ////	~idSoulCubeMissile();
@@ -197,7 +197,7 @@
 ////	qhandle_t				modelDefHandle;
 ////};
 ////
-////class idBFGProjectile : public idProjectile {
+////class idBFGProjectile extends idProjectile {
 ////public :
 ////	CLASS_PROTOTYPE( idBFGProjectile );
 ////
@@ -232,7 +232,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idDebris : public idEntity {
+////class idDebris extends idEntity {
 ////public :
 ////	CLASS_PROTOTYPE( idDebris );
 ////

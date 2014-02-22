@@ -709,7 +709,7 @@ var EV_Weapon_NetEndReload = new idEventDef( "netEndReload" );
 ////================
 ////*/
 ////void idWeapon::InitWorldModel( const idDeclEntityDef *def ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////
 ////	ent = worldModel.GetEntity();
 ////
@@ -1816,7 +1816,7 @@ var EV_Weapon_NetEndReload = new idEventDef( "netEndReload" );
 ////*/
 ////void idWeapon::AlertMonsters( void ) {
 ////	trace_t	tr;
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idVec3 end = muzzleFlash.origin + muzzleFlash.axis * muzzleFlash.target;
 ////
 ////	gameLocal.clip.TracePoint( tr, muzzleFlash.origin, end, CONTENTS_OPAQUE | MASK_SHOT_RENDERMODEL | CONTENTS_FLASHLIGHT_TRIGGER, owner );
@@ -3123,7 +3123,7 @@ var EV_Weapon_NetEndReload = new idEventDef( "netEndReload" );
 ////
 ////	idMat3 axis;
 ////	idVec3 origin, linear_velocity, angular_velocity;
-////	idEntity *ent;
+////	var ent:idEntity
 ////
 ////	if ( !GetGlobalJointTransform( true, ejectJointView, origin, axis ) ) {
 ////		return;

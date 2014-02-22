@@ -38,7 +38,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget : public idEntity {
+////class idTarget extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget );
 ////};
@@ -52,7 +52,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_Remove : public idTarget {
+////class idTarget_Remove extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_Remove );
 ////
@@ -69,7 +69,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_Show : public idTarget {
+////class idTarget_Show extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_Show );
 ////
@@ -86,7 +86,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_Damage : public idTarget {
+////class idTarget_Damage extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_Damage );
 ////
@@ -103,7 +103,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_SessionCommand : public idTarget {
+////class idTarget_SessionCommand extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_SessionCommand );
 ////
@@ -120,7 +120,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_EndLevel : public idTarget {
+////class idTarget_EndLevel extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_EndLevel );
 ////
@@ -138,7 +138,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_WaitForButton : public idTarget {
+////class idTarget_WaitForButton extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_WaitForButton );
 ////
@@ -156,7 +156,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_SetGlobalShaderTime : public idTarget {
+////class idTarget_SetGlobalShaderTime extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_SetGlobalShaderTime );
 ////
@@ -173,7 +173,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_SetShaderParm : public idTarget {
+////class idTarget_SetShaderParm extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_SetShaderParm );
 ////
@@ -190,7 +190,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_SetShaderTime : public idTarget {
+////class idTarget_SetShaderTime extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_SetShaderTime );
 ////
@@ -206,7 +206,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_FadeEntity : public idTarget {
+////class idTarget_FadeEntity extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_FadeEntity );
 ////
@@ -233,7 +233,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_LightFadeIn : public idTarget {
+////class idTarget_LightFadeIn extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_LightFadeIn );
 ////
@@ -249,7 +249,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_LightFadeOut : public idTarget {
+////class idTarget_LightFadeOut extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_LightFadeOut );
 ////
@@ -265,7 +265,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_Give : public idTarget {
+////class idTarget_Give extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_Give );
 ////
@@ -284,7 +284,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_GiveEmail : public idTarget {
+////class idTarget_GiveEmail extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_GiveEmail );
 ////
@@ -302,7 +302,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_SetModel : public idTarget {
+////class idTarget_SetModel extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_SetModel );
 ////
@@ -321,7 +321,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_SetInfluence : public idTarget {
+////class idTarget_SetInfluence extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_SetInfluence );
 ////
@@ -364,7 +364,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_SetKeyVal : public idTarget {
+////class idTarget_SetKeyVal extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_SetKeyVal );
 ////
@@ -381,7 +381,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_SetFov : public idTarget {
+////class idTarget_SetFov extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_SetFov );
 ////
@@ -405,7 +405,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_SetPrimaryObjective : public idTarget {
+////class idTarget_SetPrimaryObjective extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_SetPrimaryObjective );
 ////
@@ -421,7 +421,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_LockDoor: public idTarget {
+////class idTarget_LockDoorextends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_LockDoor );
 ////
@@ -437,7 +437,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_CallObjectFunction : public idTarget {
+////class idTarget_CallObjectFunction extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_CallObjectFunction );
 ////
@@ -454,7 +454,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_EnableLevelWeapons : public idTarget {
+////class idTarget_EnableLevelWeapons extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_EnableLevelWeapons );
 ////
@@ -471,7 +471,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTarget_Tip : public idTarget {
+////class idTarget_Tip extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_Tip );
 ////
@@ -497,7 +497,7 @@
 ////
 ////===============================================================================
 ////*/
-////class idTarget_GiveSecurity : public idTarget {
+////class idTarget_GiveSecurity extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_GiveSecurity );
 ////private:
@@ -512,7 +512,7 @@
 ////
 ////===============================================================================
 ////*/
-////class idTarget_RemoveWeapons : public idTarget {
+////class idTarget_RemoveWeapons extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_RemoveWeapons );
 ////private:
@@ -527,7 +527,7 @@
 ////
 ////===============================================================================
 ////*/
-////class idTarget_LevelTrigger : public idTarget {
+////class idTarget_LevelTrigger extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_LevelTrigger );
 ////private:
@@ -541,7 +541,7 @@
 ////
 ////===============================================================================
 ////*/
-////class idTarget_EnableStamina : public idTarget {
+////class idTarget_EnableStamina extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_EnableStamina );
 ////private:
@@ -555,7 +555,7 @@
 ////
 ////===============================================================================
 ////*/
-////class idTarget_FadeSoundClass : public idTarget {
+////class idTarget_FadeSoundClass extends idTarget {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_FadeSoundClass );
 ////private:

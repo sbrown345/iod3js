@@ -96,7 +96,7 @@
 ////}
 ////
 ////
-////class idMapBrush : public idMapPrimitive {
+////class idMapBrush extends idMapPrimitive {
 ////public:
 ////							idMapBrush( void ) { type = TYPE_BRUSH; sides.Resize( 8, 4 ); }
 ////							~idMapBrush( void ) { sides.DeleteContents( true ); }
@@ -114,7 +114,7 @@
 ////};
 ////
 ////
-////class idMapPatch : public idMapPrimitive, public idSurface_Patch {
+////class idMapPatch extends idMapPrimitive, public idSurface_Patch {
 ////public:
 ////							idMapPatch( void );
 ////							idMapPatch( int maxPatchWidth, int maxPatchHeight );

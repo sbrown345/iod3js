@@ -42,7 +42,7 @@
 //===============================================================================
 //*/
 //
-//class idSpawnableEntity : public idEntity {
+//class idSpawnableEntity extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idSpawnableEntity );
 //
@@ -63,7 +63,7 @@
 //===============================================================================
 //*/
 //
-//class idPlayerStart : public idEntity {
+//class idPlayerStart extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idPlayerStart );
 //
@@ -101,7 +101,7 @@
 //===============================================================================
 //*/
 //
-//class idActivator : public idEntity {
+//class idActivator extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idActivator );
 //
@@ -126,7 +126,7 @@
 //
 //===============================================================================
 //*/
-//class idPathCorner : public idEntity {
+//class idPathCorner extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idPathCorner );
 //
@@ -149,7 +149,7 @@
 //===============================================================================
 //*/
 //
-//class idDamagable : public idEntity {
+//class idDamagable extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idDamagable );
 //
@@ -179,7 +179,7 @@
 //===============================================================================
 //*/
 //
-//class idExplodable : public idEntity {
+//class idExplodable extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idExplodable );
 //
@@ -198,7 +198,7 @@
 //===============================================================================
 //*/
 //
-//class idSpring : public idEntity {
+//class idSpring extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idSpring );
 //
@@ -227,7 +227,7 @@
 //===============================================================================
 //*/
 //
-//class idForceField : public idEntity {
+//class idForceField extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idForceField );
 //
@@ -257,7 +257,7 @@
 //===============================================================================
 //*/
 //
-//class idAnimated : public idAFEntity_Gibbable {
+//class idAnimated extends idAFEntity_Gibbable {
 //public:
 //	CLASS_PROTOTYPE( idAnimated );
 //
@@ -301,7 +301,7 @@
 //===============================================================================
 //*/
 //
-//class idStaticEntity : public idEntity {
+//class idStaticEntity extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idStaticEntity );
 //
@@ -341,7 +341,7 @@
 //===============================================================================
 //*/
 //
-//class idFuncEmitter : public idStaticEntity {
+//class idFuncEmitter extends idStaticEntity {
 //public:
 //	CLASS_PROTOTYPE( idFuncEmitter );
 //
@@ -370,7 +370,7 @@
 //===============================================================================
 //*/
 //
-//class idFuncSmoke : public idEntity {
+//class idFuncSmoke extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idFuncSmoke );
 //
@@ -399,7 +399,7 @@
 //===============================================================================
 //*/
 //
-//class idFuncSplat : public idFuncEmitter {
+//class idFuncSplat extends idFuncEmitter {
 //public:
 //	CLASS_PROTOTYPE( idFuncSplat );
 //
@@ -421,7 +421,7 @@
 //===============================================================================
 //*/
 //
-//class idTextEntity : public idEntity {
+//class idTextEntity extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idTextEntity );
 //
@@ -457,7 +457,7 @@ class idLocationEntity extends idEntity {
 //private:
 };
 //
-//class idLocationSeparatorEntity : public idEntity {
+//class idLocationSeparatorEntity extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idLocationSeparatorEntity );
 //
@@ -466,7 +466,7 @@ class idLocationEntity extends idEntity {
 //private:
 //};
 //
-//class idVacuumSeparatorEntity : public idEntity {
+//class idVacuumSeparatorEntity extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idVacuumSeparatorEntity );
 //
@@ -483,7 +483,7 @@ class idLocationEntity extends idEntity {
 //	qhandle_t			portal;
 //};
 //
-//class idVacuumEntity : public idEntity {
+//class idVacuumEntity extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idVacuumEntity );
 //
@@ -501,7 +501,7 @@ class idLocationEntity extends idEntity {
 //===============================================================================
 //*/
 //
-//class idBeam : public idEntity {
+//class idBeam extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idBeam );
 //
@@ -541,7 +541,7 @@ class idLocationEntity extends idEntity {
 //
 //class idRenderModelLiquid;
 //
-//class idLiquid : public idEntity {
+//class idLiquid extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idLiquid );
 //
@@ -566,7 +566,7 @@ class idLocationEntity extends idEntity {
 //===============================================================================
 //*/
 //
-//class idShaking : public idEntity {
+//class idShaking extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idShaking );
 //
@@ -594,7 +594,7 @@ class idLocationEntity extends idEntity {
 //===============================================================================
 //*/
 //
-//class idEarthQuake : public idEntity {
+//class idEarthQuake extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idEarthQuake );
 //			
@@ -629,7 +629,7 @@ class idLocationEntity extends idEntity {
 //===============================================================================
 //*/
 //
-//class idFuncPortal : public idEntity {
+//class idFuncPortal extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idFuncPortal );
 //			
@@ -655,7 +655,7 @@ class idLocationEntity extends idEntity {
 //===============================================================================
 //*/
 //
-//class idFuncAASPortal : public idEntity {
+//class idFuncAASPortal extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idFuncAASPortal );
 //			
@@ -680,7 +680,7 @@ class idLocationEntity extends idEntity {
 //===============================================================================
 //*/
 //
-//class idFuncAASObstacle : public idEntity {
+//class idFuncAASObstacle extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idFuncAASObstacle );
 //			
@@ -706,7 +706,7 @@ class idLocationEntity extends idEntity {
 //===============================================================================
 //*/
 //
-//class idFuncRadioChatter : public idEntity {
+//class idFuncRadioChatter extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idFuncRadioChatter );
 //
@@ -732,7 +732,7 @@ class idLocationEntity extends idEntity {
 //===============================================================================
 //*/
 //
-//class idPhantomObjects : public idEntity {
+//class idPhantomObjects extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idPhantomObjects );
 //			

@@ -42,7 +42,7 @@
 //#define CIN_silent	8
 //#define CIN_shader	16
 //
-//class idCinematicLocal : public idCinematic {
+//class idCinematicLocal extends idCinematic {
 //public:
 //							idCinematicLocal();
 //	virtual					~idCinematicLocal();

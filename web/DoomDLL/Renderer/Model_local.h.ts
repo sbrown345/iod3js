@@ -187,7 +187,7 @@ class idRenderModelStatic extends idRenderModel {
 ////	void						TransformScaledVerts( idDrawVert *verts, const idJointMat *joints, float scale );
 ////};
 
-////class idRenderModelMD5 : public idRenderModelStatic {
+////class idRenderModelMD5 extends idRenderModelStatic {
 ////public:
 ////	virtual void				InitFromFile( const char *fileName );
 ////	virtual dynamicModel_t		IsDynamicModel() const;
@@ -228,7 +228,7 @@ class idRenderModelStatic extends idRenderModel {
 ////struct md3Header_s;
 ////struct md3Surface_s;
 
-////class idRenderModelMD3 : public idRenderModelStatic {
+////class idRenderModelMD3 extends idRenderModelStatic {
 ////public:
 ////	virtual void				InitFromFile( const char *fileName );
 ////	virtual dynamicModel_t		IsDynamicModel() const;
@@ -252,7 +252,7 @@ class idRenderModelStatic extends idRenderModel {
 ////===============================================================================
 ////*/
 
-////class idRenderModelLiquid : public idRenderModelStatic {
+////class idRenderModelLiquid extends idRenderModelStatic {
 ////public:
 ////								idRenderModelLiquid();
 
@@ -307,7 +307,7 @@ class idRenderModelStatic extends idRenderModel {
 ////===============================================================================
 ////*/
 
-////class idRenderModelPrt : public idRenderModelStatic {
+////class idRenderModelPrt extends idRenderModelStatic {
 ////public:
 ////								idRenderModelPrt();
 
@@ -356,7 +356,7 @@ class idRenderModelBeam extends idRenderModelStatic {
 ////	int							numPoints;
 ////};
 
-////class idRenderModelTrail : public idRenderModelStatic {
+////class idRenderModelTrail extends idRenderModelStatic {
 ////	idList<Trail_t>				trails;
 ////	int							numActive;
 ////	idBounds					trailBounds;
@@ -382,7 +382,7 @@ class idRenderModelBeam extends idRenderModelStatic {
 ////===============================================================================
 ////*/
 
-////class idRenderModelLightning : public idRenderModelStatic {
+////class idRenderModelLightning extends idRenderModelStatic {
 ////public:
 ////	virtual dynamicModel_t		IsDynamicModel() const;
 ////	virtual bool				IsLoaded() const;

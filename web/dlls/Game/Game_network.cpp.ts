@@ -429,7 +429,7 @@
 ////idGameLocal::SaveEntityNetworkEvent
 ////================
 ////*/
-////void idGameLocal::SaveEntityNetworkEvent( const idEntity *ent, int eventId, const idBitMsg *msg ) {
+////void idGameLocal::SaveEntityNetworkEvent( const ent:idEntity, int eventId, const idBitMsg *msg ) {
 ////	entityNetEvent_t *event;
 ////
 ////	event = savedEventQueue.Alloc();
@@ -550,7 +550,7 @@
 ////void idGameLocal::ServerWriteSnapshot( int clientNum, int sequence, idBitMsg &msg, byte *clientInPVS, int numPVSClients ) {
 ////	int i, msgSize, msgWriteBit;
 ////	idPlayer *player, *spectated = NULL;
-////	idEntity *ent;
+////	var ent:idEntity
 ////	pvsHandle_t pvsHandle;
 ////	idBitMsgDelta deltaMsg;
 ////	snapshot_t *snapshot;
@@ -868,7 +868,7 @@
 ////*/
 ////void idGameLocal::ClientShowSnapshot( int clientNum ) const {
 ////	int baseBits;
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idPlayer *player;
 ////	idMat3 viewAxis;
 ////	idBounds viewBounds;
@@ -1469,7 +1469,7 @@
 ////================
 ////*/
 ////gameReturn_t idGameLocal::ClientPrediction( int clientNum, const usercmd_t *clientCmds, bool lastPredictFrame ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idPlayer *player;
 ////	gameReturn_t ret;
 ////

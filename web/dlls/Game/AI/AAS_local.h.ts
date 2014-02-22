@@ -83,7 +83,7 @@
 ////};
 ////
 ////
-////class idAASLocal : public idAAS {
+////class idAASLocal extends idAAS {
 ////public:
 ////								idAASLocal( void );
 ////	virtual						~idAASLocal( void );

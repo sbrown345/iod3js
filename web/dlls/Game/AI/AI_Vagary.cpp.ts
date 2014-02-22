@@ -41,26 +41,51 @@
 class idAI_Vagary extends idAI {
 ////public:
 ////	CLASS_PROTOTYPE( idAI_Vagary );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idAI_Vagary>[];
+
 ////
 ////private:
-////	void	Event_ChooseObjectToThrow( const idVec3 &mins, const idVec3 &maxs, float speed, float minDist, float offset );
-////	void	Event_ThrowObjectAtEnemy( idEntity *ent, float speed );
+	Event_ChooseObjectToThrow( mins:idVec3, maxs:idVec3, /*float*/ speed:number, /*float*/ minDist:number, /*float*/ offset :number):void { throw "placeholder"; }
+	Event_ThrowObjectAtEnemy( ent:idEntity, /*float*/ speed: number): void { throw "placeholder"; }
 };
 ////
 var AI_Vagary_ChooseObjectToThrow = new idEventDef( "vagary_ChooseObjectToThrow", "vvfff", 'e' );
 var AI_Vagary_ThrowObjectAtEnemy = new idEventDef( "vagary_ThrowObjectAtEnemy", "ef" );
 ////
 ////CLASS_DECLARATION( idAI, idAI_Vagary )
-////	EVENT( AI_Vagary_ChooseObjectToThrow,	idAI_Vagary::Event_ChooseObjectToThrow )
-////	EVENT( AI_Vagary_ThrowObjectAtEnemy,	idAI_Vagary::Event_ThrowObjectAtEnemy )
-////END_CLASS
-////
+idAI_Vagary.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idAI_Vagary;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idAI_Vagary.prototype.GetType = function ( ): idTypeInfo {
+	return ( idAI_Vagary.Type );
+};
+
+idAI_Vagary.eventCallbacks = [
+	EVENT( AI_Vagary_ChooseObjectToThrow, idAI_Vagary.prototype.Event_ChooseObjectToThrow ),
+	EVENT( AI_Vagary_ThrowObjectAtEnemy, idAI_Vagary.prototype.Event_ThrowObjectAtEnemy )
+];
+
+idAI_Vagary.Type = new idTypeInfo( "idAI_Vagary", "idAI",
+	idAI_Vagary.eventCallbacks, idAI_Vagary.CreateInstance, idAI_Vagary.prototype.Spawn,
+	idAI_Vagary.prototype.Save, idAI_Vagary.prototype.Restore );
+
+
 /////*
 ////================
 ////idAI_Vagary::Event_ChooseObjectToThrow
 ////================
 ////*/
-////void idAI_Vagary::Event_ChooseObjectToThrow( const idVec3 &mins, const idVec3 &maxs, float speed, float minDist, float offset ) {
+////void idAI_Vagary::Event_ChooseObjectToThrow( mins:idVec3, maxs:idVec3, /*float*/ speed:number, float minDist, float offset ) {
 ////	idEntity *	ent;
 ////	idEntity *	entityList[ MAX_GENTITIES ];
 ////	int			numListedEntities;
@@ -123,7 +148,7 @@ var AI_Vagary_ThrowObjectAtEnemy = new idEventDef( "vagary_ThrowObjectAtEnemy", 
 ////idAI_Vagary::Event_ThrowObjectAtEnemy
 ////================
 ////*/
-////void idAI_Vagary::Event_ThrowObjectAtEnemy( idEntity *ent, float speed ) {
+////void idAI_Vagary::Event_ThrowObjectAtEnemy( ent:idEntity, /*float*/ speed:number ) {
 ////	idVec3		vel;
 ////	idEntity	*enemyEnt;
 ////	idPhysics	*entPhys;

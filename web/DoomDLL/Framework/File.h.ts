@@ -113,7 +113,7 @@ class idFile {
 };
 
 
-////class idFile_Memory : public idFile {
+////class idFile_Memory extends idFile {
 ////	friend class			idFileSystemLocal;
 ////
 ////public:
@@ -157,7 +157,7 @@ class idFile {
 ////};
 ////
 ////
-////class idFile_BitMsg : public idFile {
+////class idFile_BitMsg extends idFile {
 ////	friend class			idFileSystemLocal;
 ////
 ////public:
@@ -216,7 +216,7 @@ class idFile_Permanent extends idFile {
 };
 ////
 ////
-////class idFile_InZip : public idFile {
+////class idFile_InZip extends idFile {
 ////	friend class			idFileSystemLocal;
 ////
 ////public:

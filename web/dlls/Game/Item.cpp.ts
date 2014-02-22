@@ -743,7 +743,7 @@ idItemPowerup.Type = new idTypeInfo( "idItemPowerup", "idItem",
 ////	shotName += spawnArgs.GetString( "screenshot" );
 ////	shotName.SetFileExtension( ".tga" );
 ////	if ( spawnArgs.GetString( "camShot", "", &camName ) ) {
-////		idEntity *ent = gameLocal.FindEntity( camName );
+////		var ent:idEntity = gameLocal.FindEntity( camName );
 ////		if ( ent && ent->cameraTarget ) {
 ////			const renderView_t *view = ent->cameraTarget->GetRenderView();
 ////			renderView_t fullView = *view;

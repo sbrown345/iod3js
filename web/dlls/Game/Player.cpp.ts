@@ -1516,7 +1516,7 @@ var EV_Player_GetIdealWeapon = new idEventDef( "getIdealWeapon", null, 's' );
 ////	// transitions
 ////	if ( !gameLocal.isMultiplayer && gameLocal.serverInfo.FindKey( "devmap" ) ) {
 ////		// fire a trigger with the name "devmap"
-////		idEntity *ent = gameLocal.FindEntity( "devmap" );
+////		var ent:idEntity = gameLocal.FindEntity( "devmap" );
 ////		if ( ent ) {
 ////			ent->ActivateTargets( this );
 ////		}
@@ -5509,7 +5509,7 @@ var EV_Player_GetIdealWeapon = new idEventDef( "getIdealWeapon", null, 's' );
 ////void idPlayer::UseVehicle( void ) {
 ////	trace_t	trace;
 ////	idVec3 start, end;
-////	idEntity *ent;
+////	var ent:idEntity
 ////
 ////	if ( GetBindMaster() && GetBindMaster()->IsType( idAFEntity_Vehicle::Type ) ) {
 ////		Show();
@@ -5676,7 +5676,7 @@ var EV_Player_GetIdealWeapon = new idEventDef( "getIdealWeapon", null, 's' );
 ////==============
 ////*/
 ////void idPlayer::AdjustSpeed( void ) {
-////	float speed;
+////	var /*float*/ speed:number
 ////	float rate;
 ////
 ////	if ( spectating ) {
@@ -7481,7 +7481,7 @@ var EV_Player_GetIdealWeapon = new idEventDef( "getIdealWeapon", null, 's' );
 ////void idPlayer::SetInfluenceLevel( int level ) {
 ////	if ( level != influenceActive ) {
 ////		if ( level ) {
-////			for ( idEntity *ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent->spawnNode.Next() ) {
+////			for ( var ent:idEntity = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent->spawnNode.Next() ) {
 ////				if ( ent->IsType( idProjectile::Type ) ) {
 ////					// remove all projectiles
 ////					ent->PostEventMS( &EV_Remove, 0 );
@@ -7505,7 +7505,7 @@ var EV_Player_GetIdealWeapon = new idEventDef( "getIdealWeapon", null, 's' );
 ////idPlayer::SetInfluenceView
 ////=============
 ////*/
-////void idPlayer::SetInfluenceView( const char *mtr, const char *skinname, float radius, idEntity *ent ) {
+////void idPlayer::SetInfluenceView( const char *mtr, const char *skinname, float radius, ent:idEntity ) {
 ////	influenceMaterial = NULL;
 ////	influenceEntity = NULL;
 ////	influenceSkin = NULL;
@@ -8442,7 +8442,7 @@ var EV_Player_GetIdealWeapon = new idEventDef( "getIdealWeapon", null, 's' );
 ////	mapName.StripFileExtension();
 ////	for ( int i = inventory.levelTriggers.Num() - 1; i >= 0; i-- ) {
 ////		if ( idStr::Icmp( mapName, inventory.levelTriggers[i].levelName) == 0 ){
-////			idEntity *ent = gameLocal.FindEntity( inventory.levelTriggers[i].triggerName );
+////			var ent:idEntity = gameLocal.FindEntity( inventory.levelTriggers[i].triggerName );
 ////			if ( ent ) {
 ////				ent->PostEventMS( &EV_Activate, 1, this );
 ////			}

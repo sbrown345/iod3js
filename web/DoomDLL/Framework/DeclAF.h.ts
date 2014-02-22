@@ -138,7 +138,7 @@
 ////	void					SetDefault( const idDeclAF *file );
 ////};
 ////
-////class idDeclAF : public idDecl {
+////class idDeclAF extends idDecl {
 ////	friend class idAFFileManager;
 ////public:
 ////							idDeclAF( void );

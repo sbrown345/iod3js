@@ -640,7 +640,7 @@ class idGameLocal extends idGame {
 
 //////============================================================================
 
-////class idGameError : public idException {
+////class idGameError extends idException {
 ////public:
 ////	idGameError( const char *text ) : idException( text ) {}
 ////};

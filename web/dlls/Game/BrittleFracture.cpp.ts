@@ -33,12 +33,32 @@
 
 
 ////CLASS_DECLARATION( idEntity, idBrittleFracture )
-////	EVENT( EV_Activate, idBrittleFracture::Event_Activate )
-////	EVENT( EV_Touch, idBrittleFracture::Event_Touch )
-////END_CLASS
+idBrittleFracture.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idBrittleFracture;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
 
-////const int SHARD_ALIVE_TIME	= 5000;
-////const int SHARD_FADE_START	= 2000;
+idBrittleFracture.prototype.GetType = function ( ): idTypeInfo {
+	return ( idBrittleFracture.Type );
+};
+
+idBrittleFracture.eventCallbacks = [
+	EVENT( EV_Activate, idBrittleFracture.prototype.Event_Activate ),
+	EVENT( EV_Touch, idBrittleFracture.prototype.Event_Touch )
+];
+
+idBrittleFracture.Type = new idTypeInfo("idBrittleFracture", "idEntity",
+	idBrittleFracture.eventCallbacks, idBrittleFracture.CreateInstance, idBrittleFracture.prototype.Spawn,
+	idBrittleFracture.prototype.Save, idBrittleFracture.prototype.Restore );
+
+
+var SHARD_ALIVE_TIME	= 5000;
+var SHARD_FADE_START	= 2000;
 
 ////static const char *brittleFracture_SnapshotName = "_BrittleFracture_Snapshot_";
 
@@ -631,7 +651,7 @@
 ////idBrittleFracture::ApplyImpulse
 ////================
 ////*/
-////void idBrittleFracture::ApplyImpulse( idEntity *ent, int id, const idVec3 &point, const idVec3 &impulse ) {
+////void idBrittleFracture::ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse ) {
 
 ////	if ( id < 0 || id >= shards.Num() ) {
 ////		return;
@@ -649,7 +669,7 @@
 ////idBrittleFracture::AddForce
 ////================
 ////*/
-////void idBrittleFracture::AddForce( idEntity *ent, int id, const idVec3 &point, const idVec3 &force ) {
+////void idBrittleFracture::AddForce( ent:idEntity, int id, const idVec3 &point, const idVec3 &force ) {
 
 ////	if ( id < 0 || id >= shards.Num() ) {
 ////		return;

@@ -290,7 +290,7 @@
 ////	int children[2];				// negative numbers are (-1 - areaNumber), 0 = solid
 ////} cm_procNode_t;
 ////
-////class idCollisionModelManagerLocal : public idCollisionModelManager {
+////class idCollisionModelManagerLocal extends idCollisionModelManager {
 ////public:
 ////	// load collision models from a map file
 ////	void			LoadMap( const idMapFile *mapFile );

@@ -267,7 +267,7 @@ var EV_EnableDamage = new idEventDef( "enableDamage", "f" );
 ////bool idMoveable::Collide( const trace_t &collision, const idVec3 &velocity ) {
 ////	float v, f;
 ////	idVec3 dir;
-////	idEntity *ent;
+////	var ent:idEntity
 ////
 ////	v = -( velocity * collision.c.normal );
 ////	if ( v > BOUNCE_SOUND_MIN_VELOCITY && gameLocal.time > nextSoundTime ) {
@@ -1013,7 +1013,7 @@ var EV_TriggerTargets = new idEventDef( "<triggertargets>" );
 ////	while ( kv ) {
 ////		const idDict *debris_args = gameLocal.FindEntityDefDict( kv->GetValue(), false );
 ////		if ( debris_args ) {
-////			idEntity *ent;
+////			var ent:idEntity
 ////			idVec3 dir;
 ////			idDebris *debris;
 ////			//if ( first ) {

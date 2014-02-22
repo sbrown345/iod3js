@@ -459,7 +459,7 @@ idAFAttachment.Type = new idTypeInfo("idAFAttachment", "idAnimatedEntity",
 ////idAFAttachment::GetImpactInfo
 ////================
 ////*/
-////void idAFAttachment::GetImpactInfo( idEntity *ent, int id, const idVec3 &point, impactInfo_t *info ) {
+////void idAFAttachment::GetImpactInfo( ent:idEntity, int id, const idVec3 &point, impactInfo_t *info ) {
 ////	if ( body ) {
 ////		body->GetImpactInfo( ent, JOINT_HANDLE_TO_CLIPMODEL_ID( attachJoint ), point, info );
 ////	} else {
@@ -472,7 +472,7 @@ idAFAttachment.Type = new idTypeInfo("idAFAttachment", "idAnimatedEntity",
 ////idAFAttachment::ApplyImpulse
 ////================
 ////*/
-////void idAFAttachment::ApplyImpulse( idEntity *ent, int id, const idVec3 &point, const idVec3 &impulse ) {
+////void idAFAttachment::ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse ) {
 ////	if ( body ) {
 ////		body->ApplyImpulse( ent, JOINT_HANDLE_TO_CLIPMODEL_ID( attachJoint ), point, impulse );
 ////	} else {
@@ -485,7 +485,7 @@ idAFAttachment.Type = new idTypeInfo("idAFAttachment", "idAnimatedEntity",
 ////idAFAttachment::AddForce
 ////================
 ////*/
-////void idAFAttachment::AddForce( idEntity *ent, int id, const idVec3 &point, const idVec3 &force ) {
+////void idAFAttachment::AddForce( ent:idEntity, int id, const idVec3 &point, const idVec3 &force ) {
 ////	if ( body ) {
 ////		body->AddForce( ent, JOINT_HANDLE_TO_CLIPMODEL_ID( attachJoint ), point, force );
 ////	} else {
@@ -787,7 +787,7 @@ var BOUNCE_SOUND_MAX_VELOCITY	= 200.0;
 ////idAFEntity_Base::GetImpactInfo
 ////================
 ////*/
-////void idAFEntity_Base::GetImpactInfo( idEntity *ent, int id, const idVec3 &point, impactInfo_t *info ) {
+////void idAFEntity_Base::GetImpactInfo( ent:idEntity, int id, const idVec3 &point, impactInfo_t *info ) {
 ////	if ( af.IsActive() ) {
 ////		af.GetImpactInfo( ent, id, point, info );
 ////	} else {
@@ -800,7 +800,7 @@ var BOUNCE_SOUND_MAX_VELOCITY	= 200.0;
 ////idAFEntity_Base::ApplyImpulse
 ////================
 ////*/
-////void idAFEntity_Base::ApplyImpulse( idEntity *ent, int id, const idVec3 &point, const idVec3 &impulse ) {
+////void idAFEntity_Base::ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse ) {
 ////	if ( af.IsLoaded() ) {
 ////		af.ApplyImpulse( ent, id, point, impulse );
 ////	}
@@ -814,7 +814,7 @@ var BOUNCE_SOUND_MAX_VELOCITY	= 200.0;
 ////idAFEntity_Base::AddForce
 ////================
 ////*/
-////void idAFEntity_Base::AddForce( idEntity *ent, int id, const idVec3 &point, const idVec3 &force ) {
+////void idAFEntity_Base::AddForce( ent:idEntity, int id, const idVec3 &point, const idVec3 &force ) {
 ////	if ( af.IsLoaded() ) {
 ////		af.AddForce( ent, id, point, force );
 ////	}
@@ -971,7 +971,7 @@ var BOUNCE_SOUND_MAX_VELOCITY	= 200.0;
 ////  where * is an aribtrary string.
 ////================
 ////*/
-////void idAFEntity_Base::DropAFs( idEntity *ent, const char *type, idList<idEntity *> *list ) {
+////void idAFEntity_Base::DropAFs( ent:idEntity, const char *type, idList<idEntity *> *list ) {
 ////	const idKeyValue *kv;
 ////	const char *skinName;
 ////	idEntity *newEnt;
@@ -2848,7 +2848,7 @@ idAFEntity_ClawFourFingers.Type = new idTypeInfo("idAFEntity_ClawFourFingers", "
 ////================
 ////*/
 ////void idGameEdit::AF_UpdateEntities( const char *fileName ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idAFEntity_Base *af;
 ////	idStr name;
 ////
@@ -2874,7 +2874,7 @@ idAFEntity_ClawFourFingers.Type = new idTypeInfo("idAFEntity_ClawFourFingers", "
 ////*/
 ////void idGameEdit::AF_UndoChanges( void ) {
 ////	int i, c;
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idAFEntity_Base *af;
 ////	idDeclAF *decl;
 ////

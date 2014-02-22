@@ -112,7 +112,7 @@ var game: idGame = null;
 //////#define ID_WRITE_VERSION
 class idCommon {
 
-////class idCommonLocal : public idCommon {
+////class idCommonLocal extends idCommon {
 ////public:
 ////								idCommonLocal( void );
 

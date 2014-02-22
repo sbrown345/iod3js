@@ -119,7 +119,7 @@
 ////*/
 ////void Cmd_ListSpawnArgs_f( const idCmdArgs &args ) {
 ////	int i;
-////	idEntity *ent;
+////	var ent:idEntity
 
 ////	ent = gameLocal.FindEntity( args.Argv( 1 ) );
 ////	if ( !ent ) {
@@ -824,7 +824,7 @@
 ////		return;
 ////	}
 
-////	idEntity *ent = gameLocal.FindEntity( args.Argv( 1 ) );
+////	var ent:idEntity = gameLocal.FindEntity( args.Argv( 1 ) );
 ////	if ( !ent ) {
 ////		gameLocal.Printf( "entity not found\n" );
 ////		return;
@@ -850,7 +850,7 @@
 ////		return;
 ////	}
 
-////	idEntity *ent = gameLocal.FindEntity( args.Argv( 1 ) );
+////	var ent:idEntity = gameLocal.FindEntity( args.Argv( 1 ) );
 ////	if ( !ent ) {
 ////		gameLocal.Printf( "entity not found\n" );
 ////		return;
@@ -1017,7 +1017,7 @@
 ////====================
 ////*/
 ////void Cmd_ClearLights_f( const idCmdArgs &args ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idEntity *next;
 ////	idLight *light;
 ////	idMapEntity *mapEnt;
@@ -1919,7 +1919,7 @@
 ////*/
 ////static void Cmd_SaveParticles_f( const idCmdArgs &args ) {
 ////	int e;
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idMapEntity *mapEnt;
 ////	idMapFile *mapFile = gameLocal.GetLevelMap();
 ////	idDict dict;
@@ -2104,7 +2104,7 @@
 ////has any valid gui surfaces.
 ////=================
 ////*/
-////bool FindEntityGUIs( idEntity *ent, const modelSurface_t ** surfaces,  int maxSurfs, int &guiSurfaces ) {
+////bool FindEntityGUIs( ent:idEntity, const modelSurface_t ** surfaces,  int maxSurfs, int &guiSurfaces ) {
 ////	renderEntity_t			*renderEnt;
 ////	idRenderModel			*renderModel;
 ////	const modelSurface_t	*surf;

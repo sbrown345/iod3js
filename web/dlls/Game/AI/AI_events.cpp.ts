@@ -531,7 +531,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_SetEnemy
 ////=====================
 ////*/
-////void idAI::Event_SetEnemy( idEntity *ent ) {
+////void idAI::Event_SetEnemy( ent:idEntity ) {
 ////	if ( !ent ) {
 ////		ClearEnemy();
 ////	} else if ( !ent->IsType( idActor::Type ) ) {
@@ -948,7 +948,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_TurnToEntity
 ////=====================
 ////*/
-////void idAI::Event_TurnToEntity( idEntity *ent ) {
+////void idAI::Event_TurnToEntity( ent:idEntity ) {
 ////	if ( ent ) {
 ////		TurnToward( ent->GetPhysics()->GetOrigin() );
 ////	}
@@ -1041,7 +1041,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_MoveToEntity
 ////=====================
 ////*/
-////void idAI::Event_MoveToEntity( idEntity *ent ) {
+////void idAI::Event_MoveToEntity( ent:idEntity ) {
 ////	StopMove( MOVE_STATUS_DEST_NOT_FOUND );
 ////	if ( ent ) {
 ////		MoveToEntity( ent );
@@ -1099,7 +1099,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_FaceEntity
 ////=====================
 ////*/
-////void idAI::Event_FaceEntity( idEntity *ent ) {
+////void idAI::Event_FaceEntity( ent:idEntity ) {
 ////	FaceEntity( ent );
 ////}
 ////
@@ -1174,7 +1174,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_EnemyInCombatCone
 ////=====================
 ////*/
-////void idAI::Event_EnemyInCombatCone( idEntity *ent, int use_current_enemy_location ) {
+////void idAI::Event_EnemyInCombatCone( ent:idEntity, int use_current_enemy_location ) {
 ////	idCombatNode	*node;
 ////	bool			result;
 ////	idActor			*enemyEnt = enemy.GetEntity();
@@ -1226,7 +1226,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_GetJumpVelocity
 ////=====================
 ////*/
-////void idAI::Event_GetJumpVelocity( const idVec3 &pos, float speed, float max_height ) {
+////void idAI::Event_GetJumpVelocity( const idVec3 &pos, /*float*/ speed:number, float max_height ) {
 ////	idVec3 start;
 ////	idVec3 end;
 ////	idVec3 dir;
@@ -1265,7 +1265,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_EntityInAttackCone
 ////=====================
 ////*/
-////void idAI::Event_EntityInAttackCone( idEntity *ent ) {
+////void idAI::Event_EntityInAttackCone( ent:idEntity ) {
 ////	float	attack_cone;
 ////	idVec3	delta;
 ////	float	yaw;
@@ -1301,7 +1301,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_CanSeeEntity
 ////=====================
 ////*/
-////void idAI::Event_CanSeeEntity( idEntity *ent ) {
+////void idAI::Event_CanSeeEntity( ent:idEntity ) {
 ////	if ( !ent ) {
 ////		idThread::ReturnInt( false );
 ////		return;
@@ -2135,7 +2135,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_SetFlySpeed
 ////=====================
 ////*/
-////void idAI::Event_SetFlySpeed( float speed ) {
+////void idAI::Event_SetFlySpeed( /*float*/ speed:number ) {
 ////	if ( move.speed == fly_speed ) {
 ////		move.speed = speed;
 ////	}
@@ -2167,7 +2167,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////*/
 ////void idAI::Event_GetClosestHiddenTarget( const char *type ) {
 ////	int	i;
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idEntity *bestEnt;
 ////	float time;
 ////	float bestTime;
@@ -2219,7 +2219,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////	int	i;
 ////	int	num;
 ////	int which;
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idEntity *ents[ MAX_GENTITIES ];
 ////
 ////	num = 0;
@@ -2259,7 +2259,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_TravelDistanceToEntity
 ////================
 ////*/
-////void idAI::Event_TravelDistanceToEntity( idEntity *ent ) {
+////void idAI::Event_TravelDistanceToEntity( ent:idEntity ) {
 ////	float time;
 ////
 ////	time = TravelDistance( physicsObj.GetOrigin(), ent->GetPhysics()->GetOrigin() );
@@ -2297,7 +2297,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_LookAtEntity
 ////=====================
 ////*/
-////void idAI::Event_LookAtEntity( idEntity *ent, float duration ) {
+////void idAI::Event_LookAtEntity( ent:idEntity, float duration ) {
 ////	if ( ent == this ) {
 ////		ent = NULL;
 ////	}
@@ -2346,7 +2346,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////================
 ////*/
 ////void idAI::Event_ThrowMoveable( void ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idEntity *moveable = NULL;
 ////
 ////	for ( ent = GetNextTeamEntity(); ent != NULL; ent = ent->GetNextTeamEntity() ) {
@@ -2367,7 +2367,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////================
 ////*/
 ////void idAI::Event_ThrowAF( void ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idEntity *af = NULL;
 ////
 ////	for ( ent = GetNextTeamEntity(); ent != NULL; ent = ent->GetNextTeamEntity() ) {
@@ -2574,7 +2574,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_FindActorsInBounds
 ////=====================
 ////*/
-////void idAI::Event_FindActorsInBounds( const idVec3 &mins, const idVec3 &maxs ) {
+////void idAI::Event_FindActorsInBounds( mins:idVec3, maxs:idVec3 ) {
 ////	idEntity *	ent;
 ////	idEntity *	entityList[ MAX_GENTITIES ];
 ////	int			numListedEntities;
@@ -2616,7 +2616,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_CanReachEntity
 ////================
 ////*/
-////void idAI::Event_CanReachEntity( idEntity *ent ) {
+////void idAI::Event_CanReachEntity( ent:idEntity ) {
 ////	aasPath_t	path;
 ////	int			toAreaNum;
 ////	int			areaNum;
@@ -2703,7 +2703,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_GetReachableEntityPosition
 ////================
 ////*/
-////void idAI::Event_GetReachableEntityPosition( idEntity *ent ) {
+////void idAI::Event_GetReachableEntityPosition( ent:idEntity ) {
 ////	int		toAreaNum;
 ////	idVec3	pos;
 ////

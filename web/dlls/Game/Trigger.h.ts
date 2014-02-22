@@ -40,7 +40,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTrigger : public idEntity {
+////class idTrigger extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idTrigger );
 ////
@@ -75,7 +75,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTrigger_Multi : public idTrigger {
+////class idTrigger_Multi extends idTrigger {
 ////public:
 ////	CLASS_PROTOTYPE( idTrigger_Multi );
 ////
@@ -115,7 +115,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTrigger_EntityName : public idTrigger {
+////class idTrigger_EntityName extends idTrigger {
 ////public:
 ////	CLASS_PROTOTYPE( idTrigger_EntityName );
 ////
@@ -149,7 +149,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTrigger_Timer : public idTrigger {
+////class idTrigger_Timer extends idTrigger {
 ////public:
 ////	CLASS_PROTOTYPE( idTrigger_Timer );
 ////
@@ -184,7 +184,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTrigger_Count : public idTrigger {
+////class idTrigger_Count extends idTrigger {
 ////public:
 ////	CLASS_PROTOTYPE( idTrigger_Count );
 ////
@@ -213,7 +213,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTrigger_Hurt : public idTrigger {
+////class idTrigger_Hurt extends idTrigger {
 ////public:
 ////	CLASS_PROTOTYPE( idTrigger_Hurt );
 ////
@@ -242,7 +242,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTrigger_Fade : public idTrigger {
+////class idTrigger_Fade extends idTrigger {
 ////public:
 ////
 ////	CLASS_PROTOTYPE( idTrigger_Fade );
@@ -260,7 +260,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idTrigger_Touch : public idTrigger {
+////class idTrigger_Touch extends idTrigger {
 ////public:
 ////
 ////	CLASS_PROTOTYPE( idTrigger_Touch );

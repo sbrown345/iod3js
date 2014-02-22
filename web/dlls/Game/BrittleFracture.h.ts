@@ -52,7 +52,7 @@
 ////} shard_t;
 
 
-////class idBrittleFracture : public idEntity {
+////class idBrittleFracture extends idEntity {
 
 ////public:
 ////	CLASS_PROTOTYPE( idBrittleFracture );

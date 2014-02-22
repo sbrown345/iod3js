@@ -897,7 +897,7 @@ var EV_GetProjectileState = new idEventDef( "getProjectileState", null, 'd' );
 ////		if ( debris ) {
 ////			int amount = gameLocal.random.RandomInt( fxdebris );
 ////			for ( int i = 0; i < amount; i++ ) {
-////				idEntity *ent;
+////				var ent:idEntity
 ////				idVec3 dir;
 ////				dir.x = gameLocal.random.CRandomFloat() * 4.0f;
 ////				dir.y = gameLocal.random.CRandomFloat() * 4.0f;
@@ -918,7 +918,7 @@ var EV_GetProjectileState = new idEventDef( "getProjectileState", null, 'd' );
 ////		if ( debris ) {
 ////			int amount = gameLocal.random.RandomInt( fxdebris );
 ////			for ( int i = 0; i < amount; i++ ) {
-////				idEntity *ent;
+////				var ent:idEntity
 ////				idVec3 dir;
 ////				dir.x = gameLocal.random.CRandomFloat() * 8.0f;
 ////				dir.y = gameLocal.random.CRandomFloat() * 8.0f;
@@ -1021,7 +1021,7 @@ var EV_GetProjectileState = new idEventDef( "getProjectileState", null, 'd' );
 ////=================
 ////*/
 ////bool idProjectile::ClientPredictionCollide( idEntity *soundEnt, const idDict &projectileDef, const trace_t &collision, const idVec3 &velocity, bool addDamageEffect ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////
 ////	// remove projectile when a 'noimpact' surface is hit
 ////	if ( collision.c.material && ( collision.c.material->GetSurfaceFlags() & SURF_NOIMPACT ) ) {

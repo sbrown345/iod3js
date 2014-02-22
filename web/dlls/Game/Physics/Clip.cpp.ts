@@ -104,7 +104,7 @@ class idClipModel {
 ////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
 ////	void					Link( idClip &clp );				// must have been linked with an entity and id before
-////	void					Link( idClip &clp, idEntity *ent, int newId, const idVec3 &newOrigin, const idMat3 &newAxis, int renderModelHandle = -1 );
+////	void					Link( idClip &clp, ent:idEntity, int newId, const idVec3 &newOrigin, const idMat3 &newAxis, int renderModelHandle = -1 );
 ////	void					Unlink( void );						// unlink from sectors
 ////	void					SetPosition( const idVec3 &newOrigin, const idMat3 &newAxis );	// unlinks the clip model
 ////	void					Translate( const idVec3 &translation );							// unlinks the clip model
@@ -792,7 +792,7 @@ idClipModel::idClipModel
 ////idClipModel::Link
 ////===============
 ////*/
-////void idClipModel::Link( idClip &clp, idEntity *ent, int newId, const idVec3 &newOrigin, const idMat3 &newAxis, int renderModelHandle ) {
+////void idClipModel::Link( idClip &clp, ent:idEntity, int newId, const idVec3 &newOrigin, const idMat3 &newAxis, int renderModelHandle ) {
 ////
 ////	this.entity = ent;
 ////	this.id = newId;

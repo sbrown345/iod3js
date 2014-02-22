@@ -37,7 +37,7 @@
 ////===============================================================================
 ////*/
 ////
-////class idSound : public idEntity {
+////class idSound extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idSound );
 ////

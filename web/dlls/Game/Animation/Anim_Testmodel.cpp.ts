@@ -54,8 +54,29 @@
 //#include "../Game_local.h"
 //
 //CLASS_DECLARATION( idAnimatedEntity, idTestModel )
-//	EVENT( EV_FootstepLeft,			idTestModel::Event_Footstep )
-//	EVENT( EV_FootstepRight,		idTestModel::Event_Footstep )	
+idTestModel.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idTestModel;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idTestModel.prototype.GetType = function ( ): idTypeInfo {
+	return ( idTestModel.Type );
+};
+
+idTestModel.eventCallbacks = [
+	EVENT( EV_FootstepLeft,			idTestModel.prototype.Event_Footstep ),
+	EVENT( EV_FootstepRight,		idTestModel.prototype.Event_Footstep )	
+];
+
+idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
+	idTestModel.eventCallbacks, idTestModel.CreateInstance, idTestModel.prototype.Spawn,
+	idTestModel.prototype.Save, idTestModel.prototype.Restore );
+
 //END_CLASS
 //
 ///*

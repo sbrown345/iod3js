@@ -47,16 +47,16 @@ class idCamera extends idEntity {
 ////	virtual renderView_t *	GetRenderView();
 ////	virtual void			Stop( void ){} ;
 };
-////
-/////*
-////===============================================================================
-////
-////idCameraView
-////
-////===============================================================================
-////*/
-////
-////class idCameraView : public idCamera {
+
+/*
+===============================================================================
+
+idCameraView
+
+===============================================================================
+*/
+
+class idCameraView extends idCamera {
 ////public:
 ////	CLASS_PROTOTYPE( idCameraView );
 ////							idCameraView();
@@ -70,23 +70,23 @@ class idCamera extends idEntity {
 ////	virtual void			Stop( void );
 ////
 ////protected:
-////	void					Event_Activate( idEntity *activator );: void { throw "placeholder"; }
-////	void					Event_SetAttachments();: void { throw "placeholder"; }
+	Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+	Event_SetAttachments(): void { throw "placeholder"; }
 ////	void					SetAttachment( idEntity **e, const char *p );
 ////	float					fov;
 ////	idEntity				*attachedTo;
 ////	idEntity				*attachedView;
-////};
-////
-////
-////
-/////*
-////===============================================================================
-////
-////A camera which follows a path defined by an animation.
-////
-////===============================================================================
-////*/
+};
+
+
+
+/*
+===============================================================================
+
+A camera which follows a path defined by an animation.
+
+===============================================================================
+*/
 ////
 ////typedef struct {
 ////	idCQuat				q;
@@ -94,7 +94,7 @@ class idCamera extends idEntity {
 ////	float				fov;
 ////} cameraFrame_t;
 ////
-////class idCameraAnim : public idCamera {
+////class idCameraAnim extends idCamera {
 ////public:
 ////	CLASS_PROTOTYPE( idCameraAnim );
 ////

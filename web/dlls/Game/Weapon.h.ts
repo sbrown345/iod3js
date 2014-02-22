@@ -56,7 +56,7 @@
 ////
 ////class idMoveableItem;
 ////
-////class idWeapon : public idAnimatedEntity {
+////class idWeapon extends idAnimatedEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idWeapon );
 ////

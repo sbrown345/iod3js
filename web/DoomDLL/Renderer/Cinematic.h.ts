@@ -97,7 +97,7 @@ class idCinematic {
 //===============================================
 //*/
 //
-//class idSndWindow : public idCinematic {
+//class idSndWindow extends idCinematic {
 //public:
 //	
 //						idSndWindow() { showWaveform = false; }

@@ -646,7 +646,7 @@
 ////	// test whether or not the character is standing on a plat
 ////	bool onPlat = false;
 ////	for ( i = 0; i < phys->GetNumContacts(); i++ ) {
-////		idEntity *ent = gameLocal.entities[ phys->GetContact( i ).entityNum ];
+////		var ent:idEntity = gameLocal.entities[ phys->GetContact( i ).entityNum ];
 ////		if ( ent != NULL && ent->IsType( idPlat::Type ) ) {
 ////			onPlat = true;
 ////			break;

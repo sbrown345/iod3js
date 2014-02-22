@@ -546,7 +546,7 @@ class idProgram {
 //	function_t									*GetFunction( int index );
 //	int											GetFunctionIndex( const function_t *func );
 //
-//	void										SetEntity( const char *name, idEntity *ent );
+//	void										SetEntity( const char *name, ent:idEntity );
 //
 //	statement_t									*AllocStatement( void );
 //	statement_t									&GetStatement( int index );
@@ -558,7 +558,7 @@ class idProgram {
 //	void										ReturnInteger( int value );
 //	void										ReturnVector( idVec3 const &vec );
 //	void										ReturnString( const char *string );
-//	void										ReturnEntity( idEntity *ent );
+//	void										ReturnEntity( ent:idEntity );
 //	
 //	int											NumFilenames( void ) { return fileList.Num( ); }
 //};
@@ -1694,7 +1694,7 @@ GetFilenum( name: string):number
 //idProgram::ReturnEntity
 //================
 //*/
-//void idProgram::ReturnEntity( idEntity *ent ) {
+//void idProgram::ReturnEntity( ent:idEntity ) {
 //	if ( ent ) {
 //		*returnDef.value.entityNumberPtr = ent.entityNumber + 1;
 //	} else {

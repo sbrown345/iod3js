@@ -194,7 +194,7 @@
 ////	idVec3	pos;
 ////} aasLocation_t;
 ////
-////class idPlayer : public idActor {
+////class idPlayer extends idActor {
 ////public:
 ////	enum {
 ////		EVENT_IMPULSE = idEntity::EVENT_MAXEVENTS,

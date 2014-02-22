@@ -177,7 +177,7 @@ var EV_Light_FadeIn = new idEventDef( "fadeInLight", "f" );
 ////	extern const idEventDef EV_Light_SetLightParm;
 ////	extern const idEventDef EV_Light_SetLightParms;
 ////
-////	class idLight : public idEntity {
+////	class idLight extends idEntity {
 ////	public:
 ////		CLASS_PROTOTYPE(idLight);
 ////

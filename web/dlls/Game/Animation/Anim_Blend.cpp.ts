@@ -657,7 +657,7 @@
 //idAnim::CallFrameCommands
 //=====================
 //*/
-//void idAnim::CallFrameCommands( idEntity *ent, int from, int to ) const {
+//void idAnim::CallFrameCommands( ent:idEntity, int from, int to ) const {
 //	int index;
 //	int end;
 //	int frame;
@@ -1675,7 +1675,7 @@
 //idAnimBlend::CallFrameCommands
 //=====================
 //*/
-//void idAnimBlend::CallFrameCommands( idEntity *ent, int fromtime, int totime ) const {
+//void idAnimBlend::CallFrameCommands( ent:idEntity, int fromtime, int totime ) const {
 //	const idMD5Anim	*md5anim;
 //	frameBlend_t	frame1;
 //	frameBlend_t	frame2;
@@ -3307,7 +3307,7 @@
 //idAnimator::SetEntity
 //=====================
 //*/
-//void idAnimator::SetEntity( idEntity *ent ) {
+//void idAnimator::SetEntity( ent:idEntity ) {
 //	entity = ent;
 //}
 //

@@ -69,7 +69,7 @@
 //	SORT_GAME
 //} serverSort_t;
 //
-//class idServerScan : public idList<networkServer_t> {
+//class idServerScan extends idList<networkServer_t> {
 //public:	
 //						idServerScan( );
 //	

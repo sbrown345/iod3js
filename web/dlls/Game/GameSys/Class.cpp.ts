@@ -86,7 +86,7 @@ class idEventArg {
 ////	idEventArg( const struct trace_s *data )	{ type = D_EVENT_TRACE; value = reinterpret_cast<int>( data ); };
 };
 
-////class idAllocError : public idException {
+////class idAllocError extends idException {
 ////public:
 ////	idAllocError( const char *text = "" ) : idException( text ) {}
 ////};
@@ -1238,7 +1238,7 @@ idClass::PostEventMS
 ////	assert( idEvent::initialized );
 ////
 ////	if ( g_debugTriggers.GetBool() && ( ev == &EV_Activate ) && IsType( idEntity::Type ) ) {
-////		const idEntity *ent = *reinterpret_cast<idEntity **>( data );
+////		const var ent:idEntity = *reinterpret_cast<idEntity **>( data );
 ////		gameLocal.Printf( "%d: '%s' activated by '%s'\n", gameLocal.framenum, static_cast<idEntity *>( this ).GetName(), ent ? ent.GetName() : "NULL" );
 ////	}
 ////

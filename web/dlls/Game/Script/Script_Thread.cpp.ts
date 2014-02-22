@@ -234,13 +234,13 @@ class idThread extends idClass {
 	//	void						Event_Pause( void );
 	//	void						Event_Wait( float time );
 	//	void						Event_WaitFrame( void );
-	//	void						Event_WaitFor( idEntity *ent );
+	//	void						Event_WaitFor( ent:idEntity );
 	//	void						Event_WaitForThread( int num );
 	//	void						Event_Print( const char *text );
 	//	void						Event_PrintLn( const char *text );
 	//	void						Event_Say( const char *text );
 	//	void						Event_Assert( float value );
-	//	void						Event_Trigger( idEntity *ent );
+	//	void						Event_Trigger( ent:idEntity );
 	//	void						Event_SetCvar( const char *name, const char *value ) const;
 	//	void						Event_GetCvar( const char *name ) const;
 	//	void						Event_Random( float range ) const;
@@ -248,7 +248,7 @@ class idThread extends idClass {
 	//	void						Event_KillThread( const char *name );
 	//	void						Event_GetEntity( const char *name );
 	//	void						Event_Spawn( const char *classname );
-	//	void						Event_CopySpawnArgs( idEntity *ent );
+	//	void						Event_CopySpawnArgs( ent:idEntity );
 	//	void						Event_SetSpawnArg( const char *key, const char *value );
 	//	void						Event_SpawnString( const char *key, const char *defaultvalue );
 	//	void						Event_SpawnFloat( const char *key, float defaultvalue );
@@ -269,11 +269,11 @@ class idThread extends idClass {
 	//	void						Event_VecDotProduct( idVec3 &vec1, idVec3 &vec2 );
 	//	void						Event_VecCrossProduct( idVec3 &vec1, idVec3 &vec2 );
 	//	void						Event_VecToAngles( idVec3 &vec );
-	//	void						Event_OnSignal( int signal, idEntity *ent, const char *func );
-	//	void						Event_ClearSignalThread( int signal, idEntity *ent );
-	//	void						Event_SetCamera( idEntity *ent );
+	//	void						Event_OnSignal( int signal, ent:idEntity, const char *func );
+	//	void						Event_ClearSignalThread( int signal, ent:idEntity );
+	//	void						Event_SetCamera( ent:idEntity );
 	//	void						Event_FirstPerson( void );
-	//	void						Event_Trace( const idVec3 &start, const idVec3 &end, const idVec3 &mins, const idVec3 &maxs, int contents_mask, idEntity *passEntity );
+	//	void						Event_Trace( const idVec3 &start, const idVec3 &end, mins:idVec3, maxs:idVec3, int contents_mask, idEntity *passEntity );
 	//	void						Event_TracePoint( const idVec3 &start, const idVec3 &end, int contents_mask, idEntity *passEntity );
 	//	void						Event_GetTraceFraction( void );
 	//	void						Event_GetTraceEndPos( void );
@@ -303,7 +303,7 @@ class idThread extends idClass {
 	//	void						Event_DebugLine( const idVec3 &color, const idVec3 &start, const idVec3 &end, const float lifetime );
 	//	void						Event_DebugArrow( const idVec3 &color, const idVec3 &start, const idVec3 &end, const int size, const float lifetime );
 	//	void						Event_DebugCircle( const idVec3 &color, const idVec3 &origin, const idVec3 &dir, const float radius, const int numSteps, const float lifetime );
-	//	void						Event_DebugBounds( const idVec3 &color, const idVec3 &mins, const idVec3 &maxs, const float lifetime );
+	//	void						Event_DebugBounds( const idVec3 &color, mins:idVec3, maxs:idVec3, const float lifetime );
 	//	void						Event_DrawText( const char *text, const idVec3 &origin, float scale, const idVec3 &color, const int align, const float lifetime );
 	//	void						Event_InfluenceActive( void );
 	//
@@ -376,14 +376,14 @@ class idThread extends idClass {
 	//								
 	//	static idThread				*CurrentThread( void );
 	//	static int					CurrentThreadNum( void );
-	//	static bool					BeginMultiFrameEvent( idEntity *ent, const idEventDef *event );
-	//	static void					EndMultiFrameEvent( idEntity *ent, const idEventDef *event );
+	//	static bool					BeginMultiFrameEvent( ent:idEntity, const idEventDef *event );
+	//	static void					EndMultiFrameEvent( ent:idEntity, const idEventDef *event );
 	//
 	//	static void					ReturnString( const char *text );
 	//	static void					ReturnFloat( float value );
 	//	static void					ReturnInt( int value );
 	//	static void					ReturnVector( idVec3 const &vec );
-	//	static void					ReturnEntity( idEntity *ent );
+	//	static void					ReturnEntity( ent:idEntity );
 	//};
 	//
 ///*
@@ -477,7 +477,7 @@ class idThread extends idClass {
 //idThread::BeginMultiFrameEvent
 //================
 //*/
-//bool idThread::BeginMultiFrameEvent( idEntity *ent, const idEventDef *event ) {
+//bool idThread::BeginMultiFrameEvent( ent:idEntity, const idEventDef *event ) {
 //	if ( !currentThread ) {
 //		gameLocal.Error( "idThread::BeginMultiFrameEvent called without a current thread" );
 //	}
@@ -489,7 +489,7 @@ class idThread extends idClass {
 //idThread::EndMultiFrameEvent
 //================
 //*/
-//void idThread::EndMultiFrameEvent( idEntity *ent, const idEventDef *event ) {
+//void idThread::EndMultiFrameEvent( ent:idEntity, const idEventDef *event ) {
 //	if ( !currentThread ) {
 //		gameLocal.Error( "idThread::EndMultiFrameEvent called without a current thread" );
 //	}
@@ -1107,7 +1107,7 @@ idThread::ReturnString
 //idThread::ReturnEntity
 //================
 //*/
-//static ReturnEntity( idEntity *ent ):void {
+//static ReturnEntity( ent:idEntity ):void {
 //	gameLocal.program.ReturnEntity( ent );
 //}
 //
@@ -1214,7 +1214,7 @@ idThread::ReturnString
 //idThread::Event_WaitFor
 //================
 //*/
-//void idThread::Event_WaitFor( idEntity *ent ) {
+//void idThread::Event_WaitFor( ent:idEntity ) {
 //	if ( ent && ent->RespondsTo( EV_Thread_SetCallback ) ) {
 //		ent->ProcessEvent( &EV_Thread_SetCallback );
 //		if ( gameLocal.program.GetReturnedInteger() ) {
@@ -1285,7 +1285,7 @@ idThread::ReturnString
 //idThread::Event_Trigger
 //================
 //*/
-//void idThread::Event_Trigger( idEntity *ent ) {
+//void idThread::Event_Trigger( ent:idEntity ) {
 //	if ( ent ) {
 //		ent->Signal( SIG_TRIGGER );
 //		ent->ProcessEvent( &EV_Activate, gameLocal.GetLocalPlayer() );
@@ -1370,7 +1370,7 @@ idThread::ReturnString
 //================
 //*/
 //void idThread::Event_Spawn( const char *classname ) {
-//	idEntity *ent;
+//	var ent:idEntity
 //
 //	spawnArgs.Set( "classname", classname );
 //	gameLocal.SpawnEntityDef( spawnArgs, &ent );
@@ -1383,7 +1383,7 @@ idThread::ReturnString
 //idThread::Event_CopySpawnArgs
 //================
 //*/
-//void idThread::Event_CopySpawnArgs( idEntity *ent ) {
+//void idThread::Event_CopySpawnArgs( ent:idEntity ) {
 //	spawnArgs.Copy( ent->spawnArgs );
 //}
 //
@@ -1602,7 +1602,7 @@ idThread::ReturnString
 //idThread::Event_OnSignal
 //================
 //*/
-//void idThread::Event_OnSignal( int signal, idEntity *ent, const char *func ) {
+//void idThread::Event_OnSignal( int signal, ent:idEntity, const char *func ) {
 //	const function_t *function;
 //
 //	assert( func );
@@ -1628,7 +1628,7 @@ idThread::ReturnString
 //idThread::Event_ClearSignalThread
 //================
 //*/
-//void idThread::Event_ClearSignalThread( int signal, idEntity *ent ) {
+//void idThread::Event_ClearSignalThread( int signal, ent:idEntity ) {
 //	if ( !ent ) {
 //		Error( "Entity not found" );
 //	}
@@ -1645,7 +1645,7 @@ idThread::ReturnString
 //idThread::Event_SetCamera
 //================
 //*/
-//void idThread::Event_SetCamera( idEntity *ent ) {
+//void idThread::Event_SetCamera( ent:idEntity ) {
 //	if ( !ent ) {
 //		Error( "Entity not found" );
 //		return;
@@ -1673,7 +1673,7 @@ idThread::ReturnString
 //idThread::Event_Trace
 //================
 //*/
-//void idThread::Event_Trace( const idVec3 &start, const idVec3 &end, const idVec3 &mins, const idVec3 &maxs, int contents_mask, idEntity *passEntity ) {
+//void idThread::Event_Trace( const idVec3 &start, const idVec3 &end, mins:idVec3, maxs:idVec3, int contents_mask, idEntity *passEntity ) {
 //	if ( mins == vec3_origin && maxs == vec3_origin ) {
 //		gameLocal.clip.TracePoint( idThread.trace, start, end, contents_mask, passEntity );
 //	} else {
@@ -2066,7 +2066,7 @@ idThread::ReturnString
 //idThread::Event_DebugBounds
 //================
 //*/
-//void idThread::Event_DebugBounds( const idVec3 &color, const idVec3 &mins, const idVec3 &maxs, const float lifetime ) {
+//void idThread::Event_DebugBounds( const idVec3 &color, mins:idVec3, maxs:idVec3, const float lifetime ) {
 //	gameRenderWorld->DebugBounds( idVec4( color.x, color.y, color.z, 0.0 ), idBounds( mins, maxs ), vec3_origin, SEC2MS( lifetime ) );
 //}
 //

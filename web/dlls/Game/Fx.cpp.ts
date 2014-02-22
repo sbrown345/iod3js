@@ -97,7 +97,7 @@ class idEntityFx extends idEntity {
 ////	virtual void			ReadFromSnapshot(const idBitMsgDelta &msg);
 ////	virtual void			ClientPredictionThink(void);
 ////
-////	static idEntityFx *		StartFx(const char *fx, const idVec3 *useOrigin, const idMat3 *useAxis, idEntity *ent, bool bind);
+////	static idEntityFx *		StartFx(const char *fx, const idVec3 *useOrigin, const idMat3 *useAxis, ent:idEntity, bool bind);
 ////
 ////protected:
 ////	void					Event_Trigger(idEntity *activator);
@@ -405,7 +405,7 @@ class idEntityFx extends idEntity {
 ////*/
 ////void idEntityFx::Run( int time ) {
 ////	int ieff, j;
-////	idEntity *ent = NULL;
+////	var ent:idEntity = NULL;
 ////	const idDict *projectileDef = NULL;
 ////	idProjectile *projectile = NULL;
 ////
@@ -749,7 +749,7 @@ class idEntityFx extends idEntity {
 ////idEntityFx::StartFx
 ////================
 ////*/
-////idEntityFx *idEntityFx::StartFx( const char *fx, const idVec3 *useOrigin, const idMat3 *useAxis, idEntity *ent, bool bind ) {
+////idEntityFx *idEntityFx::StartFx( const char *fx, const idVec3 *useOrigin, const idMat3 *useAxis, ent:idEntity, bool bind ) {
 ////
 ////	if ( g_skipFX.GetBool() || !fx || !*fx ) {
 ////		return NULL;
@@ -845,7 +845,7 @@ class idEntityFx extends idEntity {
 ////END_CLASS
 ////
 ////
-////class idTeleporter : public idEntityFx {
+////class idTeleporter extends idEntityFx {
 ////public:
 ////	CLASS_PROTOTYPE(idTeleporter);
 ////

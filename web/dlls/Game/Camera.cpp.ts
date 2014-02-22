@@ -71,8 +71,31 @@
 var EV_Camera_SetAttachments = new idEventDef( "<getattachments>", null );
 ////
 ////CLASS_DECLARATION( idCamera, idCameraView )
-////	EVENT( EV_Activate,				idCameraView::Event_Activate )
-////	EVENT( EV_Camera_SetAttachments, idCameraView::Event_SetAttachments )
+idCameraView.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idCameraView;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idCameraView.prototype.GetType = function ( ): idTypeInfo {
+	return ( idCameraView.Type );
+};
+
+idCameraView.eventCallbacks = [
+	EVENT(EV_Activate, idCameraView.prototype.Event_Activate)
+	EVENT(EV_Camera_SetAttachments, idCameraView.prototype.Event_SetAttachments)
+];
+
+idCameraView.Type = new idTypeInfo("idCameraView", "idCamera",
+	idCameraView.eventCallbacks, idCameraView.CreateInstance, idCameraView.prototype.Spawn,
+	idCameraView.prototype.Save, idCameraView.prototype.Restore );
+
+////	
+////	
 ////END_CLASS
 ////
 ////
@@ -199,7 +222,7 @@ var EV_Camera_SetAttachments = new idEventDef( "<getattachments>", null );
 ////	}
 ////
 ////	idVec3 dir;
-////	idEntity *ent;
+////	var ent:idEntity
 ////
 ////	if ( attachedTo ) {
 ////		ent = attachedTo;

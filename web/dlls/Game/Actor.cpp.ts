@@ -484,7 +484,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////*/
 ////idActor::~idActor( void ) {
 ////	int i;
-////	idEntity *ent;
+////	var ent:idEntity
 ////
 ////	DeconstructScriptObject();
 ////	scriptObject.Free();
@@ -1002,7 +1002,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////================
 ////*/
 ////void idActor::Hide( void ) {
-////	idEntity *ent;
+////	ent:idEntity;
 ////	idEntity *next;
 ////
 ////	idAFEntity_Base::Hide();
@@ -1028,7 +1028,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////================
 ////*/
 ////void idActor::Show( void ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idEntity *next;
 ////
 ////	idAFEntity_Base::Show();
@@ -1062,7 +1062,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////================
 ////*/
 ////void idActor::ProjectOverlay( const idVec3 &origin, const idVec3 &dir, float size, const char *material ) {
-////	idEntity *ent;
+////	var ent:idEntity
 ////	idEntity *next;
 ////
 ////	idEntity::ProjectOverlay( origin, dir, size, material );
@@ -1471,7 +1471,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::CanSee
 ////=====================
 ////*/
-////bool idActor::CanSee( idEntity *ent, bool useFov ) const {
+////bool idActor::CanSee( ent:idEntity, bool useFov ) const {
 ////	trace_t		tr;
 ////	idVec3		eye;
 ////	idVec3		toPos;
@@ -1713,7 +1713,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////*/
 ////void idActor::RemoveAttachments( void ) {
 ////	int i;
-////	idEntity *ent;
+////	var ent:idEntity
 ////
 ////	// remove any attached entities
 ////	for( i = 0; i < attachments.Num(); i++ ) {
@@ -1729,7 +1729,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Attach
 ////================
 ////*/
-////void idActor::Attach( idEntity *ent ) {
+////void idActor::Attach( ent:idEntity ) {
 ////	idVec3			origin;
 ////	idMat3			axis;
 ////	jointHandle_t	joint;
@@ -3196,7 +3196,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Event_NextEnemy
 ////================
 ////*/
-////void idActor::Event_NextEnemy( idEntity *ent ) {
+////void idActor::Event_NextEnemy( ent:idEntity ) {
 ////	idActor *actor;
 ////
 ////	if ( !ent || ( ent == this ) ) {

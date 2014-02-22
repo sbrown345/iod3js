@@ -809,7 +809,7 @@
 //idInterpreter::BeginMultiFrameEvent
 //================
 //*/
-//bool idInterpreter::BeginMultiFrameEvent( idEntity *ent, const idEventDef *event ) { 
+//bool idInterpreter::BeginMultiFrameEvent( ent:idEntity, const idEventDef *event ) { 
 //	if ( eventEntity != ent ) {
 //		Error( "idInterpreter::BeginMultiFrameEvent called with wrong entity" );
 //	}
@@ -829,7 +829,7 @@
 //idInterpreter::EndMultiFrameEvent
 //================
 //*/
-//void idInterpreter::EndMultiFrameEvent( idEntity *ent, const idEventDef *event ) {
+//void idInterpreter::EndMultiFrameEvent( ent:idEntity, const idEventDef *event ) {
 //	if ( multiFrameEvent != event ) {
 //		Error( "idInterpreter::EndMultiFrameEvent called with wrong event" );
 //	}

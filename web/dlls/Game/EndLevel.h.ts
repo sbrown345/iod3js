@@ -26,7 +26,7 @@
 ////===========================================================================
 ////*/
 ////
-////class idTarget_EndLevel : public idEntity {
+////class idTarget_EndLevel extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idTarget_EndLevel );
 ////

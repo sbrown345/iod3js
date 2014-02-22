@@ -42,7 +42,7 @@
 ////===============================================================================
 ////*/
 
-////class idMover : public idEntity {
+////class idMover extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idMover );
 
@@ -195,7 +195,7 @@
 ////	void					Event_IsRotating( void ): void { throw "placeholder"; }
 ////};
 
-////class idSplinePath : public idEntity {
+////class idSplinePath extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idSplinePath );
 
@@ -211,7 +211,7 @@
 ////	int						floor;
 ////};
 
-////class idElevator : public idMover {
+////class idElevator extends idMover {
 ////public:
 ////	CLASS_PROTOTYPE( idElevator );
 
@@ -280,7 +280,7 @@
 ////	MOVER_2TO1
 ////} moverState_t;
 
-////class idMover_Binary : public idEntity {
+////class idMover_Binary extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idMover_Binary );
 
@@ -367,7 +367,7 @@
 ////	static void				GetMovedir( float dir, idVec3 &movedir );
 ////};
 
-////class idDoor : public idMover_Binary {
+////class idDoor extends idMover_Binary {
 ////public:
 ////	CLASS_PROTOTYPE( idDoor );
 
@@ -434,7 +434,7 @@
 ////	void					Event_ClosePortal( void ): void { throw "placeholder"; }
 ////};
 
-////class idPlat : public idMover_Binary {
+////class idPlat extends idMover_Binary {
 ////public:
 ////	CLASS_PROTOTYPE( idPlat );
 
@@ -472,7 +472,7 @@
 ////===============================================================================
 ////*/
 
-////class idMover_Periodic : public idEntity {
+////class idMover_Periodic extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idMover_Periodic );
 
@@ -496,7 +496,7 @@
 ////	void					Event_PartBlocked( idEntity *blockingEntity ): void { throw "placeholder"; }
 ////};
 
-////class idRotater : public idMover_Periodic {
+////class idRotater extends idMover_Periodic {
 ////public:
 ////	CLASS_PROTOTYPE( idRotater );
 
@@ -513,7 +513,7 @@
 ////	void					Event_Activate( idEntity *activator );
 ////};
 
-////class idBobber : public idMover_Periodic {
+////class idBobber extends idMover_Periodic {
 ////public:
 ////	CLASS_PROTOTYPE( idBobber );
 
@@ -524,7 +524,7 @@
 ////private:
 ////};
 
-////class idPendulum : public idMover_Periodic {
+////class idPendulum extends idMover_Periodic {
 ////public:
 ////	CLASS_PROTOTYPE( idPendulum );
 
@@ -535,7 +535,7 @@
 ////private:
 ////};
 
-////class idRiser : public idMover_Periodic {
+////class idRiser extends idMover_Periodic {
 ////public:
 ////	CLASS_PROTOTYPE( idRiser );
 

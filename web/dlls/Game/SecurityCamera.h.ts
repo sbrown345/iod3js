@@ -38,7 +38,7 @@
 ////*/
 ////
 ////
-////class idSecurityCamera : public idEntity {
+////class idSecurityCamera extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idSecurityCamera );
 ////

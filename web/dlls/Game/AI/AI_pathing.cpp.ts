@@ -1028,7 +1028,7 @@
 ////  Returns true if a stop event was triggered.
 ////============
 ////*/
-////bool PathTrace( const idEntity *ent, const idAAS *aas, const idVec3 &start, const idVec3 &end, int stopEvent, struct pathTrace_s &trace, predictedPath_t &path ) {
+////bool PathTrace( const ent:idEntity, const idAAS *aas, const idVec3 &start, const idVec3 &end, int stopEvent, struct pathTrace_s &trace, predictedPath_t &path ) {
 ////	trace_t clipTrace;
 ////	aasTrace_t aasTrace;
 ////
@@ -1116,7 +1116,7 @@
 ////  Can also be used when there is no AAS file available however ledges are not detected.
 ////============
 ////*/
-////bool idAI::PredictPath( const idEntity *ent, const idAAS *aas, const idVec3 &start, const idVec3 &velocity, int totalTime, int frameTime, int stopEvent, predictedPath_t &path ) {
+////bool idAI::PredictPath( const ent:idEntity, const idAAS *aas, const idVec3 &start, const idVec3 &velocity, int totalTime, int frameTime, int stopEvent, predictedPath_t &path ) {
 ////	int i, j, step, numFrames, curFrameTime;
 ////	idVec3 delta, curStart, curEnd, curVelocity, lastEnd, stepUp, tmpStart;
 ////	idVec3 gravity, gravityDir, invGravityDir;
@@ -1290,7 +1290,7 @@
 ////	float				time;		// time it takes before the projectile arrives
 ////} ballistics_t;
 ////
-////static int Ballistics( const idVec3 &start, const idVec3 &end, float speed, float gravity, ballistics_t bal[2] ) {
+////static int Ballistics( const idVec3 &start, const idVec3 &end, /*float*/ speed:number, float gravity, ballistics_t bal[2] ) {
 ////	int n, i;
 ////	float x, y, a, b, c, d, sqrtd, inva, p[2];
 ////
