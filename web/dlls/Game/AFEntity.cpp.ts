@@ -1012,7 +1012,7 @@ var BOUNCE_SOUND_MAX_VELOCITY	= 200.0;
 ////idAFEntity_Base::Event_SetConstraintPosition
 ////================
 ////*/
-////void idAFEntity_Base::Event_SetConstraintPosition( name:string, const idVec3 &pos ) {
+////void idAFEntity_Base::Event_SetConstraintPosition( name:string, pos:idVec3 ) {
 ////	af.SetConstraintPosition( name, pos );
 ////}
 ////

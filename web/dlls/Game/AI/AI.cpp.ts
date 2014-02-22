@@ -1333,7 +1333,7 @@
 ////idAI::ReachedPos
 ////=====================
 ////*/
-////bool idAI::ReachedPos( const idVec3 &pos, const moveCommand_t moveCommand ) const {
+////bool idAI::ReachedPos( pos:idVec3, const moveCommand_t moveCommand ) const {
 ////	if ( move.moveType == MOVETYPE_SLIDE ) {
 ////		idBounds bnds( idVec3( -4, -4.0f, -8.0f ), idVec3( 4.0f, 4.0f, 64.0f ) );
 ////		bnds.TranslateSelf( physicsObj.GetOrigin() );	
@@ -1361,7 +1361,7 @@
 ////idAI::PointReachableAreaNum
 ////=====================
 ////*/
-////int idAI::PointReachableAreaNum( const idVec3 &pos, const float boundsScale ) const {
+////int idAI::PointReachableAreaNum( pos:idVec3, const float boundsScale ) const {
 ////	int areaNum;
 ////	idVec3 size;
 ////	idBounds bounds;
@@ -1571,7 +1571,7 @@
 ////idAI::DirectMoveToPosition
 ////=====================
 ////*/
-////bool idAI::DirectMoveToPosition( const idVec3 &pos ) {
+////bool idAI::DirectMoveToPosition( pos:idVec3 ) {
 ////	if ( ReachedPos( pos, move.moveCommand ) ) {
 ////		StopMove( MOVE_STATUS_DONE );
 ////		return true;
@@ -1880,7 +1880,7 @@
 ////idAI::MoveToPosition
 ////=====================
 ////*/
-////bool idAI::MoveToPosition( const idVec3 &pos ) {
+////bool idAI::MoveToPosition( pos:idVec3 ) {
 ////	idVec3		org;
 ////	int			areaNum;
 ////	aasPath_t	path;
@@ -1977,7 +1977,7 @@
 ////idAI::SlideToPosition
 ////=====================
 ////*/
-////bool idAI::SlideToPosition( const idVec3 &pos, float time ) {
+////bool idAI::SlideToPosition( pos:idVec3, float time ) {
 ////	StopMove( MOVE_STATUS_DONE );
 ////
 ////	move.moveDest		= pos;
@@ -2291,7 +2291,7 @@
 ////idAI::EntityCanSeePos
 ////=====================
 ////*/
-////bool idAI::EntityCanSeePos( idActor *actor, const idVec3 &actorOrigin, const idVec3 &pos ) {
+////bool idAI::EntityCanSeePos( idActor *actor, const idVec3 &actorOrigin, pos:idVec3 ) {
 ////	idVec3 eye, point;
 ////	trace_t results;
 ////	pvsHandle_t handle;
@@ -2467,7 +2467,7 @@
 ////idAI::TurnToward
 ////=====================
 ////*/
-////bool idAI::TurnToward( const idVec3 &pos ) {
+////bool idAI::TurnToward( pos:idVec3 ) {
 ////	idVec3 dir;
 ////	idVec3 local_dir;
 ////	float lengthSqr;
@@ -4042,7 +4042,7 @@
 ////idAI::CreateProjectile
 ////=====================
 ////*/
-////idProjectile *idAI::CreateProjectile( const idVec3 &pos, const idVec3 &dir ) {
+////idProjectile *idAI::CreateProjectile( pos:idVec3, const idVec3 &dir ) {
 ////	var ent:idEntity
 ////	const char *clsname;
 ////
@@ -4082,7 +4082,7 @@
 ////idAI::LaunchProjectile
 ////=====================
 ////*/
-////idProjectile *idAI::LaunchProjectile( const char *jointname, idEntity *target, bool clampToAttackCone ) {
+////idProjectile *idAI::LaunchProjectile( jointname:string, idEntity *target, bool clampToAttackCone ) {
 ////	idVec3				muzzle;
 ////	idVec3				dir;
 ////	idVec3				start;
@@ -4458,7 +4458,7 @@
 ////idAI::GetMuzzle
 ////================
 ////*/
-////void idAI::GetMuzzle( const char *jointname, idVec3 &muzzle, idMat3 &axis ) {
+////void idAI::GetMuzzle( jointname:string, idVec3 &muzzle, idMat3 &axis ) {
 ////	jointHandle_t joint;
 ////
 ////	if ( !jointname || !jointname[ 0 ] ) {
@@ -5074,7 +5074,7 @@ idCombatNode.Type = new idTypeInfo( "idCombatNode", "idEntity",
 ////idCombatNode::EntityInView
 ////=====================
 ////*/
-////bool idCombatNode::EntityInView( idActor *actor, const idVec3 &pos ) {
+////bool idCombatNode::EntityInView( idActor *actor, pos:idVec3 ) {
 ////	if ( !actor || ( actor->health <= 0 ) ) {
 ////		return false;
 ////	}

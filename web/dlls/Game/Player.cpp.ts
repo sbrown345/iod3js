@@ -4830,7 +4830,7 @@ var EV_Player_GetIdealWeapon = new idEventDef( "getIdealWeapon", null, 's' );
 ////idPlayer::UpdateDeltaViewAngles
 ////================
 ////*/
-////void idPlayer::UpdateDeltaViewAngles( const idAngles &angles ) {
+////void idPlayer::UpdateDeltaViewAngles( angles:idAngles ) {
 ////	// set the delta angle
 ////	idAngles delta;
 ////	for( int i = 0; i < 3; i++ ) {
@@ -4844,7 +4844,7 @@ var EV_Player_GetIdealWeapon = new idEventDef( "getIdealWeapon", null, 's' );
 ////idPlayer::SetViewAngles
 ////================
 ////*/
-////void idPlayer::SetViewAngles( const idAngles &angles ) {
+////void idPlayer::SetViewAngles( angles:idAngles ) {
 ////	UpdateDeltaViewAngles( angles );
 ////	viewAngles = angles;
 ////}
@@ -6861,7 +6861,7 @@ var EV_Player_GetIdealWeapon = new idEventDef( "getIdealWeapon", null, 's' );
 ////idPlayer::Teleport
 ////============
 ////*/
-////void idPlayer::Teleport( const idVec3 &origin, const idAngles &angles, idEntity *destination ) {
+////void idPlayer::Teleport( const idVec3 &origin, angles:idAngles, idEntity *destination ) {
 ////	idVec3 org;
 ////
 ////	if ( weapon.GetEntity() ) {

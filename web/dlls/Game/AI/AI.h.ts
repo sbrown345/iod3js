@@ -246,11 +246,11 @@ class idAI extends idActor {
 //Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 ////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
-////	void					Spawn( void );
+////	void					Spawn( );
 ////	void					HeardSound( idEntity *ent, const char *action );
-////	idActor					*GetEnemy( void ) const;
+////	idActor					*GetEnemy( ) const;
 ////	void					TalkTo( idActor *actor );
-////	talkState_t				GetTalkState( void ) const;
+////	talkState_t				GetTalkState( ) const;
 ////
 ////	bool					GetAimDir( const idVec3 &firePos, idEntity *aimAtEnt, const idEntity *ignore, idVec3 &aimDir ) const;
 ////
@@ -262,7 +262,7 @@ class idAI extends idActor {
 ////							// Finds a path around dynamic obstacles.
 ////	static bool				FindPathAroundObstacles( const idPhysics *physics, const idAAS *aas, const idEntity *ignore, const idVec3 &startPos, const idVec3 &seekPos, obstaclePath_t &path );
 ////							// Frees any nodes used for the dynamic obstacle avoidance.
-////	static void				FreeObstacleAvoidanceNodes( void );
+////	static void				FreeObstacleAvoidanceNodes( );
 ////							// Predicts movement, returns true if a stop event was triggered.
 ////	static bool				PredictPath( const idEntity *ent, const idAAS *aas, const idVec3 &start, const idVec3 &velocity, int totalTime, int frameTime, int stopEvent, predictedPath_t &path );
 ////							// Return true if the trajectory of the clip model is collision free.
@@ -416,19 +416,19 @@ class idAI extends idActor {
 ////	//
 ////	// ai/ai.cpp
 ////	//
-////	void					SetAAS( void );
-////	virtual	void			DormantBegin( void );	// called when entity becomes dormant
-////	virtual	void			DormantEnd( void );		// called when entity wakes from being dormant
-////	void					Think( void );
+////	void					SetAAS( );
+////	virtual	void			DormantBegin( );	// called when entity becomes dormant
+////	virtual	void			DormantEnd( );		// called when entity wakes from being dormant
+////	void					Think( );
 ////	void					Activate( activator:idEntity );
 ////	int						ReactionTo( const idEntity *ent );
-////	bool					CheckForEnemy( void );
-////	void					EnemyDead( void );
-////	virtual bool			CanPlayChatterSounds( void ) const;
-////	void					SetChatSound( void );
-////	void					PlayChatter( void );
-////	virtual void			Hide( void );
-////	virtual void			Show( void );
+////	bool					CheckForEnemy( );
+////	void					EnemyDead( );
+////	virtual bool			CanPlayChatterSounds( ) const;
+////	void					SetChatSound( );
+////	void					PlayChatter( );
+////	virtual void			Hide( );
+////	virtual void			Show( );
 ////	idVec3					FirstVisiblePointOnPath( const idVec3 origin, const idVec3 &target, int travelFlags ) const;
 ////	void					CalculateAttackOffsets( void );
 ////	void					PlayCinematic( void );
@@ -455,29 +455,29 @@ class idAI extends idActor {
 ////
 ////	// navigation
 ////	void					KickObstacles( const idVec3 &dir, float force, idEntity *alwaysKick );
-////	bool					ReachedPos( const idVec3 &pos, const moveCommand_t moveCommand ) const;
+////	bool					ReachedPos( pos:idVec3, const moveCommand_t moveCommand ) const;
 ////	float					TravelDistance( const idVec3 &start, const idVec3 &end ) const;
-////	int						PointReachableAreaNum( const idVec3 &pos, const float boundsScale = 2.0f ) const;
+////	int						PointReachableAreaNum( pos:idVec3, const float boundsScale = 2.0f ) const;
 ////	bool					PathToGoal( aasPath_t &path, int areaNum, const idVec3 &origin, int goalAreaNum, const idVec3 &goalOrigin ) const;
 ////	void					DrawRoute( void ) const;
 ////	bool					GetMovePos( idVec3 &seekPos );
 ////	bool					MoveDone( void ) const;
-////	bool					EntityCanSeePos( idActor *actor, const idVec3 &actorOrigin, const idVec3 &pos );
+////	bool					EntityCanSeePos( idActor *actor, const idVec3 &actorOrigin, pos:idVec3 );
 ////	void					BlockedFailSafe( void );
 ////
 ////	// movement control
 ////	void					StopMove( moveStatus_t status );
 ////	bool					FaceEnemy( void );
 ////	bool					FaceEntity( idEntity *ent );
-////	bool					DirectMoveToPosition( const idVec3 &pos );
+////	bool					DirectMoveToPosition( pos:idVec3 );
 ////	bool					MoveToEnemyHeight( void );
 ////	bool					MoveOutOfRange( idEntity *entity, float range );
 ////	bool					MoveToAttackPosition( idEntity *ent, int attack_anim );
 ////	bool					MoveToEnemy( void );
 ////	bool					MoveToEntity( idEntity *ent );
-////	bool					MoveToPosition( const idVec3 &pos );
-////	bool					MoveToCover( idEntity *entity, const idVec3 &pos );
-////	bool					SlideToPosition( const idVec3 &pos, float time );
+////	bool					MoveToPosition( pos:idVec3 );
+////	bool					MoveToCover( idEntity *entity, pos:idVec3 );
+////	bool					SlideToPosition( pos:idVec3, float time );
 ////	bool					WanderAround( void );
 ////	bool					StepDirection( float dir );
 ////	bool					NewWanderDir( const idVec3 &dest );
@@ -491,7 +491,7 @@ class idAI extends idActor {
 ////	bool					FacingIdeal( void );
 ////	void					Turn( void );
 ////	bool					TurnToward( float yaw );
-////	bool					TurnToward( const idVec3 &pos );
+////	bool					TurnToward( pos:idVec3 );
 ////
 ////	// enemy management
 ////	void					ClearEnemy( void );
@@ -502,9 +502,9 @@ class idAI extends idActor {
 ////
 ////	// attacks
 ////	void					CreateProjectileClipModel( void ) const;
-////	idProjectile			*CreateProjectile( const idVec3 &pos, const idVec3 &dir );
+////	idProjectile			*CreateProjectile( pos:idVec3, const idVec3 &dir );
 ////	void					RemoveProjectile( void );
-////	idProjectile			*LaunchProjectile( const char *jointname, idEntity *target, bool clampToAttackCone );
+////	idProjectile			*LaunchProjectile( jointname:string, idEntity *target, bool clampToAttackCone );
 ////	virtual void			DamageFeedback( idEntity *victim, idEntity *inflictor, int &damage );
 ////	void					DirectDamage( const char *meleeDefName, idEntity *ent );
 ////	bool					TestMelee( void ) const;
@@ -514,17 +514,17 @@ class idAI extends idActor {
 ////	void					PushWithAF( void );
 ////
 ////	// special effects
-////	void					GetMuzzle( const char *jointname, idVec3 &muzzle, idMat3 &axis );
-////	void					InitMuzzleFlash( void );
+////	void					GetMuzzle( jointname:string, idVec3 &muzzle, idMat3 &axis );
+////	void					InitMuzzleFlash( );
 ////	void					TriggerWeaponEffects( const idVec3 &muzzle );
-////	void					UpdateMuzzleFlash( void );
-////	virtual bool			UpdateAnimationControllers( void );
-////	void					UpdateParticles( void );
+////	void					UpdateMuzzleFlash( );
+////	virtual bool			UpdateAnimationControllers( );
+////	void					UpdateParticles( );
 ////	void					TriggerParticles( const char *jointName );
 ////
 ////	// AI script state management
-////	void					LinkScriptVariables( void );
-////	void					UpdateAIScript( void );
+////	void					LinkScriptVariables( );
+////	void					UpdateAIScript( );
 ////
 ////	//
 ////	// ai/ai_events.cpp
@@ -672,10 +672,10 @@ class idCombatNode extends idEntity {
 	//void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 	//void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 
-	//void				Spawn( void );
-	//bool				IsDisabled( void ) const;
-	//bool				EntityInView( idActor *actor, const idVec3 &pos );
-	//static void			DrawDebugInfo( void );
+	//Spawn():void{throw "placeholder";}
+	//bool				IsDisabled( ) const;
+	//bool				EntityInView( idActor *actor, pos:idVec3 );
+	//static void			DrawDebugInfo( );
 
 //private:
 	//float				min_dist;

@@ -54,7 +54,7 @@
 
 class idBrittleFracture extends idEntity {
 
-public:
+//public:
 ////	CLASS_PROTOTYPE( idBrittleFracture );
 	static Type: idTypeInfo;
 	static CreateInstance ( ): idClass { throw "placeholder"; }
@@ -70,7 +70,7 @@ public:
 ////	void						Spawn( void );
 
 ////	virtual void				Present( void );
-////	virtual void				Think( void );
+////	Think():void{throw "placeholder";}
 ////	virtual void				ApplyImpulse( idEntity *ent, int id, const idVec3 &point, const idVec3 &impulse );
 ////	virtual void				AddForce( idEntity *ent, int id, const idVec3 &point, const idVec3 &force );
 ////	virtual void				AddDamageEffect( const trace_t &collision, const idVec3 &velocity, const char *damageDefName );

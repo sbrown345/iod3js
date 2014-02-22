@@ -163,9 +163,9 @@ class idEntity extends idClass {
 	Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 	Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
-////	const char *			GetEntityDefName( void ) const;
+////	const char *			GetEntityDefName( ) const;
 	SetName ( name: string ): void { throw "placeholder"; }
-////	const char *			GetName( void ) const;
+////	const char *			GetName( ) const;
 ////	virtual void			UpdateChangeableSpawnArgs( const idDict *source );
 ////
 ////							// clients generate views based on all the player specific options,
@@ -173,77 +173,77 @@ class idEntity extends idClass {
 ////	virtual renderView_t *	GetRenderView();
 ////
 ////	// thinking
-////	virtual void			Think( void );
-////	bool					CheckDormant( void );	// dormant == on the active list, but out of PVS
-////	virtual	void			DormantBegin( void );	// called when entity becomes dormant
-////	virtual	void			DormantEnd( void );		// called when entity wakes from being dormant
-////	bool					IsActive( void ) const;
+////	virtual void			Think( );
+////	bool					CheckDormant( );	// dormant == on the active list, but out of PVS
+////	virtual	void			DormantBegin( );	// called when entity becomes dormant
+////	virtual	void			DormantEnd( );		// called when entity wakes from being dormant
+////	bool					IsActive( ) const;
 ////	void					BecomeActive( int flags );
 ////	void					BecomeInactive( int flags );
-////	void					UpdatePVSAreas( const idVec3 &pos );
+////	void					UpdatePVSAreas( pos:idVec3 );
 ////
 ////	// visuals
-////	virtual void			Present( void );
-////	virtual renderEntity_t *GetRenderEntity( void );
-////	virtual int				GetModelDefHandle( void );
+////	virtual void			Present( );
+////	virtual renderEntity_t *GetRenderEntity( );
+////	virtual int				GetModelDefHandle( );
 ////	virtual void			SetModel( const char *modelname );
 ////	void					SetSkin( const idDeclSkin *skin );
-////	const idDeclSkin *		GetSkin( void ) const;
+////	const idDeclSkin *		GetSkin( ) const;
 ////	void					SetShaderParm( int parmnum, float value );
 ////	virtual void			SetColor( float red, float green, float blue );
 ////	virtual void			SetColor( const idVec3 &color );
 ////	virtual void			GetColor( idVec3 &out ) const;
 ////	virtual void			SetColor( const idVec4 &color );
 ////	virtual void			GetColor( idVec4 &out ) const;
-////	virtual void			FreeModelDef( void );
-////	virtual void			FreeLightDef( void );
-////	virtual void			Hide( void );
-////	virtual void			Show( void );
-////	bool					IsHidden( void ) const;
-////	void					UpdateVisuals( void );
-////	void					UpdateModel( void );
-////	void					UpdateModelTransform( void );
+////	virtual void			FreeModelDef( );
+////	virtual void			FreeLightDef( );
+////	virtual void			Hide( );
+////	virtual void			Show( );
+////	bool					IsHidden( ) const;
+////	void					UpdateVisuals( );
+////	void					UpdateModel( );
+////	void					UpdateModelTransform( );
 ////	virtual void			ProjectOverlay( const idVec3 &origin, const idVec3 &dir, float size, const char *material );
-////	int						GetNumPVSAreas( void );
-////	const int *				GetPVSAreas( void );
-////	void					ClearPVSAreas( void );
+////	int						GetNumPVSAreas( );
+////	const int *				GetPVSAreas( );
+////	void					ClearPVSAreas( );
 ////	bool					PhysicsTeamInPVS( pvsHandle_t pvsHandle );
 ////
 ////	// animation
-////	virtual bool			UpdateAnimationControllers( void );
+////	virtual bool			UpdateAnimationControllers( );
 ////	bool					UpdateRenderEntity( renderEntity_s *renderEntity, const renderView_t *renderView );
 ////	static bool				ModelCallback( renderEntity_s *renderEntity, const renderView_t *renderView );
-////	virtual idAnimator *	GetAnimator( void );	// returns animator object used by this entity
+////	virtual idAnimator *	GetAnimator( );	// returns animator object used by this entity
 ////
 ////	// sound
-////	virtual bool			CanPlayChatterSounds( void ) const;
+////	virtual bool			CanPlayChatterSounds( ) const;
 ////	bool					StartSound( const char *soundName, const s_channelType channel, int soundShaderFlags, bool broadcast, int *length );
 ////	bool					StartSoundShader( const idSoundShader *shader, const s_channelType channel, int soundShaderFlags, bool broadcast, int *length );
 ////	void					StopSound( const s_channelType channel, bool broadcast );	// pass SND_CHANNEL_ANY to stop all sounds
 ////	void					SetSoundVolume( float volume );
-////	void					UpdateSound( void );
-////	int						GetListenerId( void ) const;
-////	idSoundEmitter *		GetSoundEmitter( void ) const;
+////	void					UpdateSound( );
+////	int						GetListenerId( ) const;
+////	idSoundEmitter *		GetSoundEmitter( ) const;
 ////	void					FreeSoundEmitter( bool immediate );
 ////
 ////	// entity binding
-////	virtual void			PreBind( void );
-////	virtual void			PostBind( void );
-////	virtual void			PreUnbind( void );
-////	virtual void			PostUnbind( void );
+////	virtual void			PreBind( );
+////	virtual void			PostBind( );
+////	virtual void			PreUnbind( );
+////	virtual void			PostUnbind( );
 ////	void					JoinTeam( idEntity *teammember );
 ////	void					Bind( idEntity *master, bool orientated );
-////	void					BindToJoint( idEntity *master, const char *jointname, bool orientated );
-////	void					BindToJoint( idEntity *master, jointHandle_t jointnum, bool orientated );
+////	void					BindToJoint( idEntity *master, jointname:string, bool orientated );
+////	void					BindToJoint( idEntity *master, jointnum:jointHandle_t, bool orientated );
 ////	void					BindToBody( idEntity *master, int bodyId, bool orientated );
-////	void					Unbind( void );
-////	bool					IsBound( void ) const;
+////	void					Unbind( );
+////	bool					IsBound( ) const;
 ////	bool					IsBoundTo( idEntity *master ) const;
-////	idEntity *				GetBindMaster( void ) const;
-////	jointHandle_t			GetBindJoint( void ) const;
-////	int						GetBindBody( void ) const;
-////	idEntity *				GetTeamMaster( void ) const;
-////	idEntity *				GetNextTeamEntity( void ) const;
+////	idEntity *				GetBindMaster( ) const;
+////	jointHandle_t			GetBindJoint( ) const;
+////	int						GetBindBody( ) const;
+////	idEntity *				GetTeamMaster( ) const;
+////	idEntity *				GetNextTeamEntity( ) const;
 ////	void					ConvertLocalToWorldTransform( idVec3 &offset, idMat3 &axis );
 ////	idVec3					GetLocalVector( const idVec3 &vec ) const;
 ////	idVec3					GetLocalCoordinates( const idVec3 &vec ) const;
@@ -256,11 +256,11 @@ class idEntity extends idClass {
 ////							// set a new physics object to be used by this entity
 ////	void					SetPhysics( idPhysics *phys );
 ////							// get the physics object used by this entity
-////	idPhysics *				GetPhysics( void ) const;
+////	idPhysics *				GetPhysics( ) const;
 ////							// restore physics pointer for save games
 ////	void					RestorePhysics( idPhysics *phys );
 ////							// run the physics for this entity
-////	bool					RunPhysics( void );
+////	bool					RunPhysics( );
 ////							// set the origin of the physics object (relative to bindMaster if not NULL)
 ////	void					SetOrigin( const idVec3 &org );
 ////							// set the axis of the physics object (relative to bindMaster if not NULL)
@@ -284,9 +284,9 @@ class idEntity extends idClass {
 ////							// activate the physics object, 'ent' is the entity activating this entity
 ////	virtual void			ActivatePhysics( idEntity *ent );
 ////							// returns true if the physics object is at rest
-////	virtual bool			IsAtRest( void ) const;
+////	virtual bool			IsAtRest( ) const;
 ////							// returns the time the physics object came to rest
-////	virtual int				GetRestStartTime( void ) const;
+////	virtual int				GetRestStartTime( ) const;
 ////							// add a contact entity
 ////	virtual void			AddContactEntity( idEntity *ent );
 ////							// remove a touching entity
@@ -307,9 +307,9 @@ class idEntity extends idClass {
 ////	virtual void			Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location );
 ////
 ////	// scripting
-////	virtual bool			ShouldConstructScriptObjectAtSpawn( void ) const;
-////	virtual idThread *		ConstructScriptObject( void );
-////	virtual void			DeconstructScriptObject( void );
+////	virtual bool			ShouldConstructScriptObjectAtSpawn( ) const;
+////	virtual idThread *		ConstructScriptObject( );
+////	virtual void			DeconstructScriptObject( );
 ////	void					SetSignal( signalNum_t signalnum, idThread *thread, const function_t *function );
 ////	void					ClearSignal( idThread *thread, signalNum_t signalnum );
 ////	void					ClearSignalThread( signalNum_t signalnum, idThread *thread );
@@ -318,20 +318,20 @@ class idEntity extends idClass {
 ////	void					SignalEvent( idThread *thread, signalNum_t signalnum );
 ////
 ////	// gui
-////	void					TriggerGuis( void );
+////	void					TriggerGuis( );
 ////	bool					HandleGuiCommands( idEntity *entityGui, const char *cmds );
 ////	virtual bool			HandleSingleGuiCommand( idEntity *entityGui, idLexer *src );
 ////
 ////	// targets
-////	void					FindTargets( void );
-////	void					RemoveNullTargets( void );
+////	void					FindTargets( );
+////	void					RemoveNullTargets( );
 ////	void					ActivateTargets( activator:idEntity ) const;
 ////
 ////	// misc
-////	virtual void			Teleport( const idVec3 &origin, const idAngles &angles, idEntity *destination );
-////	bool					TouchTriggers( void ) const;
-////	idCurve_Spline<idVec3> *GetSpline( void ) const;
-////	virtual void			ShowEditingDialog( void );
+////	virtual void			Teleport( const idVec3 &origin, angles:idAngles, idEntity *destination );
+////	bool					TouchTriggers( ) const;
+////	idCurve_Spline<idVec3> *GetSpline( ) const;
+////	virtual void			ShowEditingDialog( );
 ////
 ////	enum {
 ////		EVENT_STARTSOUNDSHADER,
@@ -339,7 +339,7 @@ class idEntity extends idClass {
 ////		EVENT_MAXEVENTS
 ////	};
 ////
-////	virtual void			ClientPredictionThink( void );
+////	virtual void			ClientPredictionThink( );
 ////	virtual void			WriteToSnapshot( idBitMsgDelta &msg ) const;
 ////	virtual void			ReadFromSnapshot( const idBitMsgDelta &msg );
 ////	virtual bool			ServerReceiveEvent( int event, int time, const idBitMsg &msg );
@@ -379,7 +379,7 @@ class idEntity extends idClass {
 ////private:
 ////	void					FixupLocalizedStrings();
 ////
-////	bool					DoDormantTests( void );				// dormant == on the active list, but out of PVS
+////	bool					DoDormantTests( );				// dormant == on the active list, but out of PVS
 ////
 ////	// physics
 ////							// initialize the default physics
@@ -389,11 +389,11 @@ class idEntity extends idClass {
 ////
 ////	// entity binding
 ////	bool					InitBind( idEntity *master );		// initialize an entity binding
-////	void					FinishBind( void );					// finish an entity binding
-////	void					RemoveBinds( void );				// deletes any entities bound to this object
-////	void					QuitTeam( void );					// leave the current team
+////	void					FinishBind( );					// finish an entity binding
+////	void					RemoveBinds( );				// deletes any entities bound to this object
+////	void					QuitTeam( );					// leave the current team
 ////
-////	void					UpdatePVSAreas( void );
+////	void					UpdatePVSAreas( );
 ////
 ////	// events
 	Event_GetName ( ): void { throw "placeholder"; }
@@ -489,21 +489,21 @@ class idAnimatedEntity extends idEntity {
 //Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 ////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
-////	virtual void			ClientPredictionThink( void );
-////	virtual void			Think( void );
+////	virtual void			ClientPredictionThink( );
+////	virtual void			Think( );
 ////
-////	void					UpdateAnimation( void );
+////	void					UpdateAnimation( );
 ////
-////	virtual idAnimator *	GetAnimator( void );
+////	virtual idAnimator *	GetAnimator( );
 ////	virtual void			SetModel( const char *modelname );
 ////
 ////	bool					GetJointWorldTransform( jointHandle_t jointHandle, int currentTime, idVec3 &offset, idMat3 &axis );
 ////	bool					GetJointTransformForAnim( jointHandle_t jointHandle, int animNum, int currentTime, idVec3 &offset, idMat3 &axis ) const;
 ////
-////	virtual int				GetDefaultSurfaceType( void ) const;
+////	virtual int				GetDefaultSurfaceType( ) const;
 ////	virtual void			AddDamageEffect( const trace_t &collision, const idVec3 &velocity, const char *damageDefName );
 ////	void					AddLocalDamageEffect( jointHandle_t jointNum, const idVec3 &localPoint, const idVec3 &localNormal, const idVec3 &localDir, const idDeclEntityDef *def, const idMaterial *collisionMaterial );
-////	void					UpdateDamageEffects( void );
+////	void					UpdateDamageEffects( );
 ////
 ////	virtual bool			ClientReceiveEvent( int event, int time, const idBitMsg &msg );
 ////
@@ -516,14 +516,14 @@ class idAnimatedEntity extends idEntity {
 ////	idAnimator				animator;
 ////	damageEffect_t *		damageEffects;
 ////
-////private:
-////	void					Event_GetJointHandle( const char *jointname ): void { throw "placeholder"; }
-////	void 					Event_ClearAllJoints( void ): void { throw "placeholder"; }
-////	void 					Event_ClearJoint( jointHandle_t jointnum ): void { throw "placeholder"; }
-////	void 					Event_SetJointPos( jointHandle_t jointnum, jointModTransform_t transform_type, const idVec3 &pos ): void { throw "placeholder"; }
-////	void 					Event_SetJointAngle( jointHandle_t jointnum, jointModTransform_t transform_type, const idAngles &angles ): void { throw "placeholder"; }
-////	void 					Event_GetJointPos( jointHandle_t jointnum ): void { throw "placeholder"; }
-////	void 					Event_GetJointAngle( jointHandle_t jointnum ): void { throw "placeholder"; }
+//private:
+	Event_GetJointHandle( jointname:string ): void { throw "placeholder"; }
+	Event_ClearAllJoints( ): void { throw "placeholder"; }
+	Event_ClearJoint( jointnum:jointHandle_t ): void { throw "placeholder"; }
+	Event_SetJointPos( jointnum:jointHandle_t, transform_type:jointModTransform_t, pos:idVec3 ): void { throw "placeholder"; }
+	Event_SetJointAngle( jointnum:jointHandle_t, transform_type:jointModTransform_t, angles:idAngles ): void { throw "placeholder"; }
+	Event_GetJointPos( jointnum:jointHandle_t ): void { throw "placeholder"; }
+	Event_GetJointAngle( jointnum:jointHandle_t ): void { throw "placeholder"; }
 };
 ////
 ////#endif /* !__GAME_ENTITY_H__ */

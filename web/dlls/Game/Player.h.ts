@@ -357,10 +357,10 @@
 ////	bool					SkipCinematic( void );
 ////
 ////	void					UpdateConditions( void );
-////	void					SetViewAngles( const idAngles &angles );
+////	void					SetViewAngles( angles:idAngles );
 ////
 ////							// delta view angles to allow movers to rotate the view of the player
-////	void					UpdateDeltaViewAngles( const idAngles &angles );
+////	void					UpdateDeltaViewAngles( angles:idAngles );
 ////
 ////	virtual bool			Collide( const trace_t &collision, const idVec3 &velocity );
 ////
@@ -372,7 +372,7 @@
 ////	virtual	void			Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &dir, const char *damageDefName, const float damageScale, const int location );
 ////
 ////							// use exitEntityNum to specify a teleport with private camera view and delayed exit
-////	virtual void			Teleport( const idVec3 &origin, const idAngles &angles, idEntity *destination );
+////	virtual void			Teleport( const idVec3 &origin, angles:idAngles, idEntity *destination );
 ////
 ////	void					Kill( bool delayRespawn, bool nodamage );
 ////	virtual void			Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location );

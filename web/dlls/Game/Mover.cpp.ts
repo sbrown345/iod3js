@@ -1077,7 +1077,7 @@ var EV_IsRotating = new idEventDef( "isRotating", null, 'd' );
 ////idMover::MoveToPos
 ////================
 ////*/
-////void idMover::MoveToPos( const idVec3 &pos ) {
+////void idMover::MoveToPos( pos:idVec3 ) {
 ////	dest_position = GetLocalCoordinates( pos );
 ////	BeginMove( NULL );
 ////}

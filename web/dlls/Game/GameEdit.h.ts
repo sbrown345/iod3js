@@ -38,9 +38,13 @@
 ////===============================================================================
 ////*/
 ////
-////class idCursor3D extends idEntity {
+class idCursor3D extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idCursor3D );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idCursor3D>[];
 ////
 ////							idCursor3D( void );
 ////							~idCursor3D( void );
@@ -51,7 +55,7 @@
 ////
 ////	idForce_Drag			drag;
 ////	idVec3					draggedPosition;
-////};
+};
 ////
 ////
 /////*

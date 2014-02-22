@@ -250,15 +250,15 @@ class modelSurface_t {
 	geometry: srfTriangles_t;		//srfTriangles_t *			
 };
 
-////typedef enum {
-////	DM_STATIC,		// never creates a dynamic model
-////	DM_CACHED,		// once created, stays constant until the entity is updated (animating characters)
-////	DM_CONTINUOUS	// must be recreated for every single view (time dependent things like particles)
-////} dynamicModel_t;
+enum dynamicModel_t{
+	DM_STATIC,		// never creates a dynamic model
+	DM_CACHED,		// once created, stays constant until the entity is updated (animating characters)
+	DM_CONTINUOUS	// must be recreated for every single view (time dependent things like particles)
+};
 
-////typedef enum {
-////	INVALID_JOINT				= -1
-////} jointHandle_t;
+enum jointHandle_t{
+	INVALID_JOINT				= -1
+};
 
 ////class idMD5Joint {
 ////public:

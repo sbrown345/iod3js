@@ -47,12 +47,12 @@
 ////	static void			DrawDebugInfo( void );
 ////
 ////						idTrigger();
-////	void				Spawn( void );
+////	Spawn():void{throw "placeholder";}
 ////
 ////	const function_t *	GetScriptFunction( void ) const;
 ////
-////	void				Save( idSaveGame *savefile ) const;
-////	void				Restore( idRestoreGame *savefile );
+////	Save(savefile:idSaveGame):void{throw "placeholder";}
+////	Restore(savefile:idRestoreGame):void{throw "placeholder";}
 ////
 ////	virtual void		Enable( void ): void { throw "placeholder"; }
 ////	virtual void		Disable( void ): void { throw "placeholder"; }
@@ -81,10 +81,10 @@
 ////
 ////						idTrigger_Multi( void );
 ////
-////	void				Spawn( void );
+////	Spawn():void{throw "placeholder";}
 ////
-////	void				Save( idSaveGame *savefile ) const;
-////	void				Restore( idRestoreGame *savefile );
+////	Save(savefile:idSaveGame):void{throw "placeholder";}
+////	Restore(savefile:idRestoreGame):void{throw "placeholder";}
 ////
 ////private:
 ////	float				wait;
@@ -121,10 +121,10 @@
 ////
 ////						idTrigger_EntityName( void );
 ////
-////	void				Save( idSaveGame *savefile ) const;
-////	void				Restore( idRestoreGame *savefile );
+////	Save(savefile:idSaveGame):void{throw "placeholder";}
+////	Restore(savefile:idRestoreGame):void{throw "placeholder";}
 ////
-////	void				Spawn( void );
+////	Spawn():void{throw "placeholder";}
 ////
 ////private:
 ////	float				wait;
@@ -155,10 +155,10 @@
 ////
 ////						idTrigger_Timer( void );
 ////
-////	void				Save( idSaveGame *savefile ) const;
-////	void				Restore( idRestoreGame *savefile );
+////	Save(savefile:idSaveGame):void{throw "placeholder";}
+////	Restore(savefile:idRestoreGame):void{throw "placeholder";}
 ////
-////	void				Spawn( void );
+////	Spawn():void{throw "placeholder";}
 ////
 ////	virtual void		Enable( void );
 ////	virtual void		Disable( void );
@@ -190,10 +190,10 @@
 ////
 ////						idTrigger_Count( void );
 ////
-////	void				Save( idSaveGame *savefile ) const;
-////	void				Restore( idRestoreGame *savefile );
+////	Save(savefile:idSaveGame):void{throw "placeholder";}
+////	Restore(savefile:idRestoreGame):void{throw "placeholder";}
 ////
-////	void				Spawn( void );
+////	Spawn():void{throw "placeholder";}
 ////
 ////private:
 ////	int					goal;
@@ -219,10 +219,10 @@
 ////
 ////						idTrigger_Hurt( void );
 ////
-////	void				Save( idSaveGame *savefile ) const;
-////	void				Restore( idRestoreGame *savefile );
+////	Save(savefile:idSaveGame):void{throw "placeholder";}
+////	Restore(savefile:idRestoreGame):void{throw "placeholder";}
 ////
-////	void				Spawn( void );
+////	Spawn():void{throw "placeholder";}
 ////
 ////private:
 ////	bool				on;
@@ -267,11 +267,11 @@
 ////
 ////						idTrigger_Touch( void );
 ////
-////	void				Spawn( void );
+////	Spawn():void{throw "placeholder";}
 ////	virtual void		Think( void );
 ////
 ////	void				Save( idSaveGame *savefile );
-////	void				Restore( idRestoreGame *savefile );
+////	Restore(savefile:idRestoreGame):void{throw "placeholder";}
 ////
 ////	virtual void		Enable( void );
 ////	virtual void		Disable( void );

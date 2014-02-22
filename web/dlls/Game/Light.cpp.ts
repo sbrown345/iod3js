@@ -177,9 +177,13 @@ var EV_Light_FadeIn = new idEventDef( "fadeInLight", "f" );
 ////	extern const idEventDef EV_Light_SetLightParm;
 ////	extern const idEventDef EV_Light_SetLightParms;
 ////
-////	class idLight extends idEntity {
+	class idLight extends idEntity {
 ////	public:
 ////		CLASS_PROTOTYPE(idLight);
+		static Type: idTypeInfo;
+		static CreateInstance ( ): idClass { throw "placeholder"; }
+		GetType ( ): idTypeInfo { throw "placeholder"; }
+		static eventCallbacks: idEventFunc<idLight>[];
 ////
 ////		idLight();
 ////		~idLight();
@@ -266,8 +270,8 @@ var EV_Light_FadeIn = new idEventDef( "fadeInLight", "f" );
 ////		void			Event_SetSoundHandles(void);
 ////		void			Event_FadeOut(float time);
 ////		void			Event_FadeIn(float time);
-////	};
-////
+	};
+
 ////#endif /* !__GAME_LIGHT_H__ */
 ////
 ////

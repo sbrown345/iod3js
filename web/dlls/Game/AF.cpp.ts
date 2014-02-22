@@ -1061,7 +1061,7 @@
 ////  Only moves constraints that bind the entity to another entity.
 ////================
 ////*/
-////void idAF::SetConstraintPosition( const char *name, const idVec3 &pos ) {
+////void idAF::SetConstraintPosition( const char *name, pos:idVec3 ) {
 ////	idAFConstraint *constraint;
 ////
 ////	constraint = GetPhysics()->GetConstraint( name );

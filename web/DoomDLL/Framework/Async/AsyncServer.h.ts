@@ -134,7 +134,7 @@
 //
 //	bool				InitPort( void );
 //	void				ClosePort( void );
-//	void				Spawn( void );
+//	Spawn():void{throw "placeholder";}
 //	void				Kill( void );
 //	void				ExecuteMapChange( void );
 //

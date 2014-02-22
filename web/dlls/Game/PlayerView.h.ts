@@ -53,8 +53,8 @@
 ////public:
 ////						idPlayerView();
 ////
-////	void				Save( idSaveGame *savefile ) const;
-////	void				Restore( idRestoreGame *savefile );
+////	Save(savefile:idSaveGame):void{throw "placeholder";}
+////	Restore(savefile:idRestoreGame):void{throw "placeholder";}
 ////
 ////	void				SetPlayerEntity( class idPlayer *playerEnt );
 ////

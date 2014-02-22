@@ -96,7 +96,7 @@ class idSaveGame {
 	////	void					WriteWinding(const idWinding &winding);
 	////	void					WriteBounds(const idBounds &bounds);
 	////	void					WriteMat3(const idMat3 &mat);
-	////	void					WriteAngles(const idAngles &angles);
+	////	void					WriteAngles(angles:idAngles);
 	////	void					WriteObject(const idClass *obj);
 	////	void					WriteStaticObject(const idClass &obj);
 	////	void					WriteDict(const idDict *dict);
@@ -388,7 +388,7 @@ class idSaveGame {
 	////idSaveGame::WriteAngles
 	////================
 	////*/
-	////void idSaveGame::WriteAngles( const idAngles &angles ) {
+	////void idSaveGame::WriteAngles( angles:idAngles ) {
 	////	idAngles v = angles;
 	////	LittleRevBytes(&v, sizeof(float), sizeof(v)/sizeof(float) );
 	////	file->Write( &v, sizeof( v ) );

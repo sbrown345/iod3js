@@ -142,7 +142,7 @@
 //idAnim::Name
 //=====================
 //*/
-//const char *idAnim::Name( void ) const {
+//const char *idAnim::Name( ) const {
 //	return name;
 //}
 //
@@ -151,7 +151,7 @@
 //idAnim::FullName
 //=====================
 //*/
-//const char *idAnim::FullName( void ) const {
+//const char *idAnim::FullName( ) const {
 //	return realname;
 //}
 //
@@ -174,7 +174,7 @@
 //idAnim::ModelDef
 //=====================
 //*/
-//const idDeclModelDef *idAnim::ModelDef( void ) const {
+//const idDeclModelDef *idAnim::ModelDef( ) const {
 //	return modelDef;
 //}
 //
@@ -183,7 +183,7 @@
 //idAnim::Length
 //=====================
 //*/
-//int idAnim::Length( void ) const {
+//int idAnim::Length( ) const {
 //	if ( !anims[ 0 ] ) {
 //		return 0;
 //	}
@@ -196,7 +196,7 @@
 //idAnim::NumFrames
 //=====================
 //*/
-//int	idAnim::NumFrames( void ) const { 
+//int	idAnim::NumFrames( ) const { 
 //	if ( !anims[ 0 ] ) {
 //		return 0;
 //	}
@@ -209,7 +209,7 @@
 //idAnim::NumAnims
 //=====================
 //*/
-//int	idAnim::NumAnims( void ) const { 
+//int	idAnim::NumAnims( ) const { 
 //	return numAnims;
 //}
 //
@@ -218,7 +218,7 @@
 //idAnim::TotalMovementDelta
 //=====================
 //*/
-//const idVec3 &idAnim::TotalMovementDelta( void ) const {
+//const idVec3 &idAnim::TotalMovementDelta( ) const {
 //	if ( !anims[ 0 ] ) {
 //		return vec3_zero;
 //	}
@@ -977,7 +977,7 @@
 //idAnim::HasFrameCommands
 //=====================
 //*/
-//bool idAnim::HasFrameCommands( void ) const {
+//bool idAnim::HasFrameCommands( ) const {
 //	if ( !frameCommands.Num() ) {
 //		return false;
 //	}
@@ -998,7 +998,7 @@
 //idAnim::GetAnimFlags
 //=====================
 //*/
-//const animFlags_t &idAnim::GetAnimFlags( void ) const {
+//const animFlags_t &idAnim::GetAnimFlags( ) const {
 //	return flags;
 //}
 //
@@ -1013,7 +1013,7 @@
 //idAnimBlend::idAnimBlend
 //=====================
 //*/
-//idAnimBlend::idAnimBlend( void ) {
+//idAnimBlend::idAnimBlend( ) {
 //	Reset( NULL );
 //}
 //
@@ -1115,7 +1115,7 @@
 //idAnimBlend::FullName
 //=====================
 //*/
-//const char *idAnimBlend::AnimFullName( void ) const {
+//const char *idAnimBlend::AnimFullName( ) const {
 //	const idAnim *anim = Anim();
 //	if ( !anim ) {
 //		return "";
@@ -1129,7 +1129,7 @@
 //idAnimBlend::AnimName
 //=====================
 //*/
-//const char *idAnimBlend::AnimName( void ) const {
+//const char *idAnimBlend::AnimName( ) const {
 //	const idAnim *anim = Anim();
 //	if ( !anim ) {
 //		return "";
@@ -1143,7 +1143,7 @@
 //idAnimBlend::NumFrames
 //=====================
 //*/
-//int idAnimBlend::NumFrames( void ) const {
+//int idAnimBlend::NumFrames( ) const {
 //	const idAnim *anim = Anim();
 //	if ( !anim ) {
 //		return 0;
@@ -1157,7 +1157,7 @@
 //idAnimBlend::Length
 //=====================
 //*/
-//int	idAnimBlend::Length( void ) const {
+//int	idAnimBlend::Length( ) const {
 //	const idAnim *anim = Anim();
 //	if ( !anim ) {
 //		return 0;
@@ -1194,7 +1194,7 @@
 //idAnimBlend::GetFinalWeight
 //=====================
 //*/
-//float idAnimBlend::GetFinalWeight( void ) const {
+//float idAnimBlend::GetFinalWeight( ) const {
 //	return blendEndValue;
 //}
 //
@@ -1219,7 +1219,7 @@
 //idAnimBlend::NumSyncedAnims
 //=====================
 //*/
-//int idAnimBlend::NumSyncedAnims( void ) const {
+//int idAnimBlend::NumSyncedAnims( ) const {
 //	const idAnim *anim = Anim();
 //	if ( !anim ) {
 //		return 0;
@@ -1429,7 +1429,7 @@
 //idAnimBlend::GetCycleCount
 //=====================
 //*/
-//int idAnimBlend::GetCycleCount( void ) const {
+//int idAnimBlend::GetCycleCount( ) const {
 //	return cycle;
 //}
 //
@@ -1503,7 +1503,7 @@
 //idAnimBlend::GetPlaybackRate
 //=====================
 //*/
-//float idAnimBlend::GetPlaybackRate( void ) const {
+//float idAnimBlend::GetPlaybackRate( ) const {
 //	return rate;
 //}
 //
@@ -1524,7 +1524,7 @@
 //idAnimBlend::GetStartTime
 //=====================
 //*/
-//int idAnimBlend::GetStartTime( void ) const {
+//int idAnimBlend::GetStartTime( ) const {
 //	if ( !animNum ) {
 //		return 0;
 //	}
@@ -1537,7 +1537,7 @@
 //idAnimBlend::GetEndTime
 //=====================
 //*/
-//int idAnimBlend::GetEndTime( void ) const {
+//int idAnimBlend::GetEndTime( ) const {
 //	if ( !animNum ) {
 //		return 0;
 //	}
@@ -1550,7 +1550,7 @@
 //idAnimBlend::PlayLength
 //=====================
 //*/
-//int idAnimBlend::PlayLength( void ) const {
+//int idAnimBlend::PlayLength( ) const {
 //	if ( !animNum ) {
 //		return 0;
 //	}
@@ -1586,7 +1586,7 @@
 //idAnimBlend::Anim
 //=====================
 //*/
-//const idAnim *idAnimBlend::Anim( void ) const {
+//const idAnim *idAnimBlend::Anim( ) const {
 //	if ( !modelDef ) {
 //		return NULL;
 //	}
@@ -1600,7 +1600,7 @@
 //idAnimBlend::AnimNum
 //=====================
 //*/
-//int idAnimBlend::AnimNum( void ) const {
+//int idAnimBlend::AnimNum( ) const {
 //	return animNum;
 //}
 //
@@ -2105,7 +2105,7 @@
 //idDeclModelDef::Size
 //=================
 //*/
-//size_t idDeclModelDef::Size( void ) const {
+//size_t idDeclModelDef::Size( ) const {
 //	return sizeof( idDeclModelDef );
 //}
 //
@@ -2142,7 +2142,7 @@
 //idDeclModelDef::FreeData
 //=====================
 //*/
-//void idDeclModelDef::FreeData( void ) {
+//void idDeclModelDef::FreeData( ) {
 //	anims.DeleteContents( true );
 //	joints.Clear();
 //	jointParents.Clear();
@@ -2159,7 +2159,7 @@
 //idDeclModelDef::DefaultDefinition
 //================
 //*/
-//const char *idDeclModelDef::DefaultDefinition( void ) const {
+//const char *idDeclModelDef::DefaultDefinition( ) const {
 //	return "{ }";
 //}
 //
@@ -2191,7 +2191,7 @@
 //idDeclModelDef::ModelHandle
 //=====================
 //*/
-//idRenderModel *idDeclModelDef::ModelHandle( void ) const {
+//idRenderModel *idDeclModelDef::ModelHandle( ) const {
 //	return ( idRenderModel * )modelHandle;
 //}
 //
@@ -2200,7 +2200,7 @@
 //idDeclModelDef::GetJointList
 //=====================
 //*/
-//void idDeclModelDef::GetJointList( const char *jointnames, idList<jointHandle_t> &jointList ) const {
+//void idDeclModelDef::GetJointList( jointnames:string, idList<jointHandle_t> &jointList ) const {
 //	const char			*pos;
 //	idStr				jointname;
 //	const jointInfo_t	*joint;
@@ -2292,7 +2292,7 @@
 //idDeclModelDef::Touch
 //=====================
 //*/
-//void idDeclModelDef::Touch( void ) const {
+//void idDeclModelDef::Touch( ) const {
 //	if ( modelHandle ) {
 //		renderModelManager->FindModel( modelHandle->Name() );
 //	}
@@ -2303,7 +2303,7 @@
 //idDeclModelDef::GetDefaultSkin
 //=====================
 //*/
-//const idDeclSkin *idDeclModelDef::GetDefaultSkin( void ) const {
+//const idDeclSkin *idDeclModelDef::GetDefaultSkin( ) const {
 //	return skin;
 //}
 //
@@ -2312,7 +2312,7 @@
 //idDeclModelDef::GetDefaultPose
 //=====================
 //*/
-//const idJointQuat *idDeclModelDef::GetDefaultPose( void ) const {
+//const idJointQuat *idDeclModelDef::GetDefaultPose( ) const {
 //	return modelHandle->GetDefaultPose();
 //}
 //
@@ -2795,7 +2795,7 @@
 //idDeclModelDef::NumAnims
 //=====================
 //*/
-//int idDeclModelDef::NumAnims( void ) const {
+//int idDeclModelDef::NumAnims( ) const {
 //	return anims.Num() + 1;
 //}
 //
@@ -2878,7 +2878,7 @@
 //idDeclModelDef::GetSkin
 //=====================
 //*/
-//const idDeclSkin *idDeclModelDef::GetSkin( void ) const {
+//const idDeclSkin *idDeclModelDef::GetSkin( ) const {
 //	return skin;
 //}
 //
@@ -2887,7 +2887,7 @@
 //idDeclModelDef::GetModelName
 //=====================
 //*/
-//const char *idDeclModelDef::GetModelName( void ) const {
+//const char *idDeclModelDef::GetModelName( ) const {
 //	if ( modelHandle ) {
 //		return modelHandle->Name();
 //	} else {
@@ -2900,7 +2900,7 @@
 //idDeclModelDef::Joints
 //=====================
 //*/
-//const idList<jointInfo_t> &idDeclModelDef::Joints( void ) const {
+//const idList<jointInfo_t> &idDeclModelDef::Joints( ) const {
 //	return joints;
 //}
 //
@@ -2909,7 +2909,7 @@
 //idDeclModelDef::JointParents
 //=====================
 //*/
-//const int * idDeclModelDef::JointParents( void ) const {
+//const int * idDeclModelDef::JointParents( ) const {
 //	return jointParents.Ptr();
 //}
 //
@@ -2918,7 +2918,7 @@
 //idDeclModelDef::NumJoints
 //=====================
 //*/
-//int idDeclModelDef::NumJoints( void ) const {
+//int idDeclModelDef::NumJoints( ) const {
 //	return joints.Num();
 //}
 //
@@ -2983,7 +2983,7 @@
 //idDeclModelDef::GetVisualOffset
 //=====================
 //*/
-//const idVec3 &idDeclModelDef::GetVisualOffset( void ) const {
+//const idVec3 &idDeclModelDef::GetVisualOffset( ) const {
 //	return offset;
 //}
 //
@@ -3039,7 +3039,7 @@
 //idAnimator::Allocated
 //=====================
 //*/
-//size_t idAnimator::Allocated( void ) const {
+//size_t idAnimator::Allocated( ) const {
 //	size_t	size;
 //
 //	size = jointMods.Allocated() + numJoints * sizeof( joints[0] ) + jointMods.Num() * sizeof( jointMods[ 0 ] ) + AFPoseJointMods.Allocated() + AFPoseJointFrame.Allocated() + AFPoseJoints.Allocated();
@@ -3204,7 +3204,7 @@
 //idAnimator::FreeData
 //=====================
 //*/
-//void idAnimator::FreeData( void ) {
+//void idAnimator::FreeData( ) {
 //	int	i, j;
 //
 //	if ( entity ) {
@@ -3298,7 +3298,7 @@
 //idAnimator::Size
 //=====================
 //*/
-//size_t idAnimator::Size( void ) const {
+//size_t idAnimator::Size( ) const {
 //	return sizeof( *this ) + Allocated();
 //}
 //
@@ -3307,7 +3307,7 @@
 //idAnimator::SetEntity
 //=====================
 //*/
-//void idAnimator::SetEntity( ent:idEntity ) {
+//void idAnimator::SetEntity( idEntity *ent ) {
 //	entity = ent;
 //}
 //
@@ -3316,7 +3316,7 @@
 //idAnimator::GetEntity
 //=====================
 //*/
-//idEntity *idAnimator::GetEntity( void ) const {
+//idEntity *idAnimator::GetEntity( ) const {
 //	return entity;
 //}
 //
@@ -3334,7 +3334,7 @@
 //idAnimator::RemoveOrigin
 //=====================
 //*/
-//bool idAnimator::RemoveOrigin( void ) const {
+//bool idAnimator::RemoveOrigin( ) const {
 //	return removeOriginOffset;
 //}
 //
@@ -3343,7 +3343,7 @@
 //idAnimator::GetJointList
 //=====================
 //*/
-//void idAnimator::GetJointList( const char *jointnames, idList<jointHandle_t> &jointList ) const {
+//void idAnimator::GetJointList( jointnames:string, idList<jointHandle_t> &jointList ) const {
 //	if ( modelDef ) {
 //		modelDef->GetJointList( jointnames, jointList );
 //	}
@@ -3354,7 +3354,7 @@
 //idAnimator::NumAnims
 //=====================
 //*/
-//int	idAnimator::NumAnims( void ) const {
+//int	idAnimator::NumAnims( ) const {
 //	if ( !modelDef ) {
 //		return 0;
 //	}
@@ -3406,7 +3406,7 @@
 //idAnimator::NumJoints
 //=====================
 //*/
-//int	idAnimator::NumJoints( void ) const {
+//int	idAnimator::NumJoints( ) const {
 //	return numJoints;
 //}
 //
@@ -3415,7 +3415,7 @@
 //idAnimator::ModelHandle
 //=====================
 //*/
-//idRenderModel *idAnimator::ModelHandle( void ) const {
+//idRenderModel *idAnimator::ModelHandle( ) const {
 //	if ( !modelDef ) {
 //		return NULL;
 //	}
@@ -3428,7 +3428,7 @@
 //idAnimator::ModelDef
 //=====================
 //*/
-//const idDeclModelDef *idAnimator::ModelDef( void ) const {
+//const idDeclModelDef *idAnimator::ModelDef( ) const {
 //	return modelDef;
 //}
 //
@@ -3563,7 +3563,7 @@
 //idAnimator::SetJointPos
 //=====================
 //*/
-//void idAnimator::SetJointPos( jointHandle_t jointnum, jointModTransform_t transform_type, const idVec3 &pos ) {
+//void idAnimator::SetJointPos( jointnum:jointHandle_t, transform_type:jointModTransform_t, pos:idVec3 ) {
 //	int i;
 //	jointMod_t *jointMod;
 //
@@ -3603,7 +3603,7 @@
 //idAnimator::SetJointAxis
 //=====================
 //*/
-//void idAnimator::SetJointAxis( jointHandle_t jointnum, jointModTransform_t transform_type, const idMat3 &mat ) {
+//void idAnimator::SetJointAxis( jointnum:jointHandle_t, transform_type:jointModTransform_t, const idMat3 &mat ) {
 //	int i;
 //	jointMod_t *jointMod;
 //
@@ -3643,7 +3643,7 @@
 //idAnimator::ClearJoint
 //=====================
 //*/
-//void idAnimator::ClearJoint( jointHandle_t jointnum ) {
+//void idAnimator::ClearJoint( jointnum:jointHandle_t ) {
 //	int i;
 //
 //	if ( !modelDef || !modelDef->ModelHandle() || ( jointnum < 0 ) || ( jointnum >= numJoints ) ) {
@@ -3667,7 +3667,7 @@
 //idAnimator::ClearAllJoints
 //=====================
 //*/
-//void idAnimator::ClearAllJoints( void ) {
+//void idAnimator::ClearAllJoints( ) {
 //	if ( jointMods.Num() ) {
 //		ForceUpdate();
 //	}
@@ -3857,7 +3857,7 @@
 //idAnimator::InitAFPose
 //=====================
 //*/
-//void idAnimator::InitAFPose( void ) {
+//void idAnimator::InitAFPose( ) {
 //
 //	if ( !modelDef ) {
 //		return;
@@ -4054,7 +4054,7 @@
 //idAnimator::ClearAFPose
 //=====================
 //*/
-//void idAnimator::ClearAFPose( void ) {
+//void idAnimator::ClearAFPose( ) {
 //	if ( AFPoseJoints.Num() ) {
 //		ForceUpdate();
 //	}
@@ -4411,7 +4411,7 @@
 //idAnimator::ForceUpdate
 //=====================
 //*/
-//void idAnimator::ForceUpdate( void ) {
+//void idAnimator::ForceUpdate( ) {
 //	lastTransformTime = -1;
 //	forceUpdate = true;
 //}
@@ -4421,7 +4421,7 @@
 //idAnimator::ClearForceUpdate
 //=====================
 //*/
-//void idAnimator::ClearForceUpdate( void ) {
+//void idAnimator::ClearForceUpdate( ) {
 //	forceUpdate = false;
 //}
 //
@@ -4533,7 +4533,7 @@
 //idAnimator::GetFirstChild
 //=====================
 //*/
-//jointHandle_t idAnimator::GetFirstChild( jointHandle_t jointnum ) const {
+//jointHandle_t idAnimator::GetFirstChild( jointnum:jointHandle_t ) const {
 //	int					i;
 //	int					num;
 //	const jointInfo_t	*joint;

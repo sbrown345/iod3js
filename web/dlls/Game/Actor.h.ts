@@ -154,7 +154,7 @@ class idActor extends idAFEntity_Gibbable {
 ////	idVec3					GetEyePosition( void ) const;
 ////	virtual void			GetViewPos( idVec3 &origin, idMat3 &axis ) const;
 ////	void					SetFOV( float fov );
-////	bool					CheckFOV( const idVec3 &pos ) const;
+////	bool					CheckFOV( pos:idVec3 ) const;
 ////	bool					CanSee( idEntity *ent, bool useFOV ) const;
 ////	bool					PointVisible( const idVec3 &point ) const;
 ////	virtual void			GetAIAimTargets( const idVec3 &lastSightPos, idVec3 &headPos, idVec3 &chestPos );
@@ -181,7 +181,7 @@ class idActor extends idAFEntity_Gibbable {
 ////	void					SetDeltaViewAngles( const idAngles &delta );
 ////
 ////	bool					HasEnemies( void ) const;
-////	idActor *				ClosestEnemyToPoint( const idVec3 &pos );
+////	idActor *				ClosestEnemyToPoint( pos:idVec3 );
 ////	idActor *				EnemyWithMostHealth();
 ////
 ////	virtual bool			OnLadder( void ) const;
@@ -190,7 +190,7 @@ class idActor extends idAFEntity_Gibbable {
 ////
 ////	void					Attach( idEntity *ent );
 ////
-////	virtual void			Teleport( const idVec3 &origin, const idAngles &angles, idEntity *destination );
+////	virtual void			Teleport( const idVec3 &origin, angles:idAngles, idEntity *destination );
 ////
 ////	virtual	renderView_t *	GetRenderView();	
 ////	

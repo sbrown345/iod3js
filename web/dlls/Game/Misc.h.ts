@@ -42,30 +42,37 @@
 //===============================================================================
 //*/
 //
-//class idSpawnableEntity extends idEntity {
+class idSpawnableEntity extends idEntity {
 //public:
-//	CLASS_PROTOTYPE( idSpawnableEntity );
-//
-//	void				Spawn( void );
-//
-//private:
-//};
-//
-///*
-//===============================================================================
-//
-//  Potential spawning position for players.
-//  The first time a player enters the game, they will be at an 'initial' spot.
-//  Targets will be fired when someone spawns in on them.
-//
-//  When triggered, will cause player to be teleported to spawn spot.
-//
-//===============================================================================
-//*/
-//
-//class idPlayerStart extends idEntity {
+	//CLASS_PROTOTYPE(idSpawnableEntity);
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idSpawnableEntity>[];
+
+	Spawn():void{throw "placeholder";}
+
+};
+
+/*
+===============================================================================
+
+  Potential spawning position for players.
+  The first time a player enters the game, they will be at an 'initial' spot.
+  Targets will be fired when someone spawns in on them.
+
+  When triggered, will cause player to be teleported to spawn spot.
+
+===============================================================================
+*/
+
+class idPlayerStart extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idPlayerStart );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idPlayerStart>[];
 //
 //	enum {
 //		EVENT_TELEPORTPLAYER = idEntity::EVENT_MAXEVENTS,
@@ -74,7 +81,7 @@
 //
 //						idPlayerStart( void );
 //
-//	void				Spawn( void );
+	Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -87,25 +94,29 @@
 //	void				Event_TeleportPlayer( activator:idEntity ): void { throw "placeholder"; }
 //	void				Event_TeleportStage( idEntity *player ): void { throw "placeholder"; }
 //	void				TeleportPlayer( idPlayer *player ): void { throw "placeholder"; }
-//};
-//
-//
-///*
-//===============================================================================
-//
-//  Non-displayed entity used to activate triggers when it touches them.
-//  Bind to a mover to have the mover activate a trigger as it moves.
-//  When target by triggers, activating the trigger will toggle the
-//  activator on and off. Check "start_off" to have it spawn disabled.
-//	
-//===============================================================================
-//*/
-//
-//class idActivator extends idEntity {
+};
+
+
+/*
+===============================================================================
+
+  Non-displayed entity used to activate triggers when it touches them.
+  Bind to a mover to have the mover activate a trigger as it moves.
+  When target by triggers, activating the trigger will toggle the
+  activator on and off. Check "start_off" to have it spawn disabled.
+	
+===============================================================================
+*/
+
+class idActivator extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idActivator );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idActivator>[];
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -116,21 +127,25 @@
 //	bool				stay_on;
 //
 //	void				Event_Activate( activator:idEntity );
-//};
-//
-//
-///*
-//===============================================================================
-//
-//  Path entities for monsters to follow.
-//
-//===============================================================================
-//*/
-//class idPathCorner extends idEntity {
+};
+
+
+/*
+===============================================================================
+
+  Path entities for monsters to follow.
+
+===============================================================================
+*/
+class idPathCorner extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idPathCorner );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idPathCorner>[];
 //
-//	void				Spawn( void );
+	Spawn():void{throw "placeholder";}
 //
 //	static void			DrawDebugInfo( void );
 //
@@ -138,27 +153,31 @@
 //
 //private:
 //	void				Event_RandomPath( void );
-//};
-//
-//
-///*
-//===============================================================================
-//
-//  Object that fires targets and changes shader parms when damaged.
-//
-//===============================================================================
-//*/
-//
-//class idDamagable extends idEntity {
+};
+
+
+/*
+===============================================================================
+
+  Object that fires targets and changes shader parms when damaged.
+
+===============================================================================
+*/
+
+class idDamagable extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idDamagable );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idDamagable>[];
 //
 //						idDamagable( void );
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //	void				Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location );
 //
 //private:
@@ -168,41 +187,49 @@
 //	void				BecomeBroken( activator:idEntity ): void { throw "placeholder"; }
 //	void				Event_BecomeBroken( activator:idEntity ): void { throw "placeholder"; }
 //	void				Event_RestoreDamagable( void ): void { throw "placeholder"; }
-//};
-//
-//
-///*
-//===============================================================================
-//
-//  Hidden object that explodes when activated
-//
-//===============================================================================
-//*/
-//
-//class idExplodable extends idEntity {
+};
+
+
+/*
+===============================================================================
+
+  Hidden object that explodes when activated
+
+===============================================================================
+*/
+
+class idExplodable extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idExplodable );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idExplodable>[];
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //
 //private:
 //	void				Event_Explode( activator:idEntity ): void { throw "placeholder"; }
-//};
-//
-//
-///*
-//===============================================================================
-//
-//  idSpring
-//
-//===============================================================================
-//*/
-//
-//class idSpring extends idEntity {
+};
+
+
+/*
+===============================================================================
+
+  idSpring
+
+===============================================================================
+*/
+
+class idSpring extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idSpring );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idSpring>[];
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //
 //	virtual void		Think( void );
 //
@@ -216,25 +243,29 @@
 //	idForce_Spring		spring;
 //
 //	void				Event_LinkSpring( void ): void { throw "placeholder"; }
-//};
-//
-//
-///*
-//===============================================================================
-//
-//  idForceField
-//
-//===============================================================================
-//*/
-//
-//class idForceField extends idEntity {
+};
+
+
+/*
+===============================================================================
+
+  idForceField
+
+===============================================================================
+*/
+
+class idForceField extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idForceField );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idForceField>[];
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //
 //	virtual void		Think( void );
 //
@@ -246,20 +277,24 @@
 //	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 //	void				Event_Toggle( void ): void { throw "placeholder"; }
 //	void				Event_FindTargets( void ): void { throw "placeholder"; }
-//};
-//
-//
-///*
-//===============================================================================
-//
-//  idAnimated
-//
-//===============================================================================
-//*/
-//
-//class idAnimated extends idAFEntity_Gibbable {
+};
+
+
+/*
+===============================================================================
+
+  idAnimated
+
+===============================================================================
+*/
+
+class idAnimated extends idAFEntity_Gibbable {
 //public:
 //	CLASS_PROTOTYPE( idAnimated );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idAnimated>[];
 //
 //							idAnimated();
 //							~idAnimated();
@@ -290,27 +325,31 @@
 //	void					Event_Footstep( void ): void { throw "placeholder"; }
 //	void					Event_LaunchMissiles( const char *projectilename, const char *sound, const char *launchjoint, const char *targetjoint, int numshots, int framedelay ): void { throw "placeholder"; }
 //	void					Event_LaunchMissilesUpdate( int launchjoint, int targetjoint, int numshots, int framedelay ): void { throw "placeholder"; }
-//};
-//
-//
-///*
-//===============================================================================
-//
-//  idStaticEntity
-//
-//===============================================================================
-//*/
-//
-//class idStaticEntity extends idEntity {
+};
+
+
+/*
+===============================================================================
+
+  idStaticEntity
+
+===============================================================================
+*/
+
+class idStaticEntity extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idStaticEntity );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idStaticEntity>[];
 //
 //						idStaticEntity( void );
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //	void				ShowEditingDialog( void );
 //	virtual void		Hide( void );
 //	virtual void		Show( void );
@@ -330,27 +369,31 @@
 //	int					fadeStart;
 //	int					fadeEnd;
 //	bool				runGui;
-//};
-//
-//
-///*
-//===============================================================================
-//
-//idFuncEmitter
-//
-//===============================================================================
-//*/
-//
-//class idFuncEmitter extends idStaticEntity {
+};
+
+
+/*
+===============================================================================
+
+idFuncEmitter
+
+===============================================================================
+*/
+
+class idFuncEmitter extends idStaticEntity {
 //public:
 //	CLASS_PROTOTYPE( idFuncEmitter );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idFuncEmitter>[];
 //
 //						idFuncEmitter( void );
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //	void				Event_Activate( activator:idEntity );
 //
 //	virtual void		WriteToSnapshot( idBitMsgDelta &msg ) const;
@@ -359,20 +402,24 @@
 //private:
 //	bool				hidden;
 //
-//};
-//
-//
-///*
-//===============================================================================
-//
-//idFuncSmoke
-//
-//===============================================================================
-//*/
-//
-//class idFuncSmoke extends idEntity {
+};
+
+
+/*
+===============================================================================
+
+idFuncSmoke
+
+===============================================================================
+*/
+
+class idFuncSmoke extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idFuncSmoke );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idFuncSmoke>[];
 //
 //							idFuncSmoke();
 //
@@ -388,44 +435,52 @@
 //	int						smokeTime;
 //	const idDeclParticle *	smoke;
 //	bool					restart;
-//};
-//
-//
-///*
-//===============================================================================
-//
-//idFuncSplat
-//
-//===============================================================================
-//*/
-//
-//class idFuncSplat extends idFuncEmitter {
+};
+
+
+/*
+===============================================================================
+
+idFuncSplat
+
+===============================================================================
+*/
+
+class idFuncSplat extends idFuncEmitter {
 //public:
 //	CLASS_PROTOTYPE( idFuncSplat );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idFuncSplat>[];
 //
 //	idFuncSplat( void );
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //
 //private:
 //	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 //	void				Event_Splat(): void { throw "placeholder"; }
-//};
-//
-//
-///*
-//===============================================================================
-//
-//idTextEntity
-//
-//===============================================================================
-//*/
-//
-//class idTextEntity extends idEntity {
+};
+
+
+/*
+===============================================================================
+
+idTextEntity
+
+===============================================================================
+*/
+
+class idTextEntity extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idTextEntity );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idTextEntity>[];
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -435,7 +490,7 @@
 //private:
 //	idStr				text;
 //	bool				playerOriented;
-//};
+};
 
 
 /*
@@ -449,30 +504,42 @@ idLocationEntity
 class idLocationEntity extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idLocationEntity );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idLocationEntity>[];
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //
 //	const char *		GetLocation( void ) const;
 //
 //private:
 };
 //
-//class idLocationSeparatorEntity extends idEntity {
+class idLocationSeparatorEntity extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idLocationSeparatorEntity );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idLocationSeparatorEntity>[];
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //
 //private:
-//};
-//
-//class idVacuumSeparatorEntity extends idEntity {
+};
+
+class idVacuumSeparatorEntity extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idVacuumSeparatorEntity );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idVacuumSeparatorEntity>[];
 //
 //						idVacuumSeparatorEntity( void );
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -481,33 +548,41 @@ class idLocationEntity extends idEntity {
 //
 //private:
 //	qhandle_t			portal;
-//};
-//
-//class idVacuumEntity extends idEntity {
+};
+
+class idVacuumEntity extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idVacuumEntity );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idVacuumEntity>[];
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //
 //private:
-//};
-//
-//
-///*
-//===============================================================================
-//
-//  idBeam
-//
-//===============================================================================
-//*/
-//
-//class idBeam extends idEntity {
+};
+
+
+/*
+===============================================================================
+
+  idBeam
+
+===============================================================================
+*/
+
+class idBeam extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idBeam );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idBeam>[];
 //
 //						idBeam();
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -528,24 +603,28 @@ class idLocationEntity extends idEntity {
 //
 //	idEntityPtr<idBeam>	target;
 //	idEntityPtr<idBeam>	master;
-//};
-//
-//
-///*
-//===============================================================================
-//
-//  idLiquid
-//
-//===============================================================================
-//*/
-//
+};
+
+
+/*
+===============================================================================
+
+  idLiquid
+
+===============================================================================
+*/
+
 //class idRenderModelLiquid;
 //
-//class idLiquid extends idEntity {
+class idLiquid extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idLiquid );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idLiquid>[];
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -555,18 +634,18 @@ class idLocationEntity extends idEntity {
 //
 //
 //	idRenderModelLiquid *model;
-//};
-//
-//
-///*
-//===============================================================================
-//
-//  idShaking
-//
-//===============================================================================
-//*/
-//
-//class idShaking extends idEntity {
+};
+
+
+/*
+===============================================================================
+
+  idShaking
+
+===============================================================================
+*/
+
+class idShaking extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idShaking );
 //
@@ -583,24 +662,28 @@ class idLocationEntity extends idEntity {
 //
 //	void					BeginShaking( void ): void { throw "placeholder"; }
 //	void					Event_Activate( activator:idEntity ): void { throw "placeholder"; }
-//};
-//
-//
-///*
-//===============================================================================
-//
-//  idEarthQuake
-//
-//===============================================================================
-//*/
-//
-//class idEarthQuake extends idEntity {
+};
+
+
+/*
+===============================================================================
+
+  idEarthQuake
+
+===============================================================================
+*/
+
+class idEarthQuake extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idEarthQuake );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idEarthQuake>[];
 //			
 //						idEarthQuake();
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -618,24 +701,28 @@ class idLocationEntity extends idEntity {
 //	float				shakeTime;
 //
 //	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
-//};
-//
-//
-///*
-//===============================================================================
-//
-//  idFuncPortal
-//
-//===============================================================================
-//*/
-//
-//class idFuncPortal extends idEntity {
+};
+
+
+/*
+===============================================================================
+
+  idFuncPortal
+
+===============================================================================
+*/
+
+class idFuncPortal extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idFuncPortal );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idFuncPortal>[];
 //			
 //						idFuncPortal();
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -645,23 +732,27 @@ class idLocationEntity extends idEntity {
 //	bool				state;
 //
 //	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
-//};
-//
-///*
-//===============================================================================
-//
-//  idFuncAASPortal
-//
-//===============================================================================
-//*/
-//
-//class idFuncAASPortal extends idEntity {
+};
+
+/*
+===============================================================================
+
+  idFuncAASPortal
+
+===============================================================================
+*/
+
+class idFuncAASPortal extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idFuncAASPortal );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idFuncAASPortal>[];
 //			
 //						idFuncAASPortal();
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -670,23 +761,27 @@ class idLocationEntity extends idEntity {
 //	bool				state;
 //
 //	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
-//};
-//
-///*
-//===============================================================================
-//
-//  idFuncAASObstacle
-//
-//===============================================================================
-//*/
-//
-//class idFuncAASObstacle extends idEntity {
+};
+
+/*
+===============================================================================
+
+  idFuncAASObstacle
+
+===============================================================================
+*/
+
+class idFuncAASObstacle extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idFuncAASObstacle );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idFuncAASObstacle>[];
 //			
 //						idFuncAASObstacle();
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -695,24 +790,28 @@ class idLocationEntity extends idEntity {
 //	bool				state;
 //
 //	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
-//};
-//
-//
-///*
-//===============================================================================
-//
-//idFuncRadioChatter
-//
-//===============================================================================
-//*/
-//
-//class idFuncRadioChatter extends idEntity {
+};
+
+
+/*
+===============================================================================
+
+idFuncRadioChatter
+
+===============================================================================
+*/
+
+class idFuncRadioChatter extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idFuncRadioChatter );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idFuncRadioChatter>[];
 //
 //						idFuncRadioChatter();
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -721,24 +820,28 @@ class idLocationEntity extends idEntity {
 //	float				time;
 //	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 //	void				Event_ResetRadioHud( activator:idEntity ): void { throw "placeholder"; }
-//};
-//
-//
-///*
-//===============================================================================
-//
-//  idPhantomObjects
-//
-//===============================================================================
-//*/
-//
-//class idPhantomObjects extends idEntity {
+};
+
+
+/*
+===============================================================================
+
+  idPhantomObjects
+
+===============================================================================
+*/
+
+class idPhantomObjects extends idEntity {
 //public:
 //	CLASS_PROTOTYPE( idPhantomObjects );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idPhantomObjects>[];
 //			
 //						idPhantomObjects();
 //
-//	void				Spawn( void );
+Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -760,6 +863,6 @@ class idLocationEntity extends idEntity {
 //	idEntityPtr<idActor>target;
 //	idList<int>			targetTime;
 //	idList<idVec3>		lastTargetPos;
-//};
+};
 //
 //#endif /* !__GAME_MISC_H__ */

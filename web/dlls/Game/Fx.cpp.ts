@@ -43,8 +43,30 @@ var EV_Fx_KillFx= new idEventDef( "_killfx" );
 var EV_Fx_Action= new idEventDef( "_fxAction", "e" );		// implemented by subclasses
 
 ////CLASS_DECLARATION( idEntity, idEntityFx )
-////EVENT( EV_Activate,	   	idEntityFx::Event_Trigger )
-////EVENT( EV_Fx_KillFx,	idEntityFx::Event_ClearFx )
+idEntityFx.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idEntityFx;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idEntityFx.prototype.GetType = function ( ): idTypeInfo {
+	return ( idEntityFx.Type );
+};
+
+idEntityFx.eventCallbacks = [
+	EVENT( EV_Activate,	   	idEntityFx.prototype.Event_Trigger ),
+	EVENT( EV_Fx_KillFx,	idEntityFx.prototype.Event_ClearFx )
+];
+
+idEntityFx.Type = new idTypeInfo("idEntityFx", "idEntity",
+	idEntityFx.eventCallbacks, idEntityFx.CreateInstance, idEntityFx.prototype.Spawn,
+	idEntityFx.prototype.Save, idEntityFx.prototype.Restore );
+
+
 ////END_CLASS
 ////
 ////
@@ -100,8 +122,8 @@ class idEntityFx extends idEntity {
 ////	static idEntityFx *		StartFx(const char *fx, const idVec3 *useOrigin, const idMat3 *useAxis, ent:idEntity, bool bind);
 ////
 ////protected:
-////	void					Event_Trigger(activator:idEntity);
-////	void					Event_ClearFx(void);
+	Event_Trigger(activator:idEntity):void { throw "placeholder"; };
+	Event_ClearFx():void { throw "placeholder"; }
 ////
 ////	void					CleanUp(void);
 ////	void					CleanUpSingleAction(const idFXSingleAction& fxaction, idFXLocalAction& laction);
@@ -122,35 +144,35 @@ class idEntityFx extends idEntity {
 ////void idEntityFx::Save( idSaveGame *savefile ) const {
 ////	int i;
 ////
-////	savefile->WriteInt( started );
-////	savefile->WriteInt( nextTriggerTime );
-////	savefile->WriteFX( fxEffect );
-////	savefile->WriteString( systemName );
+////	savefile.WriteInt( started );
+////	savefile.WriteInt( nextTriggerTime );
+////	savefile.WriteFX( fxEffect );
+////	savefile.WriteString( systemName );
 ////
-////	savefile->WriteInt( actions.Num() );
+////	savefile.WriteInt( actions.Num() );
 ////
 ////	for ( i = 0; i < actions.Num(); i++ ) {
 ////
 ////		if ( actions[i].lightDefHandle >= 0 ) {
-////			savefile->WriteBool( true );
-////			savefile->WriteRenderLight( actions[i].renderLight );
+////			savefile.WriteBool( true );
+////			savefile.WriteRenderLight( actions[i].renderLight );
 ////		} else {
-////			savefile->WriteBool( false );
+////			savefile.WriteBool( false );
 ////		}
 ////
 ////		if ( actions[i].modelDefHandle >= 0 ) {
-////			savefile->WriteBool( true );
-////			savefile->WriteRenderEntity( actions[i].renderEntity );
+////			savefile.WriteBool( true );
+////			savefile.WriteRenderEntity( actions[i].renderEntity );
 ////		} else {
-////			savefile->WriteBool( false );
+////			savefile.WriteBool( false );
 ////		}
 ////
-////		savefile->WriteFloat( actions[i].delay );
-////		savefile->WriteInt( actions[i].start );
-////		savefile->WriteBool( actions[i].soundStarted );
-////		savefile->WriteBool( actions[i].shakeStarted );
-////		savefile->WriteBool( actions[i].decalDropped );
-////		savefile->WriteBool( actions[i].launched );
+////		savefile.WriteFloat( actions[i].delay );
+////		savefile.WriteInt( actions[i].start );
+////		savefile.WriteBool( actions[i].soundStarted );
+////		savefile.WriteBool( actions[i].shakeStarted );
+////		savefile.WriteBool( actions[i].decalDropped );
+////		savefile.WriteBool( actions[i].launched );
 ////	}
 ////}
 ////
@@ -164,44 +186,44 @@ class idEntityFx extends idEntity {
 ////	int num;
 ////	bool hasObject;
 ////
-////	savefile->ReadInt( started );
-////	savefile->ReadInt( nextTriggerTime );
-////	savefile->ReadFX( fxEffect );
-////	savefile->ReadString( systemName );
+////	savefile.ReadInt( started );
+////	savefile.ReadInt( nextTriggerTime );
+////	savefile.ReadFX( fxEffect );
+////	savefile.ReadString( systemName );
 ////
-////	savefile->ReadInt( num );
+////	savefile.ReadInt( num );
 ////
 ////	actions.SetNum( num );
 ////	for ( i = 0; i < num; i++ ) {
 ////
-////		savefile->ReadBool( hasObject );
+////		savefile.ReadBool( hasObject );
 ////		if ( hasObject ) {
-////			savefile->ReadRenderLight( actions[i].renderLight );
-////			actions[i].lightDefHandle = gameRenderWorld->AddLightDef( &actions[i].renderLight );
+////			savefile.ReadRenderLight( actions[i].renderLight );
+////			actions[i].lightDefHandle = gameRenderWorld.AddLightDef( &actions[i].renderLight );
 ////		} else {
 ////			memset( &actions[i].renderLight, 0, sizeof( renderLight_t ) );
 ////			actions[i].lightDefHandle = -1;
 ////		}
 ////
-////		savefile->ReadBool( hasObject );
+////		savefile.ReadBool( hasObject );
 ////		if ( hasObject ) {
-////			savefile->ReadRenderEntity( actions[i].renderEntity );
-////			actions[i].modelDefHandle = gameRenderWorld->AddEntityDef( &actions[i].renderEntity );
+////			savefile.ReadRenderEntity( actions[i].renderEntity );
+////			actions[i].modelDefHandle = gameRenderWorld.AddEntityDef( &actions[i].renderEntity );
 ////		} else {
 ////			memset( &actions[i].renderEntity, 0, sizeof( renderEntity_t ) );
 ////			actions[i].modelDefHandle = -1;
 ////		}
 ////
-////		savefile->ReadFloat( actions[i].delay );
+////		savefile.ReadFloat( actions[i].delay );
 ////
 ////		// let the FX regenerate the particleSystem
 ////		actions[i].particleSystem = -1;
 ////
-////		savefile->ReadInt( actions[i].start );
-////		savefile->ReadBool( actions[i].soundStarted );
-////		savefile->ReadBool( actions[i].shakeStarted );
-////		savefile->ReadBool( actions[i].decalDropped );
-////		savefile->ReadBool( actions[i].launched );
+////		savefile.ReadInt( actions[i].start );
+////		savefile.ReadBool( actions[i].soundStarted );
+////		savefile.ReadBool( actions[i].shakeStarted );
+////		savefile.ReadBool( actions[i].decalDropped );
+////		savefile.ReadBool( actions[i].launched );
 ////	}
 ////}
 ////
@@ -224,17 +246,17 @@ class idEntityFx extends idEntity {
 ////	systemName = fx;
 ////	started = 0;
 ////
-////	fxEffect = static_cast<const idDeclFX *>( declManager->FindType( DECL_FX, systemName.c_str() ) );
+////	fxEffect = static_cast<const idDeclFX *>( declManager.FindType( DECL_FX, systemName.c_str() ) );
 ////
 ////	if ( fxEffect ) {
 ////		idFXLocalAction localAction;
 ////
 ////		memset( &localAction, 0, sizeof( idFXLocalAction ) );
 ////
-////		actions.AssureSize( fxEffect->events.Num(), localAction );
+////		actions.AssureSize( fxEffect.events.Num(), localAction );
 ////
-////		for( int i = 0; i<fxEffect->events.Num(); i++ ) {
-////			const idFXSingleAction& fxaction = fxEffect->events[i];
+////		for( int i = 0; i<fxEffect.events.Num(); i++ ) {
+////			const idFXSingleAction& fxaction = fxEffect.events[i];
 ////
 ////			idFXLocalAction& laction = actions[i];
 ////			if ( fxaction.random1 || fxaction.random2 ) {
@@ -259,7 +281,7 @@ class idEntityFx extends idEntity {
 ////================
 ////*/
 ////const char *idEntityFx::EffectName( void ) {
-////	return fxEffect ? fxEffect->GetName() : NULL;
+////	return fxEffect ? fxEffect.GetName() : NULL;
 ////}
 ////
 /////*
@@ -268,7 +290,7 @@ class idEntityFx extends idEntity {
 ////================
 ////*/
 ////const char *idEntityFx::Joint( void ) {
-////	return fxEffect ? fxEffect->joint.c_str() : NULL;
+////	return fxEffect ? fxEffect.joint.c_str() : NULL;
 ////}
 ////
 /////*
@@ -280,8 +302,8 @@ class idEntityFx extends idEntity {
 ////	if ( !fxEffect ) {
 ////		return;
 ////	}
-////	for( int i = 0; i < fxEffect->events.Num(); i++ ) {
-////		const idFXSingleAction& fxaction = fxEffect->events[i];
+////	for( int i = 0; i < fxEffect.events.Num(); i++ ) {
+////		const idFXSingleAction& fxaction = fxEffect.events[i];
 ////		idFXLocalAction& laction = actions[i];
 ////		CleanUpSingleAction( fxaction, laction );		
 ////	}
@@ -294,11 +316,11 @@ class idEntityFx extends idEntity {
 ////*/
 ////void idEntityFx::CleanUpSingleAction( const idFXSingleAction& fxaction, idFXLocalAction& laction ) {
 ////	if ( laction.lightDefHandle != -1 && fxaction.sibling == -1 && fxaction.type != FX_ATTACHLIGHT ) {
-////		gameRenderWorld->FreeLightDef( laction.lightDefHandle );
+////		gameRenderWorld.FreeLightDef( laction.lightDefHandle );
 ////		laction.lightDefHandle = -1;
 ////	}
 ////	if ( laction.modelDefHandle != -1 && fxaction.sibling == -1 && fxaction.type != FX_ATTACHENTITY ) {
-////		gameRenderWorld->FreeEntityDef( laction.modelDefHandle );
+////		gameRenderWorld.FreeEntityDef( laction.modelDefHandle );
 ////		laction.modelDefHandle = -1;
 ////	}
 ////	laction.start = -1;
@@ -314,7 +336,7 @@ class idEntityFx extends idEntity {
 ////		return;
 ////	}
 ////	started = time;
-////	for( int i = 0; i < fxEffect->events.Num(); i++ ) {
+////	for( int i = 0; i < fxEffect.events.Num(); i++ ) {
 ////		idFXLocalAction& laction = actions[i];
 ////		laction.start = time;
 ////		laction.soundStarted = false;
@@ -346,8 +368,8 @@ class idEntityFx extends idEntity {
 ////	if ( !fxEffect ) {
 ////		return max;
 ////	}
-////	for( int i = 0; i < fxEffect->events.Num(); i++ ) {
-////		const idFXSingleAction& fxaction = fxEffect->events[i];
+////	for( int i = 0; i < fxEffect.events.Num(); i++ ) {
+////		const idFXSingleAction& fxaction = fxEffect.events[i];
 ////		int d = ( fxaction.delay + fxaction.duration ) * 1000.0f;
 ////		if ( d > max ) {
 ////			max = d;
@@ -386,14 +408,14 @@ class idEntityFx extends idEntity {
 ////			laction.renderEntity.shaderParms[SHADERPARM_GREEN] = (fxaction.fadeInTime) ? fadePct : 1.0f - fadePct;
 ////			laction.renderEntity.shaderParms[SHADERPARM_BLUE] = (fxaction.fadeInTime) ? fadePct : 1.0f - fadePct;
 ////	
-////			gameRenderWorld->UpdateEntityDef( laction.modelDefHandle, &laction.renderEntity );
+////			gameRenderWorld.UpdateEntityDef( laction.modelDefHandle, &laction.renderEntity );
 ////		}
 ////		if ( laction.lightDefHandle != -1 ) {
 ////			laction.renderLight.shaderParms[SHADERPARM_RED] = fxaction.lightColor.x * ( (fxaction.fadeInTime) ? fadePct : 1.0f - fadePct );
 ////			laction.renderLight.shaderParms[SHADERPARM_GREEN] = fxaction.lightColor.y * ( (fxaction.fadeInTime) ? fadePct : 1.0f - fadePct );
 ////			laction.renderLight.shaderParms[SHADERPARM_BLUE] = fxaction.lightColor.z * ( (fxaction.fadeInTime) ? fadePct : 1.0f - fadePct );
 ////
-////			gameRenderWorld->UpdateLightDef( laction.lightDefHandle, &laction.renderLight );
+////			gameRenderWorld.UpdateLightDef( laction.lightDefHandle, &laction.renderLight );
 ////		}
 ////	}
 ////}
@@ -413,8 +435,8 @@ class idEntityFx extends idEntity {
 ////		return;
 ////	}
 ////
-////	for( ieff = 0; ieff < fxEffect->events.Num(); ieff++ ) {
-////		const idFXSingleAction& fxaction = fxEffect->events[ieff];
+////	for( ieff = 0; ieff < fxEffect.events.Num(); ieff++ ) {
+////		const idFXSingleAction& fxaction = fxEffect.events[ieff];
 ////		idFXLocalAction& laction = actions[ieff];
 ////
 ////		//
@@ -454,8 +476,8 @@ class idEntityFx extends idEntity {
 ////		}
 ////
 ////		if ( fxaction.fire.Length() ) {
-////			for( j = 0; j < fxEffect->events.Num(); j++ ) {
-////				if ( fxEffect->events[j].name.Icmp( fxaction.fire ) == 0 ) {
+////			for( j = 0; j < fxEffect.events.Num(); j++ ) {
+////				if ( fxEffect.events[j].name.Icmp( fxaction.fire ) == 0 ) {
 ////					actions[j].delay = 0;
 ////				}
 ////			}
@@ -472,29 +494,29 @@ class idEntityFx extends idEntity {
 ////		switch( fxaction.type ) {
 ////			case FX_ATTACHLIGHT:
 ////			case FX_LIGHT: {
-////				if ( useAction->lightDefHandle == -1 ) {
+////				if ( useAction.lightDefHandle == -1 ) {
 ////					if ( fxaction.type == FX_LIGHT ) {
-////						memset( &useAction->renderLight, 0, sizeof( renderLight_t ) );
-////						useAction->renderLight.origin = GetPhysics()->GetOrigin() + fxaction.offset;
-////						useAction->renderLight.axis = GetPhysics()->GetAxis();
-////						useAction->renderLight.lightRadius[0] = fxaction.lightRadius;
-////						useAction->renderLight.lightRadius[1] = fxaction.lightRadius;
-////						useAction->renderLight.lightRadius[2] = fxaction.lightRadius;
-////						useAction->renderLight.shader = declManager->FindMaterial( fxaction.data, false );
-////						useAction->renderLight.shaderParms[ SHADERPARM_RED ]	= fxaction.lightColor.x;
-////						useAction->renderLight.shaderParms[ SHADERPARM_GREEN ]	= fxaction.lightColor.y;
-////						useAction->renderLight.shaderParms[ SHADERPARM_BLUE ]	= fxaction.lightColor.z;
-////						useAction->renderLight.shaderParms[ SHADERPARM_TIMESCALE ]	= 1.0f;
-////						useAction->renderLight.shaderParms[ SHADERPARM_TIMEOFFSET ] = -MS2SEC( time );
-////						useAction->renderLight.referenceSound = refSound.referenceSound;
-////						useAction->renderLight.pointLight = true;
+////						memset( &useAction.renderLight, 0, sizeof( renderLight_t ) );
+////						useAction.renderLight.origin = GetPhysics().GetOrigin() + fxaction.offset;
+////						useAction.renderLight.axis = GetPhysics().GetAxis();
+////						useAction.renderLight.lightRadius[0] = fxaction.lightRadius;
+////						useAction.renderLight.lightRadius[1] = fxaction.lightRadius;
+////						useAction.renderLight.lightRadius[2] = fxaction.lightRadius;
+////						useAction.renderLight.shader = declManager.FindMaterial( fxaction.data, false );
+////						useAction.renderLight.shaderParms[ SHADERPARM_RED ]	= fxaction.lightColor.x;
+////						useAction.renderLight.shaderParms[ SHADERPARM_GREEN ]	= fxaction.lightColor.y;
+////						useAction.renderLight.shaderParms[ SHADERPARM_BLUE ]	= fxaction.lightColor.z;
+////						useAction.renderLight.shaderParms[ SHADERPARM_TIMESCALE ]	= 1.0f;
+////						useAction.renderLight.shaderParms[ SHADERPARM_TIMEOFFSET ] = -MS2SEC( time );
+////						useAction.renderLight.referenceSound = refSound.referenceSound;
+////						useAction.renderLight.pointLight = true;
 ////						if ( fxaction.noshadows ) {
-////							useAction->renderLight.noShadows = true;
+////							useAction.renderLight.noShadows = true;
 ////						}
-////						useAction->lightDefHandle = gameRenderWorld->AddLightDef( &useAction->renderLight );
+////						useAction.lightDefHandle = gameRenderWorld.AddLightDef( &useAction.renderLight );
 ////					}
 ////					if ( fxaction.noshadows ) {
-////						for( j = 0; j < fxEffect->events.Num(); j++ ) {
+////						for( j = 0; j < fxEffect.events.Num(); j++ ) {
 ////							idFXLocalAction& laction2 = actions[j];
 ////							if ( laction2.modelDefHandle != -1 ) {
 ////								laction2.renderEntity.noShadow = true;
@@ -506,38 +528,38 @@ class idEntityFx extends idEntity {
 ////				break;
 ////			}
 ////			case FX_SOUND: {
-////				if ( !useAction->soundStarted ) {
-////					useAction->soundStarted = true;
-////					const idSoundShader *shader = declManager->FindSound(fxaction.data);
+////				if ( !useAction.soundStarted ) {
+////					useAction.soundStarted = true;
+////					const idSoundShader *shader = declManager.FindSound(fxaction.data);
 ////					StartSoundShader( shader, SND_CHANNEL_ANY, 0, false, NULL );
-////					for( j = 0; j < fxEffect->events.Num(); j++ ) {
+////					for( j = 0; j < fxEffect.events.Num(); j++ ) {
 ////						idFXLocalAction& laction2 = actions[j];
 ////						if ( laction2.lightDefHandle != -1 ) {
 ////							laction2.renderLight.referenceSound = refSound.referenceSound;
-////							gameRenderWorld->UpdateLightDef( laction2.lightDefHandle, &laction2.renderLight );
+////							gameRenderWorld.UpdateLightDef( laction2.lightDefHandle, &laction2.renderLight );
 ////						}
 ////					}
 ////				}
 ////				break;
 ////			}
 ////			case FX_DECAL: {
-////				if ( !useAction->decalDropped ) {
-////					useAction->decalDropped = true;
-////					gameLocal.ProjectDecal( GetPhysics()->GetOrigin(), GetPhysics()->GetGravity(), 8.0f, true, fxaction.size, fxaction.data ); 
+////				if ( !useAction.decalDropped ) {
+////					useAction.decalDropped = true;
+////					gameLocal.ProjectDecal( GetPhysics().GetOrigin(), GetPhysics().GetGravity(), 8.0f, true, fxaction.size, fxaction.data ); 
 ////				}
 ////				break;
 ////			}
 ////			case FX_SHAKE: {
-////				if ( !useAction->shakeStarted ) {
+////				if ( !useAction.shakeStarted ) {
 ////					idDict args;
 ////					args.Clear();
 ////					args.SetFloat( "kick_time", fxaction.shakeTime );
 ////					args.SetFloat( "kick_amplitude", fxaction.shakeAmplitude );
 ////					for ( j = 0; j < gameLocal.numClients; j++ ) {
 ////						idPlayer *player = gameLocal.GetClientByNum( j );
-////						if ( player && ( player->GetPhysics()->GetOrigin() - GetPhysics()->GetOrigin() ).LengthSqr() < Square( fxaction.shakeDistance ) ) {
+////						if ( player && ( player.GetPhysics().GetOrigin() - GetPhysics().GetOrigin() ).LengthSqr() < Square( fxaction.shakeDistance ) ) {
 ////							if ( !gameLocal.isMultiplayer || !fxaction.shakeIgnoreMaster || GetBindMaster() != player ) {
-////								player->playerView.DamageImpulse( fxaction.offset, &args );
+////								player.playerView.DamageImpulse( fxaction.offset, &args );
 ////							}
 ////						}
 ////					}
@@ -550,33 +572,33 @@ class idEntityFx extends idEntity {
 ////							}
 ////						}
 ////						// lookup the ent we are bound to?
-////						gameLocal.RadiusPush( GetPhysics()->GetOrigin(), fxaction.shakeDistance, fxaction.shakeImpulse, this, ignore_ent, 1.0f, true );
+////						gameLocal.RadiusPush( GetPhysics().GetOrigin(), fxaction.shakeDistance, fxaction.shakeImpulse, this, ignore_ent, 1.0f, true );
 ////					}
-////					useAction->shakeStarted = true;
+////					useAction.shakeStarted = true;
 ////				}
 ////				break;
 ////			}
 ////			case FX_ATTACHENTITY:
 ////			case FX_PARTICLE:
 ////			case FX_MODEL: {
-////				if ( useAction->modelDefHandle == -1 ) {
-////					memset( &useAction->renderEntity, 0, sizeof( renderEntity_t ) );
-////					useAction->renderEntity.origin = GetPhysics()->GetOrigin() + fxaction.offset;
-////					useAction->renderEntity.axis = (fxaction.explicitAxis) ? fxaction.axis : GetPhysics()->GetAxis();
-////					useAction->renderEntity.hModel = renderModelManager->FindModel( fxaction.data );
-////					useAction->renderEntity.shaderParms[ SHADERPARM_RED ]		= 1.0f;
-////					useAction->renderEntity.shaderParms[ SHADERPARM_GREEN ]		= 1.0f;
-////					useAction->renderEntity.shaderParms[ SHADERPARM_BLUE ]		= 1.0f;
-////					useAction->renderEntity.shaderParms[ SHADERPARM_TIMEOFFSET ] = -MS2SEC( time );
-////					useAction->renderEntity.shaderParms[3] = 1.0f;
-////					useAction->renderEntity.shaderParms[5] = 0.0f;
-////					if ( useAction->renderEntity.hModel ) {
-////						useAction->renderEntity.bounds = useAction->renderEntity.hModel->Bounds( &useAction->renderEntity );
+////				if ( useAction.modelDefHandle == -1 ) {
+////					memset( &useAction.renderEntity, 0, sizeof( renderEntity_t ) );
+////					useAction.renderEntity.origin = GetPhysics().GetOrigin() + fxaction.offset;
+////					useAction.renderEntity.axis = (fxaction.explicitAxis) ? fxaction.axis : GetPhysics().GetAxis();
+////					useAction.renderEntity.hModel = renderModelManager.FindModel( fxaction.data );
+////					useAction.renderEntity.shaderParms[ SHADERPARM_RED ]		= 1.0f;
+////					useAction.renderEntity.shaderParms[ SHADERPARM_GREEN ]		= 1.0f;
+////					useAction.renderEntity.shaderParms[ SHADERPARM_BLUE ]		= 1.0f;
+////					useAction.renderEntity.shaderParms[ SHADERPARM_TIMEOFFSET ] = -MS2SEC( time );
+////					useAction.renderEntity.shaderParms[3] = 1.0f;
+////					useAction.renderEntity.shaderParms[5] = 0.0f;
+////					if ( useAction.renderEntity.hModel ) {
+////						useAction.renderEntity.bounds = useAction.renderEntity.hModel.Bounds( &useAction.renderEntity );
 ////					}
-////					useAction->modelDefHandle = gameRenderWorld->AddEntityDef( &useAction->renderEntity );
+////					useAction.modelDefHandle = gameRenderWorld.AddEntityDef( &useAction.renderEntity );
 ////				} else if ( fxaction.trackOrigin ) {
-////					useAction->renderEntity.origin = GetPhysics()->GetOrigin() + fxaction.offset;
-////					useAction->renderEntity.axis = fxaction.explicitAxis ? fxaction.axis : GetPhysics()->GetAxis();
+////					useAction.renderEntity.origin = GetPhysics().GetOrigin() + fxaction.offset;
+////					useAction.renderEntity.axis = fxaction.explicitAxis ? fxaction.axis : GetPhysics().GetAxis();
 ////				}
 ////				ApplyFade( fxaction, *useAction, time, actualStart );
 ////				break;
@@ -584,11 +606,11 @@ class idEntityFx extends idEntity {
 ////			case FX_LAUNCH: {
 ////				if ( gameLocal.isClient ) {
 ////					// client never spawns entities outside of ClientReadSnapshot
-////					useAction->launched = true;
+////					useAction.launched = true;
 ////					break;
 ////				}
-////				if ( !useAction->launched ) {
-////					useAction->launched = true;
+////				if ( !useAction.launched ) {
+////					useAction.launched = true;
 ////					projectile = NULL;
 ////					// FIXME: may need to cache this if it is slow
 ////					projectileDef = gameLocal.FindEntityDefDict( fxaction.data, false );
@@ -596,10 +618,10 @@ class idEntityFx extends idEntity {
 ////						gameLocal.Warning( "projectile \'%s\' not found", fxaction.data.c_str() );
 ////					} else {
 ////						gameLocal.SpawnEntityDef( *projectileDef, &ent, false );
-////						if ( ent && ent->IsType( idProjectile::Type ) ) {
+////						if ( ent && ent.IsType( idProjectile::Type ) ) {
 ////							projectile = ( idProjectile * )ent;
-////							projectile->Create( this, GetPhysics()->GetOrigin(), GetPhysics()->GetAxis()[0] );
-////							projectile->Launch( GetPhysics()->GetOrigin(), GetPhysics()->GetAxis()[0], vec3_origin );
+////							projectile.Create( this, GetPhysics().GetOrigin(), GetPhysics().GetAxis()[0] );
+////							projectile.Launch( GetPhysics().GetOrigin(), GetPhysics().GetAxis()[0], vec3_origin );
 ////						}
 ////					}
 ////				}
@@ -759,21 +781,21 @@ class idEntityFx extends idEntity {
 ////	args.SetBool( "start", true );
 ////	args.Set( "fx", fx );
 ////	idEntityFx *nfx = static_cast<idEntityFx *>( gameLocal.SpawnEntityType( idEntityFx::Type, &args ) );
-////	if ( nfx->Joint() && *nfx->Joint() ) {
-////		nfx->BindToJoint( ent, nfx->Joint(), true );
-////		nfx->SetOrigin( vec3_origin );
+////	if ( nfx.Joint() && *nfx.Joint() ) {
+////		nfx.BindToJoint( ent, nfx.Joint(), true );
+////		nfx.SetOrigin( vec3_origin );
 ////	} else {
-////		nfx->SetOrigin( (useOrigin) ? *useOrigin : ent->GetPhysics()->GetOrigin() );
-////		nfx->SetAxis( (useAxis) ? *useAxis : ent->GetPhysics()->GetAxis() );
+////		nfx.SetOrigin( (useOrigin) ? *useOrigin : ent.GetPhysics().GetOrigin() );
+////		nfx.SetAxis( (useAxis) ? *useAxis : ent.GetPhysics().GetAxis() );
 ////	}
 ////
 ////	if ( bind ) {
 ////		// never bind to world spawn
 ////		if ( ent != gameLocal.world ) {
-////			nfx->Bind( ent, true );
+////			nfx.Bind( ent, true );
 ////		}
 ////	}
-////	nfx->Show();
+////	nfx.Show();
 ////	return nfx;
 ////}
 ////
@@ -783,9 +805,9 @@ class idEntityFx extends idEntity {
 ////=================
 ////*/
 ////void idEntityFx::WriteToSnapshot( idBitMsgDelta &msg ) const {
-////	GetPhysics()->WriteToSnapshot( msg );
+////	GetPhysics().WriteToSnapshot( msg );
 ////	WriteBindToSnapshot( msg );
-////	msg.WriteLong( ( fxEffect != NULL ) ? gameLocal.ServerRemapDecl( -1, DECL_FX, fxEffect->Index() ) : -1 );
+////	msg.WriteLong( ( fxEffect != NULL ) ? gameLocal.ServerRemapDecl( -1, DECL_FX, fxEffect.Index() ) : -1 );
 ////	msg.WriteLong( started );
 ////}
 ////
@@ -797,7 +819,7 @@ class idEntityFx extends idEntity {
 ////void idEntityFx::ReadFromSnapshot( const idBitMsgDelta &msg ) {
 ////	int fx_index, start_time, max_lapse;
 ////
-////	GetPhysics()->ReadFromSnapshot( msg );
+////	GetPhysics().ReadFromSnapshot( msg );
 ////	ReadBindFromSnapshot( msg );
 ////	fx_index = gameLocal.ClientRemapDecl( DECL_FX, msg.ReadLong() );
 ////	start_time = msg.ReadLong();
@@ -809,12 +831,12 @@ class idEntityFx extends idEntity {
 ////			started = 0;
 ////			return;
 ////		}
-////		const idDeclFX *fx = static_cast<const idDeclFX *>( declManager->DeclByIndex( DECL_FX, fx_index ) );
+////		const idDeclFX *fx = static_cast<const idDeclFX *>( declManager.DeclByIndex( DECL_FX, fx_index ) );
 ////		if ( !fx ) {
 ////			gameLocal.Error( "FX at index %d not found", fx_index );
 ////		}
 ////		fxEffect = fx;
-////		Setup( fx->GetName() );
+////		Setup( fx.GetName() );
 ////		Start( start_time );
 ////	}
 ////}
@@ -832,41 +854,61 @@ class idEntityFx extends idEntity {
 ////	Present();
 ////}
 }
-/////*
-////===============================================================================
-////
-////  idTeleporter
-////	
-////===============================================================================
-////*/
-////
-////CLASS_DECLARATION( idEntityFx, idTeleporter )
-////	EVENT( EV_Fx_Action,	idTeleporter::Event_DoAction )
-////END_CLASS
-////
-////
-////class idTeleporter extends idEntityFx {
+/*
+===============================================================================
+
+  idTeleporter
+	
+===============================================================================
+*/
+
+
+class idTeleporter extends idEntityFx {
 ////public:
 ////	CLASS_PROTOTYPE(idTeleporter);
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idTeleporter>[];
 ////
 ////private:
-////	// teleporters to this location
-////	void					Event_DoAction(activator:idEntity);
-////};
-////
-////#endif /* !__GAME_FX_H__ */
-////
-////
-////
-/////*
-////================
-////idTeleporter::Event_DoAction
-////================
-////*/
-////void idTeleporter::Event_DoAction( activator:idEntity ) {
-////	float angle;
-////
-////	angle = spawnArgs.GetFloat( "angle" );
-////	idAngles a( 0, spawnArgs.GetFloat( "angle" ), 0 );
-////	activator->Teleport( GetPhysics()->GetOrigin(), a, NULL );
-////}
+////	
+	// teleporters to this location
+/*
+================
+idTeleporter::Event_DoAction
+================
+*/
+	Event_DoAction ( activator: idEntity ): void {
+		todoThrow ( );
+		//float angle;
+
+		//angle = spawnArgs.GetFloat( "angle" );
+		//idAngles a( 0, spawnArgs.GetFloat( "angle" ), 0 );
+		//activator.Teleport( GetPhysics().GetOrigin(), a, NULL );
+	}
+
+}
+
+//CLASS_DECLARATION( idEntityFx, idTeleporter )
+idTeleporter.CreateInstance = function (): idClass {
+	try {
+		var ptr = new idTeleporter;
+		ptr.FindUninitializedMemory();
+		return ptr;
+	} catch (e) {
+		return null;
+	}
+};
+
+idTeleporter.prototype.GetType = function (): idTypeInfo {
+	return (idTeleporter.Type);
+};
+
+idTeleporter.eventCallbacks = [
+	EVENT(EV_Fx_Action, idTeleporter.prototype.Event_DoAction)
+];
+
+idTeleporter.Type = new idTypeInfo("idTeleporter", "idEntityFx",
+	idTeleporter.eventCallbacks, idTeleporter.CreateInstance, idTeleporter.prototype.Spawn,
+	idTeleporter.prototype.Save, idTeleporter.prototype.Restore);

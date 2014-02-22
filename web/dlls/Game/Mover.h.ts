@@ -118,7 +118,7 @@
 ////	void					Event_ClosePortal( void ): void { throw "placeholder"; }
 ////	void					Event_PartBlocked( idEntity *blockingEntity ): void { throw "placeholder"; }
 
-////	void					MoveToPos( const idVec3 &pos): void { throw "placeholder"; }
+////	void					MoveToPos( pos:idVec3): void { throw "placeholder"; }
 ////	void					UpdateMoveSound( moveStage_t stage ): void { throw "placeholder"; }
 ////	void					UpdateRotationSound( moveStage_t stage ): void { throw "placeholder"; }
 ////	void					SetGuiStates( const char *state ): void { throw "placeholder"; }
@@ -229,7 +229,7 @@
 ////protected:
 ////	virtual void			DoneMoving( void );
 ////	virtual void			BeginMove( idThread *thread = NULL );
-////	void					SpawnTrigger( const idVec3 &pos );
+////	void					SpawnTrigger( pos:idVec3 );
 ////	void					GetLocalTriggerPosition();
 ////	void					Event_Touch( other:idEntity, trace:trace_t );
 

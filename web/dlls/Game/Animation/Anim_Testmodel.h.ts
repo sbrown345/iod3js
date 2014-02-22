@@ -87,9 +87,9 @@ class idTestModel extends idAnimatedEntity {
 //
 //	idList<copyJoints_t>	copyJoints;
 //
-//	virtual void			Think( void );
-//
-//	void					Event_Footstep( void );
+	Think( ):void { throw "placeholder"; }
+
+	Event_Footstep( ):void { throw "placeholder"; }
 };
 //
 //#endif /* !__ANIM_TESTMODEL_H__*/

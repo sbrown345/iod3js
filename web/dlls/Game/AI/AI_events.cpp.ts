@@ -417,7 +417,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_FindEnemyInCombatNodes
 ////=====================
 ////*/
-////void idAI::Event_FindEnemyInCombatNodes( void ) {
+////void idAI::Event_FindEnemyInCombatNodes( ) {
 ////	int				i, j;
 ////	idCombatNode	*node;
 ////	idEntity		*ent;
@@ -546,7 +546,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_ClearEnemy
 ////=====================
 ////*/
-////void idAI::Event_ClearEnemy( void ) {
+////void idAI::Event_ClearEnemy( ) {
 ////	ClearEnemy();
 ////}
 ////
@@ -555,7 +555,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_MuzzleFlash
 ////=====================
 ////*/
-////void idAI::Event_MuzzleFlash( const char *jointname ) {
+////void idAI::Event_MuzzleFlash( jointname:string ) {
 ////	idVec3	muzzle;
 ////	idMat3	axis;
 ////
@@ -568,7 +568,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_CreateMissile
 ////=====================
 ////*/
-////void idAI::Event_CreateMissile( const char *jointname ) {
+////void idAI::Event_CreateMissile( jointname:string ) {
 ////	idVec3 muzzle;
 ////	idMat3 axis;
 ////
@@ -594,7 +594,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_AttackMissile
 ////=====================
 ////*/
-////void idAI::Event_AttackMissile( const char *jointname ) {
+////void idAI::Event_AttackMissile( jointname:string ) {
 ////	idProjectile *proj;
 ////
 ////	proj = LaunchProjectile( jointname, enemy.GetEntity(), true );
@@ -606,7 +606,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_FireMissileAtTarget
 ////=====================
 ////*/
-////void idAI::Event_FireMissileAtTarget( const char *jointname, const char *targetname ) {
+////void idAI::Event_FireMissileAtTarget( jointname:string, const char *targetname ) {
 ////	idEntity		*aent;
 ////	idProjectile	*proj;
 ////
@@ -700,7 +700,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_RadiusDamageFromJoint
 ////=====================
 ////*/
-////void idAI::Event_RadiusDamageFromJoint( const char *jointname, const char *damageDefName ) {
+////void idAI::Event_RadiusDamageFromJoint( jointname:string, const char *damageDefName ) {
 ////	jointHandle_t joint;
 ////	idVec3 org;
 ////	idMat3 axis;
@@ -723,7 +723,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_RandomPath
 ////=====================
 ////*/
-////void idAI::Event_RandomPath( void ) {
+////void idAI::Event_RandomPath( ) {
 ////	idPathCorner *path;
 ////
 ////	path = idPathCorner::RandomPath( this, NULL );
@@ -744,7 +744,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_EndAttack
 ////=====================
 ////*/
-////void idAI::Event_EndAttack( void ) {
+////void idAI::Event_EndAttack( ) {
 ////	EndAttack();
 ////}
 ////
@@ -753,7 +753,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_MeleeAttackToJoint
 ////=====================
 ////*/
-////void idAI::Event_MeleeAttackToJoint( const char *jointname, const char *meleeDefName ) {
+////void idAI::Event_MeleeAttackToJoint( jointname:string, const char *meleeDefName ) {
 ////	jointHandle_t	joint;
 ////	idVec3			start;
 ////	idVec3			end;
@@ -791,7 +791,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_CanBecomeSolid
 ////=====================
 ////*/
-////void idAI::Event_CanBecomeSolid( void ) {
+////void idAI::Event_CanBecomeSolid( ) {
 ////	int			i;
 ////	int			num;
 ////	idEntity *	hit;
@@ -826,7 +826,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_BecomeSolid
 ////=====================
 ////*/
-////void idAI::Event_BecomeSolid( void ) {
+////void idAI::Event_BecomeSolid( ) {
 ////	physicsObj.EnableClip();
 ////	if ( spawnArgs.GetBool( "big_monster" ) ) {
 ////		physicsObj.SetContents( 0 );
@@ -844,7 +844,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_BecomeNonSolid
 ////=====================
 ////*/
-////void idAI::Event_BecomeNonSolid( void ) {
+////void idAI::Event_BecomeNonSolid( ) {
 ////	fl.takedamage = false;
 ////	physicsObj.SetContents( 0 );
 ////	physicsObj.GetClipModel()->Unlink();
@@ -855,7 +855,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_BecomeRagdoll
 ////=====================
 ////*/
-////void idAI::Event_BecomeRagdoll( void ) {
+////void idAI::Event_BecomeRagdoll( ) {
 ////	bool result;
 ////
 ////	result = StartRagdoll();
@@ -867,7 +867,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_StopRagdoll
 ////=====================
 ////*/
-////void idAI::Event_StopRagdoll( void ) {
+////void idAI::Event_StopRagdoll( ) {
 ////	StopRagdoll();
 ////
 ////	// set back the monster physics
@@ -894,7 +894,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_GetHealth
 ////=====================
 ////*/
-////void idAI::Event_GetHealth( void ) {
+////void idAI::Event_GetHealth( ) {
 ////	idThread::ReturnFloat( health );
 ////}
 ////
@@ -903,7 +903,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_AllowDamage
 ////=====================
 ////*/
-////void idAI::Event_AllowDamage( void ) {
+////void idAI::Event_AllowDamage( ) {
 ////	fl.takedamage = true;
 ////}
 ////
@@ -912,7 +912,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_IgnoreDamage
 ////=====================
 ////*/
-////void idAI::Event_IgnoreDamage( void ) {
+////void idAI::Event_IgnoreDamage( ) {
 ////	fl.takedamage = false;
 ////}
 ////
@@ -921,7 +921,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_GetCurrentYaw
 ////=====================
 ////*/
-////void idAI::Event_GetCurrentYaw( void ) {
+////void idAI::Event_GetCurrentYaw( ) {
 ////	idThread::ReturnFloat( current_yaw );
 ////}
 ////
@@ -939,7 +939,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_TurnToPos
 ////=====================
 ////*/
-////void idAI::Event_TurnToPos( const idVec3 &pos ) {
+////void idAI::Event_TurnToPos( pos:idVec3 ) {
 ////	TurnToward( pos );
 ////}
 ////
@@ -959,7 +959,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_MoveStatus
 ////=====================
 ////*/
-////void idAI::Event_MoveStatus( void ) {
+////void idAI::Event_MoveStatus( ) {
 ////	idThread::ReturnInt( move.moveStatus );
 ////}
 ////
@@ -968,7 +968,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_StopMove
 ////=====================
 ////*/
-////void idAI::Event_StopMove( void ) {
+////void idAI::Event_StopMove( ) {
 ////	StopMove( MOVE_STATUS_DONE );
 ////}
 ////
@@ -977,7 +977,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_MoveToCover
 ////=====================
 ////*/
-////void idAI::Event_MoveToCover( void ) {
+////void idAI::Event_MoveToCover( ) {
 ////	idActor *enemyEnt = enemy.GetEntity();
 ////
 ////	StopMove( MOVE_STATUS_DEST_NOT_FOUND );
@@ -991,7 +991,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_MoveToEnemy
 ////=====================
 ////*/
-////void idAI::Event_MoveToEnemy( void ) {
+////void idAI::Event_MoveToEnemy( ) {
 ////	StopMove( MOVE_STATUS_DEST_NOT_FOUND );
 ////	if ( !enemy.GetEntity() || !MoveToEnemy() ) {
 ////		return;
@@ -1003,7 +1003,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_MoveToEnemyHeight
 ////=====================
 ////*/
-////void idAI::Event_MoveToEnemyHeight( void ) {
+////void idAI::Event_MoveToEnemyHeight( ) {
 ////	StopMove( MOVE_STATUS_DEST_NOT_FOUND );
 ////	MoveToEnemyHeight();
 ////}
@@ -1053,7 +1053,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_MoveToPosition
 ////=====================
 ////*/
-////void idAI::Event_MoveToPosition( const idVec3 &pos ) {
+////void idAI::Event_MoveToPosition( pos:idVec3 ) {
 ////	StopMove( MOVE_STATUS_DONE );
 ////	MoveToPosition( pos );
 ////}
@@ -1063,7 +1063,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_SlideTo
 ////=====================
 ////*/
-////void idAI::Event_SlideTo( const idVec3 &pos, float time ) {
+////void idAI::Event_SlideTo( pos:idVec3, float time ) {
 ////	SlideToPosition( pos, time );
 ////}
 /////*
@@ -1071,7 +1071,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_Wander
 ////=====================
 ////*/
-////void idAI::Event_Wander( void ) {
+////void idAI::Event_Wander( ) {
 ////	WanderAround();
 ////}
 ////
@@ -1080,7 +1080,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_FacingIdeal
 ////=====================
 ////*/
-////void idAI::Event_FacingIdeal( void ) {
+////void idAI::Event_FacingIdeal( ) {
 ////	bool facing = FacingIdeal();
 ////	idThread::ReturnInt( facing );
 ////}
@@ -1090,7 +1090,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_FaceEnemy
 ////=====================
 ////*/
-////void idAI::Event_FaceEnemy( void ) {
+////void idAI::Event_FaceEnemy( ) {
 ////	FaceEnemy();
 ////}
 ////
@@ -1123,7 +1123,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_GetCombatNode
 ////=====================
 ////*/
-////void idAI::Event_GetCombatNode( void ) {
+////void idAI::Event_GetCombatNode( ) {
 ////	int				i;
 ////	float			dist;
 ////	idEntity		*targetEnt;
@@ -1199,7 +1199,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////
 ////	node = static_cast<idCombatNode *>( ent );
 ////	if ( use_current_enemy_location ) {
-////		const idVec3 &pos = enemyEnt->GetPhysics()->GetOrigin();
+////		pos:idVec3 = enemyEnt->GetPhysics()->GetOrigin();
 ////		result = node->EntityInView( enemyEnt, pos );
 ////	} else {
 ////		result = node->EntityInView( enemyEnt, lastVisibleEnemyPos );
@@ -1213,7 +1213,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_WaitMove
 ////=====================
 ////*/
-////void idAI::Event_WaitMove( void ) {
+////void idAI::Event_WaitMove( ) {
 ////	idThread::BeginMultiFrameEvent( this, &AI_WaitMove );
 ////
 ////	if ( MoveDone() ) {
@@ -1226,7 +1226,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_GetJumpVelocity
 ////=====================
 ////*/
-////void idAI::Event_GetJumpVelocity( const idVec3 &pos, /*float*/ speed:number, float max_height ) {
+////void idAI::Event_GetJumpVelocity( pos:idVec3, /*float*/ speed:number, float max_height ) {
 ////	idVec3 start;
 ////	idVec3 end;
 ////	idVec3 dir;
@@ -1333,7 +1333,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_GetTalkTarget
 ////=====================
 ////*/
-////void idAI::Event_GetTalkTarget( void ) {
+////void idAI::Event_GetTalkTarget( ) {
 ////	idThread::ReturnEntity( talkTarget.GetEntity() );
 ////}
 ////
@@ -1355,7 +1355,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_EnemyRange
 ////=====================
 ////*/
-////void idAI::Event_EnemyRange( void ) {
+////void idAI::Event_EnemyRange( ) {
 ////	float dist;
 ////	idActor *enemyEnt = enemy.GetEntity();
 ////
@@ -1374,7 +1374,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_EnemyRange2D
 ////=====================
 ////*/
-////void idAI::Event_EnemyRange2D( void ) {
+////void idAI::Event_EnemyRange2D( ) {
 ////	float dist;
 ////	idActor *enemyEnt = enemy.GetEntity();
 ////
@@ -1393,7 +1393,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_GetEnemy
 ////=====================
 ////*/
-////void idAI::Event_GetEnemy( void ) {
+////void idAI::Event_GetEnemy( ) {
 ////	idThread::ReturnEntity( enemy.GetEntity() );
 ////}
 ////
@@ -1402,7 +1402,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_GetEnemyPos
 ////=====================
 ////*/
-////void idAI::Event_GetEnemyPos( void ) {
+////void idAI::Event_GetEnemyPos( ) {
 ////	idThread::ReturnVector( lastVisibleEnemyPos );
 ////}
 ////
@@ -1411,7 +1411,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_GetEnemyEyePos
 ////=====================
 ////*/
-////void idAI::Event_GetEnemyEyePos( void ) {
+////void idAI::Event_GetEnemyEyePos( ) {
 ////	idThread::ReturnVector( lastVisibleEnemyPos + lastVisibleEnemyEyeOffset );
 ////}
 ////
@@ -1441,7 +1441,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_CanHitEnemy
 ////=====================
 ////*/
-////void idAI::Event_CanHitEnemy( void ) {
+////void idAI::Event_CanHitEnemy( ) {
 ////	trace_t	tr;
 ////	idEntity *hit;
 ////
@@ -1558,7 +1558,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_CanHitEnemyFromJoint
 ////=====================
 ////*/
-////void idAI::Event_CanHitEnemyFromJoint( const char *jointname ) {
+////void idAI::Event_CanHitEnemyFromJoint( jointname:string ) {
 ////	trace_t	tr;
 ////	idVec3	muzzle;
 ////	idMat3	axis;
@@ -1626,7 +1626,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_EnemyPositionValid
 ////=====================
 ////*/
-////void idAI::Event_EnemyPositionValid( void ) {
+////void idAI::Event_EnemyPositionValid( ) {
 ////	bool result;
 ////
 ////	result = EnemyPositionValid();
@@ -1664,7 +1664,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_TestChargeAttack
 ////=====================
 ////*/
-////void idAI::Event_TestChargeAttack( void ) {
+////void idAI::Event_TestChargeAttack( ) {
 ////	trace_t trace;
 ////	idActor *enemyEnt = enemy.GetEntity();
 ////	predictedPath_t path;
@@ -1793,7 +1793,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_TestMeleeAttack
 ////=====================
 ////*/
-////void idAI::Event_TestMeleeAttack( void ) {
+////void idAI::Event_TestMeleeAttack( ) {
 ////	bool result = TestMelee();
 ////	idThread::ReturnInt( result );
 ////}
@@ -1855,7 +1855,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_PreBurn
 ////=====================
 ////*/
-////void idAI::Event_PreBurn( void ) {
+////void idAI::Event_PreBurn( ) {
 ////	// for now this just turns shadows off
 ////	renderEntity.noShadow = true;
 ////}
@@ -1865,7 +1865,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_Burn
 ////=====================
 ////*/
-////void idAI::Event_Burn( void ) {
+////void idAI::Event_Burn( ) {
 ////	renderEntity.shaderParms[ SHADERPARM_TIME_OF_DEATH ] = gameLocal.time * 0.001f;
 ////	SpawnParticles( "smoke_burnParticleSystem" );
 ////	UpdateVisuals();
@@ -1876,7 +1876,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_ClearBurn
 ////=====================
 ////*/
-////void idAI::Event_ClearBurn( void ) {
+////void idAI::Event_ClearBurn( ) {
 ////	renderEntity.noShadow = spawnArgs.GetBool( "noshadows" );
 ////	renderEntity.shaderParms[ SHADERPARM_TIME_OF_DEATH ] = 0.0f;
 ////	UpdateVisuals();
@@ -1919,7 +1919,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_NumSmokeEmitters
 ////=====================
 ////*/
-////void idAI::Event_NumSmokeEmitters( void ) {
+////void idAI::Event_NumSmokeEmitters( ) {
 ////	idThread::ReturnInt( particles.Num() );
 ////}
 ////
@@ -1928,7 +1928,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_StopThinking
 ////=====================
 ////*/
-////void idAI::Event_StopThinking( void ) {
+////void idAI::Event_StopThinking( ) {
 ////	BecomeInactive( TH_THINK );
 ////	idThread *thread = idThread::CurrentThread();
 ////	if ( thread ) {
@@ -1941,7 +1941,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_GetTurnDelta
 ////=====================
 ////*/
-////void idAI::Event_GetTurnDelta( void ) {
+////void idAI::Event_GetTurnDelta( ) {
 ////	float amount;
 ////
 ////	if ( turnRate ) {
@@ -1957,7 +1957,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_GetMoveType
 ////=====================
 ////*/
-////void idAI::Event_GetMoveType( void ) {
+////void idAI::Event_GetMoveType( ) {
 ////	idThread::ReturnInt( move.moveType );
 ////}
 ////
@@ -1984,7 +1984,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_SaveMove
 ////=====================
 ////*/
-////void idAI::Event_SaveMove( void ) {
+////void idAI::Event_SaveMove( ) {
 ////	savedMove = move;
 ////}
 ////
@@ -1993,7 +1993,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_RestoreMove
 ////=====================
 ////*/
-////void idAI::Event_RestoreMove( void ) {
+////void idAI::Event_RestoreMove( ) {
 ////	idVec3 goalPos;
 ////	idVec3 dest;
 ////
@@ -2070,7 +2070,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_JumpFrame
 ////=====================
 ////*/
-////void idAI::Event_JumpFrame( void ) {
+////void idAI::Event_JumpFrame( ) {
 ////	AI_JUMP = true;
 ////}
 ////
@@ -2079,7 +2079,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_EnableClip
 ////=====================
 ////*/
-////void idAI::Event_EnableClip( void ) {
+////void idAI::Event_EnableClip( ) {
 ////	physicsObj.SetClipMask( MASK_MONSTERSOLID );
 ////	disableGravity = false;
 ////}
@@ -2089,7 +2089,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_DisableClip
 ////=====================
 ////*/
-////void idAI::Event_DisableClip( void ) {
+////void idAI::Event_DisableClip( ) {
 ////	physicsObj.SetClipMask( 0 );
 ////	disableGravity = true;
 ////}
@@ -2099,7 +2099,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_EnableGravity
 ////=====================
 ////*/
-////void idAI::Event_EnableGravity( void ) {
+////void idAI::Event_EnableGravity( ) {
 ////	disableGravity = false;
 ////}
 ////
@@ -2108,7 +2108,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_DisableGravity
 ////=====================
 ////*/
-////void idAI::Event_DisableGravity( void ) {
+////void idAI::Event_DisableGravity( ) {
 ////	disableGravity = true;
 ////}
 ////
@@ -2117,7 +2117,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_EnableAFPush
 ////=====================
 ////*/
-////void idAI::Event_EnableAFPush( void ) {
+////void idAI::Event_EnableAFPush( ) {
 ////	af_push_moveables = true;
 ////}
 ////
@@ -2126,7 +2126,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_DisableAFPush
 ////=====================
 ////*/
-////void idAI::Event_DisableAFPush( void ) {
+////void idAI::Event_DisableAFPush( ) {
 ////	af_push_moveables = false;
 ////}
 ////
@@ -2156,7 +2156,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_ClearFlyOffset
 ////================
 ////*/
-////void idAI::Event_ClearFlyOffset( void ) {
+////void idAI::Event_ClearFlyOffset( ) {
 ////	spawnArgs.GetInt( "fly_offset",	"0", fly_offset );
 ////}
 ////
@@ -2247,7 +2247,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_TravelDistanceToPoint
 ////================
 ////*/
-////void idAI::Event_TravelDistanceToPoint( const idVec3 &pos ) {
+////void idAI::Event_TravelDistanceToPoint( pos:idVec3 ) {
 ////	float time;
 ////
 ////	time = TravelDistance( physicsObj.GetOrigin(), pos );
@@ -2345,7 +2345,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_ThrowMoveable
 ////================
 ////*/
-////void idAI::Event_ThrowMoveable( void ) {
+////void idAI::Event_ThrowMoveable( ) {
 ////	var ent:idEntity
 ////	idEntity *moveable = NULL;
 ////
@@ -2366,7 +2366,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_ThrowAF
 ////================
 ////*/
-////void idAI::Event_ThrowAF( void ) {
+////void idAI::Event_ThrowAF( ) {
 ////	var ent:idEntity
 ////	idEntity *af = NULL;
 ////
@@ -2397,7 +2397,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_GetAngles
 ////================
 ////*/
-////void idAI::Event_GetAngles( void ) {
+////void idAI::Event_GetAngles( ) {
 ////	idThread::ReturnVector( idVec3( 0.0f, current_yaw, 0.0f ) );
 ////}
 ////
@@ -2406,7 +2406,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_RealKill
 ////================
 ////*/
-////void idAI::Event_RealKill( void ) {
+////void idAI::Event_RealKill( ) {
 ////	health = 0;
 ////
 ////	if ( af.IsLoaded() ) {
@@ -2425,7 +2425,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_Kill
 ////================
 ////*/
-////void idAI::Event_Kill( void ) {
+////void idAI::Event_Kill( ) {
 ////	PostEventMS( &AI_RealKill, 0 );
 ////}
 ////
@@ -2443,7 +2443,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_LocateEnemy
 ////================
 ////*/
-////void idAI::Event_LocateEnemy( void ) {
+////void idAI::Event_LocateEnemy( ) {
 ////	idActor *enemyEnt;
 ////	int areaNum;
 ////	
@@ -2486,7 +2486,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_GetObstacle
 ////================
 ////*/
-////void idAI::Event_GetObstacle( void ) {
+////void idAI::Event_GetObstacle( ) {
 ////	idThread::ReturnEntity( move.obstacle.GetEntity() );
 ////}
 ////
@@ -2495,7 +2495,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_PushPointIntoAAS
 ////================
 ////*/
-////void idAI::Event_PushPointIntoAAS( const idVec3 &pos ) {
+////void idAI::Event_PushPointIntoAAS( pos:idVec3 ) {
 ////	int		areaNum;
 ////	idVec3	newPos;
 ////
@@ -2515,7 +2515,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_GetTurnRate
 ////================
 ////*/
-////void idAI::Event_GetTurnRate( void ) {
+////void idAI::Event_GetTurnRate( ) {
 ////	idThread::ReturnFloat( turnRate );
 ////}
 ////
@@ -2597,7 +2597,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_CanReachPosition
 ////================
 ////*/
-////void idAI::Event_CanReachPosition( const idVec3 &pos ) {
+////void idAI::Event_CanReachPosition( pos:idVec3 ) {
 ////	aasPath_t	path;
 ////	int			toAreaNum;
 ////	int			areaNum;
@@ -2660,7 +2660,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_CanReachEnemy
 ////================
 ////*/
-////void idAI::Event_CanReachEnemy( void ) {
+////void idAI::Event_CanReachEnemy( ) {
 ////	aasPath_t	path;
 ////	int			toAreaNum;
 ////	int			areaNum;

@@ -226,7 +226,29 @@
 ////*/
 ////
 ////CLASS_DECLARATION( idTarget, idTarget_WaitForButton )
-////	EVENT( EV_Activate, idTarget_WaitForButton::Event_Activate )
+idTarget_WaitForButton.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idTarget_WaitForButton;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idTarget_WaitForButton.prototype.GetType = function ( ): idTypeInfo {
+	return ( idTarget_WaitForButton.Type );
+};
+
+idTarget_WaitForButton.eventCallbacks = [
+	EVENT(EV_Activate, idTarget_WaitForButton.prototype.Event_Activate)
+];
+
+idTarget_WaitForButton.Type = new idTypeInfo( "idTarget_WaitForButton", "idTarget",
+	idTarget_WaitForButton.eventCallbacks, idTarget_WaitForButton.CreateInstance, idTarget_WaitForButton.prototype.Spawn,
+	idTarget_WaitForButton.prototype.Save, idTarget_WaitForButton.prototype.Restore );
+
+
 ////END_CLASS
 ////
 /////*

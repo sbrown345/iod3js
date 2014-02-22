@@ -136,7 +136,7 @@
 ////idAnimState::Shutdown
 ////=====================
 ////*/
-////void idAnimState::Shutdown( void ) {
+////void idAnimState::Shutdown( ) {
 ////	delete thread;
 ////	thread = NULL;
 ////}
@@ -210,7 +210,7 @@
 ////idAnimState::BecomeIdle
 ////=====================
 ////*/
-////void idAnimState::BecomeIdle( void ) {
+////void idAnimState::BecomeIdle( ) {
 ////	idleAnim = true;
 ////}
 ////
@@ -219,7 +219,7 @@
 ////idAnimState::Disabled
 ////=====================
 ////*/
-////bool idAnimState::Disabled( void ) const {
+////bool idAnimState::Disabled( ) const {
 ////	return disabled;
 ////}
 ////
@@ -247,7 +247,7 @@
 ////idAnimState::IsIdle
 ////=====================
 ////*/
-////bool idAnimState::IsIdle( void ) const {
+////bool idAnimState::IsIdle( ) const {
 ////	return disabled || idleAnim;
 ////}
 ////
@@ -256,7 +256,7 @@
 ////idAnimState::GetAnimFlags
 ////=====================
 ////*/
-////animFlags_t idAnimState::GetAnimFlags( void ) const {
+////animFlags_t idAnimState::GetAnimFlags( ) const {
 ////	animFlags_t flags;
 ////
 ////	memset( &flags, 0, sizeof( flags ) );
@@ -288,7 +288,7 @@
 ////idAnimState::Disable
 ////=====================
 ////*/
-////void idAnimState::Disable( void ) {
+////void idAnimState::Disable( ) {
 ////	disabled = true;
 ////	idleAnim = false;
 ////}
@@ -298,7 +298,7 @@
 ////idAnimState::UpdateState
 ////=====================
 ////*/
-////bool idAnimState::UpdateState( void ) {
+////bool idAnimState::UpdateState( ) {
 ////	if ( disabled ) {
 ////		return false;
 ////	}
@@ -432,7 +432,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::idActor
 ////=====================
 ////*/
-////idActor::idActor( void ) {
+////idActor::idActor( ) {
 ////	viewAxis.Identity();
 ////
 ////	scriptThread		= NULL;		// initialized by ConstructScriptObject, which is called by idEntity::Spawn
@@ -482,7 +482,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::~idActor
 ////=====================
 ////*/
-////idActor::~idActor( void ) {
+////idActor::~idActor( ) {
 ////	int i;
 ////	var ent:idEntity
 ////
@@ -515,7 +515,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Spawn
 ////=====================
 ////*/
-////void idActor::Spawn( void ) {
+////void idActor::Spawn( ) {
 ////	idEntity		*ent;
 ////	idStr			jointName;
 ////	float			fovDegrees;
@@ -652,7 +652,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::FinishSetup
 ////================
 ////*/
-////void idActor::FinishSetup( void ) {
+////void idActor::FinishSetup( ) {
 ////	const char	*scriptObjectName;
 ////
 ////	// setup script object
@@ -672,7 +672,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::SetupHead
 ////================
 ////*/
-////void idActor::SetupHead( void ) {
+////void idActor::SetupHead( ) {
 ////	idAFAttachment		*headEnt;
 ////	idStr				jointName;
 ////	const char			*headModel;
@@ -733,7 +733,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::CopyJointsFromBodyToHead
 ////================
 ////*/
-////void idActor::CopyJointsFromBodyToHead( void ) {
+////void idActor::CopyJointsFromBodyToHead( ) {
 ////	idEntity	*headEnt = head.GetEntity();
 ////	idAnimator	*headAnimator;
 ////	int			i;
@@ -768,7 +768,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Restart
 ////================
 ////*/
-////void idActor::Restart( void ) {
+////void idActor::Restart( ) {
 ////	assert( !head.GetEntity() );
 ////	SetupHead();
 ////	FinishSetup();
@@ -1001,7 +1001,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Hide
 ////================
 ////*/
-////void idActor::Hide( void ) {
+////void idActor::Hide( ) {
 ////	ent:idEntity;
 ////	idEntity *next;
 ////
@@ -1027,7 +1027,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Show
 ////================
 ////*/
-////void idActor::Show( void ) {
+////void idActor::Show( ) {
 ////	var ent:idEntity
 ////	idEntity *next;
 ////
@@ -1052,7 +1052,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::GetDefaultSurfaceType
 ////==============
 ////*/
-////int	idActor::GetDefaultSurfaceType( void ) const {
+////int	idActor::GetDefaultSurfaceType( ) const {
 ////	return SURFTYPE_FLESH;
 ////}
 ////
@@ -1082,7 +1082,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::LoadAF
 ////================
 ////*/
-////bool idActor::LoadAF( void ) {
+////bool idActor::LoadAF( ) {
 ////	idStr fileName;
 ////
 ////	if ( !spawnArgs.GetString( "ragdoll", "*unknown*", fileName ) || !fileName.Length() ) {
@@ -1097,8 +1097,8 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::SetupBody
 ////=====================
 ////*/
-////void idActor::SetupBody( void ) {
-////	const char *jointname;
+////void idActor::SetupBody( ) {
+////	jointname:string;
 ////
 ////	animator.ClearAllAnims( gameLocal.time, 0 );
 ////	animator.ClearAllJoints();
@@ -1168,7 +1168,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::CheckBlink
 ////=====================
 ////*/
-////void idActor::CheckBlink( void ) {
+////void idActor::CheckBlink( ) {
 ////	// check if it's time to blink
 ////	if ( !blink_anim || ( health <= 0 ) || !allowEyeFocus || ( blink_time > gameLocal.time ) ) {
 ////		return;
@@ -1228,7 +1228,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::ShutdownThreads
 ////================
 ////*/
-////void idActor::ShutdownThreads( void ) {
+////void idActor::ShutdownThreads( ) {
 ////	headAnim.Shutdown();
 ////	torsoAnim.Shutdown();
 ////	legsAnim.Shutdown();
@@ -1249,7 +1249,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////Overridden by subclasses that need to spawn the script object themselves.
 ////================
 ////*/
-////bool idActor::ShouldConstructScriptObjectAtSpawn( void ) const {
+////bool idActor::ShouldConstructScriptObjectAtSpawn( ) const {
 ////	return false;
 ////}
 ////
@@ -1261,7 +1261,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////Can be overridden by subclasses when a thread doesn't need to be allocated.
 ////================
 ////*/
-////idThread *idActor::ConstructScriptObject( void ) {
+////idThread *idActor::ConstructScriptObject( ) {
 ////	const function_t *constructor;
 ////
 ////	// make sure we have a scriptObject
@@ -1346,7 +1346,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::UpdateScript
 ////=====================
 ////*/
-////void idActor::UpdateScript( void ) {
+////void idActor::UpdateScript( ) {
 ////	int	i;
 ////
 ////	if ( ai_debugScript.GetInteger() == entityNumber ) {
@@ -1407,7 +1407,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::EyeHeight
 ////=====================
 ////*/
-////float idActor::EyeHeight( void ) const {
+////float idActor::EyeHeight( ) const {
 ////	return eyeOffset.z;
 ////}
 ////
@@ -1416,7 +1416,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::EyeOffset
 ////=====================
 ////*/
-////idVec3 idActor::EyeOffset( void ) const {
+////idVec3 idActor::EyeOffset( ) const {
 ////	return GetPhysics().GetGravityNormal() * -eyeOffset.z;
 ////}
 ////
@@ -1425,7 +1425,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::GetEyePosition
 ////=====================
 ////*/
-////idVec3 idActor::GetEyePosition( void ) const {
+////idVec3 idActor::GetEyePosition( ) const {
 ////	return GetPhysics().GetOrigin() + ( GetPhysics().GetGravityNormal() * -eyeOffset.z );
 ////}
 ////
@@ -1444,7 +1444,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::CheckFOV
 ////=====================
 ////*/
-////bool idActor::CheckFOV( const idVec3 &pos ) const {
+////bool idActor::CheckFOV( pos:idVec3 ) const {
 ////	if ( fovDot == 1.0f ) {
 ////		return true;
 ////	}
@@ -1552,7 +1552,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::SetCombatModel
 ////================
 ////*/
-////void idActor::SetCombatModel( void ) {
+////void idActor::SetCombatModel( ) {
 ////	idAFAttachment *headEnt;
 ////
 ////	if ( !use_combat_bbox ) {
@@ -1575,7 +1575,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::GetCombatModel
 ////================
 ////*/
-////idClipModel *idActor::GetCombatModel( void ) const {
+////idClipModel *idActor::GetCombatModel( ) const {
 ////	return combatModel;
 ////}
 ////
@@ -1584,7 +1584,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::LinkCombat
 ////================
 ////*/
-////void idActor::LinkCombat( void ) {
+////void idActor::LinkCombat( ) {
 ////	idAFAttachment *headEnt;
 ////
 ////	if ( fl.hidden || use_combat_bbox ) {
@@ -1605,7 +1605,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::UnlinkCombat
 ////================
 ////*/
-////void idActor::UnlinkCombat( void ) {
+////void idActor::UnlinkCombat( ) {
 ////	idAFAttachment *headEnt;
 ////
 ////	if ( combatModel ) {
@@ -1622,7 +1622,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::StartRagdoll
 ////================
 ////*/
-////bool idActor::StartRagdoll( void ) {
+////bool idActor::StartRagdoll( ) {
 ////	float slomoStart, slomoEnd;
 ////	float jointFrictionDent, jointFrictionDentStart, jointFrictionDentEnd;
 ////	float contactFrictionDent, contactFrictionDentStart, contactFrictionDentEnd;
@@ -1679,7 +1679,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::StopRagdoll
 ////================
 ////*/
-////void idActor::StopRagdoll( void ) {
+////void idActor::StopRagdoll( ) {
 ////	if ( af.IsActive() ) {
 ////		af.Stop();
 ////	}
@@ -1690,7 +1690,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::UpdateAnimationControllers
 ////================
 ////*/
-////bool idActor::UpdateAnimationControllers( void ) {
+////bool idActor::UpdateAnimationControllers( ) {
 ////
 ////	if ( af.IsActive() ) {
 ////		return idAFEntity_Base::UpdateAnimationControllers();
@@ -1711,7 +1711,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::RemoveAttachments
 ////================
 ////*/
-////void idActor::RemoveAttachments( void ) {
+////void idActor::RemoveAttachments( ) {
 ////	int i;
 ////	var ent:idEntity
 ////
@@ -1764,7 +1764,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Teleport
 ////================
 ////*/
-////void idActor::Teleport( const idVec3 &origin, const idAngles &angles, idEntity *destination ) {
+////void idActor::Teleport( const idVec3 &origin, angles:idAngles, idEntity *destination ) {
 ////	GetPhysics().SetOrigin( origin + idVec3( 0, 0, CM_CLIP_EPSILON ) );
 ////	GetPhysics().SetLinearVelocity( vec3_origin );
 ////
@@ -1783,7 +1783,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::GetDeltaViewAngles
 ////================
 ////*/
-////const idAngles &idActor::GetDeltaViewAngles( void ) const {
+////const idAngles &idActor::GetDeltaViewAngles( ) const {
 ////	return deltaViewAngles;
 ////}
 ////
@@ -1801,7 +1801,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::HasEnemies
 ////================
 ////*/
-////bool idActor::HasEnemies( void ) const {
+////bool idActor::HasEnemies( ) const {
 ////	idActor *ent;
 ////
 ////	for( ent = enemyList.Next(); ent != NULL; ent = ent.enemyNode.Next() ) {
@@ -1818,7 +1818,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::ClosestEnemyToPoint
 ////================
 ////*/
-////idActor *idActor::ClosestEnemyToPoint( const idVec3 &pos ) {
+////idActor *idActor::ClosestEnemyToPoint( pos:idVec3 ) {
 ////	idActor		*ent;
 ////	idActor		*bestEnt;
 ////	float		bestDistSquared;
@@ -1867,7 +1867,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::OnLadder
 ////================
 ////*/
-////bool idActor::OnLadder( void ) const {
+////bool idActor::OnLadder( ) const {
 ////	return false;
 ////}
 ////
@@ -2007,7 +2007,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::WaitState
 ////=====================
 ////*/
-////const char *idActor::WaitState( void ) const {
+////const char *idActor::WaitState( ) const {
 ////	if ( waitState.Length() ) {
 ////		return waitState;
 ////	} else {
@@ -2029,7 +2029,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::UpdateAnimState
 ////=====================
 ////*/
-////void idActor::UpdateAnimState( void ) {
+////void idActor::UpdateAnimState( ) {
 ////	headAnim.UpdateState();
 ////	torsoAnim.UpdateState();
 ////	legsAnim.UpdateState();
@@ -2231,7 +2231,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::ClearPain
 ////=====================
 ////*/
-////void idActor::ClearPain( void ) {
+////void idActor::ClearPain( ) {
 ////	pain_debounce_time = 0;
 ////}
 ////
@@ -2335,7 +2335,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////FIXME: only store group names once and store an index for each joint
 ////=====================
 ////*/
-////void idActor::SetupDamageGroups( void ) {
+////void idActor::SetupDamageGroups( ) {
 ////	int						i;
 ////	const idKeyValue		*arg;
 ////	idStr					groupname;
@@ -2417,7 +2417,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Event_EnableEyeFocus
 ////=====================
 ////*/
-////void idActor::PlayFootStepSound( void ) {
+////void idActor::PlayFootStepSound( ) {
 ////	const char *sound = NULL;
 ////	const idMaterial *material;
 ////
@@ -2443,7 +2443,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Event_EnableEyeFocus
 ////=====================
 ////*/
-////void idActor::Event_EnableEyeFocus( void ) {
+////void idActor::Event_EnableEyeFocus( ) {
 ////	allowEyeFocus = true;
 ////	blink_time = gameLocal.time + blink_min + gameLocal.random.RandomFloat() * ( blink_max - blink_min );
 ////}
@@ -2453,7 +2453,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Event_DisableEyeFocus
 ////=====================
 ////*/
-////void idActor::Event_DisableEyeFocus( void ) {
+////void idActor::Event_DisableEyeFocus( ) {
 ////	allowEyeFocus = false;
 ////	
 ////	idEntity *headEnt = head.GetEntity();
@@ -2469,7 +2469,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Event_Footstep
 ////===============
 ////*/
-////void idActor::Event_Footstep( void ) {
+////void idActor::Event_Footstep( ) {
 ////	PlayFootStepSound();
 ////}
 ////
@@ -2478,7 +2478,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Event_EnableWalkIK
 ////=====================
 ////*/
-////void idActor::Event_EnableWalkIK( void ) {
+////void idActor::Event_EnableWalkIK( ) {
 ////	walkIK.EnableAll();
 ////}
 ////
@@ -2487,7 +2487,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Event_DisableWalkIK
 ////=====================
 ////*/
-////void idActor::Event_DisableWalkIK( void ) {
+////void idActor::Event_DisableWalkIK( ) {
 ////	walkIK.DisableAll();
 ////}
 ////
@@ -2523,7 +2523,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Event_DisablePain
 ////===============
 ////*/
-////void idActor::Event_DisablePain( void ) {
+////void idActor::Event_DisablePain( ) {
 ////	allowPain = false;
 ////}
 ////
@@ -2532,7 +2532,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Event_EnablePain
 ////===============
 ////*/
-////void idActor::Event_EnablePain( void ) {
+////void idActor::Event_EnablePain( ) {
 ////	allowPain = true;
 ////}
 ////
@@ -2541,7 +2541,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Event_GetPainAnim
 ////=====================
 ////*/
-////void idActor::Event_GetPainAnim( void ) {
+////void idActor::Event_GetPainAnim( ) {
 ////	if ( !painAnim.Length() ) {
 ////		idThread::ReturnString( "pain" );
 ////	} else {
@@ -3184,7 +3184,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Event_HasEnemies
 ////================
 ////*/
-////void idActor::Event_HasEnemies( void ) {
+////void idActor::Event_HasEnemies( ) {
 ////	bool hasEnemy;
 ////
 ////	hasEnemy = HasEnemies();
@@ -3227,7 +3227,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Event_ClosestEnemyToPoint
 ////================
 ////*/
-////void idActor::Event_ClosestEnemyToPoint( const idVec3 &pos ) {
+////void idActor::Event_ClosestEnemyToPoint( pos:idVec3 ) {
 ////	idActor *bestEnt = ClosestEnemyToPoint( pos );
 ////	idThread::ReturnEntity( bestEnt );
 ////}
@@ -3277,7 +3277,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Event_GetState
 ////=====================
 ////*/
-////void idActor::Event_GetState( void ) {
+////void idActor::Event_GetState( ) {
 ////	if ( state ) {
 ////		idThread::ReturnString( state.Name() );
 ////	} else {
@@ -3290,6 +3290,6 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////idActor::Event_GetHead
 ////=====================
 ////*/
-////void idActor::Event_GetHead( void ) {
+////void idActor::Event_GetHead( ) {
 ////	idThread::ReturnEntity( head.GetEntity() );
 ////}

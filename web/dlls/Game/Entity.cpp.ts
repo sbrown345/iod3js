@@ -1272,7 +1272,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////idEntity::UpdatePVSAreas
 ////================
 ////*/
-////idEntity.prototype.UpdatePVSAreas( const idVec3 &pos ) {
+////idEntity.prototype.UpdatePVSAreas( pos:idVec3 ) {
 ////	int i;
 ////
 ////	numPVSAreas = gameLocal.pvs.GetPVSAreas( idBounds( pos ), PVSAreas, MAX_PVS_AREAS );
@@ -1841,7 +1841,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////  bind relative to a joint of the md5 model used by the master
 ////================
 ////*/
-////idEntity.prototype.BindToJoint( idEntity *master, const char *jointname, bool orientated ) {
+////idEntity.prototype.BindToJoint( idEntity *master, jointname:string, bool orientated ) {
 ////	jointHandle_t	jointnum;
 ////	idAnimator		*masterAnimator;
 ////
@@ -1879,7 +1879,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////  bind relative to a joint of the md5 model used by the master
 ////================
 ////*/
-////idEntity.prototype.BindToJoint( idEntity *master, jointHandle_t jointnum, bool orientated ) {
+////idEntity.prototype.BindToJoint( idEntity *master, jointnum:jointHandle_t, bool orientated ) {
 ////
 ////	if ( !InitBind( master ) ) {
 ////		return;
@@ -3589,7 +3589,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////idEntity::Teleport
 ////================
 ////*/
-////idEntity.prototype.Teleport( const idVec3 &origin, const idAngles &angles, idEntity *destination ) {
+////idEntity.prototype.Teleport( const idVec3 &origin, angles:idAngles, idEntity *destination ) {
 ////	GetPhysics()->SetOrigin( origin );
 ////	GetPhysics()->SetAxis( angles.ToMat3() );
 ////
@@ -3822,7 +3822,7 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////idEntity::Event_BindToJoint
 ////================
 ////*/
-////idEntity.prototype.Event_BindToJoint( idEntity *master, const char *jointname, float orientated ) {
+////idEntity.prototype.Event_BindToJoint( idEntity *master, jointname:string, float orientated ) {
 ////	BindToJoint( master, jointname, ( orientated != 0.0f ) );
 ////}
 ////
@@ -4879,13 +4879,35 @@ var EV_GetJointPos= new idEventDef( "getJointPos", "d", 'v' );
 var EV_GetJointAngle= new idEventDef( "getJointAngle", "d", 'v' );
 ////
 ////CLASS_DECLARATION( idEntity, idAnimatedEntity )
-////	EVENT( EV_GetJointHandle,		idAnimatedEntity::Event_GetJointHandle )
-////	EVENT( EV_ClearAllJoints,		idAnimatedEntity::Event_ClearAllJoints )
-////	EVENT( EV_ClearJoint,			idAnimatedEntity::Event_ClearJoint )
-////	EVENT( EV_SetJointPos,			idAnimatedEntity::Event_SetJointPos )
-////	EVENT( EV_SetJointAngle,		idAnimatedEntity::Event_SetJointAngle )
-////	EVENT( EV_GetJointPos,			idAnimatedEntity::Event_GetJointPos )
-////	EVENT( EV_GetJointAngle,		idAnimatedEntity::Event_GetJointAngle )
+idAnimatedEntity.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idAnimatedEntity;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idAnimatedEntity.prototype.GetType = function ( ): idTypeInfo {
+	return ( idAnimatedEntity.Type );
+};
+
+idAnimatedEntity.eventCallbacks = [
+	EVENT( EV_GetJointHandle,		idAnimatedEntity.prototype.Event_GetJointHandle ),
+	EVENT( EV_ClearAllJoints,		idAnimatedEntity.prototype.Event_ClearAllJoints ),
+	EVENT( EV_ClearJoint,			idAnimatedEntity.prototype.Event_ClearJoint ),
+	EVENT( EV_SetJointPos,			idAnimatedEntity.prototype.Event_SetJointPos ),
+	EVENT( EV_SetJointAngle,		idAnimatedEntity.prototype.Event_SetJointAngle ),
+	EVENT( EV_GetJointPos,			idAnimatedEntity.prototype.Event_GetJointPos ),
+	EVENT( EV_GetJointAngle,		idAnimatedEntity.prototype.Event_GetJointAngle )
+];
+
+idAnimatedEntity.Type = new idTypeInfo("idAnimatedEntity", "idEntity",
+	idAnimatedEntity.eventCallbacks, idAnimatedEntity.CreateInstance, idAnimatedEntity.prototype.Spawn,
+	idAnimatedEntity.prototype.Save, idAnimatedEntity.prototype.Restore );
+
+
 ////END_CLASS
 ////
 /////*
@@ -5312,7 +5334,7 @@ var EV_GetJointAngle= new idEventDef( "getJointAngle", "d", 'v' );
 ////looks up the number of the specified joint.  returns INVALID_JOINT if the joint is not found.
 ////================
 ////*/
-////void idAnimatedEntity::Event_GetJointHandle( const char *jointname ) {
+////void idAnimatedEntity::Event_GetJointHandle( jointname:string ) {
 ////	jointHandle_t joint;
 ////
 ////	joint = animator.GetJointHandle( jointname );
@@ -5337,7 +5359,7 @@ var EV_GetJointAngle= new idEventDef( "getJointAngle", "d", 'v' );
 ////removes any custom transforms on the specified joint
 ////================
 ////*/
-////void idAnimatedEntity::Event_ClearJoint( jointHandle_t jointnum ) {
+////void idAnimatedEntity::Event_ClearJoint( jointnum:jointHandle_t ) {
 ////	animator.ClearJoint( jointnum );
 ////}
 ////
@@ -5348,7 +5370,7 @@ var EV_GetJointAngle= new idEventDef( "getJointAngle", "d", 'v' );
 ////modifies the position of the joint based on the transform type
 ////================
 ////*/
-////void idAnimatedEntity::Event_SetJointPos( jointHandle_t jointnum, jointModTransform_t transform_type, const idVec3 &pos ) {
+////void idAnimatedEntity::Event_SetJointPos( jointnum:jointHandle_t, transform_type:jointModTransform_t, pos:idVec3 ) {
 ////	animator.SetJointPos( jointnum, transform_type, pos );
 ////}
 ////
@@ -5359,7 +5381,7 @@ var EV_GetJointAngle= new idEventDef( "getJointAngle", "d", 'v' );
 ////modifies the orientation of the joint based on the transform type
 ////================
 ////*/
-////void idAnimatedEntity::Event_SetJointAngle( jointHandle_t jointnum, jointModTransform_t transform_type, const idAngles &angles ) {
+////void idAnimatedEntity::Event_SetJointAngle( jointnum:jointHandle_t, transform_type:jointModTransform_t, angles:idAngles ) {
 ////	idMat3 mat;
 ////
 ////	mat = angles.ToMat3();
@@ -5373,7 +5395,7 @@ var EV_GetJointAngle= new idEventDef( "getJointAngle", "d", 'v' );
 ////returns the position of the joint in worldspace
 ////================
 ////*/
-////void idAnimatedEntity::Event_GetJointPos( jointHandle_t jointnum ) {
+////void idAnimatedEntity::Event_GetJointPos( jointnum:jointHandle_t ) {
 ////	idVec3 offset;
 ////	idMat3 axis;
 ////
@@ -5391,7 +5413,7 @@ var EV_GetJointAngle= new idEventDef( "getJointAngle", "d", 'v' );
 ////returns the orientation of the joint in worldspace
 ////================
 ////*/
-////void idAnimatedEntity::Event_GetJointAngle( jointHandle_t jointnum ) {
+////void idAnimatedEntity::Event_GetJointAngle( jointnum:jointHandle_t ) {
 ////	idVec3 offset;
 ////	idMat3 axis;
 ////

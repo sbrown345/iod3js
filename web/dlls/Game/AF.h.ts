@@ -72,7 +72,7 @@
 ////	void					Stop( void );
 ////	void					Rest( void );
 ////	bool					IsActive( void ) const { return isActive; }
-////	void					SetConstraintPosition( const char *name, const idVec3 &pos );
+////	void					SetConstraintPosition( const char *name, pos:idVec3 );
 ////
 ////	idPhysics_AF *			GetPhysics( void ) { return &physicsObj; }
 ////	const idPhysics_AF *	GetPhysics( void ) const { return &physicsObj; }
