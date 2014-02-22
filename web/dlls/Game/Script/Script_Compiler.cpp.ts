@@ -382,9 +382,8 @@ Creates a def for a jump constant
 */
 	JumpConstant ( /*int */value: number ): idVarDef {
 		var eval = new eval_t;
-		todoThrow ( ); return null;
-		//eval._int = value;
-		//return GetImmediate( type_jumpoffset, &eval, "" );
+		eval._int = value;
+		return this.GetImmediate( type_jumpoffset, eval, "" );
 	}
 
 /*
@@ -1741,93 +1740,92 @@ PatchLoop( /*int */start:number, /*int */continuePos :number):void {
 idCompiler::ParseReturnStatement
 ================
 */
-	ParseReturnStatement(): void {
-		todoThrow ( );
-	//idVarDef	*e;
-	//etype_t 	type_a;
-	//etype_t 	type_b;
-	//opcode_t	*op;
+	ParseReturnStatement ( ): void {
+		var e: idVarDef;
+		var type_a: etype_t;
+		var type_b: etype_t;
+		var op: opcode_t;
+		var opIdx: number;
 
-	//if ( this.CheckToken( ";" ) ) {
-	//	if ( this.scope.TypeDef().ReturnType().Type() != etype_t.ev_void ) {
-	//		this.Error( "expecting return value" );
-	//	}
+		if ( this.CheckToken( ";" ) ) {
+			if ( this.scope.TypeDef ( ).ReturnType ( ).Type ( ) != etype_t.ev_void ) {
+				this.Error( "expecting return value" );
+			}
 
-	//	this.EmitOpcode( opc.OP_RETURN, 0, 0 );
-	//	return;
-	//}
+			this.EmitOpcode_FromOpNumber( opc.OP_RETURN, /*0*/null, /*0*/null );
+			return;
+		}
 
-	//e = this.GetExpression( TOP_PRIORITY );
-	//this.ExpectToken( ";" );
+		e = this.GetExpression( TOP_PRIORITY );
+		this.ExpectToken( ";" );
 
-	//type_a = e.Type();
-	//type_b = this.scope.TypeDef().ReturnType().Type();
+		type_a = e.Type ( );
+		type_b = this.scope.TypeDef ( ).ReturnType ( ).Type ( );
 
-	//if ( this.TypeMatches( type_a, type_b ) ) {
-	//	this.EmitOpcode( opc.OP_RETURN, e, 0 );
-	//	return;
-	//}
+		if ( this.TypeMatches( type_a, type_b ) ) {
+			this.EmitOpcode_FromOpNumber( opc.OP_RETURN, e, /*0*/null );
+			return;
+		}
 
-	//for( op = idCompiler.opcodes; op.name; op++ ) {
-	//	if ( !strcmp( op.name, "=" ) ) {
-	//		break;
-	//	}
-	//}
+		for ( op = idCompiler.opcodes[opIdx = 0]; op.name; op = idCompiler.opcodes[++opIdx] ) {
+			if ( !strcmp( op.name, "=" ) ) {
+				break;
+			}
+		}
 
-	//assert( op.name );
+		assert( op.name );
 
-	//while( !this.TypeMatches( type_a, op.type_a.Type() ) || !this.TypeMatches( type_b, op.type_b.Type() ) ) {
-	//	op++;
-	//	if ( !op.name || strcmp( op.name, "=" ) ) {
-	//		this.Error( "type mismatch for return value" );
-	//	}
-	//}
+		while ( !this.TypeMatches( type_a, op.type_a.Type ( ) ) || !this.TypeMatches( type_b, op.type_b.Type ( ) ) ) {
+			op = idCompiler.opcodes[++opIdx];
+			if ( !op.name || strcmp( op.name, "=" ) ) {
+				this.Error( "type mismatch for return value" );
+			}
+		}
 
-	//idTypeDef *returnType = this.scope.TypeDef().ReturnType();
-	//if ( returnType.Type() == etype_t.ev_string ) {
-	//	this.EmitOpcode( op, e, gameLocal.program.returnStringDef );
-	//} else {
-	//	gameLocal.program.returnDef.SetTypeDef( returnType );
-	//	this.EmitOpcode( op, e, gameLocal.program.returnDef );
-	//}
-	//this.EmitOpcode(opc.OP_RETURN, null/*0*/, null/*0*/ );
-}
-	
+		var returnType = this.scope.TypeDef ( ).ReturnType ( );
+		if ( returnType.Type ( ) == etype_t.ev_string ) {
+			this.EmitOpcode( op, e, gameLocal.program.returnStringDef );
+		} else {
+			gameLocal.program.returnDef.SetTypeDef( returnType );
+			this.EmitOpcode( op, e, gameLocal.program.returnDef );
+		}
+		this.EmitOpcode_FromOpNumber( opc.OP_RETURN, null /*0*/, null /*0*/ );
+	}
+
 /*
 ================
 idCompiler::ParseWhileStatement
 ================
 */
 	ParseWhileStatement ( ): void {
-		todoThrow ( );
-		//idVarDef	*e;
-		//int			patch1;
-		//int			patch2;
+		var e: idVarDef;
+		var patch1: number; //int			
+		var patch2: number; //int			
 
-		//this.loopDepth++;
+		this.loopDepth++;
 
-		//this.ExpectToken( "(" );
+		this.ExpectToken( "(" );
 
-		//patch2 = gameLocal.program.NumStatements();
-		//e = this.GetExpression( TOP_PRIORITY );
-		//this.ExpectToken( ")" );
+		patch2 = gameLocal.program.NumStatements ( );
+		e = this.GetExpression( TOP_PRIORITY );
+		this.ExpectToken( ")" );
 
-		//if ( ( e.initialized == idVarDef::initializedConstant ) && ( *e.value.intPtr != 0 ) ) {
-		//	//FIXME: we can completely skip generation of this code in the opposite case
-		//	this.ParseStatement();
-		//	this.EmitOpcode( opc.OP_GOTO, JumpTo( patch2 ), 0 );
-		//} else {
-		//	patch1 = gameLocal.program.NumStatements();
-		//    this.EmitOpcode( opc.OP_IFNOT, e, 0 );
-		//	this.ParseStatement();
-		//	this.EmitOpcode( opc.OP_GOTO, JumpTo( patch2 ), 0 );
-		//	gameLocal.program.GetStatement( patch1 ).b = JumpFrom( patch1 );
-		//}
+		if ( ( e.initialized == initialized_t.initializedConstant ) && ( /***/e.value.intPtr != 0 ) ) {
+			//FIXME: we can completely skip generation of this code in the opposite case
+			this.ParseStatement ( );
+			this.EmitOpcode_FromOpNumber( opc.OP_GOTO, this.JumpTo( patch2 ), /*0*/null );
+		} else {
+			patch1 = gameLocal.program.NumStatements ( );
+			this.EmitOpcode_FromOpNumber( opc.OP_IFNOT, e, /*0*/null );
+			this.ParseStatement ( );
+			this.EmitOpcode_FromOpNumber( opc.OP_GOTO, this.JumpTo( patch2 ), /*0*/null );
+			gameLocal.program.GetStatement( patch1 ).b = this.JumpFrom( patch1 );
+		}
 
-		//// fixup breaks and continues
-		//PatchLoop( patch2, patch2 );
+		// fixup breaks and continues
+		this.PatchLoop( patch2, patch2 );
 
-		//this.loopDepth--;
+		this.loopDepth--;
 	}
 
 /*
@@ -1870,71 +1868,70 @@ end:
 ================
 */
 	ParseForStatement(): void {
-		todoThrow ( );
-		//idVarDef	*e;
-		//int			start;
-		//int			patch1;
-		//int			patch2;
-		//int			patch3;
-		//int			patch4;
+		var e: idVarDef;
+		var start:number; //int			
+		var patch1:number;//int			
+		var patch2:number;//int			
+		var patch3:number;//int			
+		var patch4:number;//int			
 
-		//this.loopDepth++;
+		this.loopDepth++;
 
-		//start = gameLocal.program.NumStatements();
+		start = gameLocal.program.NumStatements();
 
-		//this.ExpectToken( "(" );
+		this.ExpectToken( "(" );
 
-		//// init
-		//if ( !this.CheckToken( ";" ) ) {
-		//	do {
-		//		this.GetExpression( TOP_PRIORITY );
-		//	} while( this.CheckToken( "," ) );
+		// init
+		if ( !this.CheckToken( ";" ) ) {
+			do {
+				this.GetExpression( TOP_PRIORITY );
+			} while( this.CheckToken( "," ) );
 
-		//	this.ExpectToken( ";" );
-		//}
+			this.ExpectToken( ";" );
+		}
 
-		//// condition
-		//patch2 = gameLocal.program.NumStatements();
+		// condition
+		patch2 = gameLocal.program.NumStatements();
 
-		//e = this.GetExpression( TOP_PRIORITY );
-		//this.ExpectToken( ";" );
+		e = this.GetExpression( TOP_PRIORITY );
+		this.ExpectToken( ";" );
 
-		////FIXME: add check for constant expression
-		//patch1 = gameLocal.program.NumStatements();
-		//this.EmitOpcode( opc.OP_IFNOT, e, 0 );
+		//FIXME: add check for constant expression
+		patch1 = gameLocal.program.NumStatements();
+		this.EmitOpcode_FromOpNumber( opc.OP_IFNOT, e, /*0*/null );
 
-		//// counter
-		//if ( !this.CheckToken( ")" ) ) {
-		//	patch3 = gameLocal.program.NumStatements();
-		//	this.EmitOpcode( opc.OP_IF, e, 0 );
+		// counter
+		if ( !this.CheckToken( ")" ) ) {
+			patch3 = gameLocal.program.NumStatements();
+			this.EmitOpcode_FromOpNumber( opc.OP_IF, e, /*0*/null );
 
-		//	patch4 = patch2;
-		//	patch2 = gameLocal.program.NumStatements();
-		//	do {
-		//		this.GetExpression( TOP_PRIORITY );
-		//	} while( this.CheckToken( "," ) );
+			patch4 = patch2;
+			patch2 = gameLocal.program.NumStatements();
+			do {
+				this.GetExpression( TOP_PRIORITY );
+			} while( this.CheckToken( "," ) );
 
-		//	this.ExpectToken( ")" );
+			this.ExpectToken( ")" );
 
-		//	// goto patch4
-		//	this.EmitOpcode( opc.OP_GOTO, JumpTo( patch4 ), 0 );
+			// goto patch4
+			this.EmitOpcode_FromOpNumber( opc.OP_GOTO, this.JumpTo( patch4 ), /*0*/null );
 
-		//	// fixup patch3
-		//	gameLocal.program.GetStatement( patch3 ).b = JumpFrom( patch3 );
-		//}
+			// fixup patch3
+			gameLocal.program.GetStatement( patch3 ).b = this.JumpFrom( patch3 );
+		}
 
-		//this.ParseStatement();
+		this.ParseStatement();
 
-		//// goto patch2
-		//this.EmitOpcode( opc.OP_GOTO, JumpTo( patch2 ), 0 );
+		// goto patch2
+		this.EmitOpcode_FromOpNumber(opc.OP_GOTO, this.JumpTo( patch2 ), /*0*/null );
 
-		//// fixup patch1
-		//gameLocal.program.GetStatement( patch1 ).b = JumpFrom( patch1 );
+		// fixup patch1
+		gameLocal.program.GetStatement( patch1 ).b = this.JumpFrom( patch1 );
 
-		//// fixup breaks and continues
-		//PatchLoop( start, patch2 );
+		// fixup breaks and continues
+		this.PatchLoop( start, patch2 );
 
-		//this.loopDepth--;
+		this.loopDepth--;
 	}
 
 /*
@@ -1970,30 +1967,29 @@ idCompiler::ParseIfStatement
 ================
 */
 	ParseIfStatement(): void {
-		todoThrow ( );
-		//idVarDef	*e;
-		//int			patch1;
-		//int			patch2;
+		var e: idVarDef;
+		var patch1:number;	//int			
+		var patch2:number;	//int			
 
-		//this.ExpectToken( "(" );
-		//e = this.GetExpression( TOP_PRIORITY );
-		//this.ExpectToken( ")" );
+		this.ExpectToken( "(" );
+		e = this.GetExpression( TOP_PRIORITY );
+		this.ExpectToken( ")" );
 
-		////FIXME: add check for constant expression
-		//patch1 = gameLocal.program.NumStatements();
-		//this.EmitOpcode( opc.OP_IFNOT, e, 0 );
+		//FIXME: add check for constant expression
+		patch1 = gameLocal.program.NumStatements();
+		this.EmitOpcode_FromOpNumber( opc.OP_IFNOT, e, null/*0*/ );
 
-		//this.ParseStatement();
+		this.ParseStatement();
 
-		//if ( this.CheckToken( "else" ) ) {
-		//	patch2 = gameLocal.program.NumStatements();
-		//	this.EmitOpcode( opc.OP_GOTO, 0, 0 );
-		//	gameLocal.program.GetStatement( patch1 ).b = JumpFrom( patch1 );
-		//	this.ParseStatement();
-		//	gameLocal.program.GetStatement( patch2 ).a = JumpFrom( patch2 );
-		//} else {
-		//	gameLocal.program.GetStatement( patch1 ).b = JumpFrom( patch1 );
-		//}
+		if ( this.CheckToken( "else" ) ) {
+			patch2 = gameLocal.program.NumStatements();
+			this.EmitOpcode_FromOpNumber( opc.OP_GOTO, null/*0*/, null/*0*/ );
+			gameLocal.program.GetStatement( patch1 ).b = this.JumpFrom( patch1 );
+			this.ParseStatement();
+			gameLocal.program.GetStatement( patch2 ).a = this.JumpFrom( patch2 );
+		} else {
+			gameLocal.program.GetStatement( patch1 ).b = this.JumpFrom( patch1 );
+		}
 	}
 
 /*
@@ -2316,7 +2312,7 @@ idCompiler::ParseFunctionDef
 //	// don't bother adding a return opcode if the "return" statement was used.
 //	if ( ( func.firstStatement == gameLocal.program.NumStatements() ) || ( gameLocal.program.GetStatement( gameLocal.program.NumStatements() - 1 ).op != opc.OP_RETURN ) ) {
 //		// emit an end of statements opcode
-//		this.EmitOpcode( opc.OP_RETURN, 0, 0 );
+//		this.EmitOpcode_FromOpNumber( opc.OP_RETURN, /*0*/null, /*0*/null );
 //	}
 //#else
 		// always emit the return opcode
