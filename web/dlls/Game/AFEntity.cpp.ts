@@ -1403,7 +1403,7 @@ idAFEntity_Generic.Type = new idTypeInfo("idAFEntity_Generic", "idAFEntity_Gibba
 ////idAFEntity_Generic::Event_Activate
 ////================
 ////*/
-////void idAFEntity_Generic::Event_Activate( idEntity *activator ) {
+////void idAFEntity_Generic::Event_Activate( activator:idEntity ) {
 ////	float delay;
 ////	idVec3 init_velocity, init_avelocity;
 ////
@@ -1685,7 +1685,7 @@ idAFEntity_WithAttachedHead.Type = new idTypeInfo("idAFEntity_WithAttachedHead",
 ////idAFEntity_WithAttachedHead::Event_Activate
 ////================
 ////*/
-////void idAFEntity_WithAttachedHead::Event_Activate( idEntity *activator ) {
+////void idAFEntity_WithAttachedHead::Event_Activate( activator:idEntity ) {
 ////	float delay;
 ////	idVec3 init_velocity, init_avelocity;
 ////

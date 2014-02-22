@@ -125,7 +125,7 @@
 ////	void					Event_Explode( void ): void { throw "placeholder"; }
 ////	void					Event_Fizzle( void ): void { throw "placeholder"; }
 ////	void					Event_RadiusDamage( idEntity *ignore ): void { throw "placeholder"; }
-////	void					Event_Touch( idEntity *other, trace_t *trace ): void { throw "placeholder"; }
+////	void					Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
 ////	void					Event_GetProjectileState( void ): void { throw "placeholder"; }
 ////};
 ////

@@ -1226,7 +1226,7 @@ var SHARD_FADE_START	= 2000;
 ////idBrittleFracture::Event_Activate
 ////================
 ////*/
-////void idBrittleFracture::Event_Activate( idEntity *activator ) {
+////void idBrittleFracture::Event_Activate( activator:idEntity ) {
 ////	disableFracture = false;
 ////	if ( health <= 0 ) {
 ////		Break();
@@ -1238,7 +1238,7 @@ var SHARD_FADE_START	= 2000;
 ////idBrittleFracture::Event_Touch
 ////================
 ////*/
-////void idBrittleFracture::Event_Touch( idEntity *other, trace_t *trace ) {
+////void idBrittleFracture::Event_Touch( other:idEntity, trace:trace_t ) {
 ////	idVec3 point, impulse;
 
 ////	if ( !IsBroken() ) {

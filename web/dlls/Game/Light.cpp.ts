@@ -212,7 +212,7 @@ var EV_Light_FadeIn = new idEventDef( "fadeInLight", "f" );
 ////		void			FadeOut(float time);
 ////		void			FadeIn(float time);
 ////		void			Killed(idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location);
-////		void			BecomeBroken(idEntity *activator);
+////		void			BecomeBroken(activator:idEntity);
 ////		qhandle_t		GetLightDefHandle(void) const { return lightDefHandle; }
 ////		void			SetLightParent(idEntity *lparent) { lightParent = lparent; }
 ////		void			SetLightLevel(void);
@@ -262,7 +262,7 @@ var EV_Light_FadeIn = new idEventDef( "fadeInLight", "f" );
 ////		void			Event_Show(void);
 ////		void			Event_On(void);
 ////		void			Event_Off(void);
-////		void			Event_ToggleOnOff(idEntity *activator);
+////		void			Event_ToggleOnOff(activator:idEntity);
 ////		void			Event_SetSoundHandles(void);
 ////		void			Event_FadeOut(float time);
 ////		void			Event_FadeIn(float time);
@@ -743,7 +743,7 @@ var EV_Light_FadeIn = new idEventDef( "fadeInLight", "f" );
 ////idLight::BecomeBroken
 ////================
 ////*/
-////void idLight::BecomeBroken( idEntity *activator ) {
+////void idLight::BecomeBroken( activator:idEntity ) {
 ////	const char *damageDefName;
 ////
 ////	fl.takedamage = false;
@@ -1046,7 +1046,7 @@ var EV_Light_FadeIn = new idEventDef( "fadeInLight", "f" );
 ////idLight::Event_ToggleOnOff
 ////================
 ////*/
-////void idLight::Event_ToggleOnOff( idEntity *activator ) {
+////void idLight::Event_ToggleOnOff( activator:idEntity ) {
 ////	triggercount++;
 ////	if ( triggercount < count ) {
 ////		return;

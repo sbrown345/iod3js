@@ -3557,7 +3557,7 @@ idEntity.prototype.SetName = function ( newname: string ): void {
 ////"activator" should be set to the entity that initiated the firing.
 ////==============================
 ////*/
-////idEntity.prototype.ActivateTargets( idEntity *activator ) const {
+////idEntity.prototype.ActivateTargets( activator:idEntity ) const {
 ////	idEntity	*ent;
 ////	int			i, j;
 ////	
@@ -3747,7 +3747,7 @@ idEntity.prototype.Event_FindTargets = function ( ): void {
 ////event to delay activating targets.
 ////============
 ////*/
-////idEntity.prototype.Event_ActivateTargets( idEntity *activator ) {
+////idEntity.prototype.Event_ActivateTargets( activator:idEntity ) {
 ////	ActivateTargets( activator );
 ////}
 ////

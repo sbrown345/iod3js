@@ -138,7 +138,7 @@ class idObjective extends idItem {
 ////private:
 ////	idVec3					playerPos;
 ////
-////	void					Event_Trigger( idEntity *activator ): void { throw "placeholder"; }
+////	void					Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
 ////	void					Event_HideObjective( idEntity *e ): void { throw "placeholder"; }
 ////	void					Event_GetPlayerPos(): void { throw "placeholder"; }
 ////	void					Event_CamShot(): void { throw "placeholder"; }
@@ -234,7 +234,7 @@ class idItemRemover extends idEntity {
 ////	void					RemoveItem( idPlayer *player );
 ////
 ////private:
-////	void					Event_Trigger( idEntity *activator ): void { throw "placeholder"; }
+////	void					Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
 };
 
 class idObjectiveComplete extends idItemRemover {

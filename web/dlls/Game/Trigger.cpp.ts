@@ -369,7 +369,7 @@ var EV_TriggerAction = new idEventDef( "<triggerAction>", "e" );
 ////idTrigger_Multi::CheckFacing
 ////================
 ////*/
-////bool idTrigger_Multi::CheckFacing( idEntity *activator ) {
+////bool idTrigger_Multi::CheckFacing( activator:idEntity ) {
 ////	if ( spawnArgs.GetBool( "facing" ) ) {
 ////		if ( !activator->IsType( idPlayer::Type ) ) {
 ////			return true;
@@ -390,7 +390,7 @@ var EV_TriggerAction = new idEventDef( "<triggerAction>", "e" );
 ////idTrigger_Multi::TriggerAction
 ////================
 ////*/
-////void idTrigger_Multi::TriggerAction( idEntity *activator ) {
+////void idTrigger_Multi::TriggerAction( activator:idEntity ) {
 ////	ActivateTargets( triggerWithSelf ? this : activator );
 ////	CallScript();
 ////
@@ -409,7 +409,7 @@ var EV_TriggerAction = new idEventDef( "<triggerAction>", "e" );
 ////idTrigger_Multi::Event_TriggerAction
 ////================
 ////*/
-////void idTrigger_Multi::Event_TriggerAction( idEntity *activator ) {
+////void idTrigger_Multi::Event_TriggerAction( activator:idEntity ) {
 ////	TriggerAction( activator );
 ////}
 ////
@@ -423,7 +423,7 @@ var EV_TriggerAction = new idEventDef( "<triggerAction>", "e" );
 ////so wait for the delay time before firing
 ////================
 ////*/
-////void idTrigger_Multi::Event_Trigger( idEntity *activator ) {
+////void idTrigger_Multi::Event_Trigger( activator:idEntity ) {
 ////	if ( nextTriggerTime > gameLocal.time ) {
 ////		// can't retrigger until the wait is over
 ////		return;
@@ -460,7 +460,7 @@ var EV_TriggerAction = new idEventDef( "<triggerAction>", "e" );
 ////idTrigger_Multi::Event_Touch
 ////================
 ////*/
-////void idTrigger_Multi::Event_Touch( idEntity *other, trace_t *trace ) {
+////void idTrigger_Multi::Event_Touch( other:idEntity, trace:trace_t ) {
 ////	if( triggerFirst ) {
 ////		return;
 ////	}
@@ -603,7 +603,7 @@ var EV_TriggerAction = new idEventDef( "<triggerAction>", "e" );
 ////idTrigger_EntityName::TriggerAction
 ////================
 ////*/
-////void idTrigger_EntityName::TriggerAction( idEntity *activator ) {
+////void idTrigger_EntityName::TriggerAction( activator:idEntity ) {
 ////	ActivateTargets( activator );
 ////	CallScript();
 ////
@@ -622,7 +622,7 @@ var EV_TriggerAction = new idEventDef( "<triggerAction>", "e" );
 ////idTrigger_EntityName::Event_TriggerAction
 ////================
 ////*/
-////void idTrigger_EntityName::Event_TriggerAction( idEntity *activator ) {
+////void idTrigger_EntityName::Event_TriggerAction( activator:idEntity ) {
 ////	TriggerAction( activator );
 ////}
 ////
@@ -636,7 +636,7 @@ var EV_TriggerAction = new idEventDef( "<triggerAction>", "e" );
 ////so wait for the delay time before firing
 ////================
 ////*/
-////void idTrigger_EntityName::Event_Trigger( idEntity *activator ) {
+////void idTrigger_EntityName::Event_Trigger( activator:idEntity ) {
 ////	if ( nextTriggerTime > gameLocal.time ) {
 ////		// can't retrigger until the wait is over
 ////		return;
@@ -668,7 +668,7 @@ var EV_TriggerAction = new idEventDef( "<triggerAction>", "e" );
 ////idTrigger_EntityName::Event_Touch
 ////================
 ////*/
-////void idTrigger_EntityName::Event_Touch( idEntity *other, trace_t *trace ) {
+////void idTrigger_EntityName::Event_Touch( other:idEntity, trace:trace_t ) {
 ////	if( triggerFirst ) {
 ////		return;
 ////	}
@@ -818,7 +818,7 @@ var EV_Timer = new idEventDef( "<timer>", null );
 ////idTrigger_Timer::Event_Use
 ////================
 ////*/
-////void idTrigger_Timer::Event_Use( idEntity *activator ) {
+////void idTrigger_Timer::Event_Use( activator:idEntity ) {
 ////	// if on, turn it off
 ////	if ( on ) {
 ////		if ( offName.Length() && offName.Icmp( activator->GetName() ) ) {
@@ -898,7 +898,7 @@ var EV_Timer = new idEventDef( "<timer>", null );
 ////idTrigger_Count::Event_Trigger
 ////================
 ////*/
-////void idTrigger_Count::Event_Trigger( idEntity *activator ) {
+////void idTrigger_Count::Event_Trigger( activator:idEntity ) {
 ////	// goal of -1 means trigger has been exhausted
 ////	if (goal >= 0) {
 ////		count++;
@@ -918,7 +918,7 @@ var EV_Timer = new idEventDef( "<timer>", null );
 ////idTrigger_Count::Event_TriggerAction
 ////================
 ////*/
-////void idTrigger_Count::Event_TriggerAction( idEntity *activator ) {
+////void idTrigger_Count::Event_TriggerAction( activator:idEntity ) {
 ////	ActivateTargets( activator );
 ////	CallScript();
 ////	if ( goal == -1 ) {
@@ -993,7 +993,7 @@ var EV_Timer = new idEventDef( "<timer>", null );
 ////idTrigger_Hurt::Event_Touch
 ////================
 ////*/
-////void idTrigger_Hurt::Event_Touch( idEntity *other, trace_t *trace ) {
+////void idTrigger_Hurt::Event_Touch( other:idEntity, trace:trace_t ) {
 ////	const char *damage;
 ////
 ////	if ( on && other && gameLocal.time >= nextTime ) {
@@ -1012,7 +1012,7 @@ var EV_Timer = new idEventDef( "<timer>", null );
 ////idTrigger_Hurt::Event_Toggle
 ////================
 ////*/
-////void idTrigger_Hurt::Event_Toggle( idEntity *activator ) {
+////void idTrigger_Hurt::Event_Toggle( activator:idEntity ) {
 ////	on = !on;
 ////}
 ////
@@ -1034,7 +1034,7 @@ var EV_Timer = new idEventDef( "<timer>", null );
 ////idTrigger_Fade::Event_Trigger
 ////================
 ////*/
-////void idTrigger_Fade::Event_Trigger( idEntity *activator ) {
+////void idTrigger_Fade::Event_Trigger( activator:idEntity ) {
 ////	idVec4		fadeColor;
 ////	int			fadeTime;
 ////	idPlayer	*player;
@@ -1165,7 +1165,7 @@ var EV_Timer = new idEventDef( "<timer>", null );
 ////idTrigger_Touch::Event_Trigger
 ////================
 ////*/
-////void idTrigger_Touch::Event_Trigger( idEntity *activator ) {
+////void idTrigger_Touch::Event_Trigger( activator:idEntity ) {
 ////	if ( thinkFlags & TH_THINK ) {
 ////		BecomeInactive( TH_THINK );
 ////	} else {

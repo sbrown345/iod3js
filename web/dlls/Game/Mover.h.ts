@@ -189,7 +189,7 @@
 ////	void					Event_RemoveInitialSplineAngles( void ): void { throw "placeholder"; }
 ////	void					Event_StartSpline( idEntity *splineEntity ): void { throw "placeholder"; }
 ////	void					Event_StopSpline( void ): void { throw "placeholder"; }
-////	void					Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+////	void					Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 ////	void					Event_PostRestore( int start, int total, int accel, int decel, int useSplineAng ): void { throw "placeholder"; }
 ////	void					Event_IsMoving( void ): void { throw "placeholder"; }
 ////	void					Event_IsRotating( void ): void { throw "placeholder"; }
@@ -231,7 +231,7 @@
 ////	virtual void			BeginMove( idThread *thread = NULL );
 ////	void					SpawnTrigger( const idVec3 &pos );
 ////	void					GetLocalTriggerPosition();
-////	void					Event_Touch( idEntity *other, trace_t *trace );
+////	void					Event_Touch( other:idEntity, trace:trace_t );
 
 ////private:
 ////	typedef enum {
@@ -259,7 +259,7 @@
 ////	void					EnableProperDoors( void );
 
 ////	void					Event_TeamBlocked( idEntity *blockedEntity, idEntity *blockingEntity );
-////	void					Event_Activate( idEntity *activator );
+////	void					Event_Activate( activator:idEntity );
 ////	void					Event_PostFloorArrival();
 
 ////};
@@ -300,7 +300,7 @@
 ////	void					InitTime( idVec3 &mpos1, idVec3 &mpos2, float mtime, float maccelTime, float mdecelTime );
 ////	void					GotoPosition1( void );
 ////	void					GotoPosition2( void );
-////	void					Use_BinaryMover( idEntity *activator );
+////	void					Use_BinaryMover( activator:idEntity );
 ////	void					SetGuiStates( const char *state );
 ////	void					UpdateBuddies( int val );
 ////	idMover_Binary *		GetActivateChain( void ) const { return activateChain; }
@@ -354,7 +354,7 @@
 
 ////	void					Event_SetCallback( void );
 ////	void					Event_ReturnToPos1( void );
-////	void					Event_Use_BinaryMover( idEntity *activator );
+////	void					Event_Use_BinaryMover( activator:idEntity );
 ////	void					Event_Reached_BinaryMover( void );
 ////	void					Event_MatchActivateTeam( moverState_t newstate, int time );
 ////	void					Event_Enable( void );
@@ -389,7 +389,7 @@
 ////	bool					IsNoTouch( void );
 ////	int						IsLocked( void );
 ////	void					Lock( int f );
-////	void					Use( idEntity *other, idEntity *activator );
+////	void					Use( other:idEntity, activator:idEntity );
 ////	void					Close( void );
 ////	void					Open( void );
 ////	void					SetCompanion( idDoor *door );
@@ -419,8 +419,8 @@
 ////	void					Event_Reached_BinaryMover( void ): void { throw "placeholder"; }
 ////	void					Event_TeamBlocked( idEntity *blockedEntity, idEntity *blockingEntity ): void { throw "placeholder"; }
 ////	void					Event_PartBlocked( idEntity *blockingEntity ): void { throw "placeholder"; }
-////	void					Event_Touch( idEntity *other, trace_t *trace ): void { throw "placeholder"; }
-////	void					Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+////	void					Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
+////	void					Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 ////	void					Event_StartOpen( void ): void { throw "placeholder"; }
 ////	void					Event_SpawnDoorTrigger( void ): void { throw "placeholder"; }
 ////	void					Event_SpawnSoundTrigger( void ): void { throw "placeholder"; }
@@ -429,7 +429,7 @@
 ////	void					Event_Lock( int f ): void { throw "placeholder"; }
 ////	void					Event_IsOpen( void ): void { throw "placeholder"; }
 ////	void					Event_Locked( void ): void { throw "placeholder"; }
-////	void					Event_SpectatorTouch( idEntity *other, trace_t *trace ): void { throw "placeholder"; }
+////	void					Event_SpectatorTouch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
 ////	void					Event_OpenPortal( void ): void { throw "placeholder"; }
 ////	void					Event_ClosePortal( void ): void { throw "placeholder"; }
 ////};
@@ -460,7 +460,7 @@
 
 ////	void					Event_TeamBlocked( idEntity *blockedEntity, idEntity *blockingEntity ): void { throw "placeholder"; }
 ////	void					Event_PartBlocked( idEntity *blockingEntity ): void { throw "placeholder"; }
-////	void					Event_Touch( idEntity *other, trace_t *trace ): void { throw "placeholder"; }
+////	void					Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
 ////};
 
 
@@ -510,7 +510,7 @@
 ////private:
 ////	idEntityPtr<idEntity>	activatedBy;
 
-////	void					Event_Activate( idEntity *activator );
+////	void					Event_Activate( activator:idEntity );
 ////};
 
 ////class idBobber extends idMover_Periodic {
@@ -544,7 +544,7 @@
 ////	void					Spawn( void );
 
 ////private:
-////	void					Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+////	void					Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 ////};
 
 ////#endif /* !__GAME_MOVER_H__ */

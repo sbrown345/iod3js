@@ -52,10 +52,14 @@
 ////} shard_t;
 
 
-////class idBrittleFracture extends idEntity {
+class idBrittleFracture extends idEntity {
 
-////public:
+public:
 ////	CLASS_PROTOTYPE( idBrittleFracture );
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idBrittleFracture>[];
 
 ////								idBrittleFracture( void );
 ////	virtual						~idBrittleFracture( void );
@@ -123,8 +127,8 @@
 ////	void						CreateFractures( const idRenderModel *renderModel );
 ////	void						FindNeighbours( void );
 
-////	void						Event_Activate( idEntity *activator );: void { throw "placeholder"; }
-////	void						Event_Touch( idEntity *other, trace_t *trace );: void { throw "placeholder"; }
-////};
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+	Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
+};
 
 ////#endif /* !__GAME_BRITTLEFRACTURE_H__ */

@@ -325,7 +325,7 @@ class idEntity extends idClass {
 ////	// targets
 ////	void					FindTargets( void );
 ////	void					RemoveNullTargets( void );
-////	void					ActivateTargets( idEntity *activator ) const;
+////	void					ActivateTargets( activator:idEntity ) const;
 ////
 ////	// misc
 ////	virtual void			Teleport( const idVec3 &origin, const idAngles &angles, idEntity *destination );

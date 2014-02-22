@@ -100,7 +100,7 @@ class idEntityFx extends idEntity {
 ////	static idEntityFx *		StartFx(const char *fx, const idVec3 *useOrigin, const idMat3 *useAxis, ent:idEntity, bool bind);
 ////
 ////protected:
-////	void					Event_Trigger(idEntity *activator);
+////	void					Event_Trigger(activator:idEntity);
 ////	void					Event_ClearFx(void);
 ////
 ////	void					CleanUp(void);
@@ -713,7 +713,7 @@ class idEntityFx extends idEntity {
 ////idEntityFx::Event_Trigger
 ////================
 ////*/
-////void idEntityFx::Event_Trigger( idEntity *activator ) {
+////void idEntityFx::Event_Trigger( activator:idEntity ) {
 ////
 ////	if ( g_skipFX.GetBool() ) {
 ////		return;
@@ -851,7 +851,7 @@ class idEntityFx extends idEntity {
 ////
 ////private:
 ////	// teleporters to this location
-////	void					Event_DoAction(idEntity *activator);
+////	void					Event_DoAction(activator:idEntity);
 ////};
 ////
 ////#endif /* !__GAME_FX_H__ */
@@ -863,7 +863,7 @@ class idEntityFx extends idEntity {
 ////idTeleporter::Event_DoAction
 ////================
 ////*/
-////void idTeleporter::Event_DoAction( idEntity *activator ) {
+////void idTeleporter::Event_DoAction( activator:idEntity ) {
 ////	float angle;
 ////
 ////	angle = spawnArgs.GetFloat( "angle" );

@@ -54,8 +54,6 @@
     <TypeScriptCompile Include="dlls\Game\AF.h.ts" />
     <TypeScriptCompile Include="dlls\Game\BrittleFracture.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\BrittleFracture.h.ts" />
-    <TypeScriptCompile Include="dlls\Game\EndLevel.cpp.ts" />
-    <TypeScriptCompile Include="dlls\Game\EndLevel.h.ts" />
     <Content Include="dlls\Game\Game_local.cpp.ts" />
     <Content Include="dlls\Game\Game_local.h.ts" />
     <TypeScriptCompile Include="dlls\Game\Script\Script_Compiler.cpp.ts" />

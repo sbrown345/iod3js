@@ -137,7 +137,7 @@ var EV_Speaker_Timer = new idEventDef("<timer>", null );
 ////this will toggle the idle idSound on and off
 ////================
 ////*/
-////void idSound::Event_Trigger( idEntity *activator ) {
+////void idSound::Event_Trigger( activator:idEntity ) {
 ////	if ( wait > 0.0f ) {
 ////		if ( timerOn ) {
 ////			timerOn = false;

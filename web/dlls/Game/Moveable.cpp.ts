@@ -472,7 +472,7 @@ var EV_EnableDamage = new idEventDef( "enableDamage", "f" );
 ////idMoveable::Event_Activate
 ////================
 ////*/
-////void idMoveable::Event_Activate( idEntity *activator ) {
+////void idMoveable::Event_Activate( activator:idEntity ) {
 ////	float delay;
 ////	idVec3 init_velocity, init_avelocity;
 ////
@@ -1142,7 +1142,7 @@ var EV_TriggerTargets = new idEventDef( "<triggertargets>" );
 ////idMoveable::Event_Activate
 ////================
 ////*/
-////void idExplodingBarrel::Event_Activate( idEntity *activator ) {
+////void idExplodingBarrel::Event_Activate( activator:idEntity ) {
 ////	Killed( activator, activator, 0, vec3_origin, 0 );
 ////}
 ////

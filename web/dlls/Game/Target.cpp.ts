@@ -65,7 +65,7 @@
 ////idTarget_Remove::Event_Activate
 ////================
 ////*/
-////void idTarget_Remove::Event_Activate( idEntity *activator ) {
+////void idTarget_Remove::Event_Activate( activator:idEntity ) {
 ////	int			i;
 ////	idEntity	*ent;
 ////
@@ -98,7 +98,7 @@
 ////idTarget_Show::Event_Activate
 ////================
 ////*/
-////void idTarget_Show::Event_Activate( idEntity *activator ) {
+////void idTarget_Show::Event_Activate( activator:idEntity ) {
 ////	int			i;
 ////	idEntity	*ent;
 ////
@@ -131,7 +131,7 @@
 ////idTarget_Damage::Event_Activate
 ////================
 ////*/
-////void idTarget_Damage::Event_Activate( idEntity *activator ) {
+////void idTarget_Damage::Event_Activate( activator:idEntity ) {
 ////	int			i;
 ////	const char *damage;
 ////	idEntity *	ent;
@@ -163,7 +163,7 @@
 ////idTarget_SessionCommand::Event_Activate
 ////================
 ////*/
-////void idTarget_SessionCommand::Event_Activate( idEntity *activator ) {
+////void idTarget_SessionCommand::Event_Activate( activator:idEntity ) {
 ////	gameLocal.sessionCommand = spawnArgs.GetString( "command" );
 ////}
 ////
@@ -186,7 +186,7 @@
 ////idTarget_EndLevel::Event_Activate
 ////================
 ////*/
-////void idTarget_EndLevel::Event_Activate( idEntity *activator ) {
+////void idTarget_EndLevel::Event_Activate( activator:idEntity ) {
 ////	idStr nextMap;
 ////
 ////#ifdef ID_DEMO_BUILD
@@ -234,7 +234,7 @@
 ////idTarget_WaitForButton::Event_Activate
 ////================
 ////*/
-////void idTarget_WaitForButton::Event_Activate( idEntity *activator ) {
+////void idTarget_WaitForButton::Event_Activate( activator:idEntity ) {
 ////	if ( thinkFlags & TH_THINK ) {
 ////		BecomeInactive( TH_THINK );
 ////	} else {
@@ -282,7 +282,7 @@
 ////idTarget_SetGlobalShaderTime::Event_Activate
 ////================
 ////*/
-////void idTarget_SetGlobalShaderTime::Event_Activate( idEntity *activator ) {
+////void idTarget_SetGlobalShaderTime::Event_Activate( activator:idEntity ) {
 ////	int parm = spawnArgs.GetInt( "globalParm" );
 ////	float time = -MS2SEC( gameLocal.time );
 ////	if ( parm >= 0 && parm < MAX_GLOBAL_SHADER_PARMS ) {
@@ -307,7 +307,7 @@
 ////idTarget_SetShaderParm::Event_Activate
 ////================
 ////*/
-////void idTarget_SetShaderParm::Event_Activate( idEntity *activator ) {
+////void idTarget_SetShaderParm::Event_Activate( activator:idEntity ) {
 ////	int			i;
 ////	idEntity *	ent;
 ////	float		value;
@@ -361,7 +361,7 @@
 ////idTarget_SetShaderTime::Event_Activate
 ////================
 ////*/
-////void idTarget_SetShaderTime::Event_Activate( idEntity *activator ) {
+////void idTarget_SetShaderTime::Event_Activate( activator:idEntity ) {
 ////	int			i;
 ////	idEntity *	ent;
 ////	float		time;
@@ -428,7 +428,7 @@
 ////idTarget_FadeEntity::Event_Activate
 ////================
 ////*/
-////void idTarget_FadeEntity::Event_Activate( idEntity *activator ) {
+////void idTarget_FadeEntity::Event_Activate( activator:idEntity ) {
 ////	var ent:idEntity
 ////	int i;
 ////
@@ -504,7 +504,7 @@
 ////idTarget_LightFadeIn::Event_Activate
 ////================
 ////*/
-////void idTarget_LightFadeIn::Event_Activate( idEntity *activator ) {
+////void idTarget_LightFadeIn::Event_Activate( activator:idEntity ) {
 ////	var ent:idEntity
 ////	idLight *light;
 ////	int i;
@@ -547,7 +547,7 @@
 ////idTarget_LightFadeOut::Event_Activate
 ////================
 ////*/
-////void idTarget_LightFadeOut::Event_Activate( idEntity *activator ) {
+////void idTarget_LightFadeOut::Event_Activate( activator:idEntity ) {
 ////	var ent:idEntity
 ////	idLight *light;
 ////	int i;
@@ -601,7 +601,7 @@
 ////idTarget_Give::Event_Activate
 ////================
 ////*/
-////void idTarget_Give::Event_Activate( idEntity *activator ) {
+////void idTarget_Give::Event_Activate( activator:idEntity ) {
 ////	
 ////	if ( spawnArgs.GetBool( "development" ) && developer.GetInteger() == 0 ) {
 ////		return;
@@ -653,7 +653,7 @@
 ////idTarget_GiveEmail::Event_Activate
 ////================
 ////*/
-////void idTarget_GiveEmail::Event_Activate( idEntity *activator ) {
+////void idTarget_GiveEmail::Event_Activate( activator:idEntity ) {
 ////	idPlayer *player = gameLocal.GetLocalPlayer();
 ////	const idDeclPDA *pda = player->GetPDA();
 ////	if ( pda ) {
@@ -698,7 +698,7 @@
 ////idTarget_SetModel::Event_Activate
 ////================
 ////*/
-////void idTarget_SetModel::Event_Activate( idEntity *activator ) {
+////void idTarget_SetModel::Event_Activate( activator:idEntity ) {
 ////	for( int i = 0; i < targets.Num(); i++ ) {
 ////		var ent:idEntity = targets[ i ].GetEntity();
 ////		if ( ent ) {
@@ -962,7 +962,7 @@ var EV_ClearFlash = new idEventDef( "<ClearFlash>", "f" );
 ////idTarget_SetInfluence::Event_Activate
 ////================
 ////*/
-////void idTarget_SetInfluence::Event_Activate( idEntity *activator ) {
+////void idTarget_SetInfluence::Event_Activate( activator:idEntity ) {
 ////	int i, j;
 ////	var ent:idEntity
 ////	idLight *light;
@@ -1240,7 +1240,7 @@ var EV_ClearFlash = new idEventDef( "<ClearFlash>", "f" );
 ////idTarget_SetKeyVal::Event_Activate
 ////================
 ////*/
-////void idTarget_SetKeyVal::Event_Activate( idEntity *activator ) {
+////void idTarget_SetKeyVal::Event_Activate( activator:idEntity ) {
 ////	int i;
 ////	idStr key, val;
 ////	var ent:idEntity
@@ -1326,7 +1326,7 @@ var EV_ClearFlash = new idEventDef( "<ClearFlash>", "f" );
 ////idTarget_SetFov::Event_Activate
 ////================
 ////*/
-////void idTarget_SetFov::Event_Activate( idEntity *activator ) {
+////void idTarget_SetFov::Event_Activate( activator:idEntity ) {
 ////	// always allow during cinematics
 ////	cinematic = true;
 ////
@@ -1371,7 +1371,7 @@ var EV_ClearFlash = new idEventDef( "<ClearFlash>", "f" );
 ////idTarget_SetPrimaryObjective::Event_Activate
 ////================
 ////*/
-////void idTarget_SetPrimaryObjective::Event_Activate( idEntity *activator ) {
+////void idTarget_SetPrimaryObjective::Event_Activate( activator:idEntity ) {
 ////	idPlayer *player = gameLocal.GetLocalPlayer();
 ////	if ( player && player->objectiveSystem ) {
 ////		player->objectiveSystem->SetStateString( "missionobjective", spawnArgs.GetString( "text", common->GetLanguageDict()->GetString( "#str_04253" ) ) );
@@ -1395,7 +1395,7 @@ var EV_ClearFlash = new idEventDef( "<ClearFlash>", "f" );
 ////idTarget_LockDoor::Event_Activate
 ////================
 ////*/
-////void idTarget_LockDoor::Event_Activate( idEntity *activator ) {
+////void idTarget_LockDoor::Event_Activate( activator:idEntity ) {
 ////	int i;
 ////	var ent:idEntity
 ////	int lock;
@@ -1430,7 +1430,7 @@ var EV_ClearFlash = new idEventDef( "<ClearFlash>", "f" );
 ////idTarget_CallObjectFunction::Event_Activate
 ////================
 ////*/
-////void idTarget_CallObjectFunction::Event_Activate( idEntity *activator ) {
+////void idTarget_CallObjectFunction::Event_Activate( activator:idEntity ) {
 ////	int					i;
 ////	idEntity			*ent;
 ////	const function_t	*func;
@@ -1477,7 +1477,7 @@ var EV_ClearFlash = new idEventDef( "<ClearFlash>", "f" );
 ////idTarget_EnableLevelWeapons::Event_Activate
 ////================
 ////*/
-////void idTarget_EnableLevelWeapons::Event_Activate( idEntity *activator ) {
+////void idTarget_EnableLevelWeapons::Event_Activate( activator:idEntity ) {
 ////	int i;
 ////	const char *weap;
 ////
@@ -1573,7 +1573,7 @@ var EV_TipOff = new idEventDef( "<TipOff>" );
 ////idTarget_Tip::Event_Activate
 ////================
 ////*/
-////void idTarget_Tip::Event_Activate( idEntity *activator ) {
+////void idTarget_Tip::Event_Activate( activator:idEntity ) {
 ////	idPlayer *player = gameLocal.GetLocalPlayer();
 ////	if ( player ) {
 ////		if ( player->IsTipVisible() ) {
@@ -1620,7 +1620,7 @@ var EV_TipOff = new idEventDef( "<TipOff>" );
 ////idTarget_GiveEmail::Event_Activate
 ////================
 ////*/
-////void idTarget_GiveSecurity::Event_Activate( idEntity *activator ) {
+////void idTarget_GiveSecurity::Event_Activate( activator:idEntity ) {
 ////	idPlayer *player = gameLocal.GetLocalPlayer();
 ////	if ( player ) {
 ////		player->GiveSecurity( spawnArgs.GetString( "text_security" ) );
@@ -1645,7 +1645,7 @@ var EV_TipOff = new idEventDef( "<TipOff>" );
 ////idTarget_RemoveWeapons::Event_Activate
 ////================
 ////*/
-////void idTarget_RemoveWeapons::Event_Activate( idEntity *activator ) {
+////void idTarget_RemoveWeapons::Event_Activate( activator:idEntity ) {
 ////	for( int i = 0; i < gameLocal.numClients; i++ ) {
 ////		if ( gameLocal.entities[ i ] ) {
 ////			idPlayer *player = static_cast< idPlayer* >( gameLocal.entities[i] );
@@ -1677,7 +1677,7 @@ var EV_TipOff = new idEventDef( "<TipOff>" );
 ////idTarget_LevelTrigger::Event_Activate
 ////================
 ////*/
-////void idTarget_LevelTrigger::Event_Activate( idEntity *activator ) {
+////void idTarget_LevelTrigger::Event_Activate( activator:idEntity ) {
 ////	for( int i = 0; i < gameLocal.numClients; i++ ) {
 ////		if ( gameLocal.entities[ i ] ) {
 ////			idPlayer *player = static_cast< idPlayer* >( gameLocal.entities[i] );
@@ -1704,7 +1704,7 @@ var EV_TipOff = new idEventDef( "<TipOff>" );
 ////idTarget_EnableStamina::Event_Activate
 ////================
 ////*/
-////void idTarget_EnableStamina::Event_Activate( idEntity *activator ) {
+////void idTarget_EnableStamina::Event_Activate( activator:idEntity ) {
 ////	for( int i = 0; i < gameLocal.numClients; i++ ) {
 ////		if ( gameLocal.entities[ i ] ) {
 ////			idPlayer *player = static_cast< idPlayer* >( gameLocal.entities[i] );
@@ -1736,7 +1736,7 @@ var EV_RestoreVolume = new idEventDef( "<RestoreVolume>" );
 ////idTarget_FadeSoundClass::Event_Activate
 ////================
 ////*/
-////void idTarget_FadeSoundClass::Event_Activate( idEntity *activator ) {
+////void idTarget_FadeSoundClass::Event_Activate( activator:idEntity ) {
 ////	float fadeTime = spawnArgs.GetFloat( "fadeTime" );
 ////	float fadeDB = spawnArgs.GetFloat( "fadeDB" );
 ////	float fadeDuration = spawnArgs.GetFloat( "fadeDuration" );

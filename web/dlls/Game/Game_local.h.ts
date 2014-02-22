@@ -398,7 +398,7 @@ class idGameLocal extends idGame {
 ////	void					RegisterEntity( ent: idEntity );
 ////	void					UnregisterEntity( ent: idEntity );
 
-////	bool					RequirementMet( idEntity *activator, const idStr &requires, int removeItem );
+////	bool					RequirementMet( activator:idEntity, const idStr &requires, int removeItem );
 
 ////	void					AlertAI( ent: idEntity );
 ////	idActor *				GetAlertEntity( void );

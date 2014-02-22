@@ -84,7 +84,7 @@
 //private:
 //	int					teleportStage;
 //
-//	void				Event_TeleportPlayer( idEntity *activator ): void { throw "placeholder"; }
+//	void				Event_TeleportPlayer( activator:idEntity ): void { throw "placeholder"; }
 //	void				Event_TeleportStage( idEntity *player ): void { throw "placeholder"; }
 //	void				TeleportPlayer( idPlayer *player ): void { throw "placeholder"; }
 //};
@@ -115,7 +115,7 @@
 //private:
 //	bool				stay_on;
 //
-//	void				Event_Activate( idEntity *activator );
+//	void				Event_Activate( activator:idEntity );
 //};
 //
 //
@@ -165,8 +165,8 @@
 //	int					count;
 //	int					nextTriggerTime;
 //
-//	void				BecomeBroken( idEntity *activator ): void { throw "placeholder"; }
-//	void				Event_BecomeBroken( idEntity *activator ): void { throw "placeholder"; }
+//	void				BecomeBroken( activator:idEntity ): void { throw "placeholder"; }
+//	void				Event_BecomeBroken( activator:idEntity ): void { throw "placeholder"; }
 //	void				Event_RestoreDamagable( void ): void { throw "placeholder"; }
 //};
 //
@@ -186,7 +186,7 @@
 //	void				Spawn( void );
 //
 //private:
-//	void				Event_Explode( idEntity *activator ): void { throw "placeholder"; }
+//	void				Event_Explode( activator:idEntity ): void { throw "placeholder"; }
 //};
 //
 //
@@ -243,7 +243,7 @@
 //
 //	void				Toggle( void );
 //
-//	void				Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+//	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 //	void				Event_Toggle( void ): void { throw "placeholder"; }
 //	void				Event_FindTargets( void ): void { throw "placeholder"; }
 //};
@@ -283,7 +283,7 @@
 //
 //	void					PlayNextAnim( void );
 //
-//	void					Event_Activate( idEntity *activator ): void { throw "placeholder"; }	
+//	void					Event_Activate( activator:idEntity ): void { throw "placeholder"; }	
 //	void					Event_Start( void ): void { throw "placeholder"; }
 //	void					Event_StartRagdoll( void ): void { throw "placeholder"; }
 //	void					Event_AnimDone( int animIndex ): void { throw "placeholder"; }
@@ -321,7 +321,7 @@
 //	virtual void		ReadFromSnapshot( const idBitMsgDelta &msg );
 //
 //private:
-//	void				Event_Activate( idEntity *activator );
+//	void				Event_Activate( activator:idEntity );
 //
 //	int					spawnTime;
 //	bool				active;
@@ -351,7 +351,7 @@
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //	void				Spawn( void );
-//	void				Event_Activate( idEntity *activator );
+//	void				Event_Activate( activator:idEntity );
 //
 //	virtual void		WriteToSnapshot( idBitMsgDelta &msg ) const;
 //	virtual void		ReadFromSnapshot( const idBitMsgDelta &msg );
@@ -382,7 +382,7 @@
 //	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //	virtual void			Think( void );
-//	void					Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+//	void					Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 //
 //private:
 //	int						smokeTime;
@@ -408,7 +408,7 @@
 //	void				Spawn( void );
 //
 //private:
-//	void				Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+//	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 //	void				Event_Splat(): void { throw "placeholder"; }
 //};
 //
@@ -477,7 +477,7 @@ class idLocationEntity extends idEntity {
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
-//	void				Event_Activate( idEntity *activator );	
+//	void				Event_Activate( activator:idEntity );	
 //
 //private:
 //	qhandle_t			portal;
@@ -524,7 +524,7 @@ class idLocationEntity extends idEntity {
 //
 //private:
 //	void				Event_MatchTarget( void ): void { throw "placeholder"; }
-//	void				Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+//	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 //
 //	idEntityPtr<idBeam>	target;
 //	idEntityPtr<idBeam>	master;
@@ -551,7 +551,7 @@ class idLocationEntity extends idEntity {
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
 //private:
-//	void				Event_Touch( idEntity *other, trace_t *trace ): void { throw "placeholder"; }
+//	void				Event_Touch( other:idEntity, trace:trace_t ): void { throw "placeholder"; }
 //
 //
 //	idRenderModelLiquid *model;
@@ -582,7 +582,7 @@ class idLocationEntity extends idEntity {
 //	bool					active;
 //
 //	void					BeginShaking( void ): void { throw "placeholder"; }
-//	void					Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+//	void					Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 //};
 //
 //
@@ -617,7 +617,7 @@ class idLocationEntity extends idEntity {
 //	bool				disabled;
 //	float				shakeTime;
 //
-//	void				Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+//	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 //};
 //
 //
@@ -644,7 +644,7 @@ class idLocationEntity extends idEntity {
 //	qhandle_t			portal;
 //	bool				state;
 //
-//	void				Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+//	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 //};
 //
 ///*
@@ -669,7 +669,7 @@ class idLocationEntity extends idEntity {
 //private:
 //	bool				state;
 //
-//	void				Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+//	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 //};
 //
 ///*
@@ -694,7 +694,7 @@ class idLocationEntity extends idEntity {
 //private:
 //	bool				state;
 //
-//	void				Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+//	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 //};
 //
 //
@@ -719,8 +719,8 @@ class idLocationEntity extends idEntity {
 //
 //private:
 //	float				time;
-//	void				Event_Activate( idEntity *activator ): void { throw "placeholder"; }
-//	void				Event_ResetRadioHud( idEntity *activator ): void { throw "placeholder"; }
+//	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+//	void				Event_ResetRadioHud( activator:idEntity ): void { throw "placeholder"; }
 //};
 //
 //
@@ -746,7 +746,7 @@ class idLocationEntity extends idEntity {
 //	virtual void		Think( void );
 //
 //private:
-//	void				Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+//	void				Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 //	void				Event_Throw( void ): void { throw "placeholder"; }
 //	void				Event_ShakeObject( idEntity *object, int starttime ): void { throw "placeholder"; }
 //

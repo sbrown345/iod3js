@@ -3492,7 +3492,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////idGameLocal::RequirementMet
 ////================
 ////*/
-////bool idGameLocal::RequirementMet( idEntity *activator, const idStr &requires, int removeItem ) {
+////bool idGameLocal::RequirementMet( activator:idEntity, const idStr &requires, int removeItem ) {
 ////	if ( requires.Length() ) {
 ////		if ( activator.IsType( idPlayer::Type ) ) {
 ////			idPlayer *player = static_cast<idPlayer *>(activator);

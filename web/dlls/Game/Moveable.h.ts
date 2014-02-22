@@ -86,7 +86,7 @@
 ////	void					InitInitialSpline( int startTime );
 ////	bool					FollowInitialSplinePath( void );
 ////
-////	void					Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+////	void					Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 ////	void					Event_BecomeNonSolid( void ): void { throw "placeholder"; }
 ////	void					Event_SetOwnerFromSpawnArgs( void ): void { throw "placeholder"; }
 ////	void					Event_IsAtRest( void ): void { throw "placeholder"; }
@@ -188,7 +188,7 @@
 ////	void					AddLight( const char *name , bool burn );
 ////	void					ExplodingEffects( void );
 ////
-////	void					Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+////	void					Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 ////	void					Event_Respawn(): void { throw "placeholder"; }
 ////	void					Event_Explode(): void { throw "placeholder"; }
 ////	void					Event_TriggerTargets(): void { throw "placeholder"; }

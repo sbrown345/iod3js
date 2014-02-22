@@ -86,7 +86,7 @@ idCameraView.prototype.GetType = function ( ): idTypeInfo {
 };
 
 idCameraView.eventCallbacks = [
-	EVENT(EV_Activate, idCameraView.prototype.Event_Activate)
+	EVENT(EV_Activate, idCameraView.prototype.Event_Activate),
 	EVENT(EV_Camera_SetAttachments, idCameraView.prototype.Event_SetAttachments)
 ];
 
@@ -147,7 +147,7 @@ idCameraView.Type = new idTypeInfo("idCameraView", "idCamera",
 ////idCameraView::Event_Activate
 ////================
 ////*/
-////void idCameraView::Event_Activate( idEntity *activator ) {
+////void idCameraView::Event_Activate( activator:idEntity ) {
 ////	if (spawnArgs.GetBool("trigger")) {
 ////		if (gameLocal.GetCamera() != this) {
 ////			if ( g_debugCinematic.GetBool() ) {
@@ -254,10 +254,35 @@ var EV_Camera_Start = new idEventDef( "start", null );
 var EV_Camera_Stop = new idEventDef( "stop", null );
 ////
 ////CLASS_DECLARATION( idCamera, idCameraAnim )
-////	EVENT( EV_Thread_SetCallback,	idCameraAnim::Event_SetCallback )
-////	EVENT( EV_Camera_Stop,			idCameraAnim::Event_Stop )
-////	EVENT( EV_Camera_Start,			idCameraAnim::Event_Start )
-////	EVENT( EV_Activate,				idCameraAnim::Event_Activate )
+idCameraAnim.CreateInstance = function ( ): idClass {
+	try {
+		var ptr = new idCameraAnim;
+		ptr.FindUninitializedMemory ( );
+		return ptr;
+	} catch ( e ) {
+		return null;
+	}
+};
+
+idCameraAnim.prototype.GetType = function ( ): idTypeInfo {
+	return ( idCameraAnim.Type );
+};
+
+idCameraAnim.eventCallbacks = [
+	EVENT(EV_Thread_SetCallback, idCameraAnim.prototype.Event_SetCallback),
+	EVENT(EV_Camera_Stop, idCameraAnim.prototype.Event_Stop),
+	EVENT(EV_Camera_Start, idCameraAnim.prototype.Event_Start),
+	EVENT(EV_Activate, idCameraAnim.prototype.Event_Activate)
+];
+
+idCameraAnim.Type = new idTypeInfo("idCameraAnim", "idCamera",
+	idCameraAnim.eventCallbacks, idCameraAnim.CreateInstance, idCameraAnim.prototype.Spawn,
+	idCameraAnim.prototype.Save, idCameraAnim.prototype.Restore );
+
+////	
+////	
+////	
+////	
 ////END_CLASS
 ////
 ////

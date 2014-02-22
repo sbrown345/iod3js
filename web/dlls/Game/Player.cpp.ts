@@ -4259,7 +4259,7 @@ var EV_Player_GetIdealWeapon = new idEventDef( "getIdealWeapon", null, 's' );
 ////==============
 ////*/
 ////bool idPlayer::Collide( const trace_t &collision, const idVec3 &velocity ) {
-////	idEntity *other;
+////	other:idEntity;
 ////
 ////	if ( gameLocal.isClient ) {
 ////		return false;

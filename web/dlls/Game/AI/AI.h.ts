@@ -420,7 +420,7 @@ class idAI extends idActor {
 ////	virtual	void			DormantBegin( void );	// called when entity becomes dormant
 ////	virtual	void			DormantEnd( void );		// called when entity wakes from being dormant
 ////	void					Think( void );
-////	void					Activate( idEntity *activator );
+////	void					Activate( activator:idEntity );
 ////	int						ReactionTo( const idEntity *ent );
 ////	bool					CheckForEnemy( void );
 ////	void					EnemyDead( void );

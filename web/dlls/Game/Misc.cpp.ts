@@ -214,7 +214,7 @@ var EV_TeleportStage= new idEventDef( "<TeleportStage>", "e" );
 ////idPlayerStart::Event_TeleportPlayer
 ////================
 ////*/
-////void idPlayerStart::Event_TeleportPlayer( idEntity *activator ) {
+////void idPlayerStart::Event_TeleportPlayer( activator:idEntity ) {
 ////	idPlayer *player;
 ////
 ////	if ( activator.IsType( idPlayer::Type ) ) {
@@ -320,7 +320,7 @@ var EV_TeleportStage= new idEventDef( "<TeleportStage>", "e" );
 ////idActivator::Activate
 ////================
 ////*/
-////void idActivator::Event_Activate( idEntity *activator ) {
+////void idActivator::Event_Activate( activator:idEntity ) {
 ////	if ( thinkFlags & TH_THINK ) {
 ////		BecomeInactive( TH_THINK );
 ////	} else {
@@ -483,7 +483,7 @@ var EV_RestoreDamagable= new idEventDef( "<RestoreDamagable>" );
 ////idDamagable::BecomeBroken
 ////================
 ////*/
-////void idDamagable::BecomeBroken( idEntity *activator ) {
+////void idDamagable::BecomeBroken( activator:idEntity ) {
 ////	float	forceState;
 ////	int		numStates;
 ////	int		cycle;
@@ -560,7 +560,7 @@ var EV_RestoreDamagable= new idEventDef( "<RestoreDamagable>" );
 ////idDamagable::Event_BecomeBroken
 ////================
 ////*/
-////void idDamagable::Event_BecomeBroken( idEntity *activator ) {
+////void idDamagable::Event_BecomeBroken( activator:idEntity ) {
 ////	BecomeBroken( activator );
 ////}
 ////
@@ -601,7 +601,7 @@ var EV_RestoreDamagable= new idEventDef( "<RestoreDamagable>" );
 ////idExplodable::Event_Explode
 ////================
 ////*/
-////void idExplodable::Event_Explode( idEntity *activator ) {
+////void idExplodable::Event_Explode( activator:idEntity ) {
 ////	const char *temp;
 ////
 ////	if ( spawnArgs.GetString( "def_damage", "damage_explosion", &temp ) ) {
@@ -847,7 +847,7 @@ var EV_Toggle = new idEventDef( "Toggle", null );
 ////idForceField::Event_Activate
 ////================
 ////*/
-////void idForceField::Event_Activate( idEntity *activator ) {
+////void idForceField::Event_Activate( activator:idEntity ) {
 ////	float wait;
 ////
 ////	Toggle();
@@ -1512,7 +1512,7 @@ var EV_StartRagdoll= new idEventDef( "startRagdoll" );
 ////idStaticEntity::Event_Activate
 ////================
 ////*/
-////void idStaticEntity::Event_Activate( idEntity *activator ) {
+////void idStaticEntity::Event_Activate( activator:idEntity ) {
 ////	idStr activateGui;
 ////
 ////	spawnTime = gameLocal.time;
@@ -1635,7 +1635,7 @@ var EV_StartRagdoll= new idEventDef( "startRagdoll" );
 ////idFuncEmitter::Event_Activate
 ////================
 ////*/
-////void idFuncEmitter::Event_Activate( idEntity *activator ) {
+////void idFuncEmitter::Event_Activate( activator:idEntity ) {
 ////	if ( hidden || spawnArgs.GetBool( "cycleTrigger" ) ) {
 ////		renderEntity.shaderParms[SHADERPARM_PARTICLE_STOPTIME] = 0;
 ////		renderEntity.shaderParms[SHADERPARM_TIMEOFFSET] = -MS2SEC( gameLocal.time );
@@ -1729,7 +1729,7 @@ var EV_Splat= new idEventDef( "<Splat>" );
 ////idFuncSplat::Event_Activate
 ////================
 ////*/
-////void idFuncSplat::Event_Activate( idEntity *activator ) {
+////void idFuncSplat::Event_Activate( activator:idEntity ) {
 ////	idFuncEmitter::Event_Activate( activator );
 ////	PostEventSec( &EV_Splat, spawnArgs.GetFloat( "splatDelay", "0.25" ) );
 ////	StartSound( "snd_spurt", SND_CHANNEL_ANY, 0, false, NULL );
@@ -1808,7 +1808,7 @@ var EV_Splat= new idEventDef( "<Splat>" );
 ////idFuncSmoke::Event_Activate
 ////================
 ////*/
-////void idFuncSmoke::Event_Activate( idEntity *activator ) {
+////void idFuncSmoke::Event_Activate( activator:idEntity ) {
 ////	if ( thinkFlags & TH_UPDATEPARTICLES ) {
 ////		restart = false;
 ////		return;
@@ -1980,7 +1980,7 @@ var EV_Splat= new idEventDef( "<Splat>" );
 ////idVacuumSeparatorEntity::Event_Activate
 ////================
 ////*/
-////void idVacuumSeparatorEntity::Event_Activate( idEntity *activator ) {
+////void idVacuumSeparatorEntity::Event_Activate( activator:idEntity ) {
 ////	if ( !portal ) {
 ////		return;
 ////	}
@@ -2244,7 +2244,7 @@ var EV_Splat= new idEventDef( "<Splat>" );
 ////idBeam::Event_Activate
 ////================
 ////*/
-////void idBeam::Event_Activate( idEntity *activator ) {
+////void idBeam::Event_Activate( activator:idEntity ) {
 ////	if ( IsHidden() ) {
 ////		Show();
 ////	} else {
@@ -2336,7 +2336,7 @@ var EV_Splat= new idEventDef( "<Splat>" );
 ////idLiquid::Event_Touch
 ////================
 ////*/
-////void idLiquid::Event_Touch( idEntity *other, trace_t *trace ) {
+////void idLiquid::Event_Touch( other:idEntity, trace:trace_t ) {
 ////	// FIXME: for QuakeCon
 /////*
 ////	idVec3 pos;
@@ -2430,7 +2430,7 @@ var EV_Splat= new idEventDef( "<Splat>" );
 ////idShaking::Event_Activate
 ////================
 ////*/
-////void idShaking::Event_Activate( idEntity *activator ) {
+////void idShaking::Event_Activate( activator:idEntity ) {
 ////	if ( !active ) {
 ////		BeginShaking();
 ////	} else {
@@ -2529,7 +2529,7 @@ var EV_Splat= new idEventDef( "<Splat>" );
 ////idEarthQuake::Event_Activate
 ////================
 ////*/
-////void idEarthQuake::Event_Activate( idEntity *activator ) {
+////void idEarthQuake::Event_Activate( activator:idEntity ) {
 ////	
 ////	if ( nextTriggerTime > gameLocal.time ) {
 ////		return;
@@ -2663,7 +2663,7 @@ var EV_Splat= new idEventDef( "<Splat>" );
 ////idFuncPortal::Event_Activate
 ////================
 ////*/
-////void idFuncPortal::Event_Activate( idEntity *activator ) {
+////void idFuncPortal::Event_Activate( activator:idEntity ) {
 ////	if ( portal > 0 ) {
 ////		state = !state;
 ////		gameLocal.SetPortalState( portal, state ? PS_BLOCK_ALL : PS_BLOCK_NONE );
@@ -2725,7 +2725,7 @@ var EV_Splat= new idEventDef( "<Splat>" );
 ////idFuncAASPortal::Event_Activate
 ////================
 ////*/
-////void idFuncAASPortal::Event_Activate( idEntity *activator ) {
+////void idFuncAASPortal::Event_Activate( activator:idEntity ) {
 ////	state ^= 1;
 ////	gameLocal.SetAASAreaState( GetPhysics().GetAbsBounds(), AREACONTENTS_CLUSTERPORTAL, state );
 ////}
@@ -2785,7 +2785,7 @@ var EV_Splat= new idEventDef( "<Splat>" );
 ////idFuncAASObstacle::Event_Activate
 ////================
 ////*/
-////void idFuncAASObstacle::Event_Activate( idEntity *activator ) {
+////void idFuncAASObstacle::Event_Activate( activator:idEntity ) {
 ////	state ^= 1;
 ////	gameLocal.SetAASAreaState( GetPhysics().GetAbsBounds(), AREACONTENTS_OBSTACLE, state );
 ////}
@@ -2849,7 +2849,7 @@ var EV_ResetRadioHud= new idEventDef( "<resetradiohud>", "e" );
 ////idFuncRadioChatter::Event_Activate
 ////================
 ////*/
-////void idFuncRadioChatter::Event_Activate( idEntity *activator ) {
+////void idFuncRadioChatter::Event_Activate( activator:idEntity ) {
 ////	idPlayer *player;
 ////	const char	*sound;
 ////	const idSoundShader *shader;
@@ -2880,7 +2880,7 @@ var EV_ResetRadioHud= new idEventDef( "<resetradiohud>", "e" );
 ////idFuncRadioChatter::Event_ResetRadioHud
 ////================
 ////*/
-////void idFuncRadioChatter::Event_ResetRadioHud( idEntity *activator ) {
+////void idFuncRadioChatter::Event_ResetRadioHud( activator:idEntity ) {
 ////	idPlayer *player = ( activator.IsType( idPlayer::Type ) ) ? static_cast<idPlayer *>( activator ) : gameLocal.GetLocalPlayer();
 ////	player.hud.HandleNamedEvent( "radioChatterDown" );
 ////	ActivateTargets( activator );
@@ -3008,7 +3008,7 @@ var EV_ResetRadioHud= new idEventDef( "<resetradiohud>", "e" );
 ////idPhantomObjects::Event_Activate
 ////================
 ////*/
-////void idPhantomObjects::Event_Activate( idEntity *activator ) {
+////void idPhantomObjects::Event_Activate( activator:idEntity ) {
 ////	int i;
 ////	float time;
 ////	float frac;

@@ -50,7 +50,7 @@
 ////
 ////	void			Spawn( void );
 ////
-////	void			ToggleOnOff( idEntity *other, idEntity *activator );
+////	void			ToggleOnOff( other:idEntity, activator:idEntity );
 ////	void			Think( void );
 ////	void			SetSound( const char *sound, int channel = SND_CHANNEL_ANY );
 ////
@@ -66,7 +66,7 @@
 ////	idAngles		shakeRotate;
 ////	int				playingUntilTime;
 ////
-////	void			Event_Trigger( idEntity *activator );
+////	void			Event_Trigger( activator:idEntity );
 ////	void			Event_Timer( void );
 ////	void			Event_On( void );
 ////	void			Event_Off( void );

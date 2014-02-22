@@ -524,7 +524,7 @@ idItem.Type = new idTypeInfo( "idItem", "idEntity",
 ////idItem::Event_Touch
 ////================
 ////*/
-////void idItem::Event_Touch( idEntity *other, trace_t *trace ) {
+////void idItem::Event_Touch( other:idEntity, trace:trace_t ) {
 ////	if ( !other->IsType( idPlayer::Type ) ) {
 ////		return;
 ////	}
@@ -541,7 +541,7 @@ idItem.Type = new idTypeInfo( "idItem", "idEntity",
 ////idItem::Event_Trigger
 ////================
 ////*/
-////void idItem::Event_Trigger( idEntity *activator ) {
+////void idItem::Event_Trigger( activator:idEntity ) {
 ////
 ////	if ( !canPickUp && spawnArgs.GetBool( "triggerFirst" ) ) {
 ////		canPickUp = true;
@@ -763,7 +763,7 @@ idItemPowerup.Type = new idTypeInfo( "idItemPowerup", "idItem",
 ////idObjective::Event_Trigger
 ////================
 ////*/
-////void idObjective::Event_Trigger( idEntity *activator ) {
+////void idObjective::Event_Trigger( activator:idEntity ) {
 ////	idPlayer *player = gameLocal.GetLocalPlayer();
 ////	if ( player ) {
 ////
@@ -1280,7 +1280,7 @@ idItemPowerup.Type = new idTypeInfo( "idItemPowerup", "idItem",
 ////idItemRemover::Event_Trigger
 ////================
 ////*/
-////void idItemRemover::Event_Trigger( idEntity *activator ) {
+////void idItemRemover::Event_Trigger( activator:idEntity ) {
 ////	if ( activator->IsType( idPlayer::Type ) ) {
 ////		RemoveItem( static_cast<idPlayer *>(activator) );
 ////	}
@@ -1342,7 +1342,7 @@ idItemPowerup.Type = new idTypeInfo( "idItemPowerup", "idItem",
 ////idObjectiveComplete::Event_Trigger
 ////================
 ////*/
-////void idObjectiveComplete::Event_Trigger( idEntity *activator ) {
+////void idObjectiveComplete::Event_Trigger( activator:idEntity ) {
 ////	if ( !spawnArgs.GetBool( "objEnabled" ) ) {
 ////		return;
 ////	}

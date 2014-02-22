@@ -42,10 +42,10 @@ class idCamera extends idEntity {
 ////public:
 ////	ABSTRACT_PROTOTYPE( idCamera );
 ////
-////	void					Spawn( void );
+////	void					Spawn( );
 ////	virtual void			GetViewParms( renderView_t *view ) = 0;
 ////	virtual renderView_t *	GetRenderView();
-////	virtual void			Stop( void ){} ;
+////	virtual void			Stop( ){} ;
 };
 
 /*
@@ -67,10 +67,10 @@ class idCameraView extends idCamera {
 ////
 ////	void					Spawn( );
 ////	virtual void			GetViewParms( renderView_t *view );
-////	virtual void			Stop( void );
+////	virtual void			Stop( );
 ////
 ////protected:
-	Event_Activate( idEntity *activator ): void { throw "placeholder"; }
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 	Event_SetAttachments(): void { throw "placeholder"; }
 ////	void					SetAttachment( idEntity **e, const char *p );
 ////	float					fov;
@@ -94,7 +94,7 @@ A camera which follows a path defined by an animation.
 ////	float				fov;
 ////} cameraFrame_t;
 ////
-////class idCameraAnim extends idCamera {
+class idCameraAnim extends idCamera {
 ////public:
 ////	CLASS_PROTOTYPE( idCameraAnim );
 ////
@@ -105,7 +105,7 @@ A camera which follows a path defined by an animation.
 //Save ( savefile: idSaveGame ): void { throw "placeholder"; }				// archives object for save game file
 ////	void					Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }				// unarchives object from save game file
 ////
-////	void					Spawn( void );
+////	void					Spawn( );
 ////	virtual void			GetViewParms( renderView_t *view );
 ////
 ////private:
@@ -118,15 +118,15 @@ A camera which follows a path defined by an animation.
 ////	idList<cameraFrame_t>	camera;
 ////	idEntityPtr<idEntity>	activator;
 ////
-////	void					Start( void );
-////	void					Stop( void );
-////	void					Think( void );
+////	void					Start( );
+////	void					Stop( );
+////	void					Think( );
 ////
-////	void					LoadAnim( void ): void { throw "placeholder"; }
-////	void					Event_Start( void ): void { throw "placeholder"; }
-////	void					Event_Stop( void ): void { throw "placeholder"; }
-////	void					Event_SetCallback( void ): void { throw "placeholder"; }
-////	void					Event_Activate( idEntity *activator ): void { throw "placeholder"; }
-////};
+	LoadAnim( ): void { throw "placeholder"; }
+	Event_Start( ): void { throw "placeholder"; }
+	Event_Stop( ): void { throw "placeholder"; }
+	Event_SetCallback( ): void { throw "placeholder"; }
+	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
+};
 ////
 ////#endif /* !__GAME_CAMERA_H__ */

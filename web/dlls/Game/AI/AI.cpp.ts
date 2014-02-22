@@ -3492,7 +3492,7 @@
 ////Notifies the script that a monster has been activated by a trigger or flashlight
 ////=====================
 ////*/
-////void idAI::Activate( idEntity *activator ) {
+////void idAI::Activate( activator:idEntity ) {
 ////	idPlayer *player;
 ////
 ////	if ( AI_DEAD ) {
@@ -5111,7 +5111,7 @@ idCombatNode.Type = new idTypeInfo( "idCombatNode", "idEntity",
 ////idCombatNode::Event_Activate
 ////=====================
 ////*/
-////void idCombatNode::Event_Activate( idEntity *activator ) {
+////void idCombatNode::Event_Activate( activator:idEntity ) {
 ////	disabled = !disabled;
 ////}
 ////

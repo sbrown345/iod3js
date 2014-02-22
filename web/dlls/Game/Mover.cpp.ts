@@ -1453,7 +1453,7 @@ var EV_IsRotating = new idEventDef( "isRotating", null, 'd' );
 ////idMover::Event_Activate
 ////================
 ////*/
-////void idMover::Event_Activate( idEntity *activator ) {
+////void idMover::Event_Activate( activator:idEntity ) {
 ////	Show();
 ////	Event_StartSpline( this );
 ////}
@@ -1693,7 +1693,7 @@ var EV_GotoFloor= new idEventDef( "gotoFloor", "d" );
 ////idElevator::Event_Touch
 ////===============
 ////*/
-////void idElevator::Event_Touch( idEntity *other, trace_t *trace ) {
+////void idElevator::Event_Touch( other:idEntity, trace:trace_t ) {
 ////	
 ////	if ( gameLocal.time < lastTouchTime + 2000 ) {
 ////		return;
@@ -1766,7 +1766,7 @@ var EV_GotoFloor= new idEventDef( "gotoFloor", "d" );
 ////idElevator::Event_Activate
 ////================
 ////*/
-////void idElevator::Event_Activate( idEntity *activator ) {
+////void idElevator::Event_Activate( activator:idEntity ) {
 ////	int triggerFloor = spawnArgs.GetInt( "triggerFloor" );
 ////	if ( spawnArgs.GetBool( "trigger" ) && triggerFloor != currentFloor ) {
 ////		Event_GotoFloor( triggerFloor );
@@ -2791,7 +2791,7 @@ var EV_Mover_Disable= new idEventDef( "disable", null );
 ////idMover_Binary::Use_BinaryMover
 ////================
 ////*/
-////void idMover_Binary::Use_BinaryMover( idEntity *activator ) {
+////void idMover_Binary::Use_BinaryMover( activator:idEntity ) {
 ////	// only the master should be used
 ////	if ( moveMaster != this ) {
 ////		moveMaster->Use_BinaryMover( activator );
@@ -2850,7 +2850,7 @@ var EV_Mover_Disable= new idEventDef( "disable", null );
 ////idMover_Binary::Event_Use_BinaryMover
 ////================
 ////*/
-////void idMover_Binary::Event_Use_BinaryMover( idEntity *activator ) {
+////void idMover_Binary::Event_Use_BinaryMover( activator:idEntity ) {
 ////	Use_BinaryMover( activator );
 ////}
 ////
@@ -3482,7 +3482,7 @@ var EV_Door_IsLocked = new idEventDef( "isLocked", null, 'f' );
 ////idDoor::Use
 ////================
 ////*/
-////void idDoor::Use( idEntity *other, idEntity *activator ) {
+////void idDoor::Use( other:idEntity, activator:idEntity ) {
 ////	if ( gameLocal.RequirementMet( activator, requires, removeItem ) ) {
 ////		if ( syncLock.Length() ) {
 ////			idEntity *sync = gameLocal.FindEntity( syncLock );
@@ -3795,7 +3795,7 @@ var EV_Door_IsLocked = new idEventDef( "isLocked", null, 'f' );
 ////idDoor::Event_Touch
 ////================
 ////*/
-////void idDoor::Event_Touch( idEntity *other, trace_t *trace ) {
+////void idDoor::Event_Touch( other:idEntity, trace:trace_t ) {
 ////	idVec3		contact, translate;
 ////	idVec3		planeaxis1, planeaxis2, normal;
 ////	idBounds	bounds;
@@ -3821,7 +3821,7 @@ var EV_Door_IsLocked = new idEventDef( "isLocked", null, 'f' );
 ////idDoor::Event_SpectatorTouch
 ////================
 ////*/
-////void idDoor::Event_SpectatorTouch( idEntity *other, trace_t *trace ) {
+////void idDoor::Event_SpectatorTouch( other:idEntity, trace:trace_t ) {
 ////	idVec3		contact, translate, normal;
 ////	idBounds	bounds;
 ////	idPlayer	*p;
@@ -3855,7 +3855,7 @@ var EV_Door_IsLocked = new idEventDef( "isLocked", null, 'f' );
 ////idDoor::Event_Activate
 ////================
 ////*/
-////void idDoor::Event_Activate( idEntity *activator ) {
+////void idDoor::Event_Activate( activator:idEntity ) {
 ////	int old_lock;
 ////
 ////	if ( spawnArgs.GetInt( "locked" ) ) {
@@ -4196,7 +4196,7 @@ var EV_Door_IsLocked = new idEventDef( "isLocked", null, 'f' );
 ////idPlat::Event_Touch
 ////===============
 ////*/
-////void idPlat::Event_Touch( idEntity *other, trace_t *trace ) {
+////void idPlat::Event_Touch( other:idEntity, trace:trace_t ) {
 ////	if ( !other->IsType( idPlayer::Type ) ) {
 ////		return;
 ////	}
@@ -4410,7 +4410,7 @@ var EV_Door_IsLocked = new idEventDef( "isLocked", null, 'f' );
 ////idRotater::Event_Activate
 ////===============
 ////*/
-////void idRotater::Event_Activate( idEntity *activator ) {
+////void idRotater::Event_Activate( activator:idEntity ) {
 ////	float		speed;
 ////	bool		x_axis;
 ////	bool		y_axis;
@@ -4611,7 +4611,7 @@ var EV_Door_IsLocked = new idEventDef( "isLocked", null, 'f' );
 ////idRiser::Event_Activate
 ////================
 ////*/
-////void idRiser::Event_Activate( idEntity *activator ) {
+////void idRiser::Event_Activate( activator:idEntity ) {
 ////
 ////	if ( !IsHidden() && spawnArgs.GetBool("hide")  ) {
 ////		Hide();

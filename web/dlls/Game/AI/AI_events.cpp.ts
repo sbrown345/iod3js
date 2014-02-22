@@ -319,7 +319,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_Activate
 ////=====================
 ////*/
-////void idAI::Event_Activate( idEntity *activator ) {
+////void idAI::Event_Activate( activator:idEntity ) {
 ////	Activate( activator );
 ////}
 ////
@@ -328,7 +328,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////idAI::Event_Touch
 ////=====================
 ////*/
-////void idAI::Event_Touch( idEntity *other, trace_t *trace ) {
+////void idAI::Event_Touch( other:idEntity, trace:trace_t ) {
 ////	if ( !enemy.GetEntity() && !other->fl.notarget && ( ReactionTo( other ) & ATTACK_ON_ACTIVATE ) ) {
 ////		Activate( other );
 ////	}

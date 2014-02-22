@@ -996,7 +996,7 @@ var EV_GetProjectileState = new idEventDef( "getProjectileState", null, 'd' );
 ////idProjectile::Event_Touch
 ////================
 ////*/
-////void idProjectile::Event_Touch( idEntity *other, trace_t *trace ) {
+////void idProjectile::Event_Touch( other:idEntity, trace:trace_t ) {
 ////
 ////	if ( IsHidden() ) {
 ////		return;
@@ -1021,7 +1021,7 @@ var EV_GetProjectileState = new idEventDef( "getProjectileState", null, 'd' );
 ////=================
 ////*/
 ////bool idProjectile::ClientPredictionCollide( idEntity *soundEnt, const idDict &projectileDef, const trace_t &collision, const idVec3 &velocity, bool addDamageEffect ) {
-////	var ent:idEntity
+////	idEntity *ent;
 ////
 ////	// remove projectile when a 'noimpact' surface is hit
 ////	if ( collision.c.material && ( collision.c.material->GetSurfaceFlags() & SURF_NOIMPACT ) ) {
