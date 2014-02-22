@@ -1453,7 +1453,7 @@ FreeData( ):void {
 	this.top_defs = 0;
 	this.top_files		= 0;
 
-	this.filename = new idStr("");
+	this.filename.equals( "" );
 }
 
 /*

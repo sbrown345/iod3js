@@ -1687,7 +1687,7 @@ class idLexer {
 		//buf[length] = '\0';// TODO: WATCH OUT HERE
 		//fp.Read( buf, length );
 		//this.fileTime = fp.Timestamp();
-		//this.filename = fp.GetFullPath();
+		this.filename.equals(filename);//fp.GetFullPath();
 		//idLib::fileSystem.CloseFile( fp );
 
 
