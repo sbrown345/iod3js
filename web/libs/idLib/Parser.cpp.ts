@@ -752,97 +752,94 @@ idParser::UnreadSourceToken
 idParser::ReadDefineParms
 ================
 */
-	/*int*/ReadDefineParms(define: define_t, /*idToken ***/parms: idToken[], /*int */maxparms: number): number {
-		todoThrow ( );
-////	define_t *newdefine;
-////	idToken token, *t, *last;
-////	int i, done, lastcomma, numparms, indent;
-////
-////	if ( !this.ReadSourceToken( &token ) ) {
-////		this.Error( "define '%s' missing parameters", define.name );
-////		return 0/*false*/;
-////	}
-////
-////	if ( define.numparms > maxparms ) {
-////		this.Error( "define with more than %d parameters", maxparms );
-////		return 0/*false*/;
-////	}
-////
-////	for ( i = 0; i < define.numparms; i++ ) {
-////		parms[i] = NULL;
-////	}
-////	// if no leading "("
-////	if ( token != "(" ) {
-////		this.UnreadSourceToken( &token );
-////		this.Error( "define '%s' missing parameters", define.name );
-////		return 0/*false*/;
-////	}
-////	// read the define parameters
-////	for ( done = 0, numparms = 0, indent = 1; !done; ) {
-////		if ( numparms >= maxparms ) {
-////			this.Error( "define '%s' with too many parameters", define.name );
-////			return 0/*false*/;
-////		}
-////		parms[numparms] = NULL;
-////		lastcomma = 1;
-////		last = NULL;
-////		while( !done ) {
-////
-////			if ( !this.ReadSourceToken( &token ) ) {
-////				this.Error( "define '%s' incomplete", define.name );
-////				return 0/*false*/;
-////			}
-////
-////			if ( token == "," ) {
-////				if ( indent <= 1 ) {
-////					if ( lastcomma ) {
-////						this.Warning( "too many comma's" );
-////					}
-////					if ( numparms >= define.numparms ) {
-////						this.Warning( "too many define parameters" );
-////					}
-////					lastcomma = 1;
-////					break;
-////				}
-////			}
-////			else if ( token == "(" ) {
-////				indent++;
-////			}
-////			else if ( token == ")" ) {
-////				indent--;
-////				if ( indent <= 0 ) {
-////					if ( !parms[define.numparms-1] ) {
-////						this.Warning( "too few define parameters" );
-////					}
-////					done = 1;
-////					break;
-////				}
-////			}
-////			else if ( token.type == TT_NAME ) {
-////				newdefine = FindHashedDefine( this.definehash, token.c_str() );
-////				if ( newdefine ) {
-////					if ( !this.ExpandDefineIntoSource( &token, newdefine ) ) {
-////						return 0/*false*/;
-////					}
-////					continue;
-////				}
-////			}
-////
-////			lastcomma = 0;
-////
-////			if ( numparms < define.numparms ) {
-////
-////				t = new idToken( token );
-////				t.next = NULL;
-////				if (last) last.next = t;
-////				else parms[numparms] = t;
-////				last = t;
-////			}
-////		}
-////		numparms++;
-////	}
-	return 1/*true*/;
-}
+	/*int*/
+	ReadDefineParms ( define: define_t, /*idToken ***/parms: idToken[], /*int */maxparms: number ): number {
+		var newdefine: define_t;
+		var token = new R( new idToken ), t: idToken, last: idToken;
+		var /*int */i: number, done: number, lastcomma: number, numparms: number, indent: number;
+
+		if ( !this.ReadSourceToken( token ) ) {
+			this.Error( "define '%s' missing parameters", define.name );
+			return 0 /*false*/;
+		}
+
+		if ( define.numparms > maxparms ) {
+			this.Error( "define with more than %d parameters", maxparms );
+			return 0 /*false*/;
+		}
+
+		for ( i = 0; i < define.numparms; i++ ) {
+			parms[i] = null;
+		}
+		// if no leading "("
+		if ( token.$.data != "(" ) {
+			this.UnreadSourceToken( token );
+			this.Error( "define '%s' missing parameters", define.name );
+			return 0 /*false*/;
+		}
+		// read the define parameters
+		for ( done = 0, numparms = 0, indent = 1; !done; ) {
+			if ( numparms >= maxparms ) {
+				this.Error( "define '%s' with too many parameters", define.name );
+				return 0 /*false*/;
+			}
+			parms[numparms] = null;
+			lastcomma = 1;
+			last = null;
+			while ( !done ) {
+
+				if ( !this.ReadSourceToken( token ) ) {
+					this.Error( "define '%s' incomplete", define.name );
+					return 0 /*false*/;
+				}
+
+				if ( token.$.data == "," ) {
+					if ( indent <= 1 ) {
+						if ( lastcomma ) {
+							this.Warning( "too many comma's" );
+						}
+						if ( numparms >= define.numparms ) {
+							this.Warning( "too many define parameters" );
+						}
+						lastcomma = 1;
+						break;
+					}
+				} else if ( token.$.data == "(" ) {
+					indent++;
+				} else if ( token.$.data == ")" ) {
+					indent--;
+					if ( indent <= 0 ) {
+						if ( !parms[define.numparms - 1] ) {
+							this.Warning( "too few define parameters" );
+						}
+						done = 1;
+						break;
+					}
+				} else if ( token.$.type == TT_NAME ) {
+					newdefine = this.FindHashedDefine( this.definehash, token.$.c_str ( ) );
+					if ( newdefine ) {
+						if ( !this.ExpandDefineIntoSource( token.$, newdefine ) ) {
+							return 0 /*false*/;
+						}
+						continue;
+					}
+				}
+
+				lastcomma = 0;
+
+				if ( numparms < define.numparms ) {
+
+					t = new idToken( token.$ );
+					t.next = null;
+					if ( last ) last.next = t;
+					else parms[numparms] = t;
+					last = t;
+				}
+			}
+			numparms++;
+		}
+		return 1 /*true*/;
+	}
 
 /*
 ================
@@ -1145,8 +1142,8 @@ idParser::ExpandDefine
 		firsttoken.$ = first;
 		lasttoken.$ = last;
 		// free all the parameter tokens
-		for ( i = 0; i < define.numparms; i++ ) {
-			debugger;
+		for (i = 0; i < define.numparms; i++) {
+			todo( "remove this I guess" );
 			for ( pt = parms[i]; pt; pt = nextpt ) {
 				nextpt = pt.next;
 				delete pt;
