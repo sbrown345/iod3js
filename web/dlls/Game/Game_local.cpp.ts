@@ -310,7 +310,7 @@ idGameLocal.prototype.Init = function ( ): void {
 
 	// load default scripts
 	this.program.Startup( SCRIPT_DEFAULT );
- todoThrow("it doesnt hit NextToken");
+	todoThrow();
 	//smokeParticles = new idSmokeParticles;
 
 	//// set up the aas

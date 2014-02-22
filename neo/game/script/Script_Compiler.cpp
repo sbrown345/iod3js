@@ -586,7 +586,7 @@ idVarDef *idCompiler::EmitOpcode( const opcode_t *op, idVarDef *var_a, idVarDef 
 	
 	statement = gameLocal.program.AllocStatement();
 	statement->linenumber	= currentLineNumber;
-	statement->file 		= currentFileNumber;dlog( DEBUG_COMPILER, "EmitOpcode currentFileNumber: %i, currentLineNumber: \n", currentFileNumber, currentLineNumber );
+	statement->file 		= currentFileNumber;dlog( DEBUG_COMPILER, "EmitOpcode currentFileNumber: %i, currentLineNumber: %i\n", currentFileNumber, currentLineNumber );
 	
 	if ( ( op->type_c == &def_void ) || op->rightAssociative ) {
 		// ifs, gotos, and assignments don't need vars allocated

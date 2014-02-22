@@ -971,6 +971,7 @@ class idLexer {
 		// succesfully read a token
 		//dlog(DEBUG_Lexer, "RT: %i, %s\n", this.line , token.$.data);
 		//if ( idLexer.RTCount == 1147 ) debugger;
+		//if (token.$.data == "DEG2RAD") debugger;
 		dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", idLexer.RTCount, this.line, token.$.data);
 		idLexer.RTCount++;
 		return 1;

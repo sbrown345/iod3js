@@ -911,8 +911,9 @@ int idLexer::ReadToken( idToken *token ) {
 	}
 
 	// succesfully read a token
-	//dlog(DEBUG_Lexer, RT: %i, %s\n", line,, token->data);
-	//if (RTCount == 1147) {
+	//dlog(DEBUG_Lexer, RT: %i, %s\n", line, token->data);
+	//if (RTCount == 5358) {
+	//if (!idStr::Cmp(token->data, "DEG2RAD")) {
 	//	if (IsDebuggerPresent())
 	//		__debugbreak();
 	//}

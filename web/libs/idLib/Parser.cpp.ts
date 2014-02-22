@@ -60,7 +60,18 @@ class define_t {
 	parms: idToken;						// define parameters
 	tokens:idToken;						// macro tokens (possibly containing parm tokens)
 	next:define_t;						// next defined macro in a list
-	hashnext:define_t;					// next define in the hash chain
+	hashnext: define_t;					// next define in the hash chain
+
+	init(): void {
+		this.name = null;
+		this.flags = 0;
+		this.builtin = 0;
+		this.numparms = 0;
+		this.parms = null;
+		this.tokens = null;
+		this.next = null;
+		this.hashnext = null;
+	}
 }
 
 // indents used for conditional compilation directives:
@@ -1349,6 +1360,7 @@ idParser::Directive_define
 		}
 		// allocate define
 		define = new define_t; //(define_t *) Mem_ClearedAlloc(sizeof(define_t) + token.$.Length() + 1);
+		define.init ( );
 		//define.name = (char *) define + sizeof(define_t);
 		//strcpy(define.name, token.$.c_str());
 		define.name = token.$.c_str ( );
