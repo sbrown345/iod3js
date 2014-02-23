@@ -1338,9 +1338,9 @@ Returns the def for the current token
 	if ( this.immediateType == type_entity ) {
 		// if an immediate entity ($-prefaced name) then create or lookup a def for it.
 		// when entities are spawned, they'll lookup the def and point it to them.
-		def = gameLocal.program.GetDef( type_entity, "$" + this.token, def_namespace );
+		def = gameLocal.program.GetDef( type_entity, "$" + this.token.$.data, def_namespace );
 		if ( !def ) {
-			def = gameLocal.program.AllocDef( type_entity, "$" + this.token, def_namespace, true );
+			def = gameLocal.program.AllocDef( type_entity, "$" + this.token.$.data, def_namespace, true );
 		}
 		this.NextToken();
 		return def;
