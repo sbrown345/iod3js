@@ -321,6 +321,7 @@ class varEval_t {
 		if (value === undefined) {
 			throw 'Undefined value';
 		}
+		if ( value.toFixed( 2 ) == "3.14" )debugger;
 		this.float32s[0] = value;
 	}
 	
@@ -935,7 +936,6 @@ enum initialized_t {
 
 class idVarDef {
 	//	friend class idVarDefName;
-
 	//public:
 	num: number /*int*/;
 	value = new varEval_t;
@@ -988,17 +988,17 @@ class idVarDef {
 		this.next = null;
 	}
 
-	///*
-	//============
-	//idVarDef::~idVarDef
-	//============
-	//*/
-	//idVarDef::~idVarDef() {
-	//	if ( name ) {
-	//		name.RemoveDef( this );
-	//	}
-	//}
-	//
+	/*
+	============
+	idVarDef::~idVarDef
+	============
+	*/
+	destructor() {
+		if ( this.name ) {
+			this.name.RemoveDef( this );
+		}
+	}
+	
 	/*
 	============
 	idVarDef::Name
@@ -1078,7 +1078,7 @@ class idVarDef {
 			this.initialized = initialized_t.initializedVariable;
 		}
 
-		dlog(DEBUG_COMPILER, "SetValue negate float _value._int = %i\n", _value._int);
+		dlog( DEBUG_COMPILER, "SetValue _value._int = %i, type: %i\n", _value._int, this.typeDef.Type ( ) );
 		switch ( this.typeDef.Type ( ) ) {
 		case etype_t.ev_pointer:
 		case etype_t.ev_boolean:

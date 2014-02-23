@@ -458,6 +458,7 @@ tries to find an existing immediate with the same value
 				continue;
 			}
 
+			dlog(DEBUG_COMPILER, "FindImmediate def.num: %i\n", def.num);
 			switch ( etype ) {
 			case etype_t.ev_field:
 				dlog(DEBUG_COMPILER, "*def->value.intPtr == %i && eval->_int == %i\n", def.value.intPtr, eval._int);
@@ -535,6 +536,7 @@ returns an existing immediate with the same value, or allocates a new one
 */
 	GetImmediate ( type: idTypeDef, eval: eval_t, $string: string ): idVarDef {
 		var def: idVarDef;
+		if ( eval._int == 1016003125 )debugger;
 		dlog(DEBUG_COMPILER, "GetImmediate str: %s, _int: %i\n", $string, eval._int);
 
 		def = this.FindImmediate(type, eval, $string);
@@ -1253,6 +1255,8 @@ idCompiler::LookupDef
 		var type_c: etype_t;
 		var op: opcode_t;
 
+
+		dlog( DEBUG_COMPILER, "LookupDef %s\n", name );
 		// check if we're accessing a field
 		if ( baseobj && ( baseobj.Type ( ) == etype_t.ev_object ) ) {
 			var tdef: idVarDef;

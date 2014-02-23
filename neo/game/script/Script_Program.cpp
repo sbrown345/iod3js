@@ -662,7 +662,7 @@ void idVarDef::SetValue( const eval_t &_value, bool constant ) {
 		initialized = initializedVariable;
 	}
 
-	dlog(DEBUG_COMPILER, "SetValue negate float _value._int = %i\n", _value._int);
+	dlog(DEBUG_COMPILER, "SetValue _value._int = %i, type: %i\n", _value._int, typeDef->Type());
 	switch (typeDef->Type()) {
 	case ev_pointer :
 	case ev_boolean :
@@ -1215,7 +1215,8 @@ void idProgram::AddDefToNameList( idVarDef *def, const char *name ) {
 	int i, hash;
 
 	hash = varDefNameHash.GenerateKey( name, true );
-	for ( i = varDefNameHash.First( hash ); i != -1; i = varDefNameHash.Next( i ) ) {
+	dlog(DEBUG_COMPILER, "AddDefToNameList: num: %i, name: %s hash: %i\n", def->num, name, hash);
+	for (i = varDefNameHash.First(hash); i != -1; i = varDefNameHash.Next(i)) {
 		if ( idStr::Cmp( varDefNames[i]->Name(), name ) == 0 ) {
 			break;
 		}

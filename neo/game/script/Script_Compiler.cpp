@@ -389,11 +389,12 @@ idVarDef *idCompiler::FindImmediate( const idTypeDef *type, const eval_t *eval, 
 
 	// check for a constant with the same value
 	for( def = gameLocal.program.GetDefList( "<IMMEDIATE>" ); def != NULL; def = def->Next() ) {
-		if ( def->TypeDef() != type ) {
+		if (def->TypeDef() != type) {
 			continue;
 		}
 
-		switch( etype ) {
+		dlog(DEBUG_COMPILER, "FindImmediate def.num: %i\n", def->num);
+		switch (etype) {
 		case ev_field :
 			dlog(DEBUG_COMPILER, "*def->value.intPtr == %i && eval->_int == %i\n", *def->value.intPtr, eval->_int);
 			if (*def->value.intPtr == eval->_int) {
@@ -470,6 +471,8 @@ returns an existing immediate with the same value, or allocates a new one
 */
 idVarDef *idCompiler::GetImmediate( idTypeDef *type, const eval_t *eval, const char *string ) {
 	idVarDef *def;
+	if (eval->_int == 1016003125 && IsDebuggerPresent())
+		__debugbreak();
 	dlog(DEBUG_COMPILER, "GetImmediate str: %s, _int: %i\n", string, eval->_int);
 
 	def = FindImmediate( type, eval, string );
@@ -1191,6 +1194,7 @@ idVarDef *idCompiler::LookupDef( const char *name, const idVarDef *baseobj ) {
 	etype_t		type_c;
 	opcode_t	*op;
 
+	dlog(DEBUG_COMPILER, "LookupDef %s\n", name);
 	// check if we're accessing a field
 	if ( baseobj && ( baseobj->Type() == ev_object ) ) {
 		const idVarDef *tdef;

@@ -171,7 +171,7 @@ class idVarDefName {
 //
 //private:
 	name = new idStr;
-	defs:idVarDef;
+	defs: idVarDef;
 //};
 	/*
 ============
@@ -185,25 +185,25 @@ idVarDefName::AddDef
 		this.defs = def;
 	}
 
-///*
-//============
-//idVarDefName::RemoveDef
-//============
-//*/
-//void idVarDefName::RemoveDef( idVarDef *def ) {
-//	if ( defs == def ) {
-//		defs = def.next;
-//	} else {
-//		for ( idVarDef *d = defs; d.next != null; d = d.next ) {
-//			if ( d.next == def ) {
-//				d.next = def.next;
-//				break;
-//			}
-//		}
-//	}
-//	def.next = null;
-//	def.name = null;
-//}
+/*
+============
+idVarDefName::RemoveDef
+============
+*/
+	RemoveDef ( def: idVarDef ): void {
+		if ( this.defs == def ) {
+			this.defs = def.next;
+		} else {
+			for ( var d = this.defs; d.next != null; d = d.next ) {
+				if ( d.next == def ) {
+					d.next = def.next;
+					break;
+				}
+			}
+		}
+		def.next = null;
+		def.name = null;
+	}
 }
 
 //
@@ -765,7 +765,8 @@ idProgram::AddDefToNameList
 	AddDefToNameList ( def: idVarDef, name: string ): void {
 		var /*int */i: number, hash: number;
 
-		hash = this.varDefNameHash.GenerateKey( name, true );
+		hash = this.varDefNameHash.GenerateKey(name, true);
+		dlog(DEBUG_COMPILER, "AddDefToNameList: num: %i, name: %s hash: %i\n", def.num, name, hash);
 		for ( i = this.varDefNameHash.First( hash ); i != -1; i = this.varDefNameHash.Next( i ) ) {
 			if ( idStr.Cmp( this.varDefNames[i].Name ( ), name ) == 0 ) {
 				break;
@@ -965,8 +966,7 @@ idProgram::FreeDef
 		for ( i = def.num; i < this.varDefs.Num ( ); i++ ) {
 			this.varDefs[i].num = i;
 		}
-
-		delete def;
+		def.destructor(); //delete def;
 	}
 
 /*
