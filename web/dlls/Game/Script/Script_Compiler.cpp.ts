@@ -350,15 +350,18 @@ idCompiler::VirtualFunctionConstant
 Creates a def for an index into a virtual function table
 ============
 */
-	VirtualFunctionConstant(func: idVarDef): idVarDef {
-	var eval = new eval_t ( );
-	eval._int = func.scope.TypeDef().GetFunctionNumber( func.value.functionPtr );
-	if ( eval._int < 0 ) {
-		this.Error( "Function '%s' not found in scope '%s'", func.Name(), func.scope.Name() );
+	VirtualFunctionConstant ( func: idVarDef ): idVarDef {
+		var eval = new eval_t();
+
+		eval.init ( );
+		eval._int = func.scope.TypeDef ( ).GetFunctionNumber( func.value.functionPtr );
+		dlog(DEBUG_COMPILER, "VirtualFunctionConstant eval._int = %i\n", eval._int);
+		if ( eval._int < 0 ) {
+			this.Error( "Function '%s' not found in scope '%s'", func.Name ( ), func.scope.Name ( ) );
+		}
+
+		return this.GetImmediate( type_virtualfunction, eval, "" );
 	}
-    
-	return this.GetImmediate( type_virtualfunction, eval, "" );
-}
 
 /*
 ============
@@ -370,6 +373,7 @@ Creates a def for a size constant
 	SizeConstant ( /*int */size: number ): idVarDef {
 		var eval = new eval_t;
 		eval._int = size;
+		dlog(DEBUG_COMPILER, "SizeConstant eval._int = %i\n", eval._int);
 		return this.GetImmediate( type_argsize, eval, "" );
 	}
 
@@ -383,6 +387,7 @@ Creates a def for a jump constant
 	JumpConstant ( /*int */value: number ): idVarDef {
 		var eval = new eval_t;
 		eval._int = value;
+		dlog(DEBUG_COMPILER, "JumpConstant eval._int = %i\n", eval._int);
 		return this.GetImmediate( type_jumpoffset, eval, "" );
 	}
 
@@ -522,8 +527,10 @@ returns an existing immediate with the same value, or allocates a new one
 */
 	GetImmediate ( type: idTypeDef, eval: eval_t, $string: string ): idVarDef {
 		var def: idVarDef;
+		dlog(DEBUG_COMPILER, "GetImmediate str: %s, _int: %i\n", $string, eval._int);
 
-		def = this.FindImmediate( type, eval, $string );
+		def = this.FindImmediate(type, eval, $string);
+		dlog( DEBUG_COMPILER, "found def: %i\n", def ? 1 : 0 );
 		if ( def ) {
 			def.numUsers++;
 		} else {
@@ -608,6 +615,7 @@ try to optimize when the operator works on constants only
 			return null;
 		}
 
+		dlog(DEBUG_COMPILER, "OptimizeOpcode c._int = %i\n", c._int);
 		if ( var_a ) {
 			var_a.numUsers--;
 			if ( var_a.numUsers <= 0 ) {
@@ -793,6 +801,7 @@ Sets token, immediateType, and possibly immediate
 		case TT_NUMBER:
 			this.immediateType = type_float;
 			this.immediate._float = this.token.$.GetFloatValue ( );
+			dlog(DEBUG_COMPILER, "TT_NUMBER set float immediate._int = %i\n", this.immediate._int);
 			return;
 
 		case TT_PUNCTUATION:
@@ -1440,7 +1449,9 @@ idCompiler::GetTerm
 		if ( !this.immediateType && this.CheckToken( "-" ) ) {
 			// constants are directly negated without an instruction
 			if ( this.immediateType == type_float ) {
+				dlog(DEBUG_COMPILER, "GetTerm b4 negate float immediate._int = %i\n", this.immediate._int);
 				this.immediate._float = -this.immediate._float;
+				dlog(DEBUG_COMPILER, "GetTerm negate float immediate._int = %i\n", this.immediate._int);
 				return this.ParseImmediate ( );
 			} else if ( this.immediateType == type_vector ) {
 				this.immediate.vector[0] = -this.immediate.vector[0];
@@ -1549,6 +1560,7 @@ idCompiler::GetExpression
 			return e;
 		}
 
+		dlog(DEBUG_COMPILER, "GetExpression: e.num: %i, %s\n", e.num, e.Name());
 		while ( true ) {
 			if ( ( priority == FUNCTION_PRIORITY ) && this.CheckToken( "(" ) ) {
 				return this.ParseFunctionCall( e );
@@ -1635,7 +1647,7 @@ idCompiler::GetExpression
 				}
 			}
 
-			switch ( opIdx /* - idCompiler.opcodes */ ) {
+			switch ( opIdx /*op - idCompiler.opcodes */ ) {
 			case opc.OP_SYSCALL:
 				this.ExpectToken( "(" );
 				e = this.ParseSysObjectCall( e2 );
@@ -2394,6 +2406,7 @@ idCompiler::ParseVariableDef
 					if ( negate ) {
 						this.immediate._float = -this.immediate._float;
 					}
+					dlog(DEBUG_COMPILER, "GetTerm negate float immediate._int = %i\n", this.immediate._int);
 					def.SetValue( this.immediate, false );
 				}
 				this.NextToken ( );

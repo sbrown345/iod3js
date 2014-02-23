@@ -115,7 +115,7 @@ class eval_t {
 
 	private val = new ArrayBuffer( 12 );
 	private uint8s = new Uint8Array( this.val );
-	private int32s = new Uint32Array( this.val );
+	private int32s = new Int32Array( this.val );
 	private float32s = new Float32Array(this.val);
 	private str = "";
 
@@ -946,6 +946,7 @@ class idVarDef {
 			this.initialized = initialized_t.initializedVariable;
 		}
 
+		dlog(DEBUG_COMPILER, "SetValue negate float _value._int = %i\n", _value._int);
 		switch ( this.typeDef.Type ( ) ) {
 		case etype_t.ev_pointer:
 		case etype_t.ev_boolean:

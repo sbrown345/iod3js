@@ -662,7 +662,8 @@ void idVarDef::SetValue( const eval_t &_value, bool constant ) {
 		initialized = initializedVariable;
 	}
 
-	switch( typeDef->Type() ) {
+	dlog(DEBUG_COMPILER, "SetValue negate float _value._int = %i\n", _value._int);
+	switch (typeDef->Type()) {
 	case ev_pointer :
 	case ev_boolean :
 	case ev_field :
@@ -1243,6 +1244,7 @@ idVarDef *idProgram::AllocDef( idTypeDef *type, const char *name, idVarDef *scop
 	def->scope		= scope;
 	def->numUsers	= 1;
 	def->num		= varDefs.Append( def );
+	dlog(DEBUG_COMPILER, "AllocDef: num:%i name:%s\n", def->num, name);
 
 	// add the def to the list with defs with this name and set the name pointer
 	AddDefToNameList( def, name );

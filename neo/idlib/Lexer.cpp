@@ -912,11 +912,11 @@ int idLexer::ReadToken( idToken *token ) {
 
 	// succesfully read a token
 	//dlog(DEBUG_Lexer, RT: %i, %s\n", line, token->data);
-	//if (RTCount == 5358) {
+	if (RTCount == /*6572*/4597) {
 	//if (!idStr::Cmp(token->data, "DEG2RAD")) {
-	//	if (IsDebuggerPresent())
-	//		__debugbreak();
-	//}
+		if (IsDebuggerPresent())
+			__debugbreak();
+	}
 	dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", RTCount, line, token->data);
 	RTCount++;
 	return 1;

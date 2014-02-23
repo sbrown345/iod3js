@@ -795,6 +795,7 @@ idProgram::AllocDef
 		def.scope		= scope;
 		def.numUsers	= 1;
 		def.num		= this.varDefs.Append( def );
+		dlog( DEBUG_COMPILER, "AllocDef: num:%i name:%s\n", def.num, name );
 
 		// add the def to the list with defs with this name and set the name pointer
 		this.AddDefToNameList( def, name );
@@ -869,7 +870,7 @@ idProgram::AllocDef
 			//
 			// global variable
 			//
-			def.value.bytePtr = this.variables[ this.numVariables ]; todo("check this");
+			def.value.bytePtr = this.numVariables;//this.variables.subarray(this.numVariables);
 			this.numVariables += def.TypeDef().Size();
 			if ( this.numVariables > sizeof( this.variables ) ) {
 				throw new idCompileError( va( "Exceeded global memory size (%d bytes)", sizeof( this.variables ) ) );

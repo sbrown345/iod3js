@@ -286,6 +286,7 @@ ID_INLINE idVarDef *idCompiler::VirtualFunctionConstant( idVarDef *func ) {
 
 	memset( &eval, 0, sizeof( eval ) );
 	eval._int = func->scope->TypeDef()->GetFunctionNumber( func->value.functionPtr );
+	dlog(DEBUG_COMPILER, "VirtualFunctionConstant eval._int = %i\n", eval._int);
 	if ( eval._int < 0 ) {
 		Error( "Function '%s' not found in scope '%s'", func->Name(), func->scope->Name() );
 	}
@@ -305,7 +306,8 @@ ID_INLINE idVarDef *idCompiler::SizeConstant( int size ) {
 
 	memset( &eval, 0, sizeof( eval ) );
 	eval._int = size;
-	return GetImmediate( &type_argsize, &eval, "" );
+	dlog(DEBUG_COMPILER, "SizeConstant eval._int = %i\n", eval._int);
+	return GetImmediate(&type_argsize, &eval, "");
 }
 
 /*
@@ -320,7 +322,8 @@ ID_INLINE idVarDef *idCompiler::JumpConstant( int value ) {
 
 	memset( &eval, 0, sizeof( eval ) );
 	eval._int = value;
-	return GetImmediate( &type_jumpoffset, &eval, "" );
+	dlog(DEBUG_COMPILER, "JumpConstant eval._int = %i\n", eval._int);
+	return GetImmediate(&type_jumpoffset, &eval, "");
 }
 
 /*
@@ -459,8 +462,10 @@ returns an existing immediate with the same value, or allocates a new one
 */
 idVarDef *idCompiler::GetImmediate( idTypeDef *type, const eval_t *eval, const char *string ) {
 	idVarDef *def;
+	dlog(DEBUG_COMPILER, "GetImmediate str: %s, _int: %i\n", string, eval->_int);
 
 	def = FindImmediate( type, eval, string );
+	dlog(DEBUG_COMPILER, "found def: %i\n", def ? 1 : 0);
 	if ( def ) {
 		def->numUsers++;
 	} else {
@@ -545,7 +550,8 @@ idVarDef *idCompiler::OptimizeOpcode( const opcode_t *op, idVarDef *var_a, idVar
 		return NULL;
 	}
 
-	if ( var_a ) {
+	dlog(DEBUG_COMPILER, "OptimizeOpcode c._int = %i\n", c._int);
+	if (var_a) {
 		var_a->numUsers--;
 		if ( var_a->numUsers <= 0 ) {
 			gameLocal.program.FreeDef( var_a, NULL );
@@ -727,6 +733,7 @@ void idCompiler::NextToken( void ) {
 	case TT_NUMBER:
 		immediateType = &type_float;
 		immediate._float = token.GetFloatValue();
+		dlog(DEBUG_COMPILER, "TT_NUMBER set float immediate._int = %i\n", immediate._int);
 		return;
 
 	case TT_PUNCTUATION:
@@ -1374,7 +1381,9 @@ idVarDef *idCompiler::GetTerm( void ) {
 	if ( !immediateType && CheckToken( "-" ) ) {
 		// constants are directly negated without an instruction
 		if ( immediateType == &type_float ) {
+			dlog(DEBUG_COMPILER, "GetTerm b4 negate float immediate._int = %i\n", immediate._int);
 			immediate._float = -immediate._float;
+			dlog(DEBUG_COMPILER, "GetTerm negate float immediate._int = %i\n", immediate._int);
 			return ParseImmediate();
 		} else if ( immediateType == &type_vector ) {
 			immediate.vector[0] = -immediate.vector[0];
@@ -1484,7 +1493,8 @@ idVarDef *idCompiler::GetExpression( int priority ) {
 		return e;
 	}
 
-	while( true ) {
+	dlog(DEBUG_COMPILER, "GetExpression: e.num: %i, %s\n", e->num, e->Name());
+	while (true) {
 		if ( ( priority == FUNCTION_PRIORITY ) && CheckToken( "(" ) ) {
 			return ParseFunctionCall( e );
 		}
@@ -2327,7 +2337,8 @@ void idCompiler::ParseVariableDef( idTypeDef *type, const char *name ) {
 				if ( negate ) {
 					immediate._float = -immediate._float;
 				}
-				def->SetValue( immediate, false );
+				dlog(DEBUG_COMPILER, "GetTerm negate float immediate._int = %i\n", immediate._int);
+				def->SetValue(immediate, false);
 			}
 			NextToken();
 		}
