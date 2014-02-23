@@ -337,6 +337,11 @@ class R<T> {
 		todoThrow( "error: implicity R toString called" );
 		return "error: cast explicitly";
 	}
+
+	valueOf ( ): number {
+		todoThrow( "error: implicity R valueOf called" );
+		return NaN;
+	}
 }
 
 interface String {
