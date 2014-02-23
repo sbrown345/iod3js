@@ -331,7 +331,12 @@ class R<T> {
 
     constructor(val?: T) {
         this.$ = val;
-    }
+	}
+
+	toString ( ): string {
+		todoThrow( "error: implicity R toString called" );
+		return "error: cast explicitly";
+	}
 }
 
 interface String {
