@@ -324,14 +324,13 @@ class varEval_t {
 		this.float32s[0] = value;
 	}
 	
-	private _vectorPtr: idVec3;
-	get vectorPtr(): idVec3 { return this._vectorPtr; }
-	set vectorPtr(value: idVec3) {
-		if (value === undefined) {
-			throw 'Undefined value';
-		}
-		this._vectorPtr = value;
-	}
+	get vectorPtr(): idVec3 { return this.vec; }
+	//set vectorPtr(value: idVec3) {
+	//	if (value === undefined) {
+	//		throw 'Undefined value';
+	//	}
+	//	this.vec = value;
+	//}
 
 	private _functionPtr: function_t;
 	get functionPtr(): function_t { return this._functionPtr; }
@@ -348,6 +347,7 @@ class varEval_t {
 		this.uint8s = new Uint8Array( arrayBuffer, byteOffset, length );
 		this.int32s = new Int32Array(arrayBuffer, byteOffset, length / Int32Array.BYTES_PER_ELEMENT );
 		this.float32s = new Float32Array( arrayBuffer, byteOffset, length / Float32Array.BYTES_PER_ELEMENT );
+		this.vec = new idVec3( new Float32Array( arrayBuffer, byteOffset, 3 ) );
 	}
 
 	get bytePtr(): Uint8Array { return this.uint8s; }
@@ -421,6 +421,7 @@ class varEval_t {
 		this.val = value;
 	}
 
+	private vec: idVec3;
 	private uint8s: Uint8Array;
 	private int32s: Int32Array;
 	private float32s: Float32Array;
@@ -434,7 +435,8 @@ class varEval_t {
 		this.init ( );
 	}
 
-	init ( ): void {
+	init(): void {
+		this.val = 0;
 	}
 };
 
