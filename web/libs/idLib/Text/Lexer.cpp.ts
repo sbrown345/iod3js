@@ -573,7 +573,7 @@ class idLexer {
 					this.Warning( "literal is not one character long" );
 				}
 			}
-			todoThrow( "token.subtype = (*token)[0]; " ); //??
+			token.subtype = token.data.charCodeAt( 0 );
 		}
 		else {
 			// the sub type is the length of the string
