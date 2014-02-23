@@ -764,6 +764,7 @@ Sets token, immediateType, and possibly immediate
 			}
 		}
 
+		//if (this.token.$.type == 3 && this.token.$.data == "0" && this.token.$.line  == 28 )debugger;
 		dlog( DEBUG_COMPILER, "NextToken - type: %i, data: %s, line: %i\n", this.token.$.type, this.token.$.data, this.token.$.line );
 
 		switch ( this.token.$.type ) {
@@ -801,7 +802,7 @@ Sets token, immediateType, and possibly immediate
 		case TT_NUMBER:
 			this.immediateType = type_float;
 			this.immediate._float = this.token.$.GetFloatValue ( );
-			dlog(DEBUG_COMPILER, "TT_NUMBER set float immediate._int = %i\n", this.immediate._int);
+			dlog( DEBUG_COMPILER, "TT_NUMBER set float immediate._int = %i\n", this.immediate._int );
 			return;
 
 		case TT_PUNCTUATION:
@@ -1449,7 +1450,6 @@ idCompiler::GetTerm
 		if ( !this.immediateType && this.CheckToken( "-" ) ) {
 			// constants are directly negated without an instruction
 			if ( this.immediateType == type_float ) {
-				dlog(DEBUG_COMPILER, "GetTerm b4 negate float immediate._int = %i\n", this.immediate._int);
 				this.immediate._float = -this.immediate._float;
 				dlog(DEBUG_COMPILER, "GetTerm negate float immediate._int = %i\n", this.immediate._int);
 				return this.ParseImmediate ( );

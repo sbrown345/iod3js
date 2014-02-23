@@ -171,7 +171,9 @@ class idToken extends idStr {
     	}
 		if (!(this.subtype & TT_VALUESVALID) ) {
 			this.NumberValue();
-    	}
+		}
+
+		dlog(DEBUG_COMPILER, "GetDoubleValue: %f\n", this.floatvalue );
 		return this.floatvalue;
     }
     
@@ -313,7 +315,7 @@ class idToken extends idStr {
     	}
     	else if ( this.subtype & TT_OCTAL ) {
     		// step over the first zero
-    		p += 1;
+    		pIdx += 1;
     		while( p[pIdx] ) {
 				this.intvalue = (this.intvalue << 3) + (p.charCodeAt(pIdx) - '0'.charCodeAt(0));
     			pIdx++;
@@ -322,7 +324,7 @@ class idToken extends idStr {
     	}
     	else if ( this.subtype & TT_HEX ) {
     		// step over the leading 0x or 0X
-    		p += 2;
+			pIdx += 2;
     		while( p[pIdx] ) {
     			this.intvalue <<= 4;
     			if (p[pIdx] >= 'a' && p[pIdx] <= 'f')
@@ -337,7 +339,7 @@ class idToken extends idStr {
     	}
     	else if ( this.subtype & TT_BINARY ) {
     		// step over the leading 0b or 0B
-    		p += 2;
+			pIdx += 2;
     		while( p[pIdx] ) {
     			this.intvalue = (this.intvalue << 1) + (p.charCodeAt(pIdx) - '0'.charCodeAt(0));
     			pIdx++;

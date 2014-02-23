@@ -699,6 +699,11 @@ void idCompiler::NextToken( void ) {
 		}
 	}
 
+	//if (token.type == 3 && token.c_str()[0] == '0' && token.line == 28) {
+	//	if (IsDebuggerPresent())
+	//		__debugbreak();
+	//}
+
 	dlog(DEBUG_COMPILER, "NextToken - type: %i, data: %s, line: %i\n", token.type, token.c_str(), token.line);
 
 	switch( token.type ) {
@@ -1381,7 +1386,6 @@ idVarDef *idCompiler::GetTerm( void ) {
 	if ( !immediateType && CheckToken( "-" ) ) {
 		// constants are directly negated without an instruction
 		if ( immediateType == &type_float ) {
-			dlog(DEBUG_COMPILER, "GetTerm b4 negate float immediate._int = %i\n", immediate._int);
 			immediate._float = -immediate._float;
 			dlog(DEBUG_COMPILER, "GetTerm negate float immediate._int = %i\n", immediate._int);
 			return ParseImmediate();
