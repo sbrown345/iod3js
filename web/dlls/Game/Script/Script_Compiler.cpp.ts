@@ -2069,80 +2069,79 @@ idCompiler::ParseObjectDef
 ================
 */
 	ParseObjectDef ( objname: string ): void {
-		todoThrow ( );
-//	idTypeDef	*objtype;
-//	idTypeDef	*type;
-//	idTypeDef	*parentType;
-//	idTypeDef	*fieldtype;
-//	idStr		name;
-//	const char  *fieldname;
-//	idTypeDef	newtype( etype_t.ev_field, NULL, "", 0, NULL );
-//	idVarDef	*oldscope;
-//	int			num;
-//	int			i;
-//
-//	oldscope = this.scope;
-//	if ( this.scope.Type() != etype_t.ev_namespace ) {
-//		this.Error( "Objects cannot be defined within functions or other objects" );
-//	}
-//
-//	// make sure it doesn't exist before we create it
-//	if ( gameLocal.program.FindType( objname ) != NULL ) {
-//		this.Error( "'%s' : redefinition; different basic types", objname );
-//	}
-//
-//	// base type
-//	if ( !this.CheckToken( ":" ) ) {
-//		parentType = type_object;
-//	} else {
-//		parentType = this.ParseType();
-//		if ( !parentType.Inherits( type_object ) ) {
-//			this.Error( "Objects may only inherit from objects." );
-//		}
-//	}
-//	
-//	objtype = gameLocal.program.AllocType( etype_t.ev_object, NULL, objname, parentType == type_object ? 0 : parentType.Size(), parentType );
-//	objtype.def = gameLocal.program.AllocDef( objtype, objname, this.scope, true );
-//	this.scope = objtype.def;
-//
-//	// inherit all the functions
-//	num = parentType.NumFunctions();
-//	for( i = 0; i < parentType.NumFunctions(); i++ ) {
-//		const function_t *func = parentType.GetFunction( i );
-//		objtype.AddFunction( func );
-//	}
-//
-//	this.ExpectToken( "{" );
-//
-//	do {
-//		if ( this.CheckToken( ";" ) ) {
-//			// skip semicolons, which are harmless and ok syntax
-//			continue;
-//		}
-//
-//		fieldtype = this.ParseType();
-//		newtype.SetFieldType( fieldtype );
-//
-//		fieldname = va( "%s field", fieldtype.Name() );
-//		newtype.SetName( fieldname );
-//
-//		this.ParseName( name );
-//
-//		// check for a function prototype or declaraction
-//		if ( this.CheckToken( "(" ) ) {
-//			this.ParseFunctionDef( newtype.FieldType(), name );
-//		} else {
-//			type = gameLocal.program.GetType( newtype, true );
-//			assert( !type.def );
-//			gameLocal.program.AllocDef( type, name, this.scope, true );
-//			objtype.AddField( type, name );
-//			this.ExpectToken( ";" );
-//		}
-//	} while( !this.CheckToken( "}" ) );
-//
-//	this.scope = oldscope;
-//
-//	this.ExpectToken( ";" );
+		var objtype: idTypeDef;
+		var type: idTypeDef;
+		var parentType: idTypeDef;
+		var fieldtype: idTypeDef;
+		var name = new idStr;
+		var fieldname: string;
+		var newtype = new idTypeDef( etype_t.ev_field, null, "", 0, null );
+		var oldscope: idVarDef;
+		var num: number; //int			
+		var i: number; //int			
+
+		oldscope = this.scope;
+		if ( this.scope.Type ( ) != etype_t.ev_namespace ) {
+			this.Error( "Objects cannot be defined within functions or other objects" );
+		}
+
+		// make sure it doesn't exist before we create it
+		if ( gameLocal.program.FindType( objname ) != null ) {
+			this.Error( "'%s' : redefinition; different basic types", objname );
+		}
+
+		// base type
+		if ( !this.CheckToken( ":" ) ) {
+			parentType = type_object;
+		} else {
+			parentType = this.ParseType ( );
+			if ( !parentType.Inherits( type_object ) ) {
+				this.Error( "Objects may only inherit from objects." );
+			}
+		}
+
+		objtype = gameLocal.program.AllocType_ExtraArgs( etype_t.ev_object, null, objname, parentType == type_object ? 0 : parentType.Size ( ), parentType );
+		objtype.def = gameLocal.program.AllocDef( objtype, objname, this.scope, true );
+		this.scope = objtype.def;
+
+		// inherit all the functions
+		num = parentType.NumFunctions ( );
+		for ( i = 0; i < parentType.NumFunctions ( ); i++ ) {
+			var func = parentType.GetFunction( i );
+			objtype.AddFunction( func );
+		}
+
+		this.ExpectToken( "{" );
+
+		do {
+			if ( this.CheckToken( ";" ) ) {
+				// skip semicolons, which are harmless and ok syntax
+				continue;
+			}
+
+			fieldtype = this.ParseType ( );
+			newtype.SetFieldType( fieldtype );
+
+			fieldname = va( "%s field", fieldtype.Name ( ) );
+			newtype.SetName( fieldname );
+
+			this.ParseName( name );
+
+			// check for a function prototype or declaraction
+			if ( this.CheckToken( "(" ) ) {
+				this.ParseFunctionDef( newtype.FieldType ( ), name.data );
+			} else {
+				type = gameLocal.program.GetType( newtype, true );
+				assert( !type.def );
+				gameLocal.program.AllocDef( type, name.data, this.scope, true );
+				objtype.AddField(type, name.data );
+				this.ExpectToken( ";" );
+			}
+		} while ( !this.CheckToken( "}" ) );
+
+		this.scope = oldscope;
+
+		this.ExpectToken( ";" );
 	}
 
 /*

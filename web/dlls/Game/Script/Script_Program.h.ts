@@ -58,14 +58,13 @@ class eval_t {
 	//int  entity;
 
 	get stringPtr ( ): string {
-		todoThrow ( );
-		return this[1];
+		return this.str;
 	}
 	set stringPtr ( value: string ) {
 		if ( value === undefined ) {
 			throw 'Undefined value';
 		}
-		todoThrow ( );
+		this.str = value;
 	}
 
 	get _float ( ): number { return this.float32s[0]; }
@@ -117,7 +116,8 @@ class eval_t {
 	private val = new ArrayBuffer( 12 );
 	private uint8s = new Uint8Array( this.val );
 	private int32s = new Uint32Array( this.val );
-	private float32s = new Float32Array( this.val );
+	private float32s = new Float32Array(this.val);
+	private str = "";
 
 	init ( ): void {
 		this.int32s[0] = 0;
@@ -495,32 +495,30 @@ idTypeDef::idTypeDef
 	================
 	*/
 	MatchesVirtualFunction ( matchfunc: idTypeDef ): boolean {
-		todoThrow ( );
+		var i: number;
+		if ( this == matchfunc ) {
+			return true;
+		}
 
-		//var i:number;
-		//if ( this == &matchfunc ) {
-		//	return true;
-		//}
+		if ( ( this.type != matchfunc.type ) || ( this.auxType != matchfunc.auxType ) ) {
+			return false;
+		}
 
-		//if ( ( type != matchfunc.type ) || ( this.auxType != matchfunc.auxType ) ) {
-		//	return false;
-		//}
+		if ( this.parmTypes.Num ( ) != matchfunc.parmTypes.Num ( ) ) {
+			return false;
+		}
 
-		//if ( parmTypes.Num() != matchfunc.parmTypes.Num() ) {
-		//	return false;
-		//}
+		if ( this.parmTypes.Num ( ) > 0 ) {
+			if ( !this.parmTypes[0].Inherits( matchfunc.parmTypes[0] ) ) {
+				return false;
+			}
+		}
 
-		//if ( parmTypes.Num() > 0 ) {
-		//	if ( !parmTypes[ 0 ].Inherits( matchfunc.parmTypes[ 0 ] ) ) {
-		//		return false;
-		//	}
-		//}
-
-		//for( i = 1; i < matchfunc.parmTypes.Num(); i++ ) {
-		//	if ( parmTypes[ i ] != matchfunc.parmTypes[ i ] ) {
-		//		return false;
-		//	}
-		//}
+		for ( i = 1; i < matchfunc.parmTypes.Num ( ); i++ ) {
+			if ( this.parmTypes[i] != matchfunc.parmTypes[i] ) {
+				return false;
+			}
+		}
 
 		return true;
 	}
@@ -541,39 +539,39 @@ idTypeDef::idTypeDef
 		var parmName = this.parmNames.Alloc ( );
 		parmName.equals( name );
 	}
-	//
-	///*
-	//================
-	//idTypeDef::AddField
-	//
-	//Adds a new field to an object type.
-	//================
-	//*/
-	//void idTypeDef::AddField( idTypeDef *fieldtype, name:string ) {
-	//	if ( type != etype_t.ev_object ) {
-	//		throw new idCompileError( "idTypeDef::AddField : tried to add field to non-object type" );
-	//	}
-	//
-	//	parmTypes.Append( fieldtype );
-	//	idStr &parmName = parmNames.Alloc();
-	//	parmName = name;
-	//
-	//	if ( fieldtype.FieldType().Inherits( &type_object ) ) {
-	//		size += type_object.Size();
-	//	} else {
-	//		size += fieldtype.FieldType().Size();
-	//	}
-	//}
-	//
-	///*
-	//================
-	//idTypeDef::SetName
-	//================
-	//*/
-	//void idTypeDef::SetName( const char *newname ) {
-	//	name = newname;
-	//}
-	//
+	
+	/*
+	================
+	idTypeDef::AddField
+	
+	Adds a new field to an object type.
+	================
+	*/
+	AddField ( fieldtype: idTypeDef, name: string ) {
+		if ( this.type != etype_t.ev_object ) {
+			throw new idCompileError( "idTypeDef::AddField : tried to add field to non-object type" );
+		}
+
+		this.parmTypes.Append( fieldtype );
+		var parmName = this.parmNames.Alloc ( );
+		parmName.equals( name );
+
+		if ( fieldtype.FieldType ( ).Inherits( type_object ) ) {
+			this.size += type_object.Size ( );
+		} else {
+			this.size += fieldtype.FieldType ( ).Size ( );
+		}
+	}
+
+	/*
+	================
+	idTypeDef::SetName
+	================
+	*/
+	SetName ( newname: string ): void {
+		this.name.equals( newname );
+	}
+
 	/*
 	================
 	idTypeDef::Name
@@ -1017,8 +1015,7 @@ class idVarDef {
 		}
 
 		assert(this.typeDef && (this.typeDef.Type() == etype_t.ev_string));
-		todoThrow ( );
-		//idStr.Copynz( this.value.stringPtr, $string, MAX_STRING_LEN );
+		this.value.stringPtr = $string; //idStr.Copynz( this.value.stringPtr, $string, MAX_STRING_LEN );
 	}
 
 	/*

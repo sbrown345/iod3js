@@ -679,19 +679,19 @@ idProgram::AllocType
 		return newtype;
 	}
 
-///*
-//============
-//idProgram::AllocType
-//============
-//*/
-//idTypeDef *idProgram::AllocType( etype_t etype, idVarDef *edef, const char *ename, int esize, idTypeDef *aux ) {
-//	idTypeDef *newtype;
-//
-//	newtype	= new idTypeDef( etype, edef, ename, esize, aux );
-//	types.Append( newtype );
-//
-//	return newtype;
-//}
+/*
+============
+idProgram::AllocType
+============
+*/
+	AllocType_ExtraArgs ( etype: etype_t, edef: idVarDef, ename: string, /*int */esize: number, aux: idTypeDef ): idTypeDef {
+
+		var newtype: idTypeDef;
+		newtype = new idTypeDef( etype, edef, ename, esize, aux );
+		this.types.Append( newtype );
+
+		return newtype;
+	}
 //
 /*
 ============
@@ -1003,47 +1003,46 @@ Returns >0 if function found.
 ================
 */
 	FindFunction ( name: string ): function_t {
-		todoThrow ( );
-		//int			start;
-		//int			pos;
-		//idVarDef	*namespaceDef;
-		//idVarDef	*def;
+		var start: number; //int			
+		var pos: number; //int			
+		var namespaceDef: idVarDef;
+		var def: idVarDef;
 
-		//assert( name );
+		assert( name );
 
-		//idStr fullname = name;
-		//start = 0;
-		//namespaceDef = &def_namespace;
-		//do {
-		//	pos = fullname.Find( "::", true, start );
-		//	if ( pos < 0 ) {
-		//		break;
-		//	}
+		var fullname = new idStr( name );
+		start = 0;
+		namespaceDef = def_namespace;
+		do {
+			pos = fullname.Find( "::", true, start );
+			if ( pos < 0 ) {
+				break;
+			}
 
-		//	idStr namespaceName = fullname.Mid( start, pos - start );
-		//	def = GetDef( null, namespaceName, namespaceDef );
-		//	if ( !def ) {
-		//		// couldn't find namespace
-		//		return null;
-		//	}
-		//	namespaceDef = def;
+			var namespaceName = new idStr( fullname.Mid( start, pos - start ) );
+			def = this.GetDef( null, namespaceName.data, namespaceDef );
+			if ( !def ) {
+				// couldn't find namespace
+				return null;
+			}
+			namespaceDef = def;
 
-		//	// skip past the ::
-		//	start = pos + 2;
-		//} while( def.Type() == etype_t.ev_namespace );
+			// skip past the ::
+			start = pos + 2;
+		} while ( def.Type ( ) == etype_t.ev_namespace );
 
-		//idStr funcName = fullname.Right( fullname.Length() - start );
-		//def = GetDef( null, funcName, namespaceDef );
-		//if ( !def ) {
-		//	// couldn't find function
-		//	return null;
-		//}
+		var funcName = new idStr( fullname.Right( fullname.Length ( ) - start ) );
+		def = this.GetDef( null, funcName.data, namespaceDef );
+		if ( !def ) {
+			// couldn't find function
+			return null;
+		}
 
-		//if ( ( def.Type() == etype_t.ev_function ) && ( def.value.functionPtr.eventdef == null ) ) {
-		//	return def.value.functionPtr;
-		//}
+		if ( ( def.Type ( ) == etype_t.ev_function ) && ( def.value.functionPtr.eventdef == null ) ) {
+			return def.value.functionPtr;
+		}
 
-		//// is not a function, or is an eventdef
+		// is not a function, or is an eventdef
 		return null;
 	}
 
@@ -1064,7 +1063,7 @@ Returns >0 if function found.
 //	// look for the function
 //	def = null;
 //	for( tdef = type.def; tdef != &def_object; tdef = tdef.TypeDef().SuperClass().def ) {
-//		def = GetDef( null, name, tdef );
+//		def = this.GetDef( null, name, tdef );
 //		if ( def ) {
 //			return def.value.functionPtr;
 //		}

@@ -919,24 +919,24 @@ class idStr {
 ////	return Mid( 0, len, result );
 ////}
 
-	Right ( /*int */len: number, result: idStr ): string {
+	Right_Result ( /*int */len: number, result: idStr ): string {
 		if ( len >= this.Length ( ) ) {
 			result.data = this.data;
 			return result.data;
 		}
-		return this.Mid( this.Length ( ) - len, len, result );
+		return this.Mid_Result( this.Length ( ) - len, len, result );
 	}
 
 ////ID_INLINE idStr idStr::Left( int len ) const {
 ////	return Mid( 0, len );
 ////}
 
-////ID_INLINE idStr idStr::Right( int len ) const {
-////	if ( len >= Length() ) {
-////		return *this;
-////	}
-////	return Mid( Length() - len, len );
-////}
+	Right ( /*int */len: number ): idStr {
+		if ( len >= this.Length ( ) ) {
+			return this;
+		}
+		return this.Mid( this.Length ( ) - len, len );
+	}
 
 ////ID_INLINE void idStr::Strip( const char c ) {
 ////	StripLeading( c );
@@ -1629,7 +1629,7 @@ idStr::Replace
 idStr::Mid
 ============
 */
-	Mid ( /*int */start: number, /*int */len: number, result: idStr ): string {
+	Mid_Result ( /*int */start: number, /*int */len: number, result: idStr ): string {
 		var /*int */i: number;
 
 		result.Empty ( );
@@ -1647,27 +1647,27 @@ idStr::Mid
 		return result.data;
 	}
 
-/////*
-////============
-////idStr::Mid
-////============
-////*/
-////idStr idStr::Mid( int start, int len ) const {
-////	int i;
-////	idStr result;
+/*
+============
+idStr::Mid
+============
+*/
+	Mid ( /*int */start: number, /*int */len: number ): idStr {
+		var /*int */i: number;
+		var result = new idStr;
 
-////	i = Length();
-////	if ( i == 0 || len <= 0 || start >= i ) {
-////		return result;
-////	}
+		i = this.Length ( );
+		if ( i == 0 || len <= 0 || start >= i ) {
+			return result;
+		}
 
-////	if ( start + len >= i ) {
-////		len = i - start;
-////	}
+		if ( start + len >= i ) {
+			len = i - start;
+		}
 
-////	result.Append( &data[ start ], len );
-////	return result;
-////}
+		result.Append( /* & data[start]*/this.data.substr( start ), len );
+		return result;
+	}
 
 /////*
 ////============
@@ -1998,7 +1998,7 @@ idStr::ExtractFileExtension
 			// no extension
 			dest.Empty ( );
 		} else {
-			this.Right( this.Length ( ) - pos, dest );
+			this.Right_Result( this.Length ( ) - pos, dest );
 		}
 	}
 
