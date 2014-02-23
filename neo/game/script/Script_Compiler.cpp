@@ -385,6 +385,7 @@ idVarDef *idCompiler::FindImmediate( const idTypeDef *type, const eval_t *eval, 
 	etype_t		etype;
 
 	etype = type->Type();
+	dlog(DEBUG_COMPILER, "FindImmediate etype: %i, %s\n", etype, string);
 
 	// check for a constant with the same value
 	for( def = gameLocal.program.GetDefList( "<IMMEDIATE>" ); def != NULL; def = def->Next() ) {
@@ -394,43 +395,50 @@ idVarDef *idCompiler::FindImmediate( const idTypeDef *type, const eval_t *eval, 
 
 		switch( etype ) {
 		case ev_field :
-			if ( *def->value.intPtr == eval->_int ) {
+			dlog(DEBUG_COMPILER, "*def->value.intPtr == %i && eval->_int == %i\n", *def->value.intPtr, eval->_int);
+			if (*def->value.intPtr == eval->_int) {
 				return def;
 			}
 			break;
 
 		case ev_argsize :
-			if ( def->value.argSize == eval->_int ) {
+			dlog(DEBUG_COMPILER, "def->value.argSize == %i && eval->_int == %i\n", def->value.argSize, eval->_int);
+			if (def->value.argSize == eval->_int) {
 				return def;
 			}
 			break;
 
 		case ev_jumpoffset :
-			if ( def->value.jumpOffset == eval->_int ) {
+			dlog(DEBUG_COMPILER, "def->value.jumpOffset == %i && eval->_int == %i\n", def->value.jumpOffset, eval->_int);
+			if (def->value.jumpOffset == eval->_int) {
 				return def;
 			}
 			break;
 
 		case ev_entity :
-			if ( *def->value.intPtr == eval->entity ) {
+			dlog(DEBUG_COMPILER, "*def->value.intPtr == %i && eval->entity == %i\n", *def->value.intPtr, eval->entity);
+			if (*def->value.intPtr == eval->entity) {
 				return def;
 			}
 			break;
 
 		case ev_string :
-			if ( idStr::Cmp( def->value.stringPtr, string ) == 0 ) {
+			dlog(DEBUG_COMPILER, "def->value.stringPtr == %s && string == %s\n", def->value.stringPtr, string);
+			if (idStr::Cmp(def->value.stringPtr, string) == 0) {
 				return def;
 			}
 			break;
 
 		case ev_float :
-			if ( *def->value.floatPtr == eval->_float ) {
+			dlog(DEBUG_COMPILER, "*def->value.floatPtr == %.2f && eval->_float == %.2f\n", *def->value.floatPtr, eval->_float);
+			if (*def->value.floatPtr == eval->_float) {
 				return def;
 			}
 			break;
 
 		case ev_virtualfunction :
-			if ( def->value.virtualFunction == eval->_int ) {
+			dlog(DEBUG_COMPILER, "def->value.virtualFunction == %i && eval->_int == %i\n", def->value.virtualFunction, eval->_int);
+			if (def->value.virtualFunction == eval->_int) {
 				return def;
 			}
 			break;
@@ -467,6 +475,7 @@ idVarDef *idCompiler::GetImmediate( idTypeDef *type, const eval_t *eval, const c
 	def = FindImmediate( type, eval, string );
 	dlog(DEBUG_COMPILER, "found def: %i\n", def ? 1 : 0);
 	if ( def ) {
+		dlog(DEBUG_COMPILER, "found def: %s\n", def->Name());
 		def->numUsers++;
 	} else {
 		// allocate a new def
@@ -1572,14 +1581,16 @@ idVarDef *idCompiler::GetExpression( int priority ) {
 		}
 
 		oldop = op;
-		while( !TypeMatches( type_a, op->type_a->Type() ) || !TypeMatches( type_b, op->type_b->Type() ) ||
+		dlog(DEBUG_COMPILER, "GetExpression: oldop: %s, opIdx: %i\n", oldop->name, op - opcodes);
+		while (!TypeMatches(type_a, op->type_a->Type()) || !TypeMatches(type_b, op->type_b->Type()) ||
 			( ( type_c != ev_void ) && !TypeMatches( type_c, op->type_c->Type() ) ) ) {
 			if ( ( op->priority == FUNCTION_PRIORITY ) && TypeMatches( type_a, op->type_a->Type() ) && TypeMatches( type_b, op->type_b->Type() ) ) {
 				break;
 			}
 
 			op++;
-			if ( !op->name || strcmp( op->name, oldop->name ) ) {
+			dlog(DEBUG_COMPILER, "GetExpression: oldop: %s, opIdx: %i\n", op->name, op - opcodes);
+			if (!op->name || strcmp(op->name, oldop->name)) {
 				Error( "type mismatch for '%s'", oldop->name );
 			}
 		}

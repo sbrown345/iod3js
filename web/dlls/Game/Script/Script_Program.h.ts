@@ -295,7 +295,15 @@ class varEval_t {
 	stackOffset: number;		// offset in stack for local variables	 //int						
 	argSize:number;	//int
 	//varEval_s				*evalPtr;
-	ptrOffset:number;//int	
+	ptrOffset: number;//int	
+
+
+
+
+
+
+
+
 
 	constructor ( ) {
 		this.init ( );

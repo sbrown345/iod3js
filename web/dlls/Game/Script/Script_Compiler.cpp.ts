@@ -449,7 +449,8 @@ tries to find an existing immediate with the same value
 		var def: idVarDef;
 		var etype: etype_t;
 
-		etype = type.Type ( );
+		etype = type.Type();
+		dlog( DEBUG_COMPILER, "FindImmediate etype: %i, %s\n", etype , $string);
 
 		// check for a constant with the same value
 		for ( def = gameLocal.program.GetDefList( "<IMMEDIATE>" ); def /*!= NULL*/; def = def.Next ( ) ) {
@@ -459,42 +460,49 @@ tries to find an existing immediate with the same value
 
 			switch ( etype ) {
 			case etype_t.ev_field:
+				dlog(DEBUG_COMPILER, "*def->value.intPtr == %i && eval->_int == %i\n", def.value.intPtr, eval._int);
 				if ( /***/def.value.intPtr == eval._int ) {
 					return def;
 				}
 				break;
 
 			case etype_t.ev_argsize:
+				dlog(DEBUG_COMPILER, "def->value.argSize == %i && eval->_int == %i\n", def.value.argSize, eval._int);
 				if ( def.value.argSize == eval._int ) {
 					return def;
 				}
 				break;
 
 			case etype_t.ev_jumpoffset:
+				dlog(DEBUG_COMPILER, "def->value.jumpOffset == %i && eval->_int == %i\n", def.value.jumpOffset, eval._int);
 				if ( def.value.jumpOffset == eval._int ) {
 					return def;
 				}
 				break;
 
 			case etype_t.ev_entity:
+				dlog(DEBUG_COMPILER, "*def->value.intPtr == %i && eval->entity == %i\n", def.value.intPtr, eval.entity);
 				if ( /***/def.value.intPtr == eval.entity ) {
 					return def;
 				}
 				break;
 
 			case etype_t.ev_string:
+				dlog(DEBUG_COMPILER, "def->value.stringPtr == %s && string == %s\n", def.value.stringPtr, $string);
 				if ( idStr.Cmp( def.value.stringPtr, $string ) == 0 ) {
 					return def;
 				}
 				break;
 
 			case etype_t.ev_float:
+				dlog(DEBUG_COMPILER, "*def->value.floatPtr == %.2f && eval->_float == %.2f\n", def.value.floatPtr, eval._float);
 				if ( /***/def.value.floatPtr == eval._float ) {
 					return def;
 				}
 				break;
 
 			case etype_t.ev_virtualfunction:
+				dlog(DEBUG_COMPILER, "def->value.virtualFunction == %i && eval->_int == %i\n", def.value.virtualFunction, eval._int);
 				if ( def.value.virtualFunction == eval._int ) {
 					return def;
 				}
@@ -532,6 +540,7 @@ returns an existing immediate with the same value, or allocates a new one
 		def = this.FindImmediate(type, eval, $string);
 		dlog( DEBUG_COMPILER, "found def: %i\n", def ? 1 : 0 );
 		if ( def ) {
+			dlog(DEBUG_COMPILER, "found def: %s\n", def.Name());
 			def.numUsers++;
 		} else {
 			// allocate a new def
@@ -1571,7 +1580,7 @@ idCompiler::GetExpression
 				break;
 			}
 
-			for ( op = idCompiler.opcodes[opIdx]; op.name; op = idCompiler.opcodes[++opIdx] ) {
+			for ( op = idCompiler.opcodes[opIdx = 0]; op.name; op = idCompiler.opcodes[++opIdx] ) {
 				if ( ( op.priority == priority ) && this.CheckToken( op.name ) ) {
 					break;
 				}
@@ -1635,6 +1644,7 @@ idCompiler::GetExpression
 			}
 
 			oldop = op;
+			dlog(DEBUG_COMPILER, "GetExpression: oldop: %s, opIdx: %i\n", op.name, opIdx );
 			while ( !this.TypeMatches( type_a, op.type_a.Type ( ) ) || !this.TypeMatches( type_b, op.type_b.Type ( ) ) ||
 			( ( type_c != etype_t.ev_void ) && !this.TypeMatches( type_c, op.type_c.Type ( ) ) ) ) {
 				if ( ( op.priority == FUNCTION_PRIORITY ) && this.TypeMatches( type_a, op.type_a.Type ( ) ) && this.TypeMatches( type_b, op.type_b.Type ( ) ) ) {
@@ -1642,6 +1652,7 @@ idCompiler::GetExpression
 				}
 
 				op = idCompiler.opcodes[++opIdx];
+				dlog(DEBUG_COMPILER, "GetExpression: oldop: %s, opIdx: %i\n", op.name, opIdx);
 				if ( !op.name || strcmp( op.name, oldop.name ) ) {
 					this.Error( "type mismatch for '%s'", oldop.name );
 				}
