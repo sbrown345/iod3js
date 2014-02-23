@@ -282,37 +282,147 @@ class varEval_t {
 	// possibly first version of these pointers might be just getters that point to the same memory location?
 	
 
-	/****/objectPtrPtr: R<idScriptObject> = new R<idScriptObject>();
-	stringPtr:string;//char					
-	floatPtr:number;//float					
-	vectorPtr: idVec3;
-	functionPtr: function_t; 
-	intPtr: number;				 //int
-	bytePtr: number;				 //byte
-	entityNumberPtr:number;		 //int 					
-	virtualFunction:number;											 //int						
-	jumpOffset: number;													 //int						
-	stackOffset: number;		// offset in stack for local variables	 //int						
-	argSize:number;	//int
+	///****/objectPtrPtr: R<idScriptObject> = new R<idScriptObject>();
+	//stringPtr:string;//char					
+	//floatPtr:number;//float					
+	//vectorPtr: idVec3;
+	//functionPtr: function_t; 
+	//intPtr: number;				 //int
+	//bytePtr: number;				 //byte
+	//entityNumberPtr:number;		 //int 					
+	//virtualFunction:number;											 //int						
+	//jumpOffset: number;													 //int						
+	//stackOffset: number;		// offset in stack for local variables	 //int						
+	//argSize:number;	//int
 	//varEval_s				*evalPtr;
-	ptrOffset: number;//int	
+	//ptrOffset: number;//int	
 
 
+	get objectPtrPtr(): R<idScriptObject> {todoThrow ( ); return null; }
+	//set objectPtrPtr(value: string) {
+	//	if (value === undefined) {
+	//		throw 'Undefined value';
+	//	}
+	//	todoThrow(); 
+	//}
 
+	private  _str :string;
+	get stringPtr(): string { return this._str; }
+	set stringPtr(value: string) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this._str = value;
+	}
 
+	get floatPtr(): number { return this.float32s[0]; }
+	set floatPtr(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this.float32s[0] = value;
+	}
+	
+	private _vectorPtr: idVec3;
+	get vectorPtr(): idVec3 { return this._vectorPtr; }
+	set vectorPtr(value: idVec3) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this._vectorPtr = value;
+	}
 
+	private _functionPtr: function_t;
+	get functionPtr(): function_t { return this._functionPtr; }
+	set functionPtr(value: function_t) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this._functionPtr = value;
+	}
 
+	get bytePtr(): number { return this.uint8s[0]; }
+	set bytePtr(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this.uint8s[0] = value;
+	}
+	
+	get intPtr(): number { return this.int32s[0]; }
+	set intPtr ( value: number ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this.int32s[0] = value;
+	}
 
+	get entityNumberPtr(): number { return this.int32s[0]; }
+	set entityNumberPtr ( value: number ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this.int32s[0] = value;
+	}
 
+	get virtualFunction(): number { return this.int32s[0]; }
+	set virtualFunction(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this.int32s[0] = value;
+	}
+	
+	get jumpOffset(): number {  return this.int32s[0]; }
+	set jumpOffset(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this.int32s[0] = value;
+	}
+	get stackOffset(): number { return this.int32s[0]; }
+	set stackOffset(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this.int32s[0] = value;
+	}
+	
+	get argSize(): number { return this.int32s[0]; }
+	set argSize(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this.int32s[0] = value;
+	}
+	
+	get evalPtr(): eval_t { todoThrow();return null;}
+	set evalPtr(value: eval_t) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		todoThrow(); 
+	}
+
+	get ptrOffset(): number { return this.int32s[0]; }
+	set ptrOffset(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this.int32s[0] = value;
+	}
+
+	private val = new ArrayBuffer(4);
+	private uint8s = new Uint8Array(this.val);
+	private int32s = new Int32Array(this.val);
+	private float32s = new Float32Array(this.val);
 
 	constructor ( ) {
 		this.init ( );
 	}
 
 	init ( ): void {
-		// todo.
-		// todo.
-		// todo.
+		this.int32s[0] = 0;
 	}
 };
 
