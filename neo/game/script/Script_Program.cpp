@@ -1321,6 +1321,7 @@ idVarDef *idProgram::AllocDef( idTypeDef *type, const char *name, idVarDef *scop
 		//
 		def->value.bytePtr = &variables[ numVariables ];
 		numVariables += def->TypeDef()->Size();
+		dlog(DEBUG_COMPILER, "typedef %s, size: %i, numVariables: %i\n", type->Name(), def->TypeDef()->Size(), numVariables);
 		if ( numVariables > sizeof( variables ) ) {
 			throw idCompileError( va( "Exceeded global memory size (%d bytes)", sizeof( variables ) ) );
 		}

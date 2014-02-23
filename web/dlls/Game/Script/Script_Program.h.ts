@@ -297,6 +297,7 @@ class varEval_t {
 	//varEval_s				*evalPtr;
 	//ptrOffset: number;//int	
 
+	val:number;
 
 	get objectPtrPtr(): R<idScriptObject> {todoThrow ( ); return null; }
 	//set objectPtrPtr(value: string) {
@@ -341,13 +342,21 @@ class varEval_t {
 		this._functionPtr = value;
 	}
 
-	get bytePtr(): number { return this.uint8s[0]; }
-	set bytePtr(value: number) {
-		if (value === undefined) {
-			throw 'Undefined value';
-		}
-		this.uint8s[0] = value;
+	setBytePtr(arrayBuffer: ArrayBuffer, byteOffset: number, length: number): void {
+		this.val = byteOffset;
+		this.length = length;
+		this.uint8s = new Uint8Array( arrayBuffer, byteOffset, length );
+		this.int32s = new Int32Array(arrayBuffer, byteOffset, length / Int32Array.BYTES_PER_ELEMENT );
+		this.float32s = new Float32Array( arrayBuffer, byteOffset, length / Float32Array.BYTES_PER_ELEMENT );
 	}
+
+	get bytePtr(): Uint8Array { return this.uint8s; }
+	//set bytePtr(value: number) {
+	//	if (value === undefined) {
+	//		throw 'Undefined value';
+	//	}
+	//	this.uint8s[0] = value;
+	//}
 	
 	get intPtr(): number { return this.int32s[0]; }
 	set intPtr ( value: number ) {
@@ -365,35 +374,35 @@ class varEval_t {
 		this.int32s[0] = value;
 	}
 
-	get virtualFunction(): number { return this.int32s[0]; }
+	get virtualFunction(): number { return this.val; }
 	set virtualFunction(value: number) {
 		if (value === undefined) {
 			throw 'Undefined value';
 		}
-		this.int32s[0] = value;
+		this.val = value;
 	}
 	
-	get jumpOffset(): number {  return this.int32s[0]; }
+	get jumpOffset(): number { return this.val; }
 	set jumpOffset(value: number) {
 		if (value === undefined) {
 			throw 'Undefined value';
 		}
-		this.int32s[0] = value;
+		this.val = value;
 	}
-	get stackOffset(): number { return this.int32s[0]; }
+	get stackOffset(): number { return this.val; }
 	set stackOffset(value: number) {
 		if (value === undefined) {
 			throw 'Undefined value';
 		}
-		this.int32s[0] = value;
+		this.val = value;
 	}
 	
-	get argSize(): number { return this.int32s[0]; }
+	get argSize(): number { return this.val; }
 	set argSize(value: number) {
 		if (value === undefined) {
 			throw 'Undefined value';
 		}
-		this.int32s[0] = value;
+		this.val = value;
 	}
 	
 	get evalPtr(): eval_t { todoThrow();return null;}
@@ -404,25 +413,28 @@ class varEval_t {
 		todoThrow(); 
 	}
 
-	get ptrOffset(): number { return this.int32s[0]; }
+	get ptrOffset(): number { return this.val; }
 	set ptrOffset(value: number) {
 		if (value === undefined) {
 			throw 'Undefined value';
 		}
-		this.int32s[0] = value;
+		this.val = value;
 	}
 
-	private val = new ArrayBuffer(4);
-	private uint8s = new Uint8Array(this.val);
-	private int32s = new Int32Array(this.val);
-	private float32s = new Float32Array(this.val);
+	private uint8s: Uint8Array;
+	private int32s: Int32Array;
+	private float32s: Float32Array;
+
+	private variables: Uint8Array; // ref to global memory
+
+	private byteOffset: number;
+	private length: number;
 
 	constructor ( ) {
 		this.init ( );
 	}
 
 	init ( ): void {
-		this.int32s[0] = 0;
 	}
 };
 

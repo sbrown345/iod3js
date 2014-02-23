@@ -870,14 +870,18 @@ idProgram::AllocDef
 			//
 			// global variable
 			//
-			def.value.bytePtr = this.numVariables;//this.variables.subarray(this.numVariables);
+			//def.value.bytePtr = this.numVariables;//this.variables.subarray( this.numVariables, def.TypeDef ( ).Size ( ) );
+			def.value.setBytePtr(this.variables.buffer, this.numVariables, def.TypeDef().Size());
 			this.numVariables += def.TypeDef().Size();
+			dlog(DEBUG_COMPILER, "typedef %s, size: %i, numVariables: %i\n", type.Name(), def.TypeDef().Size(), this.numVariables);
 			if ( this.numVariables > sizeof( this.variables ) ) {
 				throw new idCompileError( va( "Exceeded global memory size (%d bytes)", sizeof( this.variables ) ) );
 			}
-			todo( "this memset thing..." );
+			
 			//memset( def.value.bytePtr, 0, def.TypeDef().Size() );
-			def.value.bytePtr = 0;
+			for ( var i = 0; i < def.TypeDef().Size(); i++ ) {
+				def.value.bytePtr[i] = 0;
+			}
 		}
 
 		return def;
