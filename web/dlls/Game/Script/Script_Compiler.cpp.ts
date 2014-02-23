@@ -796,11 +796,9 @@ Sets token, immediateType, and possibly immediate
 					if ( !lex.CheckTokenType( TT_NUMBER, 0, token2 ) ) {
 						this.Error( "expected a number following '-' but found '%s' in vector '%s'", token2.$.c_str ( ), this.token.$.c_str ( ) );
 					}
-					todoThrow ( );
-					//this.immediate.vector[ i ] = -token2.$.GetFloatValue();
+					this.immediate.vector[ i ] = -token2.$.GetFloatValue();
 				} else if ( token2.$.type == TT_NUMBER ) {
-					todoThrow ( );
-					//this.immediate.vector[i] = token2.$.GetFloatValue ( );
+					this.immediate.vector[i] = token2.$.GetFloatValue ( );
 				} else {
 					this.Error( "vector '%s' is not in the form of 'x y z'.  expected float value, found '%s'", this.token.$.c_str ( ), token2.$.c_str ( ) );
 				}

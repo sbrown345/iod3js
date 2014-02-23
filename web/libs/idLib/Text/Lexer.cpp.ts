@@ -1101,8 +1101,7 @@ class idLexer {
 		}
 		// if the type matches
 		if (tok.$.type == type && (tok.$.subtype & subtype) == subtype) {
-			todoThrow( "shoudl the following be token.$.equals(tok) ?" );
-			//token.$ = tok.$.clone();
+			token.$.equals( tok.$ );
 			return 1;
 		}
 		// unread token
