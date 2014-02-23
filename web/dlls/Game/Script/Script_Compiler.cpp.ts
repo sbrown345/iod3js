@@ -1229,89 +1229,89 @@ idCompiler::ParseSysObjectCall
 idCompiler::LookupDef
 ============
 */
-	LookupDef(name: string, baseobj: idVarDef): idVarDef {
-	var def: idVarDef;
-	var field: idVarDef;
-	var type_b: etype_t;
-	var type_c: etype_t	;
-	var op: opcode_t;
+	LookupDef ( name: string, baseobj: idVarDef ): idVarDef {
+		var def: idVarDef;
+		var field: idVarDef;
+		var type_b: etype_t;
+		var type_c: etype_t;
+		var op: opcode_t;
 
-	// check if we're accessing a field
-	if ( baseobj && ( baseobj.Type() == etype_t.ev_object ) ) {
-		var tdef: idVarDef;
+		// check if we're accessing a field
+		if ( baseobj && ( baseobj.Type ( ) == etype_t.ev_object ) ) {
+			var tdef: idVarDef;
 
-		def = null;
-		for( tdef = baseobj; tdef != def_object; tdef = tdef.TypeDef().SuperClass().def ) {
-			def = gameLocal.program.GetDef(null, name, tdef );
-			if ( def ) {
-				break;
-			}
-		}
-	} else {
-		// first look through the defs in our scope
-		def = gameLocal.program.GetDef( null, name, this.scope );
-		if ( !def ) {
-			// if we're in a member function, check types local to the object
-			if ( ( this.scope.Type() != etype_t.ev_namespace ) && ( this.scope.scope.Type() == etype_t.ev_object ) ) {
-				// get the local object pointer
-				var thisdef = gameLocal.program.GetDef( this.scope.scope.TypeDef(), "self", this.scope );
-
-				field = this.LookupDef( name, this.scope.scope.TypeDef().def );
-				if ( !field ) {
-					this.Error( "Unknown value \"%s\"", name );
+			def = null;
+			for ( tdef = baseobj; tdef != def_object; tdef = tdef.TypeDef ( ).SuperClass ( ).def ) {
+				def = gameLocal.program.GetDef( null, name, tdef );
+				if ( def ) {
+					break;
 				}
+			}
+		} else {
+			// first look through the defs in our scope
+			def = gameLocal.program.GetDef( null, name, this.scope );
+			if ( !def ) {
+				// if we're in a member function, check types local to the object
+				if ( ( this.scope.Type ( ) != etype_t.ev_namespace ) && ( this.scope.scope.Type ( ) == etype_t.ev_object ) ) {
+					// get the local object pointer
+					var thisdef = gameLocal.program.GetDef( this.scope.scope.TypeDef ( ), "self", this.scope );
 
-				// type check
-				type_b = field.Type();
-				if ( field.Type() == etype_t.ev_function ) {
-					type_c = field.TypeDef().ReturnType().Type();
-				} else {
-					type_c = field.TypeDef().FieldType().Type();	// field access gets type from field
-	                if ( this.CheckToken( "++" ) ) {
-						if ( type_c != etype_t.ev_float ) {
-							this.Error( "Invalid type for ++" );
+					field = this.LookupDef( name, this.scope.scope.TypeDef ( ).def );
+					if ( !field ) {
+						this.Error( "Unknown value \"%s\"", name );
+					}
+
+					// type check
+					type_b = field.Type ( );
+					if ( field.Type ( ) == etype_t.ev_function ) {
+						type_c = field.TypeDef ( ).ReturnType ( ).Type ( );
+					} else {
+						type_c = field.TypeDef ( ).FieldType ( ).Type ( ); // field access gets type from field
+						if ( this.CheckToken( "++" ) ) {
+							if ( type_c != etype_t.ev_float ) {
+								this.Error( "Invalid type for ++" );
+							}
+							def = this.EmitOpcode_FromOpNumber( opc.OP_UINCP_F, thisdef, field );
+							return def;
+						} else if ( this.CheckToken( "--" ) ) {
+							if ( type_c != etype_t.ev_float ) {
+								this.Error( "Invalid type for --" );
+							}
+							def = this.EmitOpcode_FromOpNumber( opc.OP_UDECP_F, thisdef, field );
+							return def;
 						}
-						def = this.EmitOpcode_FromOpNumber( opc.OP_UINCP_F, thisdef, field );
-						return def;
-					} else if ( this.CheckToken( "--" ) ) {
-						if ( type_c != etype_t.ev_float ) {
-							this.Error( "Invalid type for --" );
+					}
+					var opIdx: number;
+					op = idCompiler.opcodes[opIdx = opc.OP_INDIRECT_F];
+					while ( ( op.type_a.Type ( ) != etype_t.ev_object )
+						|| ( type_b != op.type_b.Type ( ) ) || ( type_c != op.type_c.Type ( ) ) ) {
+						if ( ( op.priority == FUNCTION_PRIORITY ) && ( op.type_a.Type ( ) == etype_t.ev_object ) && ( op.type_c.Type ( ) == etype_t.ev_void ) &&
+						( type_c != op.type_c.Type ( ) ) ) {
+							// catches object calls that return a value
+							break;
 						}
-						def = this.EmitOpcode_FromOpNumber( opc.OP_UDECP_F, thisdef, field );
-						return def;
+						op = idCompiler.opcodes[++opIdx];
+						if ( !op.name || strcmp( op.name, "." ) ) {
+							this.Error( "no valid opcode to access type '%s'", field.TypeDef ( ).SuperClass ( ).Name ( ) );
+						}
+					}
+
+					if ( ( /*op - idCompiler.opcodes*/ opIdx ) == opc.OP_OBJECTCALL ) {
+						this.ExpectToken( "(" );
+						def = this.ParseObjectCall( thisdef, field );
+					} else {
+						// emit the conversion opcode
+						def = this.EmitOpcode( op, thisdef, field );
+
+						// field access gets type from field
+						def.SetTypeDef( field.TypeDef ( ).FieldType ( ) );
 					}
 				}
-				todoThrow ( );
-				//op = idCompiler.opcodes[ opc.OP_INDIRECT_F ];
-				//while( ( op.type_a.Type() != etype_t.ev_object ) 
-				//	|| ( type_b != op.type_b.Type() ) || ( type_c != op.type_c.Type() ) ) {
-				//	if ( ( op.priority == FUNCTION_PRIORITY ) && ( op.type_a.Type() == etype_t.ev_object ) && ( op.type_c.Type() == etype_t.ev_void ) && 
-				//		( type_c != op.type_c.Type() ) ) {
-				//		// catches object calls that return a value
-				//		break;
-				//	}
-				//	op++;
-				//	if ( !op.name || strcmp( op.name, "." ) ) {
-				//		this.Error( "no valid opcode to access type '%s'", field.TypeDef().SuperClass().Name() );
-				//	}
-				//}
-
-				//if ( ( op - idCompiler.opcodes ) == opc.OP_OBJECTCALL ) {
-				//	this.ExpectToken( "(" );
-				//	def = this.ParseObjectCall( thisdef, field );
-				//} else {
-				//	// emit the conversion opcode
-				//	def = this.EmitOpcode( op, thisdef, field );
-
-				//	// field access gets type from field
-				//	def.SetTypeDef( field.TypeDef().FieldType() );
-				//}
 			}
 		}
-	}
 
-	return def;
-}
+		return def;
+	}
 
 /*
 ============
