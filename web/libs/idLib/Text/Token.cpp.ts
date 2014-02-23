@@ -173,7 +173,7 @@ class idToken extends idStr {
 			this.NumberValue();
 		}
 
-		dlog(DEBUG_COMPILER, "GetDoubleValue: %f\n", this.floatvalue );
+		dlog(DEBUG_COMPILER, "GetDoubleValue: (int)%i\n", int(this.floatvalue) ); // todo: rounding stuff
 		return this.floatvalue;
     }
     

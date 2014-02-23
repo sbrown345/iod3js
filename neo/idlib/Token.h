@@ -132,7 +132,7 @@ ID_INLINE double idToken::GetDoubleValue( void ) {
 	if ( !(subtype & TT_VALUESVALID) ) {
 		NumberValue();
 	}
-	dlog(DEBUG_COMPILER, "GetDoubleValue: %f\n", floatvalue);
+	dlog(DEBUG_COMPILER, "GetDoubleValue: (int)%i\n", (int)floatvalue);
 	return floatvalue;
 }
 
