@@ -321,7 +321,6 @@ class varEval_t {
 		if (value === undefined) {
 			throw 'Undefined value';
 		}
-		if ( value.toFixed( 2 ) == "3.14" )debugger;
 		this.float32s[0] = value;
 	}
 	

@@ -832,6 +832,7 @@ void idVarDefName::AddDef( idVarDef *def ) {
 	def->name = this;
 	def->next = defs;
 	defs = def;
+	dlog(DEBUG_COMPILER, "AddDef %s num: %i\n", def->Name(), def->num);
 }
 
 /*
@@ -840,12 +841,17 @@ idVarDefName::RemoveDef
 ============
 */
 void idVarDefName::RemoveDef( idVarDef *def ) {
-	if ( defs == def ) {
+	dlog( DEBUG_COMPILER, "RemoveDef %s num: %i\n", def->Name ( ), def->num );
+	if (defs == def) {
 		defs = def->next;
 	} else {
 		for ( idVarDef *d = defs; d->next != NULL; d = d->next ) {
 			if ( d->next == def ) {
 				d->next = def->next;
+				if (def->next)
+					dlog(DEBUG_COMPILER, "RemoveDef next %s: %i\n", def->next->Name(), def->next->num);
+				else
+					dlog(DEBUG_COMPILER, "RemoveDef next: null\n");
 				break;
 			}
 		}
@@ -1198,7 +1204,10 @@ idVarDef *idProgram::GetDefList( const char *name ) const {
 	int i, hash;
 
 	hash = varDefNameHash.GenerateKey( name, true );
+	dlog(DEBUG_COMPILER, "GetDefList %s: %i\n", name, hash);
 	for ( i = varDefNameHash.First( hash ); i != -1; i = varDefNameHash.Next( i ) ) {
+		dlog( DEBUG_COMPILER, "%i, \n", i );
+		if (i == 473)exit(0);
 		if ( idStr::Cmp( varDefNames[i]->Name(), name ) == 0 ) {
 			return varDefNames[i]->GetDefs();
 		}
@@ -1869,6 +1878,7 @@ idProgram::FreeData
 void idProgram::FreeData( void ) {
 	int i;
 
+	dlog(DEBUG_COMPILER, "idProgram::FreeData\n");
 	// free the defs
 	varDefs.DeleteContents( true );
 	varDefNames.DeleteContents( true );

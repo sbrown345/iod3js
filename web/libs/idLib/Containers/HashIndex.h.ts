@@ -189,7 +189,7 @@ idHashIndex::Add
 */
     Add ( /*const int */key: number, /*const int */index: number ): void {
         var /*int */h: number;
-
+	    dlog( DEBUG_COMPILER, "idHashIndex::Add %i %i\n", key, index );
         assert( index >= 0 );
         if ( this.hash == idHashIndex.INVALID_INDEX ) {
             this.Allocate( this.hashSize, index >= this.indexSize ? index + 1 : this.indexSize );
@@ -199,6 +199,7 @@ idHashIndex::Add
         h = key & this.hashMask;
         this.indexChain[index] = this.hash[h];
         this.hash[h] = index;
+	    dlog( DEBUG_COMPILER, "add2 h: %i index:%i\n", key, index );
     }
 
 /*
@@ -212,12 +213,14 @@ idHashIndex::Remove
 		if ( this.hash == idHashIndex.INVALID_INDEX ) {
 			return;
 		}
+		dlog(DEBUG_COMPILER, "idHashIndex::Remove %i %i\n", key, index);
 		if ( this.hash[k] == index ) {
 			this.hash[k] = this.indexChain[index];
 		} else {
 			for ( var /*int */i = this.hash[k]; i != -1; i = this.indexChain[i] ) {
 				if ( this.indexChain[i] == index ) {
 					this.indexChain[i] = this.indexChain[index];
+					dlog(DEBUG_COMPILER, "rem2 i: %i this.indexChain[i]:%i\n", i, this.indexChain[i]);
 					break;
 				}
 			}
@@ -230,7 +233,7 @@ idHashIndex::Remove
 idHashIndex::First
 ================
 */
-    First ( /*const int */key: number ): number {
+	First( /*const int */key: number): number {
         return this.hash[key & this.hashMask & this.lookupMask];
     }
 
@@ -474,6 +477,7 @@ idHashIndex::Allocate
     Allocate ( /*const int */newHashSize: number, /*const int */newIndexSize: number ): void {
         assert( idMath.IsPowerOfTwo( newHashSize ) );
 
+		dlog(DEBUG_COMPILER, "idHashIndex::Allocate %i %i\n", newHashSize, newIndexSize);
         this.Free ( );
         this.hashSize = newHashSize;
         this.hash = new Int32Array( this.hashSize );
@@ -514,6 +518,7 @@ idHashIndex::ResizeIndex
         	return;
         }
 
+		dlog(DEBUG_COMPILER, "idHashIndex::Allocate %i\n", newIndexSize);
         mod = newIndexSize % this.granularity;
         if ( !mod ) {
         	newSize = newIndexSize;

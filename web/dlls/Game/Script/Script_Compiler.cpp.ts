@@ -454,11 +454,11 @@ tries to find an existing immediate with the same value
 
 		// check for a constant with the same value
 		for ( def = gameLocal.program.GetDefList( "<IMMEDIATE>" ); def /*!= NULL*/; def = def.Next ( ) ) {
+			dlog(DEBUG_COMPILER, "FindImmediate def.num: %i\n", def.num);
 			if ( def.TypeDef ( ) != type ) {
 				continue;
 			}
 
-			dlog(DEBUG_COMPILER, "FindImmediate def.num: %i\n", def.num);
 			switch ( etype ) {
 			case etype_t.ev_field:
 				dlog(DEBUG_COMPILER, "*def->value.intPtr == %i && eval->_int == %i\n", def.value.intPtr, eval._int);
@@ -536,7 +536,6 @@ returns an existing immediate with the same value, or allocates a new one
 */
 	GetImmediate ( type: idTypeDef, eval: eval_t, $string: string ): idVarDef {
 		var def: idVarDef;
-		if ( eval._int == 1016003125 )debugger;
 		dlog(DEBUG_COMPILER, "GetImmediate str: %s, _int: %i\n", $string, eval._int);
 
 		def = this.FindImmediate(type, eval, $string);
@@ -1262,11 +1261,12 @@ idCompiler::LookupDef
 			var tdef: idVarDef;
 
 			def = null;
-			for ( tdef = baseobj; tdef != def_object; tdef = tdef.TypeDef ( ).SuperClass ( ).def ) {
+			for (tdef = baseobj; tdef != def_object; tdef = tdef.TypeDef().SuperClass().def) {
 				def = gameLocal.program.GetDef( null, name, tdef );
 				if ( def ) {
 					break;
 				}
+				if (!tdef.TypeDef().SuperClass().def) debugger;
 			}
 		} else {
 			// first look through the defs in our scope

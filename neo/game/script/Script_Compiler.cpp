@@ -389,11 +389,11 @@ idVarDef *idCompiler::FindImmediate( const idTypeDef *type, const eval_t *eval, 
 
 	// check for a constant with the same value
 	for( def = gameLocal.program.GetDefList( "<IMMEDIATE>" ); def != NULL; def = def->Next() ) {
+		dlog(DEBUG_COMPILER, "FindImmediate def.num: %i\n", def->num);
 		if (def->TypeDef() != type) {
 			continue;
 		}
 
-		dlog(DEBUG_COMPILER, "FindImmediate def.num: %i\n", def->num);
 		switch (etype) {
 		case ev_field :
 			dlog(DEBUG_COMPILER, "*def->value.intPtr == %i && eval->_int == %i\n", *def->value.intPtr, eval->_int);
@@ -471,8 +471,6 @@ returns an existing immediate with the same value, or allocates a new one
 */
 idVarDef *idCompiler::GetImmediate( idTypeDef *type, const eval_t *eval, const char *string ) {
 	idVarDef *def;
-	if (eval->_int == 1016003125 && IsDebuggerPresent())
-		__debugbreak();
 	dlog(DEBUG_COMPILER, "GetImmediate str: %s, _int: %i\n", string, eval->_int);
 
 	def = FindImmediate( type, eval, string );

@@ -183,6 +183,7 @@ idVarDefName::AddDef
 		def.name = this;
 		def.next = this.defs;
 		this.defs = def;
+		dlog(DEBUG_COMPILER, "AddDef %s num: %i\n", def.Name(), def.num);
 	}
 
 /*
@@ -190,13 +191,18 @@ idVarDefName::AddDef
 idVarDefName::RemoveDef
 ============
 */
-	RemoveDef ( def: idVarDef ): void {
+	RemoveDef(def: idVarDef): void {
+		dlog( DEBUG_COMPILER, "RemoveDef %s num: %i\n", def.Name ( ), def.num );
 		if ( this.defs == def ) {
 			this.defs = def.next;
 		} else {
 			for ( var d = this.defs; d.next != null; d = d.next ) {
 				if ( d.next == def ) {
 					d.next = def.next;
+					if (def.next)
+						dlog(DEBUG_COMPILER, "RemoveDef next %s: %i\n", def.next.Name(), def.next.num);
+					else
+						dlog(DEBUG_COMPILER, "RemoveDef next: null\n");
 					break;
 				}
 			}
@@ -749,7 +755,9 @@ idProgram::GetDefList
 		var /*int */i: number, hash: number;
 
 		hash = this.varDefNameHash.GenerateKey( name, true );
-		for ( i = this.varDefNameHash.First( hash ); i != -1; i = this.varDefNameHash.Next( i ) ) {
+		dlog(DEBUG_COMPILER, "GetDefList %s: %i\n", name, hash);
+		for (i = this.varDefNameHash.First(hash); i != -1; i = this.varDefNameHash.Next(i)) {
+			dlog( DEBUG_COMPILER, "%i, \n", i );
 			if ( idStr.Cmp( this.varDefNames[i].Name ( ), name ) == 0 ) {
 				return this.varDefNames[i].GetDefs ( );
 			}
@@ -1422,8 +1430,9 @@ idProgram::FreeData
 ================
 */
 FreeData( ):void {
-	var/*int */i:number;
+	var/*int */i: number;
 
+	dlog(DEBUG_COMPILER, "idProgram::FreeData\n" );
 	// free the defs
 	this.varDefs.DeleteContents( true );
 	this.varDefNames.DeleteContents( true );

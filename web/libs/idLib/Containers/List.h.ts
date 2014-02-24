@@ -70,6 +70,8 @@ If you have questions concerning this license or the applicable additional terms
 //	return new type;
 //}
 
+//todo: may need to look closer and delete and delete[] - i removed some and they may be needed to call some destructors
+
 /*
 ================
 idSwap<type>
