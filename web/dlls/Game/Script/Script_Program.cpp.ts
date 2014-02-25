@@ -1157,6 +1157,7 @@ called before compiling a batch of files, clears the pr struct
 	BeginCompilation ( ): void {
 		var statement = new statement_t;
 
+		dlog(DEBUG_COMPILER, "idProgram::BeginCompilation\n");
 		this.FreeData ( );
 
 		//try {

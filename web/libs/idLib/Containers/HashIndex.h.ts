@@ -188,7 +188,8 @@ idHashIndex::Add
 ================
 */
     Add ( /*const int */key: number, /*const int */index: number ): void {
-        var /*int */h: number;
+		var /*int */h: number;
+		if (key == 455 && index == 1024) debugger;
 	    dlog( DEBUG_COMPILER, "idHashIndex::Add %i %i\n", key, index );
         assert( index >= 0 );
         if ( this.hash == idHashIndex.INVALID_INDEX ) {
@@ -518,7 +519,7 @@ idHashIndex::ResizeIndex
         	return;
         }
 
-		dlog(DEBUG_COMPILER, "idHashIndex::Allocate %i\n", newIndexSize);
+		dlog(DEBUG_COMPILER, "idHashIndex::ResizeIndex %i\n", newIndexSize);
         mod = newIndexSize % this.granularity;
         if ( !mod ) {
         	newSize = newIndexSize;
@@ -534,8 +535,13 @@ idHashIndex::ResizeIndex
         oldIndexChain = this.indexChain;
         this.indexChain = new Int32Array(newSize);
         memcpy( this.indexChain, oldIndexChain, this.indexSize * sizeof(int) );
-        memset( /*some built in subarray??*/this.indexChain.subarray(this.indexSize), 0xff, (newSize - this.indexSize) * sizeof(int) );
-        this.indexSize = newSize;
+	    memsetP( new P( this.indexChain.buffer, this.indexSize * sizeof( int ) ), 0xff, ( newSize - this.indexSize ) * sizeof( int ) ); //memset( indexChain + indexSize, 0xff, (newSize - indexSize) * sizeof(int) );
+
+		this.indexSize = newSize;
+
+	    for ( var i = 0; i < newIndexSize; i++ ) {
+			dlog(DEBUG_COMPILER, "%i: %i\n", i, this.indexChain[i]);
+	    }
     }
 
 /////*

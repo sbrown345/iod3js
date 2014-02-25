@@ -1207,7 +1207,6 @@ idVarDef *idProgram::GetDefList( const char *name ) const {
 	dlog(DEBUG_COMPILER, "GetDefList %s: %i\n", name, hash);
 	for ( i = varDefNameHash.First( hash ); i != -1; i = varDefNameHash.Next( i ) ) {
 		dlog( DEBUG_COMPILER, "%i, \n", i );
-		if (i == 473)exit(0);
 		if ( idStr::Cmp( varDefNames[i]->Name(), name ) == 0 ) {
 			return varDefNames[i]->GetDefs();
 		}
@@ -1604,6 +1603,7 @@ called before compiling a batch of files, clears the pr struct
 void idProgram::BeginCompilation( void ) {
 	statement_t	*statement;
 
+	dlog(DEBUG_COMPILER, "idProgram::BeginCompilation\n");
 	FreeData();
 
 	try {

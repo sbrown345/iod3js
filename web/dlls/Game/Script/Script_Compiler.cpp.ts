@@ -454,7 +454,7 @@ tries to find an existing immediate with the same value
 
 		// check for a constant with the same value
 		for ( def = gameLocal.program.GetDefList( "<IMMEDIATE>" ); def /*!= NULL*/; def = def.Next ( ) ) {
-			dlog(DEBUG_COMPILER, "FindImmediate def.num: %i\n", def.num);
+			//dlog(DEBUG_COMPILER, "FindImmediate def.num: %i\n", def.num);
 			if ( def.TypeDef ( ) != type ) {
 				continue;
 			}

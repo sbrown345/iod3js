@@ -97,7 +97,7 @@ void idHashIndex::ResizeIndex( const int newIndexSize ) {
 		return;
 	}
 
-	dlog(DEBUG_COMPILER, "idHashIndex::Allocate %i\n", newIndexSize);
+	dlog(DEBUG_COMPILER, "idHashIndex::ResizeIndex %i\n", newIndexSize);
 	mod = newIndexSize % granularity;
 	if ( !mod ) {
 		newSize = newIndexSize;
@@ -116,6 +116,11 @@ void idHashIndex::ResizeIndex( const int newIndexSize ) {
 	memset( indexChain + indexSize, 0xff, (newSize - indexSize) * sizeof(int) );
 	delete[] oldIndexChain;
 	indexSize = newSize;
+
+
+	for (int i = 0; i < newIndexSize; i++) {
+		dlog(DEBUG_COMPILER, "%i: %i\n",i, indexChain[i]);
+	}
 }
 
 /*

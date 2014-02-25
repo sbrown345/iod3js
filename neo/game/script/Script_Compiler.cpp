@@ -389,7 +389,7 @@ idVarDef *idCompiler::FindImmediate( const idTypeDef *type, const eval_t *eval, 
 
 	// check for a constant with the same value
 	for( def = gameLocal.program.GetDefList( "<IMMEDIATE>" ); def != NULL; def = def->Next() ) {
-		dlog(DEBUG_COMPILER, "FindImmediate def.num: %i\n", def->num);
+		//dlog(DEBUG_COMPILER, "FindImmediate def.num: %i\n", def->num);
 		if (def->TypeDef() != type) {
 			continue;
 		}
@@ -714,7 +714,7 @@ void idCompiler::NextToken( void ) {
 	//		__debugbreak();
 	//}
 
-	dlog(DEBUG_COMPILER, "NextToken - type: %i, data: %s, line: %i\n", token.type, token.c_str(), token.line);
+	//dlog(DEBUG_COMPILER, "NextToken - type: %i, data: %s, line: %i\n", token.type, token.c_str(), token.line);
 
 	switch( token.type ) {
 	case TT_STRING:

@@ -109,6 +109,14 @@ function memset ( arr: ArrayBufferView, value: number, num: number ): void {
     }
 }
 
+function memsetP(ptr: P, value: number, num: number): void {
+	var startIndex = ptr.idx;
+	var uint8Array = new Uint8Array(ptr.buf);
+	for (var i = startIndex; i < num; i++) {
+		uint8Array[i] = value;
+	}
+}
+
 function short(buf: Uint8Array, ptr: number): number {
 	return buf[ptr] + (buf[ptr + 1] << 8);
 }
