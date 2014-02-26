@@ -112,6 +112,7 @@ function memset ( arr: ArrayBufferView, value: number, num: number ): void {
 function memsetP(ptr: P, value: number, num: number): void {
 	var startIndex = ptr.idx;
 	var uint8Array = new Uint8Array(ptr.buf);
+	num += startIndex;
 	for (var i = startIndex; i < num; i++) {
 		uint8Array[i] = value;
 	}

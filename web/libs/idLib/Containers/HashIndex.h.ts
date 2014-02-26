@@ -536,10 +536,10 @@ idHashIndex::ResizeIndex
         this.indexChain = new Int32Array(newSize);
         memcpy( this.indexChain, oldIndexChain, this.indexSize * sizeof(int) );
 	    memsetP( new P( this.indexChain.buffer, this.indexSize * sizeof( int ) ), 0xff, ( newSize - this.indexSize ) * sizeof( int ) ); //memset( indexChain + indexSize, 0xff, (newSize - indexSize) * sizeof(int) );
-
+		
 		this.indexSize = newSize;
 
-	    for ( var i = 0; i < newIndexSize; i++ ) {
+		for (var i = 0; i < newSize; i++ ) {
 			dlog(DEBUG_COMPILER, "%i: %i\n", i, this.indexChain[i]);
 	    }
     }
