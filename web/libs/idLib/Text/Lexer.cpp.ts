@@ -965,7 +965,7 @@ class idLexer {
 		}
 		// check for punctuations
 		else if ( !this.ReadPunctuation( token.$ ) ) {
-			this.Error( "unknown punctuation %c", c );
+			this.Error( "unknown punctuation %s", c );
 			return 0;
 		}
 		// succesfully read a token

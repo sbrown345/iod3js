@@ -2507,7 +2507,7 @@ idCompiler::ParseEventDef
 		// set the return type
 		expectedType = this.GetTypeForEventArg( ev.GetReturnType() );
 		if ( !expectedType ) {
-			this.Error( "Invalid return type '%c' in definition of '%s' event.", ev.GetReturnType(), name );
+			this.Error( "Invalid return type '%s' in definition of '%s' event.", ev.GetReturnType(), name );
 		}
 		if ( returnType != expectedType ) {
 			this.Error( "Return type doesn't match internal return type '%s'", expectedType.Name() );
@@ -2522,7 +2522,7 @@ idCompiler::ParseEventDef
 		for( i = 0; i < num; i++ ) {
 			expectedType = this.GetTypeForEventArg( format[i] );
 			if ( !expectedType || ( expectedType == type_void ) ) {
-				this.Error( "Invalid parameter '%c' in definition of '%s' event.", format[ i ], name );
+				this.Error( "Invalid parameter '%s' in definition of '%s' event.", format[ i ], name );
 			}
 
 			argType = this.ParseType();

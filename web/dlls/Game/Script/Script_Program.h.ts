@@ -1201,7 +1201,7 @@ class idVarDef {
 					ch = 0; //this.value.stringPtr;
 					for ( i = 0; i < len; i++, ch++ ) {
 						if ( idStr.CharIsPrintable( this.value.stringPtr[ch] ) ) {
-							file.Printf( "%c", this.value.stringPtr[ch] );
+							file.Printf( "%s", this.value.stringPtr[ch] );
 						} else if ( this.value.stringPtr[ch] == '\n' ) {
 							file.Printf( "\\n" );
 						} else {

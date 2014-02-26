@@ -282,7 +282,7 @@ idEventDef::idEventDef
 
 				if ( ev.returnType != returnType ) {
 					eventError = true;
-					sprintf( eventErrorMsg, "idEvent '%s' defined twice with same name but differing return types ('%c'!='%c').",
+					sprintf( eventErrorMsg, "idEvent '%s' defined twice with same name but differing return types ('%s'!='%c').",
 						command, returnType, ev.returnType );
 					return;
 				}

@@ -105,7 +105,7 @@
 ////	gameLocal.Printf( "--------------------------------------------------------------------\n" );
 ////	for( check = gameLocal.activeEntities.Next(); check != NULL; check = check.activeNode.Next() ) {
 ////		char	dormant = check.fl.isDormant ? '-' : ' ';
-////		gameLocal.Printf( "%4i:%c%-20s %-20s %s\n", check.entityNumber, dormant, check.GetEntityDefName(), check.GetClassname(), check.name.c_str() );
+////		gameLocal.Printf( "%4i:%s%-20s %-20s %s\n", check.entityNumber, dormant, check.GetEntityDefName(), check.GetClassname(), check.name.c_str() );
 ////		count++;
 ////	}
 
