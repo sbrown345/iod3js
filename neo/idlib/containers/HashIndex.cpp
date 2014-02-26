@@ -118,7 +118,7 @@ void idHashIndex::ResizeIndex( const int newIndexSize ) {
 	indexSize = newSize;
 
 
-	for (int i = 0; i < newIndexSize; i++) {
+	for (int i = 0; i < newSize; i++) {
 		dlog(DEBUG_COMPILER, "%i: %i\n",i, indexChain[i]);
 	}
 }

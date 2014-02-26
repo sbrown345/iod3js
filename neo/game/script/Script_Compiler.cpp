@@ -714,7 +714,7 @@ void idCompiler::NextToken( void ) {
 	//		__debugbreak();
 	//}
 
-	//dlog(DEBUG_COMPILER, "NextToken - type: %i, data: %s, line: %i\n", token.type, token.c_str(), token.line);
+	dlog(DEBUG_COMPILER, "NextToken - type: %i, data: %s, line: %i\n", token.type, token.c_str(), token.line);
 
 	switch( token.type ) {
 	case TT_STRING:
