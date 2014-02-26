@@ -189,7 +189,7 @@ idHashIndex::Add
 */
     Add ( /*const int */key: number, /*const int */index: number ): void {
 		var /*int */h: number;
-		if (key == 455 && index == 1024) debugger;
+
 	    dlog( DEBUG_HASHINDEX, "idHashIndex::Add %i %i\n", key, index );
         assert( index >= 0 );
         if ( this.hash == idHashIndex.INVALID_INDEX ) {

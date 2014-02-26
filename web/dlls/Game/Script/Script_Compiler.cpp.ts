@@ -2213,7 +2213,7 @@ idCompiler::ParseFunctionDef
 		var numParms: number;
 		var parmType: idTypeDef;
 		var func: function_t;
-		var pos: statement_t;
+		var pos: statement_t, posIdx:number;
 
 		if ( ( this.scope.Type ( ) != etype_t.ev_namespace ) && !this.scope.TypeDef ( ).Inherits( type_object ) ) {
 			this.Error( "Functions may not be defined within other functions" );
@@ -2313,14 +2313,13 @@ idCompiler::ParseFunctionDef
 			if ( destructorFunc ) {
 				if ( func.firstStatement < gameLocal.program.NumStatements ( ) ) {
 					// change all returns to point to the call to the destructor
-					todoThrow ( );
-					//pos = gameLocal.program.GetStatement( func.firstStatement );
-					//for ( i = func.firstStatement; i < gameLocal.program.NumStatements ( ); i++, pos++ ) {
-					//	if ( pos.op == opc.OP_RETURN ) {
-					//		pos.op = opc.OP_GOTO;
-					//		pos.a = this.JumpDef( i, gameLocal.program.NumStatements ( ) );
-					//	}
-					//}
+					pos = gameLocal.program.GetStatement( posIdx = func.firstStatement );
+					for ( i = func.firstStatement; i < gameLocal.program.NumStatements ( ); i++, pos = gameLocal.program.GetStatement( ++posIdx ) ) {
+						if ( pos.op == opc.OP_RETURN ) {
+							pos.op = opc.OP_GOTO;
+							pos.a = this.JumpDef( i, gameLocal.program.NumStatements ( ) );
+						}
+					}
 				}
 
 				// emit the call to the destructor

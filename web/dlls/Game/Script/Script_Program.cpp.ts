@@ -101,14 +101,14 @@ class function_t {
 //	Clear();
 //}
 //
-///*
-//================
-//function_t::Allocated
-//================
-//*/
-//size_t function_t::Allocated( void ) const {
-//	return name.Allocated() + parmSize.Allocated();
-//}
+/*
+================
+function_t::Allocated
+================
+*/
+	Allocated ( ): number {
+		return this.name.Allocated ( ) + this.parmSize.Allocated ( );
+	}
 
 /*
 ================

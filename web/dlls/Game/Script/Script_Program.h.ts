@@ -544,24 +544,24 @@ idTypeDef::idTypeDef
 		this.parmNames = other.parmNames;
 		this.functions = other.functions;
 	}
-	//
-	///*
-	//================
-	//idTypeDef::Allocated
-	//================
-	//*/
-	//size_t idTypeDef::Allocated( void ) const {
-	//	size_t memsize;
-	//	var i:number;
-	//
-	//	memsize = name.Allocated() + parmTypes.Allocated() + parmNames.Allocated() + this.functions.Allocated();
-	//	for( i = 0; i < parmTypes.Num(); i++ ) {
-	//		memsize += parmNames[ i ].Allocated();
-	//	}
-	//
-	//	return memsize;
-	//}
 	
+	/*
+	================
+	idTypeDef::Allocated
+	================
+	*/
+	Allocated ( ): number {
+		var memsize: number; //Allocated
+		var i: number;
+
+		memsize = this.name.Allocated ( ) + this.parmTypes.Allocated ( ) + this.parmNames.Allocated ( ) + this.functions.Allocated ( );
+		for ( i = 0; i < this.parmTypes.Num ( ); i++ ) {
+			memsize += this.parmNames[i].Allocated ( );
+		}
+
+		return memsize;
+	}
+
 	/*
 	================
 	idTypeDef::Inherits

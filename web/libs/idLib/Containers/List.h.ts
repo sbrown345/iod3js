@@ -185,17 +185,17 @@ list to NULL.
 		}
 	}
 
-///*
-//================
-//idList<type>::Allocated
+/*
+================
+idList<type>::Allocated
 
-//return total memory allocated for the list in bytes, but doesn't take into account additional memory allocated by type
-//================
-//*/
+return total memory allocated for the list in bytes, but doesn't take into account additional memory allocated by type
+================
+*/
 //template< class type >
-//ID_INLINE size_t idList<type>::Allocated( void ) const {
-//	return this.size * sizeof( type );
-//}
+	Allocated ( ): number {
+		return 0; //this.size * sizeof( type );
+	}
 
 ///*
 //================

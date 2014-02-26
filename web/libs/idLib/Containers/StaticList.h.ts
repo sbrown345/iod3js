@@ -171,18 +171,18 @@ Returns the maximum number of elements in the list.
 	Max ( ): number {
 		return this.size;
 	}
-////
-/////*
-////================
-////idStaticList<type>::Allocated
-////================
-////*/
-////template<class type,int size>
-////ID_INLINE size_t idStaticList<type,size>::Allocated( void ) const {
-////	return size * sizeof( type );
-////}
-////
-/////*
+
+/*
+================
+idStaticList<type>::Allocated
+================
+*/
+//template<class type,int size>
+	Allocated ( ): number {
+		return this.size; // * sizeof( type );
+	}
+
+/*
 ////================
 ////idStaticList<type>::Size
 ////================
