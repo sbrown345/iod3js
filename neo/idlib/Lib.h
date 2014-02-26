@@ -177,6 +177,7 @@ JavaScript Debug Helpers
 #define DEBUG_DeriveTangents 0//isd(0)
 #define DEBUG_R_DeriveTangents 0//isd(0)
 #define DEBUG_COMPILER 1//isd(0)
+#define DEBUG_HASHINDEX 0//isd(0)
 
 void dlog(bool log, char *format, ...);
 

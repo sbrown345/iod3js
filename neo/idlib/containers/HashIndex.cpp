@@ -56,7 +56,7 @@ idHashIndex::Allocate
 void idHashIndex::Allocate( const int newHashSize, const int newIndexSize ) {
 	assert( idMath::IsPowerOfTwo( newHashSize ) );
 
-	dlog(DEBUG_COMPILER, "idHashIndex::Allocate %i %i\n", newHashSize, newIndexSize);
+	dlog(DEBUG_HASHINDEX, "idHashIndex::Allocate %i %i\n", newHashSize, newIndexSize);
 	Free();
 	hashSize = newHashSize;
 	hash = new int[hashSize];
@@ -97,7 +97,7 @@ void idHashIndex::ResizeIndex( const int newIndexSize ) {
 		return;
 	}
 
-	dlog(DEBUG_COMPILER, "idHashIndex::ResizeIndex %i\n", newIndexSize);
+	dlog(DEBUG_HASHINDEX, "idHashIndex::ResizeIndex %i\n", newIndexSize);
 	mod = newIndexSize % granularity;
 	if ( !mod ) {
 		newSize = newIndexSize;
@@ -119,7 +119,7 @@ void idHashIndex::ResizeIndex( const int newIndexSize ) {
 
 
 	for (int i = 0; i < newSize; i++) {
-		dlog(DEBUG_COMPILER, "%i: %i\n",i, indexChain[i]);
+		dlog(DEBUG_HASHINDEX, "%i: %i\n",i, indexChain[i]);
 	}
 }
 

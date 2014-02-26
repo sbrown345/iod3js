@@ -193,7 +193,7 @@ idHashIndex::Add
 ID_INLINE void idHashIndex::Add( const int key, const int index ) {
 	int h;
 
-	dlog(DEBUG_COMPILER, "idHashIndex::Add %i %i\n", key, index);
+	dlog(DEBUG_HASHINDEX, "idHashIndex::Add %i %i\n", key, index);
 	assert(index >= 0);
 	if ( hash == INVALID_INDEX ) {
 		Allocate( hashSize, index >= indexSize ? index + 1 : indexSize );
@@ -204,7 +204,7 @@ ID_INLINE void idHashIndex::Add( const int key, const int index ) {
 	h = key & hashMask;
 	indexChain[index] = hash[h];
 	hash[h] = index;
-	dlog(DEBUG_COMPILER, "add2 h: %i index:%i\n", key, index);
+	dlog(DEBUG_HASHINDEX, "add2 h: %i index:%i\n", key, index);
 }
 
 /*
@@ -218,7 +218,7 @@ ID_INLINE void idHashIndex::Remove( const int key, const int index ) {
 	if ( hash == INVALID_INDEX ) {
 		return;
 	}
-	dlog(DEBUG_COMPILER, "idHashIndex::Remove %i %i\n", key, index);
+	dlog(DEBUG_HASHINDEX, "idHashIndex::Remove %i %i\n", key, index);
 	if (hash[k] == index) {
 		hash[k] = indexChain[index];
 	}
@@ -226,7 +226,7 @@ ID_INLINE void idHashIndex::Remove( const int key, const int index ) {
 		for ( int i = hash[k]; i != -1; i = indexChain[i] ) {
 			if ( indexChain[i] == index ) {
 				indexChain[i] = indexChain[index];
-				dlog(DEBUG_COMPILER, "rem2 i: %i this.indexChain[i]:%i\n", i, indexChain[i]);
+				dlog(DEBUG_HASHINDEX, "rem2 i: %i this.indexChain[i]:%i\n", i, indexChain[i]);
 				break;
 			}
 		}
