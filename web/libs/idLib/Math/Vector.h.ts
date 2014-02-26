@@ -888,7 +888,7 @@ class idVec3 {
 ////}
 
 	ToString(): string {
-		return va("x: %f, y: %f, z:%f", this.x, this.y, this.z);
+		return va("x: %4.2f, y: %4.2f, z:%4.2f", this.x, this.y, this.z);
 	}
 };
 

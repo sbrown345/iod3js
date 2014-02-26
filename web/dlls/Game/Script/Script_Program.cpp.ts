@@ -648,7 +648,7 @@ idProgram::GetFilename
 ================
 */
 	GetFilename ( /*int */num: number ): string {
-		return this.fileList[num];
+		return this.fileList[num].data;
 	}
 //
 ///*
@@ -1199,7 +1199,7 @@ idProgram::DisassembleStatement
 
 		statement = this.statements[instructionPointer];
 		op = idCompiler.opcodes[statement.op];
-		file.Printf( "%20s(%d):\t%6d: %15s\t", this.fileList[statement.file].c_str ( ), statement.linenumber, instructionPointer, op.opname );
+		file.Printf( "%20s(%d):\t%6d: %15s\t", this.fileList[statement.file].c_str ( ).replace( "/", "\\" ), statement.linenumber, instructionPointer, op.opname );
 
 		if ( statement.a ) {
 			file.Printf( "\ta: " );

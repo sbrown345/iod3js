@@ -801,7 +801,7 @@ ID_INLINE bool idVec3::ProjectAlongPlane( const idVec3 &normal, const float epsi
 }
 
 ID_INLINE char* idVec3::ToString(void)  {
-	return va("x: %f, y: %f, z:%f", x, y, z);
+	return va("x: %4.2f, y: %4.2f, z:%4.2f", x, y, z);
 }
 
 //===============================================================

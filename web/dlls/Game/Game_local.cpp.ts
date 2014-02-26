@@ -290,49 +290,50 @@ idGameLocal.prototype.Init = function ( ): void {
 
 	// register game specific decl types
 	declManager.RegisterDeclType( "model", declType_t.DECL_MODELDEF, idDeclAllocator<idDeclModelDef>( idDeclModelDef ) );
-	declManager.RegisterDeclType("export", declType_t.DECL_MODELEXPORT, idDeclAllocator<idDecl>(idDecl) );
+	declManager.RegisterDeclType( "export", declType_t.DECL_MODELEXPORT, idDeclAllocator<idDecl>( idDecl ) );
 
 	// register game specific decl folders
-	declManager.RegisterDeclFolder("def", ".def", declType_t.DECL_ENTITYDEF );
-	declManager.RegisterDeclFolder("fx", ".fx", declType_t.DECL_FX );
-	declManager.RegisterDeclFolder("particles", ".prt", declType_t. DECL_PARTICLE );
-	declManager.RegisterDeclFolder("af", ".af", declType_t. DECL_AF );
-	declManager.RegisterDeclFolder("newpdas", ".pda", declType_t. DECL_PDA );
+	declManager.RegisterDeclFolder( "def", ".def", declType_t.DECL_ENTITYDEF );
+	declManager.RegisterDeclFolder( "fx", ".fx", declType_t.DECL_FX );
+	declManager.RegisterDeclFolder( "particles", ".prt", declType_t.DECL_PARTICLE );
+	declManager.RegisterDeclFolder( "af", ".af", declType_t.DECL_AF );
+	declManager.RegisterDeclFolder( "newpdas", ".pda", declType_t.DECL_PDA );
 
-	cmdSystem.AddCommand("listModelDefs", idListDecls_f(declType_t.DECL_MODELDEF), cmdFlags_t.CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_GAME, "lists model defs" );
-	cmdSystem.AddCommand("printModelDefs", idPrintDecls_f(declType_t.DECL_MODELDEF), cmdFlags_t.CMD_FL_SYSTEM | cmdFlags_t.CMD_FL_GAME, "prints a model def", ArgCompletion_Decl_Template(declType_t.DECL_MODELDEF) /*idCmdSystem::ArgCompletion_Decl<DECL_MODELDEF>*/ );
+	cmdSystem.AddCommand( "listModelDefs", idListDecls_f( declType_t.DECL_MODELDEF ), cmdFlags_t.CMD_FL_SYSTEM | cmdFlags_t.CMD_FL_GAME, "lists model defs" );
+	cmdSystem.AddCommand( "printModelDefs", idPrintDecls_f( declType_t.DECL_MODELDEF ), cmdFlags_t.CMD_FL_SYSTEM | cmdFlags_t.CMD_FL_GAME, "prints a model def", ArgCompletion_Decl_Template( declType_t.DECL_MODELDEF ) /*idCmdSystem::ArgCompletion_Decl<DECL_MODELDEF>*/ );
 	idLexer.RTCount = 0;
-	this.Clear();
+	this.Clear ( );
 
-	idEvent.Init();
-	idClass.Init();
-	this.InitConsoleCommands();
+	idEvent.Init ( );
+	idClass.Init ( );
+	this.InitConsoleCommands ( );
 
 	// load default scripts
 	this.program.Startup( SCRIPT_DEFAULT );
+
+	this.smokeParticles = new idSmokeParticles;
+
+	// set up the aas
+	dict = this.FindEntityDefDict( "aas_types" );
+	if ( !dict ) {
+		Error( "Unable to find entityDef for 'aas_types'" );
+	}
+
+	// allocate space for the aas
+	var kv = dict.MatchPrefix( "type" );
+	while( kv != null ) {
+		aas = idAAS.Alloc();
+		this.aasList.Append( aas );
+		this.aasNames.Append( kv.GetValue() );
+		kv = dict.MatchPrefix( "type", kv );
+	}
+
+	this.gamestate = gameState_t.GAMESTATE_NOMAP;
+
+	this.Printf( "...%d aas types\n", this.aasList.Num() );
+	this.Printf( "game initialized.\n" );
+	this.Printf( "--------------------------------------\n" );
 	todoThrow();
-	//smokeParticles = new idSmokeParticles;
-
-	//// set up the aas
-	//dict = FindEntityDefDict( "aas_types" );
-	//if ( !dict ) {
-	//	Error( "Unable to find entityDef for 'aas_types'" );
-	//}
-
-	//// allocate space for the aas
-	//const idKeyValue *kv = dict.MatchPrefix( "type" );
-	//while( kv != NULL ) {
-	//	aas = idAAS::Alloc();
-	//	aasList.Append( aas );
-	//	aasNames.Append( kv.GetValue() );
-	//	kv = dict.MatchPrefix( "type", kv );
-	//}
-
-	//gamestate = GAMESTATE_NOMAP;
-
-	//Printf( "...%d aas types\n", aasList.Num() );
-	//Printf( "game initialized.\n" );
-	//Printf( "--------------------------------------\n" );
 };
 
 /////*
@@ -3097,15 +3098,15 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////	return static_cast<const idDeclEntityDef *>( decl );
 ////}
 
-/////*
-////================
-////idGameLocal::FindEntityDefDict
-////================
-////*/
-////const idDict *idGameLocal::FindEntityDefDict( name:string, bool makeDefault ) const {
-////	const idDeclEntityDef *decl = FindEntityDef( name, makeDefault );
-////	return decl ? &decl.dict : NULL;
-////}
+/*
+================
+idGameLocal::FindEntityDefDict
+================
+*/
+idGameLocal.prototype.FindEntityDefDict = function ( name: string, makeDefault = true ): idDict {
+	var decl = this.FindEntityDef( name, makeDefault );
+	return decl ? decl.dict : null;
+};
 
 /////*
 ////================

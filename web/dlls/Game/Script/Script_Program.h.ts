@@ -1172,7 +1172,7 @@ class idVarDef {
 		case etype_t.ev_jumpoffset:
 			jumpto = instructionPointer + this.value.jumpOffset;
 			jumpst = gameLocal.program.GetStatement( jumpto );
-			file.Printf( "address %d [%s(%d)]", jumpto, gameLocal.program.GetFilename( jumpst.file ), jumpst.linenumber );
+			file.Printf("address %d [%s(%d)]", jumpto, gameLocal.program.GetFilename(jumpst.file).replace("/", "\\" ), jumpst.linenumber );
 			break;
 
 		case etype_t.ev_function:
@@ -1216,7 +1216,7 @@ class idVarDef {
 					break;
 
 				case etype_t.ev_float:
-					file.Printf( "%f", /***/this.value.floatPtr /*todo: value*/ );
+					file.Printf( "%4.2f", /***/this.value.floatPtr /*todo: value*/ );
 					break;
 
 				case etype_t.ev_virtualfunction:

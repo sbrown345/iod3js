@@ -74,7 +74,7 @@
 ////
 class idAAS {
 ////public:
-////	static idAAS *				Alloc( void );
+	static Alloc ( ): idAAS { throw "placeholder"; }
 ////	virtual						~idAAS( void ) = 0;
 ////								// Initialize for the given map.
 ////	virtual bool				Init( const idStr &mapName, unsigned int mapFileCRC ) = 0;

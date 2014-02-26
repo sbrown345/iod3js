@@ -796,7 +796,7 @@ void idVarDef::PrintInfo( idFile *file, int instructionPointer ) const {
 				break;
 
 			case ev_float :
-                file->Printf( "%f", *value.floatPtr );
+                file->Printf( "%4.2f", *value.floatPtr );
 				break;
 
 			case ev_virtualfunction :

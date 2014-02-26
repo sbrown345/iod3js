@@ -31,14 +31,14 @@
 ////
 ////#include "AAS_local.h"
 ////
-/////*
-////============
-////idAAS::Alloc
-////============
-////*/
-////idAAS *idAAS::Alloc( void ) {
-////	return new idAASLocal;
-////}
+/*
+============
+idAAS::Alloc
+============
+*/
+idAAS.Alloc = function ( ): idAAS {
+	return new idAASLocal;
+};
 ////
 /////*
 ////============

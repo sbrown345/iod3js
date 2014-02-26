@@ -394,6 +394,7 @@ class idGameLocal extends idGame {
 
 ////	const idDeclEntityDef *	FindEntityDef( name:string, bool makeDefault = true ) const;
 ////	const idDict *			FindEntityDefDict( name:string, bool makeDefault = true ) const;
+	FindEntityDefDict ( name: string, makeDefault = true ): idDict { throw "placeholder"; }
 
 ////	void					RegisterEntity( ent: idEntity );
 ////	void					UnregisterEntity( ent: idEntity );

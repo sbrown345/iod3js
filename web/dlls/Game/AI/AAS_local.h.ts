@@ -83,7 +83,7 @@
 ////};
 ////
 ////
-////class idAASLocal extends idAAS {
+class idAASLocal extends idAAS {
 ////public:
 ////								idAASLocal( void );
 ////	virtual						~idAASLocal( void );
@@ -184,6 +184,6 @@
 ////	bool						PullPlayer( const idVec3 &origin, int toAreaNum ) const;
 ////	void						RandomPullPlayer( const idVec3 &origin ) const;
 ////	void						ShowPushIntoArea( const idVec3 &origin ) const;
-////};
+};
 ////
 ////#endif /* !__AAS_LOCAL_H__ */
