@@ -35,7 +35,7 @@ If you have questions concerning this license or the applicable additional terms
 
 class idDeclEntityDef extends idDecl {
 //public:
-//	idDict					dict;
+	dict = new idDict;
 
 //	virtual size_t			Size( void ) const;
 //	virtual const char *	DefaultDefinition() const;
@@ -52,7 +52,7 @@ class idDeclEntityDef extends idDecl {
 ////=================
 ////*/
 ////size_t idDeclEntityDef::Size( void ) const {
-////	return sizeof( idDeclEntityDef ) + dict.Allocated();
+////	return sizeof( idDeclEntityDef ) + this.dict.Allocated();
 ////}
 ////
 /////*
@@ -61,90 +61,90 @@ class idDeclEntityDef extends idDecl {
 ////================
 ////*/
 ////void idDeclEntityDef::FreeData( void ) {
-////	dict.Clear();
+////	this.dict.Clear();
 ////}
 ////
-/////*
-////================
-////idDeclEntityDef::Parse
-////================
-////*/
-////bool idDeclEntityDef::Parse( text:string, const int textLength ) {
-////	idLexer src;
-////	idToken	token, token2;
-////
-////	src.LoadMemory( text, textLength, GetFileName(), GetLineNum() );
-////	src.SetFlags( DECL_LEXER_FLAGS );
-////	src.SkipUntilString( "{" );
-////
-////	while (1) {
-////		if ( !src.ReadToken( &token ) ) {
-////			break;
-////		}
-////
-////		if ( !token.Icmp( "}" ) ) {
-////			break;
-////		}
-////		if ( token.type != TT_STRING ) {
-////			src.Warning( "Expected quoted string, but found '%s'", token.c_str() );
-////			MakeDefault();
-////			return false;
-////		}
-////
-////		if ( !src.ReadToken( &token2 ) ) {
-////			src.Warning( "Unexpected end of file" );
-////			MakeDefault();
-////			return false;
-////		}
-////
-////		if ( dict.FindKey( token ) ) {
-////			src.Warning( "'%s' already defined", token.c_str() );
-////		}
-////		dict.Set( token, token2 );
-////	}
-////
-////	// we always automatically set a "classname" key to our name
-////	dict.Set( "classname", GetName() );
-////
-////	// "inherit" keys will cause all values from another entityDef to be copied into this one
-////	// if they don't conflict.  We can't have circular recursions, because each entityDef will
-////	// never be parsed mroe than once
-////
-////	// find all of the dicts first, because copying inherited values will modify the dict
-////	idList<const idDeclEntityDef *> defList;
-////
-////	while ( 1 ) {
-////		const idKeyValue *kv;
-////		kv = dict.MatchPrefix( "inherit", NULL );
-////		if ( !kv ) {
-////			break;
-////		}
-////
-////		const idDeclEntityDef *copy = static_cast<const idDeclEntityDef *>( declManager->FindType( DECL_ENTITYDEF, kv->GetValue(), false ) );
-////		if ( !copy ) {
-////			src.Warning( "Unknown entityDef '%s' inherited by '%s'", kv->GetValue().c_str(), GetName() );
-////		} else {
-////			defList.Append( copy );
-////		}
-////
-////		// delete this key/value pair
-////		dict.Delete( kv->GetKey() );
-////	}
-////
-////	// now copy over the inherited key / value pairs
-////	for ( int i = 0 ; i < defList.Num() ; i++ ) {
-////		dict.SetDefaults( &defList[ i ]->dict );
-////	}
-////
-////	// precache all referenced media
-////	// do this as long as we arent in modview
-////	if ( !( com_editors & (EDITOR_RADIANT|EDITOR_AAS) ) ) {
-////		game->CacheDictionaryMedia( &dict );
-////	}
-////
-////	return true;
-////}
-////
+/*
+================
+idDeclEntityDef::Parse
+================
+*/
+	Parse ( text: string, textLength: number ): boolean {
+		var src = new idLexer;
+		var token = new R( new idToken ), token2 = new R( new idToken );
+
+		src.LoadMemory( text, textLength, this.GetFileName ( ), this.GetLineNum ( ) );
+		src.SetFlags( DECL_LEXER_FLAGS );
+		src.SkipUntilString( "{" );
+
+		while ( 1 ) {
+			if ( !src.ReadToken( token ) ) {
+				break;
+			}
+
+			if ( !token.$.Icmp( "}" ) ) {
+				break;
+			}
+			if ( token.$.type != TT_STRING ) {
+				src.Warning( "Expected quoted string, but found '%s'", token.$.c_str ( ) );
+				this.MakeDefault ( );
+				return false;
+			}
+
+			if ( !src.ReadToken( token2 ) ) {
+				src.Warning( "Unexpected end of file" );
+				this.MakeDefault ( );
+				return false;
+			}
+
+			if ( this.dict.FindKey( token.$.data ) ) {
+				src.Warning( "'%s' already defined", token.$.c_str ( ) );
+			}
+			this.dict.Set( token.$.data, token2.$.data );
+		}
+
+		// we always automatically set a "classname" key to our name
+		this.dict.Set( "classname", this.GetName ( ) );
+
+		// "inherit" keys will cause all values from another entityDef to be copied into this one
+		// if they don't conflict.  We can't have circular recursions, because each entityDef will
+		// never be parsed mroe than once
+
+		// find all of the dicts first, because copying inherited values will modify the dict
+		var defList = new idList<idDeclEntityDef>( idDeclEntityDef );
+
+		while ( 1 ) {
+			var kv: idKeyValue;
+			kv = this.dict.MatchPrefix( "inherit", null );
+			if ( !kv ) {
+				break;
+			}
+
+			var copy = <idDeclEntityDef>( declManager.FindType( declType_t.DECL_ENTITYDEF, kv.GetValue ( ).data, false ) );
+			if ( !copy ) {
+				src.Warning( "Unknown entityDef '%s' inherited by '%s'", kv.GetValue ( ).c_str ( ), this.GetName ( ) );
+			} else {
+				defList.Append( copy );
+			}
+
+			// delete this key/value pair
+			this.dict.Delete( kv.GetKey ( ).data );
+		}
+
+		// now copy over the inherited key / value pairs
+		for ( var i = 0; i < defList.Num ( ); i++ ) {
+			this.dict.SetDefaults( defList[i].dict );
+		}
+
+		// precache all referenced media
+		// do this as long as we arent in modview
+		if ( !( com_editors & ( toolFlag_t.EDITOR_RADIANT | toolFlag_t.EDITOR_AAS ) ) ) {
+			game.CacheDictionaryMedia( this.dict );
+		}
+
+		return true;
+	}
+
 /////*
 ////================
 ////idDeclEntityDef::DefaultDefinition
@@ -165,6 +165,6 @@ class idDeclEntityDef extends idDecl {
 ////================
 ////*/
 ////void idDeclEntityDef::Print( void ) {
-////	dict.Print();
+////	this.dict.Print();
 ////}
 }

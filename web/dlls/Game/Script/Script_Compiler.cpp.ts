@@ -450,7 +450,9 @@ tries to find an existing immediate with the same value
 		var etype: etype_t;
 
 		etype = type.Type();
-		dlog( DEBUG_COMPILER, "FindImmediate etype: %i, %s\n", etype , $string);
+		dlog(DEBUG_COMPILER, "FindImmediate etype: %i, %s\n", etype, $string);
+
+		//if (this.currentFileNumber == 0 && this.currentLineNumber == 106) debugger;
 
 		// check for a constant with the same value
 		for ( def = gameLocal.program.GetDefList( "<IMMEDIATE>" ); def /*!= NULL*/; def = def.Next ( ) ) {
@@ -668,7 +670,7 @@ Emits a primitive statement, returning the var it places it's value in
 		statement = gameLocal.program.AllocStatement ( );
 		statement.linenumber = this.currentLineNumber;
 		statement.file = this.currentFileNumber; dlog(DEBUG_COMPILER, "EmitOpcode currentFileNumber: %i, currentLineNumber: %i\n", this.currentFileNumber, this.currentLineNumber );
-
+		//if ( this.currentFileNumber == 0 && this.currentLineNumber == 106 )debugger;
 		if ( ( op.type_c == def_void ) || op.rightAssociative ) {
 			// ifs, gotos, and assignments don't need vars allocated
 			var_c = null;

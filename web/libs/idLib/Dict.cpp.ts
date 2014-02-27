@@ -62,8 +62,8 @@ class idKeyValue {
 //	bool				operator==( const idKeyValue &kv ) const { return ( key == kv.key && value == kv.value ); }
 
 //private:
-	key: idPoolStr;
-	value: idPoolStr;
+	key = new idPoolStr;
+	value = new idPoolStr;
 }
 
 class idDict {
@@ -179,12 +179,12 @@ class idDict {
 ////
 ////ID_INLINE void idDict::SetGranularity( int granularity ) {
 ////	this.args.SetGranularity( granularity );
-////	argHash.SetGranularity( granularity );
+////	this.argHash.SetGranularity( granularity );
 ////}
 ////
 ////ID_INLINE void idDict::SetHashSize( int hashSize ) {
 ////	if ( this.args.Num() == 0 ) {
-////		argHash.Clear( hashSize, 16 );
+////		this.argHash.Clear( hashSize, 16 );
 ////	}
 ////}
 ////
@@ -221,7 +221,7 @@ class idDict {
 ////}
 ////
 ////ID_INLINE bool idDict::GetString( key:string, const char *defaultString, const char **out ) const {
-////	const idKeyValue *kv = FindKey( key );
+////	const idKeyValue *kv = this.FindKey( key );
 ////	if ( kv ) {
 ////		*out = kv.GetValue();
 ////		return true;
@@ -231,7 +231,7 @@ class idDict {
 ////}
 ////
 ////ID_INLINE bool idDict::GetString( key:string, const char *defaultString, idStr &out ) const {
-////	const idKeyValue *kv = FindKey( key );
+////	const idKeyValue *kv = this.FindKey( key );
 ////	if ( kv ) {
 ////		out = kv.GetValue();
 ////		return true;
@@ -241,7 +241,7 @@ class idDict {
 ////}
 ////
 ////ID_INLINE const char *idDict::GetString( key:string, const char *defaultString ) const {
-////	const idKeyValue *kv = FindKey( key );
+////	const idKeyValue *kv = this.FindKey( key );
 ////	if ( kv ) {
 ////		return kv.GetValue();
 ////	}
@@ -319,11 +319,11 @@ class idDict {
 ////	Clear();
 ////
 ////	this.args = other.args;
-////	argHash = other.argHash;
+////	this.argHash = other.argHash;
 ////
 ////	for ( i = 0; i < this.args.Num(); i++ ) {
 ////		this.args[i].key = idDict.globalKeys.CopyString( this.args[i].key );
-////		this.args[i].value = globalValues.CopyString( this.args[i].value );
+////		this.args[i].value = idDict.globalValues.CopyString( this.args[i].value );
 ////	}
 ////
 ////	return *this;
@@ -350,7 +350,7 @@ class idDict {
 ////	if ( this.args.Num() ) {
 ////		found = (int *) _alloca16( other.args.Num() * sizeof( int ) );
 ////        for ( i = 0; i < n; i++ ) {
-////			found[i] = FindKeyIndex( other.args[i].GetKey() );
+////			found[i] = this.FindKeyIndex( other.args[i].GetKey() );
 ////		}
 ////	} else {
 ////		found = NULL;
@@ -360,12 +360,12 @@ class idDict {
 ////		if ( found && found[i] != -1 ) {
 ////			// first set the new value and then free the old value to allow proper self copying
 ////			const idPoolStr *oldValue = this.args[found[i]].value;
-////			this.args[found[i]].value = globalValues.CopyString( other.args[i].value );
+////			this.args[found[i]].value = idDict.globalValues.CopyString( other.args[i].value );
 ////			globalValues.FreeString( oldValue );
 ////		} else {
 ////			kv.key = idDict.globalKeys.CopyString( other.args[i].key );
-////			kv.value = globalValues.CopyString( other.args[i].value );
-////			argHash.Add( argHash.GenerateKey( kv.GetKey(), false ), this.args.Append( kv ) );
+////			kv.value = idDict.globalValues.CopyString( other.args[i].value );
+////			this.argHash.Add( this.argHash.GenerateKey( kv.GetKey(), false ), this.args.Append( kv ) );
 ////		}
 ////	}
 ////}
@@ -397,7 +397,7 @@ class idDict {
 ////		this.args[i].key = other.args[i].key;
 ////		this.args[i].value = other.args[i].value;
 ////	}
-////	argHash = other.argHash;
+////	this.argHash = other.argHash;
 ////
 ////	other.args.Clear();
 ////	other.argHash.Free();
@@ -426,7 +426,7 @@ class idDict {
 ////			parser.Error( "Unexpected end of file" );
 ////		}
 ////
-////		if ( FindKey( token ) ) {
+////		if ( this.FindKey( token ) ) {
 ////			parser.Warning( "'%s' already defined", token.c_str() );
 ////			errors = true;
 ////		}
@@ -439,29 +439,29 @@ class idDict {
 ////
 ////	return !errors;
 ////}
-////
-/////*
-////================
-////idDict::SetDefaults
-////================
-////*/
-////void idDict::SetDefaults( const idDict *dict ) {
-////	int i, n;
-////	const idKeyValue *kv, *def;
-////	idKeyValue newkv;
-////
-////	n = dict.args.Num();
-////	for( i = 0; i < n; i++ ) {
-////		def = &dict.args[i];
-////		kv = FindKey( def.GetKey() );
-////		if ( !kv ) {
-////			newkv.key = idDict.globalKeys.CopyString( def.key );
-////			newkv.value = globalValues.CopyString( def.value );
-////			argHash.Add( argHash.GenerateKey( newkv.GetKey(), false ), this.args.Append( newkv ) );
-////		}
-////	}
-////}
-////
+
+/*
+================
+idDict::SetDefaults
+================
+*/
+	SetDefaults ( dict: idDict ): void {1
+		var /*int */i: number, n: number;
+		var kv: idKeyValue, def: idKeyValue;
+		var newkv = new idKeyValue;
+
+		n = dict.args.Num ( );
+		for ( i = 0; i < n; i++ ) {
+			def = dict.args[i];
+			kv = this.FindKey( def.GetKey ( ).data );
+			if ( !kv ) {
+				newkv.key = idDict.globalKeys.CopyString( def.key );
+				newkv.value = idDict.globalValues.CopyString( def.value );
+				this.argHash.Add( this.argHash.GenerateKey( newkv.GetKey ( ), false ), this.args.Append( newkv ) );
+			}
+		}
+	}
+
 /*
 ================
 idDict::Clear
@@ -488,9 +488,9 @@ idDict::Clear
 ////	int i;
 ////	int n;
 ////
-////	n = args.Num();
+////	n = this.args.Num();
 ////	for( i = 0; i < n; i++ ) {
-////		idLib::common.Printf( "%s = %s\n", args[i].GetKey().c_str(), args[i].GetValue().c_str() );
+////		idLib::common.Printf( "%s = %s\n", this.args[i].GetKey().c_str(), this.args[i].GetValue().c_str() );
 ////	}
 ////}
 ////
@@ -507,7 +507,7 @@ idDict::Clear
 ////	unsigned long ret;
 ////	int i, n;
 ////
-////	idList<idKeyValue> sorted = args;
+////	idList<idKeyValue> sorted = this.args;
 ////	sorted.Sort( KeyCompare );
 ////	n = sorted.Num();
 ////	CRC32_InitChecksum( ret );
@@ -528,39 +528,39 @@ idDict::Clear
 ////	int		i;
 ////	size_t	size;
 ////
-////	size = args.Allocated() + argHash.Allocated();
-////	for( i = 0; i < args.Num(); i++ ) {
-////		size += args[i].Size();
+////	size = this.args.Allocated() + this.argHash.Allocated();
+////	for( i = 0; i < this.args.Num(); i++ ) {
+////		size += this.args[i].Size();
 ////	}
 ////
 ////	return size;
 ////}
 ////
-/////*
-////================
-////idDict::Set
-////================
-////*/
-////void idDict::Set( key:string, value:string ) {
-////	int i;
-////	idKeyValue kv;
-////
-////	if ( key == NULL || key[0] == '\0' ) {
-////		return;
-////	}
-////
-////	i = FindKeyIndex( key );
-////	if ( i != -1 ) {
-////		// first set the new value and then free the old value to allow proper self copying
-////		const idPoolStr *oldValue = args[i].value;
-////		args[i].value = idDict.globalValues.AllocString( value );
-////		idDict.globalValues.FreeString( oldValue );
-////	} else {
-////		kv.key = idDict.globalKeys.AllocString( key );
-////		kv.value = idDict.globalValues.AllocString( value );
-////		argHash.Add( argHash.GenerateKey( kv.GetKey(), false ), args.Append( kv ) );
-////	}
-////}
+/*
+================
+idDict::Set
+================
+*/
+Set( key:string, value:string ):void {
+	var /*int */i:number;
+	var kv = new idKeyValue ;
+
+	if ( !key ) {
+		return;
+	}
+
+	i = this.FindKeyIndex( key );
+	if ( i != -1 ) {
+		// first set the new value and then free the old value to allow proper self copying
+		var oldValue: idPoolStr = this.args[i].value;
+		this.args[i].value = idDict.globalValues.AllocString( value );
+		idDict.globalValues.FreeString( oldValue );
+	} else {
+		kv.key = idDict.globalKeys.AllocString( key );
+		kv.value = idDict.globalValues.AllocString( value );
+		this.argHash.Add( this.argHash.GenerateKey( kv.GetKey(), false ), this.args.Append( kv ) );
+	}
+}
 ////
 /////*
 ////================
@@ -711,78 +711,78 @@ idDict::Clear
 ////	}
 ////	f.Write( s, strlen(s) + 1 );
 ////}
-////
-/////*
-////================
-////idDict::FindKey
-////================
-////*/
-////const idKeyValue *idDict::FindKey( key:string ) const {
-////	int i, hash;
-////
-////	if ( key == NULL || key[0] == '\0' ) {
-////		idLib::common.DWarning( "idDict::FindKey: empty key" );
-////		return NULL;
-////	}
-////
-////	hash = argHash.GenerateKey( key, false );
-////	for ( i = argHash.First( hash ); i != -1; i = argHash.Next( i ) ) {
-////		if ( args[i].GetKey().Icmp( key ) == 0 ) {
-////			return &args[i];
-////		}
-////	}
-////
-////	return NULL;
-////}
-////
-/////*
-////================
-////idDict::FindKeyIndex
-////================
-////*/
-////int idDict::FindKeyIndex( key:string ) const {
-////
-////	if ( key == NULL || key[0] == '\0' ) {
-////		idLib::common.DWarning( "idDict::FindKeyIndex: empty key" );
-////		return NULL;
-////	}
-////
-////	int hash = argHash.GenerateKey( key, false );
-////	for ( int i = argHash.First( hash ); i != -1; i = argHash.Next( i ) ) {
-////		if ( args[i].GetKey().Icmp( key ) == 0 ) {
-////			return i;
-////		}
-////	}
-////
-////	return -1;
-////}
-////
-/////*
-////================
-////idDict::Delete
-////================
-////*/
-////void idDict::Delete( key:string ) {
-////	int hash, i;
-////
-////	hash = argHash.GenerateKey( key, false );
-////	for ( i = argHash.First( hash ); i != -1; i = argHash.Next( i ) ) {
-////		if ( this.args[i].GetKey().Icmp( key ) == 0 ) {
-////			idDict.globalKeys.FreeString( this.args[i].key );
-////			idDict.globalValues.FreeString( this.args[i].value );
-////			this.args.RemoveIndex( i );
-////			argHash.RemoveIndex( hash, i );
-////			break;
-////		}
-////	}
-////
+
+/*
+================
+idDict::FindKey
+================
+*/
+	FindKey ( key: string ): idKeyValue {
+		var /*int */i: number, hash: number;
+
+		if ( !key ) {
+			common.DWarning( "idDict::FindKey: empty key" );
+			return null;
+		}
+
+		hash = this.argHash.GenerateKey( key, false );
+		for ( i = this.argHash.First( hash ); i != -1; i = this.argHash.Next( i ) ) {
+			if ( this.args[i].GetKey ( ).Icmp( key ) == 0 ) {
+				return this.args[i];
+			}
+		}
+
+		return null;
+	}
+
+/*
+================
+idDict::FindKeyIndex
+================
+*/
+FindKeyIndex( key:string ) :number {
+
+	if ( !key ) {
+		common.DWarning( "idDict::FindKeyIndex: empty key" );
+		return null;
+	}
+
+	var hash = this.argHash.GenerateKey( key, false );
+	for ( var i = this.argHash.First( hash ); i != -1; i = this.argHash.Next( i ) ) {
+		if ( this.args[i].GetKey().Icmp( key ) == 0 ) {
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+/*
+================
+idDict::Delete
+================
+*/
+	Delete ( key: string ): void {
+		var /*int */hash: number, i: number;
+
+		hash = this.argHash.GenerateKey( key, false );
+		for ( i = this.argHash.First( hash ); i != -1; i = this.argHash.Next( i ) ) {
+			if ( this.args[i].GetKey ( ).Icmp( key ) == 0 ) {
+				idDict.globalKeys.FreeString( this.args[i].key );
+				idDict.globalValues.FreeString( this.args[i].value );
+				this.args.RemoveIndex( i );
+				this.argHash.RemoveIndex( hash, i );
+				break;
+			}
+		}
+
 ////#if 0
 ////	// make sure all keys can still be found in the hash index
 ////	for ( i = 0; i < this.args.Num(); i++ ) {
-////		assert( FindKey( this.args[i].GetKey() ) != NULL );
+////		assert( this.FindKey( this.args[i].GetKey() ) != NULL );
 ////	}
 ////#endif
-////}
+	}
 
 /*
 ================

@@ -298,7 +298,6 @@ void idGameLocal::Init( void ) {
 
 	// load default scripts
 	program.Startup( SCRIPT_DEFAULT );
-	exit(0);
 	smokeParticles = new idSmokeParticles;
 
 	// set up the aas

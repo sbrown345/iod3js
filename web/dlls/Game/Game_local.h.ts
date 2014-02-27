@@ -331,7 +331,7 @@ class idGameLocal extends idGame {
 ////	virtual bool			InitFromSaveGame( const char *mapName, idRenderWorld *renderWorld, idSoundWorld *soundWorld, idFile *saveGameFile );
 ////	virtual void			SaveGame( idFile *saveGameFile );
 ////	virtual void			MapShutdown( void );
-////	virtual void			CacheDictionaryMedia( const idDict *dict );
+		CacheDictionaryMedia( dict: idDict ):void { throw "placeholder"; }
 ////	virtual void			SpawnPlayer( int clientNum );
 ////	virtual gameReturn_t	RunFrame( const usercmd_t *clientCmds );
 ////	virtual bool			Draw( int clientNum );
@@ -388,12 +388,12 @@ class idGameLocal extends idGame {
 ////	bool					CheatsOk( bool requirePlayer = true );
 ////	void					SetSkill( int value );
 ////	gameState_t				GameState( void ) const;
-////	idEntity *				SpawnEntityType( const idTypeInfo &classdef, const idDict *args = NULL, bool bIsClientReadSnapshot = false );
-////	bool					SpawnEntityDef( const idDict &args, idEntity **ent = NULL, bool setDefaults = true );
+////	idEntity *				SpawnEntityType( const idTypeInfo &classdef, const idDict *args = NULL, bIsClientReadSnapshot = false );
+////	bool					SpawnEntityDef( const idDict &args, idEntity **ent = NULL, setDefaults = true );
 ////	int						GetSpawnId( const ent: idEntity ) const;
 
-////	const idDeclEntityDef *	FindEntityDef( name:string, bool makeDefault = true ) const;
-////	const idDict *			FindEntityDefDict( name:string, bool makeDefault = true ) const;
+	FindEntityDef ( name: string, makeDefault = true ): idDeclEntityDef { throw "placeholder"; }
+////	const idDict *			FindEntityDefDict( name:string, makeDefault = true ) const;
 	FindEntityDefDict ( name: string, makeDefault = true ): idDict { throw "placeholder"; }
 
 ////	void					RegisterEntity( ent: idEntity );

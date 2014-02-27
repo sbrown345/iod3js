@@ -114,8 +114,8 @@ class idGame {
 //	// Shut down the current map.
 //	virtual void				MapShutdown( void ) = 0;
 //
-//	// Caches media referenced from in key/value pairs in the given dictionary.
-//	virtual void				CacheDictionaryMedia( const idDict *dict ) = 0;
+	// Caches media referenced from in key/value pairs in the given dictionary.
+	CacheDictionaryMedia ( dict: idDict ): void { throw "placeholder"; }
 //
 //	// Spawns the player entity to be used by the client.
 //	virtual void				SpawnPlayer( int clientNum ) = 0;

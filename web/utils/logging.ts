@@ -8,7 +8,7 @@ JavaScript Debug Helpers
 var LOG_TO_CONSOLE = false;
 var SKIP_ALL_LOGGING = false;
 
-var DEBUG_LOG_MODE = false;
+var DEBUG_LOG_MODE = true;
 function isd(v: boolean): boolean { return DEBUG_LOG_MODE && v; }
 
 var DEBUG_WEBGL_UTIL = isd( false );

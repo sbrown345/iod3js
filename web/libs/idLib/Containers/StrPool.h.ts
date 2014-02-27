@@ -89,41 +89,41 @@ class idStrPool {
 	////ID_INLINE void idStrPool::SetCaseSensitive( bool caseSensitive ) {
 	////	this.caseSensitive = caseSensitive;
 	////}
-	////
-	/////*
-	////================
-	////idStrPool::AllocString
-	////================
-	////*/
-	////ID_INLINE const idPoolStr *idStrPool::AllocString( const char *string ) {
-	////	int i, hash;
-	////	idPoolStr *poolStr;
-	////
-	////	hash = this.poolHash.GenerateKey( string, this.caseSensitive );
-	////	if ( this.caseSensitive ) {
-	////		for ( i = this.poolHash.First( hash ); i != -1; i = this.poolHash.Next( i ) ) {
-	////			if ( this.pool[i].Cmp( string ) == 0 ) {
-	////				this.pool[i].numUsers++;
-	////				return this.pool[i];
-	////			}
-	////		}
-	////	} else {
-	////		for ( i = this.poolHash.First( hash ); i != -1; i = this.poolHash.Next( i ) ) {
-	////			if ( this.pool[i].Icmp( string ) == 0 ) {
-	////				this.pool[i].numUsers++;
-	////				return this.pool[i];
-	////			}
-	////		}
-	////	}
-	////
-	////	poolStr = new idPoolStr;
-	////	*static_cast<idStr *>(poolStr) = string;
-	////	poolStr.pool = this;
-	////	poolStr.numUsers = 1;
-	////	this.poolHash.Add( hash, this.pool.Append( poolStr ) );
-	////	return poolStr;
-	////}
 	
+	/*
+	================
+	idStrPool::AllocString
+	================
+	*/
+	AllocString ( $string: string ): idPoolStr {
+		var /*int */i: number, hash: number;
+		var poolStr: idPoolStr;
+
+		hash = this.poolHash.GenerateKey( $string, this.caseSensitive );
+		if ( this.caseSensitive ) {
+			for ( i = this.poolHash.First( hash ); i != -1; i = this.poolHash.Next( i ) ) {
+				if ( this.pool[i].Cmp( $string ) == 0 ) {
+					this.pool[i].numUsers++;
+					return this.pool[i];
+				}
+			}
+		} else {
+			for ( i = this.poolHash.First( hash ); i != -1; i = this.poolHash.Next( i ) ) {
+				if ( this.pool[i].Icmp( $string ) == 0 ) {
+					this.pool[i].numUsers++;
+					return this.pool[i];
+				}
+			}
+		}
+
+		poolStr = new idPoolStr;
+		( <idStr>( poolStr ) ).equals( $string );
+		poolStr.pool = this;
+		poolStr.numUsers = 1;
+		this.poolHash.Add( hash, this.pool.Append( poolStr ) );
+		return poolStr;
+	}
+
 	/*
 	================
 	idStrPool::FreeString
@@ -159,25 +159,25 @@ class idStrPool {
 		}
 	}
 
-	/////*
-	////================
-	////idStrPool::CopyString
-	////================
-	////*/
-	////ID_INLINE const idPoolStr *idStrPool::CopyString( const idPoolStr *poolStr ) {
-	////
-	////	assert( poolStr.numUsers >= 1 );
-	////
-	////	if ( poolStr.this.pool == this ) {
-	////		// the string is from this pool so just increase the user count
-	////		poolStr.numUsers++;
-	////		return poolStr;
-	////	} else {
-	////		// the string is from another pool so it needs to be re-allocated from this pool.
-	////		return AllocString( poolStr.c_str() );
-	////	}
-	////}
-	////
+	/*
+	================
+	idStrPool::CopyString
+	================
+	*/
+	CopyString ( poolStr: idPoolStr ): idPoolStr {
+
+		assert( poolStr.numUsers >= 1 );
+
+		if ( poolStr.pool == this ) {
+			// the string is from this pool so just increase the user count
+			poolStr.numUsers++;
+			return poolStr;
+		} else {
+			// the string is from another pool so it needs to be re-allocated from this pool.
+			return this.AllocString( poolStr.c_str ( ) );
+		}
+	}
+
 	/////*
 	////================
 	////idStrPool::Clear

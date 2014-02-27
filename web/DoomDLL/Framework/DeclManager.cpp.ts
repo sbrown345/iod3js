@@ -1957,7 +1957,7 @@ idDeclLocal.prototype.SetTextLocal = function ( text: Uint8Array, /*const int */
 ////	char *buffer;
 ////	idFile *file;
 
-////	common.Printf( "Writing \'%s\' to \'%s\'...\n", GetName(), GetFileName() );
+////	common.Printf( "Writing \'%s\' to \'%s\'...\n", GetName(), this.GetFileName() );
 
 ////	if ( sourceFile == &declManagerLocal.implicitDecls ) {
 ////		common.Warning( "Can't save implicit declaration %s.", GetName() );
@@ -1972,16 +1972,16 @@ idDeclLocal.prototype.SetTextLocal = function ( text: Uint8Array, /*const int */
 ////	// read original file
 ////	if ( sourceFile.fileSize ) {
 
-////		file = fileSystem.OpenFileRead( GetFileName() );
+////		file = fileSystem.OpenFileRead( this.GetFileName() );
 ////		if ( !file ) {
 ////			Mem_Free( buffer );
-////			common.Warning( "Couldn't open %s for reading.", GetFileName() );
+////			common.Warning( "Couldn't open %s for reading.", this.GetFileName() );
 ////			return false;
 ////		}
 
 ////		if ( file.Length() != sourceFile.fileSize || file.Timestamp() != sourceFile.timestamp ) {
 ////			Mem_Free( buffer );
-////			common.Warning( "The file %s has been modified outside of the engine.", GetFileName() );
+////			common.Warning( "The file %s has been modified outside of the engine.", this.GetFileName() );
 ////			return false;
 ////		}
 
@@ -1990,7 +1990,7 @@ idDeclLocal.prototype.SetTextLocal = function ( text: Uint8Array, /*const int */
 
 ////		if ( MD5_BlockChecksum( buffer, oldFileLength ) != sourceFile.checksum ) {
 ////			Mem_Free( buffer );
-////			common.Warning( "The file %s has been modified outside of the engine.", GetFileName() );
+////			common.Warning( "The file %s has been modified outside of the engine.", this.GetFileName() );
 ////			return false;
 ////		}
 ////	}
@@ -2002,10 +2002,10 @@ idDeclLocal.prototype.SetTextLocal = function ( text: Uint8Array, /*const int */
 ////	memcpy( buffer + sourceTextOffset, declText, textLength );
 
 ////	// write out new file
-////	file = fileSystem.OpenFileWrite( GetFileName(), "fs_devpath" );
+////	file = fileSystem.OpenFileWrite( this.GetFileName(), "fs_devpath" );
 ////	if ( !file ) {
 ////		Mem_Free( buffer );
-////		common.Warning( "Couldn't open %s for writing.", GetFileName() );
+////		common.Warning( "Couldn't open %s for writing.", this.GetFileName() );
 ////		return false;
 ////	}
 ////	file.Write( buffer, newFileLength );
@@ -2014,7 +2014,7 @@ idDeclLocal.prototype.SetTextLocal = function ( text: Uint8Array, /*const int */
 ////	// set new file size, checksum and timestamp
 ////	sourceFile.fileSize = newFileLength;
 ////	sourceFile.checksum = MD5_BlockChecksum( buffer, newFileLength );
-////	fileSystem.ReadFile( GetFileName(), NULL, &sourceFile.timestamp );
+////	fileSystem.ReadFile( this.GetFileName(), NULL, &sourceFile.timestamp );
 
 ////	// free buffer
 ////	Mem_Free( buffer );
@@ -2045,7 +2045,7 @@ idDeclLocal.prototype.SetTextLocal = function ( text: Uint8Array, /*const int */
 ////		return false;
 ////	}
 
-////	newLength = fileSystem.ReadFile( GetFileName(), NULL, &newTimestamp );
+////	newLength = fileSystem.ReadFile( this.GetFileName(), NULL, &newTimestamp );
 
 ////	if ( newLength != sourceFile.fileSize || newTimestamp != sourceFile.timestamp ) {
 ////		return true;
@@ -2113,11 +2113,10 @@ idDeclLocal::Parse
 */
 idDeclLocal.prototype.Parse = function ( text: string, textLength: number ): boolean {
 	var src = new idLexer ( );
-	todoThrow ( );
-	//src.LoadMemory( text, textLength, GetFileName(), GetLineNum() );
-	//src.SetFlags( DECL_LEXER_FLAGS );
-	//src.SkipUntilString( "{" );
-	//src.SkipBracedSection( false );
+	src.LoadMemory( text, textLength, this.GetFileName(), this.GetLineNum() );
+	src.SetFlags( DECL_LEXER_FLAGS );
+	src.SkipUntilString( "{" );
+	src.SkipBracedSection( false );
 	return true;
 };
 

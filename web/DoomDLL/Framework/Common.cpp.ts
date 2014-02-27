@@ -94,8 +94,8 @@ var com_videoRam = new idCVar( "com_videoRam", "64", CVAR_INTEGER | CVAR_SYSTEM 
 ////int				com_frameTime;			// time for the current frame in milliseconds
 ////int				com_frameNumber;		// variable frame number
 ////volatile int	com_ticNumber;			// 60 hz tics
-////int				com_editors;			// currently opened editor(s)
-////bool			com_editorActive;		//  true if an editor has focus
+var com_editors:number;			// currently opened editor(s)
+var com_editorActive:boolean;		//  true if an editor has focus
 
 ////#ifdef _WIN32
 ////HWND			com_hwndMsg = NULL;
