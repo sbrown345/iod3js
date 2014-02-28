@@ -690,15 +690,17 @@ class idStr {
 		return idStr.Icmp( this, text );
 	}
 
-////ID_INLINE int idStr::Icmpn( text:string, int n ) const {
-////	assert( text );
-////	return idStr::Icmpn( this.data, text, n );
-////}
+	Icmpn(text: string, n:number): number;
+	Icmpn(text: idStr, n: number): number;
+	Icmpn(text: any, n: number): number {
+		assert(text !== null && text !== undefined);
+		return idStr.Icmpn(this, text, n);
+	}
 
-////ID_INLINE int idStr::IcmpPrefix( text:string ) const {
-////	assert( text );
-////	return idStr::Icmpn( this.data, text, strlen( text ) );
-////}
+//ID_INLINE int idStr::IcmpPrefix( text:string ) const {
+//	assert( text );
+//	return idStr::Icmpn( this.data, text, strlen( text ) );
+//}	
 
 ////ID_INLINE int idStr::IcmpNoColor( text:string ) const {
 ////	assert( text );
@@ -2156,78 +2158,25 @@ idStr::Icmp
 idStr::Icmpn
 ================
 */
-int idStr::Icmpn( const char *s1, const char *s2, int n ) {
-	int c1, c2, d;
+	static Icmpn ( s1: string, s2: string, n: number ): number
+	static Icmpn ( s1: idStr, s2: idStr, n: number ): number
+	static Icmpn ( s1: any, s2: any, n: number ): number {
+		var ls1 = this.getString( s1 ).toLowerCase ( );
+		var ls2 = this.getString( s2 ).toLowerCase ( );
 
-	assert( n >= 0 );
+		ls1 = ls1.substr( 0, n );
+		ls2 = ls2.substr( 0, n );
 
-	do {
-		c1 = *s1++;
-		c2 = *s2++;
-
-		if ( !n-- ) {
-			return 0;		// strings are equal until end point
+		if ( ls1 == ls2 ) {
+			return 0;
 		}
 
-		d = c1 - c2;
-		while( d ) {
-			if ( c1 <= 'Z' && c1 >= 'A' ) {
-				d += ('a' - 'A');
-				if ( !d ) {
-					break;
-				}
-			}
-			if ( c2 <= 'Z' && c2 >= 'A' ) {
-				d -= ('a' - 'A');
-				if ( !d ) {
-					break;
-				}
-			}
-			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
+		if ( ls1 > ls2 ) {
+			return 1;
 		}
-	} while( c1 );
 
-	return 0;		// strings are equal
-}
-
-/////*
-////================
-////idStr::Icmp
-////================
-////*/
-////int idStr::IcmpNoColor( const char *s1, const char *s2 ) {
-////	int c1, c2, d;
-
-////	do {
-////		while ( idStr::IsColor( s1 ) ) {
-////			s1 += 2;
-////		}
-////		while ( idStr::IsColor( s2 ) ) {
-////			s2 += 2;
-////		}
-////		c1 = *s1++;
-////		c2 = *s2++;
-
-////		d = c1 - c2;
-////		while( d ) {
-////			if ( c1 <= 'Z' && c1 >= 'A' ) {
-////				d += ('a' - 'A');
-////				if ( !d ) {
-////					break;
-////				}
-////			}
-////			if ( c2 <= 'Z' && c2 >= 'A' ) {
-////				d -= ('a' - 'A');
-////				if ( !d ) {
-////					break;
-////				}
-////			}
-////			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
-////		}
-////	} while( c1 );
-
-////	return 0;		// strings are equal
-////}
+		return -1;
+	}
 
 /*
 ================
