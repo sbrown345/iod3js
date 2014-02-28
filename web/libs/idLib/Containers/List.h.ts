@@ -713,8 +713,8 @@ Searches for the specified data in the list and returns it's index.  Returns -1 
 
 		for ( i = 0; i < this.num; i++ ) {
 			//if ( this.list[i] == obj ) { 
-			// maybe check if it's got the method equalsEquals first?
-			if ( this.list[i].equalsEquals(obj) ) {
+			// maybe check if it's got the method equalTo first?
+			if ( this.list[i].equalTo(obj) ) {
 				return i;
 			}
 		}

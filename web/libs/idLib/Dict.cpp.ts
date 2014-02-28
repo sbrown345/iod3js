@@ -60,6 +60,10 @@ class idKeyValue {
 //	size_t				Size( void ) const { return sizeof( *this ) + key.Size() + value.Size(); }
 
 //	bool				operator==( const idKeyValue &kv ) const { return ( key == kv.key && value == kv.value ); }
+	equalTo(kv: idKeyValue): boolean {
+		return ( this.key.data == kv.key.data && this.value.data == kv.value.data );
+	}
+
 
 //private:
 	key = new idPoolStr;

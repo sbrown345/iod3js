@@ -653,16 +653,16 @@ class idStr {
 ////	return *this;
 ////}
 
-	equalsEquals ( other: idStr ): boolean
-	equalsEquals ( other: string ): boolean
-	equalsEquals ( other: any ): boolean {
-		return idStr.equalsEquals( this, other );
+	equalTo ( other: idStr ): boolean
+	equalTo ( other: string ): boolean
+	equalTo ( other: any ): boolean {
+		return idStr.equalTo( this, other );
 	}
 
-	static equalsEquals ( a: idStr, b: idStr ): boolean
-	static equalsEquals ( a: idStr, b: string ): boolean
-	static equalsEquals ( a: string, b: idStr ): boolean
-	static equalsEquals ( a: any, b: any ): boolean {
+	static equalTo ( a: idStr, b: idStr ): boolean
+	static equalTo ( a: idStr, b: string ): boolean
+	static equalTo ( a: string, b: idStr ): boolean
+	static equalTo ( a: any, b: any ): boolean {
 		var aStr: string = idStr.getString( a ),
 			bStr: string = idStr.getString( b );
 		return aStr === bStr;

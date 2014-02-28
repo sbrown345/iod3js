@@ -333,7 +333,6 @@ idGameLocal.prototype.Init = function ( ): void {
 	this.Printf( "...%d aas types\n", this.aasList.Num() );
 	this.Printf( "game initialized.\n" );
 	this.Printf( "--------------------------------------\n" );
-	todoThrow();
 };
 
 /////*
