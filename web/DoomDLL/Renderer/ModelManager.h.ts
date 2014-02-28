@@ -63,7 +63,7 @@ class idRenderModelManager {
 ////
 ////	// returns NULL if modelName is NULL or an empty string, otherwise
 ////	// it will create a default model if not loadable
-////	virtual	idRenderModel *	FindModel( const char *modelName ) = 0;
+	FindModel(modelName: string): idRenderModel { throw "placeholder"; }
 ////
 ////	// returns NULL if not loadable
 ////	virtual	idRenderModel *	CheckModel( const char *modelName ) = 0;

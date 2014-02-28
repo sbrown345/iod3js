@@ -45,7 +45,7 @@
 ////idUserInterfaceManager *	uiManager = NULL;
 ////idDeclManager *				declManager = NULL;
 ////idAASFileManager *			AASFileManager = NULL;
-////idCollisionModelManager *	collisionModelManager = NULL;
+var collisionModelManager:idCollisionModelManager = null;
 ////idCVar *					idCVar::staticVars = NULL;
 
 ////idCVar com_forceGenericSIMD( "com_forceGenericSIMD", "0", CVAR_BOOL|CVAR_SYSTEM, "force generic platform independent SIMD" );
@@ -1516,8 +1516,8 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////	const soundShaderParms_t *parms;
 ////	idStr soundName;
 
-////	for ( i = 0; i < declManager.GetNumDecls( DECL_SOUND ); i++ ) {
-////		soundShader = static_cast<const idSoundShader *>(declManager.DeclByIndex( DECL_SOUND, i, false ));
+////	for ( i = 0; i < declManager.GetNumDecls( declType_t.DECL_SOUND ); i++ ) {
+////		soundShader = static_cast<const idSoundShader *>(declManager.DeclByIndex( declType_t.DECL_SOUND, i, false ));
 ////		parms = soundShader.GetParms();
 
 ////		if ( soundShader.EverReferenced() && soundShader.GetState() != DS_DEFAULTED ) {
@@ -1640,162 +1640,161 @@ merging the entitydef.  It could be done post-merge, but that would
 avoid the fast pre-cache check associated with each entityDef
 ===================
 */
-idGameLocal.prototype.CacheDictionaryMedia = function( dict:idDict ):void {
-	var kv:idKeyValue;
-todoThrow ( );
-	////if ( !dict ) {
-	////	if ( cvarSystem.GetCVarBool( "com_makingBuild") ) {
-	////		DumpOggSounds();
-	////	}
-	////	return;
-	////}
+idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
+	var kv: idKeyValue;
+	if ( !dict ) {
+		if ( cvarSystem.GetCVarBool( "com_makingBuild" ) ) {
+			this.DumpOggSounds ( );
+		}
+		return;
+	}
 
-	////if ( cvarSystem.GetCVarBool( "com_makingBuild" ) ) {
-	////	GetShakeSounds( dict );
-	////}
+	if ( cvarSystem.GetCVarBool( "com_makingBuild" ) ) {
+		this.GetShakeSounds( dict );
+	}
 
-	////kv = dict.MatchPrefix( "model" );
-	////while( kv ) {
-	////	if ( kv.GetValue().Length() ) {
-	////		declManager.MediaPrint( "Precaching model %s\n", kv.GetValue().c_str() );
-	////		// precache model/animations
-	////		if ( declManager.FindType( DECL_MODELDEF, kv.GetValue(), false ) == NULL ) {
-	////			// precache the render model
-	////			renderModelManager.FindModel( kv.GetValue() );
-	////			// precache .cm files only
-	////			collisionModelManager.LoadModel( kv.GetValue(), true );
-	////		}
-	////	}
-	////	kv = dict.MatchPrefix( "model", kv );
-	////}
+	kv = dict.MatchPrefix( "model" );
+	while ( kv ) {
+		if ( kv.GetValue ( ).Length ( ) ) {
+			declManager.MediaPrint( "Precaching model %s\n", kv.GetValue ( ).c_str ( ) );
+			// precache model/animations
+			if ( declManager.FindType( declType_t.DECL_MODELDEF, kv.GetValue ( ).data, false ) == null ) {
+				// precache the render model
+				renderModelManager.FindModel( kv.GetValue ( ).data );
+				// precache .cm files only
+				collisionModelManager.LoadModel( kv.GetValue ( ).data, true );
+			}
+		}
+		kv = dict.MatchPrefix( "model", kv );
+	}
 
-	////kv = dict.FindKey( "s_shader" );
-	////if ( kv && kv.GetValue().Length() ) {
-	////	declManager.FindType( DECL_SOUND, kv.GetValue() );
-	////}
+	kv = dict.FindKey( "s_shader" );
+	if ( kv && kv.GetValue ( ).Length ( ) ) {
+		declManager.FindType( declType_t.DECL_SOUND, kv.GetValue ( ).data );
+	}
 
-	////kv = dict.MatchPrefix( "snd", NULL );
-	////while( kv ) {
-	////	if ( kv.GetValue().Length() ) {
-	////		declManager.FindType( DECL_SOUND, kv.GetValue() );
-	////	}
-	////	kv = dict.MatchPrefix( "snd", kv );
-	////}
+	kv = dict.MatchPrefix( "snd", null );
+	while ( kv ) {
+		if ( kv.GetValue ( ).Length ( ) ) {
+			declManager.FindType( declType_t.DECL_SOUND, kv.GetValue ( ).data );
+		}
+		kv = dict.MatchPrefix( "snd", kv );
+	}
 
 
-	////kv = dict.MatchPrefix( "gui", NULL );
-	////while( kv ) {
-	////	if ( kv.GetValue().Length() ) {
-	////		if ( !idStr::Icmp( kv.GetKey(), "gui_noninteractive" )
-	////			|| !idStr::Icmpn( kv.GetKey(), "gui_parm", 8 )	
-	////			|| !idStr::Icmp( kv.GetKey(), "gui_inventory" ) ) {
-	////			// unfortunate flag names, they aren't actually a gui
-	////		} else {
-	////			declManager.MediaPrint( "Precaching gui %s\n", kv.GetValue().c_str() );
-	////			idUserInterface *gui = uiManager.Alloc();
-	////			if ( gui ) {
-	////				gui.InitFromFile( kv.GetValue() );
-	////				uiManager.DeAlloc( gui );
-	////			}
-	////		}
-	////	}
-	////	kv = dict.MatchPrefix( "gui", kv );
-	////}
+	kv = dict.MatchPrefix( "gui", null );
+	while ( kv ) {
+		if ( kv.GetValue ( ).Length ( ) ) {
+			if ( !idStr.Icmp( kv.GetKey ( ), "gui_noninteractive" )
+				|| !idStr.Icmpn( kv.GetKey ( ), "gui_parm", 8 )
+				|| !idStr.Icmp( kv.GetKey ( ), "gui_inventory" ) ) {
+				// unfortunate flag names, they aren't actually a gui
+			} else {
+				declManager.MediaPrint( "Precaching gui %s\n", kv.GetValue ( ).c_str ( ) );
+				var gui = uiManager.Alloc ( );
+				if ( gui ) {
+					gui.InitFromFile( kv.GetValue ( ).data );
+					uiManager.DeAlloc( gui );
+				}
+			}
+		}
+		kv = dict.MatchPrefix( "gui", kv );
+	}
 
-	////kv = dict.FindKey( "texture" );
-	////if ( kv && kv.GetValue().Length() ) {
-	////	declManager.FindType( DECL_MATERIAL, kv.GetValue() );
-	////}
+	kv = dict.FindKey( "texture" );
+	if ( kv && kv.GetValue ( ).Length ( ) ) {
+		declManager.FindType( declType_t.DECL_MATERIAL, kv.GetValue ( ).data );
+	}
 
-	////kv = dict.MatchPrefix( "mtr", NULL );
-	////while( kv ) {
-	////	if ( kv.GetValue().Length() ) {
-	////		declManager.FindType( DECL_MATERIAL, kv.GetValue() );
-	////	}
-	////	kv = dict.MatchPrefix( "mtr", kv );
-	////}
+	kv = dict.MatchPrefix( "mtr", null );
+	while ( kv ) {
+		if ( kv.GetValue ( ).Length ( ) ) {
+			declManager.FindType( declType_t.DECL_MATERIAL, kv.GetValue ( ).data );
+		}
+		kv = dict.MatchPrefix( "mtr", kv );
+	}
 
-	////// handles hud icons
-	////kv = dict.MatchPrefix( "inv_icon", NULL );
-	////while ( kv ) {
-	////	if ( kv.GetValue().Length() ) {
-	////		declManager.FindType( DECL_MATERIAL, kv.GetValue() );
-	////	}
-	////	kv = dict.MatchPrefix( "inv_icon", kv );
-	////}
+	// handles hud icons
+	kv = dict.MatchPrefix( "inv_icon", null );
+	while ( kv ) {
+		if ( kv.GetValue ( ).Length ( ) ) {
+			declManager.FindType( declType_t.DECL_MATERIAL, kv.GetValue ( ).data );
+		}
+		kv = dict.MatchPrefix( "inv_icon", kv );
+	}
 
-	////// handles teleport fx.. this is not ideal but the actual decision on which fx to use
-	////// is handled by script code based on the teleport number
-	////kv = dict.MatchPrefix( "teleport", NULL );
-	////if ( kv && kv.GetValue().Length() ) {
-	////	int teleportType = atoi( kv.GetValue() );
-	////	const char *p = ( teleportType ) ? va( "fx/teleporter%i.fx", teleportType ) : "fx/teleporter.fx";
-	////	declManager.FindType( DECL_FX, p );
-	////}
+	// handles teleport fx.. this is not ideal but the actual decision on which fx to use
+	// is handled by script code based on the teleport number
+	kv = dict.MatchPrefix( "teleport", null );
+	if ( kv && kv.GetValue ( ).Length ( ) ) {
+		var teleportType = atoi( kv.GetValue ( ).data );
+		var p = ( teleportType ) ? va( "fx/teleporter%i.fx", teleportType ) : "fx/teleporter.fx";
+		declManager.FindType( declType_t.DECL_FX, p );
+	}
 
-	////kv = dict.MatchPrefix( "fx", NULL );
-	////while( kv ) {
-	////	if ( kv.GetValue().Length() ) {
-	////		declManager.MediaPrint( "Precaching fx %s\n", kv.GetValue().c_str() );
-	////		declManager.FindType( DECL_FX, kv.GetValue() );
-	////	}
-	////	kv = dict.MatchPrefix( "fx", kv );
-	////}
+	kv = dict.MatchPrefix( "fx", null );
+	while ( kv ) {
+		if ( kv.GetValue ( ).Length ( ) ) {
+			declManager.MediaPrint( "Precaching fx %s\n", kv.GetValue ( ).c_str ( ) );
+			declManager.FindType( declType_t.DECL_FX, kv.GetValue ( ).data );
+		}
+		kv = dict.MatchPrefix( "fx", kv );
+	}
 
-	////kv = dict.MatchPrefix( "smoke", NULL );
-	////while( kv ) {
-	////	if ( kv.GetValue().Length() ) {
-	////		idStr prtName = kv.GetValue();
-	////		int dash = prtName.Find('-');
-	////		if ( dash > 0 ) {
-	////			prtName = prtName.Left( dash );
-	////		}
-	////		declManager.FindType( DECL_PARTICLE, prtName );
-	////	}
-	////	kv = dict.MatchPrefix( "smoke", kv );
-	////}
+	kv = dict.MatchPrefix( "smoke", null );
+	while ( kv ) {
+		if ( kv.GetValue ( ).Length ( ) ) {
+			var prtName = kv.GetValue ( );
+			var /*int */dash = prtName.Find( '-' );
+			if ( dash > 0 ) {
+				prtName = prtName.Left( dash );
+			}
+			declManager.FindType( declType_t.DECL_PARTICLE, prtName.data );
+		}
+		kv = dict.MatchPrefix( "smoke", kv );
+	}
 
-	////kv = dict.MatchPrefix( "skin", NULL );
-	////while( kv ) {
-	////	if ( kv.GetValue().Length() ) {
-	////		declManager.MediaPrint( "Precaching skin %s\n", kv.GetValue().c_str() );
-	////		declManager.FindType( DECL_SKIN, kv.GetValue() );
-	////	}
-	////	kv = dict.MatchPrefix( "skin", kv );
-	////}
+	kv = dict.MatchPrefix( "skin", null );
+	while ( kv ) {
+		if ( kv.GetValue ( ).Length ( ) ) {
+			declManager.MediaPrint( "Precaching skin %s\n", kv.GetValue ( ).c_str ( ) );
+			declManager.FindType( declType_t.DECL_SKIN, kv.GetValue ( ).data );
+		}
+		kv = dict.MatchPrefix( "skin", kv );
+	}
 
-	////kv = dict.MatchPrefix( "def", NULL );
-	////while( kv ) {
-	////	if ( kv.GetValue().Length() ) {
-	////		FindEntityDef( kv.GetValue().c_str(), false );
-	////	}
-	////	kv = dict.MatchPrefix( "def", kv );
-	////}
+	kv = dict.MatchPrefix( "def", null );
+	while ( kv ) {
+		if ( kv.GetValue ( ).Length ( ) ) {
+			this.FindEntityDef( kv.GetValue ( ).c_str ( ), false );
+		}
+		kv = dict.MatchPrefix( "def", kv );
+	}
 
-	////kv = dict.MatchPrefix( "pda_name", NULL );
-	////while( kv ) {
-	////	if ( kv.GetValue().Length() ) {
-	////		declManager.FindType( DECL_PDA, kv.GetValue().c_str(), false );
-	////	}
-	////	kv = dict.MatchPrefix( "pda_name", kv );
-	////}
+	kv = dict.MatchPrefix( "pda_name", null );
+	while ( kv ) {
+		if ( kv.GetValue ( ).Length ( ) ) {
+			declManager.FindType( declType_t.DECL_PDA, kv.GetValue ( ).c_str ( ), false );
+		}
+		kv = dict.MatchPrefix( "pda_name", kv );
+	}
 
-	////kv = dict.MatchPrefix( "video", NULL );
-	////while( kv ) {
-	////	if ( kv.GetValue().Length() ) {
-	////		declManager.FindType( DECL_VIDEO, kv.GetValue().c_str(), false );
-	////	}
-	////	kv = dict.MatchPrefix( "video", kv );
-	////}
+	kv = dict.MatchPrefix( "video", null );
+	while ( kv ) {
+		if ( kv.GetValue ( ).Length ( ) ) {
+			declManager.FindType( declType_t.DECL_VIDEO, kv.GetValue ( ).c_str ( ), false );
+		}
+		kv = dict.MatchPrefix( "video", kv );
+	}
 
-	////kv = dict.MatchPrefix( "audio", NULL );
-	////while( kv ) {
-	////	if ( kv.GetValue().Length() ) {
-	////		declManager.FindType( DECL_AUDIO, kv.GetValue().c_str(), false );
-	////	}
-	////	kv = dict.MatchPrefix( "audio", kv );
-	////}
-}
+	kv = dict.MatchPrefix( "audio", null );
+	while ( kv ) {
+		if ( kv.GetValue ( ).Length ( ) ) {
+			declManager.FindType( declType_t.DECL_AUDIO, kv.GetValue ( ).c_str ( ), false );
+		}
+		kv = dict.MatchPrefix( "audio", kv );
+	}
+};
 
 /////*
 ////===========

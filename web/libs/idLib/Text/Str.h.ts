@@ -917,9 +917,9 @@ class idStr {
 ////	return idStr::Filter( filter, this.data, casesensitive );
 ////}
 
-////ID_INLINE const char *idStr::Left( int len, idStr &result ) const {
-////	return Mid( 0, len, result );
-////}
+	Left_Result ( /*int*/ len: number, result: idStr ): string {
+		return this.Mid_Result( 0, len, result );
+	}
 
 	Right_Result ( /*int */len: number, result: idStr ): string {
 		if ( len >= this.Length ( ) ) {
@@ -929,9 +929,9 @@ class idStr {
 		return this.Mid_Result( this.Length ( ) - len, len, result );
 	}
 
-////ID_INLINE idStr idStr::Left( int len ) const {
-////	return Mid( 0, len );
-////}
+	Left ( /*int */len: number ): idStr {
+		return this.Mid( 0, len );
+	}
 
 	Right ( /*int */len: number ): idStr {
 		if ( len >= this.Length ( ) ) {
@@ -2138,9 +2138,11 @@ idStr::Icmp
 */
 	static Icmp ( s1: string, s2: string ): number
 	static Icmp ( s1: idStr, s2: idStr ): number
+	static Icmp ( s1: string, s2: idStr ): number
+	static Icmp ( s1: idStr, s2: string ): number
 	static Icmp ( s1: any, s2: any ): number {
-	    var ls1 = this.getString( s1 ).toLowerCase ( );
-	    var ls2 = this.getString( s2 ).toLowerCase ( );
+		var ls1 = this.getString( s1 ).toLowerCase ( );
+		var ls2 = this.getString( s2 ).toLowerCase ( );
 
 		if ( ls1 == ls2 ) {
 			return 0;
@@ -2160,6 +2162,8 @@ idStr::Icmpn
 */
 	static Icmpn ( s1: string, s2: string, n: number ): number
 	static Icmpn ( s1: idStr, s2: idStr, n: number ): number
+	static Icmpn ( s1: string, s2: idStr, n: number ): number
+	static Icmpn ( s1: idStr, s2: string, n: number ): number
 	static Icmpn ( s1: any, s2: any, n: number ): number {
 		var ls1 = this.getString( s1 ).toLowerCase ( );
 		var ls2 = this.getString( s2 ).toLowerCase ( );

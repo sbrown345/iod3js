@@ -107,14 +107,14 @@ class trace_t {
 		this.c.init ( );
 	}
 };
-////
-////typedef int cmHandle_t;
-////
-////#define CM_CLIP_EPSILON		0.25f			// always stay this distance away from any model
-////#define CM_BOX_EPSILON		1.0f			// should always be larger than clip epsilon
-////#define CM_MAX_TRACE_DIST	4096.0f			// maximum distance a trace model may be traced, point traces are unlimited
-////
-////class idCollisionModelManager {
+//
+//typedef int cmHandle_t;
+//
+var CM_CLIP_EPSILON = 0.25;			// always stay this distance away from any model
+var CM_BOX_EPSILON = 1.0;			// should always be larger than clip epsilon
+var CM_MAX_TRACE_DIST = 4096.0;			// maximum distance a trace model may be traced, point traces are unlimited
+
+class idCollisionModelManager {
 ////public:
 ////	virtual					~idCollisionModelManager( void ) {}
 ////
@@ -124,7 +124,7 @@ class trace_t {
 ////	virtual void			FreeMap( void ) = 0;
 ////
 ////	// Gets the clip handle for a model.
-////	virtual cmHandle_t		LoadModel( const char *modelName, const bool precache ) = 0;
+		LoadModel(modelName: string, precache: boolean): number/*cmHandle_t */{ throw "placeholder"; }
 ////	// Sets up a trace model for collision with other trace models.
 ////	virtual cmHandle_t		SetupTrmModel( const idTraceModel &trm, const idMaterial *material ) = 0;
 ////	// Creates a trace model from a collision model, returns true if succesfull.
@@ -171,7 +171,7 @@ class trace_t {
 ////	virtual void			ListModels( void ) = 0;
 ////	// Writes a collision model file for the given map entity.
 ////	virtual bool			WriteCollisionModelForMapEntity( const idMapEntity *mapEnt, const char *filename, const bool testTraceModel = true ) = 0;
-////};
+}
 ////
 ////extern idCollisionModelManager *		collisionModelManager;
 ////

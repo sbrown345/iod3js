@@ -117,7 +117,7 @@ CommonInit():void {
 	this.hasSubview = false;
 	this.allowOverlays = true;
 	this.unsmoothedTangents = false;
-	this.gui = NULL;
+	this.gui = null;
 	this.deformRegisters = new Int32Array( 4 );//this.memset( deformRegisters, 0, sizeof( deformRegisters ) );
 	this.editorAlpha = 1.0;
 	this.spectrum = 0;

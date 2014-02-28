@@ -166,20 +166,20 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 	Alloc ( ): idUserInterface {
 		return new idUserInterfaceLocal ( );
 	}
-//
-//void idUserInterfaceManagerLocal::DeAlloc( idUserInterface *gui ) {
-//	if ( gui ) {
-//		int c = this.guis.Num();
-//		for ( int i = 0; i < c; i++ ) {
-//			if ( this.guis[i] == gui ) {
-//				delete this.guis[i];
-//				this.guis.RemoveIndex( i );
-//				return;
-//			}
-//		}
-//	}
-//}
-//
+
+	DeAlloc ( gui: idUserInterface ): void {
+		if ( gui ) {
+			var /*int */c = this.guis.Num ( );
+			for ( var i = 0; i < c; i++ ) {
+				if ( this.guis[i] == gui ) {
+					delete this.guis[i];
+					this.guis.RemoveIndex( i );
+					return;
+				}
+			}
+		}
+	}
+
 	FindGui ( qpath: string, autoLoad = false, needUnique = false, forceNOTUnique = false ): idUserInterface {
 		var /*int */c = this.guis.Num ( );
 		todoThrow ( );
@@ -276,8 +276,8 @@ class idUserInterfaceLocal extends idUserInterface {
 //	return interactive;
 //}
 //
-//bool idUserInterfaceLocal::InitFromFile( const char *qpath, bool rebuild, bool cache ) { 
-//
+	InitFromFile ( qpath: string, rebuild = true, cache = true ): boolean {
+		todoThrow ( );
 //	if ( !( qpath && *qpath ) ) { 
 //		// FIXME: Memory leak!!
 //		return false;
@@ -339,8 +339,8 @@ class idUserInterfaceLocal extends idUserInterface {
 //
 //	loading = false;
 //
-//	return true; 
-//}
+		return true;
+	}
 //
 //const char *idUserInterfaceLocal::HandleEvent( const sysEvent_t *event, int _time, bool *updateVisuals ) {
 //

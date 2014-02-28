@@ -248,13 +248,14 @@ Init ():void {
 ////	models.DeleteContents( true );
 ////	hash.Free();
 ////}
-////
-/////*
-////=================
-////idRenderModelManagerLocal::GetModel
-////=================
-////*/
-////idRenderModel *idRenderModelManagerLocal::GetModel( const char *modelName, bool createIfNotFound ) {
+
+/*
+=================
+idRenderModelManagerLocal::GetModel
+=================
+*/
+	GetModel(modelName: string, createIfNotFound: boolean): idRenderModel {
+		todoThrow ( );
 ////	idStr		canonical;
 ////	idStr		extension;
 ////
@@ -289,7 +290,7 @@ Init ():void {
 ////
 ////	// determine which subclass of idRenderModel to initialize
 ////
-////	idRenderModel	*model;
+		var model: idRenderModel;
 ////
 ////	canonical.ExtractFileExtension( extension );
 ////
@@ -339,8 +340,8 @@ Init ():void {
 ////
 ////	AddModel( model );
 ////
-////	return model;
-////}
+		return model;
+	}
 ////
 /////*
 ////=================
@@ -382,14 +383,14 @@ Init ():void {
 ////	delete model;
 ////}
 ////
-/////*
-////=================
-////idRenderModelManagerLocal::FindModel
-////=================
-////*/
-////idRenderModel *idRenderModelManagerLocal::FindModel( const char *modelName ) {
-////	return GetModel( modelName, true );
-////}
+/*
+=================
+idRenderModelManagerLocal::FindModel
+=================
+*/
+	FindModel ( modelName: string ): idRenderModel {
+		return this.GetModel( modelName, true );
+	}
 ////
 /////*
 ////=================

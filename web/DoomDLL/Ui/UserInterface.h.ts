@@ -59,7 +59,7 @@ class idUserInterface {
 //
 //	virtual void				SetUniqued( bool b ) = 0;
 //								// returns false if it failed to load
-//	virtual bool				InitFromFile( const char *qpath, bool rebuild = true, bool cache = true ) = 0;
+	InitFromFile(qpath: string, rebuild = true, cache = true): boolean { throw "placeholder"; }
 //
 //								// handles an event, can return an action string, the caller interprets
 //								// any return and acts accordingly
