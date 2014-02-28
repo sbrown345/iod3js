@@ -7,8 +7,9 @@ JavaScript Debug Helpers
 */
 var LOG_TO_CONSOLE = false;
 var SKIP_ALL_LOGGING = false;
+var LOGGING_WITH_VISUAL_STUDIO = window["Debug"].debuggerEnabled;
 
-var DEBUG_LOG_MODE = true;
+var DEBUG_LOG_MODE = true && !LOGGING_WITH_VISUAL_STUDIO;
 function isd(v: boolean): boolean { return DEBUG_LOG_MODE && v; }
 
 var DEBUG_WEBGL_UTIL = isd( false );
@@ -46,6 +47,8 @@ var dlogConcat = function (arr: any[]): string {
 var dlogOutput = [[]];
 
 function dlogFlush(append = false): void {
+	if (LOGGING_WITH_VISUAL_STUDIO) return;
+
 	for (var i = 0; i < dlogOutput.length; i++) {
 
 		var logText = dlogConcat(dlogOutput[i]);
