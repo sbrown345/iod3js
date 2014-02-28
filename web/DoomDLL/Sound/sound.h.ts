@@ -182,19 +182,19 @@ class idSoundEmitter {
 ////	// for save games.  Index will always be > 0
 ////	virtual	int				Index( void ) const = 0;
 };
-////
-/////*
-////===============================================================================
-////
-////	SOUND WORLD
-////
-////There can be multiple independent sound worlds, just as there can be multiple
-////independent render worlds.  The prime example is the editor sound preview
-////option existing simultaniously with a live game.
-////===============================================================================
-////*/
-////
-////class idSoundWorld {
+
+/*
+===============================================================================
+
+	SOUND WORLD
+
+There can be multiple independent sound worlds, just as there can be multiple
+independent render worlds.  The prime example is the editor sound preview
+option existing simultaniously with a live game.
+===============================================================================
+*/
+
+class idSoundWorld {
 ////public:
 ////	virtual					~idSoundWorld( void ) {}
 ////
@@ -255,17 +255,17 @@ class idSoundEmitter {
 ////	virtual void			SetSlowmo( bool active ) = 0;
 ////	virtual void			SetSlowmoSpeed( /*float*/speed:number ) = 0;
 ////	virtual void			SetEnviroSuit( bool active ) = 0;
-////};
-////
-////
-/////*
-////===============================================================================
-////
-////	SOUND SYSTEM
-////
-////===============================================================================
-////*/
-////
+};
+
+
+/*
+===============================================================================
+
+	SOUND SYSTEM
+
+===============================================================================
+*/
+
 ////typedef struct {
 ////	idStr					name;
 ////	idStr					format;
@@ -280,7 +280,7 @@ class idSoundEmitter {
 ////} soundDecoderInfo_t;
 ////
 ////
-////class idSoundSystem {
+class idSoundSystem {
 ////public:
 ////	virtual					~idSoundSystem( void ) {}
 ////
@@ -343,7 +343,7 @@ class idSoundEmitter {
 ////
 ////	// is EAX support present - -1: disabled at compile time, 0: no suitable hardware, 1: ok, 2: failed to load OpenAL DLL
 ////	virtual int				IsEAXAvailable( void ) = 0;
-////};
+}
 ////
 ////extern idSoundSystem	*soundSystem;
 ////

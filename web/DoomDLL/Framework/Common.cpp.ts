@@ -2966,7 +2966,7 @@ idCommonLocal::InitGame
 		$console.LoadGraphics ( );
 
 		// init journalling, etc
-		eventLoop.Init();
+		eventLoop.Init ( );
 
 		this.PrintLoadingMessage( common.GetLanguageDict ( ).GetString( "#str_04345" ) );
 
@@ -2975,16 +2975,16 @@ idCommonLocal::InitGame
 		cmdSystem.BufferCommandText( cmdExecution_t.CMD_EXEC_APPEND, "exec default.cfg\n" );
 
 		// skip the config file if "safe" is on the command line
-		if ( !this.SafeMode() ) {
-			cmdSystem.BufferCommandText(cmdExecution_t.CMD_EXEC_APPEND, "exec " + CONFIG_FILE + "\n" );
+		if ( !this.SafeMode ( ) ) {
+			cmdSystem.BufferCommandText( cmdExecution_t.CMD_EXEC_APPEND, "exec " + CONFIG_FILE + "\n" );
 		}
-		cmdSystem.BufferCommandText(cmdExecution_t.CMD_EXEC_APPEND, "exec autoexec.cfg\n" );
+		cmdSystem.BufferCommandText( cmdExecution_t.CMD_EXEC_APPEND, "exec autoexec.cfg\n" );
 
 		// reload the language dictionary now that we've loaded config files
-		cmdSystem.BufferCommandText(cmdExecution_t.CMD_EXEC_APPEND, "reloadLanguage\n" );
+		cmdSystem.BufferCommandText( cmdExecution_t.CMD_EXEC_APPEND, "reloadLanguage\n" );
 
 		// run cfg execution
-		cmdSystem.ExecuteCommandBuffer();
+		cmdSystem.ExecuteCommandBuffer ( );
 
 		// re-override anything from the config files with command line args
 		this.StartupVariable( null, false );
@@ -3030,19 +3030,19 @@ idCommonLocal::InitGame
 		// startup the script debugger
 		// DebuggerServerInit();
 
-	this.PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04350" ) );
+		this.PrintLoadingMessage( common.GetLanguageDict ( ).GetString( "#str_04350" ) );
 
-	// load the game dll
-	this.LoadGameDLL();
-		todoThrow();
-////	PrintLoadingMessage( common.GetLanguageDict().GetString( "#str_04351" ) );
+		// load the game dll
+		this.LoadGameDLL ( );
+		this.PrintLoadingMessage( common.GetLanguageDict ( ).GetString( "#str_04351" ) );
 
-////	// init the session
-////	session.Init();
+		// init the session
+		session.Init ( );
 
 ////	// have to do this twice.. first one sets the correct r_mode for the renderer init
 ////	// this time around the backend is all setup correct.. a bit fugly but do not want
 ////	// to mess with all the gl init at this point.. an old vid card will never qualify for 
+		todo( "sysDetect etc" );
 ////	if ( sysDetect ) {
 ////		SetMachineSpec();
 ////		Com_ExecMachineSpec_f( args );
@@ -3050,6 +3050,7 @@ idCommonLocal::InitGame
 ////		cmdSystem.BufferCommandText( CMD_EXEC_NOW, "s_restart\n" );
 ////		cmdSystem.ExecuteCommandBuffer();
 ////	}
+		todoThrow ( );
 	}
 
 /////*

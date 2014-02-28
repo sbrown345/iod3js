@@ -59,14 +59,14 @@
 //} msgBoxType_t;
 //
 //typedef const char * (*HandleGuiCommand_t)( const char * );
-//
-//class idSession {
+
+class idSession {
 //public:
 //	virtual			~idSession() {}
 //
-//	// Called in an orderly fashion at system startup,
-//	// so commands, cvars, files, etc are all available.
-//	virtual	void	Init() = 0;
+	// Called in an orderly fashion at system startup,
+	// so commands, cvars, files, etc are all available.
+	Init(): void { throw "placeholder"; }
 //
 //	// Shut down the session.
 //	virtual	void	Shutdown() = 0;
@@ -91,7 +91,7 @@
 //
 //	// Returns true if a multiplayer game is running.
 //	// CVars and commands are checked differently in multiplayer mode.
-//	virtual bool	IsMultiplayer() = 0;
+	IsMultiplayer ( ): boolean { throw "placeholder"; }
 //
 //	// Processes the given event.
 //	virtual	bool	ProcessEvent( const sysEvent_t *event ) = 0;
@@ -149,16 +149,16 @@
 //
 //	virtual int		GetSaveGameVersion( void ) = 0;
 //
-//	// The render world and sound world used for this session.
-//	idRenderWorld *	rw;
-//	idSoundWorld *	sw;
-//
-//	// The renderer and sound system will write changes to writeDemo.
-//	// Demos can be recorded and played at the same time when splicing.
-//	idDemoFile *	readDemo;
-//	idDemoFile *	writeDemo;
-//	int				renderdemoVersion;
-//};
+	// The render world and sound world used for this session.
+	rw: idRenderWorld;
+	sw: idSoundWorld;
+
+	// The renderer and sound system will write changes to writeDemo.
+	// Demos can be recorded and played at the same time when splicing.
+	readDemo: idDemoFile;
+	writeDemo: idDemoFile;
+	renderdemoVersion: number;//	int	
+};
 //
 //extern	idSession *	session;
 //

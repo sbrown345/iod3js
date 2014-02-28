@@ -86,7 +86,7 @@ class idSessionLocal extends idSession {
 //						idSessionLocal();
 //	virtual				~idSessionLocal();
 //
-//	virtual void		Init();
+	Init ( ): void { throw "placeholder"; }
 //
 //	virtual void		Shutdown();
 //
@@ -98,7 +98,7 @@ class idSessionLocal extends idSession {
 //
 //	virtual void		Frame();
 //
-//	virtual bool		IsMultiplayer();
+	IsMultiplayer ( ): boolean { throw "placeholder"; }
 //
 //	virtual bool		ProcessEvent( const sysEvent_t *event );
 //
@@ -174,18 +174,18 @@ class idSessionLocal extends idSession {
 //
 //	static idCVar		gui_configServerRate;
 //
-//	int					timeHitch;
+	timeHitch:number/*int*/;
 //
 //	bool				menuActive;
-//	idSoundWorld *		menuSoundWorld;			// so the game soundWorld can be muted
+	menuSoundWorld: idSoundWorld ;			// so the game soundWorld can be muted
 //
 //	bool				insideExecuteMapChange;	// draw loading screen and update
 //												// screen on prints
-//	int					bytesNeededForMapLoad;	// 
+	bytesNeededForMapLoad:number/*int*/;	// 
 //
 //	// we don't want to redraw the loading screen for every single
 //	// console print that happens
-//	int					lastPacifierTime;
+	lastPacifierTime:number/*int*/;
 //
 //	// this is the information required to be set before ExecuteMapChange() is called,
 //	// which can be saved off at any time with the following commands so it can all be played back
@@ -193,38 +193,38 @@ class idSessionLocal extends idSession {
 //	idStr				currentMapName;			// for checking reload on same level
 //	bool				mapSpawned;				// cleared on Stop()
 //
-//	int					numClients;				// from serverInfo
+	numClients: number/*int*/;				// from serverInfo
 //
-//	int					logIndex;
+	logIndex:number/*int*/;
 //	logCmd_t			loggedUsercmds[MAX_LOGGED_USERCMDS];
-//	int					statIndex;
+	statIndex:number/*int*/;
 //	logStats_t			loggedStats[MAX_LOGGED_STATS];
-//	int					lastSaveIndex;
+	lastSaveIndex:number/*int*/;
 //	// each game tic, numClients usercmds will be added, until full
 //
 //	bool				insideUpdateScreen;	// true while inside ::UpdateScreen()
 //
 //	bool				loadingSaveGame;	// currently loading map from a SaveGame
 //	idFile *			savegameFile;		// this is the savegame file to load from
-//	int					savegameVersion;
+	savegameVersion:number/*int*/;
 //
 //	idFile *			cmdDemoFile;		// if non-zero, we are reading commands from a file
 //
-//	int					latchedTicNumber;	// set to com_ticNumber each frame
-//	int					lastGameTic;		// while latchedTicNumber > lastGameTic, run game frames
-//	int					lastDemoTic;
+	latchedTicNumber: number/*int*/;	// set to com_ticNumber each frame
+	lastGameTic:number/*int*/;		// while latchedTicNumber > lastGameTic, run game frames
+	lastDemoTic:number/*int*/;
 //	bool				syncNextGameFrame;
 //
 //
 //	bool				aviCaptureMode;		// if true, screenshots will be taken and sound captured
 //	idStr				aviDemoShortName;	// 
 //	float				aviDemoFrameCount;
-//	int					aviTicStart;
+	aviTicStart:number/*int*/;
 //
 //	timeDemo_t			timeDemo;
-//	int					timeDemoStartTime;
-//	int					numDemoFrames;		// for timeDemo and demoShot
-//	int					demoTimeOffset;
+	timeDemoStartTime:number/*int*/;
+	numDemoFrames:number/*int*/;		// for timeDemo and demoShot
+	demoTimeOffset:number/*int*/;
 //	renderView_t		currentDemoRenderView;
 //	// the next one will be read when 
 //	// com_frameTime + demoTimeOffset > currentDemoRenderView.
@@ -234,33 +234,33 @@ class idSessionLocal extends idSession {
 //	HandleGuiCommand_t	guiHandle;
 //
 //	idUserInterface *	guiInGame;
-//	idUserInterface *	guiMainMenu;
-//	idListGUI *			guiMainMenu_MapList;		// easy map list handling
-//	idUserInterface *	guiRestartMenu;
-//	idUserInterface *	guiLoading;
-//	idUserInterface *	guiIntro;
-//	idUserInterface *	guiGameOver;
-//	idUserInterface *	guiTest;
-//	idUserInterface *	guiTakeNotes;
+	guiMainMenu: idUserInterface;
+	guiMainMenu_MapList: idListGUI;		// easy map list handling
+	guiRestartMenu:idUserInterface;
+	guiLoading:idUserInterface;
+	guiIntro:idUserInterface;
+	guiGameOver:idUserInterface;
+	guiTest:idUserInterface;
+	guiTakeNotes:idUserInterface;
 //	
 //	idUserInterface *	guiMsg;
 //	idUserInterface *	guiMsgRestore;				// store the calling GUI for restore
 //	idStr				msgFireBack[ 2 ];
-//	bool				msgRunning;
-//	int					msgRetIndex;
-//	bool				msgIgnoreButtons;
+	msgRunning:boolean;
+	msgRetIndex:number/*int*/;
+	msgIgnoreButtons:boolean;
 //	
-//	bool				waitingOnBind;
-//
-//	const idMaterial *	whiteMaterial;
-//
-//	const idMaterial *	wipeMaterial;
-//	int					wipeStartTic;
-//	int					wipeStopTic;
-//	bool				wipeHold;
+	waitingOnBind:boolean;
+
+	whiteMaterial: idMaterial;
+
+	wipeMaterial: idMaterial;
+	wipeStartTic:number/*int*/;
+	wipeStopTic:number/*int*/;
+	wipeHold:boolean;
 //
 //#if ID_CONSOLE_LOCK
-//	int					emptyDrawCount;				// watchdog to force the main menu to restart
+	emptyDrawCount: number/*int*/;				// watchdog to force the main menu to restart
 //#endif
 //
 //	//=====================================

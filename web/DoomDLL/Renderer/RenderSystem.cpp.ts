@@ -3135,17 +3135,17 @@ down, but still valid.
 ////}
 
 
-/////*
-////==============
-////AllocRenderWorld
-////==============
-////*/
-////idRenderWorld *idRenderSystemLocal::AllocRenderWorld() {
-////	idRenderWorldLocal *rw;
-////	rw = new idRenderWorldLocal;
-////	worlds.Append( rw );
-////	return rw;
-////}
+/*
+==============
+AllocRenderWorld
+==============
+*/
+	AllocRenderWorld ( ): idRenderWorld {
+		var rw: idRenderWorldLocal;
+		rw = new idRenderWorldLocal;
+		this.worlds.Append( rw );
+		return rw;
+	}
 
 /////*
 ////==============

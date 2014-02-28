@@ -311,6 +311,15 @@
 //// sound engine
 //#include "../sound/sound.h"
 /// <reference path="doomdll/sound/sound.h.ts" />
+/// <reference path="doomdll/sound/snd_local.h.ts" />
+/// <reference path="doomdll/sound/snd_world.cpp.ts" />
+/// <reference path="doomdll/sound/snd_shader.cpp.ts" />
+/// <reference path="doomdll/sound/snd_system.cpp.ts" />
+/// <reference path="doomdll/sound/snd_cache.cpp.ts" />
+/// <reference path="doomdll/sound/snd_decoder.cpp.ts" />
+/// <reference path="doomdll/sound/snd_efxfile.cpp.ts" />
+/// <reference path="doomdll/sound/snd_emitter.cpp.ts" />
+/// <reference path="doomdll/sound/snd_wavefile.cpp.ts" />
 
 //// asynchronous networking
 //#include "../framework/async/NetworkSystem.h"
@@ -320,6 +329,7 @@
 //#include "../ui/UserInterface.h"
 /// <reference path="doomdll/ui/rectangle.h.ts" />
 /// <reference path="doomdll/ui/devicecontext.cpp.ts" />
+/// <reference path="doomdll/ui/listgui.cpp.ts" />
 /// <reference path="doomdll/ui/userinterface.h.ts" />
 /// <reference path="doomdll/ui/userinterface.cpp.ts" />
 

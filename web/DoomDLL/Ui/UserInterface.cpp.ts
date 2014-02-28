@@ -215,11 +215,11 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 //	}
 //	return NULL;
 //}
-//
-//idListGUI *	idUserInterfaceManagerLocal::AllocListGUI( void ) const {
-//	return new idListGUILocal();
-//}
-//
+
+	AllocListGUI ( ): idListGUI {
+		return new idListGUILocal ( );
+	}
+
 //void idUserInterfaceManagerLocal::FreeListGUI( idListGUI *listgui ) {
 //	delete listgui;
 //}

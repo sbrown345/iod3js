@@ -201,22 +201,6 @@
 //}
 
 
-
-
-class idSession {
-	
-//
-//	// The render world and sound world used for this session.
-//	idRenderWorld *	rw;
-//	idSoundWorld *	sw;
-//
-//	// The renderer and sound system will write changes to writeDemo.
-//	// Demos can be recorded and played at the same time when splicing.
-	readDemo: idDemoFile;
-	writeDemo: idDemoFile;
-	renderdemoVersion:number;//	int	
-
-
 ///*
 //===============
 //idSessionLocal::MaybeWaitOnCDKey
@@ -465,9 +449,9 @@ class idSession {
 idSessionLocal::IsMultiplayer
 ===============
 */
-	IsMultiplayer ( ): boolean {
-		return idAsyncNetwork.IsActive ( );
-	}
+idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
+	return idAsyncNetwork.IsActive ( );
+};
 
 ///*
 //================
@@ -2851,102 +2835,102 @@ idSessionLocal::IsMultiplayer
 //		}
 //	}
 //}
-//
-///*
-//===============
-//idSessionLocal::Init
-//
-//Called in an orderly fashion at system startup,
-//so commands, cvars, files, etc are all available
-//===============
-//*/
-//void idSessionLocal::Init() {
-//
-//	common.Printf( "-------- Initializing Session --------\n" );
-//
-//	cmdSystem.AddCommand( "writePrecache", Sess_WritePrecache_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "writes precache commands" );
-//
-//#ifndef	ID_DEDICATED
-//	cmdSystem.AddCommand( "map", Session_Map_f, CMD_FL_SYSTEM, "loads a map", idCmdSystem::ArgCompletion_MapName );
-//	cmdSystem.AddCommand( "devmap", Session_DevMap_f, CMD_FL_SYSTEM, "loads a map in developer mode", idCmdSystem::ArgCompletion_MapName );
-//	cmdSystem.AddCommand( "testmap", Session_TestMap_f, CMD_FL_SYSTEM, "tests a map", idCmdSystem::ArgCompletion_MapName );
-//
-//	cmdSystem.AddCommand( "writeCmdDemo", Session_WriteCmdDemo_f, CMD_FL_SYSTEM, "writes a command demo" );
-//	cmdSystem.AddCommand( "playCmdDemo", Session_PlayCmdDemo_f, CMD_FL_SYSTEM, "plays back a command demo" );
-//	cmdSystem.AddCommand( "timeCmdDemo", Session_TimeCmdDemo_f, CMD_FL_SYSTEM, "times a command demo" );
-//	cmdSystem.AddCommand( "exitCmdDemo", Session_ExitCmdDemo_f, CMD_FL_SYSTEM, "exits a command demo" );
-//	cmdSystem.AddCommand( "aviCmdDemo", Session_AVICmdDemo_f, CMD_FL_SYSTEM, "writes AVIs for a command demo" );
-//	cmdSystem.AddCommand( "aviGame", Session_AVIGame_f, CMD_FL_SYSTEM, "writes AVIs for the current game" );
-//
-//	cmdSystem.AddCommand( "recordDemo", Session_RecordDemo_f, CMD_FL_SYSTEM, "records a demo" );
-//	cmdSystem.AddCommand( "stopRecording", Session_StopRecordingDemo_f, CMD_FL_SYSTEM, "stops demo recording" );
-//	cmdSystem.AddCommand( "playDemo", Session_PlayDemo_f, CMD_FL_SYSTEM, "plays back a demo", idCmdSystem::ArgCompletion_DemoName );
-//	cmdSystem.AddCommand( "timeDemo", Session_TimeDemo_f, CMD_FL_SYSTEM, "times a demo", idCmdSystem::ArgCompletion_DemoName );
-//	cmdSystem.AddCommand( "timeDemoQuit", Session_TimeDemoQuit_f, CMD_FL_SYSTEM, "times a demo and quits", idCmdSystem::ArgCompletion_DemoName );
-//	cmdSystem.AddCommand( "aviDemo", Session_AVIDemo_f, CMD_FL_SYSTEM, "writes AVIs for a demo", idCmdSystem::ArgCompletion_DemoName );
-//	cmdSystem.AddCommand( "compressDemo", Session_CompressDemo_f, CMD_FL_SYSTEM, "compresses a demo file", idCmdSystem::ArgCompletion_DemoName );
-//#endif
-//
-//	cmdSystem.AddCommand( "disconnect", Session_Disconnect_f, CMD_FL_SYSTEM, "disconnects from a game" );
-//
-//#ifdef ID_DEMO_BUILD
-//	cmdSystem.AddCommand( "endOfDemo", Session_EndOfDemo_f, CMD_FL_SYSTEM, "ends the demo version of the game" );
-//#endif
-//
-//	cmdSystem.AddCommand( "demoShot", Session_DemoShot_f, CMD_FL_SYSTEM, "writes a screenshot for a demo" );
-//	cmdSystem.AddCommand( "testGUI", Session_TestGUI_f, CMD_FL_SYSTEM, "tests a gui" );
-//
-//#ifndef	ID_DEDICATED
-//	cmdSystem.AddCommand( "saveGame", SaveGame_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "saves a game" );
-//	cmdSystem.AddCommand( "loadGame", LoadGame_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "loads a game", idCmdSystem::ArgCompletion_SaveGame );
-//#endif
-//
-//	cmdSystem.AddCommand( "takeViewNotes", TakeViewNotes_f, CMD_FL_SYSTEM, "take notes about the current map from the current view" );
-//	cmdSystem.AddCommand( "takeViewNotes2", TakeViewNotes2_f, CMD_FL_SYSTEM, "extended take view notes" );
-//
-//	cmdSystem.AddCommand( "rescanSI", Session_RescanSI_f, CMD_FL_SYSTEM, "internal - rescan serverinfo cvars and tell game" );
-//
-//	cmdSystem.AddCommand( "promptKey", Session_PromptKey_f, CMD_FL_SYSTEM, "prompt and sets the CD Key" );
-//
-//	cmdSystem.AddCommand( "hitch", Session_Hitch_f, CMD_FL_SYSTEM|CMD_FL_CHEAT, "hitches the game" );
-//
-//	// the same idRenderWorld will be used for all games
-//	// and demos, insuring that level specific models
-//	// will be freed
-//	rw = renderSystem.AllocRenderWorld();
-//	sw = soundSystem.AllocSoundWorld( rw );
-//
-//	menuSoundWorld = soundSystem.AllocSoundWorld( rw );
-//
-//	// we have a single instance of the main menu
+
+/*
+===============
+idSessionLocal::Init
+
+Called in an orderly fashion at system startup,
+so commands, cvars, files, etc are all available
+===============
+*/
+	idSessionLocal.prototype.Init = function ( ): void {
+
+		common.Printf( "-------- Initializing Session --------\n" );
+		todo( "idSessionLocal::Init commands" );
+//	cmdSystem.AddCommand( "writePrecache", Sess_WritePrecache_f, cmdFlags_t.CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "writes precache commands" );
+
+////#ifndef	ID_DEDICATED
+//	cmdSystem.AddCommand( "map", Session_Map_f, cmdFlags_t.CMD_FL_SYSTEM, "loads a map", idCmdSystem::ArgCompletion_MapName );
+//	cmdSystem.AddCommand( "devmap", Session_DevMap_f, cmdFlags_t.CMD_FL_SYSTEM, "loads a map in developer mode", idCmdSystem::ArgCompletion_MapName );
+//	cmdSystem.AddCommand( "testmap", Session_TestMap_f, cmdFlags_t.CMD_FL_SYSTEM, "tests a map", idCmdSystem::ArgCompletion_MapName );
+
+//	cmdSystem.AddCommand( "writeCmdDemo", Session_WriteCmdDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "writes a command demo" );
+//	cmdSystem.AddCommand( "playCmdDemo", Session_PlayCmdDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "plays back a command demo" );
+//	cmdSystem.AddCommand( "timeCmdDemo", Session_TimeCmdDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "times a command demo" );
+//	cmdSystem.AddCommand( "exitCmdDemo", Session_ExitCmdDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "exits a command demo" );
+//	cmdSystem.AddCommand( "aviCmdDemo", Session_AVICmdDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "writes AVIs for a command demo" );
+//	cmdSystem.AddCommand( "aviGame", Session_AVIGame_f, cmdFlags_t.CMD_FL_SYSTEM, "writes AVIs for the current game" );
+
+//	cmdSystem.AddCommand( "recordDemo", Session_RecordDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "records a demo" );
+//	cmdSystem.AddCommand( "stopRecording", Session_StopRecordingDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "stops demo recording" );
+//	cmdSystem.AddCommand( "playDemo", Session_PlayDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "plays back a demo", idCmdSystem::ArgCompletion_DemoName );
+//	cmdSystem.AddCommand( "timeDemo", Session_TimeDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "times a demo", idCmdSystem::ArgCompletion_DemoName );
+//	cmdSystem.AddCommand( "timeDemoQuit", Session_TimeDemoQuit_f, cmdFlags_t.CMD_FL_SYSTEM, "times a demo and quits", idCmdSystem::ArgCompletion_DemoName );
+//	cmdSystem.AddCommand( "aviDemo", Session_AVIDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "writes AVIs for a demo", idCmdSystem::ArgCompletion_DemoName );
+//	cmdSystem.AddCommand( "compressDemo", Session_CompressDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "compresses a demo file", idCmdSystem::ArgCompletion_DemoName );
+////#endif
+
+//	cmdSystem.AddCommand( "disconnect", Session_Disconnect_f, cmdFlags_t.CMD_FL_SYSTEM, "disconnects from a game" );
+
+////#ifdef ID_DEMO_BUILD
+//	cmdSystem.AddCommand( "endOfDemo", Session_EndOfDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "ends the demo version of the game" );
+////#endif
+
+//	cmdSystem.AddCommand( "demoShot", Session_DemoShot_f, cmdFlags_t.CMD_FL_SYSTEM, "writes a screenshot for a demo" );
+//	cmdSystem.AddCommand( "testGUI", Session_TestGUI_f, cmdFlags_t.CMD_FL_SYSTEM, "tests a gui" );
+
+////#ifndef	ID_DEDICATED
+//	cmdSystem.AddCommand( "saveGame", SaveGame_f, cmdFlags_t.CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "saves a game" );
+//	cmdSystem.AddCommand( "loadGame", LoadGame_f, cmdFlags_t.CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "loads a game", idCmdSystem::ArgCompletion_SaveGame );
+////#endif
+
+//	cmdSystem.AddCommand( "takeViewNotes", TakeViewNotes_f, cmdFlags_t.CMD_FL_SYSTEM, "take notes about the current map from the current view" );
+//	cmdSystem.AddCommand( "takeViewNotes2", TakeViewNotes2_f, cmdFlags_t.CMD_FL_SYSTEM, "extended take view notes" );
+
+//	cmdSystem.AddCommand( "rescanSI", Session_RescanSI_f, cmdFlags_t.CMD_FL_SYSTEM, "internal - rescan serverinfo cvars and tell game" );
+
+//	cmdSystem.AddCommand( "promptKey", Session_PromptKey_f, cmdFlags_t.CMD_FL_SYSTEM, "prompt and sets the CD Key" );
+
+//	cmdSystem.AddCommand( "hitch", Session_Hitch_f, cmdFlags_t.CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "hitches the game" );
+
+		// the same idRenderWorld will be used for all games
+		// and demos, insuring that level specific models
+		// will be freed
+		this.rw = renderSystem.AllocRenderWorld ( );
+		this.sw = soundSystem.AllocSoundWorld( this.rw );
+
+		this.menuSoundWorld = soundSystem.AllocSoundWorld( this.rw );
+
+		// we have a single instance of the main menu
 //#ifndef ID_DEMO_BUILD
 //	guiMainMenu = uiManager.FindGui( "guis/mainmenu.gui", true, false, true );
 //#else
-//	guiMainMenu = uiManager.FindGui( "guis/demo_mainmenu.gui", true, false, true );
+		this.guiMainMenu = uiManager.FindGui( "guis/demo_mainmenu.gui", true, false, true );
 //#endif
-//	guiMainMenu_MapList = uiManager.AllocListGUI();
-//	guiMainMenu_MapList.Config( guiMainMenu, "mapList" );
-//	idAsyncNetwork::client.serverList.GUIConfig( guiMainMenu, "serverList" );
-//	guiRestartMenu = uiManager.FindGui( "guis/restart.gui", true, false, true );
-//	guiGameOver = uiManager.FindGui( "guis/gameover.gui", true, false, true );
-//	guiMsg = uiManager.FindGui( "guis/msg.gui", true, false, true );
-//	guiTakeNotes = uiManager.FindGui( "guis/takeNotes.gui", true, false, true );
-//	guiIntro = uiManager.FindGui( "guis/intro.gui", true, false, true );
-//
-//	whiteMaterial = declManager.FindMaterial( "_white" );
-//
-//	guiInGame = NULL;
-//	guiTest = NULL;
-//
-//	guiActive = NULL;
-//	guiHandle = NULL;
-//
-//	ReadCDKey();
-//
-//	common.Printf( "session initialized\n" );
-//	common.Printf( "--------------------------------------\n" );
-//}
-//
+		this.guiMainMenu_MapList = uiManager.AllocListGUI();
+		this.guiMainMenu_MapList.Config( this.guiMainMenu, "mapList" );
+		idAsyncNetwork.client.serverList.GUIConfig(this.guiMainMenu, "serverList" );
+		this.guiRestartMenu = uiManager.FindGui("guis/restart.gui", true, false, true);
+		this.guiGameOver = uiManager.FindGui("guis/gameover.gui", true, false, true);
+		this.guiMsg = uiManager.FindGui("guis/msg.gui", true, false, true);
+		this.guiTakeNotes = uiManager.FindGui("guis/takeNotes.gui", true, false, true);
+		this.guiIntro = uiManager.FindGui( "guis/intro.gui", true, false, true );
+
+		this.whiteMaterial = declManager.FindMaterial( "_white" );
+
+		this.guiInGame = null;
+		this.guiTest = null;
+
+		this.guiActive = null;
+		this.guiHandle = null;
+
+		this.ReadCDKey ( );
+
+		common.Printf( "session initialized\n" );
+		common.Printf( "--------------------------------------\n" );
+	};
+
 ///*
 //===============
 //idSessionLocal::GetLocalClientNum
@@ -3349,4 +3333,3 @@ idSessionLocal::IsMultiplayer
 //	idDemoFile *	readDemo;
 //	idDemoFile *	writeDemo;
 //	int				renderdemoVersion;
-};

@@ -114,7 +114,7 @@ class idAsyncClient {
 //
 //	void				PacifierUpdate( void );
 //
-//	idServerScan		serverList;
+	serverList: idServerScan;
 //
 //private:
 	private active:boolean;						// true if client is active
