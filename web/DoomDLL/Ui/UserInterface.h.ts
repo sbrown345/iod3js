@@ -55,9 +55,9 @@ class idUserInterface {
 //								// Returns true if the gui is interactive.
 //	virtual bool				IsInteractive() const = 0;
 //
-//	virtual bool				IsUniqued() const = 0;
+	IsUniqued(): boolean { throw "placeholder"; }
 //
-//	virtual void				SetUniqued( bool b ) = 0;
+	SetUniqued(b:boolean): void { throw "placeholder"; }
 //								// returns false if it failed to load
 	InitFromFile(qpath: string, rebuild = true, cache = true): boolean { throw "placeholder"; }
 //

@@ -200,9 +200,9 @@ class idDict {
 ////	Set( key, va( "%i", val ) );
 ////}
 ////
-////ID_INLINE void idDict::SetBool( key:string, bool val ) {
-////	Set( key, va( "%i", val ) );
-////}
+	SetBool ( key: string, val: boolean ): void {
+		this.Set( key, val ? "1" : "0" /*va( "%i", val ) */ );
+	}
 ////
 ////ID_INLINE void idDict::SetVector( key:string, const idVec3 &val ) {
 ////	Set( key, val.ToString() );

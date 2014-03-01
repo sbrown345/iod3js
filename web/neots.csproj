@@ -181,6 +181,12 @@
     <TypeScriptCompile Include="DoomDLL\Sound\snd_wavefile.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Sound\snd_world.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Ui\ListGUI.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\UserInterfaceLocal.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\Window.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\Window.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\SimpleWindow.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\Winvar.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\GuiScript.cpp.ts" />
     <Content Include="libs\idLib\Timer.h.ts" />
     <Content Include="log.aspx" />
     <Content Include="other\files.ts" />

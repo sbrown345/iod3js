@@ -329,9 +329,13 @@
 //#include "../ui/UserInterface.h"
 /// <reference path="doomdll/ui/rectangle.h.ts" />
 /// <reference path="doomdll/ui/devicecontext.cpp.ts" />
+/// <reference path="doomdll/ui/guiscript.cpp.ts" />
 /// <reference path="doomdll/ui/listgui.cpp.ts" />
+/// <reference path="doomdll/ui/simplewindow.h.ts" />
 /// <reference path="doomdll/ui/userinterface.h.ts" />
 /// <reference path="doomdll/ui/userinterface.cpp.ts" />
+/// <reference path="doomdll/ui/userinterfacelocal.h.ts" />
+/// <reference path="doomdll/ui/winvar.h.ts" />
 
 //// collision detection system
 //#include "../cm/CollisionModel.h"

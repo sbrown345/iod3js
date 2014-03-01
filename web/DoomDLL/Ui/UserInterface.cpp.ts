@@ -182,27 +182,27 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 
 	FindGui ( qpath: string, autoLoad = false, needUnique = false, forceNOTUnique = false ): idUserInterface {
 		var /*int */c = this.guis.Num ( );
-		todoThrow ( );
-		//for ( var i = 0; i < c; i++ ) {
-		//	var gui = <idUserInterface>this.guis[i];
-		//	if ( !idStr.Icmp( this.guis[i].GetSourceFile ( ), qpath ) ) {
-		//		if ( !forceNOTUnique && ( needUnique || this.guis[i].IsInteractive ( ) ) ) {
-		//			break;
-		//		}
-		//		this.guis[i].AddRef ( );
-		//		return this.guis[i];
-		//	}
-		//}
+		
+		for ( var i = 0; i < c; i++ ) {
+			var gui = <idUserInterface>this.guis[i];
+			if ( !idStr.Icmp( this.guis[i].GetSourceFile ( ), qpath ) ) {
+				if ( !forceNOTUnique && ( needUnique || this.guis[i].IsInteractive ( ) ) ) {
+					break;
+				}
+				this.guis[i].AddRef ( );
+				return this.guis[i];
+			}
+		}
 
-		//if ( autoLoad ) {
-		//	var /*idUserInterface **/gui = this.Alloc ( );
-		//	if ( gui.InitFromFile( qpath ) ) {
-		//		gui.SetUniqued( forceNOTUnique ? false : needUnique );
-		//		return gui;
-		//	} else {
-		//		delete gui;
-		//	}
-		//}
+		if ( autoLoad ) {
+			var /*idUserInterface **/gui = this.Alloc ( );
+			if ( gui.InitFromFile( qpath ) ) {
+				gui.SetUniqued( forceNOTUnique ? false : needUnique );
+				return gui;
+			} else {
+				delete gui;
+			}
+		}
 		return null;
 	}
 
@@ -228,8 +228,8 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 	screenRect: idRectangle;
 	dc: idDeviceContext = new idDeviceContext();
 
-	guis: idList<idUserInterfaceLocal/***/>;
-	demoGuis: idList<idUserInterfaceLocal/***/> ;
+	guis = new idList<idUserInterfaceLocal/***/>(idUserInterfaceLocal);
+	demoGuis = new idList<idUserInterfaceLocal/***/>(idUserInterfaceLocal);
 };
 
 
@@ -277,68 +277,70 @@ class idUserInterfaceLocal extends idUserInterface {
 //}
 //
 	InitFromFile ( qpath: string, rebuild = true, cache = true ): boolean {
-		todoThrow ( );
-//	if ( !( qpath && *qpath ) ) { 
-//		// FIXME: Memory leak!!
-//		return false;
-//	}
-//
-//	int sz = sizeof( idWindow );
-//	sz = sizeof( idSimpleWindow );
-//	loading = true;
-//
-//	if ( rebuild ) {
-//		delete desktop;
-//		desktop = new idWindow( this );
-//	} else if ( desktop == NULL ) {
-//		desktop = new idWindow( this );
-//	}
-//
-//	source = qpath;
-//	state.Set( "text", "Test Text!" );
-//
-//	idParser src( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT |  lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
-//
-//	//Load the timestamp so reload guis will work correctly
-//	fileSystem.ReadFile(qpath, NULL, &timeStamp);
-//
-//	src.LoadFile( qpath );
-//
-//	if ( src.IsLoaded() ) {
-//		idToken token;
-//		while( src.ReadToken( &token ) ) {
-//			if ( idStr::Icmp( token, "windowDef" ) == 0 ) {
-//				desktop.SetDC( &uiManagerLocal.dc );
-//				if ( desktop.Parse( &src, rebuild ) ) {
-//					desktop.SetFlag( WIN_DESKTOP );
-//					desktop.FixupParms();
-//				}
-//				continue;
-//			}
-//		}
-//
-//		state.Set( "name", qpath );
-//	} else {
-//		desktop.SetDC( &uiManagerLocal.dc );
-//		desktop.SetFlag( WIN_DESKTOP );
-//		desktop.name = "Desktop";
-//		desktop.text = va( "Invalid GUI: %s", qpath );
-//		desktop.rect = idRectangle( 0.0, 0.0, 640.0f, 480.0f );
-//		desktop.drawRect = desktop.rect;
-//		desktop.foreColor = idVec4( 1.0f, 1.0f, 1.0f, 1.0f );
-//		desktop.backColor = idVec4( 0.0, 0.0, 0.0, 1.0f );
-//		desktop.SetupFromState();
-//		common.Warning( "Couldn't load gui: '%s'", qpath );
-//	}
-//
-//	interactive = desktop.Interactive();
-//
-//	if ( uiManagerLocal.guis.Find( this ) == NULL ) {
-//		uiManagerLocal.guis.Append( this );
-//	}
-//
-//	loading = false;
-//
+		if ( !( qpath /*&& *qpath*/ ) ) {
+			// FIXME: Memory leak!!
+			return false;
+		}
+
+		//var sz = sizeof( idWindow );
+		//sz = sizeof( idSimpleWindow );
+		this.loading = true;
+
+		if ( rebuild ) {
+			delete this.desktop;
+			this.desktop = new idWindow( this );
+		} else if ( !this.desktop == null ) {
+			this.desktop = new idWindow( this );
+		}
+
+		this.source.equals( qpath );
+		this.state.Set( "text", "Test Text!" );
+
+		var src = new idParser( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
+
+		//Load the timestamp so reload guis will work correctly
+		var $timeStamp = new R( this.timeStamp );
+		fileSystem.ReadFile( qpath, null, $timeStamp );
+		this.timeStamp = $timeStamp.$;
+
+		this.src.$.LoadFile( qpath );
+
+		if ( src.IsLoaded ( ) ) {
+			var token = new R( new idToken );
+			while ( src.ReadToken( token ) ) {
+				if ( idStr.Icmp( token.$, "windowDef" ) == 0 ) {
+					this.desktop.SetDC( uiManagerLocal.dc );
+					if ( this.desktop.Parse( this.src.$, rebuild ) ) {
+						this.desktop.SetFlag( WIN_DESKTOP );
+						this.desktop.FixupParms ( );
+					}
+					continue;
+				}
+			}
+
+			this.state.Set( "name", qpath );
+		} else {
+			todoThrow ( );
+			//this.desktop.SetDC( &uiManagerLocal.dc );
+			//this.desktop.SetFlag(WIN_DESKTOP);
+			//this.desktop.name = "Desktop";
+			//this.desktop.text = va("Invalid GUI: %s", qpath);
+			//this.desktop.rect = new idRectangle(0.0, 0.0, 640.0, 480.0);
+			//this.desktop.drawRect = desktop.rect;
+			//this.desktop.foreColor = idVec4(1.0, 1.0, 1.0, 1.0);
+			//this.desktop.backColor = idVec4(0.0, 0.0, 0.0, 1.0);
+			//this.desktop.SetupFromState();
+			//common.Warning( "Couldn't load gui: '%s'", qpath );
+		}
+
+		this.interactive = this.desktop.Interactive ( );
+
+		if ( uiManagerLocal.guis.Find( this ) == null ) {
+			uiManagerLocal.guis.Append( this );
+		}
+
+		this.loading = false;
+
 		return true;
 	}
 //
@@ -648,28 +650,55 @@ class idUserInterfaceLocal extends idUserInterface {
 //	cursorY = y;
 //}
 
+	IsUniqued ( ): boolean { return this.uniqued; }
+	SetUniqued ( b: boolean ): void { this.uniqued = b; }
+////	virtual void				SetCursor( float x, float y );
+////
+////	virtual float				CursorX() { return cursorX; }
+////	virtual float				CursorY() { return cursorY; }
+////
+////	size_t						Size();
+////
+////	idDict *					GetStateDict() { return &state; }
+////
+////	const char *				GetSourceFile( void ) const { return source; }
+////	ID_TIME_T						GetTimeStamp( void ) const { return timeStamp; }
+////
+////	idWindow *					GetDesktop() const { return desktop; }
+////	void						SetBindHandler( idWindow *win ) { bindHandler = win; }
+////	bool						Active() const { return active; }
+////	int							GetTime() const { return time; }
+////	void						SetTime( int _time ) { time = _time; }
+////
+////	void						ClearRefs() { refs = 0; }
+////	void						AddRef() { refs++; }
+////	int							GetRefs() { return refs; }
+////
+////	void						RecurseSetKeyBindingNames( idWindow *window );
+////	idStr						&GetPendingCmd() { return pendingCmd; };
+////	idStr						&GetReturnCmd() { return returnCmd; };
 //private:
-//	bool						active;
-//	bool						loading;
-//	bool						interactive;
-//	bool						uniqued;
-//
-//	idDict						state;
-//	idWindow *					desktop;
-//	idWindow *					bindHandler;
-//
-//	idStr						source;
-//	idStr						activateStr;
-//	idStr						pendingCmd;
-//	idStr						returnCmd;
-//	ID_TIME_T						timeStamp;
-//
-//	float						cursorX;
-//	float						cursorY;
-//
-//	int							time;
-//
-//	int							refs;
+	active: boolean;
+	loading: boolean;
+	interactive: boolean;
+	uniqued:boolean;
+
+	state = new idDict;
+	desktop: idWindow;
+	bindHandler: idWindow;
+	
+	source = new idStr;
+	activateStr = new idStr;
+	pendingCmd = new idStr;
+	returnCmd = new idStr;
+	timeStamp:number;//	ID_TIME_T	
+	
+	cursorX: number;	   //	float						
+	cursorY: number;	   //	float						
+
+	time:number;//	int	
+
+	refs:number;//	int	
 };
 
 
