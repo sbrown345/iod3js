@@ -288,17 +288,18 @@
 ////	REMOVE_STATUS_SAMPLEFINISHED		=  2
 ////} removeStatus_t;
 ////
-////class idSoundFade {
+class idSoundFade {
 ////public:
-////	int					fadeStart44kHz;
-////	int					fadeEnd44kHz;
-////	float				fadeStartVolume;		// in dB
-////	float				fadeEndVolume;			// in dB
-////
-////	void				Clear();
-////	float				FadeDbAt44kHz( int current44kHz );
-////};
-////
+	fadeStart44kHz:number;								  //int					
+	fadeEnd44kHz: number;								  //int					
+	fadeStartVolume: number;		// in dB			  //float				
+	fadeEndVolume: number;			// in dB			  //float				
+
+	Clear ( ): void { throw "placeholder"; }
+	FadeDbAt44kHz ( /*int*/ current44kHz: number ): number { throw "placeholder"; }
+}
+
+
 ////class SoundFX {
 ////protected:
 ////	bool				initialized;
@@ -431,7 +432,7 @@
 ////
 ////};
 ////
-////class idSoundEmitterLocal extends idSoundEmitter {
+class idSoundEmitterLocal extends idSoundEmitter {
 ////public:
 ////
 ////						idSoundEmitterLocal( void );
@@ -510,9 +511,9 @@
 ////	// last generated value
 ////	int					ampTime;
 ////	float				amplitude;
-////};
-////
-////
+};
+
+
 /////*
 ////===================================================================================
 ////
@@ -622,38 +623,38 @@ class idSoundWorldLocal extends idSoundWorld {
 ////	void					ResolveOrigin( const int stackDepth, const soundPortalTrace_t *prevStack, const int soundArea, const float dist, const idVec3& soundOrigin, idSoundEmitterLocal *def );
 ////	float					FindAmplitude( idSoundEmitterLocal *sound, const int localTime, const idVec3 *listenerPosition, const s_channelType channel, bool shakesOnly );
 ////
-////	//============================================
-////
-////	idRenderWorld *			rw;				// for portals and debug drawing
-////	idDemoFile *			writeDemo;			// if not NULL, archive commands here
-////
-////	idMat3					listenerAxis;
-////	idVec3					listenerPos;		// position in meters
-////	int						listenerPrivateId;
-////	idVec3					listenerQU;			// position in "quake units"
-////	int						listenerArea;
-////	idStr					listenerAreaName;
-////	int						listenerEnvironmentID;
-////
-////	int						gameMsec;
-////	int						game44kHz;
-////	int						pause44kHz;
-////	int						lastAVI44kHz;		// determine when we need to mix and write another block
-////
-////	idList<idSoundEmitterLocal *>emitters;
-////
-////	idSoundFade				soundClassFade[SOUND_MAX_CLASSES];	// for global sound fading
-////
-////	// avi stuff
-////	idFile *				fpa[6];
-////	idStr					aviDemoPath;
-////	idStr					aviDemoName;
-////
-////	idSoundEmitterLocal *	localSound;		// just for playShaderDirectly()
-////
-////	bool					slowmoActive;
-////	float					slowmoSpeed;
-////	bool					enviroSuitActive;
+	//============================================
+
+	rw:	idRenderWorld;				// for portals and debug drawing
+	writeDemo: idDemoFile ;			// if not NULL, archive commands here
+
+	listenerAxis = new idMat3;
+	listenerPos = new idVec3;		// position in meters
+	listenerPrivateId:number/*int*/;
+	listenerQU = new idVec3;			// position in "quake units"
+	listenerArea:number/*int*/;
+	listenerAreaName = new idStr;
+	listenerEnvironmentID:number/*int*/;
+
+	gameMsec:number/*int*/;
+	game44kHz:number/*int*/;
+	pause44kHz:number/*int*/;
+	lastAVI44kHz:number/*int*/;		// determine when we need to mix and write another block
+
+	emitters = new idList<idSoundEmitterLocal>(idSoundEmitterLocal );
+
+	soundClassFade = newStructArray<idSoundFade>(idSoundFade, SOUND_MAX_CLASSES);	// for global sound fading
+
+	// avi stuff
+	fpa = new Array < idFile>(6);
+	aviDemoPath = new idStr;
+	aviDemoName = new idStr;
+
+	localSound: idSoundEmitterLocal;		// just for playShaderDirectly()
+
+	slowmoActive:boolean;
+	slowmoSpeed:number/*float*/;
+	enviroSuitActive:boolean;
 };
 ////
 /////*

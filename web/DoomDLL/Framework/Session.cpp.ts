@@ -2925,7 +2925,7 @@ so commands, cvars, files, etc are all available
 		this.guiActive = null;
 		this.guiHandle = null;
 
-		this.ReadCDKey ( );
+		//this.ReadCDKey ( );
 
 		common.Printf( "session initialized\n" );
 		common.Printf( "--------------------------------------\n" );

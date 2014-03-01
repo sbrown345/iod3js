@@ -65,16 +65,16 @@
 ////	int						soundShaderFlags;		// SSF_* bit flags
 ////	int						soundClass;				// for global fading of sounds
 ////} soundShaderParms_t;
-////
-////
-////const int		SOUND_MAX_LIST_WAVS		= 32;
-////
-////// sound classes are used to fade most sounds down inside cinematics, leaving dialog
-////// flagged with a non-zero class full volume
-////const int		SOUND_MAX_CLASSES		= 4;
-////
-////// it is somewhat tempting to make this a virtual class to hide the private
-////// details here, but that doesn't fit easily with the decl manager at the moment.
+
+
+var SOUND_MAX_LIST_WAVS		= 32;
+
+// sound classes are used to fade most sounds down inside cinematics, leaving dialog
+// flagged with a non-zero class full volume
+var SOUND_MAX_CLASSES		= 4;
+
+// it is somewhat tempting to make this a virtual class to hide the private
+// details here, but that doesn't fit easily with the decl manager at the moment.
 class idSoundShader extends idDecl {
 ////public:
 ////							idSoundShader( void );

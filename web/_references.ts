@@ -461,9 +461,9 @@
 //#include "../framework/DemoFile.h"
 //#include "../framework/Session.h"
 /// <reference path="doomdll/framework/session.h.ts" />
+/// <reference path="doomdll/framework/session_local.h.ts" />
 /// <reference path="doomdll/framework/session_menu.cpp.ts" />
 /// <reference path="doomdll/framework/session.cpp.ts" />
-/// <reference path="doomdll/framework/session_local.h.ts" />
 
 //// asynchronous networking
 //#include "../framework/async/AsyncNetwork.h"

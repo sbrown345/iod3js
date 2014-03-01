@@ -30,49 +30,49 @@
 ////#pragma hdrstop
 ////
 ////#include "snd_local.h"
-////
-/////*
-////==================
-////idSoundWorldLocal::Init
-////==================
-////*/
-////void idSoundWorldLocal::Init( idRenderWorld *renderWorld ) {
-////	rw = renderWorld;
-////	writeDemo = NULL;
-////
-////	listenerAxis.Identity();
-////	listenerPos.Zero();
-////	listenerPrivateId = 0;
-////	listenerQU.Zero();
-////	listenerArea = 0;
-////	listenerAreaName = "Undefined";
-////	listenerEnvironmentID = -2;
-////
-////	gameMsec = 0;
-////	game44kHz = 0;
-////	pause44kHz = -1;
-////	lastAVI44kHz = 0;
-////
-////	for ( int i = 0 ; i < SOUND_MAX_CLASSES ; i++ ) {
-////		soundClassFade[i].Clear();
-////	}
-////
-////	// fill in the 0 index spot
-////	idSoundEmitterLocal	*placeHolder = new idSoundEmitterLocal;
-////	emitters.Append( placeHolder );
-////
-////	fpa[0] = fpa[1] = fpa[2] = fpa[3] = fpa[4] = fpa[5] = NULL;
-////
-////	aviDemoPath = "";
-////	aviDemoName = "";
-////
-////	localSound = NULL;
-////
-////	slowmoActive		= false;
-////	slowmoSpeed			= 0;
-////	enviroSuitActive	= false;
-////}
-////
+
+/*
+==================
+idSoundWorldLocal::Init
+==================
+*/
+idSoundWorldLocal.prototype.Init = function ( renderWorld: idRenderWorld ): void {
+	this.rw = renderWorld;
+	this.writeDemo = NULL;
+
+	this.listenerAxis.Identity ( );
+	this.listenerPos.Zero ( );
+	this.listenerPrivateId = 0;
+	this.listenerQU.Zero ( );
+	this.listenerArea = 0;
+	this.listenerAreaName = "Undefined";
+	this.listenerEnvironmentID = -2;
+
+	this.gameMsec = 0;
+	this.game44kHz = 0;
+	this.pause44kHz = -1;
+	this.lastAVI44kHz = 0;
+
+	for ( var i = 0; i < SOUND_MAX_CLASSES; i++ ) {
+		this.soundClassFade[i].Clear ( );
+	}
+
+	// fill in the 0 index spot
+	var placeHolder = new idSoundEmitterLocal;
+	this.emitters.Append( placeHolder );
+
+	this.fpa[0] = this.fpa[1] = this.fpa[2] = this.fpa[3] = this.fpa[4] = this.fpa[5] = null;
+
+	this.aviDemoPath = "";
+	this.aviDemoName = "";
+
+	this.localSound = NULL;
+
+	this.slowmoActive = false;
+	this.slowmoSpeed = 0;
+	this.enviroSuitActive = false;
+};
+
 /////*
 ////===============
 ////idSoundWorldLocal::idSoundWorldLocal

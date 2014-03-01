@@ -2924,9 +2924,9 @@ void idSessionLocal::Init() {
 
 	guiActive = NULL;
 	guiHandle = NULL;
-
+#ifndef JS_CHANGES
 	ReadCDKey();
-
+#endif
 	common->Printf( "session initialized\n" );
 	common->Printf( "--------------------------------------\n" );
 }

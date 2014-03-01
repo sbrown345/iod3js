@@ -31,19 +31,19 @@
 ////
 ////#include "snd_local.h"
 ////
-////
-/////*
-////===================
-////idSoundFade::Clear
-////===================
-////*/
-////void idSoundFade::Clear() {
-////	fadeStart44kHz = 0;
-////	fadeEnd44kHz = 0;
-////	fadeStartVolume = 0;
-////	fadeEndVolume = 0;
-////}
-////
+
+/*
+===================
+idSoundFade::Clear
+===================
+*/
+idSoundFade.prototype.Clear = function ( ) {
+	this.fadeStart44kHz = 0;
+	this.fadeEnd44kHz = 0;
+	this.fadeStartVolume = 0;
+	this.fadeEndVolume = 0;
+}
+
 /////*
 ////===================
 ////idSoundFade::FadeDbAt44kHz
