@@ -1865,91 +1865,89 @@ idWindow::SetFocus
 idWindow::ParseScript
 ================
 */
-	ParseScript ( src: idParser, list: idGuiScriptList, /*int **/timeParm:R<number> = null, elseBlock = false ): boolean {
-		todoThrow ( );
-		return false;
-////
-////	bool	ifElseBlock = false;
-////
-////	idToken token;
-////
-////	// scripts start with { ( unless parm is true ) and have ; separated command lists.. commands are command,
-////	// arg.. basically we want everything between the { } as it will be interpreted at
-////	// run time
-////	
-////	if ( elseBlock ) {
-////		src.ReadToken ( &token );
-////	
-////		if ( !token.Icmp ( "if" ) ) {
-////			ifElseBlock = true;
-////		}
-////		
-////		src.UnreadToken ( &token );
-////
-////		if ( !ifElseBlock && !src.ExpectTokenString( "{" ) ) {
-////			return false;
-////		}
-////	}
-////	else if ( !src.ExpectTokenString( "{" ) ) {
-////		return false;
-////	}
-////
-////	int nest = 0;
-////
-////	while (1) {
-////		if ( !src.ReadToken(&token) ) {
-////			src.Error( "Unexpected end of file" );
-////			return false;
-////		}
-////
-////		if ( token.$.data == "{" ) {
-////			nest++;
-////		}
-////
-////		if ( token.$.data == "}" ) {
-////			if (nest-- <= 0) {
-////				return true;
-////			}
-////		}
-////
-////		idGuiScript *gs = new idGuiScript();
-////		if (token.Icmp("if") == 0) {
-////			gs.conditionReg = this.ParseExpression(src);
-////			gs.ifList = new idGuiScriptList();
-////			ParseScript(src, *gs.ifList, NULL);
-////			if (src.ReadToken(&token)) {
-////				if (token.$.data == "else") {
-////					gs.elseList = new idGuiScriptList();
-////					// pass true to indicate we are parsing an else condition
-////					ParseScript(src, *gs.elseList, NULL, true );
-////				} else {
-////					src.UnreadToken(&token);
-////				}
-////			}
-////
-////			list.Append(gs);
-////
-////			// if we are parsing an else if then return out so 
-////			// the initial "if" parser can handle the rest of the tokens
-////			if ( ifElseBlock ) {
-////				return true;
-////			}
-////			continue;
-////		} else {
-////			src.UnreadToken(&token);
-////		}
-////
-////		// empty { } is not allowed
-////		if ( token.$.data == "{" ) {
-////			 src.Error ( "Unexpected {" );
-////			 delete gs;
-////			 return false;
-////		}
-////
-////		gs.Parse(src);
-////		list.Append(gs);
-////	}
-////
+	ParseScript ( src: idParser, list: idGuiScriptList, /*int **/timeParm: R<number> = null, elseBlock = false ): boolean {
+
+		var ifElseBlock = false;
+
+		var token = new R( new idToken );
+
+		// scripts start with { ( unless parm is true ) and have ; separated command lists.. commands are command,
+		// arg.. basically we want everything between the { } as it will be interpreted at
+		// run time
+
+		if ( elseBlock ) {
+			src.ReadToken( token );
+
+			if ( !token.$.Icmp( "if" ) ) {
+				ifElseBlock = true;
+			}
+
+			src.UnreadToken( token );
+
+			if ( !ifElseBlock && !src.ExpectTokenString( "{" ) ) {
+				return false;
+			}
+		} else if ( !src.ExpectTokenString( "{" ) ) {
+			return false;
+		}
+
+		var nest = 0;
+
+		while ( 1 ) {
+			if ( !src.ReadToken( token ) ) {
+				src.Error( "Unexpected end of file" );
+				return false;
+			}
+
+			if ( token.$.data == "{" ) {
+				nest++;
+			}
+
+			if ( token.$.data == "}" ) {
+				if ( nest-- <= 0 ) {
+					return true;
+				}
+			}
+
+			var gs = new idGuiScript ( );
+			if ( token.$.Icmp( "if" ) == 0 ) {
+				gs.conditionReg = this.ParseExpression( src );
+				gs.ifList = new idGuiScriptList ( );
+				this.ParseScript( src, gs.ifList, null );
+				if ( src.ReadToken( token ) ) {
+					if ( token.$.data == "else" ) {
+						gs.elseList = new idGuiScriptList ( );
+						// pass true to indicate we are parsing an else condition
+						this.ParseScript( src, gs.elseList, null, true );
+					} else {
+						src.UnreadToken( token );
+					}
+				}
+
+				list.Append( gs );
+
+				// if we are parsing an else if then return out so 
+				// the initial "if" parser can handle the rest of the tokens
+				if ( ifElseBlock ) {
+					return true;
+				}
+				continue;
+			} else {
+				src.UnreadToken( token );
+			}
+
+			// empty { } is not allowed
+			if ( token.$.data == "{" ) {
+				src.Error( "Unexpected {" );
+				delete gs;
+				return false;
+			}
+
+			gs.Parse( src );
+			list.Append( gs );
+		}
+
+		todoThrow( "shouldnt' get here" );
 	}
 
 /*
@@ -3202,7 +3200,7 @@ Returns a register index
 		todoThrow ( );
 		//char *p = new char[token.Length()+1];
 		//strcpy(p, token);
-		//a = (int)p;
+		//a = (int)p; //todo:actual address????????????????????????????????????????????
 		//b = -2;
 		return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VAR);
 	}
