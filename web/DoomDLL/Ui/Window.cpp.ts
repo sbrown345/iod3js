@@ -63,7 +63,7 @@ var ON_MOUSEENTER = 0,
 	ON_ENTER = 9,
 	ON_ENTERRELEASE = 10,
 	SCRIPT_COUNT = 11;
-		
+
 
 class idWindow {
 	static size = 948;
@@ -86,14 +86,14 @@ class idWindow {
 	////		ADJUST_BOTTOMLEFT
 	////	};
 	////
-	static ScriptNames = Array<string>(SCRIPT_COUNT);
+	//static ScriptNames = Array<string>(SCRIPT_COUNT);
 	////
 	////	static const idRegEntry RegisterVars[];
 	////	static const int		NumRegisterVars;
 	////
 	////	void SetDC(idDeviceContext *d);
 	////
-	////	idDeviceContext*	GetDC ( void ) { return dc; }
+	////	idDeviceContext*	GetDC ( void ) { return this.dc; }
 	////
 	////	idWindow *SetFocus(idWindow *w, bool scripts = true);
 	////
@@ -101,7 +101,7 @@ class idWindow {
 	////	void SetParent(idWindow *w);
 	////	void SetFlag(unsigned int f);
 	////	void ClearFlag(unsigned int f);
-	////	unsigned GetFlags() {return flags;};
+	////	unsigned GetFlags() {return this.flags;};
 	////	void Move(float x, float y);
 	////	void BringToTop(idWindow *w);
 	////	void Adjust(float xd, float yd);
@@ -111,8 +111,8 @@ class idWindow {
 	////	void SetupBackground();
 	////	drawWin_t *FindChildByName(const char *name);
 	////	idSimpleWindow *FindSimpleWinByName(const char *_name);
-	////	idWindow *GetParent() { return parent; }
-	////	idUserInterfaceLocal *GetGui() {return gui;};
+	GetParent(): idWindow { return this.parent; }
+	GetGui(): idUserInterfaceLocal {return this.gui;}
 	////	bool Contains(float x, float y);
 	////	size_t Size();
 	////	virtual size_t Allocated();
@@ -130,7 +130,7 @@ class idWindow {
 	////	void CalcClientRect(float xofs, float yofs);
 	////	void CommonInit();
 	////	void CleanUp();
-	////	void DrawBorderAndCaption(const idRectangle &drawRect);
+	////	void DrawBorderAndCaption(const idRectangle &this.drawRect);
 	////	void DrawCaption(int time, float x, float y);
 	////	void SetupTransforms(float x, float y);
 	////	bool Contains(const idRectangle &sr, float x, float y);
@@ -155,7 +155,7 @@ class idWindow {
 	////	virtual void Draw(int time, float x, float y);
 	////	virtual void MouseExit();
 	////	virtual void MouseEnter();
-	////	virtual void DrawBackground(const idRectangle &drawRect);
+	////	virtual void DrawBackground(const idRectangle &this.drawRect);
 	////	virtual const char *RouteMouseCoords(float xd, float yd);
 	////	virtual void SetBuddy(idWindow *buddy) {};
 	////	virtual void HandleBuddyUpdate(idWindow *buddy) {};
@@ -177,7 +177,7 @@ class idWindow {
 	////	void FixupParms();
 	////	void GetScriptString(const char *name, idStr &out);
 	////	void SetScriptParams();
-	////	bool HasOps() {	return (ops.Num() > 0); };
+	////	bool HasOps() {	return (this.ops.Num() > 0); };
 	////	float EvalRegs(int test = -1, bool force = false);
 	////	void StartTransition();
 	////	void AddTransition(idWinVar *dest, idVec4 from, idVec4 to, int time, float accelTime, float decelTime);
@@ -192,7 +192,7 @@ class idWindow {
 	////	void SetRegs(const char *key, const char *val);
 	////	int ParseExpression( idParser *src, idWinVar *var = NULL, int component = 0 );
 	////	int ExpressionConstant(float f);
-	////	idRegisterList *RegList() { return &regList; }
+	RegList ( ): idRegisterList { return this.regList; }
 	////	void AddCommand(const char *cmd);
 	////	void AddUpdateVar(idWinVar *var);
 	////	bool Interactive();
@@ -216,8 +216,8 @@ class idWindow {
 	////	void		RemoveChild			( idWindow *win );
 	////	bool		InsertChild			( idWindow *win, idWindow* before );
 	////
-	////	void		ScreenToClient		( idRectangle* rect );
-	////	void		ClientToScreen		( idRectangle* rect );
+	////	void		ScreenToClient		( idRectangle* this.rect );
+	////	void		ClientToScreen		( idRectangle* this.rect );
 	////
 	////	bool		UpdateFromDictionary ( idDict& dict );
 	////
@@ -254,39 +254,39 @@ class idWindow {
 	////	void ParseString(idParser *src, idStr &out);
 	////	void ParseVec4(idParser *src, idVec4 &out);
 	////	void ConvertRegEntry(const char *name, idParser *src, idStr &out, int tabs);
-	
-	actualX:number/*float*/;					// physical coords
-	actualY:number/*float*/;					// ''
-	childID:number/*int*/;					// this childs id
-	flags: number/*unsigned int */;             // visible, focus, mouseover, cursor, border, etc.. 
-	lastTimeRun:number/*int*/;				//
-	drawRect = new idRectangle;			// overall rect
-	clientRect = new idRectangle;			// client area
+
+	actualX: number /*float*/; // physical coords
+	actualY: number /*float*/; // ''
+	childID: number /*int*/; // this childs id
+	flags: number /*unsigned int */; // visible, focus, mouseover, cursor, border, etc.. 
+	lastTimeRun: number /*int*/; //
+	drawRect = new idRectangle; // overall rect
+	clientRect = new idRectangle; // client area
 	origin = new idVec2;
-	
-	timeLine:number/*int*/;					// time stamp used for various fx
-	xOffset:number/*float*/;			
-	yOffset:number/*float*/;
-	forceAspectWidth:number/*float*/;
-	forceAspectHeight:number/*float*/;
-	matScalex:number/*float*/;
-	matScaley:number/*float*/;
-	borderSize:number/*float*/;
-	textAlignx:number/*float*/;
-	textAligny:number/*float*/;
+
+	timeLine: number /*int*/; // time stamp used for various fx
+	xOffset: number /*float*/;
+	yOffset: number /*float*/;
+	forceAspectWidth: number /*float*/;
+	forceAspectHeight: number /*float*/;
+	matScalex: number /*float*/;
+	matScaley: number /*float*/;
+	borderSize: number /*float*/;
+	textAlignx: number /*float*/;
+	textAligny: number /*float*/;
 	name = new idStr;
 	comment = new idStr;
 	shear = new idVec2;
-	
-	textShadow:number;	   //	signed char		
-	fontNum:number;  //	unsigned char	
-	cursor:number;			//	unsigned char	
-	textAlign:number;	   //	signed char		
-	
-	noTime = new idWinBool;					
-	visible = new idWinBool;				
+
+	textShadow: number; //	signed char		
+	fontNum: number; //	unsigned char	
+	cursor: number; //	unsigned char	
+	textAlign: number; //	signed char		
+
+	noTime = new idWinBool;
+	visible = new idWinBool;
 	noEvents = new idWinBool;
-	rect = new idWinRectangle;				// overall rect
+	rect = new idWinRectangle; // overall rect
 	backColor = new idWinVec4;
 	matColor = new idWinVec4;
 	foreColor = new idWinVec4;
@@ -296,22 +296,22 @@ class idWindow {
 	rotate = new idWinFloat
 	text = new idWinStr;
 	backGroundName = new idWinBackground;
-	
-	definedVars = new idList<idWinVar>(idWinVar);
-	updateVars = new idList<idWinVar>(idWinVar);
-	
-	textRect = new idRectangle;			// text extented rect
-	background:idMaterial;         // background asset  
-	
-	parent:idWindow;				// parent window
-	children = new idList<idWindow>(idWindow);		// child windows	
-	drawWindows= new idList<drawWin_t>(drawWin_t);		
-	
-	focusedChild:idWindow;			// if a child window has the focus
-	captureChild:idWindow;			// if a child window has mouse capture
-	overChild:idWindow;			// if a child window has mouse capture
-	hover:boolean;
-	
+
+	definedVars = new idList<idWinVar>( idWinVar );
+	updateVars = new idList<idWinVar>( idWinVar );
+
+	textRect = new idRectangle; // text extented rect
+	background: idMaterial; // background asset  
+
+	parent: idWindow; // parent window
+	children = new idList<idWindow>( idWindow ); // child windows	
+	drawWindows = new idList<drawWin_t>( drawWin_t );
+
+	focusedChild: idWindow; // if a child window has the focus
+	captureChild: idWindow; // if a child window has mouse capture
+	overChild: idWindow; // if a child window has mouse capture
+	hover: boolean;
+
 	dc: idDeviceContext;
 	////
 	gui: idUserInterfaceLocal;
@@ -319,27 +319,27 @@ class idWindow {
 	////	static idCVar gui_debug;
 	////	static idCVar gui_edit;
 	////
-	scripts = new Array<idGuiScriptList>(SCRIPT_COUNT);
+	scripts = new Array<idGuiScriptList>( SCRIPT_COUNT );
 	////	bool *saveTemps;
 	////
-	////	idList<idTimeLineEvent*> timeLineEvents = new idList<idTimeLineEvent>(idTimeLineEvent);
-	////	idList<idTransitionData> transitions= new idList<idTransitionData>(idTransitionData);
-	////
-	////	static bool registerIsTemporary[MAX_EXPRESSION_REGISTERS]; // statics to assist during parsing
-	////
-	ops = new idList<wexpOp_t>(wexpOp_t);			   	// evaluate to make expressionRegisters
-	////	idList<float> expressionRegisters= new idList<wwwww>(wwwwwwww);
-	saveOps = new idList<wexpOp_t>(wexpOp_t);			   	// evaluate to make expressionRegisters
-	////	idList<rvNamedEvent*>		namedEvents= new idList<rvNamedEvent>(rvNamedEvent);		//  added named events
-	saveRegs = new idList<number>(Number); //idList<float>
-	////
-	////	idRegisterList regList = new idRegisterList;
-	////
+	timeLineEvents = new idList<idTimeLineEvent>( idTimeLineEvent );
+	transitions= new idList<idTransitionData>( idTransitionData );
+	
+	static registerIsTemporary = new Array<boolean>(MAX_EXPRESSION_REGISTERS); // statics to assist during parsing
+	
+	ops = new idList<wexpOp_t>( wexpOp_t ); // evaluate to make expressionRegisters
+	expressionRegisters = new idList<number>(Number);	//	idList<float>
+	saveOps = new idList<wexpOp_t>( wexpOp_t ); // evaluate to make expressionRegisters
+	namedEvents= new idList<rvNamedEvent>( rvNamedEvent ); //  added named events
+	saveRegs = new idList<number>( Number ); //idList<float>
+	
+	regList = new idRegisterList;
+	
 	hideCursor = new idWinBool;
 
 ////
-////ID_INLINE void idWindow::AddDefinedVar( idWinVar* var ) {
-////	definedVars.AddUnique( var );
+////ID_INLINE AddDefinedVar( idWinVar* var ):void {
+////	this.definedVars.AddUnique( var );
 ////}
 ////
 ////bool idWindow::registerIsTemporary[MAX_EXPRESSION_REGISTERS];		// statics to assist during parsing
@@ -361,8 +361,8 @@ class idWindow {
 ////	{ "matcolor", idRegister::VEC4 },
 ////	{ "scale", idRegister::VEC2 },
 ////	{ "translate", idRegister::VEC2 },
-////	{ "rotate", idRegister::FLOAT },
-////	{ "textscale", idRegister::FLOAT },
+////	{ "rotate", REGTYPE.FLOAT },
+////	{ "textscale", REGTYPE.FLOAT },
 ////	{ "visible", idRegister::BOOL },
 ////	{ "noevents", idRegister::BOOL },
 ////	{ "text", idRegister::STRING },
@@ -383,19 +383,19 @@ class idWindow {
 ////
 ////const int idWindow::NumRegisterVars = sizeof(RegisterVars) / sizeof(idRegEntry);
 ////
-////const char *idWindow::ScriptNames[] = {
-////	"onMouseEnter",
-////	"onMouseExit",
-////	"onAction",
-////	"onActivate",
-////	"onDeactivate",
-////	"onESC",
-////	"onEvent",
-////	"onTrigger",
-////	"onActionRelease",
-////	"onEnter",
-////	"onEnterRelease"
-////};
+	static ScriptNames = [
+		"onMouseEnter",
+		"onMouseExit",
+		"onAction",
+		"onActivate",
+		"onDeactivate",
+		"onESC",
+		"onEvent",
+		"onTrigger",
+		"onActionRelease",
+		"onEnter",
+		"onEnterRelease"
+	];
 
 /*
 ================
@@ -416,22 +416,22 @@ idWindow::CommonInit
 		this.matScalex = 1;
 		this.matScaley = 1;
 		this.borderSize = 0;
-		this.noTime.equalsBool(false);
-		this.visible .equalsBool( true);
+		this.noTime.equalsBool( false );
+		this.visible.equalsBool( true );
 		this.textAlign = 0;
 		this.textAlignx = 0;
 		this.textAligny = 0;
-		this.noEvents.equalsBool( false);
-		this.rotate.equalsFloat(0);
+		this.noEvents.equalsBool( false );
+		this.rotate.equalsFloat( 0 );
 		this.shear.Zero ( );
-		this.textScale.equalsFloat(0.35);
+		this.textScale.equalsFloat( 0.35 );
 		this.backColor.Zero ( );
 		this.foreColor.equalsVec4( new idVec4( 1, 1, 1, 1 ) );
 		this.hoverColor.equalsVec4( new idVec4( 1, 1, 1, 1 ) );
 		this.matColor.equalsVec4( new idVec4( 1, 1, 1, 1 ) );
 		this.borderColor.Zero ( );
 		this.background = null;
-		this.backGroundName.equalsStr(new idStr(""));
+		this.backGroundName.equalsStr( new idStr( "" ) );
 		this.focusedChild = null;
 		this.captureChild = null;
 		this.overChild = null;
@@ -446,7 +446,7 @@ idWindow::CommonInit
 			this.scripts[i] = null;
 		}
 
-		this.hideCursor.equalsBool(false);
+		this.hideCursor.equalsBool( false );
 	}
 
 /////*
@@ -473,32 +473,32 @@ idWindow::CommonInit
 ////	int i, c;
 ////	int sz = name.Allocated();
 ////	sz += text.Size();
-////	sz += backGroundName.Size();
+////	sz += this.backGroundName.Size();
 ////
-////	c = definedVars.Num();
+////	c = this.definedVars.Num();
 ////	for (i = 0; i < c; i++) {
-////		sz += definedVars[i].Size();
+////		sz += this.definedVars[i].Size();
 ////	}
 ////
 ////	for (i = 0; i < SCRIPT_COUNT; i++) {
-////		if (scripts[i]) {
-////			sz += scripts[i].Size();
+////		if (this.scripts[i]) {
+////			sz += this.scripts[i].Size();
 ////		}
 ////	}
-////	c = timeLineEvents.Num();
+////	c = this.timeLineEvents.Num();
 ////	for (i = 0; i < c; i++) {
-////		sz += timeLineEvents[i].Size();
+////		sz += this.timeLineEvents[i].Size();
 ////	}
 ////
-////	c = namedEvents.Num();
+////	c = this.namedEvents.Num();
 ////	for (i = 0; i < c; i++) {
-////		sz += namedEvents[i].Size();
+////		sz += this.namedEvents[i].Size();
 ////	}
 ////
-////	c = drawWindows.Num();
+////	c = this.drawWindows.Num();
 ////	for (i = 0; i < c; i++) {
-////		if (drawWindows[i].simp) {
-////			sz += drawWindows[i].simp.Size();
+////		if (this.drawWindows[i].simp) {
+////			sz += this.drawWindows[i].simp.Size();
 ////		}
 ////	}
 ////
@@ -510,49 +510,52 @@ idWindow::CommonInit
 idWindow::idWindow
 ================
 */
-	constructor ( ui: idUserInterfaceLocal ) {
-		this.dc = null;
-		this.gui = ui;
-		this.CommonInit ( );
+	constructor ( ui: idUserInterfaceLocal )
+	constructor ( d: idDeviceContext, ui: idUserInterfaceLocal )
+	constructor ( a1: any, a2?: any ) {
+		if ( arguments.length == 1 ) {
+			var ui = <idUserInterfaceLocal>a1;
+			this.dc = null;
+			this.gui = ui;
+			this.CommonInit ( );
+		} else if ( arguments.length == 2 ) {
+			var d = <idDeviceContext>a1;
+			var ui = <idUserInterfaceLocal>a2;
+			this.dc = d;
+			this.gui = ui;
+			this.CommonInit ( );
+		} else {
+			todoThrow ( );
+		}
 	}
 
+
 /*
-////================
-////idWindow::idWindow
-////================
-////*/
-////idWindow::idWindow(idDeviceContext *d, idUserInterfaceLocal *ui) {
-////	dc = d;
-////	gui = ui;
-////	CommonInit();
-////}
-////
-/////*
-////================
-////idWindow::CleanUp
-////================
-////*/
-////void idWindow::CleanUp() {
-////	int i, c = drawWindows.Num();
-////	for (i = 0; i < c; i++) {
-////		delete drawWindows[i].simp;
-////	}
-////
-////	// ensure the register list gets cleaned up
-////	regList.Reset ( );
-////	
-////	// Cleanup the named events
-////	namedEvents.DeleteContents(true);
-////
-////	drawWindows.Clear();
-////	this.children.DeleteContents(true);
-////	definedVars.DeleteContents(true);
-////	timeLineEvents.DeleteContents(true);
-////	for (i = 0; i < SCRIPT_COUNT; i++) {
-////		delete scripts[i];
-////	}
-////	CommonInit();
-////}
+================
+idWindow::CleanUp
+================
+*/
+	CleanUp ( ): void {
+		var i:number, c = this.drawWindows.Num ( );
+		for ( i = 0; i < c; i++ ) {
+			delete this.drawWindows[i].simp;
+		}
+
+		// ensure the register list gets cleaned up
+		this.regList.Reset ( );
+
+		// Cleanup the named events
+		this.namedEvents.DeleteContents( true );
+
+		this.drawWindows.Clear ( );
+		this.children.DeleteContents( true );
+		this.definedVars.DeleteContents( true );
+		this.timeLineEvents.DeleteContents( true );
+		for ( i = 0; i < SCRIPT_COUNT; i++ ) {
+			delete this.scripts[i];
+		}
+		this.CommonInit ( );
+	}
 ////
 /////*
 ////================
@@ -560,7 +563,7 @@ idWindow::idWindow
 ////================
 ////*/
 ////idWindow::~idWindow() {
-////	CleanUp();
+////	this.CleanUp();
 ////}
 ////
 /////*
@@ -568,8 +571,8 @@ idWindow::idWindow
 ////idWindow::Move
 ////================
 ////*/
-////void idWindow::Move(float x, float y) {
-////	idRectangle rct = rect;
+////Move(float x, float y):void {
+////	idRectangle rct = this.rect;
 ////	rct.x = x;
 ////	rct.y = y;
 ////	idRegister *reg = RegList().FindReg("rect");
@@ -584,8 +587,8 @@ idWindow::idWindow
 ////idWindow::SetFont
 ////================
 ////*/
-////void idWindow::SetFont() {
-////	dc.SetFont(fontNum);
+////SetFont():void {
+////	this.dc.SetFont(fontNum);
 ////}
 ////
 /////*
@@ -595,7 +598,7 @@ idWindow::idWindow
 ////*/
 ////float idWindow::GetMaxCharHeight() {
 ////	SetFont();
-////	return dc.MaxCharHeight(textScale);
+////	return this.dc.MaxCharHeight(textScale);
 ////}
 ////
 /////*
@@ -605,7 +608,7 @@ idWindow::idWindow
 ////*/
 ////float idWindow::GetMaxCharWidth() {
 ////	SetFont();
-////	return dc.MaxCharWidth(textScale);
+////	return this.dc.MaxCharWidth(textScale);
 ////}
 ////
 /////*
@@ -613,27 +616,27 @@ idWindow::idWindow
 ////idWindow::Draw
 ////================
 ////*/
-////void idWindow::Draw( int time, float x, float y ) {
+////Draw( int time, float x, float y ):void {
 ////	if ( text.Length() == 0 ) {
 ////		return;
 ////	}
 ////	if ( textShadow ) {
 ////		idStr shadowText = text;
-////		idRectangle shadowRect = textRect;
+////		idRectangle shadowRect = this.textRect;
 ////
 ////		shadowText.RemoveColors();
 ////		shadowRect.x += textShadow;
 ////		shadowRect.y += textShadow;
 ////
-////		dc.DrawText( shadowText, textScale, textAlign, colorBlack, shadowRect, !( flags & WIN_NOWRAP ), -1 );
+////		this.dc.DrawText( shadowText, textScale, textAlign, colorBlack, shadowRect, !( this.flags & WIN_NOWRAP ), -1 );
 ////	}
-////	dc.DrawText( text, textScale, textAlign, foreColor, textRect, !( flags & WIN_NOWRAP ), -1 );
+////	this.dc.DrawText( text, textScale, textAlign, foreColor, this.textRect, !( this.flags & WIN_NOWRAP ), -1 );
 ////
 ////	if ( gui_edit.GetBool() ) {
-////		dc.EnableClipping( false );
-////		dc.DrawText( va( "x: %i  y: %i", ( int )rect.x(), ( int )rect.y() ), 0.25, 0, dc.colorWhite, idRectangle( rect.x(), rect.y() - 15, 100, 20 ), false );
-////		dc.DrawText( va( "w: %i  h: %i", ( int )rect.w(), ( int )rect.h() ), 0.25, 0, dc.colorWhite, idRectangle( rect.x() + rect.w(), rect.w() + rect.h() + 5, 100, 20 ), false );
-////		dc.EnableClipping( true );
+////		this.dc.EnableClipping( false );
+////		this.dc.DrawText( va( "x: %i  y: %i", ( int )rect.x(), ( int )rect.y() ), 0.25, 0, this.dc.colorWhite, idRectangle( this.rect.x(), this.rect.y() - 15, 100, 20 ), false );
+////		this.dc.DrawText( va( "w: %i  h: %i", ( int )rect.w(), ( int )rect.h() ), 0.25, 0, this.dc.colorWhite, idRectangle( this.rect.x() + this.rect.w(), this.rect.w() + this.rect.h() + 5, 100, 20 ), false );
+////		this.dc.EnableClipping( true );
 ////	}
 ////
 ////}
@@ -643,7 +646,7 @@ idWindow::idWindow
 ////idWindow::BringToTop
 ////================
 ////*/
-////void idWindow::BringToTop(idWindow *w) {
+////BringToTop(idWindow *w):void {
 ////	
 ////	if (w && !(w.flags & WIN_MODAL)) {
 ////		return;
@@ -667,14 +670,14 @@ idWindow::idWindow
 ////idWindow::Size
 ////================
 ////*/
-////void idWindow::Size(float x, float y, float w, float h) {
-////	idRectangle rct = rect;
+////Size(float x, float y, float w, float h):void {
+////	idRectangle rct = this.rect;
 ////	rct.x = x;
 ////	rct.y = y;
 ////	rct.w = w;
 ////	rct.h = h;
 ////	rect = rct;
-////	CalcClientRect(0,0);
+////	this.CalcClientRect(0,0);
 ////}
 ////
 /////*
@@ -682,7 +685,7 @@ idWindow::idWindow
 ////idWindow::MouseEnter
 ////================
 ////*/
-////void idWindow::MouseEnter() {
+////MouseEnter():void {
 ////	
 ////	if (noEvents) {
 ////		return;
@@ -696,7 +699,7 @@ idWindow::idWindow
 ////idWindow::MouseExit
 ////================
 ////*/
-////void idWindow::MouseExit() {
+////MouseExit():void {
 ////	
 ////	if (noEvents) {
 ////		return;
@@ -725,9 +728,9 @@ idWindow::idWindow
 ////	var c = this.children.Num();
 ////	while (c > 0) {
 ////		idWindow *child = this.children[--c];
-////		if (child.visible && !child.noEvents && child.Contains(child.drawRect, gui.CursorX(), gui.CursorY())) {
+////		if (child.visible && !child.noEvents && child.Contains(child.drawRect, this.gui.CursorX(), this.gui.CursorY())) {
 ////
-////			dc.SetCursor(child.cursor);
+////			this.dc.SetCursor(child.cursor);
 ////			child.hover = true;
 ////
 ////			if (overChild != child) {
@@ -735,7 +738,7 @@ idWindow::idWindow
 ////					overChild.MouseExit();
 ////					str = overChild.cmd;
 ////					if (str.Length()) {
-////						gui.GetDesktop().AddCommand(str);
+////						this.gui.GetDesktop().AddCommand(str);
 ////						overChild.cmd = "";
 ////					}
 ////				}
@@ -743,7 +746,7 @@ idWindow::idWindow
 ////				overChild.MouseEnter();
 ////				str = overChild.cmd;
 ////				if (str.Length()) {
-////					gui.GetDesktop().AddCommand(str);
+////					this.gui.GetDesktop().AddCommand(str);
 ////					overChild.cmd = "";
 ////				}
 ////			} else {
@@ -758,7 +761,7 @@ idWindow::idWindow
 ////		overChild.MouseExit();
 ////		str = overChild.cmd;
 ////		if (str.Length()) {
-////			gui.GetDesktop().AddCommand(str);
+////			this.gui.GetDesktop().AddCommand(str);
 ////			overChild.cmd = "";
 ////		}
 ////		overChild = NULL;
@@ -771,7 +774,7 @@ idWindow::idWindow
 ////idWindow::Activate
 ////================
 ////*/
-////void idWindow::Activate( bool activate,	idStr &act ) {
+////Activate( bool activate,	idStr &act ):void {
 ////
 ////	int n = (activate) ? ON_ACTIVATE : ON_DEACTIVATE;
 ////
@@ -794,7 +797,7 @@ idWindow::idWindow
 ////idWindow::Trigger
 ////================
 ////*/
-////void idWindow::Trigger() {
+////Trigger():void {
 ////	RunScript( ON_TRIGGER );
 ////	var c = this.children.Num();
 ////	for ( var i = 0; i < c; i++ ) {
@@ -808,29 +811,29 @@ idWindow::idWindow
 ////idWindow::StateChanged
 ////================
 ////*/
-////void idWindow::StateChanged( bool redraw ) {
+////StateChanged( bool redraw ):void {
 ////
 ////	UpdateWinVars();
 ////
-////	if (expressionRegisters.Num() && ops.Num()) {
-////		EvalRegs();
+////	if (this.expressionRegisters.Num() && this.ops.Num()) {
+////		this.EvalRegs();
 ////	}
 ////
-////	int c = drawWindows.Num();
+////	int c = this.drawWindows.Num();
 ////	for ( var i = 0; i < c; i++ ) {
-////		if ( drawWindows[i].win ) {
-////			drawWindows[i].win.StateChanged( redraw );
+////		if ( this.drawWindows[i].win ) {
+////			this.drawWindows[i].win.StateChanged( redraw );
 ////		} else {
-////			drawWindows[i].simp.StateChanged( redraw );
+////			this.drawWindows[i].simp.StateChanged( redraw );
 ////		}
 ////	}
 ////
 ////	if ( redraw ) {
-////		if ( flags & WIN_DESKTOP ) {
+////		if ( this.flags & WIN_DESKTOP ) {
 ////			Redraw( 0.0f, 0.0f );
 ////		}
-////		if ( background && background.CinematicLength() ) {
-////			background.UpdateCinematic( gui.GetTime() );
+////		if ( this.background && background.CinematicLength() ) {
+////			background.UpdateCinematic( this.gui.GetTime() );
 ////		}
 ////	}
 ////}
@@ -856,25 +859,25 @@ idWindow::idWindow
 ////
 ////	w.flags |= WIN_CAPTURE;
 ////	w.GainCapture();
-////	gui.GetDesktop().captureChild = w;
+////	this.gui.GetDesktop().captureChild = w;
 ////	return last;
 ////}
-////
-/////*
-////================
-////idWindow::AddUpdateVar
-////================
-////*/
-////void idWindow::AddUpdateVar(idWinVar *var) {
-////	updateVars.AddUnique(var);
-////}
-////
+
+/*
+================
+idWindow::AddUpdateVar
+================
+*/
+	AddUpdateVar ( $var: idWinVar ): void {
+		this.updateVars.AddUnique( $var );
+	}
+
 /////*
 ////================
 ////idWindow::UpdateWinVars
 ////================
 ////*/
-////void idWindow::UpdateWinVars() {
+////UpdateWinVars():void {
 ////	int c = updateVars.Num();
 ////	for (var i = 0; i < c; i++) {
 ////		updateVars[i].Update();
@@ -897,11 +900,11 @@ idWindow::idWindow
 ////
 ////	UpdateWinVars();
 ////
-////	if (expressionRegisters.Num() && ops.Num()) {
-////		EvalRegs();
+////	if (this.expressionRegisters.Num() && this.ops.Num()) {
+////		this.EvalRegs();
 ////	}
 ////
-////	if ( flags & WIN_INTRANSITION ) {
+////	if ( this.flags & WIN_INTRANSITION ) {
 ////		Transition();
 ////	}
 ////
@@ -923,26 +926,26 @@ idWindow::idWindow
 ////idWindow::RunNamedEvent
 ////================
 ////*/
-////void idWindow::RunNamedEvent ( const char* eventName )
+////RunNamedEvent ( const char* eventName ):void
 ////{
 ////	int i;
 ////	int c;
 ////
 ////	// Find and run the event	
-////	c = namedEvents.Num( );
+////	c = this.namedEvents.Num( );
 ////	for ( i = 0; i < c; i ++ ) {
-////		if ( namedEvents[i].mName.Icmp( eventName ) ) {	
+////		if ( this.namedEvents[i].mName.Icmp( eventName ) ) {	
 ////			continue;
 ////		}
 ////
 ////		UpdateWinVars();
 ////
 ////		// Make sure we got all the current values for stuff
-////		if (expressionRegisters.Num() && ops.Num()) {
-////			EvalRegs(-1, true);
+////		if (this.expressionRegisters.Num() && this.ops.Num()) {
+////			this.EvalRegs(-1, true);
 ////		}
 ////		
-////		RunScriptList( namedEvents[i].mEvent );
+////		RunScriptList( this.namedEvents[i].mEvent );
 ////		
 ////		break;
 ////	}
@@ -961,8 +964,8 @@ idWindow::idWindow
 ////*/
 ////bool idWindow::Contains(const idRectangle &sr, float x, float y) {
 ////	idRectangle r = sr;
-////	r.x += actualX - drawRect.x;
-////	r.y += actualY - drawRect.y;
+////	r.x += actualX - this.drawRect.x;
+////	r.y += actualY - this.drawRect.y;
 ////	return r.Contains(x, y);
 ////}
 ////
@@ -972,7 +975,7 @@ idWindow::idWindow
 ////================
 ////*/
 ////bool idWindow::Contains(float x, float y) {
-////	idRectangle r = drawRect;
+////	idRectangle r = this.drawRect;
 ////	r.x = actualX;
 ////	r.y = actualY;
 ////	return r.Contains(x, y);
@@ -983,7 +986,7 @@ idWindow::idWindow
 ////idWindow::AddCommand
 ////================
 ////*/
-////void idWindow::AddCommand(const char *_cmd) {
+////AddCommand(const char *_cmd):void {
 ////	idStr str = cmd;
 ////	if (str.Length()) {
 ////		str += " ; ";
@@ -1005,21 +1008,21 @@ idWindow::idWindow
 ////
 ////	cmd = "";
 ////
-////	if ( flags & WIN_DESKTOP ) {
+////	if ( this.flags & WIN_DESKTOP ) {
 ////		actionDownRun = false;
 ////		actionUpRun = false;
-////		if (expressionRegisters.Num() && ops.Num()) {
-////			EvalRegs();
+////		if (this.expressionRegisters.Num() && this.ops.Num()) {
+////			this.EvalRegs();
 ////		}
-////		RunTimeEvents(gui.GetTime());
+////		RunTimeEvents(this.gui.GetTime());
 ////		CalcRects(0,0);
-////		dc.SetCursor( idDeviceContext::CURSOR_ARROW );
+////		this.dc.SetCursor( idDeviceContext::CURSOR_ARROW );
 ////	}
 ////
 ////	if (visible && !noEvents) {
 ////
 ////		if (event.evType == SE_KEY) {
-////			EvalRegs(-1, true);
+////			this.EvalRegs(-1, true);
 ////			if (updateVisuals) {
 ////				*updateVisuals = true;
 ////			}
@@ -1028,13 +1031,13 @@ idWindow::idWindow
 ////
 ////				if (!event.evValue2 && GetCaptureChild()) {
 ////					GetCaptureChild().LoseCapture();
-////					gui.GetDesktop().captureChild = NULL;
+////					this.gui.GetDesktop().captureChild = NULL;
 ////					return "";
 ////				} 
 ////
 ////				var c = this.children.Num();
 ////				while (--c >= 0) {
-////					if (children[c].visible && this.children[c].Contains(children[c].drawRect, gui.CursorX(), gui.CursorY()) && !(children[c].noEvents)) {
+////					if (children[c].visible && this.children[c].Contains(children[c].drawRect, this.gui.CursorX(), this.gui.CursorY()) && !(children[c].noEvents)) {
 ////						idWindow *child = this.children[c];
 ////						if (event.evValue2) {
 ////							BringToTop(child);
@@ -1043,7 +1046,7 @@ idWindow::idWindow
 ////								SetCapture(child);
 ////							}
 ////						}
-////						if (child.Contains(child.clientRect, gui.CursorX(), gui.CursorY())) {
+////						if (child.Contains(child.clientRect, this.gui.CursorX(), this.gui.CursorY())) {
 ////							//if ((gui_edit.GetBool() && (child.flags & WIN_SELECTED)) || (!gui_edit.GetBool() && (child.flags & WIN_MOVABLE))) {
 ////							//	SetCapture(child);
 ////							//}
@@ -1077,19 +1080,19 @@ idWindow::idWindow
 ////
 ////				if (!event.evValue2 && GetCaptureChild()) {
 ////					GetCaptureChild().LoseCapture();
-////					gui.GetDesktop().captureChild = NULL;
+////					this.gui.GetDesktop().captureChild = NULL;
 ////					return "";
 ////				}
 ////
 ////				var c = this.children.Num();
 ////				while (--c >= 0) {
-////					if (children[c].visible && this.children[c].Contains(children[c].drawRect, gui.CursorX(), gui.CursorY()) && !(children[c].noEvents)) {
+////					if (children[c].visible && this.children[c].Contains(children[c].drawRect, this.gui.CursorX(), this.gui.CursorY()) && !(children[c].noEvents)) {
 ////						idWindow *child = this.children[c];
 ////						if (event.evValue2) {
 ////							BringToTop(child);
 ////							SetFocus(child);
 ////						}
-////						if (child.Contains(child.clientRect,gui.CursorX(), gui.CursorY()) || GetCaptureChild() == child) {
+////						if (child.Contains(child.clientRect,this.gui.CursorX(), this.gui.CursorY()) || GetCaptureChild() == child) {
 ////							if ((gui_edit.GetBool() && (child.flags & WIN_SELECTED)) || (!gui_edit.GetBool() && (child.flags & WIN_MOVABLE))) {
 ////								SetCapture(child);
 ////							}
@@ -1107,11 +1110,11 @@ idWindow::idWindow
 ////				if (gui_edit.GetBool()) {
 ////					var c = this.children.Num();
 ////					for (var i = 0; i < c; i++) {
-////						if (children[i].drawRect.Contains(gui.CursorX(), gui.CursorY())) {
+////						if (children[i].drawRect.Contains(this.gui.CursorX(), this.gui.CursorY())) {
 ////							if (event.evValue2) {
 ////								children[i].flags ^= WIN_SELECTED;
 ////								if (children[i].flags & WIN_SELECTED) {
-////									flags &= ~WIN_SELECTED;
+////									this.flags &= ~WIN_SELECTED;
 ////									return "childsel";
 ////								}
 ////							}
@@ -1136,17 +1139,17 @@ idWindow::idWindow
 ////					idWindow *currentFocus = GetFocusedChild();
 ////					idWindow *child = GetFocusedChild();
 ////					idWindow *parent = child.GetParent();
-////					while ( parent ) {
+////					while ( this.parent ) {
 ////						bool foundFocus = false;
 ////						bool recurse = false;
 ////						int index = 0;
 ////						if ( child ) {
-////							index = parent.GetChildIndex( child ) + direction;
+////							index = this.parent.GetChildIndex( child ) + direction;
 ////						} else if ( direction < 0 ) {
-////							index = parent.GetChildCount() - 1;
+////							index = this.parent.GetChildCount() - 1;
 ////						}
-////						while ( index < parent.GetChildCount() && index >= 0) {
-////							idWindow *testWindow = parent.GetChild( index );
+////						while ( index < this.parent.GetChildCount() && index >= 0) {
+////							idWindow *testWindow = this.parent.GetChild( index );
 ////							if ( testWindow == currentFocus ) {
 ////								// we managed to wrap around and get back to our starting window
 ////								foundFocus = true;
@@ -1174,9 +1177,9 @@ idWindow::idWindow
 ////							continue;
 ////						} else {
 ////							// We didn't find anything, so go back up to our parent
-////							child = parent;
+////							child = this.parent;
 ////							parent = child.GetParent();
-////							if ( parent == gui.GetDesktop() ) {
+////							if ( this.parent == this.gui.GetDesktop() ) {
 ////								// We got back to the desktop, so wrap around but don't actually go to the desktop
 ////								parent = NULL;
 ////								child = NULL;
@@ -1199,7 +1202,7 @@ idWindow::idWindow
 ////						return childRet;
 ////					}
 ////				}
-////				if ( flags & WIN_WANTENTER ) {
+////				if ( this.flags & WIN_WANTENTER ) {
 ////					if ( event.evValue2 ) {
 ////						RunScript( ON_ACTION );
 ////					} else {
@@ -1234,14 +1237,14 @@ idWindow::idWindow
 ////		}
 ////	}
 ////
-////	gui.GetReturnCmd() = cmd;
-////	if ( gui.GetPendingCmd().Length() ) {
-////		gui.GetReturnCmd() += " ; ";
-////		gui.GetReturnCmd() += gui.GetPendingCmd();
-////		gui.GetPendingCmd().Clear();
+////	this.gui.GetReturnCmd() = cmd;
+////	if ( this.gui.GetPendingCmd().Length() ) {
+////		this.gui.GetReturnCmd() += " ; ";
+////		this.gui.GetReturnCmd() += this.gui.GetPendingCmd();
+////		this.gui.GetPendingCmd().Clear();
 ////	}
 ////	cmd = "";
-////	return gui.GetReturnCmd();
+////	return this.gui.GetReturnCmd();
 ////}
 ////
 /////*
@@ -1249,12 +1252,12 @@ idWindow::idWindow
 ////idWindow::DebugDraw
 ////================
 ////*/
-////void idWindow::DebugDraw(int time, float x, float y) {
+////DebugDraw(int time, float x, float y):void {
 ////	static char buff[16384];
-////	if (dc) {
-////		dc.EnableClipping(false);
+////	if (this.dc) {
+////		this.dc.EnableClipping(false);
 ////		if (gui_debug.GetInteger() == 1) {
-////			dc.DrawRect(drawRect.x, drawRect.y, drawRect.w, drawRect.h, 1, idDeviceContext::colorRed);
+////			this.dc.DrawRect(this.drawRect.x, this.drawRect.y, this.drawRect.w, this.drawRect.h, 1, idDeviceContext::colorRed);
 ////		} else if (gui_debug.GetInteger() == 2) {
 ////			char out[1024];
 ////			idStr str;
@@ -1264,22 +1267,22 @@ idWindow::idWindow
 ////				sprintf(buff, "%s\n", str.c_str());
 ////			}
 ////
-////			sprintf(out, "Rect: %0.1f, %0.1f, %0.1f, %0.1f\n", rect.x(), rect.y(), rect.w(), rect.h());
+////			sprintf(out, "Rect: %0.1f, %0.1f, %0.1f, %0.1f\n", this.rect.x(), this.rect.y(), this.rect.w(), this.rect.h());
 ////			strcat(buff, out);
-////			sprintf(out, "Draw Rect: %0.1f, %0.1f, %0.1f, %0.1f\n", drawRect.x, drawRect.y, drawRect.w, drawRect.h);
+////			sprintf(out, "Draw Rect: %0.1f, %0.1f, %0.1f, %0.1f\n", this.drawRect.x, this.drawRect.y, this.drawRect.w, this.drawRect.h);
 ////			strcat(buff, out);
-////			sprintf(out, "Client Rect: %0.1f, %0.1f, %0.1f, %0.1f\n", clientRect.x, clientRect.y, clientRect.w, clientRect.h);
+////			sprintf(out, "Client Rect: %0.1f, %0.1f, %0.1f, %0.1f\n", this.clientRect.x, this.clientRect.y, this.clientRect.w, this.clientRect.h);
 ////			strcat(buff, out);
-////			sprintf(out, "Cursor: %0.1f : %0.1f\n", gui.CursorX(), gui.CursorY());
+////			sprintf(out, "Cursor: %0.1f : %0.1f\n", this.gui.CursorX(), this.gui.CursorY());
 ////			strcat(buff, out);
 ////
 ////
-////			//idRectangle tempRect = textRect;
+////			//idRectangle tempRect = this.textRect;
 ////			//tempRect.x += offsetX;
-////			//drawRect.y += offsetY;
-////			dc.DrawText(buff, textScale, textAlign, foreColor, textRect, true);
+////			//this.drawRect.y += offsetY;
+////			this.dc.DrawText(buff, textScale, textAlign, foreColor, this.textRect, true);
 ////		} 
-////		dc.EnableClipping(true);
+////		this.dc.EnableClipping(true);
 ////	}
 ////}
 ////
@@ -1288,7 +1291,7 @@ idWindow::idWindow
 ////idWindow::Transition
 ////================
 ////*/
-////void idWindow::Transition() {
+////Transition():void {
 ////	int i, c = transitions.Num();
 ////	bool clear = true;
 ////
@@ -1303,7 +1306,7 @@ idWindow::idWindow
 ////				val = dynamic_cast<idWinFloat*>(data.data);
 ////			}
 ////		}
-////		if ( data.interp.IsDone( gui.GetTime() ) && data.data) {
+////		if ( data.interp.IsDone( this.gui.GetTime() ) && data.data) {
 ////			if (v4) {
 ////				*v4 = data.interp.GetEndValue();
 ////			} else if ( val ) {
@@ -1315,21 +1318,21 @@ idWindow::idWindow
 ////			clear = false;
 ////			if (data.data) {
 ////				if (v4) {
-////					*v4 = data.interp.GetCurrentValue( gui.GetTime() );
+////					*v4 = data.interp.GetCurrentValue( this.gui.GetTime() );
 ////				} else if ( val ) {
-////					*val = data.interp.GetCurrentValue( gui.GetTime() )[0];
+////					*val = data.interp.GetCurrentValue( this.gui.GetTime() )[0];
 ////				} else {
-////					*r = data.interp.GetCurrentValue( gui.GetTime() );
+////					*r = data.interp.GetCurrentValue( this.gui.GetTime() );
 ////				}
 ////			} else {
-////				common.Warning("Invalid transitional data for window %s in gui %s", GetName(), gui.GetSourceFile());
+////				common.Warning("Invalid transitional data for window %s in this.gui %s", GetName(), this.gui.GetSourceFile());
 ////			}
 ////		}
 ////	}
 ////
 ////	if ( clear ) {
 ////		transitions.SetNum( 0, false );
-////		flags &= ~WIN_INTRANSITION;
+////		this.flags &= ~WIN_INTRANSITION;
 ////	}
 ////}
 ////
@@ -1338,80 +1341,81 @@ idWindow::idWindow
 ////idWindow::Time
 ////================
 ////*/
-////void idWindow::Time() {
+////Time():void {
 ////	
 ////	if ( noTime ) {
 ////		return;
 ////	}
 ////
 ////	if ( timeLine == -1 ) {
-////		timeLine = gui.GetTime();
+////		timeLine = this.gui.GetTime();
 ////	}
 ////
 ////	cmd = "";
 ////
-////	int c = timeLineEvents.Num();
+////	int c = this.timeLineEvents.Num();
 ////	if ( c > 0 ) {
 ////		for (var i = 0; i < c; i++) {
-////			if ( timeLineEvents[i].pending && gui.GetTime() - timeLine >= timeLineEvents[i].time ) {
-////				timeLineEvents[i].pending = false;
-////				RunScriptList( timeLineEvents[i].event );
+////			if ( this.timeLineEvents[i].pending && this.gui.GetTime() - timeLine >= this.timeLineEvents[i].time ) {
+////				this.timeLineEvents[i].pending = false;
+////				RunScriptList( this.timeLineEvents[i].event );
 ////			}
 ////		}
 ////	}
-////	if ( gui.Active() ) {
-////		gui.GetPendingCmd() += cmd;
+////	if ( this.gui.Active() ) {
+////		this.gui.GetPendingCmd() += cmd;
 ////	}
 ////}
-////
-/////*
-////================
-////idWindow::EvalRegs
-////================
-////*/
-////float idWindow::EvalRegs(int test, bool force) {
-////	static float regs[MAX_EXPRESSION_REGISTERS];
-////	static idWindow *lastEval = NULL;
-////
-////	if (!force && test >= 0 && test < MAX_EXPRESSION_REGISTERS && lastEval == this) {
-////		return regs[test];
-////	}
-////
-////	lastEval = this;
-////
-////	if (expressionRegisters.Num()) {
-////		regList.SetToRegs(regs);
-////		EvaluateRegisters(regs);
-////		regList.GetFromRegs(regs);
-////	}
-////
-////	if (test >= 0 && test < MAX_EXPRESSION_REGISTERS) {
-////		return regs[test];
-////	}
-////
-////	return 0.0;
-////}
+
+/*
+================
+idWindow::EvalRegs
+================
+*/
+	EvalRegs ( /*int */test = -1, force = false ): number /*float */ {
+		todoThrow ( );
+		//static float regs[MAX_EXPRESSION_REGISTERS];
+		//static idWindow *lastEval = NULL;
+
+		//if (!force && test >= 0 && test < MAX_EXPRESSION_REGISTERS && lastEval == this) {
+		//	return regs[test];
+		//}
+
+		//lastEval = this;
+
+		//if (this.expressionRegisters.Num()) {
+		//	this.regList.SetToRegs(regs);
+		//	EvaluateRegisters(regs);
+		//	this.regList.GetFromRegs(regs);
+		//}
+
+		//if (test >= 0 && test < MAX_EXPRESSION_REGISTERS) {
+		//	return regs[test];
+		//}
+
+		return 0.0;
+	}
 ////
 /////*
 ////================
 ////idWindow::DrawBackground
 ////================
 ////*/
-////void idWindow::DrawBackground(const idRectangle &drawRect) {
+////DrawBackground(const idRectangle &drawRect):void {
 ////	if ( backColor.w() ) {
-////		dc.DrawFilledRect(drawRect.x, drawRect.y, drawRect.w, drawRect.h, backColor);
+////		this.dc.DrawFilledRect(drawRect.x, drawRect.y, drawRect.w, drawRect.h, backColor);
 ////	}
 ////
-////	if ( background && matColor.w() ) {
+////	if ( this.background && matColor.w() ) {
 ////		float scalex, scaley;
-////		if ( flags & WIN_NATURALMAT ) {
+////		if ( this.flags & WIN_NATURALMAT ) {
 ////			scalex = drawRect.w / background.GetImageWidth();
 ////			scaley = drawRect.h / background.GetImageHeight();
 ////		} else {
 ////			scalex = matScalex;
 ////			scaley = matScaley;
 ////		}
-////		dc.DrawMaterial(drawRect.x, drawRect.y, drawRect.w, drawRect.h, background, matColor, scalex, scaley);
+////		this.dc.DrawMaterial(drawRect.x, drawRect.y, drawRect.w, drawRect.h, background, matColor, scalex, scaley);
 ////	}
 ////}
 ////
@@ -1420,9 +1424,9 @@ idWindow::idWindow
 ////idWindow::DrawBorderAndCaption
 ////================
 ////*/
-////void idWindow::DrawBorderAndCaption(const idRectangle &drawRect) {
-////	if ( flags & WIN_BORDER && borderSize && borderColor.w() ) {
-////		dc.DrawRect(drawRect.x, drawRect.y, drawRect.w, drawRect.h, borderSize, borderColor);
+////DrawBorderAndCaption(const idRectangle &drawRect):void {
+////	if ( this.flags & WIN_BORDER && this.borderSize && borderColor.w() ) {
+////		this.dc.DrawRect(drawRect.x, drawRect.y, drawRect.w, drawRect.h, this.borderSize, borderColor);
 ////	}
 ////}
 ////
@@ -1431,12 +1435,12 @@ idWindow::idWindow
 ////idWindow::SetupTransforms
 ////================
 ////*/
-////void idWindow::SetupTransforms(float x, float y) {
+////SetupTransforms(float x, float y):void {
 ////	static idMat3 trans;
 ////	static idVec3 org;
 ////	
 ////	trans.Identity();
-////	org.Set( origin.x + x, origin.y + y, 0 );
+////	org.Set( this.origin.x + x, this.origin.y + y, 0 );
 ////
 ////	if ( rotate ) {
 ////		static idRotation rot;
@@ -1454,7 +1458,7 @@ idWindow::idWindow
 ////	}
 ////
 ////	if ( !trans.IsIdentity() ) {
-////		dc.SetTransformInfo( org, trans );
+////		this.dc.SetTransformInfo( org, trans );
 ////	}
 ////}
 ////
@@ -1463,20 +1467,20 @@ idWindow::idWindow
 ////idWindow::CalcRects
 ////================
 ////*/
-////void idWindow::CalcRects(float x, float y) {
-////	CalcClientRect(0, 0);
-////	drawRect.Offset(x, y);
-////	clientRect.Offset(x, y);
-////	actualX = drawRect.x;
-////	actualY = drawRect.y;
-////	int c = drawWindows.Num();
+////CalcRects(float x, float y):void {
+////	this.CalcClientRect(0, 0);
+////	this.drawRect.Offset(x, y);
+////	this.clientRect.Offset(x, y);
+////	actualX = this.drawRect.x;
+////	actualY = this.drawRect.y;
+////	int c = this.drawWindows.Num();
 ////	for (var i = 0; i < c; i++) {
-////		if (drawWindows[i].win) {
-////			drawWindows[i].win.CalcRects(clientRect.x + xOffset, clientRect.y + yOffset);
+////		if (this.drawWindows[i].win) {
+////			this.drawWindows[i].win.CalcRects(this.clientRect.x + xOffset, this.clientRect.y + yOffset);
 ////		}
 ////	}
-////	drawRect.Offset(-x, -y);
-////	clientRect.Offset(-x, -y);
+////	this.drawRect.Offset(-x, -y);
+////	this.clientRect.Offset(-x, -y);
 ////}
 ////
 /////*
@@ -1484,16 +1488,16 @@ idWindow::idWindow
 ////idWindow::Redraw
 ////================
 ////*/
-////void idWindow::Redraw(float x, float y) {
+////Redraw(float x, float y):void {
 ////	idStr str;
 ////
-////	if (r_skipGuiShaders.GetInteger() == 1 || dc == NULL ) {
+////	if (r_skipGuiShaders.GetInteger() == 1 || this.dc == NULL ) {
 ////		return;
 ////	}
 ////	
-////	int time = gui.GetTime();
+////	int time = this.gui.GetTime();
 ////
-////	if ( flags & WIN_DESKTOP && r_skipGuiShaders.GetInteger() != 3 ) {
+////	if ( this.flags & WIN_DESKTOP && r_skipGuiShaders.GetInteger() != 3 ) {
 ////		RunTimeEvents( time );
 ////	}
 ////
@@ -1501,47 +1505,47 @@ idWindow::idWindow
 ////		return;
 ////	}
 ////
-////	if ( flags & WIN_SHOWTIME ) {
-////		dc.DrawText(va(" %0.1f seconds\n%s", (float)(time - timeLine) / 1000, gui.State().GetString("name")), 0.35f, 0, dc.colorWhite, idRectangle(100, 0, 80, 80), false);
+////	if ( this.flags & WIN_SHOWTIME ) {
+////		this.dc.DrawText(va(" %0.1f seconds\n%s", (float)(time - timeLine) / 1000, this.gui.State().GetString("name")), 0.35f, 0, this.dc.colorWhite, idRectangle(100, 0, 80, 80), false);
 ////	}
 ////
-////	if ( flags & WIN_SHOWCOORDS ) {
-////		dc.EnableClipping(false);
-////		sprintf(str, "x: %i y: %i  cursorx: %i cursory: %i", (int)rect.x(), (int)rect.y(), (int)gui.CursorX(), (int)gui.CursorY());
-////		dc.DrawText(str, 0.25f, 0, dc.colorWhite, idRectangle(0, 0, 100, 20), false);
-////		dc.EnableClipping(true);
+////	if ( this.flags & WIN_SHOWCOORDS ) {
+////		this.dc.EnableClipping(false);
+////		sprintf(str, "x: %i y: %i  cursorx: %i cursory: %i", (int)rect.x(), (int)rect.y(), (int)this.gui.CursorX(), (int)this.gui.CursorY());
+////		this.dc.DrawText(str, 0.25f, 0, this.dc.colorWhite, idRectangle(0, 0, 100, 20), false);
+////		this.dc.EnableClipping(true);
 ////	}
 ////
 ////	if (!visible) {
 ////		return;
 ////	}
 ////
-////	CalcClientRect(0, 0);
+////	this.CalcClientRect(0, 0);
 ////
 ////	SetFont();
 ////	//if (flags & WIN_DESKTOP) {
 ////		// see if this window forces a new aspect ratio
-////		dc.SetSize(this.forceAspectWidth, forceAspectHeight);
+////		this.dc.SetSize(this.forceAspectWidth, forceAspectHeight);
 ////	//}
 ////
 ////	//FIXME: go to screen coord tracking
-////	drawRect.Offset(x, y);
-////	clientRect.Offset(x, y);
-////	textRect.Offset(x, y);
-////	actualX = drawRect.x;
-////	actualY = drawRect.y;
+////	this.drawRect.Offset(x, y);
+////	this.clientRect.Offset(x, y);
+////	this.textRect.Offset(x, y);
+////	actualX = this.drawRect.x;
+////	actualY = this.drawRect.y;
 ////
 ////	idVec3	oldOrg;
 ////	idMat3	oldTrans;
 ////		
-////	dc.GetTransformInfo( oldOrg, oldTrans );
+////	this.dc.GetTransformInfo( oldOrg, oldTrans );
 ////
 ////	SetupTransforms(x, y);
-////	DrawBackground(drawRect);
-////	DrawBorderAndCaption(drawRect);
+////	DrawBackground(this.drawRect);
+////	DrawBorderAndCaption(this.drawRect);
 ////
-////	if ( !( flags & WIN_NOCLIP) ) {
-////		dc.PushClipRect(clientRect);
+////	if ( !( this.flags & WIN_NOCLIP) ) {
+////		this.dc.PushClipRect(this.clientRect);
 ////	} 
 ////
 ////	if ( r_skipGuiShaders.GetInteger() < 5 ) {
@@ -1552,38 +1556,38 @@ idWindow::idWindow
 ////		DebugDraw(time, x, y);
 ////	}
 ////
-////	int c = drawWindows.Num();
+////	int c = this.drawWindows.Num();
 ////	for ( var i = 0; i < c; i++ ) {
-////		if ( drawWindows[i].win ) {
-////			drawWindows[i].win.Redraw( clientRect.x + xOffset, clientRect.y + yOffset );
+////		if ( this.drawWindows[i].win ) {
+////			this.drawWindows[i].win.Redraw( this.clientRect.x + xOffset, this.clientRect.y + yOffset );
 ////		} else {
-////			drawWindows[i].simp.Redraw( clientRect.x + xOffset, clientRect.y + yOffset );
+////			this.drawWindows[i].simp.Redraw( this.clientRect.x + xOffset, this.clientRect.y + yOffset );
 ////		}
 ////	}
 ////
 ////	// Put transforms back to what they were before the children were processed
-////	dc.SetTransformInfo(oldOrg, oldTrans);
+////	this.dc.SetTransformInfo(oldOrg, oldTrans);
 ////
-////	if ( ! ( flags & WIN_NOCLIP ) ) {
-////		dc.PopClipRect();
+////	if ( ! ( this.flags & WIN_NOCLIP ) ) {
+////		this.dc.PopClipRect();
 ////	} 
 ////
-////	if (gui_edit.GetBool()  || (flags & WIN_DESKTOP && !( flags & WIN_NOCURSOR )  && !hideCursor && (gui.Active() || ( flags & WIN_MENUGUI ) ))) {
-////		dc.SetTransformInfo(vec3_origin, mat3_identity);
-////		gui.DrawCursor();
+////	if (gui_edit.GetBool()  || (flags & WIN_DESKTOP && !( this.flags & WIN_NOCURSOR )  && !hideCursor && (this.gui.Active() || ( this.flags & WIN_MENUGUI ) ))) {
+////		this.dc.SetTransformInfo(vec3_origin, mat3_identity);
+////		this.gui.DrawCursor();
 ////	}
 ////
-////	if (gui_debug.GetInteger() && flags & WIN_DESKTOP) {
-////		dc.EnableClipping(false);
-////		sprintf(str, "x: %1.f y: %1.f",  gui.CursorX(), gui.CursorY());
-////		dc.DrawText(str, 0.25, 0, dc.colorWhite, idRectangle(0, 0, 100, 20), false);
-////		dc.DrawText(gui.GetSourceFile(), 0.25, 0, dc.colorWhite, idRectangle(0, 20, 300, 20), false);
-////		dc.EnableClipping(true);
+////	if (gui_debug.GetInteger() && this.flags & WIN_DESKTOP) {
+////		this.dc.EnableClipping(false);
+////		sprintf(str, "x: %1.f y: %1.f",  this.gui.CursorX(), this.gui.CursorY());
+////		this.dc.DrawText(str, 0.25, 0, this.dc.colorWhite, idRectangle(0, 0, 100, 20), false);
+////		this.dc.DrawText(this.gui.GetSourceFile(), 0.25, 0, this.dc.colorWhite, idRectangle(0, 20, 300, 20), false);
+////		this.dc.EnableClipping(true);
 ////	}
 ////
-////	drawRect.Offset(-x, -y);
-////	clientRect.Offset(-x, -y);
-////	textRect.Offset(-x, -y);
+////	this.drawRect.Offset(-x, -y);
+////	this.clientRect.Offset(-x, -y);
+////	this.textRect.Offset(-x, -y);
 ////}
 ////
 /*
@@ -1607,7 +1611,7 @@ idWindow::SetDC
 ////idWindow::ArchiveToDictionary
 ////================
 ////*/
-////void idWindow::ArchiveToDictionary(idDict *dict, bool useNames) {
+////ArchiveToDictionary(idDict *dict, bool useNames):void {
 ////	//FIXME: rewrite without state
 ////	var c = this.children.Num();
 ////	for (var i = 0; i < c; i++) {
@@ -1620,7 +1624,7 @@ idWindow::SetDC
 ////idWindow::InitFromDictionary
 ////================
 ////*/
-////void idWindow::InitFromDictionary(idDict *dict, bool byName) {
+////InitFromDictionary(idDict *dict, bool byName):void {
 ////	//FIXME: rewrite without state
 ////	var c = this.children.Num();
 ////	for (var i = 0; i < c; i++) {
@@ -1628,147 +1632,147 @@ idWindow::SetDC
 ////	}
 ////}
 ////
-/////*
-////================
-////idWindow::CalcClientRect
-////================
-////*/
-////void idWindow::CalcClientRect(float xofs, float yofs) {
-////	drawRect = rect;
-////
-////	if ( flags & WIN_INVERTRECT ) {
-////		drawRect.x = rect.x() - rect.w();
-////		drawRect.y = rect.y() - rect.h();
-////	}
-////	
-////	if (flags & (WIN_HCENTER | WIN_VCENTER) && parent) {
-////		// in this case treat xofs and yofs as absolute top left coords
-////		// and ignore the original positioning
-////		if (flags & WIN_HCENTER) {
-////			drawRect.x = (parent.rect.w() - rect.w()) / 2;
-////		} else {
-////			drawRect.y = (parent.rect.h() - rect.h()) / 2;
-////		}
-////	}
-////
-////	drawRect.x += xofs;
-////	drawRect.y += yofs;
-////
-////	clientRect = drawRect;
-////	if (rect.h() > 0.0 && rect.w() > 0.0) {
-////
-////		if (flags & WIN_BORDER && borderSize != 0.0) {
-////			clientRect.x += borderSize;
-////			clientRect.y += borderSize;
-////			clientRect.w -= borderSize;
-////			clientRect.h -= borderSize;
-////		}
-////
-////		textRect = clientRect;
-////		textRect.x += 2.0;
-////	 	textRect.w -= 2.0;
-////		textRect.y += 2.0;
-////		textRect.h -= 2.0;
-////
-////		textRect.x += textAlignx;
-////		textRect.y += textAligny;
-////
-////	}
-////	origin.Set( rect.x() + (rect.w() / 2 ), rect.y() + ( rect.h() / 2 ) );
-////
-////}
-////
-/////*
-////================
-////idWindow::SetupBackground
-////================
-////*/
-////void idWindow::SetupBackground() {
-////	if (backGroundName.Length()) {
-////		background = declManager.FindMaterial(backGroundName);
-////		background.SetImageClassifications( 1 );	// just for resource tracking
-////		if ( background && !background.TestMaterialFlag( MF_DEFAULTED ) ) {
-////			background.SetSort(SS_GUI );
-////		}
-////	}
-////	backGroundName.SetMaterialPtr(&background);
-////}
-////
-/////*
-////================
-////idWindow::SetupFromState
-////================
-////*/
-////void idWindow::SetupFromState() {
-////	idStr str;
-////	background = NULL;
-////
-////	SetupBackground();
-////
-////	if (borderSize) {
-////		flags |= WIN_BORDER;
-////	}
-////
-////	if (regList.FindReg("rotate") || regList.FindReg("shear")) {
-////		flags |= WIN_TRANSFORM;
-////	}
-////	
-////	CalcClientRect(0,0);
-////	if ( scripts[ ON_ACTION ] ) {
-////		cursor = idDeviceContext::CURSOR_HAND;
-////		flags |= WIN_CANFOCUS;
-////	}
-////}
-////
-/////*
-////================
-////idWindow::Moved
-////================
-////*/
-////void idWindow::Moved() {
-////}
-////
-/////*
-////================
-////idWindow::Sized
-////================
-////*/
-////void idWindow::Sized() {
-////}
-////
-/////*
-////================
-////idWindow::GainFocus
-////================
-////*/
-////void idWindow::GainFocus() {
-////}
-////
-/////*
-////================
-////idWindow::LoseFocus
-////================
-////*/
-////void idWindow::LoseFocus() {
-////}
-////
-/////*
-////================
-////idWindow::GainCapture
-////================
-////*/
-////void idWindow::GainCapture() {
-////}
-////
-/////*
-////================
-////idWindow::LoseCapture
-////================
-////*/
-////void idWindow::LoseCapture() {
-////	flags &= ~WIN_CAPTURE;
-////}
-////
+/*
+================
+idWindow::CalcClientRect
+================
+*/
+	CalcClientRect(/*float*/ xofs: number, /*float */yofs: number):void {
+		this.drawRect.equals( this.rect.data );
+
+	if ( this.flags & WIN_INVERTRECT ) {
+		this.drawRect.x = this.rect.x() - this.rect.w();
+		this.drawRect.y = this.rect.y() - this.rect.h();
+	}
+	
+	if (this.flags & (WIN_HCENTER | WIN_VCENTER) && this.parent) {
+		// in this case treat xofs and yofs as absolute top left coords
+		// and ignore the original positioning
+		if (this.flags & WIN_HCENTER) {
+			this.drawRect.x = (this.parent.rect.w() - this.rect.w()) / 2;
+		} else {
+			this.drawRect.y = (this.parent.rect.h() - this.rect.h()) / 2;
+		}
+	}
+
+	this.drawRect.x += xofs;
+	this.drawRect.y += yofs;
+
+	this.clientRect = this.drawRect;
+	if (this.rect.h() > 0.0 && this.rect.w() > 0.0) {
+
+		if (this.flags & WIN_BORDER && this.borderSize != 0.0) {
+			this.clientRect.x += this.borderSize;
+			this.clientRect.y += this.borderSize;
+			this.clientRect.w -= this.borderSize;
+			this.clientRect.h -= this.borderSize;
+		}
+
+		this.textRect = this.clientRect;
+		this.textRect.x += 2.0;
+	 	this.textRect.w -= 2.0;
+		this.textRect.y += 2.0;
+		this.textRect.h -= 2.0;
+
+		this.textRect.x += this.textAlignx;
+		this.textRect.y += this.textAligny;
+
+	}
+		this.origin.Set( this.rect.x() + (this.rect.w() / 2 ), this.rect.y() + ( this.rect.h() / 2 ) );
+
+}
+
+/*
+================
+idWindow::SetupBackground
+================
+*/
+	SetupBackground ( ): void {
+		if ( this.backGroundName.Length ( ) ) {
+			this.background = declManager.FindMaterial( this.backGroundName.data.data );
+			this.background.SetImageClassifications( 1 ); // just for resource tracking
+			if ( this.background && !this.background.TestMaterialFlag( materialFlags_t.MF_DEFAULTED ) ) {
+				this.background.SetSort( materialSort_t.SS_GUI );
+			}
+		}
+		this.backGroundName.SetMaterialPtr( this.background );
+	}
+
+/*
+================
+idWindow::SetupFromState
+================
+*/
+SetupFromState():void {
+	var str = new idStr;
+	this.background = null;
+
+	this.SetupBackground();
+
+	if (this.borderSize) {
+		this.flags |= WIN_BORDER;
+	}
+
+	if (this.regList.FindReg("rotate") || this.regList.FindReg("shear")) {
+		this.flags |= WIN_TRANSFORM;
+	}
+	
+	this.CalcClientRect(0,0);
+	if ( this.scripts[ ON_ACTION ] ) {
+		this.cursor = CURSOR_HAND;
+		this.flags |= WIN_CANFOCUS;
+	}
+}
+
+/*
+================
+idWindow::Moved
+================
+*/
+Moved():void {
+}
+
+/*
+================
+idWindow::Sized
+================
+*/
+Sized():void {
+}
+
+/*
+================
+idWindow::GainFocus
+================
+*/
+GainFocus():void {
+}
+
+/*
+================
+idWindow::LoseFocus
+================
+*/
+LoseFocus():void {
+}
+
+/*
+================
+idWindow::GainCapture
+================
+*/
+GainCapture():void {
+}
+
+/*
+================
+idWindow::LoseCapture
+================
+*/
+LoseCapture():void {
+	this.flags &= ~WIN_CAPTURE;
+}
+
 /*
 ================
 idWindow::SetFlag
@@ -1787,15 +1791,15 @@ idWindow::ClearFlag
 		this.flags &= ~f;
 	}
 
-////
-/////*
-////================
-////idWindow::SetParent
-////================
-////*/
-////void idWindow::SetParent(idWindow *w) {
-////	parent = w;
-////}
+
+/*
+================
+idWindow::SetParent
+================
+*/
+	SetParent ( w: idWindow ): void {
+		this.parent = w;
+	}
 ////
 /////*
 ////================
@@ -1804,7 +1808,7 @@ idWindow::ClearFlag
 ////*/
 ////idWindow *idWindow::GetCaptureChild() {
 ////	if (flags & WIN_DESKTOP) {
-////		return gui.GetDesktop().captureChild;
+////		return this.gui.GetDesktop().captureChild;
 ////	}
 ////	return NULL;
 ////}
@@ -1816,52 +1820,54 @@ idWindow::ClearFlag
 ////*/
 ////idWindow *idWindow::GetFocusedChild() {
 ////	if (flags & WIN_DESKTOP) {
-////		return gui.GetDesktop().focusedChild;
+////		return this.gui.GetDesktop().focusedChild;
 ////	}
 ////	return NULL;
 ////}
 ////
 ////
-/////*
-////================
-////idWindow::SetFocus
-////================
-////*/
-////idWindow *idWindow::SetFocus(idWindow *w, bool scripts) {
-////	// only one child can have the focus
-////	idWindow *lastFocus = NULL;
-////	if (w.flags & WIN_CANFOCUS) {
-////		lastFocus = gui.GetDesktop().focusedChild;
-////		if ( lastFocus ) {
-////			lastFocus.flags &= ~WIN_FOCUS;
-////			lastFocus.LoseFocus();
-////		}
-////
-////		//  call on lose focus
-////		if ( scripts && lastFocus ) {
-////			// calling this broke all sorts of guis
-////			// lastFocus.RunScript(ON_MOUSEEXIT);
-////		}
-////		//  call on gain focus
-////		if ( scripts && w ) {
-////			// calling this broke all sorts of guis
-////			// w.RunScript(ON_MOUSEENTER);
-////		}
-////
-////		w.flags |= WIN_FOCUS;
-////		w.GainFocus();
-////		gui.GetDesktop().focusedChild = w;
-////	}
-////
-////	return lastFocus;
-////}
-////
-/////*
-////================
-////idWindow::ParseScript
-////================
-////*/
-////bool idWindow::ParseScript(idParser *src, idGuiScriptList &list, int *timeParm, bool elseBlock ) {
+/*
+================
+idWindow::SetFocus
+================
+*/
+	SetFocus ( w: idWindow, scripts = true ): idWindow {
+		// only one child can have the focus
+		var lastFocus: idWindow = null;
+		if ( w.flags & WIN_CANFOCUS ) {
+			lastFocus = this.gui.GetDesktop ( ).focusedChild;
+			if ( lastFocus ) {
+				lastFocus.flags &= ~WIN_FOCUS;
+				lastFocus.LoseFocus ( );
+			}
+
+			//  call on lose focus
+			if ( scripts && lastFocus ) {
+				// calling this broke all sorts of guis
+				// lastFocus.RunScript(ON_MOUSEEXIT);
+			}
+			//  call on gain focus
+			if ( scripts && w ) {
+				// calling this broke all sorts of guis
+				// w.RunScript(ON_MOUSEENTER);
+			}
+
+			w.flags |= WIN_FOCUS;
+			w.GainFocus ( );
+			this.gui.GetDesktop ( ).focusedChild = w;
+		}
+
+		return lastFocus;
+	}
+
+/*
+================
+idWindow::ParseScript
+================
+*/
+	ParseScript ( src: idParser, list: idGuiScriptList, /*int **/timeParm:R<number> = null, elseBlock = false ): boolean {
+		todoThrow ( );
+		return false;
 ////
 ////	bool	ifElseBlock = false;
 ////
@@ -1944,64 +1950,66 @@ idWindow::ClearFlag
 ////		list.Append(gs);
 ////	}
 ////
-////}
-////
-/////*
-////================
-////idWindow::SaveExpressionParseState
-////================
-////*/
-////void idWindow::SaveExpressionParseState() {
-////	saveTemps = (bool*)Mem_Alloc(MAX_EXPRESSION_REGISTERS * sizeof(bool));
-////	memcpy(saveTemps, registerIsTemporary, MAX_EXPRESSION_REGISTERS * sizeof(bool));
-////}
-////
-/////*
-////================
-////idWindow::RestoreExpressionParseState
-////================
-////*/
-////void idWindow::RestoreExpressionParseState() {
-////	memcpy(registerIsTemporary, saveTemps, MAX_EXPRESSION_REGISTERS * sizeof(bool));
-////	Mem_Free(saveTemps);
-////}
-////
-/////*
-////================
-////idWindow::ParseScriptEntry
-////================
-////*/
-////bool idWindow::ParseScriptEntry(const char *name, idParser *src) {
-////	for (var i = 0; i < SCRIPT_COUNT; i++) {
-////		if (idStr::Icmp(name, ScriptNames[i]) == 0) {
-////			delete scripts[i];
-////			scripts[i] = new idGuiScriptList;
-////			return ParseScript(src, *scripts[i]);
-////		}
-////	}
-////	return false;
-////}
-////
+	}
+
+/*
+================
+idWindow::SaveExpressionParseState
+================
+*/
+	SaveExpressionParseState ( ): void {
+		todoThrow ( );
+		//saveTemps = (bool*)Mem_Alloc(MAX_EXPRESSION_REGISTERS * sizeof(bool));
+		//memcpy(saveTemps, idWindow.registerIsTemporary, MAX_EXPRESSION_REGISTERS * sizeof(bool));
+	}
+
+/*
+================
+idWindow::RestoreExpressionParseState
+================
+*/
+	RestoreExpressionParseState ( ): void {
+		todoThrow ( );
+		//memcpy(idWindow.registerIsTemporary, saveTemps, MAX_EXPRESSION_REGISTERS * sizeof(bool));
+		//Mem_Free(saveTemps);
+	}
+
+/*
+================
+idWindow::ParseScriptEntry
+================
+*/
+	ParseScriptEntry(name: string, src: idParser ):boolean {
+	for (var i = 0; i < SCRIPT_COUNT; i++) {
+		if (idStr.Icmp(name, idWindow.ScriptNames[i]) == 0) {
+			delete this.scripts[i];
+			this.scripts[i] = new idGuiScriptList;
+			return this.ParseScript(src, this.scripts[i]);
+		}
+	}
+	return false;
+}
+
 /////*
 ////================
 ////idWindow::DisableRegister
 ////================
 ////*/
-////void idWindow::DisableRegister(const char *_name) {
+////DisableRegister(const char *_name):void {
 ////	idRegister *reg = RegList().FindReg(_name);
 ////	if (reg) {
 ////		reg.Enable(false);
 ////	}
 ////}
-////
-/////*
-////================
-////idWindow::PostParse
-////================
-////*/
-////void idWindow::PostParse() {
-////}
-////	
+
+/*
+================
+idWindow::PostParse
+================
+*/
+PostParse():void {
+}
+	
 /////*
 ////================
 ////idWindow::GetWinVarOffset
@@ -2047,11 +2055,11 @@ idWindow::ClearFlag
 ////		return ret;
 ////	}
 ////
-////	for ( var i = 0; i < drawWindows.Num(); i++ ) {
-////		if ( drawWindows[i].win ) {
-////			ret = drawWindows[i].win.GetWinVarOffset( wv, owner );
+////	for ( var i = 0; i < this.drawWindows.Num(); i++ ) {
+////		if ( this.drawWindows[i].win ) {
+////			ret = this.drawWindows[i].win.GetWinVarOffset( wv, owner );
 ////		} else {
-////			ret = drawWindows[i].simp.GetWinVarOffset( wv, owner );
+////			ret = this.drawWindows[i].simp.GetWinVarOffset( wv, owner );
 ////		}
 ////		if ( ret != -1 ) {
 ////			break;
@@ -2077,7 +2085,7 @@ idWindow::ClearFlag
 ////		retVar = &noTime;
 ////	}
 ////	if (idStr::Icmp(_name, "background") == 0) {
-////		retVar = &backGroundName;
+////		retVar = &this.backGroundName;
 ////	}
 ////	if (idStr::Icmp(_name, "visible") == 0) {
 ////		retVar = &visible;
@@ -2113,7 +2121,7 @@ idWindow::ClearFlag
 ////		retVar = &text;
 ////	}
 ////	if (idStr::Icmp(_name, "backGroundName") == 0) {
-////		retVar = &backGroundName;
+////		retVar = &this.backGroundName;
 ////	}
 ////	if (idStr::Icmp(_name, "hidecursor") == 0) {
 ////		retVar = &hideCursor;
@@ -2121,10 +2129,10 @@ idWindow::ClearFlag
 ////
 ////	idStr key = _name;
 ////	bool guiVar = (key.Find(VAR_GUIPREFIX) >= 0);
-////	int c = definedVars.Num();
+////	int c = this.definedVars.Num();
 ////	for (var i = 0; i < c; i++) {
-////		if (idStr::Icmp(_name, (guiVar) ? va("%s",definedVars[i].GetName()) : definedVars[i].GetName()) == 0) {
-////			retVar = definedVars[i];
+////		if (idStr::Icmp(_name, (guiVar) ? va("%s",this.definedVars[i].GetName()) : this.definedVars[i].GetName()) == 0) {
+////			retVar = this.definedVars[i];
 ////			break;
 ////		}
 ////	}
@@ -2134,8 +2142,8 @@ idWindow::ClearFlag
 ////			DisableRegister(_name);
 ////		}
 ////
-////		if ( owner && parent ) {
-////			*owner = parent.FindChildByName ( name );
+////		if ( owner && this.parent ) {
+////			*owner = this.parent.FindChildByName ( name );
 ////		}
 ////
 ////		return retVar;
@@ -2145,7 +2153,7 @@ idWindow::ClearFlag
 ////	if ( len > 5 && guiVar ) {
 ////		idWinVar *var = new idWinStr;
 ////		var.Init(_name, this);
-////		definedVars.Append(var);
+////		this.definedVars.Append(var);
 ////		return var;
 ////	} else if (fixup) {
 ////		int n = key.Find("::");
@@ -2173,7 +2181,7 @@ idWindow::ClearFlag
 ////idWindow::ParseString
 ////================
 ////*/
-////void idWindow::ParseString(idParser *src, idStr &out) {
+////ParseString(idParser *src, idStr &out):void {
 ////	idToken tok;
 ////	if (src.ReadToken(&tok)) {
 ////		out = tok;
@@ -2185,7 +2193,7 @@ idWindow::ClearFlag
 ////idWindow::ParseVec4
 ////================
 ////*/
-////void idWindow::ParseVec4(idParser *src, idVec4 &out) {
+////ParseVec4(idParser *src, idVec4 &out):void {
 ////	idToken tok;
 ////	src.ReadToken(&tok);
 ////	out.x = atof(tok);
@@ -2199,23 +2207,24 @@ idWindow::ClearFlag
 ////	src.ReadToken(&tok);
 ////	out.w = atof(tok);
 ////}
-////
-/////*
-////================
-////idWindow::ParseInternalVar
-////================
-////*/
-////bool idWindow::ParseInternalVar(const char *_name, idParser *src) {
+
+/*
+================
+idWindow::ParseInternalVar
+================
+*/
+	ParseInternalVar ( _name: string, src: idParser ): boolean {
+		todoThrow ( );
 ////
 ////	if (idStr::Icmp(_name, "showtime") == 0) {
 ////		if ( src.ParseBool() ) {
-////			flags |= WIN_SHOWTIME;
+////			this.flags |= WIN_SHOWTIME;
 ////		}
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "showcoords") == 0) {
 ////		if ( src.ParseBool() ) {
-////			flags |= WIN_SHOWCOORDS;
+////			this.flags |= WIN_SHOWCOORDS;
 ////		}
 ////		return true;
 ////	}
@@ -2236,12 +2245,12 @@ idWindow::ClearFlag
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "bordersize") == 0) {
-////		borderSize = src.ParseFloat();
+////		this.borderSize = src.ParseFloat();
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "nowrap") == 0) {
 ////		if ( src.ParseBool() ) {
-////			flags |= WIN_NOWRAP;
+////			this.flags |= WIN_NOWRAP;
 ////		}
 ////		return true;
 ////	}
@@ -2254,7 +2263,7 @@ idWindow::ClearFlag
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "textalignx") == 0) {
-////		textAlignx = src.ParseFloat();
+////		this.textAlignx = src.ParseFloat();
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "textaligny") == 0) {
@@ -2274,43 +2283,43 @@ idWindow::ClearFlag
 ////	}
 ////	if (idStr::Icmp(_name, "wantenter") == 0) {
 ////		if ( src.ParseBool() ) {
-////			flags |= WIN_WANTENTER;
+////			this.flags |= WIN_WANTENTER;
 ////		}
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "naturalmatscale") == 0) {
 ////		if ( src.ParseBool() ) {
-////			flags |= WIN_NATURALMAT;
+////			this.flags |= WIN_NATURALMAT;
 ////		}
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "noclip") == 0) {
 ////		if ( src.ParseBool() ) {
-////			flags |= WIN_NOCLIP;
+////			this.flags |= WIN_NOCLIP;
 ////		}
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "nocursor") == 0) {
 ////		if ( src.ParseBool() ) {
-////			flags |= WIN_NOCURSOR;
+////			this.flags |= WIN_NOCURSOR;
 ////		}
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "menugui") == 0) {
 ////		if ( src.ParseBool() ) {
-////			flags |= WIN_MENUGUI;
+////			this.flags |= WIN_MENUGUI;
 ////		}
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "modal") == 0) {
 ////		if ( src.ParseBool() ) {
-////			flags |= WIN_MODAL;
+////			this.flags |= WIN_MODAL;
 ////		}
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "invertrect") == 0) {
 ////		if ( src.ParseBool() ) {
-////			flags |= WIN_INVERTRECT;
+////			this.flags |= WIN_INVERTRECT;
 ////		}
 ////		return true;
 ////	}
@@ -2331,513 +2340,527 @@ idWindow::ClearFlag
 ////	if ( idStr::Icmp( _name, "font" ) == 0 ) {
 ////		idStr fontStr;
 ////		ParseString( src, fontStr );
-////		fontNum = dc.FindFont( fontStr );
+////		fontNum = this.dc.FindFont( fontStr );
 ////		return true;
 ////	}
-////	return false;
-////}
-////
-/////*
-////================
-////idWindow::ParseRegEntry
-////================
-////*/
-////bool idWindow::ParseRegEntry(const char *name, idParser *src) {
-////	idStr work;
-////	work = name;
-////	work.ToLower();
-////
-////	idWinVar *var = GetWinVarByName(work, NULL);
-////	if ( var ) {
-////		for (var i = 0; i < NumRegisterVars; i++) {
-////			if (idStr::Icmp(work, RegisterVars[i].name) == 0) {
-////				regList.AddReg(work, RegisterVars[i].type, src, this, var);
-////				return true;
-////			}
-////		}
-////	}
-////
-////	// not predefined so just read the next token and add it to the state
-////	idToken tok;
-////	idVec4 v;	
-////	idWinInt *vari;
-////	idWinFloat *varf;
-////	idWinStr *vars;
-////	if (src.ReadToken(&tok)) {
-////		if (var) {
-////			var.Set(tok);
-////			return true;
-////		}
-////		switch (tok.type) {
-////			case TT_NUMBER : 
-////				if (tok.subtype & TT_INTEGER) {
-////					vari = new idWinInt();
-////					*vari = atoi(tok);
-////					vari.SetName(work);
-////					definedVars.Append(vari);
-////				} else if (tok.subtype & TT_FLOAT) {
-////					varf = new idWinFloat();
-////					*varf = atof(tok);
-////					varf.SetName(work);
-////					definedVars.Append(varf);
-////				} else {
-////					vars = new idWinStr();
-////					*vars = tok;
-////					vars.SetName(work);
-////					definedVars.Append(vars);
-////				}
-////				break;
-////			default :
-////				vars = new idWinStr();
-////				*vars = tok;
-////				vars.SetName(work);
-////				definedVars.Append(vars);
-////				break;
-////		}
-////	}
-////
-////	return true;
-////}
-////
-/////*
-////================
-////idWindow::SetInitialState
-////================
-////*/
-////void idWindow::SetInitialState(const char *_name) {
-////	name = _name;
-////	matScalex = 1.0;
-////	matScaley = 1.0;
-////	this.forceAspectWidth = 640.0;
-////	forceAspectHeight = 480.0;
-////	noTime = false;
-////	visible = true;
-////	flags = 0;
-////}
-////
+		return false;
+	}
+
+/*
+================
+idWindow::ParseRegEntry
+================
+*/
+	ParseRegEntry ( name: string, src: idParser ): boolean {
+		todoThrow ( );
+		//idStr work;
+		//work = name;
+		//work.ToLower();
+
+		//idWinVar *var = GetWinVarByName(work, NULL);
+		//if ( var ) {
+		//	for (var i = 0; i < NumRegisterVars; i++) {
+		//		if (idStr::Icmp(work, RegisterVars[i].name) == 0) {
+		//			this.regList.AddReg(work, RegisterVars[i].type, src, this, var);
+		//			return true;
+		//		}
+		//	}
+		//}
+
+		//// not predefined so just read the next token and add it to the state
+		//idToken tok;
+		//idVec4 v;	
+		//idWinInt *vari;
+		//idWinFloat *varf;
+		//idWinStr *vars;
+		//if (src.ReadToken(&tok)) {
+		//	if (var) {
+		//		var.Set(tok);
+		//		return true;
+		//	}
+		//	switch (tok.type) {
+		//		case TT_NUMBER : 
+		//			if (tok.subtype & TT_INTEGER) {
+		//				vari = new idWinInt();
+		//				*vari = atoi(tok);
+		//				vari.SetName(work);
+		//				this.definedVars.Append(vari);
+		//			} else if (tok.subtype & TT_FLOAT) {
+		//				varf = new idWinFloat();
+		//				*varf = atof(tok);
+		//				varf.SetName(work);
+		//				this.definedVars.Append(varf);
+		//			} else {
+		//				vars = new idWinStr();
+		//				*vars = tok;
+		//				vars.SetName(work);
+		//				this.definedVars.Append(vars);
+		//			}
+		//			break;
+		//		default :
+		//			vars = new idWinStr();
+		//			*vars = tok;
+		//			vars.SetName(work);
+		//			this.definedVars.Append(vars);
+		//			break;
+		//	}
+		//}
+
+		return true;
+	}
+
+/*
+================
+idWindow::SetInitialState
+================
+*/
+	SetInitialState ( _name: string ): void {
+		this.name.equals( _name );
+		this.matScalex = 1.0;
+		this.matScaley = 1.0;
+		this.forceAspectWidth = 640.0;
+		this.forceAspectHeight = 480.0;
+		this.noTime.equalsBool( false );
+		this.visible.equalsBool( true );
+		this.flags = 0;
+	}
+
 /*
 ================
 idWindow::Parse
 ================
 */
 	Parse(src: idParser, rebuild = true): boolean {
-		todoThrow ( );
-////	idToken token, token2, token3, token4, token5, token6, token7;
-////	idStr work;
-////
-////	if (rebuild) {
-////		CleanUp();
-////	}
-////
-////	drawWin_t dwt;
-////
-////	timeLineEvents.Clear();
-////	transitions.Clear();
-////
-////	namedEvents.DeleteContents( true );
-////
-////	src.ExpectTokenType( TT_NAME, 0, &token );
-////
-////	SetInitialState(token);
-////
-////	src.ExpectTokenString( "{" );
-////	src.ExpectAnyToken( &token );
-////
+		var token = new R( new idToken ), token2:idToken;//, token3, token4, token5, token6, token7;
+		var work = new idStr;
+
+	if (rebuild) {
+		this.CleanUp();
+	}
+
+		var dwt = new drawWin_t;
+
+	this.timeLineEvents.Clear();
+	this.transitions.Clear();
+
+	this.namedEvents.DeleteContents( true );
+
+	src.ExpectTokenType( TT_NAME, 0, token );
+
+	this.SetInitialState(token.$.data);
+
+	src.ExpectTokenString( "{" );
+	src.ExpectAnyToken( token );
+
 	var ret = true;
-////
-////	// attach a window wrapper to the window if the gui editor is running
-////#ifdef ID_ALLOW_TOOLS
-////	if ( com_editors & EDITOR_GUI ) {
-////		new rvGEWindowWrapper ( this, rvGEWindowWrapper::WT_NORMAL );
-////	}
-////#endif
-////
-////	while( token != "}" ) {
-////		// track what was parsed so we can maintain it for the guieditor
-////		src.SetMarker ( );
-////
-////		if ( token == "windowDef" || token == "animationDef" ) {
-////			if (token == "animationDef") {
-////				visible = false;
-////				rect = idRectangle(0,0,0,0);
-////			}
-////			src.ExpectTokenType( TT_NAME, 0, &token );
-////			token2 = token;
-////			src.UnreadToken(&token);
-////			drawWin_t *dw = FindChildByName(token2.c_str());
-////			if (dw && dw.win) {
-////				SaveExpressionParseState();
-////				dw.win.Parse(src, rebuild);
-////				RestoreExpressionParseState();
-////			} else {
-////				idWindow *win = new idWindow(dc, gui);
-////				SaveExpressionParseState();
-////				win.Parse(src, rebuild);
-////				RestoreExpressionParseState();
-////				win.SetParent(this);
-////				dwt.simp = NULL;
-////				dwt.win = NULL;
-////				if (win.IsSimple()) {
-////					idSimpleWindow *simple = new idSimpleWindow(win);
-////					dwt.simp = simple;
-////					drawWindows.Append(dwt);
-////					delete win;
-////				} else {
-////					AddChild(win);
-////					SetFocus(win,false);
-////					dwt.win = win;
-////					drawWindows.Append(dwt);
-////				}
-////			}
-////		} 
-////		else if ( token == "editDef" ) {
-////			idEditWindow *win = new idEditWindow(dc, gui);
-////		  	SaveExpressionParseState();
-////			win.Parse(src, rebuild);	
-////		  	RestoreExpressionParseState();
-////			AddChild(win);
-////			win.SetParent(this);
-////			dwt.simp = NULL;
-////			dwt.win = win;
-////			drawWindows.Append(dwt);
-////		}
-////		else if ( token == "choiceDef" ) {
-////			idChoiceWindow *win = new idChoiceWindow(dc, gui);
-////		  	SaveExpressionParseState();
-////			win.Parse(src, rebuild);	
-////		  	RestoreExpressionParseState();
-////			AddChild(win);
-////			win.SetParent(this);
-////			dwt.simp = NULL;
-////			dwt.win = win;
-////			drawWindows.Append(dwt);
-////		}
-////		else if ( token == "sliderDef" ) {
-////			idSliderWindow *win = new idSliderWindow(dc, gui);
-////		  	SaveExpressionParseState();
-////			win.Parse(src, rebuild);	
-////		  	RestoreExpressionParseState();
-////			AddChild(win);
-////			win.SetParent(this);
-////			dwt.simp = NULL;
-////			dwt.win = win;
-////			drawWindows.Append(dwt);
-////		}
-////		else if ( token == "markerDef" ) {
-////			idMarkerWindow *win = new idMarkerWindow(dc, gui);
-////		  	SaveExpressionParseState();
-////			win.Parse(src, rebuild);	
-////		  	RestoreExpressionParseState();
-////			AddChild(win);
-////			win.SetParent(this);
-////			dwt.simp = NULL;
-////			dwt.win = win;
-////			drawWindows.Append(dwt);
-////		}
-////		else if ( token == "bindDef" ) {
-////			idBindWindow *win = new idBindWindow(dc, gui);
-////		  	SaveExpressionParseState();
-////			win.Parse(src, rebuild);	
-////		  	RestoreExpressionParseState();
-////			AddChild(win);
-////			win.SetParent(this);
-////			dwt.simp = NULL;
-////			dwt.win = win;
-////			drawWindows.Append(dwt);
-////		}
-////		else if ( token == "listDef" ) {
-////			idListWindow *win = new idListWindow(dc, gui);
-////		  	SaveExpressionParseState();
-////			win.Parse(src, rebuild);	
-////		  	RestoreExpressionParseState();
-////			AddChild(win);
-////			win.SetParent(this);
-////			dwt.simp = NULL;
-////			dwt.win = win;
-////			drawWindows.Append(dwt);
-////		}
-////		else if ( token == "fieldDef" ) {
-////			idFieldWindow *win = new idFieldWindow(dc, gui);
-////		  	SaveExpressionParseState();
-////			win.Parse(src, rebuild);	
-////		  	RestoreExpressionParseState();
-////			AddChild(win);
-////			win.SetParent(this);
-////			dwt.simp = NULL;
-////			dwt.win = win;
-////			drawWindows.Append(dwt);
-////		}
-////		else if ( token == "renderDef" ) {
-////			idRenderWindow *win = new idRenderWindow(dc, gui);
-////		  	SaveExpressionParseState();
-////			win.Parse(src, rebuild);	
-////		  	RestoreExpressionParseState();
-////			AddChild(win);
-////			win.SetParent(this);
-////			dwt.simp = NULL;
-////			dwt.win = win;
-////			drawWindows.Append(dwt);
-////		}
-////		else if ( token == "gameSSDDef" ) {
-////			idGameSSDWindow *win = new idGameSSDWindow(dc, gui);
-////			SaveExpressionParseState();
-////			win.Parse(src, rebuild);	
-////			RestoreExpressionParseState();
-////			AddChild(win);
-////			win.SetParent(this);
-////			dwt.simp = NULL;
-////			dwt.win = win;
-////			drawWindows.Append(dwt);
-////		}
-////		else if ( token == "gameBearShootDef" ) {
-////			idGameBearShootWindow *win = new idGameBearShootWindow(dc, gui);
-////			SaveExpressionParseState();
-////			win.Parse(src, rebuild);	
-////			RestoreExpressionParseState();
-////			AddChild(win);
-////			win.SetParent(this);
-////			dwt.simp = NULL;
-////			dwt.win = win;
-////			drawWindows.Append(dwt);
-////		}
-////		else if ( token == "gameBustOutDef" ) {
-////			idGameBustOutWindow *win = new idGameBustOutWindow(dc, gui);
-////			SaveExpressionParseState();
-////			win.Parse(src, rebuild);	
-////			RestoreExpressionParseState();
-////			AddChild(win);
-////			win.SetParent(this);
-////			dwt.simp = NULL;
-////			dwt.win = win;
-////			drawWindows.Append(dwt);
-////		}
-////// 
-//////  added new onEvent
-////		else if ( token == "onNamedEvent" ) {
-////			// Read the event name
-////			if ( !src.ReadToken(&token) ) {
-////				src.Error( "Expected event name" );
-////				return false;
-////			}
-////
-////			rvNamedEvent* ev = new rvNamedEvent ( token );
-////			
-////			src.SetMarker ( );
-////			
-////			if ( !ParseScript ( src, *ev.mEvent ) ) {
-////				ret = false;
-////				break;
-////			}
-////
-////			// If we are in the gui editor then add the internal var to the 
-////			// the wrapper
-////#ifdef ID_ALLOW_TOOLS
-////			if ( com_editors & EDITOR_GUI ) {
-////				idStr str;
-////				idStr out;
-////				
-////				// Grab the string from the last marker
-////				src.GetStringFromMarker ( str, false );
-////				
-////				// Parse it one more time to knock unwanted tabs out
-////				idLexer src2( str, str.Length(), "", src.GetFlags() );
-////				src2.ParseBracedSectionExact ( out, 1);
-////				
-////				// Save the script		
-////				rvGEWindowWrapper::GetWrapper ( this ).GetScriptDict().Set ( va("onEvent %s", token.c_str()), out );
-////			}
-////#endif			
-////			namedEvents.Append(ev);
-////		}
-////		else if ( token == "onTime" ) {
-////			idTimeLineEvent *ev = new idTimeLineEvent;
-////
-////			if ( !src.ReadToken(&token) ) {
-////				src.Error( "Unexpected end of file" );
-////				return false;
-////			}
-////			ev.time = atoi(token.c_str());
-////			
-////			// reset the mark since we dont want it to include the time
-////			src.SetMarker ( );
-////
-////			if (!ParseScript(src, *ev.event, &ev.time)) {
-////				ret = false;
-////				break;
-////			}
-////
-////			// add the script to the wrappers script list
-////			// If we are in the gui editor then add the internal var to the 
-////			// the wrapper
-////#ifdef ID_ALLOW_TOOLS
-////			if ( com_editors & EDITOR_GUI ) {
-////				idStr str;
-////				idStr out;
-////				
-////				// Grab the string from the last marker
-////				src.GetStringFromMarker ( str, false );
-////				
-////				// Parse it one more time to knock unwanted tabs out
-////				idLexer src2( str, str.Length(), "", src.GetFlags() );
-////				src2.ParseBracedSectionExact ( out, 1);
-////				
-////				// Save the script		
-////				rvGEWindowWrapper::GetWrapper ( this ).GetScriptDict().Set ( va("onTime %d", ev.time), out );
-////			}
-////#endif
-////			// this is a timeline event
-////			ev.pending = true;
-////			timeLineEvents.Append(ev);
-////		}
-////		else if ( token == "definefloat" ) {
-////			src.ReadToken(&token);
-////			work = token;
-////			work.ToLower();
-////			idWinFloat *varf = new idWinFloat();
-////			varf.SetName(work);
-////			definedVars.Append(varf);
-////
-////			// add the float to the editors wrapper dict
-////			// Set the marker after the float name
-////			src.SetMarker ( );
-////
-////			// Read in the float 
-////			regList.AddReg(work, idRegister::FLOAT, src, this, varf);
-////
-////			// If we are in the gui editor then add the float to the defines
-////#ifdef ID_ALLOW_TOOLS
-////			if ( com_editors & EDITOR_GUI ) {
-////				idStr str;
-////				
-////				// Grab the string from the last marker and save it in the wrapper
-////				src.GetStringFromMarker ( str, true );							
-////				rvGEWindowWrapper::GetWrapper ( this ).GetVariableDict().Set ( va("definefloat\t\"%s\"",token.c_str()), str );
-////			}
-////#endif
-////		}
-////		else if ( token == "definevec4" ) {
-////			src.ReadToken(&token);
-////			work = token;
-////			work.ToLower();
-////			idWinVec4 *var = new idWinVec4();
-////			var.SetName(work);
-////
-////			// set the marker so we can determine what was parsed
-////			// set the marker after the vec4 name
-////			src.SetMarker ( );
-////
-////			// FIXME: how about we add the var to the desktop instead of this window so it won't get deleted
-////			//        when this window is destoyed which even happens during parsing with simple windows ?
-////			//definedVars.Append(var);
-////			gui.GetDesktop().definedVars.Append( var );
-////			gui.GetDesktop().regList.AddReg( work, idRegister::VEC4, src, gui.GetDesktop(), var );
-////
-////			// store the original vec4 for the editor
-////			// If we are in the gui editor then add the float to the defines
-////#ifdef ID_ALLOW_TOOLS
-////			if ( com_editors & EDITOR_GUI ) {
-////				idStr str;
-////				
-////				// Grab the string from the last marker and save it in the wrapper
-////				src.GetStringFromMarker ( str, true );							
-////				rvGEWindowWrapper::GetWrapper ( this ).GetVariableDict().Set ( va("definevec4\t\"%s\"",token.c_str()), str );
-////			}
-////#endif
-////		}
-////		else if ( token == "float" ) {
-////			src.ReadToken(&token);
-////			work = token;
-////			work.ToLower();
-////			idWinFloat *varf = new idWinFloat();
-////			varf.SetName(work);
-////			definedVars.Append(varf);
-////
-////			// add the float to the editors wrapper dict
-////			// set the marker to after the float name
-////			src.SetMarker ( );
-////
-////			// Parse the float
-////			regList.AddReg(work, idRegister::FLOAT, src, this, varf);
-////
-////			// If we are in the gui editor then add the float to the defines
-////#ifdef ID_ALLOW_TOOLS
-////			if ( com_editors & EDITOR_GUI ) {
-////				idStr str;
-////				
-////				// Grab the string from the last marker and save it in the wrapper
-////				src.GetStringFromMarker ( str, true );							
-////				rvGEWindowWrapper::GetWrapper ( this ).GetVariableDict().Set ( va("float\t\"%s\"",token.c_str()), str );
-////			}
-////#endif
-////		}
-////		else if (ParseScriptEntry(token, src)) {
-////			// add the script to the wrappers script list
-////			// If we are in the gui editor then add the internal var to the 
-////			// the wrapper
-////#ifdef ID_ALLOW_TOOLS
-////			if ( com_editors & EDITOR_GUI ) {
-////				idStr str;
-////				idStr out;
-////				
-////				// Grab the string from the last marker
-////				src.GetStringFromMarker ( str, false );
-////				
-////				// Parse it one more time to knock unwanted tabs out
-////				idLexer src2( str, str.Length(), "", src.GetFlags() );
-////				src2.ParseBracedSectionExact ( out, 1);
-////				
-////				// Save the script		
-////				rvGEWindowWrapper::GetWrapper ( this ).GetScriptDict().Set ( token, out );
-////			}
-////#endif
-////		} else if (ParseInternalVar(token, src)) {
-////			// gui editor support		
-////			// If we are in the gui editor then add the internal var to the 
-////			// the wrapper
-////#ifdef ID_ALLOW_TOOLS
-////			if ( com_editors & EDITOR_GUI ) {
-////				idStr str;
-////				src.GetStringFromMarker ( str );
-////				rvGEWindowWrapper::GetWrapper ( this ).SetStateKey ( token, str, false );
-////			}
-////#endif
-////		}
-////		else {
-////			ParseRegEntry(token, src);
-////			// hook into the main window parsing for the gui editor
-////			// If we are in the gui editor then add the internal var to the 
-////			// the wrapper
-////#ifdef ID_ALLOW_TOOLS
-////			if ( com_editors & EDITOR_GUI ) {
-////				idStr str;
-////				src.GetStringFromMarker ( str );
-////				rvGEWindowWrapper::GetWrapper ( this ).SetStateKey ( token, str, false );
-////			}
-////#endif
-////		} 
-////		if ( !src.ReadToken( &token ) ) {
-////			src.Error( "Unexpected end of file" );
-////			ret = false;
-////			break;
-////		}
-////	}
-////
-////	if (ret) {
-////		EvalRegs(-1, true);
-////	}
-////
-////	SetupFromState();
-////	PostParse();
-////
-////	// hook into the main window parsing for the gui editor
-////	// If we are in the gui editor then add the internal var to the 
-////	// the wrapper
-////#ifdef ID_ALLOW_TOOLS
-////	if ( com_editors & EDITOR_GUI ) {
-////		rvGEWindowWrapper::GetWrapper ( this ).Finish ( );
-////	}
-////#endif
-////
+
+	// attach a window wrapper to the window if the gui editor is running
+//#ifdef ID_ALLOW_TOOLS
+//	if ( com_editors & toolFlag_t.EDITOR_GUI ) {
+//		new rvGEWindowWrapper ( this, rvGEWindowWrapper::WT_NORMAL );
+//	}
+//#endif
+
+	while( token.$.data != "}" ) {
+		// track what was parsed so we can maintain it for the guieditor
+		src.SetMarker ( );
+
+		if ( token.$.data == "windowDef" || token.$.data == "animationDef" ) {
+			if (token.$.data == "animationDef") {
+				this.visible.equalsBool( false );
+				this.rect.equals( new idRectangle( 0, 0, 0, 0 ) );
+			}
+			src.ExpectTokenType( TT_NAME, 0, token );
+			token2 = token.$;
+			src.UnreadToken(token);
+			var dw: drawWin_t = this.FindChildByName(token2.c_str());
+			if (dw && dw.win) {
+				this.SaveExpressionParseState();
+				dw.win.Parse(src, rebuild);
+				this.RestoreExpressionParseState();
+			} else {
+				var win = new idWindow(this.dc, this.gui);
+				this.SaveExpressionParseState();
+				win.Parse(src, rebuild);
+				this.RestoreExpressionParseState();
+				win.SetParent(this);
+				dwt.simp = null;
+				dwt.win = null;
+				if (win.IsSimple()) {
+					var simple = new idSimpleWindow(win);
+					dwt.simp = simple;
+					this.drawWindows.Append(dwt);
+					delete win;
+				} else {
+					this.AddChild(win);
+					this.SetFocus(win,false);
+					dwt.win = win;
+					this.drawWindows.Append(dwt);
+				}
+			}
+		} 
+		else if (token.$.data == "editDef") {
+			todoThrow ( );
+			//var win = new idEditWindow(this.dc, this.gui);
+		  	//this.SaveExpressionParseState();
+			//win.Parse(src, rebuild);	
+		  	//this.RestoreExpressionParseState();
+			//this.AddChild(win);
+			//win.SetParent(this);
+			//dwt.simp = null;
+			//dwt.win = win;
+			//this.drawWindows.Append(dwt);
+		}
+		else if ( token.$.data == "choiceDef" ) {
+			todoThrow();
+			//var win = new idChoiceWindow(this.dc, this.gui);
+		  	//this.SaveExpressionParseState();
+			//win.Parse(src, rebuild);	
+		  	//this.RestoreExpressionParseState();
+			//this.AddChild(win);
+			//win.SetParent(this);
+			//dwt.simp = null;
+			//dwt.win = win;
+			//this.drawWindows.Append(dwt);
+		}
+		else if ( token.$.data == "sliderDef" ) {
+			todoThrow();
+			//var win = new idSliderWindow(this.dc, this.gui);
+		  	//this.SaveExpressionParseState();
+			//win.Parse(src, rebuild);	
+		  	//this.RestoreExpressionParseState();
+			//this.AddChild(win);
+			//win.SetParent(this);
+			//dwt.simp = null;
+			//dwt.win = win;
+			//this.drawWindows.Append(dwt);
+		}
+		else if ( token.$.data == "markerDef" ) {
+			todoThrow();
+			//var win = new idMarkerWindow(this.dc, this.gui);
+		  	//this.SaveExpressionParseState();
+			//win.Parse(src, rebuild);	
+		  	//this.RestoreExpressionParseState();
+			//this.AddChild(win);
+			//win.SetParent(this);
+			//dwt.simp = null;
+			//dwt.win = win;
+			//this.drawWindows.Append(dwt);
+		}
+		else if ( token.$.data == "bindDef" ) {
+			todoThrow();
+			//var win = new idBindWindow(this.dc, this.gui);
+		  	//this.SaveExpressionParseState();
+			//win.Parse(src, rebuild);	
+		  	//this.RestoreExpressionParseState();
+			//this.AddChild(win);
+			//win.SetParent(this);
+			//dwt.simp = null;
+			//dwt.win = win;
+			//this.drawWindows.Append(dwt);
+		}
+		else if ( token.$.data == "listDef" ) {
+			todoThrow();
+			//var win = new idListWindow(this.dc, this.gui);
+		  	//this.SaveExpressionParseState();
+			//win.Parse(src, rebuild);	
+		  	//this.RestoreExpressionParseState();
+			//this.AddChild(win);
+			//win.SetParent(this);
+			//dwt.simp = null;
+			//dwt.win = win;
+			//this.drawWindows.Append(dwt);
+		}
+		else if ( token.$.data == "fieldDef" ) {
+			todoThrow();
+			//var win = new idFieldWindow(this.dc, this.gui);
+		  	//this.SaveExpressionParseState();
+			//win.Parse(src, rebuild);	
+		  	//this.RestoreExpressionParseState();
+			//this.AddChild(win);
+			//win.SetParent(this);
+			//dwt.simp = null;
+			//dwt.win = win;
+			//this.drawWindows.Append(dwt);
+		}
+		else if ( token.$.data == "renderDef" ) {
+			todoThrow();
+			//var win = new idRenderWindow(this.dc, this.gui);
+		  	//this.SaveExpressionParseState();
+			//win.Parse(src, rebuild);	
+		  	//this.RestoreExpressionParseState();
+			//this.AddChild(win);
+			//win.SetParent(this);
+			//dwt.simp = null;
+			//dwt.win = win;
+			//this.drawWindows.Append(dwt);
+		}
+		else if ( token.$.data == "gameSSDDef" ) {
+			todoThrow();
+			//var win = new idGameSSDWindow(this.dc, this.gui);
+			//this.SaveExpressionParseState();
+			//win.Parse(src, rebuild);	
+			//this.RestoreExpressionParseState();
+			//this.AddChild(win);
+			//win.SetParent(this);
+			//dwt.simp = null;
+			//dwt.win = win;
+			//this.drawWindows.Append(dwt);
+		}
+		else if ( token.$.data == "gameBearShootDef" ) {
+			todoThrow();
+			//var win = new idGameBearShootWindow(this.dc, this.gui);
+			//this.SaveExpressionParseState();
+			//win.Parse(src, rebuild);	
+			//this.RestoreExpressionParseState();
+			//this.AddChild(win);
+			//win.SetParent(this);
+			//dwt.simp = null;
+			//dwt.win = win;
+			//this.drawWindows.Append(dwt);
+		}
+		else if ( token.$.data == "gameBustOutDef" ) {
+			todoThrow();
+			//var win = new idGameBustOutWindow(this.dc, this.gui);
+			//this.SaveExpressionParseState();
+			//win.Parse(src, rebuild);	
+			//this.RestoreExpressionParseState();
+			//this.AddChild(win);
+			//win.SetParent(this);
+			//dwt.simp = null;
+			//dwt.win = win;
+			//this.drawWindows.Append(dwt);
+		}
+// 
+//  added new onEvent
+		else if ( token.$.data == "onNamedEvent" ) {
+			// Read the event name
+			if ( !src.ReadToken(token) ) {
+				src.Error( "Expected event name" );
+				return false;
+			}
+
+			var evNamed = new rvNamedEvent ( token.$.data );
+			
+			src.SetMarker ( );
+			
+			if (!this.ParseScript(src, /***/evNamed.mEvent ) ) {
+				ret = false;
+				break;
+			}
+
+			// If we are in the gui editor then add the internal var to the 
+			// the wrapper
+//#ifdef ID_ALLOW_TOOLS
+//			if ( com_editors & EDITOR_GUI ) {
+//				idStr str;
+//				idStr out;
+				
+//				// Grab the string from the last marker
+//				src.GetStringFromMarker ( str, false );
+				
+//				// Parse it one more time to knock unwanted tabs out
+//				idLexer src2( str, str.Length(), "", src.GetFlags() );
+//				src2.ParseBracedSectionExact ( out, 1);
+				
+//				// Save the script		
+//				rvGEWindowWrapper::GetWrapper ( this ).GetScriptDict().Set ( va("onEvent %s", token.c_str()), out );
+//			}
+//#endif			
+			this.namedEvents.Append(evNamed);
+		}
+		else if ( token.$.data == "onTime" ) {
+			var ev = new idTimeLineEvent;
+
+			if ( !src.ReadToken(token) ) {
+				src.Error( "Unexpected end of file" );
+				return false;
+			}
+			ev.time = atoi(token.$.c_str());
+			
+			// reset the mark since we dont want it to include the time
+			src.SetMarker ( );
+
+			var $time = new R(ev.time );
+			var parseScriptValue = this.ParseScript(src, /***/ev.event, /*&*/$time);
+			ev.time = $time.$;
+			if (!parseScriptValue) {
+				ret = false;
+				break;
+			}
+
+			// add the script to the wrappers script list
+			// If we are in the gui editor then add the internal var to the 
+			// the wrapper
+//#ifdef ID_ALLOW_TOOLS
+//			if ( com_editors & EDITOR_GUI ) {
+//				idStr str;
+//				idStr out;
+				
+//				// Grab the string from the last marker
+//				src.GetStringFromMarker ( str, false );
+				
+//				// Parse it one more time to knock unwanted tabs out
+//				idLexer src2( str, str.Length(), "", src.GetFlags() );
+//				src2.ParseBracedSectionExact ( out, 1);
+				
+//				// Save the script		
+//				rvGEWindowWrapper::GetWrapper ( this ).GetScriptDict().Set ( va("onTime %d", ev.time), out );
+//			}
+//#endif
+			// this is a timeline event
+			ev.pending = true;
+			this.timeLineEvents.Append(ev);
+		}
+		else if ( token.$.data == "definefloat" ) {
+			src.ReadToken(token);
+			work.equals(token.$.data);
+			work.ToLower();
+			var varf = new idWinFloat();
+			varf.SetName(work.data);
+			this.definedVars.Append(varf);
+
+			// add the float to the editors wrapper dict
+			// Set the marker after the float name
+			src.SetMarker ( );
+
+			// Read in the float 
+			this.regList.AddReg_Parser(work.data, REGTYPE.FLOAT, src, this, varf);
+
+			// If we are in the gui editor then add the float to the defines
+//#ifdef ID_ALLOW_TOOLS
+//			if ( com_editors & EDITOR_GUI ) {
+//				idStr str;
+				
+//				// Grab the string from the last marker and save it in the wrapper
+//				src.GetStringFromMarker ( str, true );							
+//				rvGEWindowWrapper::GetWrapper ( this ).GetVariableDict().Set ( va("definefloat\t\"%s\"",token.c_str()), str );
+//			}
+//#endif
+		}
+		else if ( token.$.data == "definevec4" ) {
+			src.ReadToken(token);
+			work.equals(token.$.data);
+			work.ToLower();
+			var $var = new idWinVec4();
+			$var.SetName(work.data);
+
+			// set the marker so we can determine what was parsed
+			// set the marker after the vec4 name
+			src.SetMarker ( );
+
+			// FIXME: how about we add the var to the desktop instead of this window so it won't get deleted
+			//        when this window is destoyed which even happens during parsing with simple windows ?
+			//definedVars.Append(var);
+			this.gui.GetDesktop().definedVars.Append($var );
+			this.gui.GetDesktop().regList.AddReg_Parser(work.data, REGTYPE.VEC4, src, this.gui.GetDesktop(), $var );
+
+			// store the original vec4 for the editor
+			// If we are in the gui editor then add the float to the defines
+//#ifdef ID_ALLOW_TOOLS
+//			if ( com_editors & EDITOR_GUI ) {
+//				idStr str;
+				
+//				// Grab the string from the last marker and save it in the wrapper
+//				src.GetStringFromMarker ( str, true );							
+//				rvGEWindowWrapper::GetWrapper ( this ).GetVariableDict().Set ( va("definevec4\t\"%s\"",token.c_str()), str );
+//			}
+//#endif
+		}
+		else if ( token.$.data == "float" ) {
+			src.ReadToken(token);
+			work.equals(token.$.data);
+			work.ToLower();
+			var varf = new idWinFloat();
+			varf.SetName(work.data);
+			this.definedVars.Append(varf);
+
+			// add the float to the editors wrapper dict
+			// set the marker to after the float name
+			src.SetMarker ( );
+
+			// Parse the float
+			this.regList.AddReg_Parser(work.data, REGTYPE.FLOAT, src, this, varf);
+
+			// If we are in the gui editor then add the float to the defines
+//#ifdef ID_ALLOW_TOOLS
+//			if ( com_editors & EDITOR_GUI ) {
+//				idStr str;
+				
+//				// Grab the string from the last marker and save it in the wrapper
+//				src.GetStringFromMarker ( str, true );							
+//				rvGEWindowWrapper::GetWrapper ( this ).GetVariableDict().Set ( va("float\t\"%s\"",token.c_str()), str );
+//			}
+//#endif
+		}
+		else if (this.ParseScriptEntry(token.$.data, src)) {
+			// add the script to the wrappers script list
+			// If we are in the gui editor then add the internal var to the 
+			// the wrapper
+//#ifdef ID_ALLOW_TOOLS
+//			if ( com_editors & EDITOR_GUI ) {
+//				idStr str;
+//				idStr out;
+				
+//				// Grab the string from the last marker
+//				src.GetStringFromMarker ( str, false );
+				
+//				// Parse it one more time to knock unwanted tabs out
+//				idLexer src2( str, str.Length(), "", src.GetFlags() );
+//				src2.ParseBracedSectionExact ( out, 1);
+				
+//				// Save the script		
+//				rvGEWindowWrapper::GetWrapper ( this ).GetScriptDict().Set ( token, out );
+//			}
+//#endif
+		} else if (this.ParseInternalVar(token.$.data, src)) {
+			// gui editor support		
+			// If we are in the gui editor then add the internal var to the 
+			// the wrapper
+//#ifdef ID_ALLOW_TOOLS
+//			if ( com_editors & EDITOR_GUI ) {
+//				idStr str;
+//				src.GetStringFromMarker ( str );
+//				rvGEWindowWrapper::GetWrapper ( this ).SetStateKey ( token, str, false );
+//			}
+//#endif
+		}
+		else {
+			this.ParseRegEntry(token.$.data, src);
+			// hook into the main window parsing for the gui editor
+			// If we are in the gui editor then add the internal var to the 
+			// the wrapper
+//#ifdef ID_ALLOW_TOOLS
+//			if ( com_editors & EDITOR_GUI ) {
+//				idStr str;
+//				src.GetStringFromMarker ( str );
+//				rvGEWindowWrapper::GetWrapper ( this ).SetStateKey ( token, str, false );
+//			}
+//#endif
+		} 
+		if ( !src.ReadToken( token ) ) {
+			src.Error( "Unexpected end of file" );
+			ret = false;
+			break;
+		}
+	}
+
+	if (ret) {
+		this.EvalRegs(-1, true);
+	}
+
+	this.SetupFromState();
+	this.PostParse();
+
+	// hook into the main window parsing for the gui editor
+	// If we are in the gui editor then add the internal var to the 
+	// the wrapper
+//#ifdef ID_ALLOW_TOOLS
+//	if ( com_editors & EDITOR_GUI ) {
+//		rvGEWindowWrapper::GetWrapper ( this ).Finish ( );
+//	}
+//#endif
+
 	return ret;
 }
 ////
@@ -2847,49 +2870,49 @@ idWindow::Parse
 ////================
 ////*/
 ////idSimpleWindow *idWindow::FindSimpleWinByName(const char *_name) {
-////	int c = drawWindows.Num();
+////	int c = this.drawWindows.Num();
 ////	for (var i = 0; i < c; i++) {
-////		if (drawWindows[i].simp == NULL) {
+////		if (this.drawWindows[i].simp == NULL) {
 ////			continue;
 ////		}
-////		if ( idStr::Icmp(drawWindows[i].simp.name, _name) == 0 ) {
-////			return drawWindows[i].simp;
+////		if ( idStr::Icmp(this.drawWindows[i].simp.name, _name) == 0 ) {
+////			return this.drawWindows[i].simp;
 ////		} 
 ////	}
 ////	return NULL;
 ////}
 ////
-/////*
-////================
-////idWindow::FindChildByName
-////================
-////*/
-////drawWin_t *idWindow::FindChildByName(const char *_name) {
-////	static drawWin_t dw;
-////	if (idStr::Icmp(name,_name) == 0) {
-////		dw.simp = NULL;
-////		dw.win = this;
-////		return &dw;
-////	}
-////	int c = drawWindows.Num();
-////	for (var i = 0; i < c; i++) {
-////		if (drawWindows[i].win) {
-////			if (idStr::Icmp(drawWindows[i].win.name, _name) == 0) {
-////				return &drawWindows[i];
-////			}
-////			drawWin_t *win = drawWindows[i].win.FindChildByName(_name);
-////			if (win) {
-////				return win;
-////			}
-////		} else {
-////			if (idStr::Icmp(drawWindows[i].simp.name, _name) == 0) {
-////				return &drawWindows[i];
-////			}
-////		}
-////	}
-////	return NULL;
-////}
-////
+/*
+================
+idWindow::FindChildByName
+================
+*/
+	FindChildByName(_name:string): drawWin_t {
+		//static drawWin_t dw;
+		//if (idStr::Icmp(name,_name) == 0) {
+		//	dw.simp = NULL;
+		//	dw.win = this;
+		//	return &dw;
+		//}
+		//int c = this.drawWindows.Num();
+		//for (var i = 0; i < c; i++) {
+		//	if (this.drawWindows[i].win) {
+		//		if (idStr::Icmp(this.drawWindows[i].win.name, _name) == 0) {
+		//			return &this.drawWindows[i];
+		//		}
+		//		drawWin_t *win = this.drawWindows[i].win.FindChildByName(_name);
+		//		if (win) {
+		//			return win;
+		//		}
+		//	} else {
+		//		if (idStr::Icmp(this.drawWindows[i].simp.name, _name) == 0) {
+		//			return &this.drawWindows[i];
+		//		}
+		//	}
+		//}
+		return null;
+	}
+
 /////*
 ////================
 ////idWindow::GetStrPtrByName
@@ -2904,7 +2927,7 @@ idWindow::Parse
 ////idWindow::AddTransition
 ////================
 ////*/
-////void idWindow::AddTransition(idWinVar *dest, idVec4 from, idVec4 to, int time, float accelTime, float decelTime) {
+////AddTransition(idWinVar *dest, idVec4 from, idVec4 to, int time, float accelTime, float decelTime):void {
 ////	idTransitionData data;
 ////	data.data = dest;
 ////	data.interp.Init(gui.GetTime(), accelTime * time, decelTime * time, time, from, to);
@@ -2917,8 +2940,8 @@ idWindow::Parse
 ////idWindow::StartTransition
 ////================
 ////*/
-////void idWindow::StartTransition() {
-////	flags |= WIN_INTRANSITION;
+////StartTransition():void {
+////	this.flags |= WIN_INTRANSITION;
 ////}
 ////
 /////*
@@ -2926,8 +2949,8 @@ idWindow::Parse
 ////idWindow::ResetCinematics
 ////================
 ////*/
-////void idWindow::ResetCinematics() {
-////	if ( background ) {
+////ResetCinematics():void {
+////	if ( this.background ) {
 ////		background.ResetCinematicTime( gui.GetTime() );
 ////	}
 ////}
@@ -2937,14 +2960,14 @@ idWindow::Parse
 ////idWindow::ResetTime
 ////================
 ////*/
-////void idWindow::ResetTime(int t) {
+////ResetTime(int t):void {
 ////
 ////	timeLine = gui.GetTime() - t;
 ////
-////	int i, c = timeLineEvents.Num();
+////	int i, c = this.timeLineEvents.Num();
 ////	for ( i = 0; i < c; i++ ) {
-////		if ( timeLineEvents[i].time >= t ) {
-////			timeLineEvents[i].pending = true;
+////		if ( this.timeLineEvents[i].time >= t ) {
+////			this.timeLineEvents[i].pending = true;
 ////		}
 ////	}
 ////
@@ -2983,41 +3006,41 @@ idWindow::Parse
 ////*/
 ////bool idWindow::RunScript(int n) {
 ////	if (n >= ON_MOUSEENTER && n < SCRIPT_COUNT) {
-////		return RunScriptList(scripts[n]);
+////		return RunScriptList(this.scripts[n]);
 ////	}
 ////	return false;
 ////}
 ////
-/////*
-////================
-////idWindow::ExpressionConstant
-////================
-////*/
-////int idWindow::ExpressionConstant(float f) {
-////	int		i;
-////
-////	for ( i = WEXP_REG_NUM_PREDEFINED ; i < expressionRegisters.Num() ; i++ ) {
-////		if ( !registerIsTemporary[i] && expressionRegisters[i] == f ) {
-////			return i;
-////		}
-////	}
-////	if ( expressionRegisters.Num() == MAX_EXPRESSION_REGISTERS ) {
-////		common.Warning( "expressionConstant: gui %s hit MAX_EXPRESSION_REGISTERS", gui.GetSourceFile() );
-////		return 0;
-////	}
-////
-////	int c = expressionRegisters.Num();
-////	if (i > c) {
-////		while (i > c) {
-////			expressionRegisters.Append(-9999999);
-////			i--;
-////		}
-////	}
-////
-////	i = expressionRegisters.Append(f);
-////	registerIsTemporary[i] = false;
-////	return i;
-////}
+/*
+================
+idWindow::ExpressionConstant
+================
+*/
+	ExpressionConstant(/*float */f: number):number {
+		var/*int*/i: number;
+
+		for (i = wexpRegister_t.WEXP_REG_NUM_PREDEFINED ; i < this.expressionRegisters.Num() ; i++ ) {
+		if ( !idWindow.registerIsTemporary[i] && this.expressionRegisters[i] == f ) {
+			return i;
+		}
+	}
+	if ( this.expressionRegisters.Num() == MAX_EXPRESSION_REGISTERS ) {
+		common.Warning( "expressionConstant: gui %s hit MAX_EXPRESSION_REGISTERS", this.gui.GetSourceFile() );
+		return 0;
+	}
+
+	var/*int */c = this.expressionRegisters.Num();
+	if (i > c) {
+		while (i > c) {
+			this.expressionRegisters.Append(-9999999);
+			i--;
+		}
+	}
+
+	i = this.expressionRegisters.Append(f);
+	idWindow.registerIsTemporary[i] = false;
+	return i;
+}
 ////
 /////*
 ////================
@@ -3025,13 +3048,13 @@ idWindow::Parse
 ////================
 ////*/
 ////int idWindow::ExpressionTemporary() {
-////	if ( expressionRegisters.Num() == MAX_EXPRESSION_REGISTERS ) {
+////	if ( this.expressionRegisters.Num() == MAX_EXPRESSION_REGISTERS ) {
 ////		common.Warning( "expressionTemporary: gui %s hit MAX_EXPRESSION_REGISTERS", gui.GetSourceFile());
 ////		return 0;
 ////	}
-////	int i = expressionRegisters.Num();
-////	registerIsTemporary[i] = true;
-////	i = expressionRegisters.Append(0);
+////	int i = this.expressionRegisters.Num();
+////	idWindow.registerIsTemporary[i] = true;
+////	i = this.expressionRegisters.Append(0);
 ////	return i;
 ////}
 ////
@@ -3041,14 +3064,14 @@ idWindow::Parse
 ////================
 ////*/
 ////wexpOp_t *idWindow::ExpressionOp() {
-////	if ( ops.Num() == MAX_EXPRESSION_OPS ) {
+////	if ( this.ops.Num() == MAX_EXPRESSION_OPS ) {
 ////		common.Warning( "expressionOp: gui %s hit MAX_EXPRESSION_OPS", gui.GetSourceFile());
-////		return &ops[0];
+////		return &this.ops[0];
 ////	}
 ////	wexpOp_t wop;
 ////	memset(&wop, 0, sizeof(wexpOp_t));
-////	int i = ops.Append(wop);
-////	return &ops[i];
+////	int i = this.ops.Append(wop);
+////	return &this.ops[i];
 ////}
 ////
 /////*
@@ -3062,30 +3085,30 @@ idWindow::Parse
 /////*
 ////	// optimize away identity operations
 ////	if ( opType == WOP_TYPE_ADD ) {
-////		if ( !registerIsTemporary[a] && shaderRegisters[a] == 0 ) {
+////		if ( !idWindow.registerIsTemporary[a] && shaderRegisters[a] == 0 ) {
 ////			return b;
 ////		}
-////		if ( !registerIsTemporary[b] && shaderRegisters[b] == 0 ) {
+////		if ( !idWindow.registerIsTemporary[b] && shaderRegisters[b] == 0 ) {
 ////			return a;
 ////		}
-////		if ( !registerIsTemporary[a] && !registerIsTemporary[b] ) {
+////		if ( !idWindow.registerIsTemporary[a] && !idWindow.registerIsTemporary[b] ) {
 ////			return ExpressionConstant( shaderRegisters[a] + shaderRegisters[b] );
 ////		}
 ////	}
 ////	if ( opType == WOP_TYPE_MULTIPLY ) {
-////		if ( !registerIsTemporary[a] && shaderRegisters[a] == 1 ) {
+////		if ( !idWindow.registerIsTemporary[a] && shaderRegisters[a] == 1 ) {
 ////			return b;
 ////		}
-////		if ( !registerIsTemporary[a] && shaderRegisters[a] == 0 ) {
+////		if ( !idWindow.registerIsTemporary[a] && shaderRegisters[a] == 0 ) {
 ////			return a;
 ////		}
-////		if ( !registerIsTemporary[b] && shaderRegisters[b] == 1 ) {
+////		if ( !idWindow.registerIsTemporary[b] && shaderRegisters[b] == 1 ) {
 ////			return a;
 ////		}
-////		if ( !registerIsTemporary[b] && shaderRegisters[b] == 0 ) {
+////		if ( !idWindow.registerIsTemporary[b] && shaderRegisters[b] == 0 ) {
 ////			return b;
 ////		}
-////		if ( !registerIsTemporary[a] && !registerIsTemporary[b] ) {
+////		if ( !idWindow.registerIsTemporary[a] && !idWindow.registerIsTemporary[b] ) {
 ////			return ExpressionConstant( shaderRegisters[a] * shaderRegisters[b] );
 ////		}
 ////	}
@@ -3303,7 +3326,7 @@ idWindow::Parse
 ////idWindow::ParseBracedExpression
 ////================
 ////*/
-////void idWindow::ParseBracedExpression(idParser *src) {
+////ParseBracedExpression(idParser *src):void {
 ////	src.ExpectTokenString("{");
 ////	ParseExpression(src);
 ////	src.ExpectTokenString("}");
@@ -3318,23 +3341,23 @@ idWindow::Parse
 ////set to their apropriate values.
 ////===============
 ////*/
-////void idWindow::EvaluateRegisters(float *registers) {
+////EvaluateRegisters(float *registers):void {
 ////	int		i, b;
 ////	wexpOp_t	*op;
 ////	idVec4 v;
 ////
-////	int erc = expressionRegisters.Num();
-////	int oc = ops.Num();
+////	int erc = this.expressionRegisters.Num();
+////	int oc = this.ops.Num();
 ////	// copy the constants
-////	for ( i = WEXP_REG_NUM_PREDEFINED ; i < erc ; i++ ) {
-////		registers[i] = expressionRegisters[i];
+////	for ( i = wexpRegister_t.WEXP_REG_NUM_PREDEFINED ; i < erc ; i++ ) {
+////		registers[i] = this.expressionRegisters[i];
 ////	}
 ////
 ////	// copy the local and global parameters
 ////	registers[WEXP_REG_TIME] = gui.GetTime();
 ////
 ////	for ( i = 0 ; i < oc ; i++ ) {
-////		op = &ops[i];
+////		op = &this.ops[i];
 ////		if (op.b == -2) {
 ////			continue;
 ////		}
@@ -3451,7 +3474,7 @@ idWindow::Parse
 ////idWindow::ReadFromDemoFile
 ////================
 ////*/
-////void idWindow::ReadFromDemoFile( class idDemoFile *f, bool rebuild ) {
+////ReadFromDemoFile( class idDemoFile *f, bool rebuild ):void {
 ////
 ////	// should never hit unless we re-enable WRITE_GUIS
 ////#ifndef WRITE_GUIS
@@ -3459,38 +3482,38 @@ idWindow::Parse
 ////#else
 ////
 ////	if (rebuild) {
-////		CommonInit();
+////		this.CommonInit();
 ////	}
 ////	
 ////	f.SetLog(true, "window1");
-////	backGroundName = f.ReadHashString();
-////	f.SetLog(true, backGroundName);
-////	if ( backGroundName[0] ) {
-////		background = declManager.FindMaterial(backGroundName);
+////	this.backGroundName = f.ReadHashString();
+////	f.SetLog(true, this.backGroundName);
+////	if ( this.backGroundName[0] ) {
+////		this.background = declManager.FindMaterial(this.backGroundName);
 ////	} else {
-////		background = NULL;
+////		this.background = NULL;
 ////	}
-////	f.ReadUnsignedChar( cursor );
-////	f.ReadUnsignedInt( flags );
+////	f.ReadUnsignedChar( this.cursor );
+////	f.ReadUnsignedInt( this.flags );
 ////	f.ReadInt( timeLine );
 ////	f.ReadInt( lastTimeRun );
-////	idRectangle rct = rect;
+////	idRectangle rct = this.rect;
 ////	f.ReadFloat( rct.x );
 ////	f.ReadFloat( rct.y );
 ////	f.ReadFloat( rct.w );
 ////	f.ReadFloat( rct.h );
-////	f.ReadFloat( drawRect.x );
-////	f.ReadFloat( drawRect.y );
-////	f.ReadFloat( drawRect.w );
-////	f.ReadFloat( drawRect.h );
-////	f.ReadFloat( clientRect.x );
-////	f.ReadFloat( clientRect.y );
-////	f.ReadFloat( clientRect.w );
-////	f.ReadFloat( clientRect.h );
-////	f.ReadFloat( textRect.x );
-////	f.ReadFloat( textRect.y );
-////	f.ReadFloat( textRect.w );
-////	f.ReadFloat( textRect.h );
+////	f.ReadFloat( this.drawRect.x );
+////	f.ReadFloat( this.drawRect.y );
+////	f.ReadFloat( this.drawRect.w );
+////	f.ReadFloat( this.drawRect.h );
+////	f.ReadFloat( this.clientRect.x );
+////	f.ReadFloat( this.clientRect.y );
+////	f.ReadFloat( this.clientRect.w );
+////	f.ReadFloat( this.clientRect.h );
+////	f.ReadFloat( this.textRect.x );
+////	f.ReadFloat( this.textRect.y );
+////	f.ReadFloat( this.textRect.w );
+////	f.ReadFloat( this.textRect.h );
 ////	f.ReadFloat( xOffset);
 ////	f.ReadFloat( yOffset);
 ////	int i, c;
@@ -3502,9 +3525,9 @@ idWindow::Parse
 ////			bool b;
 ////			f.ReadBool( b );
 ////			if (b) {
-////				delete scripts[i];
-////				scripts[i] = new idGuiScriptList;
-////				scripts[i].ReadFromDemoFile(f);
+////				delete this.scripts[i];
+////				this.scripts[i] = new idGuiScriptList;
+////				this.scripts[i].ReadFromDemoFile(f);
 ////			}
 ////		}
 ////
@@ -3516,11 +3539,11 @@ idWindow::Parse
 ////			f.ReadBool( tl.pending );
 ////			tl.event.ReadFromDemoFile(f);
 ////			if (rebuild) {
-////				timeLineEvents.Append(tl);
+////				this.timeLineEvents.Append(tl);
 ////			} else {
-////				assert(i < timeLineEvents.Num());
-////				timeLineEvents[i].time = tl.time;
-////				timeLineEvents[i].pending = tl.pending;
+////				assert(i < this.timeLineEvents.Num());
+////				this.timeLineEvents[i].time = tl.time;
+////				this.timeLineEvents[i].pending = tl.pending;
 ////			}
 ////		}
 ////	}
@@ -3571,26 +3594,26 @@ idWindow::Parse
 ////			f.ReadInt( w.b );
 ////			f.ReadInt( w.c );
 ////			f.ReadInt( w.d );
-////			ops.Append(w);
+////			this.ops.Append(w);
 ////		}
 ////
 ////		f.ReadInt( c );
 ////		for (i = 0; i < c; i++) {
 ////			float ff;
 ////			f.ReadFloat( ff );
-////			expressionRegisters.Append(ff);
+////			this.expressionRegisters.Append(ff);
 ////		}
 ////	
-////		regList.ReadFromDemoFile(f);
+////		this.regList.ReadFromDemoFile(f);
 ////
 ////	}
 ////	f.SetLog(true, (work + "-children"));
 ////	f.ReadInt( c );
 ////	for (i = 0; i < c; i++) {
 ////		if (rebuild) {
-////			idWindow *win = new idWindow(dc, gui);
+////			idWindow *win = new idWindow(this.dc, gui);
 ////			win.ReadFromDemoFile(f);
-////			AddChild(win);
+////			this.AddChild(win);
 ////		} else {
 ////			for (int j = 0; j < c; j++) {
 ////				if (children[j].childID == i) {
@@ -3610,36 +3633,36 @@ idWindow::Parse
 ////idWindow::WriteToDemoFile
 ////================
 ////*/
-////void idWindow::WriteToDemoFile( class idDemoFile *f ) {
+////WriteToDemoFile( class idDemoFile *f ):void {
 ////	// should never hit unless we re-enable WRITE_GUIS
 ////#ifndef WRITE_GUIS
 ////	assert( false );
 ////#else
 ////
 ////	f.SetLog(true, "window");
-////	f.WriteHashString(backGroundName);
-////	f.SetLog(true, backGroundName);
-////	f.WriteUnsignedChar( cursor );
-////	f.WriteUnsignedInt( flags );
+////	f.WriteHashString(this.backGroundName);
+////	f.SetLog(true, this.backGroundName);
+////	f.WriteUnsignedChar( this.cursor );
+////	f.WriteUnsignedInt( this.flags );
 ////	f.WriteInt( timeLine );
 ////	f.WriteInt( lastTimeRun );
-////	idRectangle rct = rect;
+////	idRectangle rct = this.rect;
 ////	f.WriteFloat( rct.x );
 ////	f.WriteFloat( rct.y );
 ////	f.WriteFloat( rct.w );
 ////	f.WriteFloat( rct.h );
-////	f.WriteFloat( drawRect.x );
-////	f.WriteFloat( drawRect.y );
-////	f.WriteFloat( drawRect.w );
-////	f.WriteFloat( drawRect.h );
-////	f.WriteFloat( clientRect.x );
-////	f.WriteFloat( clientRect.y );
-////	f.WriteFloat( clientRect.w );
-////	f.WriteFloat( clientRect.h );
-////	f.WriteFloat( textRect.x );
-////	f.WriteFloat( textRect.y );
-////	f.WriteFloat( textRect.w );
-////	f.WriteFloat( textRect.h );
+////	f.WriteFloat( this.drawRect.x );
+////	f.WriteFloat( this.drawRect.y );
+////	f.WriteFloat( this.drawRect.w );
+////	f.WriteFloat( this.drawRect.h );
+////	f.WriteFloat( this.clientRect.x );
+////	f.WriteFloat( this.clientRect.y );
+////	f.WriteFloat( this.clientRect.w );
+////	f.WriteFloat( this.clientRect.h );
+////	f.WriteFloat( this.textRect.x );
+////	f.WriteFloat( this.textRect.y );
+////	f.WriteFloat( this.textRect.w );
+////	f.WriteFloat( this.textRect.h );
 ////	f.WriteFloat( xOffset );
 ////	f.WriteFloat( yOffset );
 ////	idStr work;
@@ -3695,7 +3718,7 @@ idWindow::Parse
 ////idWindow::WriteString
 ////===============
 ////*/
-////void idWindow::WriteSaveGameString( const char *string, idFile *savefile ) {
+////WriteSaveGameString( const char *string, idFile *savefile ):void {
 ////	int len = strlen( string );
 ////
 ////	savefile.Write( &len, sizeof( len ) );
@@ -3707,7 +3730,7 @@ idWindow::Parse
 ////idWindow::WriteSaveGameTransition
 ////===============
 ////*/
-////void idWindow::WriteSaveGameTransition( idTransitionData &trans, idFile *savefile ) {
+////WriteSaveGameTransition( idTransitionData &trans, idFile *savefile ):void {
 ////	drawWin_t dw, *fdw;
 ////	idStr winName("");
 ////	dw.simp = NULL;
@@ -3732,7 +3755,7 @@ idWindow::Parse
 ////idWindow::ReadSaveGameTransition
 ////===============
 ////*/
-////void idWindow::ReadSaveGameTransition( idTransitionData &trans, idFile *savefile ) {
+////ReadSaveGameTransition( idTransitionData &trans, idFile *savefile ):void {
 ////	int offset;
 ////
 ////	savefile.Read( &offset, sizeof( offset ) );
@@ -3755,7 +3778,7 @@ idWindow::Parse
 ////idWindow::WriteToSaveGame
 ////===============
 ////*/
-////void idWindow::WriteToSaveGame( idFile *savefile ) {
+////WriteToSaveGame( idFile *savefile ):void {
 ////	int i;
 ////
 ////	WriteSaveGameString( cmd, savefile );
@@ -3763,23 +3786,23 @@ idWindow::Parse
 ////	savefile.Write( &actualX, sizeof( actualX ) );
 ////	savefile.Write( &actualY, sizeof( actualY ) );
 ////	savefile.Write( &childID, sizeof( childID ) );
-////	savefile.Write( &flags, sizeof( flags ) );
+////	savefile.Write( &flags, sizeof( this.flags ) );
 ////	savefile.Write( &lastTimeRun, sizeof( lastTimeRun ) );
-////	savefile.Write( &drawRect, sizeof( drawRect ) );
-////	savefile.Write( &clientRect, sizeof( clientRect ) );
-////	savefile.Write( &origin, sizeof( origin ) );
+////	savefile.Write( &this.drawRect, sizeof( this.drawRect ) );
+////	savefile.Write( &this.clientRect, sizeof( this.clientRect ) );
+////	savefile.Write( &this.origin, sizeof( this.origin ) );
 ////	savefile.Write( &fontNum, sizeof( fontNum ) );
 ////	savefile.Write( &timeLine, sizeof( timeLine ) );
 ////	savefile.Write( &xOffset, sizeof( xOffset ) );
 ////	savefile.Write( &yOffset, sizeof( yOffset ) );
-////	savefile.Write( &cursor, sizeof( cursor ) );
+////	savefile.Write( &this.cursor, sizeof( this.cursor ) );
 ////	savefile.Write( &this.forceAspectWidth, sizeof( this.forceAspectWidth ) );
 ////	savefile.Write( &forceAspectHeight, sizeof( forceAspectHeight ) );
 ////	savefile.Write( &matScalex, sizeof( matScalex ) );
 ////	savefile.Write( &matScaley, sizeof( matScaley ) );
-////	savefile.Write( &borderSize, sizeof( borderSize ) );
+////	savefile.Write( &this.borderSize, sizeof( this.borderSize ) );
 ////	savefile.Write( &textAlign, sizeof( textAlign ) );
-////	savefile.Write( &textAlignx, sizeof( textAlignx ) );
+////	savefile.Write( &this.textAlignx, sizeof( this.textAlignx ) );
 ////	savefile.Write( &textAligny, sizeof( textAligny ) );
 ////	savefile.Write( &textShadow, sizeof( textShadow ) );
 ////	savefile.Write( &shear, sizeof( shear ) );
@@ -3800,15 +3823,15 @@ idWindow::Parse
 ////	noEvents.WriteToSaveGame( savefile );
 ////	rotate.WriteToSaveGame( savefile );
 ////	text.WriteToSaveGame( savefile );
-////	backGroundName.WriteToSaveGame( savefile );
+////	this.backGroundName.WriteToSaveGame( savefile );
 ////	hideCursor.WriteToSaveGame(savefile);
 ////
 ////	// Defined Vars
-////	for ( i = 0; i < definedVars.Num(); i++ ) {
-////		definedVars[i].WriteToSaveGame( savefile );
+////	for ( i = 0; i < this.definedVars.Num(); i++ ) {
+////		this.definedVars[i].WriteToSaveGame( savefile );
 ////	}
 ////
-////	savefile.Write( &textRect, sizeof( textRect ) );
+////	savefile.Write( &this.textRect, sizeof( this.textRect ) );
 ////
 ////	// Window pointers saved as the child ID of the window
 ////	int winID;
@@ -3825,18 +3848,18 @@ idWindow::Parse
 ////
 ////	// Scripts
 ////	for ( i = 0; i < SCRIPT_COUNT; i++ ) {
-////		if ( scripts[i] ) {
-////			scripts[i].WriteToSaveGame( savefile );
+////		if ( this.scripts[i] ) {
+////			this.scripts[i].WriteToSaveGame( savefile );
 ////		}
 ////	}
 ////
 ////	// TimeLine Events
-////	for ( i = 0; i < timeLineEvents.Num(); i++ ) {
-////		if ( timeLineEvents[i] ) {
-////			savefile.Write( &timeLineEvents[i].pending, sizeof( timeLineEvents[i].pending ) );
-////			savefile.Write( &timeLineEvents[i].time, sizeof( timeLineEvents[i].time ) );
-////			if ( timeLineEvents[i].event ) {
-////				timeLineEvents[i].event.WriteToSaveGame( savefile );
+////	for ( i = 0; i < this.timeLineEvents.Num(); i++ ) {
+////		if ( this.timeLineEvents[i] ) {
+////			savefile.Write( &this.timeLineEvents[i].pending, sizeof( this.timeLineEvents[i].pending ) );
+////			savefile.Write( &this.timeLineEvents[i].time, sizeof( this.timeLineEvents[i].time ) );
+////			if ( this.timeLineEvents[i].event ) {
+////				this.timeLineEvents[i].event.WriteToSaveGame( savefile );
 ////			}
 ////		}
 ////	}
@@ -3851,22 +3874,22 @@ idWindow::Parse
 ////
 ////
 ////	// Named Events
-////	for ( i = 0; i < namedEvents.Num(); i++ ) {
-////		if ( namedEvents[i] ) {
-////			WriteSaveGameString( namedEvents[i].mName, savefile );
-////			if ( namedEvents[i].mEvent ) {
-////				namedEvents[i].mEvent.WriteToSaveGame( savefile );
+////	for ( i = 0; i < this.namedEvents.Num(); i++ ) {
+////		if ( this.namedEvents[i] ) {
+////			WriteSaveGameString( this.namedEvents[i].mName, savefile );
+////			if ( this.namedEvents[i].mEvent ) {
+////				this.namedEvents[i].mEvent.WriteToSaveGame( savefile );
 ////			}
 ////		}
 ////	}
 ////
 ////	// regList
-////	regList.WriteToSaveGame( savefile );
+////	this.regList.WriteToSaveGame( savefile );
 ////
 ////
 ////	// Save children
-////	for ( i = 0; i < drawWindows.Num(); i++ ) {
-////		drawWin_t	window = drawWindows[i];
+////	for ( i = 0; i < this.drawWindows.Num(); i++ ) {
+////		drawWin_t	window = this.drawWindows[i];
 ////
 ////		if ( window.simp ) {
 ////			window.simp.WriteToSaveGame( savefile );
@@ -3881,7 +3904,7 @@ idWindow::Parse
 ////idWindow::ReadSaveGameString
 ////===============
 ////*/
-////void idWindow::ReadSaveGameString( idStr &string, idFile *savefile ) {
+////ReadSaveGameString( idStr &string, idFile *savefile ):void {
 ////	int len;
 ////
 ////	savefile.Read( &len, sizeof( len ) );
@@ -3898,7 +3921,7 @@ idWindow::Parse
 ////idWindow::ReadFromSaveGame
 ////===============
 ////*/
-////void idWindow::ReadFromSaveGame( idFile *savefile ) {
+////ReadFromSaveGame( idFile *savefile ):void {
 ////	int i;
 ////
 ////	transitions.Clear();
@@ -3908,23 +3931,23 @@ idWindow::Parse
 ////	savefile.Read( &actualX, sizeof( actualX ) );
 ////	savefile.Read( &actualY, sizeof( actualY ) );
 ////	savefile.Read( &childID, sizeof( childID ) );
-////	savefile.Read( &flags, sizeof( flags ) );
+////	savefile.Read( &flags, sizeof( this.flags ) );
 ////	savefile.Read( &lastTimeRun, sizeof( lastTimeRun ) );
-////	savefile.Read( &drawRect, sizeof( drawRect ) );
-////	savefile.Read( &clientRect, sizeof( clientRect ) );
-////	savefile.Read( &origin, sizeof( origin ) );
+////	savefile.Read( &this.drawRect, sizeof( this.drawRect ) );
+////	savefile.Read( &this.clientRect, sizeof( this.clientRect ) );
+////	savefile.Read( &this.origin, sizeof( this.origin ) );
 ////	savefile.Read( &fontNum, sizeof( fontNum ) );
 ////	savefile.Read( &timeLine, sizeof( timeLine ) );
 ////	savefile.Read( &xOffset, sizeof( xOffset ) );
 ////	savefile.Read( &yOffset, sizeof( yOffset ) );
-////	savefile.Read( &cursor, sizeof( cursor ) );
+////	savefile.Read( &this.cursor, sizeof( this.cursor ) );
 ////	savefile.Read( &this.forceAspectWidth, sizeof( this.forceAspectWidth ) );
 ////	savefile.Read( &forceAspectHeight, sizeof( forceAspectHeight ) );
 ////	savefile.Read( &matScalex, sizeof( matScalex ) );
 ////	savefile.Read( &matScaley, sizeof( matScaley ) );
-////	savefile.Read( &borderSize, sizeof( borderSize ) );
+////	savefile.Read( &this.borderSize, sizeof( this.borderSize ) );
 ////	savefile.Read( &textAlign, sizeof( textAlign ) );
-////	savefile.Read( &textAlignx, sizeof( textAlignx ) );
+////	savefile.Read( &this.textAlignx, sizeof( this.textAlignx ) );
 ////	savefile.Read( &textAligny, sizeof( textAligny ) );
 ////	savefile.Read( &textShadow, sizeof( textShadow ) );
 ////	savefile.Read( &shear, sizeof( shear ) );
@@ -3945,7 +3968,7 @@ idWindow::Parse
 ////	noEvents.ReadFromSaveGame( savefile );
 ////	rotate.ReadFromSaveGame( savefile );
 ////	text.ReadFromSaveGame( savefile );
-////	backGroundName.ReadFromSaveGame( savefile );
+////	this.backGroundName.ReadFromSaveGame( savefile );
 ////
 ////	if ( session.GetSaveGameVersion() >= 17 ) {
 ////		hideCursor.ReadFromSaveGame(savefile);
@@ -3954,11 +3977,11 @@ idWindow::Parse
 ////	}
 ////
 ////	// Defined Vars
-////	for ( i = 0; i < definedVars.Num(); i++ ) {
-////		definedVars[i].ReadFromSaveGame( savefile );
+////	for ( i = 0; i < this.definedVars.Num(); i++ ) {
+////		this.definedVars[i].ReadFromSaveGame( savefile );
 ////	}
 ////
-////	savefile.Read( &textRect, sizeof( textRect ) );
+////	savefile.Read( &this.textRect, sizeof( this.textRect ) );
 ////
 ////	// Window pointers saved as the child ID of the window
 ////	int winID = -1;
@@ -3984,18 +4007,18 @@ idWindow::Parse
 ////	
 ////	// Scripts
 ////	for ( i = 0; i < SCRIPT_COUNT; i++ ) {
-////		if ( scripts[i] ) {
-////			scripts[i].ReadFromSaveGame( savefile );
+////		if ( this.scripts[i] ) {
+////			this.scripts[i].ReadFromSaveGame( savefile );
 ////		}
 ////	}
 ////
 ////	// TimeLine Events
-////	for ( i = 0; i < timeLineEvents.Num(); i++ ) {
-////		if ( timeLineEvents[i] ) {
-////			savefile.Read( &timeLineEvents[i].pending, sizeof( timeLineEvents[i].pending ) );
-////			savefile.Read( &timeLineEvents[i].time, sizeof( timeLineEvents[i].time ) );
-////			if ( timeLineEvents[i].event ) {
-////				timeLineEvents[i].event.ReadFromSaveGame( savefile );
+////	for ( i = 0; i < this.timeLineEvents.Num(); i++ ) {
+////		if ( this.timeLineEvents[i] ) {
+////			savefile.Read( &this.timeLineEvents[i].pending, sizeof( this.timeLineEvents[i].pending ) );
+////			savefile.Read( &this.timeLineEvents[i].time, sizeof( this.timeLineEvents[i].time ) );
+////			if ( this.timeLineEvents[i].event ) {
+////				this.timeLineEvents[i].event.ReadFromSaveGame( savefile );
 ////			}
 ////		}
 ////	}
@@ -4015,21 +4038,21 @@ idWindow::Parse
 ////
 ////
 ////	// Named Events
-////	for ( i = 0; i < namedEvents.Num(); i++ ) {
-////		if ( namedEvents[i] ) {
-////			ReadSaveGameString( namedEvents[i].mName, savefile );
-////			if ( namedEvents[i].mEvent ) {
-////				namedEvents[i].mEvent.ReadFromSaveGame( savefile );
+////	for ( i = 0; i < this.namedEvents.Num(); i++ ) {
+////		if ( this.namedEvents[i] ) {
+////			ReadSaveGameString( this.namedEvents[i].mName, savefile );
+////			if ( this.namedEvents[i].mEvent ) {
+////				this.namedEvents[i].mEvent.ReadFromSaveGame( savefile );
 ////			}
 ////		}
 ////	}
 ////
 ////	// regList
-////	regList.ReadFromSaveGame( savefile );
+////	this.regList.ReadFromSaveGame( savefile );
 ////
 ////	// Read children
-////	for ( i = 0; i < drawWindows.Num(); i++ ) {
-////		drawWin_t	window = drawWindows[i];
+////	for ( i = 0; i < this.drawWindows.Num(); i++ ) {
+////		drawWin_t	window = this.drawWindows[i];
 ////
 ////		if ( window.simp ) {
 ////			window.simp.ReadFromSaveGame( savefile );
@@ -4038,7 +4061,7 @@ idWindow::Parse
 ////		}
 ////	}
 ////
-////	if ( flags & WIN_DESKTOP ) {
+////	if ( this.flags & WIN_DESKTOP ) {
 ////		FixupTransitions();
 ////	}
 ////}
@@ -4062,7 +4085,7 @@ idWindow::Parse
 ////idWindow::FixupTransitions
 ////===============
 ////*/
-////void idWindow::FixupTransitions() {
+////FixupTransitions():void {
 ////	int i, c = transitions.Num();
 ////	for ( i = 0; i < c; i++ ) {
 ////		drawWin_t *dw = gui.GetDesktop().FindChildByName( ( ( idWinStr* )transitions[i].data ).c_str() );
@@ -4115,15 +4138,15 @@ idWindow::Parse
 ////}
 ////
 ////
-/////*
-////===============
-////idWindow::AddChild
-////===============
-////*/
-////void idWindow::AddChild(idWindow *win) {
-////	win.childID = this.children.Append(win);
-////}
-////
+/*
+===============
+idWindow::AddChild
+===============
+*/
+AddChild(win:idWindow):void {
+	win.childID = this.children.Append(win);
+}
+
 /*
 ================
 idWindow::FixupParms
@@ -4137,30 +4160,30 @@ idWindow::FixupParms
 		//	children[i].FixupParms();
 		//}
 		//for (i = 0; i < SCRIPT_COUNT; i++) {
-		//	if (scripts[i]) {
-		//		scripts[i].FixupParms(this);
+		//	if (this.scripts[i]) {
+		//		this.scripts[i].FixupParms(this);
 		//	}
 		//}
 
-		//c = timeLineEvents.Num();
+		//c = this.timeLineEvents.Num();
 		//for (i = 0; i < c; i++) {
-		//	timeLineEvents[i].event.FixupParms(this);
+		//	this.timeLineEvents[i].event.FixupParms(this);
 		//}
 
-		//c = namedEvents.Num();
+		//c = this.namedEvents.Num();
 		//for (i = 0; i < c; i++) {
-		//	namedEvents[i].mEvent.FixupParms(this);
+		//	this.namedEvents[i].mEvent.FixupParms(this);
 		//}
 
-		//c = ops.Num();
+		//c = this.ops.Num();
 		//for (i = 0; i < c; i++) {
-		//	if (ops[i].b == -2) {
+		//	if (this.ops[i].b == -2) {
 		//		// need to fix this up
-		//		const char *p = (const char*)(ops[i].a);
+		//		const char *p = (const char*)(this.ops[i].a);
 		//		idWinVar *var = GetWinVarByName(p, true);
 		//		delete []p;
-		//		ops[i].a = (int)var;
-		//		ops[i].b = -1;
+		//		this.ops[i].a = (int)var;
+		//		this.ops[i].b = -1;
 		//	}
 		//}
 
@@ -4170,43 +4193,43 @@ idWindow::FixupParms
 		//}
 	}
 
-/////*
-////================
-////idWindow::IsSimple
-////================
-////*/
-////bool idWindow::IsSimple() {
-////
-////	// dont do simple windows when in gui editor
-////	if ( com_editors & EDITOR_GUI ) {
-////		return false;
-////	}
-////
-////	if (ops.Num()) {
-////		return false;
-////	}
-////	if (flags & (WIN_HCENTER | WIN_VCENTER)) {
-////		return false;
-////	}
-////	if (children.Num() || drawWindows.Num()) {
-////		return false;
-////	}
-////	for (var i = 0; i < SCRIPT_COUNT; i++) {
-////		if (scripts[i]) {
-////			return false;
-////		}
-////	}
-////	if (timeLineEvents.Num()) {
-////		return false;
-////	}
-////
-////	if ( namedEvents.Num() ) {
-////		return false;
-////	}
-////
-////	return true;
-////}
-////
+/*
+================
+idWindow::IsSimple
+================
+*/
+IsSimple():boolean {
+
+	// dont do simple windows when in gui editor
+	if ( com_editors & toolFlag_t.EDITOR_GUI ) {
+		return false;
+	}
+
+	if (this.ops.Num()) {
+		return false;
+	}
+	if (this.flags & (WIN_HCENTER | WIN_VCENTER)) {
+		return false;
+	}
+	if (this.children.Num() || this.drawWindows.Num()) {
+		return false;
+	}
+	for (var i = 0; i < SCRIPT_COUNT; i++) {
+		if (this.scripts[i]) {
+			return false;
+		}
+	}
+	if (this.timeLineEvents.Num()) {
+		return false;
+	}
+
+	if ( this.namedEvents.Num() ) {
+		return false;
+	}
+
+	return true;
+}
+
 /////*
 ////================
 ////idWindow::ContainsStateVars
@@ -4248,7 +4271,7 @@ idWindow::Interactive
 ////idWindow::SetChildWinVarVal
 ////================
 ////*/
-////void idWindow::SetChildWinVarVal(const char *name, const char *var, const char *val) {
+////SetChildWinVarVal(const char *name, const char *var, const char *val):void {
 ////	drawWin_t *dw = FindChildByName(name);
 ////	idWinVar *wv = NULL;
 ////	if (dw && dw.simp) {
@@ -4280,7 +4303,7 @@ idWindow::Interactive
 ////		return NULL;
 ////	}
 ////
-////	if ( !Contains ( drawRect, x, y ) ) {
+////	if ( !Contains ( this.drawRect, x, y ) ) {
 ////		return NULL;
 ////	}
 ////		
@@ -4317,7 +4340,7 @@ idWindow::Interactive
 ////*/
 ////int idWindow::GetChildCount ( void )
 ////{
-////	return drawWindows.Num ( );
+////	return this.drawWindows.Num ( );
 ////}
 ////
 /////*
@@ -4329,7 +4352,7 @@ idWindow::Interactive
 ////*/
 ////idWindow* idWindow::GetChild ( int index )
 ////{
-////	return drawWindows[index].win;
+////	return this.drawWindows[index].win;
 ////}
 ////
 /////*
@@ -4341,8 +4364,8 @@ idWindow::Interactive
 ////*/
 ////int idWindow::GetChildIndex ( idWindow* window ) {
 ////	int find;
-////	for ( find = 0; find < drawWindows.Num(); find ++ ) {
-////		if ( drawWindows[find].win == window ) {
+////	for ( find = 0; find < this.drawWindows.Num(); find ++ ) {
+////		if ( this.drawWindows[find].win == window ) {
 ////			return find;
 ////		}
 ////	}
@@ -4357,17 +4380,17 @@ idWindow::Interactive
 ////removed must still be deallocated by the caller
 ////================
 ////*/
-////void idWindow::RemoveChild ( idWindow *win ) {
+////RemoveChild ( idWindow *win ):void {
 ////	int find;
 ////
 ////	// Remove the child window
 ////	children.Remove ( win );
 ////	
-////	for ( find = 0; find < drawWindows.Num(); find ++ )
+////	for ( find = 0; find < this.drawWindows.Num(); find ++ )
 ////	{
-////		if ( drawWindows[find].win == win )
+////		if ( this.drawWindows[find].win == win )
 ////		{
-////			drawWindows.RemoveIndex ( find );
+////			this.drawWindows.RemoveIndex ( find );
 ////			break;
 ////		}
 ////	}
@@ -4382,7 +4405,7 @@ idWindow::Interactive
 ////*/
 ////bool idWindow::InsertChild ( idWindow *win, idWindow* before )
 ////{
-////	AddChild ( win );
+////	this.AddChild ( win );
 ////		
 ////	win.parent = this;
 ////
@@ -4395,12 +4418,12 @@ idWindow::Interactive
 ////		int index;
 ////		index = GetChildIndex ( before );
 ////		if ( index != -1 ) {
-////			drawWindows.Insert ( dwt, index );
+////			this.drawWindows.Insert ( dwt, index );
 ////			return true;
 ////		}
 ////	}
 ////	
-////	drawWindows.Append ( dwt );
+////	this.drawWindows.Append ( dwt );
 ////	return true;
 ////}
 ////
@@ -4409,7 +4432,7 @@ idWindow::Interactive
 ////idWindow::ScreenToClient
 ////================
 ////*/
-////void idWindow::ScreenToClient ( idRectangle* r ) {
+////ScreenToClient ( idRectangle* r ):void {
 ////	int		  x;
 ////	int		  y;
 ////	idWindow* p;
@@ -4428,7 +4451,7 @@ idWindow::Interactive
 ////idWindow::ClientToScreen
 ////================
 ////*/
-////void idWindow::ClientToScreen ( idRectangle* r ) {
+////ClientToScreen ( idRectangle* r ):void {
 ////	int		  x;
 ////	int		  y;
 ////	idWindow* p;
@@ -4450,16 +4473,16 @@ idWindow::Interactive
 ////default colors, etc..
 ////================
 ////*/
-////void idWindow::SetDefaults ( void ) {	
+////SetDefaults ( void ):void {	
 ////	this.forceAspectWidth = 640.0f;
 ////	forceAspectHeight = 480.0f;
 ////	matScalex = 1;
 ////	matScaley = 1;
-////	borderSize = 0;
+////	this.borderSize = 0;
 ////	noTime = false;
 ////	visible = true;
 ////	textAlign = 0;
-////	textAlignx = 0;
+////	this.textAlignx = 0;
 ////	textAligny = 0;
 ////	noEvents = false;
 ////	rotate = 0;
@@ -4472,8 +4495,8 @@ idWindow::Interactive
 ////	borderColor.Zero();
 ////	text = "";	
 ////
-////	background = NULL;
-////	backGroundName = "";
+////	this.background = NULL;
+////	this.backGroundName = "";
 ////}
 ////
 /////*
@@ -4492,9 +4515,9 @@ idWindow::Interactive
 ////	SetDefaults ( );
 ////	
 ////	// Clear all registers since they will get recreated
-////	regList.Reset ( );
-////	expressionRegisters.Clear ( );
-////	ops.Clear ( );
+////	this.regList.Reset ( );
+////	this.expressionRegisters.Clear ( );
+////	this.ops.Clear ( );
 ////	
 ////	for ( i = 0; i < dict.GetNumKeyVals(); i ++ ) {
 ////		kv = dict.GetKeyVal ( i );
@@ -4515,10 +4538,10 @@ idWindow::Interactive
 ////		}
 ////	}
 ////			
-////	EvalRegs(-1, true);
+////	this.EvalRegs(-1, true);
 ////
-////	SetupFromState();
-////	PostParse();
+////	this.SetupFromState();
+////	this.PostParse();
 ////	
 ////	return true;
 ////}

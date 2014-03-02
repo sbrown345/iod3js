@@ -193,11 +193,11 @@ class idDict {
 ////}
 ////
 SetFloat( key:string, /*float*/ val :number):void {
-	Set( key, va( "%f", val ) );
+	this.Set( key, va( "%f", val ) );
 }
 ////
 ////SetInt( key:string, int val ):void {
-////	Set( key, va( "%i", val ) );
+////	this.Set( key, va( "%i", val ) );
 ////}
 ////
 	SetBool ( key: string, val: boolean ): void {
@@ -211,17 +211,17 @@ SetFloat( key:string, /*float*/ val :number):void {
 	SetVec4 ( key: string, val: idVec4 ): void {
 		this.Set( key, val.ToString ( ) );
 	}
-////
-////SetVec2( key:string, const idVec2 &val ):void {
-////	Set( key, val.ToString() );
-////}
+
+	SetVec2 ( key: string, val: idVec2 ): void {
+		this.Set( key, val.ToString ( ) );
+	}
 ////
 ////SetAngles( key:string, const idAngles &val ):void {
-////	Set( key, val.ToString() );
+////	this.Set( key, val.ToString() );
 ////}
 ////
 ////SetMatrix( key:string, const idMat3 &val ):void {
-////	Set( key, val.ToString() );
+////	this.Set( key, val.ToString() );
 ////}
 ////
 ////ID_INLINE bool idDict::GetString( key:string, const char *defaultString, const char **out ) const {
@@ -434,7 +434,7 @@ SetFloat( key:string, /*float*/ val :number):void {
 ////			parser.Warning( "'%s' already defined", token.c_str() );
 ////			errors = true;
 ////		}
-////		Set( token, token2 );
+////		this.Set( token, token2 );
 ////
 ////		if ( !parser.ReadToken( &token ) ) {
 ////			parser.Error( "Unexpected end of file" );
@@ -888,7 +888,7 @@ idDict::MatchPrefix
 ////	for ( int i = 0; i < c; i++ ) {
 ////		key = ReadString( f );
 ////		val = ReadString( f );
-////		Set( key, val );
+////		this.Set( key, val );
 ////	}
 ////}
 ////

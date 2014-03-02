@@ -2049,9 +2049,9 @@ idImage.prototype.Bind = function ( ): void {
 ////}
 
 
-////void idImage::SetClassification( int tag ) {
-////	classification = tag;
-////}
+idImage.prototype.SetClassification = function ( /*int */tag: number ): void {
+	this.classification = tag;
+};
 
 /////*
 ////==================

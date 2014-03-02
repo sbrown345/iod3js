@@ -327,6 +327,7 @@
 //#include "../ui/ListGUI.h"
 //#include "../ui/UserInterface.h"
 /// <reference path="doomdll/ui/rectangle.h.ts" />
+/// <reference path="doomdll/ui/regexp.cpp.ts" />
 /// <reference path="doomdll/ui/devicecontext.cpp.ts" />
 /// <reference path="doomdll/ui/guiscript.cpp.ts" />
 /// <reference path="doomdll/ui/listgui.cpp.ts" />

@@ -136,10 +136,11 @@ class idVec2 {
 ////	this.y = y;
 ////}
 
-////ID_INLINE void idVec2::Set( const float x, const float y ) {
-////	this.x = x;
-////	this.y = y;
-////}
+	Set ( /* float */x: number, /*float */y: number ): void {
+		this.x = x;
+		this.y = y;
+	}
+
 	Zero ( ): void {
 		this.x = this.y = 0.0;
 	}
@@ -318,9 +319,9 @@ class idVec2 {
 ////	return *this;
 ////}
 
-////ID_INLINE int idVec2::GetDimension( void ) const {
-////	return 2;
-////}
+	GetDimension ( ): number {
+		return 2;
+	}
 
 ////ID_INLINE const float *idVec2::ToFloatPtr( void ) const {
 ////	return &x;
@@ -330,14 +331,14 @@ class idVec2 {
 		return new Float32Array( [this.x, this.y] );
 	}
 
-/////*
-////=============
-////idVec2::ToString
-////=============
-////*/
-////const char *idVec2::ToString( int precision ) const {
-////	return idStr::FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
-////}
+/*
+=============
+idVec2::ToString
+=============
+*/
+	ToString ( /*int*/ precision: number = 2): string {
+		return idStr.FloatArrayToString( this.ToFloatPtr ( ), this.GetDimension ( ), precision );
+	}
 
 /////*
 ////=============
@@ -1059,7 +1060,7 @@ class idVec3 {
 ////idVec3::ToString
 ////=============
 ////*/
-////const char *idVec3::ToString( int precision ) const {
+////const char *idVec3::ToString( int precision = 2) const {
 ////	return idStr::FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
 ////}
 
@@ -1236,12 +1237,19 @@ class idVec4 {
 		this.values[3] = value;
 	}
 
-	constructor ( x = 0.0, y = 0.0, z = 0.0, w = 0.0 ) {
-		this.values = new Float32Array(4);
-		this.x = x; // could extend float32 array
-		this.y = y;
-		this.z = z;
-		this.w = w;
+	constructor()
+	constructor(array: Float32Array)
+	constructor(x: number, y: number, z: number, w:number)
+	constructor(xOrArray?: any, y?: number, z?: number, w?: number) {
+		if (!(xOrArray instanceof Float32Array)) {
+			this.values = new Float32Array(4);
+			this.x = xOrArray || 0.0;
+			this.y = y || 0.0;
+			this.z = z || 0.0;
+			this.w = w || 0.0;
+		} else {
+			this.values = xOrArray;
+		}
 	}
 
 	equals ( other: idVec4 ) {
@@ -1683,7 +1691,7 @@ class idVec5 {
 ////idVec5::ToString
 ////=============
 ////*/
-////const char *idVec5::ToString( int precision ) const {
+////const char *idVec5::ToString( int precision = 2) const {
 ////	return idStr::FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
 ////}
 
@@ -1980,7 +1988,7 @@ class idVec6 {
 ////idVec6::ToString
 ////=============
 ////*/
-////const char *idVec6::ToString( int precision ) const {
+////const char *idVec6::ToString( int precision = 2) const {
 ////	return idStr::FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
 ////}
 
@@ -2495,7 +2503,7 @@ class idVec6 {
 ////idVecX::ToString
 ////=============
 ////*/
-////const char *idVecX::ToString( int precision ) const {
+////const char *idVecX::ToString( int precision = 2) const {
 ////	return idStr::FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
 ////}
 

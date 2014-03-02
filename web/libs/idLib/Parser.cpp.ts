@@ -2660,32 +2660,34 @@ idParser::ReadToken
 	}
 }
 
-/////*
-////================
-////idParser::ExpectTokenString
-////================
-////*/
-/////*int*/ExpectTokenString( $string:string ):number {
-////	idToken token;
-////
-////	if ( !idParser::ReadToken( &token ) ) {
-////		this.Error( "couldn't find expected '%s'", string );
-////		return 0/*false*/;
-////	}
-////
-////	if ( token != string ) {
-////		this.Error( "expected '%s' but found '%s'", string, token.c_str() );
-////		return 0/*false*/;
-////	}
-////	return 1/*true*/;
-////}
-////
-/////*
-////================
-////idParser::ExpectTokenType
-////================
-////*/
-/////*int*/ExpectTokenType( int type, int subtype, idToken *token ) :number{
+/*
+================
+idParser::ExpectTokenString
+================
+*/
+/*int*/
+	ExpectTokenString ( $string: string ): number {
+		var token = new R( new idToken ( ) );
+
+		if ( !this.ReadToken( token ) ) {
+			this.Error( "couldn't find expected '%s'", $string );
+			return 0 /*false*/;
+		}
+
+		if ( token.$.data != $string ) {
+			this.Error( "expected '%s' but found '%s'", $string, token.$.c_str ( ) );
+			return 0 /*false*/;
+		}
+		return 1 /*true*/;
+	}
+
+/*
+================
+idParser::ExpectTokenType
+================
+*/
+	/*int*/ExpectTokenType(/*int*/ type: number, /*int */subtype: number, token:R<idToken>): number{
+		todoThrow();
 ////	idStr str;
 ////
 ////	if ( !idParser::ReadToken( token ) ) {
@@ -2731,24 +2733,24 @@ idParser::ReadToken
 ////			return 0;
 ////		}
 ////	}
-////	return 1;
-////}
-////
-/////*
-////================
-////idParser::ExpectAnyToken
-////================
-////*/
-/////*int*/ExpectAnyToken( idToken *token ):number {
-////	if (!idParser::ReadToken( token )) {
-////		this.Error( "couldn't read expected token" );
-////		return 0/*false*/;
-////	}
-////	else {
-////		return 1/*true*/;
-////	}
-////}
-////
+	return 1;
+}
+
+/*
+================
+idParser::ExpectAnyToken
+================
+*/
+	/*int*/
+	ExpectAnyToken ( token: R<idToken> ): number {
+		if ( !this.ReadToken( token ) ) {
+			this.Error( "couldn't read expected token" );
+			return 0 /*false*/;
+		} else {
+			return 1 /*true*/;
+		}
+	}
+
 /*
 ================
 idParser::CheckTokenString
@@ -3176,16 +3178,16 @@ idParser::UnreadToken
 ////	}
 ////	return whiteSpace.Length();
 ////}
-////
-/////*
-////================
-////idParser::SetMarker
-////================
-////*/
-////void idParser::SetMarker( ) {
-////	this.marker_p = NULL;
-////}
-////
+
+/*
+================
+idParser::SetMarker
+================
+*/
+	SetMarker ( ): void {
+		this.marker_p = NULL;
+	}
+
 /////*
 ////================
 ////idParser::GetStringFromMarker

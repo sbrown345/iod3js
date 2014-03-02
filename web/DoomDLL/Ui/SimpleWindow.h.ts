@@ -47,13 +47,13 @@ class idSimpleWindow {
 	////	void			Redraw(float x, float y);
 	////	void			StateChanged( bool redraw );
 	////
-	////	idStr			name;
+	name = new idStr;
 	////
 	////	idWinVar *		GetWinVarByName(const char *_name);
 	////	int				GetWinVarOffset( idWinVar *wv, drawWin_t* owner);
 	////	size_t			Size();
 	////
-	////	idWindow*		GetParent ( void ) { return mParent; }
+	////	idWindow*		GetParent ( void ) { return this.mParent; }
 	////
 	////	virtual void	WriteToSaveGame( idFile *savefile );
 	////	virtual void	ReadFromSaveGame( idFile *savefile );
@@ -63,135 +63,135 @@ class idSimpleWindow {
 	////	void 			SetupTransforms(float x, float y);
 	////	void 			DrawBackground(const idRectangle &drawRect);
 	////	void 			DrawBorderAndCaption(const idRectangle &drawRect);
-	////
-	////	idUserInterfaceLocal *gui;
-	////	idDeviceContext *dc;
-	////	int 			flags;
-	////	idRectangle 	drawRect;			// overall rect
-	////	idRectangle 	clientRect;			// client area
-	////	idRectangle 	textRect;
-	////	idVec2			origin;
-	////	int 			fontNum;
-	////	float 			matScalex;
-	////	float 			matScaley;
-	////	float 			borderSize;
-	////	int 			textAlign;
-	////	float 			textAlignx;
-	////	float 			textAligny;
-	////	int				textShadow;
-	////
-	////	idWinStr		text;
-	////	idWinBool		visible;
-	////	idWinRectangle	rect;				// overall rect
-	////	idWinVec4		backColor;
-	////	idWinVec4		matColor;
-	////	idWinVec4		foreColor;
-	////	idWinVec4		borderColor;
-	////	idWinFloat		textScale;
-	////	idWinFloat		rotate;
-	////	idWinVec2		shear;
-	////	idWinBackground	backGroundName;
-	////
-	////	const idMaterial* background;
-	////	
-	////	idWindow *		mParent;
-	////
-	////	idWinBool	hideCursor;
+	
+		gui:idUserInterfaceLocal;
+		dc:idDeviceContext;
+		flags:number/*int*/;
+		drawRect = new idRectangle;			// overall rect
+		clientRect = new idRectangle;			// client area
+		textRect = new idRectangle;
+		origin = new idVec2;
+		fontNum:number/*int*/;
+		matScalex:number/*float*/;
+		matScaley:number/*float*/;
+		borderSize:number/*float*/;
+		textAlign:number/*int*/;
+		textAlignx:number/*float*/;
+		textAligny:number/*float*/;
+		textShadow:number/*int*/;
+	
+		text = new idWinStr;
+		visible = new idWinBool;
+		rect = new idWinRectangle;				// overall rect
+		backColor = new idWinVec4;
+		matColor = new idWinVec4;
+		foreColor = new idWinVec4;
+		borderColor = new idWinVec4;
+		textScale = new idWinFloat;
+		rotate = new idWinFloat;
+		shear = new idWinVec2;
+		backGroundName = new idWinBackground;
+	
+		background:idMaterial;
+		
+		mParent:idWindow;
+	
+		hideCursor = new idWinBool;
 	////};
 	////
 	////#endif /* !__SIMPLEWIN_H__ */
 	////
 	////
 	////
-	////idSimpleWindow::idSimpleWindow(idWindow *win) {
-	////	gui = win->GetGui();
-	////	dc = win->dc;
-	////	drawRect = win->drawRect;
-	////	clientRect = win->clientRect;
-	////	textRect = win->textRect;
-	////	origin = win->origin;
-	////	fontNum = win->fontNum;
-	////	name = win->name;
-	////	matScalex = win->matScalex;
-	////	matScaley = win->matScaley;
-	////	borderSize = win->borderSize;
-	////	textAlign = win->textAlign;
-	////	textAlignx = win->textAlignx;
-	////	textAligny = win->textAligny;
-	////	background = win->background;
-	////	flags = win->flags;
-	////	textShadow = win->textShadow;
-	////
-	////	visible = win->visible;
-	////	text = win->text;
-	////	rect = win->rect;
-	////	backColor = win->backColor;
-	////	matColor = win->matColor;
-	////	foreColor = win->foreColor;
-	////	borderColor = win->borderColor;
-	////	textScale = win->textScale;
-	////	rotate = win->rotate;
-	////	shear = win->shear;
-	////	backGroundName = win->backGroundName;
-	////	if (backGroundName.Length()) {
-	////		background = declManager->FindMaterial(backGroundName);
-	////		background->SetSort(SS_GUI);
-	////		background->SetImageClassifications(1);	// just for resource tracking
-	////	}
-	////	backGroundName.SetMaterialPtr(&background);
-	////
-	////	// 
-	////	//  added parent
-	////	mParent = win->GetParent();
-	////	// 
-	////
-	////	hideCursor = win->hideCursor;
-	////
-	////	idWindow *parent = win->GetParent();
-	////	if (parent) {
-	////		if (text.NeedsUpdate()) {
-	////			parent->AddUpdateVar(&text);
-	////		}
-	////		if (visible.NeedsUpdate()) {
-	////			parent->AddUpdateVar(&visible);
-	////		}
-	////		if (rect.NeedsUpdate()) {
-	////			parent->AddUpdateVar(&rect);
-	////		}
-	////		if (backColor.NeedsUpdate()) {
-	////			parent->AddUpdateVar(&backColor);
-	////		}
-	////		if (matColor.NeedsUpdate()) {
-	////			parent->AddUpdateVar(&matColor);
-	////		}
-	////		if (foreColor.NeedsUpdate()) {
-	////			parent->AddUpdateVar(&foreColor);
-	////		}
-	////		if (borderColor.NeedsUpdate()) {
-	////			parent->AddUpdateVar(&borderColor);
-	////		}
-	////		if (textScale.NeedsUpdate()) {
-	////			parent->AddUpdateVar(&textScale);
-	////		}
-	////		if (rotate.NeedsUpdate()) {
-	////			parent->AddUpdateVar(&rotate);
-	////		}
-	////		if (shear.NeedsUpdate()) {
-	////			parent->AddUpdateVar(&shear);
-	////		}
-	////		if (backGroundName.NeedsUpdate()) {
-	////			parent->AddUpdateVar(&backGroundName);
-	////		}
-	////	}
-	////}
-	////
+	constructor(win: idWindow) {
+		this.gui = win.GetGui();
+		this.dc = win.dc;
+		this.drawRect = win.drawRect;
+		this.clientRect = win.clientRect;
+		this.textRect = win.textRect;
+		this.origin = win.origin;
+		this.fontNum = win.fontNum;
+		this.name = win.name;
+		this.matScalex = win.matScalex;
+		this.matScaley = win.matScaley;
+		this.borderSize = win.borderSize;
+		this.textAlign = win.textAlign;
+		this.textAlignx = win.textAlignx;
+		this.textAligny = win.textAligny;
+		this.background = win.background;
+		this.flags = win.flags;
+		this.textShadow = win.textShadow;
+	
+		this.visible = win.visible;
+		this.text = win.text;
+		this.rect = win.rect;
+		this.backColor = win.backColor;
+		this.matColor = win.matColor;
+		this.foreColor = win.foreColor;
+		this.borderColor = win.borderColor;
+		this.textScale = win.textScale;
+		this.rotate = win.rotate;
+		this.shear.equalsVec2(win.shear);
+		this.backGroundName = win.backGroundName;
+		if (this.backGroundName.Length()) {
+			this.background = declManager.FindMaterial(this.backGroundName.data.data);
+			this.background.SetSort(materialSort_t.SS_GUI);
+			this.background.SetImageClassifications(1);	// just for resource tracking
+		}
+		this.backGroundName.SetMaterialPtr(this.background);
+	
+		// 
+		//  added parent
+		this.mParent = win.GetParent();
+		// 
+	
+		this.hideCursor = win.hideCursor;
+	
+		var parent = win.GetParent();
+		if (parent) {
+			if (this.text.NeedsUpdate()) {
+				parent.AddUpdateVar(this.text);
+			}
+			if (this.visible.NeedsUpdate()) {
+				parent.AddUpdateVar(this.visible);
+			}
+			if (this.rect.NeedsUpdate()) {
+				parent.AddUpdateVar(this.rect);
+			}
+			if (this.backColor.NeedsUpdate()) {
+				parent.AddUpdateVar(this.backColor);
+			}
+			if (this.matColor.NeedsUpdate()) {
+				parent.AddUpdateVar(this.matColor);
+			}
+			if (this.foreColor.NeedsUpdate()) {
+				parent.AddUpdateVar(this.foreColor);
+			}
+			if (this.borderColor.NeedsUpdate()) {
+				parent.AddUpdateVar(this.borderColor);
+			}
+			if (this.textScale.NeedsUpdate()) {
+				parent.AddUpdateVar(this.textScale);
+			}
+			if (this.rotate.NeedsUpdate()) {
+				parent.AddUpdateVar(this.rotate);
+			}
+			if (this.shear.NeedsUpdate()) {
+				parent.AddUpdateVar(this.shear);
+			}
+			if (this.backGroundName.NeedsUpdate()) {
+				parent.AddUpdateVar(this.backGroundName);
+			}
+		}
+	}
+	
 	////idSimpleWindow::~idSimpleWindow() {
 	////
 	////}
 	////
 	////void idSimpleWindow::StateChanged(bool redraw) {
-	////	if (redraw && background && background->CinematicLength()) {
-	////		background->UpdateCinematic(gui->GetTime());
+	////	if (redraw && this.background && this.background.CinematicLength()) {
+	////		this.background.UpdateCinematic(gui.GetTime());
 	////	}
 	////}
 	////
@@ -201,43 +201,43 @@ class idSimpleWindow {
 	////
 	////	trans.Identity();
 	////	org.Set(origin.x + x, origin.y + y, 0);
-	////	if (rotate) {
+	////	if (this.rotate) {
 	////		static idRotation rot;
 	////		static idVec3 vec(0, 0, 1);
-	////		rot.Set(org, vec, rotate);
+	////		rot.Set(org, vec, this.rotate);
 	////		trans = rot.ToMat3();
 	////	}
 	////
 	////	static idMat3 smat;
 	////	smat.Identity();
-	////	if (shear.x() || shear.y()) {
-	////		smat[0][1] = shear.x();
-	////		smat[1][0] = shear.y();
+	////	if (this.shear.x() || this.shear.y()) {
+	////		smat[0][1] = this.shear.x();
+	////		smat[1][0] = this.shear.y();
 	////		trans *= smat;
 	////	}
 	////
 	////	if (!trans.IsIdentity()) {
-	////		dc->SetTransformInfo(org, trans);
+	////		dc.SetTransformInfo(org, trans);
 	////	}
 	////}
 	////
 	////void idSimpleWindow::DrawBackground(const idRectangle &drawRect) {
-	////	if (backColor.w() > 0) {
-	////		dc->DrawFilledRect(drawRect.x, drawRect.y, drawRect.w, drawRect.h, backColor);
+	////	if (this.backColor.w() > 0) {
+	////		dc.DrawFilledRect(drawRect.x, drawRect.y, drawRect.w, drawRect.h, this.backColor);
 	////	}
 	////
-	////	if (background) {
-	////		if (matColor.w() > 0) {
+	////	if (this.background) {
+	////		if (this.matColor.w() > 0) {
 	////			float scalex, scaley;
 	////			if (flags & WIN_NATURALMAT) {
-	////				scalex = drawRect.w / background->GetImageWidth();
-	////				scaley = drawRect.h / background->GetImageHeight();
+	////				scalex = drawRect.w / this.background.GetImageWidth();
+	////				scaley = drawRect.h / this.background.GetImageHeight();
 	////			}
 	////			else {
 	////				scalex = matScalex;
 	////				scaley = matScaley;
 	////			}
-	////			dc->DrawMaterial(drawRect.x, drawRect.y, drawRect.w, drawRect.h, background, matColor, scalex, scaley);
+	////			dc.DrawMaterial(drawRect.x, drawRect.y, drawRect.w, drawRect.h, this.background, this.matColor, scalex, scaley);
 	////		}
 	////	}
 	////}
@@ -245,25 +245,25 @@ class idSimpleWindow {
 	////void idSimpleWindow::DrawBorderAndCaption(const idRectangle &drawRect) {
 	////	if (flags & WIN_BORDER) {
 	////		if (borderSize) {
-	////			dc->DrawRect(drawRect.x, drawRect.y, drawRect.w, drawRect.h, borderSize, borderColor);
+	////			dc.DrawRect(drawRect.x, drawRect.y, drawRect.w, drawRect.h, borderSize, this.borderColor);
 	////		}
 	////	}
 	////}
 	////
 	////void idSimpleWindow::CalcClientRect(float xofs, float yofs) {
 	////
-	////	drawRect = rect;
+	////	drawRect = this.rect;
 	////
 	////	if (flags & WIN_INVERTRECT) {
-	////		drawRect.x = rect.x() - rect.w();
-	////		drawRect.y = rect.y() - rect.h();
+	////		drawRect.x = this.rect.x() - this.rect.w();
+	////		drawRect.y = this.rect.y() - this.rect.h();
 	////	}
 	////
 	////	drawRect.x += xofs;
 	////	drawRect.y += yofs;
 	////
 	////	clientRect = drawRect;
-	////	if (rect.h() > 0.0 && rect.w() > 0.0) {
+	////	if (this.rect.h() > 0.0 && this.rect.w() > 0.0) {
 	////
 	////		if (flags & WIN_BORDER && borderSize != 0.0) {
 	////			clientRect.x += borderSize;
@@ -281,42 +281,42 @@ class idSimpleWindow {
 	////		textRect.y += textAligny;
 	////
 	////	}
-	////	origin.Set(rect.x() + (rect.w() / 2), rect.y() + (rect.h() / 2));
+	////	origin.Set(this.rect.x() + (this.rect.w() / 2), this.rect.y() + (this.rect.h() / 2));
 	////
 	////}
 	////
 	////
 	////void idSimpleWindow::Redraw(float x, float y) {
 	////
-	////	if (!visible) {
+	////	if (!this.visible) {
 	////		return;
 	////	}
 	////
 	////	CalcClientRect(0, 0);
-	////	dc->SetFont(fontNum);
+	////	dc.SetFont(fontNum);
 	////	drawRect.Offset(x, y);
 	////	clientRect.Offset(x, y);
 	////	textRect.Offset(x, y);
 	////	SetupTransforms(x, y);
 	////	if (flags & WIN_NOCLIP) {
-	////		dc->EnableClipping(false);
+	////		dc.EnableClipping(false);
 	////	}
 	////	DrawBackground(drawRect);
 	////	DrawBorderAndCaption(drawRect);
 	////	if (textShadow) {
-	////		idStr shadowText = text;
+	////		idStr shadowText = this.text;
 	////		idRectangle shadowRect = textRect;
 	////
 	////		shadowText.RemoveColors();
 	////		shadowRect.x += textShadow;
 	////		shadowRect.y += textShadow;
 	////
-	////		dc->DrawText(shadowText, textScale, textAlign, colorBlack, shadowRect, !(flags & WIN_NOWRAP), -1);
+	////		dc.DrawText(shadowText, this.textScale, textAlign, colorBlack, shadowRect, !(flags & WIN_NOWRAP), -1);
 	////	}
-	////	dc->DrawText(text, textScale, textAlign, foreColor, textRect, !(flags & WIN_NOWRAP), -1);
-	////	dc->SetTransformInfo(vec3_origin, mat3_identity);
+	////	dc.DrawText(this.text, this.textScale, textAlign, this.foreColor, textRect, !(flags & WIN_NOWRAP), -1);
+	////	dc.SetTransformInfo(vec3_origin, mat3_identity);
 	////	if (flags & WIN_NOCLIP) {
-	////		dc->EnableClipping(true);
+	////		dc.EnableClipping(true);
 	////	}
 	////	drawRect.Offset(-x, -y);
 	////	clientRect.Offset(-x, -y);
@@ -326,36 +326,36 @@ class idSimpleWindow {
 	////int idSimpleWindow::GetWinVarOffset(idWinVar *wv, drawWin_t* owner) {
 	////	int ret = -1;
 	////
-	////	if (wv == &rect) {
-	////		ret = (int)&((idSimpleWindow *)0)->rect;
+	////	if (wv == &this.rect) {
+	////		ret = (int)&((idSimpleWindow *)0).rect;
 	////	}
 	////
-	////	if (wv == &backColor) {
-	////		ret = (int)&((idSimpleWindow *)0)->backColor;
+	////	if (wv == &this.backColor) {
+	////		ret = (int)&((idSimpleWindow *)0).backColor;
 	////	}
 	////
-	////	if (wv == &matColor) {
-	////		ret = (int)&((idSimpleWindow *)0)->matColor;
+	////	if (wv == &this.matColor) {
+	////		ret = (int)&((idSimpleWindow *)0).matColor;
 	////	}
 	////
-	////	if (wv == &foreColor) {
-	////		ret = (int)&((idSimpleWindow *)0)->foreColor;
+	////	if (wv == &this.foreColor) {
+	////		ret = (int)&((idSimpleWindow *)0).foreColor;
 	////	}
 	////
-	////	if (wv == &borderColor) {
-	////		ret = (int)&((idSimpleWindow *)0)->borderColor;
+	////	if (wv == &this.borderColor) {
+	////		ret = (int)&((idSimpleWindow *)0).borderColor;
 	////	}
 	////
-	////	if (wv == &textScale) {
-	////		ret = (int)&((idSimpleWindow *)0)->textScale;
+	////	if (wv == &this.textScale) {
+	////		ret = (int)&((idSimpleWindow *)0).textScale;
 	////	}
 	////
-	////	if (wv == &rotate) {
-	////		ret = (int)&((idSimpleWindow *)0)->rotate;
+	////	if (wv == &this.rotate) {
+	////		ret = (int)&((idSimpleWindow *)0).rotate;
 	////	}
 	////
 	////	if (ret != -1) {
-	////		owner->simp = this;
+	////		owner.simp = this;
 	////	}
 	////	return ret;
 	////}
@@ -363,37 +363,37 @@ class idSimpleWindow {
 	////idWinVar *idSimpleWindow::GetWinVarByName(const char *_name) {
 	////	idWinVar *retVar = NULL;
 	////	if (idStr::Icmp(_name, "background") == 0) {
-	////		retVar = &backGroundName;
+	////		retVar = &this.backGroundName;
 	////	}
 	////	if (idStr::Icmp(_name, "visible") == 0) {
-	////		retVar = &visible;
+	////		retVar = &this.visible;
 	////	}
 	////	if (idStr::Icmp(_name, "rect") == 0) {
-	////		retVar = &rect;
+	////		retVar = &this.rect;
 	////	}
 	////	if (idStr::Icmp(_name, "backColor") == 0) {
-	////		retVar = &backColor;
+	////		retVar = &this.backColor;
 	////	}
 	////	if (idStr::Icmp(_name, "matColor") == 0) {
-	////		retVar = &matColor;
+	////		retVar = &this.matColor;
 	////	}
 	////	if (idStr::Icmp(_name, "foreColor") == 0) {
-	////		retVar = &foreColor;
+	////		retVar = &this.foreColor;
 	////	}
 	////	if (idStr::Icmp(_name, "borderColor") == 0) {
-	////		retVar = &borderColor;
+	////		retVar = &this.borderColor;
 	////	}
 	////	if (idStr::Icmp(_name, "textScale") == 0) {
-	////		retVar = &textScale;
+	////		retVar = &this.textScale;
 	////	}
 	////	if (idStr::Icmp(_name, "rotate") == 0) {
-	////		retVar = &rotate;
+	////		retVar = &this.rotate;
 	////	}
 	////	if (idStr::Icmp(_name, "shear") == 0) {
-	////		retVar = &shear;
+	////		retVar = &this.shear;
 	////	}
 	////	if (idStr::Icmp(_name, "text") == 0) {
-	////		retVar = &text;
+	////		retVar = &this.text;
 	////	}
 	////	return retVar;
 	////}
@@ -405,42 +405,42 @@ class idSimpleWindow {
 	////*/
 	////void idSimpleWindow::WriteToSaveGame(idFile *savefile) {
 	////
-	////	savefile->Write(&flags, sizeof(flags));
-	////	savefile->Write(&drawRect, sizeof(drawRect));
-	////	savefile->Write(&clientRect, sizeof(clientRect));
-	////	savefile->Write(&textRect, sizeof(textRect));
-	////	savefile->Write(&origin, sizeof(origin));
-	////	savefile->Write(&fontNum, sizeof(fontNum));
-	////	savefile->Write(&matScalex, sizeof(matScalex));
-	////	savefile->Write(&matScaley, sizeof(matScaley));
-	////	savefile->Write(&borderSize, sizeof(borderSize));
-	////	savefile->Write(&textAlign, sizeof(textAlign));
-	////	savefile->Write(&textAlignx, sizeof(textAlignx));
-	////	savefile->Write(&textAligny, sizeof(textAligny));
-	////	savefile->Write(&textShadow, sizeof(textShadow));
+	////	savefile.Write(&flags, sizeof(flags));
+	////	savefile.Write(&drawRect, sizeof(drawRect));
+	////	savefile.Write(&clientRect, sizeof(clientRect));
+	////	savefile.Write(&textRect, sizeof(textRect));
+	////	savefile.Write(&origin, sizeof(origin));
+	////	savefile.Write(&fontNum, sizeof(fontNum));
+	////	savefile.Write(&matScalex, sizeof(matScalex));
+	////	savefile.Write(&matScaley, sizeof(matScaley));
+	////	savefile.Write(&borderSize, sizeof(borderSize));
+	////	savefile.Write(&textAlign, sizeof(textAlign));
+	////	savefile.Write(&textAlignx, sizeof(textAlignx));
+	////	savefile.Write(&textAligny, sizeof(textAligny));
+	////	savefile.Write(&textShadow, sizeof(textShadow));
 	////
-	////	text.WriteToSaveGame(savefile);
-	////	visible.WriteToSaveGame(savefile);
-	////	rect.WriteToSaveGame(savefile);
-	////	backColor.WriteToSaveGame(savefile);
-	////	matColor.WriteToSaveGame(savefile);
-	////	foreColor.WriteToSaveGame(savefile);
-	////	borderColor.WriteToSaveGame(savefile);
-	////	textScale.WriteToSaveGame(savefile);
-	////	rotate.WriteToSaveGame(savefile);
-	////	shear.WriteToSaveGame(savefile);
-	////	backGroundName.WriteToSaveGame(savefile);
+	////	this.text.WriteToSaveGame(savefile);
+	////	this.visible.WriteToSaveGame(savefile);
+	////	this.rect.WriteToSaveGame(savefile);
+	////	this.backColor.WriteToSaveGame(savefile);
+	////	this.matColor.WriteToSaveGame(savefile);
+	////	this.foreColor.WriteToSaveGame(savefile);
+	////	this.borderColor.WriteToSaveGame(savefile);
+	////	this.textScale.WriteToSaveGame(savefile);
+	////	this.rotate.WriteToSaveGame(savefile);
+	////	this.shear.WriteToSaveGame(savefile);
+	////	this.backGroundName.WriteToSaveGame(savefile);
 	////
 	////	int stringLen;
 	////
-	////	if (background) {
-	////		stringLen = strlen(background->GetName());
-	////		savefile->Write(&stringLen, sizeof(stringLen));
-	////		savefile->Write(background->GetName(), stringLen);
+	////	if (this.background) {
+	////		stringLen = strlen(this.background.GetName());
+	////		savefile.Write(&stringLen, sizeof(stringLen));
+	////		savefile.Write(this.background.GetName(), stringLen);
 	////	}
 	////	else {
 	////		stringLen = 0;
-	////		savefile->Write(&stringLen, sizeof(stringLen));
+	////		savefile.Write(&stringLen, sizeof(stringLen));
 	////	}
 	////
 	////}
@@ -452,46 +452,46 @@ class idSimpleWindow {
 	////*/
 	////void idSimpleWindow::ReadFromSaveGame(idFile *savefile) {
 	////
-	////	savefile->Read(&flags, sizeof(flags));
-	////	savefile->Read(&drawRect, sizeof(drawRect));
-	////	savefile->Read(&clientRect, sizeof(clientRect));
-	////	savefile->Read(&textRect, sizeof(textRect));
-	////	savefile->Read(&origin, sizeof(origin));
-	////	savefile->Read(&fontNum, sizeof(fontNum));
-	////	savefile->Read(&matScalex, sizeof(matScalex));
-	////	savefile->Read(&matScaley, sizeof(matScaley));
-	////	savefile->Read(&borderSize, sizeof(borderSize));
-	////	savefile->Read(&textAlign, sizeof(textAlign));
-	////	savefile->Read(&textAlignx, sizeof(textAlignx));
-	////	savefile->Read(&textAligny, sizeof(textAligny));
-	////	savefile->Read(&textShadow, sizeof(textShadow));
+	////	savefile.Read(&flags, sizeof(flags));
+	////	savefile.Read(&drawRect, sizeof(drawRect));
+	////	savefile.Read(&clientRect, sizeof(clientRect));
+	////	savefile.Read(&textRect, sizeof(textRect));
+	////	savefile.Read(&origin, sizeof(origin));
+	////	savefile.Read(&fontNum, sizeof(fontNum));
+	////	savefile.Read(&matScalex, sizeof(matScalex));
+	////	savefile.Read(&matScaley, sizeof(matScaley));
+	////	savefile.Read(&borderSize, sizeof(borderSize));
+	////	savefile.Read(&textAlign, sizeof(textAlign));
+	////	savefile.Read(&textAlignx, sizeof(textAlignx));
+	////	savefile.Read(&textAligny, sizeof(textAligny));
+	////	savefile.Read(&textShadow, sizeof(textShadow));
 	////
-	////	text.ReadFromSaveGame(savefile);
-	////	visible.ReadFromSaveGame(savefile);
-	////	rect.ReadFromSaveGame(savefile);
-	////	backColor.ReadFromSaveGame(savefile);
-	////	matColor.ReadFromSaveGame(savefile);
-	////	foreColor.ReadFromSaveGame(savefile);
-	////	borderColor.ReadFromSaveGame(savefile);
-	////	textScale.ReadFromSaveGame(savefile);
-	////	rotate.ReadFromSaveGame(savefile);
-	////	shear.ReadFromSaveGame(savefile);
-	////	backGroundName.ReadFromSaveGame(savefile);
+	////	this.text.ReadFromSaveGame(savefile);
+	////	this.visible.ReadFromSaveGame(savefile);
+	////	this.rect.ReadFromSaveGame(savefile);
+	////	this.backColor.ReadFromSaveGame(savefile);
+	////	this.matColor.ReadFromSaveGame(savefile);
+	////	this.foreColor.ReadFromSaveGame(savefile);
+	////	this.borderColor.ReadFromSaveGame(savefile);
+	////	this.textScale.ReadFromSaveGame(savefile);
+	////	this.rotate.ReadFromSaveGame(savefile);
+	////	this.shear.ReadFromSaveGame(savefile);
+	////	this.backGroundName.ReadFromSaveGame(savefile);
 	////
 	////	int stringLen;
 	////
-	////	savefile->Read(&stringLen, sizeof(stringLen));
+	////	savefile.Read(&stringLen, sizeof(stringLen));
 	////	if (stringLen > 0) {
 	////		idStr backName;
 	////
 	////		backName.Fill(' ', stringLen);
-	////		savefile->Read(&(backName)[0], stringLen);
+	////		savefile.Read(&(backName)[0], stringLen);
 	////
-	////		background = declManager->FindMaterial(backName);
-	////		background->SetSort(SS_GUI);
+	////		this.background = declManager.FindMaterial(backName);
+	////		this.background.SetSort(SS_GUI);
 	////	}
 	////	else {
-	////		background = NULL;
+	////		this.background = NULL;
 	////	}
 	////
 	////}
@@ -504,8 +504,8 @@ class idSimpleWindow {
 	////size_t idSimpleWindow::Size() {
 	////	size_t sz = sizeof(*this);
 	////	sz += name.Size();
-	////	sz += text.Size();
-	////	sz += backGroundName.Size();
+	////	sz += this.text.Size();
+	////	sz += this.backGroundName.Size();
 	////	return sz;
 	////}
 }

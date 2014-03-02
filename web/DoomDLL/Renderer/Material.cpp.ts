@@ -2608,21 +2608,21 @@ CheckForConstantRegisters():void {
 ////	return "_scratch";
 ////}
 
-/////*
-////===================
-////idMaterial::SetImageClassifications
+/*
+===================
+idMaterial::SetImageClassifications
 
-////Just for image resource tracking.
-////===================
-////*/
-////void idMaterial::SetImageClassifications( int tag ) const {
-////	for ( int i = 0 ; i < this.numStages ; i++ ) {
-////		idImage	*image = this.stages[i].texture.image;
-////		if ( image ) {
-////			image.SetClassification( tag );
-////		}
-////	}
-////}
+Just for image resource tracking.
+===================
+*/
+	SetImageClassifications ( /*int*/ tag: number ): void {
+		for ( var i = 0; i < this.numStages; i++ ) {
+			var image = this.stages[i].texture.image;
+			if ( image ) {
+				image.SetClassification( tag );
+			}
+		}
+	}
 
 /////*
 ////=================

@@ -190,8 +190,8 @@ class idImage {
 
 //	void		UploadScratch( const byte *pic, /*int */width:number, /*int */height:number );
 
-//	// just for resource tracking
-//	void		SetClassification( int tag );
+	// just for resource tracking
+	SetClassification ( /*int */tag: number ): void { throw "placeholder"; }
 
 //	// estimates size of the GL image based on dimensions and storage type
 //	int			StorageSize() const;

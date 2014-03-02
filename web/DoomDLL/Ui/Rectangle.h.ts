@@ -33,12 +33,64 @@
 //extern void RotateVector(idVec3 &v, idVec3 origin, float a, float c, float s);
 class idRectangle {
 //public:
-	x:number;    // horiz position		//	float 
-	y:number;    // vert position		//	float 
-	w:number;    // width				//	float 
-	h:number;    // height;			//	float 
+	//x:number;    // horiz position		//	float 
+	//y:number;    // vert position		//	float 
+	//w:number;    // width				//	float 
+	//h: number;    // height;			//	float 
+
+	values: Float32Array;
+
+	get x(): number { return this.values[0]; }
+
+	set x(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this.values[0] = value;
+	}
+
+	get y(): number { return this.values[1]; }
+
+	set y(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this.values[1] = value;
+	}
+
+	get w(): number { return this.values[2]; }
+
+	set w(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this.values[2] = value;
+	}
+
+	get h(): number { return this.values[3]; }
+
+	set h(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this.values[3] = value;
+	}
+
 //	idRectangle() { x = y = w= h = 0.0; }
-	constructor(/*float */ix: number= 0, /*float */iy: number= 0, /*float */iw: number= 0, /*float */ih: number= 0) { this.x = ix; this.y = iy; this.w = iw; this.h = ih; }
+	constructor ( )
+	constructor ( v: Float32Array )
+	constructor ( /*float*/ ix: number, /*float*/ iy: number, /*float*/ iw: number, /*float*/ ih: number )
+	constructor ( ixOrArray?: any, iy?: any, iw?: any, ih?: any ) {
+		if ( !( ixOrArray instanceof Float32Array ) ) {
+			this.values = new Float32Array( 4 );
+			this.x = ixOrArray || 0.0;
+			this.y = iy || 0.0;
+			this.w = iw || 0.0;
+			this.h = ih || 0.0;
+		} else {
+			this.values = ixOrArray;
+		}
+	}
 	Bottom() :number/*float*/{ return this.y + this.h; }
 	Right(): number /*float*/{ return this.x + this.w; }
 	Offset ( /*float */x: number, /*float */y: number ): void {
@@ -112,9 +164,9 @@ class idRectangle {
 //
 //};
 //
-//ID_INLINE const idVec4 &idRectangle::ToVec4() const {
-//	return *reinterpret_cast<const idVec4 *>(&x);
-//}
+	ToVec4 ( ): idVec4 {
+		return new idVec4( this.values ); //*reinterpret_cast<const idVec4 *>(&x);
+	}
 //
 //
 //ID_INLINE idRectangle &idRectangle::operator+=( const idRectangle &a ) {
@@ -164,7 +216,14 @@ class idRectangle {
 //}
 //
 //
-//ID_INLINE idRectangle &idRectangle::operator=( const idVec4 v ) {
+	equals ( r: idRectangle ): idRectangle {
+		this.x = r.x;
+		this.y = r.y;
+		this.w = r.w;
+		this.h = r.h;
+		return this;
+	}
+//equalsVec4( const idVec4 v ) {
 //	x = v.x;
 //	y = v.y;
 //	w = v.z;

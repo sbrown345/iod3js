@@ -258,8 +258,8 @@ class idUserInterfaceLocal extends idUserInterface {
 	}
 //
 //idUserInterfaceLocal::~idUserInterfaceLocal() {
-//	delete desktop;
-//	desktop = NULL;
+//	delete this.desktop;
+//	this.desktop = NULL;
 //}
 //
 //const char *idUserInterfaceLocal::Name() const {
@@ -267,8 +267,8 @@ class idUserInterfaceLocal extends idUserInterface {
 //}
 //
 //const char *idUserInterfaceLocal::Comment() const {
-//	if ( desktop ) {
-//		return desktop.GetComment();
+//	if ( this.desktop ) {
+//		return this.desktop.GetComment();
 //	}
 //	return "";
 //}
@@ -349,9 +349,9 @@ class idUserInterfaceLocal extends idUserInterface {
 //
 //	time = _time;
 //
-//	if ( bindHandler && event.evType == SE_KEY && event.evValue2 == 1 ) {
-//		const char *ret = bindHandler.HandleEvent( event, updateVisuals );
-//		bindHandler = NULL;
+//	if ( this.bindHandler && event.evType == SE_KEY && event.evValue2 == 1 ) {
+//		const char *ret = this.bindHandler.HandleEvent( event, updateVisuals );
+//		this.bindHandler = NULL;
 //		return ret;
 //	}
 //
@@ -367,31 +367,31 @@ class idUserInterfaceLocal extends idUserInterface {
 //		}
 //	}
 //
-//	if ( desktop ) {
-//		return desktop.HandleEvent( event, updateVisuals );
+//	if ( this.desktop ) {
+//		return this.desktop.HandleEvent( event, updateVisuals );
 //	} 
 //
 //	return "";
 //}
 //
 //void idUserInterfaceLocal::HandleNamedEvent ( const char* eventName ) {
-//	desktop.RunNamedEvent( eventName );
+//	this.desktop.RunNamedEvent( eventName );
 //}
 //
 //void idUserInterfaceLocal::Redraw( int _time ) {
 //	if ( r_skipGuiShaders.GetInteger() > 5 ) {
 //		return;
 //	}
-//	if ( !loading && desktop ) {
+//	if ( !loading && this.desktop ) {
 //		time = _time;
 //		uiManagerLocal.dc.PushClipRect( uiManagerLocal.screenRect );
-//		desktop.Redraw( 0, 0 );
+//		this.desktop.Redraw( 0, 0 );
 //		uiManagerLocal.dc.PopClipRect();
 //	}
 //}
 //
 //void idUserInterfaceLocal::DrawCursor() {
-//	if ( !desktop || desktop.GetFlags() & WIN_MENUGUI ) {
+//	if ( !this.desktop || this.desktop.GetFlags() & WIN_MENUGUI ) {
 //		uiManagerLocal.dc.DrawCursor(&cursorX, &cursorY, 32.0f );
 //	} else {
 //		uiManagerLocal.dc.DrawCursor(&cursorX, &cursorY, 64.0f );
@@ -440,15 +440,15 @@ class idUserInterfaceLocal extends idUserInterface {
 //
 //void idUserInterfaceLocal::StateChanged( int _time, bool redraw ) {
 //	time = _time;
-//	if (desktop) {
-//		desktop.StateChanged( redraw );
+//	if (this.desktop) {
+//		this.desktop.StateChanged( redraw );
 //	}
 //	if ( state.GetBool( "noninteractive" ) ) {
 //		interactive = false;
 //	}
 //	else {
-//		if (desktop) {
-//			interactive = desktop.Interactive();
+//		if (this.desktop) {
+//			interactive = this.desktop.Interactive();
 //		} else {
 //			interactive = false;
 //		}
@@ -457,10 +457,10 @@ class idUserInterfaceLocal extends idUserInterface {
 //
 //const char *idUserInterfaceLocal::Activate(bool activate, int _time) {
 //	time = _time;
-//	active = activate;
-//	if ( desktop ) {
+//	this.active = activate;
+//	if ( this.desktop ) {
 //		activateStr = "";
-//		desktop.Activate( activate, activateStr );
+//		this.desktop.Activate( activate, activateStr );
 //		return activateStr;
 //	}
 //	return "";
@@ -468,8 +468,8 @@ class idUserInterfaceLocal extends idUserInterface {
 //
 //void idUserInterfaceLocal::Trigger(int _time) {
 //	time = _time;
-//	if ( desktop ) {
-//		desktop.Trigger();
+//	if ( this.desktop ) {
+//		this.desktop.Trigger();
 //	}
 //}
 //
@@ -478,15 +478,15 @@ class idUserInterfaceLocal extends idUserInterface {
 //	f.ReadDict( state );
 //	source = state.GetString("name");
 //
-//	if (desktop == NULL) {
+//	if (this.desktop == NULL) {
 //		f.Log("creating new gui\n");
-//		desktop = new idWindow(this);
-//	   	desktop.SetFlag( WIN_DESKTOP );
-//	   	desktop.SetDC( &uiManagerLocal.dc );
-//		desktop.ReadFromDemoFile(f);
+//		this.desktop = new idWindow(this);
+//	   	this.desktop.SetFlag( WIN_DESKTOP );
+//	   	this.desktop.SetDC( &uiManagerLocal.dc );
+//		this.desktop.ReadFromDemoFile(f);
 //	} else {
 //		f.Log("re-using gui\n");
-//		desktop.ReadFromDemoFile(f, false);
+//		this.desktop.ReadFromDemoFile(f, false);
 //	}
 //
 //	f.ReadFloat( cursorX );
@@ -509,8 +509,8 @@ class idUserInterfaceLocal extends idUserInterface {
 //void idUserInterfaceLocal::WriteToDemoFile( class idDemoFile *f ) {
 //	idStr work;
 //	f.WriteDict( state );
-//	if (desktop) {
-//		desktop.WriteToDemoFile(f);
+//	if (this.desktop) {
+//		this.desktop.WriteToDemoFile(f);
 //	}
 //
 //	f.WriteFloat( cursorX );
@@ -538,7 +538,7 @@ class idUserInterfaceLocal extends idUserInterface {
 //		savefile.Write( string, len );
 //	}
 //
-//	savefile.Write( &active, sizeof( active ) );
+//	savefile.Write( &this.active, sizeof( active ) );
 //	savefile.Write( &interactive, sizeof( interactive ) );
 //	savefile.Write( &uniqued, sizeof( uniqued ) );
 //	savefile.Write( &time, sizeof( time ) );
@@ -555,7 +555,7 @@ class idUserInterfaceLocal extends idUserInterface {
 //	savefile.Write( &cursorX, sizeof( cursorX ) );
 //	savefile.Write( &cursorY, sizeof( cursorY ) );
 //
-//	desktop.WriteToSaveGame( savefile );
+//	this.desktop.WriteToSaveGame( savefile );
 //
 //	return true;
 //}
@@ -581,7 +581,7 @@ class idUserInterfaceLocal extends idUserInterface {
 //		state.Set( key, value );
 //	}
 //
-//	savefile.Read( &active, sizeof( active ) );
+//	savefile.Read( &this.active, sizeof( active ) );
 //	savefile.Read( &interactive, sizeof( interactive ) );
 //	savefile.Read( &uniqued, sizeof( uniqued ) );
 //	savefile.Read( &time, sizeof( time ) );
@@ -599,15 +599,15 @@ class idUserInterfaceLocal extends idUserInterface {
 //	savefile.Read( &cursorX, sizeof( cursorX ) );
 //	savefile.Read( &cursorY, sizeof( cursorY ) );
 //
-//	desktop.ReadFromSaveGame( savefile );
+//	this.desktop.ReadFromSaveGame( savefile );
 //
 //	return true;
 //}
 //
 //size_t idUserInterfaceLocal::Size() {
 //	size_t sz = sizeof(*this) + state.Size() + source.Allocated();
-//	if ( desktop ) {
-//		sz += desktop.Size();
+//	if ( this.desktop ) {
+//		sz += this.desktop.Size();
 //	}
 //	return sz;
 //}
@@ -634,11 +634,11 @@ class idUserInterfaceLocal extends idUserInterface {
 //==============
 //*/
 //void idUserInterfaceLocal::SetKeyBindingNames( void ) {
-//	if ( !desktop ) {
+//	if ( !this.desktop ) {
 //		return;
 //	}
 //	// walk the windows
-//	RecurseSetKeyBindingNames( desktop );
+//	RecurseSetKeyBindingNames( this.desktop );
 //}
 //
 ///*
@@ -654,30 +654,30 @@ class idUserInterfaceLocal extends idUserInterface {
 	IsUniqued ( ): boolean { return this.uniqued; }
 	SetUniqued ( b: boolean ): void { this.uniqued = b; }
 ////	virtual void				SetCursor( float x, float y );
-////
-////	virtual float				CursorX() { return cursorX; }
-////	virtual float				CursorY() { return cursorY; }
-////
+
+	CursorX():number { return this.cursorX; }
+	CursorY():number { return this.cursorY; }
+
 ////	size_t						Size();
-////
-////	idDict *					GetStateDict() { return &state; }
-////
-////	const char *				GetSourceFile( void ) const { return source; }
-////	ID_TIME_T						GetTimeStamp( void ) const { return timeStamp; }
-////
-////	idWindow *					GetDesktop() const { return desktop; }
-////	void						SetBindHandler( idWindow *win ) { bindHandler = win; }
-////	bool						Active() const { return active; }
-////	int							GetTime() const { return time; }
-////	void						SetTime( int _time ) { time = _time; }
-////
-////	void						ClearRefs() { refs = 0; }
-////	void						AddRef() { refs++; }
-////	int							GetRefs() { return refs; }
+
+	GetStateDict(): idDict { return this.state; }
+
+	GetSourceFile( ):string { return this.source.data; }
+	GetTimeStamp( ):number { return this.timeStamp; }
+
+	GetDesktop ( ): idWindow { return this.desktop; }
+	SetBindHandler(win: idWindow): void  { this.bindHandler = win; }
+	Active():boolean{ return this.active; }
+	GetTime():number { return this.time; }
+	SetTime( /*int*/ _time:number ):void { this.time = _time; }
+	
+	ClearRefs():void { this.refs = 0; }
+	AddRef():void { this.refs++; }
+	GetRefs():number { return this.refs; }
 ////
 ////	void						RecurseSetKeyBindingNames( idWindow *window );
-////	idStr						&GetPendingCmd() { return pendingCmd; };
-////	idStr						&GetReturnCmd() { return returnCmd; };
+	GetPendingCmd():idStr { return this.pendingCmd; }
+	GetReturnCmd():idStr { return this.returnCmd; }
 //private:
 	active: boolean;
 	loading: boolean;

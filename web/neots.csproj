@@ -187,6 +187,7 @@
     <TypeScriptCompile Include="DoomDLL\Ui\SimpleWindow.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Ui\Winvar.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Ui\GuiScript.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\RegExp.cpp.ts" />
     <Content Include="libs\idLib\Timer.h.ts" />
     <Content Include="log.aspx" />
     <Content Include="other\files.ts" />

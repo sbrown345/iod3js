@@ -67,8 +67,8 @@ class idWinVar {
 ////		return *this;
 ////	}
 ////
-////	idDict *GetDict() const { return this.guiDict; }
-////	bool NeedsUpdate() { return (this.guiDict != NULL); }
+	GetDict ( ): idDict { return this.guiDict; }
+	NeedsUpdate ( ): boolean { return ( this.guiDict != null ); }
 ////
 ////	virtual void Init(const char *_name, idWindow* win) = 0;
 ////	virtual void Set(const char *val) = 0;
@@ -431,37 +431,37 @@ class idWinRectangle extends idWinVar {
 ////		return this.data;
 ////	}
 ////
-////	idRectangle &operator=(	const idRectangle &other ) {
-////		this.data = other;
-////		if (this.guiDict) {
-////			idVec4 v = this.data.ToVec4();
-////			this.guiDict.SetVec4(this.GetName(), v);
-////		}
-////		return this.data;
-////	}
+	equals ( other: idRectangle ): idRectangle {
+		this.data = other;
+		if ( this.guiDict ) {
+			var v = this.data.ToVec4 ( );
+			this.guiDict.SetVec4( this.GetName ( ), v );
+		}
+		return this.data;
+	}
 ////	
 ////	operator const idRectangle&() const {
 ////		return this.data;
 ////	}
 ////
-////	float x() const {
-////		return this.data.x;
-////	}
-////	float y() const {
-////		return this.data.y;
-////	}
-////	float w() const {
-////		return this.data.w;
-////	}
-////	float h() const {
-////		return this.data.h;
-////	}
-////	float Right() const {
-////		return this.data.Right();
-////	}
-////	float Bottom() const {
-////		return this.data.Bottom();
-////	}
+	x ( ): number {
+		return this.data.x;
+	}
+	y ( ): number {
+		return this.data.y;
+	}
+	w ( ): number {
+		return this.data.w;
+	}
+	h ( ): number {
+		return this.data.h;
+	}
+	Right() :number {
+		return this.data.Right();
+	}
+	Bottom() :number {
+		return this.data.Bottom();
+	}
 ////	idVec4 &ToVec4() {
 ////		static idVec4 ret;
 ////		ret = this.data.ToVec4();
@@ -524,14 +524,14 @@ class idWinVec2 extends idWinVar {
 ////		this.data = other.data;
 ////		return *this;
 ////	}
-////	
-////	idVec2 &operator=(	const idVec2 &other ) {
-////		this.data = other;
-////		if (this.guiDict) {
-////			this.guiDict.SetVec2(this.GetName(), this.data);
-////		}
-////		return this.data;
-////	}
+
+	equalsVec2 ( other: idVec2 ): idVec2 {
+		this.data = other;
+		if ( this.guiDict ) {
+			this.guiDict.SetVec2( this.GetName ( ), this.data );
+		}
+		return this.data;
+	}
 ////	float x() const {
 ////		return this.data.x;
 ////	}
@@ -793,12 +793,12 @@ class idWinBackground extends idWinStr {
 ////	operator const idStr &() const {
 ////		return this.data;
 ////	}
-////	int Length() {
-////		if (this.guiDict) {
-////			this.data = this.guiDict.GetString(this.GetName());
-////		}
-////		return this.data.Length();
-////	}
+	Length ( ): number {
+		if ( this.guiDict ) {
+			this.data.equals( this.guiDict.GetString( this.GetName ( ) ) );
+		}
+		return this.data.Length ( );
+	}
 ////	virtual const char *c_str() const {
 ////		return this.data.c_str();
 ////	}
@@ -836,10 +836,10 @@ class idWinBackground extends idWinStr {
 ////		return sz +data.Allocated();
 ////	}
 ////
-////	void SetMaterialPtr( const idMaterial **m ) {
-////		mat = m;
-////	}
-////
+	SetMaterialPtr( /*const idMaterial ***/m: idMaterial ): void {
+		this.mat = m;
+	}
+
 ////	virtual void WriteToSaveGame( idFile *savefile ) {
 ////		savefile.Write( &eval, sizeof( eval ) );
 ////

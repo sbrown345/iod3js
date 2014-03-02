@@ -99,10 +99,10 @@ enum wexpOpType_t{
 	WOP_TYPE_COND
 };
 
-////typedef enum {
-////	WEXP_REG_TIME,
-////	WEXP_REG_NUM_PREDEFINED
-////} wexpRegister_t;
+enum wexpRegister_t{
+	WEXP_REG_TIME,
+	WEXP_REG_NUM_PREDEFINED
+} ;
 
 class wexpOp_t {
 	opType: wexpOpType_t;	
@@ -118,30 +118,30 @@ class wexpOp_t {
 ////class rvGEWindowWrapper;
 ////class idWindow;
 ////
-////struct idTimeLineEvent {
-////	idTimeLineEvent() {
-////		event = new idGuiScriptList;
-////	}
+class idTimeLineEvent {
+	constructor ( ) {
+		this.event = new idGuiScriptList;
+	}
 ////	~idTimeLineEvent() {
 ////		delete event;
 ////	}
-////	int time;
-////	idGuiScriptList *event;
-////	bool pending;
+	time: number/*int */;
+	event: idGuiScriptList;
+	pending:boolean;
 ////	size_t Size() {
 ////		return sizeof(*this) + event->Size();
 ////	}
-////};
-////
-////class rvNamedEvent
-////{
+};
+
+class rvNamedEvent
+{
 ////public:
-////
-////	rvNamedEvent(const char* name)
-////	{
-////		mEvent = new idGuiScriptList;
-////		mName  = name;
-////	}
+
+	constructor(name:string)
+	{
+		this.mEvent = new idGuiScriptList;
+		this.mName.equals( name );
+	}
 ////	~rvNamedEvent(void)
 ////	{
 ////		delete mEvent;
@@ -151,15 +151,15 @@ class wexpOp_t {
 ////		return sizeof(*this) + mEvent->Size();
 ////	}
 ////	
-////	idStr				mName;
-////	idGuiScriptList*	mEvent;
-////};
-////
-////struct idTransitionData {
+	mName = new idStr;
+	mEvent: idGuiScriptList;
+}
+
+class idTransitionData {
 ////	idWinVar *data;
 ////	int	offset;
 ////	idInterpolateAccelDecelLinear<idVec4> interp;
-////};
+};
 ////
 ////
 ////#endif /* !__WINDOW_H__ */
