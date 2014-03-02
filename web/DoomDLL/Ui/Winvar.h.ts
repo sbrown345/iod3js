@@ -640,12 +640,12 @@ class idWinVec4 extends idWinVar {
 ////		return this.data.ToString();
 ////	}
 ////
-////	void Zero() {
-////		data.Zero();
-////		if ( this.guiDict ) {
-////			this.guiDict.SetVec4(this.GetName(), this.data);
-////		}
-////	}
+	Zero ( ): void {
+		this.data.Zero ( );
+		if ( this.guiDict ) {
+			this.guiDict.SetVec4( this.GetName ( ), this.data );
+		}
+	}
 ////
 ////	const idVec3 &ToVec3() const {
 ////		return this.data.ToVec3();

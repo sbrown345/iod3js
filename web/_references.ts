@@ -153,7 +153,6 @@
 // Math
 /// <reference path="libs/idlib/math/angles.cpp.ts" />
 /// <reference path="libs/idlib/math/vector.h.ts" />
-/// <reference path="libs/idlib/math/vector.cpp.ts" />
 /// <reference path="libs/idlib/math/math.h.ts" />
 /// <reference path="libs/idlib/math/math.cpp.ts" />
 /// <reference path="libs/idlib/math/matrix.h.ts" />

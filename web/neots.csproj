@@ -276,7 +276,6 @@
     <TypeScriptCompile Include="libs\idLib\Math\Simd_Generic.cpp.ts" />
     <TypeScriptCompile Include="libs\idLib\Math\Matrix.cpp.ts" />
     <TypeScriptCompile Include="libs\idLib\Math\Matrix.h.ts" />
-    <Content Include="libs\idLib\Math\Vector.cpp.ts" />
     <Content Include="libs\idLib\Math\Vector.h.ts" />
     <TypeScriptCompile Include="libs\idLib\precompiled.h.ts" />
     <Content Include="libs\idLib\Text\CmdArgs.cpp.ts" />

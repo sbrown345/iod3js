@@ -329,6 +329,32 @@ class idVec2 {
 	ToFloatPtr ( ): Float32Array {
 		return new Float32Array( [this.x, this.y] );
 	}
+
+/////*
+////=============
+////idVec2::ToString
+////=============
+////*/
+////const char *idVec2::ToString( int precision ) const {
+////	return idStr::FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
+////}
+
+/////*
+////=============
+////Lerp
+
+////Linearly inperpolates one vector to another.
+////=============
+////*/
+////void idVec2::Lerp( const idVec2 &v1, const idVec2 &v2, const float l ) {
+////	if ( l <= 0.0 ) {
+////		(*this) = v1;
+////	} else if ( l >= 1.0f ) {
+////		(*this) = v2;
+////	} else {
+////		(*this) = v1 + l * ( v2 - v1 );
+////	}
+////}
 }
 
 
@@ -890,6 +916,221 @@ class idVec3 {
 	ToString(): string {
 		return va("x: %4.2f, y: %4.2f, z:%4.2f", this.x, this.y, this.z);
 	}
+
+/////*
+////=============
+////idVec3::ToYaw
+////=============
+////*/
+////float idVec3::ToYaw( void ) const {
+////	float yaw;
+	
+////	if ( ( y == 0.0 ) && ( x == 0.0 ) ) {
+////		yaw = 0.0;
+////	} else {
+////		yaw = RAD2DEG( atan2( y, x ) );
+////		if ( yaw < 0.0 ) {
+////			yaw += 360.0f;
+////		}
+////	}
+
+////	return yaw;
+////}
+
+/////*
+////=============
+////idVec3::ToPitch
+////=============
+////*/
+////float idVec3::ToPitch( void ) const {
+////	float	forward;
+////	float	pitch;
+	
+////	if ( ( x == 0.0 ) && ( y == 0.0 ) ) {
+////		if ( z > 0.0 ) {
+////			pitch = 90.0f;
+////		} else {
+////			pitch = 270.0f;
+////		}
+////	} else {
+////		forward = ( float )idMath::Sqrt( x * x + y * y );
+////		pitch = RAD2DEG( atan2( z, forward ) );
+////		if ( pitch < 0.0 ) {
+////			pitch += 360.0f;
+////		}
+////	}
+
+////	return pitch;
+////}
+
+/////*
+////=============
+////idVec3::ToAngles
+////=============
+////*/
+////idAngles idVec3::ToAngles( void ) const {
+////	float forward;
+////	float yaw;
+////	float pitch;
+	
+////	if ( ( x == 0.0 ) && ( y == 0.0 ) ) {
+////		yaw = 0.0;
+////		if ( z > 0.0 ) {
+////			pitch = 90.0f;
+////		} else {
+////			pitch = 270.0f;
+////		}
+////	} else {
+////		yaw = RAD2DEG( atan2( y, x ) );
+////		if ( yaw < 0.0 ) {
+////			yaw += 360.0f;
+////		}
+
+////		forward = ( float )idMath::Sqrt( x * x + y * y );
+////		pitch = RAD2DEG( atan2( z, forward ) );
+////		if ( pitch < 0.0 ) {
+////			pitch += 360.0f;
+////		}
+////	}
+
+////	return idAngles( -pitch, yaw, 0.0 );
+////}
+
+/////*
+////=============
+////idVec3::ToPolar
+////=============
+////*/
+////idPolar3 idVec3::ToPolar( void ) const {
+////	float forward;
+////	float yaw;
+////	float pitch;
+	
+////	if ( ( x == 0.0 ) && ( y == 0.0 ) ) {
+////		yaw = 0.0;
+////		if ( z > 0.0 ) {
+////			pitch = 90.0f;
+////		} else {
+////			pitch = 270.0f;
+////		}
+////	} else {
+////		yaw = RAD2DEG( atan2( y, x ) );
+////		if ( yaw < 0.0 ) {
+////			yaw += 360.0f;
+////		}
+
+////		forward = ( float )idMath::Sqrt( x * x + y * y );
+////		pitch = RAD2DEG( atan2( z, forward ) );
+////		if ( pitch < 0.0 ) {
+////			pitch += 360.0f;
+////		}
+////	}
+////	return idPolar3( idMath::Sqrt( x * x + y * y + z * z ), yaw, -pitch );
+////}
+
+/////*
+////=============
+////idVec3::ToMat3
+////=============
+////*/
+////idMat3 idVec3::ToMat3( void ) const {
+////	idMat3	mat;
+////	float	d;
+
+////	mat[0] = *this;
+////	d = x * x + y * y;
+////	if ( !d ) {
+////		mat[1][0] = 1.0f;
+////		mat[1][1] = 0.0;
+////		mat[1][2] = 0.0;
+////	} else {
+////		d = idMath::InvSqrt( d );
+////		mat[1][0] = -y * d;
+////		mat[1][1] = x * d;
+////		mat[1][2] = 0.0;
+////	}
+////	mat[2] = Cross( mat[1] );
+
+////	return mat;
+////}
+
+/////*
+////=============
+////idVec3::ToString
+////=============
+////*/
+////const char *idVec3::ToString( int precision ) const {
+////	return idStr::FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
+////}
+
+/////*
+////=============
+////Lerp
+
+////Linearly inperpolates one vector to another.
+////=============
+////*/
+////void idVec3::Lerp( const idVec3 &v1, const idVec3 &v2, const float l ) {
+////	if ( l <= 0.0 ) {
+////		(*this) = v1;
+////	} else if ( l >= 1.0f ) {
+////		(*this) = v2;
+////	} else {
+////		(*this) = v1 + l * ( v2 - v1 );
+////	}
+////}
+
+/////*
+////=============
+////SLerp
+
+////Spherical linear interpolation from v1 to v2.
+////Vectors are expected to be normalized.
+////=============
+////*/
+////#define LERP_DELTA 1e-6
+
+////void idVec3::SLerp( const idVec3 &v1, const idVec3 &v2, const float t ) {
+////	float omega, cosom, sinom, scale0, scale1;
+
+////	if ( t <= 0.0 ) {
+////		(*this) = v1;
+////		return;
+////	} else if ( t >= 1.0f ) {
+////		(*this) = v2;
+////		return;
+////	}
+
+////	cosom = v1 * v2;
+////	if ( ( 1.0f - cosom ) > LERP_DELTA ) {
+////		omega = acos( cosom );
+////		sinom = sin( omega );
+////		scale0 = sin( ( 1.0f - t ) * omega ) / sinom;
+////		scale1 = sin( t * omega ) / sinom;
+////	} else {
+////		scale0 = 1.0f - t;
+////		scale1 = t;
+////	}
+
+////	(*this) = ( v1 * scale0 + v2 * scale1 );
+////}
+
+/////*
+////=============
+////ProjectSelfOntoSphere
+
+////Projects the z component onto a sphere.
+////=============
+////*/
+////void idVec3::ProjectSelfOntoSphere( const float radius ) {
+////	float rsqr = radius * radius;
+////	float len = Length();
+////	if ( len  < rsqr * 0.5f ) {
+////		z = sqrt( rsqr - len );
+////	} else {
+////		z = rsqr / ( 2.0f * sqrt( len ) );
+////	}
+////}
 };
 
 // todo: maybe it should extend Float32Array. underlying values can be changed by swapping the buffer?
@@ -1072,9 +1313,9 @@ class idVec4 {
 ////	this.w = w;
 ////}
 
-Zero( ):void {
-	this.x = this.y = this.z = this.w = 0.0;
-}
+	Zero ( ): void {
+		this.x = this.y = this.z = this.w = 0.0;
+	}
 
 ////ID_INLINE float idVec4::operator[]( int index ) const {
 ////	return ( &x )[ index ];
@@ -1250,6 +1491,33 @@ Zero( ):void {
 ////ID_INLINE float *idVec4::ToFloatPtr( void ) {
 ////	return &x;
 ////}
+
+	
+/////*
+////=============
+////idVec4::ToString
+////=============
+////*/
+////const char *idVec4::ToString( int precision ) const {
+////	return idStr::FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
+////}
+
+/////*
+////=============
+////Lerp
+
+////Linearly inperpolates one vector to another.
+////=============
+////*/
+////void idVec4::Lerp( const idVec4 &v1, const idVec4 &v2, const float l ) {
+////	if ( l <= 0.0 ) {
+////		(*this) = v1;
+////	} else if ( l >= 1.0f ) {
+////		(*this) = v2;
+////	} else {
+////		(*this) = v1 + l * ( v2 - v1 );
+////	}
+////}
 }
 
 //===============================================================
@@ -1405,15 +1673,46 @@ class idVec5 {
 ////ID_INLINE float *idVec5::ToFloatPtr( void ) {
 ////	return &x;
 ////}
+
+	
+/////*
+////=============
+////idVec5::ToString
+////=============
+////*/
+////const char *idVec5::ToString( int precision ) const {
+////	return idStr::FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
+////}
+
+/////*
+////=============
+////idVec5::Lerp
+////=============
+////*/
+////void idVec5::Lerp( const idVec5 &v1, const idVec5 &v2, const float l ) {
+////	if ( l <= 0.0 ) {
+////		(*this) = v1;
+////	} else if ( l >= 1.0f ) {
+////		(*this) = v2;
+////	} else {
+////		x = v1.x + l * ( v2.x - v1.x );
+////		y = v1.y + l * ( v2.y - v1.y );
+////		z = v1.z + l * ( v2.z - v1.z );
+////		s = v1.s + l * ( v2.s - v1.s );
+////		t = v1.t + l * ( v2.t - v1.t );
+////	}
+////}
+
+
 }
 
-//////===============================================================
-//////
-//////	idVec6 - 6D vector
-//////
-//////===============================================================
+//===============================================================
+//
+//	idVec6 - 6D vector
+//
+//===============================================================
 
-////class idVec6 {
+class idVec6 {
 ////public:	
 ////					idVec6( void );
 ////					explicit idVec6( const float *a );
@@ -1673,6 +1972,17 @@ class idVec5 {
 ////	return p;
 ////}
 
+/////*
+////=============
+////idVec6::ToString
+////=============
+////*/
+////const char *idVec6::ToString( int precision ) const {
+////	return idStr::FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
+////}
+
+}
+
 
 //////===============================================================
 //////
@@ -1683,6 +1993,10 @@ class idVec5 {
 //////	NOTE: due to the temporary memory pool idVecX cannot be used by multiple threads
 //////
 //////===============================================================
+
+////float	idVecX::temp[VECX_MAX_TEMP+4];
+////float *	idVecX::tempPtr = (float *) ( ( (int) idVecX::temp + 15 ) & ~15 );
+////int		idVecX::tempIndex = 0;
 
 ////#define VECX_MAX_TEMP		1024
 ////#define VECX_QUAD( x )		( ( ( ( x ) + 3 ) & ~3 ) * sizeof( float ) )
@@ -2173,6 +2487,16 @@ class idVec5 {
 ////	return p;
 ////}
 
+/////*
+////=============
+////idVecX::ToString
+////=============
+////*/
+////const char *idVecX::ToString( int precision ) const {
+////	return idStr::FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
+////}
+
+
 
 //////===============================================================
 //////
@@ -2258,3 +2582,16 @@ function VectorCopy(a: any, b: any): void { ((b)[0] = (a)[0], (b)[1] = (a)[1], (
 
 
 ////#endif /* !__MATH_VECTOR_H__ */
+
+
+
+
+
+
+////idVec2 vec2_origin( 0.0, 0.0 );
+////idVec3 vec3_origin( 0.0, 0.0, 0.0 );
+////idVec4 vec4_origin( 0.0, 0.0, 0.0, 0.0 );
+////idVec5 vec5_origin( 0.0, 0.0, 0.0, 0.0, 0.0 );
+////idVec6 vec6_origin( 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 );
+////idVec6 vec6_infinity( idMath::INFINITY, idMath::INFINITY, idMath::INFINITY, idMath::INFINITY, idMath::INFINITY, idMath::INFINITY );
+

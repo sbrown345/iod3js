@@ -208,9 +208,9 @@ class idDict {
 ////	Set( key, val.ToString() );
 ////}
 ////
-////ID_INLINE void idDict::SetVec4( key:string, const idVec4 &val ) {
-////	Set( key, val.ToString() );
-////}
+	SetVec4 ( key: string, val: idVec4 ): void {
+		this.Set( key, val.ToString ( ) );
+	}
 ////
 ////ID_INLINE void idDict::SetVec2( key:string, const idVec2 &val ) {
 ////	Set( key, val.ToString() );
