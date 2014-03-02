@@ -2686,55 +2686,55 @@ idParser::ExpectTokenString
 idParser::ExpectTokenType
 ================
 */
-	/*int*/ExpectTokenType(/*int*/ type: number, /*int */subtype: number, token:R<idToken>): number{
-		todoThrow();
-////	idStr str;
-////
-////	if ( !idParser::ReadToken( token ) ) {
-////		this.Error( "couldn't read expected token" );
-////		return 0;
-////	}
-////
-////	if ( token.type != type ) {
-////		switch( type ) {
-////			case TT_STRING: str = "string"; break;
-////			case TT_LITERAL: str = "literal"; break;
-////			case TT_NUMBER: str = "number"; break;
-////			case TT_NAME: str = "name"; break;
-////			case TT_PUNCTUATION: str = "punctuation"; break;
-////			default: str = "unknown type"; break;
-////		}
-////		this.Error( "expected a %s but found '%s'", str.c_str(), token.c_str() );
-////		return 0;
-////	}
-////	if ( token.type == TT_NUMBER ) {
-////		if ( (token.subtype & subtype) != subtype ) {
-////			str.Clear();
-////			if ( subtype & TT_DECIMAL ) str = "decimal ";
-////			if ( subtype & TT_HEX ) str = "hex ";
-////			if ( subtype & TT_OCTAL ) str = "octal ";
-////			if ( subtype & TT_BINARY ) str = "binary ";
-////			if ( subtype & TT_UNSIGNED ) str += "unsigned ";
-////			if ( subtype & TT_LONG ) str += "long ";
-////			if ( subtype & TT_FLOAT ) str += "float ";
-////			if ( subtype & TT_INTEGER ) str += "integer ";
-////			str.StripTrailing( ' ' );
-////			this.Error( "expected %s but found '%s'", str.c_str(), token.c_str() );
-////			return 0;
-////		}
-////	}
-////	else if ( token.type == TT_PUNCTUATION ) {
-////		if ( subtype < 0 ) {
-////			this.Error( "BUG: wrong punctuation subtype" );
-////			return 0;
-////		}
-////		if ( token.subtype != subtype ) {
-////			this.Error( "expected '%s' but found '%s'", this.scriptstack.GetPunctuationFromId( subtype ), token.c_str() );
-////			return 0;
-////		}
-////	}
-	return 1;
-}
+	/*int*/
+	ExpectTokenType(/*int*/ type: number, /*int */subtype: number, token: R<idToken>): number{
+		var str = new idStr;
+
+		if ( !this.ReadToken( token ) ) {
+			this.Error( "couldn't read expected token" );
+			return 0;
+		}
+
+			if (token.$.type != type ) {
+			switch( type ) {
+				case TT_STRING: str.equals("string"); break;
+				case TT_LITERAL: str.equals("literal"); break;
+				case TT_NUMBER: str.equals("number"); break;
+				case TT_NAME: str.equals("name"); break;
+				case TT_PUNCTUATION: str.equals("punctuation"); break;
+				default: str.equals("unknown type"); break;
+			}
+				this.Error("expected a %s but found '%s'", str.c_str(), token.$.c_str() );
+			return 0;
+		}
+			if (token.$.type == TT_NUMBER ) {
+				if ((token.$.subtype & subtype) != subtype ) {
+				str.Clear();
+				if ( subtype & TT_DECIMAL ) str.equals("decimal ");
+				if (subtype & TT_HEX) str.equals("hex ");
+				if (subtype & TT_OCTAL) str.equals("octal ");
+				if (subtype & TT_BINARY) str.equals("binary ");
+					if (subtype & TT_UNSIGNED) str.Append( "unsigned ");
+				if ( subtype & TT_LONG ) str.Append("long ");
+				if ( subtype & TT_FLOAT ) str.Append("float ");
+				if ( subtype & TT_INTEGER ) str.Append("integer ");
+				str.StripTrailing( ' ' );
+				this.Error( "expected %s but found '%s'", str.c_str(), token.$.c_str() );
+				return 0;
+			}
+		}
+		else if ( token.$.type == TT_PUNCTUATION ) {
+			if ( subtype < 0 ) {
+				this.Error( "BUG: wrong punctuation subtype" );
+				return 0;
+			}
+			if (token.$.subtype != subtype ) {
+				this.Error("expected '%s' but found '%s'", this.scriptstack.GetPunctuationFromId(subtype), token.$.c_str() );
+				return 0;
+			}
+		}
+		return 1;
+	}
 
 /*
 ================
