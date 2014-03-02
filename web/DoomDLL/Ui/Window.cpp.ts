@@ -200,7 +200,7 @@ class idWindow {
 	////	void SetChildWinVarVal(const char *name, const char *var, const char *val);
 	////	idWindow *GetFocusedChild();
 	////	idWindow *GetCaptureChild();
-	////	const char *GetComment() { return comment;  }
+	////	const char *GetComment() { return this.comment;  }
 	////	void SetComment( const char * p) { comment = p; }
 	////
 	////	idStr cmd;
@@ -352,37 +352,37 @@ class idWindow {
 ////extern idCVar r_skipGuiShaders;		// 1 = don't render any gui elements on surfaces
 ////
 //////  made RegisterVars a member of idWindow
-////const idRegEntry idWindow::RegisterVars[] = {
-////	{ "forecolor", idRegister::VEC4 },
-////	{ "hovercolor", idRegister::VEC4 },
-////	{ "backcolor", idRegister::VEC4 },
-////	{ "bordercolor", idRegister::VEC4 },
-////	{ "rect", idRegister::RECTANGLE },
-////	{ "matcolor", idRegister::VEC4 },
-////	{ "scale", idRegister::VEC2 },
-////	{ "translate", idRegister::VEC2 },
-////	{ "rotate", REGTYPE.FLOAT },
-////	{ "textscale", REGTYPE.FLOAT },
-////	{ "visible", idRegister::BOOL },
-////	{ "noevents", idRegister::BOOL },
-////	{ "text", idRegister::STRING },
-////	{ "background", idRegister::STRING },
-////	{ "runscript", idRegister::STRING },
-////	{ "varbackground", idRegister::STRING },
-////	{ "cvar", idRegister::STRING },
-////	{ "choices", idRegister::STRING },
-////	{ "choiceVar", idRegister::STRING },
-////	{ "bind", idRegister::STRING },
-////	{ "modelRotate", idRegister::VEC4 },
-////	{ "modelOrigin", idRegister::VEC4 },
-////	{ "lightOrigin", idRegister::VEC4 },
-////	{ "lightColor", idRegister::VEC4 },
-////	{ "viewOffset", idRegister::VEC4 },
-////	{ "hideCursor", idRegister::BOOL}
-////};
-////
-////const int idWindow::NumRegisterVars = sizeof(RegisterVars) / sizeof(idRegEntry);
-////
+static RegisterVars = [
+	new idRegEntry( "forecolor", REGTYPE.VEC4 ),
+	new idRegEntry( "hovercolor", REGTYPE.VEC4 ),
+	new idRegEntry( "backcolor", REGTYPE.VEC4 ),
+	new idRegEntry( "bordercolor", REGTYPE.VEC4 ),
+	new idRegEntry( "rect", REGTYPE.RECTANGLE ),
+	new idRegEntry( "matcolor", REGTYPE.VEC4 ),
+	new idRegEntry( "scale", REGTYPE.VEC2 ),
+	new idRegEntry( "translate", REGTYPE.VEC2 ),
+	new idRegEntry( "rotate", REGTYPE.FLOAT ),
+	new idRegEntry( "textscale", REGTYPE.FLOAT ),
+	new idRegEntry( "visible", REGTYPE.BOOL ),
+	new idRegEntry( "noevents", REGTYPE.BOOL ),
+	new idRegEntry( "text", REGTYPE.STRING ),
+	new idRegEntry( "background", REGTYPE.STRING ),
+	new idRegEntry( "runscript", REGTYPE.STRING ),
+	new idRegEntry( "varbackground", REGTYPE.STRING ),
+	new idRegEntry( "cvar", REGTYPE.STRING ),
+	new idRegEntry( "choices", REGTYPE.STRING ),
+	new idRegEntry( "choiceVar", REGTYPE.STRING ),
+	new idRegEntry( "bind", REGTYPE.STRING ),
+	new idRegEntry( "modelRotate", REGTYPE.VEC4 ),
+	new idRegEntry( "modelOrigin", REGTYPE.VEC4 ),
+	new idRegEntry( "lightOrigin", REGTYPE.VEC4 ),
+	new idRegEntry( "lightColor", REGTYPE.VEC4 ),
+	new idRegEntry( "viewOffset", REGTYPE.VEC4 ),
+	new idRegEntry( "hideCursor", REGTYPE.BOOL)
+];
+
+	static NumRegisterVars = idWindow.RegisterVars.length;//sizeof(idWindow.RegisterVars) / sizeof(idRegEntry);
+
 	static ScriptNames = [
 		"onMouseEnter",
 		"onMouseExit",
@@ -471,7 +471,7 @@ idWindow::CommonInit
 ////*/
 ////size_t idWindow::Allocated() {
 ////	int i, c;
-////	int sz = name.Allocated();
+////	int sz = this.name.Allocated();
 ////	sz += text.Size();
 ////	sz += this.backGroundName.Size();
 ////
@@ -588,7 +588,7 @@ idWindow::CleanUp
 ////================
 ////*/
 ////SetFont():void {
-////	this.dc.SetFont(fontNum);
+////	this.dc.SetFont(this.fontNum);
 ////}
 ////
 /////*
@@ -620,17 +620,17 @@ idWindow::CleanUp
 ////	if ( text.Length() == 0 ) {
 ////		return;
 ////	}
-////	if ( textShadow ) {
+////	if ( this.textShadow ) {
 ////		idStr shadowText = text;
 ////		idRectangle shadowRect = this.textRect;
 ////
 ////		shadowText.RemoveColors();
-////		shadowRect.x += textShadow;
-////		shadowRect.y += textShadow;
+////		shadowRect.x += this.textShadow;
+////		shadowRect.y += this.textShadow;
 ////
-////		this.dc.DrawText( shadowText, textScale, textAlign, colorBlack, shadowRect, !( this.flags & WIN_NOWRAP ), -1 );
+////		this.dc.DrawText( shadowText, textScale, this.textAlign, colorBlack, shadowRect, !( this.flags & WIN_NOWRAP ), -1 );
 ////	}
-////	this.dc.DrawText( text, textScale, textAlign, foreColor, this.textRect, !( this.flags & WIN_NOWRAP ), -1 );
+////	this.dc.DrawText( text, textScale, this.textAlign, foreColor, this.textRect, !( this.flags & WIN_NOWRAP ), -1 );
 ////
 ////	if ( gui_edit.GetBool() ) {
 ////		this.dc.EnableClipping( false );
@@ -1019,7 +1019,7 @@ idWindow::AddUpdateVar
 ////		this.dc.SetCursor( idDeviceContext::CURSOR_ARROW );
 ////	}
 ////
-////	if (visible && !noEvents) {
+////	if (this.visible && !noEvents) {
 ////
 ////		if (event.evType == SE_KEY) {
 ////			this.EvalRegs(-1, true);
@@ -1280,7 +1280,7 @@ idWindow::AddUpdateVar
 ////			//idRectangle tempRect = this.textRect;
 ////			//tempRect.x += offsetX;
 ////			//this.drawRect.y += offsetY;
-////			this.dc.DrawText(buff, textScale, textAlign, foreColor, this.textRect, true);
+////			this.dc.DrawText(buff, textScale, this.textAlign, foreColor, this.textRect, true);
 ////		} 
 ////		this.dc.EnableClipping(true);
 ////	}
@@ -1343,7 +1343,7 @@ idWindow::AddUpdateVar
 ////*/
 ////Time():void {
 ////	
-////	if ( noTime ) {
+////	if ( this.noTime ) {
 ////		return;
 ////	}
 ////
@@ -1412,8 +1412,8 @@ idWindow::EvalRegs
 ////			scalex = drawRect.w / background.GetImageWidth();
 ////			scaley = drawRect.h / background.GetImageHeight();
 ////		} else {
-////			scalex = matScalex;
-////			scaley = matScaley;
+////			scalex = this.matScalex;
+////			scaley = this.matScaley;
 ////		}
 ////		this.dc.DrawMaterial(drawRect.x, drawRect.y, drawRect.w, drawRect.h, background, matColor, scalex, scaley);
 ////	}
@@ -1449,11 +1449,11 @@ idWindow::EvalRegs
 ////		trans = rot.ToMat3();
 ////	}
 ////
-////	if ( shear.x || shear.y ) {
+////	if ( this.shear.x || this.shear.y ) {
 ////		static idMat3 smat;
 ////		smat.Identity();
-////		smat[0][1] = shear.x;
-////		smat[1][0] = shear.y;
+////		smat[0][1] = this.shear.x;
+////		smat[1][0] = this.shear.y;
 ////		trans *= smat;
 ////	}
 ////
@@ -1516,7 +1516,7 @@ idWindow::EvalRegs
 ////		this.dc.EnableClipping(true);
 ////	}
 ////
-////	if (!visible) {
+////	if (!this.visible) {
 ////		return;
 ////	}
 ////
@@ -1525,7 +1525,7 @@ idWindow::EvalRegs
 ////	SetFont();
 ////	//if (flags & WIN_DESKTOP) {
 ////		// see if this window forces a new aspect ratio
-////		this.dc.SetSize(this.forceAspectWidth, forceAspectHeight);
+////		this.dc.SetSize(this.forceAspectWidth, this.forceAspectHeight);
 ////	//}
 ////
 ////	//FIXME: go to screen coord tracking
@@ -1902,11 +1902,11 @@ idWindow::ParseScript
 ////			return false;
 ////		}
 ////
-////		if ( token == "{" ) {
+////		if ( token.$.data == "{" ) {
 ////			nest++;
 ////		}
 ////
-////		if ( token == "}" ) {
+////		if ( token.$.data == "}" ) {
 ////			if (nest-- <= 0) {
 ////				return true;
 ////			}
@@ -1914,11 +1914,11 @@ idWindow::ParseScript
 ////
 ////		idGuiScript *gs = new idGuiScript();
 ////		if (token.Icmp("if") == 0) {
-////			gs.conditionReg = ParseExpression(src);
+////			gs.conditionReg = this.ParseExpression(src);
 ////			gs.ifList = new idGuiScriptList();
 ////			ParseScript(src, *gs.ifList, NULL);
 ////			if (src.ReadToken(&token)) {
-////				if (token == "else") {
+////				if (token.$.data == "else") {
 ////					gs.elseList = new idGuiScriptList();
 ////					// pass true to indicate we are parsing an else condition
 ////					ParseScript(src, *gs.elseList, NULL, true );
@@ -1940,7 +1940,7 @@ idWindow::ParseScript
 ////		}
 ////
 ////		// empty { } is not allowed
-////		if ( token == "{" ) {
+////		if ( token.$.data == "{" ) {
 ////			 src.Error ( "Unexpected {" );
 ////			 delete gs;
 ////			 return false;
@@ -1990,17 +1990,17 @@ idWindow::ParseScriptEntry
 	return false;
 }
 
-/////*
-////================
-////idWindow::DisableRegister
-////================
-////*/
-////DisableRegister(const char *_name):void {
-////	idRegister *reg = RegList().FindReg(_name);
-////	if (reg) {
-////		reg.Enable(false);
-////	}
-////}
+/*
+================
+idWindow::DisableRegister
+================
+*/
+	DisableRegister ( _name: string ): void {
+		var reg = this.RegList ( ).FindReg( _name );
+		if ( reg ) {
+			reg.Enable( false );
+		}
+	}
 
 /*
 ================
@@ -2069,124 +2069,124 @@ PostParse():void {
 ////	return ret;
 ////}
 ////
-/////*
-////================
-////idWindow::GetWinVarByName
-////================
-////*/
-////idWinVar *idWindow::GetWinVarByName(const char *_name, bool fixup, drawWin_t** owner) {
-////	idWinVar *retVar = NULL;
-////
-////	if ( owner ) {
-////		*owner = NULL;
-////	}
-////
-////	if (idStr::Icmp(_name, "notime") == 0) {
-////		retVar = &noTime;
-////	}
-////	if (idStr::Icmp(_name, "background") == 0) {
-////		retVar = &this.backGroundName;
-////	}
-////	if (idStr::Icmp(_name, "visible") == 0) {
-////		retVar = &visible;
-////	}
-////	if (idStr::Icmp(_name, "rect") == 0) {
-////		retVar = &rect;
-////	}
-////	if (idStr::Icmp(_name, "backColor") == 0) {
-////		retVar = &backColor;
-////	}
-////	if (idStr::Icmp(_name, "matColor") == 0) {
-////		retVar = &matColor;
-////	}
-////	if (idStr::Icmp(_name, "foreColor") == 0) {
-////		retVar = &foreColor;
-////	}
-////	if (idStr::Icmp(_name, "hoverColor") == 0) {
-////		retVar = &hoverColor;
-////	}
-////	if (idStr::Icmp(_name, "borderColor") == 0) {
-////		retVar = &borderColor;
-////	}
-////	if (idStr::Icmp(_name, "textScale") == 0) {
-////		retVar = &textScale;
-////	}
-////	if (idStr::Icmp(_name, "rotate") == 0) {
-////		retVar = &rotate;
-////	}
-////	if (idStr::Icmp(_name, "noEvents") == 0) {
-////		retVar = &noEvents;
-////	}
-////	if (idStr::Icmp(_name, "text") == 0) {
-////		retVar = &text;
-////	}
-////	if (idStr::Icmp(_name, "backGroundName") == 0) {
-////		retVar = &this.backGroundName;
-////	}
-////	if (idStr::Icmp(_name, "hidecursor") == 0) {
-////		retVar = &hideCursor;
-////	}
-////
-////	idStr key = _name;
-////	bool guiVar = (key.Find(VAR_GUIPREFIX) >= 0);
-////	int c = this.definedVars.Num();
-////	for (var i = 0; i < c; i++) {
-////		if (idStr::Icmp(_name, (guiVar) ? va("%s",this.definedVars[i].GetName()) : this.definedVars[i].GetName()) == 0) {
-////			retVar = this.definedVars[i];
-////			break;
-////		}
-////	}
-////
-////	if (retVar) {
-////		if (fixup && *_name != '$') {
-////			DisableRegister(_name);
-////		}
-////
-////		if ( owner && this.parent ) {
-////			*owner = this.parent.FindChildByName ( name );
-////		}
-////
-////		return retVar;
-////	}
-////
-////	int len = key.Length();
-////	if ( len > 5 && guiVar ) {
-////		idWinVar *var = new idWinStr;
-////		var.Init(_name, this);
-////		this.definedVars.Append(var);
-////		return var;
-////	} else if (fixup) {
-////		int n = key.Find("::");
-////		if (n > 0) {
-////			idStr winName = key.Left(n);
-////			idStr var = key.Right(key.Length() - n - 2);
-////			drawWin_t *win = GetGui().GetDesktop().FindChildByName(winName);
-////			if (win) {
-////				if (win.win) {
-////					return win.win.GetWinVarByName(var, false, owner);
-////				} else {
-////					if ( owner ) {
-////						*owner = win;
-////					}
-////					return win.simp.GetWinVarByName(var);
-////				}
-////			} 
-////		}
-////	}
-////	return NULL;
-////}
-////
-/////*
-////================
-////idWindow::ParseString
-////================
-////*/
-////ParseString(idParser *src, idStr &out):void {
-////	idToken tok;
-////	if (src.ReadToken(&tok)) {
-////		out = tok;
-////	}
-////}
+/*
+================
+idWindow::GetWinVarByName
+================
+*/
+	GetWinVarByName ( _name: string, fixup = false, owner: R<drawWin_t> = null ): idWinVar {
+		var retVar: idWinVar = null;
+
+		if ( owner ) {
+			owner.$ = null;
+		}
+
+		if ( idStr.Icmp( _name, "notime" ) == 0 ) {
+			retVar = this.noTime;
+		}
+		if ( idStr.Icmp( _name, "background" ) == 0 ) {
+			retVar = this.backGroundName;
+		}
+		if ( idStr.Icmp( _name, "visible" ) == 0 ) {
+			retVar = this.visible;
+		}
+		if ( idStr.Icmp( _name, "rect" ) == 0 ) {
+			retVar = this.rect;
+		}
+		if ( idStr.Icmp( _name, "backColor" ) == 0 ) {
+			retVar = this.backColor;
+		}
+		if ( idStr.Icmp( _name, "matColor" ) == 0 ) {
+			retVar = this.matColor;
+		}
+		if ( idStr.Icmp( _name, "foreColor" ) == 0 ) {
+			retVar = this.foreColor;
+		}
+		if ( idStr.Icmp( _name, "hoverColor" ) == 0 ) {
+			retVar = this.hoverColor;
+		}
+		if ( idStr.Icmp( _name, "borderColor" ) == 0 ) {
+			retVar = this.borderColor;
+		}
+		if ( idStr.Icmp( _name, "textScale" ) == 0 ) {
+			retVar = this.textScale;
+		}
+		if ( idStr.Icmp( _name, "rotate" ) == 0 ) {
+			retVar = this.rotate;
+		}
+		if ( idStr.Icmp( _name, "noEvents" ) == 0 ) {
+			retVar = this.noEvents;
+		}
+		if ( idStr.Icmp( _name, "text" ) == 0 ) {
+			retVar = this.text;
+		}
+		if ( idStr.Icmp( _name, "backGroundName" ) == 0 ) {
+			retVar = this.backGroundName;
+		}
+		if ( idStr.Icmp( _name, "hidecursor" ) == 0 ) {
+			retVar = this.hideCursor;
+		}
+
+		var key = new idStr( _name );
+		var guiVar = ( key.Find( VAR_GUIPREFIX ) >= 0 );
+		var /*int */c = this.definedVars.Num ( );
+		for ( var i = 0; i < c; i++ ) {
+			if ( idStr.Icmp( _name, ( guiVar ) ? va( "%s", this.definedVars[i].GetName ( ) ) : this.definedVars[i].GetName ( ) ) == 0 ) {
+				retVar = this.definedVars[i];
+				break;
+			}
+		}
+
+		if ( retVar ) {
+			if ( fixup && _name != '$' ) {
+				this.DisableRegister( _name );
+			}
+
+			if ( owner && this.parent ) {
+				owner.$ = this.parent.FindChildByName( this.name.data );
+			}
+
+			return retVar;
+		}
+
+		var len = key.Length ( );
+		if ( len > 5 && guiVar ) {
+			var $var: idWinVar = new idWinStr;
+			$var.Init( _name, this );
+			this.definedVars.Append( $var );
+			return $var;
+		} else if ( fixup ) {
+			var n = key.Find( "::" );
+			if ( n > 0 ) {
+				var winName = new idStr( key.Left( n ) );
+				var $var2 = new idStr( key.Right( key.Length ( ) - n - 2 ) );
+				var win: drawWin_t = this.GetGui ( ).GetDesktop ( ).FindChildByName( winName.data );
+				if ( win ) {
+					if ( win.win ) {
+						return win.win.GetWinVarByName( $var2.data, false, owner );
+					} else {
+						if ( owner ) {
+							owner.$ = win;
+						}
+						return win.simp.GetWinVarByName( $var2.data );
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+/*
+================
+idWindow::ParseString
+================
+*/
+	ParseString ( src: idParser, out: idStr ): void {
+		var tok = new R( new idToken );
+		if ( src.ReadToken( tok ) ) {
+			out.equals( tok.$.data );
+		}
+	}
 ////
 /////*
 ////================
@@ -2214,135 +2214,134 @@ idWindow::ParseInternalVar
 ================
 */
 	ParseInternalVar ( _name: string, src: idParser ): boolean {
-		todoThrow ( );
-////
-////	if (idStr::Icmp(_name, "showtime") == 0) {
-////		if ( src.ParseBool() ) {
-////			this.flags |= WIN_SHOWTIME;
-////		}
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "showcoords") == 0) {
-////		if ( src.ParseBool() ) {
-////			this.flags |= WIN_SHOWCOORDS;
-////		}
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "forceaspectwidth") == 0) {
-////		this.forceAspectWidth = src.ParseFloat();
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "forceaspectheight") == 0) {
-////		forceAspectHeight = src.ParseFloat();
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "matscalex") == 0) {
-////		matScalex = src.ParseFloat();
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "matscaley") == 0) {
-////		matScaley = src.ParseFloat();
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "bordersize") == 0) {
-////		this.borderSize = src.ParseFloat();
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "nowrap") == 0) {
-////		if ( src.ParseBool() ) {
-////			this.flags |= WIN_NOWRAP;
-////		}
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "shadow") == 0) {
-////		textShadow = src.ParseInt();
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "textalign") == 0) {
-////		textAlign = src.ParseInt();
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "textalignx") == 0) {
-////		this.textAlignx = src.ParseFloat();
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "textaligny") == 0) {
-////		textAligny = src.ParseFloat();
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "shear") == 0) {
-////		shear.x = src.ParseFloat();
-////		idToken tok;
-////		src.ReadToken( &tok );
-////		if ( tok.Icmp( "," ) ) {
-////			src.Error( "Expected comma in shear definiation" );
-////			return false;
-////		}
-////		shear.y = src.ParseFloat();
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "wantenter") == 0) {
-////		if ( src.ParseBool() ) {
-////			this.flags |= WIN_WANTENTER;
-////		}
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "naturalmatscale") == 0) {
-////		if ( src.ParseBool() ) {
-////			this.flags |= WIN_NATURALMAT;
-////		}
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "noclip") == 0) {
-////		if ( src.ParseBool() ) {
-////			this.flags |= WIN_NOCLIP;
-////		}
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "nocursor") == 0) {
-////		if ( src.ParseBool() ) {
-////			this.flags |= WIN_NOCURSOR;
-////		}
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "menugui") == 0) {
-////		if ( src.ParseBool() ) {
-////			this.flags |= WIN_MENUGUI;
-////		}
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "modal") == 0) {
-////		if ( src.ParseBool() ) {
-////			this.flags |= WIN_MODAL;
-////		}
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "invertrect") == 0) {
-////		if ( src.ParseBool() ) {
-////			this.flags |= WIN_INVERTRECT;
-////		}
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "name") == 0) {
-////		ParseString(src, name);
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "play") == 0) {
-////		common.Warning( "play encountered during gui parse.. see Robert\n" );
-////		idStr playStr;
-////		ParseString(src, playStr);
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "comment") == 0) {
-////		ParseString(src, comment);
-////		return true;
-////	}
-////	if ( idStr::Icmp( _name, "font" ) == 0 ) {
-////		idStr fontStr;
-////		ParseString( src, fontStr );
-////		fontNum = this.dc.FindFont( fontStr );
-////		return true;
-////	}
+
+	if (idStr.Icmp(_name, "showtime") == 0) {
+		if ( src.ParseBool() ) {
+			this.flags |= WIN_SHOWTIME;
+		}
+		return true;
+	}
+	if (idStr.Icmp(_name, "showcoords") == 0) {
+		if ( src.ParseBool() ) {
+			this.flags |= WIN_SHOWCOORDS;
+		}
+		return true;
+	}
+	if (idStr.Icmp(_name, "forceaspectwidth") == 0) {
+		this.forceAspectWidth = src.ParseFloat();
+		return true;
+	}
+	if (idStr.Icmp(_name, "forceaspectheight") == 0) {
+		this.forceAspectHeight = src.ParseFloat();
+		return true;
+	}
+	if (idStr.Icmp(_name, "matscalex") == 0) {
+		this.matScalex = src.ParseFloat();
+		return true;
+	}
+	if (idStr.Icmp(_name, "matscaley") == 0) {
+		this.matScaley = src.ParseFloat();
+		return true;
+	}
+	if (idStr.Icmp(_name, "bordersize") == 0) {
+		this.borderSize = src.ParseFloat();
+		return true;
+	}
+	if (idStr.Icmp(_name, "nowrap") == 0) {
+		if ( src.ParseBool() ) {
+			this.flags |= WIN_NOWRAP;
+		}
+		return true;
+	}
+	if (idStr.Icmp(_name, "shadow") == 0) {
+		this.textShadow = src.ParseInt();
+		return true;
+	}
+	if (idStr.Icmp(_name, "textalign") == 0) {
+		this.textAlign = src.ParseInt();
+		return true;
+	}
+	if (idStr.Icmp(_name, "textalignx") == 0) {
+		this.textAlignx = src.ParseFloat();
+		return true;
+	}
+	if (idStr.Icmp(_name, "textaligny") == 0) {
+		this.textAligny = src.ParseFloat();
+		return true;
+	}
+	if (idStr.Icmp(_name, "shear") == 0) {
+		this.shear.x = src.ParseFloat();
+		var tok = new R( new idToken );
+		src.ReadToken( tok );
+		if ( tok.$.Icmp( "," ) ) {
+			src.Error( "Expected comma in shear definiation" );
+			return false;
+		}
+		this.shear.y = src.ParseFloat();
+		return true;
+	}
+	if (idStr.Icmp(_name, "wantenter") == 0) {
+		if ( src.ParseBool() ) {
+			this.flags |= WIN_WANTENTER;
+		}
+		return true;
+	}
+	if (idStr.Icmp(_name, "naturalmatscale") == 0) {
+		if ( src.ParseBool() ) {
+			this.flags |= WIN_NATURALMAT;
+		}
+		return true;
+	}
+	if (idStr.Icmp(_name, "noclip") == 0) {
+		if ( src.ParseBool() ) {
+			this.flags |= WIN_NOCLIP;
+		}
+		return true;
+	}
+	if (idStr.Icmp(_name, "nocursor") == 0) {
+		if ( src.ParseBool() ) {
+			this.flags |= WIN_NOCURSOR;
+		}
+		return true;
+	}
+	if (idStr.Icmp(_name, "menugui") == 0) {
+		if ( src.ParseBool() ) {
+			this.flags |= WIN_MENUGUI;
+		}
+		return true;
+	}
+	if (idStr.Icmp(_name, "modal") == 0) {
+		if ( src.ParseBool() ) {
+			this.flags |= WIN_MODAL;
+		}
+		return true;
+	}
+	if (idStr.Icmp(_name, "invertrect") == 0) {
+		if ( src.ParseBool() ) {
+			this.flags |= WIN_INVERTRECT;
+		}
+		return true;
+	}
+	if (idStr.Icmp(_name, "name") == 0) {
+		this.ParseString(src, this.name);
+		return true;
+	}
+	if (idStr.Icmp(_name, "play") == 0) {
+		common.Warning( "play encountered during gui parse.. see Robert\n" );
+		var playStr = new idStr;
+		this.ParseString(src, playStr);
+		return true;
+	}
+	if (idStr.Icmp(_name, "comment") == 0) {
+		this.ParseString(src, this.comment);
+		return true;
+	}
+	if ( idStr.Icmp( _name, "font" ) == 0 ) {
+		var fontStr = new idStr;
+		this.ParseString( src, fontStr );
+		this.fontNum = this.dc.FindFont( fontStr.data );
+		return true;
+	}
 		return false;
 	}
 
@@ -2352,59 +2351,58 @@ idWindow::ParseRegEntry
 ================
 */
 	ParseRegEntry ( name: string, src: idParser ): boolean {
-		todoThrow ( );
-		//idStr work;
-		//work = name;
-		//work.ToLower();
+		var work = new idStr;
+		work.equals(name);
+		work.ToLower();
 
-		//idWinVar *var = GetWinVarByName(work, NULL);
-		//if ( var ) {
-		//	for (var i = 0; i < NumRegisterVars; i++) {
-		//		if (idStr::Icmp(work, RegisterVars[i].name) == 0) {
-		//			this.regList.AddReg(work, RegisterVars[i].type, src, this, var);
-		//			return true;
-		//		}
-		//	}
-		//}
+		var $var = this.GetWinVarByName(work.data, null);
+		if ( $var ) {
+			for ( var i = 0; i < idWindow.NumRegisterVars; i++ ) {
+				if ( idStr.Icmp( work, idWindow.RegisterVars[i].name ) == 0 ) {
+					this.regList.AddReg_Parser( work.data, idWindow.RegisterVars[i].type, src, this, $var );
+					return true;
+				}
+			}
+		}
 
-		//// not predefined so just read the next token and add it to the state
-		//idToken tok;
-		//idVec4 v;	
-		//idWinInt *vari;
-		//idWinFloat *varf;
-		//idWinStr *vars;
-		//if (src.ReadToken(&tok)) {
-		//	if (var) {
-		//		var.Set(tok);
-		//		return true;
-		//	}
-		//	switch (tok.type) {
-		//		case TT_NUMBER : 
-		//			if (tok.subtype & TT_INTEGER) {
-		//				vari = new idWinInt();
-		//				*vari = atoi(tok);
-		//				vari.SetName(work);
-		//				this.definedVars.Append(vari);
-		//			} else if (tok.subtype & TT_FLOAT) {
-		//				varf = new idWinFloat();
-		//				*varf = atof(tok);
-		//				varf.SetName(work);
-		//				this.definedVars.Append(varf);
-		//			} else {
-		//				vars = new idWinStr();
-		//				*vars = tok;
-		//				vars.SetName(work);
-		//				this.definedVars.Append(vars);
-		//			}
-		//			break;
-		//		default :
-		//			vars = new idWinStr();
-		//			*vars = tok;
-		//			vars.SetName(work);
-		//			this.definedVars.Append(vars);
-		//			break;
-		//	}
-		//}
+		// not predefined so just read the next token and add it to the state
+		var tok = new R(new idToken);
+		//var v = new idVec4;	
+		var vari: idWinInt;
+		var varf: idWinFloat;
+		var vars: idWinStr;
+		if (src.ReadToken(tok)) {
+			if ($var) {
+				$var.Set(tok.$.data);
+				return true;
+			}
+			switch (tok.$.type) {
+				case TT_NUMBER : 
+					if (tok.$.subtype & TT_INTEGER) {
+						vari = new idWinInt();
+						vari.equalsInt( atoi( tok.$.data ) );
+						vari.SetName(work.data);
+						this.definedVars.Append(vari);
+					} else if (tok.$.subtype & TT_FLOAT) {
+						varf = new idWinFloat();
+						varf.equalsFloat( atof( tok.$.data ) );
+						varf.SetName(work.data);
+						this.definedVars.Append(varf);
+					} else {
+						vars = new idWinStr();
+						vars.equalsStr(tok.$);
+						vars.SetName(work.data);
+						this.definedVars.Append(vars);
+					}
+					break;
+				default :
+					vars = new idWinStr();
+					vars.equalsStr(tok.$);
+					vars.SetName(work.data);
+					this.definedVars.Append(vars);
+					break;
+			}
+		}
 
 		return true;
 	}
@@ -2430,393 +2428,377 @@ idWindow::SetInitialState
 idWindow::Parse
 ================
 */
-	Parse(src: idParser, rebuild = true): boolean {
-		var token = new R( new idToken ), token2:idToken;//, token3, token4, token5, token6, token7;
+	Parse ( src: idParser, rebuild = true ): boolean {
+		var token = new R( new idToken ), token2: idToken; //, token3, token4, token5, token6, token7;
 		var work = new idStr;
 
-	if (rebuild) {
-		this.CleanUp();
-	}
+		if ( rebuild ) {
+			this.CleanUp ( );
+		}
 
 		var dwt = new drawWin_t;
 
-	this.timeLineEvents.Clear();
-	this.transitions.Clear();
+		this.timeLineEvents.Clear ( );
+		this.transitions.Clear ( );
 
-	this.namedEvents.DeleteContents( true );
+		this.namedEvents.DeleteContents( true );
 
-	src.ExpectTokenType( TT_NAME, 0, token );
+		src.ExpectTokenType( TT_NAME, 0, token );
 
-	this.SetInitialState(token.$.data);
+		this.SetInitialState( token.$.data );
 
-	src.ExpectTokenString( "{" );
-	src.ExpectAnyToken( token );
+		src.ExpectTokenString( "{" );
+		src.ExpectAnyToken( token );
 
-	var ret = true;
+		var ret = true;
 
-	// attach a window wrapper to the window if the gui editor is running
+		// attach a window wrapper to the window if the gui editor is running
 //#ifdef ID_ALLOW_TOOLS
 //	if ( com_editors & toolFlag_t.EDITOR_GUI ) {
 //		new rvGEWindowWrapper ( this, rvGEWindowWrapper::WT_NORMAL );
 //	}
 //#endif
 
-	while( token.$.data != "}" ) {
-		// track what was parsed so we can maintain it for the guieditor
-		src.SetMarker ( );
+		while ( token.$.data != "}" ) {
+			// track what was parsed so we can maintain it for the guieditor
+			src.SetMarker ( );
 
-		if ( token.$.data == "windowDef" || token.$.data == "animationDef" ) {
-			if (token.$.data == "animationDef") {
-				this.visible.equalsBool( false );
-				this.rect.equals( new idRectangle( 0, 0, 0, 0 ) );
-			}
-			src.ExpectTokenType( TT_NAME, 0, token );
-			token2 = token.$;
-			src.UnreadToken(token);
-			var dw: drawWin_t = this.FindChildByName(token2.c_str());
-			if (dw && dw.win) {
-				this.SaveExpressionParseState();
-				dw.win.Parse(src, rebuild);
-				this.RestoreExpressionParseState();
-			} else {
-				var win = new idWindow(this.dc, this.gui);
-				this.SaveExpressionParseState();
-				win.Parse(src, rebuild);
-				this.RestoreExpressionParseState();
-				win.SetParent(this);
-				dwt.simp = null;
-				dwt.win = null;
-				if (win.IsSimple()) {
-					var simple = new idSimpleWindow(win);
-					dwt.simp = simple;
-					this.drawWindows.Append(dwt);
-					delete win;
-				} else {
-					this.AddChild(win);
-					this.SetFocus(win,false);
-					dwt.win = win;
-					this.drawWindows.Append(dwt);
+			if ( token.$.data == "windowDef" || token.$.data == "animationDef" ) {
+				if ( token.$.data == "animationDef" ) {
+					this.visible.equalsBool( false );
+					this.rect.equals( new idRectangle( 0, 0, 0, 0 ) );
 				}
+				src.ExpectTokenType( TT_NAME, 0, token );
+				token2 = token.$;
+				src.UnreadToken( token );
+				var dw: drawWin_t = this.FindChildByName( token2.c_str ( ) );
+				if ( dw && dw.win ) {
+					this.SaveExpressionParseState ( );
+					dw.win.Parse( src, rebuild );
+					this.RestoreExpressionParseState ( );
+				} else {
+					var win = new idWindow( this.dc, this.gui );
+					this.SaveExpressionParseState ( );
+					win.Parse( src, rebuild );
+					this.RestoreExpressionParseState ( );
+					win.SetParent( this );
+					dwt.simp = null;
+					dwt.win = null;
+					if ( win.IsSimple ( ) ) {
+						var simple = new idSimpleWindow( win );
+						dwt.simp = simple;
+						this.drawWindows.Append( dwt );
+						delete win;
+					} else {
+						this.AddChild( win );
+						this.SetFocus( win, false );
+						dwt.win = win;
+						this.drawWindows.Append( dwt );
+					}
+				}
+			} else if ( token.$.data == "editDef" ) {
+				todoThrow ( );
+				//var win = new idEditWindow(this.dc, this.gui);
+				//this.SaveExpressionParseState();
+				//win.Parse(src, rebuild);	
+				//this.RestoreExpressionParseState();
+				//this.AddChild(win);
+				//win.SetParent(this);
+				//dwt.simp = null;
+				//dwt.win = win;
+				//this.drawWindows.Append(dwt);
+			} else if ( token.$.data == "choiceDef" ) {
+				todoThrow ( );
+				//var win = new idChoiceWindow(this.dc, this.gui);
+				//this.SaveExpressionParseState();
+				//win.Parse(src, rebuild);	
+				//this.RestoreExpressionParseState();
+				//this.AddChild(win);
+				//win.SetParent(this);
+				//dwt.simp = null;
+				//dwt.win = win;
+				//this.drawWindows.Append(dwt);
+			} else if ( token.$.data == "sliderDef" ) {
+				todoThrow ( );
+				//var win = new idSliderWindow(this.dc, this.gui);
+				//this.SaveExpressionParseState();
+				//win.Parse(src, rebuild);	
+				//this.RestoreExpressionParseState();
+				//this.AddChild(win);
+				//win.SetParent(this);
+				//dwt.simp = null;
+				//dwt.win = win;
+				//this.drawWindows.Append(dwt);
+			} else if ( token.$.data == "markerDef" ) {
+				todoThrow ( );
+				//var win = new idMarkerWindow(this.dc, this.gui);
+				//this.SaveExpressionParseState();
+				//win.Parse(src, rebuild);	
+				//this.RestoreExpressionParseState();
+				//this.AddChild(win);
+				//win.SetParent(this);
+				//dwt.simp = null;
+				//dwt.win = win;
+				//this.drawWindows.Append(dwt);
+			} else if ( token.$.data == "bindDef" ) {
+				todoThrow ( );
+				//var win = new idBindWindow(this.dc, this.gui);
+				//this.SaveExpressionParseState();
+				//win.Parse(src, rebuild);	
+				//this.RestoreExpressionParseState();
+				//this.AddChild(win);
+				//win.SetParent(this);
+				//dwt.simp = null;
+				//dwt.win = win;
+				//this.drawWindows.Append(dwt);
+			} else if ( token.$.data == "listDef" ) {
+				todoThrow ( );
+				//var win = new idListWindow(this.dc, this.gui);
+				//this.SaveExpressionParseState();
+				//win.Parse(src, rebuild);	
+				//this.RestoreExpressionParseState();
+				//this.AddChild(win);
+				//win.SetParent(this);
+				//dwt.simp = null;
+				//dwt.win = win;
+				//this.drawWindows.Append(dwt);
+			} else if ( token.$.data == "fieldDef" ) {
+				todoThrow ( );
+				//var win = new idFieldWindow(this.dc, this.gui);
+				//this.SaveExpressionParseState();
+				//win.Parse(src, rebuild);	
+				//this.RestoreExpressionParseState();
+				//this.AddChild(win);
+				//win.SetParent(this);
+				//dwt.simp = null;
+				//dwt.win = win;
+				//this.drawWindows.Append(dwt);
+			} else if ( token.$.data == "renderDef" ) {
+				todoThrow ( );
+				//var win = new idRenderWindow(this.dc, this.gui);
+				//this.SaveExpressionParseState();
+				//win.Parse(src, rebuild);	
+				//this.RestoreExpressionParseState();
+				//this.AddChild(win);
+				//win.SetParent(this);
+				//dwt.simp = null;
+				//dwt.win = win;
+				//this.drawWindows.Append(dwt);
+			} else if ( token.$.data == "gameSSDDef" ) {
+				todoThrow ( );
+				//var win = new idGameSSDWindow(this.dc, this.gui);
+				//this.SaveExpressionParseState();
+				//win.Parse(src, rebuild);	
+				//this.RestoreExpressionParseState();
+				//this.AddChild(win);
+				//win.SetParent(this);
+				//dwt.simp = null;
+				//dwt.win = win;
+				//this.drawWindows.Append(dwt);
+			} else if ( token.$.data == "gameBearShootDef" ) {
+				todoThrow ( );
+				//var win = new idGameBearShootWindow(this.dc, this.gui);
+				//this.SaveExpressionParseState();
+				//win.Parse(src, rebuild);	
+				//this.RestoreExpressionParseState();
+				//this.AddChild(win);
+				//win.SetParent(this);
+				//dwt.simp = null;
+				//dwt.win = win;
+				//this.drawWindows.Append(dwt);
+			} else if ( token.$.data == "gameBustOutDef" ) {
+				todoThrow ( );
+				//var win = new idGameBustOutWindow(this.dc, this.gui);
+				//this.SaveExpressionParseState();
+				//win.Parse(src, rebuild);	
+				//this.RestoreExpressionParseState();
+				//this.AddChild(win);
+				//win.SetParent(this);
+				//dwt.simp = null;
+				//dwt.win = win;
+				//this.drawWindows.Append(dwt);
 			}
-		} 
-		else if (token.$.data == "editDef") {
-			todoThrow ( );
-			//var win = new idEditWindow(this.dc, this.gui);
-		  	//this.SaveExpressionParseState();
-			//win.Parse(src, rebuild);	
-		  	//this.RestoreExpressionParseState();
-			//this.AddChild(win);
-			//win.SetParent(this);
-			//dwt.simp = null;
-			//dwt.win = win;
-			//this.drawWindows.Append(dwt);
-		}
-		else if ( token.$.data == "choiceDef" ) {
-			todoThrow();
-			//var win = new idChoiceWindow(this.dc, this.gui);
-		  	//this.SaveExpressionParseState();
-			//win.Parse(src, rebuild);	
-		  	//this.RestoreExpressionParseState();
-			//this.AddChild(win);
-			//win.SetParent(this);
-			//dwt.simp = null;
-			//dwt.win = win;
-			//this.drawWindows.Append(dwt);
-		}
-		else if ( token.$.data == "sliderDef" ) {
-			todoThrow();
-			//var win = new idSliderWindow(this.dc, this.gui);
-		  	//this.SaveExpressionParseState();
-			//win.Parse(src, rebuild);	
-		  	//this.RestoreExpressionParseState();
-			//this.AddChild(win);
-			//win.SetParent(this);
-			//dwt.simp = null;
-			//dwt.win = win;
-			//this.drawWindows.Append(dwt);
-		}
-		else if ( token.$.data == "markerDef" ) {
-			todoThrow();
-			//var win = new idMarkerWindow(this.dc, this.gui);
-		  	//this.SaveExpressionParseState();
-			//win.Parse(src, rebuild);	
-		  	//this.RestoreExpressionParseState();
-			//this.AddChild(win);
-			//win.SetParent(this);
-			//dwt.simp = null;
-			//dwt.win = win;
-			//this.drawWindows.Append(dwt);
-		}
-		else if ( token.$.data == "bindDef" ) {
-			todoThrow();
-			//var win = new idBindWindow(this.dc, this.gui);
-		  	//this.SaveExpressionParseState();
-			//win.Parse(src, rebuild);	
-		  	//this.RestoreExpressionParseState();
-			//this.AddChild(win);
-			//win.SetParent(this);
-			//dwt.simp = null;
-			//dwt.win = win;
-			//this.drawWindows.Append(dwt);
-		}
-		else if ( token.$.data == "listDef" ) {
-			todoThrow();
-			//var win = new idListWindow(this.dc, this.gui);
-		  	//this.SaveExpressionParseState();
-			//win.Parse(src, rebuild);	
-		  	//this.RestoreExpressionParseState();
-			//this.AddChild(win);
-			//win.SetParent(this);
-			//dwt.simp = null;
-			//dwt.win = win;
-			//this.drawWindows.Append(dwt);
-		}
-		else if ( token.$.data == "fieldDef" ) {
-			todoThrow();
-			//var win = new idFieldWindow(this.dc, this.gui);
-		  	//this.SaveExpressionParseState();
-			//win.Parse(src, rebuild);	
-		  	//this.RestoreExpressionParseState();
-			//this.AddChild(win);
-			//win.SetParent(this);
-			//dwt.simp = null;
-			//dwt.win = win;
-			//this.drawWindows.Append(dwt);
-		}
-		else if ( token.$.data == "renderDef" ) {
-			todoThrow();
-			//var win = new idRenderWindow(this.dc, this.gui);
-		  	//this.SaveExpressionParseState();
-			//win.Parse(src, rebuild);	
-		  	//this.RestoreExpressionParseState();
-			//this.AddChild(win);
-			//win.SetParent(this);
-			//dwt.simp = null;
-			//dwt.win = win;
-			//this.drawWindows.Append(dwt);
-		}
-		else if ( token.$.data == "gameSSDDef" ) {
-			todoThrow();
-			//var win = new idGameSSDWindow(this.dc, this.gui);
-			//this.SaveExpressionParseState();
-			//win.Parse(src, rebuild);	
-			//this.RestoreExpressionParseState();
-			//this.AddChild(win);
-			//win.SetParent(this);
-			//dwt.simp = null;
-			//dwt.win = win;
-			//this.drawWindows.Append(dwt);
-		}
-		else if ( token.$.data == "gameBearShootDef" ) {
-			todoThrow();
-			//var win = new idGameBearShootWindow(this.dc, this.gui);
-			//this.SaveExpressionParseState();
-			//win.Parse(src, rebuild);	
-			//this.RestoreExpressionParseState();
-			//this.AddChild(win);
-			//win.SetParent(this);
-			//dwt.simp = null;
-			//dwt.win = win;
-			//this.drawWindows.Append(dwt);
-		}
-		else if ( token.$.data == "gameBustOutDef" ) {
-			todoThrow();
-			//var win = new idGameBustOutWindow(this.dc, this.gui);
-			//this.SaveExpressionParseState();
-			//win.Parse(src, rebuild);	
-			//this.RestoreExpressionParseState();
-			//this.AddChild(win);
-			//win.SetParent(this);
-			//dwt.simp = null;
-			//dwt.win = win;
-			//this.drawWindows.Append(dwt);
-		}
 // 
 //  added new onEvent
-		else if ( token.$.data == "onNamedEvent" ) {
-			// Read the event name
-			if ( !src.ReadToken(token) ) {
-				src.Error( "Expected event name" );
-				return false;
-			}
+			else if ( token.$.data == "onNamedEvent" ) {
+				// Read the event name
+				if ( !src.ReadToken( token ) ) {
+					src.Error( "Expected event name" );
+					return false;
+				}
 
-			var evNamed = new rvNamedEvent ( token.$.data );
-			
-			src.SetMarker ( );
-			
-			if (!this.ParseScript(src, /***/evNamed.mEvent ) ) {
-				ret = false;
-				break;
-			}
+				var evNamed = new rvNamedEvent( token.$.data );
 
-			// If we are in the gui editor then add the internal var to the 
-			// the wrapper
+				src.SetMarker ( );
+
+				if ( !this.ParseScript( src, /***/evNamed.mEvent ) ) {
+					ret = false;
+					break;
+				}
+
+				// If we are in the gui editor then add the internal var to the 
+				// the wrapper
 //#ifdef ID_ALLOW_TOOLS
 //			if ( com_editors & EDITOR_GUI ) {
 //				idStr str;
 //				idStr out;
-				
+
 //				// Grab the string from the last marker
 //				src.GetStringFromMarker ( str, false );
-				
+
 //				// Parse it one more time to knock unwanted tabs out
 //				idLexer src2( str, str.Length(), "", src.GetFlags() );
 //				src2.ParseBracedSectionExact ( out, 1);
-				
+
 //				// Save the script		
 //				rvGEWindowWrapper::GetWrapper ( this ).GetScriptDict().Set ( va("onEvent %s", token.c_str()), out );
 //			}
 //#endif			
-			this.namedEvents.Append(evNamed);
-		}
-		else if ( token.$.data == "onTime" ) {
-			var ev = new idTimeLineEvent;
+				this.namedEvents.Append( evNamed );
+			} else if ( token.$.data == "onTime" ) {
+				var ev = new idTimeLineEvent;
 
-			if ( !src.ReadToken(token) ) {
-				src.Error( "Unexpected end of file" );
-				return false;
-			}
-			ev.time = atoi(token.$.c_str());
-			
-			// reset the mark since we dont want it to include the time
-			src.SetMarker ( );
+				if ( !src.ReadToken( token ) ) {
+					src.Error( "Unexpected end of file" );
+					return false;
+				}
+				ev.time = atoi( token.$.c_str ( ) );
 
-			var $time = new R(ev.time );
-			var parseScriptValue = this.ParseScript(src, /***/ev.event, /*&*/$time);
-			ev.time = $time.$;
-			if (!parseScriptValue) {
-				ret = false;
-				break;
-			}
+				// reset the mark since we dont want it to include the time
+				src.SetMarker ( );
 
-			// add the script to the wrappers script list
-			// If we are in the gui editor then add the internal var to the 
-			// the wrapper
+				var $time = new R( ev.time );
+				var parseScriptValue = this.ParseScript( src, /***/ev.event, /*&*/$time );
+				ev.time = $time.$;
+				if ( !parseScriptValue ) {
+					ret = false;
+					break;
+				}
+
+				// add the script to the wrappers script list
+				// If we are in the gui editor then add the internal var to the 
+				// the wrapper
 //#ifdef ID_ALLOW_TOOLS
 //			if ( com_editors & EDITOR_GUI ) {
 //				idStr str;
 //				idStr out;
-				
+
 //				// Grab the string from the last marker
 //				src.GetStringFromMarker ( str, false );
-				
+
 //				// Parse it one more time to knock unwanted tabs out
 //				idLexer src2( str, str.Length(), "", src.GetFlags() );
 //				src2.ParseBracedSectionExact ( out, 1);
-				
+
 //				// Save the script		
 //				rvGEWindowWrapper::GetWrapper ( this ).GetScriptDict().Set ( va("onTime %d", ev.time), out );
 //			}
 //#endif
-			// this is a timeline event
-			ev.pending = true;
-			this.timeLineEvents.Append(ev);
-		}
-		else if ( token.$.data == "definefloat" ) {
-			src.ReadToken(token);
-			work.equals(token.$.data);
-			work.ToLower();
-			var varf = new idWinFloat();
-			varf.SetName(work.data);
-			this.definedVars.Append(varf);
+				// this is a timeline event
+				ev.pending = true;
+				this.timeLineEvents.Append( ev );
+			} else if ( token.$.data == "definefloat" ) {
+				src.ReadToken( token );
+				work.equals( token.$.data );
+				work.ToLower ( );
+				var varf = new idWinFloat ( );
+				varf.SetName( work.data );
+				this.definedVars.Append( varf );
 
-			// add the float to the editors wrapper dict
-			// Set the marker after the float name
-			src.SetMarker ( );
+				// add the float to the editors wrapper dict
+				// Set the marker after the float name
+				src.SetMarker ( );
 
-			// Read in the float 
-			this.regList.AddReg_Parser(work.data, REGTYPE.FLOAT, src, this, varf);
+				// Read in the float 
+				this.regList.AddReg_Parser( work.data, REGTYPE.FLOAT, src, this, varf );
 
-			// If we are in the gui editor then add the float to the defines
+				// If we are in the gui editor then add the float to the defines
 //#ifdef ID_ALLOW_TOOLS
 //			if ( com_editors & EDITOR_GUI ) {
 //				idStr str;
-				
+
 //				// Grab the string from the last marker and save it in the wrapper
 //				src.GetStringFromMarker ( str, true );							
 //				rvGEWindowWrapper::GetWrapper ( this ).GetVariableDict().Set ( va("definefloat\t\"%s\"",token.c_str()), str );
 //			}
 //#endif
-		}
-		else if ( token.$.data == "definevec4" ) {
-			src.ReadToken(token);
-			work.equals(token.$.data);
-			work.ToLower();
-			var $var = new idWinVec4();
-			$var.SetName(work.data);
+			} else if ( token.$.data == "definevec4" ) {
+				src.ReadToken( token );
+				work.equals( token.$.data );
+				work.ToLower ( );
+				var $var = new idWinVec4 ( );
+				$var.SetName( work.data );
 
-			// set the marker so we can determine what was parsed
-			// set the marker after the vec4 name
-			src.SetMarker ( );
+				// set the marker so we can determine what was parsed
+				// set the marker after the vec4 name
+				src.SetMarker ( );
 
-			// FIXME: how about we add the var to the desktop instead of this window so it won't get deleted
-			//        when this window is destoyed which even happens during parsing with simple windows ?
-			//definedVars.Append(var);
-			this.gui.GetDesktop().definedVars.Append($var );
-			this.gui.GetDesktop().regList.AddReg_Parser(work.data, REGTYPE.VEC4, src, this.gui.GetDesktop(), $var );
+				// FIXME: how about we add the var to the desktop instead of this window so it won't get deleted
+				//        when this window is destoyed which even happens during parsing with simple windows ?
+				//definedVars.Append(var);
+				this.gui.GetDesktop ( ).definedVars.Append( $var );
+				this.gui.GetDesktop ( ).regList.AddReg_Parser( work.data, REGTYPE.VEC4, src, this.gui.GetDesktop ( ), $var );
 
-			// store the original vec4 for the editor
-			// If we are in the gui editor then add the float to the defines
+				// store the original vec4 for the editor
+				// If we are in the gui editor then add the float to the defines
 //#ifdef ID_ALLOW_TOOLS
 //			if ( com_editors & EDITOR_GUI ) {
 //				idStr str;
-				
+
 //				// Grab the string from the last marker and save it in the wrapper
 //				src.GetStringFromMarker ( str, true );							
 //				rvGEWindowWrapper::GetWrapper ( this ).GetVariableDict().Set ( va("definevec4\t\"%s\"",token.c_str()), str );
 //			}
 //#endif
-		}
-		else if ( token.$.data == "float" ) {
-			src.ReadToken(token);
-			work.equals(token.$.data);
-			work.ToLower();
-			var varf = new idWinFloat();
-			varf.SetName(work.data);
-			this.definedVars.Append(varf);
+			} else if ( token.$.data == "float" ) {
+				src.ReadToken( token );
+				work.equals( token.$.data );
+				work.ToLower ( );
+				var varf = new idWinFloat ( );
+				varf.SetName( work.data );
+				this.definedVars.Append( varf );
 
-			// add the float to the editors wrapper dict
-			// set the marker to after the float name
-			src.SetMarker ( );
+				// add the float to the editors wrapper dict
+				// set the marker to after the float name
+				src.SetMarker ( );
 
-			// Parse the float
-			this.regList.AddReg_Parser(work.data, REGTYPE.FLOAT, src, this, varf);
+				// Parse the float
+				this.regList.AddReg_Parser( work.data, REGTYPE.FLOAT, src, this, varf );
 
-			// If we are in the gui editor then add the float to the defines
+				// If we are in the gui editor then add the float to the defines
 //#ifdef ID_ALLOW_TOOLS
 //			if ( com_editors & EDITOR_GUI ) {
 //				idStr str;
-				
+
 //				// Grab the string from the last marker and save it in the wrapper
 //				src.GetStringFromMarker ( str, true );							
 //				rvGEWindowWrapper::GetWrapper ( this ).GetVariableDict().Set ( va("float\t\"%s\"",token.c_str()), str );
 //			}
 //#endif
-		}
-		else if (this.ParseScriptEntry(token.$.data, src)) {
-			// add the script to the wrappers script list
-			// If we are in the gui editor then add the internal var to the 
-			// the wrapper
+			} else if ( this.ParseScriptEntry( token.$.data, src ) ) {
+				// add the script to the wrappers script list
+				// If we are in the gui editor then add the internal var to the 
+				// the wrapper
 //#ifdef ID_ALLOW_TOOLS
 //			if ( com_editors & EDITOR_GUI ) {
 //				idStr str;
 //				idStr out;
-				
+
 //				// Grab the string from the last marker
 //				src.GetStringFromMarker ( str, false );
-				
+
 //				// Parse it one more time to knock unwanted tabs out
 //				idLexer src2( str, str.Length(), "", src.GetFlags() );
 //				src2.ParseBracedSectionExact ( out, 1);
-				
+
 //				// Save the script		
 //				rvGEWindowWrapper::GetWrapper ( this ).GetScriptDict().Set ( token, out );
 //			}
 //#endif
-		} else if (this.ParseInternalVar(token.$.data, src)) {
-			// gui editor support		
-			// If we are in the gui editor then add the internal var to the 
-			// the wrapper
+			} else if ( this.ParseInternalVar( token.$.data, src ) ) {
+				// gui editor support		
+				// If we are in the gui editor then add the internal var to the 
+				// the wrapper
 //#ifdef ID_ALLOW_TOOLS
 //			if ( com_editors & EDITOR_GUI ) {
 //				idStr str;
@@ -2824,12 +2806,11 @@ idWindow::Parse
 //				rvGEWindowWrapper::GetWrapper ( this ).SetStateKey ( token, str, false );
 //			}
 //#endif
-		}
-		else {
-			this.ParseRegEntry(token.$.data, src);
-			// hook into the main window parsing for the gui editor
-			// If we are in the gui editor then add the internal var to the 
-			// the wrapper
+			} else {
+				this.ParseRegEntry( token.$.data, src );
+				// hook into the main window parsing for the gui editor
+				// If we are in the gui editor then add the internal var to the 
+				// the wrapper
 //#ifdef ID_ALLOW_TOOLS
 //			if ( com_editors & EDITOR_GUI ) {
 //				idStr str;
@@ -2837,32 +2818,32 @@ idWindow::Parse
 //				rvGEWindowWrapper::GetWrapper ( this ).SetStateKey ( token, str, false );
 //			}
 //#endif
-		} 
-		if ( !src.ReadToken( token ) ) {
-			src.Error( "Unexpected end of file" );
-			ret = false;
-			break;
+			}
+			if ( !src.ReadToken( token ) ) {
+				src.Error( "Unexpected end of file" );
+				ret = false;
+				break;
+			}
 		}
-	}
 
-	if (ret) {
-		this.EvalRegs(-1, true);
-	}
+		if ( ret ) {
+			this.EvalRegs( -1, true );
+		}
 
-	this.SetupFromState();
-	this.PostParse();
+		this.SetupFromState ( );
+		this.PostParse ( );
 
-	// hook into the main window parsing for the gui editor
-	// If we are in the gui editor then add the internal var to the 
-	// the wrapper
+		// hook into the main window parsing for the gui editor
+		// If we are in the gui editor then add the internal var to the 
+		// the wrapper
 //#ifdef ID_ALLOW_TOOLS
 //	if ( com_editors & EDITOR_GUI ) {
 //		rvGEWindowWrapper::GetWrapper ( this ).Finish ( );
 //	}
 //#endif
 
-	return ret;
-}
+		return ret;
+	}
 ////
 /////*
 ////================
@@ -2875,7 +2856,7 @@ idWindow::Parse
 ////		if (this.drawWindows[i].simp == NULL) {
 ////			continue;
 ////		}
-////		if ( idStr::Icmp(this.drawWindows[i].simp.name, _name) == 0 ) {
+////		if ( idStr.Icmp(this.drawWindows[i].simp.name, _name) == 0 ) {
 ////			return this.drawWindows[i].simp;
 ////		} 
 ////	}
@@ -2887,29 +2868,29 @@ idWindow::Parse
 idWindow::FindChildByName
 ================
 */
-	FindChildByName(_name:string): drawWin_t {
-		//static drawWin_t dw;
-		//if (idStr::Icmp(name,_name) == 0) {
-		//	dw.simp = NULL;
-		//	dw.win = this;
-		//	return &dw;
-		//}
-		//int c = this.drawWindows.Num();
-		//for (var i = 0; i < c; i++) {
-		//	if (this.drawWindows[i].win) {
-		//		if (idStr::Icmp(this.drawWindows[i].win.name, _name) == 0) {
-		//			return &this.drawWindows[i];
-		//		}
-		//		drawWin_t *win = this.drawWindows[i].win.FindChildByName(_name);
-		//		if (win) {
-		//			return win;
-		//		}
-		//	} else {
-		//		if (idStr::Icmp(this.drawWindows[i].simp.name, _name) == 0) {
-		//			return &this.drawWindows[i];
-		//		}
-		//	}
-		//}
+	private static dw: drawWin_t ;
+	FindChildByName ( _name: string ): drawWin_t {
+		if ( idStr.Icmp( name, _name ) == 0 ) {
+			idWindow.dw.simp = null;
+			idWindow.dw.win = this;
+			return idWindow.dw;
+		}
+		var c = this.drawWindows.Num ( );
+		for ( var i = 0; i < c; i++ ) {
+			if ( this.drawWindows[i].win ) {
+				if ( idStr.Icmp( this.drawWindows[i].win.name, _name ) == 0 ) {
+					return this.drawWindows[i];
+				}
+				var win = this.drawWindows[i].win.FindChildByName( _name );
+				if ( win ) {
+					return win;
+				}
+			} else {
+				if ( idStr.Icmp( this.drawWindows[i].simp.name, _name ) == 0 ) {
+					return this.drawWindows[i];
+				}
+			}
+		}
 		return null;
 	}
 
@@ -2971,7 +2952,7 @@ idWindow::FindChildByName
 ////		}
 ////	}
 ////
-////	noTime = false;
+////	this.noTime = false;
 ////
 ////	c = transitions.Num();
 ////	for ( i = 0; i < c; i++ ) {
@@ -3016,322 +2997,324 @@ idWindow::FindChildByName
 idWindow::ExpressionConstant
 ================
 */
-	ExpressionConstant(/*float */f: number):number {
-		var/*int*/i: number;
+	ExpressionConstant ( /*float */f: number ): number {
+		var /*int*/i: number;
 
-		for (i = wexpRegister_t.WEXP_REG_NUM_PREDEFINED ; i < this.expressionRegisters.Num() ; i++ ) {
-		if ( !idWindow.registerIsTemporary[i] && this.expressionRegisters[i] == f ) {
-			return i;
+		for ( i = wexpRegister_t.WEXP_REG_NUM_PREDEFINED; i < this.expressionRegisters.Num ( ); i++ ) {
+			if ( !idWindow.registerIsTemporary[i] && this.expressionRegisters[i] == f ) {
+				return i;
+			}
+		}
+		if ( this.expressionRegisters.Num ( ) == MAX_EXPRESSION_REGISTERS ) {
+			common.Warning( "expressionConstant: gui %s hit MAX_EXPRESSION_REGISTERS", this.gui.GetSourceFile ( ) );
+			return 0;
+		}
+
+		var /*int */c = this.expressionRegisters.Num ( );
+		if ( i > c ) {
+			while ( i > c ) {
+				this.expressionRegisters.Append( -9999999 );
+				i--;
+			}
+		}
+
+		i = this.expressionRegisters.Append( f );
+		idWindow.registerIsTemporary[i] = false;
+		return i;
+	}
+
+/*
+================
+idWindow::ExpressionTemporary
+================
+*/
+	ExpressionTemporary ( ): number {
+		if ( this.expressionRegisters.Num ( ) == MAX_EXPRESSION_REGISTERS ) {
+			common.Warning( "expressionTemporary: gui %s hit MAX_EXPRESSION_REGISTERS", this.gui.GetSourceFile ( ) );
+			return 0;
+		}
+		var i = this.expressionRegisters.Num ( );
+		idWindow.registerIsTemporary[i] = true;
+		i = this.expressionRegisters.Append( 0 );
+		return i;
+	}
+
+/*
+================
+idWindow::ExpressionOp
+================
+*/
+	ExpressionOp ( ): wexpOp_t {
+		if ( this.ops.Num ( ) == MAX_EXPRESSION_OPS ) {
+			common.Warning( "expressionOp: gui %s hit MAX_EXPRESSION_OPS", this.gui.GetSourceFile ( ) );
+			return this.ops[0];
+		}
+		var wop = new wexpOp_t;
+		wop.init ( ); //memset(&wop, 0, sizeof(wexpOp_t));
+		var i = this.ops.Append( wop );
+		return this.ops[i];
+	}
+
+/*
+================
+idWindow::EmitOp
+================
+*/
+
+	EmitOp ( /*int */a: number, /*int */b: number, opType: wexpOpType_t, /****/opp: R<wexpOp_t> = null ):number {
+		var op: wexpOp_t;
+/*
+	// optimize away identity operations
+	if ( opType == wexpOpType_t.WOP_TYPE_ADD ) {
+		if ( !idWindow.registerIsTemporary[a] && shaderRegisters[a] == 0 ) {
+			return b;
+		}
+		if ( !idWindow.registerIsTemporary[b] && shaderRegisters[b] == 0 ) {
+			return a;
+		}
+		if ( !idWindow.registerIsTemporary[a] && !idWindow.registerIsTemporary[b] ) {
+			return this.ExpressionConstant( shaderRegisters[a] + shaderRegisters[b] );
 		}
 	}
-	if ( this.expressionRegisters.Num() == MAX_EXPRESSION_REGISTERS ) {
-		common.Warning( "expressionConstant: gui %s hit MAX_EXPRESSION_REGISTERS", this.gui.GetSourceFile() );
+	if ( opType == wexpOpType_t.WOP_TYPE_MULTIPLY ) {
+		if ( !idWindow.registerIsTemporary[a] && shaderRegisters[a] == 1 ) {
+			return b;
+		}
+		if ( !idWindow.registerIsTemporary[a] && shaderRegisters[a] == 0 ) {
+			return a;
+		}
+		if ( !idWindow.registerIsTemporary[b] && shaderRegisters[b] == 1 ) {
+			return a;
+		}
+		if ( !idWindow.registerIsTemporary[b] && shaderRegisters[b] == 0 ) {
+			return b;
+		}
+		if ( !idWindow.registerIsTemporary[a] && !idWindow.registerIsTemporary[b] ) {
+			return this.ExpressionConstant( shaderRegisters[a] * shaderRegisters[b] );
+		}
+	}
+*/
+		op = this.ExpressionOp ( );
+
+		op.opType = opType;
+		op.a = a;
+		op.b = b;
+		op.c = this.ExpressionTemporary ( );
+
+		if ( opp ) {
+			opp.$ = op;
+		}
+		return op.c;
+	}
+
+/*
+================
+idWindow::ParseEmitOp
+================
+*/
+	ParseEmitOp ( src: idParser, /*int */a: number, opType: wexpOpType_t, /*int */priority: number, opp: R<wexpOp_t> = null ): number {
+		var b = this.ParseExpressionPriority( src, priority );
+		return this.EmitOp( a, b, opType, opp );
+	}
+
+
+/*
+================
+idWindow::ParseTerm
+
+Returns a register index
+=================
+*/
+	ParseTerm(src: idParser,	/***/$var: idWinVar = null, /*int*/ component = 0):number {
+	var token = new R(new idToken);
+	var/*int*/ a: number, b: number;
+
+	src.ReadToken( token );
+
+	if ( token.$.data == "(" ) {
+		a = this.ParseExpression( src );
+		src.ExpectTokenString(")");
+		return a;
+	}
+
+	if ( !token.$.Icmp( "time" ) ) {
+		return wexpRegister_t.WEXP_REG_TIME;
+	}
+
+	// parse negative numbers
+	if ( token.$.data == "-" ) {
+		src.ReadToken( token );
+		if ( token.$.type == TT_NUMBER || token.$.data == "." ) {
+			return this.ExpressionConstant( -/*(float)*/ token.$.GetFloatValue() );
+		}
+		src.Warning( "Bad negative number '%s'", token.$.c_str() );
 		return 0;
 	}
 
-	var/*int */c = this.expressionRegisters.Num();
-	if (i > c) {
-		while (i > c) {
-			this.expressionRegisters.Append(-9999999);
-			i--;
-		}
+	if ( token.$.type == TT_NUMBER || token.$.data == "." || token.$.data == "-" ) {
+		return this.ExpressionConstant( /*(float) */token.$.GetFloatValue() );
 	}
 
-	i = this.expressionRegisters.Append(f);
-	idWindow.registerIsTemporary[i] = false;
-	return i;
+	// see if it is a table name
+	var table = <idDeclTable>(declManager.FindType( declType_t.DECL_TABLE, token.$.c_str(), false ) );
+	if ( table ) {
+		a = table.Index();
+		// parse a table expression
+		src.ExpectTokenString("[");
+		b = this.ParseExpression(src);
+		src.ExpectTokenString("]");
+		return this.EmitOp( a, b, wexpOpType_t.WOP_TYPE_TABLE );
+	}
+	
+	if ($var == null) {
+		$var = this.GetWinVarByName(token.$.data, true);
+	}
+	if ($var) {
+		todoThrow();
+		//a = (int)$var;
+		////assert(dynamic_cast<idWinVec4*>($var));
+		//$var.Init(token.$.data, this);
+		//b = component;
+		//if (dynamic_cast<idWinVec4*>($var)) {
+		//	if (src.ReadToken(token)) {
+		//		if (token.$.data == "[") {
+		//			b = this.ParseExpression(src);
+		//			src.ExpectTokenString("]");
+		//		} else {
+		//			src.UnreadToken(token);
+		//		}
+		//	}
+		//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VAR);
+		//} else if (dynamic_cast<idWinFloat*>($var)) {
+		//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VARF);
+		//} else if (dynamic_cast<idWinInt*>($var)) {
+		//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VARI);
+		//} else if (dynamic_cast<idWinBool*>($var)) {
+		//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VARB);
+		//} else if (dynamic_cast<idWinStr*>($var)) {
+		//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VARS);
+		//} else {
+		//	src.Warning("Var expression not vec4, float or int '%s'", token.$.c_str());
+		//}
+		return 0;
+	} else {
+		// ugly but used for post parsing to fixup named vars
+		todoThrow ( );
+		//char *p = new char[token.Length()+1];
+		//strcpy(p, token);
+		//a = (int)p;
+		//b = -2;
+		return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VAR);
+	}
+
 }
-////
-/////*
-////================
-////idWindow::ExpressionTemporary
-////================
-////*/
-////int idWindow::ExpressionTemporary() {
-////	if ( this.expressionRegisters.Num() == MAX_EXPRESSION_REGISTERS ) {
-////		common.Warning( "expressionTemporary: gui %s hit MAX_EXPRESSION_REGISTERS", gui.GetSourceFile());
-////		return 0;
-////	}
-////	int i = this.expressionRegisters.Num();
-////	idWindow.registerIsTemporary[i] = true;
-////	i = this.expressionRegisters.Append(0);
-////	return i;
-////}
-////
-/////*
-////================
-////idWindow::ExpressionOp
-////================
-////*/
-////wexpOp_t *idWindow::ExpressionOp() {
-////	if ( this.ops.Num() == MAX_EXPRESSION_OPS ) {
-////		common.Warning( "expressionOp: gui %s hit MAX_EXPRESSION_OPS", gui.GetSourceFile());
-////		return &this.ops[0];
-////	}
-////	wexpOp_t wop;
-////	memset(&wop, 0, sizeof(wexpOp_t));
-////	int i = this.ops.Append(wop);
-////	return &this.ops[i];
-////}
-////
-/////*
-////================
-////idWindow::EmitOp
-////================
-////*/
-////
-////int idWindow::EmitOp( int a, int b, wexpOpType_t opType, wexpOp_t **opp ) {
-////	wexpOp_t *op;
-/////*
-////	// optimize away identity operations
-////	if ( opType == WOP_TYPE_ADD ) {
-////		if ( !idWindow.registerIsTemporary[a] && shaderRegisters[a] == 0 ) {
-////			return b;
-////		}
-////		if ( !idWindow.registerIsTemporary[b] && shaderRegisters[b] == 0 ) {
-////			return a;
-////		}
-////		if ( !idWindow.registerIsTemporary[a] && !idWindow.registerIsTemporary[b] ) {
-////			return ExpressionConstant( shaderRegisters[a] + shaderRegisters[b] );
-////		}
-////	}
-////	if ( opType == WOP_TYPE_MULTIPLY ) {
-////		if ( !idWindow.registerIsTemporary[a] && shaderRegisters[a] == 1 ) {
-////			return b;
-////		}
-////		if ( !idWindow.registerIsTemporary[a] && shaderRegisters[a] == 0 ) {
-////			return a;
-////		}
-////		if ( !idWindow.registerIsTemporary[b] && shaderRegisters[b] == 1 ) {
-////			return a;
-////		}
-////		if ( !idWindow.registerIsTemporary[b] && shaderRegisters[b] == 0 ) {
-////			return b;
-////		}
-////		if ( !idWindow.registerIsTemporary[a] && !idWindow.registerIsTemporary[b] ) {
-////			return ExpressionConstant( shaderRegisters[a] * shaderRegisters[b] );
-////		}
-////	}
-////*/
-////	op = ExpressionOp();
-////
-////	op.opType = opType;
-////	op.a = a;
-////	op.b = b;
-////	op.c = ExpressionTemporary();
-////
-////	if (opp) {
-////		*opp = op;
-////	}
-////	return op.c;
-////}
-////
-/////*
-////================
-////idWindow::ParseEmitOp
-////================
-////*/
-////int idWindow::ParseEmitOp( idParser *src, int a, wexpOpType_t opType, int priority, wexpOp_t **opp ) {
-////	int b = ParseExpressionPriority( src, priority );
-////	return EmitOp( a, b, opType, opp );  
-////}
-////
-////
-/////*
-////================
-////idWindow::ParseTerm
-////
-////Returns a register index
-////=================
-////*/
-////int idWindow::ParseTerm( idParser *src,	idWinVar *var, int component ) {
-////	idToken token;
-////	int		a, b;
-////
-////	src.ReadToken( &token );
-////
-////	if ( token == "(" ) {
-////		a = ParseExpression( src );
-////		src.ExpectTokenString(")");
-////		return a;
-////	}
-////
-////	if ( !token.Icmp( "time" ) ) {
-////		return WEXP_REG_TIME;
-////	}
-////
-////	// parse negative numbers
-////	if ( token == "-" ) {
-////		src.ReadToken( &token );
-////		if ( token.type == TT_NUMBER || token == "." ) {
-////			return ExpressionConstant( -(float) token.GetFloatValue() );
-////		}
-////		src.Warning( "Bad negative number '%s'", token.c_str() );
-////		return 0;
-////	}
-////
-////	if ( token.type == TT_NUMBER || token == "." || token == "-" ) {
-////		return ExpressionConstant( (float) token.GetFloatValue() );
-////	}
-////
-////	// see if it is a table name
-////	const idDeclTable *table = static_cast<const idDeclTable *>( declManager.FindType( DECL_TABLE, token.c_str(), false ) );
-////	if ( table ) {
-////		a = table.Index();
-////		// parse a table expression
-////		src.ExpectTokenString("[");
-////		b = ParseExpression(src);
-////		src.ExpectTokenString("]");
-////		return EmitOp( a, b, WOP_TYPE_TABLE );
-////	}
-////	
-////	if (var == NULL) {
-////		var = GetWinVarByName(token, true);
-////	}
-////	if (var) {
-////		a = (int)var;
-////		//assert(dynamic_cast<idWinVec4*>(var));
-////		var.Init(token, this);
-////		b = component;
-////		if (dynamic_cast<idWinVec4*>(var)) {
-////			if (src.ReadToken(&token)) {
-////				if (token == "[") {
-////					b = ParseExpression(src);
-////					src.ExpectTokenString("]");
-////				} else {
-////					src.UnreadToken(&token);
-////				}
-////			}
-////			return EmitOp(a, b, WOP_TYPE_VAR);
-////		} else if (dynamic_cast<idWinFloat*>(var)) {
-////			return EmitOp(a, b, WOP_TYPE_VARF);
-////		} else if (dynamic_cast<idWinInt*>(var)) {
-////			return EmitOp(a, b, WOP_TYPE_VARI);
-////		} else if (dynamic_cast<idWinBool*>(var)) {
-////			return EmitOp(a, b, WOP_TYPE_VARB);
-////		} else if (dynamic_cast<idWinStr*>(var)) {
-////			return EmitOp(a, b, WOP_TYPE_VARS);
-////		} else {
-////			src.Warning("Var expression not vec4, float or int '%s'", token.c_str());
-////		}
-////		return 0;
-////	} else {
-////		// ugly but used for post parsing to fixup named vars
-////		char *p = new char[token.Length()+1];
-////		strcpy(p, token);
-////		a = (int)p;
-////		b = -2;
-////		return EmitOp(a, b, WOP_TYPE_VAR);
-////	}
-////
-////}
-////
-/////*
-////=================
-////idWindow::ParseExpressionPriority
-////
-////Returns a register index
-////=================
-////*/
-////#define	TOP_PRIORITY 4
-////int idWindow::ParseExpressionPriority( idParser *src, int priority, idWinVar *var, int component ) {
-////	idToken token;
-////	int		a;
-////
-////	if ( priority == 0 ) {
-////		return ParseTerm( src, var, component );
-////	}
-////
-////	a = ParseExpressionPriority( src, priority - 1, var, component );
-////
-////	if ( !src.ReadToken( &token ) ) {
-////		// we won't get EOF in a real file, but we can
-////		// when parsing from generated strings
-////		return a;
-////	}
-////
-////	if ( priority == 1 && token == "*" ) {
-////		return ParseEmitOp( src, a, WOP_TYPE_MULTIPLY, priority );
-////	}
-////	if ( priority == 1 && token == "/" ) {
-////		return ParseEmitOp( src, a, WOP_TYPE_DIVIDE, priority );
-////	}
-////	if ( priority == 1 && token == "%" ) {	// implied truncate both to integer
-////		return ParseEmitOp( src, a, WOP_TYPE_MOD, priority );
-////	}
-////	if ( priority == 2 && token == "+" ) {
-////		return ParseEmitOp( src, a, WOP_TYPE_ADD, priority );
-////	}
-////	if ( priority == 2 && token == "-" ) {
-////		return ParseEmitOp( src, a, WOP_TYPE_SUBTRACT, priority );
-////	}
-////	if ( priority == 3 && token == ">" ) {
-////		return ParseEmitOp( src, a, WOP_TYPE_GT, priority );
-////	}
-////	if ( priority == 3 && token == ">=" ) {
-////		return ParseEmitOp( src, a, WOP_TYPE_GE, priority );
-////	}
-////	if ( priority == 3 && token == "<" ) {
-////		return ParseEmitOp( src, a, WOP_TYPE_LT, priority );
-////	}
-////	if ( priority == 3 && token == "<=" ) {
-////		return ParseEmitOp( src, a, WOP_TYPE_LE, priority );
-////	}
-////	if ( priority == 3 && token == "==" ) {
-////		return ParseEmitOp( src, a, WOP_TYPE_EQ, priority );
-////	}
-////	if ( priority == 3 && token == "!=" ) {
-////		return ParseEmitOp( src, a, WOP_TYPE_NE, priority );
-////	}
-////	if ( priority == 4 && token == "&&" ) {
-////		return ParseEmitOp( src, a, WOP_TYPE_AND, priority );
-////	}
-////	if ( priority == 4 && token == "||" ) {
-////		return ParseEmitOp( src, a, WOP_TYPE_OR, priority );
-////	}
-////	if ( priority == 4 && token == "?" ) {
-////		wexpOp_t *oop = NULL;
-////		int o = ParseEmitOp( src, a, WOP_TYPE_COND, priority, &oop );
-////		if ( !src.ReadToken( &token ) ) {
-////			return o;
-////		}
-////		if (token == ":") {
-////			a = ParseExpressionPriority( src, priority - 1, var );
-////			oop.d = a;
-////		}
-////		return o;
-////	}
-////
-////	// assume that anything else terminates the expression
-////	// not too robust error checking...
-////
-////	src.UnreadToken( &token );
-////
-////	return a;
-////}
-////
-/////*
-////================
-////idWindow::ParseExpression
-////
-////Returns a register index
-////================
-////*/
-////int idWindow::ParseExpression(idParser *src, idWinVar *var, int component) {
-////	return ParseExpressionPriority( src, TOP_PRIORITY, var );
-////}
-////
-/////*
-////================
-////idWindow::ParseBracedExpression
-////================
-////*/
-////ParseBracedExpression(idParser *src):void {
-////	src.ExpectTokenString("{");
-////	ParseExpression(src);
-////	src.ExpectTokenString("}");
-////}
-////
+
+/*
+=================
+idWindow::ParseExpressionPriority
+
+Returns a register index
+=================
+*/
+static TOP_PRIORITY = 4;
+ParseExpressionPriority(src:idParser, /*int*/ priority:number, $var:idWinVar = null, /*int */component = 0):number {
+	var token = new R(new idToken);
+	var/*int		*/a:number;
+
+	if ( priority == 0 ) {
+		return this.ParseTerm(src, $var, component );
+	}
+
+	a = this.ParseExpressionPriority(src, priority - 1, $var, component );
+
+	if ( !src.ReadToken( token ) ) {
+		// we won't get EOF in a real file, but we can
+		// when parsing from generated strings
+		return a;
+	}
+
+	if ( priority == 1 && token.$.data == "*" ) {
+		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_MULTIPLY, priority );
+	}
+	if ( priority == 1 && token.$.data == "/" ) {
+		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_DIVIDE, priority );
+	}
+	if ( priority == 1 && token.$.data == "%" ) {	// implied truncate both to integer
+		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_MOD, priority );
+	}
+	if ( priority == 2 && token.$.data == "+" ) {
+		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_ADD, priority );
+	}
+	if ( priority == 2 && token.$.data == "-" ) {
+		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_SUBTRACT, priority );
+	}
+	if ( priority == 3 && token.$.data == ">" ) {
+		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_GT, priority );
+	}
+	if ( priority == 3 && token.$.data == ">=" ) {
+		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_GE, priority );
+	}
+	if ( priority == 3 && token.$.data == "<" ) {
+		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_LT, priority );
+	}
+	if ( priority == 3 && token.$.data == "<=" ) {
+		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_LE, priority );
+	}
+	if ( priority == 3 && token.$.data == "==" ) {
+		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_EQ, priority );
+	}
+	if ( priority == 3 && token.$.data == "!=" ) {
+		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_NE, priority );
+	}
+	if ( priority == 4 && token.$.data == "&&" ) {
+		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_AND, priority );
+	}
+	if ( priority == 4 && token.$.data == "||" ) {
+		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_OR, priority );
+	}
+	if ( priority == 4 && token.$.data == "?" ) {
+		var oop = new R<wexpOp_t> ( );
+		var o = this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_COND, priority, /*&*/oop );
+		if ( !src.ReadToken( token ) ) {
+			return o;
+		}
+		if ( token.$.data == ":" ) {
+			a = this.ParseExpressionPriority( src, priority - 1, $var );
+			oop.$.d = a;
+		}
+		return o;
+	}
+
+	// assume that anything else terminates the expression
+	// not too robust error checking...
+
+	src.UnreadToken( token );
+
+	return a;
+}
+
+/*
+================
+idWindow::ParseExpression
+
+Returns a register index
+================
+*/
+	ParseExpression ( src: idParser, $var: idWinVar = null, /*int*/ component = 0): number {
+		return this.ParseExpressionPriority( src, idWindow.TOP_PRIORITY, $var );
+	}
+
+/*
+================
+idWindow::ParseBracedExpression
+================
+*/
+	ParseBracedExpression ( src: idParser ): void {
+		src.ExpectTokenString( "{" );
+		this.ParseExpression( src );
+		src.ExpectTokenString( "}" );
+	}
+
 /////*
 ////===============
 ////idWindow::EvaluateRegisters
@@ -3362,16 +3345,16 @@ idWindow::ExpressionConstant
 ////			continue;
 ////		}
 ////		switch( op.opType ) {
-////		case WOP_TYPE_ADD:
+////		case wexpOpType_t.WOP_TYPE_ADD:
 ////			registers[op.c] = registers[op.a] + registers[op.b];
 ////			break;
-////		case WOP_TYPE_SUBTRACT:
+////		case wexpOpType_t.WOP_TYPE_SUBTRACT:
 ////			registers[op.c] = registers[op.a] - registers[op.b];
 ////			break;
-////		case WOP_TYPE_MULTIPLY:
+////		case wexpOpType_t.WOP_TYPE_MULTIPLY:
 ////			registers[op.c] = registers[op.a] * registers[op.b];
 ////			break;
-////		case WOP_TYPE_DIVIDE:
+////		case wexpOpType_t.WOP_TYPE_DIVIDE:
 ////			if ( registers[op.b] == 0.0f ) {
 ////				common.Warning( "Divide by zero in window '%s' in %s", GetName(), gui.GetSourceFile() );
 ////				registers[op.c] = registers[op.a];
@@ -3379,45 +3362,45 @@ idWindow::ExpressionConstant
 ////				registers[op.c] = registers[op.a] / registers[op.b];
 ////			}
 ////			break;
-////		case WOP_TYPE_MOD:
+////		case wexpOpType_t.WOP_TYPE_MOD:
 ////			b = (int)registers[op.b];
 ////			b = b != 0 ? b : 1;
 ////			registers[op.c] = (int)registers[op.a] % b;
 ////			break;
-////		case WOP_TYPE_TABLE:
+////		case wexpOpType_t.WOP_TYPE_TABLE:
 ////			{
 ////				const idDeclTable *table = static_cast<const idDeclTable *>( declManager.DeclByIndex( DECL_TABLE, op.a ) );
 ////				registers[op.c] = table.TableLookup( registers[op.b] );
 ////			}
 ////			break;
-////		case WOP_TYPE_GT:
+////		case wexpOpType_t.WOP_TYPE_GT:
 ////			registers[op.c] = registers[ op.a ] > registers[op.b];
 ////			break;
-////		case WOP_TYPE_GE:
+////		case wexpOpType_t.WOP_TYPE_GE:
 ////			registers[op.c] = registers[ op.a ] >= registers[op.b];
 ////			break;
-////		case WOP_TYPE_LT:
+////		case wexpOpType_t.WOP_TYPE_LT:
 ////			registers[op.c] = registers[ op.a ] < registers[op.b];
 ////			break;
-////		case WOP_TYPE_LE:
+////		case wexpOpType_t.WOP_TYPE_LE:
 ////			registers[op.c] = registers[ op.a ] <= registers[op.b];
 ////			break;
-////		case WOP_TYPE_EQ:
+////		case wexpOpType_t.WOP_TYPE_EQ:
 ////			registers[op.c] = registers[ op.a ] == registers[op.b];
 ////			break;
-////		case WOP_TYPE_NE:
+////		case wexpOpType_t.WOP_TYPE_NE:
 ////			registers[op.c] = registers[ op.a ] != registers[op.b];
 ////			break;
-////		case WOP_TYPE_COND:
+////		case wexpOpType_t.WOP_TYPE_COND:
 ////			registers[op.c] = (registers[ op.a ]) ? registers[op.b] : registers[op.d];
 ////			break;
-////		case WOP_TYPE_AND:
+////		case wexpOpType_t.WOP_TYPE_AND:
 ////			registers[op.c] = registers[ op.a ] && registers[op.b];
 ////			break;
-////		case WOP_TYPE_OR:
+////		case wexpOpType_t.WOP_TYPE_OR:
 ////			registers[op.c] = registers[ op.a ] || registers[op.b];
 ////			break;
-////		case WOP_TYPE_VAR:
+////		case wexpOpType_t.WOP_TYPE_VAR:
 ////			if ( !op.a ) {
 ////				registers[op.c] = 0.0f;
 ////				break;
@@ -3430,7 +3413,7 @@ idWindow::ExpressionConstant
 ////				registers[op.c] = ((idWinVar*)(op.a)).x();
 ////			}
 ////			break;
-////		case WOP_TYPE_VARS:
+////		case wexpOpType_t.WOP_TYPE_VARS:
 ////			if (op.a) {
 ////				idWinStr *var = (idWinStr*)(op.a);
 ////				registers[op.c] = atof(var.c_str());
@@ -3438,7 +3421,7 @@ idWindow::ExpressionConstant
 ////				registers[op.c] = 0;
 ////			}
 ////			break;
-////		case WOP_TYPE_VARF:
+////		case wexpOpType_t.WOP_TYPE_VARF:
 ////			if (op.a) {
 ////				idWinFloat *var = (idWinFloat*)(op.a);
 ////				registers[op.c] = *var;
@@ -3446,7 +3429,7 @@ idWindow::ExpressionConstant
 ////				registers[op.c] = 0;
 ////			}
 ////			break;
-////		case WOP_TYPE_VARI:
+////		case wexpOpType_t.WOP_TYPE_VARI:
 ////			if (op.a) {
 ////				idWinInt *var = (idWinInt*)(op.a);
 ////				registers[op.c] = *var;
@@ -3454,7 +3437,7 @@ idWindow::ExpressionConstant
 ////				registers[op.c] = 0;
 ////			}
 ////			break;
-////		case WOP_TYPE_VARB:
+////		case wexpOpType_t.WOP_TYPE_VARB:
 ////			if (op.a) {
 ////				idWinBool *var = (idWinBool*)(op.a);
 ////				registers[op.c] = *var;
@@ -3791,28 +3774,28 @@ idWindow::ExpressionConstant
 ////	savefile.Write( &this.drawRect, sizeof( this.drawRect ) );
 ////	savefile.Write( &this.clientRect, sizeof( this.clientRect ) );
 ////	savefile.Write( &this.origin, sizeof( this.origin ) );
-////	savefile.Write( &fontNum, sizeof( fontNum ) );
+////	savefile.Write( &this.fontNum, sizeof( this.fontNum ) );
 ////	savefile.Write( &timeLine, sizeof( timeLine ) );
 ////	savefile.Write( &xOffset, sizeof( xOffset ) );
 ////	savefile.Write( &yOffset, sizeof( yOffset ) );
 ////	savefile.Write( &this.cursor, sizeof( this.cursor ) );
 ////	savefile.Write( &this.forceAspectWidth, sizeof( this.forceAspectWidth ) );
-////	savefile.Write( &forceAspectHeight, sizeof( forceAspectHeight ) );
-////	savefile.Write( &matScalex, sizeof( matScalex ) );
-////	savefile.Write( &matScaley, sizeof( matScaley ) );
+////	savefile.Write( &this.forceAspectHeight, sizeof( this.forceAspectHeight ) );
+////	savefile.Write( &this.matScalex, sizeof( this.matScalex ) );
+////	savefile.Write( &this.matScaley, sizeof( this.matScaley ) );
 ////	savefile.Write( &this.borderSize, sizeof( this.borderSize ) );
-////	savefile.Write( &textAlign, sizeof( textAlign ) );
+////	savefile.Write( &this.textAlign, sizeof( this.textAlign ) );
 ////	savefile.Write( &this.textAlignx, sizeof( this.textAlignx ) );
-////	savefile.Write( &textAligny, sizeof( textAligny ) );
-////	savefile.Write( &textShadow, sizeof( textShadow ) );
-////	savefile.Write( &shear, sizeof( shear ) );
+////	savefile.Write( &this.textAligny, sizeof( this.textAligny ) );
+////	savefile.Write( &this.textShadow, sizeof( this.textShadow ) );
+////	savefile.Write( &this.shear, sizeof( this.shear ) );
 ////
 ////	WriteSaveGameString( name, savefile );
-////	WriteSaveGameString( comment, savefile );
+////	WriteSaveGameString( this.comment, savefile );
 ////
 ////	// WinVars
-////	noTime.WriteToSaveGame( savefile );
-////	visible.WriteToSaveGame( savefile );
+////	this.noTime.WriteToSaveGame( savefile );
+////	this.visible.WriteToSaveGame( savefile );
 ////	rect.WriteToSaveGame( savefile );
 ////	backColor.WriteToSaveGame( savefile );
 ////	matColor.WriteToSaveGame( savefile );
@@ -3936,28 +3919,28 @@ idWindow::ExpressionConstant
 ////	savefile.Read( &this.drawRect, sizeof( this.drawRect ) );
 ////	savefile.Read( &this.clientRect, sizeof( this.clientRect ) );
 ////	savefile.Read( &this.origin, sizeof( this.origin ) );
-////	savefile.Read( &fontNum, sizeof( fontNum ) );
+////	savefile.Read( &this.fontNum, sizeof( this.fontNum ) );
 ////	savefile.Read( &timeLine, sizeof( timeLine ) );
 ////	savefile.Read( &xOffset, sizeof( xOffset ) );
 ////	savefile.Read( &yOffset, sizeof( yOffset ) );
 ////	savefile.Read( &this.cursor, sizeof( this.cursor ) );
 ////	savefile.Read( &this.forceAspectWidth, sizeof( this.forceAspectWidth ) );
-////	savefile.Read( &forceAspectHeight, sizeof( forceAspectHeight ) );
-////	savefile.Read( &matScalex, sizeof( matScalex ) );
-////	savefile.Read( &matScaley, sizeof( matScaley ) );
+////	savefile.Read( &this.forceAspectHeight, sizeof( this.forceAspectHeight ) );
+////	savefile.Read( &this.matScalex, sizeof( this.matScalex ) );
+////	savefile.Read( &this.matScaley, sizeof( this.matScaley ) );
 ////	savefile.Read( &this.borderSize, sizeof( this.borderSize ) );
-////	savefile.Read( &textAlign, sizeof( textAlign ) );
+////	savefile.Read( &this.textAlign, sizeof( this.textAlign ) );
 ////	savefile.Read( &this.textAlignx, sizeof( this.textAlignx ) );
-////	savefile.Read( &textAligny, sizeof( textAligny ) );
-////	savefile.Read( &textShadow, sizeof( textShadow ) );
-////	savefile.Read( &shear, sizeof( shear ) );
+////	savefile.Read( &this.textAligny, sizeof( this.textAligny ) );
+////	savefile.Read( &this.textShadow, sizeof( this.textShadow ) );
+////	savefile.Read( &this.shear, sizeof( this.shear ) );
 ////
 ////	ReadSaveGameString( name, savefile );
-////	ReadSaveGameString( comment, savefile );
+////	ReadSaveGameString( this.comment, savefile );
 ////
 ////	// WinVars
-////	noTime.ReadFromSaveGame( savefile );
-////	visible.ReadFromSaveGame( savefile );
+////	this.noTime.ReadFromSaveGame( savefile );
+////	this.visible.ReadFromSaveGame( savefile );
 ////	rect.ReadFromSaveGame( savefile );
 ////	backColor.ReadFromSaveGame( savefile );
 ////	matColor.ReadFromSaveGame( savefile );
@@ -4180,7 +4163,7 @@ idWindow::FixupParms
 		//	if (this.ops[i].b == -2) {
 		//		// need to fix this up
 		//		const char *p = (const char*)(this.ops[i].a);
-		//		idWinVar *var = GetWinVarByName(p, true);
+		//		idWinVar *var = this.GetWinVarByName(p, true);
 		//		delete []p;
 		//		this.ops[i].a = (int)var;
 		//		this.ops[i].b = -1;
@@ -4475,18 +4458,18 @@ idWindow::Interactive
 ////*/
 ////SetDefaults ( void ):void {	
 ////	this.forceAspectWidth = 640.0f;
-////	forceAspectHeight = 480.0f;
-////	matScalex = 1;
-////	matScaley = 1;
+////	this.forceAspectHeight = 480.0f;
+////	this.matScalex = 1;
+////	this.matScaley = 1;
 ////	this.borderSize = 0;
-////	noTime = false;
-////	visible = true;
-////	textAlign = 0;
+////	this.noTime = false;
+////	this.visible = true;
+////	this.textAlign = 0;
 ////	this.textAlignx = 0;
-////	textAligny = 0;
+////	this.textAligny = 0;
 ////	noEvents = false;
 ////	rotate = 0;
-////	shear.Zero();
+////	this.shear.Zero();
 ////	textScale = 0.35f;
 ////	backColor.Zero();
 ////	foreColor = idVec4(1, 1, 1, 1);

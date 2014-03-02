@@ -2507,7 +2507,7 @@ idParser::DollarDirective_evalint
 	DollarDirective_evalint ( ): number {
 		todoThrow ( );
 		//signed long int value;
-		//idToken token;
+		//var token = new R( new idToken );
 		//char buf[128];
 
 		//if ( !idParser::DollarEvaluate( &value, NULL, true ) ) {
@@ -2540,7 +2540,7 @@ idParser::DollarDirective_evalfloat
 	DollarDirective_evalfloat ( ): number {
 		todoThrow ( );
 		//double value;
-		//idToken token;
+		//var token = new R( new idToken );
 		//char buf[128];
 
 		//if ( !idParser::DollarEvaluate( NULL, &value, false ) ) {
@@ -2842,9 +2842,9 @@ idParser::CheckTokenString
 ////================
 ////*/
 /////*int*/SkipUntilString( $string:string ):number {
-////	idToken token;
+////	var token = new R( new idToken );
 ////
-////	while(idParser::ReadToken( &token )) {
+////	while(this.ReadToken( &token )) {
 ////		if ( token == string ) {
 ////			return 1/*true*/;
 ////		}
@@ -2858,9 +2858,9 @@ idParser::CheckTokenString
 ////================
 ////*/
 /////*int*/SkipRestOfLine( ):number {
-////	idToken token;
+////	var token = new R( new idToken );
 ////
-////	while(idParser::ReadToken( &token )) {
+////	while(this.ReadToken( &token )) {
 ////		if ( token.linesCrossed ) {
 ////			this.UnreadSourceToken( &token );
 ////			return 1/*true*/;
@@ -2878,7 +2878,7 @@ idParser::CheckTokenString
 ////=================
 ////*/
 /////*int*/SkipBracedSection( bool parseFirstBrace ):number {
-////	idToken token;
+////	var token = new R( new idToken );
 ////	int depth;
 ////
 ////	depth = parseFirstBrace ? 0 : 1;
@@ -2922,7 +2922,7 @@ idParser::CheckTokenString
 ////=================
 ////*/
 ////const char *idParser::ParseBracedSection( idStr &out, int tabs ) {
-////	idToken token;
+////	var token = new R( new idToken );
 ////	int i, depth;
 ////	bool doTabs = false;
 ////	if (tabs >= 0) {
@@ -2936,7 +2936,7 @@ idParser::CheckTokenString
 ////	out = "{";
 ////	depth = 1;
 ////	do {
-////		if ( !idParser::ReadToken( &token ) ) {
+////		if ( !this.ReadToken( &token ) ) {
 ////			Error( "missing closing brace" );
 ////			return out.c_str();
 ////		}
@@ -2990,10 +2990,10 @@ idParser::CheckTokenString
 ////=================
 ////*/
 ////const char *idParser::ParseRestOfLine( idStr &out ) {
-////	idToken token;
+////	var token = new R( new idToken );
 ////
 ////	out.Empty();
-////	while(idParser::ReadToken( &token )) {
+////	while(this.ReadToken( &token )) {
 ////		if ( token.linesCrossed ) {
 ////			this.UnreadSourceToken( &token );
 ////			break;
@@ -3023,7 +3023,7 @@ idParser::UnreadToken
 /////*int*/ReadTokenOnLine( idToken *token ):number {
 ////	idToken tok;
 ////
-////	if (!idParser::ReadToken( &tok )) {
+////	if (!this.ReadToken( &tok )) {
 ////		return 0/*false*/;
 ////	}
 ////	// if no lines were crossed before this token
@@ -3035,66 +3035,66 @@ idParser::UnreadToken
 ////	this.UnreadSourceToken( &tok );
 ////	return 0/*false*/;
 ////}
-////
-/////*
-////================
-////idParser::ParseInt
-////================
-////*/
-/////*int*/ParseInt( ):number {
-////	idToken token;
-////
-////	if ( !idParser::ReadToken( &token ) ) {
-////		this.Error( "couldn't read expected integer" );
-////		return 0;
-////	}
-////	if ( token.type == TT_PUNCTUATION && token == "-" ) {
-////		idParser::ExpectTokenType( TT_NUMBER, TT_INTEGER, &token );
-////		return -((signed int) token.GetIntValue());
-////	}
-////	else if ( token.type != TT_NUMBER || token.subtype == TT_FLOAT ) {
-////		this.Error( "expected integer value, found '%s'", token.c_str() );
-////	}
-////	return token.GetIntValue();
-////}
-////
-/////*
-////================
-////idParser::ParseBool
-////================
-////*/
-////bool idParser::ParseBool( ) {
-////	idToken token;
-////
-////	if ( !idParser::ExpectTokenType( TT_NUMBER, 0, &token ) ) {
-////		this.Error( "couldn't read expected boolean" );
-////		return false;
-////	}
-////	return ( token.GetIntValue() != 0 );
-////}
-////
-/////*
-////================
-////idParser::ParseFloat
-////================
-////*/
-////float idParser::ParseFloat( ) {
-////	idToken token;
-////
-////	if ( !idParser::ReadToken( &token ) ) {
-////		this.Error( "couldn't read expected floating point number" );
-////		return 0.0f;
-////	}
-////	if ( token.type == TT_PUNCTUATION && token == "-" ) {
-////		idParser::ExpectTokenType( TT_NUMBER, 0, &token );
-////		return -token.GetFloatValue();
-////	}
-////	else if ( token.type != TT_NUMBER ) {
-////		this.Error( "expected float value, found '%s'", token.c_str() );
-////	}
-////	return token.GetFloatValue();
-////}
-////
+
+/*
+================
+idParser::ParseInt
+================
+*/
+/*int*/
+	ParseInt ( ): number {
+		var token = new R( new idToken );
+
+		if ( !this.ReadToken( token ) ) {
+			this.Error( "couldn't read expected integer" );
+			return 0;
+		}
+		if ( token.$.type == TT_PUNCTUATION && token.$.data == "-" ) {
+			this.ExpectTokenType( TT_NUMBER, TT_INTEGER, token );
+			return -( /*(signed int)*/ int( token.$.GetIntValue ( ) ) );
+		} else if ( token.$.type != TT_NUMBER || token.$.subtype == TT_FLOAT ) {
+			this.Error( "expected integer value, found '%s'", token.$.c_str ( ) );
+		}
+		return token.$.GetIntValue ( );
+	}
+
+/*
+================
+idParser::ParseBool
+================
+*/
+	ParseBool ( ): boolean {
+		var token = new R( new idToken );
+
+		if ( !this.ExpectTokenType( TT_NUMBER, 0, token ) ) {
+			this.Error( "couldn't read expected boolean" );
+			return false;
+		}
+		return ( token.$.GetIntValue ( ) != 0 );
+	}
+
+/*
+================
+idParser::ParseFloat
+================
+*/
+/*float */
+	ParseFloat ( ): number {
+		var token = new R( new idToken );
+
+		if ( !this.ReadToken( token ) ) {
+			this.Error( "couldn't read expected floating point number" );
+			return 0.0;
+		}
+		if ( token.$.type == TT_PUNCTUATION && token.$.data == "-" ) {
+			this.ExpectTokenType( TT_NUMBER, 0, token );
+			return -token.$.GetFloatValue ( );
+		} else if ( token.$.type != TT_NUMBER ) {
+			this.Error( "expected float value, found '%s'", token.$.c_str ( ) );
+		}
+		return token.$.GetFloatValue ( );
+	}
+
 /////*
 ////================
 ////idParser::Parse1DMatrix
@@ -3216,7 +3216,7 @@ idParser::SetMarker
 ////	// If cleaning then reparse
 ////	if ( clean ) {	
 ////		idParser temp( this.marker_p, strlen( this.marker_p ), "temp", flags );
-////		idToken token;
+////		var token = new R( new idToken );
 ////		while ( temp.ReadToken ( &token ) ) {
 ////			out += token;
 ////		}

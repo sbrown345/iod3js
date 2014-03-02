@@ -31,8 +31,8 @@
 ////
 ////#include "Rectangle.h"
 ////
-////static const char *VAR_GUIPREFIX = "gui::";
-////static const int VAR_GUIPREFIX_LEN = strlen(VAR_GUIPREFIX);
+var VAR_GUIPREFIX = "gui::";
+var VAR_GUIPREFIX_LEN = strlen(VAR_GUIPREFIX);
 ////
 ////class idWindow;
 class idWinVar {
@@ -71,7 +71,7 @@ class idWinVar {
 	NeedsUpdate ( ): boolean { return ( this.guiDict != null ); }
 ////
 ////	virtual void Init(const char *_name, idWindow* win) = 0;
-////	virtual void Set(const char *val) = 0;
+		Set(val:string) :void { throw "placeholder"; }
 ////	virtual void Update() = 0;
 ////	virtual const char *c_str() const = 0;
 ////	virtual size_t Size() {	size_t sz = (this.name) ? strlen(this.name) : 0; return sz + sizeof(*this); }
@@ -87,37 +87,37 @@ class idWinVar {
 ////	bool GetEval() {
 ////		return eval;
 ////	}
-////	
-	////idWinVar::idWinVar() { 
-////	this.guiDict = NULL; 
-////	this.name = NULL; 
-////	eval = true;
-////}
+
+	constructor ( ) {
+		this.guiDict = null;
+		this.name = null;
+		this.eval = true;
+	}
 ////
 ////idWinVar::~idWinVar() { 
 ////	delete this.name;
 ////	this.name = NULL;
 ////}
-////
-////void idWinVar::SetGuiInfo(idDict *gd, const char *_name) { 
-////	this.guiDict = gd; 
-////	SetName(_name); 
-////}
-////
-////
-////void idWinVar::Init(const char *_name, idWindow *win) {
-////	idStr key = _name;
-////	this.guiDict = NULL;
-////	int len = key.Length();
-////	if (len > 5 && key[0] == 'g' && key[1] == 'u' && key[2] == 'i' && key[3] == ':') {
-////		key = key.Right(len - VAR_GUIPREFIX_LEN);
-////		SetGuiInfo( win.GetGui().GetStateDict(), key );
-////		win.AddUpdateVar(this);
-////	} else {
-////		Set(_name);
-////	}
-////}
-////
+
+	SetGuiInfo ( gd: idDict, _name: string ): void {
+		this.guiDict = gd;
+		this.SetName( _name );
+	}
+
+
+	Init ( _name: string, win: idWindow ): void {
+		var key = new idStr( _name );
+		this.guiDict = null;
+		var len = key.Length ( );
+		if ( len > 5 && key.data[0] == 'g' && key.data[1] == 'u' && key.data[2] == 'i' && key.data[3] == ':' ) {
+			key = key.Right( len - VAR_GUIPREFIX_LEN );
+			this.SetGuiInfo( win.GetGui ( ).GetStateDict ( ), key.data );
+			win.AddUpdateVar( this );
+		} else {
+			this.Set( _name );
+		}
+	}
+
 
 ////protected:
 	guiDict: idDict;
@@ -150,12 +150,12 @@ class idWinBool extends idWinVar {
 ////
 ////	operator bool() const { return this.data; }
 ////
-////	virtual void Set(const char *val) { 
-////		this.data = ( atoi( val ) != 0 );
-////		if (this.guiDict) {
-////			this.guiDict.SetBool(this.GetName(), this.data);
-////		}
-////	}
+	Set ( val: string ): void {
+		this.data = ( atoi( val ) != 0 );
+		if ( this.guiDict ) {
+			this.guiDict.SetBool( this.GetName ( ), this.data );
+		}
+	}
 ////
 ////	virtual void Update() {	
 ////		const char *s = this.GetName();
@@ -168,11 +168,11 @@ class idWinBool extends idWinVar {
 ////
 ////	// SaveGames
 ////	virtual void WriteToSaveGame( idFile *savefile ) {
-////		savefile.Write( &eval, sizeof( eval ) );
+////		savefile.Write( &this.eval, sizeof( this.eval ) );
 ////		savefile.Write( this.data, sizeof( this.data ) );
 ////	}
 ////	virtual void ReadFromSaveGame( idFile *savefile ) {
-////		savefile.Read( &eval, sizeof( eval ) );
+////		savefile.Read( &this.eval, sizeof( this.eval ) );
 ////		savefile.Read( this.data, sizeof( this.data ) );
 ////	}
 ////
@@ -198,6 +198,13 @@ class idWinStr extends idWinVar {
 ////	int	operator==(	const char *other ) const {
 ////		return (data == other);
 ////	}
+	equalsStr ( other: idStr ) {
+		this.data = other;
+		if ( this.guiDict ) {
+			this.guiDict.Set( this.GetName ( ), this.data.data );
+		}
+		return this.data;
+	}
 ////	idStr &operator=(	const idStr &other ) {
 ////		this.data = other;
 ////		if (this.guiDict) {
@@ -238,12 +245,12 @@ class idWinStr extends idWinVar {
 ////		return this.data.c_str();
 ////	}
 ////
-////	virtual void Set(const char *val) {
-////		this.data = val;
-////		if ( this.guiDict ) {
-////			this.guiDict.Set(this.GetName(), this.data);
-////		}
-////	}
+	Set ( val: string ): void {
+		this.data.equals( val );
+		if ( this.guiDict ) {
+			this.guiDict.Set( this.GetName ( ), this.data.data );
+		}
+	}
 ////
 ////	virtual void Update() {
 ////		const char *s = this.GetName();
@@ -259,7 +266,7 @@ class idWinStr extends idWinVar {
 ////
 ////	// SaveGames
 ////	virtual void WriteToSaveGame( idFile *savefile ) {
-////		savefile.Write( &eval, sizeof( eval ) );
+////		savefile.Write( &this.eval, sizeof( this.eval ) );
 ////
 ////		int len = this.data.Length();
 ////		savefile.Write( &len, sizeof( len ) );
@@ -268,7 +275,7 @@ class idWinStr extends idWinVar {
 ////		}
 ////	}
 ////	virtual void ReadFromSaveGame( idFile *savefile ) {
-////		savefile.Read( &eval, sizeof( eval ) );
+////		savefile.Read( &this.eval, sizeof( this.eval ) );
 ////
 ////		int len;
 ////		savefile.Read( &len, sizeof( len ) );
@@ -295,13 +302,13 @@ class idWinInt extends idWinVar {
 ////			this.data = this.guiDict.GetInt(this.GetName());
 ////		} 
 ////	}
-////	int &operator=(	const int &other ) {
-////		this.data = other;
-////		if (this.guiDict) {
-////			this.guiDict.SetInt(this.GetName(), this.data);
-////		}
-////		return this.data;
-////	}
+	equalsInt ( /*int */other: number ): number {
+		this.data = other;
+		if ( this.guiDict ) {
+			this.guiDict.SetInt( this.GetName ( ), this.data );
+		}
+		return this.data;
+	}
 ////	idWinInt &operator=( const idWinInt &other ) {
 ////		idWinVar::operator=(other);
 ////		this.data = other.data;
@@ -329,11 +336,11 @@ class idWinInt extends idWinVar {
 ////
 ////	// SaveGames
 ////	virtual void WriteToSaveGame( idFile *savefile ) {
-////		savefile.Write( &eval, sizeof( eval ) );
+////		savefile.Write( &this.eval, sizeof( this.eval ) );
 ////		savefile.Write( this.data, sizeof( this.data ) );
 ////	}
 ////	virtual void ReadFromSaveGame( idFile *savefile ) {
-////		savefile.Read( &eval, sizeof( eval ) );
+////		savefile.Read( &this.eval, sizeof( this.eval ) );
 ////		savefile.Read( this.data, sizeof( this.data ) );
 ////	}
 ////
@@ -369,12 +376,12 @@ class idWinFloat extends idWinVar {
 ////	operator float() const {
 ////		return this.data;
 ////	}
-////	virtual void Set(const char *val) {
-////		this.data = atof(val);
-////		if (this.guiDict) {
-////			this.guiDict.SetFloat(this.GetName(), this.data);
-////		}
-////	}
+	Set ( val: string ): void {
+		this.data = atof( val );
+		if ( this.guiDict ) {
+			this.guiDict.SetFloat( this.GetName ( ), this.data );
+		}
+	}
 ////	virtual void Update() {
 ////		const char *s = this.GetName();
 ////		if ( this.guiDict && s[0] != '\0' ) {
@@ -386,11 +393,11 @@ class idWinFloat extends idWinVar {
 ////	}
 ////
 ////	virtual void WriteToSaveGame( idFile *savefile ) {
-////		savefile.Write( &eval, sizeof( eval ) );
+////		savefile.Write( &this.eval, sizeof( this.eval ) );
 ////		savefile.Write( this.data, sizeof( this.data ) );
 ////	}
 ////	virtual void ReadFromSaveGame( idFile *savefile ) {
-////		savefile.Read( &eval, sizeof( eval ) );
+////		savefile.Read( &this.eval, sizeof( this.eval ) );
 ////		savefile.Read( this.data, sizeof( this.data ) );
 ////	}
 ////
@@ -467,17 +474,18 @@ class idWinRectangle extends idWinVar {
 ////		ret = this.data.ToVec4();
 ////		return ret;
 ////	}
-////	virtual void Set(const char *val) {
-////		if ( strchr ( val, ',' ) ) {
-////			sscanf( val, "%f,%f,%f,%f", this.data.x, this.data.y, this.data.w, this.data.h );
-////		} else {
-////			sscanf( val, "%f %f %f %f", this.data.x, this.data.y, this.data.w, this.data.h );
-////		}
-////		if (this.guiDict) {
-////			idVec4 v = this.data.ToVec4();
-////			this.guiDict.SetVec4(this.GetName(), v);
-////		}
-////	}
+	Set(val: string): void {
+		todoThrow ( );
+		//if ( strchr ( val, ',' ) ) {
+		//	sscanf( val, "%f,%f,%f,%f", this.data.x, this.data.y, this.data.w, this.data.h );
+		//} else {
+		//	sscanf( val, "%f %f %f %f", this.data.x, this.data.y, this.data.w, this.data.h );
+		//}
+		//if (this.guiDict) {
+		//	idVec4 v = this.data.ToVec4();
+		//	this.guiDict.SetVec4(this.GetName(), v);
+		//}
+	}
 ////	virtual void Update() {
 ////		const char *s = this.GetName();
 ////		if ( this.guiDict && s[0] != '\0' ) {
@@ -494,11 +502,11 @@ class idWinRectangle extends idWinVar {
 ////	}
 ////
 ////	virtual void WriteToSaveGame( idFile *savefile ) {
-////		savefile.Write( &eval, sizeof( eval ) );
+////		savefile.Write( &this.eval, sizeof( this.eval ) );
 ////		savefile.Write( this.data, sizeof( this.data ) );
 ////	}
 ////	virtual void ReadFromSaveGame( idFile *savefile ) {
-////		savefile.Read( &eval, sizeof( eval ) );
+////		savefile.Read( &this.eval, sizeof( this.eval ) );
 ////		savefile.Read( this.data, sizeof( this.data ) );
 ////	}
 ////
@@ -532,22 +540,23 @@ class idWinVec2 extends idWinVar {
 		}
 		return this.data;
 	}
-////	float x() const {
-////		return this.data.x;
-////	}
-////	float y() const {
-////		return this.data.y;
-////	}
-////	virtual void Set(const char *val) {
-////		if ( strchr ( val, ',' ) ) {
-////			sscanf( val, "%f,%f", this.data.x, this.data.y );
-////		} else {
-////		sscanf( val, "%f %f", this.data.x, this.data.y);
-////		}
-////		if (this.guiDict) {
-////			this.guiDict.SetVec2(this.GetName(), this.data);
-////		}
-////	}
+	x ( ): number /*float*/ {
+		return this.data.x;
+	}
+	y ( ): number /*float*/ {
+		return this.data.y;
+	}
+	Set ( val: string ): void {
+		todoThrow ( );
+		//if ( strchr ( val, ',' ) ) {
+		//	sscanf( val, "%f,%f", this.data.x, this.data.y );
+		//} else {
+		//sscanf( val, "%f %f", this.data.x, this.data.y);
+		//}
+		//if (this.guiDict) {
+		//	this.guiDict.SetVec2(this.GetName(), this.data);
+	}
+
 ////	operator const idVec2&() const {
 ////		return this.data;
 ////	}
@@ -565,17 +574,17 @@ class idWinVec2 extends idWinVar {
 ////	}
 ////
 ////	virtual void WriteToSaveGame( idFile *savefile ) {
-////		savefile.Write( &eval, sizeof( eval ) );
+////		savefile.Write( &this.eval, sizeof( this.eval ) );
 ////		savefile.Write( this.data, sizeof( this.data ) );
 ////	}
 ////	virtual void ReadFromSaveGame( idFile *savefile ) {
-////		savefile.Read( &eval, sizeof( eval ) );
+////		savefile.Read( &this.eval, sizeof( eval ) );
 ////		savefile.Read( this.data, sizeof( this.data ) );
 ////	}
 ////
 ////protected:
 	data = new idVec2;
-};
+}
 
 class idWinVec4 extends idWinVar {
 ////public:
@@ -606,21 +615,21 @@ class idWinVec4 extends idWinVar {
 ////		return this.data;
 ////	}
 ////
-////	float x() const {
-////		return this.data.x;
-////	}
-////
-////	float y() const {
-////		return this.data.y;
-////	}
-////
-////	float z() const {
-////		return this.data.z;
-////	}
-////
-////	float w() const {
-////		return this.data.w;
-////	}
+	x(): number /*float*/ {
+		return this.data.x;
+	}
+
+	y(): number /*float*/ {
+		return this.data.y;
+	}
+
+	z(): number /*float*/ {
+		return this.data.z;
+	}
+
+	w(): number /*float*/ {
+		return this.data.w;
+	}
 ////	virtual void Set(const char *val) {
 ////		if ( strchr ( val, ',' ) ) {
 ////			sscanf( val, "%f,%f,%f,%f", &this.data.x, &this.data.y, &this.data.z, &this.data.w );

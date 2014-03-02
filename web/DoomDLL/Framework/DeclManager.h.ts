@@ -109,7 +109,7 @@ class idDeclBase {
 ////	virtual void			Invalidate( void ) = 0;
 ////	virtual void			Reload( void ) = 0;
 	EnsureNotPurged(): void { throw "placeholder"; }
-////	virtual int				Index( void ) const = 0;
+	Index( ) :number { throw "placeholder"; }
 	GetLineNum ( ): number { throw "placeholder"; }
 	GetFileName( ):string { throw "placeholder"; }
 ////	virtual void			GetText( char *text ) const = 0;
@@ -162,9 +162,9 @@ class idDecl {
 	EnsureNotPurged ( ): void { this.base.EnsureNotPurged ( ); }
 
 ////							// Returns the index in the per-type list.
-////	int						Index( void ) const { return this.base.Index(); }
+	Index ( ): number { return this.base.Index ( ); }
 
-							// Returns the line number the decl starts.
+	// Returns the line number the decl starts.
 	GetLineNum( ):number { return this.base.GetLineNum(); }
 
 	// Returns the name of the file in which the decl is defined.

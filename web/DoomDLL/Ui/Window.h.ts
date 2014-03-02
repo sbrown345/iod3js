@@ -102,18 +102,30 @@ enum wexpOpType_t{
 enum wexpRegister_t{
 	WEXP_REG_TIME,
 	WEXP_REG_NUM_PREDEFINED
-} ;
+}
 
 class wexpOp_t {
 	opType: wexpOpType_t;	
-	a:number; b:number; c:number; d:number;//int	
-} ;
-////
-////struct idRegEntry {
-////	const char *name;
-////	idRegister::REGTYPE type;
-////	int index;
-////};
+	a: number; b: number; c: number; d: number;//int	
+
+	init ( ): void {
+		this.opType = 0;
+		this.a = 0;
+		this.b = 0;
+		this.c = 0;
+		this.d = 0;
+	}
+}
+
+class idRegEntry {
+	name: string;
+	type: REGTYPE;
+	index: number; //int 
+	constructor ( name: string, type: REGTYPE ) {
+		this.name = name;
+		this.type = type;
+	}
+};
 ////
 ////class rvGEWindowWrapper;
 ////class idWindow;

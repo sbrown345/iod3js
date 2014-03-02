@@ -57,7 +57,7 @@ class idRegister {
 ////	void				SetToRegs(float *registers);
 ////	void				GetFromRegs(float *registers);
 ////	void				CopyRegs(idRegister *src);
-////	void				Enable(bool b) { enabled = b; }
+	Enable ( b: boolean ) { this.enabled = b; }
 ////	void				ReadFromDemoFile(idDemoFile *f);
 ////	void				WriteToDemoFile(idDemoFile *f);
 ////	void				WriteToSaveGame(idFile *savefile);
@@ -339,49 +339,48 @@ idRegisterList::AddReg
 ====================
 */
 	AddReg_Parser ( name: string, /*int */type: number, src: idParser, win: idWindow, $var: idWinVar ): void {
-		todoThrow ( );
-////	idRegister* reg;
-////
-////	reg = this.FindReg( name );
-////
-////	if ( reg == NULL ) {
-////		assert(type >= 0 && type < idRegister::NUMTYPES);
-////		int numRegs = idRegister.REGCOUNT[type];
-////		reg = new idRegister( name, type );
-////		reg.$var = $var;
-////		if ( type == idRegister::STRING ) {
-////			idToken tok;
-////			if ( src.ReadToken( &tok ) ) {
-////				tok = common.GetLanguageDict().GetString( tok );
-////				$var.Init( tok, win );
-////			}
-////		} else {
-////			for ( int i = 0; i < numRegs; i++ ) {
-////				reg.regs[i] = win.ParseExpression(src, NULL);
-////				if ( i < numRegs-1 ) {
-////					src.ExpectTokenString(",");
-////				}
-////			}
-////		}
-////		int hash = this.regHash.GenerateKey( name, false );
-////		this.regHash.Add( hash, regs.Append( reg ) );
-////	} else {
-////		int numRegs = idRegister::REGCOUNT[type];
-////		reg.$var = $var;
-////		if ( type == idRegister::STRING ) {
-////			idToken tok;
-////			if ( src.ReadToken( &tok ) ) {
-////				$var.Init( tok, win );
-////			}
-////		} else {
-////			for ( int i = 0; i < numRegs; i++ ) {
-////				reg.regs[i] = win.ParseExpression( src, NULL );
-////				if ( i < numRegs-1 ) {
-////					src.ExpectTokenString(",");
-////				}
-////			}
-////		}
-////	}
+		var reg: idRegister;
+
+		reg = this.FindReg( name );
+
+		if ( reg == null ) {
+			assert( type >= 0 && type < REGTYPE.NUMTYPES );
+			var numRegs = idRegister.REGCOUNT[type];
+			reg = new idRegister( name, type );
+			reg.$var = $var;
+			if ( type == REGTYPE.STRING ) {
+				var tok = new R( new idToken );
+				if ( src.ReadToken( tok ) ) {
+					tok.$.equals( common.GetLanguageDict ( ).GetString( tok.$.data ) );
+					$var.Init( tok.$.data, win );
+				}
+			} else {
+				for ( var i = 0; i < numRegs; i++ ) {
+					reg.regs[i] = win.ParseExpression( src, null );
+					if ( i < numRegs - 1 ) {
+						src.ExpectTokenString( "," );
+					}
+				}
+			}
+			var hash = this.regHash.GenerateKey( name, false );
+			this.regHash.Add( hash, this.regs.Append( reg ) );
+		} else {
+			var numRegs = idRegister.REGCOUNT[type];
+			reg.$var = $var;
+			if ( type == REGTYPE.STRING ) {
+				var tok = new R( new idToken );
+				if ( src.ReadToken( tok ) ) {
+					$var.Init( tok.$.data, win );
+				}
+			} else {
+				for ( var i = 0; i < numRegs; i++ ) {
+					reg.regs[i] = win.ParseExpression( src, null );
+					if ( i < numRegs - 1 ) {
+						src.ExpectTokenString( "," );
+					}
+				}
+			}
+		}
 	}
 
 /////*

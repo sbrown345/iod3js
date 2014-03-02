@@ -360,44 +360,44 @@ class idSimpleWindow {
 	////	return ret;
 	////}
 	////
-	////idWinVar *idSimpleWindow::GetWinVarByName(const char *_name) {
-	////	idWinVar *retVar = NULL;
-	////	if (idStr::Icmp(_name, "background") == 0) {
-	////		retVar = &this.backGroundName;
-	////	}
-	////	if (idStr::Icmp(_name, "visible") == 0) {
-	////		retVar = &this.visible;
-	////	}
-	////	if (idStr::Icmp(_name, "rect") == 0) {
-	////		retVar = &this.rect;
-	////	}
-	////	if (idStr::Icmp(_name, "backColor") == 0) {
-	////		retVar = &this.backColor;
-	////	}
-	////	if (idStr::Icmp(_name, "matColor") == 0) {
-	////		retVar = &this.matColor;
-	////	}
-	////	if (idStr::Icmp(_name, "foreColor") == 0) {
-	////		retVar = &this.foreColor;
-	////	}
-	////	if (idStr::Icmp(_name, "borderColor") == 0) {
-	////		retVar = &this.borderColor;
-	////	}
-	////	if (idStr::Icmp(_name, "textScale") == 0) {
-	////		retVar = &this.textScale;
-	////	}
-	////	if (idStr::Icmp(_name, "rotate") == 0) {
-	////		retVar = &this.rotate;
-	////	}
-	////	if (idStr::Icmp(_name, "shear") == 0) {
-	////		retVar = &this.shear;
-	////	}
-	////	if (idStr::Icmp(_name, "text") == 0) {
-	////		retVar = &this.text;
-	////	}
-	////	return retVar;
-	////}
-	////
+	GetWinVarByName ( _name: string ): idWinVar {
+		var retVar: idWinVar = null;
+		if ( idStr.Icmp( _name, "background" ) == 0 ) {
+			retVar = this.backGroundName;
+		}
+		if ( idStr.Icmp( _name, "visible" ) == 0 ) {
+			retVar = this.visible;
+		}
+		if ( idStr.Icmp( _name, "rect" ) == 0 ) {
+			retVar = this.rect;
+		}
+		if ( idStr.Icmp( _name, "backColor" ) == 0 ) {
+			retVar = this.backColor;
+		}
+		if ( idStr.Icmp( _name, "matColor" ) == 0 ) {
+			retVar = this.matColor;
+		}
+		if ( idStr.Icmp( _name, "foreColor" ) == 0 ) {
+			retVar = this.foreColor;
+		}
+		if ( idStr.Icmp( _name, "borderColor" ) == 0 ) {
+			retVar = this.borderColor;
+		}
+		if ( idStr.Icmp( _name, "textScale" ) == 0 ) {
+			retVar = this.textScale;
+		}
+		if ( idStr.Icmp( _name, "rotate" ) == 0 ) {
+			retVar = this.rotate;
+		}
+		if ( idStr.Icmp( _name, "shear" ) == 0 ) {
+			retVar = this.shear;
+		}
+		if ( idStr.Icmp( _name, "text" ) == 0 ) {
+			retVar = this.text;
+		}
+		return retVar;
+	}
+	
 	/////*
 	////========================
 	////idSimpleWindow::WriteToSaveGame

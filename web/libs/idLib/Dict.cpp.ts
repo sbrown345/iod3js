@@ -192,14 +192,14 @@ class idDict {
 ////	}
 ////}
 ////
-SetFloat( key:string, /*float*/ val :number):void {
-	this.Set( key, va( "%f", val ) );
-}
-////
-////SetInt( key:string, int val ):void {
-////	this.Set( key, va( "%i", val ) );
-////}
-////
+	SetFloat ( key: string, /*float*/ val: number ): void {
+		this.Set( key, va( "%f", val ) );
+	}
+
+	SetInt ( key: string, /*int*/ val: number ): void {
+		this.Set( key, va( "%i", val ) );
+	}
+
 	SetBool ( key: string, val: boolean ): void {
 		this.Set( key, val ? "1" : "0" /*va( "%i", val ) */ );
 	}
