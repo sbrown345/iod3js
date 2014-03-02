@@ -356,9 +356,17 @@ Resize (/* int */newsize:number, /*int */newgranularity?:number):void {
 
 	// init any new ones
 	if ( this.initEmptyOnResize ) {
-		for ( i = 0; i < this.size; i++ ) {
-			if ( !this[i] ) {
-				this[i] = new this.type;
+		if ( this.type == Number ) {
+			for ( i = 0; i < this.size; i++ ) {
+				if ( !this[i] ) {
+					this[i] = 0;
+				}
+			}
+		} else {
+			for ( i = 0; i < this.size; i++ ) {
+				if ( !this[i] ) {
+					this[i] = new this.type;
+				}
 			}
 		}
 	}
@@ -723,24 +731,23 @@ Searches for the specified data in the list and returns it's index.  Returns -1 
 		return -1;
 	}
 
-///*
-//================
-//idList<type>::Find
+/*
+================
+idList<type>::Find
 
-//Searches for the specified data in the list and returns it's address. Returns NULL if the data is not found.
-//================
-//*/
-//template< class type >
-//ID_INLINE type *idList<type>::Find( type const & obj ) const {
-//	int i;
+Searches for the specified data in the list and returns it's address. Returns NULL if the data is not found.
+================
+*/
+	Find ( obj: type ): type {
+		var /*int */i: number;
 
-//	i = FindIndex( obj );
-//	if ( i >= 0 ) {
-//		return &this.list[ i ];
-//	}
+		i = this.FindIndex( obj );
+		if ( i >= 0 ) {
+			return this.list[i];
+		}
 
-//	return NULL;
-//}
+		return null;
+	}
 
 ///*
 //================

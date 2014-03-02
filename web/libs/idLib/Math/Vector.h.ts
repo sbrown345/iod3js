@@ -1198,43 +1198,46 @@ class idVec4 {
 	///*float			*/z:number;
 	///*float			*/w:number;
 
-	get x(): number { return this[0]; }
+	values: Float32Array;
+
+	get x(): number { return this.values[0]; }
 
 	set x(value: number) {
 		if (value === undefined) {
 			throw 'Undefined value';
 		}
-		this[0] = value;
+		this.values[0] = value;
 	}
 
-	get y(): number { return this[1]; }
+	get y(): number { return this.values[1]; }
 
 	set y(value: number) {
 		if (value === undefined) {
 			throw 'Undefined value';
 		}
-		this[1] = value;
+		this.values[1] = value;
 	}
 
-	get z(): number { return this[2]; }
+	get z(): number { return this.values[2]; }
 
 	set z(value: number) {
 		if (value === undefined) {
 			throw 'Undefined value';
 		}
-		this[2] = value;
+		this.values[2] = value;
 	}
 
-	get w(): number { return this[3]; }
+	get w(): number { return this.values[3]; }
 
 	set w(value: number) {
 		if (value === undefined) {
 			throw 'Undefined value';
 		}
-		this[3] = value;
+		this.values[3] = value;
 	}
 
 	constructor ( x = 0.0, y = 0.0, z = 0.0, w = 0.0 ) {
+		this.values = new Float32Array(4);
 		this.x = x; // could extend float32 array
 		this.y = y;
 		this.z = z;
@@ -1464,9 +1467,9 @@ class idVec4 {
 ////	return invLength * sqrLength;
 ////}
 
-////ID_INLINE int idVec4::GetDimension( void ) const {
-////	return 4;
-////}
+	GetDimension ( ): number {
+		return 4;
+	}
 
 ////ID_INLINE const idVec2 &idVec4::ToVec2( void ) const {
 ////	return *reinterpret_cast<const idVec2 *>(this);
@@ -1488,19 +1491,19 @@ class idVec4 {
 ////	return &x;
 ////}
 
-////ID_INLINE float *idVec4::ToFloatPtr( void ) {
-////	return &x;
-////}
+	ToFloatPtr ( ): Float32Array {
+		return this.values;
+	}
 
-	
-/////*
-////=============
-////idVec4::ToString
-////=============
-////*/
-////const char *idVec4::ToString( int precision ) const {
-////	return idStr::FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
-////}
+
+/*
+=============
+idVec4::ToString
+=============
+*/
+	ToString ( precision = 2 ): string {
+		return idStr.FloatArrayToString(this.ToFloatPtr(), this.GetDimension ( ), precision );
+	}
 
 /////*
 ////=============

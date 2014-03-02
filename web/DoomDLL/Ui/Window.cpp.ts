@@ -255,62 +255,62 @@ class idWindow {
 	////	void ParseVec4(idParser *src, idVec4 &out);
 	////	void ConvertRegEntry(const char *name, idParser *src, idStr &out, int tabs);
 	
-		actualX:number/*float*/;					// physical coords
-		actualY:number/*float*/;					// ''
-		childID:number/*int*/;					// this childs id
-		flags: number/*unsigned int */;             // visible, focus, mouseover, cursor, border, etc.. 
-		lastTimeRun:number/*int*/;				//
-		drawRect = new idRectangle;			// overall rect
-		clientRect = new idRectangle;			// client area
-		origin = new idVec2;
+	actualX:number/*float*/;					// physical coords
+	actualY:number/*float*/;					// ''
+	childID:number/*int*/;					// this childs id
+	flags: number/*unsigned int */;             // visible, focus, mouseover, cursor, border, etc.. 
+	lastTimeRun:number/*int*/;				//
+	drawRect = new idRectangle;			// overall rect
+	clientRect = new idRectangle;			// client area
+	origin = new idVec2;
 	
-		timeLine:number/*int*/;					// time stamp used for various fx
-		xOffset:number/*float*/;			
-		yOffset:number/*float*/;
-		forceAspectWidth:number/*float*/;
-		forceAspectHeight:number/*float*/;
-		matScalex:number/*float*/;
-		matScaley:number/*float*/;
-		borderSize:number/*float*/;
-		textAlignx:number/*float*/;
-		textAligny:number/*float*/;
-		name = new idStr;
-		comment = new idStr;
-		shear = new idVec2;
+	timeLine:number/*int*/;					// time stamp used for various fx
+	xOffset:number/*float*/;			
+	yOffset:number/*float*/;
+	forceAspectWidth:number/*float*/;
+	forceAspectHeight:number/*float*/;
+	matScalex:number/*float*/;
+	matScaley:number/*float*/;
+	borderSize:number/*float*/;
+	textAlignx:number/*float*/;
+	textAligny:number/*float*/;
+	name = new idStr;
+	comment = new idStr;
+	shear = new idVec2;
 	
-		textShadow:number;	   //	signed char		
-		fontNum:number;  //	unsigned char	
-		cursor:number;			//	unsigned char	
-		textAlign:number;	   //	signed char		
+	textShadow:number;	   //	signed char		
+	fontNum:number;  //	unsigned char	
+	cursor:number;			//	unsigned char	
+	textAlign:number;	   //	signed char		
 	
-		noTime = new idWinBool;					
-		visible = new idWinBool;				
-		noEvents = new idWinBool;
-		rect = new idWinRectangle;				// overall rect
-		backColor = new idWinVec4;
-		matColor = new idWinVec4;
-		foreColor = new idWinVec4;
-		hoverColor = new idWinVec4;
-		borderColor = new idWinVec4;
-		textScale = new idWinFloat
-		rotate = new idWinFloat
-		text = new idWinStr;
-		backGroundName = new idWinBackground;
+	noTime = new idWinBool;					
+	visible = new idWinBool;				
+	noEvents = new idWinBool;
+	rect = new idWinRectangle;				// overall rect
+	backColor = new idWinVec4;
+	matColor = new idWinVec4;
+	foreColor = new idWinVec4;
+	hoverColor = new idWinVec4;
+	borderColor = new idWinVec4;
+	textScale = new idWinFloat
+	rotate = new idWinFloat
+	text = new idWinStr;
+	backGroundName = new idWinBackground;
 	
-		definedVars = new idList<idWinVar>(idWinVar);
-		updateVars = new idList<idWinVar>(idWinVar);
+	definedVars = new idList<idWinVar>(idWinVar);
+	updateVars = new idList<idWinVar>(idWinVar);
 	
-		textRect = new idRectangle;			// text extented rect
-		background:idMaterial;         // background asset  
+	textRect = new idRectangle;			// text extented rect
+	background:idMaterial;         // background asset  
 	
-		parent:idWindow;				// parent window
-		children = new idList<idWindow>(idWindow);		// child windows	
-		drawWindows= new idList<drawWin_t>(drawWin_t);		
+	parent:idWindow;				// parent window
+	children = new idList<idWindow>(idWindow);		// child windows	
+	drawWindows= new idList<drawWin_t>(drawWin_t);		
 	
-		focusedChild:idWindow;			// if a child window has the focus
-		captureChild:idWindow;			// if a child window has mouse capture
-		overChild:idWindow;			// if a child window has mouse capture
-		hover:boolean;
+	focusedChild:idWindow;			// if a child window has the focus
+	captureChild:idWindow;			// if a child window has mouse capture
+	overChild:idWindow;			// if a child window has mouse capture
+	hover:boolean;
 	
 	dc: idDeviceContext;
 	////
@@ -329,9 +329,9 @@ class idWindow {
 	////
 	ops = new idList<wexpOp_t>(wexpOp_t);			   	// evaluate to make expressionRegisters
 	////	idList<float> expressionRegisters= new idList<wwwww>(wwwwwwww);
-	////	idList<wexpOp_t> *saveOps= new idList<wexpOp_t>(wexpOp_t);			   	// evaluate to make expressionRegisters
+	saveOps = new idList<wexpOp_t>(wexpOp_t);			   	// evaluate to make expressionRegisters
 	////	idList<rvNamedEvent*>		namedEvents= new idList<rvNamedEvent>(rvNamedEvent);		//  added named events
-	////	idList<float> *saveRegs= new idList<wwwww>(wwwwwwww);
+	saveRegs = new idList<number>(Number); //idList<float>
 	////
 	////	idRegisterList regList = new idRegisterList;
 	////
@@ -431,7 +431,7 @@ idWindow::CommonInit
 		this.matColor.equalsVec4( new idVec4( 1, 1, 1, 1 ) );
 		this.borderColor.Zero ( );
 		this.background = null;
-		this.backGroundName.equalsString("");
+		this.backGroundName.equalsStr(new idStr(""));
 		this.focusedChild = null;
 		this.captureChild = null;
 		this.overChild = null;
@@ -1521,7 +1521,7 @@ idWindow::idWindow
 ////	SetFont();
 ////	//if (flags & WIN_DESKTOP) {
 ////		// see if this window forces a new aspect ratio
-////		dc.SetSize(forceAspectWidth, forceAspectHeight);
+////		dc.SetSize(this.forceAspectWidth, forceAspectHeight);
 ////	//}
 ////
 ////	//FIXME: go to screen coord tracking
@@ -1586,22 +1586,22 @@ idWindow::idWindow
 ////	textRect.Offset(-x, -y);
 ////}
 ////
-/////*
-////================
-////idWindow::SetDC
-////================
-////*/
-////void idWindow::SetDC(idDeviceContext *d) {
-////	dc = d;
-////	//if (flags & WIN_DESKTOP) {
-////		dc.SetSize(forceAspectWidth, forceAspectHeight);
-////	//}
-////	var c = this.children.Num();
-////	for (var i = 0; i < c; i++) {
-////		children[i].SetDC(d);
-////	}
-////}
-////
+/*
+================
+idWindow::SetDC
+================
+*/
+	SetDC ( d: idDeviceContext ): void {
+		this.dc = d;
+		//if (flags & WIN_DESKTOP) {
+		this.dc.SetSize( this.forceAspectWidth, this.forceAspectHeight );
+		//}
+		var c = this.children.Num ( );
+		for ( var i = 0; i < c; i++ ) {
+			this.children[i].SetDC( d );
+		}
+	}
+
 /////*
 ////================
 ////idWindow::ArchiveToDictionary
@@ -1769,24 +1769,24 @@ idWindow::idWindow
 ////	flags &= ~WIN_CAPTURE;
 ////}
 ////
-/////*
-////================
-////idWindow::SetFlag
-////================
-////*/
-////void idWindow::SetFlag(unsigned int f) {
-////	flags |= f;
-////}
-////
-/////*
-////================
-////idWindow::ClearFlag
-////================
-////*/
-////void idWindow::ClearFlag(unsigned int f) {
-////	flags &= ~f;
-////}
-////
+/*
+================
+idWindow::SetFlag
+================
+*/
+	SetFlag ( /*unsigned int */f: number ): void {
+		this.flags |= f;
+	}
+
+/*
+================
+idWindow::ClearFlag
+================
+*/
+	ClearFlag ( /*unsigned int */f: number ): void {
+		this.flags &= ~f;
+	}
+
 ////
 /////*
 ////================
@@ -2220,7 +2220,7 @@ idWindow::idWindow
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "forceaspectwidth") == 0) {
-////		forceAspectWidth = src.ParseFloat();
+////		this.forceAspectWidth = src.ParseFloat();
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "forceaspectheight") == 0) {
@@ -2408,19 +2408,20 @@ idWindow::idWindow
 ////	name = _name;
 ////	matScalex = 1.0;
 ////	matScaley = 1.0;
-////	forceAspectWidth = 640.0;
+////	this.forceAspectWidth = 640.0;
 ////	forceAspectHeight = 480.0;
 ////	noTime = false;
 ////	visible = true;
 ////	flags = 0;
 ////}
 ////
-/////*
-////================
-////idWindow::Parse
-////================
-////*/
-////bool idWindow::Parse( idParser *src, bool rebuild) {
+/*
+================
+idWindow::Parse
+================
+*/
+	Parse(src: idParser, rebuild = true): boolean {
+		todoThrow ( );
 ////	idToken token, token2, token3, token4, token5, token6, token7;
 ////	idStr work;
 ////
@@ -2442,7 +2443,7 @@ idWindow::idWindow
 ////	src.ExpectTokenString( "{" );
 ////	src.ExpectAnyToken( &token );
 ////
-////	bool ret = true;
+	var ret = true;
 ////
 ////	// attach a window wrapper to the window if the gui editor is running
 ////#ifdef ID_ALLOW_TOOLS
@@ -2837,8 +2838,8 @@ idWindow::idWindow
 ////	}
 ////#endif
 ////
-////	return ret;
-////}
+	return ret;
+}
 ////
 /////*
 ////================
@@ -3772,7 +3773,7 @@ idWindow::idWindow
 ////	savefile.Write( &xOffset, sizeof( xOffset ) );
 ////	savefile.Write( &yOffset, sizeof( yOffset ) );
 ////	savefile.Write( &cursor, sizeof( cursor ) );
-////	savefile.Write( &forceAspectWidth, sizeof( forceAspectWidth ) );
+////	savefile.Write( &this.forceAspectWidth, sizeof( this.forceAspectWidth ) );
 ////	savefile.Write( &forceAspectHeight, sizeof( forceAspectHeight ) );
 ////	savefile.Write( &matScalex, sizeof( matScalex ) );
 ////	savefile.Write( &matScaley, sizeof( matScaley ) );
@@ -3917,7 +3918,7 @@ idWindow::idWindow
 ////	savefile.Read( &xOffset, sizeof( xOffset ) );
 ////	savefile.Read( &yOffset, sizeof( yOffset ) );
 ////	savefile.Read( &cursor, sizeof( cursor ) );
-////	savefile.Read( &forceAspectWidth, sizeof( forceAspectWidth ) );
+////	savefile.Read( &this.forceAspectWidth, sizeof( this.forceAspectWidth ) );
 ////	savefile.Read( &forceAspectHeight, sizeof( forceAspectHeight ) );
 ////	savefile.Read( &matScalex, sizeof( matScalex ) );
 ////	savefile.Read( &matScaley, sizeof( matScaley ) );
@@ -4123,52 +4124,52 @@ idWindow::idWindow
 ////	win.childID = this.children.Append(win);
 ////}
 ////
-/////*
-////================
-////idWindow::FixupParms
-////================
-////*/
-////void idWindow::FixupParms() {
-////	int i;
-////	var c = this.children.Num();
-////	for (i = 0; i < c; i++) {
-////		children[i].FixupParms();
-////	}
-////	for (i = 0; i < SCRIPT_COUNT; i++) {
-////		if (scripts[i]) {
-////			scripts[i].FixupParms(this);
-////		}
-////	}
-////
-////	c = timeLineEvents.Num();
-////	for (i = 0; i < c; i++) {
-////		timeLineEvents[i].event.FixupParms(this);
-////	}
-////
-////	c = namedEvents.Num();
-////	for (i = 0; i < c; i++) {
-////		namedEvents[i].mEvent.FixupParms(this);
-////	}
-////
-////	c = ops.Num();
-////	for (i = 0; i < c; i++) {
-////		if (ops[i].b == -2) {
-////			// need to fix this up
-////			const char *p = (const char*)(ops[i].a);
-////			idWinVar *var = GetWinVarByName(p, true);
-////			delete []p;
-////			ops[i].a = (int)var;
-////			ops[i].b = -1;
-////		}
-////	}
-////	
-////	
-////	if (flags & WIN_DESKTOP) {
-////		CalcRects(0,0);
-////	}
-////
-////}
-////
+/*
+================
+idWindow::FixupParms
+================
+*/
+	FixupParms ( ): void {
+		todoThrow ( );
+		//var/*int */i:number;
+		//var c = this.children.Num();
+		//for (i = 0; i < c; i++) {
+		//	children[i].FixupParms();
+		//}
+		//for (i = 0; i < SCRIPT_COUNT; i++) {
+		//	if (scripts[i]) {
+		//		scripts[i].FixupParms(this);
+		//	}
+		//}
+
+		//c = timeLineEvents.Num();
+		//for (i = 0; i < c; i++) {
+		//	timeLineEvents[i].event.FixupParms(this);
+		//}
+
+		//c = namedEvents.Num();
+		//for (i = 0; i < c; i++) {
+		//	namedEvents[i].mEvent.FixupParms(this);
+		//}
+
+		//c = ops.Num();
+		//for (i = 0; i < c; i++) {
+		//	if (ops[i].b == -2) {
+		//		// need to fix this up
+		//		const char *p = (const char*)(ops[i].a);
+		//		idWinVar *var = GetWinVarByName(p, true);
+		//		delete []p;
+		//		ops[i].a = (int)var;
+		//		ops[i].b = -1;
+		//	}
+		//}
+
+
+		//if (flags & WIN_DESKTOP) {
+		//	CalcRects(0,0);
+		//}
+	}
+
 /////*
 ////================
 ////idWindow::IsSimple
@@ -4450,7 +4451,7 @@ idWindow::Interactive
 ////================
 ////*/
 ////void idWindow::SetDefaults ( void ) {	
-////	forceAspectWidth = 640.0f;
+////	this.forceAspectWidth = 640.0f;
 ////	forceAspectHeight = 480.0f;
 ////	matScalex = 1;
 ////	matScaley = 1;

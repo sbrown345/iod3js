@@ -181,22 +181,22 @@ class idDict {
 ////	Clear();
 ////}
 ////
-////ID_INLINE void idDict::SetGranularity( int granularity ) {
+////SetGranularity( int granularity ) {
 ////	this.args.SetGranularity( granularity );
 ////	this.argHash.SetGranularity( granularity );
 ////}
 ////
-////ID_INLINE void idDict::SetHashSize( int hashSize ) {
+////SetHashSize( int hashSize ) {
 ////	if ( this.args.Num() == 0 ) {
 ////		this.argHash.Clear( hashSize, 16 );
 ////	}
 ////}
 ////
-////ID_INLINE void idDict::SetFloat( key:string, float val ) {
-////	Set( key, va( "%f", val ) );
-////}
+SetFloat( key:string, /*float*/ val :number):void {
+	Set( key, va( "%f", val ) );
+}
 ////
-////ID_INLINE void idDict::SetInt( key:string, int val ) {
+////SetInt( key:string, int val ):void {
 ////	Set( key, va( "%i", val ) );
 ////}
 ////
@@ -204,7 +204,7 @@ class idDict {
 		this.Set( key, val ? "1" : "0" /*va( "%i", val ) */ );
 	}
 ////
-////ID_INLINE void idDict::SetVector( key:string, const idVec3 &val ) {
+////SetVector( key:string, const idVec3 &val ):void {
 ////	Set( key, val.ToString() );
 ////}
 ////
@@ -212,15 +212,15 @@ class idDict {
 		this.Set( key, val.ToString ( ) );
 	}
 ////
-////ID_INLINE void idDict::SetVec2( key:string, const idVec2 &val ) {
+////SetVec2( key:string, const idVec2 &val ):void {
 ////	Set( key, val.ToString() );
 ////}
 ////
-////ID_INLINE void idDict::SetAngles( key:string, const idAngles &val ) {
+////SetAngles( key:string, const idAngles &val ):void {
 ////	Set( key, val.ToString() );
 ////}
 ////
-////ID_INLINE void idDict::SetMatrix( key:string, const idMat3 &val ) {
+////SetMatrix( key:string, const idMat3 &val ):void {
 ////	Set( key, val.ToString() );
 ////}
 ////
@@ -244,14 +244,14 @@ class idDict {
 ////	return false;
 ////}
 ////
-////ID_INLINE const char *idDict::GetString( key:string, const char *defaultString ) const {
-////	const idKeyValue *kv = this.FindKey( key );
-////	if ( kv ) {
-////		return kv.GetValue();
-////	}
-////	return defaultString;
-////}
-////
+	GetString ( key: string, defaultString = ""): string {
+		var kv = this.FindKey( key );
+		if ( kv ) {
+			return kv.GetValue ( ).data;
+		}
+		return defaultString;
+	}
+
 ////ID_INLINE float idDict::GetFloat( key:string, const char *defaultString ) const {
 ////	return atof( GetString( key, defaultString ) );
 ////}

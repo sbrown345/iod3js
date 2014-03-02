@@ -112,7 +112,7 @@ class idParser {
 ////					// free the current source
 ////	void			FreeSource( bool keepDefines = false );
 ////					// returns true if a source is loaded
-////	int				IsLoaded( void ) const { return idParser::loaded; }
+	IsLoaded ( ): number { return this.loaded; }
 ////					// read a token from the source
 ////	int				ReadToken( idToken *token );
 ////					// expect a certain token, reads the token when available
@@ -3272,41 +3272,42 @@ idParser::GetFlags
 	return this.flags;
 }
 
-/////*
-////================
-////idParser::LoadFile
-////================
-////*/
-/////*int*/LoadFile( const char *filename, bool OSPath ):number {
-////	idLexer *script;
-////
-////	if ( this.loaded ) {
-////		common.FatalError("idParser::loadFile: another source already loaded");
-////		return 0/*false*/;
-////	}
-////	script = new idLexer( filename, 0, OSPath );
-////	if ( !script.IsLoaded() ) {
-////		delete script;
-////		return 0/*false*/;
-////	}
-////	script.SetFlags( this.flags );
-////	script.SetPunctuations( this.punctuations );
-////	script.next = NULL;
-////	this.OSPath = OSPath;
-////	idParser::filename = filename;
-////	this.scriptstack = script;
-////	this.tokens = null;
-////	this.indentstack = null;
-////	this.skip = 0;
-////	this.loaded = true;
-////
-////	if ( !this.definehash ) {
-////		idParser::defines = null;
-////		this.definehash = (define_t **) Mem_ClearedAlloc( DEFINEHASHSIZE * sizeof(define_t *) );
-////		idParser::AddGlobalDefinesToSource();
-////	}
-////	return 1/*true*/;
-////}
+/*
+================
+idParser::LoadFile
+================
+*/
+	/*int*/
+	LoadFile ( filename: string, OSPath = false ): number {
+		var script: idLexer;
+
+		if ( this.loaded ) {
+			common.FatalError( "idParser::loadFile: another source already loaded" );
+			return 0 /*false*/;
+		}
+		script = new idLexer( filename, 0, OSPath );
+		if ( !script.IsLoaded ( ) ) {
+			delete script;
+			return 0 /*false*/;
+		}
+		script.SetFlags( this.flags );
+		script.SetPunctuations( this.punctuations );
+		script.next = null;
+		this.OSPath = OSPath;
+		this.filename.equals( filename );
+		this.scriptstack = script;
+		this.tokens = null;
+		this.indentstack = null;
+		this.skip = 0;
+		this.loaded = 1 /*true*/;
+
+		if ( !this.definehash ) {
+			this.defines = null;
+			this.definehash = new Array<define_t>( DEFINEHASHSIZE ); //(define_t **) Mem_ClearedAlloc( DEFINEHASHSIZE * sizeof(define_t *) );
+			this.AddGlobalDefinesToSource ( );
+		}
+		return 1 /*true*/;
+	}
 
 /*
 ================
@@ -3435,41 +3436,37 @@ idParser::GetPunctuationId
 		return 0;
 	}
 
-/////*
-////================
-////idParser::idParser
-////================
-////*/
-////idParser::idParser() {
-////	this.loaded = false;
-////	this.OSPath = false;
-////	this.punctuations = 0;
-////	this.flags = 0;
-////	this.scriptstack = NULL;
-////	this.indentstack = NULL;
-////	this.definehash = NULL;
-////	this.defines = NULL;
-////	this.tokens = NULL;
-////	this.marker_p = NULL;
-////}
-////
-/////*
-////================
-////idParser::idParser
-////================
-////*/
-////idParser::idParser( int flags ) {
-////	this.loaded = false;
-////	this.OSPath = false;
-////	this.punctuations = 0;
-////	this.flags = flags;
-////	this.scriptstack = NULL;
-////	this.indentstack = NULL;
-////	this.definehash = NULL;
-////	this.defines = NULL;
-////	this.tokens = NULL;
-////	this.marker_p = NULL;
-////}
+
+	constructor ( flags: number= null ) {
+		if ( arguments.length == 0 ) {
+			// idParser();
+			this.loaded = 0 /*false*/;
+			this.OSPath = false;
+			this.punctuations = null;
+			this.flags = 0;
+			this.scriptstack = null;
+			this.indentstack = null;
+			this.definehash = null;
+			this.defines = null;
+			this.tokens = null;
+			this.marker_p = NULL;
+		} else if ( arguments.length == 1 && typeof arguments[0] === "number" ) {
+			//idParser( int flags );
+			this.loaded = 0 /*false*/;
+			this.OSPath = false;
+			this.punctuations = null;
+			this.flags = flags;
+			this.scriptstack = null;
+			this.indentstack = null;
+			this.definehash = null;
+			this.defines = null;
+			this.tokens = null;
+			this.marker_p = null;
+		} else {
+			todoThrow ( );
+		}
+	}
+	
 ////
 /////*
 ////================

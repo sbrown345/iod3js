@@ -41,15 +41,16 @@ class idWinVar {
 ////	virtual ~idWinVar();
 ////
 ////	void SetGuiInfo(idDict *gd, const char *_name);
-GetName() :string{ 
-		if (this.name) {
+	GetName ( ): string {
+		if ( this.name ) {
 			if (this.guiDict && /***/this.name[0] == '*') {
-				return this.guiDict.GetString(this.name[1]);
+				return this.guiDict.GetString( this.name.substr(1) );
 			}
 			return this.name;
 		}
-		return ""; 
+		return "";
 	}
+
 	SetName(_name: string): void { 
 		//delete []this.name; 
 		this.name = null;
@@ -358,13 +359,13 @@ class idWinFloat extends idWinVar {
 ////		this.data = other.data;
 ////		return *this;
 ////	}
-////	float &operator=(	const float &other ) {
-////		this.data = other;
-////		if (this.guiDict) {
-////			this.guiDict.SetFloat(this.GetName(), this.data);
-////		}
-////		return this.data;
-////	}
+	equalsFloat ( /*float */other: number ): number {
+		this.data = other;
+		if ( this.guiDict ) {
+			this.guiDict.SetFloat( this.GetName ( ), this.data );
+		}
+		return this.data;
+	}
 ////	operator float() const {
 ////		return this.data;
 ////	}
@@ -738,7 +739,7 @@ class idWinVec3 extends idWinVar {
 ////	}
 ////
 ////protected:
-	 this.data = new idVec3;
+	 data = new idVec3;
 };
 
 class idWinBackground extends idWinStr {
@@ -759,20 +760,20 @@ class idWinBackground extends idWinStr {
 ////	int	operator==(	const char *other ) const {
 ////		return (data == other);
 ////	}
-////	idStr &operator=(	const idStr &other ) {
-////		this.data = other;
-////		if (this.guiDict) {
-////			this.guiDict.Set(this.GetName(), this.data);
-////		}
-////		if (mat) {
-////			if ( this.data == "" ) {
-////				(*mat) = NULL;
-////			} else {
-////				(*mat) = declManager.FindMaterial(data);
-////			}
-////		}
-////		return this.data;
-////	}
+	equalsStr ( other: idStr ): idStr {
+		this.data.equals(other.data);
+		if ( this.guiDict ) {
+			this.guiDict.Set( this.GetName ( ), this.data.data );
+		}
+		if ( this.mat ) {
+			if ( this.data.data == "" ) {
+				this.mat = null;
+			} else {
+				this.mat = declManager.FindMaterial( this.data.data );
+			}
+		}
+		return this.data;
+	}
 ////	idWinBackground &operator=( const idWinBackground &other ) {
 ////		idWinVar::operator=(other);
 ////		this.data = other.data;
@@ -868,7 +869,7 @@ class idWinBackground extends idWinStr {
 ////
 ////protected:
 	data = new idStr;
-	mat:idMaterial[]//	const idMaterial **mat;
+	mat:idMaterial//	const idMaterial **mat;
 };
 ////
 /////*

@@ -67,47 +67,47 @@ var WIN_DESKTOP		= 0x10000000;
 ////const char CAPTION_HEIGHT[] = "16.0";
 ////const char SCROLLER_SIZE[] = "16.0";
 ////const int SCROLLBAR_SIZE = 16;
-////
-////const int MAX_WINDOW_NAME = 32;
-////const int MAX_LIST_ITEMS = 1024;
-////
+
+var MAX_WINDOW_NAME = 32;
+var MAX_LIST_ITEMS = 1024;
+
 ////const char DEFAULT_BACKCOLOR[] = "1 1 1 1";
 ////const char DEFAULT_FORECOLOR[] = "0 0 0 1";
 ////const char DEFAULT_BORDERCOLOR[] = "0 0 0 1";
 ////const char DEFAULT_TEXTSCALE[] = "0.4";
-////
-////typedef enum {
-////	WOP_TYPE_ADD,
-////	WOP_TYPE_SUBTRACT,
-////	WOP_TYPE_MULTIPLY,
-////	WOP_TYPE_DIVIDE,
-////	WOP_TYPE_MOD,
-////	WOP_TYPE_TABLE,
-////	WOP_TYPE_GT,
-////	WOP_TYPE_GE,
-////	WOP_TYPE_LT,
-////	WOP_TYPE_LE,
-////	WOP_TYPE_EQ,
-////	WOP_TYPE_NE,
-////	WOP_TYPE_AND,
-////	WOP_TYPE_OR,
-////	WOP_TYPE_VAR,
-////	WOP_TYPE_VARS,
-////	WOP_TYPE_VARF,
-////	WOP_TYPE_VARI,
-////	WOP_TYPE_VARB,
-////	WOP_TYPE_COND
-////} wexpOpType_t;
-////
+
+enum wexpOpType_t{
+	WOP_TYPE_ADD,
+	WOP_TYPE_SUBTRACT,
+	WOP_TYPE_MULTIPLY,
+	WOP_TYPE_DIVIDE,
+	WOP_TYPE_MOD,
+	WOP_TYPE_TABLE,
+	WOP_TYPE_GT,
+	WOP_TYPE_GE,
+	WOP_TYPE_LT,
+	WOP_TYPE_LE,
+	WOP_TYPE_EQ,
+	WOP_TYPE_NE,
+	WOP_TYPE_AND,
+	WOP_TYPE_OR,
+	WOP_TYPE_VAR,
+	WOP_TYPE_VARS,
+	WOP_TYPE_VARF,
+	WOP_TYPE_VARI,
+	WOP_TYPE_VARB,
+	WOP_TYPE_COND
+};
+
 ////typedef enum {
 ////	WEXP_REG_TIME,
 ////	WEXP_REG_NUM_PREDEFINED
 ////} wexpRegister_t;
-////
-////typedef struct {
-////	wexpOpType_t opType;	
-////	int	a, b, c, d;
-////} wexpOp_t;
+
+class wexpOp_t {
+	opType: wexpOpType_t;	
+	a:number; b:number; c:number; d:number;//int	
+} ;
 ////
 ////struct idRegEntry {
 ////	const char *name;

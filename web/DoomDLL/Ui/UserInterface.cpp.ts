@@ -243,18 +243,19 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 
 class idUserInterfaceLocal extends idUserInterface {
 
-//idUserInterfaceLocal::idUserInterfaceLocal() {
-//	cursorX = cursorY = 0.0;
-//	desktop = NULL;
-//	loading = false;
-//	active = false;
-//	interactive = false;
-//	uniqued = false;
-//	bindHandler = NULL;
-//	//so the reg eval in gui parsing doesn't get bogus values
-//	time = 0;
-//	refs = 1;
-//}
+	constructor() {
+		super ( );
+		this.cursorX = this.cursorY = 0.0;
+		this.desktop = null;
+		this.loading = false;
+		this.active = false;
+		this.interactive = false;
+		this.uniqued = false;
+		this.bindHandler = null;
+		//so the reg eval in gui parsing doesn't get bogus values
+		this.time = 0;
+		this.refs = 1;
+	}
 //
 //idUserInterfaceLocal::~idUserInterfaceLocal() {
 //	delete desktop;
@@ -303,14 +304,14 @@ class idUserInterfaceLocal extends idUserInterface {
 		fileSystem.ReadFile( qpath, null, $timeStamp );
 		this.timeStamp = $timeStamp.$;
 
-		this.src.$.LoadFile( qpath );
+		src.LoadFile( qpath );
 
 		if ( src.IsLoaded ( ) ) {
 			var token = new R( new idToken );
 			while ( src.ReadToken( token ) ) {
 				if ( idStr.Icmp( token.$, "windowDef" ) == 0 ) {
 					this.desktop.SetDC( uiManagerLocal.dc );
-					if ( this.desktop.Parse( this.src.$, rebuild ) ) {
+					if ( this.desktop.Parse( src, rebuild ) ) {
 						this.desktop.SetFlag( WIN_DESKTOP );
 						this.desktop.FixupParms ( );
 					}
