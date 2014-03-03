@@ -847,15 +847,15 @@ idParser::StringizeTokens
 ================
 */
 	/*int*/
-	StringizeTokens ( tokens: idToken, token: R<idToken> ): number {
+	StringizeTokens ( tokens: idToken, token: idToken ): number {
 		var t: idToken;
 		todoThrow ( );
-		token.$.type = TT_STRING;
-		token.$.whiteSpaceStart_p = NULL;
-		token.$.whiteSpaceEnd_p = NULL;
-		token.$ = new idToken( "" );//.equals( "" ); //(*token) = "";
+		token.type = TT_STRING;
+		token.whiteSpaceStart_p = NULL;
+		token.whiteSpaceEnd_p = NULL;
+		token.equals( "" ); //(*token) = "";
 		for ( t = this.tokens; t; t = t.next ) {
-			token.$.Append( t.c_str ( ) );
+			token.Append( t.c_str ( ) );
 		}
 		return 1 /*true*/;
 	}
@@ -1091,7 +1091,7 @@ idParser::ExpandDefine
 						// step over the stringizing operator
 						dt = dt.next;
 						// stringize the define parameter tokens
-						if ( !this.StringizeTokens( parms[parmnum], token ) ) {
+						if ( !this.StringizeTokens( parms[parmnum], token.$ ) ) {
 							this.Error( "can't stringize tokens" );
 							return 0 /*false*/;
 						}

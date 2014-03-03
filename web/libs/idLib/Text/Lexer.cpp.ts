@@ -1249,7 +1249,7 @@ class idLexer {
 		}
 		// if no lines were crossed before this token
 		if ( !tok.$.linesCrossed ) {
-			token.$ = tok.$;
+			token.$.equals(tok.$);
 			return 1;
 		}
 		// restore our position

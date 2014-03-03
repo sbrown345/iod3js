@@ -189,7 +189,7 @@ will point into this temporary buffer.
 			// check for negative numbers
 			if ( !keepAsStrings && ( token.$.data == "-" ) ) {
 				if ( lex.CheckTokenType( TT_NUMBER, 0, $number ) ) {
-					token.$ = new idToken( "-" + $number.$.data );
+					token.$.equals( "-" + $number.$.data );
 				}
 			}
 
@@ -199,9 +199,9 @@ will point into this temporary buffer.
 					return;
 				}
 				if ( /*idLib::*/cvarSystem ) {
-					token.$ = new idToken( /*idLib::*/cvarSystem.GetCVarString( token.$.c_str ( ) ) );
+					token.$.equals(/*idLib::*/cvarSystem.GetCVarString( token.$.c_str ( ) ) );
 				} else {
-					token.$ = new idToken( "<unknown>" );
+					token.$.equals( "<unknown>" );
 				}
 			}
 
