@@ -3167,45 +3167,46 @@ Returns a register index
 	if ($var == null) {
 		$var = this.GetWinVarByName(token.$.data, true);
 	}
-	if ($var) {
-		todoThrow();
-		//a = (int)$var;
-		////assert(dynamic_cast<idWinVec4*>($var));
-		//$var.Init(token.$.data, this);
-		//b = component;
-		//if (dynamic_cast<idWinVec4*>($var)) {
-		//	if (src.ReadToken(token)) {
-		//		if (token.$.data == "[") {
-		//			b = this.ParseExpression(src);
-		//			src.ExpectTokenString("]");
-		//		} else {
-		//			src.UnreadToken(token);
-		//		}
-		//	}
-		//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VAR);
-		//} else if (dynamic_cast<idWinFloat*>($var)) {
-		//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VARF);
-		//} else if (dynamic_cast<idWinInt*>($var)) {
-		//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VARI);
-		//} else if (dynamic_cast<idWinBool*>($var)) {
-		//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VARB);
-		//} else if (dynamic_cast<idWinStr*>($var)) {
-		//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VARS);
-		//} else {
-		//	src.Warning("Var expression not vec4, float or int '%s'", token.$.c_str());
-		//}
-		return 0;
-	} else {
-		// ugly but used for post parsing to fixup named vars
-		todoThrow ( );
-		//char *p = new char[token.Length()+1];
-		//strcpy(p, token);
-		//a = (int)p; //todo:actual address????????????????????????????????????????????
-		//b = -2;
-		return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VAR);
+		if ( $var ) {
+			todoThrow ( );
+			//a = (int)$var;
+			////assert(dynamic_cast<idWinVec4*>($var));
+			//$var.Init(token.$.data, this);
+			//b = component;
+			//if (dynamic_cast<idWinVec4*>($var)) {
+			//	if (src.ReadToken(token)) {
+			//		if (token.$.data == "[") {
+			//			b = this.ParseExpression(src);
+			//			src.ExpectTokenString("]");
+			//		} else {
+			//			src.UnreadToken(token);
+			//		}
+			//	}
+			//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VAR);
+			//} else if (dynamic_cast<idWinFloat*>($var)) {
+			//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VARF);
+			//} else if (dynamic_cast<idWinInt*>($var)) {
+			//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VARI);
+			//} else if (dynamic_cast<idWinBool*>($var)) {
+			//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VARB);
+			//} else if (dynamic_cast<idWinStr*>($var)) {
+			//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VARS);
+			//} else {
+			//	src.Warning("Var expression not vec4, float or int '%s'", token.$.c_str());
+			//}
+			return 0;
+		} else {
+			// ugly but used for post parsing to fixup named vars
+			//char *p = new char[token.Length()+1];
+			//strcpy(p, token);
+			idWindow.ParseTermStrings.push(token.$.data);
+			a = idWindow.ParseTermStrings.length - 1; //a = (int)p
+			b = -2;
+			return this.EmitOp( a, b, wexpOpType_t.WOP_TYPE_VAR );
+		}
 	}
 
-}
+	static ParseTermStrings: string[] = [];
 
 /*
 =================
@@ -3215,81 +3216,81 @@ Returns a register index
 =================
 */
 static TOP_PRIORITY = 4;
-ParseExpressionPriority(src:idParser, /*int*/ priority:number, $var:idWinVar = null, /*int */component = 0):number {
-	var token = new R(new idToken);
-	var/*int		*/a:number;
+	ParseExpressionPriority ( src: idParser, /*int*/ priority: number, $var: idWinVar = null, /*int */component = 0 ): number {
+		var token = new R( new idToken );
+		var /*int		*/a: number;
 
-	if ( priority == 0 ) {
-		return this.ParseTerm(src, $var, component );
-	}
+		if ( priority == 0 ) {
+			return this.ParseTerm( src, $var, component );
+		}
 
-	a = this.ParseExpressionPriority(src, priority - 1, $var, component );
+		a = this.ParseExpressionPriority( src, priority - 1, $var, component );
 
-	if ( !src.ReadToken( token ) ) {
-		// we won't get EOF in a real file, but we can
-		// when parsing from generated strings
-		return a;
-	}
-
-	if ( priority == 1 && token.$.data == "*" ) {
-		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_MULTIPLY, priority );
-	}
-	if ( priority == 1 && token.$.data == "/" ) {
-		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_DIVIDE, priority );
-	}
-	if ( priority == 1 && token.$.data == "%" ) {	// implied truncate both to integer
-		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_MOD, priority );
-	}
-	if ( priority == 2 && token.$.data == "+" ) {
-		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_ADD, priority );
-	}
-	if ( priority == 2 && token.$.data == "-" ) {
-		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_SUBTRACT, priority );
-	}
-	if ( priority == 3 && token.$.data == ">" ) {
-		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_GT, priority );
-	}
-	if ( priority == 3 && token.$.data == ">=" ) {
-		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_GE, priority );
-	}
-	if ( priority == 3 && token.$.data == "<" ) {
-		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_LT, priority );
-	}
-	if ( priority == 3 && token.$.data == "<=" ) {
-		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_LE, priority );
-	}
-	if ( priority == 3 && token.$.data == "==" ) {
-		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_EQ, priority );
-	}
-	if ( priority == 3 && token.$.data == "!=" ) {
-		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_NE, priority );
-	}
-	if ( priority == 4 && token.$.data == "&&" ) {
-		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_AND, priority );
-	}
-	if ( priority == 4 && token.$.data == "||" ) {
-		return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_OR, priority );
-	}
-	if ( priority == 4 && token.$.data == "?" ) {
-		var oop = new R<wexpOp_t> ( );
-		var o = this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_COND, priority, /*&*/oop );
 		if ( !src.ReadToken( token ) ) {
+			// we won't get EOF in a real file, but we can
+			// when parsing from generated strings
+			return a;
+		}
+
+		if ( priority == 1 && token.$.data == "*" ) {
+			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_MULTIPLY, priority );
+		}
+		if ( priority == 1 && token.$.data == "/" ) {
+			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_DIVIDE, priority );
+		}
+		if ( priority == 1 && token.$.data == "%" ) { // implied truncate both to integer
+			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_MOD, priority );
+		}
+		if ( priority == 2 && token.$.data == "+" ) {
+			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_ADD, priority );
+		}
+		if ( priority == 2 && token.$.data == "-" ) {
+			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_SUBTRACT, priority );
+		}
+		if ( priority == 3 && token.$.data == ">" ) {
+			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_GT, priority );
+		}
+		if ( priority == 3 && token.$.data == ">=" ) {
+			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_GE, priority );
+		}
+		if ( priority == 3 && token.$.data == "<" ) {
+			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_LT, priority );
+		}
+		if ( priority == 3 && token.$.data == "<=" ) {
+			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_LE, priority );
+		}
+		if ( priority == 3 && token.$.data == "==" ) {
+			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_EQ, priority );
+		}
+		if ( priority == 3 && token.$.data == "!=" ) {
+			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_NE, priority );
+		}
+		if ( priority == 4 && token.$.data == "&&" ) {
+			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_AND, priority );
+		}
+		if ( priority == 4 && token.$.data == "||" ) {
+			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_OR, priority );
+		}
+		if ( priority == 4 && token.$.data == "?" ) {
+			var oop = new R<wexpOp_t> ( );
+			var o = this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_COND, priority, /*&*/oop );
+			if ( !src.ReadToken( token ) ) {
+				return o;
+			}
+			if ( token.$.data == ":" ) {
+				a = this.ParseExpressionPriority( src, priority - 1, $var );
+				oop.$.d = a;
+			}
 			return o;
 		}
-		if ( token.$.data == ":" ) {
-			a = this.ParseExpressionPriority( src, priority - 1, $var );
-			oop.$.d = a;
-		}
-		return o;
+
+		// assume that anything else terminates the expression
+		// not too robust error checking...
+
+		src.UnreadToken( token );
+
+		return a;
 	}
-
-	// assume that anything else terminates the expression
-	// not too robust error checking...
-
-	src.UnreadToken( token );
-
-	return a;
-}
 
 /*
 ================
