@@ -7,7 +7,7 @@ JavaScript Debug Helpers
 */
 var LOG_TO_CONSOLE = false;
 var SKIP_ALL_LOGGING = false;
-var LOGGING_WITH_VISUAL_STUDIO = window["Debug"] && window["Debug"].debuggerEnabled;
+var LOGGING_WITH_VISUAL_STUDIO = !!(window["Debug"] && window["Debug"].debuggerEnabled);
 
 var DEBUG_LOG_MODE = true && !LOGGING_WITH_VISUAL_STUDIO;
 function isd(v: boolean): boolean { return DEBUG_LOG_MODE && v; }
@@ -16,7 +16,6 @@ var DEBUG_WEBGL_UTIL = isd( false );
 var DEBUG_RENDER_METHODS = isd( false );
 var DEBUG_APPEND_TEXTURES_TO_BODY = isd( false );
 var DEBUG_RegisterDeclFolder = isd( false );
-var DEBUG_Lexer = isd( false );
 var DEBUG_DeriveTangents = isd( false );
 var DEBUG_R_DeriveTangents = isd( false );
 var DEBUG_COMPILER = isd( true );

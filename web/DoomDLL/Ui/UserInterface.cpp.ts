@@ -307,9 +307,9 @@ class idUserInterfaceLocal extends idUserInterface {
 		src.LoadFile( qpath );
 
 		if ( src.IsLoaded ( ) ) {
-			var token = new R( new idToken );
+			var token = new idToken ;
 			while ( src.ReadToken( token ) ) {
-				if ( idStr.Icmp( token.$, "windowDef" ) == 0 ) {
+				if ( idStr.Icmp( token, "windowDef" ) == 0 ) {
 					this.desktop.SetDC( uiManagerLocal.dc );
 					if ( this.desktop.Parse( src, rebuild ) ) {
 						this.desktop.SetFlag( WIN_DESKTOP );

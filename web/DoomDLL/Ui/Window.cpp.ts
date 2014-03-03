@@ -1869,7 +1869,7 @@ idWindow::ParseScript
 
 		var ifElseBlock = false;
 
-		var token = new R( new idToken );
+		var token = new idToken;
 
 		// scripts start with { ( unless parm is true ) and have ; separated command lists.. commands are command,
 		// arg.. basically we want everything between the { } as it will be interpreted at
@@ -1878,7 +1878,7 @@ idWindow::ParseScript
 		if ( elseBlock ) {
 			src.ReadToken( token );
 
-			if ( !token.$.Icmp( "if" ) ) {
+			if ( !token.Icmp( "if" ) ) {
 				ifElseBlock = true;
 			}
 
@@ -1899,23 +1899,23 @@ idWindow::ParseScript
 				return false;
 			}
 
-			if ( token.$.data == "{" ) {
+			if ( token.data == "{" ) {
 				nest++;
 			}
 
-			if ( token.$.data == "}" ) {
+			if ( token.data == "}" ) {
 				if ( nest-- <= 0 ) {
 					return true;
 				}
 			}
 
 			var gs = new idGuiScript ( );
-			if ( token.$.Icmp( "if" ) == 0 ) {
+			if ( token.Icmp( "if" ) == 0 ) {
 				gs.conditionReg = this.ParseExpression( src );
 				gs.ifList = new idGuiScriptList ( );
 				this.ParseScript( src, gs.ifList, null );
 				if ( src.ReadToken( token ) ) {
-					if ( token.$.data == "else" ) {
+					if ( token.data == "else" ) {
 						gs.elseList = new idGuiScriptList ( );
 						// pass true to indicate we are parsing an else condition
 						this.ParseScript( src, gs.elseList, null, true );
@@ -1937,7 +1937,7 @@ idWindow::ParseScript
 			}
 
 			// empty { } is not allowed
-			if ( token.$.data == "{" ) {
+			if ( token.data == "{" ) {
 				src.Error( "Unexpected {" );
 				delete gs;
 				return false;
@@ -2180,9 +2180,9 @@ idWindow::ParseString
 ================
 */
 	ParseString ( src: idParser, out: idStr ): void {
-		var tok = new R( new idToken );
+		var tok = new idToken;
 		if ( src.ReadToken( tok ) ) {
-			out.equals( tok.$.data );
+			out.equals( tok.data );
 		}
 	}
 ////
@@ -2269,9 +2269,9 @@ idWindow::ParseInternalVar
 	}
 	if (idStr.Icmp(_name, "shear") == 0) {
 		this.shear.x = src.ParseFloat();
-		var tok = new R( new idToken );
+		var tok = new idToken;
 		src.ReadToken( tok );
-		if ( tok.$.Icmp( "," ) ) {
+		if ( tok.Icmp( "," ) ) {
 			src.Error( "Expected comma in shear definiation" );
 			return false;
 		}
@@ -2364,38 +2364,38 @@ idWindow::ParseRegEntry
 		}
 
 		// not predefined so just read the next token and add it to the state
-		var tok = new R(new idToken);
+		var tok = new idToken;
 		//var v = new idVec4;	
 		var vari: idWinInt;
 		var varf: idWinFloat;
 		var vars: idWinStr;
 		if (src.ReadToken(tok)) {
 			if ($var) {
-				$var.Set(tok.$.data);
+				$var.Set(tok.data);
 				return true;
 			}
-			switch (tok.$.type) {
+			switch (tok.type) {
 				case TT_NUMBER : 
-					if (tok.$.subtype & TT_INTEGER) {
+					if (tok.subtype & TT_INTEGER) {
 						vari = new idWinInt();
-						vari.equalsInt( atoi( tok.$.data ) );
+						vari.equalsInt( atoi( tok.data ) );
 						vari.SetName(work.data);
 						this.definedVars.Append(vari);
-					} else if (tok.$.subtype & TT_FLOAT) {
+					} else if (tok.subtype & TT_FLOAT) {
 						varf = new idWinFloat();
-						varf.equalsFloat( atof( tok.$.data ) );
+						varf.equalsFloat( atof( tok.data ) );
 						varf.SetName(work.data);
 						this.definedVars.Append(varf);
 					} else {
 						vars = new idWinStr();
-						vars.equalsStr(tok.$);
+						vars.equalsStr(tok);
 						vars.SetName(work.data);
 						this.definedVars.Append(vars);
 					}
 					break;
 				default :
 					vars = new idWinStr();
-					vars.equalsStr(tok.$);
+					vars.equalsStr(tok);
 					vars.SetName(work.data);
 					this.definedVars.Append(vars);
 					break;
@@ -2427,7 +2427,7 @@ idWindow::Parse
 ================
 */
 	Parse ( src: idParser, rebuild = true ): boolean {
-		var token = new R( new idToken ), token2: idToken; //, token3, token4, token5, token6, token7;
+		var token = new idToken, token2: idToken; //, token3, token4, token5, token6, token7;
 		var work = new idStr;
 
 		if ( rebuild ) {
@@ -2443,7 +2443,7 @@ idWindow::Parse
 
 		src.ExpectTokenType( TT_NAME, 0, token );
 
-		this.SetInitialState( token.$.data );
+		this.SetInitialState( token.data );
 
 		src.ExpectTokenString( "{" );
 		src.ExpectAnyToken( token );
@@ -2457,17 +2457,17 @@ idWindow::Parse
 //	}
 //#endif
 
-		while ( token.$.data != "}" ) {
+		while ( token.data != "}" ) {
 			// track what was parsed so we can maintain it for the guieditor
 			src.SetMarker ( );
 
-			if ( token.$.data == "windowDef" || token.$.data == "animationDef" ) {
-				if ( token.$.data == "animationDef" ) {
+			if ( token.data == "windowDef" || token.data == "animationDef" ) {
+				if ( token.data == "animationDef" ) {
 					this.visible.equalsBool( false );
 					this.rect.equals( new idRectangle( 0, 0, 0, 0 ) );
 				}
 				src.ExpectTokenType( TT_NAME, 0, token );
-				token2 = token.$;
+				token2 = token;
 				src.UnreadToken( token );
 				var dw: drawWin_t = this.FindChildByName( token2.c_str ( ) );
 				if ( dw && dw.win ) {
@@ -2494,7 +2494,7 @@ idWindow::Parse
 						this.drawWindows.Append( dwt );
 					}
 				}
-			} else if ( token.$.data == "editDef" ) {
+			} else if ( token.data == "editDef" ) {
 				todoThrow ( );
 				//var win = new idEditWindow(this.dc, this.gui);
 				//this.SaveExpressionParseState();
@@ -2505,7 +2505,7 @@ idWindow::Parse
 				//dwt.simp = null;
 				//dwt.win = win;
 				//this.drawWindows.Append(dwt);
-			} else if ( token.$.data == "choiceDef" ) {
+			} else if ( token.data == "choiceDef" ) {
 				todoThrow ( );
 				//var win = new idChoiceWindow(this.dc, this.gui);
 				//this.SaveExpressionParseState();
@@ -2516,7 +2516,7 @@ idWindow::Parse
 				//dwt.simp = null;
 				//dwt.win = win;
 				//this.drawWindows.Append(dwt);
-			} else if ( token.$.data == "sliderDef" ) {
+			} else if ( token.data == "sliderDef" ) {
 				todoThrow ( );
 				//var win = new idSliderWindow(this.dc, this.gui);
 				//this.SaveExpressionParseState();
@@ -2527,7 +2527,7 @@ idWindow::Parse
 				//dwt.simp = null;
 				//dwt.win = win;
 				//this.drawWindows.Append(dwt);
-			} else if ( token.$.data == "markerDef" ) {
+			} else if ( token.data == "markerDef" ) {
 				todoThrow ( );
 				//var win = new idMarkerWindow(this.dc, this.gui);
 				//this.SaveExpressionParseState();
@@ -2538,7 +2538,7 @@ idWindow::Parse
 				//dwt.simp = null;
 				//dwt.win = win;
 				//this.drawWindows.Append(dwt);
-			} else if ( token.$.data == "bindDef" ) {
+			} else if ( token.data == "bindDef" ) {
 				todoThrow ( );
 				//var win = new idBindWindow(this.dc, this.gui);
 				//this.SaveExpressionParseState();
@@ -2549,7 +2549,7 @@ idWindow::Parse
 				//dwt.simp = null;
 				//dwt.win = win;
 				//this.drawWindows.Append(dwt);
-			} else if ( token.$.data == "listDef" ) {
+			} else if ( token.data == "listDef" ) {
 				todoThrow ( );
 				//var win = new idListWindow(this.dc, this.gui);
 				//this.SaveExpressionParseState();
@@ -2560,7 +2560,7 @@ idWindow::Parse
 				//dwt.simp = null;
 				//dwt.win = win;
 				//this.drawWindows.Append(dwt);
-			} else if ( token.$.data == "fieldDef" ) {
+			} else if ( token.data == "fieldDef" ) {
 				todoThrow ( );
 				//var win = new idFieldWindow(this.dc, this.gui);
 				//this.SaveExpressionParseState();
@@ -2571,7 +2571,7 @@ idWindow::Parse
 				//dwt.simp = null;
 				//dwt.win = win;
 				//this.drawWindows.Append(dwt);
-			} else if ( token.$.data == "renderDef" ) {
+			} else if ( token.data == "renderDef" ) {
 				todoThrow ( );
 				//var win = new idRenderWindow(this.dc, this.gui);
 				//this.SaveExpressionParseState();
@@ -2582,7 +2582,7 @@ idWindow::Parse
 				//dwt.simp = null;
 				//dwt.win = win;
 				//this.drawWindows.Append(dwt);
-			} else if ( token.$.data == "gameSSDDef" ) {
+			} else if ( token.data == "gameSSDDef" ) {
 				todoThrow ( );
 				//var win = new idGameSSDWindow(this.dc, this.gui);
 				//this.SaveExpressionParseState();
@@ -2593,7 +2593,7 @@ idWindow::Parse
 				//dwt.simp = null;
 				//dwt.win = win;
 				//this.drawWindows.Append(dwt);
-			} else if ( token.$.data == "gameBearShootDef" ) {
+			} else if ( token.data == "gameBearShootDef" ) {
 				todoThrow ( );
 				//var win = new idGameBearShootWindow(this.dc, this.gui);
 				//this.SaveExpressionParseState();
@@ -2604,7 +2604,7 @@ idWindow::Parse
 				//dwt.simp = null;
 				//dwt.win = win;
 				//this.drawWindows.Append(dwt);
-			} else if ( token.$.data == "gameBustOutDef" ) {
+			} else if ( token.data == "gameBustOutDef" ) {
 				todoThrow ( );
 				//var win = new idGameBustOutWindow(this.dc, this.gui);
 				//this.SaveExpressionParseState();
@@ -2618,14 +2618,14 @@ idWindow::Parse
 			}
 // 
 //  added new onEvent
-			else if ( token.$.data == "onNamedEvent" ) {
+			else if ( token.data == "onNamedEvent" ) {
 				// Read the event name
 				if ( !src.ReadToken( token ) ) {
 					src.Error( "Expected event name" );
 					return false;
 				}
 
-				var evNamed = new rvNamedEvent( token.$.data );
+				var evNamed = new rvNamedEvent( token.data );
 
 				src.SetMarker ( );
 
@@ -2653,14 +2653,14 @@ idWindow::Parse
 //			}
 //#endif			
 				this.namedEvents.Append( evNamed );
-			} else if ( token.$.data == "onTime" ) {
+			} else if ( token.data == "onTime" ) {
 				var ev = new idTimeLineEvent;
 
 				if ( !src.ReadToken( token ) ) {
 					src.Error( "Unexpected end of file" );
 					return false;
 				}
-				ev.time = atoi( token.$.c_str ( ) );
+				ev.time = atoi( token.c_str ( ) );
 
 				// reset the mark since we dont want it to include the time
 				src.SetMarker ( );
@@ -2695,9 +2695,9 @@ idWindow::Parse
 				// this is a timeline event
 				ev.pending = true;
 				this.timeLineEvents.Append( ev );
-			} else if ( token.$.data == "definefloat" ) {
+			} else if ( token.data == "definefloat" ) {
 				src.ReadToken( token );
-				work.equals( token.$.data );
+				work.equals( token.data );
 				work.ToLower ( );
 				var varf = new idWinFloat ( );
 				varf.SetName( work.data );
@@ -2720,9 +2720,9 @@ idWindow::Parse
 //				rvGEWindowWrapper::GetWrapper ( this ).GetVariableDict().Set ( va("definefloat\t\"%s\"",token.c_str()), str );
 //			}
 //#endif
-			} else if ( token.$.data == "definevec4" ) {
+			} else if ( token.data == "definevec4" ) {
 				src.ReadToken( token );
-				work.equals( token.$.data );
+				work.equals( token.data );
 				work.ToLower ( );
 				var $var = new idWinVec4 ( );
 				$var.SetName( work.data );
@@ -2748,9 +2748,9 @@ idWindow::Parse
 //				rvGEWindowWrapper::GetWrapper ( this ).GetVariableDict().Set ( va("definevec4\t\"%s\"",token.c_str()), str );
 //			}
 //#endif
-			} else if ( token.$.data == "float" ) {
+			} else if ( token.data == "float" ) {
 				src.ReadToken( token );
-				work.equals( token.$.data );
+				work.equals( token.data );
 				work.ToLower ( );
 				var varf = new idWinFloat ( );
 				varf.SetName( work.data );
@@ -2773,7 +2773,7 @@ idWindow::Parse
 //				rvGEWindowWrapper::GetWrapper ( this ).GetVariableDict().Set ( va("float\t\"%s\"",token.c_str()), str );
 //			}
 //#endif
-			} else if ( this.ParseScriptEntry( token.$.data, src ) ) {
+			} else if ( this.ParseScriptEntry( token.data, src ) ) {
 				// add the script to the wrappers script list
 				// If we are in the gui editor then add the internal var to the 
 				// the wrapper
@@ -2793,7 +2793,7 @@ idWindow::Parse
 //				rvGEWindowWrapper::GetWrapper ( this ).GetScriptDict().Set ( token, out );
 //			}
 //#endif
-			} else if ( this.ParseInternalVar( token.$.data, src ) ) {
+			} else if ( this.ParseInternalVar( token.data, src ) ) {
 				// gui editor support		
 				// If we are in the gui editor then add the internal var to the 
 				// the wrapper
@@ -2805,7 +2805,7 @@ idWindow::Parse
 //			}
 //#endif
 			} else {
-				this.ParseRegEntry( token.$.data, src );
+				this.ParseRegEntry( token.data, src );
 				// hook into the main window parsing for the gui editor
 				// If we are in the gui editor then add the internal var to the 
 				// the wrapper
@@ -3124,37 +3124,37 @@ Returns a register index
 =================
 */
 	ParseTerm(src: idParser,	/***/$var: idWinVar = null, /*int*/ component = 0):number {
-	var token = new R(new idToken);
+	var token = new idToken;
 	var/*int*/ a: number, b: number;
 
 	src.ReadToken( token );
 
-	if ( token.$.data == "(" ) {
+	if ( token.data == "(" ) {
 		a = this.ParseExpression( src );
 		src.ExpectTokenString(")");
 		return a;
 	}
 
-	if ( !token.$.Icmp( "time" ) ) {
+	if ( !token.Icmp( "time" ) ) {
 		return wexpRegister_t.WEXP_REG_TIME;
 	}
 
 	// parse negative numbers
-	if ( token.$.data == "-" ) {
+	if ( token.data == "-" ) {
 		src.ReadToken( token );
-		if ( token.$.type == TT_NUMBER || token.$.data == "." ) {
-			return this.ExpressionConstant( -/*(float)*/ token.$.GetFloatValue() );
+		if ( token.type == TT_NUMBER || token.data == "." ) {
+			return this.ExpressionConstant( -/*(float)*/ token.GetFloatValue() );
 		}
-		src.Warning( "Bad negative number '%s'", token.$.c_str() );
+		src.Warning( "Bad negative number '%s'", token.c_str() );
 		return 0;
 	}
 
-	if ( token.$.type == TT_NUMBER || token.$.data == "." || token.$.data == "-" ) {
-		return this.ExpressionConstant( /*(float) */token.$.GetFloatValue() );
+	if ( token.type == TT_NUMBER || token.data == "." || token.data == "-" ) {
+		return this.ExpressionConstant( /*(float) */token.GetFloatValue() );
 	}
 
 	// see if it is a table name
-	var table = <idDeclTable>(declManager.FindType( declType_t.DECL_TABLE, token.$.c_str(), false ) );
+	var table = <idDeclTable>(declManager.FindType( declType_t.DECL_TABLE, token.c_str(), false ) );
 	if ( table ) {
 		a = table.Index();
 		// parse a table expression
@@ -3165,17 +3165,17 @@ Returns a register index
 	}
 	
 	if ($var == null) {
-		$var = this.GetWinVarByName(token.$.data, true);
+		$var = this.GetWinVarByName(token.data, true);
 	}
 		if ( $var ) {
 			todoThrow ( );
 			//a = (int)$var;
 			////assert(dynamic_cast<idWinVec4*>($var));
-			//$var.Init(token.$.data, this);
+			//$var.Init(token.data, this);
 			//b = component;
 			//if (dynamic_cast<idWinVec4*>($var)) {
 			//	if (src.ReadToken(token)) {
-			//		if (token.$.data == "[") {
+			//		if (token.data == "[") {
 			//			b = this.ParseExpression(src);
 			//			src.ExpectTokenString("]");
 			//		} else {
@@ -3192,14 +3192,14 @@ Returns a register index
 			//} else if (dynamic_cast<idWinStr*>($var)) {
 			//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VARS);
 			//} else {
-			//	src.Warning("Var expression not vec4, float or int '%s'", token.$.c_str());
+			//	src.Warning("Var expression not vec4, float or int '%s'", token.c_str());
 			//}
 			return 0;
 		} else {
 			// ugly but used for post parsing to fixup named vars
 			//char *p = new char[token.Length()+1];
 			//strcpy(p, token);
-			idWindow.ParseTermStrings.push(token.$.data);
+			idWindow.ParseTermStrings.push(token.data);
 			a = idWindow.ParseTermStrings.length - 1; //a = (int)p
 			b = -2;
 			return this.EmitOp( a, b, wexpOpType_t.WOP_TYPE_VAR );
@@ -3217,7 +3217,7 @@ Returns a register index
 */
 static TOP_PRIORITY = 4;
 	ParseExpressionPriority ( src: idParser, /*int*/ priority: number, $var: idWinVar = null, /*int */component = 0 ): number {
-		var token = new R( new idToken );
+		var token = new idToken;
 		var /*int		*/a: number;
 
 		if ( priority == 0 ) {
@@ -3232,52 +3232,52 @@ static TOP_PRIORITY = 4;
 			return a;
 		}
 
-		if ( priority == 1 && token.$.data == "*" ) {
+		if ( priority == 1 && token.data == "*" ) {
 			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_MULTIPLY, priority );
 		}
-		if ( priority == 1 && token.$.data == "/" ) {
+		if ( priority == 1 && token.data == "/" ) {
 			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_DIVIDE, priority );
 		}
-		if ( priority == 1 && token.$.data == "%" ) { // implied truncate both to integer
+		if ( priority == 1 && token.data == "%" ) { // implied truncate both to integer
 			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_MOD, priority );
 		}
-		if ( priority == 2 && token.$.data == "+" ) {
+		if ( priority == 2 && token.data == "+" ) {
 			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_ADD, priority );
 		}
-		if ( priority == 2 && token.$.data == "-" ) {
+		if ( priority == 2 && token.data == "-" ) {
 			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_SUBTRACT, priority );
 		}
-		if ( priority == 3 && token.$.data == ">" ) {
+		if ( priority == 3 && token.data == ">" ) {
 			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_GT, priority );
 		}
-		if ( priority == 3 && token.$.data == ">=" ) {
+		if ( priority == 3 && token.data == ">=" ) {
 			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_GE, priority );
 		}
-		if ( priority == 3 && token.$.data == "<" ) {
+		if ( priority == 3 && token.data == "<" ) {
 			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_LT, priority );
 		}
-		if ( priority == 3 && token.$.data == "<=" ) {
+		if ( priority == 3 && token.data == "<=" ) {
 			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_LE, priority );
 		}
-		if ( priority == 3 && token.$.data == "==" ) {
+		if ( priority == 3 && token.data == "==" ) {
 			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_EQ, priority );
 		}
-		if ( priority == 3 && token.$.data == "!=" ) {
+		if ( priority == 3 && token.data == "!=" ) {
 			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_NE, priority );
 		}
-		if ( priority == 4 && token.$.data == "&&" ) {
+		if ( priority == 4 && token.data == "&&" ) {
 			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_AND, priority );
 		}
-		if ( priority == 4 && token.$.data == "||" ) {
+		if ( priority == 4 && token.data == "||" ) {
 			return this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_OR, priority );
 		}
-		if ( priority == 4 && token.$.data == "?" ) {
+		if ( priority == 4 && token.data == "?" ) {
 			var oop = new R<wexpOp_t> ( );
 			var o = this.ParseEmitOp( src, a, wexpOpType_t.WOP_TYPE_COND, priority, /*&*/oop );
 			if ( !src.ReadToken( token ) ) {
 				return o;
 			}
-			if ( token.$.data == ":" ) {
+			if ( token.data == ":" ) {
 				a = this.ParseExpressionPriority( src, priority - 1, $var );
 				oop.$.d = a;
 			}

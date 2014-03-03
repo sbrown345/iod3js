@@ -71,7 +71,7 @@ idDeclEntityDef::Parse
 */
 	Parse ( text: string, textLength: number ): boolean {
 		var src = new idLexer;
-		var token = new R( new idToken ), token2 = new R( new idToken );
+		var token = new idToken, token2 = new idToken;
 
 		src.LoadMemory( text, textLength, this.GetFileName ( ), this.GetLineNum ( ) );
 		src.SetFlags( DECL_LEXER_FLAGS );
@@ -82,11 +82,11 @@ idDeclEntityDef::Parse
 				break;
 			}
 
-			if ( !token.$.Icmp( "}" ) ) {
+			if ( !token.Icmp( "}" ) ) {
 				break;
 			}
-			if ( token.$.type != TT_STRING ) {
-				src.Warning( "Expected quoted string, but found '%s'", token.$.c_str ( ) );
+			if ( token.type != TT_STRING ) {
+				src.Warning( "Expected quoted string, but found '%s'", token.c_str ( ) );
 				this.MakeDefault ( );
 				return false;
 			}
@@ -97,10 +97,10 @@ idDeclEntityDef::Parse
 				return false;
 			}
 
-			if ( this.dict.FindKey( token.$.data ) ) {
-				src.Warning( "'%s' already defined", token.$.c_str ( ) );
+			if ( this.dict.FindKey( token.data ) ) {
+				src.Warning( "'%s' already defined", token.c_str ( ) );
 			}
-			this.dict.Set( token.$.data, token2.$.data );
+			this.dict.Set( token.data, token2.data );
 		}
 
 		// we always automatically set a "classname" key to our name

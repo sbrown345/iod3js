@@ -351,12 +351,12 @@ var parseBuffer = "";
 AppendToken
 ===================
 */
-function AppendToken ( token: R<idToken> ): void {
+function AppendToken ( token: idToken ): void {
 	// add a leading space if not at the beginning
 	if ( parseBuffer ) {
 		parseBuffer += " ";
 	}
-	parseBuffer += token.$.c_str ( );
+	parseBuffer += token.c_str ( );
 }
 
 /*
@@ -383,14 +383,14 @@ used to parse an image program from a text stream.
 */
 function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*int **/width: R<number>, /*int **/height: R<number>,
 	/*ID_TIME_T **/timestamps: R<number>, depth: R<textureDepth_t> ):boolean {
-	var token = new R(new idToken);
+	var token = new idToken;
 	var/*float		*/scale:number;
 	var timestamp = new R<number>(0);
 
 	src.ReadToken( token );
 	AppendToken( token );
 
-	if ( !token.$.Icmp( "heightmap" ) ) {
+	if ( !token.Icmp( "heightmap" ) ) {
 		MatchAndAppendToken( src, "(" );
 
 		if ( !R_ParseImageProgram_r( src, pic, width, height, timestamps, depth ) ) {
@@ -401,7 +401,7 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 
 		src.ReadToken( token );
 		this.AppendToken( token );
-		scale = token.$.GetFloatValue();
+		scale = token.GetFloatValue();
 		
 		// process it
 		if ( pic ) {
@@ -415,7 +415,7 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 		return true;
 	}
 
-	if ( !token.$.Icmp( "addnormals" ) ) {
+	if ( !token.Icmp( "addnormals" ) ) {
 		var /*byte	**/pic2 = new R<Uint8Array>();
 		var /*int		*/width2 = new R<number>(0), height2 = new R<number>(0);
 
@@ -448,7 +448,7 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 		return true;
 	}
 
-	if ( !token.$.Icmp( "smoothnormals" ) ) {
+	if ( !token.Icmp( "smoothnormals" ) ) {
 		MatchAndAppendToken( src, "(" );
 
 		if ( !R_ParseImageProgram_r( src, pic, width, height, timestamps, depth ) ) {
@@ -466,7 +466,7 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 		return true;
 	}
 
-	if ( !token.$.Icmp( "add" ) ) {
+	if ( !token.Icmp( "add" ) ) {
 		var pic2 = new R<Uint8Array> ( );
 		var /*int		*/width2 = new R<number>(0), height2 = new R<number> ( );
 
@@ -496,7 +496,7 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 		return true;
 	}
 
-	if ( !token.$.Icmp( "scale" ) ) {
+	if ( !token.Icmp( "scale" ) ) {
 		var scale_ = new Float32Array(4);
 		var i: number;
 
@@ -508,7 +508,7 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 			MatchAndAppendToken( src, "," );
 			src.ReadToken( token );
 			this.AppendToken( token );
-			scale_[i] = token.$.GetFloatValue();
+			scale_[i] = token.GetFloatValue();
 		}
 
 		// process it
@@ -520,7 +520,7 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 		return true;
 	}
 
-	if ( !token.$.Icmp( "invertAlpha" ) ) {
+	if ( !token.Icmp( "invertAlpha" ) ) {
 		MatchAndAppendToken( src, "(" );
 
 		R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
@@ -534,7 +534,7 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 		return true;
 	}
 
-	if ( !token.$.Icmp( "invertColor" ) ) {
+	if ( !token.Icmp( "invertColor" ) ) {
 		MatchAndAppendToken( src, "(" );
 
 		R_ParseImageProgram_r( src, pic, width, height, timestamps, depth );
@@ -548,7 +548,7 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 		return true;
 	}
 
-	if ( !token.$.Icmp( "makeIntensity" ) ) {
+	if ( !token.Icmp( "makeIntensity" ) ) {
 		var i:number;
 
 		MatchAndAppendToken( src, "(" );
@@ -570,7 +570,7 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 		return true;
 	}
 
-	if ( !token.$.Icmp( "makeAlpha" ) ) {
+	if ( !token.Icmp( "makeAlpha" ) ) {
 		var i: number;
 
 		MatchAndAppendToken( src, "(" );
@@ -600,7 +600,7 @@ function R_ParseImageProgram_r(src: idLexer, /*byte ***/pic: R<Uint8Array>, /*in
 	}
 
 	// load it as an image
-	R_LoadImage( token.$.c_str(), pic, width, height, timestamp, true );
+	R_LoadImage( token.c_str(), pic, width, height, timestamp, true );
 
 	if ( timestamp.$ == -1 ) {
 		return false;

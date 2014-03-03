@@ -878,7 +878,7 @@ class idLexer {
 	idLexer::ReadToken
 	================
 	*/
-	/*int */ReadToken(token: R<idToken> ):number {
+	/*int */ReadToken(token: idToken ):number {
 		var/*int */c:string;
 
 		if ( !this.loaded ) {
@@ -889,7 +889,7 @@ class idLexer {
 		// if there is a token available (from unreadToken)
 		if ( this.tokenavailable ) {
 			this.tokenavailable = 0;
-			token.$.equals( this.token );
+			token.equals( this.token );
 			return 1;
 		}
 		// save script pointer
@@ -897,24 +897,24 @@ class idLexer {
 		// save line counter
 		this.lastline = this.line;
 		// clear the token stuff
-		token.$.data = "";//[0] = '\0';
-		token.$.len = 0;
+		token.data = "";//[0] = '\0';
+		token.len = 0;
 		// start of the white space
 		this.whiteSpaceStart_p = this.script_p;
-		token.$.whiteSpaceStart_p = this.script_p;
+		token.whiteSpaceStart_p = this.script_p;
 		// read white space before token
 		if ( !this.ReadWhiteSpace() ) {
 			return 0;
 		}
 		// end of the white space
 		this.whiteSpaceEnd_p = this.script_p;
-		token.$.whiteSpaceEnd_p = this.script_p;
+		token.whiteSpaceEnd_p = this.script_p;
 		// line the token is on
-		token.$.line = this.line;
+		token.line = this.line;
 		// number of lines crossed before token
-		token.$.linesCrossed = this.line - this.lastline;
+		token.linesCrossed = this.line - this.lastline;
 		// clear token flags
-		token.$.flags = 0;
+		token.flags = 0;
 
 		c = this.buffer[this.script_p];
 		
@@ -922,24 +922,24 @@ class idLexer {
 		if ( this.flags & lexerFlags_t.LEXFL_ONLYSTRINGS ) {
 			// if there is a leading quote
 			if ( c == '\"' || c == '\'' ) {
-				if (!this.ReadString( token.$, c )) {
+				if (!this.ReadString( token, c )) {
 					return 0;
 				}
-			} else if ( !this.ReadName( token.$ ) ) {
+			} else if ( !this.ReadName( token ) ) {
 				return 0;
 			}
 		}
 		// if there is a number
 		else if ( (c >= '0' && c <= '9') ||
 				(c == '.' && (this.buffer[this.script_p + 1] >= '0' && this.buffer[this.script_p + 1] <= '9')) ) {
-			if ( !this.ReadNumber( token.$ ) ) {
+			if ( !this.ReadNumber( token ) ) {
 				return 0;
 			}
 			// if names are allowed to start with a number
 			if ( this.flags & lexerFlags_t.LEXFL_ALLOWNUMBERNAMES ) {
 				c = this.buffer[this.script_p];
 				if ( (c >= 'a' && c <= 'z') ||	(c >= 'A' && c <= 'Z') || c == '_' ) {
-					if ( !this.ReadName( token.$ ) ) {
+					if ( !this.ReadName( token ) ) {
 						return 0;
 					}
 				}
@@ -947,32 +947,32 @@ class idLexer {
 		}
 		// if there is a leading quote
 		else if ( c == '\"' || c == '\'' ) {
-			if (!this.ReadString( token.$, c )) {
+			if (!this.ReadString( token, c )) {
 				return 0;
 			}
 		}
 		// if there is a name
 		else if ( (c >= 'a' && c <= 'z') ||	(c >= 'A' && c <= 'Z') || c == '_' ) {
-			if ( !this.ReadName( token.$ ) ) {
+			if ( !this.ReadName( token ) ) {
 				return 0;
 			}
 		}
 		// names may also start with a slash when pathnames are allowed
 		else if ( ( this.flags & lexerFlags_t.LEXFL_ALLOWPATHNAMES ) && ( (c == '/' || c == '\\') || c == '.' ) ) {
-			if ( !this.ReadName( token.$ ) ) {
+			if ( !this.ReadName( token ) ) {
 				return 0;
 			}
 		}
 		// check for punctuations
-		else if ( !this.ReadPunctuation( token.$ ) ) {
+		else if ( !this.ReadPunctuation( token ) ) {
 			this.Error( "unknown punctuation %s", c );
 			return 0;
 		}
 		// succesfully read a token
-		//dlog(DEBUG_Lexer, "RT: %i, %s\n", this.line , token.$.data);
+		//dlog(DEBUG_Lexer, "RT: %i, %s\n", this.line , token.data);
 		//if (idLexer.RTCount == /*6572*/4597 ) debugger;
-		//if (token.$.data == "aas_types") debugger;
-		dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", idLexer.RTCount, this.line, token.$.data);
+		//if (token.data == "aas_types") debugger;
+		dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", idLexer.RTCount, this.line, token.data);
 		idLexer.RTCount++;
 		return 1;
 	}
@@ -985,14 +985,14 @@ class idLexer {
 	================
 	*/
 	ExpectTokenString( $string:string ):number {
-		var token = new R<idToken>( new idToken ( ) );
+		var token = new idToken;
 
 		if (!this.ReadToken( token )) {
 			this.Error( "couldn't find expected '%s'", $string );
 			return 0;
 		}
-		if (token.$.data != $string ) {
-			this.Error( "expected '%s' but found '%s'", $string, token.$.c_str() );
+		if (token.data != $string ) {
+			this.Error( "expected '%s' but found '%s'", $string, token.c_str() );
 			return 0;
 		}
 		return 1;
@@ -1003,7 +1003,7 @@ class idLexer {
 	idLexer::ExpectTokenType
 	================
 	*/
-	/*int */ExpectTokenType( /*int */type: number, /*int */subtype: number, token: R<idToken> ):number {
+	/*int */ExpectTokenType( /*int */type: number, /*int */subtype: number, token: idToken ):number {
 		var str = new idStr;
 
 		if ( !this.ReadToken( token ) ) {
@@ -1011,7 +1011,7 @@ class idLexer {
 			return 0;
 		}
 
-		if (token.$.type != type ) {
+		if (token.type != type ) {
 			switch( type ) {
 				case TT_STRING: str.equals("string"); break;
 				case TT_LITERAL: str.equals("literal"); break;
@@ -1020,11 +1020,11 @@ class idLexer {
 				case TT_PUNCTUATION: str.equals("punctuation"); break;
 				default: str.equals("unknown type"); break;
 			}
-			this.Error( "expected a %s but found '%s'", str.c_str(), token.$.c_str() );
+			this.Error( "expected a %s but found '%s'", str.c_str(), token.c_str() );
 			return 0;
 		}
-		if (token.$.type == TT_NUMBER ) {
-			if ((token.$.subtype & subtype) != subtype ) {
+		if (token.type == TT_NUMBER ) {
+			if ((token.subtype & subtype) != subtype ) {
 				str.Clear();
 				if (subtype & TT_DECIMAL) str.equals("decimal ");
 				if (subtype & TT_HEX) str.equals("hex ");
@@ -1035,17 +1035,17 @@ class idLexer {
 				if (subtype & TT_FLOAT) str.Append("float ");
 				if (subtype & TT_INTEGER) str.Append("integer ");
 				str.StripTrailing( ' ' );
-				this.Error( "expected %s but found '%s'", str.c_str(), token.$.c_str() );
+				this.Error( "expected %s but found '%s'", str.c_str(), token.c_str() );
 				return 0;
 			}
 		}
-		else if (token.$.type == TT_PUNCTUATION ) {
+		else if (token.type == TT_PUNCTUATION ) {
 			if ( subtype < 0 ) {
 				this.Error( "BUG: wrong punctuation subtype" );
 				return 0;
 			}
-			if (token.$.subtype != subtype ) {
-				this.Error("expected '%s' but found '%s'", this.GetPunctuationFromId(subtype), token.$.c_str() );
+			if (token.subtype != subtype ) {
+				this.Error("expected '%s' but found '%s'", this.GetPunctuationFromId(subtype), token.c_str() );
 				return 0;
 			}
 		}
@@ -1057,12 +1057,11 @@ class idLexer {
 	idLexer::ExpectAnyToken
 	================
 	*/
-	ExpectAnyToken(token: R<idToken> ):number {
-		if (!this.ReadToken( token )) {
+	ExpectAnyToken ( token: idToken ): number {
+		if ( !this.ReadToken( token ) ) {
 			this.Error( "couldn't read expected token" );
 			return 0;
-		}
-		else {
+		} else {
 			return 1;
 		}
 	}
@@ -1093,15 +1092,15 @@ class idLexer {
 	idLexer::CheckTokenType
 	================
 	*/
-	/*int */CheckTokenType( /*int */type: number, /*int */subtype: number, token: R<idToken>): number {
-		var tok = new R(new idToken);
+	/*int */CheckTokenType( /*int */type: number, /*int */subtype: number, token: idToken): number {
+		var tok = new idToken;
 
 		if ( !this.ReadToken( tok ) ) {
 			return 0;
 		}
 		// if the type matches
-		if (tok.$.type == type && (tok.$.subtype & subtype) == subtype) {
-			token.$.equals( tok.$ );
+		if (tok.type == type && (tok.subtype & subtype) == subtype) {
+			token.equals( tok );
 			return 1;
 		}
 		// unread token
@@ -1164,10 +1163,10 @@ class idLexer {
 	*/
 	/*int */
 	SkipUntilString ( $string: string ): number {
-		var token = new R( new idToken ( ) );
+		var token = new idToken;
 
 		while ( this.ReadToken( token ) ) {
-			if ( token.$.data == $string ) {
+			if ( token.data == $string ) {
 				return 1;
 			}
 		}
@@ -1180,10 +1179,10 @@ class idLexer {
 	================
 	*/
 	SkipRestOfLine( ) :number {
-		var token = new R(new idToken);
+		var token = new idToken;
 
 		while(this.ReadToken( token )) {
-			if ( token.$.linesCrossed ) {
+			if ( token.linesCrossed ) {
 				this.script_p = this.lastScript_p;
 				this.line = this.lastline;
 				return 1;
@@ -1202,7 +1201,7 @@ class idLexer {
 	*/
 	/*int */
 	SkipBracedSection ( parseFirstBrace: boolean = true ): number {
-		var token = new R<idToken>( new idToken ( ) );
+		var token = new idToken;
 		var /*int */depth: number;
 
 		depth = parseFirstBrace ? 0 : 1;
@@ -1210,10 +1209,10 @@ class idLexer {
 			if ( !this.ReadToken( token ) ) {
 				return 0 /*false*/;
 			}
-			if ( token.$.type == TT_PUNCTUATION ) {
-				if ( token.$.data == "{" ) {
+			if ( token.type == TT_PUNCTUATION ) {
+				if ( token.data == "{" ) {
 					depth++;
-				} else if ( token.$.data == "}" ) {
+				} else if ( token.data == "}" ) {
 					depth--;
 				}
 			}
@@ -1226,11 +1225,11 @@ class idLexer {
 	idLexer::UnreadToken
 	================
 	*/
-	UnreadToken(token: R<idToken> ):void {
+	UnreadToken(token: idToken ):void {
 		if ( this.tokenavailable ) {
 			common.FatalError( "idLexer::unreadToken, unread token twice\n" );
 		}
-		this.token = token.$;
+		this.token.equals(token);
 		this.tokenavailable = 1;
 	}
 
@@ -1239,8 +1238,8 @@ class idLexer {
 	idLexer::ReadTokenOnLine
 	================
 	*/
-	ReadTokenOnLine( token:R<idToken> ):number {
-		var tok = new R( new idToken );
+	ReadTokenOnLine( token: idToken ):number {
+		var tok = new idToken;
 
 		if (!this.ReadToken( tok )) {
 			this.script_p = this.lastScript_p;
@@ -1248,14 +1247,14 @@ class idLexer {
 			return 0;
 		}
 		// if no lines were crossed before this token
-		if ( !tok.$.linesCrossed ) {
-			token.$.equals(tok.$);
+		if ( !tok.linesCrossed ) {
+			token.equals(tok);
 			return 1;
 		}
 		// restore our position
 		this.script_p = this.lastScript_p;
 		this.line = this.lastline;
-		token.$.Clear();
+		token.Clear();
 		return 0;
 	}
 
@@ -1295,20 +1294,20 @@ class idLexer {
 	================
 	*/
 	/*int */ParseInt( ):number {
-		var token = new R(new idToken);
+		var token = new idToken;
 
 		if ( !this.ReadToken( token ) ) {
 			this.Error( "couldn't read expected integer" );
 			return 0;
 		}
-		if (token.$.type == TT_PUNCTUATION && token.$.data == "-" ) {
+		if (token.type == TT_PUNCTUATION && token.data == "-" ) {
 			this.ExpectTokenType( TT_NUMBER, TT_INTEGER, token );
-			return -(/*(signed int)*/ token.$.GetIntValue());
+			return -(/*(signed int)*/ token.GetIntValue());
 		}
-		else if (token.$.type != TT_NUMBER || token.$.subtype == TT_FLOAT ) {
-			this.Error("expected integer value, found '%s'", token.$.c_str() );
+		else if (token.type != TT_NUMBER || token.subtype == TT_FLOAT ) {
+			this.Error("expected integer value, found '%s'", token.c_str() );
 		}
-		return token.$.GetIntValue();
+		return token.GetIntValue();
 	}
 
 	/////*
@@ -1332,7 +1331,7 @@ class idLexer {
 	================
 	*/
 	/*float */ParseFloat( errorFlag:R<boolean> = null):number {
-		var token = new R( new idToken );
+		var token = new idToken;
 
 		if ( errorFlag ) {
 			errorFlag.$ = false;
@@ -1347,19 +1346,19 @@ class idLexer {
 			}
 			return 0;
 		}
-		if ( token.$.type == TT_PUNCTUATION && token.$.data == "-" ) {
+		if ( token.type == TT_PUNCTUATION && token.data == "-" ) {
 			this.ExpectTokenType( TT_NUMBER, 0, token );
-			return -token.$.GetFloatValue();
+			return -token.GetFloatValue();
 		}
-		else if (token.$.type != TT_NUMBER ) {
+		else if (token.type != TT_NUMBER ) {
 			if ( errorFlag ) {
-				this.Warning("expected float value, found '%s'", token.$.c_str() );
+				this.Warning("expected float value, found '%s'", token.c_str() );
 				errorFlag.$ = true;
 			} else {
-				this.Error("expected float value, found '%s'", token.$.c_str() );
+				this.Error("expected float value, found '%s'", token.c_str() );
 			}
 		}
-		return token.$.GetFloatValue();
+		return token.GetFloatValue();
 	}
 
 	/////*
@@ -1564,11 +1563,11 @@ class idLexer {
 	=================
 	*/
 	ParseRestOfLine(out: idStr ):string {
-		var token = new R( new idToken );
+		var token = new idToken;
 
 		out.Empty();
 		while(this.ReadToken( token )) {
-			if ( token.$.linesCrossed ) {
+			if ( token.linesCrossed ) {
 				this.script_p = this.lastScript_p;
 				this.line = this.lastline;
 				break;
@@ -1576,7 +1575,7 @@ class idLexer {
 			if ( out.Length() ) {
 				out.data += " ";
 			}
-			out.data += token.$.data;
+			out.data += token.data;
 		}
 		return out.c_str();
 	}

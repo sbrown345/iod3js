@@ -46,7 +46,7 @@ class idCompiler {
 	//
 	parser = new idParser;
 	parserPtr: idParser;
-	token = new R( new idToken );
+	token = new idToken;
 
 	immediateType: idTypeDef;
 	immediate = new eval_t;
@@ -753,7 +753,7 @@ Sets token, immediateType, and possibly immediate
 
 		// Save the token's line number and filename since when we emit opcodes the current 
 		// token is always the next one to be read 
-		this.currentLineNumber = this.token.$.line;
+		this.currentLineNumber = this.token.line;
 		this.currentFileNumber = gameLocal.program.GetFilenum( this.parserPtr.GetFileName ( ) );
 
 		if ( !this.parserPtr.ReadToken( this.token ) ) {
@@ -762,7 +762,7 @@ Sets token, immediateType, and possibly immediate
 		}
 
 		if ( this.currentFileNumber != gameLocal.program.GetFilenum( this.parserPtr.GetFileName ( ) ) ) {
-			if ( ( this.braceDepth > 0 ) && ( this.token.$.data != "}" ) ) {
+			if ( ( this.braceDepth > 0 ) && ( this.token.data != "}" ) ) {
 				// missing a closing brace.  try to give as much info as possible.
 				if ( this.scope.Type ( ) == etype_t.ev_function ) {
 					this.Error( "Unexpected end of file inside function '%s'.  Missing closing braces.", this.scope.Name ( ) );
@@ -776,10 +776,10 @@ Sets token, immediateType, and possibly immediate
 			}
 		}
 
-		//if (this.token.$.type == 3 && this.token.$.data == "0" && this.token.$.line  == 28 )debugger;
-		dlog( DEBUG_COMPILER, "NextToken - type: %i, data: %s, line: %i\n", this.token.$.type, this.token.$.data, this.token.$.line );
+		//if (this.token.type == 3 && this.token.data == "0" && this.token.line  == 28 )debugger;
+		dlog( DEBUG_COMPILER, "NextToken - type: %i, data: %s, line: %i\n", this.token.type, this.token.data, this.token.line );
 
-		switch ( this.token.$.type ) {
+		switch ( this.token.type ) {
 		case TT_STRING:
 			// handle quoted strings as a unit
 			this.immediateType = type_string;
@@ -789,21 +789,21 @@ Sets token, immediateType, and possibly immediate
 		{
 			// handle quoted vectors as a unit
 			this.immediateType = type_vector;
-			var lex = new idLexer( this.token.$.data, this.token.$.Length ( ), this.parserPtr.GetFileName ( ), lexerFlags_t.LEXFL_NOERRORS );
-			var token2 = new R( new idToken );
+			var lex = new idLexer( this.token.data, this.token.Length ( ), this.parserPtr.GetFileName ( ), lexerFlags_t.LEXFL_NOERRORS );
+			var token2 = new idToken;
 			for ( i = 0; i < 3; i++ ) {
 				if ( !lex.ReadToken( token2 ) ) {
-					this.Error( "Couldn't read vector. '%s' is not in the form of 'x y z'", this.token.$.c_str ( ) );
+					this.Error( "Couldn't read vector. '%s' is not in the form of 'x y z'", this.token.c_str ( ) );
 				}
-				if ( token2.$.type == TT_PUNCTUATION && token2.$.data == "-" ) {
+				if ( token2.type == TT_PUNCTUATION && token2.data == "-" ) {
 					if ( !lex.CheckTokenType( TT_NUMBER, 0, token2 ) ) {
-						this.Error( "expected a number following '-' but found '%s' in vector '%s'", token2.$.c_str ( ), this.token.$.c_str ( ) );
+						this.Error( "expected a number following '-' but found '%s' in vector '%s'", token2.c_str ( ), this.token.c_str ( ) );
 					}
-					this.immediate.vector[ i ] = -token2.$.GetFloatValue();
-				} else if ( token2.$.type == TT_NUMBER ) {
-					this.immediate.vector[i] = token2.$.GetFloatValue ( );
+					this.immediate.vector[ i ] = -token2.GetFloatValue();
+				} else if ( token2.type == TT_NUMBER ) {
+					this.immediate.vector[i] = token2.GetFloatValue ( );
 				} else {
-					this.Error( "vector '%s' is not in the form of 'x y z'.  expected float value, found '%s'", this.token.$.c_str ( ), token2.$.c_str ( ) );
+					this.Error( "vector '%s' is not in the form of 'x y z'.  expected float value, found '%s'", this.token.c_str ( ), token2.c_str ( ) );
 				}
 			}
 			return;
@@ -811,40 +811,40 @@ Sets token, immediateType, and possibly immediate
 
 		case TT_NUMBER:
 			this.immediateType = type_float;
-			this.immediate._float = this.token.$.GetFloatValue ( );
+			this.immediate._float = this.token.GetFloatValue ( );
 			dlog( DEBUG_COMPILER, "TT_NUMBER set float immediate._int = %i\n", this.immediate._int );
 			return;
 
 		case TT_PUNCTUATION:
 			// entity names
-			if ( this.token.$.data == "$" ) {
+			if ( this.token.data == "$" ) {
 				this.immediateType = type_entity;
 				this.parserPtr.ReadToken( this.token );
 				return;
 			}
 
-			if ( this.token.$.data == "{" ) {
+			if ( this.token.data == "{" ) {
 				this.braceDepth++;
 				return;
 			}
 
-			if ( this.token.$.data == "}" ) {
+			if ( this.token.data == "}" ) {
 				this.braceDepth--;
 				return;
 			}
 
-			if ( idCompiler.punctuationValid[this.token.$.subtype] ) {
+			if ( idCompiler.punctuationValid[this.token.subtype] ) {
 				return;
 			}
 
-			this.Error( "Unknown punctuation '%s'", this.token.$.c_str ( ) );
+			this.Error( "Unknown punctuation '%s'", this.token.c_str ( ) );
 			break;
 
 		case TT_NAME:
 			return;
 
 		default:
-			this.Error( "Unknown token '%s'", this.token.$.c_str ( ) );
+			this.Error( "Unknown token '%s'", this.token.c_str ( ) );
 		}
 	}
 
@@ -857,8 +857,8 @@ Gets the next token
 =============
 */
 	ExpectToken ( $string: string ): void {
-		if ( this.token.$.data != $string ) {
-			this.Error( "expected '%s', found '%s'", $string, this.token.$.c_str ( ) );
+		if ( this.token.data != $string ) {
+			this.Error( "expected '%s', found '%s'", $string, this.token.c_str ( ) );
 		}
 
 		this.NextToken ( );
@@ -873,7 +873,7 @@ Returns false and does nothing otherwise
 =============
 */
 	CheckToken ( $string: string ): boolean {
-		if ( this.token.$.data != $string ) {
+		if ( this.token.data != $string ) {
 			return false;
 		}
 
@@ -890,11 +890,11 @@ Checks to see if the current token is a valid name
 ============
 */
 	ParseName ( name: idStr ): void {
-		if ( this.token.$.type != TT_NAME ) {
-			this.Error( "'%s' is not a name", this.token.$.c_str ( ) );
+		if ( this.token.type != TT_NAME ) {
+			this.Error( "'%s' is not a name", this.token.c_str ( ) );
 		}
 
-		name.equals( this.token.$.data );
+		name.equals( this.token.data );
 		this.NextToken ( );
 	}
 
@@ -940,26 +940,26 @@ Parses a variable type, including functions types
 	CheckType ( ): idTypeDef {
 		var type: idTypeDef;
 
-		if ( this.token.$.data == "float" ) {
+		if ( this.token.data == "float" ) {
 			type = type_float;
-		} else if ( this.token.$.data == "vector" ) {
+		} else if ( this.token.data == "vector" ) {
 			type = type_vector;
-		} else if ( this.token.$.data == "entity" ) {
+		} else if ( this.token.data == "entity" ) {
 			type = type_entity;
-		} else if ( this.token.$.data == "string" ) {
+		} else if ( this.token.data == "string" ) {
 			type = type_string;
-		} else if ( this.token.$.data == "void" ) {
+		} else if ( this.token.data == "void" ) {
 			type = type_void;
-		} else if ( this.token.$.data == "object" ) {
+		} else if ( this.token.data == "object" ) {
 			type = type_object;
-		} else if ( this.token.$.data == "boolean" ) {
+		} else if ( this.token.data == "boolean" ) {
 			type = type_boolean;
-		} else if ( this.token.$.data == "namespace" ) {
+		} else if ( this.token.data == "namespace" ) {
 			type = type_namespace;
-		} else if ( this.token.$.data == "scriptEvent" ) {
+		} else if ( this.token.data == "scriptEvent" ) {
 			type = type_scriptevent;
 		} else {
-			type = gameLocal.program.FindType( this.token.$.c_str ( ) );
+			type = gameLocal.program.FindType( this.token.c_str ( ) );
 			if ( type && !type.Inherits( type_object ) ) {
 				type = null;
 			}
@@ -980,7 +980,7 @@ Parses a variable type, including functions types
 
 		type = this.CheckType ( );
 		if ( !type ) {
-			this.Error( "\"%s\" is not a type", this.token.$.c_str ( ) );
+			this.Error( "\"%s\" is not a type", this.token.c_str ( ) );
 		}
 
 		if ( ( type == type_scriptevent ) && ( this.scope != def_namespace ) ) {
@@ -1006,7 +1006,7 @@ Looks for a preexisting constant
 	ParseImmediate ( ): idVarDef {
 		var def: idVarDef;
 
-		def = this.GetImmediate( this.immediateType, this.immediate, this.token.$.c_str ( ) );
+		def = this.GetImmediate( this.immediateType, this.immediate, this.token.c_str ( ) );
 		this.NextToken ( );
 
 		return def;
@@ -1351,9 +1351,9 @@ Returns the def for the current token
 	if ( this.immediateType == type_entity ) {
 		// if an immediate entity ($-prefaced name) then create or lookup a def for it.
 		// when entities are spawned, they'll lookup the def and point it to them.
-		def = gameLocal.program.GetDef( type_entity, "$" + this.token.$.data, def_namespace );
+		def = gameLocal.program.GetDef( type_entity, "$" + this.token.data, def_namespace );
 		if ( !def ) {
-			def = gameLocal.program.AllocDef( type_entity, "$" + this.token.$.data, def_namespace, true );
+			def = gameLocal.program.AllocDef( type_entity, "$" + this.token.data, def_namespace, true );
 		}
 		this.NextToken();
 		return def;
@@ -1568,7 +1568,7 @@ idCompiler::GetExpression
 			return this.GetTerm ( );
 		}
 		e = this.GetExpression( priority - 1 );
-		if ( this.token.$.data == ";" ) {
+		if ( this.token.data == ";" ) {
 			// save us from searching through the opcodes unneccesarily
 			return e;
 		}
@@ -2401,7 +2401,7 @@ idCompiler::ParseVariableDef
 			} else {
 				// global variables can only be initialized with immediate values
 				negate = false;
-				if ( this.token.$.type == TT_PUNCTUATION && this.token.$.data == "-" ) {
+				if ( this.token.type == TT_PUNCTUATION && this.token.data == "-" ) {
 					negate = true;
 					this.NextToken ( );
 					if ( this.immediateType != type_float ) {
@@ -2415,7 +2415,7 @@ idCompiler::ParseVariableDef
 
 				// global variables are initialized at start up
 				if ( type == type_string ) {
-					def.SetString( this.token.$.data, false );
+					def.SetString( this.token.data, false );
 				} else {
 					if ( negate ) {
 						this.immediate._float = -this.immediate._float;
@@ -2691,26 +2691,26 @@ compiles the 0 terminated text, adding definitions to the program structure
 		this.parserPtr = this.parser;
 
 		// unread tokens to include script defines
-		this.token.$.equals( SCRIPT_DEFAULTDEFS );
-		this.token.$.type = TT_STRING;
-		this.token.$.subtype = this.token.$.Length ( );
-		this.token.$.line = this.token.$.linesCrossed = 0;
+		this.token.equals( SCRIPT_DEFAULTDEFS );
+		this.token.type = TT_STRING;
+		this.token.subtype = this.token.Length ( );
+		this.token.line = this.token.linesCrossed = 0;
 		this.parser.UnreadToken( this.token );
 
-		this.token.$.equals( "include" );
-		this.token.$.type = TT_NAME;
-		this.token.$.subtype = this.token.$.Length ( );
-		this.token.$.line = this.token.$.linesCrossed = 0;
+		this.token.equals( "include" );
+		this.token.type = TT_NAME;
+		this.token.subtype = this.token.Length ( );
+		this.token.line = this.token.linesCrossed = 0;
 		this.parser.UnreadToken( this.token );
 
-		this.token.$.equals( "#" );
-		this.token.$.type = TT_PUNCTUATION;
-		this.token.$.subtype = P_PRECOMP;
-		this.token.$.line = this.token.$.linesCrossed = 0;
+		this.token.equals( "#" );
+		this.token.type = TT_PUNCTUATION;
+		this.token.subtype = P_PRECOMP;
+		this.token.line = this.token.linesCrossed = 0;
 		this.parser.UnreadToken( this.token );
 
 		// init the current token line to be the first line so that currentLineNumber is set correctly in NextToken
-		this.token.$.line = 1;
+		this.token.line = 1;
 
 		error = false;
 		//try {

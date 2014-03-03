@@ -244,10 +244,10 @@ idMaterial::CheckSurfaceParm
 See if the current token matches one of the surface parm bit flags
 ===============
 */
-	CheckSurfaceParm(token: R<idToken> ):boolean {
+	CheckSurfaceParm(token: idToken ):boolean {
 
 	for ( var i = 0 ; i < numInfoParms ; i++ ) {
-		if ( !token.$.Icmp( infoParms[i].name ) ) {
+		if ( !token.Icmp( infoParms[i].name ) ) {
 			if ( infoParms[i].surfaceFlags & surfaceFlags_t.SURF_TYPE_MASK ) {
 				// ensure we only have one surface type set
 				this.surfaceFlags &= ~surfaceFlags_t.SURF_TYPE_MASK;
@@ -284,7 +284,7 @@ idMaterial::ParseSort
 =================
 */
 ParseSort(src:idLexer ):number {
-	var token = new R(new idToken);
+	var token = new idToken;
 
 	if ( !src.ReadTokenOnLine( token ) ) {
 		src.Warning( "missing sort parameter" );
@@ -292,28 +292,28 @@ ParseSort(src:idLexer ):number {
 		return;
 	}
 
-	if ( !token.$.Icmp( "subview" ) ) {
+	if ( !token.Icmp( "subview" ) ) {
 		this.sort = materialSort_t.SS_SUBVIEW;
-	} else if ( !token.$.Icmp( "opaque" ) ) {
+	} else if ( !token.Icmp( "opaque" ) ) {
 		this.sort = materialSort_t.SS_OPAQUE;
-	}else if ( !token.$.Icmp( "decal" ) ) {
+	}else if ( !token.Icmp( "decal" ) ) {
 		this.sort = materialSort_t.SS_DECAL;
-	} else if ( !token.$.Icmp( "far" ) ) {
+	} else if ( !token.Icmp( "far" ) ) {
 		this.sort = materialSort_t.SS_FAR;
-	} else if ( !token.$.Icmp( "medium" ) ) {
+	} else if ( !token.Icmp( "medium" ) ) {
 		this.sort = materialSort_t.SS_MEDIUM;
-	} else if ( !token.$.Icmp( "close" ) ) {
+	} else if ( !token.Icmp( "close" ) ) {
 		this.sort = materialSort_t.SS_CLOSE;
-	} else if ( !token.$.Icmp( "almostNearest" ) ) {
+	} else if ( !token.Icmp( "almostNearest" ) ) {
 		this.sort = materialSort_t.SS_ALMOST_NEAREST;
-	} else if ( !token.$.Icmp( "nearest" ) ) {
+	} else if ( !token.Icmp( "nearest" ) ) {
 		this.sort = materialSort_t.SS_NEAREST;
-	} else if ( !token.$.Icmp( "postProcess" ) ) {
+	} else if ( !token.Icmp( "postProcess" ) ) {
 		this.sort = materialSort_t.SS_POST_PROCESS;
-	} else if ( !token.$.Icmp( "portalSky" ) ) {
+	} else if ( !token.Icmp( "portalSky" ) ) {
 		this.sort = materialSort_t.SS_PORTAL_SKY;
 	} else {
-		this.sort = atof( token.$.data );
+		this.sort = atof( token.data );
 	}
 }
 
@@ -609,7 +609,7 @@ Returns a register index
 =================
 */
 /*int */ParseExpressionPriority( src:idLexer, /*int */priority:number ):number {
-		var token = new R( new idToken );
+		var token = new idToken;
 	var /*int		*/a:number;
 
 	if ( priority == 0 ) {
@@ -628,43 +628,43 @@ Returns a register index
 		return a;
 	}
 
-	if ( priority == 1 && token.$.data == "*" ) {
+	if ( priority == 1 && token.data == "*" ) {
 		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_MULTIPLY, priority );
 	}
-	if ( priority == 1 && token.$.data == "/" ) {
+	if ( priority == 1 && token.data == "/" ) {
 		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_DIVIDE, priority );
 	}
-	if ( priority == 1 && token.$.data == "%" ) {	// implied truncate both to integer
+	if ( priority == 1 && token.data == "%" ) {	// implied truncate both to integer
 		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_MOD, priority );
 	}
-	if ( priority == 2 && token.$.data == "+" ) {
+	if ( priority == 2 && token.data == "+" ) {
 		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_ADD, priority );
 	}
-	if ( priority == 2 && token.$.data == "-" ) {
+	if ( priority == 2 && token.data == "-" ) {
 		return this.ParseEmitOp( src, a, expOpType_t.OP_TYPE_SUBTRACT, priority );
 	}
-	if ( priority == 3 && token.$.data == ">" ) {
+	if ( priority == 3 && token.data == ">" ) {
 		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_GT, priority );
 	}
-	if ( priority == 3 && token.$.data == ">=" ) {
+	if ( priority == 3 && token.data == ">=" ) {
 		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_GE, priority );
 	}
-	if ( priority == 3 && token.$.data == "<" ) {
+	if ( priority == 3 && token.data == "<" ) {
 		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_LT, priority );
 	}
-	if ( priority == 3 && token.$.data == "<=" ) {
+	if ( priority == 3 && token.data == "<=" ) {
 		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_LE, priority );
 	}
-	if ( priority == 3 && token.$.data == "==" ) {
+	if ( priority == 3 && token.data == "==" ) {
 		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_EQ, priority );
 	}
-	if ( priority == 3 && token.$.data == "!=" ) {
+	if ( priority == 3 && token.data == "!=" ) {
 		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_NE, priority );
 	}
-	if ( priority == 4 && token.$.data == "&&" ) {
+	if ( priority == 4 && token.data == "&&" ) {
 		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_AND, priority );
 	}
-	if ( priority == 4 && token.$.data == "||" ) {
+	if ( priority == 4 && token.data == "||" ) {
 		return this.ParseEmitOp(src, a, expOpType_t.OP_TYPE_OR, priority );
 	}
 
@@ -772,7 +772,7 @@ idMaterial::ParseBlend
 ================
 */
 	ParseBlend ( src: idLexer, stage: shaderStage_t ): void {
-		var token = new R( new idToken );
+		var token = new idToken;
 		var /*int		*/srcBlend: number, dstBlend: number;
 
 		if ( !src.ReadToken( token ) ) {
@@ -780,43 +780,43 @@ idMaterial::ParseBlend
 		}
 
 		// blending combinations
-		if ( !token.$.Icmp( "blend" ) ) {
+		if ( !token.Icmp( "blend" ) ) {
 			stage.drawStateBits = GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA;
 			return;
 		}
-		if ( !token.$.Icmp( "add" ) ) {
+		if ( !token.Icmp( "add" ) ) {
 			stage.drawStateBits = GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE;
 			return;
 		}
-		if ( !token.$.Icmp( "filter" ) || !token.$.Icmp( "modulate" ) ) {
+		if ( !token.Icmp( "filter" ) || !token.Icmp( "modulate" ) ) {
 			stage.drawStateBits = GLS_SRCBLEND_DST_COLOR | GLS_DSTBLEND_ZERO;
 			return;
 		}
-		if ( !token.$.Icmp( "none" ) ) {
+		if ( !token.Icmp( "none" ) ) {
 			// none is used when defining an alpha mask that doesn't draw
 			stage.drawStateBits = GLS_SRCBLEND_ZERO | GLS_DSTBLEND_ONE;
 			return;
 		}
-		if ( !token.$.Icmp( "bumpmap" ) ) {
+		if ( !token.Icmp( "bumpmap" ) ) {
 			stage.lighting = stageLighting_t.SL_BUMP;
 			return;
 		}
-		if ( !token.$.Icmp( "diffusemap" ) ) {
+		if ( !token.Icmp( "diffusemap" ) ) {
 			stage.lighting = stageLighting_t.SL_DIFFUSE;
 			return;
 		}
-		if ( !token.$.Icmp( "specularmap" ) ) {
+		if ( !token.Icmp( "specularmap" ) ) {
 			stage.lighting = stageLighting_t.SL_SPECULAR;
 			return;
 		}
 
-		srcBlend = this.NameToSrcBlendMode(token.$ );
+		srcBlend = this.NameToSrcBlendMode(token );
 
 		this.MatchToken( src, "," );
 		if ( !src.ReadToken( token ) ) {
 			return;
 		}
-		dstBlend = this.NameToDstBlendMode( token.$ );
+		dstBlend = this.NameToDstBlendMode( token );
 
 		stage.drawStateBits = srcBlend | dstBlend;
 	}
@@ -1036,7 +1036,7 @@ An open brace has been parsed
 =================
 */
 	ParseStage(src: idLexer, trpDefault: textureRepeat_t): void {
-		var /*idToken			*/ token = new R( new idToken );
+		var /*idToken			*/ token = new idToken;
 	var /*const char		*/	/***/str:string;
 	var /*shaderStage_t		**/ss: shaderStage_t;
 	var /*textureStage_t	**/	ts: textureStage_t;
@@ -1080,36 +1080,36 @@ An open brace has been parsed
 		}
 
 		// the close brace for the entire material ends the draw block
-		if ( token.$.data == "}" ) {
+		if ( token.data == "}" ) {
 			break;
 		}
 
 		//BSM Nerve: Added for stage naming in the material editor
-		if( !token.$.Icmp( "name") ) {
+		if( !token.Icmp( "name") ) {
 			src.SkipRestOfLine();
 			continue;
 		}
 
 		// image options
-		if ( !token.$.Icmp( "blend" ) ) {
+		if ( !token.Icmp( "blend" ) ) {
 			this.ParseBlend( src, ss );
 			continue;
 		}
 
-		if (  !token.$.Icmp( "map" ) ) {
+		if (  !token.Icmp( "map" ) ) {
 			str = R_ParsePastImageProgram( src ).toString();
 			imageName = str;//idStr.Copynz( imageName, str, sizeof( imageName ) );
 			continue;
 		}
 
-		if (  !token.$.Icmp( "remoteRenderMap" ) ) {
+		if (  !token.Icmp( "remoteRenderMap" ) ) {
 			ts.dynamic = dynamicidImage_t.DI_REMOTE_RENDER;
 			ts.width = src.ParseInt();
 			ts.height = src.ParseInt();
 			continue;
 		}
 
-		if (  !token.$.Icmp( "mirrorRenderMap" ) ) {
+		if (  !token.Icmp( "mirrorRenderMap" ) ) {
 			ts.dynamic = dynamicidImage_t.DI_MIRROR_RENDER;
 			ts.width = src.ParseInt();
 			ts.height = src.ParseInt();
@@ -1117,27 +1117,27 @@ An open brace has been parsed
 			continue;
 		}
 
-		if (  !token.$.Icmp( "xrayRenderMap" ) ) {
+		if (  !token.Icmp( "xrayRenderMap" ) ) {
 			ts.dynamic = dynamicidImage_t.DI_XRAY_RENDER;
 			ts.width = src.ParseInt();
 			ts.height = src.ParseInt();
 			ts.texgen = texgen_t.TG_SCREEN;
 			continue;
 		}
-		if (  !token.$.Icmp( "screen" ) ) {
+		if (  !token.Icmp( "screen" ) ) {
 			ts.texgen = texgen_t.TG_SCREEN;
 			continue;
 		}
-		if (  !token.$.Icmp( "screen2" ) ) {
+		if (  !token.Icmp( "screen2" ) ) {
 			ts.texgen = texgen_t.TG_SCREEN2;
 			continue;
 		}
-		if (  !token.$.Icmp( "glassWarp" ) ) {
+		if (  !token.Icmp( "glassWarp" ) ) {
 			ts.texgen = texgen_t.TG_GLASSWARP;
 			continue;
 		}
 
-		if ( !token.$.Icmp( "videomap" ) ) {
+		if ( !token.Icmp( "videomap" ) ) {
 			// note that videomaps will always be in clamp mode, so texture
 			// coordinates had better be in the 0 to 1 range
 			if ( !src.ReadToken( token ) ) {
@@ -1145,7 +1145,7 @@ An open brace has been parsed
 				continue;
 			}
 			var loop = false;
-			if ( !token.$.Icmp( "loop" ) ) {
+			if ( !token.Icmp( "loop" ) ) {
 				loop = true;
 				if ( !src.ReadToken( token ) ) {
 					common.Warning( "missing parameter for 'videoMap' keyword in material '%s'", this.GetName() );
@@ -1154,88 +1154,88 @@ An open brace has been parsed
 			}
 			todoThrow ( );
 			//ts.cinematic = idCinematic::Alloc();
-			//ts.cinematic.InitFromFile( token.$.c_str(), loop );
+			//ts.cinematic.InitFromFile( token.c_str(), loop );
 			continue;
 		}
 
-		if ( !token.$.Icmp( "soundmap" ) ) {
+		if ( !token.Icmp( "soundmap" ) ) {
 			if ( !src.ReadToken( token ) ) {
 				common.Warning( "missing parameter for 'soundmap' keyword in material '%s'", this.GetName() );
 				continue;
 			}
 			todoThrow();
 			//ts.cinematic = new idSndWindow();
-			//ts.cinematic.InitFromFile( token.$.c_str(), true );
+			//ts.cinematic.InitFromFile( token.c_str(), true );
 			continue;
 		}
 
-		if ( !token.$.Icmp( "cubeMap" ) ) {
+		if ( !token.Icmp( "cubeMap" ) ) {
 			str = R_ParsePastImageProgram( src ).toString();
 			imageName = imageName;//idStr.Copynz( imageName, str, sizeof( imageName ) );
 			cubeMap = cubeFiles_t.CF_NATIVE;
 			continue;
 		}
 
-		if ( !token.$.Icmp( "cameraCubeMap" ) ) {
+		if ( !token.Icmp( "cameraCubeMap" ) ) {
 			str = R_ParsePastImageProgram(src).toString();
 			imageName = str;//idStr.Copynz( imageName, str, sizeof( imageName ) );
 			cubeMap = cubeFiles_t.CF_CAMERA;
 			continue;
 		}
 
-		if ( !token.$.Icmp( "ignoreAlphaTest" ) ) {
+		if ( !token.Icmp( "ignoreAlphaTest" ) ) {
 			ss.ignoreAlphaTest = true;
 			continue;
 		}
-		if ( !token.$.Icmp( "nearest" ) ) {
+		if ( !token.Icmp( "nearest" ) ) {
 			tf = textureFilter_t.TF_NEAREST;
 			continue;
 		}
-		if ( !token.$.Icmp( "linear" ) ) {
+		if ( !token.Icmp( "linear" ) ) {
 			tf = textureFilter_t.TF_LINEAR;
 			continue;
 		}
-		if ( !token.$.Icmp( "clamp" ) ) {
+		if ( !token.Icmp( "clamp" ) ) {
 			trp = textureRepeat_t.TR_CLAMP;
 			continue;
 		}
-		if ( !token.$.Icmp( "noclamp" ) ) {
+		if ( !token.Icmp( "noclamp" ) ) {
 			trp = textureRepeat_t.TR_REPEAT;
 			continue;
 		}
-		if ( !token.$.Icmp( "zeroclamp" ) ) {
+		if ( !token.Icmp( "zeroclamp" ) ) {
 			trp = textureRepeat_t.TR_CLAMP_TO_ZERO;
 			continue;
 		}
-		if ( !token.$.Icmp( "alphazeroclamp" ) ) {
+		if ( !token.Icmp( "alphazeroclamp" ) ) {
 			trp = textureRepeat_t.TR_CLAMP_TO_ZERO_ALPHA;
 			continue;
 		}
-		if ( !token.$.Icmp( "uncompressed" ) || !token.$.Icmp( "highquality" ) ) {
+		if ( !token.Icmp( "uncompressed" ) || !token.Icmp( "highquality" ) ) {
 			if ( !idImageManager.image_ignoreHighQuality.GetInteger() ) {
 				td = textureDepth_t.TD_HIGH_QUALITY;
 			}
 			continue;
 		}
-		if ( !token.$.Icmp( "forceHighQuality" ) ) {
+		if ( !token.Icmp( "forceHighQuality" ) ) {
 			td = textureDepth_t.TD_HIGH_QUALITY;
 			continue;
 		}
-		if ( !token.$.Icmp( "nopicmip" ) ) {
+		if ( !token.Icmp( "nopicmip" ) ) {
 			allowPicmip = false;
 			continue;
 		}
-		if ( !token.$.Icmp( "vertexColor" ) ) {
+		if ( !token.Icmp( "vertexColor" ) ) {
 			ss.vertexColor = stageVertexColor_t.SVC_MODULATE;
 			continue;
 		}
-		if ( !token.$.Icmp( "inverseVertexColor" ) ) {
+		if ( !token.Icmp( "inverseVertexColor" ) ) {
 			ss.vertexColor = stageVertexColor_t.SVC_INVERSE_MODULATE;
 			continue;
 		}
 
 		// privatePolygonOffset
-		else if ( !token.$.Icmp( "privatePolygonOffset" ) ) {
+		else if ( !token.Icmp( "privatePolygonOffset" ) ) {
 			if ( !src.ReadTokenOnLine( token ) ) {
 				ss.privatePolygonOffset = 1;
 				continue;
@@ -1247,27 +1247,27 @@ An open brace has been parsed
 		}
 
 		// texture coordinate generation
-		if ( !token.$.Icmp( "texGen" ) ) {
+		if ( !token.Icmp( "texGen" ) ) {
 			todoThrow();
 			src.ExpectAnyToken( token );
-			//if ( !token.$.Icmp( "normal" ) ) {
+			//if ( !token.Icmp( "normal" ) ) {
 			//	ts.texgen = TG_DIFFUSE_CUBE;
-			//} else if ( !token.$.Icmp( "reflect" ) ) {
+			//} else if ( !token.Icmp( "reflect" ) ) {
 			//	ts.texgen = texgen_t.TG_REFLECT_CUBE;
-			//} else if ( !token.$.Icmp( "skybox" ) ) {
+			//} else if ( !token.Icmp( "skybox" ) ) {
 			//	ts.texgen = TG_SKYBOX_CUBE;
-			//} else if ( !token.$.Icmp( "wobbleSky" ) ) {
+			//} else if ( !token.Icmp( "wobbleSky" ) ) {
 			//	ts.texgen = TG_WOBBLESKY_CUBE;
 			//	texGenRegisters[0] = this.ParseExpression( src );
 			//	texGenRegisters[1] = this.ParseExpression( src );
 			//	texGenRegisters[2] = this.ParseExpression( src );
 			//} else {
-			//	common.Warning( "bad texGen '%s' in material %s", token.$.c_str(), this.GetName() );
+			//	common.Warning( "bad texGen '%s' in material %s", token.c_str(), this.GetName() );
 			//	this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 			//}
 			continue;
 		}
-		if ( !token.$.Icmp( "scroll" ) || !token.$.Icmp( "translate" ) ) {
+		if ( !token.Icmp( "scroll" ) || !token.Icmp( "translate" ) ) {
 			todoThrow();
 			//a = this.ParseExpression( src );
 			//this.MatchToken( src, "," );
@@ -1282,7 +1282,7 @@ An open brace has been parsed
 			//MultiplyTextureMatrix( ts, matrix );
 			continue;
 		}
-		if ( !token.$.Icmp( "scale" ) ) {
+		if ( !token.Icmp( "scale" ) ) {
 			todoThrow();
 			//a = this.ParseExpression( src );
 			//this.MatchToken( src, "," );
@@ -1298,7 +1298,7 @@ An open brace has been parsed
 			//MultiplyTextureMatrix( ts, matrix );
 			continue;
 		}
-		if (!token.$.Icmp("centerScale")) {
+		if (!token.Icmp("centerScale")) {
 			todoThrow ( );
 			//a = this.ParseExpression( src );
 			//this.MatchToken( src, "," );
@@ -1314,7 +1314,7 @@ An open brace has been parsed
 			//MultiplyTextureMatrix( ts, matrix );
 			continue;
 		}
-		if ( !token.$.Icmp( "shear" ) ) {
+		if ( !token.Icmp( "shear" ) ) {
 			todoThrow();
 			//a = this.ParseExpression( src );
 			//this.MatchToken( src, "," );
@@ -1330,7 +1330,7 @@ An open brace has been parsed
 			//MultiplyTextureMatrix( ts, matrix );
 			continue;
 		}
-		if ( !token.$.Icmp( "rotate" ) ) {
+		if ( !token.Icmp( "rotate" ) ) {
 			todoThrow();
 			//var  table: idDeclTable;
 			//var /*int		*/sinReg: number, cosReg: number;
@@ -1372,31 +1372,31 @@ An open brace has been parsed
 		}
 
 		// color mask options
-		if ( !token.$.Icmp( "maskRed" ) ) {
+		if ( !token.Icmp( "maskRed" ) ) {
 			ss.drawStateBits |= GLS_REDMASK;
 			continue;
 		}		
-		if ( !token.$.Icmp( "maskGreen" ) ) {
+		if ( !token.Icmp( "maskGreen" ) ) {
 			ss.drawStateBits |= GLS_GREENMASK;
 			continue;
 		}		
-		if ( !token.$.Icmp( "maskBlue" ) ) {
+		if ( !token.Icmp( "maskBlue" ) ) {
 			ss.drawStateBits |= GLS_BLUEMASK;
 			continue;
 		}		
-		if ( !token.$.Icmp( "maskAlpha" ) ) {
+		if ( !token.Icmp( "maskAlpha" ) ) {
 			ss.drawStateBits |= GLS_ALPHAMASK;
 			continue;
 		}		
-		if ( !token.$.Icmp( "maskColor" ) ) {
+		if ( !token.Icmp( "maskColor" ) ) {
 			ss.drawStateBits |= GLS_COLORMASK;
 			continue;
 		}		
-		if ( !token.$.Icmp( "maskDepth" ) ) {
+		if ( !token.Icmp( "maskDepth" ) ) {
 			ss.drawStateBits |= GLS_DEPTHMASK;
 			continue;
 		}		
-		if ( !token.$.Icmp( "alphaTest" ) ) {
+		if ( !token.Icmp( "alphaTest" ) ) {
 			ss.hasAlphaTest = true;
 			ss.alphaTestRegister = this.ParseExpression( src );
 			this.coverage = materialCoverage_t.MC_PERFORATED;
@@ -1404,7 +1404,7 @@ An open brace has been parsed
 		}		
 
 		// shorthand for 2D modulated
-		if ( !token.$.Icmp( "colored" ) ) {
+		if ( !token.Icmp( "colored" ) ) {
 			ss.color.registers[0] = expRegister_t.EXP_REG_PARM0;
 			ss.color.registers[1] = expRegister_t.EXP_REG_PARM1;
 			ss.color.registers[2] = expRegister_t.EXP_REG_PARM2;
@@ -1413,7 +1413,7 @@ An open brace has been parsed
 			continue;
 		}
 
-		if ( !token.$.Icmp( "color" ) ) {
+		if ( !token.Icmp( "color" ) ) {
 			ss.color.registers[0] = this.ParseExpression( src );
 			this.MatchToken( src, "," );
 			ss.color.registers[1] = this.ParseExpression( src );
@@ -1423,67 +1423,67 @@ An open brace has been parsed
 			ss.color.registers[3] = this.ParseExpression( src );
 			continue;
 		}
-		if ( !token.$.Icmp( "red" ) ) {
+		if ( !token.Icmp( "red" ) ) {
 			ss.color.registers[0] = this.ParseExpression( src );
 			continue;
 		}
-		if ( !token.$.Icmp( "green" ) ) {
+		if ( !token.Icmp( "green" ) ) {
 			ss.color.registers[1] = this.ParseExpression( src );
 			continue;
 		}
-		if ( !token.$.Icmp( "blue" ) ) {
+		if ( !token.Icmp( "blue" ) ) {
 			ss.color.registers[2] = this.ParseExpression( src );
 			continue;
 		}
-		if ( !token.$.Icmp( "alpha" ) ) {
+		if ( !token.Icmp( "alpha" ) ) {
 			ss.color.registers[3] = this.ParseExpression( src );
 			continue;
 		}
-		if ( !token.$.Icmp( "rgb" ) ) {
+		if ( !token.Icmp( "rgb" ) ) {
 			ss.color.registers[0] = ss.color.registers[1] = 
 				ss.color.registers[2] = this.ParseExpression( src );
 			continue;
 		}
-		if ( !token.$.Icmp( "rgba" ) ) {
+		if ( !token.Icmp( "rgba" ) ) {
 			ss.color.registers[0] = ss.color.registers[1] = 
 				ss.color.registers[2] = ss.color.registers[3] = this.ParseExpression( src );
 			continue;
 		}
 
-		if ( !token.$.Icmp( "if" ) ) {
+		if ( !token.Icmp( "if" ) ) {
 			ss.conditionRegister = this.ParseExpression( src );
 			continue;
 		}
-		if ( !token.$.Icmp( "program" ) ) {
+		if ( !token.Icmp( "program" ) ) {
 			if ( src.ReadTokenOnLine( token ) ) {
 //#if !defined(GL_ES_VERSION_2_0)
-//				newStage.vertexProgram = R_FindARBProgram( GL_VERTEX_PROGRAM_ARB, token.$.c_str() );
-//				newStage.fragmentProgram = R_FindARBProgram( GL_FRAGMENT_PROGRAM_ARB, token.$.c_str() );
+//				newStage.vertexProgram = R_FindARBProgram( GL_VERTEX_PROGRAM_ARB, token.c_str() );
+//				newStage.fragmentProgram = R_FindARBProgram( GL_FRAGMENT_PROGRAM_ARB, token.c_str() );
 //#endif
 			}
 			continue;
 		}
-		if ( !token.$.Icmp( "fragmentProgram" ) ) {
+		if ( !token.Icmp( "fragmentProgram" ) ) {
 			if ( src.ReadTokenOnLine( token ) ) {
 //#if !defined(GL_ES_VERSION_2_0)
-//				newStage.fragmentProgram = R_FindARBProgram( GL_FRAGMENT_PROGRAM_ARB, token.$.c_str() );
+//				newStage.fragmentProgram = R_FindARBProgram( GL_FRAGMENT_PROGRAM_ARB, token.c_str() );
 //#endif
 			}
 			continue;
 		}
-		if ( !token.$.Icmp( "vertexProgram" ) ) {
+		if ( !token.Icmp( "vertexProgram" ) ) {
 			if ( src.ReadTokenOnLine( token ) ) {
 //#if !defined(GL_ES_VERSION_2_0)
-//				newStage.vertexProgram = R_FindARBProgram( GL_VERTEX_PROGRAM_ARB, token.$.c_str() );
+//				newStage.vertexProgram = R_FindARBProgram( GL_VERTEX_PROGRAM_ARB, token.c_str() );
 //#endif
 			}
 			continue;
 		}
-		if ( !token.$.Icmp( "megaTexture" ) ) {
+		if ( !token.Icmp( "megaTexture" ) ) {
 			if ( src.ReadTokenOnLine( token ) ) {
 //#if !defined(GL_ES_VERSION_2_0)
 //				newStage.megaTexture = new idMegaTexture;
-//				if ( !newStage.megaTexture.InitFromMegaFile( token.$.c_str() ) ) {
+//				if ( !newStage.megaTexture.InitFromMegaFile( token.c_str() ) ) {
 //					delete newStage.megaTexture;
 //					this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 //					continue;
@@ -1496,14 +1496,14 @@ An open brace has been parsed
 		}
 
 
-		if ( !token.$.Icmp( "vertexParm" ) ) {
+		if ( !token.Icmp( "vertexParm" ) ) {
 //#if !defined(GL_ES_VERSION_2_0)
 //			ParseVertexParm( src, &newStage );
 //#endif
 			continue;
 		}
 
-		if (  !token.$.Icmp( "fragmentMap" ) ) {	
+		if (  !token.Icmp( "fragmentMap" ) ) {	
 //#if !defined(GL_ES_VERSION_2_0)
 //			ParseFragmentMap( src, &newStage );
 //#endif
@@ -1511,7 +1511,7 @@ An open brace has been parsed
 		}
 
 
-		common.Warning( "unknown token '%s' in material '%s'", token.$.c_str(), this.GetName() );
+		common.Warning( "unknown token '%s' in material '%s'", token.c_str(), this.GetName() );
 		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 		return;
 	}
@@ -1762,7 +1762,7 @@ If there is any error during parsing, defaultShader will be set.
 =================
 */
 	ParseMaterial ( src: idLexer ): void {
-		var token = new R( new idToken );
+		var token = new idToken;
 		var /*int			*/s: number;
 		var buffer = ""; //char		buffer[1024];
 		var str = ""; /*const char	*str;*/
@@ -1791,18 +1791,18 @@ If there is any error during parsing, defaultShader will be set.
 			}
 
 			// end of material definition
-			if ( token.$.data == "}" ) {
+			if ( token.data == "}" ) {
 				break;
-			} else if ( !token.$.Icmp( "qer_editorimage" ) ) {
+			} else if ( !token.Icmp( "qer_editorimage" ) ) {
 				src.ReadTokenOnLine( token );
-				this.editorImageName = new idStr( token.$.c_str ( ) );
+				this.editorImageName = new idStr( token.c_str ( ) );
 				src.SkipRestOfLine ( );
 				continue;
 			}
 			// description
-			else if ( !token.$.Icmp( "description" ) ) {
+			else if ( !token.Icmp( "description" ) ) {
 				src.ReadTokenOnLine( token );
-				this.desc = new idStr( token.$.c_str ( ) );
+				this.desc = new idStr( token.c_str ( ) );
 				continue;
 			}
 			// check for the surface / content bit flags
@@ -1810,79 +1810,79 @@ If there is any error during parsing, defaultShader will be set.
 				continue;
 			}
 // polygonOffset
-			else if ( !token.$.Icmp( "polygonOffset" ) ) {
+			else if ( !token.Icmp( "polygonOffset" ) ) {
 				this.SetMaterialFlag( materialFlags_t.MF_POLYGONOFFSET );
 				if ( !src.ReadTokenOnLine( token ) ) {
 					this.polygonOffset = 1;
 					continue;
 				}
 				// explict larger (or negative) offset
-				this.polygonOffset = token.$.GetFloatValue ( );
+				this.polygonOffset = token.GetFloatValue ( );
 				continue;
 			}
 			// noshadow
-			else if ( !token.$.Icmp( "noShadows" ) ) {
+			else if ( !token.Icmp( "noShadows" ) ) {
 				this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
 				continue;
-			} else if ( !token.$.Icmp( "suppressInSubview" ) ) {
+			} else if ( !token.Icmp( "suppressInSubview" ) ) {
 				this.suppressInSubview = true;
 				continue;
-			} else if ( !token.$.Icmp( "portalSky" ) ) {
+			} else if ( !token.Icmp( "portalSky" ) ) {
 				this.portalSky = true;
 				continue;
 			}
 			// noSelfShadow
-			else if ( !token.$.Icmp( "noSelfShadow" ) ) {
+			else if ( !token.Icmp( "noSelfShadow" ) ) {
 				this.SetMaterialFlag( materialFlags_t.MF_NOSELFSHADOW );
 				continue;
 			}
 			// noPortalFog
-			else if ( !token.$.Icmp( "noPortalFog" ) ) {
+			else if ( !token.Icmp( "noPortalFog" ) ) {
 				this.SetMaterialFlag( materialFlags_t.MF_NOPORTALFOG );
 				continue;
 			}
 			// forceShadows allows nodraw surfaces to cast shadows
-			else if ( !token.$.Icmp( "forceShadows" ) ) {
+			else if ( !token.Icmp( "forceShadows" ) ) {
 				this.SetMaterialFlag( materialFlags_t.MF_FORCESHADOWS );
 				continue;
 			}
 			// overlay / decal suppression
-			else if ( !token.$.Icmp( "noOverlays" ) ) {
+			else if ( !token.Icmp( "noOverlays" ) ) {
 				this.allowOverlays = false;
 				continue;
 			}
 			// moster blood overlay forcing for alpha tested or translucent surfaces
-			else if ( !token.$.Icmp( "forceOverlays" ) ) {
+			else if ( !token.Icmp( "forceOverlays" ) ) {
 				this.pd.forceOverlays = true;
 				continue;
 			}
 			// translucent
-			else if ( !token.$.Icmp( "translucent" ) ) {
+			else if ( !token.Icmp( "translucent" ) ) {
 				this.coverage = materialCoverage_t.MC_TRANSLUCENT;
 				continue;
 			}
 			// global zero clamp
-			else if ( !token.$.Icmp( "zeroclamp" ) ) {
+			else if ( !token.Icmp( "zeroclamp" ) ) {
 				trpDefault = textureRepeat_t.TR_CLAMP_TO_ZERO;
 				continue;
 			}
 			// global clamp
-			else if ( !token.$.Icmp( "clamp" ) ) {
+			else if ( !token.Icmp( "clamp" ) ) {
 				trpDefault = textureRepeat_t.TR_CLAMP;
 				continue;
 			}
 			// global clamp
-			else if ( !token.$.Icmp( "alphazeroclamp" ) ) {
+			else if ( !token.Icmp( "alphazeroclamp" ) ) {
 				trpDefault = textureRepeat_t.TR_CLAMP_TO_ZERO;
 				continue;
 			}
 			// forceOpaque is used for skies-behind-windows
-			else if ( !token.$.Icmp( "forceOpaque" ) ) {
+			else if ( !token.Icmp( "forceOpaque" ) ) {
 				this.coverage = materialCoverage_t.MC_OPAQUE;
 				continue;
 			}
 			// twoSided
-			else if ( !token.$.Icmp( "twoSided" ) ) {
+			else if ( !token.Icmp( "twoSided" ) ) {
 				this.cullType = cullType_t.CT_TWO_SIDED;
 				// twoSided implies no-shadows, because the shadow
 				// volume would be coplanar with the surface, giving depth fighting
@@ -1891,47 +1891,47 @@ If there is any error during parsing, defaultShader will be set.
 				this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
 			}
 			// backSided
-			else if ( !token.$.Icmp( "backSided" ) ) {
+			else if ( !token.Icmp( "backSided" ) ) {
 				this.cullType = cullType_t.CT_BACK_SIDED;
 				// the shadow code doesn't handle this, so just disable shadows.
 				// We could fix this in the future if there was a need.
 				this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
 			}
 			// foglight
-			else if ( !token.$.Icmp( "fogLight" ) ) {
+			else if ( !token.Icmp( "fogLight" ) ) {
 				this.fogLight = true;
 				continue;
 			}
 			// blendlight
-			else if ( !token.$.Icmp( "blendLight" ) ) {
+			else if ( !token.Icmp( "blendLight" ) ) {
 				this.blendLight = true;
 				continue;
 			}
 			// ambientLight
-			else if ( !token.$.Icmp( "ambientLight" ) ) {
+			else if ( !token.Icmp( "ambientLight" ) ) {
 				this.ambientLight = true;
 				continue;
 			}
 			// mirror
-			else if ( !token.$.Icmp( "mirror" ) ) {
+			else if ( !token.Icmp( "mirror" ) ) {
 				this.sort = materialSort_t.SS_SUBVIEW;
 				this.coverage = materialCoverage_t.MC_OPAQUE;
 				continue;
 			}
 			// noFog
-			else if ( !token.$.Icmp( "noFog" ) ) {
+			else if ( !token.Icmp( "noFog" ) ) {
 				this.noFog = true;
 				continue;
 			}
 			// unsmoothedTangents
-			else if ( !token.$.Icmp( "unsmoothedTangents" ) ) {
+			else if ( !token.Icmp( "unsmoothedTangents" ) ) {
 				this.unsmoothedTangents = true;
 				continue;
 			}
 			// lightFallofImage <imageprogram>
 			// specifies the image to use for the third axis of projected
 			// light volumes
-			else if ( !token.$.Icmp( "lightFalloffImage" ) ) {
+			else if ( !token.Icmp( "lightFalloffImage" ) ) {
 				str = R_ParsePastImageProgram( src ).toString ( );
 				var copy: idStr;
 
@@ -1942,47 +1942,47 @@ If there is any error during parsing, defaultShader will be set.
 			// guisurf <guifile> | guisurf entity
 			// an entity guisurf must have an idUserInterface
 			// specified in the renderEntity
-			else if ( !token.$.Icmp( "guisurf" ) ) {
+			else if ( !token.Icmp( "guisurf" ) ) {
 				src.ReadTokenOnLine( token );
-				if ( !token.$.Icmp( "entity" ) ) {
+				if ( !token.Icmp( "entity" ) ) {
 					this.entityGui = 1;
-				} else if ( !token.$.Icmp( "entity2" ) ) {
+				} else if ( !token.Icmp( "entity2" ) ) {
 					this.entityGui = 2;
-				} else if ( !token.$.Icmp( "entity3" ) ) {
+				} else if ( !token.Icmp( "entity3" ) ) {
 					this.entityGui = 3;
 				} else {
-					this.gui = uiManager.FindGui( token.$.c_str ( ), true );
+					this.gui = uiManager.FindGui( token.c_str ( ), true );
 				}
 				continue;
 			}
 			// sort
-			else if ( !token.$.Icmp( "sort" ) ) {
+			else if ( !token.Icmp( "sort" ) ) {
 				this.ParseSort( src );
 				continue;
 			}
 			// spectrum <integer>
-			else if ( !token.$.Icmp( "spectrum" ) ) {
+			else if ( !token.Icmp( "spectrum" ) ) {
 				src.ReadTokenOnLine( token );
-				this.spectrum = atoi( token.$.c_str ( ) );
+				this.spectrum = atoi( token.c_str ( ) );
 				continue;
 			}
 			// deform < sprite | tube | flare >
-			else if ( !token.$.Icmp( "deform" ) ) {
+			else if ( !token.Icmp( "deform" ) ) {
 				this.ParseDeform( src );
 				continue;
 			}
 			// decalInfo <staySeconds> <fadeSeconds> ( <start rgb> ) ( <end rgb> )
-			else if ( !token.$.Icmp( "decalInfo" ) ) {
+			else if ( !token.Icmp( "decalInfo" ) ) {
 				this.ParseDecalInfo( src );
 				continue;
 			}
 			// renderbump <args...>
-			else if ( !token.$.Icmp( "renderbump" ) ) {
+			else if ( !token.Icmp( "renderbump" ) ) {
 				src.ParseRestOfLine( this.renderBump );
 				continue;
 			}
 			// diffusemap for stage shortcut
-			else if ( !token.$.Icmp( "diffusemap" ) ) {
+			else if ( !token.Icmp( "diffusemap" ) ) {
 				str = R_ParsePastImageProgram( src ).toString ( );
 				buffer = sprintf("blend diffusemap\nmap %s\n}\n", str);//idStr.snPrintf( buffer, sizeof( buffer ), "blend diffusemap\nmap %s\n}\n", str );
 				newSrc.LoadMemory( buffer, strlen( buffer ), "diffusemap" );
@@ -1992,7 +1992,7 @@ If there is any error during parsing, defaultShader will be set.
 				continue;
 			}
 			// specularmap for stage shortcut
-			else if ( !token.$.Icmp( "specularmap" ) ) {
+			else if ( !token.Icmp( "specularmap" ) ) {
 				str = R_ParsePastImageProgram( src ).toString ( );
 				buffer = sprintf( "blend specularmap\nmap %s\n}\n", str );//idStr.snPrintf( buffer, sizeof( buffer ), "blend specularmap\nmap %s\n}\n", str );
 				newSrc.LoadMemory( buffer, strlen( buffer ), "specularmap" );
@@ -2002,7 +2002,7 @@ If there is any error during parsing, defaultShader will be set.
 				continue;
 			}
 			// normalmap for stage shortcut
-			else if ( !token.$.Icmp( "bumpmap" ) ) {
+			else if ( !token.Icmp( "bumpmap" ) ) {
 				str = R_ParsePastImageProgram( src ).toString ( );
 				buffer = sprintf( "blend bumpmap\nmap %s\n}\n", str );//idStr.snPrintf( buffer, sizeof( buffer ), "blend bumpmap\nmap %s\n}\n", str );
 				newSrc.LoadMemory( buffer, strlen( buffer ), "bumpmap" );
@@ -2012,7 +2012,7 @@ If there is any error during parsing, defaultShader will be set.
 				continue;
 			}
 			// DECAL_MACRO for backwards compatibility with the preprocessor macros
-			else if ( !token.$.Icmp( "DECAL_MACRO" ) ) {
+			else if ( !token.Icmp( "DECAL_MACRO" ) ) {
 				// polygonOffset
 				this.SetMaterialFlag( materialFlags_t.MF_POLYGONOFFSET );
 				this.polygonOffset = 1;
@@ -2027,12 +2027,12 @@ If there is any error during parsing, defaultShader will be set.
 				// noShadows
 				this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
 				continue;
-			} else if ( token.$.data == "{" ) {
+			} else if ( token.data == "{" ) {
 				// create the new stage
 				this.ParseStage( src, trpDefault );
 				continue;
 			} else {
-				common.Warning( "unknown general material parameter '%s' in '%s'", token.$.c_str ( ), this.GetName ( ) );
+				common.Warning( "unknown general material parameter '%s' in '%s'", token.c_str ( ), this.GetName ( ) );
 				this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 				return;
 			}

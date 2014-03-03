@@ -157,7 +157,7 @@ will point into this temporary buffer.
 */
 	TokenizeString ( text: string, keepAsStrings: boolean ): void {
 		var lex = new idLexer;
-		var token = new R( new idToken ), $number = new R( new idToken ( ) );
+		var token = new idToken, $number = new idToken;
 		var /*int*/len: number, totalLen: number;
 
 		// clear previous args
@@ -187,25 +187,25 @@ will point into this temporary buffer.
 			}
 
 			// check for negative numbers
-			if ( !keepAsStrings && ( token.$.data == "-" ) ) {
+			if ( !keepAsStrings && ( token.data == "-" ) ) {
 				if ( lex.CheckTokenType( TT_NUMBER, 0, $number ) ) {
-					token.$.equals( "-" + $number.$.data );
+					token.equals( "-" + $number.data );
 				}
 			}
 
 			// check for cvar expansion
-			if ( token.$.data == "$" ) {
+			if ( token.data == "$" ) {
 				if ( !lex.ReadToken( token ) ) {
 					return;
 				}
 				if ( /*idLib::*/cvarSystem ) {
-					token.$.equals(/*idLib::*/cvarSystem.GetCVarString( token.$.c_str ( ) ) );
+					token.equals(/*idLib::*/cvarSystem.GetCVarString( token.c_str ( ) ) );
 				} else {
-					token.$.equals( "<unknown>" );
+					token.equals( "<unknown>" );
 				}
 			}
 
-			len = token.$.Length ( );
+			len = token.Length ( );
 
 			if ( totalLen + len + 1 > sizeof( this.tokenized ) ) {
 				return; // this is usually something malicious
@@ -215,7 +215,7 @@ will point into this temporary buffer.
 			this.argv[this.argc] = this.tokenized.subarray( totalLen ); //tokenized + totalLen;
 			this.argc++;
 
-			idStr.Copynz( this.tokenized.subarray( totalLen ) /*tokenized + totalLen*/, token.$.c_str ( ), idCmdArgs.MAX_COMMAND_STRING /*sizeof( tokenized )*/ - totalLen );
+			idStr.Copynz( this.tokenized.subarray( totalLen ) /*tokenized + totalLen*/, token.c_str ( ), idCmdArgs.MAX_COMMAND_STRING /*sizeof( tokenized )*/ - totalLen );
 
 			totalLen += len + 1;
 		}

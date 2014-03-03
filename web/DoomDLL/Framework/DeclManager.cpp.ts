@@ -627,11 +627,11 @@ var/*int */c_savedMemory = 0;
 /*int*/ idDeclFile.prototype.LoadAndParse = function():number {
     var /*int*/i: number, numTypes: number;
     var src = new idLexer;
-	var token = new R<idToken>( new idToken ( ) );
-	var/*int			*/startMarker:number;
+	var token = new idToken;
+	var/*int*/startMarker:number;
     var buffer = new R < Uint8Array>( );
-	var /*int			*/length:number, size: number;
-	var /*int			*/sourceLine:number;
+	var /*int*/length:number, size: number;
+	var /*int*/sourceLine:number;
 	var name = new idStr;
 	var newDecl: idDeclLocal;
 	var reparse:boolean;
@@ -680,7 +680,7 @@ var/*int */c_savedMemory = 0;
 		numTypes = declManagerLocal.GetNumDeclTypes();
 		for ( i = 0; i < numTypes; i++ ) {
 			var typeInfo: idDeclType = declManagerLocal.GetDeclType( i );
-			if (typeInfo && typeInfo.typeName.Icmp(token.$ ) == 0 ) {
+			if (typeInfo && typeInfo.typeName.Icmp( token.data ) == 0 ) {
 				identifiedType = typeInfo.type;
 				break;
 			}
@@ -688,7 +688,7 @@ var/*int */c_savedMemory = 0;
 
 		if ( i >= numTypes ) {
 
-			if (token.$.Icmp( "{" ) == 0 ) {
+			if (token.Icmp( "{" ) == 0 ) {
 
 				// if we ever see an open brace, we somehow missed the [type] <name> prefix
 				src.Warning( "Missing decl name" );
@@ -713,7 +713,7 @@ var/*int */c_savedMemory = 0;
 			break;
 		}
 
-		if (!token.$.Icmp( "{" ) ) {
+		if (!token.Icmp( "{" ) ) {
 			// if we ever see an open brace, we somehow missed the [type] <name> prefix
 			src.Warning( "Missing decl name" );
 			src.SkipBracedSection( false );
@@ -726,7 +726,7 @@ var/*int */c_savedMemory = 0;
 			continue;
 		}
 
-		name.equals( token.$.data );
+		name.equals( token.data );
 
 		assert( src.buffer.indexOf( "<!DOCTYPE html" ) === -1 );
 
@@ -735,8 +735,8 @@ var/*int */c_savedMemory = 0;
 			src.Warning( "Type without definition at end of file" );
 			break;
 		}
-		if ( token.$.c_str() != "{" ) {
-			src.Warning("Expecting '{' but found '%s'", token.$.c_str() );
+		if ( token.c_str() != "{" ) {
+			src.Warning("Expecting '{' but found '%s'", token.c_str() );
 			continue;
 		}
 		src.UnreadToken( token );

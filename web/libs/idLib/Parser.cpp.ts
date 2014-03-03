@@ -679,7 +679,7 @@ idParser::PushScript
 idParser::ReadSourceToken
 ================
 */
-	ReadSourceToken ( token: R<idToken> ): number {
+	ReadSourceToken ( token: idToken ): number {
 		var t: idToken;
 		var script: idLexer;
 		var /*int */type = new R( 0 ), skip = new R( 0 ), changedScript: number;
@@ -694,11 +694,11 @@ idParser::ReadSourceToken
 		while ( !this.tokens ) {
 			// if there's a token to read from the script
 			if ( this.scriptstack.ReadToken( token ) ) {
-				token.$.linesCrossed += changedScript;
+				token.linesCrossed += changedScript;
 
 				// set the marker based on the start of the token read in
 				if ( this.marker_p === null || this.marker_p === undefined) {
-					this.marker_p = token.$.whiteSpaceEnd_p;
+					this.marker_p = token.whiteSpaceEnd_p;
 				}
 				return 1 /*true*/;
 			}
@@ -721,7 +721,7 @@ idParser::ReadSourceToken
 			delete script;
 		}
 		// copy the already available token
-		token.$.equals(this.tokens);
+		token.equals(this.tokens);
 		// remove the token from the source
 		//t = this.tokens;
 		if ( !this.tokens.next ) {
@@ -738,10 +738,10 @@ idParser::ReadSourceToken
 idParser::UnreadSourceToken
 ================
 */
-	UnreadSourceToken ( token: R<idToken> ): number {
+	UnreadSourceToken ( token: idToken ): number {
 		var t: idToken;
 
-		t = new idToken( token.$ );
+		t = new idToken( token );
 		t.next = this.tokens;
 		this.tokens = t;
 		return 1 /*true*/;
@@ -755,7 +755,7 @@ idParser::ReadDefineParms
 	/*int*/
 	ReadDefineParms ( define: define_t, /*idToken ***/parms: idToken[], /*int */maxparms: number ): number {
 		var newdefine: define_t;
-		var token = new R( new idToken ), t: idToken, last: idToken;
+		var token = new idToken, t: idToken, last: idToken;
 		var /*int */i: number, done: number, lastcomma: number, numparms: number, indent: number;
 
 		if ( !this.ReadSourceToken( token ) ) {
@@ -772,7 +772,7 @@ idParser::ReadDefineParms
 			parms[i] = null;
 		}
 		// if no leading "("
-		if ( token.$.data != "(" ) {
+		if ( token.data != "(" ) {
 			this.UnreadSourceToken( token );
 			this.Error( "define '%s' missing parameters", define.name );
 			return 0 /*false*/;
@@ -793,7 +793,7 @@ idParser::ReadDefineParms
 					return 0 /*false*/;
 				}
 
-				if ( token.$.data == "," ) {
+				if ( token.data == "," ) {
 					if ( indent <= 1 ) {
 						if ( lastcomma ) {
 							this.Warning( "too many comma's" );
@@ -804,9 +804,9 @@ idParser::ReadDefineParms
 						lastcomma = 1;
 						break;
 					}
-				} else if ( token.$.data == "(" ) {
+				} else if ( token.data == "(" ) {
 					indent++;
-				} else if ( token.$.data == ")" ) {
+				} else if ( token.data == ")" ) {
 					indent--;
 					if ( indent <= 0 ) {
 						if ( !parms[define.numparms - 1] ) {
@@ -815,10 +815,10 @@ idParser::ReadDefineParms
 						done = 1;
 						break;
 					}
-				} else if ( token.$.type == TT_NAME ) {
-					newdefine = this.FindHashedDefine( this.definehash, token.$.c_str ( ) );
+				} else if ( token.type == TT_NAME ) {
+					newdefine = this.FindHashedDefine( this.definehash, token.c_str ( ) );
 					if ( newdefine ) {
-						if ( !this.ExpandDefineIntoSource( token.$, newdefine ) ) {
+						if ( !this.ExpandDefineIntoSource( token, newdefine ) ) {
 							return 0 /*false*/;
 						}
 						continue;
@@ -829,7 +829,7 @@ idParser::ReadDefineParms
 
 				if ( numparms < define.numparms ) {
 
-					t = new idToken( token.$ );
+					t = new idToken( token );
 					t.next = null;
 					if ( last ) last.next = t;
 					else parms[numparms] = t;
@@ -1181,7 +1181,7 @@ reads a token from the current line, continues reading on the next
 line only if a backslash '\' is found
 ================
 */
-	ReadLine ( token: R<idToken> ): number {
+	ReadLine ( token: idToken ): number {
 		var /*int */crossline: number;
 
 		crossline = 0;
@@ -1190,12 +1190,12 @@ line only if a backslash '\' is found
 				return 0 /*false*/;
 			}
 
-			if ( token.$.linesCrossed > crossline ) {
+			if ( token.linesCrossed > crossline ) {
 				this.UnreadSourceToken( token );
 				return 0 /*false*/;
 			}
 			crossline = 1;
-		} while ( ( token ).$.data == "\\" );
+		} while ( ( token ).data == "\\" );
 		return 1 /*true*/;
 	}
 
@@ -1206,27 +1206,27 @@ idParser::Directive_include
 */
 	/*int*/Directive_include(): number {
 	var script: idLexer;
-	var token = new R( new idToken );
+	var token = new idToken;
 	var path = new idStr;
 
 	if ( !this.ReadSourceToken( token ) ) {
 		this.Error( "#include without file name" );
 		return 0/*false*/;
 	}
-	if ( token.$.linesCrossed > 0 ) {
+	if ( token.linesCrossed > 0 ) {
 		this.Error( "#include without file name" );
 		return 0/*false*/;
 	}
-	if ( token.$.type == TT_STRING ) {
+	if ( token.type == TT_STRING ) {
 		script = new idLexer;
 		// try relative to the current file
 		path.equals( this.scriptstack.GetFileName ( ) );
 		path.StripFilename();
 		path.Append("/");
-		path.Append( token.$.data );
+		path.Append( token.data );
 		if ( !script.LoadFile( path.data, this.OSPath ) ) {
 			// try absolute path
-			path.equals( token.$.data );
+			path.equals( token.data );
 			if (!script.LoadFile(path.data, this.OSPath ) ) {
 				// try from the include path
 				path.equals( this.includepath.data + token );
@@ -1237,19 +1237,19 @@ idParser::Directive_include
 			}
 		}
 	}
-	else if ( token.$.type == TT_PUNCTUATION && token.$.data == "<" ) {
+	else if ( token.type == TT_PUNCTUATION && token.data == "<" ) {
 		path = this.includepath;
 		while( this.ReadSourceToken( token ) ) {
-			if ( token.$.linesCrossed > 0 ) {
+			if ( token.linesCrossed > 0 ) {
 				this.UnreadSourceToken( token );
 				break;
 			}
-			if (token.$.type == TT_PUNCTUATION && token.$.data == ">" ) {
+			if (token.type == TT_PUNCTUATION && token.data == ">" ) {
 				break;
 			}
-			path.Append( token.$.data );
+			path.Append( token.data );
 		}
-		if (token.$.data != ">" ) {
+		if (token.data != ">" ) {
 			this.Warning( "#include missing trailing >" );
 		}
 		if ( !path.Length() ) {
@@ -1286,7 +1286,7 @@ idParser::Directive_undef
 */
 /*int*/
 	Directive_undef(): number {
-		var token = new R( new idToken );
+		var token = new idToken;
 		var define: define_t, lastdefine: define_t;
 		var /*int */hash: number;
 
@@ -1295,17 +1295,17 @@ idParser::Directive_undef
 			this.Error( "undef without name" );
 			return 0 /*false*/;
 		}
-		if ( token.$.type != TT_NAME ) {
+		if ( token.type != TT_NAME ) {
 			this.UnreadSourceToken( token );
-			this.Error( "expected name but found '%s'", token.$.c_str ( ) );
+			this.Error( "expected name but found '%s'", token.c_str ( ) );
 			return 0 /*false*/;
 		}
 
-		hash = this.PC_NameHash( token.$.c_str ( ) );
+		hash = this.PC_NameHash( token.c_str ( ) );
 		for ( lastdefine = null, define = this.definehash[hash]; define; define = define.hashnext ) {
-			if ( !strcmp( define.name, token.$.c_str ( ) ) ) {
+			if ( !strcmp( define.name, token.c_str ( ) ) ) {
 				if ( define.flags & DEFINE_FIXED ) {
-					this.Warning( "can't undef '%s'", token.$.c_str ( ) );
+					this.Warning( "can't undef '%s'", token.c_str ( ) );
 				} else {
 					if ( lastdefine ) {
 						lastdefine.hashnext = define.hashnext;
@@ -1328,39 +1328,39 @@ idParser::Directive_define
 */
 	/*int*/
 	Directive_define ( ): number {
-		var token = new R( new idToken ), t = new R( new idToken ), last = new R( new idToken );
+		var token = new idToken, t = new idToken, last = new idToken;
 		var define: define_t;
 
 		if ( !this.ReadLine( token ) ) {
 			this.Error( "#define without name" );
 			return 0 /*false*/;
 		}
-		if ( token.$.type != TT_NAME ) {
+		if ( token.type != TT_NAME ) {
 			this.UnreadSourceToken( token );
-			this.Error( "expected name after #define, found '%s'", token.$.c_str ( ) );
+			this.Error( "expected name after #define, found '%s'", token.c_str ( ) );
 			return 0 /*false*/;
 		}
 		// check if the define already exists
-		define = this.FindHashedDefine( this.definehash, token.$.c_str ( ) );
+		define = this.FindHashedDefine( this.definehash, token.c_str ( ) );
 		if ( define ) {
 			if ( define.flags & DEFINE_FIXED ) {
-				this.Error( "can't redefine '%s'", token.$.c_str ( ) );
+				this.Error( "can't redefine '%s'", token.c_str ( ) );
 				return 0 /*false*/;
 			}
-			this.Warning( "redefinition of '%s'", token.$.c_str ( ) );
+			this.Warning( "redefinition of '%s'", token.c_str ( ) );
 			// unread the define name before executing the #undef directive
 			this.UnreadSourceToken( token );
 			if ( !this.Directive_undef ( ) )
 				return 0 /*false*/;
 			// if the define was not removed (define.flags & DEFINE_FIXED)
-			define = this.FindHashedDefine( this.definehash, token.$.c_str ( ) );
+			define = this.FindHashedDefine( this.definehash, token.c_str ( ) );
 		}
 		// allocate define
-		define = new define_t; //(define_t *) Mem_ClearedAlloc(sizeof(define_t) + token.$.Length() + 1);
+		define = new define_t; //(define_t *) Mem_ClearedAlloc(sizeof(define_t) + token.Length() + 1);
 		define.init ( );
 		//define.name = (char *) define + sizeof(define_t);
-		//strcpy(define.name, token.$.c_str());
-		define.name = token.$.c_str ( );
+		//strcpy(define.name, token.c_str());
+		define.name = token.c_str ( );
 		// add the define to the source
 		this.AddDefineToHash( define, this.definehash );
 		// if nothing is defined, just return
@@ -1368,9 +1368,9 @@ idParser::Directive_define
 			return 1 /*true*/;
 		}
 		// if it is a define with parameters
-		if ( token.$.WhiteSpaceBeforeToken ( ) == 0 && token.$.data == "(" ) {
+		if ( token.WhiteSpaceBeforeToken ( ) == 0 && token.data == "(" ) {
 			// read the define parameters
-			last.$ = null;
+			last = null;
 			if ( !this.CheckTokenString( ")" ) ) {
 				while ( 1 ) {
 					if ( !this.ReadLine( token ) ) {
@@ -1378,22 +1378,22 @@ idParser::Directive_define
 						return 0 /*false*/;
 					}
 					// if it isn't a name
-					if ( token.$.type != TT_NAME ) {
+					if ( token.type != TT_NAME ) {
 						this.Error( "invalid define parameter" );
 						return 0 /*false*/;
 					}
 
-					if ( this.FindDefineParm( define, token.$.c_str ( ) ) >= 0 ) {
+					if ( this.FindDefineParm( define, token.c_str ( ) ) >= 0 ) {
 						this.Error( "two the same define parameters" );
 						return 0 /*false*/;
 					}
 					// add the define parm
-					t.$ = new idToken( token.$ );
-					t.$.ClearTokenWhiteSpace ( );
-					t.$.next = null;
-					if ( last.$ ) last.$.next = t.$;
-					else define.parms = t.$;
-					last.$ = t.$;
+					t = new idToken( token );
+					t.ClearTokenWhiteSpace ( );
+					t.next = null;
+					if ( last ) last.next = t;
+					else define.parms = t;
+					last = t;
 					define.numparms++;
 					// read next token
 					if ( !this.ReadLine( token ) ) {
@@ -1401,11 +1401,11 @@ idParser::Directive_define
 						return 0 /*false*/;
 					}
 
-					if ( token.$.data == ")" ) {
+					if ( token.data == ")" ) {
 						break;
 					}
 					// then it must be a comma
-					if ( token.$.data != "," ) {
+					if ( token.data != "," ) {
 						this.Error( "define not terminated" );
 						return 0 /*false*/;
 					}
@@ -1416,23 +1416,23 @@ idParser::Directive_define
 			}
 		}
 		// read the defined stuff
-		last.$ = null;
+		last = null;
 		do {
-			t.$ = new idToken( token.$ );
-			if ( t.$.type == TT_NAME && !strcmp( t.$.c_str ( ), define.name ) ) {
-				t.$.flags |= TOKEN_FL_RECURSIVE_DEFINE;
+			t = new idToken( token );
+			if ( t.type == TT_NAME && !strcmp( t.c_str ( ), define.name ) ) {
+				t.flags |= TOKEN_FL_RECURSIVE_DEFINE;
 				this.Warning( "recursive define (removed recursion)" );
 			}
-			t.$.ClearTokenWhiteSpace ( );
-			t.$.next = null;
-			if ( last.$ ) last.$.next = t.$;
-			else define.tokens = t.$;
-			last.$ = t.$;
+			t.ClearTokenWhiteSpace ( );
+			t.next = null;
+			if ( last ) last.next = t;
+			else define.tokens = t;
+			last = t;
 		} while ( this.ReadLine( token ) );
 
-		if ( last.$ ) {
+		if ( last ) {
 			// check for merge operators at the beginning or end
-			if ( ( define.tokens.data ) == "##" || ( last.$.data ) == "##" ) {
+			if ( ( define.tokens.data ) == "##" || ( last.data ) == "##" ) {
 				this.Error( "define with misplaced ##" );
 				return 0 /*false*/;
 			}
@@ -1476,7 +1476,7 @@ idParser::Directive_if_def
 ================
 */
 	Directive_if_def ( /*int */type: number ): number {
-		var token = new R( new idToken );
+		var token = new idToken ;
 		var d: define_t;
 		var skip: number;
 
@@ -1484,12 +1484,12 @@ idParser::Directive_if_def
 			this.Error( "#ifdef without name" );
 			return 0 /*false*/;
 		}
-		if ( token.$.type != TT_NAME ) {
+		if ( token.type != TT_NAME ) {
 			this.UnreadSourceToken( token );
-			this.Error( "expected name after #ifdef, found '%s'", token.$.c_str ( ) );
+			this.Error( "expected name after #ifdef, found '%s'", token.c_str ( ) );
 			return 0 /*false*/;
 		}
-		d = this.FindHashedDefine( this.definehash, token.$.c_str ( ) );
+		d = this.FindHashedDefine( this.definehash, token.c_str ( ) );
 		skip = ( type == INDENT_IFDEF ) == ( d == null ) ? 1 : 0;
 		this.PushIndent( type, skip );
 		return 1 /*true*/;
@@ -2297,7 +2297,7 @@ idParser::Directive_line
 ================
 */
 	Directive_line ( ): number {
-		var token = new R( new idToken );
+		var token = new idToken;
 
 		this.Error( "#line directive not supported" );
 		while ( this.ReadLine( token ) ) {
@@ -2312,13 +2312,13 @@ idParser::Directive_error
 */
 /*int*/
 	Directive_error(): number {
-		var token = new R( new idToken );
+		var token = new idToken;
 
-		if ( !this.ReadLine( token ) || token.$.type != TT_STRING ) {
+		if ( !this.ReadLine( token ) || token.type != TT_STRING ) {
 			this.Error( "#error without string" );
 			return 0 /*false*/;
 		}
-		this.Error( "#error: %s", token.$.c_str ( ) );
+		this.Error( "#error: %s", token.c_str ( ) );
 		return 1 /*true*/;
 	}
 
@@ -2328,13 +2328,13 @@ idParser::Directive_warning
 ================
 */
 	/*int*/Directive_warning(): number {
-	var token = new R( new idToken );
+	var token = new idToken;
 
-	if ( !this.ReadLine( token) || token.$.type != TT_STRING ) {
+	if ( !this.ReadLine( token) || token.type != TT_STRING ) {
 		this.Warning( "#warning without string" );
 		return 0/*false*/;
 	}
-	this.Warning( "#warning: %s", token.$.c_str() );
+	this.Warning( "#warning: %s", token.c_str() );
 	return 1/*true*/;
 }
 
@@ -2344,7 +2344,7 @@ idParser::Directive_pragma
 ================
 */
 /*int*/Directive_pragma( ) {
-	var token = new R( new idToken );
+	var token = new idToken;
 
 	this.Warning( "#pragma directive not supported" );
 	while( this.ReadLine( token ) ) {
@@ -2358,16 +2358,16 @@ idParser::UnreadSignToken
 ================
 */
 UnreadSignToken( ):void {
-	var token = new R( new idToken );
+	var token = new idToken;
 
-	token.$.line = this.scriptstack.GetLineNum();
-	token.$.whiteSpaceStart_p = NULL;
-	token.$.whiteSpaceEnd_p = NULL;
-	token.$.linesCrossed = 0;
-	token.$.flags = 0;
-	token.$.equals("-");
-	token.$.type = TT_PUNCTUATION;
-	token.$.subtype = P_SUB;
+	token.line = this.scriptstack.GetLineNum();
+	token.whiteSpaceStart_p = NULL;
+	token.whiteSpaceEnd_p = NULL;
+	token.linesCrossed = 0;
+	token.flags = 0;
+	token.equals("-");
+	token.type = TT_PUNCTUATION;
+	token.subtype = P_SUB;
 	this.UnreadSourceToken( token );
 }
 
@@ -2440,7 +2440,7 @@ idParser::ReadDirective
 ================
 */
 	ReadDirective ( ): number {
-		var token = new R( new idToken );
+		var token = new idToken;
 
 		//read the directive name
 		if ( !this.ReadSourceToken( token ) ) {
@@ -2448,24 +2448,24 @@ idParser::ReadDirective
 			return 0 /*false*/;
 		}
 		//directive name must be on the same line
-		if ( token.$.linesCrossed > 0 ) {
+		if ( token.linesCrossed > 0 ) {
 			this.UnreadSourceToken( token );
 			this.Error( "found '#' at end of line" );
 			return 0 /*false*/;
 		}
 		//if if is a name
-		if ( token.$.type == TT_NAME ) {
-			if ( token.$.data == "if" ) {
+		if ( token.type == TT_NAME ) {
+			if ( token.data == "if" ) {
 				return this.Directive_if ( );
-			} else if ( token.$.data == "ifdef" ) {
+			} else if ( token.data == "ifdef" ) {
 				return this.Directive_ifdef ( );
-			} else if ( token.$.data == "ifndef" ) {
+			} else if ( token.data == "ifndef" ) {
 				return this.Directive_ifndef ( );
-			} else if ( token.$.data == "elif" ) {
+			} else if ( token.data == "elif" ) {
 				return this.Directive_elif ( );
-			} else if ( token.$.data == "else" ) {
+			} else if ( token.data == "else" ) {
 				return this.Directive_else ( );
-			} else if ( token.$.data == "endif" ) {
+			} else if ( token.data == "endif" ) {
 				return this.Directive_endif ( );
 			} else if ( this.skip > 0 ) {
 				// skip the rest of the line
@@ -2473,28 +2473,28 @@ idParser::ReadDirective
 				}
 				return 1 /*true*/;
 			} else {
-				if ( token.$.data == "include" ) {
+				if ( token.data == "include" ) {
 					return this.Directive_include ( );
-				} else if ( token.$.data == "define" ) {
+				} else if ( token.data == "define" ) {
 					return this.Directive_define ( );
-				} else if ( token.$.data == "undef" ) {
+				} else if ( token.data == "undef" ) {
 					return this.Directive_undef ( );
-				} else if ( token.$.data == "line" ) {
+				} else if ( token.data == "line" ) {
 					return this.Directive_line ( );
-				} else if ( token.$.data == "error" ) {
+				} else if ( token.data == "error" ) {
 					return this.Directive_error ( );
-				} else if ( token.$.data == "warning" ) {
+				} else if ( token.data == "warning" ) {
 					return this.Directive_warning ( );
-				} else if ( token.$.data == "pragma" ) {
+				} else if ( token.data == "pragma" ) {
 					return this.Directive_pragma ( );
-				} else if ( token.$.data == "eval" ) {
+				} else if ( token.data == "eval" ) {
 					return this.Directive_eval ( );
-				} else if ( token.$.data == "evalfloat" ) {
+				} else if ( token.data == "evalfloat" ) {
 					return this.Directive_evalfloat ( );
 				}
 			}
 		}
-		this.Error( "unknown precompiler directive '%s'", token.$.c_str ( ) );
+		this.Error( "unknown precompiler directive '%s'", token.c_str ( ) );
 		return 0 /*false*/;
 	}
 
@@ -2571,7 +2571,7 @@ idParser::ReadDollarDirective
 ================
 */
 	ReadDollarDirective ( ): number {
-		var token = new R( new idToken );
+		var token = new idToken;
 
 		// read the directive name
 		if ( !this.ReadSourceToken( token ) ) {
@@ -2579,16 +2579,16 @@ idParser::ReadDollarDirective
 			return 0 /*false*/;
 		}
 		// directive name must be on the same line
-		if ( token.$.linesCrossed > 0 ) {
+		if ( token.linesCrossed > 0 ) {
 			this.UnreadSourceToken( token );
 			this.Error( "found '$' at end of line" );
 			return 0 /*false*/;
 		}
 		// if if is a name
-		if ( token.$.type == TT_NAME ) {
-			if ( token.$.data == "evalint" ) {
+		if ( token.type == TT_NAME ) {
+			if ( token.data == "evalint" ) {
 				return this.DollarDirective_evalint ( );
-			} else if ( token.$.data == "evalfloat" ) {
+			} else if ( token.data == "evalfloat" ) {
 				return this.DollarDirective_evalfloat ( );
 			}
 		}
@@ -2601,64 +2601,63 @@ idParser::ReadDollarDirective
 idParser::ReadToken
 ================
 */
-	ReadToken(token: R<idToken >):number {
-		var define: define_t ;
+	ReadToken ( token: idToken ): number {
+		var define: define_t;
 
-	while(1) {
-		if ( !this.ReadSourceToken( token ) ) {
-			return 0/*false*/;
-		}
-		// check for precompiler directives
-		if (token.$.type == TT_PUNCTUATION && token.$.data[0] == '#' && !token.$.data[1] /*== '\0'*/ ) {
-			// read the precompiler directive
-			if ( !this.ReadDirective() ) {
-				return 0/*false*/;
+		while ( 1 ) {
+			if ( !this.ReadSourceToken( token ) ) {
+				return 0 /*false*/;
 			}
-			continue;
-		}
-		// if skipping source because of conditional compilation
-		if (this.skip ) {
-			continue;
-		}
-		// recursively concatenate strings that are behind each other still resolving defines
-		if (token.$.type == TT_STRING && !(this.scriptstack.GetFlags() & lexerFlags_t.LEXFL_NOSTRINGCONCAT) ) {
-			var newtoken = new R(new idToken);
-			if ( this.ReadToken( newtoken ) ) {
-				if ( newtoken.$.type == TT_STRING ) {
-					token.$.Append( newtoken.$.c_str() );
-				}
-				else {
-					this.UnreadSourceToken( newtoken );
-				}
-			}
-		}
-		//
-		if (!(this.scriptstack.GetFlags() & lexerFlags_t.LEXFL_NODOLLARPRECOMPILE) ) {
-			// check for special precompiler directives
-			if (token.$.type == TT_PUNCTUATION && token.$.data[0] == '$' && !token.$.data[1]/* == '\0'*/ ) {
+			// check for precompiler directives
+			if ( token.type == TT_PUNCTUATION && token.data[0] == '#' && !token.data[1] /*== '\0'*/ ) {
 				// read the precompiler directive
-				if ( this.ReadDollarDirective() ) {
-					continue;
-				}
-			}
-		}
-		// if the token is a name
-		if (token.$.type == TT_NAME && !( token.$.flags & TOKEN_FL_RECURSIVE_DEFINE ) ) {
-			// check if the name is a define macro
-			define = this.FindHashedDefine( this.definehash, token.$.c_str() );
-			// if it is a define macro
-			if ( define ) {
-				// expand the defined macro
-				if ( !this.ExpandDefineIntoSource( token.$, define ) ) {
-					return 0/*false*/;
+				if ( !this.ReadDirective ( ) ) {
+					return 0 /*false*/;
 				}
 				continue;
 			}
+			// if skipping source because of conditional compilation
+			if ( this.skip ) {
+				continue;
+			}
+			// recursively concatenate strings that are behind each other still resolving defines
+			if ( token.type == TT_STRING && !( this.scriptstack.GetFlags ( ) & lexerFlags_t.LEXFL_NOSTRINGCONCAT ) ) {
+				var newtoken = new idToken;
+				if ( this.ReadToken( newtoken ) ) {
+					if ( newtoken.type == TT_STRING ) {
+						token.Append( newtoken.c_str ( ) );
+					} else {
+						this.UnreadSourceToken( newtoken );
+					}
+				}
+			}
+			//
+			if ( !( this.scriptstack.GetFlags ( ) & lexerFlags_t.LEXFL_NODOLLARPRECOMPILE ) ) {
+				// check for special precompiler directives
+				if ( token.type == TT_PUNCTUATION && token.data[0] == '$' && !token.data[1] /* == '\0'*/ ) {
+					// read the precompiler directive
+					if ( this.ReadDollarDirective ( ) ) {
+						continue;
+					}
+				}
+			}
+			// if the token is a name
+			if ( token.type == TT_NAME && !( token.flags & TOKEN_FL_RECURSIVE_DEFINE ) ) {
+				// check if the name is a define macro
+				define = this.FindHashedDefine( this.definehash, token.c_str ( ) );
+				// if it is a define macro
+				if ( define ) {
+					// expand the defined macro
+					if ( !this.ExpandDefineIntoSource( token, define ) ) {
+						return 0 /*false*/;
+					}
+					continue;
+				}
+			}
+			// found a token
+			return 1 /*true*/;
 		}
-		// found a token
-		return 1/*true*/;
 	}
-}
 
 /*
 ================
@@ -2667,15 +2666,15 @@ idParser::ExpectTokenString
 */
 /*int*/
 	ExpectTokenString ( $string: string ): number {
-		var token = new R( new idToken ( ) );
+		var token = new idToken ( );
 
 		if ( !this.ReadToken( token ) ) {
 			this.Error( "couldn't find expected '%s'", $string );
 			return 0 /*false*/;
 		}
 
-		if ( token.$.data != $string ) {
-			this.Error( "expected '%s' but found '%s'", $string, token.$.c_str ( ) );
+		if ( token.data != $string ) {
+			this.Error( "expected '%s' but found '%s'", $string, token.c_str ( ) );
 			return 0 /*false*/;
 		}
 		return 1 /*true*/;
@@ -2687,7 +2686,7 @@ idParser::ExpectTokenType
 ================
 */
 	/*int*/
-	ExpectTokenType(/*int*/ type: number, /*int */subtype: number, token: R<idToken>): number{
+	ExpectTokenType(/*int*/ type: number, /*int */subtype: number, token: idToken): number{
 		var str = new idStr;
 
 		if ( !this.ReadToken( token ) ) {
@@ -2695,7 +2694,7 @@ idParser::ExpectTokenType
 			return 0;
 		}
 
-			if (token.$.type != type ) {
+			if (token.type != type ) {
 			switch( type ) {
 				case TT_STRING: str.equals("string"); break;
 				case TT_LITERAL: str.equals("literal"); break;
@@ -2704,11 +2703,11 @@ idParser::ExpectTokenType
 				case TT_PUNCTUATION: str.equals("punctuation"); break;
 				default: str.equals("unknown type"); break;
 			}
-				this.Error("expected a %s but found '%s'", str.c_str(), token.$.c_str() );
+				this.Error("expected a %s but found '%s'", str.c_str(), token.c_str() );
 			return 0;
 		}
-			if (token.$.type == TT_NUMBER ) {
-				if ((token.$.subtype & subtype) != subtype ) {
+			if (token.type == TT_NUMBER ) {
+				if ((token.subtype & subtype) != subtype ) {
 				str.Clear();
 				if ( subtype & TT_DECIMAL ) str.equals("decimal ");
 				if (subtype & TT_HEX) str.equals("hex ");
@@ -2719,17 +2718,17 @@ idParser::ExpectTokenType
 				if ( subtype & TT_FLOAT ) str.Append("float ");
 				if ( subtype & TT_INTEGER ) str.Append("integer ");
 				str.StripTrailing( ' ' );
-				this.Error( "expected %s but found '%s'", str.c_str(), token.$.c_str() );
+				this.Error( "expected %s but found '%s'", str.c_str(), token.c_str() );
 				return 0;
 			}
 		}
-		else if ( token.$.type == TT_PUNCTUATION ) {
+		else if ( token.type == TT_PUNCTUATION ) {
 			if ( subtype < 0 ) {
 				this.Error( "BUG: wrong punctuation subtype" );
 				return 0;
 			}
-			if (token.$.subtype != subtype ) {
-				this.Error("expected '%s' but found '%s'", this.scriptstack.GetPunctuationFromId(subtype), token.$.c_str() );
+			if (token.subtype != subtype ) {
+				this.Error("expected '%s' but found '%s'", this.scriptstack.GetPunctuationFromId(subtype), token.c_str() );
 				return 0;
 			}
 		}
@@ -2742,7 +2741,7 @@ idParser::ExpectAnyToken
 ================
 */
 	/*int*/
-	ExpectAnyToken ( token: R<idToken> ): number {
+	ExpectAnyToken ( token: idToken ): number {
 		if ( !this.ReadToken( token ) ) {
 			this.Error( "couldn't read expected token" );
 			return 0 /*false*/;
@@ -2758,13 +2757,13 @@ idParser::CheckTokenString
 */
 /*int*/
 	CheckTokenString ( $string: string ): number {
-		var tok = new R( new idToken );
+		var tok = new idToken;
 
 		if ( !this.ReadToken( tok ) ) {
 			return 0 /*false*/;
 		}
 		//if the token is available
-		if ( tok.$.data == $string ) {
+		if ( tok.data == $string ) {
 			return 1 /*true*/;
 		}
 
@@ -3011,7 +3010,7 @@ idParser::CheckTokenString
 idParser::UnreadToken
 ================
 */
-	UnreadToken ( token: R<idToken> ): void {
+	UnreadToken ( token: idToken ): void {
 		this.UnreadSourceToken( token );
 	}
 ////
@@ -3043,19 +3042,19 @@ idParser::ParseInt
 */
 /*int*/
 	ParseInt ( ): number {
-		var token = new R( new idToken );
+		var token = new idToken;
 
 		if ( !this.ReadToken( token ) ) {
 			this.Error( "couldn't read expected integer" );
 			return 0;
 		}
-		if ( token.$.type == TT_PUNCTUATION && token.$.data == "-" ) {
+		if ( token.type == TT_PUNCTUATION && token.data == "-" ) {
 			this.ExpectTokenType( TT_NUMBER, TT_INTEGER, token );
-			return -( /*(signed int)*/ int( token.$.GetIntValue ( ) ) );
-		} else if ( token.$.type != TT_NUMBER || token.$.subtype == TT_FLOAT ) {
-			this.Error( "expected integer value, found '%s'", token.$.c_str ( ) );
+			return -( /*(signed int)*/ int( token.GetIntValue ( ) ) );
+		} else if ( token.type != TT_NUMBER || token.subtype == TT_FLOAT ) {
+			this.Error( "expected integer value, found '%s'", token.c_str ( ) );
 		}
-		return token.$.GetIntValue ( );
+		return token.GetIntValue ( );
 	}
 
 /*
@@ -3064,13 +3063,13 @@ idParser::ParseBool
 ================
 */
 	ParseBool ( ): boolean {
-		var token = new R( new idToken );
+		var token = new idToken ;
 
 		if ( !this.ExpectTokenType( TT_NUMBER, 0, token ) ) {
 			this.Error( "couldn't read expected boolean" );
 			return false;
 		}
-		return ( token.$.GetIntValue ( ) != 0 );
+		return ( token.GetIntValue ( ) != 0 );
 	}
 
 /*
@@ -3080,19 +3079,19 @@ idParser::ParseFloat
 */
 /*float */
 	ParseFloat ( ): number {
-		var token = new R( new idToken );
+		var token = new idToken;
 
 		if ( !this.ReadToken( token ) ) {
 			this.Error( "couldn't read expected floating point number" );
 			return 0.0;
 		}
-		if ( token.$.type == TT_PUNCTUATION && token.$.data == "-" ) {
+		if ( token.type == TT_PUNCTUATION && token.data == "-" ) {
 			this.ExpectTokenType( TT_NUMBER, 0, token );
-			return -token.$.GetFloatValue ( );
-		} else if ( token.$.type != TT_NUMBER ) {
-			this.Error( "expected float value, found '%s'", token.$.c_str ( ) );
+			return -token.GetFloatValue ( );
+		} else if ( token.type != TT_NUMBER ) {
+			this.Error( "expected float value, found '%s'", token.c_str ( ) );
 		}
-		return token.$.GetFloatValue ( );
+		return token.GetFloatValue ( );
 	}
 
 /////*

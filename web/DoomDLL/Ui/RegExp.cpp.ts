@@ -349,10 +349,10 @@ idRegisterList::AddReg
 			reg = new idRegister( name, type );
 			reg.$var = $var;
 			if ( type == REGTYPE.STRING ) {
-				var tok = new R( new idToken );
+				var tok = new idToken;
 				if ( src.ReadToken( tok ) ) {
-					tok.$.equals( common.GetLanguageDict ( ).GetString( tok.$.data ) );
-					$var.Init( tok.$.data, win );
+					tok.equals( common.GetLanguageDict ( ).GetString( tok.data ) );
+					$var.Init( tok.data, win );
 				}
 			} else {
 				for ( var i = 0; i < numRegs; i++ ) {
@@ -368,9 +368,9 @@ idRegisterList::AddReg
 			var numRegs = idRegister.REGCOUNT[type];
 			reg.$var = $var;
 			if ( type == REGTYPE.STRING ) {
-				var tok = new R( new idToken );
+				var tok = new idToken;
 				if ( src.ReadToken( tok ) ) {
-					$var.Init( tok.$.data, win );
+					$var.Init( tok.data, win );
 				}
 			} else {
 				for ( var i = 0; i < numRegs; i++ ) {
