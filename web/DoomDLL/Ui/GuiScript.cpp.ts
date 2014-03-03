@@ -55,7 +55,7 @@ class idGSWinVar {
 ////	idStr key, val;
 ////	idWinStr *dest = dynamic_cast<idWinStr*>((*src)[0].var);
 ////	if (dest) {
-////		if (idStr::Icmp(*dest, "cmd") == 0) {
+////		if (idStr.Icmp(*dest, "cmd") == 0) {
 ////			dest = dynamic_cast<idWinStr*>((*src)[1].var);
 ////			int parmCount = src.Num();
 ////			if (parmCount > 2) {
@@ -421,11 +421,11 @@ idGuiScript::Parse
 		//		return false;
 		//	}
 
-		//	if (idStr::Icmp(token, ";") == 0) {
+		//	if (idStr.Icmp(token, ";") == 0) {
 		//		break;
 		//	}
 
-		//	if (idStr::Icmp(token, "}") == 0) {
+		//	if (idStr.Icmp(token, "}") == 0) {
 		//		src.UnreadToken(&token);
 		//		break;
 		//	}
@@ -495,7 +495,7 @@ class idGuiScriptList {
 ////				precacheBackground = true;
 ////			}
 ////		}
-////		else if (idStr::Icmp(str.c_str(), "cmd") == 0) {
+////		else if (idStr.Icmp(str.c_str(), "cmd") == 0) {
 ////			precacheSounds = true;
 ////		}
 ////		int parmCount = parms.Num();
