@@ -45,13 +45,14 @@ class idGSWinVar {
 
 
 
-////
-/////*
-////=========================
-////Script_Set
-////=========================
-////*/
-////void Script_Set(idWindow *window, idList<idGSWinVar> *src) {
+
+/*
+=========================
+Script_Set
+=========================
+*/
+function Script_Set(window: idWindow, src: idList < idGSWinVar>):void {
+todoThrow ( );
 ////	idStr key, val;
 ////	idWinStr *dest = dynamic_cast<idWinStr*>((*src)[0].var);
 ////	if (dest) {
@@ -76,14 +77,15 @@ class idGSWinVar {
 ////	}
 ////	(*src)[0].var.Set((*src)[1].var.c_str());
 ////	(*src)[0].var.SetEval(false);
-////}
-////
-/////*
-////=========================
-////Script_SetFocus
-////=========================
-////*/
-////void Script_SetFocus(idWindow *window, idList<idGSWinVar> *src) {
+}
+
+/*
+=========================
+Script_SetFocus
+=========================
+*/
+function Script_SetFocus(window: idWindow, src: idList < idGSWinVar>):void {
+todoThrow();
 ////	idWinStr *parm = dynamic_cast<idWinStr*>((*src)[0].var);
 ////	if (parm) {
 ////		drawWin_t *win = window.GetGui().GetDesktop().FindChildByName(*parm);
@@ -91,14 +93,15 @@ class idGSWinVar {
 ////			window.SetFocus(win.win);
 ////		}
 ////	}
-////}
-////
-/////*
-////=========================
-////Script_ShowCursor
-////=========================
-////*/
-////void Script_ShowCursor(idWindow *window, idList<idGSWinVar> *src) {
+}
+
+/*
+=========================
+Script_ShowCursor
+=========================
+*/
+function Script_ShowCursor(window: idWindow, src: idList < idGSWinVar>):void {
+todoThrow();
 ////	idWinStr *parm = dynamic_cast<idWinStr*>((*src)[0].var);
 ////	if ( parm ) {
 ////		if ( atoi( *parm ) ) {
@@ -107,16 +110,17 @@ class idGSWinVar {
 ////			window.GetGui().GetDesktop().SetFlag( WIN_NOCURSOR );
 ////		}
 ////	}
-////}
-////
-/////*
-////=========================
-////Script_RunScript
-////
-//// run scripts must come after any set cmd set's in the script
-////=========================
-////*/
-////void Script_RunScript(idWindow *window, idList<idGSWinVar> *src) {
+}
+
+/*
+=========================
+Script_RunScript
+
+ run scripts must come after any set cmd set's in the script
+=========================
+*/
+function Script_RunScript(window: idWindow, src: idList < idGSWinVar>):void {
+todoThrow();
 ////	idWinStr *parm = dynamic_cast<idWinStr*>((*src)[0].var);
 ////	if (parm) {
 ////		idStr str = window.cmd;
@@ -124,45 +128,49 @@ class idGSWinVar {
 ////		str += parm.c_str();
 ////		window.cmd = str;
 ////	}
-////}
-////
-/////*
-////=========================
-////Script_LocalSound
-////=========================
-////*/
-////void Script_LocalSound(idWindow *window, idList<idGSWinVar> *src) {
+}
+
+/*
+=========================
+Script_LocalSound
+=========================
+*/
+function Script_LocalSound(window: idWindow, src: idList < idGSWinVar>):void {
+todoThrow();
 ////	idWinStr *parm = dynamic_cast<idWinStr*>((*src)[0].var);
 ////	if (parm) {
 ////		session.sw.PlayShaderDirectly(*parm);
 ////	}
-////}
-////
-/////*
-////=========================
-////Script_EvalRegs
-////=========================
-////*/
-////void Script_EvalRegs(idWindow *window, idList<idGSWinVar> *src) {
+}
+
+/*
+=========================
+Script_EvalRegs
+=========================
+*/
+function Script_EvalRegs(window: idWindow, src: idList < idGSWinVar>):void {
+todoThrow();
 ////	window.EvalRegs(-1, true);
-////}
-////
-/////*
-////=========================
-////Script_EndGame
-////=========================
-////*/
-////void Script_EndGame( idWindow *window, idList<idGSWinVar> *src ) {
+}
+
+/*
+=========================
+Script_EndGame
+=========================
+*/
+function Script_EndGame(window: idWindow, src: idList<idGSWinVar>): void{
+todoThrow();
 ////	cvarSystem.SetCVarBool( "g_nightmare", true );
 ////	cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "disconnect\n" );
-////}
-////
-/////*
-////=========================
-////Script_ResetTime
-////=========================
-////*/
-////void Script_ResetTime(idWindow *window, idList<idGSWinVar> *src) {
+}
+
+/*
+=========================
+Script_ResetTime
+=========================
+*/
+function Script_ResetTime(window: idWindow, src: idList < idGSWinVar>):void {
+todoThrow();
 ////	idWinStr *parm = dynamic_cast<idWinStr*>((*src)[0].var);
 ////	drawWin_t *win = NULL;
 ////	if (parm && src.Num() > 1) {
@@ -176,23 +184,25 @@ class idGSWinVar {
 ////		window.ResetTime(atoi(*parm));
 ////		window.EvalRegs(-1, true);
 ////	}
-////}
-////
-/////*
-////=========================
-////Script_ResetCinematics
-////=========================
-////*/
-////void Script_ResetCinematics(idWindow *window, idList<idGSWinVar> *src) {
+}
+
+/*
+=========================
+Script_ResetCinematics
+=========================
+*/
+function Script_ResetCinematics(window: idWindow, src: idList < idGSWinVar>):void {
+todoThrow();
 ////	window.ResetCinematics();
-////}
-////
-/////*
-////=========================
-////Script_Transition
-////=========================
-////*/
-////void Script_Transition(idWindow *window, idList<idGSWinVar> *src) {
+}
+
+/*
+=========================
+Script_Transition
+=========================
+*/
+function Script_Transition(window: idWindow, src: idList < idGSWinVar>):void {
+todoThrow();
 ////	// transitions always affect rect or vec4 vars
 ////	if (src.Num() >= 4) {
 ////		idWinRectangle *rect = NULL;
@@ -246,32 +256,39 @@ class idGSWinVar {
 ////		}
 ////		window.StartTransition();
 ////	}
-////}
-////
-////typedef struct {
-////	const char *name;
-////	void (*handler) (idWindow *window, idList<idGSWinVar> *src);
-////	int mMinParms;
-////	int mMaxParms;
-////} guiCommandDef_t;
-////
-////guiCommandDef_t commandList[] = {
-////	{ "set", Script_Set, 2, 999 },
-////	{ "setFocus", Script_SetFocus, 1, 1 },
-////	{ "endGame", Script_EndGame, 0, 0 },
-////	{ "resetTime", Script_ResetTime, 0, 2 },
-////	{ "showCursor", Script_ShowCursor, 1, 1 },
-////	{ "resetCinematics", Script_ResetCinematics, 0, 2 },
-////	{ "transition", Script_Transition, 4, 6 },
-////	{ "localSound", Script_LocalSound, 1, 1 },
-////	{ "runScript", Script_RunScript, 1, 1 },
-////	{ "evalRegs", Script_EvalRegs, 0, 0 }
-////};
-////
-////int	scriptCommandCount = sizeof(commandList) / sizeof(guiCommandDef_t);
-////
-////
-////
+}
+
+class guiCommandDef_t {
+	name: string;
+	handler: ( window: idWindow, src: idList<idGSWinVar> ) => void;
+	mMinParms: number;
+	mMaxParms: number;
+
+	constructor ( name: string, handler: ( window: idWindow, src: idList<idGSWinVar> ) => void, mMinParms: number, mMaxParms: number ) {
+		this.name = name;
+		this.handler = handler;
+		this.mMinParms = mMinParms;
+		this.mMaxParms = mMaxParms;
+	}
+}
+
+var commandList = [
+	new guiCommandDef_t("set", Script_Set, 2, 999),
+	new guiCommandDef_t("setFocus", Script_SetFocus, 1, 1 ),
+	new guiCommandDef_t("endGame", Script_EndGame, 0, 0 ),
+	new guiCommandDef_t("resetTime", Script_ResetTime, 0, 2 ),
+	new guiCommandDef_t("showCursor", Script_ShowCursor, 1, 1 ),
+	new guiCommandDef_t("resetCinematics", Script_ResetCinematics, 0, 2 ),
+	new guiCommandDef_t("transition", Script_Transition, 4, 6 ),
+	new guiCommandDef_t("localSound", Script_LocalSound, 1, 1 ),
+	new guiCommandDef_t("runScript", Script_RunScript, 1, 1 ),
+	new guiCommandDef_t("evalRegs", Script_EvalRegs, 0, 0 )
+];
+
+var scriptCommandCount = commandList.length;//sizeof(commandList) / sizeof(guiCommandDef_t);
+
+
+
 class idGuiScript {
 ////	friend class idGuiScriptList;
 ////	friend class idWindow;
@@ -283,14 +300,14 @@ class idGuiScript {
 ////	bool Parse(idParser *src);
 ////	void Execute(idWindow *win) {
 ////		if (handler) {
-////			handler(win, &parms);
+////			this.handler(win, &this.parms);
 ////		}
 ////	}
 ////	void FixupParms(idWindow *win);
 ////	size_t Size() {
 ////		int sz = sizeof(*this);
-////		for (int i = 0; i < parms.Num(); i++) {
-////			sz += parms[i].var.Size();
+////		for (int i = 0; i < this.parms.Num(); i++) {
+////			sz += this.parms[i].var.Size();
 ////		}
 ////		return sz;
 ////	}
@@ -327,10 +344,10 @@ idGuiScript::idGuiScript
 ////idGuiScript::~idGuiScript() {
 ////	delete ifList;
 ////	delete elseList;
-////	int c = parms.Num();
+////	int c = this.parms.Num();
 ////	for ( int i = 0; i < c; i++ ) {
-////		if ( parms[i].own ) {
-////			delete parms[i].var;
+////		if ( this.parms[i].own ) {
+////			delete this.parms[i].var;
 ////		}
 ////	}
 ////}
@@ -352,9 +369,9 @@ idGuiScript::idGuiScript
 ////
 ////	savefile.Write( &conditionReg, sizeof( conditionReg ) );
 ////
-////	for ( i = 0; i < parms.Num(); i++ ) {
-////		if ( parms[i].own ) {
-////			parms[i].var.WriteToSaveGame( savefile );
+////	for ( i = 0; i < this.parms.Num(); i++ ) {
+////		if ( this.parms[i].own ) {
+////			this.parms[i].var.WriteToSaveGame( savefile );
 ////		}
 ////	}
 ////}
@@ -376,9 +393,9 @@ idGuiScript::idGuiScript
 ////
 ////	savefile.Read( &conditionReg, sizeof( conditionReg ) );
 ////
-////	for ( i = 0; i < parms.Num(); i++ ) {
-////		if ( parms[i].own ) {
-////			parms[i].var.ReadFromSaveGame( savefile );
+////	for ( i = 0; i < this.parms.Num(); i++ ) {
+////		if ( this.parms[i].own ) {
+////			this.parms[i].var.ReadFromSaveGame( savefile );
 ////		}
 ////	}
 ////}
@@ -390,60 +407,60 @@ idGuiScript::Parse
 */
 	Parse ( src: idParser ): boolean {
 		var /*int */i: number;
-		todoThrow ( );
-		//// first token should be function call
-		//// then a potentially variable set of parms
-		//// ended with a ;
-		//	var token = new R(new idToken);
-		//if ( !src.ReadToken(&token) ) {
-		//	src.Error( "Unexpected end of file" );
-		//	return false;
-		//}
 
-		//this.handler	= null;
+		// first token should be function call
+		// then a potentially variable set of parms
+		// ended with a ;
+		var token = new idToken;
+		if ( !src.ReadToken(token) ) {
+			src.Error( "Unexpected end of file" );
+			return false;
+		}
 
-		//for ( i = 0; i < scriptCommandCount ; i++ ) {
-		//	if ( idStr.Icmp(token, commandList[i].name) == 0 ) {
-		//		handler = commandList[i].handler;
-		//		break;
-		//	}
-		//}
+		this.handler	= null;
 
-		//if (this.handler == NULL) {
-		//	src.Error("Uknown script call %s", token.c_str());
-		//}
-		//// now read parms til ;
-		//// all parms are read as idWinStr's but will be fixed up later 
-		//// to be proper types
-		//while (1) {
-		//	if ( !src.ReadToken(&token) ) {
-		//		src.Error( "Unexpected end of file" );
-		//		return false;
-		//	}
+		for ( i = 0; i < scriptCommandCount ; i++ ) {
+			if ( idStr.Icmp(token, commandList[i].name) == 0 ) {
+				this.handler = commandList[i].handler;
+				break;
+			}
+		}
 
-		//	if (idStr.Icmp(token, ";") == 0) {
-		//		break;
-		//	}
+		if (this.handler == null) {
+			src.Error("Uknown script call %s", token.c_str());
+		}
+		// now read parms til ;
+		// all parms are read as idWinStr's but will be fixed up later 
+		// to be proper types
+		while (1) {
+			if ( !src.ReadToken(token) ) {
+				src.Error( "Unexpected end of file" );
+				return false;
+			}
 
-		//	if (idStr.Icmp(token, "}") == 0) {
-		//		src.UnreadToken(&token);
-		//		break;
-		//	}
+			if (idStr.Icmp(token, ";") == 0) {
+				break;
+			}
 
-		//	idWinStr *str = new idWinStr();
-		//	*str = token;
-		//	idGSWinVar wv;
-		//	wv.own = true;
-		//	wv.var = str;
-		//	parms.Append( wv );
-		//}
+			if (idStr.Icmp(token, "}") == 0) {
+				src.UnreadToken(token);
+				break;
+			}
 
-		//// 
-		////  verify min/max params
-		//if ( handler && (parms.Num() < commandList[i].mMinParms || parms.Num() > commandList[i].mMaxParms ) ) {
-		//	src.Error("incorrect number of parameters for script %s", commandList[i].name );
-		//}
-		//// 
+			var str = new idWinStr();
+			str.equalsStr( token );
+			var wv = new idGSWinVar;
+			wv.own = true;
+			wv.$var = str;
+			this.parms.Append( wv );
+		}
+
+		// 
+		//  verify min/max params
+		if ( this.handler && (this.parms.Num() < commandList[i].mMinParms || this.parms.Num() > commandList[i].mMaxParms ) ) {
+			src.Error("incorrect number of parameters for script %s", commandList[i].name );
+		}
+		// 
 
 		return true;
 	}
@@ -483,13 +500,13 @@ class idGuiScriptList {
 ////	if (handler == &Script_Set) {
 ////		bool precacheBackground = false;
 ////		bool precacheSounds = false;
-////		idWinStr *str = dynamic_cast<idWinStr*>(parms[0].var);
+////		idWinStr *str = dynamic_cast<idWinStr*>(this.parms[0].var);
 ////		assert(str);
 ////		idWinVar *dest = win.GetWinVarByName(*str, true);
 ////		if (dest) {
-////			delete parms[0].var;
-////			parms[0].var = dest;
-////			parms[0].own = false;
+////			delete this.parms[0].var;
+////			this.parms[0].var = dest;
+////			this.parms[0].own = false;
 ////
 ////			if (dynamic_cast<idWinBackground *>(dest) != NULL) {
 ////				precacheBackground = true;
@@ -498,9 +515,9 @@ class idGuiScriptList {
 ////		else if (idStr.Icmp(str.c_str(), "cmd") == 0) {
 ////			precacheSounds = true;
 ////		}
-////		int parmCount = parms.Num();
+////		int parmCount = this.parms.Num();
 ////		for (int i = 1; i < parmCount; i++) {
-////			idWinStr *str = dynamic_cast<idWinStr*>(parms[i].var);
+////			idWinStr *str = dynamic_cast<idWinStr*>(this.parms[i].var);
 ////			if (idStr::Icmpn(*str, "gui::", 5) == 0) {
 ////
 ////				//  always use a string here, no point using a float if it is one
@@ -509,15 +526,15 @@ class idGuiScriptList {
 ////				idWinStr* defvar = new idWinStr();
 ////				defvar.Init(*str, win);
 ////				win.AddDefinedVar(defvar);
-////				delete parms[i].var;
-////				parms[i].var = defvar;
-////				parms[i].own = false;
+////				delete this.parms[i].var;
+////				this.parms[i].var = defvar;
+////				this.parms[i].own = false;
 ////
 ////				//dest = win.GetWinVarByName(*str, true);
 ////				//if (dest) {
-////				//	delete parms[i].var;
-////				//	parms[i].var = dest;
-////				//	parms[i].own = false;
+////				//	delete this.parms[i].var;
+////				//	this.parms[i].var = dest;
+////				//	this.parms[i].own = false;
 ////				//}
 ////				// 
 ////			}
@@ -527,9 +544,9 @@ class idGuiScriptList {
 ////				dest = win.GetGui().GetDesktop().GetWinVarByName((const char*)(*str) + 1, true);
 ////				// 					
 ////				if (dest) {
-////					delete parms[i].var;
-////					parms[i].var = dest;
-////					parms[i].own = false;
+////					delete this.parms[i].var;
+////					this.parms[i].var = dest;
+////					this.parms[i].own = false;
 ////				}
 ////			}
 ////			else if (idStr::Cmpn(str.c_str(), STRTABLE_ID, STRTABLE_ID_LENGTH) == 0) {
@@ -556,10 +573,10 @@ class idGuiScriptList {
 ////		}
 ////	}
 ////	else if (handler == &Script_Transition) {
-////		if (parms.Num() < 4) {
+////		if (this.parms.Num() < 4) {
 ////			common.Warning("Window %s in gui %s has a bad transition definition", win.GetName(), win.GetGui().GetSourceFile());
 ////		}
-////		idWinStr *str = dynamic_cast<idWinStr*>(parms[0].var);
+////		idWinStr *str = dynamic_cast<idWinStr*>(this.parms[0].var);
 ////		assert(str);
 ////
 ////		// 
@@ -568,9 +585,9 @@ class idGuiScriptList {
 ////		// 
 ////
 ////		if (dest) {
-////			delete parms[0].var;
-////			parms[0].var = dest;
-////			parms[0].own = false;
+////			delete this.parms[0].var;
+////			this.parms[0].var = dest;
+////			this.parms[0].own = false;
 ////		}
 ////		else {
 ////			common.Warning("Window %s in gui %s: a transition does not have a valid destination var %s", win.GetName(), win.GetGui().GetSourceFile(), str.c_str());
@@ -580,11 +597,11 @@ class idGuiScriptList {
 ////		//  support variables as parameters		
 ////		int c;
 ////		for (c = 1; c < 3; c++) {
-////			str = dynamic_cast<idWinStr*>(parms[c].var);
+////			str = dynamic_cast<idWinStr*>(this.parms[c].var);
 ////
 ////			idWinVec4 *v4 = new idWinVec4;
-////			parms[c].var = v4;
-////			parms[c].own = true;
+////			this.parms[c].var = v4;
+////			this.parms[c].own = true;
 ////
 ////			drawWin_t* owner;
 ////
@@ -630,9 +647,9 @@ class idGuiScriptList {
 ////
 ////	}
 ////	else {
-////		int c = parms.Num();
+////		int c = this.parms.Num();
 ////		for (int i = 0; i < c; i++) {
-////			parms[i].var.Init(parms[i].var.c_str(), win);
+////			this.parms[i].var.Init(this.parms[i].var.c_str(), win);
 ////		}
 ////	}
 ////}
