@@ -69,6 +69,16 @@ function toupper(s: string): string {
 }
 
 // don't use subarray!
+function memcpy2d ( destination: Int32Array[], source: Int32Array[] ): void {
+	for ( var i = 0; i < destination.length; i++ ) {
+		var subArrayDest = destination[i];
+		var subArraySrc = source[i];
+		for ( var j = 0; j < subArrayDest.length; j++ ) {
+			subArrayDest[j] = subArraySrc[j];
+		}
+	}
+}
+
 function memcpy(destination: ArrayBufferView, source: ArrayBufferView, count: number): void {
 	var sourceArray = new Uint8Array(destination.buffer);
 	var destArray = new Uint8Array(source.buffer);
