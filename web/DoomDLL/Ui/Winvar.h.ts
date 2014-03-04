@@ -41,6 +41,10 @@ class idWinVar implements ITrackedObject {
 		objectTracker.addObject( this );
 	}
 
+	destructor ( ): void {
+		objectTracker.removeObject( this.refAddress );
+	}
+
 ////public:
 ////	idWinVar();
 ////	virtual ~idWinVar();

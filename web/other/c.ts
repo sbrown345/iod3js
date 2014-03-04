@@ -249,11 +249,18 @@ function exit (code:number ): void {
 	throw "exit(" + code + ");";
 }
 
+function $delete(obj: any): void {
+	if (obj && obj.destructor) {
+		obj.destructor();
+	}
+}
+
 // track references
 
 interface ITrackedObject {
 	refAddress: number;
 	trackObject():void;
+	destructor():void;
 }
 
 class ObjectTracker {
@@ -275,6 +282,10 @@ class ObjectTracker {
 
 		return this.refs[address];
 	}
+
+	removeObject ( address: number ): void {
+		delete this.refs[address];
+	}
 }
 
-var objectTracker = new ObjectTracker ( );
+var objectTracker = new ObjectTracker();

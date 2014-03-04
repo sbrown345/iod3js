@@ -383,30 +383,30 @@ idRegisterList::AddReg
 		}
 	}
 
-/////*
-////====================
-////idRegisterList::GetFromRegs
-////====================
-////*/
-////void idRegisterList::GetFromRegs(float *registers) {
-////	for ( int i = 0; i < regs.Num(); i++ ) {
-////		regs[i].GetFromRegs( registers );
-////	}
-////}
-////
-/////*
-////====================
-////idRegisterList::SetToRegs
-////====================
-////*/
-////
-////void idRegisterList::SetToRegs( float *registers ) {
-////	int i;
-////	for ( i = 0; i < regs.Num(); i++ ) {
-////		regs[i].SetToRegs( registers );
-////	}
-////}
-////
+/*
+====================
+idRegisterList::GetFromRegs
+====================
+*/
+	GetFromRegs ( registers: Float32Array ): void {
+		for ( var i = 0; i < this.regs.Num ( ); i++ ) {
+			this.regs[i].GetFromRegs( registers );
+		}
+	}
+
+/*
+====================
+idRegisterList::SetToRegs
+====================
+*/
+
+	SetToRegs ( registers: Float32Array ): void {
+		var i: number;
+		for ( i = 0; i < this.regs.Num ( ); i++ ) {
+			this.regs[i].SetToRegs( registers );
+		}
+	}
+
 /*
 ====================
 idRegisterList::FindReg

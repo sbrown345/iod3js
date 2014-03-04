@@ -287,10 +287,12 @@ class idUserInterfaceLocal extends idUserInterface {
 		//sz = sizeof( idSimpleWindow );
 		this.loading = true;
 
-		if ( rebuild ) {
-			delete this.desktop;
+		if (rebuild) {
+			if ( this.desktop ) {
+				this.desktop.destructor ( ); //delete this.desktop;
+			}
 			this.desktop = new idWindow( this );
-		} else if ( !this.desktop == null ) {
+		} else if ( this.desktop == null ) {
 			this.desktop = new idWindow( this );
 		}
 

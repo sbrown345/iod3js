@@ -230,7 +230,7 @@ class idDeclManagerLocal extends idDeclManager {
 /*virtual const char *		*/  GetDeclNameFromType( type:declType_t ) :string{throw "placeholder";}
     GetDeclTypeFromName( typeName:string ):declType_t { throw "placeholder"; }
 /*	virtual const idDecl *		*/FindType( type: declType_t, name:string, makeDefault:boolean = true ):idDecl { throw "placeholder"; }
-//	virtual const idDecl *		DeclByIndex( declType_t type, int index, bool forceParse = true ):idDecl{throw "placeholder";}
+	DeclByIndex ( type: declType_t, /*int */index: number, forceParse = true ): idDecl { throw "placeholder"; }
 
 //	virtual const idDecl*		FindDeclWithoutParsing( declType_t type, name:string, bool makeDefault = true ):idDecl{throw "placeholder";}
 //	virtual void				ReloadFile( const char* filename, bool force ):void{throw "placeholder";}
@@ -1215,30 +1215,30 @@ idDeclManagerLocal.prototype.FindType = function ( type: declType_t, name: strin
 ////	return linearLists[ typeIndex ].Num();
 ////}
 
-/////*
-////===================
-////idDeclManagerLocal::DeclByIndex
-////===================
-////*/
-////const idDecl *idDeclManagerLocal::DeclByIndex( declType_t type, int index, bool forceParse ) {
-////	int typeIndex = (int)type;
+/*
+===================
+idDeclManagerLocal::DeclByIndex
+===================
+*/
+idDeclManagerLocal.prototype.DeclByIndex = function (type: declType_t, /*int */index:number, forceParse = true ):idDecl {
+	var typeIndex = /*(int)*/type;
 
-////	if ( typeIndex < 0 || typeIndex >= this.declTypes.Num() || this.declTypes[typeIndex] == NULL ) {
-////		common.FatalError( "idDeclManager::DeclByIndex: bad type: %i", typeIndex );
-////	}
-////	if ( index < 0 || index >= linearLists[ typeIndex ].Num() ) {
-////		common.Error( "idDeclManager::DeclByIndex: out of range" );
-////	}
-////	idDeclLocal *decl = linearLists[ typeIndex ][ index ];
+	if ( typeIndex < 0 || typeIndex >= this.declTypes.Num() || this.declTypes[typeIndex] == NULL ) {
+		common.FatalError( "idDeclManager::DeclByIndex: bad type: %i", typeIndex );
+	}
+	if ( index < 0 || index >= this.linearLists[ typeIndex ].Num() ) {
+		common.Error( "idDeclManager::DeclByIndex: out of range" );
+	}
+	var decl = this.linearLists[ typeIndex ][ index ];
 
-////	decl.AllocateSelf();
+	decl.AllocateSelf();
 
-////	if ( forceParse && decl.declState == declState_t.DS_UNPARSED ) {
-////		decl.ParseLocal();
-////	}
+	if ( forceParse && decl.declState == declState_t.DS_UNPARSED ) {
+		decl.ParseLocal();
+	}
 
-////	return decl.self;
-////}
+	return decl.self;
+}
 
 /*
 ===================

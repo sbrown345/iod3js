@@ -39,7 +39,7 @@ class idDeclTable extends idDecl {
 ////private:
 ////	bool					clamp;
 ////	bool					snap;
-////	idList<float>			values;
+	values = new idList</*float*/number>(Number);
 
 
 
@@ -47,13 +47,14 @@ class idDeclTable extends idDecl {
 ////#pragma hdrstop
 ////
 ////
-/////*
-////=================
-////idDeclTable::TableLookup
-////=================
-////*/
-////float idDeclTable::TableLookup( float index ) const {
-////	int iIndex;
+/*
+=================
+idDeclTable::TableLookup
+=================
+*/
+	TableLookup ( /*float*/index: number ) /*float*/: number {
+		todoThrow ( );
+		var iIndex: number /*int*/;
 ////	float iFrac;
 ////	
 ////	int domain = values.Num() - 1;
@@ -89,8 +90,8 @@ class idDeclTable extends idDecl {
 ////		return values[iIndex] * ( 1.0f - iFrac ) + values[iIndex + 1] * iFrac;
 ////	}
 ////	
-////	return values[iIndex];
-////}
+		return this.values[iIndex];
+	}
 ////
 /////*
 ////=================

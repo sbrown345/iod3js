@@ -93,16 +93,18 @@ class idList<type> {
 	private list:any; // reference itself		
     private type:any;
 	private initEmptyOnResize: boolean; // new up when Resizing/Allocating. this makes it work with a list of references and classes/structs (otherwise idList<R<idDeclType>> this is a bit overkill)
+	private listOfReferences: boolean;
 
-    constructor(type:any, initEmptyOnResize = false, newgranularity:number = 16) {
-        assert(typeof type !== "number"); // new type arg not to be confused with newgranularity
-        this.type = type;
+	constructor ( type: any, initEmptyOnResize = false, newgranularity: number = 16, listOfReferences = false ) {
+		assert( typeof type !== "number" ); // new type arg not to be confused with newgranularity
+		this.type = type;
 		this.initEmptyOnResize = initEmptyOnResize;
-        this.num = 0;
-        this.size = 0;
-        this.granularity = newgranularity;
-        this.list = this;
-    }
+		this.num = 0;
+		this.size = 0;
+		this.granularity = newgranularity;
+		this.list = this;
+		this.listOfReferences = listOfReferences;
+	}
 
 ///*
 //================
@@ -150,7 +152,7 @@ Frees up the memory allocated by the list.  Assumes that type automatically hand
 Clear ():void {
     if ( this.list ) {
         for( var i=0; i < this.num; i++) {
-            delete this[i];
+	        $delete( this[i] );
         }
     }
 
@@ -173,8 +175,8 @@ list to NULL.
 	DeleteContents ( clear: boolean ): void {
 		var i: number;
 
-		for ( i = 0; i < this.num; i++ ) {
-			delete this.list[i];
+		for (i = 0; i < this.num; i++) {
+			$delete( this.list[i] );
 			this.list[i] = null;
 		}
 
@@ -720,10 +722,14 @@ Searches for the specified data in the list and returns it's index.  Returns -1 
 		var /*int */i: number;
 
 		for ( i = 0; i < this.num; i++ ) {
-			//if ( this.list[i] == obj ) { 
-			// maybe check if it's got the method equalTo first?
-			if ( this.list[i].equalTo(obj) ) {
-				return i;
+			if ( this.listOfReferences ) {
+				if ( this.list[i] == obj ) {
+					return i;
+				}
+			} else {
+				if ( this.list[i].equalTo( obj ) ) {
+					return i;
+				}
 			}
 		}
 
@@ -910,7 +916,7 @@ Swaps the contents of two lists
 //template< class type >
 Swap( other:idList<type> ):void {
     for( var i = 0; i < this.num; i++ ) {
-        delete this[i];
+        $delete(this[i]);
     }
 
     for( var i = 0; i < other.num; i++ ) {

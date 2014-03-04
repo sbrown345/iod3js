@@ -134,7 +134,7 @@ class idWindow {
 	////	void DrawCaption(int time, float x, float y);
 	////	void SetupTransforms(float x, float y);
 	////	bool Contains(const idRectangle &sr, float x, float y);
-	////	const char *GetName() { return this.name; };
+	GetName ( ): string { return this.name.data; }
 	////
 	////	virtual bool Parse(idParser *src, bool rebuild = true);
 	////	virtual const char *HandleEvent(const sysEvent_t *event, bool *updateVisuals);
@@ -297,8 +297,8 @@ class idWindow {
 	text = new idWinStr;
 	backGroundName = new idWinBackground;
 
-	definedVars = new idList<idWinVar>( idWinVar );
-	updateVars = new idList<idWinVar>( idWinVar );
+	definedVars = new idList<idWinVar>( idWinVar,false,16,true );
+	updateVars = new idList<idWinVar>(idWinVar, false, 16, true );
 
 	textRect = new idRectangle; // text extented rect
 	background: idMaterial; // background asset  
@@ -538,6 +538,7 @@ idWindow::CleanUp
 	CleanUp ( ): void {
 		var i:number, c = this.drawWindows.Num ( );
 		for ( i = 0; i < c; i++ ) {
+			$delete( this.drawWindows[i].simp );
 			delete this.drawWindows[i].simp;
 		}
 
@@ -552,19 +553,20 @@ idWindow::CleanUp
 		this.definedVars.DeleteContents( true );
 		this.timeLineEvents.DeleteContents( true );
 		for ( i = 0; i < SCRIPT_COUNT; i++ ) {
+			$delete( this.scripts[i] );
 			delete this.scripts[i];
 		}
 		this.CommonInit ( );
 	}
-////
-/////*
-////================
-////idWindow::~idWindow
-////================
-////*/
-////idWindow::~idWindow() {
-////	this.CleanUp();
-////}
+
+/*
+================
+idWindow::~idWindow
+================
+*/
+	destructor ( ): void {
+		this.CleanUp ( );
+	}
 ////
 /////*
 ////================
@@ -1325,7 +1327,7 @@ idWindow::AddUpdateVar
 ////					*r = data.interp.GetCurrentValue( this.gui.GetTime() );
 ////				}
 ////			} else {
-////				common.Warning("Invalid transitional data for window %s in this.gui %s", GetName(), this.gui.GetSourceFile());
+////				common.Warning("Invalid transitional data for window %s in this.gui %s", this.GetName(), this.gui.GetSourceFile());
 ////			}
 ////		}
 ////	}
@@ -1372,26 +1374,27 @@ idWindow::AddUpdateVar
 idWindow::EvalRegs
 ================
 */
+	private static regs = new Float32Array(MAX_EXPRESSION_REGISTERS);
+	private static lastEval: idWindow= null;
+
 	EvalRegs ( /*int */test = -1, force = false ): number /*float */ {
-		todoThrow ( );
-		//static float regs[MAX_EXPRESSION_REGISTERS];
-		//static idWindow *lastEval = NULL;
 
-		//if (!force && test >= 0 && test < MAX_EXPRESSION_REGISTERS && lastEval == this) {
-		//	return regs[test];
-		//}
 
-		//lastEval = this;
+		if (!force && test >= 0 && test < MAX_EXPRESSION_REGISTERS && idWindow.lastEval == this) {
+			return idWindow.regs[test];
+		}
 
-		//if (this.expressionRegisters.Num()) {
-		//	this.regList.SetToRegs(regs);
-		//	EvaluateRegisters(regs);
-		//	this.regList.GetFromRegs(regs);
-		//}
+		idWindow.lastEval = this;
 
-		//if (test >= 0 && test < MAX_EXPRESSION_REGISTERS) {
-		//	return regs[test];
-		//}
+		if (this.expressionRegisters.Num()) {
+			this.regList.SetToRegs(idWindow.regs);
+			this.EvaluateRegisters(idWindow.regs);
+			this.regList.GetFromRegs(idWindow.regs);
+		}
+
+		if (test >= 0 && test < MAX_EXPRESSION_REGISTERS) {
+			return idWindow.regs[test];
+		}
 
 		return 0.0;
 	}
@@ -1978,14 +1981,14 @@ idWindow::ParseScriptEntry
 ================
 */
 	ParseScriptEntry(name: string, src: idParser ):boolean {
-	for (var i = 0; i < SCRIPT_COUNT; i++) {
-		if (idStr.Icmp(this.name, idWindow.ScriptNames[i]) == 0) {
-			delete this.scripts[i];
-			this.scripts[i] = new idGuiScriptList;
-			return this.ParseScript(src, this.scripts[i]);
+		for ( var i = 0; i < SCRIPT_COUNT; i++ ) {
+			if ( idStr.Icmp( name, idWindow.ScriptNames[i] ) == 0 ) {
+				delete this.scripts[i];
+				this.scripts[i] = new idGuiScriptList;
+				return this.ParseScript( src, this.scripts[i] );
+			}
 		}
-	}
-	return false;
+		return false;
 }
 
 /*
@@ -2866,7 +2869,7 @@ idWindow::Parse
 idWindow::FindChildByName
 ================
 */
-	private static dw: drawWin_t ;
+	private static dw = new drawWin_t;
 	FindChildByName ( _name: string ): drawWin_t {
 		if ( idStr.Icmp( this.name, _name ) == 0 ) {
 			idWindow.dw.simp = null;
@@ -3313,142 +3316,143 @@ idWindow::ParseBracedExpression
 		src.ExpectTokenString( "}" );
 	}
 
-/////*
-////===============
-////idWindow::EvaluateRegisters
-////
-////Parameters are taken from the localSpace and the renderView,
-////then all expressions are evaluated, leaving the shader registers
-////set to their apropriate values.
-////===============
-////*/
-////EvaluateRegisters(float *registers):void {
-////	int		i, b;
-////	wexpOp_t	*op;
-////	idVec4 v;
-////
-////	int erc = this.expressionRegisters.Num();
-////	int oc = this.ops.Num();
-////	// copy the constants
-////	for ( i = wexpRegister_t.WEXP_REG_NUM_PREDEFINED ; i < erc ; i++ ) {
-////		registers[i] = this.expressionRegisters[i];
-////	}
-////
-////	// copy the local and global parameters
-////	registers[WEXP_REG_TIME] = gui.GetTime();
-////
-////	for ( i = 0 ; i < oc ; i++ ) {
-////		op = &this.ops[i];
-////		if (op.b == -2) {
-////			continue;
-////		}
-////		switch( op.opType ) {
-////		case wexpOpType_t.WOP_TYPE_ADD:
-////			registers[op.c] = registers[op.a] + registers[op.b];
-////			break;
-////		case wexpOpType_t.WOP_TYPE_SUBTRACT:
-////			registers[op.c] = registers[op.a] - registers[op.b];
-////			break;
-////		case wexpOpType_t.WOP_TYPE_MULTIPLY:
-////			registers[op.c] = registers[op.a] * registers[op.b];
-////			break;
-////		case wexpOpType_t.WOP_TYPE_DIVIDE:
-////			if ( registers[op.b] == 0.0f ) {
-////				common.Warning( "Divide by zero in window '%s' in %s", GetName(), gui.GetSourceFile() );
-////				registers[op.c] = registers[op.a];
-////			} else {
-////				registers[op.c] = registers[op.a] / registers[op.b];
-////			}
-////			break;
-////		case wexpOpType_t.WOP_TYPE_MOD:
-////			b = (int)registers[op.b];
-////			b = b != 0 ? b : 1;
-////			registers[op.c] = (int)registers[op.a] % b;
-////			break;
-////		case wexpOpType_t.WOP_TYPE_TABLE:
-////			{
-////				const idDeclTable *table = static_cast<const idDeclTable *>( declManager.DeclByIndex( DECL_TABLE, op.a ) );
-////				registers[op.c] = table.TableLookup( registers[op.b] );
-////			}
-////			break;
-////		case wexpOpType_t.WOP_TYPE_GT:
-////			registers[op.c] = registers[ op.a ] > registers[op.b];
-////			break;
-////		case wexpOpType_t.WOP_TYPE_GE:
-////			registers[op.c] = registers[ op.a ] >= registers[op.b];
-////			break;
-////		case wexpOpType_t.WOP_TYPE_LT:
-////			registers[op.c] = registers[ op.a ] < registers[op.b];
-////			break;
-////		case wexpOpType_t.WOP_TYPE_LE:
-////			registers[op.c] = registers[ op.a ] <= registers[op.b];
-////			break;
-////		case wexpOpType_t.WOP_TYPE_EQ:
-////			registers[op.c] = registers[ op.a ] == registers[op.b];
-////			break;
-////		case wexpOpType_t.WOP_TYPE_NE:
-////			registers[op.c] = registers[ op.a ] != registers[op.b];
-////			break;
-////		case wexpOpType_t.WOP_TYPE_COND:
-////			registers[op.c] = (registers[ op.a ]) ? registers[op.b] : registers[op.d];
-////			break;
-////		case wexpOpType_t.WOP_TYPE_AND:
-////			registers[op.c] = registers[ op.a ] && registers[op.b];
-////			break;
-////		case wexpOpType_t.WOP_TYPE_OR:
-////			registers[op.c] = registers[ op.a ] || registers[op.b];
-////			break;
-////		case wexpOpType_t.WOP_TYPE_VAR:
-////			if ( !op.a ) {
-////				registers[op.c] = 0.0f;
-////				break;
-////			}
-////			if ( op.b >= 0 && registers[op.b] >= 0 && registers[op.b] < 4 ) {
-////				// grabs vector components
-////				idWinVec4 *var = (idWinVec4 *)( op.a );
-////				registers[op.c] = ((idVec4&)var)[registers[op.b]];
-////			} else {
-////				registers[op.c] = ((idWinVar*)(op.a)).x();
-////			}
-////			break;
-////		case wexpOpType_t.WOP_TYPE_VARS:
-////			if (op.a) {
-////				idWinStr *var = (idWinStr*)(op.a);
-////				registers[op.c] = atof(var.c_str());
-////			} else {
-////				registers[op.c] = 0;
-////			}
-////			break;
-////		case wexpOpType_t.WOP_TYPE_VARF:
-////			if (op.a) {
-////				idWinFloat *var = (idWinFloat*)(op.a);
-////				registers[op.c] = *var;
-////			} else {
-////				registers[op.c] = 0;
-////			}
-////			break;
-////		case wexpOpType_t.WOP_TYPE_VARI:
-////			if (op.a) {
-////				idWinInt *var = (idWinInt*)(op.a);
-////				registers[op.c] = *var;
-////			} else {
-////				registers[op.c] = 0;
-////			}
-////			break;
-////		case wexpOpType_t.WOP_TYPE_VARB:
-////			if (op.a) {
-////				idWinBool *var = (idWinBool*)(op.a);
-////				registers[op.c] = *var;
-////			} else {
-////				registers[op.c] = 0;
-////			}
-////			break;
-////		default:
-////			common.FatalError( "R_EvaluateExpression: bad opcode" );
-////		}
-////	}
-////
-////}
+/*
+===============
+idWindow::EvaluateRegisters
+
+Parameters are taken from the localSpace and the renderView,
+then all expressions are evaluated, leaving the shader registers
+set to their apropriate values.
+===============
+*/
+EvaluateRegisters(/*float **/registers:Float32Array):void {
+	var/*int*/i: number, b: number;
+	var op: wexpOp_t	;
+	var v = new idVec4;
+
+	var/*int */erc = this.expressionRegisters.Num();
+	var/*int */oc = this.ops.Num();
+	// copy the constants
+	for ( i = wexpRegister_t.WEXP_REG_NUM_PREDEFINED ; i < erc ; i++ ) {
+		registers[i] = this.expressionRegisters[i];
+	}
+
+	// copy the local and global parameters
+	registers[wexpRegister_t.WEXP_REG_TIME] = this.gui.GetTime();
+
+	for ( i = 0 ; i < oc ; i++ ) {
+		op = /*&*/this.ops[i];
+		if (op.b == -2) {
+			continue;
+		}
+		switch( op.opType ) {
+		case wexpOpType_t.WOP_TYPE_ADD:
+			registers[op.c] = registers[op.a] + registers[op.b];
+			break;
+		case wexpOpType_t.WOP_TYPE_SUBTRACT:
+			registers[op.c] = registers[op.a] - registers[op.b];
+			break;
+		case wexpOpType_t.WOP_TYPE_MULTIPLY:
+			registers[op.c] = registers[op.a] * registers[op.b];
+			break;
+		case wexpOpType_t.WOP_TYPE_DIVIDE:
+			if ( registers[op.b] == 0.0 ) {
+				common.Warning( "Divide by zero in window '%s' in %s", this.GetName(), this.gui.GetSourceFile() );
+				registers[op.c] = registers[op.a];
+			} else {
+				registers[op.c] = registers[op.a] / registers[op.b];
+			}
+			break;
+		case wexpOpType_t.WOP_TYPE_MOD:
+			b = /*(int)*/int(registers[op.b]);
+			b = b != 0 ? b : 1;
+			registers[op.c] = /*(int)*/int(registers[op.a] % b);
+			break;
+		case wexpOpType_t.WOP_TYPE_TABLE:
+			{
+				var table = <idDeclTable>(declManager.DeclByIndex( declType_t.DECL_TABLE, op.a ) );
+				registers[op.c] = table.TableLookup( registers[op.b] );
+			}
+			break;
+		case wexpOpType_t.WOP_TYPE_GT:
+			registers[op.c] = registers[ op.a ] > registers[op.b] ? 1 : 0;
+			break;
+		case wexpOpType_t.WOP_TYPE_GE:
+			registers[op.c] = registers[op.a] >= registers[op.b] ? 1 : 0;
+			break;
+		case wexpOpType_t.WOP_TYPE_LT:
+			registers[op.c] = registers[op.a] < registers[op.b] ? 1 : 0;
+			break;
+		case wexpOpType_t.WOP_TYPE_LE:
+			registers[op.c] = registers[op.a] <= registers[op.b] ? 1 : 0;
+			break;
+		case wexpOpType_t.WOP_TYPE_EQ:
+			registers[op.c] = registers[op.a] == registers[op.b] ? 1 : 0;
+			break;
+		case wexpOpType_t.WOP_TYPE_NE:
+			registers[op.c] = registers[op.a] != registers[op.b] ? 1 : 0;
+			break;
+		case wexpOpType_t.WOP_TYPE_COND:
+			registers[op.c] = (registers[ op.a ]) ? registers[op.b] : registers[op.d];
+			break;
+		case wexpOpType_t.WOP_TYPE_AND:
+			registers[op.c] = registers[ op.a ] && registers[op.b];
+			break;
+		case wexpOpType_t.WOP_TYPE_OR:
+			registers[op.c] = registers[ op.a ] || registers[op.b];
+			break;
+		case wexpOpType_t.WOP_TYPE_VAR:
+			if ( !op.a ) {
+				registers[op.c] = 0.0;
+				break;
+			}
+			todoThrow ( );
+		//	if ( op.b >= 0 && registers[op.b] >= 0 && registers[op.b] < 4 ) {
+		//		// grabs vector components
+		//		idWinVec4 *var = (idWinVec4 *)( op.a );
+		//		registers[op.c] = ((idVec4&)var)[registers[op.b]];
+		//	} else {
+		//		registers[op.c] = ((idWinVar*)(op.a)).x();
+		//	}
+		//	break;
+		//case wexpOpType_t.WOP_TYPE_VARS:
+		//	if (op.a) {
+		//		idWinStr *var = (idWinStr*)(op.a);
+		//		registers[op.c] = atof(var.c_str());
+		//	} else {
+		//		registers[op.c] = 0;
+		//	}
+		//	break;
+		//case wexpOpType_t.WOP_TYPE_VARF:
+		//	if (op.a) {
+		//		idWinFloat *var = (idWinFloat*)(op.a);
+		//		registers[op.c] = *var;
+		//	} else {
+		//		registers[op.c] = 0;
+		//	}
+		//	break;
+		//case wexpOpType_t.WOP_TYPE_VARI:
+		//	if (op.a) {
+		//		idWinInt *var = (idWinInt*)(op.a);
+		//		registers[op.c] = *var;
+		//	} else {
+		//		registers[op.c] = 0;
+		//	}
+		//	break;
+		//case wexpOpType_t.WOP_TYPE_VARB:
+		//	if (op.a) {
+		//		idWinBool *var = (idWinBool*)(op.a);
+		//		registers[op.c] = *var;
+		//	} else {
+		//		registers[op.c] = 0;
+		//	}
+			break;
+		default:
+			common.FatalError( "R_EvaluateExpression: bad opcode" );
+		}
+	}
+
+}
 ////
 /////*
 ////================

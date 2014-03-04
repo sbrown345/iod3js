@@ -335,23 +335,26 @@ idGuiScript::idGuiScript
 		this.handler = null;
 		this.parms.SetGranularity( 2 );
 	}
-////
-/////*
-////=========================
-////idGuiScript::~idGuiScript
-////=========================
-////*/
-////idGuiScript::~idGuiScript() {
-////	delete ifList;
-////	delete elseList;
-////	int c = this.parms.Num();
-////	for ( int i = 0; i < c; i++ ) {
-////		if ( this.parms[i].own ) {
-////			delete this.parms[i].var;
-////		}
-////	}
-////}
-////
+
+/*
+=========================
+idGuiScript::~idGuiScript
+=========================
+*/
+	destructor ( ): void {
+		$delete(this.ifList);
+		delete this.ifList;
+		$delete(this.elseList);
+		delete this.elseList;
+		var c = this.parms.Num ( );
+		for ( var i = 0; i < c; i++ ) {
+			if ( this.parms[i].own ) {
+				$delete(this.parms[i].$var);
+				delete this.parms[i].$var;
+			}
+		}
+	}
+
 /////*
 ////=========================
 ////idGuiScript::WriteToSaveGame
@@ -469,8 +472,8 @@ idGuiScript::Parse
 class idGuiScriptList {
 	list = new idList<idGuiScript>(idGuiScript);
 ////public:
-////	idGuiScriptList() { list.SetGranularity(4); };
-////	~idGuiScriptList() { list.DeleteContents(true); };
+	constructor ( ) { this.list.SetGranularity( 4 ); }
+	destructor ( ) { this.list.DeleteContents( true ); }
 ////	void Execute(idWindow *win);
 	Append ( gs: idGuiScript ): void {
 		this.list.Append( gs );
