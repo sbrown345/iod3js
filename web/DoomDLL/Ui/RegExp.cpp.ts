@@ -95,133 +95,141 @@ class idRegister {
 ////
 ////
 ////
-/////*
-////====================
-////idRegister::SetToRegs
-////====================
-////*/
-////void idRegister::SetToRegs( float *registers ) {
-////	int i;
-////	idVec4 v;
-////	idVec2 v2;
-////	idVec3 v3;
-////	idRectangle rect;
-////
-////	if ( !enabled || var == NULL || ( var && ( var.GetDict() || !var.GetEval() ) ) ) {
-////		return;
-////	}
-////
-////	switch( type ) {
-////		case VEC4: {
-////			v = *static_cast<idWinVec4*>(var);
-////			break;
-////		}
-////		case RECTANGLE: {
-////			rect = *static_cast<idWinRectangle*>(var);
-////			v = rect.ToVec4();
-////			break;
-////		}
-////		case VEC2: {
-////			v2 = *static_cast<idWinVec2*>(var);
-////			v[0] = v2[0];
-////			v[1] = v2[1];
-////			break;
-////		}
-////		case VEC3: {
-////			v3 = *static_cast<idWinVec3*>(var);
-////			v[0] = v3[0];
-////			v[1] = v3[1];
-////			v[2] = v3[2];
-////			break;
-////		}
-////		case FLOAT: {
-////			v[0] = *static_cast<idWinFloat*>(var);
-////			break;
-////		}
-////		case INT: {
-////			v[0] = *static_cast<idWinInt*>(var);
-////			break;
-////		}
-////		case BOOL: {
-////			v[0] = *static_cast<idWinBool*>(var);
-////			break;
-////		}
-////		default: {
-////			common.FatalError( "idRegister::SetToRegs: bad reg type" );
-////			break;
-////		}
-////	}
-////	for ( i = 0; i < regCount; i++ ) {
-////		registers[ this.regs[ i ] ] = v[i];
-////	}
-////}
-////
-/////*
-////=================
-////idRegister::GetFromRegs
-////=================
-////*/
-////void idRegister::GetFromRegs( float *registers ) {
-////	idVec4 v;
-////	idRectangle rect;
-////
-////	if (!enabled || var == NULL || (var && (var.GetDict() || !var.GetEval()))) {
-////		return;
-////	}
-////
-////	for ( int i = 0; i < regCount; i++ ) {
-////		v[i] = registers[this.regs[i]];
-////	}
-////	
-////	switch( type ) {
-////		case VEC4: {
-////			*dynamic_cast<idWinVec4*>(var) = v;
-////			break;
-////		}
-////		case RECTANGLE: {
-////			rect.x = v.x;
-////			rect.y = v.y;
-////			rect.w = v.z;
-////			rect.h = v.w;
-////			*static_cast<idWinRectangle*>(var) = rect;
-////			break;
-////		}
-////		case VEC2: {
-////			*static_cast<idWinVec2*>(var) = v.ToVec2();
-////			break;
-////		}
-////		case VEC3: {
-////			*static_cast<idWinVec3*>(var) = v.ToVec3();
-////			break;
-////		}
-////		case FLOAT: {
-////			*static_cast<idWinFloat*>(var) = v[0];
-////			break;
-////		}
-////		case INT: {
-////			*static_cast<idWinInt*>(var) = v[0];
-////			break;
-////		}
-////		case BOOL: {
-////			*static_cast<idWinBool*>(var) = ( v[0] != 0.0f );
-////			break;
-////		}
-////		default: {
-////			common.FatalError( "idRegister::GetFromRegs: bad reg type" );
-////			break;
-////		}
-////	}
-////}
-////
+/*
+====================
+idRegister::SetToRegs
+====================
+*/
+	SetToRegs ( registers: Float32Array ): void {
+		var /*int */i: number;
+		var v = new idVec4;
+		var v2 = new idVec2;
+		var v3 = new idVec3;
+		var rect = new idRectangle;
+
+		if ( !this.enabled || this.$var == null || ( this.$var && ( this.$var.GetDict ( ) || !this.$var.GetEval ( ) ) ) ) {
+			return;
+		}
+
+		switch ( this.type ) {
+		case REGTYPE.VEC4:
+		{
+			v.equals( ( <idWinVec4>this.$var ).data ); //v = * static_cast<idWinVec4*>(this.$var);
+			break;
+		}
+		case REGTYPE.RECTANGLE:
+		{
+			rect.equals( ( <idWinRectangle>this.$var ).data ); //rect = *static_cast<idWinRectangle*>(this.$var);
+			v = rect.ToVec4 ( );
+			break;
+		}
+		case REGTYPE.VEC2:
+			v2.equals( ( <idWinVec2>this.$var ).data ); // = *static_cast<idWinVec2*>(this.$var);
+			v[0] = v2[0];
+			v[1] = v2[1];
+			break;
+
+		case REGTYPE.VEC3:
+		{
+			v3.equals( ( <idWinVec3>this.$var ).data ); // = *static_cast<idWinVec3*>(this.$var);
+			v[0] = v3[0];
+			v[1] = v3[1];
+			v[2] = v3[2];
+			break;
+		}
+		case REGTYPE.FLOAT:
+		{
+			v[0] = ( <idWinFloat>this.$var ).data; // *static_cast<idWinFloat*>(this.$var);
+			break;
+		}
+		case REGTYPE.INT:
+		{
+			v[0] = ( <idWinInt>this.$var ).data; //  *static_cast<idWinInt*>(this.$var);
+			break;
+		}
+		case REGTYPE.BOOL:
+		{
+			v[0] = ( <idWinBool>this.$var ).data ? 1 : 0; //  *static_cast<idWinBool*>(this.$var);
+			break;
+		}
+		default:
+		{
+			common.FatalError( "idRegister::SetToRegs: bad reg type" );
+			break;
+		}
+		}
+		for ( i = 0; i < this.regCount; i++ ) {
+			registers[this.regs[i]] = v[i];
+		}
+	}
+
+/*
+=================
+idRegister::GetFromRegs
+=================
+*/
+GetFromRegs( registers :Float32Array):void {
+	var v = new idVec4 ;
+	var rect = new idRectangle ;
+
+	if (!this.enabled || this.$var == null|| (this.$var && (this.$var.GetDict() || !this.$var.GetEval()))) {
+		return;
+	}
+
+	for ( var i = 0; i < this.regCount; i++ ) {
+		v[i] = registers[this.regs[i]];
+	}
+	
+	switch( this.type ) {
+		case REGTYPE. VEC4: {
+			(<idWinVec4 > this.$var).equalsVec4(v); //*dynamic_cast<idWinVec4*>(this.$var) = v;
+			break;
+		}
+		case REGTYPE.RECTANGLE: {
+			rect.x = v.x;
+			rect.y = v.y;
+			rect.w = v.z;
+			rect.h = v.w;
+			( <idWinRectangle>this.$var ).equalsRectangle( rect ); //*static_cast<idWinRectangle*>(this.$var) = rect;
+			break;
+		}
+		case REGTYPE.VEC2:
+		{
+			(<idWinVec2>this.$var).equalsVec2(v.ToVec2());//*static_cast<idWinVec2*>(this.$var) = v.ToVec2();
+			break;
+		}
+		case REGTYPE.VEC3: {
+			(<idWinVec3>this.$var).equalsVec3(v.ToVec3());//*static_cast<idWinVec3*>(this.$var) = v.ToVec3();
+			break;
+		}
+		case REGTYPE.FLOAT: {
+			(<idWinFloat>this.$var).equalsFloat(v[0]);//*static_cast<idWinFloat*>(this.$var) = v[0];
+			break;
+		}
+		case REGTYPE.INT: {
+			(<idWinInt>this.$var).equalsInt(v[0]);//*static_cast<idWinInt*>(this.$var) = v[0];
+			break;
+		}
+		case REGTYPE.BOOL: {
+			(<idWinBool>this.$var).equalsBool(v[0] != 0.0 );//*static_cast<idWinBool*>(this.$var) = ( v[0] != 0.0 );
+			break;
+		}
+		default: {
+			common.FatalError( "idRegister::GetFromRegs: bad reg type" );
+			break;
+		}
+	}
+}
+
 /////*
 ////=================
 ////idRegister::ReadFromDemoFile
 ////=================
 ////*/
 ////void idRegister::ReadFromDemoFile(idDemoFile *f) {
-////	f.ReadBool( enabled );
-////	f.ReadShort( type );
-////	f.ReadInt( regCount );
+////	f.ReadBool( this.enabled );
+////	f.ReadShort( this.type );
+////	f.ReadInt( this.regCount );
 ////	for ( int i = 0; i < 4; i++ )
 ////		f.ReadUnsignedShort( this.regs[i] );
 ////	name = f.ReadHashString();
@@ -233,9 +241,9 @@ class idRegister {
 ////=================
 ////*/
 ////void idRegister::WriteToDemoFile( idDemoFile *f ) {
-////	f.WriteBool( enabled );
-////	f.WriteShort( type );
-////	f.WriteInt( regCount );
+////	f.WriteBool( this.enabled );
+////	f.WriteShort( this.type );
+////	f.WriteInt( this.regCount );
 ////	for (int i = 0; i < 4; i++)
 ////		f.WriteUnsignedShort( this.regs[i] );
 ////	f.WriteHashString( name );
@@ -249,16 +257,16 @@ class idRegister {
 ////void idRegister::WriteToSaveGame( idFile *savefile ) {
 ////	int len;
 ////
-////	savefile.Write( &enabled, sizeof( enabled ) );
-////	savefile.Write( &type, sizeof( type ) );
-////	savefile.Write( &regCount, sizeof( regCount ) );
+////	savefile.Write( &this.enabled, sizeof( this.enabled ) );
+////	savefile.Write( &this.type, sizeof( this.type ) );
+////	savefile.Write( &this.regCount, sizeof( this.regCount ) );
 ////	savefile.Write( &this.regs[0], sizeof( this.regs ) );
 ////	
 ////	len = name.Length();
 ////	savefile.Write( &len, sizeof( len ) );
 ////	savefile.Write( name.c_str(), len );
 ////
-////	var.WriteToSaveGame( savefile );
+////	this.$var.WriteToSaveGame( savefile );
 ////}
 ////
 /////*
@@ -269,16 +277,16 @@ class idRegister {
 ////void idRegister::ReadFromSaveGame( idFile *savefile ) {
 ////	int len;
 ////
-////	savefile.Read( &enabled, sizeof( enabled ) );
-////	savefile.Read( &type, sizeof( type ) );
-////	savefile.Read( &regCount, sizeof( regCount ) );
+////	savefile.Read( &this.enabled, sizeof( this.enabled ) );
+////	savefile.Read( &this.type, sizeof( this.type ) );
+////	savefile.Read( &this.regCount, sizeof( this.regCount ) );
 ////	savefile.Read( &this.regs[0], sizeof( this.regs ) );
 ////
 ////	savefile.Read( &len, sizeof( len ) );
 ////	name.Fill( ' ', len );
 ////	savefile.Read( &name[0], len );
 ////
-////	var.ReadFromSaveGame( savefile );
+////	this.$var.ReadFromSaveGame( savefile );
 ////}
 ////
 }

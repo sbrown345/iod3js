@@ -165,7 +165,7 @@ class idRectangle {
 //};
 //
 	ToVec4 ( ): idVec4 {
-		return new idVec4( this.values ); //*reinterpret_cast<const idVec4 *>(&x);
+		return new idVec4( this.x, this.y, this.w, this.h ); //*reinterpret_cast<const idVec4 *>(&x);
 	}
 //
 //

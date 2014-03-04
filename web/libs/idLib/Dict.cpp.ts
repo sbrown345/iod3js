@@ -203,11 +203,11 @@ class idDict {
 	SetBool ( key: string, val: boolean ): void {
 		this.Set( key, val ? "1" : "0" /*va( "%i", val ) */ );
 	}
-////
-////SetVector( key:string, const idVec3 &val ):void {
-////	Set( key, val.ToString() );
-////}
-////
+
+	SetVector ( key: string, val: idVec3 ): void {
+		Set( key, val.ToString ( ) );
+	}
+
 	SetVec4 ( key: string, val: idVec4 ): void {
 		this.Set( key, val.ToString ( ) );
 	}

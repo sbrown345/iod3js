@@ -320,8 +320,8 @@ class idWindow {
 	////	static idCVar gui_edit;
 	////
 	scripts = new Array<idGuiScriptList>( SCRIPT_COUNT );
-	////	bool *saveTemps;
-	////
+	saveTemps: Array<boolean>;
+	
 	timeLineEvents = new idList<idTimeLineEvent>( idTimeLineEvent );
 	transitions= new idList<idTransitionData>( idTransitionData );
 	
@@ -1959,9 +1959,11 @@ idWindow::SaveExpressionParseState
 ================
 */
 	SaveExpressionParseState ( ): void {
-		todoThrow ( );
-		//saveTemps = (bool*)Mem_Alloc(MAX_EXPRESSION_REGISTERS * sizeof(bool));
+		this.saveTemps = new Array<boolean>( MAX_EXPRESSION_REGISTERS ); //saveTemps = (bool*)Mem_Alloc(MAX_EXPRESSION_REGISTERS * sizeof(bool));
 		//memcpy(saveTemps, idWindow.registerIsTemporary, MAX_EXPRESSION_REGISTERS * sizeof(bool));
+		for ( var i = 0; i < MAX_EXPRESSION_REGISTERS; i++ ) {
+			this.saveTemps[i] = idWindow.registerIsTemporary[i];
+		}
 	}
 
 /*
@@ -1970,9 +1972,11 @@ idWindow::RestoreExpressionParseState
 ================
 */
 	RestoreExpressionParseState ( ): void {
-		todoThrow ( );
 		//memcpy(idWindow.registerIsTemporary, saveTemps, MAX_EXPRESSION_REGISTERS * sizeof(bool));
-		//Mem_Free(saveTemps);
+		for (var i = 0; i < MAX_EXPRESSION_REGISTERS; i++) {
+			idWindow.registerIsTemporary[i] = this.saveTemps[i];
+		}
+		Mem_Free( this.saveTemps );
 	}
 
 /*
@@ -2467,7 +2471,7 @@ idWindow::Parse
 			if ( token.data == "windowDef" || token.data == "animationDef" ) {
 				if ( token.data == "animationDef" ) {
 					this.visible.equalsBool( false );
-					this.rect.equals( new idRectangle( 0, 0, 0, 0 ) );
+					this.rect.equalsRectangle( new idRectangle( 0, 0, 0, 0 ) );
 				}
 				src.ExpectTokenType( TT_NAME, 0, token );
 				token2 = token;
@@ -3327,7 +3331,7 @@ set to their apropriate values.
 */
 EvaluateRegisters(/*float **/registers:Float32Array):void {
 	var/*int*/i: number, b: number;
-	var op: wexpOp_t	;
+	var op: wexpOp_t;
 	var v = new idVec4;
 
 	var/*int */erc = this.expressionRegisters.Num();
@@ -3406,46 +3410,45 @@ EvaluateRegisters(/*float **/registers:Float32Array):void {
 				registers[op.c] = 0.0;
 				break;
 			}
-			todoThrow ( );
-		//	if ( op.b >= 0 && registers[op.b] >= 0 && registers[op.b] < 4 ) {
-		//		// grabs vector components
-		//		idWinVec4 *var = (idWinVec4 *)( op.a );
-		//		registers[op.c] = ((idVec4&)var)[registers[op.b]];
-		//	} else {
-		//		registers[op.c] = ((idWinVar*)(op.a)).x();
-		//	}
-		//	break;
-		//case wexpOpType_t.WOP_TYPE_VARS:
-		//	if (op.a) {
-		//		idWinStr *var = (idWinStr*)(op.a);
-		//		registers[op.c] = atof(var.c_str());
-		//	} else {
-		//		registers[op.c] = 0;
-		//	}
-		//	break;
-		//case wexpOpType_t.WOP_TYPE_VARF:
-		//	if (op.a) {
-		//		idWinFloat *var = (idWinFloat*)(op.a);
-		//		registers[op.c] = *var;
-		//	} else {
-		//		registers[op.c] = 0;
-		//	}
-		//	break;
-		//case wexpOpType_t.WOP_TYPE_VARI:
-		//	if (op.a) {
-		//		idWinInt *var = (idWinInt*)(op.a);
-		//		registers[op.c] = *var;
-		//	} else {
-		//		registers[op.c] = 0;
-		//	}
-		//	break;
-		//case wexpOpType_t.WOP_TYPE_VARB:
-		//	if (op.a) {
-		//		idWinBool *var = (idWinBool*)(op.a);
-		//		registers[op.c] = *var;
-		//	} else {
-		//		registers[op.c] = 0;
-		//	}
+			if ( op.b >= 0 && registers[op.b] >= 0 && registers[op.b] < 4 ) {
+				// grabs vector components
+				var vec4Var = <idWinVec4>objectTracker.getObject(op.a, idWinVec4 ); //idWinVec4 *var = (idWinVec4 *)( op.a );
+				registers[op.c] = ( <idVec4>vec4Var.data )[registers[op.b]]; //((idVec4&)var)[registers[op.b]];
+			} else {
+				registers[op.c] = ( <idWinVar>objectTracker.getObject( op.a, idWinVec4 ) ).x ( ); // ((idWinVar*)(op.a)).x();
+			}
+			break;
+		case wexpOpType_t.WOP_TYPE_VARS:
+			if (op.a) {
+				var strVar = <idWinStr>objectTracker.getObject( op.a, idWinStr ); //idWinStr *var = (idWinStr*)(op.a);
+				registers[op.c] = atof( strVar.c_str ( ) );
+			} else {
+				registers[op.c] = 0;
+			}
+			break;
+		case wexpOpType_t.WOP_TYPE_VARF:
+			if (op.a) {
+				var floatVar = <idWinFloat>objectTracker.getObject(op.a, idWinFloat);   //idWinFloat *var = (idWinFloat*)(op.a);
+				registers[op.c] = floatVar.data; //*var;
+			} else {
+				registers[op.c] = 0;
+			}
+			break;
+		case wexpOpType_t.WOP_TYPE_VARI:
+			if (op.a) {
+				var intVar = <idWinInt>objectTracker.getObject(op.a, idWinInt); //idWinInt *var = (idWinInt*)(op.a);
+				registers[op.c] = intVar.data;
+			} else {
+				registers[op.c] = 0;
+			}
+			break;
+		case wexpOpType_t.WOP_TYPE_VARB:
+			if (op.a) {
+				var boolVar = <idWinBool>objectTracker.getObject(op.a, idWinBool);//idWinBool *var = (idWinBool*)(op.a);
+				registers[op.c] = boolVar.data ? 1 : 0;
+			} else {
+				registers[op.c] = 0;
+			}
 			break;
 		default:
 			common.FatalError( "R_EvaluateExpression: bad opcode" );

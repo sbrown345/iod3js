@@ -53,19 +53,19 @@ class idVec2 {
 //public:
 	//x: number; //	float			
 	//y: number; //	float			
-	get x(): number { return this[0]; }
+	get x ( ): number { return this[0]; }
 
-	set x(value: number) {
-		if (value === undefined) {
+	set x ( value: number ) {
+		if ( value === undefined ) {
 			throw 'Undefined value';
 		}
 		this[0] = value;
 	}
 
-	get y(): number { return this[1]; }
+	get y ( ): number { return this[1]; }
 
-	set y(value: number) {
-		if (value === undefined) {
+	set y ( value: number ) {
+		if ( value === undefined ) {
 			throw 'Undefined value';
 		}
 		this[1] = value;
@@ -78,7 +78,7 @@ class idVec2 {
 
 		return this;
 	}
-	
+
 ////					idVec2( void );
 ////					explicit idVec2( const float x, const float y );
 
@@ -128,13 +128,13 @@ class idVec2 {
 ////extern idVec2 vec2_origin;
 ////#define vec2_zero vec2_origin
 
-////ID_INLINE idVec2::idVec2( void ) {
-////}
+	constructor ( )
+	constructor ( x: number, y: number )
+	constructor ( x?: number, y?: number ) {
+		this.x = x || 0;
+		this.y = y || 0;
+	}
 
-////ID_INLINE idVec2::idVec2( const float x, const float y ) {
-////	this.x = x;
-////	this.y = y;
-////}
 
 	Set ( /* float */x: number, /*float */y: number ): void {
 		this.x = x;
@@ -1483,17 +1483,18 @@ class idVec4 {
 ////	return *reinterpret_cast<const idVec2 *>(this);
 ////}
 
-////ID_INLINE idVec2 &idVec4::ToVec2( void ) {
-////	return *reinterpret_cast<idVec2 *>(this);
-////}
+	/*ID_INLINE idVec2 &idVec4::*/ToVec2(): idVec2 {
+		return new idVec2( this.x, this.y ); //*reinterpret_cast<idVec2 *>(this);
+	}
 
 ////ID_INLINE const idVec3 &idVec4::ToVec3( void ) const {
 ////	return *reinterpret_cast<const idVec3 *>(this);
 ////}
 
-////ID_INLINE idVec3 &idVec4::ToVec3( void ) {
-////	return *reinterpret_cast<idVec3 *>(this);
-////}
+/*ID_INLINE idVec3 &idVec4::*/
+	ToVec3 ( ): idVec3 {
+		return new idVec3( this.x, this.y, this.z ); //*reinterpret_cast<idVec3 *>(this);
+	}
 
 ////ID_INLINE const float *idVec4::ToFloatPtr( void ) const {
 ////	return &x;
@@ -1530,6 +1531,74 @@ idVec4::ToString
 ////	}
 ////}
 }
+
+Object.defineProperty(idVec4.prototype, "0", {
+	get: function (): number {
+		return this.values[0];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.x = value;
+	},
+	enumerable: false,
+	configurable: false
+});
+
+Object.defineProperty(idVec4.prototype, "1", {
+	get: function (): number {
+		return this.values[1];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.y = value;
+	},
+	enumerable: false,
+	configurable: false
+});
+
+Object.defineProperty(idVec4.prototype, "2", {
+	get: function (): number {
+		return this.values[2];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.z = value;
+	},
+	enumerable: false,
+	configurable: false
+});
+
+Object.defineProperty(idVec4.prototype, "3", {
+	get: function (): number {
+		return this.values[3];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.w = value;
+	},
+	enumerable: false,
+	configurable: false
+});
 
 //===============================================================
 //

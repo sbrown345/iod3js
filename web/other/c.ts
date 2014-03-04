@@ -275,12 +275,17 @@ class ObjectTracker {
 		obj.refAddress = this.refs.length - 1;
 	}
 
-	getObject ( address: number ): ITrackedObject {
-		if ( !this.refs[address] ) {
+	getObject ( address: number, type:any = null ): ITrackedObject {
+		var obj = this.refs[address];
+		if ( !obj ) {
 			throw "No such object";
 		}
 
-		return this.refs[address];
+		if(!(obj instanceof  type)) {
+			throw "Wrong type. Expected " + type + " but found " + obj;
+		}
+
+		return obj;
 	}
 
 	removeObject ( address: number ): void {

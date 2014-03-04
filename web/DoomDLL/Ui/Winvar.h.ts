@@ -88,14 +88,14 @@ class idWinVar implements ITrackedObject {
 ////	virtual void WriteToSaveGame( idFile *savefile ) = 0;
 ////	virtual void ReadFromSaveGame( idFile *savefile ) = 0;
 ////
-////	virtual float x( void ) const = 0;
-////
-////	void SetEval(bool b) {
-////		eval = b;
-////	}
-////	bool GetEval() {
-////		return eval;
-////	}
+	x(  ):number { throw "placeholder"; }
+
+	SetEval ( b: boolean ): void {
+		this.eval = b;
+	}
+	GetEval() :boolean{
+		return this.eval;
+	}
 
 	constructor ( ) {
 		this.trackObject();
@@ -186,7 +186,7 @@ class idWinBool extends idWinVar {
 ////		savefile.Read( this.data, sizeof( this.data ) );
 ////	}
 ////
-////	virtual float x( void ) const { return this.data ? 1.0f : 0.0f; };
+	x ( ): number { return this.data ? 1.0 : 0.0; }
 ////
 ////protected:
 	data:boolean;
@@ -251,9 +251,9 @@ class idWinStr extends idWinVar {
 ////		}
 ////		data.RemoveColors();
 ////	}
-////	virtual const char *c_str() const {
-////		return this.data.c_str();
-////	}
+	c_str ( ): string {
+		return this.data.c_str ( );
+	}
 ////
 	Set ( val: string ): void {
 		this.data.equals( val );
@@ -294,9 +294,9 @@ class idWinStr extends idWinVar {
 ////			savefile.Read( this.data[0], len );
 ////		}
 ////	}
-////
-////	// return wether string is emtpy
-////	virtual float x( void ) const { return this.data[0] ? 1.0f : 0.0f; };
+
+	// return wether string is emtpy
+	x ( ): number { return this.data.data[0] ? 1.0 : 0.0; }
 ////
 ////protected:
 	data = new idStr;
@@ -410,8 +410,8 @@ class idWinFloat extends idWinVar {
 ////		savefile.Read( &this.eval, sizeof( this.eval ) );
 ////		savefile.Read( this.data, sizeof( this.data ) );
 ////	}
-////
-////	virtual float x( void ) const { return this.data; };
+
+	x ( ): number { return this.data; }
 ////protected:
 	data:number/*float*/;
 };
@@ -448,7 +448,7 @@ class idWinRectangle extends idWinVar {
 ////		return this.data;
 ////	}
 ////
-	equals ( other: idRectangle ): idRectangle {
+	equalsRectangle ( other: idRectangle ): idRectangle {
 		this.data = other;
 		if ( this.guiDict ) {
 			var v = this.data.ToVec4 ( );
@@ -702,20 +702,20 @@ class idWinVec3 extends idWinVar {
 ////		this.data = other.data;
 ////		return *this;
 ////	}
-////	idVec3 &operator=(	const idVec3 &other ) {
-////		this.data = other;
-////		if (this.guiDict) {
-////			this.guiDict.SetVector(this.GetName(), this.data);
-////		}
-////		return this.data;
-////	}
+	equalsVec3 ( other: idVec3 ): idVec3 {
+		this.data.equals( other );
+		if ( this.guiDict ) {
+			this.guiDict.SetVector( this.GetName ( ), this.data );
+		}
+		return this.data;
+	}
 ////	operator const idVec3&() const {
 ////		return this.data;
 ////	}
-////
-////	float x() const {
-////		return this.data.x;
-////	}
+
+	x ( ): number {
+		return this.data.x;
+	}
 ////
 ////	float y() const {
 ////		return this.data.y;
