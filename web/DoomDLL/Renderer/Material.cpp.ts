@@ -2269,7 +2269,7 @@ Parses the current material definition and finds all necessary images.
 
 	if ( this.numOps ) {
 		this.ops = newStructArray<expOp_t>( expOp_t, this.numOps );
-		todoThrow("clone these: memcpy( ops, this.pd.shaderOps, this.numOps * sizeof( ops[0] ) );");
+		memcpyStruct( this.ops, this.pd.shaderOps, this.numOps, expOp_t.typeInfo );
 	}
 
 	if ( this.numRegisters ) {

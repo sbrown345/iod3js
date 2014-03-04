@@ -144,8 +144,14 @@ enum expRegister_t {
 };
 
 class expOp_t {
-	opType: expOpType_t		;	
-	/*int				*/a:number;b:number;c:number;
+	opType: expOpType_t;	
+	/*int*/a: number; b: number; c: number;
+	static typeInfo = new TypeInfo(shaderStage_t, [
+		["opType", ""],
+		["a", ""],
+		["b", ""],
+		["c", ""]
+	]);
 };
 
 class colorStage_t {

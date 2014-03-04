@@ -2579,16 +2579,15 @@ idWindow::Parse
 				//dwt.win = win;
 				//this.drawWindows.Append(dwt);
 			} else if ( token.data == "renderDef" ) {
-				todoThrow ( );
-				//var win = new idRenderWindow(this.dc, this.gui);
-				//this.SaveExpressionParseState();
-				//win.Parse(src, rebuild);	
-				//this.RestoreExpressionParseState();
-				//this.AddChild(win);
-				//win.SetParent(this);
-				//dwt.simp = null;
-				//dwt.win = win;
-				//this.drawWindows.Append(dwt);
+				var win = new idRenderWindow(this.dc, this.gui);
+				this.SaveExpressionParseState();
+				win.Parse(src, rebuild);	
+				this.RestoreExpressionParseState();
+				this.AddChild(win);
+				win.SetParent(this);
+				dwt.simp = null;
+				dwt.win = win;
+				this.drawWindows.Append(dwt);
 			} else if ( token.data == "gameSSDDef" ) {
 				todoThrow ( );
 				//var win = new idGameSSDWindow(this.dc, this.gui);
