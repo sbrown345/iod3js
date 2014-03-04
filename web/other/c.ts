@@ -248,3 +248,33 @@ function __builtin_trap ( ): void {
 function exit (code:number ): void {
 	throw "exit(" + code + ");";
 }
+
+// track references
+
+interface ITrackedObject {
+	refAddress: number;
+	trackObject():void;
+}
+
+class ObjectTracker {
+	refs: ITrackedObject[] = [];
+
+	addObject ( obj: ITrackedObject ): void {
+		if ( typeof obj.refAddress === "number" ) {
+			throw "Already tracking this ref";
+		}
+
+		this.refs.push( obj );
+		obj.refAddress = this.refs.length - 1;
+	}
+
+	getObject ( address: number ): ITrackedObject {
+		if ( !this.refs[address] ) {
+			throw "No such object";
+		}
+
+		return this.refs[address];
+	}
+}
+
+var objectTracker = new ObjectTracker ( );

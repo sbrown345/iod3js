@@ -503,7 +503,7 @@ class idSimpleWindow {
 	////
 	////size_t idSimpleWindow::Size() {
 	////	size_t sz = sizeof(*this);
-	////	sz += name.Size();
+	////	sz += this.name.Size();
 	////	sz += this.text.Size();
 	////	sz += this.backGroundName.Size();
 	////	return sz;

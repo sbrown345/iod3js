@@ -134,7 +134,7 @@ class idWindow {
 	////	void DrawCaption(int time, float x, float y);
 	////	void SetupTransforms(float x, float y);
 	////	bool Contains(const idRectangle &sr, float x, float y);
-	////	const char *GetName() { return name; };
+	////	const char *GetName() { return this.name; };
 	////
 	////	virtual bool Parse(idParser *src, bool rebuild = true);
 	////	virtual const char *HandleEvent(const sysEvent_t *event, bool *updateVisuals);
@@ -1979,7 +1979,7 @@ idWindow::ParseScriptEntry
 */
 	ParseScriptEntry(name: string, src: idParser ):boolean {
 	for (var i = 0; i < SCRIPT_COUNT; i++) {
-		if (idStr.Icmp(name, idWindow.ScriptNames[i]) == 0) {
+		if (idStr.Icmp(this.name, idWindow.ScriptNames[i]) == 0) {
 			delete this.scripts[i];
 			this.scripts[i] = new idGuiScriptList;
 			return this.ParseScript(src, this.scripts[i]);
@@ -2868,7 +2868,7 @@ idWindow::FindChildByName
 */
 	private static dw: drawWin_t ;
 	FindChildByName ( _name: string ): drawWin_t {
-		if ( idStr.Icmp( name, _name ) == 0 ) {
+		if ( idStr.Icmp( this.name, _name ) == 0 ) {
 			idWindow.dw.simp = null;
 			idWindow.dw.win = this;
 			return idWindow.dw;
@@ -3123,83 +3123,82 @@ idWindow::ParseTerm
 Returns a register index
 =================
 */
-	ParseTerm(src: idParser,	/***/$var: idWinVar = null, /*int*/ component = 0):number {
-	var token = new idToken;
-	var/*int*/ a: number, b: number;
+	ParseTerm ( src: idParser, /***/$var: idWinVar = null, /*int*/ component = 0 ): number {
+		var token = new idToken;
+		var /*int*/ a: number, b: number;
 
-	src.ReadToken( token );
-
-	if ( token.data == "(" ) {
-		a = this.ParseExpression( src );
-		src.ExpectTokenString(")");
-		return a;
-	}
-
-	if ( !token.Icmp( "time" ) ) {
-		return wexpRegister_t.WEXP_REG_TIME;
-	}
-
-	// parse negative numbers
-	if ( token.data == "-" ) {
 		src.ReadToken( token );
-		if ( token.type == TT_NUMBER || token.data == "." ) {
-			return this.ExpressionConstant( -/*(float)*/ token.GetFloatValue() );
+
+		if ( token.data == "(" ) {
+			a = this.ParseExpression( src );
+			src.ExpectTokenString( ")" );
+			return a;
 		}
-		src.Warning( "Bad negative number '%s'", token.c_str() );
-		return 0;
-	}
 
-	if ( token.type == TT_NUMBER || token.data == "." || token.data == "-" ) {
-		return this.ExpressionConstant( /*(float) */token.GetFloatValue() );
-	}
+		if ( !token.Icmp( "time" ) ) {
+			return wexpRegister_t.WEXP_REG_TIME;
+		}
 
-	// see if it is a table name
-	var table = <idDeclTable>(declManager.FindType( declType_t.DECL_TABLE, token.c_str(), false ) );
-	if ( table ) {
-		a = table.Index();
-		// parse a table expression
-		src.ExpectTokenString("[");
-		b = this.ParseExpression(src);
-		src.ExpectTokenString("]");
-		return this.EmitOp( a, b, wexpOpType_t.WOP_TYPE_TABLE );
-	}
-	
-	if ($var == null) {
-		$var = this.GetWinVarByName(token.data, true);
-	}
+		// parse negative numbers
+		if ( token.data == "-" ) {
+			src.ReadToken( token );
+			if ( token.type == TT_NUMBER || token.data == "." ) {
+				return this.ExpressionConstant( - /*(float)*/ token.GetFloatValue ( ) );
+			}
+			src.Warning( "Bad negative number '%s'", token.c_str ( ) );
+			return 0;
+		}
+
+		if ( token.type == TT_NUMBER || token.data == "." || token.data == "-" ) {
+			return this.ExpressionConstant( /*(float) */token.GetFloatValue ( ) );
+		}
+
+		// see if it is a table name
+		var table = <idDeclTable>( declManager.FindType( declType_t.DECL_TABLE, token.c_str ( ), false ) );
+		if ( table ) {
+			a = table.Index ( );
+			// parse a table expression
+			src.ExpectTokenString( "[" );
+			b = this.ParseExpression( src );
+			src.ExpectTokenString( "]" );
+			return this.EmitOp( a, b, wexpOpType_t.WOP_TYPE_TABLE );
+		}
+
+		if ( $var == null ) {
+			$var = this.GetWinVarByName( token.data, true );
+		}
 		if ( $var ) {
-			todoThrow ( );
-			//a = (int)$var;
-			////assert(dynamic_cast<idWinVec4*>($var));
-			//$var.Init(token.data, this);
-			//b = component;
-			//if (dynamic_cast<idWinVec4*>($var)) {
-			//	if (src.ReadToken(token)) {
-			//		if (token.data == "[") {
-			//			b = this.ParseExpression(src);
-			//			src.ExpectTokenString("]");
-			//		} else {
-			//			src.UnreadToken(token);
-			//		}
-			//	}
-			//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VAR);
-			//} else if (dynamic_cast<idWinFloat*>($var)) {
-			//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VARF);
-			//} else if (dynamic_cast<idWinInt*>($var)) {
-			//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VARI);
-			//} else if (dynamic_cast<idWinBool*>($var)) {
-			//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VARB);
-			//} else if (dynamic_cast<idWinStr*>($var)) {
-			//	return this.EmitOp(a, b, wexpOpType_t.WOP_TYPE_VARS);
-			//} else {
-			//	src.Warning("Var expression not vec4, float or int '%s'", token.c_str());
-			//}
+			a = /*( int )*/$var.refAddress;
+			//assert(dynamic_cast<idWinVec4*>($var));
+			$var.Init( token.data, this );
+			b = component;
+			if ( $var instanceof idWinVec4 /*dynamic_cast<idWinVec4*>($var)*/ ) {
+				if ( src.ReadToken( token ) ) {
+					if ( token.data == "[" ) {
+						b = this.ParseExpression( src );
+						src.ExpectTokenString( "]" );
+					} else {
+						src.UnreadToken( token );
+					}
+				}
+				return this.EmitOp( a, b, wexpOpType_t.WOP_TYPE_VAR );
+			} else if ( $var instanceof idWinFloat /*dynamic_cast<idWinFloat*>($var)*/ ) {
+				return this.EmitOp( a, b, wexpOpType_t.WOP_TYPE_VARF );
+			} else if ( $var instanceof idWinInt /*dynamic_cast<idWinInt*>($var)*/ ) {
+				return this.EmitOp( a, b, wexpOpType_t.WOP_TYPE_VARI );
+			} else if ( $var instanceof idWinBool /*dynamic_cast<idWinBool*>($var)*/ ) {
+				return this.EmitOp( a, b, wexpOpType_t.WOP_TYPE_VARB );
+			} else if ( $var instanceof idWinStr /*dynamic_cast<idWinStr*>($var)*/ ) {
+				return this.EmitOp( a, b, wexpOpType_t.WOP_TYPE_VARS );
+			} else {
+				src.Warning( "Var expression not vec4, float or int '%s'", token.c_str ( ) );
+			}
 			return 0;
 		} else {
 			// ugly but used for post parsing to fixup named vars
 			//char *p = new char[token.Length()+1];
 			//strcpy(p, token);
-			idWindow.ParseTermStrings.push(token.data);
+			idWindow.ParseTermStrings.push( token.data );
 			a = idWindow.ParseTermStrings.length - 1; //a = (int)p
 			b = -2;
 			return this.EmitOp( a, b, wexpOpType_t.WOP_TYPE_VAR );
@@ -3789,7 +3788,7 @@ idWindow::ParseBracedExpression
 ////	savefile.Write( &this.textShadow, sizeof( this.textShadow ) );
 ////	savefile.Write( &this.shear, sizeof( this.shear ) );
 ////
-////	WriteSaveGameString( name, savefile );
+////	WriteSaveGameString( this.name, savefile );
 ////	WriteSaveGameString( this.comment, savefile );
 ////
 ////	// WinVars
@@ -3934,7 +3933,7 @@ idWindow::ParseBracedExpression
 ////	savefile.Read( &this.textShadow, sizeof( this.textShadow ) );
 ////	savefile.Read( &this.shear, sizeof( this.shear ) );
 ////
-////	ReadSaveGameString( name, savefile );
+////	ReadSaveGameString( this.name, savefile );
 ////	ReadSaveGameString( this.comment, savefile );
 ////
 ////	// WinVars
@@ -4506,7 +4505,7 @@ idWindow::Interactive
 ////
 ////		// Special case name
 ////		if ( !kv.GetKey().Icmp ( "name" ) ) {
-////			name = kv.GetValue();
+////			this.name = kv.GetValue();
 ////			continue;
 ////		}
 ////

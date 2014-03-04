@@ -35,7 +35,12 @@ var VAR_GUIPREFIX = "gui::";
 var VAR_GUIPREFIX_LEN = strlen(VAR_GUIPREFIX);
 ////
 ////class idWindow;
-class idWinVar {
+class idWinVar implements ITrackedObject {
+	refAddress: number;
+	trackObject ( ):void {
+		objectTracker.addObject( this );
+	}
+
 ////public:
 ////	idWinVar();
 ////	virtual ~idWinVar();
@@ -89,6 +94,7 @@ class idWinVar {
 ////	}
 
 	constructor ( ) {
+		this.trackObject();
 		this.guiDict = null;
 		this.name = null;
 		this.eval = true;
