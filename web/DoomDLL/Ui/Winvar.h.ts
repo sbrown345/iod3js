@@ -327,12 +327,12 @@ class idWinInt extends idWinVar {
 ////	operator int () const {
 ////		return this.data;
 ////	}
-////	virtual void Set(const char *val) {
-////		this.data = atoi(val);;
-////		if (this.guiDict) {
-////			this.guiDict.SetInt(this.GetName(), this.data);
-////		}
-////	}
+	Set ( val: string ): void {
+		this.data = atoi( val );
+		if ( this.guiDict ) {
+			this.guiDict.SetInt( this.GetName ( ), this.data );
+		}
+	}
 ////
 ////	virtual void Update() {
 ////		const char *s = this.GetName();
@@ -358,7 +358,7 @@ class idWinInt extends idWinVar {
 ////	virtual float x( void ) const { assert( false ); return 0.0f; };
 ////
 ////protected:
-	data:number/*int*/;
+	data:number/*int*/ = 0;
 };
 
 class idWinFloat extends idWinVar {
@@ -413,7 +413,7 @@ class idWinFloat extends idWinVar {
 
 	x ( ): number { return this.data; }
 ////protected:
-	data:number/*float*/;
+	data:number/*float*/ = 0.0;
 };
 
 class idWinRectangle extends idWinVar {
@@ -485,16 +485,25 @@ class idWinRectangle extends idWinVar {
 ////		return ret;
 ////	}
 	Set(val: string): void {
-		todoThrow ( );
-		//if ( strchr ( val, ',' ) ) {
-		//	sscanf( val, "%f,%f,%f,%f", this.data.x, this.data.y, this.data.w, this.data.h );
-		//} else {
-		//	sscanf( val, "%f %f %f %f", this.data.x, this.data.y, this.data.w, this.data.h );
-		//}
-		//if (this.guiDict) {
-		//	idVec4 v = this.data.ToVec4();
-		//	this.guiDict.SetVec4(this.GetName(), v);
-		//}
+		var split: string[];
+		if (strchrContains(val, ',')) {
+			split = val.split(',');
+			this.data.x = parseFloat(split[0]);
+			this.data.y = parseFloat(split[1]);
+			this.data.w = parseFloat(split[2]);
+			this.data.h = parseFloat(split[3]);
+
+		} else {
+			split = val.split(' ');
+			this.data.x = parseFloat(split[0]);
+			this.data.y = parseFloat(split[1]);
+			this.data.w = parseFloat(split[2]);
+			this.data.h = parseFloat(split[3]);
+		}
+		if (this.guiDict) {
+			var v = this.data.ToVec4();
+			this.guiDict.SetVec4(this.GetName(), v);
+		}
 	}
 ////	virtual void Update() {
 ////		const char *s = this.GetName();
@@ -557,14 +566,21 @@ class idWinVec2 extends idWinVar {
 		return this.data.y;
 	}
 	Set ( val: string ): void {
-		todoThrow ( );
-		//if ( strchr ( val, ',' ) ) {
-		//	sscanf( val, "%f,%f", this.data.x, this.data.y );
-		//} else {
-		//sscanf( val, "%f %f", this.data.x, this.data.y);
-		//}
-		//if (this.guiDict) {
-		//	this.guiDict.SetVec2(this.GetName(), this.data);
+		var split: string[];
+		if (strchrContains(val, ',')) {
+			split = val.split(',');
+			this.data.x = parseFloat(split[0]);
+			this.data.y = parseFloat(split[1]);
+
+		} else {
+			split = val.split(' ');
+			this.data.x = parseFloat(split[0]);
+			this.data.y = parseFloat(split[1]);
+		}
+
+		if ( this.guiDict ) {
+			this.guiDict.SetVec2( this.GetName ( ), this.data );
+		}
 	}
 
 ////	operator const idVec2&() const {
@@ -640,16 +656,26 @@ class idWinVec4 extends idWinVar {
 	w(): number /*float*/ {
 		return this.data.w;
 	}
-////	virtual void Set(const char *val) {
-////		if ( strchr ( val, ',' ) ) {
-////			sscanf( val, "%f,%f,%f,%f", &this.data.x, &this.data.y, &this.data.z, &this.data.w );
-////		} else {
-////			sscanf( val, "%f %f %f %f", &this.data.x, this.data.y, this.data.z, this.data.w);
-////		}
-////		if ( this.guiDict ) {
-////			this.guiDict.SetVec4( this.GetName(), this.data );
-////		}
-////	}
+	Set(val: string): void {
+		var split: string[];
+		if (strchrContains(val, ',')) {
+			split = val.split(',');
+			this.data.x = parseFloat(split[0]);
+			this.data.y = parseFloat(split[1]);
+			this.data.z = parseFloat(split[2]);
+			this.data.w = parseFloat(split[3]);
+
+		} else {
+			split = val.split(' ');
+			this.data.x = parseFloat(split[0]);
+			this.data.y = parseFloat(split[1]);
+			this.data.z = parseFloat(split[2]);
+			this.data.w = parseFloat(split[3]);
+		}
+		if ( this.guiDict ) {
+			this.guiDict.SetVec4( this.GetName(), this.data );
+		}
+	}
 ////	virtual void Update() {
 ////		const char *s = this.GetName();
 ////		if ( this.guiDict && s[0] != '\0' ) {
@@ -724,13 +750,17 @@ class idWinVec3 extends idWinVar {
 ////	float z() const {
 ////		return this.data.z;
 ////	}
-////
-////	virtual void Set(const char *val) {
-////		sscanf( val, "%f %f %f", this.data.x, this.data.y, this.data.z);
-////		if (this.guiDict) {
-////			this.guiDict.SetVector(this.GetName(), this.data);
-////		}
-////	}
+
+	Set ( val: string ): void {
+		//sscanf(val, "%f %f %f", this.data.x, this.data.y, this.data.z);
+		var split = val.split(' ');
+		this.data.x = parseFloat(split[0]);
+		this.data.y = parseFloat(split[1]);
+		this.data.z = parseFloat(split[2]);
+		if ( this.guiDict ) {
+			this.guiDict.SetVector( this.GetName ( ), this.data );
+		}
+	}
 ////	virtual void Update() {
 ////		const char *s = this.GetName();
 ////		if ( this.guiDict && s[0] != '\0' ) {
@@ -822,20 +852,20 @@ class idWinBackground extends idWinStr {
 ////		return this.data.c_str();
 ////	}
 ////
-////	virtual void Set(const char *val) {
-////		this.data = val;
-////		if (this.guiDict) {
-////			this.guiDict.Set(this.GetName(), this.data);
-////		}
-////		if (mat) {
-////			if ( this.data == "" ) {
-////				(*mat) = NULL;
-////			} else {
-////				(*mat) = declManager.FindMaterial(data);
-////			}
-////		}
-////	}
-////
+	Set ( val: string ): void {
+		this.data.equals( val );
+		if ( this.guiDict ) {
+			this.guiDict.Set( this.GetName ( ), this.data.data );
+		}
+		if ( this.mat ) {
+			if ( this.data.equalTo( "" ) ) {
+				this.mat = null;
+			} else {
+				this.mat = declManager.FindMaterial( this.data.data );
+			}
+		}
+	}
+
 ////	virtual void Update() {
 ////		const char *s = this.GetName();
 ////		if ( this.guiDict && s[0] != '\0' ) {
@@ -899,11 +929,11 @@ class idWinBackground extends idWinStr {
 ////*/
 ////class idMultiWinVar extends idList< idWinVar * > {
 ////public:
-////	void Set( const char *val );
+////	void Set( val:string );
 ////	void Update( void );
 ////	void SetGuiInfo( idDict *dict );
 
-////void idMultiWinVar::Set( const char *val ) {
+////void idMultiWinVar::Set( val:string ) {
 ////	for ( int i = 0; i < Num(); i++ ) {
 ////		(*this)[i].Set( val );
 ////	}

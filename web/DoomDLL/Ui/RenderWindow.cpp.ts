@@ -34,7 +34,7 @@
 ////#include "UserInterfaceLocal.h"
 ////#include "RenderWindow.h"
 ////
-////class idRenderWindow : public idWindow {
+class idRenderWindow extends idWindow {
 ////public:
 ////	idRenderWindow(idUserInterfaceLocal *gui);
 ////	idRenderWindow(idDeviceContext *d, idUserInterfaceLocal *gui);
@@ -54,58 +54,69 @@
 ////	void Render(int time);
 ////	void PreRender();
 ////	void BuildAnimation(int time);
-////	renderView_t refdef;
-////	idRenderWorld *world;
-////	renderEntity_t worldEntity;
-////	renderLight_t rLight;
-////	const idMD5Anim *modelAnim;
-////
-////	qhandle_t	worldModelDef;
-////	qhandle_t	lightDef;
-////	qhandle_t   modelDef;
-////	idWinStr modelName;
-////	idWinStr animName;
-////	idStr	 animClass;
-////	idWinVec4 lightOrigin;
-////	idWinVec4 lightColor;
-////	idWinVec4 modelOrigin;
-////	idWinVec4 modelRotate;
-////	idWinVec4 viewOffset;
-////	idWinBool needsRender;
-////	int animLength;
-////	int animEndTime;
-////	bool updateAnimation;
-////};
-////
-////idRenderWindow::idRenderWindow(idDeviceContext *d, idUserInterfaceLocal *g) : idWindow(d, g) {
-////	dc = d;
-////	gui = g;
-////	CommonInit();
-////}
-////
-////idRenderWindow::idRenderWindow(idUserInterfaceLocal *g) : idWindow(g) {
-////	gui = g;
-////	CommonInit();
-////}
-////
-////idRenderWindow::~idRenderWindow() {
-////	renderSystem->FreeRenderWorld( world ); 
-////}
-////
-////void idRenderWindow::CommonInit() {
-////	world = renderSystem->AllocRenderWorld();
-////	needsRender = true;
-////	lightOrigin = idVec4(-128.0f, 0.0f, 0.0f, 1.0f);
-////	lightColor = idVec4(1.0f, 1.0f, 1.0f, 1.0f);
-////	modelOrigin.Zero();
-////	viewOffset = idVec4(-128.0f, 0.0f, 0.0f, 1.0f);
-////	modelAnim = NULL;
-////	animLength = 0;
-////	animEndTime = -1;
-////	modelDef = -1;
-////	updateAnimation = true;
-////}
-////
+////	refdef = new renderView_t;
+	world:idRenderWorld;
+	worldEntity = new renderEntity_t;
+	rLight = new renderLight_t;
+	modelAnim:idMD5Anim;
+	
+	worldModelDef:number /*qhandle_t int*/;
+	lightDef: number /*qhandle_t int*/;
+	modelDef: number /*qhandle_t int*/;
+	modelName = new idWinStr;
+	animName = new idWinStr;
+	animClass = new idStr;
+	lightOrigin = new idWinVec4;
+	lightColor = new idWinVec4;
+	modelOrigin = new idWinVec4;
+	modelRotate = new idWinVec4;
+	viewOffset = new idWinVec4;
+	needsRender = new idWinBool;
+	animLength:number /*int*/;
+	animEndTime:number /*int*/;
+	updateAnimation: boolean;
+
+
+	constructor(g: idUserInterfaceLocal)
+	constructor(d: idDeviceContext, g: idUserInterfaceLocal)
+	constructor(a1: any, a2?: any) {
+		super();
+
+		if (arguments.length == 1) {
+			var g = <idUserInterfaceLocal>a1;
+			this.ctor1(g);
+			this.dc = null;
+			this.gui = g;
+			this.CommonInit();
+		} else if (arguments.length == 2) {
+			var d = <idDeviceContext>a1, g = <idUserInterfaceLocal>a2;
+			this.ctor2(d, g);
+			this.dc = d;
+			this.gui = g;
+			this.CommonInit();
+		} else {
+			todoThrow();
+		}
+	}
+
+	destructor ( ):void {
+		todoThrow( "renderSystem.FreeRenderWorld( this.world );" );
+	}
+
+	CommonInit ( ): void {
+		this.world = renderSystem.AllocRenderWorld ( );
+		this.needsRender.equalsBool( true );
+		this.lightOrigin.equalsVec4( new idVec4( -128.0, 0.0, 0.0, 1.0 ) );
+		this.lightColor.equalsVec4( new idVec4( 1.0, 1.0, 1.0, 1.0 ) );
+		this.modelOrigin.Zero ( );
+		this.viewOffset.equalsVec4( new idVec4( -128.0, 0.0, 0.0, 1.0 ) );
+		this.modelAnim = NULL;
+		this.animLength = 0;
+		this.animEndTime = -1;
+		this.modelDef = -1;
+		this.updateAnimation = true;
+	}
+
 ////
 ////void idRenderWindow::BuildAnimation(int time) {
 ////	
@@ -114,11 +125,11 @@
 ////	}
 ////
 ////	if (animName.Length() && animClass.Length()) {
-////		worldEntity.numJoints = worldEntity.hModel->NumJoints();
+////		worldEntity.numJoints = worldEntity.hModel.NumJoints();
 ////		worldEntity.joints = ( idJointMat * )Mem_Alloc16( worldEntity.numJoints * sizeof( *worldEntity.joints ) );
-////		modelAnim = gameEdit->ANIM_GetAnimFromEntityDef(animClass, animName);
+////		modelAnim = gameEdit.ANIM_GetAnimFromEntityDef(animClass, animName);
 ////		if (modelAnim) {
-////			animLength = gameEdit->ANIM_GetLength(modelAnim);
+////			animLength = gameEdit.ANIM_GetLength(modelAnim);
 ////			animEndTime = time + animLength;
 ////		}
 ////	}
@@ -128,23 +139,23 @@
 ////
 ////void idRenderWindow::PreRender() {
 ////	if (needsRender) {
-////		world->InitFromMap( NULL );
+////		world.InitFromMap( NULL );
 ////		idDict spawnArgs;
 ////		spawnArgs.Set("classname", "light");
 ////		spawnArgs.Set("name", "light_1");
 ////		spawnArgs.Set("origin", lightOrigin.ToVec3().ToString());
 ////		spawnArgs.Set("_color", lightColor.ToVec3().ToString());
-////		gameEdit->ParseSpawnArgsToRenderLight( &spawnArgs, &rLight );
-////		lightDef = world->AddLightDef( &rLight );
+////		gameEdit.ParseSpawnArgsToRenderLight( &spawnArgs, &rLight );
+////		lightDef = world.AddLightDef( &rLight );
 ////		if ( !modelName[0] ) {
-////			common->Warning( "Window '%s' in gui '%s': no model set", GetName(), GetGui()->GetSourceFile() );
+////			common.Warning( "Window '%s' in gui '%s': no model set", GetName(), GetGui().GetSourceFile() );
 ////		}
 ////		memset( &worldEntity, 0, sizeof( worldEntity ) );
 ////		spawnArgs.Clear();
 ////		spawnArgs.Set("classname", "func_static");
 ////		spawnArgs.Set("model", modelName);
 ////		spawnArgs.Set("origin", modelOrigin.c_str());
-////		gameEdit->ParseSpawnArgsToRenderEntity( &spawnArgs, &worldEntity );
+////		gameEdit.ParseSpawnArgsToRenderEntity( &spawnArgs, &worldEntity );
 ////		if ( worldEntity.hModel ) {
 ////			idVec3 v = modelRotate.ToVec3();
 ////			worldEntity.axis = v.ToMat3();
@@ -152,7 +163,7 @@
 ////			worldEntity.shaderParms[1] = 1;
 ////			worldEntity.shaderParms[2] = 1;
 ////			worldEntity.shaderParms[3] = 1;
-////			modelDef = world->AddEntityDef( &worldEntity );
+////			modelDef = world.AddEntityDef( &worldEntity );
 ////		}
 ////		needsRender = false;
 ////	}
@@ -163,7 +174,7 @@
 ////	rLight.shaderParms[SHADERPARM_RED] = lightColor.x();
 ////	rLight.shaderParms[SHADERPARM_GREEN] = lightColor.y();
 ////	rLight.shaderParms[SHADERPARM_BLUE] = lightColor.z();
-////	world->UpdateLightDef(lightDef, &rLight);
+////	world.UpdateLightDef(lightDef, &rLight);
 ////	if ( worldEntity.hModel ) {
 ////		if (updateAnimation) {
 ////			BuildAnimation(time);
@@ -172,10 +183,10 @@
 ////			if (time > animEndTime) {
 ////				animEndTime = time + animLength;
 ////			}
-////			gameEdit->ANIM_CreateAnimFrame(worldEntity.hModel, modelAnim, worldEntity.numJoints, worldEntity.joints, animLength - (animEndTime - time), vec3_origin, false );
+////			gameEdit.ANIM_CreateAnimFrame(worldEntity.hModel, modelAnim, worldEntity.numJoints, worldEntity.joints, animLength - (animEndTime - time), vec3_origin, false );
 ////		}
 ////		worldEntity.axis = idAngles(modelRotate.x(), modelRotate.y(), modelRotate.z()).ToMat3();
-////		world->UpdateEntityDef(modelDef, &worldEntity);
+////		world.UpdateEntityDef(modelDef, &worldEntity);
 ////	}
 ////}
 ////
@@ -204,7 +215,7 @@
 ////	refdef.fov_y = 2 * atan((float)drawRect.h / drawRect.w) * idMath::M_RAD2DEG;
 ////
 ////	refdef.time = time;
-////	world->RenderScene(&refdef);
+////	world.RenderScene(&refdef);
 ////}
 ////
 ////void idRenderWindow::PostParse() {
@@ -253,3 +264,4 @@
 ////	}
 ////	return idWindow::ParseInternalVar(_name, src);
 ////}
+}

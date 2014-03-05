@@ -208,16 +208,16 @@ enum jointModTransform_t{
 //	bool					ExportAnim( const char *anim );
 //	int						ExportModels( const char *pathname, const char *extension );
 //};
-//
-///*
-//==============================================================================================
-//
-//	idMD5Anim
-//
-//==============================================================================================
-//*/
-//
-//class idMD5Anim {
+
+/*
+==============================================================================================
+
+	idMD5Anim
+
+==============================================================================================
+*/
+
+class idMD5Anim {
 //private:
 //	int						numFrames;
 //	int						frameRate;
@@ -261,7 +261,7 @@ enum jointModTransform_t{
 //	void					GetOrigin( idVec3 &offset, int currentTime, int cyclecount ) const;
 //	void					GetOriginRotation( idQuat &rotation, /*int*/time:number, int cyclecount ) const;
 //	void					GetBounds( idBounds &bounds, int currentTime, int cyclecount ) const;
-//};
+};
 //
 ///*
 //==============================================================================================

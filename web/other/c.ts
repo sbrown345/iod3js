@@ -56,6 +56,10 @@ function strchr ( str: Uint8Array, character: number ): Uint8Array {
 	return null;
 }
 
+function strchrContains ( str: string, character: string ): boolean {
+	return str.indexOf( character ) != -1;
+}
+
 function isdigit ( c: string ): number {
     return ( c >= "0" && c <= "9" ) ? 1 : 0;
 }

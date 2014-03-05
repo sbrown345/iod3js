@@ -190,9 +190,9 @@ class renderEntity_t {
 		this.xrayIndex = 0;
 	}
 };																													   
-//
-//
-//typedef struct renderLight_s {
+
+
+class renderLight_t {
 //	idMat3					axis;				// rotation vectors, must be unit length
 //	idVec3					origin;
 //
@@ -238,9 +238,9 @@ class renderEntity_t {
 //	const idMaterial *		shader;				// NULL = either lights/defaultPointLight or lights/defaultProjectedLight
 //	float					shaderParms[MAX_ENTITY_SHADER_PARMS];		// can be used in any way by shader
 //	idSoundEmitter *		referenceSound;		// for shader sound tables, allowing effects to vary with sounds
-//} renderLight_t;
-//
-//
+}
+
+
 class renderView_t {
 	// player views will set this to a non-zero integer for model suppress / allow
 	// subviews (mirrors, cameras, etc) will always clear it to zero

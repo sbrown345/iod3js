@@ -510,25 +510,32 @@ idWindow::CommonInit
 idWindow::idWindow
 ================
 */
+	constructor( /*don't do anything, calling manually*/)
 	constructor ( ui: idUserInterfaceLocal )
 	constructor ( d: idDeviceContext, ui: idUserInterfaceLocal )
-	constructor ( a1: any, a2?: any ) {
+	constructor(a1?: any, a2?: any) {
 		if ( arguments.length == 1 ) {
 			var ui = <idUserInterfaceLocal>a1;
-			this.dc = null;
-			this.gui = ui;
-			this.CommonInit ( );
+			this.ctor1( ui );
 		} else if ( arguments.length == 2 ) {
 			var d = <idDeviceContext>a1;
 			var ui = <idUserInterfaceLocal>a2;
-			this.dc = d;
-			this.gui = ui;
-			this.CommonInit ( );
-		} else {
-			todoThrow ( );
+			this.ctor2( d, ui );
 		}
 	}
 
+	// work around typescript needing to call super() first
+	ctor1 ( ui: idUserInterfaceLocal ): void {
+		this.dc = null;
+		this.gui = ui;
+		this.CommonInit();
+	}
+
+	ctor2 ( d: idDeviceContext, ui: idUserInterfaceLocal ): void {
+		this.dc = d;
+		this.gui = ui;
+		this.CommonInit();
+	}
 
 /*
 ================
@@ -2579,14 +2586,14 @@ idWindow::Parse
 				//dwt.win = win;
 				//this.drawWindows.Append(dwt);
 			} else if ( token.data == "renderDef" ) {
-				var win = new idRenderWindow(this.dc, this.gui);
+				var rWin = new idRenderWindow(this.dc, this.gui);
 				this.SaveExpressionParseState();
-				win.Parse(src, rebuild);	
+				rWin.Parse(src, rebuild);	
 				this.RestoreExpressionParseState();
-				this.AddChild(win);
-				win.SetParent(this);
+				this.AddChild(rWin);
+				rWin.SetParent(this);
 				dwt.simp = null;
-				dwt.win = win;
+				dwt.win = rWin;
 				this.drawWindows.Append(dwt);
 			} else if ( token.data == "gameSSDDef" ) {
 				todoThrow ( );
