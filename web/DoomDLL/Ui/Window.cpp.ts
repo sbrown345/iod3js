@@ -2531,27 +2531,25 @@ idWindow::Parse
 				dwt.win = cWin;
 				this.drawWindows.Append(dwt);
 			} else if ( token.data == "sliderDef" ) {
-				todoThrow ( );
-				//var win = new idSliderWindow(this.dc, this.gui);
-				//this.SaveExpressionParseState();
-				//win.Parse(src, rebuild);	
-				//this.RestoreExpressionParseState();
-				//this.AddChild(win);
-				//win.SetParent(this);
-				//dwt.simp = null;
-				//dwt.win = win;
-				//this.drawWindows.Append(dwt);
+				var sWin = new idSliderWindow(this.dc, this.gui);
+				this.SaveExpressionParseState();
+				sWin.Parse(src, rebuild);	
+				this.RestoreExpressionParseState();
+				this.AddChild(sWin);
+				sWin.SetParent(this);
+				dwt.simp = null;
+				dwt.win = sWin;
+				this.drawWindows.Append(dwt);
 			} else if ( token.data == "markerDef" ) {
-				todoThrow ( );
-				//var win = new idMarkerWindow(this.dc, this.gui);
-				//this.SaveExpressionParseState();
-				//win.Parse(src, rebuild);	
-				//this.RestoreExpressionParseState();
-				//this.AddChild(win);
-				//win.SetParent(this);
-				//dwt.simp = null;
-				//dwt.win = win;
-				//this.drawWindows.Append(dwt);
+				var mWin = new idMarkerWindow(this.dc, this.gui);
+				this.SaveExpressionParseState();
+				mWin.Parse(src, rebuild);	
+				this.RestoreExpressionParseState();
+				this.AddChild(mWin);
+				mWin.SetParent(this);
+				dwt.simp = null;
+				dwt.win = mWin;
+				this.drawWindows.Append(dwt);
 			} else if ( token.data == "bindDef" ) {
 				var bWin = new idBindWindow(this.dc, this.gui);
 				this.SaveExpressionParseState();
@@ -2563,27 +2561,25 @@ idWindow::Parse
 				dwt.win = bWin;
 				this.drawWindows.Append(dwt);
 			} else if ( token.data == "listDef" ) {
-				todoThrow ( );
-				//var win = new idListWindow(this.dc, this.gui);
-				//this.SaveExpressionParseState();
-				//win.Parse(src, rebuild);	
-				//this.RestoreExpressionParseState();
-				//this.AddChild(win);
-				//win.SetParent(this);
-				//dwt.simp = null;
-				//dwt.win = win;
-				//this.drawWindows.Append(dwt);
+				var lWin = new idListWindow(this.dc, this.gui);
+				this.SaveExpressionParseState();
+				lWin.Parse(src, rebuild);	
+				this.RestoreExpressionParseState();
+				this.AddChild(lWin);
+				lWin.SetParent(this);
+				dwt.simp = null;
+				dwt.win = lWin;
+				this.drawWindows.Append(dwt);
 			} else if ( token.data == "fieldDef" ) {
-				todoThrow ( );
-				//var win = new idFieldWindow(this.dc, this.gui);
-				//this.SaveExpressionParseState();
-				//win.Parse(src, rebuild);	
-				//this.RestoreExpressionParseState();
-				//this.AddChild(win);
-				//win.SetParent(this);
-				//dwt.simp = null;
-				//dwt.win = win;
-				//this.drawWindows.Append(dwt);
+				var fWin = new idFieldWindow(this.dc, this.gui);
+				this.SaveExpressionParseState();
+				fWin.Parse(src, rebuild);	
+				this.RestoreExpressionParseState();
+				this.AddChild(fWin);
+				fWin.SetParent(this);
+				dwt.simp = null;
+				dwt.win = fWin;
+				this.drawWindows.Append(dwt);
 			} else if ( token.data == "renderDef" ) {
 				var rWin = new idRenderWindow(this.dc, this.gui);
 				this.SaveExpressionParseState();
@@ -2595,38 +2591,35 @@ idWindow::Parse
 				dwt.win = rWin;
 				this.drawWindows.Append(dwt);
 			} else if ( token.data == "gameSSDDef" ) {
-				todoThrow ( );
-				//var win = new idGameSSDWindow(this.dc, this.gui);
-				//this.SaveExpressionParseState();
-				//win.Parse(src, rebuild);	
-				//this.RestoreExpressionParseState();
-				//this.AddChild(win);
-				//win.SetParent(this);
-				//dwt.simp = null;
-				//dwt.win = win;
-				//this.drawWindows.Append(dwt);
+				var gsWin = new idGameSSDWindow(this.dc, this.gui);
+				this.SaveExpressionParseState();
+				gsWin.Parse(src, rebuild);	
+				this.RestoreExpressionParseState();
+				this.AddChild(gsWin);
+				gsWin.SetParent(this);
+				dwt.simp = null;
+				dwt.win = gsWin;
+				this.drawWindows.Append(dwt);
 			} else if ( token.data == "gameBearShootDef" ) {
-				todoThrow ( );
-				//var win = new idGameBearShootWindow(this.dc, this.gui);
-				//this.SaveExpressionParseState();
-				//win.Parse(src, rebuild);	
-				//this.RestoreExpressionParseState();
-				//this.AddChild(win);
-				//win.SetParent(this);
-				//dwt.simp = null;
-				//dwt.win = win;
-				//this.drawWindows.Append(dwt);
+				var gbWin = new idGameBearShootWindow(this.dc, this.gui);
+				this.SaveExpressionParseState();
+				gbWin.Parse(src, rebuild);	
+				this.RestoreExpressionParseState();
+				this.AddChild(gbWin);
+				gbWin.SetParent(this);
+				dwt.simp = null;
+				dwt.win = gbWin;
+				this.drawWindows.Append(dwt);
 			} else if ( token.data == "gameBustOutDef" ) {
-				todoThrow ( );
-				//var win = new idGameBustOutWindow(this.dc, this.gui);
-				//this.SaveExpressionParseState();
-				//win.Parse(src, rebuild);	
-				//this.RestoreExpressionParseState();
-				//this.AddChild(win);
-				//win.SetParent(this);
-				//dwt.simp = null;
-				//dwt.win = win;
-				//this.drawWindows.Append(dwt);
+				var gboWin = new idGameBustOutWindow(this.dc, this.gui);
+				this.SaveExpressionParseState();
+				gboWin.Parse(src, rebuild);	
+				this.RestoreExpressionParseState();
+				this.AddChild(gboWin);
+				gboWin.SetParent(this);
+				dwt.simp = null;
+				dwt.win = gboWin;
+				this.drawWindows.Append(dwt);
 			}
 // 
 //  added new onEvent

@@ -37,13 +37,13 @@
 ////#include "UserInterfaceLocal.h"
 ////#include "MarkerWindow.h"
 ////
-////typedef struct {
+class markerData_t {
 ////	int time;
 ////	const idMaterial *mat;
 ////	idRectangle rect;
-////} markerData_t;
-////
-////class idMarkerWindow : public idWindow {
+}
+
+class idMarkerWindow extends idWindow {
 ////public:
 ////	idMarkerWindow(idUserInterfaceLocal *gui);
 ////	idMarkerWindow(idDeviceContext *d, idUserInterfaceLocal *gui);
@@ -66,40 +66,53 @@
 ////	void Line(int x1, int y1, int x2, int y2, dword* out, dword color);
 ////	void Point(int x, int y, dword *out, dword color);
 ////	logStats_t loggedStats[MAX_LOGGED_STATS];
-////	idList<markerData_t> markerTimes;
-////	idStr statData;
-////	int numStats;
-////	dword *imageBuff;
-////	const idMaterial *markerMat;
-////	const idMaterial *markerStop;
-////	idVec4 markerColor;
-////	int currentMarker;
-////	int currentTime;
-////	int stopTime;
+	markerTimes = new idList<markerData_t>(markerData_t);
+	statData = new idStr;
+	numStats:number/*int*/;
+	imageBuff: Uint32Array; //dword *
+	markerMat: idMaterial;
+	markerStop: idMaterial;
+	markerColor = new idVec4 ;
+	currentMarker:number/*int*/;
+	currentTime:number/*int*/;
+	stopTime:number/*int*/;
 ////
-////void idMarkerWindow::CommonInit() {
-////	numStats = 0;
-////	currentTime = -1;
-////	currentMarker = -1;
-////	stopTime = -1;
-////	imageBuff = NULL;
-////	markerMat = NULL;
-////	markerStop = NULL;
-////}
-////
-////idMarkerWindow::idMarkerWindow(idDeviceContext *d, idUserInterfaceLocal *g) : idWindow(d, g) {
-////	dc = d;
-////	gui = g;
-////	CommonInit();
-////}
-////
-////idMarkerWindow::idMarkerWindow(idUserInterfaceLocal *g) : idWindow(g) {
-////	gui = g;
-////	CommonInit();
-////}
-////
-////idMarkerWindow::~idMarkerWindow() {
-////}
+	CommonInit ( ): void {
+		this.numStats = 0;
+		this.currentTime = -1;
+		this.currentMarker = -1;
+		this.stopTime = -1;
+		this.imageBuff = null;
+		this.markerMat = null;
+		this.markerStop = null;
+	}
+
+	constructor ( d: idDeviceContext, g: idUserInterfaceLocal )
+	constructor ( g: idUserInterfaceLocal )
+	constructor ( a1: any, a2?: any ) {
+		super ( );
+
+		if ( arguments.length == 2 ) {
+			var d = <idDeviceContext>a1, g = <idUserInterfaceLocal>a2;
+			this.ctor2( d, g );
+			this.dc = d;
+			this.gui = g;
+			this.CommonInit ( );
+		} else if ( arguments.length == 1 ) {
+			var g = <idUserInterfaceLocal>a1;
+			this.ctor1( g );
+			this.dc = null;
+			this.gui = g;
+			this.CommonInit ( );
+		} else {
+			todoThrow ( );
+		}
+	}
+
+
+	destructor ( ): void {
+		todoThrow( "need to call base? (or just remove this method)" );
+	}
 ////
 ////bool idMarkerWindow::ParseInternalVar(_name:string, idParser *src) {
 ////	if (idStr::Icmp(_name, "markerMat") == 0) {
@@ -397,3 +410,4 @@
 ////void idMarkerWindow::MouseEnter() {
 ////	idWindow::MouseEnter();
 ////}
+}

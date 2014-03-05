@@ -346,6 +346,7 @@
 /// <reference path="doomdll/ui/gamebustoutwindow.cpp.ts" />
 /// <reference path="doomdll/ui/gamessdwindow.cpp.ts" />
 /// <reference path="doomdll/ui/gamewindow.cpp.ts" />
+/// <reference path="doomdll/ui/listwindow.cpp.ts" />
 /// <reference path="doomdll/ui/markerwindow.cpp.ts" />
 /// <reference path="doomdll/ui/renderwindow.cpp.ts" />
 /// <reference path="doomdll/ui/sliderwindow.cpp.ts" />
