@@ -2553,16 +2553,15 @@ idWindow::Parse
 				//dwt.win = win;
 				//this.drawWindows.Append(dwt);
 			} else if ( token.data == "bindDef" ) {
-				todoThrow ( );
-				//var win = new idBindWindow(this.dc, this.gui);
-				//this.SaveExpressionParseState();
-				//win.Parse(src, rebuild);	
-				//this.RestoreExpressionParseState();
-				//this.AddChild(win);
-				//win.SetParent(this);
-				//dwt.simp = null;
-				//dwt.win = win;
-				//this.drawWindows.Append(dwt);
+				var bWin = new idBindWindow(this.dc, this.gui);
+				this.SaveExpressionParseState();
+				bWin.Parse(src, rebuild);	
+				this.RestoreExpressionParseState();
+				this.AddChild(bWin);
+				bWin.SetParent(this);
+				dwt.simp = null;
+				dwt.win = bWin;
+				this.drawWindows.Append(dwt);
 			} else if ( token.data == "listDef" ) {
 				todoThrow ( );
 				//var win = new idListWindow(this.dc, this.gui);

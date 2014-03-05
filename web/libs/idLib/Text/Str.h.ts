@@ -1199,7 +1199,9 @@ FreeData( ):void {
 idStr::operator=
 ============
 */
-	equals ( text: string ): void {
+	equals ( text: string ): void
+	equals ( text: idStr ): void
+	equals ( text: any ): void {
 		var l: number /*int*/;
 		//int diff;
 		//int i;
@@ -1233,6 +1235,7 @@ idStr::operator=
 		//	return;
 		//}
 
+		text = idStr.getString( text );
 		l = strlen( text );
 		//EnsureAlloced( l + 1, false );
 		//strcpy( this.data, text );

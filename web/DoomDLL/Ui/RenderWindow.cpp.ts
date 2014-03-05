@@ -76,22 +76,21 @@ class idRenderWindow extends idWindow {
 	animEndTime:number /*int*/;
 	updateAnimation: boolean;
 
-
-	constructor(g: idUserInterfaceLocal)
 	constructor(d: idDeviceContext, g: idUserInterfaceLocal)
+	constructor(g: idUserInterfaceLocal)
 	constructor(a1: any, a2?: any) {
 		super();
 
-		if (arguments.length == 1) {
-			var g = <idUserInterfaceLocal>a1;
-			this.ctor1(g);
-			this.dc = null;
-			this.gui = g;
-			this.CommonInit();
-		} else if (arguments.length == 2) {
+		if (arguments.length == 2) {
 			var d = <idDeviceContext>a1, g = <idUserInterfaceLocal>a2;
 			this.ctor2(d, g);
 			this.dc = d;
+			this.gui = g;
+			this.CommonInit();
+		} else if (arguments.length == 1) {
+			var g = <idUserInterfaceLocal>a1;
+			this.ctor1(g);
+			this.dc = null;
 			this.gui = g;
 			this.CommonInit();
 		} else {

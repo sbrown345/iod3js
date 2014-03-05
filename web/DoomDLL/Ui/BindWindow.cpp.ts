@@ -39,7 +39,7 @@
 ////#define __BINDWINDOW_H
 ////
 ////class idUserInterfaceLocal;
-////class idBindWindow : public idWindow {
+class idBindWindow extends idWindow {
 ////public:
 ////	idBindWindow(idUserInterfaceLocal *gui);
 ////	idBindWindow(idDeviceContext *d, idUserInterfaceLocal *gui);
@@ -57,30 +57,40 @@
 ////
 ////private:
 ////	void CommonInit();
-////	idWinStr bindName;
-////	bool waitingOnKey;
+	bindName = new idWinStr;
+	waitingOnKey:boolean;
 ////};
 ////
 ////#endif // __BINDWINDOW_H
 
 
+	CommonInit ( ): void {
+		this.bindName.equalsStr( new idStr( "" ) );
+		this.waitingOnKey = false;
+	}
 
-////
-////void idBindWindow::CommonInit() {
-////	bindName = "";
-////	waitingOnKey = false;
-////}
-////
-////idBindWindow::idBindWindow(idDeviceContext *d, idUserInterfaceLocal *g) : idWindow(d, g) {
-////	dc = d;
-////	gui = g;
-////	CommonInit();
-////}
-////
-////idBindWindow::idBindWindow(idUserInterfaceLocal *g) : idWindow(g) {
-////	gui = g;
-////	CommonInit();
-////}
+	constructor(d: idDeviceContext, g: idUserInterfaceLocal)
+	constructor(g: idUserInterfaceLocal)
+	constructor(a1: any, a2?: any) {
+		super();
+
+		if (arguments.length == 2) {
+			var d = <idDeviceContext>a1, g = <idUserInterfaceLocal>a2;
+			this.ctor2(d, g);
+			this.dc = d;
+			this.gui = g;
+			this.CommonInit();
+		} else if (arguments.length == 1) {
+			var g = <idUserInterfaceLocal>a1;
+			this.ctor1(g);
+			this.dc = null;
+			this.gui = g;
+			this.CommonInit();
+		} else {
+			todoThrow();
+		}
+	}
+
 ////
 ////idBindWindow::~idBindWindow() {
 ////
@@ -90,11 +100,11 @@
 ////const char *idBindWindow::HandleEvent(const sysEvent_t *event, bool *updateVisuals) {
 ////	static char ret[ 256 ];
 ////	
-////	if (!(event->evType == SE_KEY && event->evValue2)) {
+////	if (!(event.evType == SE_KEY && event.evValue2)) {
 ////		return "";
 ////	}
 ////
-////	int key = event->evValue;
+////	int key = event.evValue;
 ////
 ////	if (waitingOnKey) {
 ////		waitingOnKey = false;
@@ -107,7 +117,7 @@
 ////	} else {
 ////		if (key == K_MOUSE1) {
 ////			waitingOnKey = true;
-////			gui->SetBindHandler(this);
+////			gui.SetBindHandler(this);
 ////			return "";
 ////		}
 ////	}
@@ -126,7 +136,7 @@
 ////
 ////void idBindWindow::PostParse() {
 ////	idWindow::PostParse();
-////	bindName.SetGuiInfo( gui->GetStateDict(), bindName );
+////	bindName.SetGuiInfo( gui.GetStateDict(), bindName );
 ////	bindName.Update();
 ////	//bindName = state.GetString("bind");
 ////	flags |= (WIN_HOLDCAPTURE | WIN_CANFOCUS);
@@ -137,23 +147,24 @@
 ////
 ////	idStr str;
 ////	if ( waitingOnKey ) {
-////		str = common->GetLanguageDict()->GetString( "#str_07000" );
+////		str = common.GetLanguageDict().GetString( "#str_07000" );
 ////	} else if ( bindName.Length() ) {
 ////		str = bindName.c_str();
 ////	} else {
-////		str = common->GetLanguageDict()->GetString( "#str_07001" );
+////		str = common.GetLanguageDict().GetString( "#str_07001" );
 ////	}
 ////
-////	if ( waitingOnKey || ( hover && !noEvents && Contains(gui->CursorX(), gui->CursorY()) ) ) {
+////	if ( waitingOnKey || ( hover && !noEvents && Contains(gui.CursorX(), gui.CursorY()) ) ) {
 ////		color = hoverColor;
 ////	} else {
 ////		hover = false;
 ////	}
 ////
-////	dc->DrawText(str, textScale, textAlign, color, textRect, false, -1);
+////	dc.DrawText(str, textScale, textAlign, color, textRect, false, -1);
 ////}
 ////
 ////void idBindWindow::Activate( bool activate, idStr &act ) {
 ////	idWindow::Activate( activate, act );
 ////	bindName.Update();
 ////}
+}

@@ -209,7 +209,7 @@ class idWinStr extends idWinVar {
 ////		return (data == other);
 ////	}
 	equalsStr ( other: idStr ) {
-		this.data = other;
+		this.data.equals(other);
 		if ( this.guiDict ) {
 			this.guiDict.Set( this.GetName ( ), this.data.data );
 		}
