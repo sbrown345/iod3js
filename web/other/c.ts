@@ -175,10 +175,12 @@ var cos = Math.cos;
 var atan = Math.atan;
 var atanf = Math.atan;
 var floor = Math.floor;
+var floorf = Math.floor;
 var abs = Math.abs;
 var labs = Math.abs;
 var fabs = Math.abs;
 var sqrt = Math.sqrt;
+var ceilf = Math.ceil;
 
 function rand() {
     todo("rand");

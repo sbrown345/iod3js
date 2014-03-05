@@ -175,7 +175,7 @@ class idDeviceContext {
 	FindFont ( name: string ) {
 		var /*int */c = idDeviceContext.fonts.Num ( );
 		for ( var i = 0; i < c; i++ ) {
-			if ( idStr.Icmp( name, idDeviceContext.fonts[i].name ) == 0 ) {
+			if ( idStr.Icmp( name, idDeviceContext.fonts[i].name.toString() ) == 0 ) {
 				return i;
 			}
 		}
