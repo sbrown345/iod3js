@@ -338,6 +338,18 @@
 /// <reference path="doomdll/ui/userinterface.cpp.ts" />
 /// <reference path="doomdll/ui/userinterfacelocal.h.ts" />
 /// <reference path="doomdll/ui/winvar.h.ts" />
+/// <reference path="doomdll/ui/bindwindow.cpp.ts" />
+/// <reference path="doomdll/ui/choicewindow.cpp.ts" />
+/// <reference path="doomdll/ui/editwindow.cpp.ts" />
+/// <reference path="doomdll/ui/fieldwindow.cpp.ts" />
+/// <reference path="doomdll/ui/gamebearshootwindow.cpp.ts" />
+/// <reference path="doomdll/ui/gamebustoutwindow.cpp.ts" />
+/// <reference path="doomdll/ui/gamessdwindow.cpp.ts" />
+/// <reference path="doomdll/ui/gamewindow.cpp.ts" />
+/// <reference path="doomdll/ui/markerwindow.cpp.ts" />
+/// <reference path="doomdll/ui/renderwindow.cpp.ts" />
+/// <reference path="doomdll/ui/sliderwindow.cpp.ts" />
+
 
 //// collision detection system
 //#include "../cm/CollisionModel.h"

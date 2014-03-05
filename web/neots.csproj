@@ -188,6 +188,17 @@
     <TypeScriptCompile Include="DoomDLL\Ui\Winvar.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Ui\GuiScript.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Ui\RegExp.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\BindWindow.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\ChoiceWindow.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\EditWindow.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\FieldWindow.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\GameBearShootWindow.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\GameBustOutWindow.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\GameSSDWindow.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\GameWindow.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\MarkerWindow.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\RenderWindow.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Ui\SliderWindow.cpp.ts" />
     <Content Include="libs\idLib\Timer.h.ts" />
     <Content Include="log.aspx" />
     <Content Include="other\files.ts" />
