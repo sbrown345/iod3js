@@ -34,7 +34,7 @@
 ////#include "UserInterfaceLocal.h"
 ////#include "SliderWindow.h"
 ////
-////class idSliderWindow : public idWindow {
+class idSliderWindow extends idWindow {
 ////public:
 ////	idSliderWindow(idUserInterfaceLocal *gui);
 ////	idSliderWindow(idDeviceContext *d, idUserInterfaceLocal *gui);
@@ -70,94 +70,106 @@
 ////	// force == true overrides liveUpdate 0
 ////	void				UpdateCvar(bool read, bool force = false);
 ////
-////	idWinFloat			value;
-////	float				low;
-////	float				high;
-////	float				thumbWidth;
-////	float				thumbHeight;
-////	float				stepSize;
-////	float				lastValue;
-////	idRectangle			thumbRect;
-////	const idMaterial *	thumbMat;
-////	bool				vertical;
-////	bool				verticalFlip;
-////	bool				scrollbar;
-////	idWindow *			buddyWin;
-////	idStr				thumbShader;
-////
-////	idWinStr			cvarStr;
-////	idCVar *			cvar;
-////	bool				cvar_init;
-////	idWinBool			liveUpdate;
-////	idWinStr			cvarGroup;
+		value = new idWinFloat;
+		low:number/*float*/;
+		high:number/*float*/;
+		thumbWidth:number/*float*/;
+		thumbHeight:number/*float*/;
+		stepSize:number/*float*/;
+		lastValue:number/*float*/;
+		thumbRect = new idRectangle;
+		thumbMat:idMaterial;
+		vertical:boolean;
+		verticalFlip:boolean;
+		scrollbar:boolean;
+		buddyWin:idWindow;
+		thumbShader = new idStr;
+		
+		cvarStr = idWinStr;
+		cvar:idCVar;
+		cvar_init:boolean;
+		liveUpdate = new idWinBool;
+		cvarGroup = new idWinStr;
 ////};
 ////
-/////*
-////============
-////idSliderWindow::CommonInit
-////============
-////*/
-////void idSliderWindow::CommonInit() {
-////	value = 0.0;
-////	low = 0.0;
-////	high = 100.0;
-////	stepSize = 1.0;
-////	thumbMat = declManager->FindMaterial("_default");
-////	buddyWin = NULL;
-////
-////	cvar = NULL;
-////	cvar_init = false;
-////	liveUpdate = true;
-////
-////	vertical = false;
-////	scrollbar = false;
-////
-////	verticalFlip = false;
-////}
-////
-////idSliderWindow::idSliderWindow(idDeviceContext *d, idUserInterfaceLocal *g) : idWindow(d, g) {
-////	dc = d;
-////	gui = g;
-////	CommonInit();
-////}
-////
-////idSliderWindow::idSliderWindow(idUserInterfaceLocal *g) : idWindow(g) {
-////	gui = g;
-////	CommonInit();
-////}
-////
-////idSliderWindow::~idSliderWindow() {
-////
-////}
+/*
+============
+idSliderWindow::CommonInit
+============
+*/
+CommonInit():void {
+	this.value.equalsFloat( 0.0 );
+	this.low = 0.0;
+	this.high = 100.0;
+	this.stepSize = 1.0;
+	this.thumbMat = declManager.FindMaterial("_default");
+	this.buddyWin = null;
+	
+	this.cvar = null;
+	this.cvar_init = false;
+	this.liveUpdate.equalsBool( true );
+	
+	this.vertical = false;
+	this.scrollbar = false;
+	
+	this.verticalFlip = false;
+}
+
+	constructor(d: idDeviceContext, g: idUserInterfaceLocal)
+	constructor(g: idUserInterfaceLocal)
+	constructor(a1: any, a2?: any) {
+		super();
+
+		if (arguments.length == 2) {
+			var d = <idDeviceContext>a1, g = <idUserInterfaceLocal>a2;
+			this.ctor2(d, g);
+			this.dc = d;
+			this.gui = g;
+			this.CommonInit();
+		} else if (arguments.length == 1) {
+			var g = <idUserInterfaceLocal>a1;
+			this.ctor1(g);
+			this.dc = null;
+			this.gui = g;
+			this.CommonInit();
+		} else {
+			todoThrow();
+		}
+	}
+
+
+	destructor(): void {
+		todoThrow("need to call base? (or just remove this method)");
+	}
 ////
 ////bool idSliderWindow::ParseInternalVar(_name:string, idParser *src) {
 ////	if (idStr::Icmp(_name, "stepsize") == 0 || idStr::Icmp(_name, "step") == 0) {
-////		stepSize = src->ParseFloat();
+////		stepSize = src.ParseFloat();
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "low") == 0) {
-////		low = src->ParseFloat();
+////		low = src.ParseFloat();
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "high") == 0) {
-////		high = src->ParseFloat();
+////		high = src.ParseFloat();
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "vertical") == 0) {
-////		vertical = src->ParseBool();
+////		vertical = src.ParseBool();
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "verticalflip") == 0) {
-////		verticalFlip = src->ParseBool();
+////		verticalFlip = src.ParseBool();
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "scrollbar") == 0) {
-////		scrollbar = src->ParseBool();
+////		scrollbar = src.ParseBool();
 ////		return true;
 ////	}
 ////	if (idStr::Icmp(_name, "thumbshader") == 0) {
 ////		ParseString(src, thumbShader);
-////		declManager->FindMaterial(thumbShader);
+////		declManager.FindMaterial(thumbShader);
 ////		return true;
 ////	}
 ////	return idWindow::ParseInternalVar(_name, src);
@@ -184,30 +196,30 @@
 ////
 ////const char *idSliderWindow::HandleEvent(const sysEvent_t *event, bool *updateVisuals) {
 ////
-////	if (!(event->evType == SE_KEY && event->evValue2)) {
+////	if (!(event.evType == SE_KEY && event.evValue2)) {
 ////		return "";
 ////	}
 ////
-////	int key = event->evValue;
+////	int key = event.evValue;
 ////
-////	if ( event->evValue2 && key == K_MOUSE1 ) {
+////	if ( event.evValue2 && key == K_MOUSE1 ) {
 ////		SetCapture(this);
 ////		RouteMouseCoords(0.0f, 0.0f);
 ////		return "";
 ////	} 
 ////
-////	if ( key == K_RIGHTARROW || key == K_KP_RIGHTARROW || ( key == K_MOUSE2 && gui->CursorY() > thumbRect.y ) )  {
+////	if ( key == K_RIGHTARROW || key == K_KP_RIGHTARROW || ( key == K_MOUSE2 && gui.CursorY() > thumbRect.y ) )  {
 ////		value = value + stepSize;
 ////	}
 ////
-////	if ( key == K_LEFTARROW || key == K_KP_LEFTARROW || ( key == K_MOUSE2 && gui->CursorY() < thumbRect.y ) ) {
+////	if ( key == K_LEFTARROW || key == K_KP_LEFTARROW || ( key == K_MOUSE2 && gui.CursorY() < thumbRect.y ) ) {
 ////		value = value - stepSize;
 ////	}
 ////
 ////	if (buddyWin) {
-////		buddyWin->HandleBuddyUpdate(this);
+////		buddyWin.HandleBuddyUpdate(this);
 ////	} else {
-////		gui->SetStateFloat( cvarStr, value );
+////		gui.SetStateFloat( cvarStr, value );
 ////		UpdateCvar( false );
 ////	}
 ////
@@ -222,10 +234,10 @@
 ////void idSliderWindow::PostParse() {
 ////	idWindow::PostParse();
 ////	value = 0.0;
-////	thumbMat = declManager->FindMaterial(thumbShader);
-////	thumbMat->SetSort( SS_GUI );
-////	thumbWidth = thumbMat->GetImageWidth();
-////	thumbHeight = thumbMat->GetImageHeight();
+////	thumbMat = declManager.FindMaterial(thumbShader);
+////	thumbMat.SetSort( SS_GUI );
+////	thumbWidth = thumbMat.GetImageWidth();
+////	thumbHeight = thumbMat.GetImageHeight();
 ////	//vertical = state.GetBool("vertical");
 ////	//scrollbar = state.GetBool("scrollbar");
 ////	flags |= (WIN_HOLDCAPTURE | WIN_CANFOCUS);
@@ -237,12 +249,12 @@
 ////	rect = _rect;
 ////	foreColor = _foreColor;
 ////	matColor = _matColor;
-////	thumbMat = declManager->FindMaterial(thumbShader);
-////	thumbMat->SetSort( SS_GUI );
-////	thumbWidth = thumbMat->GetImageWidth();
-////	thumbHeight = thumbMat->GetImageHeight();
-////	background = declManager->FindMaterial(_background);
-////	background->SetSort( SS_GUI );
+////	thumbMat = declManager.FindMaterial(thumbShader);
+////	thumbMat.SetSort( SS_GUI );
+////	thumbWidth = thumbMat.GetImageWidth();
+////	thumbHeight = thumbMat.GetImageHeight();
+////	background = declManager.FindMaterial(_background);
+////	background.SetSort( SS_GUI );
 ////	vertical = _vertical;
 ////	scrollbar = _scrollbar;
 ////	flags |= WIN_HOLDCAPTURE;
@@ -266,8 +278,8 @@
 ////	}
 ////
 ////	if ( !thumbWidth || !thumbHeight ) {
-////		thumbWidth = thumbMat->GetImageWidth();
-////		thumbHeight = thumbMat->GetImageHeight();
+////		thumbWidth = thumbMat.GetImageWidth();
+////		thumbHeight = thumbMat.GetImageHeight();
 ////	}
 ////
 ////	UpdateCvar( true );
@@ -301,7 +313,7 @@
 ////	thumbRect.w = thumbWidth;
 ////	thumbRect.h = thumbHeight;
 ////
-////	if ( hover && !noEvents && Contains(gui->CursorX(), gui->CursorY()) ) {
+////	if ( hover && !noEvents && Contains(gui.CursorX(), gui.CursorY()) ) {
 ////		color = hoverColor;
 ////	} else {
 ////		hover = false;
@@ -311,9 +323,9 @@
 ////		hover = true;
 ////	}
 ////
-////	dc->DrawMaterial(thumbRect.x, thumbRect.y, thumbRect.w, thumbRect.h, thumbMat, color);
+////	dc.DrawMaterial(thumbRect.x, thumbRect.y, thumbRect.w, thumbRect.h, thumbMat, color);
 ////	if ( flags & WIN_FOCUS ) {
-////		dc->DrawRect(thumbRect.x+1.0f, thumbRect.y+1.0f, thumbRect.w-2.0f, thumbRect.h-2.0f, 1.0f, color);
+////		dc.DrawRect(thumbRect.x+1.0f, thumbRect.y+1.0f, thumbRect.w-2.0f, thumbRect.h-2.0f, 1.0f, color);
 ////	}
 ////}
 ////
@@ -355,13 +367,13 @@
 ////	if (vertical) {
 ////		r.y += thumbHeight / 2;
 ////		r.h -= thumbHeight;
-////		if (gui->CursorY() >= r.y && gui->CursorY() <= r.Bottom()) {
-////			pct = (gui->CursorY() - r.y) / r.h;
+////		if (gui.CursorY() >= r.y && gui.CursorY() <= r.Bottom()) {
+////			pct = (gui.CursorY() - r.y) / r.h;
 ////			if ( verticalFlip ) {
 ////				pct = 1.f - pct;
 ////			}
 ////			value = low + (high - low) * pct;
-////		} else if (gui->CursorY() < r.y) {
+////		} else if (gui.CursorY() < r.y) {
 ////			if ( verticalFlip ) {
 ////				value = high;
 ////			} else {
@@ -377,10 +389,10 @@
 ////	} else {
 ////		r.x += thumbWidth / 2;
 ////		r.w -= thumbWidth;
-////		if (gui->CursorX() >= r.x && gui->CursorX() <= r.Right()) {
-////			pct = (gui->CursorX() - r.x) / r.w;
+////		if (gui.CursorX() >= r.x && gui.CursorX() <= r.Right()) {
+////			pct = (gui.CursorX() - r.x) / r.w;
 ////			value = low + (high - low) * pct;
-////		} else if (gui->CursorX() < r.x) {
+////		} else if (gui.CursorX() < r.x) {
 ////			value = low;
 ////		} else {
 ////			value = high;
@@ -388,9 +400,9 @@
 ////	}
 ////
 ////	if (buddyWin) {
-////		buddyWin->HandleBuddyUpdate(this);
+////		buddyWin.HandleBuddyUpdate(this);
 ////	} else {
-////		gui->SetStateFloat( cvarStr, value );
+////		gui.SetStateFloat( cvarStr, value );
 ////	}
 ////	UpdateCvar( false );
 ////
@@ -413,16 +425,16 @@
 ////void idSliderWindow::InitCvar( ) {
 ////	if ( cvarStr[0] == '\0' ) {
 ////		if ( !buddyWin ) {
-////			common->Warning( "idSliderWindow::InitCvar: gui '%s' window '%s' has an empty cvar string", gui->GetSourceFile(), name.c_str() );
+////			common.Warning( "idSliderWindow::InitCvar: gui '%s' window '%s' has an empty cvar string", gui.GetSourceFile(), name.c_str() );
 ////		}
 ////		cvar_init = true;
 ////		cvar = NULL;
 ////		return;
 ////	}
 ////
-////	cvar = cvarSystem->Find( cvarStr );
+////	cvar = cvarSystem.Find( cvarStr );
 ////	if ( !cvar ) {
-////		common->Warning( "idSliderWindow::InitCvar: gui '%s' window '%s' references undefined cvar '%s'", gui->GetSourceFile(), name.c_str(), cvarStr.c_str() );
+////		common.Warning( "idSliderWindow::InitCvar: gui '%s' window '%s' references undefined cvar '%s'", gui.GetSourceFile(), name.c_str(), cvarStr.c_str() );
 ////		cvar_init = true;
 ////		return;
 ////	}
@@ -438,13 +450,13 @@
 ////		return;
 ////	}
 ////	if ( force || liveUpdate ) {
-////		value = cvar->GetFloat();
-////		if ( value != gui->State().GetFloat( cvarStr ) ) {
+////		value = cvar.GetFloat();
+////		if ( value != gui.State().GetFloat( cvarStr ) ) {
 ////			if ( read ) {
-////				gui->SetStateFloat( cvarStr, value );
+////				gui.SetStateFloat( cvarStr, value );
 ////			} else {
-////				value = gui->State().GetFloat( cvarStr );
-////				cvar->SetFloat( value );
+////				value = gui.State().GetFloat( cvarStr );
+////				cvar.SetFloat( value );
 ////			}
 ////		}
 ////	}
@@ -473,3 +485,4 @@
 ////	}
 ////}
 ////
+}

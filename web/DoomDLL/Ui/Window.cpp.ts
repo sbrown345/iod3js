@@ -2511,16 +2511,15 @@ idWindow::Parse
 					}
 				}
 			} else if ( token.data == "editDef" ) {
-				todoThrow ( );
-				//var win = new idEditWindow(this.dc, this.gui);
-				//this.SaveExpressionParseState();
-				//win.Parse(src, rebuild);	
-				//this.RestoreExpressionParseState();
-				//this.AddChild(win);
-				//win.SetParent(this);
-				//dwt.simp = null;
-				//dwt.win = win;
-				//this.drawWindows.Append(dwt);
+				var eWin = new idEditWindow(this.dc, this.gui);
+				this.SaveExpressionParseState();
+				eWin.Parse(src, rebuild);	
+				this.RestoreExpressionParseState();
+				this.AddChild(eWin);
+				eWin.SetParent(this);
+				dwt.simp = null;
+				dwt.win = eWin;
+				this.drawWindows.Append(dwt);
 			} else if ( token.data == "choiceDef" ) {
 				var cWin = new idChoiceWindow(this.dc, this.gui);
 				this.SaveExpressionParseState();

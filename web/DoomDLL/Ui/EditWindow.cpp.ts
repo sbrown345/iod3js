@@ -46,7 +46,7 @@
 ////class idUserInterfaceLocal;
 ////class idSliderWindow;
 ////
-////class idEditWindow : public idWindow {
+class idEditWindow extends idWindow {
 ////public:
 ////	idEditWindow(idUserInterfaceLocal *gui);
 ////	idEditWindow(idDeviceContext *d, idUserInterfaceLocal *gui);
@@ -79,28 +79,28 @@
 ////	void				EnsureCursorVisible();
 ////	void				InitScroller(bool horizontal);
 ////
-////	int					maxChars;
-////	int					paintOffset;
-////	int					cursorPos;
-////	int					cursorLine;
-////	int					cvarMax;
-////	bool				wrap;
-////	bool				readonly;
-////	bool				numeric;
-////	idStr				sourceFile;
-////	idSliderWindow *	scroller;
-////	idList<int>			breaks;
-////	float				sizeBias;
-////	int					textIndex;
-////	int					lastTextLength;
-////	bool				forceScroll;
-////	idWinBool			password;
-////
-////	idWinStr			cvarStr;
-////	idCVar *			cvar;
-////
-////	idWinBool			liveUpdate;
-////	idWinStr			cvarGroup;
+	maxChars: number /*int*/;
+	paintOffset: number /*int*/;
+	cursorPos: number /*int*/;
+	cursorLine: number /*int*/;
+	cvarMax: number /*int*/;
+	wrap: boolean;
+	readonly: boolean;
+	numeric: boolean;
+	sourceFile = new idStr;
+	scroller: idSliderWindow;
+	breaks = new idList< /*int*/number>( Number );
+	sizeBias: number /*float*/;
+	textIndex: number /*int*/;
+	lastTextLength: number /*int*/;
+	forceScroll: boolean;
+	password = new idWinBool;
+
+	cvarStr = new idWinStr;
+	cvar: idCVar;
+
+	liveUpdate = new idWinBool;
+	cvarGroup = new idWinStr;
 ////};
 ////
 ////#endif /* !__EDITWINDOW_H__ */
@@ -108,23 +108,23 @@
 ////
 ////bool idEditWindow::ParseInternalVar( _name:string, idParser *src ) {
 ////	if ( idStr::Icmp( _name, "maxchars" ) == 0) {
-////		maxChars = src->ParseInt();
+////		maxChars = src.ParseInt();
 ////		return true;
 ////	}
 ////	if ( idStr::Icmp( _name, "numeric" ) == 0) {
-////		numeric = src->ParseBool();
+////		numeric = src.ParseBool();
 ////		return true;
 ////	}
 ////	if ( idStr::Icmp( _name, "wrap" ) == 0) {
-////		wrap = src->ParseBool();
+////		wrap = src.ParseBool();
 ////		return true;
 ////	}
 ////	if ( idStr::Icmp( _name, "readonly" ) == 0) {
-////		readonly = src->ParseBool();
+////		readonly = src.ParseBool();
 ////		return true;
 ////	}
 ////	if ( idStr::Icmp( _name, "forceScroll" ) == 0) {
-////		forceScroll = src->ParseBool();
+////		forceScroll = src.ParseBool();
 ////		return true;
 ////	}
 ////	if ( idStr::Icmp( _name, "source" ) == 0) {
@@ -132,11 +132,11 @@
 ////		return true;
 ////	}
 ////	if ( idStr::Icmp( _name, "password" ) == 0 ) { 
-////		password = src->ParseBool();
+////		password = src.ParseBool();
 ////		return true;
 ////	}
 ////	if ( idStr::Icmp( _name, "cvarMax" ) == 0) {
-////		cvarMax = src->ParseInt();
+////		cvarMax = src.ParseInt();
 ////		return true;
 ////	}
 ////
@@ -158,43 +158,55 @@
 ////	}
 ////	return idWindow::GetWinVarByName( _name, fixup, owner );
 ////}
-////
-////void idEditWindow::CommonInit() {
-////	maxChars = 128;
-////	numeric = false;
-////	paintOffset = 0;
-////	cursorPos = 0;
-////	cursorLine = 0;
-////	cvarMax = 0;
-////	wrap = false;
-////	sourceFile = "";
-////	scroller = NULL;
-////	sizeBias = 0;
-////	lastTextLength = 0;
-////	forceScroll = false;
-////	password = false;
-////	cvar = NULL;
-////	liveUpdate = true;
-////	readonly = false;
-////
-////	scroller = new idSliderWindow(dc, gui);
-////}
-////
-////
-////idEditWindow::idEditWindow( idDeviceContext *d, idUserInterfaceLocal *g ) : idWindow(d, g) {
-////	dc = d;
-////	gui = g;
-////	CommonInit();
-////}
-////
-////idEditWindow::idEditWindow( idUserInterfaceLocal *g ) : idWindow(g) {
-////	gui = g;
-////	CommonInit();
-////}
-////
-////idEditWindow::~idEditWindow() {
-////
-////}
+
+	CommonInit ( ): void {
+		this.maxChars = 128;
+		this.numeric = false;
+		this.paintOffset = 0;
+		this.cursorPos = 0;
+		this.cursorLine = 0;
+		this.cvarMax = 0;
+		this.wrap = false;
+		this.sourceFile.equals( "" );
+		this.scroller = null;
+		this.sizeBias = 0;
+		this.lastTextLength = 0;
+		this.forceScroll = false;
+		this.password.equalsBool( false );
+		this.cvar = null;
+		this.liveUpdate.equalsBool( true );
+		this.readonly = false;
+
+		this.scroller = new idSliderWindow( this.dc, this.gui );
+	}
+
+
+	constructor ( d: idDeviceContext, g: idUserInterfaceLocal )
+	constructor ( g: idUserInterfaceLocal )
+	constructor ( a1: any, a2?: any ) {
+		super ( );
+
+		if ( arguments.length == 2 ) {
+			var d = <idDeviceContext>a1, g = <idUserInterfaceLocal>a2;
+			this.ctor2( d, g );
+			this.dc = d;
+			this.gui = g;
+			this.CommonInit ( );
+		} else if ( arguments.length == 1 ) {
+			var g = <idUserInterfaceLocal>a1;
+			this.ctor1( g );
+			this.dc = null;
+			this.gui = g;
+			this.CommonInit ( );
+		} else {
+			todoThrow ( );
+		}
+	}
+
+
+	destructor ( ): void {
+		todoThrow( "need to call base? (or just remove this method)" );
+	}
 ////
 ////void idEditWindow::GainFocus() {
 ////	cursorPos = text.Length();
@@ -208,7 +220,7 @@
 ////
 ////	int len = text.Length();
 ////	if ( len != lastTextLength ) {
-////		scroller->SetValue( 0.0f );
+////		scroller.SetValue( 0.0f );
 ////		EnsureCursorVisible();
 ////		lastTextLength = len;
 ////	}
@@ -235,14 +247,14 @@
 ////	rect.x -= paintOffset;
 ////	rect.w += paintOffset;
 ////
-////	if ( wrap && scroller->GetHigh() > 0.0f ) {
+////	if ( wrap && scroller.GetHigh() > 0.0f ) {
 ////		float lineHeight = GetMaxCharHeight( ) + 5;
-////		rect.y -= scroller->GetValue() * lineHeight;
+////		rect.y -= scroller.GetValue() * lineHeight;
 ////		rect.w -= sizeBias;
 ////		rect.h = ( breaks.Num() + 1 ) * lineHeight;
 ////	}
 ////
-////	if ( hover && !noEvents && Contains(gui->CursorX(), gui->CursorY()) ) {
+////	if ( hover && !noEvents && Contains(gui.CursorX(), gui.CursorY()) ) {
 ////		color = hoverColor;
 ////	} else {
 ////		hover = false;
@@ -251,7 +263,7 @@
 ////		color = hoverColor;
 ////	}
 ////
-////	dc->DrawText( buffer, scale, 0, color, rect, wrap, (flags & WIN_FOCUS) ? cursorPos : -1);
+////	dc.DrawText( buffer, scale, 0, color, rect, wrap, (flags & WIN_FOCUS) ? cursorPos : -1);
 ////}
 ////
 /////*
@@ -271,16 +283,16 @@
 ////		}
 ////	}
 ////
-////	if ( ( event->evType != SE_CHAR && event->evType != SE_KEY ) ) {
+////	if ( ( event.evType != SE_CHAR && event.evType != SE_KEY ) ) {
 ////		return ret;
 ////	}
 ////
 ////	idStr::Copynz( buffer, text.c_str(), sizeof( buffer ) );
-////	int key = event->evValue;
+////	int key = event.evValue;
 ////	int len = text.Length();
 ////
-////	if ( event->evType == SE_CHAR ) {
-////		if ( event->evValue == Sys_GetConsoleKey( false ) || event->evValue == Sys_GetConsoleKey( true ) ) {
+////	if ( event.evType == SE_CHAR ) {
+////		if ( event.evValue == Sys_GetConsoleKey( false ) || event.evValue == Sys_GetConsoleKey( true ) ) {
 ////			return "";
 ////		}
 ////
@@ -292,7 +304,7 @@
 ////			len = maxChars;
 ////		}
 ////	
-////		if ( ( key == K_ENTER || key == K_KP_ENTER ) && event->evValue2 ) {
+////		if ( ( key == K_ENTER || key == K_KP_ENTER ) && event.evValue2 ) {
 ////			RunScript( ON_ACTION );
 ////			RunScript( ON_ENTER );
 ////			return cmd;
@@ -339,7 +351,7 @@
 ////			}
 ////		}
 ////
-////		if ( dc->GetOverStrike() ) {
+////		if ( dc.GetOverStrike() ) {
 ////			if ( maxChars && cursorPos >= maxChars ) {
 ////	       		return "";
 ////			}
@@ -361,7 +373,7 @@
 ////		}
 ////		EnsureCursorVisible();
 ////
-////	} else if ( event->evType == SE_KEY && event->evValue2 ) {
+////	} else if ( event.evType == SE_KEY && event.evValue2 ) {
 ////
 ////		if ( updateVisuals ) {
 ////			*updateVisuals = true;
@@ -446,14 +458,14 @@
 ////
 ////		if ( key == K_INS ) {
 ////			if ( !readonly ) {
-////				dc->SetOverStrike( !dc->GetOverStrike() );
+////				dc.SetOverStrike( !dc.GetOverStrike() );
 ////			}
 ////			return ret;
 ////		}
 ////
 ////		if ( key == K_DOWNARROW ) {
 ////			if ( idKeyInput::IsDown( K_CTRL ) ) {
-////				scroller->SetValue( scroller->GetValue() + 1.0f );
+////				scroller.SetValue( scroller.GetValue() + 1.0f );
 ////			} else {
 ////				if ( cursorLine < breaks.Num() - 1 ) {
 ////					int offset = cursorPos - breaks[cursorLine];
@@ -465,7 +477,7 @@
 ////
 ////		if (key == K_UPARROW ) {
 ////			if ( idKeyInput::IsDown( K_CTRL ) ) {
-////				scroller->SetValue( scroller->GetValue() - 1.0f );
+////				scroller.SetValue( scroller.GetValue() - 1.0f );
 ////			} else {
 ////				if ( cursorLine > 0 ) {
 ////					int offset = cursorPos - breaks[cursorLine];
@@ -486,7 +498,7 @@
 ////			return cmd;
 ////		}
 ////
-////	} else if ( event->evType == SE_KEY && !event->evValue2 ) {
+////	} else if ( event.evType == SE_KEY && !event.evValue2 ) {
 ////		if ( key == K_ENTER || key == K_KP_ENTER ) {
 ////			RunScript( ON_ENTERRELEASE );
 ////			return cmd;
@@ -506,9 +518,9 @@
 ////	}
 ////	if ( sourceFile.Length() ) {
 ////		void *buffer;
-////		fileSystem->ReadFile( sourceFile, &buffer );
+////		fileSystem.ReadFile( sourceFile, &buffer );
 ////		text = (char *) buffer;
-////		fileSystem->FreeFile( buffer );
+////		fileSystem.FreeFile( buffer );
 ////	}
 ////
 ////	InitCvar();
@@ -537,13 +549,13 @@
 ////		scrollerName = "_scrollerWinH";
 ////	}
 ////
-////	const idMaterial *mat = declManager->FindMaterial( barImage );
-////	mat->SetSort( SS_GUI );
-////	sizeBias = mat->GetImageWidth();
+////	const idMaterial *mat = declManager.FindMaterial( barImage );
+////	mat.SetSort( SS_GUI );
+////	sizeBias = mat.GetImageWidth();
 ////
 ////	idRectangle scrollRect;
 ////	if (horizontal) {
-////		sizeBias = mat->GetImageHeight();
+////		sizeBias = mat.GetImageHeight();
 ////		scrollRect.x = 0;
 ////		scrollRect.y = (clientRect.h - sizeBias);
 ////		scrollRect.w = clientRect.w;
@@ -555,9 +567,9 @@
 ////		scrollRect.h = clientRect.h;
 ////	}
 ////
-////	scroller->InitWithDefaults(scrollerName, scrollRect, foreColor, matColor, mat->GetName(), thumbImage, !horizontal, true);
+////	scroller.InitWithDefaults(scrollerName, scrollRect, foreColor, matColor, mat.GetName(), thumbImage, !horizontal, true);
 ////	InsertChild(scroller, NULL);
-////	scroller->SetBuddy(this);
+////	scroller.SetBuddy(this);
 ////}
 ////
 ////void idEditWindow::HandleBuddyUpdate( idWindow *buddy ) {
@@ -579,14 +591,14 @@
 ////	if ( !wrap ) {
 ////		int cursorX = 0;
 ////		if ( password ) {
-////			cursorX = cursorPos * dc->CharWidth( '*', textScale );
+////			cursorX = cursorPos * dc.CharWidth( '*', textScale );
 ////		} else {
 ////			int i = 0;
 ////			while ( i < text.Length() && i < cursorPos ) {
 ////				if ( idStr::IsColor( &text[i] ) ) {
 ////					i += 2;
 ////				} else {
-////					cursorX += dc->CharWidth( text[i], textScale );
+////					cursorX += dc.CharWidth( text[i], textScale );
 ////					i++;
 ////				}
 ////			}
@@ -605,7 +617,7 @@
 ////		if ( paintOffset < 0 ) {
 ////			paintOffset = 0;
 ////		}
-////		scroller->SetRange(0.0f, 0.0f, 1.0f);
+////		scroller.SetRange(0.0f, 0.0f, 1.0f);
 ////
 ////	} else {
 ////		// Word wrap
@@ -613,18 +625,18 @@
 ////		breaks.Clear();
 ////		idRectangle rect = textRect;
 ////		rect.w -= sizeBias;
-////		dc->DrawText(text, textScale, textAlign, colorWhite, rect, true, (flags & WIN_FOCUS) ? cursorPos : -1, true, &breaks );
+////		dc.DrawText(text, textScale, textAlign, colorWhite, rect, true, (flags & WIN_FOCUS) ? cursorPos : -1, true, &breaks );
 ////
 ////		int fit = textRect.h / (GetMaxCharHeight() + 5);
 ////		if ( fit < breaks.Num() + 1 ) {
-////			scroller->SetRange(0, breaks.Num() + 1 - fit, 1);
+////			scroller.SetRange(0, breaks.Num() + 1 - fit, 1);
 ////		} else {
 ////			// The text fits completely in the box
-////			scroller->SetRange(0.0f, 0.0f, 1.0f);
+////			scroller.SetRange(0.0f, 0.0f, 1.0f);
 ////		}
 ////
 ////		if ( forceScroll ) {
-////			scroller->SetValue( breaks.Num() - fit );
+////			scroller.SetValue( breaks.Num() - fit );
 ////		} else if ( readonly ) {
 ////		} else {
 ////			cursorLine = 0;
@@ -635,11 +647,11 @@
 ////					break;
 ////				}
 ////			}
-////			int topLine = idMath::FtoiFast( scroller->GetValue() );
+////			int topLine = idMath::FtoiFast( scroller.GetValue() );
 ////			if ( cursorLine < topLine ) {
-////				scroller->SetValue( cursorLine );
+////				scroller.SetValue( cursorLine );
 ////			} else if ( cursorLine >= topLine + fit) {
-////				scroller->SetValue( ( cursorLine - fit ) + 1 );
+////				scroller.SetValue( ( cursorLine - fit ) + 1 );
 ////			}
 ////		}
 ////	}
@@ -661,15 +673,15 @@
 ////void idEditWindow::InitCvar( ) {
 ////	if ( cvarStr[0] == '\0' ) {
 ////		if ( text.GetName() == NULL ) {
-////			common->Warning( "idEditWindow::InitCvar: gui '%s' window '%s' has an empty cvar string", gui->GetSourceFile(), name.c_str() );
+////			common.Warning( "idEditWindow::InitCvar: gui '%s' window '%s' has an empty cvar string", gui.GetSourceFile(), name.c_str() );
 ////		}
 ////		cvar = NULL;
 ////		return;
 ////	}
 ////
-////	cvar = cvarSystem->Find( cvarStr );
+////	cvar = cvarSystem.Find( cvarStr );
 ////	if ( !cvar ) {
-////		common->Warning( "idEditWindow::InitCvar: gui '%s' window '%s' references undefined cvar '%s'", gui->GetSourceFile(), name.c_str(), cvarStr.c_str() );
+////		common.Warning( "idEditWindow::InitCvar: gui '%s' window '%s' references undefined cvar '%s'", gui.GetSourceFile(), name.c_str(), cvarStr.c_str() );
 ////		return;
 ////	}
 ////}
@@ -683,11 +695,11 @@
 ////	if ( force || liveUpdate ) {
 ////		if ( cvar ) {
 ////			if ( read ) {
-////				text = cvar->GetString();
+////				text = cvar.GetString();
 ////			} else {
-////				cvar->SetString( text );
-////				if ( cvarMax && ( cvar->GetInteger() > cvarMax ) ) {
-////					cvar->SetInteger( cvarMax );
+////				cvar.SetString( text );
+////				if ( cvarMax && ( cvar.GetInteger() > cvarMax ) ) {
+////					cvar.SetInteger( cvarMax );
 ////				}
 ////			}
 ////		}
@@ -716,3 +728,4 @@
 ////		}
 ////	}
 ////}
+}

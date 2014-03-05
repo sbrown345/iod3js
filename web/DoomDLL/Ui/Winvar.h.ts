@@ -261,14 +261,14 @@ class idWinStr extends idWinVar {
 			this.guiDict.Set( this.GetName ( ), this.data.data );
 		}
 	}
-////
-////	virtual void Update() {
-////		const char *s = this.GetName();
-////		if ( this.guiDict && s[0] != '\0' ) {
-////			this.data = this.guiDict.GetString( s );
-////		}
-////	}
-////
+
+	Update ( ): void {
+		var s = this.GetName ( );
+		if ( this.guiDict && s /*[0] != '\0'*/ ) {
+			this.data.equals( this.guiDict.GetString( s ) );
+		}
+	}
+
 ////	virtual size_t Size() {
 ////		size_t sz = idWinVar::Size();
 ////		return sz +data.Allocated();
@@ -333,13 +333,13 @@ class idWinInt extends idWinVar {
 			this.guiDict.SetInt( this.GetName ( ), this.data );
 		}
 	}
-////
-////	virtual void Update() {
-////		const char *s = this.GetName();
-////		if ( this.guiDict && s[0] != '\0' ) {
-////			this.data = this.guiDict.GetInt( s );
-////		}
-////	}
+
+	Update ( ): void {
+		var s = this.GetName ( );
+		if ( this.guiDict && s /*[0] != '\0' */ ) {
+			this.data = this.guiDict.GetInt( s );
+		}
+	}
 ////	virtual const char *c_str() const {
 ////		return va("%i", this.data);
 ////	}
@@ -392,12 +392,12 @@ class idWinFloat extends idWinVar {
 			this.guiDict.SetFloat( this.GetName ( ), this.data );
 		}
 	}
-////	virtual void Update() {
-////		const char *s = this.GetName();
-////		if ( this.guiDict && s[0] != '\0' ) {
-////			this.data = this.guiDict.GetFloat( s );
-////		}
-////	}
+	Update ( ): void {
+		var s = this.GetName ( );
+		if ( this.guiDict && s /*[0] != '\0'*/ ) {
+			this.data = this.guiDict.GetFloat( s );
+		}
+	}
 ////	virtual const char *c_str() const {
 ////		return va("%f", this.data);
 ////	}
@@ -505,17 +505,17 @@ class idWinRectangle extends idWinVar {
 			this.guiDict.SetVec4(this.GetName(), v);
 		}
 	}
-////	virtual void Update() {
-////		const char *s = this.GetName();
-////		if ( this.guiDict && s[0] != '\0' ) {
-////			idVec4 v = this.guiDict.GetVec4( s );
-////			data.x = v.x;
-////			data.y = v.y;
-////			data.w = v.z;
-////			data.h = v.w;
-////		}
-////	}
-////
+	Update ( ): void {
+		var s = this.GetName ( );
+		if ( this.guiDict && s /*[0] != '\0' */ ) {
+			var v = this.guiDict.GetVec4( s );
+			this.data.x = v.x;
+			this.data.y = v.y;
+			this.data.w = v.z;
+			this.data.h = v.w;
+		}
+	}
+
 ////	virtual const char *c_str() const {
 ////		return this.data.ToVec4().ToString();
 ////	}
@@ -586,12 +586,12 @@ class idWinVec2 extends idWinVar {
 ////	operator const idVec2&() const {
 ////		return this.data;
 ////	}
-////	virtual void Update() {
-////		const char *s = this.GetName();
-////		if ( this.guiDict && s[0] != '\0' ) {
-////			this.data = this.guiDict.GetVec2( s );
-////		}
-////	}
+	 Update() :void{
+		var s = this.GetName();
+		if ( this.guiDict && s/*[0] != '\0'*/ ) {
+			this.data = this.guiDict.GetVec2( s );
+		}
+	}
 ////	virtual const char *c_str() const {
 ////		return this.data.ToString();
 ////	}
@@ -676,12 +676,12 @@ class idWinVec4 extends idWinVar {
 			this.guiDict.SetVec4( this.GetName(), this.data );
 		}
 	}
-////	virtual void Update() {
-////		const char *s = this.GetName();
-////		if ( this.guiDict && s[0] != '\0' ) {
-////			this.data = this.guiDict.GetVec4( s );
-////		}
-////	}
+	Update ( ): void {
+		var s = this.GetName ( );
+		if ( this.guiDict && s /*[0] != '\0'*/ ) {
+			this.data = this.guiDict.GetVec4( s );
+		}
+	}
 ////	virtual const char *c_str() const {
 ////		return this.data.ToString();
 ////	}
@@ -761,12 +761,12 @@ class idWinVec3 extends idWinVar {
 			this.guiDict.SetVector( this.GetName ( ), this.data );
 		}
 	}
-////	virtual void Update() {
-////		const char *s = this.GetName();
-////		if ( this.guiDict && s[0] != '\0' ) {
-////			this.data = this.guiDict.GetVector( s );
-////		}
-////	}
+	Update ( ): void {
+		var s = this.GetName ( );
+		if ( this.guiDict && s /*[0] != '\0' */ ) {
+			this.data = this.guiDict.GetVector( s );
+		}
+	}
 ////	virtual const char *c_str() const {
 ////		return this.data.ToString();
 ////	}
@@ -866,19 +866,19 @@ class idWinBackground extends idWinStr {
 		}
 	}
 
-////	virtual void Update() {
-////		const char *s = this.GetName();
-////		if ( this.guiDict && s[0] != '\0' ) {
-////			this.data = this.guiDict.GetString( s );
-////			if (mat) {
-////				if ( this.data == "" ) {
-////					(*mat) = NULL;
-////				} else {
-////					(*mat) = declManager.FindMaterial(data);
-////				}
-////			}
-////		}
-////	}
+	Update ( ): void {
+		var s = this.GetName ( );
+		if ( this.guiDict && s /*[0] != '\0'*/ ) {
+			this.data.equals( this.guiDict.GetString( s ) );
+			if ( this.mat ) {
+				if ( this.data.data == "" ) {
+					this.mat = null;
+				} else {
+					this.mat = declManager.FindMaterial( this.data.data );
+				}
+			}
+		}
+	}
 ////
 ////	virtual size_t Size() {
 ////		size_t sz = idWinVar::Size();

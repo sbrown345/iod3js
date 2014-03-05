@@ -92,7 +92,7 @@ class idBindWindow extends idWindow {
 	}
 
 
-	desctructor ( ): void {
+	destructor ( ): void {
 		todoThrow( "need to call base? (or just remove this method)" );
 	}
 
