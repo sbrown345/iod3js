@@ -49,7 +49,7 @@ class idWinVar implements ITrackedObject {
 ////	idWinVar();
 ////	virtual ~idWinVar();
 ////
-////	void SetGuiInfo(idDict *gd, const char *_name);
+////	void SetGuiInfo(idDict *gd, _name:string);
 	GetName ( ): string {
 		if ( this.name ) {
 			if (this.guiDict && /***/this.name[0] == '*') {
@@ -79,9 +79,9 @@ class idWinVar implements ITrackedObject {
 	GetDict ( ): idDict { return this.guiDict; }
 	NeedsUpdate ( ): boolean { return ( this.guiDict != null ); }
 ////
-////	virtual void Init(const char *_name, idWindow* win) = 0;
-		Set(val:string) :void { throw "placeholder"; }
-////	virtual void Update() = 0;
+////	virtual void Init(_name:string, idWindow* win) = 0;
+	Set ( val: string ): void { throw "placeholder"; }
+	Update ( ): void { throw "placeholder"; }
 ////	virtual const char *c_str() const = 0;
 ////	virtual size_t Size() {	size_t sz = (this.name) ? strlen(this.name) : 0; return sz + sizeof(*this); }
 ////
@@ -139,7 +139,7 @@ class idWinBool extends idWinVar {
 ////public:
 ////	idWinBool() : idWinVar() {};
 ////	~idWinBool() {};
-////	virtual void Init(const char *_name, idWindow *win) { idWinVar::Init(_name, win);
+////	virtual void Init(_name:string, idWindow *win) { idWinVar::Init(_name, win);
 ////		if (this.guiDict) {
 ////			this.data = this.guiDict.GetBool(this.GetName());
 ////		}
@@ -166,14 +166,14 @@ class idWinBool extends idWinVar {
 			this.guiDict.SetBool( this.GetName ( ), this.data );
 		}
 	}
-////
-////	virtual void Update() {	
-////		const char *s = this.GetName();
-////		if ( this.guiDict && s[0] != '\0' ) {
-////			this.data = this.guiDict.GetBool( s );
-////		}
-////	}
-////
+
+	Update ( ): void {
+		var s = this.GetName ( );
+		if ( this.guiDict && s /*[0] != '\0'*/ ) {
+			this.data = this.guiDict.GetBool( s );
+		}
+	}
+
 ////	virtual const char *c_str() const {return va("%i", this.data); }
 ////
 ////	// SaveGames
@@ -196,7 +196,7 @@ class idWinStr extends idWinVar {
 ////public:
 ////	idWinStr() : idWinVar() {};
 ////	~idWinStr() {};
-////	virtual void Init(const char *_name, idWindow *win) {
+////	virtual void Init(_name:string, idWindow *win) {
 ////		idWinVar::Init(_name, win);
 ////		if (this.guiDict) {
 ////			this.data = this.guiDict.GetString(this.GetName());
@@ -239,12 +239,12 @@ class idWinStr extends idWinVar {
 ////		}
 ////		return this.data.LengthWithoutColors();
 ////	}
-////	int Length() {
-////		if (this.guiDict && this.name && *this.name) {
-////			this.data = this.guiDict.GetString(this.GetName());
-////		}
-////		return this.data.Length();
-////	}
+	Length ( ): number {
+		if ( this.guiDict && this.name /* && *this.name*/ ) {
+			this.data.equals( this.guiDict.GetString( this.GetName ( ) ) );
+		}
+		return this.data.Length ( );
+	}
 ////	void RemoveColors() {
 ////		if (this.guiDict && this.name && *this.name) {
 ////			this.data = this.guiDict.GetString(this.GetName());
@@ -306,7 +306,7 @@ class idWinInt extends idWinVar {
 ////public:
 ////	idWinInt() : idWinVar() {};
 ////	~idWinInt() {};
-////	virtual void Init(const char *_name, idWindow *win) {
+////	virtual void Init(_name:string, idWindow *win) {
 ////		idWinVar::Init(_name,  win);
 ////		if (this.guiDict) {
 ////			this.data = this.guiDict.GetInt(this.GetName());
@@ -365,7 +365,7 @@ class idWinFloat extends idWinVar {
 ////public:
 ////	idWinFloat() : idWinVar() {};
 ////	~idWinFloat() {};
-////	virtual void Init(const char *_name, idWindow *win) {
+////	virtual void Init(_name:string, idWindow *win) {
 ////		idWinVar::Init(_name, win);
 ////		if (this.guiDict) {
 ////			this.data = this.guiDict.GetFloat(this.GetName());
@@ -420,7 +420,7 @@ class idWinRectangle extends idWinVar {
 ////public:
 ////	idWinRectangle() : idWinVar() {};
 ////	~idWinRectangle() {};
-////	virtual void Init(const char *_name, idWindow *win) {
+////	virtual void Init(_name:string, idWindow *win) {
 ////		idWinVar::Init(_name, win);
 ////		if (this.guiDict) {
 ////			idVec4 v = this.guiDict.GetVec4(this.GetName());
@@ -537,7 +537,7 @@ class idWinVec2 extends idWinVar {
 ////public:
 ////	idWinVec2() : idWinVar() {};
 ////	~idWinVec2() {};
-////	virtual void Init(const char *_name, idWindow *win) {
+////	virtual void Init(_name:string, idWindow *win) {
 ////		idWinVar::Init(_name, win);
 ////		if (this.guiDict) {
 ////			this.data = this.guiDict.GetVec2(this.GetName());
@@ -616,7 +616,7 @@ class idWinVec4 extends idWinVar {
 ////public:
 ////	idWinVec4() : idWinVar() {};
 ////	~idWinVec4() {};
-////	virtual void Init(const char *_name, idWindow *win) {
+////	virtual void Init(_name:string, idWindow *win) {
 ////		idWinVar::Init(_name, win);
 ////		if (this.guiDict) {
 ////			this.data = this.guiDict.GetVec4(this.GetName());
@@ -714,7 +714,7 @@ class idWinVec3 extends idWinVar {
 ////public:
 ////	idWinVec3() : idWinVar() {};
 ////	~idWinVec3() {};
-////	virtual void Init(const char *_name, idWindow *win) {
+////	virtual void Init(_name:string, idWindow *win) {
 ////		idWinVar::Init(_name, win);
 ////		if (this.guiDict) {
 ////			this.data = this.guiDict.GetVector(this.GetName());
@@ -797,7 +797,7 @@ class idWinBackground extends idWinStr {
 ////		mat = NULL;
 ////	};
 ////	~idWinBackground() {};
-////	virtual void Init(const char *_name, idWindow *win) {
+////	virtual void Init(_name:string, idWindow *win) {
 ////		idWinStr::Init(_name, win);
 ////		if (this.guiDict) {
 ////			this.data = this.guiDict.GetString(this.GetName());
@@ -920,37 +920,41 @@ class idWinBackground extends idWinStr {
 	data = new idStr;
 	mat:idMaterial//	const idMaterial **mat;
 };
-////
-/////*
-////================
-////idMultiWinVar
-////multiplexes access to a list if idWinVar*
-////================
-////*/
-////class idMultiWinVar extends idList< idWinVar * > {
+
+/*
+================
+idMultiWinVar
+multiplexes access to a list if idWinVar*
+================
+*/
+class idMultiWinVar extends idList<idWinVar /** */> {
+	constructor ( ) {
+		super( idWinVar, false, 16, /*listOfReferences */ true );
+	}
 ////public:
 ////	void Set( val:string );
 ////	void Update( void );
 ////	void SetGuiInfo( idDict *dict );
 
-////void idMultiWinVar::Set( val:string ) {
-////	for ( int i = 0; i < Num(); i++ ) {
-////		(*this)[i].Set( val );
-////	}
-////}
-////
-////void idMultiWinVar::Update( void ) {
-////	for ( int i = 0; i < Num(); i++ ) {
-////		(*this)[i].Update();
-////	}
-////}
-////
-////void idMultiWinVar::SetGuiInfo( idDict *dict ) {
-////	for ( int i = 0; i < Num(); i++ ) {
-////		(*this)[i].SetGuiInfo( dict, (*this)[i].c_str() );
-////	}
-////}
+	Set ( val: string ): void {
+		for ( var i = 0; i < this.Num ( ); i++ ) {
+			this[i].Set( val );
+		}
+	}
+
+	Update ( ): void {
+		for ( var i = 0; i < this.Num ( ); i++ ) {
+			this[i].Update ( );
+		}
+	}
+
+	SetGuiInfo ( dict: idDict ): void {
+		for ( var i = 0; i < this.Num ( ); i++ ) {
+			this[i].SetGuiInfo( dict, this[i].c_str ( ) );
+		}
+	}
 ////};
 ////
 ////#endif /* !__WINVAR_H__ */
 ////
+}

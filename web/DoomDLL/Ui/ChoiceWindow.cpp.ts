@@ -40,7 +40,7 @@
 ////#include "Window.h"
 ////
 ////class idUserInterfaceLocal;
-////class idChoiceWindow : public idWindow {
+class idChoiceWindow extends idWindow {
 ////public:
 ////	idChoiceWindow(idUserInterfaceLocal *gui);
 ////	idChoiceWindow(idDeviceContext *d, idUserInterfaceLocal *gui);
@@ -52,7 +52,7 @@
 ////	virtual void		Activate(bool activate, idStr &act);
 ////	virtual size_t		Allocated(){ return idWindow::Allocated(); };
 ////
-////	virtual idWinVar	*GetWinVarByName(const char *_name, bool winLookup = false, drawWin_t** owner = NULL);
+////	virtual idWinVar	*GetWinVarByName(_name:string, bool winLookup = false, drawWin_t** owner = NULL);
 ////
 ////	void				RunNamedEvent(const char* eventName);
 ////
@@ -70,22 +70,22 @@
 ////
 ////	void				UpdateChoicesAndVals(void);
 ////
-////	int					currentChoice;
-////	int					choiceType;
-////	idStr				latchedChoices;
-////	idWinStr			choicesStr;
-////	idStr				latchedVals;
-////	idWinStr			choiceVals;
-////	idStrList			choices;
-////	idStrList			values;
-////
-////	idWinStr			guiStr;
-////	idWinStr			cvarStr;
-////	idCVar *			cvar;
-////	idMultiWinVar		updateStr;
-////
-////	idWinBool			liveUpdate;
-////	idWinStr			updateGroup;
+	currentChoice:number;
+	choiceType:number;
+	latchedChoices = new idStr;
+	choicesStr = new idWinStr;
+	latchedVals = new idStr;
+	choiceVals = new idWinStr;
+	choices = new idStrList;
+	values = new idStrList;
+	
+	guiStr = new idWinStr;
+	cvarStr = new idWinStr;
+	cvar:idCVar;
+	updateStr = new idMultiWinVar;
+	
+	liveUpdate = new idWinBool;
+	updateGroup = new idWinStr;
 ////};
 ////
 ////#endif // __CHOICEWINDOW_H
@@ -97,9 +97,9 @@
 ////*/
 ////void idChoiceWindow::InitVars( ) {
 ////	if ( cvarStr.Length() ) {
-////		cvar = cvarSystem->Find( cvarStr );
+////		cvar = cvarSystem.Find( cvarStr );
 ////		if ( !cvar ) {
-////			common->Warning( "idChoiceWindow::InitVars: gui '%s' window '%s' references undefined cvar '%s'", gui->GetSourceFile(), name.c_str(), cvarStr.c_str() );
+////			common.Warning( "idChoiceWindow::InitVars: gui '%s' window '%s' references undefined cvar '%s'", gui.GetSourceFile(), name.c_str(), cvarStr.c_str() );
 ////			return;
 ////		}
 ////		updateStr.Append( &cvarStr );
@@ -107,51 +107,62 @@
 ////	if ( guiStr.Length() ) {
 ////		updateStr.Append( &guiStr );
 ////	}
-////	updateStr.SetGuiInfo( gui->GetStateDict() );
+////	updateStr.SetGuiInfo( gui.GetStateDict() );
 ////	updateStr.Update();
 ////}
-////
-/////*
-////============
-////idChoiceWindow::CommonInit
-////============
-////*/
-////void idChoiceWindow::CommonInit() {
-////	currentChoice = 0;
-////	choiceType = 0;
-////	cvar = NULL;
-////	liveUpdate = true;
-////	choices.Clear();
-////}
-////
-////idChoiceWindow::idChoiceWindow(idDeviceContext *d, idUserInterfaceLocal *g) : idWindow(d, g) {
-////	dc = d;
-////	gui = g;
-////	CommonInit();
-////}
-////
-////idChoiceWindow::idChoiceWindow(idUserInterfaceLocal *g) : idWindow(g) {
-////	gui = g;
-////	CommonInit();
-////}
-////
-////idChoiceWindow::~idChoiceWindow() {
-////
-////}
-////
+
+/*
+============
+idChoiceWindow::CommonInit
+============
+*/
+	CommonInit ( ): void {
+		this.currentChoice = 0;
+		this.choiceType = 0;
+		this.cvar = null;
+		this.liveUpdate.equalsBool( true );
+		this.choices.Clear ( );
+	}
+
+	constructor(d: idDeviceContext, g: idUserInterfaceLocal)
+	constructor(g: idUserInterfaceLocal)
+	constructor(a1: any, a2?: any) {
+		super();
+
+		if (arguments.length == 2) {
+			var d = <idDeviceContext>a1, g = <idUserInterfaceLocal>a2;
+			this.ctor2(d, g);
+			this.dc = d;
+			this.gui = g;
+			this.CommonInit();
+		} else if (arguments.length == 1) {
+			var g = <idUserInterfaceLocal>a1;
+			this.ctor1(g);
+			this.dc = null;
+			this.gui = g;
+			this.CommonInit();
+		} else {
+			todoThrow();
+		}
+	}
+
+	destructor(): void {
+		todoThrow("renderSystem.FreeRenderWorld( this.world );");
+	}
+
 ////void idChoiceWindow::RunNamedEvent( const char* eventName ) {
 ////	idStr event, group;
 ////	
 ////	if ( !idStr::Cmpn( eventName, "cvar read ", 10 ) ) {
 ////		event = eventName;
 ////		group = event.Mid( 10, event.Length() - 10 );
-////		if ( !group.Cmp( updateGroup ) ) {
+////		if ( !group.Cmp( this.updateGroup ) ) {
 ////			UpdateVars( true, true );
 ////		}
 ////	} else if ( !idStr::Cmpn( eventName, "cvar write ", 11 ) ) {
 ////		event = eventName;
 ////		group = event.Mid( 11, event.Length() - 11 );
-////		if ( !group.Cmp( updateGroup ) ) {
+////		if ( !group.Cmp( this.updateGroup ) ) {
 ////			UpdateVars( false, true );
 ////		}
 ////	}
@@ -161,74 +172,75 @@
 ////	if ( force || liveUpdate ) {
 ////		if ( cvar && cvarStr.NeedsUpdate() ) {
 ////			if ( read ) {
-////				cvarStr.Set( cvar->GetString() );
+////				cvarStr.Set( cvar.GetString() );
 ////			} else {
-////				cvar->SetString( cvarStr.c_str() );
+////				cvar.SetString( cvarStr.c_str() );
 ////			}	
 ////		}
 ////		if ( !read && guiStr.NeedsUpdate() ) {
-////			guiStr.Set( va( "%i", currentChoice ) );
+////			guiStr.Set( va( "%i", this.currentChoice ) );
 ////		}
 ////	}
 ////}
 ////
-////const char *idChoiceWindow::HandleEvent(const sysEvent_t *event, bool *updateVisuals) {
+	HandleEvent ( event: sysEvent_t, /*bool **/updateVisuals: R<boolean> ): string {
+		todoThrow ( );
 ////	int key;
 ////	bool runAction = false;
 ////	bool runAction2 = false;
 ////
-////	if ( event->evType == SE_KEY ) {
-////		key = event->evValue;
+////	if ( event.evType == SE_KEY ) {
+////		key = event.evValue;
 ////
 ////		if ( key == K_RIGHTARROW || key == K_KP_RIGHTARROW || key == K_MOUSE1)  {
 ////			// never affects the state, but we want to execute script handlers anyway
-////			if ( !event->evValue2 ) {
+////			if ( !event.evValue2 ) {
 ////				RunScript( ON_ACTIONRELEASE );
-////				return cmd;
+////				return this.cmd.data;
 ////			}
-////			currentChoice++;
-////			if (currentChoice >= choices.Num()) {
-////				currentChoice = 0;
+////			this.currentChoice++;
+////			if (this.currentChoice >= choices.Num()) {
+////				this.currentChoice = 0;
 ////			}
 ////			runAction = true;
 ////		}
 ////
 ////		if ( key == K_LEFTARROW || key == K_KP_LEFTARROW || key == K_MOUSE2) {
 ////			// never affects the state, but we want to execute script handlers anyway
-////			if ( !event->evValue2 ) {
+////			if ( !event.evValue2 ) {
 ////				RunScript( ON_ACTIONRELEASE );
-////				return cmd;
+////				return this.cmd.data;
 ////			}
-////			currentChoice--;
-////			if (currentChoice < 0) {
-////				currentChoice = choices.Num() - 1;
+////			this.currentChoice--;
+////			if (this.currentChoice < 0) {
+////				this.currentChoice = choices.Num() - 1;
 ////			}
 ////			runAction = true;
 ////		}
 ////
-////		if ( !event->evValue2 ) {
+////		if ( !event.evValue2 ) {
 ////			// is a key release with no action catch
 ////			return "";
 ////		}
 ////
-////	} else if ( event->evType == SE_CHAR ) {
+////	} else if ( event.evType == SE_CHAR ) {
 ////
-////		key = event->evValue;
+////		key = event.evValue;
 ////
 ////		int potentialChoice = -1;
 ////		for ( int i = 0; i < choices.Num(); i++ ) {
 ////			if ( toupper(key) == toupper(choices[i][0]) ) {
-////				if ( i < currentChoice && potentialChoice < 0 ) {
+////				if ( i < this.currentChoice && potentialChoice < 0 ) {
 ////					potentialChoice = i;
-////				} else if ( i > currentChoice ) {
+////				} else if ( i > this.currentChoice ) {
 ////					potentialChoice = -1;
-////					currentChoice = i;
+////					this.currentChoice = i;
 ////					break;
 ////				}
 ////			}
 ////		}
 ////		if ( potentialChoice >= 0 ) {
-////			currentChoice = potentialChoice;
+////			this.currentChoice = potentialChoice;
 ////		}
 ////
 ////		runAction = true;
@@ -243,11 +255,11 @@
 ////	}
 ////
 ////	if ( choiceType == 0 ) {
-////		cvarStr.Set( va( "%i", currentChoice ) );
+////		cvarStr.Set( va( "%i", this.currentChoice ) );
 ////	} else if ( values.Num() ) {
-////		cvarStr.Set( values[ currentChoice ] );
+////		cvarStr.Set( values[ this.currentChoice ] );
 ////	} else {
-////		cvarStr.Set( choices[ currentChoice ] );
+////		cvarStr.Set( choices[ this.currentChoice ] );
 ////	}
 ////
 ////	UpdateVars( false );
@@ -256,12 +268,12 @@
 ////		RunScript( ON_ACTIONRELEASE );
 ////	}
 ////	
-////	return cmd;
-////}
-////
+		return this.cmd.data;
+	}
+
 ////void idChoiceWindow::ValidateChoice() {
-////	if ( currentChoice < 0 || currentChoice >= choices.Num() ) {
-////		currentChoice = 0;
+////	if ( this.currentChoice < 0 || this.currentChoice >= choices.Num() ) {
+////		this.currentChoice = 0;
 ////	}
 ////	if ( choices.Num() == 0 ) {
 ////		choices.Append( "No Choices Defined" );
@@ -277,8 +289,8 @@
 ////	if ( choiceType == 0 ) {
 ////		// ChoiceType 0 stores current as an integer in either cvar or gui
 ////		// If both cvar and gui are defined then cvar wins, but they are both updated
-////		if ( updateStr[ 0 ]->NeedsUpdate() ) {
-////			currentChoice = atoi( updateStr[ 0 ]->c_str() );
+////		if ( updateStr[ 0 ].NeedsUpdate() ) {
+////			this.currentChoice = atoi( updateStr[ 0 ].c_str() );
 ////		}
 ////		ValidateChoice();
 ////	} else {
@@ -286,53 +298,52 @@
 ////		int c = ( values.Num() ) ? values.Num() : choices.Num();
 ////		int i;
 ////		for ( i = 0; i < c; i++ ) {
-////			if ( idStr::Icmp( cvarStr.c_str(), ( values.Num() ) ? values[i] : choices[i] ) == 0 ) {
+////			if ( idStr.Icmp( cvarStr.c_str(), ( values.Num() ) ? values[i] : choices[i] ) == 0 ) {
 ////				break;
 ////			}
 ////		}
 ////		if (i == c) {
 ////			i = 0;
 ////		}
-////		currentChoice = i;
+////		this.currentChoice = i;
 ////		ValidateChoice();
 ////	}
 ////}
 ////
-////bool idChoiceWindow::ParseInternalVar(const char *_name, idParser *src) {
-////	if (idStr::Icmp(_name, "choicetype") == 0) {
-////		choiceType = src->ParseInt();
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "currentchoice") == 0) {
-////		currentChoice = src->ParseInt();
-////		return true;
-////	}
-////	return idWindow::ParseInternalVar(_name, src);
-////}
-////
-////
-////idWinVar *idChoiceWindow::GetWinVarByName(const char *_name, bool fixup, drawWin_t** owner) {
-////	if ( idStr::Icmp( _name, "choices" ) == 0 ) {
-////		return &choicesStr;
-////	}
-////	if ( idStr::Icmp( _name, "values" ) == 0 ) {
-////		return &choiceVals;
-////	}
-////	if ( idStr::Icmp( _name, "cvar" ) == 0 ) {
-////		return &cvarStr;
-////	}
-////	if ( idStr::Icmp( _name, "gui" ) == 0 ) {
-////		return &guiStr;
-////	}
-////	if ( idStr::Icmp( _name, "liveUpdate" ) == 0 ) {
-////		return &liveUpdate;
-////	}
-////	if ( idStr::Icmp( _name, "updateGroup" ) == 0 ) {
-////		return &updateGroup;
-////	}
-////	
-////	return idWindow::GetWinVarByName(_name, fixup, owner);
-////}
+	ParseInternalVar ( _name: string, src: idParser ): boolean {
+		if ( idStr.Icmp( _name, "choicetype" ) == 0 ) {
+			this.choiceType = src.ParseInt ( );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "currentchoice" ) == 0 ) {
+			this.currentChoice = src.ParseInt ( );
+			return true;
+		}
+		return super.ParseInternalVar( _name, src );
+	}
+
+	GetWinVarByName ( _name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null): idWinVar {
+		if ( idStr.Icmp( _name, "choices" ) == 0 ) {
+			return this.choicesStr;
+		}
+		if ( idStr.Icmp( _name, "values" ) == 0 ) {
+			return this.choiceVals;
+		}
+		if ( idStr.Icmp( _name, "cvar" ) == 0 ) {
+			return this.cvarStr;
+		}
+		if ( idStr.Icmp( _name, "gui" ) == 0 ) {
+			return this.guiStr;
+		}
+		if ( idStr.Icmp( _name, "liveUpdate" ) == 0 ) {
+			return this.liveUpdate;
+		}
+		if ( idStr.Icmp( _name, "updateGroup" ) == 0 ) {
+			return this.updateGroup;
+		}
+
+		return super.GetWinVarByName( _name, fixup, owner );
+	}
 ////
 ////// update the lists whenever the WinVar have changed
 ////void idChoiceWindow::UpdateChoicesAndVals( void ) {
@@ -350,7 +361,7 @@
 ////				if ( token == ";" ) {
 ////					if ( str2.Length() ) {
 ////						str2.StripTrailingWhitespace();
-////						str2 = common->GetLanguageDict()->GetString( str2 );
+////						str2 = common.GetLanguageDict().GetString( str2 );
 ////						choices.Append(str2);
 ////						str2 = "";
 ////					}
@@ -400,7 +411,7 @@
 ////			}
 ////		}
 ////		if ( choices.Num() != values.Num() ) {
-////			common->Warning( "idChoiceWindow:: gui '%s' window '%s' has value count unequal to choices count", gui->GetSourceFile(), name.c_str());
+////			common.Warning( "idChoiceWindow:: gui '%s' window '%s' has value count unequal to choices count", gui.GetSourceFile(), name.c_str());
 ////		}
 ////		latchedVals = choiceVals.c_str();
 ////	}
@@ -427,17 +438,17 @@
 ////	textAlign = 0;
 ////
 ////	if ( textShadow ) {
-////		idStr shadowText = choices[currentChoice];
+////		idStr shadowText = choices[this.currentChoice];
 ////		idRectangle shadowRect = textRect;
 ////
 ////		shadowText.RemoveColors();
 ////		shadowRect.x += textShadow;
 ////		shadowRect.y += textShadow;
 ////
-////		dc->DrawText( shadowText, textScale, textAlign, colorBlack, shadowRect, false, -1 );
+////		dc.DrawText( shadowText, textScale, textAlign, colorBlack, shadowRect, false, -1 );
 ////	}
 ////
-////	if ( hover && !noEvents && Contains(gui->CursorX(), gui->CursorY()) ) {
+////	if ( hover && !noEvents && Contains(gui.CursorX(), gui.CursorY()) ) {
 ////		color = hoverColor;
 ////	} else {
 ////		hover = false;
@@ -446,7 +457,7 @@
 ////		color = hoverColor;
 ////	}
 ////
-////	dc->DrawText( choices[currentChoice], textScale, textAlign, color, textRect, false, -1 );
+////	dc.DrawText( choices[this.currentChoice], textScale, textAlign, color, textRect, false, -1 );
 ////}
 ////
 ////void idChoiceWindow::Activate( bool activate, idStr &act ) {
@@ -456,3 +467,4 @@
 ////		UpdateChoice();
 ////	}
 ////}
+}

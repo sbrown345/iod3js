@@ -40,7 +40,7 @@
 ////	idSliderWindow(idDeviceContext *d, idUserInterfaceLocal *gui);
 ////	virtual				~idSliderWindow();
 ////
-////	void				InitWithDefaults(const char *_name, const idRectangle &rect, const idVec4 &foreColor, const idVec4 &matColor, const char *_background, const char *thumbShader, bool _vertical, bool _scrollbar);
+////	void				InitWithDefaults(_name:string, const idRectangle &rect, const idVec4 &foreColor, const idVec4 &matColor, const char *_background, const char *thumbShader, bool _vertical, bool _scrollbar);
 ////
 ////	void				SetRange(float _low, float _high, float _step);
 ////	float				GetLow() { return low; }
@@ -50,7 +50,7 @@
 ////	float				GetValue() { return value; };
 ////
 ////	virtual size_t		Allocated(){ return idWindow::Allocated(); };
-////	virtual idWinVar *	GetWinVarByName(const char *_name, bool winLookup = false, drawWin_t** owner = NULL);
+////	virtual idWinVar *	GetWinVarByName(_name:string, bool winLookup = false, drawWin_t** owner = NULL);
 ////	virtual const char *HandleEvent(const sysEvent_t *event, bool *updateVisuals);
 ////	virtual void		PostParse();
 ////	virtual void		Draw(int time, float x, float y);
@@ -130,7 +130,7 @@
 ////
 ////}
 ////
-////bool idSliderWindow::ParseInternalVar(const char *_name, idParser *src) {
+////bool idSliderWindow::ParseInternalVar(_name:string, idParser *src) {
 ////	if (idStr::Icmp(_name, "stepsize") == 0 || idStr::Icmp(_name, "step") == 0) {
 ////		stepSize = src->ParseFloat();
 ////		return true;
@@ -163,7 +163,8 @@
 ////	return idWindow::ParseInternalVar(_name, src);
 ////}
 ////
-////idWinVar *idSliderWindow::GetWinVarByName(const char *_name, bool fixup, drawWin_t** owner) {
+//GetWinVarByName ( _name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null): idWinVar {
+////idWinVar *idSliderWindow::GetWinVarByName(_name:string, fixup:boolean, drawWin_t** owner) {
 //// 
 ////	if (idStr::Icmp(_name, "value") == 0) {
 ////		return &value;
@@ -231,7 +232,7 @@
 ////	InitCvar();
 ////}
 ////
-////void idSliderWindow::InitWithDefaults(const char *_name, const idRectangle &_rect, const idVec4 &_foreColor, const idVec4 &_matColor, const char *_background, const char *thumbShader, bool _vertical, bool _scrollbar) {
+////void idSliderWindow::InitWithDefaults(_name:string, const idRectangle &_rect, const idVec4 &_foreColor, const idVec4 &_matColor, const char *_background, const char *thumbShader, bool _vertical, bool _scrollbar) {
 ////	SetInitialState(_name);
 ////	rect = _rect;
 ////	foreColor = _foreColor;

@@ -58,7 +58,7 @@
 ////	virtual void		GainFocus();
 ////	virtual size_t		Allocated(){ return idWindow::Allocated(); };
 ////
-////	virtual idWinVar *	GetWinVarByName(const char *_name, bool winLookup = false, drawWin_t** owner = NULL);
+////	virtual idWinVar *	GetWinVarByName(_name:string, bool winLookup = false, drawWin_t** owner = NULL);
 ////
 ////	virtual void 		HandleBuddyUpdate(idWindow *buddy);
 ////	virtual void		Activate(bool activate, idStr &act);
@@ -106,7 +106,7 @@
 ////#endif /* !__EDITWINDOW_H__ */
 ////
 ////
-////bool idEditWindow::ParseInternalVar( const char *_name, idParser *src ) {
+////bool idEditWindow::ParseInternalVar( _name:string, idParser *src ) {
 ////	if ( idStr::Icmp( _name, "maxchars" ) == 0) {
 ////		maxChars = src->ParseInt();
 ////		return true;
@@ -142,8 +142,8 @@
 ////
 ////	return idWindow::ParseInternalVar( _name, src );
 ////}
-////
-////idWinVar *idEditWindow::GetWinVarByName( const char *_name, bool fixup, drawWin_t** owner ) {
+
+////GetWinVarByName ( _name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null): idWinVar {
 ////	if ( idStr::Icmp( _name, "cvar" ) == 0 ) {
 ////		return &cvarStr;
 ////	}

@@ -86,7 +86,7 @@
 ////
 ////}
 ////
-////bool idFieldWindow::ParseInternalVar(const char *_name, idParser *src) {
+////bool idFieldWindow::ParseInternalVar(_name:string, idParser *src) {
 ////	if (idStr::Icmp(_name, "cursorvar") == 0) {
 ////		ParseString(src, cursorVar);
 ////		return true;

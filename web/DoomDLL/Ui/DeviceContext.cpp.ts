@@ -152,15 +152,15 @@ class idDeviceContext {
 	static fonts: idList<fontInfoEx_t> = new idList<fontInfoEx_t>(fontInfoEx_t);
 	fontLang:idStr;
 	
-	enableClipping:boolean;						  //	bool				
+	enableClipping:boolean;			
 	
-	overStrikeMode: boolean;						  //	bool				
+	overStrikeMode: boolean;		
 	
-	mat = new idMat3;								  //	idMat3				
-	origin = new idVec3;								  //	idVec3				
-	initialized:boolean;						  //	bool				
+	mat = new idMat3;		
+	origin = new idVec3;			
+	initialized:boolean;			
 	
-	mbcs:boolean;								  //	bool				
+	mbcs:boolean;					
 
 //#endif /* !__DEVICECONTEXT_H__ */
 
@@ -799,8 +799,9 @@ Init():void {
 //	}
 //}
 //
-//int idDeviceContext::DrawText(float x, float y, float scale, idVec4 color, text:string, float adjust, int limit, int style, int cursor) {
-//	int			len, count;
+	DrawText ( /*float */x: number, /*float */y: number, /*float */scale: number, color: idVec4, text: string, /*float*/ adjust: number, /*int */limit: number, /*int */style: number, /*int */cursor: number ): number {
+		todoThrow ( );
+		var /*int*/len: number, count: number;
 //	idVec4		newColor;
 //	const glyphInfo_t *glyph;
 //	float		useScale;
@@ -865,8 +866,8 @@ Init():void {
 //			DrawEditCursor(x, y, scale);
 //		}
 //	}
-//	return count;
-//}
+		return count;
+	}
 
 	SetSize ( /*float */width: number, /*float */height: number ): void {
 		this.vidWidth = VIRTUAL_WIDTH;

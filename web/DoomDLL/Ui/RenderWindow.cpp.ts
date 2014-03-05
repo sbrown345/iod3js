@@ -45,7 +45,7 @@ class idRenderWindow extends idWindow {
 ////	virtual size_t Allocated(){ return idWindow::Allocated(); };
 ////	// 
 ////	//  
-////	virtual idWinVar *GetWinVarByName(const char *_name, bool winLookup = false, drawWin_t** owner = NULL);
+////	virtual idWinVar *GetWinVarByName(_name:string, bool winLookup = false, drawWin_t** owner = NULL);
 ////	// 
 ////
 ////private:
@@ -223,7 +223,8 @@ class idRenderWindow extends idWindow {
 ////
 ////// 
 //////  
-////idWinVar *idRenderWindow::GetWinVarByName(const char *_name, bool fixup, drawWin_t** owner ) {
+	//GetWinVarByName ( _name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null): idWinVar {
+////idWinVar *idRenderWindow::GetWinVarByName(_name:string, fixup:boolean, drawWin_t** owner ) {
 ////// 
 ////	if (idStr::Icmp(_name, "model") == 0) {
 ////		return &modelName;
@@ -256,7 +257,7 @@ class idRenderWindow extends idWindow {
 ////// 
 ////}
 ////
-////bool idRenderWindow::ParseInternalVar(const char *_name, idParser *src) {
+////bool idRenderWindow::ParseInternalVar(_name:string, idParser *src) {
 ////	if (idStr::Icmp(_name, "animClass") == 0) {
 ////		ParseString(src, animClass);
 ////		return true;

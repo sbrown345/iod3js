@@ -510,7 +510,7 @@
 ////	virtual void		PostParse();
 ////	virtual void		Draw(int time, float x, float y);
 ////	virtual const char*	Activate(bool activate);
-////	virtual idWinVar *	GetWinVarByName(const char *_name, bool winLookup = false, drawWin_t** owner = NULL);
+////	virtual idWinVar *	GetWinVarByName(_name:string, bool winLookup = false, drawWin_t** owner = NULL);
 ////
 ////	idList<BOEntity*>	entities;
 ////
@@ -854,7 +854,7 @@
 ////idGameBustOutWindow::ParseInternalVar
 ////=============================
 ////*/
-////bool idGameBustOutWindow::ParseInternalVar(const char *_name, idParser *src) {
+////bool idGameBustOutWindow::ParseInternalVar(_name:string, idParser *src) {
 ////	if ( idStr::Icmp(_name, "gamerunning") == 0 ) {
 ////		gamerunning = src->ParseBool();
 ////		return true;
@@ -891,7 +891,8 @@
 ////idGameBustOutWindow::GetWinVarByName
 ////=============================
 ////*/
-////idWinVar *idGameBustOutWindow::GetWinVarByName(const char *_name, bool winLookup, drawWin_t** owner) {
+//GetWinVarByName ( _name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null): idWinVar {
+////idWinVar *idGameBustOutWindow::GetWinVarByName(_name:string, bool winLookup, drawWin_t** owner) {
 ////	idWinVar *retVar = NULL;
 ////
 ////	if ( idStr::Icmp(_name, "gamerunning") == 0 ) {

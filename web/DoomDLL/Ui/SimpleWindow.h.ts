@@ -49,7 +49,7 @@ class idSimpleWindow {
 	////
 	name = new idStr;
 	////
-	////	idWinVar *		GetWinVarByName(const char *_name);
+	////	idWinVar *		GetWinVarByName(_name:string);
 	////	int				GetWinVarOffset( idWinVar *wv, drawWin_t* owner);
 	////	size_t			Size();
 	////

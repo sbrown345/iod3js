@@ -49,7 +49,7 @@
 ////	idMarkerWindow(idDeviceContext *d, idUserInterfaceLocal *gui);
 ////	virtual ~idMarkerWindow();
 ////	virtual size_t Allocated(){ return idWindow::Allocated(); };
-////	virtual idWinVar *GetWinVarByName(const char *_name, bool winLookup = false);
+////	virtual idWinVar *GetWinVarByName(_name:string, bool winLookup = false);
 ////
 ////	virtual const char *HandleEvent(const sysEvent_t *event, bool *updateVisuals);
 ////	virtual void PostParse();
@@ -101,7 +101,7 @@
 ////idMarkerWindow::~idMarkerWindow() {
 ////}
 ////
-////bool idMarkerWindow::ParseInternalVar(const char *_name, idParser *src) {
+////bool idMarkerWindow::ParseInternalVar(_name:string, idParser *src) {
 ////	if (idStr::Icmp(_name, "markerMat") == 0) {
 ////		idStr str;
 ////		ParseString(src, str);
@@ -123,7 +123,8 @@
 ////	return idWindow::ParseInternalVar(_name, src);
 ////}
 ////
-////idWinVar *idMarkerWindow::GetWinVarByName(const char *_name, bool fixup) {
+//GetWinVarByName ( _name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null): idWinVar {
+////idWinVar *idMarkerWindow::GetWinVarByName(_name:string, bool fixup) {
 ////	return idWindow::GetWinVarByName(_name, fixup);
 ////}
 ////

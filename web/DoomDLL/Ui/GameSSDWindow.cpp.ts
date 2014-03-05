@@ -1653,7 +1653,7 @@
 ////	virtual void	ReadFromSaveGame(idFile *savefile);
 ////
 ////	virtual const char*	HandleEvent(const sysEvent_t *event, bool *updateVisuals);
-////	virtual idWinVar*	GetWinVarByName(const char *_name, bool winLookup = false, drawWin_t** owner = NULL);
+////	virtual idWinVar*	GetWinVarByName(_name:string, bool winLookup = false, drawWin_t** owner = NULL);
 ////
 ////
 ////	virtual void		Draw(int time, float x, float y);
@@ -1932,7 +1932,8 @@
 ////	return ret;
 ////}
 ////
-////idWinVar *idGameSSDWindow::GetWinVarByName	(const char *_name, bool winLookup, drawWin_t** owner) {
+//GetWinVarByName ( _name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null): idWinVar {
+////idWinVar *idGameSSDWindow::GetWinVarByName	(_name:string, bool winLookup, drawWin_t** owner) {
 ////
 ////	idWinVar *retVar = NULL;
 ////
@@ -1987,7 +1988,7 @@
 ////}
 ////
 ////
-////bool idGameSSDWindow::ParseInternalVar(const char *_name, idParser *src) {
+////bool idGameSSDWindow::ParseInternalVar(_name:string, idParser *src) {
 ////
 ////	if (idStr::Icmp(_name, "beginLevel") == 0) {
 ////		beginLevel = src->ParseBool();

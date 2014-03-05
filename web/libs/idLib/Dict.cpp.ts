@@ -259,11 +259,11 @@ class idDict {
 ////ID_INLINE int idDict::GetInt( key:string, const char *defaultString ) const {
 ////	return atoi( GetString( key, defaultString ) );
 ////}
-////
-////ID_INLINE bool idDict::GetBool( key:string, const char *defaultString ) const {
-////	return ( atoi( GetString( key, defaultString ) ) != 0 );
-////}
-////
+
+	GetBool ( key: string, defaultString: string ): boolean {
+		return ( atoi( this.GetString( key, defaultString ) ) != 0 );
+	}
+
 ////ID_INLINE idVec3 idDict::GetVector( key:string, const char *defaultString ) const {
 ////	idVec3 out;
 ////	GetVector( key, defaultString, out );

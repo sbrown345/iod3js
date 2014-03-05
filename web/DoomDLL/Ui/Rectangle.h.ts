@@ -97,16 +97,16 @@ class idRectangle {
 		this.x += x;
 		this.y += y;
 	}
-//	bool Contains(float xt, float yt) {
-//		if (w == 0.0 && h == 0.0) {
-//			return false;
-//		}
-//		if (xt >= x && xt <= Right() && yt >= y && yt <= Bottom()) {
-//			return true;
-//		}
-//		return false;
-//	}
-//	void Empty() { x = y = w = h = 0.0; };
+	Contains ( /*float */xt: number, /*float */yt: number ): boolean {
+		if ( this.w == 0.0 && this.h == 0.0 ) {
+			return false;
+		}
+		if ( xt >= this.x && xt <= this.Right ( ) && yt >= this.y && yt <= this.Bottom ( ) ) {
+			return true;
+		}
+		return false;
+	}
+	Empty ( ): void { this.x = this.y = this.w = this.h = 0.0; }
 //
 //	void ClipAgainst(idRectangle r, bool sizeOnly) {
 //		if (!sizeOnly) {

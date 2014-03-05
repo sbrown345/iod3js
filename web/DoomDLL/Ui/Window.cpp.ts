@@ -110,21 +110,21 @@ class idWindow {
 	////	void SetupFromState();
 	////	void SetupBackground();
 	////	drawWin_t *FindChildByName(const char *name);
-	////	idSimpleWindow *FindSimpleWinByName(const char *_name);
+	////	idSimpleWindow *FindSimpleWinByName(_name:string);
 	GetParent(): idWindow { return this.parent; }
 	GetGui(): idUserInterfaceLocal {return this.gui;}
 	////	bool Contains(float x, float y);
 	////	size_t Size();
 	////	virtual size_t Allocated();
-	////	idStr* GetStrPtrByName(const char *_name);
+	////	idStr* GetStrPtrByName(_name:string);
 	////
-	////	virtual idWinVar *GetWinVarByName	(const char *_name, bool winLookup = false, drawWin_t** owner = NULL);
+	////	virtual idWinVar *GetWinVarByName	(_name:string, bool winLookup = false, drawWin_t** owner = NULL);
 	////
 	////	int  GetWinVarOffset( idWinVar *wv, drawWin_t *dw );
 	////	float GetMaxCharHeight();
 	////	float GetMaxCharWidth();
 	////	void SetFont();
-	////	void SetInitialState(const char *_name);
+	////	void SetInitialState(_name:string);
 	////	void AddChild(idWindow *win);
 	////	void DebugDraw(int time, float x, float y);
 	////	void CalcClientRect(float xofs, float yofs);
@@ -203,7 +203,7 @@ class idWindow {
 	////	const char *GetComment() { return this.comment;  }
 	////	void SetComment( const char * p) { comment = p; }
 	////
-	////	idStr cmd;
+	cmd = new idStr;
 	////
 	////	virtual void RunNamedEvent		( const char* eventName );
 	////
@@ -232,7 +232,7 @@ class idWindow {
 	////	friend class idUserInterfaceLocal;
 	////	bool IsSimple();
 	////	void UpdateWinVars();
-	////	void DisableRegister(const char *_name);
+	////	void DisableRegister(_name:string);
 	////	void Transition();
 	////	void Time();
 	////	bool RunTimeEvents(int time);
@@ -313,7 +313,7 @@ class idWindow {
 	hover: boolean;
 
 	dc: idDeviceContext;
-	////
+	
 	gui: idUserInterfaceLocal;
 	////
 	////	static idCVar gui_debug;
@@ -778,28 +778,28 @@ idWindow::~idWindow
 ////	return "";
 ////}
 ////
-/////*
-////================
-////idWindow::Activate
-////================
-////*/
-////Activate( bool activate,	idStr &act ):void {
-////
-////	int n = (activate) ? ON_ACTIVATE : ON_DEACTIVATE;
-////
-////	//  make sure win vars are updated before activation
-////	UpdateWinVars ( );
-////
-////	RunScript(n);
-////	var c = this.children.Num();
-////	for (var i = 0; i < c; i++) {
-////		this.children[i].Activate( activate, act );
-////	}
-////
-////	if ( act.Length() ) {
-////		act += " ; ";
-////	}
-////}
+/*
+================
+idWindow::Activate
+================
+*/
+	Activate ( activate: boolean, act: idStr ): void {
+		todoThrow ( );
+		//int n = (activate) ? ON_ACTIVATE : ON_DEACTIVATE;
+
+		////  make sure win vars are updated before activation
+		//UpdateWinVars ( );
+
+		//RunScript(n);
+		//var c = this.children.Num();
+		//for (var i = 0; i < c; i++) {
+		//	this.children[i].Activate( activate, act );
+		//}
+
+		//if ( act.Length() ) {
+		//	act += " ; ";
+		//}
+	}
 ////
 /////*
 ////================
@@ -966,30 +966,32 @@ idWindow::AddUpdateVar
 ////	}
 ////}
 ////
-/////*
-////================
-////idWindow::Contains
-////================
-////*/
-////bool idWindow::Contains(const idRectangle &sr, float x, float y) {
-////	idRectangle r = sr;
-////	r.x += actualX - this.drawRect.x;
-////	r.y += actualY - this.drawRect.y;
-////	return r.Contains(x, y);
-////}
-////
-/////*
-////================
-////idWindow::Contains
-////================
-////*/
-////bool idWindow::Contains(float x, float y) {
-////	idRectangle r = this.drawRect;
-////	r.x = actualX;
-////	r.y = actualY;
-////	return r.Contains(x, y);
-////}
-////
+/*
+================
+idWindow::Contains
+================
+*/
+	Contains_Rect ( sr: idRectangle, /*float */x: number, /*float */y: number ): boolean {
+		var r = new idRectangle;
+		r.equals(sr);
+		r.x += this.actualX - this.drawRect.x;
+		r.y += this.actualY - this.drawRect.y;
+		return r.Contains( x, y );
+	}
+
+/*
+================
+idWindow::Contains
+================
+*/
+	Contains ( /*float */x: number, /*float */y: number ): boolean {
+		var r = new idRectangle();
+		r.equals(this.drawRect);
+		r.x = this.actualX;
+		r.y = this.actualY;
+		return r.Contains( x, y );
+	}
+
 /////*
 ////================
 ////idWindow::AddCommand
@@ -1481,8 +1483,8 @@ idWindow::EvalRegs
 ////	this.CalcClientRect(0, 0);
 ////	this.drawRect.Offset(x, y);
 ////	this.clientRect.Offset(x, y);
-////	actualX = this.drawRect.x;
-////	actualY = this.drawRect.y;
+////	this.actualX = this.drawRect.x;
+////	this.actualY = this.drawRect.y;
 ////	int c = this.drawWindows.Num();
 ////	for (var i = 0; i < c; i++) {
 ////		if (this.drawWindows[i].win) {
@@ -1542,8 +1544,8 @@ idWindow::EvalRegs
 ////	this.drawRect.Offset(x, y);
 ////	this.clientRect.Offset(x, y);
 ////	this.textRect.Offset(x, y);
-////	actualX = this.drawRect.x;
-////	actualY = this.drawRect.y;
+////	this.actualX = this.drawRect.x;
+////	this.actualY = this.drawRect.y;
 ////
 ////	idVec3	oldOrg;
 ////	idMat3	oldTrans;
@@ -2520,16 +2522,15 @@ idWindow::Parse
 				//dwt.win = win;
 				//this.drawWindows.Append(dwt);
 			} else if ( token.data == "choiceDef" ) {
-				todoThrow ( );
-				//var win = new idChoiceWindow(this.dc, this.gui);
-				//this.SaveExpressionParseState();
-				//win.Parse(src, rebuild);	
-				//this.RestoreExpressionParseState();
-				//this.AddChild(win);
-				//win.SetParent(this);
-				//dwt.simp = null;
-				//dwt.win = win;
-				//this.drawWindows.Append(dwt);
+				var cWin = new idChoiceWindow(this.dc, this.gui);
+				this.SaveExpressionParseState();
+				cWin.Parse(src, rebuild);	
+				this.RestoreExpressionParseState();
+				this.AddChild(cWin);
+				cWin.SetParent(this);
+				dwt.simp = null;
+				dwt.win = cWin;
+				this.drawWindows.Append(dwt);
 			} else if ( token.data == "sliderDef" ) {
 				todoThrow ( );
 				//var win = new idSliderWindow(this.dc, this.gui);
@@ -2860,7 +2861,7 @@ idWindow::Parse
 ////idWindow::FindSimpleWinByName
 ////================
 ////*/
-////idSimpleWindow *idWindow::FindSimpleWinByName(const char *_name) {
+////idSimpleWindow *idWindow::FindSimpleWinByName(_name:string) {
 ////	int c = this.drawWindows.Num();
 ////	for (var i = 0; i < c; i++) {
 ////		if (this.drawWindows[i].simp == NULL) {
@@ -2909,7 +2910,7 @@ idWindow::FindChildByName
 ////idWindow::GetStrPtrByName
 ////================
 ////*/
-////idStr* idWindow::GetStrPtrByName(const char *_name) {
+////idStr* idWindow::GetStrPtrByName(_name:string) {
 ////	return NULL;
 ////}
 ////
@@ -3776,8 +3777,8 @@ EvaluateRegisters(/*float **/registers:Float32Array):void {
 ////
 ////	WriteSaveGameString( cmd, savefile );
 ////
-////	savefile.Write( &actualX, sizeof( actualX ) );
-////	savefile.Write( &actualY, sizeof( actualY ) );
+////	savefile.Write( &this.actualX, sizeof( this.actualX ) );
+////	savefile.Write( &this.actualY, sizeof( this.actualY ) );
 ////	savefile.Write( &childID, sizeof( childID ) );
 ////	savefile.Write( &flags, sizeof( this.flags ) );
 ////	savefile.Write( &lastTimeRun, sizeof( lastTimeRun ) );
@@ -3921,8 +3922,8 @@ EvaluateRegisters(/*float **/registers:Float32Array):void {
 ////
 ////	ReadSaveGameString( cmd, savefile );
 ////
-////	savefile.Read( &actualX, sizeof( actualX ) );
-////	savefile.Read( &actualY, sizeof( actualY ) );
+////	savefile.Read( &this.actualX, sizeof( this.actualX ) );
+////	savefile.Read( &this.actualY, sizeof( this.actualY ) );
 ////	savefile.Read( &childID, sizeof( childID ) );
 ////	savefile.Read( &flags, sizeof( this.flags ) );
 ////	savefile.Read( &lastTimeRun, sizeof( lastTimeRun ) );

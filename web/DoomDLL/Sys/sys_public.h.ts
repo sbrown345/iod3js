@@ -215,14 +215,14 @@
 //	M_DELTAZ
 //} sys_mEvents;
 //
-//typedef struct sysEvent_s {
+class sysEvent_t {
 //	sysEventType_t	evType;
 //	int				evValue;
 //	int				evValue2;
 //	int				evPtrLength;		// bytes of data pointed to by evPtr, for journaling
 //	void *			evPtr;				// this must be manually freed if not NULL
-//} sysEvent_t;
-//
+};
+
 //typedef struct sysMemoryStats_s {
 //	int memoryLoad;
 //	int totalPhysical;

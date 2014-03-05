@@ -51,14 +51,14 @@ class idBindWindow extends idWindow {
 ////	virtual size_t Allocated(){ return idWindow::Allocated(); };
 ////	// 
 ////	//  
-////	virtual idWinVar *GetWinVarByName(const char *_name, bool winLookup = false, drawWin_t** owner = NULL);
+////	virtual idWinVar *GetWinVarByName(_name:string, bool winLookup = false, drawWin_t** owner = NULL);
 ////	// 
 ////	virtual void Activate(bool activate, idStr &act);
 ////
 ////private:
 ////	void CommonInit();
 	bindName = new idWinStr;
-	waitingOnKey:boolean;
+	waitingOnKey: boolean;
 ////};
 ////
 ////#endif // __BINDWINDOW_H
@@ -69,102 +69,104 @@ class idBindWindow extends idWindow {
 		this.waitingOnKey = false;
 	}
 
-	constructor(d: idDeviceContext, g: idUserInterfaceLocal)
-	constructor(g: idUserInterfaceLocal)
-	constructor(a1: any, a2?: any) {
-		super();
+	constructor ( d: idDeviceContext, g: idUserInterfaceLocal )
+	constructor ( g: idUserInterfaceLocal )
+	constructor ( a1: any, a2?: any ) {
+		super ( );
 
-		if (arguments.length == 2) {
+		if ( arguments.length == 2 ) {
 			var d = <idDeviceContext>a1, g = <idUserInterfaceLocal>a2;
-			this.ctor2(d, g);
+			this.ctor2( d, g );
 			this.dc = d;
 			this.gui = g;
-			this.CommonInit();
-		} else if (arguments.length == 1) {
+			this.CommonInit ( );
+		} else if ( arguments.length == 1 ) {
 			var g = <idUserInterfaceLocal>a1;
-			this.ctor1(g);
+			this.ctor1( g );
 			this.dc = null;
 			this.gui = g;
-			this.CommonInit();
+			this.CommonInit ( );
 		} else {
-			todoThrow();
+			todoThrow ( );
 		}
 	}
 
-////
-////idBindWindow::~idBindWindow() {
-////
-////}
-////
-////
-////const char *idBindWindow::HandleEvent(const sysEvent_t *event, bool *updateVisuals) {
-////	static char ret[ 256 ];
-////	
-////	if (!(event.evType == SE_KEY && event.evValue2)) {
-////		return "";
-////	}
-////
-////	int key = event.evValue;
-////
-////	if (waitingOnKey) {
-////		waitingOnKey = false;
-////		if (key == K_ESCAPE) {
-////			idStr::snPrintf( ret, sizeof( ret ), "clearbind \"%s\"", bindName.GetName());
-////		} else {
-////			idStr::snPrintf( ret, sizeof( ret ), "bind %i \"%s\"", key, bindName.GetName());
-////		}
-////		return ret;
-////	} else {
-////		if (key == K_MOUSE1) {
-////			waitingOnKey = true;
-////			gui.SetBindHandler(this);
-////			return "";
-////		}
-////	}
-////
-////	return "";
-////}
-////
-////idWinVar *idBindWindow::GetWinVarByName(const char *_name, bool fixup, drawWin_t** owner) {
-////
-////	if (idStr::Icmp(_name, "bind") == 0) {
-////		return &bindName;
-////	}
-////
-////	return idWindow::GetWinVarByName(_name, fixup,owner);
-////}
-////
-////void idBindWindow::PostParse() {
-////	idWindow::PostParse();
-////	bindName.SetGuiInfo( gui.GetStateDict(), bindName );
-////	bindName.Update();
-////	//bindName = state.GetString("bind");
-////	flags |= (WIN_HOLDCAPTURE | WIN_CANFOCUS);
-////}
-////
-////void idBindWindow::Draw(int time, float x, float y) {
-////	idVec4 color = foreColor;
-////
-////	idStr str;
-////	if ( waitingOnKey ) {
-////		str = common.GetLanguageDict().GetString( "#str_07000" );
-////	} else if ( bindName.Length() ) {
-////		str = bindName.c_str();
-////	} else {
-////		str = common.GetLanguageDict().GetString( "#str_07001" );
-////	}
-////
-////	if ( waitingOnKey || ( hover && !noEvents && Contains(gui.CursorX(), gui.CursorY()) ) ) {
-////		color = hoverColor;
-////	} else {
-////		hover = false;
-////	}
-////
-////	dc.DrawText(str, textScale, textAlign, color, textRect, false, -1);
-////}
-////
-////void idBindWindow::Activate( bool activate, idStr &act ) {
-////	idWindow::Activate( activate, act );
-////	bindName.Update();
-////}
+
+	desctructor ( ): void {
+		todoThrow( "need to call base? (or just remove this method)" );
+	}
+
+
+	HandleEvent ( event: sysEvent_t, /*bool **/updateVisuals: R<boolean> ): string {
+		todoThrow ( );
+		//static char ret[ 256 ];
+
+		//if (!(event.evType == SE_KEY && event.evValue2)) {
+		//	return "";
+		//}
+
+		//int key = event.evValue;
+
+		//if (this.waitingOnKey) {
+		//	this.waitingOnKey = false;
+		//	if (key == K_ESCAPE) {
+		//		idStr::snPrintf( ret, sizeof( ret ), "clearbind \"%s\"", this.bindName.GetName());
+		//	} else {
+		//		idStr::snPrintf( ret, sizeof( ret ), "bind %i \"%s\"", key, this.bindName.GetName());
+		//	}
+		//	return ret;
+		//} else {
+		//	if (key == K_MOUSE1) {
+		//		this.waitingOnKey = true;
+		//		this.gui.SetBindHandler(this);
+		//		return "";
+		//	}
+		//}
+
+		return "";
+	}
+	GetWinVarByName(_name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null): idWinVar {
+		if ( idStr.Icmp( _name, "bind" ) == 0 ) {
+			return this.bindName;
+		}
+
+		return super.GetWinVarByName( _name, fixup, owner );
+	}
+
+	PostParse ( ): void {
+		super.PostParse ( );
+		this.bindName.SetGuiInfo( this.gui.GetStateDict ( ), this.bindName.c_str ( ) );
+		this.bindName.Update ( );
+		//this.bindName = state.GetString("bind");
+		this.flags |= ( WIN_HOLDCAPTURE | WIN_CANFOCUS );
+	}
+
+	Draw ( /*int*/ time: number, /*float */x: number, /*float */y: number ): void {
+		var color = new idVec4;
+		color.equals( this.foreColor.data );
+
+		var str = new idStr;
+		if ( this.waitingOnKey ) {
+			str.equals( common.GetLanguageDict ( ).GetString( "#str_07000" ) );
+		} else if ( this.bindName.Length ( ) ) {
+			str.equals( this.bindName.c_str ( ) );
+		} else {
+			str.equals( common.GetLanguageDict ( ).GetString( "#str_07001" ) );
+		}
+
+		if ( this.waitingOnKey || ( this.hover && !this.noEvents && this.Contains( this.gui.CursorX ( ), this.gui.CursorY ( ) ) ) ) {
+			color.equals( this.hoverColor.data );
+		} else {
+			this.hover = false;
+		}
+
+		todoThrow( "DrawText macro here:" );
+		//this.dc.DrawText( str, this.textScale, this.textAlign, color, this.textRect, false, -1 );
+	}
+
+	Activate ( activate: boolean, act: idStr ): void {
+
+		super.Activate( activate, act );
+		this.bindName.Update ( );
+	}
 }
