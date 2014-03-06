@@ -82,7 +82,7 @@ class idWinVar implements ITrackedObject {
 ////	virtual void Init(_name:string, idWindow* win) = 0;
 	Set ( val: string ): void { throw "placeholder"; }
 	Update ( ): void { throw "placeholder"; }
-////	virtual const char *c_str() const = 0;
+	c_str ( ): string{ throw "placeholder"; }
 ////	virtual size_t Size() {	size_t sz = (this.name) ? strlen(this.name) : 0; return sz + sizeof(*this); }
 ////
 ////	virtual void WriteToSaveGame( idFile *savefile ) = 0;
