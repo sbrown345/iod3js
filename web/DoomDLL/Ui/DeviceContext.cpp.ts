@@ -888,38 +888,40 @@ Init():void {
 //	glyph = &font.glyphs[(const unsigned char)c];
 //	return idMath::FtoiFast( glyph.xSkip * useScale );
 //}
-//
-//int idDeviceContext::TextWidth( text:string, float scale, int limit ) {
-//	int i, width;
-//
-//	SetFontByScale( scale );
-//	const glyphInfo_t *glyphs = useFont.glyphs;
-//
-//	if ( text == NULL ) {
-//		return 0;
-//	}
-//
-//	width = 0;
-//	if ( limit > 0 ) {
-//		for ( i = 0; text[i] != '\0' && i < limit; i++ ) {
-//			if ( idStr::IsColor( text + i ) ) {
-//				i++;
-//			} else {
-//				width += glyphs[((const unsigned char *)text)[i]].xSkip;
-//			}
-//		}
-//	} else {
-//		for ( i = 0; text[i] != '\0'; i++ ) {
-//			if ( idStr::IsColor( text + i ) ) {
-//				i++;
-//			} else {
-//				width += glyphs[((const unsigned char *)text)[i]].xSkip;
-//			}
-//		}
-//	}
-//	return idMath::FtoiFast( scale * useFont.glyphScale * width );
-//}
-//
+
+	/*int*/
+	TextWidth ( text: string, /*float */scale: number, /*int */limit: number ): number {
+		todoThrow ( );
+		//int i, width;
+
+		//SetFontByScale( scale );
+		//const glyphInfo_t *glyphs = useFont.glyphs;
+
+		//if ( text == NULL ) {
+		//	return 0;
+		//}
+
+		//width = 0;
+		//if ( limit > 0 ) {
+		//	for ( i = 0; text[i] != '\0' && i < limit; i++ ) {
+		//		if ( idStr::IsColor( text + i ) ) {
+		//			i++;
+		//		} else {
+		//			width += glyphs[((const unsigned char *)text)[i]].xSkip;
+		//		}
+		//	}
+		//} else {
+		//	for ( i = 0; text[i] != '\0'; i++ ) {
+		//		if ( idStr::IsColor( text + i ) ) {
+		//			i++;
+		//		} else {
+		//			width += glyphs[((const unsigned char *)text)[i]].xSkip;
+		//		}
+		//	}
+		//}
+		//return idMath::FtoiFast( scale * useFont.glyphScale * width );}
+	}
+
 //int idDeviceContext::TextHeight(text:string, float scale, int limit) {
 //	int			len, count;
 //	float		max;

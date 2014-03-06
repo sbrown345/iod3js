@@ -40,7 +40,7 @@
 ////#include "Window.h"
 ////
 ////
-////class idFieldWindow : public idWindow {
+class idFieldWindow extends idWindow {
 ////public:
 ////	idFieldWindow(idUserInterfaceLocal *gui);
 ////	idFieldWindow(idDeviceContext *d, idUserInterfaceLocal *gui);
@@ -52,82 +52,96 @@
 ////	virtual bool ParseInternalVar(const char *name, idParser *src);
 ////	void CommonInit();
 ////	void CalcPaintOffset(int len);
-////	int cursorPos;
-////	int lastTextLength;
-////	int lastCursorPos;
-////	int paintOffset;
-////	bool showCursor;
-////	idStr cursorVar;
+	cursorPos: number /*int*/;
+	lastTextLength: number /*int*/;
+	lastCursorPos: number /*int*/;
+	paintOffset: number /*int*/;
+	showCursor: boolean;
+	cursorVar = new idStr;
 ////};
-////
+
 ////#endif // __FIELDWINDOW_H
 ////
-////
-////void idFieldWindow::CommonInit() {
-////	cursorPos = 0;
-////	lastTextLength = 0;
-////	lastCursorPos = 0;
-////	paintOffset = 0;
-////	showCursor = false;
-////}
-////
-////idFieldWindow::idFieldWindow(idDeviceContext *d, idUserInterfaceLocal *g) : idWindow(d, g) {
-////	dc = d;
-////	gui = g;
-////	CommonInit();
-////}
-////
-////idFieldWindow::idFieldWindow(idUserInterfaceLocal *g) : idWindow(g) {
-////	gui = g;
-////	CommonInit();
-////}
-////
-////idFieldWindow::~idFieldWindow() {
-////
-////}
-////
-////bool idFieldWindow::ParseInternalVar(_name:string, idParser *src) {
-////	if (idStr::Icmp(_name, "cursorvar") == 0) {
-////		ParseString(src, cursorVar);
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "showcursor") == 0) {
-////		showCursor = src->ParseBool();
-////		return true;
-////	}
-////	return idWindow::ParseInternalVar(_name, src);
-////}
-////
-////
-////void idFieldWindow::CalcPaintOffset(int len) {
-////	lastCursorPos = cursorPos;
-////	lastTextLength = len;
-////	paintOffset = 0;
-////	int tw = dc->TextWidth(text, textScale, -1);
-////	if (tw < textRect.w) {
-////		return;
-////	}
-////	while (tw > textRect.w && len > 0) {
-////		tw = dc->TextWidth(text, textScale, --len);
-////		paintOffset++;
-////	}
-////}
-////
-////
-////void idFieldWindow::Draw(int time, float x, float y) {
-////	float scale = textScale;
-////	int len = text.Length();
-////	cursorPos = gui->State().GetInt( cursorVar );
-////	if (len != lastTextLength || cursorPos != lastCursorPos) {
-////		CalcPaintOffset(len);
-////	}
-////	idRectangle rect = textRect;
-////	if (paintOffset >= len) {
-////		paintOffset = 0;
-////	}
-////	if (cursorPos > len) {
-////		cursorPos = len;
-////	}
-////	dc->DrawText(&text[paintOffset], scale, 0, foreColor, rect, false, ((flags & WIN_FOCUS) || showCursor) ? cursorPos - paintOffset : -1);
-////}
-////
+
+	CommonInit ( ): void {
+		this.cursorPos = 0;
+		this.lastTextLength = 0;
+		this.lastCursorPos = 0;
+		this.paintOffset = 0;
+		this.showCursor = false;
+	}
+
+	constructor ( d: idDeviceContext, g: idUserInterfaceLocal )
+	constructor ( g: idUserInterfaceLocal )
+	constructor ( a1: any, a2?: any ) {
+		super ( );
+
+		if ( arguments.length == 2 ) {
+			var d = <idDeviceContext>a1, g = <idUserInterfaceLocal>a2;
+			this.ctor2( d, g );
+			this.dc = d;
+			this.gui = g;
+			this.CommonInit ( );
+		} else if ( arguments.length == 1 ) {
+			var g = <idUserInterfaceLocal>a1;
+			this.ctor1( g );
+			this.dc = null;
+			this.gui = g;
+			this.CommonInit ( );
+		} else {
+			todoThrow ( );
+		}
+	}
+
+
+	destructor ( ): void {
+		todoThrow( "need to call base? (or just remove this method)" );
+	}
+
+	ParseInternalVar ( _name: string, src: idParser ): boolean {
+		if ( idStr.Icmp( _name, "cursorvar" ) == 0 ) {
+			this.ParseString( src, this.cursorVar );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "showcursor" ) == 0 ) {
+			this.showCursor = src.ParseBool ( );
+			return true;
+		}
+		return super.ParseInternalVar( _name, src );
+	}
+
+
+	CalcPaintOffset ( /*int */len: number ): void {
+		this.lastCursorPos = this.cursorPos;
+		this.lastTextLength = len;
+		this.paintOffset = 0;
+		var /*int */tw = this.dc.TextWidth( this.text.c_str ( ), this.textScale.data, -1 );
+		if ( tw < this.textRect.w ) {
+			return;
+		}
+		while ( tw > this.textRect.w && len > 0 ) {
+			tw = this.dc.TextWidth( this.text.c_str ( ), this.textScale.data, --len );
+			this.paintOffset++;
+		}
+	}
+
+
+	Draw ( /*int*/ time: number, /*float */x: number, /*float */y: number ): void {
+		var scale = this.textScale.data; //float
+		var /*int*/ len = this.text.Length ( );
+		this.cursorPos = this.gui.State ( ).GetInt( this.cursorVar.c_str() );
+		if ( len != this.lastTextLength || this.cursorPos != this.lastCursorPos ) {
+			this.CalcPaintOffset( len );
+		}
+		var rect = this.textRect;
+		if ( this.paintOffset >= len ) {
+			this.paintOffset = 0;
+		}
+		if ( this.cursorPos > len ) {
+			this.cursorPos = len;
+		}
+		todoThrow ( );
+		//this.dc.DrawText(&text[paintOffset], scale, 0, foreColor, rect, false, ((flags & WIN_FOCUS) || showCursor) ? cursorPos - paintOffset : -1);
+	}
+
+}

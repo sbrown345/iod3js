@@ -400,10 +400,10 @@ class idUserInterfaceLocal extends idUserInterface {
 //	}
 //}
 //
-//const idDict &idUserInterfaceLocal::State() const {
-//	return state;
-//}
-//
+	State ( ): idDict {
+		return this.state;
+	}
+
 //void idUserInterfaceLocal::DeleteStateVar( const char *varName ) {
 //	state.Delete( varName );
 //}
