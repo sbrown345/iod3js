@@ -55,12 +55,12 @@ class idRenderWindow extends idWindow {
 ////	void PreRender();
 ////	void BuildAnimation(int time);
 ////	refdef = new renderView_t;
-	world:idRenderWorld;
+	world: idRenderWorld;
 	worldEntity = new renderEntity_t;
 	rLight = new renderLight_t;
-	modelAnim:idMD5Anim;
-	
-	worldModelDef:number /*qhandle_t int*/;
+	modelAnim: idMD5Anim;
+
+	worldModelDef: number /*qhandle_t int*/;
 	lightDef: number /*qhandle_t int*/;
 	modelDef: number /*qhandle_t int*/;
 	modelName = new idWinStr;
@@ -72,33 +72,33 @@ class idRenderWindow extends idWindow {
 	modelRotate = new idWinVec4;
 	viewOffset = new idWinVec4;
 	needsRender = new idWinBool;
-	animLength:number /*int*/;
-	animEndTime:number /*int*/;
+	animLength: number /*int*/;
+	animEndTime: number /*int*/;
 	updateAnimation: boolean;
 
-	constructor(d: idDeviceContext, g: idUserInterfaceLocal)
-	constructor(g: idUserInterfaceLocal)
-	constructor(a1: any, a2?: any) {
-		super();
+	constructor ( d: idDeviceContext, g: idUserInterfaceLocal )
+	constructor ( g: idUserInterfaceLocal )
+	constructor ( a1: any, a2?: any ) {
+		super ( );
 
-		if (arguments.length == 2) {
+		if ( arguments.length == 2 ) {
 			var d = <idDeviceContext>a1, g = <idUserInterfaceLocal>a2;
-			this.ctor2(d, g);
+			this.ctor2( d, g );
 			this.dc = d;
 			this.gui = g;
-			this.CommonInit();
-		} else if (arguments.length == 1) {
+			this.CommonInit ( );
+		} else if ( arguments.length == 1 ) {
 			var g = <idUserInterfaceLocal>a1;
-			this.ctor1(g);
+			this.ctor1( g );
 			this.dc = null;
 			this.gui = g;
-			this.CommonInit();
+			this.CommonInit ( );
 		} else {
-			todoThrow();
+			todoThrow ( );
 		}
 	}
 
-	destructor ( ):void {
+	destructor ( ): void {
 		todoThrow( "renderSystem.FreeRenderWorld( this.world );" );
 	}
 
@@ -192,7 +192,8 @@ class idRenderWindow extends idWindow {
 ////
 ////
 ////
-////void idRenderWindow::Draw(int time, float x, float y) {
+	Draw ( /*int*/ time: number, /*float */x: number, /*float */y: number ): void {
+		todoThrow ( );
 ////	PreRender();
 ////	Render(time);
 ////
@@ -215,7 +216,7 @@ class idRenderWindow extends idWindow {
 ////
 ////	refdef.time = time;
 ////	world.RenderScene(&refdef);
-////}
+	}
 ////
 ////void idRenderWindow::PostParse() {
 ////	idWindow::PostParse();
@@ -223,42 +224,38 @@ class idRenderWindow extends idWindow {
 ////
 ////// 
 //////  
-	//GetWinVarByName ( _name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null): idWinVar {
-////idWinVar *idRenderWindow::GetWinVarByName(_name:string, fixup:boolean, drawWin_t** owner ) {
+	GetWinVarByName ( _name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null ): idWinVar {
 ////// 
-////	if (idStr::Icmp(_name, "model") == 0) {
+////	if (idStr.Icmp(_name, "model") == 0) {
 ////		return &modelName;
 ////	}
-////	if (idStr::Icmp(_name, "anim") == 0) {
+////	if (idStr.Icmp(_name, "anim") == 0) {
 ////		return &animName;
 ////	}
-////	if (idStr::Icmp(_name, "lightOrigin") == 0) {
+////	if (idStr.Icmp(_name, "lightOrigin") == 0) {
 ////		return &lightOrigin;
 ////	}
-////	if (idStr::Icmp(_name, "lightColor") == 0) {
+////	if (idStr.Icmp(_name, "lightColor") == 0) {
 ////		return &lightColor;
 ////	}
-////	if (idStr::Icmp(_name, "modelOrigin") == 0) {
+////	if (idStr.Icmp(_name, "modelOrigin") == 0) {
 ////		return &modelOrigin;
 ////	}
-////	if (idStr::Icmp(_name, "modelRotate") == 0) {
+////	if (idStr.Icmp(_name, "modelRotate") == 0) {
 ////		return &modelRotate;
 ////	}
-////	if (idStr::Icmp(_name, "viewOffset") == 0) {
+////	if (idStr.Icmp(_name, "viewOffset") == 0) {
 ////		return &viewOffset;
 ////	}
-////	if (idStr::Icmp(_name, "needsRender") == 0) {
+////	if (idStr.Icmp(_name, "needsRender") == 0) {
 ////		return &needsRender;
 ////	}
-////
-////// 
-//////  
-////	return idWindow::GetWinVarByName(_name, fixup, owner);
-////// 
-////}
-////
+
+		return super.GetWinVarByName( _name, fixup, owner );
+	}
+
 ////bool idRenderWindow::ParseInternalVar(_name:string, idParser *src) {
-////	if (idStr::Icmp(_name, "animClass") == 0) {
+////	if (idStr.Icmp(_name, "animClass") == 0) {
 ////		ParseString(src, animClass);
 ////		return true;
 ////	}

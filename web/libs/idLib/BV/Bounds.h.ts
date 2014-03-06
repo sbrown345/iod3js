@@ -111,8 +111,18 @@ class idBounds {
 
 //extern idBounds	bounds_zero;
 	
-	constructor ( ) {
-		this.b = [new idVec3, new idVec3];
+	constructor ( )
+	constructor(mins: idVec3, maxs: idVec3)
+	constructor(mins?: idVec3, maxs?: idVec3) {
+		if ( arguments.length == 0 ) {
+			this.b = [new idVec3, new idVec3];
+		} else if (arguments.length == 1) {
+			todoThrow ( );
+		}else if ( arguments.length == 2 ) {
+			todoThrow ( );
+		} else {
+			todoThrow();
+		}
 	}
 
 //ID_INLINE idBounds::idBounds( const idVec3 &mins, const idVec3 &maxs ) {

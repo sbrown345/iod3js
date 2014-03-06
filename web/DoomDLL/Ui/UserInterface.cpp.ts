@@ -346,9 +346,9 @@ class idUserInterfaceLocal extends idUserInterface {
 
 		return true;
 	}
-//
-//const char *idUserInterfaceLocal::HandleEvent( const sysEvent_t *event, int _time, bool *updateVisuals ) {
-//
+
+	HandleEvent ( event: sysEvent_t, /*bool **/updateVisuals: R<boolean> ): string {
+		todoThrow ( );
 //	time = _time;
 //
 //	if ( this.bindHandler && event.evType == SE_KEY && event.evValue2 == 1 ) {
@@ -373,8 +373,8 @@ class idUserInterfaceLocal extends idUserInterface {
 //		return this.desktop.HandleEvent( event, updateVisuals );
 //	} 
 //
-//	return "";
-//}
+		return "";
+	}
 //
 //void idUserInterfaceLocal::HandleNamedEvent ( const char* eventName ) {
 //	this.desktop.RunNamedEvent( eventName );

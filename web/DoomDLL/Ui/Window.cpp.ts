@@ -625,7 +625,8 @@ idWindow::~idWindow
 ////idWindow::Draw
 ////================
 ////*/
-////Draw( int time, float x, float y ):void {
+	Draw( /*int*/ time: number, /*float */x: number, /*float */y: number): void {
+		todoThrow ( );
 ////	if ( text.Length() == 0 ) {
 ////		return;
 ////	}
@@ -648,7 +649,7 @@ idWindow::~idWindow
 ////		this.dc.EnableClipping( true );
 ////	}
 ////
-////}
+	}
 ////
 /////*
 ////================
@@ -1013,7 +1014,10 @@ idWindow::Contains
 ////idWindow::HandleEvent
 ////================
 ////*/
-////const char *idWindow::HandleEvent(const sysEvent_t *event, bool *updateVisuals) {
+
+	HandleEvent(event: sysEvent_t, /*bool **/updateVisuals: R<boolean>): string {
+		todoThrow();
+		return "TODO idWindow::HandleEvent";
 ////	static bool actionDownRun;
 ////	static bool actionUpRun;
 ////
@@ -1256,7 +1260,7 @@ idWindow::Contains
 ////	}
 ////	cmd = "";
 ////	return this.gui.GetReturnCmd();
-////}
+	}
 ////
 /////*
 ////================
@@ -2229,133 +2233,133 @@ idWindow::ParseInternalVar
 */
 	ParseInternalVar ( _name: string, src: idParser ): boolean {
 
-	if (idStr.Icmp(_name, "showtime") == 0) {
-		if ( src.ParseBool() ) {
-			this.flags |= WIN_SHOWTIME;
+		if ( idStr.Icmp( _name, "showtime" ) == 0 ) {
+			if ( src.ParseBool ( ) ) {
+				this.flags |= WIN_SHOWTIME;
+			}
+			return true;
 		}
-		return true;
-	}
-	if (idStr.Icmp(_name, "showcoords") == 0) {
-		if ( src.ParseBool() ) {
-			this.flags |= WIN_SHOWCOORDS;
+		if ( idStr.Icmp( _name, "showcoords" ) == 0 ) {
+			if ( src.ParseBool ( ) ) {
+				this.flags |= WIN_SHOWCOORDS;
+			}
+			return true;
 		}
-		return true;
-	}
-	if (idStr.Icmp(_name, "forceaspectwidth") == 0) {
-		this.forceAspectWidth = src.ParseFloat();
-		return true;
-	}
-	if (idStr.Icmp(_name, "forceaspectheight") == 0) {
-		this.forceAspectHeight = src.ParseFloat();
-		return true;
-	}
-	if (idStr.Icmp(_name, "matscalex") == 0) {
-		this.matScalex = src.ParseFloat();
-		return true;
-	}
-	if (idStr.Icmp(_name, "matscaley") == 0) {
-		this.matScaley = src.ParseFloat();
-		return true;
-	}
-	if (idStr.Icmp(_name, "bordersize") == 0) {
-		this.borderSize = src.ParseFloat();
-		return true;
-	}
-	if (idStr.Icmp(_name, "nowrap") == 0) {
-		if ( src.ParseBool() ) {
-			this.flags |= WIN_NOWRAP;
+		if ( idStr.Icmp( _name, "forceaspectwidth" ) == 0 ) {
+			this.forceAspectWidth = src.ParseFloat ( );
+			return true;
 		}
-		return true;
-	}
-	if (idStr.Icmp(_name, "shadow") == 0) {
-		this.textShadow = src.ParseInt();
-		return true;
-	}
-	if (idStr.Icmp(_name, "textalign") == 0) {
-		this.textAlign = src.ParseInt();
-		return true;
-	}
-	if (idStr.Icmp(_name, "textalignx") == 0) {
-		this.textAlignx = src.ParseFloat();
-		return true;
-	}
-	if (idStr.Icmp(_name, "textaligny") == 0) {
-		this.textAligny = src.ParseFloat();
-		return true;
-	}
-	if (idStr.Icmp(_name, "shear") == 0) {
-		this.shear.x = src.ParseFloat();
-		var tok = new idToken;
-		src.ReadToken( tok );
-		if ( tok.Icmp( "," ) ) {
-			src.Error( "Expected comma in shear definiation" );
-			return false;
+		if ( idStr.Icmp( _name, "forceaspectheight" ) == 0 ) {
+			this.forceAspectHeight = src.ParseFloat ( );
+			return true;
 		}
-		this.shear.y = src.ParseFloat();
-		return true;
-	}
-	if (idStr.Icmp(_name, "wantenter") == 0) {
-		if ( src.ParseBool() ) {
-			this.flags |= WIN_WANTENTER;
+		if ( idStr.Icmp( _name, "matscalex" ) == 0 ) {
+			this.matScalex = src.ParseFloat ( );
+			return true;
 		}
-		return true;
-	}
-	if (idStr.Icmp(_name, "naturalmatscale") == 0) {
-		if ( src.ParseBool() ) {
-			this.flags |= WIN_NATURALMAT;
+		if ( idStr.Icmp( _name, "matscaley" ) == 0 ) {
+			this.matScaley = src.ParseFloat ( );
+			return true;
 		}
-		return true;
-	}
-	if (idStr.Icmp(_name, "noclip") == 0) {
-		if ( src.ParseBool() ) {
-			this.flags |= WIN_NOCLIP;
+		if ( idStr.Icmp( _name, "bordersize" ) == 0 ) {
+			this.borderSize = src.ParseFloat ( );
+			return true;
 		}
-		return true;
-	}
-	if (idStr.Icmp(_name, "nocursor") == 0) {
-		if ( src.ParseBool() ) {
-			this.flags |= WIN_NOCURSOR;
+		if ( idStr.Icmp( _name, "nowrap" ) == 0 ) {
+			if ( src.ParseBool ( ) ) {
+				this.flags |= WIN_NOWRAP;
+			}
+			return true;
 		}
-		return true;
-	}
-	if (idStr.Icmp(_name, "menugui") == 0) {
-		if ( src.ParseBool() ) {
-			this.flags |= WIN_MENUGUI;
+		if ( idStr.Icmp( _name, "shadow" ) == 0 ) {
+			this.textShadow = src.ParseInt ( );
+			return true;
 		}
-		return true;
-	}
-	if (idStr.Icmp(_name, "modal") == 0) {
-		if ( src.ParseBool() ) {
-			this.flags |= WIN_MODAL;
+		if ( idStr.Icmp( _name, "textalign" ) == 0 ) {
+			this.textAlign = src.ParseInt ( );
+			return true;
 		}
-		return true;
-	}
-	if (idStr.Icmp(_name, "invertrect") == 0) {
-		if ( src.ParseBool() ) {
-			this.flags |= WIN_INVERTRECT;
+		if ( idStr.Icmp( _name, "textalignx" ) == 0 ) {
+			this.textAlignx = src.ParseFloat ( );
+			return true;
 		}
-		return true;
-	}
-	if (idStr.Icmp(_name, "name") == 0) {
-		this.ParseString(src, this.name);
-		return true;
-	}
-	if (idStr.Icmp(_name, "play") == 0) {
-		common.Warning( "play encountered during gui parse.. see Robert\n" );
-		var playStr = new idStr;
-		this.ParseString(src, playStr);
-		return true;
-	}
-	if (idStr.Icmp(_name, "comment") == 0) {
-		this.ParseString(src, this.comment);
-		return true;
-	}
-	if ( idStr.Icmp( _name, "font" ) == 0 ) {
-		var fontStr = new idStr;
-		this.ParseString( src, fontStr );
-		this.fontNum = this.dc.FindFont( fontStr.data );
-		return true;
-	}
+		if ( idStr.Icmp( _name, "textaligny" ) == 0 ) {
+			this.textAligny = src.ParseFloat ( );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "shear" ) == 0 ) {
+			this.shear.x = src.ParseFloat ( );
+			var tok = new idToken;
+			src.ReadToken( tok );
+			if ( tok.Icmp( "," ) ) {
+				src.Error( "Expected comma in shear definiation" );
+				return false;
+			}
+			this.shear.y = src.ParseFloat ( );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "wantenter" ) == 0 ) {
+			if ( src.ParseBool ( ) ) {
+				this.flags |= WIN_WANTENTER;
+			}
+			return true;
+		}
+		if ( idStr.Icmp( _name, "naturalmatscale" ) == 0 ) {
+			if ( src.ParseBool ( ) ) {
+				this.flags |= WIN_NATURALMAT;
+			}
+			return true;
+		}
+		if ( idStr.Icmp( _name, "noclip" ) == 0 ) {
+			if ( src.ParseBool ( ) ) {
+				this.flags |= WIN_NOCLIP;
+			}
+			return true;
+		}
+		if ( idStr.Icmp( _name, "nocursor" ) == 0 ) {
+			if ( src.ParseBool ( ) ) {
+				this.flags |= WIN_NOCURSOR;
+			}
+			return true;
+		}
+		if ( idStr.Icmp( _name, "menugui" ) == 0 ) {
+			if ( src.ParseBool ( ) ) {
+				this.flags |= WIN_MENUGUI;
+			}
+			return true;
+		}
+		if ( idStr.Icmp( _name, "modal" ) == 0 ) {
+			if ( src.ParseBool ( ) ) {
+				this.flags |= WIN_MODAL;
+			}
+			return true;
+		}
+		if ( idStr.Icmp( _name, "invertrect" ) == 0 ) {
+			if ( src.ParseBool ( ) ) {
+				this.flags |= WIN_INVERTRECT;
+			}
+			return true;
+		}
+		if ( idStr.Icmp( _name, "name" ) == 0 ) {
+			this.ParseString( src, this.name );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "play" ) == 0 ) {
+			common.Warning( "play encountered during gui parse.. see Robert\n" );
+			var playStr = new idStr;
+			this.ParseString( src, playStr );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "comment" ) == 0 ) {
+			this.ParseString( src, this.comment );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "font" ) == 0 ) {
+			var fontStr = new idStr;
+			this.ParseString( src, fontStr );
+			this.fontNum = this.dc.FindFont( fontStr.data );
+			return true;
+		}
 		return false;
 	}
 
@@ -2366,10 +2370,10 @@ idWindow::ParseRegEntry
 */
 	ParseRegEntry ( name: string, src: idParser ): boolean {
 		var work = new idStr;
-		work.equals(name);
-		work.ToLower();
+		work.equals( name );
+		work.ToLower ( );
 
-		var $var = this.GetWinVarByName(work.data, null);
+		var $var = this.GetWinVarByName( work.data, null );
 		if ( $var ) {
 			for ( var i = 0; i < idWindow.NumRegisterVars; i++ ) {
 				if ( idStr.Icmp( work, idWindow.RegisterVars[i].name ) == 0 ) {
@@ -2385,36 +2389,36 @@ idWindow::ParseRegEntry
 		var vari: idWinInt;
 		var varf: idWinFloat;
 		var vars: idWinStr;
-		if (src.ReadToken(tok)) {
-			if ($var) {
-				$var.Set(tok.data);
+		if ( src.ReadToken( tok ) ) {
+			if ( $var ) {
+				$var.Set( tok.data );
 				return true;
 			}
-			switch (tok.type) {
-				case TT_NUMBER : 
-					if (tok.subtype & TT_INTEGER) {
-						vari = new idWinInt();
-						vari.equalsInt( atoi( tok.data ) );
-						vari.SetName(work.data);
-						this.definedVars.Append(vari);
-					} else if (tok.subtype & TT_FLOAT) {
-						varf = new idWinFloat();
-						varf.equalsFloat( atof( tok.data ) );
-						varf.SetName(work.data);
-						this.definedVars.Append(varf);
-					} else {
-						vars = new idWinStr();
-						vars.equalsStr(tok);
-						vars.SetName(work.data);
-						this.definedVars.Append(vars);
-					}
-					break;
-				default :
-					vars = new idWinStr();
-					vars.equalsStr(tok);
-					vars.SetName(work.data);
-					this.definedVars.Append(vars);
-					break;
+			switch ( tok.type ) {
+			case TT_NUMBER:
+				if ( tok.subtype & TT_INTEGER ) {
+					vari = new idWinInt ( );
+					vari.equalsInt( atoi( tok.data ) );
+					vari.SetName( work.data );
+					this.definedVars.Append( vari );
+				} else if ( tok.subtype & TT_FLOAT ) {
+					varf = new idWinFloat ( );
+					varf.equalsFloat( atof( tok.data ) );
+					varf.SetName( work.data );
+					this.definedVars.Append( varf );
+				} else {
+					vars = new idWinStr ( );
+					vars.equalsStr( tok );
+					vars.SetName( work.data );
+					this.definedVars.Append( vars );
+				}
+				break;
+			default:
+				vars = new idWinStr ( );
+				vars.equalsStr( tok );
+				vars.SetName( work.data );
+				this.definedVars.Append( vars );
+				break;
 			}
 		}
 

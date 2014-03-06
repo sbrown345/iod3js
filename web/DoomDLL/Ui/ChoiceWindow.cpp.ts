@@ -428,7 +428,8 @@ idChoiceWindow::CommonInit
 ////	flags |= WIN_CANFOCUS;
 ////}
 ////
-////void idChoiceWindow::Draw(int time, float x, float y) {
+	Draw ( /*int*/ time: number, /*float */x: number, /*float */y: number ): void {
+		todoThrow ( );
 ////	idVec4 color = foreColor;
 ////
 ////	UpdateChoicesAndVals();
@@ -466,5 +467,5 @@ idChoiceWindow::CommonInit
 ////		// sets the gui state based on the current choice the window contains
 ////		UpdateChoice();
 ////	}
-////}
+	}
 }

@@ -85,7 +85,7 @@ class idSliderWindow extends idWindow {
 		buddyWin:idWindow;
 		thumbShader = new idStr;
 		
-		cvarStr = idWinStr;
+		cvarStr = new idWinStr;
 		cvar:idCVar;
 		cvar_init:boolean;
 		liveUpdate = new idWinBool;
@@ -141,61 +141,60 @@ CommonInit():void {
 	destructor(): void {
 		todoThrow("need to call base? (or just remove this method)");
 	}
-////
-////bool idSliderWindow::ParseInternalVar(_name:string, idParser *src) {
-////	if (idStr::Icmp(_name, "stepsize") == 0 || idStr::Icmp(_name, "step") == 0) {
-////		stepSize = src.ParseFloat();
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "low") == 0) {
-////		low = src.ParseFloat();
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "high") == 0) {
-////		high = src.ParseFloat();
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "vertical") == 0) {
-////		vertical = src.ParseBool();
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "verticalflip") == 0) {
-////		verticalFlip = src.ParseBool();
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "scrollbar") == 0) {
-////		scrollbar = src.ParseBool();
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "thumbshader") == 0) {
-////		ParseString(src, thumbShader);
-////		declManager.FindMaterial(thumbShader);
-////		return true;
-////	}
-////	return idWindow::ParseInternalVar(_name, src);
-////}
-////
-//GetWinVarByName ( _name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null): idWinVar {
-////idWinVar *idSliderWindow::GetWinVarByName(_name:string, fixup:boolean, drawWin_t** owner) {
-//// 
-////	if (idStr::Icmp(_name, "value") == 0) {
-////		return &value;
-////	}
-////	if (idStr::Icmp(_name, "cvar") == 0) {
-////		return &cvarStr;
-////	}
-////	if ( idStr::Icmp( _name, "liveUpdate" ) == 0 ) {
-////		return &liveUpdate;
-////	}
-////	if ( idStr::Icmp( _name, "cvarGroup" ) == 0 ) {
-////		return &cvarGroup;
-////	}
-////	
-////	return idWindow::GetWinVarByName(_name, fixup, owner);
-////}
-////
-////const char *idSliderWindow::HandleEvent(const sysEvent_t *event, bool *updateVisuals) {
-////
+
+	ParseInternalVar ( _name: string, src: idParser ): boolean {
+		if ( idStr.Icmp( _name, "stepsize" ) == 0 || idStr.Icmp( _name, "step" ) == 0 ) {
+			this.stepSize = src.ParseFloat ( );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "low" ) == 0 ) {
+			this.low = src.ParseFloat ( );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "high" ) == 0 ) {
+			this.high = src.ParseFloat ( );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "vertical" ) == 0 ) {
+			this.vertical = src.ParseBool ( );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "verticalflip" ) == 0 ) {
+			this.verticalFlip = src.ParseBool ( );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "scrollbar" ) == 0 ) {
+			this.scrollbar = src.ParseBool ( );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "thumbshader" ) == 0 ) {
+			this.ParseString( src, this.thumbShader );
+			declManager.FindMaterial( this.thumbShader.c_str ( ) );
+			return true;
+		}
+		return super.ParseInternalVar( _name, src );
+	}
+
+	GetWinVarByName ( _name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null ): idWinVar {
+
+		if ( idStr.Icmp( _name, "value" ) == 0 ) {
+			return this.value;
+		}
+		if ( idStr.Icmp( _name, "cvar" ) == 0 ) {
+			return this.cvarStr;
+		}
+		if ( idStr.Icmp( _name, "liveUpdate" ) == 0 ) {
+			return this.liveUpdate;
+		}
+		if ( idStr.Icmp( _name, "cvarGroup" ) == 0 ) {
+			return this.cvarGroup;
+		}
+
+		return super.GetWinVarByName( _name, fixup, owner );
+	}
+
+	HandleEvent ( event: sysEvent_t, /*bool **/updateVisuals: R<boolean> ): string {
+		todoThrow ( );
 ////	if (!(event.evType == SE_KEY && event.evValue2)) {
 ////		return "";
 ////	}
@@ -223,8 +222,8 @@ CommonInit():void {
 ////		UpdateCvar( false );
 ////	}
 ////
-////	return "";
-////}
+		return "";
+	}
 ////
 ////
 ////void idSliderWindow::SetBuddy(idWindow *buddy) {
@@ -270,7 +269,8 @@ CommonInit():void {
 ////	value = _value;
 ////}
 ////
-////void idSliderWindow::Draw(int time, float x, float y) {
+	Draw( /*int*/ time: number, /*float */x: number, /*float */y: number): void {
+		todoThrow ( );
 ////	idVec4 color = foreColor;
 ////
 ////	if ( !cvar && !buddyWin ) {
@@ -327,7 +327,7 @@ CommonInit():void {
 ////	if ( flags & WIN_FOCUS ) {
 ////		dc.DrawRect(thumbRect.x+1.0f, thumbRect.y+1.0f, thumbRect.w-2.0f, thumbRect.h-2.0f, 1.0f, color);
 ////	}
-////}
+}
 ////
 ////
 ////void idSliderWindow::DrawBackground(const idRectangle &_drawRect) {
@@ -485,4 +485,4 @@ CommonInit():void {
 ////	}
 ////}
 ////
-}
+	}

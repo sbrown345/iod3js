@@ -95,7 +95,7 @@ class idList<type> {
 	private initEmptyOnResize: boolean; // new up when Resizing/Allocating. this makes it work with a list of references and classes/structs (otherwise idList<R<idDeclType>> this is a bit overkill)
 	private listOfReferences: boolean;
 
-	constructor ( type: any, initEmptyOnResize = false, newgranularity: number = 16, listOfReferences = false ) {
+	constructor ( type: any, initEmptyOnResize = false, newgranularity: number = 16, listOfReferences:boolean = false ) {
 		assert( typeof type !== "number" ); // new type arg not to be confused with newgranularity
 		this.type = type;
 		this.initEmptyOnResize = initEmptyOnResize;

@@ -892,6 +892,9 @@ Init():void {
 	/*int*/
 	TextWidth ( text: string, /*float */scale: number, /*int */limit: number ): number {
 		todoThrow ( );
+		return -999999999999999999999999;
+
+
 		//int i, width;
 
 		//SetFontByScale( scale );

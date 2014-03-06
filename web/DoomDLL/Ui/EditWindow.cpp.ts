@@ -105,59 +105,59 @@ class idEditWindow extends idWindow {
 ////
 ////#endif /* !__EDITWINDOW_H__ */
 ////
-////
-////bool idEditWindow::ParseInternalVar( _name:string, idParser *src ) {
-////	if ( idStr::Icmp( _name, "maxchars" ) == 0) {
-////		maxChars = src.ParseInt();
-////		return true;
-////	}
-////	if ( idStr::Icmp( _name, "numeric" ) == 0) {
-////		numeric = src.ParseBool();
-////		return true;
-////	}
-////	if ( idStr::Icmp( _name, "wrap" ) == 0) {
-////		wrap = src.ParseBool();
-////		return true;
-////	}
-////	if ( idStr::Icmp( _name, "readonly" ) == 0) {
-////		readonly = src.ParseBool();
-////		return true;
-////	}
-////	if ( idStr::Icmp( _name, "forceScroll" ) == 0) {
-////		forceScroll = src.ParseBool();
-////		return true;
-////	}
-////	if ( idStr::Icmp( _name, "source" ) == 0) {
-////		ParseString( src, sourceFile );
-////		return true;
-////	}
-////	if ( idStr::Icmp( _name, "password" ) == 0 ) { 
-////		password = src.ParseBool();
-////		return true;
-////	}
-////	if ( idStr::Icmp( _name, "cvarMax" ) == 0) {
-////		cvarMax = src.ParseInt();
-////		return true;
-////	}
-////
-////	return idWindow::ParseInternalVar( _name, src );
-////}
 
-////GetWinVarByName ( _name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null): idWinVar {
-////	if ( idStr::Icmp( _name, "cvar" ) == 0 ) {
-////		return &cvarStr;
-////	}
-////	if ( idStr::Icmp( _name, "password" ) == 0 ) {
-////		return &password;
-////	}
-////	if ( idStr::Icmp( _name, "liveUpdate" ) == 0 ) {
-////		return &liveUpdate;
-////	}
-////	if ( idStr::Icmp( _name, "cvarGroup" ) == 0 ) {
-////		return &cvarGroup;
-////	}
-////	return idWindow::GetWinVarByName( _name, fixup, owner );
-////}
+	ParseInternalVar ( _name: string, src: idParser ): boolean {
+		if ( idStr.Icmp( _name, "maxchars" ) == 0 ) {
+			this.maxChars = src.ParseInt ( );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "numeric" ) == 0 ) {
+			this.numeric = src.ParseBool ( );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "wrap" ) == 0 ) {
+			this.wrap = src.ParseBool ( );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "readonly" ) == 0 ) {
+			this.readonly = src.ParseBool ( );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "forceScroll" ) == 0 ) {
+			this.forceScroll = src.ParseBool ( );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "source" ) == 0 ) {
+			this.ParseString( src, this.sourceFile );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "password" ) == 0 ) {
+			this.password.equalsBool( src.ParseBool ( ) );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "cvarMax" ) == 0 ) {
+			this.cvarMax = src.ParseInt ( );
+			return true;
+		}
+
+		return super.ParseInternalVar( _name, src );
+	}
+
+	GetWinVarByName ( _name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null ): idWinVar {
+		if ( idStr.Icmp( _name, "cvar" ) == 0 ) {
+			return this.cvarStr;
+		}
+		if ( idStr.Icmp( _name, "password" ) == 0 ) {
+			return this.password;
+		}
+		if ( idStr.Icmp( _name, "liveUpdate" ) == 0 ) {
+			return this.liveUpdate;
+		}
+		if ( idStr.Icmp( _name, "cvarGroup" ) == 0 ) {
+			return this.cvarGroup;
+		}
+		return super.GetWinVarByName( _name, fixup, owner );
+	}
 
 	CommonInit ( ): void {
 		this.maxChars = 128;
@@ -213,7 +213,8 @@ class idEditWindow extends idWindow {
 ////	EnsureCursorVisible();
 ////}
 ////
-////void idEditWindow::Draw( int time, float x, float y ) {
+	Draw ( /*int*/ time: number, /*float */x: number, /*float */y: number ): void {
+		todoThrow ( );
 ////	idVec4 color = foreColor;
 ////
 ////	UpdateCvar( true );
@@ -264,16 +265,17 @@ class idEditWindow extends idWindow {
 ////	}
 ////
 ////	dc.DrawText( buffer, scale, 0, color, rect, wrap, (flags & WIN_FOCUS) ? cursorPos : -1);
-////}
+	}
 ////
 /////*
 ////=============
 ////idEditWindow::HandleEvent
 ////=============
 ////*/
-////const char *idEditWindow::HandleEvent(const sysEvent_t *event, bool *updateVisuals) {
+	HandleEvent(event: sysEvent_t, /*bool **/updateVisuals: R<boolean>): string {
+		todoThrow();
 ////	static char buffer[ MAX_EDITFIELD ];
-////	const char *ret = "";
+		var ret = "";
 ////
 ////	if ( wrap ) {
 ////		// need to call this to allow proper focus and capturing on embedded children
@@ -506,9 +508,9 @@ class idEditWindow extends idWindow {
 ////			RunScript( ON_ACTIONRELEASE );
 ////		}
 ////	}
-////
-////	return ret;
-////}
+
+	return ret;
+}
 ////
 ////void idEditWindow::PostParse() {
 ////	idWindow::PostParse();

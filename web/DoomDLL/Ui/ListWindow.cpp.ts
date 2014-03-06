@@ -115,28 +115,41 @@ class idListWindow extends idWindow {
 ////// Time in milliseconds between clicks to register as a double-click
 ////static const int doubleClickSpeed = 300;
 ////
-////void idListWindow::CommonInit() {
-////	typed = "";
-////	typedTime = 0;
-////	clickTime = 0;
-////	currentSel.Clear();
-////	top = 0;
-////	sizeBias = 0;
-////	horizontal = false;
-////	scroller = new idSliderWindow(dc, gui);
-////	multipleSel = false;
-////}
-////
-////idListWindow::idListWindow(idDeviceContext *d, idUserInterfaceLocal *g) : idWindow(d, g) {
-////	dc = d;
-////	gui = g;
-////	CommonInit();
-////}
-////
-////idListWindow::idListWindow(idUserInterfaceLocal *g) : idWindow(g) {
-////	gui = g;
-////	CommonInit();
-////}
+	CommonInit ( ): void {
+		todoThrow ( );
+		//typed = "";
+		//typedTime = 0;
+		//clickTime = 0;
+		//currentSel.Clear();
+		//top = 0;
+		//sizeBias = 0;
+		//horizontal = false;
+		//scroller = new idSliderWindow(dc, gui);
+		//multipleSel = false;
+	}
+
+	constructor(d: idDeviceContext, g: idUserInterfaceLocal)
+	constructor(g: idUserInterfaceLocal)
+	constructor(a1: any, a2?: any) {
+		super();
+
+		if (arguments.length == 2) {
+			var d = <idDeviceContext>a1, g = <idUserInterfaceLocal>a2;
+			this.ctor2(d, g);
+			this.dc = d;
+			this.gui = g;
+			this.CommonInit();
+		} else if (arguments.length == 1) {
+			var g = <idUserInterfaceLocal>a1;
+			this.ctor1(g);
+			this.dc = null;
+			this.gui = g;
+			this.CommonInit();
+		} else {
+			todoThrow();
+		}
+	}
+
 ////
 ////void idListWindow::SetCurrentSel( int sel ) {
 ////	currentSel.Clear();
@@ -162,9 +175,10 @@ class idListWindow extends idWindow {
 ////	return ( currentSel.FindIndex( index ) >= 0 );
 ////}
 ////
-////const char *idListWindow::HandleEvent(const sysEvent_t *event, bool *updateVisuals) {
-////	// need to call this to allow proper focus and capturing on embedded children
-////	const char *ret = idWindow::HandleEvent(event, updateVisuals);
+	HandleEvent(event: sysEvent_t, /*bool **/updateVisuals: R<boolean>): string {
+		todoThrow();
+		// need to call this to allow proper focus and capturing on embedded children
+		var ret = super.HandleEvent( event, updateVisuals );
 ////
 ////	float vert = GetMaxCharHeight();
 ////	int numVisibleLines = textRect.h / vert;
@@ -305,11 +319,12 @@ class idListWindow extends idWindow {
 ////	}
 ////	gui.SetStateInt( va( "%s_numsel", listName.c_str() ), currentSel.Num() );
 ////
-////	return ret;
-////}
-////
-////
-////bool idListWindow::ParseInternalVar(const char *_name, idParser *src) {
+	return ret;
+}
+
+
+	ParseInternalVar(_name: string, src: idParser): boolean {
+		todoThrow ( );
 ////	if (idStr::Icmp(_name, "horizontal") == 0) {
 ////		horizontal = src.ParseBool();
 ////		return true;
@@ -362,12 +377,13 @@ class idListWindow extends idWindow {
 ////		return true;
 ////	}
 ////
-////	return idWindow::ParseInternalVar(_name, src);
-////}
-////
-////idWinVar *idListWindow::GetWinVarByName(const char *_name, bool fixup, drawWin_t** owner) {
-////	return idWindow::GetWinVarByName(_name, fixup, owner);
-////}
+		return super.ParseInternalVar( _name, src );
+	}
+
+	GetWinVarByName(_name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null): idWinVar {
+		return super.GetWinVarByName(_name, fixup, owner);
+	}
+
 ////
 ////void idListWindow::PostParse() {
 ////	idWindow::PostParse();
@@ -523,7 +539,8 @@ class idListWindow extends idWindow {
 ////	scroller.SetBuddy(this);
 ////}
 ////
-////void idListWindow::Draw(int time, float x, float y) {
+	Draw( /*int*/ time: number, /*float */x: number, /*float */y: number): void {
+		todoThrow ( );
 ////	idVec4 color;
 ////	idStr work;
 ////	int count = listItems.Num();
@@ -642,7 +659,7 @@ class idListWindow extends idWindow {
 ////			break;
 ////		}
 ////	}
-////}
+}
 ////
 ////void idListWindow::Activate(bool activate, idStr &act) {
 ////	idWindow::Activate(activate, act);
@@ -697,4 +714,4 @@ class idListWindow extends idWindow {
 ////	UpdateList();
 ////}
 ////
-}
+	}
