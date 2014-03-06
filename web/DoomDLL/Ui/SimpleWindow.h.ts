@@ -195,7 +195,7 @@ class idSimpleWindow {
 	////	}
 	////}
 	////
-	////void idSimpleWindow::SetupTransforms(float x, float y) {
+	////void idSimpleWindow::SetupTransforms(/*float */x:number, /*float */y:number) {
 	////	static idMat3 trans;
 	////	static idVec3 org;
 	////
@@ -286,7 +286,7 @@ class idSimpleWindow {
 	////}
 	////
 	////
-	////void idSimpleWindow::Redraw(float x, float y) {
+	////void idSimpleWindow::Redraw(/*float */x:number, /*float */y:number) {
 	////
 	////	if (!this.visible) {
 	////		return;

@@ -61,7 +61,7 @@ todoThrow ( );
 ////			int parmCount = src.Num();
 ////			if (parmCount > 2) {
 ////				val = dest.c_str();
-////				int i = 2;
+////				var i = 2;
 ////				while (i < parmCount) {
 ////					val += " \"";
 ////					val += (*src)[i].var.c_str();
@@ -306,7 +306,7 @@ class idGuiScript {
 ////	void FixupParms(idWindow *win);
 ////	size_t Size() {
 ////		int sz = sizeof(*this);
-////		for (int i = 0; i < this.parms.Num(); i++) {
+////		for (var i = 0; i < this.parms.Num(); i++) {
 ////			sz += this.parms[i].var.Size();
 ////		}
 ////		return sz;
@@ -480,7 +480,7 @@ class idGuiScriptList {
 	}
 ////	size_t Size() {
 ////		int sz = sizeof(*this);
-////		for (int i = 0; i < list.Num(); i++) {
+////		for (var i = 0; i < list.Num(); i++) {
 ////			sz += list[i].Size();
 ////		}
 ////		return sz;
@@ -493,170 +493,171 @@ class idGuiScriptList {
 ////	void ReadFromSaveGame(idFile *savefile);
 ////};
 ////
-////
-/////*
-////=========================
-////idGuiScriptList::FixupParms
-////=========================
-////*/
-////void idGuiScript::FixupParms(idWindow *win) {
-////	if (handler == &Script_Set) {
-////		bool precacheBackground = false;
-////		bool precacheSounds = false;
-////		idWinStr *str = dynamic_cast<idWinStr*>(this.parms[0].var);
-////		assert(str);
-////		idWinVar *dest = win.GetWinVarByName(*str, true);
-////		if (dest) {
-////			delete this.parms[0].var;
-////			this.parms[0].var = dest;
-////			this.parms[0].own = false;
-////
-////			if (dynamic_cast<idWinBackground *>(dest) != NULL) {
-////				precacheBackground = true;
-////			}
-////		}
-////		else if (idStr.Icmp(str.c_str(), "cmd") == 0) {
-////			precacheSounds = true;
-////		}
-////		int parmCount = this.parms.Num();
-////		for (int i = 1; i < parmCount; i++) {
-////			idWinStr *str = dynamic_cast<idWinStr*>(this.parms[i].var);
-////			if (idStr::Icmpn(*str, "gui::", 5) == 0) {
-////
-////				//  always use a string here, no point using a float if it is one
-////				//  FIXME: This creates duplicate variables, while not technically a problem since they
-////				//  are all bound to the same guiDict, it does consume extra memory and is generally a bad thing
-////				idWinStr* defvar = new idWinStr();
-////				defvar.Init(*str, win);
-////				win.AddDefinedVar(defvar);
-////				delete this.parms[i].var;
-////				this.parms[i].var = defvar;
-////				this.parms[i].own = false;
-////
-////				//dest = win.GetWinVarByName(*str, true);
-////				//if (dest) {
-////				//	delete this.parms[i].var;
-////				//	this.parms[i].var = dest;
-////				//	this.parms[i].own = false;
-////				//}
-////				// 
-////			}
-////			else if ((*str[0]) == '$') {
-////				// 
-////				//  dont include the $ when asking for variable
-////				dest = win.GetGui().GetDesktop().GetWinVarByName((const char*)(*str) + 1, true);
-////				// 					
-////				if (dest) {
-////					delete this.parms[i].var;
-////					this.parms[i].var = dest;
-////					this.parms[i].own = false;
-////				}
-////			}
-////			else if (idStr::Cmpn(str.c_str(), STRTABLE_ID, STRTABLE_ID_LENGTH) == 0) {
-////				str.Set(common.GetLanguageDict().GetString(str.c_str()));
-////			}
-////			else if (precacheBackground) {
-////				const idMaterial *mat = declManager.FindMaterial(str.c_str());
-////				mat.SetSort(SS_GUI);
-////			}
-////			else if (precacheSounds) {
-////				// Search for "play <...>"
-////				idToken token;
-////				idParser parser(LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT);
-////				parser.LoadMemory(str.c_str(), str.Length(), "command");
-////
-////				while (parser.ReadToken(&token)) {
-////					if (token.Icmp("play") == 0) {
-////						if (parser.ReadToken(&token) && (token != "")) {
-////							declManager.FindSound(token.c_str());
-////						}
-////					}
-////				}
-////			}
-////		}
-////	}
-////	else if (handler == &Script_Transition) {
-////		if (this.parms.Num() < 4) {
-////			common.Warning("Window %s in gui %s has a bad transition definition", win.GetName(), win.GetGui().GetSourceFile());
-////		}
-////		idWinStr *str = dynamic_cast<idWinStr*>(this.parms[0].var);
-////		assert(str);
-////
-////		// 
-////		drawWin_t *destowner;
-////		idWinVar *dest = win.GetWinVarByName(*str, true, &destowner);
-////		// 
-////
-////		if (dest) {
-////			delete this.parms[0].var;
-////			this.parms[0].var = dest;
-////			this.parms[0].own = false;
-////		}
-////		else {
-////			common.Warning("Window %s in gui %s: a transition does not have a valid destination var %s", win.GetName(), win.GetGui().GetSourceFile(), str.c_str());
-////		}
-////
-////		// 
-////		//  support variables as parameters		
-////		int c;
-////		for (c = 1; c < 3; c++) {
-////			str = dynamic_cast<idWinStr*>(this.parms[c].var);
-////
-////			idWinVec4 *v4 = new idWinVec4;
-////			this.parms[c].var = v4;
-////			this.parms[c].own = true;
-////
-////			drawWin_t* owner;
-////
-////			if ((*str[0]) == '$') {
-////				dest = win.GetWinVarByName((const char*)(*str) + 1, true, &owner);
-////			}
-////			else {
-////				dest = NULL;
-////			}
-////
-////			if (dest) {
-////				idWindow* ownerparent;
-////				idWindow* destparent;
-////				if (owner) {
-////					ownerparent = owner.simp ? owner.simp.GetParent() : owner.win.GetParent();
-////					destparent = destowner.simp ? destowner.simp.GetParent() : destowner.win.GetParent();
-////
-////					// If its the rectangle they are referencing then adjust it 
-////					if (ownerparent && destparent &&
-////						(dest == (owner.simp ? owner.simp.GetWinVarByName("rect") : owner.win.GetWinVarByName("rect"))))
-////					{
-////						idRectangle rect;
-////						rect = *(dynamic_cast<idWinRectangle*>(dest));
-////						ownerparent.ClientToScreen(&rect);
-////						destparent.ScreenToClient(&rect);
-////						*v4 = rect.ToVec4();
-////					}
-////					else {
-////						v4.Set(dest.c_str());
-////					}
-////				}
-////				else {
-////					v4.Set(dest.c_str());
-////				}
-////			}
-////			else {
-////				v4.Set(*str);
-////			}
-////
-////			delete str;
-////		}
-////		// 
-////
-////	}
-////	else {
-////		int c = this.parms.Num();
-////		for (int i = 0; i < c; i++) {
-////			this.parms[i].var.Init(this.parms[i].var.c_str(), win);
-////		}
-////	}
-////}
-////
+
+/*
+=========================
+idGuiScriptList::FixupParms
+=========================
+*/
+FixupParms(win:idWindow) :void{
+	
+	if (handler == &Script_Set) {
+		var precacheBackground = false;
+		var precacheSounds = false;
+		idWinStr *str = dynamic_cast<idWinStr*>(this.parms[0].var);
+		assert(str);
+		idWinVar *dest = win.GetWinVarByName(*str, true);
+		if (dest) {
+			delete this.parms[0].var;
+			this.parms[0].var = dest;
+			this.parms[0].own = false;
+
+			if (dynamic_cast<idWinBackground *>(dest) != NULL) {
+				precacheBackground = true;
+			}
+		}
+		else if (idStr.Icmp(str.c_str(), "cmd") == 0) {
+			precacheSounds = true;
+		}
+		var/*int */parmCount = this.parms.Num();
+		for (var i = 1; i < parmCount; i++) {
+			idWinStr *str = dynamic_cast<idWinStr*>(this.parms[i].var);
+			if (idStr::Icmpn(*str, "gui::", 5) == 0) {
+
+				//  always use a string here, no point using a float if it is one
+				//  FIXME: This creates duplicate variables, while not technically a problem since they
+				//  are all bound to the same guiDict, it does consume extra memory and is generally a bad thing
+				idWinStr* defvar = new idWinStr();
+				defvar.Init(*str, win);
+				win.AddDefinedVar(defvar);
+				delete this.parms[i].var;
+				this.parms[i].var = defvar;
+				this.parms[i].own = false;
+
+				//dest = win.GetWinVarByName(*str, true);
+				//if (dest) {
+				//	delete this.parms[i].var;
+				//	this.parms[i].var = dest;
+				//	this.parms[i].own = false;
+				//}
+				// 
+			}
+			else if ((*str[0]) == '$') {
+				// 
+				//  dont include the $ when asking for variable
+				dest = win.GetGui().GetDesktop().GetWinVarByName((const char*)(*str) + 1, true);
+				// 					
+				if (dest) {
+					delete this.parms[i].var;
+					this.parms[i].var = dest;
+					this.parms[i].own = false;
+				}
+			}
+			else if (idStr::Cmpn(str.c_str(), STRTABLE_ID, STRTABLE_ID_LENGTH) == 0) {
+				str.Set(common.GetLanguageDict().GetString(str.c_str()));
+			}
+			else if (precacheBackground) {
+				const idMaterial *mat = declManager.FindMaterial(str.c_str());
+				mat.SetSort(SS_GUI);
+			}
+			else if (precacheSounds) {
+				// Search for "play <...>"
+				idToken token;
+				idParser parser(LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT);
+				parser.LoadMemory(str.c_str(), str.Length(), "command");
+
+				while (parser.ReadToken(&token)) {
+					if (token.Icmp("play") == 0) {
+						if (parser.ReadToken(&token) && (token != "")) {
+							declManager.FindSound(token.c_str());
+						}
+					}
+				}
+			}
+		}
+	}
+	else if (handler == &Script_Transition) {
+		if (this.parms.Num() < 4) {
+			common.Warning("Window %s in gui %s has a bad transition definition", win.GetName(), win.GetGui().GetSourceFile());
+		}
+		idWinStr *str = dynamic_cast<idWinStr*>(this.parms[0].var);
+		assert(str);
+
+		// 
+		drawWin_t *destowner;
+		idWinVar *dest = win.GetWinVarByName(*str, true, &destowner);
+		// 
+
+		if (dest) {
+			delete this.parms[0].var;
+			this.parms[0].var = dest;
+			this.parms[0].own = false;
+		}
+		else {
+			common.Warning("Window %s in gui %s: a transition does not have a valid destination var %s", win.GetName(), win.GetGui().GetSourceFile(), str.c_str());
+		}
+
+		// 
+		//  support variables as parameters		
+		var/*int */c:number;
+		for (c = 1; c < 3; c++) {
+			str = dynamic_cast<idWinStr*>(this.parms[c].var);
+
+			idWinVec4 *v4 = new idWinVec4;
+			this.parms[c].var = v4;
+			this.parms[c].own = true;
+
+			drawWin_t* owner;
+
+			if ((*str[0]) == '$') {
+				dest = win.GetWinVarByName((const char*)(*str) + 1, true, &owner);
+			}
+			else {
+				dest = NULL;
+			}
+
+			if (dest) {
+				idWindow* ownerparent;
+				idWindow* destparent;
+				if (owner) {
+					ownerparent = owner.simp ? owner.simp.GetParent() : owner.win.GetParent();
+					destparent = destowner.simp ? destowner.simp.GetParent() : destowner.win.GetParent();
+
+					// If its the rectangle they are referencing then adjust it 
+					if (ownerparent && destparent &&
+						(dest == (owner.simp ? owner.simp.GetWinVarByName("rect") : owner.win.GetWinVarByName("rect"))))
+					{
+						idRectangle rect;
+						rect = *(dynamic_cast<idWinRectangle*>(dest));
+						ownerparent.ClientToScreen(&rect);
+						destparent.ScreenToClient(&rect);
+						*v4 = rect.ToVec4();
+					}
+					else {
+						v4.Set(dest.c_str());
+					}
+				}
+				else {
+					v4.Set(dest.c_str());
+				}
+			}
+			else {
+				v4.Set(*str);
+			}
+
+			delete str;
+		}
+		// 
+
+	}
+	else {
+		var c = this.parms.Num();
+		for (var i = 0; i < c; i++) {
+			this.parms[i].var.Init(this.parms[i].var.c_str(), win);
+		}
+	}
+}
+
 ////}
 ////
 /////*
@@ -666,7 +667,7 @@ class idGuiScriptList {
 ////*/
 ////void idGuiScriptList::Execute(idWindow *win) {
 ////	int c = list.Num();
-////	for (int i = 0; i < c; i++) {
+////	for (var i = 0; i < c; i++) {
 ////		idGuiScript *gs = list[i];
 ////		assert(gs);
 ////		if (gs.conditionReg >= 0) {
@@ -694,7 +695,7 @@ class idGuiScriptList {
 ////*/
 ////void idGuiScriptList::FixupParms(idWindow *win) {
 ////	int c = list.Num();
-////	for (int i = 0; i < c; i++) {
+////	for (var i = 0; i < c; i++) {
 ////		idGuiScript *gs = list[i];
 ////		gs.FixupParms(win);
 ////		if (gs.ifList) {

@@ -303,7 +303,7 @@ Init():void {
 //	clipRects.Append(r);
 //}
 //
-//void idDeviceContext::PushClipRect(float x, float y, float w, float h) {
+//void idDeviceContext::PushClipRect(/*float */x:number, /*float */y:number, float w, float h) {
 //	clipRects.Append(idRectangle(x, y, w, h));
 //}
 //
@@ -394,7 +394,7 @@ Init():void {
 //	}
 //}
 //
-//void idDeviceContext::DrawStretchPic(float x, float y, float w, float h, float s1, float t1, float s2, float t2, const idMaterial *shader) {
+//void idDeviceContext::DrawStretchPic(/*float */x:number, /*float */y:number, float w, float h, float s1, float t1, float s2, float t2, const idMaterial *shader) {
 //	idDrawVert verts[4];
 //	glIndex_t indexes[6];
 //	indexes[0] = 3;
@@ -481,7 +481,7 @@ Init():void {
 //}
 //
 //
-//void idDeviceContext::DrawMaterial(float x, float y, float w, float h, const idMaterial *mat, const idVec4 &color, float scalex, float scaley) {
+//void idDeviceContext::DrawMaterial(/*float */x:number, /*float */y:number, float w, float h, const idMaterial *mat, const idVec4 &color, float scalex, float scaley) {
 //
 //	renderSystem.SetColor(color);
 //
@@ -528,7 +528,7 @@ Init():void {
 //	DrawStretchPic( x, y, w, h, s0, t0, s1, t1, mat);
 //}
 //
-//void idDeviceContext::DrawMaterialRotated(float x, float y, float w, float h, const idMaterial *mat, const idVec4 &color, float scalex, float scaley, /*float*/angle:number) {
+//void idDeviceContext::DrawMaterialRotated(/*float */x:number, /*float */y:number, float w, float h, const idMaterial *mat, const idVec4 &color, float scalex, float scaley, /*float*/angle:number) {
 //	
 //	renderSystem.SetColor(color);
 //
@@ -575,7 +575,7 @@ Init():void {
 //	DrawStretchPicRotated( x, y, w, h, s0, t0, s1, t1, mat, angle);
 //}
 //
-//void idDeviceContext::DrawStretchPicRotated(float x, float y, float w, float h, float s1, float t1, float s2, float t2, const idMaterial *shader, /*float*/angle:number) {
+//void idDeviceContext::DrawStretchPicRotated(/*float */x:number, /*float */y:number, float w, float h, float s1, float t1, float s2, float t2, const idMaterial *shader, /*float*/angle:number) {
 //	
 //	idDrawVert verts[4];
 //	glIndex_t indexes[6];
@@ -689,7 +689,7 @@ Init():void {
 //	renderSystem.DrawStretchPic( &verts[0], &indexes[0], 4, 6, shader, (angle == 0.0) ? false : true );
 //}
 //
-//void idDeviceContext::DrawFilledRect( float x, float y, float w, float h, const idVec4 &color) {
+//void idDeviceContext::DrawFilledRect( /*float */x:number, /*float */y:number, float w, float h, const idVec4 &color) {
 //
 //	if ( color.w == 0.0 ) {
 //		return;
@@ -706,7 +706,7 @@ Init():void {
 //}
 //
 //
-//void idDeviceContext::DrawRect( float x, float y, float w, float h, float size, const idVec4 &color) {
+//void idDeviceContext::DrawRect( /*float */x:number, /*float */y:number, float w, float h, float size, const idVec4 &color) {
 //
 //	if ( color.w == 0.0 ) {
 //		return;
@@ -725,7 +725,7 @@ Init():void {
 //	DrawStretchPic( x, y + h - size, w, size, 0, 0, 0, 0, whiteImage );
 //}
 //
-//void idDeviceContext::DrawMaterialRect( float x, float y, float w, float h, float size, const idMaterial *mat, const idVec4 &color) {
+//void idDeviceContext::DrawMaterialRect( /*float */x:number, /*float */y:number, float w, float h, float size, const idMaterial *mat, const idVec4 &color) {
 //
 //	if ( color.w == 0.0 ) {
 //		return;
@@ -1053,7 +1053,7 @@ Init():void {
 //*/
 //}
 //
-//void idDeviceContext::DrawEditCursor( float x, float y, float scale ) {
+//void idDeviceContext::DrawEditCursor( /*float */x:number, /*float */y:number, float scale ) {
 //	if ( (int)( com_ticNumber >> 4 ) & 1 ) {
 //		return;
 //	}

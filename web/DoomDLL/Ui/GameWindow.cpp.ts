@@ -53,7 +53,7 @@
 ////idGameWindowProxy::Draw
 ////================
 ////*/
-////void idGameWindowProxy::Draw( int time, float x, float y ) {
+////void idGameWindowProxy::Draw( int time, /*float */x:number, /*float */y:number ) {
 ////	common->Printf( "TODO: idGameWindowProxy::Draw\n" );
 ////}
 ////

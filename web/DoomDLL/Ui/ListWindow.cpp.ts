@@ -80,27 +80,27 @@ class idListWindow extends idWindow {
 ////	void				ClearSelection(int sel);
 ////
 ////	idList<idTabRect>	tabInfo;
-////	int					top;
-////	float				sizeBias;
-////	bool				horizontal;
-////	idStr				tabStopStr;
-////	idStr				tabAlignStr;
-////	idStr				tabVAlignStr;
-////	idStr				tabTypeStr;
-////	idStr				tabIconSizeStr;
-////	idStr				tabIconVOffsetStr;
-////	idHashTable<const idMaterial*> iconMaterials;
-////	bool				multipleSel;
-////
-////	idStrList			listItems;
-////	idSliderWindow*		scroller;
-////	idList<int>			currentSel;
-////	idStr				listName;
-////
-////	int					clickTime;
-////
-////	int					typedTime;
-////	idStr				typed;
+		top:number/*int*/;
+		sizeBias:number/*float*/;
+		horizontal:boolean;
+		tabStopStr = new idStr;
+		tabAlignStr = new idStr;
+		tabVAlignStr = new idStr;
+		tabTypeStr = new idStr;
+		tabIconSizeStr = new idStr;
+		tabIconVOffsetStr = new idStr;
+		//iconMaterials = new idHashTable < idMaterial/* * */>(idMaterial);
+		multipleSel:boolean;
+		
+		listItems = new idStrList;
+		scroller:idSliderWindow;
+		currentSel = new idList</*int*/number>(Number);
+		listName = new idStr;
+		
+		clickTime:number/*int*/;
+		
+		typedTime:number/*int*/;
+		typed = new idStr;
 ////};
 ////
 ////#endif // __LISTWINDOW_H
@@ -116,16 +116,15 @@ class idListWindow extends idWindow {
 ////static const int doubleClickSpeed = 300;
 ////
 	CommonInit ( ): void {
-		todoThrow ( );
-		//typed = "";
-		//typedTime = 0;
-		//clickTime = 0;
-		//currentSel.Clear();
-		//top = 0;
-		//sizeBias = 0;
-		//horizontal = false;
-		//scroller = new idSliderWindow(dc, gui);
-		//multipleSel = false;
+		this.typed.equals( "" );
+		this.typedTime = 0;
+		this.clickTime = 0;
+		this.currentSel.Clear();
+		this.top = 0;
+		this.sizeBias = 0;
+		this.horizontal = false;
+		this.scroller = new idSliderWindow(this.dc, this.gui);
+		this.multipleSel = false;
 	}
 
 	constructor(d: idDeviceContext, g: idUserInterfaceLocal)
@@ -175,8 +174,8 @@ class idListWindow extends idWindow {
 ////	return ( currentSel.FindIndex( index ) >= 0 );
 ////}
 ////
-	HandleEvent(event: sysEvent_t, /*bool **/updateVisuals: R<boolean>): string {
-		todoThrow();
+	HandleEvent ( event: sysEvent_t, /*bool **/updateVisuals: R<boolean> ): string {
+		todoThrow ( );
 		// need to call this to allow proper focus and capturing on embedded children
 		var ret = super.HandleEvent( event, updateVisuals );
 ////
@@ -193,7 +192,7 @@ class idListWindow extends idWindow {
 ////
 ////		if ( key == K_MOUSE1 || key == K_MOUSE2 ) {
 ////			// If the user clicked in the scroller, then ignore it
-////			if ( scroller.Contains(gui.CursorX(), gui.CursorY()) ) {
+////			if ( scroller.Contains(this.gui.CursorX(), this.gui.CursorY()) ) {
 ////				return ret;
 ////			}
 ////		}
@@ -210,8 +209,8 @@ class idListWindow extends idWindow {
 ////		}
 ////
 ////		if ( key == K_MOUSE1) {
-////			if (Contains(gui.CursorX(), gui.CursorY())) {
-////				int cur = ( int )( ( gui.CursorY() - actualY - pixelOffset ) / vert ) + top;
+////			if (Contains(this.gui.CursorX(), this.gui.CursorY())) {
+////				int cur = ( int )( ( this.gui.CursorY() - actualY - pixelOffset ) / vert ) + top;
 ////				if ( cur >= 0 && cur < listItems.Num() ) {
 ////					if ( multipleSel && idKeyInput::IsDown( K_CTRL ) ) {
 ////						if ( IsSelected( cur ) ) {
@@ -220,14 +219,14 @@ class idListWindow extends idWindow {
 ////							AddCurrentSel( cur );
 ////						}
 ////					} else {
-////						if ( IsSelected( cur ) && ( gui.GetTime() < clickTime + doubleClickSpeed ) ) {
+////						if ( IsSelected( cur ) && ( this.gui.GetTime() < clickTime + doubleClickSpeed ) ) {
 ////							// Double-click causes ON_ENTER to get run
 ////							RunScript(ON_ENTER);
 ////							return cmd;
 ////						}
 ////						SetCurrentSel( cur );
 ////
-////						clickTime = gui.GetTime();
+////						clickTime = this.gui.GetTime();
 ////					}
 ////				} else {
 ////					SetCurrentSel( listItems.Num() - 1 );
@@ -257,10 +256,10 @@ class idListWindow extends idWindow {
 ////			return ret;
 ////		}
 ////
-////		if ( gui.GetTime() > typedTime + 1000 ) {
+////		if ( this.gui.GetTime() > typedTime + 1000 ) {
 ////			typed = "";
 ////		}
-////		typedTime = gui.GetTime();
+////		typedTime = this.gui.GetTime();
 ////		typed.Append( key );
 ////
 ////		for ( int i=0; i<listItems.Num(); i++ ) {
@@ -312,71 +311,70 @@ class idListWindow extends idWindow {
 ////
 ////	if ( currentSel.Num() > 0 ) {
 ////		for ( int i = 0; i < currentSel.Num(); i++ ) {
-////			gui.SetStateInt( va( "%s_sel_%i", listName.c_str(), i ), currentSel[i] );
+////			this.gui.SetStateInt( va( "%s_sel_%i", listName.c_str(), i ), currentSel[i] );
 ////		}
 ////	} else {
-////		gui.SetStateInt( va( "%s_sel_0", listName.c_str() ), 0 );
+////		this.gui.SetStateInt( va( "%s_sel_0", listName.c_str() ), 0 );
 ////	}
-////	gui.SetStateInt( va( "%s_numsel", listName.c_str() ), currentSel.Num() );
+////	this.gui.SetStateInt( va( "%s_numsel", listName.c_str() ), currentSel.Num() );
 ////
-	return ret;
-}
+		return ret;
+	}
 
 
-	ParseInternalVar(_name: string, src: idParser): boolean {
-		todoThrow ( );
-////	if (idStr::Icmp(_name, "horizontal") == 0) {
-////		horizontal = src.ParseBool();
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "listname") == 0) {
-////		ParseString(src, listName);
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "tabstops") == 0) {
-////		ParseString(src, tabStopStr);
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "tabaligns") == 0) {
-////		ParseString(src, tabAlignStr);
-////		return true;
-////	}
-////	if (idStr::Icmp(_name, "multipleSel") == 0) {
-////		multipleSel = src.ParseBool();
-////		return true;
-////	}
-////	if(idStr::Icmp(_name, "tabvaligns") == 0) {
-////		ParseString(src, tabVAlignStr);
-////		return true;
-////	}
-////	if(idStr::Icmp(_name, "tabTypes") == 0) {
-////		ParseString(src, tabTypeStr);
-////		return true;
-////	}
-////	if(idStr::Icmp(_name, "tabIconSizes") == 0) {
-////		ParseString(src, tabIconSizeStr);
-////		return true;
-////	}
-////	if(idStr::Icmp(_name, "tabIconVOffset") == 0) {
-////		ParseString(src, tabIconVOffsetStr);
-////		return true;
-////	}
-////	
-////	idStr strName = _name;
-////	if(idStr::Icmp(strName.Left(4), "mtr_") == 0) {
-////		idStr matName;
-////		const idMaterial* mat;
-////
-////		ParseString(src, matName);
-////		mat = declManager.FindMaterial(matName);
-////		mat.SetImageClassifications( 1 );	// just for resource tracking
-////		if ( mat && !mat.TestMaterialFlag( MF_DEFAULTED ) ) {
-////			mat.SetSort(SS_GUI );
-////		}
-////		iconMaterials.Set(_name, mat);
-////		return true;
-////	}
-////
+	ParseInternalVar ( _name: string, src: idParser ): boolean {
+		if ( idStr.Icmp( _name, "horizontal" ) == 0 ) {
+			this.horizontal = src.ParseBool ( );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "listname" ) == 0 ) {
+			this.ParseString( src, this.listName );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "tabstops" ) == 0 ) {
+			this.ParseString( src, this.tabStopStr );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "tabaligns" ) == 0 ) {
+			this.ParseString( src, this.tabAlignStr );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "multipleSel" ) == 0 ) {
+			this.multipleSel = src.ParseBool ( );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "tabvaligns" ) == 0 ) {
+			this.ParseString( src, this.tabVAlignStr );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "tabTypes" ) == 0 ) {
+			this.ParseString( src, this.tabTypeStr );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "tabIconSizes" ) == 0 ) {
+			this.ParseString( src, this.tabIconSizeStr );
+			return true;
+		}
+		if ( idStr.Icmp( _name, "tabIconVOffset" ) == 0 ) {
+			this.ParseString( src, this.tabIconVOffsetStr );
+			return true;
+		}
+
+		var strName = new idStr( _name );
+		if ( idStr.Icmp( strName.Left( 4 ), "mtr_" ) == 0 ) {
+			var matName = new idStr;
+			var mat: idMaterial;
+
+			this.ParseString( src, matName );
+			mat = declManager.FindMaterial( matName.data );
+			mat.SetImageClassifications( 1 ); // just for resource tracking
+			if ( mat && !mat.TestMaterialFlag( materialFlags_t.MF_DEFAULTED ) ) {
+				mat.SetSort( materialSort_t.SS_GUI );
+			}
+			todoThrow ( ); //this.iconMaterials.Set(_name, mat);
+			return true;
+		}
+
 		return super.ParseInternalVar( _name, src );
 	}
 
@@ -560,7 +558,7 @@ class idListWindow extends idWindow {
 ////		}
 ////	}
 ////
-////	if ( noEvents || !Contains(gui.CursorX(), gui.CursorY()) ) {
+////	if ( noEvents || !Contains(this.gui.CursorX(), this.gui.CursorY()) ) {
 ////		hover = false;
 ////	}
 ////
@@ -576,7 +574,7 @@ class idListWindow extends idWindow {
 ////		}
 ////		rect.y ++;
 ////		rect.h = lineHeight - 1;
-////		if ( hover && !noEvents && Contains(rect, gui.CursorX(), gui.CursorY()) ) {
+////		if ( hover && !noEvents && Contains(rect, this.gui.CursorX(), this.gui.CursorY()) ) {
 ////			color = hoverColor;
 ////		} else {
 ////			color = foreColor;
@@ -590,7 +588,7 @@ class idListWindow extends idWindow {
 ////			int stop = listItems[i].Find('\t', 0);
 ////			while ( start < listItems[i].Length() ) {
 ////				if ( tab >= tabInfo.Num() ) {
-////					common.Warning( "idListWindow::Draw: gui '%s' window '%s' tabInfo.Num() exceeded", gui.GetSourceFile(), name.c_str() );
+////					common.Warning( "idListWindow::Draw: this.gui '%s' window '%s' tabInfo.Num() exceeded", this.gui.GetSourceFile(), name.c_str() );
 ////					break;
 ////				}
 ////				listItems[i].Mid(start, stop - start, work);
@@ -677,7 +675,7 @@ class idListWindow extends idWindow {
 ////	idStr str, strName;
 ////	listItems.Clear();
 ////	for (int i = 0; i < MAX_LIST_ITEMS; i++) {
-////		if (gui.State().GetString( va("%s_item_%i", listName.c_str(), i), "", str) ) {
+////		if (this.gui.State().GetString( va("%s_item_%i", listName.c_str(), i), "", str) ) {
 ////			if ( str.Length() ) {
 ////				listItems.Append(str);
 ////			}
@@ -693,7 +691,7 @@ class idListWindow extends idWindow {
 ////		scroller.SetRange(0.0f, (listItems.Num() - fit) + 1.0f, 1.0f);
 ////	}
 ////
-////	SetCurrentSel( gui.State().GetInt( va( "%s_sel_0", listName.c_str() ) ) );
+////	SetCurrentSel( this.gui.State().GetInt( va( "%s_sel_0", listName.c_str() ) ) );
 ////
 ////	float value = scroller.GetValue();
 ////	if ( value > listItems.Num() - 1 ) {

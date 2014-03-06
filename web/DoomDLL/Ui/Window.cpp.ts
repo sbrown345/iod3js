@@ -580,7 +580,7 @@ idWindow::~idWindow
 ////idWindow::Move
 ////================
 ////*/
-////Move(float x, float y):void {
+////Move(/*float */x:number, /*float */y:number):void {
 ////	idRectangle rct = this.rect;
 ////	rct.x = x;
 ////	rct.y = y;
@@ -680,7 +680,7 @@ idWindow::~idWindow
 ////idWindow::Size
 ////================
 ////*/
-////Size(float x, float y, float w, float h):void {
+////Size(/*float */x:number, /*float */y:number, float w, float h):void {
 ////	idRectangle rct = this.rect;
 ////	rct.x = x;
 ////	rct.y = y;
@@ -1267,7 +1267,7 @@ idWindow::Contains
 ////idWindow::DebugDraw
 ////================
 ////*/
-////DebugDraw(int time, float x, float y):void {
+////DebugDraw(int time, /*float */x:number, /*float */y:number):void {
 ////	static char buff[16384];
 ////	if (this.dc) {
 ////		this.dc.EnableClipping(false);
@@ -1451,7 +1451,7 @@ idWindow::EvalRegs
 ////idWindow::SetupTransforms
 ////================
 ////*/
-////SetupTransforms(float x, float y):void {
+////SetupTransforms(/*float */x:number, /*float */y:number):void {
 ////	static idMat3 trans;
 ////	static idVec3 org;
 ////	
@@ -1477,34 +1477,34 @@ idWindow::EvalRegs
 ////		this.dc.SetTransformInfo( org, trans );
 ////	}
 ////}
-////
-/////*
-////================
-////idWindow::CalcRects
-////================
-////*/
-////CalcRects(float x, float y):void {
-////	this.CalcClientRect(0, 0);
-////	this.drawRect.Offset(x, y);
-////	this.clientRect.Offset(x, y);
-////	this.actualX = this.drawRect.x;
-////	this.actualY = this.drawRect.y;
-////	int c = this.drawWindows.Num();
-////	for (var i = 0; i < c; i++) {
-////		if (this.drawWindows[i].win) {
-////			this.drawWindows[i].win.CalcRects(this.clientRect.x + xOffset, this.clientRect.y + yOffset);
-////		}
-////	}
-////	this.drawRect.Offset(-x, -y);
-////	this.clientRect.Offset(-x, -y);
-////}
-////
+
+/*
+================
+idWindow::CalcRects
+================
+*/
+CalcRects(/*float */x:number, /*float */y:number):void {
+	this.CalcClientRect(0, 0);
+	this.drawRect.Offset(x, y);
+	this.clientRect.Offset(x, y);
+	this.actualX = this.drawRect.x;
+	this.actualY = this.drawRect.y;
+	int c = this.drawWindows.Num();
+	for (var i = 0; i < c; i++) {
+		if (this.drawWindows[i].win) {
+			this.drawWindows[i].win.CalcRects(this.clientRect.x + xOffset, this.clientRect.y + yOffset);
+		}
+	}
+	this.drawRect.Offset(-x, -y);
+	this.clientRect.Offset(-x, -y);
+}
+
 /////*
 ////================
 ////idWindow::Redraw
 ////================
 ////*/
-////Redraw(float x, float y):void {
+////Redraw(/*float */x:number, /*float */y:number):void {
 ////	idStr str;
 ////
 ////	if (r_skipGuiShaders.GetInteger() == 1 || this.dc == NULL ) {
@@ -4143,44 +4143,44 @@ idWindow::FixupParms
 ================
 */
 	FixupParms ( ): void {
-		todoThrow ( );
-		//var/*int */i:number;
-		//var c = this.children.Num();
-		//for (i = 0; i < c; i++) {
-		//	children[i].FixupParms();
-		//}
-		//for (i = 0; i < SCRIPT_COUNT; i++) {
-		//	if (this.scripts[i]) {
-		//		this.scripts[i].FixupParms(this);
-		//	}
-		//}
+		var/*int */i:number;
+		var c = this.children.Num();
+		for (i = 0; i < c; i++) {
+			this.children[i].FixupParms();
+		}
+		for (i = 0; i < SCRIPT_COUNT; i++) {
+			if (this.scripts[i]) {
+				this.scripts[i].FixupParms(this);
+			}
+		}
 
-		//c = this.timeLineEvents.Num();
-		//for (i = 0; i < c; i++) {
-		//	this.timeLineEvents[i].event.FixupParms(this);
-		//}
+		c = this.timeLineEvents.Num();
+		for (i = 0; i < c; i++) {
+			this.timeLineEvents[i].event.FixupParms(this);
+		}
 
-		//c = this.namedEvents.Num();
-		//for (i = 0; i < c; i++) {
-		//	this.namedEvents[i].mEvent.FixupParms(this);
-		//}
+		c = this.namedEvents.Num();
+		for (i = 0; i < c; i++) {
+			this.namedEvents[i].mEvent.FixupParms(this);
+		}
 
-		//c = this.ops.Num();
-		//for (i = 0; i < c; i++) {
-		//	if (this.ops[i].b == -2) {
-		//		// need to fix this up
-		//		const char *p = (const char*)(this.ops[i].a);
-		//		idWinVar *var = this.GetWinVarByName(p, true);
-		//		delete []p;
-		//		this.ops[i].a = (int)var;
-		//		this.ops[i].b = -1;
-		//	}
-		//}
+		c = this.ops.Num();
+		for (i = 0; i < c; i++) {
+			if (this.ops[i].b == -2) {
+				// need to fix this up
+				todoThrow ( );
+				//const char *p = (const char*)(this.ops[i].a);
+				//idWinVar *var = this.GetWinVarByName(p, true);
+				//delete []p;
+				//this.ops[i].a = (int)var;
+				//this.ops[i].b = -1;
+			}
+		}
 
 
-		//if (flags & WIN_DESKTOP) {
-		//	CalcRects(0,0);
-		//}
+		if (this.flags & WIN_DESKTOP) {
+			this.CalcRects(0,0);
+		}
 	}
 
 /*
@@ -4283,7 +4283,7 @@ idWindow::Interactive
 ////Finds the window under the given point
 ////================
 ////*/
-////idWindow* idWindow::FindChildByPoint ( float x, float y, idWindow** below ) {
+////idWindow* idWindow::FindChildByPoint ( /*float */x:number, /*float */y:number, idWindow** below ) {
 ////	var c = this.children.Num();
 ////
 ////	// If we are looking for a window below this one then
@@ -4316,7 +4316,7 @@ idWindow::Interactive
 ////idWindow::FindChildByPoint
 ////================
 ////*/
-////idWindow* idWindow::FindChildByPoint ( float x, float y, idWindow* below )
+////idWindow* idWindow::FindChildByPoint ( /*float */x:number, /*float */y:number, idWindow* below )
 ////{
 ////	return FindChildByPoint ( x, y, &below );
 ////}
