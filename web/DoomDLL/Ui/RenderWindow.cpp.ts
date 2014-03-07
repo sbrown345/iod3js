@@ -225,31 +225,31 @@ class idRenderWindow extends idWindow {
 ////// 
 //////  
 	GetWinVarByName ( _name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null ): idWinVar {
-////// 
-////	if (idStr.Icmp(_name, "model") == 0) {
-////		return &modelName;
-////	}
-////	if (idStr.Icmp(_name, "anim") == 0) {
-////		return &animName;
-////	}
-////	if (idStr.Icmp(_name, "lightOrigin") == 0) {
-////		return &lightOrigin;
-////	}
-////	if (idStr.Icmp(_name, "lightColor") == 0) {
-////		return &lightColor;
-////	}
-////	if (idStr.Icmp(_name, "modelOrigin") == 0) {
-////		return &modelOrigin;
-////	}
-////	if (idStr.Icmp(_name, "modelRotate") == 0) {
-////		return &modelRotate;
-////	}
-////	if (idStr.Icmp(_name, "viewOffset") == 0) {
-////		return &viewOffset;
-////	}
-////	if (idStr.Icmp(_name, "needsRender") == 0) {
-////		return &needsRender;
-////	}
+
+		if ( idStr.Icmp( _name, "model" ) == 0 ) {
+			return this.modelName;
+		}
+		if ( idStr.Icmp( _name, "anim" ) == 0 ) {
+			return this.animName;
+		}
+		if ( idStr.Icmp( _name, "lightOrigin" ) == 0 ) {
+			return this.lightOrigin;
+		}
+		if ( idStr.Icmp( _name, "lightColor" ) == 0 ) {
+			return this.lightColor;
+		}
+		if ( idStr.Icmp( _name, "modelOrigin" ) == 0 ) {
+			return this.modelOrigin;
+		}
+		if ( idStr.Icmp( _name, "modelRotate" ) == 0 ) {
+			return this.modelRotate;
+		}
+		if ( idStr.Icmp( _name, "viewOffset" ) == 0 ) {
+			return this.viewOffset;
+		}
+		if ( idStr.Icmp( _name, "needsRender" ) == 0 ) {
+			return this.needsRender;
+		}
 
 		return super.GetWinVarByName( _name, fixup, owner );
 	}
