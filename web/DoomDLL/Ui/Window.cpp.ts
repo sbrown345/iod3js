@@ -337,10 +337,10 @@ class idWindow {
 	
 	hideCursor = new idWinBool;
 
-////
-////ID_INLINE AddDefinedVar( idWinVar* var ):void {
-////	this.definedVars.AddUnique( var );
-////}
+
+	AddDefinedVar ( $var: idWinVar ): void {
+		this.definedVars.AddUnique( $var );
+	}
 ////
 ////bool idWindow::registerIsTemporary[MAX_EXPRESSION_REGISTERS];		// statics to assist during parsing
 //////float idWindow::shaderRegisters[MAX_EXPRESSION_REGISTERS];
@@ -1030,7 +1030,7 @@ idWindow::Contains
 ////			this.EvalRegs();
 ////		}
 ////		RunTimeEvents(this.gui.GetTime());
-////		CalcRects(0,0);
+////		this.CalcRects(0,0);
 ////		this.dc.SetCursor( idDeviceContext::CURSOR_ARROW );
 ////	}
 ////
@@ -1483,21 +1483,21 @@ idWindow::EvalRegs
 idWindow::CalcRects
 ================
 */
-CalcRects(/*float */x:number, /*float */y:number):void {
-	this.CalcClientRect(0, 0);
-	this.drawRect.Offset(x, y);
-	this.clientRect.Offset(x, y);
-	this.actualX = this.drawRect.x;
-	this.actualY = this.drawRect.y;
-	int c = this.drawWindows.Num();
-	for (var i = 0; i < c; i++) {
-		if (this.drawWindows[i].win) {
-			this.drawWindows[i].win.CalcRects(this.clientRect.x + xOffset, this.clientRect.y + yOffset);
+	CalcRects ( /*float */x: number, /*float */y: number ): void {
+		this.CalcClientRect( 0, 0 );
+		this.drawRect.Offset( x, y );
+		this.clientRect.Offset( x, y );
+		this.actualX = this.drawRect.x;
+		this.actualY = this.drawRect.y;
+		var c = this.drawWindows.Num ( );
+		for ( var i = 0; i < c; i++ ) {
+			if ( this.drawWindows[i].win ) {
+				this.drawWindows[i].win.CalcRects( this.clientRect.x + this.xOffset, this.clientRect.y + this.yOffset );
+			}
 		}
+		this.drawRect.Offset( -x, -y );
+		this.clientRect.Offset( -x, -y );
 	}
-	this.drawRect.Offset(-x, -y);
-	this.clientRect.Offset(-x, -y);
-}
 
 /////*
 ////================
@@ -2447,7 +2447,7 @@ idWindow::Parse
 ================
 */
 	Parse ( src: idParser, rebuild = true ): boolean {
-		var token = new idToken, token2: idToken; //, token3, token4, token5, token6, token7;
+		var token = new idToken, token2 = new idToken; //, token3, token4, token5, token6, token7;
 		var work = new idStr;
 
 		if ( rebuild ) {
@@ -2487,7 +2487,7 @@ idWindow::Parse
 					this.rect.equalsRectangle( new idRectangle( 0, 0, 0, 0 ) );
 				}
 				src.ExpectTokenType( TT_NAME, 0, token );
-				token2 = token;
+				token2.equals( token );
 				src.UnreadToken( token );
 				var dw: drawWin_t = this.FindChildByName( token2.c_str ( ) );
 				if ( dw && dw.win ) {
@@ -3207,14 +3207,12 @@ Returns a register index
 			// ugly but used for post parsing to fixup named vars
 			//char *p = new char[token.Length()+1];
 			//strcpy(p, token);
-			idWindow.ParseTermStrings.push( token.data );
-			a = idWindow.ParseTermStrings.length - 1; //a = (int)p
+			objectTracker.addObject( token );
+			a = token.refAddress; //a = (int)p
 			b = -2;
 			return this.EmitOp( a, b, wexpOpType_t.WOP_TYPE_VAR );
 		}
 	}
-
-	static ParseTermStrings: string[] = [];
 
 /*
 =================
@@ -4168,12 +4166,11 @@ idWindow::FixupParms
 		for (i = 0; i < c; i++) {
 			if (this.ops[i].b == -2) {
 				// need to fix this up
-				todoThrow ( );
-				//const char *p = (const char*)(this.ops[i].a);
-				//idWinVar *var = this.GetWinVarByName(p, true);
+				var p: string = objectTracker.getObject<idStr>( this.ops[i].a, idStr ).data;// (const char*)(this.ops[i].a);
+				var $var = this.GetWinVarByName(p, true);
 				//delete []p;
-				//this.ops[i].a = (int)var;
-				//this.ops[i].b = -1;
+				this.ops[i].a = $var.refAddress;
+				this.ops[i].b = -1;
 			}
 		}
 
@@ -4416,45 +4413,45 @@ idWindow::Interactive
 ////	this.drawWindows.Append ( dwt );
 ////	return true;
 ////}
-////
-/////*
-////================
-////idWindow::ScreenToClient
-////================
-////*/
-////ScreenToClient ( idRectangle* r ):void {
-////	int		  x;
-////	int		  y;
-////	idWindow* p;
-////	
-////	for ( p = this, x = 0, y = 0; p; p = p.parent ) {
-////		x += p.rect.x();
-////		y += p.rect.y();
-////	}
-////	
-////	r.x -= x;
-////	r.y -= y;
-////}
-////
-/////*
-////================
-////idWindow::ClientToScreen
-////================
-////*/
-////ClientToScreen ( idRectangle* r ):void {
-////	int		  x;
-////	int		  y;
-////	idWindow* p;
-////	
-////	for ( p = this, x = 0, y = 0; p; p = p.parent ) {
-////		x += p.rect.x();
-////		y += p.rect.y();
-////	}
-////	
-////	r.x += x;
-////	r.y += y;	
-////}
-////
+
+/*
+================
+idWindow::ScreenToClient
+================
+*/
+	ScreenToClient ( r: idRectangle ): void {
+		var /*int*/x: number;
+		var /*int*/y: number;
+		var p: idWindow;
+
+		for ( p = this, x = 0, y = 0; p; p = p.parent ) {
+			x += p.rect.x ( );
+			y += p.rect.y ( );
+		}
+
+		r.x -= x;
+		r.y -= y;
+	}
+
+/*
+================
+idWindow::ClientToScreen
+================
+*/
+	ClientToScreen ( r: idRectangle ): void {
+		var /*int*/x: number;
+		var /*int*/y: number;
+		var p: idWindow;
+
+		for ( p = this, x = 0, y = 0; p; p = p.parent ) {
+			x += p.rect.x ( );
+			y += p.rect.y ( );
+		}
+
+		r.x += x;
+		r.y += y;
+	}
+
 /////*
 ////================
 ////idWindow::SetDefaults

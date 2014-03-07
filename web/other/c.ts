@@ -132,6 +132,18 @@ function memsetP(ptr: P, value: number, num: number): void {
 	}
 }
 
+function dynamic_cast<T> ( obj: any, type: any ): T {
+	if ( obj instanceof type ) {
+		return <T>obj;
+	}
+
+	return null;
+}
+
+function static_cast<T> ( obj: any): T {
+		return <T>obj;
+}
+
 function short(buf: Uint8Array, ptr: number): number {
 	return buf[ptr] + (buf[ptr + 1] << 8);
 }
@@ -291,21 +303,24 @@ class ObjectTracker {
 		obj.refAddress = this.refs.length - 1;
 	}
 
-	getObject ( address: number, type:any = null ): ITrackedObject {
+	getObject<T> ( address: number, type: any = null ): T {
 		var obj = this.refs[address];
 		if ( !obj ) {
 			throw "No such object";
 		}
 
-		if(!(obj instanceof  type)) {
+		if ( !( obj instanceof type ) ) {
 			throw "Wrong type. Expected " + type + " but found " + obj;
 		}
 
-		return obj;
+		return <T><any>obj;
 	}
 
-	removeObject ( address: number ): void {
-		delete this.refs[address];
+	removeObject(address: number): void {
+		if ( this.refs[address] ) {
+			this.refs[address].refAddress = null;
+			delete this.refs[address];
+		}
 	}
 }
 

@@ -113,7 +113,15 @@ var S_COLOR_BLACK				="^9";
 ////	MEASURE_BANDWIDTH
 ////} Measure_t;
 
-class idStr {
+class idStr implements ITrackedObject {
+	refAddress: number;
+	trackObject(): void {
+		//objectTracker.addObject(this);
+	}
+
+	destructor(): void {
+		objectTracker.removeObject(this.refAddress);
+	}
 
 	constructor ( );
 	constructor ( str: idStr );

@@ -54,17 +54,17 @@ Script_Set
 function Script_Set(window: idWindow, src: idList < idGSWinVar>):void {
 todoThrow ( );
 ////	idStr key, val;
-////	idWinStr *dest = dynamic_cast<idWinStr*>((*src)[0].var);
+////	idWinStr *dest = dynamic_cast<idWinStr*>((*src)[0].$var);
 ////	if (dest) {
 ////		if (idStr.Icmp(*dest, "cmd") == 0) {
-////			dest = dynamic_cast<idWinStr*>((*src)[1].var);
+////			dest = dynamic_cast<idWinStr*>((*src)[1].$var);
 ////			int parmCount = src.Num();
 ////			if (parmCount > 2) {
 ////				val = dest.c_str();
 ////				var i = 2;
 ////				while (i < parmCount) {
 ////					val += " \"";
-////					val += (*src)[i].var.c_str();
+////					val += (*src)[i].$var.c_str();
 ////					val += "\"";
 ////					i++;
 ////				}
@@ -75,8 +75,8 @@ todoThrow ( );
 ////			return;
 ////		} 
 ////	}
-////	(*src)[0].var.Set((*src)[1].var.c_str());
-////	(*src)[0].var.SetEval(false);
+////	(*src)[0].$var.Set((*src)[1].$var.c_str());
+////	(*src)[0].$var.SetEval(false);
 }
 
 /*
@@ -86,7 +86,7 @@ Script_SetFocus
 */
 function Script_SetFocus(window: idWindow, src: idList < idGSWinVar>):void {
 todoThrow();
-////	idWinStr *parm = dynamic_cast<idWinStr*>((*src)[0].var);
+////	idWinStr *parm = dynamic_cast<idWinStr*>((*src)[0].$var);
 ////	if (parm) {
 ////		drawWin_t *win = window.GetGui().GetDesktop().FindChildByName(*parm);
 ////		if (win && win.win) {
@@ -102,7 +102,7 @@ Script_ShowCursor
 */
 function Script_ShowCursor(window: idWindow, src: idList < idGSWinVar>):void {
 todoThrow();
-////	idWinStr *parm = dynamic_cast<idWinStr*>((*src)[0].var);
+////	idWinStr *parm = dynamic_cast<idWinStr*>((*src)[0].$var);
 ////	if ( parm ) {
 ////		if ( atoi( *parm ) ) {
 ////			window.GetGui().GetDesktop().ClearFlag( WIN_NOCURSOR );
@@ -121,7 +121,7 @@ Script_RunScript
 */
 function Script_RunScript(window: idWindow, src: idList < idGSWinVar>):void {
 todoThrow();
-////	idWinStr *parm = dynamic_cast<idWinStr*>((*src)[0].var);
+////	idWinStr *parm = dynamic_cast<idWinStr*>((*src)[0].$var);
 ////	if (parm) {
 ////		idStr str = window.cmd;
 ////		str += " ; runScript ";
@@ -137,7 +137,7 @@ Script_LocalSound
 */
 function Script_LocalSound(window: idWindow, src: idList < idGSWinVar>):void {
 todoThrow();
-////	idWinStr *parm = dynamic_cast<idWinStr*>((*src)[0].var);
+////	idWinStr *parm = dynamic_cast<idWinStr*>((*src)[0].$var);
 ////	if (parm) {
 ////		session.sw.PlayShaderDirectly(*parm);
 ////	}
@@ -171,11 +171,11 @@ Script_ResetTime
 */
 function Script_ResetTime(window: idWindow, src: idList < idGSWinVar>):void {
 todoThrow();
-////	idWinStr *parm = dynamic_cast<idWinStr*>((*src)[0].var);
+////	idWinStr *parm = dynamic_cast<idWinStr*>((*src)[0].$var);
 ////	drawWin_t *win = NULL;
 ////	if (parm && src.Num() > 1) {
 ////		win = window.GetGui().GetDesktop().FindChildByName(*parm);
-////		parm = dynamic_cast<idWinStr*>((*src)[1].var);
+////		parm = dynamic_cast<idWinStr*>((*src)[1].$var);
 ////	}
 ////	if (win && win.win) {
 ////		win.win.ResetTime(atoi(*parm));
@@ -206,23 +206,23 @@ todoThrow();
 ////	// transitions always affect rect or vec4 vars
 ////	if (src.Num() >= 4) {
 ////		idWinRectangle *rect = NULL;
-////		idWinVec4 *vec4 = dynamic_cast<idWinVec4*>((*src)[0].var);
+////		idWinVec4 *vec4 = dynamic_cast<idWinVec4*>((*src)[0].$var);
 ////		// 
 ////		//  added float variable
 ////		idWinFloat* val = NULL;
 ////		// 
 ////		if (vec4 == NULL) {
-////			rect = dynamic_cast<idWinRectangle*>((*src)[0].var);
+////			rect = dynamic_cast<idWinRectangle*>((*src)[0].$var);
 ////			// 
 ////			//  added float variable					
 ////			if ( NULL == rect ) {
-////				val = dynamic_cast<idWinFloat*>((*src)[0].var);
+////				val = dynamic_cast<idWinFloat*>((*src)[0].$var);
 ////			}
 ////			// 
 ////		}
-////		idWinVec4 *from = dynamic_cast<idWinVec4*>((*src)[1].var);
-////		idWinVec4 *to = dynamic_cast<idWinVec4*>((*src)[2].var);
-////		idWinStr *timeStr = dynamic_cast<idWinStr*>((*src)[3].var);
+////		idWinVec4 *from = dynamic_cast<idWinVec4*>((*src)[1].$var);
+////		idWinVec4 *to = dynamic_cast<idWinVec4*>((*src)[2].$var);
+////		idWinStr *timeStr = dynamic_cast<idWinStr*>((*src)[3].$var);
 ////		// 
 ////		//  added float variable					
 ////		if (!((vec4 || rect || val) && from && to && timeStr)) {
@@ -234,8 +234,8 @@ todoThrow();
 ////		float ac = 0.0f;
 ////		float dc = 0.0f;
 ////		if (src.Num() > 4) {
-////			idWinStr *acv = dynamic_cast<idWinStr*>((*src)[4].var);
-////			idWinStr *dcv = dynamic_cast<idWinStr*>((*src)[5].var);
+////			idWinStr *acv = dynamic_cast<idWinStr*>((*src)[4].$var);
+////			idWinStr *dcv = dynamic_cast<idWinStr*>((*src)[5].$var);
 ////			assert(acv && dcv);
 ////			ac = atof(*acv);
 ////			dc = atof(*dcv);
@@ -288,7 +288,6 @@ var commandList = [
 var scriptCommandCount = commandList.length;//sizeof(commandList) / sizeof(guiCommandDef_t);
 
 
-
 class idGuiScript {
 ////	friend class idGuiScriptList;
 ////	friend class idWindow;
@@ -298,16 +297,16 @@ class idGuiScript {
 ////	~idGuiScript();
 ////
 ////	bool Parse(idParser *src);
-////	void Execute(idWindow *win) {
+////	void Execute(win:idWindow) {
 ////		if (handler) {
 ////			this.handler(win, &this.parms);
 ////		}
 ////	}
-////	void FixupParms(idWindow *win);
+////	void FixupParms(win:idWindow);
 ////	size_t Size() {
 ////		int sz = sizeof(*this);
 ////		for (var i = 0; i < this.parms.Num(); i++) {
-////			sz += this.parms[i].var.Size();
+////			sz += this.parms[i].$var.Size();
 ////		}
 ////		return sz;
 ////	}
@@ -342,14 +341,14 @@ idGuiScript::~idGuiScript
 =========================
 */
 	destructor ( ): void {
-		$delete(this.ifList);
+		$delete( this.ifList );
 		delete this.ifList;
-		$delete(this.elseList);
+		$delete( this.elseList );
 		delete this.elseList;
 		var c = this.parms.Num ( );
 		for ( var i = 0; i < c; i++ ) {
 			if ( this.parms[i].own ) {
-				$delete(this.parms[i].$var);
+				$delete( this.parms[i].$var );
 				delete this.parms[i].$var;
 			}
 		}
@@ -374,7 +373,7 @@ idGuiScript::~idGuiScript
 ////
 ////	for ( i = 0; i < this.parms.Num(); i++ ) {
 ////		if ( this.parms[i].own ) {
-////			this.parms[i].var.WriteToSaveGame( savefile );
+////			this.parms[i].$var.WriteToSaveGame( savefile );
 ////		}
 ////	}
 ////}
@@ -398,7 +397,7 @@ idGuiScript::~idGuiScript
 ////
 ////	for ( i = 0; i < this.parms.Num(); i++ ) {
 ////		if ( this.parms[i].own ) {
-////			this.parms[i].var.ReadFromSaveGame( savefile );
+////			this.parms[i].$var.ReadFromSaveGame( savefile );
 ////		}
 ////	}
 ////}
@@ -415,42 +414,42 @@ idGuiScript::Parse
 		// then a potentially variable set of parms
 		// ended with a ;
 		var token = new idToken;
-		if ( !src.ReadToken(token) ) {
+		if ( !src.ReadToken( token ) ) {
 			src.Error( "Unexpected end of file" );
 			return false;
 		}
 
-		this.handler	= null;
+		this.handler = null;
 
-		for ( i = 0; i < scriptCommandCount ; i++ ) {
-			if ( idStr.Icmp(token, commandList[i].name) == 0 ) {
+		for ( i = 0; i < scriptCommandCount; i++ ) {
+			if ( idStr.Icmp( token, commandList[i].name ) == 0 ) {
 				this.handler = commandList[i].handler;
 				break;
 			}
 		}
 
-		if (this.handler == null) {
-			src.Error("Uknown script call %s", token.c_str());
+		if ( this.handler == null ) {
+			src.Error( "Uknown script call %s", token.c_str ( ) );
 		}
 		// now read parms til ;
 		// all parms are read as idWinStr's but will be fixed up later 
 		// to be proper types
-		while (1) {
-			if ( !src.ReadToken(token) ) {
+		while ( 1 ) {
+			if ( !src.ReadToken( token ) ) {
 				src.Error( "Unexpected end of file" );
 				return false;
 			}
 
-			if (idStr.Icmp(token, ";") == 0) {
+			if ( idStr.Icmp( token, ";" ) == 0 ) {
 				break;
 			}
 
-			if (idStr.Icmp(token, "}") == 0) {
-				src.UnreadToken(token);
+			if ( idStr.Icmp( token, "}" ) == 0 ) {
+				src.UnreadToken( token );
 				break;
 			}
 
-			var str = new idWinStr();
+			var str = new idWinStr ( );
 			str.equalsStr( token );
 			var wv = new idGSWinVar;
 			wv.own = true;
@@ -460,8 +459,8 @@ idGuiScript::Parse
 
 		// 
 		//  verify min/max params
-		if ( this.handler && (this.parms.Num() < commandList[i].mMinParms || this.parms.Num() > commandList[i].mMaxParms ) ) {
-			src.Error("incorrect number of parameters for script %s", commandList[i].name );
+		if ( this.handler && ( this.parms.Num ( ) < commandList[i].mMinParms || this.parms.Num ( ) > commandList[i].mMaxParms ) ) {
+			src.Error( "incorrect number of parameters for script %s", commandList[i].name );
 		}
 		// 
 
@@ -474,163 +473,150 @@ idGuiScript::Parse
 	idGuiScript::FixupParms
 	=========================
 	*/
-	FixupParms(win: idWindow): void {
+	FixupParms ( win: idWindow ): void {
 
-		if (this.handler == Script_Set) {
+		if ( this.handler == Script_Set ) {
 			var precacheBackground = false;
 			var precacheSounds = false;
-			var str = <idWinStr>this.parms[0].$var;//idWinStr *str = dynamic_cast<idWinStr*>(this.parms[0].var);
-			assert(str);
-			var dest = <idWinVar>win.GetWinVarByName(str.c_str(), true);
-			if (dest) {
-				$delete(this.parms[0].$var);
-				delete this.parms[0].var;
-				this.parms[0].var = dest;
+			var str = dynamic_cast<idWinStr>( this.parms[0].$var, idWinStr );
+			assert( str );
+			var dest = <idWinVar>win.GetWinVarByName( str.c_str ( ), true );
+			if ( dest ) {
+				$delete( this.parms[0].$var );
+				delete this.parms[0].$var;
+				this.parms[0].$var = dest;
 				this.parms[0].own = false;
 
-				if (<idWinBackground >(dest) != null) {
+				if ( dynamic_cast<idWinBackground>( dest, idWinBackground ) != null ) {
 					precacheBackground = true;
 				}
-				todoThrow("does dynamic_cast need to check the type as well???????????? if ( dynamic_cast<idWinBackground *>(dest) != NULL ) {");
-			}
-			else if (idStr.Icmp(str.c_str(), "cmd") == 0) {
+			} else if ( idStr.Icmp( str.c_str ( ), "cmd" ) == 0 ) {
 				precacheSounds = true;
 			}
-			var/*int */parmCount = this.parms.Num();
-			for (var i = 1; i < parmCount; i++) {
-				var str = <idWinStr>(this.parms[i].$var);
-				if (idStr.Icmpn(str.c_str(), "gui::", 5) == 0) {
+			var /*int */parmCount = this.parms.Num ( );
+			for ( var i = 1; i < parmCount; i++ ) {
+				var str = dynamic_cast<idWinStr>( this.parms[i].$var, idWinStr );
+				if ( idStr.Icmpn( str.c_str ( ), "gui::", 5 ) == 0 ) {
 
 					//  always use a string here, no point using a float if it is one
 					//  FIXME: This creates duplicate variables, while not technically a problem since they
 					//  are all bound to the same guiDict, it does consume extra memory and is generally a bad thing
-					var defvar = new idWinStr();
-					defvar.Init(str.c_str(), win);
-					win.AddDefinedVar(defvar);
-					delete this.parms[i].var;
-					this.parms[i].var = defvar;
+					var defvar = new idWinStr ( );
+					defvar.Init( str.c_str ( ), win );
+					win.AddDefinedVar( defvar );
+					delete this.parms[i].$var;
+					this.parms[i].$var = defvar;
 					this.parms[i].own = false;
 
 					//dest = win.GetWinVarByName(*str, true);
 					//if (dest) {
-					//	delete this.parms[i].var;
-					//	this.parms[i].var = dest;
+					//	delete this.parms[i].$var;
+					//	this.parms[i].$var = dest;
 					//	this.parms[i].own = false;
 					//}
 					// 
-				}
-				else if ((str.data[0]) == '$') {
+				} else if ( ( str.data.data[0] ) == '$' ) {
 					// 
 					//  dont include the $ when asking for variable
-					dest = win.GetGui().GetDesktop().GetWinVarByName((const char*)(*str) + 1, true);
+					dest = win.GetGui ( ).GetDesktop ( ).GetWinVarByName( /*(const char*)(*str) + 1*/str.c_str ( ).substr( 1 ), true );
 					// 					
-					if (dest) {
+					if ( dest ) {
 						delete this.parms[i].$var;
 						this.parms[i].$var = dest;
 						this.parms[i].own = false;
 					}
-				}
-				else if (idStr.Cmpn(str.c_str(), STRTABLE_ID, STRTABLE_ID_LENGTH) == 0) {
-					str.Set(common.GetLanguageDict().GetString(str.c_str()));
-				}
-				else if (precacheBackground) {
-					var mat = declManager.FindMaterial(str.c_str());
-					mat.SetSort(materialSort_t.SS_GUI);
-				}
-				else if (precacheSounds) {
+				} else if ( idStr.Cmpn( str.c_str ( ), STRTABLE_ID, STRTABLE_ID_LENGTH ) == 0 ) {
+					str.Set( common.GetLanguageDict ( ).GetString( str.c_str ( ) ) );
+				} else if ( precacheBackground ) {
+					var mat = declManager.FindMaterial( str.c_str ( ) );
+					mat.SetSort( materialSort_t.SS_GUI );
+				} else if ( precacheSounds ) {
 					// Search for "play <...>"
 					var token = new idToken;
-					var parser = new idParser(lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT);
-					parser.LoadMemory(str.c_str(), str.Length(), "command");
+					var parser = new idParser( lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
+					parser.LoadMemory( str.c_str ( ), str.Length ( ), "command" );
 
-					while (parser.ReadToken(token)) {
-						if (token.Icmp("play") == 0) {
-							if (parser.ReadToken(token) && (token.data != "")) {
-								declManager.FindSound(token.c_str());
+					while ( parser.ReadToken( token ) ) {
+						if ( token.Icmp( "play" ) == 0 ) {
+							if ( parser.ReadToken( token ) && ( token.data != "" ) ) {
+								declManager.FindSound( token.c_str ( ) );
 							}
 						}
 					}
 				}
 			}
-		}
-		else if (this.handler == Script_Transition) {
-			if (this.parms.Num() < 4) {
-				common.Warning("Window %s in gui %s has a bad transition definition", win.GetName(), win.GetGui().GetSourceFile());
+		} else if ( this.handler == Script_Transition ) {
+			if ( this.parms.Num ( ) < 4 ) {
+				common.Warning( "Window %s in gui %s has a bad transition definition", win.GetName ( ), win.GetGui ( ).GetSourceFile ( ) );
 			}
-			var str = <idWinStr>(this.parms[0].$var);
-			assert(str);
+			var str = dynamic_cast<idWinStr>( this.parms[0].$var, idWinStr );
+			assert( str );
 
 			// 
-			var destowner: drawWin_t;
-			var dest = win.GetWinVarByName(str.c_str(), true, destowner);
+			var destowner = new R<drawWin_t> ( );
+			var dest = win.GetWinVarByName( str.c_str ( ), true, destowner );
 			// 
 
-			if (dest) {
-				$delete(this.parms[0].$var);
+			if ( dest ) {
+				$delete( this.parms[0].$var );
 				delete this.parms[0].$var;
 				this.parms[0].$var = dest;
 				this.parms[0].own = false;
-			}
-			else {
-				common.Warning("Window %s in gui %s: a transition does not have a valid destination var %s", win.GetName(), win.GetGui().GetSourceFile(), str.c_str());
+			} else {
+				common.Warning( "Window %s in gui %s: a transition does not have a valid destination var %s", win.GetName ( ), win.GetGui ( ).GetSourceFile ( ), str.c_str ( ) );
 			}
 
 			// 
 			//  support variables as parameters		
-			var/*int */c: number;
-			for (c = 1; c < 3; c++) {
-				str = <idWinStr>(this.parms[c].$var);
+			var /*int */c: number;
+			for ( c = 1; c < 3; c++ ) {
+				str = dynamic_cast<idWinStr>( this.parms[c].$var, idWinStr );
 
 				var v4 = new idWinVec4;
-				this.parms[c].var = v4;
+				this.parms[c].$var = v4;
 				this.parms[c].own = true;
 
-				var owner: drawWin_t;
+				var owner = new R<drawWin_t> ( );
 
-				if ((str.data[0]) == '$') {
-					dest = win.GetWinVarByName((const char*)(*str) + 1, true, owner);
-				}
-				else {
+				if ( ( str.data.data[0] ) == '$' ) {
+					dest = win.GetWinVarByName( str.c_str ( ).substr( 1 ) /*(const char*)(*str) + 1*/, true, owner );
+				} else {
 					dest = null;
 				}
 
-				if (dest) {
+				if ( dest ) {
 					var ownerparent: idWindow;
-					var destparent:idWindow;
-					if (owner) {
-						ownerparent = owner.simp ? owner.simp.GetParent() : owner.win.GetParent();
-						destparent = destowner.simp ? destowner.simp.GetParent() : destowner.win.GetParent();
+					var destparent: idWindow;
+					if ( owner.$ ) {
+						ownerparent = owner.$.simp ? owner.$.simp.GetParent ( ) : owner.$.win.GetParent ( );
+						destparent = destowner.$.simp ? destowner.$.simp.GetParent ( ) : destowner.$.win.GetParent ( );
 
 						// If its the rectangle they are referencing then adjust it 
-						if (ownerparent && destparent &&
-							(dest == (owner.simp ? owner.simp.GetWinVarByName("rect") : owner.win.GetWinVarByName("rect")))) {
-								var rect = new idRectangle
-							rect.equals( dest );//rect = * (dynamic_cast<idWinRectangle*>(dest));
-							ownerparent.ClientToScreen(rect);
-							destparent.ScreenToClient(rect);
+						if ( ownerparent && destparent &&
+						( dest == ( owner.$.simp ? owner.$.simp.GetWinVarByName( "rect" ) : owner.$.win.GetWinVarByName( "rect" ) ) ) ) {
+							var rect = new idRectangle
+							rect.equals( dynamic_cast<idWinRectangle>( dest, idWinRectangle ).data );
+							ownerparent.ClientToScreen( rect );
+							destparent.ScreenToClient( rect );
 							v4.equalsVec4( rect.ToVec4 ( ) );
+						} else {
+							v4.Set( dest.c_str ( ) );
 						}
-						else {
-							v4.Set(dest.c_str());
-						}
+					} else {
+						v4.Set( dest.c_str ( ) );
 					}
-					else {
-						v4.Set(dest.c_str());
-					}
-				}
-				else {
-					v4.Set(str.c_str());
+				} else {
+					v4.Set( str.c_str ( ) );
 				}
 
 				delete str;
 			}
 			// 
 
-		}
-		else {
-			var c = this.parms.Num();
-			for (var i = 0; i < c; i++) {
-				this.parms[i].$var.Init(this.parms[i].$var.c_str(), win);
+		} else {
+			var c = this.parms.Num ( );
+			for ( var i = 0; i < c; i++ ) {
+				this.parms[i].$var.Init( this.parms[i].$var.c_str ( ), win );
 			}
 		}
 	}
@@ -669,7 +655,7 @@ class idGuiScriptList {
 ////idGuiScriptList::Execute
 ////=========================
 ////*/
-////void idGuiScriptList::Execute(idWindow *win) {
+////void idGuiScriptList::Execute(win:idWindow) {
 ////	int c = list.Num();
 ////	for (var i = 0; i < c; i++) {
 ////		idGuiScript *gs = list[i];
@@ -691,26 +677,26 @@ class idGuiScriptList {
 ////	}
 ////}
 ////
-////
-/////*
-////=========================
-////idGuiScriptList::FixupParms
-////=========================
-////*/
-////void idGuiScriptList::FixupParms(idWindow *win) {
-////	int c = list.Num();
-////	for (var i = 0; i < c; i++) {
-////		idGuiScript *gs = list[i];
-////		gs.FixupParms(win);
-////		if (gs.ifList) {
-////			gs.ifList.FixupParms(win);
-////		}
-////		if (gs.elseList) {
-////			gs.elseList.FixupParms(win);
-////		}
-////	}
-////}
-////
+
+/*
+=========================
+idGuiScriptList::FixupParms
+=========================
+*/
+	FixupParms ( win: idWindow ): void {
+		var /*int */c = this.list.Num ( );
+		for ( var i = 0; i < c; i++ ) {
+			var gs = <idGuiScript>this.list[i];
+			gs.FixupParms( win );
+			if ( gs.ifList ) {
+				gs.ifList.FixupParms( win );
+			}
+			if ( gs.elseList ) {
+				gs.elseList.FixupParms( win );
+			}
+		}
+	}
+
 /////*
 ////=========================
 ////idGuiScriptList::WriteToSaveGame

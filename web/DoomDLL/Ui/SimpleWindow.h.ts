@@ -53,7 +53,7 @@ class idSimpleWindow {
 	////	int				GetWinVarOffset( idWinVar *wv, drawWin_t* owner);
 	////	size_t			Size();
 	////
-	////	idWindow*		GetParent ( void ) { return this.mParent; }
+	GetParent ( ): idWindow { return this.mParent; }
 	////
 	////	virtual void	WriteToSaveGame( idFile *savefile );
 	////	virtual void	ReadFromSaveGame( idFile *savefile );
