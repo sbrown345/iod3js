@@ -471,7 +471,7 @@ idGuiScript::Parse
 
 	/*
 	=========================
-	idGuiScriptList::FixupParms
+	idGuiScript::FixupParms
 	=========================
 	*/
 	FixupParms(win: idWindow): void {

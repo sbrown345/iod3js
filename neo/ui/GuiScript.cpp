@@ -430,7 +430,7 @@ void idGuiScriptList::Execute(idWindow *win) {
 
 /*
 =========================
-idGuiScriptList::FixupParms
+idGuiScript::FixupParms
 =========================
 */
 void idGuiScript::FixupParms(idWindow *win) {
