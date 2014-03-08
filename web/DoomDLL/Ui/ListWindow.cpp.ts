@@ -382,8 +382,8 @@ class idListWindow extends idWindow {
 		return super.GetWinVarByName(_name, fixup, owner);
 	}
 
-////
-////void idListWindow::PostParse() {
+	PostParse ( ): void {
+		todoThrow ( );
 ////	idWindow::PostParse();
 ////
 ////	InitScroller(horizontal);
@@ -494,7 +494,7 @@ class idListWindow extends idWindow {
 ////		tabInfo.Append(r);
 ////	}
 ////	flags |= WIN_CANFOCUS;
-////}
+	}
 ////
 /////*
 ////================

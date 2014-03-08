@@ -141,8 +141,8 @@ class idMarkerWindow extends idWindow {
 		return super.GetWinVarByName( _name, fixup );
 	}
 
-	HandleEvent(event: sysEvent_t, /*bool **/updateVisuals: R<boolean>): string {
-		todoThrow();
+	HandleEvent ( event: sysEvent_t, /*bool **/updateVisuals: R<boolean> ): string {
+		todoThrow ( );
 ////	if (!(event.evType == SE_KEY && event.evValue2)) {
 ////		return "";
 ////	}
@@ -191,13 +191,13 @@ class idMarkerWindow extends idWindow {
 ////		return "cmdDemoPauseFrame";
 ////	}
 ////
-	return "";
-}
-////
-////void idMarkerWindow::PostParse() {
-////	idWindow::PostParse();
-////}
-////
+		return "";
+	}
+
+	PostParse ( ): void {
+		super.PostParse ( );
+	}
+
 ////static const int HEALTH_MAX = 100;
 ////static const int COMBAT_MAX = 100;
 ////static const int RATE_MAX = 125;

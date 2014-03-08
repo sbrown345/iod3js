@@ -632,15 +632,15 @@ idGameBearShootWindow::GetWinVarByName
 		return super.GetWinVarByName( _name, winLookup, owner );
 	}
 
-/////*
-////=============================
-////idGameBearShootWindow::PostParse
-////=============================
-////*/
-////void idGameBearShootWindow::PostParse() {
-////	idWindow::PostParse();
-////}
-////
+/*
+=============================
+idGameBearShootWindow::PostParse
+=============================
+*/
+	PostParse ( ): void {
+		super.PostParse ( );
+	}
+
 /*
 =============================
 idGameBearShootWindow::Draw

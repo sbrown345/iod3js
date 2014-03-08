@@ -217,13 +217,11 @@ class idRenderWindow extends idWindow {
 ////	refdef.time = time;
 ////	world.RenderScene(&refdef);
 	}
-////
-////void idRenderWindow::PostParse() {
-////	idWindow::PostParse();
-////}
-////
-////// 
-//////  
+
+	PostParse(): void {
+		super.PostParse();
+	}
+
 	GetWinVarByName ( _name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null ): idWinVar {
 
 		if ( idStr.Icmp( _name, "model" ) == 0 ) {

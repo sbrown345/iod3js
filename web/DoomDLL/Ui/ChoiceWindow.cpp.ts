@@ -416,18 +416,19 @@ idChoiceWindow::CommonInit
 ////		latchedVals = choiceVals.c_str();
 ////	}
 ////}
-////
-////void idChoiceWindow::PostParse() {
-////	idWindow::PostParse();
-////	UpdateChoicesAndVals();
-////
-////	InitVars();
-////	UpdateChoice();
-////	UpdateVars(false);
-////
-////	flags |= WIN_CANFOCUS;
-////}
-////
+
+	PostParse(): void {
+		todoThrow ( );
+		//idWindow::PostParse();
+		//UpdateChoicesAndVals();
+
+		//InitVars();
+		//UpdateChoice();
+		//UpdateVars(false);
+
+		//flags |= WIN_CANFOCUS;
+	}
+
 	Draw ( /*int*/ time: number, /*float */x: number, /*float */y: number ): void {
 		todoThrow ( );
 ////	idVec4 color = foreColor;

@@ -930,15 +930,15 @@ idGameBustOutWindow::GetWinVarByName
 		return super.GetWinVarByName( _name, winLookup, owner );
 	}
 
-/////*
-////=============================
-////idGameBustOutWindow::PostParse
-////=============================
-////*/
-////void idGameBustOutWindow::PostParse() {
-////	idWindow::PostParse();
-////}
-////
+/*
+=============================
+idGameBustOutWindow::PostParse
+=============================
+*/
+	PostParse ( ): void {
+		super.PostParse ( );
+	}
+
 /*
 =============================
 idGameBustOutWindow::Draw

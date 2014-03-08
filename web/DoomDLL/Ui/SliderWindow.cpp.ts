@@ -230,7 +230,8 @@ CommonInit():void {
 ////	buddyWin = buddy;
 ////}
 ////
-////void idSliderWindow::PostParse() {
+	PostParse ( ): void {
+		todoThrow ( );
 ////	idWindow::PostParse();
 ////	value = 0.0;
 ////	thumbMat = declManager.FindMaterial(thumbShader);
@@ -241,8 +242,8 @@ CommonInit():void {
 ////	//scrollbar = state.GetBool("scrollbar");
 ////	flags |= (WIN_HOLDCAPTURE | WIN_CANFOCUS);
 ////	InitCvar();
-////}
-////
+	}
+
 ////void idSliderWindow::InitWithDefaults(_name:string, const idRectangle &_rect, const idVec4 &_foreColor, const idVec4 &_matColor, const char *_background, const char *thumbShader, bool _vertical, bool _scrollbar) {
 ////	SetInitialState(_name);
 ////	rect = _rect;

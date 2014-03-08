@@ -203,7 +203,6 @@ class idEditWindow extends idWindow {
 		}
 	}
 
-
 	destructor ( ): void {
 		todoThrow( "need to call base? (or just remove this method)" );
 	}
@@ -511,28 +510,28 @@ class idEditWindow extends idWindow {
 
 	return ret;
 }
-////
-////void idEditWindow::PostParse() {
-////	idWindow::PostParse();
-////
-////	if ( maxChars == 0 ) {
-////		maxChars = 10;
-////	}
-////	if ( sourceFile.Length() ) {
-////		void *buffer;
-////		fileSystem.ReadFile( sourceFile, &buffer );
-////		text = (char *) buffer;
-////		fileSystem.FreeFile( buffer );
-////	}
-////
-////	InitCvar();
-////	InitScroller(false);
-////
-////	EnsureCursorVisible();
-////
-////	flags |= WIN_CANFOCUS;
-////}
-////
+
+	PostParse ( ): void {todoThrow ( );
+//	super.PostParse();
+
+//	if ( maxChars == 0 ) {
+//		maxChars = 10;
+//	}
+//	if ( sourceFile.Length() ) {
+//		void *buffer;
+//		fileSystem.ReadFile( sourceFile, &buffer );
+//		text = (char *) buffer;
+//		fileSystem.FreeFile( buffer );
+//	}
+
+//	InitCvar();
+//	InitScroller(false);
+
+//	EnsureCursorVisible();
+
+//	flags |= WIN_CANFOCUS;
+	}
+
 /////*
 ////================
 ////idEditWindow::InitScroller
