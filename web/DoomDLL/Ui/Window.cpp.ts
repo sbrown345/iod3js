@@ -4132,6 +4132,7 @@ idWindow::AddChild
 ===============
 */
 AddChild(win:idWindow):void {
+	dlog(DEBUG_GUI, "idWindow::AddChild %s\n", win.name.c_str ( ) );
 	win.childID = this.children.Append(win);
 }
 

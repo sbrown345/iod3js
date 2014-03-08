@@ -3827,6 +3827,7 @@ idWindow::AddChild
 ===============
 */
 void idWindow::AddChild(idWindow *win) {
+	dlog(DEBUG_GUI, "idWindow::AddChild %s\n", win->name.c_str());
 	win->childID = children.Append(win);
 }
 

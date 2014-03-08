@@ -3361,12 +3361,14 @@ FreeSource( keepDefines = false ):void {
 	while( this.scriptstack ) {
 		script = this.scriptstack;
 		this.scriptstack = this.scriptstack.next;
+		$delete( script );
 		delete script;
 	}
 	// free all the tokens
 	while( this.tokens ) {
 		token = this.tokens;
 		this.tokens = this.tokens.next;
+		$delete( token );
 		delete token;
 	}
 	// free all indents

@@ -665,11 +665,11 @@ This is the same as in idEditWindow
 			this.UpdateList ( );
 		}
 	}
-////
-////void idListWindow::HandleBuddyUpdate(idWindow *buddy) {
-////	top = this.scroller.GetValue();
-////}
-////
+
+	HandleBuddyUpdate ( buddy: idWindow ) {
+		this.top = this.scroller.GetValue ( );
+	}
+
 	UpdateList(): void {
 		todoThrow ( );
 ////	idStr str, strName;

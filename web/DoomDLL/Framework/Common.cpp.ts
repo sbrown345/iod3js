@@ -529,8 +529,10 @@ idCommonLocal::Warning
 prints WARNING %s and adds the warning message to a queue to be printed later on
 ==================
 */
-	Warning ( /*const char **/ fmt: string, ...args: any[] ): void {
-		console.warn( fmt, args );
+	Warning( /*const char **/ fmt: string, ...args: any[]): void {
+		var argArr = args.slice(0);
+		argArr.unshift(fmt.trim());
+		console.warn.apply(console, argArr);
 		//va_list		argptr;
 		//char		msg[MAX_PRINT_MSG_SIZE];
 

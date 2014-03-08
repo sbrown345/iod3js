@@ -19,6 +19,7 @@ var DEBUG_RegisterDeclFolder = isd( false );
 var DEBUG_DeriveTangents = isd( false );
 var DEBUG_R_DeriveTangents = isd( false );
 var DEBUG_COMPILER = isd( true );
+var DEBUG_GUI = isd( true );
 var DEBUG_HASHINDEX = isd( false );
 
 function dlog(log: boolean, format: string, ...args: any[]) {

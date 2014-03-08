@@ -447,6 +447,7 @@
 
 /// <reference path="dlls/game/game.h.ts" />
 /// <reference path="dlls/game/game_local.h.ts" />
+/// <reference path="dlls/game/game_network.cpp.ts" />
 /// <reference path="dlls/game/game_local.cpp.ts" />
 
 /// <reference path="dlls/game/gamesys/syscmds.cpp.ts" />

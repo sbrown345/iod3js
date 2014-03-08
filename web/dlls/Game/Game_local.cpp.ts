@@ -60,10 +60,6 @@ var gameExport = new gameExport_t;
 ////// global animation lib
 ////idAnimManager				animationLib;
 
-////// the rest of the engine will only reference the "game" variable, while all local aspects stay hidden
-var gameLocal = new idGameLocal;
-var game:idGame = gameLocal;	// statically pointed at an idGameLocal
-
 ////const char *idGameLocal::sufaceTypeNames[ MAX_SURFACE_TYPES ] = {
 ////	"none",	"metal", "stone", "flesh", "wood", "cardboard", "liquid", "glass", "plastic",
 ////	"ricochet", "surftype10", "surftype11", "surftype12", "surftype13", "surftype14", "surftype15"
@@ -4368,3 +4364,9 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////*/
 ////void idGameLocal::GetMapLoadingGUI( char gui[ MAX_STRING_CHARS ] ) { }
 
+
+
+
+// the rest of the engine will only reference the "game" variable, while all local aspects stay hidden
+var gameLocal = new idGameLocal;
+var game: idGame = gameLocal;	// statically pointed at an idGameLocal

@@ -252,11 +252,11 @@ class idRenderWindow extends idWindow {
 		return super.GetWinVarByName( _name, fixup, owner );
 	}
 
-////bool idRenderWindow::ParseInternalVar(_name:string, idParser *src) {
-////	if (idStr.Icmp(_name, "animClass") == 0) {
-////		ParseString(src, animClass);
-////		return true;
-////	}
-////	return idWindow::ParseInternalVar(_name, src);
-////}
+	ParseInternalVar ( _name: string, src: idParser ): boolean {
+		if ( idStr.Icmp( _name, "animClass" ) == 0 ) {
+			this.ParseString( src, this.animClass );
+			return true;
+		}
+		return super.ParseInternalVar( _name, src );
+	}
 }

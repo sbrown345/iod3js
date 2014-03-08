@@ -970,7 +970,7 @@ class idLexer {
 		}
 		// succesfully read a token
 		//dlog(DEBUG_Lexer, "RT: %i, %s\n", this.line , token.data);
-		//if (idLexer.RTCount == /*6572*/4597 ) debugger;
+		if ( idLexer.RTCount == 191769 && this.line == 106 ) debugger;
 		//if (token.data == "aas_types") debugger;
 		dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", idLexer.RTCount, this.line, token.data);
 		idLexer.RTCount++;
@@ -1833,14 +1833,14 @@ FreeSource( ):void {
 	}
 
 
-/////*
-////================
-////idLexer::~idLexer
-////================
-////*/
-////idLexer::~idLexer( void ) {
-////	idLexer::FreeSource();
-////}
+/*
+================
+idLexer::~idLexer
+================
+*/
+	destructor ( ): void {
+		this.FreeSource ( );
+	}
 
 /////*
 ////================
