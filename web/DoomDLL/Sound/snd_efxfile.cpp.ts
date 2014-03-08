@@ -194,7 +194,7 @@
 ////===============
 ////*/
 ////bool idEFXFile::LoadFile( const char *filename, bool OSPath ) {
-////	idLexer src( LEXFL_NOSTRINGCONCAT );
+////	idLexer src( lexerFlags_t.LEXFL_NOSTRINGCONCAT );
 ////	idToken token;
 ////
 ////	src.LoadFile( filename, OSPath );

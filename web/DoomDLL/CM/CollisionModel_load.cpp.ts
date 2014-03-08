@@ -117,7 +117,7 @@
 ////	// load it
 ////	filename = name;
 ////	filename.SetFileExtension( PROC_FILE_EXT );
-////	src = new idLexer( filename, LEXFL_NOSTRINGCONCAT | LEXFL_NODOLLARPRECOMPILE );
+////	src = new idLexer( filename, lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NODOLLARPRECOMPILE );
 ////	if ( !src->IsLoaded() ) {
 ////		common->Warning( "idCollisionModelManagerLocal::LoadProcBSP: couldn't load %s", filename.c_str() );
 ////		delete src;

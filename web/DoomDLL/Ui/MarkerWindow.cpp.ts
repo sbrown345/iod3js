@@ -120,14 +120,14 @@ class idMarkerWindow extends idWindow {
 ////		idStr str;
 ////		ParseString(src, str);
 ////		markerMat = declManager.FindMaterial(str);
-////		markerMat.SetSort( SS_GUI );
+////		markerMat.SetSort( materialSort_t.SS_GUI );
 ////		return true;
 ////	}
 ////	if (idStr.Icmp(_name, "markerStop") == 0) {
 ////		idStr str;
 ////		ParseString(src, str);
 ////		markerStop = declManager.FindMaterial(str);
-////		markerStop.SetSort( SS_GUI );
+////		markerStop.SetSort( materialSort_t.SS_GUI );
 ////		return true;
 ////	}
 ////	if (idStr.Icmp(_name, "markerColor") == 0) {
@@ -367,7 +367,7 @@ class idMarkerWindow extends idWindow {
 ////				name = markers.GetFile( i );
 ////				markerData_t md;
 ////				md.mat = declManager.FindMaterial( name );
-////				md.mat.SetSort( SS_GUI );
+////				md.mat.SetSort( materialSort_t.SS_GUI );
 ////				name.StripPath();
 ////				name.StripFileExtension();
 ////				md.time = atoi(name);

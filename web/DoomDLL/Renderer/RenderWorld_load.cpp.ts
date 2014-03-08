@@ -514,7 +514,7 @@
 //
 //	FreeWorld();
 //
-//	src = new idLexer( filename, LEXFL_NOSTRINGCONCAT | LEXFL_NODOLLARPRECOMPILE );
+//	src = new idLexer( filename, lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NODOLLARPRECOMPILE );
 //	if ( !src->IsLoaded() ) {
 //		common->Printf( "idRenderWorldLocal::InitFromMap: %s not found\n", filename.c_str() );
 //		ClearWorld();

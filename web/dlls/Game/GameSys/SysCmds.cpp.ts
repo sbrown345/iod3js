@@ -2055,7 +2055,7 @@
 ////==================
 ////*/
 ////static void Cmd_ShowViewNotes_f( const idCmdArgs &args ) {
-////	static idLexer parser( LEXFL_ALLOWPATHNAMES | LEXFL_NOSTRINGESCAPECHARS | LEXFL_NOSTRINGCONCAT | LEXFL_NOFATALERRORS );
+////	static idLexer parser( lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOFATALERRORS );
 ////	idToken	token;
 ////	idPlayer *player;
 ////	idVec3 origin;

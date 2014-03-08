@@ -39,20 +39,20 @@
 ////
 ////
 ////enum {
-////	TAB_TYPE_TEXT = 0,
-////	TAB_TYPE_ICON = 1
+var TAB_TYPE_TEXT = 0,
+	TAB_TYPE_ICON = 1;
 ////};
-////
-////struct idTabRect {
-////	int x;
-////	int w;
-////	int align;
-////	int valign;
-////	int	type;
-////	idVec2 iconSize;
-////	float iconVOffset;
-////};
-////
+
+class idTabRect {
+	x/*int*/:number;
+	w/*int*/:number;
+	align/*int*/:number;
+	valign/*int*/:number;
+	type/*int*/:number;
+	iconSize = new idVec2;
+	iconVOffset/*float*/:number;
+};
+
 class idListWindow extends idWindow {
 ////public:
 ////	idListWindow(idUserInterfaceLocal *gui);
@@ -79,7 +79,7 @@ class idListWindow extends idWindow {
 ////	bool				IsSelected(int index);
 ////	void				ClearSelection(int sel);
 ////
-////	idList<idTabRect>	tabInfo;
+	tabInfo = new idList<idTabRect>(idTabRect);
 	top: number /*int*/;
 	sizeBias: number /*float*/;
 	horizontal: boolean;
@@ -108,9 +108,9 @@ class idListWindow extends idWindow {
 ////
 ////// Number of pixels above the text that the rect starts
 ////static const int pixelOffset = 3;
-////
-////// number of pixels between columns
-////static const int tabBorder = 4;
+
+// number of pixels between columns
+	 static tabBorder = 4;
 ////
 ////// Time in milliseconds between clicks to register as a double-click
 ////static const int doubleClickSpeed = 300;
@@ -192,7 +192,7 @@ class idListWindow extends idWindow {
 ////
 ////		if ( key == K_MOUSE1 || key == K_MOUSE2 ) {
 ////			// If the user clicked in the scroller, then ignore it
-////			if ( scroller.Contains(this.gui.CursorX(), this.gui.CursorY()) ) {
+////			if ( this.scroller.Contains(this.gui.CursorX(), this.gui.CursorY()) ) {
 ////				return ret;
 ////			}
 ////		}
@@ -281,7 +281,7 @@ class idListWindow extends idWindow {
 ////		SetCurrentSel( listItems.Num() - 1 );
 ////	}
 ////
-////	if ( scroller.GetHigh() > 0.0f ) {
+////	if ( this.scroller.GetHigh() > 0.0f ) {
 ////		if ( !idKeyInput::IsDown( K_CTRL ) ) {
 ////			if ( top > GetCurrentSel() - 1 ) {
 ////				top = GetCurrentSel() - 1;
@@ -297,10 +297,10 @@ class idListWindow extends idWindow {
 ////		if ( top < 0 ) {
 ////			top = 0;
 ////		}
-////		scroller.SetValue(top);
+////		this.scroller.SetValue(top);
 ////	} else {
 ////		top = 0;
-////		scroller.SetValue(0.0f);
+////		this.scroller.SetValue(0.0f);
 ////	}
 ////
 ////	if ( key != K_MOUSE1 ) {
@@ -383,160 +383,158 @@ class idListWindow extends idWindow {
 	}
 
 	PostParse ( ): void {
-		todoThrow ( );
-////	idWindow::PostParse();
-////
-////	InitScroller(horizontal);
-////
-////	idList<int> tabStops;
-////	idList<int> tabAligns;
-////	if (tabStopStr.Length()) {
-////		idParser src(tabStopStr, tabStopStr.Length(), "tabstops", LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS);
-////		idToken tok;
-////		while (src.ReadToken(&tok)) {
-////			if (tok == ",") {
-////				continue;
-////			}
-////			tabStops.Append(atoi(tok));
-////		}
-////	}
-////	if (tabAlignStr.Length()) {
-////		idParser src(tabAlignStr, tabAlignStr.Length(), "tabaligns", LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS);
-////		idToken tok;
-////		while (src.ReadToken(&tok)) {
-////			if (tok == ",") {
-////				continue;
-////			}
-////			tabAligns.Append(atoi(tok));
-////		}
-////	}
-////	idList<int> tabVAligns;
-////	if (tabVAlignStr.Length()) {
-////		idParser src(tabVAlignStr, tabVAlignStr.Length(), "tabvaligns", LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS);
-////		idToken tok;
-////		while (src.ReadToken(&tok)) {
-////			if (tok == ",") {
-////				continue;
-////			}
-////			tabVAligns.Append(atoi(tok));
-////		}
-////	}
-////
-////	idList<int> tabTypes;
-////	if (tabTypeStr.Length()) {
-////		idParser src(tabTypeStr, tabTypeStr.Length(), "tabtypes", LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS);
-////		idToken tok;
-////		while (src.ReadToken(&tok)) {
-////			if (tok == ",") {
-////				continue;
-////			}
-////			tabTypes.Append(atoi(tok));
-////		}
-////	}
-////	idList<idVec2> tabSizes;
-////	if (tabIconSizeStr.Length()) {
-////		idParser src(tabIconSizeStr, tabIconSizeStr.Length(), "tabiconsizes", LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS);
-////		idToken tok;
-////		while (src.ReadToken(&tok)) {
-////			if (tok == ",") {
-////				continue;
-////			}
-////			idVec2 size;
-////			size.x = atoi(tok);
-////			
-////			src.ReadToken(&tok);	//","
-////			src.ReadToken(&tok);
-////
-////			size.y = atoi(tok);
-////			tabSizes.Append(size);
-////		}
-////	}
-////
-////	idList<float> tabIconVOffsets;
-////	if (tabIconVOffsetStr.Length()) {
-////		idParser src(tabIconVOffsetStr, tabIconVOffsetStr.Length(), "tabiconvoffsets", LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_NOSTRINGESCAPECHARS);
-////		idToken tok;
-////		while (src.ReadToken(&tok)) {
-////			if (tok == ",") {
-////				continue;
-////			}
-////			tabIconVOffsets.Append(atof(tok));
-////		}
-////	}
-////
-////	int c = tabStops.Num();
-////	bool doAligns = (tabAligns.Num() == tabStops.Num());
-////	for (int i = 0; i < c; i++) {
-////		idTabRect r;
-////		r.x = tabStops[i];
-////		r.w = (i < c - 1) ? tabStops[i+1] - r.x - tabBorder : -1;
-////		r.align = (doAligns) ? tabAligns[i] : 0;
-////		if(tabVAligns.Num() > 0) {
-////			r.valign = tabVAligns[i];
-////		} else {
-////			r.valign = 0;
-////		}
-////		if(tabTypes.Num() > 0) {
-////			r.type = tabTypes[i];
-////		} else {
-////			r.type = TAB_TYPE_TEXT;
-////		}
-////		if(tabSizes.Num() > 0) {
-////			r.iconSize = tabSizes[i];
-////		} else {
-////			r.iconSize.Zero();
-////		}
-////		if(tabIconVOffsets.Num() > 0 ) {
-////			r.iconVOffset = tabIconVOffsets[i];
-////		} else {
-////			r.iconVOffset = 0;
-////		}
-////		tabInfo.Append(r);
-////	}
-////	flags |= WIN_CANFOCUS;
+		super.PostParse ( );
+
+		this.InitScroller( this.horizontal );
+
+		var tabStops = new idList< /*int*/number>( Number );
+		var tabAligns = new idList< /*int*/number>( Number );
+		if ( this.tabStopStr.Length ( ) ) {
+			var src = new idParser( this.tabStopStr.c_str ( ), this.tabStopStr.Length ( ), "tabstops", lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS );
+			var tok = new idToken;
+			while ( src.ReadToken( tok ) ) {
+				if ( tok.data == "," ) {
+					continue;
+				}
+				tabStops.Append( atoi( tok.data ) );
+			}
+		}
+		if ( this.tabAlignStr.Length ( ) ) {
+			var src = new idParser( this.tabAlignStr.c_str ( ), this.tabAlignStr.Length ( ), "tabaligns", lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS );
+			var tok = new idToken;
+			while ( src.ReadToken( tok ) ) {
+				if ( tok.data == "," ) {
+					continue;
+				}
+				tabAligns.Append( atoi( tok.data ) );
+			}
+		}
+		var tabVAligns = new idList< /*int*/number>( Number );
+		if ( this.tabVAlignStr.Length ( ) ) {
+			var src = new idParser( this.tabVAlignStr.c_str ( ), this.tabVAlignStr.Length ( ), "tabvaligns", lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS );
+			var tok = new idToken;
+			while ( src.ReadToken( tok ) ) {
+				if ( tok.data == "," ) {
+					continue;
+				}
+				tabVAligns.Append( atoi( tok.data ) );
+			}
+		}
+
+		var tabTypes = new idList< /*int*/number>( Number );
+		if ( this.tabTypeStr.Length ( ) ) {
+			var src = new idParser( this.tabTypeStr.c_str ( ), this.tabTypeStr.Length ( ), "tabtypes", lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS );
+			var tok = new idToken;
+			while ( src.ReadToken( tok ) ) {
+				if ( tok.data == "," ) {
+					continue;
+				}
+				tabTypes.Append( atoi( tok.data ) );
+			}
+		}
+		var tabSizes = new idList<idVec2>( idVec2 );
+		if ( this.tabIconSizeStr.Length ( ) ) {
+			var src = new idParser( this.tabIconSizeStr.c_str ( ), this.tabIconSizeStr.Length ( ), "tabiconsizes", lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS );
+			var tok = new idToken;
+			while ( src.ReadToken( tok ) ) {
+				if ( tok.data == "," ) {
+					continue;
+				}
+				var size = new idVec2;
+				size.x = atoi( tok.data );
+
+				src.ReadToken( tok ); //","
+				src.ReadToken( tok );
+
+				size.y = atoi( tok.data );
+				tabSizes.Append( size );
+			}
+		}
+
+		var tabIconVOffsets = new idList< /*float*/number>( Number );
+		if ( this.tabIconVOffsetStr.Length ( ) ) {
+			var src = new idParser( this.tabIconVOffsetStr.c_str ( ), this.tabIconVOffsetStr.Length ( ), "tabiconvoffsets", lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS );
+			var tok = new idToken;
+			while ( src.ReadToken( tok ) ) {
+				if ( tok.data == "," ) {
+					continue;
+				}
+				tabIconVOffsets.Append( atof( tok.data ) );
+			}
+		}
+
+		var c = tabStops.Num ( );
+		var doAligns = ( tabAligns.Num ( ) == tabStops.Num ( ) );
+		for ( var i = 0; i < c; i++ ) {
+			var r = new idTabRect;
+			r.x = tabStops[i];
+			r.w = ( i < c - 1 ) ? tabStops[i + 1] - r.x - idListWindow.tabBorder : -1;
+			r.align = ( doAligns ) ? tabAligns[i] : 0;
+			if ( tabVAligns.Num ( ) > 0 ) {
+				r.valign = tabVAligns[i];
+			} else {
+				r.valign = 0;
+			}
+			if ( tabTypes.Num ( ) > 0 ) {
+				r.type = tabTypes[i];
+			} else {
+				r.type = TAB_TYPE_TEXT;
+			}
+			if ( tabSizes.Num ( ) > 0 ) {
+				r.iconSize = tabSizes[i];
+			} else {
+				r.iconSize.Zero ( );
+			}
+			if ( tabIconVOffsets.Num ( ) > 0 ) {
+				r.iconVOffset = tabIconVOffsets[i];
+			} else {
+				r.iconVOffset = 0;
+			}
+			this.tabInfo.Append( r );
+		}
+		this.flags |= WIN_CANFOCUS;
 	}
-////
-/////*
-////================
-////idListWindow::InitScroller
-////
-////This is the same as in idEditWindow
-////================
-////*/
-////void idListWindow::InitScroller( bool horizontal )
-////{
-////	const char *thumbImage = "guis/assets/scrollbar_thumb.tga";
-////	const char *barImage = "guis/assets/scrollbarv.tga";
-////	const char *scrollerName = "_scrollerWinV";
-////
-////	if (horizontal) {
-////		barImage = "guis/assets/scrollbarh.tga";
-////		scrollerName = "_scrollerWinH";
-////	}
-////
-////	const idMaterial *mat = declManager.FindMaterial( barImage );
-////	mat.SetSort( SS_GUI );
-////	sizeBias = mat.GetImageWidth();
-////
-////	idRectangle scrollRect;
-////	if (horizontal) {
-////		sizeBias = mat.GetImageHeight();
-////		scrollRect.x = 0;
-////		scrollRect.y = (clientRect.h - sizeBias);
-////		scrollRect.w = clientRect.w;
-////		scrollRect.h = sizeBias;
-////	} else {
-////		scrollRect.x = (clientRect.w - sizeBias);
-////		scrollRect.y = 0;
-////		scrollRect.w = sizeBias;
-////		scrollRect.h = clientRect.h;
-////	}
-////
-////	scroller.InitWithDefaults(scrollerName, scrollRect, foreColor, matColor, mat.GetName(), thumbImage, !horizontal, true);
-////	InsertChild(scroller, NULL);
-////	scroller.SetBuddy(this);
-////}
-////
+
+/*
+================
+idListWindow::InitScroller
+
+This is the same as in idEditWindow
+================
+*/
+	InitScroller ( /*bool*/ horizontal: boolean ): void {
+		var thumbImage = "guis/assets/scrollbar_thumb.tga";
+		var barImage = "guis/assets/scrollbarv.tga";
+		var scrollerName = "_scrollerWinV";
+
+		if ( horizontal ) {
+			barImage = "guis/assets/scrollbarh.tga";
+			scrollerName = "_scrollerWinH";
+		}
+
+		var mat = declManager.FindMaterial( barImage );
+		mat.SetSort( materialSort_t.SS_GUI );
+		this.sizeBias = mat.GetImageWidth ( );
+
+		var scrollRect = new idRectangle;
+		if ( horizontal ) {
+			this.sizeBias = mat.GetImageHeight ( );
+			scrollRect.x = 0;
+			scrollRect.y = ( this.clientRect.h - this.sizeBias );
+			scrollRect.w = this.clientRect.w;
+			scrollRect.h = this.sizeBias;
+		} else {
+			scrollRect.x = ( this.clientRect.w - this.sizeBias );
+			scrollRect.y = 0;
+			scrollRect.w = this.sizeBias;
+			scrollRect.h = this.clientRect.h;
+		}
+
+		this.scroller.InitWithDefaults( scrollerName, scrollRect, this.foreColor.data, this.matColor.data, mat.GetName ( ), thumbImage, !horizontal, true );
+		this.InsertChild( this.scroller, null );
+		this.scroller.SetBuddy( this );
+	}
+
 	Draw ( /*int*/ time: number, /*float */x: number, /*float */y: number ): void {
 		todoThrow ( );
 ////	idVec4 color;
@@ -549,11 +547,11 @@ class idListWindow extends idWindow {
 ////	float bottom = textRect.Bottom();
 ////	float width = textRect.w;
 ////
-////	if ( scroller.GetHigh() > 0.0f ) {
+////	if ( this.scroller.GetHigh() > 0.0f ) {
 ////		if ( horizontal ) {
-////			bottom -= sizeBias;
+////			bottom -= this.sizeBias;
 ////		} else {
-////			width -= sizeBias;
+////			width -= this.sizeBias;
 ////			rect.w = width;
 ////		}
 ////	}
@@ -566,7 +564,7 @@ class idListWindow extends idWindow {
 ////		if ( IsSelected( i ) ) {
 ////			rect.h = lineHeight;
 ////			dc.DrawFilledRect(rect.x, rect.y + pixelOffset, rect.w, rect.h, borderColor);
-////			if ( flags & WIN_FOCUS ) {
+////			if ( this.flags & WIN_FOCUS ) {
 ////				idVec4 color = borderColor;
 ////				color.w = 1.0f;
 ////				dc.DrawRect(rect.x, rect.y + pixelOffset, rect.w, rect.h, 1.0f, color );
@@ -582,24 +580,24 @@ class idListWindow extends idWindow {
 ////		rect.h = lineHeight + pixelOffset;
 ////		rect.y --;
 ////
-////		if ( tabInfo.Num() > 0 ) {
+////		if ( this.tabInfo.Num() > 0 ) {
 ////			int start = 0;
 ////			int tab = 0;
 ////			int stop = listItems[i].Find('\t', 0);
 ////			while ( start < listItems[i].Length() ) {
-////				if ( tab >= tabInfo.Num() ) {
-////					common.Warning( "idListWindow::Draw: this.gui '%s' window '%s' tabInfo.Num() exceeded", this.gui.GetSourceFile(), name.c_str() );
+////				if ( tab >= this.tabInfo.Num() ) {
+////					common.Warning( "idListWindow::Draw: this.gui '%s' window '%s' this.tabInfo.Num() exceeded", this.gui.GetSourceFile(), name.c_str() );
 ////					break;
 ////				}
 ////				listItems[i].Mid(start, stop - start, work);
 ////
-////				rect.x = textRect.x + tabInfo[tab].x;
-////				rect.w = (tabInfo[tab].w == -1) ? width - tabInfo[tab].x : tabInfo[tab].w;
+////				rect.x = textRect.x + this.tabInfo[tab].x;
+////				rect.w = (this.tabInfo[tab].w == -1) ? width - this.tabInfo[tab].x : this.tabInfo[tab].w;
 ////				dc.PushClipRect( rect );
 ////
-////				if ( tabInfo[tab].type == TAB_TYPE_TEXT ) {
-////					dc.DrawText(work, scale, tabInfo[tab].align, color, rect, false, -1);
-////				} else if (tabInfo[tab].type == TAB_TYPE_ICON) {
+////				if ( this.tabInfo[tab].type == TAB_TYPE_TEXT ) {
+////					dc.DrawText(work, scale, this.tabInfo[tab].align, color, rect, false, -1);
+////				} else if (this.tabInfo[tab].type == TAB_TYPE_ICON) {
 ////					
 ////					const idMaterial	**hashMat;
 ////					const idMaterial	*iconMat;
@@ -614,23 +612,23 @@ class idListWindow extends idWindow {
 ////						}
 ////
 ////						idRectangle iconRect;
-////						iconRect.w = tabInfo[tab].iconSize.x;
-////						iconRect.h = tabInfo[tab].iconSize.y;
+////						iconRect.w = this.tabInfo[tab].iconSize.x;
+////						iconRect.h = this.tabInfo[tab].iconSize.y;
 ////
-////						if(tabInfo[tab].align == idDeviceContext::ALIGN_LEFT) {
+////						if(this.tabInfo[tab].align == idDeviceContext::ALIGN_LEFT) {
 ////							iconRect.x = rect.x;
-////						} else if (tabInfo[tab].align == idDeviceContext::ALIGN_CENTER) {
+////						} else if (this.tabInfo[tab].align == idDeviceContext::ALIGN_CENTER) {
 ////							iconRect.x = rect.x + rect.w/2.0f - iconRect.w/2.0f;
-////						} else if (tabInfo[tab].align == idDeviceContext::ALIGN_RIGHT) {
+////						} else if (this.tabInfo[tab].align == idDeviceContext::ALIGN_RIGHT) {
 ////							iconRect.x  = rect.x + rect.w - iconRect.w;
 ////						}
 ////
-////						if(tabInfo[tab].valign == 0) { //Top
-////							iconRect.y = rect.y + tabInfo[tab].iconVOffset;
-////						} else if(tabInfo[tab].valign == 1) { //Center
-////							iconRect.y = rect.y + rect.h/2.0f - iconRect.h/2.0f + tabInfo[tab].iconVOffset;
-////						} else if(tabInfo[tab].valign == 2) { //Bottom
-////							iconRect.y = rect.y + rect.h - iconRect.h + tabInfo[tab].iconVOffset;
+////						if(this.tabInfo[tab].valign == 0) { //Top
+////							iconRect.y = rect.y + this.tabInfo[tab].iconVOffset;
+////						} else if(this.tabInfo[tab].valign == 1) { //Center
+////							iconRect.y = rect.y + rect.h/2.0f - iconRect.h/2.0f + this.tabInfo[tab].iconVOffset;
+////						} else if(this.tabInfo[tab].valign == 2) { //Bottom
+////							iconRect.y = rect.y + rect.h - iconRect.h + this.tabInfo[tab].iconVOffset;
 ////						}
 ////
 ////						dc.DrawMaterial(iconRect.x, iconRect.y, iconRect.w, iconRect.h, iconMat, idVec4(1.0f,1.0f,1.0f,1.0f), 1.0f, 1.0f);
@@ -669,7 +667,7 @@ class idListWindow extends idWindow {
 	}
 ////
 ////void idListWindow::HandleBuddyUpdate(idWindow *buddy) {
-////	top = scroller.GetValue();
+////	top = this.scroller.GetValue();
 ////}
 ////
 	UpdateList(): void {
@@ -688,21 +686,21 @@ class idListWindow extends idWindow {
 ////	float vert = GetMaxCharHeight();
 ////	int fit = textRect.h / vert;
 ////	if ( listItems.Num() < fit ) {
-////		scroller.SetRange(0.0f, 0.0f, 1.0f);
+////		this.scroller.SetRange(0.0f, 0.0f, 1.0f);
 ////	} else {
-////		scroller.SetRange(0.0f, (listItems.Num() - fit) + 1.0f, 1.0f);
+////		this.scroller.SetRange(0.0f, (listItems.Num() - fit) + 1.0f, 1.0f);
 ////	}
 ////
 ////	SetCurrentSel( this.gui.State().GetInt( va( "%s_sel_0", listName.c_str() ) ) );
 ////
-////	float value = scroller.GetValue();
+////	float value = this.scroller.GetValue();
 ////	if ( value > listItems.Num() - 1 ) {
 ////		value = listItems.Num() - 1;
 ////	}
 ////	if ( value < 0.0f ) {
 ////		value = 0.0f;
 ////	}
-////	scroller.SetValue(value);
+////	this.scroller.SetValue(value);
 ////	top = value;
 ////
 ////	typedTime = 0;

@@ -2777,7 +2777,7 @@ idParser::CheckTokenString
 ////================
 ////*/
 /////*int*/CheckTokenType( int type, int subtype, idToken *token ):number {
-////	idToken tok;
+////	var tok = new idToken;
 ////
 ////	if ( !ReadToken( &tok ) ) {
 ////		return 0/*false*/;
@@ -2798,7 +2798,7 @@ idParser::CheckTokenString
 ////================
 ////*/
 /////*int*/PeekTokenString( $string:string ):number {
-////	idToken tok;
+////	var tok = new idToken;
 ////
 ////	if ( !ReadToken( &tok ) ) {
 ////		return 0/*false*/;
@@ -2819,7 +2819,7 @@ idParser::CheckTokenString
 ////================
 ////*/
 /////*int*/PeekTokenType( int type, int subtype, idToken *token ):number {
-////	idToken tok;
+////	var tok = new idToken;
 ////
 ////	if ( !ReadToken( &tok ) ) {
 ////		return 0/*false*/;
@@ -3020,7 +3020,7 @@ idParser::UnreadToken
 ////================
 ////*/
 /////*int*/ReadTokenOnLine( idToken *token ):number {
-////	idToken tok;
+////	var tok = new idToken;
 ////
 ////	if (!this.ReadToken( &tok )) {
 ////		return 0/*false*/;
@@ -3437,83 +3437,121 @@ idParser::GetPunctuationId
 		return 0;
 	}
 
-
-	constructor ( flags: number= null ) {
+/*
+================
+idParser::idParser
+================
+*/
+	constructor ( )
+	constructor ( flags: number )
+	constructor ( filename: string, /*int */flags: number )
+	constructor ( filename: string, /*int */flags: number, OSPath: boolean )
+	constructor ( ptr: string, /*int */length: number, name: string, /*int */flags: number )
+	constructor ( a1?: any, a2?: any, a3?: any, a4?: any ) {
 		if ( arguments.length == 0 ) {
-			// idParser();
-			this.loaded = 0 /*false*/;
-			this.OSPath = false;
-			this.punctuations = null;
-			this.flags = 0;
-			this.scriptstack = null;
-			this.indentstack = null;
-			this.definehash = null;
-			this.defines = null;
-			this.tokens = null;
-			this.marker_p = NULL;
-		} else if ( arguments.length == 1 && typeof arguments[0] === "number" ) {
-			//idParser( int flags );
-			this.loaded = 0 /*false*/;
-			this.OSPath = false;
-			this.punctuations = null;
-			this.flags = flags;
-			this.scriptstack = null;
-			this.indentstack = null;
-			this.definehash = null;
-			this.defines = null;
-			this.tokens = null;
-			this.marker_p = null;
+			this.constructor_default ( );
+		} else if ( arguments.length == 1 ) {
+			var flags = <number>a1;
+			this.constructor_flags( flags );
+		} else if (arguments.length == 2 || arguments.length == 3) {
+			var filename = <string>a1;
+			var flags = <number>a2;
+			var OSPath = <boolean>a3 || false;
+			this.constructor_filename( filename, flags, OSPath );
+		} else if (arguments.length == 4) {
+			var ptr = <string>a1;
+			var length = <number>a2;
+			var name = <string>a3;
+			var flags = <number>a4;
+			this.constructor_str( ptr, length, name, flags );
 		} else {
-			todoThrow ( );
+			throw "no such ctor";
 		}
 	}
+
+/*
+================
+idParser::idParser
+================
+*/
+	constructor_default(  ): void {
+		this.loaded = 0 /*false*/;
+		this.OSPath = false;
+		this.punctuations = null;
+		this.flags = 0;
+		this.scriptstack = null;
+		this.indentstack = null;
+		this.definehash = null;
+		this.defines = null;
+		this.tokens = null;
+		this.marker_p = NULL;
+	}
 	
-////
-/////*
-////================
-////idParser::idParser
-////================
-////*/
-////idParser::idParser( const char *filename, int flags, bool OSPath ) {
-////	this.loaded = false;
-////	this.OSPath = true;
-////	this.punctuations = 0;
-////	this.flags = flags;
-////	this.scriptstack = NULL;
-////	this.indentstack = NULL;
-////	this.definehash = NULL;
-////	this.defines = NULL;
-////	this.tokens = NULL;
-////	this.marker_p = NULL;
-////	LoadFile( filename, OSPath );
-////}
-////
-/////*
-////================
-////idParser::idParser
-////================
-////*/
-////idParser::idParser( const char *ptr, int length, const char *name, int flags ) {
-////	this.loaded = false;
-////	this.OSPath = false;
-////	this.punctuations = 0;
-////	this.flags = flags;
-////	this.scriptstack = NULL;
-////	this.indentstack = NULL;
-////	this.definehash = NULL;
-////	this.defines = NULL;
-////	this.tokens = NULL;
-////	this.marker_p = NULL;
-////	LoadMemory( ptr, length, name );
-////}
-////
-/////*
-////================
-////idParser::~idParser
-////================
-////*/
-////idParser::~idParser( ) {
-////	idParser::FreeSource( false );
-////}
-////
+
+/*
+================
+idParser::idParser
+================
+*/
+	constructor_flags( flags:number): void {
+		this.loaded = 0 /*false*/;
+		this.OSPath = false;
+		this.punctuations = null;
+		this.flags = flags;
+		this.scriptstack = null;
+		this.indentstack = null;
+		this.definehash = null;
+		this.defines = null;
+		this.tokens = null;
+		this.marker_p = NULL;
+	}
+	
+
+/*
+================
+idParser::idParser
+================
+*/
+	constructor_filename ( filename: string, /*int */flags: number, OSPath: boolean = false ): void {
+		this.loaded = 0 /*false*/;
+		this.OSPath = true;
+		this.punctuations = null;
+		this.flags = flags;
+		this.scriptstack = null;
+		this.indentstack = null;
+		this.definehash = null;
+		this.defines = null;
+		this.tokens = null;
+		this.marker_p = NULL;
+		this.LoadFile( filename, OSPath );
+	}
+
+/*
+================
+idParser::idParser
+================
+*/
+	constructor_str ( ptr: string, /*int */length: number, name: string, /*int */flags: number ): void {
+		this.loaded = 0 /*false*/;
+		this.OSPath = false;
+		this.punctuations = null;
+		this.flags = flags;
+		this.scriptstack = null;
+		this.indentstack = null;
+		this.definehash = null;
+		this.defines = null;
+		this.tokens = null;
+		this.marker_p = NULL;
+		this.LoadMemory( ptr, length, name );
+	}
+
+/*
+================
+idParser::~idParser
+================
+*/
+destructor( ):void {
+	this.FreeSource( false );
+}
+
 }

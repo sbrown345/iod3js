@@ -562,7 +562,7 @@
 ////	fileName = name;
 ////	fileName.SetFileExtension( CM_FILE_EXT );
 ////	src = new idLexer( fileName );
-////	src->SetFlags( LEXFL_NOSTRINGCONCAT | LEXFL_NODOLLARPRECOMPILE );
+////	src->SetFlags( lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NODOLLARPRECOMPILE );
 ////	if ( !src->IsLoaded() ) {
 ////		delete src;
 ////		return false;

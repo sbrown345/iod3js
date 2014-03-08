@@ -157,7 +157,7 @@
 //*/
 //bool idMD5Anim::LoadAnim( const char *filename ) {
 //	int		version;
-//	idLexer	parser( LEXFL_ALLOWPATHNAMES | LEXFL_NOSTRINGESCAPECHARS | LEXFL_NOSTRINGCONCAT );
+//	idLexer	parser( lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_NOSTRINGCONCAT );
 //	idToken	token;
 //	int		i, j;
 //	int		num;

@@ -199,7 +199,7 @@
 //
 //		idLexer src(LEXFL_NOERRORS|LEXFL_NOSTRINGCONCAT);
 //		if ( src.LoadFile( va("savegames/%s.txt", loadGameList[i].c_str()) ) ) {
-//			idToken tok;
+//			var tok = new idToken;
 //			src.ReadToken( &tok );
 //			name = tok;
 //		} else {
@@ -375,7 +375,7 @@
 //					saveFileName.SetFileExtension(".txt");
 //					idLexer src(LEXFL_NOERRORS|LEXFL_NOSTRINGCONCAT);
 //					if ( src.LoadFile( saveFileName ) ) {
-//						idToken tok;
+//						var tok = new idToken;
 //						src.ReadToken( &tok ); // Name
 //						src.ReadToken( &tok ); // Map
 //						src.ReadToken( &tok ); // Screenshot
@@ -417,7 +417,7 @@
 //			idStr saveName, description, screenshot;
 //			idLexer src(LEXFL_NOERRORS|LEXFL_NOSTRINGCONCAT);
 //			if ( src.LoadFile( va("savegames/%s.txt", loadGameList[choice].c_str()) ) ) {
-//				idToken tok;
+//				var tok = new idToken;
 //
 //				src.ReadToken( &tok );
 //				saveName = tok;

@@ -2212,17 +2212,17 @@ idWindow::ParseString
 ////================
 ////*/
 ////ParseVec4(idParser *src, idVec4 &out):void {
-////	idToken tok;
-////	src.ReadToken(&tok);
+////	var tok = new idToken;
+////	src.ReadToken(tok);
 ////	out.x = atof(tok);
 ////	src.ExpectTokenString(",");
-////	src.ReadToken(&tok);
+////	src.ReadToken(tok);
 ////	out.y = atof(tok);
 ////	src.ExpectTokenString(",");
-////	src.ReadToken(&tok);
+////	src.ReadToken(tok);
 ////	out.z = atof(tok);
 ////	src.ExpectTokenString(",");
-////	src.ReadToken(&tok);
+////	src.ReadToken(tok);
 ////	out.w = atof(tok);
 ////}
 
@@ -4514,8 +4514,8 @@ idWindow::ClientToScreen
 ////			continue;
 ////		}
 ////
-////		idParser src( kv.GetValue().c_str(), kv.GetValue().Length(), "",
-////					  LEXFL_NOFATALERRORS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
+////		var src = new idParser( kv.GetValue().c_str(), kv.GetValue().Length(), "",
+////					  lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 ////		if ( !ParseInternalVar ( kv.GetKey(), &src ) ) {
 ////			// Kill the old register since the parse reg entry will add a new one
 ////			if ( !ParseRegEntry ( kv.GetKey(), &src ) ) {

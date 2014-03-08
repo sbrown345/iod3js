@@ -383,7 +383,7 @@ idCameraAnim.Type = new idTypeInfo("idCameraAnim", "idCamera",
 ////*/
 ////void idCameraAnim::LoadAnim( void ) {
 ////	int			version;
-////	idLexer		parser( LEXFL_ALLOWPATHNAMES | LEXFL_NOSTRINGESCAPECHARS | LEXFL_NOSTRINGCONCAT );
+////	idLexer		parser( lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_NOSTRINGCONCAT );
 ////	idToken		token;
 ////	int			numFrames;
 ////	int			numCuts;

@@ -1072,7 +1072,7 @@ class idLexer {
 	////================
 	////*/
 	////int idLexer::CheckTokenString( const char *string ) {
-	////	idToken tok;
+	////	var tok = new idToken;
 
 	////	if ( !ReadToken( &tok ) ) {
 	////		return 0;
@@ -1115,7 +1115,7 @@ class idLexer {
 	////================
 	////*/
 	////int idLexer::PeekTokenString( const char *string ) {
-	////	idToken tok;
+	////	var tok = new idToken;
 
 	////	if ( !ReadToken( &tok ) ) {
 	////		return 0;
@@ -1138,7 +1138,7 @@ class idLexer {
 	////================
 	////*/
 	////int idLexer::PeekTokenType( int type, int subtype, token:R<idToken> ) {
-	////	idToken tok;
+	////	var tok = new idToken;
 
 	////	if ( !ReadToken( &tok ) ) {
 	////		return 0;

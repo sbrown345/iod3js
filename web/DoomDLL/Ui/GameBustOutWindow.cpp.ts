@@ -169,7 +169,7 @@ class BOEntity {
 ////void BOEntity::SetMaterial(const char* name) {
 ////	materialName = name;
 ////	material = declManager.FindMaterial( name );
-////	material.SetSort( SS_GUI );
+////	material.SetSort( materialSort_t.SS_GUI );
 ////}
 ////
 /////*
