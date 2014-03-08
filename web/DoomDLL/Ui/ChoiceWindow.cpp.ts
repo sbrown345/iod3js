@@ -70,20 +70,20 @@ class idChoiceWindow extends idWindow {
 ////
 ////	void				UpdateChoicesAndVals(void);
 ////
-	currentChoice:number;
-	choiceType:number;
+	currentChoice: number;
+	choiceType: number;
 	latchedChoices = new idStr;
 	choicesStr = new idWinStr;
 	latchedVals = new idStr;
 	choiceVals = new idWinStr;
 	choices = new idStrList;
 	values = new idStrList;
-	
+
 	guiStr = new idWinStr;
 	cvarStr = new idWinStr;
-	cvar:idCVar;
+	cvar: idCVar;
 	updateStr = new idMultiWinVar;
-	
+
 	liveUpdate = new idWinBool;
 	updateGroup = new idWinStr;
 ////};
@@ -124,30 +124,30 @@ idChoiceWindow::CommonInit
 		this.choices.Clear ( );
 	}
 
-	constructor(d: idDeviceContext, g: idUserInterfaceLocal)
-	constructor(g: idUserInterfaceLocal)
-	constructor(a1: any, a2?: any) {
-		super();
+	constructor ( d: idDeviceContext, g: idUserInterfaceLocal )
+	constructor ( g: idUserInterfaceLocal )
+	constructor ( a1: any, a2?: any ) {
+		super ( );
 
-		if (arguments.length == 2) {
+		if ( arguments.length == 2 ) {
 			var d = <idDeviceContext>a1, g = <idUserInterfaceLocal>a2;
-			this.ctor2(d, g);
+			this.ctor2( d, g );
 			this.dc = d;
 			this.gui = g;
-			this.CommonInit();
-		} else if (arguments.length == 1) {
+			this.CommonInit ( );
+		} else if ( arguments.length == 1 ) {
 			var g = <idUserInterfaceLocal>a1;
-			this.ctor1(g);
+			this.ctor1( g );
 			this.dc = null;
 			this.gui = g;
-			this.CommonInit();
+			this.CommonInit ( );
 		} else {
-			todoThrow();
+			todoThrow ( );
 		}
 	}
 
-	destructor(): void {
-		todoThrow("renderSystem.FreeRenderWorld( this.world );");
+	destructor ( ): void {
+		todoThrow( "renderSystem.FreeRenderWorld( this.world );" );
 	}
 
 ////void idChoiceWindow::RunNamedEvent( const char* eventName ) {
@@ -279,37 +279,38 @@ idChoiceWindow::CommonInit
 ////		choices.Append( "No Choices Defined" );
 ////	}
 ////}
-////
-////void idChoiceWindow::UpdateChoice() {
-////	if ( !updateStr.Num() ) {
-////		return;
-////	}
-////	UpdateVars( true );	
-////	updateStr.Update();
-////	if ( choiceType == 0 ) {
-////		// ChoiceType 0 stores current as an integer in either cvar or gui
-////		// If both cvar and gui are defined then cvar wins, but they are both updated
-////		if ( updateStr[ 0 ].NeedsUpdate() ) {
-////			this.currentChoice = atoi( updateStr[ 0 ].c_str() );
-////		}
-////		ValidateChoice();
-////	} else {
-////		// ChoiceType 1 stores current as a cvar string
-////		int c = ( values.Num() ) ? values.Num() : choices.Num();
-////		int i;
-////		for ( i = 0; i < c; i++ ) {
-////			if ( idStr.Icmp( cvarStr.c_str(), ( values.Num() ) ? values[i] : choices[i] ) == 0 ) {
-////				break;
-////			}
-////		}
-////		if (i == c) {
-////			i = 0;
-////		}
-////		this.currentChoice = i;
-////		ValidateChoice();
-////	}
-////}
-////
+
+	UpdateChoice ( ): void {
+		todoThrow ( );
+		//if ( !updateStr.Num() ) {
+		//	return;
+		//}
+		//UpdateVars( true );	
+		//updateStr.Update();
+		//if ( choiceType == 0 ) {
+		//	// ChoiceType 0 stores current as an integer in either cvar or gui
+		//	// If both cvar and gui are defined then cvar wins, but they are both updated
+		//	if ( updateStr[ 0 ].NeedsUpdate() ) {
+		//		this.currentChoice = atoi( updateStr[ 0 ].c_str() );
+		//	}
+		//	ValidateChoice();
+		//} else {
+		//	// ChoiceType 1 stores current as a cvar string
+		//	var c = ( values.Num() ) ? values.Num() : choices.Num();
+		//	var i:number;
+		//	for ( i = 0; i < c; i++ ) {
+		//		if ( idStr.Icmp( cvarStr.c_str(), ( values.Num() ) ? values[i] : choices[i] ) == 0 ) {
+		//			break;
+		//		}
+		//	}
+		//	if (i == c) {
+		//		i = 0;
+		//	}
+		//	this.currentChoice = i;
+		//	ValidateChoice();
+		//}
+	}
+
 	ParseInternalVar ( _name: string, src: idParser ): boolean {
 		if ( idStr.Icmp( _name, "choicetype" ) == 0 ) {
 			this.choiceType = src.ParseInt ( );
@@ -322,7 +323,7 @@ idChoiceWindow::CommonInit
 		return super.ParseInternalVar( _name, src );
 	}
 
-	GetWinVarByName ( _name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null): idWinVar {
+	GetWinVarByName ( _name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null ): idWinVar {
 		if ( idStr.Icmp( _name, "choices" ) == 0 ) {
 			return this.choicesStr;
 		}
@@ -417,7 +418,7 @@ idChoiceWindow::CommonInit
 ////	}
 ////}
 
-	PostParse(): void {
+	PostParse ( ): void {
 		todoThrow ( );
 		//idWindow::PostParse();
 		//UpdateChoicesAndVals();
@@ -460,13 +461,12 @@ idChoiceWindow::CommonInit
 ////	}
 ////
 ////	dc.DrawText( choices[this.currentChoice], textScale, textAlign, color, textRect, false, -1 );
-////}
-////
-////void idChoiceWindow::Activate( bool activate, idStr &act ) {
-////	idWindow::Activate( activate, act );
-////	if ( activate ) {
-////		// sets the gui state based on the current choice the window contains
-////		UpdateChoice();
-////	}
+	}
+
+	Activate ( activate: boolean, act: idStr ): void {
+		if ( activate ) {
+			// sets the gui state based on the current choice the window contains
+			this.UpdateChoice ( );
+		}
 	}
 }

@@ -410,14 +410,15 @@ CommonInit():void {
 ////	return "";
 ////}
 ////
-////
-////void idSliderWindow::Activate(bool activate, idStr &act) {
-////	idWindow::Activate(activate, act);
-////	if ( activate ) {
-////		UpdateCvar( true, true );
-////	}
-////}
-////
+
+	Activate ( activate: boolean, act: idStr ): void {
+		todoThrow ( );
+		super.Activate( activate, act );
+		if ( activate ) {
+			this.UpdateCvar( true, true );
+		}
+	}
+
 /////*
 ////============
 ////idSliderWindow::InitCvar
@@ -440,29 +441,30 @@ CommonInit():void {
 ////		return;
 ////	}
 ////}
-////
-/////*
-////============
-////idSliderWindow::UpdateCvar
-////============
-////*/
-////void idSliderWindow::UpdateCvar( bool read, bool force ) {
-////	if ( buddyWin || !cvar ) {
-////		return;
-////	}
-////	if ( force || liveUpdate ) {
-////		value = cvar.GetFloat();
-////		if ( value != gui.State().GetFloat( cvarStr ) ) {
-////			if ( read ) {
-////				gui.SetStateFloat( cvarStr, value );
-////			} else {
-////				value = gui.State().GetFloat( cvarStr );
-////				cvar.SetFloat( value );
-////			}
-////		}
-////	}
-////}
-////
+
+/*
+============
+idSliderWindow::UpdateCvar
+============
+*/
+	UpdateCvar ( read: boolean, force: boolean ): void {
+		todoThrow ( );
+		//if ( buddyWin || !cvar ) {
+		//	return;
+		//}
+		//if ( force || liveUpdate ) {
+		//	value = cvar.GetFloat();
+		//	if ( value != gui.State().GetFloat( cvarStr ) ) {
+		//		if ( read ) {
+		//			gui.SetStateFloat( cvarStr, value );
+		//		} else {
+		//			value = gui.State().GetFloat( cvarStr );
+		//			cvar.SetFloat( value );
+		//		}
+		//	}
+		//}
+	}
+
 /////*
 ////============
 ////idSliderWindow::RunNamedEvent

@@ -658,15 +658,15 @@ idGameBearShootWindow::Draw
 		//}
 	}
 
-/////*
-////=============================
-////idGameBearShootWindow::Activate
-////=============================
-////*/
-////const char *idGameBearShootWindow::Activate(bool activate) {
-////	return "";
-////}
-////
+/*
+=============================
+idGameBearShootWindow::Activate
+=============================
+*/
+	Activate ( activate: boolean ): string {
+		return "";
+	}
+
 /////*
 ////=============================
 ////idGameBearShootWindow::UpdateTurret

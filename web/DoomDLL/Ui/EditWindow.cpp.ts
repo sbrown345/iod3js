@@ -206,12 +206,13 @@ class idEditWindow extends idWindow {
 	destructor ( ): void {
 		todoThrow( "need to call base? (or just remove this method)" );
 	}
-////
-////void idEditWindow::GainFocus() {
-////	cursorPos = text.Length();
-////	EnsureCursorVisible();
-////}
-////
+
+	GainFocus ( ): void {
+		todoThrow ( );
+		//cursorPos = text.Length ( );
+		//EnsureCursorVisible ( );
+	}
+
 	Draw ( /*int*/ time: number, /*float */x: number, /*float */y: number ): void {
 		todoThrow ( );
 ////	idVec4 color = foreColor;
@@ -576,96 +577,96 @@ class idEditWindow extends idWindow {
 ////void idEditWindow::HandleBuddyUpdate( idWindow *buddy ) {
 ////}
 ////
-////void idEditWindow::EnsureCursorVisible()
-////{
-////	if ( readonly ) {
-////		cursorPos = -1;
-////	} else if ( maxChars == 1 ) {
-////		cursorPos = 0;
-////	}
-////
-////	if ( !dc ) {
-////		return;
-////	}
-////
-////	SetFont();
-////	if ( !wrap ) {
-////		int cursorX = 0;
-////		if ( password ) {
-////			cursorX = cursorPos * dc.CharWidth( '*', textScale );
-////		} else {
-////			int i = 0;
-////			while ( i < text.Length() && i < cursorPos ) {
-////				if ( idStr::IsColor( &text[i] ) ) {
-////					i += 2;
-////				} else {
-////					cursorX += dc.CharWidth( text[i], textScale );
-////					i++;
-////				}
-////			}
-////		}
-////		int maxWidth = GetMaxCharWidth( );
-////		int left = cursorX - maxWidth;
-////		int right = ( cursorX - textRect.w ) + maxWidth;
-////
-////		if ( paintOffset > left ) {
-////			// When we go past the left side, we want the text to jump 6 characters
-////			paintOffset = left - maxWidth * 6;
-////		}
-////		if ( paintOffset <  right) {
-////			paintOffset = right;
-////		}
-////		if ( paintOffset < 0 ) {
-////			paintOffset = 0;
-////		}
-////		scroller.SetRange(0.0f, 0.0f, 1.0f);
-////
-////	} else {
-////		// Word wrap
-////
-////		breaks.Clear();
-////		idRectangle rect = textRect;
-////		rect.w -= sizeBias;
-////		dc.DrawText(text, textScale, textAlign, colorWhite, rect, true, (flags & WIN_FOCUS) ? cursorPos : -1, true, &breaks );
-////
-////		int fit = textRect.h / (GetMaxCharHeight() + 5);
-////		if ( fit < breaks.Num() + 1 ) {
-////			scroller.SetRange(0, breaks.Num() + 1 - fit, 1);
-////		} else {
-////			// The text fits completely in the box
-////			scroller.SetRange(0.0f, 0.0f, 1.0f);
-////		}
-////
-////		if ( forceScroll ) {
-////			scroller.SetValue( breaks.Num() - fit );
-////		} else if ( readonly ) {
-////		} else {
-////			cursorLine = 0;
-////			for ( int i = 1; i < breaks.Num(); i++ ) {
-////				if ( cursorPos >= breaks[i] ) {
-////					cursorLine = i;
-////				} else {
-////					break;
-////				}
-////			}
-////			int topLine = idMath::FtoiFast( scroller.GetValue() );
-////			if ( cursorLine < topLine ) {
-////				scroller.SetValue( cursorLine );
-////			} else if ( cursorLine >= topLine + fit) {
-////				scroller.SetValue( ( cursorLine - fit ) + 1 );
-////			}
-////		}
-////	}
-////}
-////
-////void idEditWindow::Activate(bool activate, idStr &act) {
-////	idWindow::Activate(activate, act);
-////	if ( activate ) {
-////		UpdateCvar( true, true );
-////		EnsureCursorVisible();
-////	}
-////}
-////
+	EnsureCursorVisible ( ): void {
+		todoThrow ( );
+		//if ( readonly ) {
+		//	cursorPos = -1;
+		//} else if ( maxChars == 1 ) {
+		//	cursorPos = 0;
+		//}
+
+		//if ( !dc ) {
+		//	return;
+		//}
+
+		//SetFont();
+		//if ( !wrap ) {
+		//	int cursorX = 0;
+		//	if ( password ) {
+		//		cursorX = cursorPos * dc.CharWidth( '*', textScale );
+		//	} else {
+		//		int i = 0;
+		//		while ( i < text.Length() && i < cursorPos ) {
+		//			if ( idStr::IsColor( &text[i] ) ) {
+		//				i += 2;
+		//			} else {
+		//				cursorX += dc.CharWidth( text[i], textScale );
+		//				i++;
+		//			}
+		//		}
+		//	}
+		//	int maxWidth = GetMaxCharWidth( );
+		//	int left = cursorX - maxWidth;
+		//	int right = ( cursorX - textRect.w ) + maxWidth;
+
+		//	if ( paintOffset > left ) {
+		//		// When we go past the left side, we want the text to jump 6 characters
+		//		paintOffset = left - maxWidth * 6;
+		//	}
+		//	if ( paintOffset <  right) {
+		//		paintOffset = right;
+		//	}
+		//	if ( paintOffset < 0 ) {
+		//		paintOffset = 0;
+		//	}
+		//	scroller.SetRange(0.0f, 0.0f, 1.0f);
+
+		//} else {
+		//	// Word wrap
+
+		//	breaks.Clear();
+		//	idRectangle rect = textRect;
+		//	rect.w -= sizeBias;
+		//	dc.DrawText(text, textScale, textAlign, colorWhite, rect, true, (flags & WIN_FOCUS) ? cursorPos : -1, true, &breaks );
+
+		//	int fit = textRect.h / (GetMaxCharHeight() + 5);
+		//	if ( fit < breaks.Num() + 1 ) {
+		//		scroller.SetRange(0, breaks.Num() + 1 - fit, 1);
+		//	} else {
+		//		// The text fits completely in the box
+		//		scroller.SetRange(0.0f, 0.0f, 1.0f);
+		//	}
+
+		//	if ( forceScroll ) {
+		//		scroller.SetValue( breaks.Num() - fit );
+		//	} else if ( readonly ) {
+		//	} else {
+		//		cursorLine = 0;
+		//		for ( int i = 1; i < breaks.Num(); i++ ) {
+		//			if ( cursorPos >= breaks[i] ) {
+		//				cursorLine = i;
+		//			} else {
+		//				break;
+		//			}
+		//		}
+		//		int topLine = idMath::FtoiFast( scroller.GetValue() );
+		//		if ( cursorLine < topLine ) {
+		//			scroller.SetValue( cursorLine );
+		//		} else if ( cursorLine >= topLine + fit) {
+		//			scroller.SetValue( ( cursorLine - fit ) + 1 );
+		//		}
+		//	}
+		//}
+	}
+
+	Activate ( activate: boolean, act: idStr ): void {
+		super.Activate( activate, act );
+		if ( activate ) {
+			this.UpdateCvar( true, true );
+			this.EnsureCursorVisible ( );
+		}
+	}
+
 /////*
 ////============
 ////idEditWindow::InitCvar
@@ -687,26 +688,27 @@ class idEditWindow extends idWindow {
 ////	}
 ////}
 ////
-/////*
-////============
-////idEditWindow::UpdateCvar
-////============
-////*/
-////void idEditWindow::UpdateCvar( bool read, bool force ) {
-////	if ( force || liveUpdate ) {
-////		if ( cvar ) {
-////			if ( read ) {
-////				text = cvar.GetString();
-////			} else {
-////				cvar.SetString( text );
-////				if ( cvarMax && ( cvar.GetInteger() > cvarMax ) ) {
-////					cvar.SetInteger( cvarMax );
-////				}
-////			}
-////		}
-////	}
-////}
-////
+/*
+============
+idEditWindow::UpdateCvar
+============
+*/
+	UpdateCvar ( read: boolean, force: boolean ) {
+		todoThrow ( );
+		//if ( force || liveUpdate ) {
+		//	if ( cvar ) {
+		//		if ( read ) {
+		//			text = cvar.GetString();
+		//		} else {
+		//			cvar.SetString( text );
+		//			if ( cvarMax && ( cvar.GetInteger() > cvarMax ) ) {
+		//				cvar.SetInteger( cvarMax );
+		//			}
+		//		}
+		//	}
+		//}
+	}
+
 /////*
 ////============
 ////idEditWindow::RunNamedEvent

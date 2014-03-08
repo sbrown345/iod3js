@@ -955,14 +955,14 @@ idGameBustOutWindow::Draw
 		//}
 	}
 
-/////*
-////=============================
-////idGameBustOutWindow::Activate
-////=============================
-////*/
-////const char *idGameBustOutWindow::Activate(bool activate) {
-////	return "";
-////}
+/*
+=============================
+idGameBustOutWindow::Activate
+=============================
+*/
+	Activate(activate: boolean): string {
+		return "";
+	}
 ////
 ////
 /////*

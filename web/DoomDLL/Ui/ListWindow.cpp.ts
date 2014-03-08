@@ -80,27 +80,27 @@ class idListWindow extends idWindow {
 ////	void				ClearSelection(int sel);
 ////
 ////	idList<idTabRect>	tabInfo;
-		top:number/*int*/;
-		sizeBias:number/*float*/;
-		horizontal:boolean;
-		tabStopStr = new idStr;
-		tabAlignStr = new idStr;
-		tabVAlignStr = new idStr;
-		tabTypeStr = new idStr;
-		tabIconSizeStr = new idStr;
-		tabIconVOffsetStr = new idStr;
-		//iconMaterials = new idHashTable < idMaterial/* * */>(idMaterial);
-		multipleSel:boolean;
-		
-		listItems = new idStrList;
-		scroller:idSliderWindow;
-		currentSel = new idList</*int*/number>(Number);
-		listName = new idStr;
-		
-		clickTime:number/*int*/;
-		
-		typedTime:number/*int*/;
-		typed = new idStr;
+	top: number /*int*/;
+	sizeBias: number /*float*/;
+	horizontal: boolean;
+	tabStopStr = new idStr;
+	tabAlignStr = new idStr;
+	tabVAlignStr = new idStr;
+	tabTypeStr = new idStr;
+	tabIconSizeStr = new idStr;
+	tabIconVOffsetStr = new idStr;
+	//iconMaterials = new idHashTable < idMaterial/* * */>(idMaterial);
+	multipleSel: boolean;
+
+	listItems = new idStrList;
+	scroller: idSliderWindow;
+	currentSel = new idList< /*int*/number>( Number );
+	listName = new idStr;
+
+	clickTime: number /*int*/;
+
+	typedTime: number /*int*/;
+	typed = new idStr;
 ////};
 ////
 ////#endif // __LISTWINDOW_H
@@ -119,33 +119,33 @@ class idListWindow extends idWindow {
 		this.typed.equals( "" );
 		this.typedTime = 0;
 		this.clickTime = 0;
-		this.currentSel.Clear();
+		this.currentSel.Clear ( );
 		this.top = 0;
 		this.sizeBias = 0;
 		this.horizontal = false;
-		this.scroller = new idSliderWindow(this.dc, this.gui);
+		this.scroller = new idSliderWindow( this.dc, this.gui );
 		this.multipleSel = false;
 	}
 
-	constructor(d: idDeviceContext, g: idUserInterfaceLocal)
-	constructor(g: idUserInterfaceLocal)
-	constructor(a1: any, a2?: any) {
-		super();
+	constructor ( d: idDeviceContext, g: idUserInterfaceLocal )
+	constructor ( g: idUserInterfaceLocal )
+	constructor ( a1: any, a2?: any ) {
+		super ( );
 
-		if (arguments.length == 2) {
+		if ( arguments.length == 2 ) {
 			var d = <idDeviceContext>a1, g = <idUserInterfaceLocal>a2;
-			this.ctor2(d, g);
+			this.ctor2( d, g );
 			this.dc = d;
 			this.gui = g;
-			this.CommonInit();
-		} else if (arguments.length == 1) {
+			this.CommonInit ( );
+		} else if ( arguments.length == 1 ) {
 			var g = <idUserInterfaceLocal>a1;
-			this.ctor1(g);
+			this.ctor1( g );
 			this.dc = null;
 			this.gui = g;
-			this.CommonInit();
+			this.CommonInit ( );
 		} else {
-			todoThrow();
+			todoThrow ( );
 		}
 	}
 
@@ -378,8 +378,8 @@ class idListWindow extends idWindow {
 		return super.ParseInternalVar( _name, src );
 	}
 
-	GetWinVarByName(_name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null): idWinVar {
-		return super.GetWinVarByName(_name, fixup, owner);
+	GetWinVarByName ( _name: string, fixup: boolean = false, /*drawWin_t** */owner: R<drawWin_t> = null ): idWinVar {
+		return super.GetWinVarByName( _name, fixup, owner );
 	}
 
 	PostParse ( ): void {
@@ -537,7 +537,7 @@ class idListWindow extends idWindow {
 ////	scroller.SetBuddy(this);
 ////}
 ////
-	Draw( /*int*/ time: number, /*float */x: number, /*float */y: number): void {
+	Draw ( /*int*/ time: number, /*float */x: number, /*float */y: number ): void {
 		todoThrow ( );
 ////	idVec4 color;
 ////	idStr work;
@@ -657,21 +657,23 @@ class idListWindow extends idWindow {
 ////			break;
 ////		}
 ////	}
-}
-////
-////void idListWindow::Activate(bool activate, idStr &act) {
-////	idWindow::Activate(activate, act);
-////
-////	if ( activate ) {
-////		UpdateList();
-////	}
-////}
+	}
+
+
+	Activate ( activate: boolean, act: idStr ): void {
+		super.Activate( activate, act );
+
+		if ( activate ) {
+			this.UpdateList ( );
+		}
+	}
 ////
 ////void idListWindow::HandleBuddyUpdate(idWindow *buddy) {
 ////	top = scroller.GetValue();
 ////}
 ////
-////void idListWindow::UpdateList() {
+	UpdateList(): void {
+		todoThrow ( );
 ////	idStr str, strName;
 ////	listItems.Clear();
 ////	for (int i = 0; i < MAX_LIST_ITEMS; i++) {
@@ -706,10 +708,10 @@ class idListWindow extends idWindow {
 ////	typedTime = 0;
 ////	clickTime = 0;
 ////	typed = "";
-////}
+	}
 ////
 ////void idListWindow::StateChanged( bool redraw ) {
 ////	UpdateList();
 ////}
 ////
-	}
+}

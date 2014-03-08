@@ -321,7 +321,8 @@ class idMarkerWindow extends idWindow {
 ////}
 ////
 ////
-////void idMarkerWindow::Activate(bool activate, idStr &act) {
+	Activate ( activate: boolean, act: idStr ): void {
+		todoThrow ( );
 ////	idWindow::Activate(activate, act);
 ////	if (activate) {
 ////		int i;
@@ -402,8 +403,8 @@ class idMarkerWindow extends idWindow {
 ////			Mem_Free(imageBuff);
 ////		}
 ////	}
-////}
-////
+	}
+
 ////void idMarkerWindow::MouseExit() {
 ////	idWindow::MouseExit();
 ////}
