@@ -2480,25 +2480,25 @@ idMaterial::Texgen
 		return texgen_t.TG_EXPLICIT;
 	}
 
-/////*
-////=============
-////idMaterial::GetImageWidth
-////=============
-////*/
-////int idMaterial::GetImageWidth( void ) const {
-////	assert( GetStage(0) && GetStage(0).texture.image );
-////	return GetStage(0).texture.image.uploadWidth;
-////}
+/*
+=============
+idMaterial::GetImageWidth
+=============
+*/
+	GetImageWidth ( ): number {
+		assert( this.GetStage( 0 ) && this.GetStage( 0 ).texture.image );
+		return this.GetStage( 0 ).texture.image.uploadWidth;
+	}
 
-/////*
-////=============
-////idMaterial::GetImageHeight
-////=============
-////*/
-////int idMaterial::GetImageHeight( void ) const {
-////	assert( GetStage(0) && GetStage(0).texture.image );
-////	return GetStage(0).texture.image.uploadHeight;
-////}
+/*
+=============
+idMaterial::GetImageHeight
+=============
+*/
+	GetImageHeight ( ): number {
+		assert( this.GetStage( 0 ) && this.GetStage( 0 ).texture.image );
+		return this.GetStage( 0 ).texture.image.uploadHeight;
+	}
 
 /////*
 ////=============

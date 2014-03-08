@@ -649,45 +649,43 @@ Append( obj:type ):number {
 	return this.num - 1;
 }
 
-///*
-//================
-//idList<type>::Insert
+/*
+================
+idList<type>::Insert
 
-//Increases the size of the list by at leat one element if necessary 
-//and inserts the supplied data into it.
+Increases the size of the list by at leat one element if necessary 
+and inserts the supplied data into it.
 
-//Returns the index of the new element.
-//================
-//*/
-//template< class type >
-//ID_INLINE int idList<type>::Insert( type const & obj, int index ) {
-//	if ( !this[0] /*.list*/ ) {
-//		Resize( this.granularity );
-//	}
+Returns the index of the new element.
+================
+*/
+	Insert ( obj: type, /*int */index: number ): number {
+		if ( !this[0] /*.list*/ ) {
+			this.Resize( this.granularity );
+		}
 
-//	if ( this.num == this.size ) {
-//		int newsize;
+		if ( this.num == this.size ) {
+			var newsize: number;
 
-//		if ( this.granularity == 0 ) {	// this is a hack to fix our memset classes
-//			this.granularity = 16;
-//		}
-//		newsize = this.size + this.granularity;
-//		Resize( newsize - newsize % this.granularity );
-//	}
+			if ( this.granularity == 0 ) { // this is a hack to fix our memset classes
+				this.granularity = 16;
+			}
+			newsize = this.size + this.granularity;
+			this.Resize( newsize - newsize % this.granularity );
+		}
 
-//	if ( index < 0 ) {
-//		index = 0;
-//	}
-//	else if ( index > this.num ) {
-//		index = this.num;
-//	}
-//	for ( int i = this.num; i > index; --i ) {
-//		this.list[i] = this.list[i-1];
-//	}
-//	this.num++;
-//	this.list[index] = obj;
-//	return index;
-//}
+		if ( index < 0 ) {
+			index = 0;
+		} else if ( index > this.num ) {
+			index = this.num;
+		}
+		for ( var i = this.num; i > index; --i ) {
+			this.list[i] = this.list[i - 1];
+		}
+		this.num++;
+		this.list[index] = obj;
+		return index;
+	}
 
 // moved Append list next to Append item
 

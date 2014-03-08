@@ -591,35 +591,35 @@ idWindow::~idWindow
 ////	rect = rct;
 ////}
 ////
-/////*
-////================
-////idWindow::SetFont
-////================
-////*/
-////SetFont():void {
-////	this.dc.SetFont(this.fontNum);
-////}
-////
-/////*
-////================
-////idWindow::GetMaxCharHeight
-////================
-////*/
-////float idWindow::GetMaxCharHeight() {
-////	SetFont();
-////	return this.dc.MaxCharHeight(textScale);
-////}
-////
-/////*
-////================
-////idWindow::GetMaxCharWidth
-////================
-////*/
-////float idWindow::GetMaxCharWidth() {
-////	SetFont();
-////	return this.dc.MaxCharWidth(textScale);
-////}
-////
+/*
+================
+idWindow::SetFont
+================
+*/
+	SetFont ( ): void {
+		this.dc.SetFont( this.fontNum );
+	}
+
+/*
+================
+idWindow::GetMaxCharHeight
+================
+*/
+	GetMaxCharHeight ( ): number /*float*/ {
+		this.SetFont ( );
+		return this.dc.MaxCharHeight( this.textScale.data );
+	}
+
+/*
+================
+idWindow::GetMaxCharWidth
+================
+*/
+	GetMaxCharWidth ( ): number /*float*/ {
+		this.SetFont ( );
+		return this.dc.MaxCharWidth( this.textScale.data );
+	}
+
 /////*
 ////================
 ////idWindow::Draw
@@ -4341,24 +4341,24 @@ idWindow::Interactive
 ////{
 ////	return this.drawWindows[index].win;
 ////}
-////
-/////*
-////================
-////idWindow::GetChildIndex
-////
-////Returns the index of the given child window
-////================
-////*/
-////int idWindow::GetChildIndex ( idWindow* window ) {
-////	int find;
-////	for ( find = 0; find < this.drawWindows.Num(); find ++ ) {
-////		if ( this.drawWindows[find].win == window ) {
-////			return find;
-////		}
-////	}
-////	return -1;
-////}
-////
+
+/*
+================
+idWindow::GetChildIndex
+
+Returns the index of the given child window
+================
+*/
+	GetChildIndex ( window: idWindow ): number {
+		var find: number;
+		for ( find = 0; find < this.drawWindows.Num ( ); find ++ ) {
+			if ( this.drawWindows[find].win == window ) {
+				return find;
+			}
+		}
+		return -1;
+	}
+
 /////*
 ////================
 ////idWindow::RemoveChild
@@ -4382,37 +4382,36 @@ idWindow::Interactive
 ////		}
 ////	}
 ////}
-////
-/////*
-////================
-////idWindow::InsertChild
-////
-////Inserts the given window as a child into the given location in the zorder.
-////================
-////*/
-////bool idWindow::InsertChild ( idWindow *win, idWindow* before )
-////{
-////	this.AddChild ( win );
-////		
-////	win.parent = this;
-////
-////	drawWin_t dwt;
-////	dwt.simp = NULL;
-////	dwt.win = win;
-////
-////	// If not inserting before anything then just add it at the end
-////	if ( before ) {		
-////		int index;
-////		index = GetChildIndex ( before );
-////		if ( index != -1 ) {
-////			this.drawWindows.Insert ( dwt, index );
-////			return true;
-////		}
-////	}
-////	
-////	this.drawWindows.Append ( dwt );
-////	return true;
-////}
+
+/*
+================
+idWindow::InsertChild
+
+Inserts the given window as a child into the given location in the zorder.
+================
+*/
+	InsertChild ( win: idWindow, before: idWindow ): boolean {
+		this.AddChild( win );
+
+		win.parent = this;
+
+		var dwt = new drawWin_t;
+		dwt.simp = null;
+		dwt.win = win;
+
+		// If not inserting before anything then just add it at the end
+		if ( before ) {
+			var index: number;
+			index = this.GetChildIndex( before );
+			if ( index != -1 ) {
+				this.drawWindows.Insert( dwt, index );
+				return true;
+			}
+		}
+
+		this.drawWindows.Append( dwt );
+		return true;
+	}
 
 /*
 ================

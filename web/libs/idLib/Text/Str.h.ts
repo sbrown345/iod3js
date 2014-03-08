@@ -1684,21 +1684,18 @@ idStr::Mid
 		return result;
 	}
 
-/////*
-////============
-////idStr::StripTrailingWhitespace
-////============
-////*/
-////void idStr::StripTrailingWhitespace( void ) {
-////	int i;
-
-////	// cast to unsigned char to prevent stripping off high-ASCII characters
-////	for( i = Length(); i > 0 && (unsigned char)(data[ i - 1 ]) <= ' '; i-- ) {
-////		this.data[ i - 1 ] = '\0';
-////		len--;
-////	}
-////}
-
+/*
+============
+idStr::StripTrailingWhitespace
+============
+*/
+	StripTrailingWhitespace ( ): void {
+		var /*int */i: number;
+		for ( i = this.Length ( ); i > 0 && ( this.data.charCodeAt( i - 1 ) <= ' '.charCodeAt( 0 ) ); i-- ) {
+			this.len--;
+		}
+		this.data = this.data.substr( 0, this.len );
+	}
 /////*
 ////============
 ////idStr::StripQuotes

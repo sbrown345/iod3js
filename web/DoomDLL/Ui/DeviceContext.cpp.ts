@@ -164,10 +164,10 @@ class idDeviceContext {
 
 //#endif /* !__DEVICECONTEXT_H__ */
 
-//
-//idCVar gui_smallFontLimit( "gui_smallFontLimit", "0.30", CVAR_GUI | CVAR_ARCHIVE, "" );
-//idCVar gui_mediumFontLimit( "gui_mediumFontLimit", "0.60", CVAR_GUI | CVAR_ARCHIVE, "" );
-//
+
+	gui_smallFontLimit = new idCVar( "gui_smallFontLimit", "0.30", CVAR_GUI | CVAR_ARCHIVE, "" );
+	gui_mediumFontLimit = new idCVar( "gui_mediumFontLimit", "0.60", CVAR_GUI | CVAR_ARCHIVE, "" );
+
 //
 //idList<fontInfoEx_t> idDeviceContext::fonts;
 
@@ -209,16 +209,16 @@ class idDeviceContext {
 		this.FindFont( "fonts" );
 	}
 
-//void idDeviceContext::SetFont( int num ) {
-//	if ( num >= 0 && num < fonts.Num() ) {
-//		activeFont = &fonts[num];
-//	} else {
-//		activeFont = &fonts[0];
-//	}
-//}
-//
-//
-Init():void {
+	SetFont ( /*int */num: number ): void {
+		if ( num >= 0 && num < idDeviceContext.fonts.Num ( ) ) {
+			this.activeFont = idDeviceContext.fonts[num];
+		} else {
+			this.activeFont = idDeviceContext.fonts[0];
+		}
+	}
+
+
+	Init():void {
 	this.xScale = 0.0;
 	this.SetSize(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
 	this.whiteImage = declManager.FindMaterial("guis/assets/white.tga");
@@ -781,24 +781,24 @@ Init():void {
 //	AdjustCoords(&x, &y, &w, &h);
 //	DrawStretchPic(x, y, w, h, s, t, s2, t2, hShader);
 //}
-//
-//
-//void idDeviceContext::SetFontByScale(float scale) {
-//	if (scale <= gui_smallFontLimit.GetFloat()) {
-//		useFont = &activeFont.fontInfoSmall;
-//		activeFont.maxHeight = activeFont.maxHeightSmall;
-//		activeFont.maxWidth = activeFont.maxWidthSmall;
-//	} else if (scale <= gui_mediumFontLimit.GetFloat()) {
-//		useFont = &activeFont.fontInfoMedium;
-//		activeFont.maxHeight = activeFont.maxHeightMedium;
-//		activeFont.maxWidth = activeFont.maxWidthMedium;
-//	} else {
-//		useFont = &activeFont.fontInfoLarge;
-//		activeFont.maxHeight = activeFont.maxHeightLarge;
-//		activeFont.maxWidth = activeFont.maxWidthLarge;
-//	}
-//}
-//
+
+
+	SetFontByScale ( /*float */scale: number ): void {
+		if ( scale <= this.gui_smallFontLimit.GetFloat ( ) ) {
+			this.useFont = this.activeFont.fontInfoSmall;
+			this.activeFont.maxHeight = this.activeFont.maxHeightSmall;
+			this.activeFont.maxWidth = this.activeFont.maxWidthSmall;
+		} else if ( scale <= this.gui_mediumFontLimit.GetFloat ( ) ) {
+			this.useFont = this.activeFont.fontInfoMedium;
+			this.activeFont.maxHeight = this.activeFont.maxHeightMedium;
+			this.activeFont.maxWidth = this.activeFont.maxWidthMedium;
+		} else {
+			this.useFont = this.activeFont.fontInfoLarge;
+			this.activeFont.maxHeight = this.activeFont.maxHeightLarge;
+			this.activeFont.maxWidth = this.activeFont.maxWidthLarge;
+		}
+	}
+
 	DrawText ( /*float */x: number, /*float */y: number, /*float */scale: number, color: idVec4, text: string, /*float*/ adjust: number, /*int */limit: number, /*int */style: number, /*int */cursor: number ): number {
 		todoThrow ( );
 		var /*int*/len: number, count: number;
@@ -878,16 +878,16 @@ Init():void {
 			this.yScale = this.vidHeight * ( 1.0 / height );
 		}
 	}
-//
-//int idDeviceContext::CharWidth( const char c, float scale ) {
-//	glyphInfo_t *glyph;
-//	float		useScale;
-//	SetFontByScale(scale);
-//	fontInfo_t	*font = useFont;
-//	useScale = scale * font.glyphScale;
-//	glyph = &font.glyphs[(const unsigned char)c];
-//	return idMath::FtoiFast( glyph.xSkip * useScale );
-//}
+
+	CharWidth ( /*const char */c: string, /*float */scale: number ): number /*int*/ {
+		var glyph: glyphInfo_t;
+		var /*float		*/useScale: number;
+		this.SetFontByScale( scale );
+		var font = this.useFont;
+		useScale = scale * font.glyphScale;
+		glyph = font.glyphs[ /*(const unsigned char)*/c.charCodeAt( 0 )];
+		return idMath.FtoiFast( glyph.xSkip * useScale );
+	}
 
 	/*int*/
 	TextWidth ( text: string, /*float */scale: number, /*int */limit: number ): number {
@@ -962,19 +962,19 @@ Init():void {
 //
 //	return idMath::FtoiFast( max * useScale );
 //}
-//
-//int idDeviceContext::MaxCharWidth(float scale) {
-//	SetFontByScale(scale);
-//	float useScale = scale * useFont.glyphScale;
-//	return idMath::FtoiFast( activeFont.maxWidth * useScale );
-//}
-//
-//int idDeviceContext::MaxCharHeight(float scale) {
-//	SetFontByScale(scale);
-//	float useScale = scale * useFont.glyphScale;
-//	return idMath::FtoiFast( activeFont.maxHeight * useScale );
-//}
-//
+
+	MaxCharWidth ( /*float*/ scale: number ): number /*int*/ {
+		this.SetFontByScale( scale );
+		var /*float */useScale = scale * this.useFont.glyphScale;
+		return idMath.FtoiFast( this.activeFont.maxWidth * useScale );
+	}
+
+	MaxCharHeight ( /*float*/ scale: number ): number /*int*/ {
+		this.SetFontByScale( scale );
+		var /*float */useScale = scale * this.useFont.glyphScale;
+		return idMath.FtoiFast( this.activeFont.maxHeight * useScale );
+	}
+
 //const idMaterial *idDeviceContext::GetScrollBarImage(int index) {
 //	if (index >= SCROLLBAR_HBACK && index < SCROLLBAR_COUNT) {
 //		return scrollBarImages[index];

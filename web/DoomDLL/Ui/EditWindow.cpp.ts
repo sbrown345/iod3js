@@ -209,7 +209,7 @@ class idEditWindow extends idWindow {
 
 	GainFocus ( ): void {
 		todoThrow ( );
-		//cursorPos = text.Length ( );
+		//this.cursorPos = this.text.Length ( );
 		//EnsureCursorVisible ( );
 	}
 
@@ -219,52 +219,52 @@ class idEditWindow extends idWindow {
 ////
 ////	UpdateCvar( true );
 ////
-////	int len = text.Length();
+////	int len = this.text.Length();
 ////	if ( len != lastTextLength ) {
-////		scroller.SetValue( 0.0f );
+////		this.scroller.SetValue( 0.0 );
 ////		EnsureCursorVisible();
 ////		lastTextLength = len;
 ////	}
-////	float scale = textScale;
+////	float scale = this.textScale;
 ////
 ////	idStr		pass;
 ////	const char* buffer;
 ////	if ( password ) {		
-////		const char* temp = text;
+////		const char* temp = this.text;
 ////		for ( ; *temp; temp++ )	{
 ////			pass += "*";
 ////		}
 ////		buffer = pass;
 ////	} else {
-////		buffer = text;
+////		buffer = this.text;
 ////	}
 ////
-////	if ( cursorPos > len ) {
-////		cursorPos = len;
+////	if ( this.cursorPos > len ) {
+////		this.cursorPos = len;
 ////	}
 ////
-////	idRectangle rect = textRect;
+////	idRectangle rect = this.textRect;
 ////
-////	rect.x -= paintOffset;
-////	rect.w += paintOffset;
+////	rect.x -= this.paintOffset;
+////	rect.w += this.paintOffset;
 ////
-////	if ( wrap && scroller.GetHigh() > 0.0f ) {
-////		float lineHeight = GetMaxCharHeight( ) + 5;
-////		rect.y -= scroller.GetValue() * lineHeight;
-////		rect.w -= sizeBias;
-////		rect.h = ( breaks.Num() + 1 ) * lineHeight;
+////	if ( this.wrap && this.scroller.GetHigh() > 0.0 ) {
+////		float lineHeight = this.GetMaxCharHeight( ) + 5;
+////		rect.y -= this.scroller.GetValue() * lineHeight;
+////		rect.w -= this.sizeBias;
+////		rect.h = ( this.breaks.Num() + 1 ) * lineHeight;
 ////	}
 ////
-////	if ( hover && !noEvents && Contains(gui.CursorX(), gui.CursorY()) ) {
+////	if ( hover && !noEvents && Contains(this.gui.CursorX(), this.gui.CursorY()) ) {
 ////		color = hoverColor;
 ////	} else {
 ////		hover = false;
 ////	}
-////	if ( flags & WIN_FOCUS ) {
+////	if ( this.flags & WIN_FOCUS ) {
 ////		color = hoverColor;
 ////	}
 ////
-////	dc.DrawText( buffer, scale, 0, color, rect, wrap, (flags & WIN_FOCUS) ? cursorPos : -1);
+////	this.dc.DrawText( buffer, scale, 0, color, rect, this.wrap, (this.flags & WIN_FOCUS) ? this.cursorPos : -1);
 	}
 ////
 /////*
@@ -277,7 +277,7 @@ class idEditWindow extends idWindow {
 ////	static char buffer[ MAX_EDITFIELD ];
 		var ret = "";
 ////
-////	if ( wrap ) {
+////	if ( this.wrap ) {
 ////		// need to call this to allow proper focus and capturing on embedded children
 ////		ret = idWindow::HandleEvent( event, updateVisuals );
 ////		if ( ret && *ret ) {
@@ -289,9 +289,9 @@ class idEditWindow extends idWindow {
 ////		return ret;
 ////	}
 ////
-////	idStr::Copynz( buffer, text.c_str(), sizeof( buffer ) );
+////	idStr::Copynz( buffer, this.text.c_str(), sizeof( buffer ) );
 ////	int key = event.evValue;
-////	int len = text.Length();
+////	int len = this.text.Length();
 ////
 ////	if ( event.evType == SE_CHAR ) {
 ////		if ( event.evValue == Sys_GetConsoleKey( false ) || event.evValue == Sys_GetConsoleKey( true ) ) {
@@ -302,8 +302,8 @@ class idEditWindow extends idWindow {
 ////			*updateVisuals = true;
 ////		}
 ////
-////		if ( maxChars && len > maxChars ) {
-////			len = maxChars;
+////		if ( this.maxChars && len > this.maxChars ) {
+////			len = this.maxChars;
 ////		}
 ////	
 ////		if ( ( key == K_ENTER || key == K_KP_ENTER ) && event.evValue2 ) {
@@ -317,21 +317,21 @@ class idEditWindow extends idWindow {
 ////			return cmd;
 ////		}
 ////
-////		if ( readonly ) {
+////		if ( this.readonly ) {
 ////			return "";
 ////		}
 ////
 ////		if ( key == 'h' - 'a' + 1 || key == K_BACKSPACE ) {	// ctrl-h is backspace
-////   			if ( cursorPos > 0 ) {
-////				if ( cursorPos >= len ) {
+////   			if ( this.cursorPos > 0 ) {
+////				if ( this.cursorPos >= len ) {
 ////					buffer[len - 1] = 0;
-////					cursorPos = len - 1;
+////					this.cursorPos = len - 1;
 ////				} else {
-////					memmove( &buffer[ cursorPos - 1 ], &buffer[ cursorPos ], len + 1 - cursorPos);
-////					cursorPos--;
+////					memmove( &buffer[ this.cursorPos - 1 ], &buffer[ this.cursorPos ], len + 1 - this.cursorPos);
+////					this.cursorPos--;
 ////				}
 ////
-////				text = buffer;
+////				this.text = buffer;
 ////				UpdateCvar( false );
 ////				RunScript( ON_ACTION );
 ////			}
@@ -342,7 +342,7 @@ class idEditWindow extends idWindow {
 ////   		//
 ////   		// ignore any non printable chars (except enter when wrap is enabled)
 ////   		//
-////		if ( wrap && (key == K_ENTER || key == K_KP_ENTER) ) {
+////		if ( this.wrap && (key == K_ENTER || key == K_KP_ENTER) ) {
 ////		} else if ( !idStr::CharIsPrintable( key ) ) {
 ////			return "";
 ////		}
@@ -353,25 +353,25 @@ class idEditWindow extends idWindow {
 ////			}
 ////		}
 ////
-////		if ( dc.GetOverStrike() ) {
-////			if ( maxChars && cursorPos >= maxChars ) {
+////		if ( this.dc.GetOverStrike() ) {
+////			if ( this.maxChars && this.cursorPos >= this.maxChars ) {
 ////	       		return "";
 ////			}
 ////		} else {
-////			if ( ( len == MAX_EDITFIELD - 1 ) || ( maxChars && len >= maxChars ) ) {
+////			if ( ( len == MAX_EDITFIELD - 1 ) || ( this.maxChars && len >= this.maxChars ) ) {
 ////	       		return "";
 ////			}
-////			memmove( &buffer[ cursorPos + 1 ], &buffer[ cursorPos ], len + 1 - cursorPos );
+////			memmove( &buffer[ this.cursorPos + 1 ], &buffer[ this.cursorPos ], len + 1 - this.cursorPos );
 ////		}
 ////
-////		buffer[ cursorPos ] = key;
+////		buffer[ this.cursorPos ] = key;
 ////
-////		text = buffer;
+////		this.text = buffer;
 ////		UpdateCvar( false );
 ////		RunScript( ON_ACTION );
 ////
-////		if ( cursorPos < len + 1 ) {
-////			cursorPos++;
+////		if ( this.cursorPos < len + 1 ) {
+////			this.cursorPos++;
 ////		}
 ////		EnsureCursorVisible();
 ////
@@ -382,12 +382,12 @@ class idEditWindow extends idWindow {
 ////		}
 ////
 ////		if ( key == K_DEL ) {
-////			if ( readonly ) {
+////			if ( this.readonly ) {
 ////				return ret;
 ////			}
-////			if ( cursorPos < len ) {
-////				memmove( &buffer[cursorPos], &buffer[cursorPos + 1], len - cursorPos);
-////				text = buffer;
+////			if ( this.cursorPos < len ) {
+////				memmove( &buffer[this.cursorPos], &buffer[this.cursorPos + 1], len - this.cursorPos);
+////				this.text = buffer;
 ////				UpdateCvar( false );
 ////				RunScript( ON_ACTION );
 ////			}
@@ -395,19 +395,19 @@ class idEditWindow extends idWindow {
 ////		}
 ////
 ////		if ( key == K_RIGHTARROW )  {
-////			if ( cursorPos < len ) {
+////			if ( this.cursorPos < len ) {
 ////				if ( idKeyInput::IsDown( K_CTRL ) ) {
 ////					// skip to next word
-////					while( ( cursorPos < len ) && ( buffer[ cursorPos ] != ' ' ) ) {
-////						cursorPos++;
+////					while( ( this.cursorPos < len ) && ( buffer[ this.cursorPos ] != ' ' ) ) {
+////						this.cursorPos++;
 ////					}
 ////
-////					while( ( cursorPos < len ) && ( buffer[ cursorPos ] == ' ' ) ) {
-////						cursorPos++;
+////					while( ( this.cursorPos < len ) && ( buffer[ this.cursorPos ] == ' ' ) ) {
+////						this.cursorPos++;
 ////					}
 ////				} else {
-////					if ( cursorPos < len ) {
-////						cursorPos++;
+////					if ( this.cursorPos < len ) {
+////						this.cursorPos++;
 ////					}
 ////				}
 ////			} 
@@ -420,16 +420,16 @@ class idEditWindow extends idWindow {
 ////		if ( key == K_LEFTARROW ) {
 ////			if ( idKeyInput::IsDown( K_CTRL ) ) {
 ////				// skip to previous word
-////				while( ( cursorPos > 0 ) && ( buffer[ cursorPos - 1 ] == ' ' ) ) {
-////					cursorPos--;
+////				while( ( this.cursorPos > 0 ) && ( buffer[ this.cursorPos - 1 ] == ' ' ) ) {
+////					this.cursorPos--;
 ////				}
 ////
-////				while( ( cursorPos > 0 ) && ( buffer[ cursorPos - 1 ] != ' ' ) ) {
-////					cursorPos--;
+////				while( ( this.cursorPos > 0 ) && ( buffer[ this.cursorPos - 1 ] != ' ' ) ) {
+////					this.cursorPos--;
 ////				}
 ////			} else {
-////				if ( cursorPos > 0 ) {
-////					cursorPos--;
+////				if ( this.cursorPos > 0 ) {
+////					this.cursorPos--;
 ////				}
 ////			}
 ////
@@ -439,39 +439,39 @@ class idEditWindow extends idWindow {
 ////		}
 ////
 ////		if ( key == K_HOME ) {
-////			if ( idKeyInput::IsDown( K_CTRL ) || cursorLine <= 0 || ( cursorLine >= breaks.Num() ) ) {
-////                cursorPos = 0;
+////			if ( idKeyInput::IsDown( K_CTRL ) || this.cursorLine <= 0 || ( this.cursorLine >= this.breaks.Num() ) ) {
+////                this.cursorPos = 0;
 ////			} else {
-////				cursorPos = breaks[cursorLine];
+////				this.cursorPos = this.breaks[this.cursorLine];
 ////			}
 ////			EnsureCursorVisible();
 ////			return ret;
 ////		}
 ////
 ////		if ( key == K_END )  {
-////			if ( idKeyInput::IsDown( K_CTRL ) || (cursorLine < -1) || ( cursorLine >= breaks.Num() - 1 ) ) {
-////				cursorPos = len;
+////			if ( idKeyInput::IsDown( K_CTRL ) || (this.cursorLine < -1) || ( this.cursorLine >= this.breaks.Num() - 1 ) ) {
+////				this.cursorPos = len;
 ////			} else {
-////				cursorPos = breaks[cursorLine + 1] - 1;
+////				this.cursorPos = this.breaks[this.cursorLine + 1] - 1;
 ////			}
 ////			EnsureCursorVisible();
 ////			return ret;
 ////		}
 ////
 ////		if ( key == K_INS ) {
-////			if ( !readonly ) {
-////				dc.SetOverStrike( !dc.GetOverStrike() );
+////			if ( !this.readonly ) {
+////				this.dc.SetOverStrike( !this.dc.GetOverStrike() );
 ////			}
 ////			return ret;
 ////		}
 ////
 ////		if ( key == K_DOWNARROW ) {
 ////			if ( idKeyInput::IsDown( K_CTRL ) ) {
-////				scroller.SetValue( scroller.GetValue() + 1.0f );
+////				this.scroller.SetValue( this.scroller.GetValue() + 1.0 );
 ////			} else {
-////				if ( cursorLine < breaks.Num() - 1 ) {
-////					int offset = cursorPos - breaks[cursorLine];
-////					cursorPos = breaks[cursorLine + 1] + offset;
+////				if ( this.cursorLine < this.breaks.Num() - 1 ) {
+////					int offset = this.cursorPos - this.breaks[this.cursorLine];
+////					this.cursorPos = this.breaks[this.cursorLine + 1] + offset;
 ////					EnsureCursorVisible();
 ////				}
 ////			}
@@ -479,11 +479,11 @@ class idEditWindow extends idWindow {
 ////
 ////		if (key == K_UPARROW ) {
 ////			if ( idKeyInput::IsDown( K_CTRL ) ) {
-////				scroller.SetValue( scroller.GetValue() - 1.0f );
+////				this.scroller.SetValue( this.scroller.GetValue() - 1.0 );
 ////			} else {
-////				if ( cursorLine > 0 ) {
-////					int offset = cursorPos - breaks[cursorLine];
-////					cursorPos = breaks[cursorLine - 1] + offset;
+////				if ( this.cursorLine > 0 ) {
+////					int offset = this.cursorPos - this.breaks[this.cursorLine];
+////					this.cursorPos = this.breaks[this.cursorLine - 1] + offset;
 ////					EnsureCursorVisible();
 ////				}
 ////			}
@@ -512,151 +512,152 @@ class idEditWindow extends idWindow {
 	return ret;
 }
 
-	PostParse ( ): void {todoThrow ( );
-//	super.PostParse();
+	PostParse ( ): void {
+		super.PostParse ( );
 
-//	if ( maxChars == 0 ) {
-//		maxChars = 10;
-//	}
-//	if ( sourceFile.Length() ) {
-//		void *buffer;
-//		fileSystem.ReadFile( sourceFile, &buffer );
-//		text = (char *) buffer;
-//		fileSystem.FreeFile( buffer );
-//	}
+		if ( this.maxChars == 0 ) {
+			this.maxChars = 10;
+		}
+		if ( this.sourceFile.Length ( ) ) {
+			todoThrow ( );
+			//void *buffer;
+			//fileSystem.ReadFile( sourceFile, &buffer );
+			//this.	text = (char *) buffer;
+			//fileSystem.FreeFile( buffer );
+		}
 
-//	InitCvar();
-//	InitScroller(false);
+		this.InitCvar ( );
+		this.InitScroller( false );
 
-//	EnsureCursorVisible();
+		this.EnsureCursorVisible ( );
 
-//	flags |= WIN_CANFOCUS;
+		this.flags |= WIN_CANFOCUS;
 	}
 
-/////*
-////================
-////idEditWindow::InitScroller
-////
-////This is the same as in idListWindow
-////================
-////*/
-////void idEditWindow::InitScroller( bool horizontal )
-////{
-////	const char *thumbImage = "guis/assets/scrollbar_thumb.tga";
-////	const char *barImage = "guis/assets/scrollbarv.tga";
-////	const char *scrollerName = "_scrollerWinV";
-////
-////	if (horizontal) {
-////		barImage = "guis/assets/scrollbarh.tga";
-////		scrollerName = "_scrollerWinH";
-////	}
-////
-////	const idMaterial *mat = declManager.FindMaterial( barImage );
-////	mat.SetSort( SS_GUI );
-////	sizeBias = mat.GetImageWidth();
-////
-////	idRectangle scrollRect;
-////	if (horizontal) {
-////		sizeBias = mat.GetImageHeight();
-////		scrollRect.x = 0;
-////		scrollRect.y = (clientRect.h - sizeBias);
-////		scrollRect.w = clientRect.w;
-////		scrollRect.h = sizeBias;
-////	} else {
-////		scrollRect.x = (clientRect.w - sizeBias);
-////		scrollRect.y = 0;
-////		scrollRect.w = sizeBias;
-////		scrollRect.h = clientRect.h;
-////	}
-////
-////	scroller.InitWithDefaults(scrollerName, scrollRect, foreColor, matColor, mat.GetName(), thumbImage, !horizontal, true);
-////	InsertChild(scroller, NULL);
-////	scroller.SetBuddy(this);
-////}
-////
-////void idEditWindow::HandleBuddyUpdate( idWindow *buddy ) {
-////}
-////
+/*
+================
+idEditWindow::InitScroller
+
+This is the same as in idListWindow
+================
+*/
+InitScroller(  horizontal :boolean):void
+{
+	var thumbImage = "guis/assets/scrollbar_thumb.tga";
+	var barImage = "guis/assets/scrollbarv.tga";
+	var scrollerName = "_scrollerWinV";
+
+	if (horizontal) {
+		barImage = "guis/assets/scrollbarh.tga";
+		scrollerName = "_scrollerWinH";
+	}
+
+	var mat = declManager.FindMaterial( barImage );
+	mat.SetSort( materialSort_t.SS_GUI );
+	this.sizeBias = mat.GetImageWidth();
+
+	var scrollRect = new idRectangle;
+	if (horizontal) {
+		this.sizeBias = mat.GetImageHeight();
+		scrollRect.x = 0;
+		scrollRect.y = (this.clientRect.h - this.sizeBias);
+		scrollRect.w = this.clientRect.w;
+		scrollRect.h = this.sizeBias;
+	} else {
+		scrollRect.x = (this.clientRect.w - this.sizeBias);
+		scrollRect.y = 0;
+		scrollRect.w = this.sizeBias;
+		scrollRect.h = this.clientRect.h;
+	}
+
+	this.scroller.InitWithDefaults(scrollerName, scrollRect, this.foreColor.data, this.matColor.data, mat.GetName(), thumbImage, !horizontal, true);
+	this.InsertChild(this.scroller, null);
+	this.scroller.SetBuddy(this);
+}
+
+	HandleBuddyUpdate ( buddy: idWindow ) {
+	}
+
 	EnsureCursorVisible ( ): void {
-		todoThrow ( );
-		//if ( readonly ) {
-		//	cursorPos = -1;
-		//} else if ( maxChars == 1 ) {
-		//	cursorPos = 0;
-		//}
+		if ( this.readonly ) {
+			this.cursorPos = -1;
+		} else if ( this.maxChars == 1 ) {
+			this.cursorPos = 0;
+		}
 
-		//if ( !dc ) {
-		//	return;
-		//}
+		if ( !this.dc ) {
+			return;
+		}
 
-		//SetFont();
-		//if ( !wrap ) {
-		//	int cursorX = 0;
-		//	if ( password ) {
-		//		cursorX = cursorPos * dc.CharWidth( '*', textScale );
-		//	} else {
-		//		int i = 0;
-		//		while ( i < text.Length() && i < cursorPos ) {
-		//			if ( idStr::IsColor( &text[i] ) ) {
-		//				i += 2;
-		//			} else {
-		//				cursorX += dc.CharWidth( text[i], textScale );
-		//				i++;
-		//			}
-		//		}
-		//	}
-		//	int maxWidth = GetMaxCharWidth( );
-		//	int left = cursorX - maxWidth;
-		//	int right = ( cursorX - textRect.w ) + maxWidth;
+		this.SetFont();
+		if ( !this.wrap ) {
+			var/*int */cursorX = 0;
+			if ( password ) {
+				cursorX = this.cursorPos * this.dc.CharWidth( '*', this.textScale.data );
+			} else {
+				var i = 0;
+				while ( i < this.text.Length() && i < this.cursorPos ) {
+					if ( idStr.IsColor( this.text.c_str()[i] ) ) {
+						i += 2;
+					} else {
+						cursorX += this.dc.CharWidth( this.text[i], this.textScale.data );
+						i++;
+					}
+				}
+			}
+			var /*int*/ maxWidth = this.GetMaxCharWidth( );
+			var /*int*/ left = cursorX - maxWidth;
+			var /*int*/ right = ( cursorX - this.textRect.w ) + maxWidth;
 
-		//	if ( paintOffset > left ) {
-		//		// When we go past the left side, we want the text to jump 6 characters
-		//		paintOffset = left - maxWidth * 6;
-		//	}
-		//	if ( paintOffset <  right) {
-		//		paintOffset = right;
-		//	}
-		//	if ( paintOffset < 0 ) {
-		//		paintOffset = 0;
-		//	}
-		//	scroller.SetRange(0.0f, 0.0f, 1.0f);
+			if ( this.paintOffset > left ) {
+				// When we go past the left side, we want the text to jump 6 characters
+				this.paintOffset = left - maxWidth * 6;
+			}
+			if ( this.paintOffset <  right) {
+				this.paintOffset = right;
+			}
+			if ( this.paintOffset < 0 ) {
+				this.paintOffset = 0;
+			}
+			this.scroller.SetRange(0.0, 0.0, 1.0);
 
-		//} else {
-		//	// Word wrap
+		} else {
+			// Word wrap
 
-		//	breaks.Clear();
-		//	idRectangle rect = textRect;
-		//	rect.w -= sizeBias;
-		//	dc.DrawText(text, textScale, textAlign, colorWhite, rect, true, (flags & WIN_FOCUS) ? cursorPos : -1, true, &breaks );
+			this.breaks.Clear();
+			var rect = new idRectangle();
+			rect.equals( this.textRect );
+			rect.w -= this.sizeBias;
+			todoThrow( "this.dc.DrawText( this.text.c_str ( ), this.textScale, this.textAlign, colorWhite, rect, true, ( this.flags & WIN_FOCUS ) ? this.cursorPos : -1, true, this.breaks );" );
 
-		//	int fit = textRect.h / (GetMaxCharHeight() + 5);
-		//	if ( fit < breaks.Num() + 1 ) {
-		//		scroller.SetRange(0, breaks.Num() + 1 - fit, 1);
-		//	} else {
-		//		// The text fits completely in the box
-		//		scroller.SetRange(0.0f, 0.0f, 1.0f);
-		//	}
+			var /*int */fit = int( this.textRect.h / ( this.GetMaxCharHeight ( ) + 5 ) );
+			if ( fit < this.breaks.Num() + 1 ) {
+				this.scroller.SetRange(0, this.breaks.Num() + 1 - fit, 1);
+			} else {
+				// The text fits completely in the box
+				this.scroller.SetRange(0.0, 0.0, 1.0);
+			}
 
-		//	if ( forceScroll ) {
-		//		scroller.SetValue( breaks.Num() - fit );
-		//	} else if ( readonly ) {
-		//	} else {
-		//		cursorLine = 0;
-		//		for ( int i = 1; i < breaks.Num(); i++ ) {
-		//			if ( cursorPos >= breaks[i] ) {
-		//				cursorLine = i;
-		//			} else {
-		//				break;
-		//			}
-		//		}
-		//		int topLine = idMath::FtoiFast( scroller.GetValue() );
-		//		if ( cursorLine < topLine ) {
-		//			scroller.SetValue( cursorLine );
-		//		} else if ( cursorLine >= topLine + fit) {
-		//			scroller.SetValue( ( cursorLine - fit ) + 1 );
-		//		}
-		//	}
-		//}
+			if ( this.forceScroll ) {
+				this.scroller.SetValue( this.breaks.Num() - fit );
+			} else if ( this.readonly ) {
+			} else {
+				this.cursorLine = 0;
+				for ( var i = 1; i < this.breaks.Num(); i++ ) {
+					if ( this.cursorPos >= this.breaks[i] ) {
+						this.cursorLine = i;
+					} else {
+						break;
+					}
+				}
+				var topLine = idMath.FtoiFast( this.scroller.GetValue() );
+				if ( this.cursorLine < topLine ) {
+					this.scroller.SetValue( this.cursorLine );
+				} else if ( this.cursorLine >= topLine + fit) {
+					this.scroller.SetValue( ( this.cursorLine - fit ) + 1 );
+				}
+			}
+		}
 	}
 
 	Activate ( activate: boolean, act: idStr ): void {
@@ -667,27 +668,27 @@ class idEditWindow extends idWindow {
 		}
 	}
 
-/////*
-////============
-////idEditWindow::InitCvar
-////============
-////*/
-////void idEditWindow::InitCvar( ) {
-////	if ( cvarStr[0] == '\0' ) {
-////		if ( text.GetName() == NULL ) {
-////			common.Warning( "idEditWindow::InitCvar: gui '%s' window '%s' has an empty cvar string", gui.GetSourceFile(), name.c_str() );
-////		}
-////		cvar = NULL;
-////		return;
-////	}
-////
-////	cvar = cvarSystem.Find( cvarStr );
-////	if ( !cvar ) {
-////		common.Warning( "idEditWindow::InitCvar: gui '%s' window '%s' references undefined cvar '%s'", gui.GetSourceFile(), name.c_str(), cvarStr.c_str() );
-////		return;
-////	}
-////}
-////
+/*
+============
+idEditWindow::InitCvar
+============
+*/
+	InitCvar ( ): void {
+		if ( !this.cvarStr.data /*this.cvarStr[0] == '\0' */ ) {
+			if ( !this.text.GetName ( ) /*== NULL */ ) {
+				common.Warning( "idEditWindow::InitCvar: gui '%s' window '%s' has an empty cvar string", this.gui.GetSourceFile ( ), this.name.c_str ( ) );
+			}
+			this.cvar = null;
+			return;
+		}
+
+		this.cvar = cvarSystem.Find( this.cvarStr.c_str ( ) );
+		if ( !this.cvar ) {
+			common.Warning( "idEditWindow::InitCvar: gui '%s' window '%s' references undefined cvar '%s'", this.gui.GetSourceFile ( ), this.name.c_str ( ), this.cvarStr.c_str ( ) );
+			return;
+		}
+	}
+
 /*
 ============
 idEditWindow::UpdateCvar
@@ -696,13 +697,13 @@ idEditWindow::UpdateCvar
 	UpdateCvar ( read: boolean, force: boolean ) {
 		todoThrow ( );
 		//if ( force || liveUpdate ) {
-		//	if ( cvar ) {
+		//	if ( this.cvar ) {
 		//		if ( read ) {
-		//			text = cvar.GetString();
+		//			this.text = this.cvar.GetString();
 		//		} else {
-		//			cvar.SetString( text );
-		//			if ( cvarMax && ( cvar.GetInteger() > cvarMax ) ) {
-		//				cvar.SetInteger( cvarMax );
+		//			this.cvar.SetString( this.text );
+		//			if ( cvarMax && ( this.cvar.GetInteger() > cvarMax ) ) {
+		//				this.cvar.SetInteger( cvarMax );
 		//			}
 		//		}
 		//	}

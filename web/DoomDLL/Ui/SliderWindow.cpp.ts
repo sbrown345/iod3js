@@ -47,7 +47,7 @@ class idSliderWindow extends idWindow {
 ////	float				GetHigh() { return high; }
 ////
 ////	void				SetValue(float _value);
-////	float				GetValue() { return value; };
+	GetValue ( ): number /*float*/ { return this.value.data; }
 ////
 ////	virtual size_t		Allocated(){ return idWindow::Allocated(); };
 ////	virtual idWinVar *	GetWinVarByName(_name:string, bool winLookup = false, drawWin_t** owner = NULL);
@@ -207,87 +207,86 @@ CommonInit():void {
 ////		return "";
 ////	} 
 ////
-////	if ( key == K_RIGHTARROW || key == K_KP_RIGHTARROW || ( key == K_MOUSE2 && gui.CursorY() > thumbRect.y ) )  {
-////		value = value + stepSize;
+////	if ( key == K_RIGHTARROW || key == K_KP_RIGHTARROW || ( key == K_MOUSE2 && this.gui.CursorY() > thumbRect.y ) )  {
+////		this.value = this.value + stepSize;
 ////	}
 ////
-////	if ( key == K_LEFTARROW || key == K_KP_LEFTARROW || ( key == K_MOUSE2 && gui.CursorY() < thumbRect.y ) ) {
-////		value = value - stepSize;
+////	if ( key == K_LEFTARROW || key == K_KP_LEFTARROW || ( key == K_MOUSE2 && this.gui.CursorY() < thumbRect.y ) ) {
+////		this.value = this.value - stepSize;
 ////	}
 ////
-////	if (buddyWin) {
-////		buddyWin.HandleBuddyUpdate(this);
+////	if (this.buddyWin) {
+////		this.buddyWin.HandleBuddyUpdate(this);
 ////	} else {
-////		gui.SetStateFloat( cvarStr, value );
+////		this.gui.SetStateFloat( this.cvarStr, this.value );
 ////		UpdateCvar( false );
 ////	}
 ////
 		return "";
 	}
-////
-////
-////void idSliderWindow::SetBuddy(idWindow *buddy) {
-////	buddyWin = buddy;
-////}
-////
-	PostParse ( ): void {
-		todoThrow ( );
-////	idWindow::PostParse();
-////	value = 0.0;
-////	thumbMat = declManager.FindMaterial(thumbShader);
-////	thumbMat.SetSort( SS_GUI );
-////	thumbWidth = thumbMat.GetImageWidth();
-////	thumbHeight = thumbMat.GetImageHeight();
-////	//vertical = state.GetBool("vertical");
-////	//scrollbar = state.GetBool("scrollbar");
-////	flags |= (WIN_HOLDCAPTURE | WIN_CANFOCUS);
-////	InitCvar();
+
+
+	SetBuddy ( buddy: idWindow ): void {
+		this.buddyWin = buddy;
 	}
 
-////void idSliderWindow::InitWithDefaults(_name:string, const idRectangle &_rect, const idVec4 &_foreColor, const idVec4 &_matColor, const char *_background, const char *thumbShader, bool _vertical, bool _scrollbar) {
-////	SetInitialState(_name);
-////	rect = _rect;
-////	foreColor = _foreColor;
-////	matColor = _matColor;
-////	thumbMat = declManager.FindMaterial(thumbShader);
-////	thumbMat.SetSort( SS_GUI );
-////	thumbWidth = thumbMat.GetImageWidth();
-////	thumbHeight = thumbMat.GetImageHeight();
-////	background = declManager.FindMaterial(_background);
-////	background.SetSort( SS_GUI );
-////	vertical = _vertical;
-////	scrollbar = _scrollbar;
-////	flags |= WIN_HOLDCAPTURE;
-////}
-////
-////void idSliderWindow::SetRange(float _low, float _high, float _step) {
-////	low = _low;
-////	high = _high;
-////	stepSize = _step;
-////}
-////
-////void idSliderWindow::SetValue(float _value) {
-////	value = _value;
-////}
-////
+	PostParse ( ): void {
+		super.PostParse ( );
+		this.value.equalsFloat( 0.0 );
+		this.thumbMat = declManager.FindMaterial( this.thumbShader.data );
+		this.thumbMat.SetSort( materialSort_t.SS_GUI );
+		this.thumbWidth = this.thumbMat.GetImageWidth ( );
+		this.thumbHeight = this.thumbMat.GetImageHeight ( );
+		//vertical = state.GetBool("vertical");
+		//scrollbar = state.GetBool("scrollbar");
+		this.flags |= ( WIN_HOLDCAPTURE | WIN_CANFOCUS );
+		this.InitCvar ( );
+	}
+
+	InitWithDefaults ( _name: string, _rect: idRectangle, _foreColor: idVec4, _matColor: idVec4, _background: string, thumbShader: string, _vertical: boolean, _scrollbar: boolean ): void {
+		this.SetInitialState( _name );
+		this.rect.equalsRectangle( _rect );
+		this.foreColor.equalsVec4( _foreColor );
+		this.matColor.equalsVec4( _matColor );
+		this.thumbMat = declManager.FindMaterial( thumbShader );
+		this.thumbMat.SetSort( materialSort_t.SS_GUI );
+		this.thumbWidth = this.thumbMat.GetImageWidth ( );
+		this.thumbHeight = this.thumbMat.GetImageHeight ( );
+		this.background = declManager.FindMaterial( _background );
+		this.background.SetSort( materialSort_t.SS_GUI );
+		this.vertical = _vertical;
+		this.scrollbar = _scrollbar;
+		this.flags |= WIN_HOLDCAPTURE;
+	}
+
+	SetRange ( /*float*/ _low: number, /*float */_high: number, /*float */_step: number ): void {
+		this.low = _low;
+		this.high = _high;
+		this.stepSize = _step;
+	}
+
+	SetValue ( /*float */_value: number ): void {
+		this.value.equalsFloat( _value );
+	}
+
 	Draw( /*int*/ time: number, /*float */x: number, /*float */y: number): void {
 		todoThrow ( );
 ////	idVec4 color = foreColor;
 ////
-////	if ( !cvar && !buddyWin ) {
+////	if ( !this.cvar && !this.buddyWin ) {
 ////		return;
 ////	}
 ////
-////	if ( !thumbWidth || !thumbHeight ) {
-////		thumbWidth = thumbMat.GetImageWidth();
-////		thumbHeight = thumbMat.GetImageHeight();
+////	if ( !this.thumbWidth || !this.thumbHeight ) {
+////		this.thumbWidth = this.thumbMat.GetImageWidth();
+////		this.thumbHeight = this.thumbMat.GetImageHeight();
 ////	}
 ////
 ////	UpdateCvar( true );
-////	if ( value > high ) {
-////		value = high;
-////	} else if ( value < low ) {
-////		value = low;
+////	if ( this.value > high ) {
+////		this.value = high;
+////	} else if ( this.value < low ) {
+////		this.value = low;
 ////	}
 ////
 ////	float range = high - low;
@@ -296,43 +295,43 @@ CommonInit():void {
 ////		return;
 ////	}
 ////
-////	float thumbPos = (range) ? (value - low) / range : 0.0;
+////	float thumbPos = (range) ? (this.value - low) / range : 0.0;
 ////	if (vertical) {
 ////		if ( verticalFlip ) {
 ////			thumbPos = 1.f - thumbPos;
 ////		}
-////		thumbPos *= drawRect.h - thumbHeight;
+////		thumbPos *= drawRect.h - this.thumbHeight;
 ////		thumbPos += drawRect.y;
 ////		thumbRect.y = thumbPos;
 ////		thumbRect.x = drawRect.x;
 ////	} else {
-////		thumbPos *= drawRect.w - thumbWidth;
+////		thumbPos *= drawRect.w - this.thumbWidth;
 ////		thumbPos += drawRect.x;
 ////		thumbRect.x = thumbPos;
 ////		thumbRect.y = drawRect.y;
 ////	}
-////	thumbRect.w = thumbWidth;
-////	thumbRect.h = thumbHeight;
+////	thumbRect.w = this.thumbWidth;
+////	thumbRect.h = this.thumbHeight;
 ////
-////	if ( hover && !noEvents && Contains(gui.CursorX(), gui.CursorY()) ) {
+////	if ( hover && !noEvents && Contains(this.gui.CursorX(), this.gui.CursorY()) ) {
 ////		color = hoverColor;
 ////	} else {
 ////		hover = false;
 ////	}
-////	if ( flags & WIN_CAPTURE ) {
+////	if ( this.flags & WIN_CAPTURE ) {
 ////		color = hoverColor;
 ////		hover = true;
 ////	}
 ////
-////	dc.DrawMaterial(thumbRect.x, thumbRect.y, thumbRect.w, thumbRect.h, thumbMat, color);
-////	if ( flags & WIN_FOCUS ) {
+////	dc.DrawMaterial(thumbRect.x, thumbRect.y, thumbRect.w, thumbRect.h, this.thumbMat, color);
+////	if ( this.flags & WIN_FOCUS ) {
 ////		dc.DrawRect(thumbRect.x+1.0f, thumbRect.y+1.0f, thumbRect.w-2.0f, thumbRect.h-2.0f, 1.0f, color);
 ////	}
 }
 ////
 ////
 ////void idSliderWindow::DrawBackground(const idRectangle &_drawRect) {
-////	if ( !cvar && !buddyWin ) {
+////	if ( !this.cvar && !this.buddyWin ) {
 ////		return;
 ////	}
 ////
@@ -343,11 +342,11 @@ CommonInit():void {
 ////	idRectangle r = _drawRect;
 ////	if (!scrollbar) {
 ////		if ( vertical ) {
-////			r.y += thumbHeight / 2.f;
-////			r.h -= thumbHeight;
+////			r.y += this.thumbHeight / 2.f;
+////			r.h -= this.thumbHeight;
 ////		} else {
-////			r.x += thumbWidth / 2.0;
-////			r.w -= thumbWidth;
+////			r.x += this.thumbWidth / 2.0;
+////			r.w -= this.thumbWidth;
 ////		}
 ////	}
 ////	idWindow::DrawBackground(r);
@@ -356,54 +355,54 @@ CommonInit():void {
 ////const char *idSliderWindow::RouteMouseCoords(float xd, float yd) {
 ////	float pct;
 ////
-////	if (!(flags & WIN_CAPTURE)) {
+////	if (!(this.flags & WIN_CAPTURE)) {
 ////		return "";
 ////	}
 ////
 ////	idRectangle r = drawRect;
 ////	r.x = actualX;
 ////	r.y = actualY;
-////	r.x += thumbWidth / 2.0;
-////	r.w -= thumbWidth;
+////	r.x += this.thumbWidth / 2.0;
+////	r.w -= this.thumbWidth;
 ////	if (vertical) {
-////		r.y += thumbHeight / 2;
-////		r.h -= thumbHeight;
-////		if (gui.CursorY() >= r.y && gui.CursorY() <= r.Bottom()) {
-////			pct = (gui.CursorY() - r.y) / r.h;
+////		r.y += this.thumbHeight / 2;
+////		r.h -= this.thumbHeight;
+////		if (this.gui.CursorY() >= r.y && this.gui.CursorY() <= r.Bottom()) {
+////			pct = (this.gui.CursorY() - r.y) / r.h;
 ////			if ( verticalFlip ) {
 ////				pct = 1.f - pct;
 ////			}
-////			value = low + (high - low) * pct;
-////		} else if (gui.CursorY() < r.y) {
+////			this.value = low + (high - low) * pct;
+////		} else if (this.gui.CursorY() < r.y) {
 ////			if ( verticalFlip ) {
-////				value = high;
+////				this.value = high;
 ////			} else {
-////				value = low;
+////				this.value = low;
 ////			}
 ////		} else {
 ////			if ( verticalFlip ) {
-////				value = low;
+////				this.value = low;
 ////			} else {
-////				value = high;
+////				this.value = high;
 ////			}
 ////		}
 ////	} else {
-////		r.x += thumbWidth / 2;
-////		r.w -= thumbWidth;
-////		if (gui.CursorX() >= r.x && gui.CursorX() <= r.Right()) {
-////			pct = (gui.CursorX() - r.x) / r.w;
-////			value = low + (high - low) * pct;
-////		} else if (gui.CursorX() < r.x) {
-////			value = low;
+////		r.x += this.thumbWidth / 2;
+////		r.w -= this.thumbWidth;
+////		if (this.gui.CursorX() >= r.x && this.gui.CursorX() <= r.Right()) {
+////			pct = (this.gui.CursorX() - r.x) / r.w;
+////			this.value = low + (high - low) * pct;
+////		} else if (this.gui.CursorX() < r.x) {
+////			this.value = low;
 ////		} else {
-////			value = high;
+////			this.value = high;
 ////		}
 ////	}
 ////
-////	if (buddyWin) {
-////		buddyWin.HandleBuddyUpdate(this);
+////	if (this.buddyWin) {
+////		this.buddyWin.HandleBuddyUpdate(this);
 ////	} else {
-////		gui.SetStateFloat( cvarStr, value );
+////		this.gui.SetStateFloat( this.cvarStr, this.value );
 ////	}
 ////	UpdateCvar( false );
 ////
@@ -412,35 +411,34 @@ CommonInit():void {
 ////
 
 	Activate ( activate: boolean, act: idStr ): void {
-		todoThrow ( );
 		super.Activate( activate, act );
 		if ( activate ) {
 			this.UpdateCvar( true, true );
 		}
 	}
 
-/////*
-////============
-////idSliderWindow::InitCvar
-////============
-////*/
-////void idSliderWindow::InitCvar( ) {
-////	if ( cvarStr[0] == '\0' ) {
-////		if ( !buddyWin ) {
-////			common.Warning( "idSliderWindow::InitCvar: gui '%s' window '%s' has an empty cvar string", gui.GetSourceFile(), name.c_str() );
-////		}
-////		cvar_init = true;
-////		cvar = NULL;
-////		return;
-////	}
-////
-////	cvar = cvarSystem.Find( cvarStr );
-////	if ( !cvar ) {
-////		common.Warning( "idSliderWindow::InitCvar: gui '%s' window '%s' references undefined cvar '%s'", gui.GetSourceFile(), name.c_str(), cvarStr.c_str() );
-////		cvar_init = true;
-////		return;
-////	}
-////}
+/*
+============
+idSliderWindow::InitCvar
+============
+*/
+	InitCvar ( ): void {
+		if ( !this.cvarStr.c_str ( ) /*== '\0' */ ) {
+			if ( !this.buddyWin ) {
+				common.Warning( "idSliderWindow::InitCvar: gui '%s' window '%s' has an empty cvar string", this.gui.GetSourceFile ( ), this.name.c_str ( ) );
+			}
+			this.cvar_init = true;
+			this.cvar = null;
+			return;
+		}
+
+		this.cvar = cvarSystem.Find( this.cvarStr.c_str ( ) );
+		if ( !this.cvar ) {
+			common.Warning( "idSliderWindow::InitCvar: gui '%s' window '%s' references undefined cvar '%s'", this.gui.GetSourceFile ( ), this.name.c_str ( ), this.cvarStr.c_str ( ) );
+			this.cvar_init = true;
+			return;
+		}
+	}
 
 /*
 ============
@@ -449,17 +447,17 @@ idSliderWindow::UpdateCvar
 */
 	UpdateCvar ( read: boolean, force: boolean ): void {
 		todoThrow ( );
-		//if ( buddyWin || !cvar ) {
+		//if ( this.buddyWin || !this.cvar ) {
 		//	return;
 		//}
 		//if ( force || liveUpdate ) {
-		//	value = cvar.GetFloat();
-		//	if ( value != gui.State().GetFloat( cvarStr ) ) {
+		//	this.value = this.cvar.GetFloat();
+		//	if ( this.value != this.gui.State().GetFloat( this.cvarStr ) ) {
 		//		if ( read ) {
-		//			gui.SetStateFloat( cvarStr, value );
+		//			this.gui.SetStateFloat( this.cvarStr, this.value );
 		//		} else {
-		//			value = gui.State().GetFloat( cvarStr );
-		//			cvar.SetFloat( value );
+		//			this.value = this.gui.State().GetFloat( this.cvarStr );
+		//			this.cvar.SetFloat( this.value );
 		//		}
 		//	}
 		//}
