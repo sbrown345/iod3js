@@ -970,9 +970,9 @@ class idLexer {
 		}
 		// succesfully read a token
 		//dlog(DEBUG_Lexer, "RT: %i, %s\n", this.line , token.data);
-		if ( idLexer.RTCount == 191769 && this.line == 106 ) debugger;
+		//if ( idLexer.RTCount == 191769 && this.line == 106 ) debugger;
 		//if (token.data == "aas_types") debugger;
-		dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", idLexer.RTCount, this.line, token.data);
+		//dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", idLexer.RTCount, this.line, token.data);
 		idLexer.RTCount++;
 		return 1;
 	}

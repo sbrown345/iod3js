@@ -2167,7 +2167,8 @@ bool idWindow::Parse( idParser *src, bool rebuild) {
 				visible = false;
 				rect = idRectangle(0,0,0,0);
 			}
-			src->ExpectTokenType( TT_NAME, 0, &token );
+			dlog(DEBUG_GUI, "idWindow::Parse token: %si\n", token.c_str());
+			src->ExpectTokenType(TT_NAME, 0, &token);
 			token2 = token;
 			src->UnreadToken(&token);
 			drawWin_t *dw = FindChildByName(token2.c_str());
@@ -2186,6 +2187,7 @@ bool idWindow::Parse( idParser *src, bool rebuild) {
 				if (win->IsSimple()) {
 					idSimpleWindow *simple = new idSimpleWindow(win);
 					dwt.simp = simple;
+					dlog(DEBUG_GUI, "idWindow::Parse win->IsSimple()\n");
 					drawWindows.Append(dwt);
 					delete win;
 				} else {
@@ -2575,20 +2577,27 @@ drawWin_t *idWindow::FindChildByName(const char *_name) {
 	if (idStr::Icmp(name,_name) == 0) {
 		dw.simp = NULL;
 		dw.win = this;
+		dlog(DEBUG_GUI, "idWindow::FindChildByName return &dw;\n");
 		return &dw;
 	}
 	int c = drawWindows.Num();
+	dlog(DEBUG_GUI, "idWindow::FindChildByName %s, c: %i\n", _name, c);
 	for (int i = 0; i < c; i++) {
 		if (drawWindows[i].win) {
+			dlog(DEBUG_GUI, "idWindow::FindChildByName  drawWindows[i].win->name: %s\n", drawWindows[i].win->name.c_str());
 			if (idStr::Icmp(drawWindows[i].win->name, _name) == 0) {
+				dlog(DEBUG_GUI, "idWindow::FindChildByName  &drawWindows[i];\n");
 				return &drawWindows[i];
 			}
 			drawWin_t *win = drawWindows[i].win->FindChildByName(_name);
 			if (win) {
+				dlog(DEBUG_GUI, "idWindow::FindChildByName return win;\n");
 				return win;
 			}
 		} else {
+			dlog(DEBUG_GUI, "idWindow::FindChildByName  drawWindows[i].simp->name: %s\n", drawWindows[i].simp->name.c_str());
 			if (idStr::Icmp(drawWindows[i].simp->name, _name) == 0) {
+				dlog(DEBUG_GUI, "idWindow::FindChildByName return return &drawWindows[i];\n");
 				return &drawWindows[i];
 			}
 		}
@@ -4107,7 +4116,8 @@ bool idWindow::InsertChild ( idWindow *win, idWindow* before )
 		}
 	}
 	
-	drawWindows.Append ( dwt );
+	dlog(DEBUG_GUI, "idWindow::InsertChild  %s\n", win->name.c_str());
+	drawWindows.Append(dwt);
 	return true;
 }
 

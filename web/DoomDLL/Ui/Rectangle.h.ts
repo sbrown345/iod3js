@@ -223,13 +223,13 @@ class idRectangle {
 		this.h = r.h;
 		return this;
 	}
-//equalsVec4( const idVec4 v ) {
-//	x = v.x;
-//	y = v.y;
-//	w = v.z;
-//	h = v.w;
-//	return *this;
-//}
+	equalsVec4 ( v: idVec4 ): idRectangle {
+		this.x = v.x;
+		this.y = v.y;
+		this.w = v.z;
+		this.h = v.w;
+		return this;
+	}
 //
 //ID_INLINE int idRectangle::operator==( const idRectangle &a ) const {
 //	return (x == a.x && y == a.y && w == a.w && a.h);

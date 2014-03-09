@@ -1878,7 +1878,6 @@ idProgram::FreeData
 void idProgram::FreeData( void ) {
 	int i;
 
-	dlog(DEBUG_COMPILER, "idProgram::FreeData\n");
 	// free the defs
 	varDefs.DeleteContents( true );
 	varDefNames.DeleteContents( true );

@@ -69,18 +69,17 @@ class idWinVar implements ITrackedObject {
 			this.name = _name;
 		}
 	}
-////
-////	idWinVar &operator=( const idWinVar &other ) {
-////		this.guiDict = other.this.guiDict;
-////		SetName(other.name);
-////		return *this;
-////	}
-////
+	//idWinVar &operator =
+	equals ( other: idWinVar ): idWinVar {
+		this.guiDict = other.guiDict;
+		this.SetName( other.name );
+		return this;
+	}
+
 	GetDict ( ): idDict { return this.guiDict; }
 	NeedsUpdate ( ): boolean { return ( this.guiDict != null ); }
-////
-////	virtual void Init(_name:string, idWindow* win) = 0;
-	Set ( val: string ): void { throw "placeholder"; }
+
+	Set(val: string): void { throw "placeholder"; }
 	Update ( ): void { throw "placeholder"; }
 	c_str ( ): string{ throw "placeholder"; }
 ////	virtual size_t Size() {	size_t sz = (this.name) ? strlen(this.name) : 0; return sz + sizeof(*this); }
@@ -114,7 +113,6 @@ class idWinVar implements ITrackedObject {
 		this.SetName( _name );
 	}
 
-
 	Init ( _name: string, win: idWindow ): void {
 		var key = new idStr( _name );
 		this.guiDict = null;
@@ -139,12 +137,17 @@ class idWinBool extends idWinVar {
 ////public:
 ////	idWinBool() : idWinVar() {};
 ////	~idWinBool() {};
-////	virtual void Init(_name:string, idWindow *win) { idWinVar::Init(_name, win);
-////		if (this.guiDict) {
-////			this.data = this.guiDict.GetBool(this.GetName());
-////		}
-////	}
-////	int	operator==(	const bool &other ) { return (other == this.data); }
+	Init(_name: string, win: idWindow): void  {
+		super.Init( _name, win );
+		if ( this.guiDict ) {
+			this.data = this.guiDict.GetBool( this.GetName ( ) );
+		}
+	}
+
+	equalTo ( other: boolean ): boolean {
+		return other == this.data;
+	}
+
 	equalsBool(	other :boolean):boolean {
 		this.data = other;
 		if (this.guiDict) {
@@ -152,14 +155,14 @@ class idWinBool extends idWinVar {
 		}
 		return this.data;
 	}
-////	idWinBool &operator=( const idWinBool &other ) {
-////		idWinVar::operator=(other);
-////		this.data = other.data;
-////		return *this;
-////	}
-////
-////	operator bool() const { return this.data; }
-////
+	equals ( other: idWinBool ): idWinBool {
+		super.equals( other );
+		this.data = other.data;
+		return this;
+	}
+
+	operatorBool ( ): boolean { return this.data; }
+
 	Set ( val: string ): void {
 		this.data = ( atoi( val ) != 0 );
 		if ( this.guiDict ) {
@@ -174,7 +177,7 @@ class idWinBool extends idWinVar {
 		}
 	}
 
-////	virtual const char *c_str() const {return va("%i", this.data); }
+	c_str ( ): string { return va( "%i", this.data ); }
 ////
 ////	// SaveGames
 ////	virtual void WriteToSaveGame( idFile *savefile ) {
@@ -196,37 +199,31 @@ class idWinStr extends idWinVar {
 ////public:
 ////	idWinStr() : idWinVar() {};
 ////	~idWinStr() {};
-////	virtual void Init(_name:string, idWindow *win) {
-////		idWinVar::Init(_name, win);
-////		if (this.guiDict) {
-////			this.data = this.guiDict.GetString(this.GetName());
-////		} 
-////	}
+	Init(_name: string, win: idWindow): void  {
+		super.Init(_name, win);
+		if (this.guiDict) {
+			this.data.equals( this.guiDict.GetString( this.GetName ( ) ) );
+		} 
+	}
 ////	int	operator==(	const idStr &other ) const {
 ////		return (other == this.data);
 ////	}
 ////	int	operator==(	const char *other ) const {
 ////		return (data == other);
 ////	}
-	equalsStr ( other: idStr ) {
+	equalsStr(other: idStr): idStr {
 		this.data.equals(other);
 		if ( this.guiDict ) {
 			this.guiDict.Set( this.GetName ( ), this.data.data );
 		}
 		return this.data;
 	}
-////	idStr &operator=(	const idStr &other ) {
-////		this.data = other;
-////		if (this.guiDict) {
-////			this.guiDict.Set(this.GetName(), this.data);
-////		}
-////		return this.data;
-////	}
-////	idWinStr &operator=( const idWinStr &other ) {
-////		idWinVar::operator=(other);
-////		this.data = other.data;
-////		return *this;
-////	}
+	equals(other: idWinStr ) {
+		super.equals( other );
+		this.data.equals( other.data );
+		return this;
+	}
+
 ////	operator const char *() const {
 ////		return this.data.c_str();
 ////	}
@@ -306,12 +303,12 @@ class idWinInt extends idWinVar {
 ////public:
 ////	idWinInt() : idWinVar() {};
 ////	~idWinInt() {};
-////	virtual void Init(_name:string, idWindow *win) {
-////		idWinVar::Init(_name,  win);
-////		if (this.guiDict) {
-////			this.data = this.guiDict.GetInt(this.GetName());
-////		} 
-////	}
+	Init(_name: string, win: idWindow): void  {
+		super.Init(_name,  win);
+		if (this.guiDict) {
+			this.data = this.guiDict.GetInt(this.GetName());
+		} 
+	}
 	equalsInt ( /*int */other: number ): number {
 		this.data = other;
 		if ( this.guiDict ) {
@@ -319,11 +316,13 @@ class idWinInt extends idWinVar {
 		}
 		return this.data;
 	}
-////	idWinInt &operator=( const idWinInt &other ) {
-////		idWinVar::operator=(other);
-////		this.data = other.data;
-////		return *this;
-////	}
+
+	equals ( other: idWinInt ): idWinInt {
+		super.equals( other );
+		this.data = other.data;
+		return this;
+	}
+
 ////	operator int () const {
 ////		return this.data;
 ////	}
@@ -365,17 +364,18 @@ class idWinFloat extends idWinVar {
 ////public:
 ////	idWinFloat() : idWinVar() {};
 ////	~idWinFloat() {};
-////	virtual void Init(_name:string, idWindow *win) {
-////		idWinVar::Init(_name, win);
-////		if (this.guiDict) {
-////			this.data = this.guiDict.GetFloat(this.GetName());
-////		} 
-////	}
-////	idWinFloat &operator=( const idWinFloat &other ) {
-////		idWinVar::operator=(other);
-////		this.data = other.data;
-////		return *this;
-////	}
+	Init(_name: string, win: idWindow): void  {
+		super.Init(_name, win);
+		if (this.guiDict) {
+			this.data = this.guiDict.GetFloat(this.GetName());
+		} 
+	}
+	equals(other: idWinFloat): idWinFloat {
+		super.equals( other );//idWinVar::operator=(other);
+		this.data = other.data;
+		return this;
+	}
+
 	equalsFloat ( /*float */other: number ): number {
 		this.data = other;
 		if ( this.guiDict ) {
@@ -420,36 +420,37 @@ class idWinRectangle extends idWinVar {
 ////public:
 ////	idWinRectangle() : idWinVar() {};
 ////	~idWinRectangle() {};
-////	virtual void Init(_name:string, idWindow *win) {
-////		idWinVar::Init(_name, win);
-////		if (this.guiDict) {
-////			idVec4 v = this.guiDict.GetVec4(this.GetName());
-////			data.x = v.x;
-////			data.y = v.y;
-////			data.w = v.z;
-////			data.h = v.w;
-////		} 
-////	}
-////	
-////	int	operator==(	const idRectangle &other ) const {
-////		return (other == this.data);
-////	}
-////
-////	idWinRectangle &operator=( const idWinRectangle &other ) {
-////		idWinVar::operator=(other);
-////		this.data = other.data;
-////		return *this;
-////	}
-////	idRectangle &operator=(	const idVec4 &other ) {
-////		this.data = other;
-////		if (this.guiDict) {
-////			this.guiDict.SetVec4(this.GetName(), other);
-////		}
-////		return this.data;
-////	}
-////
+	Init ( _name: string, win: idWindow ): void {
+		super.Init( _name, win );
+		if ( this.guiDict ) {
+			var v = this.guiDict.GetVec4( this.GetName ( ) );
+			this.data.x = v.x;
+			this.data.y = v.y;
+			this.data.w = v.z;
+			this.data.h = v.w;
+		}
+	}
+
+	//equalTo(other: idRectangle): boolean {
+	//	todoThrow ( );
+	//	//return ( other.equalTo( this.data ) );
+	//}
+
+	equals(other: idWinRectangle): idWinRectangle {
+		super.equals( other );
+		this.data = other.data;
+		return this;
+	}
+	equalsVec4(other: idVec4): idRectangle {
+		this.data.equalsVec4( other );
+		if ( this.guiDict ) {
+			this.guiDict.SetVec4( this.GetName ( ), other );
+		}
+		return this.data;
+	}
+
 	equalsRectangle ( other: idRectangle ): idRectangle {
-		this.data = other;
+		this.data.equals( other );
 		if ( this.guiDict ) {
 			var v = this.data.ToVec4 ( );
 			this.guiDict.SetVec4( this.GetName ( ), v );
@@ -537,20 +538,20 @@ class idWinVec2 extends idWinVar {
 ////public:
 ////	idWinVec2() : idWinVar() {};
 ////	~idWinVec2() {};
-////	virtual void Init(_name:string, idWindow *win) {
-////		idWinVar::Init(_name, win);
-////		if (this.guiDict) {
-////			this.data = this.guiDict.GetVec2(this.GetName());
-////		} 
-////	}
+	Init(_name:string, win:idWindow): void  {
+		super.Init(_name, win);
+		if (this.guiDict) {
+			this.data = this.guiDict.GetVec2(this.GetName());
+		} 
+	}
 ////	int	operator==(	const idVec2 &other ) const {
 ////		return (other == this.data);
 ////	}
-////	idWinVec2 &operator=( const idWinVec2 &other ) {
-////		idWinVar::operator=(other);
-////		this.data = other.data;
-////		return *this;
-////	}
+	equals ( other: idWinVec2 ): idWinVec2 {
+		super.equals( other );
+		this.data.equals( other.data );
+		return this;
+	}
 
 	equalsVec2 ( other: idVec2 ): idVec2 {
 		this.data = other;
@@ -616,20 +617,21 @@ class idWinVec4 extends idWinVar {
 ////public:
 ////	idWinVec4() : idWinVar() {};
 ////	~idWinVec4() {};
-////	virtual void Init(_name:string, idWindow *win) {
-////		idWinVar::Init(_name, win);
-////		if (this.guiDict) {
-////			this.data = this.guiDict.GetVec4(this.GetName());
-////		} 
-////	}
+	Init(_name:string, win:idWindow): void  {
+		super.Init(_name, win);
+		if (this.guiDict) {
+			this.data.equals( this.guiDict.GetVec4(this.GetName()));
+		} 
+	}
 ////	int	operator==(	const idVec4 &other ) const {
 ////		return (other == this.data);
 ////	}
-////	idWinVec4 &operator=( const idWinVec4 &other ) {
-////		idWinVar::operator=(other);
-////		this.data = other.data;
-////		return *this;
-////	}
+	equals ( other: idWinVec4 ): idWinVec4 {
+		super.equals( other );
+		this.data = other.data;
+		return this;
+	}
+
 	equalsVec4(other: idVec4 ):idVec4 {
 		this.data = other;
 		if (this.guiDict) {
@@ -714,20 +716,21 @@ class idWinVec3 extends idWinVar {
 ////public:
 ////	idWinVec3() : idWinVar() {};
 ////	~idWinVec3() {};
-////	virtual void Init(_name:string, idWindow *win) {
-////		idWinVar::Init(_name, win);
-////		if (this.guiDict) {
-////			this.data = this.guiDict.GetVector(this.GetName());
-////		} 
-////	}
+	Init(_name:string, win:idWindow): void  {
+		super.Init(_name, win);
+		if (this.guiDict) {
+			this.data = this.guiDict.GetVector(this.GetName());
+		} 
+	}
 ////	int	operator==(	const idVec3 &other ) const {
 ////		return (other == this.data);
 ////	}
-////	idWinVec3 &operator=( const idWinVec3 &other ) {
-////		idWinVar::operator=(other);
-////		this.data = other.data;
-////		return *this;
-////	}
+	equals ( other: idWinVec3 ): idWinVec3 {
+		super.equals( other );
+		this.data = other.data;
+		return this;
+	}
+
 	equalsVec3 ( other: idVec3 ): idVec3 {
 		this.data.equals( other );
 		if ( this.guiDict ) {
@@ -797,12 +800,12 @@ class idWinBackground extends idWinStr {
 ////		mat = NULL;
 ////	};
 ////	~idWinBackground() {};
-////	virtual void Init(_name:string, idWindow *win) {
-////		idWinStr::Init(_name, win);
-////		if (this.guiDict) {
-////			this.data = this.guiDict.GetString(this.GetName());
-////		} 
-////	}
+	Init(_name:string, win:idWindow): void  {
+		super.Init(_name, win);
+		if (this.guiDict) {
+			this.data.equals( this.guiDict.GetString( this.GetName ( ) ) );
+		} 
+	}
 ////	int	operator==(	const idStr &other ) const {
 ////		return (other == this.data);
 ////	}
@@ -810,12 +813,12 @@ class idWinBackground extends idWinStr {
 ////		return (data == other);
 ////	}
 	equalsStr ( other: idStr ): idStr {
-		this.data.equals(other.data);
+		this.data.equals( other.data );
 		if ( this.guiDict ) {
 			this.guiDict.Set( this.GetName ( ), this.data.data );
 		}
 		if ( this.mat ) {
-			if ( this.data.data == "" ) {
+			if ( this.data.equalTo( "" ) ) {
 				this.mat = null;
 			} else {
 				this.mat = declManager.FindMaterial( this.data.data );
@@ -823,19 +826,20 @@ class idWinBackground extends idWinStr {
 		}
 		return this.data;
 	}
-////	idWinBackground &operator=( const idWinBackground &other ) {
-////		idWinVar::operator=(other);
-////		this.data = other.data;
-////		mat = other.mat;
-////		if (mat) {
-////			if ( this.data == "" ) {
-////				(*mat) = NULL;
-////			} else {
-////				(*mat) = declManager.FindMaterial(data);
-////			}
-////		}
-////		return *this;
-////	}
+
+	operator ( other: idWinBackground ): idWinBackground {
+		super.equals( other );
+		this.data = other.data;
+		this.mat = other.mat;
+		if ( this.mat ) {
+			if ( this.data.equalTo( "" ) ) {
+				this.mat = null;
+			} else {
+				( this.mat ) = declManager.FindMaterial( this.data.data );
+			}
+		}
+		return this;
+	}
 ////	operator const char *() const {
 ////		return this.data.c_str();
 ////	}

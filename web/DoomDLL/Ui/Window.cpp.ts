@@ -2486,6 +2486,7 @@ idWindow::Parse
 					this.visible.equalsBool( false );
 					this.rect.equalsRectangle( new idRectangle( 0, 0, 0, 0 ) );
 				}
+				dlog( DEBUG_GUI, "idWindow::Parse token: %si\n", token.c_str ( ) );
 				src.ExpectTokenType( TT_NAME, 0, token );
 				token2.equals( token );
 				src.UnreadToken( token );
@@ -2505,8 +2506,9 @@ idWindow::Parse
 					if ( win.IsSimple ( ) ) {
 						var simple = new idSimpleWindow( win );
 						dwt.simp = simple;
-						this.drawWindows.Append( dwt );
-						delete win;
+						dlog(DEBUG_GUI, "idWindow::Parse win->IsSimple()\n");
+						this.drawWindows.Append(dwt);
+						$delete( win );
 					} else {
 						this.AddChild( win );
 						this.SetFocus( win, false );
@@ -2880,20 +2882,27 @@ idWindow::FindChildByName
 		if ( idStr.Icmp( this.name, _name ) == 0 ) {
 			idWindow.dw.simp = null;
 			idWindow.dw.win = this;
+			dlog(DEBUG_GUI, "idWindow::FindChildByName return &dw;\n");
 			return idWindow.dw;
 		}
-		var c = this.drawWindows.Num ( );
+		var c = this.drawWindows.Num();
+		dlog( DEBUG_GUI, "idWindow::FindChildByName %s, c: %i\n", _name, c );
 		for ( var i = 0; i < c; i++ ) {
 			if ( this.drawWindows[i].win ) {
+				dlog( DEBUG_GUI, "idWindow::FindChildByName  drawWindows[i].win->name: %s\n", this.drawWindows[i].win.name.c_str ( ) );
 				if ( idStr.Icmp( this.drawWindows[i].win.name, _name ) == 0 ) {
+					dlog(DEBUG_GUI, "idWindow::FindChildByName  &drawWindows[i];\n");
 					return this.drawWindows[i];
 				}
 				var win = this.drawWindows[i].win.FindChildByName( _name );
 				if ( win ) {
+					dlog(DEBUG_GUI, "idWindow::FindChildByName return win;\n");
 					return win;
 				}
 			} else {
+				dlog(DEBUG_GUI, "idWindow::FindChildByName  drawWindows[i].simp->name: %s\n", this.drawWindows[i].simp.name.c_str());
 				if ( idStr.Icmp( this.drawWindows[i].simp.name, _name ) == 0 ) {
+					dlog(DEBUG_GUI, "idWindow::FindChildByName return return &drawWindows[i];\n");
 					return this.drawWindows[i];
 				}
 			}
@@ -4410,6 +4419,7 @@ Inserts the given window as a child into the given location in the zorder.
 			}
 		}
 
+		dlog(DEBUG_GUI, "idWindow::InsertChild  %s\n", win.name.c_str());
 		this.drawWindows.Append( dwt );
 		return true;
 	}

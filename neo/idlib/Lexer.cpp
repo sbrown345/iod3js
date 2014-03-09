@@ -912,12 +912,12 @@ int idLexer::ReadToken( idToken *token ) {
 
 	// succesfully read a token
 	//dlog(DEBUG_Lexer, RT: %i, %s\n", line, token->data);
-	if (RTCount == /*6572*/191769 && line == 106) {
-	//if (!idStr::Cmp(token->data, "aas_types")) {
-		if (IsDebuggerPresent())
-			__debugbreak();
-	}
-	dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", RTCount, line, token->data);
+	//if (RTCount == /*6572*/191769 && line == 106) {
+	////if (!idStr::Cmp(token->data, "aas_types")) {
+	//	if (IsDebuggerPresent())
+	//		__debugbreak();
+	//}
+	//dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", RTCount, line, token->data);
 	RTCount++;
 	return 1;
 }

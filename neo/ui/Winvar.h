@@ -96,7 +96,8 @@ class idWinBool : public idWinVar {
 public:
 	idWinBool() : idWinVar() {};
 	~idWinBool() {};
-	virtual void Init(const char *_name, idWindow *win) { idWinVar::Init(_name, win);
+	virtual void Init(const char *_name, idWindow *win) { 
+		idWinVar::Init(_name, win);
 		if (guiDict) {
 			data = guiDict->GetBool(GetName());
 		}

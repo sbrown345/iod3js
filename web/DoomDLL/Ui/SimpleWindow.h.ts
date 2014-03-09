@@ -103,15 +103,15 @@ class idSimpleWindow {
 	////
 	////
 	////
-	constructor(win: idWindow) {
-		this.gui = win.GetGui();
+	constructor ( win: idWindow ) {
+		this.gui = win.GetGui ( );
 		this.dc = win.dc;
-		this.drawRect = win.drawRect;
-		this.clientRect = win.clientRect;
-		this.textRect = win.textRect;
-		this.origin = win.origin;
+		this.drawRect.equals( win.drawRect );
+		this.clientRect.equals( win.clientRect );
+		this.textRect.equals( win.textRect );
+		this.origin.equals( win.origin );
 		this.fontNum = win.fontNum;
-		this.name = win.name;
+		this.name.equals( win.name );
 		this.matScalex = win.matScalex;
 		this.matScaley = win.matScaley;
 		this.borderSize = win.borderSize;
@@ -121,70 +121,70 @@ class idSimpleWindow {
 		this.background = win.background;
 		this.flags = win.flags;
 		this.textShadow = win.textShadow;
-	
-		this.visible = win.visible;
-		this.text = win.text;
-		this.rect = win.rect;
-		this.backColor = win.backColor;
-		this.matColor = win.matColor;
-		this.foreColor = win.foreColor;
-		this.borderColor = win.borderColor;
-		this.textScale = win.textScale;
-		this.rotate = win.rotate;
-		this.shear.equalsVec2(win.shear);
+
+		this.visible.equals( win.visible );
+		this.text.equals( win.text );
+		this.rect.equals( win.rect );
+		this.backColor.equals( win.backColor );
+		this.matColor.equals( win.matColor );
+		this.foreColor.equals( win.foreColor );
+		this.borderColor.equals( win.borderColor );
+		this.textScale.equals( win.textScale );
+		this.rotate.equals( win.rotate );
+		this.shear.equalsVec2( win.shear );
 		this.backGroundName = win.backGroundName;
-		if (this.backGroundName.Length()) {
-			this.background = declManager.FindMaterial(this.backGroundName.data.data);
-			this.background.SetSort(materialSort_t.SS_GUI);
-			this.background.SetImageClassifications(1);	// just for resource tracking
+		if ( this.backGroundName.Length ( ) ) {
+			this.background = declManager.FindMaterial( this.backGroundName.data.data );
+			this.background.SetSort( materialSort_t.SS_GUI );
+			this.background.SetImageClassifications( 1 ); // just for resource tracking
 		}
-		this.backGroundName.SetMaterialPtr(this.background);
-	
+		this.backGroundName.SetMaterialPtr( this.background );
+
 		// 
 		//  added parent
-		this.mParent = win.GetParent();
+		this.mParent = win.GetParent ( );
 		// 
-	
+
 		this.hideCursor = win.hideCursor;
-	
-		var parent = win.GetParent();
-		if (parent) {
-			if (this.text.NeedsUpdate()) {
-				parent.AddUpdateVar(this.text);
+
+		var parent = win.GetParent ( );
+		if ( parent ) {
+			if ( this.text.NeedsUpdate ( ) ) {
+				parent.AddUpdateVar( this.text );
 			}
-			if (this.visible.NeedsUpdate()) {
-				parent.AddUpdateVar(this.visible);
+			if ( this.visible.NeedsUpdate ( ) ) {
+				parent.AddUpdateVar( this.visible );
 			}
-			if (this.rect.NeedsUpdate()) {
-				parent.AddUpdateVar(this.rect);
+			if ( this.rect.NeedsUpdate ( ) ) {
+				parent.AddUpdateVar( this.rect );
 			}
-			if (this.backColor.NeedsUpdate()) {
-				parent.AddUpdateVar(this.backColor);
+			if ( this.backColor.NeedsUpdate ( ) ) {
+				parent.AddUpdateVar( this.backColor );
 			}
-			if (this.matColor.NeedsUpdate()) {
-				parent.AddUpdateVar(this.matColor);
+			if ( this.matColor.NeedsUpdate ( ) ) {
+				parent.AddUpdateVar( this.matColor );
 			}
-			if (this.foreColor.NeedsUpdate()) {
-				parent.AddUpdateVar(this.foreColor);
+			if ( this.foreColor.NeedsUpdate ( ) ) {
+				parent.AddUpdateVar( this.foreColor );
 			}
-			if (this.borderColor.NeedsUpdate()) {
-				parent.AddUpdateVar(this.borderColor);
+			if ( this.borderColor.NeedsUpdate ( ) ) {
+				parent.AddUpdateVar( this.borderColor );
 			}
-			if (this.textScale.NeedsUpdate()) {
-				parent.AddUpdateVar(this.textScale);
+			if ( this.textScale.NeedsUpdate ( ) ) {
+				parent.AddUpdateVar( this.textScale );
 			}
-			if (this.rotate.NeedsUpdate()) {
-				parent.AddUpdateVar(this.rotate);
+			if ( this.rotate.NeedsUpdate ( ) ) {
+				parent.AddUpdateVar( this.rotate );
 			}
-			if (this.shear.NeedsUpdate()) {
-				parent.AddUpdateVar(this.shear);
+			if ( this.shear.NeedsUpdate ( ) ) {
+				parent.AddUpdateVar( this.shear );
 			}
-			if (this.backGroundName.NeedsUpdate()) {
-				parent.AddUpdateVar(this.backGroundName);
+			if ( this.backGroundName.NeedsUpdate ( ) ) {
+				parent.AddUpdateVar( this.backGroundName );
 			}
 		}
 	}
-	
+
 	////idSimpleWindow::~idSimpleWindow() {
 	////
 	////}

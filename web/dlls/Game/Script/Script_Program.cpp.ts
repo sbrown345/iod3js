@@ -1433,7 +1433,6 @@ idProgram::FreeData
 FreeData( ):void {
 	var/*int */i: number;
 
-	dlog(DEBUG_COMPILER, "idProgram::FreeData\n" );
 	// free the defs
 	this.varDefs.DeleteContents( true );
 	this.varDefNames.DeleteContents( true );
