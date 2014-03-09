@@ -45,26 +45,26 @@
 ////class idSoundSample;
 ////
 ////// sound shader flags
-////static const int	SSF_PRIVATE_SOUND =		BIT(0);	// only plays for the current listenerId
-////static const int	SSF_ANTI_PRIVATE_SOUND =BIT(1);	// plays for everyone but the current listenerId
-////static const int	SSF_NO_OCCLUSION =		BIT(2);	// don't flow through portals, only use straight line
-////static const int	SSF_GLOBAL =			BIT(3);	// play full volume to all speakers and all listeners
-////static const int	SSF_OMNIDIRECTIONAL =	BIT(4);	// fall off with distance, but play same volume in all speakers
-////static const int	SSF_LOOPING =			BIT(5);	// repeat the sound continuously
-////static const int	SSF_PLAY_ONCE =			BIT(6);	// never restart if already playing on any channel of a given emitter
-////static const int	SSF_UNCLAMPED =			BIT(7);	// don't clamp calculated volumes at 1.0
-////static const int	SSF_NO_FLICKER =		BIT(8);	// always return 1.0 for volume queries
-////static const int	SSF_NO_DUPS =			BIT(9);	// try not to play the same sound twice in a row
+var SSF_PRIVATE_SOUND =		BIT(0);	// only plays for the current listenerId
+var SSF_ANTI_PRIVATE_SOUND =BIT(1);	// plays for everyone but the current listenerId
+var SSF_NO_OCCLUSION =		BIT(2);	// don't flow through portals, only use straight line
+var SSF_GLOBAL =			BIT(3);	// play full volume to all speakers and all listeners
+var SSF_OMNIDIRECTIONAL =	BIT(4);	// fall off with distance, but play same volume in all speakers
+var SSF_LOOPING =			BIT(5);	// repeat the sound continuously
+var SSF_PLAY_ONCE =			BIT(6);	// never restart if already playing on any channel of a given emitter
+var SSF_UNCLAMPED =			BIT(7);	// don't clamp calculated volumes at 1.0
+var SSF_NO_FLICKER =		BIT(8);	// always return 1.0 for volume queries
+var SSF_NO_DUPS =			BIT(9);	// try not to play the same sound twice in a row
 ////
-////// these options can be overriden from sound shader defaults on a per-emitter and per-channel basis
-////typedef struct {
-////	float					minDistance;
-////	float					maxDistance;
-////	float					volume;					// in dB, unfortunately.  Negative values get quieter
-////	float					shakes;
-////	int						soundShaderFlags;		// SSF_* bit flags
-////	int						soundClass;				// for global fading of sounds
-////} soundShaderParms_t;
+// these options can be overriden from sound shader defaults on a per-emitter and per-channel basis
+class soundShaderParms_t {
+	minDistance:number/*float*/;
+	maxDistance:number/*float*/;
+	volume:number/*float*/;					// in dB, unfortunately.  Negative values get quieter
+	shakes:number/*float*/;
+	soundShaderFlags:number/*int*/;		// SSF_* bit flags
+	soundClass:number/*int*/;				// for global fading of sounds
+};
 
 
 var SOUND_MAX_LIST_WAVS		= 32;
@@ -73,64 +73,6 @@ var SOUND_MAX_LIST_WAVS		= 32;
 // flagged with a non-zero class full volume
 var SOUND_MAX_CLASSES		= 4;
 
-// it is somewhat tempting to make this a virtual class to hide the private
-// details here, but that doesn't fit easily with the decl manager at the moment.
-class idSoundShader extends idDecl {
-////public:
-////							idSoundShader( void );
-////	virtual					~idSoundShader( void );
-////
-////	virtual size_t			Size( void ) const;
-////	virtual bool			SetDefaultText( void );
-////	virtual const char *	DefaultDefinition( void ) const;
-////	virtual bool			Parse( text:string, const int textLength );
-////	virtual void			FreeData( void );
-////	virtual void			List( void ) const;
-////
-////	virtual const char *	GetDescription() const;
-////
-////	// so the editor can draw correct default sound spheres
-////	// this is currently defined as meters, which sucks, IMHO.
-////	virtual float			GetMinDistance() const;		// FIXME: replace this with a GetSoundShaderParms()
-////	virtual float			GetMaxDistance() const;
-////
-////	// returns NULL if an AltSound isn't defined in the shader.
-////	// we use this for pairing a specific broken light sound with a normal light sound
-////	virtual const idSoundShader *GetAltSound() const;
-////
-////	virtual bool			HasDefaultSound() const;
-////
-////	virtual const soundShaderParms_t *GetParms() const;
-////	virtual int				GetNumSounds() const;
-////	virtual const char *	GetSound( int index ) const;
-////
-////	virtual bool			CheckShakesAndOgg( void ) const;
-////
-////private:
-////	friend class idSoundWorldLocal;
-////	friend class idSoundEmitterLocal;
-////	friend class idSoundChannel;
-////	friend class idSoundCache;
-////
-////	// options from sound shader text
-////	soundShaderParms_t		parms;						// can be overriden on a per-channel basis
-////
-////	bool					onDemand;					// only load when played, and free when finished
-////	int						speakerMask;
-////	const idSoundShader *	altSound;
-////	idStr					desc;						// description
-////	bool					errorDuringParse;
-////	float					leadinVolume;				// allows light breaking leadin sounds to be much louder than the broken loop
-////
-////	idSoundSample *	leadins[SOUND_MAX_LIST_WAVS];
-////	int						numLeadins;
-////	idSoundSample *	entries[SOUND_MAX_LIST_WAVS];
-////	int						numEntries;
-////
-////private:
-////	void					Init( void );
-////	bool					ParseShader( idLexer &src );
-};
 ////
 /////*
 ////===============================================================================

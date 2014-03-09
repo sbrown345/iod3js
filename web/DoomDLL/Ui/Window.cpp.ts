@@ -3216,8 +3216,14 @@ Returns a register index
 			// ugly but used for post parsing to fixup named vars
 			//char *p = new char[token.Length()+1];
 			//strcpy(p, token);
+			if (token.data == "") {
+				//dlogFlush();
+				debugger;
+				//throw "fix this first";
+			}
 			objectTracker.addObject( token );
 			a = token.refAddress; //a = (int)p
+			if ( a == 20863 )debugger;
 			b = -2;
 			return this.EmitOp( a, b, wexpOpType_t.WOP_TYPE_VAR );
 		}

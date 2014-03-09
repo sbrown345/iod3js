@@ -32,6 +32,18 @@
 //#include "Simd_Generic.h"
 //
 //
+
+var MIXBUFFER_SAMPLES = 4096;
+
+enum speakerLabel {
+	SPEAKER_LEFT = 0,
+	SPEAKER_RIGHT,
+	SPEAKER_CENTER,
+	SPEAKER_LFE,
+	SPEAKER_BACKLEFT,
+	SPEAKER_BACKRIGHT
+};
+
 ////===============================================================
 ////
 ////	Generic implementation of idSIMDProcessor

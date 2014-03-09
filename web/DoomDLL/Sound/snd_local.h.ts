@@ -93,16 +93,16 @@
 ////#ifdef __MWERKS__
 ////#pragma pack (push, 1)
 ////#endif
-////struct waveformatex_s {
-////    word    wFormatTag;        /* format type */
-////    word    nChannels;         /* number of channels (i.e. mono, stereo...) */
-////    dword   nSamplesPerSec;    /* sample rate */
-////    dword   nAvgBytesPerSec;   /* for buffer estimation */
-////    word    nBlockAlign;       /* block size of data */
-////    word    wBitsPerSample;    /* Number of bits per sample of mono data */
-////    word    cbSize;            /* The count in bytes of the size of
+class waveformatex_t {
+	wFormatTag:number/*word*/;        /* format type */
+	nChannels:number/*word*/;         /* number of channels (i.e. mono, stereo...) */
+	nSamplesPerSec:number/*dword*/;    /* sample rate */
+	nAvgBytesPerSec:number/*dword*/;   /* for buffer estimation */
+	nBlockAlign:number/*word*/;       /* block size of data */
+	wBitsPerSample:number/*word*/;    /* Number of bits per sample of mono data */
+	cbSize:number/*word*/;            /* The count in bytes of the size of
 ////                                    extra information (after cbSize) */
-////} PACKED;
+}// PACKED;
 ////
 ////typedef waveformatex_s waveformatex_t;
 ////
@@ -119,8 +119,8 @@
 ////
 /////* flags for wFormatTag field of WAVEFORMAT */
 ////enum {
-////	WAVE_FORMAT_TAG_PCM		= 1,
-////	WAVE_FORMAT_TAG_OGG		= 2
+var WAVE_FORMAT_TAG_PCM = 1,
+	WAVE_FORMAT_TAG_OGG = 2;
 ////};
 ////
 /////* specific waveform format structure for PCM data */
@@ -676,9 +676,10 @@ class idSoundWorldLocal extends idSoundWorld {
 ////
 class idSoundSystemLocal extends idSoundSystem {
 ////public:
-////	idSoundSystemLocal( ) {
-////		isInitialized = false;
-////	}
+	constructor() {
+		super ( );
+		this.isInitialized = false;
+	}
 ////
 ////	// all non-hardware initialization
 ////	virtual void			Init( void );
@@ -734,7 +735,7 @@ class idSoundSystemLocal extends idSoundSystem {
 ////	void					FreeOpenALSource( ALuint handle );
 ////
 ////	idAudioHardware *		snd_audio_hw;
-////	idSoundCache *			soundCache;
+	soundCache: idSoundCache;
 ////
 ////	idSoundWorldLocal *		currentSoundWorld;	// the one to mix each async tic
 ////
@@ -747,9 +748,9 @@ class idSoundSystemLocal extends idSoundSystem {
 ////	float 					realAccum[6*MIXBUFFER_SAMPLES+16];
 ////	float *					finalMixBuffer;			// points inside realAccum at a 16 byte aligned boundary
 ////
-////	bool					isInitialized;
-////	bool					muted;
-////	bool					shutdown;
+	isInitialized:boolean;
+	muted:boolean;
+	shutdown:boolean;
 ////
 ////	s_stats					soundStats;				// NOTE: updated throughout the code, not displayed anywhere
 ////
@@ -779,82 +780,82 @@ class idSoundSystemLocal extends idSoundSystem {
 ////	static int				EAXAvailable;
 ////
 ////
-////	static idCVar			s_noSound;
-////	static idCVar			s_quadraticFalloff;
-////	static idCVar			s_drawSounds;
-////	static idCVar			s_minVolume6;
-////	static idCVar			s_dotbias6;
-////	static idCVar			s_minVolume2;
-////	static idCVar			s_dotbias2;
-////	static idCVar			s_spatializationDecay;
-////	static idCVar			s_showStartSound;
-////	static idCVar			s_maxSoundsPerShader;
-////	static idCVar			s_reverse;
-////	static idCVar			s_showLevelMeter;
-////	static idCVar			s_meterTopTime;
-////	static idCVar			s_volume;
-////	static idCVar			s_constantAmplitude;
-////	static idCVar			s_playDefaultSound;
-////	static idCVar			s_useOcclusion;
-////	static idCVar			s_subFraction;
-////	static idCVar			s_globalFraction;
-////	static idCVar			s_doorDistanceAdd;
-////	static idCVar			s_singleEmitter;
-////	static idCVar			s_numberOfSpeakers;
-////	static idCVar			s_force22kHz;
-////	static idCVar			s_clipVolumes;
-////	static idCVar			s_realTimeDecoding;
-////	static idCVar			s_libOpenAL;
-////	static idCVar			s_useOpenAL;
-////	static idCVar			s_useEAXReverb;
-////	static idCVar			s_muteEAXReverb;
-////	static idCVar			s_decompressionLimit;
-////
-////	static idCVar			s_slowAttenuate;
-////
-////	static idCVar			s_enviroSuitCutoffFreq;
-////	static idCVar			s_enviroSuitCutoffQ;
-////	static idCVar			s_enviroSuitSkipLowpass;
-////	static idCVar			s_enviroSuitSkipReverb;
-////
-////	static idCVar			s_reverbTime;
-////	static idCVar			s_reverbFeedback;
-////	static idCVar			s_enviroSuitVolumeScale;
-////	static idCVar			s_skipHelltimeFX;
+	static s_noSound:idCVar;
+	static s_quadraticFalloff:idCVar;
+	static s_drawSounds:idCVar;
+	static s_minVolume6:idCVar;
+	static s_dotbias6:idCVar;
+	static s_minVolume2:idCVar;
+	static s_dotbias2:idCVar;
+	static s_spatializationDecay:idCVar;
+	static s_showStartSound:idCVar;
+	static s_maxSoundsPerShader:idCVar;
+	static s_reverse:idCVar;
+	static s_showLevelMeter:idCVar;
+	static s_meterTopTime:idCVar;
+	static s_volume:idCVar;
+	static s_constantAmplitude:idCVar;
+	static s_playDefaultSound:idCVar;
+	static s_useOcclusion:idCVar;
+	static s_subFraction:idCVar;
+	static s_globalFraction:idCVar;
+	static s_doorDistanceAdd:idCVar;
+	static s_singleEmitter:idCVar;
+	static s_numberOfSpeakers:idCVar;
+	static s_force22kHz:idCVar;
+	static s_clipVolumes:idCVar;
+	static s_realTimeDecoding:idCVar;
+	static s_libOpenAL:idCVar;
+	static s_useOpenAL:idCVar;
+	static s_useEAXReverb:idCVar;
+	static s_muteEAXReverb:idCVar;
+	static s_decompressionLimit:idCVar;
+	
+	static s_slowAttenuate:idCVar;
+	
+	static s_enviroSuitCutoffFreq:idCVar;
+	static s_enviroSuitCutoffQ:idCVar;
+	static s_enviroSuitSkipLowpass:idCVar;
+	static s_enviroSuitSkipReverb:idCVar;
+	
+	static s_reverbTime:idCVar;
+	static s_reverbFeedback:idCVar;
+	static s_enviroSuitVolumeScale:idCVar;
+	static s_skipHelltimeFX:idCVar;
 };
 ////
 ////extern	idSoundSystemLocal	soundSystemLocal;
 ////
 ////
-/////*
-////===================================================================================
-////
-////  This class holds the actual wavefile bitmap, size, and info.
-////
-////===================================================================================
-////*/
-////
-////const int SCACHE_SIZE = MIXBUFFER_SAMPLES*20;	// 1/2 of a second (aroundabout)
-////
-////class idSoundSample {
+/*
+===================================================================================
+
+  This class holds the actual wavefile bitmap, size, and info.
+
+===================================================================================
+*/
+
+var SCACHE_SIZE = MIXBUFFER_SAMPLES*20;	// 1/2 of a second (aroundabout)
+
+class idSoundSample {
 ////public:
 ////							idSoundSample();
 ////							~idSoundSample();
 ////
-////	idStr					name;						// name of the sample file
+	name = new idStr;						// name of the sample file
 ////	ID_TIME_T		 			timestamp;					// the most recent of all images used in creation, for reloadImages command
-////
-////	waveformatex_t			objectInfo;					// what are we caching
-////	int						objectSize;					// size of waveform in samples, excludes the header
-////	int						objectMemSize;				// object size in memory
+
+	objectInfo = new waveformatex_t;					// what are we caching
+	objectSize:number/*int*/;					// size of waveform in samples, excludes the header
+	objectMemSize:number/*int*/;				// object size in memory
 ////	byte *					nonCacheData;				// if it's not cached
 ////	byte *					amplitudeData;				// precomputed min,max amplitude pairs
 ////	ALuint					openalBuffer;				// openal buffer
-////	bool					hardwareBuffer;
-////	bool					defaultSound;
-////	bool					onDemand;
-////	bool					purged;
-////	bool					levelLoadReferenced;		// so we can tell which samples aren't needed any more
+	hardwareBuffer:boolean;
+	defaultSound:boolean;
+	onDemand:boolean;
+	purged:boolean;
+	levelLoadReferenced:boolean;		// so we can tell which samples aren't needed any more
 ////
 ////	int						LengthIn44kHzSamples() const;
 ////	ID_TIME_T		 			GetNewTimeStamp( void ) const;
@@ -864,7 +865,7 @@ class idSoundSystemLocal extends idSoundSystem {
 ////	void					PurgeSoundSample();			// frees all data
 ////	void					CheckForDownSample();		// down sample if required
 ////	bool					FetchFromCache( int offset, const byte **output, int *position, int *size, const bool allowIO );
-////};
+};
 ////
 ////
 /////*
@@ -891,35 +892,6 @@ class idSoundSystemLocal extends idSoundSystem {
 ////	virtual int				GetLastDecodeTime( void ) const = 0;
 ////};
 ////
-////
-/////*
-////===================================================================================
-////
-////  The actual sound cache.
-////
-////===================================================================================
-////*/
-////
-////class idSoundCache {
-////public:
-////							idSoundCache();
-////							~idSoundCache();
-////
-////	idSoundSample *			FindSound( const idStr &fname, bool loadOnDemandOnly );
-////
-////	const int				GetNumObjects( void ) { return listCache.Num(); }
-////	const idSoundSample *	GetObject( const int index ) const;
-////
-////	void					ReloadSounds( bool force );
-////
-////	void					BeginLevelLoad();
-////	void					EndLevelLoad();
-////
-////	void					PrintMemInfo( MemInfo_t *mi );
-////
-////private:
-////	bool					insideLevelLoad;
-////	idList<idSoundSample*>	listCache;
-////};
+
 ////
 ////#endif /* !__SND_LOCAL_H__ */

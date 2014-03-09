@@ -1773,19 +1773,19 @@ idStr::StripTrailingWhitespace
 		return this;
 	}
 
-/////*
-////============
-////idStr::SetFileExtension
-////============
-////*/
-////idStr &idStr::SetFileExtension( const char *extension ) {
-////	StripFileExtension();
-////	if ( *extension != '.' ) {
-////		Append( '.' );
-////	}
-////	Append( extension );
-////	return *this;
-////}
+/*
+============
+idStr::SetFileExtension
+============
+*/
+	SetFileExtension ( extension: string ): idStr {
+		this.StripFileExtension ( );
+		if ( extension != '.' ) {
+			this.Append( '.' );
+		}
+		this.Append( extension );
+		return this;
+	}
 
 /*
 ============

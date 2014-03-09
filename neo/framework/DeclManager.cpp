@@ -1523,7 +1523,6 @@ void idDeclManagerLocal::WritePrecacheCommands( idFile *f ) {
 /********************************************************************/
 
 const idMaterial *idDeclManagerLocal::FindMaterial( const char *name, bool makeDefault ) {
-	dlog(DEBUG_COMPILER, "FindMaterial: %s\n", name);
 	return static_cast<const idMaterial *>(FindType(DECL_MATERIAL, name, makeDefault));
 }
 

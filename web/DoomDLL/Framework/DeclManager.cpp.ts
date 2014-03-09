@@ -1553,7 +1553,6 @@ idDeclManagerLocal.prototype.MediaPrint = function ( fmt:string, ...args: any[] 
 /////********************************************************************/
 
 idDeclManagerLocal.prototype.FindMaterial = function ( name: string, makeDefault: boolean = true ): idMaterial {
-	dlog( DEBUG_COMPILER, "FindMaterial: %s\n", name );
     return this.FindType( declType_t.DECL_MATERIAL, name, makeDefault );
 //	return static_cast<const idMaterial *>( FindType( declType_t.DECL_MATERIAL, name, makeDefault ) );
 };

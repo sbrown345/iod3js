@@ -34,48 +34,48 @@
 ////#ifdef ID_DEDICATED
 ////idCVar idSoundSystemLocal::s_noSound( "s_noSound", "1", CVAR_SOUND | CVAR_BOOL | CVAR_ROM, "" );
 ////#else
-////idCVar idSoundSystemLocal::s_noSound( "s_noSound", "0", CVAR_SOUND | CVAR_BOOL | CVAR_NOCHEAT, "" );
+idSoundSystemLocal.s_noSound = new idCVar( "s_noSound", "0", CVAR_SOUND | CVAR_BOOL | CVAR_NOCHEAT, "" );
 ////#endif
-////idCVar idSoundSystemLocal::s_quadraticFalloff( "s_quadraticFalloff", "1", CVAR_SOUND | CVAR_BOOL, "" );
-////idCVar idSoundSystemLocal::s_drawSounds( "s_drawSounds", "0", CVAR_SOUND | CVAR_INTEGER, "", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
-////idCVar idSoundSystemLocal::s_showStartSound( "s_showStartSound", "0", CVAR_SOUND | CVAR_BOOL, "" );
-////idCVar idSoundSystemLocal::s_useOcclusion( "s_useOcclusion", "1", CVAR_SOUND | CVAR_BOOL, "" );
-////idCVar idSoundSystemLocal::s_maxSoundsPerShader( "s_maxSoundsPerShader", "0", CVAR_SOUND | CVAR_ARCHIVE, "", 0, 10, idCmdSystem::ArgCompletion_Integer<0,10> );
-////idCVar idSoundSystemLocal::s_showLevelMeter( "s_showLevelMeter", "0", CVAR_SOUND | CVAR_BOOL, "" );
-////idCVar idSoundSystemLocal::s_constantAmplitude( "s_constantAmplitude", "-1", CVAR_SOUND | CVAR_FLOAT, "" );
-////idCVar idSoundSystemLocal::s_minVolume6( "s_minVolume6", "0", CVAR_SOUND | CVAR_FLOAT, "" );
-////idCVar idSoundSystemLocal::s_dotbias6( "s_dotbias6", "0.8", CVAR_SOUND | CVAR_FLOAT, "" );
-////idCVar idSoundSystemLocal::s_minVolume2( "s_minVolume2", "0.25", CVAR_SOUND | CVAR_FLOAT, "" );
-////idCVar idSoundSystemLocal::s_dotbias2( "s_dotbias2", "1.1", CVAR_SOUND | CVAR_FLOAT, "" );
-////idCVar idSoundSystemLocal::s_spatializationDecay( "s_spatializationDecay", "2", CVAR_SOUND | CVAR_ARCHIVE | CVAR_FLOAT, "" );
-////idCVar idSoundSystemLocal::s_reverse( "s_reverse", "0", CVAR_SOUND | CVAR_ARCHIVE | CVAR_BOOL, "" );
-////idCVar idSoundSystemLocal::s_meterTopTime( "s_meterTopTime", "2000", CVAR_SOUND | CVAR_ARCHIVE | CVAR_INTEGER, "" );
-////idCVar idSoundSystemLocal::s_volume( "s_volume_dB", "0", CVAR_SOUND | CVAR_ARCHIVE | CVAR_FLOAT, "volume in dB" );
-////idCVar idSoundSystemLocal::s_playDefaultSound( "s_playDefaultSound", "1", CVAR_SOUND | CVAR_ARCHIVE | CVAR_BOOL, "play a beep for missing sounds" );
-////idCVar idSoundSystemLocal::s_subFraction( "s_subFraction", "0.75", CVAR_SOUND | CVAR_ARCHIVE | CVAR_FLOAT, "volume to subwoofer in 5.1" );
-////idCVar idSoundSystemLocal::s_globalFraction( "s_globalFraction", "0.8", CVAR_SOUND | CVAR_ARCHIVE | CVAR_FLOAT, "volume to all speakers when not spatialized" );
-////idCVar idSoundSystemLocal::s_doorDistanceAdd( "s_doorDistanceAdd", "150", CVAR_SOUND | CVAR_ARCHIVE | CVAR_FLOAT, "reduce sound volume with this distance when going through a door" );
-////idCVar idSoundSystemLocal::s_singleEmitter( "s_singleEmitter", "0", CVAR_SOUND | CVAR_INTEGER, "mute all sounds but this emitter" );
-////idCVar idSoundSystemLocal::s_numberOfSpeakers( "s_numberOfSpeakers", "2", CVAR_SOUND | CVAR_ARCHIVE, "number of speakers" );
-////idCVar idSoundSystemLocal::s_force22kHz( "s_force22kHz", "0", CVAR_SOUND | CVAR_BOOL, ""  );
-////idCVar idSoundSystemLocal::s_clipVolumes( "s_clipVolumes", "1", CVAR_SOUND | CVAR_BOOL, ""  );
-////idCVar idSoundSystemLocal::s_realTimeDecoding( "s_realTimeDecoding", "1", CVAR_SOUND | CVAR_BOOL | CVAR_INIT, "" );
-////
-////idCVar idSoundSystemLocal::s_slowAttenuate( "s_slowAttenuate", "1", CVAR_SOUND | CVAR_BOOL, "slowmo sounds attenuate over shorted distance" );
-////idCVar idSoundSystemLocal::s_enviroSuitCutoffFreq( "s_enviroSuitCutoffFreq", "2000", CVAR_SOUND | CVAR_FLOAT, "" );
-////idCVar idSoundSystemLocal::s_enviroSuitCutoffQ( "s_enviroSuitCutoffQ", "2", CVAR_SOUND | CVAR_FLOAT, "" );
-////idCVar idSoundSystemLocal::s_reverbTime( "s_reverbTime", "1000", CVAR_SOUND | CVAR_FLOAT, "" );
-////idCVar idSoundSystemLocal::s_reverbFeedback( "s_reverbFeedback", "0.333", CVAR_SOUND | CVAR_FLOAT, "" );
-////idCVar idSoundSystemLocal::s_enviroSuitVolumeScale( "s_enviroSuitVolumeScale", "0.9", CVAR_SOUND | CVAR_FLOAT, "" );
-////idCVar idSoundSystemLocal::s_skipHelltimeFX( "s_skipHelltimeFX", "0", CVAR_SOUND | CVAR_BOOL, "" );
-////
+idSoundSystemLocal.s_quadraticFalloff = new idCVar( "s_quadraticFalloff", "1", CVAR_SOUND | CVAR_BOOL, "" );
+idSoundSystemLocal.s_drawSounds = new idCVar( "s_drawSounds", "0", CVAR_SOUND | CVAR_INTEGER, "", 0, 2, ArgCompletion_Integer_Template(0,2) );
+idSoundSystemLocal.s_showStartSound = new idCVar( "s_showStartSound", "0", CVAR_SOUND | CVAR_BOOL, "" );
+idSoundSystemLocal.s_useOcclusion = new idCVar( "s_useOcclusion", "1", CVAR_SOUND | CVAR_BOOL, "" );
+idSoundSystemLocal.s_maxSoundsPerShader = new idCVar("s_maxSoundsPerShader", "0", CVAR_SOUND | CVAR_ARCHIVE, "", 0, 10, ArgCompletion_Integer_Template(0, 10) );
+idSoundSystemLocal.s_showLevelMeter = new idCVar( "s_showLevelMeter", "0", CVAR_SOUND | CVAR_BOOL, "" );
+idSoundSystemLocal.s_constantAmplitude = new idCVar( "s_constantAmplitude", "-1", CVAR_SOUND | CVAR_FLOAT, "" );
+idSoundSystemLocal.s_minVolume6 = new idCVar( "s_minVolume6", "0", CVAR_SOUND | CVAR_FLOAT, "" );
+idSoundSystemLocal.s_dotbias6 = new idCVar( "s_dotbias6", "0.8", CVAR_SOUND | CVAR_FLOAT, "" );
+idSoundSystemLocal.s_minVolume2 = new idCVar( "s_minVolume2", "0.25", CVAR_SOUND | CVAR_FLOAT, "" );
+idSoundSystemLocal.s_dotbias2 = new idCVar( "s_dotbias2", "1.1", CVAR_SOUND | CVAR_FLOAT, "" );
+idSoundSystemLocal.s_spatializationDecay = new idCVar( "s_spatializationDecay", "2", CVAR_SOUND | CVAR_ARCHIVE | CVAR_FLOAT, "" );
+idSoundSystemLocal.s_reverse = new idCVar( "s_reverse", "0", CVAR_SOUND | CVAR_ARCHIVE | CVAR_BOOL, "" );
+idSoundSystemLocal.s_meterTopTime = new idCVar( "s_meterTopTime", "2000", CVAR_SOUND | CVAR_ARCHIVE | CVAR_INTEGER, "" );
+idSoundSystemLocal.s_volume = new idCVar( "s_volume_dB", "0", CVAR_SOUND | CVAR_ARCHIVE | CVAR_FLOAT, "volume in dB" );
+idSoundSystemLocal.s_playDefaultSound = new idCVar( "s_playDefaultSound", "1", CVAR_SOUND | CVAR_ARCHIVE | CVAR_BOOL, "play a beep for missing sounds" );
+idSoundSystemLocal.s_subFraction = new idCVar( "s_subFraction", "0.75", CVAR_SOUND | CVAR_ARCHIVE | CVAR_FLOAT, "volume to subwoofer in 5.1" );
+idSoundSystemLocal.s_globalFraction = new idCVar( "s_globalFraction", "0.8", CVAR_SOUND | CVAR_ARCHIVE | CVAR_FLOAT, "volume to all speakers when not spatialized" );
+idSoundSystemLocal.s_doorDistanceAdd = new idCVar( "s_doorDistanceAdd", "150", CVAR_SOUND | CVAR_ARCHIVE | CVAR_FLOAT, "reduce sound volume with this distance when going through a door" );
+idSoundSystemLocal.s_singleEmitter = new idCVar( "s_singleEmitter", "0", CVAR_SOUND | CVAR_INTEGER, "mute all sounds but this emitter" );
+idSoundSystemLocal.s_numberOfSpeakers = new idCVar( "s_numberOfSpeakers", "2", CVAR_SOUND | CVAR_ARCHIVE, "number of speakers" );
+idSoundSystemLocal.s_force22kHz = new idCVar( "s_force22kHz", "0", CVAR_SOUND | CVAR_BOOL, ""  );
+idSoundSystemLocal.s_clipVolumes = new idCVar( "s_clipVolumes", "1", CVAR_SOUND | CVAR_BOOL, ""  );
+idSoundSystemLocal.s_realTimeDecoding = new idCVar( "s_realTimeDecoding", "1", CVAR_SOUND | CVAR_BOOL | CVAR_INIT, "" );
+
+idSoundSystemLocal.s_slowAttenuate = new idCVar( "s_slowAttenuate", "1", CVAR_SOUND | CVAR_BOOL, "slowmo sounds attenuate over shorted distance" );
+idSoundSystemLocal.s_enviroSuitCutoffFreq = new idCVar( "s_enviroSuitCutoffFreq", "2000", CVAR_SOUND | CVAR_FLOAT, "" );
+idSoundSystemLocal.s_enviroSuitCutoffQ = new idCVar( "s_enviroSuitCutoffQ", "2", CVAR_SOUND | CVAR_FLOAT, "" );
+idSoundSystemLocal.s_reverbTime = new idCVar( "s_reverbTime", "1000", CVAR_SOUND | CVAR_FLOAT, "" );
+idSoundSystemLocal.s_reverbFeedback = new idCVar( "s_reverbFeedback", "0.333", CVAR_SOUND | CVAR_FLOAT, "" );
+idSoundSystemLocal.s_enviroSuitVolumeScale = new idCVar( "s_enviroSuitVolumeScale", "0.9", CVAR_SOUND | CVAR_FLOAT, "" );
+idSoundSystemLocal.s_skipHelltimeFX = new idCVar( "s_skipHelltimeFX", "0", CVAR_SOUND | CVAR_BOOL, "" );
+
 ////#if ID_OPENAL
-////// off by default. OpenAL DLL gets loaded on-demand
-////idCVar idSoundSystemLocal::s_libOpenAL( "s_libOpenAL", "openal32.dll", CVAR_SOUND | CVAR_ARCHIVE, "OpenAL DLL name/path" );
-////idCVar idSoundSystemLocal::s_useOpenAL( "s_useOpenAL", "0", CVAR_SOUND | CVAR_BOOL | CVAR_ARCHIVE, "use OpenAL" );
-////idCVar idSoundSystemLocal::s_useEAXReverb( "s_useEAXReverb", "0", CVAR_SOUND | CVAR_BOOL | CVAR_ARCHIVE, "use EAX reverb" );
-////idCVar idSoundSystemLocal::s_muteEAXReverb( "s_muteEAXReverb", "0", CVAR_SOUND | CVAR_BOOL, "mute eax reverb" );
-////idCVar idSoundSystemLocal::s_decompressionLimit( "s_decompressionLimit", "6", CVAR_SOUND | CVAR_INTEGER | CVAR_ARCHIVE, "specifies maximum uncompressed sample length in seconds" );
+// off by default. OpenAL DLL gets loaded on-demand
+idSoundSystemLocal.s_libOpenAL = new idCVar( "s_libOpenAL", "openal32.dll", CVAR_SOUND | CVAR_ARCHIVE, "OpenAL DLL name/path" );
+idSoundSystemLocal.s_useOpenAL = new idCVar( "s_useOpenAL", "0", CVAR_SOUND | CVAR_BOOL | CVAR_ARCHIVE, "use OpenAL" );
+idSoundSystemLocal.s_useEAXReverb = new idCVar( "s_useEAXReverb", "0", CVAR_SOUND | CVAR_BOOL | CVAR_ARCHIVE, "use EAX reverb" );
+idSoundSystemLocal.s_muteEAXReverb = new idCVar( "s_muteEAXReverb", "0", CVAR_SOUND | CVAR_BOOL, "mute eax reverb" );
+idSoundSystemLocal.s_decompressionLimit = new idCVar( "s_decompressionLimit", "6", CVAR_SOUND | CVAR_INTEGER | CVAR_ARCHIVE, "specifies maximum uncompressed sample length in seconds" );
 ////#else
 ////idCVar idSoundSystemLocal::s_libOpenAL( "s_libOpenAL", "openal32.dll", CVAR_SOUND | CVAR_ARCHIVE, "OpenAL is not supported in this build" );
 ////idCVar idSoundSystemLocal::s_useOpenAL( "s_useOpenAL", "0", CVAR_SOUND | CVAR_BOOL | CVAR_ROM, "OpenAL is not supported in this build" );

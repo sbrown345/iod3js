@@ -2906,7 +2906,7 @@ void idSessionLocal::Init() {
 #ifndef ID_DEMO_BUILD
 	guiMainMenu = uiManager->FindGui( "guis/mainmenu.gui", true, false, true );
 #else
-	guiMainMenu = uiManager->FindGui( "guis/demo_mainmenu.gui", true, false, true );
+ 	guiMainMenu = uiManager->FindGui( "guis/demo_mainmenu.gui", true, false, true );
 #endif
 	guiMainMenu_MapList = uiManager->AllocListGUI();
 	guiMainMenu_MapList->Config( guiMainMenu, "mapList" );

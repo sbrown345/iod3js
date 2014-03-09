@@ -56,6 +56,8 @@ function dlogFlush(append = false): void {
 	}
 
 	dlogOutput = [[]];
+
+	console.info( "Flushed log" );
 };
 
 function sendTextNew(text: string, append: boolean): void {

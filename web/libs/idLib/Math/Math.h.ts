@@ -858,15 +858,15 @@ static Sqrt( /*float */x:number):number {
 ////	return i;
 ////}
 
-////ID_INLINE int idMath::ClampInt( int min, int max, int value ) {
-////	if ( value < min ) {
-////		return min;
-////	}
-////	if ( value > max ) {
-////		return max;
-////	}
-////	return value;
-////}
+	static ClampInt ( /*int*/ min: number, /*int */max: number, /*int */value: number ): number {
+		if ( value < min ) {
+			return min;
+		}
+		if ( value > max ) {
+			return max;
+		}
+		return value;
+	}
 
 ////ID_INLINE float idMath::ClampFloat( float min, float max, float value ) {
 ////	if ( value < min ) {
