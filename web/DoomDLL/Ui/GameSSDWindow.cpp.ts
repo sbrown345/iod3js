@@ -1786,7 +1786,7 @@ class idGameSSDWindow extends idWindow {
 
 	//All current game data is stored in this structure (except the entity list)
 	gameStats = new SSDGameStats_t;
-	entities = new idList<SSDEntity>(SSDEntity);
+	entities = new idList<SSDEntity>(SSDEntity, false, 16, true);
 
 	currentSound:number/*int*/;
 

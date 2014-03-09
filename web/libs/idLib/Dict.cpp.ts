@@ -160,7 +160,7 @@ class idDict {
 ////	static void			ListValues_f( const idCmdArgs &args );
 ////
 ////private:
-	args = new idList<idKeyValue>(idKeyValue);
+	args = new idList<idKeyValue>(idKeyValue, false, 16, true);
 	argHash = new idHashIndex;
 
 	static globalKeys = new idStrPool;

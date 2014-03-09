@@ -228,8 +228,8 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 	screenRect: idRectangle;
 	dc: idDeviceContext = new idDeviceContext();
 
-	guis = new idList<idUserInterfaceLocal/***/>(idUserInterfaceLocal);
-	demoGuis = new idList<idUserInterfaceLocal/***/>(idUserInterfaceLocal);
+	guis = new idList<idUserInterfaceLocal/***/>(idUserInterfaceLocal, false, 16, true);
+	demoGuis = new idList<idUserInterfaceLocal/***/>(idUserInterfaceLocal, false, 16, true);
 };
 
 

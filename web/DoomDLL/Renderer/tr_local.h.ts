@@ -492,51 +492,42 @@ class viewLight_t {
 // which the front end may be modifying simultaniously if running in SMP mode.
 // A single entityDef can generate multiple viewEntity_t in a single frame, as when seen in a mirror
 class /*viewEntity_s*/viewEntity_t {
-	next:viewEntity_t;
+	next: viewEntity_t;
 
 	// back end should NOT reference the entityDef, because it can change when running SMP
-	entityDef:idRenderEntityLocal;
+	entityDef: idRenderEntityLocal;
 
 	// for scissor clipping, local inside renderView viewport
 	// scissorRect.Empty() is true if the viewEntity_t was never actually
 	// seen through any portals, but was created for shadow casting.
 	// a viewEntity can have a non-empty scissorRect, meaning that an area
 	// that it is in is visible, and still not be visible.
-	scissorRect:idScreenRect;
+	scissorRect = new idScreenRect;
 
-	/*bool				*/weaponDepthHack:boolean;
-	/*float				*/modelDepthHack:number;
+	weaponDepthHack: boolean;
+	modelDepthHack: number /*float*/;
 
-	/*float				*/modelMatrix:Float32Array/*[16]*/;		// local coords to global coords
-	/*float				*/modelViewMatrix:Float32Array/*[16]*/;	// local coords to eye coords
+	modelMatrix = new Float32Array( 16 ); // local coords to global coords
+	modelViewMatrix = new Float32Array( 16 ); // local coords to eye coords
 
-	constructor() {
-		this.next = null;
-		this.entityDef = null;
-		this.scissorRect = new idScreenRect;
-		this.weaponDepthHack = false;
-		this.modelDepthHack = 0;
-		this.modelMatrix = new Float32Array(16);
-		this.modelViewMatrix = new Float32Array(16);
-	}
 
-	init(): void {
+	init ( ): void {
 		this.next = null;
 		this.entityDef = null;
 		this.scissorRect.init ( );
 		this.weaponDepthHack = false;
 		this.modelDepthHack = 0;
-		for (var i = 0; i < this.modelMatrix.length; i++ ) {
+		for ( var i = 0; i < this.modelMatrix.length; i++ ) {
 			this.modelMatrix[i] = 0;
 		}
-		for (var i = 0; i < this.modelMatrix.length; i++ ) {
+		for ( var i = 0; i < this.modelMatrix.length; i++ ) {
 			this.modelViewMatrix[i] = 0;
 		}
 	}
 }
 
 
-	var MAX_CLIP_PLANES	= 1;				// we may expand this to six for some subview issues
+var MAX_CLIP_PLANES	= 1;				// we may expand this to six for some subview issues
 
 // viewDefs are allocated on the frame temporary stack memory
 class viewDef_t {
@@ -593,15 +584,41 @@ class viewDef_t {
 	// not have any viewEntities
 
 	frustum = newStructArray<idPlane>(idPlane,5);				// positive sides face outward, [4] is the front clip plane
-	viewFrustum: idFrustum;
+	viewFrustum = new idFrustum;
 
-	areaNum=0;//int				// -1 = not in a valid area
+	areaNum:number;//int				// -1 = not in a valid area
 
 	connectedAreas: boolean[];//bool *				
 	// An array in frame temporary memory that lists if an area can be reached without
 	// crossing a closed door.  This is used to avoid drawing interactions
 	// when the light is behind a closed door.
 
+	init ( ): void {
+		this.renderView.init();
+		memset(this.projectionMatrix, 0, sizeof(this.projectionMatrix));
+		this.worldSpace.init();
+		this.renderWorld = null;
+		this.floatTime = 0.0;
+		this.initialViewAreaOrigin.Zero();
+		this.isSubview = false;
+		this.isMirror = false;
+		this.isXraySubview = false;
+		this.isEditor = false;
+		this.viewport.init ( );
+		this.scissor.init();
+		this.superView = null;
+		this.subviewSurface = null;
+		this.drawSurfs = null;
+		this.subviewSurface = null;
+		this.numDrawSurfs = 0;
+		this.maxDrawSurfs = 0;
+		this.viewLights = null;
+		this.viewEntitys = null;
+		clearStructArray( this.frustum );
+		this.viewFrustum.init();
+		this.areaNum = 0;
+		this.connectedAreas = null;
+	}
 };
 
 
@@ -665,6 +682,12 @@ class setBufferCommand_t {
 class drawSurfsCommand_t {
 	commandId: renderCommand_t = renderCommand_t.RC_NOP; next: any; 
 	viewDef: viewDef_t;
+
+	init ( ): void {
+		this.commandId = 0;
+		this.next = null;
+		this.viewDef = null;
+	}
 };
 
 ////typedef struct {
@@ -951,8 +974,12 @@ enum backEndName_t {
 }
 
 class renderCrop_t {
-	/*int*/		x: number; y: number; width: number; height: number;	// these are in physical, OpenGL Y-at-bottom pixels
-} ;
+	/*int*/	x: number; y: number; width: number; height: number;	// these are in physical, OpenGL Y-at-bottom pixels
+
+	init ( ): void {
+		this.x = this.y = this.width = this.height = 0;
+	}
+}
 var MAX_RENDER_CROPS = 8;
 
 /*

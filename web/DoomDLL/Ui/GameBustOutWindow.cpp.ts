@@ -513,7 +513,7 @@ class idGameBustOutWindow extends idWindow {
 ////	virtual const char*	Activate(bool activate);
 ////	virtual idWinVar *	GetWinVarByName(_name:string, bool winLookup = false, drawWin_t** owner = NULL);
 ////
-////	idList<BOEntity*>	entities;
+	entities = new 	idList<BOEntity>(BOEntity,false,16,true);
 ////
 ////private:
 ////	void				CommonInit();

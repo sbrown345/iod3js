@@ -54,7 +54,7 @@
 //
 //class idMat2 {
 //public:
-//					idMat2( void );
+//					idMat2( );
 //					explicit idMat2( const idVec2 &x, const idVec2 &y );
 //					explicit idMat2( const float xx, const float xy, const float yx, const float yy );
 //					explicit idMat2( const float src[ 2 ][ 2 ] );
@@ -81,25 +81,25 @@
 //	bool			operator==( const idMat2 &a ) const;					// exact compare, no epsilon
 //	bool			operator!=( const idMat2 &a ) const;					// exact compare, no epsilon
 //
-//	void			Zero( void );
-//	void			Identity( void );
+//	void			Zero( );
+//	void			Identity( );
 //	bool			IsIdentity( const float epsilon = MATRIX_EPSILON ) const;
 //	bool			IsSymmetric( const float epsilon = MATRIX_EPSILON ) const;
 //	bool			IsDiagonal( const float epsilon = MATRIX_EPSILON ) const;
 //
-//	float			Trace( void ) const;
-//	float			Determinant( void ) const;
-//	idMat2			Transpose( void ) const;	// returns transpose
-//	idMat2 &		TransposeSelf( void );
-//	idMat2			Inverse( void ) const;		// returns the inverse ( m * m.Inverse() = identity )
-//	bool			InverseSelf( void );		// returns false if determinant is zero
-//	idMat2			InverseFast( void ) const;	// returns the inverse ( m * m.Inverse() = identity )
-//	bool			InverseFastSelf( void );	// returns false if determinant is zero
+//	float			Trace( ) const;
+//	float			Determinant( ) const;
+//	idMat2			Transpose( ) const;	// returns transpose
+//	idMat2 &		TransposeSelf( );
+//	idMat2			Inverse( ) const;		// returns the inverse ( m * m.Inverse() = identity )
+//	bool			InverseSelf( );		// returns false if determinant is zero
+//	idMat2			InverseFast( ) const;	// returns the inverse ( m * m.Inverse() = identity )
+//	bool			InverseFastSelf( );	// returns false if determinant is zero
 //
-//	int				GetDimension( void ) const;
+//	int				GetDimension( ) const;
 //
-//	const float *	ToFloatPtr( void ) const;
-//	float *			ToFloatPtr( void );
+//	const float *	ToFloatPtr( ) const;
+//	float *			ToFloatPtr( );
 //	const char *	ToString( int precision = 2 ) const;
 //
 //private:
@@ -110,7 +110,7 @@
 //idMat2 mat2_identity(idVec2(1, 0), idVec2(0, 1));
 //#define mat2_default	mat2_identity
 //
-//ID_INLINE idMat2::idMat2( void ) {
+//ID_INLINE idMat2::idMat2( ) {
 //}
 //
 //ID_INLINE idMat2::idMat2( const idVec2 &x, const idVec2 &y ) {
@@ -243,12 +243,12 @@
 //	return !Compare( a );
 //}
 //
-//ID_INLINE void idMat2::Zero( void ) {
+//ID_INLINE void idMat2::Zero( ) {
 //	mat[0].Zero();
 //	mat[1].Zero();
 //}
 //
-//ID_INLINE void idMat2::Identity( void ) {
+//ID_INLINE void idMat2::Identity( ) {
 //	*this = mat2_identity;
 //}
 //
@@ -268,20 +268,20 @@
 //	return true;
 //}
 //
-//ID_INLINE float idMat2::Trace( void ) const {
+//ID_INLINE float idMat2::Trace( ) const {
 //	return ( mat[0][0] + mat[1][1] );
 //}
 //
-//ID_INLINE float idMat2::Determinant( void ) const {
+//ID_INLINE float idMat2::Determinant( ) const {
 //	return mat[0][0] * mat[1][1] - mat[0][1] * mat[1][0];
 //}
 //
-//ID_INLINE idMat2 idMat2::Transpose( void ) const {
+//ID_INLINE idMat2 idMat2::Transpose( ) const {
 //	return idMat2(	mat[0][0], mat[1][0],
 //					mat[0][1], mat[1][1] );
 //}
 //
-//ID_INLINE idMat2 &idMat2::TransposeSelf( void ) {
+//ID_INLINE idMat2 &idMat2::TransposeSelf( ) {
 //	float tmp;
 //
 //	tmp = mat[0][1];
@@ -291,7 +291,7 @@
 //	return *this;
 //}
 //
-//ID_INLINE idMat2 idMat2::Inverse( void ) const {
+//ID_INLINE idMat2 idMat2::Inverse( ) const {
 //	idMat2 invMat;
 //
 //	invMat = *this;
@@ -303,7 +303,7 @@
 //	return invMat;
 //}
 //
-//ID_INLINE idMat2 idMat2::InverseFast( void ) const {
+//ID_INLINE idMat2 idMat2::InverseFast( ) const {
 //	idMat2 invMat;
 //
 //	invMat = *this;
@@ -315,15 +315,15 @@
 //	return invMat;
 //}
 //
-//ID_INLINE int idMat2::GetDimension( void ) const {
+//ID_INLINE int idMat2::GetDimension( ) const {
 //	return 4;
 //}
 //
-//ID_INLINE const float *idMat2::ToFloatPtr( void ) const {
+//ID_INLINE const float *idMat2::ToFloatPtr( ) const {
 //	return mat[0].ToFloatPtr();
 //}
 //
-//ID_INLINE float *idMat2::ToFloatPtr( void ) {
+//ID_INLINE float *idMat2::ToFloatPtr( ) {
 //	return mat[0].ToFloatPtr();
 //}
 //
@@ -338,7 +338,7 @@
 
 class idMat3 {
 //public:
-//					idMat3( void );
+//					idMat3( );
 //					explicit idMat3( const idVec3 &x, const idVec3 &y, const idVec3 &z );
 //					explicit idMat3( const float xx, const float xy, const float xz, const float yx, const float yy, const float yz, const float zx, const float zy, const float zz );
 //					explicit idMat3( const float src[ 3 ][ 3 ] );
@@ -365,29 +365,29 @@ class idMat3 {
 //	bool			operator==( const idMat3 &a ) const;					// exact compare, no epsilon
 //	bool			operator!=( const idMat3 &a ) const;					// exact compare, no epsilon
 //
-//	void			Zero( void );
-//	void			Identity( void );
+//	void			Zero( );
+//	void			Identity( );
 //	bool			IsIdentity( const float epsilon = MATRIX_EPSILON ) const;
 //	bool			IsSymmetric( const float epsilon = MATRIX_EPSILON ) const;
 //	bool			IsDiagonal( const float epsilon = MATRIX_EPSILON ) const;
-//	bool			IsRotated( void ) const;
+//	bool			IsRotated( ) const;
 //
 //	void			ProjectVector( const idVec3 &src, idVec3 &dst ) const;
 //	void			UnprojectVector( const idVec3 &src, idVec3 &dst ) const;
 //
-//	bool			FixDegeneracies( void );	// fix degenerate axial cases
-//	bool			FixDenormals( void );		// change tiny numbers to zero
+//	bool			FixDegeneracies( );	// fix degenerate axial cases
+//	bool			FixDenormals( );		// change tiny numbers to zero
 //
-//	float			Trace( void ) const;
-//	float			Determinant( void ) const;
-//	idMat3			OrthoNormalize( void ) const;
-//	idMat3 &		OrthoNormalizeSelf( void );
-//	idMat3			Transpose( void ) const;	// returns transpose
-//	idMat3 &		TransposeSelf( void );
-//	idMat3			Inverse( void ) const;		// returns the inverse ( m * m.Inverse() = identity )
-//	bool			InverseSelf( void );		// returns false if determinant is zero
-//	idMat3			InverseFast( void ) const;	// returns the inverse ( m * m.Inverse() = identity )
-//	bool			InverseFastSelf( void );	// returns false if determinant is zero
+//	float			Trace( ) const;
+//	float			Determinant( ) const;
+//	idMat3			OrthoNormalize( ) const;
+//	idMat3 &		OrthoNormalizeSelf( );
+//	idMat3			Transpose( ) const;	// returns transpose
+//	idMat3 &		TransposeSelf( );
+//	idMat3			Inverse( ) const;		// returns the inverse ( m * m.Inverse() = identity )
+//	bool			InverseSelf( );		// returns false if determinant is zero
+//	idMat3			InverseFast( ) const;	// returns the inverse ( m * m.Inverse() = identity )
+//	bool			InverseFastSelf( );	// returns false if determinant is zero
 //	idMat3			TransposeMultiply( const idMat3 &b ) const;
 //
 //	idMat3			InertiaTranslate( const float mass, const idVec3 &centerOfMass, const idVec3 &translation ) const;
@@ -395,16 +395,16 @@ class idMat3 {
 //	idMat3			InertiaRotate( const idMat3 &rotation ) const;
 //	idMat3 &		InertiaRotateSelf( const idMat3 &rotation );
 //
-//	int				GetDimension( void ) const;
+//	int				GetDimension( ) const;
 //
-//	idAngles		ToAngles( void ) const;
-//	idQuat			ToQuat( void ) const;
-//	idCQuat			ToCQuat( void ) const;
-//	idRotation		ToRotation( void ) const;
-//	idMat4			ToMat4( void ) const;
-//	idVec3			ToAngularVelocity( void ) const;
-//	const float *	ToFloatPtr( void ) const;
-//	float *			ToFloatPtr( void );
+//	idAngles		ToAngles( ) const;
+//	idQuat			ToQuat( ) const;
+//	idCQuat			ToCQuat( ) const;
+//	idRotation		ToRotation( ) const;
+//	idMat4			ToMat4( ) const;
+//	idVec3			ToAngularVelocity( ) const;
+//	const float *	ToFloatPtr( ) const;
+//	float *			ToFloatPtr( );
 //	const char *	ToString( int precision = 2 ) const;
 //
 //	friend void		TransposeMultiply( const idMat3 &inv, const idMat3 &b, idMat3 &dst );
@@ -597,14 +597,17 @@ class idMat3 {
 //ID_INLINE bool idMat3::operator!=( const idMat3 &a ) const {
 //	return !Compare( a );
 //}
-//
-//ID_INLINE void idMat3::Zero( void ) {
-//	memset( mat, 0, sizeof( idMat3 ) );
-//}
-//
-Identity(  ):void {
-	this.equals(mat3_identity);
-}
+
+	Zero ( ): void {
+		//memset( this.mat, 0, sizeof( this.mat ) );
+		this.mat[0].Zero ( );
+		this.mat[1].Zero ( );
+		this.mat[2].Zero ( );
+	}
+
+	Identity ( ): void {
+		this.equals( mat3_identity );
+	}
 //
 //ID_INLINE bool idMat3::IsIdentity( const float epsilon ) const {
 //	return Compare( mat3_identity, epsilon );
@@ -635,7 +638,7 @@ Identity(  ):void {
 //	return true;
 //}
 //
-//ID_INLINE bool idMat3::IsRotated( void ) const {
+//ID_INLINE bool idMat3::IsRotated( ) const {
 //	return !Compare( mat3_identity );
 //}
 //
@@ -649,25 +652,25 @@ Identity(  ):void {
 //	dst = mat[ 0 ] * src.x + mat[ 1 ] * src.y + mat[ 2 ] * src.z;
 //}
 //
-//ID_INLINE bool idMat3::FixDegeneracies( void ) {
+//ID_INLINE bool idMat3::FixDegeneracies( ) {
 //	bool r = mat[0].FixDegenerateNormal();
 //	r |= mat[1].FixDegenerateNormal();
 //	r |= mat[2].FixDegenerateNormal();
 //	return r;
 //}
 //
-//ID_INLINE bool idMat3::FixDenormals( void ) {
+//ID_INLINE bool idMat3::FixDenormals( ) {
 //	bool r = mat[0].FixDenormals();
 //	r |= mat[1].FixDenormals();
 //	r |= mat[2].FixDenormals();
 //	return r;
 //}
 //
-//ID_INLINE float idMat3::Trace( void ) const {
+//ID_INLINE float idMat3::Trace( ) const {
 //	return ( mat[0][0] + mat[1][1] + mat[2][2] );
 //}
 //
-//ID_INLINE idMat3 idMat3::OrthoNormalize( void ) const {
+//ID_INLINE idMat3 idMat3::OrthoNormalize( ) const {
 //	idMat3 ortho;
 //
 //	ortho = *this;
@@ -679,7 +682,7 @@ Identity(  ):void {
 //	return ortho;
 //}
 //
-//ID_INLINE idMat3 &idMat3::OrthoNormalizeSelf( void ) {
+//ID_INLINE idMat3 &idMat3::OrthoNormalizeSelf( ) {
 //	mat[ 0 ].Normalize();
 //	mat[ 2 ].Cross( mat[ 0 ], mat[ 1 ] );
 //	mat[ 2 ].Normalize();
@@ -688,13 +691,13 @@ Identity(  ):void {
 //	return *this;
 //}
 //
-//ID_INLINE idMat3 idMat3::Transpose( void ) const {
+//ID_INLINE idMat3 idMat3::Transpose( ) const {
 //	return idMat3(	mat[0][0], mat[1][0], mat[2][0],
 //					mat[0][1], mat[1][1], mat[2][1],
 //					mat[0][2], mat[1][2], mat[2][2] );
 //}
 //
-//ID_INLINE idMat3 &idMat3::TransposeSelf( void ) {
+//ID_INLINE idMat3 &idMat3::TransposeSelf( ) {
 //	float tmp0, tmp1, tmp2;
 //
 //	tmp0 = mat[0][1];
@@ -710,7 +713,7 @@ Identity(  ):void {
 //	return *this;
 //}
 //
-//ID_INLINE idMat3 idMat3::Inverse( void ) const {
+//ID_INLINE idMat3 idMat3::Inverse( ) const {
 //	idMat3 invMat;
 //
 //	invMat = *this;
@@ -722,7 +725,7 @@ Identity(  ):void {
 //	return invMat;
 //}
 //
-//ID_INLINE idMat3 idMat3::InverseFast( void ) const {
+//ID_INLINE idMat3 idMat3::InverseFast( ) const {
 //	idMat3 invMat;
 //
 //	invMat = *this;
@@ -762,15 +765,15 @@ Identity(  ):void {
 //	return idMat3( 0.0f, -src.z,  src.y, src.z,   0.0f, -src.x, -src.y,  src.x,   0.0f );
 //}
 //
-//ID_INLINE int idMat3::GetDimension( void ) const {
+//ID_INLINE int idMat3::GetDimension( ) const {
 //	return 9;
 //}
 //
-//ID_INLINE const float *idMat3::ToFloatPtr( void ) const {
+//ID_INLINE const float *idMat3::ToFloatPtr( ) const {
 //	return mat[0].ToFloatPtr();
 //}
 //
-//ID_INLINE float *idMat3::ToFloatPtr( void ) {
+//ID_INLINE float *idMat3::ToFloatPtr( ) {
 //	return mat[0].ToFloatPtr();
 //}
 
@@ -788,7 +791,7 @@ var mat3_default = mat3_identity;
 
 class idMat4 {
 //public:
-//					idMat4( void );
+//					idMat4( );
 //					explicit idMat4( const idVec4 &x, const idVec4 &y, const idVec4 &z, const idVec4 &w );
 //					explicit idMat4(const float xx, const float xy, const float xz, const float xw,
 //									const float yx, const float yy, const float yz, const float yw,
@@ -821,30 +824,30 @@ class idMat4 {
 //	bool			operator==( const idMat4 &a ) const;					// exact compare, no epsilon
 //	bool			operator!=( const idMat4 &a ) const;					// exact compare, no epsilon
 //
-//	void			Zero( void );
-//	void			Identity( void );
+//	void			Zero( );
+//	void			Identity( );
 //	bool			IsIdentity( const float epsilon = MATRIX_EPSILON ) const;
 //	bool			IsSymmetric( const float epsilon = MATRIX_EPSILON ) const;
 //	bool			IsDiagonal( const float epsilon = MATRIX_EPSILON ) const;
-//	bool			IsRotated( void ) const;
+//	bool			IsRotated( ) const;
 //
 //	void			ProjectVector( const idVec4 &src, idVec4 &dst ) const;
 //	void			UnprojectVector( const idVec4 &src, idVec4 &dst ) const;
 //
-//	float			Trace( void ) const;
-//	float			Determinant( void ) const;
-//	idMat4			Transpose( void ) const;	// returns transpose
-//	idMat4 &		TransposeSelf( void );
-//	idMat4			Inverse( void ) const;		// returns the inverse ( m * m.Inverse() = identity )
-//	bool			InverseSelf( void );		// returns false if determinant is zero
-//	idMat4			InverseFast( void ) const;	// returns the inverse ( m * m.Inverse() = identity )
-//	bool			InverseFastSelf( void );	// returns false if determinant is zero
+//	float			Trace( ) const;
+//	float			Determinant( ) const;
+//	idMat4			Transpose( ) const;	// returns transpose
+//	idMat4 &		TransposeSelf( );
+//	idMat4			Inverse( ) const;		// returns the inverse ( m * m.Inverse() = identity )
+//	bool			InverseSelf( );		// returns false if determinant is zero
+//	idMat4			InverseFast( ) const;	// returns the inverse ( m * m.Inverse() = identity )
+//	bool			InverseFastSelf( );	// returns false if determinant is zero
 //	idMat4			TransposeMultiply( const idMat4 &b ) const;
 //
-//	int				GetDimension( void ) const;
+//	int				GetDimension( ) const;
 //
-//	const float *	ToFloatPtr( void ) const;
-//	float *			ToFloatPtr( void );
+//	const float *	ToFloatPtr( ) const;
+//	float *			ToFloatPtr( );
 //	const char *	ToString( int precision = 2 ) const;
 //
 //private:
@@ -856,7 +859,7 @@ class idMat4 {
 //extern idMat4 mat4_identity;
 //#define mat4_default	mat4_identity
 //
-//ID_INLINE idMat4::idMat4( void ) {
+//ID_INLINE idMat4::idMat4( ) {
 //}
 //
 //ID_INLINE idMat4::idMat4( const idVec4 &x, const idVec4 &y, const idVec4 &z, const idVec4 &w ) {
@@ -1084,11 +1087,11 @@ class idMat4 {
 //	return !Compare( a );
 //}
 //
-//ID_INLINE void idMat4::Zero( void ) {
+//ID_INLINE void idMat4::Zero( ) {
 //	memset( mat, 0, sizeof( idMat4 ) );
 //}
 //
-//ID_INLINE void idMat4::Identity( void ) {
+//ID_INLINE void idMat4::Identity( ) {
 //	*this = mat4_identity;
 //}
 //
@@ -1118,7 +1121,7 @@ class idMat4 {
 //	return true;
 //}
 //
-//ID_INLINE bool idMat4::IsRotated( void ) const {
+//ID_INLINE bool idMat4::IsRotated( ) const {
 //	if ( !mat[ 0 ][ 1 ] && !mat[ 0 ][ 2 ] &&
 //		!mat[ 1 ][ 0 ] && !mat[ 1 ][ 2 ] &&
 //		!mat[ 2 ][ 0 ] && !mat[ 2 ][ 1 ] ) {
@@ -1138,11 +1141,11 @@ class idMat4 {
 //	dst = mat[ 0 ] * src.x + mat[ 1 ] * src.y + mat[ 2 ] * src.z + mat[ 3 ] * src.w;
 //}
 //
-//ID_INLINE float idMat4::Trace( void ) const {
+//ID_INLINE float idMat4::Trace( ) const {
 //	return ( mat[0][0] + mat[1][1] + mat[2][2] + mat[3][3] );
 //}
 //
-//ID_INLINE idMat4 idMat4::Inverse( void ) const {
+//ID_INLINE idMat4 idMat4::Inverse( ) const {
 //	idMat4 invMat;
 //
 //	invMat = *this;
@@ -1154,7 +1157,7 @@ class idMat4 {
 //	return invMat;
 //}
 //
-//ID_INLINE idMat4 idMat4::InverseFast( void ) const {
+//ID_INLINE idMat4 idMat4::InverseFast( ) const {
 //	idMat4 invMat;
 //
 //	invMat = *this;
@@ -1166,7 +1169,7 @@ class idMat4 {
 //	return invMat;
 //}
 //
-//ID_INLINE idMat4 idMat3::ToMat4( void ) const {
+//ID_INLINE idMat4 idMat3::ToMat4( ) const {
 //	// NOTE: idMat3 is transposed because it is column-major
 //	return idMat4(	mat[0][0],	mat[1][0],	mat[2][0],	0.0f,
 //					mat[0][1],	mat[1][1],	mat[2][1],	0.0f,
@@ -1174,11 +1177,11 @@ class idMat4 {
 //					0.0f,		0.0f,		0.0f,		1.0f );
 //}
 //
-//ID_INLINE int idMat4::GetDimension( void ) const {
+//ID_INLINE int idMat4::GetDimension( ) const {
 //	return 16;
 //}
 //
-//ID_INLINE const float *idMat4::ToFloatPtr( void ) const {
+//ID_INLINE const float *idMat4::ToFloatPtr( ) const {
 //	return mat[0].ToFloatPtr();
 //}
 //
@@ -1204,7 +1207,7 @@ var mat4_default = mat4_identity;
 //
 //class idMat5 {
 //public:
-//					idMat5( void );
+//					idMat5( );
 //					explicit idMat5( const idVec5 &v0, const idVec5 &v1, const idVec5 &v2, const idVec5 &v3, const idVec5 &v4 );
 //					explicit idMat5( const float src[ 5 ][ 5 ] );
 //
@@ -1229,25 +1232,25 @@ var mat4_default = mat4_identity;
 //	bool			operator==( const idMat5 &a ) const;					// exact compare, no epsilon
 //	bool			operator!=( const idMat5 &a ) const;					// exact compare, no epsilon
 //
-//	void			Zero( void );
-//	void			Identity( void );
+//	void			Zero( );
+//	void			Identity( );
 //	bool			IsIdentity( const float epsilon = MATRIX_EPSILON ) const;
 //	bool			IsSymmetric( const float epsilon = MATRIX_EPSILON ) const;
 //	bool			IsDiagonal( const float epsilon = MATRIX_EPSILON ) const;
 //
-//	float			Trace( void ) const;
-//	float			Determinant( void ) const;
-//	idMat5			Transpose( void ) const;	// returns transpose
-//	idMat5 &		TransposeSelf( void );
-//	idMat5			Inverse( void ) const;		// returns the inverse ( m * m.Inverse() = identity )
-//	bool			InverseSelf( void );		// returns false if determinant is zero
-//	idMat5			InverseFast( void ) const;	// returns the inverse ( m * m.Inverse() = identity )
-//	bool			InverseFastSelf( void );	// returns false if determinant is zero
+//	float			Trace( ) const;
+//	float			Determinant( ) const;
+//	idMat5			Transpose( ) const;	// returns transpose
+//	idMat5 &		TransposeSelf( );
+//	idMat5			Inverse( ) const;		// returns the inverse ( m * m.Inverse() = identity )
+//	bool			InverseSelf( );		// returns false if determinant is zero
+//	idMat5			InverseFast( ) const;	// returns the inverse ( m * m.Inverse() = identity )
+//	bool			InverseFastSelf( );	// returns false if determinant is zero
 //
-//	int				GetDimension( void ) const;
+//	int				GetDimension( ) const;
 //
-//	const float *	ToFloatPtr( void ) const;
-//	float *			ToFloatPtr( void );
+//	const float *	ToFloatPtr( ) const;
+//	float *			ToFloatPtr( );
 //	const char *	ToString( int precision = 2 ) const;
 //
 //private:
@@ -1258,7 +1261,7 @@ var mat4_default = mat4_identity;
 //extern idMat5 mat5_identity;
 //#define mat5_default	mat5_identity
 //
-//ID_INLINE idMat5::idMat5( void ) {
+//ID_INLINE idMat5::idMat5( ) {
 //}
 //
 //ID_INLINE idMat5::idMat5( const float src[ 5 ][ 5 ] ) {
@@ -1424,11 +1427,11 @@ var mat4_default = mat4_identity;
 //	return !Compare( a );
 //}
 //
-//ID_INLINE void idMat5::Zero( void ) {
+//ID_INLINE void idMat5::Zero( ) {
 //	memset( mat, 0, sizeof( idMat5 ) );
 //}
 //
-//ID_INLINE void idMat5::Identity( void ) {
+//ID_INLINE void idMat5::Identity( ) {
 //	*this = mat5_identity;
 //}
 //
@@ -1458,11 +1461,11 @@ var mat4_default = mat4_identity;
 //	return true;
 //}
 //
-//ID_INLINE float idMat5::Trace( void ) const {
+//ID_INLINE float idMat5::Trace( ) const {
 //	return ( mat[0][0] + mat[1][1] + mat[2][2] + mat[3][3] + mat[4][4] );
 //}
 //
-//ID_INLINE idMat5 idMat5::Inverse( void ) const {
+//ID_INLINE idMat5 idMat5::Inverse( ) const {
 //	idMat5 invMat;
 //
 //	invMat = *this;
@@ -1474,7 +1477,7 @@ var mat4_default = mat4_identity;
 //	return invMat;
 //}
 //
-//ID_INLINE idMat5 idMat5::InverseFast( void ) const {
+//ID_INLINE idMat5 idMat5::InverseFast( ) const {
 //	idMat5 invMat;
 //
 //	invMat = *this;
@@ -1486,15 +1489,15 @@ var mat4_default = mat4_identity;
 //	return invMat;
 //}
 //
-//ID_INLINE int idMat5::GetDimension( void ) const {
+//ID_INLINE int idMat5::GetDimension( ) const {
 //	return 25;
 //}
 //
-//ID_INLINE const float *idMat5::ToFloatPtr( void ) const {
+//ID_INLINE const float *idMat5::ToFloatPtr( ) const {
 //	return mat[0].ToFloatPtr();
 //}
 //
-//ID_INLINE float *idMat5::ToFloatPtr( void ) {
+//ID_INLINE float *idMat5::ToFloatPtr( ) {
 //	return mat[0].ToFloatPtr();
 //}
 //
@@ -1507,7 +1510,7 @@ var mat4_default = mat4_identity;
 //
 //class idMat6 {
 //public:
-//					idMat6( void );
+//					idMat6( );
 //					explicit idMat6( const idVec6 &v0, const idVec6 &v1, const idVec6 &v2, const idVec6 &v3, const idVec6 &v4, const idVec6 &v5 );
 //					explicit idMat6( const idMat3 &m0, const idMat3 &m1, const idMat3 &m2, const idMat3 &m3 );
 //					explicit idMat6( const float src[ 6 ][ 6 ] );
@@ -1533,26 +1536,26 @@ var mat4_default = mat4_identity;
 //	bool			operator==( const idMat6 &a ) const;					// exact compare, no epsilon
 //	bool			operator!=( const idMat6 &a ) const;					// exact compare, no epsilon
 //
-//	void			Zero( void );
-//	void			Identity( void );
+//	void			Zero( );
+//	void			Identity( );
 //	bool			IsIdentity( const float epsilon = MATRIX_EPSILON ) const;
 //	bool			IsSymmetric( const float epsilon = MATRIX_EPSILON ) const;
 //	bool			IsDiagonal( const float epsilon = MATRIX_EPSILON ) const;
 //
 //	idMat3			SubMat3( int n ) const;
-//	float			Trace( void ) const;
-//	float			Determinant( void ) const;
-//	idMat6			Transpose( void ) const;	// returns transpose
-//	idMat6 &		TransposeSelf( void );
-//	idMat6			Inverse( void ) const;		// returns the inverse ( m * m.Inverse() = identity )
-//	bool			InverseSelf( void );		// returns false if determinant is zero
-//	idMat6			InverseFast( void ) const;	// returns the inverse ( m * m.Inverse() = identity )
-//	bool			InverseFastSelf( void );	// returns false if determinant is zero
+//	float			Trace( ) const;
+//	float			Determinant( ) const;
+//	idMat6			Transpose( ) const;	// returns transpose
+//	idMat6 &		TransposeSelf( );
+//	idMat6			Inverse( ) const;		// returns the inverse ( m * m.Inverse() = identity )
+//	bool			InverseSelf( );		// returns false if determinant is zero
+//	idMat6			InverseFast( ) const;	// returns the inverse ( m * m.Inverse() = identity )
+//	bool			InverseFastSelf( );	// returns false if determinant is zero
 //
-//	int				GetDimension( void ) const;
+//	int				GetDimension( ) const;
 //
-//	const float *	ToFloatPtr( void ) const;
-//	float *			ToFloatPtr( void );
+//	const float *	ToFloatPtr( ) const;
+//	float *			ToFloatPtr( );
 //	const char *	ToString( int precision = 2 ) const;
 //
 //private:
@@ -1563,7 +1566,7 @@ var mat4_default = mat4_identity;
 //extern idMat6 mat6_identity;
 //#define mat6_default	mat6_identity
 //
-//ID_INLINE idMat6::idMat6( void ) {
+//ID_INLINE idMat6::idMat6( ) {
 //}
 //
 //ID_INLINE idMat6::idMat6( const idMat3 &m0, const idMat3 &m1, const idMat3 &m2, const idMat3 &m3 ) {
@@ -1747,11 +1750,11 @@ var mat4_default = mat4_identity;
 //	return !Compare( a );
 //}
 //
-//ID_INLINE void idMat6::Zero( void ) {
+//ID_INLINE void idMat6::Zero( ) {
 //	memset( mat, 0, sizeof( idMat6 ) );
 //}
 //
-//ID_INLINE void idMat6::Identity( void ) {
+//ID_INLINE void idMat6::Identity( ) {
 //	*this = mat6_identity;
 //}
 //
@@ -1791,11 +1794,11 @@ var mat4_default = mat4_identity;
 //		mat[b0 + 2][b1 + 0], mat[b0 + 2][b1 + 1], mat[b0 + 2][b1 + 2] );
 //}
 //
-//ID_INLINE float idMat6::Trace( void ) const {
+//ID_INLINE float idMat6::Trace( ) const {
 //	return ( mat[0][0] + mat[1][1] + mat[2][2] + mat[3][3] + mat[4][4] + mat[5][5] );
 //}
 //
-//ID_INLINE idMat6 idMat6::Inverse( void ) const {
+//ID_INLINE idMat6 idMat6::Inverse( ) const {
 //	idMat6 invMat;
 //
 //	invMat = *this;
@@ -1807,7 +1810,7 @@ var mat4_default = mat4_identity;
 //	return invMat;
 //}
 //
-//ID_INLINE idMat6 idMat6::InverseFast( void ) const {
+//ID_INLINE idMat6 idMat6::InverseFast( ) const {
 //	idMat6 invMat;
 //
 //	invMat = *this;
@@ -1819,15 +1822,15 @@ var mat4_default = mat4_identity;
 //	return invMat;
 //}
 //
-//ID_INLINE int idMat6::GetDimension( void ) const {
+//ID_INLINE int idMat6::GetDimension( ) const {
 //	return 36;
 //}
 //
-//ID_INLINE const float *idMat6::ToFloatPtr( void ) const {
+//ID_INLINE const float *idMat6::ToFloatPtr( ) const {
 //	return mat[0].ToFloatPtr();
 //}
 //
-//ID_INLINE float *idMat6::ToFloatPtr( void ) {
+//ID_INLINE float *idMat6::ToFloatPtr( ) {
 //	return mat[0].ToFloatPtr();
 //}
 //
@@ -1850,10 +1853,10 @@ var mat4_default = mat4_identity;
 //
 //class idMatX {
 //public:
-//					idMatX( void );
+//					idMatX( );
 //					explicit idMatX( int rows, int columns );
 //					explicit idMatX( int rows, int columns, float *src );
-//					~idMatX( void );
+//					~idMatX( );
 //
 //	void			Set( int rows, int columns, const float *src );
 //	void			Set( const idMat3 &m1, const idMat3 &m2 );
@@ -1883,17 +1886,17 @@ var mat4_default = mat4_identity;
 //
 //	void			SetSize( int rows, int columns );								// set the number of rows/columns
 //	void			ChangeSize( int rows, int columns, bool makeZero = false );		// change the size keeping data intact where possible
-//	int				GetNumRows( void ) const { return numRows; }					// get the number of rows
-//	int				GetNumColumns( void ) const { return numColumns; }				// get the number of columns
+//	int				GetNumRows( ) const { return numRows; }					// get the number of rows
+//	int				GetNumColumns( ) const { return numColumns; }				// get the number of columns
 //	void			SetData( int rows, int columns, float *data );					// set float array pointer
-//	void			Zero( void );													// clear matrix
+//	void			Zero( );													// clear matrix
 //	void			Zero( int rows, int columns );									// set size and clear matrix
-//	void			Identity( void );												// clear to identity matrix
+//	void			Identity( );												// clear to identity matrix
 //	void			Identity( int rows, int columns );								// set size and clear to identity matrix
 //	void			Diag( const idVecX &v );										// create diagonal matrix from vector
 //	void			Random( int seed, float l = 0.0f, float u = 1.0f );				// fill matrix with random values
 //	void			Random( int rows, int columns, int seed, float l = 0.0f, float u = 1.0f );
-//	void			Negate( void );													// (*this) = - (*this)
+//	void			Negate( );													// (*this) = - (*this)
 //	void			Clamp( float min, float max );									// clamp all values
 //	idMatX &		SwapRows( int r1, int r2 );										// swap rows
 //	idMatX &		SwapColumns( int r1, int r2 );									// swap columns
@@ -1901,12 +1904,12 @@ var mat4_default = mat4_identity;
 //	idMatX &		RemoveRow( int r );												// remove a row
 //	idMatX &		RemoveColumn( int r );											// remove a column
 //	idMatX &		RemoveRowColumn( int r );										// remove a row and column
-//	void			ClearUpperTriangle( void );										// clear the upper triangle
-//	void			ClearLowerTriangle( void );										// clear the lower triangle
+//	void			ClearUpperTriangle( );										// clear the upper triangle
+//	void			ClearLowerTriangle( );										// clear the lower triangle
 //	void			SquareSubMatrix( const idMatX &m, int size );					// get square sub-matrix from 0,0 to size,size
 //	float			MaxDifference( const idMatX &m ) const;							// return maximum element difference between this and m
 //
-//	bool			IsSquare( void ) const { return ( numRows == numColumns ); }
+//	bool			IsSquare( ) const { return ( numRows == numColumns ); }
 //	bool			IsZero( const float epsilon = MATRIX_EPSILON ) const;
 //	bool			IsIdentity( const float epsilon = MATRIX_EPSILON ) const;
 //	bool			IsDiagonal( const float epsilon = MATRIX_EPSILON ) const;
@@ -1921,17 +1924,17 @@ var mat4_default = mat4_identity;
 //	bool			IsPositiveSemiDefinite( const float epsilon = MATRIX_EPSILON ) const;
 //	bool			IsSymmetricPositiveSemiDefinite( const float epsilon = MATRIX_EPSILON ) const;
 //
-//	float			Trace( void ) const;											// returns product of diagonal elements
-//	float			Determinant( void ) const;										// returns determinant of matrix
-//	idMatX			Transpose( void ) const;										// returns transpose
-//	idMatX &		TransposeSelf( void );											// transposes the matrix itself
-//	idMatX			Inverse( void ) const;											// returns the inverse ( m * m.Inverse() = identity )
-//	bool			InverseSelf( void );											// returns false if determinant is zero
-//	idMatX			InverseFast( void ) const;										// returns the inverse ( m * m.Inverse() = identity )
-//	bool			InverseFastSelf( void );										// returns false if determinant is zero
+//	float			Trace( ) const;											// returns product of diagonal elements
+//	float			Determinant( ) const;										// returns determinant of matrix
+//	idMatX			Transpose( ) const;										// returns transpose
+//	idMatX &		TransposeSelf( );											// transposes the matrix itself
+//	idMatX			Inverse( ) const;											// returns the inverse ( m * m.Inverse() = identity )
+//	bool			InverseSelf( );											// returns false if determinant is zero
+//	idMatX			InverseFast( ) const;										// returns the inverse ( m * m.Inverse() = identity )
+//	bool			InverseFastSelf( );										// returns false if determinant is zero
 //
-//	bool			LowerTriangularInverse( void );									// in-place inversion, returns false if determinant is zero
-//	bool			UpperTriangularInverse( void );									// in-place inversion, returns false if determinant is zero
+//	bool			LowerTriangularInverse( );									// in-place inversion, returns false if determinant is zero
+//	bool			UpperTriangularInverse( );									// in-place inversion, returns false if determinant is zero
 //
 //	idVecX			Multiply( const idVecX &vec ) const;							// (*this) * vec
 //	idVecX			TransposeMultiply( const idVecX &vec ) const;					// this->Transpose() * vec
@@ -1949,14 +1952,14 @@ var mat4_default = mat4_identity;
 //	void			Multiply( idMatX &dst, const idMatX &a ) const;					// dst = (*this) * a
 //	void			TransposeMultiply( idMatX &dst, const idMatX &a ) const;		// dst = this->Transpose() * a
 //
-//	int				GetDimension( void ) const;										// returns total number of values in matrix
+//	int				GetDimension( ) const;										// returns total number of values in matrix
 //
 //	const idVec6 &	SubVec6( int row ) const;										// interpret beginning of row as a const idVec6
 //	idVec6 &		SubVec6( int row );												// interpret beginning of row as an idVec6
 //	const idVecX	SubVecX( int row ) const;										// interpret complete row as a const idVecX
 //	idVecX			SubVecX( int row );												// interpret complete row as an idVecX
-//	const float *	ToFloatPtr( void ) const;										// pointer to const matrix float array
-//	float *			ToFloatPtr( void );												// pointer to matrix float array
+//	const float *	ToFloatPtr( ) const;										// pointer to const matrix float array
+//	float *			ToFloatPtr( );												// pointer to matrix float array
 //	const char *	ToString( int precision = 2 ) const;
 //
 //	void			Update_RankOne( const idVecX &v, const idVecX &w, float alpha );
@@ -1967,7 +1970,7 @@ var mat4_default = mat4_identity;
 //	void			Update_IncrementSymmetric( const idVecX &v );
 //	void			Update_Decrement( int r );
 //
-//	bool			Inverse_GaussJordan( void );					// invert in-place with Gauss-Jordan elimination
+//	bool			Inverse_GaussJordan( );					// invert in-place with Gauss-Jordan elimination
 //	bool			Inverse_UpdateRankOne( const idVecX &v, const idVecX &w, float alpha );
 //	bool			Inverse_UpdateRowColumn( const idVecX &v, const idVecX &w, int r );
 //	bool			Inverse_UpdateIncrement( const idVecX &v, const idVecX &w );
@@ -2000,7 +2003,7 @@ var mat4_default = mat4_identity;
 //	void			SVD_Inverse( idMatX &inv, const idVecX &w, const idMatX &V ) const;
 //	void			SVD_MultiplyFactors( idMatX &m, const idVecX &w, const idMatX &V ) const;
 //
-//	bool			Cholesky_Factor( void );						// factor in-place: L * L.Transpose()
+//	bool			Cholesky_Factor( );						// factor in-place: L * L.Transpose()
 //	bool			Cholesky_UpdateRankOne( const idVecX &v, float alpha, int offset = 0 );
 //	bool			Cholesky_UpdateRowColumn( const idVecX &v, int r );
 //	bool			Cholesky_UpdateIncrement( const idVecX &v );
@@ -2009,7 +2012,7 @@ var mat4_default = mat4_identity;
 //	void			Cholesky_Inverse( idMatX &inv ) const;
 //	void			Cholesky_MultiplyFactors( idMatX &m ) const;
 //
-//	bool			LDLT_Factor( void );							// factor in-place: L * D * L.Transpose()
+//	bool			LDLT_Factor( );							// factor in-place: L * D * L.Transpose()
 //	bool			LDLT_UpdateRankOne( const idVecX &v, float alpha, int offset = 0 );
 //	bool			LDLT_UpdateRowColumn( const idVecX &v, int r );
 //	bool			LDLT_UpdateIncrement( const idVecX &v );
@@ -2019,7 +2022,7 @@ var mat4_default = mat4_identity;
 //	void			LDLT_UnpackFactors( idMatX &L, idMatX &D ) const;
 //	void			LDLT_MultiplyFactors( idMatX &m ) const;
 //
-//	void			TriDiagonal_ClearTriangles( void );
+//	void			TriDiagonal_ClearTriangles( );
 //	bool			TriDiagonal_Solve( idVecX &x, const idVecX &b ) const;
 //	void			TriDiagonal_Inverse( idMatX &inv ) const;
 //
@@ -2029,7 +2032,7 @@ var mat4_default = mat4_identity;
 //	void			Eigen_SortIncreasing( idVecX &eigenValues );
 //	void			Eigen_SortDecreasing( idVecX &eigenValues );
 //
-//	static void		Test( void );
+//	static void		Test( );
 //
 //private:
 //	int				numRows;				// number of rows
@@ -2043,8 +2046,8 @@ var mat4_default = mat4_identity;
 //
 //private:
 //	void			SetTempSize( int rows, int columns );
-//	float			DeterminantGeneric( void ) const;
-//	bool			InverseSelfGeneric( void );
+//	float			DeterminantGeneric( ) const;
+//	bool			InverseSelfGeneric( );
 //	void			QR_Rotate( idMatX &R, int i, float a, float b );
 //	float			Pythag( float a, float b ) const;
 //	void			SVD_BiDiag( idVecX &w, idVecX &rv1, float &anorm );
@@ -2056,12 +2059,12 @@ var mat4_default = mat4_identity;
 //	bool			HessenbergToRealSchur( idMatX &H, idVecX &realEigenValues, idVecX &imaginaryEigenValues );
 //};
 //
-//ID_INLINE idMatX::idMatX( void ) {
+//ID_INLINE idMatX::idMatX( ) {
 //	numRows = numColumns = alloced = 0;
 //	mat = NULL;
 //}
 //
-//ID_INLINE idMatX::~idMatX( void ) {
+//ID_INLINE idMatX::~idMatX( ) {
 //	// if not temp memory
 //	if ( mat != NULL && ( mat < idMatX::tempPtr || mat > idMatX::tempPtr + MATX_MAX_TEMP ) && alloced != -1 ) {
 //		Mem_Free16( mat );
@@ -2353,7 +2356,7 @@ var mat4_default = mat4_identity;
 //	MATX_CLEAREND();
 //}
 //
-//ID_INLINE void idMatX::Zero( void ) {
+//ID_INLINE void idMatX::Zero( ) {
 //#ifdef MATX_SIMD
 //	SIMDProcessor->Zero16( mat, numRows * numColumns );
 //#else
@@ -2370,7 +2373,7 @@ var mat4_default = mat4_identity;
 //#endif
 //}
 //
-//ID_INLINE void idMatX::Identity( void ) {
+//ID_INLINE void idMatX::Identity( ) {
 //	assert( numRows == numColumns );
 //#ifdef MATX_SIMD
 //	SIMDProcessor->Zero16( mat, numRows * numColumns );
@@ -2420,7 +2423,7 @@ var mat4_default = mat4_identity;
 //	}
 //}
 //
-//ID_INLINE void idMatX::Negate( void ) {
+//ID_INLINE void idMatX::Negate( ) {
 //#ifdef MATX_SIMD
 //	SIMDProcessor->Negate16( mat, numRows * numColumns );
 //#else
@@ -2476,14 +2479,14 @@ var mat4_default = mat4_identity;
 //	return *this;
 //}
 //
-//ID_INLINE void idMatX::ClearUpperTriangle( void ) {
+//ID_INLINE void idMatX::ClearUpperTriangle( ) {
 //	assert( numRows == numColumns );
 //	for ( int i = numRows-2; i >= 0; i-- ) {
 //		memset( mat + i * numColumns + i + 1, 0, (numColumns - 1 - i) * sizeof(float) );
 //	}
 //}
 //
-//ID_INLINE void idMatX::ClearLowerTriangle( void ) {
+//ID_INLINE void idMatX::ClearLowerTriangle( ) {
 //	assert( numRows == numColumns );
 //	for ( int i = 1; i < numRows; i++ ) {
 //		memset( mat + i * numColumns, 0, i * sizeof(float) );
@@ -2589,7 +2592,7 @@ var mat4_default = mat4_identity;
 //	return true;
 //}
 //
-//ID_INLINE float idMatX::Trace( void ) const {
+//ID_INLINE float idMatX::Trace( ) const {
 //	float trace = 0.0f;
 //
 //	assert( numRows == numColumns );
@@ -2601,7 +2604,7 @@ var mat4_default = mat4_identity;
 //	return trace;
 //}
 //
-//ID_INLINE float idMatX::Determinant( void ) const {
+//ID_INLINE float idMatX::Determinant( ) const {
 //
 //	assert( numRows == numColumns );
 //
@@ -2624,7 +2627,7 @@ var mat4_default = mat4_identity;
 //	return 0.0f;
 //}
 //
-//ID_INLINE idMatX idMatX::Transpose( void ) const {
+//ID_INLINE idMatX idMatX::Transpose( ) const {
 //	idMatX transpose;
 //	int i, j;
 //
@@ -2639,12 +2642,12 @@ var mat4_default = mat4_identity;
 //	return transpose;
 //}
 //
-//ID_INLINE idMatX &idMatX::TransposeSelf( void ) {
+//ID_INLINE idMatX &idMatX::TransposeSelf( ) {
 //	*this = Transpose();
 //	return *this;
 //}
 //
-//ID_INLINE idMatX idMatX::Inverse( void ) const {
+//ID_INLINE idMatX idMatX::Inverse( ) const {
 //	idMatX invMat;
 //
 //	invMat.SetTempSize( numRows, numColumns );
@@ -2657,7 +2660,7 @@ var mat4_default = mat4_identity;
 //	return invMat;
 //}
 //
-//ID_INLINE bool idMatX::InverseSelf( void ) {
+//ID_INLINE bool idMatX::InverseSelf( ) {
 //
 //	assert( numRows == numColumns );
 //
@@ -2683,7 +2686,7 @@ var mat4_default = mat4_identity;
 //	}
 //}
 //
-//ID_INLINE idMatX idMatX::InverseFast( void ) const {
+//ID_INLINE idMatX idMatX::InverseFast( ) const {
 //	idMatX invMat;
 //
 //	invMat.SetTempSize( numRows, numColumns );
@@ -2696,7 +2699,7 @@ var mat4_default = mat4_identity;
 //	return invMat;
 //}
 //
-//ID_INLINE bool idMatX::InverseFastSelf( void ) {
+//ID_INLINE bool idMatX::InverseFastSelf( ) {
 //
 //	assert( numRows == numColumns );
 //
@@ -2975,7 +2978,7 @@ var mat4_default = mat4_identity;
 //#endif
 //}
 //
-//ID_INLINE int idMatX::GetDimension( void ) const {
+//ID_INLINE int idMatX::GetDimension( ) const {
 //	return numRows * numColumns;
 //}
 //
@@ -3003,11 +3006,11 @@ var mat4_default = mat4_identity;
 //	return v;
 //}
 //
-//ID_INLINE const float *idMatX::ToFloatPtr( void ) const {
+//ID_INLINE const float *idMatX::ToFloatPtr( ) const {
 //	return mat;
 //}
 //
-//ID_INLINE float *idMatX::ToFloatPtr( void ) {
+//ID_INLINE float *idMatX::ToFloatPtr( ) {
 //	return mat;
 //}
 //

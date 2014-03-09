@@ -138,7 +138,7 @@ class idThread extends idClass {
 	//	bool						manualControl;
 	//
 	static threadIndex:number /*int*/;
-	static threadList = new idList<idThread>(idThread);
+	static threadList = new idList<idThread>(idThread, false, 16, true);
 	
 	static trace = new trace_t;
 	

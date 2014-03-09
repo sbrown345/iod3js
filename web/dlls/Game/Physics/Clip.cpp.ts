@@ -282,7 +282,7 @@ class idClipModel {
 ////===============================================================
 ////*/
 ////
-	static traceModelCache = new idList<trmCache_t>(trmCache_t);
+	static traceModelCache = new idList<trmCache_t>(trmCache_t, false, 16, true);
 	static traceModelHash = new idHashIndex;
 ////	
 /////*

@@ -225,11 +225,15 @@ class idPlane {
 	//ID_INLINE bool idPlane::operator!=( const idPlane &p ) const {
 	//	return !Compare( p );
 	//}
-	//
-	//ID_INLINE void idPlane::Zero( void ) {
-	//	a = b = c = d = 0.0;
-	//}
-	//
+
+	init ( ): void {
+		this.Zero ( );
+	}
+
+	Zero ( ): void {
+		this.a = this.b = this.c = this.d = 0.0;
+	}
+
 	SetNormal(normal: idVec3 ):void {
 		this.a = normal.x;
 		this.b = normal.y;

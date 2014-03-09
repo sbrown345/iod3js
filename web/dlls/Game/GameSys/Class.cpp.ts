@@ -545,8 +545,8 @@ class idClass {
 	//Event_SafeRemove(): void { throw "placeholder"; }
 	////
 	static initialized:boolean = false;
-	static types = new idList<idTypeInfo>(idTypeInfo);
-	static typenums = new idList<idTypeInfo>(idTypeInfo);
+	static types = new idList<idTypeInfo>(idTypeInfo, false, 16, true);
+	static typenums = new idList<idTypeInfo>(idTypeInfo, false, 16, true);
 	static typeNumBits:number = 0;
 	static memused:number = 0;
 	static numobjects:number = 0;

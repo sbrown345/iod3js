@@ -436,8 +436,8 @@ class idCVarSystem {
 
 	////private:
 	initialized: boolean;
-	/*idList<idInternalCVar*>	*/  cvars: idList<idInternalCVar>;
-	/*	idHashIndex				*/  cvarHash: idHashIndex;
+	/*idList<idInternalCVar*>	*/  cvars = new idList<idInternalCVar>(idInternalCVar, false, 16, true);
+	/*	idHashIndex				*/  cvarHash = new idHashIndex();
 	modifiedFlags: number;
 	////							// use a static dictionary to MoveCVarsToDict can be used from game
 	////	static idDict			moveCVarsToDict;
@@ -463,10 +463,13 @@ class idCVarSystem {
 	////#define NUM_DESCRIPTION_CHARS	( NUM_COLUMNS - NUM_NAME_CHARS )
 	////#define FORMAT_STRING			"%-32s "
 
+/*
+============
+idCVarSystemLocal::idCVarSystemLocal
+============
+*/
 	constructor() {
 		this.initialized = false;
-		this.cvars = new idList<idInternalCVar>(idInternalCVar);
-		this.cvarHash = new idHashIndex();
 		this.modifiedFlags = 0;
 	}
 

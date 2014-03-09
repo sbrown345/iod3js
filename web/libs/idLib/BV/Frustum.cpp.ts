@@ -165,13 +165,13 @@ class idFrustum {
 //	bool			ClippedProjectionBounds( const idFrustum & frustum, const idBox & clipBox, idBounds & projectionBounds ) const;
 
 //private:
-//	idVec3			origin;		// frustum origin
-//	idMat3			axis;		// frustum orientation
-//	float			dNear;		// distance of near plane, dNear >= 0.0f
-//	float			dFar;		// distance of far plane, dFar > dNear
-//	float			dLeft;		// half the width at the far plane
-//	float			dUp;		// half the height at the far plane
-//	float			invFar;		// 1.0f / dFar
+	origin = new idVec3;		// frustum origin
+	axis = new idMat3;		// frustum orientation
+	dNear:number/*float*/;		// distance of near plane, dNear >= 0.0f
+	dFar:number/*float*/;		// distance of far plane, dFar > dNear
+	dLeft:number/*float*/;		// half the width at the far plane
+	dUp:number/*float*/;		// half the height at the far plane
+	invFar:number/*float*/;		// 1.0f / dFar
 
 //private:
 //	bool			CullLocalBox( const idVec3 & localOrigin, const idVec3 & extents, const idMat3 & localAxis ) const;
@@ -195,48 +195,58 @@ class idFrustum {
 //};
 
 
-//ID_INLINE idFrustum::idFrustum( void ) {
-//	dNear = dFar = 0.0f;
-//}
+	init ( ): void {
+		this.origin.Zero ( );
+		this.axis.Zero();
+		this.dNear = 0;
+		this.dFar = 0;
+		this.dLeft = 0;
+		this.dUp = 0;
+		this.invFar = 0;
+	}
+
+	constructor ( ) {
+		this.dNear = this.dFar = 0.0;
+	}
 
 //ID_INLINE void idFrustum::SetOrigin( const idVec3 & origin ) {
-//	this- > origin = origin;
+//	this. origin = origin;
 //}
 
 //ID_INLINE void idFrustum::SetAxis( const idMat3 & axis ) {
-//	this- > axis = axis;
+//	this. axis = axis;
 //}
 
 //ID_INLINE void idFrustum::SetSize(float dNear, float dFar, float dLeft, float dUp) {
 //	assert(dNear >= 0.0f && dFar > dNear && dLeft > 0.0f && dUp > 0.0f);
-//	this- > dNear = dNear;
-//	this- > dFar = dFar;
-//	this- > dLeft = dLeft;
-//	this- > dUp = dUp;
-//	this- > invFar = 1.0f / dFar;
+//	this. dNear = dNear;
+//	this. dFar = dFar;
+//	this. dLeft = dLeft;
+//	this. dUp = dUp;
+//	this. invFar = 1.0f / dFar;
 //}
 
 //ID_INLINE void idFrustum::SetPyramid(float dNear, float dFar) {
 //	assert(dNear >= 0.0f && dFar > dNear);
-//	this- > dNear = dNear;
-//	this- > dFar = dFar;
-//	this- > dLeft = dFar;
-//	this- > dUp = dFar;
-//	this- > invFar = 1.0f / dFar;
+//	this. dNear = dNear;
+//	this. dFar = dFar;
+//	this. dLeft = dFar;
+//	this. dUp = dFar;
+//	this. invFar = 1.0f / dFar;
 //}
 
 //ID_INLINE void idFrustum::MoveNearDistance(float dNear) {
 //	assert(dNear >= 0.0f);
-//	this- > dNear = dNear;
+//	this. dNear = dNear;
 //}
 
 //ID_INLINE void idFrustum::MoveFarDistance(float dFar) {
-//	assert(dFar > this- > dNear);
-//	float scale = dFar / this- > dFar;
-//	this- > dFar = dFar;
-//	this- > dLeft *= scale;
-//	this- > dUp *= scale;
-//	this- > invFar = 1.0f / dFar;
+//	assert(dFar > this. dNear);
+//	float scale = dFar / this. dFar;
+//	this. dFar = dFar;
+//	this. dLeft *= scale;
+//	this. dUp *= scale;
+//	this. invFar = 1.0f / dFar;
 //}
 
 //ID_INLINE const idVec3 &idFrustum::GetOrigin( void ) const {

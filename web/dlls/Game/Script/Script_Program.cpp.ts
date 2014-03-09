@@ -490,10 +490,10 @@ class idProgram {
 	variableDefaults = new idStaticList</*byte*/number>(Number, MAX_GLOBALS);
 	functions = new idStaticList<function_t>(function_t,MAX_FUNCS);
 	statements = new idStaticList<statement_t>(statement_t,MAX_STATEMENTS);
-	types = new idList<idTypeDef>(idTypeDef);
-	varDefNames = new idList<idVarDefName>(idVarDefName);
+	types = new idList<idTypeDef>(idTypeDef, false, 16, true);
+	varDefNames = new idList<idVarDefName>(idVarDefName, false, 16, true);
 	varDefNameHash = new idHashIndex;
-	varDefs = new idList<idVarDef>	(idVarDef);
+	varDefs = new idList<idVarDef>(idVarDef, false, 16, true);
 
 	sysDef:idVarDef;
 

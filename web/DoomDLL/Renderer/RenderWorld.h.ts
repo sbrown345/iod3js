@@ -244,23 +244,45 @@ class renderLight_t {
 class renderView_t {
 	// player views will set this to a non-zero integer for model suppress / allow
 	// subviews (mirrors, cameras, etc) will always clear it to zero
-	viewID:number; //0
+	viewID: number; //0
 
 	// sized from 0 to SCREEN_WIDTH / SCREEN_HEIGHT (640/480), not actual resolution
-	x: number; y:number ;width:number ;height:number;//int						
+	x: number;
+	y: number;
+	width: number;
+	height: number; //int						
 
-	fov_x:number; fov_y:number;//float					
+	fov_x: number;
+	fov_y: number; //float					
 	vieworg = new idVec3;
-	viewaxis = new idMat3;			// transformation matrix, view looks down the positive X axis
+	viewaxis = new idMat3; // transformation matrix, view looks down the positive X axis
 
-	cramZNear: boolean;			// for cinematics, we want to set ZNear much lower
-	forceUpdate:boolean;		// for an update 
+	cramZNear: boolean; // for cinematics, we want to set ZNear much lower
+	forceUpdate: boolean; // for an update 
 
 	// time in milliseconds for shader effects and other time dependent rendering issues
-	time:number//int;
-	shaderParms = new Float32Array(MAX_GLOBAL_SHADER_PARMS);		// can be used in any way by shader
-	globalMaterial: idMaterial;							// used to override everything draw
-};
+	time: number //int;
+	shaderParms = new Float32Array( MAX_GLOBAL_SHADER_PARMS ); // can be used in any way by shader
+	globalMaterial: idMaterial; // used to override everything draw
+
+	init ( ): void {
+		this.viewID = 0;
+		this.x = 0;
+		this.y = 0;
+		this.width = 0;
+		this.height = 0;
+		this.fov_x = 0;
+		this.fov_y = 0;
+		this.vieworg.Zero ( );
+		this.viewaxis.Zero ( );
+		this.cramZNear = false;
+		this.forceUpdate = false;
+		this.time = 0;
+		memset( this.shaderParms, 0, sizeof( this.shaderParms ) );
+		this.globalMaterial = null;
+	}
+}
+
 //
 //
 //// exitPortal_t is returned by idRenderWorld::GetPortal()

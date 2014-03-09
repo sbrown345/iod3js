@@ -180,7 +180,7 @@ class idDeclFile {
     constructor( fileName:string, defaultType:declType_t )
     constructor( fileName?:string, defaultType?:declType_t ) {
         if( arguments.length === 2 ) {
-            this.fileName = new idStr(fileName);
+	        this.fileName.equals( fileName );
             this.defaultType = defaultType;
             this.timestamp = 0;
             this.checksum = 0;
@@ -188,7 +188,7 @@ class idDeclFile {
             this.numLines = 0;
             this.decls = /*NULL*/null;
         } else {
-            this.fileName = new idStr("<implicit file>");
+	        this.fileName.equals( "<implicit file>" );
             this.defaultType = declType_t.DECL_MAX_TYPES;
             this.timestamp = 0;
             this.checksum = 0;
@@ -202,7 +202,7 @@ class idDeclFile {
     LoadAndParse():number{throw "placeholder";}
 
 ////public:
-	/*idStr						*/fileName:idStr;
+	/*idStr						*/fileName = new idStr;
 	/*declType_t				*/defaultType:declType_t;
     
 	/*ID_TIME_T					*/timestamp:number;
@@ -262,10 +262,10 @@ class idDeclManagerLocal extends idDeclManager {
 	GetImplicitDeclFile ( ): idDeclFile { return this.implicitDecls; }
 
 //private:
-/*	idList<idDeclType *>		*/  declTypes:idList<idDeclType>;
-	/*idList<idDeclFolder *>		*/declFolders:idList<idDeclFolder>;
+	declTypes = new idList<idDeclType>(idDeclType, false, 16, true)
+	declFolders = new idList<idDeclFolder>(idDeclFolder, false, 16, true);
 
-/*	idList<idDeclFile *>		*/loadedFiles:idList<idDeclFile>;
+	loadedFiles = new idList<idDeclFile>(idDeclFile, false, 16, true);
     hashTables:idHashIndex[/*declType_t.DECL_MAX_TYPES*/];
 /*	idList<idDeclLocal *>		*/linearLists:idList<idDeclLocal>[]/*[declType_t.DECL_MAX_TYPES]*/;
                                 implicitDecls:idDeclFile;	// this holds all the decls that were created because explicit
@@ -279,13 +279,10 @@ class idDeclManagerLocal extends idDeclManager {
 
     constructor() {
         super();
-        this.declTypes = new idList<idDeclType>( idDeclType );
-        this.declFolders = new idList<idDeclFolder>( idDeclFolder );
-        this.loadedFiles = new idList<idDeclFile>( idDeclFile );
         this.hashTables = newStructArray<idHashIndex>( idHashIndex, declType_t.DECL_MAX_TYPES );
 		this.linearLists = new Array(declType_t.DECL_MAX_TYPES);
 	    for ( var i = 0; i < declType_t.DECL_MAX_TYPES; i++ ) {
-			this.linearLists[i] = new idList<idDeclLocal>(idDeclLocal);
+			this.linearLists[i] = new idList<idDeclLocal>(idDeclLocal, false, 16, true);
 	    }
         this.implicitDecls = new idDeclFile( );
         this.checksum = 0;
@@ -1004,7 +1001,7 @@ idDeclManagerLocal::RegisterDeclFolder
 */
 idDeclManagerLocal.prototype.RegisterDeclFolder = function ( folder: string, extension: string, defaultType: declType_t ) {
     var /*int*/ i: number, j: number;
-    var fileName: idStr;
+    var fileName = new idStr;
     var declFolder: idDeclFolder;
     var fileList: idFileList;
     var df:idDeclFile;
@@ -1030,7 +1027,7 @@ idDeclManagerLocal.prototype.RegisterDeclFolder = function ( folder: string, ext
 
     // load and parse decl files
     for ( i = 0; i < fileList.GetNumFiles ( ); i++ ) {
-        fileName = new idStr( declFolder.folder + "/" + fileList.GetFile( i ) );
+	    fileName.equals( declFolder.folder + "/" + fileList.GetFile( i ) );
 
 		dlog(DEBUG_RegisterDeclFolder, "fileName: %s\n", fileName);
         // check whether this file has already been loaded

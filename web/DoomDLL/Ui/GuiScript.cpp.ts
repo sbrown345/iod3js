@@ -623,7 +623,7 @@ idGuiScript::Parse
 }
 
 class idGuiScriptList {
-	list = new idList<idGuiScript>(idGuiScript);
+	list = new idList<idGuiScript>(idGuiScript, false, 16, true);
 ////public:
 	constructor ( ) { this.list.SetGranularity( 4 ); }
 	destructor ( ) { this.list.DeleteContents( true ); }

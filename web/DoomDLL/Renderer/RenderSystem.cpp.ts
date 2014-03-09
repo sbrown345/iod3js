@@ -277,14 +277,14 @@ class idRenderSystem {
 //														// determines how much overbrighting needs
 //														// to be done post-process
 
-/*idVec4					*/ambientLightVector:idVec4;	// used for "ambient bump mapping"
+/*idVec4					*/ambientLightVector = new idVec4;	// used for "ambient bump mapping"
 
 /*	float					*/sortOffset:number;				// for determinist sorting of equal sort materials
 
-	worlds: idList<idRenderWorldLocal>;
+	worlds = new idList<idRenderWorldLocal>(idRenderWorldLocal);
 
 	primaryWorld: idRenderWorldLocal;
-	primaryRenderView: renderView_t;
+	primaryRenderView = new renderView_t;
 	primaryView:viewDef_t;
 //	// many console commands need to know which world they should operate on
 
@@ -297,24 +297,24 @@ class idRenderSystem {
 
 	viewDef: viewDef_t;
 
-	pc: performanceCounters_t;					// performance counters
+	pc = new performanceCounters_t;					// performance counters
 
-	lockSurfacesCmd: drawSurfsCommand_t;	// use this when r_lockSurfaces = 1
+	lockSurfacesCmd = new drawSurfsCommand_t;	// use this when r_lockSurfaces = 1
 
-    identitySpace:viewEntity_t;		            // can use if we don't know viewDef.worldSpace is valid
+    identitySpace = new viewEntity_t;		            // can use if we don't know viewDef.worldSpace is valid
 	logFile:FILE;			// for logging GL calls and frame breaks
 
 	/*int*/stencilIncr:number; stencilDecr:number;	// GL_INCR / INCR_WRAP_EXT, GL_DECR / GL_DECR_EXT
 
-	renderCrops:renderCrop_t[/*MAX_RENDER_CROPS*/];
+	renderCrops = newStructArray<renderCrop_t>(renderCrop_t, MAX_RENDER_CROPS);
 	/*int*/currentRenderCrop:number;
 
 	// GUI drawing variables for surface creation
 	/*int*/guiRecursionLevel:number;		// to prevent infinite overruns
 	guiModel:idGuiModel;
-	demoGuiModel:idGuiModel;
+	demoGuiModel: idGuiModel;
 
-/*	unsigned short*/		gammaTable:Uint8Array;	// brightness / gamma modify this
+	gammaTable = new Uint8Array( 256 );// brightness / gamma modify this
 
     constructor ( ) {
 	    this.Clear ( );
@@ -1971,34 +1971,34 @@ Clear( ) {
 	this.viewCount = 0;
 	this.staticAllocCount = 0;
 	this.frameShaderTime = 0.0;
-	this.viewportOffset = [0, 0];
-	this.tiledViewport = [0, 0];
+	this.viewportOffset[0] = 0;
+	this.viewportOffset[1] = 0;
+	this.tiledViewport[0] = 0;
+	this.tiledViewport[1] = 0;
 	this.backEndRenderer = backEndName_t.BE_BAD;
 	this.backEndRendererMaxLight = 1.0;
-	this.ambientLightVector = new idVec4();
 	this.ambientLightVector.Zero();
 	this.sortOffset = 0;
-	this.worlds = new idList<idRenderWorldLocal>( idRenderWorldLocal );
 	this.worlds.Clear();
 	this.primaryWorld = null;
-	this.primaryRenderView = new renderView_t ( );
+	this.primaryRenderView.init ( );
 	this.primaryView = null;
 	this.defaultMaterial = null;
 	this.testImage = null;
 	this.ambientCubeImage = null;
 	this.viewDef = null;
-	this.pc = new performanceCounters_t;
-	this.lockSurfacesCmd = new drawSurfsCommand_t;
-	this.identitySpace = new viewEntity_t;
+	this.pc.init ( );
+	this.lockSurfacesCmd.init ( );
+	this.identitySpace.init ( );
 	this.logFile = null;
 	this.stencilIncr = 0;
 	this.stencilDecr = 0;
-	this.renderCrops = newStructArray<renderCrop_t>( renderCrop_t, MAX_RENDER_CROPS );
+	clearStructArray( this.renderCrops );
 	this.currentRenderCrop = 0;
 	this.guiRecursionLevel = 0;
 	this.guiModel = null;
 	this.demoGuiModel = null;
-	this.gammaTable = new Uint8Array(256);//	this.memset( gammaTable, 0, sizeof( gammaTable ) );
+	memset( this.gammaTable, 0, sizeof( this.gammaTable ) );
 	this.takingScreenshot = false;
 }
 
