@@ -148,10 +148,10 @@ class idWinBool extends idWinVar {
 		return other == this.data;
 	}
 
-	equalsBool(	other :boolean):boolean {
+	equalsBool ( other: boolean ): boolean {
 		this.data = other;
-		if (this.guiDict) {
-			this.guiDict.SetBool(this.GetName(), this.data);
+		if ( this.guiDict ) {
+			this.guiDict.SetBool( this.GetName ( ), this.data );
 		}
 		return this.data;
 	}
