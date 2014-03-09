@@ -82,12 +82,12 @@ class idDeclSkin extends idDecl {
 ////	mappings.Clear();
 ////}
 ////
-/////*
-////================
-////idDeclSkin::Parse
-////================
-////*/
-////bool idDeclSkin::Parse( text:string, const int textLength ) {
+/*
+================
+idDeclSkin::Parse
+================
+*/
+	Parse(text: string, textLength: number): boolean { todoThrow();
 ////	idLexer src;
 ////	idToken	token, token2;
 ////
@@ -130,8 +130,8 @@ class idDeclSkin extends idDecl {
 ////		mappings.Append( map );
 ////	}
 ////
-////	return false;
-////}
+	return false;
+}
 ////
 /////*
 ////================

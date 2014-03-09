@@ -44,7 +44,7 @@ class idDeclEmail extends idDecl {
 ////
 ////	virtual size_t			Size( void ) const;
 ////	virtual const char *	DefaultDefinition( void ) const;
-////	virtual bool			Parse( text:string, const int textLength );
+	Parse ( text: string, textLength: number ): boolean {todoThrow ( );return false}
 ////	virtual void			FreeData( void );
 ////	virtual void			Print( void ) const;
 ////	virtual void			List( void ) const;
@@ -72,7 +72,7 @@ class idDeclVideo extends idDecl {
 ////
 ////	virtual size_t			Size( void ) const;
 ////	virtual const char *	DefaultDefinition( void ) const;
-////	virtual bool			Parse( text:string, const int textLength );
+	Parse(text: string, textLength: number): boolean { todoThrow();return false }
 ////	virtual void			FreeData( void );
 ////	virtual void			Print( void ) const;
 ////	virtual void			List( void ) const;
@@ -97,8 +97,8 @@ class idDeclAudio extends idDecl {
 ////							idDeclAudio() {};
 ////
 ////	virtual size_t			Size( void ) const;
-////	virtual const char *	DefaultDefinition( void ) const;
-////	virtual bool			Parse( text:string, const int textLength );
+	////	virtual const char *	DefaultDefinition( void ) const;
+	Parse(text: string, textLength: number): boolean { todoThrow();return false }
 ////	virtual void			FreeData( void );
 ////	virtual void			Print( void ) const;
 ////	virtual void			List( void ) const;
@@ -121,8 +121,8 @@ class idDeclPDA extends idDecl {
 ////							idDeclPDA() { originalEmails = originalVideos = 0; };
 ////
 ////	virtual size_t			Size( void ) const;
-////	virtual const char *	DefaultDefinition( void ) const;
-////	virtual bool			Parse( text:string, const int textLength );
+	////	virtual const char *	DefaultDefinition( void ) const;
+	Parse(text: string, textLength: number): boolean { todoThrow();return false }
 ////	virtual void			FreeData( void );
 ////	virtual void			Print( void ) const;
 ////	virtual void			List( void ) const;

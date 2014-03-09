@@ -70,13 +70,7 @@
 //
 class idDeclParticle extends idDecl {
 ////public:
-////
-////	virtual size_t			Size( void ) const;
-////	virtual const char *	DefaultDefinition( void ) const;
-////	virtual bool			Parse( text:string, const int textLength );
-////	virtual void			FreeData( void );
-////
-////	bool					Save( const char *fileName = NULL );
+
 ////
 ////	idList<idParticleStage *>stages;
 ////	idBounds				bounds;
@@ -442,12 +436,13 @@ class idDeclParticle extends idDecl {
 ////	return stage;
 ////}
 ////
-/////*
-////================
-////idDeclParticle::Parse
-////================
-////*/
-////bool idDeclParticle::Parse( text:string, const int textLength ) {
+/*
+================
+idDeclParticle::Parse
+================
+*/
+	Parse(text: string, textLength: number): boolean {
+		todoThrow ( );
 ////	idLexer src;
 ////	idToken	token;
 ////
@@ -500,8 +495,8 @@ class idDeclParticle extends idDecl {
 ////		bounds = idBounds( vec3_origin ).Expand( 8.0f );
 ////	}
 ////
-////	return true;
-////}
+	return true;
+}
 ////
 /////*
 ////================

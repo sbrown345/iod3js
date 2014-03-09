@@ -324,7 +324,7 @@ class idDeclModelDef extends idDecl {
 //
 //	virtual size_t				Size( ) const;
 //	virtual const char *		DefaultDefinition( ) const;
-//	virtual bool				Parse( text:string, const int textLength );
+	Parse(text: string, textLength: number): boolean { todoThrow();return false }
 //	virtual void				FreeData( );
 //
 //	void						Touch( ) const;

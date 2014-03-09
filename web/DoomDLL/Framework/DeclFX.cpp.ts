@@ -92,14 +92,7 @@ var
 // grouped fx structures
 //
 class idDeclFX extends idDecl {
-////public:
-////	virtual size_t			Size( void ) const;
-////	virtual const char *	DefaultDefinition( void ) const;
-////	virtual bool			Parse( text:string, const int textLength );
-////	virtual void			FreeData( void );
-////	virtual void			Print( void ) const;
-////	virtual void			List( void ) const;
-////
+
 ////	idList<idFXSingleAction>events;
 ////	idStr					joint;
 ////
@@ -482,12 +475,13 @@ class idDeclFX extends idDecl {
 ////	}
 ////}
 ////
-/////*
-////================
-////idDeclFX::Parse
-////================
-////*/
-////bool idDeclFX::Parse( text:string, const int textLength ) {
+/*
+================
+idDeclFX::Parse
+================
+*/
+	Parse ( text: string, textLength: number ): boolean {
+		todoThrow ( );
 ////	idLexer src;
 ////	idToken token;
 ////
@@ -524,8 +518,8 @@ class idDeclFX extends idDecl {
 ////		src.Warning( "FX decl '%s' had a parse error", GetName() );
 ////		return false;
 ////	}
-////	return true;
-////}
+		return true;
+	}
 ////
 /////*
 ////===================
