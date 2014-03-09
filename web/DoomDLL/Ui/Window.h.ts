@@ -115,6 +115,14 @@ class wexpOp_t {
 		this.c = 0;
 		this.d = 0;
 	}
+	
+	static typeInfo = new TypeInfo(shaderStage_t, [
+		["opType", ""],
+		["a", ""],
+		["b", ""],
+		["c", ""],
+		["d", ""],
+	]);
 }
 
 class idRegEntry {

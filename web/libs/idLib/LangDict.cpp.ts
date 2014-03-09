@@ -33,6 +33,13 @@ class idLangKeyValue {
 //public:
 	key = new idStr;
 	value = new idStr;
+
+	copy ( ): idLangKeyValue {
+		var other = new idLangKeyValue;
+		other.key.equals( this.key );
+		other.value.equals( this.value );
+		return other;
+	}
 };
 
 class idLangDict {

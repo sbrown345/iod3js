@@ -28,21 +28,26 @@
 
 
 class guiModelSurface_t {
-	/*const idMaterial	*/  material:idMaterial;
-	/*float				*/  color:Float32Array/*[4]*/;
-	/*int				*/	firstVert:number;
-	/*int				*/	numVerts:number;
-	/*int				*/	firstIndex:number;
-	/*int				*/	numIndexes:number;
+	material = new idMaterial;
+	color = new Float32Array( 4 );
+	firstVert = 0 /*int*/;
+	numVerts = 0 /*int*/;
+	firstIndex = 0 /*int*/;
+	numIndexes = 0 /*int*/;
 
-    constructor() {
-        this.material = new idMaterial;
-        this.color = new Float32Array(4);
-        this.firstVert = 0;
-        this.numVerts = 0;
-        this.firstIndex = 0;
-        this.numIndexes = 0;
-    }
+	copy ( ): guiModelSurface_t {
+		var other = new guiModelSurface_t;
+		other.material = this.material;
+		other.color[0] = this.color[0];
+		other.color[1] = this.color[1];
+		other.color[2] = this.color[2];
+		other.color[3] = this.color[3];
+		other.firstVert = this.firstVert;
+		other.numVerts = this.numVerts;
+		other.firstIndex = this.firstIndex;
+		other.numIndexes = this.numIndexes;
+		return other;
+	}
 }
 
 ////class idGuiModel {

@@ -34,8 +34,13 @@
 ////class idSimpleWindow;
 
 class drawWin_t {
-	win:idWindow;
-	simp:idSimpleWindow ;
+	win: idWindow;
+	simp: idSimpleWindow;
+
+	static typeInfo = new TypeInfo( drawWin_t, [
+		["win", ""],
+		["simp", ""]
+	] );
 }
 
 class idSimpleWindow {

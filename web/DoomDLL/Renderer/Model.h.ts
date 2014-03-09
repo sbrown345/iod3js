@@ -245,9 +245,15 @@ class srfTriangles_t {
 ////typedef idList<srfTriangles_t *> idTriList;
 
 class modelSurface_t {
-	id:number;				//int							
-	shader: idMaterial;			//const idMaterial *			
-	geometry: srfTriangles_t;		//srfTriangles_t *			
+	id: number; //int
+	shader: idMaterial;
+	geometry: srfTriangles_t;	
+
+	static typeInfo = new TypeInfo(modelSurface_t, [
+		["id", ""],
+		["shader", ""],
+		["geometry", ""]
+	]);
 };
 
 enum dynamicModel_t{

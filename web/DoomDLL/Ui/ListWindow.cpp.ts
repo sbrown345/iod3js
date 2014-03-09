@@ -51,6 +51,18 @@ class idTabRect {
 	type/*int*/:number;
 	iconSize = new idVec2;
 	iconVOffset/*float*/:number;
+
+	copy ( ): idTabRect {
+		var other = new idTabRect;
+		other.x = this.x;
+		other.w = this.w;
+		other.align = this.align;
+		other.valign = this.valign;
+		other.type = this.type;
+		other.iconSize.equals( this.iconSize );
+		other.iconVOffset = this.iconVOffset;
+		return other;
+	}
 };
 
 class idListWindow extends idWindow {

@@ -155,10 +155,7 @@ class expOp_t {
 };
 
 class colorStage_t {
-	registers: Int32Array;
-	constructor ( ) {
-		this.registers = new Int32Array( 4 );
-	}
+	registers = new Int32Array(4);
 }
 
 enum texgen_t {

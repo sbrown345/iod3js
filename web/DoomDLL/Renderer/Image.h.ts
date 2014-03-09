@@ -422,9 +422,9 @@ class idImageManager {
     ////	void				SetNormalPalette();
 	ChangeTextureFilter ( ): void { throw "placeholder"; }
 
-	images:idList<idImage>;
-    ddsList:idStrList;
-    ddsHash:idHashIndex;
+	images = new idList<idImage>(idImage,false, 16, true);
+    ddsList = new idStrList;
+    ddsHash = new idHashIndex;
 
     insideLevelLoad:boolean;			// don't actually load images now
 
@@ -437,64 +437,14 @@ class idImageManager {
 	/*float			*/	textureAnisotropy: number;
 	/*float			*/	textureLODBias: number;
 
-    imageHashTable:Array<idImage>;
+	imageHashTable = new Array<idImage>(FILE_HASH_SIZE);
 
 	backgroundImageLoads: idImage;		// chain of images that have background file loads active
-    cacheLRU:idImage;					// head/tail of doubly linked list
-    /*int					*/totalCachedImageSize:number;		// for determining when something should be purged
+    cacheLRU = new idImage;					// head/tail of doubly linked list
+    totalCachedImageSize:number/*int*/;		// for determining when something should be purged
 
-    /*int	*/numActiveBackgroundImageLoads:number;
-    /*const static int */static MAX_BACKGROUND_IMAGE_LOADS = 8;
-
-    constructor() {
-
-        //built-in images
-        this.defaultImage=null;
-        this.flatNormalMap=null;				// 128 128 255 in all pixels
-        this.ambientNormalMap=null;			// tr.ambientLightVector encoded in all pixels
-        this.rampImage=null;					// 0-255 in RGBA in S
-        this.alphaRampImage=null;				// 0-255 in alpha, 255 in RGB
-        this.alphaNotchImage=null;			// 2x1 texture with just 1110 and 1111 with point sampling
-        this.whiteImage=null;					// full of 0xff
-        this.blackImage=null;					// full of 0x00
-        this.normalCubeMapImage=null;			// cube map to normalize STR into RGB
-        this.noFalloffImage=null;				// all 255, but zero clamped
-        this.fogImage=null;					// increasing alpha is denser fog
-        this.fogEnterImage=null;				// adjust fogImage alpha based on terminator plane
-        this.cinematicImage=null;
-        this.scratchImage=null;
-        this.scratchImage2=null;
-        this.accumImage=null;
-        this.currentRenderImage=null;			// for SS_POST_PROCESS shaders
-        this.scratchCubeMapImage=null;
-        this.specularTableImage=null;			// 1D intensity texture with our specular function
-        this.specular2DTableImage=null;		// 2D intensity texture with our specular function with variable specularity
-        this.borderClampImage=null;			// white inside, black outside
-
-	    this.images = new idList<idImage>( idImage );
-//	idStrList			this.ddsList;
-//	idHashIndex			this.ddsHash=null;
-
-//	bool				this.insideLevelLoad=false;			// don't actually load images now
-
-//	byte				this.originalToCompressed[256];	// maps normal maps to 8 bit textures
-//	byte				this.compressedPalette[768];		// the palette that normal maps use
-
-//	// default filter modes for images
-//	GLenum				this.textureMinFilter;
-//	GLenum				this.textureMaxFilter;
-//	float				this.textureAnisotropy;
-//	float				this.textureLODBias;
-
-        this.imageHashTable = newStructArray<idImage>(idImage, FILE_HASH_SIZE);
-
-//	idImage *			this.backgroundImageLoads;		// chain of images that have background file loads active
-    this.cacheLRU = new idImage();					// head/tail of doubly linked list
-//	int					this.totalCachedImageSize;		// for determining when something should be purged
-
-//	int	numActiveBackgroundImageLoads;
-    }
-
+    numActiveBackgroundImageLoads:number/*int*/;
+    static MAX_BACKGROUND_IMAGE_LOADS = 8;
 	
 	static image_filter = new idCVar( "image_filter", imageFilter[1], CVAR_RENDERER | CVAR_ARCHIVE, "changes texture filtering on mipmapped images", imageFilter, ArgCompletion_String_Template(imageFilter)  );
 	static image_anisotropy = new idCVar( "image_anisotropy", "1", CVAR_RENDERER | CVAR_ARCHIVE, "set the maximum texture anisotropy if available" );

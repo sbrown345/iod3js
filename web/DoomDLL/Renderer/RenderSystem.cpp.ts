@@ -267,7 +267,7 @@ class idRenderSystem {
 
 /*	float					*/frameShaderTime:number;	// shader time for all non-world 2D rendering
 
-/*	int						*/viewportOffset:Array<number> = [0,0];	// for doing larger-than-window tiled renderings
+/*	int						*/viewportOffset:Array<number> = [0, 0];	// for doing larger-than-window tiled renderings
 /*	int						*/tiledViewport: Array<number> = [0, 0];
 
 	// determines which back end to use, and if vertex programs are in use
@@ -281,7 +281,7 @@ class idRenderSystem {
 
 /*	float					*/sortOffset:number;				// for determinist sorting of equal sort materials
 
-	worlds = new idList<idRenderWorldLocal>(idRenderWorldLocal);
+	worlds = new idList<idRenderWorldLocal>(idRenderWorldLocal, false, 16, true);
 
 	primaryWorld: idRenderWorldLocal;
 	primaryRenderView = new renderView_t;
@@ -307,10 +307,10 @@ class idRenderSystem {
 	/*int*/stencilIncr:number; stencilDecr:number;	// GL_INCR / INCR_WRAP_EXT, GL_DECR / GL_DECR_EXT
 
 	renderCrops = newStructArray<renderCrop_t>(renderCrop_t, MAX_RENDER_CROPS);
-	/*int*/currentRenderCrop:number;
+	currentRenderCrop:number/*int*/;
 
 	// GUI drawing variables for surface creation
-	/*int*/guiRecursionLevel:number;		// to prevent infinite overruns
+	guiRecursionLevel:number/*int*/;		// to prevent infinite overruns
 	guiModel:idGuiModel;
 	demoGuiModel: idGuiModel;
 

@@ -40,7 +40,14 @@ class idGSWinVar {
 		this.own = false;
 	}
 	$var: idWinVar;
-	own:boolean;
+	own: boolean;
+
+	copy ( ): idGSWinVar {
+		var other = new idGSWinVar;
+		other.$var = this.$var;
+		other.own = this.own;
+		return other;
+	}
 };
 
 

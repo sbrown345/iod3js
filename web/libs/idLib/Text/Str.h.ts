@@ -146,9 +146,14 @@ class idStr implements ITrackedObject {
 		}
 	}
 
-	toString ( ) {
+	toString ( ): string {
 		return this.data;
 	}
+
+	copy ( ): idStr {
+		return new idStr( this.data );
+	}
+
 
 ////public:
 ////						idStr( void );

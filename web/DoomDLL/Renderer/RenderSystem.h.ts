@@ -139,6 +139,14 @@ class fontInfo_t {
 		this.glyphScale = 0.0;
 		memset( this.name, 0, this.name.length );
 	}
+
+	equals ( other: fontInfo_t ): fontInfo_t {
+		this.glyphs = other.glyphs; // note: copy by ref prolly okay
+		this.glyphScale = other.glyphScale;
+		memcpy( this.name, other.name, sizeof( this.name ) );
+
+		return this;
+	}
 }
 
 class fontInfoEx_t {
@@ -168,6 +176,24 @@ class fontInfoEx_t {
 		this.maxHeightLarge = 0;
 		this.maxWidthLarge = 0;
 		this.name = new Uint8Array( 64 ); //char		
+	}
+
+	copy ( ): fontInfoEx_t {
+		var other = new fontInfoEx_t;
+		other.fontInfoSmall.equals( this.fontInfoSmall );
+		other.fontInfoMedium.equals( this.fontInfoMedium );
+		other.fontInfoLarge.equals( this.fontInfoLarge );
+		other.maxHeight = this.maxHeight;
+		other.maxWidth = this.maxWidth;
+		other.maxHeightSmall = this.maxHeightSmall;
+		other.maxWidthSmall = this.maxWidthSmall;
+		other.maxHeightMedium = this.maxHeightMedium;
+		other.maxWidthMedium = this.maxWidthMedium;
+		other.maxHeightLarge = this.maxHeightLarge;
+		other.maxWidthLarge = this.maxWidthLarge;
+		memcpy( other.name, this.name, sizeof( this.name ) );
+
+		return other;
 	}
 }
 

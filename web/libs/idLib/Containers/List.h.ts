@@ -152,7 +152,8 @@ Frees up the memory allocated by the list.  Assumes that type automatically hand
 Clear ():void {
     if ( this.list ) {
         for( var i=0; i < this.num; i++) {
-	        $delete( this[i] );
+			$delete(this[i]);
+	        delete this[i];
         }
     }
 
@@ -426,7 +427,7 @@ Makes sure the list has at least the given number of elements.
 			this.num = newNum;
 		}
 	}
-	
+
 ///*
 //================
 //idList<type>::AssureSizeAlloc
@@ -571,6 +572,22 @@ Returns a reference to a new data element at the end of the list.
 		return this.list[this.num++];
 	}
 
+
+	// make a copy of the object if needed
+	private Val(v: type): type {
+		if (this.type == Number || this.listOfReferences) {
+			return v;
+		} else {
+			if ((<any>this.type).typeInfo) {
+				var newVal = new this.type;
+				TypeInfoCopier(newVal, v, (<any>this.type).typeInfo);
+				return newVal;
+			}
+
+			return v["copy"]();
+		}
+	}
+
 ///*
 //================
 //idList<type>::Append
@@ -602,6 +619,26 @@ Returns a reference to a new data element at the end of the list.
 //	return this.num - 1;
 //}
 
+Append( obj:type ):number {
+	if ( !this[0] /*.list*/ ) {
+		this.Resize( this.granularity );
+	}
+
+	if ( this.num == this.size ) {
+		var/*int*/ newsize:number;
+
+		if ( this.granularity == 0 ) {	// this is a hack to fix our memset classes
+			this.granularity = 16;
+		}
+		newsize = this.size + this.granularity;
+		this.Resize( newsize - newsize % this.granularity );
+	}
+
+	this.list[this.num] = this.Val( obj );
+	this.num++;
+
+	return this.num - 1;
+}
 
 ///*
 //================
@@ -628,26 +665,6 @@ Returns a reference to a new data element at the end of the list.
 
 //	return Num();
 //}
-Append( obj:type ):number {
-	if ( !this[0] /*.list*/ ) {
-		this.Resize( this.granularity );
-	}
-
-	if ( this.num == this.size ) {
-		var/*int*/ newsize:number;
-
-		if ( this.granularity == 0 ) {	// this is a hack to fix our memset classes
-			this.granularity = 16;
-		}
-		newsize = this.size + this.granularity;
-		this.Resize( newsize - newsize % this.granularity );
-	}
-
-	this.list[ this.num ] = obj;
-	this.num++;
-
-	return this.num - 1;
-}
 
 /*
 ================
@@ -683,7 +700,7 @@ Returns the index of the new element.
 			this.list[i] = this.list[i - 1];
 		}
 		this.num++;
-		this.list[index] = obj;
+		this.list[index] = this.Val( obj );
 		return index;
 	}
 
@@ -699,7 +716,7 @@ Adds the data to the list if it doesn't already exist.  Returns the index of the
 //template< class type >
 	AddUnique ( obj: type ): number {
 		var /*int */index: number;
-
+		
 		index = this.FindIndex( obj );
 		if ( index < 0 ) {
 			index = this.Append( obj );

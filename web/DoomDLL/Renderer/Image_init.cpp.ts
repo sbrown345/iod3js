@@ -1915,7 +1915,9 @@ Init
 */
 idImageManager.prototype.Init = function ( ): void {
 
-	this.imageHashTable = []; //memset(imageHashTable, 0, sizeof(imageHashTable));
+	for (var i = 0; i < this.imageHashTable; i++ ) {
+		this.imageHashTable[i] = null;
+	}
 
 	this.images.Resize( 1024, 1024 );
 
