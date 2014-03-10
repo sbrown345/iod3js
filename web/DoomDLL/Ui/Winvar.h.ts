@@ -177,7 +177,7 @@ class idWinBool extends idWinVar {
 		}
 	}
 
-	c_str ( ): string { return va( "%i", this.data ); }
+	c_str ( ): string { return va( "%i", this.data ? 1 : 0 ); }
 ////
 ////	// SaveGames
 ////	virtual void WriteToSaveGame( idFile *savefile ) {
@@ -339,9 +339,9 @@ class idWinInt extends idWinVar {
 			this.data = this.guiDict.GetInt( s );
 		}
 	}
-////	virtual const char *c_str() const {
-////		return va("%i", this.data);
-////	}
+	c_str ( ): string {
+		return va( "%i", this.data );
+	}
 ////
 ////	// SaveGames
 ////	virtual void WriteToSaveGame( idFile *savefile ) {
@@ -398,9 +398,9 @@ class idWinFloat extends idWinVar {
 			this.data = this.guiDict.GetFloat( s );
 		}
 	}
-////	virtual const char *c_str() const {
-////		return va("%f", this.data);
-////	}
+	c_str ( ): string {
+		return va( "%f", this.data );
+	}
 ////
 ////	virtual void WriteToSaveGame( idFile *savefile ) {
 ////		savefile.Write( &this.eval, sizeof( this.eval ) );
@@ -517,9 +517,9 @@ class idWinRectangle extends idWinVar {
 		}
 	}
 
-////	virtual const char *c_str() const {
-////		return this.data.ToVec4().ToString();
-////	}
+	c_str ( ): string {
+		return this.data.ToVec4 ( ).ToString ( );
+	}
 ////
 ////	virtual void WriteToSaveGame( idFile *savefile ) {
 ////		savefile.Write( &this.eval, sizeof( this.eval ) );
@@ -593,9 +593,9 @@ class idWinVec2 extends idWinVar {
 			this.data = this.guiDict.GetVec2( s );
 		}
 	}
-////	virtual const char *c_str() const {
-////		return this.data.ToString();
-////	}
+	c_str ( ): string {
+		return this.data.ToString ( );
+	}
 ////	void Zero() {
 ////		data.Zero();
 ////	}
@@ -684,10 +684,10 @@ class idWinVec4 extends idWinVar {
 			this.data = this.guiDict.GetVec4( s );
 		}
 	}
-////	virtual const char *c_str() const {
-////		return this.data.ToString();
-////	}
-////
+	c_str ( ): string {
+		return this.data.ToString ( );
+	}
+
 	Zero ( ): void {
 		this.data.Zero ( );
 		if ( this.guiDict ) {
@@ -770,10 +770,10 @@ class idWinVec3 extends idWinVar {
 			this.data = this.guiDict.GetVector( s );
 		}
 	}
-////	virtual const char *c_str() const {
-////		return this.data.ToString();
-////	}
-////
+	c_str ( ): string {
+		return this.data.ToString ( );
+	}
+
 ////	void Zero() {
 ////		data.Zero();
 ////		if (this.guiDict) {
@@ -852,10 +852,10 @@ class idWinBackground extends idWinStr {
 		}
 		return this.data.Length ( );
 	}
-////	virtual const char *c_str() const {
-////		return this.data.c_str();
-////	}
-////
+	c_str ( ): string {
+		return this.data.c_str ( );
+	}
+
 	Set ( val: string ): void {
 		this.data.equals( val );
 		if ( this.guiDict ) {

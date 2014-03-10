@@ -1496,33 +1496,32 @@ returns -1 if not found otherwise the index of the text
 idStr::FloatArrayToString
 =============
 */
-	static FloatArrayToString ( /*const float **/array: Float32Array, /*int */length: number, /*int */precision: number ): string {
-		var s = "todo:FloatArrayToString ";
-		todoThrow ( );
-		//static int index = 0;
-		//static char str[4][16384];	// in case called by nested functions
-		//int i, n;
-		//char format[16], *s;
 
-		//// use an array of string so that multiple calls won't collide
-		//s = str[ index ];
-		//index = (index + 1) & 3;
+	static index = 0;
+	static str = multiDimArray < Uint8Array>(Uint8Array, 4, 16384)
+	static FloatArrayToString ( array: Float32Array, /*int */length: number, /*int */precision: number ): string {
+		var /*int */i: number, n: number;
+		var format = new Uint8Array( 16 ), s: Uint8Array; //char format[16], *s;
 
-		//idStr::snPrintf( format, sizeof( format ), "%%.%df", precision );
-		//n = idStr::snPrintf( s, sizeof( str[0] ), format, array[0] );
-		//if ( precision > 0 ) {
-		//	while( n > 0 && s[n-1] == '0' ) s[--n] = '\0';
-		//	while( n > 0 && s[n-1] == '.' ) s[--n] = '\0';
-		//}
-		//idStr::snPrintf( format, sizeof( format ), " %%.%df", precision );
-		//for ( i = 1; i < length; i++ ) {
-		//	n += idStr::snPrintf( s + n, sizeof( str[0] ) - n, format, array[i] );
-		//	if ( precision > 0 ) {
-		//		while( n > 0 && s[n-1] == '0' ) s[--n] = '\0';
-		//		while( n > 0 && s[n-1] == '.' ) s[--n] = '\0';
-		//	}
-		//}
-		return s;
+		// use an array of string so that multiple calls won't collide
+		s = idStr.str[idStr.index];
+		idStr.index = ( idStr.index + 1 ) & 3;
+
+		idStr.snPrintf( format, sizeof( format ), "%%.%df", precision );
+		n = idStr.snPrintf( s, sizeof( idStr.str[0] ), format.toString ( ), array[0] );
+		if ( precision > 0 ) {
+			while ( n > 0 && s[n - 1] == '0'.charCodeAt( 0 ) ) s[--n] = 0;
+			while ( n > 0 && s[n - 1] == '.'.charCodeAt( 0 ) ) s[--n] = 0;
+		}
+		idStr.snPrintf( format, sizeof( format ), " %%.%df", precision );
+		for ( i = 1; i < length; i++ ) {
+			n += idStr.snPrintf( s.subarray( n ), sizeof( idStr.str[0] ) - n, format.toString ( ), array[i] );
+			if ( precision > 0 ) {
+				while ( n > 0 && s[n - 1] == '0'.charCodeAt( 0 ) ) s[--n] = 0;
+				while ( n > 0 && s[n - 1] == '.'.charCodeAt( 0 ) ) s[--n] = 0;
+			}
+		}
+		return s.toString ( );
 	}
 
 /////*

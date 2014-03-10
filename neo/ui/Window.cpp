@@ -1845,6 +1845,7 @@ idWinVar *idWindow::GetWinVarByName(const char *_name, bool fixup, drawWin_t** o
 			*owner = parent->FindChildByName ( name );
 		}
 
+		dlog(DEBUG_GUI, "GetWinVarByName: retVar %s %s\n", retVar->GetName(), retVar->c_str());
 		return retVar;
 	}
 
@@ -1853,6 +1854,7 @@ idWinVar *idWindow::GetWinVarByName(const char *_name, bool fixup, drawWin_t** o
 		idWinVar *var = new idWinStr;
 		var->Init(_name, this);
 		definedVars.Append(var);
+		dlog(DEBUG_GUI, "GetWinVarByName: $var %s %s\n", var->GetName(), var->c_str());
 		return var;
 	} else if (fixup) {
 		int n = key.Find("::");
@@ -2711,7 +2713,8 @@ idWindow::ExpressionConstant
 int idWindow::ExpressionConstant(float f) {
 	int		i;
 
-	for ( i = WEXP_REG_NUM_PREDEFINED ; i < expressionRegisters.Num() ; i++ ) {
+	dlog(DEBUG_GUI, "ExpressionConstant %.2f\n", f);
+	for (i = WEXP_REG_NUM_PREDEFINED; i < expressionRegisters.Num(); i++) {
 		if ( !registerIsTemporary[i] && expressionRegisters[i] == f ) {
 			return i;
 		}
@@ -2841,6 +2844,8 @@ int idWindow::ParseTerm( idParser *src,	idWinVar *var, int component ) {
 	int		a, b;
 
 	src->ReadToken( &token );
+
+	dlog(DEBUG_GUI, "ParseTerm %s\n", token.c_str());
 
 	if ( token == "(" ) {
 		a = ParseExpression( src );

@@ -2163,7 +2163,7 @@ idWindow::GetWinVarByName
 			if ( owner && this.parent ) {
 				owner.$ = this.parent.FindChildByName( this.name.data );
 			}
-
+			dlog( DEBUG_GUI, "GetWinVarByName: retVar %s %s\n", retVar.GetName(), retVar.c_str ( ) );
 			return retVar;
 		}
 
@@ -2172,6 +2172,7 @@ idWindow::GetWinVarByName
 			var $var: idWinVar = new idWinStr;
 			$var.Init( _name, this );
 			this.definedVars.Append( $var );
+			dlog(DEBUG_GUI, "GetWinVarByName: $var %s %s\n", $var.GetName(), $var.c_str());
 			return $var;
 		} else if ( fixup ) {
 			var n = key.Find( "::" );
@@ -3016,6 +3017,7 @@ idWindow::ExpressionConstant
 	ExpressionConstant ( /*float */f: number ): number {
 		var /*int*/i: number;
 
+		dlog(DEBUG_GUI, "ExpressionConstant %.2f\n", f);
 		for ( i = wexpRegister_t.WEXP_REG_NUM_PREDEFINED; i < this.expressionRegisters.Num ( ); i++ ) {
 			if ( !idWindow.registerIsTemporary[i] && this.expressionRegisters[i] == f ) {
 				return i;
@@ -3145,7 +3147,9 @@ Returns a register index
 		var token = new idToken;
 		var /*int*/ a: number, b: number;
 
-		src.ReadToken( token );
+		src.ReadToken(token);
+
+		dlog(DEBUG_GUI, "ParseTerm %s\n", token.c_str());
 
 		if ( token.data == "(" ) {
 			a = this.ParseExpression( src );
