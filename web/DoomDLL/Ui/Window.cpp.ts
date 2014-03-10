@@ -2163,7 +2163,7 @@ idWindow::GetWinVarByName
 			if ( owner && this.parent ) {
 				owner.$ = this.parent.FindChildByName( this.name.data );
 			}
-			dlog( DEBUG_GUI, "GetWinVarByName: retVar %s %s\n", retVar.GetName(), retVar.c_str ( ) );
+			//dlog( DEBUG_GUI, "GetWinVarByName: retVar %s %s\n", retVar.GetName(), retVar.c_str ( ) );
 			return retVar;
 		}
 
@@ -2172,7 +2172,7 @@ idWindow::GetWinVarByName
 			var $var: idWinVar = new idWinStr;
 			$var.Init( _name, this );
 			this.definedVars.Append( $var );
-			dlog(DEBUG_GUI, "GetWinVarByName: $var %s %s\n", $var.GetName(), $var.c_str());
+			//dlog(DEBUG_GUI, "GetWinVarByName: $var %s %s\n", $var.GetName(), $var.c_str());
 			return $var;
 		} else if ( fixup ) {
 			var n = key.Find( "::" );
@@ -3218,15 +3218,16 @@ Returns a register index
 			return 0;
 		} else {
 			// ugly but used for post parsing to fixup named vars
-			//char *p = new char[token.Length()+1];
+			var p = new idStr( token ); //char *p = new char[token.Length()+1];
 			//strcpy(p, token);
-			if (token.data == "") {
+			dlog(DEBUG_GUI, "ugly %s\n", p.data);
+			if ( p.data == "" ) {
 				//dlogFlush();
 				debugger;
 				//throw "fix this first";
 			}
-			objectTracker.addObject( token );
-			a = token.refAddress; //a = (int)p
+			objectTracker.addObject( p );
+			a = p.refAddress; //a = (int)p
 			if ( a == 20863 )debugger;
 			b = -2;
 			return this.EmitOp( a, b, wexpOpType_t.WOP_TYPE_VAR );

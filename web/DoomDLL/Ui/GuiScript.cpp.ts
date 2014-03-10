@@ -511,6 +511,7 @@ idGuiScript::Parse
 					var defvar = new idWinStr ( );
 					defvar.Init( str.c_str ( ), win );
 					win.AddDefinedVar( defvar );
+					$delete( this.parms[i].$var );
 					delete this.parms[i].$var;
 					this.parms[i].$var = defvar;
 					this.parms[i].own = false;
@@ -528,6 +529,7 @@ idGuiScript::Parse
 					dest = win.GetGui ( ).GetDesktop ( ).GetWinVarByName( /*(const char*)(*str) + 1*/str.c_str ( ).substr( 1 ), true );
 					// 					
 					if ( dest ) {
+						$delete( this.parms[i].$var );
 						delete this.parms[i].$var;
 						this.parms[i].$var = dest;
 						this.parms[i].own = false;

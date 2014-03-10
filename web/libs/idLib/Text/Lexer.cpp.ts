@@ -974,7 +974,7 @@ class idLexer {
 		//if (token.data == "aas_types") debugger;
 		//dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", idLexer.RTCount, this.line, token.data);
 		dlog(DEBUG_COMPILER, "RT: line:%i, %s\n", this.line, token.data);
-		if ( this.line == 502 && token.data == "minDistance" )debugger;
+		//if ( this.line == 502 && token.data == "minDistance" )debugger;
 		idLexer.RTCount++;
 		return 1;
 	}

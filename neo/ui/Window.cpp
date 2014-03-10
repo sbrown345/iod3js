@@ -1845,7 +1845,7 @@ idWinVar *idWindow::GetWinVarByName(const char *_name, bool fixup, drawWin_t** o
 			*owner = parent->FindChildByName ( name );
 		}
 
-		dlog(DEBUG_GUI, "GetWinVarByName: retVar %s %s\n", retVar->GetName(), retVar->c_str());
+		//dlog(DEBUG_GUI, "GetWinVarByName: retVar %s %s\n", retVar->GetName(), retVar->c_str());
 		return retVar;
 	}
 
@@ -1854,7 +1854,7 @@ idWinVar *idWindow::GetWinVarByName(const char *_name, bool fixup, drawWin_t** o
 		idWinVar *var = new idWinStr;
 		var->Init(_name, this);
 		definedVars.Append(var);
-		dlog(DEBUG_GUI, "GetWinVarByName: $var %s %s\n", var->GetName(), var->c_str());
+		//dlog(DEBUG_GUI, "GetWinVarByName: $var %s %s\n", var->GetName(), var->c_str());
 		return var;
 	} else if (fixup) {
 		int n = key.Find("::");
@@ -2915,6 +2915,7 @@ int idWindow::ParseTerm( idParser *src,	idWinVar *var, int component ) {
 	} else {
 		// ugly but used for post parsing to fixup named vars
 		char *p = new char[token.Length()+1];
+		dlog(DEBUG_GUI, "ugly %s\n", p);
 		strcpy(p, token);
 		a = (int)p;
 		b = -2;
