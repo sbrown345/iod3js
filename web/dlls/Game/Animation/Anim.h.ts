@@ -309,63 +309,6 @@ class idMD5Anim {
 //	const animFlags_t			&GetAnimFlags( ) const;
 //};
 //
-///*
-//==============================================================================================
-//
-//	idDeclModelDef
-//
-//==============================================================================================
-//*/
-//
-class idDeclModelDef extends idDecl {
-//public:
-//								idDeclModelDef();
-//								~idDeclModelDef();
-//
-//	virtual size_t				Size( ) const;
-//	virtual const char *		DefaultDefinition( ) const;
-	Parse(text: string, textLength: number): boolean { todoThrow();return false }
-//	virtual void				FreeData( );
-//
-//	void						Touch( ) const;
-//
-//	const idDeclSkin *			GetDefaultSkin( ) const;
-//	const idJointQuat *			GetDefaultPose( ) const;
-//	void						SetupJoints( int *numJoints, idJointMat **jointList, idBounds &frameBounds, bool removeOriginOffset ) const;
-//	idRenderModel *				ModelHandle( ) const;
-//	void						GetJointList( jointnames:string, idList<jointHandle_t> &jointList ) const;
-//	const jointInfo_t *			FindJoint( name:string ) const;
-//
-//	int							NumAnims( ) const;
-//	const idAnim *				GetAnim( int index ) const;
-//	int							GetSpecificAnim( name:string ) const;
-//	int							GetAnim( name:string ) const;
-//	bool						HasAnim( name:string ) const;
-//	const idDeclSkin *			GetSkin( ) const;
-//	const char *				GetModelName( ) const;
-//	const idList<jointInfo_t> &	Joints( ) const;
-//	const int *					JointParents( ) const;
-//	int							NumJoints( ) const;
-//	const jointInfo_t *			GetJoint( int jointHandle ) const;
-//	const char *				GetJointName( int jointHandle ) const;
-//	int							NumJointsOnChannel( int channel ) const;
-//	const int *					GetChannelJoints( int channel ) const;
-//
-//	const idVec3 &				GetVisualOffset( ) const;
-//
-//private:
-//	void						CopyDecl( const idDeclModelDef *decl );
-//	bool						ParseAnim( idLexer &src, int numDefaultAnims );
-//
-//private:
-//	idVec3						offset;
-//	idList<jointInfo_t>			joints;
-//	idList<int>					jointParents;
-//	idList<int>					channelJoints[ ANIM_NumAnimChannels ];
-//	idRenderModel *				modelHandle;
-//	idList<idAnim *>			anims;
-//	const idDeclSkin *			skin;
-};
 //
 ///*
 //==============================================================================================

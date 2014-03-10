@@ -233,7 +233,6 @@
 /// <reference path="doomdll/framework/declaf.h.ts" />
 /// <reference path="doomdll/framework/declaf.cpp.ts" />
 //#include "../framework/DeclPDA.h"
-/// <reference path="doomdll/framework/declpda.h.ts" />
 /// <reference path="doomdll/framework/declpda.cpp.ts" />
 
 //// We have expression parsing and evaluation code in multiple places:

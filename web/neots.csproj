@@ -137,7 +137,6 @@
     <Content Include="DoomDLL\Framework\DeclManager.h.ts" />
     <Content Include="DoomDLL\Framework\DeclParticle.cpp.ts" />
     <Content Include="DoomDLL\Framework\DeclPDA.cpp.ts" />
-    <Content Include="DoomDLL\Framework\DeclPDA.h.ts" />
     <Content Include="DoomDLL\Framework\DeclSkin.cpp.ts" />
     <Content Include="DoomDLL\Framework\DeclTable.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Framework\DemoFile.cpp.ts" />

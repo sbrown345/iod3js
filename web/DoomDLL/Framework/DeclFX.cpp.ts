@@ -119,38 +119,38 @@ class idDeclFX extends idDecl {
 ////void idDeclFX::Print( void ) const {
 ////	const idDeclFX *list = this;
 ////
-////	common->Printf("%d events\n", list->events.Num() );
-////	for( int i = 0; i < list->events.Num(); i++ ) {
-////		switch( list->events[i].type ) {
+////	common.Printf("%d events\n", list.events.Num() );
+////	for( int i = 0; i < list.events.Num(); i++ ) {
+////		switch( list.events[i].type ) {
 ////			case FX_LIGHT:
-////				common->Printf("FX_LIGHT %s\n", list->events[i].data.c_str());
+////				common.Printf("FX_LIGHT %s\n", list.events[i].data.c_str());
 ////				break;
 ////			case FX_PARTICLE:
-////				common->Printf("FX_PARTICLE %s\n", list->events[i].data.c_str());
+////				common.Printf("FX_PARTICLE %s\n", list.events[i].data.c_str());
 ////				break;
 ////			case FX_MODEL:
-////				common->Printf("FX_MODEL %s\n", list->events[i].data.c_str());
+////				common.Printf("FX_MODEL %s\n", list.events[i].data.c_str());
 ////				break;
 ////			case FX_SOUND:
-////				common->Printf("FX_SOUND %s\n", list->events[i].data.c_str());
+////				common.Printf("FX_SOUND %s\n", list.events[i].data.c_str());
 ////				break;
 ////			case FX_DECAL:
-////				common->Printf("FX_DECAL %s\n", list->events[i].data.c_str());
+////				common.Printf("FX_DECAL %s\n", list.events[i].data.c_str());
 ////				break;
 ////			case FX_SHAKE:
-////				common->Printf("FX_SHAKE %s\n", list->events[i].data.c_str());
+////				common.Printf("FX_SHAKE %s\n", list.events[i].data.c_str());
 ////				break;
 ////			case FX_ATTACHLIGHT:
-////				common->Printf("FX_ATTACHLIGHT %s\n", list->events[i].data.c_str());
+////				common.Printf("FX_ATTACHLIGHT %s\n", list.events[i].data.c_str());
 ////				break;
 ////			case FX_ATTACHENTITY:
-////				common->Printf("FX_ATTACHENTITY %s\n", list->events[i].data.c_str());
+////				common.Printf("FX_ATTACHENTITY %s\n", list.events[i].data.c_str());
 ////				break;
 ////			case FX_LAUNCH:
-////				common->Printf("FX_LAUNCH %s\n", list->events[i].data.c_str());
+////				common.Printf("FX_LAUNCH %s\n", list.events[i].data.c_str());
 ////				break;
 ////			case FX_SHOCKWAVE:
-////				common->Printf("FX_SHOCKWAVE %s\n", list->events[i].data.c_str());
+////				common.Printf("FX_SHOCKWAVE %s\n", list.events[i].data.c_str());
 ////				break;
 ////		}
 ////	}
@@ -162,7 +162,7 @@ class idDeclFX extends idDecl {
 ////===============
 ////*/
 ////void idDeclFX::List( void ) const {
-////	common->Printf("%s, %d stages\n", GetName(), events.Num() );
+////	common.Printf("%s, %d stages\n", GetName(), events.Num() );
 ////}
 ////
 /////*
@@ -343,7 +343,7 @@ class idDeclFX extends idDecl {
 ////			FXAction.type = FX_LIGHT;
 ////
 ////			// precache the light material
-////			declManager->FindMaterial( FXAction.data );
+////			declManager.FindMaterial( FXAction.data );
 ////			continue;
 ////		}
 ////
@@ -353,7 +353,7 @@ class idDeclFX extends idDecl {
 ////			FXAction.type = FX_ATTACHLIGHT;
 ////
 ////			// precache it
-////			declManager->FindMaterial( FXAction.data );
+////			declManager.FindMaterial( FXAction.data );
 ////			continue;
 ////		}
 ////
@@ -363,7 +363,7 @@ class idDeclFX extends idDecl {
 ////			FXAction.type = FX_ATTACHENTITY;
 ////
 ////			// precache the model
-////			renderModelManager->FindModel( FXAction.data );
+////			renderModelManager.FindModel( FXAction.data );
 ////			continue;
 ////		}
 ////
@@ -373,7 +373,7 @@ class idDeclFX extends idDecl {
 ////			FXAction.type = FX_LAUNCH;
 ////
 ////			// precache the entity def
-////			declManager->FindType( DECL_ENTITYDEF, FXAction.data );
+////			declManager.FindType( DECL_ENTITYDEF, FXAction.data );
 ////			continue;
 ////		}
 ////
@@ -388,7 +388,7 @@ class idDeclFX extends idDecl {
 ////			FXAction.type = FX_MODEL;
 ////
 ////			// precache the model
-////			renderModelManager->FindModel( FXAction.data );
+////			renderModelManager.FindModel( FXAction.data );
 ////			continue;
 ////		}
 ////
@@ -406,7 +406,7 @@ class idDeclFX extends idDecl {
 ////			FXAction.type = FX_LIGHT;
 ////
 ////			// precache the light material
-////			declManager->FindMaterial( FXAction.data );
+////			declManager.FindMaterial( FXAction.data );
 ////			continue;
 ////		}
 ////	
@@ -416,7 +416,7 @@ class idDeclFX extends idDecl {
 ////			FXAction.type = FX_MODEL;
 ////
 ////			// precache it
-////			renderModelManager->FindModel( FXAction.data );
+////			renderModelManager.FindModel( FXAction.data );
 ////			continue;
 ////		}
 ////
@@ -426,7 +426,7 @@ class idDeclFX extends idDecl {
 ////			FXAction.type = FX_PARTICLE;
 ////
 ////			// precache it
-////			renderModelManager->FindModel( FXAction.data );
+////			renderModelManager.FindModel( FXAction.data );
 ////			continue;
 ////		}
 ////
@@ -436,7 +436,7 @@ class idDeclFX extends idDecl {
 ////			FXAction.type = FX_DECAL;
 ////
 ////			// precache it
-////			declManager->FindMaterial( FXAction.data );
+////			declManager.FindMaterial( FXAction.data );
 ////			continue;
 ////		}
 ////
@@ -451,7 +451,7 @@ class idDeclFX extends idDecl {
 ////			FXAction.type = FX_SOUND;
 ////
 ////			// precache it
-////			declManager->FindSound( FXAction.data );
+////			declManager.FindSound( FXAction.data );
 ////			continue;
 ////		}
 ////
@@ -466,7 +466,7 @@ class idDeclFX extends idDecl {
 ////			FXAction.type = FX_SHOCKWAVE;
 ////
 ////			// precache the entity def
-////			declManager->FindType( DECL_ENTITYDEF, FXAction.data );
+////			declManager.FindType( DECL_ENTITYDEF, FXAction.data );
 ////			continue;
 ////		}
 ////
@@ -520,28 +520,29 @@ idDeclFX::Parse
 ////	}
 		return true;
 	}
-////
-/////*
-////===================
-////idDeclFX::DefaultDefinition
-////===================
-////*/
-////const char *idDeclFX::DefaultDefinition( void ) const {
-////	return
-////		"{\n"
-////	"\t"	"{\n"
-////	"\t\t"		"duration\t5\n"
-////	"\t\t"		"model\t\t_default\n"
-////	"\t"	"}\n"
-////		"}"; 
-////}
-////
-/////*
-////===================
-////idDeclFX::FreeData
-////===================
-////*/
-////void idDeclFX::FreeData( void ) {
-////	events.Clear();
-////}
+
+/*
+===================
+idDeclFX::DefaultDefinition
+===================
+*/
+	DefaultDefinition ( ): string {
+		return +
+			"{\n" +
+			"\t" + "{\n" +
+			"\t\t" + "duration\t5\n" +
+			"\t\t" + "model\t\t_default\n" +
+			"\t" + "}\n" +
+			"}";
+	}
+
+/*
+===================
+idDeclFX::FreeData
+===================
+*/
+	FreeData(): void {
+		todoThrow ( );
+		//this.events.Clear ( );
+	}
 }

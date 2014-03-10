@@ -73,15 +73,16 @@ class idDeclSkin extends idDecl {
 ////	return sizeof( idDeclSkin );
 ////}
 ////
-/////*
-////================
-////idDeclSkin::FreeData
-////================
-////*/
-////void idDeclSkin::FreeData( void ) {
-////	mappings.Clear();
-////}
-////
+/*
+================
+idDeclSkin::FreeData
+================
+*/
+	FreeData(): void {
+		todoThrow ( );
+		//this.mappings.Clear ( );
+	}
+
 /*
 ================
 idDeclSkin::Parse
@@ -122,39 +123,40 @@ idDeclSkin::Parse
 ////			// wildcard
 ////			map.from = NULL;
 ////		} else {
-////			map.from = declManager->FindMaterial( token );
+////			map.from = declManager.FindMaterial( token );
 ////		}
 ////
-////		map.to = declManager->FindMaterial( token2 );
+////		map.to = declManager.FindMaterial( token2 );
 ////
 ////		mappings.Append( map );
 ////	}
 ////
 	return false;
 }
-////
-/////*
-////================
-////idDeclSkin::SetDefaultText
-////================
-////*/
-////bool idDeclSkin::SetDefaultText( void ) {
-////	// if there exists a material with the same name
-////	if ( declManager->FindType( DECL_MATERIAL, GetName(), false ) ) {
-////		char generated[2048];
-////
-////		idStr::snPrintf( generated, sizeof( generated ),
-////						"skin %s // IMPLICITLY GENERATED\n"
-////						"{\n"
-////						"_default %s\n"
-////						"}\n", GetName(), GetName() );
-////		SetText( generated );
-////		return true;
-////	} else {
-////		return false;
-////	}
-////}
-////
+
+/*
+================
+idDeclSkin::SetDefaultText
+================
+*/
+	SetDefaultText ( ): boolean {
+		todoThrow ( );
+		// if there exists a material with the same name
+		if ( declManager.FindType( declType_t.DECL_MATERIAL, this.GetName ( ), false ) ) {
+			var generated = new Uint8Array( 2048 );
+
+			idStr.snPrintf( generated, sizeof( generated ),
+				"skin %s // IMPLICITLY GENERATED\n" +
+				"{\n" +
+				"_default %s\n" +
+				"}\n", this.GetName ( ), this.GetName ( ) );
+			this.SetText( generated );
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 /////*
 ////================
 ////idDeclSkin::DefaultDefinition
@@ -201,7 +203,7 @@ idDeclSkin::Parse
 ////	}
 ////
 ////	// never remap surfaces that were originally nodraw, like collision hulls
-////	if ( !shader->IsDrawn() ) {
+////	if ( !shader.IsDrawn() ) {
 ////		return shader;
 ////	}
 ////
@@ -209,8 +211,8 @@ idDeclSkin::Parse
 ////		const skinMapping_t	*map = &mappings[i];
 ////
 ////		// NULL = wildcard match
-////		if ( !map->from || map->from == shader ) {
-////			return map->to;
+////		if ( !map.from || map.from == shader ) {
+////			return map.to;
 ////		}
 ////	}
 ////

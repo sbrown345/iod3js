@@ -54,22 +54,22 @@ class idDeclEntityDef extends idDecl {
 ////size_t idDeclEntityDef::Size( void ) const {
 ////	return sizeof( idDeclEntityDef ) + this.dict.Allocated();
 ////}
-////
-/////*
-////================
-////idDeclEntityDef::FreeData
-////================
-////*/
-////void idDeclEntityDef::FreeData( void ) {
-////	this.dict.Clear();
-////}
-////
+
+/*
+================
+idDeclEntityDef::FreeData
+================
+*/
+	FreeData ( ): void {
+		this.dict.Clear ( );
+	}
+
 /*
 ================
 idDeclEntityDef::Parse
 ================
 */
-	Parse ( text: string, textLength: number ): boolean {
+	0 ( text: string, textLength: number ): boolean {
 		var src = new idLexer;
 		var token = new idToken, token2 = new idToken;
 
@@ -145,18 +145,18 @@ idDeclEntityDef::Parse
 		return true;
 	}
 
-/////*
-////================
-////idDeclEntityDef::DefaultDefinition
-////================
-////*/
-////const char *idDeclEntityDef::DefaultDefinition( void ) const {
-////	return
-////		"{\n"
-////	"\t"	"\"DEFAULTED\"\t\"1\"\n"
-////		"}";
-////}
-////
+/*
+================
+idDeclEntityDef::DefaultDefinition
+================
+*/
+	DefaultDefinition ( ): string {
+		return +
+			"{\n" +
+			"\t" + "\"DEFAULTED\"\t\"1\"\n" +
+			"}";
+	}
+
 /////*
 ////================
 ////idDeclEntityDef::Print

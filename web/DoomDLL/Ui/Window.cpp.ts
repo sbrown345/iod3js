@@ -4201,37 +4201,36 @@ idWindow::FixupParms
 idWindow::IsSimple
 ================
 */
-IsSimple():boolean {
-
-	// dont do simple windows when in gui editor
-	if ( com_editors & toolFlag_t.EDITOR_GUI ) {
-		return false;
-	}
-
-	if (this.ops.Num()) {
-		return false;
-	}
-	if (this.flags & (WIN_HCENTER | WIN_VCENTER)) {
-		return false;
-	}
-	if (this.children.Num() || this.drawWindows.Num()) {
-		return false;
-	}
-	for (var i = 0; i < SCRIPT_COUNT; i++) {
-		if (this.scripts[i]) {
+	IsSimple ( ): boolean {
+		// dont do simple windows when in gui editor
+		if ( com_editors & toolFlag_t.EDITOR_GUI ) {
 			return false;
 		}
-	}
-	if (this.timeLineEvents.Num()) {
-		return false;
-	}
 
-	if ( this.namedEvents.Num() ) {
-		return false;
-	}
+		if ( this.ops.Num ( ) ) {
+			return false;
+		}
+		if ( this.flags & ( WIN_HCENTER | WIN_VCENTER ) ) {
+			return false;
+		}
+		if ( this.children.Num ( ) || this.drawWindows.Num ( ) ) {
+			return false;
+		}
+		for ( var i = 0; i < SCRIPT_COUNT; i++ ) {
+			if ( this.scripts[i] ) {
+				return false;
+			}
+		}
+		if ( this.timeLineEvents.Num ( ) ) {
+			return false;
+		}
 
-	return true;
-}
+		if ( this.namedEvents.Num ( ) ) {
+			return false;
+		}
+
+		return true;
+	}
 
 /////*
 ////================

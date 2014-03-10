@@ -61,26 +61,26 @@
 //idAnim::idAnim( const idDeclModelDef *modelDef, const idAnim *anim ) {
 //	int i;
 //
-//	this->modelDef = modelDef;
-//	numAnims = anim->numAnims;
-//	name = anim->name;
-//	realname = anim->realname;
-//	flags = anim->flags;
+//	this.modelDef = modelDef;
+//	numAnims = anim.numAnims;
+//	name = anim.name;
+//	realname = anim.realname;
+//	flags = anim.flags;
 //
 //	memset( anims, 0, sizeof( anims ) );
 //	for( i = 0; i < numAnims; i++ ) {
-//		anims[ i ] = anim->anims[ i ];
-//		anims[ i ]->IncreaseRefs();
+//		anims[ i ] = anim.anims[ i ];
+//		anims[ i ].IncreaseRefs();
 //	}
 //
-//	frameLookup.SetNum( anim->frameLookup.Num() );
-//	memcpy( frameLookup.Ptr(), anim->frameLookup.Ptr(), frameLookup.MemoryUsed() );
+//	frameLookup.SetNum( anim.frameLookup.Num() );
+//	memcpy( frameLookup.Ptr(), anim.frameLookup.Ptr(), frameLookup.MemoryUsed() );
 //
-//	frameCommands.SetNum( anim->frameCommands.Num() );
+//	frameCommands.SetNum( anim.frameCommands.Num() );
 //	for( i = 0; i < frameCommands.Num(); i++ ) {
-//		frameCommands[ i ] = anim->frameCommands[ i ];
-//		if ( anim->frameCommands[ i ].string ) {
-//			frameCommands[ i ].string = new idStr( *anim->frameCommands[ i ].string );
+//		frameCommands[ i ] = anim.frameCommands[ i ];
+//		if ( anim.frameCommands[ i ].string ) {
+//			frameCommands[ i ].string = new idStr( *anim.frameCommands[ i ].string );
 //		}
 //	}
 //}
@@ -94,7 +94,7 @@
 //	int i;
 //
 //	for( i = 0; i < numAnims; i++ ) {
-//		anims[ i ]->DecreaseRefs();
+//		anims[ i ].DecreaseRefs();
 //	}
 //
 //	for( i = 0; i < frameCommands.Num(); i++ ) {
@@ -110,10 +110,10 @@
 //void idAnim::SetAnim( const idDeclModelDef *modelDef, const char *sourcename, const char *animname, /*int*/num:number, const idMD5Anim *md5anims[ ANIM_MaxSyncedAnims ] ) {
 //	int i;
 //
-//	this->modelDef = modelDef;
+//	this.modelDef = modelDef;
 //
 //	for( i = 0; i < numAnims; i++ ) {
-//		anims[ i ]->DecreaseRefs();
+//		anims[ i ].DecreaseRefs();
 //		anims[ i ] = NULL;
 //	}
 //
@@ -124,7 +124,7 @@
 //
 //	for( i = 0; i < num; i++ ) {
 //		anims[ i ] = md5anims[ i ];
-//		anims[ i ]->IncreaseRefs();
+//		anims[ i ].IncreaseRefs();
 //	}
 //
 //	memset( &flags, 0, sizeof( flags ) );
@@ -188,7 +188,7 @@
 //		return 0;
 //	}
 //
-//	return anims[ 0 ]->Length();
+//	return anims[ 0 ].Length();
 //}
 //
 ///*
@@ -201,7 +201,7 @@
 //		return 0;
 //	}
 //	
-//	return anims[ 0 ]->NumFrames();
+//	return anims[ 0 ].NumFrames();
 //}
 //
 ///*
@@ -223,7 +223,7 @@
 //		return vec3_zero;
 //	}
 //	
-//	return anims[ 0 ]->TotalMovementDelta();
+//	return anims[ 0 ].TotalMovementDelta();
 //}
 //
 ///*
@@ -237,7 +237,7 @@
 //		return false;
 //	}
 //
-//	anims[ animNum ]->GetOrigin( offset, currentTime, cyclecount );
+//	anims[ animNum ].GetOrigin( offset, currentTime, cyclecount );
 //	return true;
 //}
 //
@@ -252,7 +252,7 @@
 //		return false;
 //	}
 //
-//	anims[ animNum ]->GetOriginRotation( rotation, currentTime, cyclecount );
+//	anims[ animNum ].GetOriginRotation( rotation, currentTime, cyclecount );
 //	return true;
 //}
 //
@@ -266,7 +266,7 @@
 //		return false;
 //	}
 //
-//	anims[ animNum ]->GetBounds( bounds, currentTime, cyclecount );
+//	anims[ animNum ].GetBounds( bounds, currentTime, cyclecount );
 //	return true;
 //}
 //
@@ -288,7 +288,7 @@
 //	const jointInfo_t	*jointInfo;
 //
 //	// make sure we're within bounds
-//	if ( ( framenum < 1 ) || ( framenum > anims[ 0 ]->NumFrames() ) ) {
+//	if ( ( framenum < 1 ) || ( framenum > anims[ 0 ].NumFrames() ) ) {
 //		return va( "Frame %d out of range", framenum );
 //	}
 //
@@ -324,7 +324,7 @@
 //		if ( !ev ) {
 //			return va( "Event '%s' not found", token.c_str() );
 //		}
-//		if ( ev->GetNumArgs() != 0 ) {
+//		if ( ev.GetNumArgs() != 0 ) {
 //			return va( "Event '%s' has arguments", token.c_str() );
 //		}
 //		fc.string = new idStr( token );
@@ -336,8 +336,8 @@
 //		if ( !token.Cmpn( "snd_", 4 ) ) {
 //			fc.string = new idStr( token );
 //		} else {
-//			fc.soundShader = declManager->FindSound( token );
-//			if ( fc.soundShader->GetState() == DS_DEFAULTED ) {
+//			fc.soundShader = declManager.FindSound( token );
+//			if ( fc.soundShader.GetState() == DS_DEFAULTED ) {
 //				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
 //			}
 //		}
@@ -349,8 +349,8 @@
 //		if ( !token.Cmpn( "snd_", 4 ) ) {
 //			fc.string = new idStr( token );
 //		} else {
-//			fc.soundShader = declManager->FindSound( token );
-//			if ( fc.soundShader->GetState() == DS_DEFAULTED ) {
+//			fc.soundShader = declManager.FindSound( token );
+//			if ( fc.soundShader.GetState() == DS_DEFAULTED ) {
 //				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
 //			}
 //		}
@@ -362,8 +362,8 @@
 //		if ( !token.Cmpn( "snd_", 4 ) ) {
 //			fc.string = new idStr( token );
 //		} else {
-//			fc.soundShader = declManager->FindSound( token );
-//			if ( fc.soundShader->GetState() == DS_DEFAULTED ) {
+//			fc.soundShader = declManager.FindSound( token );
+//			if ( fc.soundShader.GetState() == DS_DEFAULTED ) {
 //				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
 //			}
 //		}
@@ -375,8 +375,8 @@
 //		if ( !token.Cmpn( "snd_", 4 ) ) {
 //			fc.string = new idStr( token );
 //		} else {
-//			fc.soundShader = declManager->FindSound( token );
-//			if ( fc.soundShader->GetState() == DS_DEFAULTED ) {
+//			fc.soundShader = declManager.FindSound( token );
+//			if ( fc.soundShader.GetState() == DS_DEFAULTED ) {
 //				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
 //			}
 //		}
@@ -388,8 +388,8 @@
 //		if ( !token.Cmpn( "snd_", 4 ) ) {
 //			fc.string = new idStr( token );
 //		} else {
-//			fc.soundShader = declManager->FindSound( token );
-//			if ( fc.soundShader->GetState() == DS_DEFAULTED ) {
+//			fc.soundShader = declManager.FindSound( token );
+//			if ( fc.soundShader.GetState() == DS_DEFAULTED ) {
 //				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
 //			}
 //		}
@@ -401,8 +401,8 @@
 //		if ( !token.Cmpn( "snd_", 4 ) ) {
 //			fc.string = new idStr( token );
 //		} else {
-//			fc.soundShader = declManager->FindSound( token );
-//			if ( fc.soundShader->GetState() == DS_DEFAULTED ) {
+//			fc.soundShader = declManager.FindSound( token );
+//			if ( fc.soundShader.GetState() == DS_DEFAULTED ) {
 //				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
 //			}
 //		}
@@ -414,8 +414,8 @@
 //		if ( !token.Cmpn( "snd_", 4 ) ) {
 //			fc.string = new idStr( token );
 //		} else {
-//			fc.soundShader = declManager->FindSound( token );
-//			if ( fc.soundShader->GetState() == DS_DEFAULTED ) {
+//			fc.soundShader = declManager.FindSound( token );
+//			if ( fc.soundShader.GetState() == DS_DEFAULTED ) {
 //				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
 //			}
 //		}
@@ -427,8 +427,8 @@
 //		if ( !token.Cmpn( "snd_", 4 ) ) {
 //			fc.string = new idStr( token );
 //		} else {
-//			fc.soundShader = declManager->FindSound( token );
-//			if ( fc.soundShader->GetState() == DS_DEFAULTED ) {
+//			fc.soundShader = declManager.FindSound( token );
+//			if ( fc.soundShader.GetState() == DS_DEFAULTED ) {
 //				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
 //			}
 //		}
@@ -440,8 +440,8 @@
 //		if ( !token.Cmpn( "snd_", 4 ) ) {
 //			fc.string = new idStr( token );
 //		} else {
-//			fc.soundShader = declManager->FindSound( token );
-//			if ( fc.soundShader->GetState() == DS_DEFAULTED ) {
+//			fc.soundShader = declManager.FindSound( token );
+//			if ( fc.soundShader.GetState() == DS_DEFAULTED ) {
 //				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
 //			}
 //		}
@@ -453,8 +453,8 @@
 //		if ( !token.Cmpn( "snd_", 4 ) ) {
 //			fc.string = new idStr( token );
 //		} else {
-//			fc.soundShader = declManager->FindSound( token );
-//			if ( fc.soundShader->GetState() == DS_DEFAULTED ) {
+//			fc.soundShader = declManager.FindSound( token );
+//			if ( fc.soundShader.GetState() == DS_DEFAULTED ) {
 //				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
 //			}
 //		}
@@ -466,7 +466,7 @@
 //		if ( token == "none" ) {
 //			fc.skin = NULL;
 //		} else {
-//			fc.skin = declManager->FindSkin( token );
+//			fc.skin = declManager.FindSkin( token );
 //			if ( !fc.skin ) {
 //				return va( "Skin '%s' not found", token.c_str() );
 //			}
@@ -476,7 +476,7 @@
 //			return "Unexpected end of line";
 //		}
 //		fc.type = FC_FX;
-//		if ( !declManager->FindType( DECL_FX, token.c_str() ) ) {
+//		if ( !declManager.FindType( DECL_FX, token.c_str() ) ) {
 //			return va( "fx '%s' not found", token.c_str() );
 //		}
 //		fc.string = new idStr( token );
@@ -525,7 +525,7 @@
 //		if( !src.ReadTokenOnLine( &token ) ) {
 //			return "Unexpected end of line";
 //		}
-//		if ( ( token != "" ) && !modelDef->FindJoint( token ) ) {
+//		if ( ( token != "" ) && !modelDef.FindJoint( token ) ) {
 //			return va( "Joint '%s' not found", token.c_str() );
 //		}
 //		fc.type = FC_MUZZLEFLASH;
@@ -537,7 +537,7 @@
 //		if( !src.ReadTokenOnLine( &token ) ) {
 //			return "Unexpected end of line";
 //		}
-//		if ( !modelDef->FindJoint( token ) ) {
+//		if ( !modelDef.FindJoint( token ) ) {
 //			return va( "Joint '%s' not found", token.c_str() );
 //		}
 //		fc.type = FC_CREATEMISSILE;
@@ -546,7 +546,7 @@
 //		if( !src.ReadTokenOnLine( &token ) ) {
 //			return "Unexpected end of line";
 //		}
-//		if ( !modelDef->FindJoint( token ) ) {
+//		if ( !modelDef.FindJoint( token ) ) {
 //			return va( "Joint '%s' not found", token.c_str() );
 //		}
 //		fc.type = FC_LAUNCHMISSILE;
@@ -555,7 +555,7 @@
 //		if( !src.ReadTokenOnLine( &token ) ) {
 //			return "Unexpected end of line";
 //		}
-//		jointInfo = modelDef->FindJoint( token );
+//		jointInfo = modelDef.FindJoint( token );
 //		if ( !jointInfo ) {
 //			return va( "Joint '%s' not found", token.c_str() );
 //		}
@@ -564,7 +564,7 @@
 //		}
 //		fc.type = FC_FIREMISSILEATTARGET;
 //		fc.string = new idStr( token );
-//		fc.index = jointInfo->num;
+//		fc.index = jointInfo.num;
 //	} else if ( token == "footstep" ) {
 //		fc.type = FC_FOOTSTEP;
 //	} else if ( token == "leftfoot" ) {
@@ -619,7 +619,7 @@
 //	if ( !frameLookup.Num() ) {
 //		// we haven't, so allocate the table and initialize it
 //		frameLookup.SetGranularity( 1 );
-//		frameLookup.SetNum( anims[ 0 ]->NumFrames() );
+//		frameLookup.SetNum( anims[ 0 ].NumFrames() );
 //		for( i = 0; i < frameLookup.Num(); i++ ) {
 //			frameLookup[ i ].num = 0;
 //			frameLookup[ i ].firstCommand = 0;
@@ -663,7 +663,7 @@
 //	int frame;
 //	int numframes;
 //
-//	numframes = anims[ 0 ]->NumFrames();
+//	numframes = anims[ 0 ].NumFrames();
 //
 //	frame = from;
 //	while( frame != to ) {
@@ -682,253 +682,253 @@
 //					break;
 //				}
 //				case FC_SCRIPTFUNCTIONOBJECT: {
-//					gameLocal.CallObjectFrameCommand( ent, command.string->c_str() );
+//					gameLocal.CallObjectFrameCommand( ent, command.string.c_str() );
 //					break;
 //				}
 //				case FC_EVENTFUNCTION: {
-//					const idEventDef *ev = idEventDef::FindEvent( command.string->c_str() );
-//					ent->ProcessEvent( ev );
+//					const idEventDef *ev = idEventDef::FindEvent( command.string.c_str() );
+//					ent.ProcessEvent( ev );
 //					break;
 //				}
 //				case FC_SOUND: {
 //					if ( !command.soundShader ) {
-//						if ( !ent->StartSound( command.string->c_str(), SND_CHANNEL_ANY, 0, false, NULL ) ) {
+//						if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_ANY, 0, false, NULL ) ) {
 //							gameLocal.Warning( "Framecommand 'sound' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
-//								ent->name.c_str(), FullName(), frame + 1, command.string->c_str() );
+//								ent.name.c_str(), FullName(), frame + 1, command.string.c_str() );
 //						}
 //					} else {
-//						ent->StartSoundShader( command.soundShader, SND_CHANNEL_ANY, 0, false, NULL );
+//						ent.StartSoundShader( command.soundShader, SND_CHANNEL_ANY, 0, false, NULL );
 //					}
 //					break;
 //				}
 //				case FC_SOUND_VOICE: {
 //					if ( !command.soundShader ) {
-//						if ( !ent->StartSound( command.string->c_str(), SND_CHANNEL_VOICE, 0, false, NULL ) ) {
+//						if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_VOICE, 0, false, NULL ) ) {
 //							gameLocal.Warning( "Framecommand 'sound_voice' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
-//								ent->name.c_str(), FullName(), frame + 1, command.string->c_str() );
+//								ent.name.c_str(), FullName(), frame + 1, command.string.c_str() );
 //						}
 //					} else {
-//						ent->StartSoundShader( command.soundShader, SND_CHANNEL_VOICE, 0, false, NULL );
+//						ent.StartSoundShader( command.soundShader, SND_CHANNEL_VOICE, 0, false, NULL );
 //					}
 //					break;
 //				}
 //				case FC_SOUND_VOICE2: {
 //					if ( !command.soundShader ) {
-//						if ( !ent->StartSound( command.string->c_str(), SND_CHANNEL_VOICE2, 0, false, NULL ) ) {
+//						if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_VOICE2, 0, false, NULL ) ) {
 //							gameLocal.Warning( "Framecommand 'sound_voice2' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
-//								ent->name.c_str(), FullName(), frame + 1, command.string->c_str() );
+//								ent.name.c_str(), FullName(), frame + 1, command.string.c_str() );
 //						}
 //					} else {
-//						ent->StartSoundShader( command.soundShader, SND_CHANNEL_VOICE2, 0, false, NULL );
+//						ent.StartSoundShader( command.soundShader, SND_CHANNEL_VOICE2, 0, false, NULL );
 //					}
 //					break;
 //				}
 //				case FC_SOUND_BODY: {
 //					if ( !command.soundShader ) {
-//						if ( !ent->StartSound( command.string->c_str(), SND_CHANNEL_BODY, 0, false, NULL ) ) {
+//						if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_BODY, 0, false, NULL ) ) {
 //							gameLocal.Warning( "Framecommand 'sound_body' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
-//								ent->name.c_str(), FullName(), frame + 1, command.string->c_str() );
+//								ent.name.c_str(), FullName(), frame + 1, command.string.c_str() );
 //						}
 //					} else {
-//						ent->StartSoundShader( command.soundShader, SND_CHANNEL_BODY, 0, false, NULL );
+//						ent.StartSoundShader( command.soundShader, SND_CHANNEL_BODY, 0, false, NULL );
 //					}
 //					break;
 //				}
 //				case FC_SOUND_BODY2: {
 //					if ( !command.soundShader ) {
-//						if ( !ent->StartSound( command.string->c_str(), SND_CHANNEL_BODY2, 0, false, NULL ) ) {
+//						if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_BODY2, 0, false, NULL ) ) {
 //							gameLocal.Warning( "Framecommand 'sound_body2' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
-//								ent->name.c_str(), FullName(), frame + 1, command.string->c_str() );
+//								ent.name.c_str(), FullName(), frame + 1, command.string.c_str() );
 //						}
 //					} else {
-//						ent->StartSoundShader( command.soundShader, SND_CHANNEL_BODY2, 0, false, NULL );
+//						ent.StartSoundShader( command.soundShader, SND_CHANNEL_BODY2, 0, false, NULL );
 //					}
 //					break;
 //				}
 //				case FC_SOUND_BODY3: {
 //					if ( !command.soundShader ) {
-//						if ( !ent->StartSound( command.string->c_str(), SND_CHANNEL_BODY3, 0, false, NULL ) ) {
+//						if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_BODY3, 0, false, NULL ) ) {
 //							gameLocal.Warning( "Framecommand 'sound_body3' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
-//								ent->name.c_str(), FullName(), frame + 1, command.string->c_str() );
+//								ent.name.c_str(), FullName(), frame + 1, command.string.c_str() );
 //						}
 //					} else {
-//						ent->StartSoundShader( command.soundShader, SND_CHANNEL_BODY3, 0, false, NULL );
+//						ent.StartSoundShader( command.soundShader, SND_CHANNEL_BODY3, 0, false, NULL );
 //					}
 //					break;
 //									 }
 //				case FC_SOUND_WEAPON: {
 //					if ( !command.soundShader ) {
-//						if ( !ent->StartSound( command.string->c_str(), SND_CHANNEL_WEAPON, 0, false, NULL ) ) {
+//						if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_WEAPON, 0, false, NULL ) ) {
 //							gameLocal.Warning( "Framecommand 'sound_weapon' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
-//								ent->name.c_str(), FullName(), frame + 1, command.string->c_str() );
+//								ent.name.c_str(), FullName(), frame + 1, command.string.c_str() );
 //						}
 //					} else {
-//						ent->StartSoundShader( command.soundShader, SND_CHANNEL_WEAPON, 0, false, NULL );
+//						ent.StartSoundShader( command.soundShader, SND_CHANNEL_WEAPON, 0, false, NULL );
 //					}
 //					break;
 //				}
 //				case FC_SOUND_GLOBAL: {
 //					if ( !command.soundShader ) {
-//						if ( !ent->StartSound( command.string->c_str(), SND_CHANNEL_ANY, SSF_GLOBAL, false, NULL ) ) {
+//						if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_ANY, SSF_GLOBAL, false, NULL ) ) {
 //							gameLocal.Warning( "Framecommand 'sound_global' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
-//								ent->name.c_str(), FullName(), frame + 1, command.string->c_str() );
+//								ent.name.c_str(), FullName(), frame + 1, command.string.c_str() );
 //						}
 //					} else {
-//						ent->StartSoundShader( command.soundShader, SND_CHANNEL_ANY, SSF_GLOBAL, false, NULL );
+//						ent.StartSoundShader( command.soundShader, SND_CHANNEL_ANY, SSF_GLOBAL, false, NULL );
 //					}
 //					break;
 //				}
 //				case FC_SOUND_ITEM: {
 //					if ( !command.soundShader ) {
-//						if ( !ent->StartSound( command.string->c_str(), SND_CHANNEL_ITEM, 0, false, NULL ) ) {
+//						if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_ITEM, 0, false, NULL ) ) {
 //							gameLocal.Warning( "Framecommand 'sound_item' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
-//								ent->name.c_str(), FullName(), frame + 1, command.string->c_str() );
+//								ent.name.c_str(), FullName(), frame + 1, command.string.c_str() );
 //						}
 //					} else {
-//						ent->StartSoundShader( command.soundShader, SND_CHANNEL_ITEM, 0, false, NULL );
+//						ent.StartSoundShader( command.soundShader, SND_CHANNEL_ITEM, 0, false, NULL );
 //					}
 //					break;
 //				}
 //				case FC_SOUND_CHATTER: {
-//					if ( ent->CanPlayChatterSounds() ) {
+//					if ( ent.CanPlayChatterSounds() ) {
 //						if ( !command.soundShader ) {
-//							if ( !ent->StartSound( command.string->c_str(), SND_CHANNEL_VOICE, 0, false, NULL ) ) {
+//							if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_VOICE, 0, false, NULL ) ) {
 //								gameLocal.Warning( "Framecommand 'sound_chatter' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
-//									ent->name.c_str(), FullName(), frame + 1, command.string->c_str() );
+//									ent.name.c_str(), FullName(), frame + 1, command.string.c_str() );
 //							}
 //						} else {
-//							ent->StartSoundShader( command.soundShader, SND_CHANNEL_VOICE, 0, false, NULL );
+//							ent.StartSoundShader( command.soundShader, SND_CHANNEL_VOICE, 0, false, NULL );
 //						}
 //					}
 //					break;
 //				}
 //				case FC_FX: {
-//					idEntityFx::StartFx( command.string->c_str(), NULL, NULL, ent, true );
+//					idEntityFx::StartFx( command.string.c_str(), NULL, NULL, ent, true );
 //					break;
 //				}
 //				case FC_SKIN: {
-//					ent->SetSkin( command.skin );
+//					ent.SetSkin( command.skin );
 //					break;
 //				}
 //				case FC_TRIGGER: {
 //					idEntity *target;
 //
-//					target = gameLocal.FindEntity( command.string->c_str() );
+//					target = gameLocal.FindEntity( command.string.c_str() );
 //					if ( target ) {
-//						target->Signal( SIG_TRIGGER );
-//						target->ProcessEvent( &EV_Activate, ent );
-//						target->TriggerGuis();
+//						target.Signal( SIG_TRIGGER );
+//						target.ProcessEvent( &EV_Activate, ent );
+//						target.TriggerGuis();
 //					} else {
 //						gameLocal.Warning( "Framecommand 'trigger' on entity '%s', anim '%s', frame %d: Could not find entity '%s'",
-//							ent->name.c_str(), FullName(), frame + 1, command.string->c_str() );
+//							ent.name.c_str(), FullName(), frame + 1, command.string.c_str() );
 //					}
 //					break;
 //				}
 //				case FC_TRIGGER_SMOKE_PARTICLE: {
-//					ent->ProcessEvent( &AI_TriggerParticles, command.string->c_str() );
+//					ent.ProcessEvent( &AI_TriggerParticles, command.string.c_str() );
 //					break;
 //				}
 //				case FC_MELEE: {
-//					ent->ProcessEvent( &AI_AttackMelee, command.string->c_str() );
+//					ent.ProcessEvent( &AI_AttackMelee, command.string.c_str() );
 //					break;
 //				}
 //				case FC_DIRECTDAMAGE: {
-//					ent->ProcessEvent( &AI_DirectDamage, command.string->c_str() );
+//					ent.ProcessEvent( &AI_DirectDamage, command.string.c_str() );
 //					break;
 //				}
 //				case FC_BEGINATTACK: {
-//					ent->ProcessEvent( &AI_BeginAttack, command.string->c_str() );
+//					ent.ProcessEvent( &AI_BeginAttack, command.string.c_str() );
 //					break;
 //				}
 //				case FC_ENDATTACK: {
-//					ent->ProcessEvent( &AI_EndAttack );
+//					ent.ProcessEvent( &AI_EndAttack );
 //					break;
 //				}
 //				case FC_MUZZLEFLASH: {
-//					ent->ProcessEvent( &AI_MuzzleFlash, command.string->c_str() );
+//					ent.ProcessEvent( &AI_MuzzleFlash, command.string.c_str() );
 //					break;
 //				}
 //				case FC_CREATEMISSILE: {
-//					ent->ProcessEvent( &AI_CreateMissile, command.string->c_str() );
+//					ent.ProcessEvent( &AI_CreateMissile, command.string.c_str() );
 //					break;
 //				}
 //				case FC_LAUNCHMISSILE: {
-//					ent->ProcessEvent( &AI_AttackMissile, command.string->c_str() );
+//					ent.ProcessEvent( &AI_AttackMissile, command.string.c_str() );
 //					break;
 //				}
 //				case FC_FIREMISSILEATTARGET: {
-//					ent->ProcessEvent( &AI_FireMissileAtTarget, modelDef->GetJointName( command.index ), command.string->c_str() );
+//					ent.ProcessEvent( &AI_FireMissileAtTarget, modelDef.GetJointName( command.index ), command.string.c_str() );
 //					break;
 //				}
 //				case FC_FOOTSTEP : {
-//					ent->ProcessEvent( &EV_Footstep );
+//					ent.ProcessEvent( &EV_Footstep );
 //					break;
 //				}
 //				case FC_LEFTFOOT: {
-//					ent->ProcessEvent( &EV_FootstepLeft );
+//					ent.ProcessEvent( &EV_FootstepLeft );
 //					break;
 //				}
 //				case FC_RIGHTFOOT: {
-//					ent->ProcessEvent( &EV_FootstepRight );
+//					ent.ProcessEvent( &EV_FootstepRight );
 //					break;
 //				}
 //				case FC_ENABLE_EYE_FOCUS: {
-//					ent->ProcessEvent( &AI_EnableEyeFocus );
+//					ent.ProcessEvent( &AI_EnableEyeFocus );
 //					break;
 //				}
 //				case FC_DISABLE_EYE_FOCUS: {
-//					ent->ProcessEvent( &AI_DisableEyeFocus );
+//					ent.ProcessEvent( &AI_DisableEyeFocus );
 //					break;
 //				}
 //				case FC_DISABLE_GRAVITY: {
-//					ent->ProcessEvent( &AI_DisableGravity );
+//					ent.ProcessEvent( &AI_DisableGravity );
 //					break;
 //				}
 //				case FC_ENABLE_GRAVITY: {
-//					ent->ProcessEvent( &AI_EnableGravity );
+//					ent.ProcessEvent( &AI_EnableGravity );
 //					break;
 //				}
 //				case FC_JUMP: {
-//					ent->ProcessEvent( &AI_JumpFrame );
+//					ent.ProcessEvent( &AI_JumpFrame );
 //					break;
 //				}
 //				case FC_ENABLE_CLIP: {
-//					ent->ProcessEvent( &AI_EnableClip );
+//					ent.ProcessEvent( &AI_EnableClip );
 //					break;
 //				}
 //				case FC_DISABLE_CLIP: {
-//					ent->ProcessEvent( &AI_DisableClip );
+//					ent.ProcessEvent( &AI_DisableClip );
 //					break;
 //				}
 //				case FC_ENABLE_WALK_IK: {
-//					ent->ProcessEvent( &EV_EnableWalkIK );
+//					ent.ProcessEvent( &EV_EnableWalkIK );
 //					break;
 //				}
 //				case FC_DISABLE_WALK_IK: {
-//					ent->ProcessEvent( &EV_DisableWalkIK );
+//					ent.ProcessEvent( &EV_DisableWalkIK );
 //					break;
 //				}
 //				case FC_ENABLE_LEG_IK: {
-//					ent->ProcessEvent( &EV_EnableLegIK, command.index );
+//					ent.ProcessEvent( &EV_EnableLegIK, command.index );
 //					break;
 //				}
 //				case FC_DISABLE_LEG_IK: {
-//					ent->ProcessEvent( &EV_DisableLegIK, command.index );
+//					ent.ProcessEvent( &EV_DisableLegIK, command.index );
 //					break;
 //				}
 //				case FC_RECORDDEMO: {
 //					if ( command.string ) {
-//						cmdSystem->BufferCommandText( CMD_EXEC_NOW, va( "recordDemo %s", command.string->c_str() ) );
+//						cmdSystem.BufferCommandText( CMD_EXEC_NOW, va( "recordDemo %s", command.string.c_str() ) );
 //					} else {
-//						cmdSystem->BufferCommandText( CMD_EXEC_NOW, "stoprecording" );
+//						cmdSystem.BufferCommandText( CMD_EXEC_NOW, "stoprecording" );
 //					}
 //					break;
 //				}
 //				case FC_AVIGAME: {
 //					if ( command.string ) {
-//						cmdSystem->BufferCommandText( CMD_EXEC_NOW, va( "aviGame %s", command.string->c_str() ) );
+//						cmdSystem.BufferCommandText( CMD_EXEC_NOW, va( "aviGame %s", command.string.c_str() ) );
 //					} else {
-//						cmdSystem->BufferCommandText( CMD_EXEC_NOW, "aviGame" );
+//						cmdSystem.BufferCommandText( CMD_EXEC_NOW, "aviGame" );
 //					}
 //					break;
 //				}
@@ -952,7 +952,7 @@
 //		return -1;
 //	}
 //
-//	numframes = anims[ 0 ]->NumFrames();
+//	numframes = anims[ 0 ].NumFrames();
 //	for( frame = 0; frame < numframes; frame++ ) {
 //		end = frameLookup[ frame ].firstCommand + frameLookup[ frame ].num;
 //		for( index = frameLookup[ frame ].firstCommand; index < end; index++ ) {
@@ -1027,24 +1027,24 @@
 //void idAnimBlend::Save( idSaveGame *savefile ) const {
 //	int i;
 //
-//	savefile->WriteInt( starttime );
-//	savefile->WriteInt( endtime );
-//	savefile->WriteInt( timeOffset );
-//	savefile->WriteFloat( rate );
+//	savefile.WriteInt( starttime );
+//	savefile.WriteInt( endtime );
+//	savefile.WriteInt( timeOffset );
+//	savefile.WriteFloat( rate );
 //
-//	savefile->WriteInt( blendStartTime );
-//	savefile->WriteInt( blendDuration );
-//	savefile->WriteFloat( blendStartValue );
-//	savefile->WriteFloat( blendEndValue );
+//	savefile.WriteInt( blendStartTime );
+//	savefile.WriteInt( blendDuration );
+//	savefile.WriteFloat( blendStartValue );
+//	savefile.WriteFloat( blendEndValue );
 //
 //	for( i = 0; i < ANIM_MaxSyncedAnims; i++ ) {
-//		savefile->WriteFloat( animWeights[ i ] );
+//		savefile.WriteFloat( animWeights[ i ] );
 //	}
-//	savefile->WriteShort( cycle );
-//	savefile->WriteShort( frame );
-//	savefile->WriteShort( animNum );
-//	savefile->WriteBool( allowMove );
-//	savefile->WriteBool( allowFrameCommands );
+//	savefile.WriteShort( cycle );
+//	savefile.WriteShort( frame );
+//	savefile.WriteShort( animNum );
+//	savefile.WriteBool( allowMove );
+//	savefile.WriteBool( allowFrameCommands );
 //}
 //
 ///*
@@ -1057,32 +1057,32 @@
 //void idAnimBlend::Restore( idRestoreGame *savefile, const idDeclModelDef *modelDef ) {
 //	int	i;
 //
-//	this->modelDef = modelDef;
+//	this.modelDef = modelDef;
 //
-//	savefile->ReadInt( starttime );
-//	savefile->ReadInt( endtime );
-//	savefile->ReadInt( timeOffset );
-//	savefile->ReadFloat( rate );
+//	savefile.ReadInt( starttime );
+//	savefile.ReadInt( endtime );
+//	savefile.ReadInt( timeOffset );
+//	savefile.ReadFloat( rate );
 //
-//	savefile->ReadInt( blendStartTime );
-//	savefile->ReadInt( blendDuration );
-//	savefile->ReadFloat( blendStartValue );
-//	savefile->ReadFloat( blendEndValue );
+//	savefile.ReadInt( blendStartTime );
+//	savefile.ReadInt( blendDuration );
+//	savefile.ReadFloat( blendStartValue );
+//	savefile.ReadFloat( blendEndValue );
 //
 //	for( i = 0; i < ANIM_MaxSyncedAnims; i++ ) {
-//		savefile->ReadFloat( animWeights[ i ] );
+//		savefile.ReadFloat( animWeights[ i ] );
 //	}
-//	savefile->ReadShort( cycle );
-//	savefile->ReadShort( frame );
-//	savefile->ReadShort( animNum );
+//	savefile.ReadShort( cycle );
+//	savefile.ReadShort( frame );
+//	savefile.ReadShort( animNum );
 //	if ( !modelDef ) {
 //		animNum = 0;
-//	} else if ( ( animNum < 0 ) || ( animNum > modelDef->NumAnims() ) ) {
-//		gameLocal.Warning( "Anim number %d out of range for model '%s' during save game", animNum, modelDef->GetModelName() );
+//	} else if ( ( animNum < 0 ) || ( animNum > modelDef.NumAnims() ) ) {
+//		gameLocal.Warning( "Anim number %d out of range for model '%s' during save game", animNum, modelDef.GetModelName() );
 //		animNum = 0;
 //	}
-//	savefile->ReadBool( allowMove );
-//	savefile->ReadBool( allowFrameCommands );
+//	savefile.ReadBool( allowMove );
+//	savefile.ReadBool( allowFrameCommands );
 //}
 //
 ///*
@@ -1121,7 +1121,7 @@
 //		return "";
 //	}
 //
-//	return anim->FullName();
+//	return anim.FullName();
 //}
 //
 ///*
@@ -1135,7 +1135,7 @@
 //		return "";
 //	}
 //
-//	return anim->Name();
+//	return anim.Name();
 //}
 //
 ///*
@@ -1149,7 +1149,7 @@
 //		return 0;
 //	}
 //
-//	return anim->NumFrames();
+//	return anim.NumFrames();
 //}
 //
 ///*
@@ -1163,7 +1163,7 @@
 //		return 0;
 //	}
 //
-//	return anim->Length();
+//	return anim.Length();
 //}
 //
 ///*
@@ -1225,7 +1225,7 @@
 //		return 0;
 //	}
 //
-//	return anim->NumAnims();
+//	return anim.NumAnims();
 //}
 //
 ///*
@@ -1239,7 +1239,7 @@
 //		return false;
 //	}
 //
-//	if ( ( num < 0 ) || ( num > anim->NumAnims() ) ) {
+//	if ( ( num < 0 ) || ( num > anim.NumAnims() ) ) {
 //		return false;
 //	}
 //
@@ -1258,14 +1258,14 @@
 //		return;
 //	}
 //	
-//	const idAnim *_anim = modelDef->GetAnim( _animNum );
+//	const idAnim *_anim = modelDef.GetAnim( _animNum );
 //	if ( !_anim ) {
 //		return;
 //	}
 //
-//	const idMD5Anim *md5anim = _anim->MD5Anim( 0 );
-//	if ( modelDef->Joints().Num() != md5anim->NumJoints() ) {
-//		gameLocal.Warning( "Model '%s' has different # of joints than anim '%s'", modelDef->GetModelName(), md5anim->Name() );
+//	const idMD5Anim *md5anim = _anim.MD5Anim( 0 );
+//	if ( modelDef.Joints().Num() != md5anim.NumJoints() ) {
+//		gameLocal.Warning( "Model '%s' has different # of joints than anim '%s'", modelDef.GetModelName(), md5anim.Name() );
 //		return;
 //	}
 //	
@@ -1279,8 +1279,8 @@
 //	// a frame of 0 means it's not a single frame blend, so we set it to frame + 1
 //	if ( frame <= 0 ) {
 //		frame = 1;
-//	} else if ( frame > _anim->NumFrames() ) {
-//		frame = _anim->NumFrames();
+//	} else if ( frame > _anim.NumFrames() ) {
+//		frame = _anim.NumFrames();
 //	}
 //
 //	// set up blend
@@ -1301,14 +1301,14 @@
 //		return;
 //	}
 //	
-//	const idAnim *_anim = modelDef->GetAnim( _animNum );
+//	const idAnim *_anim = modelDef.GetAnim( _animNum );
 //	if ( !_anim ) {
 //		return;
 //	}
 //
-//	const idMD5Anim *md5anim = _anim->MD5Anim( 0 );
-//	if ( modelDef->Joints().Num() != md5anim->NumJoints() ) {
-//		gameLocal.Warning( "Model '%s' has different # of joints than anim '%s'", modelDef->GetModelName(), md5anim->Name() );
+//	const idMD5Anim *md5anim = _anim.MD5Anim( 0 );
+//	if ( modelDef.Joints().Num() != md5anim.NumJoints() ) {
+//		gameLocal.Warning( "Model '%s' has different # of joints than anim '%s'", modelDef.GetModelName(), md5anim.Name() );
 //		return;
 //	}
 //
@@ -1316,9 +1316,9 @@
 //	animWeights[ 0 ]	= 1.0f;
 //	endtime				= -1;
 //	cycle				= -1;
-//	if ( _anim->GetAnimFlags().random_cycle_start ) {
+//	if ( _anim.GetAnimFlags().random_cycle_start ) {
 //		// start the animation at a random time so that characters don't walk in sync
-//		starttime = currentTime - gameLocal.random.RandomFloat() * _anim->Length();
+//		starttime = currentTime - gameLocal.random.RandomFloat() * _anim.Length();
 //	} else {
 //		starttime = currentTime;
 //	}
@@ -1341,20 +1341,20 @@
 //		return;
 //	}
 //	
-//	const idAnim *_anim = modelDef->GetAnim( _animNum );
+//	const idAnim *_anim = modelDef.GetAnim( _animNum );
 //	if ( !_anim ) {
 //		return;
 //	}
 //
-//	const idMD5Anim *md5anim = _anim->MD5Anim( 0 );
-//	if ( modelDef->Joints().Num() != md5anim->NumJoints() ) {
-//		gameLocal.Warning( "Model '%s' has different # of joints than anim '%s'", modelDef->GetModelName(), md5anim->Name() );
+//	const idMD5Anim *md5anim = _anim.MD5Anim( 0 );
+//	if ( modelDef.Joints().Num() != md5anim.NumJoints() ) {
+//		gameLocal.Warning( "Model '%s' has different # of joints than anim '%s'", modelDef.GetModelName(), md5anim.Name() );
 //		return;
 //	}
 //
 //	animNum				= _animNum;
 //	starttime			= currentTime;
-//	endtime				= starttime + _anim->Length();
+//	endtime				= starttime + _anim.Length();
 //	cycle				= 1;
 //	animWeights[ 0 ]	= 1.0f;
 //
@@ -1454,18 +1454,18 @@
 //
 //			// most of the time we're running at the original frame rate, so avoid the int-to-float-to-int conversion
 //			if ( rate == 1.0f ) {
-//				endtime	= starttime - timeOffset + anim->Length();
+//				endtime	= starttime - timeOffset + anim.Length();
 //			} else if ( rate != 0.0f ) {
-//				endtime	= starttime - timeOffset + anim->Length() / rate;
+//				endtime	= starttime - timeOffset + anim.Length() / rate;
 //			} else {
 //				endtime = -1;
 //			}
 //		} else {
 //			// most of the time we're running at the original frame rate, so avoid the int-to-float-to-int conversion
 //			if ( rate == 1.0f ) {
-//				endtime	= starttime - timeOffset + anim->Length() * cycle;
+//				endtime	= starttime - timeOffset + anim.Length() * cycle;
 //			} else if ( rate != 0.0f ) {
-//				endtime	= starttime - timeOffset + ( anim->Length() * cycle ) / rate;
+//				endtime	= starttime - timeOffset + ( anim.Length() * cycle ) / rate;
 //			} else {
 //				endtime = -1;
 //			}
@@ -1591,7 +1591,7 @@
 //		return NULL;
 //	}
 //
-//	const idAnim *anim = modelDef->GetAnim( animNum );
+//	const idAnim *anim = modelDef.GetAnim( animNum );
 //	return anim;
 //}
 //
@@ -1628,7 +1628,7 @@
 //
 //		// given enough time, we can easily wrap time around in our frame calculations, so
 //		// keep cycling animations' time within the length of the anim.
-//		length = anim->Length();
+//		length = anim.Length();
 //		if ( ( cycle < 0 ) && ( length > 0 ) ) {
 //			time %= length;
 //
@@ -1663,9 +1663,9 @@
 //		return frame;
 //	}
 //
-//	md5anim = anim->MD5Anim( 0 );
+//	md5anim = anim.MD5Anim( 0 );
 //	animTime = AnimTime( currentTime );
-//	md5anim->ConvertTimeToFrame( animTime, cycle, frameinfo );
+//	md5anim.ConvertTimeToFrame( animTime, cycle, frameinfo );
 //
 //	return frameinfo.frame1 + 1;
 //}
@@ -1687,7 +1687,7 @@
 //	}
 //
 //	const idAnim *anim = Anim();
-//	if ( !anim || !anim->HasFrameCommands() ) {
+//	if ( !anim || !anim.HasFrameCommands() ) {
 //		return;
 //	}
 //
@@ -1700,18 +1700,18 @@
 //	fromFrameTime	= AnimTime( fromtime );
 //	toFrameTime		= AnimTime( totime );
 //	if ( toFrameTime < fromFrameTime ) {
-//		toFrameTime += anim->Length();
+//		toFrameTime += anim.Length();
 //	}
 //
-//	md5anim = anim->MD5Anim( 0 );
-//	md5anim->ConvertTimeToFrame( fromFrameTime, cycle, frame1 );
-//	md5anim->ConvertTimeToFrame( toFrameTime, cycle, frame2 );
+//	md5anim = anim.MD5Anim( 0 );
+//	md5anim.ConvertTimeToFrame( fromFrameTime, cycle, frame1 );
+//	md5anim.ConvertTimeToFrame( toFrameTime, cycle, frame2 );
 //
 //	if ( fromFrameTime <= 0 ) {
 //		// make sure first frame is called
-//		anim->CallFrameCommands( ent, -1, frame2.frame1 );
+//		anim.CallFrameCommands( ent, -1, frame2.frame1 );
 //	} else {
-//		anim->CallFrameCommands( ent, frame1.frame1, frame2.frame1 );
+//		anim.CallFrameCommands( ent, frame1.frame1, frame2.frame1 );
 //	}
 //}
 //
@@ -1760,14 +1760,14 @@
 //
 //	time = AnimTime( currentTime );
 //
-//	numAnims = anim->NumAnims();
+//	numAnims = anim.NumAnims();
 //	if ( numAnims == 1 ) {
-//		md5anim = anim->MD5Anim( 0 );
+//		md5anim = anim.MD5Anim( 0 );
 //		if ( frame ) {
-//			md5anim->GetSingleFrame( frame - 1, jointFrame, modelDef->GetChannelJoints( channel ), modelDef->NumJointsOnChannel( channel ) );
+//			md5anim.GetSingleFrame( frame - 1, jointFrame, modelDef.GetChannelJoints( channel ), modelDef.NumJointsOnChannel( channel ) );
 //		} else {
-//			md5anim->ConvertTimeToFrame( time, cycle, frametime );
-//			md5anim->GetInterpolatedFrame( frametime, jointFrame, modelDef->GetChannelJoints( channel ), modelDef->NumJointsOnChannel( channel ) );
+//			md5anim.ConvertTimeToFrame( time, cycle, frametime );
+//			md5anim.GetInterpolatedFrame( frametime, jointFrame, modelDef.GetChannelJoints( channel ), modelDef.NumJointsOnChannel( channel ) );
 //		}
 //	} else {
 //		//
@@ -1777,7 +1777,7 @@
 //		mixFrame = ( idJointQuat * )_alloca16( numJoints * sizeof( *jointFrame ) );
 //
 //		if ( !frame ) {
-//			anim->MD5Anim( 0 )->ConvertTimeToFrame( time, cycle, frametime );
+//			anim.MD5Anim( 0 ).ConvertTimeToFrame( time, cycle, frametime );
 //		}
 //
 //		ptr = jointFrame;
@@ -1786,16 +1786,16 @@
 //			if ( animWeights[ i ] > 0.0f ) {
 //				mixWeight += animWeights[ i ];
 //				lerp = animWeights[ i ] / mixWeight;
-//				md5anim = anim->MD5Anim( i );
+//				md5anim = anim.MD5Anim( i );
 //				if ( frame ) {
-//					md5anim->GetSingleFrame( frame - 1, ptr, modelDef->GetChannelJoints( channel ), modelDef->NumJointsOnChannel( channel ) );
+//					md5anim.GetSingleFrame( frame - 1, ptr, modelDef.GetChannelJoints( channel ), modelDef.NumJointsOnChannel( channel ) );
 //				} else {
-//					md5anim->GetInterpolatedFrame( frametime, ptr, modelDef->GetChannelJoints( channel ), modelDef->NumJointsOnChannel( channel ) );
+//					md5anim.GetInterpolatedFrame( frametime, ptr, modelDef.GetChannelJoints( channel ), modelDef.NumJointsOnChannel( channel ) );
 //				}
 //
 //				// only blend after the first anim is mixed in
 //				if ( ptr != jointFrame ) {
-//					SIMDProcessor->BlendJoints( jointFrame, ptr, lerp, modelDef->GetChannelJoints( channel ), modelDef->NumJointsOnChannel( channel ) );
+//					SIMDProcessor.BlendJoints( jointFrame, ptr, lerp, modelDef.GetChannelJoints( channel ), modelDef.NumJointsOnChannel( channel ) );
 //				}
 //
 //				ptr = mixFrame;
@@ -1816,7 +1816,7 @@
 //#endif
 //		}
 //
-//		if ( anim->GetAnimFlags().anim_turn ) {
+//		if ( anim.GetAnimFlags().anim_turn ) {
 //			jointFrame[ 0 ].q.Set( -0.70710677f, 0.0f, 0.0f, 0.70710677f );
 //		}
 //	}
@@ -1824,8 +1824,8 @@
 //	if ( !blendWeight ) {
 //		blendWeight = weight;
 //		if ( channel != ANIMCHANNEL_ALL ) {
-//			const int *index = modelDef->GetChannelJoints( channel );
-//			const /*int*/num:number = modelDef->NumJointsOnChannel( channel );
+//			const int *index = modelDef.GetChannelJoints( channel );
+//			const /*int*/num:number = modelDef.NumJointsOnChannel( channel );
 //			for( i = 0; i < num; i++ ) {
 //				int j = index[i];
 //				blendFrame[j].t = jointFrame[j].t;
@@ -1835,14 +1835,14 @@
 //    } else {
 //		blendWeight += weight;
 //		lerp = weight / blendWeight;
-//		SIMDProcessor->BlendJoints( blendFrame, jointFrame, lerp, modelDef->GetChannelJoints( channel ), modelDef->NumJointsOnChannel( channel ) );
+//		SIMDProcessor.BlendJoints( blendFrame, jointFrame, lerp, modelDef.GetChannelJoints( channel ), modelDef.NumJointsOnChannel( channel ) );
 //	}
 //
 //	if ( printInfo ) {
 //		if ( frame ) {
-//			gameLocal.Printf( "  %s: '%s', %d, %.2f%%\n", channelNames[ channel ], anim->FullName(), frame, weight * 100.0f );
+//			gameLocal.Printf( "  %s: '%s', %d, %.2f%%\n", channelNames[ channel ], anim.FullName(), frame, weight * 100.0f );
 //		} else {
-//			gameLocal.Printf( "  %s: '%s', %.3f, %.2f%%\n", channelNames[ channel ], anim->FullName(), ( float )frametime.frame1 + frametime.backlerp, weight * 100.0f );
+//			gameLocal.Printf( "  %s: '%s', %.3f, %.2f%%\n", channelNames[ channel ], anim.FullName(), ( float )frametime.frame1 + frametime.backlerp, weight * 100.0f );
 //		}
 //	}
 //
@@ -1883,9 +1883,9 @@
 //	time = AnimTime( currentTime );
 //
 //	pos.Zero();
-//	num = anim->NumAnims();
+//	num = anim.NumAnims();
 //	for( i = 0; i < num; i++ ) {
-//		anim->GetOrigin( animpos, i, time, cycle );
+//		anim.GetOrigin( animpos, i, time, cycle );
 //		pos += animpos * animWeights[ i ];
 //	}
 //
@@ -1932,18 +1932,18 @@
 //	time1 = AnimTime( fromtime );
 //	time2 = AnimTime( totime );
 //	if ( time2 < time1 ) {
-//		time2 += anim->Length();
+//		time2 += anim.Length();
 //	}
 //
-//	num = anim->NumAnims();
+//	num = anim.NumAnims();
 //
 //	pos1.Zero();
 //	pos2.Zero();
 //	for( i = 0; i < num; i++ ) {
-//		anim->GetOrigin( animpos, i, time1, cycle );
+//		anim.GetOrigin( animpos, i, time1, cycle );
 //		pos1 += animpos * animWeights[ i ];
 //
-//		anim->GetOrigin( animpos, i, time2, cycle );
+//		anim.GetOrigin( animpos, i, time2, cycle );
 //		pos2 += animpos * animWeights[ i ];
 //	}
 //
@@ -1979,7 +1979,7 @@
 //	}
 //
 //	const idAnim *anim = Anim();
-//	if ( !anim || !anim->GetAnimFlags().anim_turn ) {
+//	if ( !anim || !anim.GetAnimFlags().anim_turn ) {
 //		return;
 //	}
 //
@@ -1991,26 +1991,26 @@
 //	time1 = AnimTime( fromtime );
 //	time2 = AnimTime( totime );
 //	if ( time2 < time1 ) {
-//		time2 += anim->Length();
+//		time2 += anim.Length();
 //	}
 //
 //	q1.Set( 0.0f, 0.0f, 0.0f, 1.0f );
 //	q2.Set( 0.0f, 0.0f, 0.0f, 1.0f );
 //
 //	mixWeight = 0.0f;
-//	num = anim->NumAnims();
+//	num = anim.NumAnims();
 //	for( i = 0; i < num; i++ ) {
 //		if ( animWeights[ i ] > 0.0f ) {
 //			mixWeight += animWeights[ i ];
 //			if ( animWeights[ i ] == mixWeight ) {
-//				anim->GetOriginRotation( q1, i, time1, cycle );
-//				anim->GetOriginRotation( q2, i, time2, cycle );
+//				anim.GetOriginRotation( q1, i, time1, cycle );
+//				anim.GetOriginRotation( q2, i, time2, cycle );
 //			} else {
 //				lerp = animWeights[ i ] / mixWeight;
-//				anim->GetOriginRotation( q3, i, time1, cycle );
+//				anim.GetOriginRotation( q3, i, time1, cycle );
 //				q1.Slerp( q1, q3, lerp );
 //
-//				anim->GetOriginRotation( q3, i, time2, cycle );
+//				anim.GetOriginRotation( q3, i, time2, cycle );
 //				q2.Slerp( q1, q3, lerp );
 //			}
 //		}
@@ -2055,13 +2055,13 @@
 //	}
 //
 //	time = AnimTime( currentTime );
-//	num = anim->NumAnims();
+//	num = anim.NumAnims();
 //	
 //	addorigin = !allowMove || !removeOriginOffset;
 //	for( i = 0; i < num; i++ ) {
-//		if ( anim->GetBounds( b, i, time, cycle ) ) {
+//		if ( anim.GetBounds( b, i, time, cycle ) ) {
 //			if ( addorigin ) {
-//				anim->GetOrigin( pos, i, time, cycle );
+//				anim.GetOrigin( pos, i, time, cycle );
 //				b.TranslateSelf( pos );
 //			}
 //			bounds.AddBounds( b );
@@ -2070,13 +2070,63 @@
 //
 //	return true;
 //}
-//
-///***********************************************************************
+
+///*
+//==============================================================================================
 //
 //	idDeclModelDef
 //
-//***********************************************************************/
+//==============================================================================================
+//*/
 //
+class idDeclModelDef extends idDecl {
+	//public:
+	//								idDeclModelDef();
+	//								~idDeclModelDef();
+	//
+	//	virtual size_t				Size( ) const;
+	//	virtual const char *		DefaultDefinition( ) const;
+	Parse(text: string, textLength: number): boolean { todoThrow();return false ;}
+	//	virtual void				FreeData( );
+	//
+	//	void						Touch( ) const;
+	//
+	//	const idDeclSkin *			GetDefaultSkin( ) const;
+	//	const idJointQuat *			GetDefaultPose( ) const;
+	//	void						SetupJoints( int *numJoints, idJointMat **jointList, idBounds &frameBounds, bool removeOriginOffset ) const;
+	//	idRenderModel *				ModelHandle( ) const;
+	//	void						GetJointList( jointnames:string, idList<jointHandle_t> &jointList ) const;
+	//	const jointInfo_t *			FindJoint( name:string ) const;
+	//
+	//	int							NumAnims( ) const;
+	//	const idAnim *				GetAnim( int index ) const;
+	//	int							GetSpecificAnim( name:string ) const;
+	//	int							GetAnim( name:string ) const;
+	//	bool						HasAnim( name:string ) const;
+	//	const idDeclSkin *			GetSkin( ) const;
+	//	const char *				GetModelName( ) const;
+	//	const idList<jointInfo_t> &	Joints( ) const;
+	//	const int *					JointParents( ) const;
+	//	int							NumJoints( ) const;
+	//	const jointInfo_t *			GetJoint( int jointHandle ) const;
+	//	const char *				GetJointName( int jointHandle ) const;
+	//	int							NumJointsOnChannel( int channel ) const;
+	//	const int *					GetChannelJoints( int channel ) const;
+	//
+	//	const idVec3 &				GetVisualOffset( ) const;
+	//
+	//private:
+	//	void						CopyDecl( const idDeclModelDef *decl );
+	//	bool						ParseAnim( idLexer &src, int numDefaultAnims );
+	//
+	//private:
+	//	idVec3						offset;
+	//	idList<jointInfo_t>			joints;
+	//	idList<int>					jointParents;
+	//	idList<int>					channelJoints[ ANIM_NumAnimChannels ];
+	//	idRenderModel *				modelHandle;
+	//	idList<idAnim *>			anims;
+	//	const idDeclSkin *			skin;
 ///*
 //=====================
 //idDeclModelDef::idDeclModelDef
@@ -2119,21 +2169,21 @@
 //
 //	FreeData();
 //
-//	offset = decl->offset;
-//	modelHandle = decl->modelHandle;
-//	skin = decl->skin;
+//	offset = decl.offset;
+//	modelHandle = decl.modelHandle;
+//	skin = decl.skin;
 //
-//	anims.SetNum( decl->anims.Num() );
+//	anims.SetNum( decl.anims.Num() );
 //	for( i = 0; i < anims.Num(); i++ ) {
-//		anims[ i ] = new idAnim( this, decl->anims[ i ] );
+//		anims[ i ] = new idAnim( this, decl.anims[ i ] );
 //	}
 //
-//	joints.SetNum( decl->joints.Num() );
-//	memcpy( joints.Ptr(), decl->joints.Ptr(), decl->joints.Num() * sizeof( joints[0] ) );
-//	jointParents.SetNum( decl->jointParents.Num() );
-//	memcpy( jointParents.Ptr(), decl->jointParents.Ptr(), decl->jointParents.Num() * sizeof( jointParents[0] ) );
+//	joints.SetNum( decl.joints.Num() );
+//	memcpy( joints.Ptr(), decl.joints.Ptr(), decl.joints.Num() * sizeof( joints[0] ) );
+//	jointParents.SetNum( decl.jointParents.Num() );
+//	memcpy( jointParents.Ptr(), decl.jointParents.Ptr(), decl.jointParents.Num() * sizeof( jointParents[0] ) );
 //	for ( i = 0; i < ANIM_NumAnimChannels; i++ ) {
-//		channelJoints[i] = decl->channelJoints[i];
+//		channelJoints[i] = decl.channelJoints[i];
 //	}
 //}
 //
@@ -2154,15 +2204,15 @@
 //	}
 //}
 //
-///*
-//================
-//idDeclModelDef::DefaultDefinition
-//================
-//*/
-//const char *idDeclModelDef::DefaultDefinition( ) const {
-//	return "{ }";
-//}
-//
+/*
+================
+idDeclModelDef::DefaultDefinition
+================
+*/
+	DefaultDefinition ( ): string {
+		return "{ }";
+	}
+
 ///*
 //====================
 //idDeclModelDef::FindJoint
@@ -2176,9 +2226,9 @@
 //		return NULL;
 //	}
 //	
-//	joint = modelHandle->GetJoints();
+//	joint = modelHandle.GetJoints();
 //	for( i = 0; i < joints.Num(); i++, joint++ ) {
-//		if ( !joint->name.Icmp( name ) ) {
+//		if ( !joint.name.Icmp( name ) ) {
 //			return &joints[ i ];
 //		}
 //	}
@@ -2216,7 +2266,7 @@
 //
 //	jointList.Clear();
 //
-//	num = modelHandle->NumJoints();
+//	num = modelHandle.NumJoints();
 //
 //	// scan through list of joints and add each to the joint list
 //	pos = jointnames;
@@ -2260,27 +2310,27 @@
 //		}
 //
 //		if ( !subtract ) {
-//			jointList.AddUnique( joint->num );
+//			jointList.AddUnique( joint.num );
 //		} else {
-//			jointList.Remove( joint->num );
+//			jointList.Remove( joint.num );
 //		}
 //
 //		if ( getChildren ) {
 //			// include all joint's children
 //			child = joint + 1;
-//			for( i = joint->num + 1; i < num; i++, child++ ) {
+//			for( i = joint.num + 1; i < num; i++, child++ ) {
 //				// all children of the joint should follow it in the list.
 //				// once we reach a joint without a parent or with a parent
 //				// who is earlier in the list than the specified joint, then
 //				// we've gone through all it's children.
-//				if ( child->parentNum < joint->num ) {
+//				if ( child.parentNum < joint.num ) {
 //					break;
 //				}
 //
 //				if ( !subtract ) {
-//					jointList.AddUnique( child->num );
+//					jointList.AddUnique( child.num );
 //				} else {
-//					jointList.Remove( child->num );
+//					jointList.Remove( child.num );
 //				}
 //			}
 //		}
@@ -2294,7 +2344,7 @@
 //*/
 //void idDeclModelDef::Touch( ) const {
 //	if ( modelHandle ) {
-//		renderModelManager->FindModel( modelHandle->Name() );
+//		renderModelManager.FindModel( modelHandle.Name() );
 //	}
 //}
 //
@@ -2313,7 +2363,7 @@
 //=====================
 //*/
 //const idJointQuat *idDeclModelDef::GetDefaultPose( ) const {
-//	return modelHandle->GetDefaultPose();
+//	return modelHandle.GetDefaultPose();
 //}
 //
 ///*
@@ -2326,7 +2376,7 @@
 //	const idJointQuat	*pose;
 //	idJointMat			*list;
 //
-//	if ( !modelHandle || modelHandle->IsDefaultModel() ) {
+//	if ( !modelHandle || modelHandle.IsDefaultModel() ) {
 //		Mem_Free16( (*jointList) );
 //		(*jointList) = NULL;
 //		frameBounds.Clear();
@@ -2334,10 +2384,10 @@
 //	}
 //
 //	// get the number of joints
-//	num = modelHandle->NumJoints();
+//	num = modelHandle.NumJoints();
 //
 //	if ( !num ) {
-//		gameLocal.Error( "model '%s' has no joints", modelHandle->Name() );
+//		gameLocal.Error( "model '%s' has no joints", modelHandle.Name() );
 //	}
 //
 //	// set up initial pose for model (with no pose, model is just a jumbled mess)
@@ -2345,7 +2395,7 @@
 //	pose = GetDefaultPose();
 //
 //	// convert the joint quaternions to joint matrices
-//	SIMDProcessor->ConvertJointQuatsToJointMats( list, pose, joints.Num() );
+//	SIMDProcessor.ConvertJointQuatsToJointMats( list, pose, joints.Num() );
 //
 //	// check if we offset the model by the origin joint
 //	if ( removeOriginOffset ) {
@@ -2359,13 +2409,13 @@
 //	}
 //
 //	// transform the joint hierarchy
-//	SIMDProcessor->TransformJoints( list, jointParents.Ptr(), 1, joints.Num() - 1 );
+//	SIMDProcessor.TransformJoints( list, jointParents.Ptr(), 1, joints.Num() - 1 );
 //
 //	*numJoints = num;
 //	*jointList = list;
 //
 //	// get the bounds of the default pose
-//	frameBounds = modelHandle->Bounds( NULL );
+//	frameBounds = modelHandle.Bounds( NULL );
 //}
 //
 ///*
@@ -2396,7 +2446,7 @@
 //	alias = realname;
 //
 //	for( i = 0; i < anims.Num(); i++ ) {
-//		if ( !strcmp( anims[ i ]->FullName(), realname ) ) {
+//		if ( !strcmp( anims[ i ].FullName(), realname ) ) {
 //			break;
 //		}
 //	}
@@ -2449,12 +2499,12 @@
 //			return false;
 //		}
 //
-//		md5anim->CheckModelHierarchy( modelHandle );
+//		md5anim.CheckModelHierarchy( modelHandle );
 //
 //		if ( numAnims > 0 ) {
 //			// make sure it's the same length as the other anims
-//			if ( md5anim->Length() != md5anims[ 0 ]->Length() ) {
-//				src.Warning( "Anim '%s' does not match length of anim '%s'", md5anim->Name(), md5anims[ 0 ]->Name() );
+//			if ( md5anim.Length() != md5anims[ 0 ].Length() ) {
+//				src.Warning( "Anim '%s' does not match length of anim '%s'", md5anim.Name(), md5anims[ 0 ].Name() );
 //				MakeDefault();
 //				return false;
 //			}
@@ -2477,7 +2527,7 @@
 //		return false;
 //	}
 //
-//	anim->SetAnim( this, realname, alias, numAnims, md5anims );
+//	anim.SetAnim( this, realname, alias, numAnims, md5anims );
 //	memset( &flags, 0, sizeof( flags ) );
 //
 //	// parse any frame commands or animflags
@@ -2521,7 +2571,7 @@
 //				framenum = token.GetIntValue();
 //
 //				// put the command on the specified frame of the animation
-//				err = anim->AddFrameCommand( this, framenum, src, NULL );
+//				err = anim.AddFrameCommand( this, framenum, src, NULL );
 //				if ( err ) {
 //					src.Warning( "%s", err );
 //					MakeDefault();
@@ -2536,7 +2586,7 @@
 //	}
 //
 //	// set the flags
-//	anim->SetAnimFlags( flags );
+//	anim.SetAnimFlags( flags );
 //	return true;
 //}
 //
@@ -2582,11 +2632,11 @@
 //				return false;
 //			}
 //			
-//			const idDeclModelDef *copy = static_cast<const idDeclModelDef *>( declManager->FindType( DECL_MODELDEF, token2, false ) );
+//			const idDeclModelDef *copy = static_cast<const idDeclModelDef *>( declManager.FindType( DECL_MODELDEF, token2, false ) );
 //			if ( !copy ) {
-//				common->Warning( "Unknown model definition '%s'", token2.c_str() );
-//			} else if ( copy->GetState() == DS_DEFAULTED ) {
-//				common->Warning( "inherited model definition '%s' defaulted", token2.c_str() );
+//				common.Warning( "Unknown model definition '%s'", token2.c_str() );
+//			} else if ( copy.GetState() == DS_DEFAULTED ) {
+//				common.Warning( "inherited model definition '%s' defaulted", token2.c_str() );
 //				MakeDefault();
 //				return false;
 //			} else {
@@ -2599,7 +2649,7 @@
 //				MakeDefault();
 //				return false;
 //			}
-//			skin = declManager->FindSkin( token2 );
+//			skin = declManager.FindSkin( token2 );
 //			if ( !skin ) {
 //				src.Warning( "Skin '%s' not found", token2.c_str() );
 //				MakeDefault();
@@ -2618,21 +2668,21 @@
 //				MakeDefault();
 //				return false;
 //			}
-//			modelHandle = renderModelManager->FindModel( filename );
+//			modelHandle = renderModelManager.FindModel( filename );
 //			if ( !modelHandle ) {
 //				src.Warning( "Model '%s' not found", filename.c_str() );
 //				MakeDefault();
 //				return false;
 //			}
 //
-//			if ( modelHandle->IsDefaultModel() ) {
+//			if ( modelHandle.IsDefaultModel() ) {
 //				src.Warning( "Model '%s' defaulted", filename.c_str() );
 //				MakeDefault();
 //				return false;
 //			}
 //
 //			// get the number of joints
-//			num = modelHandle->NumJoints();
+//			num = modelHandle.NumJoints();
 //			if ( !num ) {
 //				src.Warning( "Model '%s' has no joints", filename.c_str() );
 //			}
@@ -2642,13 +2692,13 @@
 //			joints.SetNum( num );
 //			jointParents.SetNum( num );
 //			channelJoints[0].SetNum( num );
-//			md5joints = modelHandle->GetJoints();
+//			md5joints = modelHandle.GetJoints();
 //			md5joint = md5joints;
 //			for( i = 0; i < num; i++, md5joint++ ) {
 //				joints[i].channel = ANIMCHANNEL_ALL;
 //				joints[i].num = static_cast<jointHandle_t>( i );
-//				if ( md5joint->parent ) {
-//					joints[i].parentNum = static_cast<jointHandle_t>( md5joint->parent - md5joints );
+//				if ( md5joint.parent ) {
+//					joints[i].parentNum = static_cast<jointHandle_t>( md5joint.parent - md5joints );
 //				} else {
 //					joints[i].parentNum = INVALID_JOINT;
 //				}
@@ -2664,7 +2714,7 @@
 //			}
 //			num = 0;
 //			for( i = 0; i < anims.Num(); i++ ) {
-//				if ( ( token2 == anims[ i ]->Name() ) || ( token2 == anims[ i ]->FullName() ) ) {
+//				if ( ( token2 == anims[ i ].Name() ) || ( token2 == anims[ i ].FullName() ) ) {
 //					delete anims[ i ];
 //					anims.RemoveIndex( i );
 //					if ( i >= numDefaultAnims ) {
@@ -2751,7 +2801,7 @@
 //			for( num = i = 0; i < jointList.Num(); i++ ) {
 //				jointnum = jointList[ i ];
 //				if ( joints[ jointnum ].channel != ANIMCHANNEL_ALL ) {
-//					src.Warning( "Joint '%s' assigned to multiple channels", modelHandle->GetJointName( jointnum ) );
+//					src.Warning( "Joint '%s' assigned to multiple channels", modelHandle.GetJointName( jointnum ) );
 //					continue;
 //				}
 //				joints[ jointnum ].channel = channel;
@@ -2782,7 +2832,7 @@
 //
 //	// find any animations with same name
 //	for( i = 0; i < anims.Num(); i++ ) {
-//		if ( !strcmp( anims[ i ]->Name(), name ) ) {
+//		if ( !strcmp( anims[ i ].Name(), name ) ) {
 //			return true;
 //		}
 //	}
@@ -2811,7 +2861,7 @@
 //
 //	// find a specific animation
 //	for( i = 0; i < anims.Num(); i++ ) {
-//		if ( !strcmp( anims[ i ]->FullName(), name ) ) {
+//		if ( !strcmp( anims[ i ].FullName(), name ) ) {
 //			return i + 1;
 //		}
 //	}
@@ -2855,7 +2905,7 @@
 //	// find all animations with same name
 //	numAnims = 0;
 //	for( i = 0; i < anims.Num(); i++ ) {
-//		if ( !strcmp( anims[ i ]->Name(), name ) ) {
+//		if ( !strcmp( anims[ i ].Name(), name ) ) {
 //			animList[ numAnims++ ] = i;
 //			if ( numAnims >= MAX_ANIMS ) {
 //				break;
@@ -2889,7 +2939,7 @@
 //*/
 //const char *idDeclModelDef::GetModelName( ) const {
 //	if ( modelHandle ) {
-//		return modelHandle->Name();
+//		return modelHandle.Name();
 //	} else {
 //		return "";
 //	}
@@ -2950,7 +3000,7 @@
 //		gameLocal.Error( "idDeclModelDef::GetJointName : joint handle out of range" );
 //	}
 //
-//	joint = modelHandle->GetJoints();
+//	joint = modelHandle.GetJoints();
 //	return joint[ jointHandle ].name.c_str();
 //}
 //
@@ -2986,6 +3036,7 @@
 //const idVec3 &idDeclModelDef::GetVisualOffset( ) const {
 //	return offset;
 //}
+};
 //
 ///***********************************************************************
 //
@@ -3058,58 +3109,58 @@
 //	int i;
 //	int j;
 //
-//	savefile->WriteModelDef( modelDef );
-//	savefile->WriteObject( entity );
+//	savefile.WriteModelDef( modelDef );
+//	savefile.WriteObject( entity );
 //
-//	savefile->WriteInt( jointMods.Num() );
+//	savefile.WriteInt( jointMods.Num() );
 //	for( i = 0; i < jointMods.Num(); i++ ) {
-//		savefile->WriteInt( jointMods[ i ]->jointnum );
-//		savefile->WriteMat3( jointMods[ i ]->mat );
-//		savefile->WriteVec3( jointMods[ i ]->pos );
-//		savefile->WriteInt( (int&)jointMods[ i ]->transform_pos );
-//		savefile->WriteInt( (int&)jointMods[ i ]->transform_axis );
+//		savefile.WriteInt( jointMods[ i ].jointnum );
+//		savefile.WriteMat3( jointMods[ i ].mat );
+//		savefile.WriteVec3( jointMods[ i ].pos );
+//		savefile.WriteInt( (int&)jointMods[ i ].transform_pos );
+//		savefile.WriteInt( (int&)jointMods[ i ].transform_axis );
 //	}
 //	
-//	savefile->WriteInt( numJoints );
+//	savefile.WriteInt( numJoints );
 //	for ( i = 0; i < numJoints; i++ ) {
 //		float *data = joints[i].ToFloatPtr();
 //		for ( j = 0; j < 12; j++ ) {
-//			savefile->WriteFloat( data[j] );
+//			savefile.WriteFloat( data[j] );
 //		}
 //	}
 //
-//	savefile->WriteInt( lastTransformTime );
-//	savefile->WriteBool( stoppedAnimatingUpdate );
-//	savefile->WriteBool( forceUpdate );
-//	savefile->WriteBounds( frameBounds );
+//	savefile.WriteInt( lastTransformTime );
+//	savefile.WriteBool( stoppedAnimatingUpdate );
+//	savefile.WriteBool( forceUpdate );
+//	savefile.WriteBounds( frameBounds );
 //
-//	savefile->WriteFloat( AFPoseBlendWeight );
+//	savefile.WriteFloat( AFPoseBlendWeight );
 //
-//	savefile->WriteInt( AFPoseJoints.Num() );
+//	savefile.WriteInt( AFPoseJoints.Num() );
 //	for ( i = 0; i < AFPoseJoints.Num(); i++ ) {
-//		savefile->WriteInt( AFPoseJoints[i] );
+//		savefile.WriteInt( AFPoseJoints[i] );
 //	}
 //	
-//	savefile->WriteInt( AFPoseJointMods.Num() );
+//	savefile.WriteInt( AFPoseJointMods.Num() );
 //	for ( i = 0; i < AFPoseJointMods.Num(); i++ ) {
-//		savefile->WriteInt( (int&)AFPoseJointMods[i].mod );
-//		savefile->WriteMat3( AFPoseJointMods[i].axis );
-//		savefile->WriteVec3( AFPoseJointMods[i].origin );
+//		savefile.WriteInt( (int&)AFPoseJointMods[i].mod );
+//		savefile.WriteMat3( AFPoseJointMods[i].axis );
+//		savefile.WriteVec3( AFPoseJointMods[i].origin );
 //	}
 //	
-//	savefile->WriteInt( AFPoseJointFrame.Num() );
+//	savefile.WriteInt( AFPoseJointFrame.Num() );
 //	for ( i = 0; i < AFPoseJointFrame.Num(); i++ ) {
-//		savefile->WriteFloat( AFPoseJointFrame[i].q.x );
-//		savefile->WriteFloat( AFPoseJointFrame[i].q.y );
-//		savefile->WriteFloat( AFPoseJointFrame[i].q.z );
-//		savefile->WriteFloat( AFPoseJointFrame[i].q.w );
-//		savefile->WriteVec3( AFPoseJointFrame[i].t );
+//		savefile.WriteFloat( AFPoseJointFrame[i].q.x );
+//		savefile.WriteFloat( AFPoseJointFrame[i].q.y );
+//		savefile.WriteFloat( AFPoseJointFrame[i].q.z );
+//		savefile.WriteFloat( AFPoseJointFrame[i].q.w );
+//		savefile.WriteVec3( AFPoseJointFrame[i].t );
 //	}
 //	
-//	savefile->WriteBounds( AFPoseBounds );
-//	savefile->WriteInt( AFPoseTime );
+//	savefile.WriteBounds( AFPoseBounds );
+//	savefile.WriteInt( AFPoseTime );
 //
-//	savefile->WriteBool( removeOriginOffset );
+//	savefile.WriteBool( removeOriginOffset );
 //
 //	for( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
 //		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++ ) {
@@ -3130,67 +3181,67 @@
 //	int j;
 //	/*int*/num:number;
 //
-//	savefile->ReadModelDef( modelDef );
-//	savefile->ReadObject( reinterpret_cast<idClass *&>( entity ) );
+//	savefile.ReadModelDef( modelDef );
+//	savefile.ReadObject( reinterpret_cast<idClass *&>( entity ) );
 //
-//	savefile->ReadInt( num );
+//	savefile.ReadInt( num );
 //	jointMods.SetNum( num );
 //	for( i = 0; i < num; i++ ) {
 //		jointMods[ i ] = new jointMod_t;
-//		savefile->ReadInt( (int&)jointMods[ i ]->jointnum );
-//		savefile->ReadMat3( jointMods[ i ]->mat );
-//		savefile->ReadVec3( jointMods[ i ]->pos );
-//		savefile->ReadInt( (int&)jointMods[ i ]->transform_pos );
-//		savefile->ReadInt( (int&)jointMods[ i ]->transform_axis );
+//		savefile.ReadInt( (int&)jointMods[ i ].jointnum );
+//		savefile.ReadMat3( jointMods[ i ].mat );
+//		savefile.ReadVec3( jointMods[ i ].pos );
+//		savefile.ReadInt( (int&)jointMods[ i ].transform_pos );
+//		savefile.ReadInt( (int&)jointMods[ i ].transform_axis );
 //	}
 //	
-//	savefile->ReadInt( numJoints );
+//	savefile.ReadInt( numJoints );
 //	joints = (idJointMat *) Mem_Alloc16( numJoints * sizeof( joints[0] ) );
 //	for ( i = 0; i < numJoints; i++ ) {
 //		float *data = joints[i].ToFloatPtr();
 //		for ( j = 0; j < 12; j++ ) {
-//			savefile->ReadFloat( data[j] );
+//			savefile.ReadFloat( data[j] );
 //		}
 //	}
 //	
-//	savefile->ReadInt( lastTransformTime );
-//	savefile->ReadBool( stoppedAnimatingUpdate );
-//	savefile->ReadBool( forceUpdate );
-//	savefile->ReadBounds( frameBounds );
+//	savefile.ReadInt( lastTransformTime );
+//	savefile.ReadBool( stoppedAnimatingUpdate );
+//	savefile.ReadBool( forceUpdate );
+//	savefile.ReadBounds( frameBounds );
 //
-//	savefile->ReadFloat( AFPoseBlendWeight );
+//	savefile.ReadFloat( AFPoseBlendWeight );
 //
-//	savefile->ReadInt( num );
+//	savefile.ReadInt( num );
 //	AFPoseJoints.SetGranularity( 1 );
 //	AFPoseJoints.SetNum( num );
 //	for ( i = 0; i < AFPoseJoints.Num(); i++ ) {
-//		savefile->ReadInt( AFPoseJoints[i] );
+//		savefile.ReadInt( AFPoseJoints[i] );
 //	}
 //	
-//	savefile->ReadInt( num );
+//	savefile.ReadInt( num );
 //	AFPoseJointMods.SetGranularity( 1 );
 //	AFPoseJointMods.SetNum( num );
 //	for ( i = 0; i < AFPoseJointMods.Num(); i++ ) {
-//		savefile->ReadInt( (int&)AFPoseJointMods[i].mod );
-//		savefile->ReadMat3( AFPoseJointMods[i].axis );
-//		savefile->ReadVec3( AFPoseJointMods[i].origin );
+//		savefile.ReadInt( (int&)AFPoseJointMods[i].mod );
+//		savefile.ReadMat3( AFPoseJointMods[i].axis );
+//		savefile.ReadVec3( AFPoseJointMods[i].origin );
 //	}
 //	
-//	savefile->ReadInt( num );
+//	savefile.ReadInt( num );
 //	AFPoseJointFrame.SetGranularity( 1 );
 //	AFPoseJointFrame.SetNum( num );
 //	for ( i = 0; i < AFPoseJointFrame.Num(); i++ ) {
-//		savefile->ReadFloat( AFPoseJointFrame[i].q.x );
-//		savefile->ReadFloat( AFPoseJointFrame[i].q.y );
-//		savefile->ReadFloat( AFPoseJointFrame[i].q.z );
-//		savefile->ReadFloat( AFPoseJointFrame[i].q.w );
-//		savefile->ReadVec3( AFPoseJointFrame[i].t );
+//		savefile.ReadFloat( AFPoseJointFrame[i].q.x );
+//		savefile.ReadFloat( AFPoseJointFrame[i].q.y );
+//		savefile.ReadFloat( AFPoseJointFrame[i].q.z );
+//		savefile.ReadFloat( AFPoseJointFrame[i].q.w );
+//		savefile.ReadVec3( AFPoseJointFrame[i].t );
 //	}
 //	
-//	savefile->ReadBounds( AFPoseBounds );
-//	savefile->ReadInt( AFPoseTime );
+//	savefile.ReadBounds( AFPoseBounds );
+//	savefile.ReadInt( AFPoseTime );
 //
-//	savefile->ReadBool( removeOriginOffset );
+//	savefile.ReadBool( removeOriginOffset );
 //
 //	for( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
 //		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++ ) {
@@ -3208,7 +3259,7 @@
 //	int	i, j;
 //
 //	if ( entity ) {
-//		entity->BecomeInactive( TH_ANIMATE );
+//		entity.BecomeInactive( TH_ANIMATE );
 //	}
 //
 //	for( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
@@ -3266,22 +3317,22 @@
 //		return NULL;
 //	}
 //
-//	modelDef = static_cast<const idDeclModelDef *>( declManager->FindType( DECL_MODELDEF, modelname, false ) );
+//	modelDef = static_cast<const idDeclModelDef *>( declManager.FindType( DECL_MODELDEF, modelname, false ) );
 //	if ( !modelDef ) {
 //		return NULL;
 //	}
 //	
-//	idRenderModel *renderModel = modelDef->ModelHandle();
+//	idRenderModel *renderModel = modelDef.ModelHandle();
 //	if ( !renderModel ) {
 //		modelDef = NULL;
 //		return NULL;
 //	}
 //
 //	// make sure model hasn't been purged
-//	modelDef->Touch();
+//	modelDef.Touch();
 //
-//	modelDef->SetupJoints( &numJoints, &joints, frameBounds, removeOriginOffset );
-//	modelDef->ModelHandle()->Reset();
+//	modelDef.SetupJoints( &numJoints, &joints, frameBounds, removeOriginOffset );
+//	modelDef.ModelHandle().Reset();
 //
 //	// set the modelDef on all channels
 //	for( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
@@ -3290,7 +3341,7 @@
 //		}
 //	}
 //
-//	return modelDef->ModelHandle();
+//	return modelDef.ModelHandle();
 //}
 //
 ///*
@@ -3345,7 +3396,7 @@
 //*/
 //void idAnimator::GetJointList( jointnames:string, idList<jointHandle_t> &jointList ) const {
 //	if ( modelDef ) {
-//		modelDef->GetJointList( jointnames, jointList );
+//		modelDef.GetJointList( jointnames, jointList );
 //	}
 //}
 //
@@ -3359,7 +3410,7 @@
 //		return 0;
 //	}
 //	
-//	return modelDef->NumAnims();
+//	return modelDef.NumAnims();
 //}
 //
 ///*
@@ -3372,7 +3423,7 @@
 //		return NULL;
 //	}
 //	
-//	return modelDef->GetAnim( index );
+//	return modelDef.GetAnim( index );
 //}
 //
 ///*
@@ -3385,7 +3436,7 @@
 //		return 0;
 //	}
 //	
-//	return modelDef->GetAnim( name );
+//	return modelDef.GetAnim( name );
 //}
 //
 ///*
@@ -3398,7 +3449,7 @@
 //		return false;
 //	}
 //	
-//	return modelDef->HasAnim( name );
+//	return modelDef.HasAnim( name );
 //}
 //
 ///*
@@ -3420,7 +3471,7 @@
 //		return NULL;
 //	}
 //	
-//	return modelDef->ModelHandle();
+//	return modelDef.ModelHandle();
 //}
 //
 ///*
@@ -3460,7 +3511,7 @@
 //
 //	blend = channels[ channelNum ];
 //	for( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend++ ) {
-//		blend->Clear( currentTime, cleartime );
+//		blend.Clear( currentTime, cleartime );
 //	}
 //	ForceUpdate();
 //}
@@ -3475,14 +3526,14 @@
 //		gameLocal.Error( "idAnimator::SetFrame : channel out of range" );
 //	}
 //
-//	if ( !modelDef || !modelDef->GetAnim( animNum ) ) {
+//	if ( !modelDef || !modelDef.GetAnim( animNum ) ) {
 //		return;
 //	}
 //
 //	PushAnims( channelNum, currentTime, blendTime );
 //	channels[ channelNum ][ 0 ].SetFrame( modelDef, animNum, frame, currentTime, blendTime );
 //	if ( entity ) {
-//		entity->BecomeActive( TH_ANIMATE );
+//		entity.BecomeActive( TH_ANIMATE );
 //	}
 //}
 //
@@ -3496,14 +3547,14 @@
 //		gameLocal.Error( "idAnimator::CycleAnim : channel out of range" );
 //	}
 //
-//	if ( !modelDef || !modelDef->GetAnim( animNum ) ) {
+//	if ( !modelDef || !modelDef.GetAnim( animNum ) ) {
 //		return;
 //	}
 //	
 //	PushAnims( channelNum, currentTime, blendTime );
 //	channels[ channelNum ][ 0 ].CycleAnim( modelDef, animNum, currentTime, blendTime );
 //	if ( entity ) {
-//		entity->BecomeActive( TH_ANIMATE );
+//		entity.BecomeActive( TH_ANIMATE );
 //	}
 //}
 //
@@ -3517,14 +3568,14 @@
 //		gameLocal.Error( "idAnimator::PlayAnim : channel out of range" );
 //	}
 //
-//	if ( !modelDef || !modelDef->GetAnim( animNum ) ) {
+//	if ( !modelDef || !modelDef.GetAnim( animNum ) ) {
 //		return;
 //	}
 //	
 //	PushAnims( channelNum, currentTime, blendTime );
 //	channels[ channelNum ][ 0 ].PlayAnim( modelDef, animNum, currentTime, blendTime );
 //	if ( entity ) {
-//		entity->BecomeActive( TH_ANIMATE );
+//		entity.BecomeActive( TH_ANIMATE );
 //	}
 //}
 //
@@ -3554,7 +3605,7 @@
 //	toBlend.AllowFrameCommands( false );
 //
 //	if ( entity ) {
-//		entity->BecomeActive( TH_ANIMATE );
+//		entity.BecomeActive( TH_ANIMATE );
 //	}
 //}
 //
@@ -3567,33 +3618,33 @@
 //	int i;
 //	jointMod_t *jointMod;
 //
-//	if ( !modelDef || !modelDef->ModelHandle() || ( jointnum < 0 ) || ( jointnum >= numJoints ) ) {
+//	if ( !modelDef || !modelDef.ModelHandle() || ( jointnum < 0 ) || ( jointnum >= numJoints ) ) {
 //		return;
 //	}
 //
 //	jointMod = NULL;
 //	for( i = 0; i < jointMods.Num(); i++ ) {
-//		if ( jointMods[ i ]->jointnum == jointnum ) {
+//		if ( jointMods[ i ].jointnum == jointnum ) {
 //			jointMod = jointMods[ i ];
 //			break;
-//		} else if ( jointMods[ i ]->jointnum > jointnum ) {
+//		} else if ( jointMods[ i ].jointnum > jointnum ) {
 //			break;
 //		}
 //	}
 //
 //	if ( !jointMod ) {
 //		jointMod = new jointMod_t;
-//		jointMod->jointnum = jointnum;
-//		jointMod->mat.Identity();
-//		jointMod->transform_axis = JOINTMOD_NONE;
+//		jointMod.jointnum = jointnum;
+//		jointMod.mat.Identity();
+//		jointMod.transform_axis = JOINTMOD_NONE;
 //		jointMods.Insert( jointMod, i );
 //	}
 //
-//	jointMod->pos = pos;
-//	jointMod->transform_pos = transform_type;
+//	jointMod.pos = pos;
+//	jointMod.transform_pos = transform_type;
 //
 //	if ( entity ) {
-//		entity->BecomeActive( TH_ANIMATE );
+//		entity.BecomeActive( TH_ANIMATE );
 //	}
 //	ForceUpdate();
 //}
@@ -3607,33 +3658,33 @@
 //	int i;
 //	jointMod_t *jointMod;
 //
-//	if ( !modelDef || !modelDef->ModelHandle() || ( jointnum < 0 ) || ( jointnum >= numJoints ) ) {
+//	if ( !modelDef || !modelDef.ModelHandle() || ( jointnum < 0 ) || ( jointnum >= numJoints ) ) {
 //		return;
 //	}
 //
 //	jointMod = NULL;
 //	for( i = 0; i < jointMods.Num(); i++ ) {
-//		if ( jointMods[ i ]->jointnum == jointnum ) {
+//		if ( jointMods[ i ].jointnum == jointnum ) {
 //			jointMod = jointMods[ i ];
 //			break;
-//		} else if ( jointMods[ i ]->jointnum > jointnum ) {
+//		} else if ( jointMods[ i ].jointnum > jointnum ) {
 //			break;
 //		}
 //	}
 //
 //	if ( !jointMod ) {
 //		jointMod = new jointMod_t;
-//		jointMod->jointnum = jointnum;
-//		jointMod->pos.Zero();
-//		jointMod->transform_pos = JOINTMOD_NONE;
+//		jointMod.jointnum = jointnum;
+//		jointMod.pos.Zero();
+//		jointMod.transform_pos = JOINTMOD_NONE;
 //		jointMods.Insert( jointMod, i );
 //	}
 //
-//	jointMod->mat = mat;
-//	jointMod->transform_axis = transform_type;
+//	jointMod.mat = mat;
+//	jointMod.transform_axis = transform_type;
 //
 //	if ( entity ) {
-//		entity->BecomeActive( TH_ANIMATE );
+//		entity.BecomeActive( TH_ANIMATE );
 //	}
 //	ForceUpdate();
 //}
@@ -3646,17 +3697,17 @@
 //void idAnimator::ClearJoint( jointnum:jointHandle_t ) {
 //	int i;
 //
-//	if ( !modelDef || !modelDef->ModelHandle() || ( jointnum < 0 ) || ( jointnum >= numJoints ) ) {
+//	if ( !modelDef || !modelDef.ModelHandle() || ( jointnum < 0 ) || ( jointnum >= numJoints ) ) {
 //		return;
 //	}
 //
 //	for( i = 0; i < jointMods.Num(); i++ ) {
-//		if ( jointMods[ i ]->jointnum == jointnum ) {
+//		if ( jointMods[ i ].jointnum == jointnum ) {
 //			delete jointMods[ i ];
 //			jointMods.RemoveIndex( i );
 //			ForceUpdate();
 //			break;
-//		} else if ( jointMods[ i ]->jointnum > jointnum ) {
+//		} else if ( jointMods[ i ].jointnum > jointnum ) {
 //			break;
 //		}
 //	}
@@ -3700,7 +3751,7 @@
 //	const idAnimBlend	*blend;
 //	float				blendWeight;
 //
-//	if ( !modelDef || !modelDef->ModelHandle() || ( fromtime == totime ) ) {
+//	if ( !modelDef || !modelDef.ModelHandle() || ( fromtime == totime ) ) {
 //		delta.Zero();
 //		return;
 //	}
@@ -3710,13 +3761,13 @@
 //
 //	blend = channels[ ANIMCHANNEL_ALL ];
 //	for( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend++ ) {
-//		blend->BlendDelta( fromtime, totime, delta, blendWeight );
+//		blend.BlendDelta( fromtime, totime, delta, blendWeight );
 //	}
 //
-//	if ( modelDef->Joints()[ 0 ].channel ) {
-//		blend = channels[ modelDef->Joints()[ 0 ].channel ];
+//	if ( modelDef.Joints()[ 0 ].channel ) {
+//		blend = channels[ modelDef.Joints()[ 0 ].channel ];
 //		for( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend++ ) {
-//			blend->BlendDelta( fromtime, totime, delta, blendWeight );
+//			blend.BlendDelta( fromtime, totime, delta, blendWeight );
 //		}
 //	}
 //}
@@ -3732,7 +3783,7 @@
 //	float				blendWeight;
 //	idQuat				q;
 //
-//	if ( !modelDef || !modelDef->ModelHandle() || ( fromtime == totime ) ) {
+//	if ( !modelDef || !modelDef.ModelHandle() || ( fromtime == totime ) ) {
 //		delta.Identity();
 //		return false;
 //	}
@@ -3742,13 +3793,13 @@
 //
 //	blend = channels[ ANIMCHANNEL_ALL ];
 //	for( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend++ ) {
-//		blend->BlendDeltaRotation( fromtime, totime, q, blendWeight );
+//		blend.BlendDeltaRotation( fromtime, totime, q, blendWeight );
 //	}
 //
-//	if ( modelDef->Joints()[ 0 ].channel ) {
-//		blend = channels[ modelDef->Joints()[ 0 ].channel ];
+//	if ( modelDef.Joints()[ 0 ].channel ) {
+//		blend = channels[ modelDef.Joints()[ 0 ].channel ];
 //		for( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend++ ) {
-//			blend->BlendDeltaRotation( fromtime, totime, q, blendWeight );
+//			blend.BlendDeltaRotation( fromtime, totime, q, blendWeight );
 //		}
 //	}
 //
@@ -3771,7 +3822,7 @@
 //	const idAnimBlend	*blend;
 //	float				blendWeight;
 //
-//	if ( !modelDef || !modelDef->ModelHandle() ) {
+//	if ( !modelDef || !modelDef.ModelHandle() ) {
 //		pos.Zero();
 //		return;
 //	}
@@ -3781,17 +3832,17 @@
 //
 //	blend = channels[ ANIMCHANNEL_ALL ];
 //	for( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend++ ) {
-//		blend->BlendOrigin( currentTime, pos, blendWeight, removeOriginOffset );
+//		blend.BlendOrigin( currentTime, pos, blendWeight, removeOriginOffset );
 //	}
 //
-//	if ( modelDef->Joints()[ 0 ].channel ) {
-//		blend = channels[ modelDef->Joints()[ 0 ].channel ];
+//	if ( modelDef.Joints()[ 0 ].channel ) {
+//		blend = channels[ modelDef.Joints()[ 0 ].channel ];
 //		for( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend++ ) {
-//			blend->BlendOrigin( currentTime, pos, blendWeight, removeOriginOffset );
+//			blend.BlendOrigin( currentTime, pos, blendWeight, removeOriginOffset );
 //		}
 //	}
 //
-//	pos += modelDef->GetVisualOffset();
+//	pos += modelDef.GetVisualOffset();
 //}
 //
 ///*
@@ -3804,7 +3855,7 @@
 //	const idAnimBlend	*blend;
 //	int					count;
 //
-//	if ( !modelDef || !modelDef->ModelHandle() ) {
+//	if ( !modelDef || !modelDef.ModelHandle() ) {
 //		return false;
 //	}
 //
@@ -3819,7 +3870,7 @@
 //	blend = channels[ 0 ];
 //	for( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
 //		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
-//			if ( blend->AddBounds( currentTime, bounds, removeOriginOffset ) ) {
+//			if ( blend.AddBounds( currentTime, bounds, removeOriginOffset ) ) {
 //				count++;
 //			}
 //		}
@@ -3835,14 +3886,14 @@
 //		}
 //	}
 //
-//	bounds.TranslateSelf( modelDef->GetVisualOffset() );
+//	bounds.TranslateSelf( modelDef.GetVisualOffset() );
 //
 //	if ( g_debugBounds.GetBool() ) {
 //		if ( bounds[1][0] - bounds[0][0] > 2048 || bounds[1][1] - bounds[0][1] > 2048 ) {
 //			if ( entity ) {
-//				gameLocal.Warning( "big frameBounds on entity '%s' with model '%s': %f,%f", entity->name.c_str(), modelDef->ModelHandle()->Name(), bounds[1][0] - bounds[0][0], bounds[1][1] - bounds[0][1] );
+//				gameLocal.Warning( "big frameBounds on entity '%s' with model '%s': %f,%f", entity.name.c_str(), modelDef.ModelHandle().Name(), bounds[1][0] - bounds[0][0], bounds[1][1] - bounds[0][1] );
 //			} else {
-//				gameLocal.Warning( "big frameBounds on model '%s': %f,%f", modelDef->ModelHandle()->Name(), bounds[1][0] - bounds[0][0], bounds[1][1] - bounds[0][1] );
+//				gameLocal.Warning( "big frameBounds on model '%s': %f,%f", modelDef.ModelHandle().Name(), bounds[1][0] - bounds[0][0], bounds[1][1] - bounds[0][1] );
 //			}
 //		}
 //	}
@@ -3863,10 +3914,10 @@
 //		return;
 //	}
 //
-//	AFPoseJoints.SetNum( modelDef->Joints().Num(), false );
+//	AFPoseJoints.SetNum( modelDef.Joints().Num(), false );
 //	AFPoseJoints.SetNum( 0, false );
-//	AFPoseJointMods.SetNum( modelDef->Joints().Num(), false );
-//	AFPoseJointFrame.SetNum( modelDef->Joints().Num(), false );
+//	AFPoseJointMods.SetNum( modelDef.Joints().Num(), false );
+//	AFPoseJointFrame.SetNum( modelDef.Joints().Num(), false );
 //}
 //
 ///*
@@ -3902,26 +3953,26 @@
 //		return;
 //	}
 //	
-//	const idAnim *anim = modelDef->GetAnim( animNum );
+//	const idAnim *anim = modelDef.GetAnim( animNum );
 //	if ( !anim ) {
 //		return;
 //	}
 //
-//	numJoints = modelDef->Joints().Num();
+//	numJoints = modelDef.Joints().Num();
 //	if ( !numJoints ) {
 //		return;
 //	}
 //
-//	idRenderModel		*md5 = modelDef->ModelHandle();
-//	const idMD5Anim		*md5anim = anim->MD5Anim( 0 );
+//	idRenderModel		*md5 = modelDef.ModelHandle();
+//	const idMD5Anim		*md5anim = anim.MD5Anim( 0 );
 //
-//	if ( numJoints != md5anim->NumJoints() ) {
-//		gameLocal.Warning( "Model '%s' has different # of joints than anim '%s'", md5->Name(), md5anim->Name() );
+//	if ( numJoints != md5anim.NumJoints() ) {
+//		gameLocal.Warning( "Model '%s' has different # of joints than anim '%s'", md5.Name(), md5anim.Name() );
 //		return;
 //	}
 //
 //	idJointQuat *jointFrame = ( idJointQuat * )_alloca16( numJoints * sizeof( *jointFrame ) );
-//	md5anim->GetSingleFrame( 0, jointFrame, modelDef->GetChannelJoints( ANIMCHANNEL_ALL ), modelDef->NumJointsOnChannel( ANIMCHANNEL_ALL ) );
+//	md5anim.GetSingleFrame( 0, jointFrame, modelDef.GetChannelJoints( ANIMCHANNEL_ALL ), modelDef.NumJointsOnChannel( ANIMCHANNEL_ALL ) );
 //
 //	if ( removeOriginOffset ) {
 //#ifdef VELOCITY_MOVE
@@ -3934,7 +3985,7 @@
 //	idJointMat *joints = ( idJointMat * )_alloca16( numJoints * sizeof( *joints ) );
 //
 //	// convert the joint quaternions to joint matrices
-//	SIMDProcessor->ConvertJointQuatsToJointMats( joints, jointFrame, numJoints );
+//	SIMDProcessor.ConvertJointQuatsToJointMats( joints, jointFrame, numJoints );
 //
 //	// first joint is always root of entire hierarchy
 //	if ( AFPoseJoints.Num() && AFPoseJoints[0] == 0 ) {
@@ -3959,14 +4010,14 @@
 //	}
 //
 //	// pointer to joint info
-//	jointParent = modelDef->JointParents();
+//	jointParent = modelDef.JointParents();
 //
 //	// transform the child joints
 //	for( i = 1; j < AFPoseJoints.Num(); j++, i++ ) {
 //		jointMod = AFPoseJoints[j];
 //
 //		// transform any joints preceding the joint modifier
-//		SIMDProcessor->TransformJoints( joints, jointParent, i, jointMod - 1 );
+//		SIMDProcessor.TransformJoints( joints, jointParent, i, jointMod - 1 );
 //		i = jointMod;
 //
 //		parentNum = jointParent[i];
@@ -3991,13 +4042,13 @@
 //	}
 //
 //	// transform the rest of the hierarchy
-//	SIMDProcessor->TransformJoints( joints, jointParent, i, numJoints - 1 );
+//	SIMDProcessor.TransformJoints( joints, jointParent, i, numJoints - 1 );
 //
 //	// untransform hierarchy
-//	SIMDProcessor->UntransformJoints( joints, jointParent, 1, numJoints - 1 );
+//	SIMDProcessor.UntransformJoints( joints, jointParent, 1, numJoints - 1 );
 //
 //	// convert joint matrices back to joint quaternions
-//	SIMDProcessor->ConvertJointMatsToJointQuats( AFPoseJointFrame.Ptr(), joints, numJoints );
+//	SIMDProcessor.ConvertJointMatsToJointQuats( AFPoseJointFrame.Ptr(), joints, numJoints );
 //
 //	// find all modified joints and their parents
 //	bool *blendJoints = (bool *) _alloca16( numJoints * sizeof( bool ) );
@@ -4044,7 +4095,7 @@
 //		return false;
 //	}
 //
-//	SIMDProcessor->BlendJoints( blendFrame, AFPoseJointFrame.Ptr(), AFPoseBlendWeight, AFPoseJoints.Ptr(), AFPoseJoints.Num() );
+//	SIMDProcessor.BlendJoints( blendFrame, AFPoseJointFrame.Ptr(), AFPoseBlendWeight, AFPoseJoints.Ptr(), AFPoseJoints.Num() );
 //
 //	return true;
 //}
@@ -4077,11 +4128,11 @@
 //		return;
 //	}
 //
-//	if ( modelDef->ModelHandle() ) {
+//	if ( modelDef.ModelHandle() ) {
 //		blend = channels[ 0 ];
 //		for( i = 0; i < ANIM_NumAnimChannels; i++ ) {
 //			for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
-//				blend->CallFrameCommands( entity, fromtime, totime );
+//				blend.CallFrameCommands( entity, fromtime, totime );
 //			}
 //		}
 //	}
@@ -4089,10 +4140,10 @@
 //	if ( !IsAnimating( totime ) ) {
 //		stoppedAnimatingUpdate = true;
 //		if ( entity ) {
-//			entity->BecomeInactive( TH_ANIMATE );
+//			entity.BecomeInactive( TH_ANIMATE );
 //
 //			// present one more time with stopped animations so the renderer can properly recreate interactions
-//			entity->BecomeActive( TH_UPDATEVISUALS );
+//			entity.BecomeActive( TH_UPDATEVISUALS );
 //		}
 //	}
 //}
@@ -4106,7 +4157,7 @@
 //	int					i, j;
 //	const idAnimBlend	*blend;
 //
-//	if ( !modelDef || !modelDef->ModelHandle() ) {
+//	if ( !modelDef || !modelDef.ModelHandle() ) {
 //		return false;
 //	}
 //
@@ -4118,7 +4169,7 @@
 //	blend = channels[ 0 ];
 //	for( i = 0; i < ANIM_NumAnimChannels; i++ ) {
 //		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
-//			if ( !blend->IsDone( currentTime ) ) {
+//			if ( !blend.IsDone( currentTime ) ) {
 //				return true;
 //			}
 //		}
@@ -4136,7 +4187,7 @@
 //	int					i, j;
 //	const idAnimBlend	*blend;
 //
-//	if ( !modelDef || !modelDef->ModelHandle() ) {
+//	if ( !modelDef || !modelDef.ModelHandle() ) {
 //		return false;
 //	}
 //
@@ -4148,7 +4199,7 @@
 //	blend = channels[ 0 ];
 //	for( i = 0; i < ANIM_NumAnimChannels; i++ ) {
 //		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
-//			if ( blend->FrameHasChanged( currentTime ) ) {
+//			if ( blend.FrameHasChanged( currentTime ) ) {
 //				return true;
 //			}
 //		}
@@ -4185,7 +4236,7 @@
 //		return false;
 //	}
 //
-//	if ( !modelDef || !modelDef->ModelHandle() ) {
+//	if ( !modelDef || !modelDef.ModelHandle() ) {
 //		return false;
 //	}
 //
@@ -4201,10 +4252,10 @@
 //	lastTransformTime = currentTime;
 //	stoppedAnimatingUpdate = false;
 //
-//	if ( entity && ( ( g_debugAnim.GetInteger() == entity->entityNumber ) || ( g_debugAnim.GetInteger() == -2 ) ) ) {
+//	if ( entity && ( ( g_debugAnim.GetInteger() == entity.entityNumber ) || ( g_debugAnim.GetInteger() == -2 ) ) ) {
 //		debugInfo = true;
-//		gameLocal.Printf( "---------------\n%d: entity '%s':\n", gameLocal.time, entity->GetName() );
-// 		gameLocal.Printf( "model '%s':\n", modelDef->GetModelName() );
+//		gameLocal.Printf( "---------------\n%d: entity '%s':\n", gameLocal.time, entity.GetName() );
+// 		gameLocal.Printf( "model '%s':\n", modelDef.GetModelName() );
 //	} else {
 //		debugInfo = false;
 //	}
@@ -4214,17 +4265,17 @@
 //		// initialize with AF pose anim for the case where there are no other animations and no AF pose joint modifications
 //		defaultPose = AFPoseJointFrame.Ptr();
 //	} else {
-//		defaultPose = modelDef->GetDefaultPose();
+//		defaultPose = modelDef.GetDefaultPose();
 //	}
 //
 //	if ( !defaultPose ) {
-//		//gameLocal.Warning( "idAnimator::CreateFrame: no defaultPose on '%s'", modelDef->Name() );
+//		//gameLocal.Warning( "idAnimator::CreateFrame: no defaultPose on '%s'", modelDef.Name() );
 //		return false;
 //	}
 //
-//	numJoints = modelDef->Joints().Num();
+//	numJoints = modelDef.Joints().Num();
 //	idJointQuat *jointFrame = ( idJointQuat * )_alloca16( numJoints * sizeof( jointFrame[0] ) );
-//	SIMDProcessor->Memcpy( jointFrame, defaultPose, numJoints * sizeof( jointFrame[0] ) );
+//	SIMDProcessor.Memcpy( jointFrame, defaultPose, numJoints * sizeof( jointFrame[0] ) );
 //
 //	hasAnim = false;
 //
@@ -4232,7 +4283,7 @@
 //	baseBlend = 0.0f;
 //	blend = channels[ ANIMCHANNEL_ALL ];
 //	for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
-//		if ( blend->BlendAnim( currentTime, ANIMCHANNEL_ALL, numJoints, jointFrame, baseBlend, removeOriginOffset, false, debugInfo ) ) {
+//		if ( blend.BlendAnim( currentTime, ANIMCHANNEL_ALL, numJoints, jointFrame, baseBlend, removeOriginOffset, false, debugInfo ) ) {
 //			hasAnim = true;
 //			if ( baseBlend >= 1.0f ) {
 //				break;
@@ -4243,7 +4294,7 @@
 //	// only blend other channels if there's enough space to blend into
 //	if ( baseBlend < 1.0f ) {
 //		for( i = ANIMCHANNEL_ALL + 1; i < ANIM_NumAnimChannels; i++ ) {
-//			if ( !modelDef->NumJointsOnChannel( i ) ) {
+//			if ( !modelDef.NumJointsOnChannel( i ) ) {
 //				continue;
 //			}
 //			if ( i == ANIMCHANNEL_EYELIDS ) {
@@ -4253,7 +4304,7 @@
 //			blendWeight = baseBlend;
 //			blend = channels[ i ];
 //			for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
-//				if ( blend->BlendAnim( currentTime, i, numJoints, jointFrame, blendWeight, removeOriginOffset, false, debugInfo ) ) {
+//				if ( blend.BlendAnim( currentTime, i, numJoints, jointFrame, blendWeight, removeOriginOffset, false, debugInfo ) ) {
 //					hasAnim = true;
 //					if ( blendWeight >= 1.0f ) {
 //						// fully blended
@@ -4263,17 +4314,17 @@
 //			}
 //
 //			if ( debugInfo && !AFPoseJoints.Num() && !blendWeight ) {
-//				gameLocal.Printf( "%d: %s using default pose in model '%s'\n", gameLocal.time, channelNames[ i ], modelDef->GetModelName() );
+//				gameLocal.Printf( "%d: %s using default pose in model '%s'\n", gameLocal.time, channelNames[ i ], modelDef.GetModelName() );
 //			}
 //		}
 //	}
 //
 //	// blend in the eyelids
-//	if ( modelDef->NumJointsOnChannel( ANIMCHANNEL_EYELIDS ) ) {
+//	if ( modelDef.NumJointsOnChannel( ANIMCHANNEL_EYELIDS ) ) {
 //		blend = channels[ ANIMCHANNEL_EYELIDS ];
 //		blendWeight = baseBlend;
 //		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
-//			if ( blend->BlendAnim( currentTime, ANIMCHANNEL_EYELIDS, numJoints, jointFrame, blendWeight, removeOriginOffset, true, debugInfo ) ) {
+//			if ( blend.BlendAnim( currentTime, ANIMCHANNEL_EYELIDS, numJoints, jointFrame, blendWeight, removeOriginOffset, true, debugInfo ) ) {
 //				hasAnim = true;
 //				if ( blendWeight >= 1.0f ) {
 //					// fully blended
@@ -4294,42 +4345,42 @@
 //	}
 //
 //	// convert the joint quaternions to rotation matrices
-//	SIMDProcessor->ConvertJointQuatsToJointMats( joints, jointFrame, numJoints );
+//	SIMDProcessor.ConvertJointQuatsToJointMats( joints, jointFrame, numJoints );
 //
 //	// check if we need to modify the origin
-//	if ( jointMods.Num() && ( jointMods[0]->jointnum == 0 ) ) {
+//	if ( jointMods.Num() && ( jointMods[0].jointnum == 0 ) ) {
 //		jointMod = jointMods[0];
 //
-//		switch( jointMod->transform_axis ) {
+//		switch( jointMod.transform_axis ) {
 //			case JOINTMOD_NONE:
 //				break;
 //
 //			case JOINTMOD_LOCAL:
-//				joints[0].SetRotation( jointMod->mat * joints[0].ToMat3() );
+//				joints[0].SetRotation( jointMod.mat * joints[0].ToMat3() );
 //				break;
 //			
 //			case JOINTMOD_WORLD:
-//				joints[0].SetRotation( joints[0].ToMat3() * jointMod->mat );
+//				joints[0].SetRotation( joints[0].ToMat3() * jointMod.mat );
 //				break;
 //
 //			case JOINTMOD_LOCAL_OVERRIDE:
 //			case JOINTMOD_WORLD_OVERRIDE:
-//				joints[0].SetRotation( jointMod->mat );
+//				joints[0].SetRotation( jointMod.mat );
 //				break;
 //		}
 //
-//		switch( jointMod->transform_pos ) {
+//		switch( jointMod.transform_pos ) {
 //			case JOINTMOD_NONE:
 //				break;
 //
 //			case JOINTMOD_LOCAL:
-//				joints[0].SetTranslation( joints[0].ToVec3() + jointMod->pos );
+//				joints[0].SetTranslation( joints[0].ToVec3() + jointMod.pos );
 //				break;
 //			
 //			case JOINTMOD_LOCAL_OVERRIDE:
 //			case JOINTMOD_WORLD:
 //			case JOINTMOD_WORLD_OVERRIDE:
-//				joints[0].SetTranslation( jointMod->pos );
+//				joints[0].SetTranslation( jointMod.pos );
 //				break;
 //		}
 //		j = 1;
@@ -4338,70 +4389,70 @@
 //	}
 //
 //	// add in the model offset
-//	joints[0].SetTranslation( joints[0].ToVec3() + modelDef->GetVisualOffset() );
+//	joints[0].SetTranslation( joints[0].ToVec3() + modelDef.GetVisualOffset() );
 //
 //	// pointer to joint info
-//	jointParent = modelDef->JointParents();
+//	jointParent = modelDef.JointParents();
 //
 //	// add in any joint modifications
 //	for( i = 1; j < jointMods.Num(); j++, i++ ) {
 //		jointMod = jointMods[j];
 //
 //		// transform any joints preceding the joint modifier
-//		SIMDProcessor->TransformJoints( joints, jointParent, i, jointMod->jointnum - 1 );
-//		i = jointMod->jointnum;
+//		SIMDProcessor.TransformJoints( joints, jointParent, i, jointMod.jointnum - 1 );
+//		i = jointMod.jointnum;
 //
 //		parentNum = jointParent[i];
 //
 //		// modify the axis
-//		switch( jointMod->transform_axis ) {
+//		switch( jointMod.transform_axis ) {
 //			case JOINTMOD_NONE:
 //				joints[i].SetRotation( joints[i].ToMat3() * joints[ parentNum ].ToMat3() );
 //				break;
 //
 //			case JOINTMOD_LOCAL:
-//				joints[i].SetRotation( jointMod->mat * ( joints[i].ToMat3() * joints[parentNum].ToMat3() ) );
+//				joints[i].SetRotation( jointMod.mat * ( joints[i].ToMat3() * joints[parentNum].ToMat3() ) );
 //				break;
 //			
 //			case JOINTMOD_LOCAL_OVERRIDE:
-//				joints[i].SetRotation( jointMod->mat * joints[parentNum].ToMat3() );
+//				joints[i].SetRotation( jointMod.mat * joints[parentNum].ToMat3() );
 //				break;
 //
 //			case JOINTMOD_WORLD:
-//				joints[i].SetRotation( ( joints[i].ToMat3() * joints[parentNum].ToMat3() ) * jointMod->mat );
+//				joints[i].SetRotation( ( joints[i].ToMat3() * joints[parentNum].ToMat3() ) * jointMod.mat );
 //				break;
 //
 //			case JOINTMOD_WORLD_OVERRIDE:
-//				joints[i].SetRotation( jointMod->mat );
+//				joints[i].SetRotation( jointMod.mat );
 //				break;
 //		}
 //
 //		// modify the position
-//		switch( jointMod->transform_pos ) {
+//		switch( jointMod.transform_pos ) {
 //			case JOINTMOD_NONE:
 //				joints[i].SetTranslation( joints[parentNum].ToVec3() + joints[i].ToVec3() * joints[parentNum].ToMat3() );
 //				break;
 //
 //			case JOINTMOD_LOCAL:
-//				joints[i].SetTranslation( joints[parentNum].ToVec3() + ( joints[i].ToVec3() + jointMod->pos ) * joints[parentNum].ToMat3() );
+//				joints[i].SetTranslation( joints[parentNum].ToVec3() + ( joints[i].ToVec3() + jointMod.pos ) * joints[parentNum].ToMat3() );
 //				break;
 //			
 //			case JOINTMOD_LOCAL_OVERRIDE:
-//				joints[i].SetTranslation( joints[parentNum].ToVec3() + jointMod->pos * joints[parentNum].ToMat3() );
+//				joints[i].SetTranslation( joints[parentNum].ToVec3() + jointMod.pos * joints[parentNum].ToMat3() );
 //				break;
 //
 //			case JOINTMOD_WORLD:
-//				joints[i].SetTranslation( joints[parentNum].ToVec3() + joints[i].ToVec3() * joints[parentNum].ToMat3() + jointMod->pos );
+//				joints[i].SetTranslation( joints[parentNum].ToVec3() + joints[i].ToVec3() * joints[parentNum].ToMat3() + jointMod.pos );
 //				break;
 //
 //			case JOINTMOD_WORLD_OVERRIDE:
-//				joints[i].SetTranslation( jointMod->pos );
+//				joints[i].SetTranslation( jointMod.pos );
 //				break;
 //		}
 //	}
 //
 //	// transform the rest of the hierarchy
-//	SIMDProcessor->TransformJoints( joints, jointParent, i, numJoints - 1 );
+//	SIMDProcessor.TransformJoints( joints, jointParent, i, numJoints - 1 );
 //
 //	return true;
 //}
@@ -4432,7 +4483,7 @@
 //=====================
 //*/
 //bool idAnimator::GetJointTransform( jointHandle_t jointHandle, int currentTime, idVec3 &offset, idMat3 &axis ) {
-//	if ( !modelDef || ( jointHandle < 0 ) || ( jointHandle >= modelDef->NumJoints() ) ) {
+//	if ( !modelDef || ( jointHandle < 0 ) || ( jointHandle >= modelDef.NumJoints() ) ) {
 //		return false;
 //	}
 //
@@ -4454,7 +4505,7 @@
 //		return false;
 //	}
 //
-//	const idList<jointInfo_t> &modelJoints = modelDef->Joints();
+//	const idList<jointInfo_t> &modelJoints = modelDef.Joints();
 //
 //	if ( ( jointHandle < 0 ) || ( jointHandle >= modelJoints.Num() ) ) {
 //		return false;
@@ -4482,11 +4533,11 @@
 //=====================
 //*/
 //jointHandle_t idAnimator::GetJointHandle( name:string ) const {
-//	if ( !modelDef || !modelDef->ModelHandle() ) {
+//	if ( !modelDef || !modelDef.ModelHandle() ) {
 //		return INVALID_JOINT;
 //	}
 //
-//	return modelDef->ModelHandle()->GetJointHandle( name );
+//	return modelDef.ModelHandle().GetJointHandle( name );
 //}
 //
 ///*
@@ -4495,11 +4546,11 @@
 //=====================
 //*/
 //const char *idAnimator::GetJointName( jointHandle_t handle ) const {
-//	if ( !modelDef || !modelDef->ModelHandle() ) {
+//	if ( !modelDef || !modelDef.ModelHandle() ) {
 //		return "";
 //	}
 //
-//	return modelDef->ModelHandle()->GetJointName( handle );
+//	return modelDef.ModelHandle().GetJointName( handle );
 //}
 //
 ///*
@@ -4516,7 +4567,7 @@
 //		gameLocal.Error( "idAnimator::GetChannelForJoint: invalid joint num (%d)", joint );
 //	}
 //
-//	return modelDef->GetJoint( joint )->channel;
+//	return modelDef.GetJoint( joint ).channel;
 //}
 //
 ///*
@@ -4542,14 +4593,14 @@
 //		return INVALID_JOINT;
 //	}
 //
-//	num = modelDef->NumJoints();
+//	num = modelDef.NumJoints();
 //	if ( !num ) {
 //		return jointnum;
 //	}
-//	joint = modelDef->GetJoint( 0 );
+//	joint = modelDef.GetJoint( 0 );
 //	for( i = 0; i < num; i++, joint++ ) {
-//		if ( joint->parentNum == jointnum ) {
-//			return ( jointHandle_t )joint->num;
+//		if ( joint.parentNum == jointnum ) {
+//			return ( jointHandle_t )joint.num;
 //		}
 //	}
 //	return jointnum;
@@ -4561,8 +4612,8 @@
 //=====================
 //*/
 //void idAnimator::GetJoints( int *numJoints, idJointMat **jointsPtr ) {
-//	*numJoints	= this->numJoints;
-//	*jointsPtr	= this->joints;
+//	*numJoints	= this.numJoints;
+//	*jointsPtr	= this.joints;
 //}
 //
 ///*
@@ -4575,7 +4626,7 @@
 //
 //	const idAnim *anim = GetAnim( animNum );
 //	if ( anim ) {
-//		return anim->GetAnimFlags();
+//		return anim.GetAnimFlags();
 //	}
 //
 //	memset( &result, 0, sizeof( result ) );
@@ -4590,7 +4641,7 @@
 //int	idAnimator::NumFrames( int animNum ) const {
 //	const idAnim *anim = GetAnim( animNum );
 //	if ( anim ) {
-//		return anim->NumFrames();
+//		return anim.NumFrames();
 //	} else {
 //		return 0;
 //	}
@@ -4604,7 +4655,7 @@
 //int	idAnimator::NumSyncedAnims( int animNum ) const {
 //	const idAnim *anim = GetAnim( animNum );
 //	if ( anim ) {
-//		return anim->NumAnims();
+//		return anim.NumAnims();
 //	} else {
 //		return 0;
 //	}
@@ -4618,7 +4669,7 @@
 //const char *idAnimator::AnimName( int animNum ) const {
 //	const idAnim *anim = GetAnim( animNum );
 //	if ( anim ) {
-//		return anim->Name();
+//		return anim.Name();
 //	} else {
 //		return "";
 //	}
@@ -4632,7 +4683,7 @@
 //const char *idAnimator::AnimFullName( int animNum ) const {
 //	const idAnim *anim = GetAnim( animNum );
 //	if ( anim ) {
-//		return anim->FullName();
+//		return anim.FullName();
 //	} else {
 //		return "";
 //	}
@@ -4646,7 +4697,7 @@
 //int	idAnimator::AnimLength( int animNum ) const {
 //	const idAnim *anim = GetAnim( animNum );
 //	if ( anim ) {
-//		return anim->Length();
+//		return anim.Length();
 //	} else {
 //		return 0;
 //	}
@@ -4660,7 +4711,7 @@
 //const idVec3 &idAnimator::TotalMovementDelta( int animNum ) const {
 //	const idAnim *anim = GetAnim( animNum );
 //	if ( anim ) {
-//		return anim->TotalMovementDelta();
+//		return anim.TotalMovementDelta();
 //	} else {
 //		return vec3_origin;
 //	}
@@ -4680,9 +4731,9 @@
 //const idDeclModelDef *ANIM_GetModelDefFromEntityDef( const idDict *args ) {
 //	const idDeclModelDef *modelDef;
 //
-//	idStr name = args->GetString( "model" );
-//	modelDef = static_cast<const idDeclModelDef *>( declManager->FindType( DECL_MODELDEF, name, false ) );
-//	if ( modelDef && modelDef->ModelHandle() ) {
+//	idStr name = args.GetString( "model" );
+//	modelDef = static_cast<const idDeclModelDef *>( declManager.FindType( DECL_MODELDEF, name, false ) );
+//	if ( modelDef && modelDef.ModelHandle() ) {
 //		return modelDef;
 //	}
 //
@@ -4700,17 +4751,17 @@
 //
 //	model = NULL;
 //
-//	idStr name = args->GetString( "model" );
-//	modelDef = static_cast<const idDeclModelDef *>( declManager->FindType( DECL_MODELDEF, name, false ) );
+//	idStr name = args.GetString( "model" );
+//	modelDef = static_cast<const idDeclModelDef *>( declManager.FindType( DECL_MODELDEF, name, false ) );
 //	if ( modelDef ) {
-//		model = modelDef->ModelHandle();
+//		model = modelDef.ModelHandle();
 //	}
 //
 //	if ( !model ) {
-//		model = renderModelManager->FindModel( name );
+//		model = renderModelManager.FindModel( name );
 //	}
 //
-//	if ( model && model->IsDefaultModel() ) {
+//	if ( model && model.IsDefaultModel() ) {
 //		return NULL;
 //	}
 //
@@ -4752,7 +4803,7 @@
 //		return vec3_origin;
 //	}
 //
-//	return modelDef->GetVisualOffset();
+//	return modelDef.GetVisualOffset();
 //}
 //
 ///*
@@ -4765,12 +4816,12 @@
 //	idRenderModel *model;
 //
 //	model = NULL;
-//	modelDef = static_cast<const idDeclModelDef *>( declManager->FindType( DECL_MODELDEF, modelName, false ) );
+//	modelDef = static_cast<const idDeclModelDef *>( declManager.FindType( DECL_MODELDEF, modelName, false ) );
 //	if ( modelDef ) {
-//		model = modelDef->ModelHandle();
+//		model = modelDef.ModelHandle();
 //	}
 //	if ( !model ) {
-//		model = renderModelManager->FindModel( modelName );
+//		model = renderModelManager.FindModel( modelName );
 //	}
 //	return model;
 //}
@@ -4794,14 +4845,14 @@
 //	}
 //
 //	md5anim = NULL;
-//	modelname = args->GetString( "model" );
-//	modelDef = static_cast<const idDeclModelDef *>( declManager->FindType( DECL_MODELDEF, modelname, false ) );
+//	modelname = args.GetString( "model" );
+//	modelDef = static_cast<const idDeclModelDef *>( declManager.FindType( DECL_MODELDEF, modelname, false ) );
 //	if ( modelDef ) {
-//		animNum = modelDef->GetAnim( animname );
+//		animNum = modelDef.GetAnim( animname );
 //		if ( animNum ) {
-//			anim = modelDef->GetAnim( animNum );
+//			anim = modelDef.GetAnim( animNum );
 //			if ( anim ) {
-//				md5anim = anim->MD5Anim( 0 );
+//				md5anim = anim.MD5Anim( 0 );
 //			}
 //		}
 //	}
@@ -4817,10 +4868,10 @@
 //	const char *modelname;
 //	const idDeclModelDef *modelDef;
 //
-//	modelname = args->GetString( "model" );
-//	modelDef = static_cast<const idDeclModelDef *>( declManager->FindType( DECL_MODELDEF, modelname, false ) );
+//	modelname = args.GetString( "model" );
+//	modelDef = static_cast<const idDeclModelDef *>( declManager.FindType( DECL_MODELDEF, modelname, false ) );
 //	if ( modelDef ) {
-//		return modelDef->NumAnims();
+//		return modelDef.NumAnims();
 //	}
 //	return 0;
 //}
@@ -4834,12 +4885,12 @@
 //	const char *modelname;
 //	const idDeclModelDef *modelDef;
 //
-//	modelname = args->GetString( "model" );
-//	modelDef = static_cast<const idDeclModelDef *>( declManager->FindType( DECL_MODELDEF, modelname, false ) );
+//	modelname = args.GetString( "model" );
+//	modelDef = static_cast<const idDeclModelDef *>( declManager.FindType( DECL_MODELDEF, modelname, false ) );
 //	if ( modelDef ) {
-//		const idAnim* anim = modelDef->GetAnim( animNum );
+//		const idAnim* anim = modelDef.GetAnim( animNum );
 //		if ( anim ) {
-//			return anim->FullName();
+//			return anim.FullName();
 //		}
 //	}
 //	return "";
@@ -4863,7 +4914,7 @@
 //	if ( !anim ) {
 //		return 0;
 //	}
-//	return anim->Length();
+//	return anim.Length();
 //}
 //
 ///*
@@ -4875,7 +4926,7 @@
 //	if ( !anim ) {
 //		return 0;
 //	}
-//	return anim->NumFrames();
+//	return anim.NumFrames();
 //}
 //
 ///*
@@ -4889,25 +4940,25 @@
 //	const idMD5Joint	*md5joints;
 //	int					*index;
 //
-//	if ( !model || model->IsDefaultModel() || !anim ) {
+//	if ( !model || model.IsDefaultModel() || !anim ) {
 //		return;
 //	}
 //
-//	if ( numJoints != model->NumJoints() ) {
-//		gameLocal.Error( "ANIM_CreateAnimFrame: different # of joints in renderEntity_t than in model (%s)", model->Name() );
+//	if ( numJoints != model.NumJoints() ) {
+//		gameLocal.Error( "ANIM_CreateAnimFrame: different # of joints in renderEntity_t than in model (%s)", model.Name() );
 //	}
 //
-//	if ( !model->NumJoints() ) {
+//	if ( !model.NumJoints() ) {
 //		// FIXME: Print out a warning?
 //		return;
 //	}
 //
 //	if ( !joints ) {
-//		gameLocal.Error( "ANIM_CreateAnimFrame: NULL joint frame pointer on model (%s)", model->Name() );
+//		gameLocal.Error( "ANIM_CreateAnimFrame: NULL joint frame pointer on model (%s)", model.Name() );
 //	}
 //
-//	if ( numJoints != anim->NumJoints() ) {
-//		gameLocal.Warning( "Model '%s' has different # of joints than anim '%s'", model->Name(), anim->Name() );
+//	if ( numJoints != anim.NumJoints() ) {
+//		gameLocal.Warning( "Model '%s' has different # of joints than anim '%s'", model.Name(), anim.Name() );
 //		for( i = 0; i < numJoints; i++ ) {
 //			joints[i].SetRotation( mat3_identity );
 //			joints[i].SetTranslation( offset );
@@ -4922,12 +4973,12 @@
 //	}
 //
 //	// create the frame
-//	anim->ConvertTimeToFrame( time, 1, frame );
+//	anim.ConvertTimeToFrame( time, 1, frame );
 //	idJointQuat *jointFrame = ( idJointQuat * )_alloca16( numJoints * sizeof( *jointFrame ) );
-//	anim->GetInterpolatedFrame( frame, jointFrame, index, numJoints );
+//	anim.GetInterpolatedFrame( frame, jointFrame, index, numJoints );
 //
 //	// convert joint quaternions to joint matrices
-//	SIMDProcessor->ConvertJointQuatsToJointMats( joints, jointFrame, numJoints );
+//	SIMDProcessor.ConvertJointQuatsToJointMats( joints, jointFrame, numJoints );
 //
 //	// first joint is always root of entire hierarchy
 //	if ( remove_origin_offset ) {
@@ -4937,7 +4988,7 @@
 //	}
 //
 //	// transform the children
-//	md5joints = model->GetJoints();
+//	md5joints = model.GetJoints();
 //	for( i = 1; i < numJoints; i++ ) {
 //		joints[i] *= joints[ md5joints[i].parent - md5joints ];
 //	}
@@ -4961,7 +5012,7 @@
 //	idVec3					offset;
 //	const idDeclModelDef	*modelDef;
 //
-//	if ( !model || model->IsDefaultModel() ) {
+//	if ( !model || model.IsDefaultModel() ) {
 //		return NULL;
 //	}
 //
@@ -4977,22 +5028,22 @@
 //
 //	modelDef = ANIM_GetModelDefFromEntityDef( args );
 //	if ( modelDef ) {
-//		animNum = modelDef->GetAnim( animname );
+//		animNum = modelDef.GetAnim( animname );
 //		if ( !animNum ) {
 //			return NULL;
 //		}
-//		anim = modelDef->GetAnim( animNum );
+//		anim = modelDef.GetAnim( animNum );
 //		if ( !anim ) {
 //			return NULL;
 //		}
-//		md5anim = anim->MD5Anim( 0 );
-//		ent.customSkin = modelDef->GetDefaultSkin();
-//		offset = modelDef->GetVisualOffset();
+//		md5anim = anim.MD5Anim( 0 );
+//		ent.customSkin = modelDef.GetDefaultSkin();
+//		offset = modelDef.GetVisualOffset();
 //	} else {
 //		filename = animname;
 //		filename.ExtractFileExtension( extension );
 //		if ( !extension.Length() ) {
-//			animname = args->GetString( va( "anim %s", animname ) );
+//			animname = args.GetString( va( "anim %s", animname ) );
 //		}
 //
 //		md5anim = animationLib.GetAnim( animname );
@@ -5003,17 +5054,17 @@
 //		return NULL;
 //	}
 //
-//	temp = args->GetString( "skin", "" );
+//	temp = args.GetString( "skin", "" );
 //	if ( temp[ 0 ] ) {
-//		ent.customSkin = declManager->FindSkin( temp );
+//		ent.customSkin = declManager.FindSkin( temp );
 //	}
 //
-//	ent.numJoints = model->NumJoints();
+//	ent.numJoints = model.NumJoints();
 //	ent.joints = ( idJointMat * )Mem_Alloc16( ent.numJoints * sizeof( *ent.joints ) );
 //
 //	ANIM_CreateAnimFrame( model, md5anim, ent.numJoints, ent.joints, FRAME2MS( frame ), offset, remove_origin_offset );
 //
-//	newmodel = model->InstantiateDynamicModel( &ent, NULL, NULL );
+//	newmodel = model.InstantiateDynamicModel( &ent, NULL, NULL );
 //
 //	Mem_Free16( ent.joints );
 //	ent.joints = NULL;

@@ -28,7 +28,58 @@
 ////
 ////#include "../idlib/precompiled.h"
 ////#pragma hdrstop
-////
+
+
+class idDeclPDA extends idDecl {
+	////public:
+	////							idDeclPDA() { originalEmails = originalVideos = 0; };
+	////
+	////	virtual size_t			Size( void ) const;
+	////	virtual const char *	DefaultDefinition( void ) const;
+	Parse ( text: string, textLength: number ): boolean {
+		todoThrow ( );
+		return false
+	}
+	////	virtual void			FreeData( void );
+	////	virtual void			Print( void ) const;
+	////	virtual void			List( void ) const;
+	////
+	////	virtual void			AddVideo( name:string, bool unique = true ) const;
+	////	virtual void			AddAudio( name:string, bool unique = true ) const;
+	////	virtual void			AddEmail( name:string, bool unique = true ) const;
+	////	virtual void			RemoveAddedEmailsAndVideos() const;
+	////
+	////	virtual const int		GetNumVideos() const;
+	////	virtual const int		GetNumAudios() const;
+	////	virtual const int		GetNumEmails() const;
+	////	virtual const idDeclVideo *GetVideoByIndex( int index ) const;
+	////	virtual const idDeclAudio *GetAudioByIndex( int index ) const;
+	////	virtual const idDeclEmail *GetEmailByIndex( int index ) const;
+	////
+	////	virtual void			SetSecurity( const char *sec ) const;
+	////
+	////	const char *			GetPdaName() const { return pdaName; }
+	////	const char *			GetSecurity() const {return security; }
+	////	const char *			GetFullName() const { return fullName; }
+	////	const char *			GetIcon() const { return icon; }
+	////	const char *			GetPost() const { return post; }
+	////	const char *			GetID() const { return id; }
+	////	const char *			GetTitle() const { return title; }
+	////
+	////private:
+	////	mutable idStrList		videos;
+	////	mutable idStrList		audios;
+	////	mutable idStrList		emails;
+	////	idStr					pdaName;
+	////	idStr					fullName;
+	////	idStr					icon;
+	////	idStr					id;
+	////	idStr					post;
+	////	idStr					title;
+	////	mutable idStr			security;
+	////	mutable	int				originalEmails;
+	////	mutable int				originalVideos;
+
 /////*
 ////=================
 ////idDeclPDA::Size
@@ -44,7 +95,7 @@
 ////===============
 ////*/
 ////void idDeclPDA::Print( void ) const {
-////	common->Printf( "Implement me\n" );
+////	common.Printf( "Implement me\n" );
 ////}
 ////
 /////*
@@ -53,7 +104,7 @@
 ////===============
 ////*/
 ////void idDeclPDA::List( void ) const {
-////	common->Printf( "Implement me\n" );
+////	common.Printf( "Implement me\n" );
 ////}
 ////
 /////*
@@ -125,21 +176,21 @@
 ////		if ( !token.Icmp( "pda_email") ) {
 ////			src.ReadToken( &token );
 ////			emails.Append( token );
-////			declManager->FindType(DECL_EMAIL, token);
+////			declManager.FindType(DECL_EMAIL, token);
 ////			continue;
 ////		}
 ////
 ////		if ( !token.Icmp( "pda_audio") ) {
 ////			src.ReadToken( &token );
 ////			audios.Append( token );
-////			declManager->FindType(DECL_AUDIO, token);
+////			declManager.FindType(DECL_AUDIO, token);
 ////			continue;
 ////		}
 ////
 ////		if ( !token.Icmp( "pda_video") ) {
 ////			src.ReadToken( &token );
 ////			videos.Append( token );
-////			declManager->FindType(DECL_VIDEO, token);
+////			declManager.FindType(DECL_VIDEO, token);
 ////			continue;
 ////		}
 ////
@@ -155,31 +206,31 @@
 ////	return true;
 ////}
 ////
-/////*
-////===================
-////idDeclPDA::DefaultDefinition
-////===================
-////*/
-////const char *idDeclPDA::DefaultDefinition( void ) const {
-////	return
-////		"{\n"
-////		"\t"		"name  \"default pda\"\n"
-////		"}"; 
-////}
-////
-/////*
-////===================
-////idDeclPDA::FreeData
-////===================
-////*/
-////void idDeclPDA::FreeData( void ) {
-////	videos.Clear();
-////	audios.Clear();
-////	emails.Clear();
-////	originalEmails = 0;
-////	originalVideos = 0;
-////}
-////
+/*
+===================
+idDeclPDA::DefaultDefinition
+===================
+*/
+	DefaultDefinition ( ): string {
+		return "{\n" +
+			"\t" + "name  \"default pda\"\n" +
+			"}";
+	}
+
+/*
+===================
+idDeclPDA::FreeData
+===================
+*/
+	FreeData(): void {
+		todoThrow ( );
+		//this.videos.Clear ( );
+		//this.audios.Clear ( );
+		//this.emails.Clear ( );
+		//this.originalEmails = 0;
+		//this.originalVideos = 0;
+	}
+
 /////*
 ////=================
 ////idDeclPDA::AddVideo
@@ -189,8 +240,8 @@
 ////	if ( unique && ( videos.Find( name ) != NULL ) ) {
 ////		return;
 ////	}
-////	if ( declManager->FindType( DECL_VIDEO, name, false ) == NULL ) {
-////		common->Printf( "Video %s not found\n", name );
+////	if ( declManager.FindType( DECL_VIDEO, name, false ) == NULL ) {
+////		common.Printf( "Video %s not found\n", name );
 ////		return;
 ////	}
 ////	videos.Append( name );
@@ -205,8 +256,8 @@
 ////	if ( unique && ( audios.Find( name ) != NULL ) ) {
 ////		return;
 ////	}
-////	if ( declManager->FindType( DECL_AUDIO, name, false ) == NULL ) {
-////		common->Printf( "Audio log %s not found\n", name );
+////	if ( declManager.FindType( DECL_AUDIO, name, false ) == NULL ) {
+////		common.Printf( "Audio log %s not found\n", name );
 ////		return;
 ////	}
 ////	audios.Append( name );
@@ -221,8 +272,8 @@
 ////	if ( unique && ( emails.Find( name ) != NULL ) ) {
 ////		return;
 ////	}
-////	if ( declManager->FindType( DECL_EMAIL, name, false ) == NULL ) {
-////		common->Printf( "Email %s not found\n", name );
+////	if ( declManager.FindType( DECL_EMAIL, name, false ) == NULL ) {
+////		common.Printf( "Email %s not found\n", name );
 ////		return;
 ////	}
 ////	emails.Append( name );
@@ -291,7 +342,7 @@
 ////*/
 ////const idDeclVideo* idDeclPDA::GetVideoByIndex( int index ) const {
 ////	if ( index >= 0 && index < videos.Num() ) {
-////		return static_cast< const idDeclVideo* >( declManager->FindType( DECL_VIDEO, videos[index], false ) );
+////		return static_cast< const idDeclVideo* >( declManager.FindType( DECL_VIDEO, videos[index], false ) );
 ////	}
 ////	return NULL;
 ////}
@@ -303,7 +354,7 @@
 ////*/
 ////const idDeclAudio* idDeclPDA::GetAudioByIndex( int index ) const {
 ////	if ( index >= 0 && index < audios.Num() ) {
-////		return static_cast< const idDeclAudio* >( declManager->FindType( DECL_AUDIO, audios[index], false ) );
+////		return static_cast< const idDeclAudio* >( declManager.FindType( DECL_AUDIO, audios[index], false ) );
 ////	}
 ////	return NULL;
 ////}
@@ -315,11 +366,41 @@
 ////*/
 ////const idDeclEmail* idDeclPDA::GetEmailByIndex( int index ) const {
 ////	if ( index >= 0 && index < emails.Num() ) {
-////		return static_cast< const idDeclEmail* >( declManager->FindType( DECL_EMAIL, emails[index], false ) );
+////		return static_cast< const idDeclEmail* >( declManager.FindType( DECL_EMAIL, emails[index], false ) );
 ////	}
 ////	return NULL;
 ////}
+}
+
 ////
+class idDeclEmail extends idDecl {
+	////public:
+	////							idDeclEmail() {}
+	////
+	////	virtual size_t			Size( void ) const;
+	////	virtual const char *	DefaultDefinition( void ) const;
+	Parse ( text: string, textLength: number ): boolean {
+		todoThrow ( );
+		return false
+	}
+////	virtual void			FreeData( void );
+////	virtual void			Print( void ) const;
+////	virtual void			List( void ) const;
+////
+////	const char *			GetFrom() const { return from; }
+////	const char *			GetBody() const { return text; }
+////	const char *			GetSubject() const { return subject; }
+////	const char *			GetDate() const { return date; }
+////	const char *			GetTo() const { return to; }
+////	const char *			GetImage() const { return image; }
+////
+////private:
+////	idStr					text;
+////	idStr					subject;
+////	idStr					date;
+////	idStr					to;
+////	idStr					from;
+////	idStr					image;
 /////*
 ////=================
 ////idDeclEmail::Size
@@ -335,7 +416,7 @@
 ////===============
 ////*/
 ////void idDeclEmail::Print( void ) const {
-////	common->Printf( "Implement me\n" );
+////	common.Printf( "Implement me\n" );
 ////}
 ////
 /////*
@@ -344,7 +425,7 @@
 ////===============
 ////*/
 ////void idDeclEmail::List( void ) const {
-////	common->Printf( "Implement me\n" );
+////	common.Printf( "Implement me\n" );
 ////}
 ////
 /////*
@@ -438,14 +519,42 @@
 ////		"}"; 
 ////}
 ////
-/////*
-////===================
-////idDeclEmail::FreeData
-////===================
-////*/
-////void idDeclEmail::FreeData( void ) {
-////}
+/*
+===================
+idDeclEmail::FreeData
+===================
+*/
+	FreeData ( ): void {
+	}
+}
+
+class idDeclVideo extends idDecl {
+	////public:
+	////							idDeclVideo() {};
+	////
+	////	virtual size_t			Size( void ) const;
+	////	virtual const char *	DefaultDefinition( void ) const;
+	Parse ( text: string, textLength: number ): boolean {
+		todoThrow ( );
+		return false
+	}
+////	virtual void			FreeData( void );
+////	virtual void			Print( void ) const;
+////	virtual void			List( void ) const;
 ////
+////	const char *			GetRoq() const { return video; }
+////	const char *			GetWave() const { return audio; }
+////	const char *			GetVideoName() const { return videoName; }
+////	const char *			GetInfo() const { return info; }
+////	const char *			GetPreview() const { return preview; }
+////
+////private:
+////	idStr					preview;
+////	idStr					video;
+////	idStr					videoName;
+////	idStr					info;
+////	idStr					audio;
+
 /////*
 ////=================
 ////idDeclVideo::Size
@@ -461,7 +570,7 @@
 ////===============
 ////*/
 ////void idDeclVideo::Print( void ) const {
-////	common->Printf( "Implement me\n" );
+////	common.Printf( "Implement me\n" );
 ////}
 ////
 /////*
@@ -470,7 +579,7 @@
 ////===============
 ////*/
 ////void idDeclVideo::List( void ) const {
-////	common->Printf( "Implement me\n" );
+////	common.Printf( "Implement me\n" );
 ////}
 ////
 /////*
@@ -512,7 +621,7 @@
 ////		if ( !token.Icmp( "video") ) {
 ////			src.ReadToken( &token );
 ////			video = token;
-////			declManager->FindMaterial( video );			
+////			declManager.FindMaterial( video );			
 ////			continue;
 ////		}
 ////
@@ -525,7 +634,7 @@
 ////		if ( !token.Icmp( "audio") ) {
 ////			src.ReadToken( &token );
 ////			audio = token;
-////			declManager->FindSound(audio);
+////			declManager.FindSound(audio);
 ////			continue;
 ////		}
 ////
@@ -537,29 +646,51 @@
 ////	}
 ////	return true;
 ////}
-////
-/////*
-////===================
-////idDeclVideo::DefaultDefinition
-////===================
-////*/
-////const char *idDeclVideo::DefaultDefinition( void ) const {
-////	return
-////		"{\n"
-////		"\t"	"{\n"
-////		"\t\t"		"name\t5Default Video\n"
-////		"\t"	"}\n"
-////		"}"; 
-////}
-////
-/////*
-////===================
-////idDeclVideo::FreeData
-////===================
-////*/
-////void idDeclVideo::FreeData( void ) {
-////}
-////
+
+/*
+===================
+idDeclVideo::DefaultDefinition
+===================
+*/
+	DefaultDefinition ( ): string {
+		return "{\n" +
+			"\t" + "{\n" +
+			"\t\t" + "name\t5Default Video\n" +
+			"\t" + "}\n" +
+			"}";
+	}
+
+/*
+===================
+idDeclVideo::FreeData
+===================
+*/
+	FreeData ( ): void {
+	}
+}
+
+class idDeclAudio extends idDecl {
+	////public:
+	////							idDeclAudio() {};
+	////
+	////	virtual size_t			Size( void ) const;
+	////	virtual const char *	DefaultDefinition( void ) const;
+	////	virtual void			FreeData( void );
+	////	virtual void			Print( void ) const;
+	////	virtual void			List( void ) const;
+	////
+	////	const char *			GetAudioName() const { return audioName; }
+	////	const char *			GetWave() const { return audio; }
+	////	const char *			GetInfo() const { return info; }
+	////	const char *			GetPreview() const { return preview; }
+	////
+	////private:
+	////	idStr					audio;
+	////	idStr					audioName;
+	////	idStr					info;
+	////	idStr					preview;
+
+
 /////*
 ////=================
 ////idDeclAudio::Size
@@ -575,7 +706,7 @@
 ////===============
 ////*/
 ////void idDeclAudio::Print( void ) const {
-////	common->Printf( "Implement me\n" );
+////	common.Printf( "Implement me\n" );
 ////}
 ////
 /////*
@@ -584,15 +715,16 @@
 ////===============
 ////*/
 ////void idDeclAudio::List( void ) const {
-////	common->Printf( "Implement me\n" );
+////	common.Printf( "Implement me\n" );
 ////}
 ////
-/////*
-////================
-////idDeclAudio::Parse
-////================
-////*/
-////bool idDeclAudio::Parse( text:string, const int textLength ) {
+/*
+================
+idDeclAudio::Parse
+================
+*/
+	Parse(text: string, /*int */textLength: number): boolean {
+		todoThrow ( );
 ////	idLexer src;
 ////	idToken token;
 ////
@@ -620,7 +752,7 @@
 ////		if ( !token.Icmp( "audio") ) {
 ////			src.ReadToken( &token );
 ////			audio = token;
-////			declManager->FindSound(audio);
+////			declManager.FindSound(audio);
 ////			continue;
 ////		}
 ////
@@ -642,27 +774,27 @@
 ////		src.Warning( "Audio decl '%s' had a parse error", GetName() );
 ////		return false;
 ////	}
-////	return true;
-////}
-////
-/////*
-////===================
-////idDeclAudio::DefaultDefinition
-////===================
-////*/
-////const char *idDeclAudio::DefaultDefinition( void ) const {
-////	return
-////		"{\n"
-////		"\t"	"{\n"
-////		"\t\t"		"name\t5Default Audio\n"
-////		"\t"	"}\n"
-////		"}"; 
-////}
-////
-/////*
-////===================
-////idDeclAudio::FreeData
-////===================
-////*/
-////void idDeclAudio::FreeData( void ) {
-////}
+	return true;
+}
+
+/*
+===================
+idDeclAudio::DefaultDefinition
+===================
+*/
+	DefaultDefinition ( ): string {
+		return "{\n" +
+			"\t" + "{\n" +
+			"\t\t" + "name\t5Default Audio\n" +
+			"\t" + "}\n" +
+			"}";
+	}
+
+/*
+===================
+idDeclAudio::FreeData
+===================
+*/
+	FreeData ( ): void {
+	}
+}

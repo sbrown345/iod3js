@@ -88,56 +88,56 @@ class idMaterial extends idDecl {
 idMaterial::CommonInit
 =============
 */
-CommonInit():void {
-	this.desc = new idStr("<none>");
-	this.renderBump = new idStr("");
-	this.contentFlags = contentsFlags_t.CONTENTS_SOLID;
-	this.surfaceFlags = surfTypes_t.SURFTYPE_NONE;
-	this.materialFlags = 0;
-	this.sort = materialSort_t.SS_BAD;
-	this.coverage = materialCoverage_t.MC_BAD;
-	this.cullType = cullType_t.CT_FRONT_SIDED;
-	this.deform = deform_t.DFRM_NONE;
-	this.numOps = 0;
-	this.ops = null;
-	this.numRegisters = 0;
-	this.expressionRegisters = null;
-	this.constantRegisters = null;
-	this.numStages = 0;
-	this.numAmbientStages = 0;
-	this.stages = null;
-	this.editorImage = null;
-	this.lightFalloffImage = null;
-	this.shouldCreateBackSides = false;
-	this.entityGui = 0;
-	this.fogLight = false;
-	this.blendLight = false;
-	this.ambientLight = false;
-	this.noFog = false;
-	this.hasSubview = false;
-	this.allowOverlays = true;
-	this.unsmoothedTangents = false;
-	this.gui = null;
-	this.deformRegisters = new Int32Array( 4 );//this.memset( deformRegisters, 0, sizeof( deformRegisters ) );
-	this.editorAlpha = 1.0;
-	this.spectrum = 0;
-	this.polygonOffset = 0;
-	this.suppressInSubview = false;
-	this.refCount = 0;
-	this.portalSky = false;
+	CommonInit ( ): void {
+		this.desc = new idStr( "<none>" );
+		this.renderBump = new idStr( "" );
+		this.contentFlags = contentsFlags_t.CONTENTS_SOLID;
+		this.surfaceFlags = surfTypes_t.SURFTYPE_NONE;
+		this.materialFlags = 0;
+		this.sort = materialSort_t.SS_BAD;
+		this.coverage = materialCoverage_t.MC_BAD;
+		this.cullType = cullType_t.CT_FRONT_SIDED;
+		this.deform = deform_t.DFRM_NONE;
+		this.numOps = 0;
+		this.ops = null;
+		this.numRegisters = 0;
+		this.expressionRegisters = null;
+		this.constantRegisters = null;
+		this.numStages = 0;
+		this.numAmbientStages = 0;
+		this.stages = null;
+		this.editorImage = null;
+		this.lightFalloffImage = null;
+		this.shouldCreateBackSides = false;
+		this.entityGui = 0;
+		this.fogLight = false;
+		this.blendLight = false;
+		this.ambientLight = false;
+		this.noFog = false;
+		this.hasSubview = false;
+		this.allowOverlays = true;
+		this.unsmoothedTangents = false;
+		this.gui = null;
+		this.deformRegisters = new Int32Array( 4 ); //this.memset( deformRegisters, 0, sizeof( deformRegisters ) );
+		this.editorAlpha = 1.0;
+		this.spectrum = 0;
+		this.polygonOffset = 0;
+		this.suppressInSubview = false;
+		this.refCount = 0;
+		this.portalSky = false;
 
-	this.decalInfo = new decalInfo_t;
-	this.decalInfo.stayTime = 10000;
-	this.decalInfo.fadeTime = 4000;
-	this.decalInfo.start[0] = 1;
-	this.decalInfo.start[1] = 1;
-	this.decalInfo.start[2] = 1;
-	this.decalInfo.start[3] = 1;
-	this.decalInfo.end[0] = 0;
-	this.decalInfo.end[1] = 0;
-	this.decalInfo.end[2] = 0;
-	this.decalInfo.end[3] = 0;
-}
+		this.decalInfo = new decalInfo_t;
+		this.decalInfo.stayTime = 10000;
+		this.decalInfo.fadeTime = 4000;
+		this.decalInfo.start[0] = 1;
+		this.decalInfo.start[1] = 1;
+		this.decalInfo.start[2] = 1;
+		this.decalInfo.start[3] = 1;
+		this.decalInfo.end[0] = 0;
+		this.decalInfo.end[1] = 0;
+		this.decalInfo.end[2] = 0;
+		this.decalInfo.end[3] = 0;
+	}
 
 /////*
 ////=============
@@ -158,14 +158,14 @@ CommonInit():void {
 ////=============
 ////*/
 ////idMaterial::~idMaterial() {
-////}
+//}
 
-/////*
-////===============
-////idMaterial::FreeData
-////===============
-////*/
-////void idMaterial::FreeData() {
+/*
+===============
+idMaterial::FreeData
+===============
+*/
+	FreeData ( ): void {
 ////	int i;
 
 ////	if ( this.stages ) {
@@ -195,7 +195,7 @@ CommonInit():void {
 ////		R_StaticFree( ops );
 ////		ops = NULL;
 ////	}
-////}
+	}
 
 /*
 ==============
