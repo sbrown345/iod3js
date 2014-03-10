@@ -166,35 +166,35 @@ idMaterial::FreeData
 ===============
 */
 	FreeData ( ): void {
-////	int i;
+		var /*int */i: number;
 
-////	if ( this.stages ) {
-////		// delete any idCinematic textures
-////		for ( i = 0; i < this.numStages; i++ ) {
-////			if ( this.stages[i].texture.cinematic != NULL ) {
-////				delete this.stages[i].texture.cinematic;
-////				this.stages[i].texture.cinematic = NULL;
-////			}
-////			if ( this.stages[i].newStage != NULL ) {
-////				Mem_Free( this.stages[i].newStage );
-////				this.stages[i].newStage = NULL;
-////			}
-////		}
-////		R_StaticFree( this.stages );
-////		this.stages = NULL;
-////	}
-////	if ( expressionRegisters != NULL ) {
-////		R_StaticFree( expressionRegisters );
-////		expressionRegisters = NULL;
-////	}
-////	if ( this.constantRegisters != NULL ) {
-////		R_StaticFree( this.constantRegisters );
-////		this.constantRegisters = NULL;
-////	}
-////	if ( ops != NULL ) {
-////		R_StaticFree( ops );
-////		ops = NULL;
-////	}
+		if ( this.stages ) {
+			// delete any idCinematic textures
+			for ( i = 0; i < this.numStages; i++ ) {
+				if ( this.stages[i].texture.cinematic != null ) {
+					delete this.stages[i].texture.cinematic;
+					this.stages[i].texture.cinematic = null;
+				}
+				if ( this.stages[i].newStage != null ) {
+					Mem_Free( this.stages[i].newStage );
+					this.stages[i].newStage = null;
+				}
+			}
+			R_StaticFree( this.stages );
+			this.stages = null;
+		}
+		if ( this.expressionRegisters != null ) {
+			R_StaticFree( this.expressionRegisters );
+			this.expressionRegisters = null;
+		}
+		if ( this.constantRegisters != null ) {
+			R_StaticFree( this.constantRegisters );
+			this.constantRegisters = null;
+		}
+		if ( this.ops != null ) {
+			R_StaticFree( this.ops );
+			this.ops = null;
+		}
 	}
 
 /*
@@ -2317,7 +2317,7 @@ Parses the current material definition and finds all necessary images.
 ////	int			i;
 
 ////	for ( i = expRegister_t.EXP_REG_NUM_PREDEFINED ; i < GetNumRegisters() ; i++ ) {
-////		common.Printf( "register %i: %f\n", i, expressionRegisters[i] );
+////		common.Printf( "register %i: %f\n", i, this.expressionRegisters[i] );
 ////	}
 ////	common.Printf( "\n" );
 ////	for ( i = 0 ; i < this.numOps ; i++ ) {
