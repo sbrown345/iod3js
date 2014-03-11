@@ -1151,9 +1151,8 @@ An open brace has been parsed
 						continue;
 					}
 				}
-				todoThrow ( );
-				//ts.cinematic = idCinematic::Alloc();
-				//ts.cinematic.InitFromFile( token.c_str(), loop );
+				ts.cinematic = idCinematic.Alloc();
+				ts.cinematic.InitFromFile( token.c_str(), loop );
 				continue;
 			}
 

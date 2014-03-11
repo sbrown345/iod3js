@@ -42,7 +42,7 @@
 //#define CIN_silent	8
 //#define CIN_shader	16
 //
-//class idCinematicLocal extends idCinematic {
+class idCinematicLocal extends idCinematic {
 //public:
 //							idCinematicLocal();
 //	virtual					~idCinematicLocal();
@@ -54,43 +54,43 @@
 //	virtual void			ResetTime(/*int*/time:number);
 //
 //private:
-//	unsigned int			mcomp[256];
-//	byte **					qStatus[2];
-//	idStr					fileName;
-//	int						CIN_WIDTH, CIN_HEIGHT;
-//	idFile *				iFile;
-//	cinStatus_t				status;
-//	long					tfps;
-//	long					RoQPlayed;
-//	long					ROQSize;
-//	unsigned int			RoQFrameSize;
-//	long					onQuad;
-//	long					numQuads;
-//	long					samplesPerLine;
-//	unsigned int			roq_id;
-//	long					screenDelta;
-//	byte *					buf;
-//	long					samplesPerPixel;				// defaults to 2
-//	unsigned int			xsize, ysize, maxsize, minsize;
-//	long					normalBuffer0;
-//	long					roq_flags;
-//	long					roqF0;
-//	long					roqF1;
-//	long					t[2];
-//	long					roqFPS;
-//	long					drawX, drawY;
+	mcomp = new Uint32Array(256);
+	qStatus:Uint8Array[] = new Array<Uint8Array>(2); //	byte **					
+	fileName = new idStr;
+	CIN_WIDTH:number/*int*/; CIN_HEIGHT:number/*int*/;
+	iFile: idFile;
+	status: cinStatus_t;
+	tfps: number;														  //	long					
+	RoQPlayed: number;													  //	long					
+	ROQSize: number;													  //	long					
+	RoQFrameSize: number;												  //	unsigned int			
+	onQuad:number;														  //	long					
+	numQuads:number;													  //	long					
+	samplesPerLine:number;												  //	long					
+	roq_id:number;														  //	unsigned int			
+	screenDelta:number;												  //	long					
+	buf:Uint8Array;														  //	byte *					
+	samplesPerPixel:number;				// defaults to 2			  //	long					
+	xsize: number; ysize: number; maxsize: number; minsize:number;								  //	unsigned int			
+	normalBuffer0:number;												  //	long					
+	roq_flags:number;													  //	long					
+	roqF0:number;														  //	long					
+	roqF1:number;														  //	long					
+	t = [0,0];														  //	long					
+	roqFPS: number;														  //	long					
+	drawX: number; drawY: number;												  //	long					
 //
-//	int						animationLength;
-//	int						startTime;
-//	float					frameRate;
-//
-//	byte *					image;
-//
-//	bool					looping;
-//	bool					dirty;
-//	bool					half;
-//	bool					smootheddouble;
-//	bool					inMemory;
+	animationLength:number/*int*/;
+	startTime:number/*int*/;
+	frameRate:number/*float*/;
+
+	image:Uint8Array/*byte *	*/;
+
+	looping:boolean;
+	dirty:boolean;
+	half:boolean;
+	smootheddouble:boolean;
+	inMemory:boolean;
 //
 //	void					RoQ_init( void );
 //	void					blitVQQuad32fs( byte **status, unsigned char *data );
@@ -144,133 +144,25 @@
 //
 //
 ////===========================================
-//
-///*
-//==============
-//idCinematicLocal::InitCinematic
-//==============
-//*/
-//void idCinematic::InitCinematic( void ) {
-//	float t_ub,t_vr,t_ug,t_vg;
-//	long i;
-//
-//	// generate YUV tables
-//	t_ub = (1.77200f/2.0f) * (float)(1<<6) + 0.5f;
-//	t_vr = (1.40200f/2.0f) * (float)(1<<6) + 0.5f;
-//	t_ug = (0.34414f/2.0f) * (float)(1<<6) + 0.5f;
-//	t_vg = (0.71414f/2.0f) * (float)(1<<6) + 0.5f;
-//	for( i = 0; i < 256; i++ ) {
-//		float x = (float)(2 * i - 255);
-//	
-//		ROQ_UB_tab[i] = (long)( ( t_ub * x) + (1<<5));
-//		ROQ_VR_tab[i] = (long)( ( t_vr * x) + (1<<5));
-//		ROQ_UG_tab[i] = (long)( (-t_ug * x)		 );
-//		ROQ_VG_tab[i] = (long)( (-t_vg * x) + (1<<5));
-//		ROQ_YY_tab[i] = (long)( (i << 6) | (i >> 2) );
-//	}
-//
-//	file = (byte *)Mem_Alloc( 65536 );
-//	vq2 = (word *)Mem_Alloc( 256*16*4 * sizeof( word ) );
-//	vq4 = (word *)Mem_Alloc( 256*64*4 * sizeof( word ) );
-//	vq8 = (word *)Mem_Alloc( 256*256*4 * sizeof( word ) );
-//}
-//
-///*
-//==============
-//idCinematicLocal::ShutdownCinematic
-//==============
-//*/
-//void idCinematic::ShutdownCinematic( void ) {
-//	Mem_Free( file );
-//	file = NULL;
-//	Mem_Free( vq2 );
-//	vq2 = NULL;
-//	Mem_Free( vq4 );
-//	vq4 = NULL;
-//	Mem_Free( vq8 );
-//	vq8 = NULL;
-//}
-//
-///*
-//==============
-//idCinematicLocal::Alloc
-//==============
-//*/
-//idCinematic *idCinematic::Alloc() {
-//	return new idCinematicLocal;
-//}
-//
-///*
-//==============
-//idCinematicLocal::~idCinematic
-//==============
-//*/
-//idCinematic::~idCinematic( ) {
-//	Close();
-//}
-//
-///*
-//==============
-//idCinematicLocal::InitFromFile
-//==============
-//*/
-//bool idCinematic::InitFromFile( const char *qpath, bool looping ) {
-//	return false;
-//}
-//
-///*
-//==============
-//idCinematicLocal::AnimationLength
-//==============
-//*/
-//int idCinematic::AnimationLength() {
-//	return 0;
-//}
-//
-///*
-//==============
-//idCinematicLocal::ResetTime
-//==============
-//*/
-//void idCinematic::ResetTime(int milliseconds) {
-//}
-//
-///*
-//==============
-//idCinematicLocal::ImageForTime
-//==============
-//*/
-//cinData_t idCinematic::ImageForTime( int milliseconds ) {
-//	cinData_t c;
-//	memset( &c, 0, sizeof( c ) );
-//	return c;
-//}
-//
-///*
-//==============
-//idCinematicLocal::Close
-//==============
-//*/
-//void idCinematic::Close() {
-//}
-//
-////===========================================
-//
-///*
-//==============
-//idCinematicLocal::idCinematicLocal
-//==============
-//*/
-//idCinematicLocal::idCinematicLocal() {
-//	image = NULL;
-//	status = FMV_EOF;
-//	buf = NULL;
-//	iFile = NULL;
-//
-//	qStatus[0] = (byte **)Mem_Alloc( 32768 * sizeof( byte *) );
-//	qStatus[1] = (byte **)Mem_Alloc( 32768 * sizeof( byte *) );
-//}
-//
+
+//===========================================
+
+/*
+==============
+idCinematicLocal::idCinematicLocal
+==============
+*/
+	constructor ( ) {
+		super ( );
+		this.image = null;
+		this.status = cinStatus_t.FMV_EOF;
+		this.buf = null;
+		this.iFile = null;
+
+		this.qStatus[0] = new Uint8Array( Mem_Alloc( 32768 ) ); //(byte **)Mem_Alloc( 32768 * sizeof( byte *) );
+		this.qStatus[1] = new Uint8Array( Mem_Alloc( 32768 ) );
+	}
+
 ///*
 //==============
 //idCinematicLocal::~idCinematicLocal
@@ -304,13 +196,13 @@
 //		sprintf( fileName, "%s", qpath );
 //	}
 //
-//	iFile = fileSystem->OpenFileRead( fileName );
+//	iFile = fileSystem.OpenFileRead( fileName );
 //
 //	if ( !iFile ) {
 //		return false;
 //	}
 //
-//	ROQSize = iFile->Length();
+//	ROQSize = iFile.Length();
 //
 //	looping = amilooping;
 //
@@ -320,7 +212,7 @@
 //	startTime = 0;	//Sys_Milliseconds();
 //	buf = NULL;
 //
-//	iFile->Read( file, 16 );
+//	iFile.Read( file, 16 );
 //
 //	RoQID = (unsigned short)(file[0]) + (unsigned short)(file[1])*256;
 //
@@ -331,9 +223,9 @@
 //
 //	if ( RoQID == ROQ_FILE ) {
 //		RoQ_init();
-//		status = FMV_PLAY;
+//		status = cinStatus_t.FMV_PLAY;
 //		ImageForTime( 0 );
-//		status = ( looping ) ? FMV_PLAY : FMV_IDLE;
+//		status = ( looping ) ? cinStatus_t.FMV_PLAY : cinStatus_t.FMV_IDLE;
 //		return true;
 //	}
 //
@@ -351,7 +243,7 @@
 //		Mem_Free( (void *)image );
 //		image = NULL;
 //		buf = NULL;
-//		status = FMV_EOF;
+//		status = cinStatus_t.FMV_EOF;
 //	}
 //	RoQShutdown();
 //}
@@ -371,8 +263,8 @@
 //==============
 //*/
 //void idCinematicLocal::ResetTime(/*int*/time:number) {
-//	startTime = ( backEnd.viewDef ) ? 1000 * backEnd.viewDef->floatTime : -1;
-//	status = FMV_PLAY;
+//	startTime = ( backEnd.viewDef ) ? 1000 * backEnd.viewDef.floatTime : -1;
+//	status = cinStatus_t.FMV_PLAY;
 //}
 //
 ///*
@@ -393,7 +285,7 @@
 //		return cinData;
 //	}
 //
-//	if ( status == FMV_EOF || status == FMV_IDLE ) {
+//	if ( status == cinStatus_t.FMV_EOF || status == cinStatus_t.FMV_IDLE ) {
 //		return cinData;
 //	}
 //
@@ -413,7 +305,7 @@
 //	if ( tfps < numQuads ) {
 //		RoQReset();
 //		buf = NULL;
-//		status = FMV_PLAY;
+//		status = cinStatus_t.FMV_PLAY;
 //	}
 //
 //	if ( buf == NULL ) {
@@ -421,32 +313,32 @@
 //			RoQInterrupt();
 //		}
 //	} else {
-//		while( (tfps != numQuads && status == FMV_PLAY) ) {
+//		while( (tfps != numQuads && status == cinStatus_t.FMV_PLAY) ) {
 //			RoQInterrupt();
 //		}
 //	}
 //
-//	if ( status == FMV_LOOPED ) {
-//		status = FMV_PLAY;
-//		while( buf == NULL && status == FMV_PLAY ) {
+//	if ( status == cinStatus_t.FMV_LOOPED ) {
+//		status = cinStatus_t.FMV_PLAY;
+//		while( buf == NULL && status == cinStatus_t.FMV_PLAY ) {
 //			RoQInterrupt();
 //		}
 //		startTime = thisTime;
 //	}
 //
-//	if ( status == FMV_EOF ) {
+//	if ( status == cinStatus_t.FMV_EOF ) {
 //		if ( looping ) {
 //			RoQReset();
 //			buf = NULL;
-//			if ( status == FMV_LOOPED ) {
-//				status = FMV_PLAY;
+//			if ( status == cinStatus_t.FMV_LOOPED ) {
+//				status = cinStatus_t.FMV_PLAY;
 //			}
-//			while ( buf == NULL && status == FMV_PLAY ) {
+//			while ( buf == NULL && status == cinStatus_t.FMV_PLAY ) {
 //				RoQInterrupt();
 //			}
 //			startTime = thisTime;
 //		} else {
-//			status = FMV_IDLE;
+//			status = cinStatus_t.FMV_IDLE;
 //			RoQShutdown();
 //		}
 //	}
@@ -1277,10 +1169,10 @@
 //*/
 //void idCinematicLocal::RoQReset() {
 //	
-//	iFile->Seek( 0, FS_SEEK_SET );
-//	iFile->Read( file, 16 );
+//	iFile.Seek( 0, FS_SEEK_SET );
+//	iFile.Read( file, 16 );
 //	RoQ_init();
-//	status = FMV_LOOPED;
+//	status = cinStatus_t.FMV_LOOPED;
 //}
 //
 //
@@ -1336,24 +1228,24 @@
 //
 //METHODDEF boolean fill_input_buffer( j_decompress_ptr cinfo )
 //{
-//  my_src_ptr src = (my_src_ptr) cinfo->src;
+//  my_src_ptr src = (my_src_ptr) cinfo.src;
 //  int nbytes;
 //
 //  nbytes = INPUT_BUF_SIZE;
-//  if (nbytes > src->memsize) nbytes = src->memsize;
+//  if (nbytes > src.memsize) nbytes = src.memsize;
 //  if (nbytes == 0) {
 //    /* Insert a fake EOI marker */
-//    src->buffer[0] = (JOCTET) 0xFF;
-//    src->buffer[1] = (JOCTET) JPEG_EOI;
+//    src.buffer[0] = (JOCTET) 0xFF;
+//    src.buffer[1] = (JOCTET) JPEG_EOI;
 //    nbytes = 2;
 //  } else {
-//	  memcpy( src->buffer, src->infile, INPUT_BUF_SIZE );
-//	  src->infile = src->infile + nbytes;
-// 	  src->memsize = src->memsize - INPUT_BUF_SIZE;
+//	  memcpy( src.buffer, src.infile, INPUT_BUF_SIZE );
+//	  src.infile = src.infile + nbytes;
+// 	  src.memsize = src.memsize - INPUT_BUF_SIZE;
 //  }
-//  src->pub.next_input_byte = src->buffer;
-//  src->pub.bytes_in_buffer = nbytes;
-//  src->start_of_file = FALSE;
+//  src.pub.next_input_byte = src.buffer;
+//  src.pub.bytes_in_buffer = nbytes;
+//  src.start_of_file = FALSE;
 //
 //  return TRUE;
 //}
@@ -1365,13 +1257,13 @@
 //
 //METHODDEF void init_source (j_decompress_ptr cinfo)
 //{
-//  my_src_ptr src = (my_src_ptr) cinfo->src;
+//  my_src_ptr src = (my_src_ptr) cinfo.src;
 //
 //  /* We reset the empty-input-file flag for each image,
 //   * but we don't clear the input buffer.
 //   * This is correct behavior for reading a series of images from one source.
 //   */
-//  src->start_of_file = TRUE;
+//  src.start_of_file = TRUE;
 //}
 //
 ///*
@@ -1389,16 +1281,16 @@
 //METHODDEF void
 //skip_input_data (j_decompress_ptr cinfo, long num_bytes)
 //{
-//  my_src_ptr src = (my_src_ptr) cinfo->src;
+//  my_src_ptr src = (my_src_ptr) cinfo.src;
 //
 //  /* Just a dumb implementation for now.  Could use fseek() except
 //   * it doesn't work on pipes.  Not clear that being smart is worth
 //   * any trouble anyway --- large skips are infrequent.
 //   */
 //  if (num_bytes > 0) {
-//	src->infile = src->infile + num_bytes;
-//    src->pub.next_input_byte += (size_t) num_bytes;
-//    src->pub.bytes_in_buffer -= (size_t) num_bytes;
+//	src.infile = src.infile + num_bytes;
+//    src.pub.next_input_byte += (size_t) num_bytes;
+//    src.pub.bytes_in_buffer -= (size_t) num_bytes;
 //  }
 //}
 //
@@ -1440,26 +1332,26 @@
 //   * This makes it unsafe to use this manager and a different source
 //   * manager serially with the same JPEG object.  Caveat programmer.
 //   */
-//  if (cinfo->src == NULL) {	/* first time for this JPEG object? */
-//    cinfo->src = (struct jpeg_source_mgr *)
-//      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
+//  if (cinfo.src == NULL) {	/* first time for this JPEG object? */
+//    cinfo.src = (struct jpeg_source_mgr *)
+//      (*cinfo.mem.alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
 //				  sizeof(my_source_mgr));
-//    src = (my_src_ptr) cinfo->src;
-//    src->buffer = (JOCTET *)
-//      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
+//    src = (my_src_ptr) cinfo.src;
+//    src.buffer = (JOCTET *)
+//      (*cinfo.mem.alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
 //				  INPUT_BUF_SIZE * sizeof(JOCTET));
 //  }
 //
-//  src = (my_src_ptr) cinfo->src;
-//  src->pub.init_source = init_source;
-//  src->pub.fill_input_buffer = fill_input_buffer;
-//  src->pub.skip_input_data = skip_input_data;
-//  src->pub.resync_to_restart = jpeg_resync_to_restart; /* use default method */
-//  src->pub.term_source = term_source;
-//  src->infile = infile;
-//  src->memsize = size;
-//  src->pub.bytes_in_buffer = 0; /* forces fill_input_buffer on first read */
-//  src->pub.next_input_byte = NULL; /* until buffer loaded */
+//  src = (my_src_ptr) cinfo.src;
+//  src.pub.init_source = init_source;
+//  src.pub.fill_input_buffer = fill_input_buffer;
+//  src.pub.skip_input_data = skip_input_data;
+//  src.pub.resync_to_restart = jpeg_resync_to_restart; /* use default method */
+//  src.pub.term_source = term_source;
+//  src.infile = infile;
+//  src.memsize = size;
+//  src.pub.bytes_in_buffer = 0; /* forces fill_input_buffer on first read */
+//  src.pub.next_input_byte = NULL; /* until buffer loaded */
 //}
 //
 //int JPEGBlit( byte *wStatus, byte *data, int datasize )
@@ -1526,7 +1418,7 @@
 //  row_stride = cinfo.output_width * cinfo.output_components;
 //
 //  /* Make a one-row-high sample array that will go away when done with image */
-//  buffer = (*cinfo.mem->alloc_sarray)
+//  buffer = (*cinfo.mem.alloc_sarray)
 //		((j_common_ptr) &cinfo, JPOOL_IMAGE, row_stride, 1);
 //
 //  /* Step 6: while (scan lines remain to be read) */
@@ -1590,12 +1482,12 @@
 //void idCinematicLocal::RoQInterrupt(void) {
 //	byte				*framedata;
 //
-//	iFile->Read( file, RoQFrameSize+8 );
+//	iFile.Read( file, RoQFrameSize+8 );
 //	if ( RoQPlayed >= ROQSize ) { 
 //		if (looping) {
 //			RoQReset();
 //		} else {
-//			status = FMV_EOF;
+//			status = cinStatus_t.FMV_EOF;
 //		}
 //		return; 
 //	}
@@ -1655,7 +1547,7 @@
 //			}
 //			break;
 //		default:
-//			status = FMV_EOF;
+//			status = cinStatus_t.FMV_EOF;
 //			break;
 //	}	
 ////
@@ -1665,7 +1557,7 @@
 //		if (looping) {
 //			RoQReset();
 //		} else {
-//			status = FMV_EOF;
+//			status = cinStatus_t.FMV_EOF;
 //		}
 //		return; 
 //	}
@@ -1678,14 +1570,14 @@
 //	roqF1		 = (char)framedata[6];
 //
 //	if (RoQFrameSize>65536||roq_id==0x1084) {
-//		common->DPrintf("roq_size>65536||roq_id==0x1084\n");
-//		status = FMV_EOF;
+//		common.DPrintf("roq_size>65536||roq_id==0x1084\n");
+//		status = cinStatus_t.FMV_EOF;
 //		if (looping) {
 //			RoQReset();
 //		}
 //		return;
 //	}
-//	if (inMemory && (status != FMV_EOF)) { 
+//	if (inMemory && (status != cinStatus_t.FMV_EOF)) { 
 //		inMemory = false; framedata += 8; goto redump; 
 //	}
 ////
@@ -1723,13 +1615,13 @@
 //==============
 //*/
 //void idCinematicLocal::RoQShutdown( void ) {
-//	if ( status == FMV_IDLE ) {
+//	if ( status == cinStatus_t.FMV_IDLE ) {
 //		return;
 //	}
-//	status = FMV_IDLE;
+//	status = cinStatus_t.FMV_IDLE;
 //
 //	if ( iFile ) {
-//		fileSystem->CloseFile( iFile );
+//		fileSystem.CloseFile( iFile );
 //		iFile = NULL;
 //	}
 //
@@ -1761,7 +1653,7 @@
 //==============
 //*/
 //cinData_t idSndWindow::ImageForTime( int milliseconds ) {
-//	return soundSystem->ImageForTime( milliseconds, showWaveform );
+//	return soundSystem.ImageForTime( milliseconds, showWaveform );
 //}
 //
 ///*
@@ -1772,3 +1664,4 @@
 //int idSndWindow::AnimationLength() {
 //	return -1;
 //}
+}
