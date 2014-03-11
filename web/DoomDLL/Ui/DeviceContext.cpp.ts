@@ -270,7 +270,7 @@ class idDeviceContext {
 //
 //void idDeviceContext::Clear() {
 //	initialized = false;
-//	useFont = NULL;
+//	this.useFont = NULL;
 //	activeFont = NULL;
 //	mbcs = false;
 //}
@@ -798,15 +798,15 @@ class idDeviceContext {
 			this.activeFont.maxWidth = this.activeFont.maxWidthLarge;
 		}
 	}
-
-	DrawText ( /*float */x: number, /*float */y: number, /*float */scale: number, color: idVec4, text: string, /*float*/ adjust: number, /*int */limit: number, /*int */style: number, /*int */cursor: number ): number {
+	//= -1, bool calcOnly = false, idList<int> *breaks = NULL, int limit = 0 
+	DrawText ( /*float */x: number, /*float */y: number, /*float */scale: number, color: idVec4, text: string, /*float*/ adjust: number, /*int */limit: number, /*int */style: number, /*int */cursor: number = -1): number {
 		todoThrow ( );
 		var /*int*/len: number, count: number;
 //	idVec4		newColor;
 //	const glyphInfo_t *glyph;
 //	float		useScale;
 //	SetFontByScale(scale);
-//	useScale = scale * useFont.glyphScale;
+//	useScale = scale * this.useFont.glyphScale;
 //	count = 0;
 //	if ( text && color.w != 0.0 ) {
 //		const unsigned char	*s = (const unsigned char*)text;
@@ -822,7 +822,7 @@ class idDeviceContext {
 //				s++;
 //				continue;
 //			}
-//			glyph = &useFont.glyphs[*s];
+//			glyph = &this.useFont.glyphs[*s];
 //
 //			//
 //			// int yadj = Assets.textFont.glyphs[text[i]].bottom +
@@ -844,7 +844,7 @@ class idDeviceContext {
 //					} else {
 //						renderSystem.SetColor(newColor);
 //					}
-//					DrawEditCursor(x - partialSkip, y, scale);
+//					this.DrawEditCursor(x - partialSkip, y, scale);
 //				}
 //				renderSystem.SetColor(newColor);
 //				s += 2;
@@ -855,7 +855,7 @@ class idDeviceContext {
 //				PaintChar(x,y - yadj,glyph.imageWidth,glyph.imageHeight,useScale,glyph.s,glyph.t,glyph.s2,glyph.t2,glyph.glyph);
 //
 //				if (cursor == count) {
-//					DrawEditCursor(x, y, scale);
+//					this.DrawEditCursor(x, y, scale);
 //				}
 //				x += (glyph.xSkip * useScale) + adjust;
 //				s++;
@@ -863,7 +863,7 @@ class idDeviceContext {
 //			}
 //		}
 //		if (cursor == len) {
-//			DrawEditCursor(x, y, scale);
+//			this.DrawEditCursor(x, y, scale);
 //		}
 //	}
 		return count;
@@ -898,7 +898,7 @@ class idDeviceContext {
 		//int i, width;
 
 		//SetFontByScale( scale );
-		//const glyphInfo_t *glyphs = useFont.glyphs;
+		//const glyphInfo_t *glyphs = this.useFont.glyphs;
 
 		//if ( text == NULL ) {
 		//	return 0;
@@ -922,7 +922,7 @@ class idDeviceContext {
 		//		}
 		//	}
 		//}
-		//return idMath::FtoiFast( scale * useFont.glyphScale * width );}
+		//return idMath.FtoiFast( scale * this.useFont.glyphScale * width );}
 	}
 
 //int idDeviceContext::TextHeight(text:string, float scale, int limit) {
@@ -932,7 +932,7 @@ class idDeviceContext {
 //	float		useScale;
 //	const char	*s = text;
 //	SetFontByScale(scale);
-//	fontInfo_t	*font = useFont;
+//	fontInfo_t	*font = this.useFont;
 //
 //	useScale = scale * font.glyphScale;
 //	max = 0;
@@ -960,7 +960,7 @@ class idDeviceContext {
 //		}
 //	}
 //
-//	return idMath::FtoiFast( max * useScale );
+//	return idMath.FtoiFast( max * useScale );
 //}
 
 	MaxCharWidth ( /*float*/ scale: number ): number /*int*/ {
@@ -1053,160 +1053,161 @@ class idDeviceContext {
 //*/
 //}
 //
-//void idDeviceContext::DrawEditCursor( /*float */x:number, /*float */y:number, float scale ) {
-//	if ( (int)( com_ticNumber >> 4 ) & 1 ) {
-//		return;
-//	}
-//	SetFontByScale(scale);
-//	float useScale = scale * useFont.glyphScale;
-//	const glyphInfo_t *glyph2 = &useFont.glyphs[(overStrikeMode) ? '_' : '|'];
-//	float	yadj = useScale * glyph2.top;
-// 	PaintChar(x, y - yadj,glyph2.imageWidth,glyph2.imageHeight,useScale,glyph2.s,glyph2.t,glyph2.s2,glyph2.t2,glyph2.glyph);
-//}
-//
-//int idDeviceContext::DrawText( text:string, float textScale, int textAlign, idVec4 color, idRectangle rectDraw, bool wrap, int cursor, bool calcOnly, idList<int> *breaks, int limit ) {
-//	const char	*p, *textPtr, *newLinePtr;
-//	char		buff[1024];
-//	int			len, newLine, newLineWidth, count;
-//	float		y;
-//	float		textWidth;
-//
-//	float		charSkip = MaxCharWidth( textScale ) + 1;
-//	float		lineSkip = MaxCharHeight( textScale );
-//
-//	float		cursorSkip = ( cursor >= 0 ? charSkip : 0 );
-//
-//	bool		lineBreak, wordBreak;
-//
-//	SetFontByScale( textScale );
-//
-//	textWidth = 0;
-//	newLinePtr = NULL;
-//
-//	if (!calcOnly && !(text && *text)) {
-//		if (cursor == 0) {
-//			renderSystem.SetColor(color);
-//			DrawEditCursor(rectDraw.x, lineSkip + rectDraw.y, textScale);
-//		}
-//		return idMath::FtoiFast( rectDraw.w / charSkip );
-//	}
-//
-//	textPtr = text;
-//
-//	y = lineSkip + rectDraw.y; 
-//	len = 0;
-//	buff[0] = '\0';
-//	newLine = 0;
-//	newLineWidth = 0;
-//	p = textPtr;
-//
-//	if ( breaks ) {
-//		breaks.Append(0);
-//	}
-//	count = 0;
-//	textWidth = 0;
-//	lineBreak = false;
-//	wordBreak = false;
-//	while (p) {
-//
-//		if ( *p == '\n' || *p == '\r' || *p == '\0' ) {
-//			lineBreak = true;
-//			if ((*p == '\n' && *(p + 1) == '\r') || (*p == '\r' && *(p + 1) == '\n')) {
-//				p++;
-//			}
-//		}
-//
-//		int nextCharWidth = ( idStr::CharIsPrintable(*p) ? CharWidth( *p, textScale ) : cursorSkip );
-//		// FIXME: this is a temp hack until the guis can be fixed not not overflow the bounding rectangles
-//		//		  the side-effect is that list boxes and edit boxes will draw over their scroll bars
-//		//	The following line and the !linebreak in the if statement below should be removed
-//		nextCharWidth = 0;
-//
-//		if ( !lineBreak && ( textWidth + nextCharWidth ) > rectDraw.w ) {
-//			// The next character will cause us to overflow, if we haven't yet found a suitable
-//			// break spot, set it to be this character
-//			if ( len > 0 && newLine == 0 ) {
-//				newLine = len;
-//				newLinePtr = p;
-//				newLineWidth = textWidth;
-//			}
-//			wordBreak = true;
-//		} else if ( lineBreak || ( wrap && (*p == ' ' || *p == '\t') ) ) {
-//			// The next character is in view, so if we are a break character, store our position
-//			newLine = len;
-//			newLinePtr = p + 1;
-//			newLineWidth = textWidth;
-//		}
-//
-//		if ( lineBreak || wordBreak ) {
-//			float x = rectDraw.x;
-//
-//			if (textAlign == ALIGN_RIGHT) {
-//				x = rectDraw.x + rectDraw.w - newLineWidth;
-//			} else if (textAlign == ALIGN_CENTER) {
-//				x = rectDraw.x + (rectDraw.w - newLineWidth) / 2;
-//			}
-//
-//			if ( wrap || newLine > 0 ) {
-//				buff[newLine] = '\0';
-//
-//				// This is a special case to handle breaking in the middle of a word.
-//				// if we didn't do this, the cursor would appear on the end of this line
-//				// and the beginning of the next.
-//				if ( wordBreak && cursor >= newLine && newLine == len ) {
-//					cursor++;
-//				}
-//			}
-//
-//			if (!calcOnly) {
-//				count += DrawText(x, y, textScale, color, buff, 0, 0, 0, cursor);
-//			}
-//
-//			if ( cursor < newLine ) {
-//				cursor = -1;
-//			} else if ( cursor >= 0 ) {
-//				cursor -= ( newLine + 1 );
-//			}
-//
-//			if ( !wrap ) {
-//				return newLine;
-//			}
-//
-//			if ( ( limit && count > limit ) || *p == '\0' ) {
-//				break;
-//			}
-//
-//			y += lineSkip + 5;
-//
-//			if ( !calcOnly && y > rectDraw.Bottom() ) {
-//				break;
-//			}
-//
-//			p = newLinePtr;
-//
-//			if (breaks) {
-//				breaks.Append(p - text);
-//			}
-//
-//			len = 0;
-//			newLine = 0;
-//			newLineWidth = 0;
-//			textWidth = 0;
-//			lineBreak = false;
-//			wordBreak = false;
-//			continue;
-//		}
-//
-//		buff[len++] = *p++;
-//		buff[len] = '\0';
-//		// update the width
-//		if ( *( buff + len - 1 ) != C_COLOR_ESCAPE && (len <= 1 || *( buff + len - 2 ) != C_COLOR_ESCAPE)) {
-//			textWidth += textScale * useFont.glyphScale * useFont.glyphs[ (const unsigned char)*( buff + len - 1 ) ].xSkip;
-//		}
-//	}
-//
-//	return idMath::FtoiFast( rectDraw.w / charSkip );
-//}
+	DrawEditCursor ( /*float */x: number, /*float */y: number, /*float*/ scale: number ): void {
+		todoThrow ( );
+		//if ( (int)( com_ticNumber >> 4 ) & 1 ) {
+		//	return;
+		//}
+		//SetFontByScale(scale);
+		//float useScale = scale * this.useFont.glyphScale;
+		//const glyphInfo_t *glyph2 = &this.useFont.glyphs[(overStrikeMode) ? '_' : '|'];
+		//float	yadj = useScale * glyph2.top;
+		//PaintChar(x, y - yadj,glyph2.imageWidth,glyph2.imageHeight,useScale,glyph2.s,glyph2.t,glyph2.s2,glyph2.t2,glyph2.glyph);
+	}
+
+	DrawText_text ( text: string, /*float */textScale: number, /*int */textAlign: number, color: idVec4, rectDraw: idRectangle, wrap: boolean, /*int */cursor: number = -1, calcOnly: boolean = false, /*idList<int> **/breaks: idList<number> = null, /*int */limit: number = 0 ): number /*int*/ {
+		var p: number, textPtr: number, newLinePtr: number;
+		var buff = new Uint8Array( 1024 );
+		var len: number, newLine: number, newLineWidth: number, count: number; //int			
+		var y: number; //float		
+		var textWidth: number; //float		
+
+		var charSkip = this.MaxCharWidth( textScale ) + 1; //	float		
+		var lineSkip = this.MaxCharHeight( textScale ); //	float		
+
+		var cursorSkip = ( cursor >= 0 ? charSkip : 0 ); //float
+
+		var lineBreak: boolean, wordBreak: boolean;
+
+		this.SetFontByScale( textScale );
+
+		textWidth = 0;
+		newLinePtr = NULL;
+
+		if ( !calcOnly && !( text /*&& *text*/ ) ) {
+			if ( cursor == 0 ) {
+				renderSystem.SetColor( color );
+				this.DrawEditCursor( rectDraw.x, lineSkip + rectDraw.y, textScale );
+			}
+			return idMath.FtoiFast( rectDraw.w / charSkip );
+		}
+
+		textPtr = 0; //text;
+
+		y = lineSkip + rectDraw.y;
+		len = 0;
+		buff[0] = 0; //'\0';
+		newLine = 0;
+		newLineWidth = 0;
+		p = textPtr;
+
+		if ( breaks ) {
+			breaks.Append( 0 );
+		}
+		count = 0;
+		textWidth = 0;
+		lineBreak = false;
+		wordBreak = false;
+		while ( p ) {
+
+			if ( text[p] == '\n' || text[p] == '\r' || text[p] == '\0' ) {
+				lineBreak = true;
+				if ( ( text[p] == '\n' && text[p + 1] == '\r' ) || ( text[p] == '\r' && text[p + 1] == '\n' ) ) {
+					p++;
+				}
+			}
+
+			var /*int */nextCharWidth = ( idStr.CharIsPrintable( text[p] ) ? this.CharWidth( text[p], textScale ) : cursorSkip );
+			// FIXME: this is a temp hack until the guis can be fixed not not overflow the bounding rectangles
+			//		  the side-effect is that list boxes and edit boxes will draw over their scroll bars
+			//	The following line and the !linebreak in the if statement below should be removed
+			nextCharWidth = 0;
+
+			if ( !lineBreak && ( textWidth + nextCharWidth ) > rectDraw.w ) {
+				// The next character will cause us to overflow, if we haven't yet found a suitable
+				// break spot, set it to be this character
+				if ( len > 0 && newLine == 0 ) {
+					newLine = len;
+					newLinePtr = p;
+					newLineWidth = textWidth;
+				}
+				wordBreak = true;
+			} else if ( lineBreak || ( wrap && ( text[p] == ' ' || text[p] == '\t' ) ) ) {
+				// The next character is in view, so if we are a break character, store our position
+				newLine = len;
+				newLinePtr = p + 1;
+				newLineWidth = textWidth;
+			}
+
+			if ( lineBreak || wordBreak ) {
+				var /*float */x = rectDraw.x;
+
+				if ( textAlign == ALIGN_RIGHT ) {
+					x = rectDraw.x + rectDraw.w - newLineWidth;
+				} else if ( textAlign == ALIGN_CENTER ) {
+					x = rectDraw.x + ( rectDraw.w - newLineWidth ) / 2;
+				}
+
+				if ( wrap || newLine > 0 ) {
+					buff[newLine] = 0; //'\0';
+
+					// This is a special case to handle breaking in the middle of a word.
+					// if we didn't do this, the cursor would appear on the end of this line
+					// and the beginning of the next.
+					if ( wordBreak && cursor >= newLine && newLine == len ) {
+						cursor++;
+					}
+				}
+
+				if ( !calcOnly ) {
+					count += this.DrawText( x, y, textScale, color, buff.toString ( ), 0, 0, 0, cursor );
+				}
+
+				if ( cursor < newLine ) {
+					cursor = -1;
+				} else if ( cursor >= 0 ) {
+					cursor -= ( newLine + 1 );
+				}
+
+				if ( !wrap ) {
+					return newLine;
+				}
+
+				if ( ( limit && count > limit ) || text[p] == '\0' ) {
+					break;
+				}
+
+				y += lineSkip + 5;
+
+				if ( !calcOnly && y > rectDraw.Bottom ( ) ) {
+					break;
+				}
+
+				p = newLinePtr;
+
+				if ( breaks ) {
+					breaks.Append( p /*- text*/ );
+				}
+
+				len = 0;
+				newLine = 0;
+				newLineWidth = 0;
+				textWidth = 0;
+				lineBreak = false;
+				wordBreak = false;
+				continue;
+			}
+
+			buff[len++] = p++;
+			buff[len] = 0; //'\0';
+			// update the width
+			if ( /***/( buff[len - 1] ) != C_COLOR_ESCAPE.charCodeAt( 0 ) && ( len <= 1 || buff[len - 2] != C_COLOR_ESCAPE.charCodeAt( 0 ) ) ) {
+				textWidth += textScale * this.useFont.glyphScale * this.useFont.glyphs[ /*(const unsigned char)*( */buff[len - 1]].xSkip;
+			}
+		}
+
+		return idMath.FtoiFast( rectDraw.w / charSkip );
+	}
 
 
 };

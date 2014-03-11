@@ -2918,7 +2918,7 @@ void idSessionLocal::Init() {
 	guiIntro = uiManager->FindGui( "guis/intro.gui", true, false, true );
 
 	whiteMaterial = declManager->FindMaterial( "_white" );
-	exit(0);
+	
 	guiInGame = NULL;
 	guiTest = NULL;
 

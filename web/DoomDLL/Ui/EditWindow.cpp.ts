@@ -628,7 +628,7 @@ InitScroller(  horizontal :boolean):void
 			var rect = new idRectangle();
 			rect.equals( this.textRect );
 			rect.w -= this.sizeBias;
-			todoThrow( "this.dc.DrawText( this.text.c_str ( ), this.textScale, this.textAlign, colorWhite, rect, true, ( this.flags & WIN_FOCUS ) ? this.cursorPos : -1, true, this.breaks );" );
+			this.dc.DrawText_text( this.text.c_str ( ), this.textScale.data, this.textAlign, colorWhite, rect, true, ( this.flags & WIN_FOCUS ) ? this.cursorPos : -1, true, this.breaks );
 
 			var /*int */fit = int( this.textRect.h / ( this.GetMaxCharHeight ( ) + 5 ) );
 			if ( fit < this.breaks.Num() + 1 ) {

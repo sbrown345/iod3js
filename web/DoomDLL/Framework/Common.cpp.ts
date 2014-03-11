@@ -2840,38 +2840,39 @@ idCommonLocal::Init
 
 		// game specific initialization
 		this.InitGame();
-
+		
 ////		// don't add startup commands if no CD key is present
 ////#if ID_ENFORCE_KEY
 ////		if ( !session.CDKeysAreValid( false ) || !AddStartupCommands() ) {
 ////#else
-////		if ( !AddStartupCommands() ) {
+		if ( !this.AddStartupCommands() ) {
 ////#endif
-////			// if the user didn't give any commands, run default action
-////			session.StartMenu( true );
-////		}
+			// if the user didn't give any commands, run default action
+			session.StartMenu( true );
+		}
 
-////		Printf( "--- Common Initialization Complete ---\n" );
+		this.Printf( "--- Common Initialization Complete ---\n" );
 
-////		// print all warnings queued during initialization
-////		PrintWarnings();
+		// print all warnings queued during initialization
+		PrintWarnings();
 
 ////#ifdef	ID_DEDICATED
 ////		Printf( "\nType 'help' for dedicated server info.\n\n" );
 ////#endif
 
-////		// remove any prints from the notify lines
-////		console.ClearNotifyLines();
+		// remove any prints from the notify lines
+		console.ClearNotifyLines();
 
-////		ClearCommandLine();
+		ClearCommandLine();
 
-////		com_fullyInitialized = true;
+		com_fullyInitialized = true;
 ////	}
 
 ////	catch( idException & ) {
 ////		Sys_Error( "Error during initialization" );
 ////	}
-    }
+	todoThrow();
+	}
 
 
 /////*
@@ -3052,7 +3053,6 @@ idCommonLocal::InitGame
 ////		cmdSystem.BufferCommandText( CMD_EXEC_NOW, "s_restart\n" );
 ////		cmdSystem.ExecuteCommandBuffer();
 ////	}
-		todoThrow ( );
 	}
 
 /////*
