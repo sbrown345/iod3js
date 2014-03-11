@@ -423,6 +423,7 @@ idSliderWindow::InitCvar
 ============
 */
 	InitCvar ( ): void {
+		dlog(DEBUG_GUI, "idSliderWindow::InitCvar %s\n", this.cvarStr.c_str());
 		if ( !this.cvarStr.c_str ( ) /*== '\0' */ ) {
 			if ( !this.buddyWin ) {
 				common.Warning( "idSliderWindow::InitCvar: gui '%s' window '%s' has an empty cvar string", this.gui.GetSourceFile ( ), this.name.c_str ( ) );

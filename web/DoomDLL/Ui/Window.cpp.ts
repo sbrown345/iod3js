@@ -1653,50 +1653,49 @@ idWindow::SetDC
 idWindow::CalcClientRect
 ================
 */
-	CalcClientRect(/*float*/ xofs: number, /*float */yofs: number):void {
+	CalcClientRect ( /*float*/ xofs: number, /*float */yofs: number ): void {
 		this.drawRect.equals( this.rect.data );
 
-	if ( this.flags & WIN_INVERTRECT ) {
-		this.drawRect.x = this.rect.x() - this.rect.w();
-		this.drawRect.y = this.rect.y() - this.rect.h();
-	}
-	
-	if (this.flags & (WIN_HCENTER | WIN_VCENTER) && this.parent) {
-		// in this case treat xofs and yofs as absolute top left coords
-		// and ignore the original positioning
-		if (this.flags & WIN_HCENTER) {
-			this.drawRect.x = (this.parent.rect.w() - this.rect.w()) / 2;
-		} else {
-			this.drawRect.y = (this.parent.rect.h() - this.rect.h()) / 2;
-		}
-	}
-
-	this.drawRect.x += xofs;
-	this.drawRect.y += yofs;
-
-	this.clientRect = this.drawRect;
-	if (this.rect.h() > 0.0 && this.rect.w() > 0.0) {
-
-		if (this.flags & WIN_BORDER && this.borderSize != 0.0) {
-			this.clientRect.x += this.borderSize;
-			this.clientRect.y += this.borderSize;
-			this.clientRect.w -= this.borderSize;
-			this.clientRect.h -= this.borderSize;
+		if ( this.flags & WIN_INVERTRECT ) {
+			this.drawRect.x = this.rect.x ( ) - this.rect.w ( );
+			this.drawRect.y = this.rect.y ( ) - this.rect.h ( );
 		}
 
-		this.textRect = this.clientRect;
-		this.textRect.x += 2.0;
-	 	this.textRect.w -= 2.0;
-		this.textRect.y += 2.0;
-		this.textRect.h -= 2.0;
+		if ( this.flags & ( WIN_HCENTER | WIN_VCENTER ) && this.parent ) {
+			// in this case treat xofs and yofs as absolute top left coords
+			// and ignore the original positioning
+			if ( this.flags & WIN_HCENTER ) {
+				this.drawRect.x = ( this.parent.rect.w ( ) - this.rect.w ( ) ) / 2;
+			} else {
+				this.drawRect.y = ( this.parent.rect.h ( ) - this.rect.h ( ) ) / 2;
+			}
+		}
 
-		this.textRect.x += this.textAlignx;
-		this.textRect.y += this.textAligny;
+		this.drawRect.x += xofs;
+		this.drawRect.y += yofs;
 
+		this.clientRect = this.drawRect;
+		if ( this.rect.h ( ) > 0.0 && this.rect.w ( ) > 0.0 ) {
+
+			if ( this.flags & WIN_BORDER && this.borderSize != 0.0 ) {
+				this.clientRect.x += this.borderSize;
+				this.clientRect.y += this.borderSize;
+				this.clientRect.w -= this.borderSize;
+				this.clientRect.h -= this.borderSize;
+			}
+
+			this.textRect = this.clientRect;
+			this.textRect.x += 2.0;
+			this.textRect.w -= 2.0;
+			this.textRect.y += 2.0;
+			this.textRect.h -= 2.0;
+
+			this.textRect.x += this.textAlignx;
+			this.textRect.y += this.textAligny;
+
+		}
+		this.origin.Set( this.rect.x ( ) + ( this.rect.w ( ) / 2 ), this.rect.y ( ) + ( this.rect.h ( ) / 2 ) );
 	}
-		this.origin.Set( this.rect.x() + (this.rect.w() / 2 ), this.rect.y() + ( this.rect.h() / 2 ) );
-
-}
 
 /*
 ================
@@ -1719,26 +1718,26 @@ idWindow::SetupBackground
 idWindow::SetupFromState
 ================
 */
-SetupFromState():void {
-	var str = new idStr;
-	this.background = null;
+	SetupFromState ( ): void {
+		var str = new idStr;
+		this.background = null;
 
-	this.SetupBackground();
+		this.SetupBackground ( );
 
-	if (this.borderSize) {
-		this.flags |= WIN_BORDER;
-	}
+		if ( this.borderSize ) {
+			this.flags |= WIN_BORDER;
+		}
 
-	if (this.regList.FindReg("rotate") || this.regList.FindReg("shear")) {
-		this.flags |= WIN_TRANSFORM;
+		if ( this.regList.FindReg( "rotate" ) || this.regList.FindReg( "shear" ) ) {
+			this.flags |= WIN_TRANSFORM;
+		}
+
+		this.CalcClientRect( 0, 0 );
+		if ( this.scripts[ON_ACTION] ) {
+			this.cursor = CURSOR_HAND;
+			this.flags |= WIN_CANFOCUS;
+		}
 	}
-	
-	this.CalcClientRect(0,0);
-	if ( this.scripts[ ON_ACTION ] ) {
-		this.cursor = CURSOR_HAND;
-		this.flags |= WIN_CANFOCUS;
-	}
-}
 
 /*
 ================
@@ -3143,6 +3142,7 @@ idWindow::ParseTerm
 Returns a register index
 =================
 */
+	static uglyCount = 0;
 	ParseTerm ( src: idParser, /***/$var: idWinVar = null, /*int*/ component = 0 ): number {
 		var token = new idToken;
 		var /*int*/ a: number, b: number;
@@ -3220,12 +3220,8 @@ Returns a register index
 			// ugly but used for post parsing to fixup named vars
 			var p = new idStr( token ); //char *p = new char[token.Length()+1];
 			//strcpy(p, token);
-			dlog(DEBUG_GUI, "ugly %s\n", p.data);
-			if ( p.data == "" ) {
-				//dlogFlush();
-				debugger;
-				//throw "fix this first";
-			}
+			dlog( DEBUG_GUI, "ugly '%s' %i\n", p.data, idWindow.uglyCount );
+			idWindow.uglyCount++;
 			objectTracker.addObject( p );
 			a = p.refAddress; //a = (int)p
 			if ( a == 20863 )debugger;

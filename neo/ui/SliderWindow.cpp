@@ -352,7 +352,8 @@ idSliderWindow::InitCvar
 ============
 */
 void idSliderWindow::InitCvar( ) {
-	if ( cvarStr[0] == '\0' ) {
+	dlog(DEBUG_GUI, "idSliderWindow::InitCvar %s\n", cvarStr.c_str());
+	if (cvarStr[0] == '\0') {
 		if ( !buddyWin ) {
 			common->Warning( "idSliderWindow::InitCvar: gui '%s' window '%s' has an empty cvar string", gui->GetSourceFile(), name.c_str() );
 		}
@@ -363,6 +364,7 @@ void idSliderWindow::InitCvar( ) {
 
 	cvar = cvarSystem->Find( cvarStr );
 	if ( !cvar ) {
+		dlog(DEBUG_GUI, "idSliderWindow::InitCvar: gui '%s' window '%s' references undefined cvar '%s'", gui->GetSourceFile(), name.c_str(), cvarStr.c_str());
 		common->Warning( "idSliderWindow::InitCvar: gui '%s' window '%s' references undefined cvar '%s'", gui->GetSourceFile(), name.c_str(), cvarStr.c_str() );
 		cvar_init = true;
 		return;

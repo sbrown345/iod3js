@@ -589,7 +589,8 @@ idEditWindow::InitCvar
 ============
 */
 void idEditWindow::InitCvar( ) {
-	if ( cvarStr[0] == '\0' ) {
+	dlog(DEBUG_GUI, "idEditWindow::InitCvar %s\n", cvarStr.c_str());
+	if (cvarStr[0] == '\0') {
 		if ( text.GetName() == NULL ) {
 			common->Warning( "idEditWindow::InitCvar: gui '%s' window '%s' has an empty cvar string", gui->GetSourceFile(), name.c_str() );
 		}

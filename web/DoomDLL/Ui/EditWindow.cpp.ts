@@ -673,8 +673,9 @@ InitScroller(  horizontal :boolean):void
 idEditWindow::InitCvar
 ============
 */
-	InitCvar ( ): void {
-		if ( !this.cvarStr.data /*this.cvarStr[0] == '\0' */ ) {
+	InitCvar(): void {
+		dlog( DEBUG_GUI, "idEditWindow::InitCvar %s\n", this.cvarStr.c_str ( ) );
+		if ( !this.cvarStr.c_str ( ) /*this.cvarStr[0] == '\0' */ ) {
 			if ( !this.text.GetName ( ) /*== NULL */ ) {
 				common.Warning( "idEditWindow::InitCvar: gui '%s' window '%s' has an empty cvar string", this.gui.GetSourceFile ( ), this.name.c_str ( ) );
 			}
@@ -684,6 +685,7 @@ idEditWindow::InitCvar
 
 		this.cvar = cvarSystem.Find( this.cvarStr.c_str ( ) );
 		if ( !this.cvar ) {
+			dlog(DEBUG_GUI, "idEditWindow::InitCvar: gui '%s' window '%s' references undefined cvar '%s'", this.gui.GetSourceFile ( ), this.name.c_str ( ), this.cvarStr.c_str ( ) );
 			common.Warning( "idEditWindow::InitCvar: gui '%s' window '%s' references undefined cvar '%s'", this.gui.GetSourceFile ( ), this.name.c_str ( ), this.cvarStr.c_str ( ) );
 			return;
 		}

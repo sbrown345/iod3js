@@ -2839,7 +2839,8 @@ idWindow::ParseTerm
 Returns a register index
 =================
 */
-int idWindow::ParseTerm( idParser *src,	idWinVar *var, int component ) {
+static int uglyCount = 0;
+int idWindow::ParseTerm(idParser *src, idWinVar *var, int component) {
 	idToken token;
 	int		a, b;
 
@@ -2915,8 +2916,9 @@ int idWindow::ParseTerm( idParser *src,	idWinVar *var, int component ) {
 	} else {
 		// ugly but used for post parsing to fixup named vars
 		char *p = new char[token.Length()+1];
-		dlog(DEBUG_GUI, "ugly %s\n", p);
 		strcpy(p, token);
+		dlog(DEBUG_GUI, "ugly '%s' %i\n", p, uglyCount);
+		uglyCount++;
 		a = (int)p;
 		b = -2;
 		return EmitOp(a, b, WOP_TYPE_VAR);

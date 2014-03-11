@@ -718,7 +718,7 @@ idParser::ReadSourceToken
 			// remove the script and return to the previous one
 			script = this.scriptstack;
 			this.scriptstack = this.scriptstack.next;
-			delete script;
+			$delete( script );
 		}
 		// copy the already available token
 		token.equals(this.tokens);
@@ -1231,7 +1231,7 @@ idParser::Directive_include
 				// try from the include path
 				path.equals( this.includepath.data + token );
 				if (!script.LoadFile(path.data, this.OSPath ) ) {
-					delete script;
+					$delete(script);
 					script = null;
 				}
 			}
@@ -1261,7 +1261,7 @@ idParser::Directive_include
 		}
 		script = new idLexer;
 		if ( !script.LoadFile( this.includepath.data + path, this.OSPath ) ) {
-			delete script;
+			$delete(script);
 			script = null;
 		}
 	}
@@ -3288,7 +3288,7 @@ idParser::LoadFile
 		}
 		script = new idLexer( filename, 0, OSPath );
 		if ( !script.IsLoaded ( ) ) {
-			delete script;
+			$delete(script);
 			return 0 /*false*/;
 		}
 		script.SetFlags( this.flags );
@@ -3324,7 +3324,7 @@ LoadMemory(/*const char **/ptr:string, /*int */length:number, /*const char **/na
 	}
 	script = new idLexer( ptr, length, name, 0 );
 	if ( !script.IsLoaded() ) {
-		delete script;
+		$delete(script);
 		return 0/*false*/;
 	}
 	script.SetFlags( this.flags );
@@ -3362,14 +3362,12 @@ FreeSource( keepDefines = false ):void {
 		script = this.scriptstack;
 		this.scriptstack = this.scriptstack.next;
 		$delete( script );
-		delete script;
 	}
 	// free all the tokens
 	while( this.tokens ) {
 		token = this.tokens;
 		this.tokens = this.tokens.next;
 		$delete( token );
-		delete token;
 	}
 	// free all indents
 	while( this.indentstack ) {
