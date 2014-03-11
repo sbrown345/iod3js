@@ -1245,23 +1245,22 @@ An open brace has been parsed
 
 			// texture coordinate generation
 			if ( !token.Icmp( "texGen" ) ) {
-				todoThrow ( );
 				src.ExpectAnyToken( token );
-				//if ( !token.Icmp( "normal" ) ) {
-				//	ts.texgen = TG_DIFFUSE_CUBE;
-				//} else if ( !token.Icmp( "reflect" ) ) {
-				//	ts.texgen = texgen_t.TG_REFLECT_CUBE;
-				//} else if ( !token.Icmp( "skybox" ) ) {
-				//	ts.texgen = TG_SKYBOX_CUBE;
-				//} else if ( !token.Icmp( "wobbleSky" ) ) {
-				//	ts.texgen = TG_WOBBLESKY_CUBE;
-				//	texGenRegisters[0] = this.ParseExpression( src );
-				//	texGenRegisters[1] = this.ParseExpression( src );
-				//	texGenRegisters[2] = this.ParseExpression( src );
-				//} else {
-				//	common.Warning( "bad texGen '%s' in material %s", token.c_str(), this.GetName() );
-				//	this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-				//}
+				if ( !token.Icmp( "normal" ) ) {
+					ts.texgen = texgen_t.TG_DIFFUSE_CUBE;
+				} else if ( !token.Icmp( "reflect" ) ) {
+					ts.texgen = texgen_t.TG_REFLECT_CUBE;
+				} else if ( !token.Icmp( "skybox" ) ) {
+					ts.texgen = texgen_t.TG_SKYBOX_CUBE;
+				} else if ( !token.Icmp( "wobbleSky" ) ) {
+					ts.texgen = texgen_t.TG_WOBBLESKY_CUBE;
+					this.texGenRegisters[0] = this.ParseExpression( src );
+					this.texGenRegisters[1] = this.ParseExpression( src );
+					this.texGenRegisters[2] = this.ParseExpression( src );
+				} else {
+					common.Warning( "bad texGen '%s' in material %s", token.c_str ( ), this.GetName ( ) );
+					this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+				}
 				continue;
 			}
 			if ( !token.Icmp( "scroll" ) || !token.Icmp( "translate" ) ) {
@@ -1279,91 +1278,87 @@ An open brace has been parsed
 				continue;
 			}
 			if ( !token.Icmp( "scale" ) ) {
-				todoThrow ( );
-				//a = this.ParseExpression( src );
-				//this.MatchToken( src, "," );
-				//b = this.ParseExpression( src );
-				//// this just scales without a centering
-				//matrix[0][0] = a;
-				//matrix[0][1] = this.GetExpressionConstant( 0 );
-				//matrix[0][2] = this.GetExpressionConstant( 0 );
-				//matrix[1][0] = this.GetExpressionConstant( 0 );
-				//matrix[1][1] = b;
-				//matrix[1][2] = this.GetExpressionConstant( 0 );
+				a = this.ParseExpression( src );
+				this.MatchToken( src, "," );
+				b = this.ParseExpression( src );
+				// this just scales without a centering
+				matrix[0][0] = a;
+				matrix[0][1] = this.GetExpressionConstant( 0 );
+				matrix[0][2] = this.GetExpressionConstant( 0 );
+				matrix[1][0] = this.GetExpressionConstant( 0 );
+				matrix[1][1] = b;
+				matrix[1][2] = this.GetExpressionConstant( 0 );
 
-				//MultiplyTextureMatrix( ts, matrix );
+				this.MultiplyTextureMatrix( ts, matrix );
 				continue;
 			}
 			if ( !token.Icmp( "centerScale" ) ) {
-				todoThrow ( );
-				//a = this.ParseExpression( src );
-				//this.MatchToken( src, "," );
-				//b = this.ParseExpression( src );
-				//// this subtracts 0.5, then scales, then adds 0.5
-				//matrix[0][0] = a;
-				//matrix[0][1] = this.GetExpressionConstant( 0 );
-				//matrix[0][2] = this.EmitOp( this.GetExpressionConstant( 0.5 ), this.EmitOp( this.GetExpressionConstant( 0.5 ), a, expOpType_t.OP_TYPE_MULTIPLY ), expOpType_t.OP_TYPE_SUBTRACT );
-				//matrix[1][0] = this.GetExpressionConstant( 0 );
-				//matrix[1][1] = b;
-				//matrix[1][2] = this.EmitOp( this.GetExpressionConstant( 0.5 ), this.EmitOp( this.GetExpressionConstant( 0.5 ), b, expOpType_t.OP_TYPE_MULTIPLY ), expOpType_t.OP_TYPE_SUBTRACT );
+				a = this.ParseExpression( src );
+				this.MatchToken( src, "," );
+				b = this.ParseExpression( src );
+				// this subtracts 0.5, then scales, then adds 0.5
+				matrix[0][0] = a;
+				matrix[0][1] = this.GetExpressionConstant( 0 );
+				matrix[0][2] = this.EmitOp( this.GetExpressionConstant( 0.5 ), this.EmitOp( this.GetExpressionConstant( 0.5 ), a, expOpType_t.OP_TYPE_MULTIPLY ), expOpType_t.OP_TYPE_SUBTRACT );
+				matrix[1][0] = this.GetExpressionConstant( 0 );
+				matrix[1][1] = b;
+				matrix[1][2] = this.EmitOp( this.GetExpressionConstant( 0.5 ), this.EmitOp( this.GetExpressionConstant( 0.5 ), b, expOpType_t.OP_TYPE_MULTIPLY ), expOpType_t.OP_TYPE_SUBTRACT );
 
-				//MultiplyTextureMatrix( ts, matrix );
+				this.MultiplyTextureMatrix( ts, matrix );
 				continue;
 			}
 			if ( !token.Icmp( "shear" ) ) {
-				todoThrow ( );
-				//a = this.ParseExpression( src );
-				//this.MatchToken( src, "," );
-				//b = this.ParseExpression( src );
-				//// this subtracts 0.5, then shears, then adds 0.5
-				//matrix[0][0] = this.GetExpressionConstant( 1 );
-				//matrix[0][1] = a;
-				//matrix[0][2] = this.EmitOp( this.GetExpressionConstant( -0.5 ), a, expOpType_t.OP_TYPE_MULTIPLY );
-				//matrix[1][0] = b;
-				//matrix[1][1] = this.GetExpressionConstant( 1 );
-				//matrix[1][2] = this.EmitOp( this.GetExpressionConstant( -0.5 ), b, expOpType_t.OP_TYPE_MULTIPLY );
+				a = this.ParseExpression( src );
+				this.MatchToken( src, "," );
+				b = this.ParseExpression( src );
+				// this subtracts 0.5, then shears, then adds 0.5
+				matrix[0][0] = this.GetExpressionConstant( 1 );
+				matrix[0][1] = a;
+				matrix[0][2] = this.EmitOp( this.GetExpressionConstant( -0.5 ), a, expOpType_t.OP_TYPE_MULTIPLY );
+				matrix[1][0] = b;
+				matrix[1][1] = this.GetExpressionConstant( 1 );
+				matrix[1][2] = this.EmitOp( this.GetExpressionConstant( -0.5 ), b, expOpType_t.OP_TYPE_MULTIPLY );
 
-				//MultiplyTextureMatrix( ts, matrix );
+				this.MultiplyTextureMatrix( ts, matrix );
 				continue;
 			}
 			if ( !token.Icmp( "rotate" ) ) {
-				todoThrow ( );
-				//var  table: idDeclTable;
-				//var /*int		*/sinReg: number, cosReg: number;
+				var table: idDeclTable;
+				var /*int		*/sinReg: number, cosReg: number;
 
-				//// in cycles
-				//a = this.this.ParseExpression( src );
+				// in cycles
+				a = this.ParseExpression( src );
 
-				//table = static_cast<const idDeclTable *>( declManager.FindType( declType_t.DECL_TABLE, "sinTable", false ) );
-				//if ( !table ) {
-				//	common.Warning( "no sinTable for rotate defined" );
-				//	this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-				//	return;
-				//}
-				//sinReg = this.EmitOp( table.Index(), a, expOpType_t.OP_TYPE_TABLE );
+				table = static_cast<idDeclTable>( declManager.FindType( declType_t.DECL_TABLE, "sinTable", false ) );
+				if ( !table ) {
+					common.Warning( "no sinTable for rotate defined" );
+					this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+					return;
+				}
+				sinReg = this.EmitOp( table.Index ( ), a, expOpType_t.OP_TYPE_TABLE );
 
-				//table = static_cast<const idDeclTable *>( declManager.FindType( declType_t.DECL_TABLE, "cosTable", false ) );
-				//if ( !table ) {
-				//	common.Warning( "no cosTable for rotate defined" );
-				//	this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-				//	return;
-				//}
-				//cosReg = this.EmitOp( table.Index(), a, expOpType_t.OP_TYPE_TABLE );
+				table = static_cast<idDeclTable>( declManager.FindType( declType_t.DECL_TABLE, "cosTable", false ) );
+				if ( !table ) {
+					common.Warning( "no cosTable for rotate defined" );
+					this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+					return;
+				}
+				cosReg = this.EmitOp( table.Index ( ), a, expOpType_t.OP_TYPE_TABLE );
 
-				//// this subtracts 0.5, then rotates, then adds 0.5
-				//matrix[0][0] = cosReg;
-				//matrix[0][1] = this.EmitOp( this.GetExpressionConstant( 0 ), sinReg, expOpType_t.OP_TYPE_SUBTRACT );
-				//matrix[0][2] = this.EmitOp( this.EmitOp( this.EmitOp( this.GetExpressionConstant( -0.5 ), cosReg, expOpType_t.OP_TYPE_MULTIPLY ), 
-				//							this.EmitOp( this.GetExpressionConstant( 0.5 ), sinReg, expOpType_t.OP_TYPE_MULTIPLY ), expOpType_t.OP_TYPE_ADD ),
-				//							this.GetExpressionConstant( 0.5 ), expOpType_t.OP_TYPE_ADD );
+				// this subtracts 0.5, then rotates, then adds 0.5
+				matrix[0][0] = cosReg;
+				matrix[0][1] = this.EmitOp( this.GetExpressionConstant( 0 ), sinReg, expOpType_t.OP_TYPE_SUBTRACT );
+				matrix[0][2] = this.EmitOp( this.EmitOp( this.EmitOp( this.GetExpressionConstant( -0.5 ), cosReg, expOpType_t.OP_TYPE_MULTIPLY ),
+						this.EmitOp( this.GetExpressionConstant( 0.5 ), sinReg, expOpType_t.OP_TYPE_MULTIPLY ), expOpType_t.OP_TYPE_ADD ),
+					this.GetExpressionConstant( 0.5 ), expOpType_t.OP_TYPE_ADD );
 
-				//matrix[1][0] = sinReg;
-				//matrix[1][1] = cosReg;
-				//matrix[1][2] = this.EmitOp( this.EmitOp( this.EmitOp( this.GetExpressionConstant( -0.5 ), sinReg, expOpType_t.OP_TYPE_MULTIPLY ), 
-				//							this.EmitOp( this.GetExpressionConstant( -0.5 ), cosReg, expOpType_t.OP_TYPE_MULTIPLY ), expOpType_t.OP_TYPE_ADD ),
-				//							this.GetExpressionConstant( 0.5 ), expOpType_t.OP_TYPE_ADD );
+				matrix[1][0] = sinReg;
+				matrix[1][1] = cosReg;
+				matrix[1][2] = this.EmitOp( this.EmitOp( this.EmitOp( this.GetExpressionConstant( -0.5 ), sinReg, expOpType_t.OP_TYPE_MULTIPLY ),
+						this.EmitOp( this.GetExpressionConstant( -0.5 ), cosReg, expOpType_t.OP_TYPE_MULTIPLY ), expOpType_t.OP_TYPE_ADD ),
+					this.GetExpressionConstant( 0.5 ), expOpType_t.OP_TYPE_ADD );
 
-				//MultiplyTextureMatrix( ts, matrix );
+				this.MultiplyTextureMatrix( ts, matrix );
 				continue;
 			}
 
