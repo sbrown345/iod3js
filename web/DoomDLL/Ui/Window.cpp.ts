@@ -3224,7 +3224,6 @@ Returns a register index
 			idWindow.uglyCount++;
 			objectTracker.addObject( p );
 			a = p.refAddress; //a = (int)p
-			if ( a == 20863 )debugger;
 			b = -2;
 			return this.EmitOp( a, b, wexpOpType_t.WOP_TYPE_VAR );
 		}
@@ -4186,7 +4185,7 @@ idWindow::FixupParms
 				var p: string = objectTracker.getObject<idStr>( this.ops[i].a, idStr ).data;// (const char*)(this.ops[i].a);
 				var $var = this.GetWinVarByName(p, true);
 				//delete []p;
-				this.ops[i].a = $var.refAddress;
+				this.ops[i].a = $var ? $var.refAddress : 0;
 				this.ops[i].b = -1;
 			}
 		}

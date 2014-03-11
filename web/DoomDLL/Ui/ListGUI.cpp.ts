@@ -34,14 +34,16 @@
 class idListGUI extends idList<idStr> /*, public idListGUI */ {
 	constructor ( ) {
 		super( idStr );
+		this.m_pGUI = null;
+		this.m_water = 0;
+		this.m_stateUpdates = true;
 	}
 
-
-//public:
-//						idListGUILocal() { m_pGUI = NULL; m_water = 0; m_stateUpdates = true; }
-//
-//	// idListGUI interface
-//	void				Config( idUserInterface *pGUI, const char *name ) { m_pGUI = pGUI; m_name = name; }
+	// idListGUI interface
+	Config ( pGUI: idUserInterface, name: string ): void {
+		this.m_pGUI = pGUI;
+		this.m_name.equals( name );
+	}
 //	void				Add( int id, const idStr& s );
 //						// use the element count as index for the ids
 //	void				Push( const idStr& s );
@@ -56,11 +58,11 @@ class idListGUI extends idList<idStr> /*, public idListGUI */ {
 //	void				Shutdown( void );
 //
 //private:
-//	idUserInterface *	m_pGUI;
-//	idStr				m_name;
-//	int					m_water;
-//	idList<int>			m_ids;
-//	bool				m_stateUpdates;
+	m_pGUI:idUserInterface;
+	m_name = new idStr;
+	m_water:number/*int*/;
+	m_ids = new idList<number/*int*/>(Number);
+	m_stateUpdates:boolean;
 //
 //	void				StateChanged();
 //};
@@ -77,13 +79,13 @@ class idListGUI extends idList<idStr> /*, public idListGUI */ {
 ////	}
 ////
 ////	for( i = 0; i < Num(); i++ ) {
-////		m_pGUI->SetStateString( va( "%s_item_%i", m_name.c_str(), i ), (*this)[i].c_str() ); 
+////		m_pGUI.SetStateString( va( "%s_item_%i", m_name.c_str(), i ), (*this)[i].c_str() ); 
 ////	}
 ////	for( i = Num() ; i < m_water ; i++ ) {
-////		m_pGUI->SetStateString( va( "%s_item_%i", m_name.c_str(), i ), "" );
+////		m_pGUI.SetStateString( va( "%s_item_%i", m_name.c_str(), i ), "" );
 ////	}
 ////	m_water = Num();
-////	m_pGUI->StateChanged( com_frameTime );
+////	m_pGUI.StateChanged( com_frameTime );
 ////}
 ////
 /////*
@@ -92,7 +94,7 @@ class idListGUI extends idList<idStr> /*, public idListGUI */ {
 ////====================
 ////*/
 ////int idListGUILocal::GetNumSelections() {
-////	return m_pGUI->State().GetInt( va( "%s_numsel", m_name.c_str() ) );
+////	return m_pGUI.State().GetInt( va( "%s_numsel", m_name.c_str() ) );
 ////}
 ////
 /////*
@@ -104,18 +106,18 @@ class idListGUI extends idList<idStr> /*, public idListGUI */ {
 ////	if ( s ) {		
 ////		s[ 0 ] = '\0';
 ////	}
-////	int sel = m_pGUI->State().GetInt( va( "%s_sel_%i", m_name.c_str(), _sel ), "-1" );
+////	int sel = m_pGUI.State().GetInt( va( "%s_sel_%i", m_name.c_str(), _sel ), "-1" );
 ////	if ( sel == -1 || sel >= m_ids.Num() ) {
 ////		return -1;
 ////	}
 ////	if ( s ) {
-////		idStr::snPrintf( s, size, m_pGUI->State().GetString( va( "%s_item_%i", m_name.c_str(), sel ), "" ) );
+////		idStr::snPrintf( s, size, m_pGUI.State().GetString( va( "%s_item_%i", m_name.c_str(), sel ), "" ) );
 ////	}
 ////	// don't let overflow
 ////	if ( sel >= m_ids.Num() ) {
 ////		sel = 0;
 ////	}
-////	m_pGUI->SetStateInt( va( "%s_selid_0", m_name.c_str() ), m_ids[ sel ] ); 
+////	m_pGUI.SetStateInt( va( "%s_selid_0", m_name.c_str() ), m_ids[ sel ] ); 
 ////	return m_ids[ sel ];
 ////}
 ////
@@ -125,7 +127,7 @@ class idListGUI extends idList<idStr> /*, public idListGUI */ {
 ////====================
 ////*/
 ////void idListGUILocal::SetSelection( int sel ) {
-////	m_pGUI->SetStateInt( va( "%s_sel_0", m_name.c_str() ), sel );
+////	m_pGUI.SetStateInt( va( "%s_sel_0", m_name.c_str() ), sel );
 ////	StateChanged();
 ////}
 ////
@@ -167,7 +169,7 @@ class idListGUI extends idList<idStr> /*, public idListGUI */ {
 ////		return false;
 ////	}
 ////	m_ids.RemoveIndex( i );
-////	this->RemoveIndex( i );
+////	this.RemoveIndex( i );
 ////	StateChanged();
 ////	return true;
 ////}

@@ -46,8 +46,16 @@
 //
 //static idServerScan *l_serverScan = NULL;
 
+ enum scan_state_t{
+	IDLE = 0,
+	WAIT_ON_INIT,
+	LAN_SCAN,
+	NET_SCAN
+}
+
 
 class idServerScan extends idList<networkServer_t> {
+
 //public:	
 //						idServerScan( );
 //	
@@ -71,14 +79,7 @@ class idServerScan extends idList<networkServer_t> {
 //	// called each game frame. Updates the scanner state, takes care of ongoing scans
 //	void				RunFrame( );
 //	
-//	typedef enum {
-//		IDLE = 0,
-//		WAIT_ON_INIT,
-//		LAN_SCAN,
-//		NET_SCAN
-//	} scan_state_t;
-//
-//	scan_state_t		GetState() { return scan_state; }
+//	scan_state_t		GetState() { return this.scan_state; }
 //	void				SetState( scan_state_t );
 //	
 //	bool				GetBestPing( networkServer_t &serv );
@@ -100,40 +101,40 @@ class idServerScan extends idList<networkServer_t> {
 //	int					GetChallenge( );
 //
 //private:
-//	static const int	MAX_PINGREQUESTS 	= 32;		// how many servers to query at once
-//	static const int	REPLY_TIMEOUT 		= 999;		// how long should we wait for a reply from a game server
-//	static const int	INCOMING_TIMEOUT	= 1500;		// when we got an incoming server list, how long till we decide the list is done
-//	static const int	REFRESH_START		= 10000;	// how long to wait when sending the initial refresh request
-//
-//	scan_state_t		scan_state;
-//	
-//	bool				incoming_net;	// set to true while new servers are fed through AddServer
-//	bool				incoming_useTimeout;
-//	int					incoming_lastTime;
-//	
-//	int					lan_pingtime;	// holds the time of LAN scan
-//	
-//						// servers we're waiting for a reply from
-//						// won't exceed MAX_PINGREQUESTS elements
-//						// holds index of net_servers elements, indexed by 'from' string
-//	idDict				net_info;		
-//
-//	idList<inServer_t>	net_servers;
-//						// where we are in net_servers list for getInfo emissions ( NET_SCAN only )
-//						// we may either be waiting on MAX_PINGREQUESTS, or for net_servers to grow some more ( through AddServer )
-//	int					cur_info;
-//
-//	idUserInterface		*m_pGUI;
-//	idListGUI *			listGUI;
-//
-//	serverSort_t		m_sort;
-//	bool				m_sortAscending;
-//	idList<int>			m_sortedServers;	// use ascending for the walking order
-//
-//	idStr				screenshot;
-//	int					challenge;			// challenge for current scan
-//	
-//	int					endWaitTime;		// when to stop waiting on a port init
+	static	MAX_PINGREQUESTS 	= 32;		// how many servers to query at once
+	static	REPLY_TIMEOUT 		= 999;		// how long should we wait for a reply from a game server
+	static	INCOMING_TIMEOUT	= 1500;		// when we got an incoming server list, how long till we decide the list is done
+	static	REFRESH_START		= 10000;	// how long to wait when sending the initial refresh request
+
+	scan_state: scan_state_t;
+
+	incoming_net:boolean;	// set to true while new servers are fed through AddServer
+	incoming_useTimeout:boolean;
+	incoming_lastTime:number/*int*/;
+
+	lan_pingtime:number/*int*/;	// holds the time of LAN scan
+	
+	// servers we're waiting for a reply from
+	// won't exceed MAX_PINGREQUESTS elements
+	// holds index of net_servers elements, indexed by 'from' string
+	net_info = new idDict;		
+
+	net_servers = new idList<inServer_t>(inServer_t);
+	// where we are in net_servers list for getInfo emissions ( NET_SCAN only )
+	// we may either be waiting on MAX_PINGREQUESTS, or for net_servers to grow some more ( through AddServer )
+	cur_info:number/*int*/;
+
+	m_pGUI: idUserInterface;
+	listGUI: idListGUI;
+
+	m_sort: serverSort_t;
+	m_sortAscending:boolean;
+	m_sortedServers = new idList</*int*/number>(Number);	// use ascending for the walking order
+
+	screenshot = new idStr;
+	challenge:number/*int*/;			// challenge for current scan
+	
+	endWaitTime:number/*int*/;		// when to stop waiting on a port init
 //
 //private:
 //	void				LocalClear( );		// we need to clear some internal data as well
@@ -144,49 +145,49 @@ class idServerScan extends idList<networkServer_t> {
 //
 //	static int			Cmp( const int *a, const int *b );
 
+/*
+================
+idServerScan::idServerScan
+================
+*/
+	constructor ( ) {
+		super( networkServer_t );
+		this.m_pGUI = null;
+		this.m_sort = serverSort_t.SORT_PING;
+		this.m_sortAscending = true;
+		this.challenge = 0;
+		this.LocalClear ( );
+	}
 
-///*
-//================
-//idServerScan::idServerScan
-//================
-//*/
-//idServerScan::idServerScan( ) {
-//	m_pGUI = NULL;
-//	m_sort = SORT_PING;
-//	m_sortAscending = true;
-//	challenge = 0;
-//	LocalClear();
-//}
-//
-///*
-//================
-//idServerScan::LocalClear
-//================
-//*/
-//void idServerScan::LocalClear( ) {
-//	scan_state = IDLE;
-//	incoming_net = false;
-//	lan_pingtime = -1;
-//	net_info.Clear();
-//	net_servers.Clear();
-//	cur_info = 0;
-//	if ( listGUI ) {
-//		listGUI.Clear();
-//	}
-//	incoming_useTimeout = false;
-//	m_sortedServers.Clear();
-//}
-//
-///*
-//================
-//idServerScan::Clear
-//================
-//*/
-//void idServerScan::Clear( ) {
-//	LocalClear();
-//	idList<networkServer_t>::Clear();
-//}
-//
+/*
+================
+idServerScan::LocalClear
+================
+*/
+	LocalClear ( ): void {
+		this.scan_state = scan_state_t.IDLE;
+		this.incoming_net = false;
+		this.lan_pingtime = -1;
+		this.net_info.Clear ( );
+		this.net_servers.Clear ( );
+		this.cur_info = 0;
+		if ( this.listGUI ) {
+			this.listGUI.Clear ( );
+		}
+		this.incoming_useTimeout = false;
+		this.m_sortedServers.Clear ( );
+	}
+
+/*
+================
+idServerScan::Clear
+================
+*/
+	Clear ( ): void {
+		this.LocalClear ( );
+		super.Clear ( );
+	}
+
 ///*
 //================
 //idServerScan::Shutdown
@@ -194,10 +195,10 @@ class idServerScan extends idList<networkServer_t> {
 //*/
 //void idServerScan::Shutdown( ) {
 //	m_pGUI = NULL;
-//	if ( listGUI ) {
-//		listGUI.Config( NULL, NULL );
-//		uiManager.FreeListGUI( listGUI );
-//		listGUI = NULL;
+//	if ( this.listGUI ) {
+//		this.listGUI.Config( NULL, NULL );
+//		uiManager.FreeListGUI( this.listGUI );
+//		this.listGUI = NULL;
 //	}
 //	screenshot.Clear();
 //}
@@ -210,9 +211,9 @@ class idServerScan extends idList<networkServer_t> {
 //void idServerScan::SetupLANScan( ) {	
 //	Clear();
 //	GUIUpdateSelected();
-//	scan_state = LAN_SCAN;
+//	this.scan_state = LAN_SCAN;
 //	challenge++;
-//	lan_pingtime = Sys_Milliseconds();
+//	this.lan_pingtime = Sys_Milliseconds();
 //	common.DPrintf( "SetupLANScan with challenge %d\n", challenge );
 //}
 //
@@ -222,7 +223,7 @@ class idServerScan extends idList<networkServer_t> {
 //================
 //*/
 //int idServerScan::InfoResponse( networkServer_t &server ) {
-//	if ( scan_state == IDLE ) {
+//	if ( this.scan_state == IDLE ) {
 //		return false;
 //	}
 //
@@ -233,19 +234,19 @@ class idServerScan extends idList<networkServer_t> {
 //		return false;
 //	}
 //
-//	if ( scan_state == NET_SCAN ) {	
-//		const idKeyValue *info = net_info.FindKey( serv.c_str() );
+//	if ( this.scan_state == NET_SCAN ) {	
+//		const idKeyValue *info = this.net_info.FindKey( serv.c_str() );
 //		if ( !info ) {
 //			common.DPrintf( "idServerScan::InfoResponse NET_SCAN: reply from unknown %s\n", serv.c_str() );
 //			return false;
 //		}
 //		int id = atoi( info.GetValue() );
-//		net_info.Delete( serv.c_str() );
-//		inServer_t iserv = net_servers[ id ];
+//		this.net_info.Delete( serv.c_str() );
+//		inServer_t iserv = this.net_servers[ id ];
 //		server.ping = Sys_Milliseconds() - iserv.time;
 //		server.id = iserv.id;
 //	} else {
-//		server.ping = Sys_Milliseconds() - lan_pingtime;
+//		server.ping = Sys_Milliseconds() - this.lan_pingtime;
 //		server.id = 0;
 //
 //		// check for duplicate servers
@@ -269,11 +270,11 @@ class idServerScan extends idList<networkServer_t> {
 //
 //	int index = Append( server );
 //	// for now, don't maintain sorting when adding new info response servers
-//	m_sortedServers.Append( Num()-1 );
-//	if ( listGUI.IsConfigured( ) && !IsFiltered( server ) ) {
+//	this.m_sortedServers.Append( Num()-1 );
+//	if ( this.listGUI.IsConfigured( ) && !IsFiltered( server ) ) {
 //		GUIAdd( Num()-1, server );
 //	}
-//	if ( listGUI.GetSelection( NULL, 0 ) == ( Num()-1 ) ) {
+//	if ( this.listGUI.GetSelection( NULL, 0 ) == ( Num()-1 ) ) {
 //		GUIUpdateSelected();
 //	}
 //
@@ -288,7 +289,7 @@ class idServerScan extends idList<networkServer_t> {
 //void idServerScan::AddServer( int id, const char *srv ) {
 //	inServer_t s;
 //	
-//	incoming_net = true;
+//	this.incoming_net = true;
 //	incoming_lastTime = Sys_Milliseconds() + INCOMING_TIMEOUT;
 //	s.id = id;
 //	
@@ -301,7 +302,7 @@ class idServerScan extends idList<networkServer_t> {
 //		s.adr.port = PORT_SERVER;
 //	}
 //	
-//	net_servers.Append( s );
+//	this.net_servers.Append( s );
 //}
 //
 ///*
@@ -310,9 +311,9 @@ class idServerScan extends idList<networkServer_t> {
 //================
 //*/
 //void idServerScan::EndServers( ) {
-//	incoming_net = false;
+//	this.incoming_net = false;
 //	l_serverScan = this;
-//	m_sortedServers.Sort( idServerScan::Cmp );
+//	this.m_sortedServers.Sort( idServerScan::Cmp );
 //	ApplyFilter();
 //} 
 //
@@ -322,8 +323,8 @@ class idServerScan extends idList<networkServer_t> {
 //================
 //*/
 //void idServerScan::StartServers( bool timeout ) {
-//	incoming_net = true;
-//	incoming_useTimeout = timeout;
+//	this.incoming_net = true;
+//	this.incoming_useTimeout = timeout;
 //	incoming_lastTime = Sys_Milliseconds() + REFRESH_START;
 //}
 //
@@ -356,7 +357,7 @@ class idServerScan extends idList<networkServer_t> {
 //		// time to let the OS do whatever magic things it needs to do...
 //		idAsyncNetwork::client.InitPort();
 //		// start the scan one second from now...
-//		scan_state = WAIT_ON_INIT;
+//		this.scan_state = WAIT_ON_INIT;
 //		endWaitTime = Sys_Milliseconds() + 1000;
 //		return;
 //	}
@@ -364,23 +365,23 @@ class idServerScan extends idList<networkServer_t> {
 //	// make sure the client port is open
 //	idAsyncNetwork::client.InitPort();
 //
-//	scan_state = NET_SCAN;
+//	this.scan_state = NET_SCAN;
 //	challenge++;
 //	
 //	idList<networkServer_t>::Clear();
-//	m_sortedServers.Clear();
-//	cur_info = 0;
-//	net_info.Clear();
-//	listGUI.Clear();
+//	this.m_sortedServers.Clear();
+//	this.cur_info = 0;
+//	this.net_info.Clear();
+//	this.listGUI.Clear();
 //	GUIUpdateSelected();
 //	common.DPrintf( "NetScan with challenge %d\n", challenge );
 //	
-//	while ( cur_info < Min( net_servers.Num(), MAX_PINGREQUESTS ) ) {
-//		netadr_t serv = net_servers[ cur_info ].adr;
+//	while ( this.cur_info < Min( this.net_servers.Num(), MAX_PINGREQUESTS ) ) {
+//		netadr_t serv = this.net_servers[ this.cur_info ].adr;
 //		EmitGetInfo( serv );
-//		net_servers[ cur_info ].time = Sys_Milliseconds();
-//		net_info.SetInt( Sys_NetAdrToString( serv ), cur_info );
-//		cur_info++;
+//		this.net_servers[ this.cur_info ].time = Sys_Milliseconds();
+//		this.net_info.SetInt( Sys_NetAdrToString( serv ), this.cur_info );
+//		this.cur_info++;
 //	}
 //}
 //
@@ -390,13 +391,13 @@ class idServerScan extends idList<networkServer_t> {
 //===============
 //*/
 //void idServerScan::RunFrame( ) {
-//	if ( scan_state == IDLE ) {
+//	if ( this.scan_state == IDLE ) {
 //		return;
 //	} 
 //	
-//	if ( scan_state == WAIT_ON_INIT ) {
+//	if ( this.scan_state == WAIT_ON_INIT ) {
 //		if ( Sys_Milliseconds() >= endWaitTime ) {
-//				scan_state = IDLE;
+//				this.scan_state = IDLE;
 //				NetScan();
 //			}
 //		return;
@@ -404,42 +405,42 @@ class idServerScan extends idList<networkServer_t> {
 //	
 //	int timeout_limit = Sys_Milliseconds() - REPLY_TIMEOUT;
 //	
-//	if ( scan_state == LAN_SCAN ) {
-//		if ( timeout_limit > lan_pingtime ) {
+//	if ( this.scan_state == LAN_SCAN ) {
+//		if ( timeout_limit > this.lan_pingtime ) {
 //			common.Printf( "Scanned for servers on the LAN\n" );
-//			scan_state = IDLE;
+//			this.scan_state = IDLE;
 //		}
 //		return;
 //	}
 //	
-//	// if scan_state == NET_SCAN
+//	// if this.scan_state == NET_SCAN
 //	
 //	// check for timeouts
 //	int i = 0;
-//	while ( i < net_info.GetNumKeyVals() ) {
-//		if ( timeout_limit > net_servers[ atoi( net_info.GetKeyVal( i ).GetValue().c_str() ) ].time ) {
-//			common.DPrintf( "timeout %s\n", net_info.GetKeyVal( i ).GetKey().c_str() );
-//			net_info.Delete( net_info.GetKeyVal( i ).GetKey().c_str() );
+//	while ( i < this.net_info.GetNumKeyVals() ) {
+//		if ( timeout_limit > this.net_servers[ atoi( this.net_info.GetKeyVal( i ).GetValue().c_str() ) ].time ) {
+//			common.DPrintf( "timeout %s\n", this.net_info.GetKeyVal( i ).GetKey().c_str() );
+//			this.net_info.Delete( this.net_info.GetKeyVal( i ).GetKey().c_str() );
 //		} else {
 //			i++;
 //		}
 //	}
 //			
 //	// possibly send more queries
-//	while ( cur_info < net_servers.Num() && net_info.GetNumKeyVals() < MAX_PINGREQUESTS ) {
-//		netadr_t serv = net_servers[ cur_info ].adr;
+//	while ( this.cur_info < this.net_servers.Num() && this.net_info.GetNumKeyVals() < MAX_PINGREQUESTS ) {
+//		netadr_t serv = this.net_servers[ this.cur_info ].adr;
 //		EmitGetInfo( serv );
-//		net_servers[ cur_info ].time = Sys_Milliseconds();
-//		net_info.SetInt( Sys_NetAdrToString( serv ), cur_info );
-//		cur_info++;
+//		this.net_servers[ this.cur_info ].time = Sys_Milliseconds();
+//		this.net_info.SetInt( Sys_NetAdrToString( serv ), this.cur_info );
+//		this.cur_info++;
 //	}
 //	
 //	// update state
-//	if ( ( !incoming_net || ( incoming_useTimeout && Sys_Milliseconds() > incoming_lastTime ) ) && net_info.GetNumKeyVals() == 0 ) {
+//	if ( ( !this.incoming_net || ( this.incoming_useTimeout && Sys_Milliseconds() > incoming_lastTime ) ) && this.net_info.GetNumKeyVals() == 0 ) {
 //		EndServers();
 //		// the list is complete, we are no longer waiting for any getInfo replies
-//		common.Printf( "Scanned %d servers.\n", cur_info );
-//		scan_state = IDLE;
+//		common.Printf( "Scanned %d servers.\n", this.cur_info );
+//		this.scan_state = IDLE;
 //	}
 //}
 //
@@ -469,12 +470,11 @@ idServerScan::GUIConfig
 ================
 */
 	GUIConfig ( pGUI: idUserInterface, name: string ): void {
-		todoThrow ( );
-		//m_pGUI = pGUI;
-		//if ( listGUI == NULL ) {
-		//	listGUI = uiManager.AllocListGUI();
-		//}
-		//listGUI.Config( pGUI, name );
+		this.m_pGUI = pGUI;
+		if (this.listGUI == null ) {
+			this.listGUI = uiManager.AllocListGUI();
+		}
+		this.listGUI.Config( pGUI, name );
 	}
 
 ///*
@@ -488,7 +488,7 @@ idServerScan::GUIConfig
 //	if ( !m_pGUI ) {
 //		return;
 //	}
-//	int i = listGUI.GetSelection( NULL, 0 );
+//	int i = this.listGUI.GetSelection( NULL, 0 );
 //	if ( i == -1 || i >= Num() ) {
 //		m_pGUI.SetStateString( "server_name", "" );
 //		m_pGUI.SetStateString( "player1", "" );
@@ -566,7 +566,7 @@ idServerScan::GUIConfig
 //	name += "\t";
 //	name += server.serverInfo.GetString( "si_mapName" );
 //	name += "\t";
-//	listGUI.Add( id, name );
+//	this.listGUI.Add( id, name );
 //}
 //
 ///*
@@ -579,18 +579,18 @@ idServerScan::GUIConfig
 //	networkServer_t serv;
 //	idStr s;
 //
-//	listGUI.SetStateChanges( false );
-//	listGUI.Clear();
-//	for ( i = m_sortAscending ? 0 : m_sortedServers.Num() - 1;
-//			m_sortAscending ? i < m_sortedServers.Num() : i >= 0;
+//	this.listGUI.SetStateChanges( false );
+//	this.listGUI.Clear();
+//	for ( i = m_sortAscending ? 0 : this.m_sortedServers.Num() - 1;
+//			m_sortAscending ? i < this.m_sortedServers.Num() : i >= 0;
 //			m_sortAscending ? i++ : i-- ) {
-//		serv = (*this)[ m_sortedServers[ i ] ];
+//		serv = (*this)[ this.m_sortedServers[ i ] ];
 //		if ( !IsFiltered( serv ) ) {
-//			GUIAdd( m_sortedServers[ i ], serv );
+//			GUIAdd( this.m_sortedServers[ i ], serv );
 //		}
 //	}
 //	GUIUpdateSelected();
-//	listGUI.SetStateChanges( true );
+//	this.listGUI.SetStateChanges( true );
 //}
 //
 ///*
@@ -693,7 +693,7 @@ idServerScan::GUIConfig
 //	serv1 = (*l_serverScan)[ *a ];
 //	serv2 = (*l_serverScan)[ *b ];
 //	switch ( l_serverScan.m_sort ) {
-//		case SORT_PING:
+//		case serverSort_t.SORT_PING:
 //			ret = serv1.ping < serv2.ping ? -1 : ( serv1.ping > serv2.ping ? 1 : 0 );
 //			return ret;
 //		case SORT_SERVERNAME:
@@ -731,7 +731,7 @@ idServerScan::GUIConfig
 //	} else {
 //		m_sort = sort;
 //		m_sortAscending = true; // is the default for any new sort
-//		m_sortedServers.Sort( idServerScan::Cmp );
+//		this.m_sortedServers.Sort( idServerScan::Cmp );
 //	}
 //	// trigger a redraw
 //	ApplyFilter();

@@ -487,8 +487,9 @@
 //// asynchronous networking
 //#include "../framework/async/AsyncNetwork.h"
 /// <reference path="doomdll/framework/async/serverscan.h.ts" />
-/// <reference path="doomdll/framework/async/asyncclient.cpp.ts" />
+/// <reference path="doomdll/framework/async/serverscan.cpp.ts" />
 /// <reference path="doomdll/framework/async/asyncclient.h.ts" />
+/// <reference path="doomdll/framework/async/asyncclient.cpp.ts" />
 /// <reference path="doomdll/framework/async/asyncserver.h.ts" />
 /// <reference path="doomdll/framework/async/asyncserver.cpp.ts" />
 /// <reference path="doomdll/framework/async/asyncnetwork.h.ts" />
@@ -497,7 +498,6 @@
 /// <reference path="doomdll/framework/async/msgchannel.cpp.ts" />
 /// <reference path="doomdll/framework/async/networksystem.h.ts" />
 /// <reference path="doomdll/framework/async/networksystem.cpp.ts" />
-/// <reference path="doomdll/framework/async/serverscan.cpp.ts" />
 
 
 //// The editor entry points are always declared, but may just be

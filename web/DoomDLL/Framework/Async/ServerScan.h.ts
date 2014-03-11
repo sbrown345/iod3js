@@ -28,24 +28,24 @@
 //
 //#ifndef __SERVERSCAN_H__
 //#define __SERVERSCAN_H__
-//
-///*
-//===============================================================================
-//
-//	Scan for servers, on the LAN or from a list
-//	Update a listDef GUI through usage of idListGUI class
-//	When updating large lists of servers, sends out getInfo in small batches to avoid congestion
-//
-//===============================================================================
-//*/
-//
-//// storage for incoming servers / server scan
-//typedef struct {
-//	netadr_t	adr;
-//	int			id;
-//	int			time;
-//} inServer_t;
-//
+
+/*
+===============================================================================
+
+	Scan for servers, on the LAN or from a list
+	Update a listDef GUI through usage of idListGUI class
+	When updating large lists of servers, sends out getInfo in small batches to avoid congestion
+
+===============================================================================
+*/
+
+// storage for incoming servers / server scan
+class inServer_t {
+	adr = new netadr_t;
+	id: number/*int*/;
+	time: number/*int*/;
+}
+
 // the menu gui uses a hard-coded control type to display a list of network games
 class networkServer_t{
 //	netadr_t	adr;
@@ -59,13 +59,13 @@ class networkServer_t{
 //	int			OSMask;
 //    int			challenge;
 }
-//
-//typedef enum {
-//	SORT_PING,
-//	SORT_SERVERNAME,
-//	SORT_PLAYERS,
-//	SORT_GAMETYPE,
-//	SORT_MAP,
-//	SORT_GAME
-//} serverSort_t;
-//
+
+enum serverSort_t{
+	SORT_PING,
+	SORT_SERVERNAME,
+	SORT_PLAYERS,
+	SORT_GAMETYPE,
+	SORT_MAP,
+	SORT_GAME
+}
+
