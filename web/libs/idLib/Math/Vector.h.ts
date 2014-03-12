@@ -420,8 +420,12 @@ class idVec3 {
 		return "idVec3(" + this.x + "," + this.y + "," + this.z + ")";
 	}
 
-	copy ( ): idVec3 {
-		return new idVec3( this.x, this.y, this.z );
+	copy ( dest: idVec3 = null ): idVec3 {
+		dest = dest || new idVec3;
+		dest.x = this.x;
+		dest.y = this.y;
+		dest.z = this.z;
+		return dest;
 	}
 
 ////					idVec3( void );

@@ -73,10 +73,27 @@ class idCmdArgs {
 	static MAX_COMMAND_ARGS = 64;
 	static MAX_COMMAND_STRING = 2 * MAX_STRING_CHARS;
 
-	argc=0;								// number of arguments					   //	int						
+	argc = 0;								// number of arguments					   //	int						
 	argv = new Array<Uint8Array>(idCmdArgs.MAX_COMMAND_ARGS);			// points into tokenized	   //	char *					
 	tokenized = new Uint8Array(idCmdArgs.MAX_COMMAND_STRING);		// will have 0 bytes inserted		   //	char					
 
+
+	copy ( dest: idCmdArgs = null ): idCmdArgs {
+		dest = dest || new idCmdArgs;
+		dest.argc = this.argc;
+
+		for (var i = 0; i < this.argv.length; i++ ) {
+			for ( var j = 0; j < this.argv[i].length; j++ ) {
+				dest.argv[i][j] = this.argv[i][j];
+			}
+		}
+		
+		for (var i = 0; i < this.tokenized.length; i++ ) {
+			dest.tokenized[i] = this.tokenized[i];
+		}
+
+		return dest;
+	}
 
 ////#endif /* !__CMDARGS_H__ */
 

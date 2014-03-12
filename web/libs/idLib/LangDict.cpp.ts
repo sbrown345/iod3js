@@ -34,11 +34,11 @@ class idLangKeyValue {
 	key = new idStr;
 	value = new idStr;
 
-	copy ( ): idLangKeyValue {
-		var other = new idLangKeyValue;
-		other.key.equals( this.key );
-		other.value.equals( this.value );
-		return other;
+	copy ( dest: idLangKeyValue = null ): idLangKeyValue {
+		dest = dest || new idLangKeyValue;
+		dest.key.equals( this.key );
+		dest.value.equals( this.value );
+		return dest;
 	}
 };
 

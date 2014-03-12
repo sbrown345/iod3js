@@ -114,24 +114,27 @@ class idToken extends idStr {
 	constructor ( text: string )
 	constructor(arg: any = null) {
 		if ( arg instanceof idToken ) {
-			idToken.copy( this, arg );
+			arg.copy( this );
 		}
 		super( arg );
 	}
 
-	static copy ( dest: idToken, src: idToken ): void {
-		dest.type = src.type;
-		dest.subtype = src.subtype;
-		dest.line = src.line;
-		dest.linesCrossed = src.linesCrossed;
-		dest.flags = src.flags;
-		dest.intvalue = src.intvalue;
-		dest.floatvalue = src.floatvalue;
-		dest.whiteSpaceStart_p = src.whiteSpaceStart_p;
-		dest.whiteSpaceEnd_p = src.whiteSpaceEnd_p;
-		dest.next = src.next;
-		dest.data = src.data;
-		dest.len = src.len;
+	//static copy(dest: idToken, src: idToken): void {
+	copy ( dest: idToken = null ): idToken {
+		dest = dest || new idToken;
+		dest.type = this.type;
+		dest.subtype = this.subtype;
+		dest.line = this.line;
+		dest.linesCrossed = this.linesCrossed;
+		dest.flags = this.flags;
+		dest.intvalue = this.intvalue;
+		dest.floatvalue = this.floatvalue;
+		dest.whiteSpaceStart_p = this.whiteSpaceStart_p;
+		dest.whiteSpaceEnd_p = this.whiteSpaceEnd_p;
+		dest.next = this.next;
+		dest.data = this.data;
+		dest.len = this.len;
+		return dest;
 	}
 
 	equals ( token: idToken ): void
@@ -141,7 +144,7 @@ class idToken extends idStr {
 		if ( typeof arg === "string" ) {
 			super.equals( arg );
 		} else if ( arg instanceof idToken ) {
-			idToken.copy( this, arg );
+			arg.copy( this );
 		} else if ( arg instanceof idStr ) {
 			super.equals( arg.data );
 		} else {

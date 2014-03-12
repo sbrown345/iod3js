@@ -178,22 +178,22 @@ class fontInfoEx_t {
 		this.name = new Uint8Array( 64 ); //char		
 	}
 
-	copy ( ): fontInfoEx_t {
-		var other = new fontInfoEx_t;
-		other.fontInfoSmall.equals( this.fontInfoSmall );
-		other.fontInfoMedium.equals( this.fontInfoMedium );
-		other.fontInfoLarge.equals( this.fontInfoLarge );
-		other.maxHeight = this.maxHeight;
-		other.maxWidth = this.maxWidth;
-		other.maxHeightSmall = this.maxHeightSmall;
-		other.maxWidthSmall = this.maxWidthSmall;
-		other.maxHeightMedium = this.maxHeightMedium;
-		other.maxWidthMedium = this.maxWidthMedium;
-		other.maxHeightLarge = this.maxHeightLarge;
-		other.maxWidthLarge = this.maxWidthLarge;
-		memcpy( other.name, this.name, sizeof( this.name ) );
+	copy ( dest: fontInfoEx_t = null ): fontInfoEx_t {
+		dest = dest || new fontInfoEx_t;
+		dest.fontInfoSmall.equals( this.fontInfoSmall );
+		dest.fontInfoMedium.equals( this.fontInfoMedium );
+		dest.fontInfoLarge.equals( this.fontInfoLarge );
+		dest.maxHeight = this.maxHeight;
+		dest.maxWidth = this.maxWidth;
+		dest.maxHeightSmall = this.maxHeightSmall;
+		dest.maxWidthSmall = this.maxWidthSmall;
+		dest.maxHeightMedium = this.maxHeightMedium;
+		dest.maxWidthMedium = this.maxWidthMedium;
+		dest.maxHeightLarge = this.maxHeightLarge;
+		dest.maxWidthLarge = this.maxWidthLarge;
+		memcpy( dest.name, this.name, sizeof( this.name ) );
 
-		return other;
+		return dest;
 	}
 }
 

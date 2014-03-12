@@ -150,8 +150,10 @@ class idStr implements ITrackedObject {
 		return this.data;
 	}
 
-	copy ( ): idStr {
-		return new idStr( this.data );
+	copy ( dest: idStr = null ): idStr {
+		dest = dest || new idStr;
+		dest.equals( this );
+		return dest;
 	}
 
 

@@ -42,11 +42,11 @@ class idGSWinVar {
 	$var: idWinVar;
 	own: boolean;
 
-	copy ( ): idGSWinVar {
-		var other = new idGSWinVar;
-		other.$var = this.$var;
-		other.own = this.own;
-		return other;
+	copy ( dest: idGSWinVar = null ): idGSWinVar {
+		dest = dest || new idGSWinVar;
+		dest.$var = this.$var;
+		dest.own = this.own;
+		return dest;
 	}
 };
 

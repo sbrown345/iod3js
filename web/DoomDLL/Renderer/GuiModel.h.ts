@@ -35,18 +35,18 @@ class guiModelSurface_t {
 	firstIndex = 0 /*int*/;
 	numIndexes = 0 /*int*/;
 
-	copy ( ): guiModelSurface_t {
-		var other = new guiModelSurface_t;
-		other.material = this.material;
-		other.color[0] = this.color[0];
-		other.color[1] = this.color[1];
-		other.color[2] = this.color[2];
-		other.color[3] = this.color[3];
-		other.firstVert = this.firstVert;
-		other.numVerts = this.numVerts;
-		other.firstIndex = this.firstIndex;
-		other.numIndexes = this.numIndexes;
-		return other;
+	copy ( dest: guiModelSurface_t = null): guiModelSurface_t {
+		dest = dest || new guiModelSurface_t;
+		dest.material = this.material;
+		dest.color[0] = this.color[0];
+		dest.color[1] = this.color[1];
+		dest.color[2] = this.color[2];
+		dest.color[3] = this.color[3];
+		dest.firstVert = this.firstVert;
+		dest.numVerts = this.numVerts;
+		dest.firstIndex = this.firstIndex;
+		dest.numIndexes = this.numIndexes;
+		return dest;
 	}
 }
 

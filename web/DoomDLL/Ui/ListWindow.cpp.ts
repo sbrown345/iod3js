@@ -52,16 +52,16 @@ class idTabRect {
 	iconSize = new idVec2;
 	iconVOffset/*float*/:number;
 
-	copy ( ): idTabRect {
-		var other = new idTabRect;
-		other.x = this.x;
-		other.w = this.w;
-		other.align = this.align;
-		other.valign = this.valign;
-		other.type = this.type;
-		other.iconSize.equals( this.iconSize );
-		other.iconVOffset = this.iconVOffset;
-		return other;
+	copy ( dest: idTabRect = null ): idTabRect {
+		dest = dest || new idTabRect;
+		dest.x = this.x;
+		dest.w = this.w;
+		dest.align = this.align;
+		dest.valign = this.valign;
+		dest.type = this.type;
+		dest.iconSize.equals( this.iconSize );
+		dest.iconVOffset = this.iconVOffset;
+		return dest;
 	}
 };
 
