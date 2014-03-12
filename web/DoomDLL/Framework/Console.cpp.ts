@@ -98,10 +98,10 @@ class idConsoleLocal extends idConsole {
 //
 //	int					vislines;		// in scanlines
 //
-//	int					times[NUM_CON_TIMES];	// cls.realtime time the line was generated
-//									// for transparent notify lines
-//	idVec4				color;
-//
+	times = new Int32Array(NUM_CON_TIMES);	// cls.realtime time the line was generated
+									// for transparent notify lines
+	color = new idVec4;
+
 	historyEditLines = newStructArray<idEditField>(idEditField,COMMAND_HISTORY);
 //
 //	int					nextHistoryLine;// the last line in the history buffer, not masked
@@ -410,19 +410,19 @@ the renderSystem is initialized
 //	return keyCatching;
 //}
 //
-///*
-//================
-//idConsoleLocal::ClearNotifyLines
-//================
-//*/
-//void	idConsoleLocal::ClearNotifyLines() {
-//	var i:number;
-//
-//	for ( i = 0 ; i < NUM_CON_TIMES ; i++ ) {
-//		times[i] = 0;
-//	}
-//}
-//
+/*
+================
+idConsoleLocal::ClearNotifyLines
+================
+*/
+	ClearNotifyLines ( ): void {
+		var i: number;
+
+		for ( i = 0; i < NUM_CON_TIMES; i++ ) {
+			this.times[i] = 0;
+		}
+	}
+
 ///*
 //================
 //idConsoleLocal::Close

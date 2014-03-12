@@ -60,40 +60,40 @@ class idStrList extends idList<idStr> {
 ////	return ( *a ).Icmp( **b );
 ////}
 
-/////*
-////================
-////idStrList::Sort
+/*
+================
+idStrList::Sort
 
-////Sorts the list of strings alphabetically. Creates a list of pointers to the actual strings and sorts the
-////pointer list. Then copies the strings into another list using the ordered list of pointers.
-////================
-////*/
-////template<>
-////ID_INLINE void idStrList::Sort( cmp_t *compare ) {
-////	int i;
+Sorts the list of strings alphabetically. Creates a list of pointers to the actual strings and sorts the
+pointer list. Then copies the strings into another list using the ordered list of pointers.
+================
+*/
+//template<>
+	Sort ( /*cmp_t *compare */ compare: ( a: idStr, b: idStr ) => number = null ): void {
+		var /*int */i: number;
 
-////	if ( !num ) {
-////		return;
-////	}
+		if ( !this.num ) {
+			return;
+		}
 
-////	idList<idStr>		other;
-////	idList<idStrPtr>	pointerList;
+		var other = new idList<idStr>( idStr );
+		var pointerList = new idList<idStr /*Ptr*/>( idStr, false, 16, true );
 
-////	pointerList.SetNum( num );
-////	for( i = 0; i < num; i++ ) {
-////		pointerList[ i ] = &( *this )[ i ];
-////	}
+		pointerList.SetNum( this.num );
+		for ( i = 0; i < this.num; i++ ) {
+			pointerList[i] = this[i];
+		}
 
-////	pointerList.Sort();
+		pointerList.Sort ( );
 
-////	other.SetNum( num );
-////	other.SetGranularity( granularity );
-////	for( i = 0; i < other.Num(); i++ ) {
-////		other[ i ] = *pointerList[ i ];
-////	}
+		other.SetNum( this.num );
+		other.SetGranularity( this.granularity );
+		for ( i = 0; i < other.Num ( ); i++ ) {
+			other[i].equals( pointerList[i] );
+		}
 
-////	this.Swap( other );
-////}
+		this.Swap( other );
+	}
 
 /////*
 ////================
@@ -106,14 +106,14 @@ class idStrList extends idList<idStr> {
 ////ID_INLINE void idStrList::SortSubSection( int startIndex, int endIndex, cmp_t *compare ) {
 ////	int i, s;
 
-////	if ( !num ) {
+////	if ( !this.num ) {
 ////		return;
 ////	}
 ////	if ( startIndex < 0 ) {
 ////		startIndex = 0;
 ////	}
-////	if ( endIndex >= num ) {
-////		endIndex = num - 1;
+////	if ( endIndex >= this.num ) {
+////		endIndex = this.num - 1;
 ////	}
 ////	if ( startIndex >= endIndex ) {
 ////		return;

@@ -613,27 +613,30 @@ BufferCommandText(exec:cmdExecution_t, text :string) :void {
 	}
 }
 
-/////*
-////============
-////idCmdSystemLocal::BufferCommandArgs
-////============
-////*/
-////void idCmdSystemLocal::BufferCommandArgs( cmdExecution_t exec, /*const idCmdArgs &*/args:idCmdArgs ) {
-////	switch ( exec ) {
-////		case CMD_EXEC_NOW: {
-////			ExecuteTokenizedString( args );
-////			break;
-////		}
-////		case CMD_EXEC_APPEND: {
-////			AppendCommandText( "_execTokenized\n" );
-////			this.tokenizedCmds.Append( args );
-////			break;
-////		}
-////		default: {
-////			common.FatalError( "idCmdSystemLocal::BufferCommandArgs: bad exec type" );
-////		}
-////	}
-////}
+/*
+============
+idCmdSystemLocal::BufferCommandArgs
+============
+*/
+	BufferCommandArgs ( exec: cmdExecution_t, /*const idCmdArgs &*/args: idCmdArgs ): void {
+		switch ( exec ) {
+		case cmdExecution_t.CMD_EXEC_NOW:
+		{
+			this.ExecuteTokenizedString( args );
+			break;
+		}
+		case cmdExecution_t.CMD_EXEC_APPEND:
+		{
+			this.AppendCommandText( "_execTokenized\n" );
+			this.tokenizedCmds.Append( args );
+			break;
+		}
+		default:
+		{
+			common.FatalError( "idCmdSystemLocal::BufferCommandArgs: bad exec type" );
+		}
+		}
+	}
 
 /*
 ============

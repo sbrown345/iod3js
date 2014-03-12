@@ -31,15 +31,15 @@
 
 ////#include "../renderer/Image.h"
 
-////#define	MAX_PRINT_MSG_SIZE	4096
-////#define MAX_WARNING_LIST	256
+var MAX_PRINT_MSG_SIZE = 4096;
+var MAX_WARNING_LIST = 256;
 
-////typedef enum {
-////	ERP_NONE,
-////	ERP_FATAL,						// exit the entire game with a popup window
-////	ERP_DROP,						// print to console and disconnect from game
-////	ERP_DISCONNECT					// don't kill server
-////} errorParm_t;
+enum errorParm_t {
+	ERP_NONE,
+	ERP_FATAL,						// exit the entire game with a popup window
+	ERP_DROP,						// print to console and disconnect from game
+	ERP_DISCONNECT					// don't kill server
+};
 
 ////#if defined( _DEBUG )
 ////	#define BUILD_DEBUG "-debug"
@@ -260,7 +260,7 @@ constructor( ) {
 ////idCommonLocal::EndRedirect
 ////==================
 ////*/
-////void idCommonLocal::EndRedirect( void ) {
+////void idCommonLocal::EndRedirect( ) {
 ////	if ( rd_flush && rd_buffer[ 0 ] ) {
 ////		rd_flush( rd_buffer );
 ////	}
@@ -293,7 +293,7 @@ constructor( ) {
 ////FindEditor
 ////==================
 ////*/
-////bool FindEditor( void ) {
+////bool FindEditor( ) {
 ////	com_hwndMsg = NULL;
 ////	EnumWindows( EnumWindowsProc, 0 );
 ////	return !( com_hwndMsg == NULL );
@@ -306,7 +306,7 @@ constructor( ) {
 ////idCommonLocal::CloseLogFile
 ////==================
 ////*/
-////void idCommonLocal::CloseLogFile( void ) {
+////void idCommonLocal::CloseLogFile( ) {
 ////	if ( logFile ) {
 ////		com_logFile.SetBool( false ); // make sure no further VPrintf attempts to open the log file again
 ////		fileSystem.CloseFile( logFile );
@@ -543,39 +543,39 @@ prints WARNING %s and adds the warning message to a queue to be printed later on
 
 		//Printf( S_COLOR_YELLOW "WARNING: " S_COLOR_RED "%s\n", msg );
 
-		//if ( warningList.Num() < MAX_WARNING_LIST ) {
-		//	warningList.AddUnique( msg );
+		//if ( this.warningList.Num() < MAX_WARNING_LIST ) {
+		//	this.warningList.AddUnique( msg );
 		//}
 	}
 
-/////*
-////==================
-////idCommonLocal::PrintWarnings
-////==================
-////*/
-////void idCommonLocal::PrintWarnings( void ) {
-////	int i;
+/*
+==================
+idCommonLocal::PrintWarnings
+==================
+*/
+PrintWarnings( ) {
+	var/*int */i:number;
 
-////	if ( !warningList.Num() ) {
-////		return;
-////	}
+	if ( !this.warningList.Num() ) {
+		return;
+	}
 
-////	warningList.Sort();
+	this.warningList.Sort();
 
-////	Printf( "------------- Warnings ---------------\n" );
-////	Printf( "during %s...\n", warningCaption.c_str() );
+	this.Printf("------------- Warnings ---------------\n");
+	this.Printf( "during %s...\n", this.warningCaption.c_str() );
 
-////	for ( i = 0; i < warningList.Num(); i++ ) {
-////		Printf( S_COLOR_YELLOW "WARNING: " S_COLOR_RED "%s\n", warningList[i].c_str() );
-////	}
-////	if ( warningList.Num() ) {
-////		if ( warningList.Num() >= MAX_WARNING_LIST ) {
-////			Printf( "more than %d warnings\n", MAX_WARNING_LIST );
-////		} else {
-////			Printf( "%d warnings\n", warningList.Num() );
-////		}
-////	}
-////}
+	for ( i = 0; i < this.warningList.Num(); i++ ) {
+		this.Printf( S_COLOR_YELLOW+ "WARNING: "+ S_COLOR_RED +"%s\n", this.warningList[i].c_str() );
+	}
+	if (this.warningList.Num() ) {
+		if (this.warningList.Num() >= MAX_WARNING_LIST ) {
+			this.Printf( "more than %d warnings\n", MAX_WARNING_LIST );
+		} else {
+			this.Printf( "%d warnings\n", this.warningList.Num() );
+		}
+	}
+}
 
 /*
 ==================
@@ -592,11 +592,11 @@ idCommonLocal::ClearWarnings
 ////idCommonLocal::DumpWarnings
 ////==================
 ////*/
-////void idCommonLocal::DumpWarnings( void ) {
+////void idCommonLocal::DumpWarnings( ) {
 ////	int			i;
 ////	idFile		*warningFile;
 
-////	if ( !warningList.Num() ) {
+////	if ( !this.warningList.Num() ) {
 ////		return;
 ////	}
 
@@ -604,16 +604,16 @@ idCommonLocal::ClearWarnings
 ////	if ( warningFile ) {
 
 ////		warningFile.Printf( "------------- Warnings ---------------\n\n" );
-////		warningFile.Printf( "during %s...\n", warningCaption.c_str() );
-////		warningList.Sort();
-////		for ( i = 0; i < warningList.Num(); i++ ) {
-////			warningList[i].RemoveColors();
-////			warningFile.Printf( "WARNING: %s\n", warningList[i].c_str() );
+////		warningFile.Printf( "during %s...\n", this.warningCaption.c_str() );
+////		this.warningList.Sort();
+////		for ( i = 0; i < this.warningList.Num(); i++ ) {
+////			this.warningList[i].RemoveColors();
+////			warningFile.Printf( "WARNING: %s\n", this.warningList[i].c_str() );
 ////		}
-////		if ( warningList.Num() >= MAX_WARNING_LIST ) {
+////		if ( this.warningList.Num() >= MAX_WARNING_LIST ) {
 ////			warningFile.Printf( "\nmore than %d warnings!\n", MAX_WARNING_LIST );
 ////		} else {
-////			warningFile.Printf( "\n%d warnings.\n", warningList.Num() );
+////			warningFile.Printf( "\n%d warnings.\n", this.warningList.Num() );
 ////		}
 
 ////		warningFile.Printf( "\n\n-------------- Errors ---------------\n\n" );
@@ -789,7 +789,7 @@ FatalError( /*const char **/fmt:string, ...args:any[] ):void {
 ////idCommonLocal::Quit
 ////==================
 ////*/
-////void idCommonLocal::Quit( void ) {
+////void idCommonLocal::Quit( ) {
 
 ////#ifdef ID_ALLOW_TOOLS
 ////	if ( com_editors & EDITOR_RADIANT ) {
@@ -852,14 +852,14 @@ idCommonLocal::ParseCommandLine
 		}
 	}
 
-/////*
-////==================
-////idCommonLocal::ClearCommandLine
-////==================
-////*/
-////void idCommonLocal::ClearCommandLine( void ) {
-////	com_numConsoleLines = 0;
-////}
+/*
+==================
+idCommonLocal::ClearCommandLine
+==================
+*/
+	ClearCommandLine ( ): void {
+		this.com_numConsoleLines = 0;
+	}
 
 /*
 ==================
@@ -890,10 +890,10 @@ SafeMode( ):boolean {
 ////and force fullscreen off in those cases
 ////==================
 ////*/
-////void idCommonLocal::CheckToolMode( void ) {
+////void idCommonLocal::CheckToolMode( ) {
 ////	int			i;
 
-////	for ( i = 0 ; i < com_numConsoleLines ; i++ ) {
+////	for ( i = 0 ; i < this.com_numConsoleLines ; i++ ) {
 ////		if ( !idStr.Icmp( this.com_consoleLines[ i ].Argv(0), "guieditor" ) ) {
 ////			com_editors |= EDITOR_GUI;
 ////		}
@@ -962,38 +962,38 @@ be after execing the config and default.
 		}
 	}
 
-/////*
-////==================
-////idCommonLocal::AddStartupCommands
+/*
+==================
+idCommonLocal::AddStartupCommands
 
-////Adds command line parameters as script statements
-////Commands are separated by + signs
+Adds command line parameters as script statements
+Commands are separated by + signs
 
-////Returns true if any late commands were added, which
-////will keep the demoloop from immediately starting
-////==================
-////*/
-////bool idCommonLocal::AddStartupCommands( void ) {
-////	int		i;
-////	bool	added;
+Returns true if any late commands were added, which
+will keep the demoloop from immediately starting
+==================
+*/
+	AddStartupCommands ( ): boolean {
+		var /*int*/i: number;
+		var added: boolean;
 
-////	added = false;
-////	// quote every token, so args with semicolons can work
-////	for ( i = 0; i < com_numConsoleLines; i++ ) {
-////		if ( !this.com_consoleLines[i].Argc() ) {
-////			continue;
-////		}
+		added = false;
+		// quote every token, so args with semicolons can work
+		for ( i = 0; i < this.com_numConsoleLines; i++ ) {
+			if ( !this.com_consoleLines[i].Argc ( ) ) {
+				continue;
+			}
 
-////		// set commands won't override menu startup
-////		if ( idStr::Icmpn( this.com_consoleLines[i].Argv(0), "set", 3 ) ) {
-////			added = true;
-////		}
-////		// directly as tokenized so nothing gets screwed
-////		cmdSystem.BufferCommandArgs( CMD_EXEC_APPEND, this.com_consoleLines[i] );
-////	}
+			// set commands won't override menu startup
+			if ( idStr.Icmpn( this.com_consoleLines[i].Argv( 0 ), "set", 3 ) ) {
+				added = true;
+			}
+			// directly as tokenized so nothing gets screwed
+			cmdSystem.BufferCommandArgs( cmdExecution_t.CMD_EXEC_APPEND, this.com_consoleLines[i] );
+		}
 
-////	return added;
-////}
+		return added;
+	}
 
 /////*
 ////=================
@@ -1088,10 +1088,10 @@ be after execing the config and default.
 ////Writes key bindings and archived cvars to config file if modified
 ////===============
 ////*/
-////void idCommonLocal::WriteConfiguration( void ) {
+////void idCommonLocal::WriteConfiguration( ) {
 ////	// if we are quiting without fully initializing, make sure
 ////	// we don't write out anything
-////	if ( !com_fullyInitialized ) {
+////	if ( !this.com_fullyInitialized ) {
 ////		return;
 ////	}
 
@@ -2433,7 +2433,7 @@ idCommonLocal::PrintLoadingMessage
 ////idCommonLocal::InitSIMD
 ////=================
 ////*/
-////void idCommonLocal::InitSIMD( void ) {
+////void idCommonLocal::InitSIMD( ) {
 ////	idSIMD::InitProcessor( "doom", com_forceGenericSIMD.GetBool() );
 ////	com_forceGenericSIMD.ClearModified();
 ////}
@@ -2443,7 +2443,7 @@ idCommonLocal::PrintLoadingMessage
 ////idCommonLocal::Frame
 ////=================
 ////*/
-////void idCommonLocal::Frame( void ) {
+////void idCommonLocal::Frame( ) {
 ////	try {
 
 ////		// pump all the events
@@ -2551,7 +2551,7 @@ idCommonLocal::PrintLoadingMessage
 ////int prevAsyncMsec;
 ////int	lastTicMsec;
 
-////void idCommonLocal::SingleAsyncTic( void ) {
+////void idCommonLocal::SingleAsyncTic( ) {
 ////	// main thread code can prevent this from happening while modifying
 ////	// critical data structures
 ////	Sys_EnterCriticalSection();
@@ -2588,7 +2588,7 @@ idCommonLocal::PrintLoadingMessage
 ////idCommonLocal::Async
 ////=================
 ////*/
-////void idCommonLocal::Async( void ) {
+////void idCommonLocal::Async( ) {
 ////	if ( com_shuttingDown ) {
 ////		return;
 ////	}
@@ -2702,7 +2702,7 @@ LoadGameDLL( ):void {
 ////idCommonLocal::UnloadGameDLL
 ////=================
 ////*/
-////void idCommonLocal::UnloadGameDLL( void ) {
+////void idCommonLocal::UnloadGameDLL( ) {
 
 ////	// shut down the game object
 ////	if ( game != NULL ) {
@@ -2726,8 +2726,8 @@ LoadGameDLL( ):void {
 ////idCommonLocal::IsInitialized
 ////=================
 ////*/
-////bool idCommonLocal::IsInitialized( void ) const {
-////	return com_fullyInitialized;
+////bool idCommonLocal::IsInitialized( ) const {
+////	return this.com_fullyInitialized;
 ////}
 
 /////*
@@ -2848,24 +2848,25 @@ idCommonLocal::Init
 		if ( !this.AddStartupCommands() ) {
 ////#endif
 			// if the user didn't give any commands, run default action
-			session.StartMenu( true );
+			todoThrow();
+			//session.StartMenu( true );
 		}
 
 		this.Printf( "--- Common Initialization Complete ---\n" );
 
 		// print all warnings queued during initialization
-		PrintWarnings();
+		this.PrintWarnings();
 
 ////#ifdef	ID_DEDICATED
 ////		Printf( "\nType 'help' for dedicated server info.\n\n" );
 ////#endif
 
 		// remove any prints from the notify lines
-		console.ClearNotifyLines();
+		$console.ClearNotifyLines();
 
-		ClearCommandLine();
+		this.ClearCommandLine();
 
-		com_fullyInitialized = true;
+		this.com_fullyInitialized = true;
 ////	}
 
 ////	catch( idException & ) {
@@ -2880,7 +2881,7 @@ idCommonLocal::Init
 ////idCommonLocal::Shutdown
 ////=================
 ////*/
-////void idCommonLocal::Shutdown( void ) {
+////void idCommonLocal::Shutdown( ) {
 
 ////	com_shuttingDown = true;
 
@@ -2912,7 +2913,7 @@ idCommonLocal::Init
 
 ////	// free any buffered warning messages
 ////	ClearWarnings( GAME_NAME " shutdown" );
-////	warningCaption.Clear();
+////	this.warningCaption.Clear();
 ////	errorList.Clear();
 
 ////	// free language dictionary

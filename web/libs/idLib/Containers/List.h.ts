@@ -87,9 +87,9 @@ function idSwap( a:any, aProperty:string, b:any, bProperty:string ) {
 //template< class type >
 class idList<type> {
     //private:
-	private num:number;                 //int				
-	private size:number;                //int				
-	private granularity:number;         //int				
+	num:number;//int				
+	private size:number;//int				
+	granularity:number;//int				
 	private list:any; // reference itself		
     private type:any;
 	private initEmptyOnResize: boolean; // new up when Resizing/Allocating. this makes it work with a list of references and classes/structs (otherwise idList<R<idDeclType>> this is a bit overkill)
@@ -879,7 +879,7 @@ list, so any pointers to data within the list may no longer be valid.
 Sort( compare:(a:string,b:string)=>number ):void
 Sort( compare:(a:any,b:any)=>number ):void {*/
 
-Sort( compare:(a:idStr,b:idStr)=>number ):void {
+Sort( compare:(a:idStr,b:idStr)=>number = null):void {
 	if ( !this[0] /*.list*/ ) {
 		return;
 	}
