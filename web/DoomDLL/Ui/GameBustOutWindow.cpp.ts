@@ -513,7 +513,7 @@ class idGameBustOutWindow extends idWindow {
 ////	virtual const char*	Activate(bool activate);
 ////	virtual idWinVar *	GetWinVarByName(_name:string, bool winLookup = false, drawWin_t** owner = NULL);
 ////
-	entities = new 	idList<BOEntity>(BOEntity,false,16,true);
+	entities = new 	idList<BOEntity>(BOEntity,true);
 ////
 ////private:
 ////	void				CommonInit();
@@ -566,8 +566,8 @@ class idGameBustOutWindow extends idWindow {
 		ballsInPlay:number/*int*/;
 		ballHitCeiling:boolean;
 ////
-		balls = new idList<BOEntity/***/>(BOEntity,false,16,true);
-		powerUps = new idList<BOEntity/***/>(BOEntity,false,16,true);
+		balls = new idList<BOEntity/***/>(BOEntity,true);
+		powerUps = new idList<BOEntity/***/>(BOEntity,true);
 ////
 ////	BOBrick				*paddle;
 ////	idList<BOBrick*>	board[BOARD_ROWS];

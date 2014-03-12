@@ -641,7 +641,7 @@ class idSoundWorldLocal extends idSoundWorld {
 	pause44kHz:number/*int*/;
 	lastAVI44kHz:number/*int*/;		// determine when we need to mix and write another block
 
-	emitters = new idList<idSoundEmitterLocal>(idSoundEmitterLocal, false, 16, true );
+	emitters = new idList<idSoundEmitterLocal>(idSoundEmitterLocal, true );
 
 	soundClassFade = newStructArray<idSoundFade>(idSoundFade, SOUND_MAX_CLASSES);	// for global sound fading
 

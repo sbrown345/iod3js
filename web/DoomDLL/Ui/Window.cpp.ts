@@ -297,14 +297,14 @@ class idWindow {
 	text = new idWinStr;
 	backGroundName = new idWinBackground;
 
-	definedVars = new idList<idWinVar>( idWinVar,false,16,true );
-	updateVars = new idList<idWinVar>(idWinVar, false, 16, true );
+	definedVars = new idList<idWinVar>( idWinVar,true );
+	updateVars = new idList<idWinVar>(idWinVar, true );
 
 	textRect = new idRectangle; // text extented rect
 	background: idMaterial; // background asset  
 
 	parent: idWindow; // parent window
-	children = new idList<idWindow>( idWindow, false, 16, true ); // child windows	
+	children = new idList<idWindow>( idWindow, true ); // child windows	
 	drawWindows = new idList<drawWin_t>( drawWin_t );
 
 	focusedChild: idWindow; // if a child window has the focus
@@ -322,7 +322,7 @@ class idWindow {
 	scripts = new Array<idGuiScriptList>( SCRIPT_COUNT );
 	saveTemps: Array<boolean>;
 	
-	timeLineEvents = new idList<idTimeLineEvent>(idTimeLineEvent, false, 16, true );
+	timeLineEvents = new idList<idTimeLineEvent>(idTimeLineEvent, true );
 	transitions= new idList<idTransitionData>( idTransitionData );
 	
 	static registerIsTemporary = new Array<boolean>(MAX_EXPRESSION_REGISTERS); // statics to assist during parsing
@@ -330,7 +330,7 @@ class idWindow {
 	ops = new idList<wexpOp_t>( wexpOp_t ); // evaluate to make expressionRegisters
 	expressionRegisters = new idList<number>(Number);	//	idList<float>
 	saveOps = new idList<wexpOp_t>( wexpOp_t ); // evaluate to make expressionRegisters
-	namedEvents = new idList<rvNamedEvent>(rvNamedEvent, false, 16, true); //  added named events
+	namedEvents = new idList<rvNamedEvent>(rvNamedEvent, true); //  added named events
 	saveRegs = new idList<number>( Number ); //idList<float>
 	
 	regList = new idRegisterList;

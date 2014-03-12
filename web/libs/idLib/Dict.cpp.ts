@@ -160,7 +160,7 @@ class idDict {
 ////	static void			ListValues_f( const idCmdArgs &args );
 ////
 ////private:
-	args = new idList<idKeyValue>(idKeyValue, false, 16, true);
+	args = new idList<idKeyValue>(idKeyValue, true);
 	argHash = new idHashIndex;
 
 	static globalKeys = new idStrPool;
@@ -177,10 +177,10 @@ class idDict {
 ////	*this = other;
 ////}
 ////
-////ID_INLINE idDict::~idDict( void ) {
-////	Clear();
-////}
-////
+	destrcutor ( ): void {
+		this.Clear ( );
+	}
+
 ////SetGranularity( int granularity ) {
 ////	this.args.SetGranularity( granularity );
 ////	this.argHash.SetGranularity( granularity );

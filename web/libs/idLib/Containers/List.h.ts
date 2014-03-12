@@ -78,7 +78,7 @@ idSwap<type>
 ================
 */
 //template< class type >
-function idSwap( a:any, aProperty:string, b:any, bProperty:string ) {
+function idSwap( a:any, aProperty:string, b:any, bProperty:string ):void {
 	var c = a[aProperty];
 	a[aProperty] = b[bProperty];
 	b[bProperty] = c;
@@ -90,35 +90,22 @@ class idList<type> {
 	num:number;//int				
 	private size:number;//int				
 	granularity:number;//int				
-	private list:any; // reference itself		
+	private list = this;
+
     private type:any;
-	private initEmptyOnResize: boolean; // new up when Resizing/Allocating. this makes it work with a list of references and classes/structs (otherwise idList<R<idDeclType>> this is a bit overkill)
 	private listOfReferences: boolean;
 
-	constructor ( type: any, initEmptyOnResize:boolean = false, newgranularity: number = 16, listOfReferences:boolean = false ) {
+	constructor ( type: any, listOfReferences: boolean = false, newgranularity: number = 16 ) {
 		assert( typeof type !== "number" ); // new type arg not to be confused with newgranularity
+		assert(newgranularity > 0);
+
 		this.type = type;
-		this.initEmptyOnResize = initEmptyOnResize;
+		this.listOfReferences = listOfReferences;
 		this.num = 0;
 		this.size = 0;
 		this.granularity = newgranularity;
-		this.list = this;
-		this.listOfReferences = listOfReferences;
+		this.Clear ( );
 	}
-
-///*
-//================
-//idList<type>::idList( int )
-//================
-//*/
-//template< class type >
-//ID_INLINE idList<type>::idList( int newgranularity ) {
-//	assert( newgranularity > 0 );
-
-//	this.list		= NULL;
-//	granularity	= newgranularity;
-//	Clear();
-//}
 
 ///*
 //================
@@ -131,15 +118,14 @@ class idList<type> {
 //	*this = other;
 //}
 
-///*
-//================
-//idList<type>::~idList<type>
-//================
-//*/
-//template< class type >
-//ID_INLINE idList<type>::~idList( void ) {
-//	Clear();
-//}
+/*
+================
+idList<type>::~idList<type>
+================
+*/
+	destructor ( ): void {
+		this.Clear ( );
+	}
 
 /*
 ================
@@ -153,7 +139,7 @@ Clear ():void {
     if ( this.list ) {
         for( var i=0; i < this.num; i++) {
 			$delete(this[i]);
-	        delete this[i];
+			delete this[i];
         }
     }
 
@@ -326,54 +312,61 @@ Contents are copied using their = operator so that data is correnctly instantiat
 ================
 */
 //template< class type >
-Resize (/* int */newsize:number):void
-Resize (/* int */newsize:number, /*int */newgranularity?:number):void {
-	var temp:type[];
-	var/*int		*/i:number;
+	Resize ( /* int */newsize: number ): void
+	Resize ( /* int */newsize: number, /*int */newgranularity: number ): void
+	Resize ( /* int */newsize: number, /*int */newgranularity?: number ): void {
+		var temp: type[];
+		var /*int		*/i: number;
 
-	assert( newsize >= 0 );
+		assert( newsize >= 0 );
 
-    if( arguments.length === 2 ) {
-	    assert( newgranularity > 0 );
-	    this.granularity = newgranularity;
-	}
-	
-	// free up the list if no data is being reserved
-	if ( newsize <= 0 ) {
-		this.Clear();
-		return;
-	}
+		if ( arguments.length === 2 ) {
+			assert( newgranularity > 0 );
+			this.granularity = newgranularity;
+		}
 
-	if (arguments.length === 1) {
-		if (newsize == this.size) {
-			// not changing the size, so just exit
+		// free up the list if no data is being reserved
+		if ( newsize <= 0 ) {
+			this.Clear ( );
 			return;
 		}
-	}
 
-	//temp	= this.list;
-	this.size	= newsize;
-	if ( this.size < this.num ) {
-		this.num = this.size;
-	}
+		if ( arguments.length === 1 ) {
+			if ( newsize == this.size ) {
+				// not changing the size, so just exit
+				return;
+			}
+		}
 
-	// init any new ones
-	if ( this.initEmptyOnResize ) {
-		if ( this.type == Number ) {
+		//temp	= this.list;
+		this.size = newsize;
+		if ( this.size < this.num ) {
+			this.num = this.size;
+		}
+
+		// init any new ones
+		if ( this.listOfReferences ) {
 			for ( i = 0; i < this.size; i++ ) {
 				if ( !this[i] ) {
-					this[i] = 0;
+					this[i] = null;
 				}
 			}
 		} else {
-			for ( i = 0; i < this.size; i++ ) {
-				if ( !this[i] ) {
-					this[i] = new this.type;
+			if ( this.type == Number ) {
+				for ( i = 0; i < this.size; i++ ) {
+					if ( !this[i] ) {
+						this[i] = 0;
+					}
+				}
+			} else {
+				for ( i = 0; i < this.size; i++ ) {
+					if ( !this[i] ) {
+						this[i] = new this.type;
+					}
 				}
 			}
 		}
 	}
-}
 
 
 /*
@@ -574,7 +567,7 @@ Returns a reference to a new data element at the end of the list.
 
 
 	// make a copy of the object if needed
-	private Val(v: type): type {
+	private Val(v: type, dest: type): type {
 		if (this.type == Number || this.listOfReferences) {
 			return v;
 		} else {
@@ -584,7 +577,7 @@ Returns a reference to a new data element at the end of the list.
 				return newVal;
 			}
 
-			return v["copy"]();
+			return v["copy"](dest);
 		}
 	}
 
@@ -634,7 +627,7 @@ Append( obj:type ):number {
 		this.Resize( newsize - newsize % this.granularity );
 	}
 
-	this.list[this.num] = this.Val( obj );
+	this.list[this.num] = this.Val(obj, this.list[this.num] );
 	this.num++;
 
 	return this.num - 1;
@@ -700,7 +693,7 @@ Returns the index of the new element.
 			this.list[i] = this.list[i - 1];
 		}
 		this.num++;
-		this.list[index] = this.Val( obj );
+		this.list[index] = this.Val( obj, this.list[index] );
 		return index;
 	}
 

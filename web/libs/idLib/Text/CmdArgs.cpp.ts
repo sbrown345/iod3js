@@ -82,9 +82,17 @@ class idCmdArgs {
 		dest = dest || new idCmdArgs;
 		dest.argc = this.argc;
 
-		for (var i = 0; i < this.argv.length; i++ ) {
-			for ( var j = 0; j < this.argv[i].length; j++ ) {
-				dest.argv[i][j] = this.argv[i][j];
+		for (var i = 0; i < this.argv.length; i++) {
+			if ( !this.argv[i] ) {
+				continue;
+			}
+
+			if ( !dest.argv[i] ) {
+				dest.argv[i] = this.argv[i].subarray( 0 );
+			} else {
+				for ( var j = 0; j < this.argv[i].length; j++ ) {
+					dest.argv[i][j] = this.argv[i][j];
+				}
 			}
 		}
 		

@@ -310,7 +310,7 @@ class idRegisterList {
 ////	void				ReadFromSaveGame(idFile *savefile);
 ////
 ////private:
-	regs = new idList<idRegister>(idRegister, false, 16, true);
+	regs = new idList<idRegister>(idRegister, true);
 	regHash = new idHashIndex;
 
 	constructor ( ) {

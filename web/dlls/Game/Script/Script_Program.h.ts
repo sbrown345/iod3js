@@ -457,9 +457,9 @@ class idTypeDef {
 
 	// function types are more complex
 	auxType: idTypeDef;					// return type
-	parmTypes = new idList<idTypeDef>(idTypeDef, false, 16, true);
+	parmTypes = new idList<idTypeDef>(idTypeDef, true);
 	parmNames = new idStrList;
-	functions = new idList<function_t>(function_t, false, 16, true);
+	functions = new idList<function_t>(function_t, true);
 	//
 	//public:
 	def: idVarDef;						// a def that points to this type

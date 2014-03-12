@@ -485,7 +485,7 @@ class idGameLocal extends idGame {
 	camera: idCamera;
 	globalMaterial: idMaterial; // for overriding everything
 
-	aasList = new idList<idAAS>( idAAS, false, 16, true ); // area system
+	aasList = new idList<idAAS>( idAAS, true ); // area system
 	aasNames = new idStrList;
 
 	lastAIAlertEntity = new idEntityPtr<idActor> ( );

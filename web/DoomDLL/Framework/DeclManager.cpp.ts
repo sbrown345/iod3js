@@ -255,17 +255,17 @@ class idDeclManagerLocal extends idDeclManager {
 ///*virtual const idSoundShader *	    */SoundByIndex(/* int */index:number, forceParse = true ):idSoundShader{throw "placeholder";}
 
 //public:
-/*	static void					*/MakeNameCanonical( name:string, result:Uint8Array, maxLength:number ):void{throw "placeholder";}
-/*	idDeclLocal *				*/FindTypeWithoutParsing( type:declType_t, name:string, makeDefault:boolean = true ):idDeclLocal { throw "placeholder"; }
+	static MakeNameCanonical( name:string, result:Uint8Array, maxLength:number ):void{throw "placeholder";}
+	FindTypeWithoutParsing( type:declType_t, name:string, makeDefault:boolean = true ):idDeclLocal { throw "placeholder"; }
 
-	 GetDeclType( /*int */type:number ):idDeclType { return this.declTypes[type]; }
+	GetDeclType( /*int */type:number ):idDeclType { return this.declTypes[type]; }
 	GetImplicitDeclFile ( ): idDeclFile { return this.implicitDecls; }
 
 //private:
-	declTypes = new idList<idDeclType>(idDeclType, false, 16, true)
-	declFolders = new idList<idDeclFolder>(idDeclFolder, false, 16, true);
+	declTypes = new idList<idDeclType>(idDeclType, true );
+	declFolders = new idList<idDeclFolder>(idDeclFolder, true);
 
-	loadedFiles = new idList<idDeclFile>(idDeclFile, false, 16, true);
+	loadedFiles = new idList<idDeclFile>(idDeclFile, true);
     hashTables:idHashIndex[/*declType_t.DECL_MAX_TYPES*/];
 /*	idList<idDeclLocal *>		*/linearLists:idList<idDeclLocal>[]/*[declType_t.DECL_MAX_TYPES]*/;
                                 implicitDecls:idDeclFile;	// this holds all the decls that were created because explicit
@@ -282,7 +282,7 @@ class idDeclManagerLocal extends idDeclManager {
         this.hashTables = newStructArray<idHashIndex>( idHashIndex, declType_t.DECL_MAX_TYPES );
 		this.linearLists = new Array(declType_t.DECL_MAX_TYPES);
 	    for ( var i = 0; i < declType_t.DECL_MAX_TYPES; i++ ) {
-			this.linearLists[i] = new idList<idDeclLocal>(idDeclLocal, false, 16, true);
+		    this.linearLists[i] = new idList<idDeclLocal>( idDeclLocal, true );
 	    }
         this.implicitDecls = new idDeclFile( );
         this.checksum = 0;
@@ -1382,7 +1382,7 @@ idDeclManagerLocal.prototype.PrintType = function ( args: idCmdArgs, type: declT
 
 ////	char  canonicalName[MAX_STRING_CHARS];
 
-////	MakeNameCanonical( name, canonicalName, sizeof( canonicalName ) );
+////	idDeclManagerLocal.MakeNameCanonical( name, canonicalName, sizeof( canonicalName ) );
 
 ////	idStr fileName = _fileName;
 ////	fileName.BackSlashesToSlashes();
@@ -1456,10 +1456,10 @@ idDeclManagerLocal.prototype.PrintType = function ( args: idCmdArgs, type: declT
 ////bool idDeclManagerLocal::RenameDecl( declType_t type, const char* oldName, const char* newName ) {
 
 ////	char canonicalOldName[MAX_STRING_CHARS];
-////	MakeNameCanonical( oldName, canonicalOldName, sizeof( canonicalOldName ));
+////	idDeclManagerLocal.MakeNameCanonical( oldName, canonicalOldName, sizeof( canonicalOldName ));
 
 ////	char canonicalNewName[MAX_STRING_CHARS];
-////	MakeNameCanonical( newName, canonicalNewName, sizeof( canonicalNewName ) );
+////	idDeclManagerLocal.MakeNameCanonical( newName, canonicalNewName, sizeof( canonicalNewName ) );
 
 ////	idDeclLocal	*decl = NULL;
 
@@ -1586,7 +1586,7 @@ idDeclManagerLocal.prototype.FindSound = function ( name: string, makeDefault=tr
 idDeclManagerLocal::MakeNameCanonical
 ===================
 */
-idDeclManagerLocal.prototype.MakeNameCanonical = function ( name: string, /*char **/result: Uint8Array, /*int */maxLength: number ): void {
+idDeclManagerLocal.MakeNameCanonical = function ( name: string, /*char **/result: Uint8Array, /*int */maxLength: number ): void {
     var /*int */i: number, lastDot: number;
 
     lastDot = -1;
@@ -1731,7 +1731,7 @@ idDeclManagerLocal.prototype.FindTypeWithoutParsing = function ( type: declType_
 
     var canonicalNameArray = new Uint8Array( MAX_STRING_CHARS );
 
-	this.MakeNameCanonical(name, canonicalNameArray, sizeof(canonicalNameArray));
+	idDeclManagerLocal.MakeNameCanonical(name, canonicalNameArray, sizeof(canonicalNameArray));
 	var canonicalName = canonicalNameArray.toString ( );
 
     // see if it already exists

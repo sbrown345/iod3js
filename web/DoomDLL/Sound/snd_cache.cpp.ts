@@ -67,7 +67,7 @@ class idSoundCache {
 	////
 	////private:
 	insideLevelLoad:boolean;
-	listCache = new idList<idSoundSample>(idSoundSample, false, 16, true);
+	listCache = new idList<idSoundSample>(idSoundSample, true);
 
 
 /*

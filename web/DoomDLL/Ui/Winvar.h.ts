@@ -933,7 +933,7 @@ multiplexes access to a list if idWinVar*
 */
 class idMultiWinVar extends idList<idWinVar /** */> {
 	constructor ( ) {
-		super( idWinVar, false, 16, /*listOfReferences */ true );
+		super( idWinVar, true, 16 );
 	}
 ////public:
 ////	void Set( val:string );

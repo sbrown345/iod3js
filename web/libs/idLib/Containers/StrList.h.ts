@@ -45,7 +45,7 @@
 class idStrList extends idList<idStr> {
 
 	constructor ( ) {
-		super( idStr, true );
+		super( idStr, false );
 	}
 
 /////*
@@ -76,8 +76,8 @@ pointer list. Then copies the strings into another list using the ordered list o
 			return;
 		}
 
-		var other = new idList<idStr>( idStr );
-		var pointerList = new idList<idStr /*Ptr*/>( idStr, false, 16, true );
+		var other = new idList<idStr>( idStr, false );
+		var pointerList = new idList<idStr /*Ptr*/>( idStr, true );
 
 		pointerList.SetNum( this.num );
 		for ( i = 0; i < this.num; i++ ) {

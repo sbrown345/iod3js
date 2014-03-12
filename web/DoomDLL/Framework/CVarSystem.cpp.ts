@@ -436,7 +436,7 @@ class idCVarSystem {
 
 	////private:
 	initialized: boolean;
-	/*idList<idInternalCVar*>	*/  cvars = new idList<idInternalCVar>(idInternalCVar, false, 16, true);
+	/*idList<idInternalCVar*>	*/  cvars = new idList<idInternalCVar>(idInternalCVar, true);
 	/*	idHashIndex				*/  cvarHash = new idHashIndex();
 	modifiedFlags: number;
 	////							// use a static dictionary to MoveCVarsToDict can be used from game

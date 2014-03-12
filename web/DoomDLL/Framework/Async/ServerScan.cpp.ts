@@ -150,7 +150,7 @@ class idServerScan extends idList<networkServer_t> {
 idServerScan::idServerScan
 ================
 */
-	constructor ( ) {
+	constructor() {
 		super( networkServer_t );
 		this.m_pGUI = null;
 		this.m_sort = serverSort_t.SORT_PING;
@@ -168,14 +168,20 @@ idServerScan::LocalClear
 		this.scan_state = scan_state_t.IDLE;
 		this.incoming_net = false;
 		this.lan_pingtime = -1;
-		this.net_info.Clear ( );
-		this.net_servers.Clear ( );
+		if ( this.net_info ) {
+			this.net_info.Clear ( );
+		}
+		if ( this.net_servers ) {
+			this.net_servers.Clear ( );
+		}
 		this.cur_info = 0;
 		if ( this.listGUI ) {
 			this.listGUI.Clear ( );
 		}
 		this.incoming_useTimeout = false;
-		this.m_sortedServers.Clear ( );
+		if ( this.m_sortedServers ) {
+			this.m_sortedServers.Clear ( );
+		}
 	}
 
 /*

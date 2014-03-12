@@ -29,7 +29,7 @@ function dlog(log: boolean, format: string, ...args: any[]) {
 	} else {
 		var text = vsprintf(format, args);
 
-		if (dlogOutput[dlogOutput.length - 1].length > 10000) {
+		if (dlogOutput[dlogOutput.length - 1].length > 50000) {
 			dlogOutput.push([]);
 		}
 

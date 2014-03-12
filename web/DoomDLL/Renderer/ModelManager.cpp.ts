@@ -56,7 +56,7 @@ class idRenderModelManagerLocal extends idRenderModelManager {
 ////	virtual	void			PrintMemInfo( MemInfo_t *mi ):void { throw "placeholder"; }
 
 ////private:
-	models = new idList<idRenderModel>(idRenderModel, false, 16, true);
+	models = new idList<idRenderModel>(idRenderModel, true);
 	hash = new idHashIndex();
 	defaultModel:idRenderModel;
 	beamModel:idRenderModel;

@@ -281,7 +281,7 @@ class idRenderSystem {
 
 /*	float					*/sortOffset:number;				// for determinist sorting of equal sort materials
 
-	worlds = new idList<idRenderWorldLocal>(idRenderWorldLocal, false, 16, true);
+	worlds = new idList<idRenderWorldLocal>(idRenderWorldLocal, true);
 
 	primaryWorld: idRenderWorldLocal;
 	primaryRenderView = new renderView_t;

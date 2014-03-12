@@ -422,7 +422,7 @@ class idImageManager {
     ////	void				SetNormalPalette();
 	ChangeTextureFilter ( ): void { throw "placeholder"; }
 
-	images = new idList<idImage>(idImage,false, 16, true);
+	images = new idList<idImage>(idImage, true);
     ddsList = new idStrList;
     ddsHash = new idHashIndex;
 
