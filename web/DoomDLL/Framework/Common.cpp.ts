@@ -2872,7 +2872,6 @@ idCommonLocal::Init
 ////	catch( idException & ) {
 ////		Sys_Error( "Error during initialization" );
 ////	}
-	todoThrow();
 	}
 
 

@@ -875,7 +875,7 @@ static void Sys_AsyncThread( void *parm ) {
 	int		startTime;
 
 	startTime = Sys_Milliseconds();
-	wakeNumber = 0;
+		wakeNumber = 0;
 
 	while ( 1 ) {
 #ifdef WIN32	

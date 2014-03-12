@@ -903,35 +903,36 @@ var sys_cmdline: string;
 ////	}
 ////}
 
-/////*
-////==============
-////Sys_StartAsyncThread
+/*
+==============
+Sys_StartAsyncThread
 
-////Start the thread that will call idCommon::Async()
-////==============
-////*/
-////void Sys_StartAsyncThread( void ) {
-////	// create an auto-reset event that happens 60 times a second
-////	hTimer = CreateWaitableTimer( NULL, false, NULL );
-////	if ( !hTimer ) {
-////		common.Error( "idPacketServer::Spawn: CreateWaitableTimer failed" );
-////	}
+Start the thread that will call idCommon::Async()
+==============
+*/
+function Sys_StartAsyncThread(): void {
+	todo("Sys_StartAsyncThread, just setInterval to start with? then test other options "); // http://impactjs.com/forums/impact-engine/misuse-of-requestanimationframe
+//	// create an auto-reset event that happens 60 times a second
+//	hTimer = CreateWaitableTimer( NULL, false, NULL );
+//	if ( !hTimer ) {
+//		common.Error( "idPacketServer::Spawn: CreateWaitableTimer failed" );
+//	}
 
-////	LARGE_INTEGER	t;
-////	t.HighPart = t.LowPart = 0;
-////	SetWaitableTimer( hTimer, &t, USERCMD_MSEC, NULL, NULL, TRUE );
+//	LARGE_INTEGER	t;
+//	t.HighPart = t.LowPart = 0;
+//	SetWaitableTimer( hTimer, &t, USERCMD_MSEC, NULL, NULL, TRUE );
 
-////	Sys_CreateThread( (xthread_t)Sys_AsyncThread, NULL, THREAD_ABOVE_NORMAL, threadInfo, "Async", g_threads,  &g_thread_count );
+//	Sys_CreateThread( (xthread_t)Sys_AsyncThread, NULL, THREAD_ABOVE_NORMAL, threadInfo, "Async", g_threads,  &g_thread_count );
 
-////#ifdef SET_THREAD_AFFINITY 
-////	// give the async thread an affinity for the second cpu
-////	SetThreadAffinityMask( (HANDLE)threadInfo.threadHandle, 2 );
-////#endif
+//#ifdef SET_THREAD_AFFINITY 
+//	// give the async thread an affinity for the second cpu
+//	SetThreadAffinityMask( (HANDLE)threadInfo.threadHandle, 2 );
+//#endif
 
-////	if ( !threadInfo.threadHandle ) {
-////		common.Error( "Sys_StartAsyncThread: failed" );
-////	}
-////}
+//	if ( !threadInfo.threadHandle ) {
+//		common.Error( "Sys_StartAsyncThread: failed" );
+//	}
+}
 
 /////*
 ////================
@@ -1410,7 +1411,7 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 ////	Sys_FPU_SetPrecision( FPU_PRECISION_DOUBLE_EXTENDED );
 
 	common.Init( 0, /*NULL*/null, lpCmdLine );
-    todoThrow();
+    
 ////#if TEST_FPU_EXCEPTIONS != 0
 ////	common.Printf( Sys_FPU_GetState() );
 ////#endif
@@ -1421,8 +1422,8 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 ////	}
 ////#endif
 
-////	Sys_StartAsyncThread();
-
+	Sys_StartAsyncThread();
+	todoThrow();
 ////	// hide or show the early console as necessary
 ////	if ( win32.win_viewlog.GetInteger() || com_skipRenderer.GetBool() || idAsyncNetwork::serverDedicated.GetInteger() ) {
 ////		Sys_ShowConsole( 1, true );
