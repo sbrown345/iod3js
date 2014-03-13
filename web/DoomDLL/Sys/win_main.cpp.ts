@@ -49,32 +49,33 @@
 ////#include "rc/CreateResourceIDs.h"
 ////#include "../../renderer/tr_local.h"
 
-////idCVar Win32Vars_t::sys_arch( "sys_arch", "", CVAR_SYSTEM | CVAR_INIT, "" );
-////idCVar Win32Vars_t::sys_cpustring( "sys_cpustring", "detect", CVAR_SYSTEM | CVAR_INIT, "" );
-////idCVar Win32Vars_t::in_mouse( "in_mouse", "1", CVAR_SYSTEM | CVAR_BOOL, "enable mouse input" );
-////idCVar Win32Vars_t::win_allowAltTab( "win_allowAltTab", "0", CVAR_SYSTEM | CVAR_BOOL, "allow Alt-Tab when fullscreen" );
-////idCVar Win32Vars_t::win_notaskkeys( "win_notaskkeys", "0", CVAR_SYSTEM | CVAR_INTEGER, "disable windows task keys" );
-////idCVar Win32Vars_t::win_username( "win_username", "", CVAR_SYSTEM | CVAR_INIT, "windows user name" );
-////idCVar Win32Vars_t::win_xpos( "win_xpos", "3", CVAR_SYSTEM | CVAR_ARCHIVE | CVAR_INTEGER, "horizontal position of window" );
-////idCVar Win32Vars_t::win_ypos( "win_ypos", "22", CVAR_SYSTEM | CVAR_ARCHIVE | CVAR_INTEGER, "vertical position of window" );
-////idCVar Win32Vars_t::win_outputDebugString( "win_outputDebugString", "0", CVAR_SYSTEM | CVAR_BOOL, "" );
-////idCVar Win32Vars_t::win_outputEditString( "win_outputEditString", "1", CVAR_SYSTEM | CVAR_BOOL, "" );
-////idCVar Win32Vars_t::win_viewlog( "win_viewlog", "0", CVAR_SYSTEM | CVAR_INTEGER, "" );
-////idCVar Win32Vars_t::win_timerUpdate( "win_timerUpdate", "0", CVAR_SYSTEM | CVAR_BOOL, "allows the game to be updated while dragging the window" );
-////idCVar Win32Vars_t::win_allowMultipleInstances( "win_allowMultipleInstances", "0", CVAR_SYSTEM | CVAR_BOOL, "allow multiple instances running concurrently" );
+var win32 = Win32Vars_t;
 
-////Win32Vars_t	win32;
+Win32Vars_t.sys_arch= new idCVar( "sys_arch", "", CVAR_SYSTEM | CVAR_INIT, "" );
+Win32Vars_t.sys_cpustring= new idCVar( "sys_cpustring", "detect", CVAR_SYSTEM | CVAR_INIT, "" );
+Win32Vars_t.in_mouse= new idCVar( "in_mouse", "1", CVAR_SYSTEM | CVAR_BOOL, "enable mouse input" );
+Win32Vars_t.win_allowAltTab= new idCVar( "win_allowAltTab", "0", CVAR_SYSTEM | CVAR_BOOL, "allow Alt-Tab when fullscreen" );
+Win32Vars_t.win_notaskkeys= new idCVar( "win_notaskkeys", "0", CVAR_SYSTEM | CVAR_INTEGER, "disable windows task keys" );
+Win32Vars_t.win_username= new idCVar( "win_username", "", CVAR_SYSTEM | CVAR_INIT, "windows user name" );
+Win32Vars_t.win_xpos= new idCVar( "win_xpos", "3", CVAR_SYSTEM | CVAR_ARCHIVE | CVAR_INTEGER, "horizontal position of window" );
+Win32Vars_t.win_ypos= new idCVar( "win_ypos", "22", CVAR_SYSTEM | CVAR_ARCHIVE | CVAR_INTEGER, "vertical position of window" );
+Win32Vars_t.win_outputDebugString= new idCVar( "win_outputDebugString", "0", CVAR_SYSTEM | CVAR_BOOL, "" );
+Win32Vars_t.win_outputEditString= new idCVar( "win_outputEditString", "1", CVAR_SYSTEM | CVAR_BOOL, "" );
+Win32Vars_t.win_viewlog= new idCVar( "win_viewlog", "0", CVAR_SYSTEM | CVAR_INTEGER, "" );
+Win32Vars_t.win_timerUpdate= new idCVar( "win_timerUpdate", "0", CVAR_SYSTEM | CVAR_BOOL, "allows the game to be updated while dragging the window" );
+Win32Vars_t.win_allowMultipleInstances= new idCVar( "win_allowMultipleInstances", "0", CVAR_SYSTEM | CVAR_BOOL, "allow multiple instances running concurrently" );
+
 
 var sys_cmdline: string;
 
 ////// not a hard limit, just what we keep track of for debugging
-////xthreadInfo *g_threads[MAX_THREADS];
+var g_threads = new Array<xthreadInfo>( MAX_THREADS );
 
-////int g_thread_count = 0;
+var g_thread_count = 0;
 
 ////static sysMemoryStats_t exeLaunchMemoryStats;
 
-////static	xthreadInfo	threadInfo;
+var threadInfo = new xthreadInfo;
 ////static	HANDLE		hTimer;
 
 /////*
@@ -86,31 +87,33 @@ var sys_cmdline: string;
 ////	stats = exeLaunchMemoryStats;
 ////}
 
-/////*
-////==================
-////Sys_Createthread
-////==================
-////*/
-////void Sys_CreateThread(  xthread_t function, void *parms, xthreadPriority priority, xthreadInfo &info, const char *name, xthreadInfo *threads[MAX_THREADS], int *thread_count ) {
-////	HANDLE temp = CreateThread(	NULL,	// LPSECURITY_ATTRIBUTES lpsa,
-////									0,		// DWORD cbStack,
-////									(LPTHREAD_START_ROUTINE)function,	// LPTHREAD_START_ROUTINE lpStartAddr,
-////									parms,	// LPVOID lpvThreadParm,
-////									0,		//   DWORD fdwCreate,
-////									&info.threadId);
-////	info.threadHandle = (int) temp;
-////	if (priority == THREAD_HIGHEST) {
-////		SetThreadPriority( (HANDLE)info.threadHandle, THREAD_PRIORITY_HIGHEST );		//  we better sleep enough to do this
-////	} else if (priority == THREAD_ABOVE_NORMAL ) {
-////		SetThreadPriority( (HANDLE)info.threadHandle, THREAD_PRIORITY_ABOVE_NORMAL );
-////	}
-////	info.name = name;
-////	if ( *thread_count < MAX_THREADS ) {
-////		threads[(*thread_count)++] = &info;
-////	} else {
-////		common.DPrintf("WARNING: MAX_THREADS reached\n");
-////	}
-////}
+/*
+==================
+Sys_Createthread
+==================
+*/
+function Sys_CreateThread($function: /*xthread_t*/(/*void *parm*/) => number, parms: any, priority: xthreadPriority, info: xthreadInfo, name: string, threads: xthreadInfo[ /*MAX_THREADS*/], thread_count: R<number> ): void {
+	//HANDLE temp = CreateThread(	NULL,	// LPSECURITY_ATTRIBUTES lpsa,
+	//								0,		// DWORD cbStack,
+	//								(LPTHREAD_START_ROUTINE)function,	// LPTHREAD_START_ROUTINE lpStartAddr,
+	//								parms,	// LPVOID lpvThreadParm,
+	//								0,		//   DWORD fdwCreate,
+	//								&info.threadId);
+	var temp = $function ( );
+	info.threadHandle = temp;
+	todo( "Sys_Createthread priority" );
+	//if (priority == THREAD_HIGHEST) {
+	//	SetThreadPriority( (HANDLE)info.threadHandle, THREAD_PRIORITY_HIGHEST );		//  we better sleep enough to do this
+	//} else if (priority == THREAD_ABOVE_NORMAL ) {
+	//	SetThreadPriority( (HANDLE)info.threadHandle, THREAD_PRIORITY_ABOVE_NORMAL );
+	//}
+	info.name = name;
+	if ( thread_count.$ < MAX_THREADS ) {
+		threads[( thread_count.$ )++] = info;
+	} else {
+		common.DPrintf( "WARNING: MAX_T	HREADS reached\n" );
+	}
+}
 
 /////*
 ////==================
@@ -866,42 +869,14 @@ var sys_cmdline: string;
 ////}
 
 
-/////*
-////==================
-////Sys_AsyncThread
-////==================
-////*/
-////static void Sys_AsyncThread( void *parm ) {
-////	int		wakeNumber;
-////	int		startTime;
-
-////	startTime = Sys_Milliseconds();
-////	wakeNumber = 0;
-
-////	while ( 1 ) {
-////#ifdef WIN32	
-////		// this will trigger 60 times a second
-////		int r = WaitForSingleObject( hTimer, 100 );
-////		if ( r != WAIT_OBJECT_0 ) {
-////			OutputDebugString( "idPacketServer::PacketServerInterrupt: bad wait return" );
-////		}
-////#endif
-
-////#if 0
-////		wakeNumber++;
-////		int		msec = Sys_Milliseconds();
-////		int		deltaTime = msec - startTime;
-////		startTime = msec;
-
-////		char	str[1024];
-////		sprintf( str, "%i ", deltaTime );
-////		OutputDebugString( str );
-////#endif
-
-
-////		common.Async();
-////	}
-////}
+/*
+==================
+Sys_AsyncThread
+==================
+*/
+function Sys_AsyncThread ( /*void *parm*/ ): number {
+	return setInterval( common.Async, 60 );
+}
 
 /*
 ==============
@@ -910,8 +885,8 @@ Sys_StartAsyncThread
 Start the thread that will call idCommon::Async()
 ==============
 */
-function Sys_StartAsyncThread(): void {
-	todo("Sys_StartAsyncThread, just setInterval to start with? then test other options "); // http://impactjs.com/forums/impact-engine/misuse-of-requestanimationframe
+function Sys_StartAsyncThread ( ): void {
+	todo( "Sys_StartAsyncThread, just setInterval to start with? then test other options " ); // http://impactjs.com/forums/impact-engine/misuse-of-requestanimationframe
 //	// create an auto-reset event that happens 60 times a second
 //	hTimer = CreateWaitableTimer( NULL, false, NULL );
 //	if ( !hTimer ) {
@@ -922,7 +897,9 @@ function Sys_StartAsyncThread(): void {
 //	t.HighPart = t.LowPart = 0;
 //	SetWaitableTimer( hTimer, &t, USERCMD_MSEC, NULL, NULL, TRUE );
 
-//	Sys_CreateThread( (xthread_t)Sys_AsyncThread, NULL, THREAD_ABOVE_NORMAL, threadInfo, "Async", g_threads,  &g_thread_count );
+	var $g_thread_count = new R( g_thread_count );
+	Sys_CreateThread( /*(xthread_t)*/Sys_AsyncThread, null, xthreadPriority.THREAD_ABOVE_NORMAL, threadInfo, "Async", g_threads, $g_thread_count );
+	g_thread_count = $g_thread_count.$;
 
 //#ifdef SET_THREAD_AFFINITY 
 //	// give the async thread an affinity for the second cpu
@@ -1423,14 +1400,14 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 ////#endif
 
 	Sys_StartAsyncThread();
+	
+	// hide or show the early console as necessary
+	if ( win32.win_viewlog.GetInteger() || com_skipRenderer.GetBool() || idAsyncNetwork.serverDedicated.GetInteger() ) {
+		Sys_ShowConsole( 1, true );
+	} else {
+		Sys_ShowConsole( 0, false );
+	}
 	todoThrow();
-////	// hide or show the early console as necessary
-////	if ( win32.win_viewlog.GetInteger() || com_skipRenderer.GetBool() || idAsyncNetwork::serverDedicated.GetInteger() ) {
-////		Sys_ShowConsole( 1, true );
-////	} else {
-////		Sys_ShowConsole( 0, false );
-////	}
-
 ////#ifdef SET_THREAD_AFFINITY 
 ////	// give the main thread an affinity for the first cpu
 ////	SetThreadAffinityMask( GetCurrentThread(), 1 );

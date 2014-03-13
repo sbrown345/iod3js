@@ -108,11 +108,24 @@ var game: idGame = null;
 ////idGameEdit *	gameEdit = NULL;
 ////#endif
 
-////// writes si_version to the config file - in a kinda obfuscated way
-//////#define ID_WRITE_VERSION
-class idCommon {
+////typedef struct {
+////	int				milliseconds;			// should always be incremeting by 60hz
+////	int				deltaMsec;				// should always be 16
+////	int				timeConsumed;			// msec spent in Com_AsyncThread()
+////	int				clientPacketsReceived;
+////	int				serverPacketsReceived;
+////	int				mostRecentServerPacketSequence;
+////} asyncStats_t;
 
-////class idCommonLocal extends idCommon {
+////static const int MAX_ASYNC_STATS = 1024;
+////asyncStats_t	com_asyncStats[MAX_ASYNC_STATS];		// indexed by com_ticNumber
+var /*int */prevAsyncMsec: number;
+var/*int	*/lastTicMsec: number;
+
+
+// writes si_version to the config file - in a kinda obfuscated way
+//#define ID_WRITE_VERSION
+class idCommonLocal extends idCommon {
 ////public:
 ////								idCommonLocal( void );
 
@@ -214,30 +227,31 @@ class idCommon {
 idCommonLocal::idCommonLocal
 ==================
 */
-constructor( ) {
-    // defaults
-    this.languageDict = new idLangDict ( );
+	constructor ( ) {
+		super ( );
+		// defaults
+		this.languageDict = new idLangDict ( );
 
-    // id ctor
-	this.com_fullyInitialized = false;
-	this.com_refreshOnPrint = false;
-	this.com_errorEntered = 0;
-	this.com_shuttingDown = false;
+		// id ctor
+		this.com_fullyInitialized = false;
+		this.com_refreshOnPrint = false;
+		this.com_errorEntered = 0;
+		this.com_shuttingDown = false;
 
-    todo( "this.logFile = NULL;" );
+		todo( "this.logFile = NULL;" );
 
-    this.errorMessage = "";//strcpy( errorMessage, "" );
+		this.errorMessage = ""; //strcpy( errorMessage, "" );
 
-	todo( "this.rd_buffer = NULL;" );
-	todo( "this.rd_buffersize = 0;" );
-    todo( "this.rd_flush = NULL;" );
+		todo( "this.rd_buffer = NULL;" );
+		todo( "this.rd_buffersize = 0;" );
+		todo( "this.rd_flush = NULL;" );
 
-	todo( "this.gameDLL = 0;" );
+		todo( "this.gameDLL = 0;" );
 
 //#ifdef ID_WRITE_VERSION
 //	config_compressor = NULL;
 //#endif
-}
+	}
 
 /////*
 ////==================
@@ -2537,165 +2551,153 @@ idCommonLocal::PrintLoadingMessage
 ////=================
 ////*/
 
-////typedef struct {
-////	int				milliseconds;			// should always be incremeting by 60hz
-////	int				deltaMsec;				// should always be 16
-////	int				timeConsumed;			// msec spent in Com_AsyncThread()
-////	int				clientPacketsReceived;
-////	int				serverPacketsReceived;
-////	int				mostRecentServerPacketSequence;
-////} asyncStats_t;
 
-////static const int MAX_ASYNC_STATS = 1024;
-////asyncStats_t	com_asyncStats[MAX_ASYNC_STATS];		// indexed by com_ticNumber
-////int prevAsyncMsec;
-////int	lastTicMsec;
+	SingleAsyncTic ( ): void {
+		todoThrow ( );
+		//// main thread code can prevent this from happening while modifying
+		//// critical data structures
+		//Sys_EnterCriticalSection();
 
-////void idCommonLocal::SingleAsyncTic( ) {
-////	// main thread code can prevent this from happening while modifying
-////	// critical data structures
-////	Sys_EnterCriticalSection();
+		//asyncStats_t *stat = &com_asyncStats[com_ticNumber & (MAX_ASYNC_STATS-1)];
+		//memset( stat, 0, sizeof( *stat ) );
+		//stat.milliseconds = Sys_Milliseconds();
+		//stat.deltaMsec = stat.milliseconds - com_asyncStats[(com_ticNumber - 1) & (MAX_ASYNC_STATS-1)].milliseconds;
 
-////	asyncStats_t *stat = &com_asyncStats[com_ticNumber & (MAX_ASYNC_STATS-1)];
-////	memset( stat, 0, sizeof( *stat ) );
-////	stat.milliseconds = Sys_Milliseconds();
-////	stat.deltaMsec = stat.milliseconds - com_asyncStats[(com_ticNumber - 1) & (MAX_ASYNC_STATS-1)].milliseconds;
+		//if ( usercmdGen && com_asyncInput.GetBool() ) {
+		//	usercmdGen.UsercmdInterrupt();
+		//}
 
-////	if ( usercmdGen && com_asyncInput.GetBool() ) {
-////		usercmdGen.UsercmdInterrupt();
-////	}
+		//switch ( com_asyncSound.GetInteger() ) {
+		//	case 1:
+		//		soundSystem.AsyncUpdate( stat.milliseconds );
+		//		break;
+		//	case 3:
+		//		soundSystem.AsyncUpdateWrite( stat.milliseconds );
+		//		break;
+		//}
 
-////	switch ( com_asyncSound.GetInteger() ) {
-////		case 1:
-////			soundSystem.AsyncUpdate( stat.milliseconds );
-////			break;
-////		case 3:
-////			soundSystem.AsyncUpdateWrite( stat.milliseconds );
-////			break;
-////	}
+		//// we update com_ticNumber after all the background tasks
+		//// have completed their work for this tic
+		//com_ticNumber++;
 
-////	// we update com_ticNumber after all the background tasks
-////	// have completed their work for this tic
-////	com_ticNumber++;
+		//stat.timeConsumed = Sys_Milliseconds() - stat.milliseconds;
 
-////	stat.timeConsumed = Sys_Milliseconds() - stat.milliseconds;
+		//Sys_LeaveCriticalSection();
+	}
 
-////	Sys_LeaveCriticalSection();
-////}
+/*
+=================
+idCommonLocal::Async
+=================
+*/
+	Async ( ): void {
+		if ( this.com_shuttingDown ) {
+			return;
+		}
 
-/////*
-////=================
-////idCommonLocal::Async
-////=================
-////*/
-////void idCommonLocal::Async( ) {
-////	if ( com_shuttingDown ) {
-////		return;
-////	}
+		var /*int	*/msec = Sys_Milliseconds ( );
+		if ( !lastTicMsec ) {
+			lastTicMsec = msec - USERCMD_MSEC;
+		}
 
-////	int	msec = Sys_Milliseconds();
-////	if ( !lastTicMsec ) {
-////		lastTicMsec = msec - USERCMD_MSEC;
-////	}
+		if ( !com_preciseTic.GetBool ( ) ) {
+			// just run a single tic, even if the exact msec isn't precise
+			this.SingleAsyncTic ( );
+			return;
+		}
 
-////	if ( !com_preciseTic.GetBool() ) {
-////		// just run a single tic, even if the exact msec isn't precise
-////		SingleAsyncTic();
-////		return;
-////	}
+		var /*int */ticMsec = USERCMD_MSEC;
 
-////	int ticMsec = USERCMD_MSEC;
+		// the number of msec per tic can be varies with the timescale cvar
+		var /*float */timescale = com_timescale.GetFloat ( );
+		if ( timescale != 1.0 ) {
+			ticMsec /= timescale;
+			if ( ticMsec < 1 ) {
+				ticMsec = 1;
+			}
+		}
 
-////	// the number of msec per tic can be varies with the timescale cvar
-////	float timescale = com_timescale.GetFloat();
-////	if ( timescale != 1.0f ) {
-////		ticMsec /= timescale;
-////		if ( ticMsec < 1 ) {
-////			ticMsec = 1;
-////		}
-////	}
+		// don't skip too many
+		if ( timescale == 1.0 ) {
+			if ( lastTicMsec + 10 * USERCMD_MSEC < msec ) {
+				lastTicMsec = msec - 10 * USERCMD_MSEC;
+			}
+		}
 
-////	// don't skip too many
-////	if ( timescale == 1.0f ) {
-////		if ( lastTicMsec + 10 * USERCMD_MSEC < msec ) {
-////			lastTicMsec = msec - 10*USERCMD_MSEC;
-////		}
-////	}
-
-////	while ( lastTicMsec + ticMsec <= msec ) {
-////		SingleAsyncTic();
-////		lastTicMsec += ticMsec;
-////	}
-////}
+		while ( lastTicMsec + ticMsec <= msec ) {
+			this.SingleAsyncTic ( );
+			lastTicMsec += ticMsec;
+		}
+	}
 
 /*
 =================
 idCommonLocal::LoadGameDLL
 =================
 */
-LoadGameDLL( ):void {
+	LoadGameDLL ( ): void {
 //#ifdef __DOOM_DLL__
-	//char			dllPath[ MAX_OSPATH ];
+		//char			dllPath[ MAX_OSPATH ];
 
-	var gameImport = new gameImport_t;
-	var gameExport = new gameExport_t;
-	//var GetGameAPI: ( ) => gameExport_t;
+		var gameImport = new gameImport_t;
+		var gameExport = new gameExport_t;
+		//var GetGameAPI: ( ) => gameExport_t;
 
-	//fileSystem.FindDLL( "game", dllPath, true );
+		//fileSystem.FindDLL( "game", dllPath, true );
 
-	//if ( !dllPath[ 0 ] ) {
-	//	common.FatalError( "couldn't find game dynamic library" );
-	//	return;
-	//}
-	//common.DPrintf( "Loading game DLL: '%s'\n", dllPath );
-	//gameDLL = sys.DLL_Load( dllPath );
-	//if ( !gameDLL ) {
-	//	common.FatalError( "couldn't load game dynamic library" );
-	//	return;
-	//}
+		//if ( !dllPath[ 0 ] ) {
+		//	common.FatalError( "couldn't find game dynamic library" );
+		//	return;
+		//}
+		//common.DPrintf( "Loading game DLL: '%s'\n", dllPath );
+		//gameDLL = sys.DLL_Load( dllPath );
+		//if ( !gameDLL ) {
+		//	common.FatalError( "couldn't load game dynamic library" );
+		//	return;
+		//}
 
-	//GetGameAPI = (GetGameAPI_t) Sys_DLL_GetProcAddress( gameDLL, "GetGameAPI" );
-	//if ( !GetGameAPI ) {
-	//	Sys_DLL_Unload( gameDLL );
-	//	gameDLL = NULL;
-	//	common.FatalError( "couldn't find game DLL API" );
-	//	return;
-	//}
+		//GetGameAPI = (GetGameAPI_t) Sys_DLL_GetProcAddress( gameDLL, "GetGameAPI" );
+		//if ( !GetGameAPI ) {
+		//	Sys_DLL_Unload( gameDLL );
+		//	gameDLL = NULL;
+		//	common.FatalError( "couldn't find game DLL API" );
+		//	return;
+		//}
 
-	gameImport.version					= GAME_API_VERSION;
-	todo( "gameImport.sys						= sys;" );
-	gameImport.common					= common;
-	gameImport.cmdSystem				= cmdSystem;
-	gameImport.cvarSystem				= cvarSystem;
-	gameImport.fileSystem				= fileSystem;
-	todo( "gameImport.networkSystem			= networkSystem;" );
-	gameImport.renderSystem				= renderSystem;
-	todo( "gameImport.soundSystem				= soundSystem;" );
-	gameImport.renderModelManager		= renderModelManager;
-	gameImport.uiManager				= uiManager;
-	gameImport.declManager				= declManager;
-	todo( "gameImport.AASFileManager = AASFileManager;" );
-	todo( "gameImport.collisionModelManager = collisionModelManager;" );
+		gameImport.version = GAME_API_VERSION;
+		todo( "gameImport.sys						= sys;" );
+		gameImport.common = common;
+		gameImport.cmdSystem = cmdSystem;
+		gameImport.cvarSystem = cvarSystem;
+		gameImport.fileSystem = fileSystem;
+		todo( "gameImport.networkSystem			= networkSystem;" );
+		gameImport.renderSystem = renderSystem;
+		todo( "gameImport.soundSystem				= soundSystem;" );
+		gameImport.renderModelManager = renderModelManager;
+		gameImport.uiManager = uiManager;
+		gameImport.declManager = declManager;
+		todo( "gameImport.AASFileManager = AASFileManager;" );
+		todo( "gameImport.collisionModelManager = collisionModelManager;" );
 
-	gameExport							= GetGameAPI( gameImport );
+		gameExport = GetGameAPI( gameImport );
 
-	if ( gameExport.version != GAME_API_VERSION ) {
-		//Sys_DLL_Unload( gameDLL );
-		//gameDLL = NULL;
-		common.FatalError( "wrong game DLL API version" );
-		return;
-	}
+		if ( gameExport.version != GAME_API_VERSION ) {
+			//Sys_DLL_Unload( gameDLL );
+			//gameDLL = NULL;
+			common.FatalError( "wrong game DLL API version" );
+			return;
+		}
 
-	game								= gameExport.game;
-	todo( "gameEdit							= gameExport.gameEdit;" );
+		game = gameExport.game;
+		todo( "gameEdit							= gameExport.gameEdit;" );
 
 //#endif
 
-	// initialize the game object
-	if ( game != null ) {
-		game.Init();
+		// initialize the game object
+		if ( game != null ) {
+			game.Init ( );
+		}
 	}
-}
 
 /////*
 ////=================
@@ -2882,7 +2884,7 @@ idCommonLocal::Init
 ////*/
 ////void idCommonLocal::Shutdown( ) {
 
-////	com_shuttingDown = true;
+////	this.com_shuttingDown = true;
 
 ////	idAsyncNetwork::server.Kill();
 ////	idAsyncNetwork::client.Shutdown();
@@ -3113,5 +3115,5 @@ idCommonLocal::InitGame
 ////}
 }
 
-var commonLocal = new idCommon();
+var commonLocal = new idCommonLocal();
 var common = commonLocal;

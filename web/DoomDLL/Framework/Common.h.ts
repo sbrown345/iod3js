@@ -109,7 +109,7 @@ var STRTABLE_ID_LENGTH = 5;
 //	int				soundAssetsTotal;
 //};
 //
-//class idCommon {
+class idCommon {
 //public:
 //	virtual						~idCommon( void ) {}
 //
@@ -208,7 +208,7 @@ var STRTABLE_ID_LENGTH = 5;
 //
 //								// Directly sample a keystate.
 //	virtual int					KeyState( int key ) = 0;
-//};
+}
 //
 //extern idCommon *		common;
 //

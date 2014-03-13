@@ -283,6 +283,10 @@ function $delete(obj: any): void {
 	}
 }
 
+function OutputDebugString ( msg: string ) {
+	console.debug( "OutputDebugString: " + msg );
+}
+
 // track references
 
 interface ITrackedObject {

@@ -199,6 +199,8 @@
     <TypeScriptCompile Include="DoomDLL\Ui\RenderWindow.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Ui\SliderWindow.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Ui\ListWindow.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Sys\win_syscon.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Sys\win_local.h.ts" />
     <Content Include="libs\idLib\Timer.h.ts" />
     <Content Include="log.aspx" />
     <Content Include="other\files.ts" />

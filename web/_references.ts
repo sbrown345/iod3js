@@ -122,10 +122,11 @@
 
 // non-portable system services
 /// <reference path="doomdll/sys/sys_public.h.ts" />
+/// <reference path="doomdll/sys/win_local.h.ts" />
 /// <reference path="doomdll/sys/win_cpu.cpp.ts" />
 /// <reference path="doomdll/sys/win_glimp.cpp.ts" />
 /// <reference path="doomdll/sys/win_input.cpp.ts" />
-/// <reference path="doomdll/sys/win_main.cpp.ts" />
+/// <reference path="doomdll/sys/win_syscon.cpp.ts" />
 
 // id lib
 /// <reference path="libs/idlib/precompiled.h.ts" />
@@ -214,6 +215,8 @@
 
 /// <reference path="doomdll/framework/eventloop.cpp.ts" />
 
+// after cvar
+/// <reference path="doomdll/sys/win_main.cpp.ts" />
 
 // decls
 //#include "../framework/DeclManager.h"

@@ -487,19 +487,19 @@ class netadr_t{
 //
 //typedef unsigned int (*xthread_t)( void * );
 //
-//typedef enum {
-//	THREAD_NORMAL,
-//	THREAD_ABOVE_NORMAL,
-//	THREAD_HIGHEST
-//} xthreadPriority;
-//
-//typedef struct {
-//	const char *	name;
-//	int				threadHandle;
-//	unsigned long	threadId;
-//} xthreadInfo;
-//
-//const int MAX_THREADS				= 10;
+enum xthreadPriority{
+	THREAD_NORMAL,
+	THREAD_ABOVE_NORMAL,
+	THREAD_HIGHEST
+}
+
+class xthreadInfo {
+	name:string;
+	threadHandle:number/*int*/;
+	threadId: number /*unsigned long*/;
+};
+
+var MAX_THREADS = 10;
 //extern xthreadInfo *g_threads[MAX_THREADS];
 //extern int			g_thread_count;
 //
@@ -510,7 +510,7 @@ class netadr_t{
 //// if index != NULL, set the index in g_threads array (use -1 for "main" thread)
 //const char *		Sys_GetThreadName( int *index = 0 );
 // 
-//const int MAX_CRITICAL_SECTIONS		= 4;
+var MAX_CRITICAL_SECTIONS		= 4;
 //
 //enum {
 //	CRITICAL_SECTION_ZERO = 0,
