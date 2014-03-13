@@ -77,7 +77,7 @@ class WinConData {
 ////
 ////	char		errorString[80];
 ////
-////	char		consoleText[512], returnedText[512];
+		consoleText:string; returnedText:string;
 ////	bool		quitOnClose;
 ////	int			windowWidth, windowHeight;
 ////	 
@@ -453,21 +453,21 @@ function Sys_ShowConsole( /*int */visLevel:number, /*bool */quitOnClose :boolean
 	//}
 }
 
-/////*
-////** Sys_ConsoleInput
-////*/
-////char *Sys_ConsoleInput( void ) {
-////	
-////	if ( s_wcd.consoleText[0] == 0 ) {
-////		return NULL;
-////	}
-////		
-////	strcpy( s_wcd.returnedText, s_wcd.consoleText );
-////	s_wcd.consoleText[0] = 0;
-////	
-////	return s_wcd.returnedText;
-////}
-////
+/*
+** Sys_ConsoleInput
+*/
+function Sys_ConsoleInput ( ): string {
+
+	if ( !s_wcd.consoleText ) {
+		return null;
+	}
+	todoThrow ( );
+	//strcpy( s_wcd.returnedText, s_wcd.consoleText );
+	//s_wcd.consoleText[0] = 0;
+
+	return s_wcd.returnedText;
+}
+
 /////*
 ////** Conbuf_AppendText
 ////*/

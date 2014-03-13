@@ -2458,22 +2458,22 @@ idCommonLocal::Frame
 =================
 */
 	Frame ( ): void {
-		todoThrow ( );
 ////	try {
 
-////		// pump all the events
-////		Sys_GenerateEvents();
+		// pump all the events
+		Sys_GenerateEvents();
 
-////		// write config file if anything changed
-////		WriteConfiguration(); 
+		// write config file if anything changed
+		todo( "WriteConfiguration(); " );
 
 ////		// change SIMD implementation if required
 ////		if ( com_forceGenericSIMD.IsModified() ) {
 ////			InitSIMD();
 ////		}
 
-////		eventLoop.RunEventLoop();
+		eventLoop.RunEventLoop();
 
+		todoThrow();
 ////		com_frameTime = com_ticNumber * USERCMD_MSEC;
 
 ////		idAsyncNetwork::RunFrame();

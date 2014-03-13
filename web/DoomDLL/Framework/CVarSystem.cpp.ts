@@ -439,8 +439,8 @@ class idCVarSystem {
 	/*idList<idInternalCVar*>	*/  cvars = new idList<idInternalCVar>(idInternalCVar, true);
 	/*	idHashIndex				*/  cvarHash = new idHashIndex();
 	modifiedFlags: number;
-	////							// use a static dictionary to MoveCVarsToDict can be used from game
-	////	static idDict			moveCVarsToDict;
+	// use a static dictionary to MoveCVarsToDict can be used from game
+	static moveCVarsToDict = new idDict;
 
 
 	////private:
@@ -839,21 +839,21 @@ idCVarSystemLocal::idCVarSystemLocal
 	//	}
 	//}
 
-	///*
-	//============
-	//idCVarSystemLocal::MoveCVarsToDict
-	//============
-	//*/
-	//const idDict* /*idCVarSystemLocal::*/MoveCVarsToDict( int flags ) const {
-	//	moveCVarsToDict.Clear();
-	//	for( int i = 0; i < cvars.Num(); i++ ) {
-	//		idCVar *cvar = cvars[i];
-	//		if ( cvar.GetFlags() & flags ) {
-	//			moveCVarsToDict.Set( cvar.GetName(), cvar.GetString() );
-	//		}
-	//	}
-	//	return &moveCVarsToDict;
-	//}
+	/*
+	============
+	idCVarSystemLocal::MoveCVarsToDict
+	============
+	*/
+	MoveCVarsToDict ( /*int*/ flags: number ): idDict {
+		idCVarSystem.moveCVarsToDict.Clear ( );
+		for ( var i = 0; i < this.cvars.Num ( ); i++ ) {
+			var cvar = this.cvars[i];
+			if ( cvar.GetFlags ( ) & flags ) {
+				idCVarSystem.moveCVarsToDict.Set( cvar.GetName ( ), cvar.GetString ( ) );
+			}
+		}
+		return idCVarSystem.moveCVarsToDict;
+	}
 
 	///*
 	//============
@@ -1247,5 +1247,5 @@ idCVarSystemLocal::idCVarSystemLocal
 
 
 }
-var localCVarSystem = new /*idCVarSystemLocal*/idCVarSystem();
+var localCVarSystem = new /*idCVarSystemLocal*/idCVarSystem;
 var cvarSystem = localCVarSystem;

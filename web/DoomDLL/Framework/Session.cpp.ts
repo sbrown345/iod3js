@@ -70,52 +70,54 @@
 //*/
 //void Session_RescanSI_f( args:idCmdArgs ) {
 //	sessLocal.mapSpawnData.serverInfo = *cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO );
-//	if ( game && idAsyncNetwork::server.IsActive() ) {
+//	if ( game && idAsyncNetwork.server.IsActive() ) {
 //		game.SetServerInfo( sessLocal.mapSpawnData.serverInfo );
 //	}
 //}
 //
-///*
-//==================
-//Session_Map_f
-//
-//Restart the server on a different map
-//==================
-//*/
-//static void Session_Map_f( args:idCmdArgs ) {
-//	idStr		map, string;
-//	findFile_t	ff;
-//	idCmdArgs	rl_args;
-//
-//	map = args.Argv(1);
-//	if ( !map.Length() ) {
-//		return;
-//	}
-//	map.StripFileExtension();
-//
-//	// make sure the level exists before trying to change, so that
-//	// a typo at the server console won't end the game
-//	// handle addon packs through reloadEngine
-//	sprintf( string, "maps/%s.map", map.c_str() );
-//	ff = fileSystem.FindFile( string, true );
-//	switch ( ff ) {
-//	case FIND_NO:
-//		common.Printf( "Can't find map %s\n", string.c_str() );
-//		return;
-//	case FIND_ADDON:
-//		common.Printf( "map %s is in an addon pak - reloading\n", string.c_str() );
-//		rl_args.AppendArg( "map" );
-//		rl_args.AppendArg( map );
-//		cmdSystem.SetupReloadEngine( rl_args );
-//		return;
-//	default:
-//		break;
-//	}
-//
-//	cvarSystem.SetCVarBool( "developer", false );
-//	sessLocal.StartNewGame( map, true );
-//}
-//
+/*
+==================
+Session_Map_f
+
+Restart the server on a different map
+==================
+*/
+function Session_Map_f ( args: idCmdArgs ): void {
+	var map = new idStr, $string = new idStr;
+	todoThrow ( );
+	var ff: findFile_t;
+	var rl_args = new idCmdArgs;
+
+	map.equals( args.Argv( 1 ).toString ( ) );
+	if ( !map.Length ( ) ) {
+		return;
+	}
+	map.StripFileExtension ( );
+
+	// make sure the level exists before trying to change, so that
+	// a typo at the server console won't end the game
+	// handle addon packs through reloadEngine
+	$string.equals( sprintf( "maps/%s.map", map.c_str ( ) ) );
+	ff = fileSystem.FindFile( $string.toString ( ), true );
+	switch ( ff ) {
+	case findFile_t.FIND_NO:
+		common.Printf( "Can't find map %s\n", $string.c_str ( ) );
+		return;
+	case findFile_t.FIND_ADDON:
+		todoThrow ( );
+		//common.Printf( "map %s is in an addon pak - reloading\n", $string.c_str ( ) );
+		//rl_args.AppendArg( "map" );
+		//rl_args.AppendArg( map );
+		//cmdSystem.SetupReloadEngine( rl_args );
+		return;
+	default:
+		break;
+	}
+
+	cvarSystem.SetCVarBool( "developer", false );
+	sessLocal.StartNewGame( map, true );
+}
+
 ///*
 //==================
 //Session_DevMap_f
@@ -383,10 +385,10 @@
 //	UnloadMap();
 //
 //	// disconnect async client
-//	idAsyncNetwork::client.DisconnectFromServer();
+//	idAsyncNetwork.client.DisconnectFromServer();
 //
 //	// kill async server
-//	idAsyncNetwork::server.Kill();
+//	idAsyncNetwork.server.Kill();
 //
 //	if ( sw ) {
 //		sw.StopAllSounds();
@@ -1142,12 +1144,12 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //}
 //
 //
-///*
-//===============
-//idSessionLocal::StartNewGame
-//===============
-//*/
-//void idSessionLocal::StartNewGame( const char *mapName, bool devmap ) {
+/*
+===============
+idSessionLocal::StartNewGame
+===============
+*/
+idSessionLocal.prototype.StartNewGame = function ( mapName: string, devmap: boolean = false): void {
 //#ifdef	ID_DEDICATED
 //	common.Printf( "Dedicated servers cannot start singleplayer games.\n" );
 //	return;
@@ -1169,36 +1171,36 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //		}
 //	}
 //#endif
-//	if ( idAsyncNetwork::server.IsActive() ) {
-//		common.Printf("Server running, use si_map / serverMapRestart\n");
-//		return;
-//	}
-//	if ( idAsyncNetwork::client.IsActive() ) {
-//		common.Printf("Client running, disconnect from server first\n");
-//		return;
-//	}
-//
-//	// clear the userInfo so the player starts out with the defaults
-//	mapSpawnData.userInfo[0].Clear();
-//	mapSpawnData.persistentPlayerInfo[0].Clear();
-//	mapSpawnData.userInfo[0] = *cvarSystem.MoveCVarsToDict( CVAR_USERINFO );
-//
-//	mapSpawnData.serverInfo.Clear();
-//	mapSpawnData.serverInfo = *cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO );
-//	mapSpawnData.serverInfo.Set( "si_gameType", "singleplayer" );
-//
-//	// set the devmap key so any play testing items will be given at
-//	// spawn time to set approximately the right weapons and ammo
-//	if(devmap) {
-//		mapSpawnData.serverInfo.Set( "devmap", "1" );
-//	}
-//
-//	mapSpawnData.syncedCVars.Clear();
-//	mapSpawnData.syncedCVars = *cvarSystem.MoveCVarsToDict( CVAR_NETWORKSYNC );
-//
-//	MoveToNewMap( mapName );
+	if ( idAsyncNetwork.server.IsActive ( ) ) {
+		common.Printf( "Server running, use si_map / serverMapRestart\n" );
+		return;
+	}
+	if ( idAsyncNetwork.client.IsActive ( ) ) {
+		common.Printf( "Client running, disconnect from server first\n" );
+		return;
+	}
+
+	// clear the userInfo so the player starts out with the defaults
+	this.mapSpawnData.userInfo[0].Clear ( );
+	this.mapSpawnData.persistentPlayerInfo[0].Clear ( );
+	this.mapSpawnData.userInfo[0].equals( cvarSystem.MoveCVarsToDict( CVAR_USERINFO ) );
+
+	this.mapSpawnData.serverInfo.Clear ( );
+	this.mapSpawnData.serverInfo.equals( cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO ) );
+	this.mapSpawnData.serverInfo.Set( "si_gameType", "singleplayer" );
+
+	// set the devmap key so any play testing items will be given at
+	// spawn time to set approximately the right weapons and ammo
+	if ( this.devmap ) {
+		this.mapSpawnData.serverInfo.Set( "devmap", "1" );
+	}
+
+	this.mapSpawnData.syncedCVars.Clear ( );
+	this.mapSpawnData.syncedCVars.equals( cvarSystem.MoveCVarsToDict( CVAR_NETWORKSYNC ) );
+
+	this.MoveToNewMap( mapName );
 //#endif
-//}
+};
 //
 ///*
 //===============
@@ -1215,26 +1217,26 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //	return va( "^3AutoSave:^0 %s", mapName );
 //}
 //
-///*
-//===============
-//idSessionLocal::MoveToNewMap
-//
-//Leaves the existing userinfo and serverinfo
-//===============
-//*/
-//void idSessionLocal::MoveToNewMap( const char *mapName ) {
-//	mapSpawnData.serverInfo.Set( "si_map", mapName );
-//
-//	ExecuteMapChange();
-//
-//	if ( !mapSpawnData.serverInfo.GetBool("devmap") ) {
-//		// Autosave at the beginning of the level
-//		SaveGame( GetAutoSaveName( mapName ), true );
-//	}
-//
-//	SetGUI( NULL, NULL );
-//}
-//
+/*
+===============
+idSessionLocal::MoveToNewMap
+
+Leaves the existing userinfo and serverinfo
+===============
+*/
+idSessionLocal.prototype.StartNewGame = function MoveToNewMap ( mapName: string ): void {
+	this.mapSpawnData.serverInfo.Set( "si_map", mapName );
+
+	this.ExecuteMapChange ( );
+
+	if ( !this.mapSpawnData.serverInfo.GetBool( "devmap" ) ) {
+		// Autosave at the beginning of the level
+		this.SaveGame( this.GetAutoSaveName( mapName ), true );
+	}
+
+	this.SetGUI( NULL, NULL );
+};
+
 ///*
 //==============
 //SaveCmdDemoFromFile
@@ -1624,7 +1626,7 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //
 //	// set the user info
 //	for ( i = 0; i < numClients; i++ ) {
-//		game.SetUserInfo( i, mapSpawnData.userInfo[i], idAsyncNetwork::client.IsActive(), false );
+//		game.SetUserInfo( i, mapSpawnData.userInfo[i], idAsyncNetwork.client.IsActive(), false );
 //		game.SetPersistentPlayerInfo( i, mapSpawnData.persistentPlayerInfo[i] );
 //	}
 //
@@ -1637,11 +1639,11 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //			savegameFile = NULL;
 //
 //			game.SetServerInfo( mapSpawnData.serverInfo );
-//			game.InitFromNewMap( fullMapName + ".map", rw, sw, idAsyncNetwork::server.IsActive(), idAsyncNetwork::client.IsActive(), Sys_Milliseconds() );
+//			game.InitFromNewMap( fullMapName + ".map", rw, sw, idAsyncNetwork.server.IsActive(), idAsyncNetwork.client.IsActive(), Sys_Milliseconds() );
 //		}
 //	} else {
 //		game.SetServerInfo( mapSpawnData.serverInfo );
-//		game.InitFromNewMap( fullMapName + ".map", rw, sw, idAsyncNetwork::server.IsActive(), idAsyncNetwork::client.IsActive(), Sys_Milliseconds() );
+//		game.InitFromNewMap( fullMapName + ".map", rw, sw, idAsyncNetwork.server.IsActive(), idAsyncNetwork.client.IsActive(), Sys_Milliseconds() );
 //	}
 //
 //	if ( !idAsyncNetwork::IsActive() && !loadingSaveGame ) {
@@ -2359,8 +2361,8 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //
 //	UpdateScreen();
 //
-//	idAsyncNetwork::client.PacifierUpdate();
-//	idAsyncNetwork::server.PacifierUpdate();
+//	idAsyncNetwork.client.PacifierUpdate();
+//	idAsyncNetwork.server.PacifierUpdate();
 //}
 //
 ///*
@@ -2851,24 +2853,24 @@ so commands, cvars, files, etc are all available
 //	cmdSystem.AddCommand( "writePrecache", Sess_WritePrecache_f, cmdFlags_t.CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "writes precache commands" );
 
 ////#ifndef	ID_DEDICATED
-//	cmdSystem.AddCommand( "map", Session_Map_f, cmdFlags_t.CMD_FL_SYSTEM, "loads a map", idCmdSystem::ArgCompletion_MapName );
-//	cmdSystem.AddCommand( "devmap", Session_DevMap_f, cmdFlags_t.CMD_FL_SYSTEM, "loads a map in developer mode", idCmdSystem::ArgCompletion_MapName );
-//	cmdSystem.AddCommand( "testmap", Session_TestMap_f, cmdFlags_t.CMD_FL_SYSTEM, "tests a map", idCmdSystem::ArgCompletion_MapName );
+	cmdSystem.AddCommand( "map", Session_Map_f, cmdFlags_t.CMD_FL_SYSTEM, "loads a map", ArgCompletion_MapName );
+	//cmdSystem.AddCommand( "devmap", Session_DevMap_f, cmdFlags_t.CMD_FL_SYSTEM, "loads a map in developer mode", idCmdSystem::ArgCompletion_MapName );
+	//cmdSystem.AddCommand( "testmap", Session_TestMap_f, cmdFlags_t.CMD_FL_SYSTEM, "tests a map", idCmdSystem::ArgCompletion_MapName );
 
-//	cmdSystem.AddCommand( "writeCmdDemo", Session_WriteCmdDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "writes a command demo" );
-//	cmdSystem.AddCommand( "playCmdDemo", Session_PlayCmdDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "plays back a command demo" );
-//	cmdSystem.AddCommand( "timeCmdDemo", Session_TimeCmdDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "times a command demo" );
-//	cmdSystem.AddCommand( "exitCmdDemo", Session_ExitCmdDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "exits a command demo" );
-//	cmdSystem.AddCommand( "aviCmdDemo", Session_AVICmdDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "writes AVIs for a command demo" );
-//	cmdSystem.AddCommand( "aviGame", Session_AVIGame_f, cmdFlags_t.CMD_FL_SYSTEM, "writes AVIs for the current game" );
+	//cmdSystem.AddCommand( "writeCmdDemo", Session_WriteCmdDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "writes a command demo" );
+	//cmdSystem.AddCommand( "playCmdDemo", Session_PlayCmdDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "plays back a command demo" );
+	//cmdSystem.AddCommand( "timeCmdDemo", Session_TimeCmdDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "times a command demo" );
+	//cmdSystem.AddCommand( "exitCmdDemo", Session_ExitCmdDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "exits a command demo" );
+	//cmdSystem.AddCommand( "aviCmdDemo", Session_AVICmdDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "writes AVIs for a command demo" );
+	//cmdSystem.AddCommand( "aviGame", Session_AVIGame_f, cmdFlags_t.CMD_FL_SYSTEM, "writes AVIs for the current game" );
 
-//	cmdSystem.AddCommand( "recordDemo", Session_RecordDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "records a demo" );
-//	cmdSystem.AddCommand( "stopRecording", Session_StopRecordingDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "stops demo recording" );
-//	cmdSystem.AddCommand( "playDemo", Session_PlayDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "plays back a demo", idCmdSystem::ArgCompletion_DemoName );
-//	cmdSystem.AddCommand( "timeDemo", Session_TimeDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "times a demo", idCmdSystem::ArgCompletion_DemoName );
-//	cmdSystem.AddCommand( "timeDemoQuit", Session_TimeDemoQuit_f, cmdFlags_t.CMD_FL_SYSTEM, "times a demo and quits", idCmdSystem::ArgCompletion_DemoName );
-//	cmdSystem.AddCommand( "aviDemo", Session_AVIDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "writes AVIs for a demo", idCmdSystem::ArgCompletion_DemoName );
-//	cmdSystem.AddCommand( "compressDemo", Session_CompressDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "compresses a demo file", idCmdSystem::ArgCompletion_DemoName );
+	//cmdSystem.AddCommand( "recordDemo", Session_RecordDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "records a demo" );
+	//cmdSystem.AddCommand( "stopRecording", Session_StopRecordingDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "stops demo recording" );
+	//cmdSystem.AddCommand( "playDemo", Session_PlayDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "plays back a demo", idCmdSystem::ArgCompletion_DemoName );
+	//cmdSystem.AddCommand( "timeDemo", Session_TimeDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "times a demo", idCmdSystem::ArgCompletion_DemoName );
+	//cmdSystem.AddCommand( "timeDemoQuit", Session_TimeDemoQuit_f, cmdFlags_t.CMD_FL_SYSTEM, "times a demo and quits", idCmdSystem::ArgCompletion_DemoName );
+	//cmdSystem.AddCommand( "aviDemo", Session_AVIDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "writes AVIs for a demo", idCmdSystem::ArgCompletion_DemoName );
+	//cmdSystem.AddCommand( "compressDemo", Session_CompressDemo_f, cmdFlags_t.CMD_FL_SYSTEM, "compresses a demo file", idCmdSystem::ArgCompletion_DemoName );
 ////#endif
 
 //	cmdSystem.AddCommand( "disconnect", Session_Disconnect_f, cmdFlags_t.CMD_FL_SYSTEM, "disconnects from a game" );
@@ -2937,12 +2939,12 @@ so commands, cvars, files, etc are all available
 //===============
 //*/
 //int idSessionLocal::GetLocalClientNum() {
-//	if ( idAsyncNetwork::client.IsActive() ) {
-//		return idAsyncNetwork::client.GetLocalClientNum();
-//	} else if ( idAsyncNetwork::server.IsActive() ) {
+//	if ( idAsyncNetwork.client.IsActive() ) {
+//		return idAsyncNetwork.client.GetLocalClientNum();
+//	} else if ( idAsyncNetwork.server.IsActive() ) {
 //		if ( idAsyncNetwork::serverDedicated.GetInteger() == 0 ) {
 //			return 0;
-//		} else if ( idAsyncNetwork::server.IsClientInGame( idAsyncNetwork::serverDrawClient.GetInteger() ) ) {
+//		} else if ( idAsyncNetwork.server.IsClientInGame( idAsyncNetwork::serverDrawClient.GetInteger() ) ) {
 //			return idAsyncNetwork::serverDrawClient.GetInteger();
 //		} else {
 //			return -1;
@@ -3098,7 +3100,7 @@ so commands, cvars, files, etc are all available
 //void idSessionLocal::EmitGameAuth( void ) {
 //	// make sure the auth reply is empty, we use it to indicate an auth reply
 //	authMsg.Empty();
-//	if ( idAsyncNetwork::client.SendAuthCheck( cdkey_state == CDKEY_CHECKING ? cdkey : NULL, xpkey_state == CDKEY_CHECKING ? xpkey : NULL ) ) {		
+//	if ( idAsyncNetwork.client.SendAuthCheck( cdkey_state == CDKEY_CHECKING ? cdkey : NULL, xpkey_state == CDKEY_CHECKING ? xpkey : NULL ) ) {		
 //		authEmitTimeout = Sys_Milliseconds() + CDKEY_AUTH_TIMEOUT;
 //		common.DPrintf( "authing with the master..\n" );
 //	} else {

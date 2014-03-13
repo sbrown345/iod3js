@@ -519,6 +519,8 @@ idCmdSystemLocal::ExecuteTokenizedString
 			return;
 		}
 
+		debugger;
+		todoThrow( "Unknown command '" + args.Argv( 0 ) + "'\n" );
 		common.Printf( "Unknown command '%s'\n", args.Argv( 0 ) );
 	}
 

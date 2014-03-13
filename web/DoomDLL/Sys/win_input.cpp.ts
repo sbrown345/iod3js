@@ -602,17 +602,18 @@ function Sys_InitScanTable ( ): void {
 //	return keyScanTable[41 + ( shifted ? 128 : 0 )];
 //}
 //
-///*
-//==================
-//IN_Frame
-//
-//Called every frame, even if not generating commands
-//==================
-//*/
-//void IN_Frame( void ) {
-//	bool	shouldGrab = true;
-//
-//	if ( !win32.in_mouse.GetBool() ) {
+/*
+==================
+IN_Frame
+
+Called every frame, even if not generating commands
+==================
+*/
+function IN_Frame ( ): void {
+	todo( "IN_Frame");
+//	var shouldGrab = true;
+
+//	if ( !win32.in_mouse.GetBool ( ) ) {
 //		shouldGrab = false;
 //	}
 //	// if fullscreen, we always want the mouse
@@ -627,24 +628,25 @@ function Sys_InitScanTable ( ): void {
 //			shouldGrab = false;
 //		}
 //	}
-//
+
 //	if ( shouldGrab != win32.mouseGrabbed ) {
-//		if ( win32.mouseGrabbed ) {
-//			IN_DeactivateMouse();
-//		} else {
-//			IN_ActivateMouse();
-//
-//#if 0	// if we can't reacquire, try reinitializing
-//			if ( !IN_InitDIMouse() ) {
-//				win32.in_mouse.SetBool( false );
-//				return;
-//			}
-//#endif
-//		}
+//		todoThrow ( );
+////		if ( win32.mouseGrabbed ) {
+////			IN_DeactivateMouse ( );
+////		} else {
+////			IN_ActivateMouse ( );
+
+//////#if 0	// if we can't reacquire, try reinitializing
+//////			if ( !IN_InitDIMouse() ) {
+//////				win32.in_mouse.SetBool( false );
+//////				return;
+//////			}
+//////#endif
+////		}
 //	}
-//}
-//
-//
+}
+
+
 //void	Sys_GrabMouseCursor( bool grabIt ) {
 //#ifndef	ID_DEDICATED
 //	win32.mouseReleased = !grabIt;

@@ -101,10 +101,10 @@ class Win32Vars_t {
 ////	HWND			hWnd;
 ////	HINSTANCE		hInstance;
 ////
-////	bool			activeApp;			// changed with WM_ACTIVATE messages
-////	bool			mouseReleased;		// when the game has the console down or is doing a long operation
-////	bool			movingWindow;		// inhibit mouse grab when dragging the window
-////	bool			mouseGrabbed;		// current state of grab and hide
+	activeApp:boolean;			// changed with WM_ACTIVATE messages
+	mouseReleased: boolean;		// when the game has the console down or is doing a long operation
+	movingWindow: boolean;		// inhibit mouse grab when dragging the window
+	mouseGrabbed: boolean;		// current state of grab and hide
 ////
 ////	OSVERSIONINFOEX	osversion;
 ////
@@ -114,7 +114,7 @@ class Win32Vars_t {
 ////	// can know the exact time of an event (not really needed now that we use async direct input)
 ////	int				sysMsgTime;
 ////
-////	bool			windowClassRegistered;
+	windowClassRegistered:boolean;
 ////
 ////	WNDPROC			wndproc;
 ////
@@ -135,19 +135,19 @@ class Win32Vars_t {
 ////	unsigned short	oldHardwareGamma[3][256];
 ////	// desktop gamma is saved here for restoration at exit
 ////
-	static sys_arch:idCVar;
-	static sys_cpustring:idCVar;
-	static in_mouse:idCVar;
-	static win_allowAltTab:idCVar;
-	static win_notaskkeys:idCVar;
-	static win_username:idCVar;
-	static win_xpos:idCVar;			// archived X coordinate of window position
-	static win_ypos:idCVar;			// archived Y coordinate of window position
-	static win_outputDebugString:idCVar;
-	static win_outputEditString:idCVar;
-	static win_viewlog:idCVar;
-	static win_timerUpdate:idCVar;
-	static win_allowMultipleInstances:idCVar;
+	/*static*/ sys_arch:idCVar;
+	/*static*/ sys_cpustring: idCVar;
+	/*static*/ in_mouse: idCVar;
+	/*static*/ win_allowAltTab: idCVar;
+	/*static*/ win_notaskkeys: idCVar;
+	/*static*/ win_username: idCVar;
+	/*static*/ win_xpos: idCVar;			// archived X coordinate of window position
+	/*static*/ win_ypos: idCVar;			// archived Y coordinate of window position
+	/*static*/ win_outputDebugString: idCVar;
+	/*static*/ win_outputEditString: idCVar;
+	/*static*/ win_viewlog: idCVar;
+	/*static*/ win_timerUpdate: idCVar;
+	/*static*/ win_allowMultipleInstances:idCVar;
 ////
 ////	CRITICAL_SECTION criticalSections[MAX_CRITICAL_SECTIONS];
 ////	HANDLE			backgroundDownloadSemaphore;

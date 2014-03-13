@@ -63,7 +63,7 @@ class idEventLoop {
 	//
 	com_pushedEventsHead: number;
 	com_pushedEventsTail: number; //	int				
-	//	sysEvent_t		com_pushedEvents[MAX_PUSHED_EVENTS];
+	com_pushedEvents = new Array<sysEvent_t>(MAX_PUSHED_EVENTS);
 	//
 	//	static idCVar	com_journal;
 	//
@@ -98,48 +98,50 @@ class idEventLoop {
 	//idEventLoop::~idEventLoop( void ) {
 	//}
 	//
-	///*
-	//=================
-	//idEventLoop::GetRealEvent
-	//=================
-	//*/
-	//sysEvent_t	idEventLoop::GetRealEvent( void ) {
-	//	int			r;
-	//	sysEvent_t	ev;
-	//
-	//	// either get an event from the system or the journal file
-	//	if ( idEventLoop.com_journal.GetInteger() == 2 ) {
-	//		r = com_journalFile.Read( &ev, sizeof(ev) );
-	//		if ( r != sizeof(ev) ) {
-	//			common.FatalError( "Error reading from journal file" );
-	//		}
-	//		if ( ev.evPtrLength ) {
-	//			ev.evPtr = Mem_ClearedAlloc( ev.evPtrLength );
-	//			r = com_journalFile.Read( ev.evPtr, ev.evPtrLength );
-	//			if ( r != ev.evPtrLength ) {
-	//				common.FatalError( "Error reading from journal file" );
-	//			}
-	//		}
-	//	} else {
-	//		ev = Sys_GetEvent();
-	//
-	//		// write the journal value out if needed
-	//		if ( idEventLoop.com_journal.GetInteger() == 1 ) {
-	//			r = com_journalFile.Write( &ev, sizeof(ev) );
-	//			if ( r != sizeof(ev) ) {
-	//				common.FatalError( "Error writing to journal file" );
-	//			}
-	//			if ( ev.evPtrLength ) {
-	//				r = com_journalFile.Write( ev.evPtr, ev.evPtrLength );
-	//				if ( r != ev.evPtrLength ) {
-	//					common.FatalError( "Error writing to journal file" );
-	//				}
-	//			}
-	//		}
-	//	}
-	//
-	//	return ev;
-	//}
+	/*
+	=================
+	idEventLoop::GetRealEvent
+	=================
+	*/
+	GetRealEvent ( ): sysEvent_t {
+		var /*int*/r: number;
+		var ev: sysEvent_t;
+
+		// either get an event from the system or the journal file
+		if ( idEventLoop.com_journal.GetInteger ( ) == 2 ) {
+			todoThrow ( );
+			//r = com_journalFile.Read( &ev, sizeof(ev) );
+			//if ( r != sizeof(ev) ) {
+			//	common.FatalError( "Error reading from journal file" );
+			//}
+			//if ( ev.evPtrLength ) {
+			//	ev.evPtr = Mem_ClearedAlloc( ev.evPtrLength );
+			//	r = com_journalFile.Read( ev.evPtr, ev.evPtrLength );
+			//	if ( r != ev.evPtrLength ) {
+			//		common.FatalError( "Error reading from journal file" );
+			//	}
+			//}
+		} else {
+			ev = Sys_GetEvent ( );
+
+			// write the journal value out if needed
+			if ( idEventLoop.com_journal.GetInteger ( ) == 1 ) {
+				todoThrow ( );
+				//r = com_journalFile.Write( ev, sizeof(ev) );
+				//if ( r != sizeof(ev) ) {
+				//	common.FatalError( "Error writing to journal file" );
+				//}
+				//if ( ev.evPtrLength ) {
+				//	r = com_journalFile.Write( ev.evPtr, ev.evPtrLength );
+				//	if ( r != ev.evPtrLength ) {
+				//		common.FatalError( "Error writing to journal file" );
+				//	}
+				//}
+			}
+		}
+
+		return ev;
+	}
 	//
 	///*
 	//=================
@@ -150,9 +152,9 @@ class idEventLoop {
 	//	sysEvent_t		*ev;
 	//	static			bool printedWarning;
 	//
-	//	ev = &com_pushedEvents[ com_pushedEventsHead & (MAX_PUSHED_EVENTS-1) ];
+	//	ev = &com_pushedEvents[ this.com_pushedEventsHead & (MAX_PUSHED_EVENTS-1) ];
 	//
-	//	if ( com_pushedEventsHead - com_pushedEventsTail >= MAX_PUSHED_EVENTS ) {
+	//	if ( this.com_pushedEventsHead - this.com_pushedEventsTail >= MAX_PUSHED_EVENTS ) {
 	//
 	//		// don't print the warning constantly, or it can give time for more...
 	//		if ( !printedWarning ) {
@@ -163,28 +165,28 @@ class idEventLoop {
 	//		if ( ev.evPtr ) {
 	//			Mem_Free( ev.evPtr );
 	//		}
-	//		com_pushedEventsTail++;
+	//		this.com_pushedEventsTail++;
 	//	} else {
 	//		printedWarning = false;
 	//	}
 	//
 	//	*ev = *event;
-	//	com_pushedEventsHead++;
+	//	this.com_pushedEventsHead++;
 	//}
 	//
-	///*
-	//=================
-	//idEventLoop::GetEvent
-	//=================
-	//*/
-	//sysEvent_t idEventLoop::GetEvent( void ) {
-	//	if ( com_pushedEventsHead > com_pushedEventsTail ) {
-	//		com_pushedEventsTail++;
-	//		return com_pushedEvents[ (com_pushedEventsTail-1) & (MAX_PUSHED_EVENTS-1) ];
-	//	}
-	//	return GetRealEvent();
-	//}
-	//
+	/*
+	=================
+	idEventLoop::GetEvent
+	=================
+	*/
+	GetEvent ( ): sysEvent_t {
+		if ( this.com_pushedEventsHead > this.com_pushedEventsTail ) {
+			this.com_pushedEventsTail++;
+			return this.com_pushedEvents[( this.com_pushedEventsTail - 1 ) & ( MAX_PUSHED_EVENTS - 1 )];
+		}
+		return this.GetRealEvent ( );
+	}
+
 	///*
 	//=================
 	//idEventLoop::ProcessEvent
@@ -210,33 +212,33 @@ class idEventLoop {
 	//	}
 	//}
 	//
-	///*
-	//===============
-	//idEventLoop::RunEventLoop
-	//===============
-	//*/
-	//int idEventLoop::RunEventLoop( bool commandExecution ) {
-	//	sysEvent_t	ev;
-	//
-	//	while ( 1 ) {
-	//
-	//		if ( commandExecution ) {
-	//			// execute any bound commands before processing another event
-	//			cmdSystem.ExecuteCommandBuffer();
-	//		}
-	//
-	//		ev = GetEvent();
-	//
-	//		// if no more events are available
-	//		if ( ev.evType == SE_NONE ) {
-	//			return 0;
-	//		}
-	//		ProcessEvent( ev );
-	//	}
-	//
-	//	return 0;	// never reached
-	//}
-	//
+	/*
+	===============
+	idEventLoop::RunEventLoop
+	===============
+	*/
+	RunEventLoop ( commandExecution: boolean=true ): number {
+		var ev: sysEvent_t;
+
+		while ( 1 ) {
+
+			if ( commandExecution ) {
+				// execute any bound commands before processing another event
+				cmdSystem.ExecuteCommandBuffer ( );
+			}
+			todoThrow ( );
+			//ev = this.GetEvent ( );
+
+			//// if no more events are available
+			//if ( ev.evType == sysEventType_t.SE_NONE ) {
+			//	return 0;
+			//}
+			//this.ProcessEvent( ev );
+		}
+
+		return 0; // never reached
+	}
+
 	/*
 	=============
 	idEventLoop::Init

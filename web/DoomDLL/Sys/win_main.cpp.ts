@@ -49,21 +49,21 @@
 ////#include "rc/CreateResourceIDs.h"
 ////#include "../../renderer/tr_local.h"
 
-var win32 = Win32Vars_t;
+var win32 = new Win32Vars_t;
 
-Win32Vars_t.sys_arch= new idCVar( "sys_arch", "", CVAR_SYSTEM | CVAR_INIT, "" );
-Win32Vars_t.sys_cpustring= new idCVar( "sys_cpustring", "detect", CVAR_SYSTEM | CVAR_INIT, "" );
-Win32Vars_t.in_mouse= new idCVar( "in_mouse", "1", CVAR_SYSTEM | CVAR_BOOL, "enable mouse input" );
-Win32Vars_t.win_allowAltTab= new idCVar( "win_allowAltTab", "0", CVAR_SYSTEM | CVAR_BOOL, "allow Alt-Tab when fullscreen" );
-Win32Vars_t.win_notaskkeys= new idCVar( "win_notaskkeys", "0", CVAR_SYSTEM | CVAR_INTEGER, "disable windows task keys" );
-Win32Vars_t.win_username= new idCVar( "win_username", "", CVAR_SYSTEM | CVAR_INIT, "windows user name" );
-Win32Vars_t.win_xpos= new idCVar( "win_xpos", "3", CVAR_SYSTEM | CVAR_ARCHIVE | CVAR_INTEGER, "horizontal position of window" );
-Win32Vars_t.win_ypos= new idCVar( "win_ypos", "22", CVAR_SYSTEM | CVAR_ARCHIVE | CVAR_INTEGER, "vertical position of window" );
-Win32Vars_t.win_outputDebugString= new idCVar( "win_outputDebugString", "0", CVAR_SYSTEM | CVAR_BOOL, "" );
-Win32Vars_t.win_outputEditString= new idCVar( "win_outputEditString", "1", CVAR_SYSTEM | CVAR_BOOL, "" );
-Win32Vars_t.win_viewlog= new idCVar( "win_viewlog", "0", CVAR_SYSTEM | CVAR_INTEGER, "" );
-Win32Vars_t.win_timerUpdate= new idCVar( "win_timerUpdate", "0", CVAR_SYSTEM | CVAR_BOOL, "allows the game to be updated while dragging the window" );
-Win32Vars_t.win_allowMultipleInstances= new idCVar( "win_allowMultipleInstances", "0", CVAR_SYSTEM | CVAR_BOOL, "allow multiple instances running concurrently" );
+win32.sys_arch = new idCVar("sys_arch", "", CVAR_SYSTEM | CVAR_INIT, "");
+win32.sys_cpustring = new idCVar("sys_cpustring", "detect", CVAR_SYSTEM | CVAR_INIT, "");
+win32.in_mouse = new idCVar("in_mouse", "1", CVAR_SYSTEM | CVAR_BOOL, "enable mouse input");
+win32.win_allowAltTab = new idCVar("win_allowAltTab", "0", CVAR_SYSTEM | CVAR_BOOL, "allow Alt-Tab when fullscreen");
+win32.win_notaskkeys = new idCVar("win_notaskkeys", "0", CVAR_SYSTEM | CVAR_INTEGER, "disable windows task keys");
+win32.win_username = new idCVar("win_username", "", CVAR_SYSTEM | CVAR_INIT, "windows user name");
+win32.win_xpos = new idCVar("win_xpos", "3", CVAR_SYSTEM | CVAR_ARCHIVE | CVAR_INTEGER, "horizontal position of window");
+win32.win_ypos = new idCVar("win_ypos", "22", CVAR_SYSTEM | CVAR_ARCHIVE | CVAR_INTEGER, "vertical position of window");
+win32.win_outputDebugString = new idCVar("win_outputDebugString", "0", CVAR_SYSTEM | CVAR_BOOL, "");
+win32.win_outputEditString = new idCVar("win_outputEditString", "1", CVAR_SYSTEM | CVAR_BOOL, "");
+win32.win_viewlog = new idCVar("win_viewlog", "0", CVAR_SYSTEM | CVAR_INTEGER, "");
+win32.win_timerUpdate = new idCVar("win_timerUpdate", "0", CVAR_SYSTEM | CVAR_BOOL, "allows the game to be updated while dragging the window");
+win32.win_allowMultipleInstances= new idCVar( "win_allowMultipleInstances", "0", CVAR_SYSTEM | CVAR_BOOL, "allow multiple instances running concurrently" );
 
 
 var sys_cmdline: string;
@@ -709,20 +709,20 @@ function Sys_MemFrame ( ): void {
 ////	}
 ////}
 
-/////*
-////========================================================================
+/*
+========================================================================
 
-////EVENT LOOP
+EVENT LOOP
 
-////========================================================================
-////*/
+========================================================================
+*/
 
-////#define	MAX_QUED_EVENTS		256
-////#define	MASK_QUED_EVENTS	( MAX_QUED_EVENTS - 1 )
+var MAX_QUED_EVENTS = 256;
+var MASK_QUED_EVENTS = ( MAX_QUED_EVENTS - 1 );
 
-////sysEvent_t	eventQue[MAX_QUED_EVENTS];
-////int			eventHead = 0;
-////int			eventTail = 0;
+var eventQue = new Array<sysEvent_t>( MAX_QUED_EVENTS );
+var eventHead = 0;
+var eventTail = 0;
 
 /////*
 ////================
@@ -790,40 +790,42 @@ function Sys_MemFrame ( ): void {
 ////	}
 ////}
 
-/////*
-////================
-////Sys_GenerateEvents
-////================
-////*/
-////void Sys_GenerateEvents( void ) {
-////	static int entered = false;
-////	char *s;
+/*
+================
+Sys_GenerateEvents
+================
+*/
+var Sys_GenerateEvents_entered = false;
 
-////	if ( entered ) {
-////		return;
-////	}
-////	entered = true;
+function Sys_GenerateEvents(): void {
+	var s:string;
 
-////	// pump the message loop
-////	Sys_PumpEvents();
+	if (Sys_GenerateEvents_entered ) {
+		return;
+	}
+	Sys_GenerateEvents_entered = true;
 
-////	// make sure mouse and joystick are only called once a frame
-////	IN_Frame();
+	// pump the message loop
+	todo( "Sys_PumpEvents();" );
 
-////	// check for console commands
-////	s = Sys_ConsoleInput();
-////	if ( s ) {
-////		char	*b;
-////		int		len;
+	// make sure mouse and joystick are only called once a frame
+	IN_Frame();
 
-////		len = strlen( s ) + 1;
-////		b = (char *)Mem_Alloc( len );
-////		strcpy( b, s );
-////		Sys_QueEvent( 0, SE_CONSOLE, 0, 0, len, b );
-////	}
+	// check for console commands
+	s = Sys_ConsoleInput();
+	if (s) {
+		todoThrow ( );
+		//char	*b;
+		//int		len;
 
-////	entered = false;
-////}
+		//len = strlen( s ) + 1;
+		//b = (char *)Mem_Alloc( len );
+		//strcpy( b, s );
+		//Sys_QueEvent( 0, SE_CONSOLE, 0, 0, len, b );
+	}
+
+	Sys_GenerateEvents_entered = false;
+}
 
 /////*
 ////================
@@ -834,25 +836,25 @@ function Sys_MemFrame ( ): void {
 ////	eventHead = eventTail = 0;
 ////}
 
-/////*
-////================
-////Sys_GetEvent
-////================
-////*/
-////sysEvent_t Sys_GetEvent( void ) {
-////	sysEvent_t	ev;
+/*
+================
+Sys_GetEvent
+================
+*/
+function Sys_GetEvent(): sysEvent_t {
+	var ev = new sysEvent_t;
 
-////	// return if we have data
-////	if ( eventHead > eventTail ) {
-////		eventTail++;
-////		return eventQue[ ( eventTail - 1 ) & MASK_QUED_EVENTS ];
-////	}
+	// return if we have data
+	if ( eventHead > eventTail ) {
+		eventTail++;
+		return eventQue[ ( eventTail - 1 ) & MASK_QUED_EVENTS ];
+	}
 
-////	// return the empty event 
-////	memset( &ev, 0, sizeof( ev ) );
+	// return the empty event 
+	ev.init ( );//memset( &ev, 0, sizeof( ev ) );
 
-////	return ev;
-////}
+	return ev;
+}
 
 //////================================================================
 

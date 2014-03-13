@@ -3163,7 +3163,7 @@ Used for streaming data out of either a
 separate file or a ZIP file.
 ===========
 */
-    OpenFileReadFlags ( relativePath: string, /*int */searchFlags: number, foundInPak: pack_t = null, allowCopyFiles = true, gamedir: string = null ): idFile {
+    OpenFileReadFlags ( relativePath: string, /*int */searchFlags: number, foundInPak: R<pack_t> = null, allowCopyFiles = true, gamedir: string = null ): idFile {
 	    var arr: ArrayBuffer;
 		var xhr = new XMLHttpRequest();
 		xhr["overrideMimeType"]('text/plain; charset=x-user-defined');
@@ -4160,34 +4160,36 @@ PerformingCopyFiles( ):boolean {
 ////	return file;
 ////}
 ////
-/////*
-////===============
-////idFileSystemLocal::FindFile
-////===============
-////*/
-//// findFile_t idFileSystemLocal::FindFile( const char *path, bool scheduleAddons ) {
-////	pack_t *pak;
-////	idFile *f = OpenFileReadFlags( path, FSFLAG_SEARCH_DIRS | FSFLAG_SEARCH_PAKS | FSFLAG_SEARCH_ADDONS, &pak );
-////	if ( !f ) {
-////		return FIND_NO;
-////	}
-////	if ( !pak ) {
-////		// found in FS, not even in paks
-////		return FIND_YES;
-////	}
-////	// marking addons for inclusion on reload - may need to do that even when already in the search path
-////	if ( scheduleAddons && pak.addon && addonChecksums.FindIndex( pak.checksum ) < 0 ) {
-////		addonChecksums.Append( pak.checksum );			
-////	}
-////	// an addon that's not on search list yet? that will require a restart
-////	if ( pak.addon && !pak.addon_search ) {
-////		delete f;
-////		return FIND_ADDON;
-////	}
-////	delete f;
-////	return FIND_YES;
-////}
-////
+/*
+===============
+idFileSystemLocal::FindFile
+===============
+*/
+	FindFile ( path: string, scheduleAddons: boolean ): findFile_t {
+		var pak = new R<pack_t> ( );
+		var f: idFile = this.OpenFileReadFlags( path, FSFLAG_SEARCH_DIRS | FSFLAG_SEARCH_PAKS | FSFLAG_SEARCH_ADDONS,  pak );
+		if ( !f ) {
+			return findFile_t.FIND_NO;
+		}
+		if ( !pak.$ ) {
+			// found in FS, not even in paks
+			return findFile_t.FIND_YES;
+		}
+
+		todo( "more FindFile" );
+		//// marking addons for inclusion on reload - may need to do that even when already in the search path
+		//if ( scheduleAddons && pak.$.addon && addonChecksums.FindIndex( pak.$.checksum ) < 0 ) {
+		//	addonChecksums.Append( pak.$.checksum );
+		//}
+		//// an addon that's not on search list yet? that will require a restart
+		//if ( pak.$.addon && !pak.$.addon_search ) {
+		//	$delete( f );
+		//	return findFile_t.FIND_ADDON;
+		//}
+		$delete( f );
+		return findFile_t.FIND_YES;
+	}
+
 /////*
 ////===============
 ////idFileSystemLocal::GetNumMaps

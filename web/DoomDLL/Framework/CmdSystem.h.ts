@@ -185,9 +185,10 @@ function ArgCompletion_Decl_Template ( type: declType_t ): ( /*const idCmdArgs &
 //	cmdSystem.ArgCompletion_FolderExtension( args, callback, "/", true, "", NULL );
 //}
 
-//ID_INLINE void idCmdSystem::ArgCompletion_MapName( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
-//	cmdSystem.ArgCompletion_FolderExtension( args, callback, "maps/", true, ".map", NULL );
-//}
+function ArgCompletion_MapName( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
+	todoThrow ( );
+	//cmdSystem.ArgCompletion_FolderExtension( args, callback, "maps/", true, ".map", NULL );
+}
 
 function ArgCompletion_ModelName ( /*const idCmdArgs &*/args:idCmdArgs, callback: (s: string) => void ):void {
 		todoThrow ( );

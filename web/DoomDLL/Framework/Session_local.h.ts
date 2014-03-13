@@ -62,14 +62,14 @@
 //					operator int() const { return timeStamp; }
 //};
 //
-//typedef struct {
-//	idDict			serverInfo;
-//	idDict			syncedCVars;
-//	idDict			userInfo[MAX_ASYNC_CLIENTS];
-//	idDict			persistentPlayerInfo[MAX_ASYNC_CLIENTS];
-//	usercmd_t		mapSpawnUsercmd[MAX_ASYNC_CLIENTS];		// needed for tracking delta angles
-//} mapSpawnData_t;
-//
+class mapSpawnData_t {
+	serverInfo = new idDict;
+	syncedCVars = new idDict;
+	userInfo = newStructArray<idDict>( idDict, MAX_ASYNC_CLIENTS );
+	persistentPlayerInfo = newStructArray<idDict>( idDict, MAX_ASYNC_CLIENTS );
+	mapSpawnUsercmd = newStructArray<usercmd_t>( usercmd_t, MAX_ASYNC_CLIENTS ); // needed for tracking delta angles
+}
+
 //typedef enum {
 //	TD_NO,
 //	TD_YES,
@@ -132,10 +132,10 @@ class idSessionLocal extends idSession {
 //
 //	int					GetLocalClientNum();
 //
-//	void				MoveToNewMap( const char *mapName );
-//
-//	// loads a map and starts a new game on it
-//	void				StartNewGame( const char *mapName, bool devmap = false );
+	MoveToNewMap ( mapName: string ): void { throw "placeholder"; }
+
+	// loads a map and starts a new game on it
+	StartNewGame ( mapName: string, devmap = false ): void { throw "placeholder"; }
 //	void				PlayIntroGui();
 //
 //	void				LoadSession( name:string );
@@ -187,11 +187,11 @@ class idSessionLocal extends idSession {
 //	// console print that happens
 	lastPacifierTime:number/*int*/;
 //
-//	// this is the information required to be set before ExecuteMapChange() is called,
-//	// which can be saved off at any time with the following commands so it can all be played back
-//	mapSpawnData_t		mapSpawnData;
-//	idStr				currentMapName;			// for checking reload on same level
-//	bool				mapSpawned;				// cleared on Stop()
+	// this is the information required to be set before ExecuteMapChange() is called,
+	// which can be saved off at any time with the following commands so it can all be played back
+	mapSpawnData = new mapSpawnData_t;
+	currentMapName = new idStr;			// for checking reload on same level
+	mapSpawned:boolean;				// cleared on Stop()
 //
 	numClients: number/*int*/;				// from serverInfo
 //
@@ -365,4 +365,4 @@ class idSessionLocal extends idSession {
 
 
 var sessLocal = new idSessionLocal();
-var session: idSession = sessLocal;
+var session: idSessionLocal = sessLocal;
