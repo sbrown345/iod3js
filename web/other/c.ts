@@ -60,6 +60,11 @@ function strchrContains ( str: string, character: string ): boolean {
 	return str.indexOf( character ) != -1;
 }
 
+
+function strstrContains ( str: string, character: string ): boolean {
+	return str.indexOf( character ) != -1;
+}
+
 function isdigit ( c: string ): number {
     return ( c >= "0" && c <= "9" ) ? 1 : 0;
 }
@@ -285,6 +290,10 @@ function $delete(obj: any): void {
 
 function OutputDebugString ( msg: string ) {
 	console.debug( "OutputDebugString: " + msg );
+}
+
+function SetCursor ( cursor: string ) {
+	document.body.style.cursor = cursor;
 }
 
 // track references

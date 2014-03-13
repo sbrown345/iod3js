@@ -2452,12 +2452,13 @@ idCommonLocal::PrintLoadingMessage
 ////	com_forceGenericSIMD.ClearModified();
 ////}
 
-/////*
-////=================
-////idCommonLocal::Frame
-////=================
-////*/
-////void idCommonLocal::Frame( ) {
+/*
+=================
+idCommonLocal::Frame
+=================
+*/
+	Frame ( ): void {
+		todoThrow ( );
 ////	try {
 
 ////		// pump all the events
@@ -2515,7 +2516,7 @@ idCommonLocal::PrintLoadingMessage
 ////	catch( idException & ) {
 ////		return;			// an ERP_DROP was thrown
 ////	}
-////}
+	}
 
 /////*
 ////=================

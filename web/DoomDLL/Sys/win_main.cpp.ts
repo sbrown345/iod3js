@@ -211,14 +211,14 @@ function Sys_CreateThread($function: /*xthread_t*/(/*void *parm*/) => number, pa
 ////#ifdef DEBUG
 
 
-////static unsigned int debug_total_alloc = 0;
-////static unsigned int debug_total_alloc_count = 0;
-////static unsigned int debug_current_alloc = 0;
-////static unsigned int debug_current_alloc_count = 0;
-////static unsigned int debug_frame_alloc = 0;
-////static unsigned int debug_frame_alloc_count = 0;
+var debug_total_alloc = 0;
+var debug_total_alloc_count = 0;
+var debug_current_alloc = 0;
+var debug_current_alloc_count = 0;
+var debug_frame_alloc = 0;
+var debug_frame_alloc_count = 0;
 
-////idCVar sys_showMallocs( "sys_showMallocs", "0", CVAR_SYSTEM, "" );
+var sys_showMallocs = new idCVar( "sys_showMallocs", "0", CVAR_SYSTEM, "" );
 
 ////// _HOOK_ALLOC, _HOOK_REALLOC, _HOOK_FREE
 
@@ -302,19 +302,19 @@ function Sys_CreateThread($function: /*xthread_t*/(/*void *parm*/) => number, pa
 ////  	common.Printf( "Current allocation %8dk in %d blocks\n", debug_current_alloc / 1024, debug_current_alloc_count );
 ////}
 
-/////*
-////==================
-////Sys_MemFrame
-////==================
-////*/
-////void Sys_MemFrame( void ) {
-////	if( sys_showMallocs.GetInteger() ) {
-////		common.Printf("Frame: %8dk in %5d blocks\n", debug_frame_alloc / 1024, debug_frame_alloc_count );
-////	}
+/*
+==================
+Sys_MemFrame
+==================
+*/
+function Sys_MemFrame ( ): void {
+	if ( sys_showMallocs.GetInteger ( ) ) {
+		common.Printf( "Frame: %8dk in %5d blocks\n", debug_frame_alloc / 1024, debug_frame_alloc_count );
+	}
 
-////	debug_frame_alloc = 0;
-////	debug_frame_alloc_count = 0;
-////}
+	debug_frame_alloc = 0;
+	debug_frame_alloc_count = 0;
+}
 
 ////#endif
 
@@ -1130,25 +1130,25 @@ function Sys_StartAsyncThread ( ): void {
 ////	return win32.sys_cpustring.GetString();
 ////}
 
-//////=======================================================================
+//=======================================================================
 
-//////#define SET_THREAD_AFFINITY
+//#define SET_THREAD_AFFINITY
 
 
-/////*
-////====================
-////Win_Frame
-////====================
-////*/
-////void Win_Frame( void ) {
-////	// if "viewlog" has been modified, show or hide the log console
-////	if ( win32.win_viewlog.IsModified() ) {
-////		if ( !com_skipRenderer.GetBool() && idAsyncNetwork::serverDedicated.GetInteger() != 1 ) {
-////			Sys_ShowConsole( win32.win_viewlog.GetInteger(), false );
-////		}
-////		win32.win_viewlog.ClearModified();
-////	}
-////}
+/*
+====================
+Win_Frame
+====================
+*/
+function Win_Frame ( ): void {
+	// if "viewlog" has been modified, show or hide the log console
+	if ( win32.win_viewlog.IsModified ( ) ) {
+		if ( !com_skipRenderer.GetBool ( ) && idAsyncNetwork.serverDedicated.GetInteger ( ) != 1 ) {
+			Sys_ShowConsole( win32.win_viewlog.GetInteger ( ), false );
+		}
+		win32.win_viewlog.ClearModified ( );
+	}
+}
 
 ////extern "C" { void _chkstk( int size ); };
 ////void clrstk( void );
@@ -1347,7 +1347,7 @@ WinMain
 */
 function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, /*LPSTR */lpCmdLine: string, /*int */nCmdShow: number): number {
 
-////	const HCURSOR hcurSave = ::SetCursor( LoadCursor( 0, IDC_WAIT ) );
+	var hcurSave = "wait";
 
 ////	Sys_SetPhysicalWorkMemory( 192 << 20, 1024 << 20 );
 
@@ -1407,29 +1407,29 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 	} else {
 		Sys_ShowConsole( 0, false );
 	}
-	todoThrow();
+	
 ////#ifdef SET_THREAD_AFFINITY 
 ////	// give the main thread an affinity for the first cpu
 ////	SetThreadAffinityMask( GetCurrentThread(), 1 );
 ////#endif
 
-////	::SetCursor( hcurSave );
+	SetCursor( hcurSave );
 
-////	// Launch the script debugger
-////	if ( strstr( lpCmdLine, "+debugger" ) ) {
-////		// DebuggerClientInit( lpCmdLine );
-////		return 0;
-////	}
+	// Launch the script debugger
+	if (strstrContains( lpCmdLine, "+debugger" ) ) {
+		// DebuggerClientInit( lpCmdLine );
+		return 0;
+	}
 
 ////	::SetFocus( win32.hWnd );
 
-////    // main game loop
-////	while( 1 ) {
+    // main game loop
+	while( 1 ) {
 
-////		Win_Frame();
+		Win_Frame();
 
 ////#ifdef DEBUG
-////		Sys_MemFrame();
+		Sys_MemFrame();
 ////#endif
 
 ////		// set exceptions, even if some crappy syscall changes them!
@@ -1480,9 +1480,11 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 ////			}
 ////		}
 ////#endif
-////		// run the game
-////		common.Frame();
-////	}
+		// run the game
+		common.Frame();
+
+		todoThrow( "put main loop in seperate fn" );
+	}
 
 	// never gets here
 	return 0;
