@@ -43,19 +43,25 @@ class idPoolStr extends idStr {
 	////	friend class idStrPool;
 	////
 	////public:
-	////						idPoolStr() { numUsers = 0; }
-	////						~idPoolStr() { assert( numUsers == 0 ); }
-	////
-	////						// returns total size of allocated memory
-	////	size_t				Allocated( void ) const { return idStr::Allocated(); }
+	constructor() {
+		super ( );
+		this.numUsers = 0;
+	}
+
+	destructor ( ): void {
+		assert(this.numUsers == 0); 
+	}
+
+	// returns total size of allocated memory
+	Allocated ( ): number { return super.Allocated ( ); }
 	////						// returns total size of allocated memory including size of string pool type
 	////	size_t				Size( void ) const { return sizeof( *this ) + Allocated(); }
-	////						// returns a pointer to the pool this string was allocated from
-	////	const idStrPool *	GetPool( void ) const { return this.pool; }
-	////
-	////private:
+	// returns a pointer to the pool this string was allocated from
+	GetPool ( ): idStrPool { return this.pool; }
+	
+	//private:
 	pool:idStrPool;
-	numUsers:number;////	mutable int			
+	numUsers:number;//	mutable int			
 };
 
 class idStrPool {

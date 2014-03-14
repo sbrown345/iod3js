@@ -47,7 +47,7 @@
 class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 	
 	Init ( ): void {
-		this.screenRect = new idRectangle( 0, 0, 640, 480 );
+		this.screenRect.equals( new idRectangle( 0, 0, 640, 480 ) );
 		this.dc.Init ( );
 	}
 //
@@ -171,7 +171,8 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 		if ( gui ) {
 			var /*int */c = this.guis.Num ( );
 			for ( var i = 0; i < c; i++ ) {
-				if ( this.guis[i] == gui ) {
+				if (this.guis[i] == gui) {
+					$delete( this.guis[i] );
 					delete this.guis[i];
 					this.guis.RemoveIndex( i );
 					return;
@@ -200,7 +201,7 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 				gui.SetUniqued( forceNOTUnique ? false : needUnique );
 				return gui;
 			} else {
-				delete gui;
+				$delete( gui );
 			}
 		}
 		return null;
@@ -225,7 +226,7 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 //}
 
 	//private:
-	screenRect: idRectangle;
+	screenRect = new idRectangle;
 	dc: idDeviceContext = new idDeviceContext();
 
 	guis = new idList<idUserInterfaceLocal/***/>(idUserInterfaceLocal, true);

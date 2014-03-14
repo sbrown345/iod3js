@@ -214,8 +214,8 @@ class idSessionLocal extends idSession {
 	lastGameTic:number/*int*/;		// while latchedTicNumber > lastGameTic, run game frames
 	lastDemoTic:number/*int*/;
 //	bool				syncNextGameFrame;
-//
-//
+
+
 //	bool				aviCaptureMode;		// if true, screenshots will be taken and sound captured
 //	idStr				aviDemoShortName;	// 
 //	float				aviDemoFrameCount;
@@ -226,14 +226,14 @@ class idSessionLocal extends idSession {
 	numDemoFrames:number/*int*/;		// for timeDemo and demoShot
 	demoTimeOffset:number/*int*/;
 //	renderView_t		currentDemoRenderView;
-//	// the next one will be read when 
-//	// com_frameTime + demoTimeOffset > currentDemoRenderView.
-//
-//	// TODO: make this private (after sync networking removal and idnet tweaks)
-//	idUserInterface *	guiActive;
-//	HandleGuiCommand_t	guiHandle;
-//
-//	idUserInterface *	guiInGame;
+	// the next one will be read when 
+	// com_frameTime + demoTimeOffset > currentDemoRenderView.
+
+	// TODO: make this private (after sync networking removal and idnet tweaks)
+	guiActive: idUserInterface;
+	guiHandle: (str: string) => string; /*HandleGuiCommand_t*/ 
+
+	guiInGame: idUserInterface;
 	guiMainMenu: idUserInterface;
 	guiMainMenu_MapList: idListGUI;		// easy map list handling
 	guiRestartMenu:idUserInterface;
@@ -242,10 +242,10 @@ class idSessionLocal extends idSession {
 	guiGameOver:idUserInterface;
 	guiTest:idUserInterface;
 	guiTakeNotes:idUserInterface;
-//	
-//	idUserInterface *	guiMsg;
-//	idUserInterface *	guiMsgRestore;				// store the calling GUI for restore
-//	idStr				msgFireBack[ 2 ];
+	
+	guiMsg: idUserInterface;
+	guiMsgRestore: idUserInterface ;				// store the calling GUI for restore
+	msgFireBack = [new idStr, new idStr];
 	msgRunning:boolean;
 	msgRetIndex:number/*int*/;
 	msgIgnoreButtons:boolean;

@@ -482,6 +482,7 @@
 /// <reference path="doomdll/framework/KeyInput.cpp.ts" />
 //#include "../framework/DemoFile.h"
 //#include "../framework/Session.h"
+/// <reference path="doomdll/framework/async/asyncnetwork.h.ts" /> // before session_local - some variables needed
 /// <reference path="doomdll/framework/session.h.ts" />
 /// <reference path="doomdll/framework/session_local.h.ts" />
 /// <reference path="doomdll/framework/session_menu.cpp.ts" />
@@ -495,7 +496,6 @@
 /// <reference path="doomdll/framework/async/asyncclient.cpp.ts" />
 /// <reference path="doomdll/framework/async/asyncserver.h.ts" />
 /// <reference path="doomdll/framework/async/asyncserver.cpp.ts" />
-/// <reference path="doomdll/framework/async/asyncnetwork.h.ts" />
 /// <reference path="doomdll/framework/async/asyncnetwork.cpp.ts" />
 /// <reference path="doomdll/framework/async/msgchannel.h.ts" />
 /// <reference path="doomdll/framework/async/msgchannel.cpp.ts" />

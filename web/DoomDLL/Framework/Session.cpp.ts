@@ -84,7 +84,7 @@ Restart the server on a different map
 */
 function Session_Map_f ( args: idCmdArgs ): void {
 	var map = new idStr, $string = new idStr;
-	todoThrow ( );
+	
 	var ff: findFile_t;
 	var rl_args = new idCmdArgs;
 
@@ -115,7 +115,7 @@ function Session_Map_f ( args: idCmdArgs ): void {
 	}
 
 	cvarSystem.SetCVarBool( "developer", false );
-	sessLocal.StartNewGame( map, true );
+	sessLocal.StartNewGame( map.toString ( ), true );
 }
 
 ///*
@@ -274,7 +274,7 @@ function Session_Map_f ( args: idCmdArgs ): void {
 //				idAsyncNetwork::BuildInvalidKeyMsg( msg, valid );
 //				sessLocal.MessageBox( MSG_OK, msg, common.GetLanguageDict().GetString( "#str_04310" ), true, NULL, NULL, true );
 //			}
-//		} else if ( args.Argc() == 2 && idStr::Icmp( args.Argv(1), "force" ) == 0 ) {
+//		} else if ( args.Argc() == 2 && idStr.Icmp( args.Argv(1), "force" ) == 0 ) {
 //			// cancelled in force mode
 //			cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "quit\n" );
 //			cmdSystem.ExecuteCommandBuffer();
@@ -1224,7 +1224,7 @@ idSessionLocal::MoveToNewMap
 Leaves the existing userinfo and serverinfo
 ===============
 */
-idSessionLocal.prototype.StartNewGame = function MoveToNewMap ( mapName: string ): void {
+idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 	this.mapSpawnData.serverInfo.Set( "si_map", mapName );
 
 	this.ExecuteMapChange ( );
@@ -1738,7 +1738,7 @@ idSessionLocal.prototype.StartNewGame = function MoveToNewMap ( mapName: string 
 //*/
 //void LoadGame_f( args:idCmdArgs ) {
 //	console.Close();
-//	if ( args.Argc() < 2 || idStr::Icmp(args.Argv(1), "quick" ) == 0 ) {
+//	if ( args.Argc() < 2 || idStr.Icmp(args.Argv(1), "quick" ) == 0 ) {
 //		idStr saveName = common.GetLanguageDict().GetString( "#str_07178" );
 //		sessLocal.LoadGame( saveName );
 //	} else {
@@ -1752,7 +1752,7 @@ idSessionLocal.prototype.StartNewGame = function MoveToNewMap ( mapName: string 
 //===============
 //*/
 //void SaveGame_f( args:idCmdArgs ) {
-//	if ( args.Argc() < 2 || idStr::Icmp( args.Argv(1), "quick" ) == 0 ) {
+//	if ( args.Argc() < 2 || idStr.Icmp( args.Argv(1), "quick" ) == 0 ) {
 //		idStr saveName = common.GetLanguageDict().GetString( "#str_07178" );
 //		if ( sessLocal.SaveGame( saveName ) ) {
 //			common.Printf( "%s\n", saveName.c_str() );
@@ -2812,7 +2812,7 @@ idSessionLocal.prototype.StartNewGame = function MoveToNewMap ( mapName: string 
 //
 //		args.TokenizeString( ret.sessionCommand, false );
 //
-//		if ( !idStr::Icmp( args.Argv(0), "map" ) ) {
+//		if ( !idStr.Icmp( args.Argv(0), "map" ) ) {
 //			// get current player states
 //			for ( int i = 0 ; i < numClients ; i++ ) {
 //				mapSpawnData.persistentPlayerInfo[i] = game.GetPersistentPlayerInfo( i );
@@ -2823,16 +2823,16 @@ idSessionLocal.prototype.StartNewGame = function MoveToNewMap ( mapName: string 
 //
 //			// go to the next map
 //			MoveToNewMap( args.Argv(1) );
-//		} else if ( !idStr::Icmp( args.Argv(0), "devmap" ) ) {
+//		} else if ( !idStr.Icmp( args.Argv(0), "devmap" ) ) {
 //			mapSpawnData.serverInfo.Set( "devmap", "1" );
 //			MoveToNewMap( args.Argv(1) );
-//		} else if ( !idStr::Icmp( args.Argv(0), "died" ) ) {
+//		} else if ( !idStr.Icmp( args.Argv(0), "died" ) ) {
 //			// restart on the same map
 //			UnloadMap();
 //			SetGUI(guiRestartMenu, NULL);
-//		} else if ( !idStr::Icmp( args.Argv(0), "disconnect" ) ) {
+//		} else if ( !idStr.Icmp( args.Argv(0), "disconnect" ) ) {
 //			cmdSystem.BufferCommandText( CMD_EXEC_INSERT, "stoprecording ; disconnect" );
-//		} else if ( !idStr::Icmp( args.Argv(0), "endOfDemo" ) ) {
+//		} else if ( !idStr.Icmp( args.Argv(0), "endOfDemo" ) ) {
 //			cmdSystem.BufferCommandText( CMD_EXEC_NOW, "endOfDemo" );
 //		}
 //	}
@@ -3165,7 +3165,7 @@ so commands, cvars, files, etc are all available
 //			checksum = CRC32_BlockChecksum( lkey[i_key], CDKEY_BUF_LEN - 1 );
 //			chk8 = ( checksum & 0xff ) ^ ( ( ( checksum & 0xff00 ) >> 8 ) ^ ( ( ( checksum & 0xff0000 ) >> 16 ) ^ ( ( checksum & 0xff000000 ) >> 24 ) ) );
 //			idStr::snPrintf( s_chk, 3, "%02X", chk8 );
-//			if ( idStr::Icmp( l_chk[i_key], s_chk ) != 0 ) {
+//			if ( idStr.Icmp( l_chk[i_key], s_chk ) != 0 ) {
 //				offline_valid[ i_key ] = false;
 //				continue;
 //			}

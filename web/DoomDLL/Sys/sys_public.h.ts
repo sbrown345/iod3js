@@ -216,16 +216,16 @@ enum sysEventType_t{
 //} sys_mEvents;
 //
 class sysEvent_t {
-//	sysEventType_t	evType;
-//	int				evValue;
-//	int				evValue2;
-//	int				evPtrLength;		// bytes of data pointed to by evPtr, for journaling
+	evType: sysEventType_t;
+	evValue: /*int*/number;
+	evValue2: /*int*/number;
+	evPtrLength: /*int*/number; // bytes of data pointed to by evPtr, for journaling
 //	void *			evPtr;				// this must be manually freed if not NULL
 
 	init ( ): void {
 		todoThrow ( );
 	}
-};
+}
 
 //typedef struct sysMemoryStats_s {
 //	int memoryLoad;

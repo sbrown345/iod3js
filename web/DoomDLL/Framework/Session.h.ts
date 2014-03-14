@@ -99,7 +99,7 @@ class idSession {
 //	// Activates the main menu
 //	virtual void	StartMenu( bool playIntro = false ) = 0;
 //
-//	virtual void	SetGUI( idUserInterface *gui, HandleGuiCommand_t handle ) = 0;
+	SetGUI ( gui: idUserInterface, handle: ( str: string ) => string /*HandleGuiCommand_t*/ ): void { throw "placeholder"; }
 //
 //	// Updates gui and dispatched events to it
 //	virtual void	GuiFrameEvents() = 0;

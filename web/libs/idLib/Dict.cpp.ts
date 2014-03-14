@@ -177,10 +177,10 @@ class idDict {
 ////	*this = other;
 ////}
 ////
-	destrcutor ( ): void {
+	destructor ( ): void {
 		this.Clear ( );
 	}
-
+	
 ////SetGranularity( int granularity ) {
 ////	this.args.SetGranularity( granularity );
 ////	this.argHash.SetGranularity( granularity );
@@ -306,36 +306,36 @@ class idDict {
 ////		return &this.args[ index ];
 ////	}
 ////	return NULL;
-////}
 
-/////*
-////================
-////idDict::operator=
-////
-////  clear existing key/value pairs and copy all key/value pairs from other
-////================
-////*/
-////idDict &idDict::operator=( const idDict &other ) {
-////	int i;
-////
-////	// check for assignment to self
-////	if ( this == &other ) {
-////		return *this;
-////	}
-////
-////	Clear();
-////
-////	this.args = other.args;
-////	this.argHash = other.argHash;
-////
-////	for ( i = 0; i < this.args.Num(); i++ ) {
-////		this.args[i].key = idDict.globalKeys.CopyString( this.args[i].key );
-////		this.args[i].value = idDict.globalValues.CopyString( this.args[i].value );
-////	}
-////
-////	return *this;
-////}
-////
+/*
+================
+idDict::operator=
+
+  clear existing key/value pairs and copy all key/value pairs from other
+================
+*/
+
+	equals ( other: idDict ): idDict {
+		var /*int */i: number;
+
+		// check for assignment to self
+		if ( this == other ) {
+			return this;
+		}
+
+		this.Clear ( );
+
+		this.args = other.args;
+		this.argHash = other.argHash;
+
+		for ( i = 0; i < this.args.Num ( ); i++ ) {
+			this.args[i].key.equals( idDict.globalKeys.CopyString( this.args[i].key ) );
+			this.args[i].value.equals( idDict.globalValues.CopyString( this.args[i].value ) );
+		}
+
+		return this;
+	}
+
 /////*
 ////================
 ////idDict::Copy
@@ -370,46 +370,46 @@ class idDict {
 ////			this.args[found[i]].value = idDict.globalValues.CopyString( other.args[i].value );
 ////			globalValues.FreeString( oldValue );
 ////		} else {
-////			kv.key = idDict.globalKeys.CopyString( other.args[i].key );
-////			kv.value = idDict.globalValues.CopyString( other.args[i].value );
+////			kv.key .equals( idDict.globalKeys.CopyString( other.args[i].key ));
+////			kv.value .equals( idDict.globalValues.CopyString( other.args[i].value ));
 ////			this.argHash.Add( this.argHash.GenerateKey( kv.GetKey(), false ), this.args.Append( kv ) );
 ////		}
 ////	}
 ////}
-////
-/////*
-////================
-////idDict::TransferKeyValues
-////
-////  clear existing key/value pairs and transfer key/value pairs from other
-////================
-////*/
-////void idDict::TransferKeyValues( idDict &other ) {
-////	int i, n;
-////
-////	if ( this == &other ) {
-////		return;
-////	}
-////
-////	if ( other.args.Num() && other.args[0].key.GetPool() != &idDict.globalKeys ) {
-////		common.FatalError( "idDict::TransferKeyValues: can't transfer values across a DLL boundary" );
-////		return;
-////	}
-////
-////	Clear();
-////
-////	n = other.args.Num();
-////	this.args.SetNum( n );
-////	for ( i = 0; i < n; i++ ) {
-////		this.args[i].key = other.args[i].key;
-////		this.args[i].value = other.args[i].value;
-////	}
-////	this.argHash = other.argHash;
-////
-////	other.args.Clear();
-////	other.argHash.Free();
-////}
-////
+
+/*
+================
+idDict::TransferKeyValues
+
+  clear existing key/value pairs and transfer key/value pairs from other
+================
+*/
+	TransferKeyValues ( other: idDict ): void {
+		var /*int */i: number, n: number;
+
+		if ( this == other ) {
+			return;
+		}
+
+		////if ( other.args.Num ( ) && other.args[0].key.GetPool ( ) != idDict.globalKeys ) {
+		////	common.FatalError( "idDict::TransferKeyValues: can't transfer values across a DLL boundary" );
+		////	return;
+		////}
+
+		this.Clear ( );
+
+		n = other.args.Num ( );
+		this.args.SetNum( n );
+		for ( i = 0; i < n; i++ ) {
+			this.args[i].key.equals( other.args[i].key );
+			this.args[i].value.equals( other.args[i].value );
+		}
+		this.argHash = other.argHash;
+
+		other.args.Clear ( );
+		other.argHash.Free ( );
+	}
+
 /////*
 ////================
 ////idDict::Parse
@@ -462,8 +462,8 @@ idDict::SetDefaults
 			def = dict.args[i];
 			kv = this.FindKey( def.GetKey ( ).data );
 			if ( !kv ) {
-				newkv.key = idDict.globalKeys.CopyString( def.key );
-				newkv.value = idDict.globalValues.CopyString( def.value );
+				newkv.key.equals( idDict.globalKeys.CopyString( def.key ) );
+				newkv.value.equals( idDict.globalValues.CopyString( def.value ) );
 				this.argHash.Add( this.argHash.GenerateKey( newkv.GetKey ( ), false ), this.args.Append( newkv ) );
 			}
 		}
@@ -563,8 +563,8 @@ Set( key:string, value:string ):void {
 		this.args[i].value = idDict.globalValues.AllocString( value );
 		idDict.globalValues.FreeString( oldValue );
 	} else {
-		kv.key = idDict.globalKeys.AllocString( key );
-		kv.value = idDict.globalValues.AllocString( value );
+		kv.key.equals( idDict.globalKeys.AllocString( key ));
+		kv.value.equals( idDict.globalValues.AllocString( value ) );
 		this.argHash.Add( this.argHash.GenerateKey( kv.GetKey(), false ), this.args.Append( kv ) );
 	}
 }
@@ -884,13 +884,13 @@ idDict::MatchPrefix
 ////	int c;
 ////	idStr key, val;
 ////
-////	Clear();
+////	this.Clear();
 ////
 ////	f.Read( &c, sizeof( c ) );
 ////	c = LittleLong( c );
 ////	for ( int i = 0; i < c; i++ ) {
-////		key = ReadString( f );
-////		val = ReadString( f );
+////		key .equals( ReadString( f ));
+////		val .equals(ReadString( f ));
 ////		this.Set( key, val );
 ////	}
 ////}

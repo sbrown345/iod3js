@@ -877,7 +877,7 @@ Sys_AsyncThread
 ==================
 */
 function Sys_AsyncThread ( /*void *parm*/ ): number {
-	return setInterval( common.Async, 60 );
+	return setInterval( ( ) => { common.Async ( ); }, 60 );
 }
 
 /*

@@ -3449,8 +3449,8 @@ separate file or a ZIP file.
 idFileSystemLocal::OpenFileRead
 ===========
 */
-    OpenFileRead ( relativePath: string, allowCopyFiles = true, gamedir: string=null ): idFile {
-        return this.OpenFileReadFlags( relativePath, FSFLAG_SEARCH_DIRS | FSFLAG_SEARCH_PAKS, NULL, allowCopyFiles, gamedir );
+    OpenFileRead ( relativePath: string, allowCopyFiles = true, gamedir: string = null ): idFile {
+        return this.OpenFileReadFlags( relativePath, FSFLAG_SEARCH_DIRS | FSFLAG_SEARCH_PAKS, null, allowCopyFiles, gamedir );
     }
 
 /*

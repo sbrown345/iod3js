@@ -90,6 +90,8 @@ function atof ( s: string ): number {
 //var unsigned = uint32;
 
 function newStructArray<T>($class: any, count: number): T[] {
+	assert( $class );
+	assert( count !== undefined );
     var array = new Array(count);
     for (var i = 0; i < count; i++) {
         array[i] = new $class();
