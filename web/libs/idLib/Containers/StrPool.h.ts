@@ -74,7 +74,7 @@ class idStrPool {
 	////	size_t				Allocated( void ) const;
 	////	size_t				Size( void ) const;
 	////
-	////	const idPoolStr *	operator[]( int index ) const { return this.pool[index]; }
+	////	const idPoolStr *	operator[]( int index ) const { return this.pool[index]; } // maybe extend idList and do pool = list
 	////
 	////	const idPoolStr *	AllocString( const char *string );
 	////	void				FreeString( const idPoolStr *poolStr );
@@ -83,7 +83,7 @@ class idStrPool {
 	////
 	////private:
 	caseSensitive:boolean;
-	pool = new idList<idPoolStr>(idPoolStr);
+	pool = new idList<idPoolStr>(idPoolStr, true);
 	poolHash = new idHashIndex;
 	////};
 	
