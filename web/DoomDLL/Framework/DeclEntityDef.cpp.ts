@@ -69,7 +69,7 @@ idDeclEntityDef::FreeData
 idDeclEntityDef::Parse
 ================
 */
-	0 ( text: string, textLength: number ): boolean {
+	Parse ( text: string, textLength: number ): boolean {
 		var src = new idLexer;
 		var token = new idToken, token2 = new idToken;
 

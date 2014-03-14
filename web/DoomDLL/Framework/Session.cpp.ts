@@ -2846,10 +2846,10 @@ Called in an orderly fashion at system startup,
 so commands, cvars, files, etc are all available
 ===============
 */
-	idSessionLocal.prototype.Init = function ( ): void {
+idSessionLocal.prototype.Init = function ( ): void {
 
-		common.Printf( "-------- Initializing Session --------\n" );
-		todo( "idSessionLocal::Init commands" );
+	common.Printf( "-------- Initializing Session --------\n" );
+	todo( "idSessionLocal::Init commands" );
 //	cmdSystem.AddCommand( "writePrecache", Sess_WritePrecache_f, cmdFlags_t.CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "writes precache commands" );
 
 ////#ifndef	ID_DEDICATED
@@ -2896,42 +2896,42 @@ so commands, cvars, files, etc are all available
 
 //	cmdSystem.AddCommand( "hitch", Session_Hitch_f, cmdFlags_t.CMD_FL_SYSTEM|cmdFlags_t.CMD_FL_CHEAT, "hitches the game" );
 
-		// the same idRenderWorld will be used for all games
-		// and demos, insuring that level specific models
-		// will be freed
-		this.rw = renderSystem.AllocRenderWorld ( );
-		this.sw = soundSystem.AllocSoundWorld( this.rw );
+	// the same idRenderWorld will be used for all games
+	// and demos, insuring that level specific models
+	// will be freed
+	this.rw = renderSystem.AllocRenderWorld ( );
+	this.sw = soundSystem.AllocSoundWorld( this.rw );
 
-		this.menuSoundWorld = soundSystem.AllocSoundWorld( this.rw );
+	this.menuSoundWorld = soundSystem.AllocSoundWorld( this.rw );
 
-		// we have a single instance of the main menu
+	// we have a single instance of the main menu
 //#ifndef ID_DEMO_BUILD
 //	guiMainMenu = uiManager.FindGui( "guis/mainmenu.gui", true, false, true );
 //#else
-		this.guiMainMenu = uiManager.FindGui( "guis/demo_mainmenu.gui", true, false, true );
+	this.guiMainMenu = uiManager.FindGui( "guis/demo_mainmenu.gui", true, false, true );
 //#endif
-		this.guiMainMenu_MapList = uiManager.AllocListGUI();
-		this.guiMainMenu_MapList.Config( this.guiMainMenu, "mapList" );
-		idAsyncNetwork.client.serverList.GUIConfig(this.guiMainMenu, "serverList" );
-		this.guiRestartMenu = uiManager.FindGui("guis/restart.gui", true, false, true);
-		this.guiGameOver = uiManager.FindGui("guis/gameover.gui", true, false, true);
-		this.guiMsg = uiManager.FindGui("guis/msg.gui", true, false, true);
-		this.guiTakeNotes = uiManager.FindGui("guis/takeNotes.gui", true, false, true);
-		this.guiIntro = uiManager.FindGui( "guis/intro.gui", true, false, true );
+	this.guiMainMenu_MapList = uiManager.AllocListGUI ( );
+	this.guiMainMenu_MapList.Config( this.guiMainMenu, "mapList" );
+	idAsyncNetwork.client.serverList.GUIConfig( this.guiMainMenu, "serverList" );
+	this.guiRestartMenu = uiManager.FindGui( "guis/restart.gui", true, false, true );
+	this.guiGameOver = uiManager.FindGui( "guis/gameover.gui", true, false, true );
+	this.guiMsg = uiManager.FindGui( "guis/msg.gui", true, false, true );
+	this.guiTakeNotes = uiManager.FindGui( "guis/takeNotes.gui", true, false, true );
+	this.guiIntro = uiManager.FindGui( "guis/intro.gui", true, false, true );
 
-		this.whiteMaterial = declManager.FindMaterial( "_white" );
+	this.whiteMaterial = declManager.FindMaterial( "_white" );
 
-		this.guiInGame = null;
-		this.guiTest = null;
+	this.guiInGame = null;
+	this.guiTest = null;
 
-		this.guiActive = null;
-		this.guiHandle = null;
+	this.guiActive = null;
+	this.guiHandle = null;
 
-		//this.ReadCDKey ( );
+	//this.ReadCDKey ( );
 
-		common.Printf( "session initialized\n" );
-		common.Printf( "--------------------------------------\n" );
-	};
+	common.Printf( "session initialized\n" );
+	common.Printf( "--------------------------------------\n" );
+};
 
 ///*
 //===============

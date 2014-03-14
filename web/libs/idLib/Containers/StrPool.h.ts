@@ -66,7 +66,7 @@ class idPoolStr extends idStr {
 
 class idStrPool {
 	////public:
-	////						idStrPool() { this.caseSensitive = true; }
+	constructor ( ) { this.caseSensitive = true; }
 	////
 	////	void				SetCaseSensitive( bool caseSensitive );
 	////
@@ -86,16 +86,16 @@ class idStrPool {
 	pool = new idList<idPoolStr>(idPoolStr);
 	poolHash = new idHashIndex;
 	////};
-	////
-	/////*
-	////================
-	////idStrPool::SetCaseSensitive
-	////================
-	////*/
-	////ID_INLINE void idStrPool::SetCaseSensitive( bool caseSensitive ) {
-	////	this.caseSensitive = caseSensitive;
-	////}
 	
+	/*
+	================
+	idStrPool::SetCaseSensitive
+	================
+	*/
+	SetCaseSensitive ( caseSensitive: boolean ): void {
+		this.caseSensitive = caseSensitive;
+	}
+
 	/*
 	================
 	idStrPool::AllocString
@@ -158,7 +158,8 @@ class idStrPool {
 				}
 			}
 			assert( i != -1 );
-			assert( this.pool[i] == poolStr );
+			assert(this.pool[i] == poolStr);
+			$delete( this.pool[i] );
 			delete this.pool[i];
 			this.pool.RemoveIndex( i );
 			this.poolHash.RemoveIndex( hash, i );

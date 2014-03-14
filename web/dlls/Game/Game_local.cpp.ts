@@ -260,7 +260,7 @@ idGameLocal::Init
 ============
 */
 idGameLocal.prototype.Init = function ( ): void {
-	var dict = new idDict;
+	var dict: idDict;
 	var aas: idAAS;
 
 //#ifndef GAME_DLL
@@ -310,7 +310,7 @@ idGameLocal.prototype.Init = function ( ): void {
 	this.smokeParticles = new idSmokeParticles;
 
 	// set up the aas
-	dict.equals( this.FindEntityDefDict( "aas_types" ) );
+	dict = this.FindEntityDefDict( "aas_types" );
 	if ( !dict ) {
 		Error( "Unable to find entityDef for 'aas_types'" );
 	}
