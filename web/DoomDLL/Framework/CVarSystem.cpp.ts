@@ -845,7 +845,12 @@ idCVarSystemLocal::idCVarSystemLocal
 	============
 	*/
 	MoveCVarsToDict( /*int*/ flags: number): idDict {
-		if ( this.cvars.Num ( ) != 609 ) throw "must have 609 cvars to match original";
+		//for (var i = 0; i < this.cvars.Num(); i++) {
+		//	var cvar = this.cvars[i];
+		//	dlog( DEBUG_STRPOOL, "%s %s\n", cvar.GetName ( ), cvar.GetString ( ) );
+		//}
+		//dlogFlush ( );
+		//if ( this.cvars.Num ( ) != 609 ) throw "must have 609 cvars to match original";
 		idCVarSystem.moveCVarsToDict.Clear ( );
 		for ( var i = 0; i < this.cvars.Num ( ); i++ ) {
 			var cvar = this.cvars[i];

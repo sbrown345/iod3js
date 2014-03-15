@@ -864,6 +864,12 @@ idCVarSystemLocal::MoveCVarsToDict
 ============
 */
 const idDict* idCVarSystemLocal::MoveCVarsToDict( int flags ) const {
+	//for (int i = 0; i < cvars.Num(); i++) {
+	//	idCVar *cvar = cvars[i];
+	//	dlog(DEBUG_STRPOOL, "%s %s\n", cvar->GetName(), cvar->GetString());
+	//}
+
+
 	moveCVarsToDict.Clear();
 	for( int i = 0; i < cvars.Num(); i++ ) {
 		idCVar *cvar = cvars[i];

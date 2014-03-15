@@ -63,7 +63,7 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	int i, type;
 ////
 ////	for ( i = 0; i < MAX_CLIENTS; i++ ) {
-////		for ( type = 0; type < declManager->GetNumDeclTypes(); type++ ) {
+////		for ( type = 0; type < declManager.GetNumDeclTypes(); type++ ) {
 ////			clientDeclRemap[i][type].Clear();
 ////		}
 ////	}
@@ -75,7 +75,7 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	eventQueue.Init();
 ////	savedEventQueue.Init();
 ////
-////	entityDefBits = -( idMath::BitsForInteger( declManager->GetNumDecls( DECL_ENTITYDEF ) ) + 1 );
+////	entityDefBits = -( idMath::BitsForInteger( declManager.GetNumDecls( DECL_ENTITYDEF ) ) + 1 );
 ////	localClientNum = 0; // on a listen server SetLocalUser will set this right
 ////	realClientTime = 0;
 ////	isNewFrame = true;
@@ -117,22 +117,22 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////void idGameLocal::InitClientDeclRemap( int clientNum ) {
 ////	int type, i, num;
 ////
-////	for ( type = 0; type < declManager->GetNumDeclTypes(); type++ ) {
+////	for ( type = 0; type < declManager.GetNumDeclTypes(); type++ ) {
 ////
 ////		// only implicit materials and sound shaders decls are used
 ////		if ( type != DECL_MATERIAL && type != DECL_SOUND ) {
 ////			continue;
 ////		}
 ////
-////		num = declManager->GetNumDecls( (declType_t) type );
+////		num = declManager.GetNumDecls( (declType_t) type );
 ////		clientDeclRemap[clientNum][type].Clear();
 ////		clientDeclRemap[clientNum][type].AssureSize( num, -1 );
 ////
 ////		// pre-initialize the remap with non-implicit decls, all non-implicit decls are always going
 ////		// to be in order and in sync between server and client because of the decl manager checksum
 ////		for ( i = 0; i < num; i++ ) {
-////			const idDecl *decl = declManager->DeclByIndex( (declType_t) type, i, false );
-////			if ( decl->IsImplicit() ) {
+////			const idDecl *decl = declManager.DeclByIndex( (declType_t) type, i, false );
+////			if ( decl.IsImplicit() ) {
 ////				// once the first implicit decl is found all remaining decls are considered implicit as well
 ////				break;
 ////			}
@@ -163,9 +163,9 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////		return;
 ////	}
 ////
-////	const idDecl *decl = declManager->DeclByIndex( type, index, false );
+////	const idDecl *decl = declManager.DeclByIndex( type, index, false );
 ////	if ( decl == NULL ) {
-////		gameLocal.Error( "server tried to remap bad %s decl index %d", declManager->GetDeclNameFromType( type ), index );
+////		gameLocal.Error( "server tried to remap bad %s decl index %d", declManager.GetDeclNameFromType( type ), index );
 ////		return;
 ////	}
 ////
@@ -178,8 +178,8 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	outMsg.WriteByte( GAME_RELIABLE_MESSAGE_REMAP_DECL );
 ////	outMsg.WriteByte( type );
 ////	outMsg.WriteLong( index );
-////	outMsg.WriteString( decl->GetName() );
-////	networkSystem->ServerSendReliableMessage( clientNum, outMsg );
+////	outMsg.WriteString( decl.GetName() );
+////	networkSystem.ServerSendReliableMessage( clientNum, outMsg );
 ////}
 ////
 /////*
@@ -223,15 +223,15 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////
 ////	// make sure the index is valid
 ////	if ( clientDeclRemap[localClientNum][(int)type].Num() == 0 ) {
-////		gameLocal.Error( "client received decl index %d before %s decl remap was initialized", index, declManager->GetDeclNameFromType( type ) );
+////		gameLocal.Error( "client received decl index %d before %s decl remap was initialized", index, declManager.GetDeclNameFromType( type ) );
 ////		return -1;
 ////	}
 ////	if ( index >= clientDeclRemap[localClientNum][(int)type].Num() ) {
-////		gameLocal.Error( "client received unmapped %s decl index %d from server", declManager->GetDeclNameFromType( type ), index );
+////		gameLocal.Error( "client received unmapped %s decl index %d from server", declManager.GetDeclNameFromType( type ), index );
 ////		return -1;
 ////	}
 ////	if ( clientDeclRemap[localClientNum][(int)type][index] == -1 ) {
-////		gameLocal.Error( "client received unmapped %s decl index %d from server", declManager->GetDeclNameFromType( type ), index );
+////		gameLocal.Error( "client received unmapped %s decl index %d from server", declManager.GetDeclNameFromType( type ), index );
 ////		return -1;
 ////	}
 ////	return clientDeclRemap[localClientNum][type][index];
@@ -260,14 +260,14 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////		return ALLOW_NOTYET;
 ////	}
 ////
-////	if ( !cvarSystem->GetCVarBool( "si_usepass" ) ) {
+////	if ( !cvarSystem.GetCVarBool( "si_usepass" ) ) {
 ////		return ALLOW_YES;
 ////	}
 ////
-////	const char *pass = cvarSystem->GetCVarString( "g_password" );
+////	const char *pass = cvarSystem.GetCVarString( "g_password" );
 ////	if ( pass[ 0 ] == '\0' ) {
-////		common->Warning( "si_usepass is set but g_password is empty" );
-////		cmdSystem->BufferCommandText( CMD_EXEC_NOW, "say si_usepass is set but g_password is empty" );
+////		common.Warning( "si_usepass is set but g_password is empty" );
+////		cmdSystem.BufferCommandText( CMD_EXEC_NOW, "say si_usepass is set but g_password is empty" );
 ////		// avoids silent misconfigured state
 ////		idStr::snPrintf( reason, MAX_STRING_CHARS, "#str_07142" );
 ////		return ALLOW_NOTYET;
@@ -290,7 +290,7 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////void idGameLocal::ServerClientConnect( int clientNum, const char *guid ) {
 ////	// make sure no parasite entity is left
 ////	if ( entities[ clientNum ] ) {
-////		common->DPrintf( "ServerClientConnect: remove old player entity\n" );
+////		common.DPrintf( "ServerClientConnect: remove old player entity\n" );
 ////		delete entities[ clientNum ];
 ////	}
 ////	userInfo[ clientNum ].Clear();
@@ -314,7 +314,7 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	outMsg.Init( msgBuf, sizeof( msgBuf ) );
 ////	outMsg.BeginWriting();
 ////	outMsg.WriteByte( GAME_RELIABLE_MESSAGE_INIT_DECL_REMAP );
-////	networkSystem->ServerSendReliableMessage( clientNum, outMsg );
+////	networkSystem.ServerSendReliableMessage( clientNum, outMsg );
 ////
 ////	// spawn the player
 ////	SpawnPlayer( clientNum );
@@ -328,7 +328,7 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	outMsg.WriteByte( GAME_RELIABLE_MESSAGE_SPAWN_PLAYER );
 ////	outMsg.WriteByte( clientNum );
 ////	outMsg.WriteLong( spawnIds[ clientNum ] );
-////	networkSystem->ServerSendReliableMessage( -1, outMsg );
+////	networkSystem.ServerSendReliableMessage( -1, outMsg );
 ////}
 ////
 /////*
@@ -345,7 +345,7 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	outMsg.BeginWriting();
 ////	outMsg.WriteByte( GAME_RELIABLE_MESSAGE_DELETE_ENT );
 ////	outMsg.WriteBits( ( spawnIds[ clientNum ] << GENTITYNUM_BITS ) | clientNum, 32 ); // see GetSpawnId
-////	networkSystem->ServerSendReliableMessage( -1, outMsg );
+////	networkSystem.ServerSendReliableMessage( -1, outMsg );
 ////
 ////	// free snapshots stored for this client
 ////	FreeSnapshotsOlderThanSequence( clientNum, 0x7FFFFFFF );
@@ -391,35 +391,35 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////		outMsg.WriteByte( GAME_RELIABLE_MESSAGE_SPAWN_PLAYER );
 ////		outMsg.WriteByte( i );
 ////		outMsg.WriteLong( spawnIds[ i ] );
-////		networkSystem->ServerSendReliableMessage( clientNum, outMsg );
+////		networkSystem.ServerSendReliableMessage( clientNum, outMsg );
 ////	}
 ////
 ////	// send all saved events
-////	for ( event = savedEventQueue.Start(); event; event = event->next ) {
+////	for ( event = savedEventQueue.Start(); event; event = event.next ) {
 ////		outMsg.Init( msgBuf, sizeof( msgBuf ) );
 ////		outMsg.BeginWriting();
 ////		outMsg.WriteByte( GAME_RELIABLE_MESSAGE_EVENT );
-////		outMsg.WriteBits( event->spawnId, 32 );
-////		outMsg.WriteByte( event->event );
-////		outMsg.WriteLong( event->time );
-////		outMsg.WriteBits( event->paramsSize, idMath::BitsForInteger( MAX_EVENT_PARAM_SIZE ) );
-////		if ( event->paramsSize ) {
-////			outMsg.WriteData( event->paramsBuf, event->paramsSize );
+////		outMsg.WriteBits( event.spawnId, 32 );
+////		outMsg.WriteByte( event.event );
+////		outMsg.WriteLong( event.time );
+////		outMsg.WriteBits( event.paramsSize, idMath::BitsForInteger( MAX_EVENT_PARAM_SIZE ) );
+////		if ( event.paramsSize ) {
+////			outMsg.WriteData( event.paramsBuf, event.paramsSize );
 ////		}
 ////
-////		networkSystem->ServerSendReliableMessage( clientNum, outMsg );
+////		networkSystem.ServerSendReliableMessage( clientNum, outMsg );
 ////	}
 ////
 ////	// update portals for opened doors
-////	int numPortals = gameRenderWorld->NumPortals();
+////	int numPortals = gameRenderWorld.NumPortals();
 ////	outMsg.Init( msgBuf, sizeof( msgBuf ) );
 ////	outMsg.BeginWriting();
 ////	outMsg.WriteByte( GAME_RELIABLE_MESSAGE_PORTALSTATES );
 ////	outMsg.WriteLong( numPortals );
 ////	for ( i = 0; i < numPortals; i++ ) {
-////		outMsg.WriteBits( gameRenderWorld->GetPortalState( (qhandle_t) (i+1) ) , NUM_RENDER_PORTAL_BITS );
+////		outMsg.WriteBits( gameRenderWorld.GetPortalState( (qhandle_t) (i+1) ) , NUM_RENDER_PORTAL_BITS );
 ////	}
-////	networkSystem->ServerSendReliableMessage( clientNum, outMsg );
+////	networkSystem.ServerSendReliableMessage( clientNum, outMsg );
 ////
 ////	mpGame.ServerWriteInitialReliableMessages( clientNum );
 ////}
@@ -433,14 +433,14 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	entityNetEvent_t *event;
 ////
 ////	event = savedEventQueue.Alloc();
-////	event->spawnId = GetSpawnId( ent );
-////	event->event = eventId;
-////	event->time = time;
+////	event.spawnId = GetSpawnId( ent );
+////	event.event = eventId;
+////	event.time = time;
 ////	if ( msg ) {
-////		event->paramsSize = msg->GetSize();
-////		memcpy( event->paramsBuf, msg->GetData(), msg->GetSize() );
+////		event.paramsSize = msg.GetSize();
+////		memcpy( event.paramsBuf, msg.GetData(), msg.GetSize() );
 ////	} else {
-////		event->paramsSize = 0;
+////		event.paramsSize = 0;
 ////	}
 ////
 ////	savedEventQueue.Enqueue( event, idEventQueue::OUTOFORDER_IGNORE );
@@ -456,16 +456,16 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	entityState_t *state;
 ////
 ////	for ( lastSnapshot = NULL, snapshot = clientSnapshots[clientNum]; snapshot; snapshot = nextSnapshot ) {
-////		nextSnapshot = snapshot->next;
-////		if ( snapshot->sequence < sequence ) {
-////			for ( state = snapshot->firstEntityState; state; state = snapshot->firstEntityState ) {
-////				snapshot->firstEntityState = snapshot->firstEntityState->next;
+////		nextSnapshot = snapshot.next;
+////		if ( snapshot.sequence < sequence ) {
+////			for ( state = snapshot.firstEntityState; state; state = snapshot.firstEntityState ) {
+////				snapshot.firstEntityState = snapshot.firstEntityState.next;
 ////				entityStateAllocator.Free( state );
 ////			}
 ////			if ( lastSnapshot ) {
-////				lastSnapshot->next = snapshot->next;
+////				lastSnapshot.next = snapshot.next;
 ////			} else {
-////				clientSnapshots[clientNum] = snapshot->next;
+////				clientSnapshots[clientNum] = snapshot.next;
 ////			}
 ////			snapshotAllocator.Free( snapshot );
 ////		} else {
@@ -486,17 +486,17 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	FreeSnapshotsOlderThanSequence( clientNum, sequence );
 ////
 ////	for ( lastSnapshot = NULL, snapshot = clientSnapshots[clientNum]; snapshot; snapshot = nextSnapshot ) {
-////		nextSnapshot = snapshot->next;
-////		if ( snapshot->sequence == sequence ) {
-////			for ( state = snapshot->firstEntityState; state; state = state->next ) {
-////				if ( clientEntityStates[clientNum][state->entityNumber] ) {
-////					entityStateAllocator.Free( clientEntityStates[clientNum][state->entityNumber] );
+////		nextSnapshot = snapshot.next;
+////		if ( snapshot.sequence == sequence ) {
+////			for ( state = snapshot.firstEntityState; state; state = state.next ) {
+////				if ( clientEntityStates[clientNum][state.entityNumber] ) {
+////					entityStateAllocator.Free( clientEntityStates[clientNum][state.entityNumber] );
 ////				}
-////				clientEntityStates[clientNum][state->entityNumber] = state;
+////				clientEntityStates[clientNum][state.entityNumber] = state;
 ////			}
-////			memcpy( clientPVS[clientNum], snapshot->pvs, sizeof( snapshot->pvs ) );
+////			memcpy( clientPVS[clientNum], snapshot.pvs, sizeof( snapshot.pvs ) );
 ////			if ( lastSnapshot ) {
-////				lastSnapshot->next = nextSnapshot;
+////				lastSnapshot.next = nextSnapshot;
 ////			} else {
 ////				clientSnapshots[clientNum] = nextSnapshot;
 ////			}
@@ -561,8 +561,8 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	if ( !player ) {
 ////		return;
 ////	}
-////	if ( player->spectating && player->spectator != clientNum && entities[ player->spectator ] ) {
-////		spectated = static_cast< idPlayer * >( entities[ player->spectator ] );
+////	if ( player.spectating && player.spectator != clientNum && entities[ player.spectator ] ) {
+////		spectated = static_cast< idPlayer * >( entities[ player.spectator ] );
 ////	} else {
 ////		spectated = player;
 ////	}
@@ -572,15 +572,15 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////
 ////	// allocate new snapshot
 ////	snapshot = snapshotAllocator.Alloc();
-////	snapshot->sequence = sequence;
-////	snapshot->firstEntityState = NULL;
-////	snapshot->next = clientSnapshots[clientNum];
+////	snapshot.sequence = sequence;
+////	snapshot.firstEntityState = NULL;
+////	snapshot.next = clientSnapshots[clientNum];
 ////	clientSnapshots[clientNum] = snapshot;
-////	memset( snapshot->pvs, 0, sizeof( snapshot->pvs ) );
+////	memset( snapshot.pvs, 0, sizeof( snapshot.pvs ) );
 ////
 ////	// get PVS for this player
 ////	// don't use PVSAreas for networking - PVSAreas depends on animations (and md5 bounds), which are not synchronized
-////	numSourceAreas = gameRenderWorld->BoundsInAreas( spectated->GetPlayerPhysics()->GetAbsBounds(), sourceAreas, idEntity::MAX_PVS_AREAS );
+////	numSourceAreas = gameRenderWorld.BoundsInAreas( spectated.GetPlayerPhysics().GetAbsBounds(), sourceAreas, idEntity::MAX_PVS_AREAS );
 ////	pvsHandle = gameLocal.pvs.SetupCurrentPVS( sourceAreas, numSourceAreas, PVS_NORMAL );
 ////
 ////#if ASYNC_WRITE_TAGS
@@ -590,18 +590,18 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////#endif
 ////
 ////	// create the snapshot
-////	for( ent = spawnedEntities.Next(); ent != NULL; ent = ent->spawnNode.Next() ) {
+////	for( ent = spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
 ////
 ////		// if the entity is not in the player PVS
-////		if ( !ent->PhysicsTeamInPVS( pvsHandle ) && ent->entityNumber != clientNum ) {
+////		if ( !ent.PhysicsTeamInPVS( pvsHandle ) && ent.entityNumber != clientNum ) {
 ////			continue;
 ////		}
 ////
 ////		// add the entity to the snapshot pvs
-////		snapshot->pvs[ ent->entityNumber >> 5 ] |= 1 << ( ent->entityNumber & 31 );
+////		snapshot.pvs[ ent.entityNumber >> 5 ] |= 1 << ( ent.entityNumber & 31 );
 ////
 ////		// if that entity is not marked for network synchronization
-////		if ( !ent->fl.networkSync ) {
+////		if ( !ent.fl.networkSync ) {
 ////			continue;
 ////		}
 ////
@@ -609,32 +609,32 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////		msg.SaveWriteState( msgSize, msgWriteBit );
 ////
 ////		// write the entity to the snapshot
-////		msg.WriteBits( ent->entityNumber, GENTITYNUM_BITS );
+////		msg.WriteBits( ent.entityNumber, GENTITYNUM_BITS );
 ////
-////		base = clientEntityStates[clientNum][ent->entityNumber];
+////		base = clientEntityStates[clientNum][ent.entityNumber];
 ////		if ( base ) {
-////			base->state.BeginReading();
+////			base.state.BeginReading();
 ////		}
 ////		newBase = entityStateAllocator.Alloc();
-////		newBase->entityNumber = ent->entityNumber;
-////		newBase->state.Init( newBase->stateBuf, sizeof( newBase->stateBuf ) );
-////		newBase->state.BeginWriting();
+////		newBase.entityNumber = ent.entityNumber;
+////		newBase.state.Init( newBase.stateBuf, sizeof( newBase.stateBuf ) );
+////		newBase.state.BeginWriting();
 ////
-////		deltaMsg.Init( base ? &base->state : NULL, &newBase->state, &msg );
+////		deltaMsg.Init( base ? &base.state : NULL, &newBase.state, &msg );
 ////
-////		deltaMsg.WriteBits( spawnIds[ ent->entityNumber ], 32 - GENTITYNUM_BITS );
-////		deltaMsg.WriteBits( ent->GetType()->typeNum, idClass::GetTypeNumBits() );
-////		deltaMsg.WriteBits( ServerRemapDecl( -1, DECL_ENTITYDEF, ent->entityDefNumber ), entityDefBits );
+////		deltaMsg.WriteBits( spawnIds[ ent.entityNumber ], 32 - GENTITYNUM_BITS );
+////		deltaMsg.WriteBits( ent.GetType().typeNum, idClass::GetTypeNumBits() );
+////		deltaMsg.WriteBits( ServerRemapDecl( -1, DECL_ENTITYDEF, ent.entityDefNumber ), entityDefBits );
 ////
 ////		// write the class specific data to the snapshot
-////		ent->WriteToSnapshot( deltaMsg );
+////		ent.WriteToSnapshot( deltaMsg );
 ////
 ////		if ( !deltaMsg.HasChanged() ) {
 ////			msg.RestoreWriteState( msgSize, msgWriteBit );
 ////			entityStateAllocator.Free( newBase );
 ////		} else {
-////			newBase->next = snapshot->firstEntityState;
-////			snapshot->firstEntityState = newBase;
+////			newBase.next = snapshot.firstEntityState;
+////			snapshot.firstEntityState = newBase;
 ////
 ////#if ASYNC_WRITE_TAGS
 ////			msg.WriteLong( tagRandom.RandomInt() );
@@ -656,7 +656,7 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	gameLocal.pvs.WritePVS( pvsHandle, msg );
 ////#endif
 ////	for ( i = 0; i < ENTITY_PVS_SIZE; i++ ) {
-////		msg.WriteDeltaLong( clientPVS[clientNum][i], snapshot->pvs[i] );
+////		msg.WriteDeltaLong( clientPVS[clientNum][i], snapshot.pvs[i] );
 ////	}
 ////
 ////	// free the PVS
@@ -665,24 +665,24 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	// write the game and player state to the snapshot
 ////	base = clientEntityStates[clientNum][ENTITYNUM_NONE];	// ENTITYNUM_NONE is used for the game and player state
 ////	if ( base ) {
-////		base->state.BeginReading();
+////		base.state.BeginReading();
 ////	}
 ////	newBase = entityStateAllocator.Alloc();
-////	newBase->entityNumber = ENTITYNUM_NONE;
-////	newBase->next = snapshot->firstEntityState;
-////	snapshot->firstEntityState = newBase;
-////	newBase->state.Init( newBase->stateBuf, sizeof( newBase->stateBuf ) );
-////	newBase->state.BeginWriting();
-////	deltaMsg.Init( base ? &base->state : NULL, &newBase->state, &msg );
-////	if ( player->spectating && player->spectator != player->entityNumber && gameLocal.entities[ player->spectator ] && gameLocal.entities[ player->spectator ]->IsType( idPlayer::Type ) ) {
-////		static_cast< idPlayer * >( gameLocal.entities[ player->spectator ] )->WritePlayerStateToSnapshot( deltaMsg );
+////	newBase.entityNumber = ENTITYNUM_NONE;
+////	newBase.next = snapshot.firstEntityState;
+////	snapshot.firstEntityState = newBase;
+////	newBase.state.Init( newBase.stateBuf, sizeof( newBase.stateBuf ) );
+////	newBase.state.BeginWriting();
+////	deltaMsg.Init( base ? &base.state : NULL, &newBase.state, &msg );
+////	if ( player.spectating && player.spectator != player.entityNumber && gameLocal.entities[ player.spectator ] && gameLocal.entities[ player.spectator ].IsType( idPlayer::Type ) ) {
+////		static_cast< idPlayer * >( gameLocal.entities[ player.spectator ] ).WritePlayerStateToSnapshot( deltaMsg );
 ////	} else {
-////		player->WritePlayerStateToSnapshot( deltaMsg );
+////		player.WritePlayerStateToSnapshot( deltaMsg );
 ////	}
 ////	WriteGameStateToSnapshot( deltaMsg );
 ////
 ////	// copy the client PVS string
-////	memcpy( clientInPVS, snapshot->pvs, ( numPVSClients + 7 ) >> 3 );
+////	memcpy( clientInPVS, snapshot.pvs, ( numPVSClients + 7 ) >> 3 );
 ////	LittleRevBytes( clientInPVS, sizeof( int ), sizeof( clientInPVS ) / sizeof ( int ) );
 ////}
 ////
@@ -705,16 +705,16 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	int length = 0;
 ////	va_list argptr;
 ////
-////	int entityNum	= event->spawnId & ( ( 1 << GENTITYNUM_BITS ) - 1 );
-////	int id			= event->spawnId >> GENTITYNUM_BITS;
+////	int entityNum	= event.spawnId & ( ( 1 << GENTITYNUM_BITS ) - 1 );
+////	int id			= event.spawnId >> GENTITYNUM_BITS;
 ////
-////	length += idStr::snPrintf( buf+length, sizeof(buf)-1-length, "event %d for entity %d %d: ", event->event, entityNum, id );
+////	length += idStr::snPrintf( buf+length, sizeof(buf)-1-length, "event %d for entity %d %d: ", event.event, entityNum, id );
 ////	va_start( argptr, fmt );
 ////	length = idStr::vsnPrintf( buf+length, sizeof(buf)-1-length, fmt, argptr );
 ////	va_end( argptr );
 ////	idStr::Append( buf, sizeof(buf), "\n" );
 ////
-////	common->DWarning( buf );
+////	common.DWarning( buf );
 ////}
 ////
 /////*
@@ -730,22 +730,22 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	while ( eventQueue.Start() ) {
 ////		event = eventQueue.Start();
 ////
-////		if ( event->time > time ) {
+////		if ( event.time > time ) {
 ////			break;
 ////		}
 ////
 ////		idEntityPtr< idEntity > entPtr;
 ////			
-////		if( !entPtr.SetSpawnId( event->spawnId ) ) {
+////		if( !entPtr.SetSpawnId( event.spawnId ) ) {
 ////			NetworkEventWarning( event, "Entity does not exist any longer, or has not been spawned yet." );
 ////		} else {
 ////			ent = entPtr.GetEntity();
 ////			assert( ent );
 ////
-////			eventMsg.Init( event->paramsBuf, sizeof( event->paramsBuf ) );
-////			eventMsg.SetSize( event->paramsSize );
+////			eventMsg.Init( event.paramsBuf, sizeof( event.paramsBuf ) );
+////			eventMsg.SetSize( event.paramsSize );
 ////			eventMsg.BeginReading();
-////			if ( !ent->ServerReceiveEvent( event->event, event->time, eventMsg ) ) {
+////			if ( !ent.ServerReceiveEvent( event.event, event.time, eventMsg ) ) {
 ////				NetworkEventWarning( event, "unknown event" );
 ////			}
 ////		}
@@ -773,7 +773,7 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	outMsg.WriteByte( GAME_RELIABLE_MESSAGE_CHAT );
 ////	outMsg.WriteString( name );
 ////	outMsg.WriteString( text, -1, false );
-////	networkSystem->ServerSendReliableMessage( to, outMsg );
+////	networkSystem.ServerSendReliableMessage( to, outMsg );
 ////
 ////	if ( to == -1 || to == localClientNum ) {
 ////		mpGame.AddChatLine( "%s^0: %s\n", name, text );
@@ -839,23 +839,23 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////			event = eventQueue.Alloc();
 ////			eventQueue.Enqueue( event, idEventQueue::OUTOFORDER_DROP );
 ////
-////			event->spawnId = msg.ReadBits( 32 );
-////			event->event = msg.ReadByte();
-////			event->time = msg.ReadLong();
+////			event.spawnId = msg.ReadBits( 32 );
+////			event.event = msg.ReadByte();
+////			event.time = msg.ReadLong();
 ////
-////			event->paramsSize = msg.ReadBits( idMath::BitsForInteger( MAX_EVENT_PARAM_SIZE ) );
-////			if ( event->paramsSize ) {
-////				if ( event->paramsSize > MAX_EVENT_PARAM_SIZE ) {
+////			event.paramsSize = msg.ReadBits( idMath::BitsForInteger( MAX_EVENT_PARAM_SIZE ) );
+////			if ( event.paramsSize ) {
+////				if ( event.paramsSize > MAX_EVENT_PARAM_SIZE ) {
 ////					NetworkEventWarning( event, "invalid param size" );
 ////					return;
 ////				}
 ////				msg.ReadByteAlign();
-////				msg.ReadData( event->paramsBuf, event->paramsSize );
+////				msg.ReadData( event.paramsBuf, event.paramsSize );
 ////			}
 ////			break;
 ////		}
 ////		default: {
-////			Warning( "Unknown client->server reliable message: %d", id );
+////			Warning( "Unknown client.server reliable message: %d", id );
 ////			break;
 ////		}
 ////	}
@@ -883,24 +883,24 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////		return;
 ////	}
 ////
-////	viewAxis = player->viewAngles.ToMat3();
-////	viewBounds = player->GetPhysics()->GetAbsBounds().Expand( net_clientShowSnapshotRadius.GetFloat() );
+////	viewAxis = player.viewAngles.ToMat3();
+////	viewBounds = player.GetPhysics().GetAbsBounds().Expand( net_clientShowSnapshotRadius.GetFloat() );
 ////
-////	for( ent = snapshotEntities.Next(); ent != NULL; ent = ent->snapshotNode.Next() ) {
+////	for( ent = snapshotEntities.Next(); ent != NULL; ent = ent.snapshotNode.Next() ) {
 ////
-////		if ( net_clientShowSnapshot.GetInteger() == 1 && ent->snapshotBits == 0 ) {
+////		if ( net_clientShowSnapshot.GetInteger() == 1 && ent.snapshotBits == 0 ) {
 ////			continue;
 ////		}
 ////
-////		const idBounds &entBounds = ent->GetPhysics()->GetAbsBounds();
+////		const idBounds &entBounds = ent.GetPhysics().GetAbsBounds();
 ////
 ////		if ( !entBounds.IntersectsBounds( viewBounds ) ) {
 ////			continue;
 ////		}
 ////
-////		base = clientEntityStates[clientNum][ent->entityNumber];
+////		base = clientEntityStates[clientNum][ent.entityNumber];
 ////		if ( base ) {
-////			baseBits = base->state.GetNumBitsWritten();
+////			baseBits = base.state.GetNumBitsWritten();
 ////		} else {
 ////			baseBits = 0;
 ////		}
@@ -909,9 +909,9 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////			continue;
 ////		}
 ////
-////		gameRenderWorld->DebugBounds( colorGreen, entBounds );
-////		gameRenderWorld->DrawText( va( "%d: %s (%d,%d bytes of %d,%d)\n", ent->entityNumber,
-////						ent->name.c_str(), ent->snapshotBits >> 3, ent->snapshotBits & 7, baseBits >> 3, baseBits & 7 ),
+////		gameRenderWorld.DebugBounds( colorGreen, entBounds );
+////		gameRenderWorld.DrawText( va( "%d: %s (%d,%d bytes of %d,%d)\n", ent.entityNumber,
+////						ent.name.c_str(), ent.snapshotBits >> 3, ent.snapshotBits & 7, baseBits >> 3, baseBits & 7 ),
 ////							entBounds.GetCenter(), 0.1f, colorWhite, viewAxis, 1 );
 ////	}
 ////}
@@ -974,8 +974,8 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////
 ////	if ( net_clientLagOMeter.GetBool() && renderSystem ) {
 ////		UpdateLagometer( aheadOfServer, dupeUsercmds );
-////		if ( !renderSystem->UploadImage( LAGO_IMAGE, (byte *)lagometer, LAGO_IMG_WIDTH, LAGO_IMG_HEIGHT ) ) {
-////			common->Printf( "lagometer: UploadImage failed. turning off net_clientLagOMeter\n" );
+////		if ( !renderSystem.UploadImage( LAGO_IMAGE, (byte *)lagometer, LAGO_IMG_WIDTH, LAGO_IMG_HEIGHT ) ) {
+////			common.Printf( "lagometer: UploadImage failed. turning off net_clientLagOMeter\n" );
 ////			net_clientLagOMeter.SetBool( false );
 ////		}
 ////	}
@@ -983,10 +983,10 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	InitLocalClient( clientNum );
 ////
 ////	// clear any debug lines from a previous frame
-////	gameRenderWorld->DebugClearLines( time );
+////	gameRenderWorld.DebugClearLines( time );
 ////
 ////	// clear any debug polygons from a previous frame
-////	gameRenderWorld->DebugClearPolygons( time );
+////	gameRenderWorld.DebugClearPolygons( time );
 ////
 ////	// update the game time
 ////	framenum = gameFrame;
@@ -1001,9 +1001,9 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////
 ////	// allocate new snapshot
 ////	snapshot = snapshotAllocator.Alloc();
-////	snapshot->sequence = sequence;
-////	snapshot->firstEntityState = NULL;
-////	snapshot->next = clientSnapshots[clientNum];
+////	snapshot.sequence = sequence;
+////	snapshot.firstEntityState = NULL;
+////	snapshot.next = clientSnapshots[clientNum];
 ////	clientSnapshots[clientNum] = snapshot;
 ////
 ////#if ASYNC_WRITE_TAGS
@@ -1016,18 +1016,18 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////
 ////		base = clientEntityStates[clientNum][i];
 ////		if ( base ) {
-////			base->state.BeginReading();
+////			base.state.BeginReading();
 ////		}
 ////		newBase = entityStateAllocator.Alloc();
-////		newBase->entityNumber = i;
-////		newBase->next = snapshot->firstEntityState;
-////		snapshot->firstEntityState = newBase;
-////		newBase->state.Init( newBase->stateBuf, sizeof( newBase->stateBuf ) );
-////		newBase->state.BeginWriting();
+////		newBase.entityNumber = i;
+////		newBase.next = snapshot.firstEntityState;
+////		snapshot.firstEntityState = newBase;
+////		newBase.state.Init( newBase.stateBuf, sizeof( newBase.stateBuf ) );
+////		newBase.state.BeginWriting();
 ////
 ////		numBitsRead = msg.GetNumBitsRead();
 ////
-////		deltaMsg.Init( base ? &base->state : NULL, &newBase->state, &msg );
+////		deltaMsg.Init( base ? &base.state : NULL, &newBase.state, &msg );
 ////
 ////		spawnId = deltaMsg.ReadBits( 32 - GENTITYNUM_BITS );
 ////		typeNum = deltaMsg.ReadBits( idClass::GetTypeNumBits() );
@@ -1041,11 +1041,11 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////		ent = entities[i];
 ////
 ////		// if there is no entity or an entity of the wrong type
-////		if ( !ent || ent->GetType()->typeNum != typeNum || ent->entityDefNumber != entityDefNumber || spawnId != spawnIds[ i ] ) {
+////		if ( !ent || ent.GetType().typeNum != typeNum || ent.entityDefNumber != entityDefNumber || spawnId != spawnIds[ i ] ) {
 ////
 ////			if ( i < MAX_CLIENTS && ent ) {
 ////				// SPAWN_PLAYER should be taking care of spawning the entity with the right spawnId
-////				common->Warning( "ClientReadSnapshot: recycling client entity %d\n", i );
+////				common.Warning( "ClientReadSnapshot: recycling client entity %d\n", i );
 ////			}
 ////
 ////			delete ent;
@@ -1057,18 +1057,18 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////			args.Set( "name", va( "entity%d", i ) );
 ////
 ////			if ( entityDefNumber >= 0 ) {
-////				if ( entityDefNumber >= declManager->GetNumDecls( DECL_ENTITYDEF ) ) {
-////					Error( "server has %d entityDefs instead of %d", entityDefNumber, declManager->GetNumDecls( DECL_ENTITYDEF ) );
+////				if ( entityDefNumber >= declManager.GetNumDecls( DECL_ENTITYDEF ) ) {
+////					Error( "server has %d entityDefs instead of %d", entityDefNumber, declManager.GetNumDecls( DECL_ENTITYDEF ) );
 ////				}
-////				classname = declManager->DeclByIndex( DECL_ENTITYDEF, entityDefNumber, false )->GetName();
+////				classname = declManager.DeclByIndex( DECL_ENTITYDEF, entityDefNumber, false ).GetName();
 ////				args.Set( "classname", classname );
-////				if ( !SpawnEntityDef( args, &ent ) || !entities[i] || entities[i]->GetType()->typeNum != typeNum ) {
-////					Error( "Failed to spawn entity with classname '%s' of type '%s'", classname, typeInfo->classname );
+////				if ( !SpawnEntityDef( args, &ent ) || !entities[i] || entities[i].GetType().typeNum != typeNum ) {
+////					Error( "Failed to spawn entity with classname '%s' of type '%s'", classname, typeInfo.classname );
 ////				}
 ////			} else {
 ////				ent = SpawnEntityType( *typeInfo, &args, true );
-////				if ( !entities[i] || entities[i]->GetType()->typeNum != typeNum ) {
-////					Error( "Failed to spawn entity of type '%s'", typeInfo->classname );
+////				if ( !entities[i] || entities[i].GetType().typeNum != typeNum ) {
+////					Error( "Failed to spawn entity of type '%s'", typeInfo.classname );
 ////				}
 ////			}
 ////			if ( i < MAX_CLIENTS && i >= numClients ) {
@@ -1077,22 +1077,22 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////		}
 ////
 ////		// add the entity to the snapshot list
-////		ent->snapshotNode.AddToEnd( snapshotEntities );
-////		ent->snapshotSequence = sequence;
+////		ent.snapshotNode.AddToEnd( snapshotEntities );
+////		ent.snapshotSequence = sequence;
 ////
 ////		// read the class specific data from the snapshot
-////		ent->ReadFromSnapshot( deltaMsg );
+////		ent.ReadFromSnapshot( deltaMsg );
 ////
-////		ent->snapshotBits = msg.GetNumBitsRead() - numBitsRead;
+////		ent.snapshotBits = msg.GetNumBitsRead() - numBitsRead;
 ////
 ////#if ASYNC_WRITE_TAGS
 ////		if ( msg.ReadLong() != tagRandom.RandomInt() ) {
-////			cmdSystem->BufferCommandText( CMD_EXEC_NOW, "writeGameState" );
-////			if ( entityDefNumber >= 0 && entityDefNumber < declManager->GetNumDecls( DECL_ENTITYDEF ) ) {
-////				classname = declManager->DeclByIndex( DECL_ENTITYDEF, entityDefNumber, false )->GetName();
-////				Error( "write to and read from snapshot out of sync for classname '%s' of type '%s'", classname, typeInfo->classname );
+////			cmdSystem.BufferCommandText( CMD_EXEC_NOW, "writeGameState" );
+////			if ( entityDefNumber >= 0 && entityDefNumber < declManager.GetNumDecls( DECL_ENTITYDEF ) ) {
+////				classname = declManager.DeclByIndex( DECL_ENTITYDEF, entityDefNumber, false ).GetName();
+////				Error( "write to and read from snapshot out of sync for classname '%s' of type '%s'", classname, typeInfo.classname );
 ////			} else {
-////				Error( "write to and read from snapshot out of sync for type '%s'", typeInfo->classname );
+////				Error( "write to and read from snapshot out of sync for type '%s'", typeInfo.classname );
 ////			}
 ////		}
 ////#endif
@@ -1104,17 +1104,17 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	}
 ////
 ////	// if prediction is off, enable local client smoothing
-////	player->SetSelfSmooth( dupeUsercmds > 2 );
+////	player.SetSelfSmooth( dupeUsercmds > 2 );
 ////
-////	if ( player->spectating && player->spectator != clientNum && entities[ player->spectator ] ) {
-////		spectated = static_cast< idPlayer * >( entities[ player->spectator ] );
+////	if ( player.spectating && player.spectator != clientNum && entities[ player.spectator ] ) {
+////		spectated = static_cast< idPlayer * >( entities[ player.spectator ] );
 ////	} else {
 ////		spectated = player;
 ////	}
 ////
 ////	// get PVS for this player
 ////	// don't use PVSAreas for networking - PVSAreas depends on animations (and md5 bounds), which are not synchronized
-////	numSourceAreas = gameRenderWorld->BoundsInAreas( spectated->GetPlayerPhysics()->GetAbsBounds(), sourceAreas, idEntity::MAX_PVS_AREAS );
+////	numSourceAreas = gameRenderWorld.BoundsInAreas( spectated.GetPlayerPhysics().GetAbsBounds(), sourceAreas, idEntity::MAX_PVS_AREAS );
 ////	pvsHandle = gameLocal.pvs.SetupCurrentPVS( sourceAreas, numSourceAreas, PVS_NORMAL );
 ////
 ////	// read the PVS from the snapshot
@@ -1128,62 +1128,62 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////		serverPVS[ i ] = msg.ReadLong();
 ////	}
 ////	if ( memcmp( sourceAreas, serverPVS, idEntity::MAX_PVS_AREAS * sizeof( int ) ) ) {
-////		common->Warning( "client PVS areas != server PVS areas, sequence 0x%x", sequence );
+////		common.Warning( "client PVS areas != server PVS areas, sequence 0x%x", sequence );
 ////		for ( i = 0; i < idEntity::MAX_PVS_AREAS; i++ ) {
-////			common->DPrintf( "%3d ", sourceAreas[ i ] );
+////			common.DPrintf( "%3d ", sourceAreas[ i ] );
 ////		}
-////		common->DPrintf( "\n" );
+////		common.DPrintf( "\n" );
 ////		for ( i = 0; i < idEntity::MAX_PVS_AREAS; i++ ) {
-////			common->DPrintf( "%3d ", serverPVS[ i ] );
+////			common.DPrintf( "%3d ", serverPVS[ i ] );
 ////		}
-////		common->DPrintf( "\n" );
+////		common.DPrintf( "\n" );
 ////	}
 ////	gameLocal.pvs.ReadPVS( pvsHandle, msg );
 ////#endif
 ////	for ( i = 0; i < ENTITY_PVS_SIZE; i++ ) {
-////		snapshot->pvs[i] = msg.ReadDeltaLong( clientPVS[clientNum][i] );
+////		snapshot.pvs[i] = msg.ReadDeltaLong( clientPVS[clientNum][i] );
 ////	}
 ////
 ////	// add entities in the PVS that haven't changed since the last applied snapshot
-////	for( ent = spawnedEntities.Next(); ent != NULL; ent = ent->spawnNode.Next() ) {
+////	for( ent = spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
 ////
 ////		// if the entity is already in the snapshot
-////		if ( ent->snapshotSequence == sequence ) {
+////		if ( ent.snapshotSequence == sequence ) {
 ////			continue;
 ////		}
 ////
 ////		// if the entity is not in the snapshot PVS
-////		if ( !( snapshot->pvs[ent->entityNumber >> 5] & ( 1 << ( ent->entityNumber & 31 ) ) ) ) {
-////			if ( ent->PhysicsTeamInPVS( pvsHandle ) ) {
-////				if ( ent->entityNumber >= MAX_CLIENTS && ent->entityNumber < mapSpawnCount ) {
+////		if ( !( snapshot.pvs[ent.entityNumber >> 5] & ( 1 << ( ent.entityNumber & 31 ) ) ) ) {
+////			if ( ent.PhysicsTeamInPVS( pvsHandle ) ) {
+////				if ( ent.entityNumber >= MAX_CLIENTS && ent.entityNumber < mapSpawnCount ) {
 ////					// server says it's not in PVS, client says it's in PVS
 ////					// if that happens on map entities, most likely something is wrong
 ////					// I can see that moving pieces along several PVS could be a legit situation though
 ////					// this is a band aid, which means something is not done right elsewhere
-////					common->DWarning( "client thinks map entity 0x%x (%s) is stale, sequence 0x%x", ent->entityNumber, ent->name.c_str(), sequence );
+////					common.DWarning( "client thinks map entity 0x%x (%s) is stale, sequence 0x%x", ent.entityNumber, ent.name.c_str(), sequence );
 ////				} else {
-////					ent->FreeModelDef();
-////					ent->UpdateVisuals();
-////					ent->GetPhysics()->UnlinkClip();
+////					ent.FreeModelDef();
+////					ent.UpdateVisuals();
+////					ent.GetPhysics().UnlinkClip();
 ////				}
 ////			}
 ////			continue;
 ////		}
 ////
 ////		// add the entity to the snapshot list
-////		ent->snapshotNode.AddToEnd( snapshotEntities );
-////		ent->snapshotSequence = sequence;
-////		ent->snapshotBits = 0;
+////		ent.snapshotNode.AddToEnd( snapshotEntities );
+////		ent.snapshotSequence = sequence;
+////		ent.snapshotBits = 0;
 ////
-////		base = clientEntityStates[clientNum][ent->entityNumber];
+////		base = clientEntityStates[clientNum][ent.entityNumber];
 ////		if ( !base ) {
 ////			// entity has probably fl.networkSync set to false
 ////			continue;
 ////		}
 ////
-////		base->state.BeginReading();
+////		base.state.BeginReading();
 ////
-////		deltaMsg.Init( &base->state, NULL, (const idBitMsg *)NULL );
+////		deltaMsg.Init( &base.state, NULL, (const idBitMsg *)NULL );
 ////
 ////		spawnId = deltaMsg.ReadBits( 32 - GENTITYNUM_BITS );
 ////		typeNum = deltaMsg.ReadBits( idClass::GetTypeNumBits() );
@@ -1192,14 +1192,14 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////		typeInfo = idClass::GetType( typeNum );
 ////
 ////		// if the entity is not the right type
-////		if ( !typeInfo || ent->GetType()->typeNum != typeNum || ent->entityDefNumber != entityDefNumber ) {
+////		if ( !typeInfo || ent.GetType().typeNum != typeNum || ent.entityDefNumber != entityDefNumber ) {
 ////			// should never happen - it does though. with != entityDefNumber only?
-////			common->DWarning( "entity '%s' is not the right type %p 0x%d 0x%x 0x%x 0x%x", ent->GetName(), typeInfo, ent->GetType()->typeNum, typeNum, ent->entityDefNumber, entityDefNumber );
+////			common.DWarning( "entity '%s' is not the right type %p 0x%d 0x%x 0x%x 0x%x", ent.GetName(), typeInfo, ent.GetType().typeNum, typeNum, ent.entityDefNumber, entityDefNumber );
 ////			continue;
 ////		}
 ////
 ////		// read the class specific data from the base state
-////		ent->ReadFromSnapshot( deltaMsg );
+////		ent.ReadFromSnapshot( deltaMsg );
 ////	}
 ////
 ////	// free the PVS
@@ -1208,25 +1208,25 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	// read the game and player state from the snapshot
 ////	base = clientEntityStates[clientNum][ENTITYNUM_NONE];	// ENTITYNUM_NONE is used for the game and player state
 ////	if ( base ) {
-////		base->state.BeginReading();
+////		base.state.BeginReading();
 ////	}
 ////	newBase = entityStateAllocator.Alloc();
-////	newBase->entityNumber = ENTITYNUM_NONE;
-////	newBase->next = snapshot->firstEntityState;
-////	snapshot->firstEntityState = newBase;
-////	newBase->state.Init( newBase->stateBuf, sizeof( newBase->stateBuf ) );
-////	newBase->state.BeginWriting();
-////	deltaMsg.Init( base ? &base->state : NULL, &newBase->state, &msg );
-////	if ( player->spectating && player->spectator != player->entityNumber && gameLocal.entities[ player->spectator ] && gameLocal.entities[ player->spectator ]->IsType( idPlayer::Type ) ) {
-////		static_cast< idPlayer * >( gameLocal.entities[ player->spectator ] )->ReadPlayerStateFromSnapshot( deltaMsg );
-////		weap = static_cast< idPlayer * >( gameLocal.entities[ player->spectator ] )->weapon.GetEntity();
-////		if ( weap && ( weap->GetRenderEntity()->bounds[0] == weap->GetRenderEntity()->bounds[1] ) ) {
+////	newBase.entityNumber = ENTITYNUM_NONE;
+////	newBase.next = snapshot.firstEntityState;
+////	snapshot.firstEntityState = newBase;
+////	newBase.state.Init( newBase.stateBuf, sizeof( newBase.stateBuf ) );
+////	newBase.state.BeginWriting();
+////	deltaMsg.Init( base ? &base.state : NULL, &newBase.state, &msg );
+////	if ( player.spectating && player.spectator != player.entityNumber && gameLocal.entities[ player.spectator ] && gameLocal.entities[ player.spectator ].IsType( idPlayer::Type ) ) {
+////		static_cast< idPlayer * >( gameLocal.entities[ player.spectator ] ).ReadPlayerStateFromSnapshot( deltaMsg );
+////		weap = static_cast< idPlayer * >( gameLocal.entities[ player.spectator ] ).weapon.GetEntity();
+////		if ( weap && ( weap.GetRenderEntity().bounds[0] == weap.GetRenderEntity().bounds[1] ) ) {
 ////			// update the weapon's viewmodel bounds so that the model doesn't flicker in the spectator's view
-////			weap->GetAnimator()->GetBounds( gameLocal.time, weap->GetRenderEntity()->bounds );
-////			weap->UpdateVisuals();
+////			weap.GetAnimator().GetBounds( gameLocal.time, weap.GetRenderEntity().bounds );
+////			weap.UpdateVisuals();
 ////		}
 ////	} else {
-////		player->ReadPlayerStateFromSnapshot( deltaMsg );
+////		player.ReadPlayerStateFromSnapshot( deltaMsg );
 ////	}
 ////	ReadGameStateFromSnapshot( deltaMsg );
 ////
@@ -1260,14 +1260,14 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////		event = eventQueue.Start();
 ////
 ////		// only process forward, in order
-////		if ( event->time > time ) {
+////		if ( event.time > time ) {
 ////			break;
 ////		}
 ////
 ////		idEntityPtr< idEntity > entPtr;
 ////			
-////		if( !entPtr.SetSpawnId( event->spawnId ) ) {
-////			if( !gameLocal.entities[ event->spawnId & ( ( 1 << GENTITYNUM_BITS ) - 1 ) ] ) {
+////		if( !entPtr.SetSpawnId( event.spawnId ) ) {
+////			if( !gameLocal.entities[ event.spawnId & ( ( 1 << GENTITYNUM_BITS ) - 1 ) ] ) {
 ////				// if new entity exists in this position, silently ignore
 ////				NetworkEventWarning( event, "Entity does not exist any longer, or has not been spawned yet." );
 ////			}
@@ -1275,10 +1275,10 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////			ent = entPtr.GetEntity();
 ////			assert( ent );
 ////
-////			eventMsg.Init( event->paramsBuf, sizeof( event->paramsBuf ) );
-////			eventMsg.SetSize( event->paramsSize );
+////			eventMsg.Init( event.paramsBuf, sizeof( event.paramsBuf ) );
+////			eventMsg.SetSize( event.paramsSize );
 ////			eventMsg.BeginReading();
-////			if ( !ent->ClientReceiveEvent( event->event, event->time, eventMsg ) ) {
+////			if ( !ent.ClientReceiveEvent( event.event, event.time, eventMsg ) ) {
 ////				NetworkEventWarning( event, "unknown event" );
 ////			}
 ////		}
@@ -1318,12 +1318,12 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////			index = msg.ReadLong();
 ////			msg.ReadString( name, sizeof( name ) );
 ////
-////			const idDecl *decl = declManager->FindType( (declType_t)type, name, false );
+////			const idDecl *decl = declManager.FindType( (declType_t)type, name, false );
 ////			if ( decl != NULL ) {
 ////				if ( index >= clientDeclRemap[clientNum][type].Num() ) {
 ////					clientDeclRemap[clientNum][type].AssureSize( index + 1, -1 );
 ////				}
-////				clientDeclRemap[clientNum][type][index] = decl->Index();
+////				clientDeclRemap[clientNum][type][index] = decl.Index();
 ////			}
 ////			break;
 ////		}
@@ -1332,7 +1332,7 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////			int spawnId = msg.ReadLong();
 ////			if ( !entities[ client ] ) {
 ////				SpawnPlayer( client );
-////				entities[ client ]->FreeModelDef();
+////				entities[ client ].FreeModelDef();
 ////			}
 ////			// fix up the spawnId to match what the server says
 ////			// otherwise there is going to be a bogus delete/new of the client entity in the first ClientReadFromSnapshot
@@ -1364,9 +1364,9 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////		}
 ////		case GAME_RELIABLE_MESSAGE_SOUND_INDEX: {
 ////			int index = gameLocal.ClientRemapDecl( DECL_SOUND, msg.ReadLong() );
-////			if ( index >= 0 && index < declManager->GetNumDecls( DECL_SOUND ) ) {
-////				const idSoundShader *shader = declManager->SoundByIndex( index );
-////				mpGame.PlayGlobalSound( -1, SND_COUNT, shader->GetName() );
+////			if ( index >= 0 && index < declManager.GetNumDecls( DECL_SOUND ) ) {
+////				const idSoundShader *shader = declManager.SoundByIndex( index );
+////				mpGame.PlayGlobalSound( -1, SND_COUNT, shader.GetName() );
 ////			}
 ////			break;
 ////		}
@@ -1385,18 +1385,18 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////			event = eventQueue.Alloc();
 ////			eventQueue.Enqueue( event, idEventQueue::OUTOFORDER_IGNORE );
 ////
-////			event->spawnId = msg.ReadBits( 32 );
-////			event->event = msg.ReadByte();
-////			event->time = msg.ReadLong();
+////			event.spawnId = msg.ReadBits( 32 );
+////			event.event = msg.ReadByte();
+////			event.time = msg.ReadLong();
 ////
-////			event->paramsSize = msg.ReadBits( idMath::BitsForInteger( MAX_EVENT_PARAM_SIZE ) );
-////			if ( event->paramsSize ) {
-////				if ( event->paramsSize > MAX_EVENT_PARAM_SIZE ) {
+////			event.paramsSize = msg.ReadBits( idMath::BitsForInteger( MAX_EVENT_PARAM_SIZE ) );
+////			if ( event.paramsSize ) {
+////				if ( event.paramsSize > MAX_EVENT_PARAM_SIZE ) {
 ////					NetworkEventWarning( event, "invalid param size" );
 ////					return;
 ////				}
 ////				msg.ReadByteAlign();
-////				msg.ReadData( event->paramsBuf, event->paramsSize );
+////				msg.ReadData( event.paramsBuf, event.paramsSize );
 ////			}
 ////			break;
 ////		}
@@ -1416,7 +1416,7 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////			if ( !p ) {
 ////				break;
 ////			}
-////			p->tourneyLine = line;
+////			p.tourneyLine = line;
 ////			break;
 ////		}
 ////		case GAME_RELIABLE_MESSAGE_STARTVOTE: {
@@ -1435,17 +1435,17 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////		}
 ////		case GAME_RELIABLE_MESSAGE_PORTALSTATES: {
 ////			int numPortals = msg.ReadLong();
-////			assert( numPortals == gameRenderWorld->NumPortals() );
+////			assert( numPortals == gameRenderWorld.NumPortals() );
 ////			for ( int i = 0; i < numPortals; i++ ) {
-////				gameRenderWorld->SetPortalState( (qhandle_t) (i+1), msg.ReadBits( NUM_RENDER_PORTAL_BITS ) );
+////				gameRenderWorld.SetPortalState( (qhandle_t) (i+1), msg.ReadBits( NUM_RENDER_PORTAL_BITS ) );
 ////			}
 ////			break;
 ////		}
 ////		case GAME_RELIABLE_MESSAGE_PORTAL: {
 ////			qhandle_t portal = msg.ReadLong();
 ////			int blockingBits = msg.ReadBits( NUM_RENDER_PORTAL_BITS );
-////			assert( portal > 0 && portal <= gameRenderWorld->NumPortals() );
-////			gameRenderWorld->SetPortalState( portal, blockingBits );
+////			assert( portal > 0 && portal <= gameRenderWorld.NumPortals() );
+////			gameRenderWorld.SetPortalState( portal, blockingBits );
 ////			break;
 ////		}
 ////		case GAME_RELIABLE_MESSAGE_STARTSTATE: {
@@ -1457,7 +1457,7 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////			break;
 ////		}
 ////		default: {
-////			Error( "Unknown server->client reliable message: %d", id );
+////			Error( "Unknown server.client reliable message: %d", id );
 ////			break;
 ////		}
 ////	}
@@ -1481,10 +1481,10 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	}
 ////
 ////	// check for local client lag
-////	if ( networkSystem->ClientGetTimeSinceLastPacket() >= net_clientMaxPrediction.GetInteger() ) {
-////		player->isLagged = true;
+////	if ( networkSystem.ClientGetTimeSinceLastPacket() >= net_clientMaxPrediction.GetInteger() ) {
+////		player.isLagged = true;
 ////	} else {
-////		player->isLagged = false;
+////		player.isLagged = false;
 ////	}
 ////
 ////	InitLocalClient( clientNum );
@@ -1506,9 +1506,9 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	memcpy( usercmds, clientCmds, numClients * sizeof( usercmds[ 0 ] ) );
 ////
 ////	// run prediction on all entities from the last snapshot
-////	for( ent = snapshotEntities.Next(); ent != NULL; ent = ent->snapshotNode.Next() ) {
-////		ent->thinkFlags |= TH_PHYSICS;
-////		ent->ClientPredictionThink();
+////	for( ent = snapshotEntities.Next(); ent != NULL; ent = ent.snapshotNode.Next() ) {
+////		ent.thinkFlags |= TH_PHYSICS;
+////		ent.ClientPredictionThink();
 ////	}
 ////
 ////	// service any pending events
@@ -1559,16 +1559,16 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////===============
 ////*/
 ////bool idGameLocal::DownloadRequest( const char *IP, const char *guid, const char *paks, char urls[ MAX_STRING_CHARS ] ) {
-////	if ( !cvarSystem->GetCVarInteger( "net_serverDownload" ) ) {
+////	if ( !cvarSystem.GetCVarInteger( "net_serverDownload" ) ) {
 ////		return false;
 ////	}
-////	if ( cvarSystem->GetCVarInteger( "net_serverDownload" ) == 1 ) {
+////	if ( cvarSystem.GetCVarInteger( "net_serverDownload" ) == 1 ) {
 ////		// 1: single URL redirect
-////		if ( !strlen( cvarSystem->GetCVarString( "si_serverURL" ) ) ) {
-////			common->Warning( "si_serverURL not set" );
+////		if ( !strlen( cvarSystem.GetCVarString( "si_serverURL" ) ) ) {
+////			common.Warning( "si_serverURL not set" );
 ////			return false;
 ////		}
-////		idStr::snPrintf( urls, MAX_STRING_CHARS, "1;%s", cvarSystem->GetCVarString( "si_serverURL" ) );
+////		idStr::snPrintf( urls, MAX_STRING_CHARS, "1;%s", cvarSystem.GetCVarString( "si_serverURL" ) );
 ////		return true;
 ////	} else {
 ////		// 2: table of pak URLs
@@ -1578,7 +1578,7 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////		idStrList dlTable, pakList;
 ////		int i, j;
 ////
-////		Tokenize( dlTable, cvarSystem->GetCVarString( "net_serverDlTable" ) );
+////		Tokenize( dlTable, cvarSystem.GetCVarString( "net_serverDlTable" ) );
 ////		Tokenize( pakList, paks );
 ////
 ////		for ( i = 0; i < pakList.Num(); i++ ) {
@@ -1588,24 +1588,24 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////			if ( pakList[ i ][ 0 ] == '\0' ) {
 //// 				if ( i == 0 ) {
 ////					// pak 0 will always miss when client doesn't ask for game bin
-////					common->DPrintf( "no game pak request\n" );
+////					common.DPrintf( "no game pak request\n" );
 ////				} else {
-////					common->DPrintf( "no pak %d\n", i );
+////					common.DPrintf( "no pak %d\n", i );
 ////				}
 ////				continue;
 ////			}
 ////			for ( j = 0; j < dlTable.Num(); j++ ) {
-////				if ( !fileSystem->FilenameCompare( pakList[ i ], dlTable[ j ] ) ) {
+////				if ( !fileSystem.FilenameCompare( pakList[ i ], dlTable[ j ] ) ) {
 ////					break;
 ////				}
 ////			}
 ////			if ( j == dlTable.Num() ) {
-////				common->Printf( "download for %s: pak not matched: %s\n", IP, pakList[ i ].c_str() );
+////				common.Printf( "download for %s: pak not matched: %s\n", IP, pakList[ i ].c_str() );
 ////			} else {
-////				idStr url = cvarSystem->GetCVarString( "net_serverDlBaseURL" );
+////				idStr url = cvarSystem.GetCVarString( "net_serverDlBaseURL" );
 ////				url.AppendPath( dlTable[ j ] );
 ////				reply += url;
-////				common->DPrintf( "download for %s: %s\n", IP, url.c_str() );
+////				common.DPrintf( "download for %s: %s\n", IP, url.c_str() );
 ////			}
 ////		}
 ////		
@@ -1624,8 +1624,8 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////*/
 ////entityNetEvent_t* idEventQueue::Alloc() {
 ////	entityNetEvent_t* event = eventAllocator.Alloc();
-////	event->prev = NULL;
-////	event->next = NULL;
+////	event.prev = NULL;
+////	event.next = NULL;
 ////	return event;
 ////}
 ////
@@ -1636,7 +1636,7 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////*/
 ////void idEventQueue::Free( entityNetEvent_t *event ) {
 ////	// should only be called on an unlinked event!
-////	assert( !event->next && !event->prev );
+////	assert( !event.next && !event.prev );
 ////	eventAllocator.Free( event );
 ////}
 ////
@@ -1647,7 +1647,7 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////*/
 ////void idEventQueue::Shutdown() {
 ////	eventAllocator.Shutdown();
-////	this->Init();
+////	this.Init();
 ////}
 ////
 /*
@@ -1671,16 +1671,16 @@ idEventQueue.prototype.Init = function ( ): void {
 ////		return NULL;
 ////	}
 ////
-////	start = start->next;
+////	start = start.next;
 ////
 ////	if ( !start ) {
 ////		end = NULL;
 ////	} else {
-////		start->prev = NULL;
+////		start.prev = NULL;
 ////	}
 ////
-////	event->next = NULL;
-////	event->prev = NULL;
+////	event.next = NULL;
+////	event.prev = NULL;
 ////
 ////	return event;
 ////}
@@ -1696,16 +1696,16 @@ idEventQueue.prototype.Init = function ( ): void {
 ////		return NULL;
 ////	}
 ////
-////	end = event->prev;
+////	end = event.prev;
 ////
 ////	if ( !end ) {
 ////		start = NULL;
 ////	} else {
-////		end->next = NULL;		
+////		end.next = NULL;		
 ////	}
 ////
-////	event->next = NULL;
-////	event->prev = NULL;
+////	event.next = NULL;
+////	event.prev = NULL;
 ////
 ////	return event;
 ////}
@@ -1719,9 +1719,9 @@ idEventQueue.prototype.Init = function ( ): void {
 ////	if ( behaviour == OUTOFORDER_DROP ) {
 ////		// go backwards through the queue and determine if there are
 ////		// any out-of-order events
-////		while ( end && end->time > event->time ) {
+////		while ( end && end.time > event.time ) {
 ////			entityNetEvent_t *outOfOrder = RemoveLast();
-////			common->DPrintf( "WARNING: new event with id %d ( time %d ) caused removal of event with id %d ( time %d ), game time = %d.\n", event->event, event->time, outOfOrder->event, outOfOrder->time, gameLocal.time );
+////			common.DPrintf( "WARNING: new event with id %d ( time %d ) caused removal of event with id %d ( time %d ), game time = %d.\n", event.event, event.time, outOfOrder.event, outOfOrder.time, gameLocal.time );
 ////			Free( outOfOrder );
 ////		}
 ////	} else if ( behaviour == OUTOFORDER_SORT && end ) {
@@ -1730,30 +1730,30 @@ idEventQueue.prototype.Init = function ( ): void {
 ////		//				 the patch fix.
 ////		entityNetEvent_t *cur = end;
 ////		// iterate until we find a time < the new event's
-////		while ( cur && cur->time > event->time ) {
-////			cur = cur->prev;
+////		while ( cur && cur.time > event.time ) {
+////			cur = cur.prev;
 ////		}
 ////		if ( !cur ) {
 ////			// add to start
-////			event->next = start;
-////			event->prev = NULL;
+////			event.next = start;
+////			event.prev = NULL;
 ////			start = event;
 ////		} else {
 ////			// insert
-////			event->prev = cur;
-////			event->next = cur->next;
-////			cur->next = event;
+////			event.prev = cur;
+////			event.next = cur.next;
+////			cur.next = event;
 ////		}
 ////		return;
 ////	} 
 ////
 ////	// add the new event
-////	event->next = NULL;
-////	event->prev = NULL;
+////	event.next = NULL;
+////	event.prev = NULL;
 ////
 ////	if ( end ) {
-////		end->next = event;
-////		event->prev = end;
+////		end.next = event;
+////		event.prev = end;
 ////	} else {
 ////		start = event;
 ////	}

@@ -98,7 +98,11 @@ var r_aspectRatio = new idCVar( 				"r_aspectRatio",			"0",			CVAR_RENDERER | CV
 
 var g_cinematic = new idCVar(					"g_cinematic",				"1",			CVAR_GAME | CVAR_BOOL, "skips updating entities that aren't marked 'cinematic' '1' during cinematics" );
 var g_cinematicMaxSkipTime = new idCVar(		"g_cinematicMaxSkipTime",	"600",			CVAR_GAME | CVAR_FLOAT, "# of seconds to allow game to run when skipping cinematic.  prevents lock-up when cinematic doesn't end.", 0, 3600 );
-////
+
+var DEFAULT_GRAVITY = 1066.0;
+var DEFAULT_GRAVITY_STRING = "1066";
+var DEFAULT_GRAVITY_VEC3 = new idVec3(0, 0, -DEFAULT_GRAVITY);
+
 var g_muzzleFlash = new idCVar ( 				"g_muzzleFlash",			"1",			CVAR_GAME | CVAR_ARCHIVE | CVAR_BOOL, "show muzzle flashes" );
 var g_projectileLights = new idCVar ( 			"g_projectileLights",		"1",			CVAR_GAME | CVAR_ARCHIVE | CVAR_BOOL, "show dynamic lights on projectiles" );
 var g_bloodEffects = new idCVar ( 				"g_bloodEffects",			"1",			CVAR_GAME | CVAR_ARCHIVE | CVAR_BOOL, "show blood splats, sprays and gibs" );

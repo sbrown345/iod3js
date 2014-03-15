@@ -223,6 +223,9 @@
 
 // after cvar
 /// <reference path="doomdll/sys/win_main.cpp.ts" />
+/// <reference path="libs/idlib/math/lcp.cpp.ts" />
+/// <reference path="doomdll/sys/win_net.cpp.ts" />
+
 
 // decls
 //#include "../framework/DeclManager.h"
@@ -270,6 +273,7 @@
 /// <reference path="doomdll/renderer/image_process.cpp.ts" />
 /// <reference path="doomdll/renderer/image_program.cpp.ts" />
 /// <reference path="doomdll/renderer/material.cpp.ts" />
+/// <reference path="doomdll/renderer/megatexture.cpp.ts" />
 /// <reference path="doomdll/renderer/model.h.ts" />
 /// <reference path="doomdll/renderer/model_local.h.ts" />
 /// <reference path="doomdll/renderer/model.cpp.ts" />
