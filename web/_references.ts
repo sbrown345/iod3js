@@ -180,16 +180,6 @@
 /// <reference path="libs/idlib/timer.h.ts" />
 
 // framework
-/// <reference path="doomdll/cm/collisionmodel.h.ts" />
-/// <reference path="doomdll/cm/collisionmodel_local.h.ts" />
-/// <reference path="doomdll/cm/collisionmodel_translate.cpp.ts" />
-/// <reference path="doomdll/cm/collisionmodel_contacts.cpp.ts" />
-/// <reference path="doomdll/cm/collisionmodel_contents.cpp.ts" />
-/// <reference path="doomdll/cm/collisionmodel_debug.cpp.ts" />
-/// <reference path="doomdll/cm/collisionmodel_files.cpp.ts" />
-/// <reference path="doomdll/cm/collisionmodel_load.cpp.ts" />
-/// <reference path="doomdll/cm/collisionmodel_rotate.cpp.ts" />
-/// <reference path="doomdll/cm/collisionmodel_trace.cpp.ts" />
 //#include "../framework/BuildVersion.h"
 //#include "../framework/BuildDefines.h"
 /// <reference path="doomdll/framework/licensee.h.ts" />
@@ -215,6 +205,19 @@
 //#include "../framework/UsercmdGen.h"
 /// <reference path="doomdll/framework/usercmdgen.h.ts" />
 /// <reference path="doomdll/framework/usercmdgen.cpp.ts" />
+
+/// <reference path="doomdll/renderer/material.h.ts" />
+
+/// <reference path="doomdll/cm/collisionmodel.h.ts" />
+/// <reference path="doomdll/cm/collisionmodel_local.h.ts" />
+/// <reference path="doomdll/cm/collisionmodel_translate.cpp.ts" />
+/// <reference path="doomdll/cm/collisionmodel_contacts.cpp.ts" />
+/// <reference path="doomdll/cm/collisionmodel_contents.cpp.ts" />
+/// <reference path="doomdll/cm/collisionmodel_debug.cpp.ts" />
+/// <reference path="doomdll/cm/collisionmodel_files.cpp.ts" />
+/// <reference path="doomdll/cm/collisionmodel_load.cpp.ts" />
+/// <reference path="doomdll/cm/collisionmodel_rotate.cpp.ts" />
+/// <reference path="doomdll/cm/collisionmodel_trace.cpp.ts" />
 
 /// <reference path="doomdll/framework/eventloop.cpp.ts" />
 
@@ -266,7 +269,6 @@
 /// <reference path="doomdll/renderer/image_load.cpp.ts" />
 /// <reference path="doomdll/renderer/image_process.cpp.ts" />
 /// <reference path="doomdll/renderer/image_program.cpp.ts" />
-/// <reference path="doomdll/renderer/material.h.ts" />
 /// <reference path="doomdll/renderer/material.cpp.ts" />
 /// <reference path="doomdll/renderer/model.h.ts" />
 /// <reference path="doomdll/renderer/model_local.h.ts" />
