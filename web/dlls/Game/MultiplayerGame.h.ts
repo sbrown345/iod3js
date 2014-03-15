@@ -63,16 +63,16 @@ enum playerVote_t{
 ////	bool			scoreBoardUp;	// toggle based on player scoreboard button, used to activate de-activate the scoreboard gui
 ////	bool			ingame;
 ////} mpPlayerState_t;
-////
-////const int NUM_CHAT_NOTIFY	= 5;
-////const int CHAT_FADE_TIME	= 400;
-////const int FRAGLIMIT_DELAY	= 2000;
-////
-////const int MP_PLAYER_MINFRAGS = -100;
-////const int MP_PLAYER_MAXFRAGS = 100;
-////const int MP_PLAYER_MAXWINS	= 100;
-////const int MP_PLAYER_MAXPING	= 999;
-////
+
+var NUM_CHAT_NOTIFY	= 5;
+var CHAT_FADE_TIME	= 400;
+var FRAGLIMIT_DELAY	= 2000;
+
+var MP_PLAYER_MINFRAGS = -100;
+var MP_PLAYER_MAXFRAGS = 100;
+var MP_PLAYER_MAXWINS	= 100;
+var MP_PLAYER_MAXPING	= 999;
+
 ////typedef struct mpChatLine_s {
 ////	idStr			line;
 ////	short			fade;			// starts high and decreases, line is removed once reached 0

@@ -44,7 +44,7 @@ All game cvars should be defined here.
 
 */
 
-var si_gameTypeArgs: string[]		= [ "singleplayer", "deathmatch", "Tourney", "Team DM", "Last Man"/*, NULL */];
+var si_gameTypeArgs: string[] = ["singleplayer", "deathmatch", "Tourney", "Team DM", "Last Man" /*, NULL */];
 var si_readyArgs:string[] = ["Not Ready", "Ready"/*, NULL */];
 var si_spectateArgs: string[] = ["Play", "Spectate"/*, NULL */];
 
@@ -52,8 +52,9 @@ var ui_skinArgs: string[] = ["skins/characters/player/marine_mp", "skins/charact
 var ui_teamArgs: string[] = ["Red", "Blue"/*, NULL */];
 
 class gameVersion_s {
-	constructor()
-	{this.$string =  sprintf( "%s.%d%s %s %s", ENGINE_VERSION, BUILD_NUMBER, BUILD_DEBUG, BUILD_STRING, __DATE__, __TIME__); }
+	constructor ( ) {
+		this.$string =  sprintf( "%s.%d%s %s %s", ENGINE_VERSION, BUILD_NUMBER, BUILD_DEBUG, BUILD_STRING, __DATE__, __TIME__); 
+	}
 	$string:string;
 };
 
@@ -70,7 +71,7 @@ var si_name = new idCVar ( 						"si_name",					"DOOM Server",	CVAR_GAME | CVAR_
 var si_gameType = new idCVar ( 					"si_gameType",			si_gameTypeArgs[ 0 ],CVAR_GAME | CVAR_SERVERINFO | CVAR_ARCHIVE, "game type - singleplayer, deathmatch, Tourney, Team DM or Last Man", si_gameTypeArgs, ArgCompletion_String_Template(si_gameTypeArgs) );
 var si_map = new idCVar ( 						"si_map",					"game/mp/d3dm1",CVAR_GAME | CVAR_SERVERINFO | CVAR_ARCHIVE, "map to be played next on server", ArgCompletion_MapName);
 var si_maxPlayers = new idCVar ( 				"si_maxPlayers",			"4",			CVAR_GAME | CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_INTEGER, "max number of players allowed on the server", 1, 4 );
-//var si_fragLimit = new idCVar ( 				"si_fragLimit",				"10",			CVAR_GAME | CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_INTEGER, "frag limit", 1, MP_PLAYER_MAXFRAGS );
+var si_fragLimit = new idCVar ( 				"si_fragLimit",				"10",			CVAR_GAME | CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_INTEGER, "frag limit", 1, MP_PLAYER_MAXFRAGS );
 var si_timeLimit = new idCVar ( 				"si_timeLimit",				"10",			CVAR_GAME | CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_INTEGER, "time limit in minutes", 0, 60 );
 var si_teamDamage = new idCVar ( 				"si_teamDamage",			"0",			CVAR_GAME | CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_BOOL, "enable team damage" );
 var si_warmup = new idCVar ( 					"si_warmup",				"0",			CVAR_GAME | CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_BOOL, "do pre-game warmup" );

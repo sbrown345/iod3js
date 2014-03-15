@@ -844,7 +844,8 @@ idCVarSystemLocal::idCVarSystemLocal
 	idCVarSystemLocal::MoveCVarsToDict
 	============
 	*/
-	MoveCVarsToDict ( /*int*/ flags: number ): idDict {
+	MoveCVarsToDict( /*int*/ flags: number): idDict {
+		if ( this.cvars.Num ( ) != 609 ) throw "must have 609 cvars to match original";
 		idCVarSystem.moveCVarsToDict.Clear ( );
 		for ( var i = 0; i < this.cvars.Num ( ); i++ ) {
 			var cvar = this.cvars[i];

@@ -124,13 +124,13 @@ class idCVar {
 	constructor ( name?: string, value?: string, /*int */flags?: number, description?: string,
 		valueStringsOrValueMinOrValueCompletion?: any, valueMaxOrValueCompletion?: any, valueCompletion: /*argCompletion_t*/ ( args: idCmdArgs, callback: ( s: string ) => void ) => void = null ) {
 
-		// todo: tidy somehow, perhaps create a method for each overload
+		// todo: tidy somehow, perhaps create a method for each overload  (to tidy up names use last arg? valueCompletion = arguments[arguments.length - 1)
 
 		if ( arguments.length == 0 ) {
 			//// Never use the default constructor.
 			//assert( !( this.constructor != idCVar ) );
 			return; // empty ctor call e.g. super ( ); from idInternalCVar
-		} else if ( arguments.length == 4 || arguments.length == 5 ) {
+		} else if ( arguments.length == 4 || ( arguments.length == 5 && typeof valueStringsOrValueMinOrValueCompletion == "function" ) ) {
 			if ( !valueCompletion && ( flags & CVAR_BOOL ) ) {
 				this.valueCompletion = ArgCompletion_Boolean;
 			}
