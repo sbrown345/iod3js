@@ -18,9 +18,10 @@ var DEBUG_APPEND_TEXTURES_TO_BODY = isd( false );
 var DEBUG_RegisterDeclFolder = isd( false );
 var DEBUG_DeriveTangents = isd( false );
 var DEBUG_R_DeriveTangents = isd( false );
-var DEBUG_COMPILER = isd( true );
-var DEBUG_GUI = isd( true );
+var DEBUG_COMPILER = isd(false );
+var DEBUG_GUI = isd(false );
 var DEBUG_HASHINDEX = isd( false );
+var DEBUG_STRPOOL = isd( true );
 
 function dlog(log: boolean, format: string, ...args: any[]) {
 	if (!log || SKIP_ALL_LOGGING) return;

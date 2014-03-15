@@ -99,20 +99,23 @@ function Sys_CreateThread($function: /*xthread_t*/(/*void *parm*/) => number, pa
 	//								parms,	// LPVOID lpvThreadParm,
 	//								0,		//   DWORD fdwCreate,
 	//								&info.threadId);
-	var temp = $function ( );
-	info.threadHandle = temp;
-	todo( "Sys_Createthread priority" );
-	//if (priority == THREAD_HIGHEST) {
-	//	SetThreadPriority( (HANDLE)info.threadHandle, THREAD_PRIORITY_HIGHEST );		//  we better sleep enough to do this
-	//} else if (priority == THREAD_ABOVE_NORMAL ) {
-	//	SetThreadPriority( (HANDLE)info.threadHandle, THREAD_PRIORITY_ABOVE_NORMAL );
+
+	todo( "Sys_CreateThread" );
+
+	//var temp = $function ( );
+	//info.threadHandle = temp;
+	//todo( "Sys_Createthread priority" );
+	////if (priority == THREAD_HIGHEST) {
+	////	SetThreadPriority( (HANDLE)info.threadHandle, THREAD_PRIORITY_HIGHEST );		//  we better sleep enough to do this
+	////} else if (priority == THREAD_ABOVE_NORMAL ) {
+	////	SetThreadPriority( (HANDLE)info.threadHandle, THREAD_PRIORITY_ABOVE_NORMAL );
+	////}
+	//info.name = name;
+	//if ( thread_count.$ < MAX_THREADS ) {
+	//	threads[( thread_count.$ )++] = info;
+	//} else {
+	//	common.DPrintf( "WARNING: MAX_T	HREADS reached\n" );
 	//}
-	info.name = name;
-	if ( thread_count.$ < MAX_THREADS ) {
-		threads[( thread_count.$ )++] = info;
-	} else {
-		common.DPrintf( "WARNING: MAX_T	HREADS reached\n" );
-	}
 }
 
 /////*

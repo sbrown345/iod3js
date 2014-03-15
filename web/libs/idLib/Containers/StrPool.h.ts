@@ -127,6 +127,7 @@ class idStrPool {
 		poolStr.pool = this;
 		poolStr.numUsers = 1;
 		this.poolHash.Add( hash, this.pool.Append( poolStr ) );
+		dlog(DEBUG_STRPOOL, "idStrPool::AllocString '%s' poolStr.numUsers: %i\n", poolStr.c_str(), poolStr.numUsers);
 		return poolStr;
 	}
 
@@ -137,6 +138,8 @@ class idStrPool {
 	*/
 	FreeString ( poolStr: idPoolStr ): void {
 		var /*int */i: number, hash: number;
+
+		dlog(DEBUG_STRPOOL, "idStrPool::FreeString '%s' poolStr.numUsers: %i\n", poolStr.c_str(), poolStr.numUsers);
 
 		assert( poolStr.numUsers >= 1 );
 		assert( poolStr.pool == this );
@@ -172,9 +175,9 @@ class idStrPool {
 	================
 	*/
 	CopyString ( poolStr: idPoolStr ): idPoolStr {
-
+		dlog( DEBUG_STRPOOL, "idStrPool::CopyString '%s' poolStr.numUsers: %i\n", poolStr.c_str ( ), poolStr.numUsers );
 		assert( poolStr.numUsers >= 1 );
-
+		
 		if ( poolStr.pool == this ) {
 			// the string is from this pool so just increase the user count
 			poolStr.numUsers++;

@@ -109,6 +109,8 @@
     <TypeScriptCompile Include="dlls\Game\SecurityCamera.h.ts" />
     <TypeScriptCompile Include="dlls\Game\Sound.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\Sound.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\BuildDefines.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Framework\BuildVersion.h.ts" />
     <Content Include="DoomDLL\Framework\CmdSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\CmdSystem.h.ts" />
     <Content Include="DoomDLL\Framework\Common.cpp.ts" />

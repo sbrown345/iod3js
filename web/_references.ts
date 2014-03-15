@@ -140,6 +140,7 @@
 /// <reference path="libs/idlib/text/lexer.cpp.ts" />
 /// <reference path="libs/idlib/text/str.h.ts" />
 /// <reference path="libs/idlib/text/token.cpp.ts" />
+
 // BV
 /// <reference path="libs/idlib/bv/frustum.cpp.ts" />
 /// <reference path="libs/idlib/bv/bounds.h.ts" />
@@ -192,6 +193,8 @@
 //#include "../framework/BuildVersion.h"
 //#include "../framework/BuildDefines.h"
 /// <reference path="doomdll/framework/licensee.h.ts" />
+/// <reference path="doomdll/framework/builddefines.h.ts" />
+/// <reference path="doomdll/framework/buildversion.h.ts" />
 //#include "../framework/CmdSystem.h"
 /// <reference path="doomdll/framework/cmdsystem.h.ts" />
 /// <reference path="doomdll/framework/cmdsystem.cpp.ts" />

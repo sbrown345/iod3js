@@ -121,6 +121,7 @@ ID_INLINE const idPoolStr *idStrPool::AllocString( const char *string ) {
 	poolStr->pool = this;
 	poolStr->numUsers = 1;
 	poolHash.Add( hash, pool.Append( poolStr ) );
+	dlog(DEBUG_STRPOOL, "idStrPool::AllocString '%s' poolStr.numUsers: %i\n", poolStr->c_str(), poolStr->numUsers);
 	return poolStr;
 }
 
@@ -131,6 +132,8 @@ idStrPool::FreeString
 */
 ID_INLINE void idStrPool::FreeString( const idPoolStr *poolStr ) {
 	int i, hash;
+
+	dlog(DEBUG_STRPOOL, "idStrPool::FreeString '%s' poolStr.numUsers: %i\n", poolStr->c_str(), poolStr->numUsers);
 
 	assert( poolStr->numUsers >= 1 );
 	assert( poolStr->pool == this );
@@ -165,8 +168,8 @@ idStrPool::CopyString
 ================
 */
 ID_INLINE const idPoolStr *idStrPool::CopyString( const idPoolStr *poolStr ) {
-
-	assert( poolStr->numUsers >= 1 );
+	dlog(DEBUG_STRPOOL, "idStrPool::CopyString '%s' poolStr.numUsers: %i\n", poolStr->c_str(), poolStr->numUsers);
+	assert(poolStr->numUsers >= 1);
 
 	if ( poolStr->pool == this ) {
 		// the string is from this pool so just increase the user count

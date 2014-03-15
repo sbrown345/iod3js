@@ -32,39 +32,43 @@
 ////#include "../Game_local.h"
 ////
 ////#if defined( _DEBUG )
+var BUILD_DEBUG = "-debug";
 ////	#define	BUILD_DEBUG	"-debug"
 ////#else
 ////	#define	BUILD_DEBUG "-release"
 ////#endif
 ////
-/////*
-////
-////All game cvars should be defined here.
-////
-////*/
-////
-////const char *si_gameTypeArgs[]		= { "singleplayer", "deathmatch", "Tourney", "Team DM", "Last Man", NULL };
-////const char *si_readyArgs[]			= { "Not Ready", "Ready", NULL }; 
-////const char *si_spectateArgs[]		= { "Play", "Spectate", NULL };
-////
-////const char *ui_skinArgs[]			= { "skins/characters/player/marine_mp", "skins/characters/player/marine_mp_red", "skins/characters/player/marine_mp_blue", "skins/characters/player/marine_mp_green", "skins/characters/player/marine_mp_yellow", NULL };
-////const char *ui_teamArgs[]			= { "Red", "Blue", NULL }; 
-////
-////struct gameVersion_s {
-////	gameVersion_s( void ) { sprintf( string, "%s.%d%s %s %s", ENGINE_VERSION, BUILD_NUMBER, BUILD_DEBUG, BUILD_STRING, __DATE__, __TIME__ ); }
-////	char	string[256];
-////} gameVersion;
-////
-//var g_version = new idCVar ( 					"g_version",				gameVersion.string,	CVAR_GAME | CVAR_ROM, "game version" );
+/*
+
+All game cvars should be defined here.
+
+*/
+
+var si_gameTypeArgs: string[]		= [ "singleplayer", "deathmatch", "Tourney", "Team DM", "Last Man"/*, NULL */];
+var si_readyArgs:string[] = ["Not Ready", "Ready"/*, NULL */];
+var si_spectateArgs: string[] = ["Play", "Spectate"/*, NULL */];
+
+var ui_skinArgs: string[] = ["skins/characters/player/marine_mp", "skins/characters/player/marine_mp_red", "skins/characters/player/marine_mp_blue", "skins/characters/player/marine_mp_green", "skins/characters/player/marine_mp_yellow"/*, NULL */];
+var ui_teamArgs: string[] = ["Red", "Blue"/*, NULL */];
+
+class gameVersion_s {
+	constructor()
+	{this.$string =  sprintf( "%s.%d%s %s %s", ENGINE_VERSION, BUILD_NUMBER, BUILD_DEBUG, BUILD_STRING, __DATE__, __TIME__); }
+	$string:string;
+};
+
+var gameVersion = new gameVersion_s;
+
+var g_version = new idCVar ( 					"g_version",				gameVersion.$string,	CVAR_GAME | CVAR_ROM, "game version" );
 ////
 ////// noset vars
 var gamename = new idCVar ( 					"gamename",					GAME_VERSION,	CVAR_GAME | CVAR_SERVERINFO | CVAR_ROM, "" );
-//var gamedate = new idCVar ( 					"gamedate",					__DATE__,		CVAR_GAME | CVAR_ROM, "" );
+var gamedate = new idCVar ( 					"gamedate",					__DATE__,		CVAR_GAME | CVAR_ROM, "" );
 ////
 ////// server info
 var si_name = new idCVar ( 						"si_name",					"DOOM Server",	CVAR_GAME | CVAR_SERVERINFO | CVAR_ARCHIVE, "name of the server" );
-//var si_gameType = new idCVar ( 					"si_gameType",		si_gameTypeArgs[ 0 ],	CVAR_GAME | CVAR_SERVERINFO | CVAR_ARCHIVE, "game type - singleplayer, deathmatch, Tourney, Team DM or Last Man", si_gameTypeArgs, idCmdSystem::ArgCompletion_String<si_gameTypeArgs> );
-//var si_map = new idCVar ( 						"si_map",					"game/mp/d3dm1",CVAR_GAME | CVAR_SERVERINFO | CVAR_ARCHIVE, "map to be played next on server", idCmdSystem::ArgCompletion_MapName );
+var si_gameType = new idCVar ( 					"si_gameType",			si_gameTypeArgs[ 0 ],CVAR_GAME | CVAR_SERVERINFO | CVAR_ARCHIVE, "game type - singleplayer, deathmatch, Tourney, Team DM or Last Man", si_gameTypeArgs, ArgCompletion_String_Template(si_gameTypeArgs) );
+var si_map = new idCVar ( 						"si_map",					"game/mp/d3dm1",CVAR_GAME | CVAR_SERVERINFO | CVAR_ARCHIVE, "map to be played next on server", ArgCompletion_MapName);
 var si_maxPlayers = new idCVar ( 				"si_maxPlayers",			"4",			CVAR_GAME | CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_INTEGER, "max number of players allowed on the server", 1, 4 );
 //var si_fragLimit = new idCVar ( 				"si_fragLimit",				"10",			CVAR_GAME | CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_INTEGER, "frag limit", 1, MP_PLAYER_MAXFRAGS );
 var si_timeLimit = new idCVar ( 				"si_timeLimit",				"10",			CVAR_GAME | CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_INTEGER, "time limit in minutes", 0, 60 );
@@ -74,16 +78,16 @@ var si_usePass = new idCVar ( 					"si_usePass",				"0",			CVAR_GAME | CVAR_SERV
 var si_pure = new idCVar ( 						"si_pure",					"1",			CVAR_GAME | CVAR_SERVERINFO | CVAR_BOOL, "server is pure and does not allow modified data" );
 var si_spectators = new idCVar ( 				"si_spectators",			"1",			CVAR_GAME | CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_BOOL, "allow spectators or require all clients to play" );
 var si_serverURL = new idCVar ( 				"si_serverURL",				"",				CVAR_GAME | CVAR_SERVERINFO | CVAR_ARCHIVE, "where to reach the server admins and get information about the server" );
-////
-////// user info
+//
+//// user info
 var ui_name = new idCVar ( 						"ui_name",					"Player",		CVAR_GAME | CVAR_USERINFO | CVAR_ARCHIVE, "player name" );
-//var ui_skin = new idCVar ( 						"ui_skin",				ui_skinArgs[ 0 ],	CVAR_GAME | CVAR_USERINFO | CVAR_ARCHIVE, "player skin", ui_skinArgs, idCmdSystem::ArgCompletion_String<ui_skinArgs> );
-//var ui_team = new idCVar ( 						"ui_team",				ui_teamArgs[ 0 ],	CVAR_GAME | CVAR_USERINFO | CVAR_ARCHIVE, "player team", ui_teamArgs, idCmdSystem::ArgCompletion_String<ui_teamArgs> ); 
+var ui_skin = new idCVar ( 						"ui_skin",				ui_skinArgs[ 0 ],	CVAR_GAME | CVAR_USERINFO | CVAR_ARCHIVE, "player skin", ui_skinArgs, ArgCompletion_String_Template(ui_skinArgs));
+var ui_team = new idCVar ( 						"ui_team",				ui_teamArgs[0],		CVAR_GAME | CVAR_USERINFO | CVAR_ARCHIVE, "player team", ui_teamArgs, ArgCompletion_String_Template(ui_teamArgs) );
 var ui_autoSwitch = new idCVar ( 				"ui_autoSwitch",			"1",			CVAR_GAME | CVAR_USERINFO | CVAR_ARCHIVE | CVAR_BOOL, "auto switch weapon" );
 var ui_autoReload = new idCVar ( 				"ui_autoReload",			"1",			CVAR_GAME | CVAR_USERINFO | CVAR_ARCHIVE | CVAR_BOOL, "auto reload weapon" );
 var ui_showGun = new idCVar ( 					"ui_showGun",				"1",			CVAR_GAME | CVAR_USERINFO | CVAR_ARCHIVE | CVAR_BOOL, "show gun" );
-//var ui_ready = new idCVar ( 					"ui_ready",				si_readyArgs[ 0 ],	CVAR_GAME | CVAR_USERINFO, "player is ready to start playing", idCmdSystem::ArgCompletion_String<si_readyArgs> );
-//var ui_spectate = new idCVar ( 					"ui_spectate",		si_spectateArgs[ 0 ],	CVAR_GAME | CVAR_USERINFO, "play or spectate", idCmdSystem::ArgCompletion_String<si_spectateArgs> );
+var ui_ready = new idCVar ( 					"ui_ready",				 si_readyArgs[0],		CVAR_GAME | CVAR_USERINFO,							"player is ready to start playing", ArgCompletion_String_Template(si_readyArgs) );
+var ui_spectate = new idCVar ( 					"ui_spectate",			si_spectateArgs[0], CVAR_GAME | CVAR_USERINFO,								 "play or spectate", ArgCompletion_String_Template(si_spectateArgs) );
 var ui_chat = new idCVar ( 						"ui_chat",					"0",			CVAR_GAME | CVAR_USERINFO | CVAR_BOOL | CVAR_ROM | CVAR_CHEAT, "player is chatting" );
 
 // change anytime vars
@@ -125,9 +129,9 @@ var g_useDynamicProtection = new idCVar ( 		"g_useDynamicProtection",	"1",			CVA
 var g_healthTakeTime = new idCVar ( 			"g_healthTakeTime",			"5",			CVAR_GAME | CVAR_INTEGER | CVAR_ARCHIVE, "how often to take health in nightmare mode" );
 var g_healthTakeAmt = new idCVar ( 				"g_healthTakeAmt",			"5",			CVAR_GAME | CVAR_INTEGER | CVAR_ARCHIVE, "how much health to take in nightmare mode" );
 var g_healthTakeLimit = new idCVar ( 			"g_healthTakeLimit",		"25",			CVAR_GAME | CVAR_INTEGER | CVAR_ARCHIVE, "how low can health get taken in nightmare mode" );
-////
-////
-////
+
+
+
 var g_showPVS = new idCVar ( 					"g_showPVS",				"0",			CVAR_GAME | CVAR_INTEGER, "", 0, 2 );
 var g_showTargets = new idCVar ( 				"g_showTargets",			"0",			CVAR_GAME | CVAR_BOOL, "draws entities and thier targets.  hidden entities are drawn grey." );
 var g_showTriggers = new idCVar ( 				"g_showTriggers",			"0",			CVAR_GAME | CVAR_BOOL, "draws trigger entities  = new idCVar ( orange) and thier targets  = new idCVar ( green).  disabled triggers are drawn grey." );
@@ -141,10 +145,10 @@ var g_showcamerainfo = new idCVar ( 			"g_showcamerainfo",			"0",			CVAR_GAME | 
 var g_showTestModelFrame = new idCVar ( 		"g_showTestModelFrame",		"0",			CVAR_GAME | CVAR_BOOL, "displays the current animation and frame # for testmodels" );
 var g_showActiveEntities = new idCVar ( 		"g_showActiveEntities",		"0",			CVAR_GAME | CVAR_BOOL, "draws boxes around thinking entities.  dormant entities  = new idCVar ( outside of pvs) are drawn yellow.  non-dormant are green." );
 var g_showEnemies = new idCVar ( 				"g_showEnemies",			"0",			CVAR_GAME | CVAR_BOOL, "draws boxes around monsters that have targeted the the player" );
-////
+
 var g_frametime = new idCVar ( 					"g_frametime",				"0",			CVAR_GAME | CVAR_BOOL, "displays timing information for each game frame" );
 var g_timeentities = new idCVar ( 				"g_timeEntities",			"0",			CVAR_GAME | CVAR_FLOAT, "when non-zero, shows entities whose think functions exceeded the # of milliseconds specified" );
-////	
+
 var ai_debugScript = new idCVar ( 				"ai_debugScript",			"-1",			CVAR_GAME | CVAR_INTEGER, "displays script calls for the specified monster entity number" );
 var ai_debugMove = new idCVar ( 				"ai_debugMove",				"0",			CVAR_GAME | CVAR_BOOL, "draws movement information for monsters" );
 var ai_debugTrajectory = new idCVar ( 			"ai_debugTrajectory",		"0",			CVAR_GAME | CVAR_BOOL, "draws trajectory tests for monsters" );
@@ -153,30 +157,30 @@ var ai_showCombatNodes = new idCVar ( 			"ai_showCombatNodes",		"0",			CVAR_GAME
 var ai_showPaths = new idCVar ( 				"ai_showPaths",				"0",			CVAR_GAME | CVAR_BOOL, "draws path_* entities" );
 var ai_showObstacleAvoidance = new idCVar ( 	"ai_showObstacleAvoidance",	"0",			CVAR_GAME | CVAR_INTEGER, "draws obstacle avoidance information for monsters.  if 2, draws obstacles for player, as well", 0, 2, ArgCompletion_Integer_Template(0,2) );
 var ai_blockedFailSafe = new idCVar ( 			"ai_blockedFailSafe",		"1",			CVAR_GAME | CVAR_BOOL, "enable blocked fail safe handling" );
-////	
+	
 var g_dvTime = new idCVar ( 					"g_dvTime",					"1",			CVAR_GAME | CVAR_FLOAT, "" );
 var g_dvAmplitude = new idCVar ( 				"g_dvAmplitude",			"0.001",		CVAR_GAME | CVAR_FLOAT, "" );
 var g_dvFrequency = new idCVar ( 				"g_dvFrequency",			"0.5",			CVAR_GAME | CVAR_FLOAT, "" );
-////
+
 var g_kickTime = new idCVar ( 					"g_kickTime",				"1",			CVAR_GAME | CVAR_FLOAT, "" );
 var g_kickAmplitude = new idCVar ( 				"g_kickAmplitude",			"0.0001",		CVAR_GAME | CVAR_FLOAT, "" );
 var g_blobTime = new idCVar ( 					"g_blobTime",				"1",			CVAR_GAME | CVAR_FLOAT, "" );
 var g_blobSize = new idCVar ( 					"g_blobSize",				"1",			CVAR_GAME | CVAR_FLOAT, "" );
-////
+
 var g_testHealthVision = new idCVar ( 			"g_testHealthVision",		"0",			CVAR_GAME | CVAR_FLOAT, "" );
-//var g_editEntityMode = new idCVar ( 			"g_editEntityMode",			"0",			CVAR_GAME | CVAR_INTEGER,	"0 = off\n"
-//////																											"1 = lights\n"
-//////																											"2 = sounds\n"
-//////																											"3 = articulated figures\n"
-//////																											"4 = particle systems\n"
-//////																											"5 = monsters\n"
-//////																											"6 = entity names\n"
-//////																											"7 = entity models", 0, 7, idCmdSystem::ArgCompletion_Integer<0,7> );
+var g_editEntityMode = new idCVar( "g_editEntityMode", "0", CVAR_GAME | CVAR_INTEGER, "0 = off\n" +
+	"1 = lights\n" +
+	"2 = sounds\n" +
+	"3 = articulated figures\n" +
+	"4 = particle systems\n" +
+	"5 = monsters\n" +
+	"6 = entity names\n" +
+	"7 = entity models", 0, 7, ArgCompletion_Integer_Template( 0, 7 ) );
 var g_dragEntity = new idCVar ( 				"g_dragEntity",				"0",			CVAR_GAME | CVAR_BOOL, "allows dragging physics objects around by placing the crosshair over them and holding the fire button" );
 var g_dragDamping = new idCVar ( 				"g_dragDamping",			"0.5",			CVAR_GAME | CVAR_FLOAT, "" );
 var g_dragShowSelection = new idCVar ( 			"g_dragShowSelection",		"0",			CVAR_GAME | CVAR_BOOL, "" );
 var g_dropItemRotation = new idCVar ( 			"g_dropItemRotation",		"",				CVAR_GAME, "" );
-////
+
 var g_vehicleVelocity = new idCVar ( 			"g_vehicleVelocity",		"1000",			CVAR_GAME | CVAR_FLOAT, "" );
 var g_vehicleForce = new idCVar ( 				"g_vehicleForce",			"50000",		CVAR_GAME | CVAR_FLOAT, "" );
 var g_vehicleSuspensionUp = new idCVar ( 		"g_vehicleSuspensionUp",	"32",			CVAR_GAME | CVAR_FLOAT, "" );
@@ -184,10 +188,10 @@ var g_vehicleSuspensionDown = new idCVar ( 		"g_vehicleSuspensionDown",	"20",			
 var g_vehicleSuspensionKCompress = new idCVar ( "g_vehicleSuspensionKCompress","200",		CVAR_GAME | CVAR_FLOAT, "" );
 var g_vehicleSuspensionDamping = new idCVar ( 	"g_vehicleSuspensionDamping","400",			CVAR_GAME | CVAR_FLOAT, "" );
 var g_vehicleTireFriction = new idCVar ( 		"g_vehicleTireFriction",	"0.8",			CVAR_GAME | CVAR_FLOAT, "" );
-////
+
 var ik_enable = new idCVar ( 					"ik_enable",				"1",			CVAR_GAME | CVAR_BOOL, "enable IK" );
 var ik_debug = new idCVar ( 					"ik_debug",					"0",			CVAR_GAME | CVAR_BOOL, "show IK debug lines" );
-////
+
 var af_useLinearTime = new idCVar ( 			"af_useLinearTime",			"1",			CVAR_GAME | CVAR_BOOL, "use linear time algorithm for tree-like structures" );
 var af_useImpulseFriction = new idCVar ( 		"af_useImpulseFriction",	"0",			CVAR_GAME | CVAR_BOOL, "use impulse based contact friction" );
 var af_useJointImpulseFriction = new idCVar ( 	"af_useJointImpulseFriction","0",			CVAR_GAME | CVAR_BOOL, "use impulse based joint friction" );
@@ -218,15 +222,15 @@ var af_showInertia = new idCVar ( 				"af_showInertia",			"0",			CVAR_GAME | CVA
 var af_showVelocity = new idCVar ( 				"af_showVelocity",			"0",			CVAR_GAME | CVAR_BOOL, "show the velocity of each body" );
 var af_showActive = new idCVar ( 				"af_showActive",			"0",			CVAR_GAME | CVAR_BOOL, "show tree-like structures of articulated figures not at rest" );
 var af_testSolid = new idCVar ( 				"af_testSolid",				"1",			CVAR_GAME | CVAR_BOOL, "test for bodies initially stuck in solid" );
-////
+
 var rb_showTimings = new idCVar ( 				"rb_showTimings",			"0",			CVAR_GAME | CVAR_BOOL, "show rigid body cpu usage" );
 var rb_showBodies = new idCVar ( 				"rb_showBodies",			"0",			CVAR_GAME | CVAR_BOOL, "show rigid bodies" );
 var rb_showMass = new idCVar ( 					"rb_showMass",				"0",			CVAR_GAME | CVAR_BOOL, "show the mass of each rigid body" );
 var rb_showInertia = new idCVar ( 				"rb_showInertia",			"0",			CVAR_GAME | CVAR_BOOL, "show the inertia tensor of each rigid body" );
 var rb_showVelocity = new idCVar ( 				"rb_showVelocity",			"0",			CVAR_GAME | CVAR_BOOL, "show the velocity of each rigid body" );
 var rb_showActive = new idCVar ( 				"rb_showActive",			"0",			CVAR_GAME | CVAR_BOOL, "show rigid bodies that are not at rest" );
-////
-////// The default values for player movement cvars are set in def/player.def
+
+// The default values for player movement cvars are set in def/player.def
 var pm_jumpheight = new idCVar ( 				"pm_jumpheight",			"48",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_FLOAT, "approximate hieght the player can jump" );
 var pm_stepsize = new idCVar ( 					"pm_stepsize",				"16",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_FLOAT, "maximum height the player can step up without jumping" );
 var pm_crouchspeed = new idCVar ( 				"pm_crouchspeed",			"80",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_FLOAT, "speed the player can move while crouched" );
@@ -265,7 +269,7 @@ var pm_thirdPerson = new idCVar ( 				"pm_thirdPerson",			"0",			CVAR_GAME | CVA
 var pm_thirdPersonDeath = new idCVar ( 			"pm_thirdPersonDeath",		"0",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_BOOL, "enables third person view when player dies" );
 var pm_modelView = new idCVar ( 				"pm_modelView",				"0",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_INTEGER, "draws camera from POV of player model (1 = always, 2 = when dead)", 0, 2, ArgCompletion_Integer_Template(0,2) )
 var pm_airTics = new idCVar ( 					"pm_air",					"1800",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_INTEGER, "how long in milliseconds the player can go without air before he starts taking damage" );
-////
+
 var g_showPlayerShadow = new idCVar ( 			"g_showPlayerShadow",		"0",			CVAR_GAME | CVAR_ARCHIVE | CVAR_BOOL, "enables shadow of player model" );
 var g_showHud = new idCVar ( 					"g_showHud",				"1",			CVAR_GAME | CVAR_ARCHIVE | CVAR_BOOL, "" );
 var g_showProjectilePct = new idCVar ( 			"g_showProjectilePct",		"0",			CVAR_GAME | CVAR_ARCHIVE | CVAR_BOOL, "enables display of player hit percentage" );
@@ -278,22 +282,22 @@ var g_viewNodalZ = new idCVar ( 				"g_viewNodalZ",				"0",			CVAR_GAME | CVAR_F
 var g_fov = new idCVar ( 						"g_fov",					"90",			CVAR_GAME | CVAR_INTEGER | CVAR_NOCHEAT, "" );
 var g_skipViewEffects = new idCVar ( 			"g_skipViewEffects",		"0",			CVAR_GAME | CVAR_BOOL, "skip damage and other view effects" );
 var g_mpWeaponAngleScale = new idCVar ( 		"g_mpWeaponAngleScale",		"0",			CVAR_GAME | CVAR_FLOAT, "Control the weapon sway in MP" );
-////
+
 var g_testParticle = new idCVar ( 				"g_testParticle",			"0",			CVAR_GAME | CVAR_INTEGER, "test particle visualation, set by the particle editor" );
 var g_testParticleName = new idCVar ( 			"g_testParticleName",		"",				CVAR_GAME, "name of the particle being tested by the particle editor" );
 var g_testModelRotate = new idCVar ( 			"g_testModelRotate",		"0",			CVAR_GAME, "test model rotation speed" );
 var g_testPostProcess = new idCVar ( 			"g_testPostProcess",		"",				CVAR_GAME, "name of material to draw over screen" );
-//var g_testModelAnimate = new idCVar ( 			"g_testModelAnimate",		"0",			CVAR_GAME | CVAR_INTEGER, "test model animation,\n"
-//////																							"0 = cycle anim with origin reset\n"
-//////																							"1 = cycle anim with fixed origin\n"
-//////																							"2 = cycle anim with continuous origin\n"
-//////																							"3 = frame by frame with continuous origin\n"
-//////																							"4 = play anim once", 0, 4, idCmdSystem::ArgCompletion_Integer<0,4> );
+var g_testModelAnimate = new idCVar( "g_testModelAnimate", "0", CVAR_GAME | CVAR_INTEGER, "test model animation,\n" +
+	"0 = cycle anim with origin reset\n" +
+	"1 = cycle anim with fixed origin\n" +
+	"2 = cycle anim with continuous origin\n" +
+	"3 = frame by frame with continuous origin\n" +
+	"4 = play anim once", 0, 4, ArgCompletion_Integer_Template( 0, 4 ) );
 var g_testModelBlend = new idCVar ( 			"g_testModelBlend",			"0",			CVAR_GAME | CVAR_INTEGER, "number of frames to blend" );
 var g_testDeath = new idCVar ( 					"g_testDeath",				"0",			CVAR_GAME | CVAR_BOOL, "" );
 var g_exportMask = new idCVar ( 				"g_exportMask",				"",				CVAR_GAME, "" );
 var g_flushSave = new idCVar ( 					"g_flushSave",				"0",			CVAR_GAME | CVAR_BOOL, "1 = don't buffer file writing for save games." );
-////
+
 var aas_test = new idCVar ( 					"aas_test",					"0",			CVAR_GAME | CVAR_INTEGER, "" );
 var aas_showAreas = new idCVar ( 				"aas_showAreas",			"0",			CVAR_GAME | CVAR_BOOL, "" );
 var aas_showPath = new idCVar ( 				"aas_showPath",				"0",			CVAR_GAME | CVAR_INTEGER, "" );
@@ -304,30 +308,30 @@ var aas_pullPlayer = new idCVar ( 				"aas_pullPlayer",			"0",			CVAR_GAME | CVA
 var aas_randomPullPlayer = new idCVar ( 		"aas_randomPullPlayer",		"0",			CVAR_GAME | CVAR_BOOL, "" );
 var aas_goalArea = new idCVar ( 				"aas_goalArea",				"0",			CVAR_GAME | CVAR_INTEGER, "" );
 var aas_showPushIntoArea = new idCVar ( 		"aas_showPushIntoArea",		"0",			CVAR_GAME | CVAR_BOOL, "" );
-////
+
 var g_password = new idCVar ( 					"g_password",				"",				CVAR_GAME | CVAR_ARCHIVE, "game password" );
 var password = new idCVar ( 					"password",					"",				CVAR_GAME | CVAR_NOCHEAT, "client password used when connecting" );
-////
+
 var g_countDown = new idCVar ( 					"g_countDown",				"10",			CVAR_GAME | CVAR_INTEGER | CVAR_ARCHIVE, "pregame countdown in seconds", 4, 3600 );
 var g_gameReviewPause = new idCVar ( 			"g_gameReviewPause",		"10",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_INTEGER | CVAR_ARCHIVE, "scores review time in seconds (at end game)", 2, 3600 );
 var g_TDMArrows = new idCVar ( 					"g_TDMArrows",				"1",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_BOOL, "draw arrows over teammates in team deathmatch" );
 var g_balanceTDM = new idCVar ( 				"g_balanceTDM",				"1",			CVAR_GAME | CVAR_BOOL, "maintain even teams" );
-////
+
 var net_clientPredictGUI = new idCVar ( 		"net_clientPredictGUI",		"1",			CVAR_GAME | CVAR_BOOL, "test guis in networking without prediction" );
-////
-//var g_voteFlags = new idCVar ( 					"g_voteFlags",				"0",			CVAR_GAME | CVAR_NETWORKSYNC | CVAR_INTEGER | CVAR_ARCHIVE, "vote flags. bit mask of votes not allowed on this server\n"
-//////																					"bit 0 (+1)   restart now\n"
-//////																					"bit 1 (+2)   time limit\n"
-//////																					"bit 2 (+4)   frag limit\n"
-//////																					"bit 3 (+8)   game type\n"
-//////																					"bit 4 (+16)  kick player\n"
-//////																					"bit 5 (+32)  change map\n"
-//////																					"bit 6 (+64)  spectators\n"
-//////																					"bit 7 (+128) next map" );
+
+var g_voteFlags = new idCVar( "g_voteFlags", "0", CVAR_GAME | CVAR_NETWORKSYNC | CVAR_INTEGER | CVAR_ARCHIVE, "vote flags. bit mask of votes not allowed on this server\n" +
+	"bit 0 (+1)   restart now\n" +
+	"bit 1 (+2)   time limit\n" +
+	"bit 2 (+4)   frag limit\n" +
+	"bit 3 (+8)   game type\n" +
+	"bit 4 (+16)  kick player\n" +
+	"bit 5 (+32)  change map\n" +
+	"bit 6 (+64)  spectators\n" +
+	"bit 7 (+128) next map" );
 var g_mapCycle = new idCVar ( 					"g_mapCycle",				"mapcycle",		CVAR_GAME | CVAR_ARCHIVE, "map cycling script for multiplayer games - see mapcycle.scriptcfg" );
-////
+
 var mod_validSkins = new idCVar ( 				"mod_validSkins",			"skins/characters/player/marine_mp;skins/characters/player/marine_mp_green;skins/characters/player/marine_mp_blue;skins/characters/player/marine_mp_red;skins/characters/player/marine_mp_yellow",		CVAR_GAME | CVAR_ARCHIVE, "valid skins for the game" );
-////
+
 var net_serverDownload = new idCVar ( 			"net_serverDownload",		"0",			CVAR_GAME | CVAR_INTEGER | CVAR_ARCHIVE, "enable server download redirects. 0: off 1: redirect to si_serverURL 2: use builtin download. see net_serverDl cvars for configuration" );
 var net_serverDlBaseURL = new idCVar ( 			"net_serverDlBaseURL",		"",				CVAR_GAME | CVAR_ARCHIVE, "base URL for the download redirection" );
 var net_serverDlTable = new idCVar ( 			"net_serverDlTable",		"",				CVAR_GAME | CVAR_ARCHIVE, "pak names for which download is provided, seperated by ;" );

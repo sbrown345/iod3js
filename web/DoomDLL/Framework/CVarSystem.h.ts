@@ -113,36 +113,34 @@ var     CVAR_ALL				= -1,		// all flags
 
 class idCVar {
 //public:
-	//// Never use the default constructor.
-	//idCVar( void ) { assert( typeid( this ) != typeid( idCVar ) ); }
-    constructor ( )
+	constructor ( )
 
-    // Always use one of the following constructors.
-    constructor ( name: string, value: string, flags: number, description: string )
-    constructor ( name: string, value: string, flags: number, description: string, valueMin: number, valueMax: number)
-    constructor ( name: string, value: string, flags: number, description: string,
-        valueMin: number, valueMax: number, valueCompletion:/*:argCompletion_t*/ ( args: idCmdArgs, callback: ( s: string ) => void ) => void  )
-    constructor ( name: string, value: string, flags: number, description: string,
-        valueStrings: string[], valueCompletion:/*:argCompletion_t*/ ( args: idCmdArgs, callback: ( s: string ) => void ) => void  )
-    constructor ( name?: string, value?: string, /*int */flags?: number, description?: string,
-        valueStringsOrValueMinOrValueCompletion?: any, valueMaxOrValueCompletion?: any, valueCompletion:/*argCompletion_t*/ ( args: idCmdArgs, callback: ( s: string ) => void ) => void = null ) {
+	// Always use one of the following constructors.
+	constructor ( name: string, value: string, flags: number, description: string )
+	constructor ( name: string, value: string, flags: number, description: string, valueCompletion: /*:argCompletion_t*/ ( args: idCmdArgs, callback: ( s: string ) => void ) => void )
+	constructor ( name: string, value: string, flags: number, description: string, valueMin: number, valueMax: number )
+	constructor ( name: string, value: string, flags: number, description: string, valueMin: number, valueMax: number, valueCompletion: /*:argCompletion_t*/ ( args: idCmdArgs, callback: ( s: string ) => void ) => void )
+	constructor ( name: string, value: string, flags: number, description: string, valueStrings: string[], valueCompletion: /*:argCompletion_t*/ ( args: idCmdArgs, callback: ( s: string ) => void ) => void )
+	constructor ( name?: string, value?: string, /*int */flags?: number, description?: string,
+		valueStringsOrValueMinOrValueCompletion?: any, valueMaxOrValueCompletion?: any, valueCompletion: /*argCompletion_t*/ ( args: idCmdArgs, callback: ( s: string ) => void ) => void = null ) {
 
-        // todo wtf: tidy this up - create a method for each overload
+		// todo: tidy somehow, perhaps create a method for each overload
 
-        if ( arguments.length == 0 ) {
-            return; // empty ctor call e.g. super ( ); from idInternalCVar
-        }
-        else if ( arguments.length == 4 || arguments.length == 5 ) {
-            if ( !valueCompletion && ( flags & CVAR_BOOL ) ) {
-		        this.valueCompletion = /*idCmdSystem::*/ArgCompletion_Boolean;
-	        }
-	        this.Init( name, value, flags, description, 1, -1, null, valueStringsOrValueMinOrValueCompletion );
-        } else if ( typeof valueStringsOrValueMinOrValueCompletion === "number" ) {
-            this.Init( name, value, flags, description, valueStringsOrValueMinOrValueCompletion, valueMaxOrValueCompletion, null, valueCompletion );
-        } else {
-            this.Init( name, value, flags, description, 1, -1, valueStringsOrValueMinOrValueCompletion, valueMaxOrValueCompletion );
-        }
-    }
+		if ( arguments.length == 0 ) {
+			//// Never use the default constructor.
+			//assert( !( this.constructor != idCVar ) );
+			return; // empty ctor call e.g. super ( ); from idInternalCVar
+		} else if ( arguments.length == 4 || arguments.length == 5 ) {
+			if ( !valueCompletion && ( flags & CVAR_BOOL ) ) {
+				this.valueCompletion = ArgCompletion_Boolean;
+			}
+			this.Init( name, value, flags, description, 1, -1, null, valueStringsOrValueMinOrValueCompletion );
+		} else if ( typeof valueStringsOrValueMinOrValueCompletion === "number" ) {
+			this.Init( name, value, flags, description, valueStringsOrValueMinOrValueCompletion, valueMaxOrValueCompletion, null, valueCompletion );
+		} else {
+			this.Init( name, value, flags, description, 1, -1, valueStringsOrValueMinOrValueCompletion, valueMaxOrValueCompletion );
+		}
+	}
 
 ////	virtual					~idCVar( void ) {}
         

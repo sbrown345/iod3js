@@ -7,6 +7,10 @@ function notNeeded(reason?: string) {
     //console.log("todo", reason);
 }
 
+function todoImportant(reason: string) {
+	console.log("todoImportant", reason);
+}
+
 function todoUnimportant(reason?: string): void {
 }
 

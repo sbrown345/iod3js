@@ -1,6 +1,7 @@
 var NULL: number = 0; //var NULL:any = null;
 
-var __DATE__ = new Date( 2014, 2, 8 );
+var __DATE__ = "2014-2-8";
+var __TIME__ = "00:00:00";
 
 function strlen ( str: string ): number;
 function strlen ( str: Uint8Array ): number;

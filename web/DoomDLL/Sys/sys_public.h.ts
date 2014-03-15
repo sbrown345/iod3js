@@ -41,6 +41,8 @@
 //// Win32
 //#if defined(WIN32) || defined(_WIN32)
 //
+
+var BUILD_STRING = "js-web";
 //#define	BUILD_STRING					"win-x86"
 //#define BUILD_OS_ID						0
 //#define	CPUSTRING						"x86"
