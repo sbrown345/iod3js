@@ -34,7 +34,7 @@
 ////// could be a problem if players manage to go down sudden deaths till this .. oh well
 ////#define LASTMAN_NOLIVES -20
 
-////idCVar g_spectatorChat( "g_spectatorChat", "0", CVAR_GAME | CVAR_ARCHIVE | CVAR_BOOL, "let spectators talk to everyone during game" );
+var g_spectatorChat = new idCVar( "g_spectatorChat", "0", CVAR_GAME | CVAR_ARCHIVE | CVAR_BOOL, "let spectators talk to everyone during game" );
 
 ////// global sounds transmitted by index - 0 .. SND_COUNT
 ////// sounds in this list get precached on MP start

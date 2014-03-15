@@ -99,7 +99,7 @@ static Init( ):void {
 	idAsyncNetwork.serverSnapshotDelay = new idCVar("net_serverSnapshotDelay", "50", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "delay between snapshots in milliseconds");
 	idAsyncNetwork.serverMaxClientRate = new idCVar("net_serverMaxClientRate", "16000", CVAR_SYSTEM | CVAR_INTEGER | CVAR_ARCHIVE | CVAR_NOCHEAT, "maximum rate to a client in bytes/sec");
 	idAsyncNetwork.clientMaxRate = new idCVar("net_clientMaxRate", "16000", CVAR_SYSTEM | CVAR_INTEGER | CVAR_ARCHIVE | CVAR_NOCHEAT, "maximum rate requested by client from server in bytes/sec");
-	//idAsyncNetwork.serverMaxUsercmdRelay = new idCVar( "net_serverMaxUsercmdRelay", "5", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "maximum number of usercmds from other clients the server relays to a client", 1, MAX_USERCMD_RELAY, idCmdSystem::ArgCompletion_Integer<1,MAX_USERCMD_RELAY> );
+	idAsyncNetwork.serverMaxUsercmdRelay = new idCVar( "net_serverMaxUsercmdRelay", "5", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "maximum number of usercmds from other clients the server relays to a client", 1, MAX_USERCMD_RELAY, ArgCompletion_Integer_Template( 1, MAX_USERCMD_RELAY ) );
 	idAsyncNetwork.serverZombieTimeout = new idCVar("net_serverZombieTimeout", "5", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "disconnected client timeout in seconds");
 	idAsyncNetwork.serverClientTimeout = new idCVar("net_serverClientTimeout", "40", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "client time out in seconds");
 	idAsyncNetwork.clientServerTimeout = new idCVar("net_clientServerTimeout", "40", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "server time out in seconds");

@@ -110,14 +110,14 @@ var r_skipROQ= new idCVar( "r_skipROQ", "0", CVAR_RENDERER | CVAR_BOOL, "skip RO
 var r_ignore= new idCVar( "r_ignore", "0", CVAR_RENDERER, "used for random debugging without defining new vars" );
 var r_ignore2= new idCVar( "r_ignore2", "0", CVAR_RENDERER, "used for random debugging without defining new vars" );
 var r_usePreciseTriangleInteractions= new idCVar( "r_usePreciseTriangleInteractions", "0", CVAR_RENDERER | CVAR_BOOL, "1 = do winding clipping to determine if each ambiguous tri should be lit" );
-//var r_useCulling= new idCVar( "r_useCulling", "2", CVAR_RENDERER | CVAR_INTEGER, "0 = none, 1 = sphere, 2 = sphere + box", 0, 2, ArgCompletion_Integer_Template(0,2));
-//var r_useLightCulling= new idCVar( "r_useLightCulling", "3", CVAR_RENDERER | CVAR_INTEGER, "0 = none, 1 = box, 2 = exact clip of polyhedron faces, 3 = also areas", 0, 3, idCmdSystem::ArgCompletion_Integer<0,3> );
+var r_useCulling= new idCVar( "r_useCulling", "2", CVAR_RENDERER | CVAR_INTEGER, "0 = none, 1 = sphere, 2 = sphere + box", 0, 2, ArgCompletion_Integer_Template(0,2));
+var r_useLightCulling= new idCVar( "r_useLightCulling", "3", CVAR_RENDERER | CVAR_INTEGER, "0 = none, 1 = box, 2 = exact clip of polyhedron faces, 3 = also areas", 0, 3, ArgCompletion_Integer_Template(0,3) );
 var r_useLightScissors= new idCVar( "r_useLightScissors", "1", CVAR_RENDERER | CVAR_BOOL, "1 = use custom scissor rectangle for each light" );
-//var r_useClippedLightScissors= new idCVar( "r_useClippedLightScissors", "1", CVAR_RENDERER | CVAR_INTEGER, "0 = full screen when near clipped, 1 = exact when near clipped, 2 = exact always", 0, 2, ArgCompletion_Integer_Template(0,2));
+var r_useClippedLightScissors= new idCVar( "r_useClippedLightScissors", "1", CVAR_RENDERER | CVAR_INTEGER, "0 = full screen when near clipped, 1 = exact when near clipped, 2 = exact always", 0, 2, ArgCompletion_Integer_Template(0,2));
 var r_useEntityCulling= new idCVar( "r_useEntityCulling", "1", CVAR_RENDERER | CVAR_BOOL, "0 = none, 1 = box" );
 var r_useEntityScissors= new idCVar( "r_useEntityScissors", "0", CVAR_RENDERER | CVAR_BOOL, "1 = use custom scissor rectangle for each entity" );
 var r_useInteractionCulling= new idCVar( "r_useInteractionCulling", "1", CVAR_RENDERER | CVAR_BOOL, "1 = cull interactions" );
-//var r_useInteractionScissors= new idCVar( "r_useInteractionScissors", "2", CVAR_RENDERER | CVAR_INTEGER, "1 = use a custom scissor rectangle for each shadow interaction, 2 = also crop using portal scissors", -2, 2, idCmdSystem::ArgCompletion_Integer<-2,2> );
+var r_useInteractionScissors= new idCVar( "r_useInteractionScissors", "2", CVAR_RENDERER | CVAR_INTEGER, "1 = use a custom scissor rectangle for each shadow interaction, 2 = also crop using portal scissors", -2, 2, ArgCompletion_Integer_Template(-2,2) );
 var r_useShadowCulling= new idCVar( "r_useShadowCulling", "1", CVAR_RENDERER | CVAR_BOOL, "try to cull shadows from partially visible lights" );
 var r_useFrustumFarDistance= new idCVar( "r_useFrustumFarDistance", "0", CVAR_RENDERER | CVAR_FLOAT, "if != 0 force the view frustum far distance to this distance" );
 var r_logFile= new idCVar( "r_logFile", "0", CVAR_RENDERER | CVAR_INTEGER, "number of frames to emit GL logs" );
@@ -128,8 +128,8 @@ var r_shadowPolygonOffset= new idCVar( "r_shadowPolygonOffset", "-1", CVAR_RENDE
 var r_shadowPolygonFactor= new idCVar( "r_shadowPolygonFactor", "0", CVAR_RENDERER | CVAR_FLOAT, "scale value for stencil shadow drawing" );
 var r_frontBuffer= new idCVar( "r_frontBuffer", "0", CVAR_RENDERER | CVAR_BOOL, "draw to front buffer for debugging" );
 var r_skipSubviews= new idCVar( "r_skipSubviews", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = don't render any gui elements on surfaces" );
-//var r_skipGuiShaders= new idCVar( "r_skipGuiShaders", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = skip all gui elements on surfaces, 2 = skip drawing but still handle events, 3 = draw but skip events", 0, 3, idCmdSystem::ArgCompletion_Integer<0,3> );
-//var r_skipParticles= new idCVar( "r_skipParticles", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = skip all particle systems", 0, 1, idCmdSystem::ArgCompletion_Integer<0,1> );
+var r_skipGuiShaders= new idCVar( "r_skipGuiShaders", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = skip all gui elements on surfaces, 2 = skip drawing but still handle events, 3 = draw but skip events", 0, 3, ArgCompletion_Integer_Template(0,3) );
+var r_skipParticles= new idCVar( "r_skipParticles", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = skip all particle systems", 0, 1, ArgCompletion_Integer_Template(0,1) );
 var r_subviewOnly= new idCVar( "r_subviewOnly", "0", CVAR_RENDERER | CVAR_BOOL, "1 = don't render main view, allowing subviews to be debugged" );
 var r_shadows= new idCVar( "r_shadows", "1", CVAR_RENDERER | CVAR_BOOL  | CVAR_ARCHIVE, "enable shadows" );
 var r_testARBProgram= new idCVar( "r_testARBProgram", "0", CVAR_RENDERER | CVAR_BOOL, "experiment with vertex/fragment programs" );
@@ -140,7 +140,7 @@ var r_lightScale= new idCVar( "r_lightScale", "2", CVAR_RENDERER | CVAR_FLOAT, "
 var r_lightSourceRadius= new idCVar( "r_lightSourceRadius", "0", CVAR_RENDERER | CVAR_FLOAT, "for soft-shadow sampling" );
 var r_flareSize= new idCVar( "r_flareSize", "1", CVAR_RENDERER | CVAR_FLOAT, "scale the flare deforms from the material def" ); 
 
-//var r_useExternalShadows= new idCVar( "r_useExternalShadows", "1", CVAR_RENDERER | CVAR_INTEGER, "1 = skip drawing caps when outside the light volume, 2 = force to no caps for testing", 0, 2, ArgCompletion_Integer_Template(0,2));
+var r_useExternalShadows= new idCVar( "r_useExternalShadows", "1", CVAR_RENDERER | CVAR_INTEGER, "1 = skip drawing caps when outside the light volume, 2 = force to no caps for testing", 0, 2, ArgCompletion_Integer_Template(0,2));
 var r_useOptimizedShadows= new idCVar( "r_useOptimizedShadows", "1", CVAR_RENDERER | CVAR_BOOL, "use the dmap generated static shadow volumes" );
 var r_useScissor= new idCVar( "r_useScissor", "1", CVAR_RENDERER | CVAR_BOOL, "scissor clip as portals and lights are processed" );
 var r_useCombinerDisplayLists= new idCVar( "r_useCombinerDisplayLists", "1", CVAR_RENDERER | CVAR_BOOL | CVAR_NOCHEAT, "put all nvidia register combiner programming in display lists" );
@@ -167,20 +167,20 @@ var r_showDemo= new idCVar( "r_showDemo", "0", CVAR_RENDERER | CVAR_BOOL, "repor
 var r_showDynamic= new idCVar( "r_showDynamic", "0", CVAR_RENDERER | CVAR_BOOL, "report stats on dynamic surface generation" );
 var r_showLightScale= new idCVar( "r_showLightScale", "0", CVAR_RENDERER | CVAR_BOOL, "report the scale factor applied to drawing for overbrights" );
 var r_showDefs= new idCVar( "r_showDefs", "0", CVAR_RENDERER | CVAR_BOOL, "report the number of modeDefs and lightDefs in view" );
-//var r_showTrace = new idCVar( "r_showTrace", "0", CVAR_RENDERER | CVAR_INTEGER, "show the intersection of an eye trace with the world", ArgCompletion_Integer_Template( 0, 2 ) );
+var r_showTrace = new idCVar( "r_showTrace", "0", CVAR_RENDERER | CVAR_INTEGER, "show the intersection of an eye trace with the world", ArgCompletion_Integer_Template( 0, 2 ) );
 var r_showIntensity= new idCVar( "r_showIntensity", "0", CVAR_RENDERER | CVAR_BOOL, "draw the screen colors based on intensity, red = 0, green = 128, blue = 255" );
 var r_showImages= new idCVar( "r_showImages", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = show all images instead of rendering, 2 = show in proportional size", 0, 2, ArgCompletion_Integer_Template(0,2));
 var r_showSmp= new idCVar( "r_showSmp", "0", CVAR_RENDERER | CVAR_BOOL, "show which end = new idCVar(front or back) is blocking" );
-//var r_showLights= new idCVar( "r_showLights", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = just print volumes numbers, highlighting ones covering the view, 2 = also draw planes of each volume, 3 = also draw edges of each volume", 0, 3, idCmdSystem::ArgCompletion_Integer<0,3> );
-//var r_showShadows= new idCVar( "r_showShadows", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = visualize the stencil shadow volumes, 2 = draw filled in", 0, 3, idCmdSystem::ArgCompletion_Integer<0,3> );
-//var r_showShadowCount= new idCVar( "r_showShadowCount", "0", CVAR_RENDERER | CVAR_INTEGER, "colors screen based on shadow volume depth complexity, >= 2 = print overdraw count based on stencil index values, 3 = only show turboshadows, 4 = only show static shadows", 0, 4, idCmdSystem::ArgCompletion_Integer<0,4> );
+var r_showLights= new idCVar( "r_showLights", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = just print volumes numbers, highlighting ones covering the view, 2 = also draw planes of each volume, 3 = also draw edges of each volume", 0, 3, ArgCompletion_Integer_Template(0,3) );
+var r_showShadows= new idCVar( "r_showShadows", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = visualize the stencil shadow volumes, 2 = draw filled in", 0, 3, ArgCompletion_Integer_Template(0,3) );
+var r_showShadowCount= new idCVar( "r_showShadowCount", "0", CVAR_RENDERER | CVAR_INTEGER, "colors screen based on shadow volume depth complexity, >= 2 = print overdraw count based on stencil index values, 3 = only show turboshadows, 4 = only show static shadows", 0, 4, ArgCompletion_Integer_Template(0,4) );
 var r_showLightScissors= new idCVar( "r_showLightScissors", "0", CVAR_RENDERER | CVAR_BOOL, "show light scissor rectangles" );
 var r_showEntityScissors= new idCVar( "r_showEntityScissors", "0", CVAR_RENDERER | CVAR_BOOL, "show entity scissor rectangles" );
-//var r_showInteractionFrustums= new idCVar( "r_showInteractionFrustums", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = show a frustum for each interaction, 2 = also draw lines to light origin, 3 = also draw entity bbox", 0, 3, idCmdSystem::ArgCompletion_Integer<0,3> );
-//var r_showInteractionScissors= new idCVar( "r_showInteractionScissors", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = show screen rectangle which contains the interaction frustum, 2 = also draw construction lines", 0, 2, ArgCompletion_Integer_Template(0,2));
-//var r_showLightCount= new idCVar( "r_showLightCount", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = colors surfaces based on light count, 2 = also count everything through walls, 3 = also print overdraw", 0, 3, idCmdSystem::ArgCompletion_Integer<0,3> );
-//var r_showViewEntitys= new idCVar( "r_showViewEntitys", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = displays the bounding boxes of all view models, 2 = print index numbers" );
-//var r_showTris= new idCVar( "r_showTris", "0", CVAR_RENDERER | CVAR_INTEGER, "enables wireframe rendering of the world, 1 = only draw visible ones, 2 = draw all front facing, 3 = draw all", 0, 3, idCmdSystem::ArgCompletion_Integer<0,3> );
+var r_showInteractionFrustums= new idCVar( "r_showInteractionFrustums", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = show a frustum for each interaction, 2 = also draw lines to light origin, 3 = also draw entity bbox", 0, 3, ArgCompletion_Integer_Template(0,3) );
+var r_showInteractionScissors= new idCVar( "r_showInteractionScissors", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = show screen rectangle which contains the interaction frustum, 2 = also draw construction lines", 0, 2, ArgCompletion_Integer_Template(0,2));
+var r_showLightCount= new idCVar( "r_showLightCount", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = colors surfaces based on light count, 2 = also count everything through walls, 3 = also print overdraw", 0, 3, ArgCompletion_Integer_Template(0,3) );
+var r_showViewEntitys= new idCVar( "r_showViewEntitys", "0", CVAR_RENDERER | CVAR_INTEGER, "1 = displays the bounding boxes of all view models, 2 = print index numbers" );
+var r_showTris= new idCVar( "r_showTris", "0", CVAR_RENDERER | CVAR_INTEGER, "enables wireframe rendering of the world, 1 = only draw visible ones, 2 = draw all front facing, 3 = draw all", 0, 3, ArgCompletion_Integer_Template(0,3) );
 var r_showSurfaceInfo= new idCVar( "r_showSurfaceInfo", "0", CVAR_RENDERER | CVAR_BOOL, "show surface material name under crosshair" );
 var r_showNormals= new idCVar( "r_showNormals", "0", CVAR_RENDERER | CVAR_FLOAT, "draws wireframe normals" );
 var r_showMemory= new idCVar( "r_showMemory", "0", CVAR_RENDERER | CVAR_BOOL, "print frame memory utilization" );
@@ -191,7 +191,7 @@ var r_showSurfaces= new idCVar( "r_showSurfaces", "0", CVAR_RENDERER | CVAR_BOOL
 var r_showPrimitives= new idCVar( "r_showPrimitives", "0", CVAR_RENDERER | CVAR_INTEGER, "report drawsurf/index/vertex counts" );
 var r_showEdges= new idCVar( "r_showEdges", "0", CVAR_RENDERER | CVAR_BOOL, "draw the sil edges" );
 var r_showTexturePolarity= new idCVar( "r_showTexturePolarity", "0", CVAR_RENDERER | CVAR_BOOL, "shade triangles by texture area polarity" );
-//var r_showTangentSpace= new idCVar( "r_showTangentSpace", "0", CVAR_RENDERER | CVAR_INTEGER, "shade triangles by tangent space, 1 = use 1st tangent vector, 2 = use 2nd tangent vector, 3 = use normal vector", 0, 3, idCmdSystem::ArgCompletion_Integer<0,3> );
+var r_showTangentSpace= new idCVar( "r_showTangentSpace", "0", CVAR_RENDERER | CVAR_INTEGER, "shade triangles by tangent space, 1 = use 1st tangent vector, 2 = use 2nd tangent vector, 3 = use normal vector", 0, 3, ArgCompletion_Integer_Template(0,3) );
 var r_showDominantTri= new idCVar( "r_showDominantTri", "0", CVAR_RENDERER | CVAR_BOOL, "draw lines from vertexes to center of dominant triangles" );
 var r_showAlloc= new idCVar( "r_showAlloc", "0", CVAR_RENDERER | CVAR_BOOL, "report alloc/free counts" );
 var r_showTextureVectors= new idCVar( "r_showTextureVectors", "0", CVAR_RENDERER | CVAR_FLOAT, " if > 0 draw each triangles texture = new idCVar(tangent) vectors" );
@@ -200,16 +200,16 @@ var r_showOverDraw = new idCVar( "r_showOverDraw", "0", CVAR_RENDERER | CVAR_INT
 var r_lockSurfaces= new idCVar( "r_lockSurfaces", "0", CVAR_RENDERER | CVAR_BOOL, "allow moving the view point without changing the composition of the scene, including culling" );
 var r_useEntityCallbacks= new idCVar( "r_useEntityCallbacks", "1", CVAR_RENDERER | CVAR_BOOL, "if 0, issue the callback immediately at update time, rather than defering" );
 
-//var r_showSkel= new idCVar( "r_showSkel", "0", CVAR_RENDERER | CVAR_INTEGER, "draw the skeleton when model animates, 1 = draw model with skeleton, 2 = draw skeleton only", 0, 2, ArgCompletion_Integer_Template(0,2));
+var r_showSkel= new idCVar( "r_showSkel", "0", CVAR_RENDERER | CVAR_INTEGER, "draw the skeleton when model animates, 1 = draw model with skeleton, 2 = draw skeleton only", 0, 2, ArgCompletion_Integer_Template(0,2));
 var r_jointNameScale= new idCVar( "r_jointNameScale", "0.02", CVAR_RENDERER | CVAR_FLOAT, "size of joint names when r_showskel is set to 1" );
 var r_jointNameOffset= new idCVar( "r_jointNameOffset", "0.5", CVAR_RENDERER | CVAR_FLOAT, "offset of joint names when r_showskel is set to 1" );
 
 var r_debugLineDepthTest= new idCVar( "r_debugLineDepthTest", "0", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_BOOL, "perform depth test on debug lines" );
 var r_debugLineWidth= new idCVar( "r_debugLineWidth", "1", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_BOOL, "width of debug lines" );
-//var r_debugArrowStep= new idCVar( "r_debugArrowStep", "120", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_INTEGER, "step size of arrow cone line rotation in degrees", 0, 120 );
+var r_debugArrowStep= new idCVar( "r_debugArrowStep", "120", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_INTEGER, "step size of arrow cone line rotation in degrees", 0, 120 );
 var r_debugPolygonFilled= new idCVar( "r_debugPolygonFilled", "1", CVAR_RENDERER | CVAR_BOOL, "draw a filled polygon" );
 
-//var r__materialOverride= new idCVar( "r_materialOverride", "", CVAR_RENDERER, "overrides all materials", idCmdSystem::ArgCompletion_Decl<DECL_MATERIAL> );
+var r__materialOverride = new idCVar( "r_materialOverride", "", CVAR_RENDERER, "overrides all materials", ArgCompletion_Decl_Template( declType_t.DECL_MATERIAL ) );
 
 var r_debugRenderToTexture = new idCVar( "r_debugRenderToTexture", "0", CVAR_RENDERER | CVAR_INTEGER, "" );
 

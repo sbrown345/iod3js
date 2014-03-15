@@ -80,9 +80,9 @@ class idDemoFile extends idFile {
 //	bool			log;
 //	idStr			logStr;
 //
-//	static idCVar	com_logDemos;
-//	static idCVar	com_compressDemos;
-//	static idCVar	com_preloadDemos;
+	static com_logDemos = new idCVar (  "com_logDemos", "0", CVAR_SYSTEM | CVAR_BOOL, "Write demo.log with debug information in it" );
+	static com_compressDemos = new idCVar (  "com_compressDemos", "1", CVAR_SYSTEM | CVAR_INTEGER | CVAR_ARCHIVE, "Compression scheme for demo files\n0: None     = new idCVar ( Fast, large files)\n1: LZW      = new idCVar ( Fast to compress, Fast to decompress, medium/small files)\n2: LZSS     = new idCVar ( Slow to compress, Fast to decompress, small files)\n3: Huffman  = new idCVar ( Fast to compress, Slow to decompress, medium files)\nSee also: The 'CompressDemo' command" );
+	static com_preloadDemos = new idCVar (  "com_preloadDemos", "0", CVAR_SYSTEM | CVAR_BOOL | CVAR_ARCHIVE, "Load the whole demo in to RAM before running it" );
 };
 //
 //#endif /* !__DEMOFILE_H__ */

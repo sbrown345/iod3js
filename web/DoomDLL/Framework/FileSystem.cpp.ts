@@ -491,11 +491,11 @@ class idFileSystemLocal extends idFileSystem {
 	static fs_game = new idCVar( "fs_game", "", CVAR_SYSTEM | CVAR_INIT | CVAR_SERVERINFO, "mod path" );
 	static fs_game_base = new idCVar( "fs_game_base", "", CVAR_SYSTEM | CVAR_INIT | CVAR_SERVERINFO, "alternate mod path, searched after the main fs_game path, before the basedir" );
     ////#ifdef WIN32
-    ////idCVar	idFileSystemLocal::fs_caseSensitiveOS( "fs_caseSensitiveOS", "0", CVAR_SYSTEM | CVAR_BOOL, "" );
+    static fs_caseSensitiveOS = new idCVar( "fs_caseSensitiveOS", "0", CVAR_SYSTEM | CVAR_BOOL, "" );
     ////#else
     ////idCVar	idFileSystemLocal::fs_caseSensitiveOS( "fs_caseSensitiveOS", "1", CVAR_SYSTEM | CVAR_BOOL, "" );
     ////#endif
-    ////idCVar	idFileSystemLocal::fs_searchAddons( "fs_searchAddons", "0", CVAR_SYSTEM | CVAR_BOOL, "search all addon pk4s ( disables addon functionality )" );
+    static fs_searchAddons = new idCVar( "fs_searchAddons", "0", CVAR_SYSTEM | CVAR_BOOL, "search all addon pk4s ( disables addon functionality )" );
     ////
     ////idFileSystemLocal	fileSystemLocal;
     ////idFileSystem *		fileSystem = &fileSystemLocal;

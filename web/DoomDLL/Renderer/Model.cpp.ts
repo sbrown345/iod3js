@@ -35,10 +35,11 @@
 ////#include "Model_lwo.h"
 ////#include "Model_ma.h"
 
-////idCVar idRenderModelStatic::r_mergeModelSurfaces( "r_mergeModelSurfaces", "1", CVAR_BOOL|CVAR_RENDERER, "combine model surfaces with the same material" );
-////idCVar idRenderModelStatic::r_slopVertex( "r_slopVertex", "0.01", CVAR_RENDERER, "merge xyz coordinates this far apart" );
-////idCVar idRenderModelStatic::r_slopTexCoord( "r_slopTexCoord", "0.001", CVAR_RENDERER, "merge texture coordinates this far apart" );
-////idCVar idRenderModelStatic::r_slopNormal( "r_slopNormal", "0.02", CVAR_RENDERER, "merge normals that dot less than this" );
+
+idRenderModelStatic.r_mergeModelSurfaces = new idCVar ( "r_mergeModelSurfaces", "1", CVAR_BOOL|CVAR_RENDERER, "combine model surfaces with the same material" );
+idRenderModelStatic.r_slopVertex = new idCVar ( "r_slopVertex", "0.01", CVAR_RENDERER, "merge xyz coordinates this far apart" );
+idRenderModelStatic.r_slopTexCoord = new idCVar ( "r_slopTexCoord", "0.001", CVAR_RENDERER, "merge texture coordinates this far apart" );
+idRenderModelStatic.r_slopNormal = new idCVar ( "r_slopNormal", "0.02", CVAR_RENDERER, "merge normals that dot less than this" );
 
 
 /////*

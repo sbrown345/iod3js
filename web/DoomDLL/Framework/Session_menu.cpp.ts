@@ -31,7 +31,7 @@
 ////
 ////#include "Session_local.h"
 ////
-////idCVar	idSessionLocal::gui_configServerRate( "gui_configServerRate", "0", CVAR_GUI | CVAR_ARCHIVE | CVAR_ROM | CVAR_INTEGER, "" );
+idSessionLocal.gui_configServerRate = new idCVar( "gui_configServerRate", "0", CVAR_GUI | CVAR_ARCHIVE | CVAR_ROM | CVAR_INTEGER, "" );
 ////
 ////// implements the setup for, and commands from, the main menu
 ////

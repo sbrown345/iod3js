@@ -4230,7 +4230,7 @@ idDeclModelDef::DefaultDefinition
 //	const jointMod_t *	jointMod;
 //	const idJointQuat *	defaultPose;
 //
-//	static idCVar		r_showSkel( "r_showSkel", "0", CVAR_RENDERER | CVAR_INTEGER, "", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
+//	static idCVar		var r_showSkel = idAnimator.r_showSkel || idAnimator.r_showSkel = new idCVar( "r_showSkel", "0", CVAR_RENDERER | CVAR_INTEGER, "", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
 //
 //	if ( gameLocal.inCinematic && gameLocal.skipCinematic ) {
 //		return false;

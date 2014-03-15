@@ -156,23 +156,23 @@ class idSessionLocal extends idSession {
 //	bool				SaveGame(const char *saveName, bool autosave = false);
 //
 //	const char			*GetAuthMsg( void );
-//
-//	//=====================================
-//
-//	static idCVar		com_showAngles;
-//	static idCVar		com_showTics;
-//	static idCVar		com_minTics;
-//	static idCVar		com_fixedTic;
-//	static idCVar		com_showDemo;
-//	static idCVar		com_skipGameDraw;
-//	static idCVar		com_aviDemoWidth;
-//	static idCVar		com_aviDemoHeight;
-//	static idCVar		com_aviDemoSamples;
-//	static idCVar		com_aviDemoTics;
-//	static idCVar		com_wipeSeconds;
-//	static idCVar		com_guid;
-//
-//	static idCVar		gui_configServerRate;
+
+	//=====================================
+
+	static com_showAngles:idCVar;
+	static com_showTics:idCVar;
+	static com_minTics:idCVar;
+	static com_fixedTic:idCVar;
+	static com_showDemo:idCVar;
+	static com_skipGameDraw:idCVar;
+	static com_aviDemoWidth:idCVar;
+	static com_aviDemoHeight:idCVar;
+	static com_aviDemoSamples:idCVar;
+	static com_aviDemoTics:idCVar;
+	static com_wipeSeconds:idCVar;
+	static com_guid:idCVar;
+
+	static gui_configServerRate:idCVar;
 //
 	timeHitch:number/*int*/;
 //

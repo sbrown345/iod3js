@@ -48,7 +48,7 @@
 var collisionModelManager:idCollisionModelManager = null;
 ////idCVar *					idCVar::staticVars = NULL;
 
-////idCVar com_forceGenericSIMD( "com_forceGenericSIMD", "0", CVAR_BOOL|CVAR_SYSTEM, "force generic platform independent SIMD" );
+//var com_forceGenericSIMD = new idCVar( "com_forceGenericSIMD", "0", CVAR_BOOL | CVAR_SYSTEM, "force generic platform independent SIMD" );
 
 ////#endif
 

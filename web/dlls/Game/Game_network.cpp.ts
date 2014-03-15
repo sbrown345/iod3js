@@ -46,14 +46,14 @@
 ////#ifndef ASYNC_WRITE_TAGS
 ////	#define ASYNC_WRITE_TAGS 0
 ////#endif
-////
-////idCVar net_clientShowSnapshot( "net_clientShowSnapshot", "0", CVAR_GAME | CVAR_INTEGER, "", 0, 3, idCmdSystem::ArgCompletion_Integer<0,3> );
-////idCVar net_clientShowSnapshotRadius( "net_clientShowSnapshotRadius", "128", CVAR_GAME | CVAR_FLOAT, "" );
-////idCVar net_clientSmoothing( "net_clientSmoothing", "0.8", CVAR_GAME | CVAR_FLOAT, "smooth other clients angles and position.", 0.0f, 0.95f );
-////idCVar net_clientSelfSmoothing( "net_clientSelfSmoothing", "0.6", CVAR_GAME | CVAR_FLOAT, "smooth self position if network causes prediction error.", 0.0f, 0.95f );
-////idCVar net_clientMaxPrediction( "net_clientMaxPrediction", "1000", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "maximum number of milliseconds a client can predict ahead of server." );
-////idCVar net_clientLagOMeter( "net_clientLagOMeter", "1", CVAR_GAME | CVAR_BOOL | CVAR_NOCHEAT | CVAR_ARCHIVE, "draw prediction graph" );
-////
+
+var net_clientShowSnapshot = new idCVar (  "net_clientShowSnapshot", "0", CVAR_GAME | CVAR_INTEGER, "", 0, 3, ArgCompletion_Integer_Template(0,3) );
+var net_clientShowSnapshotRadius = new idCVar (  "net_clientShowSnapshotRadius", "128", CVAR_GAME | CVAR_FLOAT, "" );
+var net_clientSmoothing = new idCVar (  "net_clientSmoothing", "0.8", CVAR_GAME | CVAR_FLOAT, "smooth other clients angles and position.", 0.0, 0.95 );
+var net_clientSelfSmoothing = new idCVar (  "net_clientSelfSmoothing", "0.6", CVAR_GAME | CVAR_FLOAT, "smooth self position if network causes prediction error.", 0.0, 0.95 );
+var net_clientMaxPrediction = new idCVar (  "net_clientMaxPrediction", "1000", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "maximum number of milliseconds a client can predict ahead of server." );
+var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | CVAR_BOOL | CVAR_NOCHEAT | CVAR_ARCHIVE, "draw prediction graph" );
+
 /////*
 ////================
 ////idGameLocal::InitAsyncNetwork

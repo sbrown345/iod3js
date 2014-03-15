@@ -52,8 +52,8 @@
 //#define	FRAGMENT_SIZE			(MAX_PACKETLEN - 100)
 //#define	FRAGMENT_BIT			(1<<31)
 //
-//idCVar net_channelShowPackets( "net_channelShowPackets", "0", CVAR_SYSTEM | CVAR_BOOL, "show all packets" );
-//idCVar net_channelShowDrop( "net_channelShowDrop", "0", CVAR_SYSTEM | CVAR_BOOL, "show dropped packets" );
+var net_channelShowPackets = new idCVar (  "net_channelShowPackets", "0", CVAR_SYSTEM | CVAR_BOOL, "show all packets" );
+var net_channelShowDrop = new idCVar (  "net_channelShowDrop", "0", CVAR_SYSTEM | CVAR_BOOL, "show dropped packets" );
 //
 ///*
 //===============

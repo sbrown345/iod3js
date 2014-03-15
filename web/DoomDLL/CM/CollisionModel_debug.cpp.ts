@@ -40,59 +40,59 @@
 ////#include "CollisionModel_local.h"
 ////
 ////
-/////*
-////===============================================================================
-////
-////Visualisation code
-////
-////===============================================================================
-////*/
-////
-////const char *cm_contentsNameByIndex[] = {
-////	"none",							// 0
-////	"solid",						// 1
-////	"opaque",						// 2
-////	"water",						// 3
-////	"playerclip",					// 4
-////	"monsterclip",					// 5
-////	"moveableclip",					// 6
-////	"ikclip",						// 7
-////	"blood",						// 8
-////	"body",							// 9
-////	"corpse",						// 10
-////	"trigger",						// 11
-////	"aas_solid",					// 12
-////	"aas_obstacle",					// 13
-////	"flashlight_trigger",			// 14
-////	NULL
-////};
-////
-////int cm_contentsFlagByIndex[] = {
-////	-1,								// 0
-////	CONTENTS_SOLID,					// 1
-////	CONTENTS_OPAQUE,				// 2
-////	CONTENTS_WATER,					// 3
-////	CONTENTS_PLAYERCLIP,			// 4
-////	CONTENTS_MONSTERCLIP,			// 5
-////	CONTENTS_MOVEABLECLIP,			// 6
-////	CONTENTS_IKCLIP,				// 7
-////	CONTENTS_BLOOD,					// 8
-////	CONTENTS_BODY,					// 9
-////	CONTENTS_CORPSE,				// 10
-////	CONTENTS_TRIGGER,				// 11
-////	CONTENTS_AAS_SOLID,				// 12
-////	CONTENTS_AAS_OBSTACLE,			// 13
-////	CONTENTS_FLASHLIGHT_TRIGGER,	// 14
-////	0
-////};
-////
-////idCVar cm_drawMask(			"cm_drawMask",			"none",		CVAR_GAME,				"collision mask", cm_contentsNameByIndex, idCmdSystem::ArgCompletion_String<cm_contentsNameByIndex> );
-////idCVar cm_drawColor(		"cm_drawColor",			"1 0 0 .5",	CVAR_GAME,				"color used to draw the collision models" );
-////idCVar cm_drawFilled(		"cm_drawFilled",		"0",		CVAR_GAME | CVAR_BOOL,	"draw filled polygons" );
-////idCVar cm_drawInternal(		"cm_drawInternal",		"1",		CVAR_GAME | CVAR_BOOL,	"draw internal edges green" );
-////idCVar cm_drawNormals(		"cm_drawNormals",		"0",		CVAR_GAME | CVAR_BOOL,	"draw polygon and edge normals" );
-////idCVar cm_backFaceCull(		"cm_backFaceCull",		"0",		CVAR_GAME | CVAR_BOOL,	"cull back facing polygons" );
-////idCVar cm_debugCollision(	"cm_debugCollision",	"0",		CVAR_GAME | CVAR_BOOL,	"debug the collision detection" );
+/*
+===============================================================================
+
+Visualisation code
+
+===============================================================================
+*/
+
+var cm_contentsNameByIndex = [
+	"none",							// 0
+	"solid",						// 1
+	"opaque",						// 2
+	"water",						// 3
+	"playerclip",					// 4
+	"monsterclip",					// 5
+	"moveableclip",					// 6
+	"ikclip",						// 7
+	"blood",						// 8
+	"body",							// 9
+	"corpse",						// 10
+	"trigger",						// 11
+	"aas_solid",					// 12
+	"aas_obstacle",					// 13
+	"flashlight_trigger",			// 14
+	//NULL
+];
+
+var/*int */cm_contentsFlagByIndex = [
+	-1,								// 0
+	contentsFlags_t.CONTENTS_SOLID,					// 1
+	contentsFlags_t.CONTENTS_OPAQUE,				// 2
+	contentsFlags_t.CONTENTS_WATER,					// 3
+	contentsFlags_t.CONTENTS_PLAYERCLIP,			// 4
+	contentsFlags_t.CONTENTS_MONSTERCLIP,			// 5
+	contentsFlags_t.CONTENTS_MOVEABLECLIP,			// 6
+	contentsFlags_t.CONTENTS_IKCLIP,				// 7
+	contentsFlags_t.CONTENTS_BLOOD,					// 8
+	contentsFlags_t.CONTENTS_BODY,					// 9
+	contentsFlags_t.CONTENTS_CORPSE,				// 10
+	contentsFlags_t.CONTENTS_TRIGGER,				// 11
+	contentsFlags_t.CONTENTS_AAS_SOLID,				// 12
+	contentsFlags_t.CONTENTS_AAS_OBSTACLE,			// 13
+	contentsFlags_t.CONTENTS_FLASHLIGHT_TRIGGER,	// 14
+	0
+];
+
+var cm_drawMask = new idCVar ( 			"cm_drawMask",			"none",		CVAR_GAME,				"collision mask", cm_contentsNameByIndex, ArgCompletion_String_Template(cm_contentsNameByIndex) );
+var cm_drawColor = new idCVar ( 		"cm_drawColor",			"1 0 0 .5",	CVAR_GAME,				"color used to draw the collision models" );
+var cm_drawFilled = new idCVar ( 		"cm_drawFilled",		"0",		CVAR_GAME | CVAR_BOOL,	"draw filled polygons" );
+var cm_drawInternal = new idCVar ( 		"cm_drawInternal",		"1",		CVAR_GAME | CVAR_BOOL,	"draw internal edges green" );
+var cm_drawNormals = new idCVar ( 		"cm_drawNormals",		"0",		CVAR_GAME | CVAR_BOOL,	"draw polygon and edge normals" );
+var cm_backFaceCull = new idCVar ( 		"cm_backFaceCull",		"0",		CVAR_GAME | CVAR_BOOL,	"cull back facing polygons" );
+var cm_debugCollision = new idCVar ( 	"cm_debugCollision",	"0",		CVAR_GAME | CVAR_BOOL,	"debug the collision detection" );
 ////
 ////static idVec4 cm_color;
 ////
@@ -328,29 +328,29 @@
 ////	checkCount++;
 ////	DrawNodePolygons( model, model->node, modelOrigin, modelAxis, viewPos, radius );
 ////}
-////
-/////*
-////===============================================================================
-////
-////Speed test code
-////
-////===============================================================================
-////*/
-////
-////static idCVar cm_testCollision(		"cm_testCollision",		"0",					CVAR_GAME | CVAR_BOOL,		"" );
-////static idCVar cm_testRotation(		"cm_testRotation",		"1",					CVAR_GAME | CVAR_BOOL,		"" );
-////static idCVar cm_testModel(			"cm_testModel",			"0",					CVAR_GAME | CVAR_INTEGER,	"" );
-////static idCVar cm_testTimes(			"cm_testTimes",			"1000",					CVAR_GAME | CVAR_INTEGER,	"" );
-////static idCVar cm_testRandomMany(	"cm_testRandomMany",	"0",					CVAR_GAME | CVAR_BOOL,		"" );
-////static idCVar cm_testOrigin(		"cm_testOrigin",		"0 0 0",				CVAR_GAME,					"" );
-////static idCVar cm_testReset(			"cm_testReset",			"0",					CVAR_GAME | CVAR_BOOL,		"" );
-////static idCVar cm_testBox(			"cm_testBox",			"-16 -16 0 16 16 64",	CVAR_GAME,					"" );
-////static idCVar cm_testBoxRotation(	"cm_testBoxRotation",	"0 0 0",				CVAR_GAME,					"" );
-////static idCVar cm_testWalk(			"cm_testWalk",			"1",					CVAR_GAME | CVAR_BOOL,		"" );
-////static idCVar cm_testLength(		"cm_testLength",		"1024",					CVAR_GAME | CVAR_FLOAT,		"" );
-////static idCVar cm_testRadius(		"cm_testRadius",		"64",					CVAR_GAME | CVAR_FLOAT,		"" );
-////static idCVar cm_testAngle(			"cm_testAngle",			"60",					CVAR_GAME | CVAR_FLOAT,		"" );
-////
+
+/*
+===============================================================================
+
+Speed test code
+
+===============================================================================
+*/
+
+var cm_testCollision = new idCVar (		"cm_testCollision",		"0",					CVAR_GAME | CVAR_BOOL,		"" );
+var cm_testRotation = new idCVar (		"cm_testRotation",		"1",					CVAR_GAME | CVAR_BOOL,		"" );
+var cm_testModel = new idCVar (			"cm_testModel",			"0",					CVAR_GAME | CVAR_INTEGER,	"" );
+var cm_testTimes = new idCVar (			"cm_testTimes",			"1000",					CVAR_GAME | CVAR_INTEGER,	"" );
+var cm_testRandomMany = new idCVar (	"cm_testRandomMany",	"0",					CVAR_GAME | CVAR_BOOL,		"" );
+var cm_testOrigin = new idCVar (		"cm_testOrigin",		"0 0 0",				CVAR_GAME,					"" );
+var cm_testReset = new idCVar (			"cm_testReset",			"0",					CVAR_GAME | CVAR_BOOL,		"" );
+var cm_testBox = new idCVar (			"cm_testBox",			"-16 -16 0 16 16 64",	CVAR_GAME,					"" );
+var cm_testBoxRotation = new idCVar (	"cm_testBoxRotation",	"0 0 0",				CVAR_GAME,					"" );
+var cm_testWalk = new idCVar (			"cm_testWalk",			"1",					CVAR_GAME | CVAR_BOOL,		"" );
+var cm_testLength = new idCVar (		"cm_testLength",		"1024",					CVAR_GAME | CVAR_FLOAT,		"" );
+var cm_testRadius = new idCVar (		"cm_testRadius",		"64",					CVAR_GAME | CVAR_FLOAT,		"" );
+var cm_testAngle = new idCVar (			"cm_testAngle",			"60",					CVAR_GAME | CVAR_FLOAT,		"" );
+
 ////static int total_translation;
 ////static int min_translation = 999999;
 ////static int max_translation = -999999;

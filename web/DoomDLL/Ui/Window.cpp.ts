@@ -346,8 +346,8 @@ class idWindow {
 //////float idWindow::shaderRegisters[MAX_EXPRESSION_REGISTERS];
 //////wexpOp_t idWindow::shaderOps[MAX_EXPRESSION_OPS];
 ////
-////idCVar idWindow::gui_debug( "gui_debug", "0", CVAR_GUI | CVAR_BOOL, "" );
-////idCVar idWindow::gui_edit( "gui_edit", "0", CVAR_GUI | CVAR_BOOL, "" );
+	static gui_debug = new idCVar ( "gui_debug", "0", CVAR_GUI | CVAR_BOOL, "" );
+	static gui_edit = new idCVar ( "gui_edit", "0", CVAR_GUI | CVAR_BOOL, "" );
 ////
 ////extern idCVar r_skipGuiShaders;		// 1 = don't render any gui elements on surfaces
 ////

@@ -1,5 +1,7 @@
 var NULL: number = 0; //var NULL:any = null;
 
+var DEBUG = true;
+
 var __DATE__ = "2014-2-8";
 var __TIME__ = "00:00:00";
 

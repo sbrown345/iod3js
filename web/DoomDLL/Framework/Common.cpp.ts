@@ -47,12 +47,13 @@ enum errorParm_t {
 ////	#define BUILD_DEBUG ""
 ////#endif
 
-////struct version_s {
-////			version_s( void ) { sprintf( string, "%s.%d%s %s %s %s", ENGINE_VERSION, BUILD_NUMBER, BUILD_DEBUG, BUILD_STRING, __DATE__, __TIME__ ); }
-////	char	string[256];
-////} version;
+class version_s {
+	constructor ( ) { this.$string = sprintf( "%s.%d%s %s %s %s", ENGINE_VERSION, BUILD_NUMBER, BUILD_DEBUG, BUILD_STRING, __DATE__, __TIME__ ); }
+	$string: string
+}
+var version = new version_s;
 
-//var com_version = new idCVar( "si_version", version.string, CVAR_SYSTEM|CVAR_ROM|CVAR_SERVERINFO, "engine version" );
+var com_version = new idCVar( "si_version", version.$string, CVAR_SYSTEM|CVAR_ROM|CVAR_SERVERINFO, "engine version" );
 var com_skipRenderer = new idCVar( "com_skipRenderer", "0", CVAR_BOOL|CVAR_SYSTEM, "skip the renderer completely" );
 var com_machineSpec = new idCVar( "com_machineSpec", "-1", CVAR_INTEGER | CVAR_ARCHIVE | CVAR_SYSTEM, "hardware classification, -1 = not detected, 0 = low quality, 1 = medium quality, 2 = high quality, 3 = ultra quality" );
 var com_purgeAll = new idCVar( "com_purgeAll", "0", CVAR_BOOL | CVAR_ARCHIVE | CVAR_SYSTEM, "purge everything between level loads" );
@@ -67,7 +68,7 @@ var ASYNCSOUND_INFO = "0: mix sound inline, 1: memory mapped async mix, 2: callb
 ////#else
 var  com_asyncSound = new idCVar( "com_asyncSound", "1", CVAR_INTEGER|CVAR_SYSTEM, ASYNCSOUND_INFO, 0, 1 );
 ////#endif
-////idCVar com_forceGenericSIMD = new idCVar( "com_forceGenericSIMD", "0", CVAR_BOOL | CVAR_SYSTEM | CVAR_NOCHEAT, "force generic platform independent SIMD" );
+var com_forceGenericSIMD = new idCVar( "com_forceGenericSIMD", "0", CVAR_BOOL | CVAR_SYSTEM | CVAR_NOCHEAT, "force generic platform independent SIMD" );
 var com_developer = new idCVar( "developer", "0", CVAR_BOOL|CVAR_SYSTEM|CVAR_NOCHEAT, "developer mode" );
 var com_allowConsole = new idCVar( "com_allowConsole", "1", CVAR_BOOL | CVAR_SYSTEM | CVAR_NOCHEAT, "allow toggling console with the tilde key" );
 var com_speeds = new idCVar( "com_speeds", "0", CVAR_BOOL|CVAR_SYSTEM|CVAR_NOCHEAT, "show engine timings" );
@@ -83,7 +84,7 @@ var com_makingBuild = new idCVar( "com_makingBuild", "0", CVAR_BOOL | CVAR_SYSTE
 var com_updateLoadSize = new idCVar( "com_updateLoadSize", "0", CVAR_BOOL | CVAR_SYSTEM | CVAR_NOCHEAT, "update the load size after loading a map" );
 var com_videoRam = new idCVar( "com_videoRam", "64", CVAR_INTEGER | CVAR_SYSTEM | CVAR_NOCHEAT | CVAR_ARCHIVE, "holds the last amount of detected video ram" );
 
-////idCVar com_product_lang_ext( "com_product_lang_ext", "1", CVAR_INTEGER | CVAR_SYSTEM | CVAR_ARCHIVE, "Extension to use when creating language files." );
+var com_product_lang_ext = new idCVar( "com_product_lang_ext", "1", CVAR_INTEGER | CVAR_SYSTEM | CVAR_ARCHIVE, "Extension to use when creating language files." );
 
 ////// com_speeds times
 ////int				time_gameFrame;

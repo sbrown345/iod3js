@@ -42,8 +42,8 @@
 ////
 ////#define MAX_WINDFORCE 100.f
 ////
-////idCVar bearTurretAngle( "bearTurretAngle", "0", CVAR_FLOAT, "" );
-////idCVar bearTurretForce( "bearTurretForce", "200", CVAR_FLOAT, "" );
+var bearTurretAngle = new idCVar ( "bearTurretAngle", "0", CVAR_FLOAT, "" );
+var bearTurretForce = new idCVar ( "bearTurretForce", "200", CVAR_FLOAT, "" );
 ////
 /////*
 ////*****************************************************************************

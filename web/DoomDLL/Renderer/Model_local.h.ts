@@ -123,10 +123,10 @@ class idRenderModelStatic extends idRenderModel {
     levelLoadReferenced:boolean;	// for determining if it needs to be freed
 	timeStamp: number; //ID_TIME_T
 
-////	static idCVar				r_mergeModelSurfaces;	// combine model surfaces with the same material
-////	static idCVar				r_slopVertex;			// merge xyz coordinates this far apart
-////	static idCVar				r_slopTexCoord;			// merge texture coordinates this far apart
-////	static idCVar				r_slopNormal;			// merge normals that dot less than this
+	static r_mergeModelSurfaces: idCVar;	// combine model surfaces with the same material
+	static r_slopVertex: idCVar;			// merge xyz coordinates this far apart
+	static r_slopTexCoord: idCVar;			// merge texture coordinates this far apart
+	static r_slopNormal: idCVar;			// merge normals that dot less than this
 
 
 	constructor ( ) {

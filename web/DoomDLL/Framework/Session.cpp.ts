@@ -32,20 +32,20 @@
 //#include "Session_local.h"
 
 
-//idCVar	idSessionLocal::com_showAngles( "com_showAngles", "0", CVAR_SYSTEM | CVAR_BOOL, "" );
-//idCVar	idSessionLocal::com_minTics( "com_minTics", "1", CVAR_SYSTEM, "" );
-//idCVar	idSessionLocal::com_showTics( "com_showTics", "0", CVAR_SYSTEM | CVAR_BOOL, "" );
-//idCVar	idSessionLocal::com_fixedTic( "com_fixedTic", "0", CVAR_SYSTEM | CVAR_INTEGER, "", 0, 10 );
-//idCVar	idSessionLocal::com_showDemo( "com_showDemo", "0", CVAR_SYSTEM | CVAR_BOOL, "" );
-//idCVar	idSessionLocal::com_skipGameDraw( "com_skipGameDraw", "0", CVAR_SYSTEM | CVAR_BOOL, "" );
-//idCVar	idSessionLocal::com_aviDemoSamples( "com_aviDemoSamples", "16", CVAR_SYSTEM, "" );
-//idCVar	idSessionLocal::com_aviDemoWidth( "com_aviDemoWidth", "256", CVAR_SYSTEM, "" );
-//idCVar	idSessionLocal::com_aviDemoHeight( "com_aviDemoHeight", "256", CVAR_SYSTEM, "" );
-//idCVar	idSessionLocal::com_aviDemoTics( "com_aviDemoTics", "2", CVAR_SYSTEM | CVAR_INTEGER, "", 1, 60 );
-//idCVar	idSessionLocal::com_wipeSeconds( "com_wipeSeconds", "1", CVAR_SYSTEM, "" );
-//idCVar	idSessionLocal::com_guid( "com_guid", "", CVAR_SYSTEM | CVAR_ARCHIVE | CVAR_ROM, "" );
-//
-//
+idSessionLocal.com_showAngles = new idCVar ( "com_showAngles", "0", CVAR_SYSTEM | CVAR_BOOL, "" );
+idSessionLocal.com_minTics = new idCVar ( "com_minTics", "1", CVAR_SYSTEM, "" );
+idSessionLocal.com_showTics = new idCVar ( "com_showTics", "0", CVAR_SYSTEM | CVAR_BOOL, "" );
+idSessionLocal.com_fixedTic = new idCVar ( "com_fixedTic", "0", CVAR_SYSTEM | CVAR_INTEGER, "", 0, 10 );
+idSessionLocal.com_showDemo = new idCVar ( "com_showDemo", "0", CVAR_SYSTEM | CVAR_BOOL, "" );
+idSessionLocal.com_skipGameDraw = new idCVar ( "com_skipGameDraw", "0", CVAR_SYSTEM | CVAR_BOOL, "" );
+idSessionLocal.com_aviDemoSamples = new idCVar ( "com_aviDemoSamples", "16", CVAR_SYSTEM, "" );
+idSessionLocal.com_aviDemoWidth = new idCVar ( "com_aviDemoWidth", "256", CVAR_SYSTEM, "" );
+idSessionLocal.com_aviDemoHeight = new idCVar ( "com_aviDemoHeight", "256", CVAR_SYSTEM, "" );
+idSessionLocal.com_aviDemoTics = new idCVar ( "com_aviDemoTics", "2", CVAR_SYSTEM | CVAR_INTEGER, "", 1, 60 );
+idSessionLocal.com_wipeSeconds = new idCVar ( "com_wipeSeconds", "1", CVAR_SYSTEM, "" );
+idSessionLocal.com_guid = new idCVar ( "com_guid", "", CVAR_SYSTEM | CVAR_ARCHIVE | CVAR_ROM, "" );
+
+
 //// these must be kept up to date with window Levelshot in guis/mainmenu.gui
 //const int PREVIEW_X = 211;
 //const int PREVIEW_Y = 31;
