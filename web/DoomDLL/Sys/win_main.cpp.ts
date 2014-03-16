@@ -389,13 +389,17 @@ function Sys_MemFrame ( ): void {
 ////}
 
 
-/////*
-////==============
-////Sys_Printf
-////==============
-////*/
-////#define MAXPRINTMSG 4096
-////void Sys_Printf( const char *fmt, ... ) {
+/*
+==============
+Sys_Printf
+==============
+*/
+var MAXPRINTMSG = 4096;
+function Sys_Printf ( fmt: string, ...args: any[] ): void {
+	var argArr = args.slice( 0 );
+	argArr.unshift( fmt.trim ( ) );
+	console.log.apply( console, argArr );
+
 ////	char		msg[MAXPRINTMSG];
 
 ////	va_list argptr;
@@ -410,7 +414,7 @@ function Sys_MemFrame ( ): void {
 ////	if ( win32.win_outputEditString.GetBool() ) {
 ////		Conbuf_AppendText( msg );
 ////	}
-////}
+}
 
 /////*
 ////==============

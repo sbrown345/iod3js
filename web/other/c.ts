@@ -123,19 +123,19 @@ function zeroArray ( array: any ): void {
 }
 
 function memset ( arr: ArrayBufferView, value: number, num: number ): void {
-    //assert.uint8(value).int32(num);
-    var startIndex = 0;
-    var uint8Array = new Uint8Array( arr.buffer );
-    for ( var i = startIndex; i < num; i++ ) {
-        uint8Array[i] = value;
-    }
+	//assert.uint8(value).int32(num);
+	var startIndex = 0;
+	var uint8Array = new Uint8Array( arr.buffer );
+	for ( var i = startIndex; i < num; i++ ) {
+		uint8Array[i] = value;
+	}
 }
 
-function memsetP(ptr: P, value: number, num: number): void {
+function memsetP ( ptr: P, value: number, num: number ): void {
 	var startIndex = ptr.idx;
-	var uint8Array = new Uint8Array(ptr.buf);
+	var uint8Array = new Uint8Array( ptr.buf );
 	num += startIndex;
-	for (var i = startIndex; i < num; i++) {
+	for ( var i = startIndex; i < num; i++ ) {
 		uint8Array[i] = value;
 	}
 }
@@ -148,43 +148,43 @@ function dynamic_cast<T> ( obj: any, type: any ): T {
 	return null;
 }
 
-function static_cast<T> ( obj: any): T {
-		return <T>obj;
+function static_cast<T> ( obj: any ): T {
+	return <T>obj;
 }
 
-function short(buf: Uint8Array, ptr: number): number {
-	return buf[ptr] + (buf[ptr + 1] << 8);
+function short ( buf: Uint8Array, ptr: number ): number {
+	return buf[ptr] + ( buf[ptr + 1] << 8 );
 }
 
-function float ( ) {
-	
+function float ( v: number ): number {
+	return v;
 }
 
-function sizeof(obj: any) : number {
-    if(typeof obj === "number") {
-        debugger;
-        throw "cannot get size of number type";
-    }
+function sizeof ( obj: any ): number {
+	if ( typeof obj === "number" ) {
+		debugger;
+		throw "cannot get size of number type";
+	}
 
-	if (obj === int || obj === float) {
+	if ( obj === int || obj === float ) {
 		return 4;
 	}
 
-    if (obj.size !== undefined) {
-        return obj.size;
-    }
+	if ( obj.size !== undefined ) {
+		return obj.size;
+	}
 
-    if(obj.buffer) {
-        return obj.buffer.byteLength;
-    }
+	if ( obj.buffer ) {
+		return obj.buffer.byteLength;
+	}
 
-    throw "unsure of size of this type";
-    ////return obj.length;
+	throw "unsure of size of this type";
+	////return obj.length;
 }
 
 function sizeofSingleItem ( arr: Float64Array ): number; // works for all typed arrays
 function sizeofSingleItem ( arr: any ): number {
-    return arr.BYTES_PER_ELEMENT;
+	return arr.BYTES_PER_ELEMENT;
 }
 
 var min = Math.min;

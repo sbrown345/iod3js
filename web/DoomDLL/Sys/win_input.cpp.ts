@@ -647,15 +647,15 @@ function IN_Frame ( ): void {
 }
 
 
-//void	Sys_GrabMouseCursor( bool grabIt ) {
+function Sys_GrabMouseCursor ( grabIt: boolean ): void {
 //#ifndef	ID_DEDICATED
-//	win32.mouseReleased = !grabIt;
-//	if ( !grabIt ) {
-//		// release it right now
-//		IN_Frame();
-//	}
+	win32.mouseReleased = !grabIt;
+	if ( !grabIt ) {
+		// release it right now
+		IN_Frame ( );
+	}
 //#endif
-//}
+}
 //
 ////=====================================================================================
 //

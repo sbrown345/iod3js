@@ -86,9 +86,9 @@ class idConsoleLocal extends idConsole {
 	keyCatching:boolean;
 
 	text = new Int16Array(CON_TEXTSIZE);
-	current:number;		// line where next message will be printed		int					
+	current:number = 0;		// line where next message will be printed		int					
 	x: number;				// offset in current line for next print		int					
-	display: number;		// bottom of console displays this line			int					
+	display: number = 0;		// bottom of console displays this line			int					
 	lastKeyEvent: number;	// time of last key event for scroll delay		int					
 	nextKeyEvent: number;	// keyboard repeat rate							int					
 
@@ -169,51 +169,52 @@ class idConsoleLocal extends idConsole {
 //
 //
 //
-///*
-//==================
-//SCR_DrawFPS
-//==================
-//*/
-//#define	FPS_FRAMES	4
-//float SCR_DrawFPS( float y ) {
-//	char		*s;
-//	int			w;
-//	static int	previousTimes[FPS_FRAMES];
-//	static int	index;
-//	int		i, total;
-//	int		fps;
-//	static	int	previous;
-//	int		t, frameTime;
-//
-//	// don't use serverTime, because that will be drifting to
-//	// correct for internet lag changes, timescales, timedemos, etc
-//	t = Sys_Milliseconds();
-//	frameTime = t - previous;
-//	previous = t;
-//
-//	previousTimes[index % FPS_FRAMES] = frameTime;
-//	index++;
-//	if ( index > FPS_FRAMES ) {
-//		// average multiple frames together to smooth changes out a bit
-//		total = 0;
-//		for ( i = 0 ; i < FPS_FRAMES ; i++ ) {
-//			total += previousTimes[i];
-//		}
-//		if ( !total ) {
-//			total = 1;
-//		}
-//		fps = 10000 * FPS_FRAMES / total;
-//		fps = (fps + 5)/10;
-//
-//		s = va( "%ifps", fps );
-//		w = strlen( s ) * BIGCHAR_WIDTH;
-//
-//		renderSystem.DrawBigStringExt( 635 - w, idMath.FtoiFast( y ) + 2, s, colorWhite, true, localConsole.charSetShader);
-//	}
-//
-//	return y + BIGCHAR_HEIGHT + 4;
-//}
-//
+/*
+==================
+SCR_DrawFPS
+==================
+*/
+FPS_FRAMES	= 4;
+	SCR_DrawFPS ( /* float */y: number ): number {
+		todo( "SCR_DrawFPS" );
+		//char		*s;
+		//int			w;
+		//static int	previousTimes[FPS_FRAMES];
+		//static int	index;
+		//int		i, total;
+		//int		fps;
+		//static	int	previous;
+		//int		t, frameTime;
+
+		//// don't use serverTime, because that will be drifting to
+		//// correct for internet lag changes, timescales, timedemos, etc
+		//t = Sys_Milliseconds();
+		//frameTime = t - previous;
+		//previous = t;
+
+		//previousTimes[index % FPS_FRAMES] = frameTime;
+		//index++;
+		//if ( index > FPS_FRAMES ) {
+		//	// average multiple frames together to smooth changes out a bit
+		//	total = 0;
+		//	for ( i = 0 ; i < FPS_FRAMES ; i++ ) {
+		//		total += previousTimes[i];
+		//	}
+		//	if ( !total ) {
+		//		total = 1;
+		//	}
+		//	fps = 10000 * FPS_FRAMES / total;
+		//	fps = (fps + 5)/10;
+
+		//	s = va( "%ifps", fps );
+		//	w = strlen( s ) * BIGCHAR_WIDTH;
+
+		//	renderSystem.DrawBigStringExt( 635 - w, idMath.FtoiFast( y ) + 2, s, colorWhite, true, localConsole.charSetShader);
+		//}
+
+		return y + BIGCHAR_HEIGHT + 4;
+	}
+
 ///*
 //==================
 //SCR_DrawMemoryUsage
@@ -847,10 +848,10 @@ Handles cursor positioning, line wrapping, etc
 ================
 */
 	Print ( txt: string ): void {
-		todoThrow ( );
-//	int		y;
-//	int		c, l;
-//	int		color;
+		var txtIdx = 0;
+		var /*int*/ y: number;
+		var /*int*/ c: string, l: number;
+		var /*int*/ color: number;
 
 //#ifdef ID_ALLOW_TOOLS
 //	RadiantPrint( txt );
@@ -860,72 +861,72 @@ Handles cursor positioning, line wrapping, etc
 //	}
 //#endif
 
-//	color = idStr.ColorIndex( C_COLOR_CYAN );
+		color = idStr.ColorIndex( C_COLOR_CYAN.charCodeAt( 0 ) );
 
-//	while ( (c = *(const unsigned char*)txt) != 0 ) {
-//		if ( idStr::IsColor( txt ) ) {
-//			if ( *(txt+1) == C_COLOR_DEFAULT ) {
-//				color = idStr.ColorIndex( C_COLOR_CYAN );
-//			} else {
-//				color = idStr.ColorIndex( *(txt+1) );
-//			}
-//			txt += 2;
-//			continue;
-//		}
+		while ( c = txt[txtIdx] /*(c = *(const unsigned char*)txt) != 0 */ ) {
+			if ( idStr.IsColor( txt ) ) {
+				if ( txt[txtIdx + 1] == C_COLOR_DEFAULT ) {
+					color = idStr.ColorIndex( C_COLOR_CYAN.charCodeAt( 0 ) );
+				} else {
+					color = idStr.ColorIndex( ( txt.charCodeAt( txtIdx + 1 ) ) );
+				}
+				txtIdx += 2;
+				continue;
+			}
 
-//		y = this.current % TOTAL_LINES;
+			y = this.current % TOTAL_LINES;
 
-//		// if we are about to print a new word, check to see
-//		// if we should wrap to the new line
-//		if ( c > ' ' && ( x == 0 || text[y*LINE_WIDTH+x-1] <= ' ' ) ) {
-//			// count word length
-//			for (l=0 ; l< LINE_WIDTH ; l++) {
-//				if ( txt[l] <= ' ') {
-//					break;
-//				}
-//			}
+			// if we are about to print a new word, check to see
+			// if we should wrap to the new line
+			if ( c > ' ' && ( this.x == 0 || this.text[y * LINE_WIDTH + this.x - 1] <= ' '.charCodeAt( 0 ) ) ) {
+				// count word length
+				for ( l = 0; l < LINE_WIDTH; l++ ) {
+					if ( txt[txtIdx + l] <= ' ' ) {
+						break;
+					}
+				}
 
-//			// word wrap
-//			if (l != LINE_WIDTH && (x + l >= LINE_WIDTH) ) {
-//				Linefeed();
-//			}
-//		}
+				// word wrap
+				if ( l != LINE_WIDTH && ( this.x + l >= LINE_WIDTH ) ) {
+					this.Linefeed ( );
+				}
+			}
 
-//		txt++;
+			txtIdx++;
 
-//		switch( c ) {
-//			case '\n':
-//				Linefeed ();
-//				break;
-//			case '\t':
-//				do {
-//					text[y*LINE_WIDTH+x] = (color << 8) | ' ';
-//					x++;
-//					if ( x >= LINE_WIDTH ) {
-//						Linefeed();
-//						x = 0;
-//					}
-//				} while ( x & 3 );
-//				break;
-//			case '\r':
-//				x = 0;
-//				break;
-//			default:	// display character and advance
-//				text[y*LINE_WIDTH+x] = (color << 8) | c;
-//				x++;
-//				if ( x >= LINE_WIDTH ) {
-//					Linefeed();
-//					x = 0;
-//				}
-//				break;
-//		}
-//	}
+			switch ( c ) {
+			case '\n':
+				this.Linefeed ( );
+				break;
+			case '\t':
+				do {
+					this.text[y * LINE_WIDTH + this.x] = ( color << 8 ) | ' '.charCodeAt( 0 );
+					this.x++;
+					if ( this.x >= LINE_WIDTH ) {
+						this.Linefeed ( );
+						this.x = 0;
+					}
+				} while ( this.x & 3 );
+				break;
+			case '\r':
+				this.x = 0;
+				break;
+			default: // display character and advance
+				this.text[y * LINE_WIDTH + this.x] = ( color << 8 ) | c.charCodeAt( 0 );
+				this.x++;
+				if ( this.x >= LINE_WIDTH ) {
+					this.Linefeed ( );
+					this.x = 0;
+				}
+				break;
+			}
+		}
 
 
-//	// mark time for transparent overlay
-//	if ( this.current >= 0 ) {
-//		times[this.current % NUM_CON_TIMES] = com_frameTime;
-//	}
+		// mark time for transparent overlay
+		if ( this.current >= 0 ) {
+			this.times[this.current % NUM_CON_TIMES] = com_frameTime;
+		}
 	}
 
 
@@ -996,7 +997,7 @@ Draw the editline after a ] prompt
 //		if ( i < 0 ) {
 //			continue;
 //		}
-//		time = times[i % NUM_CON_TIMES];
+//		time = this.times[i % NUM_CON_TIMES];
 //		if ( time == 0 ) {
 //			continue;
 //		}
@@ -1172,8 +1173,7 @@ ForceFullScreen is used by the editor
 		}
 
 		if (com_showFPS.GetBool()) {
-			todoThrow ( );
-			//y = SCR_DrawFPS( 0 );
+			y = this.SCR_DrawFPS( 0 );
 		}
 
 		if ( com_showMemoryUsage.GetBool ( ) ) {

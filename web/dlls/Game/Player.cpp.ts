@@ -212,7 +212,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////				break;
 ////		}
 ////		assert( def );
-////		msec = def->dict.GetInt( "time" ) * 1000;
+////		msec = def.dict.GetInt( "time" ) * 1000;
 ////	}
 ////	powerups |= 1 << powerup;
 ////	powerupEndTime[ powerup ] = gameLocal.time + msec;
@@ -263,12 +263,12 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		item = items[ i ];
 ////
 ////		// copy all keys with "inv_"
-////		kv = item->MatchPrefix( "inv_" );
+////		kv = item.MatchPrefix( "inv_" );
 ////		if ( kv ) {
 ////			while( kv ) {
-////				sprintf( key, "item_%i %s", num, kv->GetKey().c_str() );
-////				dict.Set( key, kv->GetValue() );
-////				kv = item->MatchPrefix( "inv_", kv );
+////				sprintf( key, "item_%i %s", num, kv.GetKey().c_str() );
+////				dict.Set( key, kv.GetValue() );
+////				kv = item.MatchPrefix( "inv_", kv );
 ////			}
 ////			num++;
 ////		}
@@ -363,9 +363,9 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		sprintf( itemname, "item_%i ", i );
 ////		kv = dict.MatchPrefix( itemname );
 ////		while( kv ) {
-////			key = kv->GetKey();
+////			key = kv.GetKey();
 ////			key.Strip( itemname );
-////			item->Set( key, kv->GetValue() );
+////			item.Set( key, kv.GetValue() );
 ////			kv = dict.MatchPrefix( itemname, kv );
 ////		}
 ////	}
@@ -439,92 +439,92 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////void idInventory::Save( idSaveGame *savefile ) const {
 ////	int i;
 ////
-////	savefile->WriteInt( maxHealth );
-////	savefile->WriteInt( weapons );
-////	savefile->WriteInt( powerups );
-////	savefile->WriteInt( armor );
-////	savefile->WriteInt( maxarmor );
-////	savefile->WriteInt( ammoPredictTime );
-////	savefile->WriteInt( deplete_armor );
-////	savefile->WriteFloat( deplete_rate );
-////	savefile->WriteInt( deplete_ammount );
-////	savefile->WriteInt( nextArmorDepleteTime );
+////	savefile.WriteInt( maxHealth );
+////	savefile.WriteInt( weapons );
+////	savefile.WriteInt( powerups );
+////	savefile.WriteInt( armor );
+////	savefile.WriteInt( maxarmor );
+////	savefile.WriteInt( ammoPredictTime );
+////	savefile.WriteInt( deplete_armor );
+////	savefile.WriteFloat( deplete_rate );
+////	savefile.WriteInt( deplete_ammount );
+////	savefile.WriteInt( nextArmorDepleteTime );
 ////
 ////	for( i = 0; i < AMMO_NUMTYPES; i++ ) {
-////		savefile->WriteInt( ammo[ i ] );
+////		savefile.WriteInt( ammo[ i ] );
 ////	}
 ////	for( i = 0; i < MAX_WEAPONS; i++ ) {
-////		savefile->WriteInt( clip[ i ] );
+////		savefile.WriteInt( clip[ i ] );
 ////	}
 ////	for( i = 0; i < MAX_POWERUPS; i++ ) {
-////		savefile->WriteInt( powerupEndTime[ i ] );
+////		savefile.WriteInt( powerupEndTime[ i ] );
 ////	}
 ////
-////	savefile->WriteInt( items.Num() );
+////	savefile.WriteInt( items.Num() );
 ////	for( i = 0; i < items.Num(); i++ ) {
-////		savefile->WriteDict( items[ i ] );
+////		savefile.WriteDict( items[ i ] );
 ////	}
 ////
-////	savefile->WriteInt( pdasViewed[0] );
-////	savefile->WriteInt( pdasViewed[1] );
-////	savefile->WriteInt( pdasViewed[2] );
-////	savefile->WriteInt( pdasViewed[3] );
+////	savefile.WriteInt( pdasViewed[0] );
+////	savefile.WriteInt( pdasViewed[1] );
+////	savefile.WriteInt( pdasViewed[2] );
+////	savefile.WriteInt( pdasViewed[3] );
 ////	
-////	savefile->WriteInt( selPDA );
-////	savefile->WriteInt( selVideo );
-////	savefile->WriteInt( selEMail );
-////	savefile->WriteInt( selAudio );
-////	savefile->WriteBool( pdaOpened );
-////	savefile->WriteBool( turkeyScore );
+////	savefile.WriteInt( selPDA );
+////	savefile.WriteInt( selVideo );
+////	savefile.WriteInt( selEMail );
+////	savefile.WriteInt( selAudio );
+////	savefile.WriteBool( pdaOpened );
+////	savefile.WriteBool( turkeyScore );
 ////
-////	savefile->WriteInt( pdas.Num() );
+////	savefile.WriteInt( pdas.Num() );
 ////	for( i = 0; i < pdas.Num(); i++ ) {
-////		savefile->WriteString( pdas[ i ] );
+////		savefile.WriteString( pdas[ i ] );
 ////	}
 ////
-////	savefile->WriteInt( pdaSecurity.Num() );
+////	savefile.WriteInt( pdaSecurity.Num() );
 ////	for( i=0; i < pdaSecurity.Num(); i++ ) {
-////		savefile->WriteString( pdaSecurity[ i ] );
+////		savefile.WriteString( pdaSecurity[ i ] );
 ////	}
 ////
-////	savefile->WriteInt( videos.Num() );
+////	savefile.WriteInt( videos.Num() );
 ////	for( i = 0; i < videos.Num(); i++ ) {
-////		savefile->WriteString( videos[ i ] );
+////		savefile.WriteString( videos[ i ] );
 ////	}
 ////
-////	savefile->WriteInt( emails.Num() );
+////	savefile.WriteInt( emails.Num() );
 ////	for ( i = 0; i < emails.Num(); i++ ) {
-////		savefile->WriteString( emails[ i ] );
+////		savefile.WriteString( emails[ i ] );
 ////	}
 ////
-////	savefile->WriteInt( nextItemPickup );
-////	savefile->WriteInt( nextItemNum );
-////	savefile->WriteInt( onePickupTime );
+////	savefile.WriteInt( nextItemPickup );
+////	savefile.WriteInt( nextItemNum );
+////	savefile.WriteInt( onePickupTime );
 ////
-////	savefile->WriteInt( pickupItemNames.Num() );
+////	savefile.WriteInt( pickupItemNames.Num() );
 ////	for( i = 0; i < pickupItemNames.Num(); i++ ) {
-////		savefile->WriteString( pickupItemNames[i].icon );
-////		savefile->WriteString( pickupItemNames[i].name );
+////		savefile.WriteString( pickupItemNames[i].icon );
+////		savefile.WriteString( pickupItemNames[i].name );
 ////	}
 ////
-////	savefile->WriteInt( objectiveNames.Num() );
+////	savefile.WriteInt( objectiveNames.Num() );
 ////	for( i = 0; i < objectiveNames.Num(); i++ ) {
-////		savefile->WriteString( objectiveNames[i].screenshot );
-////		savefile->WriteString( objectiveNames[i].text );
-////		savefile->WriteString( objectiveNames[i].title );
+////		savefile.WriteString( objectiveNames[i].screenshot );
+////		savefile.WriteString( objectiveNames[i].text );
+////		savefile.WriteString( objectiveNames[i].title );
 ////	}
 ////
-////	savefile->WriteInt( levelTriggers.Num() );
+////	savefile.WriteInt( levelTriggers.Num() );
 ////	for ( i = 0; i < levelTriggers.Num(); i++ ) {
-////		savefile->WriteString( levelTriggers[i].levelName );
-////		savefile->WriteString( levelTriggers[i].triggerName );
+////		savefile.WriteString( levelTriggers[i].levelName );
+////		savefile.WriteString( levelTriggers[i].triggerName );
 ////	}
 ////
-////	savefile->WriteBool( ammoPulse );
-////	savefile->WriteBool( weaponPulse );
-////	savefile->WriteBool( armorPulse );
+////	savefile.WriteBool( ammoPulse );
+////	savefile.WriteBool( weaponPulse );
+////	savefile.WriteBool( armorPulse );
 ////
-////	savefile->WriteInt( lastGiveTime );
+////	savefile.WriteInt( lastGiveTime );
 ////}
 ////
 /////*
@@ -535,116 +535,116 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////void idInventory::Restore( idRestoreGame *savefile ) {
 ////	int i, num;
 ////
-////	savefile->ReadInt( maxHealth );
-////	savefile->ReadInt( weapons );
-////	savefile->ReadInt( powerups );
-////	savefile->ReadInt( armor );
-////	savefile->ReadInt( maxarmor );
-////	savefile->ReadInt( ammoPredictTime );
-////	savefile->ReadInt( deplete_armor );
-////	savefile->ReadFloat( deplete_rate );
-////	savefile->ReadInt( deplete_ammount );
-////	savefile->ReadInt( nextArmorDepleteTime );
+////	savefile.ReadInt( maxHealth );
+////	savefile.ReadInt( weapons );
+////	savefile.ReadInt( powerups );
+////	savefile.ReadInt( armor );
+////	savefile.ReadInt( maxarmor );
+////	savefile.ReadInt( ammoPredictTime );
+////	savefile.ReadInt( deplete_armor );
+////	savefile.ReadFloat( deplete_rate );
+////	savefile.ReadInt( deplete_ammount );
+////	savefile.ReadInt( nextArmorDepleteTime );
 ////
 ////	for( i = 0; i < AMMO_NUMTYPES; i++ ) {
-////		savefile->ReadInt( ammo[ i ] );
+////		savefile.ReadInt( ammo[ i ] );
 ////	}
 ////	for( i = 0; i < MAX_WEAPONS; i++ ) {
-////		savefile->ReadInt( clip[ i ] );
+////		savefile.ReadInt( clip[ i ] );
 ////	}
 ////	for( i = 0; i < MAX_POWERUPS; i++ ) {
-////		savefile->ReadInt( powerupEndTime[ i ] );
+////		savefile.ReadInt( powerupEndTime[ i ] );
 ////	}
 ////
-////	savefile->ReadInt( num );
+////	savefile.ReadInt( num );
 ////	for( i = 0; i < num; i++ ) {
 ////		idDict *itemdict = new idDict;
 ////
-////		savefile->ReadDict( itemdict );
+////		savefile.ReadDict( itemdict );
 ////		items.Append( itemdict );
 ////	}
 ////
 ////	// pdas
-////	savefile->ReadInt( pdasViewed[0] );
-////	savefile->ReadInt( pdasViewed[1] );
-////	savefile->ReadInt( pdasViewed[2] );
-////	savefile->ReadInt( pdasViewed[3] );
+////	savefile.ReadInt( pdasViewed[0] );
+////	savefile.ReadInt( pdasViewed[1] );
+////	savefile.ReadInt( pdasViewed[2] );
+////	savefile.ReadInt( pdasViewed[3] );
 ////	
-////	savefile->ReadInt( selPDA );
-////	savefile->ReadInt( selVideo );
-////	savefile->ReadInt( selEMail );
-////	savefile->ReadInt( selAudio );
-////	savefile->ReadBool( pdaOpened );
-////	savefile->ReadBool( turkeyScore );
+////	savefile.ReadInt( selPDA );
+////	savefile.ReadInt( selVideo );
+////	savefile.ReadInt( selEMail );
+////	savefile.ReadInt( selAudio );
+////	savefile.ReadBool( pdaOpened );
+////	savefile.ReadBool( turkeyScore );
 ////
-////	savefile->ReadInt( num );
+////	savefile.ReadInt( num );
 ////	for( i = 0; i < num; i++ ) {
 ////		idStr strPda;
-////		savefile->ReadString( strPda );
+////		savefile.ReadString( strPda );
 ////		pdas.Append( strPda );
 ////	}
 ////
 ////	// pda security clearances
-////	savefile->ReadInt( num );
+////	savefile.ReadInt( num );
 ////	for ( i = 0; i < num; i++ ) {
 ////		idStr invName;
-////		savefile->ReadString( invName );
+////		savefile.ReadString( invName );
 ////		pdaSecurity.Append( invName );
 ////	}
 ////
 ////	// videos
-////	savefile->ReadInt( num );
+////	savefile.ReadInt( num );
 ////	for( i = 0; i < num; i++ ) {
 ////		idStr strVideo;
-////		savefile->ReadString( strVideo );
+////		savefile.ReadString( strVideo );
 ////		videos.Append( strVideo );
 ////	}
 ////
 ////	// email
-////	savefile->ReadInt( num );
+////	savefile.ReadInt( num );
 ////	for( i = 0; i < num; i++ ) {
 ////		idStr strEmail;
-////		savefile->ReadString( strEmail );
+////		savefile.ReadString( strEmail );
 ////		emails.Append( strEmail );
 ////	}
 ////
-////	savefile->ReadInt( nextItemPickup );
-////	savefile->ReadInt( nextItemNum );
-////	savefile->ReadInt( onePickupTime );
-////	savefile->ReadInt( num );
+////	savefile.ReadInt( nextItemPickup );
+////	savefile.ReadInt( nextItemNum );
+////	savefile.ReadInt( onePickupTime );
+////	savefile.ReadInt( num );
 ////	for( i = 0; i < num; i++ ) {
 ////		idItemInfo info;
 ////
-////		savefile->ReadString( info.icon );
-////		savefile->ReadString( info.name );
+////		savefile.ReadString( info.icon );
+////		savefile.ReadString( info.name );
 ////
 ////		pickupItemNames.Append( info );
 ////	}
 ////
-////	savefile->ReadInt( num );
+////	savefile.ReadInt( num );
 ////	for( i = 0; i < num; i++ ) {
 ////		idObjectiveInfo obj;
 ////
-////		savefile->ReadString( obj.screenshot );
-////		savefile->ReadString( obj.text );
-////		savefile->ReadString( obj.title );
+////		savefile.ReadString( obj.screenshot );
+////		savefile.ReadString( obj.text );
+////		savefile.ReadString( obj.title );
 ////
 ////		objectiveNames.Append( obj );
 ////	}
 ////
-////	savefile->ReadInt( num );
+////	savefile.ReadInt( num );
 ////	for ( i = 0; i < num; i++ ) {
 ////		idLevelTriggerInfo lti;
-////		savefile->ReadString( lti.levelName );
-////		savefile->ReadString( lti.triggerName );
+////		savefile.ReadString( lti.levelName );
+////		savefile.ReadString( lti.triggerName );
 ////		levelTriggers.Append( lti );
 ////	}
 ////
-////	savefile->ReadBool( ammoPulse );
-////	savefile->ReadBool( weaponPulse );
-////	savefile->ReadBool( armorPulse );
+////	savefile.ReadBool( ammoPulse );
+////	savefile.ReadBool( weaponPulse );
+////	savefile.ReadBool( armorPulse );
 ////
-////	savefile->ReadInt( lastGiveTime );
+////	savefile.ReadInt( lastGiveTime );
 ////}
 ////
 /////*
@@ -662,7 +662,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////==============
 ////*/
 ////int idInventory::MaxAmmoForAmmoClass( idPlayer *owner, const char *ammo_classname ) const {
-////	return owner->spawnArgs.GetInt( va( "max_%s", ammo_classname ), "0" );
+////	return owner.spawnArgs.GetInt( va( "max_%s", ammo_classname ), "0" );
 ////}
 ////
 /////*
@@ -692,7 +692,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		if ( !decl ) {
 ////			continue;
 ////		}
-////		if ( !idStr::Icmp( ammo_classname, decl->dict.GetString( "ammoType" ) ) ) {
+////		if ( !idStr::Icmp( ammo_classname, decl.dict.GetString( "ammoType" ) ) ) {
 ////			return i;
 ////		}
 ////	}
@@ -710,9 +710,9 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		gameLocal.Error( "Unknown weapon in decl '%s'", weapon_classname );
 ////	}
 ////	if ( ammoRequired ) {
-////		*ammoRequired = decl->dict.GetInt( "ammoRequired" );
+////		*ammoRequired = decl.dict.GetInt( "ammoRequired" );
 ////	}
-////	ammo_t ammo_i = AmmoIndexForAmmoClass( decl->dict.GetString( "ammoType" ) );
+////	ammo_t ammo_i = AmmoIndexForAmmoClass( decl.dict.GetString( "ammoType" ) );
 ////	return ammo_i;
 ////}
 ////
@@ -729,7 +729,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		idItemInfo &info = pickupItemNames.Alloc();
 ////
 ////		if ( idStr::Cmpn( name, STRTABLE_ID, STRTABLE_ID_LENGTH ) == 0 ) {
-////			info.name = common->GetLanguageDict()->GetString( name );
+////			info.name = common.GetLanguageDict().GetString( name );
 ////		} else {
 ////			info.name = name;
 ////		}
@@ -827,19 +827,19 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////			// don't pickup "no ammo" weapon types twice
 ////			// not for D3 SP .. there is only one case in the game where you can get a no ammo
 ////			// weapon when you might already have it, in that case it is more conistent to pick it up
-////			if ( gameLocal.isMultiplayer && weaponDecl && ( weapons & ( 1 << i ) ) && !weaponDecl->dict.GetInt( "ammoRequired" ) ) {
+////			if ( gameLocal.isMultiplayer && weaponDecl && ( weapons & ( 1 << i ) ) && !weaponDecl.dict.GetInt( "ammoRequired" ) ) {
 ////				continue;
 ////			}
 ////
-////			if ( !gameLocal.world->spawnArgs.GetBool( "no_Weapons" ) || ( weaponName == "weapon_fists" ) || ( weaponName == "weapon_soulcube" ) ) {
+////			if ( !gameLocal.world.spawnArgs.GetBool( "no_Weapons" ) || ( weaponName == "weapon_fists" ) || ( weaponName == "weapon_soulcube" ) ) {
 ////				if ( ( weapons & ( 1 << i ) ) == 0 || gameLocal.isMultiplayer ) {
-////					if ( owner->GetUserInfo()->GetBool( "ui_autoSwitch" ) && idealWeapon ) {
+////					if ( owner.GetUserInfo().GetBool( "ui_autoSwitch" ) && idealWeapon ) {
 ////						assert( !gameLocal.isClient );
 ////						*idealWeapon = i;
 ////					} 
-////					if ( owner->hud && updateHud && lastGiveTime + 1000 < gameLocal.time ) {
-////						owner->hud->SetStateInt( "newWeapon", i );
-////						owner->hud->HandleNamedEvent( "newWeapon" );
+////					if ( owner.hud && updateHud && lastGiveTime + 1000 < gameLocal.time ) {
+////						owner.hud.SetStateInt( "newWeapon", i );
+////						owner.hud.HandleNamedEvent( "newWeapon" );
 ////						lastGiveTime = gameLocal.time;
 ////					}
 ////					weaponPulse = true;
@@ -1187,11 +1187,11 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	if ( weapon.GetEntity() ) {
 ////		// get rid of old weapon
-////		weapon.GetEntity()->Clear();
+////		weapon.GetEntity().Clear();
 ////		currentWeapon = -1;
 ////	} else if ( !gameLocal.isClient ) {
 ////		weapon = static_cast<idWeapon *>( gameLocal.SpawnEntityType( idWeapon::Type, NULL ) );
-////		weapon.GetEntity()->SetOwner( this );
+////		weapon.GetEntity().SetOwner( this );
 ////		currentWeapon = -1;
 ////	}
 ////
@@ -1226,7 +1226,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	weapon_soulcube			= SlotForWeapon( "weapon_soulcube" );
 ////	weapon_pda				= SlotForWeapon( "weapon_pda" );
 ////	weapon_fists			= SlotForWeapon( "weapon_fists" );
-////	showWeaponViewModel		= GetUserInfo()->GetBool( "ui_showGun" );
+////	showWeaponViewModel		= GetUserInfo().GetBool( "ui_showGun" );
 ////
 ////
 ////	lastDmgTime				= 0;
@@ -1293,13 +1293,13 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	if ( !gameLocal.isMultiplayer || gameLocal.isServer ) {
 ////		kv = spawnArgs.MatchPrefix( "pm_", NULL );
 ////		while( kv ) {
-////			cvarSystem->SetCVarString( kv->GetKey(), kv->GetValue() );
+////			cvarSystem.SetCVarString( kv.GetKey(), kv.GetValue() );
 ////			kv = spawnArgs.MatchPrefix( "pm_", kv );
 ////		}
 ////	}
 ////
 ////	// disable stamina on hell levels
-////	if ( gameLocal.world && gameLocal.world->spawnArgs.GetBool( "no_stamina" ) ) {
+////	if ( gameLocal.world && gameLocal.world.spawnArgs.GetBool( "no_stamina" ) ) {
 ////		pm_stamina.SetFloat( 0.0f );
 ////	}
 ////
@@ -1331,17 +1331,17 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	}
 ////
 ////	if ( cursor ) {
-////		cursor->SetStateInt( "talkcursor", 0 );
-////		cursor->SetStateString( "combatcursor", "1" );
-////		cursor->SetStateString( "itemcursor", "0" );
-////		cursor->SetStateString( "guicursor", "0" );
+////		cursor.SetStateInt( "talkcursor", 0 );
+////		cursor.SetStateString( "combatcursor", "1" );
+////		cursor.SetStateString( "itemcursor", "0" );
+////		cursor.SetStateString( "guicursor", "0" );
 ////	}
 ////
 ////	if ( ( gameLocal.isMultiplayer || g_testDeath.GetBool() ) && skin ) {
 ////		SetSkin( skin );
 ////		renderEntity.shaderParms[6] = 0.0f;
 ////	} else if ( spawnArgs.GetString( "spawn_skin", NULL, &value ) ) {
-////		skin = declManager->FindSkin( value );
+////		skin = declManager.FindSkin( value );
 ////		SetSkin( skin );
 ////		renderEntity.shaderParms[6] = 0.0f;
 ////	}
@@ -1389,7 +1389,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	ConstructScriptObject();
 ////
 ////	// execute the script so the script object's constructor takes effect immediately
-////	scriptThread->Execute();
+////	scriptThread.Execute();
 ////	
 ////	forceScoreBoard		= false;
 ////	forcedReady			= false;
@@ -1417,10 +1417,10 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	MPAimHighlight		= false;
 ////
 ////	if ( hud ) {
-////		hud->HandleNamedEvent( "aim_clear" );
+////		hud.HandleNamedEvent( "aim_clear" );
 ////	}
 ////
-////	cvarSystem->SetCVarBool( "ui_chat", false );
+////	cvarSystem.SetCVarBool( "ui_chat", false );
 ////}
 ////
 /////*
@@ -1463,30 +1463,30 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////		// load HUD
 ////		if ( gameLocal.isMultiplayer ) {
-////			hud = uiManager->FindGui( "guis/mphud.gui", true, false, true );
+////			hud = uiManager.FindGui( "guis/mphud.gui", true, false, true );
 ////		} else if ( spawnArgs.GetString( "hud", "", temp ) ) {
-////			hud = uiManager->FindGui( temp, true, false, true );
+////			hud = uiManager.FindGui( temp, true, false, true );
 ////		}
 ////		if ( hud ) {
-////			hud->Activate( true, gameLocal.time );
+////			hud.Activate( true, gameLocal.time );
 ////		}
 ////
 ////		// load cursor
 ////		if ( spawnArgs.GetString( "cursor", "", temp ) ) {
-////			cursor = uiManager->FindGui( temp, true, gameLocal.isMultiplayer, gameLocal.isMultiplayer );
+////			cursor = uiManager.FindGui( temp, true, gameLocal.isMultiplayer, gameLocal.isMultiplayer );
 ////		}
 ////		if ( cursor ) {
-////			cursor->Activate( true, gameLocal.time );
+////			cursor.Activate( true, gameLocal.time );
 ////		}
 ////
-////		objectiveSystem = uiManager->FindGui( "guis/pda.gui", true, false, true );
+////		objectiveSystem = uiManager.FindGui( "guis/pda.gui", true, false, true );
 ////		objectiveSystemOpen = false;
 ////	}
 ////
 ////	SetLastHitTime( 0 );
 ////
 ////	// load the armor sound feedback
-////	declManager->FindSound( "player_sounds_hitArmor" );
+////	declManager.FindSound( "player_sounds_hitArmor" );
 ////
 ////	// set up conditions for animation
 ////	LinkScriptVariables();
@@ -1513,8 +1513,8 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	idAFAttachment *headEnt = head.GetEntity();
 ////	if ( headEnt ) {
-////		headEnt->GetRenderEntity()->suppressSurfaceInViewID = entityNumber+1;
-////		headEnt->GetRenderEntity()->noSelfShadow = true;
+////		headEnt.GetRenderEntity().suppressSurfaceInViewID = entityNumber+1;
+////		headEnt.GetRenderEntity().noSelfShadow = true;
 ////	}
 ////
 ////	if ( gameLocal.isMultiplayer ) {
@@ -1539,7 +1539,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		// fire a trigger with the name "devmap"
 ////		var ent:idEntity = gameLocal.FindEntity( "devmap" );
 ////		if ( ent ) {
-////			ent->ActivateTargets( this );
+////			ent.ActivateTargets( this );
 ////		}
 ////	}
 ////	if ( hud ) {
@@ -1547,24 +1547,24 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		if ( weapon_soulcube > 0 && ( inventory.weapons & ( 1 << weapon_soulcube ) ) ) {
 ////			int max_souls = inventory.MaxAmmoForAmmoClass( this, "ammo_souls" );
 ////			if ( inventory.ammo[ idWeapon::GetAmmoNumForName( "ammo_souls" ) ] >= max_souls ) {
-////				hud->HandleNamedEvent( "soulCubeReady" );
+////				hud.HandleNamedEvent( "soulCubeReady" );
 ////			}
 ////		}
-////		hud->HandleNamedEvent( "itemPickup" );
+////		hud.HandleNamedEvent( "itemPickup" );
 ////	}
 ////
 ////	if ( GetPDA() ) {
 ////		// Add any emails from the inventory
 ////		for ( int i = 0; i < inventory.emails.Num(); i++ ) {
-////			GetPDA()->AddEmail( inventory.emails[i] );
+////			GetPDA().AddEmail( inventory.emails[i] );
 ////		}
-////		GetPDA()->SetSecurity( common->GetLanguageDict()->GetString( "#str_00066" ) );
+////		GetPDA().SetSecurity( common.GetLanguageDict().GetString( "#str_00066" ) );
 ////	}
 ////
-////	if ( gameLocal.world->spawnArgs.GetBool( "no_Weapons" ) ) {
+////	if ( gameLocal.world.spawnArgs.GetBool( "no_Weapons" ) ) {
 ////		hiddenWeapon = true;
 ////		if ( weapon.GetEntity() ) {
-////			weapon.GetEntity()->LowerWeapon();
+////			weapon.GetEntity().LowerWeapon();
 ////		}
 ////		idealWeapon = 0;
 ////	} else {
@@ -1573,7 +1573,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	
 ////	if ( hud ) {
 ////		UpdateHudWeapon();
-////		hud->StateChanged( gameLocal.time );
+////		hud.StateChanged( gameLocal.time );
 ////	}
 ////
 ////	tipUp = false;
@@ -1627,206 +1627,206 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////void idPlayer::Save( idSaveGame *savefile ) const {
 ////	int i;
 ////
-////	savefile->WriteUsercmd( usercmd );
+////	savefile.WriteUsercmd( usercmd );
 ////	playerView.Save( savefile );
 ////
-////	savefile->WriteBool( noclip );
-////	savefile->WriteBool( godmode );
+////	savefile.WriteBool( noclip );
+////	savefile.WriteBool( godmode );
 ////
 ////	// don't save spawnAnglesSet, since we'll have to reset them after loading the savegame
-////	savefile->WriteAngles( spawnAngles );
-////	savefile->WriteAngles( viewAngles );
-////	savefile->WriteAngles( cmdAngles );
+////	savefile.WriteAngles( spawnAngles );
+////	savefile.WriteAngles( viewAngles );
+////	savefile.WriteAngles( cmdAngles );
 ////
-////	savefile->WriteInt( buttonMask );
-////	savefile->WriteInt( oldButtons );
-////	savefile->WriteInt( oldFlags );
+////	savefile.WriteInt( buttonMask );
+////	savefile.WriteInt( oldButtons );
+////	savefile.WriteInt( oldFlags );
 ////
-////	savefile->WriteInt( lastHitTime );
-////	savefile->WriteInt( lastSndHitTime );
-////	savefile->WriteInt( lastSavingThrowTime );
+////	savefile.WriteInt( lastHitTime );
+////	savefile.WriteInt( lastSndHitTime );
+////	savefile.WriteInt( lastSavingThrowTime );
 ////
 ////	// idBoolFields don't need to be saved, just re-linked in Restore
 ////
 ////	inventory.Save( savefile );
 ////	weapon.Save( savefile );
 ////
-////	savefile->WriteUserInterface( hud, false );
-////	savefile->WriteUserInterface( objectiveSystem, false );
-////	savefile->WriteBool( objectiveSystemOpen );
+////	savefile.WriteUserInterface( hud, false );
+////	savefile.WriteUserInterface( objectiveSystem, false );
+////	savefile.WriteBool( objectiveSystemOpen );
 ////
-////	savefile->WriteInt( weapon_soulcube );
-////	savefile->WriteInt( weapon_pda );
-////	savefile->WriteInt( weapon_fists );
+////	savefile.WriteInt( weapon_soulcube );
+////	savefile.WriteInt( weapon_pda );
+////	savefile.WriteInt( weapon_fists );
 ////
-////	savefile->WriteInt( heartRate );
+////	savefile.WriteInt( heartRate );
 ////
-////	savefile->WriteFloat( heartInfo.GetStartTime() );
-////	savefile->WriteFloat( heartInfo.GetDuration() );
-////	savefile->WriteFloat( heartInfo.GetStartValue() );
-////	savefile->WriteFloat( heartInfo.GetEndValue() );
+////	savefile.WriteFloat( heartInfo.GetStartTime() );
+////	savefile.WriteFloat( heartInfo.GetDuration() );
+////	savefile.WriteFloat( heartInfo.GetStartValue() );
+////	savefile.WriteFloat( heartInfo.GetEndValue() );
 ////
-////	savefile->WriteInt( lastHeartAdjust );
-////	savefile->WriteInt( lastHeartBeat );
-////	savefile->WriteInt( lastDmgTime );
-////	savefile->WriteInt( deathClearContentsTime );
-////	savefile->WriteBool( doingDeathSkin );
-////	savefile->WriteInt( lastArmorPulse );
-////	savefile->WriteFloat( stamina );
-////	savefile->WriteFloat( healthPool );
-////	savefile->WriteInt( nextHealthPulse );
-////	savefile->WriteBool( healthPulse );
-////	savefile->WriteInt( nextHealthTake );
-////	savefile->WriteBool( healthTake );
+////	savefile.WriteInt( lastHeartAdjust );
+////	savefile.WriteInt( lastHeartBeat );
+////	savefile.WriteInt( lastDmgTime );
+////	savefile.WriteInt( deathClearContentsTime );
+////	savefile.WriteBool( doingDeathSkin );
+////	savefile.WriteInt( lastArmorPulse );
+////	savefile.WriteFloat( stamina );
+////	savefile.WriteFloat( healthPool );
+////	savefile.WriteInt( nextHealthPulse );
+////	savefile.WriteBool( healthPulse );
+////	savefile.WriteInt( nextHealthTake );
+////	savefile.WriteBool( healthTake );
 ////
-////	savefile->WriteBool( hiddenWeapon );
+////	savefile.WriteBool( hiddenWeapon );
 ////	soulCubeProjectile.Save( savefile );
 ////
-////	savefile->WriteInt( spectator );
-////	savefile->WriteVec3( colorBar );
-////	savefile->WriteInt( colorBarIndex );
-////	savefile->WriteBool( scoreBoardOpen );
-////	savefile->WriteBool( forceScoreBoard );
-////	savefile->WriteBool( forceRespawn );
-////	savefile->WriteBool( spectating );
-////	savefile->WriteInt( lastSpectateTeleport );
-////	savefile->WriteBool( lastHitToggle );
-////	savefile->WriteBool( forcedReady );
-////	savefile->WriteBool( wantSpectate );
-////	savefile->WriteBool( weaponGone );
-////	savefile->WriteBool( useInitialSpawns );
-////	savefile->WriteInt( latchedTeam );
-////	savefile->WriteInt( tourneyRank );
-////	savefile->WriteInt( tourneyLine );
+////	savefile.WriteInt( spectator );
+////	savefile.WriteVec3( colorBar );
+////	savefile.WriteInt( colorBarIndex );
+////	savefile.WriteBool( scoreBoardOpen );
+////	savefile.WriteBool( forceScoreBoard );
+////	savefile.WriteBool( forceRespawn );
+////	savefile.WriteBool( spectating );
+////	savefile.WriteInt( lastSpectateTeleport );
+////	savefile.WriteBool( lastHitToggle );
+////	savefile.WriteBool( forcedReady );
+////	savefile.WriteBool( wantSpectate );
+////	savefile.WriteBool( weaponGone );
+////	savefile.WriteBool( useInitialSpawns );
+////	savefile.WriteInt( latchedTeam );
+////	savefile.WriteInt( tourneyRank );
+////	savefile.WriteInt( tourneyLine );
 ////
 ////	teleportEntity.Save( savefile );
-////	savefile->WriteInt( teleportKiller );
+////	savefile.WriteInt( teleportKiller );
 ////
-////	savefile->WriteInt( minRespawnTime );
-////	savefile->WriteInt( maxRespawnTime );
+////	savefile.WriteInt( minRespawnTime );
+////	savefile.WriteInt( maxRespawnTime );
 ////
-////	savefile->WriteVec3( firstPersonViewOrigin );
-////	savefile->WriteMat3( firstPersonViewAxis );
+////	savefile.WriteVec3( firstPersonViewOrigin );
+////	savefile.WriteMat3( firstPersonViewAxis );
 ////
 ////	// don't bother saving dragEntity since it's a dev tool
 ////
-////	savefile->WriteJoint( hipJoint );
-////	savefile->WriteJoint( chestJoint );
-////	savefile->WriteJoint( headJoint );
+////	savefile.WriteJoint( hipJoint );
+////	savefile.WriteJoint( chestJoint );
+////	savefile.WriteJoint( headJoint );
 ////
-////	savefile->WriteStaticObject( physicsObj );
+////	savefile.WriteStaticObject( physicsObj );
 ////
-////	savefile->WriteInt( aasLocation.Num() );
+////	savefile.WriteInt( aasLocation.Num() );
 ////	for( i = 0; i < aasLocation.Num(); i++ ) {
-////		savefile->WriteInt( aasLocation[ i ].areaNum );
-////		savefile->WriteVec3( aasLocation[ i ].pos );
+////		savefile.WriteInt( aasLocation[ i ].areaNum );
+////		savefile.WriteVec3( aasLocation[ i ].pos );
 ////	}
 ////
-////	savefile->WriteInt( bobFoot );
-////	savefile->WriteFloat( bobFrac );
-////	savefile->WriteFloat( bobfracsin );
-////	savefile->WriteInt( bobCycle );
-////	savefile->WriteFloat( xyspeed );
-////	savefile->WriteInt( stepUpTime );
-////	savefile->WriteFloat( stepUpDelta );
-////	savefile->WriteFloat( idealLegsYaw );
-////	savefile->WriteFloat( legsYaw );
-////	savefile->WriteBool( legsForward );
-////	savefile->WriteFloat( oldViewYaw );
-////	savefile->WriteAngles( viewBobAngles );
-////	savefile->WriteVec3( viewBob );
-////	savefile->WriteInt( landChange );
-////	savefile->WriteInt( landTime );
+////	savefile.WriteInt( bobFoot );
+////	savefile.WriteFloat( bobFrac );
+////	savefile.WriteFloat( bobfracsin );
+////	savefile.WriteInt( bobCycle );
+////	savefile.WriteFloat( xyspeed );
+////	savefile.WriteInt( stepUpTime );
+////	savefile.WriteFloat( stepUpDelta );
+////	savefile.WriteFloat( idealLegsYaw );
+////	savefile.WriteFloat( legsYaw );
+////	savefile.WriteBool( legsForward );
+////	savefile.WriteFloat( oldViewYaw );
+////	savefile.WriteAngles( viewBobAngles );
+////	savefile.WriteVec3( viewBob );
+////	savefile.WriteInt( landChange );
+////	savefile.WriteInt( landTime );
 ////
-////	savefile->WriteInt( currentWeapon );
-////	savefile->WriteInt( idealWeapon );
-////	savefile->WriteInt( previousWeapon );
-////	savefile->WriteInt( weaponSwitchTime );
-////	savefile->WriteBool( weaponEnabled );
-////	savefile->WriteBool( showWeaponViewModel );
+////	savefile.WriteInt( currentWeapon );
+////	savefile.WriteInt( idealWeapon );
+////	savefile.WriteInt( previousWeapon );
+////	savefile.WriteInt( weaponSwitchTime );
+////	savefile.WriteBool( weaponEnabled );
+////	savefile.WriteBool( showWeaponViewModel );
 ////
-////	savefile->WriteSkin( skin );
-////	savefile->WriteSkin( powerUpSkin );
-////	savefile->WriteString( baseSkinName );
+////	savefile.WriteSkin( skin );
+////	savefile.WriteSkin( powerUpSkin );
+////	savefile.WriteString( baseSkinName );
 ////
-////	savefile->WriteInt( numProjectilesFired );
-////	savefile->WriteInt( numProjectileHits );
+////	savefile.WriteInt( numProjectilesFired );
+////	savefile.WriteInt( numProjectileHits );
 ////
-////	savefile->WriteBool( airless );
-////	savefile->WriteInt( airTics );
-////	savefile->WriteInt( lastAirDamage );
+////	savefile.WriteBool( airless );
+////	savefile.WriteInt( airTics );
+////	savefile.WriteInt( lastAirDamage );
 ////
-////	savefile->WriteBool( gibDeath );
-////	savefile->WriteBool( gibsLaunched );
-////	savefile->WriteVec3( gibsDir );
+////	savefile.WriteBool( gibDeath );
+////	savefile.WriteBool( gibsLaunched );
+////	savefile.WriteVec3( gibsDir );
 ////
-////	savefile->WriteFloat( zoomFov.GetStartTime() );
-////	savefile->WriteFloat( zoomFov.GetDuration() );
-////	savefile->WriteFloat( zoomFov.GetStartValue() );
-////	savefile->WriteFloat( zoomFov.GetEndValue() );
+////	savefile.WriteFloat( zoomFov.GetStartTime() );
+////	savefile.WriteFloat( zoomFov.GetDuration() );
+////	savefile.WriteFloat( zoomFov.GetStartValue() );
+////	savefile.WriteFloat( zoomFov.GetEndValue() );
 ////
-////	savefile->WriteFloat( centerView.GetStartTime() );
-////	savefile->WriteFloat( centerView.GetDuration() );
-////	savefile->WriteFloat( centerView.GetStartValue() );
-////	savefile->WriteFloat( centerView.GetEndValue() );
+////	savefile.WriteFloat( centerView.GetStartTime() );
+////	savefile.WriteFloat( centerView.GetDuration() );
+////	savefile.WriteFloat( centerView.GetStartValue() );
+////	savefile.WriteFloat( centerView.GetEndValue() );
 ////
-////	savefile->WriteBool( fxFov );
+////	savefile.WriteBool( fxFov );
 ////
-////	savefile->WriteFloat( influenceFov );
-////	savefile->WriteInt( influenceActive );
-////	savefile->WriteFloat( influenceRadius );
-////	savefile->WriteObject( influenceEntity );
-////	savefile->WriteMaterial( influenceMaterial );
-////	savefile->WriteSkin( influenceSkin );
+////	savefile.WriteFloat( influenceFov );
+////	savefile.WriteInt( influenceActive );
+////	savefile.WriteFloat( influenceRadius );
+////	savefile.WriteObject( influenceEntity );
+////	savefile.WriteMaterial( influenceMaterial );
+////	savefile.WriteSkin( influenceSkin );
 ////
-////	savefile->WriteObject( privateCameraView );
+////	savefile.WriteObject( privateCameraView );
 ////
 ////	for( i = 0; i < NUM_LOGGED_VIEW_ANGLES; i++ ) {
-////		savefile->WriteAngles( loggedViewAngles[ i ] );
+////		savefile.WriteAngles( loggedViewAngles[ i ] );
 ////	}
 ////	for( i = 0; i < NUM_LOGGED_ACCELS; i++ ) {
-////		savefile->WriteInt( loggedAccel[ i ].time );
-////		savefile->WriteVec3( loggedAccel[ i ].dir );
+////		savefile.WriteInt( loggedAccel[ i ].time );
+////		savefile.WriteVec3( loggedAccel[ i ].dir );
 ////	}
-////	savefile->WriteInt( currentLoggedAccel );
+////	savefile.WriteInt( currentLoggedAccel );
 ////
-////	savefile->WriteObject( focusGUIent );
+////	savefile.WriteObject( focusGUIent );
 ////	// can't save focusUI
-////	savefile->WriteObject( focusCharacter );
-////	savefile->WriteInt( talkCursor );
-////	savefile->WriteInt( focusTime );
-////	savefile->WriteObject( focusVehicle );
-////	savefile->WriteUserInterface( cursor, false );
+////	savefile.WriteObject( focusCharacter );
+////	savefile.WriteInt( talkCursor );
+////	savefile.WriteInt( focusTime );
+////	savefile.WriteObject( focusVehicle );
+////	savefile.WriteUserInterface( cursor, false );
 ////
-////	savefile->WriteInt( oldMouseX );
-////	savefile->WriteInt( oldMouseY );
+////	savefile.WriteInt( oldMouseX );
+////	savefile.WriteInt( oldMouseY );
 ////
-////	savefile->WriteString( pdaAudio );
-////	savefile->WriteString( pdaVideo );
-////	savefile->WriteString( pdaVideoWave );
+////	savefile.WriteString( pdaAudio );
+////	savefile.WriteString( pdaVideo );
+////	savefile.WriteString( pdaVideoWave );
 ////
-////	savefile->WriteBool( tipUp );
-////	savefile->WriteBool( objectiveUp );
+////	savefile.WriteBool( tipUp );
+////	savefile.WriteBool( objectiveUp );
 ////
-////	savefile->WriteInt( lastDamageDef );
-////	savefile->WriteVec3( lastDamageDir );
-////	savefile->WriteInt( lastDamageLocation );
-////	savefile->WriteInt( smoothedFrame );
-////	savefile->WriteBool( smoothedOriginUpdated );
-////	savefile->WriteVec3( smoothedOrigin );
-////	savefile->WriteAngles( smoothedAngles );
+////	savefile.WriteInt( lastDamageDef );
+////	savefile.WriteVec3( lastDamageDir );
+////	savefile.WriteInt( lastDamageLocation );
+////	savefile.WriteInt( smoothedFrame );
+////	savefile.WriteBool( smoothedOriginUpdated );
+////	savefile.WriteVec3( smoothedOrigin );
+////	savefile.WriteAngles( smoothedAngles );
 ////
-////	savefile->WriteBool( ready );
-////	savefile->WriteBool( respawning );
-////	savefile->WriteBool( leader );
-////	savefile->WriteInt( lastSpectateChange );
-////	savefile->WriteInt( lastTeleFX );
+////	savefile.WriteBool( ready );
+////	savefile.WriteBool( respawning );
+////	savefile.WriteBool( leader );
+////	savefile.WriteInt( lastSpectateChange );
+////	savefile.WriteInt( lastTeleFX );
 ////
-////	savefile->WriteFloat( pm_stamina.GetFloat() );
+////	savefile.WriteFloat( pm_stamina.GetFloat() );
 ////
 ////	if ( hud ) {
-////		hud->SetStateString( "message", common->GetLanguageDict()->GetString( "#str_02916" ) );
-////		hud->HandleNamedEvent( "Message" );
+////		hud.SetStateString( "message", common.GetLanguageDict().GetString( "#str_02916" ) );
+////		hud.HandleNamedEvent( "Message" );
 ////	}
 ////}
 ////
@@ -1840,30 +1840,30 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	int	  num;
 ////	float set;
 ////
-////	savefile->ReadUsercmd( usercmd );
+////	savefile.ReadUsercmd( usercmd );
 ////	playerView.Restore( savefile );
 ////
-////	savefile->ReadBool( noclip );
-////	savefile->ReadBool( godmode );
+////	savefile.ReadBool( noclip );
+////	savefile.ReadBool( godmode );
 ////
-////	savefile->ReadAngles( spawnAngles );
-////	savefile->ReadAngles( viewAngles );
-////	savefile->ReadAngles( cmdAngles );
+////	savefile.ReadAngles( spawnAngles );
+////	savefile.ReadAngles( viewAngles );
+////	savefile.ReadAngles( cmdAngles );
 ////
 ////	memset( usercmd.angles, 0, sizeof( usercmd.angles ) );
 ////	SetViewAngles( viewAngles );
 ////	spawnAnglesSet = true;
 ////
-////	savefile->ReadInt( buttonMask );
-////	savefile->ReadInt( oldButtons );
-////	savefile->ReadInt( oldFlags );
+////	savefile.ReadInt( buttonMask );
+////	savefile.ReadInt( oldButtons );
+////	savefile.ReadInt( oldFlags );
 ////
 ////	usercmd.flags = 0;
 ////	oldFlags = 0;
 ////
-////	savefile->ReadInt( lastHitTime );
-////	savefile->ReadInt( lastSndHitTime );
-////	savefile->ReadInt( lastSavingThrowTime );
+////	savefile.ReadInt( lastHitTime );
+////	savefile.ReadInt( lastSndHitTime );
+////	savefile.ReadInt( lastSavingThrowTime );
 ////
 ////	// Re-link idBoolFields to the scriptObject, values will be restored in scriptObject's restore
 ////	LinkScriptVariables();
@@ -1872,206 +1872,206 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	weapon.Restore( savefile );
 ////
 ////	for ( i = 0; i < inventory.emails.Num(); i++ ) {
-////		GetPDA()->AddEmail( inventory.emails[i] );
+////		GetPDA().AddEmail( inventory.emails[i] );
 ////	}
 ////
-////	savefile->ReadUserInterface( hud );
-////	savefile->ReadUserInterface( objectiveSystem );
-////	savefile->ReadBool( objectiveSystemOpen );
+////	savefile.ReadUserInterface( hud );
+////	savefile.ReadUserInterface( objectiveSystem );
+////	savefile.ReadBool( objectiveSystemOpen );
 ////
-////	savefile->ReadInt( weapon_soulcube );
-////	savefile->ReadInt( weapon_pda );
-////	savefile->ReadInt( weapon_fists );
+////	savefile.ReadInt( weapon_soulcube );
+////	savefile.ReadInt( weapon_pda );
+////	savefile.ReadInt( weapon_fists );
 ////
-////	savefile->ReadInt( heartRate );
+////	savefile.ReadInt( heartRate );
 ////
-////	savefile->ReadFloat( set );
+////	savefile.ReadFloat( set );
 ////	heartInfo.SetStartTime( set );
-////	savefile->ReadFloat( set );
+////	savefile.ReadFloat( set );
 ////	heartInfo.SetDuration( set );
-////	savefile->ReadFloat( set );
+////	savefile.ReadFloat( set );
 ////	heartInfo.SetStartValue( set );
-////	savefile->ReadFloat( set );
+////	savefile.ReadFloat( set );
 ////	heartInfo.SetEndValue( set );
 ////
-////	savefile->ReadInt( lastHeartAdjust );
-////	savefile->ReadInt( lastHeartBeat );
-////	savefile->ReadInt( lastDmgTime );
-////	savefile->ReadInt( deathClearContentsTime );
-////	savefile->ReadBool( doingDeathSkin );
-////	savefile->ReadInt( lastArmorPulse );
-////	savefile->ReadFloat( stamina );
-////	savefile->ReadFloat( healthPool );
-////	savefile->ReadInt( nextHealthPulse );
-////	savefile->ReadBool( healthPulse );
-////	savefile->ReadInt( nextHealthTake );
-////	savefile->ReadBool( healthTake );
+////	savefile.ReadInt( lastHeartAdjust );
+////	savefile.ReadInt( lastHeartBeat );
+////	savefile.ReadInt( lastDmgTime );
+////	savefile.ReadInt( deathClearContentsTime );
+////	savefile.ReadBool( doingDeathSkin );
+////	savefile.ReadInt( lastArmorPulse );
+////	savefile.ReadFloat( stamina );
+////	savefile.ReadFloat( healthPool );
+////	savefile.ReadInt( nextHealthPulse );
+////	savefile.ReadBool( healthPulse );
+////	savefile.ReadInt( nextHealthTake );
+////	savefile.ReadBool( healthTake );
 ////
-////	savefile->ReadBool( hiddenWeapon );
+////	savefile.ReadBool( hiddenWeapon );
 ////	soulCubeProjectile.Restore( savefile );
 ////
-////	savefile->ReadInt( spectator );
-////	savefile->ReadVec3( colorBar );
-////	savefile->ReadInt( colorBarIndex );
-////	savefile->ReadBool( scoreBoardOpen );
-////	savefile->ReadBool( forceScoreBoard );
-////	savefile->ReadBool( forceRespawn );
-////	savefile->ReadBool( spectating );
-////	savefile->ReadInt( lastSpectateTeleport );
-////	savefile->ReadBool( lastHitToggle );
-////	savefile->ReadBool( forcedReady );
-////	savefile->ReadBool( wantSpectate );
-////	savefile->ReadBool( weaponGone );
-////	savefile->ReadBool( useInitialSpawns );
-////	savefile->ReadInt( latchedTeam );
-////	savefile->ReadInt( tourneyRank );
-////	savefile->ReadInt( tourneyLine );
+////	savefile.ReadInt( spectator );
+////	savefile.ReadVec3( colorBar );
+////	savefile.ReadInt( colorBarIndex );
+////	savefile.ReadBool( scoreBoardOpen );
+////	savefile.ReadBool( forceScoreBoard );
+////	savefile.ReadBool( forceRespawn );
+////	savefile.ReadBool( spectating );
+////	savefile.ReadInt( lastSpectateTeleport );
+////	savefile.ReadBool( lastHitToggle );
+////	savefile.ReadBool( forcedReady );
+////	savefile.ReadBool( wantSpectate );
+////	savefile.ReadBool( weaponGone );
+////	savefile.ReadBool( useInitialSpawns );
+////	savefile.ReadInt( latchedTeam );
+////	savefile.ReadInt( tourneyRank );
+////	savefile.ReadInt( tourneyLine );
 ////
 ////	teleportEntity.Restore( savefile );
-////	savefile->ReadInt( teleportKiller );
+////	savefile.ReadInt( teleportKiller );
 ////
-////	savefile->ReadInt( minRespawnTime );
-////	savefile->ReadInt( maxRespawnTime );
+////	savefile.ReadInt( minRespawnTime );
+////	savefile.ReadInt( maxRespawnTime );
 ////
-////	savefile->ReadVec3( firstPersonViewOrigin );
-////	savefile->ReadMat3( firstPersonViewAxis );
+////	savefile.ReadVec3( firstPersonViewOrigin );
+////	savefile.ReadMat3( firstPersonViewAxis );
 ////
 ////	// don't bother saving dragEntity since it's a dev tool
 ////	dragEntity.Clear();
 ////
-////	savefile->ReadJoint( hipJoint );
-////	savefile->ReadJoint( chestJoint );
-////	savefile->ReadJoint( headJoint );
+////	savefile.ReadJoint( hipJoint );
+////	savefile.ReadJoint( chestJoint );
+////	savefile.ReadJoint( headJoint );
 ////
-////	savefile->ReadStaticObject( physicsObj );
+////	savefile.ReadStaticObject( physicsObj );
 ////	RestorePhysics( &physicsObj );
 ////
-////	savefile->ReadInt( num );
+////	savefile.ReadInt( num );
 ////	aasLocation.SetGranularity( 1 );
 ////	aasLocation.SetNum( num );
 ////	for( i = 0; i < num; i++ ) {
-////		savefile->ReadInt( aasLocation[ i ].areaNum );
-////		savefile->ReadVec3( aasLocation[ i ].pos );
+////		savefile.ReadInt( aasLocation[ i ].areaNum );
+////		savefile.ReadVec3( aasLocation[ i ].pos );
 ////	}
 ////
-////	savefile->ReadInt( bobFoot );
-////	savefile->ReadFloat( bobFrac );
-////	savefile->ReadFloat( bobfracsin );
-////	savefile->ReadInt( bobCycle );
-////	savefile->ReadFloat( xyspeed );
-////	savefile->ReadInt( stepUpTime );
-////	savefile->ReadFloat( stepUpDelta );
-////	savefile->ReadFloat( idealLegsYaw );
-////	savefile->ReadFloat( legsYaw );
-////	savefile->ReadBool( legsForward );
-////	savefile->ReadFloat( oldViewYaw );
-////	savefile->ReadAngles( viewBobAngles );
-////	savefile->ReadVec3( viewBob );
-////	savefile->ReadInt( landChange );
-////	savefile->ReadInt( landTime );
+////	savefile.ReadInt( bobFoot );
+////	savefile.ReadFloat( bobFrac );
+////	savefile.ReadFloat( bobfracsin );
+////	savefile.ReadInt( bobCycle );
+////	savefile.ReadFloat( xyspeed );
+////	savefile.ReadInt( stepUpTime );
+////	savefile.ReadFloat( stepUpDelta );
+////	savefile.ReadFloat( idealLegsYaw );
+////	savefile.ReadFloat( legsYaw );
+////	savefile.ReadBool( legsForward );
+////	savefile.ReadFloat( oldViewYaw );
+////	savefile.ReadAngles( viewBobAngles );
+////	savefile.ReadVec3( viewBob );
+////	savefile.ReadInt( landChange );
+////	savefile.ReadInt( landTime );
 ////
-////	savefile->ReadInt( currentWeapon );
-////	savefile->ReadInt( idealWeapon );
-////	savefile->ReadInt( previousWeapon );
-////	savefile->ReadInt( weaponSwitchTime );
-////	savefile->ReadBool( weaponEnabled );
-////	savefile->ReadBool( showWeaponViewModel );
+////	savefile.ReadInt( currentWeapon );
+////	savefile.ReadInt( idealWeapon );
+////	savefile.ReadInt( previousWeapon );
+////	savefile.ReadInt( weaponSwitchTime );
+////	savefile.ReadBool( weaponEnabled );
+////	savefile.ReadBool( showWeaponViewModel );
 ////
-////	savefile->ReadSkin( skin );
-////	savefile->ReadSkin( powerUpSkin );
-////	savefile->ReadString( baseSkinName );
+////	savefile.ReadSkin( skin );
+////	savefile.ReadSkin( powerUpSkin );
+////	savefile.ReadString( baseSkinName );
 ////
-////	savefile->ReadInt( numProjectilesFired );
-////	savefile->ReadInt( numProjectileHits );
+////	savefile.ReadInt( numProjectilesFired );
+////	savefile.ReadInt( numProjectileHits );
 ////
-////	savefile->ReadBool( airless );
-////	savefile->ReadInt( airTics );
-////	savefile->ReadInt( lastAirDamage );
+////	savefile.ReadBool( airless );
+////	savefile.ReadInt( airTics );
+////	savefile.ReadInt( lastAirDamage );
 ////
-////	savefile->ReadBool( gibDeath );
-////	savefile->ReadBool( gibsLaunched );
-////	savefile->ReadVec3( gibsDir );
+////	savefile.ReadBool( gibDeath );
+////	savefile.ReadBool( gibsLaunched );
+////	savefile.ReadVec3( gibsDir );
 ////
-////	savefile->ReadFloat( set );
+////	savefile.ReadFloat( set );
 ////	zoomFov.SetStartTime( set );
-////	savefile->ReadFloat( set );
+////	savefile.ReadFloat( set );
 ////	zoomFov.SetDuration( set );
-////	savefile->ReadFloat( set );
+////	savefile.ReadFloat( set );
 ////	zoomFov.SetStartValue( set );
-////	savefile->ReadFloat( set );
+////	savefile.ReadFloat( set );
 ////	zoomFov.SetEndValue( set );
 ////
-////	savefile->ReadFloat( set );
+////	savefile.ReadFloat( set );
 ////	centerView.SetStartTime( set );
-////	savefile->ReadFloat( set );
+////	savefile.ReadFloat( set );
 ////	centerView.SetDuration( set );
-////	savefile->ReadFloat( set );
+////	savefile.ReadFloat( set );
 ////	centerView.SetStartValue( set );
-////	savefile->ReadFloat( set );
+////	savefile.ReadFloat( set );
 ////	centerView.SetEndValue( set );
 ////
-////	savefile->ReadBool( fxFov );
+////	savefile.ReadBool( fxFov );
 ////
-////	savefile->ReadFloat( influenceFov );
-////	savefile->ReadInt( influenceActive );
-////	savefile->ReadFloat( influenceRadius );
-////	savefile->ReadObject( reinterpret_cast<idClass *&>( influenceEntity ) );
-////	savefile->ReadMaterial( influenceMaterial );
-////	savefile->ReadSkin( influenceSkin );
+////	savefile.ReadFloat( influenceFov );
+////	savefile.ReadInt( influenceActive );
+////	savefile.ReadFloat( influenceRadius );
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( influenceEntity ) );
+////	savefile.ReadMaterial( influenceMaterial );
+////	savefile.ReadSkin( influenceSkin );
 ////
-////	savefile->ReadObject( reinterpret_cast<idClass *&>( privateCameraView ) );
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( privateCameraView ) );
 ////
 ////	for( i = 0; i < NUM_LOGGED_VIEW_ANGLES; i++ ) {
-////		savefile->ReadAngles( loggedViewAngles[ i ] );
+////		savefile.ReadAngles( loggedViewAngles[ i ] );
 ////	}
 ////	for( i = 0; i < NUM_LOGGED_ACCELS; i++ ) {
-////		savefile->ReadInt( loggedAccel[ i ].time );
-////		savefile->ReadVec3( loggedAccel[ i ].dir );
+////		savefile.ReadInt( loggedAccel[ i ].time );
+////		savefile.ReadVec3( loggedAccel[ i ].dir );
 ////	}
-////	savefile->ReadInt( currentLoggedAccel );
+////	savefile.ReadInt( currentLoggedAccel );
 ////
-////	savefile->ReadObject( reinterpret_cast<idClass *&>( focusGUIent ) );
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( focusGUIent ) );
 ////	// can't save focusUI
 ////	focusUI = NULL;
-////	savefile->ReadObject( reinterpret_cast<idClass *&>( focusCharacter ) );
-////	savefile->ReadInt( talkCursor );
-////	savefile->ReadInt( focusTime );
-////	savefile->ReadObject( reinterpret_cast<idClass *&>( focusVehicle ) );
-////	savefile->ReadUserInterface( cursor );
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( focusCharacter ) );
+////	savefile.ReadInt( talkCursor );
+////	savefile.ReadInt( focusTime );
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( focusVehicle ) );
+////	savefile.ReadUserInterface( cursor );
 ////
-////	savefile->ReadInt( oldMouseX );
-////	savefile->ReadInt( oldMouseY );
+////	savefile.ReadInt( oldMouseX );
+////	savefile.ReadInt( oldMouseY );
 ////
-////	savefile->ReadString( pdaAudio );
-////	savefile->ReadString( pdaVideo );
-////	savefile->ReadString( pdaVideoWave );
+////	savefile.ReadString( pdaAudio );
+////	savefile.ReadString( pdaVideo );
+////	savefile.ReadString( pdaVideoWave );
 ////
-////	savefile->ReadBool( tipUp );
-////	savefile->ReadBool( objectiveUp );
+////	savefile.ReadBool( tipUp );
+////	savefile.ReadBool( objectiveUp );
 ////
-////	savefile->ReadInt( lastDamageDef );
-////	savefile->ReadVec3( lastDamageDir );
-////	savefile->ReadInt( lastDamageLocation );
-////	savefile->ReadInt( smoothedFrame );
-////	savefile->ReadBool( smoothedOriginUpdated );
-////	savefile->ReadVec3( smoothedOrigin );
-////	savefile->ReadAngles( smoothedAngles );
+////	savefile.ReadInt( lastDamageDef );
+////	savefile.ReadVec3( lastDamageDir );
+////	savefile.ReadInt( lastDamageLocation );
+////	savefile.ReadInt( smoothedFrame );
+////	savefile.ReadBool( smoothedOriginUpdated );
+////	savefile.ReadVec3( smoothedOrigin );
+////	savefile.ReadAngles( smoothedAngles );
 ////
-////	savefile->ReadBool( ready );
-////	savefile->ReadBool( respawning );
-////	savefile->ReadBool( leader );
-////	savefile->ReadInt( lastSpectateChange );
-////	savefile->ReadInt( lastTeleFX );
+////	savefile.ReadBool( ready );
+////	savefile.ReadBool( respawning );
+////	savefile.ReadBool( leader );
+////	savefile.ReadInt( lastSpectateChange );
+////	savefile.ReadInt( lastTeleFX );
 ////
 ////	// set the pm_ cvars
 ////	const idKeyValue	*kv;
 ////	kv = spawnArgs.MatchPrefix( "pm_", NULL );
 ////	while( kv ) {
-////		cvarSystem->SetCVarString( kv->GetKey(), kv->GetValue() );
+////		cvarSystem.SetCVarString( kv.GetKey(), kv.GetValue() );
 ////		kv = spawnArgs.MatchPrefix( "pm_", kv );
 ////	}
 ////
-////	savefile->ReadFloat( set );
+////	savefile.ReadFloat( set );
 ////	pm_stamina.SetFloat( set );
 ////
 ////	// create combat collision hull for exact collision detection
@@ -2156,16 +2156,16 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	spot = gameLocal.SelectInitialSpawnPoint( this );
 ////
 ////	// set the player skin from the spawn location
-////	if ( spot->spawnArgs.GetString( "skin", NULL, skin ) ) {
+////	if ( spot.spawnArgs.GetString( "skin", NULL, skin ) ) {
 ////		spawnArgs.Set( "spawn_skin", skin );
 ////	}
 ////
 ////	// activate the spawn locations targets
-////	spot->PostEventMS( &EV_ActivateTargets, 0, this );
+////	spot.PostEventMS( &EV_ActivateTargets, 0, this );
 ////
-////	origin = spot->GetPhysics()->GetOrigin();
+////	origin = spot.GetPhysics().GetOrigin();
 ////	origin[2] += 4.0f + CM_BOX_EPSILON;		// move up to make sure the player is at least an epsilon above the floor
-////	angles = spot->GetPhysics()->GetAxis().ToAngles();
+////	angles = spot.GetPhysics().GetAxis().ToAngles();
 ////}
 ////
 /////*
@@ -2345,7 +2345,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////*/
 ////void idPlayer::UpdateSkinSetup( bool restart ) {
 ////	if ( restart ) {
-////		team = ( idStr::Icmp( GetUserInfo()->GetString( "ui_team" ), "Blue" ) == 0 );
+////		team = ( idStr::Icmp( GetUserInfo().GetString( "ui_team" ), "Blue" ) == 0 );
 ////	}
 ////	if ( gameLocal.gameType == GAME_TDM ) {
 ////		if ( team ) {
@@ -2358,12 +2358,12 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		}
 ////		latchedTeam = team;
 ////	} else {
-////		baseSkinName = GetUserInfo()->GetString( "ui_skin" );
+////		baseSkinName = GetUserInfo().GetString( "ui_skin" );
 ////	}
 ////	if ( !baseSkinName.Length() ) {
 ////		baseSkinName = "skins/characters/player/marine_mp";
 ////	}
-////	skin = declManager->FindSkin( baseSkinName, false );
+////	skin = declManager.FindSkin( baseSkinName, false );
 ////	assert( skin );
 ////	// match the skin to a color band for scoreboard
 ////	if ( baseSkinName.Find( "red" ) != -1 ) {
@@ -2379,7 +2379,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	}
 ////	colorBar = colorBarTable[ colorBarIndex ];
 ////	if ( PowerUpActive( BERSERK ) ) {
-////		powerUpSkin = declManager->FindSkin( baseSkinName + "_berserk" );
+////		powerUpSkin = declManager.FindSkin( baseSkinName + "_berserk" );
 ////	}
 ////}
 ////
@@ -2395,8 +2395,8 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	teamCount[ 0 ] = teamCount[ 1 ] = 0;
 ////	for( i = 0; i < gameLocal.numClients; i++ ) {
 ////		ent = gameLocal.entities[ i ];
-////		if ( ent && ent->IsType( idPlayer::Type ) ) {
-////			teamCount[ static_cast< idPlayer * >( ent )->team ]++;
+////		if ( ent && ent.IsType( idPlayer::Type ) ) {
+////			teamCount[ static_cast< idPlayer * >( ent ).team ]++;
 ////		}
 ////	}
 ////	balanceTeam = -1;
@@ -2406,9 +2406,9 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		balanceTeam = 1;
 ////	}
 ////	if ( balanceTeam != -1 && team != balanceTeam ) {
-////		common->DPrintf( "team balance: forcing player %d to %s team\n", entityNumber, balanceTeam ? "blue" : "red" );
+////		common.DPrintf( "team balance: forcing player %d to %s team\n", entityNumber, balanceTeam ? "blue" : "red" );
 ////		team = balanceTeam;
-////		GetUserInfo()->Set( "ui_team", team ? "Blue" : "Red" );
+////		GetUserInfo().Set( "ui_team", team ? "Blue" : "Red" );
 ////		return true;
 ////	}
 ////	return false;
@@ -2426,7 +2426,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	bool	newready;
 ////
 ////	userInfo = GetUserInfo();
-////	showWeaponViewModel = userInfo->GetBool( "ui_showGun" );
+////	showWeaponViewModel = userInfo.GetBool( "ui_showGun" );
 ////
 ////	if ( !gameLocal.isMultiplayer ) {
 ////		return false;
@@ -2434,11 +2434,11 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	modifiedInfo = false;
 ////
-////	spec = ( idStr::Icmp( userInfo->GetString( "ui_spectate" ), "Spectate" ) == 0 );
+////	spec = ( idStr::Icmp( userInfo.GetString( "ui_spectate" ), "Spectate" ) == 0 );
 ////	if ( gameLocal.serverInfo.GetBool( "si_spectators" ) ) {
 ////		// never let spectators go back to game while sudden death is on
 ////		if ( canModify && gameLocal.mpGame.GetGameState() == idMultiplayerGame::SUDDENDEATH && !spec && wantSpectate == true ) {
-////			userInfo->Set( "ui_spectate", "Spectate" );
+////			userInfo.Set( "ui_spectate", "Spectate" );
 ////			modifiedInfo |= true;
 ////		} else {
 ////			if ( spec != wantSpectate && !spec ) {
@@ -2449,7 +2449,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		}
 ////	} else {
 ////		if ( canModify && spec ) {
-////			userInfo->Set( "ui_spectate", "Play" );
+////			userInfo.Set( "ui_spectate", "Play" );
 ////			modifiedInfo |= true;
 ////		} else if ( spectating ) {  
 ////			// allow player to leaving spectator mode if they were in it when si_spectators got turned off
@@ -2458,23 +2458,23 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		wantSpectate = false;
 ////	}
 ////
-////	newready = ( idStr::Icmp( userInfo->GetString( "ui_ready" ), "Ready" ) == 0 );
+////	newready = ( idStr::Icmp( userInfo.GetString( "ui_ready" ), "Ready" ) == 0 );
 ////	if ( ready != newready && gameLocal.mpGame.GetGameState() == idMultiplayerGame::WARMUP && !wantSpectate ) {
-////		gameLocal.mpGame.AddChatLine( common->GetLanguageDict()->GetString( "#str_07180" ), userInfo->GetString( "ui_name" ), newready ? common->GetLanguageDict()->GetString( "#str_04300" ) : common->GetLanguageDict()->GetString( "#str_04301" ) );
+////		gameLocal.mpGame.AddChatLine( common.GetLanguageDict().GetString( "#str_07180" ), userInfo.GetString( "ui_name" ), newready ? common.GetLanguageDict().GetString( "#str_04300" ) : common.GetLanguageDict().GetString( "#str_04301" ) );
 ////	}
 ////	ready = newready;
-////	team = ( idStr::Icmp( userInfo->GetString( "ui_team" ), "Blue" ) == 0 );
+////	team = ( idStr::Icmp( userInfo.GetString( "ui_team" ), "Blue" ) == 0 );
 ////	// server maintains TDM balance
 ////	if ( canModify && gameLocal.gameType == GAME_TDM && !gameLocal.mpGame.IsInGame( entityNumber ) && g_balanceTDM.GetBool() ) {
 ////		modifiedInfo |= BalanceTDM( );
 ////	}
 ////	UpdateSkinSetup( false );
 ////	
-////	isChatting = userInfo->GetBool( "ui_chat", "0" );
+////	isChatting = userInfo.GetBool( "ui_chat", "0" );
 ////	if ( canModify && isChatting && AI_DEAD ) {
 ////		// if dead, always force chat icon off.
 ////		isChatting = false;
-////		userInfo->SetBool( "ui_chat", false );
+////		userInfo.SetBool( "ui_chat", false );
 ////		modifiedInfo |= true;
 ////	}
 ////
@@ -2493,25 +2493,25 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	assert( weapon.GetEntity() );
 ////	assert( _hud );
 ////
-////	inclip		= weapon.GetEntity()->AmmoInClip();
-////	ammoamount	= weapon.GetEntity()->AmmoAvailable();
-////	if ( ammoamount < 0 || !weapon.GetEntity()->IsReady() ) {
+////	inclip		= weapon.GetEntity().AmmoInClip();
+////	ammoamount	= weapon.GetEntity().AmmoAvailable();
+////	if ( ammoamount < 0 || !weapon.GetEntity().IsReady() ) {
 ////		// show infinite ammo
-////		_hud->SetStateString( "player_ammo", "" );
-////		_hud->SetStateString( "player_totalammo", "" );
+////		_hud.SetStateString( "player_ammo", "" );
+////		_hud.SetStateString( "player_totalammo", "" );
 ////	} else { 
 ////		// show remaining ammo
-////		_hud->SetStateString( "player_totalammo", va( "%i", ammoamount - inclip ) );
-////		_hud->SetStateString( "player_ammo", weapon.GetEntity()->ClipSize() ? va( "%i", inclip ) : "--" );		// how much in the current clip
-////		_hud->SetStateString( "player_clips", weapon.GetEntity()->ClipSize() ? va( "%i", ammoamount / weapon.GetEntity()->ClipSize() ) : "--" );
-////		_hud->SetStateString( "player_allammo", va( "%i/%i", inclip, ammoamount - inclip ) );
+////		_hud.SetStateString( "player_totalammo", va( "%i", ammoamount - inclip ) );
+////		_hud.SetStateString( "player_ammo", weapon.GetEntity().ClipSize() ? va( "%i", inclip ) : "--" );		// how much in the current clip
+////		_hud.SetStateString( "player_clips", weapon.GetEntity().ClipSize() ? va( "%i", ammoamount / weapon.GetEntity().ClipSize() ) : "--" );
+////		_hud.SetStateString( "player_allammo", va( "%i/%i", inclip, ammoamount - inclip ) );
 ////	} 
 ////
-////	_hud->SetStateBool( "player_ammo_empty", ( ammoamount == 0 ) );
-////	_hud->SetStateBool( "player_clip_empty", ( weapon.GetEntity()->ClipSize() ? inclip == 0 : false ) );
-////	_hud->SetStateBool( "player_clip_low", ( weapon.GetEntity()->ClipSize() ? inclip <= weapon.GetEntity()->LowAmmo() : false ) );
+////	_hud.SetStateBool( "player_ammo_empty", ( ammoamount == 0 ) );
+////	_hud.SetStateBool( "player_clip_empty", ( weapon.GetEntity().ClipSize() ? inclip == 0 : false ) );
+////	_hud.SetStateBool( "player_clip_low", ( weapon.GetEntity().ClipSize() ? inclip <= weapon.GetEntity().LowAmmo() : false ) );
 ////
-////	_hud->HandleNamedEvent( "updateAmmo" );
+////	_hud.HandleNamedEvent( "updateAmmo" );
 ////}
 ////
 /////*
@@ -2533,28 +2533,28 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		staminapercentage = idMath::FtoiFast( 100.0f * stamina / max_stamina );
 ////	}
 ////
-////	_hud->SetStateInt( "player_health", health );
-////	_hud->SetStateInt( "player_stamina", staminapercentage );
-////	_hud->SetStateInt( "player_armor", inventory.armor );
-////	_hud->SetStateInt( "player_hr", heartRate );
-////	_hud->SetStateInt( "player_nostamina", ( max_stamina == 0 ) ? 1 : 0 );
+////	_hud.SetStateInt( "player_health", health );
+////	_hud.SetStateInt( "player_stamina", staminapercentage );
+////	_hud.SetStateInt( "player_armor", inventory.armor );
+////	_hud.SetStateInt( "player_hr", heartRate );
+////	_hud.SetStateInt( "player_nostamina", ( max_stamina == 0 ) ? 1 : 0 );
 ////
-////	_hud->HandleNamedEvent( "updateArmorHealthAir" );
+////	_hud.HandleNamedEvent( "updateArmorHealthAir" );
 ////
 ////	if ( healthPulse ) {
-////		_hud->HandleNamedEvent( "healthPulse" );
+////		_hud.HandleNamedEvent( "healthPulse" );
 ////		StartSound( "snd_healthpulse", SND_CHANNEL_ITEM, 0, false, NULL );
 ////		healthPulse = false;
 ////	}
 ////
 ////	if ( healthTake ) {
-////		_hud->HandleNamedEvent( "healthPulse" );
+////		_hud.HandleNamedEvent( "healthPulse" );
 ////		StartSound( "snd_healthtake", SND_CHANNEL_ITEM, 0, false, NULL );
 ////		healthTake = false;
 ////	}
 ////
 ////	if ( inventory.ammoPulse ) { 
-////		_hud->HandleNamedEvent( "ammoPulse" );
+////		_hud.HandleNamedEvent( "ammoPulse" );
 ////		inventory.ammoPulse = false;
 ////	}
 ////	if ( inventory.weaponPulse ) {
@@ -2562,11 +2562,11 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		// the armor/ammo/health because they are updated every
 ////		// frame no matter what
 ////		UpdateHudWeapon();
-////		_hud->HandleNamedEvent( "weaponPulse" );
+////		_hud.HandleNamedEvent( "weaponPulse" );
 ////		inventory.weaponPulse = false;
 ////	}
 ////	if ( inventory.armorPulse ) { 
-////		_hud->HandleNamedEvent( "armorPulse" );
+////		_hud.HandleNamedEvent( "armorPulse" );
 ////		inventory.armorPulse = false;
 ////	}
 ////
@@ -2582,11 +2582,11 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	idUserInterface *hud = idPlayer::hud;
 ////
 ////	// if updating the hud of a followed client
-////	if ( gameLocal.localClientNum >= 0 && gameLocal.entities[ gameLocal.localClientNum ] && gameLocal.entities[ gameLocal.localClientNum ]->IsType( idPlayer::Type ) ) {
+////	if ( gameLocal.localClientNum >= 0 && gameLocal.entities[ gameLocal.localClientNum ] && gameLocal.entities[ gameLocal.localClientNum ].IsType( idPlayer::Type ) ) {
 ////		idPlayer *p = static_cast< idPlayer * >( gameLocal.entities[ gameLocal.localClientNum ] );
-////		if ( p->spectating && p->spectator == entityNumber ) {
-////			assert( p->hud );
-////			hud = p->hud;
+////		if ( p.spectating && p.spectator == entityNumber ) {
+////			assert( p.hud );
+////			hud = p.hud;
 ////		}
 ////	}
 ////
@@ -2607,10 +2607,10 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////				weapstate++;
 ////			}
 ////		}
-////		hud->SetStateInt( hudWeap, weapstate );
+////		hud.SetStateInt( hudWeap, weapstate );
 ////	}
 ////	if ( flashWeapon ) {
-////		hud->HandleNamedEvent( "weaponChange" );
+////		hud.HandleNamedEvent( "weaponChange" );
 ////	}
 ////}
 ////
@@ -2627,21 +2627,21 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	UpdateHudStats( _hud );
 ////
-////	_hud->SetStateString( "weapicon", weapon.GetEntity()->Icon() );
+////	_hud.SetStateString( "weapicon", weapon.GetEntity().Icon() );
 ////
 ////	// FIXME: this is temp to allow the sound meter to show up in the hud
 ////	// it should be commented out before shipping but the code can remain
 ////	// for mod developers to enable for the same functionality
-////	_hud->SetStateInt( "s_debug", cvarSystem->GetCVarInteger( "s_showLevelMeter" ) );
+////	_hud.SetStateInt( "s_debug", cvarSystem.GetCVarInteger( "s_showLevelMeter" ) );
 ////
-////	weapon.GetEntity()->UpdateGUI();
+////	weapon.GetEntity().UpdateGUI();
 ////
-////	_hud->Redraw( gameLocal.realClientTime );
+////	_hud.Redraw( gameLocal.realClientTime );
 ////
 ////	// weapon targeting crosshair
 ////	if ( !GuiActive() ) {
-////		if ( cursor && weapon.GetEntity()->ShowCrosshair() ) {
-////			cursor->Redraw( gameLocal.realClientTime );
+////		if ( cursor && weapon.GetEntity().ShowCrosshair() ) {
+////			cursor.Redraw( gameLocal.realClientTime );
 ////		}
 ////	}
 ////}
@@ -2656,7 +2656,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	StopAudioLog();
 ////	StopSound( SND_CHANNEL_PDA, false );
 ////	if ( hud ) {
-////		hud->HandleNamedEvent( "radioChatterDown" );
+////		hud.HandleNamedEvent( "radioChatterDown" );
 ////	}
 ////	
 ////	physicsObj.SetLinearVelocity( vec3_origin );
@@ -2665,7 +2665,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	UpdateScript();
 ////
 ////	if ( weaponEnabled && weapon.GetEntity() ) {
-////		weapon.GetEntity()->EnterCinematic();
+////		weapon.GetEntity().EnterCinematic();
 ////	}
 ////
 ////	AI_FORWARD		= false;
@@ -2699,7 +2699,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	Show();
 ////
 ////	if ( weaponEnabled && weapon.GetEntity() ) {
-////		weapon.GetEntity()->ExitCinematic();
+////		weapon.GetEntity().ExitCinematic();
 ////	}
 ////
 ////	SetState( "ExitCinematic" );
@@ -2777,7 +2777,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	AI_WEAPON_FIRED = false;
 ////	AI_RELOAD		= false;
 ////	if ( weapon.GetEntity() ) {
-////		weapon.GetEntity()->EndAttack();
+////		weapon.GetEntity().EndAttack();
 ////	}
 ////}
 ////
@@ -2796,18 +2796,18 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	if ( g_editEntityMode.GetInteger() ) {
 ////		GetViewPos( muzzle, axis );
-////		if ( gameLocal.editEntities->SelectEntity( muzzle, axis[0], this ) ) {
+////		if ( gameLocal.editEntities.SelectEntity( muzzle, axis[0], this ) ) {
 ////			return;
 ////		}
 ////	}
 ////
-////	if ( !hiddenWeapon && weapon.GetEntity()->IsReady() ) {
-////		if ( weapon.GetEntity()->AmmoInClip() || weapon.GetEntity()->AmmoAvailable() ) {
+////	if ( !hiddenWeapon && weapon.GetEntity().IsReady() ) {
+////		if ( weapon.GetEntity().AmmoInClip() || weapon.GetEntity().AmmoAvailable() ) {
 ////			AI_ATTACK_HELD = true;
-////			weapon.GetEntity()->BeginAttack();
+////			weapon.GetEntity().BeginAttack();
 ////			if ( ( weapon_soulcube >= 0 ) && ( currentWeapon == weapon_soulcube ) ) {
 ////				if ( hud ) {
-////					hud->HandleNamedEvent( "soulCubeNotReady" );
+////					hud.HandleNamedEvent( "soulCubeNotReady" );
 ////				}
 ////				SelectWeapon( previousWeapon, false );
 ////			}
@@ -2877,7 +2877,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////				health = inventory.maxHealth;
 ////			}
 ////			if ( hud ) {
-////				hud->HandleNamedEvent( "healthPulse" );
+////				hud.HandleNamedEvent( "healthPulse" );
 ////			}
 ////		}
 ////
@@ -2951,29 +2951,29 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		return false;
 ////	}
 ////
-////	item->GetAttributes( attr );
+////	item.GetAttributes( attr );
 ////	
 ////	gave = false;
 ////	numPickup = inventory.pickupItemNames.Num();
 ////	for( i = 0; i < attr.GetNumKeyVals(); i++ ) {
 ////		arg = attr.GetKeyVal( i );
-////		if ( Give( arg->GetKey(), arg->GetValue() ) ) {
+////		if ( Give( arg.GetKey(), arg.GetValue() ) ) {
 ////			gave = true;
 ////		}
 ////	}
 ////
-////	arg = item->spawnArgs.MatchPrefix( "inv_weapon", NULL );
+////	arg = item.spawnArgs.MatchPrefix( "inv_weapon", NULL );
 ////	if ( arg && hud ) {
 ////		// We need to update the weapon hud manually, but not
 ////		// the armor/ammo/health because they are updated every
 ////		// frame no matter what
 ////		UpdateHudWeapon( false );
-////		hud->HandleNamedEvent( "weaponPulse" );
+////		hud.HandleNamedEvent( "weaponPulse" );
 ////	}
 ////
 ////	// display the pickup feedback on the hud
 ////	if ( gave && ( numPickup == inventory.pickupItemNames.Num() ) ) {
-////		inventory.AddPickupName( item->spawnArgs.GetString( "inv_name" ), item->spawnArgs.GetString( "inv_icon" ) );
+////		inventory.AddPickupName( item.spawnArgs.GetString( "inv_name" ), item.spawnArgs.GetString( "inv_icon" ) );
 ////	}
 ////
 ////	return gave;
@@ -3060,10 +3060,10 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		switch( powerup ) {
 ////			case BERSERK: {
 ////				if ( spawnArgs.GetString( "snd_berserk_third", "", &sound ) ) {
-////					StartSoundShader( declManager->FindSound( sound ), SND_CHANNEL_DEMONIC, 0, false, NULL );
+////					StartSoundShader( declManager.FindSound( sound ), SND_CHANNEL_DEMONIC, 0, false, NULL );
 ////				}
 ////				if ( baseSkinName.Length() ) {
-////					powerUpSkin = declManager->FindSkin( baseSkinName + "_berserk" );
+////					powerUpSkin = declManager.FindSkin( baseSkinName + "_berserk" );
 ////				}
 ////				if ( !gameLocal.isClient ) {
 ////					idealWeapon = 0;
@@ -3072,16 +3072,16 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////			}
 ////			case INVISIBILITY: {
 ////				spawnArgs.GetString( "skin_invisibility", "", &skin );
-////				powerUpSkin = declManager->FindSkin( skin );
+////				powerUpSkin = declManager.FindSkin( skin );
 ////				// remove any decals from the model
 ////				if ( modelDefHandle != -1 ) {
-////					gameRenderWorld->RemoveDecals( modelDefHandle );
+////					gameRenderWorld.RemoveDecals( modelDefHandle );
 ////				}
 ////				if ( weapon.GetEntity() ) {
-////					weapon.GetEntity()->UpdateSkin();
+////					weapon.GetEntity().UpdateSkin();
 ////				}
 ////				if ( spawnArgs.GetString( "snd_invisibility", "", &sound ) ) {
-////					StartSoundShader( declManager->FindSound( sound ), SND_CHANNEL_ANY, 0, false, NULL );
+////					StartSoundShader( declManager.FindSound( sound ), SND_CHANNEL_ANY, 0, false, NULL );
 ////				}
 ////				break;
 ////			}
@@ -3091,18 +3091,18 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////			 }
 ////			case MEGAHEALTH: {
 ////				if ( spawnArgs.GetString( "snd_megahealth", "", &sound ) ) {
-////					StartSoundShader( declManager->FindSound( sound ), SND_CHANNEL_ANY, 0, false, NULL );
+////					StartSoundShader( declManager.FindSound( sound ), SND_CHANNEL_ANY, 0, false, NULL );
 ////				}
 ////				def = gameLocal.FindEntityDef( "powerup_megahealth", false );
 ////				if ( def ) {
-////					health = def->dict.GetInt( "inv_health" );
+////					health = def.dict.GetInt( "inv_health" );
 ////				}
 ////				break;
 ////			 }
 ////		}
 ////
 ////		if ( hud ) {
-////			hud->HandleNamedEvent( "itemPickup" );
+////			hud.HandleNamedEvent( "itemPickup" );
 ////		}
 ////
 ////		return true;
@@ -3139,7 +3139,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		}
 ////		case INVISIBILITY: {
 ////			if ( weapon.GetEntity() ) {
-////				weapon.GetEntity()->UpdateSkin();
+////				weapon.GetEntity().UpdateSkin();
 ////			}
 ////			break;
 ////		}
@@ -3222,17 +3222,17 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	}
 ////	inventory.items.Append( new idDict( *item ) );
 ////	idItemInfo info;
-////	const char* itemName = item->GetString( "inv_name" );
+////	const char* itemName = item.GetString( "inv_name" );
 ////	if ( idStr::Cmpn( itemName, STRTABLE_ID, STRTABLE_ID_LENGTH ) == 0 ) {
-////		info.name = common->GetLanguageDict()->GetString( itemName );
+////		info.name = common.GetLanguageDict().GetString( itemName );
 ////	} else {
 ////		info.name = itemName;
 ////	}
-////	info.icon = item->GetString( "inv_icon" );
+////	info.icon = item.GetString( "inv_icon" );
 ////	inventory.pickupItemNames.Append( info );
 ////	if ( hud ) {
-////		hud->SetStateString( "itemicon", info.icon );
-////		hud->HandleNamedEvent( "invPickup" );
+////		hud.SetStateString( "itemicon", info.icon );
+////		hud.HandleNamedEvent( "invPickup" );
 ////	}
 ////	return true;
 ////}
@@ -3246,16 +3246,16 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	if ( objectiveSystem == NULL ) {
 ////		return;
 ////	}
-////	objectiveSystem->SetStateString( "objective1", "" );
-////	objectiveSystem->SetStateString( "objective2", "" );
-////	objectiveSystem->SetStateString( "objective3", "" );
+////	objectiveSystem.SetStateString( "objective1", "" );
+////	objectiveSystem.SetStateString( "objective2", "" );
+////	objectiveSystem.SetStateString( "objective3", "" );
 ////	for ( int i = 0; i < inventory.objectiveNames.Num(); i++ ) {
-////		objectiveSystem->SetStateString( va( "objective%i", i+1 ), "1" );
-////		objectiveSystem->SetStateString( va( "objectivetitle%i", i+1 ), inventory.objectiveNames[i].title.c_str() );
-////		objectiveSystem->SetStateString( va( "objectivetext%i", i+1 ), inventory.objectiveNames[i].text.c_str() );
-////		objectiveSystem->SetStateString( va( "objectiveshot%i", i+1 ), inventory.objectiveNames[i].screenshot.c_str() );
+////		objectiveSystem.SetStateString( va( "objective%i", i+1 ), "1" );
+////		objectiveSystem.SetStateString( va( "objectivetitle%i", i+1 ), inventory.objectiveNames[i].title.c_str() );
+////		objectiveSystem.SetStateString( va( "objectivetext%i", i+1 ), inventory.objectiveNames[i].text.c_str() );
+////		objectiveSystem.SetStateString( va( "objectiveshot%i", i+1 ), inventory.objectiveNames[i].screenshot.c_str() );
 ////	}
-////	objectiveSystem->StateChanged( gameLocal.time );
+////	objectiveSystem.StateChanged( gameLocal.time );
 ////}
 ////
 /////*
@@ -3271,7 +3271,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	inventory.objectiveNames.Append( info );
 ////	ShowObjective( "newObjective" );
 ////	if ( hud ) {
-////		hud->HandleNamedEvent( "newObjective" );
+////		hud.HandleNamedEvent( "newObjective" );
 ////	}
 ////}
 ////
@@ -3291,7 +3291,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	ShowObjective( "newObjectiveComplete" );
 ////
 ////	if ( hud ) {
-////		hud->HandleNamedEvent( "newObjectiveComplete" );
+////		hud.HandleNamedEvent( "newObjectiveComplete" );
 ////	}
 ////}
 ////
@@ -3310,12 +3310,12 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	if ( item ) {
 ////		idItemInfo info;
-////		info.name = item->GetString( "inv_name" );
-////		info.icon = item->GetString( "inv_icon" );
+////		info.name = item.GetString( "inv_name" );
+////		info.icon = item.GetString( "inv_icon" );
 ////		inventory.pickupItemNames.Append( info );
 ////	}
 ////	if ( hud ) {
-////		hud->HandleNamedEvent( "videoPickup" );
+////		hud.HandleNamedEvent( "videoPickup" );
 ////	}
 ////}
 ////
@@ -3325,10 +3325,10 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////===============
 ////*/
 ////void idPlayer::GiveSecurity( const char *security ) {
-////	GetPDA()->SetSecurity( security );
+////	GetPDA().SetSecurity( security );
 ////	if ( hud ) {
-////		hud->SetStateString( "pda_security", "1" );
-////		hud->HandleNamedEvent( "securityPickup" );
+////		hud.SetStateString( "pda_security", "1" );
+////		hud.HandleNamedEvent( "securityPickup" );
 ////	}
 ////}
 ////
@@ -3344,10 +3344,10 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	}
 ////
 ////	inventory.emails.AddUnique( emailName );
-////	GetPDA()->AddEmail( emailName );
+////	GetPDA().AddEmail( emailName );
 ////
 ////	if ( hud ) {
-////		hud->HandleNamedEvent( "emailPickup" );
+////		hud.HandleNamedEvent( "emailPickup" );
 ////	}
 ////}
 ////
@@ -3363,22 +3363,22 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	}
 ////
 ////	if ( item ) {
-////		inventory.pdaSecurity.AddUnique( item->GetString( "inv_name" ) );
+////		inventory.pdaSecurity.AddUnique( item.GetString( "inv_name" ) );
 ////	}
 ////
 ////	if ( pdaName == NULL || *pdaName == NULL ) {
 ////		pdaName = "personal";
 ////	}
 ////
-////	const idDeclPDA *pda = static_cast< const idDeclPDA* >( declManager->FindType( DECL_PDA, pdaName ) );
+////	const idDeclPDA *pda = static_cast< const idDeclPDA* >( declManager.FindType( DECL_PDA, pdaName ) );
 ////
 ////	inventory.pdas.AddUnique( pdaName );
 ////
 ////	// Copy any videos over
-////	for ( int i = 0; i < pda->GetNumVideos(); i++ ) {
-////		const idDeclVideo *video = pda->GetVideoByIndex( i );
+////	for ( int i = 0; i < pda.GetNumVideos(); i++ ) {
+////		const idDeclVideo *video = pda.GetVideoByIndex( i );
 ////		if ( video ) {
-////			inventory.videos.AddUnique( video->GetName() );
+////			inventory.videos.AddUnique( video.GetName() );
 ////		}
 ////	}
 ////
@@ -3386,26 +3386,26 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	// We don't want to display the 'you got a new pda' message during a map load
 ////	if ( gameLocal.GetFrameNum() > 10 ) {
 ////		if ( pda && hud ) {
-////			idStr pdaName = pda->GetPdaName();
+////			idStr pdaName = pda.GetPdaName();
 ////			pdaName.RemoveColors();
-////			hud->SetStateString( "pda", "1" );
-////			hud->SetStateString( "pda_text", pdaName );
-////			const char *sec = pda->GetSecurity();
-////			hud->SetStateString( "pda_security", ( sec && *sec ) ? "1" : "0" );
-////			hud->HandleNamedEvent( "pdaPickup" );
+////			hud.SetStateString( "pda", "1" );
+////			hud.SetStateString( "pda_text", pdaName );
+////			const char *sec = pda.GetSecurity();
+////			hud.SetStateString( "pda_security", ( sec && *sec ) ? "1" : "0" );
+////			hud.HandleNamedEvent( "pdaPickup" );
 ////		}
 ////
 ////		if ( inventory.pdas.Num() == 1 ) {
-////			GetPDA()->RemoveAddedEmailsAndVideos();
+////			GetPDA().RemoveAddedEmailsAndVideos();
 ////			if ( !objectiveSystemOpen ) {
 ////				TogglePDA();
 ////			}
-////			objectiveSystem->HandleNamedEvent( "showPDATip" );
+////			objectiveSystem.HandleNamedEvent( "showPDATip" );
 ////			//ShowTip( spawnArgs.GetString( "text_infoTitle" ), spawnArgs.GetString( "text_firstPDA" ), true );
 ////		}
 ////
-////		if ( inventory.pdas.Num() > 1 && pda->GetNumVideos() > 0 && hud ) {
-////			hud->HandleNamedEvent( "videoPickup" );
+////		if ( inventory.pdas.Num() > 1 && pda.GetNumVideos() > 0 && hud ) {
+////			hud.HandleNamedEvent( "videoPickup" );
 ////		}
 ////	}
 ////}
@@ -3417,7 +3417,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////*/
 ////idDict *idPlayer::FindInventoryItem( name:string ) {
 ////	for ( int i = 0; i < inventory.items.Num(); i++ ) {
-////		const char *iname = inventory.items[i]->GetString( "inv_name" );
+////		const char *iname = inventory.items[i].GetString( "inv_name" );
 ////		if ( iname && *iname ) {
 ////			if ( idStr::Icmp( name, iname ) == 0 ) {
 ////				return inventory.items[i];
@@ -3461,7 +3461,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	args.Set( "owner", name.c_str() );
 ////	gameLocal.SpawnEntityDef( args );
 ////	if ( hud ) {
-////		hud->HandleNamedEvent( "itemPickup" );
+////		hud.HandleNamedEvent( "itemPickup" );
 ////	}
 ////}
 ////
@@ -3498,8 +3498,8 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		return;
 ////	}
 ////
-////	if ( weapon.GetEntity() && weapon.GetEntity()->IsLinked() ) {
-////		weapon.GetEntity()->Reload();
+////	if ( weapon.GetEntity() && weapon.GetEntity().IsLinked() ) {
+////		weapon.GetEntity().Reload();
 ////	}
 ////}
 ////
@@ -3541,7 +3541,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	const char *weap;
 ////	int w;
 ////
-////	if ( !weaponEnabled || spectating || hiddenWeapon || gameLocal.inCinematic || gameLocal.world->spawnArgs.GetBool( "no_Weapons" ) || health < 0 ) {
+////	if ( !weaponEnabled || spectating || hiddenWeapon || gameLocal.inCinematic || gameLocal.world.spawnArgs.GetBool( "no_Weapons" ) || health < 0 ) {
 ////		return;
 ////	}
 ////
@@ -3591,7 +3591,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	const char *weap;
 ////	int w;
 ////
-////	if ( !weaponEnabled || spectating || hiddenWeapon || gameLocal.inCinematic || gameLocal.world->spawnArgs.GetBool( "no_Weapons" ) || health < 0 ) {
+////	if ( !weaponEnabled || spectating || hiddenWeapon || gameLocal.inCinematic || gameLocal.world.spawnArgs.GetBool( "no_Weapons" ) || health < 0 ) {
 ////		return;
 ////	}
 ////
@@ -3652,13 +3652,13 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		return;
 ////	}
 ////
-////	if ( ( num != weapon_pda ) && gameLocal.world->spawnArgs.GetBool( "no_Weapons" ) ) {
+////	if ( ( num != weapon_pda ) && gameLocal.world.spawnArgs.GetBool( "no_Weapons" ) ) {
 ////		num = weapon_fists;
 ////		hiddenWeapon ^= 1;
 ////		if ( hiddenWeapon && weapon.GetEntity() ) {
-////			weapon.GetEntity()->LowerWeapon();
+////			weapon.GetEntity().LowerWeapon();
 ////		} else {
-////			weapon.GetEntity()->RaiseWeapon();
+////			weapon.GetEntity().RaiseWeapon();
 ////		}
 ////	}	
 ////
@@ -3703,16 +3703,16 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		return;
 ////	}
 ////	
-////	if ( ( !died && !weapon.GetEntity()->IsReady() ) || weapon.GetEntity()->IsReloading() ) {
+////	if ( ( !died && !weapon.GetEntity().IsReady() ) || weapon.GetEntity().IsReloading() ) {
 ////		return;
 ////	}
 ////	// ammoavailable is how many shots we can fire
 ////	// inclip is which amount is in clip right now
-////	ammoavailable = weapon.GetEntity()->AmmoAvailable();
-////	inclip = weapon.GetEntity()->AmmoInClip();
+////	ammoavailable = weapon.GetEntity().AmmoAvailable();
+////	inclip = weapon.GetEntity().AmmoInClip();
 ////	
 ////	// don't drop a grenade if we have none left
-////	if ( !idStr::Icmp( idWeapon::GetAmmoNameForNum( weapon.GetEntity()->GetAmmoType() ), "ammo_grenades" ) && ( ammoavailable - inclip <= 0 ) ) {
+////	if ( !idStr::Icmp( idWeapon::GetAmmoNameForNum( weapon.GetEntity().GetAmmoType() ), "ammo_grenades" ) && ( ammoavailable - inclip <= 0 ) ) {
 ////		return;
 ////	}
 ////
@@ -3721,34 +3721,34 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	// a bad ammo config usually indicates a bad weapon state, so we should not drop
 ////	// used to be an assertion check, but it still happens in edge cases
 ////	if ( ( ammoavailable != -1 ) && ( ammoavailable - inclip < 0 ) ) {
-////		common->DPrintf( "idPlayer::DropWeapon: bad ammo setup\n" );
+////		common.DPrintf( "idPlayer::DropWeapon: bad ammo setup\n" );
 ////		return;
 ////	}
 ////	idEntity *item = NULL;
 ////	if ( died ) {
 ////		// ain't gonna throw you no weapon if I'm dead
-////		item = weapon.GetEntity()->DropItem( vec3_origin, 0, WEAPON_DROP_TIME, died );
+////		item = weapon.GetEntity().DropItem( vec3_origin, 0, WEAPON_DROP_TIME, died );
 ////	} else {
 ////		viewAngles.ToVectors( &forward, NULL, &up );
-////		item = weapon.GetEntity()->DropItem( 250.0f * forward + 150.0f * up, 500, WEAPON_DROP_TIME, died );
+////		item = weapon.GetEntity().DropItem( 250.0f * forward + 150.0f * up, 500, WEAPON_DROP_TIME, died );
 ////	}
 ////	if ( !item ) {
 ////		return;
 ////	}
 ////	// set the appropriate ammo in the dropped object
-////	const idKeyValue * keyval = item->spawnArgs.MatchPrefix( "inv_ammo_" );
+////	const idKeyValue * keyval = item.spawnArgs.MatchPrefix( "inv_ammo_" );
 ////	if ( keyval ) {
-////		item->spawnArgs.SetInt( keyval->GetKey(), ammoavailable );
-////		idStr inclipKey = keyval->GetKey();
+////		item.spawnArgs.SetInt( keyval.GetKey(), ammoavailable );
+////		idStr inclipKey = keyval.GetKey();
 ////		inclipKey.Insert( "inclip_", 4 );
-////		item->spawnArgs.SetInt( inclipKey, inclip );
+////		item.spawnArgs.SetInt( inclipKey, inclip );
 ////	}
 ////	if ( !died ) {
 ////		// remove from our local inventory completely
-////		inventory.Drop( spawnArgs, item->spawnArgs.GetString( "inv_weapon" ), -1 );
-////		weapon.GetEntity()->ResetAmmoClip();
+////		inventory.Drop( spawnArgs, item.spawnArgs.GetString( "inv_weapon" ), -1 );
+////		weapon.GetEntity().ResetAmmoClip();
 ////		NextWeapon();
-////		weapon.GetEntity()->WeaponStolen();
+////		weapon.GetEntity().WeaponStolen();
 ////		weaponGone = true;
 ////	}
 ////}
@@ -3763,45 +3763,45 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	assert( !gameLocal.isClient );
 ////
 ////	// make sure there's something to steal
-////	idWeapon *player_weapon = static_cast< idWeapon * >( player->weapon.GetEntity() );
-////	if ( !player_weapon || !player_weapon->CanDrop() || weaponGone ) {
+////	idWeapon *player_weapon = static_cast< idWeapon * >( player.weapon.GetEntity() );
+////	if ( !player_weapon || !player_weapon.CanDrop() || weaponGone ) {
 ////		return;
 ////	}
 ////	// steal - we need to effectively force the other player to abandon his weapon
-////	int newweap = player->currentWeapon;
+////	int newweap = player.currentWeapon;
 ////	if ( newweap == -1 ) {
 ////		return;
 ////	}
 ////	// might be just dropped - check inventory
-////	if ( ! ( player->inventory.weapons & ( 1 << newweap ) ) ) {
+////	if ( ! ( player.inventory.weapons & ( 1 << newweap ) ) ) {
 ////		return;
 ////	}
 ////	const char *weapon_classname = spawnArgs.GetString( va( "def_weapon%d", newweap ) );
 ////	assert( weapon_classname );
-////	int ammoavailable = player->weapon.GetEntity()->AmmoAvailable();
-////	int inclip = player->weapon.GetEntity()->AmmoInClip();
+////	int ammoavailable = player.weapon.GetEntity().AmmoAvailable();
+////	int inclip = player.weapon.GetEntity().AmmoInClip();
 ////	if ( ( ammoavailable != -1 ) && ( ammoavailable - inclip < 0 ) ) {
 ////		// see DropWeapon
-////		common->DPrintf( "idPlayer::StealWeapon: bad ammo setup\n" );
+////		common.DPrintf( "idPlayer::StealWeapon: bad ammo setup\n" );
 ////		// we still steal the weapon, so let's use the default ammo levels
 ////		inclip = -1;
 ////		const idDeclEntityDef *decl = gameLocal.FindEntityDef( weapon_classname );
 ////		assert( decl );
-////		const idKeyValue *keypair = decl->dict.MatchPrefix( "inv_ammo_" );
+////		const idKeyValue *keypair = decl.dict.MatchPrefix( "inv_ammo_" );
 ////		assert( keypair );
-////		ammoavailable = atoi( keypair->GetValue() );
+////		ammoavailable = atoi( keypair.GetValue() );
 ////	}
 ////
-////	player->weapon.GetEntity()->WeaponStolen();
-////	player->inventory.Drop( player->spawnArgs, NULL, newweap );
-////	player->SelectWeapon( weapon_fists, false );
+////	player.weapon.GetEntity().WeaponStolen();
+////	player.inventory.Drop( player.spawnArgs, NULL, newweap );
+////	player.SelectWeapon( weapon_fists, false );
 ////	// in case the robbed player is firing rounds with a continuous fire weapon like the chaingun/plasma etc.
 ////	// this will ensure the firing actually stops
-////	player->weaponGone = true;
+////	player.weaponGone = true;
 ////
 ////	// give weapon, setup the ammo count
 ////	Give( "weapon", weapon_classname );
-////	ammo_t ammo_i = player->inventory.AmmoIndexForWeaponClass( weapon_classname, NULL );
+////	ammo_t ammo_i = player.inventory.AmmoIndexForWeaponClass( weapon_classname, NULL );
 ////	idealWeapon = newweap;
 ////	inventory.ammo[ ammo_i ] += ammoavailable;
 ////	inventory.clip[ newweap ] = inclip;
@@ -3830,8 +3830,8 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		return;
 ////	}
 ////
-////	weapon.GetEntity()->RaiseWeapon();
-////	if ( weapon.GetEntity()->IsReloading() ) {
+////	weapon.GetEntity().RaiseWeapon();
+////	if ( weapon.GetEntity().IsReloading() ) {
 ////		if ( !AI_RELOAD ) {
 ////			AI_RELOAD = true;
 ////			SetState( "ReloadWeapon" );
@@ -3852,10 +3852,10 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////			currentWeapon = idealWeapon;
 ////			weaponGone = false;
 ////			animPrefix = spawnArgs.GetString( va( "def_weapon%d", currentWeapon ) );
-////			weapon.GetEntity()->GetWeaponDef( animPrefix, inventory.clip[ currentWeapon ] );
+////			weapon.GetEntity().GetWeaponDef( animPrefix, inventory.clip[ currentWeapon ] );
 ////			animPrefix.Strip( "weapon_" );
 ////
-////			weapon.GetEntity()->NetCatchup();
+////			weapon.GetEntity().NetCatchup();
 ////			const function_t *newstate = GetScriptFunction( "NetCatchup" );
 ////			if ( newstate ) {
 ////				SetState( newstate );
@@ -3863,11 +3863,11 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////			}
 ////			weaponCatchup = false;			
 ////		} else {
-////			if ( weapon.GetEntity()->IsReady() ) {
-////				weapon.GetEntity()->PutAway();
+////			if ( weapon.GetEntity().IsReady() ) {
+////				weapon.GetEntity().PutAway();
 ////			}
 ////
-////			if ( weapon.GetEntity()->IsHolstered() ) {
+////			if ( weapon.GetEntity().IsHolstered() ) {
 ////				assert( idealWeapon >= 0 );
 ////				assert( idealWeapon < MAX_WEAPONS );
 ////
@@ -3877,20 +3877,20 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////				currentWeapon = idealWeapon;
 ////				weaponGone = false;
 ////				animPrefix = spawnArgs.GetString( va( "def_weapon%d", currentWeapon ) );
-////				weapon.GetEntity()->GetWeaponDef( animPrefix, inventory.clip[ currentWeapon ] );
+////				weapon.GetEntity().GetWeaponDef( animPrefix, inventory.clip[ currentWeapon ] );
 ////				animPrefix.Strip( "weapon_" );
 ////
-////				weapon.GetEntity()->Raise();
+////				weapon.GetEntity().Raise();
 ////			}
 ////		}
 ////	} else {
 ////		weaponGone = false;	// if you drop and re-get weap, you may miss the = false above 
-////		if ( weapon.GetEntity()->IsHolstered() ) {
-////			if ( !weapon.GetEntity()->AmmoAvailable() ) {
+////		if ( weapon.GetEntity().IsHolstered() ) {
+////			if ( !weapon.GetEntity().AmmoAvailable() ) {
 ////				// weapons can switch automatically if they have no more ammo
 ////				NextBestWeapon();
 ////			} else {
-////				weapon.GetEntity()->Raise();
+////				weapon.GetEntity().Raise();
 ////				state = GetScriptFunction( "RaiseWeapon" );
 ////				if ( state ) {
 ////					SetState( state );
@@ -3906,13 +3906,13 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////			FireWeapon();
 ////		} else if ( oldButtons & BUTTON_ATTACK ) {
 ////			AI_ATTACK_HELD = false;
-////			weapon.GetEntity()->EndAttack();
+////			weapon.GetEntity().EndAttack();
 ////		}
 ////	}
 ////
 ////	// update our ammo clip in our inventory
 ////	if ( ( currentWeapon >= 0 ) && ( currentWeapon < MAX_WEAPONS ) ) {
-////		inventory.clip[ currentWeapon ] = weapon.GetEntity()->AmmoInClip();
+////		inventory.clip[ currentWeapon ] = weapon.GetEntity().AmmoInClip();
 ////		if ( hud && ( currentWeapon == idealWeapon ) ) {
 ////			UpdateHudAmmo( hud );
 ////		}
@@ -3929,11 +3929,11 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		Weapon_Combat();
 ////	}
 ////	StopFiring();
-////	weapon.GetEntity()->LowerWeapon();
+////	weapon.GetEntity().LowerWeapon();
 ////
 ////	if ( ( usercmd.buttons & BUTTON_ATTACK ) && !( oldButtons & BUTTON_ATTACK ) ) {
 ////		buttonMask |= BUTTON_ATTACK;
-////		focusCharacter->TalkTo( this );
+////		focusCharacter.TalkTo( this );
 ////	}
 ////}
 ////
@@ -3943,8 +3943,8 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////===============
 ////*/
 ////void idPlayer::LowerWeapon( void ) {
-////	if ( weapon.GetEntity() && !weapon.GetEntity()->IsHidden() ) {
-////		weapon.GetEntity()->LowerWeapon();
+////	if ( weapon.GetEntity() && !weapon.GetEntity().IsHidden() ) {
+////		weapon.GetEntity().LowerWeapon();
 ////	}
 ////}
 ////
@@ -3954,8 +3954,8 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////===============
 ////*/
 ////void idPlayer::RaiseWeapon( void ) {
-////	if ( weapon.GetEntity() && weapon.GetEntity()->IsHidden() ) {
-////		weapon.GetEntity()->RaiseWeapon();
+////	if ( weapon.GetEntity() && weapon.GetEntity().IsHidden() ) {
+////		weapon.GetEntity().RaiseWeapon();
 ////	}
 ////}
 ////
@@ -3991,7 +3991,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////			Weapon_Combat();
 ////		}
 ////		StopFiring();
-////		weapon.GetEntity()->LowerWeapon();
+////		weapon.GetEntity().LowerWeapon();
 ////	}
 ////
 ////	// disable click prediction for the GUIs. handy to check the state sync does the right thing
@@ -4006,10 +4006,10 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////		idUserInterface *ui = ActiveGui();
 ////		if ( ui ) {
-////			ev = sys->GenerateMouseButtonEvent( 1, ( usercmd.buttons & BUTTON_ATTACK ) != 0 );
-////			command = ui->HandleEvent( &ev, gameLocal.time, &updateVisuals );
+////			ev = sys.GenerateMouseButtonEvent( 1, ( usercmd.buttons & BUTTON_ATTACK ) != 0 );
+////			command = ui.HandleEvent( &ev, gameLocal.time, &updateVisuals );
 ////			if ( updateVisuals && focusGUIent && ui == focusUI ) {
-////				focusGUIent->UpdateVisuals();
+////				focusGUIent.UpdateVisuals();
 ////			}
 ////		}
 ////		if ( gameLocal.isClient ) {
@@ -4039,17 +4039,17 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	if ( gameLocal.isClient ) {
 ////		// clients need to wait till the weapon and it's world model entity
 ////		// are present and synchronized ( weapon.worldModel idEntityPtr to idAnimatedEntity )
-////		if ( !weapon.GetEntity()->IsWorldModelReady() ) {
+////		if ( !weapon.GetEntity().IsWorldModelReady() ) {
 ////			return;
 ////		}
 ////	}
 ////
 ////	// always make sure the weapon is correctly setup before accessing it
-////	if ( !weapon.GetEntity()->IsLinked() ) {
+////	if ( !weapon.GetEntity().IsLinked() ) {
 ////		if ( idealWeapon != -1 ) {
 ////			animPrefix = spawnArgs.GetString( va( "def_weapon%d", idealWeapon ) );
-////			weapon.GetEntity()->GetWeaponDef( animPrefix, inventory.clip[ idealWeapon ] );
-////			assert( weapon.GetEntity()->IsLinked() );
+////			weapon.GetEntity().GetWeaponDef( animPrefix, inventory.clip[ idealWeapon ] );
+////			assert( weapon.GetEntity().IsLinked() );
 ////		} else {
 ////			return;
 ////		}
@@ -4061,23 +4061,23 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	
 ////	if ( g_dragEntity.GetBool() ) {
 ////		StopFiring();
-////		weapon.GetEntity()->LowerWeapon();
+////		weapon.GetEntity().LowerWeapon();
 ////		dragEntity.Update( this );
 ////	} else if ( ActiveGui() ) {
 ////		// gui handling overrides weapon use
 ////		Weapon_GUI();
-////	} else 	if ( focusCharacter && ( focusCharacter->health > 0 ) ) {
+////	} else 	if ( focusCharacter && ( focusCharacter.health > 0 ) ) {
 ////		Weapon_NPC();
 ////	} else {
 ////		Weapon_Combat();
 ////	}
 ////	
 ////	if ( hiddenWeapon ) {
-////		weapon.GetEntity()->LowerWeapon();
+////		weapon.GetEntity().LowerWeapon();
 ////	}
 ////
 ////	// update weapon state, particles, dlights, etc
-////	weapon.GetEntity()->PresentWeapon( showWeaponViewModel );
+////	weapon.GetEntity().PresentWeapon( showWeaponViewModel );
 ////}
 ////
 /////*
@@ -4094,23 +4094,23 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	player = gameLocal.GetClientByNum( spectator );
 ////	if ( force || gameLocal.time > lastSpectateChange ) {
 ////		spectator = entityNumber;
-////		if ( player && player != this && !player->spectating && !player->IsInTeleport() ) {
-////			newOrig = player->GetPhysics()->GetOrigin();
-////			if ( player->physicsObj.IsCrouching() ) {
+////		if ( player && player != this && !player.spectating && !player.IsInTeleport() ) {
+////			newOrig = player.GetPhysics().GetOrigin();
+////			if ( player.physicsObj.IsCrouching() ) {
 ////				newOrig[ 2 ] += pm_crouchviewheight.GetFloat();
 ////			} else {
 ////				newOrig[ 2 ] += pm_normalviewheight.GetFloat();
 ////			}
 ////			newOrig[ 2 ] += SPECTATE_RAISE;
 ////			idBounds b = idBounds( vec3_origin ).Expand( pm_spectatebbox.GetFloat() * 0.5f );
-////			idVec3 start = player->GetPhysics()->GetOrigin();
+////			idVec3 start = player.GetPhysics().GetOrigin();
 ////			start[2] += pm_spectatebbox.GetFloat() * 0.5f;
 ////			trace_t t;
 ////			// assuming spectate bbox is inside stand or crouch box
 ////			gameLocal.clip.TraceBounds( t, start, newOrig, b, MASK_PLAYERSOLID, player );
 ////			newOrig.Lerp( start, newOrig, t.fraction );
 ////			SetOrigin( newOrig );
-////			idAngles angle = player->viewAngles;
+////			idAngles angle = player.viewAngles;
 ////			angle[ 2 ] = 0;
 ////			SetViewAngles( angle );
 ////		} else {	
@@ -4138,7 +4138,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		player = gameLocal.GetClientByNum( spectator );
 ////		assert( player ); // never call here when the current spectator is wrong
 ////		// ignore other spectators
-////		while ( latchedSpectator != spectator && player->spectating ) {
+////		while ( latchedSpectator != spectator && player.spectating ) {
 ////			spectator = gameLocal.GetNextClientNum( spectator );
 ////			player = gameLocal.GetClientByNum( spectator );
 ////		}
@@ -4160,7 +4160,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		return;
 ////	}
 ////	player = gameLocal.GetClientByNum( spectator );
-////	if ( !player || ( player->spectating && player != this ) ) {
+////	if ( !player || ( player.spectating && player != this ) ) {
 ////		SpectateFreeFly( true );
 ////	} else if ( usercmd.upmove > 0 ) {
 ////		SpectateFreeFly( false );
@@ -4177,7 +4177,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////bool idPlayer::HandleSingleGuiCommand( idEntity *entityGui, idLexer *src ) {
 ////	idToken token;
 ////
-////	if ( !src->ReadToken( &token ) ) {
+////	if ( !src.ReadToken( &token ) ) {
 ////		return false;
 ////	}
 ////
@@ -4187,12 +4187,12 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	if ( token.Icmp( "addhealth" ) == 0 ) {
 ////		if ( entityGui && health < 100 ) {
-////			int _health = entityGui->spawnArgs.GetInt( "gui_parm1" );
+////			int _health = entityGui.spawnArgs.GetInt( "gui_parm1" );
 ////			int amt = ( _health >= HEALTH_PER_DOSE ) ? HEALTH_PER_DOSE : _health;
 ////			_health -= amt;
-////			entityGui->spawnArgs.SetInt( "gui_parm1", _health );
-////			if ( entityGui->GetRenderEntity() && entityGui->GetRenderEntity()->gui[ 0 ] ) {
-////				entityGui->GetRenderEntity()->gui[ 0 ]->SetStateInt( "gui_parm1", _health );
+////			entityGui.spawnArgs.SetInt( "gui_parm1", _health );
+////			if ( entityGui.GetRenderEntity() && entityGui.GetRenderEntity().gui[ 0 ] ) {
+////				entityGui.GetRenderEntity().gui[ 0 ].SetStateInt( "gui_parm1", _health );
 ////			}
 ////			health += amt;
 ////			if ( health > 100 ) {
@@ -4232,17 +4232,17 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	if ( token.Icmp( "playpdavideo" ) == 0 ) {
 ////		if ( objectiveSystem && objectiveSystemOpen && pdaVideo.Length() > 0 ) {
-////			const idMaterial *mat = declManager->FindMaterial( pdaVideo );
+////			const idMaterial *mat = declManager.FindMaterial( pdaVideo );
 ////			if ( mat ) {
-////				int c = mat->GetNumStages();
+////				int c = mat.GetNumStages();
 ////				for ( int i = 0; i < c; i++ ) {
-////					const shaderStage_t *stage = mat->GetStage(i);
-////					if ( stage && stage->texture.cinematic ) {
-////						stage->texture.cinematic->ResetTime( gameLocal.time );
+////					const shaderStage_t *stage = mat.GetStage(i);
+////					if ( stage && stage.texture.cinematic ) {
+////						stage.texture.cinematic.ResetTime( gameLocal.time );
 ////					}
 ////				}
 ////				if ( pdaVideoWave.Length() ) {
-////					const idSoundShader *shader = declManager->FindSound( pdaVideoWave );
+////					const idSoundShader *shader = declManager.FindSound( pdaVideoWave );
 ////					StartSoundShader( shader, SND_CHANNEL_PDA, 0, false, NULL );
 ////				}
 ////			}
@@ -4251,7 +4251,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	if ( token.Icmp( "playpdaaudio" ) == 0 ) {
 ////		if ( objectiveSystem && objectiveSystemOpen && pdaAudio.Length() > 0 ) {
-////			const idSoundShader *shader = declManager->FindSound( pdaAudio );
+////			const idSoundShader *shader = declManager.FindSound( pdaAudio );
 ////			int ms;
 ////			StartSoundShader( shader, SND_CHANNEL_PDA, 0, false, &ms );
 ////			StartAudioLog();
@@ -4263,14 +4263,14 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	if ( token.Icmp( "stoppdaaudio" ) == 0 ) {
 ////		if ( objectiveSystem && objectiveSystemOpen && pdaAudio.Length() > 0 ) {
-////			// idSoundShader *shader = declManager->FindSound( pdaAudio );
+////			// idSoundShader *shader = declManager.FindSound( pdaAudio );
 ////			StopAudioLog();
 ////			StopSound( SND_CHANNEL_PDA, false );
 ////		}
 ////		return true;
 ////	}
 ////
-////	src->UnreadToken( &token );
+////	src.UnreadToken( &token );
 ////	return false;
 ////}
 ////
@@ -4288,14 +4288,14 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	other = gameLocal.entities[ collision.c.entityNum ];
 ////	if ( other ) {
-////		other->Signal( SIG_TOUCH );
+////		other.Signal( SIG_TOUCH );
 ////		if ( !spectating ) {
-////			if ( other->RespondsTo( EV_Touch ) ) {
-////				other->ProcessEvent( &EV_Touch, this, &collision );
+////			if ( other.RespondsTo( EV_Touch ) ) {
+////				other.ProcessEvent( &EV_Touch, this, &collision );
 ////			}
 ////		} else {
-////			if ( other->RespondsTo( EV_SpectatorTouch ) ) {
-////				other->ProcessEvent( &EV_SpectatorTouch, this, &collision );
+////			if ( other.RespondsTo( EV_SpectatorTouch ) ) {
+////				other.ProcessEvent( &EV_SpectatorTouch, this, &collision );
 ////			}
 ////		}
 ////	}
@@ -4314,9 +4314,9 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	if ( hud ) {
 ////		idLocationEntity *locationEntity = gameLocal.LocationForPoint( GetEyePosition() );
 ////		if ( locationEntity ) {
-////			hud->SetStateString( "location", locationEntity->GetLocation() );
+////			hud.SetStateString( "location", locationEntity.GetLocation() );
 ////		} else {
-////			hud->SetStateString( "location", common->GetLanguageDict()->GetString( "#str_02911" ) );
+////			hud.SetStateString( "location", common.GetLanguageDict().GetString( "#str_02911" ) );
 ////		}
 ////	}
 ////}
@@ -4394,7 +4394,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	start = GetEyePosition();
 ////	end = start + viewAngles.ToForward() * 80.0f;
 ////
-////	// player identification -> names to the hud
+////	// player identification . names to the hud
 ////	if ( gameLocal.isMultiplayer && entityNumber == gameLocal.localClientNum ) {
 ////		idVec3 end = start + viewAngles.ToForward() * 768.0f;
 ////		gameLocal.clip.TracePoint( trace, start, end, MASK_SHOT_BOUNDINGBOX, this );
@@ -4418,18 +4418,18 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	// gui within range along the trace
 ////	for ( i = 0; i < listedClipModels; i++ ) {
 ////		clip = clipModelList[ i ];
-////		ent = clip->GetEntity();
+////		ent = clip.GetEntity();
 ////
-////		if ( ent->IsHidden() ) {
+////		if ( ent.IsHidden() ) {
 ////			continue;
 ////		}
 ////
 ////		if ( allowFocus ) {
-////			if ( ent->IsType( idAFAttachment::Type ) ) {
-////				idEntity *body = static_cast<idAFAttachment *>( ent )->GetBody();
-////				if ( body && body->IsType( idAI::Type ) && ( static_cast<idAI *>( body )->GetTalkState() >= TALK_OK ) ) {
+////			if ( ent.IsType( idAFAttachment::Type ) ) {
+////				idEntity *body = static_cast<idAFAttachment *>( ent ).GetBody();
+////				if ( body && body.IsType( idAI::Type ) && ( static_cast<idAI *>( body ).GetTalkState() >= TALK_OK ) ) {
 ////					gameLocal.clip.TracePoint( trace, start, end, MASK_SHOT_RENDERMODEL, this );
-////					if ( ( trace.fraction < 1.0f ) && ( trace.c.entityNum == ent->entityNumber ) ) {
+////					if ( ( trace.fraction < 1.0f ) && ( trace.c.entityNum == ent.entityNumber ) ) {
 ////						ClearFocus();
 ////						focusCharacter = static_cast<idAI *>( body );
 ////						talkCursor = 1;
@@ -4440,10 +4440,10 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////				continue;
 ////			}
 ////
-////			if ( ent->IsType( idAI::Type ) ) {
-////				if ( static_cast<idAI *>( ent )->GetTalkState() >= TALK_OK ) {
+////			if ( ent.IsType( idAI::Type ) ) {
+////				if ( static_cast<idAI *>( ent ).GetTalkState() >= TALK_OK ) {
 ////					gameLocal.clip.TracePoint( trace, start, end, MASK_SHOT_RENDERMODEL, this );
-////					if ( ( trace.fraction < 1.0f ) && ( trace.c.entityNum == ent->entityNumber ) ) {
+////					if ( ( trace.fraction < 1.0f ) && ( trace.c.entityNum == ent.entityNumber ) ) {
 ////						ClearFocus();
 ////						focusCharacter = static_cast<idAI *>( ent );
 ////						talkCursor = 1;
@@ -4454,9 +4454,9 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////				continue;
 ////			}
 ////
-////			if ( ent->IsType( idAFEntity_Vehicle::Type ) ) {
+////			if ( ent.IsType( idAFEntity_Vehicle::Type ) ) {
 ////				gameLocal.clip.TracePoint( trace, start, end, MASK_SHOT_RENDERMODEL, this );
-////				if ( ( trace.fraction < 1.0f ) && ( trace.c.entityNum == ent->entityNumber ) ) {
+////				if ( ( trace.fraction < 1.0f ) && ( trace.c.entityNum == ent.entityNumber ) ) {
 ////					ClearFocus();
 ////					focusVehicle = static_cast<idAFEntity_Vehicle *>( ent );
 ////					focusTime = gameLocal.time + FOCUS_TIME;
@@ -4466,29 +4466,29 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////			}
 ////		}
 ////
-////		if ( !ent->GetRenderEntity() || !ent->GetRenderEntity()->gui[ 0 ] || !ent->GetRenderEntity()->gui[ 0 ]->IsInteractive() ) {
+////		if ( !ent.GetRenderEntity() || !ent.GetRenderEntity().gui[ 0 ] || !ent.GetRenderEntity().gui[ 0 ].IsInteractive() ) {
 ////			continue;
 ////		}
 ////
-////		if ( ent->spawnArgs.GetBool( "inv_item" ) ) {
+////		if ( ent.spawnArgs.GetBool( "inv_item" ) ) {
 ////			// don't allow guis on pickup items focus
 ////			continue;
 ////		}
 ////
-////		pt = gameRenderWorld->GuiTrace( ent->GetModelDefHandle(), start, end );
+////		pt = gameRenderWorld.GuiTrace( ent.GetModelDefHandle(), start, end );
 ////		if ( pt.x != -1 ) {
 ////			// we have a hit
-////			renderEntity_t *focusGUIrenderEntity = ent->GetRenderEntity();
+////			renderEntity_t *focusGUIrenderEntity = ent.GetRenderEntity();
 ////			if ( !focusGUIrenderEntity ) {
 ////				continue;
 ////			}
 ////
 ////			if ( pt.guiId == 1 ) {
-////				ui = focusGUIrenderEntity->gui[ 0 ];
+////				ui = focusGUIrenderEntity.gui[ 0 ];
 ////			} else if ( pt.guiId == 2 ) {
-////				ui = focusGUIrenderEntity->gui[ 1 ];
+////				ui = focusGUIrenderEntity.gui[ 1 ];
 ////			} else {
-////				ui = focusGUIrenderEntity->gui[ 2 ];
+////				ui = focusGUIrenderEntity.gui[ 2 ];
 ////			}
 ////			
 ////			if ( ui == NULL ) {
@@ -4503,51 +4503,51 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////				// new activation
 ////				// going to see if we have anything in inventory a gui might be interested in
 ////				// need to enumerate inventory items
-////				focusUI->SetStateInt( "inv_count", inventory.items.Num() );
+////				focusUI.SetStateInt( "inv_count", inventory.items.Num() );
 ////				for ( j = 0; j < inventory.items.Num(); j++ ) {
 ////					idDict *item = inventory.items[ j ];
-////					const char *iname = item->GetString( "inv_name" );
-////					const char *iicon = item->GetString( "inv_icon" );
-////					const char *itext = item->GetString( "inv_text" );
+////					const char *iname = item.GetString( "inv_name" );
+////					const char *iicon = item.GetString( "inv_icon" );
+////					const char *itext = item.GetString( "inv_text" );
 ////
-////					focusUI->SetStateString( va( "inv_name_%i", j), iname );
-////					focusUI->SetStateString( va( "inv_icon_%i", j), iicon );
-////					focusUI->SetStateString( va( "inv_text_%i", j), itext );
-////					kv = item->MatchPrefix("inv_id", NULL);
+////					focusUI.SetStateString( va( "inv_name_%i", j), iname );
+////					focusUI.SetStateString( va( "inv_icon_%i", j), iicon );
+////					focusUI.SetStateString( va( "inv_text_%i", j), itext );
+////					kv = item.MatchPrefix("inv_id", NULL);
 ////					if ( kv ) {
-////						focusUI->SetStateString( va( "inv_id_%i", j ), kv->GetValue() );
+////						focusUI.SetStateString( va( "inv_id_%i", j ), kv.GetValue() );
 ////					}
-////					focusUI->SetStateInt( iname, 1 );
+////					focusUI.SetStateInt( iname, 1 );
 ////				}
 ////
 ////
 ////				for( j = 0; j < inventory.pdaSecurity.Num(); j++ ) {
 ////					const char *p = inventory.pdaSecurity[ j ];
 ////					if ( p && *p ) {
-////						focusUI->SetStateInt( p, 1 );
+////						focusUI.SetStateInt( p, 1 );
 ////					}
 ////				}
 ////
 ////				int staminapercentage = ( int )( 100.0f * stamina / pm_stamina.GetFloat() );
-////				focusUI->SetStateString( "player_health", va("%i", health ) );
-////				focusUI->SetStateString( "player_stamina", va( "%i%%", staminapercentage ) );
-////				focusUI->SetStateString( "player_armor", va( "%i%%", inventory.armor ) );
+////				focusUI.SetStateString( "player_health", va("%i", health ) );
+////				focusUI.SetStateString( "player_stamina", va( "%i%%", staminapercentage ) );
+////				focusUI.SetStateString( "player_armor", va( "%i%%", inventory.armor ) );
 ////
-////				kv = focusGUIent->spawnArgs.MatchPrefix( "gui_parm", NULL );
+////				kv = focusGUIent.spawnArgs.MatchPrefix( "gui_parm", NULL );
 ////				while ( kv ) {
-////					focusUI->SetStateString( kv->GetKey(), kv->GetValue() );
-////					kv = focusGUIent->spawnArgs.MatchPrefix( "gui_parm", kv );
+////					focusUI.SetStateString( kv.GetKey(), kv.GetValue() );
+////					kv = focusGUIent.spawnArgs.MatchPrefix( "gui_parm", kv );
 ////				}
 ////			}
 ////
 ////			// clamp the mouse to the corner
-////			ev = sys->GenerateMouseMoveEvent( -2000, -2000 );
-////			command = focusUI->HandleEvent( &ev, gameLocal.time );
+////			ev = sys.GenerateMouseMoveEvent( -2000, -2000 );
+////			command = focusUI.HandleEvent( &ev, gameLocal.time );
 //// 			HandleGuiCommands( focusGUIent, command );
 ////
 ////			// move to an absolute position
-////			ev = sys->GenerateMouseMoveEvent( pt.x * SCREEN_WIDTH, pt.y * SCREEN_HEIGHT );
-////			command = focusUI->HandleEvent( &ev, gameLocal.time );
+////			ev = sys.GenerateMouseMoveEvent( pt.x * SCREEN_WIDTH, pt.y * SCREEN_HEIGHT );
+////			command = focusUI.HandleEvent( &ev, gameLocal.time );
 ////			HandleGuiCommands( focusGUIent, command );
 ////			focusTime = gameLocal.time + FOCUS_GUI_TIME;
 ////			break;
@@ -4556,31 +4556,31 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	if ( focusGUIent && focusUI ) {
 ////		if ( !oldFocus || oldFocus != focusGUIent ) {
-////			command = focusUI->Activate( true, gameLocal.time );
+////			command = focusUI.Activate( true, gameLocal.time );
 ////			HandleGuiCommands( focusGUIent, command );
 ////			StartSound( "snd_guienter", SND_CHANNEL_ANY, 0, false, NULL );
 ////			// HideTip();
 ////			// HideObjective();
 ////		}
 ////	} else if ( oldFocus && oldUI ) {
-////		command = oldUI->Activate( false, gameLocal.time );
+////		command = oldUI.Activate( false, gameLocal.time );
 ////		HandleGuiCommands( oldFocus, command );
 ////		StartSound( "snd_guiexit", SND_CHANNEL_ANY, 0, false, NULL );
 ////	}
 ////
 ////	if ( cursor && ( oldTalkCursor != talkCursor ) ) {
-////		cursor->SetStateInt( "talkcursor", talkCursor );
+////		cursor.SetStateInt( "talkcursor", talkCursor );
 ////	}
 ////
 ////	if ( oldChar != focusCharacter && hud ) {
 ////		if ( focusCharacter ) {
-////			hud->SetStateString( "npc", focusCharacter->spawnArgs.GetString( "npc_name", "Joe" ) );
-////			hud->HandleNamedEvent( "showNPC" );
+////			hud.SetStateString( "npc", focusCharacter.spawnArgs.GetString( "npc_name", "Joe" ) );
+////			hud.HandleNamedEvent( "showNPC" );
 ////			// HideTip();
 ////			// HideObjective();
 ////		} else {
-////			hud->SetStateString( "npc", "" );
-////			hud->HandleNamedEvent( "hideNPC" );
+////			hud.SetStateString( "npc", "" );
+////			hud.HandleNamedEvent( "hideNPC" );
 ////		}
 ////	}
 ////}
@@ -4630,14 +4630,14 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	noDamage = false;
 ////	for ( int i = 0; i < physicsObj.GetNumContacts(); i++ ) {
 ////		const contactInfo_t &contact = physicsObj.GetContact( i );
-////		if ( contact.material->GetSurfaceFlags() & SURF_NODAMAGE ) {
+////		if ( contact.material.GetSurfaceFlags() & SURF_NODAMAGE ) {
 ////			noDamage = true;
 ////			StartSound( "snd_land_hard", SND_CHANNEL_ANY, 0, false, NULL );
 ////			break;
 ////		}
 ////	}
 ////
-////	origin = GetPhysics()->GetOrigin();
+////	origin = GetPhysics().GetOrigin();
 ////	gravityVector = physicsObj.GetGravity();
 ////
 ////	// calculate the exact velocity on landing
@@ -5042,7 +5042,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////			soundShaderParms_t	parms;
 ////			memset( &parms, 0, sizeof( parms ) );
 ////			parms.volume = pct;
-////			refSound.referenceSound->ModifySound( SND_CHANNEL_HEART, &parms );
+////			refSound.referenceSound.ModifySound( SND_CHANNEL_HEART, &parms );
 ////		}
 ////
 ////		lastHeartBeat = gameLocal.time;
@@ -5073,9 +5073,9 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////				const int	*pvsAreas = GetPVSAreas();
 ////				areaNum = pvsAreas[0];
 ////			} else {
-////				areaNum = gameRenderWorld->PointInArea( this->GetPhysics()->GetOrigin() );
+////				areaNum = gameRenderWorld.PointInArea( this.GetPhysics().GetOrigin() );
 ////			}
-////			newAirless = gameRenderWorld->AreasAreConnected( gameLocal.vacuumAreaNum, areaNum, PS_BLOCK_AIR );
+////			newAirless = gameRenderWorld.AreasAreConnected( gameLocal.vacuumAreaNum, areaNum, PS_BLOCK_AIR );
 ////		}
 ////	}
 ////
@@ -5084,7 +5084,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////			StartSound( "snd_decompress", SND_CHANNEL_ANY, SSF_GLOBAL, false, NULL );
 ////			StartSound( "snd_noAir", SND_CHANNEL_BODY2, 0, false, NULL );
 ////			if ( hud ) {
-////				hud->HandleNamedEvent( "noAir" );
+////				hud.HandleNamedEvent( "noAir" );
 ////			}
 ////		}
 ////		airTics--;
@@ -5092,7 +5092,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////			airTics = 0;
 ////			// check for damage
 ////			const idDict *damageDef = gameLocal.FindEntityDefDict( "damage_noair", false );
-////			int dmgTiming = 1000 * ((damageDef) ? damageDef->GetFloat( "delay", "3.0" ) : 3.0f );
+////			int dmgTiming = 1000 * ((damageDef) ? damageDef.GetFloat( "delay", "3.0" ) : 3.0f );
 ////			if ( gameLocal.time > lastAirDamage + dmgTiming ) {
 ////				Damage( NULL, NULL, vec3_origin, "damage_noair", 1.0f, 0 );
 ////				lastAirDamage = gameLocal.time;
@@ -5104,7 +5104,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////			StartSound( "snd_recompress", SND_CHANNEL_ANY, SSF_GLOBAL, false, NULL );
 ////			StopSound( SND_CHANNEL_BODY2, false );
 ////			if ( hud ) {
-////				hud->HandleNamedEvent( "Air" );
+////				hud.HandleNamedEvent( "Air" );
 ////			}
 ////		}
 ////		airTics+=2;	// regain twice as fast as lose
@@ -5116,7 +5116,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	airless = newAirless;
 ////
 ////	if ( hud ) {
-////		hud->SetStateInt( "player_air", 100 * airTics / pm_airTics.GetInteger() );
+////		hud.SetStateInt( "player_air", 100 * airTics / pm_airTics.GetInteger() );
 ////	}
 ////}
 ////
@@ -5129,31 +5129,31 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	int c, i;
 ////	idStr work;
 ////	if ( dataType == DECL_EMAIL ) {
-////		c = src->GetNumEmails();
+////		c = src.GetNumEmails();
 ////		for ( i = 0; i < c; i++ ) {
-////			const idDeclEmail *email = src->GetEmailByIndex( i );
+////			const idDeclEmail *email = src.GetEmailByIndex( i );
 ////			if ( email == NULL ) {
 ////				work = va( "-\tEmail %d not found\t-", i );
 ////			} else {
-////				work = email->GetFrom();
+////				work = email.GetFrom();
 ////				work += "\t";
-////				work += email->GetSubject();
+////				work += email.GetSubject();
 ////				work += "\t";
-////				work += email->GetDate();
+////				work += email.GetDate();
 ////			}
-////			gui->SetStateString( va( "%s_item_%i", listName, i ), work );
+////			gui.SetStateString( va( "%s_item_%i", listName, i ), work );
 ////		}
 ////		return c;
 ////	} else if ( dataType == DECL_AUDIO ) {
-////		c = src->GetNumAudios();
+////		c = src.GetNumAudios();
 ////		for ( i = 0; i < c; i++ ) {
-////			const idDeclAudio *audio = src->GetAudioByIndex( i );
+////			const idDeclAudio *audio = src.GetAudioByIndex( i );
 ////			if ( audio == NULL ) {
 ////				work = va( "Audio Log %d not found", i );
 ////			} else {
-////				work = audio->GetAudioName();
+////				work = audio.GetAudioName();
 ////			}
-////			gui->SetStateString( va( "%s_item_%i", listName, i ), work );
+////			gui.SetStateString( va( "%s_item_%i", listName, i ), work );
 ////		}
 ////		return c;
 ////	} else if ( dataType == DECL_VIDEO ) {
@@ -5163,9 +5163,9 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////			if ( video == NULL ) {
 ////				work = va( "Video CD %s not found", inventory.videos[i].c_str() );
 ////			} else {
-////				work = video->GetVideoName();
+////				work = video.GetVideoName();
 ////			}
-////			gui->SetStateString( va( "%s_item_%i", listName, i ), work );
+////			gui.SetStateString( va( "%s_item_%i", listName, i ), work );
 ////		}
 ////		return c;
 ////	}
@@ -5179,7 +5179,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 //// */
 ////const idDeclPDA *idPlayer::GetPDA( void ) const {
 ////	if ( inventory.pdas.Num() ) {
-////		return static_cast< const idDeclPDA* >( declManager->FindType( DECL_PDA, inventory.pdas[ 0 ] ) );
+////		return static_cast< const idDeclPDA* >( declManager.FindType( DECL_PDA, inventory.pdas[ 0 ] ) );
 ////	} else {
 ////		return NULL;
 ////	}
@@ -5193,7 +5193,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////*/
 ////const idDeclVideo *idPlayer::GetVideo( int index ) {
 ////	if ( index >= 0 && index < inventory.videos.Num() ) {
-////		return static_cast< const idDeclVideo* >( declManager->FindType( DECL_VIDEO, inventory.videos[index], false ) );
+////		return static_cast< const idDeclVideo* >( declManager.FindType( DECL_VIDEO, inventory.videos[index], false ) );
 ////	}
 ////	return NULL;
 ////}
@@ -5213,15 +5213,15 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	assert( hud );
 ////
-////	int currentPDA = objectiveSystem->State().GetInt( "listPDA_sel_0", "0" );
+////	int currentPDA = objectiveSystem.State().GetInt( "listPDA_sel_0", "0" );
 ////	if ( currentPDA == -1 ) {
 ////		currentPDA = 0;
 ////	}
 ////
 ////	if ( updatePDASel ) {
-////		objectiveSystem->SetStateInt( "listPDAVideo_sel_0", 0 );
-////		objectiveSystem->SetStateInt( "listPDAEmail_sel_0", 0 );
-////		objectiveSystem->SetStateInt( "listPDAAudio_sel_0", 0 );
+////		objectiveSystem.SetStateInt( "listPDAVideo_sel_0", 0 );
+////		objectiveSystem.SetStateInt( "listPDAEmail_sel_0", 0 );
+////		objectiveSystem.SetStateInt( "listPDAAudio_sel_0", 0 );
 ////	}
 ////
 ////	if ( currentPDA > 0 ) {
@@ -5238,17 +5238,17 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	pdaVideoWave = "";
 ////	idStr name, data, preview, info, wave;
 ////	for ( j = 0; j < MAX_PDAS; j++ ) {
-////		objectiveSystem->SetStateString( va( "listPDA_item_%i", j ), "" );
+////		objectiveSystem.SetStateString( va( "listPDA_item_%i", j ), "" );
 ////	}
 ////	for ( j = 0; j < MAX_PDA_ITEMS; j++ ) {
-////		objectiveSystem->SetStateString( va( "listPDAVideo_item_%i", j ), "" );
-////		objectiveSystem->SetStateString( va( "listPDAAudio_item_%i", j ), "" );
-////		objectiveSystem->SetStateString( va( "listPDAEmail_item_%i", j ), "" );
-////		objectiveSystem->SetStateString( va( "listPDASecurity_item_%i", j ), "" );
+////		objectiveSystem.SetStateString( va( "listPDAVideo_item_%i", j ), "" );
+////		objectiveSystem.SetStateString( va( "listPDAAudio_item_%i", j ), "" );
+////		objectiveSystem.SetStateString( va( "listPDAEmail_item_%i", j ), "" );
+////		objectiveSystem.SetStateString( va( "listPDASecurity_item_%i", j ), "" );
 ////	}
 ////	for ( j = 0; j < inventory.pdas.Num(); j++ ) {
 ////
-////		const idDeclPDA *pda = static_cast< const idDeclPDA* >( declManager->FindType( DECL_PDA, inventory.pdas[j], false ) );
+////		const idDeclPDA *pda = static_cast< const idDeclPDA* >( declManager.FindType( DECL_PDA, inventory.pdas[j], false ) );
 ////
 ////		if ( pda == NULL ) {
 ////			continue;
@@ -5262,105 +5262,105 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////		if ( j != currentPDA && j < 128 && inventory.pdasViewed[j >> 5] & (1 << (j & 31)) ) {
 ////			// This pda has been read already, mark in gray
-////			objectiveSystem->SetStateString( va( "listPDA_item_%i", index), va(S_COLOR_GRAY "%s", pda->GetPdaName()) );
+////			objectiveSystem.SetStateString( va( "listPDA_item_%i", index), va(S_COLOR_GRAY "%s", pda.GetPdaName()) );
 ////		} else {
 ////			// This pda has not been read yet
-////		objectiveSystem->SetStateString( va( "listPDA_item_%i", index), pda->GetPdaName() );
+////		objectiveSystem.SetStateString( va( "listPDA_item_%i", index), pda.GetPdaName() );
 ////		}
 ////
-////		const char *security = pda->GetSecurity();
+////		const char *security = pda.GetSecurity();
 ////		if ( j == currentPDA || (currentPDA == 0 && security && *security ) ) {
 ////			if ( *security == NULL ) {
-////				security = common->GetLanguageDict()->GetString( "#str_00066" );
+////				security = common.GetLanguageDict().GetString( "#str_00066" );
 ////			}
-////			objectiveSystem->SetStateString( "PDASecurityClearance", security );
+////			objectiveSystem.SetStateString( "PDASecurityClearance", security );
 ////		}
 ////
 ////		if ( j == currentPDA ) {
 ////
-////			objectiveSystem->SetStateString( "pda_icon", pda->GetIcon() );
-////			objectiveSystem->SetStateString( "pda_id", pda->GetID() );
-////			objectiveSystem->SetStateString( "pda_title", pda->GetTitle() );
+////			objectiveSystem.SetStateString( "pda_icon", pda.GetIcon() );
+////			objectiveSystem.SetStateString( "pda_id", pda.GetID() );
+////			objectiveSystem.SetStateString( "pda_title", pda.GetTitle() );
 ////
 ////			if ( j == 0 ) {
 ////				// Selected, personal pda
 ////				// Add videos
 ////				if ( updatePDASel || !inventory.pdaOpened ) {
-////				objectiveSystem->HandleNamedEvent( "playerPDAActive" );
-////				objectiveSystem->SetStateString( "pda_personal", "1" );
+////				objectiveSystem.HandleNamedEvent( "playerPDAActive" );
+////				objectiveSystem.SetStateString( "pda_personal", "1" );
 ////					inventory.pdaOpened = true;
 ////				}
-////				objectiveSystem->SetStateString( "pda_location", hud->State().GetString("location") );
-////				objectiveSystem->SetStateString( "pda_name", cvarSystem->GetCVarString( "ui_name") );
+////				objectiveSystem.SetStateString( "pda_location", hud.State().GetString("location") );
+////				objectiveSystem.SetStateString( "pda_name", cvarSystem.GetCVarString( "ui_name") );
 ////				AddGuiPDAData( DECL_VIDEO, "listPDAVideo", pda, objectiveSystem );
-////				sel = objectiveSystem->State().GetInt( "listPDAVideo_sel_0", "0" );
+////				sel = objectiveSystem.State().GetInt( "listPDAVideo_sel_0", "0" );
 ////				const idDeclVideo *vid = NULL;
 ////				if ( sel >= 0 && sel < inventory.videos.Num() ) {
-////					vid = static_cast< const idDeclVideo * >( declManager->FindType( DECL_VIDEO, inventory.videos[ sel ], false ) );
+////					vid = static_cast< const idDeclVideo * >( declManager.FindType( DECL_VIDEO, inventory.videos[ sel ], false ) );
 ////				}
 ////				if ( vid ) {
-////					pdaVideo = vid->GetRoq();
-////					pdaVideoWave = vid->GetWave();
-////					objectiveSystem->SetStateString( "PDAVideoTitle", vid->GetVideoName() );
-////					objectiveSystem->SetStateString( "PDAVideoVid", vid->GetRoq() );
-////					objectiveSystem->SetStateString( "PDAVideoIcon", vid->GetPreview() );
-////					objectiveSystem->SetStateString( "PDAVideoInfo", vid->GetInfo() );
+////					pdaVideo = vid.GetRoq();
+////					pdaVideoWave = vid.GetWave();
+////					objectiveSystem.SetStateString( "PDAVideoTitle", vid.GetVideoName() );
+////					objectiveSystem.SetStateString( "PDAVideoVid", vid.GetRoq() );
+////					objectiveSystem.SetStateString( "PDAVideoIcon", vid.GetPreview() );
+////					objectiveSystem.SetStateString( "PDAVideoInfo", vid.GetInfo() );
 ////				} else {
 ////					//FIXME: need to precache these in the player def
-////					objectiveSystem->SetStateString( "PDAVideoVid", "sound/vo/video/welcome.tga" );
-////					objectiveSystem->SetStateString( "PDAVideoIcon", "sound/vo/video/welcome.tga" );
-////					objectiveSystem->SetStateString( "PDAVideoTitle", "" );
-////					objectiveSystem->SetStateString( "PDAVideoInfo", "" );
+////					objectiveSystem.SetStateString( "PDAVideoVid", "sound/vo/video/welcome.tga" );
+////					objectiveSystem.SetStateString( "PDAVideoIcon", "sound/vo/video/welcome.tga" );
+////					objectiveSystem.SetStateString( "PDAVideoTitle", "" );
+////					objectiveSystem.SetStateString( "PDAVideoInfo", "" );
 ////				}
 ////			} else {
 ////				// Selected, non-personal pda
 ////				// Add audio logs
 ////				if ( updatePDASel ) {
-////				objectiveSystem->HandleNamedEvent( "playerPDANotActive" );
-////				objectiveSystem->SetStateString( "pda_personal", "0" );
+////				objectiveSystem.HandleNamedEvent( "playerPDANotActive" );
+////				objectiveSystem.SetStateString( "pda_personal", "0" );
 ////					inventory.pdaOpened = true;
 ////				}
-////				objectiveSystem->SetStateString( "pda_location", pda->GetPost() );
-////				objectiveSystem->SetStateString( "pda_name", pda->GetFullName() );
+////				objectiveSystem.SetStateString( "pda_location", pda.GetPost() );
+////				objectiveSystem.SetStateString( "pda_name", pda.GetFullName() );
 ////				int audioCount = AddGuiPDAData( DECL_AUDIO, "listPDAAudio", pda, objectiveSystem );
-////				objectiveSystem->SetStateInt( "audioLogCount", audioCount );
-////				sel = objectiveSystem->State().GetInt( "listPDAAudio_sel_0", "0" );
+////				objectiveSystem.SetStateInt( "audioLogCount", audioCount );
+////				sel = objectiveSystem.State().GetInt( "listPDAAudio_sel_0", "0" );
 ////				const idDeclAudio *aud = NULL;
 ////				if ( sel >= 0 ) {
-////					aud = pda->GetAudioByIndex( sel );
+////					aud = pda.GetAudioByIndex( sel );
 ////				}
 ////				if ( aud ) {
-////					pdaAudio = aud->GetWave();
-////					objectiveSystem->SetStateString( "PDAAudioTitle", aud->GetAudioName() );
-////					objectiveSystem->SetStateString( "PDAAudioIcon", aud->GetPreview() );
-////					objectiveSystem->SetStateString( "PDAAudioInfo", aud->GetInfo() );
+////					pdaAudio = aud.GetWave();
+////					objectiveSystem.SetStateString( "PDAAudioTitle", aud.GetAudioName() );
+////					objectiveSystem.SetStateString( "PDAAudioIcon", aud.GetPreview() );
+////					objectiveSystem.SetStateString( "PDAAudioInfo", aud.GetInfo() );
 ////				} else {
-////					objectiveSystem->SetStateString( "PDAAudioIcon", "sound/vo/video/welcome.tga" );
-////					objectiveSystem->SetStateString( "PDAAutioTitle", "" );
-////					objectiveSystem->SetStateString( "PDAAudioInfo", "" );
+////					objectiveSystem.SetStateString( "PDAAudioIcon", "sound/vo/video/welcome.tga" );
+////					objectiveSystem.SetStateString( "PDAAutioTitle", "" );
+////					objectiveSystem.SetStateString( "PDAAudioInfo", "" );
 ////				}
 ////			}
 ////			// add emails
 ////			name = "";
 ////			data = "";
-////			int numEmails = pda->GetNumEmails();
+////			int numEmails = pda.GetNumEmails();
 ////			if ( numEmails > 0 ) {
 ////				AddGuiPDAData( DECL_EMAIL, "listPDAEmail", pda, objectiveSystem );
-////				sel = objectiveSystem->State().GetInt( "listPDAEmail_sel_0", "-1" );
+////				sel = objectiveSystem.State().GetInt( "listPDAEmail_sel_0", "-1" );
 ////				if ( sel >= 0 && sel < numEmails ) {
-////					const idDeclEmail *email = pda->GetEmailByIndex( sel );
-////					name = email->GetSubject();
-////					data = email->GetBody();
+////					const idDeclEmail *email = pda.GetEmailByIndex( sel );
+////					name = email.GetSubject();
+////					data = email.GetBody();
 ////				}
 ////			}
-////			objectiveSystem->SetStateString( "PDAEmailTitle", name );
-////			objectiveSystem->SetStateString( "PDAEmailText", data );
+////			objectiveSystem.SetStateString( "PDAEmailTitle", name );
+////			objectiveSystem.SetStateString( "PDAEmailText", data );
 ////		}
 ////	}
-////	if ( objectiveSystem->State().GetInt( "listPDA_sel_0", "-1" ) == -1 ) {
-////		objectiveSystem->SetStateInt( "listPDA_sel_0", 0 );
+////	if ( objectiveSystem.State().GetInt( "listPDA_sel_0", "-1" ) == -1 ) {
+////		objectiveSystem.SetStateInt( "listPDA_sel_0", 0 );
 ////	}
-////	objectiveSystem->StateChanged( gameLocal.time );
+////	objectiveSystem.StateChanged( gameLocal.time );
 ////}
 ////
 /////*
@@ -5382,24 +5382,24 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	if ( !objectiveSystemOpen ) {
 ////		int j, c = inventory.items.Num();
-////		objectiveSystem->SetStateInt( "inv_count", c );
+////		objectiveSystem.SetStateInt( "inv_count", c );
 ////		for ( j = 0; j < MAX_INVENTORY_ITEMS; j++ ) {
-////			objectiveSystem->SetStateString( va( "inv_name_%i", j ), "" );
-////			objectiveSystem->SetStateString( va( "inv_icon_%i", j ), "" );
-////			objectiveSystem->SetStateString( va( "inv_text_%i", j ), "" );
+////			objectiveSystem.SetStateString( va( "inv_name_%i", j ), "" );
+////			objectiveSystem.SetStateString( va( "inv_icon_%i", j ), "" );
+////			objectiveSystem.SetStateString( va( "inv_text_%i", j ), "" );
 ////		}
 ////		for ( j = 0; j < c; j++ ) {
 ////			idDict *item = inventory.items[j];
-////			if ( !item->GetBool( "inv_pda" ) ) {
-////				const char *iname = item->GetString( "inv_name" );
-////				const char *iicon = item->GetString( "inv_icon" );
-////				const char *itext = item->GetString( "inv_text" );
-////				objectiveSystem->SetStateString( va( "inv_name_%i", j ), iname );
-////				objectiveSystem->SetStateString( va( "inv_icon_%i", j ), iicon );
-////				objectiveSystem->SetStateString( va( "inv_text_%i", j ), itext );
-////				const idKeyValue *kv = item->MatchPrefix( "inv_id", NULL );
+////			if ( !item.GetBool( "inv_pda" ) ) {
+////				const char *iname = item.GetString( "inv_name" );
+////				const char *iicon = item.GetString( "inv_icon" );
+////				const char *itext = item.GetString( "inv_text" );
+////				objectiveSystem.SetStateString( va( "inv_name_%i", j ), iname );
+////				objectiveSystem.SetStateString( va( "inv_icon_%i", j ), iicon );
+////				objectiveSystem.SetStateString( va( "inv_text_%i", j ), itext );
+////				const idKeyValue *kv = item.MatchPrefix( "inv_id", NULL );
 ////				if ( kv ) {
-////					objectiveSystem->SetStateString( va( "inv_id_%i", j ), kv->GetValue() );
+////					objectiveSystem.SetStateString( va( "inv_id_%i", j ), kv.GetValue() );
 ////				}
 ////			}
 ////		}
@@ -5414,24 +5414,24 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////					weapstate++;
 ////				}
 ////			}
-////			objectiveSystem->SetStateInt( hudWeap, weapstate );
+////			objectiveSystem.SetStateInt( hudWeap, weapstate );
 ////		}
 ////
-////		objectiveSystem->SetStateInt( "listPDA_sel_0", inventory.selPDA );
-////		objectiveSystem->SetStateInt( "listPDAVideo_sel_0", inventory.selVideo );
-////		objectiveSystem->SetStateInt( "listPDAAudio_sel_0", inventory.selAudio );
-////		objectiveSystem->SetStateInt( "listPDAEmail_sel_0", inventory.selEMail );
+////		objectiveSystem.SetStateInt( "listPDA_sel_0", inventory.selPDA );
+////		objectiveSystem.SetStateInt( "listPDAVideo_sel_0", inventory.selVideo );
+////		objectiveSystem.SetStateInt( "listPDAAudio_sel_0", inventory.selAudio );
+////		objectiveSystem.SetStateInt( "listPDAEmail_sel_0", inventory.selEMail );
 ////		UpdatePDAInfo( false );
 ////		UpdateObjectiveInfo();
-////		objectiveSystem->Activate( true, gameLocal.time );
-////		hud->HandleNamedEvent( "pdaPickupHide" );
-////		hud->HandleNamedEvent( "videoPickupHide" );
+////		objectiveSystem.Activate( true, gameLocal.time );
+////		hud.HandleNamedEvent( "pdaPickupHide" );
+////		hud.HandleNamedEvent( "videoPickupHide" );
 ////	} else {
-////		inventory.selPDA = objectiveSystem->State().GetInt( "listPDA_sel_0" );
-////		inventory.selVideo = objectiveSystem->State().GetInt( "listPDAVideo_sel_0" );
-////		inventory.selAudio = objectiveSystem->State().GetInt( "listPDAAudio_sel_0" );
-////		inventory.selEMail = objectiveSystem->State().GetInt( "listPDAEmail_sel_0" );
-////		objectiveSystem->Activate( false, gameLocal.time );
+////		inventory.selPDA = objectiveSystem.State().GetInt( "listPDA_sel_0" );
+////		inventory.selVideo = objectiveSystem.State().GetInt( "listPDAVideo_sel_0" );
+////		inventory.selAudio = objectiveSystem.State().GetInt( "listPDAAudio_sel_0" );
+////		inventory.selEMail = objectiveSystem.State().GetInt( "listPDAEmail_sel_0" );
+////		objectiveSystem.Activate( false, gameLocal.time );
 ////	}
 ////	objectiveSystemOpen ^= 1;
 ////}
@@ -5474,7 +5474,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	if ( spectating ) {
 ////		// join the spectators
 ////		ClearPowerUps();
-////		spectator = this->entityNumber;
+////		spectator = this.entityNumber;
 ////		Init();
 ////		StopRagdoll();
 ////		SetPhysics( &physicsObj );
@@ -5482,7 +5482,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		Hide();
 ////		Event_DisableWeapon();
 ////		if ( hud ) {
-////			hud->HandleNamedEvent( "aim_clear" );
+////			hud.HandleNamedEvent( "aim_clear" );
 ////			MPAimFadeTime = 0;
 ////		}
 ////	} else {
@@ -5513,11 +5513,11 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	idClipModel *newClip;
 ////	if ( pm_usecylinder.GetBool() ) {
 ////		newClip = new idClipModel( idTraceModel( bounds, 8 ) );
-////		newClip->Translate( physicsObj.PlayerGetOrigin() );
+////		newClip.Translate( physicsObj.PlayerGetOrigin() );
 ////		physicsObj.SetClipModel( newClip, 1.0f );
 ////	} else {
 ////		newClip = new idClipModel( idTraceModel( bounds ) );
-////		newClip->Translate( physicsObj.PlayerGetOrigin() );
+////		newClip.Translate( physicsObj.PlayerGetOrigin() );
 ////		physicsObj.SetClipModel( newClip, 1.0f );
 ////	}
 ////}
@@ -5532,18 +5532,18 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	idVec3 start, end;
 ////	var ent:idEntity
 ////
-////	if ( GetBindMaster() && GetBindMaster()->IsType( idAFEntity_Vehicle::Type ) ) {
+////	if ( GetBindMaster() && GetBindMaster().IsType( idAFEntity_Vehicle::Type ) ) {
 ////		Show();
-////		static_cast<idAFEntity_Vehicle*>(GetBindMaster())->Use( this );
+////		static_cast<idAFEntity_Vehicle*>(GetBindMaster()).Use( this );
 ////	} else {
 ////		start = GetEyePosition();
 ////		end = start + viewAngles.ToForward() * 80.0f;
 ////		gameLocal.clip.TracePoint( trace, start, end, MASK_SHOT_RENDERMODEL, this );
 ////		if ( trace.fraction < 1.0f ) {
 ////			ent = gameLocal.entities[ trace.c.entityNum ];
-////			if ( ent && ent->IsType( idAFEntity_Vehicle::Type ) ) {
+////			if ( ent && ent.IsType( idAFEntity_Vehicle::Type ) ) {
 ////				Hide();
-////				static_cast<idAFEntity_Vehicle*>(ent)->Use( this );
+////				static_cast<idAFEntity_Vehicle*>(ent).Use( this );
 ////			}
 ////		}
 ////	}
@@ -5831,13 +5831,13 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		upBlend			= -frac;
 ////	}
 ////
-////    animator.CurrentAnim( ANIMCHANNEL_TORSO )->SetSyncedAnimWeight( 0, downBlend );
-////	animator.CurrentAnim( ANIMCHANNEL_TORSO )->SetSyncedAnimWeight( 1, forwardBlend );
-////	animator.CurrentAnim( ANIMCHANNEL_TORSO )->SetSyncedAnimWeight( 2, upBlend );
+////    animator.CurrentAnim( ANIMCHANNEL_TORSO ).SetSyncedAnimWeight( 0, downBlend );
+////	animator.CurrentAnim( ANIMCHANNEL_TORSO ).SetSyncedAnimWeight( 1, forwardBlend );
+////	animator.CurrentAnim( ANIMCHANNEL_TORSO ).SetSyncedAnimWeight( 2, upBlend );
 ////
-////	animator.CurrentAnim( ANIMCHANNEL_LEGS )->SetSyncedAnimWeight( 0, downBlend );
-////	animator.CurrentAnim( ANIMCHANNEL_LEGS )->SetSyncedAnimWeight( 1, forwardBlend );
-////	animator.CurrentAnim( ANIMCHANNEL_LEGS )->SetSyncedAnimWeight( 2, upBlend );
+////	animator.CurrentAnim( ANIMCHANNEL_LEGS ).SetSyncedAnimWeight( 0, downBlend );
+////	animator.CurrentAnim( ANIMCHANNEL_LEGS ).SetSyncedAnimWeight( 1, forwardBlend );
+////	animator.CurrentAnim( ANIMCHANNEL_LEGS ).SetSyncedAnimWeight( 2, upBlend );
 ////}
 ////
 /////*
@@ -5862,13 +5862,13 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		aasLocation[ i ].areaNum = 0;
 ////		aasLocation[ i ].pos = origin;
 ////		aas = gameLocal.GetAAS( i );
-////		if ( aas && aas->GetSettings() ) {
-////			size = aas->GetSettings()->boundingBoxes[0][1];
+////		if ( aas && aas.GetSettings() ) {
+////			size = aas.GetSettings().boundingBoxes[0][1];
 ////			bounds[0] = -size;
 ////			size.z = 32.0f;
 ////			bounds[1] = size;
 ////
-////			aasLocation[ i ].areaNum = aas->PointReachableAreaNum( origin, bounds, AREA_REACHABLE_WALK );
+////			aasLocation[ i ].areaNum = aas.PointReachableAreaNum( origin, bounds, AREA_REACHABLE_WALK );
 ////		}
 ////	}
 ////}
@@ -5896,12 +5896,12 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////			continue;
 ////		}
 ////
-////		size = aas->GetSettings()->boundingBoxes[0][1];
+////		size = aas.GetSettings().boundingBoxes[0][1];
 ////		bounds[0] = -size;
 ////		size.z = 32.0f;
 ////		bounds[1] = size;
 ////
-////		areaNum = aas->PointReachableAreaNum( origin, bounds, AREA_REACHABLE_WALK );
+////		areaNum = aas.PointReachableAreaNum( origin, bounds, AREA_REACHABLE_WALK );
 ////		if ( areaNum ) {
 ////			aasLocation[ i ].pos = origin;
 ////			aasLocation[ i ].areaNum = areaNum;
@@ -5992,7 +5992,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		newEyeOffset = pm_deadviewheight.GetFloat();
 ////	} else if ( physicsObj.IsCrouching() ) {
 ////		newEyeOffset = pm_crouchviewheight.GetFloat();
-////	} else if ( GetBindMaster() && GetBindMaster()->IsType( idAFEntity_Vehicle::Type ) ) {
+////	} else if ( GetBindMaster() && GetBindMaster().IsType( idAFEntity_Vehicle::Type ) ) {
 ////		newEyeOffset = 0.0f;
 ////	} else {
 ////		newEyeOffset = pm_normalviewheight.GetFloat();
@@ -6020,10 +6020,10 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////		// check if we're standing on top of a monster and give a push if we are
 ////		idEntity *groundEnt = physicsObj.GetGroundEntity();
-////		if ( groundEnt && groundEnt->IsType( idAI::Type ) ) {
+////		if ( groundEnt && groundEnt.IsType( idAI::Type ) ) {
 ////			idVec3 vel = physicsObj.GetLinearVelocity();
 ////			if ( vel.ToVec2().LengthSqr() < 0.1f ) {
-////				vel.ToVec2() = physicsObj.GetOrigin().ToVec2() - groundEnt->GetPhysics()->GetAbsBounds().GetCenter().ToVec2();
+////				vel.ToVec2() = physicsObj.GetOrigin().ToVec2() - groundEnt.GetPhysics().GetAbsBounds().GetCenter().ToVec2();
 ////				vel.ToVec2().NormalizeFast();
 ////				vel.ToVec2() *= pm_walkspeed.GetFloat();
 ////			} else {
@@ -6038,9 +6038,9 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		// bounce the view weapon
 //// 		loggedAccel_t	*acc = &loggedAccel[currentLoggedAccel&(NUM_LOGGED_ACCELS-1)];
 ////		currentLoggedAccel++;
-////		acc->time = gameLocal.time;
-////		acc->dir[2] = 200;
-////		acc->dir[0] = acc->dir[1] = 0;
+////		acc.time = gameLocal.time;
+////		acc.dir[2] = 200;
+////		acc.dir[0] = acc.dir[1] = 0;
 ////	}
 ////
 ////	if ( AI_ONLADDER ) {
@@ -6080,9 +6080,9 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////			}
 ////			int i;
 ////			for ( i = 0; i < 5, i < c; i++ ) {
-////				hud->SetStateString( va( "itemtext%i", inventory.nextItemNum ), inventory.pickupItemNames[0].name );
-////				hud->SetStateString( va( "itemicon%i", inventory.nextItemNum ), inventory.pickupItemNames[0].icon );
-////				hud->HandleNamedEvent( va( "itemPickup%i", inventory.nextItemNum++ ) );
+////				hud.SetStateString( va( "itemtext%i", inventory.nextItemNum ), inventory.pickupItemNames[0].name );
+////				hud.SetStateString( va( "itemicon%i", inventory.nextItemNum ), inventory.pickupItemNames[0].icon );
+////				hud.HandleNamedEvent( va( "itemPickup%i", inventory.nextItemNum++ ) );
 ////				inventory.pickupItemNames.RemoveIndex( 0 );
 ////				if (inventory.nextItemNum == 1 ) {
 ////					inventory.onePickupTime = gameLocal.time;
@@ -6098,16 +6098,16 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	if ( gameLocal.realClientTime == lastMPAimTime ) {
 ////		if ( MPAim != -1 && gameLocal.gameType == GAME_TDM
-////			&& gameLocal.entities[ MPAim ] && gameLocal.entities[ MPAim ]->IsType( idPlayer::Type )
-////			&& static_cast< idPlayer * >( gameLocal.entities[ MPAim ] )->team == team ) {
+////			&& gameLocal.entities[ MPAim ] && gameLocal.entities[ MPAim ].IsType( idPlayer::Type )
+////			&& static_cast< idPlayer * >( gameLocal.entities[ MPAim ] ).team == team ) {
 ////				aimed = static_cast< idPlayer * >( gameLocal.entities[ MPAim ] );
-////				hud->SetStateString( "aim_text", gameLocal.userInfo[ MPAim ].GetString( "ui_name" ) );
-////				hud->SetStateFloat( "aim_color", aimed->colorBarIndex );
-////				hud->HandleNamedEvent( "aim_flash" );
+////				hud.SetStateString( "aim_text", gameLocal.userInfo[ MPAim ].GetString( "ui_name" ) );
+////				hud.SetStateFloat( "aim_color", aimed.colorBarIndex );
+////				hud.HandleNamedEvent( "aim_flash" );
 ////				MPAimHighlight = true;
 ////				MPAimFadeTime = 0;	// no fade till loosing focus
 ////		} else if ( MPAimHighlight ) {
-////			hud->HandleNamedEvent( "aim_fade" );
+////			hud.HandleNamedEvent( "aim_fade" );
 ////			MPAimFadeTime = gameLocal.realClientTime;
 ////			MPAimHighlight = false;
 ////		}
@@ -6119,17 +6119,17 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		}
 ////	}
 ////
-////	hud->SetStateInt( "g_showProjectilePct", g_showProjectilePct.GetInteger() );
+////	hud.SetStateInt( "g_showProjectilePct", g_showProjectilePct.GetInteger() );
 ////	if ( numProjectilesFired ) {
-////		hud->SetStateString( "projectilepct", va( "Hit %% %.1f", ( (float) numProjectileHits / numProjectilesFired ) * 100 ) );
+////		hud.SetStateString( "projectilepct", va( "Hit %% %.1f", ( (float) numProjectileHits / numProjectilesFired ) * 100 ) );
 ////	} else {
-////		hud->SetStateString( "projectilepct", "Hit % 0.0" );
+////		hud.SetStateString( "projectilepct", "Hit % 0.0" );
 ////	}
 ////
 ////	if ( isLagged && gameLocal.isMultiplayer && gameLocal.localClientNum == entityNumber ) {
-////		hud->SetStateString( "hudLag", "1" );
+////		hud.SetStateString( "hudLag", "1" );
 ////	} else {
-////		hud->SetStateString( "hudLag", "0" );
+////		hud.SetStateString( "hudLag", "0" );
 ////	}
 ////}
 ////
@@ -6176,16 +6176,16 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////void idPlayer::StartFxOnBone( const char *fx, const char *bone ) {
 ////	idVec3 offset;
 ////	idMat3 axis;
-////	jointHandle_t jointHandle = GetAnimator()->GetJointHandle( bone );
+////	jointHandle_t jointHandle = GetAnimator().GetJointHandle( bone );
 ////
 ////	if ( jointHandle == INVALID_JOINT ) {
 ////		gameLocal.Printf( "Cannot find bone %s\n", bone );
 ////		return;
 ////	}
 ////
-////	if ( GetAnimator()->GetJointTransform( jointHandle, gameLocal.time, offset, axis ) ) {
-////		offset = GetPhysics()->GetOrigin() + offset * GetPhysics()->GetAxis();
-////		axis = axis * GetPhysics()->GetAxis();
+////	if ( GetAnimator().GetJointTransform( jointHandle, gameLocal.time, offset, axis ) ) {
+////		offset = GetPhysics().GetOrigin() + offset * GetPhysics().GetAxis();
+////		axis = axis * GetPhysics().GetAxis();
 ////	}
 ////
 ////	idEntityFx::StartFx( fx, &offset, &axis, this, true );
@@ -6240,17 +6240,17 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	if ( usercmd.forwardmove != oldCmd.forwardmove ) {
 ////		loggedAccel_t	*acc = &loggedAccel[currentLoggedAccel&(NUM_LOGGED_ACCELS-1)];
 ////		currentLoggedAccel++;
-////		acc->time = gameLocal.time;
-////		acc->dir[0] = usercmd.forwardmove - oldCmd.forwardmove;
-////		acc->dir[1] = acc->dir[2] = 0;
+////		acc.time = gameLocal.time;
+////		acc.dir[0] = usercmd.forwardmove - oldCmd.forwardmove;
+////		acc.dir[1] = acc.dir[2] = 0;
 ////	}
 ////
 ////	if ( usercmd.rightmove != oldCmd.rightmove ) {
 ////		loggedAccel_t	*acc = &loggedAccel[currentLoggedAccel&(NUM_LOGGED_ACCELS-1)];
 ////		currentLoggedAccel++;
-////		acc->time = gameLocal.time;
-////		acc->dir[1] = usercmd.rightmove - oldCmd.rightmove;
-////		acc->dir[0] = acc->dir[2] = 0;
+////		acc.time = gameLocal.time;
+////		acc.dir[1] = usercmd.rightmove - oldCmd.rightmove;
+////		acc.dir[0] = acc.dir[2] = 0;
 ////	}
 ////
 ////	// freelook centering
@@ -6261,7 +6261,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	// zooming
 ////	if ( ( usercmd.buttons ^ oldCmd.buttons ) & BUTTON_ZOOM ) {
 ////		if ( ( usercmd.buttons & BUTTON_ZOOM ) && weapon.GetEntity() ) {
-////			zoomFov.Init( gameLocal.time, 200.0f, CalcFov( false ), weapon.GetEntity()->GetZoomFov() );
+////			zoomFov.Init( gameLocal.time, 200.0f, CalcFov( false ), weapon.GetEntity().GetZoomFov() );
 ////		} else {
 ////			zoomFov.Init( gameLocal.time, 200.0f, zoomFov.GetCurrentValue( gameLocal.time ), DefaultFov() );
 ////		}
@@ -6276,7 +6276,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	// set the push velocity on the weapon before running the physics
 ////	if ( weapon.GetEntity() ) {
-////		weapon.GetEntity()->SetPushVelocity( physicsObj.GetPushedLinearVelocity() );
+////		weapon.GetEntity().SetPushVelocity( physicsObj.GetPushedLinearVelocity() );
 ////	}
 ////
 ////	EvaluateControls();
@@ -6356,34 +6356,34 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	}
 ////
 ////	if ( head.GetEntity() ) {
-////		headRenderEnt = head.GetEntity()->GetRenderEntity();
+////		headRenderEnt = head.GetEntity().GetRenderEntity();
 ////	} else {
 ////		headRenderEnt = NULL;
 ////	}
 ////
 ////	if ( headRenderEnt ) {
 ////		if ( influenceSkin ) {
-////			headRenderEnt->customSkin = influenceSkin;
+////			headRenderEnt.customSkin = influenceSkin;
 ////		} else {
-////			headRenderEnt->customSkin = NULL;
+////			headRenderEnt.customSkin = NULL;
 ////		}
 ////	}
 ////
 ////	if ( gameLocal.isMultiplayer || g_showPlayerShadow.GetBool() ) {
 ////		renderEntity.suppressShadowInViewID	= 0;
 ////		if ( headRenderEnt ) {
-////			headRenderEnt->suppressShadowInViewID = 0;
+////			headRenderEnt.suppressShadowInViewID = 0;
 ////		}
 ////	} else {
 ////		renderEntity.suppressShadowInViewID	= entityNumber+1;
 ////		if ( headRenderEnt ) {
-////			headRenderEnt->suppressShadowInViewID = entityNumber+1;
+////			headRenderEnt.suppressShadowInViewID = entityNumber+1;
 ////		}
 ////	}
 ////	// never cast shadows from our first-person muzzle flashes
 ////	renderEntity.suppressShadowInLightID = LIGHTID_VIEW_MUZZLE_FLASH + entityNumber;
 ////	if ( headRenderEnt ) {
-////		headRenderEnt->suppressShadowInLightID = LIGHTID_VIEW_MUZZLE_FLASH + entityNumber;
+////		headRenderEnt.suppressShadowInLightID = LIGHTID_VIEW_MUZZLE_FLASH + entityNumber;
 ////	}
 ////
 ////	if ( !g_stopTime.GetBool() ) {
@@ -6405,9 +6405,9 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	if ( g_showEnemies.GetBool() ) {
 ////		idActor *ent;
 ////		int num = 0;
-////		for( ent = enemyList.Next(); ent != NULL; ent = ent->enemyNode.Next() ) {
-////			gameLocal.Printf( "enemy (%d)'%s'\n", ent->entityNumber, ent->name.c_str() );
-////			gameRenderWorld->DebugBounds( colorRed, ent->GetPhysics()->GetBounds().Expand( 2 ), ent->GetPhysics()->GetOrigin() );
+////		for( ent = enemyList.Next(); ent != NULL; ent = ent.enemyNode.Next() ) {
+////			gameLocal.Printf( "enemy (%d)'%s'\n", ent.entityNumber, ent.name.c_str() );
+////			gameRenderWorld.DebugBounds( colorRed, ent.GetPhysics().GetBounds().Expand( 2 ), ent.GetPhysics().GetOrigin() );
 ////			num++;
 ////		}
 ////		gameLocal.Printf( "%d: enemies\n", num );
@@ -6424,8 +6424,8 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	const char *command;
 ////
 ////	if ( usercmd.mx != oldMouseX || usercmd.my != oldMouseY ) {
-////		ev = sys->GenerateMouseMoveEvent( usercmd.mx - oldMouseX, usercmd.my - oldMouseY );
-////		command = gui->HandleEvent( &ev, gameLocal.time );
+////		ev = sys.GenerateMouseMoveEvent( usercmd.mx - oldMouseX, usercmd.my - oldMouseY );
+////		command = gui.HandleEvent( &ev, gameLocal.time );
 ////		oldMouseX = usercmd.mx;
 ////		oldMouseY = usercmd.my;
 ////	}
@@ -6440,9 +6440,9 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	idVec3 dir;
 ////	
 ////	if ( attacker && attacker != this ) {
-////		dir = attacker->GetPhysics()->GetOrigin() - GetPhysics()->GetOrigin();
+////		dir = attacker.GetPhysics().GetOrigin() - GetPhysics().GetOrigin();
 ////	} else if ( inflictor && inflictor != this ) {
-////		dir = inflictor->GetPhysics()->GetOrigin() - GetPhysics()->GetOrigin();
+////		dir = inflictor.GetPhysics().GetOrigin() - GetPhysics().GetOrigin();
 ////	} else {
 ////		dir = viewAxis[ 0 ];
 ////	}
@@ -6530,7 +6530,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	fl.takedamage = true;		// can still be gibbed
 ////
 ////	// get rid of weapon
-////	weapon.GetEntity()->OwnerDied();
+////	weapon.GetEntity().OwnerDied();
 ////
 ////	// drop the weapon as an item
 ////	DropWeapon( true );
@@ -6542,9 +6542,9 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	if ( gameLocal.isMultiplayer || g_testDeath.GetBool() ) {
 ////		idPlayer *killer = NULL;
 ////		// no gibbing in MP. Event_Gib will early out in MP
-////		if ( attacker->IsType( idPlayer::Type ) ) {
+////		if ( attacker.IsType( idPlayer::Type ) ) {
 ////			killer = static_cast<idPlayer*>(attacker);
-////			if ( health < -20 || killer->PowerUpActive( BERSERK ) ) {
+////			if ( health < -20 || killer.PowerUpActive( BERSERK ) ) {
 ////				gibDeath = true;
 ////				gibsDir = dir;
 ////				gibsLaunched = false;
@@ -6593,7 +6593,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////void idPlayer::DamageFeedback( idEntity *victim, idEntity *inflictor, int &damage ) {
 ////	assert( !gameLocal.isClient );
 ////	damage *= PowerUpModifier( BERSERK );
-////	if ( damage && ( victim != this ) && victim->IsType( idActor::Type ) ) {
+////	if ( damage && ( victim != this ) && victim.IsType( idActor::Type ) ) {
 ////		SetLastHitTime( gameLocal.time );
 ////	}
 ////}
@@ -6612,10 +6612,10 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	int		damage;
 ////	int		armorSave;
 ////
-////	damageDef->GetInt( "damage", "20", damage );
+////	damageDef.GetInt( "damage", "20", damage );
 ////	damage = GetDamageForLocation( damage, location );
 ////
-////	idPlayer *player = attacker->IsType( idPlayer::Type ) ? static_cast<idPlayer*>(attacker) : NULL;
+////	idPlayer *player = attacker.IsType( idPlayer::Type ) ? static_cast<idPlayer*>(attacker) : NULL;
 ////	if ( !gameLocal.isMultiplayer ) {
 ////		if ( inflictor != gameLocal.world ) {
 ////			switch ( g_skill.GetInteger() ) {
@@ -6643,14 +6643,14 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	if ( attacker == this ) {
 ////		if ( gameLocal.isMultiplayer ) {
 ////			// only do this in mp so single player plasma and rocket splash is very dangerous in close quarters
-////			damage *= damageDef->GetFloat( "selfDamageScale", "0.5" );
+////			damage *= damageDef.GetFloat( "selfDamageScale", "0.5" );
 ////		} else {
-////			damage *= damageDef->GetFloat( "selfDamageScale", "1" );
+////			damage *= damageDef.GetFloat( "selfDamageScale", "1" );
 ////		}
 ////	}
 ////
 ////	// check for completely getting out of the damage
-////	if ( !damageDef->GetBool( "noGod" ) ) {
+////	if ( !damageDef.GetBool( "noGod" ) ) {
 ////		// check for godmode
 ////		if ( godmode ) {
 ////			damage = 0;
@@ -6658,10 +6658,10 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	}
 ////
 ////	// inform the attacker that they hit someone
-////	attacker->DamageFeedback( this, inflictor, damage );
+////	attacker.DamageFeedback( this, inflictor, damage );
 ////
 ////	// save some from armor
-////	if ( !damageDef->GetBool( "noArmor" ) ) {
+////	if ( !damageDef.GetBool( "noArmor" ) ) {
 ////		float armor_protection;
 ////
 ////		armor_protection = ( gameLocal.isMultiplayer ) ? g_armorProtectionMP.GetFloat() : g_armorProtection.GetFloat();
@@ -6686,10 +6686,10 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	// check for team damage
 ////	if ( gameLocal.gameType == GAME_TDM
 ////		&& !gameLocal.serverInfo.GetBool( "si_teamDamage" )
-////		&& !damageDef->GetBool( "noTeam" )
+////		&& !damageDef.GetBool( "noTeam" )
 ////		&& player
 ////		&& player != this		// you get self damage no matter what
-////		&& player->team == team ) {
+////		&& player.team == team ) {
 ////			damage = 0;
 ////	}
 ////
@@ -6739,7 +6739,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		attacker = gameLocal.world;
 ////	}
 ////
-////	if ( attacker->IsType( idAI::Type ) ) {
+////	if ( attacker.IsType( idAI::Type ) ) {
 ////		if ( PowerUpActive( BERSERK ) ) {
 ////			return;
 ////		}
@@ -6755,18 +6755,18 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		return;
 ////	}
 ////
-////	if ( damageDef->dict.GetBool( "ignore_player" ) ) {
+////	if ( damageDef.dict.GetBool( "ignore_player" ) ) {
 ////		return;
 ////	}
 ////
-////	CalcDamagePoints( inflictor, attacker, &damageDef->dict, damageScale, location, &damage, &armorSave );
+////	CalcDamagePoints( inflictor, attacker, &damageDef.dict, damageScale, location, &damage, &armorSave );
 ////
 ////	// determine knockback
-////	damageDef->dict.GetInt( "knockback", "20", knockback );
+////	damageDef.dict.GetInt( "knockback", "20", knockback );
 ////
 ////	if ( knockback != 0 && !fl.noknockback ) {
 ////		if ( attacker == this ) {
-////			damageDef->dict.GetFloat( "attackerPushScale", "0", attackerPushScale );
+////			damageDef.dict.GetFloat( "attackerPushScale", "0", attackerPushScale );
 ////		} else {
 ////			attackerPushScale = 1.0f;
 ////		}
@@ -6790,9 +6790,9 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		lastArmorPulse = gameLocal.time;
 ////	}
 ////	
-////	if ( damageDef->dict.GetBool( "burn" ) ) {
+////	if ( damageDef.dict.GetBool( "burn" ) ) {
 ////		StartSound( "snd_burn", SND_CHANNEL_BODY3, 0, false, NULL );
-////	} else if ( damageDef->dict.GetBool( "no_air" ) ) {
+////	} else if ( damageDef.dict.GetBool( "no_air" ) ) {
 ////		if ( !armorSave && health > 0 ) {
 ////			StartSound( "snd_airGasp", SND_CHANNEL_ITEM, 0, false, NULL );
 ////		}
@@ -6813,7 +6813,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	// the total will be turned into screen blends and view angle kicks
 ////	// at the end of the frame
 ////	if ( health > 0 ) {
-////		playerView.DamageImpulse( localDamageVector, &damageDef->dict );
+////		playerView.DamageImpulse( localDamageVector, &damageDef.dict );
 ////	}
 ////
 ////	// do the damage
@@ -6846,7 +6846,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////				health = -999;
 ////			}
 ////
-////			isTelefragged = damageDef->dict.GetBool( "telefrag" );
+////			isTelefragged = damageDef.dict.GetBool( "telefrag" );
 ////
 ////			lastDmgTime = gameLocal.time;
 ////			Killed( inflictor, attacker, damage, dir, location );
@@ -6872,7 +6872,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		}
 ////	}
 ////
-////	lastDamageDef = damageDef->Index();
+////	lastDamageDef = damageDef.Index();
 ////	lastDamageDir = damage_from;
 ////	lastDamageLocation = location;
 ////}
@@ -6886,7 +6886,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	idVec3 org;
 ////
 ////	if ( weapon.GetEntity() ) {
-////		weapon.GetEntity()->LowerWeapon();
+////		weapon.GetEntity().LowerWeapon();
 ////	}
 ////
 ////	SetOrigin( origin + idVec3( 0, 0, CM_CLIP_EPSILON ) );
@@ -6897,7 +6897,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	// clear the ik heights so model doesn't appear in the wrong place
 ////	walkIK.EnableAll();
 ////
-////	GetPhysics()->SetLinearVelocity( vec3_origin );
+////	GetPhysics().SetLinearVelocity( vec3_origin );
 ////
 ////	SetViewAngles( angles );
 ////
@@ -6982,7 +6982,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	}
 ////
 ////	if ( zoomFov.IsDone( gameLocal.time ) ) {
-////		fov = ( honorZoom && usercmd.buttons & BUTTON_ZOOM ) && weapon.GetEntity() ? weapon.GetEntity()->GetZoomFov() : DefaultFov();
+////		fov = ( honorZoom && usercmd.buttons & BUTTON_ZOOM ) && weapon.GetEntity() ? weapon.GetEntity().GetZoomFov() : DefaultFov();
 ////	} else {
 ////		fov = zoomFov.GetCurrentValue( gameLocal.time );
 ////	}
@@ -7020,7 +7020,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	int weaponAngleOffsetAverages;
 ////	float weaponAngleOffsetScale, weaponAngleOffsetMax;
 ////
-////	weapon.GetEntity()->GetWeaponAngleOffsets( &weaponAngleOffsetAverages, &weaponAngleOffsetScale, &weaponAngleOffsetMax );
+////	weapon.GetEntity().GetWeaponAngleOffsets( &weaponAngleOffsetAverages, &weaponAngleOffsetScale, &weaponAngleOffsetMax );
 ////
 ////	av = current;
 ////
@@ -7067,7 +7067,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	ofs.Zero();
 ////
-////	weapon.GetEntity()->GetWeaponTimeOffsets( &weaponOffsetTime, &weaponOffsetScale );
+////	weapon.GetEntity().GetWeaponTimeOffsets( &weaponOffsetTime, &weaponOffsetScale );
 ////
 ////	int stop = currentLoggedAccel - NUM_LOGGED_ACCELS;
 ////	if ( stop < 0 ) {
@@ -7077,14 +7077,14 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		loggedAccel_t	*acc = &loggedAccel[i&(NUM_LOGGED_ACCELS-1)];
 ////
 ////		float	f;
-////		float	t = gameLocal.time - acc->time;
+////		float	t = gameLocal.time - acc.time;
 ////		if ( t >= weaponOffsetTime ) {
 ////			break;	// remainder are too old to care about
 ////		}
 ////
 ////		f = t / weaponOffsetTime;
 ////		f = ( cos( f * 2.0f * idMath::PI ) - 1.0f ) * 0.5f;
-////		ofs += f * weaponOffsetScale * acc->dir;
+////		ofs += f * weaponOffsetScale * acc.dir;
 ////	}
 ////
 ////	return ofs;
@@ -7189,11 +7189,11 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	view.z += 8 + height;
 ////
 ////	angles.pitch *= 0.5f;
-////	renderView->viewaxis = angles.ToMat3() * physicsObj.GetGravityAxis();
+////	renderView.viewaxis = angles.ToMat3() * physicsObj.GetGravityAxis();
 ////
 ////	idMath::SinCos( DEG2RAD( angle ), sideScale, forwardScale );
-////	view -= range * forwardScale * renderView->viewaxis[ 0 ];
-////	view += range * sideScale * renderView->viewaxis[ 1 ];
+////	view -= range * forwardScale * renderView.viewaxis[ 0 ];
+////	view += range * sideScale * renderView.viewaxis[ 1 ];
 ////
 ////	if ( clip ) {
 ////		// trace a ray from the origin to the viewpoint to make sure the view isn't
@@ -7221,9 +7221,9 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	angles.pitch = - RAD2DEG( atan2( focusPoint.z, focusDist ) );
 ////	angles.yaw -= angle;
 ////
-////	renderView->vieworg = view;
-////	renderView->viewaxis = angles.ToMat3() * physicsObj.GetGravityAxis();
-////	renderView->viewID = 0;
+////	renderView.vieworg = view;
+////	renderView.viewaxis = angles.ToMat3() * physicsObj.GetGravityAxis();
+////	renderView.viewID = 0;
 ////}
 ////
 /////*
@@ -7238,9 +7238,9 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	if ( gameLocal.isClient && entityNumber != gameLocal.localClientNum ) {
 ////		org = smoothedOrigin;
 ////	} else {
-////		org = GetPhysics()->GetOrigin();
+////		org = GetPhysics().GetOrigin();
 ////	}
-////	return org + ( GetPhysics()->GetGravityNormal() * -eyeOffset.z );
+////	return org + ( GetPhysics().GetGravityNormal() * -eyeOffset.z );
 ////}
 ////
 /////*
@@ -7329,35 +7329,35 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	// copy global shader parms
 ////	for( i = 0; i < MAX_GLOBAL_SHADER_PARMS; i++ ) {
-////		renderView->shaderParms[ i ] = gameLocal.globalShaderParms[ i ];
+////		renderView.shaderParms[ i ] = gameLocal.globalShaderParms[ i ];
 ////	}
-////	renderView->globalMaterial = gameLocal.GetGlobalMaterial();
-////	renderView->time = gameLocal.time;
+////	renderView.globalMaterial = gameLocal.GetGlobalMaterial();
+////	renderView.time = gameLocal.time;
 ////
 ////	// calculate size of 3D view
-////	renderView->x = 0;
-////	renderView->y = 0;
-////	renderView->width = SCREEN_WIDTH;
-////	renderView->height = SCREEN_HEIGHT;
-////	renderView->viewID = 0;
+////	renderView.x = 0;
+////	renderView.y = 0;
+////	renderView.width = SCREEN_WIDTH;
+////	renderView.height = SCREEN_HEIGHT;
+////	renderView.viewID = 0;
 ////
 ////	// check if we should be drawing from a camera's POV
 ////	if ( !noclip && (gameLocal.GetCamera() || privateCameraView) ) {
 ////		// get origin, axis, and fov
 ////		if ( privateCameraView ) {
-////			privateCameraView->GetViewParms( renderView );
+////			privateCameraView.GetViewParms( renderView );
 ////		} else {
-////			gameLocal.GetCamera()->GetViewParms( renderView );
+////			gameLocal.GetCamera().GetViewParms( renderView );
 ////		}
 ////	} else {
 ////		if ( g_stopTime.GetBool() ) {
-////			renderView->vieworg = firstPersonViewOrigin;
-////			renderView->viewaxis = firstPersonViewAxis;
+////			renderView.vieworg = firstPersonViewOrigin;
+////			renderView.viewaxis = firstPersonViewAxis;
 ////
 ////			if ( !pm_thirdPerson.GetBool() ) {
 ////				// set the viewID to the clientNum + 1, so we can suppress the right player bodies and
 ////				// allow the right player view weapons
-////				renderView->viewID = entityNumber + 1;
+////				renderView.viewID = entityNumber + 1;
 ////			}
 ////		} else if ( pm_thirdPerson.GetBool() ) {
 ////			OffsetThirdPersonView( pm_thirdPersonAngle.GetFloat(), pm_thirdPersonRange.GetFloat(), pm_thirdPersonHeight.GetFloat(), pm_thirdPersonClip.GetBool() );
@@ -7365,24 +7365,24 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////			range = gameLocal.time < minRespawnTime ? ( gameLocal.time + RAGDOLL_DEATH_TIME - minRespawnTime ) * ( 120.0f / RAGDOLL_DEATH_TIME ) : 120.0f;
 ////			OffsetThirdPersonView( 0.0f, 20.0f + range, 0.0f, false );
 ////		} else {
-////			renderView->vieworg = firstPersonViewOrigin;
-////			renderView->viewaxis = firstPersonViewAxis;
+////			renderView.vieworg = firstPersonViewOrigin;
+////			renderView.viewaxis = firstPersonViewAxis;
 ////
 ////			// set the viewID to the clientNum + 1, so we can suppress the right player bodies and
 ////			// allow the right player view weapons
-////			renderView->viewID = entityNumber + 1;
+////			renderView.viewID = entityNumber + 1;
 ////		}
 ////		
 ////		// field of view
-////		gameLocal.CalcFov( CalcFov( true ), renderView->fov_x, renderView->fov_y );
+////		gameLocal.CalcFov( CalcFov( true ), renderView.fov_x, renderView.fov_y );
 ////	}
 ////
-////	if ( renderView->fov_y == 0 ) {
-////		common->Error( "renderView->fov_y == 0" );
+////	if ( renderView.fov_y == 0 ) {
+////		common.Error( "renderView.fov_y == 0" );
 ////	}
 ////
 ////	if ( g_showviewpos.GetBool() ) {
-////		gameLocal.Printf( "%s : %s\n", renderView->vieworg.ToString(), renderView->viewaxis.ToAngles().ToString() );
+////		gameLocal.Printf( "%s : %s\n", renderView.vieworg.ToString(), renderView.viewaxis.ToAngles().ToString() );
 ////	}
 ////}
 ////
@@ -7406,7 +7406,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	if ( inventory.ammo[ ammo_souls ] < max_souls ) {
 ////		inventory.ammo[ ammo_souls ]++;
 ////		if ( inventory.ammo[ ammo_souls ] >= max_souls ) {
-////			hud->HandleNamedEvent( "soulCubeReady" );
+////			hud.HandleNamedEvent( "soulCubeReady" );
 ////			StartSound( "snd_soulcube_ready", SND_CHANNEL_ANY, 0, false, NULL );
 ////		}
 ////	}
@@ -7460,34 +7460,34 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		StartSound( "snd_hit_feedback", SND_CHANNEL_ANY, SSF_PRIVATE_SOUND, false, NULL );
 ////	}
 ////	if ( cursor ) {
-////		cursor->HandleNamedEvent( "hitTime" );
+////		cursor.HandleNamedEvent( "hitTime" );
 ////	}
 ////	if ( hud ) {
 ////		if ( MPAim != -1 ) {
-////			if ( gameLocal.entities[ MPAim ] && gameLocal.entities[ MPAim ]->IsType( idPlayer::Type ) ) {
+////			if ( gameLocal.entities[ MPAim ] && gameLocal.entities[ MPAim ].IsType( idPlayer::Type ) ) {
 ////				aimed = static_cast< idPlayer * >( gameLocal.entities[ MPAim ] );
 ////			}
 ////			assert( aimed );
 ////			// full highlight, no fade till loosing aim
-////			hud->SetStateString( "aim_text", gameLocal.userInfo[ MPAim ].GetString( "ui_name" ) );
+////			hud.SetStateString( "aim_text", gameLocal.userInfo[ MPAim ].GetString( "ui_name" ) );
 ////			if ( aimed ) {
-////				hud->SetStateFloat( "aim_color", aimed->colorBarIndex );
+////				hud.SetStateFloat( "aim_color", aimed.colorBarIndex );
 ////			}
-////			hud->HandleNamedEvent( "aim_flash" );
+////			hud.HandleNamedEvent( "aim_flash" );
 ////			MPAimHighlight = true;
 ////			MPAimFadeTime = 0;
 ////		} else if ( lastMPAim != -1 ) {
-////			if ( gameLocal.entities[ lastMPAim ] && gameLocal.entities[ lastMPAim ]->IsType( idPlayer::Type ) ) {
+////			if ( gameLocal.entities[ lastMPAim ] && gameLocal.entities[ lastMPAim ].IsType( idPlayer::Type ) ) {
 ////				aimed = static_cast< idPlayer * >( gameLocal.entities[ lastMPAim ] );
 ////			}
 ////			assert( aimed );
 ////			// start fading right away
-////			hud->SetStateString( "aim_text", gameLocal.userInfo[ lastMPAim ].GetString( "ui_name" ) );
+////			hud.SetStateString( "aim_text", gameLocal.userInfo[ lastMPAim ].GetString( "ui_name" ) );
 ////			if ( aimed ) {
-////				hud->SetStateFloat( "aim_color", aimed->colorBarIndex );
+////				hud.SetStateFloat( "aim_color", aimed.colorBarIndex );
 ////			}
-////			hud->HandleNamedEvent( "aim_flash" );
-////			hud->HandleNamedEvent( "aim_fade" );
+////			hud.HandleNamedEvent( "aim_flash" );
+////			hud.HandleNamedEvent( "aim_fade" );
 ////			MPAimHighlight = false;
 ////			MPAimFadeTime = gameLocal.realClientTime;
 ////		}
@@ -7502,19 +7502,19 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////void idPlayer::SetInfluenceLevel( int level ) {
 ////	if ( level != influenceActive ) {
 ////		if ( level ) {
-////			for ( var ent:idEntity = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent->spawnNode.Next() ) {
-////				if ( ent->IsType( idProjectile::Type ) ) {
+////			for ( var ent:idEntity = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
+////				if ( ent.IsType( idProjectile::Type ) ) {
 ////					// remove all projectiles
-////					ent->PostEventMS( &EV_Remove, 0 );
+////					ent.PostEventMS( &EV_Remove, 0 );
 ////				}
 ////			}
 ////			if ( weaponEnabled && weapon.GetEntity() ) {
-////				weapon.GetEntity()->EnterCinematic();
+////				weapon.GetEntity().EnterCinematic();
 ////			}
 ////		} else {
 ////			physicsObj.SetLinearVelocity( vec3_origin );
 ////			if ( weaponEnabled && weapon.GetEntity() ) {
-////				weapon.GetEntity()->ExitCinematic();
+////				weapon.GetEntity().ExitCinematic();
 ////			}
 ////		}
 ////		influenceActive = level;
@@ -7531,12 +7531,12 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	influenceEntity = NULL;
 ////	influenceSkin = NULL;
 ////	if ( mtr && *mtr ) {
-////		influenceMaterial = declManager->FindMaterial( mtr );
+////		influenceMaterial = declManager.FindMaterial( mtr );
 ////	}
 ////	if ( skinname && *skinname ) {
-////		influenceSkin = declManager->FindSkin( skinname );
+////		influenceSkin = declManager.FindSkin( skinname );
 ////		if ( head.GetEntity() ) {
-////			head.GetEntity()->GetRenderEntity()->shaderParms[ SHADERPARM_TIMEOFFSET ] = -MS2SEC( gameLocal.time );
+////			head.GetEntity().GetRenderEntity().shaderParms[ SHADERPARM_TIMEOFFSET ] = -MS2SEC( gameLocal.time );
 ////		}
 ////		UpdateVisuals();
 ////	}
@@ -7617,10 +7617,10 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////==================
 ////*/
 ////void idPlayer::Event_EnableWeapon( void ) {
-////	hiddenWeapon = gameLocal.world->spawnArgs.GetBool( "no_Weapons" );
+////	hiddenWeapon = gameLocal.world.spawnArgs.GetBool( "no_Weapons" );
 ////	weaponEnabled = true;
 ////	if ( weapon.GetEntity() ) {
-////		weapon.GetEntity()->ExitCinematic();
+////		weapon.GetEntity().ExitCinematic();
 ////	}
 ////}
 ////
@@ -7630,10 +7630,10 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////==================
 ////*/
 ////void idPlayer::Event_DisableWeapon( void ) {
-////	hiddenWeapon = gameLocal.world->spawnArgs.GetBool( "no_Weapons" );
+////	hiddenWeapon = gameLocal.world.spawnArgs.GetBool( "no_Weapons" );
 ////	weaponEnabled = false;
 ////	if ( weapon.GetEntity() ) {
-////		weapon.GetEntity()->EnterCinematic();
+////		weapon.GetEntity().EnterCinematic();
 ////	}
 ////}
 ////
@@ -7662,7 +7662,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	const char *weapon;
 ////
 ////	if ( previousWeapon >= 0 ) {
-////		int pw = ( gameLocal.world->spawnArgs.GetBool( "no_Weapons" ) ) ? 0 : previousWeapon;
+////		int pw = ( gameLocal.world.spawnArgs.GetBool( "no_Weapons" ) ) ? 0 : previousWeapon;
 ////		weapon = spawnArgs.GetString( va( "def_weapon%d", pw) );
 ////		idThread::ReturnString( weapon );
 ////	} else {
@@ -7684,9 +7684,9 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		return;
 ////	}
 ////
-////	if ( hiddenWeapon && gameLocal.world->spawnArgs.GetBool( "no_Weapons" ) ) {
+////	if ( hiddenWeapon && gameLocal.world.spawnArgs.GetBool( "no_Weapons" ) ) {
 ////		idealWeapon = weapon_fists;
-////		weapon.GetEntity()->HideWeapon();
+////		weapon.GetEntity().HideWeapon();
 ////		return;
 ////	}
 ////
@@ -7762,11 +7762,11 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	// verify and setup
 ////	exitEnt = teleportEntity.GetEntity();
 ////	if ( !exitEnt ) {
-////		common->DPrintf( "Event_ExitTeleporter player %d while not being teleported\n", entityNumber );
+////		common.DPrintf( "Event_ExitTeleporter player %d while not being teleported\n", entityNumber );
 ////		return;
 ////	}
 ////
-////	pushVel = exitEnt->spawnArgs.GetFloat( "push", "300" );
+////	pushVel = exitEnt.spawnArgs.GetFloat( "push", "300" );
 ////
 ////	if ( gameLocal.isServer ) {
 ////		ServerSendEvent( EVENT_EXIT_TELEPORTER, NULL, false, -1 );
@@ -7774,9 +7774,9 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////
 ////	SetPrivateCameraView( NULL );
 ////	// setup origin and push according to the exit target
-////	SetOrigin( exitEnt->GetPhysics()->GetOrigin() + idVec3( 0, 0, CM_CLIP_EPSILON ) );
-////	SetViewAngles( exitEnt->GetPhysics()->GetAxis().ToAngles() );
-////	physicsObj.SetLinearVelocity( exitEnt->GetPhysics()->GetAxis()[ 0 ] * pushVel );
+////	SetOrigin( exitEnt.GetPhysics().GetOrigin() + idVec3( 0, 0, CM_CLIP_EPSILON ) );
+////	SetViewAngles( exitEnt.GetPhysics().GetAxis().ToAngles() );
+////	physicsObj.SetLinearVelocity( exitEnt.GetPhysics().GetAxis()[ 0 ] * pushVel );
 ////	physicsObj.ClearPushedVelocity();
 ////	// teleport fx
 ////	playerView.Flash( colorWhite, 120 );
@@ -7896,34 +7896,34 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	UpdateDeathSkin( false );
 ////
 ////	if ( head.GetEntity() ) {
-////		headRenderEnt = head.GetEntity()->GetRenderEntity();
+////		headRenderEnt = head.GetEntity().GetRenderEntity();
 ////	} else {
 ////		headRenderEnt = NULL;
 ////	}
 ////
 ////	if ( headRenderEnt ) {
 ////		if ( influenceSkin ) {
-////			headRenderEnt->customSkin = influenceSkin;
+////			headRenderEnt.customSkin = influenceSkin;
 ////		} else {
-////			headRenderEnt->customSkin = NULL;
+////			headRenderEnt.customSkin = NULL;
 ////		}
 ////	}
 ////
 ////	if ( gameLocal.isMultiplayer || g_showPlayerShadow.GetBool() ) {
 ////		renderEntity.suppressShadowInViewID	= 0;
 ////		if ( headRenderEnt ) {
-////			headRenderEnt->suppressShadowInViewID = 0;
+////			headRenderEnt.suppressShadowInViewID = 0;
 ////		}
 ////	} else {
 ////		renderEntity.suppressShadowInViewID	= entityNumber+1;
 ////		if ( headRenderEnt ) {
-////			headRenderEnt->suppressShadowInViewID = entityNumber+1;
+////			headRenderEnt.suppressShadowInViewID = entityNumber+1;
 ////		}
 ////	}
 ////	// never cast shadows from our first-person muzzle flashes
 ////	renderEntity.suppressShadowInLightID = LIGHTID_VIEW_MUZZLE_FLASH + entityNumber;
 ////	if ( headRenderEnt ) {
-////		headRenderEnt->suppressShadowInLightID = LIGHTID_VIEW_MUZZLE_FLASH + entityNumber;
+////		headRenderEnt.suppressShadowInLightID = LIGHTID_VIEW_MUZZLE_FLASH + entityNumber;
 ////	}
 ////
 ////	if ( !gameLocal.inCinematic ) {
@@ -7960,8 +7960,8 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	// smooth self origin if snapshots are telling us prediction is off
 ////	if ( gameLocal.isClient && gameLocal.framenum >= smoothedFrame && ( entityNumber != gameLocal.localClientNum || selfSmooth ) ) {
 ////		// render origin and axis
-////		idMat3 renderAxis = viewAxis * GetPhysics()->GetAxis();
-////		idVec3 renderOrigin = GetPhysics()->GetOrigin() + modelOffset * renderAxis;
+////		idMat3 renderAxis = viewAxis * GetPhysics().GetAxis();
+////		idVec3 renderOrigin = GetPhysics().GetOrigin() + modelOffset * renderAxis;
 ////
 ////		// update the smoothed origin
 ////		if ( !smoothedOriginUpdated ) {
@@ -7982,7 +7982,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		}
 ////
 ////		axis = idAngles( 0.0f, smoothedAngles.yaw, 0.0f ).ToMat3();
-////		origin = ( smoothedOrigin - GetPhysics()->GetOrigin() ) * axis.Transpose();
+////		origin = ( smoothedOrigin - GetPhysics().GetOrigin() ) * axis.Transpose();
 ////
 ////	} else {
 ////
@@ -8010,7 +8010,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		renderView_t view;
 ////
 ////		memset( &view, 0, sizeof( view ) );
-////		camera->GetViewParms( &view );
+////		camera.GetViewParms( &view );
 ////		origin = view.vieworg;
 ////		axis = view.viewaxis;
 ////		return true;
@@ -8085,7 +8085,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	if ( weapon.SetSpawnId( weaponSpawnId ) ) {
 ////		if ( weapon.GetEntity() ) {
 ////			// maintain ownership locally
-////			weapon.GetEntity()->SetOwner( this );
+////			weapon.GetEntity().SetOwner( this );
 ////		}
 ////		currentWeapon = -1;
 ////	}
@@ -8117,7 +8117,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////			StartSound( "snd_death", SND_CHANNEL_VOICE, 0, false, NULL );
 ////		}
 ////		if ( weapon.GetEntity() ) {
-////			weapon.GetEntity()->OwnerDied();
+////			weapon.GetEntity().OwnerDied();
 ////		}
 ////	} else if ( oldHealth <= 0 && health > 0 ) {
 ////		// respawn
@@ -8131,13 +8131,13 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////			lastDmgTime = gameLocal.time;
 ////		} else {
 ////			// damage feedback
-////			const idDeclEntityDef *def = static_cast<const idDeclEntityDef *>( declManager->DeclByIndex( DECL_ENTITYDEF, lastDamageDef, false ) );
+////			const idDeclEntityDef *def = static_cast<const idDeclEntityDef *>( declManager.DeclByIndex( DECL_ENTITYDEF, lastDamageDef, false ) );
 ////			if ( def ) {
-////				playerView.DamageImpulse( lastDamageDir * viewAxis.Transpose(), &def->dict );
+////				playerView.DamageImpulse( lastDamageDir * viewAxis.Transpose(), &def.dict );
 ////				AI_PAIN = Pain( NULL, NULL, oldHealth - health, lastDamageDir, lastDamageLocation );
 ////				lastDmgTime = gameLocal.time;
 ////			} else {
-////				common->Warning( "NET: no damage def for damage feedback '%d'\n", lastDamageDef );
+////				common.Warning( "NET: no damage def for damage feedback '%d'\n", lastDamageDef );
 ////			}
 ////		}
 ////	} else if ( health > oldHealth && PowerUpActive( MEGAHEALTH ) && !stateHitch ) {
@@ -8228,7 +8228,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		return true;
 ////	}
 ////
-////	// client->server events
+////	// client.server events
 ////	switch( event ) {
 ////		case EVENT_IMPULSE: {
 ////			PerformImpulse( msg.ReadBits( 6 ) );
@@ -8297,7 +8297,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	idActor::Hide();
 ////	weap = weapon.GetEntity();
 ////	if ( weap ) {
-////		weap->HideWorldModel();
+////		weap.HideWorldModel();
 ////	}
 ////}
 ////
@@ -8312,7 +8312,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	idActor::Show();
 ////	weap = weapon.GetEntity();
 ////	if ( weap ) {
-////		weap->ShowWorldModel();
+////		weap.ShowWorldModel();
 ////	}
 ////}
 ////
@@ -8323,7 +8323,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////*/
 ////void idPlayer::StartAudioLog( void ) {
 ////	if ( hud ) {
-////		hud->HandleNamedEvent( "audioLogUp" );
+////		hud.HandleNamedEvent( "audioLogUp" );
 ////	}
 ////}
 ////
@@ -8334,7 +8334,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////*/
 ////void idPlayer::StopAudioLog( void ) {
 ////	if ( hud ) {
-////		hud->HandleNamedEvent( "audioLogDown" );
+////		hud.HandleNamedEvent( "audioLogDown" );
 ////	}
 ////}
 ////
@@ -8347,9 +8347,9 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////	if ( tipUp ) {
 ////		return;
 ////	}
-////	hud->SetStateString( "tip", tip );
-////	hud->SetStateString( "tiptitle", title );
-////	hud->HandleNamedEvent( "tipWindowUp" ); 
+////	hud.SetStateString( "tip", tip );
+////	hud.SetStateString( "tiptitle", title );
+////	hud.HandleNamedEvent( "tipWindowUp" ); 
 ////	if ( autoHide ) {
 ////		PostEventSec( &EV_Player_HideTip, 5.0f );
 ////	}
@@ -8362,7 +8362,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////===============
 ////*/
 ////void idPlayer::HideTip( void ) {
-////	hud->HandleNamedEvent( "tipWindowDown" ); 
+////	hud.HandleNamedEvent( "tipWindowDown" ); 
 ////	tipUp = false;
 ////}
 ////
@@ -8381,7 +8381,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////===============
 ////*/
 ////void idPlayer::ShowObjective( const char *obj ) {
-////	hud->HandleNamedEvent( obj );
+////	hud.HandleNamedEvent( obj );
 ////	objectiveUp = true;
 ////}
 ////
@@ -8391,7 +8391,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////===============
 ////*/
 ////void idPlayer::HideObjective( void ) {
-////	hud->HandleNamedEvent( "closeObjective" );
+////	hud.HandleNamedEvent( "closeObjective" );
 ////	objectiveUp = false;
 ////}
 ////
@@ -8412,7 +8412,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////void idPlayer::SetSpectateOrigin( void ) {
 ////	idVec3 neworig;
 ////
-////	neworig = GetPhysics()->GetOrigin();
+////	neworig = GetPhysics().GetOrigin();
 ////	neworig[ 2 ] += EyeHeight();
 ////	neworig[ 2 ] += 25;
 ////	SetOrigin( neworig );
@@ -8465,7 +8465,7 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////		if ( idStr::Icmp( mapName, inventory.levelTriggers[i].levelName) == 0 ){
 ////			var ent:idEntity = gameLocal.FindEntity( inventory.levelTriggers[i].triggerName );
 ////			if ( ent ) {
-////				ent->PostEventMS( &EV_Activate, 1, this );
+////				ent.PostEventMS( &EV_Activate, 1, this );
 ////			}
 ////		}
 ////	}
@@ -8501,8 +8501,8 @@ idPlayer.Type = new idTypeInfo("idPlayer", "idActor",
 ////===============
 ////*/
 ////void idPlayer::UpdatePlayerIcons( void ) {
-////	/*int*/time:number = networkSystem->ServerGetClientTimeSinceLastPacket( entityNumber );
-////	if ( time > cvarSystem->GetCVarInteger( "net_clientMaxPrediction" ) ) {
+////	/*int*/time:number = networkSystem.ServerGetClientTimeSinceLastPacket( entityNumber );
+////	if ( time > cvarSystem.GetCVarInteger( "net_clientMaxPrediction" ) ) {
 ////		isLagged = true;
 ////	} else {
 ////		isLagged = false;

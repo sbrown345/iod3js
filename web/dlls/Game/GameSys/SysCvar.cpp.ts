@@ -53,7 +53,7 @@ var ui_teamArgs: string[] = ["Red", "Blue"/*, NULL */];
 
 class gameVersion_s {
 	constructor ( ) {
-		this.$string =  sprintf( "%s.%d%s %s %s", ENGINE_VERSION, BUILD_NUMBER, BUILD_DEBUG, BUILD_STRING, __DATE__, __TIME__); 
+		this.$string = sprintf( "%s.%d%s %s %s", ENGINE_VERSION, BUILD_NUMBER, BUILD_DEBUG, BUILD_STRING, __DATE__, __TIME__ );
 	}
 	$string:string;
 };

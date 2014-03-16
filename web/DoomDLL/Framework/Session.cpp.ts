@@ -406,29 +406,29 @@ idSessionLocal.prototype.StartWipe = function ( _wipeMaterial: string, hold: boo
 	this.wipeMaterial = declManager.FindMaterial( _wipeMaterial, false );
 
 	this.wipeStartTic = com_ticNumber;
-	this.wipeStopTic = this.wipeStartTic + 1000.0 / USERCMD_MSEC * idSessionLocal.com_wipeSeconds.GetFloat ( );
+	this.wipeStopTic = int( this.wipeStartTic + 1000.0 / USERCMD_MSEC * idSessionLocal.com_wipeSeconds.GetFloat ( ) );
 	this.wipeHold = hold;
 };
 
-///*
-//================
-//idSessionLocal::CompleteWipe
-//================
-//*/
-//void idSessionLocal::CompleteWipe() {
-//	if ( com_ticNumber == 0 ) {
-//		// if the async thread hasn't started, we would hang here
-//		this.wipeStopTic = 0;
-//		UpdateScreen( true );
-//		return;
-//	}
-//	while ( com_ticNumber < this.wipeStopTic ) {
+/*
+================
+idSessionLocal::CompleteWipe
+================
+*/
+idSessionLocal.prototype.CompleteWipe = function ( ) {
+	if ( com_ticNumber == 0 ) {
+		// if the async thread hasn't started, we would hang here
+		this.wipeStopTic = 0;
+		this.UpdateScreen( true );
+		return;
+	}
+	while ( com_ticNumber < this.wipeStopTic ) {
 //#if ID_CONSOLE_LOCK
 //		emptyDrawCount = 0;
 //#endif
-//		UpdateScreen( true );
-//	}
-//}
+		this.UpdateScreen( true );
+	}
+};
 //
 ///*
 //================
@@ -2132,30 +2132,30 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 //
 //	return false;
 //}
-//
-///*
-//===============
-//idSessionLocal::DrawWipeModel
-//
-//Draw the fade material over everything that has been drawn
-//===============
-//*/
-//void	idSessionLocal::DrawWipeModel() {
-//	int		latchedTic = com_ticNumber;
-//
-//	if (  this.wipeStartTic >= this.wipeStopTic ) {
-//		return;
-//	}
-//
-//	if ( !this.wipeHold && latchedTic >= this.wipeStopTic ) {
-//		return;
-//	}
-//
-//	float fade = ( float )( latchedTic - this.wipeStartTic ) / ( this.wipeStopTic - this.wipeStartTic );
-//	renderSystem.SetColor4( 1, 1, 1, fade );
-//	renderSystem.DrawStretchPic( 0, 0, 640, 480, 0, 0, 1, 1, wipeMaterial );
-//}
-//
+
+/*
+===============
+idSessionLocal::DrawWipeModel
+
+Draw the fade material over everything that has been drawn
+===============
+*/
+idSessionLocal.prototype.DrawWipeModel = function ( ): void {
+	var /*int*/latchedTic = this.com_ticNumber;
+
+	if ( this.wipeStartTic >= this.wipeStopTic ) {
+		return;
+	}
+
+	if ( !this.wipeHold && latchedTic >= this.wipeStopTic ) {
+		return;
+	}
+
+	var fade = ( float )( latchedTic - this.wipeStartTic ) / ( this.wipeStopTic - this.wipeStartTic );
+	renderSystem.SetColor4( 1, 1, 1, fade );
+	renderSystem.DrawStretchPicFloats( 0, 0, 640, 480, 0, 0, 1, 1, this.wipeMaterial );
+};
+
 ///*
 //===============
 //idSessionLocal::AdvanceRenderDemo
@@ -2221,71 +2221,72 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 //	}
 //
 //}
-//
-///*
-//===============
-//idSessionLocal::DrawCmdGraph
-//
-//Graphs yaw angle for testing smoothness
-//===============
-//*/
-//static const int	ANGLE_GRAPH_HEIGHT = 128;
-//static const int	ANGLE_GRAPH_STRETCH = 3;
-//void idSessionLocal::DrawCmdGraph() {
-//	if ( !com_showAngles.GetBool() ) {
-//		return;
-//	}
-//	renderSystem.SetColor4( 0.1f, 0.1f, 0.1f, 1.0f );
-//	renderSystem.DrawStretchPic( 0, 480-ANGLE_GRAPH_HEIGHT, MAX_BUFFERED_USERCMD*ANGLE_GRAPH_STRETCH, ANGLE_GRAPH_HEIGHT, 0, 0, 1, 1, whiteMaterial );
-//	renderSystem.SetColor4( 0.9f, 0.9f, 0.9f, 1.0f );
-//	for ( int i = 0 ; i < MAX_BUFFERED_USERCMD-4 ; i++ ) {
-//		usercmd_t	cmd = usercmdGen.TicCmd( latchedTicNumber - (MAX_BUFFERED_USERCMD-4) + i );
-//		int h = cmd.angles[1];
-//		h >>= 8;
-//		h &= (ANGLE_GRAPH_HEIGHT-1);
-//		renderSystem.DrawStretchPic( i* ANGLE_GRAPH_STRETCH, 480-h, 1, h, 0, 0, 1, 1, whiteMaterial );
-//	}
-//}
-//
-///*
-//===============
-//idSessionLocal::PacifierUpdate
-//===============
-//*/
-//void idSessionLocal::PacifierUpdate() {
-//	if ( !this.insideExecuteMapChange ) {
-//		return;
-//	}
-//
-//	// never do pacifier screen updates while inside the
-//	// drawing code, or we can have various recursive problems
-//	if ( this.insideUpdateScreen ) {
-//		return;
-//	}
-//
-//	int	time = eventLoop.Milliseconds();
-//
-//	if ( time - this.lastPacifierTime < 100 ) {
-//		return;
-//	}
-//	this.lastPacifierTime = time;
-//
-//	if ( this.guiLoading && this.bytesNeededForMapLoad ) {
-//		float n = fileSystem.GetReadCount();
-//		float pct = ( n / this.bytesNeededForMapLoad );
-//		// pct = idMath::ClampFloat( 0.0f, 100.0f, pct );
-//		this.guiLoading.SetStateFloat( "map_loading", pct );
-//		this.guiLoading.StateChanged( com_frameTime );
-//	}
-//
-//	Sys_GenerateEvents();
-//
-//	UpdateScreen();
-//
-//	idAsyncNetwork.client.PacifierUpdate();
-//	idAsyncNetwork.server.PacifierUpdate();
-//}
-//
+
+/*
+===============
+idSessionLocal::DrawCmdGraph
+
+Graphs yaw angle for testing smoothness
+===============
+*/
+var ANGLE_GRAPH_HEIGHT = 128;
+var ANGLE_GRAPH_STRETCH = 3;
+idSessionLocal.prototype.DrawCmdGraph = function ( ): void {
+	if ( !idSessionLocal.com_showAngles.GetBool ( ) ) {
+		return;
+	}
+	todoThrow ( );
+	//renderSystem.SetColor4( 0.1f, 0.1f, 0.1f, 1.0f );
+	//renderSystem.DrawStretchPic( 0, 480-ANGLE_GRAPH_HEIGHT, MAX_BUFFERED_USERCMD*ANGLE_GRAPH_STRETCH, ANGLE_GRAPH_HEIGHT, 0, 0, 1, 1, whiteMaterial );
+	//renderSystem.SetColor4( 0.9f, 0.9f, 0.9f, 1.0f );
+	//for ( int i = 0 ; i < MAX_BUFFERED_USERCMD-4 ; i++ ) {
+	//	usercmd_t	cmd = usercmdGen.TicCmd( latchedTicNumber - (MAX_BUFFERED_USERCMD-4) + i );
+	//	int h = cmd.angles[1];
+	//	h >>= 8;
+	//	h &= (ANGLE_GRAPH_HEIGHT-1);
+	//	renderSystem.DrawStretchPic( i* ANGLE_GRAPH_STRETCH, 480-h, 1, h, 0, 0, 1, 1, whiteMaterial );
+	//}
+};
+
+/*
+===============
+idSessionLocal::PacifierUpdate
+===============
+*/
+idSessionLocal.prototype.PacifierUpdate = function ( ) {
+	if ( !this.insideExecuteMapChange ) {
+		return;
+	}
+
+	// never do pacifier screen updates while inside the
+	// drawing code, or we can have various recursive problems
+	if ( this.insideUpdateScreen ) {
+		return;
+	}
+
+	var time = eventLoop.Milliseconds ( );
+
+	if ( time - this.lastPacifierTime < 100 ) {
+		return;
+	}
+	this.lastPacifierTime = time;
+
+	if ( this.guiLoading && this.bytesNeededForMapLoad ) {
+		var n = fileSystem.GetReadCount ( );
+		var pct = ( n / this.bytesNeededForMapLoad );
+		// pct = idMath::ClampFloat( 0.0f, 100.0f, pct );
+		this.guiLoading.SetStateFloat( "map_loading", pct );
+		this.guiLoading.StateChanged( com_frameTime );
+	}
+
+	Sys_GenerateEvents ( );
+
+	this.UpdateScreen ( );
+
+	idAsyncNetwork.client.PacifierUpdate ( );
+	idAsyncNetwork.server.PacifierUpdate ( );
+};
+
 /*
 ===============
 idSessionLocal::Draw
@@ -2389,49 +2390,54 @@ idSessionLocal.prototype.Draw = function ( ): void {
 	}
 };
 
-///*
-//===============
-//idSessionLocal::UpdateScreen
-//===============
-//*/
-//void idSessionLocal::UpdateScreen( bool outOfSequence ) {
-//
+/*
+===============
+idSessionLocal::UpdateScreen
+===============
+*/
+idSessionLocal.prototype.UpdateScreen = function ( outOfSequence: boolean= true ): void {
+
 //#ifdef _WIN32
-//
-//	if ( com_editors ) {
-//		if ( !Sys_IsWindowVisible() ) {
-//			return;
-//		}
-//	}
+
+	if ( com_editors ) {
+		todoThrow ( );
+		//if ( !Sys_IsWindowVisible() ) {
+		//	return;
+		//}
+	}
 //#endif
-//
-//	if ( this.insideUpdateScreen ) {
-//		return;
-////		common.FatalError( "idSessionLocal::UpdateScreen: recursively called" );
-//	}
-//
-//	this.insideUpdateScreen = true;
-//
-//	// if this is a long-operation update and we are in windowed mode,
-//	// release the mouse capture back to the desktop
-//	if ( outOfSequence ) {
-//		Sys_GrabMouseCursor( false );
-//	}
-//
-//	renderSystem.BeginFrame( renderSystem.GetScreenWidth(), renderSystem.GetScreenHeight() );
-//
-//	// draw everything
-//	Draw();
-//
-//	if ( com_speeds.GetBool() ) {
-//		renderSystem.EndFrame( &time_frontend, &time_backend );
-//	} else {
-//		renderSystem.EndFrame( NULL, NULL );
-//	}
-//
-//	this.insideUpdateScreen = false;
-//}
-//
+
+	if ( this.insideUpdateScreen ) {
+		return;
+//		common.FatalError( "idSessionLocal::UpdateScreen: recursively called" );
+	}
+
+	this.insideUpdateScreen = true;
+
+	// if this is a long-operation update and we are in windowed mode,
+	// release the mouse capture back to the desktop
+	if ( outOfSequence ) {
+		Sys_GrabMouseCursor( false );
+	}
+
+	renderSystem.BeginFrame( renderSystem.GetScreenWidth ( ), renderSystem.GetScreenHeight ( ) );
+
+	// draw everything
+	this.Draw ( );
+
+	if ( com_speeds.GetBool ( ) ) {
+		var $time_frontend = new R( time_frontend );
+		var $time_backend = new R( time_backend );
+		renderSystem.EndFrame( $time_frontend, $time_backend );
+		time_frontend = $time_frontend.$;
+		time_backend = $time_backend.$;
+	} else {
+		renderSystem.EndFrame( null, null );
+	}
+
+	this.insideUpdateScreen = false;
+};
+
 ///*
 //===============
 //idSessionLocal::Frame

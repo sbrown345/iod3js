@@ -112,7 +112,7 @@ class idAsyncClient {
 //	// returns false if internet link doesn't appear to be available
 //	bool				SendAuthCheck( const char *cdkey, const char *xpkey );
 //
-//	void				PacifierUpdate( void );
+	PacifierUpdate ( ): void { throw "placeholder"; }
 //
 	serverList = new idServerScan;
 //

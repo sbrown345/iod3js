@@ -43,7 +43,7 @@
 ////idAsyncClient::idAsyncClient
 ////==================
 ////*/
-////idAsyncClient::idAsyncClient( void ) {
+////idAsyncClient::idAsyncClient( ) {
 ////	guiNetMenu = NULL;
 ////	updateState = UPDATE_NONE;
 ////	Clear();
@@ -54,7 +54,7 @@
 ////idAsyncClient::Clear
 ////==================
 ////*/
-////void idAsyncClient::Clear( void ) {
+////void idAsyncClient::Clear( ) {
 ////	active = false;
 ////	realTime = 0;
 ////	clientTime = 0;
@@ -96,7 +96,7 @@
 ////idAsyncClient::Shutdown
 ////==================
 ////*/
-////void idAsyncClient::Shutdown( void ) {
+////void idAsyncClient::Shutdown( ) {
 ////	guiNetMenu = NULL;
 ////	updateMSG.Clear();
 ////	updateURL.Clear();
@@ -111,7 +111,7 @@
 ////idAsyncClient::InitPort
 ////==================
 ////*/
-////bool idAsyncClient::InitPort( void ) {
+////bool idAsyncClient::InitPort( ) {
 ////	// if this is the first time we connect to a server, open the UDP port
 ////	if ( !clientPort.GetPort() ) {
 ////		if ( !clientPort.InitForPort( PORT_ANY ) ) {
@@ -130,7 +130,7 @@
 ////idAsyncClient::ClosePort
 ////==================
 ////*/
-////void idAsyncClient::ClosePort( void ) {
+////void idAsyncClient::ClosePort( ) {
 ////	clientPort.Close();
 ////}
 ////
@@ -139,7 +139,7 @@
 ////idAsyncClient::ClearPendingPackets
 ////==================
 ////*/
-////void idAsyncClient::ClearPendingPackets( void ) {
+////void idAsyncClient::ClearPendingPackets( ) {
 ////	int			size;
 ////	byte		msgBuf[MAX_MESSAGE_SIZE];
 ////	netadr_t	from;
@@ -220,7 +220,7 @@
 ////idAsyncClient::Reconnect
 ////==================
 ////*/
-////void idAsyncClient::Reconnect( void ) {
+////void idAsyncClient::Reconnect( ) {
 ////	ConnectToServer( serverAddress );
 ////}
 ////
@@ -260,7 +260,7 @@
 ////idAsyncClient::DisconnectFromServer
 ////==================
 ////*/
-////void idAsyncClient::DisconnectFromServer( void ) {
+////void idAsyncClient::DisconnectFromServer( ) {
 ////	idBitMsg	msg;
 ////	byte		msgBuf[MAX_MESSAGE_SIZE];
 ////
@@ -348,7 +348,7 @@
 ////idAsyncClient::GetLANServers
 ////==================
 ////*/
-////void idAsyncClient::GetLANServers( void ) {
+////void idAsyncClient::GetLANServers( ) {
 ////	int			i;
 ////	idBitMsg	msg;
 ////	byte		msgBuf[MAX_MESSAGE_SIZE];
@@ -379,7 +379,7 @@
 ////idAsyncClient::GetNETServers
 ////==================
 ////*/
-////void idAsyncClient::GetNETServers( void ) {
+////void idAsyncClient::GetNETServers( ) {
 ////	idBitMsg	msg;
 ////	byte		msgBuf[MAX_MESSAGE_SIZE];
 ////
@@ -410,7 +410,7 @@
 ////idAsyncClient::ListServers
 ////==================
 ////*/
-////void idAsyncClient::ListServers( void ) {
+////void idAsyncClient::ListServers( ) {
 ////	int i;
 ////
 ////	for ( i = 0; i < serverList.Num(); i++ ) {
@@ -423,7 +423,7 @@
 ////idAsyncClient::ClearServers
 ////==================
 ////*/
-////void idAsyncClient::ClearServers( void ) {
+////void idAsyncClient::ClearServers( ) {
 ////	serverList.Clear();
 ////}
 ////
@@ -468,7 +468,7 @@
 ////idAsyncClient::GetPrediction
 ////==================
 ////*/
-////int idAsyncClient::GetPrediction( void ) const {
+////int idAsyncClient::GetPrediction( ) const {
 ////	if ( clientState < CS_CONNECTED ) {
 ////		return -1;
 ////	} else {
@@ -481,7 +481,7 @@
 ////idAsyncClient::GetTimeSinceLastPacket
 ////==================
 ////*/
-////int idAsyncClient::GetTimeSinceLastPacket( void ) const {
+////int idAsyncClient::GetTimeSinceLastPacket( ) const {
 ////	if ( clientState < CS_CONNECTED ) {
 ////		return -1;
 ////	} else {
@@ -494,7 +494,7 @@
 ////idAsyncClient::GetOutgoingRate
 ////==================
 ////*/
-////int idAsyncClient::GetOutgoingRate( void ) const {
+////int idAsyncClient::GetOutgoingRate( ) const {
 ////	if ( clientState < CS_CONNECTED ) {
 ////		return -1;
 ////	} else {
@@ -507,7 +507,7 @@
 ////idAsyncClient::GetIncomingRate
 ////==================
 ////*/
-////int idAsyncClient::GetIncomingRate( void ) const {
+////int idAsyncClient::GetIncomingRate( ) const {
 ////	if ( clientState < CS_CONNECTED ) {
 ////		return -1;
 ////	} else {
@@ -520,7 +520,7 @@
 ////idAsyncClient::GetOutgoingCompression
 ////==================
 ////*/
-////float idAsyncClient::GetOutgoingCompression( void ) const {
+////float idAsyncClient::GetOutgoingCompression( ) const {
 ////	if ( clientState < CS_CONNECTED ) {
 ////		return 0.0f;
 ////	} else {
@@ -533,7 +533,7 @@
 ////idAsyncClient::GetIncomingCompression
 ////==================
 ////*/
-////float idAsyncClient::GetIncomingCompression( void ) const {
+////float idAsyncClient::GetIncomingCompression( ) const {
 ////	if ( clientState < CS_CONNECTED ) {
 ////		return 0.0f;
 ////	} else {
@@ -546,7 +546,7 @@
 ////idAsyncClient::GetIncomingPacketLoss
 ////==================
 ////*/
-////float idAsyncClient::GetIncomingPacketLoss( void ) const {
+////float idAsyncClient::GetIncomingPacketLoss( ) const {
 ////	if ( clientState < CS_CONNECTED ) {
 ////		return 0.0f;
 ////	} else {
@@ -576,7 +576,7 @@
 ////idAsyncClient::SendUserInfoToServer
 ////==================
 ////*/
-////void idAsyncClient::SendUserInfoToServer( void ) {
+////void idAsyncClient::SendUserInfoToServer( ) {
 ////	idBitMsg	msg;
 ////	byte		msgBuf[MAX_MESSAGE_SIZE];
 ////	idDict		info;
@@ -666,7 +666,7 @@
 ////idAsyncClient::SendUsercmdsToServer
 ////==================
 ////*/
-////void idAsyncClient::SendUsercmdsToServer( void ) {
+////void idAsyncClient::SendUsercmdsToServer( ) {
 ////	int			i, numUsercmds, index;
 ////	idBitMsg	msg;
 ////	byte		msgBuf[MAX_MESSAGE_SIZE];
@@ -938,7 +938,7 @@
 ////idAsyncClient::ProcessReliableServerMessages
 ////==================
 ////*/
-////void idAsyncClient::ProcessReliableServerMessages( void ) {
+////void idAsyncClient::ProcessReliableServerMessages( ) {
 ////	idBitMsg	msg;
 ////	byte		msgBuf[MAX_MESSAGE_SIZE];
 ////	byte		id;
@@ -1649,7 +1649,7 @@
 ////idAsyncClient::SetupConnection
 ////==================
 ////*/
-////void idAsyncClient::SetupConnection( void ) {
+////void idAsyncClient::SetupConnection( ) {
 ////	idBitMsg	msg;
 ////	byte		msgBuf[MAX_MESSAGE_SIZE];
 ////
@@ -1740,7 +1740,7 @@
 ////idAsyncClient::Idle
 ////==================
 ////*/
-////void idAsyncClient::Idle( void ) {
+////void idAsyncClient::Idle( ) {
 ////	// also need to read mouse for the connecting guis
 ////	usercmdGen.GetDirectUsercmd();
 ////
@@ -1767,7 +1767,7 @@
 ////idAsyncClient::RunFrame
 ////==================
 ////*/
-////void idAsyncClient::RunFrame( void ) {
+////void idAsyncClient::RunFrame( ) {
 ////	int			msec, size;
 ////	bool		newPacket;
 ////	idBitMsg	msg;
@@ -1889,20 +1889,21 @@
 ////		}
 ////	}
 ////}
-////
-/////*
-////==================
-////idAsyncClient::PacifierUpdate
-////==================
-////*/
-////void idAsyncClient::PacifierUpdate( void ) {
-////	if ( !IsActive() ) {
-////		return;
-////	}
-////	realTime = Sys_Milliseconds();
-////	SendEmptyToServer( false, true );
-////}
-////
+
+/*
+==================
+idAsyncClient::PacifierUpdate
+==================
+*/
+idAsyncClient.prototype.PacifierUpdate = function ( ): void {
+	if ( !this.IsActive ( ) ) {
+		return;
+	}
+	todoThrow ( );
+	//realTime = Sys_Milliseconds();
+	//SendEmptyToServer( false, true );
+};
+
 /////*
 ////==================
 ////idAsyncClient::SendVersionCheck
@@ -1960,7 +1961,7 @@
 ////idAsyncClient::HandleDownloads
 ////==================
 ////*/
-////void idAsyncClient::HandleDownloads( void ) {
+////void idAsyncClient::HandleDownloads( ) {
 ////
 ////	if ( updateState == UPDATE_SENT && clientTime > updateSentTime + 2000 ) {
 ////		// timing out on no reply
@@ -2175,7 +2176,7 @@
 ////idAsyncClient::CheckTimeout
 ////===============
 ////*/
-////bool idAsyncClient::CheckTimeout( void ) {
+////bool idAsyncClient::CheckTimeout( ) {
 ////	if ( lastPacketTime > 0 && ( lastPacketTime + idAsyncNetwork::clientServerTimeout.GetInteger()*1000 < clientTime ) ) {
 ////		session.StopBox();
 ////		session.MessageBox( MSG_OK, common.GetLanguageDict().GetString ( "#str_04328" ), common.GetLanguageDict().GetString ( "#str_04329" ), true );

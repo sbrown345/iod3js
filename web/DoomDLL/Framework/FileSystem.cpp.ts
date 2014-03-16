@@ -330,7 +330,7 @@ class idDEntry extends idStrList {
 ////
 ////	bool				Matches( const char *directory, const char *extension ) const;
 ////	void				Init( const char *directory, const char *extension, const idStrList &list );
-////	void				Clear( void );
+////	void				Clear( );
 ////
 ////private:
 ////	idStr				directory;
@@ -340,15 +340,15 @@ class idDEntry extends idStrList {
 class idFileSystemLocal extends idFileSystem {
 
 ////public:
-////							idFileSystemLocal( void );
+////							idFileSystemLocal( );
 ////
-////	virtual void			Init( void );
-////	virtual void			StartBackgroundDownloadThread( void );
-////	virtual void			Restart( void );
+////	virtual void			Init( );
+////	virtual void			StartBackgroundDownloadThread( );
+////	virtual void			Restart( );
 ////	virtual void			Shutdown( bool reloading );
-////	virtual bool			IsInitialized( void ) const;
-////	virtual bool			PerformingCopyFiles( void ) const;
-////	virtual idModList *		ListMods( void );
+////	virtual bool			IsInitialized( ) const;
+////	virtual bool			PerformingCopyFiles( ) const;
+////	virtual idModList *		ListMods( );
 ////	virtual void			FreeModList( idModList *modList );
 ////	virtual idFileList *	ListFiles( const char *relativePath, const char *extension, bool sort = false, bool fullRelativePath = false, const char* gamedir = NULL );
 ////	virtual idFileList *	ListFilesTree( const char *relativePath, const char *extension, bool sort = false, const char* gamedir = NULL );
@@ -358,13 +358,13 @@ class idFileSystemLocal extends idFileSystem {
 ////	virtual const char *	BuildOSPath( const char *base, const char *game, const char *relativePath );
 ////	virtual void			CreateOSPath( const char *OSPath );
 ////	virtual bool			FileIsInPAK( const char *relativePath );
-////	virtual void			UpdatePureServerChecksums( void );
-////	virtual bool			UpdateGamePakChecksums( void );
+////	virtual void			UpdatePureServerChecksums( );
+////	virtual bool			UpdateGamePakChecksums( );
 ////	virtual fsPureReply_t	SetPureServerChecksums( const int pureChecksums[ MAX_PURE_PAKS ], int gamePakChecksum, int missingChecksums[ MAX_PURE_PAKS ], int *missingGamePakChecksum );
 ////	virtual void			GetPureServerChecksums( int checksums[ MAX_PURE_PAKS ], int OS, int *gamePakChecksum );
 ////	virtual void			SetRestartChecksums( const int pureChecksums[ MAX_PURE_PAKS ], int gamePakChecksum );
-////	virtual	void			ClearPureChecksums( void );
-////	virtual int				GetOSMask( void );
+////	virtual	void			ClearPureChecksums( );
+////	virtual int				GetOSMask( );
 ////	virtual int				ReadFile( const char *relativePath, void **buffer, ID_TIME_T *timestamp );
 ////	virtual void			FreeFile( void *buffer );
 ////	virtual int				WriteFile( const char *relativePath, const void *buffer, int size, const char *basePath = "fs_savepath" );
@@ -382,12 +382,12 @@ class idFileSystemLocal extends idFileSystem {
     AddToReadCount ( c: number ): void { this.readCount += c; }
     GetReadCount ( ): number { return this.readCount; }
 ////	virtual void			FindDLL( const char *basename, char dllPath[ MAX_OSPATH ], bool updateChecksum );
-////	virtual void			ClearDirCache( void );
-////	virtual bool			HasD3XP( void );
-////	virtual bool			RunningD3XP( void );
+////	virtual void			ClearDirCache( );
+////	virtual bool			HasD3XP( );
+////	virtual bool			RunningD3XP( );
 ////	virtual void			CopyFile( const char *fromOSPath, const char *toOSPath );
 ////	virtual int				ValidateDownloadPakForChecksum( int checksum, char path[ MAX_STRING_CHARS ], bool isBinary );
-////	virtual idFile *		MakeTemporaryFile( void );
+////	virtual idFile *		MakeTemporaryFile( );
 ////	virtual int				AddZipFile( const char *path );
 ////	virtual findFile_t		FindFile( const char *path, bool scheduleAddons );
 ////	virtual int				GetNumMaps();
@@ -462,8 +462,8 @@ class idFileSystemLocal extends idFileSystem {
     ////	pack_t *				LoadZipFile( const char *zipfile );
     ////	void					AddGameDirectory( const char *path, const char *dir );
     ////	void					SetupGameDirectories( const char *gameName );
-    ////	void					Startup( void );
-    ////	void					SetRestrictions( void );
+    ////	void					Startup( );
+    ////	void					SetRestrictions( );
     ////							// some files can be obtained from directories without compromising si_pure
     ////	bool					FileAllowedFromDir( const char *path );
     ////							// searches all the paks, no pure check
@@ -1730,7 +1730,7 @@ idFileSystemLocal::FreeFileList
 ////idFileSystemLocal::ListMods
 ////===============
 ////*/
-////idModList *idFileSystemLocal::ListMods( void ) {
+////idModList *idFileSystemLocal::ListMods( ) {
 ////	int 		i;
 ////	const int 	MAX_DESCRIPTION = 256;
 ////	char 		desc[ MAX_DESCRIPTION ];
@@ -1848,7 +1848,7 @@ idFileSystemLocal::FreeFileList
 ////idDEntry::Clear
 ////===============
 ////*/
-////void idDEntry::Clear( void ) {
+////void idDEntry::Clear( ) {
 ////	directory.Clear();
 ////	extension.Clear();
 ////	idStrList::Clear();
@@ -2053,7 +2053,7 @@ idFileSystemLocal::FreeFileList
 ////idFileSystemLocal::GetOSMask
 ////============
 ////*/
-////int idFileSystemLocal::GetOSMask( void ) {
+////int idFileSystemLocal::GetOSMask( ) {
 ////	int i, ret = 0;
 ////	for( i = 0; i < MAX_GAME_OS; i++ ) {
 ////		if ( fileSystemLocal.gamePakForOS[ i ] ) {
@@ -2255,7 +2255,7 @@ idFileSystemLocal::FreeFileList
 ////idFileSystemLocal::Startup
 ////================
 ////*/
-////void idFileSystemLocal::Startup( void ) {
+////void idFileSystemLocal::Startup( ) {
 ////	searchpath_t	**search;
 ////	int				i;
 ////	pack_t			*pak;
@@ -2437,7 +2437,7 @@ idFileSystemLocal::FreeFileList
 ////if the full version is not found
 ////===================
 ////*/
-////void idFileSystemLocal::SetRestrictions( void ) {
+////void idFileSystemLocal::SetRestrictions( ) {
 ////#ifdef ID_DEMO_BUILD
 ////	//common.Printf( "\nRunning in restricted demo mode.\n\n" );
 ////	//// make sure that the pak file has the header checksum we expect
@@ -2459,7 +2459,7 @@ idFileSystemLocal::FreeFileList
 ////idFileSystemLocal::UpdatePureServerChecksums
 ////=====================
 ////*/
-////void idFileSystemLocal::UpdatePureServerChecksums( void ) {
+////void idFileSystemLocal::UpdatePureServerChecksums( ) {
 ////	searchpath_t	*search;
 ////	int				i;
 ////	pureStatus_t	status;
@@ -2496,7 +2496,7 @@ idFileSystemLocal::FreeFileList
 ////idFileSystemLocal::UpdateGamePakChecksums
 ////=====================
 ////*/
-////bool idFileSystemLocal::UpdateGamePakChecksums( void ) {
+////bool idFileSystemLocal::UpdateGamePakChecksums( ) {
 ////	searchpath_t	*search;
 ////	fileInPack_t	*pakFile;
 ////	int				confHash;
@@ -2640,7 +2640,7 @@ idFileSystemLocal::FreeFileList
 ////idFileSystemLocal::ClearPureChecksums
 ////=====================
 ////*/
-////void idFileSystemLocal::ClearPureChecksums( void ) {
+////void idFileSystemLocal::ClearPureChecksums( ) {
 ////	common.DPrintf( "Cleared pure server lock\n" );
 ////	serverPaks.Clear();
 ////}
@@ -2861,7 +2861,7 @@ idFileSystemLocal::FreeFileList
 ////is resetting due to a game change
 ////================
 ////*/
-////void idFileSystemLocal::Init( void ) {
+////void idFileSystemLocal::Init( ) {
 ////	// allow command line parms to override our defaults
 ////	// we have to specially handle this, because normal command
 ////	// line variable sets don't happen until after the filesystem
@@ -2926,7 +2926,7 @@ idFileSystemLocal::FreeFileList
 ////idFileSystemLocal::Restart
 ////================
 ////*/
-////void idFileSystemLocal::Restart( void ) {
+////void idFileSystemLocal::Restart( ) {
 ////	// free anything we currently have loaded
 ////	Shutdown( true );
 ////
@@ -2998,16 +2998,16 @@ idFileSystemLocal::FreeFileList
 ////
 ////	mapDict.Clear();
 ////}
-////
-/////*
-////================
-////idFileSystemLocal::IsInitialized
-////================
-////*/
-////bool idFileSystemLocal::IsInitialized( void ) const {
-////	return ( searchPaths != NULL );
-////}
-////
+
+/*
+================
+idFileSystemLocal::IsInitialized
+================
+*/
+	IsInitialized ( ): boolean {
+		return ( this.searchPaths != null );
+	}
+
 ////
 /////*
 ////=================================================================================
@@ -4044,7 +4044,7 @@ PerformingCopyFiles( ):boolean {
 ////idFileSystemLocal::ClearDirCache
 ////================
 ////*/
-////void idFileSystemLocal::ClearDirCache( void ) {
+////void idFileSystemLocal::ClearDirCache( ) {
 ////	int i;
 ////
 ////	dir_cache_index = 0;
@@ -4059,7 +4059,7 @@ PerformingCopyFiles( ):boolean {
 ////idFileSystemLocal::HasD3XP
 ////===============
 ////*/
-////bool idFileSystemLocal::HasD3XP( void ) {
+////bool idFileSystemLocal::HasD3XP( ) {
 ////	int			i;
 ////	idStrList	dirs, pk4s;
 ////	idStr		gamepath;
@@ -4130,7 +4130,7 @@ PerformingCopyFiles( ):boolean {
 ////idFileSystemLocal::RunningD3XP
 ////===============
 ////*/
-////bool idFileSystemLocal::RunningD3XP( void ) {
+////bool idFileSystemLocal::RunningD3XP( ) {
 ////	// TODO: mark the checksum of the gold XP and check for it being referenced ( for double mod support )
 ////	// a simple fs_game check should be enough for now..
 ////	if ( !idStr.Icmp( fs_game.GetString(), "d3xp" ) ||
@@ -4145,7 +4145,7 @@ PerformingCopyFiles( ):boolean {
 ////idFileSystemLocal::MakeTemporaryFile
 ////===============
 ////*/
-////idFile * idFileSystemLocal::MakeTemporaryFile( void ) {
+////idFile * idFileSystemLocal::MakeTemporaryFile( ) {
 ////	FILE *f = tmpfile();
 ////	if ( !f ) {
 ////		common.Warning( "idFileSystem::MakeTemporaryFile failed: %s", strerror( errno ) );

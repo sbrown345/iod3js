@@ -87,16 +87,16 @@ var com_videoRam = new idCVar( "com_videoRam", "64", CVAR_INTEGER | CVAR_SYSTEM 
 var com_product_lang_ext = new idCVar( "com_product_lang_ext", "1", CVAR_INTEGER | CVAR_SYSTEM | CVAR_ARCHIVE, "Extension to use when creating language files." );
 
 // com_speeds times
-var time_gameFrame: number/*int*/;
-var time_gameDraw: number/*int*/;
-var time_frontend: number/*int*/;			// renderSystem frontend time
-var time_backend: number/*int*/;			// renderSystem backend time
+var time_gameFrame: number/*int*/ = 0;
+var time_gameDraw: number/*int*/ = 0;
+var time_frontend: number/*int*/ = 0;			// renderSystem frontend time
+var time_backend: number/*int*/ = 0;			// renderSystem backend time
 
-var com_frameTime: number/*int*/;			// time for the current frame in milliseconds
-var com_frameNumber: number/*int*/;		// variable frame number
-var com_ticNumber: number/*volatile int*/;			// 60 hz tics
-var com_editors:number;			// currently opened editor(s)
-var com_editorActive:boolean;		//  true if an editor has focus
+var com_frameTime: number/*int*/ = 0;			// time for the current frame in milliseconds
+var com_frameNumber: number/*int*/ = 0;		// variable frame number
+var com_ticNumber: number/*volatile int*/ = 0;			// 60 hz tics
+var com_editors:number = 0;			// currently opened editor(s)
+var com_editorActive:boolean = false;		//  true if an editor has focus
 
 ////#ifdef _WIN32
 ////HWND			com_hwndMsg = NULL;
@@ -200,9 +200,9 @@ class idCommonLocal extends idCommon {
 
     /*char						*/errorMessage:string;//[MAX_PRINT_MSG_SIZE];
 
-////	char *						rd_buffer;
-////	int							rd_buffersize;
-////	void						(*rd_flush)( const char *buffer );
+	rd_buffer:string;
+	rd_buffersize: number/*int*/;
+	rd_flush: (buffer:string)=>void;
 
 	warningCaption = new idStr;
 	warningList = new idStrList;
@@ -263,11 +263,11 @@ idCommonLocal::idCommonLocal
 ////	if ( !buffer || !buffersize || !flush ) {
 ////		return;
 ////	}
-////	rd_buffer = buffer;
-////	rd_buffersize = buffersize;
-////	rd_flush = flush;
+////	this.rd_buffer = buffer;
+////	this.rd_buffersize = buffersize;
+////	this.rd_flush = flush;
 
-////	*rd_buffer = 0;
+////	*this.rd_buffer = 0;
 ////}
 
 /////*
@@ -276,13 +276,13 @@ idCommonLocal::idCommonLocal
 ////==================
 ////*/
 ////void idCommonLocal::EndRedirect( ) {
-////	if ( rd_flush && rd_buffer[ 0 ] ) {
-////		rd_flush( rd_buffer );
+////	if ( this.rd_flush && this.rd_buffer[ 0 ] ) {
+////		this.rd_flush( this.rd_buffer );
 ////	}
 
-////	rd_buffer = NULL;
-////	rd_buffersize = 0;
-////	rd_flush = NULL;
+////	this.rd_buffer = NULL;
+////	this.rd_buffersize = 0;
+////	this.rd_flush = NULL;
 ////}
 
 ////#ifdef _WIN32
@@ -345,130 +345,133 @@ idCommonLocal::VPrintf
 A raw string should NEVER be passed as fmt, because of "%f" type crashes.
 ==================
 */
+	static logFileFailed = false;
 	VPrintf ( fmt: string, /*va_list */...args: any[] ): void {
-		todoThrow ( );
-////	char		msg[MAX_PRINT_MSG_SIZE];
-////	int			timeLength;
-////	static bool	logFileFailed = false;
+		var msg = new Uint8Array( MAX_PRINT_MSG_SIZE );
+		var /*int*/timeLength: number;
 
-////	// if the cvar system is not initialized
-////	if ( !cvarSystem.IsInitialized() ) {
-////		return;
-////	}
+		// if the cvar system is not initialized
+		if ( !cvarSystem.IsInitialized ( ) ) {
+			return;
+		}
 
-////	// optionally put a timestamp at the beginning of each print,
-////	// so we can see how long different init sections are taking
-////	if ( com_timestampPrints.GetInteger() ) {
-////		int	t = Sys_Milliseconds();
-////		if ( com_timestampPrints.GetInteger() == 1 ) {
-////			t /= 1000;
-////		}
-////		sprintf( msg, "[%i]", t );
-////		timeLength = strlen( msg );
-////	} else {
-////		timeLength = 0;
-////	}
+		// optionally put a timestamp at the beginning of each print,
+		// so we can see how long different init sections are taking
+		if ( com_timestampPrints.GetInteger ( ) ) {
+			var t = Sys_Milliseconds ( );
+			if ( com_timestampPrints.GetInteger ( ) == 1 ) {
+				t /= 1000;
+			}
+			todoThrow( 'msg = sprintf( "[%i]", t );' );
+			timeLength = strlen( msg );
+		} else {
+			timeLength = 0;
+		}
 
-////	// don't overflow
-////	if ( idStr::vsnPrintf( msg+timeLength, MAX_PRINT_MSG_SIZE-timeLength-1, fmt, args ) < 0 ) {
-////		msg[sizeof(msg)-2] = '\n'; msg[sizeof(msg)-1] = '\0'; // avoid output garbling
-////		Sys_Printf( "idCommon::VPrintf: truncated to %d characters\n", strlen(msg)-1 );
-////	}
+		// don't overflow
+		if ( idStr.vsnPrintf( msg.subarray( timeLength ), MAX_PRINT_MSG_SIZE - timeLength - 1, fmt, args ) < 0 ) {
+			msg[sizeof( msg ) - 2] = '\n'.charCodeAt( 0 );
+			msg[sizeof( msg ) - 1] = 0; // avoid output garbling
+			Sys_Printf( "idCommon::VPrintf: truncated to %d characters\n", strlen( msg ) - 1 );
+		}
 
-////	if ( rd_buffer ) {
-////		if ( (int)( strlen( msg ) + strlen( rd_buffer ) ) > ( rd_buffersize - 1 ) ) {
-////			rd_flush( rd_buffer );
-////			*rd_buffer = 0;
-////		}
-////		strcat( rd_buffer, msg );
-////		return;
-////	}
+		if ( this.rd_buffer ) {
+			if ( ( int )( strlen( msg ) + strlen( this.rd_buffer ) ) > ( this.rd_buffersize - 1 ) ) {
+				this.rd_flush( this.rd_buffer );
+				//*this.rd_buffer = 0;
+			}
+			todoThrow ( );
+			//strcat( this.rd_buffer, msg );
+			return;
+		}
 
-////	// echo to console buffer
-////	console.Print( msg );
+		// echo to console buffer
+		var msgStr = msg.toString ( );
+		$console.Print( msgStr );
 
-////	// remove any color codes
-////	idStr::RemoveColors( msg );
+		// remove any color codes
+		idStr.Copynz( msg, idStr.RemoveColors( msgStr ), msgStr.length );
 
-////	// echo to dedicated console and early console
-////	Sys_Printf( "%s", msg );
+		// echo to dedicated console and early console
+		Sys_Printf( "%s", msgStr );
 
-////	// print to script debugger server
-////	// DebuggerServerPrint( msg );
+		// print to script debugger server
+		// DebuggerServerPrint( msg );
 
-////#if 0	// !@#
-////#if defined(_DEBUG) && defined(WIN32)
-////	if ( strlen( msg ) < 512 ) {
-////		TRACE( msg );
-////	}
-////#endif
-////#endif
+//#if 0	// !@#
+//#if defined(_DEBUG) && defined(WIN32)
+//	if ( strlen( msg ) < 512 ) {
+//		TRACE( msg );
+//	}
+//#endif
+//#endif
 
-////	// logFile
-////	if ( com_logFile.GetInteger() && !logFileFailed && fileSystem.IsInitialized() ) {
-////		static bool recursing;
+		// logFile
+		if ( com_logFile.GetInteger ( ) && !idCommonLocal.logFileFailed && fileSystem.IsInitialized ( ) ) {
+			todoThrow ( );
+			//static bool recursing;
 
-////		if ( !logFile && !recursing ) {
-////			struct tm *newtime;
-////			ID_TIME_T aclock;
-////			const char *fileName = com_logFileName.GetString()[0] ? com_logFileName.GetString() : "qconsole.log";
+			//if ( !logFile && !recursing ) {
+			//	struct tm *newtime;
+			//	ID_TIME_T aclock;
+			//	const char *fileName = com_logFileName.GetString()[0] ? com_logFileName.GetString() : "qconsole.log";
 
-////			// fileSystem.OpenFileWrite can cause recursive prints into here
-////			recursing = true;
+			//	// fileSystem.OpenFileWrite can cause recursive prints into here
+			//	recursing = true;
 
-////			logFile = fileSystem.OpenFileWrite( fileName );
-////			if ( !logFile ) {
-////				logFileFailed = true;
-////				FatalError( "failed to open log file '%s'\n", fileName );
-////			}
+			//	logFile = fileSystem.OpenFileWrite( fileName );
+			//	if ( !logFile ) {
+			//		idCommonLocal.logFileFailed = true;
+			//		FatalError( "failed to open log file '%s'\n", fileName );
+			//	}
 
-////			recursing = false;
+			//	recursing = false;
 
-////			if ( com_logFile.GetInteger() > 1 ) {
-////				// force it to not buffer so we get valid
-////				// data even if we are crashing
-////				logFile.ForceFlush();
-////			}
+			//	if ( com_logFile.GetInteger() > 1 ) {
+			//		// force it to not buffer so we get valid
+			//		// data even if we are crashing
+			//		logFile.ForceFlush();
+			//	}
 
-////			time( &aclock );
-////			newtime = localtime( &aclock );
-////			Printf( "log file '%s' opened on %s\n", fileName, asctime( newtime ) );
-////		}
-////		if ( logFile ) {
-////			logFile.Write( msg, strlen( msg ) );
-////			logFile.Flush();	// ForceFlush doesn't help a whole lot
-////		}
-////	}
+			//	time( &aclock );
+			//	newtime = localtime( &aclock );
+			//	this.Printf( "log file '%s' opened on %s\n", fileName, asctime( newtime ) );
+			//}
+			//if ( logFile ) {
+			//	logFile.Write( msg, strlen( msg ) );
+			//	logFile.Flush();	// ForceFlush doesn't help a whole lot
+			//}
+		}
 
-////	// don't trigger any updates if we are in the process of doing a fatal error
-////	if ( com_errorEntered != ERP_FATAL ) {
-////		// update the console if we are in a long-running command, like dmap
-////		if ( this.com_refreshOnPrint ) {
-////			session.UpdateScreen();
-////		}
+		// don't trigger any updates if we are in the process of doing a fatal error
+		if ( this.com_errorEntered != errorParm_t.ERP_FATAL ) {
+			// update the console if we are in a long-running command, like dmap
+			if ( this.com_refreshOnPrint ) {
+				session.UpdateScreen ( );
+			}
 
-////		// let session redraw the animated loading screen if necessary
-////		session.PacifierUpdate();
-////	}
+			// let session redraw the animated loading screen if necessary
+			session.PacifierUpdate ( );
+		}
 
-////#ifdef _WIN32
+//#ifdef _WIN32
+		todo( "?" );
+//	if ( com_outputMsg ) {
+//		if ( com_msgID == -1 ) {
+//			com_msgID = ::RegisterWindowMessage( DMAP_MSGID );
+//			if ( !FindEditor() ) {
+//				com_outputMsg = false;
+//			} else {
+//				Sys_ShowWindow( false );
+//			}
+//		}
+//		if ( com_hwndMsg ) {
+//			ATOM atom = ::GlobalAddAtom( msg );
+//			::PostMessage( com_hwndMsg, com_msgID, 0, static_cast<LPARAM>(atom) );
+//		}
+//	}
 
-////	if ( com_outputMsg ) {
-////		if ( com_msgID == -1 ) {
-////			com_msgID = ::RegisterWindowMessage( DMAP_MSGID );
-////			if ( !FindEditor() ) {
-////				com_outputMsg = false;
-////			} else {
-////				Sys_ShowWindow( false );
-////			}
-////		}
-////		if ( com_hwndMsg ) {
-////			ATOM atom = ::GlobalAddAtom( msg );
-////			::PostMessage( com_hwndMsg, com_msgID, 0, static_cast<LPARAM>(atom) );
-////		}
-////	}
-
-////#endif
+//#endif
 	}
 
 /*
@@ -481,11 +484,11 @@ A raw string should NEVER be passed as fmt, because of "%f" type crashers.
 ==================
 */
 	Printf ( /*const char **/ fmt: string, ...args: any[] ): void {
-		this.VPrintf(fmt, args);
-
 		var argArr = args.slice( 0 );
 		argArr.unshift( fmt.trim() );
 		console.log.apply(console, argArr);
+
+		this.VPrintf.apply( this, argArr );
 	}
 
 /*
@@ -2773,7 +2776,8 @@ idCommonLocal::LoadGameDLL
 idCommonLocal::Init
 =================
 */
-/*idCommonLocal::Init*/Init( /*int*/ argc: number, /*const char ***/argv: Uint8Array[], /*const char **/cmdline: string ): void {
+/*idCommonLocal::Init*/
+	Init ( /*int*/ argc: number, /*const char ***/argv: Uint8Array[], /*const char **/cmdline: string ): void {
 ////try {
 ////		// set interface pointers used by idLib
 ////		idLib::sys			= sys;
@@ -2789,38 +2793,38 @@ idCommonLocal::Init
 
 		// clear warning buffer
 		this.ClearWarnings( GAME_NAME + " initialization" );
-		
+
 		// parse command line options
 		var args = new idCmdArgs;
 		if ( cmdline ) {
 			// tokenize if the OS doesn't do it for us
-			args.TokenizeString(cmdline, true);
+			args.TokenizeString( cmdline, true );
 			var $argc = new R( argc );
-			argv = args.GetArgs($argc);
+			argv = args.GetArgs( $argc );
 			argc = $argc.$;
 		}
 		this.ParseCommandLine( argc, argv );
 
 		// init console command system
-		cmdSystem.Init();
+		cmdSystem.Init ( );
 
 		// init CVar system
-		cvarSystem.Init();
+		cvarSystem.Init ( );
 
 		// start file logging right away, before early console or whatever
 		this.StartupVariable( "win_outputDebugString", false );
 
 		// register all static CVars
-        idCVar.RegisterStaticVars(); // don'try need to do because this is for registering vars in different DLLs?
+		idCVar.RegisterStaticVars ( ); // don'try need to do because this is for registering vars in different DLLs?
 
-////		// print engine version
-////		Printf( "%s\n", version.string );
+		// print engine version
+		this.Printf( "%s\n", version.$string );
 
 		// initialize key input/binding, done early so bind command exists
-        idKeyInput.Init();
+		idKeyInput.Init ( );
 
 		// init the console so we can take prints
-		$console.Init();
+		$console.Init ( );
 
 ////		// get architecture info
 ////		Sys_Init();
@@ -2839,39 +2843,39 @@ idCommonLocal::Init
 ////		InitSIMD();
 
 		// init commands
-        this.InitCommands();
+		this.InitCommands ( );
 
 ////#ifdef ID_WRITE_VERSION
 ////		config_compressor = idCompressor::AllocArithmetic();
 ////#endif
 
 		// game specific initialization
-		this.InitGame();
-		
+		this.InitGame ( );
+
 ////		// don't add startup commands if no CD key is present
 ////#if ID_ENFORCE_KEY
 ////		if ( !session.CDKeysAreValid( false ) || !AddStartupCommands() ) {
 ////#else
-		if ( !this.AddStartupCommands() ) {
+		if ( !this.AddStartupCommands ( ) ) {
 ////#endif
 			// if the user didn't give any commands, run default action
-			todoThrow();
+			todoThrow ( );
 			//session.StartMenu( true );
 		}
 
 		this.Printf( "--- Common Initialization Complete ---\n" );
 
 		// print all warnings queued during initialization
-		this.PrintWarnings();
+		this.PrintWarnings ( );
 
 ////#ifdef	ID_DEDICATED
 ////		Printf( "\nType 'help' for dedicated server info.\n\n" );
 ////#endif
 
 		// remove any prints from the notify lines
-		$console.ClearNotifyLines();
+		$console.ClearNotifyLines ( );
 
-		this.ClearCommandLine();
+		this.ClearCommandLine ( );
 
 		this.com_fullyInitialized = true;
 ////	}

@@ -889,11 +889,11 @@ class idStr implements ITrackedObject {
 ////	return idStr::HasUpper( this.data );
 ////}
 
-////ID_INLINE idStr &idStr::RemoveColors( void ) {
-////	idStr::RemoveColors( this.data );
-////	len = Length( this.data );
-////	return *this;
-////}
+	RemoveColors ( ): idStr {
+		this.data = idStr.RemoveColors( this.data );
+		this.len = idStr.Length( this.data );
+		return this;
+	}
 
 ////ID_INLINE int idStr::LengthWithoutColors( void ) const {
 ////	return idStr::LengthWithoutColors( this.data );
@@ -2408,31 +2408,27 @@ Safe strncpy that ensures a trailing zero
 ////	return len;
 ////}
 
-/////*
-////================
-////idStr::RemoveColors
-////================
-////*/
-////char *idStr::RemoveColors( char *string ) {
-////	char *d;
-////	char *s;
-////	int c;
+/*
+================
+idStr::RemoveColors
+================
+*/
+	static RemoveColors ( $string: string ): string {
+		var d = ""; //char *d;
+		var s = 0; //char *s;
+		var c: string;
 
-////	s = string;
-////	d = string;
-////	while( (c = *s) != 0 ) {
-////		if ( idStr::IsColor( s ) ) {
-////			s++;
-////		}		
-////		else {
-////			*d++ = c;
-////		}
-////		s++;
-////	}
-////	*d = '\0';
+		while ( ( c = $string[s] ) ) {
+			if ( idStr.IsColor( c ) ) {
+				s++;
+			} else {
+				d += c;
+			}
+			s++;
+		}
 
-////	return string;
-////}
+		return $string;
+	}
 
 /*
 ================
@@ -2457,42 +2453,48 @@ idStr::snPrintf
 		return len;
 	}
 
-/////*
-////============
-////idStr::vsnPrintf
+/*
+============
+idStr::vsnPrintf
 
-////vsnprintf portability:
+vsnprintf portability:
 
-////C99 standard: vsnprintf returns the number of characters (excluding the trailing
-////'\0') which would have been written to the final string if enough space had been available
-////snprintf and vsnprintf do not write more than size bytes (including the trailing '\0')
+C99 standard: vsnprintf returns the number of characters (excluding the trailing
+'\0') which would have been written to the final string if enough space had been available
+snprintf and vsnprintf do not write more than size bytes (including the trailing '\0')
 
-////win32: _vsnprintf returns the number of characters written, not including the terminating null character,
-////or a negative value if an output error occurs. If the number of characters to write exceeds count, then count 
-////characters are written and -1 is returned and no trailing '\0' is added.
+win32: _vsnprintf returns the number of characters written, not including the terminating null character,
+or a negative value if an output error occurs. If the number of characters to write exceeds count, then count 
+characters are written and -1 is returned and no trailing '\0' is added.
 
-////idStr::vsnPrintf: always appends a trailing '\0', returns number of characters written (not including terminal \0)
-////or returns -1 on failure or if the buffer would be overflowed.
-////============
-////*/
-////int idStr::vsnPrintf( char *dest, int size, const char *fmt, va_list argptr ) {
-////	int ret;
+idStr::vsnPrintf: always appends a trailing '\0', returns number of characters written (not including terminal \0)
+or returns -1 on failure or if the buffer would be overflowed.
+============
+*/
+	static vsnPrintf ( dest: Uint8Array, /*int */size: number, fmt: string, argptr: any[] /*va_list argptr */ ): number {
+		var /*int */ret: number;
 
-////#ifdef _WIN32
-////#undef _vsnprintf
-////	ret = _vsnprintf( dest, size-1, fmt, argptr );
-////#define _vsnprintf	use_idStr_vsnPrintf
-////#else
-////#undef vsnprintf
-////	ret = vsnprintf( dest, size, fmt, argptr );
-////#define vsnprintf	use_idStr_vsnPrintf
-////#endif
-////	dest[size-1] = '\0';
-////	if ( ret < 0 || ret >= size ) {
-////		return -1;
-////	}
-////	return ret;
-////}
+		var txt = vsprintf(fmt, argptr);
+		for ( var i = 0; i < txt.length; i++ ) {
+			dest[i] = txt.charCodeAt( i );
+		}
+		ret = txt.length;
+
+//#ifdef _WIN32
+//#undef _vsnprintf
+//	ret = _vsnprintf( dest, size-1, fmt, argptr );
+//#define _vsnprintf	use_idStr_vsnPrintf
+//#else
+//#undef vsnprintf
+//	ret = vsnprintf( dest, size, fmt, argptr );
+//#define vsnprintf	use_idStr_vsnPrintf
+//#endif
+		dest[size - 1] = 0;
+		if ( ret < 0 || ret >= size ) {
+			return -1;
+		}
+		return ret;
+	}
 
 /////*
 ////============

@@ -65,7 +65,7 @@ class idAsyncServer {
 
 	IsActive(): boolean { return this.active; }
 
-//	int					GetDelay( void ) const { return gameTimeResidual; }
+//	int					GetDelay( ) const { return gameTimeResidual; }
 
 
 	
@@ -113,7 +113,7 @@ class idAsyncServer {
 //idAsyncServer::idAsyncServer
 //==================
 //*/
-//idAsyncServer::idAsyncServer( void ) {
+//idAsyncServer::idAsyncServer( ) {
 //	int i;
 //
 //	active = false;
@@ -149,7 +149,7 @@ class idAsyncServer {
 //idAsyncServer::InitPort
 //==================
 //*/
-//bool idAsyncServer::InitPort( void ) {
+//bool idAsyncServer::InitPort( ) {
 //	int lastPort;
 //
 //	// if this is the first time we have spawned a server, open the UDP port
@@ -181,7 +181,7 @@ class idAsyncServer {
 //idAsyncServer::ClosePort
 //==================
 //*/
-//void idAsyncServer::ClosePort( void ) {
+//void idAsyncServer::ClosePort( ) {
 //	int i;
 //
 //	serverPort.Close();
@@ -195,7 +195,7 @@ class idAsyncServer {
 //idAsyncServer::Spawn
 //==================
 //*/
-//void idAsyncServer::Spawn( void ) {
+//void idAsyncServer::Spawn( ) {
 //	int			i, size;
 //	byte		msgBuf[MAX_MESSAGE_SIZE];
 //	netadr_t	from;
@@ -247,7 +247,7 @@ class idAsyncServer {
 //idAsyncServer::Kill
 //==================
 //*/
-//void idAsyncServer::Kill( void ) {
+//void idAsyncServer::Kill( ) {
 //	int i, j;
 //
 //	if ( !active ) {
@@ -287,7 +287,7 @@ class idAsyncServer {
 //idAsyncServer::ExecuteMapChange
 //==================
 //*/
-//void idAsyncServer::ExecuteMapChange( void ) {
+//void idAsyncServer::ExecuteMapChange( ) {
 //	int			i;
 //	idBitMsg	msg;
 //	byte		msgBuf[MAX_MESSAGE_SIZE];
@@ -425,7 +425,7 @@ class idAsyncServer {
 //idAsyncServer::GetPort
 //==================
 //*/
-//int idAsyncServer::GetPort( void ) const {
+//int idAsyncServer::GetPort( ) const {
 //	return serverPort.GetPort();
 //}
 //
@@ -434,7 +434,7 @@ class idAsyncServer {
 //idAsyncServer::GetBoundAdr
 //===============
 //*/
-//netadr_t idAsyncServer::GetBoundAdr( void ) const {
+//netadr_t idAsyncServer::GetBoundAdr( ) const {
 //	return serverPort.GetAdr();
 //}
 //
@@ -443,7 +443,7 @@ class idAsyncServer {
 //idAsyncServer::GetOutgoingRate
 //==================
 //*/
-//int idAsyncServer::GetOutgoingRate( void ) const {
+//int idAsyncServer::GetOutgoingRate( ) const {
 //	int i, rate;
 //
 //	rate = 0;
@@ -462,7 +462,7 @@ class idAsyncServer {
 //idAsyncServer::GetIncomingRate
 //==================
 //*/
-//int idAsyncServer::GetIncomingRate( void ) const {
+//int idAsyncServer::GetIncomingRate( ) const {
 //	int i, rate;
 //
 //	rate = 0;
@@ -625,7 +625,7 @@ idAsyncServer::IsClientInGame
 //idAsyncServer::GetNumClients
 //==================
 //*/
-//int idAsyncServer::GetNumClients( void ) const {
+//int idAsyncServer::GetNumClients( ) const {
 //	int ret = 0;
 //	for ( int i = 0; i < MAX_ASYNC_CLIENTS; i++ ) {
 //		if ( clients[ i ].clientState >= SCS_CONNECTED ) {
@@ -640,7 +640,7 @@ idAsyncServer::IsClientInGame
 //idAsyncServer::GetNumIdleClients
 //==================
 //*/
-//int idAsyncServer::GetNumIdleClients( void ) const {
+//int idAsyncServer::GetNumIdleClients( ) const {
 //	int ret = 0;
 //	for ( int i = 0; i < MAX_ASYNC_CLIENTS; i++ ) {
 //		if ( clients[ i ].clientState >= SCS_CONNECTED ) {
@@ -767,7 +767,7 @@ idAsyncServer::IsClientInGame
 //idAsyncServer::BeginLocalClient
 //==================
 //*/
-//void idAsyncServer::BeginLocalClient( void ) {
+//void idAsyncServer::BeginLocalClient( ) {
 //	game->SetLocalClient( localClientNum );
 //	game->SetUserInfo( localClientNum, sessLocal.mapSpawnData.userInfo[localClientNum], false, false );
 //	game->ServerClientBegin( localClientNum );
@@ -778,7 +778,7 @@ idAsyncServer::IsClientInGame
 //idAsyncServer::LocalClientInput
 //==================
 //*/
-//void idAsyncServer::LocalClientInput( void ) {
+//void idAsyncServer::LocalClientInput( ) {
 //	int index;
 //
 //	if ( localClientNum < 0 ) {
@@ -856,7 +856,7 @@ idAsyncServer::IsClientInGame
 //idAsyncServer::CheckClientTimeouts
 //==================
 //*/
-//void idAsyncServer::CheckClientTimeouts( void ) {
+//void idAsyncServer::CheckClientTimeouts( ) {
 //	int i, zombieTimeout, clientTimeout;
 //
 //	zombieTimeout = serverTime - idAsyncNetwork::serverZombieTimeout.GetInteger() * 1000;
@@ -2150,7 +2150,7 @@ idAsyncServer::IsClientInGame
 //see (client) "getInfo" -> (server) "infoResponse" -> (client)ProcessGetInfoMessage
 //===============
 //*/
-//void idAsyncServer::PrintLocalServerInfo( void ) {
+//void idAsyncServer::PrintLocalServerInfo( ) {
 //	int i;
 //
 //	common->Printf( "server '%s' IP = %s\nprotocol %d.%d OS mask 0x%x\n", 
@@ -2376,7 +2376,7 @@ idAsyncServer::IsClientInGame
 //idAsyncServer::ProcessConnectionLessMessages
 //==================
 //*/
-//void idAsyncServer::ProcessConnectionLessMessages( void ) {
+//void idAsyncServer::ProcessConnectionLessMessages( ) {
 //	int			size, id;
 //	idBitMsg	msg;
 //	byte		msgBuf[MAX_MESSAGE_SIZE];
@@ -2417,7 +2417,7 @@ idAsyncServer::IsClientInGame
 //idAsyncServer::RunFrame
 //==================
 //*/
-//void idAsyncServer::RunFrame( void ) {
+//void idAsyncServer::RunFrame( ) {
 //	int			i, msec, size;
 //	bool		newPacket;
 //	idBitMsg	msg;
@@ -2588,18 +2588,18 @@ idAsyncServer::IsClientInGame
 //
 //	idAsyncNetwork::serverMaxClientRate.ClearModified();
 //}
-//
-///*
-//==================
-//idAsyncServer::PacifierUpdate
-//==================
-//*/
-//void idAsyncServer::PacifierUpdate( void ) {
-//	int i;
-//
-//	if ( !IsActive() ) {
-//		return;
-//	}
+
+/*
+==================
+idAsyncServer::PacifierUpdate
+==================
+*/
+	PacifierUpdate ( ): void {
+		var /*int*/ i: number;
+
+		if ( !this.IsActive ( ) ) {
+			return;
+		}
 //	realTime = Sys_Milliseconds();
 //	ProcessConnectionLessMessages();
 //	for ( i = 0; i < MAX_ASYNC_CLIENTS; i++ ) {
@@ -2611,7 +2611,7 @@ idAsyncServer::IsClientInGame
 //			}
 //		}
 //	}
-//}
+	}
 //
 ///*
 //==================
@@ -2683,7 +2683,7 @@ idAsyncServer::IsClientInGame
 //idAsyncServer::UpdateAsyncStatsAvg
 //===============
 //*/
-//void idAsyncServer::UpdateAsyncStatsAvg( void ) {
+//void idAsyncServer::UpdateAsyncStatsAvg( ) {
 //	stats_average_sum -= stats_outrate[ stats_current ];
 //	stats_outrate[ stats_current ] = idAsyncNetwork::server.GetOutgoingRate();
 //	if ( stats_outrate[ stats_current ] > stats_max ) {

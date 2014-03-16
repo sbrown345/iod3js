@@ -2356,7 +2356,7 @@ drawSurfsCommand_t, etc) and links it to the end of the
 current command chain.
 ============
 */
-	static R_GetCommandBuffer ( /*int */bytes: number ): any {
+	static R_GetCommandBuffer ( /*int */bytes: number ): any {	
 		var cmd: emptyCommand_t;
 
 		cmd = /*(emptyCommand_t *)*/R_FrameAlloc<emptyCommand_t>( emptyCommand_t /*, bytes */ );
@@ -3083,7 +3083,7 @@ CaptureRenderToImage
 
 		var rc: renderCrop_t = this.renderCrops[this.currentRenderCrop];
 
-		var cmd = <copyRenderCommand_t> idRenderSystem.R_GetCommandBuffer( sizeof( cmd ) );
+		var cmd = <copyRenderCommand_t> idRenderSystem.R_GetCommandBuffer( /*sizeof( cmd ) */0);
 		cmd.commandId = renderCommand_t.RC_COPY_RENDER;
 		cmd.x = rc.x;
 		cmd.y = rc.y;

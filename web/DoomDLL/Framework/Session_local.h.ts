@@ -104,14 +104,14 @@ class idSessionLocal extends idSession {
 //
 //	virtual void		Stop();
 //
-//	virtual void		UpdateScreen( bool outOfSequence = true );
-//
-//	virtual void		PacifierUpdate();
-//
-//	virtual void		Frame();
-//
+	UpdateScreen ( outOfSequence: boolean = true ): void { throw "placeholder"; }
+
+	PacifierUpdate ( ): void { throw "placeholder"; }
+
+	Frame():void { throw "placeholder"; }
+
 	IsMultiplayer ( ): boolean { throw "placeholder"; }
-//
+
 //	virtual bool		ProcessEvent( const sysEvent_t *event );
 //
 //	virtual void		StartMenu( bool playIntro = false );
@@ -154,9 +154,9 @@ class idSessionLocal extends idSession {
 //	void				SaveSession( name:string );
 //
 //	// called by Draw when the scene to scene wipe is still running
-//	void				DrawWipeModel();
+	DrawWipeModel ( ): void { throw "placeholder"; }
 	StartWipe ( _wipeMaterial: string, hold: boolean = false ): void { throw "placeholder"; }
-	CompleteWipe(): void { throw "placeholder"; }
+	CompleteWipe ( ): void { throw "placeholder"; }
 //
 //	void				ShowLoadingGui();
 //
