@@ -884,7 +884,7 @@ Sort( compare:(a:idStr,b:idStr)=>number = null):void {
     this["length"] = this.num;
     this["splice"] = [].splice;
     this["sort"] = [].sort;
-    this["sort"](compare);
+	this["sort"](compare || idStr.Cmp); // todo, is idStr.Cmp ok, whats default?
 }
 
 ///*

@@ -485,7 +485,7 @@ A raw string should NEVER be passed as fmt, because of "%f" type crashers.
 */
 	Printf ( /*const char **/ fmt: string, ...args: any[] ): void {
 		var argArr = args.slice( 0 );
-		argArr.unshift( fmt.trim() );
+		argArr.unshift( fmt );
 		console.log.apply(console, argArr);
 
 		this.VPrintf.apply( this, argArr );
@@ -512,8 +512,7 @@ prints message that only shows up if the "developer" cvar is set
 		var temp = this.com_refreshOnPrint;
 		this.com_refreshOnPrint = false;
 
-		//this.Printf( /*S_COLOR_RED*/"%s", msg );
-		this.Printf( /*S_COLOR_RED*/"%c%s", "color: red;", msg );
+		this.Printf( S_COLOR_RED + "%s", msg );
 
 		this.com_refreshOnPrint = temp;
 	}
@@ -525,22 +524,22 @@ idCommonLocal::DWarning
 prints warning message in yellow that only shows up if the "developer" cvar is set
 ==================
 */
-	DWarning ( fmt: string, ...args: any[] ): void {
+	DWarning(fmt: string, ...argptr: any[] ): void {
 		//va_list		argptr;
 		//char		msg[MAX_PRINT_MSG_SIZE];
 
 		if ( !com_developer.GetBool ( ) ) {
 			return; // don't confuse non-developers with techie stuff...
 		}
-
+		todoThrow ( );
 		//va_start( argptr, fmt );
 		//idStr::vsnPrintf( msg, sizeof(msg), fmt, argptr );
 		//va_end( argptr );
 		//msg[sizeof(msg)-1] = '\0';
 
-		var msg = vsprintf( fmt, args );
+		var msg = vsprintf(fmt, argptr );
 
-		this.Printf( /* S_COLOR_YELLOW*/"WARNING: %s\n", msg );
+		this.Printf( S_COLOR_YELLOW + "WARNING: %s\n", msg );
 	}
 
 /*
@@ -550,23 +549,23 @@ idCommonLocal::Warning
 prints WARNING %s and adds the warning message to a queue to be printed later on
 ==================
 */
-	Warning( /*const char **/ fmt: string, ...args: any[]): void {
-		var argArr = args.slice(0);
-		argArr.unshift(fmt.trim());
+	Warning( /*const char **/ fmt: string, ...argptr: any[]): void {
+		var argArr = argptr.slice(0);
+		argArr.unshift(fmt);
 		console.warn.apply(console, argArr);
 		//va_list		argptr;
-		//char		msg[MAX_PRINT_MSG_SIZE];
+		var msg = new Uint8Array( MAX_PRINT_MSG_SIZE );
 
 		//va_start( argptr, fmt );
-		//idStr::vsnPrintf( msg, sizeof(msg), fmt, argptr );
+		idStr.vsnPrintf( msg, sizeof( msg ), fmt, argptr );
 		//va_end( argptr );
-		//msg[sizeof(msg)-1] = 0;
+		msg[sizeof(msg)-1] = 0;
 
-		//Printf( S_COLOR_YELLOW "WARNING: " S_COLOR_RED "%s\n", msg );
+		this.Printf( S_COLOR_YELLOW + "WARNING: " + S_COLOR_RED + "%s\n", msg );
 
-		//if ( this.warningList.Num() < MAX_WARNING_LIST ) {
-		//	this.warningList.AddUnique( msg );
-		//}
+		if ( this.warningList.Num() < MAX_WARNING_LIST ) {
+			this.warningList.AddUnique( new idStr( msg.toString ( ) ) );
+		}
 	}
 
 /*
