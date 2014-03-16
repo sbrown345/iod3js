@@ -80,46 +80,29 @@ class idCmdArgs {
 
 	copy ( dest: idCmdArgs = null ): idCmdArgs {
 		dest = dest || new idCmdArgs;
-		dest.argc = this.argc;
-
-		for (var i = 0; i < this.argv.length; i++) {
-			if ( !this.argv[i] ) {
-				continue;
-			}
-
-			if ( !dest.argv[i] ) {
-				dest.argv[i] = this.argv[i].subarray( 0 );
-			} else {
-				for ( var j = 0; j < this.argv[i].length; j++ ) {
-					dest.argv[i][j] = this.argv[i][j];
-				}
-			}
-		}
-		
-		for (var i = 0; i < this.tokenized.length; i++ ) {
-			dest.tokenized[i] = this.tokenized[i];
-		}
-
+		dest.equals( this );
 		return dest;
 	}
 
 ////#endif /* !__CMDARGS_H__ */
 
 
-/////*
-////============
-////idCmdArgs::operator=
-////============
-////*/
-////void idCmdArgs::operator=( args:idCmdArgs ) {
-////	int i;
+/*
+============
+idCmdArgs::operator=
+============
+*/
+	equals ( args: idCmdArgs ): idCmdArgs {
+		var /*int */i: number;
 
-////	this.argc = args.argc;
-////	memcpy( tokenized, args.tokenized, MAX_COMMAND_STRING );
-////	for ( i = 0; i < this.argc; i++ ) {
-////		argv[ i ] = tokenized + ( args.argv[ i ] - args.tokenized );
-////	}
-////}
+		this.argc = args.argc;
+		memcpy( this.tokenized, args.tokenized, idCmdArgs.MAX_COMMAND_STRING );
+		for ( i = 0; i < this.argc; i++ ) {
+			this.argv[i] = args.argv[i].toString ( ).toUint8Array ( );
+		}
+
+		return this;
+	}
 
 /*
 ============
@@ -239,7 +222,7 @@ will point into this temporary buffer.
 			// regular token
 			this.argv[this.argc] = this.tokenized.subarray( totalLen ); //tokenized + totalLen;
 			this.argc++;
-
+			
 			idStr.Copynz( this.tokenized.subarray( totalLen ) /*tokenized + totalLen*/, token.c_str ( ), idCmdArgs.MAX_COMMAND_STRING /*sizeof( tokenized )*/ - totalLen );
 
 			totalLen += len + 1;

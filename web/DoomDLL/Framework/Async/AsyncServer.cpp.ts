@@ -80,7 +80,7 @@ class idAsyncServer {
 //	int					localClientNum;				// local client on listen server
 //
 //	challenge_t			challenges[MAX_CHALLENGES];	// to prevent invalid IPs from connecting
-//	serverClient_t		clients[MAX_ASYNC_CLIENTS];	// clients
+	clients = newStructArray<serverClient_t>(serverClient_t, MAX_ASYNC_CLIENTS);	// clients
 //	usercmd_t			userCmds[MAX_USERCMD_BACKUP][MAX_ASYNC_CLIENTS];
 //
 //	int					gameInitId;					// game initialization identification
@@ -108,7 +108,7 @@ class idAsyncServer {
 //	int					stats_max;
 //	int					stats_max_index;
 
-	///*
+///*
 //==================
 //idAsyncServer::idAsyncServer
 //==================
@@ -144,7 +144,7 @@ class idAsyncServer {
 //	stats_max_index = 0;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::InitPort
 //==================
@@ -176,7 +176,7 @@ class idAsyncServer {
 //	return true;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::ClosePort
 //==================
@@ -190,7 +190,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::Spawn
 //==================
@@ -242,7 +242,7 @@ class idAsyncServer {
 //	ExecuteMapChange();
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::Kill
 //==================
@@ -282,7 +282,7 @@ class idAsyncServer {
 //	session->Stop();
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::ExecuteMapChange
 //==================
@@ -420,7 +420,7 @@ class idAsyncServer {
 //	MasterHeartbeat( true );
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::GetPort
 //==================
@@ -429,7 +429,7 @@ class idAsyncServer {
 //	return serverPort.GetPort();
 //}
 //
-	///*
+///*
 //===============
 //idAsyncServer::GetBoundAdr
 //===============
@@ -438,7 +438,7 @@ class idAsyncServer {
 //	return serverPort.GetAdr();
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::GetOutgoingRate
 //==================
@@ -457,7 +457,7 @@ class idAsyncServer {
 //	return rate;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::GetIncomingRate
 //==================
@@ -476,16 +476,16 @@ class idAsyncServer {
 //	return rate;
 //}
 //
-	///*
-//==================
-//idAsyncServer::IsClientInGame
-//==================
-//*/
-//bool idAsyncServer::IsClientInGame( int clientNum ) const {
-//	return ( clients[clientNum].clientState >= SCS_INGAME );
-//}
-//
-	///*
+	/*
+==================
+idAsyncServer::IsClientInGame
+==================
+*/
+	IsClientInGame ( /*int */clientNum: number ): boolean {
+		return (this.clients[clientNum].clientState >= serverClientState_t.SCS_INGAME );
+	}
+
+///*
 //==================
 //idAsyncServer::GetClientPing
 //==================
@@ -500,7 +500,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::GetClientPrediction
 //==================
@@ -515,7 +515,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::GetClientTimeSinceLastPacket
 //==================
@@ -530,7 +530,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::GetClientTimeSinceLastInput
 //==================
@@ -545,7 +545,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::GetClientOutgoingRate
 //==================
@@ -560,7 +560,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::GetClientIncomingRate
 //==================
@@ -575,7 +575,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::GetClientOutgoingCompression
 //==================
@@ -590,7 +590,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::GetClientIncomingCompression
 //==================
@@ -605,7 +605,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::GetClientIncomingPacketLoss
 //==================
@@ -620,7 +620,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::GetNumClients
 //==================
@@ -635,7 +635,7 @@ class idAsyncServer {
 //	return ret;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::GetNumIdleClients
 //==================
@@ -652,7 +652,7 @@ class idAsyncServer {
 //	return ret;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::DuplicateUsercmds
 //==================
@@ -675,7 +675,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::ClearClient
 //==================
@@ -703,7 +703,7 @@ class idAsyncServer {
 //	client.numDuplicatedUsercmds = 0;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::InitClient
 //==================
@@ -745,7 +745,7 @@ class idAsyncServer {
 //	game->ServerClientConnect( clientNum, client.guid );
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::InitLocalClient
 //==================
@@ -762,7 +762,7 @@ class idAsyncServer {
 //	sessLocal.mapSpawnData.userInfo[clientNum] = *cvarSystem->MoveCVarsToDict( CVAR_USERINFO );
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::BeginLocalClient
 //==================
@@ -773,7 +773,7 @@ class idAsyncServer {
 //	game->ServerClientBegin( localClientNum );
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::LocalClientInput
 //==================
@@ -797,7 +797,7 @@ class idAsyncServer {
 //	clients[localClientNum].lastPacketTime = serverTime;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::DropClient
 //==================
@@ -836,7 +836,7 @@ class idAsyncServer {
 //	client.clientState = SCS_ZOMBIE;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::SendReliableMessage
 //==================
@@ -851,7 +851,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::CheckClientTimeouts
 //==================
@@ -887,7 +887,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::SendPrintBroadcast
 //==================
@@ -908,7 +908,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::SendPrintToClient
 //==================
@@ -930,7 +930,7 @@ class idAsyncServer {
 //	SendReliableMessage( clientNum, msg );
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::SendUserInfoBroadcast
 //==================
@@ -985,7 +985,7 @@ class idAsyncServer {
 //	sessLocal.mapSpawnData.userInfo[userInfoNum] = *gameInfo;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::UpdateUI
 //if the game modifies userInfo, it will call this through command system
@@ -1004,7 +1004,7 @@ class idAsyncServer {
 //	SendUserInfoBroadcast( clientNum, *info, true );
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::SendUserInfoToClient
 //==================
@@ -1032,7 +1032,7 @@ class idAsyncServer {
 //	SendReliableMessage( clientNum, msg );
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::SendSyncedCvarsBroadcast
 //==================
@@ -1055,7 +1055,7 @@ class idAsyncServer {
 //	sessLocal.mapSpawnData.syncedCVars = cvars;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::SendSyncedCvarsToClient
 //==================
@@ -1075,7 +1075,7 @@ class idAsyncServer {
 //	SendReliableMessage( clientNum, msg );
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::SendApplySnapshotToClient
 //==================
@@ -1091,7 +1091,7 @@ class idAsyncServer {
 //	SendReliableMessage( clientNum, msg );
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::SendEmptyToClient
 //==================
@@ -1125,7 +1125,7 @@ class idAsyncServer {
 //	return true;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::SendPingToClient
 //==================
@@ -1160,7 +1160,7 @@ class idAsyncServer {
 //	return true;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::SendGameInitToClient
 //==================
@@ -1189,7 +1189,7 @@ class idAsyncServer {
 //	client.gameInitSequence = client.channel.SendMessage( serverPort, serverTime, msg );
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::SendSnapshotToClient
 //==================
@@ -1263,7 +1263,7 @@ class idAsyncServer {
 //	return true;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::ProcessUnreliableClientMessage
 //==================
@@ -1390,7 +1390,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::ProcessReliableClientMessages
 //==================
@@ -1437,7 +1437,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::ProcessAuthMessage
 //==================
@@ -1523,7 +1523,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::ProcessChallengeMessage
 //==================
@@ -1599,7 +1599,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::SendPureServerMessage
 //==================
@@ -1637,7 +1637,7 @@ class idAsyncServer {
 //	return true;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::SendReliablePureToClient
 //==================
@@ -1675,7 +1675,7 @@ class idAsyncServer {
 //	return true;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::ValidateChallenge
 //==================
@@ -1712,7 +1712,7 @@ class idAsyncServer {
 //	return i;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::ProcessConnectMessage
 //==================
@@ -1924,7 +1924,7 @@ class idAsyncServer {
 //	memset( &challenges[ ichallenge ], 0, sizeof( challenge_t ) );
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::VerifyChecksumMessage
 //==================
@@ -1977,7 +1977,7 @@ class idAsyncServer {
 //	return true;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::ProcessPureMessage
 //==================
@@ -2007,7 +2007,7 @@ class idAsyncServer {
 //	challenges[ iclient ].authState = CDK_PUREOK; // next connect message will get the client through completely
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::ProcessReliablePure
 //==================
@@ -2043,7 +2043,7 @@ class idAsyncServer {
 //	clients[ clientNum ].clientState = SCS_CONNECTED;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::RemoteConsoleOutput
 //==================
@@ -2053,7 +2053,7 @@ class idAsyncServer {
 //	PrintOOB( rconAddress, SERVER_PRINT_RCON, string );
 //}
 //
-	///*
+///*
 //==================
 //RConRedirect
 //==================
@@ -2062,7 +2062,7 @@ class idAsyncServer {
 //	idAsyncNetwork::server.RemoteConsoleOutput( string );
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::ProcessRemoteConsoleMessage
 //==================
@@ -2101,7 +2101,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::ProcessGetInfoMessage
 //==================
@@ -2144,7 +2144,7 @@ class idAsyncServer {
 //	serverPort.SendPacket( from, outMsg.GetData(), outMsg.GetSize() );
 //}
 //
-	///*
+///*
 //===============
 //idAsyncServer::PrintLocalServerInfo
 //see (client) "getInfo" -> (server) "infoResponse" -> (client)ProcessGetInfoMessage
@@ -2171,7 +2171,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::ConnectionlessMessage
 //==================
@@ -2237,7 +2237,7 @@ class idAsyncServer {
 //	return false;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::ProcessMessage
 //==================
@@ -2302,7 +2302,7 @@ class idAsyncServer {
 //	return false;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::SendReliableGameMessage
 //==================
@@ -2331,7 +2331,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::LocalClientSendReliableMessageExcluding
 //==================
@@ -2358,7 +2358,7 @@ class idAsyncServer {
 //	}	
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::LocalClientSendReliableMessage
 //==================
@@ -2371,7 +2371,7 @@ class idAsyncServer {
 //	game->ServerProcessReliableMessage( localClientNum, msg );
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::ProcessConnectionLessMessages
 //==================
@@ -2397,7 +2397,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::UpdateTime
 //==================
@@ -2412,7 +2412,7 @@ class idAsyncServer {
 //	return msec;
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::RunFrame
 //==================
@@ -2589,7 +2589,7 @@ class idAsyncServer {
 //	idAsyncNetwork::serverMaxClientRate.ClearModified();
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::PacifierUpdate
 //==================
@@ -2613,7 +2613,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::PrintOOB
 //==================
@@ -2630,7 +2630,7 @@ class idAsyncServer {
 //	serverPort.SendPacket( to, outMsg.GetData(), outMsg.GetSize() );
 //}
 //
-	///*
+///*
 //==================
 //idAsyncServer::MasterHeartbeat
 //==================
@@ -2664,7 +2664,7 @@ class idAsyncServer {
 //	}
 //}
 //
-	///*
+///*
 //===============
 //idAsyncServer::SendEnterGameToClient
 //===============
@@ -2678,7 +2678,7 @@ class idAsyncServer {
 //	SendReliableMessage( clientNum, msg );
 //}
 //
-	///*
+///*
 //===============
 //idAsyncServer::UpdateAsyncStatsAvg
 //===============
@@ -2704,7 +2704,7 @@ class idAsyncServer {
 //	stats_current++; stats_current %= stats_numsamples;
 //}
 //
-	///*
+///*
 //===============
 //idAsyncServer::GetAsyncStatsAvgMsg
 //===============
@@ -2713,7 +2713,7 @@ class idAsyncServer {
 //	sprintf( msg, "avrg out: %d B/s - max %d B/s ( over %d ms )", stats_average_sum / stats_numsamples, stats_max, idAsyncNetwork::serverSnapshotDelay.GetInteger() * stats_numsamples );
 //}
 //
-	///*
+///*
 //===============
 //idAsyncServer::ProcessDownloadRequestMessage
 //===============

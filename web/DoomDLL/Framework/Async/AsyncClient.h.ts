@@ -94,7 +94,7 @@ class idAsyncClient {
 //	bool				IsPortInitialized() { return clientPort.GetPort() != 0; }
 //
 	IsActive( ):boolean  { return this.active; }
-//	int					GetLocalClientNum( void ) const { return clientNum; }
+	GetLocalClientNum ( ): number { return this.clientNum; }
 //	int					GetPrediction( void ) const;
 //	int					GetTimeSinceLastPacket( void ) const;
 //	int					GetOutgoingRate( void ) const;
@@ -117,47 +117,47 @@ class idAsyncClient {
 	serverList = new idServerScan;
 //
 //private:
-	private active:boolean;						// true if client is active
-//	int					realTime;					// absolute time
-//
-//	int					clientTime;					// client local time
-//	idPort				clientPort;					// UDP port
-//	int					clientId;					// client identification
-//	int					clientDataChecksum;			// checksum of the data used by the client
-//	int					clientNum;					// client number on server
+	active:boolean;						// true if client is active
+	realTime:number/*int*/;					// absolute time
+
+	clientTime:number/*int*/;					// client local time
+//	idPort				clientPort = new idPort					// UDP port
+	clientId:number/*int*/;					// client identification
+	clientDataChecksum:number/*int*/;			// checksum of the data used by the client
+	clientNum:number/*int*/;					// client number on server
 //	clientState_t		clientState;				// client state
-//	int					clientPrediction;			// how far the client predicts ahead
-//	int					clientPredictTime;			// prediction time used to send user commands
-//
+	clientPrediction: number/*int*/;			// how far the client predicts ahead
+	clientPredictTime: number/*int*/;			// prediction time used to send user commands
+
 //	netadr_t			serverAddress;				// IP address of server
-//	int					serverId;					// server identification
-//	int					serverChallenge;			// challenge from server
-//	int					serverMessageSequence;		// sequence number of last server message
+	serverId:number/*int*/;					// server identification
+	serverChallenge:number/*int*/;			// challenge from server
+	serverMessageSequence:number/*int*/;		// sequence number of last server message
 //	
 //	netadr_t			lastRconAddress;			// last rcon address we emitted to
-//	int					lastRconTime;				// when last rcon emitted
+	lastRconTime:number/*int*/;				// when last rcon emitted
 //
 //	idMsgChannel		channel;					// message channel to server
-//	int					lastConnectTime;			// last time a connect message was sent
-//	int					lastEmptyTime;				// last time an empty message was sent
-//	int					lastPacketTime;				// last time a packet was received from the server
-//	int					lastSnapshotTime;			// last time a snapshot was received
-//
-//	int					snapshotSequence;			// sequence number of the last received snapshot
-//	int					snapshotGameFrame;			// game frame number of the last received snapshot
-//	int					snapshotGameTime;			// game time of the last received snapshot
-//
-//	int					gameInitId;					// game initialization identification
-//	int					gameFrame;					// local game frame
-//	int					gameTime;					// local game time
-//	int					gameTimeResidual;			// left over time from previous frame
+	lastConnectTime:number/*int*/;			// last time a connect message was sent
+	lastEmptyTime:number/*int*/;				// last time an empty message was sent
+	lastPacketTime:number/*int*/;				// last time a packet was received from the server
+	lastSnapshotTime:number/*int*/;			// last time a snapshot was received
+	
+	snapshotSequence:number/*int*/;			// sequence number of the last received snapshot
+	snapshotGameFrame:number/*int*/;			// game frame number of the last received snapshot
+	snapshotGameTime:number/*int*/;			// game time of the last received snapshot
+	
+	gameInitId:number/*int*/;					// game initialization identification
+	gameFrame:number/*int*/;					// local game frame
+	gameTime:number/*int*/;					// local game time
+	gameTimeResidual:number/*int*/;			// left over time from previous frame
 //
 //	usercmd_t			userCmds[MAX_USERCMD_BACKUP][MAX_ASYNC_CLIENTS];
 //
 //	idUserInterface *	guiNetMenu;
 //
 //	clientUpdateState_t updateState;
-//	int					updateSentTime;
+	updateSentTime:number/*int*/;
 //	idStr				updateMSG;
 //	idStr				updateURL;
 //	bool				updateDirectDownload;
@@ -167,17 +167,17 @@ class idAsyncClient {
 //	bool				showUpdateMessage;
 //
 //	backgroundDownload_t	backgroundDownload;
-//	int					dltotal;
-//	int					dlnow;
-//
-//	int					lastFrameDelta;
-//
-//	int					dlRequest;		// randomized number to keep track of the requests
-//	int					dlChecksums[ MAX_PURE_PAKS ]; // 0-terminated, first element is the game pak checksum or 0
-//	int					dlCount;		// total number of paks we request download for ( including the game pak )
+	dltotal:number/*int*/;
+	dlnow:number/*int*/;
+	
+	lastFrameDelta:number/*int*/;
+	
+	dlRequest:number/*int*/;		// randomized number to keep track of the requests
+	dlChecksums = new Int32Array(MAX_PURE_PAKS); // 0-terminated, first element is the game pak checksum or 0
+	dlCount:number/*int*/;		// total number of paks we request download for ( including the game pak )
 //	idList<pakDlEntry_t>dlList;			// list of paks to download, with url and name
-//	int					currentDlSize;
-//	int					totalDlSize;	// for partial progress stuff
+	currentDlSize: number/*int*/;
+	totalDlSize:number/*int*/;	// for partial progress stuff
 //
 //	void				Clear( void );
 //	void				ClearPendingPackets( void );

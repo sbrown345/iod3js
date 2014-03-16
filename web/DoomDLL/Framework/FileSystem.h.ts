@@ -53,8 +53,8 @@
 ////*/
 ////
 var FILE_NOT_FOUND_TIMESTAMP	= 0xFFFFFFFF;
-////static const int		MAX_PURE_PAKS				= 128;
-////static const int		MAX_OSPATH					= 256;
+var MAX_PURE_PAKS				= 128;
+var MAX_OSPATH					= 256;
 ////
 ////// modes for OpenFileByMode. used as bit mask internally
 enum fsMode_t{

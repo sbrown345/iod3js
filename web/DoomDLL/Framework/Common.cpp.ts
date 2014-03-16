@@ -86,15 +86,15 @@ var com_videoRam = new idCVar( "com_videoRam", "64", CVAR_INTEGER | CVAR_SYSTEM 
 
 var com_product_lang_ext = new idCVar( "com_product_lang_ext", "1", CVAR_INTEGER | CVAR_SYSTEM | CVAR_ARCHIVE, "Extension to use when creating language files." );
 
-////// com_speeds times
-////int				time_gameFrame;
-////int				time_gameDraw;
-////int				time_frontend;			// renderSystem frontend time
-////int				time_backend;			// renderSystem backend time
+// com_speeds times
+var time_gameFrame: number/*int*/;
+var time_gameDraw: number/*int*/;
+var time_frontend: number/*int*/;			// renderSystem frontend time
+var time_backend: number/*int*/;			// renderSystem backend time
 
-////int				com_frameTime;			// time for the current frame in milliseconds
-////int				com_frameNumber;		// variable frame number
-////volatile int	com_ticNumber;			// 60 hz tics
+var com_frameTime: number/*int*/;			// time for the current frame in milliseconds
+var com_frameNumber: number/*int*/;		// variable frame number
+var com_ticNumber: number/*volatile int*/;			// 60 hz tics
 var com_editors:number;			// currently opened editor(s)
 var com_editorActive:boolean;		//  true if an editor has focus
 
@@ -120,8 +120,8 @@ var game: idGame = null;
 
 ////static const int MAX_ASYNC_STATS = 1024;
 ////asyncStats_t	com_asyncStats[MAX_ASYNC_STATS];		// indexed by com_ticNumber
-var /*int */prevAsyncMsec: number;
-var/*int	*/lastTicMsec: number;
+var /*int*/prevAsyncMsec: number;
+var/*int*/lastTicMsec: number;
 
 
 // writes si_version to the config file - in a kinda obfuscated way
@@ -338,14 +338,15 @@ idCommonLocal::idCommonLocal
 ////	com_refreshOnPrint = set;
 ////}
 
-/////*
-////==================
-////idCommonLocal::VPrintf
+/*
+==================
+idCommonLocal::VPrintf
 
-////A raw string should NEVER be passed as fmt, because of "%f" type crashes.
-////==================
-////*/
-////void idCommonLocal::VPrintf( const char *fmt, va_list args ) {
+A raw string should NEVER be passed as fmt, because of "%f" type crashes.
+==================
+*/
+	VPrintf ( fmt: string, /*va_list */...args: any[] ): void {
+		todoThrow ( );
 ////	char		msg[MAX_PRINT_MSG_SIZE];
 ////	int			timeLength;
 ////	static bool	logFileFailed = false;
@@ -468,7 +469,7 @@ idCommonLocal::idCommonLocal
 ////	}
 
 ////#endif
-////}
+	}
 
 /*
 ==================
@@ -480,9 +481,11 @@ A raw string should NEVER be passed as fmt, because of "%f" type crashers.
 ==================
 */
 	Printf ( /*const char **/ fmt: string, ...args: any[] ): void {
+		this.VPrintf(fmt, args);
+
 		var argArr = args.slice( 0 );
 		argArr.unshift( fmt.trim() );
-		console.log.apply( console, argArr );
+		console.log.apply(console, argArr);
 	}
 
 /*

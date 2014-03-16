@@ -109,7 +109,7 @@ class autoComplete_t {
 ////*/
 ////static void PrintMatches( const char *s ) {
 ////	if ( idStr::Icmpn( s, globalAutoComplete.currentMatch, strlen( globalAutoComplete.currentMatch ) ) == 0 ) {
-////		common->Printf( "    %s\n", s );
+////		common.Printf( "    %s\n", s );
 ////	}
 ////}
 ////
@@ -120,7 +120,7 @@ class autoComplete_t {
 ////*/
 ////static void PrintCvarMatches( const char *s ) {
 ////	if ( idStr::Icmpn( s, globalAutoComplete.currentMatch, strlen( globalAutoComplete.currentMatch ) ) == 0 ) {
-////		common->Printf( "    %s" S_COLOR_WHITE " = \"%s\"\n", s, cvarSystem->GetCVarString( s ) );
+////		common.Printf( "    %s" S_COLOR_WHITE " = \"%s\"\n", s, cvarSystem.GetCVarString( s ) );
 ////	}
 ////}
 class idEditField {
@@ -197,7 +197,7 @@ idEditField::SetWidthInChars
 ////*/
 ////void idEditField::SetCursor( int c ) {
 ////	assert( c <= MAX_EDIT_LINE );
-////	cursor = c;
+////	this.cursor = c;
 ////}
 ////
 /////*
@@ -205,8 +205,8 @@ idEditField::SetWidthInChars
 ////idEditField::GetCursor
 ////===============
 ////*/
-////int idEditField::GetCursor( void ) const {
-////	return cursor;
+////int idEditField::GetCursor( ) const {
+////	return this.cursor;
 ////}
 ////
 /////*
@@ -214,130 +214,130 @@ idEditField::SetWidthInChars
 ////idEditField::ClearAutoComplete
 ////===============
 ////*/
-////void idEditField::ClearAutoComplete( void ) {
-////	if ( autoComplete.length > 0 && autoComplete.length <= (int) strlen( buffer ) ) {
-////		buffer[autoComplete.length] = '\0';
-////		if ( cursor > autoComplete.length ) {
-////			cursor = autoComplete.length;
+////void idEditField::ClearAutoComplete( ) {
+////	if ( this.autoComplete.length > 0 && this.autoComplete.length <= (int) strlen( this.buffer ) ) {
+////		this.buffer[this.autoComplete.length] = '\0';
+////		if ( this.cursor > this.autoComplete.length ) {
+////			this.cursor = this.autoComplete.length;
 ////		}
 ////	}
-////	autoComplete.length = 0;
-////	autoComplete.valid = false;
+////	this.autoComplete.length = 0;
+////	this.autoComplete.valid = false;
 ////}
 ////
-/////*
-////===============
-////idEditField::GetAutoCompleteLength
-////===============
-////*/
-////int idEditField::GetAutoCompleteLength( void ) const {
-////	return autoComplete.length;
-////}
-////
+/*
+===============
+idEditField::GetAutoCompleteLength
+===============
+*/
+	GetAutoCompleteLength ( ): number {
+		return this.autoComplete.length;
+	}
+
 /////*
 ////===============
 ////idEditField::AutoComplete
 ////===============
 ////*/
-////void idEditField::AutoComplete( void ) {
+////void idEditField::AutoComplete( ) {
 ////	char completionArgString[MAX_EDIT_LINE];
 ////	idCmdArgs args;
 ////
-////	if ( !autoComplete.valid ) {
-////		args.TokenizeString( buffer, false );
-////		idStr::Copynz( autoComplete.completionString, args.Argv( 0 ), sizeof( autoComplete.completionString ) );
+////	if ( !this.autoComplete.valid ) {
+////		args.TokenizeString( this.buffer, false );
+////		idStr::Copynz( this.autoComplete.completionString, args.Argv( 0 ), sizeof( this.autoComplete.completionString ) );
 ////		idStr::Copynz( completionArgString, args.Args(), sizeof( completionArgString ) );
-////		autoComplete.matchCount = 0;
-////		autoComplete.matchIndex = 0;
-////		autoComplete.currentMatch[0] = 0;
+////		this.autoComplete.matchCount = 0;
+////		this.autoComplete.matchIndex = 0;
+////		this.autoComplete.currentMatch[0] = 0;
 ////
-////		if ( strlen( autoComplete.completionString ) == 0 ) {
+////		if ( strlen( this.autoComplete.completionString ) == 0 ) {
 ////			return;
 ////		}
 ////
-////		globalAutoComplete = autoComplete;
+////		globalAutoComplete = this.autoComplete;
 ////
-////		cmdSystem->CommandCompletion( FindMatches );
-////		cvarSystem->CommandCompletion( FindMatches );
+////		cmdSystem.CommandCompletion( FindMatches );
+////		cvarSystem.CommandCompletion( FindMatches );
 ////
-////		autoComplete = globalAutoComplete;
+////		this.autoComplete = globalAutoComplete;
 ////
-////		if ( autoComplete.matchCount == 0 ) {
+////		if ( this.autoComplete.matchCount == 0 ) {
 ////			return;	// no matches
 ////		}
 ////
 ////		// when there's only one match or there's an argument
-////		if ( autoComplete.matchCount == 1 || completionArgString[0] != '\0' ) {
+////		if ( this.autoComplete.matchCount == 1 || completionArgString[0] != '\0' ) {
 ////
 ////			/// try completing arguments
-////			idStr::Append( autoComplete.completionString, sizeof( autoComplete.completionString ), " " );
-////			idStr::Append( autoComplete.completionString, sizeof( autoComplete.completionString ), completionArgString );
-////			autoComplete.matchCount = 0;
+////			idStr::Append( this.autoComplete.completionString, sizeof( this.autoComplete.completionString ), " " );
+////			idStr::Append( this.autoComplete.completionString, sizeof( this.autoComplete.completionString ), completionArgString );
+////			this.autoComplete.matchCount = 0;
 ////
-////			globalAutoComplete = autoComplete;
+////			globalAutoComplete = this.autoComplete;
 ////
-////			cmdSystem->ArgCompletion( autoComplete.completionString, FindMatches );
-////			cvarSystem->ArgCompletion( autoComplete.completionString, FindMatches );
+////			cmdSystem.ArgCompletion( this.autoComplete.completionString, FindMatches );
+////			cvarSystem.ArgCompletion( this.autoComplete.completionString, FindMatches );
 ////
-////			autoComplete = globalAutoComplete;
+////			this.autoComplete = globalAutoComplete;
 ////
-////			idStr::snPrintf( buffer, sizeof( buffer ), "%s", autoComplete.currentMatch );
+////			idStr::snPrintf( this.buffer, sizeof( this.buffer ), "%s", this.autoComplete.currentMatch );
 ////
-////			if ( autoComplete.matchCount == 0 ) {
+////			if ( this.autoComplete.matchCount == 0 ) {
 ////				// no argument matches
-////				idStr::Append( buffer, sizeof( buffer ), " " );
-////				idStr::Append( buffer, sizeof( buffer ), completionArgString );
-////				SetCursor( strlen( buffer ) );
+////				idStr::Append( this.buffer, sizeof( this.buffer ), " " );
+////				idStr::Append( this.buffer, sizeof( this.buffer ), completionArgString );
+////				SetCursor( strlen( this.buffer ) );
 ////				return;
 ////			}
 ////		} else {
 ////
 ////			// multiple matches, complete to shortest
-////			idStr::snPrintf( buffer, sizeof( buffer ), "%s", autoComplete.currentMatch );
+////			idStr::snPrintf( this.buffer, sizeof( this.buffer ), "%s", this.autoComplete.currentMatch );
 ////			if ( strlen( completionArgString ) ) {
-////				idStr::Append( buffer, sizeof( buffer ), " " );
-////				idStr::Append( buffer, sizeof( buffer ), completionArgString );
+////				idStr::Append( this.buffer, sizeof( this.buffer ), " " );
+////				idStr::Append( this.buffer, sizeof( this.buffer ), completionArgString );
 ////			}
 ////		}
 ////
-////		autoComplete.length = strlen( buffer );
-////		autoComplete.valid = ( autoComplete.matchCount != 1 );
-////		SetCursor( autoComplete.length );
+////		this.autoComplete.length = strlen( this.buffer );
+////		this.autoComplete.valid = ( this.autoComplete.matchCount != 1 );
+////		SetCursor( this.autoComplete.length );
 ////
-////		common->Printf( "]%s\n", buffer );
+////		common.Printf( "]%s\n", this.buffer );
 ////
 ////		// run through again, printing matches
-////		globalAutoComplete = autoComplete;
+////		globalAutoComplete = this.autoComplete;
 ////
-////		cmdSystem->CommandCompletion( PrintMatches );
-////		cmdSystem->ArgCompletion( autoComplete.completionString, PrintMatches );
-////		cvarSystem->CommandCompletion( PrintCvarMatches );
-////		cvarSystem->ArgCompletion( autoComplete.completionString, PrintMatches );
+////		cmdSystem.CommandCompletion( PrintMatches );
+////		cmdSystem.ArgCompletion( this.autoComplete.completionString, PrintMatches );
+////		cvarSystem.CommandCompletion( PrintCvarMatches );
+////		cvarSystem.ArgCompletion( this.autoComplete.completionString, PrintMatches );
 ////
-////	} else if ( autoComplete.matchCount != 1 ) {
+////	} else if ( this.autoComplete.matchCount != 1 ) {
 ////
 ////		// get the next match and show instead
-////		autoComplete.matchIndex++;
-////		if ( autoComplete.matchIndex == autoComplete.matchCount ) {
-////			autoComplete.matchIndex = 0;
+////		this.autoComplete.matchIndex++;
+////		if ( this.autoComplete.matchIndex == this.autoComplete.matchCount ) {
+////			this.autoComplete.matchIndex = 0;
 ////		}
-////		autoComplete.findMatchIndex = 0;
+////		this.autoComplete.findMatchIndex = 0;
 ////
-////		globalAutoComplete = autoComplete;
+////		globalAutoComplete = this.autoComplete;
 ////
-////		cmdSystem->CommandCompletion( FindIndexMatch );
-////		cmdSystem->ArgCompletion( autoComplete.completionString, FindIndexMatch );
-////		cvarSystem->CommandCompletion( FindIndexMatch );
-////		cvarSystem->ArgCompletion( autoComplete.completionString, FindIndexMatch );
+////		cmdSystem.CommandCompletion( FindIndexMatch );
+////		cmdSystem.ArgCompletion( this.autoComplete.completionString, FindIndexMatch );
+////		cvarSystem.CommandCompletion( FindIndexMatch );
+////		cvarSystem.ArgCompletion( this.autoComplete.completionString, FindIndexMatch );
 ////
-////		autoComplete = globalAutoComplete;
+////		this.autoComplete = globalAutoComplete;
 ////
 ////		// and print it
-////		idStr::snPrintf( buffer, sizeof( buffer ), autoComplete.currentMatch );
-////		if ( autoComplete.length > (int)strlen( buffer ) ) {
-////			autoComplete.length = strlen( buffer );
+////		idStr::snPrintf( this.buffer, sizeof( this.buffer ), this.autoComplete.currentMatch );
+////		if ( this.autoComplete.length > (int)strlen( this.buffer ) ) {
+////			this.autoComplete.length = strlen( this.buffer );
 ////		}
-////		SetCursor( autoComplete.length );
+////		SetCursor( this.autoComplete.length );
 ////	}
 ////}
 ////
@@ -359,28 +359,28 @@ idEditField::SetWidthInChars
 ////		return;
 ////	}
 ////
-////	len = strlen( buffer );
+////	len = strlen( this.buffer );
 ////
 ////	if ( ch == 'h' - 'a' + 1 || ch == K_BACKSPACE ) {	// ctrl-h is backspace
-////		if ( cursor > 0 ) {
-////			memmove( buffer + cursor - 1, buffer + cursor, len + 1 - cursor );
-////			cursor--;
-////			if ( cursor < scroll ) {
-////				scroll--;
+////		if ( this.cursor > 0 ) {
+////			memmove( this.buffer + this.cursor - 1, this.buffer + this.cursor, len + 1 - this.cursor );
+////			this.cursor--;
+////			if ( this.cursor < this.scroll ) {
+////				this.scroll--;
 ////			}
 ////		}
 ////		return;
 ////	}
 ////
 ////	if ( ch == 'a' - 'a' + 1 ) {	// ctrl-a is home
-////		cursor = 0;
-////		scroll = 0;
+////		this.cursor = 0;
+////		this.scroll = 0;
 ////		return;
 ////	}
 ////
 ////	if ( ch == 'e' - 'a' + 1 ) {	// ctrl-e is end
-////		cursor = len;
-////		scroll = cursor - widthInChars;
+////		this.cursor = len;
+////		this.scroll = this.cursor - this.widthInChars;
 ////		return;
 ////	}
 ////
@@ -392,27 +392,27 @@ idEditField::SetWidthInChars
 ////	}
 ////
 ////	if ( idKeyInput::GetOverstrikeMode() ) {	
-////		if ( cursor == MAX_EDIT_LINE - 1 ) {
+////		if ( this.cursor == MAX_EDIT_LINE - 1 ) {
 ////			return;
 ////		}
-////		buffer[cursor] = ch;
-////		cursor++;
+////		this.buffer[this.cursor] = ch;
+////		this.cursor++;
 ////	} else {	// insert mode
 ////		if ( len == MAX_EDIT_LINE - 1 ) {
 ////			return; // all full
 ////		}
-////		memmove( buffer + cursor + 1, buffer + cursor, len + 1 - cursor );
-////		buffer[cursor] = ch;
-////		cursor++;
+////		memmove( this.buffer + this.cursor + 1, this.buffer + this.cursor, len + 1 - this.cursor );
+////		this.buffer[this.cursor] = ch;
+////		this.cursor++;
 ////	}
 ////
 ////
-////	if ( cursor >= widthInChars ) {
-////		scroll++;
+////	if ( this.cursor >= this.widthInChars ) {
+////		this.scroll++;
 ////	}
 ////
-////	if ( cursor == len + 1 ) {
-////		buffer[cursor] = 0;
+////	if ( this.cursor == len + 1 ) {
+////		this.buffer[this.cursor] = 0;
 ////	}
 ////}
 ////
@@ -431,13 +431,13 @@ idEditField::SetWidthInChars
 ////		return;
 ////	}
 ////
-////	len = strlen( buffer );
+////	len = strlen( this.buffer );
 ////
 ////	if ( key == K_DEL ) {
-////		if ( autoComplete.length ) {
+////		if ( this.autoComplete.length ) {
 ////			ClearAutoComplete();
-////		} else if ( cursor < len ) {
-////			memmove( buffer + cursor, buffer + cursor + 1, len - cursor );
+////		} else if ( this.cursor < len ) {
+////			memmove( this.buffer + this.cursor, this.buffer + this.cursor + 1, len - this.cursor );
 ////		}
 ////		return;
 ////	}
@@ -445,27 +445,27 @@ idEditField::SetWidthInChars
 ////	if ( key == K_RIGHTARROW ) {
 ////		if ( idKeyInput::IsDown( K_CTRL ) ) {
 ////			// skip to next word
-////			while( ( cursor < len ) && ( buffer[ cursor ] != ' ' ) ) {
-////				cursor++;
+////			while( ( this.cursor < len ) && ( this.buffer[ this.cursor ] != ' ' ) ) {
+////				this.cursor++;
 ////			}
 ////
-////			while( ( cursor < len ) && ( buffer[ cursor ] == ' ' ) ) {
-////				cursor++;
+////			while( ( this.cursor < len ) && ( this.buffer[ this.cursor ] == ' ' ) ) {
+////				this.cursor++;
 ////			}
 ////		} else {
-////			cursor++;
+////			this.cursor++;
 ////		}
 ////
-////		if ( cursor > len ) {
-////			cursor = len;
+////		if ( this.cursor > len ) {
+////			this.cursor = len;
 ////		}
 ////
-////		if ( cursor >= scroll + widthInChars ) {
-////			scroll = cursor - widthInChars + 1;
+////		if ( this.cursor >= this.scroll + this.widthInChars ) {
+////			this.scroll = this.cursor - this.widthInChars + 1;
 ////		}
 ////
-////		if ( autoComplete.length > 0 ) {
-////			autoComplete.length = cursor;
+////		if ( this.autoComplete.length > 0 ) {
+////			this.autoComplete.length = this.cursor;
 ////		}
 ////		return;
 ////	}
@@ -473,48 +473,48 @@ idEditField::SetWidthInChars
 ////	if ( key == K_LEFTARROW ) {
 ////		if ( idKeyInput::IsDown( K_CTRL ) ) {
 ////			// skip to previous word
-////			while( ( cursor > 0 ) && ( buffer[ cursor - 1 ] == ' ' ) ) {
-////				cursor--;
+////			while( ( this.cursor > 0 ) && ( this.buffer[ this.cursor - 1 ] == ' ' ) ) {
+////				this.cursor--;
 ////			}
 ////
-////			while( ( cursor > 0 ) && ( buffer[ cursor - 1 ] != ' ' ) ) {
-////				cursor--;
+////			while( ( this.cursor > 0 ) && ( this.buffer[ this.cursor - 1 ] != ' ' ) ) {
+////				this.cursor--;
 ////			}
 ////		} else {
-////			cursor--;
+////			this.cursor--;
 ////		}
 ////
-////		if ( cursor < 0 ) {
-////			cursor = 0;
+////		if ( this.cursor < 0 ) {
+////			this.cursor = 0;
 ////		}
-////		if ( cursor < scroll ) {
-////			scroll = cursor;
+////		if ( this.cursor < this.scroll ) {
+////			this.scroll = this.cursor;
 ////		}
 ////
-////		if ( autoComplete.length ) {
-////			autoComplete.length = cursor;
+////		if ( this.autoComplete.length ) {
+////			this.autoComplete.length = this.cursor;
 ////		}
 ////		return;
 ////	}
 ////
 ////	if ( key == K_HOME || ( tolower( key ) == 'a' && idKeyInput::IsDown( K_CTRL ) ) ) {
-////		cursor = 0;
-////		scroll = 0;
-////		if ( autoComplete.length ) {
-////			autoComplete.length = cursor;
-////			autoComplete.valid = false;
+////		this.cursor = 0;
+////		this.scroll = 0;
+////		if ( this.autoComplete.length ) {
+////			this.autoComplete.length = this.cursor;
+////			this.autoComplete.valid = false;
 ////		}
 ////		return;
 ////	}
 ////
 ////	if ( key == K_END || ( tolower( key ) == 'e' && idKeyInput::IsDown( K_CTRL ) ) ) {
-////		cursor = len;
-////		if ( cursor >= scroll + widthInChars ) {
-////			scroll = cursor - widthInChars + 1;
+////		this.cursor = len;
+////		if ( this.cursor >= this.scroll + this.widthInChars ) {
+////			this.scroll = this.cursor - this.widthInChars + 1;
 ////		}
-////		if ( autoComplete.length ) {
-////			autoComplete.length = cursor;
-////			autoComplete.valid = false;
+////		if ( this.autoComplete.length ) {
+////			this.autoComplete.length = this.cursor;
+////			this.autoComplete.valid = false;
 ////		}
 ////		return;
 ////	}
@@ -535,7 +535,7 @@ idEditField::SetWidthInChars
 ////idEditField::Paste
 ////===============
 ////*/
-////void idEditField::Paste( void ) {
+////void idEditField::Paste( ) {
 ////	char	*cbd;
 ////	int		pasteLen, i;
 ////
@@ -553,16 +553,16 @@ idEditField::SetWidthInChars
 ////
 ////	Mem_Free( cbd );
 ////}
-////
-/////*
-////===============
-////idEditField::GetBuffer
-////===============
-////*/
-////char *idEditField::GetBuffer( void ) {
-////	return buffer;
-////}
-////
+
+/*
+===============
+idEditField::GetBuffer
+===============
+*/
+	GetBuffer ( ): string {
+		return this.buffer;
+	}
+
 /////*
 ////===============
 ////idEditField::SetBuffer
@@ -570,87 +570,87 @@ idEditField::SetWidthInChars
 ////*/
 ////void idEditField::SetBuffer( const char *buf ) {
 ////	Clear();
-////	idStr::Copynz( buffer, buf, sizeof( buffer ) );
-////	SetCursor( strlen( buffer ) );
+////	idStr::Copynz( this.buffer, buf, sizeof( this.buffer ) );
+////	SetCursor( strlen( this.buffer ) );
 ////}
 ////
-/////*
-////===============
-////idEditField::Draw
-////===============
-////*/
-////void idEditField::Draw( int x, int y, int width, bool showCursor, const idMaterial *shader ) {
-////	int		len;
-////	int		drawLen;
-////	int		prestep;
-////	int		cursorChar;
-////	char	str[MAX_EDIT_LINE];
-////	int		size;
-////
-////	size = SMALLCHAR_WIDTH;
-////
-////	drawLen = widthInChars;
-////	len = strlen( buffer ) + 1;
-////
-////	// guarantee that cursor will be visible
-////	if ( len <= drawLen ) {
-////		prestep = 0;
-////	} else {
-////		if ( scroll + drawLen > len ) {
-////			scroll = len - drawLen;
-////			if ( scroll < 0 ) {
-////				scroll = 0;
-////			}
-////		}
-////		prestep = scroll;
-////
-////		// Skip color code
-////		if ( idStr::IsColor( buffer + prestep ) ) { 
-////			prestep += 2;
-////		}
-////		if ( prestep > 0 && idStr::IsColor( buffer + prestep - 1 ) ) {
-////			prestep++;
-////		}
-////	}
-////
-////	if ( prestep + drawLen > len ) {
-////		drawLen = len - prestep;
-////	}
-////
-////	// extract <drawLen> characters from the field at <prestep>
-////	if ( drawLen >= MAX_EDIT_LINE ) {
-////		common->Error( "drawLen >= MAX_EDIT_LINE" );
-////	}
-////
-////	memcpy( str, buffer + prestep, drawLen );
-////	str[ drawLen ] = 0;
-////
-////	// draw it
-////	renderSystem->DrawSmallStringExt( x, y, str, colorWhite, false, shader );
-////
-////	// draw the cursor
-////	if ( !showCursor ) {
-////		return;
-////	}
-////
-////	if ( (int)( com_ticNumber >> 4 ) & 1 ) {
-////		return;		// off blink
-////	}
-////
-////	if ( idKeyInput::GetOverstrikeMode() ) {
-////		cursorChar = 11;
-////	} else {
-////		cursorChar = 10;
-////	}
-////
-////	// Move the cursor back to account for color codes
-////	for ( int i = 0; i<cursor; i++ ) {
-////		if ( idStr::IsColor( &str[i] ) ) {
-////			i++;
-////			prestep += 2;
-////		}
-////	}
-////
-////	renderSystem->DrawSmallChar( x + ( cursor - prestep ) * size, y, cursorChar, shader );
-////}
+/*
+===============
+idEditField::Draw
+===============
+*/
+	Draw ( /*int */x: number, /*int */y: number, /*int */width: number, showCursor: boolean, shader: idMaterial ): void {
+		var len: number; //int		
+		var drawLen: number; //int		
+		var prestep: number; //int		
+		var cursorChar: number; //int		
+		var str = new Uint8Array( MAX_EDIT_LINE );
+		var size: number; //int		
+
+		size = SMALLCHAR_WIDTH;
+
+		drawLen = this.widthInChars;
+		len = strlen( this.buffer ) + 1;
+
+		// guarantee that cursor will be visible
+		if ( len <= drawLen ) {
+			prestep = 0;
+		} else {
+			if ( this.scroll + drawLen > len ) {
+				this.scroll = len - drawLen;
+				if ( this.scroll < 0 ) {
+					this.scroll = 0;
+				}
+			}
+			prestep = this.scroll;
+
+			// Skip color code
+			if ( idStr.IsColor( this.buffer + prestep ) ) {
+				prestep += 2;
+			}
+			if ( prestep > 0 && idStr.IsColor( this.buffer[prestep - 1] ) ) {
+				prestep++;
+			}
+		}
+
+		if ( prestep + drawLen > len ) {
+			drawLen = len - prestep;
+		}
+
+		// extract <drawLen> characters from the field at <prestep>
+		if ( drawLen >= MAX_EDIT_LINE ) {
+			common.Error( "drawLen >= MAX_EDIT_LINE" );
+		}
+
+		memcpyUint8Array( str, this.buffer.substr( prestep ).toUint8Array ( ), drawLen );
+		str[drawLen] = 0;
+
+		// draw it
+		renderSystem.DrawSmallStringExt( x, y, str.toString ( ), colorWhite, false, shader );
+
+		// draw the cursor
+		if ( !showCursor ) {
+			return;
+		}
+
+		if ( ( int )( com_ticNumber >> 4 ) & 1 ) {
+			return; // off blink
+		}
+
+		if ( idKeyInput.GetOverstrikeMode ( ) ) {
+			cursorChar = 11;
+		} else {
+			cursorChar = 10;
+		}
+
+		// Move the cursor back to account for color codes
+		for ( var i = 0; i < this.cursor; i++ ) {
+			if ( idStr.IsColor( String.fromCharCode( str[i] ) ) ) {
+				i++;
+				prestep += 2;
+			}
+		}
+
+		renderSystem.DrawSmallChar( x + ( this.cursor - prestep ) * size, y, cursorChar, shader );
+	}
 }

@@ -46,11 +46,11 @@ idSessionLocal.com_wipeSeconds = new idCVar ( "com_wipeSeconds", "1", CVAR_SYSTE
 idSessionLocal.com_guid = new idCVar ( "com_guid", "", CVAR_SYSTEM | CVAR_ARCHIVE | CVAR_ROM, "" );
 
 
-//// these must be kept up to date with window Levelshot in guis/mainmenu.gui
-//const int PREVIEW_X = 211;
-//const int PREVIEW_Y = 31;
-//const int PREVIEW_WIDTH = 398;
-//const int PREVIEW_HEIGHT = 298;
+// these must be kept up to date with window Levelshot in guis/mainmenu.gui
+var PREVIEW_X = 211;
+var PREVIEW_Y = 31;
+var PREVIEW_WIDTH = 398;
+var PREVIEW_HEIGHT = 298;
 //
 //void RandomizeStack( void ) {
 //	// attempt to force uninitialized stack memory bugs
@@ -282,86 +282,16 @@ function Session_Map_f ( args: idCmdArgs ): void {
 //	} while ( retkey );
 //	recursed = false;
 //}
-//
-///*
-//===============================================================================
-//
-//SESSION LOCAL
-//  
-//===============================================================================
-//*/
-//
-///*
-//===============
-//idSessionLocal::Clear
-//===============
-//*/
-//void idSessionLocal::Clear() {
-//	
-//	insideUpdateScreen = false;
-//	insideExecuteMapChange = false;
-//
-//	loadingSaveGame = false;
-//	savegameFile = NULL;
-//	savegameVersion = 0;
-//
-//	currentMapName.Clear();
-//	aviDemoShortName.Clear();
-//	msgFireBack[ 0 ].Clear();
-//	msgFireBack[ 1 ].Clear();
-//
-//	timeHitch = 0;
-//
-//	rw = NULL;
-//	sw = NULL;
-//	menuSoundWorld = NULL;
-//	readDemo = NULL;
-//	writeDemo = NULL;
-//	renderdemoVersion = 0;
-//	cmdDemoFile = NULL;
-//
-//	syncNextGameFrame = false;
-//	mapSpawned = false;
-//	guiActive = NULL;
-//	aviCaptureMode = false;
-//	timeDemo = TD_NO;
-//	waitingOnBind = false;
-//	lastPacifierTime = 0;
-//	
-//	msgRunning = false;
-//	guiMsgRestore = NULL;
-//	msgIgnoreButtons = false;
-//
-//	bytesNeededForMapLoad = 0;
-//
-//#if ID_CONSOLE_LOCK
-//	emptyDrawCount = 0;
-//#endif
-//	ClearWipe();
-//
-//	loadGameList.Clear();
-//	modsList.Clear();
-//
-//	authEmitTimeout = 0;
-//	authWaitBox = false;
-//
-//	authMsg.Clear();
-//}
-//
-///*
-//===============
-//idSessionLocal::idSessionLocal
-//===============
-//*/
-//idSessionLocal::idSessionLocal() {
-//	guiInGame = guiMainMenu = guiIntro \
-//		= guiRestartMenu = guiLoading = guiGameOver = guiActive \
-//		= guiTest = guiMsg = guiMsgRestore = guiTakeNotes = NULL;	
-//	
-//	menuSoundWorld = NULL;
-//	
-//	Clear();
-//}
+
+/*
+===============================================================================
+
+SESSION LOCAL
+  
+===============================================================================
+*/
+
+
 //
 ///*
 //===============
@@ -379,7 +309,7 @@ function Session_Map_f ( args: idCmdArgs ): void {
 //===============
 //*/
 //void idSessionLocal::Stop() {
-//	ClearWipe();
+//	this.ClearWipe();
 //
 //	// clear mapSpawned and demo playing flags
 //	UnloadMap();
@@ -390,12 +320,12 @@ function Session_Map_f ( args: idCmdArgs ): void {
 //	// kill async server
 //	idAsyncNetwork.server.Kill();
 //
-//	if ( sw ) {
-//		sw.StopAllSounds();
+//	if ( this.sw ) {
+//		this.sw.StopAllSounds();
 //	}
 //
-//	insideUpdateScreen = false;
-//	insideExecuteMapChange = false;
+//	this.insideUpdateScreen = false;
+//	this.insideExecuteMapChange = false;
 //
 //	// drop all guis
 //	SetGUI( NULL, NULL );
@@ -409,25 +339,25 @@ function Session_Map_f ( args: idCmdArgs ): void {
 //void idSessionLocal::Shutdown() {
 //	int i;
 //
-//	if ( aviCaptureMode ) {
+//	if ( this.aviCaptureMode ) {
 //		EndAVICapture();
 //	}
 //
 //	Stop();
 //
-//	if ( rw ) {
-//		delete rw;
-//		rw = NULL;
+//	if ( this.rw ) {
+//		delete this.rw;
+//		this.rw = NULL;
 //	}
 //
-//	if ( sw ) {
-//		delete sw;
-//		sw = NULL;
+//	if ( this.sw ) {
+//		delete this.sw;
+//		this.sw = NULL;
 //	}
 //
-//	if ( menuSoundWorld ) {
-//		delete menuSoundWorld;
-//		menuSoundWorld = NULL;
+//	if ( this.menuSoundWorld ) {
+//		delete this.menuSoundWorld;
+//		this.menuSoundWorld = NULL;
 //	}
 //		
 //	mapSpawnData.serverInfo.Clear();
@@ -443,7 +373,7 @@ function Session_Map_f ( args: idCmdArgs ): void {
 //		guiMainMenu_MapList = NULL;
 //	}
 //
-//	Clear();
+//	this.Clear();
 //}
 
 /*
@@ -455,31 +385,31 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 	return idAsyncNetwork.IsActive ( );
 };
 
-///*
-//================
-//idSessionLocal::StartWipe
-//
-//Draws and captures the current state, then starts a wipe with that image
-//================
-//*/
-//void idSessionLocal::StartWipe( const char *_wipeMaterial, bool hold ) {
-//	console.Close();
-//
-//	// render the current screen into a texture for the wipe model
-//	renderSystem.CropRenderSize( 640, 480, true );
-//
-//	Draw();
-//
-//	renderSystem.CaptureRenderToImage( "_scratch");
-//	renderSystem.UnCrop();
-//
-//	wipeMaterial = declManager.FindMaterial( _wipeMaterial, false );
-//
-//	wipeStartTic = com_ticNumber;
-//	wipeStopTic = wipeStartTic + 1000.0f / USERCMD_MSEC * com_wipeSeconds.GetFloat();
-//	wipeHold = hold;
-//}
-//
+/*
+================
+idSessionLocal::StartWipe
+
+Draws and captures the current state, then starts a wipe with that image
+================
+*/
+idSessionLocal.prototype.StartWipe = function ( _wipeMaterial: string, hold: boolean = false ): void {
+	$console.Close ( );
+
+	// render the current screen into a texture for the wipe model
+	renderSystem.CropRenderSize( 640, 480, true );
+
+	this.Draw ( );
+
+	renderSystem.CaptureRenderToImage( "_scratch" );
+	renderSystem.UnCrop ( );
+
+	this.wipeMaterial = declManager.FindMaterial( _wipeMaterial, false );
+
+	this.wipeStartTic = com_ticNumber;
+	this.wipeStopTic = this.wipeStartTic + 1000.0 / USERCMD_MSEC * idSessionLocal.com_wipeSeconds.GetFloat ( );
+	this.wipeHold = hold;
+};
+
 ///*
 //================
 //idSessionLocal::CompleteWipe
@@ -488,11 +418,11 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //void idSessionLocal::CompleteWipe() {
 //	if ( com_ticNumber == 0 ) {
 //		// if the async thread hasn't started, we would hang here
-//		wipeStopTic = 0;
+//		this.wipeStopTic = 0;
 //		UpdateScreen( true );
 //		return;
 //	}
-//	while ( com_ticNumber < wipeStopTic ) {
+//	while ( com_ticNumber < this.wipeStopTic ) {
 //#if ID_CONSOLE_LOCK
 //		emptyDrawCount = 0;
 //#endif
@@ -509,7 +439,7 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //	if ( com_ticNumber == 0 ) {
 //		return;
 //	}
-//	console.Close();
+//	$console.Close();
 //
 //	// introduced in D3XP code. don't think it actually fixes anything, but doesn't hurt either
 //#if 1
@@ -533,17 +463,7 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //
 //
 //
-///*
-//================
-//idSessionLocal::ClearWipe
-//================
-//*/
-//void idSessionLocal::ClearWipe( void ) {
-//	wipeHold = false;
-//	wipeStopTic = 0;
-//	wipeStartTic = wipeStopTic + 1;
-//}
-//
+
 ///*
 //================
 //Session_TestGUI_f
@@ -560,9 +480,9 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //*/
 //void idSessionLocal::TestGUI( const char *guiName ) {
 //	if ( guiName && *guiName ) {
-//		guiTest = uiManager.FindGui( guiName, true, false, true );
+//		this.guiTest = uiManager.FindGui( guiName, true, false, true );
 //	} else {
-//		guiTest = NULL;
+//		this.guiTest = NULL;
 //	}
 //}
 //
@@ -786,7 +706,7 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //================
 //*/
 //void idSessionLocal::StartRecordingRenderDemo( const char *demoName ) {
-//	if ( writeDemo ) {
+//	if ( this.writeDemo ) {
 //		// allow it to act like a toggle
 //		StopRecordingRenderDemo();
 //		return;
@@ -797,24 +717,24 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //		return;
 //	}
 //
-//	console.Close();
+//	$console.Close();
 //
-//	writeDemo = new idDemoFile;
-//	if ( !writeDemo.OpenForWriting( demoName ) ) {
+//	this.writeDemo = new idDemoFile;
+//	if ( !this.writeDemo.OpenForWriting( demoName ) ) {
 //		common.Printf( "error opening %s\n", demoName );
-//		delete writeDemo;
-//		writeDemo = NULL;
+//		delete this.writeDemo;
+//		this.writeDemo = NULL;
 //		return;
 //	}
 //
-//	common.Printf( "recording to %s\n", writeDemo.GetName() );
+//	common.Printf( "recording to %s\n", this.writeDemo.GetName() );
 //
-//	writeDemo.WriteInt( DS_VERSION );
-//	writeDemo.WriteInt( RENDERDEMO_VERSION );
+//	this.writeDemo.WriteInt( DS_VERSION );
+//	this.writeDemo.WriteInt( RENDERDEMO_VERSION );
 //
 //	// if we are in a map already, dump the current state
-//	sw.StartWritingDemo( writeDemo );
-//	rw.StartWritingDemo( writeDemo );
+//	this.sw.StartWritingDemo( this.writeDemo );
+//	this.rw.StartWritingDemo( this.writeDemo );
 //}
 //
 ///*
@@ -823,17 +743,17 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //================
 //*/
 //void idSessionLocal::StopRecordingRenderDemo() {
-//	if ( !writeDemo ) {
+//	if ( !this.writeDemo ) {
 //		common.Printf( "idSessionLocal::StopRecordingRenderDemo: not recording\n" );
 //		return;
 //	}
-//	sw.StopWritingDemo();
-//	rw.StopWritingDemo();
+//	this.sw.StopWritingDemo();
+//	this.rw.StopWritingDemo();
 //
-//	writeDemo.Close();
-//	common.Printf( "stopped recording %s.\n", writeDemo.GetName() );
-//	delete writeDemo;
-//	writeDemo = NULL;
+//	this.writeDemo.Close();
+//	common.Printf( "stopped recording %s.\n", this.writeDemo.GetName() );
+//	delete this.writeDemo;
+//	this.writeDemo = NULL;
 //}
 //
 ///*
@@ -844,8 +764,8 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //================
 //*/
 //void idSessionLocal::StopPlayingRenderDemo() {
-//	if ( !readDemo ) {
-//		timeDemo = TD_NO;
+//	if ( !this.readDemo ) {
+//		this.timeDemo = TD_NO;
 //		return;
 //	}
 //
@@ -854,30 +774,30 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //
 //	EndAVICapture();
 //
-//	readDemo.Close();
+//	this.readDemo.Close();
 //
-//	sw.StopAllSounds();
-//	soundSystem.SetPlayingSoundWorld( menuSoundWorld );
+//	this.sw.StopAllSounds();
+//	soundSystem.SetPlayingSoundWorld( this.menuSoundWorld );
 //
-//	common.Printf( "stopped playing %s.\n", readDemo.GetName() );
-//	delete readDemo;
-//	readDemo = NULL;
+//	common.Printf( "stopped playing %s.\n", this.readDemo.GetName() );
+//	delete this.readDemo;
+//	this.readDemo = NULL;
 //
-//	if ( timeDemo ) {
+//	if ( this.timeDemo ) {
 //		// report the stats
 //		float	demoSeconds = ( timeDemoStopTime - timeDemoStartTime ) * 0.001f;
 //		float	demoFPS = numDemoFrames / demoSeconds;
 //		idStr	message = va( "%i frames rendered in %3.1f seconds = %3.1f fps\n", numDemoFrames, demoSeconds, demoFPS );
 //
 //		common.Printf( message );
-//		if ( timeDemo == TD_YES_THEN_QUIT ) {
+//		if ( this.timeDemo == TD_YES_THEN_QUIT ) {
 //			cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "quit\n" );
 //		} else {
 //			soundSystem.SetMute( true );
 //			MessageBox( MSG_OK, message, "Time Demo Results", true );
 //			soundSystem.SetMute( false );
 //		}
-//		timeDemo = TD_NO;
+//		this.timeDemo = TD_NO;
 //	}
 //}
 //
@@ -909,42 +829,42 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //	}
 //
 //	// make sure localSound / GUI intro music shuts up
-//	sw.StopAllSounds();
-//	sw.PlayShaderDirectly( "", 0 );	
-//	menuSoundWorld.StopAllSounds();
-//	menuSoundWorld.PlayShaderDirectly( "", 0 );
+//	this.sw.StopAllSounds();
+//	this.sw.PlayShaderDirectly( "", 0 );	
+//	this.menuSoundWorld.StopAllSounds();
+//	this.menuSoundWorld.PlayShaderDirectly( "", 0 );
 //
 //	// exit any current game
 //	Stop();
 //
 //	// automatically put the console away
-//	console.Close();
+//	$console.Close();
 //
 //	// bring up the loading screen manually, since demos won't
 //	// call ExecuteMapChange()
-//	guiLoading = uiManager.FindGui( "guis/map/loading.gui", true, false, true );
-//	guiLoading.SetStateString( "demo", common.GetLanguageDict().GetString( "#str_02087" ) );
-//	readDemo = new idDemoFile;
+//	this.guiLoading = uiManager.FindGui( "guis/map/loading.gui", true, false, true );
+//	this.guiLoading.SetStateString( "demo", common.GetLanguageDict().GetString( "#str_02087" ) );
+//	this.readDemo = new idDemoFile;
 //	demoName.DefaultFileExtension( ".demo" );
-//	if ( !readDemo.OpenForReading( demoName ) ) {
+//	if ( !this.readDemo.OpenForReading( demoName ) ) {
 //		common.Printf( "couldn't open %s\n", demoName.c_str() );
-//		delete readDemo;
-//		readDemo = NULL;
+//		delete this.readDemo;
+//		this.readDemo = NULL;
 //		Stop();
 //		StartMenu();
 //		soundSystem.SetMute( false );
 //		return;
 //	}
 //
-//	insideExecuteMapChange = true;
+//	this.insideExecuteMapChange = true;
 //	UpdateScreen();
-//	insideExecuteMapChange = false;
-//	guiLoading.SetStateString( "demo", "" );
+//	this.insideExecuteMapChange = false;
+//	this.guiLoading.SetStateString( "demo", "" );
 //
 //	// setup default render demo settings
 //	// that's default for <= Doom3 v1.1
-//	renderdemoVersion = 1;
-//	savegameVersion = 16;
+//	this.renderdemoVersion = 1;
+//	this.savegameVersion = 16;
 //
 //	AdvanceRenderDemo( true );
 //
@@ -967,26 +887,26 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //
 //	StartPlayingRenderDemo( demo );
 //	
-//	if ( twice && readDemo ) {
+//	if ( twice && this.readDemo ) {
 //		// cycle through once to precache everything
-//		guiLoading.SetStateString( "demo", common.GetLanguageDict().GetString( "#str_04852" ) );
-//		guiLoading.StateChanged( com_frameTime );
-//		while ( readDemo ) {
-//			insideExecuteMapChange = true;
+//		this.guiLoading.SetStateString( "demo", common.GetLanguageDict().GetString( "#str_04852" ) );
+//		this.guiLoading.StateChanged( com_frameTime );
+//		while ( this.readDemo ) {
+//			this.insideExecuteMapChange = true;
 //			UpdateScreen();
-//			insideExecuteMapChange = false;
+//			this.insideExecuteMapChange = false;
 //			AdvanceRenderDemo( true );
 //		}
-//		guiLoading.SetStateString( "demo", "" );
+//		this.guiLoading.SetStateString( "demo", "" );
 //		StartPlayingRenderDemo( demo );
 //	}
 //	
 //
-//	if ( !readDemo ) {
+//	if ( !this.readDemo ) {
 //		return;
 //	}
 //
-//	timeDemo = TD_YES;
+//	this.timeDemo = TD_YES;
 //}
 //
 //
@@ -997,11 +917,11 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //*/
 //void idSessionLocal::BeginAVICapture( const char *demoName ) {
 //	idStr name = demoName;
-//	name.ExtractFileBase( aviDemoShortName );
-//	aviCaptureMode = true;
+//	name.ExtractFileBase( this.aviDemoShortName );
+//	this.aviCaptureMode = true;
 //	aviDemoFrameCount = 0;
 //	aviTicStart = 0;
-//	sw.AVIOpen( va( "demos/%s/", aviDemoShortName.c_str() ), aviDemoShortName.c_str() );
+//	this.sw.AVIOpen( va( "demos/%s/", this.aviDemoShortName.c_str() ), this.aviDemoShortName.c_str() );
 //}
 //
 ///*
@@ -1010,25 +930,25 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //================
 //*/
 //void idSessionLocal::EndAVICapture() {
-//	if ( !aviCaptureMode ) {
+//	if ( !this.aviCaptureMode ) {
 //		return;
 //	}
 //
-//	sw.AVIClose();
+//	this.sw.AVIClose();
 //
 //	// write a .roqParam file so the demo can be converted to a roq file
 //	idFile *f = fileSystem.OpenFileWrite( va( "demos/%s/%s.roqParam", 
-//		aviDemoShortName.c_str(), aviDemoShortName.c_str() ) );
-//	f.Printf( "INPUT_DIR demos/%s\n", aviDemoShortName.c_str() );
-//	f.Printf( "FILENAME demos/%s/%s.RoQ\n", aviDemoShortName.c_str(), aviDemoShortName.c_str() );
+//		this.aviDemoShortName.c_str(), this.aviDemoShortName.c_str() ) );
+//	f.Printf( "INPUT_DIR demos/%s\n", this.aviDemoShortName.c_str() );
+//	f.Printf( "FILENAME demos/%s/%s.RoQ\n", this.aviDemoShortName.c_str(), this.aviDemoShortName.c_str() );
 //	f.Printf( "\nINPUT\n" );
-//	f.Printf( "%s_*.tga [00000-%05i]\n", aviDemoShortName.c_str(), (int)( aviDemoFrameCount-1 ) );
+//	f.Printf( "%s_*.tga [00000-%05i]\n", this.aviDemoShortName.c_str(), (int)( aviDemoFrameCount-1 ) );
 //	f.Printf( "END_INPUT\n" );
 //	delete f;
 //
-//	common.Printf( "captured %i frames for %s.\n", ( int )aviDemoFrameCount, aviDemoShortName.c_str() );
+//	common.Printf( "captured %i frames for %s.\n", ( int )aviDemoFrameCount, this.aviDemoShortName.c_str() );
 //
-//	aviCaptureMode = false;
+//	this.aviCaptureMode = false;
 //}
 //
 //
@@ -1041,7 +961,7 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //	idStr	demoName = _demoName;	// copy off from va() buffer
 //
 //	StartPlayingRenderDemo( demoName );
-//	if ( !readDemo ) {
+//	if ( !this.readDemo ) {
 //		return;
 //	}
 //
@@ -1071,12 +991,12 @@ idSessionLocal.prototype.IsMultiplayer = function ( ): boolean {
 //================
 //*/
 //void idSessionLocal::AVIGame( const char *demoName ) {
-//	if ( aviCaptureMode ) {
+//	if ( this.aviCaptureMode ) {
 //		EndAVICapture();
 //		return;
 //	}
 //
-//	if ( !mapSpawned ) {
+//	if ( !this.mapSpawned ) {
 //		common.Printf( "No map spawned.\n" );
 //	}
 //
@@ -1343,25 +1263,25 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	idStr fullDemoName = "demos/";
 //	fullDemoName += demoName;
 //	fullDemoName.DefaultFileExtension( ".cdemo" );
-//	cmdDemoFile = fileSystem.OpenFileRead(fullDemoName);
+//	this.cmdDemoFile = fileSystem.OpenFileRead(fullDemoName);
 //
-//	if ( cmdDemoFile == NULL ) {
+//	if ( this.cmdDemoFile == NULL ) {
 //		common.Printf( "Couldn't open %s\n", fullDemoName.c_str() );
 //		return;
 //	}
 //
-//	guiLoading = uiManager.FindGui( "guis/map/loading.gui", true, false, true );
-//	//cmdDemoFile.Read(&loadGameTime, sizeof(loadGameTime));
+//	this.guiLoading = uiManager.FindGui( "guis/map/loading.gui", true, false, true );
+//	//this.cmdDemoFile.Read(&loadGameTime, sizeof(loadGameTime));
 //
-//	LoadCmdDemoFromFile(cmdDemoFile);
+//	LoadCmdDemoFromFile(this.cmdDemoFile);
 //
 //	// start the map
 //	ExecuteMapChange();
 //
-//	cmdDemoFile = fileSystem.OpenFileRead(fullDemoName);
+//	this.cmdDemoFile = fileSystem.OpenFileRead(fullDemoName);
 //
 //	// have to do this twice as the execmapchange clears the cmddemofile
-//	LoadCmdDemoFromFile(cmdDemoFile);
+//	LoadCmdDemoFromFile(this.cmdDemoFile);
 //
 //	// run one frame to get the view angles correct
 //	RunGameTic();
@@ -1374,7 +1294,7 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //*/
 //void idSessionLocal::TimeCmdDemo( const char *demoName ) {
 //	StartPlayingCmdDemo( demoName );
-//	ClearWipe();
+//	this.ClearWipe();
 //	UpdateScreen();
 //
 //	int		startTime = Sys_Milliseconds();
@@ -1385,7 +1305,7 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	// run all the frames in sequence
 //	minuteStart = startTime;
 //
-//	while( cmdDemoFile ) {
+//	while( this.cmdDemoFile ) {
 //		RunGameTic();
 //		count++;
 //
@@ -1420,16 +1340,16 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //		game.MapShutdown();
 //	}
 //
-//	if ( cmdDemoFile ) {
-//		fileSystem.CloseFile( cmdDemoFile );
-//		cmdDemoFile = NULL;
+//	if ( this.cmdDemoFile ) {
+//		fileSystem.CloseFile( this.cmdDemoFile );
+//		this.cmdDemoFile = NULL;
 //	}
 //
-//	if ( writeDemo ) {
+//	if ( this.writeDemo ) {
 //		StopRecordingRenderDemo();
 //	}
 //
-//	mapSpawned = false;
+//	this.mapSpawned = false;
 //}
 //
 ///*
@@ -1449,11 +1369,11 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	game.GetMapLoadingGUI( guiMap );
 //
 //	if ( uiManager.CheckGui( guiMap ) ) {
-//		guiLoading = uiManager.FindGui( guiMap, true, false, true );
+//		this.guiLoading = uiManager.FindGui( guiMap, true, false, true );
 //	} else {
-//		guiLoading = uiManager.FindGui( "guis/map/loading.gui", true, false, true );
+//		this.guiLoading = uiManager.FindGui( "guis/map/loading.gui", true, false, true );
 //	}
-//	guiLoading.SetStateFloat( "map_loading", 0.0f );
+//	this.guiLoading.SetStateFloat( "map_loading", 0.0f );
 //}
 //
 ///*
@@ -1503,233 +1423,234 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //		mapDef.ReplaceSourceFileText();
 //	}
 //}
-//
-///*
-//===============
-//idSessionLocal::ExecuteMapChange
-//
-//Performs the initialization of a game based on mapSpawnData, used for both single
-//player and multiplayer, but not for renderDemos, which don't
-//create a game at all.
-//Exits with mapSpawned = true
-//===============
-//*/
-//void idSessionLocal::ExecuteMapChange( bool noFadeWipe ) {
-//	int		i;
-//	bool	reloadingSameMap;
-//
-//	// close console and remove any prints from the notify lines
-//	console.Close();
-//
-//	if ( IsMultiplayer() ) {
-//		// make sure the mp GUI isn't up, or when players get back in the
-//		// map, mpGame's menu and the gui will be out of sync.
-//		SetGUI( NULL, NULL );
-//	}
-//
-//	// mute sound
-//	soundSystem.SetMute( true );
-//
-//	// clear all menu sounds
-//	menuSoundWorld.ClearAllSoundEmitters();
-//
-//	// unpause the game sound world
-//	// NOTE: we UnPause again later down. not sure this is needed
-//	if ( sw.IsPaused() ) {
-//		sw.UnPause();
-//	}
-//
-//	if ( !noFadeWipe ) {
-//		// capture the current screen and start a wipe
-//		StartWipe( "wipeMaterial", true );
-//
-//		// immediately complete the wipe to fade out the level transition
-//		// run the wipe to completion
-//		CompleteWipe();
-//	}
-//
-//	// extract the map name from serverinfo
-//	idStr mapString = mapSpawnData.serverInfo.GetString( "si_map" );
-//
-//	idStr fullMapName = "maps/";
-//	fullMapName += mapString;
-//	fullMapName.StripFileExtension();
-//
-//	// shut down the existing game if it is running
-//	UnloadMap();
-//
-//	// don't do the deferred caching if we are reloading the same map
-//	if ( fullMapName == currentMapName ) {
-//		reloadingSameMap = true;
-//	} else {
-//		reloadingSameMap = false;
-//		currentMapName = fullMapName;
-//	}
-//
-//	// note which media we are going to need to load
-//	if ( !reloadingSameMap ) {
-//		declManager.BeginLevelLoad();
-//		renderSystem.BeginLevelLoad();
-//		soundSystem.BeginLevelLoad();
-//	}
-//
-//	uiManager.BeginLevelLoad();
-//	uiManager.Reload( true );
-//
-//	// set the loading gui that we will wipe to
-//	LoadLoadingGui( mapString );
-//
-//	// cause prints to force screen updates as a pacifier,
-//	// and draw the loading gui instead of game draws
-//	insideExecuteMapChange = true;
-//
-//	// if this works out we will probably want all the sizes in a def file although this solution will 
-//	// work for new maps etc. after the first load. we can also drop the sizes into the default.cfg
-//	fileSystem.ResetReadCount();
-//	if ( !reloadingSameMap  ) {
-//		bytesNeededForMapLoad = GetBytesNeededForMapLoad( mapString.c_str() );
-//	} else {
-//		bytesNeededForMapLoad = 30 * 1024 * 1024;
-//	}
-//
-//	ClearWipe();
-//
-//	// let the loading gui spin for 1 second to animate out
-//	ShowLoadingGui();
-//
-//	// note any warning prints that happen during the load process
-//	common.ClearWarnings( mapString );
-//
-//	// release the mouse cursor
-//	// before we do this potentially long operation
-//	Sys_GrabMouseCursor( false );
-//
-//	// if net play, we get the number of clients during mapSpawnInfo processing
-//	if ( !idAsyncNetwork::IsActive() ) {
-//		numClients = 1;
-//	} 
-//	
-//	int start = Sys_Milliseconds();
-//
-//	common.Printf( "--------- Map Initialization ---------\n" );
-//	common.Printf( "Map: %s\n", mapString.c_str() );
-//
-//	// let the renderSystem load all the geometry
-//	if ( !rw.InitFromMap( fullMapName ) ) {
-//		common.Error( "couldn't load %s", fullMapName.c_str() );
-//	}
-//
-//	// for the synchronous networking we needed to roll the angles over from
-//	// level to level, but now we can just clear everything
-//	usercmdGen.InitForNewMap();
-//	memset( &mapSpawnData.mapSpawnUsercmd, 0, sizeof( mapSpawnData.mapSpawnUsercmd ) );
-//
-//	// set the user info
-//	for ( i = 0; i < numClients; i++ ) {
-//		game.SetUserInfo( i, mapSpawnData.userInfo[i], idAsyncNetwork.client.IsActive(), false );
-//		game.SetPersistentPlayerInfo( i, mapSpawnData.persistentPlayerInfo[i] );
-//	}
-//
-//	// load and spawn all other entities ( from a savegame possibly )
-//	if ( loadingSaveGame && savegameFile ) {
-//		if ( game.InitFromSaveGame( fullMapName + ".map", rw, sw, savegameFile ) == false ) {
-//			// If the loadgame failed, restart the map with the player persistent data
-//			loadingSaveGame = false;
-//			fileSystem.CloseFile( savegameFile );
-//			savegameFile = NULL;
-//
-//			game.SetServerInfo( mapSpawnData.serverInfo );
-//			game.InitFromNewMap( fullMapName + ".map", rw, sw, idAsyncNetwork.server.IsActive(), idAsyncNetwork.client.IsActive(), Sys_Milliseconds() );
-//		}
-//	} else {
-//		game.SetServerInfo( mapSpawnData.serverInfo );
-//		game.InitFromNewMap( fullMapName + ".map", rw, sw, idAsyncNetwork.server.IsActive(), idAsyncNetwork.client.IsActive(), Sys_Milliseconds() );
-//	}
-//
-//	if ( !idAsyncNetwork::IsActive() && !loadingSaveGame ) {
-//		// spawn players
-//		for ( i = 0; i < numClients; i++ ) {
-//			game.SpawnPlayer( i );
-//		}
-//	}
-//
-//	// actually purge/load the media
-//	if ( !reloadingSameMap ) {
-//		renderSystem.EndLevelLoad();
-//		soundSystem.EndLevelLoad( mapString.c_str() );
-//		declManager.EndLevelLoad();
-//		SetBytesNeededForMapLoad( mapString.c_str(), fileSystem.GetReadCount() );
-//	}
-//	uiManager.EndLevelLoad();
-//
-//	if ( !idAsyncNetwork::IsActive() && !loadingSaveGame ) {
-//		// run a few frames to allow everything to settle
-//		for ( i = 0; i < 10; i++ ) {
-//			game.RunFrame( mapSpawnData.mapSpawnUsercmd );
-//		}
-//	}
-//
-//	common.Printf ("-----------------------------------\n");
-//
-//	int	msec = Sys_Milliseconds() - start;
-//	common.Printf( "%6d msec to load %s\n", msec, mapString.c_str() );
-//
-//	// let the renderSystem generate interactions now that everything is spawned
-//	rw.GenerateAllInteractions();
-//
-//	common.PrintWarnings();
-//
-//	if ( guiLoading && bytesNeededForMapLoad ) {
-//		float pct = guiLoading.State().GetFloat( "map_loading" );
-//		if ( pct < 0.0f ) {
-//			pct = 0.0f;
-//		}
-//		while ( pct < 1.0f ) {
-//			guiLoading.SetStateFloat( "map_loading", pct );
-//			guiLoading.StateChanged( com_frameTime );
-//			Sys_GenerateEvents();
-//			UpdateScreen();
-//			pct += 0.05f;
-//		}
-//	}
-//
-//	// capture the current screen and start a wipe
-//	StartWipe( "wipe2Material" );
-//
-//	usercmdGen.Clear();
-//
-//	// start saving commands for possible writeCmdDemo usage
-//	logIndex = 0;
-//	statIndex = 0;
-//	lastSaveIndex = 0;
-//
-//	// don't bother spinning over all the tics we spent loading
-//	lastGameTic = latchedTicNumber = com_ticNumber;
-//
-//	// remove any prints from the notify lines
-//	console.ClearNotifyLines();
-//
-//	// stop drawing the laoding screen
-//	insideExecuteMapChange = false;
-//
-//	Sys_SetPhysicalWorkMemory( -1, -1 );
-//
-//	// set the game sound world for playback
-//	soundSystem.SetPlayingSoundWorld( sw );
-//
-//	// when loading a save game the sound is paused
-//	if ( sw.IsPaused() ) {
-//		// unpause the game sound world
-//		sw.UnPause();
-//	}
-//
-//	// restart entity sound playback
-//	soundSystem.SetMute( false );
-//
-//	// we are valid for game draws now
-//	mapSpawned = true;
-//	Sys_ClearEvents();
-//}
+
+/*
+===============
+idSessionLocal::ExecuteMapChange
+
+Performs the initialization of a game based on mapSpawnData, used for both single
+player and multiplayer, but not for renderDemos, which don't
+create a game at all.
+Exits with mapSpawned = true
+===============
+*/
+idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = false): void {
+	var/*int*/i:number;
+	var reloadingSameMap = false;
+
+	// close console and remove any prints from the notify lines
+	$console.Close();
+
+	if ( this.IsMultiplayer() ) {
+		// make sure the mp GUI isn't up, or when players get back in the
+		// map, mpGame's menu and the gui will be out of sync.
+		this.SetGUI( NULL, NULL );
+	}
+
+	// mute sound
+	soundSystem.SetMute( true );
+
+	// clear all menu sounds
+	this.menuSoundWorld.ClearAllSoundEmitters();
+
+	// unpause the game sound world
+	// NOTE: we UnPause again later down. not sure this is needed
+	if ( this.sw.IsPaused() ) {
+		this.sw.UnPause();
+	}
+
+	if ( !noFadeWipe ) {
+		// capture the current screen and start a wipe
+		this.StartWipe( "wipeMaterial", true );
+
+		// immediately complete the wipe to fade out the level transition
+		// run the wipe to completion
+		this.CompleteWipe();
+	}
+	todoThrow ( );
+	//// extract the map name from serverinfo
+	//idStr mapString = mapSpawnData.serverInfo.GetString( "si_map" );
+
+	//idStr fullMapName = "maps/";
+	//fullMapName += mapString;
+	//fullMapName.StripFileExtension();
+
+	//// shut down the existing game if it is running
+	//UnloadMap();
+
+	//// don't do the deferred caching if we are reloading the same map
+	//if ( fullMapName == this.currentMapName ) {
+	//	reloadingSameMap = true;
+	//} else {
+	//	reloadingSameMap = false;
+	//	this.currentMapName = fullMapName;
+	//}
+
+	//// note which media we are going to need to load
+	//if ( !reloadingSameMap ) {
+	//	declManager.BeginLevelLoad();
+	//	renderSystem.BeginLevelLoad();
+	//	soundSystem.BeginLevelLoad();
+	//}
+
+	//uiManager.BeginLevelLoad();
+	//uiManager.Reload( true );
+
+	//// set the loading gui that we will wipe to
+	//LoadLoadingGui( mapString );
+
+	//// cause prints to force screen updates as a pacifier,
+	//// and draw the loading gui instead of game draws
+	//this.insideExecuteMapChange = true;
+
+	//// if this works out we will probably want all the sizes in a def file although this solution will 
+	//// work for new maps etc. after the first load. we can also drop the sizes into the default.cfg
+	//fileSystem.ResetReadCount();
+	//if ( !reloadingSameMap  ) {
+	//	this.bytesNeededForMapLoad = GetBytesNeededForMapLoad( mapString.c_str() );
+	//} else {
+	//	this.bytesNeededForMapLoad = 30 * 1024 * 1024;
+	//}
+
+	//this.ClearWipe();
+
+	//// let the loading gui spin for 1 second to animate out
+	//ShowLoadingGui();
+
+	//// note any warning prints that happen during the load process
+	//common.ClearWarnings( mapString );
+
+	//// release the mouse cursor
+	//// before we do this potentially long operation
+	//Sys_GrabMouseCursor( false );
+
+	//// if net play, we get the number of clients during mapSpawnInfo processing
+	//if ( !idAsyncNetwork::IsActive() ) {
+	//	numClients = 1;
+	//} 
+
+	//int start = Sys_Milliseconds();
+
+	//common.Printf( "--------- Map Initialization ---------\n" );
+	//common.Printf( "Map: %s\n", mapString.c_str() );
+
+	//// let the renderSystem load all the geometry
+	//if ( !this.rw.InitFromMap( fullMapName ) ) {
+	//	common.Error( "couldn't load %s", fullMapName.c_str() );
+	//}
+
+	//// for the synchronous networking we needed to roll the angles over from
+	//// level to level, but now we can just clear everything
+	//usercmdGen.InitForNewMap();
+	//memset( &mapSpawnData.mapSpawnUsercmd, 0, sizeof( mapSpawnData.mapSpawnUsercmd ) );
+
+	//// set the user info
+	//for ( i = 0; i < numClients; i++ ) {
+	//	game.SetUserInfo( i, mapSpawnData.userInfo[i], idAsyncNetwork.client.IsActive(), false );
+	//	game.SetPersistentPlayerInfo( i, mapSpawnData.persistentPlayerInfo[i] );
+	//}
+
+	//// load and spawn all other entities ( from a savegame possibly )
+	//if ( this.loadingSaveGame && this.savegameFile ) {
+	//	if ( game.InitFromSaveGame( fullMapName + ".map", this.rw, this.sw, this.savegameFile ) == false ) {
+	//		// If the loadgame failed, restart the map with the player persistent data
+	//		this.loadingSaveGame = false;
+	//		fileSystem.CloseFile( this.savegameFile );
+	//		this.savegameFile = NULL;
+
+	//		game.SetServerInfo( mapSpawnData.serverInfo );
+	//		game.InitFromNewMap( fullMapName + ".map", this.rw, this.sw, idAsyncNetwork.server.IsActive(), idAsyncNetwork.client.IsActive(), Sys_Milliseconds() );
+	//	}
+	//} else {
+	//	game.SetServerInfo( mapSpawnData.serverInfo );
+	//	game.InitFromNewMap( fullMapName + ".map", this.rw, this.sw, idAsyncNetwork.server.IsActive(), idAsyncNetwork.client.IsActive(), Sys_Milliseconds() );
+	//}
+
+	//if ( !idAsyncNetwork::IsActive() && !this.loadingSaveGame ) {
+	//	// spawn players
+	//	for ( i = 0; i < numClients; i++ ) {
+	//		game.SpawnPlayer( i );
+	//	}
+	//}
+
+	//// actually purge/load the media
+	//if ( !reloadingSameMap ) {
+	//	renderSystem.EndLevelLoad();
+	//	soundSystem.EndLevelLoad( mapString.c_str() );
+	//	declManager.EndLevelLoad();
+	//	SetBytesNeededForMapLoad( mapString.c_str(), fileSystem.GetReadCount() );
+	//}
+	//uiManager.EndLevelLoad();
+
+	//if ( !idAsyncNetwork::IsActive() && !this.loadingSaveGame ) {
+	//	// run a few frames to allow everything to settle
+	//	for ( i = 0; i < 10; i++ ) {
+	//		game.RunFrame( mapSpawnData.mapSpawnUsercmd );
+	//	}
+	//}
+
+	//common.Printf ("-----------------------------------\n");
+
+	//int	msec = Sys_Milliseconds() - start;
+	//common.Printf( "%6d msec to load %s\n", msec, mapString.c_str() );
+
+	//// let the renderSystem generate interactions now that everything is spawned
+	//this.rw.GenerateAllInteractions();
+
+	//common.PrintWarnings();
+
+	//if ( this.guiLoading && this.bytesNeededForMapLoad ) {
+	//	float pct = this.guiLoading.State().GetFloat( "map_loading" );
+	//	if ( pct < 0.0f ) {
+	//		pct = 0.0f;
+	//	}
+	//	while ( pct < 1.0f ) {
+	//		this.guiLoading.SetStateFloat( "map_loading", pct );
+	//		this.guiLoading.StateChanged( com_frameTime );
+	//		Sys_GenerateEvents();
+	//		UpdateScreen();
+	//		pct += 0.05f;
+	//	}
+	//}
+
+	//// capture the current screen and start a wipe
+	//StartWipe( "wipe2Material" );
+
+	//usercmdGen.Clear();
+
+	//// start saving commands for possible writeCmdDemo usage
+	//logIndex = 0;
+	//statIndex = 0;
+	//lastSaveIndex = 0;
+
+	//// don't bother spinning over all the tics we spent loading
+	//lastGameTic = latchedTicNumber = com_ticNumber;
+
+	//// remove any prints from the notify lines
+	//$console.ClearNotifyLines();
+
+	//// stop drawing the laoding screen
+	//this.insideExecuteMapChange = false;
+
+	//Sys_SetPhysicalWorkMemory( -1, -1 );
+
+	//// set the game sound world for playback
+	//soundSystem.SetPlayingSoundWorld( this.sw );
+
+	//// when loading a save game the sound is paused
+	//if ( this.sw.IsPaused() ) {
+	//	// unpause the game sound world
+	//	this.sw.UnPause();
+	//}
+
+	//// restart entity sound playback
+	//soundSystem.SetMute( false );
+
+	//// we are valid for game draws now
+	//this.mapSpawned = true;
+	//Sys_ClearEvents();
+	todoThrow ( );
+};
 //
 ///*
 //===============
@@ -1737,7 +1658,7 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //===============
 //*/
 //void LoadGame_f( args:idCmdArgs ) {
-//	console.Close();
+//	$console.Close();
 //	if ( args.Argc() < 2 || idStr.Icmp(args.Argv(1), "quick" ) == 0 ) {
 //		idStr saveName = common.GetLanguageDict().GetString( "#str_07178" );
 //		sessLocal.LoadGame( saveName );
@@ -1796,7 +1717,7 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	}
 //
 //	if ( extended ) {
-//		guiTakeNotes = uiManager.FindGui( "guis/takeNotes2.gui", true, false, true );
+//		this.guiTakeNotes = uiManager.FindGui( "guis/takeNotes2.gui", true, false, true );
 //
 //#if 0
 //		const char *people[] = {
@@ -1814,21 +1735,21 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //		const int numPeople = sizeof( people ) / sizeof( people[0] );
 //
 //		idListGUI * guiList_people = uiManager.AllocListGUI();
-//		guiList_people.Config( guiTakeNotes, "person" );
+//		guiList_people.Config( this.guiTakeNotes, "person" );
 //		for ( int i = 0; i < numPeople; i++ ) {
 //			guiList_people.Push( people[i] );
 //		}
 //		uiManager.FreeListGUI( guiList_people );
 //
 //	} else {
-//		guiTakeNotes = uiManager.FindGui( "guis/takeNotes.gui", true, false, true );
+//		this.guiTakeNotes = uiManager.FindGui( "guis/takeNotes.gui", true, false, true );
 //	}
 //
-//	SetGUI( guiTakeNotes, NULL );
-//	guiActive.SetStateString( "note", "" );
-//	guiActive.SetStateString( "notefile", p );
-//	guiActive.SetStateBool( "extended", extended );
-//	guiActive.Activate( true, com_frameTime );
+//	SetGUI( this.guiTakeNotes, NULL );
+//	this.guiActive.SetStateString( "note", "" );
+//	this.guiActive.SetStateString( "notefile", p );
+//	this.guiActive.SetStateBool( "extended", extended );
+//	this.guiActive.Activate( true, com_frameTime );
 //}
 //
 ///*
@@ -1837,10 +1758,10 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //===============
 //*/
 //void Session_Hitch_f( args:idCmdArgs ) {
-//	idSoundWorld *sw = soundSystem.GetPlayingSoundWorld();
-//	if ( sw ) {
+//	idSoundWorld *this.sw = soundSystem.GetPlayingSoundWorld();
+//	if ( this.sw ) {
 //		soundSystem.SetMute(true);
-//		sw.Pause();
+//		this.sw.Pause();
 //		Sys_EnterCriticalSection();
 //	}
 //	if ( args.Argc() == 2 ) {
@@ -1848,9 +1769,9 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	} else {
 //		Sys_Sleep( 100 );
 //	}
-//	if ( sw ) {
+//	if ( this.sw ) {
 //		Sys_LeaveCriticalSection();
-//		sw.UnPause();
+//		this.sw.UnPause();
 //		soundSystem.SetMute(false);
 //	}
 //}
@@ -1901,7 +1822,7 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	int i;
 //	idStr gameFile, previewFile, descriptionFile, mapName;
 //
-//	if ( !mapSpawned ) {
+//	if ( !this.mapSpawned ) {
 //		common.Printf( "Not playing a game.\n" );
 //		return false;
 //	}
@@ -2027,7 +1948,7 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //		pauseWorld.UnPause();
 //	}
 //
-//	syncNextGameFrame = true;
+//	this.syncNextGameFrame = true;
 //
 //
 //	return true;
@@ -2065,54 +1986,54 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	// Open savegame file
 //	// only allow loads from the game directory because we don't want a base game to load
 //	idStr game = cvarSystem.GetCVarString( "fs_game" );
-//	savegameFile = fileSystem.OpenFileRead( in, true, game.Length() ? game : NULL );
+//	this.savegameFile = fileSystem.OpenFileRead( in, true, game.Length() ? game : NULL );
 //
-//	if ( savegameFile == NULL ) {
+//	if ( this.savegameFile == NULL ) {
 //		common.Warning( "Couldn't open savegame file %s", in.c_str() );
 //		return false;
 //	}
 //
-//	loadingSaveGame = true;
+//	this.loadingSaveGame = true;
 //
 //	// Read in save game header
 //	// Game Name / Version / Map Name / Persistant Player Info
 //
 //	// game
-//	savegameFile.ReadString( gamename );
+//	this.savegameFile.ReadString( gamename );
 //
 //	// if this isn't a savegame for the correct game, abort loadgame
 //	if ( gamename != GAME_NAME ) {
 //		common.Warning( "Attempted to load an invalid savegame: %s", in.c_str() );
 //
-//		loadingSaveGame = false;
-//		fileSystem.CloseFile( savegameFile );
-//		savegameFile = NULL;
+//		this.loadingSaveGame = false;
+//		fileSystem.CloseFile( this.savegameFile );
+//		this.savegameFile = NULL;
 //		return false;
 //	}
 //
 //	// version
-//	savegameFile.ReadInt( savegameVersion );
+//	this.savegameFile.ReadInt( this.savegameVersion );
 //
 //	// map
-//	savegameFile.ReadString( saveMap );
+//	this.savegameFile.ReadString( saveMap );
 //
 //	// persistent player info
 //	for ( i = 0; i < MAX_ASYNC_CLIENTS; i++ ) {
-//		mapSpawnData.persistentPlayerInfo[i].ReadFromFileHandle( savegameFile );
+//		mapSpawnData.persistentPlayerInfo[i].ReadFromFileHandle( this.savegameFile );
 //	}
 //
 //	// check the version, if it doesn't match, cancel the loadgame,
 //	// but still load the map with the persistant playerInfo from the header
 //	// so that the player doesn't lose too much progress.
-//	if ( savegameVersion != SAVEGAME_VERSION &&
-//		 !( savegameVersion == 16 && SAVEGAME_VERSION == 17 ) ) {	// handle savegame v16 in v17
+//	if ( this.savegameVersion != SAVEGAME_VERSION &&
+//		 !( this.savegameVersion == 16 && SAVEGAME_VERSION == 17 ) ) {	// handle savegame v16 in v17
 //		common.Warning( "Savegame Version mismatch: aborting loadgame and starting level with persistent data" );
-//		loadingSaveGame = false;
-//		fileSystem.CloseFile( savegameFile );
-//		savegameFile = NULL;
+//		this.loadingSaveGame = false;
+//		fileSystem.CloseFile( this.savegameFile );
+//		this.savegameFile = NULL;
 //	}
 //
-//	common.DPrintf( "loading a v%d savegame\n", savegameVersion );
+//	common.DPrintf( "loading a v%d savegame\n", this.savegameVersion );
 //
 //	if ( saveMap.Length() > 0 ) {
 //
@@ -2136,10 +2057,10 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //		SetGUI( NULL, NULL );
 //	}
 //
-//	if ( loadingSaveGame ) {
-//		fileSystem.CloseFile( savegameFile );
-//		loadingSaveGame = false;
-//		savegameFile = NULL;
+//	if ( this.loadingSaveGame ) {
+//		fileSystem.CloseFile( this.savegameFile );
+//		this.loadingSaveGame = false;
+//		this.savegameFile = NULL;
 //	}
 //
 //	return true;
@@ -2153,8 +2074,8 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //*/
 //bool idSessionLocal::ProcessEvent( const sysEvent_t *event ) {
 //	// hitting escape anywhere brings up the menu
-//	if ( !guiActive && event.evType == SE_KEY && event.evValue2 == 1 && event.evValue == K_ESCAPE ) {
-//		console.Close();
+//	if ( !this.guiActive && event.evType == SE_KEY && event.evValue2 == 1 && event.evValue == K_ESCAPE ) {
+//		$console.Close();
 //		if ( game ) {
 //			idUserInterface	*gui = NULL;
 //			escReply_t		op;
@@ -2171,20 +2092,20 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	}
 //
 //	// let the pull-down console take it if desired
-//	if ( console.ProcessEvent( event, false ) ) {
+//	if ( $console.ProcessEvent( event, false ) ) {
 //		return true;
 //	}
 //
 //	// if we are testing a GUI, send all events to it
-//	if ( guiTest ) {
+//	if ( this.guiTest ) {
 //		// hitting escape exits the testgui
 //		if ( event.evType == SE_KEY && event.evValue2 == 1 && event.evValue == K_ESCAPE ) {
-//			guiTest = NULL;
+//			this.guiTest = NULL;
 //			return true;
 //		}
 //		
 //		static const char *cmd;
-//		cmd = guiTest.HandleEvent( event, com_frameTime );
+//		cmd = this.guiTest.HandleEvent( event, com_frameTime );
 //		if ( cmd && cmd[0] ) {
 //			common.Printf( "testGui event returned: '%s'\n", cmd );
 //		}
@@ -2192,14 +2113,14 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	}
 //
 //	// menus / etc
-//	if ( guiActive ) {
+//	if ( this.guiActive ) {
 //		MenuEvent( event );
 //		return true;
 //	}
 //
 //	// if we aren't in a game, force the console to take it
-//	if ( !mapSpawned ) {
-//		console.ProcessEvent( event, true );
+//	if ( !this.mapSpawned ) {
+//		$console.ProcessEvent( event, true );
 //		return true;
 //	}
 //
@@ -2222,15 +2143,15 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //void	idSessionLocal::DrawWipeModel() {
 //	int		latchedTic = com_ticNumber;
 //
-//	if (  wipeStartTic >= wipeStopTic ) {
+//	if (  this.wipeStartTic >= this.wipeStopTic ) {
 //		return;
 //	}
 //
-//	if ( !wipeHold && latchedTic >= wipeStopTic ) {
+//	if ( !this.wipeHold && latchedTic >= this.wipeStopTic ) {
 //		return;
 //	}
 //
-//	float fade = ( float )( latchedTic - wipeStartTic ) / ( wipeStopTic - wipeStartTic );
+//	float fade = ( float )( latchedTic - this.wipeStartTic ) / ( this.wipeStopTic - this.wipeStartTic );
 //	renderSystem.SetColor4( 1, 1, 1, fade );
 //	renderSystem.DrawStretchPic( 0, 0, 640, 480, 0, 0, 1, 1, wipeMaterial );
 //}
@@ -2247,7 +2168,7 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //
 //	int skipFrames = 0;
 //
-//	if ( !aviCaptureMode && !timeDemo && !singleFrameOnly ) {
+//	if ( !this.aviCaptureMode && !this.timeDemo && !singleFrameOnly ) {
 //		skipFrames = ( (latchedTicNumber - lastDemoTic) / USERCMD_PER_DEMO_FRAME ) - 1;
 //		// never skip too many frames, just let it go into slightly slow motion
 //		if ( skipFrames > 4 ) {
@@ -2262,7 +2183,7 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	while( skipFrames > -1 ) {
 //		int		ds = DS_FINISHED;
 //
-//		readDemo.ReadInt( ds );
+//		this.readDemo.ReadInt( ds );
 //		if ( ds == DS_FINISHED ) {
 //			if ( numDemoFrames != 1 ) {
 //				// if the demo has a single frame (a demoShot), continuously replay
@@ -2273,7 +2194,7 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //			break;
 //		}
 //		if ( ds == DS_RENDER ) {
-//			if ( rw.ProcessDemoCommand( readDemo, &currentDemoRenderView, &demoTimeOffset ) ) {
+//			if ( this.rw.ProcessDemoCommand( this.readDemo, &this.currentDemoRenderView, &demoTimeOffset ) ) {
 //				// a view is ready to render
 //				skipFrames--;
 //				numDemoFrames++;
@@ -2281,15 +2202,15 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //			continue;
 //		}
 //		if ( ds == DS_SOUND ) {
-//			sw.ProcessDemoCommand( readDemo );
+//			this.sw.ProcessDemoCommand( this.readDemo );
 //			continue;
 //		}
 //		// appears in v1.2, with savegame format 17
 //		if ( ds == DS_VERSION ) {
-//			readDemo.ReadInt( renderdemoVersion );
-//			common.Printf( "reading a v%d render demo\n", renderdemoVersion );
-//			// set the savegameVersion to current for render demo paths that share the savegame paths
-//			savegameVersion = SAVEGAME_VERSION;
+//			this.readDemo.ReadInt( this.renderdemoVersion );
+//			common.Printf( "reading a v%d render demo\n", this.renderdemoVersion );
+//			// set the this.savegameVersion to current for render demo paths that share the savegame paths
+//			this.savegameVersion = SAVEGAME_VERSION;
 //			continue;
 //		}
 //		common.Error( "Bad render demo token" );
@@ -2332,29 +2253,29 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //===============
 //*/
 //void idSessionLocal::PacifierUpdate() {
-//	if ( !insideExecuteMapChange ) {
+//	if ( !this.insideExecuteMapChange ) {
 //		return;
 //	}
 //
 //	// never do pacifier screen updates while inside the
 //	// drawing code, or we can have various recursive problems
-//	if ( insideUpdateScreen ) {
+//	if ( this.insideUpdateScreen ) {
 //		return;
 //	}
 //
 //	int	time = eventLoop.Milliseconds();
 //
-//	if ( time - lastPacifierTime < 100 ) {
+//	if ( time - this.lastPacifierTime < 100 ) {
 //		return;
 //	}
-//	lastPacifierTime = time;
+//	this.lastPacifierTime = time;
 //
-//	if ( guiLoading && bytesNeededForMapLoad ) {
+//	if ( this.guiLoading && this.bytesNeededForMapLoad ) {
 //		float n = fileSystem.GetReadCount();
-//		float pct = ( n / bytesNeededForMapLoad );
+//		float pct = ( n / this.bytesNeededForMapLoad );
 //		// pct = idMath::ClampFloat( 0.0f, 100.0f, pct );
-//		guiLoading.SetStateFloat( "map_loading", pct );
-//		guiLoading.StateChanged( com_frameTime );
+//		this.guiLoading.SetStateFloat( "map_loading", pct );
+//		this.guiLoading.StateChanged( com_frameTime );
 //	}
 //
 //	Sys_GenerateEvents();
@@ -2365,67 +2286,70 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	idAsyncNetwork.server.PacifierUpdate();
 //}
 //
-///*
-//===============
-//idSessionLocal::Draw
-//===============
-//*/
-//void idSessionLocal::Draw() {
-//	bool fullConsole = false;
-//
-//	if ( insideExecuteMapChange ) {
-//		if ( guiLoading ) {
-//			guiLoading.Redraw( com_frameTime );
-//		}
-//		if ( guiActive == guiMsg ) {
-//			guiMsg.Redraw( com_frameTime );
-//		} 
-//	} else if ( guiTest ) {
-//		// if testing a gui, clear the screen and draw it
-//		// clear the background, in case the tested gui is transparent
-//		// NOTE that you can't use this for aviGame recording, it will tick at real com_frameTime between screenshots..
-//		renderSystem.SetColor( colorBlack );
-//		renderSystem.DrawStretchPic( 0, 0, 640, 480, 0, 0, 1, 1, declManager.FindMaterial( "_white" ) );
-//		guiTest.Redraw( com_frameTime );
-//	} else if ( guiActive && !guiActive.State().GetBool( "gameDraw" ) ) {
-//		
-//		// draw the frozen gui in the background
-//		if ( guiActive == guiMsg && guiMsgRestore ) {
-//			guiMsgRestore.Redraw( com_frameTime );
-//		}
-//		
-//		// draw the menus full screen
-//		if ( guiActive == guiTakeNotes && !com_skipGameDraw.GetBool() ) {
-//			game.Draw( GetLocalClientNum() );
-//		}
-//
-//		guiActive.Redraw( com_frameTime );
-//	} else if ( readDemo ) {
-//		rw.RenderScene( &currentDemoRenderView );
-//		renderSystem.DrawDemoPics();
-//	} else if ( mapSpawned ) {
-//		bool gameDraw = false;
-//		// normal drawing for both single and multi player
-//		if ( !com_skipGameDraw.GetBool() && GetLocalClientNum() >= 0 ) {
-//			// draw the game view
-//			int	start = Sys_Milliseconds();
-//			gameDraw = game.Draw( GetLocalClientNum() );
-//			int end = Sys_Milliseconds();
-//			time_gameDraw += ( end - start );	// note time used for com_speeds
-//		}
-//		if ( !gameDraw ) {
-//			renderSystem.SetColor( colorBlack );
-//			renderSystem.DrawStretchPic( 0, 0, 640, 480, 0, 0, 1, 1, declManager.FindMaterial( "_white" ) );
-//		}
-//
-//		// save off the 2D drawing from the game
-//		if ( writeDemo ) {
-//			renderSystem.WriteDemoPics();
-//		}
-//	} else {
+/*
+===============
+idSessionLocal::Draw
+===============
+*/
+idSessionLocal.prototype.Draw = function ( ): void {
+	var fullConsole = false;
+
+	if ( this.insideExecuteMapChange ) {
+		if ( this.guiLoading ) {
+			this.guiLoading.Redraw( com_frameTime );
+		}
+		if ( this.guiActive == this.guiMsg ) {
+			this.guiMsg.Redraw( com_frameTime );
+		}
+	} else if ( this.guiTest ) {
+		// if testing a gui, clear the screen and draw it
+		// clear the background, in case the tested gui is transparent
+		// NOTE that you can't use this for aviGame recording, it will tick at real com_frameTime between screenshots..
+		renderSystem.SetColor( colorBlack );
+		renderSystem.DrawStretchPicFloats( 0, 0, 640, 480, 0, 0, 1, 1, declManager.FindMaterial( "_white" ) );
+		this.guiTest.Redraw( com_frameTime );
+	} else if ( this.guiActive && !this.guiActive.State ( ).GetBool( "gameDraw" ) ) {
+
+		// draw the frozen gui in the background
+		if ( this.guiActive == this.guiMsg && this.guiMsgRestore ) {
+			this.guiMsgRestore.Redraw( com_frameTime );
+		}
+
+		// draw the menus full screen
+		if (this.guiActive == this.guiTakeNotes && !idSessionLocal.com_skipGameDraw.GetBool()) {
+			todoThrow ( );
+			//game.Draw( this.GetLocalClientNum ( ) );
+		}
+
+		this.guiActive.Redraw( com_frameTime );
+	} else if (this.readDemo) {
+		todoThrow ( );
+		//this.rw.RenderScene( this.currentDemoRenderView );
+		//renderSystem.DrawDemoPics ( );
+	} else if ( this.mapSpawned ) {
+		var gameDraw = false;
+		// normal drawing for both single and multi player
+		if ( !idSessionLocal.com_skipGameDraw.GetBool ( ) && this.GetLocalClientNum ( ) >= 0 ) {
+			// draw the game view
+			var start = Sys_Milliseconds ( );
+			gameDraw = this.game.Draw( this.GetLocalClientNum ( ) );
+			var end = Sys_Milliseconds ( );
+			time_gameDraw += ( end - start ); // note time used for com_speeds
+		}
+		if ( !gameDraw ) {
+			renderSystem.SetColor( colorBlack );
+			renderSystem.DrawStretchPicFloats( 0, 0, 640, 480, 0, 0, 1, 1, declManager.FindMaterial( "_white" ) );
+		}
+
+		// save off the 2D drawing from the game
+		if ( this.writeDemo ) {
+			todoThrow ( );
+			//renderSystem.WriteDemoPics();
+		}
+	} else {
 //#if ID_CONSOLE_LOCK
 //		if ( com_allowConsole.GetBool() ) {
-//			console.Draw( true );
+//			$console.Draw( true );
 //		} else {
 //			emptyDrawCount++;
 //			if ( emptyDrawCount > 5 ) {
@@ -2439,12 +2363,12 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //			renderSystem.DrawStretchPic( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 1, 1, declManager.FindMaterial( "_white" ) );
 //		}
 //#else
-//		// draw the console full screen - this should only ever happen in developer builds
-//		console.Draw( true );
+		// draw the console full screen - this should only ever happen in developer builds
+		$console.Draw( true );
 //#endif
-//		fullConsole = true;
-//	}
-//
+		fullConsole = true;
+	}
+
 //#if ID_CONSOLE_LOCK
 //	if ( !fullConsole && emptyDrawCount ) {
 //		common.DPrintf( "idSession: %d empty frame draws\n", emptyDrawCount );
@@ -2452,19 +2376,19 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	}
 //	fullConsole = false;
 //#endif
-//
-//	// draw the wipe material on top of this if it hasn't completed yet
-//	DrawWipeModel();
-//	
-//	// draw debug graphs
-//	DrawCmdGraph();
-//
-//	// draw the half console / notify console on top of everything
-//	if ( !fullConsole ) {
-//		console.Draw( false );
-//	}
-//}
-//
+
+	// draw the wipe material on top of this if it hasn't completed yet
+	this.DrawWipeModel ( );
+
+	// draw debug graphs
+	this.DrawCmdGraph ( );
+
+	// draw the half console / notify console on top of everything
+	if ( !fullConsole ) {
+		$console.Draw( false );
+	}
+};
+
 ///*
 //===============
 //idSessionLocal::UpdateScreen
@@ -2481,12 +2405,12 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	}
 //#endif
 //
-//	if ( insideUpdateScreen ) {
+//	if ( this.insideUpdateScreen ) {
 //		return;
 ////		common.FatalError( "idSessionLocal::UpdateScreen: recursively called" );
 //	}
 //
-//	insideUpdateScreen = true;
+//	this.insideUpdateScreen = true;
 //
 //	// if this is a long-operation update and we are in windowed mode,
 //	// release the mouse capture back to the desktop
@@ -2505,7 +2429,7 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //		renderSystem.EndFrame( NULL, NULL );
 //	}
 //
-//	insideUpdateScreen = false;
+//	this.insideUpdateScreen = false;
 //}
 //
 ///*
@@ -2526,17 +2450,17 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //
 //	// if the console is down, we don't need to hold
 //	// the mouse cursor
-//	if ( console.Active() || com_editorActive ) {
+//	if ( $console.Active() || com_editorActive ) {
 //		Sys_GrabMouseCursor( false );
 //	} else {
 //		Sys_GrabMouseCursor( true );
 //	}
 //
 //	// save the screenshot and audio from the last draw if needed
-//	if ( aviCaptureMode ) {
+//	if ( this.aviCaptureMode ) {
 //		idStr	name;
 //
-//		name = va("demos/%s/%s_%05i.tga", aviDemoShortName.c_str(), aviDemoShortName.c_str(), aviTicStart );
+//		name = va("demos/%s/%s_%05i.tga", this.aviDemoShortName.c_str(), this.aviDemoShortName.c_str(), aviTicStart );
 //
 //		float ratio = 30.0f / ( 1000.0f / USERCMD_MSEC / com_aviDemoTics.GetInteger() );
 //		aviDemoFrameCount += ratio;
@@ -2545,13 +2469,13 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //			int c = aviDemoFrameCount - aviTicStart;
 //			while ( c-- ) {
 //				renderSystem.TakeScreenshot( com_aviDemoWidth.GetInteger(), com_aviDemoHeight.GetInteger(), name, com_aviDemoSamples.GetInteger(), NULL );
-//				name = va("demos/%s/%s_%05i.tga", aviDemoShortName.c_str(), aviDemoShortName.c_str(), ++aviTicStart );
+//				name = va("demos/%s/%s_%05i.tga", this.aviDemoShortName.c_str(), this.aviDemoShortName.c_str(), ++aviTicStart );
 //			}
 //		}
 //		aviTicStart = aviDemoFrameCount;
 //
 //		// remove any printed lines at the top before taking the screenshot
-//		console.ClearNotifyLines();
+//		$console.ClearNotifyLines();
 //
 //		// this will call Draw, possibly multiple times if com_aviDemoSamples is > 1
 //		renderSystem.TakeScreenshot( com_aviDemoWidth.GetInteger(), com_aviDemoHeight.GetInteger(), name, com_aviDemoSamples.GetInteger(), NULL );
@@ -2568,15 +2492,15 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //		minTic = lastGameTic + com_minTics.GetInteger();
 //	}
 //	
-//	if ( readDemo ) {
-//		if ( !timeDemo && numDemoFrames != 1 ) {
+//	if ( this.readDemo ) {
+//		if ( !this.timeDemo && numDemoFrames != 1 ) {
 //			minTic = lastDemoTic + USERCMD_PER_DEMO_FRAME;
 //		} else {
 //			// timedemos and demoshots will run as fast as they can, other demos
 //			// will not run more than 30 hz
 //			minTic = latchedTicNumber;
 //		}
-//	} else if ( writeDemo ) {
+//	} else if ( this.writeDemo ) {
 //		minTic = lastGameTic + USERCMD_PER_DEMO_FRAME;		// demos are recorded at 30 hz
 //	}
 //	
@@ -2635,25 +2559,25 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	GuiFrameEvents();
 //
 //	// advance demos
-//	if ( readDemo ) {
+//	if ( this.readDemo ) {
 //		AdvanceRenderDemo( false );
 //		return;
 //	}
 //
 //	//------------ single player game tics --------------
 //
-//	if ( !mapSpawned || guiActive ) {
+//	if ( !this.mapSpawned || this.guiActive ) {
 //		if ( !com_asyncInput.GetBool() ) {
 //			// early exit, won't do RunGameTic .. but still need to update mouse position for GUIs
 //			usercmdGen.GetDirectUsercmd();
 //		}
 //	}
 //
-//	if ( !mapSpawned ) {
+//	if ( !this.mapSpawned ) {
 //		return;
 //	}
 //
-//	if ( guiActive ) {
+//	if ( this.guiActive ) {
 //		lastGameTic = latchedTicNumber;
 //		return;
 //	}
@@ -2675,11 +2599,11 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	int	numCmdsToRun = latchedTicNumber - lastGameTic;
 //
 //	// don't let a long onDemand sound load unsync everything
-//	if ( timeHitch ) {
-//		int	skip = timeHitch / USERCMD_MSEC;
+//	if ( this.timeHitch ) {
+//		int	skip = this.timeHitch / USERCMD_MSEC;
 //		lastGameTic += skip;
 //		numCmdsToRun -= skip;
-//		timeHitch = 0;
+//		this.timeHitch = 0;
 //	}
 //
 //	// don't get too far behind after a hitch
@@ -2689,7 +2613,7 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //
 //	// never use more than USERCMD_PER_DEMO_FRAME,
 //	// which makes it go into slow motion when recording
-//	if ( writeDemo ) {
+//	if ( this.writeDemo ) {
 //		int fixedTic = USERCMD_PER_DEMO_FRAME;
 //		// we should have waited long enough
 //		if ( numCmdsToRun < fixedTic ) {
@@ -2701,16 +2625,16 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //		// this may cause commands run in a previous frame to
 //		// be run again if we are going at above the real time rate
 //		lastGameTic = latchedTicNumber - com_fixedTic.GetInteger();
-//	} else if (	aviCaptureMode ) {
+//	} else if (	this.aviCaptureMode ) {
 //		lastGameTic = latchedTicNumber - com_aviDemoTics.GetInteger();
 //	}
 //
 //	// force only one game frame update this frame.  the game code requests this after skipping cinematics
 //	// so we come back immediately after the cinematic is done instead of a few frames later which can
 //	// cause sounds played right after the cinematic to not play.
-//	if ( syncNextGameFrame ) {
+//	if ( this.syncNextGameFrame ) {
 //		lastGameTic = latchedTicNumber - 1;
-//		syncNextGameFrame = false;
+//		this.syncNextGameFrame = false;
 //	}
 //
 //	// create client commands, which will be sent directly
@@ -2723,11 +2647,11 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	int i;
 //	for ( i = 0 ; i < gameTicsToRun ; i++ ) {
 //		RunGameTic();
-//		if ( !mapSpawned ) {
+//		if ( !this.mapSpawned ) {
 //			// exited game play
 //			break;
 //		}
-//		if ( syncNextGameFrame ) {
+//		if ( this.syncNextGameFrame ) {
 //			// long game frame, so break out and continue executing as if there was no hitch
 //			break;
 //		}
@@ -2744,12 +2668,12 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	usercmd_t	cmd;
 //
 //	// if we are doing a command demo, read or write from the file
-//	if ( cmdDemoFile ) {
-//		if ( !cmdDemoFile.Read( &logCmd, sizeof( logCmd ) ) ) {
+//	if ( this.cmdDemoFile ) {
+//		if ( !this.cmdDemoFile.Read( &logCmd, sizeof( logCmd ) ) ) {
 //			common.Printf( "Command demo completed at logIndex %i\n", logIndex );
-//			fileSystem.CloseFile( cmdDemoFile );
-//			cmdDemoFile = NULL;
-//			if ( aviCaptureMode ) {
+//			fileSystem.CloseFile( this.cmdDemoFile );
+//			this.cmdDemoFile = NULL;
+//			if ( this.aviCaptureMode ) {
 //				EndAVICapture();
 //				Shutdown();
 //			}
@@ -2764,7 +2688,7 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	}
 //	
 //	// if we didn't get one from the file, get it locally
-//	if ( !cmdDemoFile ) {
+//	if ( !this.cmdDemoFile ) {
 //		// get a locally created command
 //		if ( com_asyncInput.GetBool() ) {
 //			cmd = usercmdGen.TicCmd( lastGameTic );
@@ -2782,7 +2706,7 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	time_gameFrame += end - start;	// note time used for com_speeds
 //
 //	// check for constency failure from a recorded command
-//	if ( cmdDemoFile ) {
+//	if ( this.cmdDemoFile ) {
 //		if ( ret.consistencyHash != logCmd.consistencyHash ) {
 //			common.Printf( "Consistency failure on logIndex %i\n", logIndex );
 //			Stop();
@@ -2805,7 +2729,7 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //		logIndex++;
 //	}
 //
-//	syncNextGameFrame = ret.syncNextGameFrame;
+//	this.syncNextGameFrame = ret.syncNextGameFrame;
 //
 //	if ( ret.sessionCommand[0] ) {
 //		idCmdArgs args;
@@ -2933,37 +2857,37 @@ idSessionLocal.prototype.Init = function ( ): void {
 	common.Printf( "--------------------------------------\n" );
 };
 
-///*
-//===============
-//idSessionLocal::GetLocalClientNum
-//===============
-//*/
-//int idSessionLocal::GetLocalClientNum() {
-//	if ( idAsyncNetwork.client.IsActive() ) {
-//		return idAsyncNetwork.client.GetLocalClientNum();
-//	} else if ( idAsyncNetwork.server.IsActive() ) {
-//		if ( idAsyncNetwork::serverDedicated.GetInteger() == 0 ) {
-//			return 0;
-//		} else if ( idAsyncNetwork.server.IsClientInGame( idAsyncNetwork::serverDrawClient.GetInteger() ) ) {
-//			return idAsyncNetwork::serverDrawClient.GetInteger();
-//		} else {
-//			return -1;
-//		}
-//	} else {
-//		return 0;
-//	}
-//}
-//
+/*
+===============
+idSessionLocal::GetLocalClientNum
+===============
+*/
+idSessionLocal.prototype.GetLocalClientNum = function ( ): number /*int*/ {
+	if ( idAsyncNetwork.client.IsActive ( ) ) {
+		return idAsyncNetwork.client.GetLocalClientNum ( );
+	} else if ( idAsyncNetwork.server.IsActive ( ) ) {
+		if ( idAsyncNetwork.serverDedicated.GetInteger ( ) == 0 ) {
+			return 0;
+		} else if ( idAsyncNetwork.server.IsClientInGame( idAsyncNetwork.serverDrawClient.GetInteger ( ) ) ) {
+			return idAsyncNetwork.serverDrawClient.GetInteger ( );
+		} else {
+			return -1;
+		}
+	} else {
+		return 0;
+	}
+};
+
 ///*
 //===============
 //idSessionLocal::SetPlayingSoundWorld
 //===============
 //*/
 //void idSessionLocal::SetPlayingSoundWorld() {
-//	if ( guiActive && ( guiActive == guiMainMenu || guiActive == guiIntro || guiActive == guiLoading || ( guiActive == guiMsg && !mapSpawned ) ) ) {
-//		soundSystem.SetPlayingSoundWorld( menuSoundWorld );
+//	if ( this.guiActive && ( this.guiActive == guiMainMenu || this.guiActive == guiIntro || this.guiActive == this.guiLoading || ( this.guiActive == this.guiMsg && !this.mapSpawned ) ) ) {
+//		soundSystem.SetPlayingSoundWorld( this.menuSoundWorld );
 //	} else {
-//		soundSystem.SetPlayingSoundWorld( sw );
+//		soundSystem.SetPlayingSoundWorld( this.sw );
 //	}
 //}
 //
@@ -2976,7 +2900,7 @@ idSessionLocal.prototype.Init = function ( ): void {
 //===============
 //*/
 //void idSessionLocal::TimeHitch( int msec ) {
-//	timeHitch += msec;
+//	this.timeHitch += msec;
 //}
 //
 ///*
@@ -3304,7 +3228,7 @@ idSessionLocal.prototype.Init = function ( ): void {
 //===============
 //*/
 //const char *idSessionLocal::GetCurrentMapName() {
-//	return currentMapName.c_str();
+//	return this.currentMapName.c_str();
 //}
 //
 ///*
@@ -3313,7 +3237,7 @@ idSessionLocal.prototype.Init = function ( ): void {
 //===============
 //*/
 //int idSessionLocal::GetSaveGameVersion( void ) {
-//	return savegameVersion;
+//	return this.savegameVersion;
 //}
 //
 ///*

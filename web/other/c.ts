@@ -27,8 +27,8 @@ function strcpy(destination: Uint8Array, source: string): Uint8Array {
 function strncpy(destination: Uint8Array, source: string, numChars: number): Uint8Array {
 	//assert.isType(Uint8Array, destination).isString(source);
 
-	for (var i = 0; i < source.length && i < numChars; i++) {
-		destination[i] = source.charCodeAt(i);
+	for (var i = 0; i < numChars; i++) {
+		destination[i] = source.charCodeAt(i) || 0;
 	}
 
 	destination[i] = 0;

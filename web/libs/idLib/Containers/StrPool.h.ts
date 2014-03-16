@@ -110,6 +110,7 @@ class idStrPool {
 			for ( i = this.poolHash.First( hash ); i != -1; i = this.poolHash.Next( i ) ) {
 				if ( this.pool[i].Cmp( $string ) == 0 ) {
 					this.pool[i].numUsers++;
+					dlog(DEBUG_STRPOOL, "idStrPool::AllocString caseSensitive this.pool[i] '%s' numUsers: %i\n", this.pool[i].c_str(), this.pool[i].numUsers);
 					return this.pool[i];
 				}
 			}
@@ -117,6 +118,7 @@ class idStrPool {
 			for ( i = this.poolHash.First( hash ); i != -1; i = this.poolHash.Next( i ) ) {
 				if ( this.pool[i].Icmp( $string ) == 0 ) {
 					this.pool[i].numUsers++;
+					dlog(DEBUG_STRPOOL, "idStrPool::AllocString !caseSensitive this.pool[i] '%s' numUsers: %i\n", this.pool[i].c_str(), this.pool[i].numUsers);
 					return this.pool[i];
 				}
 			}

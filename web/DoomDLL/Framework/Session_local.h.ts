@@ -70,11 +70,11 @@ class mapSpawnData_t {
 	mapSpawnUsercmd = newStructArray<usercmd_t>( usercmd_t, MAX_ASYNC_CLIENTS ); // needed for tracking delta angles
 }
 
-//typedef enum {
-//	TD_NO,
-//	TD_YES,
-//	TD_YES_THEN_QUIT
-//} timeDemo_t;
+enum timeDemo_t{
+	TD_NO,
+	TD_YES,
+	TD_YES_THEN_QUIT
+};
 //
 //const int USERCMD_PER_DEMO_FRAME	= 2;
 //const int CONNECT_TRANSMIT_TIME		= 1000;
@@ -83,7 +83,19 @@ class mapSpawnData_t {
 class idSessionLocal extends idSession {
 //public:
 //
-//						idSessionLocal();
+	/*
+	===============
+	idSessionLocal::idSessionLocal
+	===============
+	*/
+	constructor() {
+		super ( );
+		this.guiInGame = this.guiMainMenu = this.guiIntro = this.guiRestartMenu = this.guiLoading = this.guiGameOver = this.guiActive = this.guiTest = this.guiMsg = this.guiMsgRestore = this.guiTakeNotes = null;
+	
+		this.menuSoundWorld = null;
+	
+		this.Clear();
+	}
 //	virtual				~idSessionLocal();
 //
 	Init ( ): void { throw "placeholder"; }
@@ -128,10 +140,10 @@ class idSessionLocal extends idSession {
 //
 //	virtual const char *GetCurrentMapName();
 //
-//	//=====================================
+	//=====================================
 //
-//	int					GetLocalClientNum();
-//
+	GetLocalClientNum():number/*int*/  { throw "placeholder"; }
+
 	MoveToNewMap ( mapName: string ): void { throw "placeholder"; }
 
 	// loads a map and starts a new game on it
@@ -143,9 +155,8 @@ class idSessionLocal extends idSession {
 //
 //	// called by Draw when the scene to scene wipe is still running
 //	void				DrawWipeModel();
-//	void				StartWipe( const char *materialName, bool hold = false);
-//	void				CompleteWipe();
-//	void				ClearWipe();
+	StartWipe ( _wipeMaterial: string, hold: boolean = false ): void { throw "placeholder"; }
+	CompleteWipe(): void { throw "placeholder"; }
 //
 //	void				ShowLoadingGui();
 //
@@ -173,20 +184,20 @@ class idSessionLocal extends idSession {
 	static com_guid:idCVar;
 
 	static gui_configServerRate:idCVar;
-//
+
 	timeHitch:number/*int*/;
-//
-//	bool				menuActive;
-	menuSoundWorld: idSoundWorld ;			// so the game soundWorld can be muted
-//
-//	bool				insideExecuteMapChange;	// draw loading screen and update
-//												// screen on prints
+
+	menuActive:boolean;
+	menuSoundWorld: idSoundWorld;			// so the game soundWorld can be muted
+
+	insideExecuteMapChange:boolean;	// draw loading screen and update
+												// screen on prints
 	bytesNeededForMapLoad:number/*int*/;	// 
-//
-//	// we don't want to redraw the loading screen for every single
-//	// console print that happens
+
+	// we don't want to redraw the loading screen for every single
+	// console print that happens
 	lastPacifierTime:number/*int*/;
-//
+
 	// this is the information required to be set before ExecuteMapChange() is called,
 	// which can be saved off at any time with the following commands so it can all be played back
 	mapSpawnData = new mapSpawnData_t;
@@ -200,32 +211,32 @@ class idSessionLocal extends idSession {
 	statIndex:number/*int*/;
 //	logStats_t			loggedStats[MAX_LOGGED_STATS];
 	lastSaveIndex:number/*int*/;
-//	// each game tic, numClients usercmds will be added, until full
-//
-//	bool				insideUpdateScreen;	// true while inside ::UpdateScreen()
-//
-//	bool				loadingSaveGame;	// currently loading map from a SaveGame
-//	idFile *			savegameFile;		// this is the savegame file to load from
+	// each game tic, numClients usercmds will be added, until full
+
+	insideUpdateScreen:boolean;	// true while inside ::UpdateScreen()
+
+	loadingSaveGame:boolean;	// currently loading map from a SaveGame
+	savegameFile:idFile ;		// this is the savegame file to load from
 	savegameVersion:number/*int*/;
-//
-//	idFile *			cmdDemoFile;		// if non-zero, we are reading commands from a file
-//
+
+	cmdDemoFile:idFile ;		// if non-zero, we are reading commands from a file
+
 	latchedTicNumber: number/*int*/;	// set to com_ticNumber each frame
 	lastGameTic:number/*int*/;		// while latchedTicNumber > lastGameTic, run game frames
 	lastDemoTic:number/*int*/;
-//	bool				syncNextGameFrame;
+	syncNextGameFrame:boolean;
 
 
-//	bool				aviCaptureMode;		// if true, screenshots will be taken and sound captured
-//	idStr				aviDemoShortName;	// 
-//	float				aviDemoFrameCount;
+	aviCaptureMode:boolean;		// if true, screenshots will be taken and sound captured
+	aviDemoShortName = new idStr;	// 
+	aviDemoFrameCount: number/*float*/;
 	aviTicStart:number/*int*/;
-//
-//	timeDemo_t			timeDemo;
+
+	timeDemo: timeDemo_t;
 	timeDemoStartTime:number/*int*/;
 	numDemoFrames:number/*int*/;		// for timeDemo and demoShot
 	demoTimeOffset:number/*int*/;
-//	renderView_t		currentDemoRenderView;
+	currentDemoRenderView = new renderView_t;
 	// the next one will be read when 
 	// com_frameTime + demoTimeOffset > currentDemoRenderView.
 
@@ -263,11 +274,9 @@ class idSessionLocal extends idSession {
 	emptyDrawCount: number/*int*/;				// watchdog to force the main menu to restart
 //#endif
 //
-//	//=====================================
-//	void				Clear();
-//
-//	void				DrawCmdGraph();
-//	void				Draw();
+	//=====================================
+	DrawCmdGraph ( ): void { throw "placeholder"; }
+	Draw ( ): void { throw "placeholder"; }
 //
 //	void				WriteCmdDemo( const char *name, bool save = false);
 //	void				StartPlayingCmdDemo( const char *demoName);
@@ -299,18 +308,18 @@ class idSessionLocal extends idSession {
 //	int					GetBytesNeededForMapLoad( const char *mapName );
 //	void				SetBytesNeededForMapLoad( const char *mapName, int bytesNeeded );
 //
-//	void				ExecuteMapChange( bool noFadeWipe = false );
+	ExecuteMapChange ( noFadeWipe: boolean = false ): void { throw "placeholder"; }
 //	void				UnloadMap();
 //
 //	// return true if we actually waiting on an auth reply
 //	bool				MaybeWaitOnCDKey( void );
-//
-//	//------------------
-//	// Session_menu.cpp
-//
-//	idStrList			loadGameList;
-//	idStrList			modsList;
-//
+
+	//------------------
+	// Session_menu.cpp
+
+	loadGameList = new idStrList;
+	modsList = new idStrList;
+
 //	idUserInterface *	GetActiveMenu();
 //
 //	void				DispatchCommand( idUserInterface *gui, const char *menuCommand, bool doIngame = true );
@@ -352,10 +361,80 @@ class idSessionLocal extends idSession {
 //	cdKeyState_t		cdkey_state;
 //	char				xpkey[ CDKEY_BUF_LEN ];
 //	cdKeyState_t		xpkey_state;
-//	int					authEmitTimeout;
-//	bool				authWaitBox;
-//
-//	idStr				authMsg;
+	authEmitTimeout:number;
+	authWaitBox:boolean;
+
+	authMsg = new idStr;
+
+
+
+/*
+===============
+idSessionLocal::Clear
+===============
+*/
+	Clear ( ): void {
+
+		this.insideUpdateScreen = false;
+		this.insideExecuteMapChange = false;
+
+		this.loadingSaveGame = false;
+		this.savegameFile = null;
+		this.savegameVersion = 0;
+
+		this.currentMapName.Clear ( );
+		this.aviDemoShortName.Clear ( );
+		this.msgFireBack[0].Clear ( );
+		this.msgFireBack[1].Clear ( );
+
+		this.timeHitch = 0;
+
+		this.rw = NULL;
+		this.sw = NULL;
+		this.menuSoundWorld = null;
+		this.readDemo = null;
+		this.writeDemo = null;
+		this.renderdemoVersion = 0;
+		this.cmdDemoFile = null;
+
+		this.syncNextGameFrame = false;
+		this.mapSpawned = false;
+		this.guiActive = null;
+		this.aviCaptureMode = false;
+		this.timeDemo = timeDemo_t.TD_NO;
+		this.waitingOnBind = false;
+		this.lastPacifierTime = 0;
+
+		this.msgRunning = false;
+		this.guiMsgRestore = null;
+		this.msgIgnoreButtons = false;
+
+		this.bytesNeededForMapLoad = 0;
+
+		//#if ID_CONSOLE_LOCK
+		//	emptyDrawCount = 0;
+		//#endif
+		this.ClearWipe ( );
+
+		this.loadGameList.Clear ( );
+		this.modsList.Clear ( );
+
+		this.authEmitTimeout = 0;
+		this.authWaitBox = false;
+
+		this.authMsg.Clear ( );
+	}
+
+	/*
+	================
+	idSessionLocal::ClearWipe
+	================
+	*/
+	ClearWipe ( ): void {
+		this.wipeHold = false;
+		this.wipeStopTic = 0;
+		this.wipeStartTic = this.wipeStopTic + 1;
+	}
 };
 //
 //extern idSessionLocal	sessLocal;

@@ -28,22 +28,22 @@
 //
 //#ifndef __DEMOFILE_H__
 //#define __DEMOFILE_H__
-//
-///*
-//===============================================================================
-//
-//	Demo file
-//
-//===============================================================================
-//*/
-//
-//typedef enum {
-//	DS_FINISHED,
-//	DS_RENDER,
-//	DS_SOUND,
-//	DS_VERSION
-//} demoSystem_t;
-//
+
+/*
+===============================================================================
+
+	Demo file
+
+===============================================================================
+*/
+
+enum demoSystem_t{
+	DS_FINISHED,
+	DS_RENDER,
+	DS_SOUND,
+	DS_VERSION
+};
+
 class idDemoFile extends idFile {
 //public:
 //					idDemoFile();

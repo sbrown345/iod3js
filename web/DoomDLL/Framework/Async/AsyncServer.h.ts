@@ -91,41 +91,41 @@
 //	int					OS;
 //} challenge_t;
 //
-//typedef enum {
-//	SCS_FREE,			// can be reused for a new connection
-//	SCS_ZOMBIE,			// client has been disconnected, but don't reuse connection for a couple seconds
-//	SCS_PUREWAIT,		// client needs to update it's pure checksums before we can go further
-//	SCS_CONNECTED,		// client is connected
-//	SCS_INGAME			// client is in the game
-//} serverClientState_t;
-//
-//typedef struct serverClient_s {
-//	int					OS;
-//	int					clientId;
-//	serverClientState_t	clientState;
-//	int					clientPrediction;
-//	int					clientAheadTime;
-//	int					clientRate;
-//	int					clientPing;
-//
-//	int					gameInitSequence;
-//	int					gameFrame;
-//	int					gameTime;
+enum serverClientState_t{
+	SCS_FREE,			// can be reused for a new connection
+	SCS_ZOMBIE,			// client has been disconnected, but don't reuse connection for a couple seconds
+	SCS_PUREWAIT,		// client needs to update it's pure checksums before we can go further
+	SCS_CONNECTED,		// client is connected
+	SCS_INGAME			// client is in the game
+};
+
+class serverClient_t {
+	OS:number/*int*/;
+	clientId:number/*int*/;
+	clientState: serverClientState_t;
+	clientPrediction:number/*int*/;
+	clientAheadTime:number/*int*/;
+	clientRate:number/*int*/;
+	clientPing:number/*int*/;
+	
+	gameInitSequence:number/*int*/;
+	gameFrame:number/*int*/;
+	gameTime:number/*int*/;
 //
 //	idMsgChannel		channel;
-//	int					lastConnectTime;
-//	int					lastEmptyTime;
-//	int					lastPingTime;
-//	int					lastSnapshotTime;
-//	int					lastPacketTime;
-//	int					lastInputTime;
-//	int					snapshotSequence;
-//	int					acknowledgeSnapshotSequence;
-//	int					numDuplicatedUsercmds;
+	lastConnectTime:number/*int*/;
+	lastEmptyTime:number/*int*/;
+	lastPingTime:number/*int*/;
+	lastSnapshotTime:number/*int*/;
+	lastPacketTime:number/*int*/;
+	lastInputTime:number/*int*/;
+	snapshotSequence:number/*int*/;
+	acknowledgeSnapshotSequence:number/*int*/;
+	numDuplicatedUsercmds:number/*int*/;
 //
 //	char				guid[12];  // Even Balance - M. Quinn
 //
-//} serverClient_t;
+};
 //
 //
 //class idAsyncServer {

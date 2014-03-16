@@ -172,7 +172,7 @@ class idCVar {
 
 ////protected:
     name:string;					// name                                    //	const char *			
-    value:string;					// value                                   //	const char *			
+    value:string;					// value                                   //	const char *	
     description:string;			    // description                             //	const char *			
     flags:number;					// CVAR_? flags                            //	int						
     valueMin:number;				// minimum value                           //	float					

@@ -149,7 +149,7 @@ class Win32Vars_t {
 	/*static*/ win_timerUpdate: idCVar;
 	/*static*/ win_allowMultipleInstances:idCVar;
 ////
-////	CRITICAL_SECTION criticalSections[MAX_CRITICAL_SECTIONS];
+	criticalSections = new Array<number>(MAX_CRITICAL_SECTIONS);
 ////	HANDLE			backgroundDownloadSemaphore;
 ////
 ////	HINSTANCE		hInstDI;			// direct input

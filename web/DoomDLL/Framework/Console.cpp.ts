@@ -35,7 +35,7 @@
 var	LINE_WIDTH				=78
 var	NUM_CON_TIMES			=4
 var	CON_TEXTSIZE			=0x30000
-var	TOTAL_LINES				=(CON_TEXTSIZE / LINE_WIDTH)
+var	TOTAL_LINES				=int(CON_TEXTSIZE / LINE_WIDTH)
 var CONSOLE_FIRSTREPEAT		=200
 var CONSOLE_REPEAT			=100
 
@@ -46,13 +46,13 @@ var COMMAND_HISTORY = 64;
 
 class idConsoleLocal extends idConsole {
 //public:
-//	virtual	void		Init( void );
-//	virtual void		Shutdown( void );
-//	virtual	void		LoadGraphics( void );
+//	virtual	void		Init( );
+//	virtual void		Shutdown( );
+//	virtual	void		LoadGraphics( );
 //	virtual	bool		ProcessEvent( const sysEvent_t *event, bool forceAccept );
-//	virtual	bool		Active( void );
-//	virtual	void		ClearNotifyLines( void );
-//	virtual	void		Close( void );
+//	virtual	bool		Active( );
+//	virtual	void		ClearNotifyLines( );
+//	virtual	void		Close( );
 //	virtual	void		Print( text:string );
 //	virtual	void		Draw( bool forceFullScreen );
 //
@@ -79,37 +79,37 @@ class idConsoleLocal extends idConsole {
 //
 //	void				Scroll();
 //	void				SetDisplayFraction( float frac );
-//	void				UpdateDisplayFraction( void );
+//	void				UpdateDisplayFraction( );
 //
 	//============================
 
 	keyCatching:boolean;
-//
-//	short				text[CON_TEXTSIZE];
+
+	text = new Int16Array(CON_TEXTSIZE);
 	current:number;		// line where next message will be printed		int					
 	x: number;				// offset in current line for next print		int					
 	display: number;		// bottom of console displays this line			int					
 	lastKeyEvent: number;	// time of last key event for scroll delay		int					
 	nextKeyEvent: number;	// keyboard repeat rate							int					
 
-//	float				displayFrac;	// approaches finalFrac at scr_conspeed
-//	float				finalFrac;		// 0.0 to 1.0 lines of console to display
-//	int					fracTime;		// time of last displayFrac update
-//
-//	int					vislines;		// in scanlines
-//
+	displayFrac:number/*float*/;	// approaches finalFrac at scr_conspeed
+	finalFrac:number/*float*/;		// 0.0 to 1.0 lines of console to display
+	fracTime:number/*int*/;		// time of last displayFrac update
+	
+	vislines:number/*int*/;		// in scanlines
+
 	times = new Int32Array(NUM_CON_TIMES);	// cls.realtime time the line was generated
 									// for transparent notify lines
 	color = new idVec4;
 
 	historyEditLines = newStructArray<idEditField>(idEditField,COMMAND_HISTORY);
-//
-//	int					nextHistoryLine;// the last line in the history buffer, not masked
-//	int					historyLine;	// the line being displayed from history buffer
-//									// will be <= nextHistoryLine
-//
+	
+	nextHistoryLine:number/*int*/;// the last line in the history buffer, not masked
+	historyLine:number/*int*/;	// the line being displayed from history buffer
+								// will be <= nextHistoryLine
+
 	consoleField = new idEditField;
-//
+
 	static con_speed = new idCVar (  "con_speed", "3", CVAR_SYSTEM, "speed at which the console moves up and down" );
 	static con_notifyTime = new idCVar (  "con_notifyTime", "3", CVAR_SYSTEM, "time messages are displayed onscreen when console is pulled up" );
 	static con_noPrint = new idCVar (  "con_noPrint", DEBUG ? "0":"1", CVAR_BOOL|CVAR_SYSTEM|CVAR_NOCHEAT, "print on the console but not onscreen when console is pulled up" );
@@ -117,8 +117,8 @@ class idConsoleLocal extends idConsole {
 	whiteShader: idMaterial;
 	consoleShader:idMaterial;
 //};
-//
-//
+
+
 
 //#ifdef DEBUG
 //idCVar idConsoleLocal::con_noPrint( "con_noPrint", "0", CVAR_BOOL|CVAR_SYSTEM|CVAR_NOCHEAT, "print on the console but not onscreen when console is pulled up" );
@@ -208,7 +208,7 @@ class idConsoleLocal extends idConsole {
 //		s = va( "%ifps", fps );
 //		w = strlen( s ) * BIGCHAR_WIDTH;
 //
-//		renderSystem.DrawBigStringExt( 635 - w, idMath::FtoiFast( y ) + 2, s, colorWhite, true, localConsole.charSetShader);
+//		renderSystem.DrawBigStringExt( 635 - w, idMath.FtoiFast( y ) + 2, s, colorWhite, true, localConsole.charSetShader);
 //	}
 //
 //	return y + BIGCHAR_HEIGHT + 4;
@@ -380,7 +380,7 @@ idConsoleLocal::Init
 //idConsoleLocal::Shutdown
 //==============
 //*/
-//void idConsoleLocal::Shutdown( void ) {
+//void idConsoleLocal::Shutdown( ) {
 //	cmdSystem.RemoveCommand( "clear" );
 //	cmdSystem.RemoveCommand( "conDump" );
 //}
@@ -405,8 +405,8 @@ the renderSystem is initialized
 //idConsoleLocal::Active
 //================
 //*/
-//bool	idConsoleLocal::Active( void ) {
-//	return keyCatching;
+//bool	idConsoleLocal::Active( ) {
+//	return this.keyCatching;
 //}
 //
 /*
@@ -422,18 +422,18 @@ idConsoleLocal::ClearNotifyLines
 		}
 	}
 
-///*
-//================
-//idConsoleLocal::Close
-//================
-//*/
-//void	idConsoleLocal::Close() {
-//	keyCatching = false;
-//	SetDisplayFraction( 0 );
-//	displayFrac = 0;	// don't scroll to that point, go immediately
-//	ClearNotifyLines();
-//}
-//
+/*
+================
+idConsoleLocal::Close
+================
+*/
+	Close ( ): void {
+		this.keyCatching = false;
+		this.SetDisplayFraction( 0 );
+		this.displayFrac = 0; // don't scroll to that point, go immediately
+		this.ClearNotifyLines ( );
+	}
+
 ///*
 //================
 //idConsoleLocal::Clear
@@ -443,7 +443,7 @@ idConsoleLocal::ClearNotifyLines
 //	var i:number;
 //
 //	for ( i = 0 ; i < CON_TEXTSIZE ; i++ ) {
-//		text[i] = (idStr::ColorIndex(C_COLOR_CYAN)<<8) | ' ';
+//		text[i] = (idStr.ColorIndex(C_COLOR_CYAN)<<8) | ' ';
 //	}
 //
 //	Bottom();		// go to end
@@ -469,11 +469,11 @@ idConsoleLocal::ClearNotifyLines
 //	}
 //
 //	// skip empty lines
-//	l = current - TOTAL_LINES + 1;
+//	l = this.current - TOTAL_LINES + 1;
 //	if ( l < 0 ) {
 //		l = 0;
 //	}
-//	for ( ; l <= current ; l++ )
+//	for ( ; l <= this.current ; l++ )
 //	{
 //		line = text + ( l % TOTAL_LINES ) * LINE_WIDTH;
 //		for ( x = 0; x < LINE_WIDTH; x++ )
@@ -484,7 +484,7 @@ idConsoleLocal::ClearNotifyLines
 //	}
 //
 //	// write the remaining lines
-//	for ( ; l <= current; l++ ) {
+//	for ( ; l <= this.current; l++ ) {
 //		line = text + ( l % TOTAL_LINES ) * LINE_WIDTH;
 //		for( i = 0; i < LINE_WIDTH; i++ ) {
 //			buffer[i] = line[i] & 0xff;
@@ -504,49 +504,49 @@ idConsoleLocal::ClearNotifyLines
 //
 //	fileSystem.CloseFile( f );
 //}
-//
-///*
-//================
-//idConsoleLocal::PageUp
-//================
-//*/
-//void idConsoleLocal::PageUp( void ) {
-//	display -= 2;
-//	if ( current - display >= TOTAL_LINES ) {
-//		display = current - TOTAL_LINES + 1;
-//	}
-//}
-//
-///*
-//================
-//idConsoleLocal::PageDown
-//================
-//*/
-//void idConsoleLocal::PageDown( void ) {
-//	display += 2;
-//	if ( display > current ) {
-//		display = current;
-//	}
-//}
-//
-///*
-//================
-//idConsoleLocal::Top
-//================
-//*/
-//void idConsoleLocal::Top( void ) {
-//	display = 0;
-//}
-//
-///*
-//================
-//idConsoleLocal::Bottom
-//================
-//*/
-//void idConsoleLocal::Bottom( void ) {
-//	display = current;
-//}
-//
+
+/*
+================
+idConsoleLocal::PageUp
+================
+*/
+PageUp( ):void {
+	this.display -= 2;
+	if ( this.current - this.display >= TOTAL_LINES ) {
+		this.display = this.current - TOTAL_LINES + 1;
+	}
+}
+
+/*
+================
+idConsoleLocal::PageDown
+================
+*/
+PageDown( ):void {
+	this.display += 2;
+	if ( this.display > this.current ) {
+		this.display = this.current;
+	}
+}
+
+/*
+================
+idConsoleLocal::Top
+================
+*/
+Top( ):void {
+	this.display = 0;
+}
+
+/*
+================
+idConsoleLocal::Bottom
+================
+*/
+Bottom( ):void {
+	this.display = this.current;
+}
+
 //
 ///*
 //=============================================================================
@@ -572,7 +572,7 @@ idConsoleLocal::ClearNotifyLines
 //	}
 //
 //	// ctrl-L clears screen
-//	if ( key == 'l' && idKeyInput::IsDown( K_CTRL ) ) {
+//	if ( key == 'l' && idKeyInput.IsDown( K_CTRL ) ) {
 //		Clear();
 //		return;
 //	}
@@ -580,18 +580,18 @@ idConsoleLocal::ClearNotifyLines
 //	// enter finishes the line
 //	if ( key == K_ENTER || key == K_KP_ENTER ) {
 //
-//		common.Printf ( "]%s\n", consoleField.GetBuffer() );
+//		common.Printf ( "]%s\n", this.consoleField.GetBuffer() );
 //
-//		cmdSystem.BufferCommandText( CMD_EXEC_APPEND, consoleField.GetBuffer() );	// valid command
+//		cmdSystem.BufferCommandText( CMD_EXEC_APPEND, this.consoleField.GetBuffer() );	// valid command
 //		cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "\n" );
 //
 //		// copy line to history buffer
-//		historyEditLines[nextHistoryLine % COMMAND_HISTORY] = consoleField;
+//		historyEditLines[nextHistoryLine % COMMAND_HISTORY] = this.consoleField;
 //		nextHistoryLine++;
 //		historyLine = nextHistoryLine;
 //
-//		consoleField.Clear();
-//		consoleField.SetWidthInChars( LINE_WIDTH );
+//		this.consoleField.Clear();
+//		this.consoleField.SetWidthInChars( LINE_WIDTH );
 //
 //		session.UpdateScreen();// force an update, because the command
 //								// may take some time
@@ -601,43 +601,43 @@ idConsoleLocal::ClearNotifyLines
 //	// command completion
 //
 //	if ( key == K_TAB ) {
-//		consoleField.AutoComplete();
+//		this.consoleField.AutoComplete();
 //		return;
 //	}
 //
 //	// command history (ctrl-p ctrl-n for unix style)
 //
 //	if ( ( key == K_UPARROW ) ||
-//		 ( ( tolower(key) == 'p' ) && idKeyInput::IsDown( K_CTRL ) ) ) {
+//		 ( ( tolower(key) == 'p' ) && idKeyInput.IsDown( K_CTRL ) ) ) {
 //		if ( nextHistoryLine - historyLine < COMMAND_HISTORY && historyLine > 0 ) {
 //			historyLine--;
 //		}
-//		consoleField = historyEditLines[ historyLine % COMMAND_HISTORY ];
+//		this.consoleField = historyEditLines[ historyLine % COMMAND_HISTORY ];
 //		return;
 //	}
 //
 //	if ( ( key == K_DOWNARROW ) ||
-//		 ( ( tolower( key ) == 'n' ) && idKeyInput::IsDown( K_CTRL ) ) ) {
+//		 ( ( tolower( key ) == 'n' ) && idKeyInput.IsDown( K_CTRL ) ) ) {
 //		if ( historyLine == nextHistoryLine ) {
 //			return;
 //		}
 //		historyLine++;
-//		consoleField = historyEditLines[ historyLine % COMMAND_HISTORY ];
+//		this.consoleField = historyEditLines[ historyLine % COMMAND_HISTORY ];
 //		return;
 //	}
 //
 //	// console scrolling
 //	if ( key == K_PGUP ) {
 //		PageUp();
-//		lastKeyEvent = eventLoop.Milliseconds();
-//		nextKeyEvent = CONSOLE_FIRSTREPEAT;
+//		this.lastKeyEvent = eventLoop.Milliseconds();
+//		this.nextKeyEvent = CONSOLE_FIRSTREPEAT;
 //		return;
 //	}
 //
 //	if ( key == K_PGDN ) {
 //		PageDown();
-//		lastKeyEvent = eventLoop.Milliseconds();
-//		nextKeyEvent = CONSOLE_FIRSTREPEAT;
+//		this.lastKeyEvent = eventLoop.Milliseconds();
+//		this.nextKeyEvent = CONSOLE_FIRSTREPEAT;
 //		return;
 //	}
 //
@@ -652,87 +652,87 @@ idConsoleLocal::ClearNotifyLines
 //	}
 //
 //	// ctrl-home = top of console
-//	if ( key == K_HOME && idKeyInput::IsDown( K_CTRL ) ) {
+//	if ( key == K_HOME && idKeyInput.IsDown( K_CTRL ) ) {
 //		Top();
 //		return;
 //	}
 //
 //	// ctrl-end = bottom of console
-//	if ( key == K_END && idKeyInput::IsDown( K_CTRL ) ) {
+//	if ( key == K_END && idKeyInput.IsDown( K_CTRL ) ) {
 //		Bottom();
 //		return;
 //	}
 //
 //	// pass to the normal editline routine
-//	consoleField.KeyDownEvent( key );
+//	this.consoleField.KeyDownEvent( key );
 //}
 //
-///*
-//==============
-//Scroll
-//deals with scrolling text because we don't have key repeat
-//==============
-//*/
-//void idConsoleLocal::Scroll( ) {
-//	if (lastKeyEvent == -1 || (lastKeyEvent+200) > eventLoop.Milliseconds()) {
-//		return;
-//	}
-//	// console scrolling
-//	if ( idKeyInput::IsDown( K_PGUP ) ) {
-//		PageUp();
-//		nextKeyEvent = CONSOLE_REPEAT;
-//		return;
-//	}
-//
-//	if ( idKeyInput::IsDown( K_PGDN ) ) {
-//		PageDown();
-//		nextKeyEvent = CONSOLE_REPEAT;
-//		return;
-//	}
-//}
-//
-///*
-//==============
-//SetDisplayFraction
-//
-//Causes the console to start opening the desired amount.
-//==============
-//*/
-//void idConsoleLocal::SetDisplayFraction( float frac ) {
-//	finalFrac = frac;
-//	fracTime = com_frameTime;
-//}
-//
-///*
-//==============
-//UpdateDisplayFraction
-//
-//Scrolls the console up or down based on conspeed
-//==============
-//*/
-//void idConsoleLocal::UpdateDisplayFraction( void ) {
-//	if ( con_speed.GetFloat() <= 0.1f ) {
-//		fracTime = com_frameTime;
-//		displayFrac = finalFrac;
-//		return;
-//	}
-//
-//	// scroll towards the destination height
-//	if ( finalFrac < displayFrac ) {
-//		displayFrac -= con_speed.GetFloat() * ( com_frameTime - fracTime ) * 0.001f;
-//		if ( finalFrac > displayFrac ) {
-//			displayFrac = finalFrac;
-//		}
-//		fracTime = com_frameTime;
-//	} else if ( finalFrac > displayFrac ) {
-//		displayFrac += con_speed.GetFloat() * ( com_frameTime - fracTime ) * 0.001f;
-//		if ( finalFrac < displayFrac ) {
-//			displayFrac = finalFrac;
-//		}
-//		fracTime = com_frameTime;
-//	}
-//}
-//
+/*
+==============
+Scroll
+deals with scrolling text because we don't have key repeat
+==============
+*/
+	Scroll ( ): void {
+		if ( this.lastKeyEvent == -1 || ( this.lastKeyEvent + 200 ) > eventLoop.Milliseconds ( ) ) {
+			return;
+		}
+		// console scrolling
+		if ( idKeyInput.IsDown( keyNum_t.K_PGUP ) ) {
+			this.PageUp ( );
+			this.nextKeyEvent = CONSOLE_REPEAT;
+			return;
+		}
+
+		if ( idKeyInput.IsDown( keyNum_t.K_PGDN ) ) {
+			this.PageDown ( );
+			this.nextKeyEvent = CONSOLE_REPEAT;
+			return;
+		}
+	}
+
+/*
+==============
+SetDisplayFraction
+
+Causes the console to start opening the desired amount.
+==============
+*/
+	SetDisplayFraction ( frac: number /*float */ ): void {
+		this.finalFrac = frac;
+		this.fracTime = com_frameTime;
+	}
+
+/*
+==============
+UpdateDisplayFraction
+
+Scrolls the console up or down based on conspeed
+==============
+*/
+	UpdateDisplayFraction ( ): void {
+		if ( idConsoleLocal.con_speed.GetFloat ( ) <= 0.1 ) {
+			this.fracTime = com_frameTime;
+			this.displayFrac = this.finalFrac;
+			return;
+		}
+
+		// scroll towards the destination height
+		if ( this.finalFrac < this.displayFrac ) {
+			this.displayFrac -= idConsoleLocal.con_speed.GetFloat ( ) * ( com_frameTime - this.fracTime ) * 0.001;
+			if ( this.finalFrac > this.displayFrac ) {
+				this.displayFrac = this.finalFrac;
+			}
+			this.fracTime = com_frameTime;
+		} else if ( this.finalFrac > this.displayFrac ) {
+			this.displayFrac += idConsoleLocal.con_speed.GetFloat ( ) * ( com_frameTime - this.fracTime ) * 0.001;
+			if ( this.finalFrac < this.displayFrac ) {
+				this.displayFrac = this.finalFrac;
+			}
+			this.fracTime = com_frameTime;
+		}
+	}
+
 ///*
 //==============
 //ProcessEvent
@@ -744,8 +744,8 @@ idConsoleLocal::ClearNotifyLines
 //
 //#if ID_CONSOLE_LOCK
 //	// If the console's not already down, and we have it turned off, check for ctrl+alt
-//	if ( !keyCatching && !com_allowConsole.GetBool() ) {
-//		if ( !idKeyInput::IsDown( K_CTRL ) || !idKeyInput::IsDown( K_ALT ) ) {
+//	if ( !this.keyCatching && !com_allowConsole.GetBool() ) {
+//		if ( !idKeyInput.IsDown( K_CTRL ) || !idKeyInput.IsDown( K_ALT ) ) {
 //			consoleKey = false;
 //		}
 //	}
@@ -758,17 +758,17 @@ idConsoleLocal::ClearNotifyLines
 //			return true;
 //		}
 //
-//		consoleField.ClearAutoComplete();
+//		this.consoleField.ClearAutoComplete();
 //
 //		// a down event will toggle the destination lines
-//		if ( keyCatching ) {
-//			Close();
+//		if ( this.keyCatching ) {
+//			this.Close();
 //			Sys_GrabMouseCursor( true );
 //			cvarSystem.SetCVarBool( "ui_chat", false );
 //		} else {
-//			consoleField.Clear();
-//			keyCatching = true;
-//			if ( idKeyInput::IsDown( K_SHIFT ) ) {
+//			this.consoleField.Clear();
+//			this.keyCatching = true;
+//			if ( idKeyInput.IsDown( K_SHIFT ) ) {
 //				// if the shift key is down, don't open the console as much
 //				SetDisplayFraction( 0.2f );
 //			} else {
@@ -780,7 +780,7 @@ idConsoleLocal::ClearNotifyLines
 //	}
 //
 //	// if we aren't key catching, dump all the other events
-//	if ( !forceAccept && !keyCatching ) {
+//	if ( !forceAccept && !this.keyCatching ) {
 //		return false;
 //	}
 //
@@ -788,7 +788,7 @@ idConsoleLocal::ClearNotifyLines
 //	if ( event.evType == SE_CHAR ) {
 //		// never send the console key as a character
 //		if ( event.evValue != Sys_GetConsoleKey( false ) && event.evValue != Sys_GetConsoleKey( true ) ) {
-//			consoleField.CharEvent( event.evValue );
+//			this.consoleField.CharEvent( event.evValue );
 //		}
 //		return true;
 //	}
@@ -807,73 +807,74 @@ idConsoleLocal::ClearNotifyLines
 //	return false;
 //}
 //
-///*
-//==============================================================================
-//
-//PRINTING
-//
-//==============================================================================
-//*/
-//
-///*
-//===============
-//Linefeed
-//===============
-//*/
-//void idConsoleLocal::Linefeed() {
-//	var i:number;
-//
-//	// mark time for transparent overlay
-//	if ( current >= 0 ) {
-//		times[current % NUM_CON_TIMES] = com_frameTime;
-//	}
-//
-//	x = 0;
-//	if ( display == current ) {
-//		display++;
-//	}
-//	current++;
-//	for ( i = 0; i < LINE_WIDTH; i++ ) {
-//		text[(current%TOTAL_LINES)*LINE_WIDTH+i] = (idStr::ColorIndex(C_COLOR_CYAN)<<8) | ' ';
-//	}
-//}
-//
-//
-///*
-//================
-//Print
-//
-//Handles cursor positioning, line wrapping, etc
-//================
-//*/
-//void idConsoleLocal::Print( const char *txt ) {
+/*
+==============================================================================
+
+PRINTING
+
+==============================================================================
+*/
+
+/*
+===============
+Linefeed
+===============
+*/
+	Linefeed ( ): void {
+		var i: number;
+
+		// mark time for transparent overlay
+		if ( this.current >= 0 ) {
+			this.times[this.current % NUM_CON_TIMES] = com_frameTime;
+		}
+
+		this.x = 0;
+		if ( this.display == this.current ) {
+			this.display++;
+		}
+		this.current++;
+		for ( i = 0; i < LINE_WIDTH; i++ ) {
+			this.text[( this.current % TOTAL_LINES ) * LINE_WIDTH + i] = ( idStr.ColorIndex( C_COLOR_CYAN.charCodeAt( 0 ) ) << 8 ) | ' '.charCodeAt( 0 );
+		}
+	}
+
+
+/*
+================
+Print
+
+Handles cursor positioning, line wrapping, etc
+================
+*/
+	Print ( txt: string ): void {
+		todoThrow ( );
 //	int		y;
 //	int		c, l;
 //	int		color;
-//
+
 //#ifdef ID_ALLOW_TOOLS
 //	RadiantPrint( txt );
-//
+
 //	if( com_editors & EDITOR_MATERIAL ) {
 //		MaterialEditorPrintConsole(txt);
 //	}
 //#endif
-//
-//	color = idStr::ColorIndex( C_COLOR_CYAN );
-//
+
+//	color = idStr.ColorIndex( C_COLOR_CYAN );
+
 //	while ( (c = *(const unsigned char*)txt) != 0 ) {
 //		if ( idStr::IsColor( txt ) ) {
 //			if ( *(txt+1) == C_COLOR_DEFAULT ) {
-//				color = idStr::ColorIndex( C_COLOR_CYAN );
+//				color = idStr.ColorIndex( C_COLOR_CYAN );
 //			} else {
-//				color = idStr::ColorIndex( *(txt+1) );
+//				color = idStr.ColorIndex( *(txt+1) );
 //			}
 //			txt += 2;
 //			continue;
 //		}
-//
-//		y = current % TOTAL_LINES;
-//
+
+//		y = this.current % TOTAL_LINES;
+
 //		// if we are about to print a new word, check to see
 //		// if we should wrap to the new line
 //		if ( c > ' ' && ( x == 0 || text[y*LINE_WIDTH+x-1] <= ' ' ) ) {
@@ -883,15 +884,15 @@ idConsoleLocal::ClearNotifyLines
 //					break;
 //				}
 //			}
-//
+
 //			// word wrap
 //			if (l != LINE_WIDTH && (x + l >= LINE_WIDTH) ) {
 //				Linefeed();
 //			}
 //		}
-//
+
 //		txt++;
-//
+
 //		switch( c ) {
 //			case '\n':
 //				Linefeed ();
@@ -919,56 +920,56 @@ idConsoleLocal::ClearNotifyLines
 //				break;
 //		}
 //	}
-//
-//
+
+
 //	// mark time for transparent overlay
-//	if ( current >= 0 ) {
-//		times[current % NUM_CON_TIMES] = com_frameTime;
+//	if ( this.current >= 0 ) {
+//		times[this.current % NUM_CON_TIMES] = com_frameTime;
 //	}
-//}
-//
-//
-///*
-//==============================================================================
-//
-//DRAWING
-//
-//==============================================================================
-//*/
-//
-//
-///*
-//================
-//DrawInput
-//
-//Draw the editline after a ] prompt
-//================
-//*/
-//void idConsoleLocal::DrawInput() {
-//	int y, autoCompleteLength;
-//
-//	y = vislines - ( SMALLCHAR_HEIGHT * 2 );
-//
-//	if ( consoleField.GetAutoCompleteLength() != 0 ) {
-//		autoCompleteLength = strlen( consoleField.GetBuffer() ) - consoleField.GetAutoCompleteLength();
-//
-//		if ( autoCompleteLength > 0 ) {
-//			renderSystem.SetColor4( .8f, .2f, .2f, .45f );
-//
-//			renderSystem.DrawStretchPic( 2 * SMALLCHAR_WIDTH + consoleField.GetAutoCompleteLength() * SMALLCHAR_WIDTH,
-//							y + 2, autoCompleteLength * SMALLCHAR_WIDTH, SMALLCHAR_HEIGHT - 2, 0, 0, 0, 0, whiteShader );
-//
-//		}
-//	}
-//
-//	renderSystem.SetColor( idStr::ColorForIndex( C_COLOR_CYAN ) );
-//
-//	renderSystem.DrawSmallChar( 1 * SMALLCHAR_WIDTH, y, ']', localConsole.charSetShader );
-//
-//	consoleField.Draw(2 * SMALLCHAR_WIDTH, y, SCREEN_WIDTH - 3 * SMALLCHAR_WIDTH, true, charSetShader );
-//}
-//
-//
+	}
+
+
+/*
+==============================================================================
+
+DRAWING
+
+==============================================================================
+*/
+
+
+/*
+================
+DrawInput
+
+Draw the editline after a ] prompt
+================
+*/
+	DrawInput ( ): void {
+		var /*int */y: number, autoCompleteLength: number;
+
+		y = this.vislines - ( SMALLCHAR_HEIGHT * 2 );
+
+		if ( this.consoleField.GetAutoCompleteLength ( ) != 0 ) {
+			autoCompleteLength = strlen( this.consoleField.GetBuffer ( ) ) - this.consoleField.GetAutoCompleteLength ( );
+
+			if ( autoCompleteLength > 0 ) {
+				renderSystem.SetColor4( .8, .2, .2, .45 );
+
+				renderSystem.DrawStretchPicFloats( 2 * SMALLCHAR_WIDTH + this.consoleField.GetAutoCompleteLength ( ) * SMALLCHAR_WIDTH,
+					y + 2, autoCompleteLength * SMALLCHAR_WIDTH, SMALLCHAR_HEIGHT - 2, 0, 0, 0, 0, this.whiteShader );
+
+			}
+		}
+
+		renderSystem.SetColor( idStr.ColorForIndex( C_COLOR_CYAN.charCodeAt( 0 ) ) );
+
+		renderSystem.DrawSmallChar( 1 * SMALLCHAR_WIDTH, y, ']'.charCodeAt(0), localConsole.charSetShader );
+
+		this.consoleField.Draw( 2 * SMALLCHAR_WIDTH, y, SCREEN_WIDTH - 3 * SMALLCHAR_WIDTH, true, this.charSetShader );
+	}
+
+
 ///*
 //================
 //DrawNotify
@@ -987,11 +988,11 @@ idConsoleLocal::ClearNotifyLines
 //		return;
 //	}
 //
-//	currentColor = idStr::ColorIndex( C_COLOR_WHITE );
-//	renderSystem.SetColor( idStr::ColorForIndex( currentColor ) );
+//	currentColor = idStr.ColorIndex( C_COLOR_WHITE );
+//	renderSystem.SetColor( idStr.ColorForIndex( currentColor ) );
 //
 //	v = 0;
-//	for ( i = current-NUM_CON_TIMES+1; i <= current; i++ ) {
+//	for ( i = this.current-NUM_CON_TIMES+1; i <= this.current; i++ ) {
 //		if ( i < 0 ) {
 //			continue;
 //		}
@@ -1009,9 +1010,9 @@ idConsoleLocal::ClearNotifyLines
 //			if ( ( text_p[x] & 0xff ) == ' ' ) {
 //				continue;
 //			}
-//			if ( idStr::ColorIndex(text_p[x]>>8) != currentColor ) {
-//				currentColor = idStr::ColorIndex(text_p[x]>>8);
-//				renderSystem.SetColor( idStr::ColorForIndex( currentColor ) );
+//			if ( idStr.ColorIndex(text_p[x]>>8) != currentColor ) {
+//				currentColor = idStr.ColorIndex(text_p[x]>>8);
+//				renderSystem.SetColor( idStr.ColorForIndex( currentColor ) );
 //			}
 //			renderSystem.DrawSmallChar( (x+1)*SMALLCHAR_WIDTH, v, text_p[x] & 0xff, localConsole.charSetShader );
 //		}
@@ -1022,168 +1023,174 @@ idConsoleLocal::ClearNotifyLines
 //	renderSystem.SetColor( colorCyan );
 //}
 //
-///*
-//================
-//DrawSolidConsole
-//
-//Draws the console with the solid background
-//================
-//*/
-//void idConsoleLocal::DrawSolidConsole( float frac ) {
-//	int				i, x;
-//	float			y;
-//	int				rows;
-//	short			*text_p;
-//	int				row;
-//	int				lines;
-//	int				currentColor;
-//
-//	lines = idMath::FtoiFast( SCREEN_HEIGHT * frac );
-//	if ( lines <= 0 ) {
-//		return;
-//	}
-//
-//	if ( lines > SCREEN_HEIGHT ) {
-//		lines = SCREEN_HEIGHT;
-//	}
-//
-//	// draw the background
-//	y = frac * SCREEN_HEIGHT - 2;
-//	if ( y < 1.0f ) {
-//		y = 0.0f;
-//	} else {
-//		renderSystem.DrawStretchPic( 0, 0, SCREEN_WIDTH, y, 0, 1.0f - displayFrac, 1, 1, consoleShader );
-//	}
-//
-//	renderSystem.SetColor( colorCyan );
-//	renderSystem.DrawStretchPic( 0, y, SCREEN_WIDTH, 2, 0, 0, 0, 0, whiteShader );
-//	renderSystem.SetColor( colorWhite );
-//
-//	// draw the version number
-//
-//	renderSystem.SetColor( idStr::ColorForIndex( C_COLOR_CYAN ) );
-//
-//	idStr version = va("%s.%i", ENGINE_VERSION, BUILD_NUMBER);
-//	i = version.Length();
-//
-//	for ( x = 0; x < i; x++ ) {
-//		renderSystem.DrawSmallChar( SCREEN_WIDTH - ( i - x ) * SMALLCHAR_WIDTH, 
-//			(lines-(SMALLCHAR_HEIGHT+SMALLCHAR_HEIGHT/2)), version[x], localConsole.charSetShader );
-//
-//	}
-//
-//
-//	// draw the text
-//	vislines = lines;
-//	rows = (lines-SMALLCHAR_WIDTH)/SMALLCHAR_WIDTH;		// rows of text to draw
-//
-//	y = lines - (SMALLCHAR_HEIGHT*3);
-//
-//	// draw from the bottom up
-//	if ( display != current ) {
-//		// draw arrows to show the buffer is backscrolled
-//		renderSystem.SetColor( idStr::ColorForIndex( C_COLOR_CYAN ) );
-//		for ( x = 0; x < LINE_WIDTH; x += 4 ) {
-//			renderSystem.DrawSmallChar( (x+1)*SMALLCHAR_WIDTH, idMath::FtoiFast( y ), '^', localConsole.charSetShader );
-//		}
-//		y -= SMALLCHAR_HEIGHT;
-//		rows--;
-//	}
-//	
-//	row = display;
-//
-//	if ( x == 0 ) {
-//		row--;
-//	}
-//
-//	currentColor = idStr::ColorIndex( C_COLOR_WHITE );
-//	renderSystem.SetColor( idStr::ColorForIndex( currentColor ) );
-//
-//	for ( i = 0; i < rows; i++, y -= SMALLCHAR_HEIGHT, row-- ) {
-//		if ( row < 0 ) {
-//			break;
-//		}
-//		if ( current - row >= TOTAL_LINES ) {
-//			// past scrollback wrap point
-//			continue;	
-//		}
-//
-//		text_p = text + (row % TOTAL_LINES)*LINE_WIDTH;
-//
-//		for ( x = 0; x < LINE_WIDTH; x++ ) {
-//			if ( ( text_p[x] & 0xff ) == ' ' ) {
-//				continue;
-//			}
-//
-//			if ( idStr::ColorIndex(text_p[x]>>8) != currentColor ) {
-//				currentColor = idStr::ColorIndex(text_p[x]>>8);
-//				renderSystem.SetColor( idStr::ColorForIndex( currentColor ) );
-//			}
-//			renderSystem.DrawSmallChar( (x+1)*SMALLCHAR_WIDTH, idMath::FtoiFast( y ), text_p[x] & 0xff, localConsole.charSetShader );
-//		}
-//	}
-//
-//	// draw the input prompt, user text, and cursor if desired
-//	DrawInput();
-//
-//	renderSystem.SetColor( colorCyan );
-//}
-//
-//
-///*
-//==============
-//Draw
-//
-//ForceFullScreen is used by the editor
-//==============
-//*/
-//void	idConsoleLocal::Draw( bool forceFullScreen ) {
-//	float y = 0.0f;
-//
-//	if ( !charSetShader ) {
-//		return;
-//	}
-//
-//	if ( forceFullScreen ) {
-//		// if we are forced full screen because of a disconnect, 
-//		// we want the console closed when we go back to a session state
-//		Close();
-//		// we are however catching keyboard input
-//		keyCatching = true;
-//	}
-//
-//	Scroll();
-//
-//	UpdateDisplayFraction();
-//
-//	if ( forceFullScreen ) {
-//		DrawSolidConsole( 1.0f );
-//	} else if ( displayFrac ) {
-//		DrawSolidConsole( displayFrac );
-//	} else {
-//		// only draw the notify lines if the developer cvar is set,
-//		// or we are a debug build
-//		if ( !con_noPrint.GetBool() ) {
-//			DrawNotify();
-//		}
-//	}
-//
-//	if ( com_showFPS.GetBool() ) {
-//		y = SCR_DrawFPS( 0 );
-//	}
-//
-//	if ( com_showMemoryUsage.GetBool() ) {
-//		y = SCR_DrawMemoryUsage( y );
-//	}
-//
-//	if ( com_showAsyncStats.GetBool() ) {
-//		y = SCR_DrawAsyncStats( y );
-//	}
-//
-//	if ( com_showSoundDecoders.GetBool() ) {
-//		y = SCR_DrawSoundDecoders( y );
-//	}
-//}
+/*
+================
+DrawSolidConsole
+
+Draws the console with the solid background
+================
+*/
+	DrawSolidConsole ( frac: number /*float */ ): void {
+		var i: number, x: number; //int				
+		var y: number; //float			
+		var rows: number; //int
+		var text_p: Uint16Array; //short			
+		var row: number; //int				
+		var lines: number; //int				
+		var currentColor: number; //int				
+
+		lines = idMath.FtoiFast( SCREEN_HEIGHT * frac );
+		if ( lines <= 0 ) {
+			return;
+		}
+
+		if ( lines > SCREEN_HEIGHT ) {
+			lines = SCREEN_HEIGHT;
+		}
+
+		// draw the background
+		y = frac * SCREEN_HEIGHT - 2;
+		if ( y < 1.0 ) {
+			y = 0.0;
+		} else {
+			renderSystem.DrawStretchPicFloats( 0, 0, SCREEN_WIDTH, y, 0, 1.0 - this.displayFrac, 1, 1, this.consoleShader );
+		}
+
+		renderSystem.SetColor( colorCyan );
+		renderSystem.DrawStretchPicFloats( 0, y, SCREEN_WIDTH, 2, 0, 0, 0, 0, this.whiteShader );
+		renderSystem.SetColor( colorWhite );
+
+		// draw the version number
+
+		renderSystem.SetColor( idStr.ColorForIndex( C_COLOR_CYAN.charCodeAt( 0 ) ) );
+
+		var /*idStr */version = new idStr( va( "%s.%i", ENGINE_VERSION, BUILD_NUMBER ) );
+		i = version.Length ( );
+
+		for ( x = 0; x < i; x++ ) {
+			renderSystem.DrawSmallChar( SCREEN_WIDTH - ( i - x ) * SMALLCHAR_WIDTH,
+			( lines - ( SMALLCHAR_HEIGHT + SMALLCHAR_HEIGHT / 2 ) ), version[x], localConsole.charSetShader );
+
+		}
+
+
+		// draw the text
+		this.vislines = lines;
+		rows = int( ( lines - SMALLCHAR_WIDTH ) / SMALLCHAR_WIDTH ); // rows of text to draw
+
+		y = lines - ( SMALLCHAR_HEIGHT * 3 );
+
+		// draw from the bottom up
+		if ( this.display != this.current ) {
+			// draw arrows to show the buffer is backscrolled
+			renderSystem.SetColor( idStr.ColorForIndex( C_COLOR_CYAN.charCodeAt( 0 ) ) );
+			for ( x = 0; x < LINE_WIDTH; x += 4 ) {
+				todoThrow ( );
+				//renderSystem.DrawSmallChar( ( x + 1 ) * SMALLCHAR_WIDTH, idMath.FtoiFast( y ), '^', localConsole.charSetShader );
+			}
+			y -= SMALLCHAR_HEIGHT;
+			rows--;
+		}
+
+		row = this.display;
+
+		if ( x == 0 ) {
+			row--;
+		}
+
+		currentColor = idStr.ColorIndex( C_COLOR_WHITE.charCodeAt( 0 ) );
+		renderSystem.SetColor( idStr.ColorForIndex( currentColor ) );
+
+		for ( i = 0; i < rows; i++, y -= SMALLCHAR_HEIGHT, row-- ) {
+			if ( row < 0 ) {
+				break;
+			}
+			if ( this.current - row >= TOTAL_LINES ) {
+				// past scrollback wrap point
+				continue;
+			}
+
+			text_p = this.text.subarray( ( row % TOTAL_LINES ) * LINE_WIDTH );
+
+			for ( x = 0; x < LINE_WIDTH; x++ ) {
+				if ( ( text_p[x] & 0xff ) == ' '.charCodeAt( 0 ) ) {
+					continue;
+				}
+
+				if ( idStr.ColorIndex( text_p[x] >> 8 ) != currentColor ) {
+					currentColor = idStr.ColorIndex( text_p[x] >> 8 );
+					renderSystem.SetColor( idStr.ColorForIndex( currentColor ) );
+				}
+				renderSystem.DrawSmallChar( ( x + 1 ) * SMALLCHAR_WIDTH, idMath.FtoiFast( y ), text_p[x] & 0xff, localConsole.charSetShader );
+			}
+		}
+
+		// draw the input prompt, user text, and cursor if desired
+		this.DrawInput ( );
+
+		renderSystem.SetColor( colorCyan );
+	}
+
+
+/*
+==============
+Draw
+
+ForceFullScreen is used by the editor
+==============
+*/
+	Draw ( forceFullScreen: boolean ): void {
+		var y = 0.0;
+
+		if ( !this.charSetShader ) {
+			return;
+		}
+
+		if ( forceFullScreen ) {
+			// if we are forced full screen because of a disconnect, 
+			// we want the console closed when we go back to a session state
+			this.Close ( );
+			// we are however catching keyboard input
+			this.keyCatching = true;
+		}
+
+		this.Scroll ( );
+
+		this.UpdateDisplayFraction ( );
+
+		if ( forceFullScreen ) {
+			this.DrawSolidConsole( 1.0 );
+		} else if ( this.displayFrac ) {
+			this.DrawSolidConsole( this.displayFrac );
+		} else {
+			// only draw the notify lines if the developer cvar is set,
+			// or we are a debug build
+			if (!idConsoleLocal.con_noPrint.GetBool()) {
+				todoThrow ( );
+				//DrawNotify ( );
+			}
+		}
+
+		if (com_showFPS.GetBool()) {
+			todoThrow ( );
+			//y = SCR_DrawFPS( 0 );
+		}
+
+		if ( com_showMemoryUsage.GetBool ( ) ) {
+			todoThrow();
+			//y = SCR_DrawMemoryUsage( y );
+		}
+
+		if ( com_showAsyncStats.GetBool ( ) ) {
+			todoThrow();
+			//y = SCR_DrawAsyncStats( y );
+		}
+
+		if ( com_showSoundDecoders.GetBool ( ) ) {
+			todoThrow();
+			//y = SCR_DrawSoundDecoders( y );
+		}
+	}
 
 }
 

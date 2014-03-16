@@ -66,8 +66,15 @@ class idKeyValue {
 
 
 //private:
-	key = new idPoolStr;
-	value = new idPoolStr;
+	key: idPoolStr;
+	value: idPoolStr;
+
+	copy ( dest: idKeyValue = null ): idKeyValue {
+		dest = dest || new idKeyValue;
+		dest.key = this.key;
+		dest.value = this.value;
+		return dest;
+	}
 }
 
 class idDict {
@@ -160,7 +167,7 @@ class idDict {
 ////	static void			ListValues_f( const idCmdArgs &args );
 ////
 ////private:
-	args = new idList<idKeyValue>(idKeyValue, true);
+	args = new idList<idKeyValue>(idKeyValue);
 	argHash = new idHashIndex;
 
 	static globalKeys = new idStrPool;
@@ -329,11 +336,16 @@ idDict::operator=
 		this.argHash = other.argHash;
 
 		for ( i = 0; i < this.args.Num ( ); i++ ) {
-			this.args[i].key.equals( idDict.globalKeys.CopyString( this.args[i].key ) );
-			this.args[i].value.equals( idDict.globalValues.CopyString( this.args[i].value ) );
+			this.args[i].key = idDict.globalKeys.CopyString( this.args[i].key );
+			this.args[i].value = idDict.globalValues.CopyString( this.args[i].value );
 		}
 
 		return this;
+	}
+
+	// for idList::Append
+	copy(dest: idDict = null): idDict {
+		return this.equals( dest );
 	}
 
 /////*
@@ -391,10 +403,10 @@ idDict::TransferKeyValues
 			return;
 		}
 
-		////if ( other.args.Num ( ) && other.args[0].key.GetPool ( ) != idDict.globalKeys ) {
-		////	common.FatalError( "idDict::TransferKeyValues: can't transfer values across a DLL boundary" );
-		////	return;
-		////}
+		if ( other.args.Num ( ) && other.args[0].key.GetPool ( ) != idDict.globalKeys ) {
+			common.FatalError( "idDict::TransferKeyValues: can't transfer values across a DLL boundary" );
+			return;
+		}
 
 		this.Clear ( );
 
@@ -462,8 +474,8 @@ idDict::SetDefaults
 			def = dict.args[i];
 			kv = this.FindKey( def.GetKey ( ).data );
 			if ( !kv ) {
-				newkv.key.equals( idDict.globalKeys.CopyString( def.key ) );
-				newkv.value.equals( idDict.globalValues.CopyString( def.value ) );
+				newkv.key = idDict.globalKeys.CopyString( def.key );
+				newkv.value = idDict.globalValues.CopyString( def.value );
 				this.argHash.Add( this.argHash.GenerateKey( newkv.GetKey ( ), false ), this.args.Append( newkv ) );
 			}
 		}
@@ -563,8 +575,8 @@ Set( key:string, value:string ):void {
 		this.args[i].value = idDict.globalValues.AllocString( value );
 		idDict.globalValues.FreeString( oldValue );
 	} else {
-		kv.key.equals( idDict.globalKeys.AllocString( key ));
-		kv.value.equals( idDict.globalValues.AllocString( value ) );
+		kv.key = idDict.globalKeys.AllocString( key );
+		kv.value = idDict.globalValues.AllocString( value );
 		this.argHash.Add( this.argHash.GenerateKey( kv.GetKey(), false ), this.args.Append( kv ) );
 	}
 }

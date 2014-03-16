@@ -60,13 +60,13 @@
 ////	SCMD_STOP,
 ////	SCMD_FADE
 ////} soundDemoCommand_t;
-////
-////const int SOUND_MAX_CHANNELS		= 8;
-////const int SOUND_DECODER_FREE_DELAY	= 1000 * MIXBUFFER_SAMPLES / USERCMD_MSEC;		// four seconds
-////
-////const int PRIMARYFREQ				= 44100;			// samples per second
-////const float SND_EPSILON				= 1.0f / 32768.0f;	// if volume is below this, it will always multiply to zero
-////
+
+var SOUND_MAX_CHANNELS		= 8;
+var SOUND_DECODER_FREE_DELAY	= 1000 * MIXBUFFER_SAMPLES / USERCMD_MSEC;		// four seconds
+
+var  PRIMARYFREQ				= 44100;			// samples per second
+var  SND_EPSILON				= 1.0 / 32768.0;	// if volume is below this, it will always multiply to zero
+
 ////const int ROOM_SLICES_IN_BUFFER		= 10;
 ////
 ////class idAudioHardware;
@@ -272,22 +272,22 @@ var WAVE_FORMAT_TAG_PCM = 1,
 ////    virtual void	 	SetVolume( float x ) = 0;
 ////};
 ////
-////
-/////*
-////===================================================================================
-////
-////idSoundEmitterLocal
-////
-////===================================================================================
-////*/
-////
-////typedef enum {
-////	REMOVE_STATUS_INVALID				= -1,
-////	REMOVE_STATUS_ALIVE					=  0,
-////	REMOVE_STATUS_WAITSAMPLEFINISHED	=  1,
-////	REMOVE_STATUS_SAMPLEFINISHED		=  2
-////} removeStatus_t;
-////
+
+/*
+===================================================================================
+
+idSoundEmitterLocal
+
+===================================================================================
+*/
+
+enum removeStatus_t{
+	REMOVE_STATUS_INVALID				= -1,
+	REMOVE_STATUS_ALIVE					=  0,
+	REMOVE_STATUS_WAITSAMPLEFINISHED	=  1,
+	REMOVE_STATUS_SAMPLEFINISHED		=  2
+};
+
 class idSoundFade {
 ////public:
 	fadeStart44kHz:number;								  //int					
@@ -398,120 +398,6 @@ class idSoundFade {
 ////	bool					IsActive()				{ return active; };
 ////	FracTime				GetCurrentPosition()	{ return curPosition; };
 ////};
-////
-////class idSoundChannel {
-////public:
-////						idSoundChannel( void );
-////						~idSoundChannel( void );
-////
-////	void				Clear( void );
-////	void				Start( void );
-////	void				Stop( void );
-////	void				GatherChannelSamples( int sampleOffset44k, int sampleCount44k, float *dest ) const;
-////	void				ALStop( void );			// free OpenAL resources if any
-////
-////	bool				triggerState;
-////	int					trigger44kHzTime;		// hardware time sample the channel started
-////	int					triggerGame44kHzTime;	// game time sample time the channel started
-////	soundShaderParms_t	parms;					// combines the shader parms and the per-channel overrides
-////	idSoundSample *		leadinSample;			// if not looped, this is the only sample
-////	s_channelType		triggerChannel;
-////	const idSoundShader *soundShader;
-////	idSampleDecoder *	decoder;
-////	float				diversity;
-////	float				lastVolume;				// last calculated volume based on distance
-////	float				lastV[6];				// last calculated volume for each speaker, so we can smoothly fade
-////	idSoundFade			channelFade;
-////	bool				triggered;
-////	ALuint				openalSource;
-////	ALuint				openalStreamingOffset;
-////	ALuint				openalStreamingBuffer[3];
-////	ALuint				lastopenalStreamingBuffer[3];
-////
-////	bool				disallowSlow;
-////
-////};
-////
-class idSoundEmitterLocal extends idSoundEmitter {
-////public:
-////
-////						idSoundEmitterLocal( void );
-////	virtual				~idSoundEmitterLocal( void );
-////
-////	//----------------------------------------------
-////
-////	// the "time" parameters should be game time in msec, which is used to make queries
-////	// return deterministic values regardless of async buffer scheduling
-////
-////	// a non-immediate free will let all currently playing sounds complete
-////	virtual void		Free( bool immediate );
-////
-////	// the parms specified will be the default overrides for all sounds started on this emitter.
-////	// NULL is acceptable for parms
-////	virtual void		UpdateEmitter( const idVec3 &origin, int listenerId, const soundShaderParms_t *parms );
-////
-////	// returns the length of the started sound in msec
-////	virtual int			StartSound( const idSoundShader *shader, const s_channelType channel, float diversity = 0, int shaderFlags = 0, bool allowSlow = true /* D3XP */ );
-////
-////	// can pass SCHANNEL_ANY
-////	virtual void		ModifySound( const s_channelType channel, const soundShaderParms_t *parms );
-////	virtual void		StopSound( const s_channelType channel );
-////	virtual void		FadeSound( const s_channelType channel, float to, float over );
-////
-////	virtual bool		CurrentlyPlaying( void ) const;
-////
-////	// can pass SCHANNEL_ANY
-////	virtual	float		CurrentAmplitude( void );
-////
-////	// used for save games
-////	virtual	int			Index( void ) const;
-////
-////	//----------------------------------------------
-////
-////	void				Clear( void );
-////
-////	void				OverrideParms( const soundShaderParms_t *base, const soundShaderParms_t *over, soundShaderParms_t *out );
-////	void				CheckForCompletion( int current44kHzTime );
-////	void				Spatialize( idVec3 listenerPos, int listenerArea, idRenderWorld *rw );
-////
-////	idSoundWorldLocal *	soundWorld;				// the world that holds this emitter
-////
-////	int					index;						// in world emitter list
-////	removeStatus_t		removeStatus;
-////
-////	idVec3				origin;
-////	int					listenerId;		
-////	soundShaderParms_t	parms;						// default overrides for all channels
-////
-////
-////	// the following are calculated in UpdateEmitter, and don't need to be archived
-////	float				maxDistance;				// greatest of all playing channel distances
-////	int					lastValidPortalArea;		// so an emitter that slides out of the world continues playing
-////	bool				playing;					// if false, no channel is active
-////	bool				hasShakes;
-////	idVec3				spatializedOrigin;			// the virtual sound origin, either the real sound origin,
-////													// or a point through a portal chain
-////	float				realDistance;				// in meters
-////	float				distance;					// in meters, this may be the straight-line distance, or
-////													// it may go through a chain of portals.  If there
-////													// is not an open-portal path, distance will be > maxDistance
-////
-////	// a single soundEmitter can have many channels playing from the same point
-////	idSoundChannel		channels[SOUND_MAX_CHANNELS];
-////
-////	idSlowChannel		slowChannels[SOUND_MAX_CHANNELS];
-////
-////	idSlowChannel		GetSlowChannel( const idSoundChannel *chan );
-////	void				SetSlowChannel( const idSoundChannel *chan, idSlowChannel slow );
-////	void				ResetSlowChannel( const idSoundChannel *chan );
-////
-////	// this is just used for feedback to the game or rendering system:
-////	// flashing lights and screen shakes.  Because the material expression
-////	// evaluation doesn't do common subexpression removal, we cache the
-////	// last generated value
-////	int					ampTime;
-////	float				amplitude;
-};
 
 
 /////*
@@ -549,9 +435,9 @@ class idSoundWorldLocal extends idSoundWorld {
 ////public:
 ////	virtual					~idSoundWorldLocal( void );
 ////
-////	// call at each map start
-////	virtual void			ClearAllSoundEmitters( void );
-////	virtual void			StopAllSounds( void );
+	// call at each map start
+	ClearAllSoundEmitters(  ):void { throw "placeholder"; }
+	StopAllSounds(  ):void { throw "placeholder"; }
 ////
 ////	// get a new emitter that can play sounds in this world
 ////	virtual idSoundEmitter *AllocSoundEmitter( void );
@@ -583,11 +469,11 @@ class idSoundWorldLocal extends idSoundWorld {
 ////	// pause and unpause the sound world
 ////	virtual void			Pause( void );
 ////	virtual void			UnPause( void );
-////	virtual bool			IsPaused( void );
+	IsPaused ( ): boolean { throw "placeholder"; }
 ////
 ////	// avidump
 ////	virtual void			AVIOpen( const char *path, const char *name );
-////	virtual void			AVIClose( void );
+	AVIClose ( ): void { throw "placeholder"; }
 ////
 ////	// SaveGame Support
 ////	virtual void			WriteToSaveGame( idFile *savefile );
@@ -699,7 +585,7 @@ class idSoundSystemLocal extends idSoundSystem {
 ////	// direct mixing called from the sound driver thread for OSes that support it
 ////	virtual int				AsyncMix( int soundTime, float *mixBuffer );
 ////
-////	virtual void			SetMute( bool mute );
+	SetMute ( mute: boolean ): void { throw "placeholder"; }
 ////
 ////	virtual cinData_t		ImageForTime( const int milliseconds, const bool waveform );
 ////
@@ -774,8 +660,8 @@ class idSoundSystemLocal extends idSoundSystem {
 ////	idEFXFile				EFXDatabase;
 ////	bool					efxloaded;
 ////							// latches
-////	static bool				useOpenAL;
-////	static bool				useEAXReverb;
+	static useOpenAL: boolean;
+	static useEAXReverb: boolean;
 ////							// mark available during initialization, or through an explicit test
 ////	static int				EAXAvailable;
 ////
@@ -866,17 +752,17 @@ class idSoundSample {
 ////	void					CheckForDownSample();		// down sample if required
 ////	bool					FetchFromCache( int offset, const byte **output, int *position, int *size, const bool allowIO );
 };
-////
-////
-/////*
-////===================================================================================
-////
-////  Sound sample decoder.
-////
-////===================================================================================
-////*/
-////
-////class idSampleDecoder {
+
+
+/*
+===================================================================================
+
+  Sound sample decoder.
+
+===================================================================================
+*/
+
+class idSampleDecoder {
 ////public:
 ////	static void				Init( void );
 ////	static void				Shutdown( void );
@@ -890,8 +776,8 @@ class idSoundSample {
 ////	virtual void			ClearDecoder( void ) = 0;
 ////	virtual idSoundSample *	GetSample( void ) const = 0;
 ////	virtual int				GetLastDecodeTime( void ) const = 0;
-////};
-////
+};
+
 
 ////
 ////#endif /* !__SND_LOCAL_H__ */

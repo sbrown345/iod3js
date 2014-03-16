@@ -1057,15 +1057,15 @@ idSoundSystemLocal.prototype.AllocSoundWorld = function ( rw: idRenderWorld ): i
 	return local;
 };
 
-/////*
-////===================
-////idSoundSystemLocal::SetMute
-////===================
-////*/
-////void idSoundSystemLocal::SetMute( bool muteOn ) {
-////	muted = muteOn;
-////}
-////
+/*
+===================
+idSoundSystemLocal::SetMute
+===================
+*/
+idSoundSystemLocal.prototype.SetMute = function ( muteOn: boolean ): void {
+	this.muted = muteOn;
+};
+
 /////*
 ////===================
 ////idSoundSystemLocal::SamplesToMilliseconds

@@ -192,31 +192,31 @@ idScreenRect::Equals
 ////idScreenRect R_ScreenRectFromViewFrustumBounds( const idBounds &bounds );
 ////void R_ShowColoredScreenRect( const idScreenRect &rect, int colorIndex );
 
-////typedef enum {
-////	DC_BAD,
-////	DC_RENDERVIEW,
-////	DC_UPDATE_ENTITYDEF,
-////	DC_DELETE_ENTITYDEF,
-////	DC_UPDATE_LIGHTDEF,
-////	DC_DELETE_LIGHTDEF,
-////	DC_LOADMAP,
-////	DC_CROP_RENDER,
-////	DC_UNCROP_RENDER,
-////	DC_CAPTURE_RENDER,
-////	DC_END_FRAME,
-////	DC_DEFINE_MODEL,
-////	DC_SET_PORTAL_STATE,
-////	DC_UPDATE_SOUNDOCCLUSION,
-////	DC_GUI_MODEL
-////} demoCommand_t;
+enum demoCommand_t{
+	DC_BAD,
+	DC_RENDERVIEW,
+	DC_UPDATE_ENTITYDEF,
+	DC_DELETE_ENTITYDEF,
+	DC_UPDATE_LIGHTDEF,
+	DC_DELETE_LIGHTDEF,
+	DC_LOADMAP,
+	DC_CROP_RENDER,
+	DC_UNCROP_RENDER,
+	DC_CAPTURE_RENDER,
+	DC_END_FRAME,
+	DC_DEFINE_MODEL,
+	DC_SET_PORTAL_STATE,
+	DC_UPDATE_SOUNDOCCLUSION,
+	DC_GUI_MODEL
+};
 
-/////*
-////==============================================================================
+/*
+==============================================================================
 
-////SURFACES
+SURFACES
 
-////==============================================================================
-////*/
+==============================================================================
+*/
 
 ////#include "ModelDecal.h"
 ////#include "ModelOverlay.h"
@@ -690,12 +690,12 @@ class drawSurfsCommand_t {
 	}
 };
 
-////typedef struct {
-////	renderCommand_t		commandId, *next;
-////	int		x, y, imageWidth, imageHeight;
-////	idImage	*image;
-////	int		cubeFace;					// when copying to a cubeMap
-////} copyRenderCommand_t;
+class copyRenderCommand_t {
+	commandId: renderCommand_t = renderCommand_t.RC_NOP; next:any;
+	x: number; y: number; imageWidth: number; imageHeight: number; //int
+	image: idImage	;
+	cubeFace: number/*int*/;					// when copying to a cubeMap
+}
 
 
 //=======================================================================

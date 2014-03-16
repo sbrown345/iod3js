@@ -160,28 +160,30 @@ function Sys_CreateThread($function: /*xthread_t*/(/*void *parm*/) => number, pa
 ////}
 
 
-/////*
-////==================
-////Sys_EnterCriticalSection
-////==================
-////*/
-////void Sys_EnterCriticalSection( int index ) {
-////	assert( index >= 0 && index < MAX_CRITICAL_SECTIONS );
-////	if ( TryEnterCriticalSection( &win32.criticalSections[index] ) == 0 ) {
-////		EnterCriticalSection( &win32.criticalSections[index] );
-//////		Sys_DebugPrintf( "busy lock '%s' in thread '%s'\n", lock.name, Sys_GetThreadName() );
-////	}
-////}
+/*
+==================
+Sys_EnterCriticalSection
+==================
+*/
+function Sys_EnterCriticalSection ( /*int */index: number = CRITICAL_SECTION_ZERO ): void {
+	assert( index >= 0 && index < MAX_CRITICAL_SECTIONS );
+	todo( "Sys_EnterCriticalSection?" );
+//	if (TryEnterCriticalSection(win32.criticalSections[index]) == 0) {
+//		EnterCriticalSection( win32.criticalSections[index] );
+////		Sys_DebugPrintf( "busy lock '%s' in thread '%s'\n", lock.name, Sys_GetThreadName() );
+//	}
+}
 
-/////*
-////==================
-////Sys_LeaveCriticalSection
-////==================
-////*/
-////void Sys_LeaveCriticalSection( int index ) {
-////	assert( index >= 0 && index < MAX_CRITICAL_SECTIONS );
-////	LeaveCriticalSection( &win32.criticalSections[index] );
-////}
+/*
+==================
+Sys_LeaveCriticalSection
+==================
+*/
+function Sys_LeaveCriticalSection ( /*int*/ index: number = CRITICAL_SECTION_ZERO ) {
+	todo( "Sys_LeaveCriticalSection?" );
+	//assert( index >= 0 && index < MAX_CRITICAL_SECTIONS );
+	//LeaveCriticalSection( &win32.criticalSections[index] );
+}
 
 /////*
 ////==================

@@ -144,12 +144,14 @@ ID_INLINE void idStrPool::FreeString( const idPoolStr *poolStr ) {
 		if ( caseSensitive ) { 
 			for ( i = poolHash.First( hash ); i != -1; i = poolHash.Next( i ) ) {
 				if ( pool[i]->Cmp( poolStr->c_str() ) == 0 ) {
+					dlog(DEBUG_STRPOOL, "idStrPool::AllocString caseSensitive this.pool[i] '%s' numUsers: %i\n", pool[i]->c_str(), pool[i]->numUsers);
 					break;
 				}
 			}
 		} else {
 			for ( i = poolHash.First( hash ); i != -1; i = poolHash.Next( i ) ) {
 				if ( pool[i]->Icmp( poolStr->c_str() ) == 0 ) {
+					dlog(DEBUG_STRPOOL, "idStrPool::AllocString !caseSensitive this.pool[i] '%s' numUsers: %i\n", pool[i]->c_str(), pool[i]->numUsers);
 					break;
 				}
 			}

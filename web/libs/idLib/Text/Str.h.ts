@@ -1086,9 +1086,9 @@ class idStr implements ITrackedObject {
 ////	return ( c == '\t' );
 ////}
 
-////ID_INLINE int idStr::ColorIndex( int c ) {
-////	return ( c & 15 );
-////}
+	static ColorIndex ( /*int*/ c: number ): number {
+		return ( c & 15 );
+	}
 
 ////ID_INLINE int idStr::DynamicMemoryUsed() const {
 ////	return ( this.data == baseBuffer ) ? 0 : alloced;

@@ -63,7 +63,16 @@ class soundShaderParms_t {
 	volume:number/*float*/;					// in dB, unfortunately.  Negative values get quieter
 	shakes:number/*float*/;
 	soundShaderFlags:number/*int*/;		// SSF_* bit flags
-	soundClass:number/*int*/;				// for global fading of sounds
+	soundClass: number/*int*/;				// for global fading of sounds
+
+	init ( ): void {
+		this.minDistance = 0;
+		this.maxDistance = 0;
+		this.volume = 0;
+		this.shakes = 0;
+		this.soundShaderFlags = 0;
+		this.soundClass = 0;
+	}
 };
 
 
@@ -73,18 +82,18 @@ var SOUND_MAX_LIST_WAVS		= 32;
 // flagged with a non-zero class full volume
 var SOUND_MAX_CLASSES		= 4;
 
-////
-/////*
-////===============================================================================
-////
-////	SOUND EMITTER
-////
-////===============================================================================
-////*/
-////
-////// sound channels
-////static const int SCHANNEL_ANY = 0;	// used in queries and commands to effect every channel at once, in
-////									// startSound to have it not override any other channel
+
+/*
+===============================================================================
+
+	SOUND EMITTER
+
+===============================================================================
+*/
+
+// sound channels
+var SCHANNEL_ANY = 0;	// used in queries and commands to effect every channel at once, in
+									// startSound to have it not override any other channel
 ////static const int SCHANNEL_ONE = 1;	// any following integer can be used as a channel number
 ////typedef int s_channelType;	// the game uses its own series of enums, and we don't want to require casts
 ////

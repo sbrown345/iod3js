@@ -485,38 +485,38 @@ idKeyInput::ArgCompletion_KeyName
 			//}
 		};
 	}
-////
-/////*
-////===================
-////idKeyInput::GetOverstrikeMode
-////===================
-////*/
-////static GetOverstrikeMode( void ):boolean {
-////	return key_overstrikeMode;
-////}
-////
-/////*
-////===================
-////idKeyInput::SetOverstrikeMode
-////===================
-////*/
-////static SetOverstrikeMode( bool state ):void {
-////	key_overstrikeMode = state;
-////}
-////
-/////*
-////===================
-////idKeyInput::IsDown
-////===================
-////*/
-////static IsDown( int keynum ):boolean {
-////	if ( keynum == -1 ) {
-////		return false;
-////	}
-////
-////	return keys[keynum].down;
-////}
-////
+
+/*
+===================
+idKeyInput::GetOverstrikeMode
+===================
+*/
+	static GetOverstrikeMode ( ): boolean {
+		return key_overstrikeMode;
+	}
+
+/*
+===================
+idKeyInput::SetOverstrikeMode
+===================
+*/
+	static SetOverstrikeMode ( state: boolean ): void {
+		key_overstrikeMode = state;
+	}
+
+/*
+===================
+idKeyInput::IsDown
+===================
+*/
+	static IsDown ( /*int*/ keynum: number ): boolean {
+		if ( keynum == -1 ) {
+			return false;
+		}
+
+		return keys[keynum].down;
+	}
+
 /*
 ===================
 idKeyInput::StringToKeyNum
@@ -1019,7 +1019,7 @@ idKeyInput::Init
 ////idKeyInput::Shutdown
 ////===================
 ////*/
-////static Shutdown( void ):void {
+////static Shutdown( ):void {
 ////	delete [] keys;
 ////	keys = NULL;
 ////}
