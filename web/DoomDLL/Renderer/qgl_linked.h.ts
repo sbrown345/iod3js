@@ -80,7 +80,7 @@ var glColorMaterial = ( ...args: any[]) => { todoThrow ( ); };
 var glColorPointer = ( ...args: any[]) => { todoThrow ( ); };
 var glCopyPixels = ( ...args: any[]) => { todoThrow ( ); };
 var glCopyTexImage1D = ( ...args: any[]) => { todoThrow ( ); };
-var glCopyTexImage2D = ( ...args: any[]) => { todoThrow ( ); };
+var glCopyTexImage2D = < ( target: number, level: number, internalformat: number, x: number, y: number, width: number, height: number, border: number ) => void > gl.copyTexImage2D.bind( gl );
 var glCopyTexSubImage1D = ( ...args: any[]) => { todoThrow ( ); };
 var glCopyTexSubImage2D = ( ...args: any[]) => { todoThrow ( ); };
 var glCullFace = <( mode: number ) => void > gl.cullFace.bind( gl );

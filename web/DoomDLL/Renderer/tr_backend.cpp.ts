@@ -707,29 +707,28 @@ function RB_SwapBuffers ( /*const void **/data: any ): void {
 	}
 }
 
-/////*
-////=============
-////RB_CopyRender
+/*
+=============
+RB_CopyRender
 
-////Copy part of the current framebuffer to an image
-////=============
-////*/
-////const void	RB_CopyRender(const void *data)
-////{
-////	const copyRenderCommand_t	*cmd;
+Copy part of the current framebuffer to an image
+=============
+*/
+function RB_CopyRender ( data: any ): void {
+	var cmd: copyRenderCommand_t;
 
-////	cmd = (const copyRenderCommand_t *)data;
+	cmd = < copyRenderCommand_t >data;
 
-////	if (r_skipCopyTexture.GetBool()) {
-////		return;
-////	}
+	if ( r_skipCopyTexture.GetBool ( ) ) {
+		return;
+	}
 
-////	RB_LogComment("***************** RB_CopyRender *****************\n");
+	RB_LogComment( "***************** RB_CopyRender *****************\n" );
 
-////	if (cmd.image) {
-////		cmd.image.CopyFramebuffer(cmd.x, cmd.y, cmd.imageWidth, cmd.imageHeight, false);
-////	}
-////}
+	if ( cmd.image ) {
+		cmd.image.CopyFramebuffer( cmd.x, cmd.y, cmd.imageWidth, cmd.imageHeight, false );
+	}
+}
 
 /*
 ====================
@@ -781,9 +780,8 @@ function RB_ExecuteBackEndCommands(cmds:emptyCommand_t):void
 				c_swapBuffers++;
 				break;
 			case renderCommand_t.RC_COPY_RENDER:
-				todoThrow();
-				//RB_CopyRender(cmds);
-				//c_copyRenders++;
+				RB_CopyRender(cmds);
+				c_copyRenders++;
 				break;
 			default:
 				common.Error("RB_ExecuteBackEndCommands: bad commandId");

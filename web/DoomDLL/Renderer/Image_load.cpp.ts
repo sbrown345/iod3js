@@ -776,7 +776,7 @@ idImage.prototype.GenerateImage = function ( pic: Uint8Array, /*int */width: num
 ////	internalFormat = SelectInternalFormat( &pic, 1, width, height * picDepth, minDepthParm );
 
 ////	uploadHeight = scaled_height;
-////	uploadWidth = scaled_width;
+////	this.uploadWidth = scaled_width;
 ////	uploadDepth = scaled_depth;
 
 
@@ -1066,7 +1066,7 @@ idImage.prototype.ImageProgramStringToCompressedFileName = function ( imageProg:
 
 
 
-////	int numLevels = NumLevelsForImageSize( uploadWidth, uploadHeight );
+////	int numLevels = NumLevelsForImageSize( this.uploadWidth, this.uploadHeight );
 ////	if ( numLevels > MAX_TEXTURE_LEVELS ) {
 ////		common.Warning( "R_WritePrecompressedImage: level > MAX_TEXTURE_LEVELS for image %s", filename );
 ////		return;
@@ -1144,19 +1144,19 @@ idImage.prototype.ImageProgramStringToCompressedFileName = function ( imageProg:
 ////	memset( &header, 0, sizeof(header) );
 ////	header.dwSize = sizeof(header);
 ////	header.dwFlags = DDSF_CAPS | DDSF_PIXELFORMAT | DDSF_WIDTH | DDSF_HEIGHT;
-////	header.dwHeight = uploadHeight;
-////	header.dwWidth = uploadWidth;
+////	header.dwHeight = this.uploadHeight;
+////	header.dwWidth = this.uploadWidth;
 
 ////	if ( FormatIsDXT( altInternalFormat ) ) {
 ////		// size (in bytes) of the compressed base image
 ////		header.dwFlags |= DDSF_LINEARSIZE;
-////		header.dwPitchOrLinearSize = ( ( uploadWidth + 3 ) / 4 ) * ( ( uploadHeight + 3 ) / 4 )*
+////		header.dwPitchOrLinearSize = ( ( this.uploadWidth + 3 ) / 4 ) * ( ( this.uploadHeight + 3 ) / 4 )*
 ////			(altInternalFormat <= GL_COMPRESSED_RGBA_S3TC_DXT1_EXT ? 8 : 16);
 ////	}
 ////	else {
 ////		// 4 Byte aligned line width (from nv_dds)
 ////		header.dwFlags |= DDSF_PITCH;
-////		header.dwPitchOrLinearSize = ( ( uploadWidth * bitSize + 31 ) & -32 ) >> 3;
+////		header.dwPitchOrLinearSize = ( ( this.uploadWidth * bitSize + 31 ) & -32 ) >> 3;
 ////	}
 
 ////	header.dwCaps1 = DDSF_TEXTURE;
@@ -1226,8 +1226,8 @@ idImage.prototype.ImageProgramStringToCompressedFileName = function ( imageProg:
 
 ////	glPixelStorei( GL_PACK_ALIGNMENT, 1 );	// otherwise small rows get padded to 32 bits
 
-////	int uw = uploadWidth;
-////	int uh = uploadHeight;
+////	int uw = this.uploadWidth;
+////	int uh = this.uploadHeight;
 
 ////	// Will be allocated first time through the loop
 ////	byte *data = NULL;
@@ -1474,8 +1474,8 @@ idImage.prototype.CheckPrecompressedImage = function( fullLoad:boolean ):boolean
 
 ////	precompressedFile = true;
 
-////	uploadWidth = header.dwWidth;
-////	uploadHeight = header.dwHeight;
+////	this.uploadWidth = header.dwWidth;
+////	this.uploadHeight = header.dwHeight;
 ////    if ( header.ddspf.dwFlags & DDSF_FOURCC ) {
 ////        switch ( header.ddspf.dwFourCC ) {
 ////        case DDS_MAKEFOURCC( 'D', 'X', 'T', '1' ):
@@ -1529,12 +1529,12 @@ idImage.prototype.CheckPrecompressedImage = function( fullLoad:boolean ):boolean
 ////		numMipmaps = header.dwMipMapCount;
 ////	}
 
-////	int uw = uploadWidth;
-////	int uh = uploadHeight;
+////	int uw = this.uploadWidth;
+////	int uh = this.uploadHeight;
 
 ////	// We may skip some mip maps if we are downsizing
 ////	int skipMip = 0;
-////	GetDownsize( uploadWidth, uploadHeight );
+////	this.GetDownsize( this.uploadWidth, this.uploadHeight );
 
 ////	byte *imagedata = data + sizeof(ddsFileHeader_t) + 4;
 
@@ -1547,7 +1547,7 @@ idImage.prototype.CheckPrecompressedImage = function( fullLoad:boolean ):boolean
 ////			size = uw * uh * (header.ddspf.dwRGBBitCount / 8);
 ////		}
 
-////		if ( uw > uploadWidth || uh > uploadHeight ) {
+////		if ( uw > this.uploadWidth || uh > this.uploadHeight ) {
 ////			skipMip++;
 ////		} else {
 ////			if ( FormatIsDXT( internalFormat ) ) {
@@ -1857,79 +1857,79 @@ idImage.prototype.Bind = function ( ): void {
 ////}
 
 
-/////*
-////====================
-////CopyFramebuffer
-////====================
-////*/
-////void idImage::CopyFramebuffer( int x, int y, int imageWidth, int imageHeight, bool useOversizedBuffer ) {
-////	Bind();
+/*
+====================
+CopyFramebuffer
+====================
+*/
+idImage.prototype.CopyFramebuffer = function ( /*int*/ x: number, /*int */y: number, /*int */imageWidth: number, /*int */imageHeight: number, useOversizedBuffer: boolean ): void {
+	this.Bind ( );
 
-////	if ( cvarSystem.GetCVarBool( "g_lowresFullscreenFX" ) ) {
-////		imageWidth = 512;
-////		imageHeight = 512;
-////	}
+	if ( cvarSystem.GetCVarBool( "g_lowresFullscreenFX" ) ) {
+		imageWidth = 512;
+		imageHeight = 512;
+	}
 
-////	// if the size isn't a power of 2, the image must be increased in size
-////	int	potWidth, potHeight;
+	// if the size isn't a power of 2, the image must be increased in size
+	var /*int	*/potWidth: number, potHeight: number;
 
-////	potWidth = MakePowerOfTwo( imageWidth );
-////	potHeight = MakePowerOfTwo( imageHeight );
+	potWidth = MakePowerOfTwo( imageWidth );
+	potHeight = MakePowerOfTwo( imageHeight );
 
-////	GetDownsize( imageWidth, imageHeight );
-////	GetDownsize( potWidth, potHeight );
+	this.GetDownsize( imageWidth, imageHeight );
+	this.GetDownsize( potWidth, potHeight );
 
-////#if !defined(GL_ES_VERSION_2_0)
-////	glReadBuffer( GL_BACK );
-////#endif
+//#if !defined(GL_ES_VERSION_2_0)
+//	glReadBuffer( GL_BACK );
+//#endif
 
-////	// only resize if the current dimensions can't hold it at all,
-////	// otherwise subview renderings could thrash this
-////	if ( ( useOversizedBuffer && ( uploadWidth < potWidth || uploadHeight < potHeight ) )
-////		|| ( !useOversizedBuffer && ( uploadWidth != potWidth || uploadHeight != potHeight ) ) ) {
-////		uploadWidth = potWidth;
-////		uploadHeight = potHeight;
-////		if ( potWidth == imageWidth && potHeight == imageHeight ) {
-////			glCopyTexImage2D( GL_TEXTURE_2D, 0, GL_RGB8, x, y, imageWidth, imageHeight, 0 );
-////		} else {
-////			byte	*junk;
-////			// we need to create a dummy image with power of two dimensions,
-////			// then do a glCopyTexSubImage2D of the data we want
-////			// this might be a 16+ meg allocation, which could fail on _alloca
-////			junk = (byte *)Mem_Alloc( potWidth * potHeight * 4 );
-////			memset( junk, 0, potWidth * potHeight * 4 );		//!@#
-////#if 0 // Disabling because it's unnecessary and introduces a green strip on edge of _currentRender
-////			for ( int i = 0 ; i < potWidth * potHeight * 4 ; i+=4 ) {
-////				junk[i+1] = 255;
-////			}
-////#endif
-////			glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, potWidth, potHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, junk );
-////			Mem_Free( junk );
+	// only resize if the current dimensions can't hold it at all,
+	// otherwise subview renderings could thrash this
+	if ( ( useOversizedBuffer && ( this.uploadWidth < potWidth || this.uploadHeight < potHeight ) )
+		|| ( !useOversizedBuffer && ( this.uploadWidth != potWidth || this.uploadHeight != potHeight ) ) ) {
+		this.uploadWidth = potWidth;
+		this.uploadHeight = potHeight;
+		if ( potWidth == imageWidth && potHeight == imageHeight ) {
+			glCopyTexImage2D( GL_TEXTURE_2D, 0, GL_RGB8, x, y, imageWidth, imageHeight, 0 );
+		} else {
+			var junk: Uint8Array;
+			// we need to create a dummy image with power of two dimensions,
+			// then do a glCopyTexSubImage2D of the data we want
+			// this might be a 16+ meg allocation, which could fail on _alloca
+			junk = /*(byte *)*/new Uint8Array( Mem_Alloc( potWidth * potHeight * 4 ) );
+			memset( junk, 0, potWidth * potHeight * 4 ); //!@#
+//#if 0 // Disabling because it's unnecessary and introduces a green strip on edge of _currentRender
+//			for ( int i = 0 ; i < potWidth * potHeight * 4 ; i+=4 ) {
+//				junk[i+1] = 255;
+//			}
+//#endif
+			glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, potWidth, potHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, junk );
+			Mem_Free( junk );
 
-////			glCopyTexSubImage2D( GL_TEXTURE_2D, 0, 0, 0, x, y, imageWidth, imageHeight );
-////		}
-////	} else {
-////		// otherwise, just subimage upload it so that drivers can tell we are going to be changing
-////		// it and don't try and do a texture compression or some other silliness
-////		glCopyTexSubImage2D( GL_TEXTURE_2D, 0, 0, 0, x, y, imageWidth, imageHeight );
-////	}
+			glCopyTexSubImage2D( GL_TEXTURE_2D, 0, 0, 0, x, y, imageWidth, imageHeight );
+		}
+	} else {
+		// otherwise, just subimage upload it so that drivers can tell we are going to be changing
+		// it and don't try and do a texture compression or some other silliness
+		glCopyTexSubImage2D( GL_TEXTURE_2D, 0, 0, 0, x, y, imageWidth, imageHeight );
+	}
 
-////	// if the image isn't a full power of two, duplicate an extra row and/or column to fix bilerps
-////	if ( imageWidth != potWidth ) {
-////		glCopyTexSubImage2D( GL_TEXTURE_2D, 0, imageWidth, 0, x+imageWidth-1, y, 1, imageHeight );
-////	}
-////	if ( imageHeight != potHeight ) {
-////		glCopyTexSubImage2D( GL_TEXTURE_2D, 0, 0, imageHeight, x, y+imageHeight-1, imageWidth, 1 );
-////	}
+	// if the image isn't a full power of two, duplicate an extra row and/or column to fix bilerps
+	if ( imageWidth != potWidth ) {
+		glCopyTexSubImage2D( GL_TEXTURE_2D, 0, imageWidth, 0, x + imageWidth - 1, y, 1, imageHeight );
+	}
+	if ( imageHeight != potHeight ) {
+		glCopyTexSubImage2D( GL_TEXTURE_2D, 0, 0, imageHeight, x, y + imageHeight - 1, imageWidth, 1 );
+	}
 
-////	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-////	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
-////	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-////	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 
-////	backEnd.c_copyFrameBuffer++;
-////}
+	backEnd.c_copyFrameBuffer++;
+};
 
 /////*
 ////====================
@@ -1947,9 +1947,9 @@ idImage.prototype.Bind = function ( ): void {
 ////	potWidth = MakePowerOfTwo( imageWidth );
 ////	potHeight = MakePowerOfTwo( imageHeight );
 
-////	if ( uploadWidth != potWidth || uploadHeight != potHeight ) {
-////		uploadWidth = potWidth;
-////		uploadHeight = potHeight;
+////	if ( this.uploadWidth != potWidth || this.uploadHeight != potHeight ) {
+////		this.uploadWidth = potWidth;
+////		this.uploadHeight = potHeight;
 ////		if ( potWidth == imageWidth && potHeight == imageHeight ) {
 ////			glCopyTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24_OES, x, y, imageWidth, imageHeight, 0 );
 ////		} else {
@@ -1985,16 +1985,16 @@ idImage.prototype.Bind = function ( ): void {
 ////	if ( rows == cols * 6 ) {
 ////		if ( type != textureType_t.TT_CUBIC ) {
 ////			type = textureType_t.TT_CUBIC;
-////			uploadWidth = -1;	// for a non-sub upload
+////			this.uploadWidth = -1;	// for a non-sub upload
 ////		}
 
 ////		Bind();
 
 ////		rows /= 6;
 ////		// if the scratchImage isn't in the format we want, specify it as a new texture
-////		if ( cols != uploadWidth || rows != uploadHeight ) {
-////			uploadWidth = cols;
-////			uploadHeight = rows;
+////		if ( cols != this.uploadWidth || rows != this.uploadHeight ) {
+////			this.uploadWidth = cols;
+////			this.uploadHeight = rows;
 
 ////			// upload the base level
 ////			for ( i = 0 ; i < 6 ; i++ ) {
@@ -2018,15 +2018,15 @@ idImage.prototype.Bind = function ( ): void {
 ////		// otherwise, it is a 2D image
 ////		if ( type != TT_2D ) {
 ////			type = TT_2D;
-////			uploadWidth = -1;	// for a non-sub upload
+////			this.uploadWidth = -1;	// for a non-sub upload
 ////		}
 
 ////		Bind();
 
 ////		// if the scratchImage isn't in the format we want, specify it as a new texture
-////		if ( cols != uploadWidth || rows != uploadHeight ) {
-////			uploadWidth = cols;
-////			uploadHeight = rows;
+////		if ( cols != this.uploadWidth || rows != this.uploadHeight ) {
+////			this.uploadWidth = cols;
+////			this.uploadHeight = rows;
 ////			glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB8, cols, rows, 0, GL_RGBA, GL_UNSIGNED_BYTE, data );
 ////		} else {
 ////			// otherwise, just subimage upload it so that drivers can tell we are going to be changing
@@ -2068,13 +2068,13 @@ idImage.prototype.SetClassification = function ( /*int */tag: number ): void {
 ////	switch ( type ) {
 ////	default:
 ////	case TT_2D:
-////		baseSize = uploadWidth*uploadHeight;
+////		baseSize = this.uploadWidth*this.uploadHeight;
 ////		break;
 ////	case TT_3D:
-////		baseSize = uploadWidth*uploadHeight*uploadDepth;
+////		baseSize = this.uploadWidth*this.uploadHeight*uploadDepth;
 ////		break;
 ////	case textureType_t.TT_CUBIC:
-////		baseSize = 6 * uploadWidth*uploadHeight;
+////		baseSize = 6 * this.uploadWidth*this.uploadHeight;
 ////		break;
 ////	}
 
@@ -2120,7 +2120,7 @@ idImage.prototype.SetClassification = function ( /*int */tag: number ): void {
 ////		break;
 ////	}
 
-////	common.Printf( "%4i %4i ",	uploadWidth, uploadHeight );
+////	common.Printf( "%4i %4i ",	this.uploadWidth, this.uploadHeight );
 
 ////	switch( filter ) {
 ////	case textureFilter_t.TF_DEFAULT:
