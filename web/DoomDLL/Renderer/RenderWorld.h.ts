@@ -340,7 +340,7 @@ class idRenderWorld {
 //	// until it is determined that it is actually needed for a given view.
 //	virtual	qhandle_t		AddEntityDef( const renderEntity_t *re ) = 0;
 //	virtual	void			UpdateEntityDef( qhandle_t entityHandle, const renderEntity_t *re ) = 0;
-//	virtual	void			FreeEntityDef( qhandle_t entityHandle ) = 0;
+	FreeEntityDef ( entityHandle: number/*qhandle_t */): void { throw "placeholder"; }
 //	virtual const renderEntity_t *GetRenderEntity( qhandle_t entityHandle ) const = 0;
 //
 //	virtual	qhandle_t		AddLightDef( const renderLight_t *rlight ) = 0;

@@ -375,37 +375,37 @@ class idRenderEntityLocal extends idRenderEntity {
 
 	parms = new renderEntity_t;
 
-////	float					modelMatrix[16];		// this is just a rearrangement of parms.axis and parms.origin
+	modelMatrix = new Float32Array(16);		// this is just a rearrangement of parms.axis and parms.origin
 
-////	idRenderWorldLocal *	world;
-////	int						index;					// in world entityDefs
+	world:idRenderWorldLocal;
+	index:number/*int*/;					// in world entityDefs
+	
+	lastModifiedFrameNum:number/*int*/;	// to determine if it is constantly changing,
+													// and should go in the dynamic frame memory, or kept
+													// in the cached memory
+	archived:boolean;				// for demo writing
 
-////	int						lastModifiedFrameNum;	// to determine if it is constantly changing,
-////													// and should go in the dynamic frame memory, or kept
-////													// in the cached memory
-////	bool					archived;				// for demo writing
-
-////	idRenderModel *			dynamicModel;			// if parms.model.IsDynamicModel(), this is the generated data
-////	int						dynamicModelFrameCount;	// continuously animating dynamic models will recreate
-////													// dynamicModel if this doesn't == tr.viewCount
-////	idRenderModel *			cachedDynamicModel;
+	dynamicModel:idRenderModel;			// if parms.model.IsDynamicModel(), this is the generated data
+	dynamicModelFrameCount:number/*int*/;	// continuously animating dynamic models will recreate
+							// dynamicModel if this doesn't == tr.viewCount
+	cachedDynamicModel:idRenderModel;
 
 	referenceBounds = new idBounds;		// the local bounds used to place entityRefs, either from parms or a model
 
-////	// a viewEntity_t is created whenever a idRenderEntityLocal is considered for inclusion
-////	// in a given view, even if it turns out to not be visible
-////	int						viewCount;				// if tr.viewCount == viewCount, viewEntity is valid,
-////													// but the entity may still be off screen
-////	struct viewEntity_s *	viewEntity;				// in frame temporary memory
+	// a viewEntity_t is created whenever a idRenderEntityLocal is considered for inclusion
+	// in a given view, even if it turns out to not be visible
+	viewCount:number/*int*/;				// if tr.viewCount == viewCount, viewEntity is valid,
+						// but the entity may still be off screen
+	viewEntity:viewEntity_t;				// in frame temporary memory
 
-////	int						visibleCount;
-////	// if tr.viewCount == visibleCount, at least one ambient
-////	// surface has actually been added by R_AddAmbientDrawsurfs
-////	// note that an entity could still be in the view frustum and not be visible due
-////	// to portal passing
+	visibleCount:number/*int*/;
+	// if tr.viewCount == visibleCount, at least one ambient
+	// surface has actually been added by R_AddAmbientDrawsurfs
+	// note that an entity could still be in the view frustum and not be visible due
+	// to portal passing
 
-////	idRenderModelDecal *	decals;					// chain of decals that have been projected on this model
-////	idRenderModelOverlay *	overlay;				// blood overlays on animated models
+	decals:idRenderModelDecal;					// chain of decals that have been projected on this model
+	overlay:idRenderModelOverlay;				// blood overlays on animated models
 
 	entityRefs:areaReference_t;				// chain of all references
 	firstInteraction: idInteraction;		// doubly linked list

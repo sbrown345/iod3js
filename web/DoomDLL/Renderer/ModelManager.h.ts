@@ -58,8 +58,8 @@ class idRenderModelManager {
 ////	// allocates a new empty render model.
 ////	virtual idRenderModel *	AllocModel() = 0;
 ////
-////	// frees a render model
-////	virtual void			FreeModel( idRenderModel *model ) = 0;
+	// frees a render model
+	FreeModel(model: idRenderModel): void { throw "placeholder"; }
 ////
 ////	// returns NULL if modelName is NULL or an empty string, otherwise
 ////	// it will create a default model if not loadable

@@ -287,47 +287,48 @@
 //	// that may contain the updated surface
 //	R_CreateEntityRefs( def );
 //}
-//
-///*
-//===================
-//FreeEntityDef
-//
-//Frees all references and lit surfaces from the model, and
-//NULL's out it's entry in the world list
-//===================
-//*/
-//void idRenderWorldLocal::FreeEntityDef( qhandle_t entityHandle ) {
-//	idRenderEntityLocal	*def;
-//
-//	if ( entityHandle < 0 || entityHandle >= this.entityDefs.Num() ) {
-//		common.Printf( "idRenderWorld::FreeEntityDef: handle %i > %i\n", entityHandle, this.entityDefs.Num() );
-//		return;
-//	}
-//
-//	def = this.entityDefs[entityHandle];
-//	if ( !def ) {
-//		common.Printf( "idRenderWorld::FreeEntityDef: handle %i is NULL\n", entityHandle );
-//		return;
-//	}
-//
-//	R_FreeEntityDefDerivedData( def, false, false );
-//
-//	if ( session.writeDemo && def.archived ) {
-//		WriteFreeEntity( entityHandle );
-//	}
-//
-//	// if we are playing a demo, these will have been freed
-//	// in R_FreeEntityDefDerivedData(), otherwise the gui
-//	// object still exists in the game
-//
-//	def.parms.gui[ 0 ] = NULL;
-//	def.parms.gui[ 1 ] = NULL;
-//	def.parms.gui[ 2 ] = NULL;
-//
-//	delete def;
-//	this.entityDefs[ entityHandle ] = NULL;
-//}
-//
+
+/*
+===================
+FreeEntityDef
+
+Frees all references and lit surfaces from the model, and
+NULL's out it's entry in the world list
+===================
+*/
+idRenderWorldLocal.prototype.FreeEntityDef = function ( entityHandle: number /*qhandle_t*/ ): void {
+	var def: idRenderEntityLocal;
+
+	if ( entityHandle < 0 || entityHandle >= this.entityDefs.Num ( ) ) {
+		common.Printf( "idRenderWorld::FreeEntityDef: handle %i > %i\n", entityHandle, this.entityDefs.Num ( ) );
+		return;
+	}
+
+	def = this.entityDefs[entityHandle];
+	if ( !def ) {
+		common.Printf( "idRenderWorld::FreeEntityDef: handle %i is NULL\n", entityHandle );
+		return;
+	}
+
+	R_FreeEntityDefDerivedData( def, false, false );
+
+	if ( session.writeDemo && def.archived ) {
+		todoThrow ( );
+		//WriteFreeEntity( entityHandle );
+	}
+
+	// if we are playing a demo, these will have been freed
+	// in R_FreeEntityDefDerivedData(), otherwise the gui
+	// object still exists in the game
+
+	def.parms.gui[0] = null;
+	def.parms.gui[1] = null;
+	def.parms.gui[2] = null;
+
+	$delete( def );
+	this.entityDefs[entityHandle] = null;
+};
+
 ///*
 //==================
 //GetRenderEntity

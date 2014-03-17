@@ -89,17 +89,21 @@ idGameLocal::ShutdownAsyncNetwork
 */
 idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 	this.entityStateAllocator.Shutdown ( );
-	this.snapshotAllocator.Shutdown();
-	this.eventQueue.Shutdown();
+	this.snapshotAllocator.Shutdown ( );
+	this.eventQueue.Shutdown ( );
 	this.savedEventQueue.Shutdown ( );
 	//memset(this.clientEntityStates, 0, sizeof(clientEntityStates));
-	for (var i = 0; i < MAX_CLIENTS; i++ ) {
-		for (var j = 0; j < MAX_GENTITIES; j++ ) {
-			this.clientEntityStates[i][j].init ( );
+	for ( var i = 0; i < MAX_CLIENTS; i++ ) {
+		for ( var j = 0; j < MAX_GENTITIES; j++ ) {
+			this.clientEntityStates[i][j] = null;
 		}
 	}
-	memset2DArray(this.clientPVS, 0); //memset(this.clientPVS, 0, sizeof(clientPVS));
-	clearStructArray(this.clientSnapshots);//memset(this.clientSnapshots, 0, sizeof( clientSnapshots ) );
+	memset2DArray( this.clientPVS, 0 ); //memset(this.clientPVS, 0, sizeof(clientPVS));
+
+	//memset(this.clientSnapshots, 0, sizeof( clientSnapshots ) );
+	for ( var k = 0; k < this.clientSnapshots.length; k++ ) {
+		this.clientSnapshots[k] = null;
+	}
 };
 
 /////*
@@ -358,7 +362,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	// free entity states stored for this client
 ////	for ( i = 0; i < MAX_GENTITIES; i++ ) {
 ////		if ( clientEntityStates[ clientNum ][ i ] ) {
-////			entityStateAllocator.Free( clientEntityStates[ clientNum ][ i ] );
+////			this.entityStateAllocator.Free( clientEntityStates[ clientNum ][ i ] );
 ////			clientEntityStates[ clientNum ][ i ] = NULL;
 ////		}
 ////	}
@@ -465,14 +469,14 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////		if ( snapshot.sequence < sequence ) {
 ////			for ( state = snapshot.firstEntityState; state; state = snapshot.firstEntityState ) {
 ////				snapshot.firstEntityState = snapshot.firstEntityState.next;
-////				entityStateAllocator.Free( state );
+////				this.entityStateAllocator.Free( state );
 ////			}
 ////			if ( lastSnapshot ) {
 ////				lastSnapshot.next = snapshot.next;
 ////			} else {
 ////				clientSnapshots[clientNum] = snapshot.next;
 ////			}
-////			snapshotAllocator.Free( snapshot );
+////			this.snapshotAllocator.Free( snapshot );
 ////		} else {
 ////			lastSnapshot = snapshot;
 ////		}
@@ -495,7 +499,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////		if ( snapshot.sequence == sequence ) {
 ////			for ( state = snapshot.firstEntityState; state; state = state.next ) {
 ////				if ( clientEntityStates[clientNum][state.entityNumber] ) {
-////					entityStateAllocator.Free( clientEntityStates[clientNum][state.entityNumber] );
+////					this.entityStateAllocator.Free( clientEntityStates[clientNum][state.entityNumber] );
 ////				}
 ////				clientEntityStates[clientNum][state.entityNumber] = state;
 ////			}
@@ -505,7 +509,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////			} else {
 ////				clientSnapshots[clientNum] = nextSnapshot;
 ////			}
-////			snapshotAllocator.Free( snapshot );
+////			this.snapshotAllocator.Free( snapshot );
 ////			return true;
 ////		} else {
 ////			lastSnapshot = snapshot;
@@ -576,7 +580,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	FreeSnapshotsOlderThanSequence( clientNum, sequence - 64 );
 ////
 ////	// allocate new snapshot
-////	snapshot = snapshotAllocator.Alloc();
+////	snapshot = this.snapshotAllocator.Alloc();
 ////	snapshot.sequence = sequence;
 ////	snapshot.firstEntityState = NULL;
 ////	snapshot.next = clientSnapshots[clientNum];
@@ -620,7 +624,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////		if ( base ) {
 ////			base.state.BeginReading();
 ////		}
-////		newBase = entityStateAllocator.Alloc();
+////		newBase = this.entityStateAllocator.Alloc();
 ////		newBase.entityNumber = ent.entityNumber;
 ////		newBase.state.Init( newBase.stateBuf, sizeof( newBase.stateBuf ) );
 ////		newBase.state.BeginWriting();
@@ -636,7 +640,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////
 ////		if ( !deltaMsg.HasChanged() ) {
 ////			msg.RestoreWriteState( msgSize, msgWriteBit );
-////			entityStateAllocator.Free( newBase );
+////			this.entityStateAllocator.Free( newBase );
 ////		} else {
 ////			newBase.next = snapshot.firstEntityState;
 ////			snapshot.firstEntityState = newBase;
@@ -672,7 +676,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	if ( base ) {
 ////		base.state.BeginReading();
 ////	}
-////	newBase = entityStateAllocator.Alloc();
+////	newBase = this.entityStateAllocator.Alloc();
 ////	newBase.entityNumber = ENTITYNUM_NONE;
 ////	newBase.next = snapshot.firstEntityState;
 ////	snapshot.firstEntityState = newBase;
@@ -1005,7 +1009,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	snapshotEntities.Clear();
 ////
 ////	// allocate new snapshot
-////	snapshot = snapshotAllocator.Alloc();
+////	snapshot = this.snapshotAllocator.Alloc();
 ////	snapshot.sequence = sequence;
 ////	snapshot.firstEntityState = NULL;
 ////	snapshot.next = clientSnapshots[clientNum];
@@ -1023,7 +1027,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////		if ( base ) {
 ////			base.state.BeginReading();
 ////		}
-////		newBase = entityStateAllocator.Alloc();
+////		newBase = this.entityStateAllocator.Alloc();
 ////		newBase.entityNumber = i;
 ////		newBase.next = snapshot.firstEntityState;
 ////		snapshot.firstEntityState = newBase;
@@ -1215,7 +1219,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	if ( base ) {
 ////		base.state.BeginReading();
 ////	}
-////	newBase = entityStateAllocator.Alloc();
+////	newBase = this.entityStateAllocator.Alloc();
 ////	newBase.entityNumber = ENTITYNUM_NONE;
 ////	newBase.next = snapshot.firstEntityState;
 ////	snapshot.firstEntityState = newBase;
@@ -1628,7 +1632,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////===============
 ////*/
 ////entityNetEvent_t* idEventQueue::Alloc() {
-////	entityNetEvent_t* event = eventAllocator.Alloc();
+////	entityNetEvent_t* event = this.eventAllocator.Alloc();
 ////	event.prev = NULL;
 ////	event.next = NULL;
 ////	return event;
@@ -1642,19 +1646,19 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////void idEventQueue::Free( entityNetEvent_t *event ) {
 ////	// should only be called on an unlinked event!
 ////	assert( !event.next && !event.prev );
-////	eventAllocator.Free( event );
+////	this.eventAllocator.Free( event );
 ////}
-////
-/////*
-////===============
-////idEventQueue::Shutdown
-////===============
-////*/
-////void idEventQueue::Shutdown() {
-////	eventAllocator.Shutdown();
-////	this.Init();
-////}
-////
+
+/*
+===============
+idEventQueue::Shutdown
+===============
+*/
+idEventQueue.prototype.Shutdown = function ( ): void {
+	this.eventAllocator.Shutdown ( );
+	this.Init ( );
+};
+
 /*
 ===============
 idEventQueue::Init

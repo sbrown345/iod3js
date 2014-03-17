@@ -41,7 +41,7 @@ class idRenderModelManagerLocal extends idRenderModelManager {
 //Init():void { throw "placeholder"; }
 ////	virtual void			Shutdown():void { throw "placeholder"; }
 ////	virtual idRenderModel *	AllocModel():idRenderModel { throw "placeholder"; }
-////	virtual void			FreeModel( idRenderModel *model ):void { throw "placeholder"; }
+	//FreeModel ( model: idRenderModel ): void { throw "placeholder"; }
 ////	virtual idRenderModel *	FindModel( const char *modelName ):idRenderModel { throw "placeholder"; }
 ////	virtual idRenderModel *	CheckModel( const char *modelName ):idRenderModel { throw "placeholder"; }
 ////	virtual idRenderModel *	DefaultModel():idRenderModel { throw "placeholder"; }
@@ -349,38 +349,38 @@ idRenderModelManagerLocal::GetModel
 ////idRenderModel *idRenderModelManagerLocal::AllocModel() {
 ////	return new idRenderModelStatic();
 ////}
-////
-/////*
-////=================
-////idRenderModelManagerLocal::FreeModel
-////=================
-////*/
-////void idRenderModelManagerLocal::FreeModel( idRenderModel *model ) {
-////	if ( !model ) {
-////		return;
-////	}
-////	if ( !dynamic_cast<idRenderModelStatic *>( model ) ) {
-////		common.Error( "idRenderModelManager::FreeModel: model '%s' is not a static model", model.Name() );
-////		return;
-////	}
-////	if ( model == defaultModel ) {
-////		common.Error( "idRenderModelManager::FreeModel: can't free the default model" );
-////		return;
-////	}
-////	if ( model == beamModel ) {
-////		common.Error( "idRenderModelManager::FreeModel: can't free the beam model" );
-////		return;
-////	}
-////	if ( model == spriteModel ) { 
-////		common.Error( "idRenderModelManager::FreeModel: can't free the sprite model" );
-////		return;
-////	}
-////
-////	R_CheckForEntityDefsUsingModel( model );
-////
-////	delete model;
-////}
-////
+
+/*
+=================
+idRenderModelManagerLocal::FreeModel
+=================
+*/
+	FreeModel ( model: idRenderModel ): void {
+		if ( !model ) {
+			return;
+		}
+		if ( !dynamic_cast<idRenderModelStatic>( model, idRenderModelStatic ) ) {
+			common.Error( "idRenderModelManager::FreeModel: model '%s' is not a static model", model.Name ( ) );
+			return;
+		}
+		if ( model == this.defaultModel ) {
+			common.Error( "idRenderModelManager::FreeModel: can't free the default model" );
+			return;
+		}
+		if ( model == this.beamModel ) {
+			common.Error( "idRenderModelManager::FreeModel: can't free the beam model" );
+			return;
+		}
+		if ( model == this.spriteModel ) {
+			common.Error( "idRenderModelManager::FreeModel: can't free the sprite model" );
+			return;
+		}
+
+		R_CheckForEntityDefsUsingModel( model );
+
+		$delete( model );
+	}
+
 /*
 =================
 idRenderModelManagerLocal::FindModel

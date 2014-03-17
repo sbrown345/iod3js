@@ -206,6 +206,7 @@
     <TypeScriptCompile Include="libs\idLib\Math\Lcp.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\MegaTexture.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Sys\win_net.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Renderer\ModelOverlay.cpp.ts" />
     <Content Include="libs\idLib\Timer.h.ts" />
     <Content Include="log.aspx" />
     <Content Include="other\files.ts" />

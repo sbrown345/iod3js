@@ -294,6 +294,7 @@
 /// <reference path="doomdll/renderer/modeldecal.cpp.ts" />
 /// <reference path="doomdll/renderer/modelmanager.h.ts" />
 /// <reference path="doomdll/renderer/modelmanager.cpp.ts" />
+/// <reference path="doomdll/renderer/modeloverlay.cpp.ts" />
 /// <reference path="doomdll/renderer/qgl_linked.h.ts" />
 /// <reference path="doomdll/renderer/tr_local.h.ts" />
 /// <reference path="doomdll/renderer/renderworld.h.ts" />

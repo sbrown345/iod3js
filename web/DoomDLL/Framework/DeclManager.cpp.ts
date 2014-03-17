@@ -87,44 +87,44 @@ class idDeclLocal extends idDeclBase {
 ////public:
 ////								*/idDeclLocal();
 ////	virtual 					*/~idDeclLocal() {};
-/*	virtual const char *		*/GetName( ):string {throw "placeholder";}
-/*	virtual declType_t			*/GetType( ):declType_t {throw "placeholder";}
-/*	virtual declState_t			*/GetState( ) :declState_t {throw "placeholder";}
-/*	virtual bool				*/IsImplicit( ) :boolean {throw "placeholder";}
-/*	virtual bool				*/IsValid( ) :boolean {throw "placeholder";}
-/*	virtual void				*/Invalidate( ):void{throw "placeholder";}
-/*	virtual void				*/Reload( ):void {throw "placeholder";}
-/*	virtual void				*/EnsureNotPurged( ):void {throw "placeholder";}
-/*	virtual int					*/Index( ) :number {return null;}
-/*	virtual int					*/GetLineNum( ) :number {throw "placeholder";}
-/*	virtual const char *		*/GetFileName( ) :string {throw "placeholder";}
-/*	virtual size_t				*/Size( ):number {throw "placeholder";}
-/*	virtual void				*/GetText( text:Uint8Array):void{}
-/*	virtual int					*/GetTextLength( ):number {throw "placeholder";}
-/*	virtual void				*/SetText( text:Uint8Array ):void{throw "placeholder";}
-/*	virtual bool				*/ReplaceSourceFileText( ):boolean{throw "placeholder";}
-/*	virtual bool				*/SourceFileChanged( ):boolean{throw "placeholder";}
-/*	virtual void				*/MakeDefault(): void { throw "placeholder"; }
-/*	virtual bool				*/EverReferenced( ):boolean { throw "placeholder"; }
+	GetName( ):string {throw "placeholder";}
+	GetType( ):declType_t {throw "placeholder";}
+	GetState( ) :declState_t {throw "placeholder";}
+	IsImplicit( ) :boolean {throw "placeholder";}
+	IsValid( ) :boolean {throw "placeholder";}
+	Invalidate( ):void{throw "placeholder";}
+	Reload( ):void {throw "placeholder";}
+	EnsureNotPurged( ):void {throw "placeholder";}
+	Index( ) :number {return null;}
+	GetLineNum( ) :number {throw "placeholder";}
+	GetFileName( ) :string {throw "placeholder";}
+	Size( ):number {throw "placeholder";}
+	GetText( text:Uint8Array):void{}
+	GetTextLength( ):number {throw "placeholder";}
+	SetText( text:Uint8Array ):void{throw "placeholder";}
+	ReplaceSourceFileText( ):boolean{throw "placeholder";}
+	SourceFileChanged( ):boolean{throw "placeholder";}
+	MakeDefault(): void { throw "placeholder"; }
+	EverReferenced( ):boolean { throw "placeholder"; }
 
 //protected:
-/*virtual bool				*/SetDefaultText( ):boolean { throw "placeholder"; }
-/*virtual const char *		*/DefaultDefinition( ):string { throw "placeholder"; }
-/*virtual bool				*/Parse( text:string, textLength:number ):boolean { throw "placeholder"; }
-/*virtual void				*/FreeData( ):void { throw "placeholder"; }
-/*virtual void				*/List( ):void { throw "placeholder"; }
-/*virtual void				*/Print( ):void { throw "placeholder"; }
+	SetDefaultText( ):boolean { throw "placeholder"; }
+	DefaultDefinition( ):string { throw "placeholder"; }
+	Parse( text:string, textLength:number ):boolean { throw "placeholder"; }
+	FreeData( ):void { throw "placeholder"; }
+	List( ):void { throw "placeholder"; }
+	Print( ):void { throw "placeholder"; }
 
 //protected:
     AllocateSelf( ):void{ throw "placeholder";}
 
-////								// Parses the decl definition.
-////								// After calling parse, a decl will be guaranteed usable.
+	// Parses the decl definition.
+	// After calling parse, a decl will be guaranteed usable.
 	ParseLocal(): void { throw "placeholder";}
 
-////								// Does a MakeDefualt, but flags the decl so that it
-////								// will Parse() the next time the decl is found.
-////	void						Purge( );
+	// Does a MakeDefualt, but flags the decl so that it
+	// will Parse() the next time the decl is found.
+	Purge(): void { throw "placeholder"; }
 
 ////								// Set textSource possible with compression.
 	SetTextLocal(text: Uint8Array, length: number): void { throw "placeholder"; }
@@ -953,7 +953,7 @@ idDeclManagerLocal.prototype.BeginLevelLoad = function ( ): void {
 	for ( var i = 0; i < declType_t.DECL_MAX_TYPES; i++ ) {
 		var num = this.linearLists[i].Num ( );
 		for ( var j = 0; j < num; j++ ) {
-			var decl = this.linearLists[i][j];
+			var decl: idDeclLocal = this.linearLists[i][j];
 			decl.Purge ( );
 		}
 	}
@@ -2210,24 +2210,24 @@ idDeclLocal.prototype.ParseLocal = function ( ): void {
 	declManagerLocal.indent--;
 };
 
-/////*
-////=================
-////idDeclLocal::Purge
-////=================
-////*/
-////void idDeclLocal::Purge( ) {
-////	// never purge things that were referenced outside level load,
-////	// like the console and menu graphics
-////	if ( parsedOutsideLevelLoad ) {
-////		return;
-////	}
+/*
+=================
+idDeclLocal::Purge
+=================
+*/
+idDeclLocal.prototype.Purge = function ( ) {
+	// never purge things that were referenced outside level load,
+	// like the console and menu graphics
+	if ( parsedOutsideLevelLoad ) {
+		return;
+	}
 
-////	referencedThisLevel = false;
-////	MakeDefault();
+	referencedThisLevel = false;
+	MakeDefault ( );
 
-////	// the next Find() for this will re-parse the real data
-////	declState = declState_t.DS_UNPARSED;
-////}
+	// the next Find() for this will re-parse the real data
+	declState = declState_t.DS_UNPARSED;
+};
 
 /////*
 ////=================

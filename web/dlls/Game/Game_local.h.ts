@@ -120,14 +120,21 @@ class entityState_t {
 	//idBitMsg				state;
 	//byte					stateBuf[MAX_ENTITY_STATE_SIZE];
 	//struct entityState_s *	next;
+
+	init ( ): void {
+		
+	}
 }
 
 class snapshot_t {
 ////	int						sequence;
 ////	entityState_t *			firstEntityState;
 ////	int						pvs[ENTITY_PVS_SIZE];
-////	struct snapshot_s *		next;
-};
+	////	struct snapshot_s *		next;
+	init(): void {
+
+	}
+}
 
 var  MAX_EVENT_PARAM_SIZE		= 128;
 
@@ -196,7 +203,7 @@ class idEventQueue {
 
 ////	entityNetEvent_t *		Alloc();
 ////	void					Free( entityNetEvent_t *event );
-////	void					Shutdown();
+	Shutdown():void { throw "placeholder"; }
 
 	Init():void { throw "placeholder"; }
 ////	void					Enqueue( entityNetEvent_t* event, outOfOrderBehaviour_t oooBehaviour );
@@ -506,8 +513,8 @@ class idGameLocal extends idGame {
 	clientEntityStates: entityState_t[][] = multiDimEmptyArray<entityState_t>( MAX_CLIENTS, MAX_GENTITIES );
 	clientPVS = multiDimArray<Int32Array>( Int32Array, MAX_CLIENTS, ENTITY_PVS_SIZE );
 	clientSnapshots = new Array<snapshot_t>( MAX_CLIENTS );
-////	idBlockAlloc<entityState_t,256>entityStateAllocator;
-////	idBlockAlloc<snapshot_t,64>snapshotAllocator;
+	entityStateAllocator = idBlockAlloc_template < entityState_t>(entityState_t, 256);//	idBlockAlloc<entityState_t,256>entityStateAllocator;
+	snapshotAllocator = idBlockAlloc_template<snapshot_t>(snapshot_t, 64);//	idBlockAlloc<snapshot_t,64>;
 
 	eventQueue = new idEventQueue;
 	savedEventQueue = new idEventQueue;

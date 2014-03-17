@@ -74,10 +74,10 @@ class function_t {
 //public:
 //						function_t();
 //
-//	size_t				Allocated( void ) const;
+//	size_t				Allocated( ) const;
 //	void				SetName( name:string );
-//	const char			*Name( void ) const;
-//	void				Clear( void );
+//	const char			*Name( ) const;
+//	void				Clear( );
 //
 //private:
 	name = new idStr;
@@ -133,7 +133,7 @@ function_t::Name
 //function_t::Clear
 //================
 //*/
-//void function_t::Clear( void ) {
+//void function_t::Clear( ) {
 //	eventdef		= null;
 //	def				= null;
 //	type			= null;
@@ -156,7 +156,7 @@ function_t::Name
 
 class idVarDefName {
 //public:
-//							idVarDefName( void ) { defs = null; }
+//							idVarDefName( ) { defs = null; }
 //							idVarDefName( const char *n ) { name = n; defs = null; }
 	constructor ( n: string = null ) {
 		this.name.equals( n || "" );
@@ -243,7 +243,7 @@ idVarDefName::RemoveDef
 //idScriptObject::Free
 //============
 //*/
-//void idScriptObject::Free( void ) {
+//void idScriptObject::Free( ) {
 //	if ( data ) {
 //		Mem_Free( data );
 //	}
@@ -347,7 +347,7 @@ idVarDefName::RemoveDef
 //Resets the memory for the script object without changing its type.
 //============
 //*/
-//void idScriptObject::ClearObject( void ) {
+//void idScriptObject::ClearObject( ) {
 //	size_t size;
 //
 //	if ( type != &type_object ) {
@@ -362,7 +362,7 @@ idVarDefName::RemoveDef
 //idScriptObject::HasObject
 //============
 //*/
-//bool idScriptObject::HasObject( void ) const {
+//bool idScriptObject::HasObject( ) const {
 //	return ( type != &type_object );
 //}
 //
@@ -371,7 +371,7 @@ idVarDefName::RemoveDef
 //idScriptObject::GetTypeDef
 //============
 //*/
-//idTypeDef *idScriptObject::GetTypeDef( void ) const {
+//idTypeDef *idScriptObject::GetTypeDef( ) const {
 //	return type;
 //}
 //
@@ -380,7 +380,7 @@ idVarDefName::RemoveDef
 //idScriptObject::GetTypeName
 //============
 //*/
-//const char *idScriptObject::GetTypeName( void ) const {
+//const char *idScriptObject::GetTypeName( ) const {
 //	return type.Name();
 //}
 //
@@ -389,7 +389,7 @@ idVarDefName::RemoveDef
 //idScriptObject::GetConstructor
 //============
 //*/
-//const function_t *idScriptObject::GetConstructor( void ) const {
+//const function_t *idScriptObject::GetConstructor( ) const {
 //	const function_t *func;
 //
 //	func = GetFunction( "init" );
@@ -401,7 +401,7 @@ idVarDefName::RemoveDef
 //idScriptObject::GetDestructor
 //============
 //*/
-//const function_t *idScriptObject::GetDestructor( void ) const {
+//const function_t *idScriptObject::GetDestructor( ) const {
 //	const function_t *func;
 //
 //	func = GetFunction( "destroy" );
@@ -503,7 +503,7 @@ class idProgram {
 	top_defs: number;		   //	int											
 	top_files: number;		   //	int											
 //
-//	void										CompileStats( void );
+//	void										CompileStats( );
 //
 //public:
 	returnDef:idVarDef;
@@ -515,19 +515,19 @@ class idProgram {
 //	// save games
 //	void										Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	bool										Restore( idRestoreGame *savefile );
-//	int											CalculateChecksum( void ) const;		// Used to insure program code has not
+//	int											CalculateChecksum( ) const;		// Used to insure program code has not
 //																						//    changed between savegames
 //
 //	void										Startup( const char *defaultScript );
-//	void										Restart( void );
+//	void										Restart( );
 //	bool										CompileText( const char *source, text:string, bool console );
 //	const function_t							*CompileFunction( const char *functionName, text:string );
 //	void										CompileFile( const char *filename );
-//	void										BeginCompilation( void );
-//	void										FinishCompilation( void );
+//	void										BeginCompilation( );
+//	void										FinishCompilation( );
 //	void										DisassembleStatement( idFile *file, int instructionPointer ) const;
-//	void										Disassemble( void ) const;
-//	void										FreeData( void );
+//	void										Disassemble( ) const;
+//	void										FreeData( );
 //
 //	const char									*GetFilename( int num );
 //	int											GetFilenum( name:string );
@@ -554,11 +554,11 @@ class idProgram {
 //
 //	void										SetEntity( name:string, ent:idEntity );
 //
-//	statement_t									*AllocStatement( void );
+//	statement_t									*AllocStatement( );
 //	statement_t									&GetStatement( int index );
 	NumStatements ( ) { return this.statements.Num ( ); }
 //
-//	int 										GetReturnedInteger( void );
+//	int 										GetReturnedInteger( );
 //
 //	void										ReturnFloat( float value );
 //	void										ReturnInteger( int value );
@@ -566,7 +566,7 @@ class idProgram {
 //	void										ReturnString( const char *string );
 //	void										ReturnEntity( ent:idEntity );
 //	
-//	int											NumFilenames( void ) { return fileList.Num( ); }
+//	int											NumFilenames( ) { return this.fileList.Num( ); }
 //};
 //
 	/*
@@ -584,7 +584,7 @@ idProgram::GetStatement
 //================
 //*/
 //ID_INLINE function_t *idProgram::GetFunction( int index ) {
-//	return &functions[ index ];
+//	return &this.functions[ index ];
 //}
 //
 ///*
@@ -593,7 +593,7 @@ idProgram::GetStatement
 //================
 //*/
 //ID_INLINE int idProgram::GetFunctionIndex( const function_t *func ) {
-//	return func - &functions[0];
+//	return func - &this.functions[0];
 //}
 //
 ///*
@@ -601,7 +601,7 @@ idProgram::GetStatement
 //idProgram::GetReturnedInteger
 //================
 //*/
-//ID_INLINE int idProgram::GetReturnedInteger( void ) {
+//ID_INLINE int idProgram::GetReturnedInteger( ) {
 //	return *returnDef.value.intPtr;
 //}
 //
@@ -657,7 +657,7 @@ idProgram::GetFilename
 //================
 //*/
 //ID_INLINE int idProgram::GetLineNumberForStatement( int index ) {
-//	return statements[ index ].linenumber;
+//	return this.statements[ index ].linenumber;
 //}
 //
 ///*
@@ -666,7 +666,7 @@ idProgram::GetFilename
 //================
 //*/
 //ID_INLINE const char *idProgram::GetFilenameForStatement( int index ) {
-//	return GetFilename( statements[ index ].file );
+//	return GetFilename( this.statements[ index ].file );
 //}
 //
 //#endif /* !__SCRIPT_PROGRAM_H__ */
@@ -1430,44 +1430,44 @@ idProgram::CompileFile
 idProgram::FreeData
 ================
 */
-FreeData( ):void {
-	var/*int */i: number;
+	FreeData ( ): void {
+		var /*int */i: number;
 
-	// free the defs
-	this.varDefs.DeleteContents( true );
-	this.varDefNames.DeleteContents( true );
-	this.varDefNameHash.Free();
+		// free the defs
+		this.varDefs.DeleteContents( true );
+		this.varDefNames.DeleteContents( true );
+		this.varDefNameHash.Free ( );
 
-	this.returnDef		= null;
-	this.returnStringDef = null;
-	this.sysDef			= null;
+		this.returnDef = null;
+		this.returnStringDef = null;
+		this.sysDef = null;
 
-	// free any special types we've created
-	this.types.DeleteContents( true );
+		// free any special types we've created
+		this.types.DeleteContents( true );
 
-	this.filenum = 0;
+		this.filenum = 0;
 
-	this.numVariables = 0;
-	memset(this.variables, 0, sizeof(this.variables ) );
+		this.numVariables = 0;
+		memset( this.variables, 0, sizeof( this.variables ) );
 
-	// clear all the strings in the functions so that it doesn't look like we're leaking memory.
-	for (i = 0; i < this.functions.Num(); i++ ) {
-		this.functions[ i ].Clear();
+		// clear all the strings in the functions so that it doesn't look like we're leaking memory.
+		for ( i = 0; i < this.functions.Num ( ); i++ ) {
+			this.functions[i].Clear ( );
+		}
+
+		this.filename.Clear ( );
+		this.fileList.Clear ( );
+		this.statements.Clear ( );
+		this.functions.Clear ( );
+
+		this.top_functions = 0;
+		this.top_statements = 0;
+		this.top_types = 0;
+		this.top_defs = 0;
+		this.top_files = 0;
+
+		this.filename.equals( "" );
 	}
-
-	this.filename.Clear();
-	this.fileList.Clear();
-	this.statements.Clear();
-	this.functions.Clear();
-
-	this.top_functions = 0;
-	this.top_statements = 0;
-	this.top_types = 0;
-	this.top_defs = 0;
-	this.top_files		= 0;
-
-	this.filename.equals( "" );
-}
 
 /*
 ================
@@ -1498,26 +1498,26 @@ idProgram::Startup
 //*/
 //void idProgram::Save( idSaveGame *savefile ) const {
 //	int i;
-//	int currentFileNum = top_files;
+//	int currentFileNum = this.top_files;
 //
-//	savefile.WriteInt( (fileList.Num() - currentFileNum) );
-//	while ( currentFileNum < fileList.Num() ) {
-//		savefile.WriteString( fileList[ currentFileNum ] );
+//	savefile.WriteInt( (this.fileList.Num() - currentFileNum) );
+//	while ( currentFileNum < this.fileList.Num() ) {
+//		savefile.WriteString( this.fileList[ currentFileNum ] );
 //		currentFileNum++;
 //	}
 //
-//	for ( i = 0; i < variableDefaults.Num(); i++ ) {
-//		if ( variables[i] != variableDefaults[i] ) {
+//	for ( i = 0; i < this.variableDefaults.Num(); i++ ) {
+//		if ( this.variables[i] != this.variableDefaults[i] ) {
 //			savefile.WriteInt( i );
-//			savefile.WriteByte( variables[i] );
+//			savefile.WriteByte( this.variables[i] );
 //		}
 //	}
 //	// Mark the end of the diff with default variables with -1
 //	savefile.WriteInt( -1 );
 //
-//	savefile.WriteInt( numVariables );
-//	for ( i = variableDefaults.Num(); i < numVariables; i++ ) {
-//		savefile.WriteByte( variables[i] );
+//	savefile.WriteInt( this.numVariables );
+//	for ( i = this.variableDefaults.Num(); i < this.numVariables; i++ ) {
+//		savefile.WriteByte( this.variables[i] );
 //	}
 //
 //	int checksum = CalculateChecksum();
@@ -1542,13 +1542,13 @@ idProgram::Startup
 //
 //	savefile.ReadInt( index );
 //	while( index >= 0 ) {
-//		savefile.ReadByte( variables[index] );
+//		savefile.ReadByte( this.variables[index] );
 //		savefile.ReadInt( index );
 //	}
 //
 //	savefile.ReadInt( num );
-//	for ( i = variableDefaults.Num(); i < num; i++ ) {
-//		savefile.ReadByte( variables[i] );
+//	for ( i = this.variableDefaults.Num(); i < num; i++ ) {
+//		savefile.ReadByte( this.variables[i] );
 //	}
 //
 //	int saved_checksum, checksum;
@@ -1568,7 +1568,7 @@ idProgram::Startup
 //idProgram::CalculateChecksum
 //================
 //*/
-//int idProgram::CalculateChecksum( void ) const {
+//int idProgram::CalculateChecksum( ) const {
 //	int i, result;
 //
 //	typedef struct {
@@ -1580,83 +1580,85 @@ idProgram::Startup
 //		unsigned short	file;
 //	} statementBlock_t;
 //
-//	statementBlock_t	*statementList = new statementBlock_t[ statements.Num() ];
+//	statementBlock_t	*statementList = new statementBlock_t[ this.statements.Num() ];
 //
-//	memset( statementList, 0, ( sizeof(statementBlock_t) * statements.Num() ) );
+//	memset( statementList, 0, ( sizeof(statementBlock_t) * this.statements.Num() ) );
 //
 //	// Copy info into new list, using the variable numbers instead of a pointer to the variable
-//	for( i = 0; i < statements.Num(); i++ ) {
-//		statementList[i].op = statements[i].op;
+//	for( i = 0; i < this.statements.Num(); i++ ) {
+//		statementList[i].op = this.statements[i].op;
 //
-//		if ( statements[i].a ) {
-//			statementList[i].a = statements[i].a.num;
+//		if ( this.statements[i].a ) {
+//			statementList[i].a = this.statements[i].a.num;
 //		} else {
 //			statementList[i].a = -1;
 //		}
-//		if ( statements[i].b ) {
-//			statementList[i].b = statements[i].b.num;
+//		if ( this.statements[i].b ) {
+//			statementList[i].b = this.statements[i].b.num;
 //		} else {
 //			statementList[i].b = -1;
 //		}
-//		if ( statements[i].c ) {
-//			statementList[i].c = statements[i].c.num;
+//		if ( this.statements[i].c ) {
+//			statementList[i].c = this.statements[i].c.num;
 //		} else {
 //			statementList[i].c = -1;
 //		}
 //
-//		statementList[i].linenumber = statements[i].linenumber;
-//		statementList[i].file = statements[i].file;
+//		statementList[i].linenumber = this.statements[i].linenumber;
+//		statementList[i].file = this.statements[i].file;
 //	}
 //
-//	result = MD4_BlockChecksum( statementList, ( sizeof(statementBlock_t) * statements.Num() ) );
+//	result = MD4_BlockChecksum( statementList, ( sizeof(statementBlock_t) * this.statements.Num() ) );
 //
 //	delete [] statementList;
 //
 //	return result;
 //}
-//
-///*
-//==============
-//idProgram::Restart
-//
-//Restores all variables to their initial value
-//==============
-//*/
-//void idProgram::Restart( void ) {
-//	int i;
-//
-//	idThread::Restart();
-//
-//	//
-//	// since there may have been a script loaded by the map or the user may
-//	// have typed "script" from the console, free up any types and vardefs that
-//	// have been allocated after the initial startup
-//	//
-//	for( i = top_types; i < types.Num(); i++ ) {
-//		delete types[ i ];
-//	}
-//	types.SetNum( top_types, false );
-//
-//	for( i = top_defs; i < varDefs.Num(); i++ ) {
-//		delete varDefs[ i ];
-//	}
-//	varDefs.SetNum( top_defs, false );
-//
-//	for( i = top_functions; i < functions.Num(); i++ ) {
-//		functions[ i ].Clear();
-//	}
-//	functions.SetNum( top_functions	);
-//
-//	statements.SetNum( top_statements );
-//	fileList.SetNum( top_files, false );
-//	filename.Clear();
-//	
-//	// reset the variables to their default values
-//	numVariables = variableDefaults.Num();
-//	for( i = 0; i < numVariables; i++ ) {
-//		variables[ i ] = variableDefaults[ i ];
-//	}
-//}
+
+/*
+==============
+idProgram::Restart
+
+Restores all variables to their initial value
+==============
+*/
+	Restart ( ): void {
+		var /*int */i: number;
+
+		idThread.Restart ( );
+
+		//
+		// since there may have been a script loaded by the map or the user may
+		// have typed "script" from the console, free up any types and vardefs that
+		// have been allocated after the initial startup
+		//
+		for ( i = this.top_types; i < this.types.Num ( ); i++ ) {
+			$delete( this.types[i] );
+			delete this.types[i];
+		}
+		this.types.SetNum( this.top_types, false );
+
+		for ( i = this.top_defs; i < this.varDefs.Num ( ); i++ ) {
+			$delete( this.varDefs[i] );
+			delete this.varDefs[i];
+		}
+		this.varDefs.SetNum( this.top_defs, false );
+
+		for ( i = this.top_functions; i < this.functions.Num ( ); i++ ) {
+			this.functions[i].Clear ( );
+		}
+		this.functions.SetNum( this.top_functions );
+
+		this.statements.SetNum( this.top_statements );
+		this.fileList.SetNum( this.top_files, false );
+		this.filename.Clear ( );
+
+		// reset the variables to their default values
+		this.numVariables = this.variableDefaults.Num ( );
+		for ( i = 0; i < this.numVariables; i++ ) {
+			this.variables[i] = this.variableDefaults[i];
+		}
+	}
 
 /*
 ================

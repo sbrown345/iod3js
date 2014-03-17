@@ -1123,12 +1123,12 @@ function Mem_Alloc ( /*const int */size: number ): ArrayBuffer {
 ////	return mem;
 //}
 
-/////*
-////==================
-////Mem_Free16
-////==================
-////*/
-////void Mem_Free16( void *ptr ) {
+/*
+==================
+Mem_Free16
+==================
+*/
+function Mem_Free16 ( /*void **/ptr: any ): void {
 ////	if ( !ptr ) {
 ////		return;
 ////	}
@@ -1142,7 +1142,7 @@ function Mem_Alloc ( /*const int */size: number ): ArrayBuffer {
 ////	// make sure the memory is 16 byte aligned
 ////	assert( ( ((int)ptr) & 15) == 0 );
 //// 	mem_heap.Free16( ptr );
-////}
+}
 
 /////*
 ////==================

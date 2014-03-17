@@ -1479,11 +1479,11 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 	this.UnloadMap();
 
 	// don't do the deferred caching if we are reloading the same map
-	if ( fullMapName == this.currentMapName ) {
+	if ( fullMapName.data == this.currentMapName.data ) {
 		reloadingSameMap = true;
 	} else {
 		reloadingSameMap = false;
-		this.currentMapName = fullMapName;
+		this.currentMapName.equls( fullMapName );
 	}
 
 	// note which media we are going to need to load
