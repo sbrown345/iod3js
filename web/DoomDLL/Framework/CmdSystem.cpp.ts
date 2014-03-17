@@ -287,15 +287,14 @@ idCmdSystemLocal::Echo_f
 Just prints the rest of the line to the console
 ===============
 */
-Echo_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
-    todoThrow();
-	////int		i;
-	
-	////for ( i = 1; i < args.Argc(); i++ ) {
-	////	common.Printf( "%s ", args.Argv( i ) );
-	////}
-	////common.Printf( "\n" );
-}
+	Echo_f ( /*const idCmdArgs &*/args: idCmdArgs ): void {
+		var /*int*/i: number;
+
+		for ( i = 1; i < args.Argc ( ); i++ ) {
+			common.Printf( "%s ", args.Argv( i ) );
+		}
+		common.Printf( "\n" );
+	}
 
 /*
 ============
@@ -304,14 +303,14 @@ idCmdSystemLocal::Wait_f
 Causes execution of the remainder of the command buffer to be delayed until next frame.
 ============
 */
-Wait_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
-    todoThrow();
-	////if ( args.Argc() == 2 ) {
-	////	cmdSystemLocal.SetWait( atoi( args.Argv( 1 ) ) );
-	////} else {
-	////	cmdSystemLocal.SetWait( 1 );
-	////}
-}
+	Wait_f ( /*const idCmdArgs &*/args: idCmdArgs ): void {
+		todoThrow ( );
+		////if ( args.Argc() == 2 ) {
+		////	cmdSystemLocal.SetWait( atoi( args.Argv( 1 ) ) );
+		////} else {
+		////	cmdSystemLocal.SetWait( 1 );
+		////}
+	}
 
 /*
 ============
@@ -320,13 +319,13 @@ idCmdSystemLocal::Parse_f
 This just prints out how the rest of the line was parsed, as a debugging tool.
 ============
 */
-Parse_f( /*const idCmdArgs &*/args:idCmdArgs ):void {
-	////int		i;
+	Parse_f ( /*const idCmdArgs &*/args: idCmdArgs ): void {
+		var /*int*/i: number;
 
-	////for ( i = 0; i < args.Argc(); i++ ) {
-	////	common.Printf( "%i: %s\n", i, args.Argv(i) );
-	////}
-}
+		for ( i = 0; i < args.Argc ( ); i++ ) {
+			common.Printf( "%i: %s\n", i, args.Argv( i ) );
+		}
+	}
 
 /*
 ============
@@ -595,25 +594,29 @@ Adds command text at the end of the buffer, does NOT add a final \n
 idCmdSystemLocal::BufferCommandText
 ============
 */
-BufferCommandText(exec:cmdExecution_t, text :string) :void {
-	switch( exec ) {
-		case cmdExecution_t.CMD_EXEC_NOW: {
+	BufferCommandText ( exec: cmdExecution_t, text: string ): void {
+		switch ( exec ) {
+		case cmdExecution_t.CMD_EXEC_NOW:
+		{
 			this.ExecuteCommandText( text );
 			break;
 		}
-		case cmdExecution_t.CMD_EXEC_INSERT: {
+		case cmdExecution_t.CMD_EXEC_INSERT:
+		{
 			this.InsertCommandText( text );
 			break;
 		}
-		case cmdExecution_t.CMD_EXEC_APPEND: {
+		case cmdExecution_t.CMD_EXEC_APPEND:
+		{
 			this.AppendCommandText( text );
 			break;
 		}
-		default: {
+		default:
+		{
 			common.FatalError( "idCmdSystemLocal::BufferCommandText: bad exec type" );
 		}
+		}
 	}
-}
 
 /*
 ============

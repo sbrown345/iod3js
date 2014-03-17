@@ -486,8 +486,6 @@ A raw string should NEVER be passed as fmt, because of "%f" type crashers.
 	Printf ( /*const char **/ fmt: string, ...args: any[] ): void {
 		var argArr = args.slice( 0 );
 		argArr.unshift( fmt );
-		console.log.apply(console, argArr);
-
 		this.VPrintf.apply( this, argArr );
 	}
 

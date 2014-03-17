@@ -220,7 +220,7 @@ class idEventLoop {
 	RunEventLoop ( commandExecution: boolean=true ): number {
 		var ev: sysEvent_t;
 
-		while ( 1 ) {
+		//while ( 1 ) {
 
 			if ( commandExecution ) {
 				// execute any bound commands before processing another event
@@ -234,8 +234,8 @@ class idEventLoop {
 			//	return 0;
 			//}
 			//this.ProcessEvent( ev );
-		}
-
+		//}
+		todoThrow( "idEventLoop::RunEventLoop while loop" );
 		return 0; // never reached
 	}
 

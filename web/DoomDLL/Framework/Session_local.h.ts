@@ -161,10 +161,10 @@ class idSessionLocal extends idSession {
 //	void				ShowLoadingGui();
 //
 //	void				ScrubSaveGameFileName( idStr &saveFileName ) const;
-//	idStr				GetAutoSaveName( const char *mapName ) const;
+	GetAutoSaveName ( mapName: string ): idStr { throw "placeholder"; }
 //
 //	bool				LoadGame(const char *saveName);
-//	bool				SaveGame(const char *saveName, bool autosave = false);
+	SaveGame(saveName:string, autosave = false):boolean { throw "placeholder"; }
 //
 //	const char			*GetAuthMsg( void );
 

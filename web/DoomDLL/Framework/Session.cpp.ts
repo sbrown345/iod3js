@@ -328,7 +328,7 @@ SESSION LOCAL
 //	this.insideExecuteMapChange = false;
 //
 //	// drop all guis
-//	SetGUI( NULL, NULL );
+//	this.SetGUI( null, null );
 //}
 //
 ///*
@@ -1121,22 +1121,22 @@ idSessionLocal.prototype.StartNewGame = function ( mapName: string, devmap: bool
 	this.MoveToNewMap( mapName );
 //#endif
 };
-//
-///*
-//===============
-//idSessionLocal::GetAutoSaveName
-//===============
-//*/
-//idStr idSessionLocal::GetAutoSaveName( const char *mapName ) const {
-//	const idDecl *mapDecl = declManager.FindType( DECL_MAPDEF, mapName, false );
-//	const idDeclEntityDef *mapDef = static_cast<const idDeclEntityDef *>( mapDecl );
-//	if ( mapDef ) {
-//		mapName = common.GetLanguageDict().GetString( mapDef.dict.GetString( "name", mapName ) );
-//	}
-//	// Fixme: Localization
-//	return va( "^3AutoSave:^0 %s", mapName );
-//}
-//
+
+/*
+===============
+idSessionLocal::GetAutoSaveName
+===============
+*/
+idSessionLocal.prototype.GetAutoSaveName = function ( mapName: string ): idStr {
+	var mapDecl = declManager.FindType( declType_t.DECL_MAPDEF, mapName, false );
+	var mapDef = static_cast<idDeclEntityDef>( mapDecl );
+	if ( mapDef ) {
+		mapName = common.GetLanguageDict ( ).GetString( mapDef.dict.GetString( "name", mapName ) );
+	}
+	// Fixme: Localization
+	return new idStr( va( "^3AutoSave:^0 %s", mapName ) );
+};
+
 /*
 ===============
 idSessionLocal::MoveToNewMap
@@ -1154,7 +1154,7 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 		this.SaveGame( this.GetAutoSaveName( mapName ), true );
 	}
 
-	this.SetGUI( NULL, NULL );
+	this.SetGUI( null, null );
 };
 
 ///*
@@ -1444,7 +1444,7 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 	if ( this.IsMultiplayer() ) {
 		// make sure the mp GUI isn't up, or when players get back in the
 		// map, mpGame's menu and the gui will be out of sync.
-		this.SetGUI( NULL, NULL );
+		this.SetGUI( null, null );
 	}
 
 	// mute sound
@@ -1809,12 +1809,16 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 //	}
 //}
 //
-///*
-//===============
-//idSessionLocal::SaveGame
-//===============
-//*/
-//bool idSessionLocal::SaveGame( const char *saveName, bool autosave ) {
+/*
+===============
+idSessionLocal::SaveGame
+===============
+*/
+idSessionLocal.prototype.SaveGame = function (saveName: string, autosave = false): boolean {
+	todo( "idSessionLocal::SaveGame" );
+	return false;
+
+
 //#ifdef	ID_DEDICATED
 //	common.Printf( "Dedicated servers cannot save games.\n" );
 //	return false;
@@ -1953,8 +1957,8 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 //
 //	return true;
 //#endif
-//}
-//
+};
+
 ///*
 //===============
 //idSessionLocal::LoadGame
@@ -2054,7 +2058,7 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 //
 //		ExecuteMapChange();
 //
-//		SetGUI( NULL, NULL );
+//		this.SetGUI( null, null );
 //	}
 //
 //	if ( this.loadingSaveGame ) {

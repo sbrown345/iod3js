@@ -1356,7 +1356,7 @@ function Win_Frame ( ): void {
 WinMain
 ==================
 */
-function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, /*LPSTR */lpCmdLine: string, /*int */nCmdShow: number): number {
+function WinMain ( /*HINSTANCE*/ hInstance: any, /*HINSTANCE */hPrevInstance: any, /*LPSTR */lpCmdLine: string, /*int */nCmdShow: number ): number {
 
 	var hcurSave = "wait";
 
@@ -1375,7 +1375,7 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 ////#endif
 
 ////	win32.hInstance = hInstance;
-    sys_cmdline = lpCmdLine;
+	sys_cmdline = lpCmdLine;
 
 ////	// done before Com/Sys_Init since we need this for error output
 ////	Sys_CreateConsole();
@@ -1388,7 +1388,7 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 ////	}
 
 	// get the initial time base
-	Sys_Milliseconds();
+	Sys_Milliseconds ( );
 
 ////#ifdef DEBUG
 ////	// disable the painfully slow MS heap check every 1024 allocs
@@ -1399,7 +1399,7 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 ////	Sys_FPU_SetPrecision( FPU_PRECISION_DOUBLE_EXTENDED );
 
 	common.Init( 0, /*NULL*/null, lpCmdLine );
-    
+
 ////#if TEST_FPU_EXCEPTIONS != 0
 ////	common.Printf( Sys_FPU_GetState() );
 ////#endif
@@ -1410,15 +1410,15 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 ////	}
 ////#endif
 
-	Sys_StartAsyncThread();
-	
+	Sys_StartAsyncThread ( );
+
 	// hide or show the early console as necessary
-	if ( win32.win_viewlog.GetInteger() || com_skipRenderer.GetBool() || idAsyncNetwork.serverDedicated.GetInteger() ) {
+	if ( win32.win_viewlog.GetInteger ( ) || com_skipRenderer.GetBool ( ) || idAsyncNetwork.serverDedicated.GetInteger ( ) ) {
 		Sys_ShowConsole( 1, true );
 	} else {
 		Sys_ShowConsole( 0, false );
 	}
-	
+
 ////#ifdef SET_THREAD_AFFINITY 
 ////	// give the main thread an affinity for the first cpu
 ////	SetThreadAffinityMask( GetCurrentThread(), 1 );
@@ -1427,20 +1427,20 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 	SetCursor( hcurSave );
 
 	// Launch the script debugger
-	if (strstrContains( lpCmdLine, "+debugger" ) ) {
+	if ( strstrContains( lpCmdLine, "+debugger" ) ) {
 		// DebuggerClientInit( lpCmdLine );
 		return 0;
 	}
 
 ////	::SetFocus( win32.hWnd );
 
-    // main game loop
-	while( 1 ) {
+	requestAnimationFrame( main_game_loop );
+	function main_game_loop ( ) {
 
-		Win_Frame();
+		Win_Frame ( );
 
 ////#ifdef DEBUG
-		Sys_MemFrame();
+		Sys_MemFrame ( );
 ////#endif
 
 ////		// set exceptions, even if some crappy syscall changes them!
@@ -1492,9 +1492,11 @@ function WinMain( /*HINSTANCE*/ hInstance:any, /*HINSTANCE */hPrevInstance:any, 
 ////		}
 ////#endif
 		// run the game
-		common.Frame();
+		common.Frame ( );
 
 		todoThrow( "put main loop in seperate fn" );
+
+		requestAnimationFrame( main_game_loop );
 	}
 
 	// never gets here

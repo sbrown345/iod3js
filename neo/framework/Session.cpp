@@ -1892,6 +1892,10 @@ idSessionLocal::SaveGame
 ===============
 */
 bool idSessionLocal::SaveGame( const char *saveName, bool autosave ) {
+#ifdef JS_CHANGES
+	return false;
+#endif
+
 #ifdef	ID_DEDICATED
 	common->Printf( "Dedicated servers cannot save games.\n" );
 	return false;
