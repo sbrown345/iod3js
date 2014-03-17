@@ -1070,7 +1070,7 @@ Draws the console with the solid background
 
 		for ( x = 0; x < i; x++ ) {
 			renderSystem.DrawSmallChar( SCREEN_WIDTH - ( i - x ) * SMALLCHAR_WIDTH,
-			( lines - ( SMALLCHAR_HEIGHT + SMALLCHAR_HEIGHT / 2 ) ), version[x], localConsole.charSetShader );
+			( lines - ( SMALLCHAR_HEIGHT + SMALLCHAR_HEIGHT / 2 ) ), version.data.charCodeAt( x ), localConsole.charSetShader );
 
 		}
 

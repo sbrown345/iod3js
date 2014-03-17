@@ -203,9 +203,9 @@ class idSessionLocal extends idSession {
 	mapSpawnData = new mapSpawnData_t;
 	currentMapName = new idStr;			// for checking reload on same level
 	mapSpawned:boolean;				// cleared on Stop()
-//
+
 	numClients: number/*int*/;				// from serverInfo
-//
+
 	logIndex:number/*int*/;
 //	logCmd_t			loggedUsercmds[MAX_LOGGED_USERCMDS];
 	statIndex:number/*int*/;
@@ -260,7 +260,7 @@ class idSessionLocal extends idSession {
 	msgRunning:boolean;
 	msgRetIndex:number/*int*/;
 	msgIgnoreButtons:boolean;
-//	
+
 	waitingOnBind:boolean;
 
 	whiteMaterial: idMaterial;
@@ -269,7 +269,7 @@ class idSessionLocal extends idSession {
 	wipeStartTic:number/*int*/;
 	wipeStopTic:number/*int*/;
 	wipeHold:boolean;
-//
+
 //#if ID_CONSOLE_LOCK
 	emptyDrawCount: number/*int*/;				// watchdog to force the main menu to restart
 //#endif
