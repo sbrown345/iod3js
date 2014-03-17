@@ -1033,7 +1033,8 @@ class idStr implements ITrackedObject {
 		}
 	}
 
-	static IsColor ( s: string ): boolean {
+	static IsColor(s: string): boolean {
+		assert( s.length === 1 );
 		return ( s[0] == C_COLOR_ESCAPE && s[1] != '\0' && s[1] != ' ' );
 	}
 
@@ -2352,16 +2353,16 @@ Safe strncpy that ensures a trailing zero
 =============
 */
 	static Copynz ( /*char **/dest: Uint8Array, /*const char **/src: string, /*int */destsize: number ): void {
-		if ( !src ) {
+		if ( src === null || src === undefined ) {
 			common.Warning( "idStr::Copynz: NULL src" );
 			return;
 		}
 		if ( destsize < 1 ) {
-			common.Warning( "idStr::Copynz: destsize < 1" ); 
+			common.Warning( "idStr::Copynz: destsize < 1" );
 			return;
 		}
-		strncpy( dest, src, destsize-1 );
-		dest[destsize-1] = 0;
+		strncpy( dest, src, destsize - 1 );
+		dest[destsize - 1] = 0;
 	}
 
 /////*

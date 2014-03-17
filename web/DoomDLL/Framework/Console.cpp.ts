@@ -864,7 +864,7 @@ Handles cursor positioning, line wrapping, etc
 		color = idStr.ColorIndex( C_COLOR_CYAN.charCodeAt( 0 ) );
 
 		while ( c = txt[txtIdx] /*(c = *(const unsigned char*)txt) != 0 */ ) {
-			if ( idStr.IsColor( txt ) ) {
+			if ( idStr.IsColor( txt[txtIdx]  ) ) {
 				if ( txt[txtIdx + 1] == C_COLOR_DEFAULT ) {
 					color = idStr.ColorIndex( C_COLOR_CYAN.charCodeAt( 0 ) );
 				} else {

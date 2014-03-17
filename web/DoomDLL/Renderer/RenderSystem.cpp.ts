@@ -2634,7 +2634,7 @@ Coordinates are at 640 by 480 virtual resolution
 		xx = x;
 		this.SetColor( setColor );
 		while ( $string[s] ) {
-			if ( idStr.IsColor( $string.substr( s ) ) ) {
+			if ( idStr.IsColor( $string.substr( s, 1 ) ) ) {
 				if ( !forceColor ) {
 					if ( $string[s + 1] == C_COLOR_DEFAULT ) {
 						this.SetColor( setColor );
