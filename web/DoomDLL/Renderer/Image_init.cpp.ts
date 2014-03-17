@@ -1635,8 +1635,8 @@ idImageManager.prototype.ImageFromFile = function ( _name: string, filter: textu
 ////	int		i;
 ////	idImage	*image;
 
-////	for ( i = 0; i < images.Num() ; i++ ) {
-////		image = images[i];
+////	for ( i = 0; i < this.images.Num() ; i++ ) {
+////		image = this.images[i];
 ////		image.PurgeImage();
 ////	}
 ////}
@@ -1875,8 +1875,8 @@ idImageManager.prototype.CompleteBackgroundImageLoads = function ( ) {
 ////	idImage	*image;
 
 ////	total = 0;
-////	for ( i = 0; i < images.Num(); i++ ) {
-////		image = images[i];
+////	for ( i = 0; i < this.images.Num(); i++ ) {
+////		image = this.images[i];
 ////		if ( image.frameUsed == backEnd.frameCount ) {
 ////			total += image.StorageSize();
 ////		}
@@ -1966,37 +1966,37 @@ idImageManager.prototype.Init = function ( ): void {
 ////===============
 ////*/
 ////void idImageManager::Shutdown() {
-////	images.DeleteContents( true );
+////	this.images.DeleteContents( true );
 ////}
 
-/////*
-////====================
-////BeginLevelLoad
+/*
+====================
+BeginLevelLoad
 
-////Mark all file based images as currently unused,
-////but don't free anything.  Calls to ImageFromFile() will
-////either mark the image as used, or create a new image without
-////loading the actual data.
-////====================
-////*/
-////void idImageManager::BeginLevelLoad() {
-////	insideLevelLoad = true;
+Mark all file based images as currently unused,
+but don't free anything.  Calls to ImageFromFile() will
+either mark the image as used, or create a new image without
+loading the actual data.
+====================
+*/
+idImageManager.prototype.BeginLevelLoad = function ( ) {
+	this.insideLevelLoad = true;
 
-////	for ( int i = 0 ; i < images.Num() ; i++ ) {
-////		idImage	*image = images[ i ];
+	for ( var i = 0; i < this.images.Num ( ); i++ ) {
+		var image = this.images[i];
 
-////		// generator function images are always kept around
-////		if ( image.generatorFunction ) {
-////			continue;
-////		}
+		// generator function images are always kept around
+		if ( image.generatorFunction ) {
+			continue;
+		}
 
-////		if ( com_purgeAll.GetBool() ) {
-////			image.PurgeImage();
-////		}
+		if ( com_purgeAll.GetBool ( ) ) {
+			image.PurgeImage ( );
+		}
 
-////		image.levelLoadReferenced = false;
-////	}
-////}
+		image.levelLoadReferenced = false;
+	}
+};
 
 /////*
 ////====================
@@ -2015,7 +2015,7 @@ idImageManager.prototype.Init = function ( ): void {
 ////void idImageManager::EndLevelLoad() {
 ////	int			start = Sys_Milliseconds();
 
-////	insideLevelLoad = false;
+////	this.insideLevelLoad = false;
 ////	if ( idAsyncNetwork::serverDedicated.GetInteger() ) {
 ////		return;
 ////	}
@@ -2027,8 +2027,8 @@ idImageManager.prototype.Init = function ( ): void {
 ////	int		loadCount = 0;
 
 ////	// purge the ones we don't need
-////	for ( int i = 0 ; i < images.Num() ; i++ ) {
-////		idImage	*image = images[ i ];
+////	for ( int i = 0 ; i < this.images.Num() ; i++ ) {
+////		idImage	*image = this.images[ i ];
 ////		if ( image.generatorFunction ) {
 ////			continue;
 ////		}
@@ -2044,8 +2044,8 @@ idImageManager.prototype.Init = function ( ): void {
 ////	}
 
 ////	// load the ones we do need, if we are preloading
-////	for ( int i = 0 ; i < images.Num() ; i++ ) {
-////		idImage	*image = images[ i ];
+////	for ( int i = 0 ; i < this.images.Num() ; i++ ) {
+////		idImage	*image = this.images[ i ];
 ////		if ( image.generatorFunction ) {
 ////			continue;
 ////		}
@@ -2161,15 +2161,15 @@ idImageManager.prototype.Init = function ( ): void {
 ////	}
 
 ////	// sort first
-////	sortIndex = new int[images.Num()];
+////	sortIndex = new int[this.images.Num()];
 
-////	for ( i = 0; i < images.Num(); i++ ) {
+////	for ( i = 0; i < this.images.Num(); i++ ) {
 ////		sortIndex[i] = i;
 ////	}
 
-////	for ( i = 0; i < images.Num() - 1; i++ ) {
-////		for ( j = i + 1; j < images.Num(); j++ ) {
-////			if ( images[sortIndex[i]].StorageSize() < images[sortIndex[j]].StorageSize() ) {
+////	for ( i = 0; i < this.images.Num() - 1; i++ ) {
+////		for ( j = i + 1; j < this.images.Num(); j++ ) {
+////			if ( this.images[sortIndex[i]].StorageSize() < this.images[sortIndex[j]].StorageSize() ) {
 ////				int temp = sortIndex[i];
 ////				sortIndex[i] = sortIndex[j];
 ////				sortIndex[j] = temp;
@@ -2178,8 +2178,8 @@ idImageManager.prototype.Init = function ( ): void {
 ////	}
 
 ////	// print next
-////	for ( i = 0; i < images.Num(); i++ ) {
-////		idImage *im = images[sortIndex[i]];
+////	for ( i = 0; i < this.images.Num(); i++ ) {
+////		idImage *im = this.images[sortIndex[i]];
 ////		int size;
 
 ////		size = im.StorageSize();

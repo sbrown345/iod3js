@@ -200,26 +200,26 @@ function R_InitTriSurfData( ):void {
 //	triDupVertAllocator.Shutdown();
 //}
 //
-///*
-//===============
-//R_PurgeTriSurfData
-//===============
-//*/
-//void R_PurgeTriSurfData( frameData_t *frame ) {
-//	// free deferred triangle surfaces
-//	R_FreeDeferredTriSurfs( frame );
-//
-//	// free empty base blocks
-//	triVertexAllocator.FreeEmptyBaseBlocks();
-//	triIndexAllocator.FreeEmptyBaseBlocks();
-//	triShadowVertexAllocator.FreeEmptyBaseBlocks();
-//	triPlaneAllocator.FreeEmptyBaseBlocks();
-//	triSilIndexAllocator.FreeEmptyBaseBlocks();
-//	triSilEdgeAllocator.FreeEmptyBaseBlocks();
-//	triDominantTrisAllocator.FreeEmptyBaseBlocks();
-//	triMirroredVertAllocator.FreeEmptyBaseBlocks();
-//	triDupVertAllocator.FreeEmptyBaseBlocks();
-//}
+/*
+===============
+R_PurgeTriSurfData
+===============
+*/
+function R_PurgeTriSurfData ( frame: frameData_t ): void {
+	// free deferred triangle surfaces
+	R_FreeDeferredTriSurfs( frame );
+
+	// free empty base blocks
+	triVertexAllocator.FreeEmptyBaseBlocks ( );
+	triIndexAllocator.FreeEmptyBaseBlocks ( );
+	triShadowVertexAllocator.FreeEmptyBaseBlocks ( );
+	triPlaneAllocator.FreeEmptyBaseBlocks ( );
+	triSilIndexAllocator.FreeEmptyBaseBlocks ( );
+	triSilEdgeAllocator.FreeEmptyBaseBlocks ( );
+	triDominantTrisAllocator.FreeEmptyBaseBlocks ( );
+	triMirroredVertAllocator.FreeEmptyBaseBlocks ( );
+	triDupVertAllocator.FreeEmptyBaseBlocks ( );
+}
 //
 ///*
 //===============

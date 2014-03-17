@@ -182,18 +182,18 @@ var WAVE_FORMAT_TAG_PCM = 1,
 ////
 ////class idWaveFile {
 ////public:
-////				    idWaveFile( void );
-////					~idWaveFile( void );
+////				    idWaveFile( );
+////					~idWaveFile( );
 ////
 ////    int				Open( const char* strFileName, waveformatex_t* pwfx = NULL );
 ////    int				OpenFromMemory( short* pbData, int ulDataSize, waveformatextensible_t* pwfx );
 ////    int				Read( byte* pBuffer, int dwSizeToRead, int *pdwSizeRead );
 ////	int				Seek( int offset );
-////    int				Close( void );
-////    int				ResetFile( void );
+////    int				Close( );
+////    int				ResetFile( );
 ////
-////	int				GetOutputSize( void ) { return mdwSize; }
-////	int				GetMemorySize( void ) { return mMemSize; }
+////	int				GetOutputSize( ) { return mdwSize; }
+////	int				GetMemorySize( ) { return mMemSize; }
 ////
 ////    waveformatextensible_t	mpwfx;        // Pointer to waveformatex structure
 ////
@@ -215,11 +215,11 @@ var WAVE_FORMAT_TAG_PCM = 1,
 ////	bool			isOgg;
 ////
 ////private:
-////    int				ReadMMIO( void );
+////    int				ReadMMIO( );
 ////
 ////    int				OpenOGG( const char* strFileName, waveformatex_t* pwfx = NULL );
 ////	int				ReadOGG( byte* pBuffer, int dwSizeToRead, int *pdwSizeRead );
-////	int				CloseOGG( void );
+////	int				CloseOGG( );
 ////};
 ////
 ////
@@ -245,13 +245,13 @@ var WAVE_FORMAT_TAG_PCM = 1,
 ////	
 ////	// try to write as many sound samples to the device as possible without blocking and prepare for a possible new mixing call
 ////	// returns wether there is *some* space for writing available
-////	virtual bool			Flush( void ) = 0;
+////	virtual bool			Flush( ) = 0;
 ////
 ////	virtual void			Write( bool flushing ) = 0;
 ////
-////	virtual int				GetNumberOfSpeakers( void )= 0;
-////	virtual int				GetMixBufferSize( void ) = 0;
-////	virtual short*			GetMixBuffer( void ) = 0;
+////	virtual int				GetNumberOfSpeakers( )= 0;
+////	virtual int				GetMixBufferSize( ) = 0;
+////	virtual short*			GetMixBuffer( ) = 0;
 ////};
 ////
 ////
@@ -266,9 +266,9 @@ var WAVE_FORMAT_TAG_PCM = 1,
 ////class idAudioBuffer {
 ////public:
 ////    virtual int 		Play( dword dwPriority=0, dword dwFlags=0 ) = 0;
-////    virtual int			Stop( void ) = 0;
-////    virtual int			Reset( void ) = 0;
-////    virtual bool		IsSoundPlaying( void ) = 0;
+////    virtual int			Stop( ) = 0;
+////    virtual int			Reset( ) = 0;
+////    virtual bool		IsSoundPlaying( ) = 0;
 ////    virtual void	 	SetVolume( float x ) = 0;
 ////};
 ////
@@ -410,7 +410,7 @@ class idSoundFade {
 ////
 ////class s_stats {
 ////public:
-////	s_stats( void ) {
+////	s_stats( ) {
 ////		rinuse = 0;
 ////		runs = 1;
 ////		timeinprocess = 0;
@@ -433,14 +433,14 @@ class idSoundFade {
 ////
 class idSoundWorldLocal extends idSoundWorld {
 ////public:
-////	virtual					~idSoundWorldLocal( void );
+////	virtual					~idSoundWorldLocal( );
 ////
 	// call at each map start
 	ClearAllSoundEmitters(  ):void { throw "placeholder"; }
 	StopAllSounds(  ):void { throw "placeholder"; }
 ////
 ////	// get a new emitter that can play sounds in this world
-////	virtual idSoundEmitter *AllocSoundEmitter( void );
+////	virtual idSoundEmitter *AllocSoundEmitter( );
 ////
 ////	// for load games
 ////	virtual idSoundEmitter *EmitterForIndex( int index );
@@ -458,7 +458,7 @@ class idSoundWorldLocal extends idSoundWorld {
 ////
 ////	// dumps the current state and begins archiving commands
 ////	virtual void			StartWritingDemo( idDemoFile *demo );
-////	virtual void			StopWritingDemo( void );
+////	virtual void			StopWritingDemo( );
 ////
 ////	// read a sound command from a demo file
 ////	virtual void			ProcessDemoCommand( idDemoFile *readDemo );
@@ -467,8 +467,8 @@ class idSoundWorldLocal extends idSoundWorld {
 ////	virtual void			PlayShaderDirectly( const char *name, int channel = -1 );
 ////
 ////	// pause and unpause the sound world
-////	virtual void			Pause( void );
-////	virtual void			UnPause( void );
+////	virtual void			Pause( );
+////	virtual void			UnPause( );
 	IsPaused ( ): boolean { throw "placeholder"; }
 ////
 ////	// avidump
@@ -490,11 +490,11 @@ class idSoundWorldLocal extends idSoundWorld {
 ////
 ////	//=======================================
 ////
-////							idSoundWorldLocal( void );
+////							idSoundWorldLocal( );
 ////
-////	void					Shutdown( void );
+////	void					Shutdown( );
 	Init ( rw: idRenderWorld ): void { throw "placeholder"; }
-////	void					ClearBuffer( void );
+////	void					ClearBuffer( );
 ////
 ////	// update
 ////	void					ForegroundUpdate( int currentTime );
@@ -505,7 +505,7 @@ class idSoundWorldLocal extends idSoundWorld {
 ////	void					AddChannelContribution( idSoundEmitterLocal *sound, idSoundChannel *chan,
 ////												int current44kHz, int numSpeakers, float *finalMixBuffer );
 ////	void					MixLoop( int current44kHz, int numSpeakers, float *finalMixBuffer );
-////	void					AVIUpdate( void );
+////	void					AVIUpdate( );
 ////	void					ResolveOrigin( const int stackDepth, const soundPortalTrace_t *prevStack, const int soundArea, const float dist, const idVec3& soundOrigin, idSoundEmitterLocal *def );
 ////	float					FindAmplitude( idSoundEmitterLocal *sound, const int localTime, const idVec3 *listenerPosition, const s_channelType channel, bool shakesOnly );
 ////
@@ -568,15 +568,15 @@ class idSoundSystemLocal extends idSoundSystem {
 	}
 ////
 ////	// all non-hardware initialization
-////	virtual void			Init( void );
+////	virtual void			Init( );
 ////
 ////	// shutdown routine
-////	virtual	void			Shutdown( void );
-////	virtual void			ClearBuffer( void );
+////	virtual	void			Shutdown( );
+////	virtual void			ClearBuffer( );
 ////
 ////	// sound is attached to the window, and must be recreated when the window is changed
-////	virtual bool			ShutdownHW( void );
-////	virtual bool			InitHW( void );
+////	virtual bool			ShutdownHW( );
+////	virtual bool			InitHW( );
 ////
 ////	// async loop, called at 60Hz
 ////	virtual int				AsyncUpdate( int time );
@@ -599,18 +599,18 @@ class idSoundSystemLocal extends idSoundSystem {
 ////
 ////	// some tools, like the sound dialog, may be used in both the game and the editor
 ////	// This can return NULL, so check!
-////	virtual idSoundWorld	*GetPlayingSoundWorld( void );
+////	virtual idSoundWorld	*GetPlayingSoundWorld( );
 ////
-////	virtual	void			BeginLevelLoad( void );
+	BeginLevelLoad( ):void { throw "placeholder"; }
 ////	virtual	void			EndLevelLoad( const char *mapString );
 ////
 ////	virtual void			PrintMemInfo( MemInfo_t *mi );
 ////
-////	virtual int				IsEAXAvailable( void );
+////	virtual int				IsEAXAvailable( );
 ////
 ////	//-------------------------
 ////
-////	int						GetCurrent44kHzTime( void ) const;
+////	int						GetCurrent44kHzTime( ) const;
 ////	float					dB2Scale( const float val ) const;
 ////	int						SamplesToMilliseconds( int samples ) const;
 ////	int						MillisecondsToSamples( int ms ) const;
@@ -658,8 +658,8 @@ class idSoundSystemLocal extends idSoundSystem {
 ////	EAXSetBufferMode		alEAXSetBufferMode;
 ////	EAXGetBufferMode		alEAXGetBufferMode;
 ////	idEFXFile				EFXDatabase;
-////	bool					efxloaded;
-////							// latches
+	efxloaded:boolean;
+	// latches
 	static useOpenAL: boolean;
 	static useEAXReverb: boolean;
 ////							// mark available during initialization, or through an explicit test
@@ -744,7 +744,7 @@ class idSoundSample {
 	levelLoadReferenced:boolean;		// so we can tell which samples aren't needed any more
 ////
 ////	int						LengthIn44kHzSamples() const;
-////	ID_TIME_T		 			GetNewTimeStamp( void ) const;
+////	ID_TIME_T		 			GetNewTimeStamp( ) const;
 ////	void					MakeDefault();				// turns it into a beep
 ////	void					Load();						// loads the current sound based on name
 ////	void					Reload( bool force );		// reloads if timestamp has changed, or always if force
@@ -764,18 +764,18 @@ class idSoundSample {
 
 class idSampleDecoder {
 ////public:
-////	static void				Init( void );
-////	static void				Shutdown( void );
-////	static idSampleDecoder *Alloc( void );
+////	static void				Init( );
+////	static void				Shutdown( );
+////	static idSampleDecoder *Alloc( );
 ////	static void				Free( idSampleDecoder *decoder );
-////	static int				GetNumUsedBlocks( void );
-////	static int				GetUsedBlockMemory( void );
+////	static int				GetNumUsedBlocks( );
+////	static int				GetUsedBlockMemory( );
 ////
-////	virtual					~idSampleDecoder( void ) {}
+////	virtual					~idSampleDecoder( ) {}
 ////	virtual void			Decode( idSoundSample *sample, int sampleOffset44k, int sampleCount44k, float *dest ) = 0;
-////	virtual void			ClearDecoder( void ) = 0;
-////	virtual idSoundSample *	GetSample( void ) const = 0;
-////	virtual int				GetLastDecodeTime( void ) const = 0;
+////	virtual void			ClearDecoder( ) = 0;
+////	virtual idSoundSample *	GetSample( ) const = 0;
+////	virtual int				GetLastDecodeTime( ) const = 0;
 };
 
 

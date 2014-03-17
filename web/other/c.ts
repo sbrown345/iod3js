@@ -291,6 +291,16 @@ function $delete(obj: any): void {
 	}
 }
 
+function $deleteArray ( arr: any[] ): void {
+	if ( !arr ) {
+		return;
+	}
+
+	for ( var i = 0; i < arr.length; i++ ) {
+		$delete( arr[i] );
+	}
+}
+
 function OutputDebugString ( msg: string ) {
 	console.debug( "OutputDebugString: " + msg );
 }

@@ -373,12 +373,12 @@ class idImageManager {
 	// disable the active texture unit
 	BindNull(): void { throw "placeholder"; }
 
-    ////	// Mark all file based images as currently unused,
-    ////	// but don't free anything.  Calls to ImageFromFile() will
-    ////	// either mark the image as used, or create a new image without
-    ////	// loading the actual data.
-    ////	// Called only by renderSystem::BeginLevelLoad
-    ////	void				BeginLevelLoad();
+    // Mark all file based images as currently unused,
+    // but don't free anything.  Calls to ImageFromFile() will
+    // either mark the image as used, or create a new image without
+    // loading the actual data.
+    // Called only by renderSystem::BeginLevelLoad
+    BeginLevelLoad():void { throw "placeholder"; }
 
     ////	// Free all images marked as unused, and load all images that are necessary.
     ////	// This architecture prevents us from having the union of two level's

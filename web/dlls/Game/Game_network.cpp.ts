@@ -59,7 +59,7 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////idGameLocal::InitAsyncNetwork
 ////================
 ////*/
-////void idGameLocal::InitAsyncNetwork( void ) {
+////void idGameLocal::InitAsyncNetwork( ) {
 ////	int i, type;
 ////
 ////	for ( i = 0; i < MAX_CLIENTS; i++ ) {
@@ -82,21 +82,26 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////	clientSmoothing = net_clientSmoothing.GetFloat();
 ////}
 ////
-/////*
-////================
-////idGameLocal::ShutdownAsyncNetwork
-////================
-////*/
-////void idGameLocal::ShutdownAsyncNetwork( void ) {
-////	entityStateAllocator.Shutdown();
-////	snapshotAllocator.Shutdown();
-////	eventQueue.Shutdown();
-////	savedEventQueue.Shutdown();
-////	memset( clientEntityStates, 0, sizeof( clientEntityStates ) );
-////	memset( clientPVS, 0, sizeof( clientPVS ) );
-////	memset( clientSnapshots, 0, sizeof( clientSnapshots ) );
-////}
-////
+/*
+================
+idGameLocal::ShutdownAsyncNetwork
+================
+*/
+idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
+	this.entityStateAllocator.Shutdown ( );
+	this.snapshotAllocator.Shutdown();
+	this.eventQueue.Shutdown();
+	this.savedEventQueue.Shutdown ( );
+	//memset(this.clientEntityStates, 0, sizeof(clientEntityStates));
+	for (var i = 0; i < MAX_CLIENTS; i++ ) {
+		for (var j = 0; j < MAX_GENTITIES; j++ ) {
+			this.clientEntityStates[i][j].init ( );
+		}
+	}
+	memset2DArray(this.clientPVS, 0); //memset(this.clientPVS, 0, sizeof(clientPVS));
+	clearStructArray(this.clientSnapshots);//memset(this.clientSnapshots, 0, sizeof( clientSnapshots ) );
+};
+
 /////*
 ////================
 ////idGameLocal::InitLocalClient
@@ -722,7 +727,7 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////idGameLocal::ServerProcessEntityNetworkEventQueue
 ////================
 ////*/
-////void idGameLocal::ServerProcessEntityNetworkEventQueue( void ) {
+////void idGameLocal::ServerProcessEntityNetworkEventQueue( ) {
 ////	idEntity			*ent;
 ////	entityNetEvent_t	*event;
 ////	idBitMsg			eventMsg;
@@ -1251,7 +1256,7 @@ var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | 
 ////idGameLocal::ClientProcessEntityNetworkEventQueue
 ////================
 ////*/
-////void idGameLocal::ClientProcessEntityNetworkEventQueue( void ) {
+////void idGameLocal::ClientProcessEntityNetworkEventQueue( ) {
 ////	idEntity			*ent;
 ////	entityNetEvent_t	*event;
 ////	idBitMsg			eventMsg;
@@ -1665,7 +1670,7 @@ idEventQueue.prototype.Init = function ( ): void {
 ////idEventQueue::Dequeue
 ////===============
 ////*/
-////entityNetEvent_t* idEventQueue::Dequeue( void ) {
+////entityNetEvent_t* idEventQueue::Dequeue( ) {
 ////	entityNetEvent_t* event = start;
 ////	if ( !event ) {
 ////		return NULL;
@@ -1690,7 +1695,7 @@ idEventQueue.prototype.Init = function ( ): void {
 ////idEventQueue::RemoveLast
 ////===============
 ////*/
-////entityNetEvent_t* idEventQueue::RemoveLast( void ) {
+////entityNetEvent_t* idEventQueue::RemoveLast( ) {
 ////	entityNetEvent_t *event = end;
 ////	if ( !event ) {
 ////		return NULL;

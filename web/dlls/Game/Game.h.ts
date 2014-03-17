@@ -111,9 +111,9 @@ class idGame {
 //	// Saves the current game state, the session may have written some data to the file already.
 //	virtual void				SaveGame( idFile *saveGameFile ) = 0;
 //
-//	// Shut down the current map.
-//	virtual void				MapShutdown( void ) = 0;
-//
+	// Shut down the current map.
+	MapShutdown(  ) :void { throw "placeholder"; }
+
 	// Caches media referenced from in key/value pairs in the given dictionary.
 	CacheDictionaryMedia ( dict: idDict ): void { throw "placeholder"; }
 //

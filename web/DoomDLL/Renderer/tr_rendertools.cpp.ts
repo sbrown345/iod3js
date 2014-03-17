@@ -1701,12 +1701,12 @@ function RB_ShowOverdraw ( ): void {
 //#endif
 //}
 //
-///*
-//================
-//RB_ClearDebugText
-//================
-//*/
-//void RB_ClearDebugText( /*int*/time:number ) {
+/*
+================
+RB_ClearDebugText
+================
+*/
+function RB_ClearDebugText ( /*int*/time: number ): void {
 //#if !defined(GL_ES_VERSION_2_0)
 //	int			i;
 //	int			num;
@@ -1737,8 +1737,8 @@ function RB_ShowOverdraw ( ): void {
 //	}
 //	rb_numDebugText = num;
 //#endif
-//}
-//
+}
+
 ///*
 //================
 //RB_AddDebugText
@@ -1944,12 +1944,12 @@ function RB_ShowOverdraw ( ): void {
 //#endif
 //}
 //
-///*
-//================
-//RB_ClearDebugLines
-//================
-//*/
-//void RB_ClearDebugLines( /*int*/time:number ) {
+/*
+================
+RB_ClearDebugLines
+================
+*/
+function RB_ClearDebugLines ( /*int*/time: number ): void {
 //#if !defined(GL_ES_VERSION_2_0)
 //	int			i;
 //	int			num;
@@ -1975,7 +1975,7 @@ function RB_ShowOverdraw ( ): void {
 //	}
 //	rb_numDebugLines = num;
 //#endif
-//}
+}
 //
 ///*
 //================
@@ -2065,13 +2065,13 @@ function RB_ShowOverdraw ( ): void {
 //	GL_State( GLS_DEFAULT );
 //#endif
 //}
-//
-///*
-//================
-//RB_ClearDebugPolygons
-//================
-//*/
-//void RB_ClearDebugPolygons( /*int*/time:number ) {
+
+/*
+================
+RB_ClearDebugPolygons
+================
+*/
+function RB_ClearDebugPolygons ( /*int*/time: number ): void {
 //#if !defined(GL_ES_VERSION_2_0)
 //	int				i;
 //	int				num;
@@ -2098,14 +2098,14 @@ function RB_ShowOverdraw ( ): void {
 //	}
 //	rb_numDebugPolygons = num;
 //#endif
-//}
-//
-///*
-//================
-//RB_AddDebugPolygon
-//================
-//*/
-//void RB_AddDebugPolygon( const idVec4 &color, const idWinding &winding, const int lifeTime, const bool depthTest ) {
+}
+
+/*
+================
+RB_AddDebugPolygon
+================
+*/
+function RB_AddDebugPolygon ( color: idVec4, winding: idWinding, lifeTime: number, depthTest: boolean ): void {
 //#if !defined(GL_ES_VERSION_2_0)
 //	debugPolygon_t *poly;
 //
@@ -2117,8 +2117,8 @@ function RB_ShowOverdraw ( ): void {
 //		poly.lifeTime	= rb_debugPolygonTime + lifeTime;
 //	}
 //#endif
-//}
-//
+}
+
 ///*
 //================
 //RB_ShowDebugPolygons

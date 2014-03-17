@@ -959,20 +959,20 @@ idPVS::Shutdown
 */
 	Shutdown ( ): void {
 		if ( this.connectedAreas ) {
-			//delete connectedAreas;
+			$delete( this.connectedAreas );
 			this.connectedAreas = null;
 		}
 		if ( this.areaQueue ) {
-			//delete areaQueue;
+			$delete( this.areaQueue );
 			this.areaQueue = null;
 		}
 		if ( this.areaPVS ) {
-			//delete areaPVS;
+			$delete( this.areaPVS );
 			this.areaPVS = null;
 		}
 		if ( this.currentPVS ) {
 			for ( var i = 0; i < MAX_CURRENT_PVS; i++ ) {
-				//delete currentPVS[i].pvs;
+				$delete( this.currentPVS[i].pvs );
 				this.currentPVS[i].pvs = null;
 			}
 		}

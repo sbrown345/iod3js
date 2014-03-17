@@ -40,17 +40,17 @@ class idRenderModelManagerLocal extends idRenderModelManager {
 ////
 //Init():void { throw "placeholder"; }
 ////	virtual void			Shutdown():void { throw "placeholder"; }
-////	virtual idRenderModel *	AllocModel():void { throw "placeholder"; }
+////	virtual idRenderModel *	AllocModel():idRenderModel { throw "placeholder"; }
 ////	virtual void			FreeModel( idRenderModel *model ):void { throw "placeholder"; }
-////	virtual idRenderModel *	FindModel( const char *modelName ):void { throw "placeholder"; }
-////	virtual idRenderModel *	CheckModel( const char *modelName ):void { throw "placeholder"; }
-////	virtual idRenderModel *	DefaultModel():void { throw "placeholder"; }
+////	virtual idRenderModel *	FindModel( const char *modelName ):idRenderModel { throw "placeholder"; }
+////	virtual idRenderModel *	CheckModel( const char *modelName ):idRenderModel { throw "placeholder"; }
+////	virtual idRenderModel *	DefaultModel():idRenderModel { throw "placeholder"; }
 ////	virtual void			AddModel( idRenderModel *model ):void { throw "placeholder"; }
 ////	virtual void			RemoveModel( idRenderModel *model ):void { throw "placeholder"; }
 ////	virtual void			ReloadModels( bool forceAll = false ):void { throw "placeholder"; }
 ////	virtual void			FreeModelVertexCaches():void { throw "placeholder"; }
 ////	virtual void			WritePrecacheCommands( idFile *file ):void { throw "placeholder"; }
-////	virtual void			BeginLevelLoad():void { throw "placeholder"; }
+	////BeginLevelLoad ( ): void { throw "placeholder"; }
 ////	virtual void			EndLevelLoad():void { throw "placeholder"; }
 ////
 ////	virtual	void			PrintMemInfo( MemInfo_t *mi ):void { throw "placeholder"; }
@@ -185,8 +185,8 @@ TouchModel_f( args:idCmdArgs ):void {
 ////=================
 ////*/
 ////void idRenderModelManagerLocal::WritePrecacheCommands( idFile *f ) {
-////	for ( int i = 0 ; i < models.Num() ; i++ ) {
-////		idRenderModel	*model = models[i];
+////	for ( int i = 0 ; i < this.models.Num() ; i++ ) {
+////		idRenderModel	*model = this.models[i];
 ////
 ////		if ( !model ) {
 ////			continue;
@@ -243,7 +243,7 @@ Init ():void {
 ////=================
 ////*/
 ////void idRenderModelManagerLocal::Shutdown() {
-////	models.DeleteContents( true );
+////	this.models.DeleteContents( true );
 ////	hash.Free();
 ////}
 
@@ -267,13 +267,13 @@ idRenderModelManagerLocal::GetModel
 ////	// see if it is already present
 ////	int key = hash.GenerateKey( modelName, false );
 ////	for ( int i = hash.First( key ); i != -1; i = hash.Next( i ) ) {
-////		idRenderModel *model = models[i];
+////		idRenderModel *model = this.models[i];
 ////
 ////		if ( canonical.Icmp( model.Name() ) == 0 ) {
 ////			if ( !model.IsLoaded() ) {
 ////				// reload it if it was purged
 ////				model.LoadModel();
-////			} else if ( insideLevelLoad && !model.IsLevelLoadReferenced() ) {
+////			} else if ( this.insideLevelLoad && !model.IsLevelLoadReferenced() ) {
 ////				// we are reusing a model already in memory, but
 ////				// touch all the materials to make sure they stay
 ////				// in memory as well
@@ -423,9 +423,9 @@ AddModel( model:idRenderModel ):void {
 ////=================
 ////*/
 ////void idRenderModelManagerLocal::RemoveModel( idRenderModel *model ) {
-////	int index = models.FindIndex( model );
+////	int index = this.models.FindIndex( model );
 ////	hash.RemoveIndex( hash.GenerateKey( model.Name(), false ), index );
-////	models.RemoveIndex( index );
+////	this.models.RemoveIndex( index );
 ////}
 ////
 /////*
@@ -443,8 +443,8 @@ AddModel( model:idRenderModel ):void {
 ////	R_FreeDerivedData();
 ////
 ////	// skip the default model at index 0
-////	for ( int i = 1 ; i < models.Num() ; i++ ) {
-////		idRenderModel	*model = models[i];
+////	for ( int i = 1 ; i < this.models.Num() ; i++ ) {
+////		idRenderModel	*model = this.models[i];
 ////
 ////		// we may want to allow world model reloading in the future, but we don't now
 ////		if ( !model.IsReloadable() ) {
@@ -477,34 +477,35 @@ AddModel( model:idRenderModel ):void {
 ////=================
 ////*/
 ////void idRenderModelManagerLocal::FreeModelVertexCaches() {
-////	for ( int i = 0 ; i < models.Num() ; i++ ) {
-////		idRenderModel *model = models[i];
+////	for ( int i = 0 ; i < this.models.Num() ; i++ ) {
+////		idRenderModel *model = this.models[i];
 ////		model.FreeVertexCache();
 ////	}
 ////}
 ////
-/////*
-////=================
-////idRenderModelManagerLocal::BeginLevelLoad
-////=================
-////*/
-////void idRenderModelManagerLocal::BeginLevelLoad() {
-////	insideLevelLoad = true;
-////
-////	for ( int i = 0 ; i < models.Num() ; i++ ) {
-////		idRenderModel *model = models[i];
-////
-////		if ( com_purgeAll.GetBool() && model.IsReloadable() ) {
-////			R_CheckForEntityDefsUsingModel( model );
-////			model.PurgeModel();
-////		}
-////
-////		model.SetLevelLoadReferenced( false );
-////	}
-////
-////	// purge unused triangle surface memory
-////	R_PurgeTriSurfData( frameData );
-////}
+/*
+=================
+idRenderModelManagerLocal::BeginLevelLoad
+=================
+*/
+	BeginLevelLoad ( ): void {
+		this.insideLevelLoad = true;
+
+		for ( var i = 0; i < this.models.Num ( ); i++ ) {
+			var model = this.models[i];
+
+			if ( com_purgeAll.GetBool ( ) && model.IsReloadable ( ) ) {
+				todoThrow ( );
+				//R_CheckForEntityDefsUsingModel( model );
+				//model.PurgeModel ( );
+			}
+
+			model.SetLevelLoadReferenced( false );
+		}
+
+		// purge unused triangle surface memory
+		R_PurgeTriSurfData( frameData );
+	}
 ////
 /////*
 ////=================
@@ -516,14 +517,14 @@ AddModel( model:idRenderModel ):void {
 ////
 ////	int start = Sys_Milliseconds();
 ////
-////	insideLevelLoad = false;
+////	this.insideLevelLoad = false;
 ////	int	purgeCount = 0;
 ////	int	keepCount = 0;
 ////	int	loadCount = 0;
 ////
 ////	// purge any models not touched
-////	for ( int i = 0 ; i < models.Num() ; i++ ) {
-////		idRenderModel *model = models[i];
+////	for ( int i = 0 ; i < this.models.Num() ; i++ ) {
+////		idRenderModel *model = this.models[i];
 ////
 ////		if ( !model.IsLevelLoadReferenced() && model.IsLoaded() && model.IsReloadable() ) {
 ////
@@ -547,8 +548,8 @@ AddModel( model:idRenderModel ):void {
 ////	R_PurgeTriSurfData( frameData );
 ////
 ////	// load any new ones
-////	for ( int i = 0 ; i < models.Num() ; i++ ) {
-////		idRenderModel *model = models[i];
+////	for ( int i = 0 ; i < this.models.Num() ; i++ ) {
+////		idRenderModel *model = this.models[i];
 ////
 ////		if ( model.IsLevelLoadReferenced() && !model.IsLoaded() && model.IsReloadable() ) {
 ////

@@ -114,7 +114,7 @@ class idRenderWorldLocal extends idRenderWorld {
 //	virtual bool			Trace( modelTrace_t &trace, const idVec3 &start, end:idVec3, const float radius, bool skipDynamic = true, bool skipPlayer = false ) const;
 //	virtual bool			FastWorldTrace( modelTrace_t &trace, const idVec3 &start, end:idVec3 ) const;
 //
-//	virtual void			DebugClearLines( /*int*/time:number );
+	DebugClearLines( /*int*/time:number ):void { throw "placeholder"; }
 //	virtual void			DebugLine( const idVec4 &color, const idVec3 &start, end:idVec3, const int lifetime = 0, const bool depthTest = false );
 //	virtual void			DebugArrow( const idVec4 &color, start:idVec3, end:idVec3, int size, const int lifetime = 0 );
 //	virtual void			DebugWinding( const idVec4 &color, const idWinding &w, const idVec3 &origin, const idMat3 &axis, const int lifetime = 0, const bool depthTest = false );
@@ -126,9 +126,9 @@ class idRenderWorldLocal extends idRenderWorld {
 //	virtual void			DebugCone( const idVec4 &color, const idVec3 &apex, const idVec3 &dir, float radius1, float radius2, const int lifetime = 0 );
 //	virtual void			DebugScreenRect( const idVec4 &color, const idScreenRect &rect, const viewDef_t *viewDef, const int lifetime = 0 );
 //	virtual void			DebugAxis( const idVec3 &origin, const idMat3 &axis );
-//
-//	virtual void			DebugClearPolygons( /*int*/time:number );
-//	virtual void			DebugPolygon( const idVec4 &color, const idWinding &winding, const int lifeTime = 0, const bool depthTest = false );
+
+	DebugClearPolygons( /*int*/time: number): void { throw "placeholder"; }
+	DebugPolygon ( color: idVec4, winding: idWinding, lifeTime: number = 0, depthTest: boolean = false ): void { throw "placeholder"; }
 //
 //	virtual void			DrawText( text:string, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align = 1, const int lifetime = 0, bool depthTest = false );
 //

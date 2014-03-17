@@ -1713,19 +1713,19 @@ idRenderWorldLocal.prototype.FreeInteractions = function ( ): void {
 //
 //	PushVolumeIntoTree_r( def, light, &sphere, numPoints, points, 0 );
 //}
-//
-////===================================================================
-//
-///*
-//====================
-//idRenderWorldLocal::DebugClearLines
-//====================
-//*/
-//void idRenderWorldLocal::DebugClearLines( /*int*/time:number ) {
-//	RB_ClearDebugLines( time );
-//	RB_ClearDebugText( time );
-//}
-//
+
+//===================================================================
+
+/*
+====================
+idRenderWorldLocal::DebugClearLines
+====================
+*/
+idRenderWorldLocal.prototype.DebugClearLines = function ( /*int*/time: number ): void {
+	RB_ClearDebugLines( time );
+	RB_ClearDebugText( time );
+};
+
 ///*
 //====================
 //idRenderWorldLocal::DebugLine
@@ -1999,25 +1999,25 @@ idRenderWorldLocal.prototype.FreeInteractions = function ( ): void {
 //	end = start + axis[2] * -20.0f;
 //	DebugArrow( colorBlue, start, end, 2 );
 //}
-//
-///*
-//====================
-//idRenderWorldLocal::DebugClearPolygons
-//====================
-//*/
-//void idRenderWorldLocal::DebugClearPolygons( /*int*/time:number ) {
-//	RB_ClearDebugPolygons( time );
-//}
-//
-///*
-//====================
-//idRenderWorldLocal::DebugPolygon
-//====================
-//*/
-//void idRenderWorldLocal::DebugPolygon( const idVec4 &color, const idWinding &winding, const int lifeTime, const bool depthTest ) {
-//	RB_AddDebugPolygon( color, winding, lifeTime, depthTest );
-//}
-//
+
+/*
+====================
+idRenderWorldLocal::DebugClearPolygons
+====================
+*/
+idRenderWorldLocal.prototype.DebugClearPolygons = function ( /*int*/time: number ): void {
+	RB_ClearDebugPolygons( time );
+};
+
+/*
+====================
+idRenderWorldLocal::DebugPolygon
+====================
+*/
+idRenderWorldLocal.prototype.DebugPolygon = function ( color: idVec4, winding: idWinding, lifeTime: number = 0, depthTest: boolean = false ): void {
+	RB_AddDebugPolygon( color, winding, lifeTime, depthTest );
+};
+
 ///*
 //================
 //idRenderWorldLocal::DebugScreenRect

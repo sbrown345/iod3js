@@ -312,7 +312,7 @@ SESSION LOCAL
 //	this.ClearWipe();
 //
 //	// clear mapSpawned and demo playing flags
-//	UnloadMap();
+//	this.UnloadMap();
 //
 //	// disconnect async client
 //	idAsyncNetwork.client.DisconnectFromServer();
@@ -756,51 +756,51 @@ idSessionLocal.prototype.CompleteWipe = function ( ) {
 //	this.writeDemo = NULL;
 //}
 //
-///*
-//================
-//idSessionLocal::StopPlayingRenderDemo
-//
-//Reports timeDemo numbers and finishes any avi recording
-//================
-//*/
-//void idSessionLocal::StopPlayingRenderDemo() {
-//	if ( !this.readDemo ) {
-//		this.timeDemo = TD_NO;
-//		return;
-//	}
-//
-//	// Record the stop time before doing anything that could be time consuming 
-//	int timeDemoStopTime = Sys_Milliseconds();
-//
-//	EndAVICapture();
-//
-//	this.readDemo.Close();
-//
-//	this.sw.StopAllSounds();
-//	soundSystem.SetPlayingSoundWorld( this.menuSoundWorld );
-//
-//	common.Printf( "stopped playing %s.\n", this.readDemo.GetName() );
-//	delete this.readDemo;
-//	this.readDemo = NULL;
-//
-//	if ( this.timeDemo ) {
-//		// report the stats
-//		float	demoSeconds = ( timeDemoStopTime - timeDemoStartTime ) * 0.001f;
-//		float	demoFPS = numDemoFrames / demoSeconds;
-//		idStr	message = va( "%i frames rendered in %3.1f seconds = %3.1f fps\n", numDemoFrames, demoSeconds, demoFPS );
-//
-//		common.Printf( message );
-//		if ( this.timeDemo == TD_YES_THEN_QUIT ) {
-//			cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "quit\n" );
-//		} else {
-//			soundSystem.SetMute( true );
-//			MessageBox( MSG_OK, message, "Time Demo Results", true );
-//			soundSystem.SetMute( false );
-//		}
-//		this.timeDemo = TD_NO;
-//	}
-//}
-//
+/*
+================
+idSessionLocal::StopPlayingRenderDemo
+
+Reports timeDemo numbers and finishes any avi recording
+================
+*/
+idSessionLocal.prototype.StopPlayingRenderDemo = function ( ) {
+	if ( !this.readDemo ) {
+		this.timeDemo = timeDemo_t.TD_NO;
+		return;
+	}
+	todoThrow ( );
+	//// Record the stop time before doing anything that could be time consuming 
+	//int timeDemoStopTime = Sys_Milliseconds();
+
+	//EndAVICapture();
+
+	//this.readDemo.Close();
+
+	//this.sw.StopAllSounds();
+	//soundSystem.SetPlayingSoundWorld( this.menuSoundWorld );
+
+	//common.Printf( "stopped playing %s.\n", this.readDemo.GetName() );
+	//delete this.readDemo;
+	//this.readDemo = NULL;
+
+	//if ( this.timeDemo ) {
+	//	// report the stats
+	//	float	demoSeconds = ( timeDemoStopTime - timeDemoStartTime ) * 0.001f;
+	//	float	demoFPS = numDemoFrames / demoSeconds;
+	//	idStr	message = va( "%i frames rendered in %3.1f seconds = %3.1f fps\n", numDemoFrames, demoSeconds, demoFPS );
+
+	//	common.Printf( message );
+	//	if ( this.timeDemo == TD_YES_THEN_QUIT ) {
+	//		cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "quit\n" );
+	//	} else {
+	//		soundSystem.SetMute( true );
+	//		MessageBox( MSG_OK, message, "Time Demo Results", true );
+	//		soundSystem.SetMute( false );
+	//	}
+	//	this.timeDemo = timeDemo_t.TD_NO;
+	//}
+};
+
 ///*
 //================
 //idSessionLocal::DemoShot
@@ -1322,36 +1322,36 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //	sec = ( endTime - startTime ) / 1000.0;
 //	common.Printf( "%i seconds of game, replayed in %5.1f seconds\n", count / 60, sec );
 //}
-//
-///*
-//===============
-//idSessionLocal::UnloadMap
-//
-//Performs cleanup that needs to happen between maps, or when a
-//game is exited.
-//Exits with mapSpawned = false
-//===============
-//*/
-//void idSessionLocal::UnloadMap() {
-//	StopPlayingRenderDemo();
-//
-//	// end the current map in the game
-//	if ( game ) {
-//		game.MapShutdown();
-//	}
-//
-//	if ( this.cmdDemoFile ) {
-//		fileSystem.CloseFile( this.cmdDemoFile );
-//		this.cmdDemoFile = NULL;
-//	}
-//
-//	if ( this.writeDemo ) {
-//		StopRecordingRenderDemo();
-//	}
-//
-//	this.mapSpawned = false;
-//}
-//
+
+/*
+===============
+idSessionLocal::UnloadMap
+
+Performs cleanup that needs to happen between maps, or when a
+game is exited.
+Exits with mapSpawned = false
+===============
+*/
+idSessionLocal.prototype.UnloadMap = function ( ) {
+	this.StopPlayingRenderDemo ( );
+
+	// end the current map in the game
+	if ( game ) {
+		game.MapShutdown ( );
+	}
+
+	if ( this.cmdDemoFile ) {
+		fileSystem.CloseFile( this.cmdDemoFile );
+		this.cmdDemoFile = null;
+	}
+
+	if ( this.writeDemo ) {
+		this.StopRecordingRenderDemo ( );
+	}
+
+	this.mapSpawned = false;
+};
+
 ///*
 //===============
 //idSessionLocal::LoadLoadingGui
@@ -1467,32 +1467,32 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 		// run the wipe to completion
 		this.CompleteWipe();
 	}
-	todoThrow ( );
-	//// extract the map name from serverinfo
-	//idStr mapString = mapSpawnData.serverInfo.GetString( "si_map" );
+	
+	// extract the map name from serverinfo
+	var mapString = this.mapSpawnData.serverInfo.GetString( "si_map" );
 
-	//idStr fullMapName = "maps/";
-	//fullMapName += mapString;
-	//fullMapName.StripFileExtension();
+	var fullMapName = new idStr( "maps/" );
+	fullMapName.Append( mapString );
+	fullMapName.StripFileExtension();
 
-	//// shut down the existing game if it is running
-	//UnloadMap();
+	// shut down the existing game if it is running
+	this.UnloadMap();
 
-	//// don't do the deferred caching if we are reloading the same map
-	//if ( fullMapName == this.currentMapName ) {
-	//	reloadingSameMap = true;
-	//} else {
-	//	reloadingSameMap = false;
-	//	this.currentMapName = fullMapName;
-	//}
+	// don't do the deferred caching if we are reloading the same map
+	if ( fullMapName == this.currentMapName ) {
+		reloadingSameMap = true;
+	} else {
+		reloadingSameMap = false;
+		this.currentMapName = fullMapName;
+	}
 
-	//// note which media we are going to need to load
-	//if ( !reloadingSameMap ) {
-	//	declManager.BeginLevelLoad();
-	//	renderSystem.BeginLevelLoad();
-	//	soundSystem.BeginLevelLoad();
-	//}
-
+	// note which media we are going to need to load
+	if ( !reloadingSameMap ) {
+		declManager.BeginLevelLoad();
+		renderSystem.BeginLevelLoad();
+		soundSystem.BeginLevelLoad();
+	}
+	todoThrow()
 	//uiManager.BeginLevelLoad();
 	//uiManager.Reload( true );
 
@@ -2762,7 +2762,7 @@ idSessionLocal.prototype.UpdateScreen = function ( outOfSequence: boolean= true 
 //			MoveToNewMap( args.Argv(1) );
 //		} else if ( !idStr.Icmp( args.Argv(0), "died" ) ) {
 //			// restart on the same map
-//			UnloadMap();
+//			this.UnloadMap();
 //			SetGUI(guiRestartMenu, NULL);
 //		} else if ( !idStr.Icmp( args.Argv(0), "disconnect" ) ) {
 //			cmdSystem.BufferCommandText( CMD_EXEC_INSERT, "stoprecording ; disconnect" );

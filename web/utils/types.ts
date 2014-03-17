@@ -156,6 +156,16 @@ function flatten3DArray <T>( arrayClass: any, array:Array<Array<T>> ): T {
     return flatArray;
 }
 
+function memset2DArray<T> ( array: Array<T>, val: number ): void {
+	var d1 = array;
+	for ( var i = 0; i < d1.length; i++ ) {
+		var d2 = d1[i];
+		for ( var j = 0; j < d2["length"]; j++ ) {
+			d2[j] = val;
+		}
+	}
+}
+
 function memset3DArray<T> ( array: Array<Array<T>>, val: number ): void {
 	var d1 = array;
 	for ( var i = 0; i < d1.length; i++ ) {

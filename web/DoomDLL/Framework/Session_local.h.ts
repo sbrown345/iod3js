@@ -286,7 +286,7 @@ class idSessionLocal extends idSession {
 //	void				StartRecordingRenderDemo( const char *name );
 //	void				StopRecordingRenderDemo();
 //	void				StartPlayingRenderDemo( idStr name );
-//	void				StopPlayingRenderDemo();
+	StopPlayingRenderDemo ( ): void { throw "placeholder"; }
 //	void				CompressDemoFile( const char *scheme, const char *name );
 //	void				TimeRenderDemo( const char *name, bool twice = false );
 //	void				AVIRenderDemo( const char *name );
@@ -309,7 +309,7 @@ class idSessionLocal extends idSession {
 //	void				SetBytesNeededForMapLoad( const char *mapName, int bytesNeeded );
 //
 	ExecuteMapChange ( noFadeWipe: boolean = false ): void { throw "placeholder"; }
-//	void				UnloadMap();
+	UnloadMap():void { throw "placeholder"; }
 //
 //	// return true if we actually waiting on an auth reply
 //	bool				MaybeWaitOnCDKey( void );
@@ -389,8 +389,8 @@ idSessionLocal::Clear
 
 		this.timeHitch = 0;
 
-		this.rw = NULL;
-		this.sw = NULL;
+		this.rw = null;
+		this.sw = null;
 		this.menuSoundWorld = null;
 		this.readDemo = null;
 		this.writeDemo = null;

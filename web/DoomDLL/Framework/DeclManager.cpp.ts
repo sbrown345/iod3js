@@ -220,7 +220,7 @@ class idDeclManagerLocal extends idDeclManager {
     Init( ):void{throw "placeholder";}
 ///*virtual void				*/Shutdown( ):void{throw "placeholder";}
 ///*virtual void				*/Reload( force:boolean ):void{throw "placeholder";}
-///*virtual void				*/BeginLevelLoad():void{throw "placeholder";}
+	BeginLevelLoad ( ): void { throw "placeholder"; }
 ///*virtual void				*/EndLevelLoad():void{throw "placeholder";}
     RegisterDeclType( typeName:string, type:declType_t , allocator: ()=> idDecl ):void{throw "placeholder";}
     RegisterDeclFolder( folder:string, extension:string, defaultType:declType_t ):void{throw "placeholder";}
@@ -267,13 +267,13 @@ class idDeclManagerLocal extends idDeclManager {
 
 	loadedFiles = new idList<idDeclFile>(idDeclFile, true);
     hashTables:idHashIndex[/*declType_t.DECL_MAX_TYPES*/];
-/*	idList<idDeclLocal *>		*/linearLists:idList<idDeclLocal>[]/*[declType_t.DECL_MAX_TYPES]*/;
+	linearLists:idList<idDeclLocal>[]/*[declType_t.DECL_MAX_TYPES]*/;
                                 implicitDecls:idDeclFile;	// this holds all the decls that were created because explicit
 												// text definitions were not found. Decls that became default
 												// because of a parse error are not in this list.
-/*	int							*/checksum:number;		// checksum of all loaded decl text
-/*	int							*/indent:number;			// for MediaPrint
-/*	bool						*/insideLevelLoad:boolean;
+	checksum:number/*int*/;		// checksum of all loaded decl text
+	indent:number/*int*/;			// for MediaPrint
+	insideLevelLoad:boolean;
 
     static decl_show = new idCVar("decl_show", "0", CVAR_SYSTEM, "set to 1 to print parses, 2 to also print references", 0, 2, ArgCompletion_Integer_Template(0, 2));
 
@@ -621,36 +621,37 @@ This is used during both the initial load, and any reloads
 */
 var/*int */c_savedMemory = 0;
 
-/*int*/ idDeclFile.prototype.LoadAndParse = function():number {
-    var /*int*/i: number, numTypes: number;
-    var src = new idLexer;
+/*int*/
+idDeclFile.prototype.LoadAndParse = function ( ): number {
+	var /*int*/i: number, numTypes: number;
+	var src = new idLexer;
 	var token = new idToken;
-	var/*int*/startMarker:number;
-    var buffer = new R < Uint8Array>( );
-	var /*int*/length:number, size: number;
-	var /*int*/sourceLine:number;
+	var /*int*/startMarker: number;
+	var buffer = new R<Uint8Array> ( );
+	var /*int*/length: number, size: number;
+	var /*int*/sourceLine: number;
 	var name = new idStr;
 	var newDecl: idDeclLocal;
-	var reparse:boolean;
+	var reparse: boolean;
 
 	// load the text
-	common.DPrintf( "...loading '%s'\n", this.fileName.c_str() );
-    var $timestamp = new R<number>( this.timestamp );
-	length = fileSystem.ReadFile( this.fileName.c_str(), /*(void **)&*/buffer, $timestamp );
-    this.timestamp = $timestamp.$;
+	common.DPrintf( "...loading '%s'\n", this.fileName.c_str ( ) );
+	var $timestamp = new R<number>( this.timestamp );
+	length = fileSystem.ReadFile( this.fileName.c_str ( ), /*(void **)&*/buffer, $timestamp );
+	this.timestamp = $timestamp.$;
 	if ( length == -1 ) {
-		common.FatalError( "couldn't load %s", this.fileName.c_str() );
+		common.FatalError( "couldn't load %s", this.fileName.c_str ( ) );
 		return 0;
 	}
 
-    if (!src.LoadMemory(buffer.$.toString(), length, this.fileName.c_str() ) ) {
-		common.Error( "Couldn't parse %s", this.c_str() );
+	if ( !src.LoadMemory( buffer.$.toString ( ), length, this.fileName.c_str ( ) ) ) {
+		common.Error( "Couldn't parse %s", this.c_str ( ) );
 		Mem_Free( buffer );
 		return 0;
 	}
 
 	// mark all the defs that were from the last reload of this file
-	for ( var decl:idDeclLocal = this.decls; decl; decl = decl.nextInFile ) {
+	for ( var decl: idDeclLocal = this.decls; decl; decl = decl.nextInFile ) {
 		decl.redefinedInReload = false;
 	}
 
@@ -661,23 +662,23 @@ var/*int */c_savedMemory = 0;
 	this.fileSize = length;
 
 	// scan through, identifying each individual declaration
-	while( 1 ) {
+	while ( 1 ) {
 
-		startMarker = src.GetFileOffset();
-		sourceLine = src.GetLineNum();
+		startMarker = src.GetFileOffset ( );
+		sourceLine = src.GetLineNum ( );
 
 		// parse the decl type name
-		if (!src.ReadToken(token) ) {
+		if ( !src.ReadToken( token ) ) {
 			break;
 		}
 
 		var identifiedType = declType_t.DECL_MAX_TYPES;
 
 		// get the decl type from the type name
-		numTypes = declManagerLocal.GetNumDeclTypes();
+		numTypes = declManagerLocal.GetNumDeclTypes ( );
 		for ( i = 0; i < numTypes; i++ ) {
 			var typeInfo: idDeclType = declManagerLocal.GetDeclType( i );
-			if (typeInfo && typeInfo.typeName.Icmp( token.data ) == 0 ) {
+			if ( typeInfo && typeInfo.typeName.Icmp( token.data ) == 0 ) {
 				identifiedType = typeInfo.type;
 				break;
 			}
@@ -685,7 +686,7 @@ var/*int */c_savedMemory = 0;
 
 		if ( i >= numTypes ) {
 
-			if (token.Icmp( "{" ) == 0 ) {
+			if ( token.Icmp( "{" ) == 0 ) {
 
 				// if we ever see an open brace, we somehow missed the [type] <name> prefix
 				src.Warning( "Missing decl name" );
@@ -710,7 +711,7 @@ var/*int */c_savedMemory = 0;
 			break;
 		}
 
-		if (!token.Icmp( "{" ) ) {
+		if ( !token.Icmp( "{" ) ) {
 			// if we ever see an open brace, we somehow missed the [type] <name> prefix
 			src.Warning( "Missing decl name" );
 			src.SkipBracedSection( false );
@@ -718,8 +719,8 @@ var/*int */c_savedMemory = 0;
 		}
 
 		// FIXME: export decls are only used by the model exporter, they are skipped here for now
-		if (identifiedType == declType_t.DECL_MODELEXPORT ) {
-			src.SkipBracedSection();
+		if ( identifiedType == declType_t.DECL_MODELEXPORT ) {
+			src.SkipBracedSection ( );
 			continue;
 		}
 
@@ -728,19 +729,19 @@ var/*int */c_savedMemory = 0;
 		assert( src.buffer.indexOf( "<!DOCTYPE html" ) === -1 );
 
 		// make sure there's a '{'
-		if ( !src.ReadToken(token) ) {
+		if ( !src.ReadToken( token ) ) {
 			src.Warning( "Type without definition at end of file" );
 			break;
 		}
-		if ( token.c_str() != "{" ) {
-			src.Warning("Expecting '{' but found '%s'", token.c_str() );
+		if ( token.c_str ( ) != "{" ) {
+			src.Warning( "Expecting '{' but found '%s'", token.c_str ( ) );
 			continue;
 		}
 		src.UnreadToken( token );
 
 		// now take everything until a matched closing brace
-		src.SkipBracedSection();
-		size = src.GetFileOffset() - startMarker;
+		src.SkipBracedSection ( );
+		size = src.GetFileOffset ( ) - startMarker;
 
 		// look it up, possibly getting a newly created default decl
 		reparse = false;
@@ -749,7 +750,7 @@ var/*int */c_savedMemory = 0;
 			// update the existing copy
 			if ( newDecl.sourceFile != this || newDecl.redefinedInReload ) {
 				src.Warning( "%s '%s' previously defined at %s:%i", declManagerLocal.GetDeclNameFromType( identifiedType ),
-								name.c_str(), newDecl.sourceFile.fileName.c_str(), newDecl.sourceLine );
+					name.c_str ( ), newDecl.sourceFile.fileName.c_str ( ), newDecl.sourceLine );
 				continue;
 			}
 			if ( newDecl.declState != declState_t.DS_UNPARSED ) {
@@ -766,10 +767,10 @@ var/*int */c_savedMemory = 0;
 
 		if ( newDecl.textSource ) {
 			Mem_Free( newDecl.textSource );
-			newDecl.textSource = null/*NULL*/;
+			newDecl.textSource = null /*NULL*/;
 		}
 
-		newDecl.SetTextLocal( buffer.$.subarray(startMarker), size );
+		newDecl.SetTextLocal( buffer.$.subarray( startMarker ), size );
 		newDecl.sourceFile = this;
 		newDecl.sourceTextOffset = startMarker;
 		newDecl.sourceTextLength = size;
@@ -778,25 +779,25 @@ var/*int */c_savedMemory = 0;
 
 		// if it is currently in use, reparse it immedaitely
 		if ( reparse ) {
-			newDecl.ParseLocal();
+			newDecl.ParseLocal ( );
 		}
 	}
 
-	this.numLines = src.GetLineNum();
+	this.numLines = src.GetLineNum ( );
 
 	Mem_Free( buffer );
 
 	// any defs that weren't redefinedInReload should now be defaulted
-	for (var decl: idDeclLocal = this.decls ; decl ; decl = decl.nextInFile ) {
+	for ( var decl: idDeclLocal = this.decls; decl; decl = decl.nextInFile ) {
 		if ( decl.redefinedInReload == false ) {
-			decl.MakeDefault();
+			decl.MakeDefault ( );
 			decl.sourceTextOffset = decl.sourceFile.fileSize;
 			decl.sourceTextLength = 0;
 			decl.sourceLine = decl.sourceFile.numLines;
 		}
 	}
 	return this.checksum;
-}
+};
 
 /////*
 ////====================================================================================
@@ -939,24 +940,24 @@ idDeclManagerLocal.prototype.Init = function( ):void {
 ////	}
 ////}
 
-/////*
-////===================
-////idDeclManagerLocal::BeginLevelLoad
-////===================
-////*/
-////void idDeclManagerLocal::BeginLevelLoad() {
-////	this.insideLevelLoad = true;
+/*
+===================
+idDeclManagerLocal::BeginLevelLoad
+===================
+*/
+idDeclManagerLocal.prototype.BeginLevelLoad = function ( ): void {
+	this.insideLevelLoad = true;
 
-////	// clear all the referencedThisLevel flags and purge all the data
-////	// so the next reference will cause a reparse
-////	for ( int i = 0; i < declType_t.DECL_MAX_TYPES; i++ ) {
-////		int	num = linearLists[i].Num();
-////		for ( int j = 0 ; j < num ; j++ ) {
-////			idDeclLocal *decl = linearLists[i][j];
-////			decl.Purge();
-////		}
-////	}
-////}
+	// clear all the referencedThisLevel flags and purge all the data
+	// so the next reference will cause a reparse
+	for ( var i = 0; i < declType_t.DECL_MAX_TYPES; i++ ) {
+		var num = this.linearLists[i].Num ( );
+		for ( var j = 0; j < num; j++ ) {
+			var decl = this.linearLists[i][j];
+			decl.Purge ( );
+		}
+	}
+};
 
 /////*
 ////===================

@@ -457,11 +457,11 @@ class idRenderWorld {
 //	// this is used to regenerate all interactions ( which is currently only done during influences ), there may be a less 
 //	// expensive way to do it
 //	virtual void			RegenerateWorld() = 0;
-//
-//	//-------------- Debug Visualization  -----------------
-//
-//	// Line drawing for debug visualization
-//	virtual void			DebugClearLines( /*int*/time:number ) = 0;		// a time of 0 will clear all lines and text
+
+	//-------------- Debug Visualization  -----------------
+
+	// Line drawing for debug visualization
+	DebugClearLines ( /*int*/time: number ): void { throw "placeholder"; } // a time of 0 will clear all lines and text
 //	virtual void			DebugLine( const idVec4 &color, start:idVec3, const idVec3 &end, const int lifetime = 0, const bool depthTest = false ) = 0;
 //	virtual void			DebugArrow( const idVec4 &color, start:idVec3, end:idVec3, int size, const int lifetime = 0 ) = 0;
 //	virtual void			DebugWinding( const idVec4 &color, const idWinding &w, const idVec3 &origin, const idMat3 &axis, const int lifetime = 0, const bool depthTest = false ) = 0;
@@ -473,9 +473,9 @@ class idRenderWorld {
 //	virtual void			DebugCone( const idVec4 &color, const idVec3 &apex, const idVec3 &dir, float radius1, float radius2, const int lifetime = 0 ) = 0;
 //	virtual void			DebugAxis( const idVec3 &origin, const idMat3 &axis ) = 0;
 //
-//	// Polygon drawing for debug visualization.
-//	virtual void			DebugClearPolygons( /*int*/time:number ) = 0;		// a time of 0 will clear all polygons
-//	virtual void			DebugPolygon( const idVec4 &color, const idWinding &winding, const int lifeTime = 0, const bool depthTest = false ) = 0;
+	// Polygon drawing for debug visualization.
+	DebugClearPolygons( /*int*/time:number ):void { throw "placeholder"; }		// a time of 0 will clear all polygons
+	DebugPolygon ( color: idVec4, winding: idWinding, lifeTime: number = 0, depthTest: boolean = false ): void { throw "placeholder"; }
 //
 //	// Text drawing for debug visualization.
 //	virtual void			DrawText( text:string, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align = 1, const int lifetime = 0, bool depthTest = false ) = 0;

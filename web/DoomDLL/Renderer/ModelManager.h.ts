@@ -49,8 +49,8 @@ class idRenderModelManager {
 ////	// frees all the models
 ////	virtual	void			Shutdown() = 0;
 ////
-////	// called only by renderer::BeginLevelLoad
-////	virtual void			BeginLevelLoad() = 0;
+	// called only by renderer::BeginLevelLoad
+	BeginLevelLoad():void { throw "placeholder"; }
 ////
 ////	// called only by renderer::EndLevelLoad
 ////	virtual void			EndLevelLoad() = 0;

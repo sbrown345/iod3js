@@ -41,7 +41,7 @@ If you have questions concerning this license or the applicable additional terms
 
 var glConfig = new glconfig_t ( );
 
-////static void GfxInfo_f( void );
+////static void GfxInfo_f( );
 
 var r_inhibitFragmentProgram = new idCVar( "r_inhibitFragmentProgram", "0", CVAR_RENDERER | CVAR_BOOL, "ignore the fragment program extension" );
 var r_glDriver = new idCVar( "r_glDriver", "", CVAR_RENDERER, "\"opengl32\", etc." );
@@ -1334,7 +1334,7 @@ GL_CheckErrors
 ////Save out a screenshot showing the stencil buffer expanded by 16x range
 ////===============
 ////*/
-////void R_StencilShot( void ) {
+////void R_StencilShot( ) {
 ////	byte		*buffer;
 ////	int			i, c;
 
@@ -1921,7 +1921,7 @@ R_InitMaterials( ):void {
 ////R_InitCvars
 ////=================
 ////*/
-////void R_InitCvars( void ) {
+////void R_InitCvars( ) {
 ////	// update latched cvars here
 ////}
 
@@ -2061,7 +2061,7 @@ idRenderSystemLocal::Init
 ////idRenderSystemLocal::Shutdown
 ////===============
 ////*/
-////void idRenderSystemLocal::Shutdown( void ) {	
+////void idRenderSystemLocal::Shutdown( ) {	
 ////	common.Printf( "idRenderSystem::Shutdown()\n" );
 
 ////	R_DoneFreeType( );
@@ -2101,22 +2101,22 @@ idRenderSystemLocal::Init
 ////	ShutdownOpenGL();
 ////}
 
-/////*
-////========================
-////idRenderSystemLocal::BeginLevelLoad
-////========================
-////*/
-////void idRenderSystemLocal::BeginLevelLoad( void ) {
-////	renderModelManager.BeginLevelLoad();
-////	globalImages.BeginLevelLoad();
-////}
+/*
+========================
+idRenderSystemLocal::BeginLevelLoad
+========================
+*/
+	BeginLevelLoad ( ): void {
+		renderModelManager.BeginLevelLoad ( );
+		globalImages.BeginLevelLoad ( );
+	}
 
 /////*
 ////========================
 ////idRenderSystemLocal::EndLevelLoad
 ////========================
 ////*/
-////void idRenderSystemLocal::EndLevelLoad( void ) {
+////void idRenderSystemLocal::EndLevelLoad( ) {
 ////	renderModelManager.EndLevelLoad();
 ////	globalImages.EndLevelLoad();
 ////	if ( r_forceLoadImages.GetBool() ) {
@@ -2150,7 +2150,7 @@ idRenderSystemLocal::InitOpenGL
 ////idRenderSystemLocal::ShutdownOpenGL
 ////========================
 ////*/
-////void idRenderSystemLocal::ShutdownOpenGL( void ) {
+////void idRenderSystemLocal::ShutdownOpenGL( ) {
 ////	// free the context and close the window
 ////	R_ShutdownFrameData();
 ////	GLimp_Shutdown();
@@ -2162,7 +2162,7 @@ idRenderSystemLocal::InitOpenGL
 ////idRenderSystemLocal::IsOpenGLRunning
 ////========================
 ////*/
-////bool idRenderSystemLocal::IsOpenGLRunning( void ) const {
+////bool idRenderSystemLocal::IsOpenGLRunning( ) const {
 ////	if ( !glConfig.isInitialized ) {
 ////		return false;
 ////	}
@@ -2491,7 +2491,7 @@ See if some cvars that we watch have changed
 ////idRenderSystemLocal::idRenderSystemLocal
 ////=============
 ////*/
-////idRenderSystemLocal::idRenderSystemLocal( void ) {
+////idRenderSystemLocal::idRenderSystemLocal( ) {
 ////	Clear();
 ////}
 
@@ -2500,7 +2500,7 @@ See if some cvars that we watch have changed
 ////idRenderSystemLocal::~idRenderSystemLocal
 ////=============
 ////*/
-////idRenderSystemLocal::~idRenderSystemLocal( void ) {
+////idRenderSystemLocal::~idRenderSystemLocal( ) {
 ////}
 
 /*

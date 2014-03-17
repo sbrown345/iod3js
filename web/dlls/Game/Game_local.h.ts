@@ -529,7 +529,7 @@ class idGameLocal extends idGame {
 ////	void					SpawnMapEntities( ):void { throw "placeholder"; }
 ////							// commons used by init, shutdown, and restart
 ////	void					MapPopulate( ):void { throw "placeholder"; }
-////	void					MapClear( bool clearClients );
+	MapClear ( clearClients: boolean ): void { throw "placeholder"; }
 
 ////	pvsHandle_t				GetClientPVS( idPlayer *player, pvsType_t type );
 ////	void					SetupPlayerPVS( ):void { throw "placeholder"; }
@@ -545,7 +545,7 @@ class idGameLocal extends idGame {
 	ShutdownConsoleCommands ( ): void { throw "placeholder"; }
 
 ////	void					InitAsyncNetwork( ):void { throw "placeholder"; }
-////	void					ShutdownAsyncNetwork( ):void { throw "placeholder"; }
+	ShutdownAsyncNetwork ( ): void { throw "placeholder"; }
 ////	void					InitLocalClient( int clientNum );
 ////	void					InitClientDeclRemap( int clientNum );
 ////	void					ServerSendDeclRemapToClient( int clientNum, declType_t type, int index );

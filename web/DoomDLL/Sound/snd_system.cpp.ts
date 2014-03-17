@@ -299,12 +299,12 @@ var soundSystem = soundSystemLocal;
 ////
 ////	common.Printf( "----- Initializing Sound System ------\n" );
 ////
-////	isInitialized = false;
+////	this.isInitialized = false;
 ////	muted = false;
 ////	shutdown = false;
 ////
 ////	currentSoundWorld = NULL;
-////	soundCache = NULL;
+////	this.soundCache = NULL;
 ////
 ////	olddwCurrentWritePos = 0;
 ////	buffers = 0;
@@ -327,7 +327,7 @@ var soundSystem = soundSystemLocal;
 ////
 ////	if ( !s_noSound.GetBool() ) {
 ////		idSampleDecoder::Init();
-////		soundCache = new idSoundCache();
+////		this.soundCache = new idSoundCache();
 ////	}
 ////
 ////	// set up openal device and context
@@ -442,7 +442,7 @@ var soundSystem = soundSystemLocal;
 ////	// destroy openal sources
 ////	if ( useOpenAL ) {
 ////		
-////		efxloaded = false;
+////		this.efxloaded = false;
 ////
 ////		// adjust source count back up to allow for freeing of all resources
 ////		openalSourceCount += 8;
@@ -466,8 +466,8 @@ var soundSystem = soundSystemLocal;
 ////	}
 ////
 ////	// destroy all the sounds (hardware buffers as well)
-////	delete soundCache;
-////	soundCache = NULL;
+////	delete this.soundCache;
+////	this.soundCache = NULL;
 ////
 ////	// destroy openal device and context
 ////	if ( useOpenAL ) {
@@ -517,7 +517,7 @@ var soundSystem = soundSystemLocal;
 ////		s_numberOfSpeakers.SetInteger( snd_audio_hw.GetNumberOfSpeakers() );
 ////	}
 ////
-////	isInitialized = true;
+////	this.isInitialized = true;
 ////	shutdown = false;
 ////
 ////	return true;
@@ -529,7 +529,7 @@ var soundSystem = soundSystemLocal;
 ////===============
 ////*/
 ////bool idSoundSystemLocal::ShutdownHW() {
-////	if ( !isInitialized ) {
+////	if ( !this.isInitialized ) {
 ////		return false;
 ////	}
 ////
@@ -541,7 +541,7 @@ var soundSystem = soundSystemLocal;
 ////	delete snd_audio_hw;
 ////	snd_audio_hw = NULL;
 ////
-////	isInitialized = false;
+////	this.isInitialized = false;
 ////
 ////	if ( graph ) {
 ////		Mem_Free( graph );
@@ -600,7 +600,7 @@ var soundSystem = soundSystemLocal;
 ////int idSoundSystemLocal::AsyncMix( int soundTime, float *mixBuffer ) {
 ////	int	inTime, numSpeakers;
 ////
-////	if ( !isInitialized || shutdown || !snd_audio_hw ) {
+////	if ( !this.isInitialized || shutdown || !snd_audio_hw ) {
 ////		return 0;
 ////	}
 ////
@@ -625,7 +625,7 @@ var soundSystem = soundSystemLocal;
 ////*/
 ////int idSoundSystemLocal::AsyncUpdate( int inTime ) {
 ////
-////	if ( !isInitialized || shutdown || !snd_audio_hw ) {
+////	if ( !this.isInitialized || shutdown || !snd_audio_hw ) {
 ////		return 0;
 ////	}
 ////
@@ -747,7 +747,7 @@ var soundSystem = soundSystemLocal;
 ////*/
 ////int idSoundSystemLocal::AsyncUpdateWrite( int inTime ) {
 ////
-////	if ( !isInitialized || shutdown || !snd_audio_hw ) {
+////	if ( !this.isInitialized || shutdown || !snd_audio_hw ) {
 ////		return 0;
 ////	}
 ////
@@ -838,7 +838,7 @@ var soundSystem = soundSystemLocal;
 ////	cinData_t ret;
 ////	int i, j;
 ////
-////	if ( !isInitialized || !snd_audio_hw ) {
+////	if ( !this.isInitialized || !snd_audio_hw ) {
 ////		memset( &ret, 0, sizeof( ret ) );
 ////		return ret;
 ////	}
@@ -1104,34 +1104,35 @@ idSoundSystemLocal.prototype.SetMute = function ( muteOn: boolean ): void {
 ////	return currentSoundWorld;
 ////}
 ////
-/////*
-////===================
-////idSoundSystemLocal::BeginLevelLoad
-////===================
-////*/
-////
-////void idSoundSystemLocal::BeginLevelLoad() {
-////	if ( !isInitialized ) {
-////		return;
-////	}
-////	soundCache.BeginLevelLoad();
-////	
-////	if ( efxloaded ) {
-////		EFXDatabase.UnloadFile();
-////		efxloaded = false;
-////	}
-////}
-////
+/*
+===================
+idSoundSystemLocal::BeginLevelLoad
+===================
+*/
+
+idSoundSystemLocal.prototype.BeginLevelLoad = function ( ): void {
+	if ( !this.isInitialized ) {
+		return;
+	}
+	this.soundCache.BeginLevelLoad ( );
+
+	if ( this.efxloaded ) {
+		todoThrow ( );
+		//EFXDatabase.UnloadFile ( );
+		//this.efxloaded = false;
+	}
+};
+
 /////*
 ////===================
 ////idSoundSystemLocal::EndLevelLoad
 ////===================
 ////*/
 ////void idSoundSystemLocal::EndLevelLoad( const char *mapstring ) {
-////	if ( !isInitialized ) {
+////	if ( !this.isInitialized ) {
 ////		return;
 ////	}
-////	soundCache.EndLevelLoad();
+////	this.soundCache.EndLevelLoad();
 ////
 ////	idStr efxname( "efxs/" );
 ////	idStr mapname( mapstring );
@@ -1140,9 +1141,9 @@ idSoundSystemLocal.prototype.SetMute = function ( muteOn: boolean ): void {
 ////	mapname.StripPath();
 ////	efxname += mapname;
 ////
-////	efxloaded = EFXDatabase.LoadFile( efxname );
+////	this.efxloaded = EFXDatabase.LoadFile( efxname );
 ////
-////	if ( efxloaded ) {
+////	if ( this.efxloaded ) {
 ////		common.Printf("sound: found %s\n", efxname.c_str() );
 ////	} else {
 ////		common.Printf("sound: missing %s\n", efxname.c_str() );
@@ -1418,7 +1419,7 @@ idSoundSystemLocal.prototype.SetMute = function ( muteOn: boolean ): void {
 ////=================
 ////*/
 ////void idSoundSystemLocal::PrintMemInfo( MemInfo_t *mi ) {
-////	soundCache.PrintMemInfo( mi );
+////	this.soundCache.PrintMemInfo( mi );
 ////}
 ////
 /////*
