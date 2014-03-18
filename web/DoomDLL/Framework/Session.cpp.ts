@@ -1536,7 +1536,7 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 	common.Printf( "Map: %s\n", mapString.c_str() );
 
 	// let the renderSystem load all the geometry
-	if ( !this.rw.InitFromMap( fullMapName ) ) {
+	if (!this.rw.InitFromMap(fullMapName.c_str() ) ) {
 		common.Error( "couldn't load %s", fullMapName.c_str() );
 	}
 
@@ -1553,18 +1553,18 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 todoThrow()
 	//// load and spawn all other entities ( from a savegame possibly )
 	//if ( this.loadingSaveGame && this.savegameFile ) {
-	//	if ( game.InitFromSaveGame( fullMapName + ".map", this.rw, this.sw, this.savegameFile ) == false ) {
+	//	if ( game.InitFromSaveGame( fullMapName.c_str() + ".map", this.rw, this.sw, this.savegameFile ) == false ) {
 	//		// If the loadgame failed, restart the map with the player persistent data
 	//		this.loadingSaveGame = false;
 	//		fileSystem.CloseFile( this.savegameFile );
 	//		this.savegameFile = NULL;
 
 	//		game.SetServerInfo( this.mapSpawnData.serverInfo );
-	//		game.InitFromNewMap( fullMapName + ".map", this.rw, this.sw, idAsyncNetwork.server.IsActive(), idAsyncNetwork.client.IsActive(), Sys_Milliseconds() );
+	//		game.InitFromNewMap( fullMapName.c_str() + ".map", this.rw, this.sw, idAsyncNetwork.server.IsActive(), idAsyncNetwork.client.IsActive(), Sys_Milliseconds() );
 	//	}
 	//} else {
 	//	game.SetServerInfo( this.mapSpawnData.serverInfo );
-	//	game.InitFromNewMap( fullMapName + ".map", this.rw, this.sw, idAsyncNetwork.server.IsActive(), idAsyncNetwork.client.IsActive(), Sys_Milliseconds() );
+	//	game.InitFromNewMap( fullMapName.c_str() + ".map", this.rw, this.sw, idAsyncNetwork.server.IsActive(), idAsyncNetwork.client.IsActive(), Sys_Milliseconds() );
 	//}
 
 	//if ( !idAsyncNetwork::IsActive() && !this.loadingSaveGame ) {

@@ -71,13 +71,13 @@ class idRenderModelManager {
 ////	// returns the default cube model
 ////	virtual	idRenderModel *	DefaultModel() = 0;
 ////
-////	// world map parsing will add all the inline models with this call
-////	virtual	void			AddModel( idRenderModel *model ) = 0;
+	// world map parsing will add all the inline models with this call
+	AddModel ( model: idRenderModel ): void { throw "placeholder"; }
 ////
-////	// when a world map unloads, it removes its internal models from the list
-////	// before freeing them.
-////	// There may be an issue with multiple renderWorlds that share data...
-////	virtual	void			RemoveModel( idRenderModel *model ) = 0;
+	// when a world map unloads, it removes its internal models from the list
+	// before freeing them.
+	// There may be an issue with multiple renderWorlds that share data...
+	RemoveModel ( model: idRenderModel ): void { throw "placeholder"; }
 ////
 ////	// the reloadModels console command calls this, but it can
 ////	// also be explicitly invoked

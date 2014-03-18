@@ -29,19 +29,19 @@
 //#ifndef __RENDERWORLDLOCAL_H__
 //#define __RENDERWORLDLOCAL_H__
 //
-//// assume any lightDef or entityDef index above this is an internal error
-//const int LUDICROUS_INDEX	= 10000;
-//
-//
-//typedef struct portal_s {
-//	int						intoArea;		// area this portal leads to
-//	idWinding *				w;				// winding points have counter clockwise ordering seen this area
-//	idPlane					plane;			// view must be on the positive side of the plane to cross
-//	struct portal_s *		next;			// next portal of the area
-//	struct doublePortal_s *	doublePortal;
-//} portal_t;
-//
-//
+// assume any lightDef or entityDef index above this is an internal error
+var LUDICROUS_INDEX	= 10000;
+
+
+class portal_t {
+	intoArea:number/*int*/;		// area this portal leads to
+	w:idWinding;				// winding points have counter clockwise ordering seen this area
+	plane = new idPlane;			// view must be on the positive side of the plane to cross
+//	struct portal_s *		next:portal_s;			// next portal of the area
+//	struct doublePortal_s *	doublePortal:doublePortal_s;
+}
+
+
 //typedef struct doublePortal_s {
 //	struct portal_s	*		portals[2];
 //	int						blockingBits;	// PS_BLOCK_VIEW, PS_BLOCK_AIR, etc, set by doors that shut them off
@@ -54,17 +54,17 @@
 //} doublePortal_t;
 //
 //
-//typedef struct portalArea_s {
-//	int				areaNum;
-//	int				connectedAreaNum[NUM_PORTAL_ATTRIBUTES];	// if two areas have matching connectedAreaNum, they are
-//									// not separated by a portal with the apropriate PS_BLOCK_* blockingBits
-//	int				viewCount;		// set by R_FindViewLightsAndEntities
-//	portal_t *		portals;		// never changes after load
+class portalArea_t {
+	areaNum:number/*int*/;
+	connectedAreaNum = new Int32Array(NUM_PORTAL_ATTRIBUTES);	// if two areas have matching connectedAreaNum, they are
+								// not separated by a portal with the apropriate PS_BLOCK_* blockingBits
+	viewCount:number/*int*/;		// set by R_FindViewLightsAndEntities
+	portals: portal_t;		// never changes after load
 //	areaReference_t	entityRefs;		// head/tail of doubly linked list, may change
 //	areaReference_t	lightRefs;		// head/tail of doubly linked list, may change
-//} portalArea_t;
-//
-//
+}
+
+
 //static const int	CHILDREN_HAVE_MULTIPLE_AREAS = -2;
 //static const int	AREANUM_SOLID = -1;
 //typedef struct {
@@ -103,7 +103,7 @@ class idRenderWorldLocal extends idRenderWorld {
 //	virtual void			SetRenderView( const renderView_t *renderView );
 //	virtual	void			RenderScene( const renderView_t *renderView );
 //
-//	virtual	int				NumAreas( void ) const;
+//	virtual	int				NumAreas( ) const;
 //	virtual int				PointInArea( const idVec3 &point ) const;
 //	virtual int				BoundsInAreas( const idBounds &bounds, int *areas, int maxAreas ) const;
 //	virtual	int				NumPortalsInArea( int areaNum );
@@ -114,7 +114,7 @@ class idRenderWorldLocal extends idRenderWorld {
 //	virtual bool			Trace( modelTrace_t &trace, const idVec3 &start, end:idVec3, const float radius, bool skipDynamic = true, bool skipPlayer = false ) const;
 //	virtual bool			FastWorldTrace( modelTrace_t &trace, const idVec3 &start, end:idVec3 ) const;
 //
-	DebugClearLines( /*int*/time:number ):void { throw "placeholder"; }
+	DebugClearLines ( /*int*/time: number ): void { throw "placeholder"; }
 //	virtual void			DebugLine( const idVec4 &color, const idVec3 &start, end:idVec3, const int lifetime = 0, const bool depthTest = false );
 //	virtual void			DebugArrow( const idVec4 &color, start:idVec3, end:idVec3, int size, const int lifetime = 0 );
 //	virtual void			DebugWinding( const idVec4 &color, const idWinding &w, const idVec3 &origin, const idMat3 &axis, const int lifetime = 0, const bool depthTest = false );
@@ -132,46 +132,46 @@ class idRenderWorldLocal extends idRenderWorld {
 //
 //	virtual void			DrawText( text:string, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align = 1, const int lifetime = 0, bool depthTest = false );
 //
-//	//-----------------------
-//
-//	idStr					mapName;				// ie: maps/tim_dm2.proc, written to demoFile
-//	ID_TIME_T					mapTimeStamp;			// for fast reloads of the same level
-//
-//	areaNode_t *			areaNodes;
-//	int						numAreaNodes;
-//
-//	portalArea_t *			portalAreas;
-//	int						numPortalAreas;
-//	int						connectedAreaNum;		// incremented every time a door portal state changes
-//
-//	idScreenRect *			areaScreenRect;
-//
-//	doublePortal_t *		doublePortals;
-//	int						numInterAreaPortals;
-//
-	localModels: idList<idRenderModel>;
+	//-----------------------
 
-	entityDefs:	idList <idRenderEntityLocal>;
-	lightDefs 	:idList <idRenderLightLocal>;
-//
-//	idBlockAlloc<areaReference_t, 1024> areaReferenceAllocator;
-//	idBlockAlloc<idInteraction, 256>	interactionAllocator;
-//	idBlockAlloc<areaNumRef_t, 1024>	areaNumRefAllocator;
-//
+	mapName = new idStr;				// ie: maps/tim_dm2.proc, written to demoFile
+	mapTimeStamp: number;			// for fast reloads of the same level
+
+	//areaNodes: areaNode_t ;
+	numAreaNodes:number/*int*/;
+
+	portalAreas:portalArea_t;
+	numPortalAreas:number/*int*/;
+	connectedAreaNum:number/*int*/;		// incremented every time a door portal state changes
+	
+	areaScreenRect: idScreenRect;
+
+//	doublePortal_t *		doublePortals;
+	numInterAreaPortals:number/*int*/;
+
+	localModels = new idList<idRenderModel>(idRenderModel,true);
+
+	entityDefs = new idList<idRenderEntityLocal>(idRenderEntityLocal,true);
+	lightDefs = new idList<idRenderLightLocal>(idRenderLightLocal,true);
+	
+	areaReferenceAllocator = idBlockAlloc_template <areaReference_t>(areaReference_t, 1024);	
+	interactionAllocator = idBlockAlloc_template <idInteraction>(idInteraction, 256);
+	areaNumRefAllocator = idBlockAlloc_template <areaNumRef_t>(areaNumRef_t, 1024);
+
 //	// all light / entity interactions are referenced here for fast lookup without
 //	// having to crawl the doubly linked lists.  EnntityDefs are sequential for better
 //	// cache access, because the table is accessed by light in idRenderWorldLocal::CreateLightDefInteractions()
 //	// Growing this table is time consuming, so we add a pad value to the number
 //	// of entityDefs and lightDefs
 //	idInteraction **		interactionTable;
-//	int						interactionTableWidth;		// entityDefs
-//	int						interactionTableHeight;		// lightDefs
-//
-//
-//	bool					generateAllInteractionsCalled;
-//
-//	//-----------------------
-//	// RenderWorld_load.cpp
+	interactionTableWidth:number/*int*/;		// entityDefs
+	interactionTableHeight:number/*int*/;		// lightDefs
+
+
+	generateAllInteractionsCalled: boolean;
+
+	//-----------------------
+	// RenderWorld_load.cpp
 //
 //	idRenderModel *			ParseModel( idLexer *src );
 //	idRenderModel *			ParseShadowModel( idLexer *src );
@@ -179,12 +179,12 @@ class idRenderWorldLocal extends idRenderWorld {
 //	void					ParseInterAreaPortals( idLexer *src );
 //	void					ParseNodes( idLexer *src );
 //	int						CommonChildrenArea_r( areaNode_t *node );
-//	void					FreeWorld();
-//	void					ClearWorld();
-//	void					FreeDefs();
-//	void					TouchWorldModels( void );
-//	void					AddWorldModelEntities();
-//	void					ClearPortalStates();
+	FreeWorld():void { throw "placeholder"; }
+	ClearWorld():void { throw "placeholder"; }
+	FreeDefs():void { throw "placeholder"; }
+	TouchWorldModels( ):void { throw "placeholder"; }
+	AddWorldModelEntities():void { throw "placeholder"; }
+	ClearPortalStates():void { throw "placeholder"; }
 //	virtual	bool			InitFromMap( const char *mapName );
 //
 //	//--------------------------
@@ -204,10 +204,10 @@ class idRenderWorldLocal extends idRenderWorld {
 //	void					AddAreaLightRefs( int areaNum, const struct portalStack_s *ps );
 //	void					AddAreaRefs( int areaNum, const struct portalStack_s *ps );
 //	void					BuildConnectedAreas_r( int areaNum );
-//	void					BuildConnectedAreas( void );
-//	void					FindViewLightsAndEntities( void );
+//	void					BuildConnectedAreas( );
+//	void					FindViewLightsAndEntities( );
 //
-//	int						NumPortals( void ) const;
+//	int						NumPortals( ) const;
 //	qhandle_t				FindPortal( const idBounds &b ) const;
 //	void					SetPortalState( qhandle_t portal, int blockingBits );
 //	int						GetPortalState( qhandle_t portal );

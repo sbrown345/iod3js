@@ -320,7 +320,7 @@ class idRenderLightLocal extends idRenderLight {
 
 ////	float					modelMatrix[16];		// this is just a rearrangement of parms.axis and parms.origin
 
-////	idRenderWorldLocal *	world;
+	world: idRenderWorldLocal;
 ////	int						index;					// in world lightdefs
 
 ////	int						areaNum;				// if not -1, we may be able to cull all the light's

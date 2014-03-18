@@ -80,12 +80,12 @@
 //	srfCullInfo_t			cullInfo;
 //} surfaceInteraction_t;
 //
-//
-//typedef struct areaNumRef_s {
-//	struct areaNumRef_s *	next;
-//	int						areaNum;
-//} areaNumRef_t;
-//
+
+class areaNumRef_t {
+	//struct areaNumRef_s *	next;
+	//int						areaNum;
+}
+
 //
 //class idRenderEntityLocal;
 //class idRenderLightLocal;

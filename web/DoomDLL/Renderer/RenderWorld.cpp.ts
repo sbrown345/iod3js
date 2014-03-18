@@ -151,7 +151,7 @@
 //*/
 //idRenderWorldLocal::~idRenderWorldLocal() {
 //	// free all the entityDefs, lightDefs, portals, etc
-//	FreeWorld();
+//	this.FreeWorld();
 //
 //	// free up the debug lines, polys, and text
 //	RB_ClearDebugPolygons( 0 );

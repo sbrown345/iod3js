@@ -46,7 +46,7 @@ class idRenderModelManagerLocal extends idRenderModelManager {
 ////	virtual idRenderModel *	CheckModel( const char *modelName ):idRenderModel { throw "placeholder"; }
 ////	virtual idRenderModel *	DefaultModel():idRenderModel { throw "placeholder"; }
 ////	virtual void			AddModel( idRenderModel *model ):void { throw "placeholder"; }
-////	virtual void			RemoveModel( idRenderModel *model ):void { throw "placeholder"; }
+	////RemoveModel ( model: idRenderModel ): void { throw "placeholder"; }
 ////	virtual void			ReloadModels( bool forceAll = false ):void { throw "placeholder"; }
 ////	virtual void			FreeModelVertexCaches():void { throw "placeholder"; }
 ////	virtual void			WritePrecacheCommands( idFile *file ):void { throw "placeholder"; }
@@ -56,13 +56,13 @@ class idRenderModelManagerLocal extends idRenderModelManager {
 ////	virtual	void			PrintMemInfo( MemInfo_t *mi ):void { throw "placeholder"; }
 
 ////private:
-	models = new idList<idRenderModel>(idRenderModel, true);
-	hash = new idHashIndex();
-	defaultModel:idRenderModel;
-	beamModel:idRenderModel;
-	spriteModel:idRenderModel;
-	trailModel:idRenderModel;
-	insideLevelLoad:boolean;		// don't actually load now
+	models = new idList<idRenderModel>( idRenderModel, true );
+	hash = new idHashIndex ( );
+	defaultModel: idRenderModel;
+	beamModel: idRenderModel;
+	spriteModel: idRenderModel;
+	trailModel: idRenderModel;
+	insideLevelLoad: boolean; // don't actually load now
 ////
 ////	idRenderModel *			GetModel( const char *modelName, bool createIfNotFound );
 ////
@@ -77,68 +77,68 @@ class idRenderModelManagerLocal extends idRenderModelManager {
 idRenderModelManagerLocal::idRenderModelManagerLocal
 ==============
 */
-constructor() {
-    super ( );
-	this.defaultModel = null;
-	this.beamModel = null;
-	this.spriteModel = null;
-	this.insideLevelLoad = false;
-	this.trailModel = null;
-}
+	constructor ( ) {
+		super ( );
+		this.defaultModel = null;
+		this.beamModel = null;
+		this.spriteModel = null;
+		this.insideLevelLoad = false;
+		this.trailModel = null;
+	}
 
 /*
 ==============
 idRenderModelManagerLocal::PrintModel_f
 ==============
 */
-PrintModel_f( args:idCmdArgs ) {
-    todoThrow ( );
-	//idRenderModel	*model;
+	PrintModel_f ( args: idCmdArgs ) {
+		todoThrow ( );
+		//idRenderModel	*model;
 
-	//if ( args.Argc() != 2 ) {
-	//	common.Printf( "usage: printModel <modelName>\n" );
-	//	return;
-	//}
+		//if ( args.Argc() != 2 ) {
+		//	common.Printf( "usage: printModel <modelName>\n" );
+		//	return;
+		//}
 
-	//model = renderModelManager.CheckModel( args.Argv( 1 ) );
-	//if ( !model ) {
-	//	common.Printf( "model \"%s\" not found\n", args.Argv( 1 ) );
-	//	return;
-	//}
+		//model = renderModelManager.CheckModel( args.Argv( 1 ) );
+		//if ( !model ) {
+		//	common.Printf( "model \"%s\" not found\n", args.Argv( 1 ) );
+		//	return;
+		//}
 
-	//model.Print();
-}
+		//model.Print();
+	}
 
 /*
 ==============
 idRenderModelManagerLocal::ListModels_f
 ==============
 */
-    ListModels_f ( args: idCmdArgs ): void {
-        todoThrow ( );
-        //int		totalMem = 0;
-        //int		inUse = 0;
+	ListModels_f ( args: idCmdArgs ): void {
+		todoThrow ( );
+		//int		totalMem = 0;
+		//int		inUse = 0;
 
-        //common.Printf( " mem   srf verts tris\n" );
-        //common.Printf( " ---   --- ----- ----\n" );
+		//common.Printf( " mem   srf verts tris\n" );
+		//common.Printf( " ---   --- ----- ----\n" );
 
-        //for ( int i = 0 ; i < localModelManager.models.Num() ; i++ ) {
-        //	idRenderModel	*model = localModelManager.models[i];
+		//for ( int i = 0 ; i < localModelManager.models.Num() ; i++ ) {
+		//	idRenderModel	*model = localModelManager.models[i];
 
-        //	if ( !model.IsLoaded() ) {
-        //		continue;
-        //	}
-        //	model.List();
-        //	totalMem += model.Memory();
-        //	inUse++;
-        //}
+		//	if ( !model.IsLoaded() ) {
+		//		continue;
+		//	}
+		//	model.List();
+		//	totalMem += model.Memory();
+		//	inUse++;
+		//}
 
-        //common.Printf( " ---   --- ----- ----\n" );
-        //common.Printf( " mem   srf verts tris\n" );
+		//common.Printf( " ---   --- ----- ----\n" );
+		//common.Printf( " mem   srf verts tris\n" );
 
-        //common.Printf( "%i loaded models\n", inUse );
-        //common.Printf( "total memory: %4.1fM\n", (float)totalMem / (1024*1024) );
-    }
+		//common.Printf( "%i loaded models\n", inUse );
+		//common.Printf( "total memory: %4.1fM\n", (float)totalMem / (1024*1024) );
+	}
 
 
 /*
@@ -146,14 +146,14 @@ idRenderModelManagerLocal::ListModels_f
 idRenderModelManagerLocal::ReloadModels_f
 ==============
 */
-ReloadModels_f( args:idCmdArgs ):void {
-    todoThrow ( );
-	//if ( idStr::Icmp( args.Argv(1), "all" ) == 0 ) {
-	//	localModelManager.ReloadModels( true );
-	//} else {
-	//	localModelManager.ReloadModels( false );
-	//}
-}
+	ReloadModels_f ( args: idCmdArgs ): void {
+		todoThrow ( );
+		//if ( idStr::Icmp( args.Argv(1), "all" ) == 0 ) {
+		//	localModelManager.ReloadModels( true );
+		//} else {
+		//	localModelManager.ReloadModels( false );
+		//}
+	}
 
 /*
 ==============
@@ -162,22 +162,22 @@ idRenderModelManagerLocal::TouchModel_f
 Precache a specific model
 ==============
 */
-TouchModel_f( args:idCmdArgs ):void {
-    todoThrow ( );
-    //const char	*model = args.Argv( 1 );
+	TouchModel_f ( args: idCmdArgs ): void {
+		todoThrow ( );
+		//const char	*model = args.Argv( 1 );
 
-    //if ( !model[0] ) {
-    //	common.Printf( "usage: touchModel <modelName>\n" );
-    //	return;
-    //}
+		//if ( !model[0] ) {
+		//	common.Printf( "usage: touchModel <modelName>\n" );
+		//	return;
+		//}
 
-    //common.Printf( "touchModel %s\n", model );
-    //session.UpdateScreen();
-    //idRenderModel *m = renderModelManager.CheckModel( model );
-    //if ( !m ) {
-    //	common.Printf( "...not found\n" );
-    //}
-}
+		//common.Printf( "touchModel %s\n", model );
+		//session.UpdateScreen();
+		//idRenderModel *m = renderModelManager.CheckModel( model );
+		//if ( !m ) {
+		//	common.Printf( "...not found\n" );
+		//}
+	}
 
 /////*
 ////=================
@@ -207,35 +207,35 @@ TouchModel_f( args:idCmdArgs ):void {
 idRenderModelManagerLocal::Init
 =================
 */
-Init ():void {
-	cmdSystem.AddCommand( "listModels", this.ListModels_f, cmdFlags_t.CMD_FL_RENDERER, "lists all models" );
-	cmdSystem.AddCommand( "printModel", this.PrintModel_f, cmdFlags_t.CMD_FL_RENDERER, "prints model info", ArgCompletion_ModelName );
-	cmdSystem.AddCommand( "reloadModels", this.ReloadModels_f, cmdFlags_t.CMD_FL_RENDERER|cmdFlags_t.CMD_FL_CHEAT, "reloads models" );
-	cmdSystem.AddCommand( "touchModel", this.TouchModel_f, cmdFlags_t.CMD_FL_RENDERER, "touches a model", ArgCompletion_ModelName );
+	Init ( ): void {
+		cmdSystem.AddCommand( "listModels", this.ListModels_f, cmdFlags_t.CMD_FL_RENDERER, "lists all models" );
+		cmdSystem.AddCommand( "printModel", this.PrintModel_f, cmdFlags_t.CMD_FL_RENDERER, "prints model info", ArgCompletion_ModelName );
+		cmdSystem.AddCommand( "reloadModels", this.ReloadModels_f, cmdFlags_t.CMD_FL_RENDERER | cmdFlags_t.CMD_FL_CHEAT, "reloads models" );
+		cmdSystem.AddCommand( "touchModel", this.TouchModel_f, cmdFlags_t.CMD_FL_RENDERER, "touches a model", ArgCompletion_ModelName );
 
-	this.insideLevelLoad = false;
+		this.insideLevelLoad = false;
 
-	// create a default model
-	var model = new idRenderModelStatic;
-	model.InitEmpty( "_DEFAULT" );
-	model.MakeDefaultModel();
-	model.SetLevelLoadReferenced( true );
-	this.defaultModel = model;
-	this.AddModel( model );
+		// create a default model
+		var model = new idRenderModelStatic;
+		model.InitEmpty( "_DEFAULT" );
+		model.MakeDefaultModel ( );
+		model.SetLevelLoadReferenced( true );
+		this.defaultModel = model;
+		this.AddModel( model );
 
-	// create the beam model
-	var beam = new idRenderModelBeam;
-	beam.InitEmpty( "_BEAM" );
-	beam.SetLevelLoadReferenced( true );
-	this.beamModel = beam;
-	this.AddModel( beam );
+		// create the beam model
+		var beam = new idRenderModelBeam;
+		beam.InitEmpty( "_BEAM" );
+		beam.SetLevelLoadReferenced( true );
+		this.beamModel = beam;
+		this.AddModel( beam );
 
-	var sprite = new idRenderModelSprite;
-	sprite.InitEmpty( "_SPRITE" );
-	sprite.SetLevelLoadReferenced( true );
-	this.spriteModel = sprite;
-	this.AddModel( sprite );
-}
+		var sprite = new idRenderModelSprite;
+		sprite.InitEmpty( "_SPRITE" );
+		sprite.SetLevelLoadReferenced( true );
+		this.spriteModel = sprite;
+		this.AddModel( sprite );
+	}
 
 /////*
 ////=================
@@ -244,7 +244,7 @@ Init ():void {
 ////*/
 ////void idRenderModelManagerLocal::Shutdown() {
 ////	this.models.DeleteContents( true );
-////	hash.Free();
+////	this.hash.Free();
 ////}
 
 /*
@@ -252,7 +252,7 @@ Init ():void {
 idRenderModelManagerLocal::GetModel
 =================
 */
-	GetModel(modelName: string, createIfNotFound: boolean): idRenderModel {
+	GetModel ( modelName: string, createIfNotFound: boolean ): idRenderModel {
 		todoThrow ( );
 ////	idStr		canonical;
 ////	idStr		extension;
@@ -265,8 +265,8 @@ idRenderModelManagerLocal::GetModel
 ////	canonical.ToLower();
 ////
 ////	// see if it is already present
-////	int key = hash.GenerateKey( modelName, false );
-////	for ( int i = hash.First( key ); i != -1; i = hash.Next( i ) ) {
+////	int key = this.hash.GenerateKey( modelName, false );
+////	for ( int i = this.hash.First( key ); i != -1; i = this.hash.Next( i ) ) {
 ////		idRenderModel *model = this.models[i];
 ////
 ////		if ( canonical.Icmp( model.Name() ) == 0 ) {
@@ -413,21 +413,21 @@ idRenderModelManagerLocal::FindModel
 idRenderModelManagerLocal::AddModel
 =================
 */
-AddModel( model:idRenderModel ):void {
-	this.hash.Add( this.hash.GenerateKey( model.Name(), false ), this.models.Append( model ) );
-}
+	AddModel ( model: idRenderModel ): void {
+		this.hash.Add( this.hash.GenerateKey( model.Name ( ), false ), this.models.Append( model ) );
+	}
 
-/////*
-////=================
-////idRenderModelManagerLocal::RemoveModel
-////=================
-////*/
-////void idRenderModelManagerLocal::RemoveModel( idRenderModel *model ) {
-////	int index = this.models.FindIndex( model );
-////	hash.RemoveIndex( hash.GenerateKey( model.Name(), false ), index );
-////	this.models.RemoveIndex( index );
-////}
-////
+/*
+=================
+idRenderModelManagerLocal::RemoveModel
+=================
+*/
+	RemoveModel ( model: idRenderModel ): void {
+		var index = this.models.FindIndex( model );
+		this.hash.RemoveIndex( this.hash.GenerateKey( model.Name ( ), false ), index );
+		this.models.RemoveIndex( index );
+	}
+
 /////*
 ////=================
 ////idRenderModelManagerLocal::ReloadModels
@@ -624,7 +624,7 @@ idRenderModelManagerLocal::BeginLevelLoad
 ////	f.Printf( "\nTotal model bytes allocated: %s\n", idStr::FormatNumber( totalMem ).c_str() );
 ////	fileSystem.CloseFile( f );
 ////}
-};
+}
 
 
 var localModelManager = new idRenderModelManagerLocal ( );
