@@ -49,7 +49,8 @@ class idPoolStr extends idStr {
 	}
 
 	destructor ( ): void {
-		assert(this.numUsers == 0); 
+		assert(this.numUsers == 0);
+		super.destructor ( );
 	}
 
 	// returns total size of allocated memory

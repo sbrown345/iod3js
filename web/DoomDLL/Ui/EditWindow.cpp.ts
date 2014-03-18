@@ -203,9 +203,9 @@ class idEditWindow extends idWindow {
 		}
 	}
 
-	destructor ( ): void {
-		todoThrow( "need to call base? (or just remove this method)" );
-	}
+	////destructor ( ): void {
+	////	// call base
+	////}
 
 	GainFocus ( ): void {
 		todoThrow ( );

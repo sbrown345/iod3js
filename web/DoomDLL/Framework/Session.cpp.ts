@@ -360,11 +360,11 @@ SESSION LOCAL
 //		this.menuSoundWorld = NULL;
 //	}
 //		
-//	mapSpawnData.serverInfo.Clear();
-//	mapSpawnData.syncedCVars.Clear();
+//	this.mapSpawnData.serverInfo.Clear();
+//	this.mapSpawnData.syncedCVars.Clear();
 //	for ( i = 0; i < MAX_ASYNC_CLIENTS; i++ ) {
-//		mapSpawnData.userInfo[i].Clear();
-//		mapSpawnData.persistentPlayerInfo[i].Clear();
+//		this.mapSpawnData.userInfo[i].Clear();
+//		this.mapSpawnData.persistentPlayerInfo[i].Clear();
 //	}
 //
 //	if ( guiMainMenu_MapList != NULL ) {
@@ -429,28 +429,28 @@ idSessionLocal.prototype.CompleteWipe = function ( ) {
 		this.UpdateScreen( true );
 	}
 };
-//
-///*
-//================
-//idSessionLocal::ShowLoadingGui
-//================
-//*/
-//void idSessionLocal::ShowLoadingGui() {
-//	if ( com_ticNumber == 0 ) {
-//		return;
-//	}
-//	$console.Close();
-//
-//	// introduced in D3XP code. don't think it actually fixes anything, but doesn't hurt either
+
+/*
+================
+idSessionLocal::ShowLoadingGui
+================
+*/
+idSessionLocal.prototype.ShowLoadingGui = function ( ): void {
+	if ( com_ticNumber == 0 ) {
+		return;
+	}
+	$console.Close ( );
+
+	// introduced in D3XP code. don't think it actually fixes anything, but doesn't hurt either
 //#if 1
-//	// Try and prevent the while loop from being skipped over (long hitch on the main thread?)
-//	int stop = Sys_Milliseconds() + 1000;
-//	int force = 10;
-//	while ( Sys_Milliseconds() < stop || force-- > 0 ) {
-//		com_frameTime = com_ticNumber * USERCMD_MSEC;
-//		session.Frame();
-//		session.UpdateScreen( false );
-//	}
+	// Try and prevent the while loop from being skipped over (long hitch on the main thread?)
+	var /*int*/stop = Sys_Milliseconds ( ) + 1000;
+	var /*int*/force = 10;
+	while ( Sys_Milliseconds ( ) < stop || force-- > 0 ) {
+		com_frameTime = com_ticNumber * USERCMD_MSEC;
+		session.Frame ( );
+		session.UpdateScreen( false );
+	}
 //#else
 //	int stop = com_ticNumber + 1000.0f / USERCMD_MSEC * 1.0f;
 //	while ( com_ticNumber < stop ) {
@@ -459,10 +459,10 @@ idSessionLocal.prototype.CompleteWipe = function ( ) {
 //		session.UpdateScreen( false );
 //	}
 //#endif
-//}
-//
-//
-//
+};
+
+
+
 
 ///*
 //================
@@ -1173,10 +1173,10 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //
 //	file.Write( &mapSpawnData.mapSpawnUsercmd, sizeof( mapSpawnData.mapSpawnUsercmd ) );
 //
-//	if ( numClients < 1 ) {
-//		numClients = 1;
+//	if ( this.numClients < 1 ) {
+//		this.numClients = 1;
 //	}
-//	file.Write( loggedUsercmds, numClients * logIndex * sizeof( loggedUsercmds[0] ) );
+//	file.Write( loggedUsercmds, this.numClients * logIndex * sizeof( loggedUsercmds[0] ) );
 //}
 //
 ///*
@@ -1235,7 +1235,7 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //		idFile *statsFile = fileSystem.OpenFileWrite( statsName );
 //		if ( statsFile ) {
 //			statsFile.Write( &statIndex, sizeof( statIndex ) );
-//			statsFile.Write( loggedStats, numClients * statIndex * sizeof( loggedStats[0] ) );
+//			statsFile.Write( loggedStats, this.numClients * statIndex * sizeof( loggedStats[0] ) );
 //			fileSystem.CloseFile( statsFile );
 //		}
 //	}
@@ -1352,55 +1352,55 @@ idSessionLocal.prototype.UnloadMap = function ( ) {
 	this.mapSpawned = false;
 };
 
-///*
-//===============
-//idSessionLocal::LoadLoadingGui
-//===============
-//*/
-//void idSessionLocal::LoadLoadingGui( const char *mapName ) {
-//	// load / program a gui to stay up on the screen while loading
-//	idStr stripped = mapName;
-//	stripped.StripFileExtension();
-//	stripped.StripPath();
-//
-//	char guiMap[ MAX_STRING_CHARS ];
-//	strncpy( guiMap, va( "guis/map/%s.gui", stripped.c_str() ), MAX_STRING_CHARS );
-//	// give the gamecode a chance to override
-//	game.GetMapLoadingGUI( guiMap );
-//
-//	if ( uiManager.CheckGui( guiMap ) ) {
-//		this.guiLoading = uiManager.FindGui( guiMap, true, false, true );
-//	} else {
-//		this.guiLoading = uiManager.FindGui( "guis/map/loading.gui", true, false, true );
-//	}
-//	this.guiLoading.SetStateFloat( "map_loading", 0.0f );
-//}
-//
-///*
-//===============
-//idSessionLocal::GetBytesNeededForMapLoad
-//===============
-//*/
-//int idSessionLocal::GetBytesNeededForMapLoad( const char *mapName ) {
-//	const idDecl *mapDecl = declManager.FindType( DECL_MAPDEF, mapName, false );
-//	const idDeclEntityDef *mapDef = static_cast<const idDeclEntityDef *>( mapDecl );
-//	if ( mapDef ) {
-//		return mapDef.dict.GetInt( va("size%d", Max( 0, com_machineSpec.GetInteger() ) ) );
-//	} else {
-//		if ( com_machineSpec.GetInteger() < 2 ) {
-//			return 200 * 1024 * 1024;
-//		} else {
-//			return 400 * 1024 * 1024;
-//		}
-//	}
-//}
-//
+/*
+===============
+idSessionLocal::LoadLoadingGui
+===============
+*/
+idSessionLocal.prototype.LoadLoadingGui = function ( mapName: string ): void {
+	// load / program a gui to stay up on the screen while loading
+	var stripped = new idStr( mapName );
+	stripped.StripFileExtension ( );
+	stripped.StripPath ( );
+
+	var guiMap = new Uint8Array( MAX_STRING_CHARS );
+	strncpy( guiMap, va( "guis/map/%s.gui", stripped.c_str ( ) ), MAX_STRING_CHARS );
+	// give the gamecode a chance to override
+	game.GetMapLoadingGUI( guiMap );
+
+	if ( uiManager.CheckGui( guiMap.toString ( ) ) ) {
+		this.guiLoading = uiManager.FindGui( guiMap.toString ( ), true, false, true );
+	} else {
+		this.guiLoading = uiManager.FindGui( "guis/map/loading.gui", true, false, true );
+	}
+	this.guiLoading.SetStateFloat( "map_loading", 0.0 );
+};
+
+/*
+===============
+idSessionLocal::GetBytesNeededForMapLoad
+===============
+*/
+idSessionLocal.prototype.GetBytesNeededForMapLoad = function ( mapName: string ): number {
+	var mapDecl: idDecl = declManager.FindType( declType_t.DECL_MAPDEF, mapName, false );
+	var mapDef = static_cast<idDeclEntityDef>( mapDecl );
+	if ( mapDef ) {
+		return mapDef.dict.GetInt( va( "size%d", Max( 0, com_machineSpec.GetInteger ( ) ) ) );
+	} else {
+		if ( com_machineSpec.GetInteger ( ) < 2 ) {
+			return 200 * 1024 * 1024;
+		} else {
+			return 400 * 1024 * 1024;
+		}
+	}
+};
+
 ///*
 //===============
 //idSessionLocal::SetBytesNeededForMapLoad
 //===============
 //*/
-//void idSessionLocal::SetBytesNeededForMapLoad( const char *mapName, int bytesNeeded ) {
+//void idSessionLocal::SetBytesNeededForMapLoad( mapName:string, int bytesNeeded ) {
 //	idDecl *mapDecl = const_cast<idDecl *>(declManager.FindType( DECL_MAPDEF, mapName, false ));
 //	idDeclEntityDef *mapDef = static_cast<idDeclEntityDef *>( mapDecl );
 //
@@ -1469,10 +1469,10 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 	}
 	
 	// extract the map name from serverinfo
-	var mapString = this.mapSpawnData.serverInfo.GetString( "si_map" );
+	var mapString = new idStr( this.mapSpawnData.serverInfo.GetString( "si_map" ) );
 
 	var fullMapName = new idStr( "maps/" );
-	fullMapName.Append( mapString );
+	fullMapName.Append( mapString.data );
 	fullMapName.StripFileExtension();
 
 	// shut down the existing game if it is running
@@ -1483,7 +1483,7 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 		reloadingSameMap = true;
 	} else {
 		reloadingSameMap = false;
-		this.currentMapName.equls( fullMapName );
+		this.currentMapName.equals( fullMapName );
 	}
 
 	// note which media we are going to need to load
@@ -1492,64 +1492,65 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 		renderSystem.BeginLevelLoad();
 		soundSystem.BeginLevelLoad();
 	}
-	todoThrow()
-	//uiManager.BeginLevelLoad();
-	//uiManager.Reload( true );
+	
+	uiManager.BeginLevelLoad();
+	uiManager.Reload( true );
 
-	//// set the loading gui that we will wipe to
-	//LoadLoadingGui( mapString );
+	// set the loading gui that we will wipe to
+	this.LoadLoadingGui( mapString.c_str ( ) );
+	
+	// cause prints to force screen updates as a pacifier,
+	// and draw the loading gui instead of game draws
+	this.insideExecuteMapChange = true;
+	
+	// if this works out we will probably want all the sizes in a def file although this solution will 
+	// work for new maps etc. after the first load. we can also drop the sizes into the default.cfg
+	fileSystem.ResetReadCount();
+	if ( !reloadingSameMap  ) {
+		this.bytesNeededForMapLoad = this.GetBytesNeededForMapLoad( mapString.c_str() );
+	} else {
+		this.bytesNeededForMapLoad = 30 * 1024 * 1024;
+	}
+	
+	this.ClearWipe();
 
-	//// cause prints to force screen updates as a pacifier,
-	//// and draw the loading gui instead of game draws
-	//this.insideExecuteMapChange = true;
+	// let the loading gui spin for 1 second to animate out
+	this.ShowLoadingGui();
+	todo( "ShowLoadingGui, some async thing?" );
 
-	//// if this works out we will probably want all the sizes in a def file although this solution will 
-	//// work for new maps etc. after the first load. we can also drop the sizes into the default.cfg
-	//fileSystem.ResetReadCount();
-	//if ( !reloadingSameMap  ) {
-	//	this.bytesNeededForMapLoad = GetBytesNeededForMapLoad( mapString.c_str() );
-	//} else {
-	//	this.bytesNeededForMapLoad = 30 * 1024 * 1024;
-	//}
+	// note any warning prints that happen during the load process
+	common.ClearWarnings( mapString.c_str ( ) );
 
-	//this.ClearWipe();
+	// release the mouse cursor
+	// before we do this potentially long operation
+	Sys_GrabMouseCursor( false );
 
-	//// let the loading gui spin for 1 second to animate out
-	//ShowLoadingGui();
+	// if net play, we get the number of clients during mapSpawnInfo processing
+	if ( !idAsyncNetwork.IsActive() ) {
+		this.numClients = 1;
+	} 
 
-	//// note any warning prints that happen during the load process
-	//common.ClearWarnings( mapString );
+	var start = Sys_Milliseconds();
 
-	//// release the mouse cursor
-	//// before we do this potentially long operation
-	//Sys_GrabMouseCursor( false );
+	common.Printf( "--------- Map Initialization ---------\n" );
+	common.Printf( "Map: %s\n", mapString.c_str() );
 
-	//// if net play, we get the number of clients during mapSpawnInfo processing
-	//if ( !idAsyncNetwork::IsActive() ) {
-	//	numClients = 1;
-	//} 
+	// let the renderSystem load all the geometry
+	if ( !this.rw.InitFromMap( fullMapName ) ) {
+		common.Error( "couldn't load %s", fullMapName.c_str() );
+	}
 
-	//int start = Sys_Milliseconds();
+	// for the synchronous networking we needed to roll the angles over from
+	// level to level, but now we can just clear everything
+	usercmdGen.InitForNewMap();
+	this.mapSpawnData.init ( );//memset( &mapSpawnData.mapSpawnUsercmd, 0, sizeof( mapSpawnData.mapSpawnUsercmd ) );
 
-	//common.Printf( "--------- Map Initialization ---------\n" );
-	//common.Printf( "Map: %s\n", mapString.c_str() );
-
-	//// let the renderSystem load all the geometry
-	//if ( !this.rw.InitFromMap( fullMapName ) ) {
-	//	common.Error( "couldn't load %s", fullMapName.c_str() );
-	//}
-
-	//// for the synchronous networking we needed to roll the angles over from
-	//// level to level, but now we can just clear everything
-	//usercmdGen.InitForNewMap();
-	//memset( &mapSpawnData.mapSpawnUsercmd, 0, sizeof( mapSpawnData.mapSpawnUsercmd ) );
-
-	//// set the user info
-	//for ( i = 0; i < numClients; i++ ) {
-	//	game.SetUserInfo( i, mapSpawnData.userInfo[i], idAsyncNetwork.client.IsActive(), false );
-	//	game.SetPersistentPlayerInfo( i, mapSpawnData.persistentPlayerInfo[i] );
-	//}
-
+	// set the user info
+	for ( i = 0; i < this.numClients; i++ ) {
+		game.SetUserInfo( i, this.mapSpawnData.userInfo[i], idAsyncNetwork.client.IsActive(), false );
+		game.SetPersistentPlayerInfo( i, this.mapSpawnData.persistentPlayerInfo[i] );
+	}
+todoThrow()
 	//// load and spawn all other entities ( from a savegame possibly )
 	//if ( this.loadingSaveGame && this.savegameFile ) {
 	//	if ( game.InitFromSaveGame( fullMapName + ".map", this.rw, this.sw, this.savegameFile ) == false ) {
@@ -1558,17 +1559,17 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 	//		fileSystem.CloseFile( this.savegameFile );
 	//		this.savegameFile = NULL;
 
-	//		game.SetServerInfo( mapSpawnData.serverInfo );
+	//		game.SetServerInfo( this.mapSpawnData.serverInfo );
 	//		game.InitFromNewMap( fullMapName + ".map", this.rw, this.sw, idAsyncNetwork.server.IsActive(), idAsyncNetwork.client.IsActive(), Sys_Milliseconds() );
 	//	}
 	//} else {
-	//	game.SetServerInfo( mapSpawnData.serverInfo );
+	//	game.SetServerInfo( this.mapSpawnData.serverInfo );
 	//	game.InitFromNewMap( fullMapName + ".map", this.rw, this.sw, idAsyncNetwork.server.IsActive(), idAsyncNetwork.client.IsActive(), Sys_Milliseconds() );
 	//}
 
 	//if ( !idAsyncNetwork::IsActive() && !this.loadingSaveGame ) {
 	//	// spawn players
-	//	for ( i = 0; i < numClients; i++ ) {
+	//	for ( i = 0; i < this.numClients; i++ ) {
 	//		game.SpawnPlayer( i );
 	//	}
 	//}
@@ -1585,7 +1586,7 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 	//if ( !idAsyncNetwork::IsActive() && !this.loadingSaveGame ) {
 	//	// run a few frames to allow everything to settle
 	//	for ( i = 0; i < 10; i++ ) {
-	//		game.RunFrame( mapSpawnData.mapSpawnUsercmd );
+	//		game.RunFrame( this.mapSpawnData.mapSpawnUsercmd );
 	//	}
 	//}
 
@@ -1889,13 +1890,13 @@ idSessionLocal.prototype.SaveGame = function (saveName: string, autosave = false
 //	fileOut.WriteInt( SAVEGAME_VERSION );
 //
 //	// map
-//	mapName = mapSpawnData.serverInfo.GetString( "si_map" );
+//	mapName = this.mapSpawnData.serverInfo.GetString( "si_map" );
 //	fileOut.WriteString( mapName );
 //
 //	// persistent player info
 //	for ( i = 0; i < MAX_ASYNC_CLIENTS; i++ ) {
-//		mapSpawnData.persistentPlayerInfo[i] = game.GetPersistentPlayerInfo( i );
-//		mapSpawnData.persistentPlayerInfo[i].WriteToFileHandle( fileOut );
+//		this.mapSpawnData.persistentPlayerInfo[i] = game.GetPersistentPlayerInfo( i );
+//		this.mapSpawnData.persistentPlayerInfo[i].WriteToFileHandle( fileOut );
 //	}
 //
 //	// let the game save its state
@@ -1937,7 +1938,7 @@ idSessionLocal.prototype.SaveGame = function (saveName: string, autosave = false
 //	fileDesc.Printf( "\"%s\"\n", mapName.c_str());
 //
 //	if ( autosave ) {
-//		idStr sshot = mapSpawnData.serverInfo.GetString( "si_map" );
+//		idStr sshot = this.mapSpawnData.serverInfo.GetString( "si_map" );
 //		sshot.StripPath();
 //		sshot.StripFileExtension();
 //		fileDesc.Printf( "\"guis/assets/autosave/%s\"\n", sshot.c_str() );
@@ -2023,7 +2024,7 @@ idSessionLocal.prototype.SaveGame = function (saveName: string, autosave = false
 //
 //	// persistent player info
 //	for ( i = 0; i < MAX_ASYNC_CLIENTS; i++ ) {
-//		mapSpawnData.persistentPlayerInfo[i].ReadFromFileHandle( this.savegameFile );
+//		this.mapSpawnData.persistentPlayerInfo[i].ReadFromFileHandle( this.savegameFile );
 //	}
 //
 //	// check the version, if it doesn't match, cancel the loadgame,
@@ -2042,19 +2043,19 @@ idSessionLocal.prototype.SaveGame = function (saveName: string, autosave = false
 //	if ( saveMap.Length() > 0 ) {
 //
 //		// Start loading map
-//		mapSpawnData.serverInfo.Clear();
+//		this.mapSpawnData.serverInfo.Clear();
 //
-//		mapSpawnData.serverInfo = *cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO );
-//		mapSpawnData.serverInfo.Set( "si_gameType", "singleplayer" );
+//		this.mapSpawnData.serverInfo = *cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO );
+//		this.mapSpawnData.serverInfo.Set( "si_gameType", "singleplayer" );
 //
-//		mapSpawnData.serverInfo.Set( "si_map", saveMap );
+//		this.mapSpawnData.serverInfo.Set( "si_map", saveMap );
 //
-//		mapSpawnData.syncedCVars.Clear();
-//		mapSpawnData.syncedCVars = *cvarSystem.MoveCVarsToDict( CVAR_NETWORKSYNC );
+//		this.mapSpawnData.syncedCVars.Clear();
+//		this.mapSpawnData.syncedCVars = *cvarSystem.MoveCVarsToDict( CVAR_NETWORKSYNC );
 //
-//		mapSpawnData.mapSpawnUsercmd[0] = usercmdGen.TicCmd( latchedTicNumber );
+//		this.mapSpawnData.mapSpawnUsercmd[0] = usercmdGen.TicCmd( latchedTicNumber );
 //		// make sure no buttons are pressed
-//		mapSpawnData.mapSpawnUsercmd[0].buttons = 0;
+//		this.mapSpawnData.mapSpawnUsercmd[0].buttons = 0;
 //
 //		ExecuteMapChange();
 //
@@ -2145,7 +2146,7 @@ Draw the fade material over everything that has been drawn
 ===============
 */
 idSessionLocal.prototype.DrawWipeModel = function ( ): void {
-	var /*int*/latchedTic = this.com_ticNumber;
+	var /*int*/latchedTic = com_ticNumber;
 
 	if ( this.wipeStartTic >= this.wipeStopTic ) {
 		return;
@@ -2600,8 +2601,8 @@ idSessionLocal.prototype.UpdateScreen = function ( outOfSequence: boolean= true 
 //
 //	// check for user info changes
 //	if ( cvarSystem.GetModifiedFlags() & CVAR_USERINFO ) {
-//		mapSpawnData.userInfo[0] = *cvarSystem.MoveCVarsToDict( CVAR_USERINFO );
-//		game.SetUserInfo( 0, mapSpawnData.userInfo[0], false, false );
+//		this.mapSpawnData.userInfo[0] = *cvarSystem.MoveCVarsToDict( CVAR_USERINFO );
+//		game.SetUserInfo( 0, this.mapSpawnData.userInfo[0], false, false );
 //		cvarSystem.ClearModifiedFlags( CVAR_USERINFO );
 //	}
 //
@@ -2748,17 +2749,17 @@ idSessionLocal.prototype.UpdateScreen = function ( outOfSequence: boolean= true 
 //
 //		if ( !idStr.Icmp( args.Argv(0), "map" ) ) {
 //			// get current player states
-//			for ( int i = 0 ; i < numClients ; i++ ) {
-//				mapSpawnData.persistentPlayerInfo[i] = game.GetPersistentPlayerInfo( i );
+//			for ( int i = 0 ; i < this.numClients ; i++ ) {
+//				this.mapSpawnData.persistentPlayerInfo[i] = game.GetPersistentPlayerInfo( i );
 //			}
 //			// clear the devmap key on serverinfo, so player spawns
 //			// won't get the map testing items
-//			mapSpawnData.serverInfo.Delete( "devmap" );
+//			this.mapSpawnData.serverInfo.Delete( "devmap" );
 //
 //			// go to the next map
 //			MoveToNewMap( args.Argv(1) );
 //		} else if ( !idStr.Icmp( args.Argv(0), "devmap" ) ) {
-//			mapSpawnData.serverInfo.Set( "devmap", "1" );
+//			this.mapSpawnData.serverInfo.Set( "devmap", "1" );
 //			MoveToNewMap( args.Argv(1) );
 //		} else if ( !idStr.Icmp( args.Argv(0), "died" ) ) {
 //			// restart on the same map

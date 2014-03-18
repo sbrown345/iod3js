@@ -146,9 +146,9 @@ idChoiceWindow::CommonInit
 		}
 	}
 
-	destructor ( ): void {
-		todoThrow( "renderSystem.FreeRenderWorld( this.world );" );
-	}
+	////destructor ( ): void {
+	////	// call base
+	////}
 
 ////void idChoiceWindow::RunNamedEvent( const char* eventName ) {
 ////	idStr event, group;

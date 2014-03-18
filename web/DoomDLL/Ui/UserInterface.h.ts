@@ -76,21 +76,21 @@ class idUserInterface {
 //
 //								// Provides read access to the idDict that holds this gui's state.
 //	virtual const idDict &		State() const = 0;
-//
-//								// Removes a gui state variable
-//	virtual void				DeleteStateVar( const char *varName ) = 0;
-//
-//								// Sets a gui state variable.
-//	virtual void				SetStateString( const char *varName, value:string ) = 0;
-//	virtual void				SetStateBool( const char *varName, const bool value ) = 0;
-//	virtual void				SetStateInt( const char *varName, const int value ) = 0;
-//	virtual void				SetStateFloat( const char *varName, const float value ) = 0;
-//
+	
+	// Removes a gui state variable
+	DeleteStateVar( varName:string ):void {throw "placeholder";}
+
+	// Sets a gui state variable.
+	SetStateString ( varName: string, value: string ): void { throw "placeholder"; }
+	SetStateBool ( varName: string, value: boolean ): void { throw "placeholder"; }
+	SetStateInt ( varName: string, /*int */value: number ): void { throw "placeholder"; }
+	SetStateFloat ( varName: string, /*float */value: number ): void { throw "placeholder"; }
+
 //								// Gets a gui state variable
-//	virtual const char*			GetStateString( const char *varName, const char* defaultString = "" ) const = 0;
-//	virtual bool				GetStateBool( const char *varName, const char* defaultString = "0" ) const  = 0;
-//	virtual int					GetStateInt( const char *varName, const char* defaultString = "0" ) const = 0;
-//	virtual float				GetStateFloat( const char *varName, const char* defaultString = "0" ) const = 0;
+//	virtual const char*			GetStateString( varName:string, const char* defaultString = "" ) const = 0;
+//	virtual bool				GetStateBool( varName:string, const char* defaultString = "0" ) const  = 0;
+//	virtual int					GetStateInt( varName:string, const char* defaultString = "0" ) const = 0;
+//	virtual float				GetStateFloat( varName:string, const char* defaultString = "0" ) const = 0;
 //
 //								// The state has changed and the gui needs to update from the state idDict.
 //	virtual void				StateChanged( /*int*/time:number, bool redraw = false ) = 0;

@@ -101,7 +101,7 @@ class idWindow {
 	////	void SetParent(idWindow *w);
 	////	void SetFlag(unsigned int f);
 	////	void ClearFlag(unsigned int f);
-	////	unsigned GetFlags() {return this.flags;};
+	GetFlags ( ): number { return this.flags; }
 	////	void Move(float x, float y);
 	////	void BringToTop(idWindow *w);
 	////	void Adjust(float xd, float yd);
@@ -112,7 +112,7 @@ class idWindow {
 	////	drawWin_t *FindChildByName(const char *name);
 	////	idSimpleWindow *FindSimpleWinByName(_name:string);
 	GetParent(): idWindow { return this.parent; }
-	GetGui(): idUserInterfaceLocal {return this.gui;}
+	GetGui ( ): idUserInterfaceLocal { return this.gui; }
 	////	bool Contains(float x, float y);
 	////	size_t Size();
 	////	virtual size_t Allocated();

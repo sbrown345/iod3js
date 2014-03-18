@@ -3149,18 +3149,18 @@ AllocRenderWorld
 		return rw;
 	}
 
-/////*
-////==============
-////FreeRenderWorld
-////==============
-////*/
-////void idRenderSystemLocal::FreeRenderWorld( idRenderWorld *rw ) {
-////	if ( this.primaryWorld == rw ) {
-////		this.primaryWorld = NULL;
-////	}
-////	worlds.Remove( static_cast<idRenderWorldLocal *>(rw) );
-////	delete rw;
-////}
+/*
+==============
+FreeRenderWorld
+==============
+*/
+	FreeRenderWorld ( rw: idRenderWorld ): void {
+		if ( this.primaryWorld == rw ) {
+			this.primaryWorld = null;
+		}
+		this.worlds.Remove( static_cast<idRenderWorldLocal>( rw ) );
+		$delete( rw );
+	}
 
 /////*
 ////==============

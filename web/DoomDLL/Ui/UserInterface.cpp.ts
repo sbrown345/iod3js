@@ -51,22 +51,22 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 		this.dc.Init ( );
 	}
 //
-//void idUserInterfaceManagerLocal::Shutdown() {
+//Shutdown():void {
 //	this.guis.DeleteContents( true );
 //	demoGuis.DeleteContents( true );
 //	dc.Shutdown();
 //}
 //
-//void idUserInterfaceManagerLocal::Touch( const char *name ) {
+//Touch( const char *name ):void {
 //	idUserInterface *gui = this.Alloc();
 //	gui.InitFromFile( name );
 ////	delete gui;
 //}
 //
-//void idUserInterfaceManagerLocal::WritePrecacheCommands( idFile *f ) {
+//WritePrecacheCommands( idFile *f ):void {
 //
-//	int c = this.guis.Num();
-//	for( int i = 0; i < c; i++ ) {
+//	var c = this.guis.Num();
+//	for( var i = 0; i < c; i++ ) {
 //		char	str[1024];
 //		sprintf( str, "touchGui %s\n", this.guis[i].Name() );
 //		common.Printf( "%s", str );
@@ -74,27 +74,27 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 //	}
 //}
 //
-//void idUserInterfaceManagerLocal::SetSize( float width, float height ) {
+//SetSize( float width, float height ):void {
 //	dc.SetSize( width, height );
 //}
 //
-//void idUserInterfaceManagerLocal::BeginLevelLoad() {
-//	int c = this.guis.Num();
-//	for ( int i = 0; i < c; i++ ) {
-//		if ( (this.guis[ i ].GetDesktop().GetFlags() & WIN_MENUGUI) == 0 ) {
-//			this.guis[ i ].ClearRefs();
-//			/*
-//			delete this.guis[ i ];
-//			this.guis.RemoveIndex( i );
-//			i--; c--;
-//			*/
-//		}
-//	}
-//}
+	BeginLevelLoad ( ): void {
+		var c = this.guis.Num ( );
+		for ( var i = 0; i < c; i++ ) {
+			if ( ( this.guis[i].GetDesktop ( ).GetFlags ( ) & WIN_MENUGUI ) == 0 ) {
+				this.guis[i].ClearRefs ( );
+				/*
+				delete this.guis[ i ];
+				this.guis.RemoveIndex( i );
+				i--; c--;
+				*/
+			}
+		}
+	}
 //
-//void idUserInterfaceManagerLocal::EndLevelLoad() {
-//	int c = this.guis.Num();
-//	for ( int i = 0; i < c; i++ ) {
+//EndLevelLoad():void {
+//	var c = this.guis.Num();
+//	for ( var i = 0; i < c; i++ ) {
 //		if ( this.guis[i].GetRefs() == 0 ) {
 //			//common.Printf( "purging %s.\n", this.guis[i].GetSourceFile() );
 //
@@ -115,31 +115,31 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 //		}
 //	}
 //}
+
+	Reload ( all: boolean ): void {
+		var /*ID_TIME_T */ts = new R<number> ( );
+
+		var c = this.guis.Num ( );
+		for ( var i = 0; i < c; i++ ) {
+			if ( !all ) {
+				fileSystem.ReadFile( this.guis[i].GetSourceFile ( ), null, ts );
+				if ( ts.$ <= this.guis[i].GetTimeStamp ( ) ) {
+					continue;
+				}
+			}
+
+			this.guis[i].InitFromFile( this.guis[i].GetSourceFile ( ) );
+			common.Printf( "reloading %s.\n", this.guis[i].GetSourceFile ( ) );
+		}
+	}
 //
-//void idUserInterfaceManagerLocal::Reload( bool all ) {
-//	ID_TIME_T ts;
-//
-//	int c = this.guis.Num();
-//	for ( int i = 0; i < c; i++ ) {
-//		if ( !all ) {
-//			fileSystem.ReadFile( this.guis[i].GetSourceFile(), NULL, &ts );
-//			if ( ts <= this.guis[i].GetTimeStamp() ) {
-//				continue;
-//			}
-//		}
-//
-//		this.guis[i].InitFromFile( this.guis[i].GetSourceFile() );
-//		common.Printf( "reloading %s.\n", this.guis[i].GetSourceFile() );
-//	}
-//}
-//
-//void idUserInterfaceManagerLocal::ListGuis() const {
-//	int c = this.guis.Num();
+//ListGuis() :void {
+//	var c = this.guis.Num();
 //	common.Printf( "\n   size   refs   name\n" );
 //	size_t total = 0;
 //	int copies = 0;
 //	int unique = 0;
-//	for ( int i = 0; i < c; i++ ) {
+//	for ( var i = 0; i < c; i++ ) {
 //		idUserInterfaceLocal *gui = this.guis[i];
 //		size_t sz = gui.Size();
 //		bool isUnique = this.guis[i].interactive;
@@ -153,16 +153,16 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 //	}
 //	common.Printf( "===========\n  %i total Guis ( %i copies, %i unique ), %.2f total Mbytes", c, copies, unique, total / ( 1024.0f * 1024.0f ) );
 //}
-//
-//bool idUserInterfaceManagerLocal::CheckGui( const char *qpath ) const {
-//	idFile *file = fileSystem.OpenFileRead( qpath );
-//	if ( file ) {
-//		fileSystem.CloseFile( file );
-//		return true;
-//	}
-//	return false;
-//}
-//
+
+	CheckGui ( qpath: string ): boolean {
+		var file = fileSystem.OpenFileRead( qpath );
+		if ( file ) {
+			fileSystem.CloseFile( file );
+			return true;
+		}
+		return false;
+	}
+
 	Alloc ( ): idUserInterface {
 		return new idUserInterfaceLocal ( );
 	}
@@ -208,8 +208,8 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 	}
 
 //idUserInterface *idUserInterfaceManagerLocal::FindDemoGui( const char *qpath ) {
-//	int c = demoGuis.Num();
-//	for ( int i = 0; i < c; i++ ) {
+//	var c = demoGuis.Num();
+//	for ( var i = 0; i < c; i++ ) {
 //		if ( !idStr::Icmp( demoGuis[i].GetSourceFile(), qpath ) ) {
 //			return demoGuis[i];
 //		}
@@ -221,7 +221,7 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 		return new idListGUILocal ( );
 	}
 
-//void idUserInterfaceManagerLocal::FreeListGUI( idListGUI *listgui ) {
+//FreeListGUI( idListGUI *listgui ):void {
 //	delete listgui;
 //}
 
@@ -244,7 +244,7 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 
 class idUserInterfaceLocal extends idUserInterface {
 
-	constructor() {
+	constructor ( ) {
 		super ( );
 		this.cursorX = this.cursorY = 0.0;
 		this.desktop = null;
@@ -259,7 +259,7 @@ class idUserInterfaceLocal extends idUserInterface {
 	}
 //
 //idUserInterfaceLocal::~idUserInterfaceLocal() {
-//	delete this.desktop;
+//	$delete( this.desktop );
 //	this.desktop = NULL;
 //}
 //
@@ -288,9 +288,9 @@ class idUserInterfaceLocal extends idUserInterface {
 		//sz = sizeof( idSimpleWindow );
 		this.loading = true;
 
-		if (rebuild) {
+		if ( rebuild ) {
 			if ( this.desktop ) {
-				this.desktop.destructor ( ); //delete this.desktop;
+				$delete( this.desktop );
 			}
 			this.desktop = new idWindow( this );
 		} else if ( this.desktop == null ) {
@@ -310,7 +310,7 @@ class idUserInterfaceLocal extends idUserInterface {
 		src.LoadFile( qpath );
 
 		if ( src.IsLoaded ( ) ) {
-			var token = new idToken ;
+			var token = new idToken;
 			while ( src.ReadToken( token ) ) {
 				if ( idStr.Icmp( token, "windowDef" ) == 0 ) {
 					this.desktop.SetDC( uiManagerLocal.dc );
@@ -405,40 +405,40 @@ class idUserInterfaceLocal extends idUserInterface {
 		return this.state;
 	}
 
-//void idUserInterfaceLocal::DeleteStateVar( const char *varName ) {
-//	state.Delete( varName );
-//}
-//
-//void idUserInterfaceLocal::SetStateString( const char *varName, value:string ) {
-//	state.Set( varName, value );
-//}
-//
-//void idUserInterfaceLocal::SetStateBool( const char *varName, const bool value ) {
-//	state.SetBool( varName, value );
-//}
-//
-//void idUserInterfaceLocal::SetStateInt( const char *varName, const int value ) {
-//	state.SetInt( varName, value );
-//}
-//
-//void idUserInterfaceLocal::SetStateFloat( const char *varName, const float value ) {
-//	state.SetFloat( varName, value );
-//}
-//
+	DeleteStateVar ( varName: string ): void {
+		this.state.Delete( varName );
+	}
+
+	SetStateString ( varName: string, value: string ): void {
+		this.state.Set( varName, value );
+	}
+
+	SetStateBool ( varName: string, value: boolean ): void {
+		this.state.SetBool( varName, value );
+	}
+
+	SetStateInt ( varName: string, /*int */value: number ): void {
+		this.state.SetInt( varName, value );
+	}
+
+	SetStateFloat ( varName: string, /*float */value: number ): void {
+		this.state.SetFloat( varName, value );
+	}
+
 //const char* idUserInterfaceLocal::GetStateString( const char *varName, const char* defaultString ) const {
-//	return state.GetString(varName, defaultString);
+//	return this.state.GetString(varName, defaultString);
 //}
 //
 //bool idUserInterfaceLocal::GetStateBool( const char *varName, const char* defaultString ) const {
-//	return state.GetBool(varName, defaultString); 
+//	return this.state.GetBool(varName, defaultString); 
 //}
 //
 //int idUserInterfaceLocal::GetStateInt( const char *varName, const char* defaultString ) const {
-//	return state.GetInt(varName, defaultString);
+//	return this.state.GetInt(varName, defaultString);
 //}
 //
 //float idUserInterfaceLocal::GetStateFloat( const char *varName, const char* defaultString ) const {
-//	return state.GetFloat(varName, defaultString);
+//	return this.state.GetFloat(varName, defaultString);
 //}
 //
 //void idUserInterfaceLocal::StateChanged( int _time, bool redraw ) {
@@ -446,7 +446,7 @@ class idUserInterfaceLocal extends idUserInterface {
 //	if (this.desktop) {
 //		this.desktop.StateChanged( redraw );
 //	}
-//	if ( state.GetBool( "noninteractive" ) ) {
+//	if ( this.state.GetBool( "noninteractive" ) ) {
 //		interactive = false;
 //	}
 //	else {
@@ -478,8 +478,8 @@ class idUserInterfaceLocal extends idUserInterface {
 //
 //void idUserInterfaceLocal::ReadFromDemoFile( class idDemoFile *f ) {
 //	idStr work;
-//	f.ReadDict( state );
-//	source = state.GetString("name");
+//	f.ReadDict( this.state );
+//	source = this.state.GetString("name");
 //
 //	if (this.desktop == NULL) {
 //		f.Log("creating new gui\n");
@@ -496,8 +496,8 @@ class idUserInterfaceLocal extends idUserInterface {
 //	f.ReadFloat( cursorY );
 //
 //	bool add = true;
-//	int c = uiManagerLocal.demoGuis.Num();
-//	for ( int i = 0; i < c; i++ ) {
+//	var c = uiManagerLocal.demoGuis.Num();
+//	for ( var i = 0; i < c; i++ ) {
 //		if ( uiManagerLocal.demoGuis[i] == this ) {
 //			add = false;
 //			break;
@@ -511,7 +511,7 @@ class idUserInterfaceLocal extends idUserInterface {
 //
 //void idUserInterfaceLocal::WriteToDemoFile( class idDemoFile *f ) {
 //	idStr work;
-//	f.WriteDict( state );
+//	f.WriteDict( this.state );
 //	if (this.desktop) {
 //		this.desktop.WriteToDemoFile(f);
 //	}
@@ -525,11 +525,11 @@ class idUserInterfaceLocal extends idUserInterface {
 //	const idKeyValue *kv;
 //	const char *string;
 //
-//	int num = state.GetNumKeyVals();
+//	int num = this.state.GetNumKeyVals();
 //	savefile.Write( &num, sizeof( num ) );
 //
-//	for( int i = 0; i < num; i++ ) {
-//		kv = state.GetKeyVal( i );
+//	for( var i = 0; i < num; i++ ) {
+//		kv = this.state.GetKeyVal( i );
 //		len = kv.GetKey().Length();
 //		string = kv.GetKey().c_str();
 //		savefile.Write( &len, sizeof( len ) );
@@ -571,7 +571,7 @@ class idUserInterfaceLocal extends idUserInterface {
 //
 //	savefile.Read( &num, sizeof( num ) );
 //
-//	state.Clear();
+//	this.state.Clear();
 //	for( i = 0; i < num; i++ ) {
 //		savefile.Read( &len, sizeof( len ) );
 //		key.Fill( ' ', len );
@@ -581,7 +581,7 @@ class idUserInterfaceLocal extends idUserInterface {
 //		value.Fill( ' ', len );
 //		savefile.Read( &value[0], len );
 //		
-//		state.Set( key, value );
+//		this.state.Set( key, value );
 //	}
 //
 //	savefile.Read( &this.active, sizeof( active ) );
@@ -608,7 +608,7 @@ class idUserInterfaceLocal extends idUserInterface {
 //}
 //
 //size_t idUserInterfaceLocal::Size() {
-//	size_t sz = sizeof(*this) + state.Size() + source.Allocated();
+//	size_t sz = sizeof(*this) + this.state.Size() + source.Allocated();
 //	if ( this.desktop ) {
 //		sz += this.desktop.Size();
 //	}
@@ -658,51 +658,51 @@ class idUserInterfaceLocal extends idUserInterface {
 	SetUniqued ( b: boolean ): void { this.uniqued = b; }
 ////	virtual void				SetCursor( float x, float y );
 
-	CursorX():number { return this.cursorX; }
-	CursorY():number { return this.cursorY; }
+	CursorX ( ): number { return this.cursorX; }
+	CursorY ( ): number { return this.cursorY; }
 
 ////	size_t						Size();
 
-	GetStateDict(): idDict { return this.state; }
+	GetStateDict ( ): idDict { return this.state; }
 
-	GetSourceFile( ):string { return this.source.data; }
-	GetTimeStamp( ):number { return this.timeStamp; }
+	GetSourceFile ( ): string { return this.source.data; }
+	GetTimeStamp ( ): number { return this.timeStamp; }
 
 	GetDesktop ( ): idWindow { return this.desktop; }
-	SetBindHandler(win: idWindow): void  { this.bindHandler = win; }
-	Active():boolean{ return this.active; }
-	GetTime():number { return this.time; }
-	SetTime( /*int*/ _time:number ):void { this.time = _time; }
-	
-	ClearRefs():void { this.refs = 0; }
-	AddRef():void { this.refs++; }
-	GetRefs():number { return this.refs; }
+	SetBindHandler ( win: idWindow ): void { this.bindHandler = win; }
+	Active ( ): boolean { return this.active; }
+	GetTime ( ): number { return this.time; }
+	SetTime ( /*int*/ _time: number ): void { this.time = _time; }
+
+	ClearRefs ( ): void { this.refs = 0; }
+	AddRef ( ): void { this.refs++; }
+	GetRefs ( ): number { return this.refs; }
 ////
 ////	void						RecurseSetKeyBindingNames( idWindow *window );
-	GetPendingCmd():idStr { return this.pendingCmd; }
-	GetReturnCmd():idStr { return this.returnCmd; }
+	GetPendingCmd ( ): idStr { return this.pendingCmd; }
+	GetReturnCmd ( ): idStr { return this.returnCmd; }
 //private:
 	active: boolean;
 	loading: boolean;
 	interactive: boolean;
-	uniqued:boolean;
+	uniqued: boolean;
 
 	state = new idDict;
 	desktop: idWindow;
 	bindHandler: idWindow;
-	
+
 	source = new idStr;
 	activateStr = new idStr;
 	pendingCmd = new idStr;
 	returnCmd = new idStr;
-	timeStamp:number;//	ID_TIME_T	
-	
-	cursorX: number;	   //	float						
-	cursorY: number;	   //	float						
+	timeStamp: number; //	ID_TIME_T	
 
-	time:number;//	int	
+	cursorX: number; //	float						
+	cursorY: number; //	float						
 
-	refs:number;//	int	
+	time: number; //	int	
+
+	refs: number; //	int	
 };
 
 

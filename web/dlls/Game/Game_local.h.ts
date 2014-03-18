@@ -330,7 +330,7 @@ class idGameLocal extends idGame {
 ////	virtual void			Shutdown( void );
 ////	virtual void			SetLocalClient( int clientNum );
 ////	virtual void			ThrottleUserInfo( void );
-////	virtual const idDict *	SetUserInfo( int clientNum, const idDict &userInfo, bool isClient, bool canModify );
+	SetUserInfo ( /*int */clientNum: number, userInfo: idDict, isClient: boolean, canModify: boolean ): idDict { throw "placeholder"; }
 ////	virtual const idDict *	GetUserInfo( int clientNum );
 ////	virtual void			SetServerInfo( const idDict &serverInfo );
 

@@ -93,10 +93,9 @@ class idFieldWindow extends idWindow {
 		}
 	}
 
-
-	destructor ( ): void {
-		todoThrow( "need to call base? (or just remove this method)" );
-	}
+	////destructor ( ): void {
+	////	// call base
+	////}
 
 	ParseInternalVar ( _name: string, src: idParser ): boolean {
 		if ( idStr.Icmp( _name, "cursorvar" ) == 0 ) {

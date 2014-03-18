@@ -266,6 +266,7 @@ class idBlockAlloc<T> {
 		while ( this.blocks ) {
 			var block = this.blocks;
 			this.blocks = this.blocks.next;
+			$delete( block );
 			delete block;
 		}
 		this.blocks = null;

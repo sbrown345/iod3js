@@ -2218,15 +2218,15 @@ idDeclLocal::Purge
 idDeclLocal.prototype.Purge = function ( ) {
 	// never purge things that were referenced outside level load,
 	// like the console and menu graphics
-	if ( parsedOutsideLevelLoad ) {
+	if ( this.parsedOutsideLevelLoad ) {
 		return;
 	}
 
-	referencedThisLevel = false;
-	MakeDefault ( );
+	this.referencedThisLevel = false;
+	this.MakeDefault ( );
 
 	// the next Find() for this will re-parse the real data
-	declState = declState_t.DS_UNPARSED;
+	this.declState = declState_t.DS_UNPARSED;
 };
 
 /////*

@@ -36,7 +36,7 @@
 //usercmd_t::ByteSwap
 //================
 //*/
-//void usercmd_t::ByteSwap( void ) {
+//void usercmd_t::ByteSwap( ) {
 //	angles[0] = LittleShort( angles[0] );
 //	angles[1] = LittleShort( angles[1] );
 //	angles[2] = LittleShort( angles[2] );
@@ -56,7 +56,7 @@
 //			angles[0] == rhs.angles[0] &&
 //			angles[1] == rhs.angles[1] &&
 //			angles[2] == rhs.angles[2] &&
-//			impulse == rhs.impulse &&
+//			this.impulse == rhs.impulse &&
 //			flags == rhs.flags &&
 //			mx == rhs.mx &&
 //			my == rhs.my );
@@ -268,26 +268,26 @@ var userCmdStrings = [
 	new userCmdString_t( null,				usercmdButton_t.UB_NONE )
 ];
 
-// class buttonState_t {
+class buttonState_t {
 // public:
-//	int		on;
-//	bool	held;
-//
-//			buttonState_t() { Clear(); };
-//	void	Clear( void );
+	on: number /*int*/;
+	held: boolean;
+
+	constructor ( ) { this.Clear ( ); }
+//	void	Clear( );
 //	void	SetKeyState( int keystate, bool toggle );
-//};
-//
-///*
-//================
-//buttonState_t::Clear
-//================
-//*/
-//void buttonState_t::Clear( void ) {
-//	held = false;
-//	on = 0;
-//}
-//
+
+
+	/*
+================
+buttonState_t::Clear
+================
+*/
+	Clear ( ): void {
+		this.held = false;
+		this.on = 0;
+	}
+
 ///*
 //================
 //buttonState_t::SetKeyState
@@ -304,7 +304,8 @@ var userCmdStrings = [
 //		on ^= 1;
 //	}
 //}
-//
+}
+
 //
 //const int NUM_USER_COMMANDS = sizeof(userCmdStrings) / sizeof(userCmdString_t);
 //
@@ -312,27 +313,27 @@ var userCmdStrings = [
 //
 class idUsercmdGenLocal extends idUsercmdGen {
 //public:
-//					idUsercmdGenLocal( void );
+//					idUsercmdGenLocal( );
 //	
-//	void			Init( void );
+//	void			Init( );
 //
-//	void			InitForNewMap( void );
+//	void			InitForNewMap( );
 //
-//	void			Shutdown( void );
+//	void			Shutdown( );
 //
-//	void			Clear( void );
+//	void			Clear( );
 //
-//	void			ClearAngles( void );
+//	void			ClearAngles( );
 //
 //	usercmd_t		TicCmd( int ticNumber );
 //
 //	void			InhibitUsercmd( inhibit_t subsystem, bool inhibit );
 //
-//	void			UsercmdInterrupt( void );
+//	void			UsercmdInterrupt( );
 //
 //	int				CommandStringUsercmdData( const char *cmdString );
 //
-//	int				GetNumUserCommands( void );
+//	int				GetNumUserCommands( );
 //
 //	const char *	GetUserCommandName( int index );
 //
@@ -341,33 +342,33 @@ class idUsercmdGenLocal extends idUsercmdGen {
 //	int				ButtonState( int key );
 //	int				KeyState( int key );
 //
-//	usercmd_t		GetDirectUsercmd( void );
+//	usercmd_t		GetDirectUsercmd( );
 //
 //private:
-//	void			MakeCurrent( void );
-//	void			InitCurrent( void );
+//	void			MakeCurrent( );
+//	void			InitCurrent( );
 //
-//	bool			Inhibited( void );
-//	void			AdjustAngles( void );
-//	void			KeyMove( void );
-//	void			JoystickMove( void );
-//	void			MouseMove( void );
-//	void			CmdButtons( void );
+//	bool			Inhibited( );
+//	void			AdjustAngles( );
+//	void			KeyMove( );
+//	void			JoystickMove( );
+//	void			MouseMove( );
+//	void			CmdButtons( );
 //
-//	void			Mouse( void );
-//	void			Keyboard( void );
-//	void			Joystick( void );
+//	void			Mouse( );
+//	void			Keyboard( );
+//	void			Joystick( );
 //
 //	void			Key( int keyNum, bool down );
 //
-//	idVec3			viewangles;
-//	int				flags;
-//	int				impulse;
-//
-//	buttonState_t	toggled_crouch;
-//	buttonState_t	toggled_run;
-//	buttonState_t	toggled_zoom;
-//
+	viewangles = new idVec3;
+	flags: number/*int*/;
+	impulse: number/*int*/;
+
+	toggled_crouch = new buttonState_t;
+	toggled_run = new buttonState_t;
+	toggled_zoom = new buttonState_t;
+
 	buttonState = new Int32Array(usercmdButton_t.UB_MAX_BUTTONS);
 	keyState = new Array<boolean>(keyNum_t.K_LAST_KEY);
 
@@ -402,29 +403,30 @@ class idUsercmdGenLocal extends idUsercmdGen {
 	static m_strafeSmooth = new idCVar ( "m_strafeSmooth", "4", CVAR_SYSTEM | CVAR_ARCHIVE | CVAR_INTEGER, "number of samples blended for mouse moving", 1, 8, ArgCompletion_Integer_Template(1,8) );
 	static m_showMouseRate = new idCVar ( "m_showMouseRate", "0", CVAR_SYSTEM | CVAR_BOOL, "shows mouse movement" );
 //};
-//
 
-//
-///*
-//================
-//idUsercmdGenLocal::idUsercmdGenLocal
-//================
-//*/
-//idUsercmdGenLocal::idUsercmdGenLocal( void ) {
-//	lastCommandTime = 0;
-//	initialized = false;
-//
-//	flags = 0;
-//	impulse = 0;
-//
-//	toggled_crouch.Clear();
-//	toggled_run.Clear();
-//	toggled_zoom.Clear();
-//	toggled_run.on = in_alwaysRun.GetBool();
-//
-//	ClearAngles();
-//	Clear();
-//}
+
+
+/*
+================
+idUsercmdGenLocal::idUsercmdGenLocal
+================
+*/
+	constructor() {
+		super ( );
+		this.lastCommandTime = 0;
+		this.initialized = false;
+
+		this.flags = 0;
+		this.impulse = 0;
+
+		this.toggled_crouch.Clear ( );
+		this.toggled_run.Clear ( );
+		this.toggled_zoom.Clear ( );
+		this.toggled_run.on = idUsercmdGenLocal.in_alwaysRun.GetBool ( ) ? 1 : 0;
+
+		this.ClearAngles ( );
+		this.Clear ( );
+	}
 //
 ///*
 //================
@@ -477,7 +479,7 @@ class idUsercmdGenLocal extends idUsercmdGen {
 //idUsercmdGenLocal::GetNumUserCommands
 //================
 //*/
-//int idUsercmdGenLocal::GetNumUserCommands( void ) {
+//int idUsercmdGenLocal::GetNumUserCommands( ) {
 //	return NUM_USER_COMMANDS;
 //}
 //
@@ -500,7 +502,7 @@ class idUsercmdGenLocal extends idUsercmdGen {
 //is user cmd generation inhibited
 //================
 //*/
-//bool idUsercmdGenLocal::Inhibited( void ) {
+//bool idUsercmdGenLocal::Inhibited( ) {
 //	return ( inhibitCommands != 0);
 //}
 //
@@ -511,10 +513,10 @@ class idUsercmdGenLocal extends idUsercmdGen {
 //Moves the local angle positions
 //================
 //*/
-//void idUsercmdGenLocal::AdjustAngles( void ) {
+//void idUsercmdGenLocal::AdjustAngles( ) {
 //	float	speed;
 //	
-//	if ( toggled_run.on ^ ( in_alwaysRun.GetBool() && idAsyncNetwork::IsActive() ) ) {
+//	if ( this.toggled_run.on ^ ( idUsercmdGenLocal.in_alwaysRun.GetBool() && idAsyncNetwork::IsActive() ) ) {
 //		speed = idMath::M_MS2SEC * USERCMD_MSEC * in_angleSpeedKey.GetFloat();
 //	} else {
 //		speed = idMath::M_MS2SEC * USERCMD_MSEC;
@@ -536,7 +538,7 @@ class idUsercmdGenLocal extends idUsercmdGen {
 //Sets the usercmd_t based on key states
 //================
 //*/
-//void idUsercmdGenLocal::KeyMove( void ) {
+//void idUsercmdGenLocal::KeyMove( ) {
 //	int		forward, side, up;
 //
 //	forward = 0;
@@ -550,7 +552,7 @@ class idUsercmdGenLocal extends idUsercmdGen {
 //	side += KEY_MOVESPEED * ButtonState( UB_MOVERIGHT );
 //	side -= KEY_MOVESPEED * ButtonState( UB_MOVELEFT );
 //
-//	up -= KEY_MOVESPEED * toggled_crouch.on;
+//	up -= KEY_MOVESPEED * this.toggled_crouch.on;
 //	up += KEY_MOVESPEED * ButtonState( UB_UP );
 //
 //	forward += KEY_MOVESPEED * ButtonState( UB_FORWARD );
@@ -566,7 +568,7 @@ class idUsercmdGenLocal extends idUsercmdGen {
 //idUsercmdGenLocal::MouseMove
 //=================
 //*/
-//void idUsercmdGenLocal::MouseMove( void ) {
+//void idUsercmdGenLocal::MouseMove( ) {
 //	float		mx, my, strafeMx, strafeMy;
 //	static int	history[8][2];
 //	static int	historyCounter;
@@ -660,10 +662,10 @@ class idUsercmdGenLocal extends idUsercmdGen {
 //idUsercmdGenLocal::JoystickMove
 //=================
 //*/
-//void idUsercmdGenLocal::JoystickMove( void ) {
+//void idUsercmdGenLocal::JoystickMove( ) {
 //	float	anglespeed;
 //
-//	if ( toggled_run.on ^ ( in_alwaysRun.GetBool() && idAsyncNetwork::IsActive() ) ) {
+//	if ( this.toggled_run.on ^ ( idUsercmdGenLocal.in_alwaysRun.GetBool() && idAsyncNetwork::IsActive() ) ) {
 //		anglespeed = idMath::M_MS2SEC * USERCMD_MSEC * in_angleSpeedKey.GetFloat();
 //	} else {
 //		anglespeed = idMath::M_MS2SEC * USERCMD_MSEC;
@@ -685,7 +687,7 @@ class idUsercmdGenLocal extends idUsercmdGen {
 //idUsercmdGenLocal::CmdButtons
 //==============
 //*/
-//void idUsercmdGenLocal::CmdButtons( void ) {
+//void idUsercmdGenLocal::CmdButtons( ) {
 //	int		i;
 //
 //	cmd.buttons = 0;
@@ -703,12 +705,12 @@ class idUsercmdGenLocal extends idUsercmdGen {
 //	}
 //
 //	// check the run button
-//	if ( toggled_run.on ^ ( in_alwaysRun.GetBool() && idAsyncNetwork::IsActive() ) ) {
+//	if ( this.toggled_run.on ^ ( idUsercmdGenLocal.in_alwaysRun.GetBool() && idAsyncNetwork::IsActive() ) ) {
 //		cmd.buttons |= BUTTON_RUN;
 //	}
 //
 //	// check the zoom button
-//	if ( toggled_zoom.on ) {
+//	if ( this.toggled_zoom.on ) {
 //		cmd.buttons |= BUTTON_ZOOM;
 //	}
 //
@@ -731,11 +733,11 @@ class idUsercmdGenLocal extends idUsercmdGen {
 //inits the current command for this frame
 //================
 //*/
-//void idUsercmdGenLocal::InitCurrent( void ) {
+//void idUsercmdGenLocal::InitCurrent( ) {
 //	memset( &cmd, 0, sizeof( cmd ) );
-//	cmd.flags = flags;
+//	cmd.flags = this.flags;
 //	cmd.impulse = impulse;
-//	cmd.buttons |= ( in_alwaysRun.GetBool() && idAsyncNetwork::IsActive() ) ? BUTTON_RUN : 0;
+//	cmd.buttons |= ( idUsercmdGenLocal.in_alwaysRun.GetBool() && idAsyncNetwork::IsActive() ) ? BUTTON_RUN : 0;
 //	cmd.buttons |= in_freeLook.GetBool() ? BUTTON_MLOOK : 0;
 //}
 //
@@ -746,7 +748,7 @@ class idUsercmdGenLocal extends idUsercmdGen {
 //creates the current command for this frame
 //================
 //*/
-//void idUsercmdGenLocal::MakeCurrent( void ) {
+//void idUsercmdGenLocal::MakeCurrent( ) {
 //	idVec3		oldAngles;
 //	int		i;
 //
@@ -754,9 +756,9 @@ class idUsercmdGenLocal extends idUsercmdGen {
 //	
 //	if ( !Inhibited() ) {
 //		// update toggled key states
-//		toggled_crouch.SetKeyState( ButtonState( UB_DOWN ), in_toggleCrouch.GetBool() );
-//		toggled_run.SetKeyState( ButtonState( UB_SPEED ), in_toggleRun.GetBool() && idAsyncNetwork::IsActive() );
-//		toggled_zoom.SetKeyState( ButtonState( UB_ZOOM ), in_toggleZoom.GetBool() );
+//		this.toggled_crouch.SetKeyState( ButtonState( UB_DOWN ), in_toggleCrouch.GetBool() );
+//		this.toggled_run.SetKeyState( ButtonState( UB_SPEED ), in_toggleRun.GetBool() && idAsyncNetwork::IsActive() );
+//		this.toggled_zoom.SetKeyState( ButtonState( UB_ZOOM ), in_toggleZoom.GetBool() );
 //
 //		// keyboard angle adjustment
 //		AdjustAngles();
@@ -791,8 +793,8 @@ class idUsercmdGenLocal extends idUsercmdGen {
 //	cmd.mx = continuousMouseX;
 //	cmd.my = continuousMouseY;
 //
-//	flags = cmd.flags;
-//	impulse = cmd.impulse;
+//	this.flags = cmd.flags;
+//	this.impulse = cmd.impulse;
 //
 //}
 
@@ -824,30 +826,30 @@ idUsercmdGenLocal::Init
 		this.initialized = true;
 	}
 
-///*
-//================
-//idUsercmdGenLocal::InitForNewMap
-//================
-//*/
-//void idUsercmdGenLocal::InitForNewMap( void ) {
-//	flags = 0;
-//	impulse = 0;
-//
-//	toggled_crouch.Clear();
-//	toggled_run.Clear();
-//	toggled_zoom.Clear();
-//	toggled_run.on = in_alwaysRun.GetBool();
-//
-//	Clear();
-//	ClearAngles();
-//}
-//
+/*
+================
+idUsercmdGenLocal::InitForNewMap
+================
+*/
+	InitForNewMap ( ): void {
+		this.flags = 0;
+		this.impulse = 0;
+
+		this.toggled_crouch.Clear ( );
+		this.toggled_run.Clear ( );
+		this.toggled_zoom.Clear ( );
+		this.toggled_run.on = idUsercmdGenLocal.in_alwaysRun.GetBool ( ) ? 1 : 0;
+
+		this.Clear ( );
+		this.ClearAngles ( );
+	}
+
 ///*
 //================
 //idUsercmdGenLocal::Shutdown
 //================
 //*/
-//void idUsercmdGenLocal::Shutdown( void ) {
+//void idUsercmdGenLocal::Shutdown( ) {
 //	initialized = false;
 //}
 
@@ -869,16 +871,16 @@ idUsercmdGenLocal::Clear
 		this.mouseButton = 0;
 		this.mouseDown = false;
 	}
-//
-///*
-//================
-//idUsercmdGenLocal::ClearAngles
-//================
-//*/
-//void idUsercmdGenLocal::ClearAngles( void ) {
-//	viewangles.Zero();
-//}
-//
+
+/*
+================
+idUsercmdGenLocal::ClearAngles
+================
+*/
+	ClearAngles ( ): void {
+		this.viewangles.Zero ( );
+	}
+
 ///*
 //================
 //idUsercmdGenLocal::TicCmd
@@ -948,7 +950,7 @@ idUsercmdGenLocal::Clear
 //idUsercmdGenLocal::Mouse
 //===================
 //*/
-//void idUsercmdGenLocal::Mouse( void ) {
+//void idUsercmdGenLocal::Mouse( ) {
 //	int i, numEvents;
 //
 //	numEvents = Sys_PollMouseInputEvents();
@@ -998,7 +1000,7 @@ idUsercmdGenLocal::Clear
 //idUsercmdGenLocal::Keyboard
 //===============
 //*/
-//void idUsercmdGenLocal::Keyboard( void ) {
+//void idUsercmdGenLocal::Keyboard( ) {
 //
 //	int numEvents = Sys_PollKeyboardInputEvents();
 //
@@ -1023,7 +1025,7 @@ idUsercmdGenLocal::Clear
 //idUsercmdGenLocal::Joystick
 //===============
 //*/
-//void idUsercmdGenLocal::Joystick( void ) {
+//void idUsercmdGenLocal::Joystick( ) {
 //	memset( joystickAxis, 0, sizeof( joystickAxis ) );
 //}
 //
@@ -1034,7 +1036,7 @@ idUsercmdGenLocal::Clear
 //Called asyncronously
 //================
 //*/
-//void idUsercmdGenLocal::UsercmdInterrupt( void ) {
+//void idUsercmdGenLocal::UsercmdInterrupt( ) {
 //	// dedicated servers won't create usercmds
 //	if ( !initialized ) {
 //		return;
@@ -1078,7 +1080,7 @@ idUsercmdGenLocal::Clear
 //idUsercmdGenLocal::GetDirectUsercmd
 //================
 //*/
-//usercmd_t idUsercmdGenLocal::GetDirectUsercmd( void ) {
+//usercmd_t idUsercmdGenLocal::GetDirectUsercmd( ) {
 //
 //	// initialize current usercmd
 //	InitCurrent();

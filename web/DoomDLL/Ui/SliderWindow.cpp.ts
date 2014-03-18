@@ -136,11 +136,10 @@ CommonInit():void {
 			todoThrow();
 		}
 	}
-
-
-	destructor(): void {
-		todoThrow("need to call base? (or just remove this method)");
-	}
+	
+	////destructor ( ): void {
+	////	// call base
+	////}
 
 	ParseInternalVar ( _name: string, src: idParser ): boolean {
 		if ( idStr.Icmp( _name, "stepsize" ) == 0 || idStr.Icmp( _name, "step" ) == 0 ) {

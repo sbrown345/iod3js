@@ -329,9 +329,9 @@ class idRenderWorld {
 //public:
 //	virtual					~idRenderWorld() {};
 //
-//	// The same render world can be reinitialized as often as desired
-//	// a NULL or empty mapName will create an empty, single area world
-//	virtual bool			InitFromMap( const char *mapName ) = 0;
+	// The same render world can be reinitialized as often as desired
+	// a NULL or empty mapName will create an empty, single area world
+	InitFromMap ( mapName: string ): boolean { throw "placeholder"; }
 //
 //	//-------------- Entity and Light Defs -----------------
 //

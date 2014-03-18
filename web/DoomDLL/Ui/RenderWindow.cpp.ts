@@ -99,7 +99,8 @@ class idRenderWindow extends idWindow {
 	}
 
 	destructor ( ): void {
-		todoThrow( "renderSystem.FreeRenderWorld( this.world );" );
+		renderSystem.FreeRenderWorld(this.world);
+		super.destructor ( );
 	}
 
 	CommonInit ( ): void {
@@ -109,7 +110,7 @@ class idRenderWindow extends idWindow {
 		this.lightColor.equalsVec4( new idVec4( 1.0, 1.0, 1.0, 1.0 ) );
 		this.modelOrigin.Zero ( );
 		this.viewOffset.equalsVec4( new idVec4( -128.0, 0.0, 0.0, 1.0 ) );
-		this.modelAnim = NULL;
+		this.modelAnim = null;
 		this.animLength = 0;
 		this.animEndTime = -1;
 		this.modelDef = -1;

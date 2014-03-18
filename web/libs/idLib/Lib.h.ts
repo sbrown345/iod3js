@@ -155,9 +155,9 @@ class idException {
 	}
 }
 
-////// move from Math.h to keep gcc happy
-////template<class T> ID_INLINE T	Max( T x, T y ) { return ( x > y ) ? x : y; }
-////template<class T> ID_INLINE T	Min( T x, T y ) { return ( x < y ) ? x : y; }
+// move from Math.h to keep gcc happy
+var Max = Math.max;//template<class T> ID_INLINE T	Max( T x, T y ) { return ( x > y ) ? x : y; }
+var Min = Math.min;//template<class T> ID_INLINE T	Min( T x, T y ) { return ( x < y ) ? x : y; }
 
 /////*
 ////===============================================================================

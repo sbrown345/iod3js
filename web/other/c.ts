@@ -313,8 +313,8 @@ function SetCursor ( cursor: string ) {
 
 interface ITrackedObject {
 	refAddress: number;
-	trackObject():void;
-	destructor():void;
+	trackObject ( ): void;
+	destructor ( ): void;
 }
 
 class ObjectTracker {

@@ -548,7 +548,7 @@ class idGameBustOutWindow extends idWindow {
 		gameOver:boolean;
 		
 		numLevels:number/*int*/;
-////	byte *				levelBoardData;
+		levelBoardData:Uint8Array;//	byte *				
 		boardDataLoaded:boolean;
 		
 		umBricks:number/*int*/;
@@ -597,11 +597,12 @@ class idGameBustOutWindow extends idWindow {
 		}
 	}
 
-	destructor(): void {
-		todoThrow("need to call base? (or just remove this method)");
-		//this.entities.DeleteContents(true);
+	destructor ( ): void {
+		this.entities.DeleteContents( true );
 
-		//Mem_Free( this.levelBoardData );
+		Mem_Free( this.levelBoardData );
+
+		super.destructor ( );
 	}
 
 /////*

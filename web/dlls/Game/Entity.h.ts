@@ -156,7 +156,7 @@ class idEntity extends idClass {
 	static eventCallbacks: idEventFunc<idEntity>[];
 ////
 ////							idEntity();
-////							~idEntity();
+	destructor ( ): void { throw "placeholder"; }
 ////
 	Spawn ( ): void { throw "placeholder"; }
 

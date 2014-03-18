@@ -571,13 +571,13 @@ idEntity.Type = new idTypeInfo( "idEntity", "idClass",
 ////	}
 ////}
 ////
-/////*
-////================
-////idEntity::~idEntity
-////================
-////*/
-////idEntity::~idEntity( ):void {
-////
+/*
+================
+idEntity::~idEntity
+================
+*/
+idEntity.prototype.destructor = function ( ): void {
+	todoThrow ( );
 ////	if ( gameLocal.GameState() != GAMESTATE_SHUTDOWN && !gameLocal.isClient && fl.networkSync && entityNumber >= MAX_CLIENTS ) {
 ////		idBitMsg	msg;
 ////		byte		msgBuf[ MAX_GAME_MESSAGE_SIZE ];
@@ -621,7 +621,7 @@ idEntity.Type = new idTypeInfo( "idEntity", "idClass",
 ////	FreeSoundEmitter( false );
 ////
 ////	gameLocal.UnregisterEntity( this );
-////}
+};
 ////
 /////*
 ////================

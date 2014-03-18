@@ -91,9 +91,9 @@ class idBindWindow extends idWindow {
 		}
 	}
 
-	destructor ( ): void {
-		todoThrow( "need to call base? (or just remove this method)" );
-	}
+	////destructor ( ): void {
+	////	// call base
+	////}
 
 	HandleEvent ( event: sysEvent_t, /*bool **/updateVisuals: R<boolean> ): string {
 		todoThrow ( );

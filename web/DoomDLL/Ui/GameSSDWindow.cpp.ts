@@ -1816,8 +1816,8 @@ class idGameSSDWindow extends idWindow {
 	}
 
 	destructor ( ): void {
-		todoThrow( "need to call base? (or just remove this method)" );
-		this.ResetGameStats ( );
+		this.ResetGameStats();
+		super.destructor ( );
 	}
 
 

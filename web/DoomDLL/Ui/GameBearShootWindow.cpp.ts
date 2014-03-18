@@ -44,14 +44,14 @@
 ////
 var bearTurretAngle = new idCVar ( "bearTurretAngle", "0", CVAR_FLOAT, "" );
 var bearTurretForce = new idCVar ( "bearTurretForce", "200", CVAR_FLOAT, "" );
-////
-/////*
-////*****************************************************************************
-////* BSEntity	
-////****************************************************************************
-////*/
-////
-////class BSEntity {
+
+/*
+*****************************************************************************
+* BSEntity	
+****************************************************************************
+*/
+
+class BSEntity {
 ////public:
 ////	const idMaterial *		material;
 ////	idStr					materialName;
@@ -229,6 +229,7 @@ var bearTurretForce = new idCVar ( "bearTurretForce", "200", CVAR_FLOAT, "" );
 ////		dc.DrawMaterialRotated( position.x, position.y, width, height, material, entColor, 1.0f, 1.0f, DEG2RAD(rotation) );
 ////	}
 ////}
+}
 
 /*
 *****************************************************************************
@@ -291,7 +292,7 @@ class idGameBearShootWindow extends idWindow {
 ////	float				windForce;
 ////	int					windUpdateTime;
 ////
-////	idList<BSEntity*>	entities;
+	entities = new idList<BSEntity>(BSEntity,true);
 ////
 ////	BSEntity			*turret;
 ////	BSEntity			*bear;
@@ -324,9 +325,9 @@ class idGameBearShootWindow extends idWindow {
 	}
 
 
-	destructor(): void {
-		todoThrow("need to call base? (or just remove this method)");
-		//this.entities.DeleteContents(true);
+	destructor ( ): void {
+		this.entities.DeleteContents( true );
+		super.destructor ( );
 	}
 
 ////

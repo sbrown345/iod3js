@@ -67,7 +67,15 @@ class mapSpawnData_t {
 	syncedCVars = new idDict;
 	userInfo = newStructArray<idDict>( idDict, MAX_ASYNC_CLIENTS );
 	persistentPlayerInfo = newStructArray<idDict>( idDict, MAX_ASYNC_CLIENTS );
-	mapSpawnUsercmd = newStructArray<usercmd_t>( usercmd_t, MAX_ASYNC_CLIENTS ); // needed for tracking delta angles
+	mapSpawnUsercmd = newStructArray<usercmd_t>(usercmd_t, MAX_ASYNC_CLIENTS); // needed for tracking delta angles
+
+	init ( ): void {
+		this.serverInfo.Clear ( );
+		this.syncedCVars.Clear ( );
+		clearStructArray( this.userInfo );
+		clearStructArray(this.persistentPlayerInfo );
+		clearStructArray(this.mapSpawnUsercmd );
+	}
 }
 
 enum timeDemo_t{
@@ -158,7 +166,7 @@ class idSessionLocal extends idSession {
 	StartWipe ( _wipeMaterial: string, hold: boolean = false ): void { throw "placeholder"; }
 	CompleteWipe ( ): void { throw "placeholder"; }
 //
-//	void				ShowLoadingGui();
+	ShowLoadingGui():void { throw "placeholder"; }
 //
 //	void				ScrubSaveGameFileName( idStr &saveFileName ) const;
 	GetAutoSaveName ( mapName: string ): idStr { throw "placeholder"; }
@@ -296,17 +304,17 @@ class idSessionLocal extends idSession {
 //	void				EndAVICapture();
 //
 //	void				AdvanceRenderDemo( bool singleFrameOnly );
-//	void				RunGameTic();
-//	
-//	void				FinishCmdLoad();
-//	void				LoadLoadingGui(const char *mapName);
+	RunGameTic ( ): void { throw "placeholder"; }
+
+	FinishCmdLoad ( ): void { throw "placeholder"; }
+	LoadLoadingGui ( mapName: string ): void { throw "placeholder"; }
 //
 //	void				DemoShot( const char *name );
 //
 //	void				TestGUI( const char *name );
 //
-//	int					GetBytesNeededForMapLoad( const char *mapName );
-//	void				SetBytesNeededForMapLoad( const char *mapName, int bytesNeeded );
+	GetBytesNeededForMapLoad ( mapName: string ): number { throw "placeholder"; }
+	SetBytesNeededForMapLoad ( mapName: string, /*int */bytesNeeded: number ): void { throw "placeholder"; }
 //
 	ExecuteMapChange ( noFadeWipe: boolean = false ): void { throw "placeholder"; }
 	UnloadMap():void { throw "placeholder"; }

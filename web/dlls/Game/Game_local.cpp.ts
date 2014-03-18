@@ -414,7 +414,7 @@ idGameLocal.prototype.Init = function ( ): void {
 ////============
 ////*/
 ////void idGameLocal::SaveGame( idFile *f ) {
-////	int i;
+////	var/*int */i:number;
 ////	var ent:idEntity
 ////	idEntity *link;
 
@@ -600,14 +600,14 @@ idGameLocal.prototype.Init = function ( ): void {
 ////	return persistentPlayerInfo[ clientNum ];
 ////}
 
-/////*
-////===========
-////idGameLocal::SetPersistentPlayerInfo
-////============
-////*/
-////void idGameLocal::SetPersistentPlayerInfo( int clientNum, const idDict &playerInfo ) {
-////	persistentPlayerInfo[ clientNum ] = playerInfo;
-////}
+/*
+===========
+idGameLocal::SetPersistentPlayerInfo
+============
+*/
+idGameLocal.prototype.SetPersistentPlayerInfo = function ( /*int */clientNum: number, playerInfo: idDict ): void {
+	this.persistentPlayerInfo[clientNum].equals( playerInfo );
+};
 
 /*
 ============
@@ -730,62 +730,62 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////	localClientNum = clientNum;
 ////}
 
-/////*
-////===========
-////idGameLocal::SetUserInfo
-////============
-////*/
-////const idDict* idGameLocal::SetUserInfo( int clientNum, const idDict &userInfo, bool isClient, bool canModify ) {
-////	int i;
-////	bool modifiedInfo = false;
+/*
+===========
+idGameLocal::SetUserInfo
+============
+*/
+idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userInfo: idDict, isClient: boolean, canModify: boolean ): idDict {
+	var /*int */i: number;
+	var modifiedInfo = false;
 
-////	this.isClient = isClient;
+	this.isClient = isClient;
+	todoThrow ( );
+	//if ( clientNum >= 0 && clientNum < MAX_CLIENTS ) {
+	//	idGameLocal.userInfo[ clientNum ] = userInfo;
 
-////	if ( clientNum >= 0 && clientNum < MAX_CLIENTS ) {
-////		idGameLocal::userInfo[ clientNum ] = userInfo;
+	//	// server sanity
+	//	if ( canModify ) {
+	//		todoThrow ( );
+	//		//// don't let numeric nicknames, it can be exploited to go around kick and ban commands from the server
+	//		//if ( idStr.IsNumeric( userInfo[ clientNum ].GetString( "ui_name" ) ) ) {
+	//		//	idGameLocal::userInfo[ clientNum ].Set( "ui_name", va( "%s_", idGameLocal::userInfo[ clientNum ].GetString( "ui_name" ) ) );
+	//		//	modifiedInfo = true;
+	//		//}
 
-////		// server sanity
-////		if ( canModify ) {
+	//		//// don't allow dupe nicknames
+	//		//for ( i = 0; i < this.numClients; i++ ) {
+	//		//	if ( i == clientNum ) {
+	//		//		continue;
+	//		//	}
+	//		//	if ( this.entities[ i ] && this.entities[ i ].IsType( idPlayer::Type ) ) {
+	//		//		if ( !idStr.Icmp( idGameLocal::userInfo[ clientNum ].GetString( "ui_name" ), idGameLocal::userInfo[ i ].GetString( "ui_name" ) ) ) {
+	//		//			idGameLocal::userInfo[ clientNum ].Set( "ui_name", va( "%s_", idGameLocal::userInfo[ clientNum ].GetString( "ui_name" ) ) );
+	//		//			modifiedInfo = true;
+	//		//			i = -1;	// rescan
+	//		//			continue;
+	//		//		}
+	//		//	}
+	//		//}
+	//	}
 
-////			// don't let numeric nicknames, it can be exploited to go around kick and ban commands from the server
-////			if ( idStr::IsNumeric( userInfo[ clientNum ].GetString( "ui_name" ) ) ) {
-////				idGameLocal::userInfo[ clientNum ].Set( "ui_name", va( "%s_", idGameLocal::userInfo[ clientNum ].GetString( "ui_name" ) ) );
-////				modifiedInfo = true;
-////			}
-		
-////			// don't allow dupe nicknames
-////			for ( i = 0; i < this.numClients; i++ ) {
-////				if ( i == clientNum ) {
-////					continue;
-////				}
-////				if ( this.entities[ i ] && this.entities[ i ].IsType( idPlayer::Type ) ) {
-////					if ( !idStr::Icmp( idGameLocal::userInfo[ clientNum ].GetString( "ui_name" ), idGameLocal::userInfo[ i ].GetString( "ui_name" ) ) ) {
-////						idGameLocal::userInfo[ clientNum ].Set( "ui_name", va( "%s_", idGameLocal::userInfo[ clientNum ].GetString( "ui_name" ) ) );
-////						modifiedInfo = true;
-////						i = -1;	// rescan
-////						continue;
-////					}
-////				}
-////			}
-////		}
+	//	if ( this.entities[ clientNum ] && this.entities[ clientNum ].IsType( idPlayer.Type ) ) {
+	//		modifiedInfo |= static_cast<idPlayer >( this.entities[ clientNum ] ).UserInfoChanged( canModify );
+	//	}
 
-////		if ( this.entities[ clientNum ] && this.entities[ clientNum ].IsType( idPlayer::Type ) ) {
-////			modifiedInfo |= static_cast<idPlayer *>( this.entities[ clientNum ] ).UserInfoChanged( canModify );
-////		}
+	//	if ( !isClient ) {
+	//		// now mark this client in game
+	//		mpGame.EnterGame( clientNum );
+	//	}
+	//}
 
-////		if ( !isClient ) {
-////			// now mark this client in game
-////			mpGame.EnterGame( clientNum );
-////		}
-////	}
-
-////	if ( modifiedInfo ) {
-////		assert( canModify );
-////		newInfo = idGameLocal::userInfo[ clientNum ];
-////		return &newInfo;
-////	}
-////	return NULL;
-////}
+	//if ( modifiedInfo ) {
+	//	assert( canModify );
+	//	this.newInfo.equals( this.userInfo[clientNum] );
+	//	return this.newInfo;
+	//}
+	return null;
+};
 
 /////*
 ////===========
@@ -829,8 +829,8 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////===================
 ////*/
 ////void idGameLocal::LoadMap( const char *mapName, int randseed ) {
-////	int i;
-////	bool sameMap = (mapFile && idStr::Icmp(this.mapFileName, mapName) == 0);
+////	var/*int */i:number;
+////	bool sameMap = (mapFile && idStr.Icmp(this.mapFileName, mapName) == 0);
 
 ////	// clear the sound system
 ////	gameSoundWorld.ClearAllSoundEmitters();
@@ -1195,7 +1195,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////=================
 ////*/
 ////bool idGameLocal::InitFromSaveGame( const char *mapName, idRenderWorld *renderWorld, idSoundWorld *soundWorld, idFile *saveGameFile ) {
-////	int i;
+////	var/*int */i:number;
 ////	int num;
 ////	var ent:idEntity
 ////	idDict si;
@@ -1868,7 +1868,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////================
 ////*/
 ////idPlayer *idGameLocal::GetClientByName( name:string ) const {
-////	int i;
+////	var/*int */i:number;
 ////	var ent:idEntity
 ////	for ( i = 0 ; i < this.numClients ; i++ ) {
 ////		ent = this.entities[ i ];
@@ -2805,7 +2805,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////==================
 ////*/
 ////idAAS *idGameLocal::GetAAS( name:string ) const {
-////	int i;
+////	var/*int */i:number;
 
 ////	for ( i = 0; i < aasNames.Num(); i++ ) {
 ////		if ( aasNames[ i ] == name ) {
@@ -2825,7 +2825,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////==================
 ////*/
 ////void idGameLocal::SetAASAreaState( const idBounds &bounds, const int areaContents, bool closed ) {
-////	int i;
+////	var/*int */i:number;
 
 ////	for( i = 0; i < aasList.Num(); i++ ) {
 ////		aasList[ i ].SetAreaState( bounds, areaContents, closed );
@@ -2838,7 +2838,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////==================
 ////*/
 ////aasHandle_t idGameLocal::AddAASObstacle( const idBounds &bounds ) {
-////	int i;
+////	var/*int */i:number;
 ////	aasHandle_t obstacle;
 ////	aasHandle_t check;
 
@@ -2861,7 +2861,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////==================
 ////*/
 ////void idGameLocal::RemoveAASObstacle( const aasHandle_t handle ) {
-////	int i;
+////	var/*int */i:number;
 
 ////	for( i = 0; i < aasList.Num(); i++ ) {
 ////		aasList[ i ].RemoveObstacle( handle );
@@ -2874,7 +2874,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////==================
 ////*/
 ////void idGameLocal::RemoveAllAASObstacles( void ) {
-////	int i;
+////	var/*int */i:number;
 
 ////	for( i = 0; i < aasList.Num(); i++ ) {
 ////		aasList[ i ].RemoveAllObstacles();
@@ -3129,7 +3129,7 @@ idGameLocal.prototype.FindEntityDefDict = function ( name: string, makeDefault =
 ////#ifndef ID_DEMO_BUILD
 ////	if ( g_skill.GetInteger() == 3 ) { 
 ////		name = spawnArgs.GetString( "classname" );
-////		if ( idStr::Icmp( name, "item_medkit" ) == 0 || idStr::Icmp( name, "item_medkit_small" ) == 0 ) {
+////		if ( idStr.Icmp( name, "item_medkit" ) == 0 || idStr.Icmp( name, "item_medkit_small" ) == 0 ) {
 ////			result = true;
 ////		}
 ////	}
@@ -3137,7 +3137,7 @@ idGameLocal.prototype.FindEntityDefDict = function ( name: string, makeDefault =
 
 ////	if ( gameLocal.isMultiplayer ) {
 ////		name = spawnArgs.GetString( "classname" );
-////		if ( idStr::Icmp( name, "weapon_bfg" ) == 0 || idStr::Icmp( name, "weapon_soulcube" ) == 0 ) {
+////		if ( idStr.Icmp( name, "weapon_bfg" ) == 0 || idStr.Icmp( name, "weapon_soulcube" ) == 0 ) {
 ////			result = true;
 ////		}
 ////	}
@@ -3322,7 +3322,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////=============
 ////*/
 ////void idGameLocal::ArgCompletion_EntityName( const idCmdArgs &args, void(*callback)( const char *s ) ) {
-////	int i;
+////	var/*int */i:number;
 
 ////	for( i = 0; i < gameLocal.num_entities; i++ ) {
 ////		if ( gameLocal.entities[ i ] ) {
@@ -3372,7 +3372,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 
 ////	for ( ; ent != NULL; ent = ent.spawnNode.Next() ) {
 ////		assert( ent );
-////		if ( idStr::Icmp( ent.GetEntityDefName(), match ) == 0 ) {
+////		if ( idStr.Icmp( ent.GetEntityDefName(), match ) == 0 ) {
 ////			return ent;
 ////		}
 ////	}
@@ -3855,7 +3855,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////=============
 ////*/
 ////void idGameLocal::SetCamera( idCamera *cam ) {
-////	int i;
+////	var/*int */i:number;
 ////	var ent:idEntity
 ////	idAI *ai;
 
@@ -4215,13 +4215,13 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////*/
 ////void idGameLocal::UpdateServerInfoFlags() {
 ////	gameType = GAME_SP;
-////	if ( ( idStr::Icmp( this.serverInfo.GetString( "si_gameType" ), "deathmatch" ) == 0 ) ) {
+////	if ( ( idStr.Icmp( this.serverInfo.GetString( "si_gameType" ), "deathmatch" ) == 0 ) ) {
 ////		gameType = GAME_DM;
-////	} else if ( ( idStr::Icmp( this.serverInfo.GetString( "si_gameType" ), "Tourney" ) == 0 ) ) {
+////	} else if ( ( idStr.Icmp( this.serverInfo.GetString( "si_gameType" ), "Tourney" ) == 0 ) ) {
 ////		gameType = GAME_TOURNEY;
-////	} else if ( ( idStr::Icmp( this.serverInfo.GetString( "si_gameType" ), "Team DM" ) == 0 ) ) {
+////	} else if ( ( idStr.Icmp( this.serverInfo.GetString( "si_gameType" ), "Team DM" ) == 0 ) ) {
 ////		gameType = GAME_TDM;
-////	} else if ( ( idStr::Icmp( this.serverInfo.GetString( "si_gameType" ), "Last Man" ) == 0 ) ) {
+////	} else if ( ( idStr.Icmp( this.serverInfo.GetString( "si_gameType" ), "Last Man" ) == 0 ) ) {
 ////		gameType = GAME_LASTMAN;
 ////	}
 ////	if ( gameType == GAME_LASTMAN ) {
@@ -4360,12 +4360,12 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////	}
 ////}
 
-/////*
-////===============
-////idGameLocal::GetMapLoadingGUI
-////===============
-////*/
-////void idGameLocal::GetMapLoadingGUI( char gui[ MAX_STRING_CHARS ] ) { }
+/*
+===============
+idGameLocal::GetMapLoadingGUI
+===============
+*/
+idGameLocal.prototype.GetMapLoadingGUI = function ( gui: Uint8Array /* MAX_STRING_CHARS */ ) {};
 
 
 

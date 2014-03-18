@@ -838,26 +838,25 @@ Note that the element is not destroyed, so any memory used by it may not be free
 		return true;
 	}
 
-///*
-//================
-//idList<type>::Remove
+/*
+================
+idList<type>::Remove
 
-//Removes the element if it is found within the list and moves all data following the element down to fill in the gap.
-//The number of elements in the list is reduced by one.  Returns false if the data is not found in the list.  Note that
-//the element is not destroyed, so any memory used by it may not be freed until the destruction of the list.
-//================
-//*/
-//template< class type >
-//ID_INLINE bool idList<type>::Remove( type const & obj ) {
-//	int index;
+Removes the element if it is found within the list and moves all data following the element down to fill in the gap.
+The number of elements in the list is reduced by one.  Returns false if the data is not found in the list.  Note that
+the element is not destroyed, so any memory used by it may not be freed until the destruction of the list.
+================
+*/
+	Remove ( obj: type ): boolean {
+		var /*int */index: number;
 
-//	index = FindIndex( obj );
-//	if ( index >= 0 ) {
-//		return RemoveIndex( index );
-//	}
-	
-//	return false;
-//}
+		index = this.FindIndex( obj );
+		if ( index >= 0 ) {
+			return this.RemoveIndex( index );
+		}
+
+		return false;
+	}
 
 /*
 ================

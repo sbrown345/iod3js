@@ -81,11 +81,11 @@ class idGame {
 //
 //	// Set the local client number. Distinguishes listen ( == 0 ) / dedicated ( == -1 )
 //	virtual void				SetLocalClient( int clientNum ) = 0;
-//
-//	// Sets the user info for a client.
-//	// if canModify is true, the game can modify the user info in the returned dictionary pointer, server will forward the change back
-//	// canModify is never true on network client
-//	virtual const idDict *		SetUserInfo( int clientNum, const idDict &userInfo, bool isClient, bool canModify ) = 0;
+
+	// Sets the user info for a client.
+	// if canModify is true, the game can modify the user info in the returned dictionary pointer, server will forward the change back
+	// canModify is never true on network client
+	SetUserInfo ( /*int */clientNum: number, userInfo: idDict, isClient: boolean, canModify: boolean ): idDict { throw "placeholder"; }
 //
 //	// Retrieve the game's userInfo dict for a client.
 //	virtual const idDict *		GetUserInfo( int clientNum ) = 0;
@@ -99,9 +99,9 @@ class idGame {
 //	// The session calls this before moving the single player game to a new level.
 //	virtual const idDict &		GetPersistentPlayerInfo( int clientNum ) = 0;
 //
-//	// The session calls this right before a new level is loaded.
-//	virtual void				SetPersistentPlayerInfo( int clientNum, const idDict &playerInfo ) = 0;
-//
+	// The session calls this right before a new level is loaded.
+	SetPersistentPlayerInfo ( /*int */clientNum: number, playerInfo: idDict ): void { throw "placeholder"; }
+
 //	// Loads a map and spawns all the entities.
 //	virtual void				InitFromNewMap( const char *mapName, idRenderWorld *renderWorld, idSoundWorld *soundWorld, bool isServer, bool isClient, int randseed ) = 0;
 //
@@ -189,8 +189,8 @@ class idGame {
 //
 //	virtual bool				DownloadRequest( const char *IP, const char *guid, const char *paks, char urls[ MAX_STRING_CHARS ] ) = 0;
 //
-//	virtual void				GetMapLoadingGUI( char gui[ MAX_STRING_CHARS ] ) = 0;
-	};
+	GetMapLoadingGUI ( gui /*[ MAX_STRING_CHARS ]*/: Uint8Array ): void { throw "placeholder"; }
+};
 //
 //extern idGame *					game;
 //

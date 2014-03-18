@@ -2581,9 +2581,9 @@ idCommonLocal::Frame
 		//		break;
 		//}
 
-		//// we update com_ticNumber after all the background tasks
-		//// have completed their work for this tic
-		//com_ticNumber++;
+		// we update com_ticNumber after all the background tasks
+		// have completed their work for this tic
+		com_ticNumber++;
 
 		//stat.timeConsumed = Sys_Milliseconds() - stat.milliseconds;
 
