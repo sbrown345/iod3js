@@ -1757,7 +1757,7 @@ If there is any error during parsing, defaultShader will be set.
 		var /*int			*/s: number;
 		var buffer = ""; //char		buffer[1024];
 		var str = ""; /*const char	*str;*/
-		var newSrc: idLexer;
+		var newSrc = new idLexer;
 		var /*int			*/i: number;
 
 		s = 0;
@@ -2333,22 +2333,22 @@ Parses the current material definition and finds all necessary images.
 ////	return ReplaceSourceFileText();
 ////}
 
-/////*
-////===============
-////idMaterial::AddReference
-////===============
-////*/
-////void idMaterial::AddReference() {
-////	refCount++;
+/*
+===============
+idMaterial::AddReference
+===============
+*/
+	AddReference ( ): void {
+		this.refCount++;
 
-////	for ( int i = 0; i < this.numStages; i++ ) {
-////		shaderStage_t *s = &this.stages[i];
+		for ( var i = 0; i < this.numStages; i++ ) {
+			var s: shaderStage_t = this.stages[i];
 
-////		if ( s.texture.image ) {
-////			s.texture.image.AddReference();
-////		}
-////	}
-////}
+			if ( s.texture.image ) {
+				s.texture.image.AddReference ( );
+			}
+		}
+	}
 
 /*
 ===============

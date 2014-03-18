@@ -202,7 +202,7 @@ class idImage {
 //	// check for changed timestamp on disk and reload if necessary
 	Reload( checkPrecompressed:boolean, force :boolean):void { throw "placeholder"; }
 
-//	void		AddReference()				{ refCount++; };
+	AddReference ( ): void { this.refCount++; }
 
 //==========================================================
 

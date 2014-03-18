@@ -172,9 +172,9 @@ class idRenderWorldLocal extends idRenderWorld {
 
 	//-----------------------
 	// RenderWorld_load.cpp
-//
-//	idRenderModel *			ParseModel( idLexer *src );
-//	idRenderModel *			ParseShadowModel( idLexer *src );
+
+	ParseModel ( src: idLexer ): idRenderModel { throw "placeholder"; }
+	ParseShadowModel ( src: idLexer ): idRenderModel { throw "placeholder"; }
 //	void					SetupAreaRefs();
 //	void					ParseInterAreaPortals( idLexer *src );
 //	void					ParseNodes( idLexer *src );

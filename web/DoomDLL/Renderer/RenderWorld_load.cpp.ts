@@ -111,80 +111,80 @@ idRenderWorldLocal.prototype.FreeWorld = function ( ): void {
 //		renderModelManager.CheckModel( this.localModels[i].Name() );
 //	}
 //}
-//
-///*
-//================
-//idRenderWorldLocal::ParseModel
-//================
-//*/
-//idRenderModel *idRenderWorldLocal::ParseModel( idLexer *src ) {
-//	idRenderModel	*model;
-//	idToken			token;
-//	int				i, j;
-//	srfTriangles_t	*tri;
-//	modelSurface_t	surf;
-//
-//	src.ExpectTokenString( "{" );
-//
-//	// parse the name
-//	src.ExpectAnyToken( &token );
-//
-//	model = renderModelManager.AllocModel();
-//	model.InitEmpty( token );
-//
-//	int numSurfaces = src.ParseInt();
-//	if ( numSurfaces < 0 ) {
-//		src.Error( "R_ParseModel: bad numSurfaces" );
-//	}
-//
-//	for ( i = 0 ; i < numSurfaces ; i++ ) {
-//		src.ExpectTokenString( "{" );
-//
-//		src.ExpectAnyToken( &token );
-//
-//		surf.shader = declManager.FindMaterial( token );
-//
-//		((idMaterial*)surf.shader).AddReference();
-//
-//		tri = R_AllocStaticTriSurf();
-//		surf.geometry = tri;
-//
-//		tri.numVerts = src.ParseInt();
-//		tri.numIndexes = src.ParseInt();
-//
-//		R_AllocStaticTriSurfVerts( tri, tri.numVerts );
-//		for ( j = 0 ; j < tri.numVerts ; j++ ) {
-//			float	vec[8];
-//
-//			src.Parse1DMatrix( 8, vec );
-//
-//			tri.verts[j].xyz[0] = vec[0];
-//			tri.verts[j].xyz[1] = vec[1];
-//			tri.verts[j].xyz[2] = vec[2];
-//			tri.verts[j].st[0] = vec[3];
-//			tri.verts[j].st[1] = vec[4];
-//			tri.verts[j].normal[0] = vec[5];
-//			tri.verts[j].normal[1] = vec[6];
-//			tri.verts[j].normal[2] = vec[7];
-//		}
-//
-//		R_AllocStaticTriSurfIndexes( tri, tri.numIndexes );
-//		for ( j = 0 ; j < tri.numIndexes ; j++ ) {
-//			tri.indexes[j] = src.ParseInt();
-//		}
-//		src.ExpectTokenString( "}" );
-//
-//		// add the completed surface to the model
-//		model.AddSurface( surf );
-//	}
-//
-//	src.ExpectTokenString( "}" );
-//
-//	model.FinishSurfaces();
-//
-//	return model;
-//}
-//
+
+/*
+================
+idRenderWorldLocal::ParseModel
+================
+*/
+idRenderWorldLocal.prototype.ParseModel = function ( src: idLexer ): idRenderModel {
+	var model: idRenderModel;
+	var token = new idToken;
+	var i: number, j: number;
+	var tri: srfTriangles_t;
+	var surf = new modelSurface_t;
+
+	src.ExpectTokenString( "{" );
+
+	// parse the name
+	src.ExpectAnyToken( token );
+
+	model = renderModelManager.AllocModel ( );
+	model.InitEmpty( token.data );
+
+	var numSurfaces = src.ParseInt ( );
+	if ( numSurfaces < 0 ) {
+		src.Error( "R_ParseModel: bad numSurfaces" );
+	}
+
+	for ( i = 0; i < numSurfaces; i++ ) {
+		src.ExpectTokenString( "{" );
+
+		src.ExpectAnyToken( token );
+
+		surf.shader = declManager.FindMaterial( token.data );
+
+		( <idMaterial>surf.shader ).AddReference ( );
+
+		tri = R_AllocStaticTriSurf ( );
+		surf.geometry = tri;
+
+		tri.numVerts = src.ParseInt ( );
+		tri.numIndexes = src.ParseInt ( );
+
+		R_AllocStaticTriSurfVerts( tri, tri.numVerts );
+		for ( j = 0; j < tri.numVerts; j++ ) {
+			var vec = new Float32Array( 8 );
+
+			src.Parse1DMatrix( 8, vec );
+
+			tri.verts[j].xyz[0] = vec[0];
+			tri.verts[j].xyz[1] = vec[1];
+			tri.verts[j].xyz[2] = vec[2];
+			tri.verts[j].st[0] = vec[3];
+			tri.verts[j].st[1] = vec[4];
+			tri.verts[j].normal[0] = vec[5];
+			tri.verts[j].normal[1] = vec[6];
+			tri.verts[j].normal[2] = vec[7];
+		}
+
+		R_AllocStaticTriSurfIndexes( tri, tri.numIndexes );
+		for ( j = 0; j < tri.numIndexes; j++ ) {
+			tri.indexes[j] = src.ParseInt ( );
+		}
+		src.ExpectTokenString( "}" );
+
+		// add the completed surface to the model
+		model.AddSurface( surf );
+	}
+
+	src.ExpectTokenString( "}" );
+
+	model.FinishSurfaces ( );
+
+	return model;
+};
+
 ///*
 //================
 //idRenderWorldLocal::ParseShadowModel
@@ -535,6 +535,7 @@ idRenderWorldLocal.prototype.InitFromMap = function ( name: string ): boolean {
 
 	if ( !src.ReadToken( token ) || token.Icmp( PROC_FILE_ID ) ) {
 		common.Printf( "idRenderWorldLocal::InitFromMap: bad id '%s' instead of '%s'\n", token.c_str ( ), PROC_FILE_ID );
+		$delete( src );
 		delete src;
 		return false;
 	}

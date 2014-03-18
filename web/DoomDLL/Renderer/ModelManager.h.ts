@@ -54,10 +54,10 @@ class idRenderModelManager {
 ////
 ////	// called only by renderer::EndLevelLoad
 ////	virtual void			EndLevelLoad() = 0;
-////
-////	// allocates a new empty render model.
-////	virtual idRenderModel *	AllocModel() = 0;
-////
+
+	// allocates a new empty render model.
+	AllocModel(): idRenderModel { throw "placeholder"; }
+
 	// frees a render model
 	FreeModel(model: idRenderModel): void { throw "placeholder"; }
 ////

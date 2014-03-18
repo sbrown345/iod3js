@@ -340,15 +340,15 @@ idRenderModelManagerLocal::GetModel
 ////
 		return model;
 	}
-////
-/////*
-////=================
-////idRenderModelManagerLocal::AllocModel
-////=================
-////*/
-////idRenderModel *idRenderModelManagerLocal::AllocModel() {
-////	return new idRenderModelStatic();
-////}
+
+/*
+=================
+idRenderModelManagerLocal::AllocModel
+=================
+*/
+	AllocModel ( ): idRenderModel {
+		return new idRenderModelStatic ( );
+	}
 
 /*
 =================

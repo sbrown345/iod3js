@@ -1363,27 +1363,27 @@ class idLexer {
 		return token.GetFloatValue();
 	}
 
-	/////*
-	////================
-	////idLexer::Parse1DMatrix
-	////================
-	////*/
-	////int idLexer::Parse1DMatrix( int x, float *m ) {
-	////	var i:number;
+	/*
+	================
+	idLexer::Parse1DMatrix
+	================
+	*/
+	Parse1DMatrix ( /*int*/ x: number, m: Float32Array ): number {
+		var i: number;
 
-	////	if ( !idLexer::ExpectTokenString( "(" ) ) {
-	////		return false;
-	////	}
+		if ( !this.ExpectTokenString( "(" ) ) {
+			return /*false*/0;
+		}
 
-	////	for ( i = 0; i < x; i++ ) {
-	////		m[i] = idLexer::ParseFloat();
-	////	}
+		for ( i = 0; i < x; i++ ) {
+			m[i] = this.ParseFloat ( );
+		}
 
-	////	if ( !idLexer::ExpectTokenString( ")" ) ) {
-	////		return false;
-	////	}
-	////	return true;
-	////}
+		if ( !this.ExpectTokenString( ")" ) ) {
+			return /*false*/0;
+		}
+		return /*true*/1;
+	}
 
 	/////*
 	////================
@@ -1393,20 +1393,20 @@ class idLexer {
 	////int idLexer::Parse2DMatrix( int y, int x, float *m ) {
 	////	var i:number;
 
-	////	if ( !idLexer::ExpectTokenString( "(" ) ) {
-	////		return false;
+	////	if ( !this.ExpectTokenString( "(" ) ) {
+	////		return /*false*/0;
 	////	}
 
 	////	for ( i = 0; i < y; i++ ) {
 	////		if ( !idLexer::Parse1DMatrix( x, m + i * x ) ) {
-	////			return false;
+	////			return /*false*/0;
 	////		}
 	////	}
 
-	////	if ( !idLexer::ExpectTokenString( ")" ) ) {
-	////		return false;
+	////	if ( !this.ExpectTokenString( ")" ) ) {
+	////		return /*false*/0;
 	////	}
-	////	return true;
+	////	return /*true*/1;
 	////}
 
 	/////*
@@ -1417,20 +1417,20 @@ class idLexer {
 	////int idLexer::Parse3DMatrix( int z, int y, int x, float *m ) {
 	////	var i:number;
 
-	////	if ( !idLexer::ExpectTokenString( "(" ) ) {
-	////		return false;
+	////	if ( !this.ExpectTokenString( "(" ) ) {
+	////		return /*false*/0;
 	////	}
 
 	////	for ( i = 0 ; i < z; i++ ) {
 	////		if ( !idLexer::Parse2DMatrix( y, x, m + i * x*y ) ) {
-	////			return false;
+	////			return /*false*/0;
 	////		}
 	////	}
 
-	////	if ( !idLexer::ExpectTokenString( ")" ) ) {
-	////		return false;
+	////	if ( !this.ExpectTokenString( ")" ) ) {
+	////		return /*false*/0;
 	////	}
-	////	return true;
+	////	return /*true*/1;
 	////}
 
 	/////*
@@ -1451,7 +1451,7 @@ class idLexer {
 
 	////	out.Empty();
 
-	////	if ( !idLexer::ExpectTokenString( "{" ) ) {
+	////	if ( !this.ExpectTokenString( "{" ) ) {
 	////		return out.c_str( );
 	////	}
 
@@ -1520,7 +1520,7 @@ class idLexer {
 	////	int i, depth;
 
 	////	out.Empty();
-	////	if ( !idLexer::ExpectTokenString( "{" ) ) {
+	////	if ( !this.ExpectTokenString( "{" ) ) {
 	////		return out.c_str();
 	////	}
 	////	out = "{";

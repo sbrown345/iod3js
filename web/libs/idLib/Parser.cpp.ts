@@ -2929,7 +2929,7 @@ idParser::CheckTokenString
 ////	}
 ////
 ////	out.Empty();
-////	if ( !idParser::ExpectTokenString( "{" ) ) {
+////	if ( !this.ExpectTokenString( "{" ) ) {
 ////		return out.c_str();
 ////	}
 ////	out = "{";
@@ -3094,28 +3094,29 @@ idParser::ParseFloat
 		return token.GetFloatValue ( );
 	}
 
-/////*
-////================
-////idParser::Parse1DMatrix
-////================
-////*/
-/////*int*/Parse1DMatrix( int x, float *m ):number {
-////	var i:number;
-////
-////	if ( !idParser::ExpectTokenString( "(" ) ) {
-////		return 0/*false*/;
-////	}
-////
-////	for ( i = 0; i < x; i++ ) {
-////		m[i] = idParser::ParseFloat();
-////	}
-////
-////	if ( !idParser::ExpectTokenString( ")" ) ) {
-////		return 0/*false*/;
-////	}
-////	return 1/*true*/;
-////}
-////
+/*
+================
+idParser::Parse1DMatrix
+================
+*/
+/*int*/
+	Parse1DMatrix ( /*int*/ x: number, /*float **/m: Float32Array ): number {
+		var i: number;
+
+		if ( !this.ExpectTokenString( "(" ) ) {
+			return 0 /*false*/;
+		}
+
+		for ( i = 0; i < x; i++ ) {
+			m[i] = this.ParseFloat ( );
+		}
+
+		if ( !this.ExpectTokenString( ")" ) ) {
+			return 0 /*false*/;
+		}
+		return 1 /*true*/;
+	}
+
 /////*
 ////================
 ////idParser::Parse2DMatrix
@@ -3124,7 +3125,7 @@ idParser::ParseFloat
 /////*int*/Parse2DMatrix( int y, int x, float *m ):number {
 ////	var i:number;
 ////
-////	if ( !idParser::ExpectTokenString( "(" ) ) {
+////	if ( !this.ExpectTokenString( "(" ) ) {
 ////		return 0/*false*/;
 ////	}
 ////
@@ -3134,7 +3135,7 @@ idParser::ParseFloat
 ////		}
 ////	}
 ////
-////	if ( !idParser::ExpectTokenString( ")" ) ) {
+////	if ( !this.ExpectTokenString( ")" ) ) {
 ////		return 0/*false*/;
 ////	}
 ////	return 1/*true*/;
@@ -3148,7 +3149,7 @@ idParser::ParseFloat
 /////*int*/Parse3DMatrix( int z, int y, int x, float *m ):number {
 ////	var i:number;
 ////
-////	if ( !idParser::ExpectTokenString( "(" ) ) {
+////	if ( !this.ExpectTokenString( "(" ) ) {
 ////		return 0/*false*/;
 ////	}
 ////
@@ -3158,7 +3159,7 @@ idParser::ParseFloat
 ////		}
 ////	}
 ////
-////	if ( !idParser::ExpectTokenString( ")" ) ) {
+////	if ( !this.ExpectTokenString( ")" ) ) {
 ////		return 0/*false*/;
 ////	}
 ////	return 1/*true*/;

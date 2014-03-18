@@ -288,21 +288,21 @@ class idRenderModel {
 ////	// shadow and tangent generation, along with some surface cleanup to make it load faster
 ////	virtual void				PartialInitFromFile( const char *fileName ) = 0;
 
-////	// this is used for dynamically created surfaces, which are assumed to not be reloadable.
-////	// It can be called again to clear out the surfaces of a dynamic model for regeneration.
-////	virtual void				InitEmpty( const char *name ) = 0;
+	// this is used for dynamically created surfaces, which are assumed to not be reloadable.
+	// It can be called again to clear out the surfaces of a dynamic model for regeneration.
+	InitEmpty ( name: string ): void { throw "placeholder"; }
 
-////	// dynamic model instantiations will be created with this
-////	// the geometry data will be owned by the model, and freed when it is freed
-////	// the geoemtry should be raw triangles, with no extra processing
-////	virtual void				AddSurface( modelSurface_t surface ) = 0;
+	// dynamic model instantiations will be created with this
+	// the geometry data will be owned by the model, and freed when it is freed
+	// the geoemtry should be raw triangles, with no extra processing
+	AddSurface(surface: modelSurface_t ) :void { throw "placeholder"; }
 
-////	// cleans all the geometry and performs cross-surface processing
-////	// like shadow hulls
-////	// Creates the duplicated back side geometry for two sided, alpha tested, lit materials
-////	// This does not need to be called if none of the surfaces added with AddSurface require
-////	// light interaction, and all the triangles are already well formed.
-////	virtual void				FinishSurfaces() = 0;
+	// cleans all the geometry and performs cross-surface processing
+	// like shadow hulls
+	// Creates the duplicated back side geometry for two sided, alpha tested, lit materials
+	// This does not need to be called if none of the surfaces added with AddSurface require
+	// light interaction, and all the triangles are already well formed.
+	FinishSurfaces ( ): void { throw "placeholder"; }
 
 ////	// frees all the data, but leaves the class around for dangling references,
 ////	// which can regenerate the data with LoadModel()
