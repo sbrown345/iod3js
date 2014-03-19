@@ -21,7 +21,8 @@ var DEBUG_R_DeriveTangents = isd( false );
 var DEBUG_COMPILER = isd(false );
 var DEBUG_GUI = isd(false );
 var DEBUG_HASHINDEX = isd( false );
-var DEBUG_STRPOOL = isd( true );
+var DEBUG_STRPOOL = isd( false );
+var DEBUG_RENDERWORLD_LOAD = isd( true );
 
 function dlog(log: boolean, format: string, ...args: any[]) {
 	if (!log || SKIP_ALL_LOGGING) return;

@@ -1888,8 +1888,8 @@ R_RemoveDegenerateTriangles
 silIndexes must have already been calculated
 =================
 */
-function R_RemoveDegenerateTriangles(tri: srfTriangles_t ): void {
-	var /*int		*/c_removed:number;
+function R_RemoveDegenerateTriangles ( tri: srfTriangles_t ): void {
+	var /*int		*/c_removed: number;
 	var /*int		*/i: number;
 	var /*int		*/a: number, b: number, c: number;
 
@@ -1897,8 +1897,8 @@ function R_RemoveDegenerateTriangles(tri: srfTriangles_t ): void {
 	c_removed = 0;
 	for ( i = 0; i < tri.numIndexes; i += 3 ) {
 		a = tri.silIndexes[i];
-		b = tri.silIndexes[i+1];
-		c = tri.silIndexes[i+2];
+		b = tri.silIndexes[i + 1];
+		c = tri.silIndexes[i + 2];
 		if ( a == b || a == c || b == c ) {
 			c_removed++;
 			todoThrow ( );

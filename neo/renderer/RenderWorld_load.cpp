@@ -115,7 +115,8 @@ void idRenderWorldLocal::TouchWorldModels( void ) {
 idRenderWorldLocal::ParseModel
 ================
 */
-idRenderModel *idRenderWorldLocal::ParseModel( idLexer *src ) {
+int ParseModelCount = 0;
+idRenderModel *idRenderWorldLocal::ParseModel(idLexer *src) {
 	idRenderModel	*model;
 	idToken			token;
 	int				i, j;
@@ -135,6 +136,8 @@ idRenderModel *idRenderWorldLocal::ParseModel( idLexer *src ) {
 		src->Error( "R_ParseModel: bad numSurfaces" );
 	}
 
+	dlog(DEBUG_RENDERWORLD_LOAD, "ParseModelCount %i\n", ParseModelCount);
+	ParseModelCount++;
 	for ( i = 0 ; i < numSurfaces ; i++ ) {
 		src->ExpectTokenString( "{" );
 
@@ -146,15 +149,21 @@ idRenderModel *idRenderWorldLocal::ParseModel( idLexer *src ) {
 
 		tri = R_AllocStaticTriSurf();
 		surf.geometry = tri;
+		dlog(DEBUG_RENDERWORLD_LOAD, "shader %s i: %i\n", token.c_str(), i);
 
 		tri->numVerts = src->ParseInt();
 		tri->numIndexes = src->ParseInt();
+
+		dlog(DEBUG_RENDERWORLD_LOAD, "	tri.numVerts %i tri.numIndexes: %i\n", tri->numVerts, tri->numIndexes);
 
 		R_AllocStaticTriSurfVerts( tri, tri->numVerts );
 		for ( j = 0 ; j < tri->numVerts ; j++ ) {
 			float	vec[8];
 
-			src->Parse1DMatrix( 8, vec );
+			src->Parse1DMatrix(8, vec);
+
+			dlog(DEBUG_RENDERWORLD_LOAD, "vec j: %i %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f\n",
+				j, vec[0], vec[1], vec[2], vec[3], vec[4], vec[5], vec[6], vec[7]);
 
 			tri->verts[j].xyz[0] = vec[0];
 			tri->verts[j].xyz[1] = vec[1];
@@ -169,6 +178,7 @@ idRenderModel *idRenderWorldLocal::ParseModel( idLexer *src ) {
 		R_AllocStaticTriSurfIndexes( tri, tri->numIndexes );
 		for ( j = 0 ; j < tri->numIndexes ; j++ ) {
 			tri->indexes[j] = src->ParseInt();
+			dlog(DEBUG_RENDERWORLD_LOAD, "tri.indexes[%i]: %i\n", j, tri->indexes[j]);
 		}
 		src->ExpectTokenString( "}" );
 
@@ -179,7 +189,7 @@ idRenderModel *idRenderWorldLocal::ParseModel( idLexer *src ) {
 	src->ExpectTokenString( "}" );
 
 	model->FinishSurfaces();
-
+	
 	return model;
 }
 

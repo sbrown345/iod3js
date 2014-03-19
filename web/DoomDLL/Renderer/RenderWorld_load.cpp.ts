@@ -117,6 +117,7 @@ idRenderWorldLocal.prototype.FreeWorld = function ( ): void {
 idRenderWorldLocal::ParseModel
 ================
 */
+var ParseModelCount = 0;
 idRenderWorldLocal.prototype.ParseModel = function ( src: idLexer ): idRenderModel {
 	var model: idRenderModel;
 	var token = new idToken;
@@ -137,12 +138,15 @@ idRenderWorldLocal.prototype.ParseModel = function ( src: idLexer ): idRenderMod
 		src.Error( "R_ParseModel: bad numSurfaces" );
 	}
 
+	dlog(DEBUG_RENDERWORLD_LOAD, "ParseModelCount %i\n", ParseModelCount );
+	ParseModelCount++;
 	for ( i = 0; i < numSurfaces; i++ ) {
 		src.ExpectTokenString( "{" );
 
 		src.ExpectAnyToken( token );
 
 		surf.shader = declManager.FindMaterial( token.data );
+		dlog(DEBUG_RENDERWORLD_LOAD, "shader %s i: %i\n", token.data, i);
 
 		( <idMaterial>surf.shader ).AddReference ( );
 
@@ -150,13 +154,18 @@ idRenderWorldLocal.prototype.ParseModel = function ( src: idLexer ): idRenderMod
 		surf.geometry = tri;
 
 		tri.numVerts = src.ParseInt ( );
-		tri.numIndexes = src.ParseInt ( );
+		tri.numIndexes = src.ParseInt();
+
+		dlog( DEBUG_RENDERWORLD_LOAD, "	tri.numVerts %i tri.numIndexes: %i\n", tri.numVerts, tri.numIndexes );
 
 		R_AllocStaticTriSurfVerts( tri, tri.numVerts );
 		for ( j = 0; j < tri.numVerts; j++ ) {
 			var vec = new Float32Array( 8 );
 
 			src.Parse1DMatrix( 8, vec );
+
+			dlog( DEBUG_RENDERWORLD_LOAD, "vec j: %i %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f\n",
+				j, vec[0], vec[1], vec[2], vec[3], vec[4], vec[5], vec[6], vec[7]);
 
 			tri.verts[j].xyz[0] = vec[0];
 			tri.verts[j].xyz[1] = vec[1];
@@ -171,6 +180,7 @@ idRenderWorldLocal.prototype.ParseModel = function ( src: idLexer ): idRenderMod
 		R_AllocStaticTriSurfIndexes( tri, tri.numIndexes );
 		for ( j = 0; j < tri.numIndexes; j++ ) {
 			tri.indexes[j] = src.ParseInt ( );
+			dlog( DEBUG_RENDERWORLD_LOAD, "tri.indexes[%i]: %i\n", j, tri.indexes[j] );
 		}
 		src.ExpectTokenString( "}" );
 
