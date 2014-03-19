@@ -619,7 +619,7 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 			newTri = R_CopyStaticTriSurf( surf.geometry );
 			R_ReverseTriangles( newTri );
 
-			var newSurf: modelSurface_t;
+			var newSurf = new modelSurface_t;
 
 			newSurf.shader = surf.shader;
 			newSurf.geometry = newTri;

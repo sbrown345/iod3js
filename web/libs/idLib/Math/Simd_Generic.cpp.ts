@@ -2475,50 +2475,51 @@ idSIMD_Generic::Memcpy
 //		cullBits[i] = bits;
 //	}
 //}
-//
-///*
-//============
-//idSIMD_Generic::DeriveTriPlanes
-//
-//	Derives a plane equation for each triangle.
-//============
-//*/
-//void VPCALL idSIMD_Generic::DeriveTriPlanes( idPlane *planes, const idDrawVert *verts, const int numVerts, const int *indexes, const int numIndexes ) {
-//	int i;
-//
-//	for ( i = 0; i < numIndexes; i += 3 ) {
-//		const idDrawVert *a, *b, *c;
-//		float d0[3], d1[3], f;
-//		idVec3 n;
-//
-//		a = verts + indexes[i + 0];
-//		b = verts + indexes[i + 1];
-//		c = verts + indexes[i + 2];
-//
-//		d0[0] = b.xyz[0] - a.xyz[0];
-//		d0[1] = b.xyz[1] - a.xyz[1];
-//		d0[2] = b.xyz[2] - a.xyz[2];
-//
-//		d1[0] = c.xyz[0] - a.xyz[0];
-//		d1[1] = c.xyz[1] - a.xyz[1];
-//		d1[2] = c.xyz[2] - a.xyz[2];
-//
-//		n[0] = d1[1] * d0[2] - d1[2] * d0[1];
-//		n[1] = d1[2] * d0[0] - d1[0] * d0[2];
-//		n[2] = d1[0] * d0[1] - d1[1] * d0[0];
-//
-//		f = idMath.RSqrt( n.x * n.x + n.y * n.y + n.z * n.z );
-//
-//		n.x *= f;
-//		n.y *= f;
-//		n.z *= f;
-//
-//		planes.SetNormal( n );
-//		planes.FitThroughPoint( a.xyz );
-//		planes++;
-//	}
-//}
-//
+
+/*
+============
+idSIMD_Generic::DeriveTriPlanes
+
+	Derives a plane equation for each triangle.
+============
+*/
+	static DeriveTriPlanes ( planes: idPlane[], verts: idDrawVert [], /*int */numVerts: number, /*int **/indexes: Int16Array, /*int */numIndexes: number ): void {
+		var /*int */i: number;
+		var planesIdx = 0;
+
+		for ( i = 0; i < numIndexes; i += 3 ) {
+			var a: idDrawVert, b: idDrawVert, c: idDrawVert;
+			var /*float */d0 = [0, 0, 0], d1 = [0, 0, 0], f: number;
+			var n = new idVec3;
+
+			a = verts[indexes[i + 0]];
+			b = verts[indexes[i + 1]];
+			c = verts[indexes[i + 2]];
+
+			d0[0] = b.xyz[0] - a.xyz[0];
+			d0[1] = b.xyz[1] - a.xyz[1];
+			d0[2] = b.xyz[2] - a.xyz[2];
+
+			d1[0] = c.xyz[0] - a.xyz[0];
+			d1[1] = c.xyz[1] - a.xyz[1];
+			d1[2] = c.xyz[2] - a.xyz[2];
+
+			n[0] = d1[1] * d0[2] - d1[2] * d0[1];
+			n[1] = d1[2] * d0[0] - d1[0] * d0[2];
+			n[2] = d1[0] * d0[1] - d1[1] * d0[0];
+
+			f = idMath.RSqrt( n.x * n.x + n.y * n.y + n.z * n.z );
+
+			n.x *= f;
+			n.y *= f;
+			n.z *= f;
+
+			planes[planesIdx].SetNormal( n );
+			planes[planesIdx].FitThroughPoint( a.xyz );
+			planesIdx++;
+		}
+	}
+
 /*
 ============
 idSIMD_Generic::DeriveTangents

@@ -536,9 +536,9 @@ function R_CopyStaticTriSurf( tri:srfTriangles_t ):srfTriangles_t {
 	R_AllocStaticTriSurfIndexes( newTri, tri.numIndexes );
 	newTri.numVerts = tri.numVerts;
 	newTri.numIndexes = tri.numIndexes;
-	todoThrow ( );
-	//memcpy( newTri.verts, tri.verts, tri.numVerts * sizeof( newTri.verts[0] ) );
-	//memcpy( newTri.indexes, tri.indexes, tri.numIndexes * sizeof( newTri.indexes[0] ) );
+	
+	memcpyStructs( newTri.verts, tri.verts, tri.numVerts );
+	memcpy( newTri.indexes, tri.indexes, tri.indexes["BYTES_PER_ELEMENT"] );
 
 	return newTri;
 }
@@ -811,72 +811,72 @@ function R_CreateDupVerts(tri: srfTriangles_t): void {
 	}
 
 	tri.dupVerts = triDupVertAllocator.AllocInt32Array( tri.numDupVerts * 2 );
-	memcpy( tri.dupVerts, tempDupVerts, tri.numDupVerts * 2 * sizeofSingleItem( tri.dupVerts ) );
+	memcpy( tri.dupVerts, tempDupVerts, tri.numDupVerts * 2 * Int32Array.BYTES_PER_ELEMENT );
 }
 
-///*
-//=====================
-//R_DeriveFacePlanes
-//
-//Writes the facePlanes values, overwriting existing ones if present
-//=====================
-//*/
-//void R_DeriveFacePlanes( srfTriangles_t *tri ) {
-//	idPlane *	planes;
-//
-//	if ( !tri.facePlanes ) {
-//		R_AllocStaticTriSurfPlanes( tri, tri.numIndexes );
-//	}
-//	planes = tri.facePlanes;
-//
+/*
+=====================
+R_DeriveFacePlanes
+
+Writes the facePlanes values, overwriting existing ones if present
+=====================
+*/
+function R_DeriveFacePlanes ( tri: srfTriangles_t ): void {
+	var planes: idPlane[];
+
+	if ( !tri.facePlanes ) {
+		R_AllocStaticTriSurfPlanes( tri, tri.numIndexes );
+	}
+	planes = tri.facePlanes;
+
 //#if 1
-//
-//	SIMDProcessor.DeriveTriPlanes( planes, tri.verts, tri.numVerts, tri.indexes, tri.numIndexes );
-//
+
+	SIMDProcessor.DeriveTriPlanes( planes, tri.verts, tri.numVerts, tri.indexes, tri.numIndexes );
+
 //#else
-//
+
 //	for ( int i = 0; i < tri.numIndexes; i+= 3, planes++ ) {
 //		int		i1, i2, i3;
 //		idVec3	d1, d2, normal;
 //		idVec3	*v1, *v2, *v3;
-//
+
 //		i1 = tri.indexes[i + 0];
 //		i2 = tri.indexes[i + 1];
 //		i3 = tri.indexes[i + 2];
-//
+
 //		v1 = &tri.verts[i1].xyz;
 //		v2 = &tri.verts[i2].xyz;
 //		v3 = &tri.verts[i3].xyz;
-//
+
 //		d1[0] = v2.x - v1.x;
 //		d1[1] = v2.y - v1.y;
 //		d1[2] = v2.z - v1.z;
-//
+
 //		d2[0] = v3.x - v1.x;
 //		d2[1] = v3.y - v1.y;
 //		d2[2] = v3.z - v1.z;
-//
+
 //		normal[0] = d2.y * d1.z - d2.z * d1.y;
 //		normal[1] = d2.z * d1.x - d2.x * d1.z;
 //		normal[2] = d2.x * d1.y - d2.y * d1.x;
-//
+
 //		float sqrLength, invLength;
-//
+
 //		sqrLength = normal.x * normal.x + normal.y * normal.y + normal.z * normal.z;
 //		invLength = idMath::RSqrt( sqrLength );
-//
+
 //		(*planes)[0] = normal[0] * invLength;
 //		(*planes)[1] = normal[1] * invLength;
 //		(*planes)[2] = normal[2] * invLength;
-//
+
 //		planes.FitThroughPoint( *v1 );
 //	}
-//
+
 //#endif
-//
-//	tri.facePlanesCalculated = true;
-//}
-//
+
+	tri.facePlanesCalculated = true;
+}
+
 ///*
 //=====================
 //R_CreateVertexNormals
@@ -1111,7 +1111,7 @@ function R_IdentifySilEdges(tri: srfTriangles_t, omitCoplanarEdges:boolean): voi
 
 	tri.numSilEdges = numSilEdges;
 	tri.silEdges = triSilEdgeAllocator.Alloc(numSilEdges);
-	memcpyStruct(tri.silEdges, silEdges, numSilEdges, silEdge_t.typeInfo );
+	memcpyStructs(tri.silEdges, silEdges, numSilEdges, silEdge_t.typeInfo );
 }
 
 /*
@@ -1143,101 +1143,100 @@ function R_FaceNegativePolarity( tri:srfTriangles_t, /*int */firstIndex:number )
 	return true;
 }
 
-///*
-//==================
-//R_DeriveFaceTangents
-//==================
-//*/
-//typedef struct {
-//	idVec3		tangents[2];
-//	bool	negativePolarity;
-//	bool	degenerate;
-//} faceTangents_t;
-//
-//static void	R_DeriveFaceTangents( const srfTriangles_t *tri, faceTangents_t *faceTangents ) {
-//	int		i;
-//	int			c_textureDegenerateFaces;
-//	int			c_positive, c_negative;
-//	faceTangents_t	*ft;
-//	idDrawVert	*a, *b, *c;
-//
-//	//
-//	// calculate tangent vectors for each face in isolation
-//	//
-//	c_positive = 0;
-//	c_negative = 0;
-//	c_textureDegenerateFaces = 0;
-//	for ( i = 0 ; i < tri.numIndexes ; i+=3 ) {
-//		float	area;
-//		idVec3	temp;
-//		float		d0[5], d1[5];
-//
-//		ft = &faceTangents[i/3];
-//
-//		a = tri.verts + tri.indexes[i + 0];
-//		b = tri.verts + tri.indexes[i + 1];
-//		c = tri.verts + tri.indexes[i + 2];
-//
-//		d0[0] = b.xyz[0] - a.xyz[0];
-//		d0[1] = b.xyz[1] - a.xyz[1];
-//		d0[2] = b.xyz[2] - a.xyz[2];
-//		d0[3] = b.st[0] - a.st[0];
-//		d0[4] = b.st[1] - a.st[1];
-//
-//		d1[0] = c.xyz[0] - a.xyz[0];
-//		d1[1] = c.xyz[1] - a.xyz[1];
-//		d1[2] = c.xyz[2] - a.xyz[2];
-//		d1[3] = c.st[0] - a.st[0];
-//		d1[4] = c.st[1] - a.st[1];
-//
-//		area = d0[3] * d1[4] - d0[4] * d1[3];
-//		if ( fabs( area ) < 1e-20f ) {
-//			ft.negativePolarity = false;
-//			ft.degenerate = true;
-//			ft.tangents[0].Zero();
-//			ft.tangents[1].Zero();
-//			c_textureDegenerateFaces++;
-//			continue;
-//		}
-//		if ( area > 0.0 ) {
-//			ft.negativePolarity = false;
-//			c_positive++;
-//		} else {
-//			ft.negativePolarity = true;
-//			c_negative++;
-//		}
-//		ft.degenerate = false;
-//
+/*
+==================
+R_DeriveFaceTangents
+==================
+*/
+class faceTangents_t {
+	tangents = [new idVec3, new idVec3];
+	negativePolarity: boolean;
+	degenerate: boolean;
+}
+
+function R_DeriveFaceTangents ( tri: srfTriangles_t, faceTangents: faceTangents_t[] ): void {
+	var /*int		*/i: number;
+	var /*int			*/c_textureDegenerateFaces: number;
+	var /*int			*/c_positive: number, c_negative: number;
+	var ft: faceTangents_t;
+	var a: idDrawVert, b: idDrawVert, c: idDrawVert;
+
+	//
+	// calculate tangent vectors for each face in isolation
+	//
+	c_positive = 0;
+	c_negative = 0;
+	c_textureDegenerateFaces = 0;
+	for ( i = 0; i < tri.numIndexes; i += 3 ) {
+		var area: number;
+		var temp = new idVec3;
+		var /*float*/ d0 = [0, 0, 0, 0, 0], d1 = [0, 0, 0, 0, 0];
+
+		ft = faceTangents[i / 3 | 0];
+
+		a = tri.verts[tri.indexes[i + 0]];
+		b = tri.verts[tri.indexes[i + 1]];
+		c = tri.verts[tri.indexes[i + 2]];
+
+		d0[0] = b.xyz[0] - a.xyz[0];
+		d0[1] = b.xyz[1] - a.xyz[1];
+		d0[2] = b.xyz[2] - a.xyz[2];
+		d0[3] = b.st[0] - a.st[0];
+		d0[4] = b.st[1] - a.st[1];
+
+		d1[0] = c.xyz[0] - a.xyz[0];
+		d1[1] = c.xyz[1] - a.xyz[1];
+		d1[2] = c.xyz[2] - a.xyz[2];
+		d1[3] = c.st[0] - a.st[0];
+		d1[4] = c.st[1] - a.st[1];
+
+		area = d0[3] * d1[4] - d0[4] * d1[3];
+		if ( fabs( area ) < 1e-20 ) {
+			ft.negativePolarity = false;
+			ft.degenerate = true;
+			ft.tangents[0].Zero ( );
+			ft.tangents[1].Zero ( );
+			c_textureDegenerateFaces++;
+			continue;
+		}
+		if ( area > 0.0 ) {
+			ft.negativePolarity = false;
+			c_positive++;
+		} else {
+			ft.negativePolarity = true;
+			c_negative++;
+		}
+		ft.degenerate = false;
+
 //#ifdef USE_INVA
-//		float inva = area < 0.0 ? -1 : 1;		// was = 1.0f / area;
-//
-//        temp[0] = (d0[0] * d1[4] - d0[4] * d1[0]) * inva;
-//        temp[1] = (d0[1] * d1[4] - d0[4] * d1[1]) * inva;
-//        temp[2] = (d0[2] * d1[4] - d0[4] * d1[2]) * inva;
-//		temp.Normalize();
-//		ft.tangents[0] = temp;
-//        
-//        temp[0] = (d0[3] * d1[0] - d0[0] * d1[3]) * inva;
-//        temp[1] = (d0[3] * d1[1] - d0[1] * d1[3]) * inva;
-//        temp[2] = (d0[3] * d1[2] - d0[2] * d1[3]) * inva;
-//		temp.Normalize();
-//		ft.tangents[1] = temp;
+		var /*float */inva = area < 0.0 ? -1 : 1; // was = 1.0f / area;
+
+		temp[0] = ( d0[0] * d1[4] - d0[4] * d1[0] ) * inva;
+		temp[1] = ( d0[1] * d1[4] - d0[4] * d1[1] ) * inva;
+		temp[2] = ( d0[2] * d1[4] - d0[4] * d1[2] ) * inva;
+		temp.Normalize ( );
+		ft.tangents[0].equals( temp );
+
+		temp[0] = ( d0[3] * d1[0] - d0[0] * d1[3] ) * inva;
+		temp[1] = ( d0[3] * d1[1] - d0[1] * d1[3] ) * inva;
+		temp[2] = ( d0[3] * d1[2] - d0[2] * d1[3] ) * inva;
+		temp.Normalize ( );
+		ft.tangents[1].equals( temp );
 //#else
 //        temp[0] = (d0[0] * d1[4] - d0[4] * d1[0]);
 //        temp[1] = (d0[1] * d1[4] - d0[4] * d1[1]);
 //        temp[2] = (d0[2] * d1[4] - d0[4] * d1[2]);
 //		temp.Normalize();
 //		ft.tangents[0] = temp;
-//        
+
 //        temp[0] = (d0[3] * d1[0] - d0[0] * d1[3]);
 //        temp[1] = (d0[3] * d1[1] - d0[1] * d1[3]);
 //        temp[2] = (d0[3] * d1[2] - d0[2] * d1[3]);
 //		temp.Normalize();
 //		ft.tangents[1] = temp;
 //#endif
-//	}
-//}
-
+	}
+}
 
 
 /*
@@ -1313,7 +1312,7 @@ function R_DuplicateMirroredVertexes( tri:srfTriangles_t ):void {
 //#else
 	var oldVerts = tri.verts;
 	R_AllocStaticTriSurfVerts( tri, totalVerts );
-	//memcpyStruct(tri.verts, oldVerts, tri.numVerts, idDrawVert.typeInfo);
+	//memcpyStructs(tri.verts, oldVerts, tri.numVerts, idDrawVert.typeInfo);
 	for ( var k = 0; k < tri.numVerts; k++ ) {
 		tri.verts[k].equals( oldVerts[k] );
 	}
@@ -1343,107 +1342,107 @@ function R_DuplicateMirroredVertexes( tri:srfTriangles_t ):void {
 	tri.numVerts = totalVerts;
 }
 
-///*
-//=================
-//R_DeriveTangentsWithoutNormals
-//
-//Build texture space tangents for bump mapping
-//If a surface is deformed, this must be recalculated
-//
-//This assumes that any mirrored vertexes have already been duplicated, so
-//any shared vertexes will have the tangent spaces smoothed across.
-//
-//Texture wrapping slightly complicates this, but as long as the normals
-//are shared, and the tangent vectors are projected onto the normals, the
-//separate vertexes should wind up with identical tangent spaces.
-//
-//mirroring a normalmap WILL cause a slightly visible seam unless the normals
-//are completely flat around the edge's full bilerp support.
-//
-//Vertexes which are smooth shaded must have their tangent vectors
-//in the same plane, which will allow a seamless
-//rendering as long as the normal map is even on both sides of the
-//seam.
-//
-//A smooth shaded surface may have multiple tangent vectors at a vertex
-//due to texture seams or mirroring, but it should only have a single
-//normal vector.
-//
-//Each triangle has a pair of tangent vectors in it's plane
-//
-//Should we consider having vertexes point at shared tangent spaces
-//to save space or speed transforms?
-//
-//this version only handles bilateral symetry
-//=================
-//*/
-//void R_DeriveTangentsWithoutNormals( srfTriangles_t *tri ) {
-//	int			i, j;
-//	faceTangents_t	*faceTangents;
-//	faceTangents_t	*ft;
-//	idDrawVert		*vert;
-//
-//	faceTangents = (faceTangents_t *)_alloca16( sizeof(faceTangents[0]) * tri.numIndexes/3 );
-//	R_DeriveFaceTangents( tri, faceTangents );
-//
-//	// clear the tangents
-//	for ( i = 0 ; i < tri.numVerts ; i++ ) {
-//		tri.verts[i].tangents[0].Zero();
-//		tri.verts[i].tangents[1].Zero();
-//	}
-//
-//	// sum up the neighbors
-//	for ( i = 0 ; i < tri.numIndexes ; i+=3 ) {
-//		ft = &faceTangents[i/3];
-//
-//		// for each vertex on this face
-//		for ( j = 0 ; j < 3 ; j++ ) {
-//			vert = &tri.verts[tri.indexes[i+j]];
-//
-//			vert.tangents[0] += ft.tangents[0];
-//			vert.tangents[1] += ft.tangents[1];
-//		}
-//	}
-//
+/*
+=================
+R_DeriveTangentsWithoutNormals
+
+Build texture space tangents for bump mapping
+If a surface is deformed, this must be recalculated
+
+This assumes that any mirrored vertexes have already been duplicated, so
+any shared vertexes will have the tangent spaces smoothed across.
+
+Texture wrapping slightly complicates this, but as long as the normals
+are shared, and the tangent vectors are projected onto the normals, the
+separate vertexes should wind up with identical tangent spaces.
+
+mirroring a normalmap WILL cause a slightly visible seam unless the normals
+are completely flat around the edge's full bilerp support.
+
+Vertexes which are smooth shaded must have their tangent vectors
+in the same plane, which will allow a seamless
+rendering as long as the normal map is even on both sides of the
+seam.
+
+A smooth shaded surface may have multiple tangent vectors at a vertex
+due to texture seams or mirroring, but it should only have a single
+normal vector.
+
+Each triangle has a pair of tangent vectors in it's plane
+
+Should we consider having vertexes point at shared tangent spaces
+to save space or speed transforms?
+
+this version only handles bilateral symetry
+=================
+*/
+function R_DeriveTangentsWithoutNormals ( tri: srfTriangles_t ): void {
+	var /*int*/i: number, j: number;
+	var faceTangents: faceTangents_t[];
+	var ft: faceTangents_t;
+	var vert: idDrawVert;
+
+	faceTangents = newStructArray<faceTangents_t>( faceTangents_t, tri.numIndexes / 3 | 0 ); // (faceTangents_t *)_alloca16( sizeof(faceTangents[0]) * tri.numIndexes/3 );
+	R_DeriveFaceTangents( tri, faceTangents );
+
+	// clear the tangents
+	for ( i = 0; i < tri.numVerts; i++ ) {
+		tri.verts[i].tangents[0].Zero ( );
+		tri.verts[i].tangents[1].Zero ( );
+	}
+
+	// sum up the neighbors
+	for ( i = 0; i < tri.numIndexes; i += 3 ) {
+		ft = faceTangents[( i / 3 ) | 0];
+
+		// for each vertex on this face
+		for ( j = 0; j < 3; j++ ) {
+			vert = tri.verts[tri.indexes[i + j]];
+
+			vert.tangents[0].plusEquals( ft.tangents[0] );
+			vert.tangents[1].plusEquals( ft.tangents[1] );
+		}
+	}
+
 //#if 0
 //	// sum up both sides of the mirrored verts
 //	// so the S vectors exactly mirror, and the T vectors are equal
 //	for ( i = 0 ; i < tri.numMirroredVerts ; i++ ) {
 //		idDrawVert	*v1, *v2;
-//
+
 //		v1 = &tri.verts[ tri.numVerts - tri.numMirroredVerts + i ];
 //		v2 = &tri.verts[ tri.mirroredVerts[i] ];
-//
+
 //		v1.tangents[0] -= v2.tangents[0];
 //		v1.tangents[1] += v2.tangents[1];
-//
+
 //		v2.tangents[0] = vec3_origin - v1.tangents[0];
 //		v2.tangents[1] = v1.tangents[1];
 //	}
 //#endif
-//
-//
-//	// project the summed vectors onto the normal plane
-//	// and normalize.  The tangent vectors will not necessarily
-//	// be orthogonal to each other, but they will be orthogonal
-//	// to the surface normal.
-//	for ( i = 0 ; i < tri.numVerts ; i++ ) {
-//		vert = &tri.verts[i];
-//		for ( j = 0 ; j < 2 ; j++ ) {
-//			float	d;
-//
-//			d = vert.tangents[j] * vert.normal;
-//			vert.tangents[j] = vert.tangents[j] - d * vert.normal;
-//			vert.tangents[j].Normalize();
-//		}
-//	}
-//
-//	tri.tangentsCalculated = true;
-//}
-//
+
+
+	// project the summed vectors onto the normal plane
+	// and normalize.  The tangent vectors will not necessarily
+	// be orthogonal to each other, but they will be orthogonal
+	// to the surface normal.
+	for ( i = 0; i < tri.numVerts; i++ ) {
+		vert = tri.verts[i];
+		for ( j = 0; j < 2; j++ ) {
+			var /*float	*/d: number;
+
+			d = vert.tangents[j].timesVec( vert.normal );
+			vert.tangents[j].equals( vert.tangents[j].minus( idVec3.times( d, vert.normal ) ) );
+			vert.tangents[j].Normalize ( );
+		}
+	}
+
+	tri.tangentsCalculated = true;
+}
+
 //static ID_INLINE void VectorNormalizeFast2( const idVec3 &v, idVec3 &out) {
 //	float	ilength;
-//
+
 //	ilength = idMath::RSqrt( v[0]*v[0] + v[1]*v[1] + v[2]*v[2] );
 //	out[0] = v[0] * ilength;
 //	out[1] = v[1] * ilength;
@@ -2078,24 +2077,23 @@ This should be called before R_CleanupTriangles
 =================
 */
 function R_ReverseTriangles ( tri: srfTriangles_t ): void {
-	todoThrow ( );
-	//int			i;
+	var i: number;
 
-	//// flip the normal on each vertex
-	//// If the surface is going to have generated normals, this won't matter,
-	//// but if it has explicit normals, this will keep it on the correct side
-	//for ( i = 0 ; i < tri.numVerts ; i++ ) {
-	//	tri.verts[i].normal = vec3_origin - tri.verts[i].normal;
-	//}
+	// flip the normal on each vertex
+	// If the surface is going to have generated normals, this won't matter,
+	// but if it has explicit normals, this will keep it on the correct side
+	for ( i = 0; i < tri.numVerts; i++ ) {
+		tri.verts[i].normal.equals( vec3_origin.minus( tri.verts[i].normal ) );
+	}
 
-	//// flip the index order to make them back sided
-	//for ( i = 0 ; i < tri.numIndexes ; i+= 3 ) {
-	//	glIndex_t	temp;
+	// flip the index order to make them back sided
+	for ( i = 0; i < tri.numIndexes; i += 3 ) {
+		var /*glIndex_t	*/temp: number;
 
-	//	temp = tri.indexes[ i + 0 ];
-	//	tri.indexes[ i + 0 ] = tri.indexes[ i + 1 ];
-	//	tri.indexes[ i + 1 ] = temp;
-	//}
+		temp = tri.indexes[i + 0];
+		tri.indexes[i + 0] = tri.indexes[i + 1];
+		tri.indexes[i + 1] = temp;
+	}
 }
 
 /*
@@ -2137,9 +2135,8 @@ function R_CleanupTriangles(tri: srfTriangles_t, createNormals:boolean, identify
 		//R_BuildDominantTris( tri );
 		//R_DeriveUnsmoothedTangents( tri );
 	} else if ( !createNormals ) {
-		todoThrow();
-		//R_DeriveFacePlanes( tri );
-		//R_DeriveTangentsWithoutNormals( tri );
+		R_DeriveFacePlanes( tri );
+		R_DeriveTangentsWithoutNormals( tri );
 	} else {
 		R_DeriveTangents( tri );
 	}

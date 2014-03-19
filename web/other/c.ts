@@ -92,6 +92,10 @@ function memcpy2d ( destination: Int32Array[], source: Int32Array[] ): void {
 }
 
 function memcpy(destination: ArrayBufferView, source: ArrayBufferView, count: number): void {
+	if ( !destination ) {
+		return;
+	}
+
 	var sourceArray = new Uint8Array(destination.buffer);
 	var destArray = new Uint8Array(source.buffer);
 	for (var i = 0; i < count; i++) {

@@ -2258,12 +2258,12 @@ Parses the current material definition and finds all necessary images.
 
 	if (this.numStages) {
 		this.stages = newStructArray<shaderStage_t>( shaderStage_t, this.numStages ); //(shaderStage_t *)R_StaticAlloc( this.numStages * sizeof( stages[0] ) );
-		memcpyStruct( this.stages, this.pd.parseStages, this.numStages , shaderStage_t.typeInfo);
+		memcpyStructs( this.stages, this.pd.parseStages, this.numStages , shaderStage_t.typeInfo);
 	}
 
 	if ( this.numOps ) {
 		this.ops = newStructArray<expOp_t>( expOp_t, this.numOps );
-		memcpyStruct( this.ops, this.pd.shaderOps, this.numOps, expOp_t.typeInfo );
+		memcpyStructs( this.ops, this.pd.shaderOps, this.numOps, expOp_t.typeInfo );
 	}
 
 	if ( this.numRegisters ) {
