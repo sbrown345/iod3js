@@ -727,15 +727,19 @@ static int *R_CreateSilRemap( const srfTriangles_t *tri ) {
 	c_unique = 0;
 	for ( i = 0 ; i < tri->numVerts ; i++ ) {
 		v1 = &tri->verts[i];
+		dlog(DEBUG_RENDERWORLD_LOAD, "v1 xyz: %.2f %.2f %.2f\n", v1->xyz[0], v1->xyz[1], v1->xyz[2]);
 
 		// see if there is an earlier vert that it can map to
 		hashKey = hash.GenerateKey( v1->xyz );
 		dlog(DEBUG_RENDERWORLD_LOAD, "R_CreateSilRemap hashKey: %i\n", hashKey);
 		for (j = hash.First(hashKey); j >= 0; j = hash.Next(j)) {
+			dlog(DEBUG_RENDERWORLD_LOAD, "j:  %i\n", j);
 			v2 = &tri->verts[j];
-			if ( v2->xyz[0] == v1->xyz[0]
+			dlog(DEBUG_RENDERWORLD_LOAD, "v2 xyz: %.2f %.2f %.2f\n", v2->xyz[0], v2->xyz[1], v2->xyz[2]);
+			if (v2->xyz[0] == v1->xyz[0]
 				&& v2->xyz[1] == v1->xyz[1]
 				&& v2->xyz[2] == v1->xyz[2] ) {
+				dlog(DEBUG_RENDERWORLD_LOAD, "c_removed++\n");
 				c_removed++;
 				remap[i] = j;
 				break;
@@ -748,6 +752,11 @@ static int *R_CreateSilRemap( const srfTriangles_t *tri ) {
 		}
 	}
 
+	dlog(DEBUG_RENDERWORLD_LOAD, "remap:\n");
+	for (int i = 0; i < tri->numVerts; i++)
+	{
+		dlog(DEBUG_RENDERWORLD_LOAD, "%i: %i\n", i, remap[i]);
+	}
 	return remap;
 }
 
@@ -775,7 +784,8 @@ void R_CreateSilIndexes( srfTriangles_t *tri ) {
 	tri->silIndexes = triSilIndexAllocator.Alloc( tri->numIndexes );
 	for ( i = 0; i < tri->numIndexes; i++ ) {
 		tri->silIndexes[i] = remap[tri->indexes[i]];
-		dlog(DEBUG_RENDERWORLD_LOAD, "R_CreateSilRemap tri->silIndexes[%i]: %i\n", i, tri->silIndexes[i]);
+		dlog(DEBUG_RENDERWORLD_LOAD, "remap indexes tri->indexes[%i]: %i\n", i, tri->indexes[i]);
+		dlog(DEBUG_RENDERWORLD_LOAD, "remap indexes tri->silIndexes[%i]: %i\n", i, tri->silIndexes[i]);
 	}
 
 	R_StaticFree( remap );
@@ -2104,6 +2114,9 @@ FIXME: allow createFlat and createSmooth normals, as well as explicit
 */
 void R_CleanupTriangles( srfTriangles_t *tri, bool createNormals, bool identifySilEdges, bool useUnsmoothedTangents ) {
 	dlog(DEBUG_RENDERWORLD_LOAD, "R_CleanupTriangles tri nv:%i \n", tri->numVerts);
+	for (int i = 0; i < tri->numIndexes; i++) {
+		dlog(DEBUG_RENDERWORLD_LOAD, "tri->indexes[%i]: %i\n", i, tri->indexes[i]);
+	}
 	R_RangeCheckIndexes(tri);
 
 	R_CreateSilIndexes( tri );

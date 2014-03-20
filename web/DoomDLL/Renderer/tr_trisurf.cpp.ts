@@ -528,17 +528,17 @@ R_CopyStaticTriSurf
 This only duplicates the indexes and verts, not any of the derived data.
 =================
 */
-function R_CopyStaticTriSurf( tri:srfTriangles_t ):srfTriangles_t {
+function R_CopyStaticTriSurf ( tri: srfTriangles_t ): srfTriangles_t {
 	var newTri: srfTriangles_t;
 
-	newTri = R_AllocStaticTriSurf();
+	newTri = R_AllocStaticTriSurf ( );
 	R_AllocStaticTriSurfVerts( newTri, tri.numVerts );
 	R_AllocStaticTriSurfIndexes( newTri, tri.numIndexes );
 	newTri.numVerts = tri.numVerts;
 	newTri.numIndexes = tri.numIndexes;
-	
+
 	memcpyStructs( newTri.verts, tri.verts, tri.numVerts );
-	memcpy( newTri.indexes, tri.indexes, tri.indexes["BYTES_PER_ELEMENT"] );
+	memcpy( newTri.indexes, tri.indexes, tri.numIndexes * tri.indexes["BYTES_PER_ELEMENT"] );
 
 	return newTri;
 }
@@ -729,15 +729,19 @@ function R_CreateSilRemap ( tri: srfTriangles_t ): Int32Array {
 	c_unique = 0;
 	for ( i = 0; i < tri.numVerts; i++ ) {
 		v1 = tri.verts[i];
+		dlog(DEBUG_RENDERWORLD_LOAD, "v1 xyz: %.2f %.2f %.2f\n", v1.xyz[0], v1.xyz[1], v1.xyz[2]);
 
 		// see if there is an earlier vert that it can map to
 		hashKey = hash.GenerateKeyFromVector(v1.xyz);
 		dlog(DEBUG_RENDERWORLD_LOAD, "R_CreateSilRemap hashKey: %i\n", hashKey);
 		for ( j = hash.First( hashKey ); j >= 0; j = hash.Next( j ) ) {
+			dlog(DEBUG_RENDERWORLD_LOAD, "j:  %i\n", j);
 			v2 = tri.verts[j];
+			dlog(DEBUG_RENDERWORLD_LOAD, "v2 xyz: %.2f %.2f %.2f\n", v2.xyz[0], v2.xyz[1], v2.xyz[2]);
 			if ( v2.xyz[0] == v1.xyz[0]
 				&& v2.xyz[1] == v1.xyz[1]
 				&& v2.xyz[2] == v1.xyz[2] ) {
+				dlog(DEBUG_RENDERWORLD_LOAD, "c_removed++\n");
 				c_removed++;
 				remap[i] = j;
 				break;
@@ -750,6 +754,12 @@ function R_CreateSilRemap ( tri: srfTriangles_t ): Int32Array {
 		}
 	}
 
+	
+	dlog(DEBUG_RENDERWORLD_LOAD, "remap:\n");
+	for (var i = 0; i < tri.numVerts; i++)
+	{
+		dlog(DEBUG_RENDERWORLD_LOAD, "%i: %i\n", i, remap[i]);
+	}
 	return remap;
 }
 
@@ -777,7 +787,8 @@ function R_CreateSilIndexes ( tri: srfTriangles_t ): void {
 	tri.silIndexes = triSilIndexAllocator.AllocInt16Array( tri.numIndexes );
 	for ( i = 0; i < tri.numIndexes; i++ ) {
 		tri.silIndexes[i] = remap[tri.indexes[i]];
-		dlog(DEBUG_RENDERWORLD_LOAD, "R_CreateSilRemap tri->silIndexes[%i]: %i\n", i, tri.silIndexes[i]);
+		dlog(DEBUG_RENDERWORLD_LOAD, "remap indexes tri->indexes[%i]: %i\n", i, tri.indexes[i]);
+		dlog(DEBUG_RENDERWORLD_LOAD, "remap indexes tri->silIndexes[%i]: %i\n", i, tri.silIndexes[i]);
 	}
 
 	R_StaticFree( remap );
@@ -2111,6 +2122,9 @@ FIXME: allow createFlat and createSmooth normals, as well as explicit
 */
 function R_CleanupTriangles(tri: srfTriangles_t, createNormals:boolean, identifySilEdges:boolean, useUnsmoothedTangents:boolean): void {
 	dlog(DEBUG_RENDERWORLD_LOAD, "R_CleanupTriangles tri nv:%i \n", tri.numVerts);
+	for ( var i = 0; i < tri.numIndexes; i++ ) {
+		dlog(DEBUG_RENDERWORLD_LOAD, "tri->indexes[%i]: %i\n", i, tri.indexes[i]);
+	}
 	R_RangeCheckIndexes( tri );
 
 	R_CreateSilIndexes( tri );
