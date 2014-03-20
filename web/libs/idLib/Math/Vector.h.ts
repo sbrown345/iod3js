@@ -145,9 +145,9 @@ class idVec2 {
 		this.x = this.y = 0.0;
 	}
 
-////ID_INLINE bool idVec2::Compare( const idVec2 &a ) const {
-////	return ( ( x == a.x ) && ( y == a.y ) );
-////}
+	Compare ( a: idVec2 ): boolean {
+		return ( ( this.x == a.x ) && ( this.y == a.y ) );
+	}
 
 ////ID_INLINE bool idVec2::Compare( const idVec2 &a, const float epsilon ) const {
 ////	if ( idMath::Fabs( x - a.x ) > epsilon ) {
@@ -161,9 +161,9 @@ class idVec2 {
 ////	return true;
 ////}
 
-////ID_INLINE bool idVec2::operator==( const idVec2 &a ) const {
-////	return Compare( a );
-////}
+	opEqualTo ( a: idVec2 ): boolean {
+		return this.Compare( a );
+	}
 
 ////ID_INLINE bool idVec2::operator!=( const idVec2 &a ) const {
 ////	return !Compare( a );

@@ -119,10 +119,10 @@
 var MAX_SIL_EDGES			= 0x10000;
 var SILEDGE_HASH_SIZE		= 1024;
 
-var /*int			*/numSilEdges: number;
+var /*int*/numSilEdges: number;
 var silEdges: silEdge_t[];
 var silEdgeHash = new idHashIndex( SILEDGE_HASH_SIZE, MAX_SIL_EDGES );
-var /*int			*/numPlanes: number;
+var /*int*/numPlanes: number;
 //
 var srfTrianglesAllocator = idBlockAlloc_template<srfTriangles_t>( srfTriangles_t, 1 << 8 );
 //
@@ -713,6 +713,7 @@ function R_CreateSilRemap ( tri: srfTriangles_t ): Int32Array {
 	var /*int*/ i: number, j: number, hashKey: number;
 	var v1: idDrawVert, v2: idDrawVert;
 
+	dlog(DEBUG_RENDERWORLD_LOAD, "R_CreateSilRemap tri.numVerts: %i, numIndexes: %i numMirroredVerts: %i, \n", tri.numVerts, tri.numIndexes, tri.numMirroredVerts);
 	remap = new Int32Array( tri.numVerts ); ////(int *)R_ClearedStaticAlloc( tri.numVerts * sizeof( remap[0] ) );
 
 	if ( !r_useSilRemap.GetBool ( ) ) {
@@ -730,7 +731,8 @@ function R_CreateSilRemap ( tri: srfTriangles_t ): Int32Array {
 		v1 = tri.verts[i];
 
 		// see if there is an earlier vert that it can map to
-		hashKey = hash.GenerateKeyFromVector( v1.xyz );
+		hashKey = hash.GenerateKeyFromVector(v1.xyz);
+		dlog(DEBUG_RENDERWORLD_LOAD, "R_CreateSilRemap hashKey: %i\n", hashKey);
 		for ( j = hash.First( hashKey ); j >= 0; j = hash.Next( j ) ) {
 			v2 = tri.verts[j];
 			if ( v2.xyz[0] == v1.xyz[0]
@@ -763,6 +765,7 @@ function R_CreateSilIndexes ( tri: srfTriangles_t ): void {
 	var /*int*/i:number;
 	var /*int*/remap: Int32Array;
 
+	dlog(DEBUG_RENDERWORLD_LOAD, "R_CreateSilIndexes\n");
 	if ( tri.silIndexes ) {
 		triSilIndexAllocator.Free( tri.silIndexes );
 		tri.silIndexes = null;
@@ -774,6 +777,7 @@ function R_CreateSilIndexes ( tri: srfTriangles_t ): void {
 	tri.silIndexes = triSilIndexAllocator.AllocInt16Array( tri.numIndexes );
 	for ( i = 0; i < tri.numIndexes; i++ ) {
 		tri.silIndexes[i] = remap[tri.indexes[i]];
+		dlog(DEBUG_RENDERWORLD_LOAD, "R_CreateSilRemap tri->silIndexes[%i]: %i\n", i, tri.silIndexes[i]);
 	}
 
 	R_StaticFree( remap );
@@ -787,16 +791,20 @@ R_CreateDupVerts
 function R_CreateDupVerts(tri: srfTriangles_t): void {
 	var /*int */i:number;
 
+	dlog(DEBUG_RENDERWORLD_LOAD, "R_CreateDupVerts\n");
 	var /*int **/remap = new Int32Array( tri.numVerts );//(int *) _alloca16( tri.numVerts * sizeof( remap[0] ) );
 
 	// initialize vertex remap in case there are unused verts
 	for ( i = 0; i < tri.numVerts; i++ ) {
 		remap[i] = i;
+		dlog(DEBUG_RENDERWORLD_LOAD, "%i\n", i);
 	}
 
+	dlog(DEBUG_RENDERWORLD_LOAD, "set the remap based on how the silhouette indexes are remapped\n");
 	// set the remap based on how the silhouette indexes are remapped
 	for ( i = 0; i < tri.numIndexes; i++ ) {
 		remap[tri.indexes[i]] = tri.silIndexes[i];
+		dlog(DEBUG_RENDERWORLD_LOAD, "%i\n", tri.silIndexes[i]);
 	}
 
 	// create duplicate vertex index based on the vertex remap
@@ -810,6 +818,7 @@ function R_CreateDupVerts(tri: srfTriangles_t): void {
 		}
 	}
 
+	dlog(DEBUG_RENDERWORLD_LOAD, "numDupVerts\n %i", tri.numDupVerts);
 	tri.dupVerts = triDupVertAllocator.AllocInt32Array( tri.numDupVerts * 2 );
 	memcpy( tri.dupVerts, tempDupVerts, tri.numDupVerts * 2 * Int32Array.BYTES_PER_ELEMENT );
 }
@@ -922,7 +931,7 @@ function R_DeriveFacePlanes ( tri: srfTriangles_t ): void {
 var c_duplicatedEdges = 0, c_tripledEdges = 0;
 
 function R_DefineEdge( /*int*/ v1:number, /*int */v2:number, /*int */planeNum :number):void {
-	var/*int		*/i: number, hashKey: number;
+	var/*int*/i: number, hashKey: number;
 
 	// check for degenerate edge
 	if ( v1 == v2 ) {
@@ -994,17 +1003,17 @@ If the surface will not deform, coplanar edges (polygon interiors)
 can never create silhouette plains, and can be omited
 =================
 */
-var /*int*/	c_coplanarSilEdges = 0
+var /*int*/ c_coplanarSilEdges = 0;
 var /*int*/ c_totalSilEdges = 0;
 
 function R_IdentifySilEdges(tri: srfTriangles_t, omitCoplanarEdges:boolean): void {
-	var /*int		*/i: number;
-	var /*int		*/numTris: number;
-	var /*int		*/shared: number, single: number;
+	var /*int*/i: number;
+	var /*int*/numTris: number;
+	var /*int*/shared: number, single: number;
 
 	omitCoplanarEdges = false;	// optimization doesn't work for some reason
 
-	numTris = tri.numIndexes / 3;
+	numTris = int( tri.numIndexes / 3 );
 
 	numSilEdges = 0;
 	silEdgeHash.Clear();
@@ -1014,7 +1023,7 @@ function R_IdentifySilEdges(tri: srfTriangles_t, omitCoplanarEdges:boolean): voi
 	c_tripledEdges = 0;
 
 	for ( i = 0 ; i < numTris ; i++ ) {
-		var/*int		*/i1: number, i2: number, i3: number;
+		var/*int*/i1: number, i2: number, i3: number;
 
 		i1 = tri.silIndexes[ i*3 + 0 ];
 		i2 = tri.silIndexes[ i*3 + 1 ];
@@ -1037,7 +1046,7 @@ function R_IdentifySilEdges(tri: srfTriangles_t, omitCoplanarEdges:boolean): voi
 	// edges, because they are never silhouettes in the conventional sense,
 	// but they are still needed to balance out all the true sil edges
 	// for the shadow algorithm to function
-	var/*int		*/c_coplanarCulled:number;
+	var/*int*/c_coplanarCulled:number;
 
 	c_coplanarCulled = 0;
 	if ( omitCoplanarEdges ) {
@@ -1258,19 +1267,15 @@ sets mirroredVerts and mirroredVerts[]
 ===================
 */
 class tangentVert_t {
-	polarityUsed:boolean[/*2*/];	/*bool	*/	
-	negativeRemap: number;		/*int	*/		
-	constructor ( ) {
-		this.polarityUsed = [false, false];
-		this.negativeRemap = 0;
-	}
+	polarityUsed = [false, false];
+	negativeRemap: number = 0;/*int	*/		
 };
 
-function R_DuplicateMirroredVertexes( tri:srfTriangles_t ):void {
-	var tverts: tangentVert_t[], vert: tangentVert_t;	   //tangentVert_t	
-	var i: number, j:number;			   //int				
-	var totalVerts: number;		   //int				
-	var numMirror: number;		   //int				
+function R_DuplicateMirroredVertexes ( tri: srfTriangles_t ): void {
+	var tverts: tangentVert_t[], vert: tangentVert_t; //tangentVert_t	
+	var i: number, j: number; //int				
+	var totalVerts: number; //int				
+	var numMirror: number; //int				
 
 	tverts = newStructArray<tangentVert_t>( tangentVert_t, tri.numVerts ); //(tangentVert_t *)_alloca16( tri.numVerts * sizeof( *tverts ) );
 	//memset( tverts, 0, tri.numVerts * sizeof( *tverts ) );
@@ -1278,22 +1283,22 @@ function R_DuplicateMirroredVertexes( tri:srfTriangles_t ):void {
 	// determine texture polarity of each surface
 
 	// mark each vert with the polarities it uses
-	for ( i = 0 ; i < tri.numIndexes ; i+=3 ) {
-		var/*int	*/polarity:number;
+	for ( i = 0; i < tri.numIndexes; i += 3 ) {
+		var /*int*/polarity: number;
 
 		polarity = R_FaceNegativePolarity( tri, i ) ? 1 : 0;
-		for ( j = 0 ; j < 3 ; j++ ) {
-			tverts[tri.indexes[i+j]].polarityUsed[ polarity ] = true;
+		for ( j = 0; j < 3; j++ ) {
+			tverts[tri.indexes[i + j]].polarityUsed[polarity] = true;
 		}
 	}
 
 	// now create new verts as needed
 	totalVerts = tri.numVerts;
-	for ( i = 0 ; i < tri.numVerts ; i++ ) {
+	for ( i = 0; i < tri.numVerts; i++ ) {
 		vert = tverts[i];
 		if ( vert.polarityUsed[0] && vert.polarityUsed[1] ) {
 			vert.negativeRemap = totalVerts;
-			totalVerts++;	
+			totalVerts++;
 		}
 	}
 
@@ -1321,7 +1326,7 @@ function R_DuplicateMirroredVertexes( tri:srfTriangles_t ):void {
 
 	// create the duplicates
 	numMirror = 0;
-	for ( i = 0 ; i < tri.numVerts ; i++ ) {
+	for ( i = 0; i < tri.numVerts; i++ ) {
 		j = tverts[i].negativeRemap;
 		if ( j ) {
 			tri.verts[j] = tri.verts[i];
@@ -1332,9 +1337,9 @@ function R_DuplicateMirroredVertexes( tri:srfTriangles_t ):void {
 
 	tri.numVerts = totalVerts;
 	// change the indexes
-	for ( i = 0 ; i < tri.numIndexes ; i++ ) {
-		if ( tverts[tri.indexes[i]].negativeRemap && 
-			R_FaceNegativePolarity( tri, 3*(i/3) ) ) {
+	for ( i = 0; i < tri.numIndexes; i++ ) {
+		if ( tverts[tri.indexes[i]].negativeRemap &&
+			R_FaceNegativePolarity( tri, 3 * int( i / 3 ) ) ) {
 			tri.indexes[i] = tverts[tri.indexes[i]].negativeRemap;
 		}
 	}
@@ -1393,7 +1398,7 @@ function R_DeriveTangentsWithoutNormals ( tri: srfTriangles_t ): void {
 
 	// sum up the neighbors
 	for ( i = 0; i < tri.numIndexes; i += 3 ) {
-		ft = faceTangents[( i / 3 ) | 0];
+		ft = faceTangents[int( i / 3 )];
 
 		// for each vertex on this face
 		for ( j = 0; j < 3; j++ ) {
@@ -1889,9 +1894,9 @@ silIndexes must have already been calculated
 =================
 */
 function R_RemoveDegenerateTriangles ( tri: srfTriangles_t ): void {
-	var /*int		*/c_removed: number;
-	var /*int		*/i: number;
-	var /*int		*/a: number, b: number, c: number;
+	var /*int*/c_removed: number;
+	var /*int*/i: number;
+	var /*int*/a: number, b: number, c: number;
 
 	// check for completely degenerate triangles
 	c_removed = 0;
@@ -1899,6 +1904,7 @@ function R_RemoveDegenerateTriangles ( tri: srfTriangles_t ): void {
 		a = tri.silIndexes[i];
 		b = tri.silIndexes[i + 1];
 		c = tri.silIndexes[i + 2];
+		dlog(DEBUG_RENDERWORLD_LOAD, "R_CleanupTriangles tri abc:%i %i %i\n", a, b, c);
 		if ( a == b || a == c || b == c ) {
 			c_removed++;
 			todoThrow ( );
@@ -1934,7 +1940,7 @@ function R_TestDegenerateTextureSpace ( tri: srfTriangles_t ): void {
 		var b = tri.verts[tri.indexes[i + 1]];
 		var c = tri.verts[tri.indexes[i + 2]];
 
-		if ( a.st == b.st || b.st == c.st || c.st == a.st ) {
+		if ( a.st.opEqualTo( b.st ) || b.st.opEqualTo( c.st ) || c.st.opEqualTo( a.st ) ) {
 			c_degenerate++;
 		}
 	}
@@ -2104,6 +2110,7 @@ FIXME: allow createFlat and createSmooth normals, as well as explicit
 =================
 */
 function R_CleanupTriangles(tri: srfTriangles_t, createNormals:boolean, identifySilEdges:boolean, useUnsmoothedTangents:boolean): void {
+	dlog(DEBUG_RENDERWORLD_LOAD, "R_CleanupTriangles tri nv:%i \n", tri.numVerts);
 	R_RangeCheckIndexes( tri );
 
 	R_CreateSilIndexes( tri );

@@ -711,7 +711,8 @@ static int *R_CreateSilRemap( const srfTriangles_t *tri ) {
 	int		i, j, hashKey;
 	const idDrawVert *v1, *v2;
 
-	remap = (int *)R_ClearedStaticAlloc( tri->numVerts * sizeof( remap[0] ) );
+	dlog(DEBUG_RENDERWORLD_LOAD, "R_CreateSilRemap tri.numVerts: %i, numIndexes: %i numMirroredVerts: %i, \n", tri->numVerts, tri->numIndexes, tri->numMirroredVerts);
+	remap = (int *)R_ClearedStaticAlloc(tri->numVerts * sizeof(remap[0]));
 
 	if ( !r_useSilRemap.GetBool() ) {
 		for ( i = 0 ; i < tri->numVerts ; i++ ) {
@@ -729,7 +730,8 @@ static int *R_CreateSilRemap( const srfTriangles_t *tri ) {
 
 		// see if there is an earlier vert that it can map to
 		hashKey = hash.GenerateKey( v1->xyz );
-		for ( j = hash.First( hashKey ); j >= 0; j = hash.Next( j ) ) {
+		dlog(DEBUG_RENDERWORLD_LOAD, "R_CreateSilRemap hashKey: %i\n", hashKey);
+		for (j = hash.First(hashKey); j >= 0; j = hash.Next(j)) {
 			v2 = &tri->verts[j];
 			if ( v2->xyz[0] == v1->xyz[0]
 				&& v2->xyz[1] == v1->xyz[1]
@@ -761,7 +763,8 @@ void R_CreateSilIndexes( srfTriangles_t *tri ) {
 	int		i;
 	int		*remap;
 
-	if ( tri->silIndexes ) {
+	dlog(DEBUG_RENDERWORLD_LOAD, "R_CreateSilIndexes\n");
+	if (tri->silIndexes) {
 		triSilIndexAllocator.Free( tri->silIndexes );
 		tri->silIndexes = NULL;
 	}
@@ -772,6 +775,7 @@ void R_CreateSilIndexes( srfTriangles_t *tri ) {
 	tri->silIndexes = triSilIndexAllocator.Alloc( tri->numIndexes );
 	for ( i = 0; i < tri->numIndexes; i++ ) {
 		tri->silIndexes[i] = remap[tri->indexes[i]];
+		dlog(DEBUG_RENDERWORLD_LOAD, "R_CreateSilRemap tri->silIndexes[%i]: %i\n", i, tri->silIndexes[i]);
 	}
 
 	R_StaticFree( remap );
@@ -785,16 +789,20 @@ R_CreateDupVerts
 void R_CreateDupVerts( srfTriangles_t *tri ) {
 	int i;
 
-	int *remap = (int *) _alloca16( tri->numVerts * sizeof( remap[0] ) );
+	dlog(DEBUG_RENDERWORLD_LOAD, "R_CreateDupVerts\n");
+	int *remap = (int *)_alloca16(tri->numVerts * sizeof(remap[0]));
 
 	// initialize vertex remap in case there are unused verts
 	for ( i = 0; i < tri->numVerts; i++ ) {
 		remap[i] = i;
+		dlog(DEBUG_RENDERWORLD_LOAD, "%i\n", i);
 	}
 
+	dlog(DEBUG_RENDERWORLD_LOAD, "set the remap based on how the silhouette indexes are remapped\n");
 	// set the remap based on how the silhouette indexes are remapped
 	for ( i = 0; i < tri->numIndexes; i++ ) {
 		remap[tri->indexes[i]] = tri->silIndexes[i];
+		dlog(DEBUG_RENDERWORLD_LOAD, "%i\n", tri->silIndexes[i]);
 	}
 
 	// create duplicate vertex index based on the vertex remap
@@ -808,7 +816,8 @@ void R_CreateDupVerts( srfTriangles_t *tri ) {
 		}
 	}
 
-	tri->dupVerts = triDupVertAllocator.Alloc( tri->numDupVerts * 2 );
+	dlog(DEBUG_RENDERWORLD_LOAD, "numDupVerts\n %i", tri->numDupVerts);
+	tri->dupVerts = triDupVertAllocator.Alloc(tri->numDupVerts * 2);
 	memcpy( tri->dupVerts, tempDupVerts, tri->numDupVerts * 2 * sizeof( tri->dupVerts[0] ) );
 }
 
@@ -1889,7 +1898,8 @@ void R_RemoveDegenerateTriangles( srfTriangles_t *tri ) {
 		a = tri->silIndexes[i];
 		b = tri->silIndexes[i+1];
 		c = tri->silIndexes[i+2];
-		if ( a == b || a == c || b == c ) {
+		dlog(DEBUG_RENDERWORLD_LOAD, "R_CleanupTriangles tri abc:%i %i %i\n", a, b, c);
+		if (a == b || a == c || b == c) {
 			c_removed++;
 			memmove( tri->indexes + i, tri->indexes + i + 3, ( tri->numIndexes - i - 3 ) * sizeof( tri->indexes[0] ) );
 			if ( tri->silIndexes ) {
@@ -1923,7 +1933,7 @@ void R_TestDegenerateTextureSpace( srfTriangles_t *tri ) {
 		const idDrawVert &b = tri->verts[tri->indexes[i+1]];
 		const idDrawVert &c = tri->verts[tri->indexes[i+2]];
 
-		if ( a.st == b.st || b.st == c.st || c.st == a.st ) {
+		if (a.st == b.st || b.st == c.st || c.st == a.st) {
 			c_degenerate++;
 		}
 	}
@@ -2093,7 +2103,8 @@ FIXME: allow createFlat and createSmooth normals, as well as explicit
 =================
 */
 void R_CleanupTriangles( srfTriangles_t *tri, bool createNormals, bool identifySilEdges, bool useUnsmoothedTangents ) {
-	R_RangeCheckIndexes( tri );
+	dlog(DEBUG_RENDERWORLD_LOAD, "R_CleanupTriangles tri nv:%i \n", tri->numVerts);
+	R_RangeCheckIndexes(tri);
 
 	R_CreateSilIndexes( tri );
 

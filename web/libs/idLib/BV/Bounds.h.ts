@@ -171,10 +171,10 @@ class idBounds {
 //	return newBounds;
 //}
 
-//ID_INLINE idBounds &idBounds::operator+=( const idBounds &a ) {
-//	idBounds::AddBounds( a );
-//	return *this;
-//}
+	opAdditionAssignment ( a: idBounds ): idBounds {
+		this.AddBounds( a );
+		return this;
+	}
 
 //ID_INLINE idBounds idBounds::operator-( const idBounds &a ) const {
 //	assert( this.b[1][0] - this.b[0][0] > a.b[1][0] - a.b[0][0] &&

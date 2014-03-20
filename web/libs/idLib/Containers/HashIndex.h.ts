@@ -405,7 +405,7 @@ idHashIndex::GenerateKey
 ================
 */
 	GenerateKeyFromVector( v:idVec3  ):number {
-		return ( ( ( /*(int)*/ v[0] ) + ( /*(int)*/ v[1] ) + ( /*(int)*/ v[2] ) ) & this.hashMask );
+		return ( ( ( int( v[0] ) ) + ( int( v[1] ) ) + ( int( v[2] ) ) ) & this.hashMask );
 	}
 
 /*

@@ -214,19 +214,19 @@ function R_StaticAlloc ( /*int */bytes: number ): Uint8Array {
 	return buf;
 }
 
-///*
-//=================
-//R_ClearedStaticAlloc
-//=================
-//*/
-//void *R_ClearedStaticAlloc( int bytes ) {
-//	void	*buf;
-//
-//	buf = R_StaticAlloc( bytes );
-//	SIMDProcessor.Memset( buf, 0, bytes );
-//	return buf;
-//}
-//
+/*
+=================
+R_ClearedStaticAlloc
+=================
+*/
+function R_ClearedStaticAlloc ( /*int */bytes: number ): Uint8Array {
+	var buf: Uint8Array;
+
+	buf = R_StaticAlloc( bytes );
+	//SIMDProcessor.Memset( buf, 0, bytes );
+	return buf;
+}
+
 /*
 =================
 R_StaticFree

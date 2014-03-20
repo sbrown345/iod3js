@@ -568,6 +568,7 @@ idRenderWorldLocal.prototype.InitFromMap = function ( name: string ): boolean {
 		}
 
 		if ( token.data == "shadowModel" ) {
+			dlog(DEBUG_RENDERWORLD_LOAD, "ParseShadowModel\n");
 			lastModel = this.ParseShadowModel( src );
 
 			// add it to the model manager list
@@ -579,11 +580,13 @@ idRenderWorldLocal.prototype.InitFromMap = function ( name: string ): boolean {
 		}
 
 		if ( token.data == "interAreaPortals" ) {
+			dlog(DEBUG_RENDERWORLD_LOAD, "interAreaPortals\n");
 			this.ParseInterAreaPortals( src );
 			continue;
 		}
 
 		if ( token.data == "nodes" ) {
+			dlog(DEBUG_RENDERWORLD_LOAD, "nodes\n");
 			this.ParseNodes( src );
 			continue;
 		}

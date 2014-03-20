@@ -42,14 +42,14 @@ idRenderModelStatic.r_slopTexCoord = new idCVar ( "r_slopTexCoord", "0.001", CVA
 idRenderModelStatic.r_slopNormal = new idCVar ( "r_slopNormal", "0.02", CVAR_RENDERER, "merge normals that dot less than this" );
 
 
-/////*
-////================
-////idRenderModelStatic::~idRenderModelStatic
-////================
-////*/
-////idRenderModelStatic::~idRenderModelStatic() {
-////	PurgeModel();
-////}
+/*
+================
+idRenderModelStatic::~idRenderModelStatic
+================
+*/
+idRenderModelStatic.prototype.destructor = function ( ) {
+	this.PurgeModel ( );
+};
 
 /////*
 ////==============
@@ -335,7 +335,7 @@ idRenderModelStatic::AddSurface
 idRenderModelStatic.prototype.AddSurface = function ( surface: modelSurface_t ): void {
 	this.surfaces.Append( surface );
 	if ( surface.geometry ) {
-		this.bounds.AddBounds( surface.geometry.bounds );
+		this.bounds.opAdditionAssignment( surface.geometry.bounds );
 	}
 };
 
@@ -561,6 +561,7 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 	var /*int			*/i: number;
 	var /*int			*/totalVerts: number, totalIndexes: number;
 
+	dlog(DEBUG_RENDERWORLD_LOAD, "FinishSurfaces\n");
 	this.purged = false;
 
 	// make sure we don't have a huge bounds even if we don't finish everything

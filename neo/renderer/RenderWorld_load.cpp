@@ -190,6 +190,7 @@ idRenderModel *idRenderWorldLocal::ParseModel(idLexer *src) {
 
 	model->FinishSurfaces();
 	
+	
 	return model;
 }
 
@@ -564,7 +565,8 @@ bool idRenderWorldLocal::InitFromMap( const char *name ) {
 		}
 
 		if ( token == "shadowModel" ) {
-			lastModel = ParseShadowModel( src );
+			dlog(DEBUG_RENDERWORLD_LOAD, "ParseShadowModel\n");
+			lastModel = ParseShadowModel(src);
 
 			// add it to the model manager list
 			renderModelManager->AddModel( lastModel );
@@ -575,12 +577,14 @@ bool idRenderWorldLocal::InitFromMap( const char *name ) {
 		}
 
 		if ( token == "interAreaPortals" ) {
-			ParseInterAreaPortals( src );
+			dlog(DEBUG_RENDERWORLD_LOAD, "interAreaPortals\n");
+			ParseInterAreaPortals(src);
 			continue;
 		}
 
 		if ( token == "nodes" ) {
-			ParseNodes( src );
+			dlog(DEBUG_RENDERWORLD_LOAD, "nodes\n");
+			ParseNodes(src);
 			continue;
 		}
 

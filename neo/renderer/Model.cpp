@@ -581,6 +581,7 @@ void idRenderModelStatic::FinishSurfaces() {
 	int			i;
 	int			totalVerts, totalIndexes;
 
+	dlog(DEBUG_RENDERWORLD_LOAD, "FinishSurfaces\n");
 	purged = false;
 
 	// make sure we don't have a huge bounds even if we don't finish everything

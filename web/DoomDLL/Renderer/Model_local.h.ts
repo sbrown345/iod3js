@@ -43,7 +43,7 @@ class idRenderModelStatic extends idRenderModel {
 ////	static idRenderModel *		Alloc();
 
 ////								idRenderModelStatic();
-////	virtual						~idRenderModelStatic();
+	destructor ( ): void { throw "placeholder"; }
 
 	InitFromFile( fileName:string ): void { throw "placeholder"; }
 	PartialInitFromFile( fileName:string ): void { throw "placeholder"; }
