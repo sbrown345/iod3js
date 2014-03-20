@@ -89,8 +89,8 @@ idMaterial::CommonInit
 =============
 */
 	CommonInit ( ): void {
-		this.desc = new idStr( "<none>" );
-		this.renderBump = new idStr( "" );
+		this.desc.equals( "<none>" );
+		this.renderBump.equals( "" );
 		this.contentFlags = contentsFlags_t.CONTENTS_SOLID;
 		this.surfaceFlags = surfTypes_t.SURFTYPE_NONE;
 		this.materialFlags = 0;
@@ -1553,83 +1553,82 @@ idMaterial::ParseDeform
 ===============
 */
 	ParseDeform ( src: idLexer ): void {
-		todoThrow ( );
-		//idToken token;
+		var token = new idToken;
 
-		//if ( !src.ExpectAnyToken( &token ) ) {
-		//	return;
-		//}
+		if ( !src.ExpectAnyToken( token ) ) {
+			return;
+		}
 
-		//if ( !token.Icmp( "sprite" ) ) {
-		//	deform = DFRM_SPRITE;
-		//	this.cullType = cullType_t.CT_TWO_SIDED;
-		//	this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
-		//	return;
-		//}
-		//if ( !token.Icmp( "tube" ) ) {
-		//	deform = DFRM_TUBE;
-		//	this.cullType = cullType_t.CT_TWO_SIDED;
-		//	this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
-		//	return;
-		//}
-		//if ( !token.Icmp( "flare" ) ) {
-		//	deform = DFRM_FLARE;
-		//	this.cullType = cullType_t.CT_TWO_SIDED;
-		//	deformRegisters[0] = this.ParseExpression( src );
-		//	this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
-		//	return;
-		//}
-		//if ( !token.Icmp( "expand" ) ) {
-		//	deform = DFRM_EXPAND;
-		//	deformRegisters[0] = this.ParseExpression( src );
-		//	return;
-		//}
-		//if ( !token.Icmp( "move" ) ) {
-		//	deform = DFRM_MOVE;
-		//	deformRegisters[0] = this.ParseExpression( src );
-		//	return;
-		//}
-		//if ( !token.Icmp( "turbulent" ) ) {
-		//	deform = DFRM_TURB;
+		if ( !token.Icmp( "sprite" ) ) {
+			this.deform = deform_t.DFRM_SPRITE;
+			this.cullType = cullType_t.CT_TWO_SIDED;
+			this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
+			return;
+		}
+		if ( !token.Icmp( "tube" ) ) {
+			this.deform = deform_t.DFRM_TUBE;
+			this.cullType = cullType_t.CT_TWO_SIDED;
+			this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
+			return;
+		}
+		if ( !token.Icmp( "flare" ) ) {
+			this.deform = deform_t.DFRM_FLARE;
+			this.cullType = cullType_t.CT_TWO_SIDED;
+			this.deformRegisters[0] = this.ParseExpression( src );
+			this.SetMaterialFlag( materialFlags_t.MF_NOSHADOWS );
+			return;
+		}
+		if ( !token.Icmp( "expand" ) ) {
+			this.deform = deform_t.DFRM_EXPAND;
+			this.deformRegisters[0] = this.ParseExpression( src );
+			return;
+		}
+		if ( !token.Icmp( "move" ) ) {
+			this.deform = deform_t.DFRM_MOVE;
+			this.deformRegisters[0] = this.ParseExpression( src );
+			return;
+		}
+		if ( !token.Icmp( "turbulent" ) ) {
+			this.deform = deform_t.DFRM_TURB;
 
-		//	if ( !src.ExpectAnyToken( &token ) ) {
-		//		src.Warning( "deform particle missing particle name" );
-		//		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-		//		return;
-		//	}
-		//	deformDecl = declManager.FindType( declType_t.DECL_TABLE, token.c_str(), true );
+			if ( !src.ExpectAnyToken( token ) ) {
+				src.Warning( "deform particle missing particle name" );
+				this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+				return;
+			}
+			this.deformDecl = declManager.FindType( declType_t.DECL_TABLE, token.c_str ( ), true );
 
-		//	deformRegisters[0] = this.ParseExpression( src );
-		//	deformRegisters[1] = this.ParseExpression( src );
-		//	deformRegisters[2] = this.ParseExpression( src );
-		//	return;
-		//}
-		//if ( !token.Icmp( "eyeBall" ) ) {
-		//	deform = DFRM_EYEBALL;
-		//	return;
-		//}
-		//if ( !token.Icmp( "particle" ) ) {
-		//	deform = DFRM_PARTICLE;
-		//	if ( !src.ExpectAnyToken( &token ) ) {
-		//		src.Warning( "deform particle missing particle name" );
-		//		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-		//		return;
-		//	}
-		//	deformDecl = declManager.FindType( DECL_PARTICLE, token.c_str(), true );
-		//	return;
-		//}
-		//if ( !token.Icmp( "particle2" ) ) {
-		//	deform = DFRM_PARTICLE2;
-		//	if ( !src.ExpectAnyToken( &token ) ) {
-		//		src.Warning( "deform particle missing particle name" );
-		//		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-		//		return;
-		//	}
-		//	deformDecl = declManager.FindType( DECL_PARTICLE, token.c_str(), true );
-		//	return;
-		//}
-		//src.Warning( "Bad deform type '%s'", token.c_str() );
-		//this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+			this.deformRegisters[0] = this.ParseExpression( src );
+			this.deformRegisters[1] = this.ParseExpression( src );
+			this.deformRegisters[2] = this.ParseExpression( src );
+			return;
+		}
+		if ( !token.Icmp( "eyeBall" ) ) {
+			this.deform = deform_t.DFRM_EYEBALL;
+			return;
+		}
+		if ( !token.Icmp( "particle" ) ) {
+			this.deform = deform_t.DFRM_PARTICLE;
+			if ( !src.ExpectAnyToken( token ) ) {
+				src.Warning( "deform particle missing particle name" );
+				this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+				return;
+			}
+			this.deformDecl = declManager.FindType( declType_t.DECL_PARTICLE, token.c_str ( ), true );
+			return;
+		}
+		if ( !token.Icmp( "particle2" ) ) {
+			this.deform = deform_t.DFRM_PARTICLE2;
+			if ( !src.ExpectAnyToken( token ) ) {
+				src.Warning( "deform particle missing particle name" );
+				this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+				return;
+			}
+			this.deformDecl = declManager.FindType( declType_t.DECL_PARTICLE, token.c_str ( ), true );
+			return;
+		}
+		src.Warning( "Bad deform type '%s'", token.c_str ( ) );
+		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
 	}
 
 
@@ -1754,11 +1753,11 @@ If there is any error during parsing, defaultShader will be set.
 */
 	ParseMaterial ( src: idLexer ): void {
 		var token = new idToken;
-		var /*int			*/s: number;
+		var /*int*/s: number;
 		var buffer = ""; //char		buffer[1024];
-		var str = ""; /*const char	*str;*/
+		var str = "";
 		var newSrc = new idLexer;
-		var /*int			*/i: number;
+		var /*int*/i: number;
 
 		s = 0;
 
@@ -1786,14 +1785,14 @@ If there is any error during parsing, defaultShader will be set.
 				break;
 			} else if ( !token.Icmp( "qer_editorimage" ) ) {
 				src.ReadTokenOnLine( token );
-				this.editorImageName = new idStr( token.c_str ( ) );
+				this.editorImageName.equals( token.c_str ( ) );
 				src.SkipRestOfLine ( );
 				continue;
 			}
 			// description
 			else if ( !token.Icmp( "description" ) ) {
 				src.ReadTokenOnLine( token );
-				this.desc = new idStr( token.c_str ( ) );
+				this.desc.equals( token.c_str ( ) );
 				continue;
 			}
 			// check for the surface / content bit flags
@@ -1975,7 +1974,7 @@ If there is any error during parsing, defaultShader will be set.
 			// diffusemap for stage shortcut
 			else if ( !token.Icmp( "diffusemap" ) ) {
 				str = R_ParsePastImageProgram( src ).toString ( );
-				buffer = sprintf("blend diffusemap\nmap %s\n}\n", str);//idStr.snPrintf( buffer, sizeof( buffer ), "blend diffusemap\nmap %s\n}\n", str );
+				buffer = sprintf( "blend diffusemap\nmap %s\n}\n", str ); //idStr.snPrintf( buffer, sizeof( buffer ), "blend diffusemap\nmap %s\n}\n", str );
 				newSrc.LoadMemory( buffer, strlen( buffer ), "diffusemap" );
 				newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 				this.ParseStage( newSrc, trpDefault );
@@ -1985,7 +1984,7 @@ If there is any error during parsing, defaultShader will be set.
 			// specularmap for stage shortcut
 			else if ( !token.Icmp( "specularmap" ) ) {
 				str = R_ParsePastImageProgram( src ).toString ( );
-				buffer = sprintf( "blend specularmap\nmap %s\n}\n", str );//idStr.snPrintf( buffer, sizeof( buffer ), "blend specularmap\nmap %s\n}\n", str );
+				buffer = sprintf( "blend specularmap\nmap %s\n}\n", str ); //idStr.snPrintf( buffer, sizeof( buffer ), "blend specularmap\nmap %s\n}\n", str );
 				newSrc.LoadMemory( buffer, strlen( buffer ), "specularmap" );
 				newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 				this.ParseStage( newSrc, trpDefault );
@@ -1995,7 +1994,7 @@ If there is any error during parsing, defaultShader will be set.
 			// normalmap for stage shortcut
 			else if ( !token.Icmp( "bumpmap" ) ) {
 				str = R_ParsePastImageProgram( src ).toString ( );
-				buffer = sprintf( "blend bumpmap\nmap %s\n}\n", str );//idStr.snPrintf( buffer, sizeof( buffer ), "blend bumpmap\nmap %s\n}\n", str );
+				buffer = sprintf( "blend bumpmap\nmap %s\n}\n", str ); //idStr.snPrintf( buffer, sizeof( buffer ), "blend bumpmap\nmap %s\n}\n", str );
 				newSrc.LoadMemory( buffer, strlen( buffer ), "bumpmap" );
 				newSrc.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 				this.ParseStage( newSrc, trpDefault );
@@ -2799,7 +2798,7 @@ idMaterial::SetDefaultText
 //						// necessary to prevent mutliple gui surfaces, mirrors, autosprites, and some other
 //						// special effects from being combined into a single surface
 //						// guis, merging sprites or other effects, mirrors and remote views are always discrete
-//	bool				IsDiscrete(): boolean { return ( entityGui || gui || deform != deform_t.DFRM_NONE || this.sort == materialSort_t.SS_SUBVIEW ||
+//	bool				IsDiscrete(): boolean { return ( entityGui || gui || this.deform != deform_t.DFRM_NONE || this.sort == materialSort_t.SS_SUBVIEW ||
 //												( surfaceFlags & SURF_DISCRETE ) != 0 ); }
 
 //						// Normally, dmap chops each surface by every BSP boundary, then reoptimizes.
@@ -2979,8 +2978,8 @@ GetNumRegisters():number { return this.numRegisters; }
 ////	void				CheckForConstantRegisters();
 
 //private:
-	desc: idStr;				// description
-	renderBump: idStr;			// renderbump command options, without the "renderbump" at the start
+	desc = new idStr;				// description
+	renderBump = new idStr;			// renderbump command options, without the "renderbump" at the start
 
 	lightFalloffImage: idImage;
 
@@ -3003,7 +3002,7 @@ GetNumRegisters():number { return this.numRegisters; }
 
 	/*mutable	float		*/sort:number;				// lower numbered shaders draw before higher numbered
 	deform: deform_t;
-	deformRegisters:Int32Array/*[4]*/;		// numeric parameter for deforms
+	deformRegisters = new Int32Array(4);		// numeric parameter for deforms
 	deformDecl: idDecl;			// for surface emitted particle deforms and tables
 
 	texGenRegisters:Int32Array/*[MAX_TEXGEN_REGISTERS]*/;	// for wobbleSky
@@ -3039,7 +3038,7 @@ GetNumRegisters():number { return this.numRegisters; }
 	// we defer loading of the editor image until it is asked for, so the game doesn't load up
 	// all the invisible and uncompressed images.
 	// If editorImage is NULL, it will atempt to load editorImageName, and set editorImage to that or defaultImage
-	editorImageName: idStr;
+	editorImageName = new idStr;
 	/*mutable idImage *	*/editorImage:idImage;		// image used for non-shaded preview
 	/*float				*/editorAlpha:number;
 
