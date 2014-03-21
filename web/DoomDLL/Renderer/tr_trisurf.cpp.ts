@@ -1320,7 +1320,7 @@ function R_DuplicateMirroredVertexes ( tri: srfTriangles_t ): void {
 		tri.mirroredVerts = null;
 		return;
 	}
-	todoThrow ( );
+	
 	tri.mirroredVerts = triMirroredVertAllocator.AllocInt32Array( tri.numMirroredVerts );
 
 //#ifdef USE_TRI_DATA_ALLOCATOR
@@ -1328,10 +1328,7 @@ function R_DuplicateMirroredVertexes ( tri: srfTriangles_t ): void {
 //#else
 	var oldVerts = tri.verts;
 	R_AllocStaticTriSurfVerts( tri, totalVerts );
-	//memcpyStructs(tri.verts, oldVerts, tri.numVerts, idDrawVert.typeInfo);
-	for ( var k = 0; k < tri.numVerts; k++ ) {
-		tri.verts[k].equals( oldVerts[k] );
-	}
+	memcpyStructs( tri.verts, oldVerts, tri.numVerts );
 	triVertexAllocator.Free( oldVerts );
 //#endif
 
