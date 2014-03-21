@@ -524,9 +524,9 @@ class idVec3 {
 		this.x = this.y = this.z = 0.0;
 	}
 
-////ID_INLINE idVec3 idVec3::operator-() const {
-////	return idVec3( -this.x, -this.y, - this.z );
-////}
+	opSubtract ( ): idVec3 {
+		return new idVec3( -this.x, -this.y, -this.z );
+	}
 
 ////ID_INLINE idVec3 &idVec3::operator=( const idVec3 &a ) {
 ////	x = a.x;
@@ -558,9 +558,9 @@ class idVec3 {
 		return new idVec3( b.x * a, b.y * a, b.z * a );
 	}
 
-////ID_INLINE idVec3 idVec3::operator+( const idVec3 &a ) const {
-////	return idVec3( this.x + a.x, this.y + a.y, this.z + a.z );
-////}
+	opAddition ( a: idVec3 ) {
+		return new idVec3( this.x + a.x, this.y + a.y, this.z + a.z );
+	}
 
 	equals ( a: idVec3 ): idVec3 {
 		this.x = a.x;
@@ -1365,9 +1365,9 @@ class idVec4 {
 ////	return idVec4( b.x * a, b.y * a, b.z * a, b.w * a );
 ////}
 
-////ID_INLINE idVec4 idVec4::operator+( const idVec4 &a ) const {
-////	return idVec4( x + a.x, y + a.y, z + a.z, w + a.w );
-////}
+//ID_INLINE idVec4 idVec4::operator+( const idVec4 &a ) const {
+//	return idVec4( x + a.x, y + a.y, z + a.z, w + a.w );
+//}
 
 ////ID_INLINE idVec4 &idVec4::operator+=( const idVec4 &a ) {
 ////	x += a.x;

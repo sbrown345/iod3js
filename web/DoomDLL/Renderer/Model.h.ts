@@ -98,7 +98,7 @@ var SHADOW_CAP_INFINITE	= 64;
 
 // our only drawing geometry type
 class srfTriangles_t {
-	bounds: idBounds; // for culling																				idBounds					
+	bounds = new idBounds; // for culling																				idBounds					
 
 	ambientViewCount: number; // if == tr.viewCount, it is visible this view												int							
 
@@ -151,12 +151,8 @@ class srfTriangles_t {
 	ambientCache: vertCache_t; // idDrawVert
 	shadowCache: vertCache_t; // shadowCache_t
 
-	constructor ( ) {
-		this.init ( );
-	}
-
 	init ( ) {
-		this.bounds = new idBounds;
+		this.bounds.init ( );
 
 		this.ambientViewCount = 0;
 
@@ -207,39 +203,6 @@ class srfTriangles_t {
 		this.ambientCache = null;
 		this.shadowCache = null;
 	}
-
-	static typeInfo = [
-		["bounds", ""],
-		["ambientViewCount", ""],
-		["generateNormals", ""],
-		["tangentsCalculated", ""],
-		["facePlanesCalculated", ""],
-		["perfectHull", ""],
-		["deformedSurface", ""],
-		["numVerts", ""],
-		["verts", ""],
-		["numIndexes", ""],
-		["indexes", ""],
-		["silIndexes", ""],
-		["numMirroredVerts", ""],
-		["mirroredVerts", ""],
-		["numDupVerts", ""],
-		["dupVerts", ""],
-		["numSilEdges", ""],
-		["silEdges", ""],
-		["facePlanes", ""],
-		["dominantTris", ""],
-		["numShadowIndexesNoFrontCaps", ""],
-		["numShadowIndexesNoCaps", ""],
-		["shadowCapPlaneBits", ""],
-		["shadowVertexes", ""],
-		["ambientSurface", ""],
-		["nextDeferredFree", ""],
-		["indexCache", ""],
-		["ambientCache", ""],
-		["lightingCache", ""],
-		["shadowCache", ""]
-	];
 };
 
 ////typedef idList<srfTriangles_t *> idTriList;

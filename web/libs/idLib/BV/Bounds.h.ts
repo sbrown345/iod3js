@@ -106,22 +106,23 @@ class idBounds {
 //	void			AxisProjection( const idVec3 &origin, const idMat3 &axis, const idVec3 &dir, float &min, float &max ) const;
 
 //private:
-	b:idVec3[/*2*/];
-
+	b = [new idVec3, new idVec3];
 
 //extern idBounds	bounds_zero;
-	
+
 	constructor ( )
-	constructor(mins: idVec3, maxs: idVec3)
-	constructor(mins?: idVec3, maxs?: idVec3) {
-		if ( arguments.length == 0 ) {
-			this.b = [new idVec3, new idVec3];
-		} else if (arguments.length == 1) {
+	constructor ( mins: idVec3, maxs: idVec3 )
+	constructor ( mins?: idVec3, maxs?: idVec3 ) {
+		if (arguments.length == 0) {
+			return;
+		}
+
+		if (arguments.length == 1) {
 			todoThrow ( );
-		}else if ( arguments.length == 2 ) {
+		} else if ( arguments.length == 2 ) {
 			todoThrow ( );
 		} else {
-			todoThrow();
+			todoThrow ( );
 		}
 	}
 
@@ -134,6 +135,10 @@ class idBounds {
 //	this.b[0] = point;
 //	this.b[1] = point;
 //}
+
+	init ( ): void {
+		this.Zero ( );
+	}
 
 //ID_INLINE const idVec3 &idBounds::operator[]( const int index ) const {
 //	return this.b[index];
@@ -160,7 +165,7 @@ class idBounds {
 //}
 
 //ID_INLINE idBounds &idBounds::operator*=( const idMat3 &r ) {
-//	this->FromTransformedBounds( *this, vec3_origin, r );
+//	this.FromTransformedBounds( *this, vec3_origin, r );
 //	return *this;
 //}
 
@@ -651,7 +656,7 @@ Zero( ):void {
 //============
 //*/
 //void idBounds::FromPoints(const idVec3 *points, const int numPoints) {
-//	SIMDProcessor->MinMax(b[0], this.b[1], points, numPoints);
+//	SIMDProcessor.MinMax(b[0], this.b[1], points, numPoints);
 //}
 
 	///*
@@ -819,3 +824,25 @@ Zero( ):void {
 //	}
 //}
 }
+
+Object.defineProperty(idBounds.prototype, "0", {
+	get: function (): number {
+		return this.b[0];
+	},
+	set: function (value: number): void {
+		todoThrow ( );
+	},
+	enumerable: false,
+	configurable: false
+});
+
+Object.defineProperty(idBounds.prototype, "1", {
+	get: function (): number {
+		return this.b[1];
+	},
+	set: function (value: number): void {
+		todoThrow ( );
+	},
+	enumerable: false,
+	configurable: false
+});

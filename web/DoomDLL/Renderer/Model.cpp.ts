@@ -672,8 +672,8 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 			// at run time...
 			if ( surf.shader.Deform ( ) != deform_t.DFRM_NONE ) {
 				var tri = surf.geometry;
-				var mid = new idVec3( tri.bounds[1] + tri.bounds[0] ).timesFloat( 0.5 );
-				var /*float	*/radius = ( tri.bounds[0].subtract( mid ) ).Length ( );
+				var mid: idVec3 = ( tri.bounds[1].opAddition( tri.bounds[0] ) ).timesFloat( 0.5 );
+				var /*float	*/radius = ( tri.bounds[0].opSubtract( mid ) ).Length ( );
 				radius += 20.0;
 
 				tri.bounds[0][0] = mid[0] - radius;
