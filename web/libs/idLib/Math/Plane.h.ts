@@ -70,7 +70,7 @@ var PLANETYPE_NONAXIAL			=9;
 
 class idPlane {
 	//public:
-	//					idPlane( void );
+	//					idPlane( );
 	//					idPlane( float a, float b, float c, float d );
 	//					idPlane( const idVec3 &normal, const float dist );
 	//
@@ -88,16 +88,16 @@ class idPlane {
 	//	bool			operator==(	const idPlane &p ) const;					// exact compare, no epsilon
 	//	bool			operator!=(	const idPlane &p ) const;					// exact compare, no epsilon
 	//
-	//	void			Zero( void );							// zero plane
+	//	void			Zero( );							// zero plane
 	//	void			SetNormal( const idVec3 &normal );		// sets the normal
-	//	const idVec3 &	Normal( void ) const;					// reference to const normal
-	//	idVec3 &		Normal( void );							// reference to normal
+	//	const idVec3 &	Normal( ) const;					// reference to const normal
+	//	idVec3 &		Normal( );							// reference to normal
 	//	float			Normalize( bool fixDegenerate = true );	// only normalizes the plane normal, does not adjust d
-	//	bool			FixDegenerateNormal( void );			// fix degenerate normal
+	//	bool			FixDegenerateNormal( );			// fix degenerate normal
 	//	bool			FixDegeneracies( float distEpsilon );	// fix degenerate normal and dist
-	//	float			Dist( void ) const;						// returns: -d
+	//	float			Dist( ) const;						// returns: -d
 	//	void			SetDist( const float dist );			// sets: d = -dist
-	//	int				Type( void ) const;						// returns plane type
+	//	int				Type( ) const;						// returns plane type
 	//
 	//	bool			FromPoints( const idVec3 &p1, const idVec3 &p2, const idVec3 &p3, bool fixDegenerate = true );
 	//	bool			FromVecs( const idVec3 &dir1, const idVec3 &dir2, const idVec3 &p, bool fixDegenerate = true );
@@ -116,12 +116,12 @@ class idPlane {
 	//	bool			RayIntersection( start:idVec3, const idVec3 &dir, float &scale ) const;
 	//	bool			PlaneIntersection( const idPlane &plane, idVec3 &start, idVec3 &dir ) const;
 	//
-	//	int				GetDimension( void ) const;
+	//	int				GetDimension( ) const;
 	//
-	//	const idVec4 &	ToVec4( void ) const;
-	//	idVec4 &		ToVec4( void );
-	//	const float *	ToFloatPtr( void ) const;
-	//	float *			ToFloatPtr( void );
+	//	const idVec4 &	ToVec4( ) const;
+	//	idVec4 &		ToVec4( );
+	//	const float *	ToFloatPtr( ) const;
+	//	float *			ToFloatPtr( );
 	//	const char *	ToString( int precision = 2 ) const;
 	//
 	//private:
@@ -134,21 +134,21 @@ class idPlane {
 	//extern idPlane plane_origin;
 	//#define plane_zero plane_origin
 	//
-	//ID_INLINE idPlane::idPlane( void ) {
+	//ID_INLINE idPlane::idPlane( ) {
 	//}
 	//
 	//ID_INLINE idPlane::idPlane( float a, float b, float c, float d ) {
-	//	this->a = a;
-	//	this->b = b;
-	//	this->c = c;
-	//	this->d = d;
+	//	this.a = a;
+	//	this.b = b;
+	//	this.c = c;
+	//	this.d = d;
 	//}
 	//
 	//ID_INLINE idPlane::idPlane( const idVec3 &normal, const float dist ) {
-	//	this->a = normal.x;
-	//	this->b = normal.y;
-	//	this->c = normal.z;
-	//	this->d = -dist;
+	//	this.a = normal.x;
+	//	this.b = normal.y;
+	//	this.c = normal.z;
+	//	this.d = -dist;
 	//}
 	//
 	//ID_INLINE float idPlane::operator[]( int index ) const {
@@ -240,27 +240,27 @@ class idPlane {
 		this.c = normal.z;
 	}
 	
-	//ID_INLINE const idVec3 &idPlane::Normal( void ) const {
+	//ID_INLINE const idVec3 &idPlane::Normal( ) const {
 	//	return *reinterpret_cast<const idVec3 *>(&a);
 	//}
 	//
-	/*ID_INLINE idVec3 &idPlane::*/Normal():idVec3 {
-		return new idVec3(this.a, this.b, this.c); // reinterpret_cast (may want to pass by ref?)
+	Normal ( ): idVec3 {
+		return new idVec3( this.a, this.b, this.c ); 
 	}
-	//
-	//ID_INLINE float idPlane::Normalize( bool fixDegenerate ) {
-	//	float length = reinterpret_cast<idVec3 *>(&a)->Normalize();
-	//
-	//	if ( fixDegenerate ) {
-	//		FixDegenerateNormal();
-	//	}
-	//	return length;
-	//}
-	//
-	//ID_INLINE bool idPlane::FixDegenerateNormal( void ) {
-	//	return this.Normal().FixDegenerateNormal();
-	//}
-	//
+
+	Normalize ( fixDegenerate: boolean = true): number /*float*/ {
+		var length = /*reinterpret_cast<idVec3 *>*/ new idVec3( this.a, this.b, this.c ).Normalize ( );
+
+		if ( fixDegenerate ) {
+			this.FixDegenerateNormal ( );
+		}
+		return length;
+	}
+
+	FixDegenerateNormal ( ): boolean {
+		return this.Normal ( ).FixDegenerateNormal ( );
+	}
+
 	//ID_INLINE bool idPlane::FixDegeneracies( float distEpsilon ) {
 	//	bool fixedNormal = FixDegenerateNormal();
 	//	// only fix dist if the normal was degenerate
@@ -375,23 +375,23 @@ class idPlane {
 	//	return true;
 	//}
 	//
-	//ID_INLINE int idPlane::GetDimension( void ) const {
+	//ID_INLINE int idPlane::GetDimension( ) const {
 	//	return 4;
 	//}
 	//
-	//ID_INLINE const idVec4 &idPlane::ToVec4( void ) const {
+	//ID_INLINE const idVec4 &idPlane::ToVec4( ) const {
 	//	return *reinterpret_cast<const idVec4 *>(&a);
 	//}
 	//
-	//ID_INLINE idVec4 &idPlane::ToVec4( void ) {
+	//ID_INLINE idVec4 &idPlane::ToVec4( ) {
 	//	return *reinterpret_cast<idVec4 *>(&a);
 	//}
 	//
-	//ID_INLINE const float *idPlane::ToFloatPtr( void ) const {
+	//ID_INLINE const float *idPlane::ToFloatPtr( ) const {
 	//	return reinterpret_cast<const float *>(&a);
 	//}
 	//
-	//ID_INLINE float *idPlane::ToFloatPtr( void ) {
+	//ID_INLINE float *idPlane::ToFloatPtr( ) {
 	//	return reinterpret_cast<float *>(&a);
 	//}
 	//

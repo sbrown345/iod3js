@@ -53,22 +53,25 @@ class idVec2 {
 //public:
 	//x: number; //	float			
 	//y: number; //	float			
-	get x ( ): number { return this[0]; }
+	
+	values = new Float32Array(2);
+
+	get x ( ): number { return this.values[0]; }
 
 	set x ( value: number ) {
 		if ( value === undefined ) {
 			throw 'Undefined value';
 		}
-		this[0] = value;
+		this.values[0] = value;
 	}
 
-	get y ( ): number { return this[1]; }
+	get y ( ): number { return this.values[1]; }
 
 	set y ( value: number ) {
 		if ( value === undefined ) {
 			throw 'Undefined value';
 		}
-		this[1] = value;
+		this.values[1] = value;
 	}
 
 
@@ -89,17 +92,17 @@ class idVec2 {
 ////	float &			operator[]( int index );
 ////	idVec2			operator-() const;
 ////	float			operator*( const idVec2 &a ) const;
-////	idVec2			operator*( const float a ) const;
-////	idVec2			operator/( const float a ) const;
+////	idVec2			operator*( /*const float */a :number ) const;
+////	idVec2			operator/( /*const float */a :number ) const;
 ////	idVec2			operator+( const idVec2 &a ) const;
 ////	idVec2			operator-( const idVec2 &a ) const;
 ////	idVec2 &		operator+=( const idVec2 &a );
 ////	idVec2 &		operator-=( const idVec2 &a );
 ////	idVec2 &		operator/=( const idVec2 &a );
-////	idVec2 &		operator/=( const float a );
-////	idVec2 &		operator*=( const float a );
+////	idVec2 &		operator/=( /*const float */a :number );
+////	idVec2 &		operator*=( /*const float */a :number );
 
-////	friend idVec2	operator*( const float a, const idVec2 b );
+////	friend idVec2	operator*( /*const float */a :number, const idVec2 b );
 
 ////	bool			Compare( const idVec2 &a ) const;							// exact compare, no epsilon
 ////	bool			Compare( const idVec2 &a, const float epsilon ) const;		// compare with epsilon
@@ -150,11 +153,11 @@ class idVec2 {
 	}
 
 ////ID_INLINE bool idVec2::Compare( const idVec2 &a, const float epsilon ) const {
-////	if ( idMath::Fabs( x - a.x ) > epsilon ) {
+////	if ( idMath.Fabs( x - a.x ) > epsilon ) {
 ////		return false;
 ////	}
 
-////	if ( idMath::Fabs( y - a.y ) > epsilon ) {
+////	if ( idMath.Fabs( y - a.y ) > epsilon ) {
 ////		return false;
 ////	}
 
@@ -266,16 +269,16 @@ class idVec2 {
 ////	return x * a.x + y * a.y;
 ////}
 
-////ID_INLINE idVec2 idVec2::operator*( const float a ) const {
+////ID_INLINE idVec2 idVec2::operator*( /*const float */a :number ) const {
 ////	return idVec2( x * a, y * a );
 ////}
 
-////ID_INLINE idVec2 idVec2::operator/( const float a ) const {
+////ID_INLINE idVec2 idVec2::operator/( /*const float */a :number ) const {
 ////	float inva = 1.0 / a;
 ////	return idVec2( x * inva, y * inva );
 ////}
 
-////ID_INLINE idVec2 operator*( const float a, const idVec2 b ) {
+////ID_INLINE idVec2 operator*( /*const float */a :number, const idVec2 b ) {
 ////	return idVec2( b.x * a, b.y * a );
 ////}
 
@@ -297,7 +300,7 @@ class idVec2 {
 ////	return *this;
 ////}
 
-////ID_INLINE idVec2 &idVec2::operator/=( const float a ) {
+////ID_INLINE idVec2 &idVec2::operator/=( /*const float */a :number ) {
 ////	float inva = 1.0 / a;
 ////	x *= inva;
 ////	y *= inva;
@@ -312,7 +315,7 @@ class idVec2 {
 ////	return *this;
 ////}
 
-////ID_INLINE idVec2 &idVec2::operator*=( const float a ) {
+////ID_INLINE idVec2 &idVec2::operator*=( /*const float */a :number ) {
 ////	x *= a;
 ////	y *= a;
 
@@ -328,7 +331,7 @@ class idVec2 {
 ////}
 
 	ToFloatPtr ( ): Float32Array {
-		return new Float32Array( [this.x, this.y] );
+		return this.values;
 	}
 
 /*
@@ -357,6 +360,40 @@ idVec2::ToString
 ////	}
 ////}
 }
+
+Object.defineProperty(idVec2.prototype, "0", {
+	get: function (): number {
+		return this.values[0];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.x = value;
+	},
+	enumerable: false,
+	configurable: false
+});
+
+Object.defineProperty(idVec2.prototype, "1", {
+	get: function (): number {
+		return this.values[1];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.y = value;
+	},
+	enumerable: false,
+	configurable: false
+});
 
 
 //===============================================================
@@ -439,17 +476,17 @@ class idVec3 {
 ////	idVec3			operator-() const;
 ////	idVec3 &		operator=( const idVec3 &a );		// required because of a msvc 6 & 7 bug
 ////	float			operator*( const idVec3 &a ) const;
-////	idVec3			operator*( const float a ) const;
-////	idVec3			operator/( const float a ) const;
+////	idVec3			operator*( /*const float */a :number ) const;
+////	idVec3			operator/( /*const float */a :number ) const;
 ////	idVec3			operator+( const idVec3 &a ) const;
 ////	idVec3			operator-( const idVec3 &a ) const;
 ////	idVec3 &		operator+=( const idVec3 &a );
 ////	idVec3 &		operator-=( const idVec3 &a );
 ////	idVec3 &		operator/=( const idVec3 &a );
-////	idVec3 &		operator/=( const float a );
-////	idVec3 &		operator*=( const float a );
+////	idVec3 &		operator/=( /*const float */a :number );
+////	idVec3 &		operator*=( /*const float */a :number );
 
-////	friend idVec3	operator*( const float a, const idVec3 b );
+////	friend idVec3	operator*( /*const float */a :number, const idVec3 b );
 
 ////	bool			Compare( const idVec3 &a ) const;							// exact compare, no epsilon
 ////	bool			Compare( const idVec3 &a, const float epsilon ) const;		// compare with epsilon
@@ -548,7 +585,7 @@ class idVec3 {
 		return new idVec3( this.x * a, this.y * a, this.z * a );
 	}
 
-////ID_INLINE idVec3 idVec3::operator/( const float a ) const {
+////ID_INLINE idVec3 idVec3::operator/( /*const float */a :number ) const {
 ////	float inva = 1.0 / a;
 ////	return idVec3( this.x * inva, this.y * inva, this.z * inva );
 ////}
@@ -571,7 +608,7 @@ class idVec3 {
 	}
 
 	/*operator+=*/
-	/*AdditionAssignment*/ plusEquals( a: idVec3 ): idVec3 {
+	/*AdditionAssignment*/ opAdditionAssignment( a: idVec3 ): idVec3 {
 		this.x += a.x;
 		this.y += a.y;
 		this.z += a.z;
@@ -587,7 +624,7 @@ class idVec3 {
 ////	return *this;
 ////}
 
-////ID_INLINE idVec3 &idVec3::operator/=( const float a ) {
+////ID_INLINE idVec3 &idVec3::operator/=( /*const float */a :number ) {
 ////	float inva = 1.0 / a;
 ////	this.x *= inva;
 ////	this.y *= inva;
@@ -596,7 +633,7 @@ class idVec3 {
 ////	return *this;
 ////}
 	/*-=*/
-	minusEquals ( a: idVec3 ): idVec3 {
+	opSubtractionAssignment ( a: idVec3 ): idVec3 {
 		this.x -= a.x;
 		this.y -= a.y;
 		this.z -= a.z;
@@ -604,28 +641,28 @@ class idVec3 {
 		return this;
 	}
 
-////ID_INLINE idVec3 &idVec3::operator*=( const float a ) {
-////	this.x *= a;
-////	this.y *= a;
-////	this.z *= a;
+	opMultiplicationAssignment ( /*const float */a: number ): idVec3 {
+		this.x *= a;
+		this.y *= a;
+		this.z *= a;
 
-////	return *this;
-////}
+		return this;
+	}
 
 	Compare ( a: idVec3 ): boolean {
 		return ( ( this.x == a.x ) && ( this.y == a.y ) && ( this.z == a.z ) );
 	}
 
 ////ID_INLINE bool idVec3::Compare( const idVec3 &a, const float epsilon ) const {
-////	if ( idMath::Fabs( this.x - a.x ) > epsilon ) {
+////	if ( idMath.Fabs( this.x - a.x ) > epsilon ) {
 ////		return false;
 ////	}
 			
-////	if ( idMath::Fabs( this.y - a.y ) > epsilon ) {
+////	if ( idMath.Fabs( this.y - a.y ) > epsilon ) {
 ////		return false;
 ////	}
 
-////	if ( idMath::Fabs( this.z - a.z ) > epsilon ) {
+////	if ( idMath.Fabs( this.z - a.z ) > epsilon ) {
 ////		return false;
 ////	}
 
@@ -651,72 +688,72 @@ class idVec3 {
 ////	return invLength * sqrLength;
 ////}
 
-////ID_INLINE bool idVec3::FixDegenerateNormal( ) {
-////	if ( this.x == 0.0 ) {
-////		if ( this.y == 0.0 ) {
-////			if ( this.z > 0.0 ) {
-////				if ( this.z != 1.0 ) {
-////					z = 1.0;
-////					return true;
-////				}
-////			} else {
-////				if ( this.z != -1.0 ) {
-////					z = -1.0;
-////					return true;
-////				}
-////			}
-////			return false;
-////		} else if ( this.z == 0.0 ) {
-////			if ( this.y > 0.0 ) {
-////				if ( this.y != 1.0 ) {
-////					y = 1.0;
-////					return true;
-////				}
-////			} else {
-////				if ( this.y != -1.0 ) {
-////					y = -1.0;
-////					return true;
-////				}
-////			}
-////			return false;
-////		}
-////	} else if ( this.y == 0.0 ) {
-////		if ( this.z == 0.0 ) {
-////			if ( this.x > 0.0 ) {
-////				if ( this.x != 1.0 ) {
-////					x = 1.0;
-////					return true;
-////				}
-////			} else {
-////				if ( this.x != -1.0 ) {
-////					x = -1.0;
-////					return true;
-////				}
-////			}
-////			return false;
-////		}
-////	}
-////	if ( idMath::Fabs( this.x ) == 1.0 ) {
-////		if ( this.y != 0.0 || this.z != 0.0 ) {
-////			y = this.z = 0.0;
-////			return true;
-////		}
-////		return false;
-////	} else if ( idMath::Fabs( this.y ) == 1.0 ) {
-////		if ( this.x != 0.0 || this.z != 0.0 ) {
-////			x = this.z = 0.0;
-////			return true;
-////		}
-////		return false;
-////	} else if ( idMath::Fabs( this.z ) == 1.0 ) {
-////		if ( this.x != 0.0 || this.y != 0.0 ) {
-////			x = this.y = 0.0;
-////			return true;
-////		}
-////		return false;
-////	}
-////	return false;
-////}
+	FixDegenerateNormal ( ): boolean {
+		if ( this.x == 0.0 ) {
+			if ( this.y == 0.0 ) {
+				if ( this.z > 0.0 ) {
+					if ( this.z != 1.0 ) {
+						this.z = 1.0;
+						return true;
+					}
+				} else {
+					if ( this.z != -1.0 ) {
+						this.z = -1.0;
+						return true;
+					}
+				}
+				return false;
+			} else if ( this.z == 0.0 ) {
+				if ( this.y > 0.0 ) {
+					if ( this.y != 1.0 ) {
+						this.y = 1.0;
+						return true;
+					}
+				} else {
+					if ( this.y != -1.0 ) {
+						this.y = -1.0;
+						return true;
+					}
+				}
+				return false;
+			}
+		} else if ( this.y == 0.0 ) {
+			if ( this.z == 0.0 ) {
+				if ( this.x > 0.0 ) {
+					if ( this.x != 1.0 ) {
+						this.x = 1.0;
+						return true;
+					}
+				} else {
+					if ( this.x != -1.0 ) {
+						this.x = -1.0;
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+		if ( idMath.Fabs( this.x ) == 1.0 ) {
+			if ( this.y != 0.0 || this.z != 0.0 ) {
+				this.y = this.z = 0.0;
+				return true;
+			}
+			return false;
+		} else if ( idMath.Fabs( this.y ) == 1.0 ) {
+			if ( this.x != 0.0 || this.z != 0.0 ) {
+				this.x = this.z = 0.0;
+				return true;
+			}
+			return false;
+		} else if ( idMath.Fabs( this.z ) == 1.0 ) {
+			if ( this.x != 0.0 || this.y != 0.0 ) {
+				this.x = this.y = 0.0;
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
 
 ////ID_INLINE bool idVec3::FixDenormals( ) {
 ////	bool denormal = false;
@@ -837,7 +874,7 @@ class idVec3 {
 
 	ToFloatPtr ( ): Float32Array {
 		//return <Float32Array><any>this;
-		return new Float32Array( [this.x, this.y, this.z] );
+		return this.values;
 	}
 
 ////ID_INLINE float *idVec3::ToFloatPtr( ) {
@@ -864,7 +901,7 @@ class idVec3 {
 ////ID_INLINE void idVec3::OrthogonalBasis( idVec3 &left, idVec3 &up ) const {
 ////	float l, s;
 
-////	if ( idMath::Fabs( this.z ) > 0.7f ) {
+////	if ( idMath.Fabs( this.z ) > 0.7f ) {
 ////		l = this.y * this.y + this.z * this.z;
 ////		s = idMath.InvSqrt( l );
 ////		up[0] = 0;
@@ -910,7 +947,7 @@ class idVec3 {
 ////	// normalize so a fixed epsilon can be used
 ////	cross.Normalize();
 ////	len = normal * cross;
-////	if ( idMath::Fabs( len ) < epsilon ) {
+////	if ( idMath.Fabs( len ) < epsilon ) {
 ////		return false;
 ////	}
 ////	cross *= overBounce * ( normal * (*this) ) / len;
@@ -1273,17 +1310,17 @@ class idVec4 {
 ////	float &			operator[]( const int index );
 ////	idVec4			operator-() const;
 ////	float			operator*( const idVec4 &a ) const;
-////	idVec4			operator*( const float a ) const;
-////	idVec4			operator/( const float a ) const;
+////	idVec4			operator*( /*const float */a :number ) const;
+////	idVec4			operator/( /*const float */a :number ) const;
 ////	idVec4			operator+( const idVec4 &a ) const;
 ////	idVec4			operator-( const idVec4 &a ) const;
 ////	idVec4 &		operator+=( const idVec4 &a );
 ////	idVec4 &		operator-=( const idVec4 &a );
 ////	idVec4 &		operator/=( const idVec4 &a );
-////	idVec4 &		operator/=( const float a );
-////	idVec4 &		operator*=( const float a );
+////	idVec4 &		operator/=( /*const float */a :number );
+////	idVec4 &		operator*=( /*const float */a :number );
 
-////	friend idVec4	operator*( const float a, const idVec4 b );
+////	friend idVec4	operator*( /*const float */a :number, const idVec4 b );
 
 ////	bool			Compare( const idVec4 &a ) const;							// exact compare, no epsilon
 ////	bool			Compare( const idVec4 &a, const float epsilon ) const;		// compare with epsilon
@@ -1352,16 +1389,16 @@ class idVec4 {
 ////	return x * a.x + y * a.y + z * a.z + w * a.w;
 ////}
 
-////ID_INLINE idVec4 idVec4::operator*( const float a ) const {
+////ID_INLINE idVec4 idVec4::operator*( /*const float */a :number ) const {
 ////	return idVec4( x * a, y * a, z * a, w * a );
 ////}
 
-////ID_INLINE idVec4 idVec4::operator/( const float a ) const {
+////ID_INLINE idVec4 idVec4::operator/( /*const float */a :number ) const {
 ////	float inva = 1.0 / a;
 ////	return idVec4( x * inva, y * inva, z * inva, w * inva );
 ////}
 
-////ID_INLINE idVec4 operator*( const float a, const idVec4 b ) {
+////ID_INLINE idVec4 operator*( /*const float */a :number, const idVec4 b ) {
 ////	return idVec4( b.x * a, b.y * a, b.z * a, b.w * a );
 ////}
 
@@ -1387,7 +1424,7 @@ class idVec4 {
 ////	return *this;
 ////}
 
-////ID_INLINE idVec4 &idVec4::operator/=( const float a ) {
+////ID_INLINE idVec4 &idVec4::operator/=( /*const float */a :number ) {
 ////	float inva = 1.0 / a;
 ////	x *= inva;
 ////	y *= inva;
@@ -1406,7 +1443,7 @@ class idVec4 {
 ////	return *this;
 ////}
 
-////ID_INLINE idVec4 &idVec4::operator*=( const float a ) {
+////ID_INLINE idVec4 &idVec4::operator*=( /*const float */a :number ) {
 ////	x *= a;
 ////	y *= a;
 ////	z *= a;
@@ -1420,19 +1457,19 @@ class idVec4 {
 ////}
 
 ////ID_INLINE bool idVec4::Compare( const idVec4 &a, const float epsilon ) const {
-////	if ( idMath::Fabs( x - a.x ) > epsilon ) {
+////	if ( idMath.Fabs( x - a.x ) > epsilon ) {
 ////		return false;
 ////	}
 			
-////	if ( idMath::Fabs( y - a.y ) > epsilon ) {
+////	if ( idMath.Fabs( y - a.y ) > epsilon ) {
 ////		return false;
 ////	}
 
-////	if ( idMath::Fabs( z - a.z ) > epsilon ) {
+////	if ( idMath.Fabs( z - a.z ) > epsilon ) {
 ////		return false;
 ////	}
 
-////	if ( idMath::Fabs( w - a.w ) > epsilon ) {
+////	if ( idMath.Fabs( w - a.w ) > epsilon ) {
 ////		return false;
 ////	}
 
@@ -1616,50 +1653,53 @@ class idVec5 {
 	//y: number; //	float			
 	//z: number; //	float			
 	//s: number; //	float			
-	//t: number; //	float		
-	get x ( ): number { return this[0]; }
+	//t: number; //	float	
+	
+	values = new Float32Array(5);
+		
+	get x ( ): number { return this.values[0]; }
 
 	set x ( value: number ) {
 		if ( value === undefined ) {
 			throw 'Undefined value';
 		}
-		this[0] = value;
+		this.values[0] = value;
 	}
 
-	get y ( ): number { return this[1]; }
+	get y(): number { return this.values[1]; }
 
 	set y ( value: number ) {
 		if ( value === undefined ) {
 			throw 'Undefined value';
 		}
-		this[1] = value;
+		this.values[1] = value;
 	}
 
-	get z ( ): number { return this[2]; }
+	get z ( ): number { return this.values[2]; }
 
 	set z ( value: number ) {
 		if ( value === undefined ) {
 			throw 'Undefined value';
 		}
-		this[2] = value;
+		this.values[2] = value;
 	}
 
-	get s ( ): number { return this[3]; }
+	get s ( ): number { return this.values[3]; }
 
 	set s ( value: number ) {
 		if ( value === undefined ) {
 			throw 'Undefined value';
 		}
-		this[3] = value;
+		this.values[3] = value;
 	}
 
-	get t ( ): number { return this[4]; }
+	get t ( ): number { return this.values[4]; }
 
 	set t ( value: number ) {
 		if ( value === undefined ) {
 			throw 'Undefined value';
 		}
-		this[4] = value;
+		this.values[4] = value;
 	}
 
 ////					idVec5( );
@@ -1746,19 +1786,19 @@ class idVec5 {
 ////	return *reinterpret_cast<const idVec3 *>(this);
 ////}
 
-////ID_INLINE idVec3 &idVec5::ToVec3( ) {
-////	return *reinterpret_cast<idVec3 *>(this);
-////}
+	ToVec3 ( ): idVec3 {
+		return new idVec3( this.x, this.y, this.z ); //return *reinterpret_cast<idVec3 *>(this);
+	}
 
 ////ID_INLINE const float *idVec5::ToFloatPtr( ) const {
 ////	return &x;
 ////}
 
-////ID_INLINE float *idVec5::ToFloatPtr( ) {
-////	return &x;
-////}
+	ToFloatPtr ( ): Float32Array {
+		return this.values;
+	}
 
-	
+
 /////*
 ////=============
 ////idVec5::ToString
@@ -1808,17 +1848,17 @@ class idVec6 {
 ////	float			operator[]( const int index ) const;
 ////	float &			operator[]( const int index );
 ////	idVec6			operator-() const;
-////	idVec6			operator*( const float a ) const;
-////	idVec6			operator/( const float a ) const;
+////	idVec6			operator*( /*const float */a :number ) const;
+////	idVec6			operator/( /*const float */a :number ) const;
 ////	float			operator*( const idVec6 &a ) const;
 ////	idVec6			operator-( const idVec6 &a ) const;
 ////	idVec6			operator+( const idVec6 &a ) const;
-////	idVec6 &		operator*=( const float a );
-////	idVec6 &		operator/=( const float a );
+////	idVec6 &		operator*=( /*const float */a :number );
+////	idVec6 &		operator/=( /*const float */a :number );
 ////	idVec6 &		operator+=( const idVec6 &a );
 ////	idVec6 &		operator-=( const idVec6 &a );
 
-////	friend idVec6	operator*( const float a, const idVec6 b );
+////	friend idVec6	operator*( /*const float */a :number, const idVec6 b );
 
 ////	bool			Compare( const idVec6 &a ) const;							// exact compare, no epsilon
 ////	bool			Compare( const idVec6 &a, const float epsilon ) const;		// compare with epsilon
@@ -1874,7 +1914,7 @@ class idVec6 {
 ////	return p[index];
 ////}
 
-////ID_INLINE idVec6 idVec6::operator*( const float a ) const {
+////ID_INLINE idVec6 idVec6::operator*( /*const float */a :number ) const {
 ////	return idVec6( p[0]*a, p[1]*a, p[2]*a, p[3]*a, p[4]*a, p[5]*a );
 ////}
 
@@ -1882,7 +1922,7 @@ class idVec6 {
 ////	return p[0] * a[0] + p[1] * a[1] + p[2] * a[2] + p[3] * a[3] + p[4] * a[4] + p[5] * a[5];
 ////}
 
-////ID_INLINE idVec6 idVec6::operator/( const float a ) const {
+////ID_INLINE idVec6 idVec6::operator/( /*const float */a :number ) const {
 ////	float inva;
 
 ////	assert( a != 0.0 );
@@ -1898,7 +1938,7 @@ class idVec6 {
 ////	return idVec6( p[0] - a[0], p[1] - a[1], p[2] - a[2], p[3] - a[3], p[4] - a[4], p[5] - a[5] );
 ////}
 
-////ID_INLINE idVec6 &idVec6::operator*=( const float a ) {
+////ID_INLINE idVec6 &idVec6::operator*=( /*const float */a :number ) {
 ////	p[0] *= a;
 ////	p[1] *= a;
 ////	p[2] *= a;
@@ -1908,7 +1948,7 @@ class idVec6 {
 ////	return *this;
 ////}
 
-////ID_INLINE idVec6 &idVec6::operator/=( const float a ) {
+////ID_INLINE idVec6 &idVec6::operator/=( /*const float */a :number ) {
 ////	float inva;
 
 ////	assert( a != 0.0 );
@@ -1942,7 +1982,7 @@ class idVec6 {
 ////	return *this;
 ////}
 
-////ID_INLINE idVec6 operator*( const float a, const idVec6 b ) {
+////ID_INLINE idVec6 operator*( /*const float */a :number, const idVec6 b ) {
 ////	return b * a;
 ////}
 
@@ -1952,27 +1992,27 @@ class idVec6 {
 ////}
 
 ////ID_INLINE bool idVec6::Compare( const idVec6 &a, const float epsilon ) const {
-////	if ( idMath::Fabs( p[0] - a[0] ) > epsilon ) {
+////	if ( idMath.Fabs( p[0] - a[0] ) > epsilon ) {
 ////		return false;
 ////	}
 			
-////	if ( idMath::Fabs( p[1] - a[1] ) > epsilon ) {
+////	if ( idMath.Fabs( p[1] - a[1] ) > epsilon ) {
 ////		return false;
 ////	}
 
-////	if ( idMath::Fabs( p[2] - a[2] ) > epsilon ) {
+////	if ( idMath.Fabs( p[2] - a[2] ) > epsilon ) {
 ////		return false;
 ////	}
 
-////	if ( idMath::Fabs( p[3] - a[3] ) > epsilon ) {
+////	if ( idMath.Fabs( p[3] - a[3] ) > epsilon ) {
 ////		return false;
 ////	}
 
-////	if ( idMath::Fabs( p[4] - a[4] ) > epsilon ) {
+////	if ( idMath.Fabs( p[4] - a[4] ) > epsilon ) {
 ////		return false;
 ////	}
 
-////	if ( idMath::Fabs( p[5] - a[5] ) > epsilon ) {
+////	if ( idMath.Fabs( p[5] - a[5] ) > epsilon ) {
 ////		return false;
 ////	}
 
@@ -2101,17 +2141,17 @@ class idVec6 {
 ////	float &			operator[]( const int index );
 ////	idVecX			operator-() const;
 ////	idVecX &		operator=( const idVecX &a );
-////	idVecX			operator*( const float a ) const;
-////	idVecX			operator/( const float a ) const;
+////	idVecX			operator*( /*const float */a :number ) const;
+////	idVecX			operator/( /*const float */a :number ) const;
 ////	float			operator*( const idVecX &a ) const;
 ////	idVecX			operator-( const idVecX &a ) const;
 ////	idVecX			operator+( const idVecX &a ) const;
-////	idVecX &		operator*=( const float a );
-////	idVecX &		operator/=( const float a );
+////	idVecX &		operator*=( /*const float */a :number );
+////	idVecX &		operator/=( /*const float */a :number );
 ////	idVecX &		operator+=( const idVecX &a );
 ////	idVecX &		operator-=( const idVecX &a );
 
-////	friend idVecX	operator*( const float a, const idVecX b );
+////	friend idVecX	operator*( /*const float */a :number, const idVecX b );
 
 ////	bool			Compare( const idVecX &a ) const;							// exact compare, no epsilon
 ////	bool			Compare( const idVecX &a, const float epsilon ) const;		// compare with epsilon
@@ -2275,7 +2315,7 @@ class idVec6 {
 ////	return *this;
 ////}
 
-////ID_INLINE idVecX idVecX::operator*( const float a ) const {
+////ID_INLINE idVecX idVecX::operator*( /*const float */a :number ) const {
 ////	idVecX m;
 
 ////	m.SetTempSize( size );
@@ -2290,7 +2330,7 @@ class idVec6 {
 ////	return m;
 ////}
 
-////ID_INLINE idVecX &idVecX::operator*=( const float a ) {
+////ID_INLINE idVecX &idVecX::operator*=( /*const float */a :number ) {
 ////#ifdef VECX_SIMD
 ////	SIMDProcessor.MulAssign16( p, a, size );
 ////#else
@@ -2302,18 +2342,18 @@ class idVec6 {
 ////	return *this;
 ////}
 
-////ID_INLINE idVecX idVecX::operator/( const float a ) const {
+////ID_INLINE idVecX idVecX::operator/( /*const float */a :number ) const {
 ////	assert( a != 0.0 );
 ////	return (*this) * ( 1.0 / a );
 ////}
 
-////ID_INLINE idVecX &idVecX::operator/=( const float a ) {
+////ID_INLINE idVecX &idVecX::operator/=( /*const float */a :number ) {
 ////	assert( a != 0.0 );
 ////	(*this) *= ( 1.0 / a );
 ////	return *this;
 ////}
 
-////ID_INLINE idVecX operator*( const float a, const idVecX b ) {
+////ID_INLINE idVecX operator*( /*const float */a :number, const idVecX b ) {
 ////	return b * a;
 ////}
 
@@ -2345,7 +2385,7 @@ class idVec6 {
 
 ////	assert( size == a.size );
 ////	for ( i = 0; i < size; i++ ) {
-////		if ( idMath::Fabs( p[i] - a.p[i] ) > epsilon ) {
+////		if ( idMath.Fabs( p[i] - a.p[i] ) > epsilon ) {
 ////			return false;
 ////		}
 ////	}

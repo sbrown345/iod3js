@@ -2611,9 +2611,9 @@ idSIMD_Generic::DeriveTangents
 			t1.z *= f;
 
 			if ( used[v0] ) {
-				a.normal /*+=*/.plusEquals( n );
-				a.tangents[0] /*+=*/.plusEquals( t0 );
-				a.tangents[1] /*+=*/.plusEquals( t1 );
+				a.normal /*+=*/.opAdditionAssignment( n );
+				a.tangents[0] /*+=*/.opAdditionAssignment( t0 );
+				a.tangents[1] /*+=*/.opAdditionAssignment( t1 );
 			} else {
 				a.normal /*=*/.equals( n );
 				a.tangents[0] /*=*/.equals( t0 );
@@ -2622,9 +2622,9 @@ idSIMD_Generic::DeriveTangents
 			}
 
 			if ( used[v1] ) {
-				b.normal /*+=*/.plusEquals( n );
-				b.tangents[0] /*+=*/.plusEquals( t0 );
-				b.tangents[1] /*+=*/.plusEquals( t1 );
+				b.normal /*+=*/.opAdditionAssignment( n );
+				b.tangents[0] /*+=*/.opAdditionAssignment( t0 );
+				b.tangents[1] /*+=*/.opAdditionAssignment( t1 );
 			} else {
 				b.normal /*=*/.equals( n );
 				b.tangents[0] /*=*/.equals( t0 );
@@ -2633,9 +2633,9 @@ idSIMD_Generic::DeriveTangents
 			}
 
 			if ( used[v2] ) {
-				c.normal /*+=*/.plusEquals( n );
-				c.tangents[0] /*+=*/.plusEquals( t0 );
-				c.tangents[1] /*+=*/.plusEquals( t1 );
+				c.normal /*+=*/.opAdditionAssignment( n );
+				c.tangents[0] /*+=*/.opAdditionAssignment( t0 );
+				c.tangents[1] /*+=*/.opAdditionAssignment( t1 );
 			} else {
 				c.normal /*=*/.equals( n );
 				c.tangents[0] /*=*/.equals( t0 );
@@ -2743,7 +2743,7 @@ idSIMD_Generic::NormalizeTangents
 			for ( var /*int */j = 0; j < 2; j++ ) {
 				var t: idVec3 = verts[i].tangents[j];
 
-				t /*-=*/.minusEquals( idVec3.times( t.timesVec( v ), v ) ); //t -= ( t * v ) * v;  // todo: check precedence 
+				t.opSubtractionAssignment( idVec3.times( t.timesVec( v ), v ) ); //t -= ( t * v ) * v;  // todo: check precedence 
 				f = idMath.RSqrt( t.x * t.x + t.y * t.y + t.z * t.z );
 				t.x *= f;
 				t.y *= f;

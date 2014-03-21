@@ -255,103 +255,103 @@ idRenderWorldLocal.prototype.ParseModel = function ( src: idLexer ): idRenderMod
 //
 //	return model;
 //}
-//
-///*
-//================
-//idRenderWorldLocal::SetupAreaRefs
-//================
-//*/
-//void idRenderWorldLocal::SetupAreaRefs() {
-//	int		i;
-//
-//	connectedAreaNum = 0;
-//	for ( i = 0 ; i < this.numPortalAreas ; i++ ) {
-//		this.portalAreas[i].areaNum = i;
-//		this.portalAreas[i].lightRefs.areaNext =
-//		this.portalAreas[i].lightRefs.areaPrev =
-//			&this.portalAreas[i].lightRefs;
-//		this.portalAreas[i].entityRefs.areaNext =
-//		this.portalAreas[i].entityRefs.areaPrev =
-//			&this.portalAreas[i].entityRefs;
-//	}
-//}
-//
-///*
-//================
-//idRenderWorldLocal::ParseInterAreaPortals
-//================
-//*/
-//void idRenderWorldLocal::ParseInterAreaPortals( idLexer *src ) {
-//	int i, j;
-//
-//	src.ExpectTokenString( "{" );
-//
-//	this.numPortalAreas = src.ParseInt();
-//	if ( this.numPortalAreas < 0 ) {
-//		src.Error( "R_ParseInterAreaPortals: bad numPortalAreas" );
-//		return;
-//	}
-//	this.portalAreas = (portalArea_t *)R_ClearedStaticAlloc( this.numPortalAreas * sizeof( this.portalAreas[0] ) );
-//	this.areaScreenRect = (idScreenRect *) R_ClearedStaticAlloc( this.numPortalAreas * sizeof( idScreenRect ) );
-//
-//	// set the doubly linked lists
-//	SetupAreaRefs();
-//
-//	this.numInterAreaPortals = src.ParseInt();
-//	if ( this.numInterAreaPortals < 0 ) {
-//		src.Error(  "R_ParseInterAreaPortals: bad numInterAreaPortals" );
-//		return;
-//	}
-//
-//	this.doublePortals = (doublePortal_t *)R_ClearedStaticAlloc( this.numInterAreaPortals * 
-//		sizeof( this.doublePortals [0] ) );
-//
-//	for ( i = 0 ; i < this.numInterAreaPortals ; i++ ) {
-//		int		numPoints, a1, a2;
-//		idWinding	*w;
-//		portal_t	*p;
-//
-//		numPoints = src.ParseInt();
-//		a1 = src.ParseInt();
-//		a2 = src.ParseInt();
-//
-//		w = new idWinding( numPoints );
-//		w.SetNumPoints( numPoints );
-//		for ( j = 0 ; j < numPoints ; j++ ) {
-//			src.Parse1DMatrix( 3, (*w)[j].ToFloatPtr() );
-//			// no texture coordinates
-//			(*w)[j][3] = 0;
-//			(*w)[j][4] = 0;
-//		}
-//
-//		// add the portal to a1
-//		p = (portal_t *)R_ClearedStaticAlloc( sizeof( *p ) );
-//		p.intoArea = a2;
-//		p.doublePortal = &this.doublePortals[i];
-//		p.w = w;
-//		p.w.GetPlane( p.plane );
-//
-//		p.next = this.portalAreas[a1].portals;
-//		this.portalAreas[a1].portals = p;
-//
-//		this.doublePortals[i].portals[0] = p;
-//
-//		// reverse it for a2
-//		p = (portal_t *)R_ClearedStaticAlloc( sizeof( *p ) );
-//		p.intoArea = a1;
-//		p.doublePortal = &this.doublePortals[i];
-//		p.w = w.Reverse();
-//		p.w.GetPlane( p.plane );
-//
-//		p.next = this.portalAreas[a2].portals;
-//		this.portalAreas[a2].portals = p;
-//
-//		this.doublePortals[i].portals[1] = p;
-//	}
-//
-//	src.ExpectTokenString( "}" );
-//}
-//
+
+/*
+================
+idRenderWorldLocal::SetupAreaRefs
+================
+*/
+idRenderWorldLocal.prototype.SetupAreaRefs = function ( ): void {
+	var /*int*/i: number;
+
+	this.connectedAreaNum = 0;
+	for ( i = 0; i < this.numPortalAreas; i++ ) {
+		this.portalAreas[i].areaNum = i;
+		this.portalAreas[i].lightRefs.areaNext =
+			this.portalAreas[i].lightRefs.areaPrev =
+			this.portalAreas[i].lightRefs;
+		this.portalAreas[i].entityRefs.areaNext =
+			this.portalAreas[i].entityRefs.areaPrev =
+			this.portalAreas[i].entityRefs;
+	}
+};
+
+/*
+================
+idRenderWorldLocal::ParseInterAreaPortals
+================
+*/
+idRenderWorldLocal.prototype.ParseInterAreaPortals = function (src: idLexer ) {
+	var /*int */i: number, j: number;
+
+	src.ExpectTokenString( "{" );
+
+	this.numPortalAreas = src.ParseInt();
+	if ( this.numPortalAreas < 0 ) {
+		src.Error( "R_ParseInterAreaPortals: bad numPortalAreas" );
+		return;
+	}
+	this.portalAreas = newStructArray<portalArea_t>( portalArea_t, this.numPortalAreas ); //(portalArea_t *)R_ClearedStaticAlloc( this.numPortalAreas * sizeof( this.portalAreas[0] ) );
+	this.areaScreenRect = newStructArray<idScreenRect>( idScreenRect, this.numPortalAreas ); //(idScreenRect *) R_ClearedStaticAlloc( this.numPortalAreas * sizeof( idScreenRect ) );
+
+	// set the doubly linked lists
+	this.SetupAreaRefs();
+
+	this.numInterAreaPortals = src.ParseInt();
+	if ( this.numInterAreaPortals < 0 ) {
+		src.Error(  "R_ParseInterAreaPortals: bad numInterAreaPortals" );
+		return;
+	}
+
+	this.doublePortals = newStructArray<doublePortal_t>( doublePortal_t, this.numInterAreaPortals );// (doublePortal_t *)R_ClearedStaticAlloc( this.numInterAreaPortals * 
+		//sizeof( this.doublePortals [0] ) );
+
+	for ( i = 0 ; i < this.numInterAreaPortals ; i++ ) {
+		var/*int*/numPoints: number, a1: number, a2: number;
+		var w: idWinding;
+		var p: portal_t;
+
+		numPoints = src.ParseInt();
+		a1 = src.ParseInt();
+		a2 = src.ParseInt();
+
+		w = new idWinding( numPoints );
+		w.SetNumPoints( numPoints );
+		for ( j = 0 ; j < numPoints ; j++ ) {
+			src.Parse1DMatrix( 3, (w)[j].ToFloatPtr() );
+			// no texture coordinates
+			(w)[j][3] = 0;
+			(w)[j][4] = 0;
+		}
+
+		// add the portal to a1
+		p = new portal_t;//(portal_t *)R_ClearedStaticAlloc( sizeof( *p ) );
+		p.intoArea = a2;
+		p.doublePortal = this.doublePortals[i];
+		p.w = w;
+		p.w.GetPlane( p.plane );
+
+		p.next = this.portalAreas[a1].portals;
+		this.portalAreas[a1].portals = p;
+
+		this.doublePortals[i].portals[0] = p;
+
+		// reverse it for a2
+		p = new portal_t;//(portal_t *)R_ClearedStaticAlloc( sizeof( *p ) );
+		p.intoArea = a1;
+		p.doublePortal = this.doublePortals[i];
+		p.w = w.Reverse();
+		p.w.GetPlane( p.plane );
+
+		p.next = this.portalAreas[a2].portals;
+		this.portalAreas[a2].portals = p;
+
+		this.doublePortals[i].portals[1] = p;
+	}
+
+	src.ExpectTokenString( "}" );
+}
+
 ///*
 //================
 //idRenderWorldLocal::ParseNodes
@@ -429,7 +429,7 @@ idRenderWorldLocal.prototype.ParseModel = function ( src: idLexer ): idRenderMod
 //	this.portalAreas = (portalArea_t *)R_ClearedStaticAlloc( sizeof( this.portalAreas[0] ) );
 //	this.areaScreenRect = (idScreenRect *) R_ClearedStaticAlloc( sizeof( idScreenRect ) );
 //
-//	SetupAreaRefs();
+//	this.SetupAreaRefs();
 //
 //	// even though we only have a single area, create a node
 //	// that has both children pointing at it so we don't need to
@@ -627,7 +627,7 @@ idRenderWorldLocal.prototype.InitFromMap = function ( name: string ): boolean {
 //	// flood fill all area connections
 //	for ( i = 0 ; i < this.numPortalAreas ; i++ ) {
 //		for ( j = 0 ; j < NUM_PORTAL_ATTRIBUTES ; j++ ) {
-//			connectedAreaNum++;
+//			this.connectedAreaNum++;
 //			FloodConnectedAreas( &this.portalAreas[i], j );
 //		}
 //	}

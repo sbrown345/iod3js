@@ -264,13 +264,13 @@ class drawSurf_t {
 
 // areas have references to hold all the lights and entities in them
 class areaReference_t {
-	//struct areaReference_s *areaNext;				// chain in the area
-	//struct areaReference_s *areaPrev;
-	//struct areaReference_s *ownerNext;				// chain on either the entityDef or lightDef
-	//idRenderEntityLocal *	entity;					// only one of entity / light will be non-NULL
-	//idRenderLightLocal *	light;					// only one of entity / light will be non-NULL
-	//struct portalArea_s	*	area;					// so owners can find all the areas they are in
-};
+	areaNext: areaReference_t; // chain in the area
+	areaPrev: areaReference_t
+	ownerNext: areaReference_t // chain on either the entityDef or lightDef
+	entity: idRenderEntityLocal // only one of entity / light will be non-NULL
+	light: idRenderLightLocal // only one of entity / light will be non-NULL
+	area: portalArea_t // so owners can find all the areas they are in
+}
 
 
 // idRenderLight should become the new public interface replacing the qhandle_t to light defs in the idRenderWorld interface

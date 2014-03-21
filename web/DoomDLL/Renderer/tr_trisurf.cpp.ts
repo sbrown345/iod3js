@@ -1412,8 +1412,8 @@ function R_DeriveTangentsWithoutNormals ( tri: srfTriangles_t ): void {
 		for ( j = 0; j < 3; j++ ) {
 			vert = tri.verts[tri.indexes[i + j]];
 
-			vert.tangents[0].plusEquals( ft.tangents[0] );
-			vert.tangents[1].plusEquals( ft.tangents[1] );
+			vert.tangents[0].opAdditionAssignment( ft.tangents[0] );
+			vert.tangents[1].opAdditionAssignment( ft.tangents[1] );
 		}
 	}
 
@@ -1793,7 +1793,7 @@ function R_DeriveTangents(tri:srfTriangles_t, allocFacePlanes:boolean = true):vo
 
 	// add the normal of a duplicated vertex to the normal of the first vertex with the same XYZ
 	for ( i = 0; i < tri.numDupVerts; i++ ) {
-		verts[dupVerts[i * 2 + 0]].normal /*+=*/.plusEquals( verts[dupVerts[i * 2 + 1]].normal );
+		verts[dupVerts[i * 2 + 0]].normal /*+=*/.opAdditionAssignment( verts[dupVerts[i * 2 + 1]].normal );
 	}
 
 	// copy vertex normals to duplicated vertices

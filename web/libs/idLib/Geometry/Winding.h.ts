@@ -40,13 +40,13 @@
 class idWinding {
 
 //public:
-//					idWinding( void );
+//					idWinding( );
 //					explicit idWinding( const int n );								// allocate for n points
 //					explicit idWinding( const idVec3 *verts, const int n );			// winding from points
 //					explicit idWinding( const idVec3 &normal, const float dist );	// base winding for plane
 //					explicit idWinding( const idPlane &plane );						// base winding for plane
 //					explicit idWinding( const idWinding &winding );
-//	virtual			~idWinding( void );
+//	virtual			~idWinding( );
 //
 //	idWinding &		operator=( const idWinding &winding );
 //	const idVec5 &	operator[]( const int index ) const;
@@ -59,9 +59,9 @@ class idWinding {
 //	void			AddPoint( const idVec5 &v );
 //
 //					// number of points on winding
-//	int				GetNumPoints( void ) const;
+//	int				GetNumPoints( ) const;
 //	void			SetNumPoints( int n );
-//	virtual void	Clear( void );
+//	virtual void	Clear( );
 //
 //					// huge winding for plane, the points go counter clockwise when facing the front of the plane
 //	void			BaseForPlane( const idVec3 &normal, const float dist );
@@ -78,9 +78,9 @@ class idWinding {
 //	bool			ClipInPlace( const idPlane &plane, const float epsilon = ON_EPSILON, const bool keepOn = false );
 //
 //					// returns a copy of the winding
-//	idWinding *		Copy( void ) const;
-//	idWinding *		Reverse( void ) const;
-//	void			ReverseSelf( void );
+//	idWinding *		Copy( ) const;
+//	idWinding *		Reverse( ) const;
+//	void			ReverseSelf( );
 //	void			RemoveEqualPoints( const float epsilon = ON_EPSILON );
 //	void			RemoveColinearPoints( const idVec3 &normal, const float epsilon = ON_EPSILON );
 //	void			RemovePoint( int point );
@@ -96,16 +96,16 @@ class idWinding {
 //					// check whether the winding is valid or not
 //	bool			Check( bool print = true ) const;
 //
-//	float			GetArea( void ) const;
-//	idVec3			GetCenter( void ) const;
+//	float			GetArea( ) const;
+//	idVec3			GetCenter( ) const;
 //	float			GetRadius( const idVec3 &center ) const;
 //	void			GetPlane( idVec3 &normal, float &dist ) const;
 //	void			GetPlane( idPlane &plane ) const;
 //	void			GetBounds( idBounds &bounds ) const;
 //
-//	bool			IsTiny( void ) const;
-//	bool			IsHuge( void ) const;	// base winding for a plane is typically huge
-//	void			Print( void ) const;
+//	bool			IsTiny( ) const;
+//	bool			IsHuge( ) const;	// base winding for a plane is typically huge
+//	void			Print( ) const;
 //
 //	float			PlaneDistance( const idPlane &plane ) const;
 //	int				PlaneSide( const idPlane &plane, const float epsilon = ON_EPSILON ) const;
@@ -129,7 +129,7 @@ class idWinding {
 //	virtual bool	ReAllocate( int n, bool keep = false );
 //};
 //
-//ID_INLINE idWinding::idWinding( void ) {
+//ID_INLINE idWinding::idWinding( ) {
 //	this.numPoints = this.allocedSize = 0;
 //	this.p = NULL;
 //}
@@ -188,7 +188,7 @@ class idWinding {
 //	this.numPoints = winding.GetNumPoints();
 //}
 //
-//ID_INLINE idWinding::~idWinding( void ) {
+//ID_INLINE idWinding::~idWinding( ) {
 //	delete[] this.p;
 //	this.p = NULL;
 //}
@@ -246,15 +246,15 @@ class idWinding {
 	GetNumPoints ( ): number {
 		return this.numPoints;
 	}
+
+	SetNumPoints ( /*int */n: number ): void {
+		if ( !this.EnsureAlloced( n, true ) ) {
+			return;
+		}
+		this.numPoints = n;
+	}
 //
-//ID_INLINE void idWinding::SetNumPoints( int n ) {
-//	if ( !EnsureAlloced( n, true ) ) {
-//		return;
-//	}
-//	this.numPoints = n;
-//}
-//
-//ID_INLINE void idWinding::Clear( void ) {
+//ID_INLINE void idWinding::Clear( ) {
 //	this.numPoints = 0;
 //	delete[] this.p;
 //	this.p = NULL;
@@ -308,7 +308,7 @@ idWinding::ReAllocate
 		return true;
 	}
 //
-	///*
+///*
 //=============
 //idWinding::BaseForPlane
 //=============
@@ -334,7 +334,7 @@ idWinding::ReAllocate
 //	this.p[3].s = this.p[3].t = 0.0;
 //}
 //
-	///*
+///*
 //=============
 //idWinding::Split
 //=============
@@ -484,7 +484,7 @@ idWinding::ReAllocate
 //	return SIDE_CROSS;
 //}
 //
-	///*
+///*
 //=============
 //idWinding::Clip
 //=============
@@ -723,12 +723,12 @@ idWinding::ClipInPlace
 		return true;
 	}
 //
-	///*
+///*
 //=============
 //idWinding::Copy
 //=============
 //*/
-//idWinding *idWinding::Copy(void) const {
+//idWinding *idWinding::Copy() const {
 //	idWinding *w;
 //
 //	w = new idWinding(numPoints);
@@ -737,40 +737,40 @@ idWinding::ClipInPlace
 //	return w;
 //}
 //
-	///*
-//=============
-//idWinding::Reverse
-//=============
-//*/
-//idWinding *idWinding::Reverse(void) const {
-//	idWinding *w;
-//	int i;
-//
-//	w = new idWinding(numPoints);
-//	w.numPoints = this.numPoints;
-//	for (i = 0; i < this.numPoints; i++) {
-//		w.p[numPoints - i - 1] = this.p[i];
-//	}
-//	return w;
-//}
-//
-	///*
+/*
+=============
+idWinding::Reverse
+=============
+*/
+	Reverse ( ): idWinding {
+		var w: idWinding;
+		var /*int */i: number;
+
+		w = new idWinding( this.numPoints );
+		w.numPoints = this.numPoints;
+		for ( i = 0; i < this.numPoints; i++ ) {
+			w.p[this.numPoints - i - 1] = this.p[i];
+		}
+		return w;
+	}
+
+///*
 //=============
 //idWinding::ReverseSelf
 //=============
 //*/
-//void idWinding::ReverseSelf(void) {
+//void idWinding::ReverseSelf() {
 //	idVec5 v;
 //	int i;
 //
-//	for (i = 0; i < (numPoints >> 1); i++) {
+//	for (i = 0; i < (this.numPoints >> 1); i++) {
 //		v = this.p[i];
-//		this.p[i] = this.p[numPoints - i - 1];
-//		this.p[numPoints - i - 1] = v;
+//		this.p[i] = this.p[this.numPoints - i - 1];
+//		this.p[this.numPoints - i - 1] = v;
 //	}
 //}
 //
-	///*
+///*
 //=============
 //idWinding::Check
 //=============
@@ -857,12 +857,12 @@ idWinding::ClipInPlace
 //	return true;
 //}
 //
-	///*
+///*
 //=============
 //idWinding::GetArea
 //=============
 //*/
-//float idWinding::GetArea(void) const {
+//float idWinding::GetArea() const {
 //	int i;
 //	idVec3 d1, d2, cross;
 //	float total;
@@ -877,7 +877,7 @@ idWinding::ClipInPlace
 //	return total * 0.5f;
 //}
 //
-	///*
+///*
 //=============
 //idWinding::GetRadius
 //=============
@@ -897,25 +897,25 @@ idWinding::ClipInPlace
 //	}
 //	return idMath::Sqrt(radius);
 //}
-//
-	///*
-//=============
-//idWinding::GetCenter
-//=============
-//*/
-//idVec3 idWinding::GetCenter(void) const {
-//	int i;
-//	idVec3 center;
-//
-//	center.Zero();
-//	for (i = 0; i < this.numPoints; i++) {
-//		center += this.p[i].ToVec3();
-//	}
-//	center *= (1.0f / this.numPoints);
-//	return center;
-//}
-//
-	///*
+
+/*
+=============
+idWinding::GetCenter
+=============
+*/
+GetCenter() :idVec3{
+	var/*int */i:number;
+	var center = new idVec3 ;
+
+	center.Zero();
+	for (i = 0; i < this.numPoints; i++) {
+		center.opAdditionAssignment( this.p[i].ToVec3 ( ) );
+	}
+	center.opMultiplicationAssignment( 1.0 / this.numPoints );
+	return center;
+}
+
+///*
 //=============
 //idWinding::GetPlane
 //=============
@@ -937,29 +937,29 @@ idWinding::ClipInPlace
 //	dist = this.p[0].ToVec3() * normal;
 //}
 //
-	///*
-//=============
-//idWinding::GetPlane
-//=============
-//*/
-//void idWinding::GetPlane(idPlane &plane) const {
-//	idVec3 v1, v2;
-//	idVec3 center;
+/*
+=============
+idWinding::GetPlane
+=============
+*/
+	GetPlane ( plane: idPlane ): void {
+		var v1: idVec3, v2: idVec3;
+		var center: idVec3;
+
+		if ( this.numPoints < 3 ) {
+			plane.Zero ( );
+			return;
+		}
+
+		center = this.GetCenter ( );
+		v1 = this.p[0].ToVec3 ( ).minus( center );
+		v2 = this.p[1].ToVec3 ( ).minus( center );
+		plane.SetNormal( v2.Cross( v1 ) );
+		plane.Normalize ( );
+		plane.FitThroughPoint( this.p[0].ToVec3 ( ) );
+	}
 //
-//	if (numPoints < 3) {
-//		plane.Zero();
-//		return;
-//	}
-//
-//	center = GetCenter();
-//	v1 = this.p[0].ToVec3() - center;
-//	v2 = this.p[1].ToVec3() - center;
-//	plane.SetNormal(v2.Cross(v1));
-//	plane.Normalize();
-//	plane.FitThroughPoint(p[0].ToVec3());
-//}
-//
-	///*
+///*
 //=============
 //idWinding::GetBounds
 //=============
@@ -995,7 +995,7 @@ idWinding::ClipInPlace
 //	}
 //}
 //
-	///*
+///*
 //=============
 //idWinding::RemoveEqualPoints
 //=============
@@ -1015,7 +1015,7 @@ idWinding::ClipInPlace
 //	}
 //}
 //
-	///*
+///*
 //=============
 //idWinding::RemoveColinearPoints
 //=============
@@ -1048,7 +1048,7 @@ idWinding::ClipInPlace
 //	}
 //}
 //
-	///*
+///*
 //=============
 //idWinding::AddToConvexHull
 //
@@ -1141,7 +1141,7 @@ idWinding::ClipInPlace
 //	}
 //}
 //
-	///*
+///*
 //=============
 //idWinding::AddToConvexHull
 //
@@ -1260,7 +1260,7 @@ idWinding::ClipInPlace
 //	memcpy(p, hullPoints, numHullPoints * sizeof(idVec5));
 //}
 //
-	///*
+///*
 //=============
 //idWinding::TryMerge
 //=============
@@ -1370,7 +1370,7 @@ idWinding::ClipInPlace
 //	return newf;
 //}
 //
-	///*
+///*
 //=============
 //idWinding::RemovePoint
 //=============
@@ -1385,7 +1385,7 @@ idWinding::ClipInPlace
 //	this.numPoints--;
 //}
 //
-	///*
+///*
 //=============
 //idWinding::InsertPoint
 //=============
@@ -1409,7 +1409,7 @@ idWinding::ClipInPlace
 //	this.numPoints++;
 //}
 //
-	///*
+///*
 //=============
 //idWinding::InsertPointIfOnEdge
 //=============
@@ -1464,14 +1464,14 @@ idWinding::ClipInPlace
 //	return false;
 //}
 //
-	///*
+///*
 //=============
 //idWinding::IsTiny
 //=============
 //*/
 //#define	EDGE_LENGTH		0.2f
 //
-//bool idWinding::IsTiny(void) const {
+//bool idWinding::IsTiny() const {
 //	int		i;
 //	float	len;
 //	idVec3	delta;
@@ -1490,12 +1490,12 @@ idWinding::ClipInPlace
 //	return true;
 //}
 //
-	///*
+///*
 //=============
 //idWinding::IsHuge
 //=============
 //*/
-//bool idWinding::IsHuge(void) const {
+//bool idWinding::IsHuge() const {
 //	int i, j;
 //
 //	for (i = 0; i < this.numPoints; i++) {
@@ -1508,12 +1508,12 @@ idWinding::ClipInPlace
 //	return false;
 //}
 //
-	///*
+///*
 //=============
 //idWinding::Print
 //=============
 //*/
-//void idWinding::Print(void) const {
+//void idWinding::Print() const {
 //	int i;
 //
 //	for (i = 0; i < this.numPoints; i++) {
@@ -1521,7 +1521,7 @@ idWinding::ClipInPlace
 //	}
 //}
 //
-	///*
+///*
 //=============
 //idWinding::PlaneDistance
 //=============
@@ -1556,7 +1556,7 @@ idWinding::ClipInPlace
 //	return 0.0;
 //}
 //
-	///*
+///*
 //=============
 //idWinding::PlaneSide
 //=============
@@ -1595,7 +1595,7 @@ idWinding::ClipInPlace
 //	return SIDE_ON;
 //}
 //
-	///*
+///*
 //=============
 //idWinding::PlanesConcave
 //=============
@@ -1621,7 +1621,7 @@ idWinding::ClipInPlace
 //	return false;
 //}
 //
-	///*
+///*
 //=============
 //idWinding::PointInside
 //=============
@@ -1643,7 +1643,7 @@ idWinding::ClipInPlace
 //	return true;
 //}
 //
-	///*
+///*
 //=============
 //idWinding::LineIntersection
 //=============
@@ -1683,7 +1683,7 @@ idWinding::ClipInPlace
 //	return PointInside(windingPlane.Normal(), mid, 0.0);
 //}
 //
-	///*
+///*
 //=============
 //idWinding::RayIntersection
 //=============
@@ -1894,18 +1894,18 @@ idFixedWinding::ReAllocate
 //
 //
 //public:
-//					idFixedWinding( void );
+//					idFixedWinding( );
 //					explicit idFixedWinding( const int n );
 //					explicit idFixedWinding( const idVec3 *verts, const int n );
 //					explicit idFixedWinding( const idVec3 &normal, const float dist );
 //					explicit idFixedWinding( const idPlane &plane );
 //					explicit idFixedWinding( const idWinding &winding );
 //					explicit idFixedWinding( const idFixedWinding &winding );
-//	virtual			~idFixedWinding( void );
+//	virtual			~idFixedWinding( );
 //
 //	idFixedWinding &operator=( const idWinding &winding );
 //
-//	virtual void	Clear( void );
+//	virtual void	Clear( );
 //
 //					// splits the winding in a back and front part, 'this' becomes the front part
 //					// returns a SIDE_?
@@ -1917,7 +1917,7 @@ idFixedWinding::ReAllocate
 //	virtual bool	ReAllocate( int n, bool keep = false );
 //};
 //
-//ID_INLINE idFixedWinding::idFixedWinding( void ) {
+//ID_INLINE idFixedWinding::idFixedWinding( ) {
 //	this.numPoints = 0;
 //	this.p = data;
 //	this.allocedSize = MAX_POINTS_ON_WINDING;
@@ -1990,7 +1990,7 @@ idFixedWinding::ReAllocate
 //	this.numPoints = winding.GetNumPoints();
 //}
 //
-//ID_INLINE idFixedWinding::~idFixedWinding( void ) {
+//ID_INLINE idFixedWinding::~idFixedWinding( ) {
 //	this.p = NULL;	// otherwise it tries to free the fixed buffer
 //}
 //
@@ -2012,4 +2012,61 @@ idFixedWinding::ReAllocate
 		this.numPoints = 0;
 	}
 }
+
 //#endif	/* !__WINDING_H__ */
+
+
+Object.defineProperty( idWinding.prototype, "0", {
+	get: function ( ): number {
+		return this.p[0];
+	},
+	set: function ( value: number ): void {
+		todoThrow ( );
+	},
+	enumerable: false,
+	configurable: false
+} );
+
+Object.defineProperty( idWinding.prototype, "1", {
+	get: function ( ): number {
+		return this.p[1];
+	},
+	set: function ( value: number ): void {
+		todoThrow ( );
+	},
+	enumerable: false,
+	configurable: false
+} );
+
+Object.defineProperty( idWinding.prototype, "2", {
+	get: function ( ): number {
+		return this.p[2];
+	},
+	set: function ( value: number ): void {
+		todoThrow ( );
+	},
+	enumerable: false,
+	configurable: false
+} );
+
+Object.defineProperty( idWinding.prototype, "3", {
+	get: function ( ): number {
+		return this.p[3];
+	},
+	set: function ( value: number ): void {
+		todoThrow ( );
+	},
+	enumerable: false,
+	configurable: false
+} );
+
+Object.defineProperty( idWinding.prototype, "4", {
+	get: function ( ): number {
+		return this.p[4];
+	},
+	set: function ( value: number ): void {
+		todoThrow ( );
+	},
+	enumerable: false,
+	configurable: false
+} );

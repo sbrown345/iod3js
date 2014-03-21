@@ -34,34 +34,34 @@ var LUDICROUS_INDEX	= 10000;
 
 
 class portal_t {
-	intoArea:number/*int*/;		// area this portal leads to
-	w:idWinding;				// winding points have counter clockwise ordering seen this area
-	plane = new idPlane;			// view must be on the positive side of the plane to cross
-//	struct portal_s *		next:portal_s;			// next portal of the area
-//	struct doublePortal_s *	doublePortal:doublePortal_s;
+	intoArea: number /*int*/; // area this portal leads to
+	w: idWinding; // winding points have counter clockwise ordering seen this area
+	plane = new idPlane; // view must be on the positive side of the plane to cross
+	next: portal_t; // next portal of the area
+	doublePortal: doublePortal_t;
 }
 
 
-//typedef struct doublePortal_s {
-//	struct portal_s	*		portals[2];
-//	int						blockingBits;	// PS_BLOCK_VIEW, PS_BLOCK_AIR, etc, set by doors that shut them off
-//
-//	// A portal will be considered closed if it is past the
-//	// fog-out point in a fog volume.  We only support a single
-//	// fog volume over each portal.
-//	idRenderLightLocal *		fogLight;
-//	struct doublePortal_s *	nextFoggedPortal;
-//} doublePortal_t;
-//
-//
+class doublePortal_t {
+	portals = new Array<portal_t>(2);
+	blockingBits: number /*int*/; // PS_BLOCK_VIEW, PS_BLOCK_AIR, etc, set by doors that shut them off
+
+	// A portal will be considered closed if it is past the
+	// fog-out point in a fog volume.  We only support a single
+	// fog volume over each portal.
+	fogLight: idRenderLightLocal;
+	nextFoggedPortal: doublePortal_t;
+}
+
+
 class portalArea_t {
 	areaNum:number/*int*/;
 	connectedAreaNum = new Int32Array(NUM_PORTAL_ATTRIBUTES);	// if two areas have matching connectedAreaNum, they are
 								// not separated by a portal with the apropriate PS_BLOCK_* blockingBits
 	viewCount:number/*int*/;		// set by R_FindViewLightsAndEntities
 	portals: portal_t;		// never changes after load
-//	areaReference_t	entityRefs;		// head/tail of doubly linked list, may change
-//	areaReference_t	lightRefs;		// head/tail of doubly linked list, may change
+	entityRefs = new areaReference_t;		// head/tail of doubly linked list, may change
+	lightRefs = new areaReference_t;		// head/tail of doubly linked list, may change
 }
 
 
@@ -175,8 +175,8 @@ class idRenderWorldLocal extends idRenderWorld {
 
 	ParseModel ( src: idLexer ): idRenderModel { throw "placeholder"; }
 	ParseShadowModel ( src: idLexer ): idRenderModel { throw "placeholder"; }
-//	void					SetupAreaRefs();
-//	void					ParseInterAreaPortals( idLexer *src );
+	SetupAreaRefs ( ): void { throw "placeholder"; }
+	ParseInterAreaPortals(src: idLexer ):void { throw "placeholder"; }
 //	void					ParseNodes( idLexer *src );
 //	int						CommonChildrenArea_r( areaNode_t *node );
 	FreeWorld():void { throw "placeholder"; }
