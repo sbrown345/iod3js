@@ -65,16 +65,16 @@ class portalArea_t {
 }
 
 
-//static const int	CHILDREN_HAVE_MULTIPLE_AREAS = -2;
-//static const int	AREANUM_SOLID = -1;
-//typedef struct {
-//	idPlane			plane;
-//	int				children[2];		// negative numbers are (-1 - areaNumber), 0 = solid
-//	int				commonChildrenArea;	// if all children are either solid or a single area,
-//										// this is the area number, else CHILDREN_HAVE_MULTIPLE_AREAS
-//} areaNode_t;
-//
-//
+var CHILDREN_HAVE_MULTIPLE_AREAS = -2;
+var AREANUM_SOLID = -1;
+class areaNode_t {
+	plane = new idPlane;
+	children = new Int32Array(2);		// negative numbers are (-1 - areaNumber), 0 = solid
+	commonChildrenArea:number/*int*/;	// if all children are either solid or a single area,
+										// this is the area number, else CHILDREN_HAVE_MULTIPLE_AREAS
+}
+
+
 class idRenderWorldLocal extends idRenderWorld {
 //public:
 //							idRenderWorldLocal();
@@ -137,7 +137,7 @@ class idRenderWorldLocal extends idRenderWorld {
 	mapName = new idStr;				// ie: maps/tim_dm2.proc, written to demoFile
 	mapTimeStamp: number;			// for fast reloads of the same level
 
-	//areaNodes: areaNode_t ;
+	areaNodes: areaNode_t[];
 	numAreaNodes:number/*int*/;
 
 	portalAreas:portalArea_t;
@@ -177,8 +177,8 @@ class idRenderWorldLocal extends idRenderWorld {
 	ParseShadowModel ( src: idLexer ): idRenderModel { throw "placeholder"; }
 	SetupAreaRefs ( ): void { throw "placeholder"; }
 	ParseInterAreaPortals(src: idLexer ):void { throw "placeholder"; }
-//	void					ParseNodes( idLexer *src );
-//	int						CommonChildrenArea_r( areaNode_t *node );
+	ParseNodes ( src: idLexer ): void { throw "placeholder"; }
+	CommonChildrenArea_r ( node: areaNode_t ): number { throw "placeholder"; }
 	FreeWorld():void { throw "placeholder"; }
 	ClearWorld():void { throw "placeholder"; }
 	FreeDefs():void { throw "placeholder"; }
@@ -212,7 +212,7 @@ class idRenderWorldLocal extends idRenderWorld {
 //	void					SetPortalState( qhandle_t portal, int blockingBits );
 //	int						GetPortalState( qhandle_t portal );
 //	bool					AreasAreConnected( int areaNum1, int areaNum2, portalConnection_t connection );
-//	void					FloodConnectedAreas( portalArea_t *area, int portalAttributeIndex );
+	FloodConnectedAreas(area: portalArea_t, /*int */portalAttributeIndex: number): void { throw "placeholder"; }
 //	idScreenRect &			GetAreaScreenRect( int areaNum ) const { return areaScreenRect[areaNum]; }
 //	void					ShowPortals();
 //
@@ -239,7 +239,7 @@ class idRenderWorldLocal extends idRenderWorld {
 //
 //	void					ResizeInteractionTable();
 //
-//	void					AddEntityRefToArea( idRenderEntityLocal *def, portalArea_t *area );
+	AddEntityRefToArea(def:idRenderEntityLocal, area :portalArea_t ):void { throw "placeholder"; }
 //	void					AddLightRefToArea( idRenderLightLocal *light, portalArea_t *area );
 //
 //	void					RecurseProcBSP_r( modelTrace_t *results, int parentNodeNum, int nodeNum, float p1f, float p2f, const idVec3 &p1, const idVec3 &p2 ) const;

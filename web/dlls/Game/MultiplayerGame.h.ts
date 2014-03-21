@@ -92,7 +92,7 @@ var MP_PLAYER_MAXPING	= 999;
 ////	SND_COUNT
 ////} snd_evt_t;
 ////
-////class idMultiplayerGame {
+class idMultiplayerGame {
 ////public:
 ////
 ////					idMultiplayerGame();
@@ -349,8 +349,8 @@ var MP_PLAYER_MAXPING	= 999;
 ////	void			VoiceChat( const idCmdArgs &args, bool team );
 ////	void			DumpTourneyLine( void );
 ////	void			SuddenRespawn( void );
-////};
-////
+}
+
 ////ID_INLINE idMultiplayerGame::gameState_t idMultiplayerGame::GetGameState( void ) const {
 ////	return gameState;
 ////}

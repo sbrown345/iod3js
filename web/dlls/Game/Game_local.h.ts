@@ -285,7 +285,7 @@ class idGameLocal extends idGame {
 
 	sessionCommand = new idStr; // a target_sessionCommand can set this to return something to the session 
 
-////	idMultiplayerGame		mpGame;					// handles rules for standard dm
+	mpGame = new idMultiplayerGame;					// handles rules for standard dm
 
 	smokeParticles: idSmokeParticles; // global smoke trails
 	editEntities: idEditEntities; // in game editing
@@ -336,7 +336,7 @@ class idGameLocal extends idGame {
 
 ////	virtual const idDict &	GetPersistentPlayerInfo( int clientNum );
 ////	virtual void			SetPersistentPlayerInfo( int clientNum, const idDict &playerInfo );
-////	virtual void			InitFromNewMap( const char *mapName, idRenderWorld *renderWorld, idSoundWorld *soundWorld, bool isServer, bool isClient, int randSeed );
+	InitFromNewMap ( mapName: string, renderWorld: idRenderWorld, soundWorld: idSoundWorld, isServer: boolean, isClient: boolean, randseed: number /*int*/ ): void { throw "placeholder"; }
 ////	virtual bool			InitFromSaveGame( const char *mapName, idRenderWorld *renderWorld, idSoundWorld *soundWorld, idFile *saveGameFile );
 ////	virtual void			SaveGame( idFile *saveGameFile );
 ////	virtual void			MapShutdown( void );
@@ -374,8 +374,8 @@ class idGameLocal extends idGame {
 	DWarning ( fmt: string, ...args: any[] ): void { throw "placeholder"; }
 	Error ( fmt: string, ...args: any[] ): void { throw "placeholder"; }
 
-////							// Initializes all map variables common to both save games and spawned games
-////	void					LoadMap( const char *mapName, int randseed );
+	// Initializes all map variables common to both save games and spawned games
+	LoadMap ( mapName: string, /*int */randseed: number ): void { throw "placeholder"; }
 
 ////	void					LocalMapRestart( void );
 ////	void					MapRestart( void );
@@ -508,7 +508,7 @@ class idGameLocal extends idGame {
 	influenceActive: boolean; // true when a phantasm is happening
 	nextGibTime: number /*int*/;
 
-////	idList<int>				clientDeclRemap[MAX_CLIENTS][DECL_MAX_TYPES];
+	clientDeclRemap: idList<number/*int*/>[/*MAX_CLIENTS*/][/*DECL_MAX_TYPES*/];
 
 	clientEntityStates: entityState_t[][] = multiDimEmptyArray<entityState_t>( MAX_CLIENTS, MAX_GENTITIES );
 	clientPVS = multiDimArray<Int32Array>( Int32Array, MAX_CLIENTS, ENTITY_PVS_SIZE );
@@ -525,33 +525,33 @@ class idGameLocal extends idGame {
 
 	newInfo = new idDict ( );
 
-////	idStrList				shakeSounds;
+	shakeSounds = new idStrList;
 
 	lagometer = $3dArray( Uint8Array, LAGO_IMG_HEIGHT, LAGO_IMG_WIDTH, 4 );
 
 	Clear ( ): void { throw "placeholder"; }
 ////							// returns true if the entity shouldn't be spawned at all in this game type or difficulty level
 ////	bool					InhibitEntitySpawn( idDict &spawnArgs );
-////							// spawn entities from the map file
-////	void					SpawnMapEntities( ):void { throw "placeholder"; }
-////							// commons used by init, shutdown, and restart
-////	void					MapPopulate( ):void { throw "placeholder"; }
+	// spawn entities from the map file
+	SpawnMapEntities( ):void { throw "placeholder"; }
+	// commons used by init, shutdown, and restart
+	MapPopulate( ):void { throw "placeholder"; }
 	MapClear ( clearClients: boolean ): void { throw "placeholder"; }
 
 ////	pvsHandle_t				GetClientPVS( idPlayer *player, pvsType_t type );
-////	void					SetupPlayerPVS( ):void { throw "placeholder"; }
-////	void					FreePlayerPVS( ):void { throw "placeholder"; }
-////	void					UpdateGravity( ):void { throw "placeholder"; }
-////	void					SortActiveEntityList( ):void { throw "placeholder"; }
-////	void					ShowTargets( ):void { throw "placeholder"; }
-////	void					RunDebugInfo( ):void { throw "placeholder"; }
+	SetupPlayerPVS( ):void { throw "placeholder"; }
+	FreePlayerPVS( ):void { throw "placeholder"; }
+	UpdateGravity( ):void { throw "placeholder"; }
+	SortActiveEntityList( ):void { throw "placeholder"; }
+	ShowTargets( ):void { throw "placeholder"; }
+	RunDebugInfo( ):void { throw "placeholder"; }
 
-////	void					InitScriptForMap( ):void { throw "placeholder"; }
+	InitScriptForMap( ):void { throw "placeholder"; }
 
 	InitConsoleCommands ( ): void { throw "placeholder"; }
 	ShutdownConsoleCommands ( ): void { throw "placeholder"; }
 
-////	void					InitAsyncNetwork( ):void { throw "placeholder"; }
+	InitAsyncNetwork( ):void { throw "placeholder"; }
 	ShutdownAsyncNetwork ( ): void { throw "placeholder"; }
 ////	void					InitLocalClient( int clientNum );
 ////	void					InitClientDeclRemap( int clientNum );
@@ -583,7 +583,14 @@ class idGameLocal extends idGame {
 ////	void					GetMapLoadingGUI( char gui[ MAX_STRING_CHARS ] );
 
 	constructor() {
-		super ( );
+		super();
+
+		for ( var i = 0; i < MAX_CLIENTS; i++ ) {
+			for ( var j = 0; j < declType_t.DECL_MAX_TYPES; j++ ) {
+				this.clientDeclRemap[i][j] = new idList<number>( Number );
+			}
+		}
+
 		this.Clear ( );
 	}
 };

@@ -118,8 +118,8 @@ class idCollisionModelManager {
 ////public:
 ////	virtual					~idCollisionModelManager( void ) {}
 ////
-////	// Loads collision models from a map file.
-////	virtual void			LoadMap( const idMapFile *mapFile ) = 0;
+	// Loads collision models from a map file.
+	LoadMap ( mapFile: idMapFile ): void { throw "placeholder"; }
 ////	// Frees all the collision models.
 ////	virtual void			FreeMap( void ) = 0;
 ////

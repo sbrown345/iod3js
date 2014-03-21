@@ -73,12 +73,12 @@
 //	float			windowX, windowY;
 //
 //	r.Clear();
-//	for ( i = 0 ; i < w->GetNumPoints() ; i++ ) {
-//		R_LocalPointToGlobal( space->modelMatrix, (*w)[i].ToVec3(), v );
+//	for ( i = 0 ; i < w.GetNumPoints() ; i++ ) {
+//		R_LocalPointToGlobal( space.modelMatrix, (*w)[i].ToVec3(), v );
 //		R_GlobalToNormalizedDeviceCoordinates( v, ndc );
 //
-//		windowX = 0.5f * ( 1.0f + ndc[0] ) * ( tr.viewDef->viewport.x2 - tr.viewDef->viewport.x1 );
-//		windowY = 0.5f * ( 1.0f + ndc[1] ) * ( tr.viewDef->viewport.y2 - tr.viewDef->viewport.y1 );
+//		windowX = 0.5f * ( 1.0f + ndc[0] ) * ( tr.viewDef.viewport.x2 - tr.viewDef.viewport.x1 );
+//		windowY = 0.5f * ( 1.0f + ndc[1] ) * ( tr.viewDef.viewport.y2 - tr.viewDef.viewport.y1 );
 //
 //		r.AddPoint( windowX, windowY );
 //	}
@@ -99,21 +99,21 @@
 //	int			i;
 //	idPlane		forward;
 //
-//	ldef = p->doublePortal->fogLight;
+//	ldef = p.doublePortal.fogLight;
 //	if ( !ldef ) {
 //		return false;
 //	}
 //
 //	// find the current density of the fog
-//	const idMaterial	*lightShader = ldef->lightShader;
-//	int		size = sizeof( float ) *lightShader->GetNumRegisters();
+//	const idMaterial	*lightShader = ldef.lightShader;
+//	int		size = sizeof( float ) *lightShader.GetNumRegisters();
 //	float	*regs =(float *)_alloca( size );
 //
-//	lightShader->EvaluateRegisters( regs, ldef->parms.shaderParms, tr.viewDef, ldef->parms.referenceSound );
+//	lightShader.EvaluateRegisters( regs, ldef.parms.shaderParms, tr.viewDef, ldef.parms.referenceSound );
 //
-//	const shaderStage_t	*stage = lightShader->GetStage(0);
+//	const shaderStage_t	*stage = lightShader.GetStage(0);
 //
-//	float alpha = regs[ stage->color.registers[3] ];
+//	float alpha = regs[ stage.color.registers[3] ];
 //
 //
 //	// if they left the default value on, set a fog distance of 500
@@ -126,13 +126,13 @@
 //		a = -0.5f / alpha;
 //	}
 //
-//	forward[0] = a * tr.viewDef->worldSpace.modelViewMatrix[2];
-//	forward[1] = a * tr.viewDef->worldSpace.modelViewMatrix[6];
-//	forward[2] = a * tr.viewDef->worldSpace.modelViewMatrix[10];
-//	forward[3] = a * tr.viewDef->worldSpace.modelViewMatrix[14];
+//	forward[0] = a * tr.viewDef.worldSpace.modelViewMatrix[2];
+//	forward[1] = a * tr.viewDef.worldSpace.modelViewMatrix[6];
+//	forward[2] = a * tr.viewDef.worldSpace.modelViewMatrix[10];
+//	forward[3] = a * tr.viewDef.worldSpace.modelViewMatrix[14];
 //
-//	w = p->w;
-//	for ( i = 0 ; i < w->GetNumPoints() ; i++ ) {
+//	w = p.w;
+//	for ( i = 0 ; i < w.GetNumPoints() ; i++ ) {
 //		float	d;
 //
 //		d = forward.Distance( (*w)[i].ToVec3() );
@@ -167,28 +167,28 @@
 //	AddAreaRefs( areaNum, ps );
 //
 //	if ( areaScreenRect[areaNum].IsEmpty() ) {
-//		areaScreenRect[areaNum] = ps->rect;
+//		areaScreenRect[areaNum] = ps.rect;
 //	} else {
-//		areaScreenRect[areaNum].Union( ps->rect );
+//		areaScreenRect[areaNum].Union( ps.rect );
 //	}
 //
 //	// go through all the portals
-//	for ( p = area->portals; p; p = p->next ) {
+//	for ( p = area.portals; p; p = p.next ) {
 //		// an enclosing door may have sealed the portal off
-//		if ( p->doublePortal->blockingBits & PS_BLOCK_VIEW ) {
+//		if ( p.doublePortal.blockingBits & PS_BLOCK_VIEW ) {
 //			continue;
 //		}
 //
 //		// make sure this portal is facing away from the view
-//		d = p->plane.Distance( origin );
+//		d = p.plane.Distance( origin );
 //		if ( d < -0.1f ) {
 //			continue;
 //		}
 //
 //		// make sure the portal isn't in our stack trace,
 //		// which would cause an infinite loop
-//		for ( check = ps; check; check = check->next ) {
-//			if ( check->p == p ) {
+//		for ( check = ps; check; check = check.next ) {
+//			if ( check.p == p ) {
 //				break;		// don't recursively enter a stack
 //			}
 //		}
@@ -204,14 +204,14 @@
 //			newStack = *ps;
 //			newStack.p = p;
 //			newStack.next = ps;
-//			FloodViewThroughArea_r( origin, p->intoArea, &newStack );
+//			FloodViewThroughArea_r( origin, p.intoArea, &newStack );
 //			continue;
 //		}
 //
 //		// clip the portal winding to all of the planes
-//		w = *p->w;
-//		for ( j = 0; j < ps->numPortalPlanes; j++ ) {
-//			if ( !w.ClipInPlace( -ps->portalPlanes[j], 0 ) ) {
+//		w = *p.w;
+//		for ( j = 0; j < ps.numPortalPlanes; j++ ) {
+//			if ( !w.ClipInPlace( -ps.portalPlanes[j], 0 ) ) {
 //				break;
 //			}
 //		}
@@ -233,7 +233,7 @@
 //		newStack.rect = ScreenRectFromWinding( &w, &tr.identitySpace );
 //		
 //		// slop might have spread it a pixel outside, so trim it back
-//		newStack.rect.Intersect( ps->rect );
+//		newStack.rect.Intersect( ps.rect );
 //
 //		// generate a set of clipping planes that will further restrict
 //		// the visible view beyond just the scissor rect
@@ -265,10 +265,10 @@
 //		}
 //
 //		// the last stack plane is the portal plane
-//		newStack.portalPlanes[newStack.numPortalPlanes] = p->plane;
+//		newStack.portalPlanes[newStack.numPortalPlanes] = p.plane;
 //		newStack.numPortalPlanes++;
 //
-//		FloodViewThroughArea_r( origin, p->intoArea, &newStack );
+//		FloodViewThroughArea_r( origin, p.intoArea, &newStack );
 //	}
 //}
 //
@@ -294,12 +294,12 @@
 //	}
 //
 //	ps.numPortalPlanes = numPlanes;
-//	ps.rect = tr.viewDef->scissor;
+//	ps.rect = tr.viewDef.scissor;
 //
-//	if ( tr.viewDef->areaNum < 0 ){
+//	if ( tr.viewDef.areaNum < 0 ){
 //
 //		for ( i = 0; i < numPortalAreas; i++ ) {
-//			areaScreenRect[i] = tr.viewDef->scissor;
+//			areaScreenRect[i] = tr.viewDef.scissor;
 //		}
 //
 //		// if outside the world, mark everything
@@ -313,7 +313,7 @@
 //		}
 //
 //		// flood out through portals, setting area viewCount
-//		FloodViewThroughArea_r( origin, tr.viewDef->areaNum, &ps );
+//		FloodViewThroughArea_r( origin, tr.viewDef.areaNum, &ps );
 //	}
 //}
 //
@@ -343,18 +343,18 @@
 //	AddLightRefToArea( light, area );	
 //
 //	// go through all the portals
-//	for ( p = area->portals; p; p = p->next ) {
+//	for ( p = area.portals; p; p = p.next ) {
 //		// make sure this portal is facing away from the view
-//		d = p->plane.Distance( light->globalLightOrigin );
+//		d = p.plane.Distance( light.globalLightOrigin );
 //		if ( d < -0.1f ) {
 //			continue;
 //		}
 //
 //		// make sure the portal isn't in our stack trace,
 //		// which would cause an infinite loop
-//		for ( check = ps; check; check = check->next ) {
+//		for ( check = ps; check; check = check.next ) {
 //			firstPortalStack = check;
-//			if ( check->p == p ) {
+//			if ( check.p == p ) {
 //				break;		// don't recursively enter a stack
 //			}
 //		}
@@ -369,14 +369,14 @@
 //			newStack = *ps;
 //			newStack.p = p;
 //			newStack.next = ps;
-//			FloodLightThroughArea_r( light, p->intoArea, &newStack );
+//			FloodLightThroughArea_r( light, p.intoArea, &newStack );
 //			continue;
 //		}
 //
 //		// clip the portal winding to all of the planes
-//		w = *p->w;
-//		for ( j = 0; j < ps->numPortalPlanes; j++ ) {
-//			if ( !w.ClipInPlace( -ps->portalPlanes[j], 0 ) ) {
+//		w = *p.w;
+//		for ( j = 0; j < ps.numPortalPlanes; j++ ) {
+//			if ( !w.ClipInPlace( -ps.portalPlanes[j], 0 ) ) {
 //				break;
 //			}
 //		}
@@ -385,8 +385,8 @@
 //		}
 //		// also always clip to the original light planes, because they aren't
 //		// necessarily extending to infinitiy like a view frustum
-//		for ( j = 0; j < firstPortalStack->numPortalPlanes; j++ ) {
-//			if ( !w.ClipInPlace( -firstPortalStack->portalPlanes[j], 0 ) ) {
+//		for ( j = 0; j < firstPortalStack.numPortalPlanes; j++ ) {
+//			if ( !w.ClipInPlace( -firstPortalStack.portalPlanes[j], 0 ) ) {
 //				break;
 //			}
 //		}
@@ -413,8 +413,8 @@
 //				j = 0;
 //			}
 //
-//			v1 = light->globalLightOrigin - w[i].ToVec3();
-//			v2 = light->globalLightOrigin - w[j].ToVec3();
+//			v1 = light.globalLightOrigin - w[i].ToVec3();
+//			v2 = light.globalLightOrigin - w[j].ToVec3();
 //
 //			newStack.portalPlanes[newStack.numPortalPlanes].Normal().Cross( v2, v1 );
 //
@@ -422,12 +422,12 @@
 //			if ( newStack.portalPlanes[newStack.numPortalPlanes].Normalize() < 0.01f ) {
 //				continue;
 //			}
-//			newStack.portalPlanes[newStack.numPortalPlanes].FitThroughPoint( light->globalLightOrigin );
+//			newStack.portalPlanes[newStack.numPortalPlanes].FitThroughPoint( light.globalLightOrigin );
 //
 //			newStack.numPortalPlanes++;
 //		}
 //
-//		FloodLightThroughArea_r( light, p->intoArea, &newStack );
+//		FloodLightThroughArea_r( light, p.intoArea, &newStack );
 //	}
 //}
 //
@@ -444,11 +444,11 @@
 //void idRenderWorldLocal::FlowLightThroughPortals( idRenderLightLocal *light ) {
 //	portalStack_t	ps;
 //	int				i;
-//	const idVec3 origin = light->globalLightOrigin;
+//	const idVec3 origin = light.globalLightOrigin;
 //
 //	// if the light origin areaNum is not in a valid area,
 //	// the light won't have any area refs
-//	if ( light->areaNum == -1 ) {
+//	if ( light.areaNum == -1 ) {
 //		return;
 //	}
 //
@@ -456,10 +456,10 @@
 //
 //	ps.numPortalPlanes = 6;
 //	for ( i = 0 ; i < 6 ; i++ ) {
-//		ps.portalPlanes[i] = light->frustum[i];
+//		ps.portalPlanes[i] = light.frustum[i];
 //	}
 //
-//	FloodLightThroughArea_r( light, light->areaNum, &ps );
+//	FloodLightThroughArea_r( light, light.areaNum, &ps );
 //}
 //
 ////======================================================================================================
@@ -478,11 +478,11 @@
 //	portalArea = &portalAreas[ areaNum ];
 //
 //	// go through all the portals
-//	for ( p = portalArea->portals; p; p = p->next ) {
+//	for ( p = portalArea.portals; p; p = p.next ) {
 //
 //		// check if we already visited the area the portal leads to
-//		for ( a = areas; a; a = a->next ) {
-//			if ( a->areaNum == p->intoArea ) {
+//		for ( a = areas; a; a = a.next ) {
+//			if ( a.areaNum == p.intoArea ) {
 //				break;
 //			}
 //		}
@@ -491,17 +491,17 @@
 //		}
 //
 //		// the frustum origin must be at the front of the portal plane
-//		if ( p->plane.Side( frustum.GetOrigin(), 0.1f ) == SIDE_BACK ) {
+//		if ( p.plane.Side( frustum.GetOrigin(), 0.1f ) == SIDE_BACK ) {
 //			continue;
 //		}
 //
 //		// the frustum must cross the portal plane
-//		if ( frustum.PlaneSide( p->plane, 0.0f ) != PLANESIDE_CROSS ) {
+//		if ( frustum.PlaneSide( p.plane, 0.0f ) != PLANESIDE_CROSS ) {
 //			continue;
 //		}
 //
 //		// get the bounds for the portal winding projected in the frustum
-//		frustum.ProjectionBounds( *p->w, newBounds );
+//		frustum.ProjectionBounds( *p.w, newBounds );
 //
 //		newBounds.IntersectSelf( bounds );
 //
@@ -512,11 +512,11 @@
 //		newBounds[1][0] = frustum.GetFarDistance();
 //
 //		a = areaNumRefAllocator.Alloc();
-//		a->areaNum = p->intoArea;
-//		a->next = areas;
+//		a.areaNum = p.intoArea;
+//		a.next = areas;
 //		areas = a;
 //
-//		areas = FloodFrustumAreas_r( frustum, p->intoArea, newBounds, areas );
+//		areas = FloodFrustumAreas_r( frustum, p.intoArea, newBounds, areas );
 //	}
 //
 //	return areas;
@@ -538,8 +538,8 @@
 //	bounds[0].Set( frustum.GetNearDistance(), -1.0f, -1.0f );
 //	bounds[1].Set( frustum.GetFarDistance(), 1.0f, 1.0f );
 //
-//	for ( a = areas; a; a = a->next ) {
-//		areas = FloodFrustumAreas_r( frustum, a->areaNum, bounds, areas );
+//	for ( a = areas; a; a = a.next ) {
+//		areas = FloodFrustumAreas_r( frustum, a.areaNum, bounds, areas );
 //	}
 //
 //	return areas;
@@ -572,8 +572,8 @@
 //	// because we want to do all touching of the model after
 //	// we have determined all the lights that may effect it,
 //	// which optimizes cache usage
-//	if ( R_CullLocalBox( entity->referenceBounds, entity->modelMatrix,
-//							ps->numPortalPlanes, ps->portalPlanes ) ) {
+//	if ( R_CullLocalBox( entity.referenceBounds, entity.modelMatrix,
+//							ps.numPortalPlanes, ps.portalPlanes ) ) {
 //		return true;
 //	}
 //
@@ -597,25 +597,25 @@
 //
 //	area = &portalAreas[ areaNum ];
 //
-//	for ( ref = area->entityRefs.areaNext ; ref != &area->entityRefs ; ref = ref->areaNext ) {
-//		entity = ref->entity;
+//	for ( ref = area.entityRefs.areaNext ; ref != &area.entityRefs ; ref = ref.areaNext ) {
+//		entity = ref.entity;
 //
 //		// debug tool to allow viewing of only one entity at a time
-//		if ( r_singleEntity.GetInteger() >= 0 && r_singleEntity.GetInteger() != entity->index ) {
+//		if ( r_singleEntity.GetInteger() >= 0 && r_singleEntity.GetInteger() != entity.index ) {
 //			continue;
 //		}
 //
 //		// remove decals that are completely faded away
-//		R_FreeEntityDefFadedDecals( entity, tr.viewDef->renderView.time );
+//		R_FreeEntityDefFadedDecals( entity, tr.viewDef.renderView.time );
 //
 //		// check for completely suppressing the model
 //		if ( !r_skipSuppress.GetBool() ) {
-//			if ( entity->parms.suppressSurfaceInViewID
-//					&& entity->parms.suppressSurfaceInViewID == tr.viewDef->renderView.viewID ) {
+//			if ( entity.parms.suppressSurfaceInViewID
+//					&& entity.parms.suppressSurfaceInViewID == tr.viewDef.renderView.viewID ) {
 //				continue;
 //			}
-//			if ( entity->parms.allowSurfaceInViewID 
-//					&& entity->parms.allowSurfaceInViewID != tr.viewDef->renderView.viewID ) {
+//			if ( entity.parms.allowSurfaceInViewID 
+//					&& entity.parms.allowSurfaceInViewID != tr.viewDef.renderView.viewID ) {
 //				continue;
 //			}
 //		}
@@ -630,7 +630,7 @@
 //		vEnt = R_SetEntityDefViewEntity( entity );
 //
 //		// possibly expand the scissor rect
-//		vEnt->scissorRect.Union( ps->rect );
+//		vEnt.scissorRect.Union( ps.rect );
 //	}
 //}
 //
@@ -659,12 +659,12 @@
 //			// so the planes that have the view origin on the negative
 //			// side will be the "back" faces of the light, which must have
 //			// some fragment inside the portalStack to be visible
-//			if ( light->frustum[i].Distance( tr.viewDef->renderView.vieworg ) >= 0 ) {
+//			if ( light.frustum[i].Distance( tr.viewDef.renderView.vieworg ) >= 0 ) {
 //				continue;
 //			}
 //
 //			// get the exact winding for this side
-//			const idWinding *ow = light->frustumWindings[i];
+//			const idWinding *ow = light.frustumWindings[i];
 //
 //			// projected lights may have one of the frustums degenerated
 //			if ( !ow ) {
@@ -674,8 +674,8 @@
 //			w = *ow;
 //
 //			// now check the winding against each of the portalStack planes
-//			for ( j = 0; j < ps->numPortalPlanes - 1; j++ ) {
-//				if ( !w.ClipInPlace( -ps->portalPlanes[j] ) ) {
+//			for ( j = 0; j < ps.numPortalPlanes - 1; j++ ) {
+//				if ( !w.ClipInPlace( -ps.portalPlanes[j] ) ) {
 //					break;
 //				}
 //			}
@@ -692,17 +692,17 @@
 //	} else {
 //
 //		// simple point check against each plane
-//		tri = light->frustumTris;
+//		tri = light.frustumTris;
 //
 //		// check against frustum planes
-//		for ( i = 0; i < ps->numPortalPlanes - 1; i++ ) {
-//			for ( j = 0; j < tri->numVerts; j++ ) {
-//				d = ps->portalPlanes[i].Distance( tri->verts[j].xyz );
+//		for ( i = 0; i < ps.numPortalPlanes - 1; i++ ) {
+//			for ( j = 0; j < tri.numVerts; j++ ) {
+//				d = ps.portalPlanes[i].Distance( tri.verts[j].xyz );
 //				if ( d < 0.0f ) {
 //					break;	// point is inside this plane
 //				}
 //			}
-//			if ( j == tri->numVerts ) {
+//			if ( j == tri.numVerts ) {
 //				// all points were outside one of the planes
 //				tr.pc.c_box_cull_out++;
 //				return true;
@@ -728,19 +728,19 @@
 //
 //	area = &portalAreas[ areaNum ];
 //
-//	for ( lref = area->lightRefs.areaNext ; lref != &area->lightRefs ; lref = lref->areaNext ) {
-//		light = lref->light;
+//	for ( lref = area.lightRefs.areaNext ; lref != &area.lightRefs ; lref = lref.areaNext ) {
+//		light = lref.light;
 //
 //		// debug tool to allow viewing of only one light at a time
-//		if ( r_singleLight.GetInteger() >= 0 && r_singleLight.GetInteger() != light->index ) {
+//		if ( r_singleLight.GetInteger() >= 0 && r_singleLight.GetInteger() != light.index ) {
 //			continue;
 //		}
 //
 //		// check for being closed off behind a door
 //		// a light that doesn't cast shadows will still light even if it is behind a door
 //		if ( r_useLightCulling.GetInteger() >= 3 &&
-//				!light->parms.noShadows && light->lightShader->LightCastsShadows()
-//					&& light->areaNum != -1 && !tr.viewDef->connectedAreas[ light->areaNum ] ) {
+//				!light.parms.noShadows && light.lightShader.LightCastsShadows()
+//					&& light.areaNum != -1 && !tr.viewDef.connectedAreas[ light.areaNum ] ) {
 //			continue;
 //		}
 //
@@ -754,7 +754,7 @@
 //		vLight = R_SetLightDefViewLight( light );
 //
 //		// expand the scissor rect
-//		vLight->scissorRect.Union( ps->rect );
+//		vLight.scissorRect.Union( ps.rect );
 //	}
 //}
 //
@@ -785,17 +785,17 @@
 //	portalArea_t	*area;
 //	portal_t		*portal;
 //
-//	if ( tr.viewDef->connectedAreas[areaNum] ) {
+//	if ( tr.viewDef.connectedAreas[areaNum] ) {
 //		return;
 //	}
 //
-//	tr.viewDef->connectedAreas[areaNum] = true;
+//	tr.viewDef.connectedAreas[areaNum] = true;
 //
 //	// flood through all non-blocked portals
 //	area = &portalAreas[ areaNum ];
-//	for ( portal = area->portals ; portal ; portal = portal->next ) {
-//		if ( !(portal->doublePortal->blockingBits & PS_BLOCK_VIEW) ) {
-//			BuildConnectedAreas_r( portal->intoArea );
+//	for ( portal = area.portals ; portal ; portal = portal.next ) {
+//		if ( !(portal.doublePortal.blockingBits & PS_BLOCK_VIEW) ) {
+//			BuildConnectedAreas_r( portal.intoArea );
 //		}
 //	}
 //}
@@ -810,20 +810,20 @@
 //void idRenderWorldLocal::BuildConnectedAreas( void ) {
 //	int		i;
 //
-//	tr.viewDef->connectedAreas = (bool *)R_FrameAlloc( numPortalAreas
-//		* sizeof( tr.viewDef->connectedAreas[0] ) );
+//	tr.viewDef.connectedAreas = (bool *)R_FrameAlloc( numPortalAreas
+//		* sizeof( tr.viewDef.connectedAreas[0] ) );
 //
 //	// if we are outside the world, we can see all areas
-//	if ( tr.viewDef->areaNum == -1 ) {
+//	if ( tr.viewDef.areaNum == -1 ) {
 //		for ( i = 0 ; i < numPortalAreas ; i++ ) {
-//			tr.viewDef->connectedAreas[i] = true;
+//			tr.viewDef.connectedAreas[i] = true;
 //		}
 //		return;
 //	}
 //
 //	// start with none visible, and flood fill from the current area
-//	memset( tr.viewDef->connectedAreas, 0, numPortalAreas * sizeof( tr.viewDef->connectedAreas[0] ) );
-//	BuildConnectedAreas_r( tr.viewDef->areaNum );
+//	memset( tr.viewDef.connectedAreas, 0, numPortalAreas * sizeof( tr.viewDef.connectedAreas[0] ) );
+//	BuildConnectedAreas_r( tr.viewDef.areaNum );
 //}
 //
 ///*
@@ -839,15 +839,15 @@
 //*/
 //void idRenderWorldLocal::FindViewLightsAndEntities( void ) {
 //	// clear the visible lightDef and entityDef lists
-//	tr.viewDef->viewLights = NULL;
-//	tr.viewDef->viewEntitys = NULL;
+//	tr.viewDef.viewLights = NULL;
+//	tr.viewDef.viewEntitys = NULL;
 //
 //	// find the area to start the portal flooding in
 //	if ( !r_usePortals.GetBool() ) {
 //		// debug tool to force no portal culling
-//		tr.viewDef->areaNum = -1;
+//		tr.viewDef.areaNum = -1;
 //	} else {
-//		tr.viewDef->areaNum = PointInArea( tr.viewDef->initialViewAreaOrigin );
+//		tr.viewDef.areaNum = PointInArea( tr.viewDef.initialViewAreaOrigin );
 //	}
 //
 //	// determine all possible connected areas for
@@ -862,29 +862,29 @@
 //	if ( r_singleArea.GetBool() ) {
 //		// if debugging, only mark this area
 //		// if we are outside the world, don't draw anything
-//		if ( tr.viewDef->areaNum >= 0 ) {
+//		if ( tr.viewDef.areaNum >= 0 ) {
 //			portalStack_t	ps;
 //			int				i;
 //			static int lastPrintedAreaNum;
 //
-//			if ( tr.viewDef->areaNum != lastPrintedAreaNum ) {
-//				lastPrintedAreaNum = tr.viewDef->areaNum;
-//				common->Printf( "entering portal area %i\n", tr.viewDef->areaNum );
+//			if ( tr.viewDef.areaNum != lastPrintedAreaNum ) {
+//				lastPrintedAreaNum = tr.viewDef.areaNum;
+//				common.Printf( "entering portal area %i\n", tr.viewDef.areaNum );
 //			}
 //
 //			for ( i = 0 ; i < 5 ; i++ ) {
-//				ps.portalPlanes[i] = tr.viewDef->frustum[i];
+//				ps.portalPlanes[i] = tr.viewDef.frustum[i];
 //			}
 //			ps.numPortalPlanes = 5;
-//			ps.rect = tr.viewDef->scissor;
+//			ps.rect = tr.viewDef.scissor;
 //
-//			AddAreaRefs( tr.viewDef->areaNum, &ps );
+//			AddAreaRefs( tr.viewDef.areaNum, &ps );
 //		}
 //	} else {
 //		// note that the center of projection for flowing through portals may
 //		// be a different point than initialViewAreaOrigin for subviews that
 //		// may have the viewOrigin in a solid/invalid area
-//		FlowViewThroughPortals( tr.viewDef->renderView.vieworg, 5, tr.viewDef->frustum );
+//		FlowViewThroughPortals( tr.viewDef.renderView.vieworg, 5, tr.viewDef.frustum );
 //	}
 //}
 //
@@ -913,10 +913,10 @@
 //
 //	for ( i = 0 ; i < numInterAreaPortals ; i++ ) {
 //		portal = &doublePortals[i];
-//		w = portal->portals[0]->w;
+//		w = portal.portals[0].w;
 //
 //		wb.Clear();
-//		for ( j = 0 ; j < w->GetNumPoints() ; j++ ) {
+//		for ( j = 0 ; j < w.GetNumPoints() ; j++ ) {
 //			wb.AddPoint( (*w)[j].ToVec3() );
 //		}
 //		if ( wb.IntersectsBounds( b ) ) {
@@ -926,26 +926,26 @@
 //
 //	return 0;
 //}
-//
-///*
-//=============
-//FloodConnectedAreas
-//=============
-//*/
-//void	idRenderWorldLocal::FloodConnectedAreas( portalArea_t *area, int portalAttributeIndex ) {
-//	if ( area->connectedAreaNum[portalAttributeIndex] == connectedAreaNum ) {
-//		return;
-//	}
-//	area->connectedAreaNum[portalAttributeIndex] = connectedAreaNum;
-//
-//	for ( portal_t *p = area->portals ; p ; p = p->next ) {
-//		if ( !(p->doublePortal->blockingBits & (1<<portalAttributeIndex) ) ) {
-//			FloodConnectedAreas( &portalAreas[p->intoArea], portalAttributeIndex );
-//		}
-//	}
-//}
-//
-///*
+
+/*
+=============
+FloodConnectedAreas
+=============
+*/
+idRenderWorldLocal.prototype.FloodConnectedAreas = function ( area: portalArea_t, /*int */portalAttributeIndex: number ): void {
+	if ( area.connectedAreaNum[portalAttributeIndex] == this.connectedAreaNum ) {
+		return;
+	}
+	area.connectedAreaNum[portalAttributeIndex] = this.connectedAreaNum;
+
+	for ( var p = area.portals; p; p = p.next ) {
+		if ( !( p.doublePortal.blockingBits & ( 1 << portalAttributeIndex ) ) ) {
+			this.FloodConnectedAreas( this.portalAreas[p.intoArea], portalAttributeIndex );
+		}
+	}
+};
+
+/*
 //==============
 //AreasAreConnected
 //
@@ -956,7 +956,7 @@
 //		return false;
 //	}
 //	if ( areaNum1 > numPortalAreas || areaNum2 > numPortalAreas || areaNum1 < 0 || areaNum2 < 0 ) {
-//		common->Error( "idRenderWorldLocal::AreAreasConnected: bad parms: %i, %i", areaNum1, areaNum2 );
+//		common.Error( "idRenderWorldLocal::AreAreasConnected: bad parms: %i, %i", areaNum1, areaNum2 );
 //	}
 //
 //	int	attribute = 0;
@@ -968,7 +968,7 @@
 //		intConnection >>= 1;
 //	}
 //	if ( attribute >= NUM_PORTAL_ATTRIBUTES || ( 1 << attribute ) != (int)connection ) {
-//		common->Error( "idRenderWorldLocal::AreasAreConnected: bad connection number: %i\n", (int)connection );
+//		common.Error( "idRenderWorldLocal::AreasAreConnected: bad connection number: %i\n", (int)connection );
 //	}
 //
 //	return portalAreas[areaNum1].connectedAreaNum[attribute] == portalAreas[areaNum2].connectedAreaNum[attribute];
@@ -988,7 +988,7 @@
 //	}
 //
 //	if ( portal < 1 || portal > numInterAreaPortals ) {
-//		common->Error( "SetPortalState: bad portal number %i", portal );
+//		common.Error( "SetPortalState: bad portal number %i", portal );
 //	}
 //	int	old = doublePortals[portal-1].blockingBits;
 //	if ( old == blockTypes ) {
@@ -1001,15 +1001,15 @@
 //	for ( int i = 0 ; i < NUM_PORTAL_ATTRIBUTES ; i++ ) {
 //		if ( ( old ^ blockTypes ) & ( 1 << i ) ) {
 //			connectedAreaNum++;
-//			FloodConnectedAreas( &portalAreas[doublePortals[portal-1].portals[1]->intoArea], i );
+//			FloodConnectedAreas( &portalAreas[doublePortals[portal-1].portals[1].intoArea], i );
 //		}
 //	}
 //
-//	if ( session->writeDemo ) {
-//		session->writeDemo->WriteInt( DS_RENDER );
-//		session->writeDemo->WriteInt( DC_SET_PORTAL_STATE );
-//		session->writeDemo->WriteInt( portal );
-//		session->writeDemo->WriteInt( blockTypes );
+//	if ( session.writeDemo ) {
+//		session.writeDemo.WriteInt( DS_RENDER );
+//		session.writeDemo.WriteInt( DC_SET_PORTAL_STATE );
+//		session.writeDemo.WriteInt( portal );
+//		session.writeDemo.WriteInt( blockTypes );
 //	}
 //}
 //
@@ -1024,7 +1024,7 @@
 //	}
 //
 //	if ( portal < 1 || portal > numInterAreaPortals ) {
-//		common->Error( "GetPortalState: bad portal number %i", portal );
+//		common.Error( "GetPortalState: bad portal number %i", portal );
 //	}
 //
 //	return doublePortals[portal-1].blockingBits;
@@ -1047,16 +1047,16 @@
 //	// flood out through portals, setting area viewCount
 //	for ( i = 0 ; i < numPortalAreas ; i++ ) {
 //		area = &portalAreas[i];
-//		if ( area->viewCount != tr.viewCount ) {
+//		if ( area.viewCount != tr.viewCount ) {
 //			continue;
 //		}
-//		for ( p = area->portals ; p ; p = p->next ) {
-//			w = p->w;
+//		for ( p = area.portals ; p ; p = p.next ) {
+//			w = p.w;
 //			if ( !w ) {
 //				continue;
 //			}
 //
-//			if ( portalAreas[ p->intoArea ].viewCount != tr.viewCount ) {
+//			if ( portalAreas[ p.intoArea ].viewCount != tr.viewCount ) {
 //				// red = can't see
 //				glColor3f( 1, 0, 0 );
 //			} else {
@@ -1065,7 +1065,7 @@
 //			}
 //
 //			glBegin( GL_LINE_LOOP );
-//			for ( j = 0 ; j < w->GetNumPoints() ; j++ ) {
+//			for ( j = 0 ; j < w.GetNumPoints() ; j++ ) {
 //				glVertex3fv( (*w)[j].ToFloatPtr() );
 //			}
 //			glEnd();

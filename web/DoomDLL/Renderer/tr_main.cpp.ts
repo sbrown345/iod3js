@@ -355,34 +355,34 @@ function R_ClearedFrameAlloc<T> ( type: any, /*int */bytes__Unused: number ): T 
 //*/
 //void R_FrameFree( void *data ) {
 //}
-//
-//
-//
-////==========================================================================
-//
-//void R_AxisToModelMatrix( const idMat3 &axis, const idVec3 &origin, float modelMatrix[16] ) {
-//	modelMatrix[0] = axis[0][0];
-//	modelMatrix[4] = axis[1][0];
-//	modelMatrix[8] = axis[2][0];
-//	modelMatrix[12] = origin[0];
-//
-//	modelMatrix[1] = axis[0][1];
-//	modelMatrix[5] = axis[1][1];
-//	modelMatrix[9] = axis[2][1];
-//	modelMatrix[13] = origin[1];
-//
-//	modelMatrix[2] = axis[0][2];
-//	modelMatrix[6] = axis[1][2];
-//	modelMatrix[10] = axis[2][2];
-//	modelMatrix[14] = origin[2];
-//
-//	modelMatrix[3] = 0;
-//	modelMatrix[7] = 0;
-//	modelMatrix[11] = 0;
-//	modelMatrix[15] = 1;
-//}
-//
-//
+
+
+
+//==========================================================================
+
+function R_AxisToModelMatrix ( axis: idMat3, origin: idVec3, /*float */modelMatrix: Float32Array /*[16]*/ ): void {
+	modelMatrix[0] = axis[0][0];
+	modelMatrix[4] = axis[1][0];
+	modelMatrix[8] = axis[2][0];
+	modelMatrix[12] = origin[0];
+
+	modelMatrix[1] = axis[0][1];
+	modelMatrix[5] = axis[1][1];
+	modelMatrix[9] = axis[2][1];
+	modelMatrix[13] = origin[1];
+
+	modelMatrix[2] = axis[0][2];
+	modelMatrix[6] = axis[1][2];
+	modelMatrix[10] = axis[2][2];
+	modelMatrix[14] = origin[2];
+
+	modelMatrix[3] = 0;
+	modelMatrix[7] = 0;
+	modelMatrix[11] = 0;
+	modelMatrix[15] = 1;
+}
+
+
 //// FIXME: these assume no skewing or scaling transforms
 //
 //void R_LocalPointToGlobal( const float modelMatrix[16], const idVec3 &in, idVec3 &out ) {

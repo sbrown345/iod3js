@@ -91,8 +91,8 @@ class dominantTri_t {
 } ;
 
 class shadowCache_t {
-	xyz:idVec4;					// we use homogenous coordinate tricks
-} ;
+	xyz = new idVec4; // we use homogenous coordinate tricks
+}
 
 var SHADOW_CAP_INFINITE	= 64;
 
@@ -138,7 +138,7 @@ class srfTriangles_t {
 	// plane, we need to draw the rear caps of the shadow volume								  							
 	// turboShadows will have SHADOW_CAP_INFINITE												  							
 
-	shadowVertexes: shadowCache_t; // these will be copied to shadowCache when it is going to be drawn.						  shadowCache_t *				
+	shadowVertexes: shadowCache_t[]; // these will be copied to shadowCache when it is going to be drawn.						  shadowCache_t *				
 	// these are NULL when vertex programs are available
 
 	ambientSurface: srfTriangles_t; // for light interactions, point back at the original surface that generated
@@ -304,17 +304,17 @@ class idRenderModel {
 ////	// reports the amount of memory (roughly) consumed by the model
 ////	virtual int					Memory() const = 0;
 
-////	// for reloadModels
-////	virtual ID_TIME_T				Timestamp() const = 0;
+	// for reloadModels
+	Timestamp():number { throw "placeholder"; }
 
-////	// returns the number of surfaces
-////	virtual int					NumSurfaces() const = 0;
+	// returns the number of surfaces
+	NumSurfaces(): number { throw "placeholder"; }
 
-////	// NumBaseSurfaces will not count any overlays added to dynamic models
-////	virtual int					NumBaseSurfaces() const = 0;
+	// NumBaseSurfaces will not count any overlays added to dynamic models
+	NumBaseSurfaces(): number { throw "placeholder"; }
 
-////	// get a pointer to a surface
-////	virtual const modelSurface_t *Surface( int surfaceNum ) const = 0;
+	// get a pointer to a surface
+	Surface(surfaceNum: number): modelSurface_t { throw "placeholder"; }
 
 ////	// Allocates surface triangles.
 ////	// Allocates memory for srfTriangles_t::verts and srfTriangles_t::indexes
@@ -331,8 +331,8 @@ class idRenderModel {
 ////	// if some surfaces are noSelfShadow and others aren't
 ////	virtual srfTriangles_t	*	ShadowHull() const = 0;
 
-////	// models of the form "_area*" may have a prelight shadow model associated with it
-////	virtual bool				IsStaticWorldModel() const = 0;
+	// models of the form "_area*" may have a prelight shadow model associated with it
+	IsStaticWorldModel ( ): boolean { throw "placeholder"; }
 
 ////	// models parsed from inside map files or dynamically created cannot be reloaded by
 ////	// reloadmodels
@@ -341,12 +341,12 @@ class idRenderModel {
 ////	// md3, md5, particles, etc
 ////	virtual dynamicModel_t		IsDynamicModel() const = 0;
 
-////	// if the load failed for any reason, this will return true
-////	virtual bool				IsDefaultModel() const = 0;
+	// if the load failed for any reason, this will return true
+	IsDefaultModel ( ): boolean { throw "placeholder"; }
 
-////	// dynamic models should return a fast, conservative approximation
-////	// static models should usually return the exact value
-////	virtual idBounds			Bounds( const struct renderEntity_s *ent = NULL ) const = 0;
+	// dynamic models should return a fast, conservative approximation
+	// static models should usually return the exact value
+	Bounds ( ent: renderEntity_t = null ): idBounds { throw "placeholder"; }
 
 ////	// returns value != 0.0 if the model requires the depth hack
 ////	virtual float				DepthHack() const = 0;

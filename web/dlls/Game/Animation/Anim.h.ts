@@ -529,36 +529,5 @@ class idMD5Anim {
 //	idBounds					AFPoseBounds;
 //	int							AFPoseTime;
 //};
-//
-///*
-//==============================================================================================
-//
-//	idAnimManager
-//
-//==============================================================================================
-//*/
-//
-//class idAnimManager {
-//public:
-//								idAnimManager();
-//								~idAnimManager();
-//
-//	static bool					forceExport;
-//
-//	void						Shutdown( );
-//	idMD5Anim *					GetAnim( name:string );
-//	void						ReloadAnims( );
-//	void						ListAnims( ) const;
-//	int							JointIndex( name:string );
-//	const char *				JointName( int index ) const;
-//
-//	void						ClearAnimsInUse( );
-//	void						FlushUnusedAnims( );
-//
-//private:
-//	idHashTable<idMD5Anim *>	animations;
-//	idStrList					jointnames;
-//	idHashIndex					jointnamesHash;
-//};
-//
+
 //#endif /* !__ANIM_H__ */

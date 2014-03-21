@@ -67,7 +67,7 @@
 //idMD5Anim::Free
 //====================
 //*/
-//void idMD5Anim::Free( void ) {
+//void idMD5Anim::Free( ) {
 //	numFrames	= 0;
 //	numJoints	= 0;
 //	frameRate	= 24;
@@ -86,7 +86,7 @@
 //idMD5Anim::NumFrames
 //====================
 //*/
-//int	idMD5Anim::NumFrames( void ) const {
+//int	idMD5Anim::NumFrames( ) const {
 //	return numFrames;
 //}
 //
@@ -95,7 +95,7 @@
 //idMD5Anim::NumJoints
 //====================
 //*/
-//int	idMD5Anim::NumJoints( void ) const {
+//int	idMD5Anim::NumJoints( ) const {
 //	return numJoints;
 //}
 //
@@ -104,7 +104,7 @@
 //idMD5Anim::Length
 //====================
 //*/
-//int idMD5Anim::Length( void ) const {
+//int idMD5Anim::Length( ) const {
 //	return animLength;
 //}
 //
@@ -113,7 +113,7 @@
 //idMD5Anim::TotalMovementDelta
 //=====================
 //*/
-//const idVec3 &idMD5Anim::TotalMovementDelta( void ) const {
+//const idVec3 &idMD5Anim::TotalMovementDelta( ) const {
 //	return totaldelta;
 //}
 //
@@ -122,7 +122,7 @@
 //idMD5Anim::TotalMovementDelta
 //=====================
 //*/
-//const char *idMD5Anim::Name( void ) const {
+//const char *idMD5Anim::Name( ) const {
 //	return name;
 //}
 //
@@ -131,7 +131,7 @@
 //idMD5Anim::Reload
 //====================
 //*/
-//bool idMD5Anim::Reload( void ) {
+//bool idMD5Anim::Reload( ) {
 //	idStr filename;
 //
 //	filename = name;
@@ -145,7 +145,7 @@
 //idMD5Anim::Allocated
 //====================
 //*/
-//size_t idMD5Anim::Allocated( void ) const {
+//size_t idMD5Anim::Allocated( ) const {
 //	size_t	size = bounds.Allocated() + jointInfo.Allocated() + componentFrames.Allocated() + name.Allocated();
 //	return size;
 //}
@@ -332,7 +332,7 @@
 //idMD5Anim::IncreaseRefs
 //====================
 //*/
-//void idMD5Anim::IncreaseRefs( void ) const {
+//void idMD5Anim::IncreaseRefs( ) const {
 //	ref_count++;
 //}
 //
@@ -341,7 +341,7 @@
 //idMD5Anim::DecreaseRefs
 //====================
 //*/
-//void idMD5Anim::DecreaseRefs( void ) const {
+//void idMD5Anim::DecreaseRefs( ) const {
 //	ref_count--;
 //}
 //
@@ -350,7 +350,7 @@
 //idMD5Anim::NumRefs
 //====================
 //*/
-//int idMD5Anim::NumRefs( void ) const {
+//int idMD5Anim::NumRefs( ) const {
 //	return ref_count;
 //}
 //
@@ -910,13 +910,36 @@
 //		}
 //	}
 //}
+
+/*
+==============================================================================================
+
+	idAnimManager
+
+==============================================================================================
+*/
+
+class idAnimManager {
+//public:
+//								idAnimManager();
+//								~idAnimManager();
 //
-///***********************************************************************
+//	static bool					forceExport;
 //
-//	idAnimManager
+//	void						Shutdown( );
+//	idMD5Anim *					GetAnim( name:string );
+//	void						ReloadAnims( );
+//	void						ListAnims( ) const;
+//	int							JointIndex( name:string );
+//	const char *				JointName( int index ) const;
 //
-//***********************************************************************/
+//	void						ClearAnimsInUse( );
+//	void						FlushUnusedAnims( );
 //
+//private:
+//	idHashTable<idMD5Anim *>	animations;
+//	idStrList					jointnames;
+//	idHashIndex					jointnamesHash;
 ///*
 //====================
 //idAnimManager::idAnimManager
@@ -939,7 +962,7 @@
 //idAnimManager::Shutdown
 //====================
 //*/
-//void idAnimManager::Shutdown( void ) {
+//void idAnimManager::Shutdown( ) {
 //	animations.DeleteContents();
 //	jointnames.Clear();
 //	jointnamesHash.Free();
@@ -984,7 +1007,7 @@
 //idAnimManager::ReloadAnims
 //================
 //*/
-//void idAnimManager::ReloadAnims( void ) {
+//void idAnimManager::ReloadAnims( ) {
 //	int			i;
 //	idMD5Anim	**animptr;
 //
@@ -1030,7 +1053,7 @@
 //idAnimManager::ListAnims
 //================
 //*/
-//void idAnimManager::ListAnims( void ) const {
+//void idAnimManager::ListAnims( ) const {
 //	int			i;
 //	idMD5Anim	**animptr;
 //	idMD5Anim	*anim;
@@ -1066,7 +1089,8 @@
 //idAnimManager::FlushUnusedAnims
 //================
 //*/
-//void idAnimManager::FlushUnusedAnims( void ) {
+	FlushUnusedAnims(): void {
+		todoThrow ( );
 //	int						i;
 //	idMD5Anim				**animptr;
 //	idList<idMD5Anim *>		removeAnims;
@@ -1085,3 +1109,5 @@
 //		delete removeAnims[ i ];
 //	}
 //}
+	}
+}

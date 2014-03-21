@@ -1365,48 +1365,48 @@ idRenderWorldLocal.prototype.FreeEntityDef = function ( entityHandle: number /*q
 //	}
 //	return false;
 //}
-//
-///*
-//=================================================================================
-//
-//CREATE MODEL REFS
-//
-//=================================================================================
-//*/
-//
-///*
-//=================
-//AddEntityRefToArea
-//
-//This is called by R_PushVolumeIntoTree and also directly
-//for the world model references that are precalculated.
-//=================
-//*/
-//void idRenderWorldLocal::AddEntityRefToArea( idRenderEntityLocal *def, portalArea_t *area ) {
-//	areaReference_t	*ref;
-//
-//	if ( !def ) {
-//		common.Error( "idRenderWorldLocal::AddEntityRefToArea: NULL def" );
-//	}
-//
-//	ref = areaReferenceAllocator.Alloc();
-//
-//	tr.pc.c_entityReferences++;
-//
-//	ref.entity = def;
-//
-//	// link to entityDef
-//	ref.ownerNext = def.entityRefs;
-//	def.entityRefs = ref;
-//
-//	// link to end of area list
-//	ref.area = area;
-//	ref.areaNext = &area.entityRefs;
-//	ref.areaPrev = area.entityRefs.areaPrev;
-//	ref.areaNext.areaPrev = ref;
-//	ref.areaPrev.areaNext = ref;
-//}
-//
+
+/*
+=================================================================================
+
+CREATE MODEL REFS
+
+=================================================================================
+*/
+
+/*
+=================
+AddEntityRefToArea
+
+This is called by R_PushVolumeIntoTree and also directly
+for the world model references that are precalculated.
+=================
+*/
+idRenderWorldLocal.prototype.AddEntityRefToArea = function ( def: idRenderEntityLocal, area: portalArea_t ): void {
+	var ref: areaReference_t;
+
+	if ( !def ) {
+		common.Error( "idRenderWorldLocal::AddEntityRefToArea: NULL def" );
+	}
+
+	ref = this.areaReferenceAllocator.Alloc ( );
+
+	tr.pc.c_entityReferences++;
+
+	ref.entity = def;
+
+	// link to entityDef
+	ref.ownerNext = def.entityRefs;
+	def.entityRefs = ref;
+
+	// link to end of area list
+	ref.area = area;
+	ref.areaNext = area.entityRefs;
+	ref.areaPrev = area.entityRefs.areaPrev;
+	ref.areaNext.areaPrev = ref;
+	ref.areaPrev.areaNext = ref;
+};
+
 ///*
 //===================
 //AddLightRefToArea
@@ -1417,7 +1417,7 @@ idRenderWorldLocal.prototype.FreeEntityDef = function ( entityHandle: number /*q
 //	areaReference_t	*lref;
 //
 //	// add a lightref to this area
-//	lref = areaReferenceAllocator.Alloc();
+//	lref = this.areaReferenceAllocator.Alloc();
 //	lref.light = light;
 //	lref.area = area;
 //	lref.ownerNext = light.references;

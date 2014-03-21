@@ -125,10 +125,49 @@ class idPlane {
 	//	const char *	ToString( int precision = 2 ) const;
 	//
 	//private:
-	a:number; //	float			
-	b:number; //	float			
-	c:number; //	float			
-	d:number; //	float			
+	//a:number; //	float			
+	//b:number; //	float			
+	//c:number; //	float			
+	//d: number; //	float		
+
+	values = new Float32Array(4);	
+
+	get a ( ): number { return this.values[0]; }
+
+	set a ( value: number ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this.values[0] = value;
+	}
+
+	get b ( ): number { return this.values[1]; }
+
+	set b ( value: number ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this.values[1] = value;
+	}
+
+	get c ( ): number { return this.values[2]; }
+
+	set c ( value: number ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this.values[2] = value;
+	}
+
+	get d ( ): number { return this.values[3]; }
+
+	set d ( value: number ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this.values[3] = value;
+	}
+	
 	//};
 	//
 	//extern idPlane plane_origin;
@@ -390,11 +429,11 @@ class idPlane {
 	//ID_INLINE const float *idPlane::ToFloatPtr( ) const {
 	//	return reinterpret_cast<const float *>(&a);
 	//}
-	//
-	//ID_INLINE float *idPlane::ToFloatPtr( ) {
-	//	return reinterpret_cast<float *>(&a);
-	//}
-	//
+
+	ToFloatPtr ( ): Float32Array {
+		return this.values; //reinterpret_cast<float *>(&a);
+	}
+
 	//#endif /* !__MATH_PLANE_H__ */
 
 
@@ -556,3 +595,71 @@ class idPlane {
 	//	return idStr::FloatArrayToString(ToFloatPtr(), GetDimension(), precision);
 	//}
 }
+
+Object.defineProperty(idPlane.prototype, "0", {
+	get: function (): number {
+		return this.values[0];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.x = value;
+	},
+	enumerable: false,
+	configurable: false
+});
+
+Object.defineProperty(idPlane.prototype, "1", {
+	get: function (): number {
+		return this.values[1];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.y = value;
+	},
+	enumerable: false,
+	configurable: false
+});
+
+Object.defineProperty(idPlane.prototype, "2", {
+	get: function (): number {
+		return this.values[2];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.z = value;
+	},
+	enumerable: false,
+	configurable: false
+});
+
+Object.defineProperty(idPlane.prototype, "3", {
+	get: function (): number {
+		return this.values[3];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.w = value;
+	},
+	enumerable: false,
+	configurable: false
+});

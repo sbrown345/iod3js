@@ -239,34 +239,34 @@ Zero( ):void {
 //	return this.b[0][0] > this.b[1][0];
 //}
 
-//ID_INLINE bool idBounds::AddPoint( const idVec3 &v ) {
-//	bool expanded = false;
-//	if ( v[0] < this.b[0][0]) {
-//		this.b[0][0] = v[0];
-//		expanded = true;
-//	}
-//	if ( v[0] > this.b[1][0]) {
-//		this.b[1][0] = v[0];
-//		expanded = true;
-//	}
-//	if ( v[1] < this.b[0][1] ) {
-//		this.b[0][1] = v[1];
-//		expanded = true;
-//	}
-//	if ( v[1] > this.b[1][1]) {
-//		this.b[1][1] = v[1];
-//		expanded = true;
-//	}
-//	if ( v[2] < this.b[0][2] ) {
-//		this.b[0][2] = v[2];
-//		expanded = true;
-//	}
-//	if ( v[2] > this.b[1][2]) {
-//		this.b[1][2] = v[2];
-//		expanded = true;
-//	}
-//	return expanded;
-//}
+	AddPoint ( v: idVec3 ): boolean {
+		var expanded = false;
+		if ( v[0] < this.b[0][0] ) {
+			this.b[0][0] = v[0];
+			expanded = true;
+		}
+		if ( v[0] > this.b[1][0] ) {
+			this.b[1][0] = v[0];
+			expanded = true;
+		}
+		if ( v[1] < this.b[0][1] ) {
+			this.b[0][1] = v[1];
+			expanded = true;
+		}
+		if ( v[1] > this.b[1][1] ) {
+			this.b[1][1] = v[1];
+			expanded = true;
+		}
+		if ( v[2] < this.b[0][2] ) {
+			this.b[0][2] = v[2];
+			expanded = true;
+		}
+		if ( v[2] > this.b[1][2] ) {
+			this.b[1][2] = v[2];
+			expanded = true;
+		}
+		return expanded;
+	}
 
 	AddBounds ( a: idBounds ): boolean {
 		var expanded = false;

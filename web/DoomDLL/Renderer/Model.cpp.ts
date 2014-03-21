@@ -258,7 +258,7 @@ idRenderModelStatic.prototype.MakeDefaultModel = function ( ): void {
 ////	bool loaded;
 ////	idStr extension;
 
-////	InitEmpty( fileName );
+////	this.InitEmpty( fileName );
 
 ////	// FIXME: load new .proc map format
 
@@ -352,32 +352,32 @@ idRenderModelStatic.prototype.Name = function ( ): string {
     return this.name;
 };
 
-/////*
-////================
-////idRenderModelStatic::Timestamp
-////================
-////*/
-////ID_TIME_T idRenderModelStatic::Timestamp() const {
-////	return timeStamp;
-////}
+/*
+================
+idRenderModelStatic::Timestamp
+================
+*/
+idRenderModelStatic.prototype.Timestamp = function ( ): number {
+	return this.timeStamp;
+};
 
-/////*
-////================
-////idRenderModelStatic::NumSurfaces
-////================
-////*/
-////int idRenderModelStatic::NumSurfaces() const {
-////	return this.surfaces.Num();
-////}
+/*
+================
+idRenderModelStatic.prototype.NumSurfaces
+================
+*/
+idRenderModelStatic.prototype.NumSurfaces = function ( ): number /*int*/ {
+	return this.surfaces.Num ( );
+};
 
-/////*
-////================
-////idRenderModelStatic::NumBaseSurfaces
-////================
-////*/
-////int idRenderModelStatic::NumBaseSurfaces() const {
-////	return this.surfaces.Num() - overlaysAdded;
-////}
+/*
+================
+idRenderModelStatic.prototype.NumBaseSurfaces
+================
+*/
+idRenderModelStatic.prototype.NumBaseSurfaces = function ( ): number /*int*/ {
+	return this.surfaces.Num ( ) - this.overlaysAdded;
+};
 
 /*
 ================
@@ -409,60 +409,60 @@ idRenderModelStatic.prototype.Surface = function ( surfaceNum: number ): modelSu
 ////	R_FreeStaticTriSurf( tris );
 ////}
 
-/////*
-////================
-////idRenderModelStatic::ShadowHull
-////================
-////*/
-////srfTriangles_t *idRenderModelStatic::ShadowHull() const {
-////	return shadowHull;
-////}
+/*
+================
+idRenderModelStatic::ShadowHull
+================
+*/
+idRenderModelStatic.prototype.ShadowHull = function ( ): srfTriangles_t {
+	return this.shadowHull;
+};
 
-/////*
-////================
-////idRenderModelStatic::IsStaticWorldModel
-////================
-////*/
-////bool idRenderModelStatic::IsStaticWorldModel() const {
-////	return isStaticWorldModel;
-////}
+/*
+================
+idRenderModelStatic.prototype.IsStaticWorldModel
+================
+*/
+idRenderModelStatic.prototype.IsStaticWorldModel = function ( ): boolean {
+	return this.isStaticWorldModel;
+};
 
-/////*
-////================
-////idRenderModelStatic::IsDynamicModel
-////================
-////*/
-////dynamicModel_t idRenderModelStatic::IsDynamicModel() const {
-////	// dynamic subclasses will override this
-////	return DM_STATIC;
-////}
+/*
+================
+idRenderModelStatic.prototype.IsDynamicModel
+================
+*/
+idRenderModelStatic.prototype.IsDynamicModel = function ( ): dynamicModel_t {
+	// dynamic subclasses will override this
+	return dynamicModel_t.DM_STATIC;
+};
 
-/////*
-////================
-////idRenderModelStatic::IsReloadable
-////================
-////*/
-////bool idRenderModelStatic::IsReloadable() const {
-////	return reloadable;
-////}
+/*
+================
+idRenderModelStatic.prototype.IsReloadable
+================
+*/
+idRenderModelStatic.prototype.IsReloadable =  function ( ): boolean {
+	return this.reloadable;
+};
 
-/////*
-////================
-////idRenderModelStatic::Bounds
-////================
-////*/
-////idBounds idRenderModelStatic::Bounds( const struct renderEntity_s *mdef ) const {
-////	return this.bounds;
-////}
+/*
+================
+idRenderModelStatic.prototype.Bounds
+================
+*/
+idRenderModelStatic.prototype.Bounds = function ( mdef: renderEntity_t = null): idBounds {
+	return this.bounds;
+};
 
-/////*
-////================
-////idRenderModelStatic::DepthHack
-////================
-////*/
-////float idRenderModelStatic::DepthHack() const {
-////	return 0.0;
-////}
+/*
+================
+idRenderModelStatic.prototype.DepthHack
+================
+*/
+idRenderModelStatic.prototype.DepthHack = function ( ): number {
+	return 0.0;
+};
 
 /////*
 ////================
@@ -2137,7 +2137,7 @@ idRenderModelStatic.prototype.PurgeModel = function ( ) {
 ////void idRenderModelStatic::ReadFromDemoFile( class idDemoFile *f ) {
 ////	PurgeModel();
 
-////	InitEmpty( f.ReadHashString() );
+////	this.InitEmpty( f.ReadHashString() );
 
 ////	int i, j, numSurfaces;
 ////	f.ReadInt( numSurfaces );

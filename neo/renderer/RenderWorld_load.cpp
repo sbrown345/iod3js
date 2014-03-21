@@ -592,7 +592,7 @@ bool idRenderWorldLocal::InitFromMap( const char *name ) {
 
 	delete src;
 	dlog(DEBUG_RENDERWORLD_LOAD, "exit\n");
-	exit(0);
+	
 
 	// if it was a trivial map without any areas, create a single area
 	if ( !numPortalAreas ) {
@@ -604,7 +604,7 @@ bool idRenderWorldLocal::InitFromMap( const char *name ) {
 
 	AddWorldModelEntities();
 	ClearPortalStates();
-
+	exit(0);
 	// done!
 	return true;
 }

@@ -93,8 +93,8 @@ class idGame {
 //	// The game gets a chance to alter userinfo before they are emitted to server.
 //	virtual void				ThrottleUserInfo( void ) = 0;
 //
-//	// Sets the serverinfo at map loads and when it changes.
-//	virtual void				SetServerInfo( const idDict &serverInfo ) = 0;
+	// Sets the serverinfo at map loads and when it changes.
+	SetServerInfo ( serverInfo: idDict ): void { throw "placeholder"; }
 //
 //	// The session calls this before moving the single player game to a new level.
 //	virtual const idDict &		GetPersistentPlayerInfo( int clientNum ) = 0;
@@ -102,8 +102,8 @@ class idGame {
 	// The session calls this right before a new level is loaded.
 	SetPersistentPlayerInfo ( /*int */clientNum: number, playerInfo: idDict ): void { throw "placeholder"; }
 
-//	// Loads a map and spawns all the entities.
-//	virtual void				InitFromNewMap( const char *mapName, idRenderWorld *renderWorld, idSoundWorld *soundWorld, bool isServer, bool isClient, int randseed ) = 0;
+	// Loads a map and spawns all the entities.
+	InitFromNewMap ( mapName: string, renderWorld: idRenderWorld, soundWorld: idSoundWorld, isServer: boolean, isClient: boolean, randseed: number /*int*/ ): void { throw "placeholder"; }
 //
 //	// Loads a map from a savegame file.
 //	virtual bool				InitFromSaveGame( const char *mapName, idRenderWorld *renderWorld, idSoundWorld *soundWorld, idFile *saveGameFile ) = 0;

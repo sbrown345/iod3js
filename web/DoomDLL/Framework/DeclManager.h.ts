@@ -285,8 +285,8 @@ class idDeclManager {
 
 ////	virtual void			ReloadFile( const char* filename, bool force ) = 0;
 
-////							// Returns the number of decls of the given type.
-////	virtual int				GetNumDecls( declType_t type ) = 0;
+	// Returns the number of decls of the given type.
+	GetNumDecls ( type: declType_t ): number { throw "placeholder"; }
 
 ////							// The complete lists of decls can be walked to populate editor browsers.
 ////							// If forceParse is set false, you can get the decl to check name / filename / etc.

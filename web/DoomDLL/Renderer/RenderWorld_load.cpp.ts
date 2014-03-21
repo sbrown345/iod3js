@@ -195,66 +195,66 @@ idRenderWorldLocal.prototype.ParseModel = function ( src: idLexer ): idRenderMod
 	return model;
 };
 
-///*
-//================
-//idRenderWorldLocal::ParseShadowModel
-//================
-//*/
-//idRenderModel *idRenderWorldLocal::ParseShadowModel( idLexer *src ) {
-//	idRenderModel	*model;
-//	idToken			token;
-//	int				j;
-//	srfTriangles_t	*tri;
-//	modelSurface_t	surf;
-//
-//	src.ExpectTokenString( "{" );
-//
-//	// parse the name
-//	src.ExpectAnyToken( &token );
-//
-//	model = renderModelManager.AllocModel();
-//	model.InitEmpty( token );
-//
-//	surf.shader = tr.defaultMaterial;
-//
-//	tri = R_AllocStaticTriSurf();
-//	surf.geometry = tri;
-//
-//	tri.numVerts = src.ParseInt();
-//	tri.numShadowIndexesNoCaps = src.ParseInt();
-//	tri.numShadowIndexesNoFrontCaps = src.ParseInt();
-//	tri.numIndexes = src.ParseInt();
-//	tri.shadowCapPlaneBits = src.ParseInt();
-//
-//	R_AllocStaticTriSurfShadowVerts( tri, tri.numVerts );
-//	tri.bounds.Clear();
-//	for ( j = 0 ; j < tri.numVerts ; j++ ) {
-//		float	vec[8];
-//
-//		src.Parse1DMatrix( 3, vec );
-//		tri.shadowVertexes[j].xyz[0] = vec[0];
-//		tri.shadowVertexes[j].xyz[1] = vec[1];
-//		tri.shadowVertexes[j].xyz[2] = vec[2];
-//		tri.shadowVertexes[j].xyz[3] = 1;		// no homogenous value
-//
-//		tri.bounds.AddPoint( tri.shadowVertexes[j].xyz.ToVec3() );
-//	}
-//
-//	R_AllocStaticTriSurfIndexes( tri, tri.numIndexes );
-//	for ( j = 0 ; j < tri.numIndexes ; j++ ) {
-//		tri.indexes[j] = src.ParseInt();
-//	}
-//
-//	// add the completed surface to the model
-//	model.AddSurface( surf );
-//
-//	src.ExpectTokenString( "}" );
-//
-//	// we do NOT do a model.FinishSurfaceces, because we don't need sil edges, planes, tangents, etc.
-////	model.FinishSurfaces();
-//
-//	return model;
-//}
+/*
+================
+idRenderWorldLocal::ParseShadowModel
+================
+*/
+idRenderWorldLocal.prototype.ParseShadowModel = function ( src: idLexer ): idRenderModel {
+	var model: idRenderModel;
+	var token = new idToken;
+	var j: number /*int*/;
+	var tri: srfTriangles_t;
+	var surf = new modelSurface_t;
+
+	src.ExpectTokenString( "{" );
+
+	// parse the name
+	src.ExpectAnyToken( token );
+
+	model = renderModelManager.AllocModel ( );
+	model.InitEmpty( token.data );
+
+	surf.shader = tr.defaultMaterial;
+
+	tri = R_AllocStaticTriSurf ( );
+	surf.geometry = tri;
+
+	tri.numVerts = src.ParseInt ( );
+	tri.numShadowIndexesNoCaps = src.ParseInt ( );
+	tri.numShadowIndexesNoFrontCaps = src.ParseInt ( );
+	tri.numIndexes = src.ParseInt ( );
+	tri.shadowCapPlaneBits = src.ParseInt ( );
+
+	R_AllocStaticTriSurfShadowVerts( tri, tri.numVerts );
+	tri.bounds.Clear ( );
+	for ( j = 0; j < tri.numVerts; j++ ) {
+		var vec = new Float32Array( 8 );
+
+		src.Parse1DMatrix( 3, vec );
+		tri.shadowVertexes[j].xyz[0] = vec[0];
+		tri.shadowVertexes[j].xyz[1] = vec[1];
+		tri.shadowVertexes[j].xyz[2] = vec[2];
+		tri.shadowVertexes[j].xyz[3] = 1; // no homogenous value
+
+		tri.bounds.AddPoint( tri.shadowVertexes[j].xyz.ToVec3 ( ) );
+	}
+
+	R_AllocStaticTriSurfIndexes( tri, tri.numIndexes );
+	for ( j = 0; j < tri.numIndexes; j++ ) {
+		tri.indexes[j] = src.ParseInt ( );
+	}
+
+	// add the completed surface to the model
+	model.AddSurface( surf );
+
+	src.ExpectTokenString( "}" );
+
+	// we do NOT do a model.FinishSurfaceces, because we don't need sil edges, planes, tangents, etc.
+//	model.FinishSurfaces();
+
+	return model;
+};
 
 /*
 ================
@@ -281,12 +281,12 @@ idRenderWorldLocal.prototype.SetupAreaRefs = function ( ): void {
 idRenderWorldLocal::ParseInterAreaPortals
 ================
 */
-idRenderWorldLocal.prototype.ParseInterAreaPortals = function (src: idLexer ) {
+idRenderWorldLocal.prototype.ParseInterAreaPortals = function ( src: idLexer ) {
 	var /*int */i: number, j: number;
 
 	src.ExpectTokenString( "{" );
 
-	this.numPortalAreas = src.ParseInt();
+	this.numPortalAreas = src.ParseInt ( );
 	if ( this.numPortalAreas < 0 ) {
 		src.Error( "R_ParseInterAreaPortals: bad numPortalAreas" );
 		return;
@@ -295,37 +295,37 @@ idRenderWorldLocal.prototype.ParseInterAreaPortals = function (src: idLexer ) {
 	this.areaScreenRect = newStructArray<idScreenRect>( idScreenRect, this.numPortalAreas ); //(idScreenRect *) R_ClearedStaticAlloc( this.numPortalAreas * sizeof( idScreenRect ) );
 
 	// set the doubly linked lists
-	this.SetupAreaRefs();
+	this.SetupAreaRefs ( );
 
-	this.numInterAreaPortals = src.ParseInt();
+	this.numInterAreaPortals = src.ParseInt ( );
 	if ( this.numInterAreaPortals < 0 ) {
-		src.Error(  "R_ParseInterAreaPortals: bad numInterAreaPortals" );
+		src.Error( "R_ParseInterAreaPortals: bad numInterAreaPortals" );
 		return;
 	}
 
-	this.doublePortals = newStructArray<doublePortal_t>( doublePortal_t, this.numInterAreaPortals );// (doublePortal_t *)R_ClearedStaticAlloc( this.numInterAreaPortals * 
-		//sizeof( this.doublePortals [0] ) );
+	this.doublePortals = newStructArray<doublePortal_t>( doublePortal_t, this.numInterAreaPortals ); // (doublePortal_t *)R_ClearedStaticAlloc( this.numInterAreaPortals * 
+	//sizeof( this.doublePortals [0] ) );
 
-	for ( i = 0 ; i < this.numInterAreaPortals ; i++ ) {
-		var/*int*/numPoints: number, a1: number, a2: number;
+	for ( i = 0; i < this.numInterAreaPortals; i++ ) {
+		var /*int*/numPoints: number, a1: number, a2: number;
 		var w: idWinding;
 		var p: portal_t;
 
-		numPoints = src.ParseInt();
-		a1 = src.ParseInt();
-		a2 = src.ParseInt();
+		numPoints = src.ParseInt ( );
+		a1 = src.ParseInt ( );
+		a2 = src.ParseInt ( );
 
 		w = new idWinding( numPoints );
 		w.SetNumPoints( numPoints );
-		for ( j = 0 ; j < numPoints ; j++ ) {
-			src.Parse1DMatrix( 3, (w)[j].ToFloatPtr() );
+		for ( j = 0; j < numPoints; j++ ) {
+			src.Parse1DMatrix( 3, ( w )[j].ToFloatPtr ( ) );
 			// no texture coordinates
-			(w)[j][3] = 0;
-			(w)[j][4] = 0;
+			( w )[j][3] = 0;
+			( w )[j][4] = 0;
 		}
 
 		// add the portal to a1
-		p = new portal_t;//(portal_t *)R_ClearedStaticAlloc( sizeof( *p ) );
+		p = new portal_t; //(portal_t *)R_ClearedStaticAlloc( sizeof( *p ) );
 		p.intoArea = a2;
 		p.doublePortal = this.doublePortals[i];
 		p.w = w;
@@ -337,10 +337,10 @@ idRenderWorldLocal.prototype.ParseInterAreaPortals = function (src: idLexer ) {
 		this.doublePortals[i].portals[0] = p;
 
 		// reverse it for a2
-		p = new portal_t;//(portal_t *)R_ClearedStaticAlloc( sizeof( *p ) );
+		p = new portal_t; //(portal_t *)R_ClearedStaticAlloc( sizeof( *p ) );
 		p.intoArea = a1;
 		p.doublePortal = this.doublePortals[i];
-		p.w = w.Reverse();
+		p.w = w.Reverse ( );
 		p.w.GetPlane( p.plane );
 
 		p.next = this.portalAreas[a2].portals;
@@ -350,95 +350,95 @@ idRenderWorldLocal.prototype.ParseInterAreaPortals = function (src: idLexer ) {
 	}
 
 	src.ExpectTokenString( "}" );
-}
+};
 
-///*
-//================
-//idRenderWorldLocal::ParseNodes
-//================
-//*/
-//void idRenderWorldLocal::ParseNodes( idLexer *src ) {
-//	int			i;
-//
-//	src.ExpectTokenString( "{" );
-//
-//	numAreaNodes = src.ParseInt();
-//	if ( numAreaNodes < 0 ) {
-//		src.Error( "R_ParseNodes: bad numAreaNodes" );
-//	}
-//	this.areaNodes = (areaNode_t *)R_ClearedStaticAlloc( numAreaNodes * sizeof( this.areaNodes[0] ) );
-//
-//	for ( i = 0 ; i < numAreaNodes ; i++ ) {
-//		areaNode_t	*node;
-//
-//		node = &this.areaNodes[i];
-//
-//		src.Parse1DMatrix( 4, node.plane.ToFloatPtr() );
-//		node.children[0] = src.ParseInt();
-//		node.children[1] = src.ParseInt();
-//	}
-//
-//	src.ExpectTokenString( "}" );
-//}
-//
-///*
-//================
-//idRenderWorldLocal::CommonChildrenArea_r
-//================
-//*/
-//int idRenderWorldLocal::CommonChildrenArea_r( areaNode_t *node ) {
-//	int	nums[2];
-//
-//	for ( int i = 0 ; i < 2 ; i++ ) {
-//		if ( node.children[i] <= 0 ) {
-//			nums[i] = -1 - node.children[i];
-//		} else {
-//			nums[i] = this.CommonChildrenArea_r( &this.areaNodes[ node.children[i] ] );
-//		}
-//	}
-//
-//	// solid nodes will match any area
-//	if ( nums[0] == AREANUM_SOLID ) {
-//		nums[0] = nums[1];
-//	}
-//	if ( nums[1] == AREANUM_SOLID ) {
-//		nums[1] = nums[0];
-//	}
-//
-//	int	common;
-//	if ( nums[0] == nums[1] ) {
-//		common = nums[0];
-//	} else {
-//		common = CHILDREN_HAVE_MULTIPLE_AREAS;
-//	}
-//
-//	node.commonChildrenArea = common;
-//
-//	return common;
-//}
-//
-///*
-//=================
-//idRenderWorldLocal::ClearWorld
-//
-//Sets up for a single area world
-//=================
-//*/
-//void idRenderWorldLocal::ClearWorld() {
-//	this.numPortalAreas = 1;
-//	this.portalAreas = (portalArea_t *)R_ClearedStaticAlloc( sizeof( this.portalAreas[0] ) );
-//	this.areaScreenRect = (idScreenRect *) R_ClearedStaticAlloc( sizeof( idScreenRect ) );
-//
-//	this.SetupAreaRefs();
-//
-//	// even though we only have a single area, create a node
-//	// that has both children pointing at it so we don't need to
-//	//
-//	this.areaNodes = (areaNode_t *)R_ClearedStaticAlloc( sizeof( this.areaNodes[0] ) );
-//	this.areaNodes[0].plane[3] = 1;
-//	this.areaNodes[0].children[0] = -1;
-//	this.areaNodes[0].children[1] = -1;
-//}
+/*
+================
+idRenderWorldLocal::ParseNodes
+================
+*/
+idRenderWorldLocal.prototype.ParseNodes = function ( src: idLexer ): void {
+	var /*int*/i: number;
+
+	src.ExpectTokenString( "{" );
+
+	this.numAreaNodes = src.ParseInt ( );
+	if ( this.numAreaNodes < 0 ) {
+		src.Error( "R_ParseNodes: bad numAreaNodes" );
+	}
+	this.areaNodes = newStructArray<areaNode_t>( areaNode_t, this.numAreaNodes ); //(areaNode_t *)R_ClearedStaticAlloc( numAreaNodes * sizeof( this.areaNodes[0] ) );
+
+	for ( i = 0; i < this.numAreaNodes; i++ ) {
+		var node: areaNode_t;
+
+		node = this.areaNodes[i];
+
+		src.Parse1DMatrix( 4, node.plane.ToFloatPtr ( ) );
+		node.children[0] = src.ParseInt ( );
+		node.children[1] = src.ParseInt ( );
+	}
+
+	src.ExpectTokenString( "}" );
+};
+
+/*
+================
+idRenderWorldLocal::CommonChildrenArea_r
+================
+*/
+idRenderWorldLocal.prototype.CommonChildrenArea_r = function ( node: areaNode_t ): number /*int*/ {
+	var /*int	*/nums = [0, 0];
+
+	for ( var i = 0; i < 2; i++ ) {
+		if ( node.children[i] <= 0 ) {
+			nums[i] = -1 - node.children[i];
+		} else {
+			nums[i] = this.CommonChildrenArea_r( this.areaNodes[node.children[i]] );
+		}
+	}
+
+	// solid nodes will match any area
+	if ( nums[0] == AREANUM_SOLID ) {
+		nums[0] = nums[1];
+	}
+	if ( nums[1] == AREANUM_SOLID ) {
+		nums[1] = nums[0];
+	}
+
+	var /*int	*/common: number;
+	if ( nums[0] == nums[1] ) {
+		common = nums[0];
+	} else {
+		common = CHILDREN_HAVE_MULTIPLE_AREAS;
+	}
+
+	node.commonChildrenArea = common;
+
+	return common;
+};
+
+/*
+=================
+idRenderWorldLocal::ClearWorld
+
+Sets up for a single area world
+=================
+*/
+idRenderWorldLocal.prototype.ClearWorld = function ( ): void {
+	this.numPortalAreas = 1;
+	this.portalAreas = new portalArea_t; // (portalArea_t *)R_ClearedStaticAlloc( sizeof( this.portalAreas[0] ) );
+	this.areaScreenRect = new idScreenRect; // (idScreenRect *) R_ClearedStaticAlloc( sizeof( idScreenRect ) );
+
+	this.SetupAreaRefs ( );
+
+	// even though we only have a single area, create a node
+	// that has both children pointing at it so we don't need to
+	//
+	this.areaNodes = [new areaNode_t]; // (areaNode_t *)R_ClearedStaticAlloc( sizeof( this.areaNodes[0] ) );
+	this.areaNodes[0].plane[3] = 1;
+	this.areaNodes[0].children[0] = -1;
+	this.areaNodes[0].children[1] = -1;
+};
 
 /*
 =================
@@ -602,7 +602,7 @@ idRenderWorldLocal.prototype.InitFromMap = function ( name: string ): boolean {
 	}
 
 	// find the points where we can early-our of reference pushing into the BSP tree
-	this.CommonChildrenArea_r( this.areaNodes );
+	this.CommonChildrenArea_r( this.areaNodes[0] );
 
 	this.AddWorldModelEntities ( );
 	this.ClearPortalStates ( );
@@ -611,89 +611,89 @@ idRenderWorldLocal.prototype.InitFromMap = function ( name: string ): boolean {
 	return true;
 };
 
-///*
-//=====================
-//idRenderWorldLocal::ClearPortalStates
-//=====================
-//*/
-//void idRenderWorldLocal::ClearPortalStates() {
-//	int		i, j;
-//
-//	// all portals start off open
-//	for ( i = 0 ; i < this.numInterAreaPortals ; i++ ) {
-//		this.doublePortals[i].blockingBits = PS_BLOCK_NONE;
-//	}
-//
-//	// flood fill all area connections
-//	for ( i = 0 ; i < this.numPortalAreas ; i++ ) {
-//		for ( j = 0 ; j < NUM_PORTAL_ATTRIBUTES ; j++ ) {
-//			this.connectedAreaNum++;
-//			FloodConnectedAreas( &this.portalAreas[i], j );
-//		}
-//	}
-//}
-//
-///*
-//=====================
-//idRenderWorldLocal::AddWorldModelEntities
-//=====================
-//*/
-//void idRenderWorldLocal::AddWorldModelEntities() {
-//	int		i;
-//
-//	// add the world model for each portal area
-//	// we can't just call AddEntityDef, because that would place the references
-//	// based on the bounding box, rather than explicitly into the correct area
-//	for ( i = 0 ; i < this.numPortalAreas ; i++ ) {
-//		idRenderEntityLocal	*def;
-//		int			index;
-//
-//		def = new idRenderEntityLocal;
-//
-//		// try and reuse a free spot
-//		index = this.entityDefs.FindNull();
-//		if ( index == -1 ) {
-//			index = this.entityDefs.Append(def);
-//		} else {
-//			this.entityDefs[index] = def;
-//		}
-//
-//		def.index = index;
-//		def.world = this;
-//
-//		def.parms.hModel = renderModelManager.FindModel( va("_area%i", i ) );
-//		if ( def.parms.hModel.IsDefaultModel() || !def.parms.hModel.IsStaticWorldModel() ) {
-//			common.Error( "idRenderWorldLocal::InitFromMap: bad area model lookup" );
-//		}
-//
-//		idRenderModel *hModel = def.parms.hModel;
-//
-//		for ( int j = 0; j < hModel.NumSurfaces(); j++ ) {
-//			const modelSurface_t *surf = hModel.Surface( j );
-//
-//			if ( surf.shader.GetName() == idStr( "textures/smf/portal_sky" ) ) {
-//				def.needsPortalSky = true;
-//			}
-//		}
-//
-//		def.referenceBounds = def.parms.hModel.Bounds();
-//
-//		def.parms.axis[0][0] = 1;
-//		def.parms.axis[1][1] = 1;
-//		def.parms.axis[2][2] = 1;
-//
-//		R_AxisToModelMatrix( def.parms.axis, def.parms.origin, def.modelMatrix );
-//
-//		// in case an explicit shader is used on the world, we don't
-//		// want it to have a 0 alpha or color
-//		def.parms.shaderParms[0] =
-//		def.parms.shaderParms[1] =
-//		def.parms.shaderParms[2] =
-//		def.parms.shaderParms[3] = 1;
-//
-//		AddEntityRefToArea( def, &this.portalAreas[i] );
-//	}
-//}
+/*
+=====================
+idRenderWorldLocal::ClearPortalStates
+=====================
+*/
+idRenderWorldLocal.prototype.ClearPortalStates = function ( ): void {
+	var /*int*/i: number, j: number;
+
+	// all portals start off open
+	for ( i = 0; i < this.numInterAreaPortals; i++ ) {
+		this.doublePortals[i].blockingBits = portalConnection_t.PS_BLOCK_NONE;
+	}
+
+	// flood fill all area connections
+	for ( i = 0; i < this.numPortalAreas; i++ ) {
+		for ( j = 0; j < NUM_PORTAL_ATTRIBUTES; j++ ) {
+			this.connectedAreaNum++;
+			this.FloodConnectedAreas( this.portalAreas[i], j );
+		}
+	}
+};
+
+/*
+=====================
+idRenderWorldLocal::AddWorldModelEntities
+=====================
+*/
+idRenderWorldLocal.prototype.AddWorldModelEntities = function ( ): void {
+	var /*int		*/i: number;
+
+	// add the world model for each portal area
+	// we can't just call AddEntityDef, because that would place the references
+	// based on the bounding box, rather than explicitly into the correct area
+	for ( i = 0; i < this.numPortalAreas; i++ ) {
+		var def: idRenderEntityLocal;
+		var /*int			*/index: number;
+
+		def = new idRenderEntityLocal;
+
+		// try and reuse a free spot
+		index = this.entityDefs.FindNull ( );
+		if ( index == -1 ) {
+			index = this.entityDefs.Append( def );
+		} else {
+			this.entityDefs[index] = def;
+		}
+
+		def.index = index;
+		def.world = this;
+
+		def.parms.hModel = renderModelManager.FindModel( va( "_area%i", i ) );
+		if ( def.parms.hModel.IsDefaultModel ( ) || !def.parms.hModel.IsStaticWorldModel ( ) ) {
+			common.Error( "idRenderWorldLocal::InitFromMap: bad area model lookup" );
+		}
+
+		var hModel: idRenderModel = def.parms.hModel;
+
+		for ( var j = 0; j < hModel.NumSurfaces ( ); j++ ) {
+			var surf: modelSurface_t = hModel.Surface( j );
+
+			if ( surf.shader.GetName ( ) == ( "textures/smf/portal_sky" ) ) {
+				def.needsPortalSky = true;
+			}
+		}
+
+		def.referenceBounds = def.parms.hModel.Bounds ( );
+
+		def.parms.axis[0][0] = 1;
+		def.parms.axis[1][1] = 1;
+		def.parms.axis[2][2] = 1;
+
+		R_AxisToModelMatrix( def.parms.axis, def.parms.origin, def.modelMatrix );
+
+		// in case an explicit shader is used on the world, we don't
+		// want it to have a 0 alpha or color
+		def.parms.shaderParms[0] =
+			def.parms.shaderParms[1] =
+			def.parms.shaderParms[2] =
+			def.parms.shaderParms[3] = 1;
+
+		this.AddEntityRefToArea( def, this.portalAreas[i] );
+	}
+};
 //
 ///*
 //=====================

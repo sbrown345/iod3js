@@ -54,34 +54,42 @@ var net_clientSelfSmoothing = new idCVar (  "net_clientSelfSmoothing", "0.6", CV
 var net_clientMaxPrediction = new idCVar (  "net_clientMaxPrediction", "1000", CVAR_SYSTEM | CVAR_INTEGER | CVAR_NOCHEAT, "maximum number of milliseconds a client can predict ahead of server." );
 var net_clientLagOMeter = new idCVar (  "net_clientLagOMeter", "1", CVAR_GAME | CVAR_BOOL | CVAR_NOCHEAT | CVAR_ARCHIVE, "draw prediction graph" );
 
-/////*
-////================
-////idGameLocal::InitAsyncNetwork
-////================
-////*/
-////void idGameLocal::InitAsyncNetwork( ) {
-////	int i, type;
-////
-////	for ( i = 0; i < MAX_CLIENTS; i++ ) {
-////		for ( type = 0; type < declManager.GetNumDeclTypes(); type++ ) {
-////			clientDeclRemap[i][type].Clear();
-////		}
-////	}
-////
-////	memset( clientEntityStates, 0, sizeof( clientEntityStates ) );
-////	memset( clientPVS, 0, sizeof( clientPVS ) );
-////	memset( clientSnapshots, 0, sizeof( clientSnapshots ) );
-////
-////	eventQueue.Init();
-////	savedEventQueue.Init();
-////
-////	entityDefBits = -( idMath::BitsForInteger( declManager.GetNumDecls( DECL_ENTITYDEF ) ) + 1 );
-////	localClientNum = 0; // on a listen server SetLocalUser will set this right
-////	realClientTime = 0;
-////	isNewFrame = true;
-////	clientSmoothing = net_clientSmoothing.GetFloat();
-////}
-////
+/*
+================
+idGameLocal::InitAsyncNetwork
+================
+*/
+idGameLocal.prototype.InitAsyncNetwork = function ( ): void {
+	var /*int */i: number, type: number;
+
+	for ( i = 0; i < MAX_CLIENTS; i++ ) {
+		for ( type = 0; type < declManager.GetNumDeclTypes ( ); type++ ) {
+			this.clientDeclRemap[i][type].Clear ( );
+		}
+	}
+
+	//memset( this.clientEntityStates, 0, sizeof( this.clientEntityStates ) );
+	for (var i = 0; i < MAX_CLIENTS; i++) {
+		for (var j = 0; j < MAX_GENTITIES; j++) {
+			this.clientEntityStates[i][j] = null;
+		}
+	}
+	memset2DArray(this.clientPVS, 0); //memset( this.clientPVS, 0, sizeof( this.clientPVS ) );
+	//memset( this.clientSnapshots, 0, sizeof( this.clientSnapshots ) );
+	for (var k = 0; k < this.clientSnapshots.length; k++) {
+		this.clientSnapshots[k] = null;
+	}
+
+	this.eventQueue.Init ( );
+	this.savedEventQueue.Init ( );
+
+	this.entityDefBits = -( idMath.BitsForInteger( declManager.GetNumDecls( declType_t.DECL_ENTITYDEF ) ) + 1 );
+	this.localClientNum = 0; // on a listen server SetLocalUser will set this right
+	this.realClientTime = 0;
+	this.isNewFrame = true;
+	this.clientSmoothing = net_clientSmoothing.GetFloat ( );
+};
+
 /*
 ================
 idGameLocal::ShutdownAsyncNetwork
@@ -92,15 +100,15 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 	this.snapshotAllocator.Shutdown ( );
 	this.eventQueue.Shutdown ( );
 	this.savedEventQueue.Shutdown ( );
-	//memset(this.clientEntityStates, 0, sizeof(clientEntityStates));
+	//memset(this.this.clientEntityStates, 0, sizeof(this.clientEntityStates));
 	for ( var i = 0; i < MAX_CLIENTS; i++ ) {
 		for ( var j = 0; j < MAX_GENTITIES; j++ ) {
 			this.clientEntityStates[i][j] = null;
 		}
 	}
-	memset2DArray( this.clientPVS, 0 ); //memset(this.clientPVS, 0, sizeof(clientPVS));
+	memset2DArray( this.clientPVS, 0 ); //memset(this.clientPVS, 0, sizeof(this.clientPVS));
 
-	//memset(this.clientSnapshots, 0, sizeof( clientSnapshots ) );
+	//memset(this.this.clientSnapshots, 0, sizeof( this.clientSnapshots ) );
 	for ( var k = 0; k < this.clientSnapshots.length; k++ ) {
 		this.clientSnapshots[k] = null;
 	}
@@ -114,8 +122,8 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////void idGameLocal::InitLocalClient( int clientNum ) {
 ////	isServer = false;
 ////	isClient = true;
-////	localClientNum = clientNum;
-////	clientSmoothing = net_clientSmoothing.GetFloat();
+////	this.localClientNum = clientNum;
+////	this.clientSmoothing = net_clientSmoothing.GetFloat();
 ////}
 ////
 /////*
@@ -134,8 +142,8 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////		}
 ////
 ////		num = declManager.GetNumDecls( (declType_t) type );
-////		clientDeclRemap[clientNum][type].Clear();
-////		clientDeclRemap[clientNum][type].AssureSize( num, -1 );
+////		this.clientDeclRemap[clientNum][type].Clear();
+////		this.clientDeclRemap[clientNum][type].AssureSize( num, -1 );
 ////
 ////		// pre-initialize the remap with non-implicit decls, all non-implicit decls are always going
 ////		// to be in order and in sync between server and client because of the decl manager checksum
@@ -145,7 +153,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////				// once the first implicit decl is found all remaining decls are considered implicit as well
 ////				break;
 ////			}
-////			clientDeclRemap[clientNum][type][i] = i;
+////			this.clientDeclRemap[clientNum][type][i] = i;
 ////		}
 ////	}
 ////}
@@ -164,11 +172,11 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////		return;
 ////	}
 ////	// increase size of list if required
-////	if ( index >= clientDeclRemap[clientNum][type].Num() ) {
-////		clientDeclRemap[clientNum][(int)type].AssureSize( index + 1, -1 );
+////	if ( index >= this.clientDeclRemap[clientNum][type].Num() ) {
+////		this.clientDeclRemap[clientNum][(int)type].AssureSize( index + 1, -1 );
 ////	}
 ////	// if already remapped
-////	if ( clientDeclRemap[clientNum][(int)type][index] != -1 ) {
+////	if ( this.clientDeclRemap[clientNum][(int)type][index] != -1 ) {
 ////		return;
 ////	}
 ////
@@ -179,7 +187,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	}
 ////
 ////	// set the index at the server
-////	clientDeclRemap[clientNum][(int)type][index] = index;
+////	this.clientDeclRemap[clientNum][(int)type][index] = index;
 ////
 ////	// write update to client
 ////	outMsg.Init( msgBuf, sizeof( msgBuf ) );
@@ -231,19 +239,19 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	}
 ////
 ////	// make sure the index is valid
-////	if ( clientDeclRemap[localClientNum][(int)type].Num() == 0 ) {
+////	if ( this.clientDeclRemap[this.localClientNum][(int)type].Num() == 0 ) {
 ////		gameLocal.Error( "client received decl index %d before %s decl remap was initialized", index, declManager.GetDeclNameFromType( type ) );
 ////		return -1;
 ////	}
-////	if ( index >= clientDeclRemap[localClientNum][(int)type].Num() ) {
+////	if ( index >= this.clientDeclRemap[this.localClientNum][(int)type].Num() ) {
 ////		gameLocal.Error( "client received unmapped %s decl index %d from server", declManager.GetDeclNameFromType( type ), index );
 ////		return -1;
 ////	}
-////	if ( clientDeclRemap[localClientNum][(int)type][index] == -1 ) {
+////	if ( this.clientDeclRemap[this.localClientNum][(int)type][index] == -1 ) {
 ////		gameLocal.Error( "client received unmapped %s decl index %d from server", declManager.GetDeclNameFromType( type ), index );
 ////		return -1;
 ////	}
-////	return clientDeclRemap[localClientNum][type][index];
+////	return this.clientDeclRemap[this.localClientNum][type][index];
 ////}
 ////
 /////*
@@ -327,7 +335,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////
 ////	// spawn the player
 ////	SpawnPlayer( clientNum );
-////	if ( clientNum == localClientNum ) {
+////	if ( clientNum == this.localClientNum ) {
 ////		mpGame.EnterGame( clientNum );
 ////	}
 ////
@@ -361,14 +369,14 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////
 ////	// free entity states stored for this client
 ////	for ( i = 0; i < MAX_GENTITIES; i++ ) {
-////		if ( clientEntityStates[ clientNum ][ i ] ) {
-////			this.entityStateAllocator.Free( clientEntityStates[ clientNum ][ i ] );
-////			clientEntityStates[ clientNum ][ i ] = NULL;
+////		if ( this.clientEntityStates[ clientNum ][ i ] ) {
+////			this.entityStateAllocator.Free( this.clientEntityStates[ clientNum ][ i ] );
+////			this.clientEntityStates[ clientNum ][ i ] = NULL;
 ////		}
 ////	}
 ////
 ////	// clear the client PVS
-////	memset( clientPVS[ clientNum ], 0, sizeof( clientPVS[ clientNum ] ) );
+////	memset( this.clientPVS[ clientNum ], 0, sizeof( this.clientPVS[ clientNum ] ) );
 ////
 ////	// delete the player entity
 ////	delete entities[ clientNum ];
@@ -404,14 +412,14 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	}
 ////
 ////	// send all saved events
-////	for ( event = savedEventQueue.Start(); event; event = event.next ) {
+////	for ( event = this.savedEventQueue.Start(); event; event = event.next ) {
 ////		outMsg.Init( msgBuf, sizeof( msgBuf ) );
 ////		outMsg.BeginWriting();
 ////		outMsg.WriteByte( GAME_RELIABLE_MESSAGE_EVENT );
 ////		outMsg.WriteBits( event.spawnId, 32 );
 ////		outMsg.WriteByte( event.event );
 ////		outMsg.WriteLong( event.time );
-////		outMsg.WriteBits( event.paramsSize, idMath::BitsForInteger( MAX_EVENT_PARAM_SIZE ) );
+////		outMsg.WriteBits( event.paramsSize, idMath.BitsForInteger( MAX_EVENT_PARAM_SIZE ) );
 ////		if ( event.paramsSize ) {
 ////			outMsg.WriteData( event.paramsBuf, event.paramsSize );
 ////		}
@@ -441,7 +449,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////void idGameLocal::SaveEntityNetworkEvent( const ent:idEntity, int eventId, const idBitMsg *msg ) {
 ////	entityNetEvent_t *event;
 ////
-////	event = savedEventQueue.Alloc();
+////	event = this.savedEventQueue.Alloc();
 ////	event.spawnId = GetSpawnId( ent );
 ////	event.event = eventId;
 ////	event.time = time;
@@ -452,7 +460,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////		event.paramsSize = 0;
 ////	}
 ////
-////	savedEventQueue.Enqueue( event, idEventQueue::OUTOFORDER_IGNORE );
+////	this.savedEventQueue.Enqueue( event, idEventQueue::OUTOFORDER_IGNORE );
 ////}
 ////
 /////*
@@ -464,7 +472,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	snapshot_t *snapshot, *lastSnapshot, *nextSnapshot;
 ////	entityState_t *state;
 ////
-////	for ( lastSnapshot = NULL, snapshot = clientSnapshots[clientNum]; snapshot; snapshot = nextSnapshot ) {
+////	for ( lastSnapshot = NULL, snapshot = this.clientSnapshots[clientNum]; snapshot; snapshot = nextSnapshot ) {
 ////		nextSnapshot = snapshot.next;
 ////		if ( snapshot.sequence < sequence ) {
 ////			for ( state = snapshot.firstEntityState; state; state = snapshot.firstEntityState ) {
@@ -474,7 +482,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////			if ( lastSnapshot ) {
 ////				lastSnapshot.next = snapshot.next;
 ////			} else {
-////				clientSnapshots[clientNum] = snapshot.next;
+////				this.clientSnapshots[clientNum] = snapshot.next;
 ////			}
 ////			this.snapshotAllocator.Free( snapshot );
 ////		} else {
@@ -494,20 +502,20 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////
 ////	FreeSnapshotsOlderThanSequence( clientNum, sequence );
 ////
-////	for ( lastSnapshot = NULL, snapshot = clientSnapshots[clientNum]; snapshot; snapshot = nextSnapshot ) {
+////	for ( lastSnapshot = NULL, snapshot = this.clientSnapshots[clientNum]; snapshot; snapshot = nextSnapshot ) {
 ////		nextSnapshot = snapshot.next;
 ////		if ( snapshot.sequence == sequence ) {
 ////			for ( state = snapshot.firstEntityState; state; state = state.next ) {
-////				if ( clientEntityStates[clientNum][state.entityNumber] ) {
-////					this.entityStateAllocator.Free( clientEntityStates[clientNum][state.entityNumber] );
+////				if ( this.clientEntityStates[clientNum][state.entityNumber] ) {
+////					this.entityStateAllocator.Free( this.clientEntityStates[clientNum][state.entityNumber] );
 ////				}
-////				clientEntityStates[clientNum][state.entityNumber] = state;
+////				this.clientEntityStates[clientNum][state.entityNumber] = state;
 ////			}
-////			memcpy( clientPVS[clientNum], snapshot.pvs, sizeof( snapshot.pvs ) );
+////			memcpy( this.clientPVS[clientNum], snapshot.pvs, sizeof( snapshot.pvs ) );
 ////			if ( lastSnapshot ) {
 ////				lastSnapshot.next = nextSnapshot;
 ////			} else {
-////				clientSnapshots[clientNum] = nextSnapshot;
+////				this.clientSnapshots[clientNum] = nextSnapshot;
 ////			}
 ////			this.snapshotAllocator.Free( snapshot );
 ////			return true;
@@ -583,8 +591,8 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	snapshot = this.snapshotAllocator.Alloc();
 ////	snapshot.sequence = sequence;
 ////	snapshot.firstEntityState = NULL;
-////	snapshot.next = clientSnapshots[clientNum];
-////	clientSnapshots[clientNum] = snapshot;
+////	snapshot.next = this.clientSnapshots[clientNum];
+////	this.clientSnapshots[clientNum] = snapshot;
 ////	memset( snapshot.pvs, 0, sizeof( snapshot.pvs ) );
 ////
 ////	// get PVS for this player
@@ -620,7 +628,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////		// write the entity to the snapshot
 ////		msg.WriteBits( ent.entityNumber, GENTITYNUM_BITS );
 ////
-////		base = clientEntityStates[clientNum][ent.entityNumber];
+////		base = this.clientEntityStates[clientNum][ent.entityNumber];
 ////		if ( base ) {
 ////			base.state.BeginReading();
 ////		}
@@ -633,7 +641,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////
 ////		deltaMsg.WriteBits( spawnIds[ ent.entityNumber ], 32 - GENTITYNUM_BITS );
 ////		deltaMsg.WriteBits( ent.GetType().typeNum, idClass::GetTypeNumBits() );
-////		deltaMsg.WriteBits( ServerRemapDecl( -1, DECL_ENTITYDEF, ent.entityDefNumber ), entityDefBits );
+////		deltaMsg.WriteBits( ServerRemapDecl( -1, DECL_ENTITYDEF, ent.entityDefNumber ), this.entityDefBits );
 ////
 ////		// write the class specific data to the snapshot
 ////		ent.WriteToSnapshot( deltaMsg );
@@ -665,14 +673,14 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	gameLocal.pvs.WritePVS( pvsHandle, msg );
 ////#endif
 ////	for ( i = 0; i < ENTITY_PVS_SIZE; i++ ) {
-////		msg.WriteDeltaLong( clientPVS[clientNum][i], snapshot.pvs[i] );
+////		msg.WriteDeltaLong( this.clientPVS[clientNum][i], snapshot.pvs[i] );
 ////	}
 ////
 ////	// free the PVS
 ////	pvs.FreeCurrentPVS( pvsHandle );
 ////
 ////	// write the game and player state to the snapshot
-////	base = clientEntityStates[clientNum][ENTITYNUM_NONE];	// ENTITYNUM_NONE is used for the game and player state
+////	base = this.clientEntityStates[clientNum][ENTITYNUM_NONE];	// ENTITYNUM_NONE is used for the game and player state
 ////	if ( base ) {
 ////		base.state.BeginReading();
 ////	}
@@ -736,8 +744,8 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	entityNetEvent_t	*event;
 ////	idBitMsg			eventMsg;
 ////
-////	while ( eventQueue.Start() ) {
-////		event = eventQueue.Start();
+////	while ( this.eventQueue.Start() ) {
+////		event = this.eventQueue.Start();
 ////
 ////		if ( event.time > time ) {
 ////			break;
@@ -762,9 +770,9 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////#if !defined(NDEBUG)
 ////		entityNetEvent_t* freedEvent = 
 ////#endif
-////			eventQueue.Dequeue();
+////			this.eventQueue.Dequeue();
 ////		assert( freedEvent == event );
-////		eventQueue.Free( event );
+////		this.eventQueue.Free( event );
 ////	}
 ////}
 ////
@@ -784,7 +792,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	outMsg.WriteString( text, -1, false );
 ////	networkSystem.ServerSendReliableMessage( to, outMsg );
 ////
-////	if ( to == -1 || to == localClientNum ) {
+////	if ( to == -1 || to == this.localClientNum ) {
 ////		mpGame.AddChatLine( "%s^0: %s\n", name, text );
 ////	}
 ////}
@@ -845,14 +853,14 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////			entityNetEvent_t *event;
 ////
 ////			// allocate new event
-////			event = eventQueue.Alloc();
-////			eventQueue.Enqueue( event, idEventQueue::OUTOFORDER_DROP );
+////			event = this.eventQueue.Alloc();
+////			this.eventQueue.Enqueue( event, idEventQueue::OUTOFORDER_DROP );
 ////
 ////			event.spawnId = msg.ReadBits( 32 );
 ////			event.event = msg.ReadByte();
 ////			event.time = msg.ReadLong();
 ////
-////			event.paramsSize = msg.ReadBits( idMath::BitsForInteger( MAX_EVENT_PARAM_SIZE ) );
+////			event.paramsSize = msg.ReadBits( idMath.BitsForInteger( MAX_EVENT_PARAM_SIZE ) );
 ////			if ( event.paramsSize ) {
 ////				if ( event.paramsSize > MAX_EVENT_PARAM_SIZE ) {
 ////					NetworkEventWarning( event, "invalid param size" );
@@ -907,7 +915,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////			continue;
 ////		}
 ////
-////		base = clientEntityStates[clientNum][ent.entityNumber];
+////		base = this.clientEntityStates[clientNum][ent.entityNumber];
 ////		if ( base ) {
 ////			baseBits = base.state.GetNumBitsWritten();
 ////		} else {
@@ -1003,7 +1011,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	previousTime = time - msec;
 ////
 ////	// so that StartSound/StopSound doesn't risk skipping
-////	isNewFrame = true;
+////	this.isNewFrame = true;
 ////
 ////	// clear the snapshot entity list
 ////	snapshotEntities.Clear();
@@ -1012,8 +1020,8 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	snapshot = this.snapshotAllocator.Alloc();
 ////	snapshot.sequence = sequence;
 ////	snapshot.firstEntityState = NULL;
-////	snapshot.next = clientSnapshots[clientNum];
-////	clientSnapshots[clientNum] = snapshot;
+////	snapshot.next = this.clientSnapshots[clientNum];
+////	this.clientSnapshots[clientNum] = snapshot;
 ////
 ////#if ASYNC_WRITE_TAGS
 ////	idRandom tagRandom;
@@ -1023,7 +1031,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	// read all entities from the snapshot
 ////	for ( i = msg.ReadBits( GENTITYNUM_BITS ); i != ENTITYNUM_NONE; i = msg.ReadBits( GENTITYNUM_BITS ) ) {
 ////
-////		base = clientEntityStates[clientNum][i];
+////		base = this.clientEntityStates[clientNum][i];
 ////		if ( base ) {
 ////			base.state.BeginReading();
 ////		}
@@ -1040,7 +1048,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////
 ////		spawnId = deltaMsg.ReadBits( 32 - GENTITYNUM_BITS );
 ////		typeNum = deltaMsg.ReadBits( idClass::GetTypeNumBits() );
-////		entityDefNumber = ClientRemapDecl( DECL_ENTITYDEF, deltaMsg.ReadBits( entityDefBits ) );
+////		entityDefNumber = ClientRemapDecl( DECL_ENTITYDEF, deltaMsg.ReadBits( this.entityDefBits ) );
 ////
 ////		typeInfo = idClass::GetType( typeNum );
 ////		if ( !typeInfo ) {
@@ -1150,7 +1158,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	gameLocal.pvs.ReadPVS( pvsHandle, msg );
 ////#endif
 ////	for ( i = 0; i < ENTITY_PVS_SIZE; i++ ) {
-////		snapshot.pvs[i] = msg.ReadDeltaLong( clientPVS[clientNum][i] );
+////		snapshot.pvs[i] = msg.ReadDeltaLong( this.clientPVS[clientNum][i] );
 ////	}
 ////
 ////	// add entities in the PVS that haven't changed since the last applied snapshot
@@ -1184,7 +1192,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////		ent.snapshotSequence = sequence;
 ////		ent.snapshotBits = 0;
 ////
-////		base = clientEntityStates[clientNum][ent.entityNumber];
+////		base = this.clientEntityStates[clientNum][ent.entityNumber];
 ////		if ( !base ) {
 ////			// entity has probably fl.networkSync set to false
 ////			continue;
@@ -1196,7 +1204,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////
 ////		spawnId = deltaMsg.ReadBits( 32 - GENTITYNUM_BITS );
 ////		typeNum = deltaMsg.ReadBits( idClass::GetTypeNumBits() );
-////		entityDefNumber = deltaMsg.ReadBits( entityDefBits );
+////		entityDefNumber = deltaMsg.ReadBits( this.entityDefBits );
 ////
 ////		typeInfo = idClass::GetType( typeNum );
 ////
@@ -1215,7 +1223,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	pvs.FreeCurrentPVS( pvsHandle );
 ////
 ////	// read the game and player state from the snapshot
-////	base = clientEntityStates[clientNum][ENTITYNUM_NONE];	// ENTITYNUM_NONE is used for the game and player state
+////	base = this.clientEntityStates[clientNum][ENTITYNUM_NONE];	// ENTITYNUM_NONE is used for the game and player state
 ////	if ( base ) {
 ////		base.state.BeginReading();
 ////	}
@@ -1265,8 +1273,8 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	entityNetEvent_t	*event;
 ////	idBitMsg			eventMsg;
 ////
-////	while( eventQueue.Start() ) {
-////		event = eventQueue.Start();
+////	while( this.eventQueue.Start() ) {
+////		event = this.eventQueue.Start();
 ////
 ////		// only process forward, in order
 ////		if ( event.time > time ) {
@@ -1295,9 +1303,9 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////#if !defined(NDEBUG)
 ////		entityNetEvent_t* freedEvent = 
 ////#endif
-////			eventQueue.Dequeue();
+////			this.eventQueue.Dequeue();
 ////		assert( freedEvent == event );
-////		eventQueue.Free( event );
+////		this.eventQueue.Free( event );
 ////	}
 ////}
 ////
@@ -1329,10 +1337,10 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////
 ////			const idDecl *decl = declManager.FindType( (declType_t)type, name, false );
 ////			if ( decl != NULL ) {
-////				if ( index >= clientDeclRemap[clientNum][type].Num() ) {
-////					clientDeclRemap[clientNum][type].AssureSize( index + 1, -1 );
+////				if ( index >= this.clientDeclRemap[clientNum][type].Num() ) {
+////					this.clientDeclRemap[clientNum][type].AssureSize( index + 1, -1 );
 ////				}
-////				clientDeclRemap[clientNum][type][index] = decl.Index();
+////				this.clientDeclRemap[clientNum][type][index] = decl.Index();
 ////			}
 ////			break;
 ////		}
@@ -1391,14 +1399,14 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////			entityNetEvent_t *event;
 ////
 ////			// allocate new event
-////			event = eventQueue.Alloc();
-////			eventQueue.Enqueue( event, idEventQueue::OUTOFORDER_IGNORE );
+////			event = this.eventQueue.Alloc();
+////			this.eventQueue.Enqueue( event, idEventQueue::OUTOFORDER_IGNORE );
 ////
 ////			event.spawnId = msg.ReadBits( 32 );
 ////			event.event = msg.ReadByte();
 ////			event.time = msg.ReadLong();
 ////
-////			event.paramsSize = msg.ReadBits( idMath::BitsForInteger( MAX_EVENT_PARAM_SIZE ) );
+////			event.paramsSize = msg.ReadBits( idMath.BitsForInteger( MAX_EVENT_PARAM_SIZE ) );
 ////			if ( event.paramsSize ) {
 ////				if ( event.paramsSize > MAX_EVENT_PARAM_SIZE ) {
 ////					NetworkEventWarning( event, "invalid param size" );
@@ -1504,11 +1512,11 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	time += msec;
 ////
 ////	// update the real client time and the new frame flag
-////	if ( time > realClientTime ) {
-////		realClientTime = time;
-////		isNewFrame = true;
+////	if ( time > this.realClientTime ) {
+////		this.realClientTime = time;
+////		this.isNewFrame = true;
 ////	} else {
-////		isNewFrame = false;
+////		this.isNewFrame = false;
 ////	}
 ////
 ////	// set the user commands for this frame
@@ -1524,7 +1532,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////	idEvent::ServiceEvents();
 ////
 ////	// show any debug info for this frame
-////	if ( isNewFrame ) {
+////	if ( this.isNewFrame ) {
 ////		RunDebugInfo();
 ////		D_DrawDebugLines();
 ////	}

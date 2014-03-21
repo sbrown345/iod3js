@@ -76,9 +76,19 @@ Note: mirrors and other special view portals are not taken into account
 
 
 class pvsHandle_t {
-	i:number;			// index to current pvs			int					
-	h:number;			// handle for current pvs       unsigned int		
-} ;
+	i: number; // index to current pvs			int					
+	//h: number;			// handle for current pvs       unsigned int	
+		
+	private _h = new Uint32Array( 1 );
+	get h ( ): number { return this._h[0]; }
+
+	set h ( value: number ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this._h[0] = value;
+	}
+}
 
 
 class pvsCurrent_t {

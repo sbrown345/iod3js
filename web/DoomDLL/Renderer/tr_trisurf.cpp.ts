@@ -563,16 +563,16 @@ function R_AllocStaticTriSurfIndexes(tri: srfTriangles_t, /*int */numIndexes:num
 	tri.indexes = triIndexAllocator.AllocInt16Array( numIndexes );
 }
 
-///*
-//=================
-//R_AllocStaticTriSurfShadowVerts
-//=================
-//*/
-//void R_AllocStaticTriSurfShadowVerts( srfTriangles_t *tri, int numVerts ) {
-//	assert( tri.shadowVertexes == null );
-//	tri.shadowVertexes = triShadowVertexAllocator.Alloc( numVerts );
-//}
-//
+/*
+=================
+R_AllocStaticTriSurfShadowVerts
+=================
+*/
+function R_AllocStaticTriSurfShadowVerts ( tri: srfTriangles_t, /*int */numVerts: number ): void {
+	assert( tri.shadowVertexes == null );
+	tri.shadowVertexes = triShadowVertexAllocator.Alloc( numVerts );
+}
+
 /*
 =================
 R_AllocStaticTriSurfPlanes

@@ -57,8 +57,8 @@ var gameSoundWorld: idSoundWorld = null;		// all audio goes to this world
 
 var gameExport = new gameExport_t;
 
-////// global animation lib
-////idAnimManager				animationLib;
+// global animation lib
+var animationLib = new idAnimManager;
 
 ////const char *idGameLocal::sufaceTypeNames[ MAX_SURFACE_TYPES ] = {
 ////	"none",	"metal", "stone", "flesh", "wood", "cardboard", "liquid", "glass", "plastic",
@@ -312,7 +312,7 @@ idGameLocal.prototype.Init = function ( ): void {
 	// set up the aas
 	dict = this.FindEntityDefDict( "aas_types" );
 	if ( !dict ) {
-		Error( "Unable to find entityDef for 'aas_types'" );
+		this.Error( "Unable to find entityDef for 'aas_types'" );
 	}
 
 	// allocate space for the aas
@@ -346,12 +346,12 @@ idGameLocal.prototype.Init = function ( ): void {
 
 ////	this.Printf( "------------ Game Shutdown -----------\n" );
 
-////	mpGame.Shutdown();
+////	this.mpGame.Shutdown();
 
 ////	this.MapShutdown();
 
-////	aasList.DeleteContents( true );
-////	aasNames.Clear();
+////	this.aasList.DeleteContents( true );
+////	this.aasNames.Clear();
 
 ////	idAI::FreeObstacleAvoidanceNodes();
 
@@ -375,8 +375,8 @@ idGameLocal.prototype.Init = function ( ): void {
 ////	this.program.FreeData();
 
 ////	// delete the .map file
-////	delete mapFile;
-////	mapFile = NULL;
+////	delete this.mapFile;
+////	this.mapFile = NULL;
 
 ////	// free the collision map
 ////	collisionModelManager.FreeMap();
@@ -470,60 +470,60 @@ idGameLocal.prototype.Init = function ( ): void {
 ////		savegame.WriteInt( this.spawnIds[ i ] );
 ////	}
 
-////	savegame.WriteInt( firstFreeIndex );
-////	savegame.WriteInt( num_entities );
+////	savegame.WriteInt( this.firstFreeIndex );
+////	savegame.WriteInt( this.num_entities );
 
 ////	// enityHash is restored by idEntity::Restore setting the entity name.
 
-////	savegame.WriteObject( world );
+////	savegame.WriteObject( this.world );
 
-////	savegame.WriteInt( spawnedEntities.Num() );
-////	for( ent = spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
+////	savegame.WriteInt( this.spawnedEntities.Num() );
+////	for( ent = this.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
 ////		savegame.WriteObject( ent );
 ////	}
 
-////	savegame.WriteInt( activeEntities.Num() );
-////	for( ent = activeEntities.Next(); ent != NULL; ent = ent.activeNode.Next() ) {
+////	savegame.WriteInt( this.activeEntities.Num() );
+////	for( ent = this.activeEntities.Next(); ent != NULL; ent = ent.activeNode.Next() ) {
 ////		savegame.WriteObject( ent );
 ////	}
 
-////	savegame.WriteInt( numEntitiesToDeactivate );
-////	savegame.WriteBool( sortPushers );
-////	savegame.WriteBool( sortTeamMasters );
+////	savegame.WriteInt( this.numEntitiesToDeactivate );
+////	savegame.WriteBool( this.sortPushers );
+////	savegame.WriteBool( this.sortTeamMasters );
 ////	savegame.WriteDict( &persistentLevelInfo );
 
 ////	for( i = 0; i < MAX_GLOBAL_SHADER_PARMS; i++ ) {
-////		savegame.WriteFloat( globalShaderParms[ i ] );
+////		savegame.WriteFloat( this.globalShaderParms[ i ] );
 ////	}
 
-////	savegame.WriteInt( random.GetSeed() );
+////	savegame.WriteInt( this.random.GetSeed() );
 ////	savegame.WriteObject( this.frameCommandThread );
 
 ////	// clip
 ////	// push
 ////	// pvs
 
-////	testmodel = NULL;
-////	testFx = NULL;
+////	this.testmodel = NULL;
+////	this.testFx = NULL;
 
-////	savegame.WriteString( sessionCommand );
+////	savegame.WriteString( this.sessionCommand );
 
 ////	// FIXME: save smoke particles
 
-////	savegame.WriteInt( cinematicSkipTime );
-////	savegame.WriteInt( cinematicStopTime );
-////	savegame.WriteInt( cinematicMaxSkipTime );
+////	savegame.WriteInt( this.cinematicSkipTime );
+////	savegame.WriteInt( this.cinematicStopTime );
+////	savegame.WriteInt( this.cinematicMaxSkipTime );
 ////	savegame.WriteBool( this.inCinematic );
-////	savegame.WriteBool( skipCinematic );
+////	savegame.WriteBool( this.skipCinematic );
 
 ////	savegame.WriteBool( isMultiplayer );
 ////	savegame.WriteInt( gameType );
 
-////	savegame.WriteInt( framenum );
-////	savegame.WriteInt( previousTime );
-////	savegame.WriteInt( time );
+////	savegame.WriteInt( this.framenum );
+////	savegame.WriteInt( this.previousTime );
+////	savegame.WriteInt( this.time );
 
-////	savegame.WriteInt( vacuumAreaNum );
+////	savegame.WriteInt( this.vacuumAreaNum );
 
 ////	savegame.WriteInt( entityDefBits );
 ////	savegame.WriteBool( isServer );
@@ -538,7 +538,7 @@ idGameLocal.prototype.Init = function ( ): void {
 ////	savegame.WriteFloat( clientSmoothing );
 
 ////	savegame.WriteBool( mapCycleLoaded );
-////	savegame.WriteInt( spawnCount );
+////	savegame.WriteInt( this.spawnCount );
 
 ////	if ( !this.locationEntities ) {
 ////		savegame.WriteInt( 0 );
@@ -551,24 +551,24 @@ idGameLocal.prototype.Init = function ( ): void {
 
 ////	savegame.WriteObject( this.camera );
 
-////	savegame.WriteMaterial( globalMaterial );
+////	savegame.WriteMaterial( this.globalMaterial );
 
-////	lastAIAlertEntity.Save( &savegame );
-////	savegame.WriteInt( lastAIAlertTime );
+////	this.lastAIAlertEntity.Save( &savegame );
+////	savegame.WriteInt( this.lastAIAlertTime );
 
-////	savegame.WriteDict( &spawnArgs );
+////	savegame.WriteDict( &this.spawnArgs );
 
-////	savegame.WriteInt( playerPVS.i );
-////	savegame.WriteInt( playerPVS.h );
-////	savegame.WriteInt( playerConnectedAreas.i );
-////	savegame.WriteInt( playerConnectedAreas.h );
+////	savegame.WriteInt( this.playerPVS.i );
+////	savegame.WriteInt( this.playerPVS.h );
+////	savegame.WriteInt( this.playerConnectedAreas.i );
+////	savegame.WriteInt( this.playerConnectedAreas.h );
 
-////	savegame.WriteVec3( gravity );
+////	savegame.WriteVec3( this.gravity );
 
 ////	// gamestate
 
 ////	savegame.WriteBool( influenceActive );
-////	savegame.WriteInt( nextGibTime );
+////	savegame.WriteInt( this.nextGibTime );
 
 ////	// spawnSpots
 ////	// initialSpots
@@ -775,7 +775,7 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 
 	//	if ( !isClient ) {
 	//		// now mark this client in game
-	//		mpGame.EnterGame( clientNum );
+	//		this.mpGame.EnterGame( clientNum );
 	//	}
 	//}
 
@@ -821,118 +821,120 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 ////}
 
 
-/////*
-////===================
-////idGameLocal::LoadMap
+/*
+===================
+idGameLocal::LoadMap
 
-////Initializes all map variables common to both save games and spawned games.
-////===================
-////*/
-////void idGameLocal::LoadMap( const char *mapName, int randseed ) {
-////	var/*int */i:number;
-////	bool sameMap = (mapFile && idStr.Icmp(this.mapFileName, mapName) == 0);
+Initializes all map variables common to both save games and spawned games.
+===================
+*/
+idGameLocal.prototype.LoadMap = function ( mapName: string, /*int */randseed: number ): void {
+	var /*int */i: number;
+	var sameMap = ( this.mapFile && idStr.Icmp( this.mapFileName, mapName ) == 0 );
 
-////	// clear the sound system
-////	gameSoundWorld.ClearAllSoundEmitters();
+	// clear the sound system
+	gameSoundWorld.ClearAllSoundEmitters ( );
 
-////	InitAsyncNetwork();
+	this.InitAsyncNetwork ( );
 
-////	if ( !sameMap || ( mapFile && mapFile.NeedsReload() ) ) {
-////		// load the .map file
-////		if ( mapFile ) {
-////			delete mapFile;
-////		}
-////		mapFile = new idMapFile;
-////		if ( !mapFile.Parse( idStr( mapName ) + ".map" ) ) {
-////			delete mapFile;
-////			mapFile = NULL;
-////			Error( "Couldn't load %s", mapName );
-////		}
-////	}
-////	this.mapFileName = mapFile.GetName();
+	if ( !sameMap || ( this.mapFile && this.mapFile.NeedsReload ( ) ) ) {
+		// load the .map file
+		if ( this.mapFile ) {
+			$delete( this.mapFile );
+			delete this.mapFile;
+		}
+		this.mapFile = new idMapFile;
+		if ( !this.mapFile.Parse( mapName  + ".map" ) ) {
+			$delete(this.mapFile);
+			delete this.mapFile;
+			this.mapFile = NULL;
+			this.Error( "Couldn't load %s", mapName );
+		}
+	}
+	this.mapFileName = this.mapFile.GetName ( );
 
-////	// load the collision map
-////	collisionModelManager.LoadMap( mapFile );
+	// load the collision map
+	collisionModelManager.LoadMap( this.mapFile );
 
-////	this.numClients = 0;
+	this.numClients = 0;
 
-////	// initialize all entities for this game
-////	memset( this.entities, 0, sizeof( this.entities ) );
-////	memset( usercmds, 0, sizeof( usercmds ) );
-////	memset( this.spawnIds, -1, sizeof( this.spawnIds ) );
-////	spawnCount = idGameLocal.INITIAL_SPAWN_COUNT;
-	
-////	spawnedEntities.Clear();
-////	activeEntities.Clear();
-////	numEntitiesToDeactivate = 0;
-////	sortTeamMasters = false;
-////	sortPushers = false;
-////	lastGUIEnt = NULL;
-////	lastGUI = 0;
+	// initialize all entities for this game
+	clearStructArray( this.entities );	//memset( this.entities, 0, sizeof( this.entities ) );
+	clearStructArray( this.usercmds );// memset( usercmds, 0, sizeof( usercmds ) );
+	memset( this.spawnIds, -1, sizeof( this.spawnIds )  );
+	this.spawnCount = idGameLocal.INITIAL_SPAWN_COUNT;
 
-////	globalMaterial = NULL;
+	this.spawnedEntities.Clear ( );
+	this.activeEntities.Clear ( );
+	this.numEntitiesToDeactivate = 0;
+	this.sortTeamMasters = false;
+	this.sortPushers = false;
+	this.lastGUIEnt = null;
+	this.lastGUI = 0;
 
-////	memset( globalShaderParms, 0, sizeof( globalShaderParms ) );
+	this.globalMaterial = null;
 
-////	// always leave room for the max number of clients,
-////	// even if they aren't all used, so numbers inside that
-////	// range are NEVER anything but clients
-////	num_entities	= MAX_CLIENTS;
-////	firstFreeIndex	= MAX_CLIENTS;
+	memset( this.globalShaderParms, 0, sizeof( this.globalShaderParms ) );
 
-////	// reset the random number generator.
-////	random.SetSeed( isMultiplayer ? randseed : 0 );
+	// always leave room for the max number of clients,
+	// even if they aren't all used, so numbers inside that
+	// range are NEVER anything but clients
+	this.num_entities = MAX_CLIENTS;
+	this.firstFreeIndex = MAX_CLIENTS;
 
-////	this.camera			= NULL;
-////	world			= NULL;
-////	testmodel		= NULL;
-////	testFx			= NULL;
+	// reset the random number generator.
+	this.random.SetSeed( this.isMultiplayer ? randseed : 0 );
 
-////	lastAIAlertEntity = NULL;
-////	lastAIAlertTime = 0;
-	
-////	previousTime	= 0;
-////	time			= 0;
-////	framenum		= 0;
-////	sessionCommand = "";
-////	nextGibTime		= 0;
+	this.camera = null;
+	this.world = null;
+	this.testmodel = null;
+	this.testFx = null;
 
-////	vacuumAreaNum = -1;		// if an info_vacuum is spawned, it will set this
+	this.lastAIAlertEntity = null;
+	this.lastAIAlertTime = 0;
 
-////	if ( !this.editEntities ) {
-////		this.editEntities = new idEditEntities;
-////	}
+	this.previousTime = 0;
+	this.time = 0;
+	this.framenum = 0;
+	this.sessionCommand.equals( "" );
+	this.nextGibTime = 0;
 
-////	gravity.Set( 0, 0, -g_gravity.GetFloat() );
+	this.vacuumAreaNum = -1; // if an info_vacuum is spawned, it will set this
 
-////	spawnArgs.Clear();
+	if ( !this.editEntities ) {
+		this.editEntities = new idEditEntities;
+	}
 
-////	skipCinematic = false;
-////	this.inCinematic = false;
-////	cinematicSkipTime = 0;
-////	cinematicStopTime = 0;
-////	cinematicMaxSkipTime = 0;
+	this.gravity.Set( 0, 0, -g_gravity.GetFloat ( ) );
 
-////	this.clip.Init();
-////	this.pvs.Init();
-////	playerPVS.i = -1;
-////	playerConnectedAreas.i = -1;
+	this.spawnArgs.Clear ( );
 
-////	// load navigation system for all the different monster sizes
-////	for( i = 0; i < aasNames.Num(); i++ ) {
-////		aasList[ i ].Init( idStr( this.mapFileName ).SetFileExtension( aasNames[ i ] ).c_str(), mapFile.GetGeometryCRC() );
-////	}
+	this.skipCinematic = false;
+	this.inCinematic = false;
+	this.cinematicSkipTime = 0;
+	this.cinematicStopTime = 0;
+	this.cinematicMaxSkipTime = 0;
 
-////	// clear the smoke particle free list
-////	this.smokeParticles.Init();
+	this.clip.Init ( );
+	this.pvs.Init ( );
+	this.playerPVS.i = -1;
+	this.playerConnectedAreas.i = -1;
 
-////	// cache miscellanious media references
-////	FindEntityDef( "preCacheExtras", false );
+	// load navigation system for all the different monster sizes
+	for ( i = 0; i < this.aasNames.Num ( ); i++ ) {
+		this.aasList[i].Init( new idStr( this.mapFileName ).SetFileExtension( this.aasNames[i] ).c_str ( ), this.mapFile.GetGeometryCRC ( ) );
+	}
 
-////	if ( !sameMap ) {
-////		mapFile.RemovePrimitiveData();
-////	}
-////}
+	// clear the smoke particle free list
+	this.smokeParticles.Init ( );
+
+	// cache miscellanious media references
+	this.FindEntityDef( "preCacheExtras", false );
+
+	if ( !sameMap ) {
+		this.mapFile.RemovePrimitiveData ( );
+	}
+};
 
 /////*
 ////===================
@@ -967,20 +969,20 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 
 ////	// the spawnCount is reset to zero temporarily to spawn the map entities with the same spawnId
 ////	// if we don't do that, network clients are confused and don't show any map entities
-////	latchSpawnCount = spawnCount;
-////	spawnCount = idGameLocal.INITIAL_SPAWN_COUNT;
+////	latchSpawnCount = this.spawnCount;
+////	this.spawnCount = idGameLocal.INITIAL_SPAWN_COUNT;
 
 ////	this.gamestate = GAMESTATE_STARTUP;
 
 ////	this.program.Restart();
 
-////	InitScriptForMap();
+////	this.InitScriptForMap();
 
-////	MapPopulate();
+////	this.MapPopulate();
 
 ////	// once the map is populated, set the spawnCount back to where it was so we don't risk any collision
 ////	// (note that if there are no players in the game, we could just leave it at it's current value)
-////	spawnCount = latchSpawnCount;
+////	this.spawnCount = latchSpawnCount;
 
 ////	// setup the client entities again
 ////	for ( i = 0; i < MAX_CLIENTS; i++ ) {
@@ -1033,7 +1035,7 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 ////			networkSystem.ServerSendReliableMessage( -1, outMsg );
 
 ////			LocalMapRestart();
-////			mpGame.MapRestart();
+////			this.mpGame.MapRestart();
 ////		}
 ////	}
 ////}
@@ -1126,7 +1128,7 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 ////*/
 ////void idGameLocal::MapPopulate( void ) {
 
-////	if ( isMultiplayer ) {
+////	if ( this.isMultiplayer ) {
 ////		cvarSystem.SetCVarBool( "r_skipSpecular", false );
 ////	}
 ////	// parse the key/value pairs and spawn entities
@@ -1140,7 +1142,7 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 
 ////	// spawnCount - 1 is the number of entities spawned into the map, their indexes started at MAX_CLIENTS (included)
 ////	// mapSpawnCount is used as the max index of map entities, it's the first index of non-map entities
-////	mapSpawnCount = MAX_CLIENTS + spawnCount - 1;
+////	mapSpawnCount = MAX_CLIENTS + this.spawnCount - 1;
 
 ////	// execute pending events before the very first game frame
 ////	// this makes sure the map script main() function is called
@@ -1149,45 +1151,45 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 ////	idEvent::ServiceEvents();
 ////}
 
-/////*
-////===================
-////idGameLocal::InitFromNewMap
-////===================
-////*/
-////void idGameLocal::InitFromNewMap( const char *mapName, idRenderWorld *renderWorld, idSoundWorld *soundWorld, bool isServer, bool isClient, int randseed ) {
+/*
+===================
+idGameLocal::InitFromNewMap
+===================
+*/
+idGameLocal.prototype.InitFromNewMap = function ( mapName: string, renderWorld: idRenderWorld, soundWorld: idSoundWorld, isServer: boolean, isClient: boolean, randseed: number /*int*/ ): void {
 
-////	this.isServer = isServer;
-////	this.isClient = isClient;
-////	this.isMultiplayer = isServer || isClient;
+	this.isServer = isServer;
+	this.isClient = isClient;
+	this.isMultiplayer = isServer || isClient;
 
-////	if ( this.mapFileName.Length() ) {
-////		this.MapShutdown();
-////	}
+	if ( this.mapFileName.Length ( ) ) {
+		this.MapShutdown ( );
+	}
 
-////	this.Printf( "----------- Game Map Init ------------\n" );
+	this.Printf( "----------- Game Map Init ------------\n" );
 
-////	this.gamestate = GAMESTATE_STARTUP;
+	this.gamestate = gameState_t.GAMESTATE_STARTUP;
 
-////	gameRenderWorld = renderWorld;
-////	gameSoundWorld = soundWorld;
+	gameRenderWorld = renderWorld;
+	gameSoundWorld = soundWorld;
 
-////	LoadMap( mapName, randseed );
+	this.LoadMap( mapName, randseed );
 
-////	InitScriptForMap();
+	this.InitScriptForMap ( );
 
-////	MapPopulate();
+	this.MapPopulate ( );
 
-////	mpGame.Reset();
+	this.mpGame.Reset ( );
 
-////	mpGame.Precache();
+	this.mpGame.Precache ( );
 
-////	// free up any unused animations
-////	animationLib.FlushUnusedAnims();
+	// free up any unused animations
+	animationLib.FlushUnusedAnims ( );
 
-////	this.gamestate = GAMESTATE_ACTIVE;
+	this.gamestate = gameState_t.GAMESTATE_ACTIVE;
 
-////	this.Printf( "--------------------------------------\n" );
-////}
+	this.Printf( "--------------------------------------\n" );
+};
 
 /////*
 ////=================
@@ -1236,17 +1238,17 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 ////	g_skill.SetInteger( i );
 
 ////	// precache the player
-////	FindEntityDef( "player_doommarine", false );
+////	this.FindEntityDef( "player_doommarine", false );
 
 ////	// precache any media specified in the map
-////	for ( i = 0; i < mapFile.GetNumEntities(); i++ ) {
-////		idMapEntity *mapEnt = mapFile.GetEntity( i );
+////	for ( i = 0; i < this.mapFile.GetNumEntities(); i++ ) {
+////		idMapEntity *mapEnt = this.mapFile.GetEntity( i );
 
 ////		if ( !InhibitEntitySpawn( mapEnt.epairs ) ) {
 ////			CacheDictionaryMedia( &mapEnt.epairs );
 ////			const char *classname = mapEnt.epairs.GetString( "classname" );
 ////			if ( classname != '\0' ) {
-////				FindEntityDef( classname, false );
+////				this.FindEntityDef( classname, false );
 ////			}
 ////		}
 ////	}
@@ -1271,19 +1273,19 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 ////		}
 ////	}
 
-////	savegame.ReadInt( firstFreeIndex );
-////	savegame.ReadInt( num_entities );
+////	savegame.ReadInt( this.firstFreeIndex );
+////	savegame.ReadInt( this.num_entities );
 
 ////	// enityHash is restored by idEntity::Restore setting the entity name.
 
-////	savegame.ReadObject( reinterpret_cast<idClass *&>( world ) );
+////	savegame.ReadObject( reinterpret_cast<idClass *&>( this.world ) );
 
 ////	savegame.ReadInt( num );
 ////	for( i = 0; i < num; i++ ) {
 ////		savegame.ReadObject( reinterpret_cast<idClass *&>( ent ) );
 ////		assert( ent );
 ////		if ( ent ) {
-////			ent.spawnNode.AddToEnd( spawnedEntities );
+////			ent.spawnNode.AddToEnd( this.spawnedEntities );
 ////		}
 ////	}
 
@@ -1292,21 +1294,21 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 ////		savegame.ReadObject( reinterpret_cast<idClass *&>( ent ) );
 ////		assert( ent );
 ////		if ( ent ) {
-////			ent.activeNode.AddToEnd( activeEntities );
+////			ent.activeNode.AddToEnd( this.activeEntities );
 ////		}
 ////	}
 
-////	savegame.ReadInt( numEntitiesToDeactivate );
-////	savegame.ReadBool( sortPushers );
-////	savegame.ReadBool( sortTeamMasters );
+////	savegame.ReadInt( this.numEntitiesToDeactivate );
+////	savegame.ReadBool( this.sortPushers );
+////	savegame.ReadBool( this.sortTeamMasters );
 ////	savegame.ReadDict( &persistentLevelInfo );
 
 ////	for( i = 0; i < MAX_GLOBAL_SHADER_PARMS; i++ ) {
-////		savegame.ReadFloat( globalShaderParms[ i ] );
+////		savegame.ReadFloat( this.globalShaderParms[ i ] );
 ////	}
 
 ////	savegame.ReadInt( i );
-////	random.SetSeed( i );
+////	this.random.SetSeed( i );
 
 ////	savegame.ReadObject( reinterpret_cast<idClass *&>( this.frameCommandThread ) );
 
@@ -1314,27 +1316,27 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 ////	// push
 ////	// pvs
 
-////	// testmodel = "<NULL>"
-////	// testFx = "<NULL>"
+////	// this.testmodel = "<NULL>"
+////	// this.testFx = "<NULL>"
 
-////	savegame.ReadString( sessionCommand );
+////	savegame.ReadString( this.sessionCommand );
 
 ////	// FIXME: save smoke particles
 
-////	savegame.ReadInt( cinematicSkipTime );
-////	savegame.ReadInt( cinematicStopTime );
-////	savegame.ReadInt( cinematicMaxSkipTime );
+////	savegame.ReadInt( this.cinematicSkipTime );
+////	savegame.ReadInt( this.cinematicStopTime );
+////	savegame.ReadInt( this.cinematicMaxSkipTime );
 ////	savegame.ReadBool( this.inCinematic );
-////	savegame.ReadBool( skipCinematic );
+////	savegame.ReadBool( this.skipCinematic );
 
 ////	savegame.ReadBool( isMultiplayer );
 ////	savegame.ReadInt( (int &)gameType );
 
-////	savegame.ReadInt( framenum );
-////	savegame.ReadInt( previousTime );
-////	savegame.ReadInt( time );
+////	savegame.ReadInt( this.framenum );
+////	savegame.ReadInt( this.previousTime );
+////	savegame.ReadInt( this.time );
 
-////	savegame.ReadInt( vacuumAreaNum );
+////	savegame.ReadInt( this.vacuumAreaNum );
 
 ////	savegame.ReadInt( entityDefBits );
 ////	savegame.ReadBool( isServer );
@@ -1349,7 +1351,7 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 ////	savegame.ReadFloat( clientSmoothing );
 
 ////	savegame.ReadBool( mapCycleLoaded );
-////	savegame.ReadInt( spawnCount );
+////	savegame.ReadInt( this.spawnCount );
 
 ////	savegame.ReadInt( num );
 ////	if ( num ) {
@@ -1365,24 +1367,24 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 
 ////	savegame.ReadObject( reinterpret_cast<idClass *&>( this.camera ) );
 
-////	savegame.ReadMaterial( globalMaterial );
+////	savegame.ReadMaterial( this.globalMaterial );
 
-////	lastAIAlertEntity.Restore( &savegame );
-////	savegame.ReadInt( lastAIAlertTime );
+////	this.lastAIAlertEntity.Restore( &savegame );
+////	savegame.ReadInt( this.lastAIAlertTime );
 
-////	savegame.ReadDict( &spawnArgs );
+////	savegame.ReadDict( &this.spawnArgs );
 
-////	savegame.ReadInt( playerPVS.i );
-////	savegame.ReadInt( (int &)playerPVS.h );
-////	savegame.ReadInt( playerConnectedAreas.i );
-////	savegame.ReadInt( (int &)playerConnectedAreas.h );
+////	savegame.ReadInt( this.playerPVS.i );
+////	savegame.ReadInt( (int &)this.playerPVS.h );
+////	savegame.ReadInt( this.playerConnectedAreas.i );
+////	savegame.ReadInt( (int &)this.playerConnectedAreas.h );
 
-////	savegame.ReadVec3( gravity );
+////	savegame.ReadVec3( this.gravity );
 
 ////	// gamestate is restored after restoring everything else
 
 ////	savegame.ReadBool( influenceActive );
-////	savegame.ReadInt( nextGibTime );
+////	savegame.ReadInt( this.nextGibTime );
 
 ////	// spawnSpots
 ////	// initialSpots
@@ -1396,9 +1398,9 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 
 ////	savegame.RestoreObjects();
 
-////	mpGame.Reset();
+////	this.mpGame.Reset();
 
-////	mpGame.Precache();
+////	this.mpGame.Precache();
 
 ////	// free up any unused animations
 ////	animationLib.FlushUnusedAnims();
@@ -1832,19 +1834,19 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////	args.Set( "name", va( "player%d", clientNum + 1 ) );
 ////	args.Set( "classname", isMultiplayer ? "player_doommarine_mp" : "player_doommarine" );
 ////	if ( !SpawnEntityDef( args, &ent ) || !this.entities[ clientNum ] ) {
-////		Error( "Failed to spawn player as '%s'", args.GetString( "classname" ) );
+////		this.Error( "Failed to spawn player as '%s'", args.GetString( "classname" ) );
 ////	}
 
 ////	// make sure it's a compatible class
 ////	if ( !ent.IsType( idPlayer::Type ) ) {
-////		Error( "'%s' spawned the player as a '%s'.  Player spawnclass must be a subclass of idPlayer.", args.GetString( "classname" ), ent.GetClassname() );
+////		this.Error( "'%s' spawned the player as a '%s'.  Player spawnclass must be a subclass of idPlayer.", args.GetString( "classname" ), ent.GetClassname() );
 ////	}
 
 ////	if ( clientNum >= this.numClients ) {
 ////		this.numClients = clientNum + 1;
 ////	}
 
-////	mpGame.SpawnPlayer( clientNum );
+////	this.mpGame.SpawnPlayer( clientNum );
 ////}
 
 /////*
@@ -1971,7 +1973,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////	idPlayer *	player;
 ////	pvsHandle_t	otherPVS, newPVS;
 
-////	playerPVS.i = -1;
+////	this.playerPVS.i = -1;
 ////	for ( i = 0; i < this.numClients; i++ ) {
 ////		ent = this.entities[i];
 ////		if ( !ent || !ent.IsType( idPlayer::Type ) ) {
@@ -1980,24 +1982,24 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 
 ////		player = static_cast<idPlayer *>(ent);
 
-////		if ( playerPVS.i == -1 ) {
-////			playerPVS = GetClientPVS( player, PVS_NORMAL );
+////		if ( this.playerPVS.i == -1 ) {
+////			this.playerPVS = GetClientPVS( player, PVS_NORMAL );
 ////		} else {
 ////			otherPVS = GetClientPVS( player, PVS_NORMAL );
-////			newPVS = this.pvs.MergeCurrentPVS( playerPVS, otherPVS );
-////			this.pvs.FreeCurrentPVS( playerPVS );
+////			newPVS = this.pvs.MergeCurrentPVS( this.playerPVS, otherPVS );
+////			this.pvs.FreeCurrentPVS( this.playerPVS );
 ////			this.pvs.FreeCurrentPVS( otherPVS );
-////			playerPVS = newPVS;
+////			this.playerPVS = newPVS;
 ////		}
 
-////		if ( playerConnectedAreas.i == -1 ) {
-////			playerConnectedAreas = GetClientPVS( player, PVS_CONNECTED_AREAS );
+////		if ( this.playerConnectedAreas.i == -1 ) {
+////			this.playerConnectedAreas = GetClientPVS( player, PVS_CONNECTED_AREAS );
 ////		} else {
 ////			otherPVS = GetClientPVS( player, PVS_CONNECTED_AREAS );
-////			newPVS = this.pvs.MergeCurrentPVS( playerConnectedAreas, otherPVS );
-////			this.pvs.FreeCurrentPVS( playerConnectedAreas );
+////			newPVS = this.pvs.MergeCurrentPVS( this.playerConnectedAreas, otherPVS );
+////			this.pvs.FreeCurrentPVS( this.playerConnectedAreas );
 ////			this.pvs.FreeCurrentPVS( otherPVS );
-////			playerConnectedAreas = newPVS;
+////			this.playerConnectedAreas = newPVS;
 ////		}
 ////	}
 ////}
@@ -2008,13 +2010,13 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////================
 ////*/
 ////void idGameLocal::FreePlayerPVS( void ) {
-////	if ( playerPVS.i != -1 ) {
-////		this.pvs.FreeCurrentPVS( playerPVS );
-////		playerPVS.i = -1;
+////	if ( this.playerPVS.i != -1 ) {
+////		this.pvs.FreeCurrentPVS( this.playerPVS );
+////		this.playerPVS.i = -1;
 ////	}
-////	if ( playerConnectedAreas.i != -1 ) {
-////		this.pvs.FreeCurrentPVS( playerConnectedAreas );
-////		playerConnectedAreas.i = -1;
+////	if ( this.playerConnectedAreas.i != -1 ) {
+////		this.pvs.FreeCurrentPVS( this.playerConnectedAreas );
+////		this.playerConnectedAreas.i = -1;
 ////	}
 ////}
 
@@ -2026,10 +2028,10 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////================
 ////*/
 ////bool idGameLocal::InPlayerPVS( ent: idEntity ) const {
-////	if ( playerPVS.i == -1 ) {
+////	if ( this.playerPVS.i == -1 ) {
 ////		return false;
 ////	}
-////    return this.pvs.InCurrentPVS( playerPVS, ent.GetPVSAreas(), ent.GetNumPVSAreas() );
+////    return this.pvs.InCurrentPVS( this.playerPVS, ent.GetPVSAreas(), ent.GetNumPVSAreas() );
 ////}
 
 /////*
@@ -2040,10 +2042,10 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////================
 ////*/
 ////bool idGameLocal::InPlayerConnectedArea( ent: idEntity ) const {
-////	if ( playerConnectedAreas.i == -1 ) {
+////	if ( this.playerConnectedAreas.i == -1 ) {
 ////		return false;
 ////	}
-////    return this.pvs.InCurrentPVS( playerConnectedAreas, ent.GetPVSAreas(), ent.GetNumPVSAreas() );
+////    return this.pvs.InCurrentPVS( this.playerConnectedAreas, ent.GetPVSAreas(), ent.GetNumPVSAreas() );
 ////}
 
 /////*
@@ -2058,14 +2060,14 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////		if ( g_gravity.GetFloat() == 0.0 ) {
 ////			g_gravity.SetFloat( 1.0f );
 ////		}
-////        gravity.Set( 0, 0, -g_gravity.GetFloat() );
+////        this.gravity.Set( 0, 0, -g_gravity.GetFloat() );
 
 ////		// update all physics objects
-////		for( ent = spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
+////		for( ent = this.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
 ////			if ( ent.IsType( idAFEntity_Generic::Type ) ) {
 ////				idPhysics *phys = ent.GetPhysics();
 ////				if ( phys ) {
-////					phys.SetGravity( gravity );
+////					phys.SetGravity( this.gravity );
 ////				}
 ////			}
 ////		}
@@ -2079,7 +2081,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////================
 ////*/
 ////const idVec3 &idGameLocal::GetGravity( void ) const {
-////	return gravity;
+////	return this.gravity;
 ////}
 
 /////*
@@ -2094,21 +2096,21 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////	ent:idEntity, *next_ent, *master, *part;
 
 ////	// if the active entity list needs to be reordered to place physics team masters at the front
-////	if ( sortTeamMasters ) {
-////		for ( ent = activeEntities.Next(); ent != NULL; ent = next_ent ) {
+////	if ( this.sortTeamMasters ) {
+////		for ( ent = this.activeEntities.Next(); ent != NULL; ent = next_ent ) {
 ////			next_ent = ent.activeNode.Next();
 ////			master = ent.GetTeamMaster();
 ////			if ( master && master == ent ) {
 ////				ent.activeNode.Remove();
-////				ent.activeNode.AddToFront( activeEntities );
+////				ent.activeNode.AddToFront( this.activeEntities );
 ////			}
 ////		}
 ////	}
 
 ////	// if the active entity list needs to be reordered to place pushers at the front
-////	if ( sortPushers ) {
+////	if ( this.sortPushers ) {
 
-////		for ( ent = activeEntities.Next(); ent != NULL; ent = next_ent ) {
+////		for ( ent = this.activeEntities.Next(); ent != NULL; ent = next_ent ) {
 ////			next_ent = ent.activeNode.Next();
 ////			master = ent.GetTeamMaster();
 ////			if ( !master || master == ent ) {
@@ -2121,12 +2123,12 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////				// if there is an actor on the team
 ////				if ( part ) {
 ////					ent.activeNode.Remove();
-////					ent.activeNode.AddToFront( activeEntities );
+////					ent.activeNode.AddToFront( this.activeEntities );
 ////				}
 ////			}
 ////		}
 
-////		for ( ent = activeEntities.Next(); ent != NULL; ent = next_ent ) {
+////		for ( ent = this.activeEntities.Next(); ent != NULL; ent = next_ent ) {
 ////			next_ent = ent.activeNode.Next();
 ////			master = ent.GetTeamMaster();
 ////			if ( !master || master == ent ) {
@@ -2139,14 +2141,14 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////				// if there is an entity on the team using parametric physics
 ////				if ( part ) {
 ////					ent.activeNode.Remove();
-////					ent.activeNode.AddToFront( activeEntities );
+////					ent.activeNode.AddToFront( this.activeEntities );
 ////				}
 ////			}
 ////		}
 ////	}
 
-////	sortTeamMasters = false;
-////	sortPushers = false;
+////	this.sortTeamMasters = false;
+////	this.sortPushers = false;
 ////}
 
 /////*
@@ -2173,7 +2175,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 
 ////	if ( !isMultiplayer && g_stopTime.GetBool() ) {
 ////		// clear any debug lines from a previous frame
-////		gameRenderWorld.DebugClearLines( time + 1 );
+////		gameRenderWorld.DebugClearLines( this.time + 1 );
 
 ////		// set the user commands for this frame
 ////		memcpy( usercmds, clientCmds, this.numClients * sizeof( usercmds[ 0 ] ) );
@@ -2183,10 +2185,10 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////		}
 ////	} else do {
 ////		// update the game time
-////		framenum++;
-////		previousTime = time;
-////		time += msec;
-////		realClientTime = time;
+////		this.framenum++;
+////		this.previousTime = this.time;
+////		this.time += msec;
+////		realClientTime = this.time;
 
 ////#ifdef GAME_DLL
 ////		// allow changing SIMD usage on the fly
@@ -2197,7 +2199,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 
 ////		// make sure the random number counter is used each frame so random events
 ////		// are influenced by the player's actions
-////		random.RandomInt();
+////		this.random.RandomInt();
 
 ////		if ( player ) {
 ////			// update the renderview so that any gui videos play from the right frame
@@ -2208,10 +2210,10 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////		}
 
 ////		// clear any debug lines from a previous frame
-////		gameRenderWorld.DebugClearLines( time );
+////		gameRenderWorld.DebugClearLines( this.time );
 
 ////		// clear any debug polygons from a previous frame
-////		gameRenderWorld.DebugClearPolygons( time );
+////		gameRenderWorld.DebugClearPolygons( this.time );
 
 ////		// set the user commands for this frame
 ////		memcpy( usercmds, clientCmds, this.numClients * sizeof( usercmds[ 0 ] ) );
@@ -2237,9 +2239,9 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////		// let entities think
 ////		if ( g_timeentities.GetFloat() ) {
 ////			num = 0;
-////			for( ent = activeEntities.Next(); ent != NULL; ent = ent.activeNode.Next() ) {
+////			for( ent = this.activeEntities.Next(); ent != NULL; ent = ent.activeNode.Next() ) {
 ////				if ( g_cinematic.GetBool() && this.inCinematic && !ent.cinematic ) {
-////					ent.GetPhysics().UpdateTime( time );
+////					ent.GetPhysics().UpdateTime( this.time );
 ////					continue;
 ////				}
 ////				timer_singlethink.Clear();
@@ -2248,16 +2250,16 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////				timer_singlethink.Stop();
 ////				ms = timer_singlethink.Milliseconds();
 ////				if ( ms >= g_timeentities.GetFloat() ) {
-////					this.Printf( "%d: entity '%s': %.1f ms\n", time, ent.name.c_str(), ms );
+////					this.Printf( "%d: entity '%s': %.1f ms\n", this.time, ent.name.c_str(), ms );
 ////				}
 ////				num++;
 ////			}
 ////		} else {
 ////			if ( this.inCinematic ) {
 ////				num = 0;
-////				for( ent = activeEntities.Next(); ent != NULL; ent = ent.activeNode.Next() ) {
+////				for( ent = this.activeEntities.Next(); ent != NULL; ent = ent.activeNode.Next() ) {
 ////					if ( g_cinematic.GetBool() && !ent.cinematic ) {
-////						ent.GetPhysics().UpdateTime( time );
+////						ent.GetPhysics().UpdateTime( this.time );
 ////						continue;
 ////					}
 ////					ent.Think();
@@ -2265,7 +2267,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////				}
 ////			} else {
 ////				num = 0;
-////				for( ent = activeEntities.Next(); ent != NULL; ent = ent.activeNode.Next() ) {
+////				for( ent = this.activeEntities.Next(); ent != NULL; ent = ent.activeNode.Next() ) {
 ////					ent.Think();
 ////					num++;
 ////				}
@@ -2273,18 +2275,18 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////		}
 
 ////		// remove any entities that have stopped thinking
-////		if ( numEntitiesToDeactivate ) {
+////		if ( this.numEntitiesToDeactivate ) {
 ////			idEntity *next_ent;
 ////			int c = 0;
-////			for( ent = activeEntities.Next(); ent != NULL; ent = next_ent ) {
+////			for( ent = this.activeEntities.Next(); ent != NULL; ent = next_ent ) {
 ////				next_ent = ent.activeNode.Next();
 ////				if ( !ent.thinkFlags ) {
 ////					ent.activeNode.Remove();
 ////					c++;
 ////				}
 ////			}
-////			//assert( numEntitiesToDeactivate == c );
-////			numEntitiesToDeactivate = 0;
+////			//assert( this.numEntitiesToDeactivate == c );
+////			this.numEntitiesToDeactivate = 0;
 ////		}
 
 ////		timer_think.Stop();
@@ -2301,13 +2303,13 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 
 ////		// do multiplayer related stuff
 ////		if ( isMultiplayer ) {
-////			mpGame.Run();
+////			this.mpGame.Run();
 ////		}
 
 ////		// display how long it took to calculate the current game frame
 ////		if ( g_frametime.GetBool() ) {
 ////			this.Printf( "game %d: all:%.1f th:%.1f ev:%.1f %d ents \n",
-////				time, timer_think.Milliseconds() + timer_events.Milliseconds(),
+////				this.time, timer_think.Milliseconds() + timer_events.Milliseconds(),
 ////				timer_think.Milliseconds(), timer_events.Milliseconds(), num );
 ////		}
 
@@ -2322,32 +2324,32 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////			// combat is a 0-100 value based on lastHitTime and lastDmgTime
 ////			// each make up 50% of the time spread over 10 seconds
 ////			ret.combat = 0;
-////			if ( player.lastDmgTime > 0 && time < player.lastDmgTime + 10000 ) {
-////				ret.combat += 50.0f * (float) ( time - player.lastDmgTime ) / 10000;
+////			if ( player.lastDmgTime > 0 && this.time < player.lastDmgTime + 10000 ) {
+////				ret.combat += 50.0f * (float) ( this.time - player.lastDmgTime ) / 10000;
 ////			}
-////			if ( player.lastHitTime > 0 && time < player.lastHitTime + 10000 ) {
-////				ret.combat += 50.0f * (float) ( time - player.lastHitTime ) / 10000;
+////			if ( player.lastHitTime > 0 && this.time < player.lastHitTime + 10000 ) {
+////				ret.combat += 50.0f * (float) ( this.time - player.lastHitTime ) / 10000;
 ////			}
 ////		}
 
 ////		// see if a target_sessionCommand has forced a changelevel
-////		if ( sessionCommand.Length() ) {
-////			strncpy( ret.sessionCommand, sessionCommand, sizeof( ret.sessionCommand ) );
+////		if ( this.sessionCommand.Length() ) {
+////			strncpy( ret.sessionCommand, this.sessionCommand, sizeof( ret.sessionCommand ) );
 ////			break;
 ////		}
 
 ////		// make sure we don't loop forever when skipping a cinematic
-////		if ( skipCinematic && ( time > cinematicMaxSkipTime ) ) {
+////		if ( this.skipCinematic && ( this.time > this.cinematicMaxSkipTime ) ) {
 ////			Warning( "Exceeded maximum cinematic skip length.  Cinematic may be looping infinitely." );
-////			skipCinematic = false;
+////			this.skipCinematic = false;
 ////			break;
 ////		}
-////	} while( ( this.inCinematic || ( time < cinematicStopTime ) ) && skipCinematic );
+////	} while( ( this.inCinematic || ( this.time < this.cinematicStopTime ) ) && this.skipCinematic );
 
-////	ret.syncNextGameFrame = skipCinematic;
-////	if ( skipCinematic ) {
+////	ret.syncNextGameFrame = this.skipCinematic;
+////	if ( this.skipCinematic ) {
 ////		soundSystem.SetMute( false );
-////		skipCinematic = false;		
+////		this.skipCinematic = false;		
 ////	}
 
 ////	// show any debug info for this frame
@@ -2381,7 +2383,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 	
 ////	if ( !sys.FPU_StackIsEmpty() ) {
 ////		this.Printf( sys.FPU_GetState() );
-////		Error( "idGameLocal::CalcFov: FPU stack not empty" );
+////		this.Error( "idGameLocal::CalcFov: FPU stack not empty" );
 ////	}
 
 ////	// first, calculate the vertical fov based on a 640x480 view
@@ -2393,7 +2395,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////	assert( fov_y > 0 );
 ////	if ( fov_y <= 0 ) {
 ////		this.Printf( sys.FPU_GetState() );
-////		Error( "idGameLocal::CalcFov: bad result" );
+////		this.Error( "idGameLocal::CalcFov: bad result" );
 ////	}
 
 ////	switch( r_aspectRatio.GetInteger() ) {
@@ -2430,7 +2432,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////	assert( ( fov_x > 0 ) && ( fov_y > 0 ) );
 ////	if ( ( fov_y <= 0 ) || ( fov_x <= 0 ) ) {
 ////		this.Printf( sys.FPU_GetState() );
-////		Error( "idGameLocal::CalcFov: bad result" );
+////		this.Error( "idGameLocal::CalcFov: bad result" );
 ////	}
 ////}
 
@@ -2443,7 +2445,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////*/
 ////bool idGameLocal::Draw( int clientNum ) {
 ////	if ( isMultiplayer ) {
-////		return mpGame.Draw( clientNum );
+////		return this.mpGame.Draw( clientNum );
 ////	}
 
 ////	idPlayer *player = static_cast<idPlayer *>(this.entities[ clientNum ]);
@@ -2489,7 +2491,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////	if ( !isMultiplayer ) {
 ////		return NULL;
 ////	}
-////	return mpGame.StartMenu();
+////	return this.mpGame.StartMenu();
 ////}
 
 /////*
@@ -2501,7 +2503,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////	if ( !isMultiplayer ) {
 ////		return NULL;
 ////	}
-////	return mpGame.HandleGuiCommands( menuCommand );
+////	return this.mpGame.HandleGuiCommands( menuCommand );
 ////}
 
 /////*
@@ -2519,24 +2521,24 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////================
 ////*/
 ////idMapFile *idGameLocal::GetLevelMap( void ) {
-////	if ( mapFile && mapFile.HasPrimitiveData()) {
-////		return mapFile;
+////	if ( this.mapFile && this.mapFile.HasPrimitiveData()) {
+////		return this.mapFile;
 ////	}
 ////	if ( !this.mapFileName.Length() ) {
 ////		return NULL;
 ////	}
 
-////	if ( mapFile ) {
-////		delete mapFile;
+////	if ( this.mapFile ) {
+////		delete this.mapFile;
 ////	}
 
-////	mapFile = new idMapFile;
-////	if ( !mapFile.Parse( this.mapFileName ) ) {
-////		delete mapFile;
-////		mapFile = NULL;
+////	this.mapFile = new idMapFile;
+////	if ( !this.mapFile.Parse( this.mapFileName ) ) {
+////		delete this.mapFile;
+////		this.mapFile = NULL;
 ////	}
 
-////	return mapFile;
+////	return this.mapFile;
 ////}
 
 /////*
@@ -2569,7 +2571,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////	func = ent.scriptObject.GetFunction( frameCommand );
 ////	if ( !func ) {
 ////		if ( !ent.IsType( idTestModel::Type ) ) {
-////			Error( "Unknown function '%s' called for frame command on entity '%s'", frameCommand, ent.name.c_str() );
+////			this.Error( "Unknown function '%s' called for frame command on entity '%s'", frameCommand, ent.name.c_str() );
 ////		}
 ////	} else {
 ////		this.frameCommandThread.CallFunction( ent, func, true );
@@ -2596,7 +2598,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 
 ////	viewTextBounds.ExpandSelf( 128.0f );
 ////	viewBounds.ExpandSelf( 512.0f );
-////	for( ent = spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
+////	for( ent = this.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
 ////		totalBounds = ent.GetPhysics().GetAbsBounds();
 ////		for( i = 0; i < ent.targets.Num(); i++ ) {
 ////			target = ent.targets[ i ].GetEntity();
@@ -2660,9 +2662,9 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 
 ////		viewTextBounds.ExpandSelf( 128.0f );
 ////		viewBounds.ExpandSelf( 512.0f );
-////		for( ent = spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
+////		for( ent = this.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
 ////			// don't draw the worldspawn
-////			if ( ent == world ) {
+////			if ( ent == this.world ) {
 ////				continue;
 ////			}
 
@@ -2695,7 +2697,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 
 ////	// debug tool to draw bounding boxes around active entities
 ////	if ( g_showActiveEntities.GetBool() ) {
-////		for( ent = activeEntities.Next(); ent != NULL; ent = ent.activeNode.Next() ) {
+////		for( ent = this.activeEntities.Next(); ent != NULL; ent = ent.activeNode.Next() ) {
 ////			idBounds	b = ent.GetPhysics().GetBounds();
 ////			if ( b.GetVolume() <= 0 ) {
 ////				b[0][0] = b[0][1] = b[0][2] = -8;
@@ -2782,7 +2784,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////==================
 ////*/
 ////int	idGameLocal::NumAAS( void ) const {
-////	return aasList.Num();
+////	return this.aasList.Num();
 ////}
 
 /////*
@@ -2791,9 +2793,9 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////==================
 ////*/
 ////idAAS *idGameLocal::GetAAS( int num ) const {
-////	if ( ( num >= 0 ) && ( num < aasList.Num() ) ) {
-////		if ( aasList[ num ] && aasList[ num ].GetSettings() ) {
-////			return aasList[ num ];
+////	if ( ( num >= 0 ) && ( num < this.aasList.Num() ) ) {
+////		if ( this.aasList[ num ] && this.aasList[ num ].GetSettings() ) {
+////			return this.aasList[ num ];
 ////		}
 ////	}
 ////	return NULL;
@@ -2807,12 +2809,12 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////idAAS *idGameLocal::GetAAS( name:string ) const {
 ////	var/*int */i:number;
 
-////	for ( i = 0; i < aasNames.Num(); i++ ) {
-////		if ( aasNames[ i ] == name ) {
-////			if ( !aasList[ i ].GetSettings() ) {
+////	for ( i = 0; i < this.aasNames.Num(); i++ ) {
+////		if ( this.aasNames[ i ] == name ) {
+////			if ( !this.aasList[ i ].GetSettings() ) {
 ////				return NULL;
 ////			} else {
-////				return aasList[ i ];
+////				return this.aasList[ i ];
 ////			}
 ////		}
 ////	}
@@ -2827,8 +2829,8 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////void idGameLocal::SetAASAreaState( const idBounds &bounds, const int areaContents, bool closed ) {
 ////	var/*int */i:number;
 
-////	for( i = 0; i < aasList.Num(); i++ ) {
-////		aasList[ i ].SetAreaState( bounds, areaContents, closed );
+////	for( i = 0; i < this.aasList.Num(); i++ ) {
+////		this.aasList[ i ].SetAreaState( bounds, areaContents, closed );
 ////	}
 ////}
 
@@ -2842,13 +2844,13 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////	aasHandle_t obstacle;
 ////	aasHandle_t check;
 
-////	if ( !aasList.Num() ) {
+////	if ( !this.aasList.Num() ) {
 ////		return -1;
 ////	}
 
-////	obstacle = aasList[ 0 ].AddObstacle( bounds );
-////	for( i = 1; i < aasList.Num(); i++ ) {
-////		check = aasList[ i ].AddObstacle( bounds );
+////	obstacle = this.aasList[ 0 ].AddObstacle( bounds );
+////	for( i = 1; i < this.aasList.Num(); i++ ) {
+////		check = this.aasList[ i ].AddObstacle( bounds );
 ////		assert( check == obstacle );
 ////	}
 
@@ -2863,8 +2865,8 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////void idGameLocal::RemoveAASObstacle( const aasHandle_t handle ) {
 ////	var/*int */i:number;
 
-////	for( i = 0; i < aasList.Num(); i++ ) {
-////		aasList[ i ].RemoveObstacle( handle );
+////	for( i = 0; i < this.aasList.Num(); i++ ) {
+////		this.aasList[ i ].RemoveObstacle( handle );
 ////	}
 ////}
 
@@ -2876,8 +2878,8 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////void idGameLocal::RemoveAllAASObstacles( void ) {
 ////	var/*int */i:number;
 
-////	for( i = 0; i < aasList.Num(); i++ ) {
-////		aasList[ i ].RemoveAllObstacles();
+////	for( i = 0; i < this.aasList.Num(); i++ ) {
+////		this.aasList[ i ].RemoveAllObstacles();
 ////	}
 ////}
 
@@ -2916,28 +2918,28 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////void idGameLocal::RegisterEntity( ent: idEntity ) {
 ////	int spawn_entnum;
 
-////	if ( spawnCount >= ( 1 << ( 32 - GENTITYNUM_BITS ) ) ) {
-////		Error( "idGameLocal::RegisterEntity: spawn count overflow" );
+////	if ( this.spawnCount >= ( 1 << ( 32 - GENTITYNUM_BITS ) ) ) {
+////		this.Error( "idGameLocal::RegisterEntity: spawn count overflow" );
 ////	}
 
-////	if ( !spawnArgs.GetInt( "spawn_entnum", "0", spawn_entnum ) ) {
-////		while( this.entities[firstFreeIndex] && firstFreeIndex < ENTITYNUM_MAX_NORMAL ) {
-////			firstFreeIndex++;
+////	if ( !this.spawnArgs.GetInt( "spawn_entnum", "0", spawn_entnum ) ) {
+////		while( this.entities[this.firstFreeIndex] && this.firstFreeIndex < ENTITYNUM_MAX_NORMAL ) {
+////			this.firstFreeIndex++;
 ////		}
-////		if ( firstFreeIndex >= ENTITYNUM_MAX_NORMAL ) {
-////			Error( "no free entities" );
+////		if ( this.firstFreeIndex >= ENTITYNUM_MAX_NORMAL ) {
+////			this.Error( "no free entities" );
 ////		}
-////		spawn_entnum = firstFreeIndex++;
+////		spawn_entnum = this.firstFreeIndex++;
 ////	}
 
 ////	this.entities[ spawn_entnum ] = ent;
-////	this.spawnIds[ spawn_entnum ] = spawnCount++;
+////	this.spawnIds[ spawn_entnum ] = this.spawnCount++;
 ////	ent.entityNumber = spawn_entnum;
-////	ent.spawnNode.AddToEnd( spawnedEntities );
-////	ent.spawnArgs.TransferKeyValues( spawnArgs );
+////	ent.spawnNode.AddToEnd( this.spawnedEntities );
+////	ent.spawnArgs.TransferKeyValues( this.spawnArgs );
 
-////	if ( spawn_entnum >= num_entities ) {
-////		num_entities++;
+////	if ( spawn_entnum >= this.num_entities ) {
+////		this.num_entities++;
 ////	}
 ////}
 
@@ -2957,8 +2959,8 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////		ent.spawnNode.Remove();
 ////		this.entities[ ent.entityNumber ] = NULL;
 ////		this.spawnIds[ ent.entityNumber ] = -1;
-////		if ( ent.entityNumber >= MAX_CLIENTS && ent.entityNumber < firstFreeIndex ) {
-////			firstFreeIndex = ent.entityNumber;
+////		if ( ent.entityNumber >= MAX_CLIENTS && ent.entityNumber < this.firstFreeIndex ) {
+////			this.firstFreeIndex = ent.entityNumber;
 ////		}
 ////		ent.entityNumber = ENTITYNUM_NONE;
 ////	}
@@ -2979,14 +2981,14 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////#endif
 
 ////	if ( !classdef.IsType( idEntity::Type ) ) {
-////		Error( "Attempted to spawn non-entity class '%s'", classdef.classname );
+////		this.Error( "Attempted to spawn non-entity class '%s'", classdef.classname );
 ////	}
 
 ////	try {
 ////		if ( args ) {
-////			spawnArgs = *args;
+////			this.spawnArgs = *args;
 ////		} else {
-////			spawnArgs.Clear();
+////			this.spawnArgs.Clear();
 ////		}
 ////		obj = classdef.CreateInstance();
 ////		obj.CallSpawn();
@@ -2995,7 +2997,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////	catch( idAllocError & ) {
 ////		obj = NULL;
 ////	}
-////	spawnArgs.Clear();
+////	this.spawnArgs.Clear();
 
 ////	return static_cast<idEntity *>(obj);
 ////}
@@ -3020,25 +3022,25 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////		*ent = NULL;
 ////	}
 
-////	spawnArgs = args;
+////	this.spawnArgs = args;
 
-////	if ( spawnArgs.GetString( "name", "", &name ) ) {
+////	if ( this.spawnArgs.GetString( "name", "", &name ) ) {
 ////		sprintf( error, " on '%s'", name);
 ////	}
 
-////	spawnArgs.GetString( "classname", NULL, &classname );
+////	this.spawnArgs.GetString( "classname", NULL, &classname );
 
-////	const idDeclEntityDef *def = FindEntityDef( classname, false );
+////	const idDeclEntityDef *def = this.FindEntityDef( classname, false );
 
 ////	if ( !def ) {
 ////		Warning( "Unknown classname '%s'%s.", classname, error.c_str() );
 ////		return false;
 ////	}
 
-////	spawnArgs.SetDefaults( &def.dict );
+////	this.spawnArgs.SetDefaults( &def.dict );
 
 ////	// check if we should spawn a class object
-////	spawnArgs.GetString( "spawnclass", NULL, &spawn );
+////	this.spawnArgs.GetString( "spawnclass", NULL, &spawn );
 ////	if ( spawn ) {
 
 ////		cls = idClass::GetClass( spawn );
@@ -3063,7 +3065,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////	}
 
 ////	// check if we should call a script function to spawn
-////	spawnArgs.GetString( "spawnfunc", NULL, &spawn );
+////	this.spawnArgs.GetString( "spawnfunc", NULL, &spawn );
 ////	if ( spawn ) {
 ////		const function_t *func = this.program.FindFunction( spawn );
 ////		if ( !func ) {
@@ -3192,32 +3194,32 @@ idGameLocal.prototype.FindEntityDefDict = function ( name: string, makeDefault =
 
 ////	this.Printf( "Spawning entities\n" );
 
-////	if ( mapFile == NULL ) {
+////	if ( this.mapFile == NULL ) {
 ////		this.Printf("No mapfile present\n");
 ////		return;
 ////	}
 
 ////	SetSkill( g_skill.GetInteger() );
 
-////	numEntities = mapFile.GetNumEntities();
+////	numEntities = this.mapFile.GetNumEntities();
 ////	if ( numEntities == 0 ) {
-////		Error( "...no entities" );
+////		this.Error( "...no entities" );
 ////	}
 
 ////	// the worldspawn is a special that performs any global setup
 ////	// needed by a level
-////	mapEnt = mapFile.GetEntity( 0 );
+////	mapEnt = this.mapFile.GetEntity( 0 );
 ////	args = mapEnt.epairs;
 ////	args.SetInt( "spawn_entnum", ENTITYNUM_WORLD );
 ////	if ( !SpawnEntityDef( args ) || !this.entities[ ENTITYNUM_WORLD ] || !this.entities[ ENTITYNUM_WORLD ].IsType( idWorldspawn::Type ) ) {
-////		Error( "Problem spawning world entity" );
+////		this.Error( "Problem spawning world entity" );
 ////	}
 
 ////	num = 1;
 ////	inhibit = 0;
 
 ////	for ( i = 1 ; i < numEntities ; i++ ) {
-////		mapEnt = mapFile.GetEntity( i );
+////		mapEnt = this.mapFile.GetEntity( i );
 ////		args = mapEnt.epairs;
 
 ////		if ( !InhibitEntitySpawn( args ) ) {
@@ -3365,7 +3367,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////	idEntity	*ent;
 
 ////	if ( !from ) {
-////		ent = spawnedEntities.Next();
+////		ent = this.spawnedEntities.Next();
 ////	} else {
 ////		ent = from.spawnNode.Next();
 ////	}
@@ -3397,7 +3399,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 
 ////	bestEnt = NULL;
 ////	bestScale = 1.0f;
-////	for( ent = spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
+////	for( ent = this.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
 ////		if ( ent.IsType( c ) && ent != skip ) {
 ////			b = ent.GetPhysics().GetAbsBounds().Expand( 16 );
 ////			if ( b.RayIntersection( start, end-start, scale ) ) {
@@ -3423,7 +3425,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////	int entCount = 0;
 
 ////	bo.ExpandSelf( radius );
-////	for( ent = spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
+////	for( ent = this.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
 ////		if ( ent.GetPhysics().GetAbsBounds().IntersectsBounds( bo ) ) {
 ////			entityList[entCount++] = ent;
 ////		}
@@ -3518,8 +3520,8 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////void idGameLocal::AlertAI( ent: idEntity ) {
 ////	if ( ent && ent.IsType( idActor::Type ) ) {
 ////		// alert them for the next frame
-////		lastAIAlertTime = time + msec;
-////		lastAIAlertEntity = static_cast<idActor *>( ent );
+////		this.lastAIAlertTime = this.time + msec;
+////		this.lastAIAlertEntity = static_cast<idActor *>( ent );
 ////	}
 ////}
 
@@ -3529,8 +3531,8 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////============
 ////*/
 ////idActor *idGameLocal::GetAlertEntity( void ) {
-////	if ( lastAIAlertTime >= time ) {
-////		return lastAIAlertEntity.GetEntity();
+////	if ( this.lastAIAlertTime >= this.time ) {
+////		return this.lastAIAlertEntity.GetEntity();
 ////	}
 
 ////	return NULL;
@@ -3709,7 +3711,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////		}
 
 ////		if ( quake ) {
-////			clipModel.GetEntity().ApplyImpulse( world, clipModel.GetId(), clipModel.GetOrigin(), scale * push * dir );
+////			clipModel.GetEntity().ApplyImpulse( this.world, clipModel.GetId(), clipModel.GetOrigin(), scale * push * dir );
 ////		} else {
 ////			RadiusPushClipModel( origin, scale * push, clipModel );
 ////		}
@@ -3734,7 +3736,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////		impulse = clipModel.GetAbsBounds().GetCenter() - origin;
 ////		impulse.Normalize();
 ////		impulse.z += 1.0f;
-////		clipModel.GetEntity().ApplyImpulse( world, clipModel.GetId(), clipModel.GetOrigin(), push * impulse );
+////		clipModel.GetEntity().ApplyImpulse( this.world, clipModel.GetId(), clipModel.GetOrigin(), push * impulse );
 ////		return;
 ////	}
 
@@ -3769,7 +3771,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////		// impulse is applied to the center of the polygon
 ////		center = clipModel.GetOrigin() + center * clipModel.GetAxis();
 
-////		clipModel.GetEntity().ApplyImpulse( world, clipModel.GetId(), center, impulse );
+////		clipModel.GetEntity().ApplyImpulse( this.world, clipModel.GetId(), center, impulse );
 ////	}
 ////}
 
@@ -3796,7 +3798,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////	}
 
 ////	// randomly rotate the decal winding
-////	idMath::SinCos16( ( angle ) ? angle : random.RandomFloat() * idMath::TWO_PI, s, c );
+////	idMath::SinCos16( ( angle ) ? angle : this.random.RandomFloat() * idMath::TWO_PI, s, c );
 
 ////	// winding orientation
 ////	axis[2] = dir;
@@ -3819,7 +3821,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////	winding += idVec5( windingOrigin + ( axis * decalWinding[1] ) * size, idVec2( 0, 1 ) );
 ////	winding += idVec5( windingOrigin + ( axis * decalWinding[2] ) * size, idVec2( 0, 0 ) );
 ////	winding += idVec5( windingOrigin + ( axis * decalWinding[3] ) * size, idVec2( 1, 0 ) );
-////	gameRenderWorld.ProjectDecalOntoWorld( winding, projectionOrigin, parallel, depth * 0.5f, declManager.FindMaterial( material ), time );
+////	gameRenderWorld.ProjectDecalOntoWorld( winding, projectionOrigin, parallel, depth * 0.5f, declManager.FindMaterial( material ), this.time );
 ////}
 
 /////*
@@ -3842,7 +3844,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////		return;
 ////	}
 
-////	size = halfSize + random.RandomFloat() * halfSize;
+////	size = halfSize + this.random.RandomFloat() * halfSize;
 ////	trm.SetupPolygon( verts, 4 );
 ////	mdl.LoadModel( trm );
 ////	this.clip.Translation( results, origin, origin + dir * 64.0f, &mdl, mat3_identity, CONTENTS_SOLID, NULL );
@@ -3869,16 +3871,16 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////	if ( this.camera ) {
 ////		this.inCinematic = true;
 
-////		if ( skipCinematic && this.camera.spawnArgs.GetBool( "disconnect" ) ) {
+////		if ( this.skipCinematic && this.camera.spawnArgs.GetBool( "disconnect" ) ) {
 ////			this.camera.spawnArgs.SetBool( "disconnect", false );
 ////			cvarSystem.SetCVarFloat( "r_znear", 3.0f );
 ////			cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "disconnect\n" );
-////			skipCinematic = false;
+////			this.skipCinematic = false;
 ////			return;
 ////		}
 
-////		if ( time > cinematicStopTime ) {
-////			cinematicSkipTime = time + CINEMATIC_SKIP_DELAY;
+////		if ( this.time > this.cinematicStopTime ) {
+////			this.cinematicSkipTime = this.time + CINEMATIC_SKIP_DELAY;
 ////		}
 
 ////		// set r_znear so that transitioning into/out of the player's head doesn't clip through the view
@@ -3894,7 +3896,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 
 ////		if ( !cam.spawnArgs.GetBool( "ignore_enemies" ) ) {
 ////			// kill any active monsters that are enemies of the player
-////			for ( ent = spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
+////			for ( ent = this.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
 ////				if ( ent.cinematic || ent.fl.isDormant ) {
 ////					// only kill entities that aren't needed for cinematics and aren't dormant
 ////					continue;
@@ -3923,7 +3925,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 
 ////	} else {
 ////		this.inCinematic = false;
-////		cinematicStopTime = time + msec;
+////		this.cinematicStopTime = this.time + msec;
 
 ////		// restore r_znear
 ////		cvarSystem.SetCVarFloat( "r_znear", 3.0f );
@@ -3958,7 +3960,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////			this.camera.spawnArgs.SetBool( "disconnect", false );
 ////			cvarSystem.SetCVarFloat( "r_znear", 3.0f );
 ////			cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "disconnect\n" );
-////			skipCinematic = false;
+////			this.skipCinematic = false;
 ////			return false;
 ////		}
 
@@ -3969,9 +3971,9 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////	}
 
 ////	soundSystem.SetMute( true );
-////	if ( !skipCinematic ) {
-////		skipCinematic = true;
-////		cinematicMaxSkipTime = gameLocal.time + SEC2MS( g_cinematicMaxSkipTime.GetFloat() );
+////	if ( !this.skipCinematic ) {
+////		this.skipCinematic = true;
+////		this.cinematicMaxSkipTime = gameLocal.time + SEC2MS( g_cinematicMaxSkipTime.GetFloat() );
 ////	}
 
 ////	return true;
@@ -3994,7 +3996,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////	memset( this.locationEntities, 0, numAreas * sizeof( *this.locationEntities ) );
 
 ////	// for each location entity, make pointers from every area it touches
-////	for( ent = spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
+////	for( ent = this.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
 ////		if ( !ent.IsType( idLocationEntity::Type ) ) {
 ////			continue;
 ////		}
@@ -4045,7 +4047,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////		return NULL;
 ////	}
 ////	if ( areaNum >= gameRenderWorld.NumAreas() ) {
-////		Error( "idGameLocal::LocationForPoint: areaNum >= gameRenderWorld.NumAreas()" );
+////		this.Error( "idGameLocal::LocationForPoint: areaNum >= gameRenderWorld.NumAreas()" );
 ////	}
 
 ////	return this.locationEntities[ areaNum ];
@@ -4129,7 +4131,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////		}
 ////	}
 ////	for ( i = 0; i < initialSpots.Num(); i++ ) {
-////		j = random.RandomInt( initialSpots.Num() );
+////		j = this.random.RandomInt( initialSpots.Num() );
 ////		ent = initialSpots[ i ];
 ////		initialSpots[ i ] = initialSpots[ j ];
 ////		initialSpots[ j ] = ent;
@@ -4157,13 +4159,13 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////	if ( !isMultiplayer || !spawnSpots.Num() ) {
 ////		spot.ent = FindEntityUsingDef( NULL, "info_player_start" );
 ////		if ( !spot.ent ) {
-////			Error( "No info_player_start on map.\n" );
+////			this.Error( "No info_player_start on map.\n" );
 ////		}
 ////		return spot.ent;
 ////	}
 ////	if ( player.spectating ) {
 ////		// plain random spot, don't bother
-////		return spawnSpots[ random.RandomInt( spawnSpots.Num() ) ].ent;
+////		return spawnSpots[ this.random.RandomInt( spawnSpots.Num() ) ].ent;
 ////	} else if ( player.useInitialSpawns && currentInitialSpot < initialSpots.Num() ) {
 ////		return initialSpots[ currentInitialSpot++ ];
 ////	} else {
@@ -4177,7 +4179,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////		}
 ////		if ( alone ) {
 ////			// don't do distance-based
-////			return spawnSpots[ random.RandomInt( spawnSpots.Num() ) ].ent;
+////			return spawnSpots[ this.random.RandomInt( spawnSpots.Num() ) ].ent;
 ////		}
 
 ////		// find the distance to the closest active player for each spawn spot
@@ -4202,7 +4204,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////		qsort( ( void * )spawnSpots.Ptr(), spawnSpots.Num(), sizeof( spawnSpot_t ), ( int (*)(const void *, const void *) )sortSpawnPoints );
 
 ////		// choose a random one in the top half
-////		which = random.RandomInt( spawnSpots.Num() / 2 );
+////		which = this.random.RandomInt( spawnSpots.Num() / 2 );
 ////		spot = spawnSpots[ which ];
 ////	}
 ////	return spot.ent;
@@ -4243,7 +4245,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////================
 ////*/
 ////void idGameLocal::SetGlobalMaterial( const idMaterial *mat ) {
-////	globalMaterial = mat;
+////	this.globalMaterial = mat;
 ////}
 
 /////*
@@ -4252,7 +4254,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////================
 ////*/
 ////const idMaterial *idGameLocal::GetGlobalMaterial() {
-////	return globalMaterial;
+////	return this.globalMaterial;
 ////}
 
 /////*
@@ -4270,7 +4272,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////================
 ////*/
 ////void idGameLocal::ThrottleUserInfo( void ) {
-////	mpGame.ThrottleUserInfo();
+////	this.mpGame.ThrottleUserInfo();
 ////}
 
 /////*
@@ -4331,7 +4333,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////================
 ////*/
 ////void idGameLocal::GetClientStats( int clientNum, char *data, const int len ) {
-////	mpGame.PlayerStats( clientNum, data, len );
+////	this.mpGame.PlayerStats( clientNum, data, len );
 ////}
 
 
@@ -4356,7 +4358,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////	}
 ////	// Switch to a team
 ////	else {
-////		mpGame.SwitchToTeam ( clientNum, oldTeam, team );
+////		this.mpGame.SwitchToTeam ( clientNum, oldTeam, team );
 ////	}
 ////}
 

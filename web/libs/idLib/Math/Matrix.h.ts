@@ -776,8 +776,41 @@ class idMat3 {
 //ID_INLINE float *idMat3::ToFloatPtr( ) {
 //	return mat[0].ToFloatPtr();
 //}
-
 };
+
+Object.defineProperty(idMat3.prototype, "0", {
+	get: function (): number {
+		return this.mat[0];
+	},
+	set: function (value: number): void {
+		todoThrow();
+	},
+	enumerable: false,
+	configurable: false
+});
+
+Object.defineProperty(idMat3.prototype, "1", {
+	get: function (): number {
+		return this.mat[1];
+	},
+	set: function (value: number): void {
+		todoThrow();
+	},
+	enumerable: false,
+	configurable: false
+});
+
+Object.defineProperty(idMat3.prototype, "2", {
+	get: function (): number {
+		return this.mat[2];
+	},
+	set: function (value: number): void {
+		todoThrow();
+	},
+	enumerable: false,
+	configurable: false
+});
+
 
 var mat3_zero = new idMat3();
 var mat3_identity = new idMat3( new idVec3( 1, 0, 0 ), new idVec3( 0, 1, 0 ), new idVec3( 0, 0, 1 ) );

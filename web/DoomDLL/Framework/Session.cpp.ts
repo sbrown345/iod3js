@@ -1550,23 +1550,24 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 		game.SetUserInfo( i, this.mapSpawnData.userInfo[i], idAsyncNetwork.client.IsActive(), false );
 		game.SetPersistentPlayerInfo( i, this.mapSpawnData.persistentPlayerInfo[i] );
 	}
+
+	// load and spawn all other entities ( from a savegame possibly )
+	if (this.loadingSaveGame && this.savegameFile) {
+		todoThrow ( );
+		//if ( game.InitFromSaveGame( fullMapName.c_str() + ".map", this.rw, this.sw, this.savegameFile ) == false ) {
+		//	// If the loadgame failed, restart the map with the player persistent data
+		//	this.loadingSaveGame = false;
+		//	fileSystem.CloseFile( this.savegameFile );
+		//	this.savegameFile = NULL;
+
+		//	game.SetServerInfo( this.mapSpawnData.serverInfo );
+		//	game.InitFromNewMap( fullMapName.c_str() + ".map", this.rw, this.sw, idAsyncNetwork.server.IsActive(), idAsyncNetwork.client.IsActive(), Sys_Milliseconds() );
+		//}
+	} else {
+		game.SetServerInfo( this.mapSpawnData.serverInfo );
+		game.InitFromNewMap( fullMapName.c_str() + ".map", this.rw, this.sw, idAsyncNetwork.server.IsActive(), idAsyncNetwork.client.IsActive(), Sys_Milliseconds() );
+	}
 todoThrow()
-	//// load and spawn all other entities ( from a savegame possibly )
-	//if ( this.loadingSaveGame && this.savegameFile ) {
-	//	if ( game.InitFromSaveGame( fullMapName.c_str() + ".map", this.rw, this.sw, this.savegameFile ) == false ) {
-	//		// If the loadgame failed, restart the map with the player persistent data
-	//		this.loadingSaveGame = false;
-	//		fileSystem.CloseFile( this.savegameFile );
-	//		this.savegameFile = NULL;
-
-	//		game.SetServerInfo( this.mapSpawnData.serverInfo );
-	//		game.InitFromNewMap( fullMapName.c_str() + ".map", this.rw, this.sw, idAsyncNetwork.server.IsActive(), idAsyncNetwork.client.IsActive(), Sys_Milliseconds() );
-	//	}
-	//} else {
-	//	game.SetServerInfo( this.mapSpawnData.serverInfo );
-	//	game.InitFromNewMap( fullMapName.c_str() + ".map", this.rw, this.sw, idAsyncNetwork.server.IsActive(), idAsyncNetwork.client.IsActive(), Sys_Milliseconds() );
-	//}
-
 	//if ( !idAsyncNetwork::IsActive() && !this.loadingSaveGame ) {
 	//	// spawn players
 	//	for ( i = 0; i < this.numClients; i++ ) {

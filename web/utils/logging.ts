@@ -6,11 +6,11 @@ JavaScript Debug Helpers
 ===============================================================================
 */
 var LOG_TO_CONSOLE = false;
-var SKIP_ALL_LOGGING = false;
+var SKIP_ALL_LOGGING = true;
 var LOGGING_WITH_VISUAL_STUDIO = !!(window["Debug"] && window["Debug"].debuggerEnabled);
 
 var DEBUG_LOG_MODE = true && !LOGGING_WITH_VISUAL_STUDIO;
-function isd(v: boolean): boolean { return DEBUG_LOG_MODE && v; }
+function isd ( v: boolean ): boolean { return DEBUG_LOG_MODE && v; }
 
 var DEBUG_WEBGL_UTIL = isd( false );
 var DEBUG_RENDER_METHODS = isd( false );
@@ -22,7 +22,7 @@ var DEBUG_COMPILER = isd(false );
 var DEBUG_GUI = isd(false );
 var DEBUG_HASHINDEX = isd( false );
 var DEBUG_STRPOOL = isd( false );
-var DEBUG_RENDERWORLD_LOAD = isd( true );
+var DEBUG_RENDERWORLD_LOAD = isd( true ); // todo: checkoutput
 
 function dlog(log: boolean, format: string, ...args: any[]) {
 	if (!log || SKIP_ALL_LOGGING) return;

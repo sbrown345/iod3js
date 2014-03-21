@@ -63,15 +63,15 @@ class idRenderModelStatic extends idRenderModel {
 	Print() : void { throw "placeholder"; }
 	List() : void { throw "placeholder"; }
 ////	virtual int					Memory() const;
-////	virtual ID_TIME_T				Timestamp() const;
-////	virtual int					NumSurfaces() const;
-////	virtual int					NumBaseSurfaces() const;
+	Timestamp():number { throw "placeholder"; }
+	NumSurfaces():number { throw "placeholder"; }
+	NumBaseSurfaces():number { throw "placeholder"; }
 	Surface ( surfaceNum: number ): modelSurface_t { throw "placeholder"; }
 ////	virtual srfTriangles_t *	AllocSurfaceTriangles( int numVerts, int numIndexes ) const;
 ////	virtual void				FreeSurfaceTriangles( srfTriangles_t *tris ) : void { throw "placeholder"; }
-////	virtual srfTriangles_t *	ShadowHull() const;
-////	virtual bool				IsStaticWorldModel() const;
-////	virtual dynamicModel_t		IsDynamicModel() const;
+	ShadowHull ( ): srfTriangles_t { throw "placeholder"; }
+	IsStaticWorldModel ( ): boolean { throw "placeholder"; }
+	IsDynamicModel(): dynamicModel_t { throw "placeholder"; }
 	IsDefaultModel(): boolean { throw "placeholder"; }
 	IsReloadable(): boolean { throw "placeholder"; }
 ////	virtual idRenderModel *		InstantiateDynamicModel( const struct renderEntity_s *ent, const struct viewDef_s *view, idRenderModel *cachedModel );
@@ -81,10 +81,10 @@ class idRenderModelStatic extends idRenderModel {
 ////	virtual const char *		GetJointName( jointHandle_t handle ) const;
 ////	virtual const idJointQuat *	GetDefaultPose( void ) const;
 ////	virtual int					NearestJoint( int surfaceNum, int a, int b, int c ) const;
-////	virtual idBounds			Bounds( const struct renderEntity_s *ent ) const;
+	Bounds ( ent: renderEntity_t = null ): idBounds { throw "placeholder"; }
 ////	virtual void				ReadFromDemoFile( class idDemoFile *f );: void { throw "placeholder"; }
 ////	virtual void				WriteToDemoFile( class idDemoFile *f );: void { throw "placeholder"; }
-////	virtual float				DepthHack() const;
+	DepthHack() :number { throw "placeholder"; }
 
     MakeDefaultModel(): void { throw "placeholder"; }
 
@@ -190,7 +190,7 @@ class idRenderModelStatic extends idRenderModel {
 ////class idRenderModelMD5 extends idRenderModelStatic {
 ////public:
 ////	virtual void				InitFromFile( const char *fileName );
-////	virtual dynamicModel_t		IsDynamicModel() const;
+////	virtual IsDynamicModel() const;
 ////	virtual idBounds			Bounds( const struct renderEntity_s *ent ) const;
 ////	virtual void				Print() const;
 ////	virtual void				List() const;
