@@ -400,7 +400,8 @@ idCollisionModelManagerLocal.prototype.ParsePolygons = function ( src: idLexer, 
 
 	if ( src.CheckTokenType( TT_NUMBER, 0, token ) ) {
 		model.polygonBlock = new cm_polygonBlock_t; // (cm_polygonBlock_t *) Mem_Alloc( sizeof( cm_polygonBlock_t ) + token.GetIntValue() );
-		model.polygonBlock.bytesRemaining = token.GetIntValue ( );
+		model.polygonBlock.bytesRemaining = token.GetIntValue();
+		debugger; //either use objects or have object wrapper around typed ararys?
 		model.polygonBlock.next = new Uint8Array( token.GetIntValue ( ) ); //( (byte *) model.polygonBlock ) + sizeof( cm_polygonBlock_t );
 	}
 

@@ -100,8 +100,8 @@ class cm_edge_t {
 class cm_polygonBlock_t{
 	bytesRemaining:number/*int*/;
 	next: any;//	byte *		
-	nextIdx: number;
-} ;
+	nextIdx: number = 0;
+}
 
 class cm_polygon_t{
 	bounds = new idBounds;				// polygon bounds
@@ -141,7 +141,7 @@ class cm_polygonRefBlock_t {
 class cm_brushBlock_t{
 	bytesRemaining:number/*int*/
 	next: any;//	byte *					
-	nextIdx: number;
+	nextIdx: number = 0;
 }
 
 class cm_brush_t {

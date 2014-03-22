@@ -574,7 +574,7 @@ idCollisionModelManagerLocal.prototype.AllocNode = function ( model: cm_model_t,
 	var nodeBlock: cm_nodeBlock_t;
 	
 	if ( !model.nodeBlocks || !model.nodeBlocks.nextNode ) {
-		var arr = newStructArray<cm_node_t>( cm_nodeBlock_t, blockSize );
+		var arr = newStructArray<cm_node_t>( cm_node_t, blockSize );
 		nodeBlock = new cm_nodeBlock_t; //(cm_nodeBlock_t *) Mem_ClearedAlloc( sizeof( cm_nodeBlock_t ) + blockSize * sizeof(cm_node_t) );
 		nodeBlock.nextNode = arr[nodeIdx++]; //(cm_node_t *) ( ( (byte *) nodeBlock ) + sizeof( cm_nodeBlock_t ) );
 		nodeBlock.next = model.nodeBlocks;
@@ -663,15 +663,17 @@ idCollisionModelManagerLocal.prototype.AllocPolygon = function ( model: cm_model
 	var poly: cm_polygon_t;
 	var /*int */size: number;
 
-	size = /*sizeof( cm_polygon_t )*/60 + ( numEdges - 1 ) * 4 /*sizeof( poly.edges[0] )*/;
+	size = /*sizeof( cm_polygon_t )60 +*/ ( numEdges - 1 ) * 4 /*sizeof( poly.edges[0] )*/;
 	model.numPolygons++;
 	model.polygonMemory += size;
-	if ( model.polygonBlock && model.polygonBlock.bytesRemaining >= size ) {
+	if (model.polygonBlock && model.polygonBlock.bytesRemaining >= size) {
+		debugger;//todo: model.polygonBlock.next can't be  uint8array...
 		poly = <cm_polygon_t>/*(cm_polygon_t *) */model.polygonBlock.next;
 		model.polygonBlock.nextIdx += size;
 		model.polygonBlock.bytesRemaining -= size;
 	} else {
 		poly = new cm_polygon_t; // (cm_polygon_t *) Mem_Alloc( size );
+		poly.edges = new Int32Array( new ArrayBuffer( size ) );
 	}
 	return poly;
 };
@@ -685,7 +687,7 @@ idCollisionModelManagerLocal.prototype.AllocBrush = function ( model: cm_model_t
 	var brush: cm_brush_t;
 	var /*int */size: number;
 
-	size = /* sizeof( cm_brush_t ) */60 + ( numPlanes - 1 ) * 16;/*sizeof( brush.planes[0] );*/
+	size = /* sizeof( cm_brush_t ) 60 +*/ ( numPlanes - 1 );//* 16;/*sizeof( brush.planes[0] );*/
 	model.numBrushes++;
 	model.brushMemory += size;
 	if ( model.brushBlock && model.brushBlock.bytesRemaining >= size ) {
@@ -694,6 +696,7 @@ idCollisionModelManagerLocal.prototype.AllocBrush = function ( model: cm_model_t
 		model.brushBlock.bytesRemaining -= size;
 	} else {
 		brush = new cm_brush_t; // (cm_brush_t *) Mem_Alloc( size );
+		brush.planes = newStructArray<idPlane>( idPlane, size );
 	}
 	return brush;
 };
