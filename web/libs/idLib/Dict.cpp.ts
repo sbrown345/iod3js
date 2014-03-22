@@ -187,6 +187,10 @@ class idDict {
 	destructor ( ): void {
 		this.Clear ( );
 	}
+
+	init ( ): void {
+		this.Clear ( );
+	}
 	
 ////SetGranularity( int granularity ) {
 ////	this.args.SetGranularity( granularity );

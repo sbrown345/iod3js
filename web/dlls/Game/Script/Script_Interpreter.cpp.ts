@@ -46,23 +46,23 @@
 class idInterpreter {
 //private:
 //	prstack_t			callStack[ MAX_STACK_DEPTH ];
-//	int 				callStackDepth;
-//	int 				maxStackDepth;
-//
+	callStackDepth: number/*int*/;
+	maxStackDepth: number/*int*/;
+
 //	byte				localstack[ LOCALSTACK_SIZE ];
-//	int 				localstackUsed;
-//	int 				localstackBase;
-//	int 				maxLocalstackUsed;
-//
-//	const function_t	*currentFunction;
-//	int 				instructionPointer;
-//
-//	int					popParms;
-//	const idEventDef	*multiFrameEvent;
-	eventEntity:idEntity;
+	localstackUsed: number/*int*/;
+	localstackBase: number/*int*/;
+	maxLocalstackUsed: number/*int*/;
+
+	currentFunction: function_t;
+	instructionPointer: number/*int*/;
+	
+	popParms: number/*int*/;
+	multiFrameEvent: idEventDef;
+	eventEntity: idEntity;
 
 	thread:idThread;
-//
+
 //	void				PopParms( int numParms );
 //	void				PushString( const char *string );
 //	void				Push( int value );
@@ -80,10 +80,10 @@ class idInterpreter {
 //	void				CallSysEvent( const function_t *func, int argsize );
 //
 //public:
-//	bool				doneProcessing;
-//	bool				threadDying;
-//	bool				terminateOnExit;
-//	bool				debug;
+	doneProcessing: boolean;
+	threadDying: boolean;
+	terminateOnExit: boolean;
+	debug: boolean;
 //
 //						idInterpreter();
 //
@@ -93,31 +93,31 @@ class idInterpreter {
 //
 //	void				SetThread( idThread *pThread );
 //
-//	void				StackTrace( void ) const;
+//	void				StackTrace( ) const;
 //
-//	int					CurrentLine( void ) const;
-//	const char			*CurrentFile( void ) const;
+//	int					CurrentLine( ) const;
+//	const char			*CurrentFile( ) const;
 //
 //	void				Error( char *fmt, ... ) const id_attribute((format(printf,2,3)));
 //	void				Warning( char *fmt, ... ) const id_attribute((format(printf,2,3)));
-//	void				DisplayInfo( void ) const;
+//	void				DisplayInfo( ) const;
 //
 //	bool				BeginMultiFrameEvent( ent:idEntity, const idEventDef *event );
 //	void				EndMultiFrameEvent( ent:idEntity, const idEventDef *event );
-//	bool				MultiFrameEventInProgress( void ) const;
+//	bool				MultiFrameEventInProgress( ) const;
 //
 //	void				ThreadCall( idInterpreter *source, const function_t *func, int args );
 //	void				EnterFunction( const function_t *func, bool clearStack );
 //	void				EnterObjectFunction( idEntity *self, const function_t *func, bool clearStack );
 //
-//	bool				Execute( void );
-//	void				Reset( void );
+//	bool				Execute( );
+//	void				Reset( );
 //
 //	bool				GetRegisterValue( name:string, idStr &out, int scopeDepth );
-//	int					GetCallstackDepth( void ) const;
-//	const prstack_t		*GetCallstack( void ) const;
-//	const function_t	*GetCurrentFunction( void ) const;
-//	idThread			*GetThread( void ) const;
+//	int					GetCallstackDepth( ) const;
+//	const prstack_t		*GetCallstack( ) const;
+//	const function_t	*GetCurrentFunction( ) const;
+//	idThread			*GetThread( ) const;
 //
 
 
@@ -282,8 +282,8 @@ class idInterpreter {
 //*/
 //idInterpreter::idInterpreter() {
 //	localstackUsed = 0;
-//	terminateOnExit = true;
-//	debug = 0;
+//	this.terminateOnExit = true;
+//	this.debug = 0;
 //	memset( localstack, 0, sizeof( localstack ) );
 //	memset( callStack, 0, sizeof( callStack ) );
 //	Reset();
@@ -324,8 +324,8 @@ class idInterpreter {
 //
 //	savefile.WriteInt( popParms );
 //
-//	if ( multiFrameEvent ) {
-//		savefile.WriteString( multiFrameEvent.GetName() );
+//	if ( this.multiFrameEvent ) {
+//		savefile.WriteString( this.multiFrameEvent.GetName() );
 //	} else {
 //		savefile.WriteString( "" );
 //	}
@@ -333,10 +333,10 @@ class idInterpreter {
 //
 //	savefile.WriteObject( thread );
 //
-//	savefile.WriteBool( doneProcessing );
-//	savefile.WriteBool( threadDying );
-//	savefile.WriteBool( terminateOnExit );
-//	savefile.WriteBool( debug );
+//	savefile.WriteBool( this.doneProcessing );
+//	savefile.WriteBool( this.threadDying );
+//	savefile.WriteBool( this.terminateOnExit );
+//	savefile.WriteBool( this.debug );
 //}
 //
 ///*
@@ -382,16 +382,16 @@ class idInterpreter {
 //
 //	savefile.ReadString( funcname );
 //	if ( funcname.Length() ) {
-//		multiFrameEvent = idEventDef::FindEvent( funcname );
+//		this.multiFrameEvent = idEventDef::FindEvent( funcname );
 //	}
 //
 //	savefile.ReadObject( reinterpret_cast<idClass *&>( eventEntity ) );
 //	savefile.ReadObject( reinterpret_cast<idClass *&>( thread ) );
 //
-//	savefile.ReadBool( doneProcessing );
-//	savefile.ReadBool( threadDying );
-//	savefile.ReadBool( terminateOnExit );
-//	savefile.ReadBool( debug );
+//	savefile.ReadBool( this.doneProcessing );
+//	savefile.ReadBool( this.threadDying );
+//	savefile.ReadBool( this.terminateOnExit );
+//	savefile.ReadBool( this.debug );
 //}
 //
 ///*
@@ -399,7 +399,7 @@ class idInterpreter {
 //idInterpreter::Reset
 //================
 //*/
-//void idInterpreter::Reset( void ) {
+//void idInterpreter::Reset( ) {
 //	callStackDepth = 0;
 //	localstackUsed = 0;
 //	localstackBase = 0;
@@ -408,14 +408,14 @@ class idInterpreter {
 //	maxStackDepth = 0;
 //
 //	popParms = 0;
-//	multiFrameEvent = NULL;
+//	this.multiFrameEvent = NULL;
 //	eventEntity = NULL;
 //
 //	currentFunction = 0;
 //	NextInstruction( 0 );
 //
-//	threadDying 	= false;
-//	doneProcessing	= true;
+//	this.threadDying 	= false;
+//	this.doneProcessing	= true;
 //}
 //
 ///*
@@ -561,7 +561,7 @@ class idInterpreter {
 //idInterpreter::GetCallstackDepth
 //================
 //*/
-//int idInterpreter::GetCallstackDepth( void ) const {
+//int idInterpreter::GetCallstackDepth( ) const {
 //	return callStackDepth;
 //}
 //
@@ -570,7 +570,7 @@ class idInterpreter {
 //idInterpreter::GetCallstack
 //================
 //*/
-//const prstack_t *idInterpreter::GetCallstack( void ) const {
+//const prstack_t *idInterpreter::GetCallstack( ) const {
 //	return &callStack[ 0 ];
 //}
 //
@@ -579,7 +579,7 @@ class idInterpreter {
 //idInterpreter::GetCurrentFunction
 //================
 //*/
-//const function_t *idInterpreter::GetCurrentFunction( void ) const {
+//const function_t *idInterpreter::GetCurrentFunction( ) const {
 //	return currentFunction;
 //}
 //
@@ -588,7 +588,7 @@ class idInterpreter {
 //idInterpreter::GetThread
 //================
 //*/
-//idThread *idInterpreter::GetThread( void ) const {
+//idThread *idInterpreter::GetThread( ) const {
 //	return thread;
 //}
 //
@@ -607,7 +607,7 @@ idInterpreter::SetThread
 //idInterpreter::CurrentLine
 //================
 //*/
-//int idInterpreter::CurrentLine( void ) const {
+//int idInterpreter::CurrentLine( ) const {
 //	if ( instructionPointer < 0 ) {
 //		return 0;
 //	}
@@ -619,7 +619,7 @@ idInterpreter::SetThread
 //idInterpreter::CurrentFile
 //================
 //*/
-//const char *idInterpreter::CurrentFile( void ) const {
+//const char *idInterpreter::CurrentFile( ) const {
 //	if ( instructionPointer < 0 ) {
 //		return "";
 //	}
@@ -631,7 +631,7 @@ idInterpreter::SetThread
 //idInterpreter::StackTrace
 //============
 //*/
-//void idInterpreter::StackTrace( void ) const {
+//void idInterpreter::StackTrace( ) const {
 //	const function_t	*f;
 //	int 				i;
 //	int					top;
@@ -715,7 +715,7 @@ idInterpreter::SetThread
 //idInterpreter::DisplayInfo
 //================
 //*/
-//void idInterpreter::DisplayInfo( void ) const {
+//void idInterpreter::DisplayInfo( ) const {
 //	const function_t *f;
 //	int i;
 //
@@ -827,7 +827,7 @@ idInterpreter::SetThread
 //		Error( "NULL function" );
 //	}
 //
-//	if ( debug ) {
+//	if ( this.debug ) {
 //		if ( currentFunction ) {
 //			gameLocal.Printf( "%d: call '%s' from '%s'(line %d)%s\n", gameLocal.time, func.Name(), currentFunction.Name(), 
 //				gameLocal.program.GetStatement( instructionPointer ).linenumber, clearStack ? " clear stack" : "" );
@@ -895,7 +895,7 @@ idInterpreter::SetThread
 //	PopParms( currentFunction.locals );
 //	assert( localstackUsed == localstackBase );
 //
-//	if ( debug ) {
+//	if ( this.debug ) {
 //		statement_t &line = gameLocal.program.GetStatement( instructionPointer );
 //		gameLocal.Printf( "%d: %s(%d): exit %s", gameLocal.time, gameLocal.program.GetFilename( line.file ), line.linenumber, currentFunction.Name() );
 //		if ( callStackDepth > 1 ) {
@@ -914,8 +914,8 @@ idInterpreter::SetThread
 //
 //	if ( !callStackDepth ) {
 //		// all done
-//		doneProcessing = true;
-//		threadDying = true;
+//		this.doneProcessing = true;
+//		this.threadDying = true;
 //		currentFunction = 0;
 //	}
 //}
@@ -1012,7 +1012,7 @@ idInterpreter::SetThread
 //			( *( idEntity ** )&data[ i ] ) = GetEntity( *var.entityNumberPtr );
 //			if ( !( *( idEntity ** )&data[ i ] ) ) {
 //				Warning( "Entity not found for event '%s'. Terminating thread.", evdef.GetName() );
-//				threadDying = true;
+//				this.threadDying = true;
 //				PopParms( argsize );
 //				return;
 //			}
@@ -1038,13 +1038,13 @@ idInterpreter::SetThread
 //	popParms = argsize;
 //	eventEntity.ProcessEventArgPtr( evdef, data );
 //
-//	if ( !multiFrameEvent ) {
+//	if ( !this.multiFrameEvent ) {
 //		if ( popParms ) {
 //			PopParms( popParms );
 //		}
 //		eventEntity = NULL;
 //	} else {
-//		doneProcessing = true;
+//		this.doneProcessing = true;
 //	}
 //	popParms = 0;
 //}
@@ -1058,14 +1058,14 @@ idInterpreter::SetThread
 //	if ( eventEntity != ent ) {
 //		Error( "idInterpreter::BeginMultiFrameEvent called with wrong entity" );
 //	}
-//	if ( multiFrameEvent ) {
-//		if ( multiFrameEvent != event ) {
+//	if ( this.multiFrameEvent ) {
+//		if ( this.multiFrameEvent != event ) {
 //			Error( "idInterpreter::BeginMultiFrameEvent called with wrong event" );
 //		}
 //		return false;
 //	}
 //
-//	multiFrameEvent = event;
+//	this.multiFrameEvent = event;
 //	return true;
 //}
 //
@@ -1075,22 +1075,22 @@ idInterpreter::SetThread
 //================
 //*/
 //void idInterpreter::EndMultiFrameEvent( ent:idEntity, const idEventDef *event ) {
-//	if ( multiFrameEvent != event ) {
+//	if ( this.multiFrameEvent != event ) {
 //		Error( "idInterpreter::EndMultiFrameEvent called with wrong event" );
 //	}
 //
-//	multiFrameEvent = NULL;
+//	this.multiFrameEvent = NULL;
 //}
 //
-///*
-//================
-//idInterpreter::MultiFrameEventInProgress
-//================
-//*/
-//bool idInterpreter::MultiFrameEventInProgress( void ) const {
-//	return multiFrameEvent != NULL;
-//}
-//
+/*
+================
+idInterpreter::MultiFrameEventInProgress
+================
+*/
+	MultiFrameEventInProgress ( ): boolean {
+		return this.multiFrameEvent != null;
+	}
+
 ///*
 //================
 //idInterpreter::CallSysEvent
@@ -1142,7 +1142,7 @@ idInterpreter::SetThread
 //			*( idEntity ** )&data[ i ] = GetEntity( *source.entityNumberPtr );
 //			if ( !*( idEntity ** )&data[ i ] ) {
 //				Warning( "Entity not found for event '%s'. Terminating thread.", evdef.GetName() );
-//				threadDying = true;
+//				this.threadDying = true;
 //				PopParms( argsize );
 //				return;
 //			}
@@ -1173,12 +1173,13 @@ idInterpreter::SetThread
 //	popParms = 0;
 //}
 //
-///*
-//====================
-//idInterpreter::Execute
-//====================
-//*/
-//bool idInterpreter::Execute( void ) {
+/*
+====================
+idInterpreter::Execute
+====================
+*/
+	Execute(): boolean {
+		todoThrow()
 //	varEval_t	var_a;
 //	varEval_t	var_b;
 //	varEval_t	var_c;
@@ -1190,19 +1191,19 @@ idInterpreter::SetThread
 //	idScriptObject *obj;
 //	const function_t *func;
 //
-//	if ( threadDying || !currentFunction ) {
+//	if ( this.threadDying || !currentFunction ) {
 //		return true;
 //	}
 //
-//	if ( multiFrameEvent ) {
+//	if ( this.multiFrameEvent ) {
 //		// move to previous instruction and call it again
 //		instructionPointer--;
 //	}
 //
 //	runaway = 5000000;
 //
-//	doneProcessing = false;
-//	while( !doneProcessing && !threadDying ) {
+//	this.doneProcessing = false;
+//	while( !this.doneProcessing && !this.threadDying ) {
 //		instructionPointer++;
 //
 //		if ( !--runaway ) {
@@ -2076,6 +2077,6 @@ idInterpreter::SetThread
 //		}
 //	}
 //
-//	return threadDying;
-//}
+	return this.threadDying;
+}
 }

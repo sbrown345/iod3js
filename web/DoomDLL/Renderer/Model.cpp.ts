@@ -94,7 +94,7 @@ idRenderModelStatic.prototype.destructor = function ( ) {
 
 ////	totalBytes += sizeof( *this );
 ////	totalBytes += name.DynamicMemoryUsed();
-////	totalBytes += surfaces.MemoryUsed();
+////	totalBytes += this.surfaces.MemoryUsed();
 
 ////	if ( shadowHull ) {
 ////		totalBytes += R_TriSurfMemory( shadowHull );
@@ -288,7 +288,7 @@ idRenderModelStatic.prototype.MakeDefaultModel = function ( ): void {
 ////	}
 
 ////	// it is now available for use
-////	purged = false;
+////	this.purged = false;
 
 ////	// create the bounds for culling and dynamic surface creation
 ////	FinishSurfaces();
@@ -483,7 +483,7 @@ idRenderModelStatic.prototype.DepthHack = function ( ): number {
 ////idRenderModelStatic::NumJoints
 ////================
 ////*/
-////int idRenderModelStatic::NumJoints( void ) const {
+////int idRenderModelStatic::NumJoints( ) const {
 ////	return 0;
 ////}
 
@@ -492,7 +492,7 @@ idRenderModelStatic.prototype.DepthHack = function ( ): number {
 ////idRenderModelStatic::GetJoints
 ////================
 ////*/
-////const idMD5Joint *idRenderModelStatic::GetJoints( void ) const {
+////const idMD5Joint *idRenderModelStatic::GetJoints( ) const {
 ////	return NULL;
 ////}
 
@@ -519,7 +519,7 @@ idRenderModelStatic.prototype.DepthHack = function ( ): number {
 ////idRenderModelStatic::GetDefaultPose
 ////================
 ////*/
-////const idJointQuat *idRenderModelStatic::GetDefaultPose( void ) const {
+////const idJointQuat *idRenderModelStatic::GetDefaultPose( ) const {
 ////	return NULL;
 ////}
 
@@ -2111,7 +2111,7 @@ idRenderModelStatic.prototype.PurgeModel = function ( ) {
 ////We are about to restart the vertex cache, so dump everything
 ////==============
 ////*/
-////void idRenderModelStatic::FreeVertexCache( void ) {
+////void idRenderModelStatic::FreeVertexCache( ) {
 ////	for ( int j = 0 ; j < surfaces.Num() ; j++ ) {
 ////		srfTriangles_t *tri = surfaces[j].geometry;
 ////		if ( !tri ) {
@@ -2217,14 +2217,14 @@ idRenderModelStatic.prototype.PurgeModel = function ( ) {
 ////	}
 ////}
 
-/////*
-////================
-////idRenderModelStatic::IsLoaded
-////================
-////*/
-////bool idRenderModelStatic::IsLoaded( void ) {
-////	return !purged;
-////}
+/*
+================
+idRenderModelStatic::IsLoaded
+================
+*/
+idRenderModelStatic.prototype.IsLoaded = function ( ): boolean {
+	return !this.purged;
+};
 
 /*
 ================
@@ -2235,29 +2235,29 @@ idRenderModelStatic.prototype.SetLevelLoadReferenced = function ( referenced: bo
     this.levelLoadReferenced = referenced;
 };
 
-/////*
-////================
-////idRenderModelStatic::IsLevelLoadReferenced
-////================
-////*/
-////bool idRenderModelStatic::IsLevelLoadReferenced( void ) {
-////	return levelLoadReferenced;
-////}
+/*
+================
+idRenderModelStatic::IsLevelLoadReferenced
+================
+*/
+idRenderModelStatic.prototype.IsLevelLoadReferenced = function ( ): boolean {
+	return this.levelLoadReferenced;
+};
 
-/////*
-////=================
-////idRenderModelStatic::TouchData
-////=================
-////*/
-////void idRenderModelStatic::TouchData( void ) {
-////	for ( int i = 0 ; i < surfaces.Num() ; i++ ) {
-////		var surf = &surfaces[i];
+/*
+=================
+idRenderModelStatic::TouchData
+=================
+*/
+idRenderModelStatic.prototype.TouchData = function ( ) {
+	for ( var i = 0; i < this.surfaces.Num ( ); i++ ) {
+		var surf: modelSurface_t = this.surfaces[i];
 
-////		// re-find the material to make sure it gets added to the
-////		// level keep list
-////		declManager.FindMaterial( surf.shader.GetName() );
-////	}
-////}
+		// re-find the material to make sure it gets added to the
+		// level keep list
+		declManager.FindMaterial( surf.shader.GetName ( ) );
+	}
+};
 
 /////*
 ////=================
@@ -2267,10 +2267,10 @@ idRenderModelStatic.prototype.SetLevelLoadReferenced = function ( referenced: bo
 ////bool idRenderModelStatic::DeleteSurfaceWithId( int id ) {
 ////	int i;
 
-////	for ( i = 0; i < surfaces.Num(); i++ ) {
-////		if ( surfaces[i].id == id ) {
-////			R_FreeStaticTriSurf( surfaces[i].geometry );
-////			surfaces.RemoveIndex( i );
+////	for ( i = 0; i < this.surfaces.Num(); i++ ) {
+////		if ( this.surfaces[i].id == id ) {
+////			R_FreeStaticTriSurf( this.surfaces[i].geometry );
+////			this.surfaces.RemoveIndex( i );
 ////			return true;
 ////		}
 ////	}
@@ -2282,13 +2282,13 @@ idRenderModelStatic.prototype.SetLevelLoadReferenced = function ( referenced: bo
 ////idRenderModelStatic::DeleteSurfacesWithNegativeId
 ////=================
 ////*/
-////void idRenderModelStatic::DeleteSurfacesWithNegativeId( void ) {
+////void idRenderModelStatic::DeleteSurfacesWithNegativeId( ) {
 ////	int i;
 
-////	for ( i = 0; i < surfaces.Num(); i++ ) {
-////		if ( surfaces[i].id < 0 ) {
-////			R_FreeStaticTriSurf( surfaces[i].geometry );
-////			surfaces.RemoveIndex( i );
+////	for ( i = 0; i < this.surfaces.Num(); i++ ) {
+////		if ( this.surfaces[i].id < 0 ) {
+////			R_FreeStaticTriSurf( this.surfaces[i].geometry );
+////			this.surfaces.RemoveIndex( i );
 ////			i--;
 ////		}
 ////	}
@@ -2302,8 +2302,8 @@ idRenderModelStatic.prototype.SetLevelLoadReferenced = function ( referenced: bo
 ////bool idRenderModelStatic::FindSurfaceWithId( int id, int &surfaceNum ) {
 ////	int i;
 
-////	for ( i = 0; i < surfaces.Num(); i++ ) {
-////		if ( surfaces[i].id == id ) {
+////	for ( i = 0; i < this.surfaces.Num(); i++ ) {
+////		if ( this.surfaces[i].id == id ) {
 ////			surfaceNum = i;
 ////			return true;
 ////		}

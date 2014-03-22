@@ -73,8 +73,8 @@ class mapSpawnData_t {
 		this.serverInfo.Clear ( );
 		this.syncedCVars.Clear ( );
 		clearStructArray( this.userInfo );
-		clearStructArray(this.persistentPlayerInfo );
-		clearStructArray(this.mapSpawnUsercmd );
+		clearStructArray( this.persistentPlayerInfo );
+		clearStructArray( this.mapSpawnUsercmd );
 	}
 }
 

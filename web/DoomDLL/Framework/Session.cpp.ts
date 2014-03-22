@@ -1164,14 +1164,14 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //*/
 //void idSessionLocal::SaveCmdDemoToFile( idFile *file ) {
 //
-//	mapSpawnData.serverInfo.WriteToFileHandle( file );
+//	this.mapSpawnData.serverInfo.WriteToFileHandle( file );
 //
 //	for ( int i = 0 ; i < MAX_ASYNC_CLIENTS ; i++ ) {
-//		mapSpawnData.userInfo[i].WriteToFileHandle( file );
-//		mapSpawnData.persistentPlayerInfo[i].WriteToFileHandle( file );
+//		this.mapSpawnData.userInfo[i].WriteToFileHandle( file );
+//		this.mapSpawnData.persistentPlayerInfo[i].WriteToFileHandle( file );
 //	}
 //
-//	file.Write( &mapSpawnData.mapSpawnUsercmd, sizeof( mapSpawnData.mapSpawnUsercmd ) );
+//	file.Write( &this.mapSpawnData.mapSpawnUsercmd, sizeof( this.mapSpawnData.mapSpawnUsercmd ) );
 //
 //	if ( this.numClients < 1 ) {
 //		this.numClients = 1;
@@ -1186,13 +1186,13 @@ idSessionLocal.prototype.MoveToNewMap = function ( mapName: string ): void {
 //*/
 //void idSessionLocal::LoadCmdDemoFromFile( idFile *file ) {
 //
-//	mapSpawnData.serverInfo.ReadFromFileHandle( file );
+//	this.mapSpawnData.serverInfo.ReadFromFileHandle( file );
 //
 //	for ( int i = 0 ; i < MAX_ASYNC_CLIENTS ; i++ ) {
-//		mapSpawnData.userInfo[i].ReadFromFileHandle( file );
-//		mapSpawnData.persistentPlayerInfo[i].ReadFromFileHandle( file );
+//		this.mapSpawnData.userInfo[i].ReadFromFileHandle( file );
+//		this.mapSpawnData.persistentPlayerInfo[i].ReadFromFileHandle( file );
 //	}
-//	file.Read( &mapSpawnData.mapSpawnUsercmd, sizeof( mapSpawnData.mapSpawnUsercmd ) );
+//	file.Read( &this.mapSpawnData.mapSpawnUsercmd, sizeof( this.mapSpawnData.mapSpawnUsercmd ) );
 //}
 //
 ///*
@@ -1543,7 +1543,7 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 	// for the synchronous networking we needed to roll the angles over from
 	// level to level, but now we can just clear everything
 	usercmdGen.InitForNewMap();
-	this.mapSpawnData.init ( );//memset( &mapSpawnData.mapSpawnUsercmd, 0, sizeof( mapSpawnData.mapSpawnUsercmd ) );
+	this.mapSpawnData.init ( );//memset( &this.mapSpawnData.mapSpawnUsercmd, 0, sizeof( this.mapSpawnData.mapSpawnUsercmd ) );
 
 	// set the user info
 	for ( i = 0; i < this.numClients; i++ ) {

@@ -300,7 +300,7 @@ class idGameLocal extends idGame {
 	framenum: number /*int*/;
 	previousTime: number /*int*/; // time in msec of last frame
 	time: number /*int*/; // in msec
-////	static const int		msec = USERCMD_MSEC;	// time since last update in milliseconds
+	/*static*/ msec = USERCMD_MSEC;	// time since last update in milliseconds
 
 	vacuumAreaNum: number /*int*/; // -1 if level doesn't have any outside areas
 

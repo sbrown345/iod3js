@@ -381,7 +381,7 @@ idThread::GetThreadNum
 //================
 //*/
 //idThread *idThread::CurrentThread( ) {
-//	return currentThread;
+//	return idThread.currentThread;
 //}
 //
 ///*
@@ -390,8 +390,8 @@ idThread::GetThreadNum
 //================
 //*/
 //int idThread::CurrentThreadNum( ) {
-//	if ( currentThread ) {
-//		return currentThread.GetThreadNum();
+//	if ( idThread.currentThread ) {
+//		return idThread.currentThread.GetThreadNum();
 //	} else {
 //		return 0;
 //	}
@@ -403,10 +403,10 @@ idThread::GetThreadNum
 //================
 //*/
 //bool idThread::BeginMultiFrameEvent( ent:idEntity, const idEventDef *event ) {
-//	if ( !currentThread ) {
+//	if ( !idThread.currentThread ) {
 //		gameLocal.Error( "idThread::BeginMultiFrameEvent called without a current thread" );
 //	}
-//	return currentThread.interpreter.BeginMultiFrameEvent( ent, event );
+//	return idThread.currentThread.interpreter.BeginMultiFrameEvent( ent, event );
 //}
 //
 ///*
@@ -414,11 +414,11 @@ idThread::GetThreadNum
 //idThread::EndMultiFrameEvent
 //================
 //*/
-//void idThread::EndMultiFrameEvent( ent:idEntity, const idEventDef *event ) {
-//	if ( !currentThread ) {
+//EndMultiFrameEvent( ent:idEntity, const idEventDef *event ):void {
+//	if ( !idThread.currentThread ) {
 //		gameLocal.Error( "idThread::EndMultiFrameEvent called without a current thread" );
 //	}
-//	currentThread.interpreter.EndMultiFrameEvent( ent, event );
+//	idThread.currentThread.interpreter.EndMultiFrameEvent( ent, event );
 //}
 
 	constructor ( )
@@ -535,8 +535,8 @@ idThread::~idThread
 //		}
 //	}
 //
-//	if ( currentThread == this ) {
-//		currentThread = NULL;
+//	if ( idThread.currentThread == this ) {
+//		idThread.currentThread = NULL;
 //	}
 	}
 
@@ -545,7 +545,7 @@ idThread::~idThread
 //idThread::ManualDelete
 //================
 //*/
-//void idThread::ManualDelete( ) {
+//ManualDelete( ):void {
 //	this.interpreter.terminateOnExit = false;
 //}
 //
@@ -554,7 +554,7 @@ idThread::~idThread
 //idThread::Save
 //================
 //*/
-//void idThread::Save( idSaveGame *savefile ) const {
+//Save( idSaveGame *savefile ) :void {
 //
 //	// We will check on restore that threadNum is still the same,
 //	//  threads should have been restored in the same order.
@@ -580,7 +580,7 @@ idThread::~idThread
 //idThread::Restore
 //================
 //*/
-//void idThread::Restore( idRestoreGame *savefile ) {
+//Restore( idRestoreGame *savefile ):void {
 //	savefile.ReadInt( this.threadNum );
 //
 //	savefile.ReadObject( reinterpret_cast<idClass *&>( this.waitingForThread ) );
@@ -604,7 +604,6 @@ idThread::Init
 ================
 */
 	Init ( ): void {
-		todoThrow ( );
 		// create a unique threadNum
 		do {
 			idThread.threadIndex++;
@@ -651,7 +650,7 @@ idThread::GetThread
 //idThread::DisplayInfo
 //================
 //*/
-//void idThread::DisplayInfo( ) {
+//DisplayInfo( ) :void{
 //	gameLocal.Printf( 
 //		"%12i: '%s'\n"
 //		"        File: %s(%d)\n"
@@ -690,7 +689,7 @@ idThread::GetThread
 //idThread::ListThreads_f
 //================
 //*/
-//void idThread::ListThreads_f( const idCmdArgs &args ) {
+//ListThreads_f( const idCmdArgs &args ) :void{
 //	int	i;
 //	int	n;
 //
@@ -730,12 +729,12 @@ idThread::Restart
 //idThread::DelayedStart
 //================
 //*/
-//void idThread::DelayedStart( int delay ) {
+//DelayedStart( int delay ):void {
 //	super.CancelEvents( &EV_Thread_Execute );
 //	if ( gameLocal.time <= 0 ) {
 //		delay++;
 //	}
-//	PostEventMS( &EV_Thread_Execute, delay );
+//	super.PostEventMS( &EV_Thread_Execute, delay );
 //}
 
 /*
@@ -766,7 +765,7 @@ SetThreadName( name:string ) :void {
 //idThread::ObjectMoveDone
 //================
 //*/
-//void idThread::ObjectMoveDone( int threadnum, idEntity *obj ) {
+//ObjectMoveDone( int threadnum, idEntity *obj ) :void{
 //	idThread *thread;
 //
 //	if ( !threadnum ) {
@@ -778,24 +777,24 @@ SetThreadName( name:string ) :void {
 //		thread.ObjectMoveDone( obj );
 //	}
 //}
-//
-///*
-//================
-//idThread::End
-//================
-//*/
-//void idThread::End( ) {
-//	// Tell thread to die.  It will exit on its own.
-//	Pause();
-//	this.interpreter.threadDying	= true;
-//}
-//
+
+/*
+================
+idThread::End
+================
+*/
+	End ( ): void {
+		// Tell thread to die.  It will exit on its own.
+		this.Pause ( );
+		this.interpreter.threadDying = true;
+	}
+
 ///*
 //================
 //idThread::KillThread
 //================
 //*/
-//void idThread::KillThread( name:string ) {
+//KillThread( name:string ) :void{
 //	int			i;
 //	int			num;
 //	int			len;
@@ -825,7 +824,7 @@ SetThreadName( name:string ) :void {
 //idThread::KillThread
 //================
 //*/
-//void idThread::KillThread( /*int*/num:number ) {
+//KillThread( /*int*/num:number ) :void{
 //	idThread *thread;
 //
 //	thread = this.GetThread( num );
@@ -841,38 +840,37 @@ idThread::Execute
 ================
 */
 	Execute ( ): boolean {
-		todoThrow ( );
 		var oldThread: idThread;
 		var done: boolean;
 
-		//if ( this.manualControl && ( this.waitingUntil > gameLocal.time ) ) {
-		//	return false;
-		//}
+		if ( this.manualControl && ( this.waitingUntil > gameLocal.time ) ) {
+			return false;
+		}
 
-		//oldThread = currentThread;
-		//currentThread = this;
+		oldThread = idThread.currentThread;
+		idThread.currentThread = this;
 
-		//this.lastExecuteTime = gameLocal.time;
-		//this.ClearWaitFor();
-		//done = this.interpreter.Execute();
-		//if ( done ) {
-		//	End();
-		//	if ( this.interpreter.terminateOnExit ) {
-		//		PostEventMS( &EV_Remove, 0 );
-		//	}
-		//} else if ( !this.manualControl ) {
-		//	if ( this.waitingUntil > this.lastExecuteTime ) {
-		//		PostEventMS( &EV_Thread_Execute, this.waitingUntil - this.lastExecuteTime );
-		//	} else if ( this.interpreter.MultiFrameEventInProgress() ) {
-		//		PostEventMS( &EV_Thread_Execute, gameLocal.msec );
-		//	}
-		//}
+		this.lastExecuteTime = gameLocal.time;
+		this.ClearWaitFor ( );
+		done = this.interpreter.Execute ( );
+		if ( done ) {
+			this.End ( );
+			if ( this.interpreter.terminateOnExit ) {
+				super.PostEventMS( EV_Remove, 0 );
+			}
+		} else if ( !this.manualControl ) {
+			if ( this.waitingUntil > this.lastExecuteTime ) {
+				super.PostEventMS( EV_Thread_Execute, this.waitingUntil - this.lastExecuteTime );
+			} else if ( this.interpreter.MultiFrameEventInProgress ( ) ) {
+				super.PostEventMS( EV_Thread_Execute, gameLocal.msec );
+			}
+		}
 
-		//currentThread = oldThread;
+		idThread.currentThread = oldThread;
 
 		return done;
 	}
-//
+
 ///*
 //================
 //idThread::IsWaiting
@@ -899,7 +897,7 @@ idThread::Execute
 //NOTE: If this is called from within a event called by this thread, the function arguments will be invalid after calling this function.
 //================
 //*/
-//void idThread::CallFunction( const function_t *func, bool clearStack ) {
+//CallFunction( const function_t *func, bool clearStack ) :void{
 //	this.ClearWaitFor();
 //	this.interpreter.EnterFunction( func, clearStack );
 //}
@@ -911,7 +909,7 @@ idThread::Execute
 //NOTE: If this is called from within a event called by this thread, the function arguments will be invalid after calling this function.
 //================
 //*/
-//void idThread::CallFunction( idEntity *self, const function_t *func, bool clearStack ) {
+//CallFunction( idEntity *self, const function_t *func, bool clearStack ) :void{
 //	assert( self );
 //	this.ClearWaitFor();
 //	this.interpreter.EnterObjectFunction( self, func, clearStack );
@@ -943,7 +941,7 @@ idThread::ClearWaitFor
 //idThread::ObjectMoveDone
 //================
 //*/
-//void idThread::ObjectMoveDone( idEntity *obj ) {
+//ObjectMoveDone( idEntity *obj ):void {
 //	assert( obj );
 //
 //	if ( IsWaitingFor( obj ) ) {
@@ -957,7 +955,7 @@ idThread::ClearWaitFor
 //idThread::ThreadCallback
 //================
 //*/
-//void idThread::ThreadCallback( idThread *thread ) {
+//ThreadCallback( idThread *thread ) :void{
 //	if ( this.interpreter.threadDying ) {
 //		return;
 //	}
@@ -973,7 +971,7 @@ idThread::ClearWaitFor
 //idThread::Event_SetThreadName
 //================
 //*/
-//void idThread::Event_SetThreadName( name:string ) {
+//Event_SetThreadName( name:string ):void {
 //	this.SetThreadName( name );
 //}
 //
@@ -982,7 +980,7 @@ idThread::ClearWaitFor
 //idThread::Error
 //================
 //*/
-//void idThread::Error( const char *fmt, ... ) const {
+//Error( const char *fmt, ... ) :void {
 //	va_list	argptr;
 //	char	text[ 1024 ];
 //
@@ -998,7 +996,7 @@ idThread::ClearWaitFor
 //idThread::Warning
 //================
 //*/
-//void idThread::Warning( const char *fmt, ... ) const {
+//Warning( const char *fmt, ... ) :void {
 //	va_list	argptr;
 //	char	text[ 1024 ];
 //
@@ -1061,27 +1059,27 @@ idThread::ReturnString
 //idThread::Event_Execute
 //================
 //*/
-//void idThread::Event_Execute( ) {
+//Event_Execute( )::void {
 //	this.Execute();
 //}
-//
-///*
-//================
-//idThread::Pause
-//================
-//*/
-//void idThread::Pause( ) {
-//	this.ClearWaitFor();
-//	this.interpreter.doneProcessing = true;
-//}
-//
+
+/*
+================
+idThread::Pause
+================
+*/
+	Pause ( ): void {
+		this.ClearWaitFor ( );
+		this.interpreter.doneProcessing = true;
+	}
+
 ///*
 //================
 //idThread::WaitMS
 //================
 //*/
-//void idThread::WaitMS( /*int*/time:number ) {
-//	Pause();
+//WaitMS( /*int*/time:number ):void {
+//	this.Pause();
 //	this.waitingUntil = gameLocal.time + time;
 //}
 //
@@ -1090,7 +1088,7 @@ idThread::ReturnString
 //idThread::WaitSec
 //================
 //*/
-//void idThread::WaitSec( /*float*/time:number ) {
+//WaitSec( /*float*/time:number ) :void{
 //	WaitMS( SEC2MS( time ) );
 //}
 //
@@ -1099,8 +1097,8 @@ idThread::ReturnString
 //idThread::WaitFrame
 //================
 //*/
-//void idThread::WaitFrame( ) {
-//	Pause();
+//WaitFrame( ):void {
+//	this.Pause();
 //
 //	// manual control threads don't set waitingUntil so that they can be run again
 //	// that frame if necessary.
@@ -1120,7 +1118,7 @@ idThread::ReturnString
 //idThread::Event_TerminateThread
 //================
 //*/
-//void idThread::Event_TerminateThread( /*int*/num:number ) {
+//Event_TerminateThread( /*int*/num:number ):void {
 //	idThread *thread;
 //
 //	thread = this.GetThread( num );
@@ -1132,8 +1130,8 @@ idThread::ReturnString
 //idThread::Event_Pause
 //================
 //*/
-//void idThread::Event_Pause( ) {
-//	Pause();
+//Event_Pause( ):void {
+//	this.Pause();
 //}
 //
 ///*
@@ -1141,7 +1139,7 @@ idThread::ReturnString
 //idThread::Event_Wait
 //================
 //*/
-//void idThread::Event_Wait( /*float*/time:number ) {
+//Event_Wait( /*float*/time:number ):void {
 //	WaitSec( time );
 //}
 //
@@ -1150,7 +1148,7 @@ idThread::ReturnString
 //idThread::Event_WaitFrame
 //================
 //*/
-//void idThread::Event_WaitFrame( ) {
+//Event_WaitFrame( ) :void{
 //	WaitFrame();
 //}
 //
@@ -1159,11 +1157,11 @@ idThread::ReturnString
 //idThread::Event_WaitFor
 //================
 //*/
-//void idThread::Event_WaitFor( ent:idEntity ) {
+//Event_WaitFor( ent:idEntity ):void {
 //	if ( ent && ent.RespondsTo( EV_Thread_SetCallback ) ) {
 //		ent.ProcessEvent( &EV_Thread_SetCallback );
 //		if ( gameLocal.program.GetReturnedInteger() ) {
-//			Pause();
+//			this.Pause();
 //			this.waitingFor = ent.entityNumber;
 //		}
 //	}
@@ -1174,7 +1172,7 @@ idThread::ReturnString
 //idThread::Event_WaitForThread
 //================
 //*/
-//void idThread::Event_WaitForThread( /*int*/num:number ) {
+//Event_WaitForThread( /*int*/num:number ):void {
 //	idThread *thread;
 //
 //	thread = this.GetThread( num );
@@ -1184,7 +1182,7 @@ idThread::ReturnString
 //			Warning( "Thread %d not running", num );
 //		}
 //	} else {
-//		Pause();
+//		this.Pause();
 //		this.waitingForThread = thread;
 //	}
 //}
@@ -1194,7 +1192,7 @@ idThread::ReturnString
 //idThread::Event_Print
 //================
 //*/
-//void idThread::Event_Print( text:string ) {
+//Event_Print( text:string ) :void{
 //	gameLocal.Printf( "%s", text );
 //}
 //
@@ -1203,7 +1201,7 @@ idThread::ReturnString
 //idThread::Event_PrintLn
 //================
 //*/
-//void idThread::Event_PrintLn( text:string ) {
+//Event_PrintLn( text:string ) :void{
 //	gameLocal.Printf( "%s\n", text );
 //}
 //
@@ -1212,7 +1210,7 @@ idThread::ReturnString
 //idThread::Event_Say
 //================
 //*/
-//void idThread::Event_Say( text:string ) {
+//Event_Say( text:string ):void{
 //	cmdSystem.BufferCommandText( CMD_EXEC_NOW, va( "say \"%s\"", text ) );
 //}
 //
@@ -1221,7 +1219,7 @@ idThread::ReturnString
 //idThread::Event_Assert
 //================
 //*/
-//void idThread::Event_Assert( float value ) {
+//Event_Assert( float value ):void {
 //	assert( value );
 //}
 //
@@ -1230,7 +1228,7 @@ idThread::ReturnString
 //idThread::Event_Trigger
 //================
 //*/
-//void idThread::Event_Trigger( ent:idEntity ) {
+//Event_Trigger( ent:idEntity ) :void{
 //	if ( ent ) {
 //		ent.Signal( SIG_TRIGGER );
 //		ent.ProcessEvent( &EV_Activate, gameLocal.GetLocalPlayer() );
@@ -1243,7 +1241,7 @@ idThread::ReturnString
 //idThread::Event_SetCvar
 //================
 //*/
-//void idThread::Event_SetCvar( name:string, value:string ) const {
+//Event_SetCvar( name:string, value:string ) :void {
 //	cvarSystem.SetCVarString( name, value );
 //}
 //
@@ -1252,7 +1250,7 @@ idThread::ReturnString
 //idThread::Event_GetCvar
 //================
 //*/
-//void idThread::Event_GetCvar( name:string ) const {
+//Event_GetCvar( name:string ) :void {
 //	ReturnString( cvarSystem.GetCVarString( name ) );
 //}
 //
@@ -1261,7 +1259,7 @@ idThread::ReturnString
 //idThread::Event_Random
 //================
 //*/
-//void idThread::Event_Random( float range ) const {
+//Event_Random( float range ) :void {
 //	float result;
 //
 //	result = gameLocal.random.RandomFloat();
@@ -1273,7 +1271,7 @@ idThread::ReturnString
 //idThread::Event_GetTime
 //================
 //*/
-//void idThread::Event_GetTime( ) {
+//Event_GetTime( ):void {
 //	ReturnFloat( MS2SEC( gameLocal.realClientTime ) );
 //}
 //
@@ -1282,7 +1280,7 @@ idThread::ReturnString
 //idThread::Event_KillThread
 //================
 //*/
-//void idThread::Event_KillThread( name:string ) {
+//Event_KillThread( name:string ) {
 //	KillThread( name );
 //}
 //
@@ -1291,7 +1289,7 @@ idThread::ReturnString
 //idThread::Event_GetEntity
 //================
 //*/
-//void idThread::Event_GetEntity( name:string ) {
+//Event_GetEntity( name:string ):void {
 //	int			entnum;
 //	idEntity	*ent;
 //
@@ -1314,7 +1312,7 @@ idThread::ReturnString
 //idThread::Event_Spawn
 //================
 //*/
-//void idThread::Event_Spawn( const char *classname ) {
+//Event_Spawn( const char *classname ):void {
 //	var ent:idEntity
 //
 //	spawnArgs.Set( "classname", classname );
@@ -1328,7 +1326,7 @@ idThread::ReturnString
 //idThread::Event_CopySpawnArgs
 //================
 //*/
-//void idThread::Event_CopySpawnArgs( ent:idEntity ) {
+//Event_CopySpawnArgs( ent:idEntity ) :void{
 //	spawnArgs.Copy( ent.spawnArgs );
 //}
 //
@@ -1337,7 +1335,7 @@ idThread::ReturnString
 //idThread::Event_SetSpawnArg
 //================
 //*/
-//void idThread::Event_SetSpawnArg( key:string, value:string ) {
+//Event_SetSpawnArg( key:string, value:string ) :void{
 //	spawnArgs.Set( key, value );
 //}
 //
@@ -1346,7 +1344,7 @@ idThread::ReturnString
 //idThread::Event_SpawnString
 //================
 //*/
-//void idThread::Event_SpawnString( key:string, const char *defaultvalue ) {
+//Event_SpawnString( key:string, const char *defaultvalue ) :void{
 //	const char *result;
 //
 //	spawnArgs.GetString( key, defaultvalue, &result );
@@ -1358,7 +1356,7 @@ idThread::ReturnString
 //idThread::Event_SpawnFloat
 //================
 //*/
-//void idThread::Event_SpawnFloat( key:string, float defaultvalue ) {
+//Event_SpawnFloat( key:string, float defaultvalue ) :void{
 //	float result;
 //
 //	spawnArgs.GetFloat( key, va( "%f", defaultvalue ), result );
@@ -1370,7 +1368,7 @@ idThread::ReturnString
 //idThread::Event_SpawnVector
 //================
 //*/
-//void idThread::Event_SpawnVector( key:string, idVec3 &defaultvalue ) {
+//Event_SpawnVector( key:string, idVec3 &defaultvalue ):void {
 //	idVec3 result;
 //
 //	spawnArgs.GetVector( key, va( "%f %f %f", defaultvalue.x, defaultvalue.y, defaultvalue.z ), result );
@@ -1382,7 +1380,7 @@ idThread::ReturnString
 //idThread::Event_ClearPersistantArgs
 //================
 //*/
-//void idThread::Event_ClearPersistantArgs( ) {
+//Event_ClearPersistantArgs( ):void {
 //	gameLocal.persistentLevelInfo.Clear();
 //}
 //
@@ -1392,7 +1390,7 @@ idThread::ReturnString
 //idThread::Event_SetPersistantArg
 //================
 //*/
-//void idThread::Event_SetPersistantArg( key:string, value:string ) {
+//Event_SetPersistantArg( key:string, value:string ):void {
 //	gameLocal.persistentLevelInfo.Set( key, value );
 //}
 //
@@ -1401,7 +1399,7 @@ idThread::ReturnString
 //idThread::Event_GetPersistantString
 //================
 //*/
-//void idThread::Event_GetPersistantString( key:string ) {
+//Event_GetPersistantString( key:string ) :void{
 //	const char *result;
 //
 //	gameLocal.persistentLevelInfo.GetString( key, "", &result );
@@ -1413,7 +1411,7 @@ idThread::ReturnString
 //idThread::Event_GetPersistantFloat
 //================
 //*/
-//void idThread::Event_GetPersistantFloat( key:string ) {
+//Event_GetPersistantFloat( key:string ):void {
 //	float result;
 //
 //	gameLocal.persistentLevelInfo.GetFloat( key, "0", result );
@@ -1425,7 +1423,7 @@ idThread::ReturnString
 //idThread::Event_GetPersistantVector
 //================
 //*/
-//void idThread::Event_GetPersistantVector( key:string ) {
+//Event_GetPersistantVector( key:string ) :void{
 //	idVec3 result;
 //
 //	gameLocal.persistentLevelInfo.GetVector( key, "0 0 0", result );
@@ -1437,7 +1435,7 @@ idThread::ReturnString
 //idThread::Event_AngToForward
 //================
 //*/
-//void idThread::Event_AngToForward( ang:idAngles ) {
+//Event_AngToForward( ang:idAngles ):void {
 //	ReturnVector( ang.ToForward() );
 //}
 //
@@ -1446,7 +1444,7 @@ idThread::ReturnString
 //idThread::Event_AngToRight
 //================
 //*/
-//void idThread::Event_AngToRight( ang:idAngles ) {
+//Event_AngToRight( ang:idAngles ):void {
 //	idVec3 vec;
 //
 //	ang.ToVectors( NULL, &vec );
@@ -1458,7 +1456,7 @@ idThread::ReturnString
 //idThread::Event_AngToUp
 //================
 //*/
-//void idThread::Event_AngToUp( ang:idAngles ) {
+//Event_AngToUp( ang:idAngles ) :void{
 //	idVec3 vec;
 //
 //	ang.ToVectors( NULL, NULL, &vec );
@@ -1470,7 +1468,7 @@ idThread::ReturnString
 //idThread::Event_GetSine
 //================
 //*/
-//void idThread::Event_GetSine( /*float*/angle:number ) {
+//Event_GetSine( /*float*/angle:number ):void {
 //	ReturnFloat( idMath::Sin( DEG2RAD( angle ) ) );
 //}
 //
@@ -1479,7 +1477,7 @@ idThread::ReturnString
 //idThread::Event_GetCosine
 //================
 //*/
-//void idThread::Event_GetCosine( /*float*/angle:number ) {
+//Event_GetCosine( /*float*/angle:number ) :void{
 //	ReturnFloat( idMath::Cos( DEG2RAD( angle ) ) );
 //}
 //
@@ -1488,7 +1486,7 @@ idThread::ReturnString
 //idThread::Event_GetSquareRoot
 //================
 //*/
-//void idThread::Event_GetSquareRoot( float theSquare ) {
+//Event_GetSquareRoot( float theSquare ) :void{
 //	ReturnFloat( idMath::Sqrt( theSquare ) );
 //}
 //
@@ -1497,7 +1495,7 @@ idThread::ReturnString
 //idThread::Event_VecNormalize
 //================
 //*/
-//void idThread::Event_VecNormalize( vec:idVec3 ) {
+//Event_VecNormalize( vec:idVec3 ) :void{
 //	idVec3 n;
 //
 //	n = vec;
@@ -1510,7 +1508,7 @@ idThread::ReturnString
 //idThread::Event_VecLength
 //================
 //*/
-//void idThread::Event_VecLength( vec:idVec3 ) {
+//Event_VecLength( vec:idVec3 ):void {
 //	ReturnFloat( vec.Length() );
 //}
 //
@@ -1519,7 +1517,7 @@ idThread::ReturnString
 //idThread::Event_VecDotProduct
 //================
 //*/
-//void idThread::Event_VecDotProduct( idVec3 &vec1, idVec3 &vec2 ) {
+//Event_VecDotProduct( idVec3 &vec1, idVec3 &vec2 ) :void{
 //	ReturnFloat( vec1 * vec2 );
 //}
 //
@@ -1528,7 +1526,7 @@ idThread::ReturnString
 //idThread::Event_VecCrossProduct
 //================
 //*/
-//void idThread::Event_VecCrossProduct( idVec3 &vec1, idVec3 &vec2 ) {
+//Event_VecCrossProduct( idVec3 &vec1, idVec3 &vec2 ):void {
 //	ReturnVector( vec1.Cross( vec2 ) );
 //}
 //
@@ -1537,7 +1535,7 @@ idThread::ReturnString
 //idThread::Event_VecToAngles
 //================
 //*/
-//void idThread::Event_VecToAngles( vec:idVec3 ) {
+//Event_VecToAngles( vec:idVec3 ) :void{
 //	idAngles ang = vec.ToAngles();
 //	ReturnVector( idVec3( ang[0], ang[1], ang[2] ) );
 //}
@@ -1547,7 +1545,7 @@ idThread::ReturnString
 //idThread::Event_OnSignal
 //================
 //*/
-//void idThread::Event_OnSignal( int signal, ent:idEntity, const char *func ) {
+//Event_OnSignal( int signal, ent:idEntity, const char *func ) :void{
 //	const function_t *function;
 //
 //	assert( func );
@@ -1573,7 +1571,7 @@ idThread::ReturnString
 //idThread::Event_ClearSignalThread
 //================
 //*/
-//void idThread::Event_ClearSignalThread( int signal, ent:idEntity ) {
+//Event_ClearSignalThread( int signal, ent:idEntity ):void {
 //	if ( !ent ) {
 //		Error( "Entity not found" );
 //	}
@@ -1590,7 +1588,7 @@ idThread::ReturnString
 //idThread::Event_SetCamera
 //================
 //*/
-//void idThread::Event_SetCamera( ent:idEntity ) {
+//Event_SetCamera( ent:idEntity ) :void{
 //	if ( !ent ) {
 //		Error( "Entity not found" );
 //		return;
@@ -1609,7 +1607,7 @@ idThread::ReturnString
 //idThread::Event_FirstPerson
 //================
 //*/
-//void idThread::Event_FirstPerson( ) {
+//Event_FirstPerson( ):void {
 //	gameLocal.SetCamera( NULL );
 //}
 //
@@ -1618,7 +1616,7 @@ idThread::ReturnString
 //idThread::Event_Trace
 //================
 //*/
-//void idThread::Event_Trace( start:idVec3, end:idVec3, mins:idVec3, maxs:idVec3, int contents_mask, passEntity:idEntity ) {
+//Event_Trace( start:idVec3, end:idVec3, mins:idVec3, maxs:idVec3, int contents_mask, passEntity:idEntity ):void {
 //	if ( mins == vec3_origin && maxs == vec3_origin ) {
 //		gameLocal.clip.TracePoint( idThread.trace, start, end, contents_mask, passEntity );
 //	} else {
@@ -1632,7 +1630,7 @@ idThread::ReturnString
 //idThread::Event_TracePoint
 //================
 //*/
-//void idThread::Event_TracePoint( start:idVec3, end:idVec3, int contents_mask, passEntity:idEntity ) {
+//Event_TracePoint( start:idVec3, end:idVec3, int contents_mask, passEntity:idEntity ) :void{
 //	gameLocal.clip.TracePoint( idThread.trace, start, end, contents_mask, passEntity );
 //	ReturnFloat( idThread.trace.fraction );
 //}
@@ -1642,7 +1640,7 @@ idThread::ReturnString
 //idThread::Event_GetTraceFraction
 //================
 //*/
-//void idThread::Event_GetTraceFraction( ) {
+//Event_GetTraceFraction( ):void {
 //	ReturnFloat( idThread.trace.fraction );
 //}
 //
@@ -1651,7 +1649,7 @@ idThread::ReturnString
 //idThread::Event_GetTraceEndPos
 //================
 //*/
-//void idThread::Event_GetTraceEndPos( ) {
+//Event_GetTraceEndPos( ) :void{
 //	ReturnVector( idThread.trace.endpos );
 //}
 //
@@ -1660,7 +1658,7 @@ idThread::ReturnString
 //idThread::Event_GetTraceNormal
 //================
 //*/
-//void idThread::Event_GetTraceNormal( ) {
+//Event_GetTraceNormal( ) :void{
 //	if ( idThread.trace.fraction < 1.0f ) {
 //		ReturnVector( idThread.trace.c.normal );
 //	} else {
@@ -1673,7 +1671,7 @@ idThread::ReturnString
 //idThread::Event_GetTraceEntity
 //================
 //*/
-//void idThread::Event_GetTraceEntity( ) {
+//Event_GetTraceEntity( ):void {
 //	if ( idThread.trace.fraction < 1.0f ) {
 //		ReturnEntity( gameLocal.entities[ idThread.trace.c.entityNum ] );
 //	} else {
@@ -1686,7 +1684,7 @@ idThread::ReturnString
 //idThread::Event_GetTraceJoint
 //================
 //*/
-//void idThread::Event_GetTraceJoint( ) {
+//Event_GetTraceJoint( ) :void{
 //	if ( idThread.trace.fraction < 1.0f && idThread.trace.c.id < 0 ) {
 //		idAFEntity_Base *af = static_cast<idAFEntity_Base *>( gameLocal.entities[ idThread.trace.c.entityNum ] );
 //		if ( af && af.IsType( idAFEntity_Base::Type ) && af.IsActiveAF() ) {
@@ -1702,7 +1700,7 @@ idThread::ReturnString
 //idThread::Event_GetTraceBody
 //================
 //*/
-//void idThread::Event_GetTraceBody( ) {
+//Event_GetTraceBody( ):void {
 //	if ( idThread.trace.fraction < 1.0f && idThread.trace.c.id < 0 ) {
 //		idAFEntity_Base *af = static_cast<idAFEntity_Base *>( gameLocal.entities[ idThread.trace.c.entityNum ] );
 //		if ( af && af.IsType( idAFEntity_Base::Type ) && af.IsActiveAF() ) {
@@ -1722,7 +1720,7 @@ idThread::ReturnString
 //idThread::Event_FadeIn
 //================
 //*/
-//void idThread::Event_FadeIn( color:idVec3, /*float*/time:number ) {
+//Event_FadeIn( color:idVec3, /*float*/time:number ) :void{
 //	idVec4		fadeColor;
 //	idPlayer	*player;
 //
@@ -1738,7 +1736,7 @@ idThread::ReturnString
 //idThread::Event_FadeOut
 //================
 //*/
-//void idThread::Event_FadeOut( color:idVec3, /*float*/time:number ) {
+//Event_FadeOut( color:idVec3, /*float*/time:number ):void {
 //	idVec4		fadeColor;
 //	idPlayer	*player;
 //
@@ -1754,7 +1752,7 @@ idThread::ReturnString
 //idThread::Event_FadeTo
 //================
 //*/
-//void idThread::Event_FadeTo( color:idVec3, float alpha, /*float*/time:number ) {
+//Event_FadeTo( color:idVec3, float alpha, /*float*/time:number ):void {
 //	idVec4		fadeColor;
 //	idPlayer	*player;
 //
@@ -1770,7 +1768,7 @@ idThread::ReturnString
 //idThread::Event_SetShaderParm
 //================
 //*/
-//void idThread::Event_SetShaderParm( int parmnum, float value ) {
+//Event_SetShaderParm( int parmnum, float value ) :void{
 //	if ( ( parmnum < 0 ) || ( parmnum >= MAX_GLOBAL_SHADER_PARMS ) ) {
 //		Error( "shader parm index (%d) out of range", parmnum );
 //	}
@@ -1783,7 +1781,7 @@ idThread::ReturnString
 //idThread::Event_StartMusic
 //================
 //*/
-//void idThread::Event_StartMusic( text:string ) {
+//Event_StartMusic( text:string ) :void{
 //	gameSoundWorld.PlayShaderDirectly( text );
 //}
 //
@@ -1792,7 +1790,7 @@ idThread::ReturnString
 //idThread::Event_Warning
 //================
 //*/
-//void idThread::Event_Warning( text:string ) {
+//Event_Warning( text:string ) :void{
 //	Warning( "%s", text );
 //}
 //
@@ -1801,7 +1799,7 @@ idThread::ReturnString
 //idThread::Event_Error
 //================
 //*/
-//void idThread::Event_Error( text:string ) {
+//Event_Error( text:string ):void {
 //	Error( "%s", text );
 //}
 //
@@ -1810,7 +1808,7 @@ idThread::ReturnString
 //idThread::Event_StrLen
 //================
 //*/
-//void idThread::Event_StrLen( $string:string ) {
+//Event_StrLen( $string:string ):void {
 //	int len;
 //
 //	len = strlen( string );
@@ -1822,7 +1820,7 @@ idThread::ReturnString
 //idThread::Event_StrLeft
 //================
 //*/
-//void idThread::Event_StrLeft( $string:string, /*int*/num:number ) {
+//Event_StrLeft( $string:string, /*int*/num:number ):void {
 //	int len;
 //
 //	if ( num < 0 ) {
@@ -1845,7 +1843,7 @@ idThread::ReturnString
 //idThread::Event_StrRight 
 //================
 //*/
-//void idThread::Event_StrRight( $string:string, /*int*/num:number ) {
+//Event_StrRight( $string:string, /*int*/num:number ) :void{
 //	int len;
 //
 //	if ( num < 0 ) {
@@ -1867,7 +1865,7 @@ idThread::ReturnString
 //idThread::Event_StrSkip
 //================
 //*/
-//void idThread::Event_StrSkip( $string:string, /*int*/num:number ) {
+//Event_StrSkip( $string:string, /*int*/num:number ) :void{
 //	int len;
 //
 //	if ( num < 0 ) {
@@ -1889,7 +1887,7 @@ idThread::ReturnString
 //idThread::Event_StrMid
 //================
 //*/
-//void idThread::Event_StrMid( $string:string, int start, /*int*/num:number ) {
+//Event_StrMid( $string:string, int start, /*int*/num:number ) :void{
 //	int len;
 //
 //	if ( num < 0 ) {
@@ -1918,7 +1916,7 @@ idThread::ReturnString
 //idThread::Event_StrToFloat( const char *string )
 //================
 //*/
-//void idThread::Event_StrToFloat( $string:string ) {
+//Event_StrToFloat( $string:string ):void {
 //	float result;
 //
 //	result = atof( string );
@@ -1930,7 +1928,7 @@ idThread::ReturnString
 //idThread::Event_RadiusDamage
 //================
 //*/
-//void idThread::Event_RadiusDamage( const idVec3 &origin, idEntity *inflictor, idEntity *attacker, idEntity *ignore, const char *damageDefName, float dmgPower ) {
+//Event_RadiusDamage( const idVec3 &origin, idEntity *inflictor, idEntity *attacker, idEntity *ignore, const char *damageDefName, float dmgPower ):void {
 //	gameLocal.RadiusDamage( origin, inflictor, attacker, ignore, ignore, damageDefName, dmgPower );
 //}
 //
@@ -1939,7 +1937,7 @@ idThread::ReturnString
 //idThread::Event_IsClient
 //================
 //*/
-//void idThread::Event_IsClient( ) { 
+//Event_IsClient( ):void { 
 //	idThread::ReturnFloat( gameLocal.isClient );
 //}
 //
@@ -1948,7 +1946,7 @@ idThread::ReturnString
 //idThread::Event_IsMultiplayer
 //================
 //*/
-//void idThread::Event_IsMultiplayer( ) { 
+//Event_IsMultiplayer( ):void { 
 //	idThread::ReturnFloat( gameLocal.isMultiplayer );
 //}
 //
@@ -1957,7 +1955,7 @@ idThread::ReturnString
 //idThread::Event_GetFrameTime
 //================
 //*/
-//void idThread::Event_GetFrameTime( ) { 
+//Event_GetFrameTime( ) :void{ 
 //	idThread::ReturnFloat( MS2SEC( gameLocal.msec ) );
 //}
 //
@@ -1966,7 +1964,7 @@ idThread::ReturnString
 //idThread::Event_GetTicsPerSecond
 //================
 //*/
-//void idThread::Event_GetTicsPerSecond( ) { 
+//Event_GetTicsPerSecond( ) :void{ 
 //	idThread::ReturnFloat( USERCMD_HZ );
 //}
 //
@@ -1975,7 +1973,7 @@ idThread::ReturnString
 //idThread::Event_CacheSoundShader
 //================
 //*/
-//void idThread::Event_CacheSoundShader( const char *soundName ) {
+//Event_CacheSoundShader( const char *soundName ):void {
 //	declManager.FindSound( soundName );
 //}
 //
@@ -1984,7 +1982,7 @@ idThread::ReturnString
 //idThread::Event_DebugLine
 //================
 //*/
-//void idThread::Event_DebugLine( color:idVec3, start:idVec3, end:idVec3, const float lifetime ) {
+//Event_DebugLine( color:idVec3, start:idVec3, end:idVec3, const float lifetime ):void {
 //	gameRenderWorld.DebugLine( idVec4( color.x, color.y, color.z, 0.0 ), start, end, SEC2MS( lifetime ) );
 //}
 //
@@ -1993,7 +1991,7 @@ idThread::ReturnString
 //idThread::Event_DebugArrow
 //================
 //*/
-//void idThread::Event_DebugArrow( color:idVec3, start:idVec3, end:idVec3, const int size, const float lifetime ) {
+//Event_DebugArrow( color:idVec3, start:idVec3, end:idVec3, const int size, const float lifetime ):void {
 //	gameRenderWorld.DebugArrow( idVec4( color.x, color.y, color.z, 0.0 ), start, end, size, SEC2MS( lifetime ) );
 //}
 //
@@ -2002,7 +2000,7 @@ idThread::ReturnString
 //idThread::Event_DebugCircle
 //================
 //*/
-//void idThread::Event_DebugCircle( color:idVec3, const idVec3 &origin, const idVec3 &dir, const float radius, const int numSteps, const float lifetime ) {
+//Event_DebugCircle( color:idVec3, const idVec3 &origin, const idVec3 &dir, const float radius, const int numSteps, const float lifetime ):void {
 //	gameRenderWorld.DebugCircle( idVec4( color.x, color.y, color.z, 0.0 ), origin, dir, radius, numSteps, SEC2MS( lifetime ) );
 //}
 //
@@ -2011,7 +2009,7 @@ idThread::ReturnString
 //idThread::Event_DebugBounds
 //================
 //*/
-//void idThread::Event_DebugBounds( color:idVec3, mins:idVec3, maxs:idVec3, const float lifetime ) {
+//Event_DebugBounds( color:idVec3, mins:idVec3, maxs:idVec3, const float lifetime ) :void{
 //	gameRenderWorld.DebugBounds( idVec4( color.x, color.y, color.z, 0.0 ), idBounds( mins, maxs ), vec3_origin, SEC2MS( lifetime ) );
 //}
 //
@@ -2020,7 +2018,7 @@ idThread::ReturnString
 //idThread::Event_DrawText
 //================
 //*/
-//void idThread::Event_DrawText( text:string, const idVec3 &origin, float scale, color:idVec3, const int align, const float lifetime ) {
+//Event_DrawText( text:string, const idVec3 &origin, float scale, color:idVec3, const int align, const float lifetime ) :void{
 //	gameRenderWorld.DrawText( text, origin, scale, idVec4( color.x, color.y, color.z, 0.0 ), gameLocal.GetLocalPlayer().viewAngles.ToMat3(), align, SEC2MS( lifetime ) );
 //}
 //
@@ -2029,7 +2027,7 @@ idThread::ReturnString
 //idThread::Event_InfluenceActive
 //================
 //*/
-//void idThread::Event_InfluenceActive( ) {
+//Event_InfluenceActive( ):void {
 //	idPlayer *player;
 //
 //	player = gameLocal.GetLocalPlayer();

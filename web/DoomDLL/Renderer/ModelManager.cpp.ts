@@ -253,91 +253,90 @@ idRenderModelManagerLocal::GetModel
 =================
 */
 	GetModel ( modelName: string, createIfNotFound: boolean ): idRenderModel {
-		todoThrow ( );
-////	idStr		canonical;
-////	idStr		extension;
-////
-////	if ( !modelName || !modelName[0] ) {
-////		return NULL;
-////	}
-////
-////	canonical = modelName;
-////	canonical.ToLower();
-////
-////	// see if it is already present
-////	int key = this.hash.GenerateKey( modelName, false );
-////	for ( int i = this.hash.First( key ); i != -1; i = this.hash.Next( i ) ) {
-////		idRenderModel *model = this.models[i];
-////
-////		if ( canonical.Icmp( model.Name() ) == 0 ) {
-////			if ( !model.IsLoaded() ) {
-////				// reload it if it was purged
-////				model.LoadModel();
-////			} else if ( this.insideLevelLoad && !model.IsLevelLoadReferenced() ) {
-////				// we are reusing a model already in memory, but
-////				// touch all the materials to make sure they stay
-////				// in memory as well
-////				model.TouchData();
-////			}
-////			model.SetLevelLoadReferenced( true );
-////			return model;
-////		}
-////	}
-////
-////	// see if we can load it
-////
-////	// determine which subclass of idRenderModel to initialize
-////
+		var canonical = new idStr;
+		var extension = new idStr;
+
+		if ( !modelName /*|| !modelName[0]*/ ) {
+			return null;
+		}
+
+		canonical.equals( modelName );
+		canonical.ToLower ( );
+
+		// see if it is already present
+		var /*int */key = this.hash.GenerateKey( modelName, false );
+		for ( var i = this.hash.First( key ); i != -1; i = this.hash.Next( i ) ) {
+			var model: idRenderModel = this.models[i];
+
+			if ( canonical.Icmp( model.Name ( ) ) == 0 ) {
+				if ( !model.IsLoaded ( ) ) {
+					// reload it if it was purged
+					model.LoadModel ( );
+				} else if ( this.insideLevelLoad && !model.IsLevelLoadReferenced ( ) ) {
+					// we are reusing a model already in memory, but
+					// touch all the materials to make sure they stay
+					// in memory as well
+					model.TouchData ( );
+				}
+				model.SetLevelLoadReferenced( true );
+				return model;
+			}
+		}
+
+		// see if we can load it
+
+		// determine which subclass of idRenderModel to initialize
+		
 		var model: idRenderModel;
-////
-////	canonical.ExtractFileExtension( extension );
-////
-////	if ( ( extension.Icmp( "ase" ) == 0 ) || ( extension.Icmp( "lwo" ) == 0 ) || ( extension.Icmp( "flt" ) == 0 ) ) {
-////		model = new idRenderModelStatic;
-////		model.InitFromFile( modelName );
-////	} else if ( extension.Icmp( "ma" ) == 0 ) {
-////		model = new idRenderModelStatic;
-////		model.InitFromFile( modelName );
-////	} else if ( extension.Icmp( MD5_MESH_EXT ) == 0 ) {
-////		model = new idRenderModelMD5;
-////		model.InitFromFile( modelName );
-////	} else if ( extension.Icmp( "md3" ) == 0 ) {
-////		model = new idRenderModelMD3;
-////		model.InitFromFile( modelName );
-////	} else if ( extension.Icmp( "prt" ) == 0  ) {
-////		model = new idRenderModelPrt;
-////		model.InitFromFile( modelName );
-////	} else if ( extension.Icmp( "liquid" ) == 0  ) {
-////		model = new idRenderModelLiquid;
-////		model.InitFromFile( modelName );
-////	} else {
-////
-////		if ( extension.Length() ) {
-////			common.Warning( "unknown model type '%s'", canonical.c_str() );
-////		}
-////
-////		if ( !createIfNotFound ) {
-////			return NULL;
-////		}
-////
-////		idRenderModelStatic	*smodel = new idRenderModelStatic;
-////		smodel.InitEmpty( modelName );
-////		smodel.MakeDefaultModel();
-////
-////		model = smodel;
-////	}
-////
-////	model.SetLevelLoadReferenced( true );
-////
-////	if ( !createIfNotFound && model.IsDefaultModel() ) {
-////		delete model;
-////		model = NULL;
-////
-////		return NULL;
-////	}
-////
-////	AddModel( model );
-////
+
+		canonical.ExtractFileExtension( extension );
+
+		if ( ( extension.Icmp( "ase" ) == 0 ) || ( extension.Icmp( "lwo" ) == 0 ) || ( extension.Icmp( "flt" ) == 0 ) ) {
+			model = new idRenderModelStatic;
+			model.InitFromFile( modelName );
+		} else if ( extension.Icmp( "ma" ) == 0 ) {
+			model = new idRenderModelStatic;
+			model.InitFromFile( modelName );
+		} else if ( extension.Icmp( MD5_MESH_EXT ) == 0 ) {
+			model = new idRenderModelMD5;
+			model.InitFromFile( modelName );
+		} else if ( extension.Icmp( "md3" ) == 0 ) {
+			model = new idRenderModelMD3;
+			model.InitFromFile( modelName );
+		} else if ( extension.Icmp( "prt" ) == 0 ) {
+			model = new idRenderModelPrt;
+			model.InitFromFile( modelName );
+		} else if ( extension.Icmp( "liquid" ) == 0 ) {
+			model = new idRenderModelLiquid;
+			model.InitFromFile( modelName );
+		} else {
+
+			if ( extension.Length ( ) ) {
+				common.Warning( "unknown model type '%s'", canonical.c_str ( ) );
+			}
+
+			if ( !createIfNotFound ) {
+				return null;
+			}
+
+			var smodel = new idRenderModelStatic;
+			smodel.InitEmpty( modelName );
+			smodel.MakeDefaultModel ( );
+
+			model = smodel;
+		}
+
+		model.SetLevelLoadReferenced( true );
+
+		if ( !createIfNotFound && model.IsDefaultModel ( ) ) {
+			$delete( model );
+			model = null;
+
+			return null;
+		}
+
+		this.AddModel( model );
+
 		return model;
 	}
 

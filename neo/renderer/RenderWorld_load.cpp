@@ -604,7 +604,7 @@ bool idRenderWorldLocal::InitFromMap( const char *name ) {
 
 	AddWorldModelEntities();
 	ClearPortalStates();
-	exit(0);
+	
 	// done!
 	return true;
 }

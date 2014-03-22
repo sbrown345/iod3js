@@ -29,20 +29,20 @@
 ////#ifndef __MODEL_H__
 ////#define __MODEL_H__
 
-/////*
-////===============================================================================
+/*
+===============================================================================
 
-////	Render Model
+	Render Model
 
-////===============================================================================
-////*/
+===============================================================================
+*/
 
-////// shared between the renderer, game, and Maya export DLL
-////#define MD5_VERSION_STRING		"MD5Version"
-////#define MD5_MESH_EXT			"md5mesh"
-////#define MD5_ANIM_EXT			"md5anim"
-////#define MD5_CAMERA_EXT			"md5camera"
-////#define MD5_VERSION				10
+// shared between the renderer, game, and Maya export DLL
+var MD5_VERSION_STRING		= "MD5Version"
+var MD5_MESH_EXT			= "md5mesh"
+var MD5_ANIM_EXT			= "md5anim"
+var MD5_CAMERA_EXT			= "md5camera"
+var MD5_VERSION				= 10
 
 // using shorts for triangle indexes can save a significant amount of traffic, but
 // to support the large models that renderBump loads, they need to be 32 bits
@@ -244,12 +244,12 @@ class idRenderModel {
 ////public:
 ////	virtual						~idRenderModel() {};
 
-////	// Loads static models only, dynamic models must be loaded by the modelManager
-////	virtual void				InitFromFile( const char *fileName ) = 0;
+	// Loads static models only, dynamic models must be loaded by the modelManager
+	InitFromFile ( fileName: string ): void { throw "placeholder"; }
 
-////	// renderBump uses this to load the very high poly count models, skipping the
-////	// shadow and tangent generation, along with some surface cleanup to make it load faster
-////	virtual void				PartialInitFromFile( const char *fileName ) = 0;
+	// renderBump uses this to load the very high poly count models, skipping the
+	// shadow and tangent generation, along with some surface cleanup to make it load faster
+	PartialInitFromFile(fileName: string): void { throw "placeholder"; }
 
 	// this is used for dynamically created surfaces, which are assumed to not be reloadable.
 	// It can be called again to clear out the surfaces of a dynamic model for regeneration.
@@ -267,45 +267,45 @@ class idRenderModel {
 	// light interaction, and all the triangles are already well formed.
 	FinishSurfaces ( ): void { throw "placeholder"; }
 
-////	// frees all the data, but leaves the class around for dangling references,
-////	// which can regenerate the data with LoadModel()
-////	virtual void				PurgeModel() = 0;
+	// frees all the data, but leaves the class around for dangling references,
+	// which can regenerate the data with LoadModel()
+	PurgeModel(): void { throw "placeholder"; }
 
-////	// resets any model information that needs to be reset on a same level load etc.. 
-////	// currently only implemented for liquids
-////	virtual void				Reset() = 0;
+	// resets any model information that needs to be reset on a same level load etc.. 
+	// currently only implemented for liquids
+	Reset(): void { throw "placeholder"; }
 
-////	// used for initial loads, reloadModel, and reloading the data of purged models
-////	// Upon exit, the model will absolutely be valid, but possibly as a default model
-////	virtual void				LoadModel() = 0;
+	// used for initial loads, reloadModel, and reloading the data of purged models
+	// Upon exit, the model will absolutely be valid, but possibly as a default model
+	LoadModel(): void { throw "placeholder"; }
 
-////	// internal use
-////	virtual bool				IsLoaded() = 0;
-////	virtual void				SetLevelLoadReferenced( bool referenced ) = 0;
-////	virtual bool				IsLevelLoadReferenced() = 0;
+	// internal use
+	IsLoaded(): boolean { throw "placeholder"; }
+	SetLevelLoadReferenced(referenced: boolean): void { throw "placeholder"; }
+	IsLevelLoadReferenced(): boolean { throw "placeholder"; }
 
-////	// models that are already loaded at level start time
-////	// will still touch their data to make sure they
-////	// are kept loaded
-////	virtual void				TouchData() = 0;
+	// models that are already loaded at level start time
+	// will still touch their data to make sure they
+	// are kept loaded
+	TouchData(): void { throw "placeholder"; }
 
-////	// dump any ambient caches on the model surfaces
-////	virtual void				FreeVertexCache() = 0;
+	// dump any ambient caches on the model surfaces
+	FreeVertexCache(): void { throw "placeholder"; }
 
     // returns the name of the model
     Name():string { throw "placeholder"; }
 
-////	// prints a detailed report on the model for printModel
-////	virtual void				Print() const = 0;
+	// prints a detailed report on the model for printModel
+	Print(): void { throw "placeholder"; }
 
-////	// prints a single line report for listModels
-////	virtual void				List() const = 0;
+	// prints a single line report for listModels
+	List(): void { throw "placeholder"; }
 
-////	// reports the amount of memory (roughly) consumed by the model
-////	virtual int					Memory() const = 0;
+	// reports the amount of memory (roughly) consumed by the model
+	Memory(): number { throw "placeholder"; }
 
 	// for reloadModels
-	Timestamp():number { throw "placeholder"; }
+	Timestamp ( ): number { throw "placeholder"; }
 
 	// returns the number of surfaces
 	NumSurfaces(): number { throw "placeholder"; }

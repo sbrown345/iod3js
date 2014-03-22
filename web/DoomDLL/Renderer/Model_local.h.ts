@@ -62,7 +62,7 @@ class idRenderModelStatic extends idRenderModel {
 	Name():string { throw "placeholder"; }
 	Print() : void { throw "placeholder"; }
 	List() : void { throw "placeholder"; }
-////	virtual int					Memory() const;
+	Memory() :number { throw "placeholder"; }
 	Timestamp():number { throw "placeholder"; }
 	NumSurfaces():number { throw "placeholder"; }
 	NumBaseSurfaces():number { throw "placeholder"; }
@@ -150,15 +150,18 @@ class idRenderModelStatic extends idRenderModel {
 	}
 };
 
-/////*
-////===============================================================================
+/*
+===============================================================================
 
-////	MD5 animated model
+	MD5 animated model
 
-////===============================================================================
-////*/
+===============================================================================
+*/
 
-////class idMD5Mesh {
+class idMD5Mesh {
+	constructor() {
+		todoThrow()
+	}
 ////	friend class				idRenderModelMD5;
 
 ////public:
@@ -185,9 +188,13 @@ class idRenderModelStatic extends idRenderModel {
 
 ////	void						TransformVerts( idDrawVert *verts, const idJointMat *joints );
 ////	void						TransformScaledVerts( idDrawVert *verts, const idJointMat *joints, float scale );
-////};
+};
 
-////class idRenderModelMD5 extends idRenderModelStatic {
+class idRenderModelMD5 extends idRenderModelStatic {
+	constructor() {
+		super();
+		todoThrow()
+	}
 ////public:
 ////	virtual void				InitFromFile( const char *fileName );
 ////	virtual IsDynamicModel() const;
@@ -215,7 +222,7 @@ class idRenderModelStatic extends idRenderModel {
 ////	void						GetFrameBounds( const renderEntity_t *ent, idBounds &bounds ) const;
 ////	void						DrawJoints( const renderEntity_t *ent, const struct viewDef_s *view ) const;
 ////	void						ParseJoint( idLexer &parser, idMD5Joint *joint, idJointQuat *defaultPose );
-////};
+};
 
 /////*
 ////===============================================================================
@@ -228,7 +235,11 @@ class idRenderModelStatic extends idRenderModel {
 ////struct md3Header_s;
 ////struct md3Surface_s;
 
-////class idRenderModelMD3 extends idRenderModelStatic {
+class idRenderModelMD3 extends idRenderModelStatic {
+	constructor() {
+		super();
+		todoThrow()
+	}
 ////public:
 ////	virtual void				InitFromFile( const char *fileName );
 ////	virtual dynamicModel_t		IsDynamicModel() const;
@@ -242,7 +253,7 @@ class idRenderModelStatic extends idRenderModel {
 ////	int							numLods;
 
 ////	void						LerpMeshVertexes( srfTriangles_t *tri, const struct md3Surface_s *surf, const float backlerp, const int frame, const int oldframe ) const;
-////};
+};
 
 /////*
 ////===============================================================================
@@ -252,7 +263,11 @@ class idRenderModelStatic extends idRenderModel {
 ////===============================================================================
 ////*/
 
-////class idRenderModelLiquid extends idRenderModelStatic {
+class idRenderModelLiquid extends idRenderModelStatic {
+	constructor() {
+		super();
+		todoThrow()
+	}
 ////public:
 ////								idRenderModelLiquid();
 
@@ -297,7 +312,7 @@ class idRenderModelStatic extends idRenderModel {
 
 ////	int							nextDropTime;
 
-////};
+};
 
 /////*
 ////===============================================================================
@@ -307,7 +322,11 @@ class idRenderModelStatic extends idRenderModel {
 ////===============================================================================
 ////*/
 
-////class idRenderModelPrt extends idRenderModelStatic {
+class idRenderModelPrt extends idRenderModelStatic {
+	constructor() {
+		super();
+		todoThrow()
+	}
 ////public:
 ////								idRenderModelPrt();
 
@@ -321,7 +340,7 @@ class idRenderModelStatic extends idRenderModel {
 
 ////private:
 ////	const idDeclParticle *		particleSystem;
-////};
+};
 
 /////*
 ////===============================================================================
@@ -356,7 +375,11 @@ class idRenderModelBeam extends idRenderModelStatic {
 ////	int							numPoints;
 ////};
 
-////class idRenderModelTrail extends idRenderModelStatic {
+class idRenderModelTrail extends idRenderModelStatic {
+	constructor() {
+		super();
+		todoThrow()
+	}
 ////	idList<Trail_t>				trails;
 ////	int							numActive;
 ////	idBounds					trailBounds;
@@ -372,7 +395,7 @@ class idRenderModelBeam extends idRenderModelStatic {
 ////	int							NewTrail( idVec3 pt, int duration );
 ////	void						UpdateTrail( int index, idVec3 pt );
 ////	void						DrawTrail( int index, const struct renderEntity_s *ent, srfTriangles_t *tri, float globalAlpha );
-////};
+};
 
 /////*
 ////===============================================================================
@@ -382,13 +405,17 @@ class idRenderModelBeam extends idRenderModelStatic {
 ////===============================================================================
 ////*/
 
-////class idRenderModelLightning extends idRenderModelStatic {
+class idRenderModelLightning extends idRenderModelStatic {
+	constructor() {
+		super();
+		todoThrow()
+	}
 ////public:
 ////	virtual dynamicModel_t		IsDynamicModel() const;
 ////	virtual bool				IsLoaded() const;
 ////	virtual idRenderModel *		InstantiateDynamicModel( const struct renderEntity_s *ent, const struct viewDef_s *view, idRenderModel *cachedModel );
 ////	virtual idBounds			Bounds( const struct renderEntity_s *ent ) const;
-////};
+};
 
 /*
 ================================================================================
