@@ -517,7 +517,7 @@ idGameLocal.prototype.Init = function ( ): void {
 ////	savegame.WriteBool( this.skipCinematic );
 
 ////	savegame.WriteBool( isMultiplayer );
-////	savegame.WriteInt( gameType );
+////	savegame.WriteInt( this.gameType );
 
 ////	savegame.WriteInt( this.framenum );
 ////	savegame.WriteInt( this.previousTime );
@@ -799,26 +799,26 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 ////	return NULL;
 ////}
 
-/////*
-////===========
-////idGameLocal::SetServerInfo
-////============
-////*/
-////void idGameLocal::SetServerInfo( const idDict &_serverInfo ) {
-////	idBitMsg	outMsg;
-////	byte		msgBuf[MAX_GAME_MESSAGE_SIZE];
+/*
+===========
+idGameLocal::SetServerInfo
+============
+*/
+idGameLocal.prototype.SetServerInfo = function ( _serverInfo: idDict ): void {
+	//idBitMsg	outMsg;
+	//byte		msgBuf[MAX_GAME_MESSAGE_SIZE];
+	this.serverInfo.equals( _serverInfo );
+	this.UpdateServerInfoFlags ( );
 
-////	this.serverInfo = _serverInfo;
-////	UpdateServerInfoFlags();
-
-////	if ( !isClient ) {
-////		// Let our clients know the server info changed
-////		outMsg.Init( msgBuf, sizeof( msgBuf ) );
-////		outMsg.WriteByte( GAME_RELIABLE_MESSAGE_SERVERINFO );
-////		outMsg.WriteDeltaDict( gameLocal.serverInfo, NULL );
-////		networkSystem.ServerSendReliableMessage( -1, outMsg );
-////	}
-////}
+	if ( !this.isClient ) {
+		todoThrow ( );
+		//// Let our clients know the server info changed
+		//outMsg.Init( msgBuf, sizeof( msgBuf ) );
+		//outMsg.WriteByte( GAME_RELIABLE_MESSAGE_SERVERINFO );
+		//outMsg.WriteDeltaDict( gameLocal.serverInfo, NULL );
+		//networkSystem.ServerSendReliableMessage( -1, outMsg );
+	}
+};
 
 
 /*
@@ -1330,7 +1330,7 @@ idGameLocal.prototype.InitFromNewMap = function ( mapName: string, renderWorld: 
 ////	savegame.ReadBool( this.skipCinematic );
 
 ////	savegame.ReadBool( isMultiplayer );
-////	savegame.ReadInt( (int &)gameType );
+////	savegame.ReadInt( (int &)this.gameType );
 
 ////	savegame.ReadInt( this.framenum );
 ////	savegame.ReadInt( this.previousTime );
@@ -4210,33 +4210,33 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////	return spot.ent;
 ////}
 
-/////*
-////================
-////idGameLocal::UpdateServerInfoFlags
-////================
-////*/
-////void idGameLocal::UpdateServerInfoFlags() {
-////	gameType = GAME_SP;
-////	if ( ( idStr.Icmp( this.serverInfo.GetString( "si_gameType" ), "deathmatch" ) == 0 ) ) {
-////		gameType = GAME_DM;
-////	} else if ( ( idStr.Icmp( this.serverInfo.GetString( "si_gameType" ), "Tourney" ) == 0 ) ) {
-////		gameType = GAME_TOURNEY;
-////	} else if ( ( idStr.Icmp( this.serverInfo.GetString( "si_gameType" ), "Team DM" ) == 0 ) ) {
-////		gameType = GAME_TDM;
-////	} else if ( ( idStr.Icmp( this.serverInfo.GetString( "si_gameType" ), "Last Man" ) == 0 ) ) {
-////		gameType = GAME_LASTMAN;
-////	}
-////	if ( gameType == GAME_LASTMAN ) {
-////		if ( !this.serverInfo.GetInt( "si_warmup" ) ) {
-////			common.Warning( "Last Man Standing - forcing warmup on" );
-////			this.serverInfo.SetInt( "si_warmup", 1 );
-////		}
-////		if ( this.serverInfo.GetInt( "si_fraglimit" ) <= 0 ) {
-////			common.Warning( "Last Man Standing - setting fraglimit 1" );
-////			this.serverInfo.SetInt( "si_fraglimit", 1 );
-////		}
-////	}
-////}
+/*
+================
+idGameLocal::UpdateServerInfoFlags
+================
+*/
+idGameLocal.prototype.UpdateServerInfoFlags = function ( ): void {
+	this.gameType = gameType_t.GAME_SP;
+	if ( ( idStr.Icmp( this.serverInfo.GetString( "si_gameType" ), "deathmatch" ) == 0 ) ) {
+		this.gameType = gameType_t.GAME_DM;
+	} else if ( ( idStr.Icmp( this.serverInfo.GetString( "si_gameType" ), "Tourney" ) == 0 ) ) {
+		this.gameType = gameType_t.GAME_TOURNEY;
+	} else if ( ( idStr.Icmp( this.serverInfo.GetString( "si_gameType" ), "Team DM" ) == 0 ) ) {
+		this.gameType = gameType_t.GAME_TDM;
+	} else if ( ( idStr.Icmp( this.serverInfo.GetString( "si_gameType" ), "Last Man" ) == 0 ) ) {
+		this.gameType = gameType_t.GAME_LASTMAN;
+	}
+	if ( this.gameType == gameType_t.GAME_LASTMAN ) {
+		if ( !this.serverInfo.GetInt( "si_warmup" ) ) {
+			common.Warning( "Last Man Standing - forcing warmup on" );
+			this.serverInfo.SetInt( "si_warmup", 1 );
+		}
+		if ( this.serverInfo.GetInt( "si_fraglimit" ) <= 0 ) {
+			common.Warning( "Last Man Standing - setting fraglimit 1" );
+			this.serverInfo.SetInt( "si_fraglimit", 1 );
+		}
+	}
+};
 
 
 /////*

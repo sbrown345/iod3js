@@ -565,8 +565,8 @@ class idGameLocal extends idGame {
 ////	void					ClientProcessEntityNetworkEventQueue( ):void { throw "placeholder"; }
 ////	void					ClientShowSnapshot( int clientNum ) const;
 ////							// call after any change to serverInfo. Will update various quick-access flags
-////	void					UpdateServerInfoFlags( ):void { throw "placeholder"; }
-////	void					RandomizeInitialSpawns( ):void { throw "placeholder"; }
+	UpdateServerInfoFlags( ):void { throw "placeholder"; }
+	RandomizeInitialSpawns( ):void { throw "placeholder"; }
 ////	static int				sortSpawnPoints( const void *ptr1, const void *ptr2 );
 
 ////	void					DumpOggSounds( ):void { throw "placeholder"; }

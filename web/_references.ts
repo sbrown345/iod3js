@@ -173,6 +173,7 @@
 /// <reference path="libs/idlib/geometry/jointtransform.h.ts" />
 
 // Libs root
+/// <reference path="libs/idlib/bitmsg.cpp.ts" />
 /// <reference path="libs/idlib/dict.cpp.ts" />
 /// <reference path="libs/idlib/langdict.cpp.ts" />
 /// <reference path="libs/idlib/mapfile.h.ts" />

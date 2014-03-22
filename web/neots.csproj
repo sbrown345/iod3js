@@ -222,6 +222,7 @@
     <TypeScriptCompile Include="DoomDLL\Sys\win_net.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Renderer\ModelOverlay.cpp.ts" />
     <TypeScriptCompile Include="libs\idLib\Math\Interpolate.h.ts" />
+    <TypeScriptCompile Include="libs\idLib\BitMsg.cpp.ts" />
     <Content Include="libs\idLib\Timer.h.ts" />
     <Content Include="log.aspx" />
     <Content Include="other\files.ts" />
