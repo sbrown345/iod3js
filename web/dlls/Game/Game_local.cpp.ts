@@ -33,19 +33,20 @@
 
 ////#ifdef GAME_DLL
 
+// not needed, can access the other ones anyway
 ////idSys *						sys = null;
 ////idCommon *					common = null;
 ////idCmdSystem *				cmdSystem = null;
 ////idCVarSystem *				cvarSystem = null;
 ////idFileSystem *				fileSystem = null;
-var networkSystem: idNetworkSystem = null;
+////var networkSystem: idNetworkSystem = null;
 ////idRenderSystem *			renderSystem = null;
 ////idSoundSystem *				soundSystem = null;
 ////var renderModelManager:idRenderModelManager = null;
 ////idUserInterfaceManager *	uiManager = null;
 ////idDeclManager *				declManager = null;
 ////idAASFileManager *			AASFileManager = null;
-var collisionModelManager:idCollisionModelManager = null;
+////var collisionModelManager:idCollisionModelManager = null;
 ////idCVar *					idCVar::staticVars = null;
 
 //var com_forceGenericSIMD = new idCVar( "com_forceGenericSIMD", "0", CVAR_BOOL | CVAR_SYSTEM, "force generic platform independent SIMD" );

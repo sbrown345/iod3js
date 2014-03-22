@@ -334,7 +334,7 @@ class gameImport_t {
 	uiManager: idUserInterfaceManager; // user interface manager
 	declManager: idDeclManager; // declaration manager				 
 	//AASFileManager: idAASFileManager;			// AAS file manager			
-	//collisionModelManager: idCollisionModelManager;	// collision model manager
+	collisionModelManager: idCollisionModelManager;	// collision model manager
 }
 
 

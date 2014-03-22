@@ -85,8 +85,25 @@
 ////	texT[2] = -cos(RotY);
 ////}
 
+class idMapPrimitive {
+	////public:
+	////	enum { TYPE_INVALID = -1, TYPE_BRUSH, TYPE_PATCH };
+	static TYPE_INVALID = -1;
+	static TYPE_BRUSH = 0;
+	static TYPE_PATCH = 1;
 
-class idMapPatch extends idMapPrimitive // todo: , public idSurface_Patch
+	epairs = new idDict;
+
+	constructor() { this.type = idMapPrimitive.TYPE_INVALID; }
+	////	virtual					~idMapPrimitive( ) { }
+	GetType(): number { return this.type; }
+
+	////protected:
+	type: number/*int*/;
+};
+
+// https://stackoverflow.com/questions/17865620/typescript-multiple-inheritance-workarounds
+class idMapPatch extends idMapPrimitive // todo: , public idSurface_Patch    
 {
 	////public:
 	////							idMapPatch( );
@@ -806,23 +823,6 @@ var DEFAULT_CURVE_MAX_LENGTH		= -1.0;
 var DEFAULT_CURVE_MAX_LENGTH_CD		= -1.0;
 
 
-class idMapPrimitive {
-////public:
-////	enum { TYPE_INVALID = -1, TYPE_BRUSH, TYPE_PATCH };
-	static TYPE_INVALID = -1;
-	static TYPE_BRUSH = 0;
-	static TYPE_PATCH = 1;
-
-	epairs = new idDict;
-
-	constructor ( ) { this.type = idMapPrimitive.TYPE_INVALID; }
-////	virtual					~idMapPrimitive( ) { }
-	GetType( ) :number { return this.type; }
-
-////protected:
-	type:number/*int*/;
-};
-
 
 class idMapBrushSide {
 ////	friend class idMapBrush;
@@ -884,13 +884,13 @@ class idMapFile {
 	////	bool					Parse( const char *filename, bool ignoreRegion = false, bool osPath = false );
 	////	bool					Write( const char *fileName, const char *ext, bool fromBasePath = true );
 	////							// get the number of entities in the map
-	////	int						GetNumEntities( ) const { return this.entities.Num(); }
+	GetNumEntities ( ): number { return this.entities.Num ( ); }
 	////							// get the specified entity
-	////	idMapEntity *			GetEntity( int i ) const { return this.entities[i]; }
+	GetEntity ( /*int */i: number ): idMapEntity { return this.entities[i]; }
 	////							// get the name without file extension
-	////	const char *			GetName( ) const { return this.name; }
+	GetName ( ): string { return this.name.data; }
 	////							// get the file time
-	////	ID_TIME_T					GetFileTime( ) const { return fileTime; }
+	GetFileTime ( ): number { return this.fileTime; }
 	////							// get CRC for the map geometry
 	////							// texture coordinates and entity key/value pairs are not taken into account
 	////	unsigned int			GetGeometryCRC( ) const { return this.geometryCRC; }
@@ -932,7 +932,7 @@ class idMapFile {
 	idMapFile::Parse
 	===============
 	*/
-	Parse(filename: string, ignoreRegion: boolean, osPath: boolean): boolean {
+	Parse(filename: string, ignoreRegion: boolean = false, osPath: boolean = false): boolean {
 		// no string concatenation for epairs and allow path names for materials
 		var src = new idLexer(lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES);
 		var token = new idToken;

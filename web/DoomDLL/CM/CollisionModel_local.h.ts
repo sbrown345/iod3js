@@ -36,30 +36,30 @@
 ////
 ////#include "CollisionModel.h"
 ////
-////#define MIN_NODE_SIZE						64.0f
-////#define MAX_NODE_POLYGONS					128
-////#define CM_MAX_POLYGON_EDGES				64
-////#define CIRCLE_APPROXIMATION_LENGTH			64.0f
-////
-////#define	MAX_SUBMODELS						2048
-////#define	TRACE_MODEL_HANDLE					MAX_SUBMODELS
-////
-////#define VERTEX_HASH_BOXSIZE					(1<<6)	// must be power of 2
-////#define VERTEX_HASH_SIZE					(VERTEX_HASH_BOXSIZE*VERTEX_HASH_BOXSIZE)
-////#define EDGE_HASH_SIZE						(1<<14)
-////
-////#define NODE_BLOCK_SIZE_SMALL				8
-////#define NODE_BLOCK_SIZE_LARGE				256
-////#define REFERENCE_BLOCK_SIZE_SMALL			8
-////#define REFERENCE_BLOCK_SIZE_LARGE			256
-////
-////#define MAX_WINDING_LIST					128		// quite a few are generated at times
-////#define INTEGRAL_EPSILON					0.01f
-////#define VERTEX_EPSILON						0.1f
-////#define CHOP_EPSILON						0.1f
-////
-////
-////typedef struct cm_windingList_s {
+var MIN_NODE_SIZE					=	64.0
+var MAX_NODE_POLYGONS				=	128
+var CM_MAX_POLYGON_EDGES			=	64
+var CIRCLE_APPROXIMATION_LENGTH		=	64.0
+
+var	MAX_SUBMODELS					=	2048
+var	TRACE_MODEL_HANDLE				=	MAX_SUBMODELS
+
+var VERTEX_HASH_BOXSIZE				=	(1<<6)	// must be power of 2
+var VERTEX_HASH_SIZE				=	(VERTEX_HASH_BOXSIZE*VERTEX_HASH_BOXSIZE)
+var EDGE_HASH_SIZE					=	(1<<14)
+								
+var NODE_BLOCK_SIZE_SMALL			=	8
+var NODE_BLOCK_SIZE_LARGE			=	256
+var REFERENCE_BLOCK_SIZE_SMALL		=	8
+var REFERENCE_BLOCK_SIZE_LARGE		=	256
+
+var MAX_WINDING_LIST				=	128		// quite a few are generated at times
+var INTEGRAL_EPSILON				=	0.01
+var VERTEX_EPSILON					=	0.1
+var CHOP_EPSILON					=	0.1
+
+
+class cm_windingList_t {
 ////	int					numWindings;			// number of windings
 ////	idFixedWinding		w[MAX_WINDING_LIST];	// windings
 ////	idVec3				normal;					// normal for all windings
@@ -68,24 +68,26 @@
 ////	float				radius;					// radius relative to origin for all windings
 ////	int					contents;				// winding surface contents
 ////	int					primitiveNum;			// number of primitive the windings came from
-////} cm_windingList_t;
-////
-/////*
-////===============================================================================
-////
-////Collision model
-////
-////===============================================================================
-////*/
-////
-////typedef struct cm_vertex_s {
+}
+
+
+/*
+===============================================================================
+
+Collision model
+
+===============================================================================
+*/
+
+class cm_vertex_t {
 ////	idVec3					p;					// vertex point
 ////	int						checkcount;			// for multi-check avoidance
 ////	unsigned long			side;				// each bit tells at which side this vertex passes one of the trace model edges
 ////	unsigned long			sideSet;			// each bit tells if sidedness for the trace model edge has been calculated yet
-////} cm_vertex_t;
+}
+
 ////
-////typedef struct cm_edge_s {
+class cm_edge_t {
 ////	int						checkcount;			// for multi-check avoidance
 ////	unsigned short			internal;			// a trace model can never collide with internal edges
 ////	unsigned short			numUsers;			// number of polygons using this edge
@@ -93,14 +95,14 @@
 ////	unsigned long			sideSet;			// each bit tells if sidedness for the trace model vertex has been calculated yet
 ////	int						vertexNum[2];		// start and end point of edge
 ////	idVec3					normal;				// edge normal
-////} cm_edge_t;
-////
+}
+
 ////typedef struct cm_polygonBlock_s {
 ////	int						bytesRemaining;
 ////	byte *					next;
 ////} cm_polygonBlock_t;
 ////
-////typedef struct cm_polygon_s {
+class cm_polygon_t{
 ////	idBounds				bounds;				// polygon bounds
 ////	int						checkcount;			// for multi-check avoidance
 ////	int						contents;			// contents behind polygon
@@ -108,24 +110,28 @@
 ////	idPlane					plane;				// polygon plane
 ////	int						numEdges;			// number of edges
 ////	int						edges[1];			// variable sized, indexes into cm_edge_t list
-////} cm_polygon_t;
-////
-////typedef struct cm_polygonRef_s {
+
+	init ( ): void {
+		
+	}
+};
+
+class cm_polygonRef_t {
 ////	cm_polygon_t *			p;					// pointer to polygon
 ////	struct cm_polygonRef_s *next;				// next polygon in chain
-////} cm_polygonRef_t;
+} ;
 ////
-////typedef struct cm_polygonRefBlock_s {
+class cm_polygonRefBlock_t {
 ////	cm_polygonRef_t *		nextRef;			// next polygon reference in block
 ////	struct cm_polygonRefBlock_s *next;			// next block with polygon references
-////} cm_polygonRefBlock_t;
-////
-////typedef struct cm_brushBlock_s {
+};
+
+class cm_brushBlock_t{
 ////	int						bytesRemaining;
 ////	byte *					next;
-////} cm_brushBlock_t;
-////
-////typedef struct cm_brush_s {
+}
+
+class cm_brush_t {
 ////	int						checkcount;			// for multi-check avoidance
 ////	idBounds				bounds;				// brush bounds
 ////	int						contents;			// contents of brush
@@ -133,75 +139,75 @@
 ////	int						primitiveNum;		// number of brush primitive
 ////	int						numPlanes;			// number of bounding planes
 ////	idPlane					planes[1];			// variable sized
-////} cm_brush_t;
-////
-////typedef struct cm_brushRef_s {
+}
+
+class cm_brushRef_t{
 ////	cm_brush_t *			b;					// pointer to brush
 ////	struct cm_brushRef_s *	next;				// next brush in chain
-////} cm_brushRef_t;
+}
 ////
-////typedef struct cm_brushRefBlock_s {
+class cm_brushRefBlock_t {
 ////	cm_brushRef_t *			nextRef;			// next brush reference in block
 ////	struct cm_brushRefBlock_s *next;			// next block with brush references
-////} cm_brushRefBlock_t;
-////
-////typedef struct cm_node_s {
+};
+
+class cm_node_t {
 ////	int						planeType;			// node axial plane type
 ////	float					planeDist;			// node plane distance
 ////	cm_polygonRef_t *		polygons;			// polygons in node
 ////	cm_brushRef_t *			brushes;			// brushes in node
 ////	struct cm_node_s *		parent;				// parent of this node
 ////	struct cm_node_s *		children[2];		// node children
-////} cm_node_t;
-////
-////typedef struct cm_nodeBlock_s {
+}
+
+class cm_nodeBlock_t {
 ////	cm_node_t *				nextNode;			// next node in block
 ////	struct cm_nodeBlock_s *next;				// next block with nodes
-////} cm_nodeBlock_t;
-////
-////typedef struct cm_model_s {
-////	idStr					name;				// model name
-////	idBounds				bounds;				// model bounds
-////	int						contents;			// all contents of the model ored together
-////	bool					isConvex;			// set if model is convex
-////	// model geometry
-////	int						maxVertices;		// size of vertex array
-////	int						numVertices;		// number of vertices
-////	cm_vertex_t *			vertices;			// array with all vertices used by the model
-////	int						maxEdges;			// size of edge array
-////	int						numEdges;			// number of edges
-////	cm_edge_t *				edges;				// array with all edges used by the model
-////	cm_node_t *				node;				// first node of spatial subdivision
-////	// blocks with allocated memory
-////	cm_nodeBlock_t *		nodeBlocks;			// list with blocks of nodes
-////	cm_polygonRefBlock_t *	polygonRefBlocks;	// list with blocks of polygon references
-////	cm_brushRefBlock_t *	brushRefBlocks;		// list with blocks of brush references
-////	cm_polygonBlock_t *		polygonBlock;		// memory block with all polygons
-////	cm_brushBlock_t *		brushBlock;			// memory block with all brushes
-////	// statistics
-////	int						numPolygons;
-////	int						polygonMemory;
-////	int						numBrushes;
-////	int						brushMemory;
-////	int						numNodes;
-////	int						numBrushRefs;
-////	int						numPolygonRefs;
-////	int						numInternalEdges;
-////	int						numSharpEdges;
-////	int						numRemovedPolys;
-////	int						numMergedPolys;
-////	int						usedMemory;
-////} cm_model_t;
-////
-/////*
-////===============================================================================
-////
-////Data used during collision detection calculations
-////
-////===============================================================================
-////*/
-////
-////typedef struct cm_trmVertex_s {
+}
+
+class cm_model_t {
+	name = new idStr;				// model name
+	bounds = new idBounds;				// model bounds
+	contents:number/*int*/;			// all contents of the model ored together
+	isConvex:boolean;			// set if model is convex
+	// model geometry
+	maxVertices:number/*int*/;		// size of vertex array
+	numVertices:number/*int*/;		// number of vertices
+	vertices:cm_vertex_t;			// array with all vertices used by the model
+	maxEdges:number/*int*/;			// size of edge array
+	numEdges:number/*int*/;			// number of edges
+	edges:cm_edge_t;				// array with all edges used by the model
+	node:cm_node_t;				// first node of spatial subdivision
+	// blocks with allocated memory
+	nodeBlocks:cm_nodeBlock_t;			// list with blocks of nodes
+	polygonRefBlocks:cm_polygonRefBlock_t;	// list with blocks of polygon references
+	brushRefBlocks:cm_brushRefBlock_t;		// list with blocks of brush references
+	polygonBlock:cm_polygonBlock_t;		// memory block with all polygons
+	brushBlock:cm_brushBlock_t;			// memory block with all brushes
+	// statistics
+	numPolygons:number/*int*/;
+	polygonMemory:number/*int*/;
+	numBrushes:number/*int*/;
+	brushMemory:number/*int*/;
+	numNodes:number/*int*/;
+	numBrushRefs:number/*int*/;
+	numPolygonRefs:number/*int*/;
+	numInternalEdges:number/*int*/;
+	numSharpEdges:number/*int*/;
+	numRemovedPolys:number/*int*/;
+	numMergedPolys:number/*int*/;
+	usedMemory:number/*int*/;
+} ;
+
+/*
+===============================================================================
+
+Data used during collision detection calculations
+
+===============================================================================
+*/
+
+class cm_trmVertex_t {
 ////	int used;										// true if this vertex is used for collision detection
 ////	idVec3 p;										// vertex position
 ////	idVec3 endp;									// end point of vertex after movement
@@ -209,9 +215,9 @@
 ////	idPluecker pl;									// pluecker coordinate for vertex movement
 ////	idVec3 rotationOrigin;							// rotation origin for this vertex
 ////	idBounds rotationBounds;						// rotation bounds for this vertex
-////} cm_trmVertex_t;
-////
-////typedef struct cm_trmEdge_s {
+};
+
+class cm_trmEdge_t {
 ////	int used;										// true when vertex is used for collision detection
 ////	idVec3 start;									// start of edge
 ////	idVec3 end;										// end of edge
@@ -221,17 +227,17 @@
 ////	idBounds rotationBounds;						// rotation bounds for this edge
 ////	idPluecker plzaxis;								// pluecker coordinate for rotation about the z-axis
 ////	unsigned short bitNum;							// vertex bit number
-////} cm_trmEdge_t;
-////
-////typedef struct cm_trmPolygon_s {
+};
+
+class cm_trmPolygon_t {
 ////	int used;
 ////	idPlane plane;									// polygon plane
 ////	int numEdges;									// number of edges
 ////	int edges[MAX_TRACEMODEL_POLYEDGES];			// index into cm_traceWork_t->edges
 ////	idBounds rotationBounds;						// rotation bounds for this polygon
-////} cm_trmPolygon_t;
-////
-////typedef struct cm_traceWork_s {
+};
+
+class cm_traceWork_t{
 ////	int numVerts;
 ////	cm_trmVertex_t vertices[MAX_TRACEMODEL_VERTS];	// trm vertices
 ////	int numEdges;
@@ -275,27 +281,27 @@
 ////	idPluecker polygonEdgePlueckerCache[CM_MAX_POLYGON_EDGES];
 ////	idPluecker polygonVertexPlueckerCache[CM_MAX_POLYGON_EDGES];
 ////	idVec3 polygonRotationOriginCache[CM_MAX_POLYGON_EDGES];
-////} cm_traceWork_t;
-////
-/////*
-////===============================================================================
-////
-////Collision Map
-////
-////===============================================================================
-////*/
-////
-////typedef struct cm_procNode_s {
-////	idPlane plane;
-////	int children[2];				// negative numbers are (-1 - areaNumber), 0 = solid
-////} cm_procNode_t;
-////
-////class idCollisionModelManagerLocal extends idCollisionModelManager {
+};
+
+/*
+===============================================================================
+
+Collision Map
+
+===============================================================================
+*/
+
+class cm_procNode_t {
+	plane = new idPlane;
+	children = new Int32Array(2);				// negative numbers are (-1 - areaNumber), 0 = solid
+};
+
+class idCollisionModelManagerLocal extends idCollisionModelManager {
 ////public:
 ////	// load collision models from a map file
 ////	void			LoadMap( const idMapFile *mapFile );
 ////	// frees all the collision models
-////	void			FreeMap( void );
+////	void			FreeMap( );
 ////
 ////	// get clip handle for model
 ////	cmHandle_t		LoadModel( const char *modelName, const bool precache );
@@ -341,7 +347,7 @@
 ////	// print model information, use -1 handle for accumulated model info
 ////	void			ModelInfo( cmHandle_t model );
 ////	// list all loaded models
-////	void			ListModels( void );
+////	void			ListModels( );
 ////	// write a collision model file for the map entity
 ////	bool			WriteCollisionModelForMapEntity( const idMapEntity *mapEnt, const char *filename, const bool testTraceModel = true );
 ////
@@ -400,8 +406,8 @@
 ////	void			RecurseProcBSP_r( trace_t *results, int parentNodeNum, int nodeNum, float p1f, float p2f, const idVec3 &p1, const idVec3 &p2 );
 ////
 ////private:			// CollisionMap_load.cpp
-////	void			Clear( void );
-////	void			FreeTrmModelStructure( void );
+	Clear ( ): void { throw "placeholder"; }
+	FreeTrmModelStructure ( ): void { throw "placeholder"; }
 ////					// model deallocation
 ////	void			RemovePolygonReferences_r( cm_node_t *node, cm_polygon_t *p );
 ////	void			RemoveBrushReferences_r( cm_node_t *node, cm_brush_t *b );
@@ -433,7 +439,7 @@
 ////	void			R_ChopWindingListWithTreeBrushes( cm_windingList_t *list, cm_node_t *node );
 ////	idFixedWinding *WindingOutsideBrushes( idFixedWinding *w, const idPlane &plane, int contents, int patch, cm_node_t *headNode );
 ////					// creation of axial BSP tree
-////	cm_model_t *	AllocModel( void );
+		AllocModel( ):cm_model_t {throw "placeholder";}
 ////	cm_node_t *		AllocNode( cm_model_t *model, int blockSize );
 ////	cm_polygonRef_t*AllocPolygonReference( cm_model_t *model, int blockSize );
 ////	cm_brushRef_t *	AllocBrushReference( cm_model_t *model, int blockSize );
@@ -441,14 +447,14 @@
 ////	cm_brush_t *	AllocBrush( cm_model_t *model, int numPlanes );
 ////	void			AddPolygonToNode( cm_model_t *model, cm_node_t *node, cm_polygon_t *p );
 ////	void			AddBrushToNode( cm_model_t *model, cm_node_t *node, cm_brush_t *b );
-////	void			SetupTrmModelStructure( void );
+	SetupTrmModelStructure(): void { throw "placeholder"; }
 ////	void			R_FilterPolygonIntoTree( cm_model_t *model, cm_node_t *node, cm_polygonRef_t *pref, cm_polygon_t *p );
 ////	void			R_FilterBrushIntoTree( cm_model_t *model, cm_node_t *node, cm_brushRef_t *pref, cm_brush_t *b );
 ////	cm_node_t *		R_CreateAxialBSPTree( cm_model_t *model, cm_node_t *node, const idBounds &bounds );
 ////	cm_node_t *		CreateAxialBSPTree( cm_model_t *model, cm_node_t *node );
 ////					// creation of raw polygons
-////	void			SetupHash(void);
-////	void			ShutdownHash(void);
+	SetupHash( ):void { throw "placeholder"; }
+	ShutdownHash( ):void { throw "placeholder"; }
 ////	void			ClearHash( idBounds &bounds );
 ////	int				HashVec(vec:idVec3);
 ////	int				GetVertex( cm_model_t *model, const idVec3 &v, int *vertexNum );
@@ -500,28 +506,28 @@
 ////								const idVec3 &viewOrigin, const float radius );
 ////
 ////private:			// collision map data
-////	idStr			mapName;
-////	ID_TIME_T			mapFileTime;
-////	int				loaded;
-////					// for multi-check avoidance
-////	int				checkCount;
-////					// models
-////	int				maxModels;
-////	int				numModels;
-////	cm_model_t **	models;
-////					// polygons and brush for trm model
-////	cm_polygonRef_t*trmPolygons[MAX_TRACEMODEL_POLYS];
-////	cm_brushRef_t *	trmBrushes[1];
-////	const idMaterial *trmMaterial;
-////					// for data pruning
-////	int				numProcNodes;
-////	cm_procNode_t *	procNodes;
-////					// for retrieving contact points
-////	bool			getContacts;
-////	contactInfo_t *	contacts;
-////	int				maxContacts;
-////	int				numContacts;
-////};
+	mapName = new idStr;
+	mapFileTime: number/*ID_TIME_T*/;
+	loaded:number/*int*/;
+	// for multi-check avoidance
+	checkCount:number/*int*/;
+	// models
+	maxModels:number/*int*/;
+	numModels:number/*int*/;
+	models: cm_model_t[];
+	// polygons and brush for trm model
+	trmPolygons = newStructArray<cm_polygonRef_t>(cm_polygonRef_t,MAX_TRACEMODEL_POLYS);
+	trmBrushes: cm_brushRef_t[] = [null];
+	trmMaterial:idMaterial;
+	// for data pruning
+	numProcNodes:number/*int*/;
+	procNodes:cm_procNode_t;
+	// for retrieving contact points
+	getContacts:boolean;
+	contacts:contactInfo_t; //contactInfo_t *	
+	maxContacts:number/*int*/;
+	numContacts:number/*int*/;
+};
 ////
 ////// for debugging
 ////extern idCVar cm_debugCollision;

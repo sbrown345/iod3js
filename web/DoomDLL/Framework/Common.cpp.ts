@@ -2682,7 +2682,7 @@ idCommonLocal::LoadGameDLL
 		gameImport.uiManager = uiManager;
 		gameImport.declManager = declManager;
 		todo( "gameImport.AASFileManager = AASFileManager;" );
-		todo( "gameImport.collisionModelManager = collisionModelManager;" );
+		gameImport.collisionModelManager = collisionModelManager;
 
 		gameExport = GetGameAPI( gameImport );
 

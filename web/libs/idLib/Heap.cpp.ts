@@ -1144,16 +1144,16 @@ function Mem_Free16 ( /*void **/ptr: any ): void {
 //// 	mem_heap.Free16( ptr );
 }
 
-/////*
-////==================
-////Mem_ClearedAlloc
-////==================
-////*/
-////void *Mem_ClearedAlloc( const int size ) {
-////	void *mem = Mem_Alloc( size );
-////	SIMDProcessor.Memset( mem, 0, size );
-////	return mem;
-////}
+///*
+//==================
+//Mem_ClearedAlloc
+//==================
+//*/
+//void *Mem_ClearedAlloc( const int size ) {
+//	void *mem = Mem_Alloc( size );
+//	SIMDProcessor.Memset( mem, 0, size );
+//	return mem;
+//}
 
 /////*
 ////==================
