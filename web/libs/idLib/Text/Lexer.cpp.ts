@@ -1779,6 +1779,7 @@ FreeSource( ):void {
 
 	constructor ( )
 	constructor ( flags: number /*int*/ )
+	constructor ( filename: string )
 	constructor ( filename: string, /*int */flags: number )
 	constructor ( filename: string, /*int */flags: number, OSPath: boolean )
 	constructor ( /*const char **/ptr: string, /*int */length: number, name: string, /*int*/ flags: number )
@@ -1797,7 +1798,7 @@ FreeSource( ):void {
 			this.token.equals( "" );
 			this.next = null;
 			this.hadError = false;
-		} else if ( arguments.length == 1 ) {
+		} else if ( arguments.length == 1 && typeof a1 === "number" ) {
 			var flags = a1;
 			this.loaded = 0;
 			this.filename.equals( "" );
@@ -1812,7 +1813,7 @@ FreeSource( ):void {
 			this.token.equals( "" );
 			this.next = null;
 			this.hadError = false;
-		} else if ( arguments.length == 2 || arguments.length == 3 ) {
+		} else if ( typeof a1 === "string" && ( arguments.length == 1 || arguments.length == 2 || arguments.length == 3 ) ) {
 			var filename = a1, flags = a2, OSPath = a3 || false;
 			this.loaded = 0;
 			this.flags = flags;

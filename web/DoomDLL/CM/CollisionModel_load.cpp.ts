@@ -2200,24 +2200,24 @@ idCollisionModelManagerLocal.prototype.SetupHash = function ( ): void {
 	}
 };
 
-/////*
-////================
-////idCollisionModelManagerLocal::ShutdownHash
-////================
-////*/
-////void idCollisionModelManagerLocal::ShutdownHash( ) {
-////	delete cm_vertexHash;
-////	cm_vertexHash = NULL;
-////	delete cm_edgeHash;
-////	cm_edgeHash = NULL;
-////	delete cm_tmpList;
-////	cm_tmpList = NULL;
-////	delete cm_outList;
-////	cm_outList = NULL;
-////	delete cm_windingList;
-////	cm_windingList = NULL;
-////}
-////
+/*
+================
+idCollisionModelManagerLocal::ShutdownHash
+================
+*/
+idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
+	$delete( this.cm_vertexHash );
+	this.cm_vertexHash = null;
+	$delete(this. cm_edgeHash );
+	this.cm_edgeHash = null;
+	$delete(this.cm_tmpList );
+	this.cm_tmpList = null;
+	$delete(this.cm_outList );
+	this.cm_outList = null;
+	$delete(this.cm_windingList );
+	this.cm_windingList = null;
+};
+
 /////*
 ////================
 ////idCollisionModelManagerLocal::ClearHash
@@ -3211,35 +3211,35 @@ idCollisionModelManagerLocal.prototype.SetupHash = function ( ): void {
 ////	common.Printf( "%6i polygons merged\n", model.numMergedPolys );
 ////	common.Printf( "%6i KB total memory used\n", model.usedMemory>>10 );
 ////}
-////
-/////*
-////================
-////idCollisionModelManagerLocal::AccumulateModelInfo
-////================
-////*/
-////void idCollisionModelManagerLocal::AccumulateModelInfo( cm_model_t *model ) {
-////	var i:number;
-////
-////	memset( model, 0, sizeof( *model ) );
-////	// accumulate statistics of all loaded models
-////	for ( i = 0; i < this.numModels; i++ ) {
-////		model.numVertices += this.models[i].numVertices;
-////		model.numEdges += this.models[i].numEdges;
-////		model.numPolygons += this.models[i].numPolygons;
-////		model.polygonMemory += this.models[i].polygonMemory;
-////		model.numBrushes += this.models[i].numBrushes;
-////		model.brushMemory += this.models[i].brushMemory;
-////		model.numNodes += this.models[i].numNodes;
-////		model.numBrushRefs += this.models[i].numBrushRefs;
-////		model.numPolygonRefs += this.models[i].numPolygonRefs;
-////		model.numInternalEdges += this.models[i].numInternalEdges;
-////		model.numSharpEdges += this.models[i].numSharpEdges;
-////		model.numRemovedPolys += this.models[i].numRemovedPolys;
-////		model.numMergedPolys += this.models[i].numMergedPolys;
-////		model.usedMemory += this.models[i].usedMemory;
-////	}
-////}
-////
+
+/*
+================
+idCollisionModelManagerLocal::AccumulateModelInfo
+================
+*/
+idCollisionModelManagerLocal.prototype.AccumulateModelInfo = function ( model: cm_model_t ): void {
+	var i: number;
+
+	model.init ( ); //memset( model, 0, sizeof( *model ) );
+	// accumulate statistics of all loaded models
+	for ( i = 0; i < this.numModels; i++ ) {
+		model.numVertices += this.models[i].numVertices;
+		model.numEdges += this.models[i].numEdges;
+		model.numPolygons += this.models[i].numPolygons;
+		model.polygonMemory += this.models[i].polygonMemory;
+		model.numBrushes += this.models[i].numBrushes;
+		model.brushMemory += this.models[i].brushMemory;
+		model.numNodes += this.models[i].numNodes;
+		model.numBrushRefs += this.models[i].numBrushRefs;
+		model.numPolygonRefs += this.models[i].numPolygonRefs;
+		model.numInternalEdges += this.models[i].numInternalEdges;
+		model.numSharpEdges += this.models[i].numSharpEdges;
+		model.numRemovedPolys += this.models[i].numRemovedPolys;
+		model.numMergedPolys += this.models[i].numMergedPolys;
+		model.usedMemory += this.models[i].usedMemory;
+	}
+};
+
 /////*
 ////================
 ////idCollisionModelManagerLocal::ModelInfo
@@ -3280,61 +3280,61 @@ idCollisionModelManagerLocal.prototype.SetupHash = function ( ): void {
 ////	}
 ////	common.Printf( "%4d KB in %d models\n", (totalMemory>>10), this.numModels );
 ////}
-////
-/////*
-////================
-////idCollisionModelManagerLocal::BuildModels
-////================
-////*/
-////void idCollisionModelManagerLocal::BuildModels( const idMapFile *mapFile ) {
-////	var i:number;
-////	const idMapEntity *mapEnt;
-////
-////	idTimer timer;
-////	timer.Start();
-////
-////	if ( !LoadCollisionModelFile( mapFile.GetName(), mapFile.GetGeometryCRC() ) ) {
-////
-////		if ( !mapFile.GetNumEntities() ) {
-////			return;
-////		}
-////
-////		// load the .proc file bsp for data optimisation
-////		LoadProcBSP( mapFile.GetName() );
-////
-////		// convert brushes and patches to collision data
-////		for ( i = 0; i < mapFile.GetNumEntities(); i++ ) {
-////			mapEnt = mapFile.GetEntity(i);
-////
-////			if ( this.numModels >= MAX_SUBMODELS ) {
-////				common.Error( "idCollisionModelManagerLocal::BuildModels: more than %d collision models", MAX_SUBMODELS );
-////				break;
-////			}
-////			this.models[this.numModels] = CollisionModelForMapEntity( mapEnt );
-////			if ( this.models[ this.numModels] ) {
-////				this.numModels++;
-////			}
-////		}
-////
-////		// free the proc bsp which is only used for data optimization
-////		Mem_Free( procNodes );
-////		procNodes = NULL;
-////
-////		// write the collision models to a file
-////		WriteCollisionModelsToFile( mapFile.GetName(), 0, this.numModels, mapFile.GetGeometryCRC() );
-////	}
-////
-////	timer.Stop();
-////
-////	// print statistics on collision data
-////	cm_model_t model;
-////	AccumulateModelInfo( &model );
-////	common.Printf( "collision data:\n" );
-////	common.Printf( "%6i models\n", this.numModels );
-////	PrintModelInfo( &model );
-////	common.Printf( "%.0f msec to load collision data.\n", timer.Milliseconds() );
-////}
-////
+
+/*
+================
+idCollisionModelManagerLocal::BuildModels
+================
+*/
+idCollisionModelManagerLocal.prototype.BuildModels = function ( mapFile: idMapFile ): void {
+	var i: number;
+	var mapEnt: idMapEntity;
+
+	var timer = new idTimer;
+	timer.Start ( );
+
+	if ( !this.LoadCollisionModelFile( mapFile.GetName ( ), mapFile.GetGeometryCRC ( ) ) ) {
+		todoThrow ( );
+		//if ( !mapFile.GetNumEntities() ) {
+		//	return;
+		//}
+
+		//// load the .proc file bsp for data optimisation
+		//this.LoadProcBSP( mapFile.GetName() );
+
+		//// convert brushes and patches to collision data
+		//for ( i = 0; i < mapFile.GetNumEntities(); i++ ) {
+		//	mapEnt = mapFile.GetEntity(i);
+
+		//	if ( this.numModels >= MAX_SUBMODELS ) {
+		//		common.Error( "idCollisionModelManagerLocal::BuildModels: more than %d collision models", MAX_SUBMODELS );
+		//		break;
+		//	}
+		//	this.models[this.numModels] = CollisionModelForMapEntity( mapEnt );
+		//	if ( this.models[ this.numModels] ) {
+		//		this.numModels++;
+		//	}
+		//}
+
+		//// free the proc bsp which is only used for data optimization
+		//Mem_Free( procNodes );
+		//procNodes = NULL;
+
+		//// write the collision models to a file
+		//this.WriteCollisionModelsToFile( mapFile.GetName(), 0, this.numModels, mapFile.GetGeometryCRC() );
+	}
+
+	timer.Stop ( );
+
+	// print statistics on collision data
+	var model = new cm_model_t;
+	this.AccumulateModelInfo( model );
+	common.Printf( "collision data:\n" );
+	common.Printf( "%6i models\n", this.numModels );
+	this.PrintModelInfo( model );
+	common.Printf( "%.0f msec to load collision data.\n", timer.Milliseconds ( ) );
+};
+
 
 /*
 ================

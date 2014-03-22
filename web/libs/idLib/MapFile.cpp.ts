@@ -893,7 +893,7 @@ class idMapFile {
 	GetFileTime ( ): number { return this.fileTime; }
 	////							// get CRC for the map geometry
 	////							// texture coordinates and entity key/value pairs are not taken into account
-	////	unsigned int			GetGeometryCRC( ) const { return this.geometryCRC; }
+	GetGeometryCRC ( ): number /*unsigned int*/ { return this.geometryCRC; }
 	////							// returns true if the file on disk changed
 	////	bool					NeedsReload();
 	////
