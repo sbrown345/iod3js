@@ -199,8 +199,8 @@ idCollisionModelManagerLocal.prototype.Clear = function ( ): void {
 ////idCollisionModelManagerLocal::RemovePolygonReferences_r
 ////================
 ////*/
-////void idCollisionModelManagerLocal::RemovePolygonReferences_r( cm_node_t *node, cm_polygon_t *p ) {
-////	cm_polygonRef_t *pref;
+////void idCollisionModelManagerLocal::RemovePolygonReferences_r( node: cm_node_t, var p: cm_polygon_t ) {
+////	pref: cm_polygonRef_t;
 ////
 ////	while( node ) {
 ////		for ( pref = node.polygons; pref; pref = pref.next ) {
@@ -232,7 +232,7 @@ idCollisionModelManagerLocal.prototype.Clear = function ( ): void {
 ////idCollisionModelManagerLocal::RemoveBrushReferences_r
 ////================
 ////*/
-////void idCollisionModelManagerLocal::RemoveBrushReferences_r( cm_node_t *node, cm_brush_t *b ) {
+////void idCollisionModelManagerLocal::RemoveBrushReferences_r( node: cm_node_t, cm_brush_t *b ) {
 ////	cm_brushRef_t *bref;
 ////
 ////	while( node ) {
@@ -264,7 +264,7 @@ idCollisionModelManagerLocal.prototype.Clear = function ( ): void {
 ////idCollisionModelManagerLocal::FreeNode
 ////================
 ////*/
-////void idCollisionModelManagerLocal::FreeNode( cm_node_t *node ) {
+////void idCollisionModelManagerLocal::FreeNode( node: cm_node_t ) {
 ////	// don't free the node here
 ////	// the nodes are allocated in blocks which are freed when the model is freed
 ////}
@@ -274,7 +274,7 @@ idCollisionModelManagerLocal.prototype.Clear = function ( ): void {
 ////idCollisionModelManagerLocal::FreePolygonReference
 ////================
 ////*/
-////void idCollisionModelManagerLocal::FreePolygonReference( cm_polygonRef_t *pref ) {
+////void idCollisionModelManagerLocal::FreePolygonReference( pref: cm_polygonRef_t ) {
 ////	// don't free the polygon reference here
 ////	// the polygon references are allocated in blocks which are freed when the model is freed
 ////}
@@ -294,7 +294,7 @@ idCollisionModelManagerLocal.prototype.Clear = function ( ): void {
 ////idCollisionModelManagerLocal::FreePolygon
 ////================
 ////*/
-////void idCollisionModelManagerLocal::FreePolygon( cm_model_t *model, cm_polygon_t *poly ) {
+////void idCollisionModelManagerLocal::FreePolygon( model: cm_model_t, cm_polygon_t *poly ) {
 ////	model.numPolygons--;
 ////	model.polygonMemory -= sizeof( cm_polygon_t ) + ( poly.numEdges - 1 ) * sizeof( poly.edges[0] );
 ////	if ( model.polygonBlock == NULL ) {
@@ -307,7 +307,7 @@ idCollisionModelManagerLocal.prototype.Clear = function ( ): void {
 ////idCollisionModelManagerLocal::FreeBrush
 ////================
 ////*/
-////void idCollisionModelManagerLocal::FreeBrush( cm_model_t *model, cm_brush_t *brush ) {
+////void idCollisionModelManagerLocal::FreeBrush( model: cm_model_t, cm_brush_t *brush ) {
 ////	model.numBrushes--;
 ////	model.brushMemory -= sizeof( cm_brush_t ) + ( brush.numPlanes - 1 ) * sizeof( brush.planes[0] );
 ////	if ( model.brushBlock == NULL ) {
@@ -320,9 +320,9 @@ idCollisionModelManagerLocal.prototype.Clear = function ( ): void {
 ////idCollisionModelManagerLocal::FreeTree_r
 ////================
 ////*/
-////void idCollisionModelManagerLocal::FreeTree_r( cm_model_t *model, cm_node_t *headNode, cm_node_t *node ) {
-////	cm_polygonRef_t *pref;
-////	cm_polygon_t *p;
+////void idCollisionModelManagerLocal::FreeTree_r( model: cm_model_t, cm_node_t *headNode, node: cm_node_t ) {
+////	pref: cm_polygonRef_t;
+////	var p: cm_polygon_t;
 ////	cm_brushRef_t *bref;
 ////	cm_brush_t *b;
 ////
@@ -363,7 +363,7 @@ idCollisionModelManagerLocal.prototype.Clear = function ( ): void {
 ////idCollisionModelManagerLocal::FreeModel
 ////================
 ////*/
-////void idCollisionModelManagerLocal::FreeModel( cm_model_t *model ) {
+////void idCollisionModelManagerLocal::FreeModel( model: cm_model_t ) {
 ////	cm_polygonRefBlock_t *polygonRefBlock, *nextPolygonRefBlock;
 ////	cm_brushRefBlock_t *brushRefBlock, *nextBrushRefBlock;
 ////	cm_nodeBlock_t *nodeBlock, *nextNodeBlock;
@@ -467,9 +467,9 @@ idCollisionModelManagerLocal.prototype.Clear = function ( ): void {
 ////*/
 ////#define SHARP_EDGE_DOT	-0.7f
 ////
-////void idCollisionModelManagerLocal::CalculateEdgeNormals( cm_model_t *model, cm_node_t *node ) {
-////	cm_polygonRef_t *pref;
-////	cm_polygon_t *p;
+////void idCollisionModelManagerLocal::CalculateEdgeNormals( model: cm_model_t, node: cm_node_t ) {
+////	pref: cm_polygonRef_t;
+////	var p: cm_polygon_t;
 ////	cm_edge_t *edge;
 ////	float dot, s;
 ////	int i, edgeNum;
@@ -703,8 +703,8 @@ idCollisionModelManagerLocal.prototype.AllocBrush = function ( model: cm_model_t
 ////idCollisionModelManagerLocal::AddPolygonToNode
 ////================
 ////*/
-////void idCollisionModelManagerLocal::AddPolygonToNode( cm_model_t *model, cm_node_t *node, cm_polygon_t *p ) {
-////	cm_polygonRef_t *pref;
+////void idCollisionModelManagerLocal::AddPolygonToNode( model: cm_model_t, node: cm_node_t, var p: cm_polygon_t ) {
+////	pref: cm_polygonRef_t;
 ////
 ////	pref = this.AllocPolygonReference( model, model.numPolygonRefs < REFERENCE_BLOCK_SIZE_SMALL ? REFERENCE_BLOCK_SIZE_SMALL : REFERENCE_BLOCK_SIZE_LARGE );
 ////	pref.p = p;
@@ -718,7 +718,7 @@ idCollisionModelManagerLocal.prototype.AllocBrush = function ( model: cm_model_t
 ////idCollisionModelManagerLocal::AddBrushToNode
 ////================
 ////*/
-////void idCollisionModelManagerLocal::AddBrushToNode( cm_model_t *model, cm_node_t *node, cm_brush_t *b ) {
+////void idCollisionModelManagerLocal::AddBrushToNode( model: cm_model_t, node: cm_node_t, cm_brush_t *b ) {
 ////	cm_brushRef_t *bref;
 ////
 ////	bref = AllocBrushReference( model, model.numBrushRefs < REFERENCE_BLOCK_SIZE_SMALL ? REFERENCE_BLOCK_SIZE_SMALL : REFERENCE_BLOCK_SIZE_LARGE );
@@ -794,7 +794,7 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////	cm_vertex_t *vertex;
 ////	cm_edge_t *edge;
 ////	cm_polygon_t *poly;
-////	cm_model_t *model;
+////	model: cm_model_t;
 ////	const traceModelVert_t *trmVert;
 ////	const traceModelEdge_t *trmEdge;
 ////	const traceModelPoly_t *trmPoly;
@@ -1104,7 +1104,7 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////idCollisionModelManagerLocal::R_ChopWindingListWithTreeBrushes
 ////============
 ////*/
-////void idCollisionModelManagerLocal::R_ChopWindingListWithTreeBrushes( cm_windingList_t *list, cm_node_t *node ) {
+////void idCollisionModelManagerLocal::R_ChopWindingListWithTreeBrushes( cm_windingList_t *list, node: cm_node_t ) {
 ////	var i:number;
 ////	cm_brushRef_t *bref;
 ////	cm_brush_t *b;
@@ -1238,9 +1238,9 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////  does not allow for a node to have multiple references to the same polygon
 ////=============
 ////*/
-////void idCollisionModelManagerLocal::ReplacePolygons( cm_model_t *model, cm_node_t *node, cm_polygon_t *p1, cm_polygon_t *p2, cm_polygon_t *newp ) {
-////	cm_polygonRef_t *pref, *lastpref, *nextpref;
-////	cm_polygon_t *p;
+////void idCollisionModelManagerLocal::ReplacePolygons( model: cm_model_t, node: cm_node_t, cm_polygon_t *p1, cm_polygon_t *p2, cm_polygon_t *newp ) {
+////	var pref: cm_polygonRef_t, *lastpref, *nextpref;
+////	var p: cm_polygon_t;
 ////	bool linked;
 ////
 ////	while( 1 ) {
@@ -1298,7 +1298,7 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////#define	CONTINUOUS_EPSILON	0.005f
 ////#define NORMAL_EPSILON		0.01f
 ////
-////cm_polygon_t *idCollisionModelManagerLocal::TryMergePolygons( cm_model_t *model, cm_polygon_t *p1, cm_polygon_t *p2 ) {
+////cm_polygon_t *idCollisionModelManagerLocal::TryMergePolygons( model: cm_model_t, cm_polygon_t *p1, cm_polygon_t *p2 ) {
 ////	int i, j, nexti, prevj;
 ////	int p1BeforeShare, p1AfterShare, p2BeforeShare, p2AfterShare;
 ////	int newEdges[CM_MAX_POLYGON_EDGES], newNumEdges;
@@ -1478,10 +1478,10 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////idCollisionModelManagerLocal::MergePolygonWithTreePolygons
 ////=============
 ////*/
-////bool idCollisionModelManagerLocal::MergePolygonWithTreePolygons( cm_model_t *model, cm_node_t *node, cm_polygon_t *polygon ) {
+////bool idCollisionModelManagerLocal::MergePolygonWithTreePolygons( model: cm_model_t, node: cm_node_t, cm_polygon_t *polygon ) {
 ////	var i:number;
-////	cm_polygonRef_t *pref;
-////	cm_polygon_t *p, *newp;
+////	pref: cm_polygonRef_t;
+////	var p: cm_polygon_t, *newp;
 ////
 ////	while( 1 ) {
 ////		for ( pref = node.polygons; pref; pref = pref.next ) {
@@ -1538,9 +1538,9 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////  try to merge any two polygons with the same surface flags and the same contents
 ////=============
 ////*/
-////void idCollisionModelManagerLocal::MergeTreePolygons( cm_model_t *model, cm_node_t *node ) {
-////	cm_polygonRef_t *pref;
-////	cm_polygon_t *p;
+////void idCollisionModelManagerLocal::MergeTreePolygons( model: cm_model_t, node: cm_node_t ) {
+////	pref: cm_polygonRef_t;
+////	var p: cm_polygon_t;
 ////	bool merge;
 ////
 ////	while( 1 ) {
@@ -1596,7 +1596,7 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////idCollisionModelManagerLocal::PointInsidePolygon
 ////=============
 ////*/
-////bool idCollisionModelManagerLocal::PointInsidePolygon( cm_model_t *model, cm_polygon_t *p, idVec3 &v ) {
+////bool idCollisionModelManagerLocal::PointInsidePolygon( model: cm_model_t, var p: cm_polygon_t, idVec3 &v ) {
 ////	int i, edgeNum;
 ////	idVec3 *v1, *v2, dir1, dir2, vec;
 ////	cm_edge_t *edge;
@@ -1622,7 +1622,7 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////idCollisionModelManagerLocal::FindInternalEdgesOnPolygon
 ////=============
 ////*/
-////void idCollisionModelManagerLocal::FindInternalEdgesOnPolygon( cm_model_t *model, cm_polygon_t *p1, cm_polygon_t *p2 ) {
+////void idCollisionModelManagerLocal::FindInternalEdgesOnPolygon( model: cm_model_t, cm_polygon_t *p1, cm_polygon_t *p2 ) {
 ////	int i, j, k, edgeNum;
 ////	cm_edge_t *edge;
 ////	idVec3 *v1, *v2, dir1, dir2;
@@ -1724,9 +1724,9 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////idCollisionModelManagerLocal::FindInternalPolygonEdges
 ////=============
 ////*/
-////void idCollisionModelManagerLocal::FindInternalPolygonEdges( cm_model_t *model, cm_node_t *node, cm_polygon_t *polygon ) {
-////	cm_polygonRef_t *pref;
-////	cm_polygon_t *p;
+////void idCollisionModelManagerLocal::FindInternalPolygonEdges( model: cm_model_t, node: cm_node_t, cm_polygon_t *polygon ) {
+////	pref: cm_polygonRef_t;
+////	var p: cm_polygon_t;
 ////
 ////	if ( polygon.material.GetCullType() == CT_TWO_SIDED || polygon.material.ShouldCreateBackSides() ) {
 ////		return;
@@ -1770,7 +1770,7 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////idCollisionModelManagerLocal::FindContainedEdges
 ////=============
 ////*/
-////void idCollisionModelManagerLocal::FindContainedEdges( cm_model_t *model, cm_polygon_t *p ) {
+////void idCollisionModelManagerLocal::FindContainedEdges( model: cm_model_t, var p: cm_polygon_t ) {
 ////	int i, edgeNum;
 ////	cm_edge_t *edge;
 ////	idFixedWinding w;
@@ -1795,9 +1795,9 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////idCollisionModelManagerLocal::FindInternalEdges
 ////=============
 ////*/
-////void idCollisionModelManagerLocal::FindInternalEdges( cm_model_t *model, cm_node_t *node ) {
-////	cm_polygonRef_t *pref;
-////	cm_polygon_t *p;
+////void idCollisionModelManagerLocal::FindInternalEdges( model: cm_model_t, node: cm_node_t ) {
+////	pref: cm_polygonRef_t;
+////	var p: cm_polygon_t;
 ////
 ////	while( 1 ) {
 ////		for ( pref = node.polygons; pref; pref = pref.next ) {
@@ -1834,11 +1834,11 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////CM_FindSplitter
 ////================
 ////*/
-////static int CM_FindSplitter( const cm_node_t *node, const idBounds &bounds, int *planeType, float *planeDist ) {
+////static int CM_FindSplitter( const node: cm_node_t, const idBounds &bounds, int *planeType, float *planeDist ) {
 ////	int i, j, type, axis[3], polyCount;
 ////	float dist, t, bestt, size[3];
 ////	cm_brushRef_t *bref;
-////	cm_polygonRef_t *pref;
+////	pref: cm_polygonRef_t;
 ////	const cm_node_t *n;
 ////	bool forceSplit = false;
 ////
@@ -1938,7 +1938,7 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////CM_R_InsideAllChildren
 ////================
 ////*/
-////static int CM_R_InsideAllChildren( cm_node_t *node, const idBounds &bounds ) {
+////static int CM_R_InsideAllChildren( node: cm_node_t, const idBounds &bounds ) {
 ////	assert(node != NULL);
 ////	if ( node.planeType != -1 ) {
 ////		if ( bounds[0][node.planeType] >= node.planeDist ) {
@@ -1956,44 +1956,41 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////	}
 ////	return true;
 ////}
-////
-/////*
-////================
-////idCollisionModelManagerLocal::R_FilterPolygonIntoTree
-////================
-////*/
-////void idCollisionModelManagerLocal::R_FilterPolygonIntoTree( cm_model_t *model, cm_node_t *node, cm_polygonRef_t *pref, cm_polygon_t *p ) {
-////	assert(node != NULL);
-////	while ( node.planeType != -1 ) {
-////		if ( CM_R_InsideAllChildren( node, p.bounds ) ) {
-////			break;
-////		}
-////		if ( p.bounds[0][node.planeType] >= node.planeDist ) {
-////			node = node.children[0];
-////		}
-////		else if ( p.bounds[1][node.planeType] <= node.planeDist ) {
-////			node = node.children[1];
-////		}
-////		else {
-////			R_FilterPolygonIntoTree( model, node.children[1], NULL, p );
-////			node = node.children[0];
-////		}
-////	}
-////	if ( pref ) {
-////		pref.next = node.polygons;
-////		node.polygons = pref;
-////	}
-////	else {
-////		AddPolygonToNode( model, node, p );
-////	}
-////}
+
+/*
+================
+idCollisionModelManagerLocal::R_FilterPolygonIntoTree
+================
+*/
+idCollisionModelManagerLocal.prototype.R_FilterPolygonIntoTree = function ( model: cm_model_t, node: cm_node_t, pref: cm_polygonRef_t, p: cm_polygon_t ): void {
+	assert( node != null );
+	while ( node.planeType != -1 ) {
+		if ( this.CM_R_InsideAllChildren( node, p.bounds ) ) {
+			break;
+		}
+		if ( p.bounds[0][node.planeType] >= node.planeDist ) {
+			node = node.children[0];
+		} else if ( p.bounds[1][node.planeType] <= node.planeDist ) {
+			node = node.children[1];
+		} else {
+			this.R_FilterPolygonIntoTree( model, node.children[1], null, p );
+			node = node.children[0];
+		}
+	}
+	if ( pref ) {
+		pref.next = node.polygons;
+		node.polygons = pref;
+	} else {
+		this.AddPolygonToNode( model, node, p );
+	}
+};
 ////
 /////*
 ////================
 ////idCollisionModelManagerLocal::R_FilterBrushIntoTree
 ////================
 ////*/
-////void idCollisionModelManagerLocal::R_FilterBrushIntoTree( cm_model_t *model, cm_node_t *node, cm_brushRef_t *pref, cm_brush_t *b ) {
+////void idCollisionModelManagerLocal::R_FilterBrushIntoTree( model: cm_model_t, node: cm_node_t, cm_brushRef_t *pref, cm_brush_t *b ) {
 ////	assert(node != NULL);
 ////	while ( node.planeType != -1 ) {
 ////		if ( CM_R_InsideAllChildren( node, b.bounds ) ) {
@@ -2027,10 +2024,10 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////  the brush or polygon is inside all children
 ////================
 ////*/
-////cm_node_t *idCollisionModelManagerLocal::R_CreateAxialBSPTree( cm_model_t *model, cm_node_t *node, const idBounds &bounds ) {
+////cm_node_t *idCollisionModelManagerLocal::R_CreateAxialBSPTree( model: cm_model_t, node: cm_node_t, const idBounds &bounds ) {
 ////	int planeType;
 ////	float planeDist;
-////	cm_polygonRef_t *pref, *nextpref, *prevpref;
+////	var pref: cm_polygonRef_t, *nextpref, *prevpref;
 ////	cm_brushRef_t *bref, *nextbref, *prevbref;
 ////	cm_node_t *frontNode, *backNode, *n;
 ////	idBounds frontBounds, backBounds;
@@ -2110,16 +2107,16 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////int cm_numSavedPolygonLinks;
 ////int cm_numSavedBrushLinks;
 ////
-////int CM_R_CountChildren( cm_node_t *node ) {
+////int CM_R_CountChildren( node: cm_node_t ) {
 ////	if ( node.planeType == -1 ) {
 ////		return 0;
 ////	}
 ////	return 2 + CM_R_CountChildren(node.children[0]) + CM_R_CountChildren(node.children[1]);
 ////}
 ////
-////void CM_R_TestOptimisation( cm_node_t *node ) {
+////void CM_R_TestOptimisation( node: cm_node_t ) {
 ////	int polyCount, brushCount, numChildren;
-////	cm_polygonRef_t *pref;
+////	pref: cm_polygonRef_t;
 ////	cm_brushRef_t *bref;
 ////
 ////	if ( node.planeType == -1 ) {
@@ -2148,8 +2145,8 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////idCollisionModelManagerLocal::CreateAxialBSPTree
 ////================
 ////*/
-////cm_node_t *idCollisionModelManagerLocal::CreateAxialBSPTree( cm_model_t *model, cm_node_t *node ) {
-////	cm_polygonRef_t *pref;
+////cm_node_t *idCollisionModelManagerLocal::CreateAxialBSPTree( model: cm_model_t, node: cm_node_t ) {
+////	pref: cm_polygonRef_t;
 ////	cm_brushRef_t *bref;
 ////	idBounds bounds;
 ////
@@ -2276,7 +2273,7 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////idCollisionModelManagerLocal::GetVertex
 ////================
 ////*/
-////int idCollisionModelManagerLocal::GetVertex( cm_model_t *model, const idVec3 &v, int *vertexNum ) {
+////int idCollisionModelManagerLocal::GetVertex( model: cm_model_t, const idVec3 &v, int *vertexNum ) {
 ////	int i, hashKey, vn;
 ////	idVec3 vert, *p;
 ////	
@@ -2328,7 +2325,7 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////idCollisionModelManagerLocal::GetEdge
 ////================
 ////*/
-////int idCollisionModelManagerLocal::GetEdge( cm_model_t *model, const idVec3 &v1, const idVec3 &v2, int *edgeNum, int v1num ) {
+////int idCollisionModelManagerLocal::GetEdge( model: cm_model_t, const idVec3 &v1, const idVec3 &v2, int *edgeNum, int v1num ) {
 ////	int v2num, hashKey, e;
 ////	int found, *vertexNum;
 ////
@@ -2416,11 +2413,11 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////idCollisionModelManagerLocal::CreatePolygon
 ////================
 ////*/
-////void idCollisionModelManagerLocal::CreatePolygon( cm_model_t *model, idFixedWinding *w, const idPlane &plane, const idMaterial *material, int primitiveNum ) {
+////void idCollisionModelManagerLocal::CreatePolygon( model: cm_model_t, idFixedWinding *w, const idPlane &plane, const idMaterial *material, int primitiveNum ) {
 ////	int i, j, edgeNum, v1num;
 ////	int numPolyEdges, polyEdges[MAX_POINTS_ON_WINDING];
 ////	idBounds bounds;
-////	cm_polygon_t *p;
+////	p: cm_polygon_t ;
 ////
 ////	// turn the winding into a sequence of edges
 ////	numPolyEdges = 0;
@@ -2478,7 +2475,7 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////  NOTE: for patches primitiveNum < 0 and abs(primitiveNum) is the real number
 ////================
 ////*/
-////void idCollisionModelManagerLocal::PolygonFromWinding( cm_model_t *model, idFixedWinding *w, const idPlane &plane, const idMaterial *material, int primitiveNum ) {
+////void idCollisionModelManagerLocal::PolygonFromWinding( model: cm_model_t, idFixedWinding *w, const idPlane &plane, const idMaterial *material, int primitiveNum ) {
 ////	int contents;
 ////
 ////	contents = material.GetContentFlags();
@@ -2519,7 +2516,7 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////idCollisionModelManagerLocal::CreatePatchPolygons
 ////=================
 ////*/
-////void idCollisionModelManagerLocal::CreatePatchPolygons( cm_model_t *model, idSurface_Patch &mesh, const idMaterial *material, int primitiveNum ) {
+////void idCollisionModelManagerLocal::CreatePatchPolygons( model: cm_model_t, idSurface_Patch &mesh, const idMaterial *material, int primitiveNum ) {
 ////	int i, j;
 ////	float dot;
 ////	int v1, v2, v3, v4;
@@ -2614,7 +2611,7 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////idCollisionModelManagerLocal::ConverPatch
 ////=================
 ////*/
-////void idCollisionModelManagerLocal::ConvertPatch( cm_model_t *model, const idMapPatch *patch, int primitiveNum ) {
+////void idCollisionModelManagerLocal::ConvertPatch( model: cm_model_t, const idMapPatch *patch, int primitiveNum ) {
 ////	const idMaterial *material;
 ////	idSurface_Patch *cp;
 ////
@@ -2644,7 +2641,7 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////idCollisionModelManagerLocal::ConvertBrushSides
 ////================
 ////*/
-////void idCollisionModelManagerLocal::ConvertBrushSides( cm_model_t *model, const idMapBrush *mapBrush, int primitiveNum ) {
+////void idCollisionModelManagerLocal::ConvertBrushSides( model: cm_model_t, const idMapBrush *mapBrush, int primitiveNum ) {
 ////	int i, j;
 ////	idMapBrushSide *mapSide;
 ////	idFixedWinding w;
@@ -2684,7 +2681,7 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////idCollisionModelManagerLocal::ConvertBrush
 ////================
 ////*/
-////void idCollisionModelManagerLocal::ConvertBrush( cm_model_t *model, const idMapBrush *mapBrush, int primitiveNum ) {
+////void idCollisionModelManagerLocal::ConvertBrush( model: cm_model_t, const idMapBrush *mapBrush, int primitiveNum ) {
 ////	int i, j, contents;
 ////	idBounds bounds;
 ////	idMapBrushSide *mapSide;
@@ -2743,7 +2740,7 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////CM_CountNodeBrushes
 ////================
 ////*/
-////static int CM_CountNodeBrushes( const cm_node_t *node ) {
+////static int CM_CountNodeBrushes( const node: cm_node_t ) {
 ////	int count;
 ////	cm_brushRef_t *bref;
 ////
@@ -2759,8 +2756,8 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////CM_R_GetModelBounds
 ////================
 ////*/
-////static void CM_R_GetNodeBounds( idBounds *bounds, cm_node_t *node ) {
-////	cm_polygonRef_t *pref;
+////static void CM_R_GetNodeBounds( idBounds *bounds, node: cm_node_t ) {
+////	pref: cm_polygonRef_t;
 ////	cm_brushRef_t *bref;
 ////
 ////	while ( 1 ) {
@@ -2785,7 +2782,7 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////CM_GetNodeBounds
 ////================
 ////*/
-////void CM_GetNodeBounds( idBounds *bounds, cm_node_t *node ) {
+////void CM_GetNodeBounds( idBounds *bounds, node: cm_node_t ) {
 ////	bounds.Clear();
 ////	CM_R_GetNodeBounds( bounds, node );
 ////	if ( bounds.IsCleared() ) {
@@ -2798,9 +2795,9 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////CM_GetNodeContents
 ////================
 ////*/
-////int CM_GetNodeContents( cm_node_t *node ) {
+////int CM_GetNodeContents( node: cm_node_t ) {
 ////	int contents;
-////	cm_polygonRef_t *pref;
+////	pref: cm_polygonRef_t;
 ////	cm_brushRef_t *bref;
 ////
 ////	contents = 0;
@@ -2825,9 +2822,9 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////idCollisionModelManagerLocal::RemapEdges
 ////==================
 ////*/
-////void idCollisionModelManagerLocal::RemapEdges( cm_node_t *node, int *edgeRemap ) {
-////	cm_polygonRef_t *pref;
-////	cm_polygon_t *p;
+////void idCollisionModelManagerLocal::RemapEdges( node: cm_node_t, int *edgeRemap ) {
+////	pref: cm_polygonRef_t;
+////	var p: cm_polygon_t;
 ////	var i:number;
 ////
 ////	while ( 1 ) {
@@ -2864,7 +2861,7 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////  can have a lot of unused entries.
 ////==================
 ////*/
-////void idCollisionModelManagerLocal::OptimizeArrays( cm_model_t *model ) {
+////void idCollisionModelManagerLocal::OptimizeArrays( model: cm_model_t ) {
 ////	int i, newNumVertices, newNumEdges, *v;
 ////	int *remap;
 ////	cm_edge_t *oldEdges;
@@ -2932,7 +2929,7 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////idCollisionModelManagerLocal::FinishModel
 ////================
 ////*/
-////void idCollisionModelManagerLocal::FinishModel( cm_model_t *model ) {
+////void idCollisionModelManagerLocal::FinishModel( model: cm_model_t ) {
 ////	// try to merge polygons
 ////	this.checkCount++;
 ////	MergeTreePolygons( model, model.node );
@@ -2972,8 +2969,8 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////	idRenderModel *renderModel;
 ////	const modelSurface_t *surf;
 ////	idFixedWinding w;
-////	cm_node_t *node;
-////	cm_model_t *model;
+////	node: cm_node_t;
+////	model: cm_model_t;
 ////	idPlane plane;
 ////	idBounds bounds;
 ////	bool collisionSurface;
@@ -3081,7 +3078,7 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////================
 ////*/
 ////cm_model_t *idCollisionModelManagerLocal::CollisionModelForMapEntity( const idMapEntity *mapEnt ) {
-////	cm_model_t *model;
+////	model: cm_model_t;
 ////	idBounds bounds;
 ////	const char *name;
 ////	int i, brushCount;
@@ -3197,7 +3194,7 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////idCollisionModelManagerLocal::PrintModelInfo
 ////==================
 ////*/
-////void idCollisionModelManagerLocal::PrintModelInfo( const cm_model_t *model ) {
+////void idCollisionModelManagerLocal::PrintModelInfo( const model: cm_model_t ) {
 ////	common.Printf( "%6i vertices (%i KB)\n", model.numVertices, (model.numVertices * sizeof(cm_vertex_t))>>10 );
 ////	common.Printf( "%6i edges (%i KB)\n", model.numEdges, (model.numEdges * sizeof(cm_edge_t))>>10 );
 ////	common.Printf( "%6i polygons (%i KB)\n", model.numPolygons, model.polygonMemory>>10 );
@@ -3546,9 +3543,9 @@ idCollisionModelManagerLocal.prototype.LoadMap = function ( mapFile: idMapFile )
 ////idCollisionModelManagerLocal::TrmFromModel_r
 ////==================
 ////*/
-////bool idCollisionModelManagerLocal::TrmFromModel_r( idTraceModel &trm, cm_node_t *node ) {
-////	cm_polygonRef_t *pref;
-////	cm_polygon_t *p;
+////bool idCollisionModelManagerLocal::TrmFromModel_r( idTraceModel &trm, node: cm_node_t ) {
+////	pref: cm_polygonRef_t;
+////	var p: cm_polygon_t;
 ////	var i:number;
 ////
 ////	while ( 1 ) {
@@ -3593,7 +3590,7 @@ idCollisionModelManagerLocal.prototype.LoadMap = function ( mapFile: idMapFile )
 ////  NOTE: polygon merging can merge colinear edges and as such might cause dangling edges.
 ////==================
 ////*/
-////bool idCollisionModelManagerLocal::TrmFromModel( const cm_model_t *model, idTraceModel &trm ) {
+////bool idCollisionModelManagerLocal::TrmFromModel( const model: cm_model_t, idTraceModel &trm ) {
 ////	int i, j, numEdgeUsers[MAX_TRACEMODEL_EDGES+1];
 ////
 ////	// if the model has too many vertices to fit in a trace model

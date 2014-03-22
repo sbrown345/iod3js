@@ -93,34 +93,34 @@ var cm_drawInternal = new idCVar ( 		"cm_drawInternal",		"1",		CVAR_GAME | CVAR_
 var cm_drawNormals = new idCVar ( 		"cm_drawNormals",		"0",		CVAR_GAME | CVAR_BOOL,	"draw polygon and edge normals" );
 var cm_backFaceCull = new idCVar ( 		"cm_backFaceCull",		"0",		CVAR_GAME | CVAR_BOOL,	"cull back facing polygons" );
 var cm_debugCollision = new idCVar ( 	"cm_debugCollision",	"0",		CVAR_GAME | CVAR_BOOL,	"debug the collision detection" );
-////
-////static idVec4 cm_color;
-////
-/////*
-////================
-////idCollisionModelManagerLocal::ContentsFromString
-////================
-////*/
-////int idCollisionModelManagerLocal::ContentsFromString( const char *string ) const {
-////	int i, contents = 0;
-////	idLexer src( string, idStr::Length( string ), "ContentsFromString" );
-////	idToken token;
-////
-////	while( src.ReadToken( &token ) ) {
-////		if ( token == "," ) {
-////			continue;
-////		}
-////		for ( i = 1; cm_contentsNameByIndex[i] != NULL; i++ ) {
-////			if ( token.Icmp( cm_contentsNameByIndex[i] ) == 0 ) {
-////				contents |= cm_contentsFlagByIndex[i];
-////				break;
-////			}
-////		}
-////	}
-////
-////	return contents;
-////}
-////
+
+//static idVec4 cm_color;
+
+/*
+================
+idCollisionModelManagerLocal::ContentsFromString
+================
+*/
+idCollisionModelManagerLocal.prototype.ContentsFromString = function ( $string: string ): number {
+	var /*int */i: number, contents = 0;
+	var src = new idLexer( $string, idStr.Length( $string ), "ContentsFromString" );
+	var token = new idToken;
+
+	while ( src.ReadToken( token ) ) {
+		if ( token.data == "," ) {
+			continue;
+		}
+		for ( i = 1; cm_contentsNameByIndex[i] != null; i++ ) {
+			if ( token.Icmp( cm_contentsNameByIndex[i] ) == 0 ) {
+				contents |= cm_contentsFlagByIndex[i];
+				break;
+			}
+		}
+	}
+
+	return contents;
+};
+
 /////*
 ////================
 ////idCollisionModelManagerLocal::StringFromContents

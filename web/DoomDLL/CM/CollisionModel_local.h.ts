@@ -409,7 +409,7 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 ////	void			TranslateTrmVertexThroughPolygon( cm_traceWork_t *tw, cm_polygon_t *poly, cm_trmVertex_t *v, int bitNum );
 ////	void			TranslatePointThroughPolygon( cm_traceWork_t *tw, cm_polygon_t *poly, cm_trmVertex_t *v );
 ////	void			TranslateVertexThroughTrmPolygon( cm_traceWork_t *tw, cm_trmPolygon_t *trmpoly, cm_polygon_t *poly, cm_vertex_t *v, idVec3 &endp, idPluecker &pl );
-////	bool			TranslateTrmThroughPolygon( cm_traceWork_t *tw, cm_polygon_t *p );
+////	bool			TranslateTrmThroughPolygon( cm_traceWork_t *tw, p: cm_polygon_t );
 ////	void			SetupTranslationHeartPlanes( cm_traceWork_t *tw );
 ////	void			SetupTrm( cm_traceWork_t *tw, const idTraceModel *trm );
 ////
@@ -434,7 +434,7 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 ////	void			RotateTrmVertexThroughPolygon( cm_traceWork_t *tw, cm_polygon_t *poly, cm_trmVertex_t *v, int vertexNum);
 ////	void			RotateVertexThroughTrmPolygon( cm_traceWork_t *tw, cm_trmPolygon_t *trmpoly, cm_polygon_t *poly,
 ////											cm_vertex_t *v, idVec3 &rotationOrigin );
-////	bool			RotateTrmThroughPolygon( cm_traceWork_t *tw, cm_polygon_t *p );
+////	bool			RotateTrmThroughPolygon( cm_traceWork_t *tw, p: cm_polygon_t );
 ////	void			BoundsForRotation( const idVec3 &origin, const idVec3 &axis, start:idVec3, const idVec3 &end, idBounds &bounds );
 ////	void			Rotation180( trace_t *results, const idVec3 &rorg, const idVec3 &axis,
 ////									const float startAngle, const float endAngle, start:idVec3,
@@ -443,7 +443,7 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 ////
 ////private:			// CollisionMap_contents.cpp
 ////	bool			TestTrmVertsInBrush( cm_traceWork_t *tw, cm_brush_t *b );
-////	bool			TestTrmInPolygon( cm_traceWork_t *tw, cm_polygon_t *p );
+////	bool			TestTrmInPolygon( cm_traceWork_t *tw, p: cm_polygon_t );
 ////	cm_node_t *		PointNode( const idVec3 &p, model: cm_model_t );
 ////	int				PointContents( const idVec3 p, cmHandle_t model );
 ////	int				TransformedPointContents( const idVec3 &p, cmHandle_t model, const idVec3 &origin, const idMat3 &modelAxis );
@@ -452,8 +452,8 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 ////									cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis );
 ////
 ////private:			// CollisionMap_trace.cpp
-////	void			TraceTrmThroughNode( cm_traceWork_t *tw, cm_node_t *node );
-////	void			TraceThroughAxialBSPTree_r( cm_traceWork_t *tw, cm_node_t *node, float p1f, float p2f, idVec3 &p1, idVec3 &p2);
+////	void			TraceTrmThroughNode( cm_traceWork_t *tw, node: cm_node_t );
+////	void			TraceThroughAxialBSPTree_r( cm_traceWork_t *tw, node: cm_node_t, float p1f, float p2f, idVec3 &p1, idVec3 &p2);
 ////	void			TraceThroughModel( cm_traceWork_t *tw );
 ////	void			RecurseProcBSP_r( trace_t *results, int parentNodeNum, int nodeNum, float p1f, float p2f, const idVec3 &p1, const idVec3 &p2 );
 ////
@@ -461,26 +461,26 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 	Clear ( ): void { throw "placeholder"; }
 	FreeTrmModelStructure ( ): void { throw "placeholder"; }
 ////					// model deallocation
-////	void			RemovePolygonReferences_r( cm_node_t *node, cm_polygon_t *p );
-////	void			RemoveBrushReferences_r( cm_node_t *node, cm_brush_t *b );
-////	void			FreeNode( cm_node_t *node );
-////	void			FreePolygonReference( cm_polygonRef_t *pref );
+////	void			RemovePolygonReferences_r( node: cm_node_t, p: cm_polygon_t );
+////	void			RemoveBrushReferences_r( node: cm_node_t, cm_brush_t *b );
+////	void			FreeNode( node: cm_node_t );
+////	void			FreePolygonReference( pref: cm_polygonRef_t );
 ////	void			FreeBrushReference( cm_brushRef_t *bref );
 ////	void			FreePolygon( model: cm_model_t, cm_polygon_t *poly );
 ////	void			FreeBrush( model: cm_model_t, cm_brush_t *brush );
-////	void			FreeTree_r( model: cm_model_t, cm_node_t *headNode, cm_node_t *node );
+////	void			FreeTree_r( model: cm_model_t, cm_node_t *headNode, node: cm_node_t );
 ////	void			FreeModel( model: cm_model_t );
 ////					// merging polygons
-////	void			ReplacePolygons( model: cm_model_t, cm_node_t *node, cm_polygon_t *p1, cm_polygon_t *p2, cm_polygon_t *newp );
+////	void			ReplacePolygons( model: cm_model_t, node: cm_node_t, cm_polygon_t *p1, cm_polygon_t *p2, cm_polygon_t *newp );
 ////	cm_polygon_t *	TryMergePolygons( model: cm_model_t, cm_polygon_t *p1, cm_polygon_t *p2 );
-////	bool			MergePolygonWithTreePolygons( model: cm_model_t, cm_node_t *node, cm_polygon_t *polygon );
-////	void			MergeTreePolygons( model: cm_model_t, cm_node_t *node );
+////	bool			MergePolygonWithTreePolygons( model: cm_model_t, node: cm_node_t, cm_polygon_t *polygon );
+////	void			MergeTreePolygons( model: cm_model_t, node: cm_node_t );
 ////					// finding internal edges
-////	bool			PointInsidePolygon( model: cm_model_t, cm_polygon_t *p, idVec3 &v );
+////	bool			PointInsidePolygon( model: cm_model_t, p: cm_polygon_t, idVec3 &v );
 ////	void			FindInternalEdgesOnPolygon( model: cm_model_t, cm_polygon_t *p1, cm_polygon_t *p2 );
-////	void			FindInternalPolygonEdges( model: cm_model_t, cm_node_t *node, cm_polygon_t *polygon );
-////	void			FindInternalEdges( model: cm_model_t, cm_node_t *node );
-////	void			FindContainedEdges( model: cm_model_t, cm_polygon_t *p );
+////	void			FindInternalPolygonEdges( model: cm_model_t, node: cm_node_t, cm_polygon_t *polygon );
+////	void			FindInternalEdges( model: cm_model_t, node: cm_node_t );
+////	void			FindContainedEdges( model: cm_model_t, p: cm_polygon_t );
 ////					// loading of proc BSP tree
 ////	void			ParseProcNodes( idLexer *src );
 ////	void			LoadProcBSP( const char *name );
@@ -488,7 +488,7 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 ////	int				R_ChoppedAwayByProcBSP( int nodeNum, idFixedWinding *w, const idVec3 &normal, const idVec3 &origin, const float radius );
 ////	int				ChoppedAwayByProcBSP( const idFixedWinding &w, const idPlane &plane, int contents );
 ////	void			ChopWindingListWithBrush( cm_windingList_t *list, cm_brush_t *b );
-////	void			R_ChopWindingListWithTreeBrushes( cm_windingList_t *list, cm_node_t *node );
+////	void			R_ChopWindingListWithTreeBrushes( cm_windingList_t *list, node: cm_node_t );
 ////	idFixedWinding *WindingOutsideBrushes( idFixedWinding *w, const idPlane &plane, int contents, int patch, cm_node_t *headNode );
 ////					// creation of axial BSP tree
 	AllocModel ( ): cm_model_t { throw "placeholder"; }
@@ -497,13 +497,13 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 	AllocBrushReference(model: cm_model_t, /*int*/ blockSize:number): cm_brushRef_t {throw "placeholder";}
 	AllocPolygon(model: cm_model_t, /*int */numEdges:number): cm_polygon_t {throw "placeholder";}
 	AllocBrush(model: cm_model_t, /*int */numPlanes:number): cm_brush_t {throw "placeholder";}
-////	void			AddPolygonToNode( model: cm_model_t, cm_node_t *node, cm_polygon_t *p );
-////	void			AddBrushToNode( model: cm_model_t, cm_node_t *node, cm_brush_t *b );
+////	void			AddPolygonToNode( model: cm_model_t, node: cm_node_t, p: cm_polygon_t );
+////	void			AddBrushToNode( model: cm_model_t, node: cm_node_t, cm_brush_t *b );
 	SetupTrmModelStructure(): void { throw "placeholder"; }
-	R_FilterPolygonIntoTree( model: cm_model_t, cm_node_t *node, cm_polygonRef_t *pref, cm_polygon_t *p ):void;
-////	void			R_FilterBrushIntoTree( model: cm_model_t, cm_node_t *node, cm_brushRef_t *pref, cm_brush_t *b );
-////	cm_node_t *		R_CreateAxialBSPTree( model: cm_model_t, cm_node_t *node, const idBounds &bounds );
-////	cm_node_t *		CreateAxialBSPTree( model: cm_model_t, cm_node_t *node );
+	R_FilterPolygonIntoTree( model: cm_model_t, node: cm_node_t, pref: cm_polygonRef_t, p: cm_polygon_t ):void { throw "placeholder"; }
+////	void			R_FilterBrushIntoTree( model: cm_model_t, node: cm_node_t, cm_brushRef_t *pref, cm_brush_t *b );
+////	cm_node_t *		R_CreateAxialBSPTree( model: cm_model_t, node: cm_node_t, const idBounds &bounds );
+////	cm_node_t *		CreateAxialBSPTree( model: cm_model_t, node: cm_node_t );
 ////					// creation of raw polygons
 	SetupHash( ):void { throw "placeholder"; }
 	ShutdownHash( ):void { throw "placeholder"; }
@@ -513,30 +513,30 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 ////	int				GetEdge( model: cm_model_t, const idVec3 &v1, const idVec3 &v2, int *edgeNum, int v1num );
 ////	void			CreatePolygon( model: cm_model_t, idFixedWinding *w, const idPlane &plane, const idMaterial *material, int primitiveNum );
 ////	void			PolygonFromWinding( model: cm_model_t, idFixedWinding *w, const idPlane &plane, const idMaterial *material, int primitiveNum );
-////	void			CalculateEdgeNormals( model: cm_model_t, cm_node_t *node );
+////	void			CalculateEdgeNormals( model: cm_model_t, node: cm_node_t );
 ////	void			CreatePatchPolygons( model: cm_model_t, idSurface_Patch &mesh, const idMaterial *material, int primitiveNum );
 ////	void			ConvertPatch( model: cm_model_t, const idMapPatch *patch, int primitiveNum );
 ////	void			ConvertBrushSides( model: cm_model_t, const idMapBrush *mapBrush, int primitiveNum );
 ////	void			ConvertBrush( model: cm_model_t, const idMapBrush *mapBrush, int primitiveNum );
 ////	void			PrintModelInfo( const model: cm_model_t );
 	AccumulateModelInfo ( model: cm_model_t ): void { throw "placeholder"; }
-////	void			RemapEdges( cm_node_t *node, int *edgeRemap );
+////	void			RemapEdges( node: cm_node_t, int *edgeRemap );
 ////	void			OptimizeArrays( model: cm_model_t );
 ////	void			FinishModel( model: cm_model_t );
 	BuildModels ( mapFile: idMapFile ): void { throw "placeholder"; }
 ////	cmHandle_t		FindModel( name:string );
 ////	cm_model_t *	CollisionModelForMapEntity( const idMapEntity *mapEnt );	// brush/patch model from .map
 ////	cm_model_t *	LoadRenderModel( const char *fileName );					// ASE/LWO models
-////	bool			TrmFromModel_r( idTraceModel &trm, cm_node_t *node );
+////	bool			TrmFromModel_r( idTraceModel &trm, node: cm_node_t );
 ////	bool			TrmFromModel( const model: cm_model_t, idTraceModel &trm );
 ////
 ////private:			// CollisionMap_files.cpp
 ////					// writing
-////	void			WriteNodes( idFile *fp, cm_node_t *node );
-////	int				CountPolygonMemory( cm_node_t *node ) const;
-////	void			WritePolygons( idFile *fp, cm_node_t *node );
-////	int				CountBrushMemory( cm_node_t *node ) const;
-////	void			WriteBrushes( idFile *fp, cm_node_t *node );
+////	void			WriteNodes( idFile *fp, node: cm_node_t );
+////	int				CountPolygonMemory( node: cm_node_t ) const;
+////	void			WritePolygons( idFile *fp, node: cm_node_t );
+////	int				CountBrushMemory( node: cm_node_t ) const;
+////	void			WriteBrushes( idFile *fp, node: cm_node_t );
 ////	void			WriteCollisionModel( idFile *fp, model: cm_model_t );
 ////	void			WriteCollisionModelsToFile( const char *filename, int firstModel, int lastModel, unsigned int mapFileCRC );
 ////					// loading
@@ -549,12 +549,12 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 	LoadCollisionModelFile ( name: string, /*unsigned int */mapFileCRC: number ): boolean { throw "placeholder"; }
 ////
 ////private:			// CollisionMap_debug
-////	int				ContentsFromString( const char *string ) const;
+	ContentsFromString ( $string: string ): number /*int*/ { throw "placeholder"; }
 ////	const char *	StringFromContents( const int contents ) const;
 ////	void			DrawEdge( model: cm_model_t, int edgeNum, const idVec3 &origin, const idMat3 &axis );
-////	void			DrawPolygon( model: cm_model_t, cm_polygon_t *p, const idVec3 &origin, const idMat3 &axis,
+////	void			DrawPolygon( model: cm_model_t, p: cm_polygon_t, const idVec3 &origin, const idMat3 &axis,
 ////								const idVec3 &viewOrigin );
-////	void			DrawNodePolygons( model: cm_model_t, cm_node_t *node, const idVec3 &origin, const idMat3 &axis,
+////	void			DrawNodePolygons( model: cm_model_t, node: cm_node_t, const idVec3 &origin, const idMat3 &axis,
 ////								const idVec3 &viewOrigin, const float radius );
 ////
 ////private:			// collision map data

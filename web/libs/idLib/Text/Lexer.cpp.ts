@@ -1782,6 +1782,7 @@ FreeSource( ):void {
 	constructor ( filename: string )
 	constructor ( filename: string, /*int */flags: number )
 	constructor ( filename: string, /*int */flags: number, OSPath: boolean )
+	constructor ( /*const char **/ptr: string, /*int */length: number, name: string )
 	constructor ( /*const char **/ptr: string, /*int */length: number, name: string, /*int*/ flags: number )
 	constructor ( a1?: any, a2?: any, a3?: any, a4?: any ) {
 		if ( arguments.length == 0 ) {
@@ -1814,7 +1815,7 @@ FreeSource( ):void {
 			this.next = null;
 			this.hadError = false;
 		} else if ( typeof a1 === "string" && ( arguments.length == 1 || arguments.length == 2 || arguments.length == 3 ) ) {
-			var filename = a1, flags = a2, OSPath = a3 || false;
+			var filename = a1, flags = a2 || 0, OSPath = a3 || false;
 			this.loaded = 0;
 			this.flags = flags;
 			this.SetPunctuations( null );
@@ -1823,8 +1824,8 @@ FreeSource( ):void {
 			this.next = null;
 			this.hadError = false;
 			this.LoadFile( filename, OSPath );
-		} else if ( arguments.length == 4 ) {
-			var ptr = a1, length: number = a2, name: string = a3, flags = a4;
+		} else if ( typeof a3 === "string" && ( arguments.length == 3 || arguments.length == 4 ) ) {
+			var ptr = a1, length: number = a2, name: string = a3, flags = a4 || 0;
 			this.loaded = 0;
 			this.flags = flags;
 			this.SetPunctuations( null );

@@ -392,88 +392,88 @@ idCollisionModelManagerLocal.prototype.ParseNodes = function ( src: idLexer, mod
 idCollisionModelManagerLocal::ParsePolygons
 ================
 */
-idCollisionModelManagerLocal.prototype.ParsePolygons = function (src: idLexer, model: cm_model_t): void {
+idCollisionModelManagerLocal.prototype.ParsePolygons = function ( src: idLexer, model: cm_model_t ): void {
 	var p: cm_polygon_t;
-	var/*int */i: number, numEdges: number;
-	var normal = new idVec3 ;
+	var /*int */i: number, numEdges: number;
+	var normal = new idVec3;
 	var token = new idToken;
 
 	if ( src.CheckTokenType( TT_NUMBER, 0, token ) ) {
-		model.polygonBlock = (cm_polygonBlock_t *) Mem_Alloc( sizeof( cm_polygonBlock_t ) + token.GetIntValue() );
-		model.polygonBlock.bytesRemaining = token.GetIntValue();
-		model.polygonBlock.next = ( (byte *) model.polygonBlock ) + sizeof( cm_polygonBlock_t );
+		model.polygonBlock = new cm_polygonBlock_t; // (cm_polygonBlock_t *) Mem_Alloc( sizeof( cm_polygonBlock_t ) + token.GetIntValue() );
+		model.polygonBlock.bytesRemaining = token.GetIntValue ( );
+		model.polygonBlock.next = new Uint8Array( token.GetIntValue ( ) ); //( (byte *) model.polygonBlock ) + sizeof( cm_polygonBlock_t );
 	}
 
 	src.ExpectTokenString( "{" );
 	while ( !src.CheckTokenString( "}" ) ) {
 		// parse polygon
-		numEdges = src.ParseInt();
+		numEdges = src.ParseInt ( );
 		p = this.AllocPolygon( model, numEdges );
 		p.numEdges = numEdges;
 		src.ExpectTokenString( "(" );
 		for ( i = 0; i < p.numEdges; i++ ) {
-			p.edges[i] = src.ParseInt();
+			p.edges[i] = src.ParseInt ( );
 		}
 		src.ExpectTokenString( ")" );
-		src.Parse1DMatrix( 3, normal.ToFloatPtr() );
+		src.Parse1DMatrix( 3, normal.ToFloatPtr ( ) );
 		p.plane.SetNormal( normal );
-		p.plane.SetDist( src.ParseFloat() );
-		src.Parse1DMatrix( 3, p.bounds[0].ToFloatPtr() );
-		src.Parse1DMatrix( 3, p.bounds[1].ToFloatPtr() );
+		p.plane.SetDist( src.ParseFloat ( ) );
+		src.Parse1DMatrix( 3, p.bounds[0].ToFloatPtr ( ) );
+		src.Parse1DMatrix( 3, p.bounds[1].ToFloatPtr ( ) );
 		src.ExpectTokenType( TT_STRING, 0, token );
 		// get material
-		p.material = declManager.FindMaterial( token );
-		p.contents = p.material.GetContentFlags();
+		p.material = declManager.FindMaterial( token.data );
+		p.contents = p.material.GetContentFlags ( );
 		p.checkcount = 0;
 		// filter polygon into tree
-		R_FilterPolygonIntoTree( model, model.node, null, p );
+		this.R_FilterPolygonIntoTree( model, model.node, null, p );
 	}
-}
+};
 
 /*
 ================
 idCollisionModelManagerLocal::ParseBrushes
 ================
 */
-idCollisionModelManagerLocal.prototype.ParseBrushes = function (src: idLexer, model: cm_model_t): void {
-	cm_brush_t *b;
-	int i, numPlanes;
-	idVec3 normal;
-	idToken token;
+idCollisionModelManagerLocal.prototype.ParseBrushes = function ( src: idLexer, model: cm_model_t ): void {
+	var b: cm_brush_t;
+	var /*int */i: number, numPlanes: number;
+	var normal = new idVec3;
+	var token = new idToken;
 
-	if ( src.CheckTokenType( TT_NUMBER, 0, &token ) ) {
-		model.brushBlock = (cm_brushBlock_t *) Mem_Alloc( sizeof( cm_brushBlock_t ) + token.GetIntValue() );
-		model.brushBlock.bytesRemaining = token.GetIntValue();
-		model.brushBlock.next = ( (byte *) model.brushBlock ) + sizeof( cm_brushBlock_t );
+	if ( src.CheckTokenType( TT_NUMBER, 0, token ) ) {
+		model.brushBlock = new cm_brushBlock_t; //(cm_brushBlock_t *) Mem_Alloc( sizeof( cm_brushBlock_t ) + token.GetIntValue() );
+		model.brushBlock.bytesRemaining = token.GetIntValue ( );
+		model.brushBlock.next = new Uint8Array( token.GetIntValue ( ) ); //(byte *) model.brushBlock ) + sizeof( cm_brushBlock_t );
 	}
 
 	src.ExpectTokenString( "{" );
 	while ( !src.CheckTokenString( "}" ) ) {
 		// parse brush
-		numPlanes = src.ParseInt();
-		b = AllocBrush( model, numPlanes );
+		numPlanes = src.ParseInt ( );
+		b = this.AllocBrush( model, numPlanes );
 		b.numPlanes = numPlanes;
 		src.ExpectTokenString( "{" );
 		for ( i = 0; i < b.numPlanes; i++ ) {
-			src.Parse1DMatrix( 3, normal.ToFloatPtr() );
+			src.Parse1DMatrix( 3, normal.ToFloatPtr ( ) );
 			b.planes[i].SetNormal( normal );
-			b.planes[i].SetDist( src.ParseFloat() );
+			b.planes[i].SetDist( src.ParseFloat ( ) );
 		}
 		src.ExpectTokenString( "}" );
-		src.Parse1DMatrix( 3, b.bounds[0].ToFloatPtr() );
-		src.Parse1DMatrix( 3, b.bounds[1].ToFloatPtr() );
+		src.Parse1DMatrix( 3, b.bounds[0].ToFloatPtr ( ) );
+		src.Parse1DMatrix( 3, b.bounds[1].ToFloatPtr ( ) );
 		src.ReadToken( token );
 		if ( token.type == TT_NUMBER ) {
-			b.contents = token.GetIntValue();		// old .cm files use a single integer
+			b.contents = token.GetIntValue ( ); // old .cm files use a single integer
 		} else {
-			b.contents = ContentsFromString( token );
+			b.contents = this.ContentsFromString( token );
 		}
 		b.checkcount = 0;
 		b.primitiveNum = 0;
 		// filter brush into tree
-		R_FilterBrushIntoTree( model, model.node, NULL, b );
+		this.R_FilterBrushIntoTree( model, model.node, null, b );
 	}
-}
+};
 
 /*
 ================
