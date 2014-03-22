@@ -67,7 +67,6 @@
     <TypeScriptCompile Include="dlls\Game\Misc.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\Misc.h.ts" />
     <TypeScriptCompile Include="dlls\Game\MultiplayerGame.cpp.ts" />
-    <TypeScriptCompile Include="dlls\Game\MultiplayerGame.h.ts" />
     <TypeScriptCompile Include="dlls\Game\WorldSpawn.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\SmokeParticles.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\Game_network.cpp.ts" />

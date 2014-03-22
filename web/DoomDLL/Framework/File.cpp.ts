@@ -1103,8 +1103,10 @@ idFile_Permanent::Write
 Properly handles partial writes
 =================
 */
-idFile_Permanent.prototype.Write = function ( /*const void **/buffer: Uint8Array, /*int */len: number ): number {
-	idFileSystemLocal.tempFilesForWriting[this.name.data] += buffer.toString();
+idFile_Permanent.prototype.Write = function ( /*const void **/buffer: Uint8Array, /*int */len: number): number {
+	if ( !SKIP_ALL_LOGGING ) {
+		idFileSystemLocal.tempFilesForWriting[this.name.data] += buffer.toString();
+	}
 	//int		block, remaining;
 	//int		written;
 	//byte *	buf;
