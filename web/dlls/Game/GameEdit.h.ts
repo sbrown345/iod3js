@@ -56,17 +56,17 @@ class idCursor3D extends idEntity {
 ////	idForce_Drag			drag;
 ////	idVec3					draggedPosition;
 };
-////
-////
-/////*
-////===============================================================================
-////
-////	Allows entities to be dragged through the world with physics.
-////
-////===============================================================================
-////*/
-////
-////class idDragEntity {
+
+
+/*
+===============================================================================
+
+	Allows entities to be dragged through the world with physics.
+
+===============================================================================
+*/
+
+class idDragEntity {
 ////public:
 ////							idDragEntity( void );
 ////							~idDragEntity( void );
@@ -90,7 +90,7 @@ class idCursor3D extends idEntity {
 ////	idEntityPtr<idEntity>	selected;			// last dragged entity
 ////
 ////	void					StopDrag( void );
-////};
+};
 ////
 ////
 /////*

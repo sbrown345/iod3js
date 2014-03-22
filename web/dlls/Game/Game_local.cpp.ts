@@ -740,50 +740,50 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 	var modifiedInfo = false;
 
 	this.isClient = isClient;
-	todoThrow ( );
-	//if ( clientNum >= 0 && clientNum < MAX_CLIENTS ) {
-	//	idGameLocal.userInfo[ clientNum ] = userInfo;
+	
+	if ( clientNum >= 0 && clientNum < MAX_CLIENTS ) {
+		this.userInfo[ clientNum ] = userInfo;
 
-	//	// server sanity
-	//	if ( canModify ) {
-	//		todoThrow ( );
-	//		//// don't let numeric nicknames, it can be exploited to go around kick and ban commands from the server
-	//		//if ( idStr.IsNumeric( userInfo[ clientNum ].GetString( "ui_name" ) ) ) {
-	//		//	idGameLocal::userInfo[ clientNum ].Set( "ui_name", va( "%s_", idGameLocal::userInfo[ clientNum ].GetString( "ui_name" ) ) );
-	//		//	modifiedInfo = true;
-	//		//}
+		// server sanity
+		if ( canModify ) {
+			todoThrow ( );
+			//// don't let numeric nicknames, it can be exploited to go around kick and ban commands from the server
+			//if ( idStr.IsNumeric( userInfo[ clientNum ].GetString( "ui_name" ) ) ) {
+			//	idGameLocal::userInfo[ clientNum ].Set( "ui_name", va( "%s_", idGameLocal::userInfo[ clientNum ].GetString( "ui_name" ) ) );
+			//	modifiedInfo = true;
+			//}
 
-	//		//// don't allow dupe nicknames
-	//		//for ( i = 0; i < this.numClients; i++ ) {
-	//		//	if ( i == clientNum ) {
-	//		//		continue;
-	//		//	}
-	//		//	if ( this.entities[ i ] && this.entities[ i ].IsType( idPlayer::Type ) ) {
-	//		//		if ( !idStr.Icmp( idGameLocal::userInfo[ clientNum ].GetString( "ui_name" ), idGameLocal::userInfo[ i ].GetString( "ui_name" ) ) ) {
-	//		//			idGameLocal::userInfo[ clientNum ].Set( "ui_name", va( "%s_", idGameLocal::userInfo[ clientNum ].GetString( "ui_name" ) ) );
-	//		//			modifiedInfo = true;
-	//		//			i = -1;	// rescan
-	//		//			continue;
-	//		//		}
-	//		//	}
-	//		//}
-	//	}
+			//// don't allow dupe nicknames
+			//for ( i = 0; i < this.numClients; i++ ) {
+			//	if ( i == clientNum ) {
+			//		continue;
+			//	}
+			//	if ( this.entities[ i ] && this.entities[ i ].IsType( idPlayer::Type ) ) {
+			//		if ( !idStr.Icmp( idGameLocal::userInfo[ clientNum ].GetString( "ui_name" ), idGameLocal::userInfo[ i ].GetString( "ui_name" ) ) ) {
+			//			idGameLocal::userInfo[ clientNum ].Set( "ui_name", va( "%s_", idGameLocal::userInfo[ clientNum ].GetString( "ui_name" ) ) );
+			//			modifiedInfo = true;
+			//			i = -1;	// rescan
+			//			continue;
+			//		}
+			//	}
+			//}
+		}
 
-	//	if ( this.entities[ clientNum ] && this.entities[ clientNum ].IsType( idPlayer.Type ) ) {
-	//		modifiedInfo |= static_cast<idPlayer >( this.entities[ clientNum ] ).UserInfoChanged( canModify );
-	//	}
+		if ( this.entities[ clientNum ] && this.entities[ clientNum ].IsType( idPlayer.Type ) ) {
+			modifiedInfo |= static_cast<idPlayer>( this.entities[ clientNum ] ).UserInfoChanged( canModify );
+		}
 
-	//	if ( !isClient ) {
-	//		// now mark this client in game
-	//		this.mpGame.EnterGame( clientNum );
-	//	}
-	//}
+		if ( !isClient ) {
+			// now mark this client in game
+			this.mpGame.EnterGame( clientNum );
+		}
+	}
 
-	//if ( modifiedInfo ) {
-	//	assert( canModify );
-	//	this.newInfo.equals( this.userInfo[clientNum] );
-	//	return this.newInfo;
-	//}
+	if ( modifiedInfo ) {
+		assert( canModify );
+		this.newInfo.equals( this.userInfo[clientNum] );
+		return this.newInfo;
+	}
 	return null;
 };
 
