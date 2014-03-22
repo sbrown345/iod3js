@@ -81,7 +81,7 @@ idRenderWorldLocal.prototype.FreeWorld = function ( ): void {
 
 	if ( this.areaNodes ) {
 		R_StaticFree( this.areaNodes );
-		this.areaNodes = NULL;
+		this.areaNodes = null;
 	}
 
 	// free all the inline idRenderModels 

@@ -103,7 +103,23 @@
 ////	idList<signal_t> signal[ NUM_SIGNALS ];
 ////};
 ////
-////
+
+class entityFlags_s {
+	// todo: bit fields
+	notarget			:boolean/*:1*/;	// if true never attack or target this entity
+	noknockback			:boolean/*:1*/;	// if true no knockback from hits
+	takedamage			:boolean/*:1*/;	// if true this entity can be damaged
+	hidden				:boolean/*:1*/;	// if true this entity is not visible
+	bindOrientated		:boolean/*:1*/;	// if true both the master orientation is used for binding
+	solidForTeam		:boolean/*:1*/;	// if true this entity is considered solid when a physics team mate pushes entities
+	forcePhysicsUpdate	:boolean/*:1*/;	// if true always update from the physics whether the object moved or not
+	selected			:boolean/*:1*/;	// if true the entity is selected for editing
+	neverDormant		:boolean/*:1*/;	// if true the entity never goes dormant
+	isDormant			:boolean/*:1*/;	// if true the entity is dormant
+	hasAwakened			:boolean/*:1*/;	// before a monster has been awakened the first time, use full PVS for dormant instead of area-connected
+	networkSync			:boolean/*:1*/; // if true the entity is synchronized over the network
+};
+
 class idEntity extends idClass {
 ////public:
 ////	static const int		MAX_PVS_AREAS = 4;
@@ -132,21 +148,8 @@ class idEntity extends idClass {
 ////	idList< idEntityPtr<idEntity> >	targets;		// when this entity is activated these entities entity are activated
 ////
 ////	int						health;					// FIXME: do all objects really need health?
-////
-////	struct entityFlags_s {
-////		bool				notarget			:1;	// if true never attack or target this entity
-////		bool				noknockback			:1;	// if true no knockback from hits
-////		bool				takedamage			:1;	// if true this entity can be damaged
-////		bool				hidden				:1;	// if true this entity is not visible
-////		bool				bindOrientated		:1;	// if true both the master orientation is used for binding
-////		bool				solidForTeam		:1;	// if true this entity is considered solid when a physics team mate pushes entities
-////		bool				forcePhysicsUpdate	:1;	// if true always update from the physics whether the object moved or not
-////		bool				selected			:1;	// if true the entity is selected for editing
-////		bool				neverDormant		:1;	// if true the entity never goes dormant
-////		bool				isDormant			:1;	// if true the entity is dormant
-////		bool				hasAwakened			:1;	// before a monster has been awakened the first time, use full PVS for dormant instead of area-connected
-////		bool				networkSync			:1; // if true the entity is synchronized over the network
-////	} fl;
+
+	fl = new entityFlags_s;
 ////
 ////public:
 ////	ABSTRACT_PROTOTYPE( idEntity );

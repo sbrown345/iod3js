@@ -37,6 +37,42 @@
 ////	"mtr_icon_chat"
 ////};
 ////
+////#ifndef	__PLAYERICON_H__
+////#define	__PLAYERICON_H__
+////
+////typedef enum {
+////	ICON_LAG,
+////	ICON_CHAT,
+////	ICON_NONE
+////} playerIconType_t;
+////
+class idPlayerIcon {
+	////public:
+	////	
+	////public:
+	////	idPlayerIcon();
+	////	~idPlayerIcon();
+	////
+	////	void	Draw( idPlayer *player, jointHandle_t joint );
+	////	void	Draw( idPlayer *player, const idVec3 &origin );
+	////
+	////public:
+	////	playerIconType_t	iconType;
+	////	renderEntity_t		renderEnt;
+	////	qhandle_t			iconHandle;
+	////
+	////public:
+	////	void	FreeIcon( void );
+	////	bool	CreateIcon( idPlayer* player, playerIconType_t type, const char *mtr, const idVec3 &origin, const idMat3 &axis );
+	////	bool	CreateIcon( idPlayer* player, playerIconType_t type, const idVec3 &origin, const idMat3 &axis );
+	////	void	UpdateIcon( idPlayer* player, const idVec3 &origin, const idMat3 &axis );
+	////
+
+////
+////
+////#endif	/* !_PLAYERICON_H_ */
+////
+
 /////*
 ////===============
 ////idPlayerIcon::idPlayerIcon
@@ -70,7 +106,7 @@
 ////		return;
 ////	}
 ////
-////	player->GetJointWorldTransform( joint, gameLocal.time, origin, axis );
+////	player.GetJointWorldTransform( joint, gameLocal.time, origin, axis );
 ////	origin.z += 16.0f;
 ////
 ////	Draw( player, origin );
@@ -83,19 +119,19 @@
 ////*/
 ////void idPlayerIcon::Draw( idPlayer *player, const idVec3 &origin ) {
 ////	idPlayer *localPlayer = gameLocal.GetLocalPlayer();
-////	if ( !localPlayer || !localPlayer->GetRenderView() ) {
+////	if ( !localPlayer || !localPlayer.GetRenderView() ) {
 ////		FreeIcon();
 ////		return;
 ////	}
 ////
-////	idMat3 axis = localPlayer->GetRenderView()->viewaxis;
+////	idMat3 axis = localPlayer.GetRenderView().viewaxis;
 ////
-////	if ( player->isLagged ) {
+////	if ( player.isLagged ) {
 ////		// create the icon if necessary, or update if already created
 ////		if ( !CreateIcon( player, ICON_LAG, origin, axis ) ) {
 ////			UpdateIcon( player, origin, axis );
 ////		}
-////	} else if ( player->isChatting ) {
+////	} else if ( player.isChatting ) {
 ////		if ( !CreateIcon( player, ICON_CHAT, origin, axis ) ) {
 ////			UpdateIcon( player, origin, axis );
 ////		}
@@ -111,7 +147,7 @@
 ////*/
 ////void idPlayerIcon::FreeIcon( void ) {
 ////	if ( iconHandle != - 1 ) {
-////		gameRenderWorld->FreeEntityDef( iconHandle );
+////		gameRenderWorld.FreeEntityDef( iconHandle );
 ////		iconHandle = -1;
 ////	}
 ////	iconType = ICON_NONE;
@@ -124,7 +160,7 @@
 ////*/
 ////bool idPlayerIcon::CreateIcon( idPlayer *player, playerIconType_t type, const idVec3 &origin, const idMat3 &axis ) {
 ////	assert( type != ICON_NONE );
-////	const char *mtr = player->spawnArgs.GetString( iconKeys[ type ], "_default" );
+////	const char *mtr = player.spawnArgs.GetString( iconKeys[ type ], "_default" );
 ////	return CreateIcon( player, type, mtr, origin, axis );
 ////}
 ////
@@ -151,18 +187,18 @@
 ////	renderEnt.shaderParms[ SHADERPARM_ALPHA ]			= 1.0f;
 ////	renderEnt.shaderParms[ SHADERPARM_SPRITE_WIDTH ]	= 16.0f;
 ////	renderEnt.shaderParms[ SHADERPARM_SPRITE_HEIGHT ]	= 16.0f;
-////	renderEnt.hModel = renderModelManager->FindModel( "_sprite" );
+////	renderEnt.hModel = renderModelManager.FindModel( "_sprite" );
 ////	renderEnt.callback = NULL;
 ////	renderEnt.numJoints = 0;
 ////	renderEnt.joints = NULL;
 ////	renderEnt.customSkin = 0;
 ////	renderEnt.noShadow = true;
 ////	renderEnt.noSelfShadow = true;
-////	renderEnt.customShader = declManager->FindMaterial( mtr );
+////	renderEnt.customShader = declManager.FindMaterial( mtr );
 ////	renderEnt.referenceShader = 0;
-////	renderEnt.bounds = renderEnt.hModel->Bounds( &renderEnt );
+////	renderEnt.bounds = renderEnt.hModel.Bounds( &renderEnt );
 ////
-////	iconHandle = gameRenderWorld->AddEntityDef( &renderEnt );
+////	iconHandle = gameRenderWorld.AddEntityDef( &renderEnt );
 ////	iconType = type;
 ////
 ////	return true;
@@ -178,6 +214,7 @@
 ////
 ////	renderEnt.origin = origin;
 ////	renderEnt.axis	= axis;
-////	gameRenderWorld->UpdateEntityDef( iconHandle, &renderEnt );
+////	gameRenderWorld.UpdateEntityDef( iconHandle, &renderEnt );
 ////}
 ////
+}

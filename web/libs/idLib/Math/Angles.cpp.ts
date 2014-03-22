@@ -58,7 +58,36 @@ class idAngles {
 ////	float			pitch;
 ////	float			yaw;
 ////	float			roll;
-////
+
+	values = new Float32Array(3);
+
+	get pitch ( ): number { return this.values[0]; }
+
+	set pitch ( value: number ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this.values[0] = value;
+	}
+
+	get yaw ( ): number { return this.values[1]; }
+
+	set yaw ( value: number ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this.values[1] = value;
+	}
+
+	get roll ( ): number { return this.values[2]; }
+
+	set roll ( value: number ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this.values[2] = value;
+	}
+
 ////	idAngles(void);
 ////	idAngles(float pitch, float yaw, float roll);
 ////	explicit idAngles(const idVec3 &v);
@@ -106,26 +135,37 @@ class idAngles {
 ////};
 ////
 ////extern idAngles ang_zero;
-////
+
+	constructor ( );
+	constructor ( /*float*/ pitch: number, /*float */yaw: number, /*float */roll: number );
+	constructor ( v: idVec3 );
+	constructor ( a1?: any, a2?: any, a3?: any ) {
+		if ( arguments.length == 1 ) {
+			this.constructor_vec( a1 );
+		} else if ( arguments.length == 3 ) {
+			this.constructor_3args( a1, a2, a3 );
+		}
+	}
+
 ////ID_INLINE idAngles::idAngles(void) {
 ////}
-////
-////ID_INLINE idAngles::idAngles(float pitch, float yaw, float roll) {
-////	this->pitch = pitch;
-////	this->yaw = yaw;
-////	this->roll = roll;
-////}
-////
-////ID_INLINE idAngles::idAngles(const idVec3 &v) {
-////	this->pitch = v[0];
-////	this->yaw = v[1];
-////	this->roll = v[2];
-////}
-////
+
+	private constructor_3args ( /*float*/ pitch: number, /*float */yaw: number, /*float */roll: number ): void {
+		this.pitch = pitch;
+		this.yaw = yaw;
+		this.roll = roll;
+	}
+
+	private constructor_vec ( v: idVec3 ): void {
+		this.pitch = v[0];
+		this.yaw = v[1];
+		this.roll = v[2];
+	}
+
 ////ID_INLINE void idAngles::Set(float pitch, float yaw, float roll) {
-////	this->pitch = pitch;
-////	this->yaw = yaw;
-////	this->roll = roll;
+////	this.pitch = pitch;
+////	this.yaw = yaw;
+////	this.roll = roll;
 ////}
 ////
 ////ID_INLINE idAngles &idAngles::Zero(void) {
@@ -146,14 +186,14 @@ class idAngles {
 ////ID_INLINE idAngles idAngles::operator-() const {
 ////	return idAngles(-pitch, -yaw, -roll);
 ////}
-////
-////ID_INLINE idAngles &idAngles::operator=(const idAngles &a) {
-////	pitch = a.pitch;
-////	yaw = a.yaw;
-////	roll = a.roll;
-////	return *this;
-////}
-////
+
+	opEquals ( a: idAngles ): idAngles {
+		this.pitch = a.pitch;
+		this.yaw = a.yaw;
+		this.roll = a.roll;
+		return this;
+	}
+
 ////ID_INLINE idAngles idAngles::operator+(const idAngles &a) const {
 ////	return idAngles(pitch + a.pitch, yaw + a.yaw, roll + a.roll);
 ////}
@@ -349,15 +389,15 @@ class idAngles {
 ////	idMath::SinCos( DEG2RAD( roll ), sr, cr );
 ////
 ////	if ( forward ) {
-////		forward->Set( cp * cy, cp * sy, -sp );
+////		forward.Set( cp * cy, cp * sy, -sp );
 ////	}
 ////
 ////	if ( right ) {
-////		right->Set( -sr * sp * cy + cr * sy, -sr * sp * sy + -cr * cy, -sr * cp );
+////		right.Set( -sr * sp * cy + cr * sy, -sr * sp * sy + -cr * cy, -sr * cp );
 ////	}
 ////
 ////	if ( up ) {
-////		up->Set( cr * sp * cy + -sr * -sy, cr * sp * sy + -sr * cy, cr * cp );
+////		up.Set( cr * sp * cy + -sr * -sy, cr * sp * sy + -sr * cy, cr * cp );
 ////	}
 ////}
 ////
@@ -491,3 +531,5 @@ class idAngles {
 ////	return idStr::FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
 ////}
 }
+
+var ang_zero = new idAngles( 0.0, 0.0, 0.0 );

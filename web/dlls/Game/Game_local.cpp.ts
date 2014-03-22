@@ -737,7 +737,7 @@ idGameLocal::SetUserInfo
 */
 idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userInfo: idDict, isClient: boolean, canModify: boolean ): idDict {
 	var /*int */i: number;
-	var modifiedInfo = false;
+	var modifiedInfo = 0/*false*/;
 
 	this.isClient = isClient;
 	
@@ -750,7 +750,7 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 			//// don't let numeric nicknames, it can be exploited to go around kick and ban commands from the server
 			//if ( idStr.IsNumeric( userInfo[ clientNum ].GetString( "ui_name" ) ) ) {
 			//	idGameLocal::userInfo[ clientNum ].Set( "ui_name", va( "%s_", idGameLocal::userInfo[ clientNum ].GetString( "ui_name" ) ) );
-			//	modifiedInfo = true;
+			//	modifiedInfo = 1/*true*/;
 			//}
 
 			//// don't allow dupe nicknames
@@ -761,7 +761,7 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 			//	if ( this.entities[ i ] && this.entities[ i ].IsType( idPlayer::Type ) ) {
 			//		if ( !idStr.Icmp( idGameLocal::userInfo[ clientNum ].GetString( "ui_name" ), idGameLocal::userInfo[ i ].GetString( "ui_name" ) ) ) {
 			//			idGameLocal::userInfo[ clientNum ].Set( "ui_name", va( "%s_", idGameLocal::userInfo[ clientNum ].GetString( "ui_name" ) ) );
-			//			modifiedInfo = true;
+			//			modifiedInfo = 1/*true*/;
 			//			i = -1;	// rescan
 			//			continue;
 			//		}
@@ -770,7 +770,7 @@ idGameLocal.prototype.SetUserInfo = function ( /*int */clientNum: number, userIn
 		}
 
 		if ( this.entities[ clientNum ] && this.entities[ clientNum ].IsType( idPlayer.Type ) ) {
-			modifiedInfo |= static_cast<idPlayer>( this.entities[ clientNum ] ).UserInfoChanged( canModify );
+			modifiedInfo |= ( static_cast<idPlayer>( this.entities[clientNum] ).UserInfoChanged( canModify ) ? 1 : 0 );
 		}
 
 		if ( !isClient ) {

@@ -284,8 +284,8 @@ class idAFEntity_Generic extends  idAFEntity_Gibbable
 ////
 ////private:
 	Event_Activate(activator: idEntity): void { throw "placeholder"; }
-////
-////	bool					keepRunningPhysics;
+
+	keepRunningPhysics:boolean;
 };
 
 

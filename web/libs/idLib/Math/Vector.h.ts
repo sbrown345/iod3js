@@ -1147,7 +1147,7 @@ class idVec3 {
 ////	if ( ( 1.0f - cosom ) > LERP_DELTA ) {
 ////		omega = acos( cosom );
 ////		sinom = sin( omega );
-////		scale0 = sin( ( 1.0f - t ) * omega ) / sinom;
+////		scale0 = sin( ( 1.0 - t ) * omega ) / sinom;
 ////		scale1 = sin( t * omega ) / sinom;
 ////	} else {
 ////		scale0 = 1.0f - t;
@@ -1170,7 +1170,7 @@ class idVec3 {
 ////	if ( len  < rsqr * 0.5f ) {
 ////		z = sqrt( rsqr - len );
 ////	} else {
-////		z = rsqr / ( 2.0f * sqrt( len ) );
+////		z = rsqr / ( 2.0 * sqrt( len ) );
 ////	}
 ////}
 };
@@ -1226,6 +1226,8 @@ Object.defineProperty(idVec3.prototype, "2", {
 	enumerable: false,
 	configurable: false
 });
+
+var vec3_zero = vec3_origin;
 
 //===============================================================
 //
