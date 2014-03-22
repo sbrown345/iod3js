@@ -169,9 +169,9 @@ class idLexer {
 		return this.script_p; // - this.buffer;
 	}
 
-	////ID_INLINE const ID_TIME_T idLexer::GetFileTime( void ) {
-	////	return idLexer::fileTime;
-	////}
+	GetFileTime ( ): number {
+		return this.fileTime;
+	}
 
 	GetLineNum ( ): number {
 		return this.line;
@@ -1068,26 +1068,26 @@ class idLexer {
 		}
 	}
 
-	/////*
-	////================
-	////idLexer::CheckTokenString
-	////================
-	////*/
-	////int idLexer::CheckTokenString( const char *string ) {
-	////	var tok = new idToken;
+	/*
+	================
+	idLexer::CheckTokenString
+	================
+	*/
+	CheckTokenString ( $string: string ): number /*int*/ {
+		var tok = new idToken;
 
-	////	if ( !ReadToken( &tok ) ) {
-	////		return 0;
-	////	}
-	////	// if the given string is available
-	////	if ( tok == string ) {
-	////		return 1;
-	////	}
-	////	// unread token
-	////	script_p = this.lastScript_p;
-	////	this.line = this.lastline;
-	////	return 0;
-	////}
+		if ( !this.ReadToken( tok ) ) {
+			return 0;
+		}
+		// if the given string is available
+		if ( tok.data == $string ) {
+			return 1;
+		}
+		// unread token
+		this.script_p = this.lastScript_p;
+		this.line = this.lastline;
+		return 0;
+	}
 
 	/*
 	================
@@ -1317,7 +1317,7 @@ class idLexer {
 	////idLexer::ParseBool
 	////================
 	////*/
-	////bool idLexer::ParseBool( void ) {
+	////bool idLexer::ParseBool( ) {
 	////	var token = new R(new idToken);
 
 	////	if ( !this.ExpectTokenType( TT_NUMBER, 0, &token ) ) {
@@ -1600,7 +1600,7 @@ class idLexer {
 	////idLexer::GetLastWhiteSpaceStart
 	////================
 	////*/
-	////int idLexer::GetLastWhiteSpaceStart( void ) const {
+	////int idLexer::GetLastWhiteSpaceStart( ) const {
 	////	return this.whiteSpaceStart_p - buffer;
 	////}
 
@@ -1609,7 +1609,7 @@ class idLexer {
 	////idLexer::GetLastWhiteSpaceEnd
 	////================
 	////*/
-	////int idLexer::GetLastWhiteSpaceEnd( void ) const {
+	////int idLexer::GetLastWhiteSpaceEnd( ) const {
 	////	return whiteSpaceEnd_p - buffer;
 	////}
 
@@ -1618,7 +1618,7 @@ class idLexer {
 	////idLexer::Reset
 	////================
 	////*/
-	////void idLexer::Reset( void ) {
+	////void idLexer::Reset( ) {
 	////	// pointer in script buffer
 	////	this.script_p = 0;//idLexer::buffer;
 	////	// pointer in script buffer before reading token
@@ -1650,7 +1650,7 @@ class idLexer {
 	////idLexer::NumLinesCrossed
 	////================
 	////*/
-	////int idLexer::NumLinesCrossed( void ) {
+	////int idLexer::NumLinesCrossed( ) {
 	////	return this.line - idLexer::lastline;
 	////}
 
@@ -1859,7 +1859,7 @@ idLexer::~idLexer
 ////idLexer::HadError
 ////================
 ////*/
-////bool idLexer::HadError( void ) const {
+////bool idLexer::HadError( ) const {
 ////	return hadError;
 ////}
 
