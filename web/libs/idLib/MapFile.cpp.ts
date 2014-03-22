@@ -60,7 +60,7 @@
 ////=================
 ////ComputeAxisBase
 ////
-////WARNING : special case behaviour of atan2(y,x) <-> atan(y/x) might not be the same everywhere when x == 0
+////WARNING : special case behaviour of atan2(y,x) <. atan(y/x) might not be the same everywhere when x == 0
 ////rotation by (0,RotY,RotZ) assigns X to normal
 ////=================
 ////*/
@@ -138,20 +138,20 @@
 ////	}
 ////
 ////	idMapPatch *patch = new idMapPatch( info[0], info[1] );
-////	patch->SetSize( info[0], info[1] );
+////	patch.SetSize( info[0], info[1] );
 ////	if ( version < 2.0f ) {
-////		patch->SetMaterial( "textures/" + token );
+////		patch.SetMaterial( "textures/" + token );
 ////	} else {
-////		patch->SetMaterial( token );
+////		patch.SetMaterial( token );
 ////	}
 ////
 ////	if ( patchDef3 ) {
-////		patch->SetHorzSubdivisions( info[2] );
-////		patch->SetVertSubdivisions( info[3] );
-////		patch->SetExplicitlySubdivided( true );
+////		patch.SetHorzSubdivisions( info[2] );
+////		patch.SetVertSubdivisions( info[3] );
+////		patch.SetExplicitlySubdivided( true );
 ////	}
 ////
-////	if ( patch->GetWidth() < 0 || patch->GetHeight() < 0 ) {
+////	if ( patch.GetWidth() < 0 || patch.GetHeight() < 0 ) {
 ////		src.Error( "idMapPatch::Parse: bad size" );
 ////		delete patch;
 ////		return NULL;
@@ -163,13 +163,13 @@
 ////		delete patch;
 ////		return NULL;
 ////	}
-////	for ( j = 0; j < patch->GetWidth(); j++ ) {
+////	for ( j = 0; j < patch.GetWidth(); j++ ) {
 ////		if ( !src.ExpectTokenString( "(" ) ) {
 ////			src.Error( "idMapPatch::Parse: bad vertex row data" );
 ////			delete patch;
 ////			return NULL;
 ////		}
-////		for ( i = 0; i < patch->GetHeight(); i++ ) {
+////		for ( i = 0; i < patch.GetHeight(); i++ ) {
 ////			float v[5];
 ////
 ////			if ( !src.Parse1DMatrix( 5, v ) ) {
@@ -178,12 +178,12 @@
 ////				return NULL;
 ////			}
 ////
-////			vert = &((*patch)[i * patch->GetWidth() + j]);
-////			vert->xyz[0] = v[0] - origin[0];
-////			vert->xyz[1] = v[1] - origin[1];
-////			vert->xyz[2] = v[2] - origin[2];
-////			vert->st[0] = v[3];
-////			vert->st[1] = v[4];
+////			vert = &((*patch)[i * patch.GetWidth() + j]);
+////			vert.xyz[0] = v[0] - origin[0];
+////			vert.xyz[1] = v[1] - origin[1];
+////			vert.xyz[2] = v[2] - origin[2];
+////			vert.st[0] = v[3];
+////			vert.st[1] = v[4];
 ////		}
 ////		if ( !src.ExpectTokenString( ")" ) ) {
 ////			delete patch;
@@ -206,7 +206,7 @@
 ////		if ( token.type == TT_STRING ) {
 ////			idStr key = token;
 ////			src.ExpectTokenType( TT_STRING, 0, &token );
-////			patch->epairs.Set( key, token );
+////			patch.epairs.Set( key, token );
 ////		}
 ////	}
 ////
@@ -223,24 +223,24 @@
 ////	const idDrawVert *v;
 ////
 ////	if ( GetExplicitlySubdivided() ) {
-////		fp->WriteFloatString( "// primitive %d\n{\n patchDef3\n {\n", primitiveNum );
-////		fp->WriteFloatString( "  \"%s\"\n  ( %d %d %d %d 0 0 0 )\n", GetMaterial(), GetWidth(), GetHeight(), GetHorzSubdivisions(), GetVertSubdivisions());
+////		fp.WriteFloatString( "// primitive %d\n{\n patchDef3\n {\n", primitiveNum );
+////		fp.WriteFloatString( "  \"%s\"\n  ( %d %d %d %d 0 0 0 )\n", GetMaterial(), GetWidth(), GetHeight(), GetHorzSubdivisions(), GetVertSubdivisions());
 ////	} else {
-////		fp->WriteFloatString( "// primitive %d\n{\n patchDef2\n {\n", primitiveNum );
-////		fp->WriteFloatString( "  \"%s\"\n  ( %d %d 0 0 0 )\n", GetMaterial(), GetWidth(), GetHeight());
+////		fp.WriteFloatString( "// primitive %d\n{\n patchDef2\n {\n", primitiveNum );
+////		fp.WriteFloatString( "  \"%s\"\n  ( %d %d 0 0 0 )\n", GetMaterial(), GetWidth(), GetHeight());
 ////	}
 ////
-////	fp->WriteFloatString( "  (\n" );
+////	fp.WriteFloatString( "  (\n" );
 ////	for ( i = 0; i < GetWidth(); i++ ) {
-////		fp->WriteFloatString( "   ( " );
+////		fp.WriteFloatString( "   ( " );
 ////		for ( j = 0; j < GetHeight(); j++ ) {
 ////			v = &verts[ j * GetWidth() + i ];
-////			fp->WriteFloatString( " ( %f %f %f %f %f )", v->xyz[0] + origin[0],
-////								v->xyz[1] + origin[1], v->xyz[2] + origin[2], v->st[0], v->st[1] );
+////			fp.WriteFloatString( " ( %f %f %f %f %f )", v.xyz[0] + origin[0],
+////								v.xyz[1] + origin[1], v.xyz[2] + origin[2], v.st[0], v.st[1] );
 ////		}
-////		fp->WriteFloatString( " )\n" );
+////		fp.WriteFloatString( " )\n" );
 ////	}
-////	fp->WriteFloatString( "  )\n }\n}\n" );
+////	fp.WriteFloatString( "  )\n }\n}\n" );
 ////
 ////	return true;
 ////}
@@ -250,7 +250,7 @@
 ////idMapPatch::GetGeometryCRC
 ////===============
 ////*/
-////unsigned int idMapPatch::GetGeometryCRC( void ) const {
+////unsigned int idMapPatch::GetGeometryCRC( ) const {
 ////	int i, j;
 ////	unsigned int crc;
 ////
@@ -332,7 +332,7 @@
 ////		sides.Append(side);
 ////
 ////		if ( newFormat ) {
-////			if ( !src.Parse1DMatrix( 4, side->plane.ToFloatPtr() ) ) {
+////			if ( !src.Parse1DMatrix( 4, side.plane.ToFloatPtr() ) ) {
 ////				src.Error( "idMapBrush::Parse: unable to read brush side plane definition" );
 ////				sides.DeleteContents( true );
 ////				return NULL;
@@ -351,17 +351,17 @@
 ////			planepts[1] -= origin;
 ////			planepts[2] -= origin;
 ////
-////			side->plane.FromPoints( planepts[0], planepts[1], planepts[2] );
+////			side.plane.FromPoints( planepts[0], planepts[1], planepts[2] );
 ////		}
 ////
 ////		// read the texture matrix
 ////		// this is odd, because the texmat is 2D relative to default planar texture axis
-////		if ( !src.Parse2DMatrix( 2, 3, side->texMat[0].ToFloatPtr() ) ) {
+////		if ( !src.Parse2DMatrix( 2, 3, side.texMat[0].ToFloatPtr() ) ) {
 ////			src.Error( "idMapBrush::Parse: unable to read brush side texture matrix" );
 ////			sides.DeleteContents( true );
 ////			return NULL;
 ////		}
-////		side->origin = origin;
+////		side.origin = origin;
 ////		
 ////		// read the material
 ////		if ( !src.ReadTokenOnLine( &token ) ) {
@@ -372,9 +372,9 @@
 ////
 ////		// we had an implicit 'textures/' in the old format...
 ////		if ( version < 2.0f ) {
-////			side->material = "textures/" + token;
+////			side.material = "textures/" + token;
 ////		} else {
-////			side->material = token;
+////			side.material = token;
 ////		}
 ////
 ////		// Q2 allowed override of default flags and values, but we don't any more
@@ -393,10 +393,10 @@
 ////
 ////	idMapBrush *brush = new idMapBrush();
 ////	for ( i = 0; i < sides.Num(); i++ ) {
-////		brush->AddSide( sides[i] );
+////		brush.AddSide( sides[i] );
 ////	}
 ////
-////	brush->epairs = epairs;
+////	brush.epairs = epairs;
 ////
 ////	return brush;
 ////}
@@ -436,7 +436,7 @@
 ////		planepts[1] -= origin;
 ////		planepts[2] -= origin;
 ////
-////		side->plane.FromPoints( planepts[0], planepts[1], planepts[2] );
+////		side.plane.FromPoints( planepts[0], planepts[1], planepts[2] );
 ////
 ////		// read the material
 ////		if ( !src.ReadTokenOnLine( &token ) ) {
@@ -446,7 +446,7 @@
 ////		}
 ////
 ////		// we have an implicit 'textures/' in the old format
-////		side->material = "textures/" + token;
+////		side.material = "textures/" + token;
 ////
 ////		// read the texture shift, rotate and scale
 ////		shift[0] = src.ParseInt();
@@ -454,9 +454,9 @@
 ////		rotate = src.ParseInt();
 ////		scale[0] = src.ParseFloat();
 ////		scale[1] = src.ParseFloat();
-////		side->texMat[0] = idVec3( 0.03125f, 0.0f, 0.0f );
-////		side->texMat[1] = idVec3( 0.0f, 0.03125f, 0.0f );
-////		side->origin = origin;
+////		side.texMat[0] = idVec3( 0.03125f, 0.0f, 0.0f );
+////		side.texMat[1] = idVec3( 0.0f, 0.03125f, 0.0f );
+////		side.origin = origin;
 ////		
 ////		// Q2 allowed override of default flags and values, but we don't any more
 ////		if ( src.ReadTokenOnLine( &token ) ) {
@@ -469,10 +469,10 @@
 ////
 ////	idMapBrush *brush = new idMapBrush();
 ////	for ( i = 0; i < sides.Num(); i++ ) {
-////		brush->AddSide( sides[i] );
+////		brush.AddSide( sides[i] );
 ////	}
 ////
-////	brush->epairs = epairs;
+////	brush.epairs = epairs;
 ////
 ////	return brush;
 ////}
@@ -486,24 +486,24 @@
 ////	int i;
 ////	idMapBrushSide *side;
 ////
-////	fp->WriteFloatString( "// primitive %d\n{\n brushDef3\n {\n", primitiveNum );
+////	fp.WriteFloatString( "// primitive %d\n{\n brushDef3\n {\n", primitiveNum );
 ////
 ////	// write brush epairs
 ////	for ( i = 0; i < epairs.GetNumKeyVals(); i++) {
-////		fp->WriteFloatString( "  \"%s\" \"%s\"\n", epairs.GetKeyVal(i)->GetKey().c_str(), epairs.GetKeyVal(i)->GetValue().c_str());
+////		fp.WriteFloatString( "  \"%s\" \"%s\"\n", epairs.GetKeyVal(i).GetKey().c_str(), epairs.GetKeyVal(i).GetValue().c_str());
 ////	}
 ////
 ////	// write brush sides
 ////	for ( i = 0; i < GetNumSides(); i++ ) {
 ////		side = GetSide( i );
-////		fp->WriteFloatString( "  ( %f %f %f %f ) ", side->plane[0], side->plane[1], side->plane[2], side->plane[3] );
-////		fp->WriteFloatString( "( ( %f %f %f ) ( %f %f %f ) ) \"%s\" 0 0 0\n",
-////							side->texMat[0][0], side->texMat[0][1], side->texMat[0][2],
-////								side->texMat[1][0], side->texMat[1][1], side->texMat[1][2],
-////									side->material.c_str() );
+////		fp.WriteFloatString( "  ( %f %f %f %f ) ", side.plane[0], side.plane[1], side.plane[2], side.plane[3] );
+////		fp.WriteFloatString( "( ( %f %f %f ) ( %f %f %f ) ) \"%s\" 0 0 0\n",
+////							side.texMat[0][0], side.texMat[0][1], side.texMat[0][2],
+////								side.texMat[1][0], side.texMat[1][1], side.texMat[1][2],
+////									side.material.c_str() );
 ////	}
 ////
-////	fp->WriteFloatString( " }\n}\n" );
+////	fp.WriteFloatString( " }\n}\n" );
 ////
 ////	return true;
 ////}
@@ -513,7 +513,7 @@
 ////idMapBrush::GetGeometryCRC
 ////===============
 ////*/
-////unsigned int idMapBrush::GetGeometryCRC( void ) const {
+////unsigned int idMapBrush::GetGeometryCRC( ) const {
 ////	int i, j;
 ////	idMapBrushSide *mapSide;
 ////	unsigned int crc;
@@ -522,9 +522,9 @@
 ////	for ( i = 0; i < GetNumSides(); i++ ) {
 ////		mapSide = GetSide(i);
 ////		for ( j = 0; j < 4; j++ ) {
-////			crc ^= FloatCRC( mapSide->GetPlane()[j] );
+////			crc ^= FloatCRC( mapSide.GetPlane()[j] );
 ////		}
-////		crc ^= StringCRC( mapSide->GetMaterial() );
+////		crc ^= StringCRC( mapSide.GetMaterial() );
 ////	}
 ////
 ////	return crc;
@@ -556,7 +556,7 @@
 ////	mapEnt = new idMapEntity();
 ////
 ////	if ( worldSpawn ) {
-////		mapEnt->primitives.Resize( 1024, 256 );
+////		mapEnt.primitives.Resize( 1024, 256 );
 ////	}
 ////
 ////	origin.Zero();
@@ -587,7 +587,7 @@
 ////				if ( !mapBrush ) {
 ////					return NULL;
 ////				}
-////				mapEnt->AddPrimitive( mapBrush );
+////				mapEnt.AddPrimitive( mapBrush );
 ////			}
 ////			// if is it a patch: patchDef2, patchDef3
 ////			else if ( token.Icmpn( "patch", 5 ) == 0 ) {
@@ -595,7 +595,7 @@
 ////				if ( !mapPatch ) {
 ////					return NULL;
 ////				}
-////				mapEnt->AddPrimitive( mapPatch );
+////				mapEnt.AddPrimitive( mapPatch );
 ////			}
 ////			// assume it's a brush in Q3 or older style
 ////			else {
@@ -604,7 +604,7 @@
 ////				if ( !mapBrush ) {
 ////					return NULL;
 ////				}
-////				mapEnt->AddPrimitive( mapBrush );
+////				mapEnt.AddPrimitive( mapBrush );
 ////			}
 ////		} else {
 ////			idStr key, value;
@@ -619,7 +619,7 @@
 ////			value.StripTrailingWhitespace();
 ////			key.StripTrailingWhitespace();
 ////
-////			mapEnt->epairs.Set( key, value );
+////			mapEnt.epairs.Set( key, value );
 ////
 ////			if ( !idStr::Icmp( key, "origin" ) ) {
 ////				// scanf into doubles, then assign, so it is idVec size independent
@@ -648,11 +648,11 @@
 ////	idMapPrimitive *mapPrim;
 ////	idVec3 origin;
 ////
-////	fp->WriteFloatString( "// entity %d\n{\n", entityNum );
+////	fp.WriteFloatString( "// entity %d\n{\n", entityNum );
 ////
 ////	// write entity epairs
 ////	for ( i = 0; i < epairs.GetNumKeyVals(); i++) {
-////		fp->WriteFloatString( "\"%s\" \"%s\"\n", epairs.GetKeyVal(i)->GetKey().c_str(), epairs.GetKeyVal(i)->GetValue().c_str());
+////		fp.WriteFloatString( "\"%s\" \"%s\"\n", epairs.GetKeyVal(i).GetKey().c_str(), epairs.GetKeyVal(i).GetValue().c_str());
 ////	}
 ////
 ////	epairs.GetVector( "origin", "0 0 0", origin );
@@ -661,17 +661,17 @@
 ////	for ( i = 0; i < GetNumPrimitives(); i++ ) {
 ////		mapPrim = GetPrimitive( i );
 ////
-////		switch( mapPrim->GetType() ) {
+////		switch( mapPrim.GetType() ) {
 ////			case idMapPrimitive::TYPE_BRUSH:
-////				static_cast<idMapBrush*>(mapPrim)->Write( fp, i, origin );
+////				static_cast<idMapBrush*>(mapPrim).Write( fp, i, origin );
 ////				break;
 ////			case idMapPrimitive::TYPE_PATCH:
-////				static_cast<idMapPatch*>(mapPrim)->Write( fp, i, origin );
+////				static_cast<idMapPatch*>(mapPrim).Write( fp, i, origin );
 ////				break;
 ////		}
 ////	}
 ////
-////	fp->WriteFloatString( "}\n" );
+////	fp.WriteFloatString( "}\n" );
 ////
 ////	return true;
 ////}
@@ -690,7 +690,7 @@
 ////idMapEntity::GetGeometryCRC
 ////===============
 ////*/
-////unsigned int idMapEntity::GetGeometryCRC( void ) const {
+////unsigned int idMapEntity::GetGeometryCRC( ) const {
 ////	int i;
 ////	unsigned int crc;
 ////	idMapPrimitive	*mapPrim;
@@ -699,12 +699,12 @@
 ////	for ( i = 0; i < GetNumPrimitives(); i++ ) {
 ////		mapPrim = GetPrimitive( i );
 ////
-////		switch( mapPrim->GetType() ) {
+////		switch( mapPrim.GetType() ) {
 ////			case idMapPrimitive::TYPE_BRUSH:
-////				crc ^= static_cast<idMapBrush*>(mapPrim)->GetGeometryCRC();
+////				crc ^= static_cast<idMapBrush*>(mapPrim).GetGeometryCRC();
 ////				break;
 ////			case idMapPrimitive::TYPE_PATCH:
-////				crc ^= static_cast<idMapPatch*>(mapPrim)->GetGeometryCRC();
+////				crc ^= static_cast<idMapPatch*>(mapPrim).GetGeometryCRC();
 ////				break;
 ////		}
 ////	}
@@ -712,119 +712,328 @@
 ////	return crc;
 ////}
 ////
+/*
+===============
+idMapFile::Parse
+===============
+*/
+bool idMapFile::Parse( const char *filename, bool ignoreRegion, bool osPath ) {
+	// no string concatenation for epairs and allow path names for materials
+	idLexer src( lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
+	idToken token;
+	idStr fullName;
+	idMapEntity *mapEnt;
+	int i, j, k;
+
+	name = filename;
+	name.StripFileExtension();
+	fullName = name;
+	hasPrimitiveData = false;
+
+	if ( !ignoreRegion ) {
+		// try loading a .reg file first
+		fullName.SetFileExtension( "reg" );
+		src.LoadFile( fullName, osPath );
+	}
+
+	if ( !src.IsLoaded() ) {
+		// now try a .map file
+		fullName.SetFileExtension( "map" );
+		src.LoadFile( fullName, osPath );
+		if ( !src.IsLoaded() ) {
+			// didn't get anything at all
+			return false;
+		}
+	}
+
+	version = OLD_MAP_VERSION;
+	fileTime = src.GetFileTime();
+	entities.DeleteContents( true );
+
+	if ( src.CheckTokenString( "Version" ) ) {
+		src.ReadTokenOnLine( &token );
+		version = token.GetFloatValue();
+	}
+
+	while( 1 ) {
+		mapEnt = idMapEntity::Parse( src, ( entities.Num() == 0 ), version );
+		if ( !mapEnt ) {
+			break;
+		}
+		entities.Append( mapEnt );
+	}
+
+	SetGeometryCRC();
+
+	// if the map has a worldspawn
+	if ( entities.Num() ) {
+
+		// "removeEntities" "classname" can be set in the worldspawn to remove all entities with the given classname
+		const idKeyValue *removeEntities = entities[0].epairs.MatchPrefix( "removeEntities", NULL );
+		while ( removeEntities ) {
+			RemoveEntities( removeEntities.GetValue() );
+			removeEntities = entities[0].epairs.MatchPrefix( "removeEntities", removeEntities );
+		}
+
+		// "overrideMaterial" "material" can be set in the worldspawn to reset all materials
+		idStr material;
+		if ( entities[0].epairs.GetString( "overrideMaterial", "", material ) ) {
+			for ( i = 0; i < entities.Num(); i++ ) {
+				mapEnt = entities[i];
+				for ( j = 0; j < mapEnt.GetNumPrimitives(); j++ ) {
+					idMapPrimitive *mapPrimitive = mapEnt.GetPrimitive( j );
+					switch( mapPrimitive.GetType() ) {
+						case idMapPrimitive::TYPE_BRUSH: {
+							idMapBrush *mapBrush = static_cast<idMapBrush *>(mapPrimitive);
+							for ( k = 0; k < mapBrush.GetNumSides(); k++ ) {
+								mapBrush.GetSide( k ).SetMaterial( material );
+							}
+							break;
+						}
+						case idMapPrimitive::TYPE_PATCH: {
+							static_cast<idMapPatch *>(mapPrimitive).SetMaterial( material );
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		// force all entities to have a name key/value pair
+		if ( entities[0].epairs.GetBool( "forceEntityNames" ) ) {
+			for ( i = 1; i < entities.Num(); i++ ) {
+				mapEnt = entities[i];
+				if ( !mapEnt.epairs.FindKey( "name" ) ) {
+					mapEnt.epairs.Set( "name", va( "%s%d", mapEnt.epairs.GetString( "classname", "forcedName" ), i ) );
+				}
+			}
+		}
+
+		// move the primitives of any func_group entities to the worldspawn
+		if ( entities[0].epairs.GetBool( "moveFuncGroups" ) ) {
+			for ( i = 1; i < entities.Num(); i++ ) {
+				mapEnt = entities[i];
+				if ( idStr::Icmp( mapEnt.epairs.GetString( "classname" ), "func_group" ) == 0 ) {
+					entities[0].primitives.Append( mapEnt.primitives );
+					mapEnt.primitives.Clear();
+				}
+			}
+		}
+	}
+
+	hasPrimitiveData = true;
+	return true;
+}
+
+////#ifndef __MAPFILE_H__
+////#define __MAPFILE_H__
+////
 /////*
-////===============
-////idMapFile::Parse
-////===============
+////===============================================================================
+////
+////	Reads or writes the contents of .map files into a standard internal
+////	format, which can then be moved into private formats for collision
+////	detection, map processing, or editor use.
+////
+////	No validation (duplicate planes, null area brushes, etc) is performed.
+////	There are no limits to the number of any of the elements in maps.
+////	The order of entities, brushes, and sides is maintained.
+////
+////===============================================================================
 ////*/
-////bool idMapFile::Parse( const char *filename, bool ignoreRegion, bool osPath ) {
-////	// no string concatenation for epairs and allow path names for materials
-////	idLexer src( lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
-////	idToken token;
-////	idStr fullName;
-////	idMapEntity *mapEnt;
-////	int i, j, k;
 ////
-////	name = filename;
-////	name.StripFileExtension();
-////	fullName = name;
-////	hasPrimitiveData = false;
+////const int OLD_MAP_VERSION					= 1;
+////const int CURRENT_MAP_VERSION				= 2;
+////const int DEFAULT_CURVE_SUBDIVISION			= 4;
+////const float DEFAULT_CURVE_MAX_ERROR			= 4.0f;
+////const float DEFAULT_CURVE_MAX_ERROR_CD		= 24.0f;
+////const float DEFAULT_CURVE_MAX_LENGTH		= -1.0f;
+////const float DEFAULT_CURVE_MAX_LENGTH_CD		= -1.0f;
 ////
-////	if ( !ignoreRegion ) {
-////		// try loading a .reg file first
-////		fullName.SetFileExtension( "reg" );
-////		src.LoadFile( fullName, osPath );
-////	}
 ////
-////	if ( !src.IsLoaded() ) {
-////		// now try a .map file
-////		fullName.SetFileExtension( "map" );
-////		src.LoadFile( fullName, osPath );
-////		if ( !src.IsLoaded() ) {
-////			// didn't get anything at all
-////			return false;
-////		}
-////	}
+////class idMapPrimitive {
+////public:
+////	enum { TYPE_INVALID = -1, TYPE_BRUSH, TYPE_PATCH };
 ////
-////	version = OLD_MAP_VERSION;
-////	fileTime = src.GetFileTime();
-////	entities.DeleteContents( true );
+////	idDict					epairs;
 ////
-////	if ( src.CheckTokenString( "Version" ) ) {
-////		src.ReadTokenOnLine( &token );
-////		version = token.GetFloatValue();
-////	}
+////							idMapPrimitive( ) { type = TYPE_INVALID; }
+////	virtual					~idMapPrimitive( ) { }
+////	int						GetType( ) const { return type; }
 ////
-////	while( 1 ) {
-////		mapEnt = idMapEntity::Parse( src, ( entities.Num() == 0 ), version );
-////		if ( !mapEnt ) {
-////			break;
-////		}
-////		entities.Append( mapEnt );
-////	}
+////protected:
+////	int						type;
+////};
 ////
-////	SetGeometryCRC();
 ////
-////	// if the map has a worldspawn
-////	if ( entities.Num() ) {
+////class idMapBrushSide {
+////	friend class idMapBrush;
 ////
-////		// "removeEntities" "classname" can be set in the worldspawn to remove all entities with the given classname
-////		const idKeyValue *removeEntities = entities[0]->epairs.MatchPrefix( "removeEntities", NULL );
-////		while ( removeEntities ) {
-////			RemoveEntities( removeEntities->GetValue() );
-////			removeEntities = entities[0]->epairs.MatchPrefix( "removeEntities", removeEntities );
-////		}
+////public:
+////							idMapBrushSide( );
+////							~idMapBrushSide( ) { }
+////	const char *			GetMaterial( ) const { return material; }
+////	void					SetMaterial( const char *p ) { material = p; }
+////	const idPlane &			GetPlane( ) const { return plane; }
+////	void					SetPlane( const idPlane &p ) { plane = p; }
+////	void					SetTextureMatrix( const idVec3 mat[2] ) { texMat[0] = mat[0]; texMat[1] = mat[1]; }
+////	void					GetTextureMatrix( idVec3 &mat1, idVec3 &mat2 ) { mat1 = texMat[0]; mat2 = texMat[1]; }
+////	void					GetTextureVectors( idVec4 v[2] ) const;
 ////
-////		// "overrideMaterial" "material" can be set in the worldspawn to reset all materials
-////		idStr material;
-////		if ( entities[0]->epairs.GetString( "overrideMaterial", "", material ) ) {
-////			for ( i = 0; i < entities.Num(); i++ ) {
-////				mapEnt = entities[i];
-////				for ( j = 0; j < mapEnt->GetNumPrimitives(); j++ ) {
-////					idMapPrimitive *mapPrimitive = mapEnt->GetPrimitive( j );
-////					switch( mapPrimitive->GetType() ) {
-////						case idMapPrimitive::TYPE_BRUSH: {
-////							idMapBrush *mapBrush = static_cast<idMapBrush *>(mapPrimitive);
-////							for ( k = 0; k < mapBrush->GetNumSides(); k++ ) {
-////								mapBrush->GetSide( k )->SetMaterial( material );
-////							}
-////							break;
-////						}
-////						case idMapPrimitive::TYPE_PATCH: {
-////							static_cast<idMapPatch *>(mapPrimitive)->SetMaterial( material );
-////							break;
-////						}
-////					}
-////				}
-////			}
-////		}
+////protected:
+////	idStr					material;
+////	idPlane					plane;
+////	idVec3					texMat[2];
+////	idVec3					origin;
+////};
 ////
-////		// force all entities to have a name key/value pair
-////		if ( entities[0]->epairs.GetBool( "forceEntityNames" ) ) {
-////			for ( i = 1; i < entities.Num(); i++ ) {
-////				mapEnt = entities[i];
-////				if ( !mapEnt->epairs.FindKey( "name" ) ) {
-////					mapEnt->epairs.Set( "name", va( "%s%d", mapEnt->epairs.GetString( "classname", "forcedName" ), i ) );
-////				}
-////			}
-////		}
-////
-////		// move the primitives of any func_group entities to the worldspawn
-////		if ( entities[0]->epairs.GetBool( "moveFuncGroups" ) ) {
-////			for ( i = 1; i < entities.Num(); i++ ) {
-////				mapEnt = entities[i];
-////				if ( idStr::Icmp( mapEnt->epairs.GetString( "classname" ), "func_group" ) == 0 ) {
-////					entities[0]->primitives.Append( mapEnt->primitives );
-////					mapEnt->primitives.Clear();
-////				}
-////			}
-////		}
-////	}
-////
-////	hasPrimitiveData = true;
-////	return true;
+////ID_INLINE idMapBrushSide::idMapBrushSide( ) {
+////	plane.Zero();
+////	texMat[0].Zero();
+////	texMat[1].Zero();
+////	origin.Zero();
 ////}
 ////
+////
+////class idMapBrush extends idMapPrimitive {
+////public:
+////							idMapBrush( ) { type = TYPE_BRUSH; sides.Resize( 8, 4 ); }
+////							~idMapBrush( ) { sides.DeleteContents( true ); }
+////	static idMapBrush *		Parse( idLexer &src, const idVec3 &origin, bool newFormat = true, float version = CURRENT_MAP_VERSION );
+////	static idMapBrush *		ParseQ3( idLexer &src, const idVec3 &origin );
+////	bool					Write( idFile *fp, int primitiveNum, const idVec3 &origin ) const;
+////	int						GetNumSides( ) const { return sides.Num(); }
+////	int						AddSide( idMapBrushSide *side ) { return sides.Append( side ); }
+////	idMapBrushSide *		GetSide( int i ) const { return sides[i]; }
+////	unsigned int			GetGeometryCRC( ) const;
+////
+////protected:
+////	int						numSides;
+////	idList<idMapBrushSide*> sides;
+////};
+////
+////
+////class idMapPatch extends idMapPrimitive, public idSurface_Patch {
+////public:
+////							idMapPatch( );
+////							idMapPatch( int maxPatchWidth, int maxPatchHeight );
+////							~idMapPatch( ) { }
+////	static idMapPatch *		Parse( idLexer &src, const idVec3 &origin, bool patchDef3 = true, float version = CURRENT_MAP_VERSION );
+////	bool					Write( idFile *fp, int primitiveNum, const idVec3 &origin ) const;
+////	const char *			GetMaterial( ) const { return material; }
+////	void					SetMaterial( const char *p ) { material = p; }
+////	int						GetHorzSubdivisions( ) const { return horzSubdivisions; }
+////	int						GetVertSubdivisions( ) const { return vertSubdivisions; }
+////	bool					GetExplicitlySubdivided( ) const { return explicitSubdivisions; }
+////	void					SetHorzSubdivisions( int n ) { horzSubdivisions = n; }
+////	void					SetVertSubdivisions( int n ) { vertSubdivisions = n; }
+////	void					SetExplicitlySubdivided( bool b ) { explicitSubdivisions = b; }
+////	unsigned int			GetGeometryCRC( ) const;
+////
+////protected:
+////	idStr					material;
+////	int						horzSubdivisions;
+////	int						vertSubdivisions;
+////	bool					explicitSubdivisions;
+////};
+////
+////ID_INLINE idMapPatch::idMapPatch( ) {
+////	type = TYPE_PATCH;
+////	horzSubdivisions = vertSubdivisions = 0;
+////	explicitSubdivisions = false;
+////	width = height = 0;
+////	maxWidth = maxHeight = 0;
+////	expanded = false;
+////}
+////
+////ID_INLINE idMapPatch::idMapPatch( int maxPatchWidth, int maxPatchHeight ) {
+////	type = TYPE_PATCH;
+////	horzSubdivisions = vertSubdivisions = 0;
+////	explicitSubdivisions = false;
+////	width = height = 0;
+////	maxWidth = maxPatchWidth;
+////	maxHeight = maxPatchHeight;
+////	verts.SetNum( maxWidth * maxHeight );
+////	expanded = false;
+////}
+////
+////
+////class idMapEntity {
+////	friend class			idMapFile;
+////
+////public:
+////	idDict					epairs;
+////
+////public:
+////							idMapEntity( ) { epairs.SetHashSize( 64 ); }
+////							~idMapEntity( ) { primitives.DeleteContents( true ); }
+////	static idMapEntity *	Parse( idLexer &src, bool worldSpawn = false, float version = CURRENT_MAP_VERSION );
+////	bool					Write( idFile *fp, int entityNum ) const;
+////	int						GetNumPrimitives( ) const { return primitives.Num(); }
+////	idMapPrimitive *		GetPrimitive( int i ) const { return primitives[i]; }
+////	void					AddPrimitive( idMapPrimitive *p ) { primitives.Append( p ); }
+////	unsigned int			GetGeometryCRC( ) const;
+////	void					RemovePrimitiveData();
+////
+////protected:
+////	idList<idMapPrimitive*>	primitives;
+////};
+////
+////
+class idMapFile {
+	////public:
+	////							idMapFile( );
+	////							~idMapFile( ) { entities.DeleteContents( true ); }
+	////
+	////							// filename does not require an extension
+	////							// normally this will use a .reg file instead of a .map file if it exists,
+	////							// which is what the game and dmap want, but the editor will want to always
+	////							// load a .map file
+	////	bool					Parse( const char *filename, bool ignoreRegion = false, bool osPath = false );
+	////	bool					Write( const char *fileName, const char *ext, bool fromBasePath = true );
+	////							// get the number of entities in the map
+	////	int						GetNumEntities( ) const { return entities.Num(); }
+	////							// get the specified entity
+	////	idMapEntity *			GetEntity( int i ) const { return entities[i]; }
+	////							// get the name without file extension
+	////	const char *			GetName( ) const { return name; }
+	////							// get the file time
+	////	ID_TIME_T					GetFileTime( ) const { return fileTime; }
+	////							// get CRC for the map geometry
+	////							// texture coordinates and entity key/value pairs are not taken into account
+	////	unsigned int			GetGeometryCRC( ) const { return geometryCRC; }
+	////							// returns true if the file on disk changed
+	////	bool					NeedsReload();
+	////
+	////	int						AddEntity( idMapEntity *mapentity );
+	////	idMapEntity *			FindEntity( const char *name );
+	////	void					RemoveEntity( idMapEntity *mapEnt );
+	////	void					RemoveEntities( const char *classname );
+	////	void					RemoveAllEntities();
+	////	void					RemovePrimitiveData();
+	////	bool					HasPrimitiveData() { return hasPrimitiveData; }
+	////
+	////protected:
+	////	float					version;
+	////	ID_TIME_T					fileTime;
+	////	unsigned int			geometryCRC;
+	////	idList<idMapEntity *>	entities;
+	////	idStr					name;
+	////	bool					hasPrimitiveData;
+	////
+	////private:
+	////	void					SetGeometryCRC( );
+////
+////ID_INLINE idMapFile::idMapFile( ) {
+////	version = CURRENT_MAP_VERSION;
+////	fileTime = 0;
+////	geometryCRC = 0;
+////	entities.Resize( 1024, 256 );
+////	hasPrimitiveData = false;
+////}
+////
+////#endif /* !__MAPFILE_H__ */
+
 /////*
 ////============
 ////idMapFile::Write
@@ -838,27 +1047,27 @@
 ////	qpath = fileName;
 ////	qpath.SetFileExtension( ext );
 ////
-////	idLib::common->Printf( "writing %s...\n", qpath.c_str() );
+////	idLib::common.Printf( "writing %s...\n", qpath.c_str() );
 ////
 ////	if ( fromBasePath ) {
-////		fp = idLib::fileSystem->OpenFileWrite( qpath, "fs_devpath" );
+////		fp = idLib::fileSystem.OpenFileWrite( qpath, "fs_devpath" );
 ////	}
 ////	else {
-////		fp = idLib::fileSystem->OpenExplicitFileWrite( qpath );
+////		fp = idLib::fileSystem.OpenExplicitFileWrite( qpath );
 ////	}
 ////
 ////	if ( !fp ) {
-////		idLib::common->Warning( "Couldn't open %s\n", qpath.c_str() );
+////		idLib::common.Warning( "Couldn't open %s\n", qpath.c_str() );
 ////		return false;
 ////	}
 ////
-////	fp->WriteFloatString( "Version %f\n", (float) CURRENT_MAP_VERSION );
+////	fp.WriteFloatString( "Version %f\n", (float) CURRENT_MAP_VERSION );
 ////
 ////	for ( i = 0; i < entities.Num(); i++ ) {
-////		entities[i]->Write( fp, i );
+////		entities[i].Write( fp, i );
 ////	}
 ////
-////	idLib::fileSystem->CloseFile( fp );
+////	idLib::fileSystem.CloseFile( fp );
 ////
 ////	return true;
 ////}
@@ -868,12 +1077,12 @@
 ////idMapFile::SetGeometryCRC
 ////===============
 ////*/
-////void idMapFile::SetGeometryCRC( void ) {
+////void idMapFile::SetGeometryCRC( ) {
 ////	int i;
 ////
 ////	geometryCRC = 0;
 ////	for ( i = 0; i < entities.Num(); i++ ) {
-////		geometryCRC ^= entities[i]->GetGeometryCRC();
+////		geometryCRC ^= entities[i].GetGeometryCRC();
 ////	}
 ////}
 ////
@@ -895,7 +1104,7 @@
 ////idMapEntity *idMapFile::FindEntity( const char *name ) {
 ////	for ( int i = 0; i < entities.Num(); i++ ) {
 ////		idMapEntity *ent = entities[i];
-////		if ( idStr::Icmp( ent->epairs.GetString( "name" ), name ) == 0 ) {
+////		if ( idStr::Icmp( ent.epairs.GetString( "name" ), name ) == 0 ) {
 ////			return ent;
 ////		}
 ////	}
@@ -920,7 +1129,7 @@
 ////void idMapFile::RemoveEntities( const char *classname ) {
 ////	for ( int i = 0; i < entities.Num(); i++ ) {
 ////		idMapEntity *ent = entities[i];
-////		if ( idStr::Icmp( ent->epairs.GetString( "classname" ), classname ) == 0 ) {
+////		if ( idStr::Icmp( ent.epairs.GetString( "classname" ), classname ) == 0 ) {
 ////			delete entities[i];
 ////			entities.RemoveIndex( i );
 ////			i--;
@@ -946,7 +1155,7 @@
 ////void idMapFile::RemovePrimitiveData() {
 ////	for ( int i = 0; i < entities.Num(); i++ ) {
 ////		idMapEntity *ent = entities[i];
-////		ent->RemovePrimitiveData();
+////		ent.RemovePrimitiveData();
 ////	}
 ////	hasPrimitiveData = false;
 ////}
@@ -959,9 +1168,10 @@
 ////bool idMapFile::NeedsReload() {
 ////	if ( name.Length() ) {
 ////		ID_TIME_T time = (ID_TIME_T)-1;
-////		if ( idLib::fileSystem->ReadFile( name, NULL, &time ) > 0 ) {
+////		if ( idLib::fileSystem.ReadFile( name, NULL, &time ) > 0 ) {
 ////			return ( time > fileTime );
 ////		}
 ////	}
 ////	return true;
 ////}
+}

@@ -177,7 +177,6 @@
     <TypeScriptCompile Include="libs\idLib\Containers\LinkList.h.ts" />
     <TypeScriptCompile Include="libs\idLib\Math\Random.h.ts" />
     <TypeScriptCompile Include="libs\idLib\MapFile.cpp.ts" />
-    <TypeScriptCompile Include="libs\idLib\MapFile.h.ts" />
     <TypeScriptCompile Include="libs\idLib\Containers\StrPool.h.ts" />
     <TypeScriptCompile Include="libs\idLib\Containers\Hierarchy.h.ts" />
     <TypeScriptCompile Include="libs\idLib\Containers\StaticList.h.ts" />

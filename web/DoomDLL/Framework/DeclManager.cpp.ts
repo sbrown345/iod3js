@@ -268,7 +268,7 @@ class idDeclManagerLocal extends idDeclManager {
 	loadedFiles = new idList<idDeclFile>(idDeclFile, true);
     hashTables:idHashIndex[/*declType_t.DECL_MAX_TYPES*/];
 	linearLists:idList<idDeclLocal>[]/*[declType_t.DECL_MAX_TYPES]*/;
-                                implicitDecls:idDeclFile;	// this holds all the decls that were created because explicit
+    implicitDecls:idDeclFile;	// this holds all the decls that were created because explicit
 												// text definitions were not found. Decls that became default
 												// because of a parse error are not in this list.
 	checksum:number/*int*/;		// checksum of all loaded decl text
@@ -901,8 +901,8 @@ idDeclManagerLocal.prototype.Init = function( ):void {
 
 ////	// free decls
 ////	for ( i = 0; i < declType_t.DECL_MAX_TYPES; i++ ) {
-////		for ( j = 0; j < linearLists[i].Num(); j++ ) {
-////			decl = linearLists[i][j];
+////		for ( j = 0; j < this.linearLists[i].Num(); j++ ) {
+////			decl = this.linearLists[i][j];
 ////			if ( decl.self != NULL ) {
 ////				decl.self.FreeData();
 ////				delete decl.self;
@@ -913,7 +913,7 @@ idDeclManagerLocal.prototype.Init = function( ):void {
 ////			}
 ////			delete decl;
 ////		}
-////		linearLists[i].Clear();
+////		this.linearLists[i].Clear();
 ////		this.hashTables[i].Free();
 ////	}
 
@@ -1061,7 +1061,7 @@ idDeclManagerLocal.prototype.RegisterDeclFolder = function ( folder: string, ext
 ////	// get the total number of decls
 ////	total = 0;
 ////	for ( i = 0; i < declType_t.DECL_MAX_TYPES; i++ ) {
-////		total += linearLists[i].Num();
+////		total += this.linearLists[i].Num();
 ////	}
 
 ////	checksumData = (int *) _alloca16( total * 2 * sizeof( int ) );
@@ -1075,9 +1075,9 @@ idDeclManagerLocal.prototype.RegisterDeclFolder = function ( folder: string, ext
 ////			continue;
 ////		}
  
-////		num = linearLists[i].Num();
+////		num = this.linearLists[i].Num();
 ////		for ( j = 0; j < num; j++ ) {
-////			idDeclLocal *decl = linearLists[i][j];
+////			idDeclLocal *decl = this.linearLists[i][j];
 
 ////			if ( decl.sourceFile == &implicitDecls ) {
 ////				continue;
@@ -1199,19 +1199,19 @@ idDeclManagerLocal.prototype.FindType = function ( type: declType_t, name: strin
 ////	}
 ////}
 
-/////*
-////===================
-////idDeclManagerLocal::GetNumDecls
-////===================
-////*/
-////int idDeclManagerLocal::GetNumDecls( declType_t type ) {
-////	int typeIndex = (int)type;
+/*
+===================
+idDeclManagerLocal::GetNumDecls
+===================
+*/
+idDeclManagerLocal.prototype.GetNumDecls = function ( type: declType_t ): number /*int*/ {
+	var /*int */typeIndex = /*(int)*/type;
 
-////	if ( typeIndex < 0 || typeIndex >= this.declTypes.Num() || this.declTypes[typeIndex] == NULL ) {
-////		common.FatalError( "idDeclManager::GetNumDecls: bad type: %i", typeIndex );
-////	}
-////	return linearLists[ typeIndex ].Num();
-////}
+	if ( typeIndex < 0 || typeIndex >= this.declTypes.Num ( ) || this.declTypes[typeIndex] == null ) {
+		common.FatalError( "idDeclManager::GetNumDecls: bad type: %i", typeIndex );
+	}
+	return this.linearLists[typeIndex].Num ( );
+};
 
 /*
 ===================
@@ -1221,7 +1221,7 @@ idDeclManagerLocal::DeclByIndex
 idDeclManagerLocal.prototype.DeclByIndex = function (type: declType_t, /*int */index:number, forceParse = true ):idDecl {
 	var typeIndex = /*(int)*/type;
 
-	if ( typeIndex < 0 || typeIndex >= this.declTypes.Num() || this.declTypes[typeIndex] == NULL ) {
+	if ( typeIndex < 0 || typeIndex >= this.declTypes.Num() || this.declTypes[typeIndex] == null ) {
 		common.FatalError( "idDeclManager::DeclByIndex: bad type: %i", typeIndex );
 	}
 	if ( index < 0 || index >= this.linearLists[ typeIndex ].Num() ) {
@@ -1271,9 +1271,9 @@ idDeclManagerLocal.prototype.ListType = function ( args: idCmdArgs, type: declTy
 
 ////	common.Printf( "--------------------\n" );
 ////	int printed = 0;
-////	int	count = linearLists[ (int)type ].Num();
+////	int	count = this.linearLists[ (int)type ].Num();
 ////	for ( int i = 0 ; i < count ; i++ ) {
-////		idDeclLocal *decl = linearLists[ (int)type ][ i ];
+////		idDeclLocal *decl = this.linearLists[ (int)type ][ i ];
 
 ////		if ( !all && decl.declState == declState_t.DS_UNPARSED ) {
 ////			continue;
@@ -1391,9 +1391,9 @@ idDeclManagerLocal.prototype.PrintType = function ( args: idCmdArgs, type: declT
 ////	// see if it already exists
 ////	hash = this.hashTables[typeIndex].GenerateKey( canonicalName, false );
 ////	for ( i = this.hashTables[typeIndex].First( hash ); i >= 0; i = this.hashTables[typeIndex].Next( i ) ) {
-////		if ( linearLists[typeIndex][i].name.Icmp( canonicalName ) == 0 ) {
-////			linearLists[typeIndex][i].AllocateSelf();
-////			return linearLists[typeIndex][i].self;
+////		if ( this.linearLists[typeIndex][i].name.Icmp( canonicalName ) == 0 ) {
+////			this.linearLists[typeIndex][i].AllocateSelf();
+////			return this.linearLists[typeIndex][i].self;
 ////		}
 ////	}
 
@@ -1443,8 +1443,8 @@ idDeclManagerLocal.prototype.PrintType = function ( args: idCmdArgs, type: declT
 ////	sourceFile.decls = decl;
 
 ////	// add it to the hash table and linear list
-////	decl.index = linearLists[typeIndex].Num();
-////	this.hashTables[typeIndex].Add( hash, linearLists[typeIndex].Append( decl ) );
+////	decl.index = this.linearLists[typeIndex].Num();
+////	this.hashTables[typeIndex].Add( hash, this.linearLists[typeIndex].Append( decl ) );
 
 ////	return decl.self;
 ////}
@@ -1469,8 +1469,8 @@ idDeclManagerLocal.prototype.PrintType = function ( args: idCmdArgs, type: declT
 ////	int i, hash;
 ////	hash = this.hashTables[typeIndex].GenerateKey( canonicalOldName, false );
 ////	for ( i = this.hashTables[typeIndex].First( hash ); i >= 0; i = this.hashTables[typeIndex].Next( i ) ) {
-////		if ( linearLists[typeIndex][i].name.Icmp( canonicalOldName ) == 0 ) {
-////			decl = linearLists[typeIndex][i];
+////		if ( this.linearLists[typeIndex][i].name.Icmp( canonicalOldName ) == 0 ) {
+////			decl = this.linearLists[typeIndex][i];
 ////			break;
 ////		}
 ////	}
@@ -1534,10 +1534,10 @@ idDeclManagerLocal.prototype.MediaPrint = function ( fmt:string, ...args: any[] 
 ////			continue;
 ////		}
 
-////		num = linearLists[i].Num();
+////		num = this.linearLists[i].Num();
 
 ////		for ( int j = 0 ; j < num ; j++ ) {
-////			idDeclLocal *decl = linearLists[i][j];
+////			idDeclLocal *decl = this.linearLists[i][j];
 
 ////			if ( !decl.referencedThisLevel ) {
 ////				continue;

@@ -129,7 +129,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //	const idKeyValue	*kv;
 //	copyJoints_t		copyJoint;
 //
-//	if ( renderEntity.hModel && renderEntity.hModel->IsDefaultModel() && !animator.ModelDef() ) {
+//	if ( renderEntity.hModel && renderEntity.hModel.IsDefaultModel() && !animator.ModelDef() ) {
 //		gameLocal.Warning( "Unable to create testmodel for '%s' : model defaulted", spawnArgs.GetString( "model" ) );
 //		PostEventMS( &EV_Remove, 0 );
 //		return;
@@ -139,8 +139,8 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //	animator.RemoveOriginOffset( g_testModelAnimate.GetInteger() == 1 );
 //
 //	physicsObj.SetSelf( this );
-//	physicsObj.SetOrigin( GetPhysics()->GetOrigin() );
-//	physicsObj.SetAxis( GetPhysics()->GetAxis() );
+//	physicsObj.SetOrigin( GetPhysics().GetOrigin() );
+//	physicsObj.SetAxis( GetPhysics().GetAxis() );
 //	
 //	if ( spawnArgs.GetVector( "mins", NULL, bounds[0] ) ) {
 //		spawnArgs.GetVector( "maxs", NULL, bounds[1] );
@@ -167,23 +167,23 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //			idDict				args;
 //			const idKeyValue	*sndKV = spawnArgs.MatchPrefix( "snd_", NULL );
 //			while( sndKV ) {
-//				args.Set( sndKV->GetKey(), sndKV->GetValue() );
+//				args.Set( sndKV.GetKey(), sndKV.GetValue() );
 //				sndKV = spawnArgs.MatchPrefix( "snd_", sndKV );
 //			}
 //
 //			head = gameLocal.SpawnEntityType( idAnimatedEntity::Type, &args );
 //			animator.GetJointTransform( joint, gameLocal.time, origin, axis );
-//			origin = GetPhysics()->GetOrigin() + ( origin + modelOffset ) * GetPhysics()->GetAxis();
-//			head.GetEntity()->SetModel( headModel );
-//			head.GetEntity()->SetOrigin( origin );
-//			head.GetEntity()->SetAxis( GetPhysics()->GetAxis() );
-//			head.GetEntity()->BindToJoint( this, animator.GetJointName( joint ), true );
+//			origin = GetPhysics().GetOrigin() + ( origin + modelOffset ) * GetPhysics().GetAxis();
+//			head.GetEntity().SetModel( headModel );
+//			head.GetEntity().SetOrigin( origin );
+//			head.GetEntity().SetAxis( GetPhysics().GetAxis() );
+//			head.GetEntity().BindToJoint( this, animator.GetJointName( joint ), true );
 //		
-//			headAnimator = head.GetEntity()->GetAnimator();
+//			headAnimator = head.GetEntity().GetAnimator();
 //
 //			// set up the list of joints to copy to the head
 //			for( kv = spawnArgs.MatchPrefix( "copy_joint", NULL ); kv != NULL; kv = spawnArgs.MatchPrefix( "copy_joint", kv ) ) {
-//				jointName = kv->GetKey();
+//				jointName = kv.GetKey();
 //
 //				if ( jointName.StripLeadingOnce( "copy_joint_world " ) ) {
 //					copyJoint.mod = JOINTMOD_WORLD_OVERRIDE;
@@ -198,7 +198,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //					continue;
 //				}
 //
-//				copyJoint.to = headAnimator->GetJointHandle( jointName );
+//				copyJoint.to = headAnimator.GetJointHandle( jointName );
 //				if ( copyJoint.to == INVALID_JOINT ) {
 //					gameLocal.Warning( "Unknown copy_joint '%s' on head", jointName.c_str() );
 //					continue;
@@ -214,7 +214,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //
 //	SetPhysics( &physicsObj );
 //
-//	gameLocal.Printf( "Added testmodel at origin = '%s',  angles = '%s'\n", GetPhysics()->GetOrigin().ToString(), GetPhysics()->GetAxis().ToAngles().ToString()  );
+//	gameLocal.Printf( "Added testmodel at origin = '%s',  angles = '%s'\n", GetPhysics().GetOrigin().ToString(), GetPhysics().GetAxis().ToAngles().ToString()  );
 //	BecomeActive( TH_THINK );
 //}
 //
@@ -226,7 +226,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //idTestModel::~idTestModel() {
 //	StopSound( SND_CHANNEL_ANY, false );
 //	if ( renderEntity.hModel ) {
-//		gameLocal.Printf( "Removing testmodel %s\n", renderEntity.hModel->Name() );
+//		gameLocal.Printf( "Removing testmodel %s\n", renderEntity.hModel.Name() );
 //	} else {
 //		gameLocal.Printf( "Removing testmodel\n" );
 //	}
@@ -234,8 +234,8 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //		gameLocal.testmodel = NULL;
 //	}
 //	if ( head.GetEntity() ) {
-//		head.GetEntity()->StopSound( SND_CHANNEL_ANY, false );
-//		head.GetEntity()->PostEventMS( &EV_Remove, 0 );
+//		head.GetEntity().StopSound( SND_CHANNEL_ANY, false );
+//		head.GetEntity().PostEventMS( &EV_Remove, 0 );
 //	}
 //}
 //
@@ -275,7 +275,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //		if ( anim && ( gameLocal.testmodel == this ) && ( mode != g_testModelAnimate.GetInteger() ) ) {
 //			StopSound( SND_CHANNEL_ANY, false );
 //			if ( head.GetEntity() ) {
-//				head.GetEntity()->StopSound( SND_CHANNEL_ANY, false );
+//				head.GetEntity().StopSound( SND_CHANNEL_ANY, false );
 //			}
 //			switch( g_testModelAnimate.GetInteger() ) {
 //			default:
@@ -285,15 +285,15 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //					// single frame animations end immediately, so just cycle it since it's the same result
 //					animator.CycleAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
 //					if ( headAnim ) {
-//						headAnimator->CycleAnim( ANIMCHANNEL_ALL, headAnim, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
+//						headAnimator.CycleAnim( ANIMCHANNEL_ALL, headAnim, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
 //					}
 //				} else {
 //					animator.PlayAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
 //					if ( headAnim ) {
-//						headAnimator->PlayAnim( ANIMCHANNEL_ALL, headAnim, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
-//						if ( headAnimator->AnimLength( headAnim ) > animator.AnimLength( anim ) ) {
+//						headAnimator.PlayAnim( ANIMCHANNEL_ALL, headAnim, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
+//						if ( headAnimator.AnimLength( headAnim ) > animator.AnimLength( anim ) ) {
 //							// loop the body anim when the head anim is longer
-//							animator.CurrentAnim( ANIMCHANNEL_ALL )->SetCycleCount( -1 );
+//							animator.CurrentAnim( ANIMCHANNEL_ALL ).SetCycleCount( -1 );
 //						}
 //					}
 //				}
@@ -305,7 +305,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //				animator.CycleAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
 //				animator.RemoveOriginOffset( true );
 //				if ( headAnim ) {
-//					headAnimator->CycleAnim( ANIMCHANNEL_ALL, headAnim, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
+//					headAnimator.CycleAnim( ANIMCHANNEL_ALL, headAnim, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
 //				}
 //				break;
 //
@@ -314,7 +314,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //				animator.CycleAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
 //				animator.RemoveOriginOffset( false );
 //				if ( headAnim ) {
-//					headAnimator->CycleAnim( ANIMCHANNEL_ALL, headAnim, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
+//					headAnimator.CycleAnim( ANIMCHANNEL_ALL, headAnim, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
 //				}
 //				break;
 //
@@ -323,7 +323,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //				animator.SetFrame( ANIMCHANNEL_ALL, anim, frame, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
 //				animator.RemoveOriginOffset( false );
 //				if ( headAnim ) {
-//					headAnimator->SetFrame( ANIMCHANNEL_ALL, headAnim, frame, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
+//					headAnimator.SetFrame( ANIMCHANNEL_ALL, headAnim, frame, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
 //				}
 //				break;
 //
@@ -332,7 +332,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //				animator.PlayAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
 //				animator.RemoveOriginOffset( false );
 //				if ( headAnim ) {
-//					headAnimator->PlayAnim( ANIMCHANNEL_ALL, headAnim, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
+//					headAnimator.PlayAnim( ANIMCHANNEL_ALL, headAnim, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
 //				}
 //				break;
 //
@@ -341,7 +341,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //				animator.SetFrame( ANIMCHANNEL_ALL, anim, frame, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
 //				animator.RemoveOriginOffset( true );
 //				if ( headAnim ) {
-//					headAnimator->SetFrame( ANIMCHANNEL_ALL, headAnim, frame, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
+//					headAnimator.SetFrame( ANIMCHANNEL_ALL, headAnim, frame, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
 //				}
 //				break;
 //			}
@@ -354,10 +354,10 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //			StopSound( SND_CHANNEL_ANY, false );
 //			animator.PlayAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
 //			if ( headAnim ) {
-//				headAnimator->PlayAnim( ANIMCHANNEL_ALL, headAnim, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
-//				if ( headAnimator->AnimLength( headAnim ) > animator.AnimLength( anim ) ) {
+//				headAnimator.PlayAnim( ANIMCHANNEL_ALL, headAnim, gameLocal.time, FRAME2MS( g_testModelBlend.GetInteger() ) );
+//				if ( headAnimator.AnimLength( headAnim ) > animator.AnimLength( anim ) ) {
 //					// loop the body anim when the head anim is longer
-//					animator.CurrentAnim( ANIMCHANNEL_ALL )->SetCycleCount( -1 );
+//					animator.CurrentAnim( ANIMCHANNEL_ALL ).SetCycleCount( -1 );
 //				}
 //			}
 //		}
@@ -366,15 +366,15 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //			// copy the animation from the body to the head
 //			for( i = 0; i < copyJoints.Num(); i++ ) {
 //				if ( copyJoints[ i ].mod == JOINTMOD_WORLD_OVERRIDE ) {
-//					idMat3 mat = head.GetEntity()->GetPhysics()->GetAxis().Transpose();
+//					idMat3 mat = head.GetEntity().GetPhysics().GetAxis().Transpose();
 //					GetJointWorldTransform( copyJoints[ i ].from, gameLocal.time, pos, axis );
-//					pos -= head.GetEntity()->GetPhysics()->GetOrigin();
-//					headAnimator->SetJointPos( copyJoints[ i ].to, copyJoints[ i ].mod, pos * mat );
-//					headAnimator->SetJointAxis( copyJoints[ i ].to, copyJoints[ i ].mod, axis * mat );
+//					pos -= head.GetEntity().GetPhysics().GetOrigin();
+//					headAnimator.SetJointPos( copyJoints[ i ].to, copyJoints[ i ].mod, pos * mat );
+//					headAnimator.SetJointAxis( copyJoints[ i ].to, copyJoints[ i ].mod, axis * mat );
 //				} else {
 //					animator.GetJointLocalTransform( copyJoints[ i ].from, gameLocal.time, pos, axis );
-//					headAnimator->SetJointPos( copyJoints[ i ].to, copyJoints[ i ].mod, pos );
-//					headAnimator->SetJointAxis( copyJoints[ i ].to, copyJoints[ i ].mod, axis );
+//					headAnimator.SetJointPos( copyJoints[ i ].to, copyJoints[ i ].mod, pos );
+//					headAnimator.SetJointAxis( copyJoints[ i ].to, copyJoints[ i ].mod, axis );
 //				}
 //			}
 //		}
@@ -393,8 +393,8 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //
 //			joint = animator.GetJointHandle( "origin" );
 //			animator.GetJointTransform( joint, gameLocal.time, neworigin, axis );
-//			neworigin = ( ( neworigin - animator.ModelDef()->GetVisualOffset() ) * physicsObj.GetAxis() ) + GetPhysics()->GetOrigin();
-//			clip->Link( gameLocal.clip, this, 0, neworigin, clip->GetAxis() );
+//			neworigin = ( ( neworigin - animator.ModelDef().GetVisualOffset() ) * physicsObj.GetAxis() ) + GetPhysics().GetOrigin();
+//			clip.Link( gameLocal.clip, this, 0, neworigin, clip.GetAxis() );
 //		}
 //	}
 //
@@ -402,11 +402,11 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //	Present();
 //
 //	if ( ( gameLocal.testmodel == this ) && g_showTestModelFrame.GetInteger() && anim ) {
-//		gameLocal.Printf( "^5 Anim: ^7%s  ^5Frame: ^7%d/%d  Time: %.3f\n", animator.AnimFullName( anim ), animator.CurrentAnim( ANIMCHANNEL_ALL )->GetFrameNumber( gameLocal.time ),
-//			animator.CurrentAnim( ANIMCHANNEL_ALL )->NumFrames(), MS2SEC( gameLocal.time - animator.CurrentAnim( ANIMCHANNEL_ALL )->GetStartTime() ) );
+//		gameLocal.Printf( "^5 Anim: ^7%s  ^5Frame: ^7%d/%d  Time: %.3f\n", animator.AnimFullName( anim ), animator.CurrentAnim( ANIMCHANNEL_ALL ).GetFrameNumber( gameLocal.time ),
+//			animator.CurrentAnim( ANIMCHANNEL_ALL ).NumFrames(), MS2SEC( gameLocal.time - animator.CurrentAnim( ANIMCHANNEL_ALL ).GetStartTime() ) );
 //		if ( headAnim ) {
-//			gameLocal.Printf( "^5 Head: ^7%s  ^5Frame: ^7%d/%d  Time: %.3f\n\n", headAnimator->AnimFullName( headAnim ), headAnimator->CurrentAnim( ANIMCHANNEL_ALL )->GetFrameNumber( gameLocal.time ),
-//				headAnimator->CurrentAnim( ANIMCHANNEL_ALL )->NumFrames(), MS2SEC( gameLocal.time - headAnimator->CurrentAnim( ANIMCHANNEL_ALL )->GetStartTime() ) );
+//			gameLocal.Printf( "^5 Head: ^7%s  ^5Frame: ^7%d/%d  Time: %.3f\n\n", headAnimator.AnimFullName( headAnim ), headAnimator.CurrentAnim( ANIMCHANNEL_ALL ).GetFrameNumber( gameLocal.time ),
+//				headAnimator.CurrentAnim( ANIMCHANNEL_ALL ).NumFrames(), MS2SEC( gameLocal.time - headAnimator.CurrentAnim( ANIMCHANNEL_ALL ).GetStartTime() ) );
 //		} else {
 //			gameLocal.Printf( "\n\n" );
 //		}
@@ -434,20 +434,20 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //	animname = animator.AnimFullName( anim );
 //	headAnim = 0;
 //	if ( headAnimator ) {
-//		headAnimator->ClearAllAnims( gameLocal.time, 0 );
-//        headAnim = headAnimator->GetAnim( animname );
+//		headAnimator.ClearAllAnims( gameLocal.time, 0 );
+//        headAnim = headAnimator.GetAnim( animname );
 //		if ( !headAnim ) {
-//			headAnim = headAnimator->GetAnim( "idle" );
+//			headAnim = headAnimator.GetAnim( "idle" );
 //		}
 //
-//		if ( headAnim && ( headAnimator->AnimLength( headAnim ) > animtime ) ) {
-//			animtime = headAnimator->AnimLength( headAnim );
+//		if ( headAnim && ( headAnimator.AnimLength( headAnim ) > animtime ) ) {
+//			animtime = headAnimator.AnimLength( headAnim );
 //		}
 //	}
 //
 //	gameLocal.Printf( "anim '%s', %d.%03d seconds, %d frames\n", animname.c_str(), animator.AnimLength( anim ) / 1000, animator.AnimLength( anim ) % 1000, animator.NumFrames( anim ) );
 //	if ( headAnim ) {
-//		gameLocal.Printf( "head '%s', %d.%03d seconds, %d frames\n", headAnimator->AnimFullName( headAnim ), headAnimator->AnimLength( headAnim ) / 1000, headAnimator->AnimLength( headAnim ) % 1000, headAnimator->NumFrames( headAnim ) );
+//		gameLocal.Printf( "head '%s', %d.%03d seconds, %d frames\n", headAnimator.AnimFullName( headAnim ), headAnimator.AnimLength( headAnim ) / 1000, headAnimator.AnimLength( headAnim ) % 1000, headAnimator.NumFrames( headAnim ) );
 //	}
 //
 //	// reset the anim
@@ -476,20 +476,20 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //	animname = animator.AnimFullName( anim );
 //	headAnim = 0;
 //	if ( headAnimator ) {
-//		headAnimator->ClearAllAnims( gameLocal.time, 0 );
-//        headAnim = headAnimator->GetAnim( animname );
+//		headAnimator.ClearAllAnims( gameLocal.time, 0 );
+//        headAnim = headAnimator.GetAnim( animname );
 //		if ( !headAnim ) {
-//			headAnim = headAnimator->GetAnim( "idle" );
+//			headAnim = headAnimator.GetAnim( "idle" );
 //		}
 //
-//		if ( headAnim && ( headAnimator->AnimLength( headAnim ) > animtime ) ) {
-//			animtime = headAnimator->AnimLength( headAnim );
+//		if ( headAnim && ( headAnimator.AnimLength( headAnim ) > animtime ) ) {
+//			animtime = headAnimator.AnimLength( headAnim );
 //		}
 //	}
 //
 //	gameLocal.Printf( "anim '%s', %d.%03d seconds, %d frames\n", animname.c_str(), animator.AnimLength( anim ) / 1000, animator.AnimLength( anim ) % 1000, animator.NumFrames( anim ) );
 //	if ( headAnim ) {
-//		gameLocal.Printf( "head '%s', %d.%03d seconds, %d frames\n", headAnimator->AnimFullName( headAnim ), headAnimator->AnimLength( headAnim ) / 1000, headAnimator->AnimLength( headAnim ) % 1000, headAnimator->NumFrames( headAnim ) );
+//		gameLocal.Printf( "head '%s', %d.%03d seconds, %d frames\n", headAnimator.AnimFullName( headAnim ), headAnimator.AnimLength( headAnim ) / 1000, headAnimator.AnimLength( headAnim ) % 1000, headAnimator.NumFrames( headAnim ) );
 //	}
 //
 //	// reset the anim
@@ -585,17 +585,17 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //	animtime = animator.AnimLength( anim );
 //	headAnim = 0;
 //	if ( headAnimator ) {
-//		headAnimator->ClearAllAnims( gameLocal.time, 0 );
-//        headAnim = headAnimator->GetAnim( animname );
+//		headAnimator.ClearAllAnims( gameLocal.time, 0 );
+//        headAnim = headAnimator.GetAnim( animname );
 //		if ( !headAnim ) {
-//			headAnim = headAnimator->GetAnim( "idle" );
+//			headAnim = headAnimator.GetAnim( "idle" );
 //			if ( !headAnim ) {
 //				gameLocal.Printf( "Missing 'idle' anim for head.\n" );
 //			}
 //		}
 //
-//		if ( headAnim && ( headAnimator->AnimLength( headAnim ) > animtime ) ) {
-//			animtime = headAnimator->AnimLength( headAnim );
+//		if ( headAnim && ( headAnimator.AnimLength( headAnim ) > animtime ) ) {
+//			animtime = headAnimator.AnimLength( headAnim );
 //		}
 //	}
 //
@@ -620,13 +620,13 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //		return;
 //	}
 //
-//	anim1 = gameLocal.testmodel->animator.GetAnim( args.Argv( 1 ) );
+//	anim1 = gameLocal.testmodel.animator.GetAnim( args.Argv( 1 ) );
 //	if ( !anim1 ) {
 //		gameLocal.Printf( "Animation '%s' not found.\n", args.Argv( 1 ) );
 //		return;
 //	}
 //
-//	anim2 = gameLocal.testmodel->animator.GetAnim( args.Argv( 2 ) );
+//	anim2 = gameLocal.testmodel.animator.GetAnim( args.Argv( 2 ) );
 //	if ( !anim2 ) {
 //		gameLocal.Printf( "Animation '%s' not found.\n", args.Argv( 2 ) );
 //		return;
@@ -660,7 +660,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //		return;
 //	}
 //
-//	gameLocal.Printf( "modelDef %p kept\n", gameLocal.testmodel->renderEntity.hModel );
+//	gameLocal.Printf( "modelDef %p kept\n", gameLocal.testmodel.renderEntity.hModel );
 //
 //	gameLocal.testmodel = NULL;
 //}
@@ -685,18 +685,18 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //
 //	// delete the testModel if active
 //	if ( !gameLocal.testmodel ) {
-//		common->Printf( "No active testModel\n" );
+//		common.Printf( "No active testModel\n" );
 //		return;
 //	}
 //
 //	if ( args.Argc() < 2 ) {
-//		common->Printf( "removing testSkin.\n" );
-//		gameLocal.testmodel->SetSkin( NULL );
+//		common.Printf( "removing testSkin.\n" );
+//		gameLocal.testmodel.SetSkin( NULL );
 //		return;
 //	}
 //
 //	name = args.Argv( 1 );
-//	gameLocal.testmodel->SetSkin( declManager->FindSkin( name ) );
+//	gameLocal.testmodel.SetSkin( declManager.FindSkin( name ) );
 //}
 //
 ///*
@@ -719,18 +719,18 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //
 //	// delete the testModel if active
 //	if ( !gameLocal.testmodel ) {
-//		common->Printf( "No active testModel\n" );
+//		common.Printf( "No active testModel\n" );
 //		return;
 //	}
 //
 //	if ( args.Argc() != 3 ) {
-//		common->Printf( "USAGE: testShaderParm <parmNum> <float | \"time\">\n" );
+//		common.Printf( "USAGE: testShaderParm <parmNum> <float | \"time\">\n" );
 //		return;
 //	}
 //
 //	int	parm = atoi( args.Argv( 1 ) );
 //	if ( parm < 0 || parm >= MAX_ENTITY_SHADER_PARMS ) {
-//		common->Printf( "parmNum %i out of range\n", parm );
+//		common.Printf( "parmNum %i out of range\n", parm );
 //		return;
 //	}
 //
@@ -741,7 +741,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //		value = atof( args.Argv( 2 ) );
 //	}
 //
-//	gameLocal.testmodel->SetShaderParm( parm, value );
+//	gameLocal.testmodel.SetShaderParm( parm, value );
 //}
 //
 ///*
@@ -780,7 +780,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //	if ( entityDef ) {
 //		dict = *entityDef;
 //	} else {
-//		if ( declManager->FindType( DECL_MODELDEF, name, false ) ) {
+//		if ( declManager.FindType( DECL_MODELDEF, name, false ) ) {
 //			dict.Set( "model", name );
 //		} else {
 //			// allow map models with underscore prefixes to be tested during development
@@ -795,7 +795,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //				name.SetFileExtension( MD5_MESH_EXT );
 //			}
 //
-//			if ( !renderModelManager->CheckModel( name ) ) {
+//			if ( !renderModelManager.CheckModel( name ) ) {
 //				gameLocal.Printf( "Can't register model\n" );
 //				return;
 //			}
@@ -803,12 +803,12 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //		}
 //	}
 //
-//	offset = player->GetPhysics()->GetOrigin() + player->viewAngles.ToForward() * 100.0f;
+//	offset = player.GetPhysics().GetOrigin() + player.viewAngles.ToForward() * 100.0f;
 //
 //	dict.Set( "origin", offset.ToString() );
-//	dict.Set( "angle", va( "%f", player->viewAngles.yaw + 180.0f ) );
+//	dict.Set( "angle", va( "%f", player.viewAngles.yaw + 180.0f ) );
 //	gameLocal.testmodel = ( idTestModel * )gameLocal.SpawnEntityType( idTestModel::Type, &dict );
-//	gameLocal.testmodel->renderEntity.shaderParms[SHADERPARM_TIMEOFFSET] = -MS2SEC( gameLocal.time );
+//	gameLocal.testmodel.renderEntity.shaderParms[SHADERPARM_TIMEOFFSET] = -MS2SEC( gameLocal.time );
 //}
 //
 ///*
@@ -819,15 +819,15 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //void idTestModel::ArgCompletion_TestModel( const idCmdArgs &args, void(*callback)( const char *s ) ) {
 //	int i, num;
 //
-//	num = declManager->GetNumDecls( DECL_ENTITYDEF );
+//	num = declManager.GetNumDecls( DECL_ENTITYDEF );
 //	for ( i = 0; i < num; i++ ) {
-//		callback( idStr( args.Argv( 0 ) ) + " " + declManager->DeclByIndex( DECL_ENTITYDEF, i , false )->GetName() );
+//		callback( idStr( args.Argv( 0 ) ) + " " + declManager.DeclByIndex( DECL_ENTITYDEF, i , false ).GetName() );
 //	}
-//	num = declManager->GetNumDecls( DECL_MODELDEF );
+//	num = declManager.GetNumDecls( DECL_MODELDEF );
 //	for ( i = 0; i < num; i++ ) {
-//		callback( idStr( args.Argv( 0 ) ) + " " + declManager->DeclByIndex( DECL_MODELDEF, i , false )->GetName() );
+//		callback( idStr( args.Argv( 0 ) ) + " " + declManager.DeclByIndex( DECL_MODELDEF, i , false ).GetName() );
 //	}
-//	cmdSystem->ArgCompletion_FolderExtension( args, callback, "models/", false, ".lwo", ".ase", ".md5mesh", ".ma", ".mb", NULL );
+//	cmdSystem.ArgCompletion_FolderExtension( args, callback, "models/", false, ".lwo", ".ase", ".md5mesh", ".ma", ".mb", NULL );
 //}
 //
 ///*
@@ -841,8 +841,8 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //		return;
 //	}
 //
-//	gameLocal.testmodel->renderEntity.shaderParms[SHADERPARM_PARTICLE_STOPTIME] = MS2SEC( gameLocal.time );
-//	gameLocal.testmodel->UpdateVisuals();
+//	gameLocal.testmodel.renderEntity.shaderParms[SHADERPARM_PARTICLE_STOPTIME] = MS2SEC( gameLocal.time );
+//	gameLocal.testmodel.UpdateVisuals();
 //}
 //
 ///*
@@ -856,7 +856,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //		return;
 //	}
 //
-//	gameLocal.testmodel->TestAnim( args );
+//	gameLocal.testmodel.TestAnim( args );
 //}
 //
 //
@@ -867,9 +867,9 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //*/
 //void idTestModel::ArgCompletion_TestAnim( const idCmdArgs &args, void(*callback)( const char *s ) ) {
 //	if ( gameLocal.testmodel ) {
-//		idAnimator *animator = gameLocal.testmodel->GetAnimator();
-//		for( int i = 0; i < animator->NumAnims(); i++ ) {
-//			callback( va( "%s %s", args.Argv( 0 ), animator->AnimFullName( i ) ) );
+//		idAnimator *animator = gameLocal.testmodel.GetAnimator();
+//		for( int i = 0; i < animator.NumAnims(); i++ ) {
+//			callback( va( "%s %s", args.Argv( 0 ), animator.AnimFullName( i ) ) );
 //		}
 //	}
 //}
@@ -885,7 +885,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //		return;
 //	}
 //
-//	gameLocal.testmodel->BlendAnim( args );
+//	gameLocal.testmodel.BlendAnim( args );
 //}
 //
 ///*
@@ -899,7 +899,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //		return;
 //	}
 //
-//	gameLocal.testmodel->NextAnim( args );
+//	gameLocal.testmodel.NextAnim( args );
 //}
 //
 ///*
@@ -913,7 +913,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //		return;
 //	}
 //
-//	gameLocal.testmodel->PrevAnim( args );
+//	gameLocal.testmodel.PrevAnim( args );
 //}
 //
 ///*
@@ -927,7 +927,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //		return;
 //	}
 //
-//	gameLocal.testmodel->NextFrame( args );
+//	gameLocal.testmodel.NextFrame( args );
 //}
 //
 ///*
@@ -941,5 +941,5 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //		return;
 //	}
 //
-//	gameLocal.testmodel->PrevFrame( args );
+//	gameLocal.testmodel.PrevFrame( args );
 //}
