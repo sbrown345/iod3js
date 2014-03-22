@@ -79,7 +79,7 @@ var collisionModelManager/*: idCollisionModelManager*/ = collisionModelManagerLo
 ////================
 ////*/
 ////void idCollisionModelManagerLocal::ParseProcNodes( idLexer *src ) {
-////	int i;
+////	var i:number;
 ////
 ////	src.ExpectTokenString( "{" );
 ////
@@ -405,7 +405,7 @@ idCollisionModelManagerLocal.prototype.Clear = function ( ): void {
 ////================
 ////*/
 ////void idCollisionModelManagerLocal::FreeMap( ) {
-////	int i;
+////	var i:number;
 ////
 ////	if ( !this.loaded ) {
 ////		Clear();
@@ -434,7 +434,7 @@ idCollisionModelManagerLocal.prototype.Clear = function ( ): void {
 ////================
 ////*/
 ////void idCollisionModelManagerLocal::FreeTrmModelStructure( ) {
-////	int i;
+////	var i:number;
 ////
 ////	assert( this.models );
 ////	if ( !this.models[MAX_SUBMODELS] ) {
@@ -442,9 +442,9 @@ idCollisionModelManagerLocal.prototype.Clear = function ( ): void {
 ////	}
 ////
 ////	for ( i = 0; i < MAX_TRACEMODEL_POLYS; i++ ) {
-////		FreePolygon( this.models[MAX_SUBMODELS], trmPolygons[i].p );
+////		FreePolygon( this.models[MAX_SUBMODELS], this.trmPolygons[i].p );
 ////	}
-////	FreeBrush( this.models[MAX_SUBMODELS], trmBrushes[0].b );
+////	FreeBrush( this.models[MAX_SUBMODELS], this.trmBrushes[0].b );
 ////
 ////	this.models[MAX_SUBMODELS].node.polygons = NULL;
 ////	this.models[MAX_SUBMODELS].node.brushes = NULL;
@@ -563,138 +563,141 @@ idCollisionModelManagerLocal.prototype.AllocModel = function ( ): cm_model_t {
 	return model;
 };
 
-/////*
-////================
-////idCollisionModelManagerLocal::AllocNode
-////================
-////*/
-////cm_node_t *idCollisionModelManagerLocal::AllocNode( cm_model_t *model, int blockSize ) {
-////	int i;
-////	cm_node_t *node;
-////	cm_nodeBlock_t *nodeBlock;
-////
-////	if ( !model.nodeBlocks || !model.nodeBlocks.nextNode ) {
-////		nodeBlock = (cm_nodeBlock_t *) Mem_ClearedAlloc( sizeof( cm_nodeBlock_t ) + blockSize * sizeof(cm_node_t) );
-////		nodeBlock.nextNode = (cm_node_t *) ( ( (byte *) nodeBlock ) + sizeof( cm_nodeBlock_t ) );
-////		nodeBlock.next = model.nodeBlocks;
-////		model.nodeBlocks = nodeBlock;
-////		node = nodeBlock.nextNode;
-////		for ( i = 0; i < blockSize - 1; i++ ) {
-////			node.parent = node + 1;
-////			node = node.parent;
-////		}
-////		node.parent = NULL;
-////	}
-////
-////	node = model.nodeBlocks.nextNode;
-////	model.nodeBlocks.nextNode = node.parent;
-////	node.parent = NULL;
-////
-////	return node;
-////}
-////
-/////*
-////================
-////idCollisionModelManagerLocal::AllocPolygonReference
-////================
-////*/
-////cm_polygonRef_t *idCollisionModelManagerLocal::AllocPolygonReference( cm_model_t *model, int blockSize ) {
-////	int i;
-////	cm_polygonRef_t *pref;
-////	cm_polygonRefBlock_t *prefBlock;
-////
-////	if ( !model.polygonRefBlocks || !model.polygonRefBlocks.nextRef ) {
-////		prefBlock = (cm_polygonRefBlock_t *) Mem_Alloc( sizeof( cm_polygonRefBlock_t ) + blockSize * sizeof(cm_polygonRef_t) );
-////		prefBlock.nextRef = (cm_polygonRef_t *) ( ( (byte *) prefBlock ) + sizeof( cm_polygonRefBlock_t ) );
-////		prefBlock.next = model.polygonRefBlocks;
-////		model.polygonRefBlocks = prefBlock;
-////		pref = prefBlock.nextRef;
-////		for ( i = 0; i < blockSize - 1; i++ ) {
-////			pref.next = pref + 1;
-////			pref = pref.next;
-////		}
-////		pref.next = NULL;
-////	}
-////
-////	pref = model.polygonRefBlocks.nextRef;
-////	model.polygonRefBlocks.nextRef = pref.next;
-////
-////	return pref;
-////}
-////
-/////*
-////================
-////idCollisionModelManagerLocal::AllocBrushReference
-////================
-////*/
-////cm_brushRef_t *idCollisionModelManagerLocal::AllocBrushReference( cm_model_t *model, int blockSize ) {
-////	int i;
-////	cm_brushRef_t *bref;
-////	cm_brushRefBlock_t *brefBlock;
-////
-////	if ( !model.brushRefBlocks || !model.brushRefBlocks.nextRef ) {
-////		brefBlock = (cm_brushRefBlock_t *) Mem_Alloc( sizeof(cm_brushRefBlock_t) + blockSize * sizeof(cm_brushRef_t) );
-////		brefBlock.nextRef = (cm_brushRef_t *) ( ( (byte *) brefBlock ) + sizeof(cm_brushRefBlock_t) );
-////		brefBlock.next = model.brushRefBlocks;
-////		model.brushRefBlocks = brefBlock;
-////		bref = brefBlock.nextRef;
-////		for ( i = 0; i < blockSize - 1; i++ ) {
-////			bref.next = bref + 1;
-////			bref = bref.next;
-////		}
-////		bref.next = NULL;
-////	}
-////
-////	bref = model.brushRefBlocks.nextRef;
-////	model.brushRefBlocks.nextRef = bref.next;
-////
-////	return bref;
-////}
-////
-/////*
-////================
-////idCollisionModelManagerLocal::AllocPolygon
-////================
-////*/
-////cm_polygon_t *idCollisionModelManagerLocal::AllocPolygon( cm_model_t *model, int numEdges ) {
-////	cm_polygon_t *poly;
-////	int size;
-////
-////	size = sizeof( cm_polygon_t ) + ( numEdges - 1 ) * sizeof( poly.edges[0] );
-////	model.numPolygons++;
-////	model.polygonMemory += size;
-////	if ( model.polygonBlock && model.polygonBlock.bytesRemaining >= size ) {
-////		poly = (cm_polygon_t *) model.polygonBlock.next;
-////		model.polygonBlock.next += size;
-////		model.polygonBlock.bytesRemaining -= size;
-////	} else {
-////		poly = (cm_polygon_t *) Mem_Alloc( size );
-////	}
-////	return poly;
-////}
-////
-/////*
-////================
-////idCollisionModelManagerLocal::AllocBrush
-////================
-////*/
-////cm_brush_t *idCollisionModelManagerLocal::AllocBrush( cm_model_t *model, int numPlanes ) {
-////	cm_brush_t *brush;
-////	int size;
-////
-////	size = sizeof( cm_brush_t ) + ( numPlanes - 1 ) * sizeof( brush.planes[0] );
-////	model.numBrushes++;
-////	model.brushMemory += size;
-////	if ( model.brushBlock && model.brushBlock.bytesRemaining >= size ) {
-////		brush = (cm_brush_t *) model.brushBlock.next;
-////		model.brushBlock.next += size;
-////		model.brushBlock.bytesRemaining -= size;
-////	} else {
-////		brush = (cm_brush_t *) Mem_Alloc( size );
-////	}
-////	return brush;
-////}
-////
+/*
+================
+idCollisionModelManagerLocal::AllocNode
+================
+*/
+idCollisionModelManagerLocal.prototype.AllocNode = function ( model: cm_model_t, /*int */blockSize: number ): cm_node_t {
+	var i: number;
+	var node: cm_node_t, nodeIdx = 0;
+	var nodeBlock: cm_nodeBlock_t;
+	
+	if ( !model.nodeBlocks || !model.nodeBlocks.nextNode ) {
+		var arr = newStructArray<cm_node_t>( cm_nodeBlock_t, blockSize );
+		nodeBlock = new cm_nodeBlock_t; //(cm_nodeBlock_t *) Mem_ClearedAlloc( sizeof( cm_nodeBlock_t ) + blockSize * sizeof(cm_node_t) );
+		nodeBlock.nextNode = arr[nodeIdx++]; //(cm_node_t *) ( ( (byte *) nodeBlock ) + sizeof( cm_nodeBlock_t ) );
+		nodeBlock.next = model.nodeBlocks;
+		model.nodeBlocks = nodeBlock;
+		node = nodeBlock.nextNode;
+		for ( i = 0; i < blockSize - 1; i++ ) {
+			node.parent = arr[nodeIdx++];
+			node = node.parent;
+		}
+		node.parent = null;
+	}
+
+	node = model.nodeBlocks.nextNode;
+	model.nodeBlocks.nextNode = node.parent;
+	node.parent = null;
+
+	return node;
+};
+
+/*
+================
+idCollisionModelManagerLocal::AllocPolygonReference
+================
+*/
+idCollisionModelManagerLocal.prototype.AllocPolygonReference = function ( model: cm_model_t, /*int */blockSize: number ): cm_polygonRef_t {
+	var i: number;
+	var pref: cm_polygonRef_t, prefIdx = 0;
+	var prefBlock: cm_polygonRefBlock_t;
+
+	if ( !model.polygonRefBlocks || !model.polygonRefBlocks.nextRef ) {
+		var arr = newStructArray<cm_polygonRef_t>(cm_polygonRef_t, blockSize);
+		prefBlock = new cm_polygonRefBlock_t;//(cm_polygonRefBlock_t *) Mem_Alloc( sizeof( cm_polygonRefBlock_t ) + blockSize * sizeof(cm_polygonRef_t) );
+		prefBlock.nextRef = arr[prefIdx++];//(cm_polygonRef_t *) ( ( (byte *) prefBlock ) + sizeof( cm_polygonRefBlock_t ) );
+		prefBlock.next = model.polygonRefBlocks;
+		model.polygonRefBlocks = prefBlock;
+		pref = prefBlock.nextRef;
+		for ( i = 0; i < blockSize - 1; i++ ) {
+			pref.next = arr[prefIdx++];
+			pref = pref.next;
+		}
+		pref.next = null;
+	}
+
+	pref = model.polygonRefBlocks.nextRef;
+	model.polygonRefBlocks.nextRef = pref.next;
+
+	return pref;
+};
+
+/*
+================
+idCollisionModelManagerLocal::AllocBrushReference
+================
+*/
+idCollisionModelManagerLocal.prototype.AllocBrushReference = function ( model: cm_model_t, /*int*/ blockSize: number ): cm_brushRef_t {
+	var i: number;
+	var bref: cm_brushRef_t, brefIdx = 0;
+	var brefBlock: cm_brushRefBlock_t;
+
+	if ( !model.brushRefBlocks || !model.brushRefBlocks.nextRef ) {
+		var arr = newStructArray<cm_brushRef_t>(cm_brushRef_t, blockSize);
+		brefBlock = new cm_brushRefBlock_t;//(cm_brushRefBlock_t *) Mem_Alloc( sizeof(cm_brushRefBlock_t) + blockSize * sizeof(cm_brushRef_t) );
+		brefBlock.nextRef = arr[brefIdx++];//(cm_brushRef_t *) ( ( (byte *) brefBlock ) + sizeof(cm_brushRefBlock_t) );
+		brefBlock.next = model.brushRefBlocks;
+		model.brushRefBlocks = brefBlock;
+		bref = brefBlock.nextRef;
+		for ( i = 0; i < blockSize - 1; i++ ) {
+			bref.next = arr[brefIdx++];
+			bref = bref.next;
+		}
+		bref.next = null;
+	}
+
+	bref = model.brushRefBlocks.nextRef;
+	model.brushRefBlocks.nextRef = bref.next;
+
+	return bref;
+};
+
+/*
+================
+idCollisionModelManagerLocal::AllocPolygon
+================
+*/
+idCollisionModelManagerLocal.prototype.AllocPolygon = function ( model: cm_model_t, /*int */numEdges: number ): cm_polygon_t {
+	var poly: cm_polygon_t;
+	var /*int */size: number;
+
+	size = /*sizeof( cm_polygon_t )*/60 + ( numEdges - 1 ) * 4 /*sizeof( poly.edges[0] )*/;
+	model.numPolygons++;
+	model.polygonMemory += size;
+	if ( model.polygonBlock && model.polygonBlock.bytesRemaining >= size ) {
+		poly = <cm_polygon_t>/*(cm_polygon_t *) */model.polygonBlock.next;
+		model.polygonBlock.nextIdx += size;
+		model.polygonBlock.bytesRemaining -= size;
+	} else {
+		poly = new cm_polygon_t; // (cm_polygon_t *) Mem_Alloc( size );
+	}
+	return poly;
+};
+
+/*
+================
+idCollisionModelManagerLocal::AllocBrush
+================
+*/
+idCollisionModelManagerLocal.prototype.AllocBrush = function ( model: cm_model_t, /*int */numPlanes: number ): cm_brush_t {
+	var brush: cm_brush_t;
+	var /*int */size: number;
+
+	size = /* sizeof( cm_brush_t ) */60 + ( numPlanes - 1 ) * 16;/*sizeof( brush.planes[0] );*/
+	model.numBrushes++;
+	model.brushMemory += size;
+	if ( model.brushBlock && model.brushBlock.bytesRemaining >= size ) {
+		brush = /*(cm_brush_t *)*/ <cm_brush_t>model.brushBlock.next;
+		model.brushBlock.nextIdx += size;
+		model.brushBlock.bytesRemaining -= size;
+	} else {
+		brush = new cm_brush_t; // (cm_brush_t *) Mem_Alloc( size );
+	}
+	return brush;
+};
+
 /////*
 ////================
 ////idCollisionModelManagerLocal::AddPolygonToNode
@@ -703,7 +706,7 @@ idCollisionModelManagerLocal.prototype.AllocModel = function ( ): cm_model_t {
 ////void idCollisionModelManagerLocal::AddPolygonToNode( cm_model_t *model, cm_node_t *node, cm_polygon_t *p ) {
 ////	cm_polygonRef_t *pref;
 ////
-////	pref = AllocPolygonReference( model, model.numPolygonRefs < REFERENCE_BLOCK_SIZE_SMALL ? REFERENCE_BLOCK_SIZE_SMALL : REFERENCE_BLOCK_SIZE_LARGE );
+////	pref = this.AllocPolygonReference( model, model.numPolygonRefs < REFERENCE_BLOCK_SIZE_SMALL ? REFERENCE_BLOCK_SIZE_SMALL : REFERENCE_BLOCK_SIZE_LARGE );
 ////	pref.p = p;
 ////	pref.next = node.polygons;
 ////	node.polygons = pref;
@@ -732,8 +735,8 @@ idCollisionModelManagerLocal::SetupTrmModelStructure
 */
 idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): void {
 	var/*int */i:number;
-	var node: cm_node_t ;
-	var model: cm_model_t ;
+	var node: cm_node_t;
+	var model: cm_model_t;
 
 	// setup model
 	model = this.AllocModel();
@@ -741,41 +744,41 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 	assert( this.models );
 	this.models[MAX_SUBMODELS] = model;
 	// create node to hold the collision data
-	node = (cm_node_t *) AllocNode( model, 1 );
+	node = <cm_node_t > this.AllocNode( model, 1 );
 	node.planeType = -1;
 	model.node = node;
 	// allocate vertex and edge arrays
 	model.numVertices = 0;
 	model.maxVertices = MAX_TRACEMODEL_VERTS;
-	model.vertices = (cm_vertex_t *) Mem_ClearedAlloc( model.maxVertices * sizeof(cm_vertex_t) );
+	model.vertices = newStructArray<cm_vertex_t>( cm_vertex_t, model.maxVertices ); //(cm_vertex_t *) Mem_ClearedAlloc( model.maxVertices * sizeof(cm_vertex_t) );
 	model.numEdges = 0;
 	model.maxEdges = MAX_TRACEMODEL_EDGES+1;
-	model.edges = (cm_edge_t *) Mem_ClearedAlloc( model.maxEdges * sizeof(cm_edge_t) );
+	model.edges = newStructArray<cm_edge_t>( cm_edge_t, model.maxEdges );// (cm_edge_t *) Mem_ClearedAlloc( model.maxEdges * sizeof(cm_edge_t) );
 	// create a material for the trace model polygons
-	trmMaterial = declManager.FindMaterial( "_tracemodel", false );
-	if ( !trmMaterial ) {
+	this.trmMaterial = declManager.FindMaterial( "_tracemodel", false );
+	if ( !this.trmMaterial ) {
 		common.FatalError( "_tracemodel material not found" );
 	}
 
 	// allocate polygons
 	for ( i = 0; i < MAX_TRACEMODEL_POLYS; i++ ) {
-		trmPolygons[i] = AllocPolygonReference( model, MAX_TRACEMODEL_POLYS );
-		trmPolygons[i].p = AllocPolygon( model, MAX_TRACEMODEL_POLYEDGES );
-		trmPolygons[i].p.bounds.Clear();
-		trmPolygons[i].p.plane.Zero();
-		trmPolygons[i].p.checkcount = 0;
-		trmPolygons[i].p.contents = -1;		// all contents
-		trmPolygons[i].p.material = trmMaterial;
-		trmPolygons[i].p.numEdges = 0;
+		this.trmPolygons[i] = this.AllocPolygonReference( model, MAX_TRACEMODEL_POLYS );
+		this.trmPolygons[i].p = this.AllocPolygon( model, MAX_TRACEMODEL_POLYEDGES );
+		this.trmPolygons[i].p.bounds.Clear();
+		this.trmPolygons[i].p.plane.Zero();
+		this.trmPolygons[i].p.checkcount = 0;
+		this.trmPolygons[i].p.contents = -1;		// all contents
+		this.trmPolygons[i].p.material = this.trmMaterial;
+		this.trmPolygons[i].p.numEdges = 0;
 	}
 	// allocate brush for position test
-	trmBrushes[0] = AllocBrushReference( model, 1 );
-	trmBrushes[0].b = AllocBrush( model, MAX_TRACEMODEL_POLYS );
-	trmBrushes[0].b.primitiveNum = 0;
-	trmBrushes[0].b.bounds.Clear();
-	trmBrushes[0].b.checkcount = 0;
-	trmBrushes[0].b.contents = -1;		// all contents
-	trmBrushes[0].b.numPlanes = 0;
+	this.trmBrushes[0] = this.AllocBrushReference( model, 1 );
+	this.trmBrushes[0].b = this.AllocBrush( model, MAX_TRACEMODEL_POLYS );
+	this.trmBrushes[0].b.primitiveNum = 0;
+	this.trmBrushes[0].b.bounds.Clear();
+	this.trmBrushes[0].b.checkcount = 0;
+	this.trmBrushes[0].b.contents = -1;		// all contents
+	this.trmBrushes[0].b.numPlanes = 0;
 }
 
 /////*
@@ -799,7 +802,7 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////	assert( this.models );
 ////
 ////	if ( material == NULL ) {
-////		material = trmMaterial;
+////		material = this.trmMaterial;
 ////	}
 ////
 ////	model = this.models[MAX_SUBMODELS];
@@ -832,7 +835,7 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////	model.numPolygons = trm.numPolys;
 ////	trmPoly = trm.polys;
 ////	for ( i = 0; i < trm.numPolys; i++, trmPoly++ ) {
-////		poly = trmPolygons[i].p;
+////		poly = this.trmPolygons[i].p;
 ////		poly.numEdges = trmPoly.numEdges;
 ////		for ( j = 0; j < trmPoly.numEdges; j++ ) {
 ////			poly.edges[j] = trmPoly.edges[j];
@@ -842,20 +845,20 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////		poly.bounds = trmPoly.bounds;
 ////		poly.material = material;
 ////		// link polygon at node
-////		trmPolygons[i].next = model.node.polygons;
-////		model.node.polygons = trmPolygons[i];
+////		this.trmPolygons[i].next = model.node.polygons;
+////		model.node.polygons = this.trmPolygons[i];
 ////	}
 ////	// if the trace model is convex
 ////	if ( trm.isConvex ) {
 ////		// setup brush for position test
-////		trmBrushes[0].b.numPlanes = trm.numPolys;
+////		this.trmBrushes[0].b.numPlanes = trm.numPolys;
 ////		for ( i = 0; i < trm.numPolys; i++ ) {
-////			trmBrushes[0].b.planes[i] = trmPolygons[i].p.plane;
+////			this.trmBrushes[0].b.planes[i] = this.trmPolygons[i].p.plane;
 ////		}
-////		trmBrushes[0].b.bounds = trm.bounds;
+////		this.trmBrushes[0].b.bounds = trm.bounds;
 ////		// link brush at node
-////		trmBrushes[0].next = model.node.brushes;
-////		model.node.brushes = trmBrushes[0];
+////		this.trmBrushes[0].next = model.node.brushes;
+////		model.node.brushes = this.trmBrushes[0];
 ////	}
 ////	// model bounds
 ////	model.bounds = trm.bounds;
@@ -1102,7 +1105,7 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////============
 ////*/
 ////void idCollisionModelManagerLocal::R_ChopWindingListWithTreeBrushes( cm_windingList_t *list, cm_node_t *node ) {
-////	int i;
+////	var i:number;
 ////	cm_brushRef_t *bref;
 ////	cm_brush_t *b;
 ////
@@ -1449,7 +1452,7 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////		}
 ////	}
 ////
-////	newp = AllocPolygon( model, newNumEdges );
+////	newp = this.AllocPolygon( model, newNumEdges );
 ////	memcpy( newp, p1, sizeof(cm_polygon_t) );
 ////	memcpy( newp.edges, newEdges, newNumEdges * sizeof(int) );
 ////	newp.numEdges = newNumEdges;
@@ -1476,7 +1479,7 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function (): voi
 ////=============
 ////*/
 ////bool idCollisionModelManagerLocal::MergePolygonWithTreePolygons( cm_model_t *model, cm_node_t *node, cm_polygon_t *polygon ) {
-////	int i;
+////	var i:number;
 ////	cm_polygonRef_t *pref;
 ////	cm_polygon_t *p, *newp;
 ////
@@ -2221,7 +2224,7 @@ idCollisionModelManagerLocal.prototype.SetupHash = function ( ): void {
 ////================
 ////*/
 ////void idCollisionModelManagerLocal::ClearHash( idBounds &bounds ) {
-////	int i;
+////	var i:number;
 ////	float f, max;
 ////
 ////	cm_vertexHash.Clear();
@@ -2454,7 +2457,7 @@ idCollisionModelManagerLocal.prototype.SetupHash = function ( ): void {
 ////
 ////	w.GetBounds( bounds );
 ////
-////	p = AllocPolygon( model, numPolyEdges );
+////	p = this.AllocPolygon( model, numPolyEdges );
 ////	p.numEdges = numPolyEdges;
 ////	p.contents = material.GetContentFlags();
 ////	p.material = material;
@@ -2722,7 +2725,7 @@ idCollisionModelManagerLocal.prototype.SetupHash = function ( ): void {
 ////		return;
 ////	}
 ////	// create brush for position test
-////	brush = AllocBrush( model, mapBrush.GetNumSides() );
+////	brush = this.AllocBrush( model, mapBrush.GetNumSides() );
 ////	brush.checkcount = 0;
 ////	brush.contents = contents;
 ////	brush.material = material;
@@ -2825,7 +2828,7 @@ idCollisionModelManagerLocal.prototype.SetupHash = function ( ): void {
 ////void idCollisionModelManagerLocal::RemapEdges( cm_node_t *node, int *edgeRemap ) {
 ////	cm_polygonRef_t *pref;
 ////	cm_polygon_t *p;
-////	int i;
+////	var i:number;
 ////
 ////	while ( 1 ) {
 ////		for ( pref = node.polygons; pref; pref = pref.next ) {
@@ -3174,7 +3177,7 @@ idCollisionModelManagerLocal.prototype.SetupHash = function ( ): void {
 ////================
 ////*/
 ////cmHandle_t idCollisionModelManagerLocal::FindModel( const char *name ) {
-////	int i;
+////	var i:number;
 ////
 ////	// check if this model is already loaded
 ////	for ( i = 0; i < this.numModels; i++ ) {
@@ -3215,7 +3218,7 @@ idCollisionModelManagerLocal.prototype.SetupHash = function ( ): void {
 ////================
 ////*/
 ////void idCollisionModelManagerLocal::AccumulateModelInfo( cm_model_t *model ) {
-////	int i;
+////	var i:number;
 ////
 ////	memset( model, 0, sizeof( *model ) );
 ////	// accumulate statistics of all loaded models
@@ -3284,7 +3287,7 @@ idCollisionModelManagerLocal.prototype.SetupHash = function ( ): void {
 ////================
 ////*/
 ////void idCollisionModelManagerLocal::BuildModels( const idMapFile *mapFile ) {
-////	int i;
+////	var i:number;
 ////	const idMapEntity *mapEnt;
 ////
 ////	idTimer timer;
@@ -3546,7 +3549,7 @@ idCollisionModelManagerLocal.prototype.LoadMap = function ( mapFile: idMapFile )
 ////bool idCollisionModelManagerLocal::TrmFromModel_r( idTraceModel &trm, cm_node_t *node ) {
 ////	cm_polygonRef_t *pref;
 ////	cm_polygon_t *p;
-////	int i;
+////	var i:number;
 ////
 ////	while ( 1 ) {
 ////		for ( pref = node.polygons; pref; pref = pref.next ) {

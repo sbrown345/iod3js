@@ -80,124 +80,137 @@ Collision model
 */
 
 class cm_vertex_t {
-////	idVec3					p;					// vertex point
-////	int						checkcount;			// for multi-check avoidance
+	p = new idVec3;					// vertex point
+	checkcount:number/*int*/;			// for multi-check avoidance
 ////	unsigned long			side;				// each bit tells at which side this vertex passes one of the trace model edges
 ////	unsigned long			sideSet;			// each bit tells if sidedness for the trace model edge has been calculated yet
 }
 
 ////
 class cm_edge_t {
-////	int						checkcount;			// for multi-check avoidance
+	checkcount:number/*int*/;			// for multi-check avoidance
 ////	unsigned short			internal;			// a trace model can never collide with internal edges
 ////	unsigned short			numUsers;			// number of polygons using this edge
 ////	unsigned long			side;				// each bit tells at which side of this edge one of the trace model vertices passes
 ////	unsigned long			sideSet;			// each bit tells if sidedness for the trace model vertex has been calculated yet
-////	int						vertexNum[2];		// start and end point of edge
-////	idVec3					normal;				// edge normal
+	vertexNum = new Int32Array(2);		// start and end point of edge
+	normal = new idVec3;				// edge normal
 }
 
-////typedef struct cm_polygonBlock_s {
-////	int						bytesRemaining;
-////	byte *					next;
-////} cm_polygonBlock_t;
-////
+class cm_polygonBlock_t{
+	bytesRemaining:number/*int*/;
+	next: any;//	byte *		
+	nextIdx: number;
+} ;
+
 class cm_polygon_t{
-////	idBounds				bounds;				// polygon bounds
-////	int						checkcount;			// for multi-check avoidance
-////	int						contents;			// contents behind polygon
-////	const idMaterial *		material;			// material
-////	idPlane					plane;				// polygon plane
-////	int						numEdges;			// number of edges
-////	int						edges[1];			// variable sized, indexes into cm_edge_t list
+	bounds = new idBounds;				// polygon bounds
+	checkcount:number/*int*/			// for multi-check avoidance
+	contents:number/*int*/			// contents behind polygon
+	material:idMaterial;			// material
+	plane = new idPlane;				// polygon plane
+	numEdges:number/*int*/			// number of edges
+	edges = new Int32Array(1);			// variable sized, indexes into cm_edge_t list
 
 	init ( ): void {
-		
+		this.bounds.init();
+		this.checkcount = 0;
+		this.contents = 0;
+		this.material = null;
+		this.plane.init();
+		this.numEdges = 0;
+		memset( this.edges, 0, sizeof( this.edges ) );
 	}
 };
 
 class cm_polygonRef_t {
-////	cm_polygon_t *			p;					// pointer to polygon
-////	struct cm_polygonRef_s *next;				// next polygon in chain
-} ;
-////
+	p:cm_polygon_t ;					// pointer to polygon
+	next:cm_polygonRef_t;				// next polygon in chain
+} 
+
 class cm_polygonRefBlock_t {
-////	cm_polygonRef_t *		nextRef;			// next polygon reference in block
-////	struct cm_polygonRefBlock_s *next;			// next block with polygon references
+	nextRef:cm_polygonRef_t;			// next polygon reference in block
+	next:cm_polygonRefBlock_t;			// next block with polygon references
 };
 
 class cm_brushBlock_t{
-////	int						bytesRemaining;
-////	byte *					next;
+	bytesRemaining:number/*int*/
+	next: any;//	byte *					
+	nextIdx: number;
 }
 
 class cm_brush_t {
-////	int						checkcount;			// for multi-check avoidance
-////	idBounds				bounds;				// brush bounds
-////	int						contents;			// contents of brush
-////	const idMaterial *		material;			// material
-////	int						primitiveNum;		// number of brush primitive
-////	int						numPlanes;			// number of bounding planes
-////	idPlane					planes[1];			// variable sized
+	checkcount:number/*int*/			// for multi-check avoidance
+	bounds = new idBounds;				// brush bounds
+	contents:number/*int*/			// contents of brush
+	material:idMaterial;			// material
+	primitiveNum:number/*int*/		// number of brush primitive
+	numPlanes:number/*int*/			// number of bounding planes
+	planes = [new idPlane];			// variable sized
 }
 
-class cm_brushRef_t{
-////	cm_brush_t *			b;					// pointer to brush
-////	struct cm_brushRef_s *	next;				// next brush in chain
+class cm_brushRef_t {
+	b: cm_brush_t; // pointer to brush
+	next: cm_brushRef_t; // next brush in chain
 }
-////
+
 class cm_brushRefBlock_t {
-////	cm_brushRef_t *			nextRef;			// next brush reference in block
-////	struct cm_brushRefBlock_s *next;			// next block with brush references
-};
+	nextRef: cm_brushRef_t; // next brush reference in block
+	next: cm_brushRefBlock_t; // next block with brush references
+}
 
 class cm_node_t {
-////	int						planeType;			// node axial plane type
-////	float					planeDist;			// node plane distance
-////	cm_polygonRef_t *		polygons;			// polygons in node
-////	cm_brushRef_t *			brushes;			// brushes in node
-////	struct cm_node_s *		parent;				// parent of this node
-////	struct cm_node_s *		children[2];		// node children
+	planeType: number /*int*/; // node axial plane type
+	planeDist: number /*float*/; // node plane distance
+	polygons: cm_polygonRef_t; // polygons in node
+	brushes: cm_brushRef_t; // brushes in node
+	parent: cm_node_t; // parent of this nodecm_nodeBlock_t
+	children = new Array<cm_node_t>( 2 ); // node children
 }
 
 class cm_nodeBlock_t {
-////	cm_node_t *				nextNode;			// next node in block
-////	struct cm_nodeBlock_s *next;				// next block with nodes
+	nextNode: cm_node_t; // next node in block
+	next: cm_nodeBlock_t; // next block with nodes
+
+	init ( ): void {
+		this.nextNode = null;
+		this.next = null;
+	}
 }
 
 class cm_model_t {
-	name = new idStr;				// model name
-	bounds = new idBounds;				// model bounds
-	contents:number/*int*/;			// all contents of the model ored together
-	isConvex:boolean;			// set if model is convex
+	name = new idStr; // model name
+	bounds = new idBounds; // model bounds
+	contents: number /*int*/; // all contents of the model ored together
+	isConvex: boolean; // set if model is convex
 	// model geometry
-	maxVertices:number/*int*/;		// size of vertex array
-	numVertices:number/*int*/;		// number of vertices
-	vertices:cm_vertex_t;			// array with all vertices used by the model
-	maxEdges:number/*int*/;			// size of edge array
-	numEdges:number/*int*/;			// number of edges
-	edges:cm_edge_t;				// array with all edges used by the model
-	node:cm_node_t;				// first node of spatial subdivision
+	maxVertices: number /*int*/; // size of vertex array
+	numVertices: number /*int*/; // number of vertices
+	vertices: cm_vertex_t[]; // array with all vertices used by the model
+	maxEdges: number /*int*/; // size of edge array
+	numEdges: number /*int*/; // number of edges
+	edges: cm_edge_t[]; // array with all edges used by the model
+	node: cm_node_t; // first node of spatial subdivision
 	// blocks with allocated memory
-	nodeBlocks:cm_nodeBlock_t;			// list with blocks of nodes
-	polygonRefBlocks:cm_polygonRefBlock_t;	// list with blocks of polygon references
-	brushRefBlocks:cm_brushRefBlock_t;		// list with blocks of brush references
-	polygonBlock:cm_polygonBlock_t;		// memory block with all polygons
-	brushBlock:cm_brushBlock_t;			// memory block with all brushes
+	nodeBlocks: cm_nodeBlock_t; // list with blocks of nodes
+	polygonRefBlocks: cm_polygonRefBlock_t; // list with blocks of polygon references
+	brushRefBlocks: cm_brushRefBlock_t; // list with blocks of brush references
+	polygonBlock: cm_polygonBlock_t; // memory block with all polygons
+	brushBlock: cm_brushBlock_t; // memory block with all brushes
 	// statistics
-	numPolygons:number/*int*/;
-	polygonMemory:number/*int*/;
-	numBrushes:number/*int*/;
-	brushMemory:number/*int*/;
-	numNodes:number/*int*/;
-	numBrushRefs:number/*int*/;
-	numPolygonRefs:number/*int*/;
-	numInternalEdges:number/*int*/;
-	numSharpEdges:number/*int*/;
-	numRemovedPolys:number/*int*/;
-	numMergedPolys:number/*int*/;
-	usedMemory:number/*int*/;
-} ;
+	numPolygons: number /*int*/;
+	polygonMemory: number /*int*/;
+	numBrushes: number /*int*/;
+	brushMemory: number /*int*/;
+	numNodes: number /*int*/;
+	numBrushRefs: number /*int*/;
+	numPolygonRefs: number /*int*/;
+	numInternalEdges: number /*int*/;
+	numSharpEdges: number /*int*/;
+	numRemovedPolys: number /*int*/;
+	numMergedPolys: number /*int*/;
+	usedMemory: number /*int*/;
+}
 
 /*
 ===============================================================================
@@ -439,12 +452,12 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 ////	void			R_ChopWindingListWithTreeBrushes( cm_windingList_t *list, cm_node_t *node );
 ////	idFixedWinding *WindingOutsideBrushes( idFixedWinding *w, const idPlane &plane, int contents, int patch, cm_node_t *headNode );
 ////					// creation of axial BSP tree
-		AllocModel( ):cm_model_t {throw "placeholder";}
-////	cm_node_t *		AllocNode( cm_model_t *model, int blockSize );
-////	cm_polygonRef_t*AllocPolygonReference( cm_model_t *model, int blockSize );
-////	cm_brushRef_t *	AllocBrushReference( cm_model_t *model, int blockSize );
-////	cm_polygon_t *	AllocPolygon( cm_model_t *model, int numEdges );
-////	cm_brush_t *	AllocBrush( cm_model_t *model, int numPlanes );
+	AllocModel ( ): cm_model_t { throw "placeholder"; }
+	AllocNode ( model: cm_model_t, /*int */blockSize: number ): cm_node_t { throw "placeholder"; }
+	AllocPolygonReference(model:cm_model_t, /*int */blockSize :number) :cm_polygonRef_t {throw "placeholder";}
+	AllocBrushReference(model: cm_model_t, /*int*/ blockSize:number): cm_brushRef_t {throw "placeholder";}
+	AllocPolygon(model: cm_model_t, /*int */numEdges:number): cm_polygon_t {throw "placeholder";}
+	AllocBrush(model: cm_model_t, /*int */numPlanes:number): cm_brush_t {throw "placeholder";}
 ////	void			AddPolygonToNode( cm_model_t *model, cm_node_t *node, cm_polygon_t *p );
 ////	void			AddBrushToNode( cm_model_t *model, cm_node_t *node, cm_brush_t *b );
 	SetupTrmModelStructure(): void { throw "placeholder"; }
