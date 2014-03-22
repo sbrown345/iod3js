@@ -30,22 +30,52 @@
 //#pragma hdrstop
 //
 //#include "NetworkSystem.h"
-//
-//idNetworkSystem		networkSystemLocal;
-//idNetworkSystem *	networkSystem = &networkSystemLocal;
-//
-//
+
+
+
+
 ///*
-//==================
-//idNetworkSystem::ServerSendReliableMessage
-//==================
-//*/
-//void idNetworkSystem::ServerSendReliableMessage( int clientNum, const idBitMsg &msg ) {
-//	if ( idAsyncNetwork::server.IsActive() ) {
-//		idAsyncNetwork::server.SendReliableGameMessage( clientNum, msg );
-//	}
-//}
+//===============================================================================
 //
+//  Network System.
+//
+//===============================================================================
+//*/
+//
+class idNetworkSystem {
+	//public:
+	//	virtual					~idNetworkSystem( void ) {}
+	//
+	//	virtual void			ServerSendReliableMessage( int clientNum, const idBitMsg &msg );
+	//	virtual void			ServerSendReliableMessageExcluding( int clientNum, const idBitMsg &msg );
+	//	virtual int				ServerGetClientPing( int clientNum );
+	//	virtual int				ServerGetClientPrediction( int clientNum );
+	//	virtual int				ServerGetClientTimeSinceLastPacket( int clientNum );
+	//	virtual int				ServerGetClientTimeSinceLastInput( int clientNum );
+	//	virtual int				ServerGetClientOutgoingRate( int clientNum );
+	//	virtual int				ServerGetClientIncomingRate( int clientNum );
+	//	virtual float			ServerGetClientIncomingPacketLoss( int clientNum );
+	//
+	//	virtual void			ClientSendReliableMessage( const idBitMsg &msg );
+	//	virtual int				ClientGetPrediction( void );
+	//	virtual int				ClientGetTimeSinceLastPacket( void );
+	//	virtual int				ClientGetOutgoingRate( void );
+	//	virtual int				ClientGetIncomingRate( void );
+	//	virtual float			ClientGetIncomingPacketLoss( void );
+//
+
+/*
+==================
+idNetworkSystem::ServerSendReliableMessage
+==================
+*/
+	ServerSendReliableMessage ( /*int*/ clientNum: number, msg: idBitMsg ): void {
+		if ( idAsyncNetwork.server.IsActive ( ) ) {
+			todoThrow ( );
+			//idAsyncNetwork.server.SendReliableGameMessage( clientNum, msg );
+		}
+	}
+
 ///*
 //==================
 //idNetworkSystem::ServerSendReliableMessageExcluding
@@ -211,5 +241,10 @@
 //	if ( idAsyncNetwork::client.IsActive() ) {
 //		return idAsyncNetwork::client.GetIncomingPacketLoss();
 //	}
-//	return 0.0f;
+//	return 0.0;
 //}
+
+}
+
+var networkSystemLocal = new idNetworkSystem;
+var networkSystem/*: idNetworkSystem*/ = networkSystemLocal;

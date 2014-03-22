@@ -56,8 +56,8 @@ class idKeyValue {
 	GetKey ( ): idStr { return this.key; }
 	GetValue ( ): idStr { return this.value; }
 
-//	size_t				Allocated( void ) const { return key.Allocated() + value.Allocated(); }
-//	size_t				Size( void ) const { return sizeof( *this ) + key.Size() + value.Size(); }
+//	size_t				Allocated( ) const { return key.Allocated() + value.Allocated(); }
+//	size_t				Size( ) const { return sizeof( *this ) + key.Size() + value.Size(); }
 
 //	bool				operator==( const idKeyValue &kv ) const { return ( key == kv.key && value == kv.value ); }
 	equalTo(kv: idKeyValue): boolean {
@@ -79,9 +79,9 @@ class idKeyValue {
 
 class idDict {
 ////public:
-////						idDict( void );
+////						idDict( );
 ////						idDict( const idDict &other );	// allow declaration with assignment
-////						~idDict( void );
+////						~idDict( );
 ////
 ////						// set the granularity for the index
 ////	void				SetGranularity( int granularity );
@@ -98,12 +98,12 @@ class idDict {
 ////						// copy key/value pairs from other dict not present in this dict
 ////	void				SetDefaults( const idDict *dict );
 ////						// clear dict freeing up memory
-////	void				Clear( void );
+////	void				Clear( );
 ////						// print the dict
 ////	void				Print() const;
 ////
-////	size_t				Allocated( void ) const;
-////	size_t				Size( void ) const { return sizeof( *this ) + Allocated(); }
+////	size_t				Allocated( ) const;
+////	size_t				Size( ) const { return sizeof( *this ) + Allocated(); }
 ////
 ////	void				Set( key:string, value:string );
 ////	void				SetFloat( key:string, float val );
@@ -137,7 +137,7 @@ class idDict {
 ////	bool				GetAngles( key:string, const char *defaultString, idAngles &out ) const;
 ////	bool				GetMatrix( key:string, const char *defaultString, idMat3 &out ) const;
 ////
-////	int					GetNumKeyVals( void ) const;
+////	int					GetNumKeyVals( ) const;
 ////	const idKeyValue *	GetKeyVal( int index ) const;
 ////						// returns the key/value pair with the given key
 ////						// returns NULL if the key/value pair does not exist
@@ -157,10 +157,10 @@ class idDict {
 ////	void				ReadFromFileHandle( idFile *f );
 ////
 ////						// returns a unique checksum for this dictionary's content
-////	int					Checksum( void ) const;
+////	int					Checksum( ) const;
 ////
-////	static void			Init( void );
-////	static void			Shutdown( void );
+////	static void			Init( );
+////	static void			Shutdown( );
 ////
 ////	static void			ShowMemoryUsage_f( const idCmdArgs &args );
 ////	static void			ListKeys_f( const idCmdArgs &args );
@@ -307,17 +307,17 @@ class idDict {
 ////	GetMatrix( key, defaultString, out );
 ////	return out;
 ////}
-////
-////ID_INLINE int idDict::GetNumKeyVals( void ) const {
-////	return this.args.Num();
-////}
-////
-////ID_INLINE const idKeyValue *idDict::GetKeyVal( int index ) const {
-////	if ( index >= 0 && index < this.args.Num() ) {
-////		return &this.args[ index ];
-////	}
-////	return NULL;
 
+	GetNumKeyVals ( ): number {
+		return this.args.Num ( );
+	}
+
+	GetKeyVal ( /*int */index: number ): idKeyValue {
+		if ( index >= 0 && index < this.args.Num ( ) ) {
+			return this.args[index];
+		}
+		return null;
+	}
 /*
 ================
 idDict::operator=
@@ -526,7 +526,7 @@ idDict::Clear
 ////idDict::Checksum
 ////================
 ////*/
-////int	idDict::Checksum( void ) const {
+////int	idDict::Checksum( ) const {
 ////	unsigned long ret;
 ////	int i, n;
 ////
@@ -547,7 +547,7 @@ idDict::Clear
 ////idDict::Allocated
 ////================
 ////*/
-////size_t idDict::Allocated( void ) const {
+////size_t idDict::Allocated( ) const {
 ////	int		i;
 ////	size_t	size;
 ////
@@ -916,7 +916,7 @@ idDict::MatchPrefix
 ////idDict::Init
 ////================
 ////*/
-////void idDict::Init( void ) {
+////void idDict::Init( ) {
 ////	idDict.globalKeys.SetCaseSensitive( false );
 ////	idDict.globalValues.SetCaseSensitive( true );
 ////}
@@ -926,7 +926,7 @@ idDict::MatchPrefix
 ////idDict::Shutdown
 ////================
 ////*/
-////void idDict::Shutdown( void ) {
+////void idDict::Shutdown( ) {
 ////	idDict.globalKeys.Clear();
 ////	idDict.globalValues.Clear();
 ////}

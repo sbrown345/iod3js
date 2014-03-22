@@ -33,20 +33,20 @@
 
 ////#ifdef GAME_DLL
 
-////idSys *						sys = NULL;
-////idCommon *					common = NULL;
-////idCmdSystem *				cmdSystem = NULL;
-////idCVarSystem *				cvarSystem = NULL;
-////idFileSystem *				fileSystem = NULL;
-////idNetworkSystem *			networkSystem = NULL;
-////idRenderSystem *			renderSystem = NULL;
-////idSoundSystem *				soundSystem = NULL;
+////idSys *						sys = null;
+////idCommon *					common = null;
+////idCmdSystem *				cmdSystem = null;
+////idCVarSystem *				cvarSystem = null;
+////idFileSystem *				fileSystem = null;
+var networkSystem: idNetworkSystem = null;
+////idRenderSystem *			renderSystem = null;
+////idSoundSystem *				soundSystem = null;
 ////var renderModelManager:idRenderModelManager = null;
-////idUserInterfaceManager *	uiManager = NULL;
-////idDeclManager *				declManager = NULL;
-////idAASFileManager *			AASFileManager = NULL;
+////idUserInterfaceManager *	uiManager = null;
+////idDeclManager *				declManager = null;
+////idAASFileManager *			AASFileManager = null;
 var collisionModelManager:idCollisionModelManager = null;
-////idCVar *					idCVar::staticVars = NULL;
+////idCVar *					idCVar::staticVars = null;
 
 //var com_forceGenericSIMD = new idCVar( "com_forceGenericSIMD", "0", CVAR_BOOL | CVAR_SYSTEM, "force generic platform independent SIMD" );
 
@@ -805,18 +805,17 @@ idGameLocal::SetServerInfo
 ============
 */
 idGameLocal.prototype.SetServerInfo = function ( _serverInfo: idDict ): void {
-	//idBitMsg	outMsg;
-	//byte		msgBuf[MAX_GAME_MESSAGE_SIZE];
+	var outMsg = new idBitMsg	;
+	var msgBuf = new Uint8Array( MAX_GAME_MESSAGE_SIZE );
 	this.serverInfo.equals( _serverInfo );
 	this.UpdateServerInfoFlags ( );
 
 	if ( !this.isClient ) {
-		todoThrow ( );
-		//// Let our clients know the server info changed
-		//outMsg.Init( msgBuf, sizeof( msgBuf ) );
-		//outMsg.WriteByte( GAME_RELIABLE_MESSAGE_SERVERINFO );
-		//outMsg.WriteDeltaDict( gameLocal.serverInfo, NULL );
-		//networkSystem.ServerSendReliableMessage( -1, outMsg );
+		// Let our clients know the server info changed
+		outMsg.Init( msgBuf, sizeof( msgBuf ) );
+		outMsg.WriteByte( GAME_RELIABLE_MESSAGE_SERVERINFO );
+		outMsg.WriteDeltaDict( gameLocal.serverInfo, null );
+		networkSystem.ServerSendReliableMessage( -1, outMsg );
 	}
 };
 

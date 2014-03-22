@@ -525,7 +525,6 @@
 /// <reference path="doomdll/framework/async/asyncnetwork.cpp.ts" />
 /// <reference path="doomdll/framework/async/msgchannel.h.ts" />
 /// <reference path="doomdll/framework/async/msgchannel.cpp.ts" />
-/// <reference path="doomdll/framework/async/networksystem.h.ts" />
 /// <reference path="doomdll/framework/async/networksystem.cpp.ts" />
 
 

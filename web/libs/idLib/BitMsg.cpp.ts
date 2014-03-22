@@ -55,33 +55,33 @@ class idBitMsg {
 	////
 	////	void			Init(byte *data, int length);
 	////	void			Init(const byte *data, int length);
-	////	byte *			GetData(void);						// get data for writing
-	////	const byte *	GetData(void) const;					// get data for reading
-	////	int				GetMaxSize(void) const;				// get the maximum message size
+	////	byte *			GetData( );						// get data for writing
+	////	const byte *	GetData( ) const;					// get data for reading
+	////	int				GetMaxSize( ) const;				// get the maximum message size
 	////	void			SetAllowOverflow(bool set);			// generate error if not set and message is overflowed
-	////	bool			IsOverflowed(void) const;				// returns true if the message was overflowed
+	////	bool			IsOverflowed( ) const;				// returns true if the message was overflowed
 	////
-	////	int				GetSize(void) const;					// size of the message in bytes
+	////	int				GetSize( ) const;					// size of the message in bytes
 	////	void			SetSize(int size);					// set the message size
-	////	int				GetWriteBit(void) const;				// get current write bit
+	////	int				GetWriteBit( ) const;				// get current write bit
 	////	void			SetWriteBit(int bit);					// set current write bit
-	////	int				GetNumBitsWritten(void) const;		// returns number of bits written
-	////	int				GetRemainingWriteBits(void) const;	// space left in bits for writing
+	////	int				GetNumBitsWritten( ) const;		// returns number of bits written
+	////	int				GetRemainingWriteBits( ) const;	// space left in bits for writing
 	////	void			SaveWriteState(int &s, int &b) const;	// save the write state
 	////	void			RestoreWriteState(int s, int b);		// restore the write state
 	////
-	////	int				GetReadCount(void) const;				// bytes read so far
+	////	int				GetReadCount( ) const;				// bytes read so far
 	////	void			SetReadCount(int bytes);				// set the number of bytes and bits read
-	////	int				GetReadBit(void) const;				// get current read bit
+	////	int				GetReadBit( ) const;				// get current read bit
 	////	void			SetReadBit(int bit);					// set current read bit
-	////	int				GetNumBitsRead(void) const;			// returns number of bits read
-	////	int				GetRemainingReadBits(void) const;		// number of bits left to read
+	////	int				GetNumBitsRead( ) const;			// returns number of bits read
+	////	int				GetRemainingReadBits( ) const;		// number of bits left to read
 	////	void			SaveReadState(int &c, int &b) const;	// save the read state
 	////	void			RestoreReadState(int c, int b);		// restore the read state
 	////
-	////	void			BeginWriting(void);					// begin writing
-	////	int				GetRemainingSpace(void) const;		// space left in bytes
-	////	void			WriteByteAlign(void);					// write up to the next byte boundary
+	////	void			BeginWriting( );					// begin writing
+	////	int				GetRemainingSpace( ) const;		// space left in bytes
+	////	void			WriteByteAlign( );					// write up to the next byte boundary
 	////	void			WriteBits(int value, int numBits);	// write the specified number of bits
 	////	void			WriteChar(int c);
 	////	void			WriteByte(int c);
@@ -108,19 +108,19 @@ class idBitMsg {
 	////	void			WriteDeltaLongCounter(int oldValue, int newValue);
 	////	bool			WriteDeltaDict(const idDict &dict, const idDict *base);
 	////
-	////	void			BeginReading(void) const;				// begin reading.
-	////	int				GetRemaingData(void) const;			// number of bytes left to read
-	////	void			ReadByteAlign(void) const;			// read up to the next byte boundary
+	////	void			BeginReading( ) const;				// begin reading.
+	////	int				GetRemaingData( ) const;			// number of bytes left to read
+	////	void			ReadByteAlign( ) const;			// read up to the next byte boundary
 	////	int				ReadBits(int numBits) const;			// read the specified number of bits
-	////	int				ReadChar(void) const;
-	////	int				ReadByte(void) const;
-	////	int				ReadShort(void) const;
-	////	int				ReadUShort(void) const;
-	////	int				ReadLong(void) const;
-	////	float			ReadFloat(void) const;
+	////	int				ReadChar( ) const;
+	////	int				ReadByte( ) const;
+	////	int				ReadShort( ) const;
+	////	int				ReadUShort( ) const;
+	////	int				ReadLong( ) const;
+	////	float			ReadFloat( ) const;
 	////	float			ReadFloat(int exponentBits, int mantissaBits) const;
-	////	float			ReadAngle8(void) const;
-	////	float			ReadAngle16(void) const;
+	////	float			ReadAngle8( ) const;
+	////	float			ReadAngle16( ) const;
 	////	idVec3			ReadDir(int numBits) const;
 	////	int				ReadString(char *buffer, int bufferSize) const;
 	////	int				ReadData(void *data, int length) const;
@@ -141,15 +141,15 @@ class idBitMsg {
 	////	static idVec3	BitsToDir(int bits, int numBits);
 	////
 	////private:
-	////	byte *			writeData;			// pointer to data for writing
-	////	const byte *	readData;			// pointer to data for reading
-	////	int				maxSize;			// maximum size of message in bytes
-	////	int				curSize;			// current size of message in bytes
-	////	int				writeBit;			// number of bits written to the last written byte
-	////	mutable int		readCount;			// number of bytes read so far
-	////	mutable int		readBit;			// number of bits read from the last read byte
-	////	bool			allowOverflow;		// if false, generate an error when the message is overflowed
-	////	bool			overflowed;			// set to true if the buffer size failed (with allowOverflow set)
+	writeData:Uint8Array/*byte **/;			// pointer to data for writing
+	readData:Uint8Array/*const byte **/;			// pointer to data for reading
+	maxSize:number/*int*/;			// maximum size of message in bytes
+	curSize:number/*int*/;			// current size of message in bytes
+	writeBit:number/*int*/;			// number of bits written to the last written byte
+	readCount:number/*int*/;			// number of bytes read so far
+	readBit:number/*int*/;			// number of bits read from the last read byte
+	allowOverflow:boolean;		// if false, generate an error when the message is overflowed
+	overflowed:boolean;			// set to true if the buffer size failed (with allowOverflow set)
 	////
 	////private:
 	////	bool			CheckOverflow(int numBits);
@@ -159,158 +159,158 @@ class idBitMsg {
 	////};
 	////
 	////
-	////ID_INLINE void idBitMsg::Init(byte *data, int length) {
-	////	writeData = data;
-	////	readData = data;
-	////	maxSize = length;
-	////}
+	Init ( data: Uint8Array, /*int */length: number ): void {
+		this.writeData = data;
+		this.readData = data;
+		this.maxSize = length;
+	}
 	////
 	////ID_INLINE void idBitMsg::Init(const byte *data, int length) {
-	////	writeData = NULL;
-	////	readData = data;
-	////	maxSize = length;
+	////	this.writeData = NULL;
+	////	this.readData = data;
+	////	this.maxSize = length;
 	////}
 	////
-	////ID_INLINE byte *idBitMsg::GetData(void) {
-	////	return writeData;
+	////ID_INLINE byte *idBitMsg::GetData( ) {
+	////	return this.writeData;
 	////}
 	////
-	////ID_INLINE const byte *idBitMsg::GetData(void) const {
-	////	return readData;
+	////ID_INLINE const byte *idBitMsg::GetData( ) const {
+	////	return this.readData;
 	////}
 	////
-	////ID_INLINE int idBitMsg::GetMaxSize(void) const {
-	////	return maxSize;
+	////ID_INLINE int idBitMsg::GetMaxSize( ) const {
+	////	return this.maxSize;
 	////}
 	////
 	////ID_INLINE void idBitMsg::SetAllowOverflow(bool set) {
-	////	allowOverflow = set;
+	////	this.allowOverflow = set;
 	////}
 	////
-	////ID_INLINE bool idBitMsg::IsOverflowed(void) const {
-	////	return overflowed;
+	////ID_INLINE bool idBitMsg::IsOverflowed( ) const {
+	////	return this.overflowed;
 	////}
 	////
-	////ID_INLINE int idBitMsg::GetSize(void) const {
-	////	return curSize;
+	////ID_INLINE int idBitMsg::GetSize( ) const {
+	////	return this.curSize;
 	////}
 	////
 	////ID_INLINE void idBitMsg::SetSize(int size) {
-	////	if (size > maxSize) {
-	////		curSize = maxSize;
+	////	if (size > this.maxSize) {
+	////		this.curSize = this.maxSize;
 	////	}
 	////	else {
-	////		curSize = size;
+	////		this.curSize = size;
 	////	}
 	////}
 	////
-	////ID_INLINE int idBitMsg::GetWriteBit(void) const {
-	////	return writeBit;
+	////ID_INLINE int idBitMsg::GetWriteBit( ) const {
+	////	return this.writeBit;
 	////}
 	////
 	////ID_INLINE void idBitMsg::SetWriteBit(int bit) {
-	////	writeBit = bit & 7;
-	////	if (writeBit) {
-	////		writeData[curSize - 1] &= (1 << writeBit) - 1;
+	////	this.writeBit = bit & 7;
+	////	if (this.writeBit) {
+	////		this.writeData[this.curSize - 1] &= (1 << this.writeBit) - 1;
 	////	}
 	////}
 	////
-	////ID_INLINE int idBitMsg::GetNumBitsWritten(void) const {
-	////	return ((curSize << 3) - ((8 - writeBit) & 7));
-	////}
-	////
-	////ID_INLINE int idBitMsg::GetRemainingWriteBits(void) const {
-	////	return (maxSize << 3) - GetNumBitsWritten();
-	////}
-	////
+	GetNumBitsWritten ( ): number {
+		return ( ( this.curSize << 3 ) - ( ( 8 - this.writeBit ) & 7 ) );
+	}
+
+	GetRemainingWriteBits ( ): number {
+		return ( this.maxSize << 3 ) - this.GetNumBitsWritten ( );
+	}
+	
 	////ID_INLINE void idBitMsg::SaveWriteState(int &s, int &b) const {
-	////	s = curSize;
-	////	b = writeBit;
+	////	s = this.curSize;
+	////	b = this.writeBit;
 	////}
 	////
 	////ID_INLINE void idBitMsg::RestoreWriteState(int s, int b) {
-	////	curSize = s;
-	////	writeBit = b & 7;
-	////	if (writeBit) {
-	////		writeData[curSize - 1] &= (1 << writeBit) - 1;
+	////	this.curSize = s;
+	////	this.writeBit = b & 7;
+	////	if (this.writeBit) {
+	////		this.writeData[this.curSize - 1] &= (1 << this.writeBit) - 1;
 	////	}
 	////}
 	////
-	////ID_INLINE int idBitMsg::GetReadCount(void) const {
-	////	return readCount;
+	////ID_INLINE int idBitMsg::GetReadCount( ) const {
+	////	return this.readCount;
 	////}
 	////
 	////ID_INLINE void idBitMsg::SetReadCount(int bytes) {
-	////	readCount = bytes;
+	////	this.readCount = bytes;
 	////}
 	////
-	////ID_INLINE int idBitMsg::GetReadBit(void) const {
-	////	return readBit;
+	////ID_INLINE int idBitMsg::GetReadBit( ) const {
+	////	return this.readBit;
 	////}
 	////
 	////ID_INLINE void idBitMsg::SetReadBit(int bit) {
-	////	readBit = bit & 7;
+	////	this.readBit = bit & 7;
 	////}
 	////
-	////ID_INLINE int idBitMsg::GetNumBitsRead(void) const {
-	////	return ((readCount << 3) - ((8 - readBit) & 7));
+	////ID_INLINE int idBitMsg::GetNumBitsRead( ) const {
+	////	return ((this.readCount << 3) - ((8 - this.readBit) & 7));
 	////}
 	////
-	////ID_INLINE int idBitMsg::GetRemainingReadBits(void) const {
-	////	return (curSize << 3) - GetNumBitsRead();
+	////ID_INLINE int idBitMsg::GetRemainingReadBits( ) const {
+	////	return (this.curSize << 3) - GetNumBitsRead();
 	////}
 	////
 	////ID_INLINE void idBitMsg::SaveReadState(int &c, int &b) const {
-	////	c = readCount;
-	////	b = readBit;
+	////	c = this.readCount;
+	////	b = this.readBit;
 	////}
 	////
 	////ID_INLINE void idBitMsg::RestoreReadState(int c, int b) {
-	////	readCount = c;
-	////	readBit = b & 7;
+	////	this.readCount = c;
+	////	this.readBit = b & 7;
 	////}
+
+	BeginWriting ( ): void {
+		this.curSize = 0;
+		this.overflowed = false;
+		this.writeBit = 0;
+	}
 	////
-	////ID_INLINE void idBitMsg::BeginWriting(void) {
-	////	curSize = 0;
-	////	overflowed = false;
-	////	writeBit = 0;
+	////ID_INLINE int idBitMsg::GetRemainingSpace( ) const {
+	////	return this.maxSize - this.curSize;
 	////}
-	////
-	////ID_INLINE int idBitMsg::GetRemainingSpace(void) const {
-	////	return maxSize - curSize;
-	////}
-	////
-	////ID_INLINE void idBitMsg::WriteByteAlign(void) {
-	////	writeBit = 0;
-	////}
-	////
+
+	WriteByteAlign ( ): void {
+		this.writeBit = 0;
+	}
+
 	////ID_INLINE void idBitMsg::WriteChar(int c) {
-	////	WriteBits(c, -8);
+	////	this.WriteBits(c, -8);
 	////}
-	////
-	////ID_INLINE void idBitMsg::WriteByte(int c) {
-	////	WriteBits(c, 8);
-	////}
+
+	WriteByte ( /*int */c: number ): void {
+		this.WriteBits( c, 8 );
+	}
 	////
 	////ID_INLINE void idBitMsg::WriteShort(int c) {
-	////	WriteBits(c, -16);
+	////	this.WriteBits(c, -16);
 	////}
 	////
 	////ID_INLINE void idBitMsg::WriteUShort(int c) {
-	////	WriteBits(c, 16);
+	////	this.WriteBits(c, 16);
 	////}
 	////
 	////ID_INLINE void idBitMsg::WriteLong(int c) {
-	////	WriteBits(c, 32);
+	////	this.WriteBits(c, 32);
 	////}
 	////
 	////ID_INLINE void idBitMsg::WriteFloat(float f) {
-	////	WriteBits(*reinterpret_cast<int *>(&f), 32);
+	////	this.WriteBits(*reinterpret_cast<int *>(&f), 32);
 	////}
 	////
 	////ID_INLINE void idBitMsg::WriteFloat(float f, int exponentBits, int mantissaBits) {
 	////	int bits = idMath::FloatToBits(f, exponentBits, mantissaBits);
-	////	WriteBits(bits, 1 + exponentBits + mantissaBits);
+	////	this.WriteBits(bits, 1 + exponentBits + mantissaBits);
 	////}
 	////
 	////ID_INLINE void idBitMsg::WriteAngle8(float f) {
@@ -322,7 +322,7 @@ class idBitMsg {
 	////}
 	////
 	////ID_INLINE void idBitMsg::WriteDir(const idVec3 &dir, int numBits) {
-	////	WriteBits(DirToBits(dir, numBits), numBits);
+	////	this.WriteBits(DirToBits(dir, numBits), numBits);
 	////}
 	////
 	////ID_INLINE void idBitMsg::WriteDeltaChar(int oldValue, int newValue) {
@@ -351,40 +351,40 @@ class idBitMsg {
 	////	WriteDelta(oldBits, newBits, 1 + exponentBits + mantissaBits);
 	////}
 	////
-	////ID_INLINE void idBitMsg::BeginReading(void) const {
-	////	readCount = 0;
-	////	readBit = 0;
+	////ID_INLINE void idBitMsg::BeginReading( ) const {
+	////	this.readCount = 0;
+	////	this.readBit = 0;
 	////}
 	////
-	////ID_INLINE int idBitMsg::GetRemaingData(void) const {
-	////	return curSize - readCount;
+	////ID_INLINE int idBitMsg::GetRemaingData( ) const {
+	////	return this.curSize - this.readCount;
 	////}
 	////
-	////ID_INLINE void idBitMsg::ReadByteAlign(void) const {
-	////	readBit = 0;
+	////ID_INLINE void idBitMsg::ReadByteAlign( ) const {
+	////	this.readBit = 0;
 	////}
 	////
-	////ID_INLINE int idBitMsg::ReadChar(void) const {
+	////ID_INLINE int idBitMsg::ReadChar( ) const {
 	////	return (signed char)ReadBits(-8);
 	////}
 	////
-	////ID_INLINE int idBitMsg::ReadByte(void) const {
+	////ID_INLINE int idBitMsg::ReadByte( ) const {
 	////	return (unsigned char)ReadBits(8);
 	////}
 	////
-	////ID_INLINE int idBitMsg::ReadShort(void) const {
+	////ID_INLINE int idBitMsg::ReadShort( ) const {
 	////	return (short)ReadBits(-16);
 	////}
 	////
-	////ID_INLINE int idBitMsg::ReadUShort(void) const {
+	////ID_INLINE int idBitMsg::ReadUShort( ) const {
 	////	return (unsigned short)ReadBits(16);
 	////}
 	////
-	////ID_INLINE int idBitMsg::ReadLong(void) const {
+	////ID_INLINE int idBitMsg::ReadLong( ) const {
 	////	return ReadBits(32);
 	////}
 	////
-	////ID_INLINE float idBitMsg::ReadFloat(void) const {
+	////ID_INLINE float idBitMsg::ReadFloat( ) const {
 	////	float value;
 	////	*reinterpret_cast<int *>(&value) = ReadBits(32);
 	////	return value;
@@ -395,11 +395,11 @@ class idBitMsg {
 	////	return idMath::BitsToFloat(bits, exponentBits, mantissaBits);
 	////}
 	////
-	////ID_INLINE float idBitMsg::ReadAngle8(void) const {
+	////ID_INLINE float idBitMsg::ReadAngle8( ) const {
 	////	return BYTE2ANGLE(ReadByte());
 	////}
 	////
-	////ID_INLINE float idBitMsg::ReadAngle16(void) const {
+	////ID_INLINE float idBitMsg::ReadAngle16( ) const {
 	////	return SHORT2ANGLE(ReadShort());
 	////}
 	////
@@ -434,182 +434,182 @@ class idBitMsg {
 	////	int newBits = ReadDelta(oldBits, 1 + exponentBits + mantissaBits);
 	////	return idMath::BitsToFloat(newBits, exponentBits, mantissaBits);
 	////}
-	////
-	////
-	////
-	/////*
-	////================
-	////idBitMsg::idBitMsg
-	////================
-	////*/
-	////idBitMsg::idBitMsg() {
-	////	writeData = NULL;
-	////	readData = NULL;
-	////	maxSize = 0;
-	////	curSize = 0;
-	////	writeBit = 0;
-	////	readCount = 0;
-	////	readBit = 0;
-	////	allowOverflow = false;
-	////	overflowed = false;
-	////}
-	////
-	/////*
-	////================
-	////idBitMsg::CheckOverflow
-	////================
-	////*/
-	////bool idBitMsg::CheckOverflow( int numBits ) {
-	////	assert( numBits >= 0 );
-	////	if ( numBits > GetRemainingWriteBits() ) {
-	////		if ( !allowOverflow ) {
-	////			idLib::common.FatalError( "idBitMsg: overflow without allowOverflow set" );
-	////		}
-	////		if ( numBits > ( maxSize << 3 ) ) {
-	////			idLib::common.FatalError( "idBitMsg: %i bits is > full message size", numBits );
-	////		}
-	////		idLib::common.Printf( "idBitMsg: overflow\n" );
-	////		BeginWriting();
-	////		overflowed = true;
-	////		return true;
-	////	}
-	////	return false;
-	////}
-	////
-	/////*
-	////================
-	////idBitMsg::GetByteSpace
-	////================
-	////*/
-	////byte *idBitMsg::GetByteSpace( int length ) {
-	////	byte *ptr;
-	////
-	////	if ( !writeData ) {
-	////		idLib::common.FatalError( "idBitMsg::GetByteSpace: cannot write to message" );
-	////	}
-	////
-	////	// round up to the next byte
-	////	WriteByteAlign();
-	////
-	////	// check for overflow
-	////	CheckOverflow( length << 3 );
-	////
-	////	ptr = writeData + curSize;
-	////	curSize += length;
-	////	return ptr;
-	////}
-	////
-	/////*
-	////================
-	////idBitMsg::WriteBits
-	////
-	////  If the number of bits is negative a sign is included.
-	////================
-	////*/
-	////void idBitMsg::WriteBits( int value, int numBits ) {
-	////	int		put;
-	////	int		fraction;
-	////
-	////	if ( !writeData ) {
-	////		idLib::common.Error( "idBitMsg::WriteBits: cannot write to message" );
-	////	}
-	////
-	////	// check if the number of bits is valid
-	////	if ( numBits == 0 || numBits < -31 || numBits > 32 ) {
-	////		idLib::common.Error( "idBitMsg::WriteBits: bad numBits %i", numBits );
-	////	}
-	////
-	////	// check for value overflows
-	////	// this should be an error really, as it can go unnoticed and cause either bandwidth or corrupted data transmitted
-	////	if ( numBits != 32 ) {
-	////		if ( numBits > 0 ) {
-	////			if ( value > ( 1 << numBits ) - 1 ) {
-	////				idLib::common.Warning( "idBitMsg::WriteBits: value overflow %d %d", value, numBits );
-	////			} else if ( value < 0 ) {
-	////				idLib::common.Warning( "idBitMsg::WriteBits: value overflow %d %d", value, numBits );
-	////			}
-	////		} else {
-	////			int r = 1 << ( - 1 - numBits );
-	////			if ( value > r - 1 ) {
-	////				idLib::common.Warning( "idBitMsg::WriteBits: value overflow %d %d", value, numBits );
-	////			} else if ( value < -r ) {
-	////				idLib::common.Warning( "idBitMsg::WriteBits: value overflow %d %d", value, numBits );
-	////			}
-	////		}
-	////	}
-	////
-	////	if ( numBits < 0 ) {
-	////		numBits = -numBits;
-	////	}
-	////
-	////	// check for msg overflow
-	////	if ( CheckOverflow( numBits ) ) {
-	////		return;
-	////	}
-	////
-	////	// write the bits
-	////	while( numBits ) {
-	////		if ( writeBit == 0 ) {
-	////			writeData[curSize] = 0;
-	////			curSize++;
-	////		}
-	////		put = 8 - writeBit;
-	////		if ( put > numBits ) {
-	////			put = numBits;
-	////		}
-	////		fraction = value & ( ( 1 << put ) - 1 );
-	////		writeData[curSize - 1] |= fraction << writeBit;
-	////		numBits -= put;
-	////		value >>= put;
-	////		writeBit = ( writeBit + put ) & 7;
-	////	}
-	////}
-	////
-	/////*
-	////================
-	////idBitMsg::WriteString
-	////================
-	////*/
-	////void idBitMsg::WriteString( const char *s, int maxLength, bool make7Bit ) {
-	////	if ( !s ) {
-	////		WriteData( "", 1 );
-	////	} else {
-	////		int i, l;
-	////		byte *dataPtr;
-	////		const byte *bytePtr;
-	////
-	////		l = idStr::Length( s );
-	////		if ( maxLength >= 0 && l >= maxLength ) {
-	////			l = maxLength - 1;
-	////		}
-	////		dataPtr = GetByteSpace( l + 1 );
-	////		bytePtr = reinterpret_cast<const byte *>(s);
-	////		if ( make7Bit ) {
-	////			for ( i = 0; i < l; i++ ) {
-	////				if ( bytePtr[i] > 127 ) {
-	////					dataPtr[i] = '.';
-	////				} else {
-	////					dataPtr[i] = bytePtr[i];
-	////				}
-	////			}
-	////		} else {
-	////			for ( i = 0; i < l; i++ ) {
-	////				dataPtr[i] = bytePtr[i];
-	////			}
-	////		}
-	////		dataPtr[i] = '\0';
-	////	}
-	////}
-	////
-	/////*
-	////================
-	////idBitMsg::WriteData
-	////================
-	////*/
-	////void idBitMsg::WriteData( const void *data, int length ) {
-	////	memcpy( GetByteSpace( length ), data, length );
-	////}
-	////
+	
+	
+	
+	/*
+	================
+	idBitMsg::idBitMsg
+	================
+	*/
+	constructor() {
+		this.writeData = null;
+		this.readData = null;
+		this.maxSize = 0;
+		this.curSize = 0;
+		this.writeBit = 0;
+		this.readCount = 0;
+		this.readBit = 0;
+		this.allowOverflow = false;
+		this.overflowed = false;
+	}
+	
+	/*
+	================
+	idBitMsg::CheckOverflow
+	================
+	*/
+	CheckOverflow ( /*int */numBits: number ): boolean {
+		assert( numBits >= 0 );
+		if ( numBits > this.GetRemainingWriteBits ( ) ) {
+			if ( !this.allowOverflow ) {
+				common.FatalError( "idBitMsg: overflow without allowOverflow set" );
+			}
+			if ( numBits > ( this.maxSize << 3 ) ) {
+				common.FatalError( "idBitMsg: %i bits is > full message size", numBits );
+			}
+			common.Printf( "idBitMsg: overflow\n" );
+			this.BeginWriting ( );
+			this.overflowed = true;
+			return true;
+		}
+		return false;
+	}
+
+	/*
+	================
+	idBitMsg::GetByteSpace
+	================
+	*/
+	GetByteSpace ( /*int */length: number ): Uint8Array {
+		var ptr: Uint8Array;
+
+		if ( !this.writeData ) {
+			common.FatalError( "idBitMsg::GetByteSpace: cannot write to message" );
+		}
+
+		// round up to the next byte
+		this.WriteByteAlign ( );
+
+		// check for overflow
+		this.CheckOverflow( length << 3 );
+
+		ptr = this.writeData.subarray( this.curSize ); //this.writeData + this.curSize;
+		this.curSize += length;
+		return ptr;
+	}
+
+	/*
+	================
+	idBitMsg::WriteBits
+	
+	  If the number of bits is negative a sign is included.
+	================
+	*/
+	WriteBits ( /*int*/ value: number, /*int */numBits: number ): void {
+		var /*int		*/put: number;
+		var /*int		*/fraction: number;
+
+		if ( !this.writeData ) {
+			common.Error( "idBitMsg::WriteBits: cannot write to message" );
+		}
+
+		// check if the number of bits is valid
+		if ( numBits == 0 || numBits < -31 || numBits > 32 ) {
+			common.Error( "idBitMsg::WriteBits: bad numBits %i", numBits );
+		}
+
+		// check for value overflows
+		// this should be an error really, as it can go unnoticed and cause either bandwidth or corrupted data transmitted
+		if ( numBits != 32 ) {
+			if ( numBits > 0 ) {
+				if ( value > ( 1 << numBits ) - 1 ) {
+					common.Warning( "idBitMsg::WriteBits: value overflow %d %d", value, numBits );
+				} else if ( value < 0 ) {
+					common.Warning( "idBitMsg::WriteBits: value overflow %d %d", value, numBits );
+				}
+			} else {
+				var /*int */r = 1 << ( - 1 - numBits );
+				if ( value > r - 1 ) {
+					common.Warning( "idBitMsg::WriteBits: value overflow %d %d", value, numBits );
+				} else if ( value < -r ) {
+					common.Warning( "idBitMsg::WriteBits: value overflow %d %d", value, numBits );
+				}
+			}
+		}
+
+		if ( numBits < 0 ) {
+			numBits = -numBits;
+		}
+
+		// check for msg overflow
+		if ( this.CheckOverflow( numBits ) ) {
+			return;
+		}
+
+		// write the bits
+		while ( numBits ) {
+			if ( this.writeBit == 0 ) {
+				this.writeData[this.curSize] = 0;
+				this.curSize++;
+			}
+			put = 8 - this.writeBit;
+			if ( put > numBits ) {
+				put = numBits;
+			}
+			fraction = value & ( ( 1 << put ) - 1 );
+			this.writeData[this.curSize - 1] |= fraction << this.writeBit;
+			numBits -= put;
+			value >>= put;
+			this.writeBit = ( this.writeBit + put ) & 7;
+		}
+	}
+
+	/*
+	================
+	idBitMsg::WriteString
+	================
+	*/
+	WriteString ( s: string, /*int */maxLength: number = -1, make7Bit: boolean=true ): void {
+		if ( !s ) {
+			this.WriteData( "".toUint8Array ( ), 1 );
+		} else {
+			var /*int */i: number, l: number;
+			var /*byte **/dataPtr: Uint8Array;
+			var /*const byte **/bytePtr: Uint8Array;
+
+			l = idStr.Length( s );
+			if ( maxLength >= 0 && l >= maxLength ) {
+				l = maxLength - 1;
+			}
+			dataPtr = this.GetByteSpace( l + 1 );
+			bytePtr = s.toUint8Array ( ); //reinterpret_cast<const byte *>(s);
+			if ( make7Bit ) {
+				for ( i = 0; i < l; i++ ) {
+					if ( bytePtr[i] > 127 ) {
+						dataPtr[i] = '.'.charCodeAt( 0 );
+					} else {
+						dataPtr[i] = bytePtr[i];
+					}
+				}
+			} else {
+				for ( i = 0; i < l; i++ ) {
+					dataPtr[i] = bytePtr[i];
+				}
+			}
+			dataPtr[i] = 0;
+		}
+	}
+
+	/*
+	================
+	idBitMsg::WriteData
+	================
+	*/
+	WriteData ( data: Uint8Array, /*int */length: number ): void {
+		memcpy( this.GetByteSpace( length ), data, length );
+	}
+
 	/////*
 	////================
 	////idBitMsg::WriteNetadr
@@ -617,7 +617,7 @@ class idBitMsg {
 	////*/
 	////void idBitMsg::WriteNetadr( const netadr_t adr ) {
 	////	byte *dataPtr;
-	////	dataPtr = GetByteSpace( 4 );
+	////	dataPtr = this.GetByteSpace( 4 );
 	////	memcpy( dataPtr, adr.ip, 4 );
 	////	WriteUShort( adr.port );
 	////}
@@ -629,11 +629,11 @@ class idBitMsg {
 	////*/
 	////void idBitMsg::WriteDelta( int oldValue, int newValue, int numBits ) {
 	////	if ( oldValue == newValue ) {
-	////		WriteBits( 0, 1 );
+	////		this.WriteBits( 0, 1 );
 	////		return;
 	////	}
-	////	WriteBits( 1, 1 );
-	////	WriteBits( newValue, numBits );
+	////	this.WriteBits( 1, 1 );
+	////	this.WriteBits( newValue, numBits );
 	////}
 	////
 	/////*
@@ -651,9 +651,9 @@ class idBitMsg {
 	////			break;
 	////		}
 	////	}
-	////	WriteBits( i, 3 );
+	////	this.WriteBits( i, 3 );
 	////	if ( i ) {
-	////		WriteBits( ( ( 1 << i ) - 1 ) & newValue, i );
+	////		this.WriteBits( ( ( 1 << i ) - 1 ) & newValue, i );
 	////	}
 	////}
 	////
@@ -672,9 +672,9 @@ class idBitMsg {
 	////			break;
 	////		}
 	////	}
-	////	WriteBits( i, 4 );
+	////	this.WriteBits( i, 4 );
 	////	if ( i ) {
-	////		WriteBits( ( ( 1 << i ) - 1 ) & newValue, i );
+	////		this.WriteBits( ( ( 1 << i ) - 1 ) & newValue, i );
 	////	}
 	////}
 	////
@@ -693,64 +693,64 @@ class idBitMsg {
 	////			break;
 	////		}
 	////	}
-	////	WriteBits( i, 5 );
+	////	this.WriteBits( i, 5 );
 	////	if ( i ) {
-	////		WriteBits( ( ( 1 << i ) - 1 ) & newValue, i );
+	////		this.WriteBits( ( ( 1 << i ) - 1 ) & newValue, i );
 	////	}
 	////}
-	////
-	/////*
-	////==================
-	////idBitMsg::WriteDeltaDict
-	////==================
-	////*/
-	////bool idBitMsg::WriteDeltaDict( const idDict &dict, const idDict *base ) {
-	////	int i;
-	////	const idKeyValue *kv, *basekv;
-	////	bool changed = false;
-	////
-	////	if ( base != NULL ) {
-	////
-	////		for ( i = 0; i < dict.GetNumKeyVals(); i++ ) {
-	////			kv = dict.GetKeyVal( i );
-	////			basekv = base.FindKey( kv.GetKey() );
-	////			if ( basekv == NULL || basekv.GetValue().Icmp( kv.GetValue() ) != 0 ) {
-	////				WriteString( kv.GetKey() );
-	////				WriteString( kv.GetValue() );
-	////				changed = true;
-	////			}
-	////		}
-	////
-	////		WriteString( "" );
-	////
-	////		for ( i = 0; i < base.GetNumKeyVals(); i++ ) {
-	////			basekv = base.GetKeyVal( i );
-	////			kv = dict.FindKey( basekv.GetKey() );
-	////			if ( kv == NULL ) {
-	////				WriteString( basekv.GetKey() );
-	////				changed = true;
-	////			}
-	////		}
-	////
-	////		WriteString( "" );
-	////
-	////	} else {
-	////
-	////		for ( i = 0; i < dict.GetNumKeyVals(); i++ ) {
-	////			kv = dict.GetKeyVal( i );
-	////			WriteString( kv.GetKey() );
-	////			WriteString( kv.GetValue() );
-	////			changed = true;
-	////		}
-	////		WriteString( "" );
-	////
-	////		WriteString( "" );
-	////
-	////	}
-	////
-	////	return changed;
-	////}
-	////
+	
+	/*
+	==================
+	idBitMsg::WriteDeltaDict
+	==================
+	*/
+	WriteDeltaDict ( dict: idDict, base: idDict ): boolean {
+		var /*int */i: number;
+		var kv: idKeyValue, basekv: idKeyValue;
+		var changed = false;
+
+		if ( base != null ) {
+
+			for ( i = 0; i < dict.GetNumKeyVals ( ); i++ ) {
+				kv = dict.GetKeyVal( i );
+				basekv = base.FindKey( kv.GetKey ( ).data );
+				if ( basekv == null || basekv.GetValue ( ).Icmp( kv.GetValue ( ) ) != 0 ) {
+					this.WriteString( kv.GetKey ( ).data );
+					this.WriteString( kv.GetValue ( ).data );
+					changed = true;
+				}
+			}
+
+			this.WriteString( "" );
+
+			for ( i = 0; i < base.GetNumKeyVals ( ); i++ ) {
+				basekv = base.GetKeyVal( i );
+				kv = dict.FindKey( basekv.GetKey ( ).data );
+				if ( kv == null ) {
+					this.WriteString( basekv.GetKey ( ).data );
+					changed = true;
+				}
+			}
+
+			this.WriteString( "" );
+
+		} else {
+
+			for ( i = 0; i < dict.GetNumKeyVals ( ); i++ ) {
+				kv = dict.GetKeyVal( i );
+				this.WriteString( kv.GetKey ( ).data );
+				this.WriteString( kv.GetValue ( ).data );
+				changed = true;
+			}
+			this.WriteString( "" );
+
+			this.WriteString( "" );
+
+		}
+
+		return changed;
+	}
+	
 	/////*
 	////================
 	////idBitMsg::ReadBits
@@ -765,13 +765,13 @@ class idBitMsg {
 	////	int		fraction;
 	////	bool	sgn;
 	////
-	////	if ( !readData ) {
-	////		idLib::common.FatalError( "idBitMsg::ReadBits: cannot read from message" );
+	////	if ( !this.readData ) {
+	////		common.FatalError( "idBitMsg::ReadBits: cannot read from message" );
 	////	}
 	////
 	////	// check if the number of bits is valid
 	////	if ( numBits == 0 || numBits < -31 || numBits > 32 ) {
-	////		idLib::common.FatalError( "idBitMsg::ReadBits: bad numBits %i", numBits );
+	////		common.FatalError( "idBitMsg::ReadBits: bad numBits %i", numBits );
 	////	}
 	////
 	////	value = 0;
@@ -790,20 +790,20 @@ class idBitMsg {
 	////	}
 	////
 	////	while ( valueBits < numBits ) {
-	////		if ( readBit == 0 ) {
-	////			readCount++;
+	////		if ( this.readBit == 0 ) {
+	////			this.readCount++;
 	////		}
-	////		get = 8 - readBit;
+	////		get = 8 - this.readBit;
 	////		if ( get > (numBits - valueBits) ) {
 	////			get = numBits - valueBits;
 	////		}
-	////		fraction = readData[readCount - 1];
-	////		fraction >>= readBit;
+	////		fraction = this.readData[this.readCount - 1];
+	////		fraction >>= this.readBit;
 	////		fraction &= ( 1 << get ) - 1;
 	////		value |= fraction << valueBits;
 	////
 	////		valueBits += get;
-	////		readBit = ( readBit + get ) & 7;
+	////		this.readBit = ( this.readBit + get ) & 7;
 	////	}
 	////
 	////	if ( sgn ) {
@@ -857,21 +857,21 @@ class idBitMsg {
 	////	int cnt;
 	////
 	////	ReadByteAlign();
-	////	cnt = readCount;
+	////	cnt = this.readCount;
 	////
-	////	if ( readCount + length > curSize ) {
+	////	if ( this.readCount + length > this.curSize ) {
 	////		if ( data ) {
-	////			memcpy( data, readData + readCount, GetRemaingData() );
+	////			memcpy( data, this.readData + this.readCount, GetRemaingData() );
 	////		}
-	////		readCount = curSize;
+	////		this.readCount = this.curSize;
 	////	} else {
 	////		if ( data ) {
-	////			memcpy( data, readData + readCount, length );
+	////			memcpy( data, this.readData + this.readCount, length );
 	////		}
-	////		readCount += length;
+	////		this.readCount += length;
 	////	}
 	////
-	////	return ( readCount - cnt );
+	////	return ( this.readCount - cnt );
 	////}
 	////
 	/////*
@@ -1043,7 +1043,7 @@ class idBitMsgDelta {
 	////
 	////	void			Init(const idBitMsg *base, idBitMsg *newBase, idBitMsg *delta);
 	////	void			Init(const idBitMsg *base, idBitMsg *newBase, const idBitMsg *delta);
-	////	bool			HasChanged(void) const;
+	////	bool			HasChanged( ) const;
 	////
 	////	void			WriteBits(int value, int numBits);
 	////	void			WriteChar(int c);
@@ -1071,15 +1071,15 @@ class idBitMsgDelta {
 	////	void			WriteDeltaLongCounter(int oldValue, int newValue);
 	////
 	////	int				ReadBits(int numBits) const;
-	////	int				ReadChar(void) const;
-	////	int				ReadByte(void) const;
-	////	int				ReadShort(void) const;
-	////	int				ReadUShort(void) const;
-	////	int				ReadLong(void) const;
-	////	float			ReadFloat(void) const;
+	////	int				ReadChar( ) const;
+	////	int				ReadByte( ) const;
+	////	int				ReadShort( ) const;
+	////	int				ReadUShort( ) const;
+	////	int				ReadLong( ) const;
+	////	float			ReadFloat( ) const;
 	////	float			ReadFloat(int exponentBits, int mantissaBits) const;
-	////	float			ReadAngle8(void) const;
-	////	float			ReadAngle16(void) const;
+	////	float			ReadAngle8( ) const;
+	////	float			ReadAngle16( ) const;
 	////	idVec3			ReadDir(int numBits) const;
 	////	void			ReadString(char *buffer, int bufferSize) const;
 	////	void			ReadData(void *data, int length) const;
@@ -1131,49 +1131,49 @@ class idBitMsgDelta {
 	////	this.changed = false;
 	////}
 	////
-	////ID_INLINE bool idBitMsgDelta::HasChanged(void) const {
+	////ID_INLINE bool idBitMsgDelta::HasChanged( ) const {
 	////	return changed;
 	////}
 	////
 	////ID_INLINE void idBitMsgDelta::WriteChar(int c) {
-	////	WriteBits(c, -8);
+	////	this.WriteBits(c, -8);
 	////}
 	////
 	////ID_INLINE void idBitMsgDelta::WriteByte(int c) {
-	////	WriteBits(c, 8);
+	////	this.WriteBits(c, 8);
 	////}
 	////
 	////ID_INLINE void idBitMsgDelta::WriteShort(int c) {
-	////	WriteBits(c, -16);
+	////	this.WriteBits(c, -16);
 	////}
 	////
 	////ID_INLINE void idBitMsgDelta::WriteUShort(int c) {
-	////	WriteBits(c, 16);
+	////	this.WriteBits(c, 16);
 	////}
 	////
 	////ID_INLINE void idBitMsgDelta::WriteLong(int c) {
-	////	WriteBits(c, 32);
+	////	this.WriteBits(c, 32);
 	////}
 	////
 	////ID_INLINE void idBitMsgDelta::WriteFloat(float f) {
-	////	WriteBits(*reinterpret_cast<int *>(&f), 32);
+	////	this.WriteBits(*reinterpret_cast<int *>(&f), 32);
 	////}
 	////
 	////ID_INLINE void idBitMsgDelta::WriteFloat(float f, int exponentBits, int mantissaBits) {
 	////	int bits = idMath::FloatToBits(f, exponentBits, mantissaBits);
-	////	WriteBits(bits, 1 + exponentBits + mantissaBits);
+	////	this.WriteBits(bits, 1 + exponentBits + mantissaBits);
 	////}
 	////
 	////ID_INLINE void idBitMsgDelta::WriteAngle8(float f) {
-	////	WriteBits(ANGLE2BYTE(f), 8);
+	////	this.WriteBits(ANGLE2BYTE(f), 8);
 	////}
 	////
 	////ID_INLINE void idBitMsgDelta::WriteAngle16(float f) {
-	////	WriteBits(ANGLE2SHORT(f), 16);
+	////	this.WriteBits(ANGLE2SHORT(f), 16);
 	////}
 	////
 	////ID_INLINE void idBitMsgDelta::WriteDir(const idVec3 &dir, int numBits) {
-	////	WriteBits(idBitMsg::DirToBits(dir, numBits), numBits);
+	////	this.WriteBits(idBitMsg::DirToBits(dir, numBits), numBits);
 	////}
 	////
 	////ID_INLINE void idBitMsgDelta::WriteDeltaChar(int oldValue, int newValue) {
@@ -1202,27 +1202,27 @@ class idBitMsgDelta {
 	////	WriteDelta(oldBits, newBits, 1 + exponentBits + mantissaBits);
 	////}
 	////
-	////ID_INLINE int idBitMsgDelta::ReadChar(void) const {
+	////ID_INLINE int idBitMsgDelta::ReadChar( ) const {
 	////	return (signed char)ReadBits(-8);
 	////}
 	////
-	////ID_INLINE int idBitMsgDelta::ReadByte(void) const {
+	////ID_INLINE int idBitMsgDelta::ReadByte( ) const {
 	////	return (unsigned char)ReadBits(8);
 	////}
 	////
-	////ID_INLINE int idBitMsgDelta::ReadShort(void) const {
+	////ID_INLINE int idBitMsgDelta::ReadShort( ) const {
 	////	return (short)ReadBits(-16);
 	////}
 	////
-	////ID_INLINE int idBitMsgDelta::ReadUShort(void) const {
+	////ID_INLINE int idBitMsgDelta::ReadUShort( ) const {
 	////	return (unsigned short)ReadBits(16);
 	////}
 	////
-	////ID_INLINE int idBitMsgDelta::ReadLong(void) const {
+	////ID_INLINE int idBitMsgDelta::ReadLong( ) const {
 	////	return ReadBits(32);
 	////}
 	////
-	////ID_INLINE float idBitMsgDelta::ReadFloat(void) const {
+	////ID_INLINE float idBitMsgDelta::ReadFloat( ) const {
 	////	float value;
 	////	*reinterpret_cast<int *>(&value) = ReadBits(32);
 	////	return value;
@@ -1233,11 +1233,11 @@ class idBitMsgDelta {
 	////	return idMath::BitsToFloat(bits, exponentBits, mantissaBits);
 	////}
 	////
-	////ID_INLINE float idBitMsgDelta::ReadAngle8(void) const {
+	////ID_INLINE float idBitMsgDelta::ReadAngle8( ) const {
 	////	return BYTE2ANGLE(ReadByte());
 	////}
 	////
-	////ID_INLINE float idBitMsgDelta::ReadAngle16(void) const {
+	////ID_INLINE float idBitMsgDelta::ReadAngle16( ) const {
 	////	return SHORT2ANGLE(ReadShort());
 	////}
 	////

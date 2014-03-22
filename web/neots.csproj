@@ -137,7 +137,6 @@
     <TypeScriptCompile Include="DoomDLL\Framework\Async\MsgChannel.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Framework\Async\MsgChannel.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Framework\Async\NetworkSystem.cpp.ts" />
-    <TypeScriptCompile Include="DoomDLL\Framework\Async\NetworkSystem.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Framework\Async\ServerScan.cpp.ts" />
     <TypeScriptCompile Include="DoomDLL\Framework\Async\ServerScan.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Framework\Common.h.ts" />
