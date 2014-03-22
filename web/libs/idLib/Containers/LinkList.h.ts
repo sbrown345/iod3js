@@ -45,27 +45,27 @@ class idLinkList<type> {
 	////						idLinkList();
 	////						~idLinkList();
 	////
-	////	bool				IsListEmpty( void ) const;
-	////	bool				InList( void ) const;
-	////	int					Num( void ) const;
-	////	void				Clear( void );
+	////	bool				IsListEmpty( ) const;
+	////	bool				InList( ) const;
+	////	int					Num( ) const;
+	////	void				Clear( );
 	////
 	////	void				InsertBefore( idLinkList &node );
 	////	void				InsertAfter( idLinkList &node );
 	////	void				AddToEnd( idLinkList &node );
 	////	void				AddToFront( idLinkList &node );
 	////
-	////	void				Remove( void );
+	////	void				Remove( );
 	////
-	////	type *				Next( void ) const;
-	////	type *				Prev( void ) const;
+	////	type *				Next( ) const;
+	////	type *				Prev( ) const;
 	////
-	////	type *				Owner( void ) const;
+	////	type *				Owner( ) const;
 	////	void				SetOwner( type *object );
 	////
-	////	idLinkList *		ListHead( void ) const;
-	////	idLinkList *		NextNode( void ) const;
-	////	idLinkList *		PrevNode( void ) const;
+	////	idLinkList *		ListHead( ) const;
+	////	idLinkList *		NextNode( ) const;
+	////	idLinkList *		PrevNode( ) const;
 	////
 	////private:
 	head: idLinkList<type>;
@@ -89,20 +89,20 @@ class idLinkList<type> {
 		this.next	= this;
 		this.prev	= this;
 	}
-	////
-	/////*
-	////================
-	////idLinkList<type>::~idLinkList
-	////
-	////Removes the node from the list, or if it's the head of a list, removes
-	////all the nodes from the list.
-	////================
-	////*/
-	//////template< class type >
-	////idLinkList<type>::~idLinkList() {
-	////	Clear();
-	////}
-	////
+	
+	/*
+	================
+	idLinkList<type>::~idLinkList
+	
+	Removes the node from the list, or if it's the head of a list, removes
+	all the nodes from the list.
+	================
+	*/
+	//template< class type >
+	destructor ( ): void {
+		this.Clear ( );
+	}
+
 	/////*
 	////================
 	////idLinkList<type>::IsListEmpty
@@ -111,8 +111,8 @@ class idLinkList<type> {
 	////================
 	////*/
 	//////template< class type >
-	////bool idLinkList<type>::IsListEmpty( void ) const {
-	////	return head.next == head;
+	////bool idLinkList<type>::IsListEmpty( ) const {
+	////	return this.head.next == this.head;
 	////}
 	////
 	/////*
@@ -123,8 +123,8 @@ class idLinkList<type> {
 	////================
 	////*/
 	//////template< class type >
-	////bool idLinkList<type>::InList( void ) const {
-	////	return head != this;
+	////bool idLinkList<type>::InList( ) const {
+	////	return this.head != this;
 	////}
 	////
 	/////*
@@ -135,12 +135,12 @@ class idLinkList<type> {
 	////================
 	////*/
 	//////template< class type >
-	////int idLinkList<type>::Num( void ) const {
+	////int idLinkList<type>::Num( ) const {
 	////	idLinkList<type>	*node;
 	////	int					num;
 	////
 	////	num = 0;
-	////	for( node = head.next; node != head; node = node.next ) {
+	////	for( node = this.head.next; node != this.head; node = node.next ) {
 	////		num++;
 	////	}
 	////
@@ -213,11 +213,11 @@ class idLinkList<type> {
 	////void idLinkList<type>::InsertAfter( idLinkList &node ) {
 	////	Remove();
 	////
-	////	prev		= &node;
-	////	next		= node.next;
+	////	this.prev		= &node;
+	////	this.next		= node.next;
 	////	node.next	= this;
-	////	next.prev	= this;
-	////	head		= node.head;
+	////	this.next.prev	= this;
+	////	this.head		= node.head;
 	////}
 	
 	/*
@@ -253,25 +253,25 @@ class idLinkList<type> {
 	////================
 	////*/
 	//////template< class type >
-	////idLinkList<type> *idLinkList<type>::ListHead( void ) const {
+	////idLinkList<type> *idLinkList<type>::ListHead( ) const {
 	////	return head;
 	////}
-	////
-	/////*
-	////================
-	////idLinkList<type>::Next
-	////
-	////Returns the next object in the list, or NULL if at the end.
-	////================
-	////*/
-	//////template< class type >
-	////type *idLinkList<type>::Next( void ) const {
-	////	if ( !next || ( next == head ) ) {
-	////		return NULL;
-	////	}
-	////	return next.owner;
-	////}
-	////
+	
+	/*
+	================
+	idLinkList<type>::Next
+	
+	Returns the next object in the list, or NULL if at the end.
+	================
+	*/
+	//template< class type >
+	Next ( ): type {
+		if ( !this.next || ( this.next == this.head ) ) {
+			return null;
+		}
+		return this.next.owner;
+	}
+
 	/////*
 	////================
 	////idLinkList<type>::Prev
@@ -280,11 +280,11 @@ class idLinkList<type> {
 	////================
 	////*/
 	//////template< class type >
-	////type *idLinkList<type>::Prev( void ) const {
-	////	if ( !prev || ( prev == head ) ) {
-	////		return NULL;
+	////type *idLinkList<type>::Prev( ) const {
+	////	if ( !this.prev || ( this.prev == this.head ) ) {
+	////		return null;
 	////	}
-	////	return prev.owner;
+	////	return this.prev.owner;
 	////}
 	////
 	/////*
@@ -295,11 +295,11 @@ class idLinkList<type> {
 	////================
 	////*/
 	//////template< class type >
-	////idLinkList<type> *idLinkList<type>::NextNode( void ) const {
-	////	if ( next == head ) {
+	////idLinkList<type> *idLinkList<type>::NextNode( ) const {
+	////	if ( this.next == this.head ) {
 	////		return NULL;
 	////	}
-	////	return next;
+	////	return this.next;
 	////}
 	////
 	/////*
@@ -310,11 +310,11 @@ class idLinkList<type> {
 	////================
 	////*/
 	//////template< class type >
-	////idLinkList<type> *idLinkList<type>::PrevNode( void ) const {
-	////	if ( prev == head ) {
-	////		return NULL;
+	////idLinkList<type> *idLinkList<type>::PrevNode( ) const {
+	////	if ( this.prev == this.head ) {
+	////		return null;
 	////	}
-	////	return prev;
+	////	return this.prev;
 	////}
 	////
 	/////*
@@ -325,7 +325,7 @@ class idLinkList<type> {
 	////================
 	////*/
 	//////template< class type >
-	////type *idLinkList<type>::Owner( void ) const {
+	////type *idLinkList<type>::Owner( ) const {
 	////	return owner;
 	////}
 	////

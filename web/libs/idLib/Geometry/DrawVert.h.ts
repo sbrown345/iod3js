@@ -84,7 +84,7 @@ class idDrawVert {
 	public static size = 60;
 
 	writeToDataView ( dv: DataView, offset: number ): void {
-		var i = offset + -4;
+		var i = offset -4;
 		dv.setFloat32( i += 4, this.xyz[0], true );
 		dv.setFloat32( i += 4, this.xyz[1], true );
 		dv.setFloat32( i += 4, this.xyz[2], true );

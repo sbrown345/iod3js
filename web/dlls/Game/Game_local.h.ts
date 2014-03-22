@@ -585,6 +585,7 @@ class idGameLocal extends idGame {
 	constructor() {
 		super();
 
+		this.clientDeclRemap = multiDimEmptyArray<idList<number>>( MAX_CLIENTS, declType_t.DECL_MAX_TYPES );
 		for ( var i = 0; i < MAX_CLIENTS; i++ ) {
 			for ( var j = 0; j < declType_t.DECL_MAX_TYPES; j++ ) {
 				this.clientDeclRemap[i][j] = new idList<number>( Number );

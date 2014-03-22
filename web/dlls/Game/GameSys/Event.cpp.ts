@@ -569,8 +569,8 @@ idEvent::Free
 ////void idEvent::Schedule( idClass *obj, const idTypeInfo *type, /*int*/time:number ) {
 ////	idEvent *event;
 ////
-////	assert( initialized );
-////	if ( !initialized ) {
+////	assert( idEvent.initialized );
+////	if ( !idEvent.initialized ) {
 ////		return;
 ////	}
 ////
@@ -593,29 +593,29 @@ idEvent::Free
 ////		eventNode.AddToEnd( EventQueue );
 ////	}
 ////}
-////
-/////*
-////================
-////idEvent::CancelEvents
-////================
-////*/
-////void idEvent::CancelEvents( const idClass *obj, const idEventDef *evdef ) {
-////	idEvent *event;
-////	idEvent *next;
-////
-////	if ( !initialized ) {
-////		return;
-////	}
-////
-////	for( event = EventQueue.Next(); event != NULL; event = next ) {
-////		next = event.eventNode.Next();
-////		if ( event.object == obj ) {
-////			if ( !evdef || ( evdef == event.eventdef ) ) {
-////				event.Free();
-////			}
-////		}
-////	}
-////}
+
+/*
+================
+idEvent::CancelEvents
+================
+*/
+	static CancelEvents ( obj: idClass, evdef: idEventDef = null ) {
+		var event: idEvent;
+		var next: idEvent;
+
+		if ( !idEvent.initialized ) {
+			return;
+		}
+
+		for ( event = EventQueue.Next ( ); event != null; event = next ) {
+			next = event.eventNode.Next ( );
+			if ( event.object == obj ) {
+				if ( !evdef || ( evdef == event.eventdef ) ) {
+					event.Free ( );
+				}
+			}
+		}
+	}
 
 /*
 ================
@@ -780,7 +780,7 @@ static Init( ):void {
 ////void idEvent::Shutdown( void ) {
 ////	gameLocal.Printf( "Shutdown event system\n" );
 ////
-////	if ( !initialized ) {
+////	if ( !idEvent.initialized ) {
 ////		gameLocal.Printf( "...not started\n" );
 ////		return;
 ////	}
@@ -790,7 +790,7 @@ static Init( ):void {
 ////	eventDataAllocator.Shutdown();
 ////
 ////	// say it is now shutdown
-////	initialized = false;
+////	idEvent.initialized = false;
 ////}
 ////
 /////*

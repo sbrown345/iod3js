@@ -66,7 +66,7 @@ If you have questions concerning this license or the applicable additional terms
 //================
 //*/
 //template< class type >
-//ID_INLINE type *idListNewElement( void ) {
+//ID_INLINE type *idListNewElement( ) {
 //	return new type;
 //}
 
@@ -194,7 +194,7 @@ return total memory allocated for the list in bytes, but doesn't take into accou
 //================
 //*/
 //template< class type >
-//ID_INLINE size_t idList<type>::Size( void ) const {
+//ID_INLINE size_t idList<type>::Size( ) const {
 //	return sizeof( idList<type> ) + Allocated();
 //}
 
@@ -204,7 +204,7 @@ return total memory allocated for the list in bytes, but doesn't take into accou
 //================
 //*/
 //template< class type >
-//ID_INLINE size_t idList<type>::MemoryUsed( void ) const {
+//ID_INLINE size_t idList<type>::MemoryUsed( ) const {
 //	return this.num * sizeof( *this.list );
 //}
 
@@ -229,7 +229,7 @@ Num():number {
 //================
 //*/
 //template< class type >
-//ID_INLINE int idList<type>::NumAllocated( void ) const {
+//ID_INLINE int idList<type>::NumAllocated( ) const {
 //	return size;
 //}
 
@@ -293,7 +293,7 @@ GetGranularity( ) :number {
 //================
 //*/
 //template< class type >
-//ID_INLINE void idList<type>::Condense( void ) {
+//ID_INLINE void idList<type>::Condense( ) {
 //	if ( this.list ) {
 //		if ( this.num ) {
 //			Resize( this.num );
@@ -525,7 +525,7 @@ Makes sure the list has at least the given number of elements.
 //================
 //*/
 //template< class type >
-//ID_INLINE type *idList<type>::Ptr( void ) {
+//ID_INLINE type *idList<type>::Ptr( ) {
 //	return this.list;
 //}
 
@@ -541,7 +541,7 @@ Makes sure the list has at least the given number of elements.
 //================
 //*/
 //template< class type >
-//const ID_INLINE type *idList<type>::Ptr( void ) const {
+//const ID_INLINE type *idList<type>::Ptr( ) const {
 //	return this.list;
 //}
 
@@ -763,29 +763,28 @@ Searches for the specified data in the list and returns it's address. Returns NU
 		return null;
 	}
 
-///*
-//================
-//idList<type>::FindNull
+/*
+================
+idList<type>::FindNull
 
-//Searches for a NULL pointer in the list.  Returns -1 if NULL is not found.
+Searches for a NULL pointer in the list.  Returns -1 if NULL is not found.
 
-//NOTE: This function can only be called on lists containing pointers. Calling it
-//on non-pointer lists will cause a compiler error.
-//================
-//*/
-//template< class type >
-//ID_INLINE int idList<type>::FindNull( void ) const {
-//	int i;
+NOTE: This function can only be called on lists containing pointers. Calling it
+on non-pointer lists will cause a compiler error.
+================
+*/
+	FindNull ( ): number {
+		var /*int */i: number;
 
-//	for( i = 0; i < this.num; i++ ) {
-//		if ( this.list[ i ] == NULL ) {
-//			return i;
-//		}
-//	}
+		for ( i = 0; i < this.num; i++ ) {
+			if ( this.list[i] == null ) {
+				return i;
+			}
+		}
 
-//	// Not found
-//	return -1;
-//}
+		// Not found
+		return -1;
+	}
 
 ///*
 //================

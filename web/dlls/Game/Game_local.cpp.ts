@@ -122,7 +122,7 @@ function GetGameAPI ( $import: gameImport_t ) {
 ////TestGameAPI
 ////============
 ////*/
-////void TestGameAPI( void ) {
+////void TestGameAPI( ) {
 ////	gameImport_t testImport;
 ////	gameExport_t testExport;
 
@@ -338,7 +338,7 @@ idGameLocal.prototype.Init = function ( ): void {
 ////  shut down the entire game
 ////============
 ////*/
-////void idGameLocal::Shutdown( void ) {
+////void idGameLocal::Shutdown( ) {
 
 ////	if ( !common ) {
 ////		return;
@@ -1060,7 +1060,7 @@ idGameLocal.prototype.LoadMap = function ( mapName: string, /*int */randseed: nu
 ////idGameLocal::NextMap
 ////===================
 ////*/
-////bool idGameLocal::NextMap( void ) {
+////bool idGameLocal::NextMap( ) {
 ////	const function_t	*func;
 ////	idThread			*thread;
 ////	idDict				newInfo;
@@ -1126,7 +1126,7 @@ idGameLocal.prototype.LoadMap = function ( mapName: string, /*int */randseed: nu
 ////idGameLocal::MapPopulate
 ////===================
 ////*/
-////void idGameLocal::MapPopulate( void ) {
+////void idGameLocal::MapPopulate( ) {
 
 ////	if ( this.isMultiplayer ) {
 ////		cvarSystem.SetCVarBool( "r_skipSpecular", false );
@@ -1508,7 +1508,7 @@ idGameLocal.prototype.MapShutdown = function ( ): void {
 ////idGameLocal::DumpOggSounds
 ////===================
 ////*/
-////void idGameLocal::DumpOggSounds( void ) {
+////void idGameLocal::DumpOggSounds( ) {
 ////	int i, j, k, size, totalSize;
 ////	idFile *file;
 ////	idStrList oggSounds, weaponSounds;
@@ -1796,27 +1796,27 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 	}
 };
 
-/////*
-////===========
-////idGameLocal::InitScriptForMap
-////============
-////*/
-////void idGameLocal::InitScriptForMap( void ) {
-////	// create a thread to run frame commands on
-////	this.frameCommandThread = new idThread();
-////	this.frameCommandThread.ManualDelete();
-////	this.frameCommandThread.SetThreadName( "frameCommands" );
+/*
+===========
+idGameLocal::InitScriptForMap
+============
+*/
+idGameLocal.prototype.InitScriptForMap = function ( ): void {
+	// create a thread to run frame commands on
+	this.frameCommandThread = new idThread ( );
+	this.frameCommandThread.ManualDelete ( );
+	this.frameCommandThread.SetThreadName( "frameCommands" );
 
-////	// run the main game script function (not the level specific main)
-////	const function_t *func = this.program.FindFunction( SCRIPT_DEFAULTFUNC );
-////	if ( func != NULL ) {
-////		idThread *thread = new idThread( func );
-////		if ( thread.Start() ) {
-////			// thread has finished executing, so delete it
-////			delete thread;
-////		}
-////	}
-////}
+	// run the main game script function (not the level specific main)
+	var /*function_t */func = this.program.FindFunction( SCRIPT_DEFAULTFUNC );
+	if ( func != null ) {
+		var thread = new idThread( func );
+		if ( thread.Start ( ) ) {
+			// thread has finished executing, so delete it
+			$delete( thread );
+		}
+	}
+};
 
 /////*
 ////===========
@@ -1967,7 +1967,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////idGameLocal::SetupPlayerPVS
 ////================
 ////*/
-////void idGameLocal::SetupPlayerPVS( void ) {
+////void idGameLocal::SetupPlayerPVS( ) {
 ////	int			i;
 ////	idEntity *	ent;
 ////	idPlayer *	player;
@@ -2009,7 +2009,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////idGameLocal::FreePlayerPVS
 ////================
 ////*/
-////void idGameLocal::FreePlayerPVS( void ) {
+////void idGameLocal::FreePlayerPVS( ) {
 ////	if ( this.playerPVS.i != -1 ) {
 ////		this.pvs.FreeCurrentPVS( this.playerPVS );
 ////		this.playerPVS.i = -1;
@@ -2053,7 +2053,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////idGameLocal::UpdateGravity
 ////================
 ////*/
-////void idGameLocal::UpdateGravity( void ) {
+////void idGameLocal::UpdateGravity( ) {
 ////	var ent:idEntity
 
 ////	if ( g_gravity.IsModified() ) {
@@ -2080,7 +2080,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////idGameLocal::GetGravity
 ////================
 ////*/
-////const idVec3 &idGameLocal::GetGravity( void ) const {
+////const idVec3 &idGameLocal::GetGravity( ) const {
 ////	return this.gravity;
 ////}
 
@@ -2092,7 +2092,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////  actors come next and physics team slaves appear after their master.
 ////================
 ////*/
-////void idGameLocal::SortActiveEntityList( void ) {
+////void idGameLocal::SortActiveEntityList( ) {
 ////	ent:idEntity, *next_ent, *master, *part;
 
 ////	// if the active entity list needs to be reordered to place physics team masters at the front
@@ -2487,7 +2487,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////idGameLocal::StartMenu
 ////================
 ////*/
-////idUserInterface* idGameLocal::StartMenu( void ) {
+////idUserInterface* idGameLocal::StartMenu( ) {
 ////	if ( !isMultiplayer ) {
 ////		return NULL;
 ////	}
@@ -2520,7 +2520,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////  should only be used for in-game level editing
 ////================
 ////*/
-////idMapFile *idGameLocal::GetLevelMap( void ) {
+////idMapFile *idGameLocal::GetLevelMap( ) {
 ////	if ( this.mapFile && this.mapFile.HasPrimitiveData()) {
 ////		return this.mapFile;
 ////	}
@@ -2546,7 +2546,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////idGameLocal::GetMapName
 ////================
 ////*/
-////const char *idGameLocal::GetMapName( void ) const {
+////const char *idGameLocal::GetMapName( ) const {
 ////	return this.mapFileName.c_str();
 ////}
 
@@ -2584,7 +2584,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////idGameLocal::ShowTargets
 ////================
 ////*/
-////void idGameLocal::ShowTargets( void ) {
+////void idGameLocal::ShowTargets( ) {
 ////	idMat3		axis = GetLocalPlayer().viewAngles.ToMat3();
 ////	idVec3		up = axis[ 2 ] * 5.0f;
 ////	const idVec3 &viewPos = GetLocalPlayer().GetPhysics().GetOrigin();
@@ -2643,7 +2643,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////idGameLocal::RunDebugInfo
 ////================
 ////*/
-////void idGameLocal::RunDebugInfo( void ) {
+////void idGameLocal::RunDebugInfo( ) {
 ////	var ent:idEntity
 ////	idPlayer *player;
 
@@ -2783,7 +2783,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////idGameLocal::NumAAS
 ////==================
 ////*/
-////int	idGameLocal::NumAAS( void ) const {
+////int	idGameLocal::NumAAS( ) const {
 ////	return this.aasList.Num();
 ////}
 
@@ -2875,7 +2875,7 @@ idGameLocal.prototype.CacheDictionaryMedia = function ( dict: idDict ): void {
 ////idGameLocal::RemoveAllAASObstacles
 ////==================
 ////*/
-////void idGameLocal::RemoveAllAASObstacles( void ) {
+////void idGameLocal::RemoveAllAASObstacles( ) {
 ////	var/*int */i:number;
 
 ////	for( i = 0; i < this.aasList.Num(); i++ ) {
@@ -3173,7 +3173,7 @@ idGameLocal.prototype.FindEntityDefDict = function ( name: string, makeDefault =
 ////Used to allow entities to know if they're being spawned during the initial spawn.
 ////==============
 ////*/
-////gameState_t	idGameLocal::GameState( void ) const {
+////gameState_t	idGameLocal::GameState( ) const {
 ////	return this.gamestate;
 ////}
 
@@ -3184,7 +3184,7 @@ idGameLocal.prototype.FindEntityDefDict = function ( name: string, makeDefault =
 ////Parses textual entity definitions out of an entstring and spawns gentities.
 ////==============
 ////*/
-////void idGameLocal::SpawnMapEntities( void ) {
+////void idGameLocal::SpawnMapEntities( ) {
 ////	int			i;
 ////	int			num;
 ////	int			inhibit;
@@ -3530,7 +3530,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////idGameLocal::GetAlertEntity
 ////============
 ////*/
-////idActor *idGameLocal::GetAlertEntity( void ) {
+////idActor *idGameLocal::GetAlertEntity( ) {
 ////	if ( this.lastAIAlertTime >= this.time ) {
 ////		return this.lastAIAlertEntity.GetEntity();
 ////	}
@@ -3945,7 +3945,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////idGameLocal::GetCamera
 ////=============
 ////*/
-////idCamera *idGameLocal::GetCamera( void ) const {
+////idCamera *idGameLocal::GetCamera( ) const {
 ////	return this.camera;
 ////}
 
@@ -3954,7 +3954,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////idGameLocal::SkipCinematic
 ////=============
 ////*/
-////bool idGameLocal::SkipCinematic( void ) {
+////bool idGameLocal::SkipCinematic( ) {
 ////	if ( this.camera ) {
 ////		if ( this.camera.spawnArgs.GetBool( "disconnect" ) ) {
 ////			this.camera.spawnArgs.SetBool( "disconnect", false );
@@ -4099,7 +4099,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////prepare for a sequence of initial player spawns
 ////============
 ////*/
-////void idGameLocal::RandomizeInitialSpawns( void ) {
+////void idGameLocal::RandomizeInitialSpawns( ) {
 ////	spawnSpot_t	spot;
 ////	int i, j;
 ////	var ent:idEntity
@@ -4271,7 +4271,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////idGameLocal::ThrottleUserInfo
 ////================
 ////*/
-////void idGameLocal::ThrottleUserInfo( void ) {
+////void idGameLocal::ThrottleUserInfo( ) {
 ////	this.mpGame.ThrottleUserInfo();
 ////}
 

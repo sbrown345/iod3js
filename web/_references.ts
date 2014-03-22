@@ -410,7 +410,6 @@
 /// <reference path="dlls/game/script/script_program.cpp.ts" />
 /// <reference path="dlls/game/script/script_compiler.h.ts" />
 /// <reference path="dlls/game/script/script_compiler.cpp.ts" />
-/// <reference path="dlls/game/script/script_interpreter.h.ts" />
 /// <reference path="dlls/game/script/script_interpreter.cpp.ts" />
 /// <reference path="dlls/game/script/script_thread.cpp.ts" />
 /// <reference path="dlls/game/af.h.ts" />

@@ -121,22 +121,22 @@ var EV_Thread_InfluenceActive = new idEventDef( "influenceActive", null, 'd' );
 class idThread extends idClass {
 	//private:
 	static currentThread: idThread;
-	//
-	//	idThread					*waitingForThread;
-	//	int							waitingFor;
-	//	int							waitingUntil;
-	//	idInterpreter				interpreter;
-	//
-	//	idDict						spawnArgs;
-	//								
-	//	int 						threadNum;
-	//	idStr 						threadName;
-	//
-	//	int							lastExecuteTime;
-	//	int							creationTime;
-	//
-	//	bool						manualControl;
-	//
+	
+	waitingForThread:idThread;
+	waitingFor:number/*int*/;
+	waitingUntil:number/*int*/;
+	interpreter = new idInterpreter;
+	
+	spawnArgs = new idDict;
+	
+	threadNum:number/*int*/;
+	threadName = new idStr;
+	
+	lastExecuteTime:number/*int*/;
+	creationTime:number/*int*/;
+	
+	manualControl:boolean;
+	
 	static threadIndex:number /*int*/;
 	static threadList = new idList<idThread>(idThread, true);
 	
@@ -147,10 +147,10 @@ class idThread extends idClass {
 	//
 	Event_Execute(): void { throw "placeholder"; }
 	Event_SetThreadName(name: string): void { throw "placeholder"; }
+	
 	//
-	//	//
-	//	// script callable Events
-	//	//
+	// script callable Events
+	//
 	Event_TerminateThread( /*int*/ num:Number ):void{throw "placeholder";}
 	Event_Pause( ):void{throw "placeholder";}
 	Event_Wait( /*float*/time:number ):void{throw "placeholder";}
@@ -250,8 +250,8 @@ class idThread extends idClass {
 	//	void						Save ( savefile: idSaveGame ): void { throw "placeholder"; }				// archives object for save game file
 	//	void						Restore( idRestoreGame *savefile );				// unarchives object from save game file
 	//
-	//	void						EnableDebugInfo( ) { interpreter.debug = true; };
-	//	void						DisableDebugInfo( ) { interpreter.debug = false; };
+	//	void						EnableDebugInfo( ) { this.interpreter.debug = true; };
+	//	void						DisableDebugInfo( ) { this.interpreter.debug = false; };
 	//
 	//	void						WaitMS( /*int*/time:number );
 	//	void						WaitSec( /*float*/time:number );
@@ -279,10 +279,10 @@ class idThread extends idClass {
 	//	static void					KillThread( /*int*/num:number );
 	//	bool						Execute( );
 	//	void						ManualControl( ) { manualControl = true; CancelEvents( &EV_Thread_Execute ); };
-	//	void						DoneProcessing( ) { interpreter.doneProcessing = true; };
-	//	void						ContinueProcessing( ) { interpreter.doneProcessing = false; };
-	//	bool						ThreadDying( ) { return interpreter.threadDying; };
-	//	void						EndThread( ) { interpreter.threadDying = true; };
+	//	void						DoneProcessing( ) { this.interpreter.doneProcessing = true; };
+	//	void						ContinueProcessing( ) { this.interpreter.doneProcessing = false; };
+	//	bool						ThreadDying( ) { return this.interpreter.threadDying; };
+	//	void						EndThread( ) { this.interpreter.threadDying = true; };
 	//	bool						IsWaiting( );
 	//	void						ClearWaitFor( );
 	//	bool						IsWaitingFor( idEntity *obj );
@@ -310,71 +310,71 @@ class idThread extends idClass {
 	//	static void					ReturnVector( idVec3 const &vec );
 	//	static void					ReturnEntity( ent:idEntity );
 	//};
-	//
+//
 ///*
-	//================
-	//idThread::WaitingOnThread
-	//================
-	//*/
-	//ID_INLINE idThread *idThread::WaitingOnThread( ) {
-	//	return waitingForThread;
-	//}
-	//
+//================
+//idThread::WaitingOnThread
+//================
+//*/
+//ID_INLINE idThread *idThread::WaitingOnThread( ) {
+//	return this.waitingForThread;
+//}
+//
 ///*
-	//================
-	//idThread::SetThreadNum
-	//================
-	//*/
-	//ID_INLINE void idThread::SetThreadNum( /*int*/num:number ) {
-	//	threadNum = num;
-	//}
-	//
+//================
+//idThread::SetThreadNum
+//================
+//*/
+//ID_INLINE void idThread::SetThreadNum( /*int*/num:number ) {
+//	this.threadNum = num;
+//}
+
+/*
+================
+idThread::GetThreadNum
+================
+*/
+	GetThreadNum ( ): number {
+		return this.threadNum;
+	}
+
 ///*
-	//================
-	//idThread::GetThreadNum
-	//================
-	//*/
-	//ID_INLINE int idThread::GetThreadNum( ) {
-	//	return threadNum;
-	//}
-	//
+//================
+//idThread::GetThreadName
+//================
+//*/
+//ID_INLINE const char *idThread::GetThreadName( ) {
+//	return this.threadName.c_str();
+//}
+//
 ///*
-	//================
-	//idThread::GetThreadName
-	//================
-	//*/
-	//ID_INLINE const char *idThread::GetThreadName( ) {
-	//	return threadName.c_str();
-	//}
-	//
+//================
+//idThread::GetThreads
+//================
+//*/
+//ID_INLINE idList<idThread*>& idThread::GetThreads ( ) {
+//	return idThread.threadList;
+//}	
+//
 ///*
-	//================
-	//idThread::GetThreads
-	//================
-	//*/
-	//ID_INLINE idList<idThread*>& idThread::GetThreads ( ) {
-	//	return idThread.threadList;
-	//}	
-	//
+//================
+//idThread::IsDoneProcessing
+//================
+//*/
+//ID_INLINE bool idThread::IsDoneProcessing ( ) {
+//	return this.interpreter.doneProcessing;
+//}
+//
 ///*
-	//================
-	//idThread::IsDoneProcessing
-	//================
-	//*/
-	//ID_INLINE bool idThread::IsDoneProcessing ( ) {
-	//	return interpreter.doneProcessing;
-	//}
-	//
-///*
-	//================
-	//idThread::IsDying
-	//================
-	//*/
-	//ID_INLINE bool idThread::IsDying ( ) {
-	//	return interpreter.threadDying;
-	//}
-	//
-	//#endif /* !__SCRIPT_THREAD_H__ */
+//================
+//idThread::IsDying
+//================
+//*/
+//ID_INLINE bool idThread::IsDying ( ) {
+//	return this.interpreter.threadDying;
+//}
+//
+//#endif /* !__SCRIPT_THREAD_H__ */
 ///*
 //================
 //idThread::CurrentThread
@@ -391,7 +391,7 @@ class idThread extends idClass {
 //*/
 //int idThread::CurrentThreadNum( ) {
 //	if ( currentThread ) {
-//		return currentThread->GetThreadNum();
+//		return currentThread.GetThreadNum();
 //	} else {
 //		return 0;
 //	}
@@ -406,7 +406,7 @@ class idThread extends idClass {
 //	if ( !currentThread ) {
 //		gameLocal.Error( "idThread::BeginMultiFrameEvent called without a current thread" );
 //	}
-//	return currentThread->interpreter.BeginMultiFrameEvent( ent, event );
+//	return currentThread.interpreter.BeginMultiFrameEvent( ent, event );
 //}
 //
 ///*
@@ -418,19 +418,36 @@ class idThread extends idClass {
 //	if ( !currentThread ) {
 //		gameLocal.Error( "idThread::EndMultiFrameEvent called without a current thread" );
 //	}
-//	currentThread->interpreter.EndMultiFrameEvent( ent, event );
+//	currentThread.interpreter.EndMultiFrameEvent( ent, event );
 //}
-//
+
+	constructor ( )
+	constructor ( self: idEntity, func: function_t )
+	constructor ( func: function_t )
+	//constructor ( source: idInterpreter, func: function_t, args: number )
+	//constructor ( source: idInterpreter, self: idEntity, func: function_t, args: number )
+	constructor ( a1?: any, a2?: any, a3?: any, a4?: any ) {
+		super ( );
+
+		switch ( arguments.length ) {
+			case 1:
+				this.constructor_func( <function_t>a1 );
+			break;
+		default:
+			todoThrow ( );
+		}
+	}
+
 ///*
 //================
 //idThread::idThread
 //================
 //*/
 //idThread::idThread() {
-//	Init();
-//	SetThreadName( va( "thread_%d", threadIndex ) );
+//	this.Init();
+//	this.SetThreadName( va( "thread_%d", idThread.threadIndex ) );
 //	if ( g_debugScript.GetBool() ) {
-//		gameLocal.Printf( "%d: create thread (%d) '%s'\n", gameLocal.time, threadNum, threadName.c_str() );
+//		gameLocal.Printf( "%d: create thread (%d) '%s'\n", gameLocal.time, this.threadNum, this.threadName.c_str() );
 //	}
 //}
 //
@@ -442,29 +459,29 @@ class idThread extends idClass {
 //idThread::idThread( idEntity *self, const function_t *func ) {
 //	assert( self );
 //	
-//	Init();
-//	SetThreadName( self->name );
-//	interpreter.EnterObjectFunction( self, func, false );
+//	this.Init();
+//	this.SetThreadName( self.name );
+//	this.interpreter.EnterObjectFunction( self, func, false );
 //	if ( g_debugScript.GetBool() ) {
-//		gameLocal.Printf( "%d: create thread (%d) '%s'\n", gameLocal.time, threadNum, threadName.c_str() );
+//		gameLocal.Printf( "%d: create thread (%d) '%s'\n", gameLocal.time, this.threadNum, this.threadName.c_str() );
 //	}
 //}
 //
-///*
-//================
-//idThread::idThread
-//================
-//*/
-//idThread::idThread( const function_t *func ) {
-//	assert( func );
-//
-//	Init();
-//	SetThreadName( func->Name() );
-//	interpreter.EnterFunction( func, false );
-//	if ( g_debugScript.GetBool() ) {
-//		gameLocal.Printf( "%d: create thread (%d) '%s'\n", gameLocal.time, threadNum, threadName.c_str() );
-//	}
-//}
+/*
+================
+idThread::idThread
+================
+*/
+	constructor_func ( func: function_t ): void {
+		assert( func );
+
+		this.Init ( );
+		this.SetThreadName( func.Name ( ) );
+		this.interpreter.EnterFunction( func, false );
+		if ( g_debugScript.GetBool ( ) ) {
+			gameLocal.Printf( "%d: create thread (%d) '%s'\n", gameLocal.time, this.threadNum, this.threadName.c_str ( ) );
+		}
+	}
 //
 ///*
 //================
@@ -472,10 +489,10 @@ class idThread extends idClass {
 //================
 //*/
 //idThread::idThread( idInterpreter *source, const function_t *func, int args ) {
-//	Init();
-//	interpreter.ThreadCall( source, func, args );
+//	this.Init();
+//	this.interpreter.ThreadCall( source, func, args );
 //	if ( g_debugScript.GetBool() ) {
-//		gameLocal.Printf( "%d: create thread (%d) '%s'\n", gameLocal.time, threadNum, threadName.c_str() );
+//		gameLocal.Printf( "%d: create thread (%d) '%s'\n", gameLocal.time, this.threadNum, this.threadName.c_str() );
 //	}
 //}
 //
@@ -487,48 +504,49 @@ class idThread extends idClass {
 //idThread::idThread( idInterpreter *source, idEntity *self, const function_t *func, int args ) {
 //	assert( self );
 //
-//	Init();
-//	SetThreadName( self->name );
-//	interpreter.ThreadCall( source, func, args );
+//	this.Init();
+//	this.SetThreadName( self.name );
+//	this.interpreter.ThreadCall( source, func, args );
 //	if ( g_debugScript.GetBool() ) {
-//		gameLocal.Printf( "%d: create thread (%d) '%s'\n", gameLocal.time, threadNum, threadName.c_str() );
+//		gameLocal.Printf( "%d: create thread (%d) '%s'\n", gameLocal.time, this.threadNum, this.threadName.c_str() );
 //	}
 //}
-//
-///*
-//================
-//idThread::~idThread
-//================
-//*/
-//idThread::~idThread() {
+
+/*
+================
+idThread::~idThread
+================
+*/
+	destructor(): void {
+		todoThrow ( );
 //	idThread	*thread;
 //	int			i;
 //	int			n;
 //
 //	if ( g_debugScript.GetBool() ) {
-//		gameLocal.Printf( "%d: end thread (%d) '%s'\n", gameLocal.time, threadNum, threadName.c_str() );
+//		gameLocal.Printf( "%d: end thread (%d) '%s'\n", gameLocal.time, this.threadNum, this.threadName.c_str() );
 //	}
 //	idThread.threadList.Remove( this );
 //	n = idThread.threadList.Num();
 //	for( i = 0; i < n; i++ ) {
 //		thread = idThread.threadList[ i ];
-//		if ( thread->WaitingOnThread() == this ) {
-//			thread->ThreadCallback( this );
+//		if ( thread.WaitingOnThread() == this ) {
+//			thread.ThreadCallback( this );
 //		}
 //	}
 //
 //	if ( currentThread == this ) {
 //		currentThread = NULL;
 //	}
-//}
-//
+	}
+
 ///*
 //================
 //idThread::ManualDelete
 //================
 //*/
 //void idThread::ManualDelete( ) {
-//	interpreter.terminateOnExit = false;
+//	this.interpreter.terminateOnExit = false;
 //}
 //
 ///*
@@ -540,21 +558,21 @@ class idThread extends idClass {
 //
 //	// We will check on restore that threadNum is still the same,
 //	//  threads should have been restored in the same order.
-//	savefile->WriteInt( threadNum );
+//	savefile.WriteInt( this.threadNum );
 //
-//	savefile->WriteObject( waitingForThread );
-//	savefile->WriteInt( waitingFor );
-//	savefile->WriteInt( waitingUntil );
+//	savefile.WriteObject( this.waitingForThread );
+//	savefile.WriteInt( this.waitingFor );
+//	savefile.WriteInt( this.waitingUntil );
 //
-//	interpreter.Save( savefile );
+//	this.interpreter.Save( savefile );
 //
-//	savefile->WriteDict( &spawnArgs );
-//	savefile->WriteString( threadName );
+//	savefile.WriteDict( &spawnArgs );
+//	savefile.WriteString( this.threadName );
 //
-//	savefile->WriteInt( lastExecuteTime );
-//	savefile->WriteInt( creationTime );
+//	savefile.WriteInt( this.lastExecuteTime );
+//	savefile.WriteInt( this.creationTime );
 //
-//	savefile->WriteBool( manualControl );
+//	savefile.WriteBool( this.manualControl );
 //}
 //
 ///*
@@ -563,70 +581,71 @@ class idThread extends idClass {
 //================
 //*/
 //void idThread::Restore( idRestoreGame *savefile ) {
-//	savefile->ReadInt( threadNum );
+//	savefile.ReadInt( this.threadNum );
 //
-//	savefile->ReadObject( reinterpret_cast<idClass *&>( waitingForThread ) );
-//	savefile->ReadInt( waitingFor );
-//	savefile->ReadInt( waitingUntil );
+//	savefile.ReadObject( reinterpret_cast<idClass *&>( this.waitingForThread ) );
+//	savefile.ReadInt( this.waitingFor );
+//	savefile.ReadInt( this.waitingUntil );
 //
-//	interpreter.Restore( savefile );
+//	this.interpreter.Restore( savefile );
 //
-//	savefile->ReadDict( &spawnArgs );
-//	savefile->ReadString( threadName );
+//	savefile.ReadDict( &spawnArgs );
+//	savefile.ReadString( this.threadName );
 //
-//	savefile->ReadInt( lastExecuteTime );
-//	savefile->ReadInt( creationTime );
+//	savefile.ReadInt( this.lastExecuteTime );
+//	savefile.ReadInt( this.creationTime );
 //
-//	savefile->ReadBool( manualControl );
+//	savefile.ReadBool( this.manualControl );
 //}
-//
-///*
-//================
-//idThread::Init
-//================
-//*/
-//void idThread::Init( ) {
-//	// create a unique threadNum
-//	do {
-//		threadIndex++;
-//		if ( threadIndex == 0 ) {
-//			threadIndex = 1;
-//		}
-//	} while( GetThread( threadIndex ) );
-//
-//	threadNum = threadIndex;
-//	idThread.threadList.Append( this );
-//	
-//	creationTime = gameLocal.time;
-//	lastExecuteTime = 0;
-//	manualControl = false;
-//
-//	ClearWaitFor();
-//
-//	interpreter.SetThread( this );
-//}
-//
-///*
-//================
-//idThread::GetThread
-//================
-//*/
-//idThread *idThread::GetThread( /*int*/num:number ) {
-//	int			i;
-//	int			n;
-//	idThread	*thread;
-//
-//	n = idThread.threadList.Num();
-//	for( i = 0; i < n; i++ ) {
-//		thread = idThread.threadList[ i ];
-//		if ( thread->GetThreadNum() == num ) {
-//			return thread;
-//		}
-//	}
-//
-//	return NULL;
-//}
-//
+
+/*
+================
+idThread::Init
+================
+*/
+	Init ( ): void {
+		todoThrow ( );
+		// create a unique threadNum
+		do {
+			idThread.threadIndex++;
+			if ( idThread.threadIndex == 0 ) {
+				idThread.threadIndex = 1;
+			}
+		} while ( this.GetThread( idThread.threadIndex ) );
+
+		this.threadNum = idThread.threadIndex;
+		idThread.threadList.Append( this );
+
+		this.creationTime = gameLocal.time;
+		this.lastExecuteTime = 0;
+		this.manualControl = false;
+
+		this.ClearWaitFor ( );
+
+		this.interpreter.SetThread( this );
+	}
+
+/*
+================
+idThread::GetThread
+================
+*/
+	GetThread ( /*int*/num: number ): idThread {
+		var /*int			*/i: number;
+		var /*int			*/n: number;
+		var thread: idThread;
+
+		n = idThread.threadList.Num ( );
+		for ( i = 0; i < n; i++ ) {
+			thread = idThread.threadList[i];
+			if ( thread.GetThreadNum ( ) == num ) {
+				return thread;
+			}
+		}
+
+		return null;
+	}
+
 ///*
 //================
 //idThread::DisplayInfo
@@ -638,22 +657,22 @@ class idThread extends idClass {
 //		"        File: %s(%d)\n"
 //		"     Created: %d (%d ms ago)\n"
 //		"      Status: ", 
-//		threadNum, threadName.c_str(), 
-//		interpreter.CurrentFile(), interpreter.CurrentLine(), 
-//		creationTime, gameLocal.time - creationTime );
+//		this.threadNum, this.threadName.c_str(), 
+//		this.interpreter.CurrentFile(), this.interpreter.CurrentLine(), 
+//		this.creationTime, gameLocal.time - this.creationTime );
 //
-//	if ( interpreter.threadDying ) {
+//	if ( this.interpreter.threadDying ) {
 //		gameLocal.Printf( "Dying\n" );
-//	} else if ( interpreter.doneProcessing ) {
+//	} else if ( this.interpreter.doneProcessing ) {
 //		gameLocal.Printf( 
 //			"Paused since %d (%d ms)\n"
-//			"      Reason: ",  lastExecuteTime, gameLocal.time - lastExecuteTime );
-//		if ( waitingForThread ) {
-//			gameLocal.Printf( "Waiting for thread #%3i '%s'\n", waitingForThread->GetThreadNum(), waitingForThread->GetThreadName() );
-//		} else if ( ( waitingFor != ENTITYNUM_NONE ) && ( gameLocal.entities[ waitingFor ] ) ) {
-//			gameLocal.Printf( "Waiting for entity #%3i '%s'\n", waitingFor, gameLocal.entities[ waitingFor ]->name.c_str() );
-//		} else if ( waitingUntil ) {
-//			gameLocal.Printf( "Waiting until %d (%d ms total wait time)\n", waitingUntil, waitingUntil - lastExecuteTime );
+//			"      Reason: ",  this.lastExecuteTime, gameLocal.time - this.lastExecuteTime );
+//		if ( this.waitingForThread ) {
+//			gameLocal.Printf( "Waiting for thread #%3i '%s'\n", this.waitingForThread.GetThreadNum(), this.waitingForThread.GetThreadName() );
+//		} else if ( ( this.waitingFor != ENTITYNUM_NONE ) && ( gameLocal.entities[ this.waitingFor ] ) ) {
+//			gameLocal.Printf( "Waiting for entity #%3i '%s'\n", this.waitingFor, gameLocal.entities[ this.waitingFor ].name.c_str() );
+//		} else if ( this.waitingUntil ) {
+//			gameLocal.Printf( "Waiting until %d (%d ms total wait time)\n", this.waitingUntil, this.waitingUntil - this.lastExecuteTime );
 //		} else {
 //			gameLocal.Printf( "None\n" );
 //		}
@@ -661,7 +680,7 @@ class idThread extends idClass {
 //		gameLocal.Printf( "Processing\n" );
 //	}
 //
-//	interpreter.DisplayInfo();
+//	this.interpreter.DisplayInfo();
 //
 //	gameLocal.Printf( "\n" );
 //}
@@ -677,8 +696,8 @@ class idThread extends idClass {
 //
 //	n = idThread.threadList.Num();
 //	for( i = 0; i < n; i++ ) {
-//		//idThread.threadList[ i ]->DisplayInfo();
-//		gameLocal.Printf( "%3i: %-20s : %s(%d)\n", idThread.threadList[ i ]->threadNum, idThread.threadList[ i ]->threadName.c_str(), idThread.threadList[ i ]->interpreter.CurrentFile(), idThread.threadList[ i ]->interpreter.CurrentLine() );
+//		//idThread.threadList[ i ].DisplayInfo();
+//		gameLocal.Printf( "%3i: %-20s : %s(%d)\n", idThread.threadList[ i ].threadNum, idThread.threadList[ i ].threadName.c_str(), idThread.threadList[ i ].interpreter.CurrentFile(), idThread.threadList[ i ].interpreter.CurrentLine() );
 //	}
 //	gameLocal.Printf( "%d active threads\n\n", n );
 //}
@@ -712,36 +731,36 @@ idThread::Restart
 //================
 //*/
 //void idThread::DelayedStart( int delay ) {
-//	CancelEvents( &EV_Thread_Execute );
+//	super.CancelEvents( &EV_Thread_Execute );
 //	if ( gameLocal.time <= 0 ) {
 //		delay++;
 //	}
 //	PostEventMS( &EV_Thread_Execute, delay );
 //}
-//
-///*
-//================
-//idThread::Start
-//================
-//*/
-//bool idThread::Start( ) {
-//	bool result;
-//
-//	CancelEvents( &EV_Thread_Execute );
-//	result = Execute();
-//
-//	return result;
-//}
-//
-///*
-//================
-//idThread::SetThreadName
-//================
-//*/
-//void idThread::SetThreadName( name:string ) {
-//	threadName = name;
-//}
-//
+
+/*
+================
+idThread::Start
+================
+*/
+Start( ):boolean {
+	var result:boolean;
+
+	super.CancelEvents( EV_Thread_Execute );
+	result = this.Execute();
+
+	return result;
+}
+
+/*
+================
+idThread::SetThreadName
+================
+*/
+SetThreadName( name:string ) :void {
+	this.threadName.equals( name );
+}
+
 ///*
 //================
 //idThread::ObjectMoveDone
@@ -754,9 +773,9 @@ idThread::Restart
 //		return;
 //	}
 //
-//	thread = GetThread( threadnum );
+//	thread = this.GetThread( threadnum );
 //	if ( thread ) {
-//		thread->ObjectMoveDone( obj );
+//		thread.ObjectMoveDone( obj );
 //	}
 //}
 //
@@ -768,7 +787,7 @@ idThread::Restart
 //void idThread::End( ) {
 //	// Tell thread to die.  It will exit on its own.
 //	Pause();
-//	interpreter.threadDying	= true;
+//	this.interpreter.threadDying	= true;
 //}
 //
 ///*
@@ -795,8 +814,8 @@ idThread::Restart
 //	num = idThread.threadList.Num();
 //	for( i = 0; i < num; i++ ) {
 //		thread = idThread.threadList[ i ];
-//		if ( !idStr::Cmpn( thread->GetThreadName(), name, len ) ) {
-//			thread->End();
+//		if ( !idStr::Cmpn( thread.GetThreadName(), name, len ) ) {
+//			thread.End();
 //		}
 //	}
 //}
@@ -809,49 +828,50 @@ idThread::Restart
 //void idThread::KillThread( /*int*/num:number ) {
 //	idThread *thread;
 //
-//	thread = GetThread( num );
+//	thread = this.GetThread( num );
 //	if ( thread ) {
 //		// Tell thread to die.  It will delete itself on it's own.
-//		thread->End();
+//		thread.End();
 //	}
 //}
 //
-///*
-//================
-//idThread::Execute
-//================
-//*/
-//bool idThread::Execute( ) {
-//	idThread	*oldThread;
-//	bool		done;
-//
-//	if ( manualControl && ( waitingUntil > gameLocal.time ) ) {
-//		return false;
-//	}
-//
-//	oldThread = currentThread;
-//	currentThread = this;
-//
-//	lastExecuteTime = gameLocal.time;
-//	ClearWaitFor();
-//	done = interpreter.Execute();
-//	if ( done ) {
-//		End();
-//		if ( interpreter.terminateOnExit ) {
-//			PostEventMS( &EV_Remove, 0 );
-//		}
-//	} else if ( !manualControl ) {
-//		if ( waitingUntil > lastExecuteTime ) {
-//			PostEventMS( &EV_Thread_Execute, waitingUntil - lastExecuteTime );
-//		} else if ( interpreter.MultiFrameEventInProgress() ) {
-//			PostEventMS( &EV_Thread_Execute, gameLocal.msec );
-//		}
-//	}
-//
-//	currentThread = oldThread;
-//
-//	return done;
-//}
+/*
+================
+idThread::Execute
+================
+*/
+	Execute ( ): boolean {
+		todoThrow ( );
+		var oldThread: idThread;
+		var done: boolean;
+
+		//if ( this.manualControl && ( this.waitingUntil > gameLocal.time ) ) {
+		//	return false;
+		//}
+
+		//oldThread = currentThread;
+		//currentThread = this;
+
+		//this.lastExecuteTime = gameLocal.time;
+		//this.ClearWaitFor();
+		//done = this.interpreter.Execute();
+		//if ( done ) {
+		//	End();
+		//	if ( this.interpreter.terminateOnExit ) {
+		//		PostEventMS( &EV_Remove, 0 );
+		//	}
+		//} else if ( !this.manualControl ) {
+		//	if ( this.waitingUntil > this.lastExecuteTime ) {
+		//		PostEventMS( &EV_Thread_Execute, this.waitingUntil - this.lastExecuteTime );
+		//	} else if ( this.interpreter.MultiFrameEventInProgress() ) {
+		//		PostEventMS( &EV_Thread_Execute, gameLocal.msec );
+		//	}
+		//}
+
+		//currentThread = oldThread;
+
+		return done;
+	}
 //
 ///*
 //================
@@ -861,11 +881,11 @@ idThread::Restart
 //================
 //*/
 //bool idThread::IsWaiting( ) {
-//	if ( waitingForThread || ( waitingFor != ENTITYNUM_NONE ) ) {
+//	if ( this.waitingForThread || ( this.waitingFor != ENTITYNUM_NONE ) ) {
 //		return true;
 //	}
 //
-//	if ( waitingUntil && ( waitingUntil > gameLocal.time ) ) {
+//	if ( this.waitingUntil && ( this.waitingUntil > gameLocal.time ) ) {
 //		return true;
 //	}
 //
@@ -880,8 +900,8 @@ idThread::Restart
 //================
 //*/
 //void idThread::CallFunction( const function_t *func, bool clearStack ) {
-//	ClearWaitFor();
-//	interpreter.EnterFunction( func, clearStack );
+//	this.ClearWaitFor();
+//	this.interpreter.EnterFunction( func, clearStack );
 //}
 //
 ///*
@@ -893,21 +913,21 @@ idThread::Restart
 //*/
 //void idThread::CallFunction( idEntity *self, const function_t *func, bool clearStack ) {
 //	assert( self );
-//	ClearWaitFor();
-//	interpreter.EnterObjectFunction( self, func, clearStack );
+//	this.ClearWaitFor();
+//	this.interpreter.EnterObjectFunction( self, func, clearStack );
 //}
 //
-///*
-//================
-//idThread::ClearWaitFor
-//================
-//*/
-//void idThread::ClearWaitFor( ) {
-//	waitingFor			= ENTITYNUM_NONE;
-//	waitingForThread	= NULL;
-//	waitingUntil		= 0;
-//}
-//
+/*
+================
+idThread::ClearWaitFor
+================
+*/
+	ClearWaitFor ( ): void {
+		this.waitingFor = ENTITYNUM_NONE;
+		this.waitingForThread = null;
+		this.waitingUntil = 0;
+	}
+
 ///*
 //================
 //idThread::IsWaitingFor
@@ -915,7 +935,7 @@ idThread::Restart
 //*/
 //bool idThread::IsWaitingFor( idEntity *obj ) {
 //	assert( obj );
-//	return waitingFor == obj->entityNumber;
+//	return this.waitingFor == obj.entityNumber;
 //}
 //
 ///*
@@ -927,7 +947,7 @@ idThread::Restart
 //	assert( obj );
 //
 //	if ( IsWaitingFor( obj ) ) {
-//		ClearWaitFor();
+//		this.ClearWaitFor();
 //		DelayedStart( 0 );
 //	}
 //}
@@ -938,12 +958,12 @@ idThread::Restart
 //================
 //*/
 //void idThread::ThreadCallback( idThread *thread ) {
-//	if ( interpreter.threadDying ) {
+//	if ( this.interpreter.threadDying ) {
 //		return;
 //	}
 //
-//	if ( thread == waitingForThread ) {
-//		ClearWaitFor();
+//	if ( thread == this.waitingForThread ) {
+//		this.ClearWaitFor();
 //		DelayedStart( 0 );
 //	}
 //}
@@ -954,7 +974,7 @@ idThread::Restart
 //================
 //*/
 //void idThread::Event_SetThreadName( name:string ) {
-//	SetThreadName( name );
+//	this.SetThreadName( name );
 //}
 //
 ///*
@@ -970,7 +990,7 @@ idThread::Restart
 //	vsprintf( text, fmt, argptr );
 //	va_end( argptr );
 //
-//	interpreter.Error( text );
+//	this.interpreter.Error( text );
 //}
 //
 ///*
@@ -986,7 +1006,7 @@ idThread::Restart
 //	vsprintf( text, fmt, argptr );
 //	va_end( argptr );
 //
-//	interpreter.Warning( text );
+//	this.interpreter.Warning( text );
 //}
 //
 /*
@@ -1042,7 +1062,7 @@ idThread::ReturnString
 //================
 //*/
 //void idThread::Event_Execute( ) {
-//	Execute();
+//	this.Execute();
 //}
 //
 ///*
@@ -1051,8 +1071,8 @@ idThread::ReturnString
 //================
 //*/
 //void idThread::Pause( ) {
-//	ClearWaitFor();
-//	interpreter.doneProcessing = true;
+//	this.ClearWaitFor();
+//	this.interpreter.doneProcessing = true;
 //}
 //
 ///*
@@ -1062,7 +1082,7 @@ idThread::ReturnString
 //*/
 //void idThread::WaitMS( /*int*/time:number ) {
 //	Pause();
-//	waitingUntil = gameLocal.time + time;
+//	this.waitingUntil = gameLocal.time + time;
 //}
 //
 ///*
@@ -1084,8 +1104,8 @@ idThread::ReturnString
 //
 //	// manual control threads don't set waitingUntil so that they can be run again
 //	// that frame if necessary.
-//	if ( !manualControl ) {
-//		waitingUntil = gameLocal.time + gameLocal.msec;
+//	if ( !this.manualControl ) {
+//		this.waitingUntil = gameLocal.time + gameLocal.msec;
 //	}
 //}
 //
@@ -1103,7 +1123,7 @@ idThread::ReturnString
 //void idThread::Event_TerminateThread( /*int*/num:number ) {
 //	idThread *thread;
 //
-//	thread = GetThread( num );
+//	thread = this.GetThread( num );
 //	KillThread( num );
 //}
 //
@@ -1140,11 +1160,11 @@ idThread::ReturnString
 //================
 //*/
 //void idThread::Event_WaitFor( ent:idEntity ) {
-//	if ( ent && ent->RespondsTo( EV_Thread_SetCallback ) ) {
-//		ent->ProcessEvent( &EV_Thread_SetCallback );
+//	if ( ent && ent.RespondsTo( EV_Thread_SetCallback ) ) {
+//		ent.ProcessEvent( &EV_Thread_SetCallback );
 //		if ( gameLocal.program.GetReturnedInteger() ) {
 //			Pause();
-//			waitingFor = ent->entityNumber;
+//			this.waitingFor = ent.entityNumber;
 //		}
 //	}
 //}
@@ -1157,7 +1177,7 @@ idThread::ReturnString
 //void idThread::Event_WaitForThread( /*int*/num:number ) {
 //	idThread *thread;
 //
-//	thread = GetThread( num );
+//	thread = this.GetThread( num );
 //	if ( !thread ) {
 //		if ( g_debugScript.GetBool() ) {
 //			// just print a warning and continue executing
@@ -1165,7 +1185,7 @@ idThread::ReturnString
 //		}
 //	} else {
 //		Pause();
-//		waitingForThread = thread;
+//		this.waitingForThread = thread;
 //	}
 //}
 //
@@ -1193,7 +1213,7 @@ idThread::ReturnString
 //================
 //*/
 //void idThread::Event_Say( text:string ) {
-//	cmdSystem->BufferCommandText( CMD_EXEC_NOW, va( "say \"%s\"", text ) );
+//	cmdSystem.BufferCommandText( CMD_EXEC_NOW, va( "say \"%s\"", text ) );
 //}
 //
 ///*
@@ -1212,9 +1232,9 @@ idThread::ReturnString
 //*/
 //void idThread::Event_Trigger( ent:idEntity ) {
 //	if ( ent ) {
-//		ent->Signal( SIG_TRIGGER );
-//		ent->ProcessEvent( &EV_Activate, gameLocal.GetLocalPlayer() );
-//		ent->TriggerGuis();
+//		ent.Signal( SIG_TRIGGER );
+//		ent.ProcessEvent( &EV_Activate, gameLocal.GetLocalPlayer() );
+//		ent.TriggerGuis();
 //	}
 //}
 //
@@ -1224,7 +1244,7 @@ idThread::ReturnString
 //================
 //*/
 //void idThread::Event_SetCvar( name:string, value:string ) const {
-//	cvarSystem->SetCVarString( name, value );
+//	cvarSystem.SetCVarString( name, value );
 //}
 //
 ///*
@@ -1233,7 +1253,7 @@ idThread::ReturnString
 //================
 //*/
 //void idThread::Event_GetCvar( name:string ) const {
-//	ReturnString( cvarSystem->GetCVarString( name ) );
+//	ReturnString( cvarSystem.GetCVarString( name ) );
 //}
 //
 ///*
@@ -1309,7 +1329,7 @@ idThread::ReturnString
 //================
 //*/
 //void idThread::Event_CopySpawnArgs( ent:idEntity ) {
-//	spawnArgs.Copy( ent->spawnArgs );
+//	spawnArgs.Copy( ent.spawnArgs );
 //}
 //
 ///*
@@ -1545,7 +1565,7 @@ idThread::ReturnString
 //		Error( "Function '%s' not found", func );
 //	}
 //
-//	ent->SetSignal( ( signalNum_t )signal, this, function );
+//	ent.SetSignal( ( signalNum_t )signal, this, function );
 //}
 //
 ///*
@@ -1562,7 +1582,7 @@ idThread::ReturnString
 //		Error( "Signal out of range" );
 //	}
 //
-//	ent->ClearSignalThread( ( signalNum_t )signal, this );
+//	ent.ClearSignalThread( ( signalNum_t )signal, this );
 //}
 //
 ///*
@@ -1576,7 +1596,7 @@ idThread::ReturnString
 //		return;
 //	}
 //
-//	if ( !ent->IsType( idCamera::Type ) ) {
+//	if ( !ent.IsType( idCamera::Type ) ) {
 //		Error( "Entity is not a camera" );
 //		return;
 //	}
@@ -1669,8 +1689,8 @@ idThread::ReturnString
 //void idThread::Event_GetTraceJoint( ) {
 //	if ( idThread.trace.fraction < 1.0f && idThread.trace.c.id < 0 ) {
 //		idAFEntity_Base *af = static_cast<idAFEntity_Base *>( gameLocal.entities[ idThread.trace.c.entityNum ] );
-//		if ( af && af->IsType( idAFEntity_Base::Type ) && af->IsActiveAF() ) {
-//			ReturnString( af->GetAnimator()->GetJointName( CLIPMODEL_ID_TO_JOINT_HANDLE( idThread.trace.c.id ) ) );
+//		if ( af && af.IsType( idAFEntity_Base::Type ) && af.IsActiveAF() ) {
+//			ReturnString( af.GetAnimator().GetJointName( CLIPMODEL_ID_TO_JOINT_HANDLE( idThread.trace.c.id ) ) );
 //			return;
 //		}
 //	}
@@ -1685,11 +1705,11 @@ idThread::ReturnString
 //void idThread::Event_GetTraceBody( ) {
 //	if ( idThread.trace.fraction < 1.0f && idThread.trace.c.id < 0 ) {
 //		idAFEntity_Base *af = static_cast<idAFEntity_Base *>( gameLocal.entities[ idThread.trace.c.entityNum ] );
-//		if ( af && af->IsType( idAFEntity_Base::Type ) && af->IsActiveAF() ) {
-//			int bodyId = af->BodyForClipModelId( idThread.trace.c.id );
-//			idAFBody *body = af->GetAFPhysics()->GetBody( bodyId );
+//		if ( af && af.IsType( idAFEntity_Base::Type ) && af.IsActiveAF() ) {
+//			int bodyId = af.BodyForClipModelId( idThread.trace.c.id );
+//			idAFBody *body = af.GetAFPhysics().GetBody( bodyId );
 //			if ( body ) {
-//				ReturnString( body->GetName() );
+//				ReturnString( body.GetName() );
 //				return;
 //			}
 //		}
@@ -1709,7 +1729,7 @@ idThread::ReturnString
 //	player = gameLocal.GetLocalPlayer();
 //	if ( player ) {
 //		fadeColor.Set( color[ 0 ], color[ 1 ], color[ 2 ], 0.0 );
-//		player->playerView.Fade(fadeColor, SEC2MS( time ) );
+//		player.playerView.Fade(fadeColor, SEC2MS( time ) );
 //	}
 //}
 //
@@ -1725,7 +1745,7 @@ idThread::ReturnString
 //	player = gameLocal.GetLocalPlayer();
 //	if ( player ) {
 //		fadeColor.Set( color[ 0 ], color[ 1 ], color[ 2 ], 1.0f );
-//		player->playerView.Fade(fadeColor, SEC2MS( time ) );
+//		player.playerView.Fade(fadeColor, SEC2MS( time ) );
 //	}
 //}
 //
@@ -1741,7 +1761,7 @@ idThread::ReturnString
 //	player = gameLocal.GetLocalPlayer();
 //	if ( player ) {
 //		fadeColor.Set( color[ 0 ], color[ 1 ], color[ 2 ], alpha );
-//		player->playerView.Fade(fadeColor, SEC2MS( time ) );
+//		player.playerView.Fade(fadeColor, SEC2MS( time ) );
 //	}
 //}
 //
@@ -1764,7 +1784,7 @@ idThread::ReturnString
 //================
 //*/
 //void idThread::Event_StartMusic( text:string ) {
-//	gameSoundWorld->PlayShaderDirectly( text );
+//	gameSoundWorld.PlayShaderDirectly( text );
 //}
 //
 ///*
@@ -1956,7 +1976,7 @@ idThread::ReturnString
 //================
 //*/
 //void idThread::Event_CacheSoundShader( const char *soundName ) {
-//	declManager->FindSound( soundName );
+//	declManager.FindSound( soundName );
 //}
 //
 ///*
@@ -1965,7 +1985,7 @@ idThread::ReturnString
 //================
 //*/
 //void idThread::Event_DebugLine( color:idVec3, start:idVec3, end:idVec3, const float lifetime ) {
-//	gameRenderWorld->DebugLine( idVec4( color.x, color.y, color.z, 0.0 ), start, end, SEC2MS( lifetime ) );
+//	gameRenderWorld.DebugLine( idVec4( color.x, color.y, color.z, 0.0 ), start, end, SEC2MS( lifetime ) );
 //}
 //
 ///*
@@ -1974,7 +1994,7 @@ idThread::ReturnString
 //================
 //*/
 //void idThread::Event_DebugArrow( color:idVec3, start:idVec3, end:idVec3, const int size, const float lifetime ) {
-//	gameRenderWorld->DebugArrow( idVec4( color.x, color.y, color.z, 0.0 ), start, end, size, SEC2MS( lifetime ) );
+//	gameRenderWorld.DebugArrow( idVec4( color.x, color.y, color.z, 0.0 ), start, end, size, SEC2MS( lifetime ) );
 //}
 //
 ///*
@@ -1983,7 +2003,7 @@ idThread::ReturnString
 //================
 //*/
 //void idThread::Event_DebugCircle( color:idVec3, const idVec3 &origin, const idVec3 &dir, const float radius, const int numSteps, const float lifetime ) {
-//	gameRenderWorld->DebugCircle( idVec4( color.x, color.y, color.z, 0.0 ), origin, dir, radius, numSteps, SEC2MS( lifetime ) );
+//	gameRenderWorld.DebugCircle( idVec4( color.x, color.y, color.z, 0.0 ), origin, dir, radius, numSteps, SEC2MS( lifetime ) );
 //}
 //
 ///*
@@ -1992,7 +2012,7 @@ idThread::ReturnString
 //================
 //*/
 //void idThread::Event_DebugBounds( color:idVec3, mins:idVec3, maxs:idVec3, const float lifetime ) {
-//	gameRenderWorld->DebugBounds( idVec4( color.x, color.y, color.z, 0.0 ), idBounds( mins, maxs ), vec3_origin, SEC2MS( lifetime ) );
+//	gameRenderWorld.DebugBounds( idVec4( color.x, color.y, color.z, 0.0 ), idBounds( mins, maxs ), vec3_origin, SEC2MS( lifetime ) );
 //}
 //
 ///*
@@ -2001,7 +2021,7 @@ idThread::ReturnString
 //================
 //*/
 //void idThread::Event_DrawText( text:string, const idVec3 &origin, float scale, color:idVec3, const int align, const float lifetime ) {
-//	gameRenderWorld->DrawText( text, origin, scale, idVec4( color.x, color.y, color.z, 0.0 ), gameLocal.GetLocalPlayer()->viewAngles.ToMat3(), align, SEC2MS( lifetime ) );
+//	gameRenderWorld.DrawText( text, origin, scale, idVec4( color.x, color.y, color.z, 0.0 ), gameLocal.GetLocalPlayer().viewAngles.ToMat3(), align, SEC2MS( lifetime ) );
 //}
 //
 ///*
@@ -2013,7 +2033,7 @@ idThread::ReturnString
 //	idPlayer *player;
 //
 //	player = gameLocal.GetLocalPlayer();
-//	if ( player && player->GetInfluenceLevel() ) {
+//	if ( player && player.GetInfluenceLevel() ) {
 //		idThread::ReturnInt( true );
 //	} else {
 //		idThread::ReturnInt( false );

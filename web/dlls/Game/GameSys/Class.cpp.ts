@@ -927,15 +927,15 @@ so it must be called as idClass::GetClass( classname )
 ////	cls = GetType();
 ////	return cls.superclass;
 ////}
-////
-/////*
-////================
-////idClass::CancelEvents
-////================
-////*/
-////void idClass::CancelEvents( ev: idEventDef ) {
-////	idEvent::CancelEvents( this, ev );
-////}
+
+/*
+================
+idClass::CancelEvents
+================
+*/
+	CancelEvents ( ev: idEventDef ): void {
+		idEvent.CancelEvents( this, ev );
+	}
 
 /*
 ================

@@ -30,7 +30,251 @@
 //#pragma hdrstop
 //
 //#include "../Game_local.h"
+
+//#ifndef __SCRIPT_INTERPRETER_H__
+//#define __SCRIPT_INTERPRETER_H__
 //
+//#define MAX_STACK_DEPTH 	64
+//#define LOCALSTACK_SIZE 	6144
+//
+//typedef struct prstack_s {
+//	int 				s;
+//	const function_t	*f;
+//	int 				stackbase;
+//} prstack_t;
+//
+class idInterpreter {
+//private:
+//	prstack_t			callStack[ MAX_STACK_DEPTH ];
+//	int 				callStackDepth;
+//	int 				maxStackDepth;
+//
+//	byte				localstack[ LOCALSTACK_SIZE ];
+//	int 				localstackUsed;
+//	int 				localstackBase;
+//	int 				maxLocalstackUsed;
+//
+//	const function_t	*currentFunction;
+//	int 				instructionPointer;
+//
+//	int					popParms;
+//	const idEventDef	*multiFrameEvent;
+	eventEntity:idEntity;
+
+	thread:idThread;
+//
+//	void				PopParms( int numParms );
+//	void				PushString( const char *string );
+//	void				Push( int value );
+//	const char			*FloatToString( float value );
+//	void				AppendString( idVarDef *def, const char *from );
+//	void				SetString( idVarDef *def, const char *from );
+//	const char			*GetString( idVarDef *def );
+//	varEval_t			GetVariable( idVarDef *def );
+//	idEntity			*GetEntity( int entnum ) const;
+//	idScriptObject		*GetScriptObject( int entnum ) const;
+//	void				NextInstruction( int position );
+//
+//	void				LeaveFunction( idVarDef *returnDef );
+//	void				CallEvent( const function_t *func, int argsize );
+//	void				CallSysEvent( const function_t *func, int argsize );
+//
+//public:
+//	bool				doneProcessing;
+//	bool				threadDying;
+//	bool				terminateOnExit;
+//	bool				debug;
+//
+//						idInterpreter();
+//
+//	// save games
+//	Save ( savefile: idSaveGame ): void { throw "placeholder"; }				// archives object for save game file
+//	Restore(savefile:idRestoreGame):void{throw "placeholder";}				// unarchives object from save game file
+//
+//	void				SetThread( idThread *pThread );
+//
+//	void				StackTrace( void ) const;
+//
+//	int					CurrentLine( void ) const;
+//	const char			*CurrentFile( void ) const;
+//
+//	void				Error( char *fmt, ... ) const id_attribute((format(printf,2,3)));
+//	void				Warning( char *fmt, ... ) const id_attribute((format(printf,2,3)));
+//	void				DisplayInfo( void ) const;
+//
+//	bool				BeginMultiFrameEvent( ent:idEntity, const idEventDef *event );
+//	void				EndMultiFrameEvent( ent:idEntity, const idEventDef *event );
+//	bool				MultiFrameEventInProgress( void ) const;
+//
+//	void				ThreadCall( idInterpreter *source, const function_t *func, int args );
+//	void				EnterFunction( const function_t *func, bool clearStack );
+//	void				EnterObjectFunction( idEntity *self, const function_t *func, bool clearStack );
+//
+//	bool				Execute( void );
+//	void				Reset( void );
+//
+//	bool				GetRegisterValue( name:string, idStr &out, int scopeDepth );
+//	int					GetCallstackDepth( void ) const;
+//	const prstack_t		*GetCallstack( void ) const;
+//	const function_t	*GetCurrentFunction( void ) const;
+//	idThread			*GetThread( void ) const;
+//
+
+
+///*
+//====================
+//idInterpreter::PopParms
+//====================
+//*/
+//ID_INLINE void idInterpreter::PopParms( int numParms ) {
+//	// pop our parms off the stack
+//	if ( localstackUsed < numParms ) {
+//		Error( "locals stack underflow\n" );
+//	}
+//
+//	localstackUsed -= numParms;
+//}
+//
+///*
+//====================
+//idInterpreter::Push
+//====================
+//*/
+//ID_INLINE void idInterpreter::Push( int value ) {
+//	if ( localstackUsed + sizeof( int ) > LOCALSTACK_SIZE ) {
+//		Error( "Push: locals stack overflow\n" );
+//	}
+//	*( int * )&localstack[ localstackUsed ]	= value;
+//	localstackUsed += sizeof( int );
+//}
+//
+///*
+//====================
+//idInterpreter::PushString
+//====================
+//*/
+//ID_INLINE void idInterpreter::PushString( const char *string ) {
+//	if ( localstackUsed + MAX_STRING_LEN > LOCALSTACK_SIZE ) {
+//		Error( "PushString: locals stack overflow\n" );
+//	}
+//	idStr.Copynz( ( char * )&localstack[ localstackUsed ], string, MAX_STRING_LEN );
+//	localstackUsed += MAX_STRING_LEN;
+//}
+//
+///*
+//====================
+//idInterpreter::FloatToString
+//====================
+//*/
+//ID_INLINE const char *idInterpreter::FloatToString( float value ) {
+//	static char	text[ 32 ];
+//
+//	if ( value == ( float )( int )value ) {
+//		sprintf( text, "%d", ( int )value );
+//	} else {
+//		sprintf( text, "%f", value );
+//	}
+//	return text;
+//}
+//
+///*
+//====================
+//idInterpreter::AppendString
+//====================
+//*/
+//ID_INLINE void idInterpreter::AppendString( idVarDef *def, const char *from ) {
+//	if ( def.initialized == idVarDef::stackVariable ) {
+//		idStr::Append( ( char * )&localstack[ localstackBase + def.value.stackOffset ], MAX_STRING_LEN, from );
+//	} else {
+//		idStr::Append( def.value.stringPtr, MAX_STRING_LEN, from );
+//	}
+//}
+//
+///*
+//====================
+//idInterpreter::SetString
+//====================
+//*/
+//ID_INLINE void idInterpreter::SetString( idVarDef *def, const char *from ) {
+//	if ( def.initialized == idVarDef::stackVariable ) {
+//		idStr.Copynz( ( char * )&localstack[ localstackBase + def.value.stackOffset ], from, MAX_STRING_LEN );
+//	} else {
+//		idStr.Copynz( def.value.stringPtr, from, MAX_STRING_LEN );
+//	}
+//}
+//
+///*
+//====================
+//idInterpreter::GetString
+//====================
+//*/
+//ID_INLINE const char *idInterpreter::GetString( idVarDef *def ) {
+//	if ( def.initialized == idVarDef::stackVariable ) {
+//		return ( char * )&localstack[ localstackBase + def.value.stackOffset ];
+//	} else {
+//		return def.value.stringPtr;
+//	}
+//}
+//
+///*
+//====================
+//idInterpreter::GetVariable
+//====================
+//*/
+//ID_INLINE varEval_t idInterpreter::GetVariable( idVarDef *def ) {
+//	if ( def.initialized == idVarDef::stackVariable ) {
+//		varEval_t val;
+//		val.intPtr = ( int * )&localstack[ localstackBase + def.value.stackOffset ];
+//		return val;
+//	} else {
+//		return def.value;
+//	}
+//}
+//
+///*
+//================
+//idInterpreter::GetEntity
+//================
+//*/
+//ID_INLINE idEntity *idInterpreter::GetEntity( int entnum ) const{
+//	assert( entnum <= MAX_GENTITIES );
+//	if ( ( entnum > 0 ) && ( entnum <= MAX_GENTITIES ) ) {
+//		return gameLocal.entities[ entnum - 1 ];
+//	}
+//	return NULL;
+//}
+//
+///*
+//================
+//idInterpreter::GetScriptObject
+//================
+//*/
+//ID_INLINE idScriptObject *idInterpreter::GetScriptObject( int entnum ) const {
+//	idEntity *ent;
+//
+//	assert( entnum <= MAX_GENTITIES );
+//	if ( ( entnum > 0 ) && ( entnum <= MAX_GENTITIES ) ) {
+//		ent = gameLocal.entities[ entnum - 1 ];
+//		if ( ent && ent.scriptObject.data ) {
+//			return &ent.scriptObject;
+//		}
+//	}
+//	return NULL;
+//}
+//
+///*
+//====================
+//idInterpreter::NextInstruction
+//====================
+//*/
+//ID_INLINE void idInterpreter::NextInstruction( int position ) {
+//	// Before we execute an instruction, we increment instructionPointer,
+//	// therefore we need to compensate for that here.
+//	instructionPointer = position - 1;
+//}
+//
+//#endif /* !__SCRIPT_INTERPRETER_H__ */
+
 ///*
 //================
 //idInterpreter::idInterpreter()
@@ -53,46 +297,46 @@
 //void idInterpreter::Save( idSaveGame *savefile ) const {
 //	int i;
 //
-//	savefile->WriteInt( callStackDepth );
+//	savefile.WriteInt( callStackDepth );
 //	for( i = 0; i < callStackDepth; i++ ) {
-//		savefile->WriteInt( callStack[i].s );
+//		savefile.WriteInt( callStack[i].s );
 //		if ( callStack[i].f ) {
-//			savefile->WriteInt( gameLocal.program.GetFunctionIndex( callStack[i].f ) );
+//			savefile.WriteInt( gameLocal.program.GetFunctionIndex( callStack[i].f ) );
 //		} else {
-//			savefile->WriteInt( -1 );
+//			savefile.WriteInt( -1 );
 //		}
-//		savefile->WriteInt( callStack[i].stackbase );
+//		savefile.WriteInt( callStack[i].stackbase );
 //	}
-//	savefile->WriteInt( maxStackDepth );
+//	savefile.WriteInt( maxStackDepth );
 //
-//	savefile->WriteInt( localstackUsed );
-//	savefile->Write( &localstack, localstackUsed );
+//	savefile.WriteInt( localstackUsed );
+//	savefile.Write( &localstack, localstackUsed );
 //
-//	savefile->WriteInt( localstackBase );
-//	savefile->WriteInt( maxLocalstackUsed );
+//	savefile.WriteInt( localstackBase );
+//	savefile.WriteInt( maxLocalstackUsed );
 //
 //	if ( currentFunction ) {
-//		savefile->WriteInt( gameLocal.program.GetFunctionIndex( currentFunction ) );
+//		savefile.WriteInt( gameLocal.program.GetFunctionIndex( currentFunction ) );
 //	} else {
-//		savefile->WriteInt( -1 );
+//		savefile.WriteInt( -1 );
 //	}
-//	savefile->WriteInt( instructionPointer );
+//	savefile.WriteInt( instructionPointer );
 //
-//	savefile->WriteInt( popParms );
+//	savefile.WriteInt( popParms );
 //
 //	if ( multiFrameEvent ) {
-//		savefile->WriteString( multiFrameEvent->GetName() );
+//		savefile.WriteString( multiFrameEvent.GetName() );
 //	} else {
-//		savefile->WriteString( "" );
+//		savefile.WriteString( "" );
 //	}
-//	savefile->WriteObject( eventEntity );
+//	savefile.WriteObject( eventEntity );
 //
-//	savefile->WriteObject( thread );
+//	savefile.WriteObject( thread );
 //
-//	savefile->WriteBool( doneProcessing );
-//	savefile->WriteBool( threadDying );
-//	savefile->WriteBool( terminateOnExit );
-//	savefile->WriteBool( debug );
+//	savefile.WriteBool( doneProcessing );
+//	savefile.WriteBool( threadDying );
+//	savefile.WriteBool( terminateOnExit );
+//	savefile.WriteBool( debug );
 //}
 //
 ///*
@@ -105,49 +349,49 @@
 //	idStr funcname;
 //	int func_index;
 //
-//	savefile->ReadInt( callStackDepth );
+//	savefile.ReadInt( callStackDepth );
 //	for( i = 0; i < callStackDepth; i++ ) {
-//		savefile->ReadInt( callStack[i].s );
+//		savefile.ReadInt( callStack[i].s );
 //
-//		savefile->ReadInt( func_index );
+//		savefile.ReadInt( func_index );
 //		if ( func_index >= 0 ) {
 //			callStack[i].f = gameLocal.program.GetFunction( func_index );
 //		} else {
 //			callStack[i].f = NULL;
 //		}
 //
-//		savefile->ReadInt( callStack[i].stackbase );
+//		savefile.ReadInt( callStack[i].stackbase );
 //	}
-//	savefile->ReadInt( maxStackDepth );
+//	savefile.ReadInt( maxStackDepth );
 //
-//	savefile->ReadInt( localstackUsed );
-//	savefile->Read( &localstack, localstackUsed );
+//	savefile.ReadInt( localstackUsed );
+//	savefile.Read( &localstack, localstackUsed );
 //
-//	savefile->ReadInt( localstackBase );
-//	savefile->ReadInt( maxLocalstackUsed );
+//	savefile.ReadInt( localstackBase );
+//	savefile.ReadInt( maxLocalstackUsed );
 //
-//	savefile->ReadInt( func_index );
+//	savefile.ReadInt( func_index );
 //	if ( func_index >= 0 ) {
 //		currentFunction = gameLocal.program.GetFunction( func_index );
 //	} else {
 //		currentFunction = NULL;
 //	}
-//	savefile->ReadInt( instructionPointer );
+//	savefile.ReadInt( instructionPointer );
 //
-//	savefile->ReadInt( popParms );
+//	savefile.ReadInt( popParms );
 //
-//	savefile->ReadString( funcname );
+//	savefile.ReadString( funcname );
 //	if ( funcname.Length() ) {
 //		multiFrameEvent = idEventDef::FindEvent( funcname );
 //	}
 //
-//	savefile->ReadObject( reinterpret_cast<idClass *&>( eventEntity ) );
-//	savefile->ReadObject( reinterpret_cast<idClass *&>( thread ) );
+//	savefile.ReadObject( reinterpret_cast<idClass *&>( eventEntity ) );
+//	savefile.ReadObject( reinterpret_cast<idClass *&>( thread ) );
 //
-//	savefile->ReadBool( doneProcessing );
-//	savefile->ReadBool( threadDying );
-//	savefile->ReadBool( terminateOnExit );
-//	savefile->ReadBool( debug );
+//	savefile.ReadBool( doneProcessing );
+//	savefile.ReadBool( threadDying );
+//	savefile.ReadBool( terminateOnExit );
+//	savefile.ReadBool( debug );
 //}
 //
 ///*
@@ -209,7 +453,7 @@
 //		return false;
 //	}
 //
-//	idStr.Copynz( funcObject, func->Name(), sizeof( funcObject ) );
+//	idStr.Copynz( funcObject, func.Name(), sizeof( funcObject ) );
 //	funcName = strstr( funcObject, "::" );
 //	if ( funcName ) {
 //		*funcName = '\0';
@@ -243,7 +487,7 @@
 //	}
 //		
 //	reg = GetVariable( d );
-//	switch( d->Type() ) {
+//	switch( d.Type() ) {
 //	case ev_float:
 //		if ( reg.floatPtr ) {
 //			out = va("%g", *reg.floatPtr );
@@ -255,7 +499,7 @@
 //
 //	case ev_vector:
 //		if ( reg.vectorPtr ) {				
-//			out = va( "%g,%g,%g", reg.vectorPtr->x, reg.vectorPtr->y, reg.vectorPtr->z );
+//			out = va( "%g,%g,%g", reg.vectorPtr.x, reg.vectorPtr.y, reg.vectorPtr.z );
 //		} else {
 //			out = "0,0,0";
 //		}
@@ -277,19 +521,19 @@
 //			return false;
 //		}
 //
-//		field = scope->TypeDef()->GetParmType( reg.ptrOffset )->FieldType();
+//		field = scope.TypeDef().GetParmType( reg.ptrOffset ).FieldType();
 //		obj   = *reinterpret_cast<const idScriptObject **>( &localstack[ callStack[ callStackDepth ].stackbase ] );
 //		if ( !field || !obj ) {
 //			return false;
 //		}
 //								
-//		switch ( field->Type() ) {
+//		switch ( field.Type() ) {
 //		case ev_boolean:
-//			out = va( "%d", *( reinterpret_cast<int *>( &obj->data[ reg.ptrOffset ] ) ) );
+//			out = va( "%d", *( reinterpret_cast<int *>( &obj.data[ reg.ptrOffset ] ) ) );
 //			return true;
 //
 //		case ev_float:
-//			out = va( "%g", *( reinterpret_cast<float *>( &obj->data[ reg.ptrOffset ] ) ) );
+//			out = va( "%g", *( reinterpret_cast<float *>( &obj.data[ reg.ptrOffset ] ) ) );
 //			return true;
 //
 //		default:
@@ -349,15 +593,15 @@
 //}
 //
 //
-///*
-//================
-//idInterpreter::SetThread
-//================
-//*/
-//void idInterpreter::SetThread( idThread *pThread ) {
-//	thread = pThread;
-//}
-//
+/*
+================
+idInterpreter::SetThread
+================
+*/
+	SetThread ( pThread: idThread ): void {
+		this.thread = pThread;
+	}
+
 ///*
 //================
 //idInterpreter::CurrentLine
@@ -405,7 +649,7 @@
 //	if ( !currentFunction ) {
 //		gameLocal.Printf( "<NO FUNCTION>\n" );
 //	} else {
-//		gameLocal.Printf( "%12s : %s\n", gameLocal.program.GetFilename( currentFunction->filenum ), currentFunction->Name() );
+//		gameLocal.Printf( "%12s : %s\n", gameLocal.program.GetFilename( currentFunction.filenum ), currentFunction.Name() );
 //	}
 //
 //	for( i = top; i >= 0; i-- ) {
@@ -413,7 +657,7 @@
 //		if ( !f ) {
 //			gameLocal.Printf( "<NO FUNCTION>\n" );
 //		} else {
-//			gameLocal.Printf( "%12s : %s\n", gameLocal.program.GetFilename( f->filenum ), f->Name() );
+//			gameLocal.Printf( "%12s : %s\n", gameLocal.program.GetFilename( f.filenum ), f.Name() );
 //		}
 //	}
 //}
@@ -437,9 +681,9 @@
 //
 //	if ( ( instructionPointer >= 0 ) && ( instructionPointer < gameLocal.program.NumStatements() ) ) {
 //		statement_t &line = gameLocal.program.GetStatement( instructionPointer );
-//		common->Error( "%s(%d): Thread '%s': %s\n", gameLocal.program.GetFilename( line.file ), line.linenumber, thread->GetThreadName(), text );
+//		common.Error( "%s(%d): Thread '%s': %s\n", gameLocal.program.GetFilename( line.file ), line.linenumber, thread.GetThreadName(), text );
 //	} else {
-//		common->Error( "Thread '%s': %s\n", thread->GetThreadName(), text );
+//		common.Error( "Thread '%s': %s\n", thread.GetThreadName(), text );
 //	}
 //}
 //
@@ -460,9 +704,9 @@
 //
 //	if ( ( instructionPointer >= 0 ) && ( instructionPointer < gameLocal.program.NumStatements() ) ) {
 //		statement_t &line = gameLocal.program.GetStatement( instructionPointer );
-//		common->Warning( "%s(%d): Thread '%s': %s", gameLocal.program.GetFilename( line.file ), line.linenumber, thread->GetThreadName(), text );
+//		common.Warning( "%s(%d): Thread '%s': %s", gameLocal.program.GetFilename( line.file ), line.linenumber, thread.GetThreadName(), text );
 //	} else {
-//		common->Warning( "Thread '%s' : %s", thread->GetThreadName(), text );
+//		common.Warning( "Thread '%s' : %s", thread.GetThreadName(), text );
 //	}
 //}
 //
@@ -485,7 +729,7 @@
 //		if ( !currentFunction ) {
 //			gameLocal.Printf( "<NO FUNCTION>\n" );
 //		} else {
-//			gameLocal.Printf( "%12s : %s\n", gameLocal.program.GetFilename( currentFunction->filenum ), currentFunction->Name() );
+//			gameLocal.Printf( "%12s : %s\n", gameLocal.program.GetFilename( currentFunction.filenum ), currentFunction.Name() );
 //		}
 //
 //		for( i = callStackDepth; i > 0; i-- ) {
@@ -494,7 +738,7 @@
 //			if ( !f ) {
 //				gameLocal.Printf( "<NO FUNCTION>\n" );
 //			} else {
-//				gameLocal.Printf( "%12s : %s\n", gameLocal.program.GetFilename( f->filenum ), f->Name() );
+//				gameLocal.Printf( "%12s : %s\n", gameLocal.program.GetFilename( f.filenum ), f.Name() );
 //			}
 //		}
 //	}
@@ -510,15 +754,15 @@
 //void idInterpreter::ThreadCall( idInterpreter *source, const function_t *func, int args ) {
 //	Reset();
 //
-//	memcpy( localstack, &source->localstack[ source->localstackUsed - args ], args );
+//	memcpy( localstack, &source.localstack[ source.localstackUsed - args ], args );
 //
 //	localstackUsed = args;
 //	localstackBase = 0;
 //
 //	maxLocalstackUsed = localstackUsed;
-//	EnterFunction( func, false );
+//	this.EnterFunction( func, false );
 //
-//	thread->SetThreadName( currentFunction->Name() );
+//	thread.SetThreadName( currentFunction.Name() );
 //}
 //
 ///*
@@ -538,8 +782,8 @@
 //		PopParms( popParms );
 //		popParms = 0;
 //	}
-//	Push( self->entityNumber + 1 );
-//	EnterFunction( func, false );
+//	Push( self.entityNumber + 1 );
+//	this.EnterFunction( func, false );
 //}
 //
 ///*
@@ -551,7 +795,8 @@
 //NOTE: If this is called from within a event called by this interpreter, the function arguments will be invalid after calling this function.
 //====================
 //*/
-//void idInterpreter::EnterFunction( const function_t *func, bool clearStack ) {
+	EnterFunction = function ( func: function_t, clearStack: boolean ): void {
+		todoThrow ( );
 //	int 		c;
 //	prstack_t	*stack;
 //
@@ -569,9 +814,9 @@
 //
 //	stack = &callStack[ callStackDepth ];
 //
-//	stack->s			= instructionPointer + 1;	// point to the next instruction to execute
-//	stack->f			= currentFunction;
-//	stack->stackbase	= localstackBase;
+//	stack.s			= instructionPointer + 1;	// point to the next instruction to execute
+//	stack.f			= currentFunction;
+//	stack.stackbase	= localstackBase;
 //
 //	callStackDepth++;
 //	if ( callStackDepth > maxStackDepth ) {
@@ -584,20 +829,20 @@
 //
 //	if ( debug ) {
 //		if ( currentFunction ) {
-//			gameLocal.Printf( "%d: call '%s' from '%s'(line %d)%s\n", gameLocal.time, func->Name(), currentFunction->Name(), 
+//			gameLocal.Printf( "%d: call '%s' from '%s'(line %d)%s\n", gameLocal.time, func.Name(), currentFunction.Name(), 
 //				gameLocal.program.GetStatement( instructionPointer ).linenumber, clearStack ? " clear stack" : "" );
 //		} else {
-//            gameLocal.Printf( "%d: call '%s'%s\n", gameLocal.time, func->Name(), clearStack ? " clear stack" : "" );
+//            gameLocal.Printf( "%d: call '%s'%s\n", gameLocal.time, func.Name(), clearStack ? " clear stack" : "" );
 //		}
 //	}
 //
 //	currentFunction = func;
-//	assert( !func->eventdef );
-//	NextInstruction( func->firstStatement );
+//	assert( !func.eventdef );
+//	NextInstruction( func.firstStatement );
 //
 //	// allocate space on the stack for locals
 //	// parms are already on stack
-//	c = func->locals - func->parmTotal;
+//	c = func.locals - func.parmTotal;
 //	assert( c >= 0 );
 //
 //	if ( localstackUsed + c > LOCALSTACK_SIZE ) {
@@ -608,12 +853,12 @@
 //	memset( &localstack[ localstackUsed ], 0, c );
 //
 //	localstackUsed += c;
-//	localstackBase = localstackUsed - func->locals;
+//	localstackBase = localstackUsed - func.locals;
 //
 //	if ( localstackUsed > maxLocalstackUsed ) {
 //		maxLocalstackUsed = localstackUsed ;
 //	}
-//}
+	}
 //
 ///*
 //====================
@@ -630,7 +875,7 @@
 //
 //	// return value
 //	if ( returnDef ) {
-//		switch( returnDef->Type() ) {
+//		switch( returnDef.Type() ) {
 //		case ev_string :
 //			gameLocal.program.ReturnString( GetString( returnDef ) );
 //			break;
@@ -647,14 +892,14 @@
 //	}
 //
 //	// remove locals from the stack
-//	PopParms( currentFunction->locals );
+//	PopParms( currentFunction.locals );
 //	assert( localstackUsed == localstackBase );
 //
 //	if ( debug ) {
 //		statement_t &line = gameLocal.program.GetStatement( instructionPointer );
-//		gameLocal.Printf( "%d: %s(%d): exit %s", gameLocal.time, gameLocal.program.GetFilename( line.file ), line.linenumber, currentFunction->Name() );
+//		gameLocal.Printf( "%d: %s(%d): exit %s", gameLocal.time, gameLocal.program.GetFilename( line.file ), line.linenumber, currentFunction.Name() );
 //		if ( callStackDepth > 1 ) {
-//			gameLocal.Printf( " return to %s(line %d)\n", callStack[ callStackDepth - 1 ].f->Name(), gameLocal.program.GetStatement( callStack[ callStackDepth - 1 ].s ).linenumber );
+//			gameLocal.Printf( " return to %s(line %d)\n", callStack[ callStackDepth - 1 ].f.Name(), gameLocal.program.GetStatement( callStack[ callStackDepth - 1 ].s ).linenumber );
 //		} else {
 //			gameLocal.Printf( " done\n" );
 //		}
@@ -663,9 +908,9 @@
 //	// up stack
 //	callStackDepth--;
 //	stack = &callStack[ callStackDepth ]; 
-//	currentFunction = stack->f;
-//	localstackBase = stack->stackbase;
-//	NextInstruction( stack->s );
+//	currentFunction = stack.f;
+//	localstackBase = stack.stackbase;
+//	NextInstruction( stack.s );
 //
 //	if ( !callStackDepth ) {
 //		// all done
@@ -694,20 +939,20 @@
 //		Error( "NULL function" );
 //	}
 //
-//	assert( func->eventdef );
-//	evdef = func->eventdef;
+//	assert( func.eventdef );
+//	evdef = func.eventdef;
 //
 //	start = localstackUsed - argsize;
 //	var.intPtr = ( int * )&localstack[ start ];
 //	eventEntity = GetEntity( *var.entityNumberPtr );
 //
-//	if ( !eventEntity || !eventEntity->RespondsTo( *evdef ) ) {
+//	if ( !eventEntity || !eventEntity.RespondsTo( *evdef ) ) {
 //		if ( eventEntity && developer.GetBool() ) {
 //			// give a warning in developer mode
-//			Warning( "Function '%s' not supported on entity '%s'", evdef->GetName(), eventEntity->name.c_str() );
+//			Warning( "Function '%s' not supported on entity '%s'", evdef.GetName(), eventEntity.name.c_str() );
 //		}
 //		// always return a safe value when an object doesn't exist
-//		switch( evdef->GetReturnType() ) {
+//		switch( evdef.GetReturnType() ) {
 //		case D_EVENT_INTEGER :
 //			gameLocal.program.ReturnInteger( 0 );
 //			break;
@@ -740,7 +985,7 @@
 //		return;
 //	}
 //
-//	format = evdef->GetArgFormat();
+//	format = evdef.GetArgFormat();
 //	for( j = 0, i = 0, pos = type_object.Size(); ( pos < argsize ) || ( format[ i ] != 0 ); i++ ) {
 //		switch( format[ i ] ) {
 //		case D_EVENT_INTEGER :
@@ -766,7 +1011,7 @@
 //			var.intPtr = ( int * )&localstack[ start + pos ];
 //			( *( idEntity ** )&data[ i ] ) = GetEntity( *var.entityNumberPtr );
 //			if ( !( *( idEntity ** )&data[ i ] ) ) {
-//				Warning( "Entity not found for event '%s'. Terminating thread.", evdef->GetName() );
+//				Warning( "Entity not found for event '%s'. Terminating thread.", evdef.GetName() );
 //				threadDying = true;
 //				PopParms( argsize );
 //				return;
@@ -779,19 +1024,19 @@
 //			break;
 //
 //		case D_EVENT_TRACE :
-//			Error( "trace type not supported from script for '%s' event.", evdef->GetName() );
+//			Error( "trace type not supported from script for '%s' event.", evdef.GetName() );
 //			break;
 //
 //		default :
-//			Error( "Invalid arg format string for '%s' event.", evdef->GetName() );
+//			Error( "Invalid arg format string for '%s' event.", evdef.GetName() );
 //			break;
 //		}
 //
-//		pos += func->parmSize[ j++ ];
+//		pos += func.parmSize[ j++ ];
 //	}
 //
 //	popParms = argsize;
-//	eventEntity->ProcessEventArgPtr( evdef, data );
+//	eventEntity.ProcessEventArgPtr( evdef, data );
 //
 //	if ( !multiFrameEvent ) {
 //		if ( popParms ) {
@@ -865,12 +1110,12 @@
 //		Error( "NULL function" );
 //	}
 //
-//	assert( func->eventdef );
-//	evdef = func->eventdef;
+//	assert( func.eventdef );
+//	evdef = func.eventdef;
 //
 //	start = localstackUsed - argsize;
 //
-//	format = evdef->GetArgFormat();
+//	format = evdef.GetArgFormat();
 //	for( j = 0, i = 0, pos = 0; ( pos < argsize ) || ( format[ i ] != 0 ); i++ ) {
 //		switch( format[ i ] ) {
 //		case D_EVENT_INTEGER :
@@ -896,7 +1141,7 @@
 //			source.intPtr = ( int * )&localstack[ start + pos ];
 //			*( idEntity ** )&data[ i ] = GetEntity( *source.entityNumberPtr );
 //			if ( !*( idEntity ** )&data[ i ] ) {
-//				Warning( "Entity not found for event '%s'. Terminating thread.", evdef->GetName() );
+//				Warning( "Entity not found for event '%s'. Terminating thread.", evdef.GetName() );
 //				threadDying = true;
 //				PopParms( argsize );
 //				return;
@@ -909,19 +1154,19 @@
 //			break;
 //
 //		case D_EVENT_TRACE :
-//			Error( "trace type not supported from script for '%s' event.", evdef->GetName() );
+//			Error( "trace type not supported from script for '%s' event.", evdef.GetName() );
 //			break;
 //
 //		default :
-//			Error( "Invalid arg format string for '%s' event.", evdef->GetName() );
+//			Error( "Invalid arg format string for '%s' event.", evdef.GetName() );
 //			break;
 //		}
 //
-//		pos += func->parmSize[ j++ ];
+//		pos += func.parmSize[ j++ ];
 //	}
 //
 //	popParms = argsize;
-//	thread->ProcessEventArgPtr( evdef, data );
+//	thread.ProcessEventArgPtr( evdef, data );
 //	if ( popParms ) {
 //		PopParms( popParms );
 //	}
@@ -967,171 +1212,171 @@
 //		// next statement
 //		st = &gameLocal.program.GetStatement( instructionPointer );
 //
-//		switch( st->op ) {
+//		switch( st.op ) {
 //		case OP_RETURN:
-//			LeaveFunction( st->a );
+//			LeaveFunction( st.a );
 //			break;
 //
 //		case OP_THREAD:
-//			newThread = new idThread( this, st->a->value.functionPtr, st->b->value.argSize );
-//			newThread->Start();
+//			newThread = new idThread( this, st.a.value.functionPtr, st.b.value.argSize );
+//			newThread.Start();
 //
 //			// return the thread number to the script
-//			gameLocal.program.ReturnFloat( newThread->GetThreadNum() );
-//			PopParms( st->b->value.argSize );
+//			gameLocal.program.ReturnFloat( newThread.GetThreadNum() );
+//			PopParms( st.b.value.argSize );
 //			break;
 //
 //		case OP_OBJTHREAD:
-//			var_a = GetVariable( st->a );
+//			var_a = GetVariable( st.a );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
-//				func = obj->GetTypeDef()->GetFunction( st->b->value.virtualFunction );
-//				assert( st->c->value.argSize == func->parmTotal );
-//				newThread = new idThread( this, GetEntity( *var_a.entityNumberPtr ), func, func->parmTotal );
-//				newThread->Start();
+//				func = obj.GetTypeDef().GetFunction( st.b.value.virtualFunction );
+//				assert( st.c.value.argSize == func.parmTotal );
+//				newThread = new idThread( this, GetEntity( *var_a.entityNumberPtr ), func, func.parmTotal );
+//				newThread.Start();
 //
 //				// return the thread number to the script
-//				gameLocal.program.ReturnFloat( newThread->GetThreadNum() );
+//				gameLocal.program.ReturnFloat( newThread.GetThreadNum() );
 //			} else {
 //				// return a null thread to the script
 //				gameLocal.program.ReturnFloat( 0.0 );
 //			}
-//			PopParms( st->c->value.argSize );
+//			PopParms( st.c.value.argSize );
 //			break;
 //
 //		case OP_CALL:
-//			EnterFunction( st->a->value.functionPtr, false );
+//			this.EnterFunction( st.a.value.functionPtr, false );
 //			break;
 //
 //		case OP_EVENTCALL:
-//			CallEvent( st->a->value.functionPtr, st->b->value.argSize );
+//			CallEvent( st.a.value.functionPtr, st.b.value.argSize );
 //			break;
 //
 //		case OP_OBJECTCALL:	
-//			var_a = GetVariable( st->a );
+//			var_a = GetVariable( st.a );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
-//				func = obj->GetTypeDef()->GetFunction( st->b->value.virtualFunction );
-//				EnterFunction( func, false );
+//				func = obj.GetTypeDef().GetFunction( st.b.value.virtualFunction );
+//				this.EnterFunction( func, false );
 //			} else {
 //				// return a 'safe' value
 //				gameLocal.program.ReturnVector( vec3_zero );
 //				gameLocal.program.ReturnString( "" );
-//				PopParms( st->c->value.argSize );
+//				PopParms( st.c.value.argSize );
 //			}
 //			break;
 //
 //		case OP_SYSCALL:
-//			CallSysEvent( st->a->value.functionPtr, st->b->value.argSize );
+//			CallSysEvent( st.a.value.functionPtr, st.b.value.argSize );
 //			break;
 //
 //		case OP_IFNOT:
-//			var_a = GetVariable( st->a );
+//			var_a = GetVariable( st.a );
 //			if ( *var_a.intPtr == 0 ) {
-//				NextInstruction( instructionPointer + st->b->value.jumpOffset );
+//				NextInstruction( instructionPointer + st.b.value.jumpOffset );
 //			}
 //			break;
 //
 //		case OP_IF:
-//			var_a = GetVariable( st->a );
+//			var_a = GetVariable( st.a );
 //			if ( *var_a.intPtr != 0 ) {
-//				NextInstruction( instructionPointer + st->b->value.jumpOffset );
+//				NextInstruction( instructionPointer + st.b.value.jumpOffset );
 //			}
 //			break;
 //
 //		case OP_GOTO:
-//			NextInstruction( instructionPointer + st->a->value.jumpOffset );
+//			NextInstruction( instructionPointer + st.a.value.jumpOffset );
 //			break;
 //
 //		case OP_ADD_F:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = *var_a.floatPtr + *var_b.floatPtr;
 //			break;
 //
 //		case OP_ADD_V:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.vectorPtr = *var_a.vectorPtr + *var_b.vectorPtr;
 //			break;
 //
 //		case OP_ADD_S:
-//			SetString( st->c, GetString( st->a ) );
-//			AppendString( st->c, GetString( st->b ) );
+//			SetString( st.c, GetString( st.a ) );
+//			AppendString( st.c, GetString( st.b ) );
 //			break;
 //
 //		case OP_ADD_FS:
-//			var_a = GetVariable( st->a );
-//			SetString( st->c, FloatToString( *var_a.floatPtr ) );
-//			AppendString( st->c, GetString( st->b ) );
+//			var_a = GetVariable( st.a );
+//			SetString( st.c, FloatToString( *var_a.floatPtr ) );
+//			AppendString( st.c, GetString( st.b ) );
 //			break;
 //
 //		case OP_ADD_SF:
-//			var_b = GetVariable( st->b );
-//			SetString( st->c, GetString( st->a ) );
-//			AppendString( st->c, FloatToString( *var_b.floatPtr ) );
+//			var_b = GetVariable( st.b );
+//			SetString( st.c, GetString( st.a ) );
+//			AppendString( st.c, FloatToString( *var_b.floatPtr ) );
 //			break;
 //
 //		case OP_ADD_VS:
-//			var_a = GetVariable( st->a );
-//			SetString( st->c, var_a.vectorPtr->ToString() );
-//			AppendString( st->c, GetString( st->b ) );
+//			var_a = GetVariable( st.a );
+//			SetString( st.c, var_a.vectorPtr.ToString() );
+//			AppendString( st.c, GetString( st.b ) );
 //			break;
 //
 //		case OP_ADD_SV:
-//			var_b = GetVariable( st->b );
-//			SetString( st->c, GetString( st->a ) );
-//			AppendString( st->c, var_b.vectorPtr->ToString() );
+//			var_b = GetVariable( st.b );
+//			SetString( st.c, GetString( st.a ) );
+//			AppendString( st.c, var_b.vectorPtr.ToString() );
 //			break;
 //
 //		case OP_SUB_F:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = *var_a.floatPtr - *var_b.floatPtr;
 //			break;
 //
 //		case OP_SUB_V:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.vectorPtr = *var_a.vectorPtr - *var_b.vectorPtr;
 //			break;
 //
 //		case OP_MUL_F:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = *var_a.floatPtr * *var_b.floatPtr;
 //			break;
 //
 //		case OP_MUL_V:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = *var_a.vectorPtr * *var_b.vectorPtr;
 //			break;
 //
 //		case OP_MUL_FV:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.vectorPtr = *var_a.floatPtr * *var_b.vectorPtr;
 //			break;
 //
 //		case OP_MUL_VF:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.vectorPtr = *var_a.vectorPtr * *var_b.floatPtr;
 //			break;
 //
 //		case OP_DIV_F:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //
 //			if ( *var_b.floatPtr == 0.0 ) {
 //				Warning( "Divide by zero" );
@@ -1142,9 +1387,9 @@
 //			break;
 //
 //		case OP_MOD_F:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable ( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable ( st.c );
 //
 //			if ( *var_b.floatPtr == 0.0 ) {
 //				Warning( "Divide by zero" );
@@ -1155,249 +1400,249 @@
 //			break;
 //
 //		case OP_BITAND:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = static_cast<int>( *var_a.floatPtr ) & static_cast<int>( *var_b.floatPtr );
 //			break;
 //
 //		case OP_BITOR:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = static_cast<int>( *var_a.floatPtr ) | static_cast<int>( *var_b.floatPtr );
 //			break;
 //
 //		case OP_GE:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr >= *var_b.floatPtr );
 //			break;
 //
 //		case OP_LE:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr <= *var_b.floatPtr );
 //			break;
 //
 //		case OP_GT:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr > *var_b.floatPtr );
 //			break;
 //
 //		case OP_LT:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr < *var_b.floatPtr );
 //			break;
 //
 //		case OP_AND:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr != 0.0 ) && ( *var_b.floatPtr != 0.0 );
 //			break;
 //
 //		case OP_AND_BOOLF:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.intPtr != 0 ) && ( *var_b.floatPtr != 0.0 );
 //			break;
 //
 //		case OP_AND_FBOOL:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr != 0.0 ) && ( *var_b.intPtr != 0 );
 //			break;
 //
 //		case OP_AND_BOOLBOOL:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.intPtr != 0 ) && ( *var_b.intPtr != 0 );
 //			break;
 //
 //		case OP_OR:	
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr != 0.0 ) || ( *var_b.floatPtr != 0.0 );
 //			break;
 //
 //		case OP_OR_BOOLF:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.intPtr != 0 ) || ( *var_b.floatPtr != 0.0 );
 //			break;
 //
 //		case OP_OR_FBOOL:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr != 0.0 ) || ( *var_b.intPtr != 0 );
 //			break;
 //			
 //		case OP_OR_BOOLBOOL:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.intPtr != 0 ) || ( *var_b.intPtr != 0 );
 //			break;
 //			
 //		case OP_NOT_BOOL:
-//			var_a = GetVariable( st->a );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.intPtr == 0 );
 //			break;
 //
 //		case OP_NOT_F:
-//			var_a = GetVariable( st->a );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr == 0.0 );
 //			break;
 //
 //		case OP_NOT_V:
-//			var_a = GetVariable( st->a );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.vectorPtr == vec3_zero );
 //			break;
 //
 //		case OP_NOT_S:
-//			var_c = GetVariable( st->c );
-//			*var_c.floatPtr = ( strlen( GetString( st->a ) ) == 0 );
+//			var_c = GetVariable( st.c );
+//			*var_c.floatPtr = ( strlen( GetString( st.a ) ) == 0 );
 //			break;
 //
 //		case OP_NOT_ENT:
-//			var_a = GetVariable( st->a );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( GetEntity( *var_a.entityNumberPtr ) == NULL );
 //			break;
 //
 //		case OP_NEG_F:
-//			var_a = GetVariable( st->a );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = -*var_a.floatPtr;
 //			break;
 //
 //		case OP_NEG_V:
-//			var_a = GetVariable( st->a );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_c = GetVariable( st.c );
 //			*var_c.vectorPtr = -*var_a.vectorPtr;
 //			break;
 //
 //		case OP_INT_F:
-//			var_a = GetVariable( st->a );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = static_cast<int>( *var_a.floatPtr );
 //			break;
 //
 //		case OP_EQ_F:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr == *var_b.floatPtr );
 //			break;
 //
 //		case OP_EQ_V:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.vectorPtr == *var_b.vectorPtr );
 //			break;
 //
 //		case OP_EQ_S:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
-//			*var_c.floatPtr = ( idStr::Cmp( GetString( st->a ), GetString( st->b ) ) == 0 );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
+//			*var_c.floatPtr = ( idStr::Cmp( GetString( st.a ), GetString( st.b ) ) == 0 );
 //			break;
 //
 //		case OP_EQ_E:
 //		case OP_EQ_EO:
 //		case OP_EQ_OE:
 //		case OP_EQ_OO:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.entityNumberPtr == *var_b.entityNumberPtr );
 //			break;
 //
 //		case OP_NE_F:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr != *var_b.floatPtr );
 //			break;
 //
 //		case OP_NE_V:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.vectorPtr != *var_b.vectorPtr );
 //			break;
 //
 //		case OP_NE_S:
-//			var_c = GetVariable( st->c );
-//			*var_c.floatPtr = ( idStr::Cmp( GetString( st->a ), GetString( st->b ) ) != 0 );
+//			var_c = GetVariable( st.c );
+//			*var_c.floatPtr = ( idStr::Cmp( GetString( st.a ), GetString( st.b ) ) != 0 );
 //			break;
 //
 //		case OP_NE_E:
 //		case OP_NE_EO:
 //		case OP_NE_OE:
 //		case OP_NE_OO:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.entityNumberPtr != *var_b.entityNumberPtr );
 //			break;
 //
 //		case OP_UADD_F:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //			*var_b.floatPtr += *var_a.floatPtr;
 //			break;
 //
 //		case OP_UADD_V:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //			*var_b.vectorPtr += *var_a.vectorPtr;
 //			break;
 //
 //		case OP_USUB_F:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //			*var_b.floatPtr -= *var_a.floatPtr;
 //			break;
 //
 //		case OP_USUB_V:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //			*var_b.vectorPtr -= *var_a.vectorPtr;
 //			break;
 //
 //		case OP_UMUL_F:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //			*var_b.floatPtr *= *var_a.floatPtr;
 //			break;
 //
 //		case OP_UMUL_V:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //			*var_b.vectorPtr *= *var_a.floatPtr;
 //			break;
 //
 //		case OP_UDIV_F:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //
 //			if ( *var_a.floatPtr == 0.0 ) {
 //				Warning( "Divide by zero" );
@@ -1408,20 +1653,20 @@
 //			break;
 //
 //		case OP_UDIV_V:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //
 //			if ( *var_a.floatPtr == 0.0 ) {
 //				Warning( "Divide by zero" );
-//				var_b.vectorPtr->Set( idMath::INFINITY, idMath::INFINITY, idMath::INFINITY );
+//				var_b.vectorPtr.Set( idMath::INFINITY, idMath::INFINITY, idMath::INFINITY );
 //			} else {
 //				*var_b.vectorPtr = *var_b.vectorPtr / *var_a.floatPtr;
 //			}
 //			break;
 //
 //		case OP_UMOD_F:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //
 //			if ( *var_a.floatPtr == 0.0 ) {
 //				Warning( "Divide by zero" );
@@ -1432,77 +1677,77 @@
 //			break;
 //
 //		case OP_UOR_F:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //			*var_b.floatPtr = static_cast<int>( *var_b.floatPtr ) | static_cast<int>( *var_a.floatPtr );
 //			break;
 //
 //		case OP_UAND_F:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //			*var_b.floatPtr = static_cast<int>( *var_b.floatPtr ) & static_cast<int>( *var_a.floatPtr );
 //			break;
 //
 //		case OP_UINC_F:
-//			var_a = GetVariable( st->a );
+//			var_a = GetVariable( st.a );
 //			( *var_a.floatPtr )++;
 //			break;
 //
 //		case OP_UINCP_F:
-//			var_a = GetVariable( st->a );
+//			var_a = GetVariable( st.a );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
-//				var.bytePtr = &obj->data[ st->b->value.ptrOffset ];
+//				var.bytePtr = &obj.data[ st.b.value.ptrOffset ];
 //				( *var.floatPtr )++;
 //			}
 //			break;
 //
 //		case OP_UDEC_F:
-//			var_a = GetVariable( st->a );
+//			var_a = GetVariable( st.a );
 //			( *var_a.floatPtr )--;
 //			break;
 //
 //		case OP_UDECP_F:
-//			var_a = GetVariable( st->a );
+//			var_a = GetVariable( st.a );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
-//				var.bytePtr = &obj->data[ st->b->value.ptrOffset ];
+//				var.bytePtr = &obj.data[ st.b.value.ptrOffset ];
 //				( *var.floatPtr )--;
 //			}
 //			break;
 //
 //		case OP_COMP_F:
-//			var_a = GetVariable( st->a );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_c = GetVariable( st.c );
 //			*var_c.floatPtr = ~static_cast<int>( *var_a.floatPtr );
 //			break;
 //
 //		case OP_STORE_F:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //			*var_b.floatPtr = *var_a.floatPtr;
 //			break;
 //
 //		case OP_STORE_ENT:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //			*var_b.entityNumberPtr = *var_a.entityNumberPtr;
 //			break;
 //
 //		case OP_STORE_BOOL:	
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //			*var_b.intPtr = *var_a.intPtr;
 //			break;
 //
 //		case OP_STORE_OBJENT:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( !obj ) {
 //				*var_b.entityNumberPtr = 0;
-//			} else if ( !obj->GetTypeDef()->Inherits( st->b->TypeDef() ) ) {
-//				//Warning( "object '%s' cannot be converted to '%s'", obj->GetTypeName(), st->b->TypeDef()->Name() );
+//			} else if ( !obj.GetTypeDef().Inherits( st.b.TypeDef() ) ) {
+//				//Warning( "object '%s' cannot be converted to '%s'", obj.GetTypeName(), st.b.TypeDef().Name() );
 //				*var_b.entityNumberPtr = 0;
 //			} else {
 //				*var_b.entityNumberPtr = *var_a.entityNumberPtr;
@@ -1511,39 +1756,39 @@
 //
 //		case OP_STORE_OBJ:
 //		case OP_STORE_ENTOBJ:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //			*var_b.entityNumberPtr = *var_a.entityNumberPtr;
 //			break;
 //
 //		case OP_STORE_S:
-//			SetString( st->b, GetString( st->a ) );
+//			SetString( st.b, GetString( st.a ) );
 //			break;
 //
 //		case OP_STORE_V:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //			*var_b.vectorPtr = *var_a.vectorPtr;
 //			break;
 //
 //		case OP_STORE_FTOS:
-//			var_a = GetVariable( st->a );
-//			SetString( st->b, FloatToString( *var_a.floatPtr ) );
+//			var_a = GetVariable( st.a );
+//			SetString( st.b, FloatToString( *var_a.floatPtr ) );
 //			break;
 //
 //		case OP_STORE_BTOS:
-//			var_a = GetVariable( st->a );
-//			SetString( st->b, *var_a.intPtr ? "true" : "false" );
+//			var_a = GetVariable( st.a );
+//			SetString( st.b, *var_a.intPtr ? "true" : "false" );
 //			break;
 //
 //		case OP_STORE_VTOS:
-//			var_a = GetVariable( st->a );
-//			SetString( st->b, var_a.vectorPtr->ToString() );
+//			var_a = GetVariable( st.a );
+//			SetString( st.b, var_a.vectorPtr.ToString() );
 //			break;
 //
 //		case OP_STORE_FTOBOOL:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //			if ( *var_a.floatPtr != 0.0 ) {
 //				*var_b.intPtr = 1;
 //			} else {
@@ -1552,151 +1797,151 @@
 //			break;
 //
 //		case OP_STORE_BOOLTOF:
-//			var_a = GetVariable( st->a );
-//			var_b = GetVariable( st->b );
+//			var_a = GetVariable( st.a );
+//			var_b = GetVariable( st.b );
 //			*var_b.floatPtr = static_cast<float>( *var_a.intPtr );
 //			break;
 //
 //		case OP_STOREP_F:
-//			var_b = GetVariable( st->b );
-//			if ( var_b.evalPtr && var_b.evalPtr->floatPtr ) {
-//				var_a = GetVariable( st->a );
-//				*var_b.evalPtr->floatPtr = *var_a.floatPtr;
+//			var_b = GetVariable( st.b );
+//			if ( var_b.evalPtr && var_b.evalPtr.floatPtr ) {
+//				var_a = GetVariable( st.a );
+//				*var_b.evalPtr.floatPtr = *var_a.floatPtr;
 //			}
 //			break;
 //
 //		case OP_STOREP_ENT:
-//			var_b = GetVariable( st->b );
-//			if ( var_b.evalPtr && var_b.evalPtr->entityNumberPtr ) {
-//				var_a = GetVariable( st->a );
-//				*var_b.evalPtr->entityNumberPtr = *var_a.entityNumberPtr;
+//			var_b = GetVariable( st.b );
+//			if ( var_b.evalPtr && var_b.evalPtr.entityNumberPtr ) {
+//				var_a = GetVariable( st.a );
+//				*var_b.evalPtr.entityNumberPtr = *var_a.entityNumberPtr;
 //			}
 //			break;
 //
 //		case OP_STOREP_FLD:
-//			var_b = GetVariable( st->b );
-//			if ( var_b.evalPtr && var_b.evalPtr->intPtr ) {
-//				var_a = GetVariable( st->a );
-//				*var_b.evalPtr->intPtr = *var_a.intPtr;
+//			var_b = GetVariable( st.b );
+//			if ( var_b.evalPtr && var_b.evalPtr.intPtr ) {
+//				var_a = GetVariable( st.a );
+//				*var_b.evalPtr.intPtr = *var_a.intPtr;
 //			}
 //			break;
 //
 //		case OP_STOREP_BOOL:
-//			var_b = GetVariable( st->b );
-//			if ( var_b.evalPtr && var_b.evalPtr->intPtr ) {
-//				var_a = GetVariable( st->a );
-//				*var_b.evalPtr->intPtr = *var_a.intPtr;
+//			var_b = GetVariable( st.b );
+//			if ( var_b.evalPtr && var_b.evalPtr.intPtr ) {
+//				var_a = GetVariable( st.a );
+//				*var_b.evalPtr.intPtr = *var_a.intPtr;
 //			}
 //			break;
 //
 //		case OP_STOREP_S:
-//			var_b = GetVariable( st->b );
-//			if ( var_b.evalPtr && var_b.evalPtr->stringPtr ) {
-//				idStr.Copynz( var_b.evalPtr->stringPtr, GetString( st->a ), MAX_STRING_LEN );
+//			var_b = GetVariable( st.b );
+//			if ( var_b.evalPtr && var_b.evalPtr.stringPtr ) {
+//				idStr.Copynz( var_b.evalPtr.stringPtr, GetString( st.a ), MAX_STRING_LEN );
 //			}
 //			break;
 //
 //		case OP_STOREP_V:
-//			var_b = GetVariable( st->b );
-//			if ( var_b.evalPtr && var_b.evalPtr->vectorPtr ) {
-//				var_a = GetVariable( st->a );
-//				*var_b.evalPtr->vectorPtr = *var_a.vectorPtr;
+//			var_b = GetVariable( st.b );
+//			if ( var_b.evalPtr && var_b.evalPtr.vectorPtr ) {
+//				var_a = GetVariable( st.a );
+//				*var_b.evalPtr.vectorPtr = *var_a.vectorPtr;
 //			}
 //			break;
 //		
 //		case OP_STOREP_FTOS:
-//			var_b = GetVariable( st->b );
-//			if ( var_b.evalPtr && var_b.evalPtr->stringPtr ) {
-//				var_a = GetVariable( st->a );
-//				idStr.Copynz( var_b.evalPtr->stringPtr, FloatToString( *var_a.floatPtr ), MAX_STRING_LEN );
+//			var_b = GetVariable( st.b );
+//			if ( var_b.evalPtr && var_b.evalPtr.stringPtr ) {
+//				var_a = GetVariable( st.a );
+//				idStr.Copynz( var_b.evalPtr.stringPtr, FloatToString( *var_a.floatPtr ), MAX_STRING_LEN );
 //			}
 //			break;
 //
 //		case OP_STOREP_BTOS:
-//			var_b = GetVariable( st->b );
-//			if ( var_b.evalPtr && var_b.evalPtr->stringPtr ) {
-//				var_a = GetVariable( st->a );
+//			var_b = GetVariable( st.b );
+//			if ( var_b.evalPtr && var_b.evalPtr.stringPtr ) {
+//				var_a = GetVariable( st.a );
 //				if ( *var_a.floatPtr != 0.0 ) {
-//					idStr.Copynz( var_b.evalPtr->stringPtr, "true", MAX_STRING_LEN );
+//					idStr.Copynz( var_b.evalPtr.stringPtr, "true", MAX_STRING_LEN );
 //				} else {
-//					idStr.Copynz( var_b.evalPtr->stringPtr, "false", MAX_STRING_LEN );
+//					idStr.Copynz( var_b.evalPtr.stringPtr, "false", MAX_STRING_LEN );
 //				}
 //			}
 //			break;
 //
 //		case OP_STOREP_VTOS:
-//			var_b = GetVariable( st->b );
-//			if ( var_b.evalPtr && var_b.evalPtr->stringPtr ) {
-//				var_a = GetVariable( st->a );
-//				idStr.Copynz( var_b.evalPtr->stringPtr, var_a.vectorPtr->ToString(), MAX_STRING_LEN );
+//			var_b = GetVariable( st.b );
+//			if ( var_b.evalPtr && var_b.evalPtr.stringPtr ) {
+//				var_a = GetVariable( st.a );
+//				idStr.Copynz( var_b.evalPtr.stringPtr, var_a.vectorPtr.ToString(), MAX_STRING_LEN );
 //			}
 //			break;
 //
 //		case OP_STOREP_FTOBOOL:
-//			var_b = GetVariable( st->b );
-//			if ( var_b.evalPtr && var_b.evalPtr->intPtr ) {
-//				var_a = GetVariable( st->a );
+//			var_b = GetVariable( st.b );
+//			if ( var_b.evalPtr && var_b.evalPtr.intPtr ) {
+//				var_a = GetVariable( st.a );
 //				if ( *var_a.floatPtr != 0.0 ) {
-//					*var_b.evalPtr->intPtr = 1;
+//					*var_b.evalPtr.intPtr = 1;
 //				} else {
-//					*var_b.evalPtr->intPtr = 0;
+//					*var_b.evalPtr.intPtr = 0;
 //				}
 //			}
 //			break;
 //
 //		case OP_STOREP_BOOLTOF:
-//			var_b = GetVariable( st->b );
-//			if ( var_b.evalPtr && var_b.evalPtr->floatPtr ) {
-//				var_a = GetVariable( st->a );
-//				*var_b.evalPtr->floatPtr = static_cast<float>( *var_a.intPtr );
+//			var_b = GetVariable( st.b );
+//			if ( var_b.evalPtr && var_b.evalPtr.floatPtr ) {
+//				var_a = GetVariable( st.a );
+//				*var_b.evalPtr.floatPtr = static_cast<float>( *var_a.intPtr );
 //			}
 //			break;
 //
 //		case OP_STOREP_OBJ:
-//			var_b = GetVariable( st->b );
-//			if ( var_b.evalPtr && var_b.evalPtr->entityNumberPtr ) {
-//				var_a = GetVariable( st->a );
-//				*var_b.evalPtr->entityNumberPtr = *var_a.entityNumberPtr;
+//			var_b = GetVariable( st.b );
+//			if ( var_b.evalPtr && var_b.evalPtr.entityNumberPtr ) {
+//				var_a = GetVariable( st.a );
+//				*var_b.evalPtr.entityNumberPtr = *var_a.entityNumberPtr;
 //			}
 //			break;
 //
 //		case OP_STOREP_OBJENT:
-//			var_b = GetVariable( st->b );
-//			if ( var_b.evalPtr && var_b.evalPtr->entityNumberPtr ) {
-//				var_a = GetVariable( st->a );
+//			var_b = GetVariable( st.b );
+//			if ( var_b.evalPtr && var_b.evalPtr.entityNumberPtr ) {
+//				var_a = GetVariable( st.a );
 //				obj = GetScriptObject( *var_a.entityNumberPtr );
 //				if ( !obj ) {
-//					*var_b.evalPtr->entityNumberPtr = 0;
+//					*var_b.evalPtr.entityNumberPtr = 0;
 //
-//				// st->b points to type_pointer, which is just a temporary that gets its type reassigned, so we store the real type in st->c
+//				// st.b points to type_pointer, which is just a temporary that gets its type reassigned, so we store the real type in st.c
 //				// so that we can do a type check during run time since we don't know what type the script object is at compile time because it
 //				// comes from an entity
-//				} else if ( !obj->GetTypeDef()->Inherits( st->c->TypeDef() ) ) {
-//					//Warning( "object '%s' cannot be converted to '%s'", obj->GetTypeName(), st->c->TypeDef()->Name() );
-//					*var_b.evalPtr->entityNumberPtr = 0;
+//				} else if ( !obj.GetTypeDef().Inherits( st.c.TypeDef() ) ) {
+//					//Warning( "object '%s' cannot be converted to '%s'", obj.GetTypeName(), st.c.TypeDef().Name() );
+//					*var_b.evalPtr.entityNumberPtr = 0;
 //				} else {
-//					*var_b.evalPtr->entityNumberPtr = *var_a.entityNumberPtr;
+//					*var_b.evalPtr.entityNumberPtr = *var_a.entityNumberPtr;
 //				}
 //			}
 //			break;
 //
 //		case OP_ADDRESS:
-//			var_a = GetVariable( st->a );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_c = GetVariable( st.c );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
-//				var_c.evalPtr->bytePtr = &obj->data[ st->b->value.ptrOffset ];
+//				var_c.evalPtr.bytePtr = &obj.data[ st.b.value.ptrOffset ];
 //			} else {
-//				var_c.evalPtr->bytePtr = NULL;
+//				var_c.evalPtr.bytePtr = NULL;
 //			}
 //			break;
 //
 //		case OP_INDIRECT_F:
-//			var_a = GetVariable( st->a );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_c = GetVariable( st.c );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
-//				var.bytePtr = &obj->data[ st->b->value.ptrOffset ];
+//				var.bytePtr = &obj.data[ st.b.value.ptrOffset ];
 //				*var_c.floatPtr = *var.floatPtr;
 //			} else {
 //				*var_c.floatPtr = 0.0;
@@ -1704,11 +1949,11 @@
 //			break;
 //
 //		case OP_INDIRECT_ENT:
-//			var_a = GetVariable( st->a );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_c = GetVariable( st.c );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
-//				var.bytePtr = &obj->data[ st->b->value.ptrOffset ];
+//				var.bytePtr = &obj.data[ st.b.value.ptrOffset ];
 //				*var_c.entityNumberPtr = *var.entityNumberPtr;
 //			} else {
 //				*var_c.entityNumberPtr = 0;
@@ -1716,11 +1961,11 @@
 //			break;
 //
 //		case OP_INDIRECT_BOOL:
-//			var_a = GetVariable( st->a );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_c = GetVariable( st.c );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
-//				var.bytePtr = &obj->data[ st->b->value.ptrOffset ];
+//				var.bytePtr = &obj.data[ st.b.value.ptrOffset ];
 //				*var_c.intPtr = *var.intPtr;
 //			} else {
 //				*var_c.intPtr = 0;
@@ -1728,58 +1973,58 @@
 //			break;
 //
 //		case OP_INDIRECT_S:
-//			var_a = GetVariable( st->a );
+//			var_a = GetVariable( st.a );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
-//				var.bytePtr = &obj->data[ st->b->value.ptrOffset ];
-//				SetString( st->c, var.stringPtr );
+//				var.bytePtr = &obj.data[ st.b.value.ptrOffset ];
+//				SetString( st.c, var.stringPtr );
 //			} else {
-//				SetString( st->c, "" );
+//				SetString( st.c, "" );
 //			}
 //			break;
 //
 //		case OP_INDIRECT_V:
-//			var_a = GetVariable( st->a );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_c = GetVariable( st.c );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
-//				var.bytePtr = &obj->data[ st->b->value.ptrOffset ];
+//				var.bytePtr = &obj.data[ st.b.value.ptrOffset ];
 //				*var_c.vectorPtr = *var.vectorPtr;
 //			} else {
-//				var_c.vectorPtr->Zero();
+//				var_c.vectorPtr.Zero();
 //			}
 //			break;
 //
 //		case OP_INDIRECT_OBJ:
-//			var_a = GetVariable( st->a );
-//			var_c = GetVariable( st->c );
+//			var_a = GetVariable( st.a );
+//			var_c = GetVariable( st.c );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( !obj ) {
 //				*var_c.entityNumberPtr = 0;
 //			} else {
-//				var.bytePtr = &obj->data[ st->b->value.ptrOffset ];
+//				var.bytePtr = &obj.data[ st.b.value.ptrOffset ];
 //				*var_c.entityNumberPtr = *var.entityNumberPtr;
 //			}
 //			break;
 //
 //		case OP_PUSH_F:
-//			var_a = GetVariable( st->a );
+//			var_a = GetVariable( st.a );
 //			Push( *var_a.intPtr );
 //			break;
 //
 //		case OP_PUSH_FTOS:
-//			var_a = GetVariable( st->a );
+//			var_a = GetVariable( st.a );
 //			PushString( FloatToString( *var_a.floatPtr ) );
 //			break;
 //
 //		case OP_PUSH_BTOF:
-//			var_a = GetVariable( st->a );
+//			var_a = GetVariable( st.a );
 //			floatVal = *var_a.intPtr;
 //			Push( *reinterpret_cast<int *>( &floatVal ) );
 //			break;
 //
 //		case OP_PUSH_FTOB:
-//			var_a = GetVariable( st->a );
+//			var_a = GetVariable( st.a );
 //			if ( *var_a.floatPtr != 0.0 ) {
 //				Push( 1 );
 //			} else {
@@ -1788,48 +2033,49 @@
 //			break;
 //
 //		case OP_PUSH_VTOS:
-//			var_a = GetVariable( st->a );
-//			PushString( var_a.vectorPtr->ToString() );
+//			var_a = GetVariable( st.a );
+//			PushString( var_a.vectorPtr.ToString() );
 //			break;
 //
 //		case OP_PUSH_BTOS:
-//			var_a = GetVariable( st->a );
+//			var_a = GetVariable( st.a );
 //			PushString( *var_a.intPtr ? "true" : "false" );
 //			break;
 //
 //		case OP_PUSH_ENT:
-//			var_a = GetVariable( st->a );
+//			var_a = GetVariable( st.a );
 //			Push( *var_a.entityNumberPtr );
 //			break;
 //
 //		case OP_PUSH_S:
-//			PushString( GetString( st->a ) );
+//			PushString( GetString( st.a ) );
 //			break;
 //
 //		case OP_PUSH_V:
-//			var_a = GetVariable( st->a );
-//			Push( *reinterpret_cast<int *>( &var_a.vectorPtr->x ) );
-//			Push( *reinterpret_cast<int *>( &var_a.vectorPtr->y ) );
-//			Push( *reinterpret_cast<int *>( &var_a.vectorPtr->z ) );
+//			var_a = GetVariable( st.a );
+//			Push( *reinterpret_cast<int *>( &var_a.vectorPtr.x ) );
+//			Push( *reinterpret_cast<int *>( &var_a.vectorPtr.y ) );
+//			Push( *reinterpret_cast<int *>( &var_a.vectorPtr.z ) );
 //			break;
 //
 //		case OP_PUSH_OBJ:
-//			var_a = GetVariable( st->a );
+//			var_a = GetVariable( st.a );
 //			Push( *var_a.entityNumberPtr );
 //			break;
 //
 //		case OP_PUSH_OBJENT:
-//			var_a = GetVariable( st->a );
+//			var_a = GetVariable( st.a );
 //			Push( *var_a.entityNumberPtr );
 //			break;
 //
 //		case OP_BREAK:
 //		case OP_CONTINUE:
 //		default:
-//			Error( "Bad opcode %i", st->op );
+//			Error( "Bad opcode %i", st.op );
 //			break;
 //		}
 //	}
 //
 //	return threadDying;
 //}
+}
