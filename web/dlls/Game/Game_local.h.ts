@@ -210,7 +210,7 @@ class idEventQueue {
 ////	entityNetEvent_t *		Dequeue( ):void { throw "placeholder"; }
 ////	entityNetEvent_t *		RemoveLast( ):void { throw "placeholder"; }
 
-////	entityNetEvent_t *		Start( void ) { return start; }
+////	entityNetEvent_t *		Start( ) { return start; }
 
 	////private:
 	start: entityNetEvent_t;
@@ -232,13 +232,13 @@ class idEntityPtr<type> {
 ////	idEntityPtr<type> &		operator=( type *ent );
 
 ////	// synchronize entity pointers over the network
-////	int						GetSpawnId( void ) const { return spawnId; }
+////	int						GetSpawnId( ) const { return spawnId; }
 ////	bool					SetSpawnId( int id );
-////	bool					UpdateSpawnId( void );
+////	bool					UpdateSpawnId( );
 
-////	bool					IsValid( void ) const;
-////	type *					GetEntity( void ) const;
-////	int						GetEntityNum( void ) const;
+////	bool					IsValid( ) const;
+////	type *					GetEntity( ) const;
+////	int						GetEntityNum( ) const;
 
 ////private:
 ////	int						spawnId;
@@ -327,9 +327,9 @@ class idGameLocal extends idGame {
 ////							idGameLocal();
 
 	Init ( ): void { throw "placeholder"; }
-////	virtual void			Shutdown( void );
+////	virtual void			Shutdown( );
 ////	virtual void			SetLocalClient( int clientNum );
-////	virtual void			ThrottleUserInfo( void );
+////	virtual void			ThrottleUserInfo( );
 	SetUserInfo ( /*int */clientNum: number, userInfo: idDict, isClient: boolean, canModify: boolean ): idDict { throw "placeholder"; }
 ////	virtual const idDict *	GetUserInfo( int clientNum );
 ////	virtual void			SetServerInfo( const idDict &serverInfo );
@@ -339,13 +339,13 @@ class idGameLocal extends idGame {
 	InitFromNewMap ( mapName: string, renderWorld: idRenderWorld, soundWorld: idSoundWorld, isServer: boolean, isClient: boolean, randseed: number /*int*/ ): void { throw "placeholder"; }
 ////	virtual bool			InitFromSaveGame( const char *mapName, idRenderWorld *renderWorld, idSoundWorld *soundWorld, idFile *saveGameFile );
 ////	virtual void			SaveGame( idFile *saveGameFile );
-////	virtual void			MapShutdown( void );
+////	virtual void			MapShutdown( );
 	CacheDictionaryMedia ( dict: idDict ): void { throw "placeholder"; }
 ////	virtual void			SpawnPlayer( int clientNum );
 ////	virtual gameReturn_t	RunFrame( const usercmd_t *clientCmds );
 ////	virtual bool			Draw( int clientNum );
 ////	virtual escReply_t		HandleESC( idUserInterface **gui );
-////	virtual idUserInterface	*StartMenu( void );
+////	virtual idUserInterface	*StartMenu( );
 ////	virtual const char *	HandleGuiCommands( const char *menuCommand );
 ////	virtual void			HandleMainMenuCommands( const char *menuCommand, idUserInterface *gui );
 ////	virtual allowReply_t	ServerAllowClient( int numClients, const char *IP, const char *guid, const char *password, char reason[MAX_STRING_CHARS] );
@@ -377,28 +377,28 @@ class idGameLocal extends idGame {
 	// Initializes all map variables common to both save games and spawned games
 	LoadMap ( mapName: string, /*int */randseed: number ): void { throw "placeholder"; }
 
-////	void					LocalMapRestart( void );
-////	void					MapRestart( void );
+////	void					LocalMapRestart( );
+////	void					MapRestart( );
 ////	static void				MapRestart_f( const idCmdArgs &args );
-////	bool					NextMap( void );	// returns wether serverinfo settings have been modified
+////	bool					NextMap( );	// returns wether serverinfo settings have been modified
 ////	static void				NextMap_f( const idCmdArgs &args );
 
-////	idMapFile *				GetLevelMap( void );
-////	const char *			GetMapName( void ) const;
+////	idMapFile *				GetLevelMap( );
+////	const char *			GetMapName( ) const;
 
-////	int						NumAAS( void ) const;
+////	int						NumAAS( ) const;
 ////	idAAS *					GetAAS( int num ) const;
 ////	idAAS *					GetAAS( name:string ) const;
 ////	void					SetAASAreaState( const idBounds &bounds, const int areaContents, bool closed );
 ////	aasHandle_t				AddAASObstacle( const idBounds &bounds );
 ////	void					RemoveAASObstacle( const aasHandle_t handle );
-////	void					RemoveAllAASObstacles( void );
+////	void					RemoveAllAASObstacles( );
 
 ////	bool					CheatsOk( bool requirePlayer = true );
-////	void					SetSkill( int value );
-////	gameState_t				GameState( void ) const;
+	SetSkill ( /*int*/ value: number ): void { throw "placeholder"; }
+	GameState ( ): gameState_t { throw "placeholder"; }
 ////	idEntity *				SpawnEntityType( const idTypeInfo &classdef, const idDict *args = NULL, bIsClientReadSnapshot = false );
-////	bool					SpawnEntityDef( const idDict &args, idEntity **ent = NULL, setDefaults = true );
+	SpawnEntityDef ( args: idDict, ent: R<idEntity> = new R<idEntity> ( ), setDefaults: boolean = true ): boolean { throw "placeholder"; }
 ////	int						GetSpawnId( const ent: idEntity ) const;
 
 	FindEntityDef ( name: string, makeDefault = true ): idDeclEntityDef { throw "placeholder"; }
@@ -411,14 +411,14 @@ class idGameLocal extends idGame {
 ////	bool					RequirementMet( activator:idEntity, const idStr &requires, int removeItem );
 
 ////	void					AlertAI( ent: idEntity );
-////	idActor *				GetAlertEntity( void );
+////	idActor *				GetAlertEntity( );
 
 ////	bool					InPlayerPVS( ent: idEntity ) const;
 ////	bool					InPlayerConnectedArea( ent: idEntity ) const;
 
 ////	void					SetCamera( idCamera *cam );
-////	idCamera *				GetCamera( void ) const;
-////	bool					SkipCinematic( void );
+////	idCamera *				GetCamera( ) const;
+////	bool					SkipCinematic( );
 ////	void					CalcFov( float base_fov, float &fov_x, float &fov_y ) const;
 
 	AddEntityToHash ( name: string, ent: idEntity ): void { throw "placeholder"; }
@@ -445,7 +445,7 @@ class idGameLocal extends idGame {
 ////	void					CallFrameCommand( ent: idEntity, const function_t *frameCommand );
 ////	void					CallObjectFrameCommand( ent: idEntity, const char *frameCommand );
 
-////	const idVec3 &			GetGravity( void ) const;
+////	const idVec3 &			GetGravity( ) const;
 
 ////	// added the following to assist licensees with merge issues
 ////	int						GetFrameNum() const { return framenum; };
@@ -531,7 +531,7 @@ class idGameLocal extends idGame {
 
 	Clear ( ): void { throw "placeholder"; }
 ////							// returns true if the entity shouldn't be spawned at all in this game type or difficulty level
-////	bool					InhibitEntitySpawn( idDict &spawnArgs );
+	InhibitEntitySpawn ( spawnArgs: idDict ): boolean { throw "placeholder"; }
 	// spawn entities from the map file
 	SpawnMapEntities( ):void { throw "placeholder"; }
 	// commons used by init, shutdown, and restart
@@ -643,12 +643,12 @@ class idGameLocal extends idGame {
 ////}
 
 ////template< class type >
-////ID_INLINE bool idEntityPtr<type>::IsValid( void ) const {
+////ID_INLINE bool idEntityPtr<type>::IsValid( ) const {
 ////	return ( gameLocal.spawnIds[ spawnId & ( ( 1 << GENTITYNUM_BITS ) - 1 ) ] == ( spawnId >> GENTITYNUM_BITS ) );
 ////}
 
 ////template< class type >
-////ID_INLINE type *idEntityPtr<type>::GetEntity( void ) const {
+////ID_INLINE type *idEntityPtr<type>::GetEntity( ) const {
 ////	int entityNum = spawnId & ( ( 1 << GENTITYNUM_BITS ) - 1 );
 ////	if ( ( gameLocal.spawnIds[ entityNum ] == ( spawnId >> GENTITYNUM_BITS ) ) ) {
 ////		return static_cast<type *>( gameLocal.entities[ entityNum ] );
@@ -657,7 +657,7 @@ class idGameLocal extends idGame {
 ////}
 
 ////template< class type >
-////ID_INLINE int idEntityPtr<type>::GetEntityNum( void ) const {
+////ID_INLINE int idEntityPtr<type>::GetEntityNum( ) const {
 ////	return ( spawnId & ( ( 1 << GENTITYNUM_BITS ) - 1 ) );
 ////}
 

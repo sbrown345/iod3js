@@ -157,7 +157,27 @@ class idClipModel {
 	renderModelHandle:number;		// render model def handle							////	int						
 
 	clipLinks:clipLink_t;				// links into sectors
-	touchCount:number/*int*/;
+	touchCount: number/*int*/;
+
+	init ( ): void {
+		this.enabled = false;
+		this.entity = null;
+		this.id = 0;
+		this.owner = null;
+		this.origin.init ( );
+		this.axis.init ( );
+		this.bounds.init ( );
+		this.absBounds.init ( );
+		this.material.init ( );
+		this.contents = 0;
+		this.collisionModelHandle = 0;
+		this.traceModelIndex = 0;
+		this.renderModelHandle = 0;
+
+		this.clipLinks = null;
+		this.touchCount = 0;
+	}
+
 ////
 ////	void					Init( );			// initialize
 ////	void					Link_r( struct clipSector_s *node );
@@ -932,12 +952,22 @@ class idClip {
 idClip::idClip
 ===============
 */
-constructor( ) {
-	this.numClipSectors = 0;
-	this.clipSectors = null;
-	this.worldBounds.Zero();
-	this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;
-}
+	constructor ( ) {
+		this.numClipSectors = 0;
+		this.clipSectors = null;
+		this.worldBounds.Zero ( );
+		this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;
+	}
+	
+	init ( ): void {
+		this.numClipSectors = 0;
+		this.clipSectors = null;
+		this.worldBounds.Zero();
+		this.temporaryClipModel.init ( );
+		this.defaultClipModel.init ( );
+		this.touchCount= 0;
+		this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;
+	}
 
 /////*
 ////===============

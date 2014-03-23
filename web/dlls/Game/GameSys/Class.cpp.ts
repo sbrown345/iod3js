@@ -50,7 +50,7 @@
 ////extern const idEventDef EV_Remove;
 ////extern const idEventDef EV_SafeRemove;
 ////
-////typedef void ( idClass::*eventCallback_t )( void );
+////typedef void ( idClass::*eventCallback_t )( );
 ////
 ////template< class Type >
 class idEventFunc<Type> {
@@ -60,11 +60,11 @@ class idEventFunc<Type> {
 	}
 
 	event: idEventDef;
-	$function: ( ...args: any[] /*????*/ ) => void; //eventCallback_t  - typedef void ( idClass::*eventCallback_t )( void ); ?????
+	$function: ( ...args: any[] /*????*/ ) => void; //eventCallback_t  - typedef void ( idClass::*eventCallback_t )( ); ?????
 }
 
 // added & so gcc could compile this
-////#define EVENT( event, function )	{ &( event ), ( void ( idClass::* )( void ) )( &function ) },
+////#define EVENT( event, function )	{ &( event ), ( void ( idClass::* )( ) )( &function ) },
 function EVENT(event: idEventDef, $function: any): idEventFunc<any>{
 	return new idEventFunc( event, $function );
 }
@@ -107,7 +107,7 @@ class idTypeInfo {
 	classname:string;
 	superclass: string;
 	CreateInstance: () => idClass;
-	Spawn:()=>void;////	void						( idClass::*Spawn )( void );
+	Spawn:()=>void;////	void						( idClass::*Spawn )( );
 	Save: (savefile: idSaveGame) => void;
 	Restore: (savefile: idRestoreGame) => void;
 	
@@ -123,29 +123,29 @@ class idTypeInfo {
 	node = new idHierarchy<idTypeInfo>();
 	////
 	////								idTypeInfo( const char *classname, const char *superclass, 
-	////												idEventFunc<idClass> *eventCallbacks, idClass *( *CreateInstance )( void ), void ( idClass::*Spawn )( void ),
+	////												idEventFunc<idClass> *eventCallbacks, idClass *( *CreateInstance )( ), void ( idClass::*Spawn )( ),
 	////												void ( idClass::*Save )( idSaveGame *savefile ) const, void	( idClass::*Restore )( idRestoreGame *savefile ) );
 	////								~idTypeInfo();
 	////
-	////	void						Init( void );
-	////	void						Shutdown( void );
+	////	void						Init( );
+	////	void						Shutdown( );
 	////
 	////	bool						IsType( const idTypeInfo &superclass ) const;
 	////	bool						RespondsTo( const idEventDef &ev ) const;
 	////};
-	////
-	/////*
-	////================
-	////idTypeInfo::IsType
-	////
-	////Checks if the object's class is a subclass of the class defined by the 
-	////passed in idTypeInfo.
-	////================
-	////*/
-	////ID_INLINE bool idTypeInfo::IsType( const idTypeInfo &type ) const {
-	////	return ( ( typeNum >= type.typeNum ) && ( typeNum <= type.lastChild ) );
-	////}
 	
+	/*
+	================
+	idTypeInfo::IsType
+	
+	Checks if the object's class is a subclass of the class defined by the 
+	passed in idTypeInfo.
+	================
+	*/
+	IsType ( type: idTypeInfo ): boolean {
+		return ( ( this.typeNum >= type.typeNum ) && ( this.typeNum <= type.lastChild ) );
+	}
+
 	/*
 	================
 	idTypeInfo::RespondsTo
@@ -173,8 +173,8 @@ class idTypeInfo {
 ////================
 	constructor ( classname: string, superclass: string, eventCallbacks: idEventFunc<idClass>[], CreateInstance: ( ) => idClass,
 		Spawn: ( ) => void, Save: ( savefile: idSaveGame ) => void, Restore: ( savefile: idRestoreGame ) => void ) {
-////idTypeInfo::idTypeInfo( const char *classname, const char *superclass, idEventFunc<idClass> *eventCallbacks, idClass *( *CreateInstance )( void ), 
-////	void ( idClass::*Spawn )( void ), void ( idClass::*Save )( idSaveGame *savefile ) const, void ( idClass::*Restore )( idRestoreGame *savefile ) ) {
+////idTypeInfo::idTypeInfo( const char *classname, const char *superclass, idEventFunc<idClass> *eventCallbacks, idClass *( *CreateInstance )( ), 
+////	void ( idClass::*Spawn )( ), void ( idClass::*Save )( idSaveGame *savefile ) const, void ( idClass::*Restore )( idRestoreGame *savefile ) ) {
 
 		var type: idTypeInfo;
 		var insert: idTypeInfo;
@@ -201,9 +201,9 @@ class idTypeInfo {
 		}
 
 		//// Insert sorted
-		//for ( insert = &typelist; *insert; insert = &(*insert)->next ) {
-		//	assert( idStr::Cmp( classname, (*insert)->classname ) );
-		//	if ( idStr::Cmp( classname, (*insert)->classname ) < 0 ) {
+		//for ( insert = &typelist; *insert; insert = &(*insert).next ) {
+		//	assert( idStr::Cmp( classname, (*insert).classname ) );
+		//	if ( idStr::Cmp( classname, (*insert).classname ) < 0 ) {
 		//		next = *insert;
 		//		*insert = this;
 		//		break;
@@ -353,7 +353,7 @@ table for fast lookups of event functions.  Should only be called once.
 ////		}
 ////		this.eventMap = NULL;
 ////	}
-////	typeNum = 0;
+////	this.typeNum = 0;
 ////	lastChild = 0;
 ////}
 ////
@@ -377,8 +377,8 @@ table for fast lookups of event functions.  Should only be called once.
 ////#define CLASS_PROTOTYPE( nameofclass )									\
 ////public:																	\
 ////	static	idTypeInfo						Type;						\
-////	static	idClass							*CreateInstance( void );	\
-////	virtual	idTypeInfo						*GetType( void ) const;		\
+////	static	idClass							*CreateInstance( );	\
+////	virtual	idTypeInfo						*GetType( ) const;		\
 ////	static	idEventFunc<nameofclass>		eventCallbacks[]
 ////
 /*
@@ -394,19 +394,19 @@ incorrect.  Use this on concrete classes only.
 */
 ////#define CLASS_DECLARATION( nameofsuperclass, nameofclass )											\
 ////	idTypeInfo nameofclass::Type( #nameofclass, #nameofsuperclass,									\
-////		( idEventFunc<idClass> * )nameofclass::eventCallbacks,	nameofclass::CreateInstance, ( void ( idClass::* )( void ) )&nameofclass::Spawn,	\
+////		( idEventFunc<idClass> * )nameofclass::eventCallbacks,	nameofclass::CreateInstance, ( void ( idClass::* )( ) )&nameofclass::Spawn,	\
 ////		( void ( idClass::* )( idSaveGame * ) const )&nameofclass::Save, ( void ( idClass::* )( idRestoreGame * ) )&nameofclass::Restore );	\
-////	idClass *nameofclass::CreateInstance( void ) {													\
+////	idClass *nameofclass::CreateInstance( ) {													\
 ////		try {																						\
 ////			nameofclass *ptr = new nameofclass;														\
-////			ptr->FindUninitializedMemory();															\
+////			ptr.FindUninitializedMemory();															\
 ////			return ptr;																				\
 ////		}																							\
 ////		catch( idAllocError & ) {																	\
 ////			return NULL;																			\
 ////		}																							\
 ////	}																								\
-////	idTypeInfo *nameofclass::GetType( void ) const {												\
+////	idTypeInfo *nameofclass::GetType( ) const {												\
 ////		return &( nameofclass::Type );																\
 ////	}																								\
 ////idEventFunc<nameofclass> nameofclass::eventCallbacks[] = {
@@ -424,8 +424,8 @@ incorrect.  Use this on concrete classes only.
 ////#define ABSTRACT_PROTOTYPE( nameofclass )								\
 ////public:																	\
 ////	static	idTypeInfo						Type;						\
-////	static	idClass							*CreateInstance( void );	\
-////	virtual	idTypeInfo						*GetType( void ) const;		\
+////	static	idClass							*CreateInstance( );	\
+////	virtual	idTypeInfo						*GetType( ) const;		\
 ////	static	idEventFunc<nameofclass>		eventCallbacks[]
 ////
 /////*
@@ -441,18 +441,18 @@ incorrect.  Use this on concrete classes only.
 ////*/
 ////#define ABSTRACT_DECLARATION( nameofsuperclass, nameofclass )										\
 ////	idTypeInfo nameofclass::Type( #nameofclass, #nameofsuperclass,									\
-////		( idEventFunc<idClass> * )nameofclass::eventCallbacks, nameofclass::CreateInstance, ( void ( idClass::* )( void ) )&nameofclass::Spawn,	\
+////		( idEventFunc<idClass> * )nameofclass::eventCallbacks, nameofclass::CreateInstance, ( void ( idClass::* )( ) )&nameofclass::Spawn,	\
 ////		( void ( idClass::* )( idSaveGame * ) const )&nameofclass::Save, ( void ( idClass::* )( idRestoreGame * ) )&nameofclass::Restore );	\
-////	idClass *nameofclass::CreateInstance( void ) {													\
+////	idClass *nameofclass::CreateInstance( ) {													\
 ////		gameLocal.Error( "Cannot instanciate abstract class %s.", #nameofclass );					\
 ////		return NULL;																				\
 ////	}																								\
-////	idTypeInfo *nameofclass::GetType( void ) const {												\
+////	idTypeInfo *nameofclass::GetType( ) const {												\
 ////		return &( nameofclass::Type );																\
 ////	}																								\
 ////	idEventFunc<nameofclass> nameofclass::eventCallbacks[] = {
 ////
-////typedef void ( idClass::*classSpawnFunc_t )( void );
+////typedef void ( idClass::*classSpawnFunc_t )( );
 ////
 ////class idSaveGame;	
 ////class idRestoreGame;
@@ -478,12 +478,12 @@ class idClass {
 	////
 	////	virtual						~idClass();
 	////
-	////	void						Spawn( void );
-	////	void						CallSpawn( void );
+	////	void						Spawn( );
+	////	void						CallSpawn( );
 	////	bool						IsType( const idTypeInfo &c ) const;
-	////	const char *				GetClassname( void ) const;
-	////	const char *				GetSuperclass( void ) const;
-	////	void						FindUninitializedMemory( void );
+	////	const char *				GetClassname( ) const;
+	////	const char *				GetSuperclass( ) const;
+	////	void						FindUninitializedMemory( );
 	//
 	Save ( savefile: idSaveGame ): void {}
 	Restore ( savefile: idRestoreGame ): void {}
@@ -526,14 +526,14 @@ class idClass {
 	//Event_Remove( ):void { throw "placeholder"; }
 	////
 	////	// Static functions
-	////	static void					Init( void );
-	////	static void					Shutdown( void );
+	////	static void					Init( );
+	////	static void					Shutdown( );
 	////	static idTypeInfo *			GetClass( name:string );
 	////	static void					DisplayInfo_f( const idCmdArgs &args );
 	////	static void					ListClasses_f( const idCmdArgs &args );
 	////	static idClass *			CreateInstance( name:string );
-	////	static int					GetNumTypes( void ) { return idClass.types.Num(); }
-	////	static int					GetTypeNumBits( void ) { return idClass.typeNumBits; }
+	////	static int					GetNumTypes( ) { return idClass.types.Num(); }
+	////	static int					GetTypeNumBits( ) { return idClass.typeNumBits; }
 	////	static idTypeInfo *			GetType( int num );
 	////
 	////private:
@@ -559,39 +559,39 @@ class idClass {
 ////idList<idTypeInfo *>	idClass::typenums;
 ////
 ////
-/////*
-////================
-////idClass::CallSpawn
-////================
-////*/
-////void idClass::CallSpawn( void ) {
-////	idTypeInfo *type;
-////
-////	type = GetType();
-////	CallSpawnFunc( type );
-////}
-////
-/////*
-////================
-////idClass::CallSpawnFunc
-////================
-////*/
-////classSpawnFunc_t idClass::CallSpawnFunc( idTypeInfo *cls ) {
-////	classSpawnFunc_t func;
-////
-////	if ( cls.$super ) {
-////		func = CallSpawnFunc( cls.$super );
-////		if ( func == cls.Spawn ) {
-////			// don't call the same function twice in a row.
-////			// this can happen when subclasses don't have their own spawn function.
-////			return func;
-////		}
-////	}
-////
-////	( this.*cls.Spawn )();
-////
-////	return cls.Spawn;
-////}
+/*
+================
+idClass::CallSpawn
+================
+*/
+	CallSpawn ( ): void {
+		var type: idTypeInfo;
+
+		type = this.GetType ( );
+		this.CallSpawnFunc( type );
+	}
+
+/*
+================
+idClass::CallSpawnFunc
+================
+*/
+	CallSpawnFunc ( cls: idTypeInfo ): ( ) => void /*classSpawnFunc_t*/ {
+		var func: ( ) => void; /*classSpawnFunc_t*/
+
+		if ( cls.$super ) {
+			func = this.CallSpawnFunc( cls.$super );
+			if ( func == cls.Spawn ) {
+				// don't call the same function twice in a row.
+				// this can happen when subclasses don't have their own spawn function.
+				return func;
+			}
+		}
+		todoThrow ( );
+		//( this.*cls.Spawn )();
+
+		return cls.Spawn;
+	}
 
 /*
 ================
@@ -739,7 +739,7 @@ once during the execution of the program or DLL.
 ////idClass::Shutdown
 ////================
 ////*/
-////void idClass::Shutdown( void ) {
+////void idClass::Shutdown( ) {
 ////	idTypeInfo	*c;
 ////
 ////	for( c = typelist; c != NULL; c = c.next ) {
@@ -862,7 +862,7 @@ so it must be called as idClass::GetClass( classname )
 			min = 0;
 			max = idClass.types.Num ( ) - 1;
 			while ( min <= max ) {
-				mid = ( min + max ) / 2;
+				mid = int( ( min + max ) / 2 );
 				c = idClass.types[mid];
 				order = idStr.Cmp( c.classname, name );
 				if ( !order ) {
@@ -907,7 +907,7 @@ so it must be called as idClass::GetClass( classname )
 ////Returns the text classname of the object.
 ////================
 ////*/
-////const char *idClass::GetClassname( void ) const {
+////const char *idClass::GetClassname( ) const {
 ////	idTypeInfo *type;
 ////
 ////	type = GetType();
@@ -921,7 +921,7 @@ so it must be called as idClass::GetClass( classname )
 ////Returns the text classname of the superclass.
 ////================
 ////*/
-////const char *idClass::GetSuperclass( void ) const {
+////const char *idClass::GetSuperclass( ) const {
 ////	idTypeInfo *cls;
 ////
 ////	cls = GetType();
@@ -1377,21 +1377,21 @@ idClass::Event_SafeRemove
 		this.PostEventMS(  EV_Remove, 0 );
 	}
 
-	/////*
-	////================
-	////idClass::IsType
-	////
-	////Checks if the object's class is a subclass of the class defined by the 
-	////passed in idTypeInfo.
-	////================
-	////*/
-	////ID_INLINE bool idClass::IsType( const idTypeInfo &superclass ) const {
-	////	idTypeInfo *subclass;
-	////
-	////	subclass = GetType();
-	////	return subclass->IsType( superclass );
-	////}
-	////
+	/*
+	================
+	idClass::IsType
+	
+	Checks if the object's class is a subclass of the class defined by the 
+	passed in idTypeInfo.
+	================
+	*/
+	IsType ( superclass: idTypeInfo ): boolean {
+		var subclass: idTypeInfo;
+
+		subclass = this.GetType ( );
+		return subclass.IsType( superclass );
+	}
+
 	/////*
 	////================
 	////idClass::RespondsTo
@@ -1402,7 +1402,7 @@ idClass::Event_SafeRemove
 	////
 	////	assert( idEvent::initialized );
 	////	c = GetType();
-	////	return c->RespondsTo( ev );
+	////	return c.RespondsTo( ev );
 	////}
 	////
 	////#endif /* !__SYS_CLASS_H__ */

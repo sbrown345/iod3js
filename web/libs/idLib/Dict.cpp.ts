@@ -234,17 +234,17 @@ class idDict {
 ////SetMatrix( key:string, const idMat3 &val ):void {
 ////	this.Set( key, val.ToString() );
 ////}
-////
-////ID_INLINE bool idDict::GetString( key:string, defaultString:string, const char **out ) const {
-////	const idKeyValue *kv = this.FindKey( key );
-////	if ( kv ) {
-////		*out = kv.GetValue();
-////		return true;
-////	}
-////	*out = defaultString;
-////	return false;
-////}
-////
+
+	GetString_Rstring ( key: string, defaultString: string, out: R<string> ): boolean {
+		var kv = this.FindKey( key );
+		if ( kv ) {
+			out.$ = kv.GetValue ( ).data;
+			return true;
+		}
+		out.$ = defaultString;
+		return false;
+	}
+
 ////ID_INLINE bool idDict::GetString( key:string, defaultString:string, idStr &out ) const {
 ////	const idKeyValue *kv = this.FindKey( key );
 ////	if ( kv ) {
@@ -613,20 +613,20 @@ Set( key:string, value:string ):void {
 ////	return found;
 ////}
 ////
-/////*
-////================
-////idDict::GetBool
-////================
-////*/
-////bool idDict::GetBool( key:string, defaultString:string, bool &out ) const {
-////	const char	*s;
-////	bool		found;
-////
-////	found = GetString( key, defaultString, &s );
-////	out = ( atoi( s ) != 0 );
-////	return found;
-////}
-////
+/*
+================
+idDict::GetBool
+================
+*/
+	GetBool_R ( key: string, defaultString: string, out: R<boolean> ): boolean {
+		var s = new R<string> ( );
+		var found: boolean;
+
+		found = this.GetString_Rstring( key, defaultString, s );
+		out.$ = ( atoi( s.$ ) != 0 );
+		return found;
+	}
+
 /////*
 ////================
 ////idDict::GetAngles

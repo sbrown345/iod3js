@@ -635,27 +635,28 @@ idGameLocal.prototype.DPrintf = function ( /*const char **/ fmt: string, ...args
 	console.log.apply( console, argArr );
 };
 
-/////*
-////============
-////idGameLocal::Warning
-////============
-////*/
-////idGameLocal.prototype.Warning( const char *fmt, ... ) :void  {
-////	va_list		argptr;
-////	char		text[MAX_STRING_CHARS];
-////	idThread *	thread;
+/*
+============
+idGameLocal::Warning
+============
+*/
+idGameLocal.prototype.Warning = function ( fmt: string, ...args: any[] ): void {
+	todoThrow ( );
+	//va_list		argptr;
+	//char		text[MAX_STRING_CHARS];
+	//idThread *	thread;
 
-////	va_start( argptr, fmt );
-////	idStr::vsnPrintf( text, sizeof( text ), fmt, argptr );
-////	va_end( argptr );
+	//va_start( argptr, fmt );
+	//idStr::vsnPrintf( text, sizeof( text ), fmt, argptr );
+	//va_end( argptr );
 
-////	thread = idThread::CurrentThread();
-////	if ( thread ) {
-////		thread.Warning( "%s", text );
-////	} else {
-////		common.Warning( "%s", text );
-////	}
-////}
+	//thread = idThread::CurrentThread();
+	//if ( thread ) {
+	//	thread.Warning( "%s", text );
+	//} else {
+	//	common.Warning( "%s", text );
+	//}
+};
 
 /////*
 ////============
@@ -859,7 +860,10 @@ idGameLocal.prototype.LoadMap = function ( mapName: string, /*int */randseed: nu
 	this.numClients = 0;
 
 	// initialize all entities for this game
-	clearStructArray( this.entities );	//memset( this.entities, 0, sizeof( this.entities ) );
+	//memset( this.entities, 0, sizeof( this.entities ) );
+	for ( var j = 0; j < this.entities; j++ ) {
+		this.entities[j] = null;
+	}
 	clearStructArray( this.usercmds );// memset( usercmds, 0, sizeof( usercmds ) );
 	memset( this.spawnIds, -1, sizeof( this.spawnIds )  );
 	this.spawnCount = idGameLocal.INITIAL_SPAWN_COUNT;
@@ -1244,8 +1248,8 @@ idGameLocal.prototype.InitFromNewMap = function ( mapName: string, renderWorld: 
 ////	for ( i = 0; i < this.mapFile.GetNumEntities(); i++ ) {
 ////		idMapEntity *mapEnt = this.mapFile.GetEntity( i );
 
-////		if ( !InhibitEntitySpawn( mapEnt.epairs ) ) {
-////			CacheDictionaryMedia( &mapEnt.epairs );
+////		if ( !this.InhibitEntitySpawn( mapEnt.epairs ) ) {
+////			this.CacheDictionaryMedia( &mapEnt.epairs );
 ////			const char *classname = mapEnt.epairs.GetString( "classname" );
 ////			if ( classname != '\0' ) {
 ////				this.FindEntityDef( classname, false );
@@ -1833,7 +1837,7 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 ////	args.SetInt( "spawn_entnum", clientNum );
 ////	args.Set( "name", va( "player%d", clientNum + 1 ) );
 ////	args.Set( "classname", isMultiplayer ? "player_doommarine_mp" : "player_doommarine" );
-////	if ( !SpawnEntityDef( args, &ent ) || !this.entities[ clientNum ] ) {
+////	if ( !this.SpawnEntityDef( args, &ent ) || !this.entities[ clientNum ] ) {
 ////		this.Error( "Failed to spawn player as '%s'", args.GetString( "classname" ) );
 ////	}
 
@@ -2340,7 +2344,7 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 
 ////		// make sure we don't loop forever when skipping a cinematic
 ////		if ( this.skipCinematic && ( this.time > this.cinematicMaxSkipTime ) ) {
-////			Warning( "Exceeded maximum cinematic skip length.  Cinematic may be looping infinitely." );
+////			this.Warning( "Exceeded maximum cinematic skip length.  Cinematic may be looping infinitely." );
 ////			this.skipCinematic = false;
 ////			break;
 ////		}
@@ -3002,84 +3006,84 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 ////	return static_cast<idEntity *>(obj);
 ////}
 
-/////*
-////===================
-////idGameLocal::SpawnEntityDef
+/*
+===================
+idGameLocal::SpawnEntityDef
 
-////Finds the spawn function for the entity and calls it,
-////returning false if not found
-////===================
-////*/
-////bool idGameLocal::SpawnEntityDef( const idDict &args, idEntity **ent, bool setDefaults ) {
-////	const char	*classname;
-////	const char	*spawn;
-////	idTypeInfo	*cls;
-////	idClass		*obj;
-////	idStr		error;
-////	const char  *name;
+Finds the spawn function for the entity and calls it,
+returning false if not found
+===================
+*/
+idGameLocal.prototype.SpawnEntityDef = function ( args: idDict, ent: R<idEntity> = new R<idEntity> ( ), setDefaults: boolean = true ): boolean {
+	var classname = new R<string> ( );
+	var spawn = new R<string> ( );
+	var cls: idTypeInfo;
+	var obj: idClass;
+	var error = new idStr;
+	var name = new R<string> ( );
 
-////	if ( ent ) {
-////		*ent = NULL;
-////	}
+	if ( ent ) {
+		ent.$ = null;
+	}
 
-////	this.spawnArgs = args;
+	this.spawnArgs = args;
 
-////	if ( this.spawnArgs.GetString( "name", "", &name ) ) {
-////		sprintf( error, " on '%s'", name);
-////	}
+	if ( this.spawnArgs.GetString_Rstring( "name", "", name ) ) {
+		error.equals( sprintf( " on '%s'", name.$ ) );
+	}
 
-////	this.spawnArgs.GetString( "classname", NULL, &classname );
+	this.spawnArgs.GetString_Rstring( "classname", null, classname );
 
-////	const idDeclEntityDef *def = this.FindEntityDef( classname, false );
+	var def = this.FindEntityDef( classname, false );
 
-////	if ( !def ) {
-////		Warning( "Unknown classname '%s'%s.", classname, error.c_str() );
-////		return false;
-////	}
+	if ( !def ) {
+		this.Warning( "Unknown classname '%s'%s.", classname.$, error.c_str ( ) );
+		return false;
+	}
 
-////	this.spawnArgs.SetDefaults( &def.dict );
+	this.spawnArgs.SetDefaults( def.dict );
 
-////	// check if we should spawn a class object
-////	this.spawnArgs.GetString( "spawnclass", NULL, &spawn );
-////	if ( spawn ) {
+	// check if we should spawn a class object
+	this.spawnArgs.GetString_Rstring( "spawnclass", null, spawn );
+	if ( spawn.$ ) {
 
-////		cls = idClass::GetClass( spawn );
-////		if ( !cls ) {
-////			Warning( "Could not spawn '%s'.  Class '%s' not found%s.", classname, spawn, error.c_str() );
-////			return false;
-////		}
+		cls = idClass.GetClass( spawn.$ );
+		if ( !cls ) {
+			this.Warning( "Could not spawn '%s'.  Class '%s' not found%s.", classname.$, spawn.$, error.c_str ( ) );
+			return false;
+		}
 
-////		obj = cls.CreateInstance();
-////		if ( !obj ) {
-////			Warning( "Could not spawn '%s'. Instance could not be created%s.", classname, error.c_str() );
-////			return false;
-////		}
+		obj = cls.CreateInstance ( );
+		if ( !obj ) {
+			this.Warning( "Could not spawn '%s'. Instance could not be created%s.", classname.$, error.c_str ( ) );
+			return false;
+		}
+		
+		obj.CallSpawn ( );
 
-////		obj.CallSpawn();
+		if ( ent && obj.IsType( idEntity.Type ) ) {
+			ent.$ = static_cast<idEntity>( obj );
+		}
 
-////		if ( ent && obj.IsType( idEntity::Type ) ) {
-////			*ent = static_cast<idEntity *>(obj);
-////		}
+		return true;
+	}
 
-////		return true;
-////	}
+	// check if we should call a script function to spawn
+	this.spawnArgs.GetString( "spawnfunc", null, spawn );
+	if ( spawn.$ ) {
+		var func: function_t = this.program.FindFunction( spawn.$ );
+		if ( !func ) {
+			this.Warning( "Could not spawn '%s'.  Script function '%s' not found%s.", classname.$, spawn.$, error.c_str ( ) );
+			return false;
+		}
+		var thread = new idThread( func );
+		thread.DelayedStart( 0 );
+		return true;
+	}
 
-////	// check if we should call a script function to spawn
-////	this.spawnArgs.GetString( "spawnfunc", NULL, &spawn );
-////	if ( spawn ) {
-////		const function_t *func = this.program.FindFunction( spawn );
-////		if ( !func ) {
-////			Warning( "Could not spawn '%s'.  Script function '%s' not found%s.", classname, spawn, error.c_str() );
-////			return false;
-////		}
-////		idThread *thread = new idThread( func );
-////		thread.DelayedStart( 0 );
-////		return true;
-////	}
-
-////	Warning( "%s doesn't include a spawnfunc or spawnclass%s.", classname, error.c_str() );
-////	return false;
-////}
+	this.Warning( "%s doesn't include a spawnfunc or spawnclass%s.", classname.$, error.c_str ( ) );
+	return false;
+};
 
 /*
 ================
@@ -3108,133 +3112,133 @@ idGameLocal.prototype.FindEntityDefDict = function ( name: string, makeDefault =
 	return decl ? decl.dict : null;
 };
 
-/////*
-////================
-////idGameLocal::InhibitEntitySpawn
-////================
-////*/
-////bool idGameLocal::InhibitEntitySpawn( idDict &spawnArgs ) {
-	
-////	bool result = false;
+/*
+================
+idGameLocal::InhibitEntitySpawn
+================
+*/
+idGameLocal.prototype.InhibitEntitySpawn = function ( spawnArgs: idDict ): boolean {
 
-////	if ( isMultiplayer ) {
-////		spawnArgs.GetBool( "not_multiplayer", "0", result );
-////	} else if ( g_skill.GetInteger() == 0 ) {
-////		spawnArgs.GetBool( "not_easy", "0", result );
-////	} else if ( g_skill.GetInteger() == 1 ) {
-////		spawnArgs.GetBool( "not_medium", "0", result );
-////	} else {
-////		spawnArgs.GetBool( "not_hard", "0", result );
-////	}
+	var result = new R<boolean>( false );
 
-////	const char *name;
-////#ifndef ID_DEMO_BUILD
-////	if ( g_skill.GetInteger() == 3 ) { 
-////		name = spawnArgs.GetString( "classname" );
-////		if ( idStr.Icmp( name, "item_medkit" ) == 0 || idStr.Icmp( name, "item_medkit_small" ) == 0 ) {
-////			result = true;
-////		}
-////	}
-////#endif
+	if ( this.isMultiplayer ) {
+		spawnArgs.GetBool_R( "not_multiplayer", "0", result );
+	} else if ( g_skill.GetInteger ( ) == 0 ) {
+		spawnArgs.GetBool_R( "not_easy", "0", result );
+	} else if ( g_skill.GetInteger ( ) == 1 ) {
+		spawnArgs.GetBool_R( "not_medium", "0", result );
+	} else {
+		spawnArgs.GetBool_R( "not_hard", "0", result );
+	}
 
-////	if ( gameLocal.isMultiplayer ) {
-////		name = spawnArgs.GetString( "classname" );
-////		if ( idStr.Icmp( name, "weapon_bfg" ) == 0 || idStr.Icmp( name, "weapon_soulcube" ) == 0 ) {
-////			result = true;
-////		}
-////	}
+	var name: string;
+//#ifndef ID_DEMO_BUILD
+//	if ( g_skill.GetInteger() == 3 ) { 
+//		name = spawnArgs.GetString( "classname" );
+//		if ( idStr.Icmp( name, "item_medkit" ) == 0 || idStr.Icmp( name, "item_medkit_small" ) == 0 ) {
+//			result = true;
+//		}
+//	}
+//#endif
 
-////	return result;
-////}
+	if ( gameLocal.isMultiplayer ) {
+		name = spawnArgs.GetString( "classname" );
+		if ( idStr.Icmp( name, "weapon_bfg" ) == 0 || idStr.Icmp( name, "weapon_soulcube" ) == 0 ) {
+			result.$ = true;
+		}
+	}
 
-/////*
-////================
-////idGameLocal::SetSkill
-////================
-////*/
-////idGameLocal.prototype.SetSkill( int value ):void  {
-////	int skill_level;
+	return result.$;
+};
 
-////	if ( value < 0 ) {
-////		skill_level = 0;
-////	} else if ( value > 3 ) {
-////		skill_level = 3;
-////	} else {
-////		skill_level = value;
-////	}
+/*
+================
+idGameLocal::SetSkill
+================
+*/
+idGameLocal.prototype.SetSkill = function ( /*int*/ value: number ): void {
+	var /*int */skill_level: number;
 
-////	g_skill.SetInteger( skill_level );
-////}
+	if ( value < 0 ) {
+		skill_level = 0;
+	} else if ( value > 3 ) {
+		skill_level = 3;
+	} else {
+		skill_level = value;
+	}
 
-/////*
-////==============
-////idGameLocal::GameState
+	g_skill.SetInteger( skill_level );
+};
 
-////Used to allow entities to know if they're being spawned during the initial spawn.
-////==============
-////*/
-////gameState_t	idGameLocal::GameState( ) const {
-////	return this.gamestate;
-////}
+/*
+==============
+idGameLocal::GameState
 
-/////*
-////==============
-////idGameLocal::SpawnMapEntities
+Used to allow entities to know if they're being spawned during the initial spawn.
+==============
+*/
+idGameLocal.prototype.GameState = function ( ): gameState_t {
+	return this.gamestate;
+};
 
-////Parses textual entity definitions out of an entstring and spawns gentities.
-////==============
-////*/
-////idGameLocal.prototype.SpawnMapEntities( ):void  {
-////	int			i;
-////	int			num;
-////	int			inhibit;
-////	idMapEntity	*mapEnt;
-////	int			numEntities;
-////	idDict		args;
+/*
+==============
+idGameLocal::SpawnMapEntities
 
-////	this.Printf( "Spawning entities\n" );
+Parses textual entity definitions out of an entstring and spawns gentities.
+==============
+*/
+idGameLocal.prototype.SpawnMapEntities = function ( ): void {
+	var i: number /*int*/;
+	var num: number /*int*/;
+	var inhibit: number /*int*/;
+	var mapEnt: idMapEntity;
+	var numEntities: number /*int*/;
+	var args = new idDict;
 
-////	if ( this.mapFile == NULL ) {
-////		this.Printf("No mapfile present\n");
-////		return;
-////	}
+	this.Printf( "Spawning entities\n" );
 
-////	SetSkill( g_skill.GetInteger() );
+	if ( this.mapFile == NULL ) {
+		this.Printf( "No mapfile present\n" );
+		return;
+	}
 
-////	numEntities = this.mapFile.GetNumEntities();
-////	if ( numEntities == 0 ) {
-////		this.Error( "...no entities" );
-////	}
+	this.SetSkill( g_skill.GetInteger ( ) );
 
-////	// the worldspawn is a special that performs any global setup
-////	// needed by a level
-////	mapEnt = this.mapFile.GetEntity( 0 );
-////	args = mapEnt.epairs;
-////	args.SetInt( "spawn_entnum", ENTITYNUM_WORLD );
-////	if ( !SpawnEntityDef( args ) || !this.entities[ ENTITYNUM_WORLD ] || !this.entities[ ENTITYNUM_WORLD ].IsType( idWorldspawn::Type ) ) {
-////		this.Error( "Problem spawning world entity" );
-////	}
+	numEntities = this.mapFile.GetNumEntities ( );
+	if ( numEntities == 0 ) {
+		this.Error( "...no entities" );
+	}
 
-////	num = 1;
-////	inhibit = 0;
+	// the worldspawn is a special that performs any global setup
+	// needed by a level
+	mapEnt = this.mapFile.GetEntity( 0 );
+	args = mapEnt.epairs;
+	args.SetInt( "spawn_entnum", ENTITYNUM_WORLD );
+	if ( !this.SpawnEntityDef( args ) || !this.entities[ENTITYNUM_WORLD] || !this.entities[ENTITYNUM_WORLD].IsType( idWorldspawn.Type ) ) {
+		this.Error( "Problem spawning world entity" );
+	}
 
-////	for ( i = 1 ; i < numEntities ; i++ ) {
-////		mapEnt = this.mapFile.GetEntity( i );
-////		args = mapEnt.epairs;
+	num = 1;
+	inhibit = 0;
 
-////		if ( !InhibitEntitySpawn( args ) ) {
-////			// precache any media specified in the map entity
-////			CacheDictionaryMedia( &args );
+	for ( i = 1; i < numEntities; i++ ) {
+		mapEnt = this.mapFile.GetEntity( i );
+		args = mapEnt.epairs;
 
-////			SpawnEntityDef( args );
-////			num++;
-////		} else {
-////			inhibit++;
-////		}
-////	}
+		if ( !this.InhibitEntitySpawn( args ) ) {
+			// precache any media specified in the map entity
+			this.CacheDictionaryMedia( args );
 
-////	this.Printf( "...%i entities spawned, %i inhibited\n\n", num, inhibit );
-////}
+			this.SpawnEntityDef( args );
+			num++;
+		} else {
+			inhibit++;
+		}
+	}
+
+	this.Printf( "...%i entities spawned, %i inhibited\n\n", num, inhibit );
+};
 
 /*
 ================
@@ -3483,7 +3487,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 
 ////		if ( !gameLocal.isMultiplayer ) {
 ////			// let the mapper know about it
-////			Warning( "'%s' telefragged '%s'", ent.name.c_str(), hit.name.c_str() );
+////			this.Warning( "'%s' telefragged '%s'", ent.name.c_str(), hit.name.c_str() );
 ////		}
 ////	}
 ////}
@@ -3554,7 +3558,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 
 ////	const idDict *damageDef = FindEntityDefDict( damageDefName, false );
 ////	if ( !damageDef ) {
-////		Warning( "Unknown damageDef '%s'", damageDefName );
+////		this.Warning( "Unknown damageDef '%s'", damageDefName );
 ////		return;
 ////	}
 
@@ -4010,7 +4014,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////			Error( "idGameLocal::SpreadLocations: areaNum >= gameRenderWorld.NumAreas()" );
 ////		}
 ////		if ( this.locationEntities[areaNum] ) {
-////			Warning( "location entity '%s' overlaps '%s'", ent.spawnArgs.GetString( "name" ),
+////			this.Warning( "location entity '%s' overlaps '%s'", ent.spawnArgs.GetString( "name" ),
 ////				this.locationEntities[areaNum].spawnArgs.GetString( "name" ) );
 ////			continue;
 ////		}

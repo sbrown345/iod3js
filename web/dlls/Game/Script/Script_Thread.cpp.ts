@@ -723,19 +723,19 @@ idThread::Restart
 		idThread.trace.init ( );
 		idThread.trace.c.entityNum = ENTITYNUM_NONE;
 	}
-//
-///*
-//================
-//idThread::DelayedStart
-//================
-//*/
-//DelayedStart( int delay ):void {
-//	super.CancelEvents( &EV_Thread_Execute );
-//	if ( gameLocal.time <= 0 ) {
-//		delay++;
-//	}
-//	super.PostEventMS( &EV_Thread_Execute, delay );
-//}
+
+/*
+================
+idThread::DelayedStart
+================
+*/
+	DelayedStart ( /*int*/ delay: number ): void {
+		super.CancelEvents( EV_Thread_Execute );
+		if ( gameLocal.time <= 0 ) {
+			delay++;
+		}
+		super.PostEventMS( EV_Thread_Execute, delay );
+	}
 
 /*
 ================
