@@ -587,10 +587,10 @@ class idVec3 {
 		return new idVec3( this.x * a, this.y * a, this.z * a );
 	}
 
-////ID_INLINE idVec3 idVec3::operator/( /*const float */a :number ) const {
-////	float inva = 1.0 / a;
-////	return idVec3( this.x * inva, this.y * inva, this.z * inva );
-////}
+	opDivision ( /*const float */a: number ): idVec3 {
+		var /*float*/ inva = 1.0 / a;
+		return new idVec3( this.x * inva, this.y * inva, this.z * inva );
+	}
 
 	/*operator**/
 	static times ( /*const float */a: number, b: idVec3 ): idVec3 {

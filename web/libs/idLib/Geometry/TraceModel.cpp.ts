@@ -78,7 +78,7 @@ class traceModelEdge_t {
 }
 
 class traceModelPoly_t {
-	normal= new idVec3;
+	normal = new idVec3;
 	dist: number /*float*/
 	bounds = new idBounds;
 	numEdges: number /*int*/;
@@ -89,15 +89,15 @@ class idTraceModel {
 ////
 ////public:
 	type: traceModel_t;
-	numVerts:number/*int*/;
-	verts = newStructArray<idVec3/*traceModelVert_t*/>(idVec3, MAX_TRACEMODEL_VERTS);
-	numEdges:number/*int*/;
-	edges = newStructArray<traceModelEdge_t>(traceModelEdge_t, MAX_TRACEMODEL_EDGES + 1);
-	numPolys:number/*int*/;
-	polys = newStructArray<traceModelPoly_t>(traceModelPoly_t, MAX_TRACEMODEL_POLYS);
-	offset = new idVec3;			// offset to center of model
-	bounds = new idBounds;			// bounds of model
-	isConvex:boolean;		// true when model is convex
+	numVerts: number /*int*/;
+	verts = newStructArray<idVec3 /*traceModelVert_t*/>( idVec3, MAX_TRACEMODEL_VERTS );
+	numEdges: number /*int*/;
+	edges = newStructArray<traceModelEdge_t>( traceModelEdge_t, MAX_TRACEMODEL_EDGES + 1 );
+	numPolys: number /*int*/;
+	polys = newStructArray<traceModelPoly_t>( traceModelPoly_t, MAX_TRACEMODEL_POLYS );
+	offset = new idVec3; // offset to center of model
+	bounds = new idBounds; // bounds of model
+	isConvex: boolean; // true when model is convex
 ////
 ////public:
 ////	idTraceModel( );
@@ -366,19 +366,19 @@ idTraceModel::InitBox
 ////
 ////	// set polygons
 ////	for ( i = 0; i < numPolys; i++ ) {
-////		e0 = polys[i].edges[0];
-////		e1 = polys[i].edges[1];
+////		e0 = this.polys[i].edges[0];
+////		e1 = this.polys[i].edges[1];
 ////		v0 = this.edges[abs(e0)].v[INTSIGNBITSET(e0)];
 ////		v1 = this.edges[abs(e0)].v[INTSIGNBITNOTSET(e0)];
 ////		v2 = this.edges[abs(e1)].v[INTSIGNBITNOTSET(e1)];
 ////		// polygon plane
-////		polys[i].normal = ( this.verts[v1] - this.verts[v0] ).Cross( this.verts[v2] - this.verts[v0] );
-////		polys[i].normal.Normalize();
-////		polys[i].dist = polys[i].normal * this.verts[v0];
+////		this.polys[i].normal = ( this.verts[v1] - this.verts[v0] ).Cross( this.verts[v2] - this.verts[v0] );
+////		this.polys[i].normal.Normalize();
+////		this.polys[i].dist = this.polys[i].normal * this.verts[v0];
 ////		// polygon bounds
-////		polys[i].bounds[0] = polys[i].bounds[1] = this.verts[v0];
-////		polys[i].bounds.AddPoint( this.verts[v1] );
-////		polys[i].bounds.AddPoint( this.verts[v2] );
+////		this.polys[i].bounds[0] = this.polys[i].bounds[1] = this.verts[v0];
+////		this.polys[i].bounds.AddPoint( this.verts[v1] );
+////		this.polys[i].bounds.AddPoint( this.verts[v2] );
 ////	}
 ////
 ////	// trm bounds
@@ -433,45 +433,45 @@ idTraceModel::InitBox
 ////	this.edges[12].v[0] =  5; this.edges[12].v[1] =  3;
 ////
 ////	// all edges of a polygon go counter clockwise
-////	polys[0].numEdges = 3;
-////	polys[0].edges[0] = 1;
-////	polys[0].edges[1] = 2;
-////	polys[0].edges[2] = 3;
+////	this.polys[0].numEdges = 3;
+////	this.polys[0].edges[0] = 1;
+////	this.polys[0].edges[1] = 2;
+////	this.polys[0].edges[2] = 3;
 ////
-////	polys[1].numEdges = 3;
-////	polys[1].edges[0] = -3;
-////	polys[1].edges[1] = 4;
-////	polys[1].edges[2] = 5;
+////	this.polys[1].numEdges = 3;
+////	this.polys[1].edges[0] = -3;
+////	this.polys[1].edges[1] = 4;
+////	this.polys[1].edges[2] = 5;
 ////
-////	polys[2].numEdges = 3;
-////	polys[2].edges[0] = -5;
-////	polys[2].edges[1] = 6;
-////	polys[2].edges[2] = 7;
+////	this.polys[2].numEdges = 3;
+////	this.polys[2].edges[0] = -5;
+////	this.polys[2].edges[1] = 6;
+////	this.polys[2].edges[2] = 7;
 ////
-////	polys[3].numEdges = 3;
-////	polys[3].edges[0] = -7;
-////	polys[3].edges[1] = 8;
-////	polys[3].edges[2] = -1;
+////	this.polys[3].numEdges = 3;
+////	this.polys[3].edges[0] = -7;
+////	this.polys[3].edges[1] = 8;
+////	this.polys[3].edges[2] = -1;
 ////
-////	polys[4].numEdges = 3;
-////	polys[4].edges[0] = 9;
-////	polys[4].edges[1] = -2;
-////	polys[4].edges[2] = 10;
+////	this.polys[4].numEdges = 3;
+////	this.polys[4].edges[0] = 9;
+////	this.polys[4].edges[1] = -2;
+////	this.polys[4].edges[2] = 10;
 ////
-////	polys[5].numEdges = 3;
-////	polys[5].edges[0] = 11;
-////	polys[5].edges[1] = -4;
-////	polys[5].edges[2] = -9;
+////	this.polys[5].numEdges = 3;
+////	this.polys[5].edges[0] = 11;
+////	this.polys[5].edges[1] = -4;
+////	this.polys[5].edges[2] = -9;
 ////
-////	polys[6].numEdges = 3;
-////	polys[6].edges[0] = 12;
-////	polys[6].edges[1] = -6;
-////	polys[6].edges[2] = -11;
+////	this.polys[6].numEdges = 3;
+////	this.polys[6].edges[0] = 12;
+////	this.polys[6].edges[1] = -6;
+////	this.polys[6].edges[2] = -11;
 ////
-////	polys[7].numEdges = 3;
-////	polys[7].edges[0] = -10;
-////	polys[7].edges[1] = -8;
-////	polys[7].edges[2] = -12;
+////	this.polys[7].numEdges = 3;
+////	this.polys[7].edges[0] = -10;
+////	this.polys[7].edges[1] = -8;
+////	this.polys[7].edges[2] = -12;
 ////
 ////	// convex model
 ////	isConvex = true;
@@ -534,25 +534,25 @@ idTraceModel::InitBox
 ////
 ////	// set polygons
 ////	for ( i = 0; i < numPolys; i++ ) {
-////		e0 = polys[i].edges[0];
-////		e1 = polys[i].edges[1];
-////		e2 = polys[i].edges[2];
-////		e3 = polys[i].edges[3];
+////		e0 = this.polys[i].edges[0];
+////		e1 = this.polys[i].edges[1];
+////		e2 = this.polys[i].edges[2];
+////		e3 = this.polys[i].edges[3];
 ////		v0 = this.edges[abs(e0)].v[INTSIGNBITSET(e0)];
 ////		v1 = this.edges[abs(e0)].v[INTSIGNBITNOTSET(e0)];
 ////		v2 = this.edges[abs(e1)].v[INTSIGNBITNOTSET(e1)];
 ////		v3 = this.edges[abs(e2)].v[INTSIGNBITNOTSET(e2)];
 ////		v4 = this.edges[abs(e3)].v[INTSIGNBITNOTSET(e3)];
 ////		// polygon plane
-////		polys[i].normal = ( this.verts[v1] - this.verts[v0] ).Cross( this.verts[v2] - this.verts[v0] );
-////		polys[i].normal.Normalize();
-////		polys[i].dist = polys[i].normal * this.verts[v0];
+////		this.polys[i].normal = ( this.verts[v1] - this.verts[v0] ).Cross( this.verts[v2] - this.verts[v0] );
+////		this.polys[i].normal.Normalize();
+////		this.polys[i].dist = this.polys[i].normal * this.verts[v0];
 ////		// polygon bounds
-////		polys[i].bounds[0] = polys[i].bounds[1] = this.verts[v0];
-////		polys[i].bounds.AddPoint( this.verts[v1] );
-////		polys[i].bounds.AddPoint( this.verts[v2] );
-////		polys[i].bounds.AddPoint( this.verts[v3] );
-////		polys[i].bounds.AddPoint( this.verts[v4] );
+////		this.polys[i].bounds[0] = this.polys[i].bounds[1] = this.verts[v0];
+////		this.polys[i].bounds.AddPoint( this.verts[v1] );
+////		this.polys[i].bounds.AddPoint( this.verts[v2] );
+////		this.polys[i].bounds.AddPoint( this.verts[v3] );
+////		this.polys[i].bounds.AddPoint( this.verts[v4] );
 ////	}
 ////
 ////	// trm bounds
@@ -625,89 +625,89 @@ idTraceModel::InitBox
 ////	this.edges[30].v[0] = 19; this.edges[30].v[1] =  7;
 ////
 ////	// all edges of a polygon go counter clockwise
-////	polys[0].numEdges = 5;
-////	polys[0].edges[0] = 1;
-////	polys[0].edges[1] = 2;
-////	polys[0].edges[2] = 3;
-////	polys[0].edges[3] = 4;
-////	polys[0].edges[4] = 5;
+////	this.polys[0].numEdges = 5;
+////	this.polys[0].edges[0] = 1;
+////	this.polys[0].edges[1] = 2;
+////	this.polys[0].edges[2] = 3;
+////	this.polys[0].edges[3] = 4;
+////	this.polys[0].edges[4] = 5;
 ////
-////	polys[1].numEdges = 5;
-////	polys[1].edges[0] = -5;
-////	polys[1].edges[1] = 6;
-////	polys[1].edges[2] = 7;
-////	polys[1].edges[3] = 8;
-////	polys[1].edges[4] = 9;
+////	this.polys[1].numEdges = 5;
+////	this.polys[1].edges[0] = -5;
+////	this.polys[1].edges[1] = 6;
+////	this.polys[1].edges[2] = 7;
+////	this.polys[1].edges[3] = 8;
+////	this.polys[1].edges[4] = 9;
 ////
-////	polys[2].numEdges = 5;
-////	polys[2].edges[0] = -8;
-////	polys[2].edges[1] = 10;
-////	polys[2].edges[2] = 11;
-////	polys[2].edges[3] = 12;
-////	polys[2].edges[4] = 13;
+////	this.polys[2].numEdges = 5;
+////	this.polys[2].edges[0] = -8;
+////	this.polys[2].edges[1] = 10;
+////	this.polys[2].edges[2] = 11;
+////	this.polys[2].edges[3] = 12;
+////	this.polys[2].edges[4] = 13;
 ////
-////	polys[3].numEdges = 5;
-////	polys[3].edges[0] = 14;
-////	polys[3].edges[1] = 15;
-////	polys[3].edges[2] = 16;
-////	polys[3].edges[3] = 17;
-////	polys[3].edges[4] = -3;
+////	this.polys[3].numEdges = 5;
+////	this.polys[3].edges[0] = 14;
+////	this.polys[3].edges[1] = 15;
+////	this.polys[3].edges[2] = 16;
+////	this.polys[3].edges[3] = 17;
+////	this.polys[3].edges[4] = -3;
 ////
-////	polys[4].numEdges = 5;
-////	polys[4].edges[0] = 18;
-////	polys[4].edges[1] = 19;
-////	polys[4].edges[2] = 20;
-////	polys[4].edges[3] = 21;
-////	polys[4].edges[4] = -12;
+////	this.polys[4].numEdges = 5;
+////	this.polys[4].edges[0] = 18;
+////	this.polys[4].edges[1] = 19;
+////	this.polys[4].edges[2] = 20;
+////	this.polys[4].edges[3] = 21;
+////	this.polys[4].edges[4] = -12;
 ////
-////	polys[5].numEdges = 5;
-////	polys[5].edges[0] = 22;
-////	polys[5].edges[1] = 23;
-////	polys[5].edges[2] = 24;
-////	polys[5].edges[3] = -16;
-////	polys[5].edges[4] = 25;
+////	this.polys[5].numEdges = 5;
+////	this.polys[5].edges[0] = 22;
+////	this.polys[5].edges[1] = 23;
+////	this.polys[5].edges[2] = 24;
+////	this.polys[5].edges[3] = -16;
+////	this.polys[5].edges[4] = 25;
 ////
-////	polys[6].numEdges = 5;
-////	polys[6].edges[0] = -9;
-////	polys[6].edges[1] = -13;
-////	polys[6].edges[2] = -21;
-////	polys[6].edges[3] = 26;
-////	polys[6].edges[4] = -1;
+////	this.polys[6].numEdges = 5;
+////	this.polys[6].edges[0] = -9;
+////	this.polys[6].edges[1] = -13;
+////	this.polys[6].edges[2] = -21;
+////	this.polys[6].edges[3] = 26;
+////	this.polys[6].edges[4] = -1;
 ////
-////	polys[7].numEdges = 5;
-////	polys[7].edges[0] = -26;
-////	polys[7].edges[1] = -20;
-////	polys[7].edges[2] = 27;
-////	polys[7].edges[3] = -14;
-////	polys[7].edges[4] = -2;
+////	this.polys[7].numEdges = 5;
+////	this.polys[7].edges[0] = -26;
+////	this.polys[7].edges[1] = -20;
+////	this.polys[7].edges[2] = 27;
+////	this.polys[7].edges[3] = -14;
+////	this.polys[7].edges[4] = -2;
 ////
-////	polys[8].numEdges = 5;
-////	polys[8].edges[0] = -4;
-////	polys[8].edges[1] = -17;
-////	polys[8].edges[2] = -24;
-////	polys[8].edges[3] = 28;
-////	polys[8].edges[4] = -6;
+////	this.polys[8].numEdges = 5;
+////	this.polys[8].edges[0] = -4;
+////	this.polys[8].edges[1] = -17;
+////	this.polys[8].edges[2] = -24;
+////	this.polys[8].edges[3] = 28;
+////	this.polys[8].edges[4] = -6;
 ////
-////	polys[9].numEdges = 5;
-////	polys[9].edges[0] = -23;
-////	polys[9].edges[1] = 29;
-////	polys[9].edges[2] = -10;
-////	polys[9].edges[3] = -7;
-////	polys[9].edges[4] = -28;
+////	this.polys[9].numEdges = 5;
+////	this.polys[9].edges[0] = -23;
+////	this.polys[9].edges[1] = 29;
+////	this.polys[9].edges[2] = -10;
+////	this.polys[9].edges[3] = -7;
+////	this.polys[9].edges[4] = -28;
 ////
-////	polys[10].numEdges = 5;
-////	polys[10].edges[0] = -25;
-////	polys[10].edges[1] = -15;
-////	polys[10].edges[2] = -27;
-////	polys[10].edges[3] = -19;
-////	polys[10].edges[4] = 30;
+////	this.polys[10].numEdges = 5;
+////	this.polys[10].edges[0] = -25;
+////	this.polys[10].edges[1] = -15;
+////	this.polys[10].edges[2] = -27;
+////	this.polys[10].edges[3] = -19;
+////	this.polys[10].edges[4] = 30;
 ////
-////	polys[11].numEdges = 5;
-////	polys[11].edges[0] = -30;
-////	polys[11].edges[1] = -18;
-////	polys[11].edges[2] = -11;
-////	polys[11].edges[3] = -29;
-////	polys[11].edges[4] = -22;
+////	this.polys[11].numEdges = 5;
+////	this.polys[11].edges[0] = -30;
+////	this.polys[11].edges[1] = -18;
+////	this.polys[11].edges[2] = -11;
+////	this.polys[11].edges[3] = -29;
+////	this.polys[11].edges[4] = -22;
 ////
 ////	// convex model
 ////	isConvex = true;
@@ -765,43 +765,43 @@ idTraceModel::InitBox
 ////		this.edges[n2+ii].v[0] = i;
 ////		this.edges[n2+ii].v[1] = n + i;
 ////		// vertical polygon edges
-////		polys[i].numEdges = 4;
-////		polys[i].edges[0] = ii;
-////		polys[i].edges[1] = n2 + (ii % n) + 1;
-////		polys[i].edges[2] = -(n + ii);
-////		polys[i].edges[3] = -(n2 + ii);
+////		this.polys[i].numEdges = 4;
+////		this.polys[i].edges[0] = ii;
+////		this.polys[i].edges[1] = n2 + (ii % n) + 1;
+////		this.polys[i].edges[2] = -(n + ii);
+////		this.polys[i].edges[3] = -(n2 + ii);
 ////		// bottom and top polygon edges
-////		polys[n].edges[i] = -(n - i);
-////		polys[n+1].edges[i] = n + ii;
+////		this.polys[n].edges[i] = -(n - i);
+////		this.polys[n+1].edges[i] = n + ii;
 ////	}
 ////	// bottom and top polygon numEdges
-////	polys[n].numEdges = n;
-////	polys[n+1].numEdges = n;
+////	this.polys[n].numEdges = n;
+////	this.polys[n+1].numEdges = n;
 ////	// polygons
 ////	for ( i = 0; i < n; i++ ) {
 ////		// vertical polygon plane
-////		polys[i].normal = (this.verts[(i+1)%n] - this.verts[i]).Cross( this.verts[n+i] - this.verts[i] );
-////		polys[i].normal.Normalize();
-////		polys[i].dist = polys[i].normal * this.verts[i];
+////		this.polys[i].normal = (this.verts[(i+1)%n] - this.verts[i]).Cross( this.verts[n+i] - this.verts[i] );
+////		this.polys[i].normal.Normalize();
+////		this.polys[i].dist = this.polys[i].normal * this.verts[i];
 ////		// vertical polygon bounds
-////		polys[i].bounds.Clear();
-////		polys[i].bounds.AddPoint( this.verts[i] );
-////		polys[i].bounds.AddPoint( this.verts[(i+1)%n] );
-////		polys[i].bounds[0][2] = -halfSize.z + offset.z;
-////		polys[i].bounds[1][2] = halfSize.z + offset.z;
+////		this.polys[i].bounds.Clear();
+////		this.polys[i].bounds.AddPoint( this.verts[i] );
+////		this.polys[i].bounds.AddPoint( this.verts[(i+1)%n] );
+////		this.polys[i].bounds[0][2] = -halfSize.z + offset.z;
+////		this.polys[i].bounds[1][2] = halfSize.z + offset.z;
 ////	}
 ////	// bottom and top polygon plane
-////	polys[n].normal.Set( 0.0, 0.0, -1.0 );
-////	polys[n].dist = -cylBounds[0][2];
-////	polys[n+1].normal.Set( 0.0, 0.0, 1.0 );
-////	polys[n+1].dist = cylBounds[1][2];
+////	this.polys[n].normal.Set( 0.0, 0.0, -1.0 );
+////	this.polys[n].dist = -cylBounds[0][2];
+////	this.polys[n+1].normal.Set( 0.0, 0.0, 1.0 );
+////	this.polys[n+1].dist = cylBounds[1][2];
 ////	// trm bounds
 ////	bounds = cylBounds;
 ////	// bottom and top polygon bounds
-////	polys[n].bounds = bounds;
-////	polys[n].bounds[1][2] = bounds[0][2];
-////	polys[n+1].bounds = bounds;
-////	polys[n+1].bounds[0][2] = bounds[1][2];
+////	this.polys[n].bounds = bounds;
+////	this.polys[n].bounds[1][2] = bounds[0][2];
+////	this.polys[n+1].bounds = bounds;
+////	this.polys[n+1].bounds[0][2] = bounds[1][2];
 ////	// convex model
 ////	isConvex = true;
 ////
@@ -873,36 +873,36 @@ idTraceModel::InitBox
 ////		this.edges[n+ii].v[0] = i;
 ////		this.edges[n+ii].v[1] = n;
 ////		// vertical polygon edges
-////		polys[i].numEdges = 3;
-////		polys[i].edges[0] = ii;
-////		polys[i].edges[1] = n + (ii % n) + 1;
-////		polys[i].edges[2] = -(n + ii);
+////		this.polys[i].numEdges = 3;
+////		this.polys[i].edges[0] = ii;
+////		this.polys[i].edges[1] = n + (ii % n) + 1;
+////		this.polys[i].edges[2] = -(n + ii);
 ////		// bottom polygon edges
-////		polys[n].edges[i] = -(n - i);
+////		this.polys[n].edges[i] = -(n - i);
 ////	}
 ////	// bottom polygon numEdges
-////	polys[n].numEdges = n;
+////	this.polys[n].numEdges = n;
 ////
 ////	// polygons
 ////	for ( i = 0; i < n; i++ ) {
 ////		// polygon plane
-////		polys[i].normal = (this.verts[(i+1)%n] - this.verts[i]).Cross( this.verts[n] - this.verts[i] );
-////		polys[i].normal.Normalize();
-////		polys[i].dist = polys[i].normal * this.verts[i];
+////		this.polys[i].normal = (this.verts[(i+1)%n] - this.verts[i]).Cross( this.verts[n] - this.verts[i] );
+////		this.polys[i].normal.Normalize();
+////		this.polys[i].dist = this.polys[i].normal * this.verts[i];
 ////		// polygon bounds
-////		polys[i].bounds.Clear();
-////		polys[i].bounds.AddPoint( this.verts[i] );
-////		polys[i].bounds.AddPoint( this.verts[(i+1)%n] );
-////		polys[i].bounds.AddPoint( this.verts[n] );
+////		this.polys[i].bounds.Clear();
+////		this.polys[i].bounds.AddPoint( this.verts[i] );
+////		this.polys[i].bounds.AddPoint( this.verts[(i+1)%n] );
+////		this.polys[i].bounds.AddPoint( this.verts[n] );
 ////	}
 ////	// bottom polygon plane
-////	polys[n].normal.Set( 0.0, 0.0, -1.0 );
-////	polys[n].dist = -coneBounds[0][2];
+////	this.polys[n].normal.Set( 0.0, 0.0, -1.0 );
+////	this.polys[n].dist = -coneBounds[0][2];
 ////	// trm bounds
 ////	bounds = coneBounds;
 ////	// bottom polygon bounds
-////	polys[n].bounds = bounds;
-////	polys[n].bounds[1][2] = bounds[0][2];
+////	this.polys[n].bounds = bounds;
+////	this.polys[n].bounds[1][2] = bounds[0][2];
 ////	// convex model
 ////	isConvex = true;
 ////
@@ -952,21 +952,21 @@ idTraceModel::InitBox
 ////	bounds[0].Set( width * -0.5, width * -0.5, -halfLength );
 ////	bounds[1].Set( width * 0.5, width * 0.25f, halfLength );
 ////	// poly plane normals
-////	polys[0].normal = ( this.verts[2] - this.verts[0] ).Cross( this.verts[1] - this.verts[0] );
-////	polys[0].normal.Normalize();
-////	polys[2].normal.Set( -polys[0].normal[0], polys[0].normal[1], polys[0].normal[2] );
-////	polys[3].normal.Set( polys[0].normal[0], polys[0].normal[1], -polys[0].normal[2] );
-////	polys[5].normal.Set( -polys[0].normal[0], polys[0].normal[1], -polys[0].normal[2] );
-////	polys[1].normal = (this.verts[3] - this.verts[0]).Cross(this.verts[2] - this.verts[0]);
-////	polys[1].normal.Normalize();
-////	polys[4].normal.Set( polys[1].normal[0], polys[1].normal[1], -polys[1].normal[2] );
+////	this.polys[0].normal = ( this.verts[2] - this.verts[0] ).Cross( this.verts[1] - this.verts[0] );
+////	this.polys[0].normal.Normalize();
+////	this.polys[2].normal.Set( -this.polys[0].normal[0], this.polys[0].normal[1], this.polys[0].normal[2] );
+////	this.polys[3].normal.Set( this.polys[0].normal[0], this.polys[0].normal[1], -this.polys[0].normal[2] );
+////	this.polys[5].normal.Set( -this.polys[0].normal[0], this.polys[0].normal[1], -this.polys[0].normal[2] );
+////	this.polys[1].normal = (this.verts[3] - this.verts[0]).Cross(this.verts[2] - this.verts[0]);
+////	this.polys[1].normal.Normalize();
+////	this.polys[4].normal.Set( this.polys[1].normal[0], this.polys[1].normal[1], -this.polys[1].normal[2] );
 ////	// poly plane distances
 ////	for ( i = 0; i < 6; i++ ) {
-////		polys[i].dist = polys[i].normal * this.verts[ this.edges[ abs(polys[i].edges[0]) ].v[0] ];
-////		polys[i].bounds.Clear();
+////		this.polys[i].dist = this.polys[i].normal * this.verts[ this.edges[ abs(this.polys[i].edges[0]) ].v[0] ];
+////		this.polys[i].bounds.Clear();
 ////		for ( j = 0; j < 3; j++ ) {
-////			edgeNum = polys[i].edges[ j ];
-////			polys[i].bounds.AddPoint( this.verts[ this.edges[abs(edgeNum)].v[edgeNum < 0] ] );
+////			edgeNum = this.polys[i].edges[ j ];
+////			this.polys[i].bounds.AddPoint( this.verts[ this.edges[abs(edgeNum)].v[edgeNum < 0] ] );
 ////		}
 ////	}
 ////
@@ -999,35 +999,35 @@ idTraceModel::InitBox
 ////	}
 ////
 ////	// all edges of a polygon go counter clockwise
-////	polys[0].numEdges = 3;
-////	polys[0].edges[0] = 2;
-////	polys[0].edges[1] = -4;
-////	polys[0].edges[2] = -1;
+////	this.polys[0].numEdges = 3;
+////	this.polys[0].edges[0] = 2;
+////	this.polys[0].edges[1] = -4;
+////	this.polys[0].edges[2] = -1;
 ////
-////	polys[1].numEdges = 3;
-////	polys[1].edges[0] = 3;
-////	polys[1].edges[1] = -5;
-////	polys[1].edges[2] = -2;
+////	this.polys[1].numEdges = 3;
+////	this.polys[1].edges[0] = 3;
+////	this.polys[1].edges[1] = -5;
+////	this.polys[1].edges[2] = -2;
 ////
-////	polys[2].numEdges = 3;
-////	polys[2].edges[0] = 1;
-////	polys[2].edges[1] = -6;
-////	polys[2].edges[2] = -3;
+////	this.polys[2].numEdges = 3;
+////	this.polys[2].edges[0] = 1;
+////	this.polys[2].edges[1] = -6;
+////	this.polys[2].edges[2] = -3;
 ////
-////	polys[3].numEdges = 3;
-////	polys[3].edges[0] = 4;
-////	polys[3].edges[1] = 8;
-////	polys[3].edges[2] = -7;
+////	this.polys[3].numEdges = 3;
+////	this.polys[3].edges[0] = 4;
+////	this.polys[3].edges[1] = 8;
+////	this.polys[3].edges[2] = -7;
 ////
-////	polys[4].numEdges = 3;
-////	polys[4].edges[0] = 5;
-////	polys[4].edges[1] = 9;
-////	polys[4].edges[2] = -8;
+////	this.polys[4].numEdges = 3;
+////	this.polys[4].edges[0] = 5;
+////	this.polys[4].edges[1] = 9;
+////	this.polys[4].edges[2] = -8;
 ////
-////	polys[5].numEdges = 3;
-////	polys[5].edges[0] = 6;
-////	polys[5].edges[1] = 7;
-////	polys[5].edges[2] = -9;
+////	this.polys[5].numEdges = 3;
+////	this.polys[5].edges[0] = 6;
+////	this.polys[5].edges[1] = 7;
+////	this.polys[5].edges[2] = -9;
 ////
 ////	// convex model
 ////	isConvex = true;
@@ -1053,15 +1053,15 @@ idTraceModel::InitBox
 ////	this.numEdges = this.numVerts;
 ////	numPolys = 2;
 ////	// set polygon planes
-////	polys[0].numEdges = numEdges;
-////	polys[0].normal = ( v[1] - v[0] ).Cross( v[2] - v[0] );
-////	polys[0].normal.Normalize();
-////	polys[0].dist = polys[0].normal * v[0];
-////	polys[1].numEdges = numEdges;
-////	polys[1].normal = -polys[0].normal;
-////	polys[1].dist = -polys[0].dist;
+////	this.polys[0].numEdges = numEdges;
+////	this.polys[0].normal = ( v[1] - v[0] ).Cross( v[2] - v[0] );
+////	this.polys[0].normal.Normalize();
+////	this.polys[0].dist = this.polys[0].normal * v[0];
+////	this.polys[1].numEdges = numEdges;
+////	this.polys[1].normal = -this.polys[0].normal;
+////	this.polys[1].dist = -this.polys[0].dist;
 ////	// setup verts, edges and polygons
-////	polys[0].bounds.Clear();
+////	this.polys[0].bounds.Clear();
 ////	mid = vec3_origin;
 ////	for ( i = 0, j = 1; i < this.numVerts; i++, j++ ) {
 ////		if ( j >= this.numVerts ) {
@@ -1070,18 +1070,18 @@ idTraceModel::InitBox
 ////		this.verts[i] = v[i];
 ////		this.edges[i+1].v[0] = i;
 ////		this.edges[i+1].v[1] = j;
-////		this.edges[i+1].normal = polys[0].normal.Cross( v[i] - v[j] );
+////		this.edges[i+1].normal = this.polys[0].normal.Cross( v[i] - v[j] );
 ////		this.edges[i+1].normal.Normalize();
-////		polys[0].edges[i] = i + 1;
-////		polys[1].edges[i] = -(this.numVerts - i);
-////		polys[0].bounds.AddPoint( this.verts[i] );
+////		this.polys[0].edges[i] = i + 1;
+////		this.polys[1].edges[i] = -(this.numVerts - i);
+////		this.polys[0].bounds.AddPoint( this.verts[i] );
 ////		mid += v[i];
 ////	}
-////	polys[1].bounds = polys[0].bounds;
+////	this.polys[1].bounds = this.polys[0].bounds;
 ////	// offset to center
 ////	offset = mid * (1.0 / this.numVerts);
 ////	// total bounds
-////	bounds = polys[0].bounds;
+////	bounds = this.polys[0].bounds;
 ////	// considered non convex because the model has no volume
 ////	isConvex = false;
 ////}
@@ -1101,47 +1101,47 @@ idTraceModel::InitBox
 ////	}
 ////	SetupPolygon( verts, w.GetNumPoints() );
 ////}
-////
-/////*
-////============
-////idTraceModel::VolumeFromPolygon
-////============
-////*/
-////void idTraceModel::VolumeFromPolygon( idTraceModel &trm, float thickness ) const {
-////	var/*int */i:number;
-////
-////	trm = *this;
-////	trm.type = TRM_POLYGONVOLUME;
-////	trm.this.numVerts = this.numVerts * 2;
-////	trm.numEdges = this.numEdges * 3;
-////	trm.numPolys = this.numEdges + 2;
-////	for ( i = 0; i < this.numEdges; i++ ) {
-////		trm.verts[ this.numVerts + i ] = this.verts[i] - thickness * polys[0].normal;
-////		trm.edges[ this.numEdges + i + 1 ].v[0] = this.numVerts + i;
-////		trm.edges[ this.numEdges + i + 1 ].v[1] = this.numVerts + (i+1) % this.numVerts;
-////		trm.edges[ this.numEdges * 2 + i + 1 ].v[0] = i;
-////		trm.edges[ this.numEdges * 2 + i + 1 ].v[1] = this.numVerts + i;
-////		trm.polys[1].edges[i] = -(this.numEdges + i + 1);
-////		trm.polys[2+i].numEdges = 4;
-////		trm.polys[2+i].edges[0] = -(i + 1);
-////		trm.polys[2+i].edges[1] = this.numEdges*2 + i + 1;
-////		trm.polys[2+i].edges[2] = this.numEdges + i + 1;
-////		trm.polys[2+i].edges[3] = -(this.numEdges*2 + (i+1) % this.numEdges + 1);
-////		trm.polys[2+i].normal = (this.verts[(i + 1) % this.numVerts] - this.verts[i]).Cross( polys[0].normal );
-////		trm.polys[2+i].normal.Normalize();
-////		trm.polys[2+i].dist = trm.polys[2+i].normal * this.verts[i];
-////	}
-////	trm.polys[1].dist = trm.polys[1].normal * trm.verts[ this.numEdges ];
-////
-////	trm.GenerateEdgeNormals();
-////}
+
+/*
+============
+idTraceModel::VolumeFromPolygon
+============
+*/
+	VolumeFromPolygon ( trm: R<idTraceModel>, /*float */thickness: number ): void {
+		var /*int */i: number;
+
+		trm.$ = this;
+		trm.$.type = traceModel_t.TRM_POLYGONVOLUME;
+		trm.$.numVerts = this.numVerts * 2;
+		trm.$.numEdges = this.numEdges * 3;
+		trm.$.numPolys = this.numEdges + 2;
+		for ( i = 0; i < this.numEdges; i++ ) {
+			trm.$.verts[this.numVerts + i].equals( this.verts[i].opSubtraction( idVec3.times( thickness, this.polys[0].normal ) ) );
+			trm.$.edges[this.numEdges + i + 1].v[0] = this.numVerts + i;
+			trm.$.edges[this.numEdges + i + 1].v[1] = this.numVerts + ( i + 1 ) % this.numVerts;
+			trm.$.edges[this.numEdges * 2 + i + 1].v[0] = i;
+			trm.$.edges[this.numEdges * 2 + i + 1].v[1] = this.numVerts + i;
+			trm.$.polys[1].edges[i] = -( this.numEdges + i + 1 );
+			trm.$.polys[2 + i].numEdges = 4;
+			trm.$.polys[2 + i].edges[0] = -( i + 1 );
+			trm.$.polys[2 + i].edges[1] = this.numEdges * 2 + i + 1;
+			trm.$.polys[2 + i].edges[2] = this.numEdges + i + 1;
+			trm.$.polys[2 + i].edges[3] = -( this.numEdges * 2 + ( i + 1 ) % this.numEdges + 1 );
+			trm.$.polys[2 + i].normal.equals( this.verts[( i + 1 ) % this.numVerts].opSubtraction( this.verts[i] ) ).Cross( this.polys[0].normal );
+			trm.$.polys[2 + i].normal.Normalize ( );
+			trm.$.polys[2 + i].dist = trm.$.polys[2 + i].normal.timesVec( this.verts[i] );
+		}
+		trm.$.polys[1].dist = trm.$.polys[1].normal.timesVec( trm.$.verts[this.numEdges] );
+
+		trm.$.GenerateEdgeNormals ( );
+	}
 
 /*
 ============
 idTraceModel::GenerateEdgeNormals
 ============
 */
-	static SHARP_EDGE_DOT	=-0.7;
+	static SHARP_EDGE_DOT =-0.7;
 
 	GenerateEdgeNormals ( ): number {
 		var /*int */i: number, j: number, edgeNum: number, numSharpEdges: number;
@@ -1192,9 +1192,9 @@ idTraceModel::GenerateEdgeNormals
 ////		this.verts[i] += translation;
 ////	}
 ////	for ( i = 0; i < numPolys; i++ ) {
-////		polys[i].dist += polys[i].normal * translation;
-////		polys[i].bounds[0] += translation;
-////		polys[i].bounds[1] += translation;
+////		this.polys[i].dist += this.polys[i].normal * translation;
+////		this.polys[i].bounds[0] += translation;
+////		this.polys[i].bounds[1] += translation;
 ////	}
 ////	offset += translation;
 ////	bounds[0] += translation;
@@ -1215,15 +1215,15 @@ idTraceModel::GenerateEdgeNormals
 ////
 ////	bounds.Clear();
 ////	for ( i = 0; i < numPolys; i++ ) {
-////		polys[i].normal *= rotation;
-////		polys[i].bounds.Clear();
+////		this.polys[i].normal *= rotation;
+////		this.polys[i].bounds.Clear();
 ////		edgeNum = 0;
-////		for ( j = 0; j < polys[i].numEdges; j++ ) {
-////			edgeNum = polys[i].edges[j];
-////			polys[i].bounds.AddPoint( this.verts[edges[abs(edgeNum)].v[INTSIGNBITSET(edgeNum)]] );
+////		for ( j = 0; j < this.polys[i].numEdges; j++ ) {
+////			edgeNum = this.polys[i].edges[j];
+////			this.polys[i].bounds.AddPoint( this.verts[edges[abs(edgeNum)].v[INTSIGNBITSET(edgeNum)]] );
 ////		}
-////		polys[i].dist = polys[i].normal * this.verts[edges[abs(edgeNum)].v[INTSIGNBITSET(edgeNum)]];
-////		bounds += polys[i].bounds;
+////		this.polys[i].dist = this.polys[i].normal * this.verts[edges[abs(edgeNum)].v[INTSIGNBITSET(edgeNum)]];
+////		bounds += this.polys[i].bounds;
 ////	}
 ////
 ////	this.GenerateEdgeNormals();
@@ -1241,7 +1241,7 @@ idTraceModel::GenerateEdgeNormals
 ////
 ////	if ( this.type == TRM_POLYGON ) {
 ////		for ( i = 0; i < this.numEdges; i++ ) {
-////			edgeNum = polys[0].edges[i];
+////			edgeNum = this.polys[0].edges[i];
 ////			edge = &edges[abs(edgeNum)];
 ////			dir = this.verts[ edge.v[ INTSIGNBITSET(edgeNum) ] ] - this.verts[ edge.v[ INTSIGNBITNOTSET(edgeNum) ] ];
 ////			if ( dir.Normalize() < 2.0 * m ) {
@@ -1255,12 +1255,12 @@ idTraceModel::GenerateEdgeNormals
 ////	}
 ////
 ////	for ( i = 0; i < numPolys; i++ ) {
-////		polys[i].dist -= m;
+////		this.polys[i].dist -= m;
 ////
-////		for ( j = 0; j < polys[i].numEdges; j++ ) {
-////			edgeNum = polys[i].edges[j];
+////		for ( j = 0; j < this.polys[i].numEdges; j++ ) {
+////			edgeNum = this.polys[i].edges[j];
 ////			edge = &edges[abs(edgeNum)];
-////			this.verts[ edge.v[ INTSIGNBITSET(edgeNum) ] ] -= polys[i].normal * m;
+////			this.verts[ edge.v[ INTSIGNBITSET(edgeNum) ] ] -= this.polys[i].normal * m;
 ////		}
 ////	}
 ////}
@@ -1317,7 +1317,7 @@ idTraceModel::GenerateEdgeNormals
 ////	if ( polyNum < 0 || polyNum >= numPolys ) {
 ////		return 0.0;
 ////	}
-////	poly = &polys[polyNum];
+////	poly = &this.polys[polyNum];
 ////	total = 0.0;
 ////	base = this.verts[ this.edges[ abs(poly.edges[0]) ].v[ INTSIGNBITSET( poly.edges[0] ) ] ];
 ////	for ( i = 0; i < poly.numEdges; i++ ) {
@@ -1386,7 +1386,7 @@ idTraceModel::GenerateEdgeNormals
 ////	memset( edgeIsSilEdge, 0, sizeof( edgeIsSilEdge ) );
 ////
 ////	for ( i = 0; i < numPolys; i++ ) {
-////		poly = &polys[i];
+////		poly = &this.polys[i];
 ////		edgeNum = poly.edges[0];
 ////		dir = this.verts[ this.edges[abs(edgeNum)].v[ INTSIGNBITSET(edgeNum) ] ] - projectionOrigin;
 ////		if ( dir * poly.normal < 0.0 ) {
@@ -1413,7 +1413,7 @@ idTraceModel::GenerateEdgeNormals
 ////	memset( edgeIsSilEdge, 0, sizeof( edgeIsSilEdge ) );
 ////
 ////	for ( i = 0; i < numPolys; i++ ) {
-////		poly = &polys[i];
+////		poly = &this.polys[i];
 ////		if ( projectionDir * poly.normal < 0.0 ) {
 ////			for ( j = 0; j < poly.numEdges; j++ ) {
 ////				edgeNum = poly.edges[j];
@@ -1431,238 +1431,256 @@ idTraceModel::GenerateEdgeNormals
 ////  credits to Brian Mirtich for his paper "Fast and Accurate Computation of Polyhedral Mass Properties"
 ////
 ////*/
-////
-////typedef struct projectionIntegrals_s {
-////	float P1;
-////	float Pa, Pb;
-////	float Paa, Pab, Pbb;
-////	float Paaa, Paab, Pabb, Pbbb;
-////} projectionIntegrals_t;
-////
-/////*
-////============
-////idTraceModel::ProjectionIntegrals
-////============
-////*/
-////void idTraceModel::ProjectionIntegrals( int polyNum, int a, int b, struct projectionIntegrals_s &integrals ) const {
-////	const traceModelPoly_t *poly;
-////	int i, edgeNum;
-////	idVec3 v1, v2;
-////	float a0, a1, da;
-////	float b0, b1, db;
-////	float a0_2, a0_3, a0_4, b0_2, b0_3, b0_4;
-////	float a1_2, a1_3, b1_2, b1_3;
-////	float C1, Ca, Caa, Caaa, Cb, Cbb, Cbbb;
-////	float Cab, Kab, Caab, Kaab, Cabb, Kabb;
-////
-////	memset(&integrals, 0, sizeof(projectionIntegrals_t));
-////	poly = &polys[polyNum];
-////	for ( i = 0; i < poly.numEdges; i++ ) {
-////		edgeNum = poly.edges[i];
-////		v1 = this.verts[ this.edges[ abs(edgeNum) ].v[ edgeNum < 0 ] ];
-////		v2 = this.verts[ this.edges[ abs(edgeNum) ].v[ edgeNum > 0 ] ];
-////		a0 = v1[a];
-////		b0 = v1[b];
-////		a1 = v2[a];
-////		b1 = v2[b];
-////		da = a1 - a0;
-////		db = b1 - b0;
-////		a0_2 = a0 * a0;
-////		a0_3 = a0_2 * a0;
-////		a0_4 = a0_3 * a0;
-////		b0_2 = b0 * b0;
-////		b0_3 = b0_2 * b0;
-////		b0_4 = b0_3 * b0;
-////		a1_2 = a1 * a1;
-////		a1_3 = a1_2 * a1; 
-////		b1_2 = b1 * b1;
-////		b1_3 = b1_2 * b1;
-////
-////		C1 = a1 + a0;
-////		Ca = a1 * C1 + a0_2;
-////		Caa = a1 * Ca + a0_3;
-////		Caaa = a1 * Caa + a0_4;
-////		Cb = b1 * (b1 + b0) + b0_2;
-////		Cbb = b1 * Cb + b0_3;
-////		Cbbb = b1 * Cbb + b0_4;
-////		Cab = 3 * a1_2 + 2 * a1 * a0 + a0_2;
-////		Kab = a1_2 + 2 * a1 * a0 + 3 * a0_2;
-////		Caab = a0 * Cab + 4 * a1_3;
-////		Kaab = a1 * Kab + 4 * a0_3;
-////		Cabb = 4 * b1_3 + 3 * b1_2 * b0 + 2 * b1 * b0_2 + b0_3;
-////		Kabb = b1_3 + 2 * b1_2 * b0 + 3 * b1 * b0_2 + 4 * b0_3;
-////
-////		integrals.P1 += db * C1;
-////		integrals.Pa += db * Ca;
-////		integrals.Paa += db * Caa;
-////		integrals.Paaa += db * Caaa;
-////		integrals.Pb += da * Cb;
-////		integrals.Pbb += da * Cbb;
-////		integrals.Pbbb += da * Cbbb;
-////		integrals.Pab += db * (b1 * Cab + b0 * Kab);
-////		integrals.Paab += db * (b1 * Caab + b0 * Kaab);
-////		integrals.Pabb += da * (a1 * Cabb + a0 * Kabb);
-////	}
-////
-////	integrals.P1 *= (1.0 / 2.0);
-////	integrals.Pa *= (1.0 / 6.0);
-////	integrals.Paa *= (1.0 / 12.0);
-////	integrals.Paaa *= (1.0 / 20.0);
-////	integrals.Pb *= (1.0 / -6.0);
-////	integrals.Pbb *= (1.0 / -12.0);
-////	integrals.Pbbb *= (1.0 / -20.0);
-////	integrals.Pab *= (1.0 / 24.0);
-////	integrals.Paab *= (1.0 / 60.0);
-////	integrals.Pabb *= (1.0 / -60.0);
-////}
-////
-////typedef struct polygonIntegrals_s {
-////	float Fa, Fb, Fc;
-////	float Faa, Fbb, Fcc;
-////	float Faaa, Fbbb, Fccc;
-////	float Faab, Fbbc, Fcca;
-////} polygonIntegrals_t;
-////
-/////*
-////============
-////idTraceModel::PolygonIntegrals
-////============
-////*/
-////void idTraceModel::PolygonIntegrals( int polyNum, int a, int b, int c, struct polygonIntegrals_s &integrals ) const {
-////	projectionIntegrals_t pi;
-////	idVec3 n;
-////	float w;
-////	float k1, k2, k3, k4;
-////
-////	ProjectionIntegrals( polyNum, a, b, pi );
-////
-////	n = polys[polyNum].normal;
-////	w = -polys[polyNum].dist;
-////	k1 = 1 / n[c];
-////	k2 = k1 * k1;
-////	k3 = k2 * k1;
-////	k4 = k3 * k1;
-////
-////	integrals.Fa = k1 * pi.Pa;
-////	integrals.Fb = k1 * pi.Pb;
-////	integrals.Fc = -k2 * (n[a] * pi.Pa + n[b] * pi.Pb + w * pi.P1);
-////
-////	integrals.Faa = k1 * pi.Paa;
-////	integrals.Fbb = k1 * pi.Pbb;
-////	integrals.Fcc = k3 * (Square(n[a]) * pi.Paa + 2 * n[a] * n[b] * pi.Pab + Square(n[b]) * pi.Pbb
-////			+ w * (2 * (n[a] * pi.Pa + n[b] * pi.Pb) + w * pi.P1));
-////
-////	integrals.Faaa = k1 * pi.Paaa;
-////	integrals.Fbbb = k1 * pi.Pbbb;
-////	integrals.Fccc = -k4 * (Cube(n[a]) * pi.Paaa + 3 * Square(n[a]) * n[b] * pi.Paab 
-////			+ 3 * n[a] * Square(n[b]) * pi.Pabb + Cube(n[b]) * pi.Pbbb
-////			+ 3 * w * (Square(n[a]) * pi.Paa + 2 * n[a] * n[b] * pi.Pab + Square(n[b]) * pi.Pbb)
-////			+ w * w * (3 * (n[a] * pi.Pa + n[b] * pi.Pb) + w * pi.P1));
-////
-////	integrals.Faab = k1 * pi.Paab;
-////	integrals.Fbbc = -k2 * (n[a] * pi.Pabb + n[b] * pi.Pbbb + w * pi.Pbb);
-////	integrals.Fcca = k3 * (Square(n[a]) * pi.Paaa + 2 * n[a] * n[b] * pi.Paab + Square(n[b]) * pi.Pabb
-////			+ w * (2 * (n[a] * pi.Paa + n[b] * pi.Pab) + w * pi.Pa));
-////}
-////
-////typedef struct volumeIntegrals_s {
-////	float T0;
-////	idVec3 T1;
-////	idVec3 T2;
-////	idVec3 TP;
-////} volumeIntegrals_t;
-////
-/////*
-////============
-////idTraceModel::VolumeIntegrals
-////============
-////*/
-////void idTraceModel::VolumeIntegrals( struct volumeIntegrals_s &integrals ) const {
-////	const traceModelPoly_t *poly;
-////	polygonIntegrals_t pi;
-////	int i, a, b, c;
-////	float nx, ny, nz;
-////
-////	memset( &integrals, 0, sizeof(volumeIntegrals_t) );
-////	for ( i = 0; i < numPolys; i++ ) {
-////		poly = &polys[i];
-////
-////		nx = idMath::Fabs( poly.normal[0] );
-////		ny = idMath::Fabs( poly.normal[1] );
-////		nz = idMath::Fabs( poly.normal[2] );
-////		if ( nx > ny && nx > nz ) {
-////			c = 0;
-////		}
-////		else {
-////			c = (ny > nz) ? 1 : 2;
-////		}
-////		a = (c + 1) % 3;
-////		b = (a + 1) % 3;
-////
-////		PolygonIntegrals( i, a, b, c, pi );
-////
-////		integrals.T0 += poly.normal[0] * ((a == 0) ? pi.Fa : ((b == 0) ? pi.Fb : pi.Fc));
-////
-////		integrals.T1[a] += poly.normal[a] * pi.Faa;
-////		integrals.T1[b] += poly.normal[b] * pi.Fbb;
-////		integrals.T1[c] += poly.normal[c] * pi.Fcc;
-////		integrals.T2[a] += poly.normal[a] * pi.Faaa;
-////		integrals.T2[b] += poly.normal[b] * pi.Fbbb;
-////		integrals.T2[c] += poly.normal[c] * pi.Fccc;
-////		integrals.TP[a] += poly.normal[a] * pi.Faab;
-////		integrals.TP[b] += poly.normal[b] * pi.Fbbc;
-////		integrals.TP[c] += poly.normal[c] * pi.Fcca;
-////	}
-////
-////	integrals.T1 *= 0.5;
-////	integrals.T2 *= (1.0 / 3.0);
-////	integrals.TP *= 0.5;
-////}
-////
-/////*
-////============
-////idTraceModel::GetMassProperties
-////============
-////*/
-////void idTraceModel::GetMassProperties( const float density, float &mass, idVec3 &centerOfMass, idMat3 &inertiaTensor ) const {
-////	volumeIntegrals_t integrals;
-////
-////	// if polygon trace model
-////	if ( this.type == TRM_POLYGON ) {
-////		idTraceModel trm;
-////
-////		VolumeFromPolygon( trm, 1.0 );
-////		trm.GetMassProperties( density, mass, centerOfMass, inertiaTensor );
-////		return;
-////	}
-////
-////	VolumeIntegrals( integrals );
-////
-////	// if no volume
-////	if ( integrals.T0 == 0.0 ) {
-////		mass = 1.0;
-////		centerOfMass.Zero();
-////		inertiaTensor.Identity();
-////		return;
-////	}
-////
-////	// mass of model
-////	mass = density * integrals.T0;
-////	// center of mass
-////	centerOfMass = integrals.T1 / integrals.T0;
-////	// compute inertia tensor
-////	inertiaTensor[0][0] = density * (integrals.T2[1] + integrals.T2[2]);
-////	inertiaTensor[1][1] = density * (integrals.T2[2] + integrals.T2[0]);
-////	inertiaTensor[2][2] = density * (integrals.T2[0] + integrals.T2[1]);
-////	inertiaTensor[0][1] = inertiaTensor[1][0] = - density * integrals.TP[0];
-////	inertiaTensor[1][2] = inertiaTensor[2][1] = - density * integrals.TP[1];
-////	inertiaTensor[2][0] = inertiaTensor[0][2] = - density * integrals.TP[2];
-////	// translate inertia tensor to center of mass
-////	inertiaTensor[0][0] -= mass * (centerOfMass[1]*centerOfMass[1] + centerOfMass[2]*centerOfMass[2]);
-////	inertiaTensor[1][1] -= mass * (centerOfMass[2]*centerOfMass[2] + centerOfMass[0]*centerOfMass[0]);
-////	inertiaTensor[2][2] -= mass * (centerOfMass[0]*centerOfMass[0] + centerOfMass[1]*centerOfMass[1]);
-////	inertiaTensor[0][1] = inertiaTensor[1][0] += mass * centerOfMass[0] * centerOfMass[1];
-////	inertiaTensor[1][2] = inertiaTensor[2][1] += mass * centerOfMass[1] * centerOfMass[2];
-////	inertiaTensor[2][0] = inertiaTensor[0][2] += mass * centerOfMass[2] * centerOfMass[0];
-////}
+
+
+/*
+============
+idTraceModel::ProjectionIntegrals
+============
+*/
+	ProjectionIntegrals ( /*int */polyNum: number, /*int */a: number, /*int */b: number, /*struct projectionIntegrals_s &*/integrals: projectionIntegrals_t ): void {
+		var poly: traceModelPoly_t;
+		var /*int */i: number, edgeNum: number;
+		var v1 = new idVec3, v2 = new idVec3;
+		var /*float */a0: number, a1: number, da: number;
+		var /*float */b0: number, b1: number, db: number;
+		var /*float */a0_2: number, a0_3: number, a0_4: number, b0_2: number, b0_3: number, b0_4: number;
+		var /*float */a1_2: number, a1_3: number, b1_2: number, b1_3: number;
+		var /*float */C1: number, Ca: number, Caa: number, Caaa: number, Cb: number, Cbb: number, Cbbb: number;
+		var /*float */Cab: number, Kab: number, Caab: number, Kaab: number, Cabb: number, Kabb: number;
+
+		integrals.init ( ); //memset(&integrals, 0, sizeof(projectionIntegrals_t));
+		poly = this.polys[polyNum];
+		for ( i = 0; i < poly.numEdges; i++ ) {
+			edgeNum = poly.edges[i];
+			v1.equals( this.verts[this.edges[abs( edgeNum )].v[edgeNum < 0 ? 1 : 0]] );
+			v2.equals( this.verts[this.edges[abs( edgeNum )].v[edgeNum > 0 ? 1 : 0]] );
+			a0 = v1[a];
+			b0 = v1[b];
+			a1 = v2[a];
+			b1 = v2[b];
+			da = a1 - a0;
+			db = b1 - b0;
+			a0_2 = a0 * a0;
+			a0_3 = a0_2 * a0;
+			a0_4 = a0_3 * a0;
+			b0_2 = b0 * b0;
+			b0_3 = b0_2 * b0;
+			b0_4 = b0_3 * b0;
+			a1_2 = a1 * a1;
+			a1_3 = a1_2 * a1;
+			b1_2 = b1 * b1;
+			b1_3 = b1_2 * b1;
+
+			C1 = a1 + a0;
+			Ca = a1 * C1 + a0_2;
+			Caa = a1 * Ca + a0_3;
+			Caaa = a1 * Caa + a0_4;
+			Cb = b1 * ( b1 + b0 ) + b0_2;
+			Cbb = b1 * Cb + b0_3;
+			Cbbb = b1 * Cbb + b0_4;
+			Cab = 3 * a1_2 + 2 * a1 * a0 + a0_2;
+			Kab = a1_2 + 2 * a1 * a0 + 3 * a0_2;
+			Caab = a0 * Cab + 4 * a1_3;
+			Kaab = a1 * Kab + 4 * a0_3;
+			Cabb = 4 * b1_3 + 3 * b1_2 * b0 + 2 * b1 * b0_2 + b0_3;
+			Kabb = b1_3 + 2 * b1_2 * b0 + 3 * b1 * b0_2 + 4 * b0_3;
+
+			integrals.P1 += db * C1;
+			integrals.Pa += db * Ca;
+			integrals.Paa += db * Caa;
+			integrals.Paaa += db * Caaa;
+			integrals.Pb += da * Cb;
+			integrals.Pbb += da * Cbb;
+			integrals.Pbbb += da * Cbbb;
+			integrals.Pab += db * ( b1 * Cab + b0 * Kab );
+			integrals.Paab += db * ( b1 * Caab + b0 * Kaab );
+			integrals.Pabb += da * ( a1 * Cabb + a0 * Kabb );
+		}
+
+		integrals.P1 *= ( 1.0 / 2.0 );
+		integrals.Pa *= ( 1.0 / 6.0 );
+		integrals.Paa *= ( 1.0 / 12.0 );
+		integrals.Paaa *= ( 1.0 / 20.0 );
+		integrals.Pb *= ( 1.0 / -6.0 );
+		integrals.Pbb *= ( 1.0 / -12.0 );
+		integrals.Pbbb *= ( 1.0 / -20.0 );
+		integrals.Pab *= ( 1.0 / 24.0 );
+		integrals.Paab *= ( 1.0 / 60.0 );
+		integrals.Pabb *= ( 1.0 / -60.0 );
+	}
+
+
+/*
+============
+idTraceModel::PolygonIntegrals
+============
+*/
+	PolygonIntegrals ( /*int */polyNum: number, /*int */a: number, /*int */b: number, /*int */c: number, /*struct polygonIntegrals_s &*/integrals: polygonIntegrals_t ): void {
+		var pi = new projectionIntegrals_t;
+		var n = new idVec3;
+		var /*float */w: number;
+		var /*float */k1: number, k2: number, k3: number, k4: number;
+
+		this.ProjectionIntegrals( polyNum, a, b, pi );
+
+		n.equals( this.polys[polyNum].normal );
+		w = -this.polys[polyNum].dist;
+		k1 = 1 / n[c];
+		k2 = k1 * k1;
+		k3 = k2 * k1;
+		k4 = k3 * k1;
+
+		integrals.Fa = k1 * pi.Pa;
+		integrals.Fb = k1 * pi.Pb;
+		integrals.Fc = -k2 * ( n[a] * pi.Pa + n[b] * pi.Pb + w * pi.P1 );
+
+		integrals.Faa = k1 * pi.Paa;
+		integrals.Fbb = k1 * pi.Pbb;
+		integrals.Fcc = k3 * ( Square( n[a] ) * pi.Paa + 2 * n[a] * n[b] * pi.Pab + Square( n[b] ) * pi.Pbb
+			+ w * ( 2 * ( n[a] * pi.Pa + n[b] * pi.Pb ) + w * pi.P1 ) );
+
+		integrals.Faaa = k1 * pi.Paaa;
+		integrals.Fbbb = k1 * pi.Pbbb;
+		integrals.Fccc = -k4 * ( Cube( n[a] ) * pi.Paaa + 3 * Square( n[a] ) * n[b] * pi.Paab
+			+ 3 * n[a] * Square( n[b] ) * pi.Pabb + Cube( n[b] ) * pi.Pbbb
+			+ 3 * w * ( Square( n[a] ) * pi.Paa + 2 * n[a] * n[b] * pi.Pab + Square( n[b] ) * pi.Pbb )
+			+ w * w * ( 3 * ( n[a] * pi.Pa + n[b] * pi.Pb ) + w * pi.P1 ) );
+
+		integrals.Faab = k1 * pi.Paab;
+		integrals.Fbbc = -k2 * ( n[a] * pi.Pabb + n[b] * pi.Pbbb + w * pi.Pbb );
+		integrals.Fcca = k3 * ( Square( n[a] ) * pi.Paaa + 2 * n[a] * n[b] * pi.Paab + Square( n[b] ) * pi.Pabb
+			+ w * ( 2 * ( n[a] * pi.Paa + n[b] * pi.Pab ) + w * pi.Pa ) );
+	}
+
+
+/*
+============
+idTraceModel::VolumeIntegrals
+============
+*/
+	VolumeIntegrals ( /*struct volumeIntegrals_s &*/integrals: volumeIntegrals_t ): void {
+		var poly: traceModelPoly_t;
+		var pi = new polygonIntegrals_t;
+		var /*int */i: number, a: number, b: number, c: number;
+		var /*float */nx: number, ny: number, nz: number;
+
+		integrals.init ( ); //memset( &integrals, 0, sizeof(volumeIntegrals_t) );
+		for ( i = 0; i < this.numPolys; i++ ) {
+			poly = this.polys[i];
+
+			nx = idMath.Fabs( poly.normal[0] );
+			ny = idMath.Fabs( poly.normal[1] );
+			nz = idMath.Fabs( poly.normal[2] );
+			if ( nx > ny && nx > nz ) {
+				c = 0;
+			} else {
+				c = ( ny > nz ) ? 1 : 2;
+			}
+			a = ( c + 1 ) % 3;
+			b = ( a + 1 ) % 3;
+
+			this.PolygonIntegrals( i, a, b, c, pi );
+
+			integrals.T0 += poly.normal[0] * ( ( a == 0 ) ? pi.Fa : ( ( b == 0 ) ? pi.Fb : pi.Fc ) );
+
+			integrals.T1[a] += poly.normal[a] * pi.Faa;
+			integrals.T1[b] += poly.normal[b] * pi.Fbb;
+			integrals.T1[c] += poly.normal[c] * pi.Fcc;
+			integrals.T2[a] += poly.normal[a] * pi.Faaa;
+			integrals.T2[b] += poly.normal[b] * pi.Fbbb;
+			integrals.T2[c] += poly.normal[c] * pi.Fccc;
+			integrals.TP[a] += poly.normal[a] * pi.Faab;
+			integrals.TP[b] += poly.normal[b] * pi.Fbbc;
+			integrals.TP[c] += poly.normal[c] * pi.Fcca;
+		}
+
+		integrals.T1.opMultiplicationAssignment( 0.5 );
+		integrals.T2.opMultiplicationAssignment( ( 1.0 / 3.0 ) );
+		integrals.TP.opMultiplicationAssignment( 0.5 );
+	}
+
+/*
+============
+idTraceModel::GetMassProperties
+============
+*/
+	GetMassProperties ( /*float */density: number, /*float &*/mass: R<number>, centerOfMass: idVec3, inertiaTensor: idMat3 ): void {
+		var integrals = new volumeIntegrals_t;
+
+		// if polygon trace model
+		if ( this.type == traceModel_t.TRM_POLYGON ) {
+			var trm = new R( new idTraceModel );
+
+			this.VolumeFromPolygon( trm, 1.0 );
+			trm.$.GetMassProperties( density, mass, centerOfMass, inertiaTensor );
+			return;
+		}
+
+		this.VolumeIntegrals( integrals );
+
+		// if no volume
+		if ( integrals.T0 == 0.0 ) {
+			mass.$ = 1.0;
+			centerOfMass.Zero ( );
+			inertiaTensor.Identity ( );
+			return;
+		}
+
+		// mass of model
+		mass.$ = density * integrals.T0;
+		// center of mass
+		centerOfMass.equals( integrals.T1.opDivision( integrals.T0 ) );
+		// compute inertia tensor
+		inertiaTensor[0][0] = density * ( integrals.T2[1] + integrals.T2[2] );
+		inertiaTensor[1][1] = density * ( integrals.T2[2] + integrals.T2[0] );
+		inertiaTensor[2][2] = density * ( integrals.T2[0] + integrals.T2[1] );
+		inertiaTensor[0][1] = inertiaTensor[1][0] = - density * integrals.TP[0];
+		inertiaTensor[1][2] = inertiaTensor[2][1] = - density * integrals.TP[1];
+		inertiaTensor[2][0] = inertiaTensor[0][2] = - density * integrals.TP[2];
+		// translate inertia tensor to center of mass
+		inertiaTensor[0][0] -= mass.$ * ( centerOfMass[1] * centerOfMass[1] + centerOfMass[2] * centerOfMass[2] );
+		inertiaTensor[1][1] -= mass.$ * ( centerOfMass[2] * centerOfMass[2] + centerOfMass[0] * centerOfMass[0] );
+		inertiaTensor[2][2] -= mass.$ * ( centerOfMass[0] * centerOfMass[0] + centerOfMass[1] * centerOfMass[1] );
+		inertiaTensor[0][1] = inertiaTensor[1][0] += mass.$ * centerOfMass[0] * centerOfMass[1];
+		inertiaTensor[1][2] = inertiaTensor[2][1] += mass.$ * centerOfMass[1] * centerOfMass[2];
+		inertiaTensor[2][0] = inertiaTensor[0][2] += mass.$ * centerOfMass[2] * centerOfMass[0];
+	}
+}
+
+
+class projectionIntegrals_t {
+	// all float
+	P1: number;
+	Pa: number; Pb: number;
+	Paa: number; Pab: number; Pbb: number;
+	Paaa: number; Paab: number; Pabb: number; Pbbb: number;
+};
+
+class polygonIntegrals_t {
+	// all float
+	Fa: number; Fb: number; Fc: number;
+	Faa: number; Fbb: number; Fcc: number;
+	Faaa: number; Fbbb: number; Fccc: number;
+	Faab: number; Fbbc: number; Fcca: number;
+
+	init ( ): void {
+		this.Fa = this.Fb = this.Fc = 0;
+		this.Faa = this.Fbb = this.Fcc = 0;
+		this.Faaa = this.Fbbb = this.Fccc = 0;
+		this.Faab = this.Fbbc = this.Fcca = 0;
+	}
+}
+
+class volumeIntegrals_t {
+	T0: number /*float*/;
+	T1 = new idVec3;
+	T2 = new idVec3;
+	TP = new idVec3;
+	init ( ): void {
+		this.T0 = 0;
+		this.T1.init ( );
+		this.T2.init ( );
+		this.TP.init ( );
+	}
 }

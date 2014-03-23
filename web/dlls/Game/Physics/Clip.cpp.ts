@@ -353,7 +353,9 @@ idClipModel::AllocTraceModel
 
 		entry = new trmCache_t;
 		entry.trm = trm;
-		entry.trm.GetMassProperties( 1.0, entry.volume, entry.centerOfMass, entry.inertiaTensor );
+		var $entryVolume = new R(entry.volume );
+		entry.trm.GetMassProperties( 1.0, $entryVolume, entry.centerOfMass, entry.inertiaTensor );
+		entry.volume = $entryVolume.$;
 		entry.refCount = 1;
 
 		traceModelIndex = traceModelCache.Append( entry );
