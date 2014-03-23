@@ -339,7 +339,7 @@ idGameLocal.prototype.Init = function ( ): void {
 ////  shut down the entire game
 ////============
 ////*/
-////void idGameLocal::Shutdown( ) {
+////idGameLocal.prototype.Shutdown( ):void  {
 
 ////	if ( !common ) {
 ////		return;
@@ -414,7 +414,7 @@ idGameLocal.prototype.Init = function ( ): void {
 ////the session may have written some data to the file already
 ////============
 ////*/
-////void idGameLocal::SaveGame( idFile *f ) {
+////idGameLocal.prototype.SaveGame( idFile *f ) {
 ////	var/*int */i:number;
 ////	var ent:idEntity
 ////	idEntity *link;
@@ -640,7 +640,7 @@ idGameLocal.prototype.DPrintf = function ( /*const char **/ fmt: string, ...args
 ////idGameLocal::Warning
 ////============
 ////*/
-////void idGameLocal::Warning( const char *fmt, ... ) const {
+////idGameLocal.prototype.Warning( const char *fmt, ... ) :void  {
 ////	va_list		argptr;
 ////	char		text[MAX_STRING_CHARS];
 ////	idThread *	thread;
@@ -662,7 +662,7 @@ idGameLocal.prototype.DPrintf = function ( /*const char **/ fmt: string, ...args
 ////idGameLocal::DWarning
 ////============
 ////*/
-////void idGameLocal::DWarning( const char *fmt, ... ) const {
+////idGameLocal.prototype.DWarning( const char *fmt, ... ) :void  {
 ////	va_list		argptr;
 ////	char		text[MAX_STRING_CHARS];
 ////	idThread *	thread;
@@ -727,7 +727,7 @@ idGameLocal.prototype.Error = function (fmt: string, ...args: any[]): void {
 ////idGameLocal::SetLocalClient
 ////============
 ////*/
-////void idGameLocal::SetLocalClient( int clientNum ) {
+////idGameLocal.prototype.SetLocalClient( int clientNum ) :void {
 ////	localClientNum = clientNum;
 ////}
 
@@ -941,7 +941,7 @@ idGameLocal.prototype.LoadMap = function ( mapName: string, /*int */randseed: nu
 ////idGameLocal::LocalMapRestart
 ////===================
 ////*/
-////void idGameLocal::LocalMapRestart( ) {
+////idGameLocal.prototype.LocalMapRestart( ):void  {
 ////	int i, latchSpawnCount;
 
 ////	this.Printf( "----------- Game Map Restart ------------\n" );
@@ -1001,7 +1001,7 @@ idGameLocal.prototype.LoadMap = function ( mapName: string, /*int */randseed: nu
 ////idGameLocal::MapRestart
 ////===================
 ////*/
-////void idGameLocal::MapRestart( ) {
+////idGameLocal.prototype.MapRestart( ):void  {
 ////	idBitMsg	outMsg;
 ////	byte		msgBuf[MAX_GAME_MESSAGE_SIZE];
 ////	idDict		newInfo;
@@ -1045,7 +1045,7 @@ idGameLocal.prototype.LoadMap = function ( mapName: string, /*int */randseed: nu
 ////idGameLocal::MapRestart_f
 ////===================
 ////*/
-////void idGameLocal::MapRestart_f( args:idCmdArgs ) {
+////idGameLocal.prototype.MapRestart_f( args:idCmdArgs ) :void {
 ////	if ( !gameLocal.isMultiplayer || gameLocal.isClient ) {
 ////		common.Printf( "server is not running - use spawnServer\n" );
 ////		cmdSystem.BufferCommandText( CMD_EXEC_APPEND, "spawnServer\n" );
@@ -1110,7 +1110,7 @@ idGameLocal.prototype.LoadMap = function ( mapName: string, /*int */randseed: nu
 ////idGameLocal::NextMap_f
 ////===================
 ////*/
-////void idGameLocal::NextMap_f( args:idCmdArgs ) {
+////idGameLocal.prototype.NextMap_f( args:idCmdArgs ) :void {
 ////	if ( !gameLocal.isMultiplayer || gameLocal.isClient ) {
 ////		common.Printf( "server is not running\n" );
 ////		return;
@@ -1121,35 +1121,35 @@ idGameLocal.prototype.LoadMap = function ( mapName: string, /*int */randseed: nu
 ////	gameLocal.MapRestart( );
 ////}
 
-/////*
-////===================
-////idGameLocal::MapPopulate
-////===================
-////*/
-////void idGameLocal::MapPopulate( ) {
+/*
+===================
+idGameLocal::MapPopulate
+===================
+*/
+idGameLocal.prototype.MapPopulate = function ( ): void {
 
-////	if ( this.isMultiplayer ) {
-////		cvarSystem.SetCVarBool( "r_skipSpecular", false );
-////	}
-////	// parse the key/value pairs and spawn entities
-////	SpawnMapEntities();
+	if ( this.isMultiplayer ) {
+		cvarSystem.SetCVarBool( "r_skipSpecular", false );
+	}
+	// parse the key/value pairs and spawn entities
+	this.SpawnMapEntities ( );
 
-////	// mark location entities in all connected areas
-////	SpreadLocations();
+	// mark location entities in all connected areas
+	this.SpreadLocations ( );
 
-////	// prepare the list of randomized initial spawn spots
-////	RandomizeInitialSpawns();
+	// prepare the list of randomized initial spawn spots
+	this.RandomizeInitialSpawns ( );
 
-////	// spawnCount - 1 is the number of entities spawned into the map, their indexes started at MAX_CLIENTS (included)
-////	// mapSpawnCount is used as the max index of map entities, it's the first index of non-map entities
-////	mapSpawnCount = MAX_CLIENTS + this.spawnCount - 1;
+	// spawnCount - 1 is the number of entities spawned into the map, their indexes started at MAX_CLIENTS (included)
+	// mapSpawnCount is used as the max index of map entities, it's the first index of non-map entities
+	this.mapSpawnCount = MAX_CLIENTS + this.spawnCount - 1;
 
-////	// execute pending events before the very first game frame
-////	// this makes sure the map script main() function is called
-////	// before the physics are run so entities can bind correctly
-////	this.Printf( "==== Processing events ====\n" );
-////	idEvent::ServiceEvents();
-////}
+	// execute pending events before the very first game frame
+	// this makes sure the map script main() function is called
+	// before the physics are run so entities can bind correctly
+	this.Printf( "==== Processing events ====\n" );
+	idEvent.ServiceEvents ( );
+};
 
 /*
 ===================
@@ -1172,7 +1172,7 @@ idGameLocal.prototype.InitFromNewMap = function ( mapName: string, renderWorld: 
 
 	gameRenderWorld = renderWorld;
 	gameSoundWorld = soundWorld;
-
+	debugger;//todo: test LoadMap outcome
 	this.LoadMap( mapName, randseed );
 
 	this.InitScriptForMap ( );
@@ -1508,7 +1508,7 @@ idGameLocal.prototype.MapShutdown = function ( ): void {
 ////idGameLocal::DumpOggSounds
 ////===================
 ////*/
-////void idGameLocal::DumpOggSounds( ) {
+////idGameLocal.prototype.DumpOggSounds( ):void  {
 ////	int i, j, k, size, totalSize;
 ////	idFile *file;
 ////	idStrList oggSounds, weaponSounds;
@@ -1613,7 +1613,7 @@ idGameLocal.prototype.MapShutdown = function ( ): void {
 ////idGameLocal::GetShakeSounds
 ////===================
 ////*/
-////void idGameLocal::GetShakeSounds( const idDict *dict ) {
+////idGameLocal.prototype.GetShakeSounds( const idDict *dict ):void  {
 ////	const idSoundShader *soundShader;
 ////	const char *soundShaderName;
 ////	idStr soundName;
@@ -1823,7 +1823,7 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 ////idGameLocal::SpawnPlayer
 ////============
 ////*/
-////void idGameLocal::SpawnPlayer( int clientNum ) {
+////idGameLocal.prototype.SpawnPlayer( int clientNum ):void  {
 ////	idEntity	*ent;
 ////	idDict		args;
 
@@ -1967,7 +1967,7 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 ////idGameLocal::SetupPlayerPVS
 ////================
 ////*/
-////void idGameLocal::SetupPlayerPVS( ) {
+////idGameLocal.prototype.SetupPlayerPVS( ) :void {
 ////	int			i;
 ////	idEntity *	ent;
 ////	idPlayer *	player;
@@ -2009,7 +2009,7 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 ////idGameLocal::FreePlayerPVS
 ////================
 ////*/
-////void idGameLocal::FreePlayerPVS( ) {
+////idGameLocal.prototype.FreePlayerPVS( ):void  {
 ////	if ( this.playerPVS.i != -1 ) {
 ////		this.pvs.FreeCurrentPVS( this.playerPVS );
 ////		this.playerPVS.i = -1;
@@ -2053,7 +2053,7 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 ////idGameLocal::UpdateGravity
 ////================
 ////*/
-////void idGameLocal::UpdateGravity( ) {
+////idGameLocal.prototype.UpdateGravity( ):void  {
 ////	var ent:idEntity
 
 ////	if ( g_gravity.IsModified() ) {
@@ -2092,7 +2092,7 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 ////  actors come next and physics team slaves appear after their master.
 ////================
 ////*/
-////void idGameLocal::SortActiveEntityList( ) {
+////idGameLocal.prototype.SortActiveEntityList( ):void  {
 ////	ent:idEntity, *next_ent, *master, *part;
 
 ////	// if the active entity list needs to be reordered to place physics team masters at the front
@@ -2375,7 +2375,7 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 ////Calculates the horizontal and vertical field of view based on a horizontal field of view and custom aspect ratio
 ////====================
 ////*/
-////void idGameLocal::CalcFov( float base_fov, float &fov_x, float &fov_y ) const {
+////idGameLocal.prototype.CalcFov( float base_fov, float &fov_x, float &fov_y ) :void  {
 ////	float	x;
 ////	float	y;
 ////	float	ratio_x;
@@ -2511,7 +2511,7 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 ////idGameLocal::HandleMainMenuCommands
 ////================
 ////*/
-////void idGameLocal::HandleMainMenuCommands( const char *menuCommand, idUserInterface *gui ) { }
+////idGameLocal.prototype.HandleMainMenuCommands( const char *menuCommand, idUserInterface *gui ):void  { }
 
 /////*
 ////================
@@ -2555,7 +2555,7 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 ////idGameLocal::CallFrameCommand
 ////================
 ////*/
-////void idGameLocal::CallFrameCommand( ent: idEntity, const function_t *frameCommand ) {
+////idGameLocal.prototype.CallFrameCommand( ent: idEntity, const function_t *frameCommand ) :void {
 ////	this.frameCommandThread.CallFunction( ent, frameCommand, true );
 ////	this.frameCommandThread.Execute();
 ////}
@@ -2565,7 +2565,7 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 ////idGameLocal::CallObjectFrameCommand
 ////================
 ////*/
-////void idGameLocal::CallObjectFrameCommand( ent: idEntity, const char *frameCommand ) {
+////idGameLocal.prototype.CallObjectFrameCommand( ent: idEntity, const char *frameCommand ) :void {
 ////	const function_t *func;
 
 ////	func = ent.scriptObject.GetFunction( frameCommand );
@@ -2584,7 +2584,7 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 ////idGameLocal::ShowTargets
 ////================
 ////*/
-////void idGameLocal::ShowTargets( ) {
+////idGameLocal.prototype.ShowTargets( ) :void {
 ////	idMat3		axis = GetLocalPlayer().viewAngles.ToMat3();
 ////	idVec3		up = axis[ 2 ] * 5.0f;
 ////	const idVec3 &viewPos = GetLocalPlayer().GetPhysics().GetOrigin();
@@ -2643,7 +2643,7 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 ////idGameLocal::RunDebugInfo
 ////================
 ////*/
-////void idGameLocal::RunDebugInfo( ) {
+////idGameLocal.prototype.RunDebugInfo( ) :void {
 ////	var ent:idEntity
 ////	idPlayer *player;
 
@@ -2826,7 +2826,7 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 ////idGameLocal::SetAASAreaState
 ////==================
 ////*/
-////void idGameLocal::SetAASAreaState( const idBounds &bounds, const int areaContents, bool closed ) {
+////idGameLocal.prototype.SetAASAreaState( const idBounds &bounds, const int areaContents, bool closed ):void  {
 ////	var/*int */i:number;
 
 ////	for( i = 0; i < this.aasList.Num(); i++ ) {
@@ -2862,7 +2862,7 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 ////idGameLocal::RemoveAASObstacle
 ////==================
 ////*/
-////void idGameLocal::RemoveAASObstacle( const aasHandle_t handle ) {
+////idGameLocal.prototype.RemoveAASObstacle( const aasHandle_t handle ) :void {
 ////	var/*int */i:number;
 
 ////	for( i = 0; i < this.aasList.Num(); i++ ) {
@@ -2875,7 +2875,7 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 ////idGameLocal::RemoveAllAASObstacles
 ////==================
 ////*/
-////void idGameLocal::RemoveAllAASObstacles( ) {
+////idGameLocal.prototype.RemoveAllAASObstacles( ) :void {
 ////	var/*int */i:number;
 
 ////	for( i = 0; i < this.aasList.Num(); i++ ) {
@@ -2915,7 +2915,7 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 ////idGameLocal::RegisterEntity
 ////===================
 ////*/
-////void idGameLocal::RegisterEntity( ent: idEntity ) {
+////idGameLocal.prototype.RegisterEntity( ent: idEntity ):void  {
 ////	int spawn_entnum;
 
 ////	if ( this.spawnCount >= ( 1 << ( 32 - GENTITYNUM_BITS ) ) ) {
@@ -2948,7 +2948,7 @@ idGameLocal.prototype.InitScriptForMap = function ( ): void {
 ////idGameLocal::UnregisterEntity
 ////===================
 ////*/
-////void idGameLocal::UnregisterEntity( ent: idEntity ) {
+////idGameLocal.prototype.UnregisterEntity( ent: idEntity ):void  {
 ////	assert( ent );
 
 ////	if ( this.editEntities ) {
@@ -3152,7 +3152,7 @@ idGameLocal.prototype.FindEntityDefDict = function ( name: string, makeDefault =
 ////idGameLocal::SetSkill
 ////================
 ////*/
-////void idGameLocal::SetSkill( int value ) {
+////idGameLocal.prototype.SetSkill( int value ):void  {
 ////	int skill_level;
 
 ////	if ( value < 0 ) {
@@ -3184,7 +3184,7 @@ idGameLocal.prototype.FindEntityDefDict = function ( name: string, makeDefault =
 ////Parses textual entity definitions out of an entstring and spawns gentities.
 ////==============
 ////*/
-////void idGameLocal::SpawnMapEntities( ) {
+////idGameLocal.prototype.SpawnMapEntities( ):void  {
 ////	int			i;
 ////	int			num;
 ////	int			inhibit;
@@ -3323,7 +3323,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////Argument completion for entity names
 ////=============
 ////*/
-////void idGameLocal::ArgCompletion_EntityName( const idCmdArgs &args, void(*callback)( const char *s ) ) {
+////idGameLocal.prototype.ArgCompletion_EntityName( const idCmdArgs &args, void(*callback)( const char *s ) ) {
 ////	var/*int */i:number;
 
 ////	for( i = 0; i < gameLocal.num_entities; i++ ) {
@@ -3443,7 +3443,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////If catch_teleport, this only marks teleport players for death on exit
 ////=================
 ////*/
-////void idGameLocal::KillBox( ent: idEntity, bool catch_teleport ) {
+////idGameLocal.prototype.KillBox( ent: idEntity, bool catch_teleport ) :void {
 ////	int			i;
 ////	int			num;
 ////	idEntity *	hit;
@@ -3517,7 +3517,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////idGameLocal::AlertAI
 ////============
 ////*/
-////void idGameLocal::AlertAI( ent: idEntity ) {
+////idGameLocal.prototype.AlertAI( ent: idEntity ) {
 ////	if ( ent && ent.IsType( idActor::Type ) ) {
 ////		// alert them for the next frame
 ////		this.lastAIAlertTime = this.time + msec;
@@ -3543,7 +3543,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////idGameLocal::RadiusDamage
 ////============
 ////*/
-////void idGameLocal::RadiusDamage( const idVec3 &origin, idEntity *inflictor, idEntity *attacker, idEntity *ignoreDamage, idEntity *ignorePush, const char *damageDefName, float dmgPower ) {
+////idGameLocal.prototype.RadiusDamage( const idVec3 &origin, idEntity *inflictor, idEntity *attacker, idEntity *ignoreDamage, idEntity *ignorePush, const char *damageDefName, float dmgPower ):void  {
 ////	float		dist, damageScale, attackerDamageScale, attackerPushScale;
 ////	idEntity *	ent;
 ////	idEntity *	entityList[ MAX_GENTITIES ];
@@ -3648,7 +3648,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////idGameLocal::RadiusPush
 ////==============
 ////*/
-////void idGameLocal::RadiusPush( const idVec3 &origin, const float radius, const float push, const idEntity *inflictor, const idEntity *ignore, float inflictorScale, const bool quake ) {
+////idGameLocal.prototype.RadiusPush( const idVec3 &origin, const float radius, const float push, const idEntity *inflictor, const idEntity *ignore, float inflictorScale, const bool quake ):void  {
 ////	int i, numListedClipModels;
 ////	idClipModel *clipModel;
 ////	idClipModel *clipModelList[ MAX_GENTITIES ];
@@ -3723,7 +3723,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////idGameLocal::RadiusPushClipModel
 ////==============
 ////*/
-////void idGameLocal::RadiusPushClipModel( const idVec3 &origin, const float push, const idClipModel *clipModel ) {
+////idGameLocal.prototype.RadiusPushClipModel( const idVec3 &origin, const float push, const idClipModel *clipModel ):void  {
 ////	int i, j;
 ////	float dot, dist, area;
 ////	const idTraceModel *trm;
@@ -3780,7 +3780,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////idGameLocal::ProjectDecal
 ////===============
 ////*/
-////void idGameLocal::ProjectDecal( const idVec3 &origin, const idVec3 &dir, float depth, bool parallel, float size, const char *material, /*float*/angle:number ) {
+////idGameLocal.prototype.ProjectDecal( const idVec3 &origin, const idVec3 &dir, float depth, bool parallel, float size, const char *material, /*float*/angle:number ):void  {
 ////	float s, c;
 ////	idMat3 axis, axistemp;
 ////	idFixedWinding winding;
@@ -3829,7 +3829,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////idGameLocal::BloodSplat
 ////==============
 ////*/
-////void idGameLocal::BloodSplat( const idVec3 &origin, const idVec3 &dir, float size, const char *material ) {
+////idGameLocal.prototype.BloodSplat( const idVec3 &origin, const idVec3 &dir, float size, const char *material ):void  {
 ////	float halfSize = size * 0.5f;
 ////	idVec3 verts[] = {	idVec3( 0.0, +halfSize, +halfSize ),
 ////						idVec3( 0.0, +halfSize, -halfSize ),
@@ -3856,7 +3856,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////idGameLocal::SetCamera
 ////=============
 ////*/
-////void idGameLocal::SetCamera( idCamera *cam ) {
+////idGameLocal.prototype.SetCamera( idCamera *cam ):void  {
 ////	var/*int */i:number;
 ////	var ent:idEntity
 ////	idAI *ai;
@@ -3987,7 +3987,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////Now that everything has been spawned, associate areas with location entities
 ////======================
 ////*/
-////void idGameLocal::SpreadLocations() {
+////idGameLocal.prototype.SpreadLocations():void  {
 ////	var ent:idEntity
 
 ////	// allocate the area table
@@ -4058,7 +4058,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////idGameLocal::SetPortalState
 ////============
 ////*/
-////void idGameLocal::SetPortalState( qhandle_t portal, int blockingBits ) {
+////idGameLocal.prototype.SetPortalState( qhandle_t portal, int blockingBits ):void  {
 ////	idBitMsg outMsg;
 ////	byte msgBuf[ MAX_GAME_MESSAGE_SIZE ];
 
@@ -4099,7 +4099,7 @@ idGameLocal.prototype.RemoveEntityFromHash = function ( name: string, ent: idEnt
 ////prepare for a sequence of initial player spawns
 ////============
 ////*/
-////void idGameLocal::RandomizeInitialSpawns( ) {
+////idGameLocal.prototype.RandomizeInitialSpawns( ) :void {
 ////	spawnSpot_t	spot;
 ////	int i, j;
 ////	var ent:idEntity
@@ -4244,7 +4244,7 @@ idGameLocal.prototype.UpdateServerInfoFlags = function ( ): void {
 ////idGameLocal::SetGlobalMaterial
 ////================
 ////*/
-////void idGameLocal::SetGlobalMaterial( const idMaterial *mat ) {
+////idGameLocal.prototype.SetGlobalMaterial( const idMaterial *mat ):void  {
 ////	this.globalMaterial = mat;
 ////}
 
@@ -4271,7 +4271,7 @@ idGameLocal.prototype.UpdateServerInfoFlags = function ( ): void {
 ////idGameLocal::ThrottleUserInfo
 ////================
 ////*/
-////void idGameLocal::ThrottleUserInfo( ) {
+////idGameLocal.prototype.ThrottleUserInfo( ):void  {
 ////	this.mpGame.ThrottleUserInfo();
 ////}
 
@@ -4280,7 +4280,7 @@ idGameLocal.prototype.UpdateServerInfoFlags = function ( ): void {
 ////idGameLocal::SelectTimeGroup
 ////============
 ////*/
-////void idGameLocal::SelectTimeGroup( int timeGroup ) { }
+////idGameLocal.prototype.SelectTimeGroup( int timeGroup ):void  { }
 
 /////*
 ////===========
@@ -4296,7 +4296,7 @@ idGameLocal.prototype.UpdateServerInfoFlags = function ( ): void {
 ////idGameLocal::GetBestGameType
 ////============
 ////*/
-////void idGameLocal::GetBestGameType( const char* map, const char* gametype, char buf[ MAX_STRING_CHARS ] ) {
+////idGameLocal.prototype.GetBestGameType( const char* map, const char* gametype, char buf[ MAX_STRING_CHARS ] ):void  {
 ////	strncpy( buf, gametype, MAX_STRING_CHARS );
 ////	buf[ MAX_STRING_CHARS - 1 ] = '\0';
 ////}
@@ -4332,7 +4332,7 @@ idGameLocal.prototype.UpdateServerInfoFlags = function ( ): void {
 ////idGameLocal::GetClientStats
 ////================
 ////*/
-////void idGameLocal::GetClientStats( int clientNum, char *data, const int len ) {
+////idGameLocal.prototype.GetClientStats( int clientNum, char *data, const int len ):void  {
 ////	this.mpGame.PlayerStats( clientNum, data, len );
 ////}
 
@@ -4342,7 +4342,7 @@ idGameLocal.prototype.UpdateServerInfoFlags = function ( ): void {
 ////idGameLocal::SwitchTeam
 ////================
 ////*/
-////void idGameLocal::SwitchTeam( int clientNum, int team ) {
+////idGameLocal.prototype.SwitchTeam( int clientNum, int team ) :void {
 
 ////	idPlayer *   player;
 ////	player = clientNum >= 0 ? static_cast<idPlayer *>( gameLocal.entities[ clientNum ] ) : NULL;

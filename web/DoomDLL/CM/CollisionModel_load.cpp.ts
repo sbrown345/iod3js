@@ -451,76 +451,76 @@ idCollisionModelManagerLocal.prototype.Clear = function ( ): void {
 ////	FreeModel( this.models[MAX_SUBMODELS] );
 ////}
 ////
-////
-/////*
-////===============================================================================
-////
-////Edge normals
-////
-////===============================================================================
-////*/
-////
-/////*
-////================
-////idCollisionModelManagerLocal::CalculateEdgeNormals
-////================
-////*/
-////#define SHARP_EDGE_DOT	-0.7f
-////
-////void idCollisionModelManagerLocal::CalculateEdgeNormals( model: cm_model_t, node: cm_node_t ) {
-////	var pref: cm_polygonRef_t;
-////	var p: cm_polygon_t;
-////	cm_edge_t *edge;
-////	float dot, s;
-////	int i, edgeNum;
-////	idVec3 dir;
-////
-////	while( 1 ) {
-////		for ( pref = node.polygons; pref; pref = pref.next ) {
-////			p = pref.p;
-////			// if we checked this polygon already
-////			if ( p.checkcount == this.checkCount ) {
-////				continue;
-////			}
-////			p.checkcount = this.checkCount;
-////
-////			for ( i = 0; i < p.numEdges; i++ ) {
-////				edgeNum = p.edges[i];
-////				edge = model.edges + abs( edgeNum );
-////				if ( edge.normal[0] == 0.0f && edge.normal[1] == 0.0f && edge.normal[2] == 0.0f ) {
-////					// if the edge is only used by this polygon
-////					if ( edge.numUsers == 1 ) {
-////						dir = model.vertices[ edge.vertexNum[edgeNum < 0]].p - model.vertices[ edge.vertexNum[edgeNum > 0]].p;
-////						edge.normal = p.plane.Normal().Cross( dir );
-////						edge.normal.Normalize();
-////					} else {
-////						// the edge is used by more than one polygon
-////						edge.normal = p.plane.Normal();
-////					}
-////				} else {
-////					dot = edge.normal * p.plane.Normal();
-////					// if the two planes make a very sharp edge
-////					if ( dot < SHARP_EDGE_DOT ) {
-////						// max length normal pointing outside both polygons
-////						dir = model.vertices[ edge.vertexNum[edgeNum > 0]].p - model.vertices[ edge.vertexNum[edgeNum < 0]].p;
-////						edge.normal = edge.normal.Cross( dir ) + p.plane.Normal().Cross( -dir );
-////						edge.normal *= ( 0.5f / ( 0.5f + 0.5f * SHARP_EDGE_DOT ) ) / edge.normal.Length();
-////						model.numSharpEdges++;
-////					} else {
-////						s = 0.5f / ( 0.5f + 0.5f * dot );
-////						edge.normal = s * ( edge.normal + p.plane.Normal() );
-////					}
-////				}
-////			}
-////		}
-////		// if leaf node
-////		if ( node.planeType == -1 ) {
-////			break;
-////		}
-////		CalculateEdgeNormals( model, node.children[1] );
-////		node = node.children[0];
-////	}
-////}
+
+/*
+===============================================================================
+
+Edge normals
+
+===============================================================================
+*/
+
+/*
+================
+idCollisionModelManagerLocal::CalculateEdgeNormals
+================
+*/
+var SHARP_EDGE_DOT = -0.7;
+
+idCollisionModelManagerLocal.prototype.CalculateEdgeNormals = function ( model: cm_model_t, node: cm_node_t ): void {
+	var pref: cm_polygonRef_t;
+	var p: cm_polygon_t;
+	var edge: cm_edge_t;
+	var /*float */dot: number, s: number;
+	var /*int */i: number, edgeNum: number;
+	var dir = new idVec3;
+
+	while ( 1 ) {
+		for ( pref = node.polygons; pref; pref = pref.next ) {
+			p = pref.p;
+			// if we checked this polygon already
+			if ( p.checkcount == this.checkCount ) {
+				continue;
+			}
+			p.checkcount = this.checkCount;
+
+			for ( i = 0; i < p.numEdges; i++ ) {
+				edgeNum = p.edges[i];
+				edge = model.edges[abs( edgeNum )]; // + abs( edgeNum );
+				if ( edge.normal[0] == 0.0 && edge.normal[1] == 0.0 && edge.normal[2] == 0.0 ) {
+					// if the edge is only used by this polygon
+					if ( edge.numUsers == 1 ) {
+						dir.equals( model.vertices[edge.vertexNum[edgeNum < 0 ? 1 : 0]].p.opSubtraction( model.vertices[edge.vertexNum[edgeNum > 0 ? 1 : 0]].p ) );
+						edge.normal.equals( p.plane.Normal ( ).Cross( dir ) );
+						edge.normal.Normalize ( );
+					} else {
+						// the edge is used by more than one polygon
+						edge.normal.equals( p.plane.Normal ( ) );
+					}
+				} else {
+					dot = edge.normal.timesVec( p.plane.Normal ( ) );
+					// if the two planes make a very sharp edge
+					if ( dot < SHARP_EDGE_DOT ) {
+						// max length normal pointing outside both polygons
+						dir.equals( model.vertices[edge.vertexNum[edgeNum > 0 ? 1 : 0]].p.opSubtraction( model.vertices[edge.vertexNum[edgeNum < 0 ? 1 : 0]].p ) );
+						edge.normal.equals( edge.normal.Cross( dir ).opAddition( p.plane.Normal ( ).Cross( dir.opUnaryMinus ( ) ) ) );
+						edge.normal.opMultiplicationAssignment( ( 0.5 / ( 0.5 + 0.5 * SHARP_EDGE_DOT ) ) / edge.normal.Length ( ) );
+						model.numSharpEdges++;
+					} else {
+						s = 0.5 / ( 0.5 + 0.5 * dot );
+						edge.normal.equals( idVec3.times( s, edge.normal.opAddition( p.plane.Normal ( ) ) ) );
+					}
+				}
+			}
+		}
+		// if leaf node
+		if ( node.planeType == -1 ) {
+			break;
+		}
+		this.CalculateEdgeNormals( model, node.children[1] );
+		node = node.children[0];
+	}
+};
 
 /*
 ===============================================================================
@@ -716,20 +716,20 @@ idCollisionModelManagerLocal.prototype.AddPolygonToNode = function ( model: cm_m
 	model.numPolygonRefs++;
 };
 
-/////*
-////================
-////idCollisionModelManagerLocal::AddBrushToNode
-////================
-////*/
-////void idCollisionModelManagerLocal::AddBrushToNode( model: cm_model_t, node: cm_node_t, cm_brush_t *b ) {
-////	cm_brushRef_t *bref;
-////
-////	bref = AllocBrushReference( model, model.numBrushRefs < REFERENCE_BLOCK_SIZE_SMALL ? REFERENCE_BLOCK_SIZE_SMALL : REFERENCE_BLOCK_SIZE_LARGE );
-////	bref.b = b;
-////	bref.next = node.brushes;
-////	node.brushes = bref;
-////	model.numBrushRefs++;
-////}
+/*
+================
+idCollisionModelManagerLocal::AddBrushToNode
+================
+*/
+idCollisionModelManagerLocal.prototype.AddBrushToNode = function ( model: cm_model_t, node: cm_node_t, b: cm_brush_t ): void {
+	var bref: cm_brushRef_t;
+
+	bref = this.AllocBrushReference( model, model.numBrushRefs < REFERENCE_BLOCK_SIZE_SMALL ? REFERENCE_BLOCK_SIZE_SMALL : REFERENCE_BLOCK_SIZE_LARGE );
+	bref.b = b;
+	bref.next = node.brushes;
+	node.brushes = bref;
+	model.numBrushRefs++;
+};
 
 /*
 ================
@@ -910,7 +910,7 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function ( ): vo
 ////		}
 ////		else if ( res == SIDE_ON ) {
 ////			// continue with the side the winding faces
-////			if ( node.plane.Normal() * normal > 0.0f ) {
+////			if ( node.plane.Normal() * normal > 0.0 ) {
 ////				nodeNum = node.children[0];
 ////			}
 ////			else {
@@ -959,7 +959,7 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function ( ): vo
 ////	// make a local copy of the winding
 ////	neww = w;
 ////	neww.GetBounds( bounds );
-////	origin = (bounds[1] - bounds[0]) * 0.5f;
+////	origin = (bounds[1] - bounds[0]) * 0.5;
 ////	radius = origin.Length() + CHOP_EPSILON;
 ////	origin = bounds[0] + origin;
 ////	//
@@ -1927,8 +1927,8 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function ( ): vo
 ////				return true;
 ////			}
 ////			// don't create splitters real close to the bounds
-////			if ( bounds[1][type] - *planeDist > (MIN_NODE_SIZE*0.5f) &&
-////				*planeDist - bounds[0][type] > (MIN_NODE_SIZE*0.5f) ) {
+////			if ( bounds[1][type] - *planeDist > (MIN_NODE_SIZE*0.5) &&
+////				*planeDist - bounds[0][type] > (MIN_NODE_SIZE*0.5) ) {
 ////				return true;
 ////			}
 ////		}
@@ -1987,38 +1987,35 @@ idCollisionModelManagerLocal.prototype.R_FilterPolygonIntoTree = function ( mode
 		this.AddPolygonToNode( model, node, p );
 	}
 };
-////
-/////*
-////================
-////idCollisionModelManagerLocal::R_FilterBrushIntoTree
-////================
-////*/
-////void idCollisionModelManagerLocal::R_FilterBrushIntoTree( model: cm_model_t, node: cm_node_t, cm_brushRef_t *pref, cm_brush_t *b ) {
-////	assert(node != NULL);
-////	while ( node.planeType != -1 ) {
-////		if ( CM_R_InsideAllChildren( node, b.bounds ) ) {
-////			break;
-////		}
-////		if ( b.bounds[0][node.planeType] >= node.planeDist ) {
-////			node = node.children[0];
-////		}
-////		else if ( b.bounds[1][node.planeType] <= node.planeDist ) {
-////			node = node.children[1];
-////		}
-////		else {
-////			R_FilterBrushIntoTree( model, node.children[1], NULL, b );
-////			node = node.children[0];
-////		}
-////	}
-////	if ( pref ) {
-////		pref.next = node.brushes;
-////		node.brushes = pref;
-////	}
-////	else {
-////		AddBrushToNode( model, node, b );
-////	}
-////}
-////
+
+/*
+================
+idCollisionModelManagerLocal::R_FilterBrushIntoTree
+================
+*/
+idCollisionModelManagerLocal.prototype.R_FilterBrushIntoTree = function ( model: cm_model_t, node: cm_node_t, pref: cm_brushRef_t, b: cm_brush_t ): void {
+	assert( node != null );
+	while ( node.planeType != -1 ) {
+		if ( CM_R_InsideAllChildren( node, b.bounds ) ) {
+			break;
+		}
+		if ( b.bounds[0][node.planeType] >= node.planeDist ) {
+			node = node.children[0];
+		} else if ( b.bounds[1][node.planeType] <= node.planeDist ) {
+			node = node.children[1];
+		} else {
+			this.R_FilterBrushIntoTree( model, node.children[1], null, b );
+			node = node.children[0];
+		}
+	}
+	if ( pref ) {
+		pref.next = node.brushes;
+		node.brushes = pref;
+	} else {
+		this.AddBrushToNode( model, node, b );
+	}
+};
+
 /////*
 ////================
 ////idCollisionModelManagerLocal::R_CreateAxialBSPTree
@@ -2538,7 +2535,7 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////			d1 = mesh[v2].xyz - mesh[v1].xyz;
 ////			d2 = mesh[v3].xyz - mesh[v1].xyz;
 ////			plane.SetNormal( d1.Cross(d2) );
-////			if ( plane.Normalize() != 0.0f ) {
+////			if ( plane.Normalize() != 0.0 ) {
 ////				plane.FitThroughPoint( mesh[v1].xyz );
 ////				dot = plane.Distance( mesh[v4].xyz );
 ////				// if we can turn it into a quad
@@ -2566,7 +2563,7 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////			d1 = mesh[v3].xyz - mesh[v1].xyz;
 ////			d2 = mesh[v4].xyz - mesh[v1].xyz;
 ////			plane.SetNormal( d1.Cross(d2) );
-////			if ( plane.Normalize() != 0.0f ) {
+////			if ( plane.Normalize() != 0.0 ) {
 ////				plane.FitThroughPoint( mesh[v1].xyz );
 ////
 ////				w.Clear();
@@ -2735,7 +2732,7 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////	for (i = 0; i < mapBrush.GetNumSides(); i++) {
 ////		brush.planes[i] = planes[i];
 ////	}
-////	AddBrushToNode( model, model.node, brush );
+////	this.AddBrushToNode( model, model.node, brush );
 ////}
 ////
 /////*
@@ -2753,73 +2750,73 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////	}
 ////	return count;
 ////}
-////
-/////*
-////================
-////CM_R_GetModelBounds
-////================
-////*/
-////static void CM_R_GetNodeBounds( idBounds *bounds, node: cm_node_t ) {
-////	var pref: cm_polygonRef_t;
-////	cm_brushRef_t *bref;
-////
-////	while ( 1 ) {
-////		for ( pref = node.polygons; pref; pref = pref.next ) {
-////			bounds.AddPoint( pref.p.bounds[0] );
-////			bounds.AddPoint( pref.p.bounds[1] );
-////		}
-////		for ( bref = node.brushes; bref; bref = bref.next ) {
-////			bounds.AddPoint( bref.b.bounds[0] );
-////			bounds.AddPoint( bref.b.bounds[1] );
-////		}
-////		if ( node.planeType == -1 ) {
-////			break;
-////		}
-////		CM_R_GetNodeBounds( bounds, node.children[1] );
-////		node = node.children[0];
-////	}
-////}
-////
-/////*
-////================
-////CM_GetNodeBounds
-////================
-////*/
-////void CM_GetNodeBounds( idBounds *bounds, node: cm_node_t ) {
-////	bounds.Clear();
-////	CM_R_GetNodeBounds( bounds, node );
-////	if ( bounds.IsCleared() ) {
-////		bounds.Zero();
-////	}
-////}
-////
-/////*
-////================
-////CM_GetNodeContents
-////================
-////*/
-////int CM_GetNodeContents( node: cm_node_t ) {
-////	int contents;
-////	var pref: cm_polygonRef_t;
-////	cm_brushRef_t *bref;
-////
-////	contents = 0;
-////	while ( 1 ) {
-////		for ( pref = node.polygons; pref; pref = pref.next ) {
-////			contents |= pref.p.contents;
-////		}
-////		for ( bref = node.brushes; bref; bref = bref.next ) {
-////			contents |= bref.b.contents;
-////		}
-////		if ( node.planeType == -1 ) {
-////			break;
-////		}
-////		contents |= CM_GetNodeContents( node.children[1] );
-////		node = node.children[0];
-////	}
-////	return contents;
-////}
-////
+
+/*
+================
+CM_R_GetModelBounds
+================
+*/
+function CM_R_GetNodeBounds ( bounds: idBounds, node: cm_node_t ): void {
+	var pref: cm_polygonRef_t;
+	var bref: cm_brushRef_t;
+
+	while ( 1 ) {
+		for ( pref = node.polygons; pref; pref = pref.next ) {
+			bounds.AddPoint( pref.p.bounds[0] );
+			bounds.AddPoint( pref.p.bounds[1] );
+		}
+		for ( bref = node.brushes; bref; bref = bref.next ) {
+			bounds.AddPoint( bref.b.bounds[0] );
+			bounds.AddPoint( bref.b.bounds[1] );
+		}
+		if ( node.planeType == -1 ) {
+			break;
+		}
+		CM_R_GetNodeBounds( bounds, node.children[1] );
+		node = node.children[0];
+	}
+}
+
+/*
+================
+CM_GetNodeBounds
+================
+*/
+function CM_GetNodeBounds ( bounds: idBounds, node: cm_node_t ): void {
+	bounds.Clear ( );
+	CM_R_GetNodeBounds( bounds, node );
+	if ( bounds.IsCleared ( ) ) {
+		bounds.Zero ( );
+	}
+}
+
+/*
+================
+CM_GetNodeContents
+================
+*/
+function CM_GetNodeContents ( node: cm_node_t ): number /*int*/ {
+	var /*int */contents: number;
+	var pref: cm_polygonRef_t;
+	var bref: cm_brushRef_t;
+
+	contents = 0;
+	while ( 1 ) {
+		for ( pref = node.polygons; pref; pref = pref.next ) {
+			contents |= pref.p.contents;
+		}
+		for ( bref = node.brushes; bref; bref = bref.next ) {
+			contents |= bref.b.contents;
+		}
+		if ( node.planeType == -1 ) {
+			break;
+		}
+		contents |= CM_GetNodeContents( node.children[1] );
+		node = node.children[0];
+	}
+	return contents;
+}
+
 /////*
 ////==================
 ////idCollisionModelManagerLocal::RemapEdges
@@ -2941,7 +2938,7 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////	FindInternalEdges( model, model.node );
 ////	// calculate edge normals
 ////	this.checkCount++;
-////	CalculateEdgeNormals( model, model.node );
+////	this.CalculateEdgeNormals( model, model.node );
 ////
 ////	//common.Printf( "%s vertex hash spread is %d\n", model.name.c_str(), cm_vertexHash.GetSpread() );
 ////	//common.Printf( "%s edge hash spread is %d\n", model.name.c_str(), cm_edgeHash.GetSpread() );
@@ -3191,26 +3188,26 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 ////	}
 ////	return -1;
 ////}
-////
-/////*
-////==================
-////idCollisionModelManagerLocal::PrintModelInfo
-////==================
-////*/
-////void idCollisionModelManagerLocal::PrintModelInfo( const model: cm_model_t ) {
-////	common.Printf( "%6i vertices (%i KB)\n", model.numVertices, (model.numVertices * sizeof(cm_vertex_t))>>10 );
-////	common.Printf( "%6i edges (%i KB)\n", model.numEdges, (model.numEdges * sizeof(cm_edge_t))>>10 );
-////	common.Printf( "%6i polygons (%i KB)\n", model.numPolygons, model.polygonMemory>>10 );
-////	common.Printf( "%6i brushes (%i KB)\n", model.numBrushes, model.brushMemory>>10 );
-////	common.Printf( "%6i nodes (%i KB)\n", model.numNodes, (model.numNodes * sizeof(cm_node_t))>>10 );
-////	common.Printf( "%6i polygon refs (%i KB)\n", model.numPolygonRefs, (model.numPolygonRefs * sizeof(cm_polygonRef_t))>>10 );
-////	common.Printf( "%6i brush refs (%i KB)\n", model.numBrushRefs, (model.numBrushRefs * sizeof(cm_brushRef_t))>>10 );
-////	common.Printf( "%6i internal edges\n", model.numInternalEdges );
-////	common.Printf( "%6i sharp edges\n", model.numSharpEdges );
-////	common.Printf( "%6i contained polygons removed\n", model.numRemovedPolys );
-////	common.Printf( "%6i polygons merged\n", model.numMergedPolys );
-////	common.Printf( "%6i KB total memory used\n", model.usedMemory>>10 );
-////}
+
+/*
+==================
+idCollisionModelManagerLocal::PrintModelInfo
+==================
+*/
+idCollisionModelManagerLocal.prototype.PrintModelInfo = function ( model: cm_model_t ): void {
+	common.Printf( "%6i vertices (%i KB)\n", model.numVertices, ( model.numVertices * sizeof( cm_vertex_t ) ) >> 10 );
+	common.Printf( "%6i edges (%i KB)\n", model.numEdges, ( model.numEdges * sizeof( cm_edge_t ) ) >> 10 );
+	common.Printf( "%6i polygons (%i KB)\n", model.numPolygons, model.polygonMemory >> 10 );
+	common.Printf( "%6i brushes (%i KB)\n", model.numBrushes, model.brushMemory >> 10 );
+	common.Printf( "%6i nodes (%i KB)\n", model.numNodes, ( model.numNodes * sizeof( cm_node_t ) ) >> 10 );
+	common.Printf( "%6i polygon refs (%i KB)\n", model.numPolygonRefs, ( model.numPolygonRefs * sizeof( cm_polygonRef_t ) ) >> 10 );
+	common.Printf( "%6i brush refs (%i KB)\n", model.numBrushRefs, ( model.numBrushRefs * sizeof( cm_brushRef_t ) ) >> 10 );
+	common.Printf( "%6i internal edges\n", model.numInternalEdges );
+	common.Printf( "%6i sharp edges\n", model.numSharpEdges );
+	common.Printf( "%6i contained polygons removed\n", model.numRemovedPolys );
+	common.Printf( "%6i polygons merged\n", model.numMergedPolys );
+	common.Printf( "%6i KB total memory used\n", model.usedMemory >> 10 );
+};
 
 /*
 ================
@@ -3250,7 +3247,7 @@ idCollisionModelManagerLocal.prototype.AccumulateModelInfo = function ( model: c
 ////
 ////	if ( model == -1 ) {
 ////		AccumulateModelInfo( &modelInfo );
-////		PrintModelInfo( &modelInfo );
+////		this.PrintModelInfo( &modelInfo );
 ////		return;
 ////	}
 ////	if ( model < 0 || model > MAX_SUBMODELS || model > this.maxModels ) {
@@ -3262,7 +3259,7 @@ idCollisionModelManagerLocal.prototype.AccumulateModelInfo = function ( model: c
 ////		return;
 ////	}
 ////
-////	PrintModelInfo( this.models[model] );
+////	this.PrintModelInfo( this.models[model] );
 ////}
 ////
 /////*
@@ -3599,14 +3596,14 @@ idCollisionModelManagerLocal.prototype.LoadMap = function ( mapFile: idMapFile )
 ////	// if the model has too many vertices to fit in a trace model
 ////	if ( model.numVertices > MAX_TRACEMODEL_VERTS ) {
 ////		common.Printf( "idCollisionModelManagerLocal::TrmFromModel: model %s has too many vertices.\n", model.name.c_str() );
-////		PrintModelInfo( model );
+////		this.PrintModelInfo( model );
 ////		return false;
 ////	}
 ////
 ////	// plus one because the collision model accounts for the first unused edge
 ////	if ( model.numEdges > MAX_TRACEMODEL_EDGES+1 ) {
 ////		common.Printf( "idCollisionModelManagerLocal::TrmFromModel: model %s has too many edges.\n", model.name.c_str() );
-////		PrintModelInfo( model );
+////		this.PrintModelInfo( model );
 ////		return false;
 ////	}
 ////
@@ -3620,7 +3617,7 @@ idCollisionModelManagerLocal.prototype.LoadMap = function ( mapFile: idMapFile )
 ////	this.checkCount++;
 ////	if ( !TrmFromModel_r( trm, model.node ) ) {
 ////		common.Printf( "idCollisionModelManagerLocal::TrmFromModel: model %s has too many polygons.\n", model.name.c_str() );
-////		PrintModelInfo( model );
+////		this.PrintModelInfo( model );
 ////		return false;
 ////	}
 ////
@@ -3649,7 +3646,7 @@ idCollisionModelManagerLocal.prototype.LoadMap = function ( mapFile: idMapFile )
 ////	for ( i = 1; i <= trm.numEdges; i++ ) {
 ////		if ( numEdgeUsers[i] != 2 ) {
 ////			common.Printf( "idCollisionModelManagerLocal::TrmFromModel: model %s has dangling edges, the model has to be an enclosed hull.\n", model.name.c_str() );
-////			PrintModelInfo( model );
+////			this.PrintModelInfo( model );
 ////			return false;
 ////		}
 ////	}

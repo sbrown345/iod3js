@@ -80,6 +80,7 @@ Collision model
 */
 
 class cm_vertex_t {
+	static size = 24;
 	p = new idVec3;					// vertex point
 	checkcount:number/*int*/;			// for multi-check avoidance
 	side:number/*unsigned long*/;				// each bit tells at which side this vertex passes one of the trace model edges
@@ -88,6 +89,7 @@ class cm_vertex_t {
 
 
 class cm_edge_t {
+	static size = 36;
 	checkcount: number /*int*/; // for multi-check avoidance
 	internal: number /*unsigned short*/; // a trace model can never collide with internal edges
 	numUsers: number /*unsigned short*/; // number of polygons using this edge
@@ -144,6 +146,7 @@ class cm_polygon_t{
 };
 
 class cm_polygonRef_t {
+	static size = 8;
 	p:cm_polygon_t ;					// pointer to polygon
 	next: cm_polygonRef_t;				// next polygon in chain
 
@@ -204,6 +207,7 @@ class cm_brush_t {
 }
 
 class cm_brushRef_t {
+	static size = 8;
 	b: cm_brush_t; // pointer to brush
 	next: cm_brushRef_t; // next brush in chain
 }
@@ -225,6 +229,7 @@ class cm_brushRefBlock_t {
 }
 
 class cm_node_t {
+	static size = 28;
 	planeType: number /*int*/; // node axial plane type
 	planeDist: number /*float*/; // node plane distance
 	polygons: cm_polygonRef_t; // polygons in node
@@ -575,7 +580,7 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 	AddBrushToNode(model: cm_model_t, node: cm_node_t, b: cm_brush_t): void { throw "placeholder"; }
 	SetupTrmModelStructure(): void { throw "placeholder"; }
 	R_FilterPolygonIntoTree( model: cm_model_t, node: cm_node_t, pref: cm_polygonRef_t, p: cm_polygon_t ):void { throw "placeholder"; }
-////	void			R_FilterBrushIntoTree( model: cm_model_t, node: cm_node_t, cm_brushRef_t *pref, b: cm_brush_t );
+	R_FilterBrushIntoTree ( model: cm_model_t, node: cm_node_t, pref: cm_brushRef_t, b: cm_brush_t ): void { throw "placeholder"; }
 ////	cm_node_t *		R_CreateAxialBSPTree( model: cm_model_t, node: cm_node_t, const idBounds &bounds );
 ////	cm_node_t *		CreateAxialBSPTree( model: cm_model_t, node: cm_node_t );
 ////					// creation of raw polygons
@@ -587,12 +592,12 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 ////	int				GetEdge( model: cm_model_t, const idVec3 &v1, const idVec3 &v2, int *edgeNum, int v1num );
 ////	void			CreatePolygon( model: cm_model_t, idFixedWinding *w, const idPlane &plane, const idMaterial *material, int primitiveNum );
 ////	void			PolygonFromWinding( model: cm_model_t, idFixedWinding *w, const idPlane &plane, const idMaterial *material, int primitiveNum );
-////	void			CalculateEdgeNormals( model: cm_model_t, node: cm_node_t );
+	CalculateEdgeNormals( model: cm_model_t, node: cm_node_t ):void { throw "placeholder"; }
 ////	void			CreatePatchPolygons( model: cm_model_t, idSurface_Patch &mesh, const idMaterial *material, int primitiveNum );
 ////	void			ConvertPatch( model: cm_model_t, const idMapPatch *patch, int primitiveNum );
 ////	void			ConvertBrushSides( model: cm_model_t, const idMapBrush *mapBrush, int primitiveNum );
 ////	void			ConvertBrush( model: cm_model_t, const idMapBrush *mapBrush, int primitiveNum );
-////	void			PrintModelInfo( const model: cm_model_t );
+	PrintModelInfo( model: cm_model_t ):void { throw "placeholder"; }
 	AccumulateModelInfo ( model: cm_model_t ): void { throw "placeholder"; }
 ////	void			RemapEdges( node: cm_node_t, int *edgeRemap );
 ////	void			OptimizeArrays( model: cm_model_t );

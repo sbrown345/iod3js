@@ -1445,7 +1445,7 @@ function R_DeriveTangentsWithoutNormals ( tri: srfTriangles_t ): void {
 			var /*float	*/d: number;
 
 			d = vert.tangents[j].timesVec( vert.normal );
-			vert.tangents[j].equals( vert.tangents[j].minus( idVec3.times( d, vert.normal ) ) );
+			vert.tangents[j].equals( vert.tangents[j].opSubtraction( idVec3.times( d, vert.normal ) ) );
 			vert.tangents[j].Normalize ( );
 		}
 	}
@@ -2097,7 +2097,7 @@ function R_ReverseTriangles ( tri: srfTriangles_t ): void {
 	// If the surface is going to have generated normals, this won't matter,
 	// but if it has explicit normals, this will keep it on the correct side
 	for ( i = 0; i < tri.numVerts; i++ ) {
-		tri.verts[i].normal.equals( vec3_origin.minus( tri.verts[i].normal ) );
+		tri.verts[i].normal.equals( vec3_origin.opSubtraction( tri.verts[i].normal ) );
 	}
 
 	// flip the index order to make them back sided

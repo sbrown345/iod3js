@@ -638,13 +638,14 @@ static ClearEventList( ):void {
 		EventPool[ i ].Free();
 	}
 }
-////
-/////*
-////================
-////idEvent::ServiceEvents
-////================
-////*/
-////void idEvent::ServiceEvents( void ) {
+
+/*
+================
+idEvent::ServiceEvents
+================
+*/
+	static ServiceEvents ( ): void {
+		todoThrow ( );
 ////	idEvent		*event;
 ////	int			num;
 ////	int			args[ D_EVENT_MAXARGS ];
@@ -736,7 +737,7 @@ static ClearEventList( ):void {
 ////			gameLocal.Error( "Event overflow.  Possible infinite loop in script." );
 ////		}
 ////	}
-////}
+	}
 
 /*
 ================
@@ -777,7 +778,7 @@ static Init( ):void {
 ////idEvent::Shutdown
 ////================
 ////*/
-////void idEvent::Shutdown( void ) {
+////void idEvent::Shutdown( ) {
 ////	gameLocal.Printf( "Shutdown event system\n" );
 ////
 ////	if ( !idEvent.initialized ) {
@@ -1006,7 +1007,7 @@ static Init( ):void {
 ////CreateEventCallbackHandler
 ////================
 ////*/
-////void CreateEventCallbackHandler( void ) {
+////void CreateEventCallbackHandler( ) {
 ////	int num;
 ////	int count;
 ////	int i, j, k;

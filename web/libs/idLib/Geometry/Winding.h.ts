@@ -952,8 +952,8 @@ idWinding::GetPlane
 		}
 
 		center = this.GetCenter ( );
-		v1 = this.p[0].ToVec3 ( ).minus( center );
-		v2 = this.p[1].ToVec3 ( ).minus( center );
+		v1 = this.p[0].ToVec3 ( ).opSubtraction( center );
+		v2 = this.p[1].ToVec3 ( ).opSubtraction( center );
 		plane.SetNormal( v2.Cross( v1 ) );
 		plane.Normalize ( );
 		plane.FitThroughPoint( this.p[0].ToVec3 ( ) );
@@ -1718,8 +1718,8 @@ idWinding::TriangleArea
 	static /*float */TriangleArea ( a: idVec3, b: idVec3, c: idVec3 ): number {
 		var v1: idVec3, v2: idVec3;
 		var cross: idVec3;
-		v1 = b. /*-*/minus( a );
-		v2 = c. /*-*/minus( a );
+		v1 = b. /*-*/opSubtraction( a );
+		v2 = c. /*-*/opSubtraction( a );
 		cross = v1.Cross( v2 );
 		return 0.5 * cross.Length ( );
 	}

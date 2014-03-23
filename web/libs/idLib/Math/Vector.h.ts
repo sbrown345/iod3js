@@ -561,7 +561,7 @@ class idVec3 {
 		this.x = this.y = this.z = 0.0;
 	}
 
-	opSubtract ( ): idVec3 {
+	opUnaryMinus ( ): idVec3 {
 		return new idVec3( -this.x, -this.y, -this.z );
 	}
 
@@ -572,12 +572,12 @@ class idVec3 {
 ////	return *this;
 ////}
 
-	minus ( a: idVec3 ): idVec3 {
+	opSubtraction ( a: idVec3 ): idVec3 {
 		return new idVec3( this.x - a.x, this.y - a.y, this.z - a.z );
 	}
 
-/*float*/
-	timesVec ( a: idVec3 ): number {
+
+	timesVec ( a: idVec3 ): /*float*/number {
 		return this.x * a.x + this.y * a.y + this.z * a.z;
 	}
 

@@ -532,9 +532,9 @@ idCollisionModelManagerLocal.prototype.ParseCollisionModel = function ( src: idL
 	this.checkCount++;
 	this.CalculateEdgeNormals( model, model.node );
 	// get model bounds from brush and polygon bounds
-	this.CM_GetNodeBounds( model.bounds, model.node );
+	CM_GetNodeBounds( model.bounds, model.node );
 	// get model contents
-	model.contents = this.CM_GetNodeContents( model.node );
+	model.contents = CM_GetNodeContents( model.node );
 	// total memory used by this model
 	model.usedMemory = model.numVertices * sizeof( cm_vertex_t ) +
 		model.numEdges * sizeof( cm_edge_t ) +
