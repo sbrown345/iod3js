@@ -600,6 +600,6 @@ function LittleFloat( /*float*/ l: number): number { return l/*return _LittleFlo
 */
 
 function AssertFailed( /*const char **/file:string, /*int */line:number, /*const char **/expression:string ):void {
-    todoThrow();
+	todoThrow(expression);
     //idLib::sys.DebugPrintf( "\n\nASSERTION FAILED!\n%s(%d): '%s'\n", file, line, expression );
 }

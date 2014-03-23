@@ -466,7 +466,7 @@ idCollisionModelManagerLocal.prototype.ParseBrushes = function ( src: idLexer, m
 		if ( token.type == TT_NUMBER ) {
 			b.contents = token.GetIntValue ( ); // old .cm files use a single integer
 		} else {
-			b.contents = this.ContentsFromString( token );
+			b.contents = this.ContentsFromString( token.data );
 		}
 		b.checkcount = 0;
 		b.primitiveNum = 0;

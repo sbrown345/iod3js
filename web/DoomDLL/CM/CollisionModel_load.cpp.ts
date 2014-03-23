@@ -694,7 +694,6 @@ idCollisionModelManagerLocal.prototype.AllocBrush = function ( model: cm_model_t
 		brush.planes = newStructArray<idPlane>(idPlane, numPlanes ); // manually allocate, it is already done in original
 		model.brushBlock.nextPtr += 1; //next += size;
 		model.brushBlock.bytesRemaining -= size;
-		debugger;
 	} else {
 		brush = new cm_brush_t; // (cm_brush_t *) Mem_Alloc( size );
 		brush.planes = newStructArray<idPlane>( idPlane, numPlanes );

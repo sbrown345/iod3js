@@ -1673,7 +1673,7 @@ class idLexer {
 		//if ( !OSPath && ( baseFolder[0] != '\0' ) ) {// TODO: WATCH OUT HERE
 		//	pathname.equals( va( "%s/%s", this.baseFolder, filename ));
 		//} else {
-		//	pathname = filename;
+		//	pathname .equals(filename);
 		//}
 		//if ( OSPath ) {
 		//	fp = fileSystem.OpenExplicitFileRead( pathname );
@@ -1731,7 +1731,7 @@ class idLexer {
 
 		assert( typeof ptr === "string" );
 
-		this.filename = new idStr( name );
+		this.filename.equals( name );
 		this.buffer = ptr;
 		this.fileTime = 0;
 		this.length = length;
@@ -1774,7 +1774,7 @@ FreeSource( ):void {
 	}
 	this.tokenavailable = 0;
 	this.token = new idToken();
-	this.loaded = 0;
+	this.loaded = 0/*false*/;
 }
 
 	constructor ( )
@@ -1786,7 +1786,7 @@ FreeSource( ):void {
 	constructor ( /*const char **/ptr: string, /*int */length: number, name: string, /*int*/ flags: number )
 	constructor ( a1?: any, a2?: any, a3?: any, a4?: any ) {
 		if ( arguments.length == 0 ) {
-			this.loaded = 0;
+			this.loaded = 0 /*false*/;
 			this.filename.equals( "" );
 			this.flags = 0;
 			this.SetPunctuations( null );
@@ -1801,7 +1801,7 @@ FreeSource( ):void {
 			this.hadError = false;
 		} else if ( arguments.length == 1 && typeof a1 === "number" ) {
 			var flags = a1;
-			this.loaded = 0;
+			this.loaded = 0 /*false*/;
 			this.filename.equals( "" );
 			this.flags = flags;
 			this.SetPunctuations( null );
@@ -1814,19 +1814,9 @@ FreeSource( ):void {
 			this.token.equals( "" );
 			this.next = null;
 			this.hadError = false;
-		} else if ( typeof a1 === "string" && ( arguments.length == 1 || arguments.length == 2 || arguments.length == 3 ) ) {
-			var filename = a1, flags = a2 || 0, OSPath = a3 || false;
-			this.loaded = 0;
-			this.flags = flags;
-			this.SetPunctuations( null );
-			this.allocated = 0;
-			this.token.equals( "" );
-			this.next = null;
-			this.hadError = false;
-			this.LoadFile( filename, OSPath );
-		} else if ( typeof a3 === "string" && ( arguments.length == 3 || arguments.length == 4 ) ) {
+		} else if ( typeof a2 === "number" && typeof a3 === "string" && ( arguments.length == 3 || arguments.length == 4 ) ) {
 			var ptr = a1, length: number = a2, name: string = a3, flags = a4 || 0;
-			this.loaded = 0;
+			this.loaded = 0 /*false*/;
 			this.flags = flags;
 			this.SetPunctuations( null );
 			this.allocated = 0;
@@ -1834,6 +1824,16 @@ FreeSource( ):void {
 			this.next = null;
 			this.hadError = false;
 			this.LoadMemory( ptr, length, name );
+		} else if ( typeof a1 === "string" && ( arguments.length == 1 || arguments.length == 2 || arguments.length == 3 ) ) {
+			var filename = a1, flags = a2 || 0, OSPath = a3 || false;
+			this.loaded = 0 /*false*/;
+			this.flags = flags;
+			this.SetPunctuations( null );
+			this.allocated = 0;
+			this.token.equals( "" );
+			this.next = null;
+			this.hadError = false;
+			this.LoadFile( filename, OSPath );
 		}
 	}
 

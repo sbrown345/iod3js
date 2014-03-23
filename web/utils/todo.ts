@@ -17,12 +17,12 @@ function todoUnimportant(reason?: string): void {
 function todoMaybeGameDLL(reason?: string): void {
 }
 
-function todoThrow ( message: string = "" ): any {
+function todoThrow ( message: any = "" ): any {
 	if ( window.location.search.indexOf( "skipTodoThrow" ) === -1 ) {
 		dlogFlush ( );
 		console.log( idFileSystemLocal.tempFilesForWriting );
-		//debugger;
-		console.error( "todoThrow \n" + message );
+		debugger;
+		console.error( "todoThrow \n", message );
 		throw "!";
 	}
 }
