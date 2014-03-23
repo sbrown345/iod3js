@@ -23,6 +23,7 @@ var DEBUG_GUI = isd(false );
 var DEBUG_HASHINDEX = isd( false );
 var DEBUG_STRPOOL = isd( false );
 var DEBUG_RENDERWORLD_LOAD = isd( true ); // todo: checkoutput
+var DEBUG_CM = isd( true ); // todo: checkoutput
 
 function dlog(log: boolean, format: string, ...args: any[]) {
 	if (!log || SKIP_ALL_LOGGING) return;

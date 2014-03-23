@@ -31,17 +31,33 @@
 ////
 ////#include "../Game_local.h"
 
+/*
+===============================================================
+
+	idClipModel trace model cache
+
+===============================================================
+*/
+
+var traceModelCache = new idList<trmCache_t>(trmCache_t, true);
+var traceModelHash = new idHashIndex;
+
+
 var MAX_SECTOR_DEPTH		=		12
 var MAX_SECTORS				=		((1<<(MAX_SECTOR_DEPTH+1))-1)
 
-class clipSector_t{
-	//int						axis;		// -1 = leaf node
-	//float					dist;
-	//struct clipSector_s *	children[2];
-	//struct clipLink_s *		clipLinks;
+class clipSector_t {
+	axis: number /*int*/; // -1 = leaf node
+	dist: number /*float*/;
+	children = new Array<clipSector_t>( 2 );
+	clipLinks: clipSector_t;
 
 	init ( ): void {
-		
+		this.axis = 0;
+		this.dist = 0;
+		this.children[0] = null;
+		this.children[1] = null;
+		this.clipLinks = null;
 	}
 }
 
@@ -298,16 +314,6 @@ class idClipModel {
 
 ////#endif /* !__CLIP_H__ */
 
-/*
-===============================================================
-
-	idClipModel trace model cache
-
-===============================================================
-*/
-
-	static traceModelCache = new idList<trmCache_t>(trmCache_t, true);
-	static traceModelHash = new idHashIndex;
 	
 /*
 ===============
@@ -315,8 +321,8 @@ idClipModel::ClearTraceModelCache
 ===============
 */
 	static ClearTraceModelCache ( ): void {
-		idClipModel.traceModelCache.DeleteContents( true );
-		idClipModel.traceModelHash.Free ( );
+		traceModelCache.DeleteContents( true );
+		traceModelHash.Free ( );
 	}
 
 /////*
@@ -325,35 +331,35 @@ idClipModel::ClearTraceModelCache
 ////===============
 ////*/
 ////int idClipModel::TraceModelCacheSize( ) {
-////	return this.idClipModel.Num() * sizeof( idTraceModel );
+////	return traceModelCache.Num() * sizeof( idTraceModel );
 ////}
-////
-/////*
-////===============
-////idClipModel::AllocTraceModel
-////===============
-////*/
-////int idClipModel::AllocTraceModel( const idTraceModel &trm ) {
-////	int i, hashKey, traceModelIndex;
-////	trmCache_t *entry;
-////
-////	hashKey = GetTraceModelHashKey( trm );
-////	for ( i = traceModelHash.First( hashKey ); i >= 0; i = traceModelHash.Next( i ) ) {
-////		if ( this.idClipModel[i].trm == trm ) {
-////			this.idClipModel[i].refCount++;
-////			return i;
-////		}
-////	}
-////
-////	entry = new trmCache_t;
-////	entry.trm = trm;
-////	entry.trm.GetMassProperties( 1.0f, entry.volume, entry.centerOfMass, entry.inertiaTensor );
-////	entry.refCount = 1;
-////
-////	traceModelIndex = this.idClipModel.Append( entry );
-////	traceModelHash.Add( hashKey, traceModelIndex );
-////	return traceModelIndex;
-////}
+
+/*
+===============
+idClipModel::AllocTraceModel
+===============
+*/
+	AllocTraceModel ( trm: idTraceModel ): number {
+		var /*int */i: number, hashKey: number, traceModelIndex: number;
+		var entry: trmCache_t;
+
+		hashKey = this.GetTraceModelHashKey( trm );
+		for ( i = traceModelHash.First( hashKey ); i >= 0; i = traceModelHash.Next( i ) ) {
+			if ( traceModelCache[i].trm == trm ) {
+				traceModelCache[i].refCount++;
+				return i;
+			}
+		}
+
+		entry = new trmCache_t;
+		entry.trm = trm;
+		entry.trm.GetMassProperties( 1.0, entry.volume, entry.centerOfMass, entry.inertiaTensor );
+		entry.refCount = 1;
+
+		traceModelIndex = traceModelCache.Append( entry );
+		traceModelHash.Add( hashKey, traceModelIndex );
+		return traceModelIndex;
+	}
 
 /*
 ===============
@@ -361,11 +367,11 @@ idClipModel::FreeTraceModel
 ===============
 */
 	static FreeTraceModel ( /*int */traceModelIndex: number ): void {
-		if (traceModelIndex < 0 || traceModelIndex >= idClipModel.traceModelCache.Num ( ) || idClipModel.traceModelCache[traceModelIndex].refCount <= 0 ) {
+		if (traceModelIndex < 0 || traceModelIndex >= traceModelCache.Num ( ) || traceModelCache[traceModelIndex].refCount <= 0 ) {
 			gameLocal.Warning( "idClipModel::FreeTraceModel: tried to free uncached trace model" );
 			return;
 		}
-		idClipModel.traceModelCache[traceModelIndex].refCount--;
+		traceModelCache[traceModelIndex].refCount--;
 	}
 ////
 /////*
@@ -374,19 +380,19 @@ idClipModel::FreeTraceModel
 ////===============
 ////*/
 ////idTraceModel *idClipModel::GetCachedTraceModel( int traceModelIndex ) {
-////	return &this.idClipModel[traceModelIndex].trm;
+////	return &traceModelCache[traceModelIndex].trm;
 ////}
-////
-/////*
-////===============
-////idClipModel::GetTraceModelHashKey
-////===============
-////*/
-////int idClipModel::GetTraceModelHashKey( const idTraceModel &trm ) {
-////	const idVec3 &v = trm.bounds[0];
-////	return ( trm.type << 8 ) ^ ( trm.numVerts << 4 ) ^ ( trm.numEdges << 2 ) ^ ( trm.numPolys << 0 ) ^ idMath::FloatHash( v.ToFloatPtr(), v.GetDimension() );
-////}
-////
+
+/*
+===============
+idClipModel::GetTraceModelHashKey
+===============
+*/
+	GetTraceModelHashKey ( trm: idTraceModel ): number {
+		var v = trm.bounds[0];
+		return ( trm.type << 8 ) ^ ( trm.numVerts << 4 ) ^ ( trm.numEdges << 2 ) ^ ( trm.numPolys << 0 ) ^ idMath.FloatHash( v.ToFloatPtr ( ), v.GetDimension ( ) );
+	}
+
 /////*
 ////===============
 ////idClipModel::SaveTraceModels
@@ -395,9 +401,9 @@ idClipModel::FreeTraceModel
 ////void idClipModel::SaveTraceModels( idSaveGame *savefile ) {
 ////	int i;
 ////
-////	savefile.WriteInt( this.idClipModel.Num() );
-////	for ( i = 0; i < this.idClipModel.Num(); i++ ) {
-////		trmCache_t *entry = this.idClipModel[i];
+////	savefile.WriteInt( traceModelCache.Num() );
+////	for ( i = 0; i < traceModelCache.Num(); i++ ) {
+////		trmCache_t *entry = traceModelCache[i];
 ////		
 ////		savefile.WriteTraceModel( entry.trm );
 ////		savefile.WriteFloat( entry.volume );
@@ -417,7 +423,7 @@ idClipModel::FreeTraceModel
 ////	ClearTraceModelCache();
 ////
 ////	savefile.ReadInt( num );
-////	this.idClipModel.SetNum( num );
+////	traceModelCache.SetNum( num );
 ////
 ////	for ( i = 0; i < num; i++ ) {
 ////		trmCache_t *entry = new trmCache_t;
@@ -429,7 +435,7 @@ idClipModel::FreeTraceModel
 ////		savefile.ReadMat3( entry.inertiaTensor );
 ////		entry.refCount = 0;
 ////
-////		this.idClipModel[i] = entry;
+////		traceModelCache[i] = entry;
 ////		traceModelHash.Add( GetTraceModelHashKey( entry.trm ), i );
 ////	}
 ////}
@@ -464,21 +470,21 @@ idClipModel::FreeTraceModel
 ////		return false;
 ////	}
 ////}
-////
-/////*
-////================
-////idClipModel::LoadModel
-////================
-////*/
-////void idClipModel::LoadModel( const idTraceModel &trm ) {
-////	collisionModelHandle = 0;
-////	renderModelHandle = -1;
-////	if ( traceModelIndex != -1 ) {
-////		idClipModel.FreeTraceModel( traceModelIndex );
-////	}
-////	traceModelIndex = AllocTraceModel( trm );
-////	bounds = trm.bounds;
-////}
+
+/*
+================
+idClipModel::LoadModel
+================
+*/
+	LoadModel ( trm: idTraceModel ): void {
+		this.collisionModelHandle = 0;
+		this.renderModelHandle = -1;
+		if ( this.traceModelIndex != -1 ) {
+			idClipModel.FreeTraceModel( this.traceModelIndex );
+		}
+		this.traceModelIndex = this.AllocTraceModel( trm );
+		this.bounds.opEquals( trm.bounds );
+	}
 ////
 /////*
 ////================
@@ -656,7 +662,7 @@ idClipModel::idClipModel
 ////	}
 ////	savefile.ReadInt( traceModelIndex );
 ////	if ( traceModelIndex >= 0 ) {
-////		this.idClipModel[traceModelIndex].refCount++;
+////		traceModelCache[traceModelIndex].refCount++;
 ////	}
 ////	savefile.ReadInt( renderModelHandle );
 ////	savefile.ReadBool( linked );
@@ -713,7 +719,7 @@ idClipModel::idClipModel
 ////		gameLocal.Error( "idClipModel::GetMassProperties: clip model %d on '%s' is not a trace model\n", id, entity.name.c_str() );
 ////	}
 ////
-////	trmCache_t *entry = this.idClipModel[traceModelIndex];
+////	trmCache_t *entry = traceModelCache[traceModelIndex];
 ////	mass = entry.volume * density;
 ////	centerOfMass = entry.centerOfMass;
 ////	inertiaTensor = density * entry.inertiaTensor;
@@ -873,7 +879,7 @@ class idClip {
 	////	// special case translations versus the rest of the world
 	////	bool					TracePoint( trace_t &results, start:idVec3, end:idVec3,
 	////								int contentMask, passEntity:idEntity );
-	////	bool					TraceBounds( trace_t &results, start:idVec3, end:idVec3, const idBounds &bounds,
+	////	bool					TraceBounds( trace_t &results, start:idVec3, end:idVec3, const bounds: idBounds,
 	////								int contentMask, passEntity:idEntity );
 	////
 	////	// clip versus a specific model
@@ -898,8 +904,8 @@ class idClip {
 	////	bool					GetModelContactFeature( const contactInfo_t &contact, const idClipModel *clipModel, idFixedWinding &winding ) const;
 	////
 	////	// get entities/clip models within or touching the given bounds
-	////	int						EntitiesTouchingBounds( const idBounds &bounds, int contentMask, idEntity **entityList, int maxCount ) const;
-	////	int						ClipModelsTouchingBounds( const idBounds &bounds, int contentMask, idClipModel **clipModelList, int maxCount ) const;
+	////	int						EntitiesTouchingBounds( const bounds: idBounds, int contentMask, idEntity **entityList, int maxCount ) const;
+	////	int						ClipModelsTouchingBounds( const bounds: idBounds, int contentMask, idClipModel **clipModelList, int maxCount ) const;
 	////
 	////	const idBounds &		GetWorldBounds( ) const;
 	////	idClipModel *			DefaultClipModel( );
@@ -925,10 +931,10 @@ class idClip {
 	numContacts:number/*int*/;
 	////
 	////private:
-	////	struct clipSector_s *	CreateClipSectors_r( const int depth, const idBounds &bounds, idVec3 &maxSector );
+	////	struct clipSector_s *	CreateClipSectors_r( const int depth, const bounds: idBounds, idVec3 &maxSector );
 	////	void					ClipModelsTouchingBounds_r( const struct clipSector_s *node, struct listParms_s &parms ) const;
 	////	const idTraceModel *	TraceModelForClipModel( const idClipModel *mdl ) const;
-	////	int						GetTraceClipModels( const idBounds &bounds, int contentMask, passEntity:idEntity, idClipModel **clipModelList ) const;
+	////	int						GetTraceClipModels( const bounds: idBounds, int contentMask, passEntity:idEntity, idClipModel **clipModelList ) const;
 	////	void					TraceRenderModel( trace_t &trace, start:idVec3, const idVec3 &end, const float radius, const idMat3 &axis, idClipModel *touch ) const;
 ////
 ////
@@ -937,7 +943,7 @@ class idClip {
 ////	return ( results.fraction < 1.0f );
 ////}
 ////
-////ID_INLINE bool idClip::TraceBounds( trace_t &results, start:idVec3, end:idVec3, const idBounds &bounds, int contentMask, const passEntity:idEntity ) {
+////ID_INLINE bool idClip::TraceBounds( trace_t &results, start:idVec3, end:idVec3, const bounds: idBounds, int contentMask, const passEntity:idEntity ) {
 ////	this.temporaryClipModel.LoadModel( idTraceModel( bounds ) );
 ////	Translation( results, start, end, &this.temporaryClipModel, mat3_identity, contentMask, passEntity );
 ////	return ( results.fraction < 1.0f );
@@ -973,55 +979,55 @@ idClip::idClip
 		this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;
 	}
 
-/////*
-////===============
-////idClip::CreateClipSectors_r
-////
-////Builds a uniformly subdivided tree for the given world size
-////===============
-////*/
-////clipSector_t *idClip::CreateClipSectors_r( const int depth, const idBounds &bounds, idVec3 &maxSector ) {
-////	int				i;
-////	clipSector_t	*anode;
-////	idVec3			size;
-////	idBounds		front, back;
-////
-////	anode = &this.clipSectors[idClip::this.numClipSectors];
-////	idClip::this.numClipSectors++;
-////
-////	if ( depth == MAX_SECTOR_DEPTH ) {
-////		anode.axis = -1;
-////		anode.children[0] = anode.children[1] = NULL;
-////
-////		for ( i = 0; i < 3; i++ ) {
-////			if ( bounds[1][i] - bounds[0][i] > maxSector[i] ) {
-////				maxSector[i] = bounds[1][i] - bounds[0][i];
-////			}
-////		}
-////		return anode;
-////	}
-////
-////	size = bounds[1] - bounds[0];
-////	if ( size[0] >= size[1] && size[0] >= size[2] ) {
-////		anode.axis = 0;
-////	} else if ( size[1] >= size[0] && size[1] >= size[2] ) {
-////		anode.axis = 1;
-////	} else {
-////		anode.axis = 2;
-////	}
-////
-////	anode.dist = 0.5f * ( bounds[1][anode.axis] + bounds[0][anode.axis] );
-////
-////	front = bounds;
-////	back = bounds;
-////	
-////	front[0][anode.axis] = back[1][anode.axis] = anode.dist;
-////	
-////	anode.children[0] = CreateClipSectors_r( depth+1, front, maxSector );
-////	anode.children[1] = CreateClipSectors_r( depth+1, back, maxSector );
-////
-////	return anode;
-////}
+/*
+===============
+idClip::CreateClipSectors_r
+
+Builds a uniformly subdivided tree for the given world size
+===============
+*/
+	CreateClipSectors_r ( /*int */depth: number, bounds: idBounds, maxSector: idVec3 ): clipSector_t {
+		var /*int*/i: number;
+		var anode: clipSector_t;
+		var size = new idVec3;
+		var front = new idBounds, back = new idBounds;
+
+		anode = this.clipSectors[this.numClipSectors];
+		this.numClipSectors++;
+
+		if ( depth == MAX_SECTOR_DEPTH ) {
+			anode.axis = -1;
+			anode.children[0] = anode.children[1] = null;
+
+			for ( i = 0; i < 3; i++ ) {
+				if ( bounds[1][i] - bounds[0][i] > maxSector[i] ) {
+					maxSector[i] = bounds[1][i] - bounds[0][i];
+				}
+			}
+			return anode;
+		}
+
+		size.equals( bounds[1].opSubtraction( bounds[0] ) );
+		if ( size[0] >= size[1] && size[0] >= size[2] ) {
+			anode.axis = 0;
+		} else if ( size[1] >= size[0] && size[1] >= size[2] ) {
+			anode.axis = 1;
+		} else {
+			anode.axis = 2;
+		}
+
+		anode.dist = 0.5 * ( bounds[1][anode.axis] + bounds[0][anode.axis] );
+
+		front.opEquals( bounds );
+		back.opEquals( bounds );
+
+		front[0][anode.axis] = back[1][anode.axis] = anode.dist;
+
+		anode.children[0] = this.CreateClipSectors_r( depth + 1, front, maxSector );
+		anode.children[1] = this.CreateClipSectors_r( depth + 1, back, maxSector );
+
+		return anode;
+	}
 
 /*
 ===============
@@ -1039,20 +1045,20 @@ idClip::Init
 		this.touchCount = -1;
 		// get world map bounds
 		h = collisionModelManager.LoadModel( "worldMap", false );
-		todoThrow ( );
-		//collisionModelManager.GetModelBounds( h, this.worldBounds );
-		//// create world sectors
-		//this.CreateClipSectors_r( 0, this.worldBounds, maxSector );
+		
+		collisionModelManager.GetModelBounds( h, this.worldBounds );
+		// create world sectors
+		this.CreateClipSectors_r( 0, this.worldBounds, maxSector );
 
-		//size.equals( this.worldBounds[1].opSubtraction( this.worldBounds[0] ) );
-		//gameLocal.Printf( "map bounds are (%1.1f, %1.1f, %1.1f)\n", size[0], size[1], size[2] );
-		//gameLocal.Printf( "max clip sector is (%1.1f, %1.1f, %1.1f)\n", maxSector[0], maxSector[1], maxSector[2] );
+		size.equals( this.worldBounds[1].opSubtraction( this.worldBounds[0] ) );
+		gameLocal.Printf( "map bounds are (%1.1f, %1.1f, %1.1f)\n", size[0], size[1], size[2] );
+		gameLocal.Printf( "max clip sector is (%1.1f, %1.1f, %1.1f)\n", maxSector[0], maxSector[1], maxSector[2] );
 
-		//// initialize a default clip model
-		//defaultClipModel.LoadModel(new idTraceModel(new idBounds( new idVec3( 0, 0, 0 ) ).Expand( 8 ) ) );
+		// initialize a default clip model
+		this.defaultClipModel.LoadModel(new idTraceModel(new idBounds( new idVec3( 0, 0, 0 ) ).Expand( 8 ) ) );
 
-		//// set counters to zero
-		//this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;
+		// set counters to zero
+		this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;
 	}
 
 /*
@@ -1149,7 +1155,7 @@ idClip::Shutdown
 ////idClip::ClipModelsTouchingBounds
 ////================
 ////*/
-////int idClip::ClipModelsTouchingBounds( const idBounds &bounds, int contentMask, idClipModel **clipModelList, int maxCount ) const {
+////int idClip::ClipModelsTouchingBounds( const bounds: idBounds, int contentMask, idClipModel **clipModelList, int maxCount ) const {
 ////	listParms_t parms;
 ////
 ////	if (	bounds[0][0] > bounds[1][0] ||
@@ -1178,7 +1184,7 @@ idClip::Shutdown
 ////idClip::EntitiesTouchingBounds
 ////================
 ////*/
-////int idClip::EntitiesTouchingBounds( const idBounds &bounds, int contentMask, idEntity **entityList, int maxCount ) const {
+////int idClip::EntitiesTouchingBounds( const bounds: idBounds, int contentMask, idEntity **entityList, int maxCount ) const {
 ////	idClipModel *clipModelList[MAX_GENTITIES];
 ////	int i, j, count, entCount;
 ////
@@ -1215,7 +1221,7 @@ idClip::Shutdown
 ////  cm.owner == passOwner ( don't interact with other missiles from same owner )
 ////====================
 ////*/
-////int idClip::GetTraceClipModels( const idBounds &bounds, int contentMask, passEntity:idEntity, idClipModel **clipModelList ) const {
+////int idClip::GetTraceClipModels( const bounds: idBounds, int contentMask, passEntity:idEntity, idClipModel **clipModelList ) const {
 ////	int i, num;
 ////	idClipModel	*cm;
 ////	idEntity *passOwner;

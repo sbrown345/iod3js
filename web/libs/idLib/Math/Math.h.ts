@@ -897,15 +897,17 @@ static Sqrt( /*float */x:number):number {
 ////	return AngleNormalize180( angle1 - angle2 );
 ////}
 
-////ID_INLINE int idMath::FloatHash( const float *array, const int numFloats ) {
-////	int i, hash = 0;
-////	const int *ptr;
+	static FloatHash ( /*float **/array: Float32Array, /*int */numFloats: number ): number {
+		var /*int */i: number, hash = 0;
+		var ptr: Int32Array; //const int *ptr;
 
-////	ptr = reinterpret_cast<const int *>( array );
-////	for ( i = 0; i < numFloats; i++ ) {
-////		hash ^= ptr[i];
-////	}
-////	return hash;
+		ptr = new Int32Array( array.buffer ); //reinterpret_cast<const int *>( array );
+		for ( i = 0; i < numFloats; i++ ) {
+			hash ^= ptr[i];
+		}
+		dlog( DEBUG_CM, "FloatHash: %i\n", hash );
+		return hash;
+	}
 
 ////#endif /* !__MATH_MATH_H__ */
 

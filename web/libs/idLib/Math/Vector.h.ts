@@ -862,9 +862,9 @@ class idVec3 {
 ////	z = float( int( this.z ) );
 ////}
 
-////ID_INLINE int idVec3::GetDimension( ) const {
-////	return 3;
-////}
+	GetDimension ( ): number {
+		return 3;
+	}
 
 ////ID_INLINE const idVec2 &idVec3::ToVec2( ) const {
 ////	return *reinterpret_cast<const idVec2 *>(this);

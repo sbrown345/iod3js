@@ -112,14 +112,17 @@ class idBounds {
 //extern idBounds	bounds_zero;
 
 	constructor ( )
+	constructor ( point: idVec3 )
 	constructor ( mins: idVec3, maxs: idVec3 )
-	constructor ( mins?: idVec3, maxs?: idVec3 ) {
-		if (arguments.length == 0) {
+	constructor ( a1?: idVec3, a2?: idVec3 ) {
+		if ( arguments.length == 0 ) {
 			return;
 		}
 
-		if (arguments.length == 1) {
-			todoThrow ( );
+		if ( arguments.length == 1 ) {
+			var point = a1;
+			this.b[0].equals( point );
+			this.b[1].equals( point );
 		} else if ( arguments.length == 2 ) {
 			todoThrow ( );
 		} else {
@@ -152,6 +155,11 @@ class idBounds {
 //ID_INLINE idBounds idBounds::operator+( const idVec3 &t ) const {
 //	return idBounds( this.b[0] + t, this.b[1] + t );
 //}
+
+	opEquals ( other: idBounds ) {
+		this.b[0].equals( other.b[0] );
+		this.b[1].equals( other.b[1] );
+	}
 
 //ID_INLINE idBounds &idBounds::operator+=( const idVec3 &t ) {
 //	this.b[0] += t;
@@ -331,10 +339,10 @@ Zero( ):void {
 //	return *this;
 //}
 
-//ID_INLINE idBounds idBounds::Expand( const float d ) const {
-//	return idBounds( idVec3( this.b[0][0] - d, this.b[0][1] - d, this.b[0][2] - d ),
-//						idVec3( this.b[1][0] + d, this.b[1][1] + d, this.b[1][2] + d ) );
-//}
+	Expand ( /*float */d: number ): idBounds {
+		return new idBounds( new idVec3( this.b[0][0] - d, this.b[0][1] - d, this.b[0][2] - d ),
+			new idVec3( this.b[1][0] + d, this.b[1][1] + d, this.b[1][2] + d ) );
+	}
 
 //ID_INLINE idBounds &idBounds::ExpandSelf( const float d ) {
 //	this.b[0][0] -= d;
