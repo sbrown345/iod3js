@@ -191,7 +191,9 @@ class idPlane {
 	//	this.c = normal.z;
 	//	this.d = -dist;
 	//}
-	//
+	
+	[n: number]: number;
+
 	//ID_INLINE float idPlane::operator[]( int index ) const {
 	//	return ( &a )[ index ];
 	//}

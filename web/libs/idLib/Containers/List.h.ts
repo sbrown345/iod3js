@@ -86,6 +86,8 @@ function idSwap( a:any, aProperty:string, b:any, bProperty:string ):void {
 
 //template< class type >
 class idList<type> {
+	[n: number]: type;
+
     //private:
 	num:number;//int				
 	private size:number;//int				
@@ -355,7 +357,7 @@ Contents are copied using their = operator so that data is correnctly instantiat
 			if ( this.type == Number ) {
 				for ( i = 0; i < this.size; i++ ) {
 					if ( !this[i] ) {
-						this[i] = 0;
+						(<any>this)[i] = 0;
 					}
 				}
 			} else {
@@ -633,31 +635,30 @@ Append( obj:type ):number {
 	return this.num - 1;
 }
 
-///*
-//================
-//idList<type>::Append
+/*
+================
+idList<type>::Append
 
-//adds the other list to this one
+adds the other list to this one
 
-//Returns the size of the new combined list
-//================
-//*/
-//template< class type >
-//ID_INLINE int idList<type>::Append( const idList<type> &other ) {
-//	if ( !this[0] /*.list*/ ) {
-//		if ( this.granularity == 0 ) {	// this is a hack to fix our memset classes
-//			this.granularity = 16;
-//		}
-//		Resize( this.granularity );
-//	}
+Returns the size of the new combined list
+================
+*/
+	Append_idList ( other: idList<type> ): number {
+		if ( !this[0] /*.list*/ ) {
+			if ( this.granularity == 0 ) { // this is a hack to fix our memset classes
+				this.granularity = 16;
+			}
+			this.Resize( this.granularity );
+		}
 
-//	int n = other.Num();
-//	for (int i = 0; i < n; i++) {
-//		Append(other[i]);
-//	}
+		var /*int */n = other.Num ( );
+		for ( var i = 0; i < n; i++ ) {
+			this.Append( other[i] );
+		}
 
-//	return Num();
-//}
+		return this.Num ( );
+	}
 
 /*
 ================
@@ -735,7 +736,7 @@ Searches for the specified data in the list and returns it's index.  Returns -1 
 					return i;
 				}
 			} else {
-				if ( this.list[i].equalTo( obj ) ) {
+				if ( this.list[i]["equalTo"]( obj ) ) {
 					return i;
 				}
 			}

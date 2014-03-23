@@ -864,7 +864,7 @@ idTypeDef::idTypeDef
 	GetParmName ( /*int */parmNumber: number ): string {
 		assert( parmNumber >= 0 );
 		assert( parmNumber < this.parmTypes.Num ( ) );
-		return this.parmNames[parmNumber];
+		return this.parmNames[parmNumber].data;
 	}
 	
 	/*

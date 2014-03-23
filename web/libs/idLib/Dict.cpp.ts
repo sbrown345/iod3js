@@ -245,16 +245,16 @@ class idDict {
 		return false;
 	}
 
-////ID_INLINE bool idDict::GetString( key:string, defaultString:string, idStr &out ) const {
-////	const idKeyValue *kv = this.FindKey( key );
-////	if ( kv ) {
-////		out = kv.GetValue();
-////		return true;
-////	}
-////	out = defaultString;
-////	return false;
-////}
-////
+	GetString_RidStr ( key: string, defaultString: string, out: idStr ): boolean {
+		var kv = this.FindKey( key );
+		if ( kv ) {
+			out.equals( kv.GetValue ( ) );
+			return true;
+		}
+		out.equals( defaultString );
+		return false;
+	}
+
 	GetString ( key: string, defaultString = ""): string {
 		var kv = this.FindKey( key );
 		if ( kv ) {

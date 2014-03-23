@@ -30,16 +30,20 @@
 ////#pragma hdrstop
 ////
 ////#include "../Game_local.h"
-////
-////#define	MAX_SECTOR_DEPTH				12
-////#define MAX_SECTORS						((1<<(MAX_SECTOR_DEPTH+1))-1)
-////
+
+var MAX_SECTOR_DEPTH		=		12
+var MAX_SECTORS				=		((1<<(MAX_SECTOR_DEPTH+1))-1)
+
 class clipSector_t{
 	//int						axis;		// -1 = leaf node
 	//float					dist;
 	//struct clipSector_s *	children[2];
 	//struct clipLink_s *		clipLinks;
-} ;
+
+	init ( ): void {
+		
+	}
+}
 
 class clipLink_t {
 	//idClipModel *			clipModel;
@@ -50,17 +54,17 @@ class clipLink_t {
 }
 
 class trmCache_t {
-	//idTraceModel			trm;
-	//int						refCount;
-	//float					volume;
-	//idVec3					centerOfMass;
-	//idMat3					inertiaTensor;
-} ;
-////
+	trm = new idTraceModel;
+	refCount:number/*int*/;
+	volume:number/*float*/;
+	centerOfMass = new idVec3;
+	inertiaTensor = new idMat3;
+}
+
 ////idVec3 vec3_boxEpsilon( CM_BOX_EPSILON, CM_BOX_EPSILON, CM_BOX_EPSILON );
-////
+
 var clipLinkAllocator = idBlockAlloc_template<clipLink_t>( clipLink_t, 1024 );
-////
+
 
 /////*
 ////===============================================================================
@@ -582,7 +586,7 @@ idClipModel::idClipModel
 ////	}
 ////	renderModelHandle = model.renderModelHandle;
 ////	clipLinks = NULL;
-////	touchCount = -1;
+////	this.touchCount = -1;
 ////}
 ////
 /////*
@@ -622,7 +626,7 @@ idClipModel::idClipModel
 ////	savefile.WriteInt( traceModelIndex );
 ////	savefile.WriteInt( renderModelHandle );
 ////	savefile.WriteBool( clipLinks != NULL );
-////	savefile.WriteInt( touchCount );
+////	savefile.WriteInt( this.touchCount );
 ////}
 ////
 /////*
@@ -656,12 +660,12 @@ idClipModel::idClipModel
 ////	}
 ////	savefile.ReadInt( renderModelHandle );
 ////	savefile.ReadBool( linked );
-////	savefile.ReadInt( touchCount );
+////	savefile.ReadInt( this.touchCount );
 ////
 ////	// the render model will be set when the clip model is linked
 ////	renderModelHandle = -1;
 ////	clipLinks = NULL;
-////	touchCount = -1;
+////	this.touchCount = -1;
 ////
 ////	if ( linked ) {
 ////		Link( gameLocal.clip, entity, id, origin, axis, renderModelHandle );
@@ -982,7 +986,7 @@ idClip::idClip
 ////	idVec3			size;
 ////	idBounds		front, back;
 ////
-////	anode = &clipSectors[idClip::this.numClipSectors];
+////	anode = &this.clipSectors[idClip::this.numClipSectors];
 ////	idClip::this.numClipSectors++;
 ////
 ////	if ( depth == MAX_SECTOR_DEPTH ) {
@@ -1018,37 +1022,38 @@ idClip::idClip
 ////
 ////	return anode;
 ////}
-////
-/////*
-////===============
-////idClip::Init
-////===============
-////*/
-////void idClip::Init( ) {
-////	cmHandle_t h;
-////	idVec3 size, maxSector = vec3_origin;
-////
-////	// clear clip sectors
-////	clipSectors = new clipSector_t[MAX_SECTORS];
-////	memset( clipSectors, 0, MAX_SECTORS * sizeof( clipSector_t ) );
-////	this.numClipSectors = 0;
-////	touchCount = -1;
-////	// get world map bounds
-////	h = collisionModelManager.LoadModel( "worldMap", false );
-////	collisionModelManager.GetModelBounds( h, this.worldBounds );
-////	// create world sectors
-////	CreateClipSectors_r( 0, this.worldBounds, maxSector );
-////
-////	size = this.worldBounds[1] - this.worldBounds[0];
-////	gameLocal.Printf( "map bounds are (%1.1f, %1.1f, %1.1f)\n", size[0], size[1], size[2] );
-////	gameLocal.Printf( "max clip sector is (%1.1f, %1.1f, %1.1f)\n", maxSector[0], maxSector[1], maxSector[2] );
-////
-////	// initialize a default clip model
-////	defaultClipModel.LoadModel( idTraceModel( idBounds( idVec3( 0, 0, 0 ) ).Expand( 8 ) ) );
-////
-////	// set counters to zero
-////	this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;
-////}
+
+/*
+===============
+idClip::Init
+===============
+*/
+	Init ( ): void {
+		var h: number /*cmHandle_t*/;
+		var size = new idVec3, maxSector = new idVec3( vec3_origin.x, vec3_origin.y, vec3_origin.z );
+
+		// clear clip sectors
+		this.clipSectors = newStructArray<clipSector_t>( clipSector_t, MAX_SECTORS );
+		clearStructArray( this.clipSectors ); //	memset( this.clipSectors, 0, MAX_SECTORS * sizeof( clipSector_t ) );
+		this.numClipSectors = 0;
+		this.touchCount = -1;
+		// get world map bounds
+		h = collisionModelManager.LoadModel( "worldMap", false );
+		todoThrow ( );
+		//collisionModelManager.GetModelBounds( h, this.worldBounds );
+		//// create world sectors
+		//this.CreateClipSectors_r( 0, this.worldBounds, maxSector );
+
+		//size.equals( this.worldBounds[1].opSubtraction( this.worldBounds[0] ) );
+		//gameLocal.Printf( "map bounds are (%1.1f, %1.1f, %1.1f)\n", size[0], size[1], size[2] );
+		//gameLocal.Printf( "max clip sector is (%1.1f, %1.1f, %1.1f)\n", maxSector[0], maxSector[1], maxSector[2] );
+
+		//// initialize a default clip model
+		//defaultClipModel.LoadModel(new idTraceModel(new idBounds( new idVec3( 0, 0, 0 ) ).Expand( 8 ) ) );
+
+		//// set counters to zero
+		//this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;
+	}
 
 /*
 ===============
@@ -1109,7 +1114,7 @@ idClip::Shutdown
 ////		}
 ////
 ////		// avoid duplicates in the list
-////		if ( check.touchCount == touchCount ) {
+////		if ( check.touchCount == this.touchCount ) {
 ////			continue;
 ////		}
 ////
@@ -1133,7 +1138,7 @@ idClip::Shutdown
 ////			return;
 ////		}
 ////
-////		check.touchCount = touchCount;
+////		check.touchCount = this.touchCount;
 ////		parms.list[parms.count] = check;
 ////		parms.count++;
 ////	}
@@ -1162,8 +1167,8 @@ idClip::Shutdown
 ////	parms.count = 0;
 ////	parms.maxCount = maxCount;
 ////
-////	touchCount++;
-////	ClipModelsTouchingBounds_r( clipSectors, parms );
+////	this.touchCount++;
+////	ClipModelsTouchingBounds_r( this.clipSectors, parms );
 ////
 ////	return parms.count;
 ////}

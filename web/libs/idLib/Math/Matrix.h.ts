@@ -952,7 +952,7 @@ class idMat4 {
 //	//assert( ( index >= 0 ) && ( index < 4 ) );
 //	return mat[ index ];
 //}
-//
+	[index: number]: idVec4;
 //ID_INLINE idVec4 &idMat4::operator[]( int index ) {
 //	//assert( ( index >= 0 ) && ( index < 4 ) );
 //	return mat[ index ];

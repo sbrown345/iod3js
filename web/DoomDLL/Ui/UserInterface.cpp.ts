@@ -273,11 +273,11 @@ class idUserInterfaceLocal extends idUserInterface {
 //	}
 //	return "";
 //}
-//
-//bool idUserInterfaceLocal::IsInteractive() const {
-//	return interactive;
-//}
-//
+
+	IsInteractive ( ): boolean {
+		return this.interactive;
+	}
+
 	InitFromFile ( qpath: string, rebuild = true, cache = true ): boolean {
 		if ( !( qpath /*&& *qpath*/ ) ) {
 			// FIXME: Memory leak!!

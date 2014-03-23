@@ -605,14 +605,14 @@ class idMapEntity {
 ////							~idMapEntity( ) { primitives.DeleteContents( true ); }
 ////	static idMapEntity *	Parse( idLexer &src, bool worldSpawn = false, float version = CURRENT_MAP_VERSION );
 ////	bool					Write( idFile *fp, int entityNum ) const;
-	GetNumPrimitives( ) :number{ return this.primitives.Num(); }
+	GetNumPrimitives ( ): number { return this.primitives.Num ( ); }
 	GetPrimitive ( /*int */i: number ): idMapPrimitive { return this.primitives[i]; }
 ////	void					AddPrimitive( idMapPrimitive *p ) { primitives.Append( p ); }
 ////	unsigned int			GetGeometryCRC( ) const;
 ////	void					RemovePrimitiveData();
 ////
 ////protected:
-	primitives = new idList<idMapPrimitive>(idMapPrimitive, true);
+	primitives = new idList<idMapPrimitive>( idMapPrimitive, true );
 
 /*
 ================
@@ -768,33 +768,34 @@ idMapEntity::Parse
 ////void idMapEntity::RemovePrimitiveData() {
 ////	primitives.DeleteContents(true);
 ////}
-////
-/////*
-////===============
-////idMapEntity::GetGeometryCRC
-////===============
-////*/
-////unsigned int idMapEntity::GetGeometryCRC( ) const {
-////	int i;
-////	unsigned int crc;
-////	idMapPrimitive	*mapPrim;
-////
-////	crc = 0;
-////	for ( i = 0; i < GetNumPrimitives(); i++ ) {
-////		mapPrim = GetPrimitive( i );
-////
-////		switch( mapPrim.GetType() ) {
-////			case idMapPrimitive::TYPE_BRUSH:
-////				crc ^= static_cast<idMapBrush*>(mapPrim).GetGeometryCRC();
-////				break;
-////			case idMapPrimitive::TYPE_PATCH:
-////				crc ^= static_cast<idMapPatch*>(mapPrim).GetGeometryCRC();
-////				break;
-////		}
-////	}
-////
-////	return crc;
-////}
+
+/*
+===============
+idMapEntity::GetGeometryCRC
+===============
+*/
+	GetGeometryCRC ( ): number /*idMapEntity::*/ {
+		todoThrow ( );
+		var /*int */i: number;
+		var /*unsigned int */crc: number;
+		var mapPrim: idMapPrimitive;
+
+		//crc = 0;
+		//for ( i = 0; i < GetNumPrimitives(); i++ ) {
+		//	mapPrim = GetPrimitive( i );
+
+		//	switch( mapPrim.GetType() ) {
+		//		case idMapPrimitive::TYPE_BRUSH:
+		//			crc ^= static_cast<idMapBrush*>(mapPrim).GetGeometryCRC();
+		//			break;
+		//		case idMapPrimitive::TYPE_PATCH:
+		//			crc ^= static_cast<idMapPatch*>(mapPrim).GetGeometryCRC();
+		//			break;
+		//	}
+		//}
+
+		return crc;
+	}
 }
 
 ////#ifndef __MAPFILE_H__
@@ -932,109 +933,111 @@ class idMapFile {
 	idMapFile::Parse
 	===============
 	*/
-	Parse(filename: string, ignoreRegion: boolean = false, osPath: boolean = false): boolean {
+	Parse ( filename: string, ignoreRegion: boolean = false, osPath: boolean = false ): boolean {
 		// no string concatenation for epairs and allow path names for materials
-		var src = new idLexer(lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES);
+		var src = new idLexer( lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 		var token = new idToken;
 		var fullName = new idStr;
 		var mapEnt: idMapEntity;
 		var /*int */i: number, j: number, k: number;
 
-		this.name.equals(filename);
-		this.name.StripFileExtension();
+		this.name.equals( filename );
+		this.name.StripFileExtension ( );
 		fullName.equals( this.name );
 		this.hasPrimitiveData = false;
 
-		if (!ignoreRegion) {
+		if ( !ignoreRegion ) {
 			// try loading a .reg file first
-			fullName.SetFileExtension("reg");
-			src.LoadFile(fullName.data, osPath);
+			fullName.SetFileExtension( "reg" );
+			src.LoadFile( fullName.data, osPath );
 		}
 
-		if (!src.IsLoaded()) {
+		if ( !src.IsLoaded ( ) ) {
 			// now try a .map file
-			fullName.SetFileExtension("map");
-			src.LoadFile(fullName.data, osPath);
-			if (!src.IsLoaded()) {
+			fullName.SetFileExtension( "map" );
+			src.LoadFile( fullName.data, osPath );
+			if ( !src.IsLoaded ( ) ) {
 				// didn't get anything at all
 				return false;
 			}
 		}
 
 		this.version = OLD_MAP_VERSION;
-		this.fileTime = src.GetFileTime();
-		this.entities.DeleteContents(true);
+		this.fileTime = src.GetFileTime ( );
+		this.entities.DeleteContents( true );
 
-		if (src.CheckTokenString("Version")) {
+		if ( src.CheckTokenString( "Version" ) ) {
 			src.ReadTokenOnLine( token );
-			this.version = token.GetFloatValue();
+			this.version = token.GetFloatValue ( );
 		}
 
-		while (1) {
-		mapEnt = idMapEntity.Parse(src, (this.entities.Num() == 0), this.version);
-			if (!mapEnt) {
+		while ( 1 ) {
+			mapEnt = idMapEntity.Parse( src, ( this.entities.Num ( ) == 0 ), this.version );
+			if ( !mapEnt ) {
 				break;
 			}
-			this.entities.Append(mapEnt);
+			this.entities.Append( mapEnt );
 		}
 
-		this.SetGeometryCRC();
+		this.SetGeometryCRC ( );
 
 		// if the map has a worldspawn
-		if (this.entities.Num()) {
+		if ( this.entities.Num ( ) ) {
 
-		// "removeEntities" "classname" can be set in the worldspawn to remove all entities with the given classname
-			var removeEntities: idKeyValue = this.entities[0].epairs.MatchPrefix("removeEntities", NULL);
-			while (removeEntities) {
-				this.RemoveEntities(removeEntities.GetValue().data);
-				removeEntities = this.entities[0].epairs.MatchPrefix("removeEntities", removeEntities);
+			// "removeEntities" "classname" can be set in the worldspawn to remove all entities with the given classname
+			var removeEntities: idKeyValue = this.entities[0].epairs.MatchPrefix( "removeEntities", null );
+			while ( removeEntities ) {
+				this.RemoveEntities( removeEntities.GetValue ( ).data );
+				removeEntities = this.entities[0].epairs.MatchPrefix( "removeEntities", removeEntities );
 			}
 
-		// "overrideMaterial" "material" can be set in the worldspawn to reset all materials
+			// "overrideMaterial" "material" can be set in the worldspawn to reset all materials
 			var material = new idStr;
-			if (this.entities[0].epairs.GetString("overrideMaterial", "", material)) {
-				for (i = 0; i < this.entities.Num(); i++) {
+			if ( this.entities[0].epairs.GetString_RidStr( "overrideMaterial", "", material ) ) {
+				for ( i = 0; i < this.entities.Num ( ); i++ ) {
 					mapEnt = this.entities[i];
-					for (j = 0; j < mapEnt.GetNumPrimitives(); j++) {
-						var mapPrimitive = mapEnt.GetPrimitive(j);
-						switch (mapPrimitive.GetType()) {
-						case idMapPrimitive.TYPE_BRUSH: {
-								var  mapBrush = static_cast<idMapBrush>(mapPrimitive);
-								for (k = 0; k < mapBrush.GetNumSides(); k++) {
-									mapBrush.GetSide(k).SetMaterial(material.data);
-								}
-								break;
+					for ( j = 0; j < mapEnt.GetNumPrimitives ( ); j++ ) {
+						var mapPrimitive = mapEnt.GetPrimitive( j );
+						switch ( mapPrimitive.GetType ( ) ) {
+						case idMapPrimitive.TYPE_BRUSH:
+						{
+							var mapBrush = static_cast<idMapBrush>( mapPrimitive );
+							for ( k = 0; k < mapBrush.GetNumSides ( ); k++ ) {
+								mapBrush.GetSide( k ).SetMaterial( material.data );
 							}
-						case idMapPrimitive.TYPE_PATCH: {
-								static_cast<idMapPatch>(mapPrimitive).SetMaterial(material.data);
-								break;
-							}
+							break;
+						}
+						case idMapPrimitive.TYPE_PATCH:
+						{
+							static_cast<idMapPatch>( mapPrimitive ).SetMaterial( material.data );
+							break;
+						}
 						}
 					}
 				}
 			}
 
 			// force all this.entities to have a name key/value pair
-			if (this.entities[0].epairs.GetBool("forceEntityNames")) {
-				for (i = 1; i < this.entities.Num(); i++) {
+			if ( this.entities[0].epairs.GetBool( "forceEntityNames" ) ) {
+				for ( i = 1; i < this.entities.Num ( ); i++ ) {
 					mapEnt = this.entities[i];
-					if (!mapEnt.epairs.FindKey("name")) {
-						mapEnt.epairs.Set("name", va("%s%d", mapEnt.epairs.GetString("classname", "forcedName"), i));
+					if ( !mapEnt.epairs.FindKey( "name" ) ) {
+						mapEnt.epairs.Set( "name", va( "%s%d", mapEnt.epairs.GetString( "classname", "forcedName" ), i ) );
 					}
 				}
 			}
 
 			// move the primitives of any func_group this.entities to the worldspawn
-			if (this.entities[0].epairs.GetBool("moveFuncGroups")) {
-				for (i = 1; i < this.entities.Num(); i++) {
+			if ( this.entities[0].epairs.GetBool( "moveFuncGroups" ) ) {
+				for ( i = 1; i < this.entities.Num ( ); i++ ) {
 					mapEnt = this.entities[i];
-				if ( idStr.Icmp(mapEnt.epairs.GetString("classname"), "func_group") == 0 ) {
-						this.entities[0].primitives.Append(mapEnt.primitives);
-						mapEnt.primitives.Clear();
+					if ( idStr.Icmp( mapEnt.epairs.GetString( "classname" ), "func_group" ) == 0 ) {
+						this.entities[0].primitives.Append_idList( mapEnt.primitives );
+						mapEnt.primitives.Clear ( );
 					}
 				}
 			}
-	}
+		}
 
 		this.hasPrimitiveData = true;
 		return true;

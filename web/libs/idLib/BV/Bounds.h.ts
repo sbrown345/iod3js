@@ -38,6 +38,7 @@
 */
 
 class idBounds {
+	[index: number]: idVec3;
 //public:
 //					idBounds( );
 //					explicit idBounds( const idVec3 &mins, const idVec3 &maxs );

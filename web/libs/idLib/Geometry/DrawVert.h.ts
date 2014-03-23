@@ -119,7 +119,8 @@ class idDrawVert {
 		return dv.buffer;
 	}
 
-//IDcolor:Uint8Array/*4*/;_INLINE float idDrawVert::operator[]( const int index ) const {
+	[index: number]: number;
+//_INLINE float idDrawVert::operator[]( const int index ) const {
 //	assert( index >= 0 && index < 5 );
 //	return ((float *)(&xyz))[index];
 //}

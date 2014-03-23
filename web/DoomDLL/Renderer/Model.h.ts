@@ -334,9 +334,9 @@ class idRenderModel {
 	// models of the form "_area*" may have a prelight shadow model associated with it
 	IsStaticWorldModel ( ): boolean { throw "placeholder"; }
 
-////	// models parsed from inside map files or dynamically created cannot be reloaded by
-////	// reloadmodels
-////	virtual bool				IsReloadable() const = 0;
+	// models parsed from inside map files or dynamically created cannot be reloaded by
+	// reloadmodels
+	IsReloadable ( ): boolean { throw "placeholder"; }
 
 ////	// md3, md5, particles, etc
 ////	virtual dynamicModel_t		IsDynamicModel() const = 0;

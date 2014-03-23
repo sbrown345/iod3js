@@ -171,6 +171,7 @@ class idVec2 {
 ////ID_INLINE bool idVec2::operator!=( const idVec2 &a ) const {
 ////	return !Compare( a );
 ////}
+	[index: number]: number;
 
 ////ID_INLINE float idVec2::operator[]( int index ) const {
 ////	return ( &x )[ index ];
@@ -542,6 +543,7 @@ class idVec3 {
 ////	this.y = y;
 ////	this.z = z;
 ////}
+	[index: number]: number;
 
 ////ID_INLINE float idVec3::operator[]( const int index ) const {
 ////	return ( &x )[ index ];
@@ -1371,6 +1373,7 @@ class idVec4 {
 		this.x = this.y = this.z = this.w = 0.0;
 	}
 
+	[index: number]: number;
 ////ID_INLINE float idVec4::operator[]( int index ) const {
 ////	return ( &x )[ index ];
 ////}
@@ -1764,6 +1767,7 @@ class idVec5 {
 		this.t = copyFrom.t;
 	}
 
+	[index: number]: number;
 ////ID_INLINE float idVec5::operator[]( int index ) const {
 ////	return ( &x )[ index ];
 ////}
@@ -1908,6 +1912,7 @@ class idVec6 {
 ////	return idVec6( -p[0], -p[1], -p[2], -p[3], -p[4], -p[5] );
 ////}
 
+	[index: number]: number;
 ////ID_INLINE float idVec6::operator[]( const int index ) const {
 ////	return p[index];
 ////}
@@ -2225,6 +2230,7 @@ class idVec6 {
 ////	}
 ////}
 
+	//[index: number]: number;
 ////ID_INLINE float idVecX::operator[]( const int index ) const {
 ////	assert( index >= 0 && index < size );
 ////	return p[index];
@@ -2664,6 +2670,7 @@ class idVec6 {
 ////	this.phi = phi;
 ////}
 
+	//[index: number]: number;
 ////ID_INLINE float idPolar3::operator[]( const int index ) const {
 ////	return ( &radius )[ index ];
 ////}

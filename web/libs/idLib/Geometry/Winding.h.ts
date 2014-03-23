@@ -206,7 +206,8 @@ class idWinding {
 //	this.numPoints = winding.numPoints;
 //	return *this;
 //}
-//
+	[index: number]: idVec5;
+
 //ID_INLINE const idVec5 &idWinding::operator[]( const int index ) const {
 //	//assert( index >= 0 && index < this.numPoints );
 //	return this.p[ index ];
@@ -2017,10 +2018,10 @@ idFixedWinding::ReAllocate
 
 
 Object.defineProperty( idWinding.prototype, "0", {
-	get: function ( ): number {
+	get: function ( ): idVec5 {
 		return this.p[0];
 	},
-	set: function ( value: number ): void {
+	set: function ( value: idVec5 ): void {
 		todoThrow ( );
 	},
 	enumerable: false,
@@ -2028,10 +2029,10 @@ Object.defineProperty( idWinding.prototype, "0", {
 } );
 
 Object.defineProperty( idWinding.prototype, "1", {
-	get: function ( ): number {
+	get: function ( ): idVec5 {
 		return this.p[1];
 	},
-	set: function ( value: number ): void {
+	set: function ( value: idVec5 ): void {
 		todoThrow ( );
 	},
 	enumerable: false,
@@ -2039,10 +2040,10 @@ Object.defineProperty( idWinding.prototype, "1", {
 } );
 
 Object.defineProperty( idWinding.prototype, "2", {
-	get: function ( ): number {
+	get: function ( ): idVec5 {
 		return this.p[2];
 	},
-	set: function ( value: number ): void {
+	set: function ( value: idVec5 ): void {
 		todoThrow ( );
 	},
 	enumerable: false,
@@ -2050,10 +2051,10 @@ Object.defineProperty( idWinding.prototype, "2", {
 } );
 
 Object.defineProperty( idWinding.prototype, "3", {
-	get: function ( ): number {
+	get: function ( ): idVec5 {
 		return this.p[3];
 	},
-	set: function ( value: number ): void {
+	set: function ( value: idVec5 ): void {
 		todoThrow ( );
 	},
 	enumerable: false,
@@ -2061,10 +2062,10 @@ Object.defineProperty( idWinding.prototype, "3", {
 } );
 
 Object.defineProperty( idWinding.prototype, "4", {
-	get: function ( ): number {
+	get: function ( ): idVec5 {
 		return this.p[4];
 	},
-	set: function ( value: number ): void {
+	set: function ( value: idVec5 ): void {
 		todoThrow ( );
 	},
 	enumerable: false,
