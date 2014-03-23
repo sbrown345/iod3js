@@ -104,14 +104,11 @@ class cm_polygonBlock_t {
 
 	get next ( ): cm_polygon_t {
 		if ( !this.polygons[this.nextPtr] ) {
-			debugger;
 			this.polygons[this.nextPtr] = new cm_polygon_t;
 		}
 		return this.polygons[this.nextPtr];
 	}
 	set next(value: cm_polygon_t) {
-		debugger;
-		assert( value );
 		this.polygons[this.nextPtr] = value;
 	}
 
@@ -133,7 +130,7 @@ class cm_polygon_t{
 	material:idMaterial;			// material
 	plane = new idPlane;				// polygon plane
 	numEdges:number/*int*/			// number of edges
-	edges = new Int32Array(1);			// variable sized, indexes into cm_edge_t list
+	edges: Int32Array;			// variable sized, indexes into cm_edge_t list
 
 	init ( ): void {
 		this.bounds.init();
@@ -162,7 +159,6 @@ class cm_polygonRefBlock_t {
 
 	get nextRef ( ): cm_polygonRef_t { return this.blocks[this.nextRefPtr]; }
 	set nextRef ( value: cm_polygonRef_t ) {
-		assert( value );
 		this.blocks[this.nextRefPtr] = value;
 	}
 
@@ -179,14 +175,11 @@ class cm_brushBlock_t {
 
 	get next(): cm_brush_t {
 		if (!this.brushes[this.nextPtr]) {
-			debugger;
 			this.brushes[this.nextPtr] = new cm_brush_t;
 		}
 		return this.brushes[this.nextPtr];
 	}
 	set next(value: cm_brush_t) {
-		debugger;
-		assert(value);
 		this.brushes[this.nextPtr] = value;
 	}
 
@@ -207,7 +200,7 @@ class cm_brush_t {
 	material:idMaterial;			// material
 	primitiveNum:number/*int*/		// number of brush primitive
 	numPlanes:number/*int*/			// number of bounding planes
-	planes = [new idPlane];			// variable sized
+	planes: idPlane[];			// variable sized
 }
 
 class cm_brushRef_t {
@@ -216,8 +209,19 @@ class cm_brushRef_t {
 }
 
 class cm_brushRefBlock_t {
-	nextRef: cm_brushRef_t; // next brush reference in block
+	nextRefPtr = 0; // next polygon reference in block
 	next: cm_brushRefBlock_t; // next block with brush references
+
+	get nextRef ( ): cm_brushRef_t { return this.blocks[this.nextRefPtr]; }
+	set nextRef ( value: cm_brushRef_t ) {
+		this.blocks[this.nextRefPtr] = value;
+	}
+
+	blocks: cm_brushRef_t[];
+
+	constructor ( blockSize: number ) {
+		this.blocks = newStructArray<cm_brushRef_t>( cm_brushRef_t, blockSize );
+	}
 }
 
 class cm_node_t {
@@ -235,7 +239,6 @@ class cm_nodeBlock_t {
 
 	get nextNode(): cm_node_t { return this.blocks[this.nextNodePtr]; }
 	set nextNode(value: cm_node_t ) {
-		assert( value );
 		this.blocks[this.nextNodePtr] = value;
 	}
 
@@ -513,7 +516,7 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 ////									cmHandle_t model, const idVec3 &origin, const idMat3 &modelAxis );
 ////
 ////private:			// CollisionMap_contents.cpp
-////	bool			TestTrmVertsInBrush( cm_traceWork_t *tw, cm_brush_t *b );
+////	bool			TestTrmVertsInBrush( cm_traceWork_t *tw, b: cm_brush_t );
 ////	bool			TestTrmInPolygon( cm_traceWork_t *tw, p: cm_polygon_t );
 ////	cm_node_t *		PointNode( const idVec3 &p, model: cm_model_t );
 ////	int				PointContents( const idVec3 p, cmHandle_t model );
@@ -533,7 +536,7 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 	FreeTrmModelStructure ( ): void { throw "placeholder"; }
 ////					// model deallocation
 ////	void			RemovePolygonReferences_r( node: cm_node_t, p: cm_polygon_t );
-////	void			RemoveBrushReferences_r( node: cm_node_t, cm_brush_t *b );
+////	void			RemoveBrushReferences_r( node: cm_node_t, b: cm_brush_t );
 ////	void			FreeNode( node: cm_node_t );
 ////	void			FreePolygonReference( pref: cm_polygonRef_t );
 ////	void			FreeBrushReference( cm_brushRef_t *bref );
@@ -558,7 +561,7 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 ////					// removal of contained polygons
 ////	int				R_ChoppedAwayByProcBSP( int nodeNum, idFixedWinding *w, const idVec3 &normal, const idVec3 &origin, const float radius );
 ////	int				ChoppedAwayByProcBSP( const idFixedWinding &w, const idPlane &plane, int contents );
-////	void			ChopWindingListWithBrush( cm_windingList_t *list, cm_brush_t *b );
+////	void			ChopWindingListWithBrush( cm_windingList_t *list, b: cm_brush_t );
 ////	void			R_ChopWindingListWithTreeBrushes( cm_windingList_t *list, node: cm_node_t );
 ////	idFixedWinding *WindingOutsideBrushes( idFixedWinding *w, const idPlane &plane, int contents, int patch, cm_node_t *headNode );
 ////					// creation of axial BSP tree
@@ -568,11 +571,11 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 	AllocBrushReference(model: cm_model_t, /*int*/ blockSize:number): cm_brushRef_t {throw "placeholder";}
 	AllocPolygon(model: cm_model_t, /*int */numEdges:number): cm_polygon_t {throw "placeholder";}
 	AllocBrush(model: cm_model_t, /*int */numPlanes:number): cm_brush_t {throw "placeholder";}
-////	void			AddPolygonToNode( model: cm_model_t, node: cm_node_t, p: cm_polygon_t );
-////	void			AddBrushToNode( model: cm_model_t, node: cm_node_t, cm_brush_t *b );
+	AddPolygonToNode( model: cm_model_t, node: cm_node_t, p: cm_polygon_t ): void { throw "placeholder"; }
+	AddBrushToNode(model: cm_model_t, node: cm_node_t, b: cm_brush_t): void { throw "placeholder"; }
 	SetupTrmModelStructure(): void { throw "placeholder"; }
 	R_FilterPolygonIntoTree( model: cm_model_t, node: cm_node_t, pref: cm_polygonRef_t, p: cm_polygon_t ):void { throw "placeholder"; }
-////	void			R_FilterBrushIntoTree( model: cm_model_t, node: cm_node_t, cm_brushRef_t *pref, cm_brush_t *b );
+////	void			R_FilterBrushIntoTree( model: cm_model_t, node: cm_node_t, cm_brushRef_t *pref, b: cm_brush_t );
 ////	cm_node_t *		R_CreateAxialBSPTree( model: cm_model_t, node: cm_node_t, const idBounds &bounds );
 ////	cm_node_t *		CreateAxialBSPTree( model: cm_model_t, node: cm_node_t );
 ////					// creation of raw polygons

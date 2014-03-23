@@ -127,10 +127,20 @@ function zeroArray ( array: any ): void {
 }
 
 function memset ( arr: ArrayBufferView, value: number, num: number ): void {
-	//assert.uint8(value).int32(num);
 	var startIndex = 0;
-	var uint8Array = new Uint8Array( arr.buffer );
-	for ( var i = startIndex; i < num; i++ ) {
+
+	// todo: check this
+	//if ( value === 0 ) {
+	//	var arrayLen = num / arr["BYTES_PER_ELEMENT"];
+	//	for ( var i = startIndex; i < arrayLen; i++ ) {
+	//		arr[i] = 0;
+	//	}
+	//	return;
+	//}
+
+	//assert.uint8(value).int32(num);
+	var uint8Array = new Uint8Array(arr.buffer);
+	for (var i = startIndex; i < num; i++) {
 		uint8Array[i] = value;
 	}
 }
