@@ -69,6 +69,8 @@ var PLANETYPE_ZEROZ				=8;
 var PLANETYPE_NONAXIAL			=9;
 
 class idPlane {
+	static size = 16;
+
 	//public:
 	//					idPlane( );
 	//					idPlane( float a, float b, float c, float d );

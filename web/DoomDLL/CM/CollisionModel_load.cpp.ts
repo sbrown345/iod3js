@@ -572,23 +572,22 @@ idCollisionModelManagerLocal.prototype.AllocNode = function ( model: cm_model_t,
 	var i: number;
 	var node: cm_node_t, nodeIdx = 0;
 	var nodeBlock: cm_nodeBlock_t;
-	
+	// todo: undo this and cm_nodeBlock_t?? i just overcomplicted it... or maybe the other ones need it like this so to keep it consistent leave it...
 	if ( !model.nodeBlocks || !model.nodeBlocks.nextNode ) {
-		var arr = newStructArray<cm_node_t>( cm_node_t, blockSize );
-		nodeBlock = new cm_nodeBlock_t; //(cm_nodeBlock_t *) Mem_ClearedAlloc( sizeof( cm_nodeBlock_t ) + blockSize * sizeof(cm_node_t) );
-		nodeBlock.nextNode = arr[nodeIdx++]; //(cm_node_t *) ( ( (byte *) nodeBlock ) + sizeof( cm_nodeBlock_t ) );
+		nodeBlock = new cm_nodeBlock_t( blockSize ); //(cm_nodeBlock_t *) Mem_ClearedAlloc( sizeof( cm_nodeBlock_t ) + blockSize * sizeof(cm_node_t) );
+		nodeBlock.nextNodePtr = 0;//nodeBlock.nextNode //(cm_node_t *) ( ( (byte *) nodeBlock ) + sizeof( cm_nodeBlock_t ) );
 		nodeBlock.next = model.nodeBlocks;
 		model.nodeBlocks = nodeBlock;
 		node = nodeBlock.nextNode;
 		for ( i = 0; i < blockSize - 1; i++ ) {
-			node.parent = arr[nodeIdx++];
+			node.parent = nodeBlock.blocks[++nodeIdx];
 			node = node.parent;
 		}
 		node.parent = null;
 	}
 
 	node = model.nodeBlocks.nextNode;
-	model.nodeBlocks.nextNode = node.parent;
+	model.nodeBlocks.nextNode = node.parent; //???????
 	node.parent = null;
 
 	return node;
@@ -605,14 +604,13 @@ idCollisionModelManagerLocal.prototype.AllocPolygonReference = function ( model:
 	var prefBlock: cm_polygonRefBlock_t;
 
 	if ( !model.polygonRefBlocks || !model.polygonRefBlocks.nextRef ) {
-		var arr = newStructArray<cm_polygonRef_t>(cm_polygonRef_t, blockSize);
-		prefBlock = new cm_polygonRefBlock_t;//(cm_polygonRefBlock_t *) Mem_Alloc( sizeof( cm_polygonRefBlock_t ) + blockSize * sizeof(cm_polygonRef_t) );
-		prefBlock.nextRef = arr[prefIdx++];//(cm_polygonRef_t *) ( ( (byte *) prefBlock ) + sizeof( cm_polygonRefBlock_t ) );
+		prefBlock = new cm_polygonRefBlock_t( blockSize );//(cm_polygonRefBlock_t *) Mem_Alloc( sizeof( cm_polygonRefBlock_t ) + blockSize * sizeof(cm_polygonRef_t) );
+		prefBlock.nextRefPtr = 0;// = arr[prefIdx++];//(cm_polygonRef_t *) ( ( (byte *) prefBlock ) + sizeof( cm_polygonRefBlock_t ) );
 		prefBlock.next = model.polygonRefBlocks;
 		model.polygonRefBlocks = prefBlock;
 		pref = prefBlock.nextRef;
 		for ( i = 0; i < blockSize - 1; i++ ) {
-			pref.next = arr[prefIdx++];
+			pref.next = prefBlock.blocks[++prefIdx];
 			pref = pref.next;
 		}
 		pref.next = null;
@@ -663,17 +661,16 @@ idCollisionModelManagerLocal.prototype.AllocPolygon = function ( model: cm_model
 	var poly: cm_polygon_t;
 	var /*int */size: number;
 
-	size = /*sizeof( cm_polygon_t )60 +*/ ( numEdges - 1 ) * 4 /*sizeof( poly.edges[0] )*/;
+	size = sizeof( cm_polygon_t ) + ( numEdges - 1 ) * 4 /*sizeof( poly.edges[0] )*/;
 	model.numPolygons++;
 	model.polygonMemory += size;
 	if (model.polygonBlock && model.polygonBlock.bytesRemaining >= size) {
-		debugger;//todo: model.polygonBlock.next can't be  uint8array...
-		poly = <cm_polygon_t>/*(cm_polygon_t *) */model.polygonBlock.next;
-		model.polygonBlock.nextIdx += size;
+		poly = /*(cm_polygon_t *)*/ model.polygonBlock.next;
+		model.polygonBlock.nextPtr += 1;//model.polygonBlock.next += size;
 		model.polygonBlock.bytesRemaining -= size;
 	} else {
 		poly = new cm_polygon_t; // (cm_polygon_t *) Mem_Alloc( size );
-		poly.edges = new Int32Array( new ArrayBuffer( size ) );
+		poly.edges = new Int32Array( numEdges - 1 );
 	}
 	return poly;
 };
@@ -687,16 +684,16 @@ idCollisionModelManagerLocal.prototype.AllocBrush = function ( model: cm_model_t
 	var brush: cm_brush_t;
 	var /*int */size: number;
 
-	size = /* sizeof( cm_brush_t ) 60 +*/ ( numPlanes - 1 );//* 16;/*sizeof( brush.planes[0] );*/
+	size = sizeof( cm_brush_t ) + ( numPlanes - 1 ) * 16/*sizeof( brush.planes[0] )*/;
 	model.numBrushes++;
 	model.brushMemory += size;
 	if ( model.brushBlock && model.brushBlock.bytesRemaining >= size ) {
 		brush = /*(cm_brush_t *)*/ <cm_brush_t>model.brushBlock.next;
-		model.brushBlock.nextIdx += size;
+		model.brushBlock.nextPtr += 1; //next += size;
 		model.brushBlock.bytesRemaining -= size;
 	} else {
 		brush = new cm_brush_t; // (cm_brush_t *) Mem_Alloc( size );
-		brush.planes = newStructArray<idPlane>( idPlane, size );
+		brush.planes = newStructArray<idPlane>( idPlane, numPlanes );
 	}
 	return brush;
 };

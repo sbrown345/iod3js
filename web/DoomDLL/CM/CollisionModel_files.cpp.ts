@@ -399,10 +399,9 @@ idCollisionModelManagerLocal.prototype.ParsePolygons = function ( src: idLexer, 
 	var token = new idToken;
 
 	if ( src.CheckTokenType( TT_NUMBER, 0, token ) ) {
-		model.polygonBlock = new cm_polygonBlock_t; // (cm_polygonBlock_t *) Mem_Alloc( sizeof( cm_polygonBlock_t ) + token.GetIntValue() );
+		model.polygonBlock = new cm_polygonBlock_t( token.GetIntValue ( ) ); // (cm_polygonBlock_t *) Mem_Alloc( sizeof( cm_polygonBlock_t ) + token.GetIntValue() );
 		model.polygonBlock.bytesRemaining = token.GetIntValue();
-		debugger; //either use objects or have object wrapper around typed ararys?
-		model.polygonBlock.next = new Uint8Array( token.GetIntValue ( ) ); //( (byte *) model.polygonBlock ) + sizeof( cm_polygonBlock_t );
+		model.polygonBlock.nextPtr = 0; //model->polygonBlock->next = ( (byte *) model->polygonBlock ) + sizeof( cm_polygonBlock_t );
 	}
 
 	src.ExpectTokenString( "{" );
@@ -443,9 +442,9 @@ idCollisionModelManagerLocal.prototype.ParseBrushes = function ( src: idLexer, m
 	var token = new idToken;
 
 	if ( src.CheckTokenType( TT_NUMBER, 0, token ) ) {
-		model.brushBlock = new cm_brushBlock_t; //(cm_brushBlock_t *) Mem_Alloc( sizeof( cm_brushBlock_t ) + token.GetIntValue() );
+		model.brushBlock = new cm_brushBlock_t( token.GetIntValue ( ) ); //(cm_brushBlock_t *) Mem_Alloc( sizeof( cm_brushBlock_t ) + token.GetIntValue() );
 		model.brushBlock.bytesRemaining = token.GetIntValue ( );
-		model.brushBlock.next = new Uint8Array( token.GetIntValue ( ) ); //(byte *) model.brushBlock ) + sizeof( cm_brushBlock_t );
+		model.polygonBlock.nextPtr = 0; //model->brushBlock->next = ( (byte *) model->brushBlock ) + sizeof( cm_brushBlock_t );
 	}
 
 	src.ExpectTokenString( "{" );

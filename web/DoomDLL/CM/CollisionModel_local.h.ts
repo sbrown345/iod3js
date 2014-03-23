@@ -86,24 +86,47 @@ class cm_vertex_t {
 	sideSet: number/*unsigned long*/;			// each bit tells if sidedness for the trace model edge has been calculated yet
 }
 
-////
+
 class cm_edge_t {
-	checkcount:number/*int*/;			// for multi-check avoidance
-	internal:number/*unsigned short*/;			// a trace model can never collide with internal edges
-	numUsers:number/*unsigned short*/;			// number of polygons using this edge
-	side:number/*unsigned long*/;				// each bit tells at which side of this edge one of the trace model vertices passes
-	sideSet:number/*unsigned long*/;			// each bit tells if sidedness for the trace model vertex has been calculated yet
-	vertexNum = new Int32Array(2);		// start and end point of edge
-	normal = new idVec3;				// edge normal
+	checkcount: number /*int*/; // for multi-check avoidance
+	internal: number /*unsigned short*/; // a trace model can never collide with internal edges
+	numUsers: number /*unsigned short*/; // number of polygons using this edge
+	side: number /*unsigned long*/; // each bit tells at which side of this edge one of the trace model vertices passes
+	sideSet: number /*unsigned long*/; // each bit tells if sidedness for the trace model vertex has been calculated yet
+	vertexNum = new Int32Array( 2 ); // start and end point of edge
+	normal = new idVec3; // edge normal
 }
 
-class cm_polygonBlock_t{
-	bytesRemaining:number/*int*/;
-	next: any;//	byte *		
-	nextIdx: number = 0;
+class cm_polygonBlock_t {
+	bytesRemaining: number /*int*/;
+	//next: cm_polygon_t;//	byte *		
+	nextPtr = 0;
+
+	get next ( ): cm_polygon_t {
+		if ( !this.polygons[this.nextPtr] ) {
+			debugger;
+			this.polygons[this.nextPtr] = new cm_polygon_t;
+		}
+		return this.polygons[this.nextPtr];
+	}
+	set next(value: cm_polygon_t) {
+		debugger;
+		assert( value );
+		this.polygons[this.nextPtr] = value;
+	}
+
+	private polygons: cm_polygon_t[] = [];
+
+	memoryUsedInOriginal: number;// not used, seems right to keep this for now
+	constructor(memoryUsedInOriginal: number) {
+		this.memoryUsedInOriginal = memoryUsedInOriginal;
+		//this.polygons = newStructArray<cm_polygon_t>( cm_polygon_t, polygonCount );
+	}
 }
 
 class cm_polygon_t{
+	static  size = 60;
+
 	bounds = new idBounds;				// polygon bounds
 	checkcount:number/*int*/			// for multi-check avoidance
 	contents:number/*int*/			// contents behind polygon
@@ -131,20 +154,53 @@ class cm_polygonRef_t {
 		this.p = null;
 		this.next = null;
 	}
-} 
+}
 
 class cm_polygonRefBlock_t {
-	nextRef:cm_polygonRef_t;			// next polygon reference in block
-	next:cm_polygonRefBlock_t;			// next block with polygon references
-};
+	nextRefPtr = 0; // next polygon reference in block
+	next: cm_polygonRefBlock_t; // next block with polygon references
 
-class cm_brushBlock_t{
-	bytesRemaining:number/*int*/
-	next: any;//	byte *					
-	nextIdx: number = 0;
+	get nextRef ( ): cm_polygonRef_t { return this.blocks[this.nextRefPtr]; }
+	set nextRef ( value: cm_polygonRef_t ) {
+		assert( value );
+		this.blocks[this.nextRefPtr] = value;
+	}
+
+	blocks: cm_polygonRef_t[];
+
+	constructor ( blockSize: number ) {
+		this.blocks = newStructArray<cm_polygonRef_t>( cm_polygonRef_t, blockSize );
+	}
+}
+
+class cm_brushBlock_t {
+	bytesRemaining: number /*int*/
+	nextPtr = 0; //next: byte *
+
+	get next(): cm_brush_t {
+		if (!this.brushes[this.nextPtr]) {
+			debugger;
+			this.brushes[this.nextPtr] = new cm_brush_t;
+		}
+		return this.brushes[this.nextPtr];
+	}
+	set next(value: cm_brush_t) {
+		debugger;
+		assert(value);
+		this.brushes[this.nextPtr] = value;
+	}
+
+	brushes: cm_brush_t[] = [];
+
+	memoryUsedInOriginal: number;// not used, seems right to keep this for now
+	constructor(memoryUsedInOriginal: number) {
+		this.memoryUsedInOriginal = memoryUsedInOriginal;
+	}
 }
 
 class cm_brush_t {
+	static size = 60;
+
 	checkcount:number/*int*/			// for multi-check avoidance
 	bounds = new idBounds;				// brush bounds
 	contents:number/*int*/			// contents of brush
@@ -174,12 +230,27 @@ class cm_node_t {
 }
 
 class cm_nodeBlock_t {
-	nextNode: cm_node_t; // next node in block
+	nextNodePtr = 0; // next node in block
 	next: cm_nodeBlock_t; // next block with nodes
+
+	get nextNode(): cm_node_t { return this.blocks[this.nextNodePtr]; }
+	set nextNode(value: cm_node_t ) {
+		assert( value );
+		this.blocks[this.nextNodePtr] = value;
+	}
+
+	blocks: cm_node_t[];
+
+	constructor ( blockSize: number ) {
+		this.blocks = newStructArray<cm_node_t>( cm_node_t, blockSize );
+	}
 
 	init ( ): void {
 		this.nextNode = null;
 		this.next = null;
+
+		this.blocks = null;
+		this.nextNodePtr = 0;
 	}
 }
 
