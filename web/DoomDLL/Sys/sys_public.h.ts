@@ -224,7 +224,7 @@ class sysEvent_t {
 	evPtrLength: /*int*/number; // bytes of data pointed to by evPtr, for journaling
 //	void *			evPtr;				// this must be manually freed if not NULL
 
-	init ( ): void {
+	memset0 ( ): void {
 		todoThrow ( );
 	}
 }

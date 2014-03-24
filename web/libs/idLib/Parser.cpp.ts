@@ -62,7 +62,7 @@ class define_t {
 	next:define_t;						// next defined macro in a list
 	hashnext: define_t;					// next define in the hash chain
 
-	init(): void {
+	memset0(): void {
 		this.name = null;
 		this.flags = 0;
 		this.builtin = 0;
@@ -1357,7 +1357,7 @@ idParser::Directive_define
 		}
 		// allocate define
 		define = new define_t; //(define_t *) Mem_ClearedAlloc(sizeof(define_t) + token.Length() + 1);
-		define.init ( );
+		define.memset0 ( );
 		//define.name = (char *) define + sizeof(define_t);
 		//strcpy(define.name, token.c_str());
 		define.name = token.c_str ( );

@@ -504,10 +504,10 @@ function RB_GLSL_GetUniformLocations(shader: shaderProgram_t): void {
 }
 
 function RB_GLSL_InitShaders ( ): boolean {
-	interactionShader.init ( );
-	shadowShader.init ( );
-	defaultShader.init ( );
-	depthFillShader.init ( );
+	interactionShader.memset0 ( );
+	shadowShader.memset0 ( );
+	defaultShader.memset0 ( );
+	depthFillShader.memset0 ( );
 
 	// load interation shaders
 	R_LoadGLSLShader( "interaction.vert", interactionShader, GL_VERTEX_SHADER );

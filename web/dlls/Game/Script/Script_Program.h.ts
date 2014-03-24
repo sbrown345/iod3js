@@ -119,7 +119,7 @@ class eval_t {
 	private float32s = new Float32Array(this.val);
 	private str = "";
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.int32s[0] = 0;
 		this.int32s[1] = 0;
 		this.int32s[2] = 0;
@@ -432,10 +432,10 @@ class varEval_t {
 	private length: number;
 
 	constructor ( ) {
-		this.init ( );
+		this.memset0 ( );
 	}
 
-	init(): void {
+	memset0(): void {
 		this.val = 0;
 	}
 };
@@ -982,7 +982,7 @@ class idVarDef {
 		this.scope = null;
 		this.numUsers = 0;
 		this.initialized = initialized_t.uninitialized;
-		this.value.init ( );
+		this.value.memset0 ( );
 		this.name = null;
 		this.next = null;
 	}

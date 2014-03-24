@@ -184,6 +184,10 @@ function sizeof ( obj: any ): number {
 		return 4;
 	}
 
+	if ( obj === long ) {
+		return 8;
+	}
+
 	if ( obj.size !== undefined ) {
 		return obj.size;
 	}

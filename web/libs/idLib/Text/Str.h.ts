@@ -156,7 +156,7 @@ class idStr implements ITrackedObject {
 		return dest;
 	}
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.Clear ( );
 	}
 

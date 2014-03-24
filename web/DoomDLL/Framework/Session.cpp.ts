@@ -1543,7 +1543,7 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 	// for the synchronous networking we needed to roll the angles over from
 	// level to level, but now we can just clear everything
 	usercmdGen.InitForNewMap();
-	this.mapSpawnData.init ( );//memset( &this.mapSpawnData.mapSpawnUsercmd, 0, sizeof( this.mapSpawnData.mapSpawnUsercmd ) );
+	this.mapSpawnData.memset0 ( );//memset( &this.mapSpawnData.mapSpawnUsercmd, 0, sizeof( this.mapSpawnData.mapSpawnUsercmd ) );
 
 	// set the user info
 	for ( i = 0; i < this.numClients; i++ ) {

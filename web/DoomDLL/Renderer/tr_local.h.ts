@@ -66,10 +66,10 @@ class idScreenRect {
 	//bool		IsEmpty() const;
 
 	constructor ( ) {
-		this.init ( );
+		this.memset0 ( );
 	}
 
-	init ( ):void {
+	memset0 ( ):void {
 		this.x1 = 0; this.y1 = 0; this.x2 = 0; this.y2 = 0;
 		this.zmin = 0; this.zmax = 0;							
 	}
@@ -459,19 +459,19 @@ class viewLight_t {
 	translucentInteractions: drawSurf_t; // get shadows from everything
 
 	constructor ( ) {
-		this.init ( );
+		this.memset0 ( );
 	}
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.next = null;
 		this.lightDef = null;
-		this.scissorRect.init ( );
+		this.scissorRect.memset0 ( );
 		this.viewInsideLight = false;
 		this.viewSeesGlobalLightOrigin = false;
 		this.viewSeesShadowPlaneBits = 0;
-		this.globalLightOrigin.init ( );
+		this.globalLightOrigin.memset0 ( );
 		clearStructArray( this.lightProject );
-		this.fogPlane.init ( );
+		this.fogPlane.memset0 ( );
 		this.frustumTris = null;
 		this.lightShader = null;
 		this.shaderRegisters = 0;
@@ -511,10 +511,10 @@ class /*viewEntity_s*/viewEntity_t {
 	modelViewMatrix = new Float32Array( 16 ); // local coords to eye coords
 
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.next = null;
 		this.entityDef = null;
-		this.scissorRect.init ( );
+		this.scissorRect.memset0 ( );
 		this.weaponDepthHack = false;
 		this.modelDepthHack = 0;
 		for ( var i = 0; i < this.modelMatrix.length; i++ ) {
@@ -593,10 +593,10 @@ class viewDef_t {
 	// crossing a closed door.  This is used to avoid drawing interactions
 	// when the light is behind a closed door.
 
-	init ( ): void {
-		this.renderView.init();
+	memset0 ( ): void {
+		this.renderView.memset0();
 		memset(this.projectionMatrix, 0, sizeof(this.projectionMatrix));
-		this.worldSpace.init();
+		this.worldSpace.memset0();
 		this.renderWorld = null;
 		this.floatTime = 0.0;
 		this.initialViewAreaOrigin.Zero();
@@ -604,8 +604,8 @@ class viewDef_t {
 		this.isMirror = false;
 		this.isXraySubview = false;
 		this.isEditor = false;
-		this.viewport.init ( );
-		this.scissor.init();
+		this.viewport.memset0 ( );
+		this.scissor.memset0();
 		this.superView = null;
 		this.subviewSurface = null;
 		this.drawSurfs = null;
@@ -615,7 +615,7 @@ class viewDef_t {
 		this.viewLights = null;
 		this.viewEntitys = null;
 		clearStructArray( this.frustum );
-		this.viewFrustum.init();
+		this.viewFrustum.memset0();
 		this.areaNum = 0;
 		this.connectedAreas = null;
 	}
@@ -683,7 +683,7 @@ class drawSurfsCommand_t {
 	commandId: renderCommand_t = renderCommand_t.RC_NOP; next: any; 
 	viewDef: viewDef_t;
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.commandId = 0;
 		this.next = null;
 		this.viewDef = null;
@@ -787,10 +787,10 @@ class performanceCounters_t{
 	/*	int		*/frontEndMsec: number;		// sum of time in all RE_RenderScene's in a frame
 
 	constructor() {
-		this.init ( );
+		this.memset0 ( );
 	}
 
-	init ( ) {
+	memset0 ( ) {
 		this.c_sphere_cull_in = 0;
 		this.c_sphere_cull_clip = 0;
 		this.c_sphere_cull_out = 0;
@@ -828,7 +828,7 @@ class tmu_t {
 	texEnv: number; //int		
 	textureType: textureType_t;
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.current2DMap = 0;
 		this.current3DMap = 0;
 		this.currentCubeMap = 0;
@@ -849,7 +849,7 @@ class glstate_t {
 
 	currentProgram: shaderProgram_t;
 
-	init ( ): void {
+	memset0 ( ): void {
 		clearStructArray( this.tmu );
 		this.currenttmu = 0;
 
@@ -885,10 +885,10 @@ class backEndCounters_t {
 	msec: number; // total msec for backend run		   //	int		
 
 	constructor ( ) {
-		this.init ( );
+		this.memset0 ( );
 	}
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.c_surfaces = 0;
 		this.c_shaders = 0;
 		this.c_vertexes = 0;
@@ -944,15 +944,15 @@ class backEndState_t {
 	c_copyFrameBuffer: number; //int
 
 	constructor ( ) {
-		this.init ( );
+		this.memset0 ( );
 	}
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.frameCount = 0;
 		this.viewDef = null;
-		this.pc.init ( );
+		this.pc.memset0 ( );
 		this.currentSpace = null;
-		this.currentScissor.init ( );
+		this.currentScissor.memset0 ( );
 		this.vLight = null;
 		this.depthFunc = 0;
 		zeroArray( this.lightTextureMatrix );
@@ -960,7 +960,7 @@ class backEndState_t {
 		this.lightScale = 0.0;
 		this.overBright = 0.0;
 		this.currentRenderCopied = false;
-		this.glState.init ( );
+		this.glState.memset0 ( );
 		this.c_copyFrameBuffer = 0;
 	}
 }
@@ -976,7 +976,7 @@ enum backEndName_t {
 class renderCrop_t {
 	/*int*/	x: number; y: number; width: number; height: number;	// these are in physical, OpenGL Y-at-bottom pixels
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.x = this.y = this.width = this.height = 0;
 	}
 }
@@ -1683,10 +1683,10 @@ class shaderProgram_t {
 	u_vertexParm = new Array<Number>( MAX_VERTEX_PARMS ); //GLint
 
 	constructor ( ) {
-		this.init ( );
+		this.memset0 ( );
 	}
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.program = null;
 
 		this.vertexShader = null;

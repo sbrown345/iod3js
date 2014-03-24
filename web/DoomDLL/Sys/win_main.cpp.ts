@@ -860,7 +860,7 @@ function Sys_GetEvent(): sysEvent_t {
 	}
 
 	// return the empty event 
-	ev.init ( );//memset( &ev, 0, sizeof( ev ) );
+	ev.memset0 ( );//memset( &ev, 0, sizeof( ev ) );
 
 	return ev;
 }

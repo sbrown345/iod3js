@@ -731,7 +731,7 @@ idPlayer::idPlayer
 */
 	constructor ( ) {
 		super ( );
-		this.usercmd.init ( ); //memset( &usercmd, 0, sizeof( usercmd ) );
+		this.usercmd.memset0 ( ); //memset( &usercmd, 0, sizeof( usercmd ) );
 
 		this.noclip = false;
 		this.godmode = false;

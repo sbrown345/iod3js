@@ -1449,7 +1449,7 @@ idTraceModel::ProjectionIntegrals
 		var /*float */C1: number, Ca: number, Caa: number, Caaa: number, Cb: number, Cbb: number, Cbbb: number;
 		var /*float */Cab: number, Kab: number, Caab: number, Kaab: number, Cabb: number, Kabb: number;
 
-		integrals.init ( ); //memset(&integrals, 0, sizeof(projectionIntegrals_t));
+		integrals.memset0 ( ); //memset(&integrals, 0, sizeof(projectionIntegrals_t));
 		poly = this.polys[polyNum];
 		for ( i = 0; i < poly.numEdges; i++ ) {
 			edgeNum = poly.edges[i];
@@ -1565,7 +1565,7 @@ idTraceModel::VolumeIntegrals
 		var /*int */i: number, a: number, b: number, c: number;
 		var /*float */nx: number, ny: number, nz: number;
 
-		integrals.init ( ); //memset( &integrals, 0, sizeof(volumeIntegrals_t) );
+		integrals.memset0 ( ); //memset( &integrals, 0, sizeof(volumeIntegrals_t) );
 		for ( i = 0; i < this.numPolys; i++ ) {
 			poly = this.polys[i];
 
@@ -1655,7 +1655,15 @@ class projectionIntegrals_t {
 	Pa: number; Pb: number;
 	Paa: number; Pab: number; Pbb: number;
 	Paaa: number; Paab: number; Pabb: number; Pbbb: number;
-};
+
+
+	memset0 ( ): void {
+		this.P1 = 0;
+		this.Pa = this.Pb = 0;
+		this.Paa = this.Pab = this.Pbb = 0;
+		this.Paaa = this.Paab = this.Pabb = this.Pbbb = 0;
+	}
+}
 
 class polygonIntegrals_t {
 	// all float
@@ -1664,7 +1672,7 @@ class polygonIntegrals_t {
 	Faaa: number; Fbbb: number; Fccc: number;
 	Faab: number; Fbbc: number; Fcca: number;
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.Fa = this.Fb = this.Fc = 0;
 		this.Faa = this.Fbb = this.Fcc = 0;
 		this.Faaa = this.Fbbb = this.Fccc = 0;
@@ -1677,10 +1685,10 @@ class volumeIntegrals_t {
 	T1 = new idVec3;
 	T2 = new idVec3;
 	TP = new idVec3;
-	init ( ): void {
+	memset0 ( ): void {
 		this.T0 = 0;
-		this.T1.init ( );
-		this.T2.init ( );
-		this.TP.init ( );
+		this.T1.memset0 ( );
+		this.T2.memset0 ( );
+		this.TP.memset0 ( );
 	}
 }

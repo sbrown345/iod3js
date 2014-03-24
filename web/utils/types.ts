@@ -78,6 +78,10 @@ var byte = function (v: number): number {
 //    return float32ConvertArray[0];
 //};
 
+function long ( v: number ): number {
+	return Math.floor( v );
+}
+
 function int ( v: number ): number {
 	return v | 0;
 }
@@ -114,13 +118,9 @@ function newStructArray<T>($class: any, count: number): T[] {
     return array;
 }
 
-interface Object {
-    init():void;
-}
-
 function clearStructArray(array : Array<any>) : void {
     for (var i = 0; i < array.length; i++) {
-        array[i].init();
+        array[i].memset0();
     }
 }
 

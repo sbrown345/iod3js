@@ -73,7 +73,7 @@ idInterpolate::idInterpolate
 */
 	constructor ( ) {
 		this.currentTime = this.startTime = this.duration = 0;
-		this.currentValue.init ( ); // memset( &currentValue, 0, sizeof( currentValue ) );
+		(<any>this.currentValue).memset0 ( ); // memset( &currentValue, 0, sizeof( currentValue ) );
 		this.startValue = this.endValue = this.currentValue;
 	}
 

@@ -283,7 +283,7 @@ class idPlane {
 	//	return !Compare( p );
 	//}
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.Zero ( );
 	}
 

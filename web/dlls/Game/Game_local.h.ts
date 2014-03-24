@@ -121,7 +121,7 @@ class entityState_t {
 	//byte					stateBuf[MAX_ENTITY_STATE_SIZE];
 	//struct entityState_s *	next;
 
-	init ( ): void {
+	memset0 ( ): void {
 		
 	}
 }
@@ -131,7 +131,7 @@ class snapshot_t {
 ////	entityState_t *			firstEntityState;
 ////	int						pvs[ENTITY_PVS_SIZE];
 	////	struct snapshot_s *		next;
-	init(): void {
+	memset0(): void {
 
 	}
 }

@@ -41,7 +41,7 @@ class singleSmoke_t {
 	//idVec3						origin;
 	//idMat3						axis;
 
-	init ( ): void {
+	memset0 ( ): void {
 		todo ( );
 	}
 };
@@ -49,7 +49,7 @@ class singleSmoke_t {
 class activeSmokeStage_t {
 	//const idParticleStage *		stage;
 	//singleSmoke_t *				smokes;
-	init(): void {
+	memset0(): void {
 		todo();
 	}
 };
@@ -98,7 +98,7 @@ idSmokeParticles::idSmokeParticles
 */
 	constructor ( ) {
 		this.initialized = false;
-		this.renderEntity.init ( ); //this.memset( &renderEntity, 0, sizeof( renderEntity ) );
+		this.renderEntity.memset0 ( ); //this.memset( &renderEntity, 0, sizeof( renderEntity ) );
 		this.renderEntityHandle = -1;
 		clearStructArray( this.smokes );//this.memset( smokes, 0, sizeof( smokes ) );
 		this.freeSmokes = null;

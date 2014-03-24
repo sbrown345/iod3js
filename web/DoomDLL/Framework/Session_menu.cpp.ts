@@ -107,7 +107,7 @@ idSessionLocal.prototype.SetGUI = function ( gui: idUserInterface, handle: ( str
 	}
 
 	var ev = new sysEvent_t;
-	ev.init ( ); //memset( &ev, 0, sizeof( ev ) );
+	ev.memset0 ( ); //memset( &ev, 0, sizeof( ev ) );
 	ev.evType = sysEventType_t.SE_NONE;
 
 	cmd = this.guiActive.HandleEvent( ev, this.com_frameTime );

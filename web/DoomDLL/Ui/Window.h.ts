@@ -108,7 +108,7 @@ class wexpOp_t {
 	opType: wexpOpType_t;	
 	a: number; b: number; c: number; d: number;//int	
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.opType = 0;
 		this.a = 0;
 		this.b = 0;

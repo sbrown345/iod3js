@@ -315,7 +315,7 @@ idRenderSystem.prototype.RegisterFont = function( fontName:string, font :fontInf
 	}
 */
 
-	font.init();//memset( &font, 0, sizeof( font ) );
+	font.memset0();//memset( &font, 0, sizeof( font ) );
 
 	for ( fontCount = 0; fontCount < 3; fontCount++ ) {
 

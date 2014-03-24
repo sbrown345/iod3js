@@ -140,7 +140,7 @@ class idBounds {
 //	this.b[1] = point;
 //}
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.Zero ( );
 	}
 

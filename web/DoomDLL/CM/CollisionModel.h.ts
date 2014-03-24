@@ -70,10 +70,10 @@ class contactInfo_t {
 	id:number;				// id of clip model the contact surface is part of	 ////	int		
 	
 	constructor ( ) {
-		this.init ( );
+		this.memset0 ( );
 	}
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.type = 0;
 		this.point.Zero ( );
 		this.normal.Zero ( );
@@ -97,14 +97,14 @@ class trace_t {
 	static size = 108;
 
 	constructor ( ) {
-		this.init ( );
+		this.memset0 ( );
 	}
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.fraction = 0;
 		this.endpos.Zero ( );
 		this.endAxis.equals( mat3_zero );
-		this.c.init ( );
+		this.c.memset0 ( );
 	}
 };
 //

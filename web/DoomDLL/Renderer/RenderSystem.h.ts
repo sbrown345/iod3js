@@ -110,7 +110,7 @@ class glyphInfo_t {
 	glyph: idMaterial; // shader with the glyph				//const idMaterial *	
 	shaderName = new Uint8Array( 32 ); //char				
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.height = 0;
 		this.top = 0;
 		this.bottom = 0;
@@ -134,7 +134,7 @@ class fontInfo_t {
 	glyphScale: number /*float*/;
 	name = new Uint8Array(64); //char
 
-	init(): void {
+	memset0(): void {
 		clearStructArray(this.glyphs);
 		this.glyphScale = 0.0;
 		memset( this.name, 0, this.name.length );
@@ -163,10 +163,10 @@ class fontInfoEx_t {
 	maxWidthLarge: number; //int					
 	name = new Uint8Array( 64 ); //char		
 
-	init ( ): void {
-		this.fontInfoSmall.init ( );
-		this.fontInfoMedium.init ( );
-		this.fontInfoLarge.init ( );
+	memset0 ( ): void {
+		this.fontInfoSmall.memset0 ( );
+		this.fontInfoMedium.memset0 ( );
+		this.fontInfoLarge.memset0 ( );
 		this.maxHeight = 0;
 		this.maxWidth = 0;
 		this.maxHeightSmall = 0;

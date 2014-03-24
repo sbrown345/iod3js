@@ -151,8 +151,8 @@ class srfTriangles_t {
 	ambientCache: vertCache_t; // idDrawVert
 	shadowCache: vertCache_t; // shadowCache_t
 
-	init ( ) {
-		this.bounds.init ( );
+	memset0 ( ) {
+		this.bounds.memset0 ( );
 
 		this.ambientViewCount = 0;
 

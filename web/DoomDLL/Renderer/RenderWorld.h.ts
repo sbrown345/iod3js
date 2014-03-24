@@ -153,10 +153,10 @@ class renderEntity_t {
 	xrayIndex: number;																										   //int						
 
 	constructor ( ) {
-		this.init ( );
+		this.memset0 ( );
 	}
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.hModel = null;
 		this.entityNum = 0;
 		this.bodyId = 0;
@@ -265,7 +265,7 @@ class renderView_t {
 	shaderParms = new Float32Array( MAX_GLOBAL_SHADER_PARMS ); // can be used in any way by shader
 	globalMaterial: idMaterial; // used to override everything draw
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.viewID = 0;
 		this.x = 0;
 		this.y = 0;

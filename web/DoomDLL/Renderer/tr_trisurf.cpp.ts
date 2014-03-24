@@ -517,7 +517,7 @@ R_AllocStaticTriSurf
 */
 function R_AllocStaticTriSurf(): srfTriangles_t {
 	var tris = srfTrianglesAllocator.Alloc();
-	tris.init ( );// memset( tris, 0, sizeof( srfTriangles_t ) );
+	tris.memset0 ( );// memset( tris, 0, sizeof( srfTriangles_t ) );
 	return tris;
 }
 

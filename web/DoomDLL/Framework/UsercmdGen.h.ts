@@ -106,10 +106,10 @@ class usercmd_t {
 //	void		ByteSwap();						// on big endian systems, byte swap the shorts and ints
 //	bool		operator==( const usercmd_t &rhs ) const;
 	constructor ( ) {
-		this.init ( );
+		this.memset0 ( );
 	}
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.gameFrame = 0;
 		this.gameTime = 0;
 		this.duplicateCount = 0;

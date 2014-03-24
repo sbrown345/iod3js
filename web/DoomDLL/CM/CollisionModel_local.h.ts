@@ -134,12 +134,12 @@ class cm_polygon_t{
 	numEdges:number/*int*/			// number of edges
 	edges: Int32Array;			// variable sized, indexes into cm_edge_t list
 
-	init ( ): void {
-		this.bounds.init();
+	memset0 ( ): void {
+		this.bounds.memset0();
 		this.checkcount = 0;
 		this.contents = 0;
 		this.material = null;
-		this.plane.init();
+		this.plane.memset0();
 		this.numEdges = 0;
 		memset( this.edges, 0, sizeof( this.edges ) );
 	}
@@ -150,7 +150,7 @@ class cm_polygonRef_t {
 	p:cm_polygon_t ;					// pointer to polygon
 	next: cm_polygonRef_t;				// next polygon in chain
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.p = null;
 		this.next = null;
 	}
@@ -253,7 +253,7 @@ class cm_nodeBlock_t {
 		this.blocks = newStructArray<cm_node_t>( cm_node_t, blockSize );
 	}
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.nextNode = null;
 		this.next = null;
 
@@ -295,9 +295,9 @@ class cm_model_t {
 	numMergedPolys: number /*int*/;
 	usedMemory: number /*int*/;
 
-	init ( ): void {
-		this.name.init ( );
-		this.bounds.init ( );
+	memset0 ( ): void {
+		this.name.memset0 ( );
+		this.bounds.memset0 ( );
 		this.contents = 0;
 		this.isConvex = false;
 

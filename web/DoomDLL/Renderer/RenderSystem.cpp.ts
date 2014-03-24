@@ -1981,15 +1981,15 @@ Clear( ) {
 	this.sortOffset = 0;
 	this.worlds.Clear();
 	this.primaryWorld = null;
-	this.primaryRenderView.init ( );
+	this.primaryRenderView.memset0 ( );
 	this.primaryView = null;
 	this.defaultMaterial = null;
 	this.testImage = null;
 	this.ambientCubeImage = null;
 	this.viewDef = null;
-	this.pc.init ( );
-	this.lockSurfacesCmd.init ( );
-	this.identitySpace.init ( );
+	this.pc.memset0 ( );
+	this.lockSurfacesCmd.memset0 ( );
+	this.identitySpace.memset0 ( );
 	this.logFile = null;
 	this.stencilIncr = 0;
 	this.stencilDecr = 0;
@@ -2313,8 +2313,8 @@ only be called when the back end thread is idle.
 		//	common.Printf( "lightScale: %f\n", backEnd.pc.maxLightValue );
 		//}
 
-		tr.pc.init ( ); //memset( &tr.pc, 0, sizeof( tr.pc ) );
-		backEnd.pc.init ( ); //memset( &backEnd.pc, 0, sizeof( backEnd.pc ) );
+		tr.pc.memset0 ( ); //memset( &tr.pc, 0, sizeof( tr.pc ) );
+		backEnd.pc.memset0 ( ); //memset( &backEnd.pc, 0, sizeof( backEnd.pc ) );
 	}
 
 

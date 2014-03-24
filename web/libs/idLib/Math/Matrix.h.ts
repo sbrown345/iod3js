@@ -434,6 +434,10 @@ class idMat3 {
 		this.mat[2].equals( other.mat[2] );
 	}
 
+	memset0 ( ): void {
+		clearStructArray( this.mat );
+	}
+
 //
 //ID_INLINE idMat3::idMat3( const float xx, const float xy, const float xz, const float yx, const float yy, const float yz, const float zx, const float zy, const float zz ) {
 //	mat[ 0 ].x = xx; mat[ 0 ].y = xy; mat[ 0 ].z = xz;

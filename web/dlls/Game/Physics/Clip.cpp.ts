@@ -52,7 +52,7 @@ class clipSector_t {
 	children = new Array<clipSector_t>( 2 );
 	clipLinks: clipSector_t;
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.axis = 0;
 		this.dist = 0;
 		this.children[0] = null;
@@ -179,16 +179,16 @@ class idClipModel {
 	clipLinks:clipLink_t;				// links into sectors
 	touchCount: number/*int*/;
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.enabled = false;
 		this.entity = null;
 		this.id = 0;
 		this.owner = null;
-		this.origin.init ( );
-		this.axis.init ( );
-		this.bounds.init ( );
-		this.absBounds.init ( );
-		this.material.init ( );
+		this.origin.memset0 ( );
+		this.axis.memset0 ( );
+		this.bounds.memset0 ( );
+		this.absBounds.memset0 ( );
+		this.material = null;
 		this.contents = 0;
 		this.collisionModelHandle = 0;
 		this.traceModelIndex = 0;
@@ -971,12 +971,12 @@ idClip::idClip
 		this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;
 	}
 	
-	init ( ): void {
+	memset0 ( ): void {
 		this.numClipSectors = 0;
 		this.clipSectors = null;
 		this.worldBounds.Zero();
-		this.temporaryClipModel.init ( );
-		this.defaultClipModel.init ( );
+		this.temporaryClipModel.memset0 ( );
+		this.defaultClipModel.memset0 ( );
 		this.touchCount= 0;
 		this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;
 	}

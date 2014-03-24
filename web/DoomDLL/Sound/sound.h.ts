@@ -65,7 +65,7 @@ class soundShaderParms_t {
 	soundShaderFlags:number/*int*/;		// SSF_* bit flags
 	soundClass: number/*int*/;				// for global fading of sounds
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.minDistance = 0;
 		this.maxDistance = 0;
 		this.volume = 0;

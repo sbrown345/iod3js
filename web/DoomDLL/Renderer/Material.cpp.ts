@@ -61,23 +61,23 @@ var TOP_PRIORITY = 4;
 
 ////// keep all of these on the stack, when they are static it makes material parsing non-reentrant
 class mtrParsingData_t {
-	/*bool			*/registerIsTemporary:boolean[];//[MAX_EXPRESSION_REGISTERS];
-	/*float			*/shaderRegisters:Float32Array;//[MAX_EXPRESSION_REGISTERS];
-	/*expOp_t		*/shaderOps:expOp_t[];//[MAX_EXPRESSION_OPS];
-	/*shaderStage_t	*/parseStages:shaderStage_t[];//[MAX_SHADER_STAGES];
+	registerIsTemporary: boolean[ /*MAX_EXPRESSION_REGISTERS*/];
+	shaderRegisters: Float32Array; //[MAX_EXPRESSION_REGISTERS];
+	shaderOps: expOp_t[ /*MAX_EXPRESSION_OPS*/];
+	parseStages: shaderStage_t[ /*MAX_SHADER_STAGES*/];
 
 	registersAreConstant: boolean;
 	forceOverlays: boolean;
 
 	constructor ( ) {
-		this.init ( );
+		this.memset0 ( );
 	}
 
-	init ( ) {
+	memset0 ( ): void {
 		this.registerIsTemporary = new Array( MAX_EXPRESSION_REGISTERS );
 		this.shaderRegisters = new Float32Array( MAX_EXPRESSION_REGISTERS );
 		this.shaderOps = newStructArray<expOp_t>( expOp_t, MAX_EXPRESSION_OPS );
-		this.parseStages = newStructArray<shaderStage_t>(shaderStage_t, MAX_SHADER_STAGES);
+		this.parseStages = newStructArray<shaderStage_t>( shaderStage_t, MAX_SHADER_STAGES );
 	}
 }
 
@@ -283,39 +283,39 @@ Sets defaultShader and returns false if the next token doesn't match
 idMaterial::ParseSort
 =================
 */
-ParseSort(src:idLexer ):number {
-	var token = new idToken;
+	ParseSort ( src: idLexer ): number {
+		var token = new idToken;
 
-	if ( !src.ReadTokenOnLine( token ) ) {
-		src.Warning( "missing sort parameter" );
-		this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
-		return;
-	}
+		if ( !src.ReadTokenOnLine( token ) ) {
+			src.Warning( "missing sort parameter" );
+			this.SetMaterialFlag( materialFlags_t.MF_DEFAULTED );
+			return;
+		}
 
-	if ( !token.Icmp( "subview" ) ) {
-		this.sort = materialSort_t.SS_SUBVIEW;
-	} else if ( !token.Icmp( "opaque" ) ) {
-		this.sort = materialSort_t.SS_OPAQUE;
-	}else if ( !token.Icmp( "decal" ) ) {
-		this.sort = materialSort_t.SS_DECAL;
-	} else if ( !token.Icmp( "far" ) ) {
-		this.sort = materialSort_t.SS_FAR;
-	} else if ( !token.Icmp( "medium" ) ) {
-		this.sort = materialSort_t.SS_MEDIUM;
-	} else if ( !token.Icmp( "close" ) ) {
-		this.sort = materialSort_t.SS_CLOSE;
-	} else if ( !token.Icmp( "almostNearest" ) ) {
-		this.sort = materialSort_t.SS_ALMOST_NEAREST;
-	} else if ( !token.Icmp( "nearest" ) ) {
-		this.sort = materialSort_t.SS_NEAREST;
-	} else if ( !token.Icmp( "postProcess" ) ) {
-		this.sort = materialSort_t.SS_POST_PROCESS;
-	} else if ( !token.Icmp( "portalSky" ) ) {
-		this.sort = materialSort_t.SS_PORTAL_SKY;
-	} else {
-		this.sort = atof( token.data );
+		if ( !token.Icmp( "subview" ) ) {
+			this.sort = materialSort_t.SS_SUBVIEW;
+		} else if ( !token.Icmp( "opaque" ) ) {
+			this.sort = materialSort_t.SS_OPAQUE;
+		} else if ( !token.Icmp( "decal" ) ) {
+			this.sort = materialSort_t.SS_DECAL;
+		} else if ( !token.Icmp( "far" ) ) {
+			this.sort = materialSort_t.SS_FAR;
+		} else if ( !token.Icmp( "medium" ) ) {
+			this.sort = materialSort_t.SS_MEDIUM;
+		} else if ( !token.Icmp( "close" ) ) {
+			this.sort = materialSort_t.SS_CLOSE;
+		} else if ( !token.Icmp( "almostNearest" ) ) {
+			this.sort = materialSort_t.SS_ALMOST_NEAREST;
+		} else if ( !token.Icmp( "nearest" ) ) {
+			this.sort = materialSort_t.SS_NEAREST;
+		} else if ( !token.Icmp( "postProcess" ) ) {
+			this.sort = materialSort_t.SS_POST_PROCESS;
+		} else if ( !token.Icmp( "portalSky" ) ) {
+			this.sort = materialSort_t.SS_PORTAL_SKY;
+		} else {
+			this.sort = atof( token.data );
+		}
 	}
-}
 
 /*
 =================

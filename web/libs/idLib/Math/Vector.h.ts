@@ -466,7 +466,7 @@ class idVec3 {
 		return dest;
 	}
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.x = 0;
 		this.y = 0;
 		this.z = 0;

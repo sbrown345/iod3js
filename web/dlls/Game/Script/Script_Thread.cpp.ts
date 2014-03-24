@@ -720,7 +720,7 @@ idThread::Restart
 		}
 		idThread.threadList.Clear ( );
 
-		idThread.trace.init ( );
+		idThread.trace.memset0 ( );
 		idThread.trace.c.entityNum = ENTITYNUM_NONE;
 	}
 

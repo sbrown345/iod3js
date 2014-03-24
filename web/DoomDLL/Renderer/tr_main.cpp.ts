@@ -331,7 +331,7 @@ R_ClearedFrameAlloc
 */
 function R_ClearedFrameAlloc<T> ( type: any, /*int */bytes__Unused: number ): T {
 	var r = <T>new type;
-	r.init ( );
+	( <any>r ).memset0 ( );
 	return r;
 	//void	*r;
 

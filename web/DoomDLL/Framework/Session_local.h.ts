@@ -69,7 +69,7 @@ class mapSpawnData_t {
 	persistentPlayerInfo = newStructArray<idDict>( idDict, MAX_ASYNC_CLIENTS );
 	mapSpawnUsercmd = newStructArray<usercmd_t>(usercmd_t, MAX_ASYNC_CLIENTS); // needed for tracking delta angles
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.serverInfo.Clear ( );
 		this.syncedCVars.Clear ( );
 		clearStructArray( this.userInfo );

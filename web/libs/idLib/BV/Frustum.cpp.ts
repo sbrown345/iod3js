@@ -195,7 +195,7 @@ class idFrustum {
 //};
 
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.origin.Zero ( );
 		this.axis.Zero();
 		this.dNear = 0;

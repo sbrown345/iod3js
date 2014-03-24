@@ -196,7 +196,7 @@ EmitSurface
 		}
 	
 		var renderEntity = new renderEntity_t;//memset( &renderEntity, 0, sizeof( renderEntity ) );
-		renderEntity.init ( );
+		renderEntity.memset0 ( );
 		memcpy( renderEntity.shaderParms, surf.color, sizeof( surf.color ) );
 
 		var /*viewEntity_t **/guiSpace = /*(viewEntity_t *)*/R_ClearedFrameAlloc<viewEntity_t>( viewEntity_t, /* sizeof( *guiSpace )*/null );

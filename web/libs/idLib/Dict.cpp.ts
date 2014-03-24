@@ -188,7 +188,7 @@ class idDict {
 		this.Clear ( );
 	}
 
-	init ( ): void {
+	memset0 ( ): void {
 		this.Clear ( );
 	}
 	

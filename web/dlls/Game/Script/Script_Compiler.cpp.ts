@@ -294,7 +294,7 @@ constructor() {
 	this.console			= false;
 	this.scope				= def_namespace;
 
-	this.immediate.init ( );
+	this.immediate.memset0 ( );
 	for (var i = 0; i < idCompiler.punctuationValid.length; i++ ) {
 		idCompiler.punctuationValid[i] = false;
 	}
@@ -353,7 +353,7 @@ Creates a def for an index into a virtual function table
 	VirtualFunctionConstant ( func: idVarDef ): idVarDef {
 		var eval = new eval_t();
 
-		eval.init ( );
+		eval.memset0 ( );
 		eval._int = func.scope.TypeDef ( ).GetFunctionNumber( func.value.functionPtr );
 		dlog(DEBUG_COMPILER, "VirtualFunctionConstant eval._int = %i\n", eval._int);
 		if ( eval._int < 0 ) {
@@ -578,7 +578,7 @@ try to optimize when the operator works on constants only
 
 		var vec_c = new idVec3(c.vector); //idVec3 &vec_c = *reinterpret_cast<idVec3 *>( &c.vector[ 0 ] );
 
-		c.init ( );//memset( &c, 0, sizeof( c ) );
+		c.memset0 ( );//memset( &c, 0, sizeof( c ) );
 		switch (idCompiler.GetOpCodeIndex(op) ) {
 			case opc.OP_ADD_F:		c._float = var_a.value.floatPtr + var_b.value.floatPtr; type = type_float; break;
 			case opc.OP_ADD_V:		todoThrow("vec_c = var_a.value.vectorPtr.plus(var_b.value.vectorPtr); type = type_vector;");	 break;
@@ -749,7 +749,7 @@ Sets token, immediateType, and possibly immediate
 
 		// reset our type
 		this.immediateType = null;
-		this.immediate.init ( );
+		this.immediate.memset0 ( );
 
 		// Save the token's line number and filename since when we emit opcodes the current 
 		// token is always the next one to be read 
@@ -2684,7 +2684,7 @@ compiles the 0 terminated text, adding definitions to the program structure
 		this.currentLineNumber = 0;
 		this.console = toConsole;
 
-		this.immediate.init ( );
+		this.immediate.memset0 ( );
 
 		this.parser.SetFlags( lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS );
 		this.parser.LoadMemory( text, strlen( text ), filename );

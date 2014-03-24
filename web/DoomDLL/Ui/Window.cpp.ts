@@ -3067,7 +3067,7 @@ idWindow::ExpressionOp
 			return this.ops[0];
 		}
 		var wop = new wexpOp_t;
-		wop.init ( ); //memset(&wop, 0, sizeof(wexpOp_t));
+		wop.memset0 ( ); //memset(&wop, 0, sizeof(wexpOp_t));
 		var i = this.ops.Append( wop );
 		return this.ops[i];
 	}

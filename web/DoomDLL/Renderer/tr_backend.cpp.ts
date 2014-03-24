@@ -57,7 +57,7 @@ function RB_SetDefaultGLState():void
 	//
 	// make sure our GL state vector is set correctly
 	//
-	backEnd.glState.init ( );
+	backEnd.glState.memset0 ( );
 	backEnd.glState.forceGlState = true;
 
 	GL_UseProgram(null);

@@ -3228,7 +3228,7 @@ idCollisionModelManagerLocal::AccumulateModelInfo
 idCollisionModelManagerLocal.prototype.AccumulateModelInfo = function ( model: cm_model_t ): void {
 	var i: number;
 
-	model.init ( ); //memset( model, 0, sizeof( *model ) );
+	model.memset0 ( ); //memset( model, 0, sizeof( *model ) );
 	// accumulate statistics of all loaded models
 	for ( i = 0; i < this.numModels; i++ ) {
 		model.numVertices += this.models[i].numVertices;

@@ -219,7 +219,7 @@ idSoundChannel::Clear
 		for ( j = 0; j < 6; j++ ) {
 			this.lastV[j] = 0.0;
 		}
-		this.parms.init ( ); //memset( this.parms, 0, sizeof(this.parms) );
+		this.parms.memset0 ( ); //memset( this.parms, 0, sizeof(this.parms) );
 
 		this.triggered = false;
 		this.openalSource = null;
@@ -497,7 +497,7 @@ idSoundEmitterLocal::Clear
 		this.maxDistance = 10.0; // meters
 		this.spatializedOrigin.Zero ( );
 
-		this.parms.init ( );
+		this.parms.memset0 ( );
 	}
 ////
 /////*
