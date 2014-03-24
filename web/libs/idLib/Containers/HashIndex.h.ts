@@ -404,7 +404,7 @@ idHashIndex::GenerateKey
 idHashIndex::GenerateKey
 ================
 */
-	GenerateKeyFromVector( v:idVec3  ):number {
+	GenerateKey_vec3( v:idVec3  ):number {
 		return ( ( ( int( v[0] ) ) + ( int( v[1] ) ) + ( int( v[2] ) ) ) & this.hashMask );
 	}
 
@@ -413,7 +413,7 @@ idHashIndex::GenerateKey
 idHashIndex::GenerateKey
 ================
 */
-	GenerateKeyFromNumbers ( /*const int */n1: number, /*const int */n2: number ): number {
+	GenerateKey_ints ( /*const int */n1: number, /*const int */n2: number ): number {
 		return ( ( n1 + n2 ) & this.hashMask );
 	}
 

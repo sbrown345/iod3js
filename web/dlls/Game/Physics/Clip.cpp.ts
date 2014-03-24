@@ -1047,7 +1047,7 @@ idClip::Init
 		this.touchCount = -1;
 		// get world map bounds
 		h = collisionModelManager.LoadModel( "worldMap", false );
-		
+
 		collisionModelManager.GetModelBounds( h, this.worldBounds );
 		// create world sectors
 		this.CreateClipSectors_r( 0, this.worldBounds, maxSector );
@@ -1057,7 +1057,7 @@ idClip::Init
 		gameLocal.Printf( "max clip sector is (%1.1f, %1.1f, %1.1f)\n", maxSector[0], maxSector[1], maxSector[2] );
 
 		// initialize a default clip model
-		this.defaultClipModel.LoadModel(new idTraceModel(new idBounds( new idVec3( 0, 0, 0 ) ).Expand( 8 ) ) );
+		this.defaultClipModel.LoadModel( new idTraceModel( new idBounds( new idVec3( 0, 0, 0 ) ).Expand( 8 ) ) );
 
 		// set counters to zero
 		this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;

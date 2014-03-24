@@ -131,17 +131,17 @@ class idCollisionModelManager {
 ////	virtual bool			TrmFromModel( const char *modelName, idTraceModel &trm ) = 0;
 ////
 ////	// Gets the name of a model.
-////	virtual const char *	GetModelName( cmHandle_t model ) const = 0;
-////	// Gets the bounds of a model.
-////	virtual bool			GetModelBounds( cmHandle_t model, idBounds &bounds ) const = 0;
+////	virtual const char *	GetModelName(model: /*cmHandle_t*/number ) const = 0;
+	// Gets the bounds of a model.
+	GetModelBounds ( model: /*cmHandle_t*/number, bounds: idBounds ): boolean { throw "placeholder"; }
 ////	// Gets all contents flags of brushes and polygons of a model ored together.
-////	virtual bool			GetModelContents( cmHandle_t model, int &contents ) const = 0;
+////	virtual bool			GetModelContents(model: /*cmHandle_t*/number, int &contents ) const = 0;
 ////	// Gets a vertex of a model.
-////	virtual bool			GetModelVertex( cmHandle_t model, int vertexNum, idVec3 &vertex ) const = 0;
+////	virtual bool			GetModelVertex(model: /*cmHandle_t*/number, int vertexNum, idVec3 &vertex ) const = 0;
 ////	// Gets an edge of a model.
-////	virtual bool			GetModelEdge( cmHandle_t model, int edgeNum, idVec3 &start, idVec3 &end ) const = 0;
+////	virtual bool			GetModelEdge(model: /*cmHandle_t*/number, int edgeNum, idVec3 &start, idVec3 &end ) const = 0;
 ////	// Gets a polygon of a model.
-////	virtual bool			GetModelPolygon( cmHandle_t model, int polygonNum, idFixedWinding &winding ) const = 0;
+////	virtual bool			GetModelPolygon(model: /*cmHandle_t*/number, int polygonNum, idFixedWinding &winding ) const = 0;
 ////
 ////	// Translates a trace model and reports the first collision if any.
 ////	virtual void			Translation( trace_t *results, start:idVec3, end:idVec3,
@@ -163,10 +163,10 @@ class idCollisionModelManager {
 ////	// Tests collision detection.
 ////	virtual void			DebugOutput( const idVec3 &origin ) = 0;
 ////	// Draws a model.
-////	virtual void			DrawModel( cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis,
+////	virtual void			DrawModel(model: /*cmHandle_t*/number, const idVec3 &modelOrigin, const idMat3 &modelAxis,
 ////												const idVec3 &viewOrigin, const float radius ) = 0;
 ////	// Prints model information, use -1 handle for accumulated model info.
-////	virtual void			ModelInfo( cmHandle_t model ) = 0;
+////	virtual void			ModelInfo(model: /*cmHandle_t*/number ) = 0;
 ////	// Lists all loaded models.
 ////	virtual void			ListModels( void ) = 0;
 ////	// Writes a collision model file for the given map entity.

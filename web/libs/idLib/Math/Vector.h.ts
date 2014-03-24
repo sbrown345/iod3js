@@ -466,6 +466,12 @@ class idVec3 {
 		return dest;
 	}
 
+	init ( ): void {
+		this.x = 0;
+		this.y = 0;
+		this.z = 0;
+	}
+
 ////					idVec3( );
 ////					explicit idVec3( const float x, const float y, const float z );
 
@@ -1759,12 +1765,12 @@ class idVec5 {
 		this.t = t;
 	}
 
-	equals ( copyFrom: idVec5 ) {
-		this.x = copyFrom.x;
-		this.y = copyFrom.y;
-		this.z = copyFrom.z;
-		this.s = copyFrom.s;
-		this.t = copyFrom.t;
+	equals ( other: idVec5 ) {
+		this.x = other.x;
+		this.y = other.y;
+		this.z = other.z;
+		this.s = other.s;
+		this.t = other.t;
 	}
 
 	[index: number]: number;

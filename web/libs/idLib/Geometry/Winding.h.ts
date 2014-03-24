@@ -137,7 +137,7 @@ class idWinding {
 //ID_INLINE idWinding::idWinding( int n ) {
 //	this.numPoints = this.allocedSize = 0;
 //	this.p = NULL;
-//	EnsureAlloced( n );
+//	this.EnsureAlloced( n );
 //}
 
 	constructor ( n: number=null ) {
@@ -153,7 +153,7 @@ class idWinding {
 //
 //	this.numPoints = this.allocedSize = 0;
 //	this.p = NULL;
-//	if ( !EnsureAlloced( n ) ) {
+//	if ( !this.EnsureAlloced( n ) ) {
 //		this.numPoints = 0;
 //		return;
 //	}
@@ -178,7 +178,7 @@ class idWinding {
 //
 //ID_INLINE idWinding::idWinding( const idWinding &winding ) {
 //	int i;
-//	if ( !EnsureAlloced( winding.GetNumPoints() ) ) {
+//	if ( !this.EnsureAlloced( winding.GetNumPoints() ) ) {
 //		this.numPoints = 0;
 //		return;
 //	}
@@ -196,7 +196,7 @@ class idWinding {
 //ID_INLINE idWinding &idWinding::operator=( const idWinding &winding ) {
 //	int i;
 //
-//	if ( !EnsureAlloced( winding.numPoints ) ) {
+//	if ( !this.EnsureAlloced( winding.numPoints ) ) {
 //		this.numPoints = 0;
 //		return *this;
 //	}
@@ -314,7 +314,7 @@ idWinding::ReAllocate
 //	vup *= MAX_WORLD_SIZE;
 //	vright *= MAX_WORLD_SIZE;
 //
-//	EnsureAlloced(4);
+//	this.EnsureAlloced(4);
 //	this.numPoints = 4;
 //	this.p[0].ToVec3() = org - vright + vup;
 //	this.p[0].s = this.p[0].t = 0.0;
@@ -351,7 +351,7 @@ idWinding::ReAllocate
 //
 //	// determine sides for each point
 //	for (i = 0; i < this.numPoints; i++) {
-//		dists[i] = dot = plane.Distance(p[i].ToVec3());
+//		dists[i] = dot = plane.Distance(this.p[i].ToVec3());
 //		if (dot > epsilon) {
 //			sides[i] = SIDE_FRONT;
 //		}
@@ -432,10 +432,10 @@ idWinding::ReAllocate
 //			dot = dists[i] / (dists[i] - dists[i + 1]);
 //			for (j = 0; j < 3; j++) {
 //				// avoid round off error when possible
-//				if (plane.Normal()[j] == 1.0f) {
+//				if (plane.Normal()[j] == 1.0) {
 //					mid[j] = plane.Dist();
 //				}
-//				else if (plane.Normal()[j] == -1.0f) {
+//				else if (plane.Normal()[j] == -1.0) {
 //					mid[j] = -plane.Dist();
 //				}
 //				else {
@@ -449,10 +449,10 @@ idWinding::ReAllocate
 //			dot = dists[i + 1] / (dists[i + 1] - dists[i]);
 //			for (j = 0; j < 3; j++) {
 //				// avoid round off error when possible
-//				if (plane.Normal()[j] == 1.0f) {
+//				if (plane.Normal()[j] == 1.0) {
 //					mid[j] = plane.Dist();
 //				}
-//				else if (plane.Normal()[j] == -1.0f) {
+//				else if (plane.Normal()[j] == -1.0) {
 //					mid[j] = -plane.Dist();
 //				}
 //				else {
@@ -502,7 +502,7 @@ idWinding::ReAllocate
 //
 //	// determine sides for each point
 //	for (i = 0; i < this.numPoints; i++) {
-//		dists[i] = dot = plane.Distance(p[i].ToVec3());
+//		dists[i] = dot = plane.Distance(this.p[i].ToVec3());
 //		if (dot > epsilon) {
 //			sides[i] = SIDE_FRONT;
 //		}
@@ -568,10 +568,10 @@ idWinding::ReAllocate
 //		dot = dists[i] / (dists[i] - dists[i + 1]);
 //		for (j = 0; j < 3; j++) {
 //			// avoid round off error when possible
-//			if (plane.Normal()[j] == 1.0f) {
+//			if (plane.Normal()[j] == 1.0) {
 //				mid[j] = plane.Dist();
 //			}
-//			else if (plane.Normal()[j] == -1.0f) {
+//			else if (plane.Normal()[j] == -1.0) {
 //				mid[j] = -plane.Dist();
 //			}
 //			else {
@@ -585,7 +585,7 @@ idWinding::ReAllocate
 //		newNumPoints++;
 //	}
 //
-//	if (!EnsureAlloced(newNumPoints, false)) {
+//	if (!this.EnsureAlloced(newNumPoints, false)) {
 //		return this;
 //	}
 //
@@ -622,7 +622,7 @@ idWinding::ClipInPlace
 //
 //	// determine sides for each point
 //	for (i = 0; i < this.numPoints; i++) {
-//		dists[i] = dot = plane.Distance(p[i].ToVec3());
+//		dists[i] = dot = plane.Distance(this.p[i].ToVec3());
 //		if (dot > epsilon) {
 //			sides[i] = SIDE_FRONT;
 //		}
@@ -688,10 +688,10 @@ idWinding::ClipInPlace
 //		dot = dists[i] / (dists[i] - dists[i + 1]);
 //		for (j = 0; j < 3; j++) {
 //			// avoid round off error when possible
-//			if (plane.Normal()[j] == 1.0f) {
+//			if (plane.Normal()[j] == 1.0) {
 //				mid[j] = plane.Dist();
 //			}
-//			else if (plane.Normal()[j] == -1.0f) {
+//			else if (plane.Normal()[j] == -1.0) {
 //				mid[j] = -plane.Dist();
 //			}
 //			else {
@@ -705,7 +705,7 @@ idWinding::ClipInPlace
 //		newNumPoints++;
 //	}
 //
-//	if (!EnsureAlloced(newNumPoints, false)) {
+//	if (!this.EnsureAlloced(newNumPoints, false)) {
 //		return true;
 //	}
 //
@@ -725,7 +725,7 @@ idWinding::ClipInPlace
 //
 //	w = new idWinding(numPoints);
 //	w.numPoints = this.numPoints;
-//	memcpy(w.p, this.p, this.numPoints * sizeof(p[0]));
+//	memcpy(w.p, this.p, this.numPoints * sizeof(this.p[0]));
 //	return w;
 //}
 //
@@ -746,22 +746,22 @@ idWinding::Reverse
 		return w;
 	}
 
-///*
-//=============
-//idWinding::ReverseSelf
-//=============
-//*/
-//void idWinding::ReverseSelf() {
-//	idVec5 v;
-//	int i;
-//
-//	for (i = 0; i < (this.numPoints >> 1); i++) {
-//		v = this.p[i];
-//		this.p[i] = this.p[this.numPoints - i - 1];
-//		this.p[this.numPoints - i - 1] = v;
-//	}
-//}
-//
+/*
+=============
+idWinding::ReverseSelf
+=============
+*/
+	ReverseSelf ( ): void {
+		var v = new idVec5;
+		var /*int */i: number;
+		todoThrow ( );
+		//for ( i = 0; i < ( this.numPoints >> 1 ); i++ ) {
+		//	v.equals( this.p[i] );;// todo: equals??
+		//	this.p[i] .equals( this.p[this.numPoints - i - 1]);// todo: .equals??
+		//	this.p[this.numPoints - i - 1].equals( v );// todo: .equals??
+		//}
+	}
+
 ///*
 //=============
 //idWinding::Check
@@ -782,7 +782,7 @@ idWinding::Reverse
 //	}
 //
 //	area = GetArea();
-//	if (area < 1.0f) {
+//	if (area < 1.0) {
 //		if (print) {
 //			idLib::common.Printf("idWinding::Check: tiny area: %f", area);
 //		}
@@ -950,43 +950,40 @@ idWinding::GetPlane
 		plane.Normalize ( );
 		plane.FitThroughPoint( this.p[0].ToVec3 ( ) );
 	}
-//
-///*
-//=============
-//idWinding::GetBounds
-//=============
-//*/
-//void idWinding::GetBounds(idBounds &bounds) const {
-//	int i;
-//
-//	if (!numPoints) {
-//		bounds.Clear();
-//		return;
-//	}
-//
-//	bounds[0] = bounds[1] = this.p[0].ToVec3();
-//	for (i = 1; i < this.numPoints; i++) {
-//		if (p[i].x < bounds[0].x) {
-//			bounds[0].x = this.p[i].x;
-//		}
-//		else if (p[i].x > bounds[1].x) {
-//			bounds[1].x = this.p[i].x;
-//		}
-//		if (p[i].y < bounds[0].y) {
-//			bounds[0].y = this.p[i].y;
-//		}
-//		else if (p[i].y > bounds[1].y) {
-//			bounds[1].y = this.p[i].y;
-//		}
-//		if (p[i].z < bounds[0].z) {
-//			bounds[0].z = this.p[i].z;
-//		}
-//		else if (p[i].z > bounds[1].z) {
-//			bounds[1].z = this.p[i].z;
-//		}
-//	}
-//}
-//
+
+/*
+=============
+idWinding::GetBounds
+=============
+*/
+	GetBounds ( bounds: idBounds ): void {
+		var /*int */i: number;
+
+		if ( !this.numPoints ) {
+			bounds.Clear ( );
+			return;
+		}
+
+		bounds[0] = bounds[1] = this.p[0].ToVec3 ( );
+		for ( i = 1; i < this.numPoints; i++ ) {
+			if ( this.p[i].x < bounds[0].x ) {
+				bounds[0].x = this.p[i].x;
+			} else if ( this.p[i].x > bounds[1].x ) {
+				bounds[1].x = this.p[i].x;
+			}
+			if ( this.p[i].y < bounds[0].y ) {
+				bounds[0].y = this.p[i].y;
+			} else if ( this.p[i].y > bounds[1].y ) {
+				bounds[1].y = this.p[i].y;
+			}
+			if ( this.p[i].z < bounds[0].z ) {
+				bounds[0].z = this.p[i].z;
+			} else if ( this.p[i].z > bounds[1].z ) {
+				bounds[1].z = this.p[i].z;
+			}
+		}
+	}
+
 ///*
 //=============
 //idWinding::RemoveEqualPoints
@@ -996,7 +993,7 @@ idWinding::GetPlane
 //	int i, j;
 //
 //	for (i = 0; i < this.numPoints; i++) {
-//		if ((p[i].ToVec3() - this.p[(i + this.numPoints - 1) % this.numPoints].ToVec3()).LengthSqr() >= Square(epsilon)) {
+//		if ((this.p[i].ToVec3() - this.p[(i + this.numPoints - 1) % this.numPoints].ToVec3()).LengthSqr() >= Square(epsilon)) {
 //			continue;
 //		}
 //		this.numPoints--;
@@ -1024,7 +1021,7 @@ idWinding::GetPlane
 //	for (i = 0; i < this.numPoints; i++) {
 //
 //		// create plane through edge orthogonal to winding plane
-//		edgeNormal = (p[i].ToVec3() - this.p[(i + this.numPoints - 1) % this.numPoints].ToVec3()).Cross(normal);
+//		edgeNormal = (this.p[i].ToVec3() - this.p[(i + this.numPoints - 1) % this.numPoints].ToVec3()).Cross(normal);
 //		edgeNormal.Normalize();
 //		dist = edgeNormal * this.p[i].ToVec3();
 //
@@ -1158,7 +1155,7 @@ idWinding::GetPlane
 //	}
 //	case 1: {
 //				// don't add the same point second
-//				if (p[0].ToVec3().Compare(point, epsilon)) {
+//				if (this.p[0].ToVec3().Compare(point, epsilon)) {
 //					return;
 //				}
 //				this.p[1].ToVec3() = point;
@@ -1167,12 +1164,12 @@ idWinding::GetPlane
 //	}
 //	case 2: {
 //				// don't add a point if it already exists
-//				if (p[0].ToVec3().Compare(point, epsilon) || this.p[1].ToVec3().Compare(point, epsilon)) {
+//				if (this.p[0].ToVec3().Compare(point, epsilon) || this.p[1].ToVec3().Compare(point, epsilon)) {
 //					return;
 //				}
 //				// if only two points make sure we have the right ordering according to the normal
 //				dir = point - this.p[0].ToVec3();
-//				dir = dir.Cross(p[1].ToVec3() - this.p[0].ToVec3());
+//				dir = dir.Cross(this.p[1].ToVec3() - this.p[0].ToVec3());
 //				if (dir[0] == 0.0 && dir[1] == 0.0 && dir[2] == 0.0) {
 //					// points don't make a plane
 //					return;
@@ -1245,7 +1242,7 @@ idWinding::GetPlane
 //		numHullPoints++;
 //	}
 //
-//	if (!EnsureAlloced(numHullPoints, false)) {
+//	if (!this.EnsureAlloced(numHullPoints, false)) {
 //		return;
 //	}
 //	this.numPoints = numHullPoints;
@@ -1372,7 +1369,7 @@ idWinding::GetPlane
 //		idLib::common.FatalError("idWinding::removePoint: point out of range");
 //	}
 //	if (point < this.numPoints - 1) {
-//		memmove(&p[point], &p[point + 1], (numPoints - point - 1) * sizeof(p[0]));
+//		memmove(&p[point], &p[point + 1], (numPoints - point - 1) * sizeof(this.p[0]));
 //	}
 //	this.numPoints--;
 //}
@@ -1393,7 +1390,7 @@ idWinding::GetPlane
 //		idLib::common.FatalError("idWinding::insertPoint: spot < 0");
 //	}
 //
-//	EnsureAlloced(numPoints + 1, true);
+//	this.EnsureAlloced(numPoints + 1, true);
 //	for (i = this.numPoints; i > spot; i--) {
 //		this.p[i] = this.p[i - 1];
 //	}
@@ -1419,7 +1416,7 @@ idWinding::GetPlane
 //	for (i = 0; i < this.numPoints; i++) {
 //
 //		// create plane through edge orthogonal to winding plane
-//		normal = (p[(i + 1) % this.numPoints].ToVec3() - this.p[i].ToVec3()).Cross(plane.Normal());
+//		normal = (this.p[(i + 1) % this.numPoints].ToVec3() - this.p[i].ToVec3()).Cross(plane.Normal());
 //		normal.Normalize();
 //		dist = normal * this.p[i].ToVec3();
 //
@@ -1481,25 +1478,25 @@ idWinding::GetPlane
 //	}
 //	return true;
 //}
-//
-///*
-//=============
-//idWinding::IsHuge
-//=============
-//*/
-//bool idWinding::IsHuge() const {
-//	int i, j;
-//
-//	for (i = 0; i < this.numPoints; i++) {
-//		for (j = 0; j < 3; j++) {
-//			if (p[i][j] <= MIN_WORLD_COORD || this.p[i][j] >= MAX_WORLD_COORD) {
-//				return true;
-//			}
-//		}
-//	}
-//	return false;
-//}
-//
+
+/*
+=============
+idWinding::IsHuge
+=============
+*/
+	IsHuge ( ): boolean {
+		var /*int */i: number, j: number;
+
+		for ( i = 0; i < this.numPoints; i++ ) {
+			for ( j = 0; j < 3; j++ ) {
+				if ( this.p[i][j] <= MIN_WORLD_COORD || this.p[i][j] >= MAX_WORLD_COORD ) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 ///*
 //=============
 //idWinding::Print
@@ -1525,7 +1522,7 @@ idWinding::GetPlane
 //	min = idMath::INFINITY;
 //	max = -min;
 //	for (i = 0; i < this.numPoints; i++) {
-//		d = plane.Distance(p[i].ToVec3());
+//		d = plane.Distance(this.p[i].ToVec3());
 //		if (d < min) {
 //			min = d;
 //			if (FLOATSIGNBITSET(min) & FLOATSIGNBITNOTSET(max)) {
@@ -1561,7 +1558,7 @@ idWinding::GetPlane
 //	front = false;
 //	back = false;
 //	for (i = 0; i < this.numPoints; i++) {
-//		d = plane.Distance(p[i].ToVec3());
+//		d = plane.Distance(this.p[i].ToVec3());
 //		if (d < -epsilon) {
 //			if (front) {
 //				return SIDE_CROSS;
@@ -1688,7 +1685,7 @@ idWinding::GetPlane
 //	scale = 0.0;
 //	pl1.FromRay(start, dir);
 //	for (i = 0; i < this.numPoints; i++) {
-//		pl2.FromLine(p[i].ToVec3(), this.p[(i + 1) % this.numPoints].ToVec3());
+//		pl2.FromLine(this.p[i].ToVec3(), this.p[(i + 1) % this.numPoints].ToVec3());
 //		side = pl1.PermutedInnerProduct(pl2) > 0.0;
 //		if (i && side != lastside) {
 //			return false;
@@ -1756,135 +1753,129 @@ idFixedWinding::ReAllocate
 		return true;
 	}
 
-///*
-//=============
-//idFixedWinding::Split
-//=============
-//*/
-//int idFixedWinding::Split(idFixedWinding *back, const idPlane &plane, const float epsilon) {
-//	int		counts[3];
-//	float	dists[MAX_POINTS_ON_WINDING + 4];
-//	byte	sides[MAX_POINTS_ON_WINDING + 4];
-//	float	dot;
-//	int		i, j;
-//	idVec5 *p1, *p2;
-//	idVec5	mid;
-//	idFixedWinding out;
-//
-//	counts[SIDE_FRONT] = counts[SIDE_BACK] = counts[SIDE_ON] = 0;
-//
-//	// determine sides for each point
-//	for (i = 0; i < this.numPoints; i++) {
-//		dists[i] = dot = plane.Distance(p[i].ToVec3());
-//		if (dot > epsilon) {
-//			sides[i] = SIDE_FRONT;
-//		}
-//		else if (dot < -epsilon) {
-//			sides[i] = SIDE_BACK;
-//		}
-//		else {
-//			sides[i] = SIDE_ON;
-//		}
-//		counts[sides[i]]++;
-//	}
-//
-//	if (!counts[SIDE_BACK]) {
-//		if (!counts[SIDE_FRONT]) {
-//			return SIDE_ON;
-//		}
-//		else {
-//			return SIDE_FRONT;
-//		}
-//	}
-//
-//	if (!counts[SIDE_FRONT]) {
-//		return SIDE_BACK;
-//	}
-//
-//	sides[i] = sides[0];
-//	dists[i] = dists[0];
-//
-//	out.numPoints = 0;
-//	back.numPoints = 0;
-//
-//	for (i = 0; i < this.numPoints; i++) {
-//		p1 = &p[i];
-//
-//		if (!out.EnsureAlloced(out.numPoints + 1, true)) {
-//			return SIDE_FRONT;		// can't split -- fall back to original
-//		}
-//		if (!back.EnsureAlloced(back.numPoints + 1, true)) {
-//			return SIDE_FRONT;		// can't split -- fall back to original
-//		}
-//
-//		if (sides[i] == SIDE_ON) {
-//			out.p[out.numPoints] = *p1;
-//			out.numPoints++;
-//			back.p[back.numPoints] = *p1;
-//			back.numPoints++;
-//			continue;
-//		}
-//
-//		if (sides[i] == SIDE_FRONT) {
-//			out.p[out.numPoints] = *p1;
-//			out.numPoints++;
-//		}
-//		if (sides[i] == SIDE_BACK) {
-//			back.p[back.numPoints] = *p1;
-//			back.numPoints++;
-//		}
-//
-//		if (sides[i + 1] == SIDE_ON || sides[i + 1] == sides[i]) {
-//			continue;
-//		}
-//
-//		if (!out.EnsureAlloced(out.numPoints + 1, true)) {
-//			return SIDE_FRONT;		// can't split -- fall back to original
-//		}
-//
-//		if (!back.EnsureAlloced(back.numPoints + 1, true)) {
-//			return SIDE_FRONT;		// can't split -- fall back to original
-//		}
-//
-//		// generate a split point
-//		j = i + 1;
-//		if (j >= this.numPoints) {
-//			p2 = &p[0];
-//		}
-//		else {
-//			p2 = &p[j];
-//		}
-//
-//		dot = dists[i] / (dists[i] - dists[i + 1]);
-//		for (j = 0; j < 3; j++) {
-//			// avoid round off error when possible
-//			if (plane.Normal()[j] == 1.0f) {
-//				mid[j] = plane.Dist();
-//			}
-//			else if (plane.Normal()[j] == -1.0f) {
-//				mid[j] = -plane.Dist();
-//			}
-//			else {
-//				mid[j] = (*p1)[j] + dot * ((*p2)[j] - (*p1)[j]);
-//			}
-//		}
-//		mid.s = p1.s + dot * (p2.s - p1.s);
-//		mid.t = p1.t + dot * (p2.t - p1.t);
-//
-//		out.p[out.numPoints] = mid;
-//		out.numPoints++;
-//		back.p[back.numPoints] = mid;
-//		back.numPoints++;
-//	}
-//	for (i = 0; i < out.numPoints; i++) {
-//		this.p[i] = out.p[i];
-//	}
-//	this.numPoints = out.numPoints;
-//
-//	return SIDE_CROSS;
-//}
-//
-//
+/*
+=============
+idFixedWinding::Split
+=============
+*/
+	Split ( back: idFixedWinding, plane: idPlane, /*float */epsilon: number = ON_EPSILON ): number /*int*/ {
+		var /*int		*/counts = new Int32Array( 3 );
+		var dists = new Float32Array( MAX_POINTS_ON_WINDING + 4 );
+		var /*byte	*/sides = new Uint8Array( MAX_POINTS_ON_WINDING + 4 );
+		var /*float	*/dot: number;
+		var /*int		*/i: number, j: number;
+		var p1: idVec5, p2: idVec5;
+		var mid = new idVec5;
+		var out = new idFixedWinding;
+
+		counts[SIDE_FRONT] = counts[SIDE_BACK] = counts[SIDE_ON] = 0;
+
+		// determine sides for each point
+		for ( i = 0; i < this.numPoints; i++ ) {
+			dists[i] = dot = plane.Distance( this.p[i].ToVec3 ( ) );
+			if ( dot > epsilon ) {
+				sides[i] = SIDE_FRONT;
+			} else if ( dot < -epsilon ) {
+				sides[i] = SIDE_BACK;
+			} else {
+				sides[i] = SIDE_ON;
+			}
+			counts[sides[i]]++;
+		}
+
+		if ( !counts[SIDE_BACK] ) {
+			if ( !counts[SIDE_FRONT] ) {
+				return SIDE_ON;
+			} else {
+				return SIDE_FRONT;
+			}
+		}
+
+		if ( !counts[SIDE_FRONT] ) {
+			return SIDE_BACK;
+		}
+
+		sides[i] = sides[0];
+		dists[i] = dists[0];
+
+		out.numPoints = 0;
+		back.numPoints = 0;
+
+		for ( i = 0; i < this.numPoints; i++ ) {
+			p1 = /*&*/this.p[i];
+
+			if ( !out.EnsureAlloced( out.numPoints + 1, true ) ) {
+				return SIDE_FRONT; // can't split -- fall back to original
+			}
+			if ( !back.EnsureAlloced( back.numPoints + 1, true ) ) {
+				return SIDE_FRONT; // can't split -- fall back to original
+			}
+
+			if ( sides[i] == SIDE_ON ) {
+				out.p[out.numPoints].equals( p1 );
+				out.numPoints++;
+				back.p[back.numPoints].equals( p1 );
+				back.numPoints++;
+				continue;
+			}
+
+			if ( sides[i] == SIDE_FRONT ) {
+				out.p[out.numPoints].equals( p1 );
+				out.numPoints++;
+			}
+			if ( sides[i] == SIDE_BACK ) {
+				back.p[back.numPoints].equals( p1 );
+				back.numPoints++;
+			}
+
+			if ( sides[i + 1] == SIDE_ON || sides[i + 1] == sides[i] ) {
+				continue;
+			}
+
+			if ( !out.EnsureAlloced( out.numPoints + 1, true ) ) {
+				return SIDE_FRONT; // can't split -- fall back to original
+			}
+
+			if ( !back.EnsureAlloced( back.numPoints + 1, true ) ) {
+				return SIDE_FRONT; // can't split -- fall back to original
+			}
+
+			// generate a split point
+			j = i + 1;
+			if ( j >= this.numPoints ) {
+				p2 = /*&*/this.p[0];
+			} else {
+				p2 = /*&*/this.p[j];
+			}
+
+			dot = dists[i] / ( dists[i] - dists[i + 1] );
+			for ( j = 0; j < 3; j++ ) {
+				// avoid round off error when possible
+				if ( plane.Normal ( )[j] == 1.0 ) {
+					mid[j] = plane.Dist ( );
+				} else if ( plane.Normal ( )[j] == -1.0 ) {
+					mid[j] = -plane.Dist ( );
+				} else {
+					mid[j] = ( p1 )[j] + dot * ( ( p2 )[j] - ( p1 )[j] );
+				}
+			}
+			mid.s = p1.s + dot * ( p2.s - p1.s );
+			mid.t = p1.t + dot * ( p2.t - p1.t );
+
+			out.p[out.numPoints] = mid;
+			out.numPoints++;
+			back.p[back.numPoints] = mid;
+			back.numPoints++;
+		}
+		for ( i = 0; i < out.numPoints; i++ ) {
+			this.p[i] = out.p[i];
+		}
+		this.numPoints = out.numPoints;
+
+		return SIDE_CROSS;
+	}
+
+
 //public:
 //					idFixedWinding( );
 //					explicit idFixedWinding( const int n );
@@ -1927,7 +1918,7 @@ idFixedWinding::ReAllocate
 //	this.numPoints = 0;
 //	this.p = data;
 //	this.allocedSize = MAX_POINTS_ON_WINDING;
-//	if ( !EnsureAlloced( n ) ) {
+//	if ( !this.EnsureAlloced( n ) ) {
 //		this.numPoints = 0;
 //		return;
 //	}
@@ -1957,7 +1948,7 @@ idFixedWinding::ReAllocate
 //
 //	this.p = data;
 //	this.allocedSize = MAX_POINTS_ON_WINDING;
-//	if ( !EnsureAlloced( winding.GetNumPoints() ) ) {
+//	if ( !this.EnsureAlloced( winding.GetNumPoints() ) ) {
 //		this.numPoints = 0;
 //		return;
 //	}
@@ -1972,7 +1963,7 @@ idFixedWinding::ReAllocate
 //
 //	this.p = data;
 //	this.allocedSize = MAX_POINTS_ON_WINDING;
-//	if ( !EnsureAlloced( winding.GetNumPoints() ) ) {
+//	if ( !this.EnsureAlloced( winding.GetNumPoints() ) ) {
 //		this.numPoints = 0;
 //		return;
 //	}
@@ -1985,21 +1976,21 @@ idFixedWinding::ReAllocate
 //ID_INLINE idFixedWinding::~idFixedWinding( ) {
 //	this.p = NULL;	// otherwise it tries to free the fixed buffer
 //}
-//
-//ID_INLINE idFixedWinding &idFixedWinding::operator=( const idWinding &winding ) {
-//	int i;
-//
-//	if ( !EnsureAlloced( winding.GetNumPoints() ) ) {
-//		this.numPoints = 0;
-//		return *this;
-//	}
-//	for ( i = 0; i < winding.GetNumPoints(); i++ ) {
-//		this.p[i] = winding[i];
-//	}
-//	this.numPoints = winding.GetNumPoints();
-//	return *this;
-//}
-//
+
+	opEquals ( winding: idWinding ): idWinding {
+		var /*int */i: number;
+
+		if ( !this.EnsureAlloced( winding.GetNumPoints ( ) ) ) {
+			this.numPoints = 0;
+			return this;
+		}
+		for ( i = 0; i < winding.GetNumPoints ( ); i++ ) {
+			this.p[i] = winding[i];
+		}
+		this.numPoints = winding.GetNumPoints ( );
+		return this;
+	}
+
 	Clear ( ): void {
 		this.numPoints = 0;
 	}

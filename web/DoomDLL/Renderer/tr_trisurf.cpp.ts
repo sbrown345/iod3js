@@ -732,7 +732,7 @@ function R_CreateSilRemap ( tri: srfTriangles_t ): Int32Array {
 		dlog(DEBUG_RENDERWORLD_LOAD, "v1 xyz: %.2f %.2f %.2f\n", v1.xyz[0], v1.xyz[1], v1.xyz[2]);
 
 		// see if there is an earlier vert that it can map to
-		hashKey = hash.GenerateKeyFromVector(v1.xyz);
+		hashKey = hash.GenerateKey_vec3(v1.xyz);
 		dlog(DEBUG_RENDERWORLD_LOAD, "R_CreateSilRemap hashKey: %i\n", hashKey);
 		for ( j = hash.First( hashKey ); j >= 0; j = hash.Next( j ) ) {
 			dlog(DEBUG_RENDERWORLD_LOAD, "j:  %i\n", j);
@@ -948,7 +948,7 @@ function R_DefineEdge( /*int*/ v1:number, /*int */v2:number, /*int */planeNum :n
 	if ( v1 == v2 ) {
 		return;
 	}
-	hashKey = silEdgeHash.GenerateKeyFromNumbers( v1, v2 );
+	hashKey = silEdgeHash.GenerateKey_ints( v1, v2 );
 	// search for a matching other side
 	for ( i = silEdgeHash.First( hashKey ); i >= 0 && i < MAX_SIL_EDGES; i = silEdgeHash.Next( i ) ) {
 		if ( silEdges[i].v1 == v1 && silEdges[i].v2 == v2 ) {

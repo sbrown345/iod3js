@@ -564,8 +564,8 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 ////	void			ParseProcNodes( idLexer *src );
 ////	void			LoadProcBSP( const char *name );
 ////					// removal of contained polygons
-////	int				R_ChoppedAwayByProcBSP( int nodeNum, idFixedWinding *w, const idVec3 &normal, const idVec3 &origin, const float radius );
-////	int				ChoppedAwayByProcBSP( const idFixedWinding &w, const idPlane &plane, int contents );
+	R_ChoppedAwayByProcBSP( /*int*/ nodeNum:number, w:idFixedWinding, normal:idVec3, origin:idVec3 , /*float */radius :number):number/*int*/{throw "placeholder";}
+	ChoppedAwayByProcBSP ( w: idFixedWinding, plane: idPlane, /*int */contents: number ): number { throw "placeholder"; }
 ////	void			ChopWindingListWithBrush( cm_windingList_t *list, b: cm_brush_t );
 ////	void			R_ChopWindingListWithTreeBrushes( cm_windingList_t *list, node: cm_node_t );
 ////	idFixedWinding *WindingOutsideBrushes( idFixedWinding *w, const idPlane &plane, int contents, int patch, cm_node_t *headNode );
@@ -587,10 +587,10 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 	SetupHash( ):void { throw "placeholder"; }
 	ShutdownHash( ):void { throw "placeholder"; }
 	ClearHash ( bounds: idBounds ): void { throw "placeholder"; }
-////	int				HashVec(vec:idVec3);
-////	int				GetVertex( model: cm_model_t, const idVec3 &v, int *vertexNum );
-////	int				GetEdge( model: cm_model_t, const idVec3 &v1, const idVec3 &v2, int *edgeNum, int v1num );
-////	void			CreatePolygon( model: cm_model_t, idFixedWinding *w, const idPlane &plane, const idMaterial *material, int primitiveNum ):void {throw "placeholder";}
+	HashVec(vec:idVec3):number/*int*/ {throw "placeholder";}
+	GetVertex ( model: cm_model_t, v: idVec3, vertexNum: R<number> ): number /*int*/ { throw "placeholder"; }
+	GetEdge ( model: cm_model_t, v1: idVec3, v2: idVec3, /*int **/edgeNum: R<number>, /*int */v1num: number ): number /*int*/ { throw "placeholder"; }
+	CreatePolygon(model: cm_model_t, w: idFixedWinding, plane: idPlane, material: idMaterial, /*int*/ primitiveNum: number):void {throw "placeholder";}
 	PolygonFromWinding(model: cm_model_t, w: idFixedWinding, plane: idPlane, material: idMaterial , /*int */primitiveNum :number) :void { throw "placeholder"; }
 	CalculateEdgeNormals( model: cm_model_t, node: cm_node_t ):void { throw "placeholder"; }
 ////	void			CreatePatchPolygons( model: cm_model_t, idSurface_Patch &mesh, const idMaterial *material, int primitiveNum ):void {throw "placeholder";}

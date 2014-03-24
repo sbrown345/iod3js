@@ -793,9 +793,9 @@ static Sqrt( /*float */x:number):number {
 		return ceilf( f );
 	}
 
-////ID_INLINE float idMath::Rint( float f ) {
-////	return floorf( f + 0.5 );
-////}
+	static Rint ( /*float*/ f: number ): number /*float*/ {
+		return floorf( f + 0.5 );
+	}
 
 	static Ftoi ( /*float */f: number ): number {
 		return /*(int)*/ int( f );

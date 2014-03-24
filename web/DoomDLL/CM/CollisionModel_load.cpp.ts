@@ -87,12 +87,12 @@ Proc BSP tree for data pruning
 ////	if ( numProcNodes < 0 ) {
 ////		src.Error( "ParseProcNodes: bad numProcNodes" );
 ////	}
-////	procNodes = (cm_procNode_t *)Mem_ClearedAlloc( numProcNodes * sizeof( cm_procNode_t ) );
+////	this.procNodes = (cm_procNode_t *)Mem_ClearedAlloc( numProcNodes * sizeof( cm_procNode_t ) );
 ////
 ////	for ( i = 0; i < numProcNodes; i++ ) {
 ////		cm_procNode_t *node;
 ////
-////		node = &procNodes[i];
+////		node = &this.procNodes[i];
 ////
 ////		src.Parse1DMatrix( 4, node.plane.ToFloatPtr() );
 ////		node.children[0] = src.ParseInt();
@@ -792,7 +792,7 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function ( ): vo
 ////as a reusable temporary buffer
 ////================
 ////*/
-////cmHandle_t idCollisionModelManagerLocal::SetupTrmModel( const idTraceModel &trm, const idMaterial *material ) {
+////cmHandle_t idCollisionModelManagerLocal::SetupTrmModel( const idTraceModel &trm, material:idMaterial  ) {
 ////	int i, j;
 ////	cm_vertex_t *vertex;
 ////	cm_edge_t *edge;
@@ -870,102 +870,99 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function ( ): vo
 ////
 ////	return TRACE_MODEL_HANDLE;
 ////}
-////
-/////*
-////===============================================================================
-////
-////Optimisation, removal of polygons contained within brushes or solid
-////
-////===============================================================================
-////*/
-////
-/////*
-////============
-////idCollisionModelManagerLocal::R_ChoppedAwayByProcBSP
-////============
-////*/
-////int idCollisionModelManagerLocal::R_ChoppedAwayByProcBSP( int nodeNum, idFixedWinding *w, const idVec3 &normal, const idVec3 &origin, const float radius ) {
-////	int res;
-////	idFixedWinding back;
-////	cm_procNode_t *node;
-////	float dist;
-////
-////	do {
-////		node = procNodes + nodeNum;
-////		dist = node.plane.Normal() * origin + node.plane[3];
-////		if ( dist > radius ) {
-////			res = SIDE_FRONT;
-////		}
-////		else if ( dist < -radius ) {
-////			res = SIDE_BACK;
-////		}
-////		else {
-////			res = w.Split( &back, node.plane, CHOP_EPSILON );
-////		}
-////		if ( res == SIDE_FRONT ) {
-////			nodeNum = node.children[0];
-////		}
-////		else if ( res == SIDE_BACK ) {
-////			nodeNum = node.children[1];
-////		}
-////		else if ( res == SIDE_ON ) {
-////			// continue with the side the winding faces
-////			if ( node.plane.Normal() * normal > 0.0 ) {
-////				nodeNum = node.children[0];
-////			}
-////			else {
-////				nodeNum = node.children[1];
-////			}
-////		}
-////		else {
-////			// if either node is not solid
-////			if ( node.children[0] < 0 || node.children[1] < 0 ) {
-////				return false;
-////			}
-////			// only recurse if the node is not solid
-////			if ( node.children[1] > 0 ) {
-////				if ( !R_ChoppedAwayByProcBSP( node.children[1], &back, normal, origin, radius ) ) {
-////					return false;
-////				}
-////			}
-////			nodeNum = node.children[0];
-////		}
-////	} while ( nodeNum > 0 );
-////	if ( nodeNum < 0 ) {
-////		return false;
-////	}
-////	return true;
-////}
-////
-/////*
-////============
-////idCollisionModelManagerLocal::ChoppedAwayByProcBSP
-////============
-////*/
-////int idCollisionModelManagerLocal::ChoppedAwayByProcBSP( const idFixedWinding &w, const idPlane &plane, int contents ) {
-////	idFixedWinding neww;
-////	idBounds bounds;
-////	float radius;
-////	idVec3 origin;
-////
-////	// if the .proc file has no BSP tree
-////	if ( procNodes == NULL ) {
-////		return false;
-////	}
-////	// don't chop if the polygon is not solid
-////	if ( !(contents & CONTENTS_SOLID) ) {
-////		return false;
-////	}
-////	// make a local copy of the winding
-////	neww = w;
-////	neww.GetBounds( bounds );
-////	origin = (bounds[1] - bounds[0]) * 0.5;
-////	radius = origin.Length() + CHOP_EPSILON;
-////	origin = bounds[0] + origin;
-////	//
-////	return R_ChoppedAwayByProcBSP( 0, &neww, plane.Normal(), origin, radius );
-////}
-////
+
+/*
+===============================================================================
+
+Optimisation, removal of polygons contained within brushes or solid
+
+===============================================================================
+*/
+
+/*
+============
+idCollisionModelManagerLocal::R_ChoppedAwayByProcBSP
+============
+*/
+idCollisionModelManagerLocal.prototype.R_ChoppedAwayByProcBSP = function ( /*int*/ nodeNum: number, w: idFixedWinding, normal: idVec3, origin: idVec3, /*float */radius: number ): number /*int*/ {
+	var /*int */res: number;
+	var back = new idFixedWinding;
+	var node: cm_procNode_t;
+	var /*float */dist: number;
+
+	do {
+		node = this.procNodes[nodeNum];
+		dist = node.plane.Normal ( ).timesVec( origin ) + node.plane[3];
+
+		if ( dist > radius ) {
+			res = SIDE_FRONT;
+		} else if ( dist < -radius ) {
+			res = SIDE_BACK;
+		} else {
+			res = w.Split( back, node.plane, CHOP_EPSILON );
+		}
+		if ( res == SIDE_FRONT ) {
+			nodeNum = node.children[0];
+		} else if ( res == SIDE_BACK ) {
+			nodeNum = node.children[1];
+		} else if ( res == SIDE_ON ) {
+			// continue with the side the winding faces
+			if ( node.plane.Normal ( ).timesVec( normal ) > 0.0 ) {
+				nodeNum = node.children[0];
+			} else {
+				nodeNum = node.children[1];
+			}
+		} else {
+			// if either node is not solid
+			if ( node.children[0] < 0 || node.children[1] < 0 ) {
+				return 0 /*false*/;
+			}
+			// only recurse if the node is not solid
+			if ( node.children[1] > 0 ) {
+				if ( !this.R_ChoppedAwayByProcBSP( node.children[1], back, normal, origin, radius ) ) {
+					return 0 /*false*/;
+				}
+			}
+			nodeNum = node.children[0];
+		}
+	} while ( nodeNum > 0 );
+	if ( nodeNum < 0 ) {
+		return 0 /*false*/;
+	}
+	return 1 /*true*/;
+};
+
+/*
+============
+idCollisionModelManagerLocal::ChoppedAwayByProcBSP
+============
+*/
+idCollisionModelManagerLocal.prototype.ChoppedAwayByProcBSP = function ( w: idFixedWinding, plane: idPlane, /*int */contents: number ): number {
+	todoThrow ( );
+	return -99999999999999999999;
+	//var neww = new idFixedWinding;
+	//var bounds = new idBounds ;
+	//var/*float */radius:number;
+	//var origin = new idVec3 ;
+
+	//// if the .proc file has no BSP tree
+	//if ( this.procNodes == null ) {
+	//	return 0/*false*/;
+	//}
+	//// don't chop if the polygon is not solid
+	//if (!(contents & contentsFlags_t.CONTENTS_SOLID) ) {
+	//	return 0/*false*/;
+	//}
+	//// make a local copy of the winding
+	//neww = w;
+	//neww.GetBounds( bounds );
+	//origin = (bounds[1] - bounds[0]) * 0.5;
+	//radius = origin.Length() + CHOP_EPSILON;
+	//origin = bounds[0] + origin;
+	////
+	//return R_ChoppedAwayByProcBSP( 0, &neww, plane.Normal(), origin, radius );
+};
+
 /////*
 ////=============
 ////idCollisionModelManagerLocal::ChopWindingWithBrush
@@ -1177,7 +1174,7 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function ( ): vo
 ////  without creating multiple winding fragments then the chopped winding is returned.
 ////============
 ////*/
-////idFixedWinding *idCollisionModelManagerLocal::WindingOutsideBrushes( idFixedWinding *w, const idPlane &plane, int contents, int primitiveNum, cm_node_t *headNode ) {
+////idFixedWinding *idCollisionModelManagerLocal::WindingOutsideBrushes( w:idFixedWinding, plane:idPlane, int contents, /*int*/ primitiveNum:number , cm_node_t *headNode ) {
 ////	int i, windingLeft;
 ////
 ////	cm_windingList.bounds.Clear();
@@ -1315,11 +1312,11 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function ( ): vo
 ////	if ( p1.material != p2.material ) {
 ////		return NULL;
 ////	}
-////	if ( idMath::Fabs( p1.plane.Dist() - p2.plane.Dist() ) > NORMAL_EPSILON ) {
+////	if ( idMath.Fabs( p1.plane.Dist() - p2.plane.Dist() ) > NORMAL_EPSILON ) {
 ////		return NULL;
 ////	}
 ////	for ( i = 0; i < 3; i++ ) {
-////		if ( idMath::Fabs( p1.plane.Normal()[i] - p2.plane.Normal()[i] ) > NORMAL_EPSILON ) {
+////		if ( idMath.Fabs( p1.plane.Normal()[i] - p2.plane.Normal()[i] ) > NORMAL_EPSILON ) {
 ////			return NULL;
 ////		}
 ////		if ( p1.bounds[0][i] > p2.bounds[1][i] ) {
@@ -1691,11 +1688,11 @@ idCollisionModelManagerLocal.prototype.SetupTrmModelStructure = function ( ): vo
 ////		else {
 ////			// both vertices should be on the plane of the other polygon
 ////			d = p2.plane.Distance( *v1 );
-////			if ( idMath::Fabs(d) > VERTEX_EPSILON ) {
+////			if ( idMath.Fabs(d) > VERTEX_EPSILON ) {
 ////				continue;
 ////			}
 ////			d = p2.plane.Distance( *v2 );
-////			if ( idMath::Fabs(d) > VERTEX_EPSILON ) {
+////			if ( idMath.Fabs(d) > VERTEX_EPSILON ) {
 ////				continue;
 ////			}
 ////		}
@@ -2243,279 +2240,280 @@ idCollisionModelManagerLocal.prototype.ClearHash = function ( bounds: idBounds )
 	}
 };
 
-/////*
-////================
-////idCollisionModelManagerLocal::HashVec
-////================
-////*/
-////ID_INLINE int idCollisionModelManagerLocal::HashVec(vec:idVec3) {
-////	/*
-////	int x, y;
-////
-////	x = (((int)(vec[0] - cm_modelBounds[0].x + 0.5 )) >> cm_vertexShift) & (VERTEX_HASH_BOXSIZE-1);
-////	y = (((int)(vec[1] - cm_modelBounds[0].y + 0.5 )) >> cm_vertexShift) & (VERTEX_HASH_BOXSIZE-1);
-////
-////	assert (x >= 0 && x < VERTEX_HASH_BOXSIZE && y >= 0 && y < VERTEX_HASH_BOXSIZE);
-////
-////	return y * VERTEX_HASH_BOXSIZE + x;
-////	*/
-////	int x, y, z;
-////
-////	x = (((int) (vec[0] - cm_modelBounds[0].x + 0.5)) + 2) >> 2;
-////	y = (((int) (vec[1] - cm_modelBounds[0].y + 0.5)) + 2) >> 2;
-////	z = (((int) (vec[2] - cm_modelBounds[0].z + 0.5)) + 2) >> 2;
-////	return (x + y * VERTEX_HASH_BOXSIZE + z) & (VERTEX_HASH_SIZE-1);
-////}
-////
-/////*
-////================
-////idCollisionModelManagerLocal::GetVertex
-////================
-////*/
-////int idCollisionModelManagerLocal::GetVertex( model: cm_model_t, const idVec3 &v, int *vertexNum ) {
-////	int i, hashKey, vn;
-////	idVec3 vert, *p;
-////	
-////	for (i = 0; i < 3; i++) {
-////		if ( idMath::Fabs(v[i] - idMath::Rint(v[i])) < INTEGRAL_EPSILON )
-////			vert[i] = idMath::Rint(v[i]);
-////		else
-////			vert[i] = v[i];
-////	}
-////
-////	hashKey = HashVec( vert );
-////
-////	for (vn = cm_vertexHash.First( hashKey ); vn >= 0; vn = cm_vertexHash.Next( vn ) ) {
-////		p = &model.vertices[vn].p;
-////		// first compare z-axis because hash is based on x-y plane
-////		if (idMath::Fabs(vert[2] - (*p)[2]) < VERTEX_EPSILON &&
-////			idMath::Fabs(vert[0] - (*p)[0]) < VERTEX_EPSILON &&
-////			idMath::Fabs(vert[1] - (*p)[1]) < VERTEX_EPSILON )
-////		{
-////			*vertexNum = vn;
-////			return true;
-////		}
-////	}
-////
-////	if ( model.numVertices >= model.maxVertices ) {
-////		cm_vertex_t *oldVertices;
-////
-////		// resize vertex array
-////		model.maxVertices = (float) model.maxVertices * 1.5f + 1;
-////		oldVertices = model.vertices;
-////		model.vertices = (cm_vertex_t *) Mem_ClearedAlloc( model.maxVertices * sizeof(cm_vertex_t) );
-////		memcpy( model.vertices, oldVertices, model.numVertices * sizeof(cm_vertex_t) );
-////		Mem_Free( oldVertices );
-////
-////		cm_vertexHash.ResizeIndex( model.maxVertices );
-////	}
-////	model.vertices[model.numVertices].p = vert;
-////	model.vertices[model.numVertices].checkcount = 0;
-////	*vertexNum = model.numVertices;
-////	// add vertice to hash
-////	cm_vertexHash.Add( hashKey, model.numVertices );
-////	//
-////	model.numVertices++;
-////	return false;
-////}
-////
-/////*
-////================
-////idCollisionModelManagerLocal::GetEdge
-////================
-////*/
-////int idCollisionModelManagerLocal::GetEdge( model: cm_model_t, const idVec3 &v1, const idVec3 &v2, int *edgeNum, int v1num ) {
-////	int v2num, hashKey, e;
-////	int found, *vertexNum;
-////
-////	// the first edge is a dummy
-////	if ( model.numEdges == 0 ) {
-////		model.numEdges = 1;
-////	}
-////
-////	if ( v1num != -1 ) {
-////		found = 1;
-////	}
-////	else {
-////		found = GetVertex( model, v1, &v1num );
-////	}
-////	found &= GetVertex( model, v2, &v2num );
-////	// if both vertices are the same or snapped onto each other
-////	if ( v1num == v2num ) {
-////		*edgeNum = 0;
-////		return true;
-////	}
-////	hashKey = cm_edgeHash.GenerateKey( v1num, v2num );
-////	// if both vertices where already stored
-////	if (found) {
-////		for (e = cm_edgeHash.First( hashKey ); e >= 0; e = cm_edgeHash.Next( e ) )
-////		{
-////			// NOTE: only allow at most two users that use the edge in opposite direction
-////			if ( model.edges[e].numUsers != 1 ) {
-////				continue;
-////			}
-////
-////			vertexNum = model.edges[e].vertexNum;
-////			if ( vertexNum[0] == v2num ) {
-////				if ( vertexNum[1] == v1num ) {
-////					// negative for a reversed edge
-////					*edgeNum = -e;
-////					break;
-////				}
-////			}
-////			/*
-////			else if ( vertexNum[0] == v1num ) {
-////				if ( vertexNum[1] == v2num ) {
-////					*edgeNum = e;
-////					break;
-////				}
-////			}
-////			*/
-////		}
-////		// if edge found in hash
-////		if ( e >= 0 ) {
-////			model.edges[e].numUsers++;
-////			return true;
-////		}
-////	}
-////	if ( model.numEdges >= model.maxEdges ) {
-////		cm_edge_t *oldEdges;
-////
-////		// resize edge array
-////		model.maxEdges = (float) model.maxEdges * 1.5f + 1;
-////		oldEdges = model.edges;
-////		model.edges = (cm_edge_t *) Mem_ClearedAlloc( model.maxEdges * sizeof(cm_edge_t) );
-////		memcpy( model.edges, oldEdges, model.numEdges * sizeof(cm_edge_t) );
-////		Mem_Free( oldEdges );
-////
-////		cm_edgeHash.ResizeIndex( model.maxEdges );
-////	}
-////	// setup edge
-////	model.edges[model.numEdges].vertexNum[0] = v1num;
-////	model.edges[model.numEdges].vertexNum[1] = v2num;
-////	model.edges[model.numEdges].internal = false;
-////	model.edges[model.numEdges].checkcount = 0;
-////	model.edges[model.numEdges].numUsers = 1; // used by one polygon atm
-////	model.edges[model.numEdges].normal.Zero();
-////	//
-////	*edgeNum = model.numEdges;
-////	// add edge to hash
-////	cm_edgeHash.Add( hashKey, model.numEdges );
-////
-////	model.numEdges++;
-////
-////	return false;
-////}
-////
-/////*
-////================
-////idCollisionModelManagerLocal::CreatePolygon
-////================
-////*/
-////void idCollisionModelManagerLocal::CreatePolygon( model: cm_model_t, idFixedWinding *w, const idPlane &plane, const idMaterial *material, int primitiveNum ) {
-////	int i, j, edgeNum, v1num;
-////	int numPolyEdges, polyEdges[MAX_POINTS_ON_WINDING];
-////	idBounds bounds;
-////	p: cm_polygon_t ;
-////
-////	// turn the winding into a sequence of edges
-////	numPolyEdges = 0;
-////	v1num = -1;		// first vertex unknown
-////	for ( i = 0, j = 1; i < w.GetNumPoints(); i++, j++ ) {
-////		if ( j >= w.GetNumPoints() ) {
-////			j = 0;
-////		}
-////		GetEdge( model, (*w)[i].ToVec3(), (*w)[j].ToVec3(), &polyEdges[numPolyEdges], v1num );
-////		if ( polyEdges[numPolyEdges] ) {
-////			// last vertex of this edge is the first vertex of the next edge
-////			v1num = model.edges[ abs(polyEdges[numPolyEdges]) ].vertexNum[ INTSIGNBITNOTSET(polyEdges[numPolyEdges]) ];
-////			// this edge is valid so keep it
-////			numPolyEdges++;
-////		}
-////	}
-////	// should have at least 3 edges
-////	if ( numPolyEdges < 3 ) {
-////		return;
-////	}
-////	// the polygon is invalid if some edge is found twice
-////	for ( i = 0; i < numPolyEdges; i++ ) {
-////		for ( j = i+1; j < numPolyEdges; j++ ) {
-////			if ( abs(polyEdges[i]) == abs(polyEdges[j]) ) {
-////				return;
-////			}
-////		}
-////	}
-////	// don't overflow max edges
-////	if ( numPolyEdges > CM_MAX_POLYGON_EDGES ) {
-////		common.Warning( "idCollisionModelManagerLocal::CreatePolygon: polygon has more than %d edges", numPolyEdges );
-////		numPolyEdges = CM_MAX_POLYGON_EDGES;
-////	}
-////
-////	w.GetBounds( bounds );
-////
-////	p = this.AllocPolygon( model, numPolyEdges );
-////	p.numEdges = numPolyEdges;
-////	p.contents = material.GetContentFlags();
-////	p.material = material;
-////	p.checkcount = 0;
-////	p.plane = plane;
-////	p.bounds = bounds;
-////	for ( i = 0; i < numPolyEdges; i++ ) {
-////		edgeNum = polyEdges[i];
-////		p.edges[i] = edgeNum;
-////	}
-////	R_FilterPolygonIntoTree( model, model.node, NULL, p );
-////}
-////
-/////*
-////================
-////idCollisionModelManagerLocal::PolygonFromWinding
-////
-////  NOTE: for patches primitiveNum < 0 and abs(primitiveNum) is the real number
-////================
-////*/
-////void idCollisionModelManagerLocal::PolygonFromWinding( model: cm_model_t, idFixedWinding *w, const idPlane &plane, const idMaterial *material, int primitiveNum ) {
-////	int contents;
-////
-////	contents = material.GetContentFlags();
-////
-////	// if this polygon is part of the world model
-////	if ( this.numModels == 0 ) {
-////		// if the polygon is fully chopped away by the proc bsp tree
-////		if ( ChoppedAwayByProcBSP( *w, plane, contents ) ) {
-////			model.numRemovedPolys++;
-////			return;
-////		}
-////	}
-////
-////	// get one winding that is not or only partly contained in brushes
-////	w = WindingOutsideBrushes( w, plane, contents, primitiveNum, model.node );
-////
-////	// if the polygon is fully contained within a brush
-////	if ( !w ) {
-////		model.numRemovedPolys++;
-////		return;
-////	}
-////
-////	if ( w.IsHuge() ) {
-////		common.Warning( "idCollisionModelManagerLocal::PolygonFromWinding: model %s primitive %d is degenerate", model.name.c_str(), abs(primitiveNum) );
-////		return;
-////	}
-////
-////	CreatePolygon( model, w, plane, material, primitiveNum );
-////
-////	if ( material.GetCullType() == CT_TWO_SIDED || material.ShouldCreateBackSides() ) {
-////		w.ReverseSelf();
-////		CreatePolygon( model, w, -plane, material, primitiveNum );
-////	}
-////}
-////
+/*
+================
+idCollisionModelManagerLocal::HashVec
+================
+*/
+idCollisionModelManagerLocal.prototype.HashVec = function ( vec: idVec3 ): number /*int*/ {
+	/*
+	int x, y;
+
+	x = (((int)(vec[0] - cm_modelBounds[0].x + 0.5 )) >> cm_vertexShift) & (VERTEX_HASH_BOXSIZE-1);
+	y = (((int)(vec[1] - cm_modelBounds[0].y + 0.5 )) >> cm_vertexShift) & (VERTEX_HASH_BOXSIZE-1);
+
+	assert (x >= 0 && x < VERTEX_HASH_BOXSIZE && y >= 0 && y < VERTEX_HASH_BOXSIZE);
+
+	return y * VERTEX_HASH_BOXSIZE + x;
+	*/
+	var /*int */x: number, y: number, z: number;
+
+	x = ( ( ( int )( vec[0] - cm_modelBounds[0].x + 0.5 ) ) + 2 ) >> 2;
+	y = ( ( ( int )( vec[1] - cm_modelBounds[0].y + 0.5 ) ) + 2 ) >> 2;
+	z = ( ( ( int )( vec[2] - cm_modelBounds[0].z + 0.5 ) ) + 2 ) >> 2;
+	return ( x + y * VERTEX_HASH_BOXSIZE + z ) & ( VERTEX_HASH_SIZE - 1 );
+};
+
+/*
+================
+idCollisionModelManagerLocal::GetVertex
+================
+*/
+idCollisionModelManagerLocal.prototype.GetVertex = function ( model: cm_model_t, v: idVec3, vertexNum: R<number> ): number /*int*/ {
+	var /*int */i: number, hashKey: number, vn: number;
+	var vert = new idVec3, p: idVec3;
+
+	for ( i = 0; i < 3; i++ ) {
+		if ( idMath.Fabs( v[i] - idMath.Rint( v[i] ) ) < INTEGRAL_EPSILON )
+			vert[i] = idMath.Rint( v[i] );
+		else
+			vert[i] = v[i];
+	}
+
+	hashKey = this.HashVec( vert );
+
+	for ( vn = cm_vertexHash.First( hashKey ); vn >= 0; vn = cm_vertexHash.Next( vn ) ) {
+		p = model.vertices[vn].p;
+		// first compare z-axis because hash is based on x-y plane
+		if ( idMath.Fabs( vert[2] - ( p )[2] ) < VERTEX_EPSILON &&
+			idMath.Fabs( vert[0] - ( p )[0] ) < VERTEX_EPSILON &&
+			idMath.Fabs( vert[1] - ( p )[1] ) < VERTEX_EPSILON ) {
+			vertexNum.$ = vn;
+			return 1 /*true*/;
+		}
+	}
+
+	if ( model.numVertices >= model.maxVertices ) {
+		var oldVertices: cm_vertex_t[];
+
+		// resize vertex array
+		model.maxVertices = /*(float)*/ model.maxVertices * 1.5 + 1;
+		oldVertices = model.vertices;
+		model.vertices = newStructArray<cm_vertex_t>( cm_vertex_t, model.maxVertices ); //(cm_vertex_t *) Mem_ClearedAlloc( model.maxVertices * sizeof(cm_vertex_t) );
+		memcpyStructs( model.vertices, oldVertices, model.numVertices ); //memcpy(model.vertices, oldVertices, model.numVertices * sizeof(cm_vertex_t));
+		Mem_Free( oldVertices );
+
+		cm_vertexHash.ResizeIndex( model.maxVertices );
+	}
+	model.vertices[model.numVertices].p.equals( vert );
+	model.vertices[model.numVertices].checkcount = 0;
+	vertexNum.$ = model.numVertices;
+	// add vertice to hash
+	cm_vertexHash.Add( hashKey, model.numVertices );
+
+	model.numVertices++;
+	return 0 /*false*/;
+};
+
+/*
+================
+idCollisionModelManagerLocal::GetEdge
+================
+*/
+idCollisionModelManagerLocal.prototype.GetEdge = function ( model: cm_model_t, v1: idVec3, v2: idVec3, /*int **/edgeNum: R<number>, /*int */v1num: number ): number /*int*/ {
+	var /*int */v2num: number, hashKey: number, e: number;
+	var /*int */found: number, vertexNum: Int32Array;
+
+	// the first edge is a dummy
+	if ( model.numEdges == 0 ) {
+		model.numEdges = 1;
+	}
+
+	if ( v1num != -1 ) {
+		found = 1;
+	} else {
+		var $v1num = new R( v1num );
+		found = this.GetVertex( model, v1, $v1num );
+		v1num = $v1num.$;
+	}
+	var $v2num = new R( v2num );
+	found &= this.GetVertex( model, v2, $v2num );
+	v2num = $v2num.$;
+	// if both vertices are the same or snapped onto each other
+	if ( v1num == v2num ) {
+		edgeNum.$ = 0;
+		return 1 /*true*/;
+	}
+	hashKey = cm_edgeHash.GenerateKey_ints( v1num, v2num );
+	// if both vertices where already stored
+	if ( found ) {
+		for ( e = cm_edgeHash.First( hashKey ); e >= 0; e = cm_edgeHash.Next( e ) ) {
+			// NOTE: only allow at most two users that use the edge in opposite direction
+			if ( model.edges[e].numUsers != 1 ) {
+				continue;
+			}
+
+			vertexNum = model.edges[e].vertexNum;
+			if ( vertexNum[0] == v2num ) {
+				if ( vertexNum[1] == v1num ) {
+					// negative for a reversed edge
+					edgeNum.$ = -e;
+					break;
+				}
+			}
+			/*
+			else if ( vertexNum[0] == v1num ) {
+				if ( vertexNum[1] == v2num ) {
+					edgeNum.$ = e;
+					break;
+				}
+			}
+			*/
+		}
+		// if edge found in hash
+		if ( e >= 0 ) {
+			model.edges[e].numUsers++;
+			return 1 /*true*/;
+		}
+	}
+	if ( model.numEdges >= model.maxEdges ) {
+		var oldEdges: cm_edge_t[];
+
+		// resize edge array
+		model.maxEdges = /*(float) */model.maxEdges * 1.5 + 1;
+		oldEdges = model.edges;
+		model.edges = newStructArray<cm_edge_t>( cm_edge_t, model.maxEdges ); //(cm_edge_t *) Mem_ClearedAlloc( model.maxEdges * sizeof(cm_edge_t) );
+		memcpyStructs( model.edges, oldEdges, model.numEdges ); //memcpy( model.edges, oldEdges, model.numEdges * sizeof(cm_edge_t) );
+		Mem_Free( oldEdges );
+
+		cm_edgeHash.ResizeIndex( model.maxEdges );
+	}
+	// setup edge
+	model.edges[model.numEdges].vertexNum[0] = v1num;
+	model.edges[model.numEdges].vertexNum[1] = v2num;
+	model.edges[model.numEdges].internal = 0 /*false*/;
+	model.edges[model.numEdges].checkcount = 0;
+	model.edges[model.numEdges].numUsers = 1; // used by one polygon atm
+	model.edges[model.numEdges].normal.Zero ( );
+	//
+	edgeNum.$ = model.numEdges;
+	// add edge to hash
+	cm_edgeHash.Add( hashKey, model.numEdges );
+
+	model.numEdges++;
+
+	return 0 /*false*/;
+};
+
+/*
+================
+idCollisionModelManagerLocal::CreatePolygon
+================
+*/
+idCollisionModelManagerLocal.prototype.CreatePolygon = function ( model: cm_model_t, w: idFixedWinding, plane: idPlane, material: idMaterial, /*int*/ primitiveNum: number ): void {
+	var /*int */i: number, j: number, edgeNum: number, v1num: number;
+	var /*int */numPolyEdges: number, polyEdges = new Int32Array( MAX_POINTS_ON_WINDING );
+	var bounds = new idBounds;
+	var p: cm_polygon_t;
+
+	// turn the winding into a sequence of edges
+	numPolyEdges = 0;
+	v1num = -1; // first vertex unknown
+	for ( i = 0, j = 1; i < w.GetNumPoints ( ); i++, j++ ) {
+		if ( j >= w.GetNumPoints ( ) ) {
+			j = 0;
+		}
+		this.GetEdge( model, ( w )[i].ToVec3 ( ), ( w )[j].ToVec3 ( ), polyEdges[numPolyEdges], v1num );
+		if ( polyEdges[numPolyEdges] ) {
+			// last vertex of this edge is the first vertex of the next edge
+			v1num = model.edges[abs( polyEdges[numPolyEdges] )].vertexNum[INTSIGNBITNOTSET( polyEdges[numPolyEdges] )];
+			// this edge is valid so keep it
+			numPolyEdges++;
+		}
+	}
+	// should have at least 3 edges
+	if ( numPolyEdges < 3 ) {
+		return;
+	}
+	// the polygon is invalid if some edge is found twice
+	for ( i = 0; i < numPolyEdges; i++ ) {
+		for ( j = i + 1; j < numPolyEdges; j++ ) {
+			if ( abs( polyEdges[i] ) == abs( polyEdges[j] ) ) {
+				return;
+			}
+		}
+	}
+	// don't overflow max edges
+	if ( numPolyEdges > CM_MAX_POLYGON_EDGES ) {
+		common.Warning( "idCollisionModelManagerLocal::CreatePolygon: polygon has more than %d edges", numPolyEdges );
+		numPolyEdges = CM_MAX_POLYGON_EDGES;
+	}
+
+	w.GetBounds( bounds );
+
+	p = this.AllocPolygon( model, numPolyEdges );
+	p.numEdges = numPolyEdges;
+	p.contents = material.GetContentFlags ( );
+	p.material = material;
+	p.checkcount = 0;
+	p.plane = plane;
+	p.bounds = bounds;
+	for ( i = 0; i < numPolyEdges; i++ ) {
+		edgeNum = polyEdges[i];
+		p.edges[i] = edgeNum;
+	}
+	this.R_FilterPolygonIntoTree( model, model.node, null, p );
+};
+
+/*
+================
+idCollisionModelManagerLocal::PolygonFromWinding
+
+  NOTE: for patches primitiveNum < 0 and abs(primitiveNum) is the real number
+================
+*/
+idCollisionModelManagerLocal.prototype.PolygonFromWinding = function ( model: cm_model_t, w: idFixedWinding, plane: idPlane, material: idMaterial, /*int */primitiveNum: number ): void {
+	var /*int */contents: number;
+
+	contents = material.GetContentFlags ( );
+
+	// if this polygon is part of the world model
+	if ( this.numModels == 0 ) {
+		// if the polygon is fully chopped away by the proc bsp tree
+		if ( this.ChoppedAwayByProcBSP( w, plane, contents ) ) {
+			model.numRemovedPolys++;
+			return;
+		}
+	}
+
+	// get one winding that is not or only partly contained in brushes
+	w.opEquals( this.WindingOutsideBrushes( w, plane, contents, primitiveNum, model.node ) );
+
+	// if the polygon is fully contained within a brush
+	if ( !w ) {
+		model.numRemovedPolys++;
+		return;
+	}
+
+	if ( w.IsHuge ( ) ) {
+		common.Warning( "idCollisionModelManagerLocal::PolygonFromWinding: model %s primitive %d is degenerate", model.name.c_str ( ), abs( primitiveNum ) );
+		return;
+	}
+
+	this.CreatePolygon( model, w, plane, material, primitiveNum );
+
+	if ( material.GetCullType ( ) == cullType_t.CT_TWO_SIDED || material.ShouldCreateBackSides ( ) ) {
+		w.ReverseSelf ( );
+		this.CreatePolygon( model, w, -plane, material, primitiveNum );
+	}
+};
+
 /////*
 ////=================
 ////idCollisionModelManagerLocal::CreatePatchPolygons
 ////=================
 ////*/
-////void idCollisionModelManagerLocal::CreatePatchPolygons( model: cm_model_t, idSurface_Patch &mesh, const idMaterial *material, int primitiveNum ) {
+////void idCollisionModelManagerLocal::CreatePatchPolygons( model: cm_model_t, idSurface_Patch &mesh, material:idMaterial , /*int*/ primitiveNum:number  ) {
 ////	int i, j;
 ////	float dot;
 ////	int v1, v2, v3, v4;
@@ -2538,7 +2536,7 @@ idCollisionModelManagerLocal.prototype.ClearHash = function ( bounds: idBounds )
 ////				plane.FitThroughPoint( mesh[v1].xyz );
 ////				dot = plane.Distance( mesh[v4].xyz );
 ////				// if we can turn it into a quad
-////				if ( idMath::Fabs(dot) < 0.1f ) {
+////				if ( idMath.Fabs(dot) < 0.1f ) {
 ////					w.Clear();
 ////					w += mesh[v1].xyz;
 ////					w += mesh[v2].xyz;
@@ -2610,8 +2608,8 @@ idCollisionModelManagerLocal.prototype.ClearHash = function ( bounds: idBounds )
 ////idCollisionModelManagerLocal::ConverPatch
 ////=================
 ////*/
-////void idCollisionModelManagerLocal::ConvertPatch( model: cm_model_t, const idMapPatch *patch, int primitiveNum ) {
-////	const idMaterial *material;
+////void idCollisionModelManagerLocal::ConvertPatch( model: cm_model_t, const idMapPatch *patch, /*int*/ primitiveNum:number  ) {
+////	material:idMaterial ;
 ////	idSurface_Patch *cp;
 ////
 ////	material = declManager.FindMaterial( patch.GetMaterial() );
@@ -2640,12 +2638,12 @@ idCollisionModelManagerLocal.prototype.ClearHash = function ( bounds: idBounds )
 ////idCollisionModelManagerLocal::ConvertBrushSides
 ////================
 ////*/
-////void idCollisionModelManagerLocal::ConvertBrushSides( model: cm_model_t, const idMapBrush *mapBrush, int primitiveNum ) {
+////void idCollisionModelManagerLocal::ConvertBrushSides( model: cm_model_t, const idMapBrush *mapBrush, /*int*/ primitiveNum:number  ) {
 ////	int i, j;
 ////	idMapBrushSide *mapSide;
 ////	idFixedWinding w;
 ////	idPlane *planes;
-////	const idMaterial *material;
+////	material:idMaterial ;
 ////
 ////	// fix degenerate planes
 ////	planes = (idPlane *) _alloca16( mapBrush.GetNumSides() * sizeof( planes[0] ) );
@@ -2680,14 +2678,14 @@ idCollisionModelManagerLocal.prototype.ClearHash = function ( bounds: idBounds )
 ////idCollisionModelManagerLocal::ConvertBrush
 ////================
 ////*/
-////void idCollisionModelManagerLocal::ConvertBrush( model: cm_model_t, const idMapBrush *mapBrush, int primitiveNum ) {
+////void idCollisionModelManagerLocal::ConvertBrush( model: cm_model_t, const idMapBrush *mapBrush, /*int*/ primitiveNum:number  ) {
 ////	int i, j, contents;
 ////	idBounds bounds;
 ////	idMapBrushSide *mapSide;
 ////	cm_brush_t *brush;
 ////	idPlane *planes;
 ////	idFixedWinding w;
-////	const idMaterial *material = NULL;
+////	material:idMaterial  = NULL;
 ////
 ////	contents = 0;
 ////	bounds.Clear();
@@ -2998,7 +2996,7 @@ idCollisionModelManagerLocal.prototype.LoadRenderModel = function ( fileName: st
 	model.maxEdges = 0;
 	model.numEdges = 0;
 
-	bounds = renderModel.Bounds( null );
+	bounds.opEquals( renderModel.Bounds( null ) );
 
 	collisionSurface = false;
 	for ( i = 0; i < renderModel.NumSurfaces ( ); i++ ) {
@@ -3327,8 +3325,8 @@ idCollisionModelManagerLocal.prototype.BuildModels = function ( mapFile: idMapFi
 		//}
 
 		//// free the proc bsp which is only used for data optimization
-		//Mem_Free( procNodes );
-		//procNodes = null;
+		//Mem_Free( this.procNodes );
+		//this.procNodes = null;
 
 		//// write the collision models to a file
 		//this.WriteCollisionModelsToFile( mapFile.GetName(), 0, this.numModels, mapFile.GetGeometryCRC() );
@@ -3407,23 +3405,23 @@ idCollisionModelManagerLocal.prototype.LoadMap = function ( mapFile: idMapFile )
 ////	}
 ////	return this.models[model].name.c_str();
 ////}
-////
-/////*
-////===================
-////idCollisionModelManagerLocal::GetModelBounds
-////===================
-////*/
-////bool idCollisionModelManagerLocal::GetModelBounds( cmHandle_t model, idBounds &bounds ) const {
-////
-////	if ( model < 0 || model > MAX_SUBMODELS || model >= this.numModels || !this.models[model] ) {
-////		common.Printf( "idCollisionModelManagerLocal::GetModelBounds: invalid model handle\n" );
-////		return false;
-////	}
-////
-////	bounds = this.models[model].bounds;
-////	return true;
-////}
-////
+
+/*
+===================
+idCollisionModelManagerLocal::GetModelBounds
+===================
+*/
+idCollisionModelManagerLocal.prototype.GetModelBounds = function ( model: /*cmHandle_t*/number, bounds: idBounds ): boolean {
+
+	if ( model < 0 || model > MAX_SUBMODELS || model >= this.numModels || !this.models[model] ) {
+		common.Printf( "idCollisionModelManagerLocal::GetModelBounds: invalid model handle\n" );
+		return false;
+	}
+
+	bounds.opEquals( this.models[model].bounds );
+	return true;
+};
+
 /////*
 ////===================
 ////idCollisionModelManagerLocal::GetModelContents

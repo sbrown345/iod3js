@@ -94,10 +94,10 @@ function BIT( num: number ):number			{ return ( 1 << ( num ) );}
 
 var MAX_STRING_CHARS = 1024;		// max length of a string
 
-////// maximum world size
-////#define MAX_WORLD_COORD			( 128 * 1024 )
-////#define MIN_WORLD_COORD			( -128 * 1024 )
-////#define MAX_WORLD_SIZE			( MAX_WORLD_COORD - MIN_WORLD_COORD )
+// maximum world size
+var MAX_WORLD_COORD			=( 128 * 1024 )
+var MIN_WORLD_COORD			=( -128 * 1024 )
+var MAX_WORLD_SIZE			=( MAX_WORLD_COORD - MIN_WORLD_COORD )
 
 ////// basic colors
 ////extern	idVec4 colorBlack;
