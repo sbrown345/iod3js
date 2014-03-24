@@ -388,25 +388,25 @@ idRenderModelManagerLocal::FindModel
 	FindModel ( modelName: string ): idRenderModel {
 		return this.GetModel( modelName, true );
 	}
-////
-/////*
-////=================
-////idRenderModelManagerLocal::CheckModel
-////=================
-////*/
-////idRenderModel *idRenderModelManagerLocal::CheckModel( const char *modelName ) {
-////	return GetModel( modelName, false );
-////}
-////
-/////*
-////=================
-////idRenderModelManagerLocal::DefaultModel
-////=================
-////*/
-////idRenderModel *idRenderModelManagerLocal::DefaultModel() {
-////	return defaultModel;
-////}
-////
+
+/*
+=================
+idRenderModelManagerLocal::CheckModel
+=================
+*/
+	CheckModel ( modelName: string ): idRenderModel {
+		return this.GetModel( modelName, false );
+	}
+
+/*
+=================
+idRenderModelManagerLocal::DefaultModel
+=================
+*/
+	DefaultModel ( ): idRenderModel {
+		return this.defaultModel;
+	}
+
 /*
 =================
 idRenderModelManagerLocal::AddModel

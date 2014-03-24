@@ -170,28 +170,33 @@ class idPlane {
 		this.values[3] = value;
 	}
 	
-	//};
-	//
 	//extern idPlane plane_origin;
 	//#define plane_zero plane_origin
-	//
-	//ID_INLINE idPlane::idPlane( ) {
-	//}
-	//
-	//ID_INLINE idPlane::idPlane( float a, float b, float c, float d ) {
-	//	this.a = a;
-	//	this.b = b;
-	//	this.c = c;
-	//	this.d = d;
-	//}
-	//
-	//ID_INLINE idPlane::idPlane( const idVec3 &normal, const float dist ) {
-	//	this.a = normal.x;
-	//	this.b = normal.y;
-	//	this.c = normal.z;
-	//	this.d = -dist;
-	//}
-	
+
+	constructor ( )
+	constructor ( normal: idVec3, dist: number /*float*/ )
+	constructor ( a: number /*float*/, b: number /*float*/, c: number /*float*/, d: number /*float*/ )
+	constructor ( a1?: any, a2?: any, a3?: any, a4?: any ) {
+		if ( arguments.length == 0 ) {
+			return;
+		}
+
+		if ( arguments.length == 4 ) {
+			this.a = a1;
+			this.b = a2;
+			this.c = a3;
+			this.d = a4;
+		} else if ( arguments.length == 2 ) {
+			var normal = <idVec3>a1, dist = <number>a2;
+
+			this.a = normal.x;
+			this.b = normal.y;
+			this.c = normal.z;
+			this.d = -dist;
+		}
+	}
+
+
 	[n: number]: number;
 
 	//ID_INLINE float idPlane::operator[]( int index ) const {
@@ -201,11 +206,20 @@ class idPlane {
 	//ID_INLINE float& idPlane::operator[]( int index ) {
 	//	return ( &a )[ index ];
 	//}
-	//
-	//ID_INLINE idPlane idPlane::operator-() const {
-	//	return idPlane( -a, -b, -c, -d );
-	//}
-	//
+
+	opUnaryMinus ( ): idPlane {
+		return new idPlane( -this.a, -this.b, -this.c, -this.d );
+	}
+
+	opEquals ( other: idPlane ): idPlane {
+		this.a = other.a;
+		this.b = other.b;
+		this.c = other.c;
+		this.d = other.d;
+
+		return this;
+	}
+
 	//ID_INLINE idPlane &idPlane::operator=( const idVec3 &v ) { 
 	//	a = v.x;
 	//	b = v.y;

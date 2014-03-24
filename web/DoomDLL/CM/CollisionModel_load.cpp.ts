@@ -53,27 +53,27 @@
 ////
 var collisionModelManagerLocal = new idCollisionModelManagerLocal;
 var collisionModelManager/*: idCollisionModelManager*/ = collisionModelManagerLocal;
-////
-////cm_windingList_t *				cm_windingList;
-////cm_windingList_t *				cm_outList;
-////cm_windingList_t *				cm_tmpList;
-////
-////idHashIndex *					cm_vertexHash;
-////idHashIndex *					cm_edgeHash;
-////
-////idBounds						cm_modelBounds;
-////int								cm_vertexShift;
-////
-////
-/////*
-////===============================================================================
-////
-////Proc BSP tree for data pruning
-////
-////===============================================================================
-////*/
-////
-/////*
+
+var cm_windingList:cm_windingList_t;
+var cm_outList:cm_windingList_t;
+var cm_tmpList:cm_windingList_t;
+
+var cm_vertexHash: idHashIndex;
+var cm_edgeHash: idHashIndex;
+
+var cm_modelBounds = new idBounds;
+var cm_vertexShift :number /*int*/;
+
+
+/*
+===============================================================================
+
+Proc BSP tree for data pruning
+
+===============================================================================
+*/
+
+/*
 ////================
 ////idCollisionModelManagerLocal::ParseProcNodes
 ////================
@@ -2140,30 +2140,30 @@ idCollisionModelManagerLocal.prototype.R_FilterBrushIntoTree = function ( model:
 ////}
 ////*/
 ////
-/////*
-////================
-////idCollisionModelManagerLocal::CreateAxialBSPTree
-////================
-////*/
-////cm_node_t *idCollisionModelManagerLocal::CreateAxialBSPTree( model: cm_model_t, node: cm_node_t ) {
-////	var pref: cm_polygonRef_t;
-////	cm_brushRef_t *bref;
-////	idBounds bounds;
-////
-////	// get head node bounds
-////	bounds.Clear();
-////	for ( pref = node.polygons; pref; pref = pref.next) {
-////		bounds += pref.p.bounds;
-////	}
-////	for ( bref = node.brushes; bref; bref = bref.next) {
-////		bounds += bref.b.bounds;
-////	}
-////
-////	// create axial BSP tree from head node
-////	node = R_CreateAxialBSPTree( model, node, bounds );
-////
-////	return node;
-////}
+/*
+================
+idCollisionModelManagerLocal::CreateAxialBSPTree
+================
+*/
+idCollisionModelManagerLocal.prototype.CreateAxialBSPTree = function ( model: cm_model_t, node: cm_node_t ): cm_node_t {
+	var pref: cm_polygonRef_t;
+	var bref: cm_brushRef_t;
+	var bounds = new idBounds;
+
+	// get head node bounds
+	bounds.Clear ( );
+	for ( pref = node.polygons; pref; pref = pref.next ) {
+		bounds.opAdditionAssignment( pref.p.bounds );
+	}
+	for ( bref = node.brushes; bref; bref = bref.next ) {
+		bounds.opAdditionAssignment( bref.b.bounds );
+	}
+
+	// create axial BSP tree from head node
+	node = this.R_CreateAxialBSPTree( model, node, bounds );
+
+	return node;
+};
 
 /*
 ===============================================================================
@@ -2215,35 +2215,34 @@ idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
 	this.cm_windingList = null;
 };
 
-/////*
-////================
-////idCollisionModelManagerLocal::ClearHash
-////================
-////*/
-////void idCollisionModelManagerLocal::ClearHash( idBounds &bounds ) {
-////	var i:number;
-////	float f, max;
-////
-////	cm_vertexHash.Clear();
-////	cm_edgeHash.Clear();
-////
-////	cm_modelBounds = bounds;
-////	max = bounds[1].x - bounds[0].x;
-////	f = bounds[1].y - bounds[0].y;
-////	if ( f > max ) {
-////		max = f;
-////	}
-////	cm_vertexShift = (float) max / VERTEX_HASH_BOXSIZE;
-////	for ( i = 0; (1<<i) < cm_vertexShift; i++ ) {
-////	}
-////	if ( i == 0 ) {
-////		cm_vertexShift = 1;
-////	}
-////	else {
-////		cm_vertexShift = i;
-////	}
-////}
-////
+/*
+================
+idCollisionModelManagerLocal::ClearHash
+================
+*/
+idCollisionModelManagerLocal.prototype.ClearHash = function ( bounds: idBounds ): void {
+	var i: number;
+	var /*float */f: number, max: number;
+
+	cm_vertexHash.Clear ( );
+	cm_edgeHash.Clear ( );
+
+	cm_modelBounds = bounds;
+	max = bounds[1].x - bounds[0].x;
+	f = bounds[1].y - bounds[0].y;
+	if ( f > max ) {
+		max = f;
+	}
+	cm_vertexShift = /*(float)*/ max / VERTEX_HASH_BOXSIZE;
+	for ( i = 0; ( 1 << i ) < cm_vertexShift; i++ ) {
+	}
+	if ( i == 0 ) {
+		cm_vertexShift = 1;
+	} else {
+		cm_vertexShift = i;
+	}
+};
+
 /////*
 ////================
 ////idCollisionModelManagerLocal::HashVec
@@ -2958,120 +2957,120 @@ function CM_GetNodeContents ( node: cm_node_t ): number /*int*/ {
 ////						model.numPolygonRefs * sizeof(cm_polygonRef_t) +
 ////						model.numBrushRefs * sizeof(cm_brushRef_t);
 ////}
-////
-/////*
-////================
-////idCollisionModelManagerLocal::LoadRenderModel
-////================
-////*/
-////cm_model_t *idCollisionModelManagerLocal::LoadRenderModel( const char *fileName ) {
-////	int i, j;
-////	idRenderModel *renderModel;
-////	const modelSurface_t *surf;
-////	idFixedWinding w;
-////	node: cm_node_t;
-////	model: cm_model_t;
-////	idPlane plane;
-////	idBounds bounds;
-////	bool collisionSurface;
-////	idStr extension;
-////
-////	// only load ASE and LWO models
-////	idStr( fileName ).ExtractFileExtension( extension );
-////	if ( ( extension.Icmp( "ase" ) != 0 ) && ( extension.Icmp( "lwo" ) != 0 ) && ( extension.Icmp( "ma" ) != 0 ) ) {
-////		return NULL;
-////	}
-////
-////	if ( !renderModelManager.CheckModel( fileName ) ) {
-////		return NULL;
-////	}
-////
-////	renderModel = renderModelManager.FindModel( fileName );
-////
-////	model = AllocModel();
-////	model.name = fileName;
-////	node = AllocNode( model, NODE_BLOCK_SIZE_SMALL );
-////	node.planeType = -1;
-////	model.node = node;
-////
-////	model.maxVertices = 0;
-////	model.numVertices = 0;
-////	model.maxEdges = 0;
-////	model.numEdges = 0;
-////
-////	bounds = renderModel.Bounds( NULL );
-////
-////	collisionSurface = false;
-////	for ( i = 0; i < renderModel.NumSurfaces(); i++ ) {
-////		surf = renderModel.Surface( i );
-////		if ( surf.shader.GetSurfaceFlags() & SURF_COLLISION ) {
-////			collisionSurface = true;
-////		}
-////	}
-////
-////	for ( i = 0; i < renderModel.NumSurfaces(); i++ ) {
-////		surf = renderModel.Surface( i );
-////		// if this surface has no contents
-////		if ( ! ( surf.shader.GetContentFlags() & CONTENTS_REMOVE_UTIL ) ) {
-////			continue;
-////		}
-////		// if the model has a collision surface and this surface is not a collision surface
-////		if ( collisionSurface && !( surf.shader.GetSurfaceFlags() & SURF_COLLISION ) ) {
-////			continue;
-////		}
-////		// get max verts and edges
-////		model.maxVertices += surf.geometry.numVerts;
-////		model.maxEdges += surf.geometry.numIndexes;
-////	}
-////
-////	model.vertices = (cm_vertex_t *) Mem_ClearedAlloc( model.maxVertices * sizeof(cm_vertex_t) );
-////	model.edges = (cm_edge_t *) Mem_ClearedAlloc( model.maxEdges * sizeof(cm_edge_t) );
-////
-////	// setup hash to speed up finding shared vertices and edges
-////	this.SetupHash();
-////
-////	cm_vertexHash.ResizeIndex( model.maxVertices );
-////	cm_edgeHash.ResizeIndex( model.maxEdges );
-////
-////	ClearHash( bounds );
-////
-////	for ( i = 0; i < renderModel.NumSurfaces(); i++ ) {
-////		surf = renderModel.Surface( i );
-////		// if this surface has no contents
-////		if ( ! ( surf.shader.GetContentFlags() & CONTENTS_REMOVE_UTIL ) ) {
-////			continue;
-////		}
-////		// if the model has a collision surface and this surface is not a collision surface
-////		if ( collisionSurface && !( surf.shader.GetSurfaceFlags() & SURF_COLLISION ) ) {
-////			continue;
-////		}
-////
-////		for ( j = 0; j < surf.geometry.numIndexes; j += 3 ) {
-////			w.Clear();
-////			w += surf.geometry.verts[ surf.geometry.indexes[ j + 2 ] ].xyz;
-////			w += surf.geometry.verts[ surf.geometry.indexes[ j + 1 ] ].xyz;
-////			w += surf.geometry.verts[ surf.geometry.indexes[ j + 0 ] ].xyz;
-////			w.GetPlane( plane );
-////			plane = -plane;
-////			PolygonFromWinding( model, &w, plane, surf.shader, 1 );
-////		}
-////	}
-////
-////	// create a BSP tree for the model
-////	model.node = CreateAxialBSPTree( model, model.node );
-////
-////	model.isConvex = false;
-////
-////	FinishModel( model );
-////
-////	// shutdown the hash
-////	this.ShutdownHash();
-////
-////	common.Printf( "loaded collision model %s\n", model.name.c_str() );
-////
-////	return model;
-////}
-////
+
+/*
+================
+idCollisionModelManagerLocal::LoadRenderModel
+================
+*/
+idCollisionModelManagerLocal.prototype.LoadRenderModel = function ( fileName: string ): cm_model_t {
+	var /*int */i: number, j: number;
+	var renderModel: idRenderModel;
+	var surf: modelSurface_t;
+	var w = new idFixedWinding;
+	var node: cm_node_t;
+	var model: cm_model_t;
+	var plane = new idPlane;
+	var bounds = new idBounds;
+	var collisionSurface: boolean;
+	var extension = new idStr;
+
+	// only load ASE and LWO models
+	new idStr( fileName ).ExtractFileExtension( extension );
+	if ( ( extension.Icmp( "ase" ) != 0 ) && ( extension.Icmp( "lwo" ) != 0 ) && ( extension.Icmp( "ma" ) != 0 ) ) {
+		return null;
+	}
+
+	if ( !renderModelManager.CheckModel( fileName ) ) {
+		return null;
+	}
+
+	renderModel = renderModelManager.FindModel( fileName );
+
+	model = this.AllocModel ( );
+	model.name.equals( fileName );
+	node = this.AllocNode( model, NODE_BLOCK_SIZE_SMALL );
+	node.planeType = -1;
+	model.node = node;
+
+	model.maxVertices = 0;
+	model.numVertices = 0;
+	model.maxEdges = 0;
+	model.numEdges = 0;
+
+	bounds = renderModel.Bounds( null );
+
+	collisionSurface = false;
+	for ( i = 0; i < renderModel.NumSurfaces ( ); i++ ) {
+		surf = renderModel.Surface( i );
+		if ( surf.shader.GetSurfaceFlags ( ) & surfaceFlags_t.SURF_COLLISION ) {
+			collisionSurface = true;
+		}
+	}
+
+	for ( i = 0; i < renderModel.NumSurfaces ( ); i++ ) {
+		surf = renderModel.Surface( i );
+		// if this surface has no contents
+		if ( !( surf.shader.GetContentFlags ( ) & contentsFlags_t.CONTENTS_REMOVE_UTIL ) ) {
+			continue;
+		}
+		// if the model has a collision surface and this surface is not a collision surface
+		if ( collisionSurface && !( surf.shader.GetSurfaceFlags ( ) & surfaceFlags_t.SURF_COLLISION ) ) {
+			continue;
+		}
+		// get max verts and edges
+		model.maxVertices += surf.geometry.numVerts;
+		model.maxEdges += surf.geometry.numIndexes;
+	}
+
+	model.vertices = newStructArray<cm_vertex_t>( cm_vertex_t, model.maxVertices ); // (cm_vertex_t *) Mem_ClearedAlloc( model.maxVertices * sizeof(cm_vertex_t) );
+	model.edges = newStructArray<cm_edge_t>( cm_edge_t, model.maxEdges ); // (cm_edge_t *) Mem_ClearedAlloc( model.maxEdges * sizeof(cm_edge_t) );
+
+	// setup hash to speed up finding shared vertices and edges
+	this.SetupHash ( );
+
+	cm_vertexHash.ResizeIndex( model.maxVertices );
+	cm_edgeHash.ResizeIndex( model.maxEdges );
+
+	this.ClearHash( bounds );
+
+	for ( i = 0; i < renderModel.NumSurfaces ( ); i++ ) {
+		surf = renderModel.Surface( i );
+		// if this surface has no contents
+		if ( !( surf.shader.GetContentFlags ( ) & contentsFlags_t.CONTENTS_REMOVE_UTIL ) ) {
+			continue;
+		}
+		// if the model has a collision surface and this surface is not a collision surface
+		if ( collisionSurface && !( surf.shader.GetSurfaceFlags ( ) & surfaceFlags_t.SURF_COLLISION ) ) {
+			continue;
+		}
+
+		for ( j = 0; j < surf.geometry.numIndexes; j += 3 ) {
+			w.Clear ( );
+			w.opAdditionAssignment( surf.geometry.verts[surf.geometry.indexes[j + 2]].xyz );
+			w.opAdditionAssignment( surf.geometry.verts[surf.geometry.indexes[j + 1]].xyz );
+			w.opAdditionAssignment( surf.geometry.verts[surf.geometry.indexes[j + 0]].xyz );
+			w.GetPlane( plane );
+			plane.opEquals( plane.opUnaryMinus ( ) );
+			this.PolygonFromWinding( model, w, plane, surf.shader, 1 );
+		}
+	}
+
+	// create a BSP tree for the model
+	model.node = this.CreateAxialBSPTree( model, model.node );
+
+	model.isConvex = false;
+
+	this.FinishModel( model );
+
+	// shutdown the hash
+	this.ShutdownHash ( );
+
+	common.Printf( "loaded collision model %s\n", model.name.c_str ( ) );
+
+	return model;
+};
+
 /////*
 ////================
 ////idCollisionModelManagerLocal::CollisionModelForMapEntity
@@ -3085,7 +3084,7 @@ function CM_GetNodeContents ( node: cm_node_t ): number /*int*/ {
 ////
 ////	// if the entity has no primitives
 ////	if ( mapEnt.GetNumPrimitives() < 1 ) {
-////		return NULL;
+////		return null;
 ////	}
 ////
 ////	// get a name for the collision model
@@ -3146,7 +3145,7 @@ function CM_GetNodeContents ( node: cm_node_t ): number /*int*/ {
 ////	}
 ////
 ////	// different models do not share edges and vertices with each other, so clear the hash
-////	ClearHash( bounds );
+////	this.ClearHash( bounds );
 ////
 ////	// create polygons from patches and brushes
 ////	for ( i = 0; i < mapEnt.GetNumPrimitives(); i++ ) {
@@ -3167,27 +3166,27 @@ function CM_GetNodeContents ( node: cm_node_t ): number /*int*/ {
 ////
 ////	return model;
 ////}
-////
-/////*
-////================
-////idCollisionModelManagerLocal::FindModel
-////================
-////*/
-////cmHandle_t idCollisionModelManagerLocal::FindModel( const char *name ) {
-////	var i:number;
-////
-////	// check if this model is already loaded
-////	for ( i = 0; i < this.numModels; i++ ) {
-////		if ( !this.models[i].name.Icmp( name ) ) {
-////			break;
-////		}
-////	}
-////	// if the model is already loaded
-////	if ( i < this.numModels ) {
-////		return i;
-////	}
-////	return -1;
-////}
+
+/*
+================
+idCollisionModelManagerLocal::FindModel
+================
+*/
+idCollisionModelManagerLocal.prototype.FindModel = function ( name: string ): /*cmHandle_t*/  number{
+	var i: number;
+
+	// check if this model is already loaded
+	for ( i = 0; i < this.numModels; i++ ) {
+		if ( !this.models[i].name.Icmp( name ) ) {
+			break;
+		}
+	}
+	// if the model is already loaded
+	if ( i < this.numModels ) {
+		return i;
+	}
+	return -1;
+};
 
 /*
 ==================
@@ -3329,7 +3328,7 @@ idCollisionModelManagerLocal.prototype.BuildModels = function ( mapFile: idMapFi
 
 		//// free the proc bsp which is only used for data optimization
 		//Mem_Free( procNodes );
-		//procNodes = NULL;
+		//procNodes = null;
 
 		//// write the collision models to a file
 		//this.WriteCollisionModelsToFile( mapFile.GetName(), 0, this.numModels, mapFile.GetGeometryCRC() );
@@ -3508,50 +3507,50 @@ idCollisionModelManagerLocal.prototype.LoadMap = function ( mapFile: idMapFile )
 ////
 ////	return true;
 ////}
-////
-/////*
-////==================
-////idCollisionModelManagerLocal::LoadModel
-////==================
-////*/
-////cmHandle_t idCollisionModelManagerLocal::LoadModel( const char *modelName, const bool precache ) {
-////	int handle;
-////
-////	handle = FindModel( modelName );
-////	if ( handle >= 0 ) {
-////		return handle;
-////	}
-////
-////	if ( this.numModels >= MAX_SUBMODELS ) {
-////		common.Error( "idCollisionModelManagerLocal::LoadModel: no free slots\n" );
-////		return 0;
-////	}
-////
-////	// try to load a .cm file
-////	if ( LoadCollisionModelFile( modelName, 0 ) ) {
-////		handle = FindModel( modelName );
-////		if ( handle >= 0 ) {
-////			return handle;
-////		} else {
-////			common.Warning( "idCollisionModelManagerLocal::LoadModel: collision file for '%s' contains different model", modelName );
-////		}
-////	}
-////
-////	// if only precaching .cm files do not waste memory converting render this.models
-////	if ( precache ) {
-////		return 0;
-////	}
-////
-////	// try to load a .ASE or .LWO model and convert it to a collision model
-////	this.models[this.numModels] = LoadRenderModel( modelName );
-////	if ( this.models[this.numModels] != NULL ) {
-////		this.numModels++;
-////		return ( this.numModels - 1 );
-////	}
-////
-////	return 0;
-////}
-////
+
+/*
+==================
+idCollisionModelManagerLocal::LoadModel
+==================
+*/
+idCollisionModelManagerLocal.prototype.LoadModel = function ( modelName: string, precache: boolean ): /*cmHandle_t*/number {
+	var /*int */handle: number;
+
+	handle = this.FindModel( modelName );
+	if ( handle >= 0 ) {
+		return handle;
+	}
+
+	if ( this.numModels >= MAX_SUBMODELS ) {
+		common.Error( "idCollisionModelManagerLocal::LoadModel: no free slots\n" );
+		return 0;
+	}
+
+	// try to load a .cm file
+	if ( this.LoadCollisionModelFile( modelName, 0 ) ) {
+		handle = this.FindModel( modelName );
+		if ( handle >= 0 ) {
+			return handle;
+		} else {
+			common.Warning( "idCollisionModelManagerLocal::LoadModel: collision file for '%s' contains different model", modelName );
+		}
+	}
+
+	// if only precaching .cm files do not waste memory converting render this.models
+	if ( precache ) {
+		return 0;
+	}
+
+	// try to load a .ASE or .LWO model and convert it to a collision model
+	this.models[this.numModels] = this.LoadRenderModel( modelName );
+	if ( this.models[this.numModels] != null ) {
+		this.numModels++;
+		return ( this.numModels - 1 );
+	}
+
+	return 0;
+};
+
 /////*
 ////==================
 ////idCollisionModelManagerLocal::TrmFromModel_r

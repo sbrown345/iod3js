@@ -124,7 +124,7 @@ class idCollisionModelManager {
 ////	virtual void			FreeMap( void ) = 0;
 ////
 ////	// Gets the clip handle for a model.
-		LoadModel(modelName: string, precache: boolean): number/*cmHandle_t */{ throw "placeholder"; }
+	LoadModel ( modelName: string, precache: boolean ): number /*cmHandle_t */ { throw "placeholder"; }
 ////	// Sets up a trace model for collision with other trace models.
 ////	virtual cmHandle_t		SetupTrmModel( const idTraceModel &trm, const idMaterial *material ) = 0;
 ////	// Creates a trace model from a collision model, returns true if succesfull.

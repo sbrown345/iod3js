@@ -65,8 +65,8 @@ class idRenderModelManager {
 ////	// it will create a default model if not loadable
 	FindModel(modelName: string): idRenderModel { throw "placeholder"; }
 ////
-////	// returns NULL if not loadable
-////	virtual	idRenderModel *	CheckModel( const char *modelName ) = 0;
+	// returns NULL if not loadable
+	CheckModel ( modelName: string ): idRenderModel { throw "placeholder"; }
 ////
 ////	// returns the default cube model
 ////	virtual	idRenderModel *	DefaultModel() = 0;

@@ -569,7 +569,7 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 ////	void			ChopWindingListWithBrush( cm_windingList_t *list, b: cm_brush_t );
 ////	void			R_ChopWindingListWithTreeBrushes( cm_windingList_t *list, node: cm_node_t );
 ////	idFixedWinding *WindingOutsideBrushes( idFixedWinding *w, const idPlane &plane, int contents, int patch, cm_node_t *headNode );
-////					// creation of axial BSP tree
+	// creation of axial BSP tree
 	AllocModel ( ): cm_model_t { throw "placeholder"; }
 	AllocNode ( model: cm_model_t, /*int */blockSize: number ): cm_node_t { throw "placeholder"; }
 	AllocPolygonReference(model:cm_model_t, /*int */blockSize :number) :cm_polygonRef_t {throw "placeholder";}
@@ -581,44 +581,44 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 	SetupTrmModelStructure(): void { throw "placeholder"; }
 	R_FilterPolygonIntoTree( model: cm_model_t, node: cm_node_t, pref: cm_polygonRef_t, p: cm_polygon_t ):void { throw "placeholder"; }
 	R_FilterBrushIntoTree ( model: cm_model_t, node: cm_node_t, pref: cm_brushRef_t, b: cm_brush_t ): void { throw "placeholder"; }
-////	cm_node_t *		R_CreateAxialBSPTree( model: cm_model_t, node: cm_node_t, const bounds: idBounds );
-////	cm_node_t *		CreateAxialBSPTree( model: cm_model_t, node: cm_node_t );
-////					// creation of raw polygons
+////	cm_node_t *		R_CreateAxialBSPTree( model: cm_model_t, node: cm_node_t, const bounds: idBounds ):cm_node_t {throw "placeholder";}
+	CreateAxialBSPTree ( model: cm_model_t, node: cm_node_t ): cm_node_t { throw "placeholder"; }
+	// creation of raw polygons
 	SetupHash( ):void { throw "placeholder"; }
 	ShutdownHash( ):void { throw "placeholder"; }
-////	void			ClearHash( bounds: idBounds );
+	ClearHash ( bounds: idBounds ): void { throw "placeholder"; }
 ////	int				HashVec(vec:idVec3);
 ////	int				GetVertex( model: cm_model_t, const idVec3 &v, int *vertexNum );
 ////	int				GetEdge( model: cm_model_t, const idVec3 &v1, const idVec3 &v2, int *edgeNum, int v1num );
-////	void			CreatePolygon( model: cm_model_t, idFixedWinding *w, const idPlane &plane, const idMaterial *material, int primitiveNum );
-////	void			PolygonFromWinding( model: cm_model_t, idFixedWinding *w, const idPlane &plane, const idMaterial *material, int primitiveNum );
+////	void			CreatePolygon( model: cm_model_t, idFixedWinding *w, const idPlane &plane, const idMaterial *material, int primitiveNum ):void {throw "placeholder";}
+	PolygonFromWinding(model: cm_model_t, w: idFixedWinding, plane: idPlane, material: idMaterial , /*int */primitiveNum :number) :void { throw "placeholder"; }
 	CalculateEdgeNormals( model: cm_model_t, node: cm_node_t ):void { throw "placeholder"; }
-////	void			CreatePatchPolygons( model: cm_model_t, idSurface_Patch &mesh, const idMaterial *material, int primitiveNum );
-////	void			ConvertPatch( model: cm_model_t, const idMapPatch *patch, int primitiveNum );
-////	void			ConvertBrushSides( model: cm_model_t, const idMapBrush *mapBrush, int primitiveNum );
-////	void			ConvertBrush( model: cm_model_t, const idMapBrush *mapBrush, int primitiveNum );
+////	void			CreatePatchPolygons( model: cm_model_t, idSurface_Patch &mesh, const idMaterial *material, int primitiveNum ):void {throw "placeholder";}
+////	void			ConvertPatch( model: cm_model_t, const idMapPatch *patch, int primitiveNum ):void {throw "placeholder";}
+////	void			ConvertBrushSides( model: cm_model_t, const idMapBrush *mapBrush, int primitiveNum ):void {throw "placeholder";}
+////	void			ConvertBrush( model: cm_model_t, const idMapBrush *mapBrush, int primitiveNum ):void {throw "placeholder";}
 	PrintModelInfo( model: cm_model_t ):void { throw "placeholder"; }
 	AccumulateModelInfo ( model: cm_model_t ): void { throw "placeholder"; }
-////	void			RemapEdges( node: cm_node_t, int *edgeRemap );
-////	void			OptimizeArrays( model: cm_model_t );
-////	void			FinishModel( model: cm_model_t );
+////	void			RemapEdges( node: cm_node_t, int *edgeRemap ):void {throw "placeholder";}
+////	void			OptimizeArrays( model: cm_model_t ):void {throw "placeholder";}
+	FinishModel( model: cm_model_t ):void {throw "placeholder";}
 	BuildModels ( mapFile: idMapFile ): void { throw "placeholder"; }
-////	cmHandle_t		FindModel( name:string );
+	FindModel( name:string ):number {throw "placeholder";}
 ////	cm_model_t *	CollisionModelForMapEntity( const idMapEntity *mapEnt );	// brush/patch model from .map
-////	cm_model_t *	LoadRenderModel( const char *fileName );					// ASE/LWO models
+	LoadRenderModel ( fileName: string ): cm_model_t { throw "placeholder"; } // ASE/LWO models
 ////	bool			TrmFromModel_r( idTraceModel &trm, node: cm_node_t );
 ////	bool			TrmFromModel( const model: cm_model_t, idTraceModel &trm );
 ////
 ////private:			// CollisionMap_files.cpp
 ////					// writing
-////	void			WriteNodes( idFile *fp, node: cm_node_t );
+////	void			WriteNodes( idFile *fp, node: cm_node_t ):void {throw "placeholder";}
 ////	int				CountPolygonMemory( node: cm_node_t ) const;
-////	void			WritePolygons( idFile *fp, node: cm_node_t );
+////	void			WritePolygons( idFile *fp, node: cm_node_t ):void {throw "placeholder";}
 ////	int				CountBrushMemory( node: cm_node_t ) const;
-////	void			WriteBrushes( idFile *fp, node: cm_node_t );
-////	void			WriteCollisionModel( idFile *fp, model: cm_model_t );
-////	void			WriteCollisionModelsToFile( const char *filename, int firstModel, int lastModel, unsigned int mapFileCRC );
-////					// loading
+////	void			WriteBrushes( idFile *fp, node: cm_node_t ):void {throw "placeholder";}
+////	void			WriteCollisionModel( idFile *fp, model: cm_model_t ):void {throw "placeholder";}
+////	void			WriteCollisionModelsToFile( const char *filename, int firstModel, int lastModel, unsigned int mapFileCRC ):void {throw "placeholder";}
+	// loading
 	ParseNodes(src: idLexer, model: cm_model_t, parent: cm_node_t ):cm_node_t { throw "placeholder"; }
 	ParseVertices ( src: idLexer, model: cm_model_t ): void { throw "placeholder"; }
 	ParseEdges ( src: idLexer, model: cm_model_t ): void { throw "placeholder"; }
@@ -626,7 +626,7 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 	ParseBrushes ( src: idLexer, model: cm_model_t ): void { throw "placeholder"; }
 	ParseCollisionModel ( src: idLexer ): boolean { throw "placeholder"; }
 	LoadCollisionModelFile ( name: string, /*unsigned int */mapFileCRC: number ): boolean { throw "placeholder"; }
-////
+
 ////private:			// CollisionMap_debug
 	ContentsFromString ( $string: string ): number /*int*/ { throw "placeholder"; }
 ////	const char *	StringFromContents( const int contents ) const;

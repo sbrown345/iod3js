@@ -218,25 +218,16 @@ class idWinding {
 //	return this.p[ index ];
 //}
 //
-//ID_INLINE idWinding &idWinding::operator+=( const idVec3 &v ) {
-//	AddPoint( v );
-//	return *this;
-//}
-//
-//ID_INLINE idWinding &idWinding::operator+=( const idVec5 &v ) {
-//	AddPoint( v );
-//	return *this;
-//}
-//
-//ID_INLINE void idWinding::AddPoint( const idVec3 &v ) {
-//	if ( !EnsureAlloced(this.numPoints+1, true) ) {
-//		return;
-//	}
-//	this.p[this.numPoints] = v;
-//	this.numPoints++;
-//}
-//
-	AddPoint ( /*const */v: idVec5 ): void {
+	opAdditionAssignment ( v: idVec3 ): idWinding
+	opAdditionAssignment ( v: idVec5 ): idWinding
+	opAdditionAssignment ( v: any ): idWinding {
+		this.AddPoint( v );
+		return this;
+	}
+
+	AddPoint( /*const */v: idVec3): void
+	AddPoint( /*const */v: idVec5): void
+	AddPoint ( /*const */v: any ): void {
 		if ( !this.EnsureAlloced( this.numPoints + 1, true ) ) {
 			return;
 		}
