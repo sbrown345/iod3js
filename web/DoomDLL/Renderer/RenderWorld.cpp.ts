@@ -2881,8 +2881,7 @@ ClearPortalStates  (): void {
 	for (i = 0; i < this.numPortalAreas; i++) {
 		for (j = 0; j < NUM_PORTAL_ATTRIBUTES; j++) {
 			this.connectedAreaNum++;
-			todoThrow ( );
-			//this.FloodConnectedAreas(this.portalAreas[i], j);
+			this.FloodConnectedAreas( this.portalAreas[i], j );
 		}
 	}
 }
@@ -3854,15 +3853,15 @@ AddWorldModelEntities  (): void {
 FloodConnectedAreas
 =============
 */
-FloodConnectedAreas  (area: portalArea_t, /*int */portalAttributeIndex: number): void {
-		if (area.connectedAreaNum[portalAttributeIndex] == this.connectedAreaNum) {
+	FloodConnectedAreas ( area: portalArea_t, /*int */portalAttributeIndex: number ): void {
+		if ( area.connectedAreaNum[portalAttributeIndex] == this.connectedAreaNum ) {
 			return;
 		}
 		area.connectedAreaNum[portalAttributeIndex] = this.connectedAreaNum;
 
-		for (var p = area.portals; p; p = p.next) {
-			if (!(p.doublePortal.blockingBits & (1 << portalAttributeIndex))) {
-				this.FloodConnectedAreas(this.portalAreas[p.intoArea], portalAttributeIndex);
+		for ( var p = area.portals; p; p = p.next ) {
+			if ( !( p.doublePortal.blockingBits & ( 1 << portalAttributeIndex ) ) ) {
+				this.FloodConnectedAreas( this.portalAreas[p.intoArea], portalAttributeIndex );
 			}
 		}
 	}

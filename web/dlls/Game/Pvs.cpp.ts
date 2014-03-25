@@ -204,8 +204,7 @@ idPVS::~idPVS
 ================
 */
 	destructor ( ): void {
-		todoThrow ( );
-		//this.Shutdown ( );
+		this.Shutdown ( );
 	}
 
 /*
@@ -239,48 +238,48 @@ idPVS::CreatePVSData
 			return;
 		}
 
-		this.pvsPortals = new pvsPortal_t[this.numPortals];
-		this.pvsAreas = new pvsArea_t[this.numAreas];
+		this.pvsPortals = newStructArray<pvsPortal_t>( pvsPortal_t, this.numPortals );
+		this.pvsAreas = newStructArray<pvsArea_t>( pvsArea_t, this.numAreas );
 		clearStructArray( this.pvsAreas ); //memset( this.pvsAreas, 0, this.numAreas * sizeof( *this.pvsAreas ) );
+		debugger;
+		cp = 0;
+		portalPtrs = newStructArray<pvsPortal_t>( pvsPortal_t, this.numPortals ); //new pvsPortal_t*[this.numPortals];
 
-		//cp = 0;
-		//portalPtrs = newStructArray<pvsPortal_t>( pvsPortal_t, this.numPortals ); //new pvsPortal_t*[this.numPortals];
+		debugger; // todo: is this slice right:?
+		for ( i = 0; i < this.numAreas; i++ ) {
 
-		//for ( i = 0; i < this.numAreas; i++ ) {
+			area = this.pvsAreas[i];
+			area.bounds.Clear();
+			area.portals = portalPtrs.slice( cp ); //portalPtrs + cp;
 
-		//	area = this.pvsAreas[i];
-		//	area.bounds.Clear();
-		//	todoThrow ( );
-		//	area.portals = portalPtrs[cp];
+			n = gameRenderWorld.NumPortalsInArea( i );
 
-		//	n = gameRenderWorld.NumPortalsInArea( i );
+			for ( j = 0; j < n; j++ ) {
 
-		//	for ( j = 0; j < n; j++ ) {
+				portal = gameRenderWorld.GetPortal( i, j );
 
-		//		portal = gameRenderWorld.GetPortal( i, j );
+				p = this.pvsPortals[cp++];
+				// the winding goes counter clockwise seen from this area
+				p.w = portal.w.Copy();
+				p.areaNum = portal.areas[1];	// area[1] is always the area the portal leads to
 
-		//		p = this.pvsPortals[cp++];
-		//		// the winding goes counter clockwise seen from this area
-		//		p.w = portal.w.Copy();
-		//		p.areaNum = portal.areas[1];	// area[1] is always the area the portal leads to
+				p.vis = new Uint8Array(this.portalVisBytes);
+				memset( p.vis, 0, this.portalVisBytes );
+				p.mightSee = new Uint8Array(this.portalVisBytes);
+				memset( p.mightSee, 0, this.portalVisBytes );
+				p.w.GetBounds( p.bounds );
+				p.w.GetPlane( p.plane );
+				// plane normal points to outside the area
+				p.plane.opEquals( p.plane.opUnaryMinus ( ) );
+				// no PVS calculated for this portal yet
+				p.done = false;
 
-		//		p.vis = new byte[this.portalVisBytes];
-		//		memset( p.vis, 0, this.portalVisBytes );
-		//		p.mightSee = new byte[this.portalVisBytes];
-		//		memset( p.mightSee, 0, this.portalVisBytes );
-		//		p.w.GetBounds( p.bounds );
-		//		p.w.GetPlane( p.plane );
-		//		// plane normal points to outside the area
-		//		p.plane.opEquals( p.plane.opUnaryMinus ( ) );
-		//		// no PVS calculated for this portal yet
-		//		p.done = false;
+				area.portals[area.numPortals] = p;
+				area.numPortals++;
 
-		//		area.portals[area.numPortals] = p;
-		//		area.numPortals++;
-
-		//		area.bounds.opAdditionAssignment( p.bounds );
-		//	}
-		//}
+				area.bounds.opAdditionAssignment( p.bounds );
+			}
+		}
 	}
 
 /*
@@ -328,20 +327,20 @@ idPVS::FloodFrontPortalPVS_r
 
 		for ( i = 0; i < area.numPortals; i++ ) {
 			p = area.portals[i];
-			todoThrow ( );
-			//n = p - this.pvsPortals; //todo is this i??
-			//// don't flood through if this portal is not at the front
-			//if ( !( portal.mightSee[n >> 3] & ( 1 << ( n & 7 ) ) ) ) {
-			//	continue;
-			//}
-			//// don't flood through if already visited this portal
-			//if ( portal.vis[n >> 3] & ( 1 << ( n & 7 ) ) ) {
-			//	continue;
-			//}
-			//// this portal might be visible
-			//portal.vis[n >> 3] |= ( 1 << ( n & 7 ) );
-			//// flood through the portal
-			//this.FloodFrontPortalPVS_r( portal, p.areaNum );
+			debugger;
+			n = this.pvsPortals.indexOf( p );
+			// don't flood through if this portal is not at the front
+			if ( !( portal.mightSee[n >> 3] & ( 1 << ( n & 7 ) ) ) ) {
+				continue;
+			}
+			// don't flood through if already visited this portal
+			if ( portal.vis[n >> 3] & ( 1 << ( n & 7 ) ) ) {
+				continue;
+			}
+			// this portal might be visible
+			portal.vis[n >> 3] |= ( 1 << ( n & 7 ) );
+			// flood through the portal
+			this.FloodFrontPortalPVS_r( portal, p.areaNum );
 		}
 	}
 
@@ -417,7 +416,8 @@ idPVS::FrontPortalPVS
 					}
 
 					// the portal might be visible at the front
-					todoThrow("n = p2 - this.pvsPortals;")
+					debugger;
+					n = this.pvsPortals.indexOf( p2 );
 					p1.mightSee[n >> 3] |= 1 << ( n & 7 );
 				}
 			}
@@ -448,7 +448,7 @@ idPVS::FrontPortalPVS
 ////	stack = prevStack.next;
 ////	// if no next stack entry allocated
 ////	if ( !stack ) {
-////		stack = reinterpret_cast<pvsStack_t*>(new byte[sizeof(pvsStack_t) + this.portalVisBytes]);
+////		stack = reinterpret_cast<pvsStack_t*>(new Uint8Array(sizeof(pvsStack_t) + this.portalVisBytes));
 ////		stack.mightSee = (reinterpret_cast<byte *>(stack)) + sizeof(pvsStack_t);
 ////		stack.next = null;
 ////		prevStack.next = stack;
@@ -527,12 +527,13 @@ PassagePVS( ) :void {
 	var/*int */i:number;
 	var source: pvsPortal_t ;
 	var stack: pvsStack_t, s: pvsStack_t ;
+	
+	// create the passages
+	this.CreatePassages();
+	debugger;
 	todoThrow ( );
-	//// create the passages
-	//this.CreatePassages();
-
 	//// allocate first stack entry
-	//stack = reinterpret_cast<pvsStack_t*>(new byte[sizeof(pvsStack_t) + this.portalVisBytes]);
+	//stack = reinterpret_cast<pvsStack_t*>(new Uint8Array(sizeof(pvsStack_t) + this.portalVisBytes));
 	//stack.mightSee = (reinterpret_cast<byte *>(stack)) + sizeof(pvsStack_t);
 	//stack.next = null;
 
@@ -556,249 +557,245 @@ PassagePVS( ) :void {
 	//DestroyPassages();
 }
 
-/////*
-////===============
-////idPVS::AddPassageBoundaries
-////===============
-////*/
-////void idPVS::AddPassageBoundaries( const idWinding &source, const idWinding &pass, bool flipClip, idPlane *bounds, int &numBounds, int maxBounds ) const {
-////	int			i, j, k, l;
-////	idVec3		v1, v2, normal;
-////	float		d, dist;
-////	bool		flipTest, front;
-////	idPlane		plane;
-////
-////
-////	// check all combinations	
-////	for ( i = 0; i < source.GetNumPoints(); i++ ) {
-////
-////		l = (i + 1) % source.GetNumPoints();
-////		v1 = source[l].ToVec3() - source[i].ToVec3();
-////
-////		// find a vertex of pass that makes a plane that puts all of the
-////		// vertices of pass on the front side and all of the vertices of
-////		// source on the back side
-////		for ( j = 0; j < pass.GetNumPoints(); j++ ) {
-////
-////			v2 = pass[j].ToVec3() - source[i].ToVec3();
-////
-////			normal = v1.Cross( v2 );
-////			if ( normal.Normalize() < 0.01f ) {
-////				continue;
-////			}
-////			dist = normal * pass[j].ToVec3();
-////
-////			//
-////			// find out which side of the generated seperating plane has the
-////			// source portal
-////			//
-////			flipTest = false;
-////			for ( k = 0; k < source.GetNumPoints(); k++ ) {
-////				if ( k == i || k == l ) {
-////					continue;
-////				}
-////				d = source[k].ToVec3() * normal - dist;
-////				if ( d < -ON_EPSILON ) {
-////					// source is on the negative side, so we want all
-////					// pass and target on the positive side
-////					flipTest = false;
-////					break;
-////				}
-////				else if ( d > ON_EPSILON ) {
-////					// source is on the positive side, so we want all
-////					// pass and target on the negative side
-////					flipTest = true;
-////					break;
-////				}
-////			}
-////			if ( k == source.GetNumPoints() ) {
-////				continue;		// planar with source portal
-////			}
-////
-////			// flip the normal if the source portal is backwards
-////			if (flipTest) {
-////				normal = -normal;
-////				dist = -dist;
-////			}
-////
-////			// if all of the pass portal points are now on the positive side,
-////			// this is the seperating plane
-////			front = false;
-////			for ( k = 0; k < pass.GetNumPoints(); k++ ) {
-////				if ( k == j ) {
-////					continue;
-////				}
-////				d = pass[k].ToVec3() * normal - dist;
-////				if ( d < -ON_EPSILON ) {
-////					break;
-////				}
-////				else if ( d > ON_EPSILON ) {
-////					front = true;
-////				}
-////			}
-////			if ( k < pass.GetNumPoints() ) {
-////				continue;	// points on negative side, not a seperating plane
-////			}
-////			if ( !front ) {
-////				continue;	// planar with seperating plane
-////			}
-////
-////			// flip the normal if we want the back side
-////			if ( flipClip ) {
-////				plane.SetNormal( -normal );
-////				plane.SetDist( -dist );
-////			}
-////			else {
-////				plane.SetNormal( normal );
-////				plane.SetDist( dist );
-////			}
-////
-////			// check if the plane is already a passage boundary
-////			for ( k = 0; k < numBounds; k++ ) {
-////				if ( plane.Compare( bounds[k], 0.001f, 0.01f ) ) {
-////					break;
-////				}
-////			}
-////			if ( k < numBounds ) {
-////				break;
-////			}
-////
-////			if ( numBounds >= maxBounds ) {
-////				gameLocal.Warning( "max passage boundaries." );
-////				break;
-////			}
-////			bounds[numBounds] = plane;
-////			numBounds++;
-////			break;
-////		}
-////	}
-////}
-////
-/////*
-////================
-////idPVS::CreatePassages
-////================
-////*/
-////#define MAX_PASSAGE_BOUNDS		128
-////
-////void idPVS::CreatePassages( ) const {
-////	int i, j, l, n, numBounds, front, passageMemory, byteNum, bitNum;
-////	int sides[MAX_PASSAGE_BOUNDS];
-////	idPlane passageBounds[MAX_PASSAGE_BOUNDS];
-////	pvsPortal_t *source, *target, *p;
-////	pvsArea_t *area;
-////	pvsPassage_t *passage;
-////	idFixedWinding winding;
-////	byte canSee, mightSee, bit;
-////
-////	passageMemory = 0;
-////	for ( i = 0; i < this.numPortals; i++ ) {
-////		source = &this.pvsPortals[i];
-////		area = &this.pvsAreas[source.areaNum];
-////
-////		source.passages = new pvsPassage_t[area.numPortals];
-////
-////		for ( j = 0; j < area.numPortals; j++ ) {
-////			target = area.portals[j];
-////			n = target - this.pvsPortals;
-////
-////			passage = &source.passages[j];
-////
-////			// if the source portal cannot see this portal
-////			if ( !( source.mightSee[ n>>3 ] & (1 << (n&7)) ) ) {
-////				// not all portals in the area have to be visible because areas are not necesarily convex
-////				// also no passage has to be created for the portal which is the opposite of the source
-////				passage.canSee = null;
-////				continue;
-////			}
-////
-////			passage.canSee = new byte[this.portalVisBytes];
-////			passageMemory += this.portalVisBytes;
-////
-////			// boundary plane normals point inwards
-////			numBounds = 0;
-////			AddPassageBoundaries( *(source.w), *(target.w), false, passageBounds, numBounds, MAX_PASSAGE_BOUNDS );
-////			AddPassageBoundaries( *(target.w), *(source.w), true, passageBounds, numBounds, MAX_PASSAGE_BOUNDS );
-////
-////			// get all portals visible through this passage
-////			for ( byteNum = 0; byteNum < this.portalVisBytes; byteNum++) {
-////
-////				canSee = 0;
-////				mightSee = source.mightSee[byteNum] & target.mightSee[byteNum];
-////
-////				// go through eight portals at a time to speed things up
-////				for ( bitNum = 0; bitNum < 8; bitNum++ ) {
-////
-////					bit = 1 << bitNum;
-////
-////					if ( !( mightSee & bit ) ) {
-////						continue;
-////					}
-////
-////					p = &this.pvsPortals[(byteNum << 3) + bitNum];
-////	
-////					if ( p.areaNum == source.areaNum ) {
-////						continue;
-////					}
-////
-////					for ( front = 0, l = 0; l < numBounds; l++ ) {
-////						sides[l] = p.bounds.PlaneSide( passageBounds[l] );
-////						// if completely at the back of the passage bounding plane
-////						if ( sides[l] == PLANESIDE_BACK ) {
-////							break;
-////						}
-////						// if completely at the front
-////						if ( sides[l] == PLANESIDE_FRONT ) {
-////							front++;
-////						}
-////					}
-////					// if completely outside the passage
-////					if ( l < numBounds ) {
-////						continue;
-////					}
-////
-////					// if not at the front of all bounding planes and thus not completely inside the passage
-////					if ( front != numBounds ) {
-////
-////						winding = *p.w;
-////
-////						for ( l = 0; l < numBounds; l++ ) {
-////							// only clip if the winding possibly crosses this plane
-////							if ( sides[l] != PLANESIDE_CROSS ) {
-////								continue;
-////							}
-////							// clip away the part at the back of the bounding plane
-////							winding.ClipInPlace( passageBounds[l] );
-////							// if completely clipped away
-////							if ( !winding.GetNumPoints() ) {
-////								break;
-////							}
-////						}
-////						// if completely outside the passage
-////						if ( l < numBounds ) {
-////							continue;
-////						}
-////					}
-////
-////					canSee |= bit;
-////				}
-////
-////				// store results of all eight portals
-////				passage.canSee[byteNum] = canSee;
-////			}
-////
-////			// can always see the target portal
-////			passage.canSee[n >> 3] |= (1 << (n&7));
-////		}
-////	}
-////	if ( passageMemory < 1024 ) {
-////		gameLocal.Printf( "%5d bytes passage memory used to build PVS\n", passageMemory );
-////	}
-////	else {
-////		gameLocal.Printf( "%5d KB passage memory used to build PVS\n", passageMemory>>10 );
-////	}
-////}
-////
+/*
+===============
+idPVS::AddPassageBoundaries
+===============
+*/
+	AddPassageBoundaries ( source: idWinding, pass: idWinding, flipClip: boolean, bounds: idPlane[], /*int */numBounds: R<number>, /*int */maxBounds: number ): void {
+		var /*int			*/i: number, j: number, k: number, l: number;
+		var v1 = new idVec3, v2 = new idVec3, normal = new idVec3;
+		var /*float*/ d: number, dist: number;
+		var flipTest: boolean, front: boolean;
+		var plane = new idPlane;
+
+
+		// check all combinations	
+		for ( i = 0; i < source.GetNumPoints ( ); i++ ) {
+
+			l = ( i + 1 ) % source.GetNumPoints ( );
+			v1.equals( source[l].ToVec3 ( ).opSubtraction( source[i].ToVec3 ( ) ) );
+
+			// find a vertex of pass that makes a plane that puts all of the
+			// vertices of pass on the front side and all of the vertices of
+			// source on the back side
+			for ( j = 0; j < pass.GetNumPoints ( ); j++ ) {
+
+				v2.equals( pass[j].ToVec3 ( ).opSubtraction( source[i].ToVec3 ( ) ) );
+
+				normal = v1.Cross( v2 );
+				if ( normal.Normalize ( ) < 0.01 ) {
+					continue;
+				}
+				dist = normal.timesVec( pass[j].ToVec3 ( ) );
+
+				//
+				// find out which side of the generated seperating plane has the
+				// source portal
+				//
+				flipTest = false;
+				for ( k = 0; k < source.GetNumPoints ( ); k++ ) {
+					if ( k == i || k == l ) {
+						continue;
+					}
+					d = source[k].ToVec3 ( ).timesVec( normal ) - dist;
+					if ( d < -ON_EPSILON ) {
+						// source is on the negative side, so we want all
+						// pass and target on the positive side
+						flipTest = false;
+						break;
+					} else if ( d > ON_EPSILON ) {
+						// source is on the positive side, so we want all
+						// pass and target on the negative side
+						flipTest = true;
+						break;
+					}
+				}
+				if ( k == source.GetNumPoints ( ) ) {
+					continue; // planar with source portal
+				}
+
+				// flip the normal if the source portal is backwards
+				if ( flipTest ) {
+					normal.equals( normal.opUnaryMinus ( ) );
+					dist = -dist;
+				}
+
+				// if all of the pass portal points are now on the positive side,
+				// this is the seperating plane
+				front = false;
+				for ( k = 0; k < pass.GetNumPoints ( ); k++ ) {
+					if ( k == j ) {
+						continue;
+					}
+					d = pass[k].ToVec3 ( ).timesVec( normal ) - dist;
+					if ( d < -ON_EPSILON ) {
+						break;
+					} else if ( d > ON_EPSILON ) {
+						front = true;
+					}
+				}
+				if ( k < pass.GetNumPoints ( ) ) {
+					continue; // points on negative side, not a seperating plane
+				}
+				if ( !front ) {
+					continue; // planar with seperating plane
+				}
+
+				// flip the normal if we want the back side
+				if ( flipClip ) {
+					plane.SetNormal( normal.opUnaryMinus ( ) );
+					plane.SetDist( -dist );
+				} else {
+					plane.SetNormal( normal );
+					plane.SetDist( dist );
+				}
+
+				// check if the plane is already a passage boundary
+				for ( k = 0; k < numBounds.$; k++ ) {
+					if (plane.Compare_epsilon( bounds[k], 0.001, 0.01 ) ) {
+						break;
+					}
+				}
+				if ( k < numBounds.$ ) {
+					break;
+				}
+
+				if ( numBounds.$ >= maxBounds ) {
+					gameLocal.Warning( "max passage boundaries." );
+					break;
+				}
+				bounds[numBounds.$].opEquals( plane );
+				numBounds.$++;
+				break;
+			}
+		}
+	}
+
+/*
+================
+idPVS::CreatePassages
+================
+*/
+static MAX_PASSAGE_BOUNDS		=128;
+
+	CreatePassages ( ): void {
+		var /*int */i: number, j: number, l: number, n: number, numBounds = new R<number> ( ), front: number, passageMemory: number, byteNum: number, bitNum: number;
+		var sides = new Int32Array( idPVS.MAX_PASSAGE_BOUNDS );
+		var passageBounds = newStructArray<idPlane>( idPlane, idPVS.MAX_PASSAGE_BOUNDS );
+		var source: pvsPortal_t, target: pvsPortal_t, p: pvsPortal_t;
+		var area: pvsArea_t;
+		var passage: pvsPassage_t;
+		var winding = new idFixedWinding;
+		var /*byte */canSee: number, mightSee: number, bit: number;
+
+		passageMemory = 0;
+		for ( i = 0; i < this.numPortals; i++ ) {
+			source = this.pvsPortals[i];
+			area = this.pvsAreas[source.areaNum];
+
+			source.passages = new pvsPassage_t[area.numPortals];
+
+			for ( j = 0; j < area.numPortals; j++ ) {
+				target = area.portals[j];
+				n = this.pvsPortals.indexOf( target ); //n = target - this.pvsPortals;
+
+				passage = source.passages[j];
+
+				// if the source portal cannot see this portal
+				if ( !( source.mightSee[n >> 3] & ( 1 << ( n & 7 ) ) ) ) {
+					// not all portals in the area have to be visible because areas are not necesarily convex
+					// also no passage has to be created for the portal which is the opposite of the source
+					passage.canSee = null;
+					continue;
+				}
+
+				passage.canSee = new Uint8Array( this.portalVisBytes );
+				passageMemory += this.portalVisBytes;
+
+				// boundary plane normals point inwards
+				numBounds.$ = 0;
+				this.AddPassageBoundaries( ( source.w ), ( target.w ), false, passageBounds, numBounds, idPVS.MAX_PASSAGE_BOUNDS );
+				this.AddPassageBoundaries( ( target.w ), ( source.w ), true, passageBounds, numBounds, idPVS.MAX_PASSAGE_BOUNDS );
+
+				// get all portals visible through this passage
+				for ( byteNum = 0; byteNum < this.portalVisBytes; byteNum++ ) {
+
+					canSee = 0;
+					mightSee = source.mightSee[byteNum] & target.mightSee[byteNum];
+
+					// go through eight portals at a time to speed things up
+					for ( bitNum = 0; bitNum < 8; bitNum++ ) {
+
+						bit = 1 << bitNum;
+
+						if ( !( mightSee & bit ) ) {
+							continue;
+						}
+
+						p = this.pvsPortals[( byteNum << 3 ) + bitNum];
+
+						if ( p.areaNum == source.areaNum ) {
+							continue;
+						}
+
+						for ( front = 0, l = 0; l < numBounds.$; l++ ) {
+							sides[l] = p.bounds.PlaneSide( passageBounds[l] );
+							// if completely at the back of the passage bounding plane
+							if ( sides[l] == PLANESIDE_BACK ) {
+								break;
+							}
+							// if completely at the front
+							if ( sides[l] == PLANESIDE_FRONT ) {
+								front++;
+							}
+						}
+						// if completely outside the passage
+						if ( l < numBounds.$ ) {
+							continue;
+						}
+
+						// if not at the front of all bounding planes and thus not completely inside the passage
+						if ( front != numBounds.$ ) {
+
+							winding = p.w;
+
+							for ( l = 0; l < numBounds.$; l++ ) {
+								// only clip if the winding possibly crosses this plane
+								if ( sides[l] != PLANESIDE_CROSS ) {
+									continue;
+								}
+								// clip away the part at the back of the bounding plane
+								winding.ClipInPlace( passageBounds[l] );
+								// if completely clipped away
+								if ( !winding.GetNumPoints ( ) ) {
+									break;
+								}
+							}
+							// if completely outside the passage
+							if ( l < numBounds.$ ) {
+								continue;
+							}
+						}
+
+						canSee |= bit;
+					}
+
+					// store results of all eight portals
+					passage.canSee[byteNum] = canSee;
+				}
+
+				// can always see the target portal
+				passage.canSee[n >> 3] |= ( 1 << ( n & 7 ) );
+			}
+		}
+		if ( passageMemory < 1024 ) {
+			gameLocal.Printf( "%5d bytes passage memory used to build PVS\n", passageMemory );
+		} else {
+			gameLocal.Printf( "%5d KB passage memory used to build PVS\n", passageMemory >> 10 );
+		}
+	}
+
 /////*
 ////================
 ////idPVS::DestroyPassages
@@ -923,7 +920,7 @@ idPVS::Init
 		this.areaVisBytes = ( ( ( this.numAreas + 31 ) & ~31 ) >> 3 );
 		this.areaVisLongs = this.areaVisBytes / sizeof( long );
 
-		this.areaPVS = new byte[this.numAreas * this.areaVisBytes];
+		this.areaPVS = new Uint8Array( this.numAreas * this.areaVisBytes );
 		memset( this.areaPVS, 0xFF, this.numAreas * this.areaVisBytes );
 
 		this.numPortals = this.GetPortalCount ( );
@@ -934,7 +931,7 @@ idPVS::Init
 		for ( var i = 0; i < MAX_CURRENT_PVS; i++ ) {
 			this.currentPVS[i].handle.i = -1;
 			this.currentPVS[i].handle.h = 0;
-			this.currentPVS[i].pvs = new byte[this.areaVisBytes];
+			this.currentPVS[i].pvs = new Uint8Array( this.areaVisBytes );
 			memset( this.currentPVS[i].pvs, 0, this.areaVisBytes );
 		}
 

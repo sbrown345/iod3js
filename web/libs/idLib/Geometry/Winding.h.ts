@@ -368,22 +368,22 @@ idWinding::ReAllocate
 //
 //		GetPlane(windingPlane);
 //		if (windingPlane.Normal() * plane.Normal() > 0.0) {
-//			*front = Copy();
+//			*front = this.Copy();
 //			return SIDE_FRONT;
 //		}
 //		else {
-//			*back = Copy();
+//			*back = this.Copy();
 //			return SIDE_BACK;
 //		}
 //	}
 //	// if nothing at the front of the clipping plane
 //	if (!counts[SIDE_FRONT]) {
-//		*back = Copy();
+//		*back = this.Copy();
 //		return SIDE_BACK;
 //	}
 //	// if nothing at the back of the clipping plane
 //	if (!counts[SIDE_BACK]) {
-//		*front = Copy();
+//		*front = this.Copy();
 //		return SIDE_FRONT;
 //	}
 //
@@ -708,21 +708,21 @@ idWinding::ClipInPlace
 //
 		return true;
 	}
-//
-///*
-//=============
-//idWinding::Copy
-//=============
-//*/
-//idWinding *idWinding::Copy() const {
-//	idWinding *w;
-//
-//	w = new idWinding(numPoints);
-//	w.numPoints = this.numPoints;
-//	memcpy(w.p, this.p, this.numPoints * sizeof(this.p[0]));
-//	return w;
-//}
-//
+
+/*
+=============
+idWinding::Copy
+=============
+*/
+	Copy ( ): idWinding {
+		var w: idWinding;
+
+		w = new idWinding( this.numPoints );
+		w.numPoints = this.numPoints;
+		memcpyStructs( w.p, this.p, this.numPoints ); //memcpy(w.p, this.p, this.numPoints * sizeof(this.p[0]));
+		return w;
+	}
+
 /*
 =============
 idWinding::Reverse

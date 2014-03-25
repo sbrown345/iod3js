@@ -244,37 +244,37 @@ class idPlane {
 	//ID_INLINE bool idPlane::Compare( const idPlane &p ) const {
 	//	return ( a == p.a && b == p.b && c == p.c && d == p.d );
 	//}
-	//
-	//ID_INLINE bool idPlane::Compare( const idPlane &p, const float epsilon ) const {
-	//	if ( idMath::Fabs( a - p.a ) > epsilon ) {
-	//		return false;
-	//	}
-	//			
-	//	if ( idMath::Fabs( b - p.b ) > epsilon ) {
-	//		return false;
-	//	}
-	//
-	//	if ( idMath::Fabs( c - p.c ) > epsilon ) {
-	//		return false;
-	//	}
-	//
-	//	if ( idMath::Fabs( d - p.d ) > epsilon ) {
-	//		return false;
-	//	}
-	//
-	//	return true;
-	//}
-	//
-	//ID_INLINE bool idPlane::Compare( const idPlane &p, const float normalEps, const float distEps ) const {
-	//	if ( idMath::Fabs( d - p.d ) > distEps ) {
-	//		return false;
-	//	}
-	//	if ( !this.Normal().Compare( p.Normal(), normalEps ) ) {
-	//		return false;
-	//	}
-	//	return true;
-	//}
-	//
+
+	Compare_epsilon ( p: idPlane, /*float */epsilon: number ): boolean {
+		if ( idMath.Fabs( this.a - p.a ) > epsilon ) {
+			return false;
+		}
+
+		if ( idMath.Fabs( this.b - p.b ) > epsilon ) {
+			return false;
+		}
+
+		if ( idMath.Fabs( this.c - p.c ) > epsilon ) {
+			return false;
+		}
+
+		if ( idMath.Fabs( this.d - p.d ) > epsilon ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	Compare ( p: idPlane, /* float */normalEps: number, /*float */distEps: number ): boolean {
+		if ( idMath.Fabs( this.d - p.d ) > distEps ) {
+			return false;
+		}
+		if ( !this.Normal ( ).Compare( p.Normal ( ), normalEps ) ) {
+			return false;
+		}
+		return true;
+	}
+	
 	//ID_INLINE bool idPlane::operator==( const idPlane &p ) const {
 	//	return Compare( p );
 	//}
@@ -322,7 +322,7 @@ class idPlane {
 	//	bool fixedNormal = FixDegenerateNormal();
 	//	// only fix dist if the normal was degenerate
 	//	if ( fixedNormal ) {
-	//		if ( idMath::Fabs( d - idMath::Rint( d ) ) < distEpsilon ) {
+	//		if ( idMath.Fabs( d - idMath::Rint( d ) ) < distEpsilon ) {
 	//			d = idMath::Rint( d );
 	//		}
 	//	}
@@ -589,7 +589,7 @@ class idPlane {
 	//	n11 = plane.this.Normal().LengthSqr();
 	//	det = n00 * n11 - n01 * n01;
 	//
-	//	if (idMath::Fabs(det) < 1e-6f) {
+	//	if (idMath.Fabs(det) < 1e-6f) {
 	//		return false;
 	//	}
 	//
