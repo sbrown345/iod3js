@@ -53,7 +53,7 @@
 
 ////#endif
 
-var gameRenderWorld: idRenderWorld  = null;		// all drawing is done to this world
+var gameRenderWorld: idRenderWorldLocal  = null;		// all drawing is done to this world
 var gameSoundWorld: idSoundWorld = null;		// all audio goes to this world
 
 var gameExport = new gameExport_t;
@@ -1174,7 +1174,7 @@ idGameLocal.prototype.InitFromNewMap = function ( mapName: string, renderWorld: 
 
 	this.gamestate = gameState_t.GAMESTATE_STARTUP;
 
-	gameRenderWorld = renderWorld;
+	gameRenderWorld = <idRenderWorldLocal>renderWorld;
 	gameSoundWorld = soundWorld;
 	debugger;//todo: test LoadMap outcome
 	this.LoadMap( mapName, randseed );

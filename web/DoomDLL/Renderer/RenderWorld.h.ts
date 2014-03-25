@@ -330,18 +330,18 @@ class idRenderWorld {
 //	virtual					~idRenderWorld() {};
 //
 	// The same render world can be reinitialized as often as desired
-	// a NULL or empty mapName will create an empty, single area world
-	InitFromMap ( mapName: string ): boolean { throw "placeholder"; }
-//
-//	//-------------- Entity and Light Defs -----------------
-//
-//	// entityDefs and lightDefs are added to a given world to determine
-//	// what will be drawn for a rendered scene.  Most update work is defered
-//	// until it is determined that it is actually needed for a given view.
-//	virtual	qhandle_t		AddEntityDef( const renderEntity_t *re ) = 0;
-//	virtual	void			UpdateEntityDef( qhandle_t entityHandle, const renderEntity_t *re ) = 0;
-	FreeEntityDef ( entityHandle: number/*qhandle_t */): void { throw "placeholder"; }
-//	virtual const renderEntity_t *GetRenderEntity( qhandle_t entityHandle ) const = 0;
+//	// a NULL or empty mapName will create an empty, single area world
+//	InitFromMap ( mapName: string ): boolean { throw "placeholder"; }
+////
+////	//-------------- Entity and Light Defs -----------------
+////
+////	// entityDefs and lightDefs are added to a given world to determine
+////	// what will be drawn for a rendered scene.  Most update work is defered
+////	// until it is determined that it is actually needed for a given view.
+////	virtual	qhandle_t		AddEntityDef( const renderEntity_t *re ) = 0;
+////	virtual	void			UpdateEntityDef( qhandle_t entityHandle, const renderEntity_t *re ) = 0;
+//	FreeEntityDef ( entityHandle: number/*qhandle_t */): void { throw "placeholder"; }
+////	virtual const renderEntity_t *GetRenderEntity( qhandle_t entityHandle ) const = 0;
 //
 //	virtual	qhandle_t		AddLightDef( const renderLight_t *rlight ) = 0;
 //	virtual	void			UpdateLightDef( qhandle_t lightHandle, const renderLight_t *rlight ) = 0;
@@ -387,7 +387,7 @@ class idRenderWorld {
 //	//-------------- Portal Area Information -----------------
 //
 //	// returns the number of portals
-//	virtual int				NumPortals( void ) const = 0;
+//	virtual int				NumPortals( ) const = 0;
 //
 //	// returns 0 if no portal contacts the bounds
 //	// This is used by the game to identify portals that are contained
@@ -403,11 +403,10 @@ class idRenderWorld {
 //	// returns true only if a chain of portals without the given connection bits set
 //	// exists between the two areas (a door doesn't separate them, etc)
 //	virtual	bool			AreasAreConnected( int areaNum1, int areaNum2, portalConnection_t connection ) = 0;
-//
-//	// returns the number of portal areas in a map, so game code can build information
-//	// tables for the different areas
-//	virtual	int				NumAreas( void ) const = 0;
-//
+
+	// returns the number of portal areas in a map, so game code can build information
+	// tables for the different areas
+	//NumAreas ( ): number { throw "placeholder"; }
 //	// Will return -1 if the point is not in an area, otherwise
 //	// it will return 0 <= value < NumAreas()
 //	virtual int				PointInArea( const idVec3 &point ) const = 0;
@@ -461,7 +460,7 @@ class idRenderWorld {
 	//-------------- Debug Visualization  -----------------
 
 	// Line drawing for debug visualization
-	DebugClearLines ( /*int*/time: number ): void { throw "placeholder"; } // a time of 0 will clear all lines and text
+	//DebugClearLines ( /*int*/time: number ): void { throw "placeholder"; } // a time of 0 will clear all lines and text
 //	virtual void			DebugLine( const idVec4 &color, start:idVec3, const idVec3 &end, const int lifetime = 0, const bool depthTest = false ) = 0;
 //	virtual void			DebugArrow( const idVec4 &color, start:idVec3, end:idVec3, int size, const int lifetime = 0 ) = 0;
 //	virtual void			DebugWinding( const idVec4 &color, const idWinding &w, const idVec3 &origin, const idMat3 &axis, const int lifetime = 0, const bool depthTest = false ) = 0;
@@ -473,9 +472,9 @@ class idRenderWorld {
 //	virtual void			DebugCone( const idVec4 &color, const idVec3 &apex, const idVec3 &dir, float radius1, float radius2, const int lifetime = 0 ) = 0;
 //	virtual void			DebugAxis( const idVec3 &origin, const idMat3 &axis ) = 0;
 //
-	// Polygon drawing for debug visualization.
-	DebugClearPolygons( /*int*/time:number ):void { throw "placeholder"; }		// a time of 0 will clear all polygons
-	DebugPolygon ( color: idVec4, winding: idWinding, lifeTime: number = 0, depthTest: boolean = false ): void { throw "placeholder"; }
+	//// Polygon drawing for debug visualization.
+	//DebugClearPolygons( /*int*/time:number ):void { throw "placeholder"; }		// a time of 0 will clear all polygons
+	//DebugPolygon ( color: idVec4, winding: idWinding, lifeTime: number = 0, depthTest: boolean = false ): void { throw "placeholder"; }
 //
 //	// Text drawing for debug visualization.
 //	virtual void			DrawText( text:string, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align = 1, const int lifetime = 0, bool depthTest = false ) = 0;

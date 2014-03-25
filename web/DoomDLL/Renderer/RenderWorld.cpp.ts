@@ -118,32 +118,218 @@
 //
 //	common.Printf( "total active: %i\n", active );
 //}
-//
-///*
-//===================
-//idRenderWorldLocal::idRenderWorldLocal
-//===================
-//*/
-//idRenderWorldLocal::idRenderWorldLocal() {
-//	mapName.Clear();
-//	mapTimeStamp = FILE_NOT_FOUND_TIMESTAMP;
-//
-//	generateAllInteractionsCalled = false;
-//
-//	areaNodes = NULL;
-//	numAreaNodes = 0;
-//
-//	portalAreas = NULL;
-//	numPortalAreas = 0;
-//
-//	doublePortals = NULL;
-//	numInterAreaPortals = 0;
-//
-//	interactionTable = 0;
-//	interactionTableWidth = 0;
-//	interactionTableHeight = 0;
-//}
-//
+
+
+class idRenderWorldLocal extends idRenderWorld {
+	//public:
+	//							idRenderWorldLocal();
+	//	virtual					~idRenderWorldLocal();
+
+
+	//
+	//	virtual	qhandle_t		AddEntityDef( const renderEntity_t *re );
+	//	virtual	void			UpdateEntityDef( qhandle_t entityHandle, const renderEntity_t *re );
+	//	virtual	void			FreeEntityDef( qhandle_t entityHandle );
+	//	virtual const renderEntity_t *GetRenderEntity( qhandle_t entityHandle ) const;
+	//
+	//	virtual	qhandle_t		AddLightDef( const renderLight_t *rlight );
+	//	virtual	void			UpdateLightDef( qhandle_t lightHandle, const renderLight_t *rlight );
+	//	virtual	void			FreeLightDef( qhandle_t lightHandle );
+	//	virtual const renderLight_t *GetRenderLight( qhandle_t lightHandle ) const;
+	//
+	//	virtual bool			CheckAreaForPortalSky( int areaNum );
+	//
+	//	virtual	void			GenerateAllInteractions();
+	//	virtual void			RegenerateWorld();
+	//
+	//	virtual void			ProjectDecalOntoWorld( const idFixedWinding &winding, const idVec3 &projectionOrigin, const bool parallel, const float fadeDepth, const idMaterial *material, const int startTime );
+	//	virtual void			ProjectDecal( qhandle_t entityHandle, const idFixedWinding &winding, const idVec3 &projectionOrigin, const bool parallel, const float fadeDepth, const idMaterial *material, const int startTime );
+	//	virtual void			ProjectOverlay( qhandle_t entityHandle, const idPlane localTextureAxis[2], const idMaterial *material );
+	//	virtual void			RemoveDecals( qhandle_t entityHandle );
+	//
+	//	virtual void			SetRenderView( const renderView_t *renderView );
+	//	virtual	void			RenderScene( const renderView_t *renderView );
+	//
+	//NumAreas(): number { throw "placeholder"; }
+	//	virtual int				PointInArea( const idVec3 &point ) const;
+	//	virtual int				BoundsInAreas( const idBounds &bounds, int *areas, int maxAreas ) const;
+	//	virtual	int				NumPortalsInArea( int areaNum );
+	//	virtual exitPortal_t	GetPortal( int areaNum, int portalNum );
+	//
+	//	virtual	guiPoint_t		GuiTrace( qhandle_t entityHandle, const idVec3 start, const idVec3 end ) const;
+	//	virtual bool			ModelTrace( modelTrace_t &trace, qhandle_t entityHandle, const idVec3 &start, end:idVec3, const float radius ) const;
+	//	virtual bool			Trace( modelTrace_t &trace, const idVec3 &start, end:idVec3, const float radius, bool skipDynamic = true, bool skipPlayer = false ) const;
+	//	virtual bool			FastWorldTrace( modelTrace_t &trace, const idVec3 &start, end:idVec3 ) const;
+	//
+	//DebugClearLines( /*int*/time: number): void { throw "placeholder"; }
+	//	virtual void			DebugLine( const idVec4 &color, const idVec3 &start, end:idVec3, const int lifetime = 0, const bool depthTest = false );
+	//	virtual void			DebugArrow( const idVec4 &color, start:idVec3, end:idVec3, int size, const int lifetime = 0 );
+	//	virtual void			DebugWinding( const idVec4 &color, const idWinding &w, const idVec3 &origin, const idMat3 &axis, const int lifetime = 0, const bool depthTest = false );
+	//	virtual void			DebugCircle( const idVec4 &color, const idVec3 &origin, const idVec3 &dir, const float radius, const int numSteps, const int lifetime = 0, const bool depthTest = false );
+	//	virtual void			DebugSphere( const idVec4 &color, const idSphere &sphere, const int lifetime = 0, bool depthTest = false );
+	//	virtual void			DebugBounds( const idVec4 &color, const idBounds &bounds, const idVec3 &org = vec3_origin, const int lifetime = 0 );
+	//	virtual void			DebugBox( const idVec4 &color, const idBox &box, const int lifetime = 0 );
+	//	virtual void			DebugFrustum( const idVec4 &color, const idFrustum &frustum, const bool showFromOrigin = false, const int lifetime = 0 );
+	//	virtual void			DebugCone( const idVec4 &color, const idVec3 &apex, const idVec3 &dir, float radius1, float radius2, const int lifetime = 0 );
+	//	virtual void			DebugScreenRect( const idVec4 &color, const idScreenRect &rect, const viewDef_t *viewDef, const int lifetime = 0 );
+	//	virtual void			DebugAxis( const idVec3 &origin, const idMat3 &axis );
+
+	//DebugClearPolygons( /*int*/time: number): void { throw "placeholder"; }
+	//DebugPolygon(color: idVec4, winding: idWinding, lifeTime: number = 0, depthTest: boolean = false): void { throw "placeholder"; }
+	//
+	//	virtual void			DrawText( text:string, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align = 1, const int lifetime = 0, bool depthTest = false );
+	//
+	//-----------------------
+
+	mapName = new idStr; // ie: maps/tim_dm2.proc, written to demoFile
+	mapTimeStamp: number; // for fast reloads of the same level
+
+	areaNodes: areaNode_t[];
+	numAreaNodes: number /*int*/;
+
+	portalAreas: portalArea_t[];
+	numPortalAreas: number /*int*/;
+	connectedAreaNum: number /*int*/; // incremented every time a door portal state changes
+
+	areaScreenRect: idScreenRect[];
+
+	doublePortals: doublePortal_t [];
+	numInterAreaPortals: number /*int*/;
+
+	localModels = new idList<idRenderModel>( idRenderModel, true );
+
+	entityDefs = new idList<idRenderEntityLocal>( idRenderEntityLocal, true );
+	lightDefs = new idList<idRenderLightLocal>( idRenderLightLocal, true );
+
+	areaReferenceAllocator = idBlockAlloc_template<areaReference_t>( areaReference_t, 1024 );
+	interactionAllocator = idBlockAlloc_template<idInteraction>( idInteraction, 256 );
+	areaNumRefAllocator = idBlockAlloc_template<areaNumRef_t>( areaNumRef_t, 1024 );
+
+	// all light / entity interactions are referenced here for fast lookup without
+	// having to crawl the doubly linked lists.  EnntityDefs are sequential for better
+	// cache access, because the table is accessed by light in idRenderWorldLocal::CreateLightDefInteractions()
+	// Growing this table is time consuming, so we add a pad value to the number
+	// of entityDefs and lightDefs
+	interactionTable: idInteraction[];
+	interactionTableWidth: number /*int*/; // entityDefs
+	interactionTableHeight: number /*int*/; // lightDefs
+
+
+	generateAllInteractionsCalled: boolean;
+
+	//-----------------------
+	// RenderWorld_load.cpp
+
+	//ParseModel(src: idLexer): idRenderModel { throw "placeholder"; }
+	//ParseShadowModel(src: idLexer): idRenderModel { throw "placeholder"; }
+	//SetupAreaRefs(): void { throw "placeholder"; }
+	//ParseInterAreaPortals(src: idLexer): void { throw "placeholder"; }
+	//ParseNodes(src: idLexer): void { throw "placeholder"; }
+	//CommonChildrenArea_r(node: areaNode_t): number { throw "placeholder"; }
+	//FreeWorld(): void { throw "placeholder"; }
+	//ClearWorld(): void { throw "placeholder"; }
+	//FreeDefs(): void { throw "placeholder"; }
+	//TouchWorldModels(): void { throw "placeholder"; }
+	//AddWorldModelEntities(): void { throw "placeholder"; }
+	//ClearPortalStates(): void { throw "placeholder"; }
+	//	virtual	bool			InitFromMap( const char *mapName );
+	//
+	//	//--------------------------
+	//	// RenderWorld_portals.cpp
+	//
+	//	idScreenRect			ScreenRectFromWinding( const idWinding *w, viewEntity_t *space );
+	//	bool					PortalIsFoggedOut( const portal_t *p );
+	//	void					FloodViewThroughArea_r( const idVec3 origin, int areaNum, const struct portalStack_s *ps );
+	//	void					FlowViewThroughPortals( const idVec3 origin, int numPlanes, const idPlane *planes );
+	//	void					FloodLightThroughArea_r( idRenderLightLocal *light, int areaNum, const struct portalStack_s *ps );
+	//	void					FlowLightThroughPortals( idRenderLightLocal *light );
+	//	areaNumRef_t *			FloodFrustumAreas_r( const idFrustum &frustum, const int areaNum, const idBounds &bounds, areaNumRef_t *areas );
+	//	areaNumRef_t *			FloodFrustumAreas( const idFrustum &frustum, areaNumRef_t *areas );
+	//	bool					CullEntityByPortals( const idRenderEntityLocal *entity, const struct portalStack_s *ps );
+	//	void					AddAreaEntityRefs( int areaNum, const struct portalStack_s *ps );
+	//	bool					CullLightByPortals( const idRenderLightLocal *light, const struct portalStack_s *ps );
+	//	void					AddAreaLightRefs( int areaNum, const struct portalStack_s *ps );
+	//	void					AddAreaRefs( int areaNum, const struct portalStack_s *ps );
+	//	void					BuildConnectedAreas_r( int areaNum );
+	//	void					BuildConnectedAreas( );
+	//	void					FindViewLightsAndEntities( );
+	//
+	//	int						NumPortals( ) const;
+	//	qhandle_t				FindPortal( const idBounds &b ) const;
+	//	void					SetPortalState( qhandle_t portal, int blockingBits );
+	//	int						GetPortalState( qhandle_t portal );
+	//	bool					AreasAreConnected( int areaNum1, int areaNum2, portalConnection_t connection );
+	//FloodConnectedAreas(area: portalArea_t, /*int */portalAttributeIndex: number): void { throw "placeholder"; }
+	//	idScreenRect &			GetAreaScreenRect( int areaNum ) const { return areaScreenRect[areaNum]; }
+	//	void					ShowPortals();
+	//
+	//	//--------------------------
+	//	// RenderWorld_demo.cpp
+	//
+	//	void					StartWritingDemo( idDemoFile *demo );
+	//	void					StopWritingDemo();
+	//	bool					ProcessDemoCommand( idDemoFile *readDemo, renderView_t *demoRenderView, int *demoTimeOffset );
+	//
+	//	void					WriteLoadMap();
+	//	void					WriteRenderView( const renderView_t *renderView );
+	//	void					WriteVisibleDefs( const viewDef_t *viewDef );
+	//	void					WriteFreeLight( qhandle_t handle );
+	//	void					WriteFreeEntity( qhandle_t handle );
+	//	void					WriteRenderLight( qhandle_t handle, const renderLight_t *light );
+	//	void					WriteRenderEntity( qhandle_t handle, const renderEntity_t *ent );
+	//	void					ReadRenderEntity();
+	//	void					ReadRenderLight();
+	//	
+	//
+	//	//--------------------------
+	//	// RenderWorld.cpp
+	//
+	//	void					ResizeInteractionTable();
+	//
+	//AddEntityRefToArea(def: idRenderEntityLocal, area: portalArea_t): void { throw "placeholder"; }
+	//	void					AddLightRefToArea( idRenderLightLocal *light, portalArea_t *area );
+	//
+	//	void					RecurseProcBSP_r( modelTrace_t *results, int parentNodeNum, int nodeNum, float p1f, float p2f, const idVec3 &p1, const idVec3 &p2 ) const;
+	//
+	//	void					BoundsInAreas_r( int nodeNum, const idBounds &bounds, int *areas, int *numAreas, int maxAreas ) const;
+	//
+	//	float					DrawTextLength( text:string, float scale, int len = 0 );
+	//
+	//FreeInteractions(): void { throw "placeholder"; }
+	//
+	//	void					PushVolumeIntoTree_r( idRenderEntityLocal *def, idRenderLightLocal *light, const idSphere *sphere, int numPoints, const idVec3 (*points), int nodeNum );
+	//
+	//	void					PushVolumeIntoTree( idRenderEntityLocal *def, idRenderLightLocal *light, int numPoints, const idVec3 (*points) );
+	//
+	//	//-------------------------------
+	//	// tr_light.c
+	//	void					CreateLightDefInteractions( idRenderLightLocal *ldef );
+/*
+===================
+idRenderWorldLocal::idRenderWorldLocal
+===================
+*/
+	constructor ( ) {
+		super ( );
+		this.mapName.Clear ( );
+		this.mapTimeStamp = FILE_NOT_FOUND_TIMESTAMP;
+
+		this.generateAllInteractionsCalled = false;
+
+		this.areaNodes = null;
+		this.numAreaNodes = 0;
+
+		this.portalAreas = null;
+		this.numPortalAreas = 0;
+
+		this.doublePortals = null;
+		this.numInterAreaPortals = 0;
+
+		this.interactionTable = null;
+		this.interactionTableWidth = 0;
+		this.interactionTableHeight = 0;
+	}
+
 ///*
 //===================
 //idRenderWorldLocal::~idRenderWorldLocal
@@ -168,8 +354,8 @@
 //	// we overflowed the interaction table, so dump it
 //	// we may want to resize this in the future if it turns out to be common
 //	common.Printf( "idRenderWorldLocal::ResizeInteractionTable: overflowed interactionTableWidth, dumping\n" );
-//	R_StaticFree( interactionTable );
-//	interactionTable = NULL;
+//	R_StaticFree( this.interactionTable );
+//	this.interactionTable = null;
 //}
 //
 ///*
@@ -182,7 +368,7 @@
 //	int entityHandle = this.entityDefs.FindNull();
 //	if ( entityHandle == -1 ) {
 //		entityHandle = this.entityDefs.Append( NULL );
-//		if ( interactionTable && this.entityDefs.Num() > interactionTableWidth ) {
+//		if ( this.interactionTable && this.entityDefs.Num() > this.interactionTableWidth ) {
 //			ResizeInteractionTable();
 //		}
 //	}
@@ -296,38 +482,38 @@ Frees all references and lit surfaces from the model, and
 NULL's out it's entry in the world list
 ===================
 */
-idRenderWorldLocal.prototype.FreeEntityDef = function ( entityHandle: number /*qhandle_t*/ ): void {
-	var def: idRenderEntityLocal;
+	FreeEntityDef ( entityHandle: number /*qhandle_t*/ ): void {
+		var def: idRenderEntityLocal;
 
-	if ( entityHandle < 0 || entityHandle >= this.entityDefs.Num ( ) ) {
-		common.Printf( "idRenderWorld::FreeEntityDef: handle %i > %i\n", entityHandle, this.entityDefs.Num ( ) );
-		return;
+		if ( entityHandle < 0 || entityHandle >= this.entityDefs.Num ( ) ) {
+			common.Printf( "idRenderWorld::FreeEntityDef: handle %i > %i\n", entityHandle, this.entityDefs.Num ( ) );
+			return;
+		}
+
+		def = this.entityDefs[entityHandle];
+		if ( !def ) {
+			common.Printf( "idRenderWorld::FreeEntityDef: handle %i is NULL\n", entityHandle );
+			return;
+		}
+
+		R_FreeEntityDefDerivedData( def, false, false );
+
+		if ( session.writeDemo && def.archived ) {
+			todoThrow ( );
+			//WriteFreeEntity( entityHandle );
+		}
+
+		// if we are playing a demo, these will have been freed
+		// in R_FreeEntityDefDerivedData(), otherwise the gui
+		// object still exists in the game
+
+		def.parms.gui[0] = null;
+		def.parms.gui[1] = null;
+		def.parms.gui[2] = null;
+
+		$delete( def );
+		this.entityDefs[entityHandle] = null;
 	}
-
-	def = this.entityDefs[entityHandle];
-	if ( !def ) {
-		common.Printf( "idRenderWorld::FreeEntityDef: handle %i is NULL\n", entityHandle );
-		return;
-	}
-
-	R_FreeEntityDefDerivedData( def, false, false );
-
-	if ( session.writeDemo && def.archived ) {
-		todoThrow ( );
-		//WriteFreeEntity( entityHandle );
-	}
-
-	// if we are playing a demo, these will have been freed
-	// in R_FreeEntityDefDerivedData(), otherwise the gui
-	// object still exists in the game
-
-	def.parms.gui[0] = null;
-	def.parms.gui[1] = null;
-	def.parms.gui[2] = null;
-
-	$delete( def );
-	this.entityDefs[entityHandle] = null;
-};
 
 ///*
 //==================
@@ -362,7 +548,7 @@ idRenderWorldLocal.prototype.FreeEntityDef = function ( entityHandle: number /*q
 //
 //	if ( lightHandle == -1 ) {
 //		lightHandle = lightDefs.Append( NULL );
-//		if ( interactionTable && lightDefs.Num() > interactionTableHeight ) {
+//		if ( this.interactionTable && lightDefs.Num() > this.interactionTableHeight ) {
 //			ResizeInteractionTable();
 //		}
 //	}
@@ -440,38 +626,39 @@ idRenderWorldLocal.prototype.FreeEntityDef = function ( entityHandle: number /*q
 //		R_CreateLightDefFogPortals( light );
 //	}
 //}
-//
-///*
-//====================
-//FreeLightDef
-//
-//Frees all references and lit surfaces from the light, and
-//NULL's out it's entry in the world list
-//====================
-//*/
-//void idRenderWorldLocal::FreeLightDef( qhandle_t lightHandle ) {
-//	idRenderLightLocal	*light;
-//
-//	if ( lightHandle < 0 || lightHandle >= lightDefs.Num() ) {
-//		common.Printf( "idRenderWorld::FreeLightDef: invalid handle %i [0, %i]\n", lightHandle, lightDefs.Num() );
-//		return;
-//	}
-//
-//	light = lightDefs[lightHandle];
-//	if ( !light ) {
-//		common.Printf( "idRenderWorld::FreeLightDef: handle %i is NULL\n", lightHandle );
-//		return;
-//	}
-//
-//	R_FreeLightDefDerivedData( light );
-//
-//	if ( session.writeDemo && light.archived ) {
-//		WriteFreeLight( lightHandle );
-//	}
-//
-//	delete light;
-//	lightDefs[lightHandle] = NULL;
-//}
+
+/*
+====================
+FreeLightDef
+
+Frees all references and lit surfaces from the light, and
+NULL's out it's entry in the world list
+====================
+*/
+	FreeLightDef ( lightHandle: /*qhandle_t*/number ) {
+		todoThrow ( );
+		//idRenderLightLocal	*light;
+
+		//if ( lightHandle < 0 || lightHandle >= lightDefs.Num() ) {
+		//	common.Printf( "idRenderWorld::FreeLightDef: invalid handle %i [0, %i]\n", lightHandle, lightDefs.Num() );
+		//	return;
+		//}
+
+		//light = lightDefs[lightHandle];
+		//if ( !light ) {
+		//	common.Printf( "idRenderWorld::FreeLightDef: handle %i is NULL\n", lightHandle );
+		//	return;
+		//}
+
+		//R_FreeLightDefDerivedData( light );
+
+		//if ( session.writeDemo && light.archived ) {
+		//	WriteFreeLight( lightHandle );
+		//}
+
+		//delete light;
+		//lightDefs[lightHandle] = NULL;
+	}
 //
 ///*
 //==================
@@ -518,7 +705,7 @@ idRenderWorldLocal.prototype.FreeEntityDef = function ( entityHandle: number /*q
 //	// check all areas for models
 //	for ( i = 0; i < numAreas; i++ ) {
 //
-//		area = &portalAreas[ areas[i] ];
+//		area = &this.portalAreas[ areas[i] ];
 //
 //		// check all models in this area
 //		for ( ref = area.entityRefs.areaNext; ref != &area.entityRefs; ref = ref.areaNext ) {
@@ -784,15 +971,15 @@ idRenderWorldLocal.prototype.FreeEntityDef = function ( entityHandle: number /*q
 //#endif
 //}
 //
-///*
-//===================
-//NumAreas
-//===================
-//*/
-//int idRenderWorldLocal::NumAreas( void ) const {
-//	return numPortalAreas;
-//}
-//
+/*
+===================
+NumAreas
+===================
+*/
+	NumAreas  ( ): Number /*int*/ {
+		return this.numPortalAreas;
+	}
+
 ///*
 //===================
 //NumPortalsInArea
@@ -803,10 +990,10 @@ idRenderWorldLocal.prototype.FreeEntityDef = function ( entityHandle: number /*q
 //	int				count;
 //	portal_t		*portal;
 //
-//	if ( areaNum >= numPortalAreas || areaNum < 0 ) {
+//	if ( areaNum >= this.numPortalAreas || areaNum < 0 ) {
 //		common.Error( "idRenderWorld::NumPortalsInArea: bad areanum %i", areaNum );
 //	}
-//	area = &portalAreas[areaNum];
+//	area = &this.portalAreas[areaNum];
 //
 //	count = 0;
 //	for ( portal = area.portals ; portal ; portal = portal.next ) {
@@ -826,10 +1013,10 @@ idRenderWorldLocal.prototype.FreeEntityDef = function ( entityHandle: number /*q
 //	portal_t		*portal;
 //	exitPortal_t	ret;
 //
-//	if ( areaNum > numPortalAreas ) {
+//	if ( areaNum > this.numPortalAreas ) {
 //		common.Error( "idRenderWorld::GetPortal: areaNum > numAreas" );
 //	}
-//	area = &portalAreas[areaNum];
+//	area = &this.portalAreas[areaNum];
 //
 //	count = 0;
 //	for ( portal = area.portals ; portal ; portal = portal.next ) {
@@ -838,7 +1025,7 @@ idRenderWorldLocal.prototype.FreeEntityDef = function ( entityHandle: number /*q
 //			ret.areas[1] = portal.intoArea;
 //			ret.w = portal.w;
 //			ret.blockingBits = portal.doublePortal.blockingBits;
-//			ret.portalHandle = portal.doublePortal - doublePortals + 1;
+//			ret.portalHandle = portal.doublePortal - this.doublePortals + 1;
 //			return ret;
 //		}
 //		count++;
@@ -863,7 +1050,7 @@ idRenderWorldLocal.prototype.FreeEntityDef = function ( entityHandle: number /*q
 //	int			nodeNum;
 //	float		d;
 //	
-//	node = areaNodes;
+//	node = this.areaNodes;
 //	if ( !node ) {
 //		return -1;
 //	}
@@ -879,12 +1066,12 @@ idRenderWorldLocal.prototype.FreeEntityDef = function ( entityHandle: number /*q
 //		}
 //		if ( nodeNum < 0 ) {
 //			nodeNum = -1 - nodeNum;
-//			if ( nodeNum >= numPortalAreas ) {
+//			if ( nodeNum >= this.numPortalAreas ) {
 //				common.Error( "idRenderWorld::PointInArea: area out of range" );
 //			}
 //			return nodeNum;
 //		}
-//		node = areaNodes + nodeNum;
+//		node = this.areaNodes + nodeNum;
 //	}
 //	
 //	return -1;
@@ -914,7 +1101,7 @@ idRenderWorldLocal.prototype.FreeEntityDef = function ( entityHandle: number /*q
 //			return;
 //		}
 //
-//		node = areaNodes + nodeNum;
+//		node = this.areaNodes + nodeNum;
 //
 //		side = bounds.PlaneSide( node.plane );
 //		if ( side == PLANESIDE_FRONT ) {
@@ -952,7 +1139,7 @@ idRenderWorldLocal.prototype.FreeEntityDef = function ( entityHandle: number /*q
 //	assert( bounds[0][0] <= bounds[1][0] && bounds[0][1] <= bounds[1][1] && bounds[0][2] <= bounds[1][2] );
 //	assert( bounds[1][0] - bounds[0][0] < 1e4f && bounds[1][1] - bounds[0][1] < 1e4f && bounds[1][2] - bounds[0][2] < 1e4f );
 //
-//	if ( !areaNodes ) {
+//	if ( !this.areaNodes ) {
 //		return numAreas;
 //	}
 //	BoundsInAreas_r( 0, bounds, areas, &numAreas, maxAreas );
@@ -1182,7 +1369,7 @@ idRenderWorldLocal.prototype.FreeEntityDef = function ( entityHandle: number /*q
 //	// check all areas for models
 //	for ( i = 0; i < numAreas; i++ ) {
 //
-//		area = &portalAreas[ areas[i] ];
+//		area = &this.portalAreas[ areas[i] ];
 //
 //		// check all models in this area
 //		for ( ref = area.entityRefs.areaNext; ref != &area.entityRefs; ref = ref.areaNext ) {
@@ -1322,12 +1509,12 @@ idRenderWorldLocal.prototype.FreeEntityDef = function ( entityHandle: number /*q
 //
 //			results.fraction = p1f;
 //			results.point = p1;
-//			node = &areaNodes[parentNodeNum];
+//			node = &this.areaNodes[parentNodeNum];
 //			results.normal = node.plane.Normal();
 //			return;
 //		}
 //	}
-//	node = &areaNodes[nodeNum];
+//	node = &this.areaNodes[nodeNum];
 //
 //	// distance from plane for trace start and end
 //	t1 = node.plane.Normal() * p1 + node.plane[3];
@@ -1359,7 +1546,7 @@ idRenderWorldLocal.prototype.FreeEntityDef = function ( entityHandle: number /*q
 //bool idRenderWorldLocal::FastWorldTrace( modelTrace_t &results, start:idVec3, end:idVec3 ) const {
 //	memset( &results, 0, sizeof( modelTrace_t ) );
 //	results.fraction = 1.0f;
-//	if ( areaNodes != NULL ) {
+//	if ( this.areaNodes != NULL ) {
 //		RecurseProcBSP_r( &results, -1, 0, 0.0f, 1.0f, start, end );
 //		return ( results.fraction < 1.0f );
 //	}
@@ -1382,30 +1569,30 @@ This is called by R_PushVolumeIntoTree and also directly
 for the world model references that are precalculated.
 =================
 */
-idRenderWorldLocal.prototype.AddEntityRefToArea = function ( def: idRenderEntityLocal, area: portalArea_t ): void {
-	var ref: areaReference_t;
+	AddEntityRefToArea ( def: idRenderEntityLocal, area: portalArea_t ): void {
+		var ref: areaReference_t;
 
-	if ( !def ) {
-		common.Error( "idRenderWorldLocal::AddEntityRefToArea: NULL def" );
+		if ( !def ) {
+			common.Error( "idRenderWorldLocal::AddEntityRefToArea: NULL def" );
+		}
+
+		ref = this.areaReferenceAllocator.Alloc ( );
+
+		tr.pc.c_entityReferences++;
+
+		ref.entity = def;
+
+		// link to entityDef
+		ref.ownerNext = def.entityRefs;
+		def.entityRefs = ref;
+
+		// link to end of area list
+		ref.area = area;
+		ref.areaNext = area.entityRefs;
+		ref.areaPrev = area.entityRefs.areaPrev;
+		ref.areaNext.areaPrev = ref;
+		ref.areaPrev.areaNext = ref;
 	}
-
-	ref = this.areaReferenceAllocator.Alloc ( );
-
-	tr.pc.c_entityReferences++;
-
-	ref.entity = def;
-
-	// link to entityDef
-	ref.ownerNext = def.entityRefs;
-	def.entityRefs = ref;
-
-	// link to end of area list
-	ref.area = area;
-	ref.areaNext = area.entityRefs;
-	ref.areaPrev = area.entityRefs.areaPrev;
-	ref.areaNext.areaPrev = ref;
-	ref.areaPrev.areaNext = ref;
-};
 
 ///*
 //===================
@@ -1450,7 +1637,7 @@ idRenderWorldLocal.prototype.AddEntityRefToArea = function ( def: idRenderEntity
 //
 //	int start = Sys_Milliseconds();
 //
-//	generateAllInteractionsCalled = false;
+//	this.generateAllInteractionsCalled = false;
 //
 //	// watch how much memory we allocate
 //	tr.staticAllocCount = 0;
@@ -1475,10 +1662,10 @@ idRenderWorldLocal.prototype.AddEntityRefToArea = function ( def: idRenderEntity
 //
 //	// build the interaction table
 //	if ( r_useInteractionTable.GetBool() ) {
-//		interactionTableWidth = this.entityDefs.Num() + 100;
-//		interactionTableHeight = lightDefs.Num() + 100;
-//		int	size =  interactionTableWidth * interactionTableHeight * sizeof( *interactionTable );
-//		interactionTable = (idInteraction **)R_ClearedStaticAlloc( size );
+//		this.interactionTableWidth = this.entityDefs.Num() + 100;
+//		this.interactionTableHeight = lightDefs.Num() + 100;
+//		int	size =  this.interactionTableWidth * this.interactionTableHeight * sizeof( *this.interactionTable );
+//		this.interactionTable = (idInteraction **)R_ClearedStaticAlloc( size );
 //
 //		int	count = 0;
 //		for ( int i = 0 ; i < this.lightDefs.Num() ; i++ ) {
@@ -1489,9 +1676,9 @@ idRenderWorldLocal.prototype.AddEntityRefToArea = function ( def: idRenderEntity
 //			idInteraction	*inter;
 //			for ( inter = ldef.firstInteraction; inter != NULL; inter = inter.lightNext ) {
 //				idRenderEntityLocal	*edef = inter.entityDef;
-//				int index = ldef.index * interactionTableWidth + edef.index;
+//				int index = ldef.index * this.interactionTableWidth + edef.index;
 //
-//				interactionTable[ index ] = inter;
+//				this.interactionTable[ index ] = inter;
 //				count++;
 //			}
 //		}
@@ -1501,7 +1688,7 @@ idRenderWorldLocal.prototype.AddEntityRefToArea = function ( def: idRenderEntity
 //	}
 //
 //	// entities flagged as noDynamicInteractions will no longer make any
-//	generateAllInteractionsCalled = true;
+//	this.generateAllInteractionsCalled = true;
 //}
 
 /*
@@ -1509,21 +1696,21 @@ idRenderWorldLocal.prototype.AddEntityRefToArea = function ( def: idRenderEntity
 idRenderWorldLocal::FreeInteractions
 ===================
 */
-idRenderWorldLocal.prototype.FreeInteractions = function ( ): void {
-	var i: number;
-	var def: idRenderEntityLocal;
+	FreeInteractions ( ): void {
+		var i: number;
+		var def: idRenderEntityLocal;
 
-	for ( i = 0; i < this.entityDefs.Num ( ); i++ ) {
-		def = this.entityDefs[i];
-		if ( !def ) {
-			continue;
-		}
-		// free all the interactions
-		while ( def.firstInteraction != null ) {
-			def.firstInteraction.UnlinkAndFree ( );
+		for ( i = 0; i < this.entityDefs.Num ( ); i++ ) {
+			def = this.entityDefs[i];
+			if ( !def ) {
+				continue;
+			}
+			// free all the interactions
+			while ( def.firstInteraction != null ) {
+				def.firstInteraction.UnlinkAndFree ( );
+			}
 		}
 	}
-};
 
 ///*
 //==================
@@ -1550,7 +1737,7 @@ idRenderWorldLocal.prototype.FreeInteractions = function ( ): void {
 //		portalArea_t	*area;
 //		int		areaNum = -1 - nodeNum;
 //
-//		area = &portalAreas[ areaNum ];
+//		area = &this.portalAreas[ areaNum ];
 //		if ( area.viewCount == tr.viewCount ) {
 //			return;	// already added a reference here
 //		}
@@ -1566,7 +1753,7 @@ idRenderWorldLocal.prototype.FreeInteractions = function ( ): void {
 //		return;
 //	}
 //
-//	node = areaNodes + nodeNum;
+//	node = this.areaNodes + nodeNum;
 //
 //	// if we know that all possible children nodes only touch an area
 //	// we have already marked, we can early out
@@ -1576,7 +1763,7 @@ idRenderWorldLocal.prototype.FreeInteractions = function ( ): void {
 //		// yet, because the test volume may yet wind up being in the
 //		// solid part, which would cause bounds slightly poked into
 //		// a wall to show up in the next room
-//		if ( portalAreas[ node.commonChildrenArea ].viewCount == tr.viewCount ) {
+//		if ( this.portalAreas[ node.commonChildrenArea ].viewCount == tr.viewCount ) {
 //			return;
 //		}
 //	}
@@ -1689,7 +1876,7 @@ idRenderWorldLocal.prototype.FreeInteractions = function ( ): void {
 //	float radSquared, lr;
 //	idVec3 mid, dir;
 //
-//	if ( areaNodes == NULL ) {
+//	if ( this.areaNodes == NULL ) {
 //		return;
 //	}
 //
@@ -1722,10 +1909,10 @@ idRenderWorldLocal.prototype.FreeInteractions = function ( ): void {
 idRenderWorldLocal::DebugClearLines
 ====================
 */
-idRenderWorldLocal.prototype.DebugClearLines = function ( /*int*/time: number ): void {
-	RB_ClearDebugLines( time );
-	RB_ClearDebugText( time );
-};
+	DebugClearLines ( /*int*/time: number ): void {
+		RB_ClearDebugLines( time );
+		RB_ClearDebugText( time );
+	}
 
 ///*
 //====================
@@ -2006,18 +2193,18 @@ idRenderWorldLocal.prototype.DebugClearLines = function ( /*int*/time: number ):
 idRenderWorldLocal::DebugClearPolygons
 ====================
 */
-idRenderWorldLocal.prototype.DebugClearPolygons = function ( /*int*/time: number ): void {
-	RB_ClearDebugPolygons( time );
-};
+	DebugClearPolygons ( /*int*/time: number ): void {
+		RB_ClearDebugPolygons( time );
+	}
 
 /*
 ====================
 idRenderWorldLocal::DebugPolygon
 ====================
 */
-idRenderWorldLocal.prototype.DebugPolygon = function ( color: idVec4, winding: idWinding, lifeTime: number = 0, depthTest: boolean = false ): void {
-	RB_AddDebugPolygon( color, winding, lifeTime, depthTest );
-};
+	DebugPolygon ( color: idVec4, winding: idWinding, lifeTime: number = 0, depthTest: boolean = false ): void {
+		RB_AddDebugPolygon( color, winding, lifeTime, depthTest );
+	}
 
 ///*
 //================
@@ -2085,7 +2272,1762 @@ idRenderWorldLocal.prototype.DebugPolygon = function ( color: idVec4, winding: i
 //void idRenderWorldLocal::RegenerateWorld() {
 //	R_RegenerateWorld_f( idCmdArgs() );
 //}
+
+
+
+
+	// RenderWorld_load.cpp
+
+
+
+
+
+/*
+================
+idRenderWorldLocal::FreeWorld
+================
+*/
+FreeWorld  (): void {
+		var i: number;
+
+		// this will free all the lightDefs and entityDefs
+		this.FreeDefs();
+
+		// free all the portals and check light/model references
+		for (i = 0; i < this.numPortalAreas; i++) {
+			var area: portalArea_t;
+			var portal: portal_t, nextPortal: portal_t;
+			todoThrow("portal.next struct/ref ???");
+			//area = this.portalAreas[i];
+			//for ( portal = area.portals ; portal ; portal = nextPortal ) {
+			//	nextPortal = portal.next;
+			//	$delete (portal.w):
+			//	delete portal.w;
+			//	R_StaticFree( portal );
+			//}
+
+			//// there shouldn't be any remaining lightRefs or entityRefs
+			//if ( area.lightRefs.areaNext != area.lightRefs ) {
+			//	common.Error( "FreeWorld: unexpected remaining lightRefs" );
+			//}
+			//if ( area.entityRefs.areaNext != area.entityRefs ) {
+			//	common.Error( "FreeWorld: unexpected remaining entityRefs" );
+			//}
+		}
+
+		if (this.portalAreas) {
+			R_StaticFree(this.portalAreas);
+			this.portalAreas = null;
+			this.numPortalAreas = 0;
+			R_StaticFree(this.areaScreenRect);
+			this.areaScreenRect = null;
+		}
+
+		if (this.doublePortals) {
+			R_StaticFree(this.doublePortals);
+			this.doublePortals = null;
+			this.numInterAreaPortals = 0;
+		}
+
+		if (this.areaNodes) {
+			R_StaticFree(this.areaNodes);
+			this.areaNodes = null;
+		}
+
+		// free all the inline idRenderModels 
+		for (i = 0; i < this.localModels.Num(); i++) {
+			renderModelManager.RemoveModel(this.localModels[i]);
+			$delete(this.localModels[i]);
+			delete this.localModels[i];
+		}
+		this.localModels.Clear();
+
+		this.areaReferenceAllocator.Shutdown();
+		this.interactionAllocator.Shutdown();
+		this.areaNumRefAllocator.Shutdown();
+
+		this.mapName.equals("<FREED>");
+	}
 //
+///*
+//================
+//idRenderWorldLocal::TouchWorldModels
+//================
+//*/
+//void idRenderWorldLocal::TouchWorldModels( void ) {
+//	int i;
+//
+//	for ( i = 0 ; i < this.localModels.Num() ; i++ ) {
+//		renderModelManager.CheckModel( this.localModels[i].Name() );
+//	}
+//}
+
+/*
+================
+idRenderWorldLocal::ParseModel
+================
+*/
+static ParseModelCount = 0;
+ParseModel  (src: idLexer): idRenderModel {
+	var model: idRenderModel;
+	var token = new idToken;
+	var i: number, j: number;
+	var tri: srfTriangles_t;
+	var surf = new modelSurface_t;
+
+	src.ExpectTokenString("{");
+
+	// parse the name
+	src.ExpectAnyToken(token);
+
+	model = renderModelManager.AllocModel();
+	model.InitEmpty(token.data);
+
+	var numSurfaces = src.ParseInt();
+	if (numSurfaces < 0) {
+		src.Error("R_ParseModel: bad numSurfaces");
+	}
+
+	dlog(DEBUG_RENDERWORLD_LOAD, "ParseModelCount %i\n", idRenderWorldLocal.ParseModelCount);
+	idRenderWorldLocal.ParseModelCount++;
+	for (i = 0; i < numSurfaces; i++) {
+		src.ExpectTokenString("{");
+
+		src.ExpectAnyToken(token);
+
+		surf.shader = declManager.FindMaterial(token.data);
+		dlog(DEBUG_RENDERWORLD_LOAD, "shader %s i: %i\n", token.data, i);
+
+		(<idMaterial>surf.shader).AddReference();
+
+		tri = R_AllocStaticTriSurf();
+		surf.geometry = tri;
+
+		tri.numVerts = src.ParseInt();
+		tri.numIndexes = src.ParseInt();
+
+		dlog(DEBUG_RENDERWORLD_LOAD, "	tri.numVerts %i tri.numIndexes: %i\n", tri.numVerts, tri.numIndexes);
+
+		R_AllocStaticTriSurfVerts(tri, tri.numVerts);
+		for (j = 0; j < tri.numVerts; j++) {
+			var vec = new Float32Array(8);
+
+			src.Parse1DMatrix(8, vec);
+
+			dlog(DEBUG_RENDERWORLD_LOAD, "vec j: %i %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f\n",
+				j, vec[0], vec[1], vec[2], vec[3], vec[4], vec[5], vec[6], vec[7]);
+
+			tri.verts[j].xyz[0] = vec[0];
+			tri.verts[j].xyz[1] = vec[1];
+			tri.verts[j].xyz[2] = vec[2];
+			tri.verts[j].st[0] = vec[3];
+			tri.verts[j].st[1] = vec[4];
+			tri.verts[j].normal[0] = vec[5];
+			tri.verts[j].normal[1] = vec[6];
+			tri.verts[j].normal[2] = vec[7];
+		}
+
+		R_AllocStaticTriSurfIndexes(tri, tri.numIndexes);
+		for (j = 0; j < tri.numIndexes; j++) {
+			tri.indexes[j] = src.ParseInt();
+			dlog(DEBUG_RENDERWORLD_LOAD, "tri.indexes[%i]: %i\n", j, tri.indexes[j]);
+		}
+		src.ExpectTokenString("}");
+
+		// add the completed surface to the model
+		model.AddSurface(surf);
+	}
+
+	src.ExpectTokenString("}");
+
+	model.FinishSurfaces();
+
+	return model;
+}
+
+/*
+================
+idRenderWorldLocal::ParseShadowModel
+================
+*/
+ParseShadowModel  (src: idLexer): idRenderModel {
+	var model: idRenderModel;
+	var token = new idToken;
+	var j: number /*int*/;
+	var tri: srfTriangles_t;
+	var surf = new modelSurface_t;
+
+	src.ExpectTokenString("{");
+
+	// parse the name
+	src.ExpectAnyToken(token);
+
+	model = renderModelManager.AllocModel();
+	model.InitEmpty(token.data);
+
+	surf.shader = tr.defaultMaterial;
+
+	tri = R_AllocStaticTriSurf();
+	surf.geometry = tri;
+
+	tri.numVerts = src.ParseInt();
+	tri.numShadowIndexesNoCaps = src.ParseInt();
+	tri.numShadowIndexesNoFrontCaps = src.ParseInt();
+	tri.numIndexes = src.ParseInt();
+	tri.shadowCapPlaneBits = src.ParseInt();
+
+	R_AllocStaticTriSurfShadowVerts(tri, tri.numVerts);
+	tri.bounds.Clear();
+	for (j = 0; j < tri.numVerts; j++) {
+		var vec = new Float32Array(8);
+
+		src.Parse1DMatrix(3, vec);
+		tri.shadowVertexes[j].xyz[0] = vec[0];
+		tri.shadowVertexes[j].xyz[1] = vec[1];
+		tri.shadowVertexes[j].xyz[2] = vec[2];
+		tri.shadowVertexes[j].xyz[3] = 1; // no homogenous value
+
+		tri.bounds.AddPoint(tri.shadowVertexes[j].xyz.ToVec3());
+	}
+
+	R_AllocStaticTriSurfIndexes(tri, tri.numIndexes);
+	for (j = 0; j < tri.numIndexes; j++) {
+		tri.indexes[j] = src.ParseInt();
+	}
+
+	// add the completed surface to the model
+	model.AddSurface(surf);
+
+	src.ExpectTokenString("}");
+
+	// we do NOT do a model.FinishSurfaceces, because we don't need sil edges, planes, tangents, etc.
+	//	model.FinishSurfaces();
+
+	return model;
+}
+
+/*
+================
+idRenderWorldLocal::SetupAreaRefs
+================
+*/
+SetupAreaRefs  (): void {
+	var /*int*/i: number;
+
+	this.connectedAreaNum = 0;
+	for (i = 0; i < this.numPortalAreas; i++) {
+		this.portalAreas[i].areaNum = i;
+		this.portalAreas[i].lightRefs.areaNext =
+		this.portalAreas[i].lightRefs.areaPrev =
+		this.portalAreas[i].lightRefs;
+		this.portalAreas[i].entityRefs.areaNext =
+		this.portalAreas[i].entityRefs.areaPrev =
+		this.portalAreas[i].entityRefs;
+	}
+}
+
+/*
+================
+idRenderWorldLocal::ParseInterAreaPortals
+================
+*/
+ParseInterAreaPortals  (src: idLexer) {
+	var /*int */i: number, j: number;
+
+	src.ExpectTokenString("{");
+
+	this.numPortalAreas = src.ParseInt();
+	if (this.numPortalAreas < 0) {
+		src.Error("R_ParseInterAreaPortals: bad numPortalAreas");
+		return;
+	}
+	this.portalAreas = newStructArray<portalArea_t>(portalArea_t, this.numPortalAreas); //(portalArea_t *)R_ClearedStaticAlloc( this.numPortalAreas * sizeof( this.portalAreas[0] ) );
+	this.areaScreenRect = newStructArray<idScreenRect>(idScreenRect, this.numPortalAreas); //(idScreenRect *) R_ClearedStaticAlloc( this.numPortalAreas * sizeof( idScreenRect ) );
+
+	// set the doubly linked lists
+	this.SetupAreaRefs();
+
+	this.numInterAreaPortals = src.ParseInt();
+	if (this.numInterAreaPortals < 0) {
+		src.Error("R_ParseInterAreaPortals: bad numInterAreaPortals");
+		return;
+	}
+
+	this.doublePortals = newStructArray<doublePortal_t>(doublePortal_t, this.numInterAreaPortals); // (doublePortal_t *)R_ClearedStaticAlloc( this.numInterAreaPortals * 
+	//sizeof( this.doublePortals [0] ) );
+
+	for (i = 0; i < this.numInterAreaPortals; i++) {
+		var /*int*/numPoints: number, a1: number, a2: number;
+		var w: idWinding;
+		var p: portal_t;
+
+		numPoints = src.ParseInt();
+		a1 = src.ParseInt();
+		a2 = src.ParseInt();
+
+		w = new idWinding(numPoints);
+		w.SetNumPoints(numPoints);
+		for (j = 0; j < numPoints; j++) {
+			src.Parse1DMatrix(3, (w)[j].ToFloatPtr());
+			// no texture coordinates
+			(w)[j][3] = 0;
+			(w)[j][4] = 0;
+		}
+
+		// add the portal to a1
+		p = new portal_t; //(portal_t *)R_ClearedStaticAlloc( sizeof( *p ) );
+		p.intoArea = a2;
+		p.doublePortal = this.doublePortals[i];
+		p.w = w;
+		p.w.GetPlane(p.plane);
+
+		p.next = this.portalAreas[a1].portals;
+		this.portalAreas[a1].portals = p;
+
+		this.doublePortals[i].portals[0] = p;
+
+		// reverse it for a2
+		p = new portal_t; //(portal_t *)R_ClearedStaticAlloc( sizeof( *p ) );
+		p.intoArea = a1;
+		p.doublePortal = this.doublePortals[i];
+		p.w = w.Reverse();
+		p.w.GetPlane(p.plane);
+
+		p.next = this.portalAreas[a2].portals;
+		this.portalAreas[a2].portals = p;
+
+		this.doublePortals[i].portals[1] = p;
+	}
+
+	src.ExpectTokenString("}");
+}
+
+/*
+================
+idRenderWorldLocal::ParseNodes
+================
+*/
+ParseNodes  (src: idLexer): void {
+	var /*int*/i: number;
+
+	src.ExpectTokenString("{");
+
+	this.numAreaNodes = src.ParseInt();
+	if (this.numAreaNodes < 0) {
+		src.Error("R_ParseNodes: bad numAreaNodes");
+	}
+	this.areaNodes = newStructArray<areaNode_t>(areaNode_t, this.numAreaNodes); //(areaNode_t *)R_ClearedStaticAlloc( numAreaNodes * sizeof( this.areaNodes[0] ) );
+
+	for (i = 0; i < this.numAreaNodes; i++) {
+		var node: areaNode_t;
+
+		node = this.areaNodes[i];
+
+		src.Parse1DMatrix(4, node.plane.ToFloatPtr());
+		node.children[0] = src.ParseInt();
+		node.children[1] = src.ParseInt();
+	}
+
+	src.ExpectTokenString("}");
+}
+
+/*
+================
+idRenderWorldLocal::CommonChildrenArea_r
+================
+*/
+CommonChildrenArea_r  (node: areaNode_t): number /*int*/ {
+	var /*int	*/nums = [0, 0];
+
+	for (var i = 0; i < 2; i++) {
+		if (node.children[i] <= 0) {
+			nums[i] = -1 - node.children[i];
+		} else {
+			nums[i] = this.CommonChildrenArea_r(this.areaNodes[node.children[i]]);
+		}
+	}
+
+	// solid nodes will match any area
+	if (nums[0] == AREANUM_SOLID) {
+		nums[0] = nums[1];
+	}
+	if (nums[1] == AREANUM_SOLID) {
+		nums[1] = nums[0];
+	}
+
+	var /*int	*/common: number;
+	if (nums[0] == nums[1]) {
+		common = nums[0];
+	} else {
+		common = CHILDREN_HAVE_MULTIPLE_AREAS;
+	}
+
+	node.commonChildrenArea = common;
+
+	return common;
+}
+
+/*
+=================
+idRenderWorldLocal::ClearWorld
+
+Sets up for a single area world
+=================
+*/
+ClearWorld  (): void {
+	this.numPortalAreas = 1;
+	this.portalAreas = [new portalArea_t]; // (portalArea_t *)R_ClearedStaticAlloc( sizeof( this.portalAreas[0] ) );
+	this.areaScreenRect = [new idScreenRect]; // (idScreenRect *) R_ClearedStaticAlloc( sizeof( idScreenRect ) );
+
+	this.SetupAreaRefs();
+
+	// even though we only have a single area, create a node
+	// that has both children pointing at it so we don't need to
+	//
+	this.areaNodes = [new areaNode_t]; // (areaNode_t *)R_ClearedStaticAlloc( sizeof( this.areaNodes[0] ) );
+	this.areaNodes[0].plane[3] = 1;
+	this.areaNodes[0].children[0] = -1;
+	this.areaNodes[0].children[1] = -1;
+}
+
+/*
+=================
+idRenderWorldLocal::FreeDefs
+
+dump all the interactions
+=================
+*/
+FreeDefs  (): void {
+	var /*int*/i: number;
+
+	this.generateAllInteractionsCalled = false;
+
+	if (this.interactionTable) {
+		R_StaticFree(this.interactionTable);
+		this.interactionTable = null;
+	}
+
+	// free all lightDefs
+	for (i = 0; i < this.lightDefs.Num(); i++) {
+		var light: idRenderLightLocal;
+
+		light = this.lightDefs[i];
+		if (light && light.world == this) {
+			this.FreeLightDef(i);
+			this.lightDefs[i] = null;
+		}
+	}
+
+	// free all entityDefs
+	for (i = 0; i < this.entityDefs.Num(); i++) {
+		var mod: idRenderEntityLocal;
+
+		mod = this.entityDefs[i];
+		if (mod && mod.world == this) {
+			this.FreeEntityDef(i);
+			this.entityDefs[i] = null;
+		}
+	}
+}
+
+/*
+=================
+idRenderWorldLocal::InitFromMap
+
+A NULL or empty name will make a world without a map model, which
+is still useful for displaying a bare model
+=================
+*/
+InitFromMap  (name: string): boolean {
+	var src: idLexer;
+	var token = new idToken;
+	var filename = new idStr;
+	var lastModel: idRenderModel;
+
+	// if this is an empty world, initialize manually
+	if (!name /*|| !name[0] */ ) {
+		this.FreeWorld();
+		this.mapName.Clear();
+		this.ClearWorld();
+		return true;
+	}
+
+
+	// load it
+	filename.equals(name);
+	filename.SetFileExtension(PROC_FILE_EXT);
+
+	// if we are reloading the same map, check the timestamp
+	// and try to skip all the work
+	var currentTimeStamp = new R<number>();
+	fileSystem.ReadFile(filename.data, null, currentTimeStamp);
+
+	if (name == this.mapName.data) {
+		if (currentTimeStamp.$ != FILE_NOT_FOUND_TIMESTAMP && currentTimeStamp.$ == this.mapTimeStamp) {
+			common.Printf("idRenderWorldLocal::InitFromMap: retaining existing map\n");
+			todoThrow();
+			this.FreeDefs();
+			todoThrow();
+			//this.TouchWorldModels();
+			//this.AddWorldModelEntities();
+			//this.ClearPortalStates();
+			return true;
+		}
+		common.Printf("idRenderWorldLocal::InitFromMap: timestamp has changed, reloading.\n");
+	}
+
+	this.FreeWorld();
+
+	src = new idLexer(filename.data, lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NODOLLARPRECOMPILE);
+	if (!src.IsLoaded()) {
+		common.Printf("idRenderWorldLocal::InitFromMap: %s not found\n", filename.c_str());
+		this.ClearWorld();
+		return false;
+	}
+
+
+	this.mapName.equals(name);
+	this.mapTimeStamp = currentTimeStamp.$;
+
+	// if we are writing a demo, archive the load command
+	if (session.writeDemo) {
+		todoThrow ( );
+		//this.WriteLoadMap();
+	}
+
+	if (!src.ReadToken(token) || token.Icmp(PROC_FILE_ID)) {
+		common.Printf("idRenderWorldLocal::InitFromMap: bad id '%s' instead of '%s'\n", token.c_str(), PROC_FILE_ID);
+		$delete(src);
+		delete src;
+		return false;
+	}
+
+	// parse the file
+	while (1) {
+		if (!src.ReadToken(token)) {
+			break;
+		}
+
+		if (token.data == "model") {
+			lastModel = this.ParseModel(src);
+
+			// add it to the model manager list
+			renderModelManager.AddModel(lastModel);
+
+			// save it in the list to free when clearing this map
+			this.localModels.Append(lastModel);
+			continue;
+		}
+
+		if (token.data == "shadowModel") {
+			dlog(DEBUG_RENDERWORLD_LOAD, "ParseShadowModel\n");
+			lastModel = this.ParseShadowModel(src);
+
+			// add it to the model manager list
+			renderModelManager.AddModel(lastModel);
+
+			// save it in the list to free when clearing this map
+			this.localModels.Append(lastModel);
+			continue;
+		}
+
+		if (token.data == "interAreaPortals") {
+			dlog(DEBUG_RENDERWORLD_LOAD, "interAreaPortals\n");
+			this.ParseInterAreaPortals(src);
+			continue;
+		}
+
+		if (token.data == "nodes") {
+			dlog(DEBUG_RENDERWORLD_LOAD, "nodes\n");
+			this.ParseNodes(src);
+			continue;
+		}
+
+		src.Error("idRenderWorldLocal::InitFromMap: bad token \"%s\"", token.c_str());
+	}
+
+	$delete(src);
+
+	// if it was a trivial map without any areas, create a single area
+	if (!this.numPortalAreas) {
+		this.ClearWorld();
+	}
+
+	// find the points where we can early-our of reference pushing into the BSP tree
+	this.CommonChildrenArea_r(this.areaNodes[0]);
+
+	this.AddWorldModelEntities();
+	this.ClearPortalStates();
+
+	// done!
+	return true;
+}
+
+/*
+=====================
+idRenderWorldLocal::ClearPortalStates
+=====================
+*/
+ClearPortalStates  (): void {
+	var /*int*/i: number, j: number;
+
+	// all portals start off open
+	for (i = 0; i < this.numInterAreaPortals; i++) {
+		this.doublePortals[i].blockingBits = portalConnection_t.PS_BLOCK_NONE;
+	}
+
+	// flood fill all area connections
+	for (i = 0; i < this.numPortalAreas; i++) {
+		for (j = 0; j < NUM_PORTAL_ATTRIBUTES; j++) {
+			this.connectedAreaNum++;
+			todoThrow ( );
+			//this.FloodConnectedAreas(this.portalAreas[i], j);
+		}
+	}
+}
+
+/*
+=====================
+idRenderWorldLocal::AddWorldModelEntities
+=====================
+*/
+AddWorldModelEntities  (): void {
+	var /*int		*/i: number;
+
+	// add the world model for each portal area
+	// we can't just call AddEntityDef, because that would place the references
+	// based on the bounding box, rather than explicitly into the correct area
+	for (i = 0; i < this.numPortalAreas; i++) {
+		var def: idRenderEntityLocal;
+		var /*int			*/index: number;
+
+		def = new idRenderEntityLocal;
+
+		// try and reuse a free spot
+		index = this.entityDefs.FindNull();
+		if (index == -1) {
+			index = this.entityDefs.Append(def);
+		} else {
+			this.entityDefs[index] = def;
+		}
+
+		def.index = index;
+		def.world = this;
+
+		def.parms.hModel = renderModelManager.FindModel(va("_area%i", i));
+		if (def.parms.hModel.IsDefaultModel() || !def.parms.hModel.IsStaticWorldModel()) {
+			common.Error("idRenderWorldLocal::InitFromMap: bad area model lookup");
+		}
+
+		var hModel: idRenderModel = def.parms.hModel;
+
+		for (var j = 0; j < hModel.NumSurfaces(); j++) {
+			var surf: modelSurface_t = hModel.Surface(j);
+
+			if (surf.shader.GetName() == ("textures/smf/portal_sky")) {
+				def.needsPortalSky = true;
+			}
+		}
+
+		def.referenceBounds = def.parms.hModel.Bounds();
+
+		def.parms.axis[0][0] = 1;
+		def.parms.axis[1][1] = 1;
+		def.parms.axis[2][2] = 1;
+
+		R_AxisToModelMatrix(def.parms.axis, def.parms.origin, def.modelMatrix);
+
+		// in case an explicit shader is used on the world, we don't
+		// want it to have a 0 alpha or color
+		def.parms.shaderParms[0] =
+		def.parms.shaderParms[1] =
+		def.parms.shaderParms[2] =
+		def.parms.shaderParms[3] = 1;
+
+		this.AddEntityRefToArea(def, this.portalAreas[i]);
+	}
+}
+//
+///*
+//=====================
+//CheckAreaForPortalSky
+//=====================
+//*/
+//bool idRenderWorldLocal::CheckAreaForPortalSky( int areaNum ) {
+//	areaReference_t	*ref;
+//
+//	assert( areaNum >= 0 && areaNum < this.numPortalAreas );
+//
+//	for ( ref = this.portalAreas[areaNum].entityRefs.areaNext; ref.entity; ref = ref.areaNext ) {
+//		assert( ref.area == &this.portalAreas[areaNum] );
+//
+//		if ( ref.entity && ref.entity.needsPortalSky ) {
+//			return true;
+//		}
+//	}
+//
+//	return false;
+//}
+
+
+
+
+
+
+
+
+// RenderWorld_portals.cpp:
+
+
+
+
+///*
+//===================
+//idRenderWorldLocal::ScreenRectForWinding
+//===================
+//*/
+//idScreenRect idRenderWorldLocal::ScreenRectFromWinding( const idWinding *w, viewEntity_t *space ) {
+//	idScreenRect	r;
+//	int				i;
+//	idVec3			v;
+//	idVec3			ndc;
+//	float			windowX, windowY;
+//
+//	r.Clear();
+//	for ( i = 0 ; i < w.GetNumPoints() ; i++ ) {
+//		R_LocalPointToGlobal( space.modelMatrix, (*w)[i].ToVec3(), v );
+//		R_GlobalToNormalizedDeviceCoordinates( v, ndc );
+//
+//		windowX = 0.5f * ( 1.0f + ndc[0] ) * ( tr.viewDef.viewport.x2 - tr.viewDef.viewport.x1 );
+//		windowY = 0.5f * ( 1.0f + ndc[1] ) * ( tr.viewDef.viewport.y2 - tr.viewDef.viewport.y1 );
+//
+//		r.AddPoint( windowX, windowY );
+//	}
+//
+//	r.Expand();
+//
+//	return r;
+//}
+//
+///*
+//===================
+//PortalIsFoggedOut
+//===================
+//*/
+//bool idRenderWorldLocal::PortalIsFoggedOut( const portal_t *p ) {
+//	idRenderLightLocal	*ldef;
+//	const idWinding	*w;
+//	int			i;
+//	idPlane		forward;
+//
+//	ldef = p.doublePortal.fogLight;
+//	if ( !ldef ) {
+//		return false;
+//	}
+//
+//	// find the current density of the fog
+//	const idMaterial	*lightShader = ldef.lightShader;
+//	int		size = sizeof( float ) *lightShader.GetNumRegisters();
+//	float	*regs =(float *)_alloca( size );
+//
+//	lightShader.EvaluateRegisters( regs, ldef.parms.shaderParms, tr.viewDef, ldef.parms.referenceSound );
+//
+//	const shaderStage_t	*stage = lightShader.GetStage(0);
+//
+//	float alpha = regs[ stage.color.registers[3] ];
+//
+//
+//	// if they left the default value on, set a fog distance of 500
+//	float	a;
+//
+//	if ( alpha <= 1.0f ) {
+//		a = -0.5f / DEFAULT_FOG_DISTANCE;
+//	} else {
+//		// otherwise, distance = alpha color
+//		a = -0.5f / alpha;
+//	}
+//
+//	forward[0] = a * tr.viewDef.worldSpace.modelViewMatrix[2];
+//	forward[1] = a * tr.viewDef.worldSpace.modelViewMatrix[6];
+//	forward[2] = a * tr.viewDef.worldSpace.modelViewMatrix[10];
+//	forward[3] = a * tr.viewDef.worldSpace.modelViewMatrix[14];
+//
+//	w = p.w;
+//	for ( i = 0 ; i < w.GetNumPoints() ; i++ ) {
+//		float	d;
+//
+//		d = forward.Distance( (*w)[i].ToVec3() );
+//		if ( d < 0.5f ) {
+//			return false;		// a point not clipped off
+//		}
+//	}
+//
+//	return true;
+//}
+//
+///*
+//===================
+//FloodViewThroughArea_r
+//===================
+//*/
+//void idRenderWorldLocal::FloodViewThroughArea_r( const idVec3 origin, int areaNum, 
+//								 const struct portalStack_s *ps ) {
+//	portal_t*		p;
+//	float			d;
+//	portalArea_t *	area;
+//	const portalStack_t	*check;
+//	portalStack_t	newStack;
+//	int				i, j;
+//	idVec3			v1, v2;
+//	int				addPlanes;
+//	idFixedWinding	w;		// we won't overflow because MAX_PORTAL_PLANES = 20
+//
+//	area = &portalAreas[ areaNum ];
+//
+//	// cull models and lights to the current collection of planes
+//	AddAreaRefs( areaNum, ps );
+//
+//	if ( areaScreenRect[areaNum].IsEmpty() ) {
+//		areaScreenRect[areaNum] = ps.rect;
+//	} else {
+//		areaScreenRect[areaNum].Union( ps.rect );
+//	}
+//
+//	// go through all the portals
+//	for ( p = area.portals; p; p = p.next ) {
+//		// an enclosing door may have sealed the portal off
+//		if ( p.doublePortal.blockingBits & PS_BLOCK_VIEW ) {
+//			continue;
+//		}
+//
+//		// make sure this portal is facing away from the view
+//		d = p.plane.Distance( origin );
+//		if ( d < -0.1f ) {
+//			continue;
+//		}
+//
+//		// make sure the portal isn't in our stack trace,
+//		// which would cause an infinite loop
+//		for ( check = ps; check; check = check.next ) {
+//			if ( check.p == p ) {
+//				break;		// don't recursively enter a stack
+//			}
+//		}
+//		if ( check ) {
+//			continue;	// already in stack
+//		}
+//
+//		// if we are very close to the portal surface, don't bother clipping
+//		// it, which tends to give epsilon problems that make the area vanish
+//		if ( d < 1.0f ) {
+//
+//			// go through this portal
+//			newStack = *ps;
+//			newStack.p = p;
+//			newStack.next = ps;
+//			FloodViewThroughArea_r( origin, p.intoArea, &newStack );
+//			continue;
+//		}
+//
+//		// clip the portal winding to all of the planes
+//		w = *p.w;
+//		for ( j = 0; j < ps.numPortalPlanes; j++ ) {
+//			if ( !w.ClipInPlace( -ps.portalPlanes[j], 0 ) ) {
+//				break;
+//			}
+//		}
+//		if ( !w.GetNumPoints() ) {
+//			continue;	// portal not visible
+//		}
+//
+//		// see if it is fogged out
+//		if ( PortalIsFoggedOut( p ) ) {
+//			continue;
+//		}
+//
+//		// go through this portal
+//		newStack.p = p;
+//		newStack.next = ps;
+//
+//		// find the screen pixel bounding box of the remaining portal
+//		// so we can scissor things outside it
+//		newStack.rect = ScreenRectFromWinding( &w, &tr.identitySpace );
+//		
+//		// slop might have spread it a pixel outside, so trim it back
+//		newStack.rect.Intersect( ps.rect );
+//
+//		// generate a set of clipping planes that will further restrict
+//		// the visible view beyond just the scissor rect
+//
+//		addPlanes = w.GetNumPoints();
+//		if ( addPlanes > MAX_PORTAL_PLANES ) {
+//			addPlanes = MAX_PORTAL_PLANES;
+//		}
+//
+//		newStack.numPortalPlanes = 0;
+//		for ( i = 0; i < addPlanes; i++ ) {
+//			j = i+1;
+//			if ( j == w.GetNumPoints() ) {
+//				j = 0;
+//			}
+//
+//			v1 = origin - w[i].ToVec3();
+//			v2 = origin - w[j].ToVec3();
+//
+//			newStack.portalPlanes[newStack.numPortalPlanes].Normal().Cross( v2, v1 );
+//
+//			// if it is degenerate, skip the plane
+//			if ( newStack.portalPlanes[newStack.numPortalPlanes].Normalize() < 0.01f ) {
+//				continue;
+//			}
+//			newStack.portalPlanes[newStack.numPortalPlanes].FitThroughPoint( origin );
+//
+//			newStack.numPortalPlanes++;
+//		}
+//
+//		// the last stack plane is the portal plane
+//		newStack.portalPlanes[newStack.numPortalPlanes] = p.plane;
+//		newStack.numPortalPlanes++;
+//
+//		FloodViewThroughArea_r( origin, p.intoArea, &newStack );
+//	}
+//}
+//
+///*
+//=======================
+//FlowViewThroughPortals
+//
+//Finds viewLights and viewEntities by flowing from an origin through the visible portals.
+//origin point can see into.  The planes array defines a volume (positive
+//sides facing in) that should contain the origin, such as a view frustum or a point light box.
+//Zero planes assumes an unbounded volume.
+//=======================
+//*/
+//void idRenderWorldLocal::FlowViewThroughPortals( const idVec3 origin, int numPlanes, const idPlane *planes ) {
+//	portalStack_t	ps;
+//	int				i;
+//
+//	ps.next = NULL;
+//	ps.p = NULL;
+//
+//	for ( i = 0 ; i < numPlanes ; i++ ) {
+//		ps.portalPlanes[i] = planes[i];
+//	}
+//
+//	ps.numPortalPlanes = numPlanes;
+//	ps.rect = tr.viewDef.scissor;
+//
+//	if ( tr.viewDef.areaNum < 0 ){
+//
+//		for ( i = 0; i < numPortalAreas; i++ ) {
+//			areaScreenRect[i] = tr.viewDef.scissor;
+//		}
+//
+//		// if outside the world, mark everything
+//		for ( i = 0 ; i < numPortalAreas ; i++ ) {
+//			AddAreaRefs( i, &ps );
+//		}
+//	} else {
+//
+//		for ( i = 0; i < numPortalAreas; i++ ) {
+//			areaScreenRect[i].Clear();
+//		}
+//
+//		// flood out through portals, setting area viewCount
+//		FloodViewThroughArea_r( origin, tr.viewDef.areaNum, &ps );
+//	}
+//}
+//
+////==================================================================================================
+//
+//
+///*
+//===================
+//FloodLightThroughArea_r
+//===================
+//*/
+//void idRenderWorldLocal::FloodLightThroughArea_r( idRenderLightLocal *light, int areaNum, 
+//								 const struct portalStack_s *ps ) {
+//	portal_t*		p;
+//	float			d;
+//	portalArea_t *	area;
+//	const portalStack_t	*check, *firstPortalStack;
+//	portalStack_t	newStack;
+//	int				i, j;
+//	idVec3			v1, v2;
+//	int				addPlanes;
+//	idFixedWinding	w;		// we won't overflow because MAX_PORTAL_PLANES = 20
+//
+//	area = &portalAreas[ areaNum ];
+//
+//	// add an areaRef
+//	AddLightRefToArea( light, area );	
+//
+//	// go through all the portals
+//	for ( p = area.portals; p; p = p.next ) {
+//		// make sure this portal is facing away from the view
+//		d = p.plane.Distance( light.globalLightOrigin );
+//		if ( d < -0.1f ) {
+//			continue;
+//		}
+//
+//		// make sure the portal isn't in our stack trace,
+//		// which would cause an infinite loop
+//		for ( check = ps; check; check = check.next ) {
+//			firstPortalStack = check;
+//			if ( check.p == p ) {
+//				break;		// don't recursively enter a stack
+//			}
+//		}
+//		if ( check ) {
+//			continue;	// already in stack
+//		}
+//
+//		// if we are very close to the portal surface, don't bother clipping
+//		// it, which tends to give epsilon problems that make the area vanish
+//		if ( d < 1.0f ) {
+//			// go through this portal
+//			newStack = *ps;
+//			newStack.p = p;
+//			newStack.next = ps;
+//			FloodLightThroughArea_r( light, p.intoArea, &newStack );
+//			continue;
+//		}
+//
+//		// clip the portal winding to all of the planes
+//		w = *p.w;
+//		for ( j = 0; j < ps.numPortalPlanes; j++ ) {
+//			if ( !w.ClipInPlace( -ps.portalPlanes[j], 0 ) ) {
+//				break;
+//			}
+//		}
+//		if ( !w.GetNumPoints() ) {
+//			continue;	// portal not visible
+//		}
+//		// also always clip to the original light planes, because they aren't
+//		// necessarily extending to infinitiy like a view frustum
+//		for ( j = 0; j < firstPortalStack.numPortalPlanes; j++ ) {
+//			if ( !w.ClipInPlace( -firstPortalStack.portalPlanes[j], 0 ) ) {
+//				break;
+//			}
+//		}
+//		if ( !w.GetNumPoints() ) {
+//			continue;	// portal not visible
+//		}
+//
+//		// go through this portal
+//		newStack.p = p;
+//		newStack.next = ps;
+//
+//		// generate a set of clipping planes that will further restrict
+//		// the visible view beyond just the scissor rect
+//
+//		addPlanes = w.GetNumPoints();
+//		if ( addPlanes > MAX_PORTAL_PLANES ) {
+//			addPlanes = MAX_PORTAL_PLANES;
+//		}
+//
+//		newStack.numPortalPlanes = 0;
+//		for ( i = 0; i < addPlanes; i++ ) {
+//			j = i+1;
+//			if ( j == w.GetNumPoints() ) {
+//				j = 0;
+//			}
+//
+//			v1 = light.globalLightOrigin - w[i].ToVec3();
+//			v2 = light.globalLightOrigin - w[j].ToVec3();
+//
+//			newStack.portalPlanes[newStack.numPortalPlanes].Normal().Cross( v2, v1 );
+//
+//			// if it is degenerate, skip the plane
+//			if ( newStack.portalPlanes[newStack.numPortalPlanes].Normalize() < 0.01f ) {
+//				continue;
+//			}
+//			newStack.portalPlanes[newStack.numPortalPlanes].FitThroughPoint( light.globalLightOrigin );
+//
+//			newStack.numPortalPlanes++;
+//		}
+//
+//		FloodLightThroughArea_r( light, p.intoArea, &newStack );
+//	}
+//}
+//
+//
+///*
+//=======================
+//FlowLightThroughPortals
+//
+//Adds an arearef in each area that the light center flows into.
+//This can only be used for shadow casting lights that have a generated
+//prelight, because shadows are cast from back side which may not be in visible areas.
+//=======================
+//*/
+//void idRenderWorldLocal::FlowLightThroughPortals( idRenderLightLocal *light ) {
+//	portalStack_t	ps;
+//	int				i;
+//	const idVec3 origin = light.globalLightOrigin;
+//
+//	// if the light origin areaNum is not in a valid area,
+//	// the light won't have any area refs
+//	if ( light.areaNum == -1 ) {
+//		return;
+//	}
+//
+//	memset( &ps, 0, sizeof( ps ) );
+//
+//	ps.numPortalPlanes = 6;
+//	for ( i = 0 ; i < 6 ; i++ ) {
+//		ps.portalPlanes[i] = light.frustum[i];
+//	}
+//
+//	FloodLightThroughArea_r( light, light.areaNum, &ps );
+//}
+//
+////======================================================================================================
+//
+///*
+//===================
+//idRenderWorldLocal::FloodFrustumAreas_r
+//===================
+//*/
+//areaNumRef_t *idRenderWorldLocal::FloodFrustumAreas_r( const idFrustum &frustum, const int areaNum, const idBounds &bounds, areaNumRef_t *areas ) {
+//	portal_t *p;
+//	portalArea_t *portalArea;
+//	idBounds newBounds;
+//	areaNumRef_t *a;
+//
+//	portalArea = &portalAreas[ areaNum ];
+//
+//	// go through all the portals
+//	for ( p = portalArea.portals; p; p = p.next ) {
+//
+//		// check if we already visited the area the portal leads to
+//		for ( a = areas; a; a = a.next ) {
+//			if ( a.areaNum == p.intoArea ) {
+//				break;
+//			}
+//		}
+//		if ( a ) {
+//			continue;
+//		}
+//
+//		// the frustum origin must be at the front of the portal plane
+//		if ( p.plane.Side( frustum.GetOrigin(), 0.1f ) == SIDE_BACK ) {
+//			continue;
+//		}
+//
+//		// the frustum must cross the portal plane
+//		if ( frustum.PlaneSide( p.plane, 0.0f ) != PLANESIDE_CROSS ) {
+//			continue;
+//		}
+//
+//		// get the bounds for the portal winding projected in the frustum
+//		frustum.ProjectionBounds( *p.w, newBounds );
+//
+//		newBounds.IntersectSelf( bounds );
+//
+//		if ( newBounds[0][0] > newBounds[1][0] || newBounds[0][1] > newBounds[1][1] || newBounds[0][2] > newBounds[1][2] ) {
+//			continue;
+//		}
+//
+//		newBounds[1][0] = frustum.GetFarDistance();
+//
+//		a = areaNumRefAllocator.Alloc();
+//		a.areaNum = p.intoArea;
+//		a.next = areas;
+//		areas = a;
+//
+//		areas = FloodFrustumAreas_r( frustum, p.intoArea, newBounds, areas );
+//	}
+//
+//	return areas;
+//}
+//
+///*
+//===================
+//idRenderWorldLocal::FloodFrustumAreas
+//
+//  Retrieves all the portal areas the frustum floods into where the frustum starts in the given areas.
+//  All portals are assumed to be open.
+//===================
+//*/
+//areaNumRef_t *idRenderWorldLocal::FloodFrustumAreas( const idFrustum &frustum, areaNumRef_t *areas ) {
+//	idBounds bounds;
+//	areaNumRef_t *a;
+//
+//	// bounds that cover the whole frustum
+//	bounds[0].Set( frustum.GetNearDistance(), -1.0f, -1.0f );
+//	bounds[1].Set( frustum.GetFarDistance(), 1.0f, 1.0f );
+//
+//	for ( a = areas; a; a = a.next ) {
+//		areas = FloodFrustumAreas_r( frustum, a.areaNum, bounds, areas );
+//	}
+//
+//	return areas;
+//}
+//
+//
+///*
+//=======================================================================
+//
+//R_FindViewLightsAndEntities
+//
+//=======================================================================
+//*/
+//
+///*
+//================
+//CullEntityByPortals
+//
+//Return true if the entity reference bounds do not intersect the current portal chain.
+//================
+//*/
+//bool idRenderWorldLocal::CullEntityByPortals( const idRenderEntityLocal *entity, const portalStack_t *ps ) {
+//
+//	if ( !r_useEntityCulling.GetBool() ) {
+//		return false;
+//	}
+//
+//	// try to cull the entire thing using the reference bounds.
+//	// we do not yet do callbacks or dynamic model creation,
+//	// because we want to do all touching of the model after
+//	// we have determined all the lights that may effect it,
+//	// which optimizes cache usage
+//	if ( R_CullLocalBox( entity.referenceBounds, entity.modelMatrix,
+//							ps.numPortalPlanes, ps.portalPlanes ) ) {
+//		return true;
+//	}
+//
+//	return false;
+//}
+//
+///*
+//===================
+//AddAreaEntityRefs
+//
+//Any models that are visible through the current portalStack will
+//have their scissor 
+//===================
+//*/
+//void idRenderWorldLocal::AddAreaEntityRefs( int areaNum, const portalStack_t *ps ) {
+//	areaReference_t		*ref;
+//	idRenderEntityLocal	*entity;
+//	portalArea_t		*area;
+//	viewEntity_t		*vEnt;
+//	idBounds			b;
+//
+//	area = &portalAreas[ areaNum ];
+//
+//	for ( ref = area.entityRefs.areaNext ; ref != &area.entityRefs ; ref = ref.areaNext ) {
+//		entity = ref.entity;
+//
+//		// debug tool to allow viewing of only one entity at a time
+//		if ( r_singleEntity.GetInteger() >= 0 && r_singleEntity.GetInteger() != entity.index ) {
+//			continue;
+//		}
+//
+//		// remove decals that are completely faded away
+//		R_FreeEntityDefFadedDecals( entity, tr.viewDef.renderView.time );
+//
+//		// check for completely suppressing the model
+//		if ( !r_skipSuppress.GetBool() ) {
+//			if ( entity.parms.suppressSurfaceInViewID
+//					&& entity.parms.suppressSurfaceInViewID == tr.viewDef.renderView.viewID ) {
+//				continue;
+//			}
+//			if ( entity.parms.allowSurfaceInViewID 
+//					&& entity.parms.allowSurfaceInViewID != tr.viewDef.renderView.viewID ) {
+//				continue;
+//			}
+//		}
+//
+//		// cull reference bounds
+//		if ( CullEntityByPortals( entity, ps ) ) {
+//			// we are culled out through this portal chain, but it might
+//			// still be visible through others
+//			continue;
+//		}
+//
+//		vEnt = R_SetEntityDefViewEntity( entity );
+//
+//		// possibly expand the scissor rect
+//		vEnt.scissorRect.Union( ps.rect );
+//	}
+//}
+//
+///*
+//================
+//CullLightByPortals
+//
+//Return true if the light frustum does not intersect the current portal chain.
+//The last stack plane is not used because lights are not near clipped.
+//================
+//*/
+//bool idRenderWorldLocal::CullLightByPortals( const idRenderLightLocal *light, const portalStack_t *ps ) {
+//	int				i, j;
+//	const srfTriangles_t	*tri;
+//	float			d;
+//	idFixedWinding	w;		// we won't overflow because MAX_PORTAL_PLANES = 20
+//
+//	if ( r_useLightCulling.GetInteger() == 0 ) {
+//		return false;
+//	}
+//
+//	if ( r_useLightCulling.GetInteger() >= 2 ) {
+//		// exact clip of light faces against all planes
+//		for ( i = 0; i < 6; i++ ) {
+//			// the light frustum planes face out from the light,
+//			// so the planes that have the view origin on the negative
+//			// side will be the "back" faces of the light, which must have
+//			// some fragment inside the portalStack to be visible
+//			if ( light.frustum[i].Distance( tr.viewDef.renderView.vieworg ) >= 0 ) {
+//				continue;
+//			}
+//
+//			// get the exact winding for this side
+//			const idWinding *ow = light.frustumWindings[i];
+//
+//			// projected lights may have one of the frustums degenerated
+//			if ( !ow ) {
+//				continue;
+//			}
+//
+//			w = *ow;
+//
+//			// now check the winding against each of the portalStack planes
+//			for ( j = 0; j < ps.numPortalPlanes - 1; j++ ) {
+//				if ( !w.ClipInPlace( -ps.portalPlanes[j] ) ) {
+//					break;
+//				}
+//			}
+//
+//			if ( w.GetNumPoints() ) {
+//				// part of the winding is visible through the portalStack,
+//				// so the light is not culled
+//				return false;
+//			}
+//		}
+//		// none of the light surfaces were visible
+//		return true;
+//
+//	} else {
+//
+//		// simple point check against each plane
+//		tri = light.frustumTris;
+//
+//		// check against frustum planes
+//		for ( i = 0; i < ps.numPortalPlanes - 1; i++ ) {
+//			for ( j = 0; j < tri.numVerts; j++ ) {
+//				d = ps.portalPlanes[i].Distance( tri.verts[j].xyz );
+//				if ( d < 0.0f ) {
+//					break;	// point is inside this plane
+//				}
+//			}
+//			if ( j == tri.numVerts ) {
+//				// all points were outside one of the planes
+//				tr.pc.c_box_cull_out++;
+//				return true;
+//			}
+//		}
+//	}
+//
+//	return false;
+//}
+//
+///*
+//===================
+//AddAreaLightRefs
+//
+//This is the only point where lights get added to the viewLights list
+//===================
+//*/
+//void idRenderWorldLocal::AddAreaLightRefs( int areaNum, const portalStack_t *ps ) {
+//	areaReference_t		*lref;
+//	portalArea_t		*area;
+//	idRenderLightLocal			*light;
+//	viewLight_t			*vLight;
+//
+//	area = &portalAreas[ areaNum ];
+//
+//	for ( lref = area.lightRefs.areaNext ; lref != &area.lightRefs ; lref = lref.areaNext ) {
+//		light = lref.light;
+//
+//		// debug tool to allow viewing of only one light at a time
+//		if ( r_singleLight.GetInteger() >= 0 && r_singleLight.GetInteger() != light.index ) {
+//			continue;
+//		}
+//
+//		// check for being closed off behind a door
+//		// a light that doesn't cast shadows will still light even if it is behind a door
+//		if ( r_useLightCulling.GetInteger() >= 3 &&
+//				!light.parms.noShadows && light.lightShader.LightCastsShadows()
+//					&& light.areaNum != -1 && !tr.viewDef.connectedAreas[ light.areaNum ] ) {
+//			continue;
+//		}
+//
+//		// cull frustum
+//		if ( CullLightByPortals( light, ps ) ) {
+//			// we are culled out through this portal chain, but it might
+//			// still be visible through others
+//			continue;
+//		}
+//
+//		vLight = R_SetLightDefViewLight( light );
+//
+//		// expand the scissor rect
+//		vLight.scissorRect.Union( ps.rect );
+//	}
+//}
+//
+///*
+//===================
+//AddAreaRefs
+//
+//This may be entered multiple times with different planes
+//if more than one portal sees into the area
+//===================
+//*/
+//void idRenderWorldLocal::AddAreaRefs( int areaNum, const portalStack_t *ps ) {
+//	// mark the viewCount, so r_showPortals can display the
+//	// considered portals
+//	portalAreas[ areaNum ].viewCount = tr.viewCount;
+//
+//	// add the models and lights, using more precise culling to the planes
+//	AddAreaEntityRefs( areaNum, ps );
+//	AddAreaLightRefs( areaNum, ps );
+//}
+//
+///*
+//===================
+//BuildConnectedAreas_r
+//===================
+//*/
+//void idRenderWorldLocal::BuildConnectedAreas_r( int areaNum ) {
+//	portalArea_t	*area;
+//	portal_t		*portal;
+//
+//	if ( tr.viewDef.connectedAreas[areaNum] ) {
+//		return;
+//	}
+//
+//	tr.viewDef.connectedAreas[areaNum] = true;
+//
+//	// flood through all non-blocked portals
+//	area = &portalAreas[ areaNum ];
+//	for ( portal = area.portals ; portal ; portal = portal.next ) {
+//		if ( !(portal.doublePortal.blockingBits & PS_BLOCK_VIEW) ) {
+//			BuildConnectedAreas_r( portal.intoArea );
+//		}
+//	}
+//}
+//
+///*
+//===================
+//BuildConnectedAreas
+//
+//This is only valid for a given view, not all views in a frame
+//===================
+//*/
+//void idRenderWorldLocal::BuildConnectedAreas( void ) {
+//	int		i;
+//
+//	tr.viewDef.connectedAreas = (bool *)R_FrameAlloc( numPortalAreas
+//		* sizeof( tr.viewDef.connectedAreas[0] ) );
+//
+//	// if we are outside the world, we can see all areas
+//	if ( tr.viewDef.areaNum == -1 ) {
+//		for ( i = 0 ; i < numPortalAreas ; i++ ) {
+//			tr.viewDef.connectedAreas[i] = true;
+//		}
+//		return;
+//	}
+//
+//	// start with none visible, and flood fill from the current area
+//	memset( tr.viewDef.connectedAreas, 0, numPortalAreas * sizeof( tr.viewDef.connectedAreas[0] ) );
+//	BuildConnectedAreas_r( tr.viewDef.areaNum );
+//}
+//
+///*
+//=============
+//FindViewLightsAndEntites
+//
+//All the modelrefs and lightrefs that are in visible areas
+//will have viewEntitys and viewLights created for them.
+//
+//The scissorRects on the viewEntitys and viewLights may be empty if
+//they were considered, but not actually visible.
+//=============
+//*/
+//void idRenderWorldLocal::FindViewLightsAndEntities( void ) {
+//	// clear the visible lightDef and entityDef lists
+//	tr.viewDef.viewLights = NULL;
+//	tr.viewDef.viewEntitys = NULL;
+//
+//	// find the area to start the portal flooding in
+//	if ( !r_usePortals.GetBool() ) {
+//		// debug tool to force no portal culling
+//		tr.viewDef.areaNum = -1;
+//	} else {
+//		tr.viewDef.areaNum = PointInArea( tr.viewDef.initialViewAreaOrigin );
+//	}
+//
+//	// determine all possible connected areas for
+//	// light-behind-door culling
+//	BuildConnectedAreas();
+//
+//	// bump the view count, invalidating all
+//	// visible areas
+//	tr.viewCount++;
+//
+//	// flow through all the portals and add models / lights
+//	if ( r_singleArea.GetBool() ) {
+//		// if debugging, only mark this area
+//		// if we are outside the world, don't draw anything
+//		if ( tr.viewDef.areaNum >= 0 ) {
+//			portalStack_t	ps;
+//			int				i;
+//			static int lastPrintedAreaNum;
+//
+//			if ( tr.viewDef.areaNum != lastPrintedAreaNum ) {
+//				lastPrintedAreaNum = tr.viewDef.areaNum;
+//				common.Printf( "entering portal area %i\n", tr.viewDef.areaNum );
+//			}
+//
+//			for ( i = 0 ; i < 5 ; i++ ) {
+//				ps.portalPlanes[i] = tr.viewDef.frustum[i];
+//			}
+//			ps.numPortalPlanes = 5;
+//			ps.rect = tr.viewDef.scissor;
+//
+//			AddAreaRefs( tr.viewDef.areaNum, &ps );
+//		}
+//	} else {
+//		// note that the center of projection for flowing through portals may
+//		// be a different point than initialViewAreaOrigin for subviews that
+//		// may have the viewOrigin in a solid/invalid area
+//		FlowViewThroughPortals( tr.viewDef.renderView.vieworg, 5, tr.viewDef.frustum );
+//	}
+//}
+//
+///*
+//==============
+//NumPortals
+//==============
+//*/
+//int idRenderWorldLocal::NumPortals( void ) const {
+//	return numInterAreaPortals;
+//}
+//
+///*
+//==============
+//FindPortal
+//
+//Game code uses this to identify which portals are inside doors.
+//Returns 0 if no portal contacts the bounds
+//==============
+//*/
+//qhandle_t idRenderWorldLocal::FindPortal( const idBounds &b ) const {
+//	int				i, j;
+//	idBounds		wb;
+//	doublePortal_t	*portal;
+//	idWinding		*w;
+//
+//	for ( i = 0 ; i < numInterAreaPortals ; i++ ) {
+//		portal = &doublePortals[i];
+//		w = portal.portals[0].w;
+//
+//		wb.Clear();
+//		for ( j = 0 ; j < w.GetNumPoints() ; j++ ) {
+//			wb.AddPoint( (*w)[j].ToVec3() );
+//		}
+//		if ( wb.IntersectsBounds( b ) ) {
+//			return i + 1;
+//		}
+//	}
+//
+//	return 0;
+//}
+
+/*
+=============
+FloodConnectedAreas
+=============
+*/
+FloodConnectedAreas  (area: portalArea_t, /*int */portalAttributeIndex: number): void {
+		if (area.connectedAreaNum[portalAttributeIndex] == this.connectedAreaNum) {
+			return;
+		}
+		area.connectedAreaNum[portalAttributeIndex] = this.connectedAreaNum;
+
+		for (var p = area.portals; p; p = p.next) {
+			if (!(p.doublePortal.blockingBits & (1 << portalAttributeIndex))) {
+				this.FloodConnectedAreas(this.portalAreas[p.intoArea], portalAttributeIndex);
+			}
+		}
+	}
+
+/*
+//==============
+//AreasAreConnected
+//
+//==============
+//*/
+//bool	idRenderWorldLocal::AreasAreConnected( int areaNum1, int areaNum2, portalConnection_t connection ) {
+//	if ( areaNum1 == -1 || areaNum2 == -1 ) {
+//		return false;
+//	}
+//	if ( areaNum1 > numPortalAreas || areaNum2 > numPortalAreas || areaNum1 < 0 || areaNum2 < 0 ) {
+//		common.Error( "idRenderWorldLocal::AreAreasConnected: bad parms: %i, %i", areaNum1, areaNum2 );
+//	}
+//
+//	int	attribute = 0;
+//
+//	int	intConnection = (int)connection;
+//
+//	while ( intConnection > 1 ) {
+//		attribute++;
+//		intConnection >>= 1;
+//	}
+//	if ( attribute >= NUM_PORTAL_ATTRIBUTES || ( 1 << attribute ) != (int)connection ) {
+//		common.Error( "idRenderWorldLocal::AreasAreConnected: bad connection number: %i\n", (int)connection );
+//	}
+//
+//	return portalAreas[areaNum1].connectedAreaNum[attribute] == portalAreas[areaNum2].connectedAreaNum[attribute];
+//}
+//
+//
+///*
+//==============
+//SetPortalState
+//
+//doors explicitly close off portals when shut
+//==============
+//*/
+//void		idRenderWorldLocal::SetPortalState( qhandle_t portal, int blockTypes ) {
+//	if ( portal == 0 ) {
+//		return;
+//	}
+//
+//	if ( portal < 1 || portal > numInterAreaPortals ) {
+//		common.Error( "SetPortalState: bad portal number %i", portal );
+//	}
+//	int	old = doublePortals[portal-1].blockingBits;
+//	if ( old == blockTypes ) {
+//		return;
+//	}
+//	doublePortals[portal-1].blockingBits = blockTypes;
+//
+//	// leave the connectedAreaGroup the same on one side,
+//	// then flood fill from the other side with a new number for each changed attribute
+//	for ( int i = 0 ; i < NUM_PORTAL_ATTRIBUTES ; i++ ) {
+//		if ( ( old ^ blockTypes ) & ( 1 << i ) ) {
+//			connectedAreaNum++;
+//			FloodConnectedAreas( &portalAreas[doublePortals[portal-1].portals[1].intoArea], i );
+//		}
+//	}
+//
+//	if ( session.writeDemo ) {
+//		session.writeDemo.WriteInt( DS_RENDER );
+//		session.writeDemo.WriteInt( DC_SET_PORTAL_STATE );
+//		session.writeDemo.WriteInt( portal );
+//		session.writeDemo.WriteInt( blockTypes );
+//	}
+//}
+//
+///*
+//==============
+//GetPortalState
+//==============
+//*/
+//int		idRenderWorldLocal::GetPortalState( qhandle_t portal ) {
+//	if ( portal == 0 ) {
+//		return 0;
+//	}
+//
+//	if ( portal < 1 || portal > numInterAreaPortals ) {
+//		common.Error( "GetPortalState: bad portal number %i", portal );
+//	}
+//
+//	return doublePortals[portal-1].blockingBits;
+//}
+//
+///*
+//=====================
+//idRenderWorldLocal::ShowPortals
+//
+//Debugging tool, won't work correctly with SMP or when mirrors are present
+//=====================
+//*/
+//void idRenderWorldLocal::ShowPortals() {
+//#if !defined(GL_ES_VERSION_2_0)	/* XXX */
+//	int			i, j;
+//	portalArea_t	*area;
+//	portal_t	*p;
+//	idWinding	*w;
+//
+//	// flood out through portals, setting area viewCount
+//	for ( i = 0 ; i < numPortalAreas ; i++ ) {
+//		area = &portalAreas[i];
+//		if ( area.viewCount != tr.viewCount ) {
+//			continue;
+//		}
+//		for ( p = area.portals ; p ; p = p.next ) {
+//			w = p.w;
+//			if ( !w ) {
+//				continue;
+//			}
+//
+//			if ( portalAreas[ p.intoArea ].viewCount != tr.viewCount ) {
+//				// red = can't see
+//				glColor3f( 1, 0, 0 );
+//			} else {
+//				// green = see through
+//				glColor3f( 0, 1, 0 );
+//			}
+//
+//			glBegin( GL_LINE_LOOP );
+//			for ( j = 0 ; j < w.GetNumPoints() ; j++ ) {
+//				glVertex3fv( (*w)[j].ToFloatPtr() );
+//			}
+//			glEnd();
+//		}
+//	}
+//#endif
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
 ///*
 //===============
 //R_GlobalShaderOverride

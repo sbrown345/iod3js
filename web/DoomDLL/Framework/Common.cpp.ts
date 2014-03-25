@@ -3122,4 +3122,4 @@ idCommonLocal::InitGame
 }
 
 var commonLocal = new idCommonLocal();
-var common = commonLocal;
+var common: idCommonLocal = commonLocal;
