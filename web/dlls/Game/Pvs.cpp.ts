@@ -139,20 +139,20 @@ class idPVS {
 ////#endif
 ////
 ////private:
-	numAreas:number;					 ////	int					
-	numPortals:number;					 ////	int					
-	connectedAreas:boolean[];				 ////	bool *				
-	areaQueue:Int32Array;					 ////	int *				
-	areaPVS:Uint8Array;					 ////	byte *				
+	numAreas: number; ////	int					
+	numPortals: number; ////	int					
+	connectedAreas: boolean[]; ////	bool *				
+	areaQueue: Int32Array; ////	int *				
+	areaPVS: Uint8Array; ////	byte *				
 	// current PVS for a specific source possibly taking portal states (open/closed) into account
-	currentPVS = newStructArray<pvsCurrent_t>(pvsCurrent_t ,MAX_CURRENT_PVS);
+	currentPVS = newStructArray<pvsCurrent_t>( pvsCurrent_t, MAX_CURRENT_PVS );
 	// used to create PVS
-	portalVisBytes:number;		 ////	int					
-	portalVisLongs:number;		 ////	int					
-	areaVisBytes:number;		 ////	int					
-	areaVisLongs:number;		 ////	int					
-	pvsPortals: pvsPortal_t[];			 ////	struct pvsPortal_s *
-	pvsAreas: pvsArea_t[];			 ////	struct pvsArea_s *	
+	portalVisBytes: number; ////	int					
+	portalVisLongs: number; ////	int					
+	areaVisBytes: number; ////	int					
+	areaVisLongs: number; ////	int					
+	pvsPortals: pvsPortal_t[]; ////	struct pvsPortal_s *
+	pvsAreas: pvsArea_t[]; ////	struct pvsArea_s *	
 ////
 ////private:
 ////	int					GetPortalCount(void) const;
@@ -203,231 +203,233 @@ idPVS::idPVS
 idPVS::~idPVS
 ================
 */
-	destructor(): void {
+	destructor ( ): void {
 		todoThrow ( );
 		//this.Shutdown ( );
 	}
 
-/////*
-////================
-////idPVS::GetPortalCount
-////================
-////*/
-////int idPVS::GetPortalCount( ) const {
-////	int i, na, np;
-////
-////	na = gameRenderWorld.NumAreas();
-////	np = 0;
-////	for ( i = 0; i < na; i++ ) {
-////		np += gameRenderWorld.NumPortalsInArea( i );
-////	}
-////	return np;
-////}
-////
-/////*
-////================
-////idPVS::CreatePVSData
-////================
-////*/
-////void idPVS::CreatePVSData( ) {
-////	int i, j, n, cp;
-////	exitPortal_t portal;
-////	pvsArea_t *area;
-////	pvsPortal_t *p, **portalPtrs;
-////
-////	if ( !this.numPortals ) {
-////		return;
-////	}
-////
-////	this.pvsPortals = new pvsPortal_t[this.numPortals];
-////	this.pvsAreas = new pvsArea_t[this.numAreas];
-////	memset( this.pvsAreas, 0, this.numAreas * sizeof( *this.pvsAreas ) );
-////
-////	cp = 0;
-////	portalPtrs = new pvsPortal_t*[this.numPortals];
-////
-////	for ( i = 0; i < this.numAreas; i++ ) {
-////
-////		area = &this.pvsAreas[i];
-////		area.bounds.Clear();
-////		area.portals = portalPtrs + cp;
-////
-////		n = gameRenderWorld.NumPortalsInArea( i );
-////
-////		for ( j = 0; j < n; j++ ) {
-////
-////			portal = gameRenderWorld.GetPortal( i, j );
-////
-////			p = &this.pvsPortals[cp++];
-////			// the winding goes counter clockwise seen from this area
-////			p.w = portal.w.Copy();
-////			p.areaNum = portal.areas[1];	// area[1] is always the area the portal leads to
-////
-////			p.vis = new byte[this.portalVisBytes];
-////			memset( p.vis, 0, this.portalVisBytes );
-////			p.mightSee = new byte[this.portalVisBytes];
-////			memset( p.mightSee, 0, this.portalVisBytes );
-////			p.w.GetBounds( p.bounds );
-////			p.w.GetPlane( p.plane );
-////			// plane normal points to outside the area
-////			p.plane = -p.plane;
-////			// no PVS calculated for this portal yet
-////			p.done = false;
-////
-////			area.portals[area.numPortals] = p;
-////			area.numPortals++;
-////
-////			area.bounds += p.bounds;
-////		}
-////	}
-////}
-////
-/////*
-////================
-////idPVS::DestroyPVSData
-////================
-////*/
-////void idPVS::DestroyPVSData( ) {
-////	var/*int */i:number;
-////
-////	if ( !this.pvsAreas ) {
-////		return;
-////	}
-////
-////	// delete portal pointer array
-////	delete[] this.pvsAreas[0].portals;
-////
-////	// delete all areas
-////	delete[] this.pvsAreas;
-////	this.pvsAreas = null;
-////
-////	// delete portal data
-////	for ( i = 0; i < this.numPortals; i++ ) {
-////		delete[] this.pvsPortals[i].vis;
-////		delete[] this.pvsPortals[i].mightSee;
-////		delete this.pvsPortals[i].w;
-////	}
-////
-////	// delete portals
-////	delete[] this.pvsPortals;
-////	this.pvsPortals = null;
-////}
-////
-/////*
-////================
-////idPVS::FloodFrontPortalPVS_r
-////================
-////*/
-////void idPVS::FloodFrontPortalPVS_r( pvsPortal_t *portal, int areaNum ) const {
-////	int i, n;
-////	pvsArea_t *area;
-////	pvsPortal_t *p;
-////
-////	area = &this.pvsAreas[ areaNum ];
-////
-////	for ( i = 0; i < area.numPortals; i++ ) {
-////		p = area.portals[i];
-////		n = p - this.pvsPortals;
-////		// don't flood through if this portal is not at the front
-////		if ( !( portal.mightSee[ n>>3 ] & (1 << (n&7)) ) ) {
-////			continue;
-////		}
-////		// don't flood through if already visited this portal
-////		if ( portal.vis[ n>>3 ] & (1 << (n&7)) ) {
-////			continue;
-////		}
-////		// this portal might be visible
-////		portal.vis[ n>>3 ] |= (1 << (n&7));
-////		// flood through the portal
-////		FloodFrontPortalPVS_r( portal, p.areaNum );
-////	}
-////}
-////
-/////*
-////================
-////idPVS::FrontPortalPVS
-////================
-////*/
-////void idPVS::FrontPortalPVS( ) const {
-////	int i, j, k, n, p, side1, side2, areaSide;
-////	pvsPortal_t *p1, *p2;
-////	pvsArea_t *area;
-////
-////	for ( i = 0; i < this.numPortals; i++ ) {
-////		p1 = &this.pvsPortals[i];
-////
-////		for ( j = 0; j < this.numAreas; j++ ) {
-////
-////			area = &this.pvsAreas[j];
-////
-////			areaSide = side1 = area.bounds.PlaneSide( p1.plane );
-////
-////			// if the whole area is at the back side of the portal
-////			if ( areaSide == PLANESIDE_BACK ) {
-////				continue;
-////			}
-////
-////			for ( p = 0; p < area.numPortals; p++ ) {
-////	
-////				p2 = area.portals[p];
-////
-////				// if we the whole area is not at the front we need to check
-////				if ( areaSide != PLANESIDE_FRONT ) {
-////					// if the second portal is completely at the back side of the first portal
-////					side1 = p2.bounds.PlaneSide( p1.plane );
-////					if ( side1 == PLANESIDE_BACK ) {
-////						continue;
-////					}
-////				}
-////
-////				// if the first portal is completely at the front of the second portal
-////				side2 = p1.bounds.PlaneSide( p2.plane );
-////				if ( side2 == PLANESIDE_FRONT ) {
-////					continue;
-////				}
-////
-////				// if the second portal is not completely at the front of the first portal
-////				if ( side1 != PLANESIDE_FRONT ) {
-////					// more accurate check
-////					for ( k = 0; k < p2.w.GetNumPoints(); k++ ) {
-////						// if more than an epsilon at the front side
-////						if ( p1.plane.Side( (*p2.w)[k].ToVec3(), ON_EPSILON ) == PLANESIDE_FRONT ) {
-////							break;
-////						}
-////					}
-////					if ( k >= p2.w.GetNumPoints() ) {
-////						continue;	// second portal is at the back of the first portal
-////					}
-////				}
-////
-////				// if the first portal is not completely at the back side of the second portal
-////				if ( side2 != PLANESIDE_BACK ) {
-////					// more accurate check
-////					for ( k = 0; k < p1.w.GetNumPoints(); k++ ) {
-////						// if more than an epsilon at the back side
-////						if ( p2.plane.Side( (*p1.w)[k].ToVec3(), ON_EPSILON ) == PLANESIDE_BACK ) {
-////							break;
-////						}
-////					}
-////					if ( k >= p1.w.GetNumPoints() ) {
-////						continue;	// first portal is at the front of the second portal
-////					}
-////				}
-////
-////				// the portal might be visible at the front
-////				n = p2 - this.pvsPortals;
-////				p1.mightSee[ n >> 3 ] |= 1 << (n&7);
-////			}
-////		}
-////	}
-////
-////	// flood the front portal pvs for all portals
-////	for ( i = 0; i < this.numPortals; i++ ) {
-////		p1 = &this.pvsPortals[i];
-////		FloodFrontPortalPVS_r( p1, p1.areaNum );
-////	}
-////}
-////
+/*
+================
+idPVS::GetPortalCount
+================
+*/
+	GetPortalCount ( ): number /*int*/ {
+		var /*int */i: number, na: number, np: number;
+
+		na = gameRenderWorld.NumAreas ( );
+		np = 0;
+		for ( i = 0; i < na; i++ ) {
+			np += gameRenderWorld.NumPortalsInArea( i );
+		}
+		return np;
+	}
+
+/*
+================
+idPVS::CreatePVSData
+================
+*/
+	CreatePVSData ( ): void {
+		var /*int */i: number, j: number, n: number, cp: number;
+		var portal = new exitPortal_t;
+		var area: pvsArea_t;
+		var p: pvsPortal_t, portalPtrs: pvsPortal_t [];
+
+		if ( !this.numPortals ) {
+			return;
+		}
+
+		this.pvsPortals = new pvsPortal_t[this.numPortals];
+		this.pvsAreas = new pvsArea_t[this.numAreas];
+		clearStructArray( this.pvsAreas ); //memset( this.pvsAreas, 0, this.numAreas * sizeof( *this.pvsAreas ) );
+
+		//cp = 0;
+		//portalPtrs = newStructArray<pvsPortal_t>( pvsPortal_t, this.numPortals ); //new pvsPortal_t*[this.numPortals];
+
+		//for ( i = 0; i < this.numAreas; i++ ) {
+
+		//	area = this.pvsAreas[i];
+		//	area.bounds.Clear();
+		//	todoThrow ( );
+		//	area.portals = portalPtrs[cp];
+
+		//	n = gameRenderWorld.NumPortalsInArea( i );
+
+		//	for ( j = 0; j < n; j++ ) {
+
+		//		portal = gameRenderWorld.GetPortal( i, j );
+
+		//		p = this.pvsPortals[cp++];
+		//		// the winding goes counter clockwise seen from this area
+		//		p.w = portal.w.Copy();
+		//		p.areaNum = portal.areas[1];	// area[1] is always the area the portal leads to
+
+		//		p.vis = new byte[this.portalVisBytes];
+		//		memset( p.vis, 0, this.portalVisBytes );
+		//		p.mightSee = new byte[this.portalVisBytes];
+		//		memset( p.mightSee, 0, this.portalVisBytes );
+		//		p.w.GetBounds( p.bounds );
+		//		p.w.GetPlane( p.plane );
+		//		// plane normal points to outside the area
+		//		p.plane.opEquals( p.plane.opUnaryMinus ( ) );
+		//		// no PVS calculated for this portal yet
+		//		p.done = false;
+
+		//		area.portals[area.numPortals] = p;
+		//		area.numPortals++;
+
+		//		area.bounds.opAdditionAssignment( p.bounds );
+		//	}
+		//}
+	}
+
+/*
+================
+idPVS::DestroyPVSData
+================
+*/
+	DestroyPVSData ( ): void {
+		var /*int */i: number;
+
+		if ( !this.pvsAreas ) {
+			return;
+		}
+		todoThrow ( );
+		//// delete portal pointer array
+		//$deleteArray( this.pvsAreas[0].portals );
+
+		//// delete all areas
+		//$deleteArray(this.pvsAreas);
+		//this.pvsAreas = null;
+
+		//// delete portal data
+		//for ( i = 0; i < this.numPortals; i++ ) {
+		//	delete[] this.pvsPortals[i].vis;
+		//	delete[] this.pvsPortals[i].mightSee;
+		//	delete this.pvsPortals[i].w;
+		//}
+
+		//// delete portals
+		//delete[] this.pvsPortals;
+		//this.pvsPortals = null;
+	}
+
+/*
+================
+idPVS::FloodFrontPortalPVS_r
+================
+*/
+	FloodFrontPortalPVS_r ( portal: pvsPortal_t, /*int */areaNum: number ): void {
+		var /*int */i: number, n: number;
+		var area: pvsArea_t;
+		var p: pvsPortal_t;
+
+		area = this.pvsAreas[areaNum];
+
+		for ( i = 0; i < area.numPortals; i++ ) {
+			p = area.portals[i];
+			todoThrow ( );
+			//n = p - this.pvsPortals; //todo is this i??
+			//// don't flood through if this portal is not at the front
+			//if ( !( portal.mightSee[n >> 3] & ( 1 << ( n & 7 ) ) ) ) {
+			//	continue;
+			//}
+			//// don't flood through if already visited this portal
+			//if ( portal.vis[n >> 3] & ( 1 << ( n & 7 ) ) ) {
+			//	continue;
+			//}
+			//// this portal might be visible
+			//portal.vis[n >> 3] |= ( 1 << ( n & 7 ) );
+			//// flood through the portal
+			//this.FloodFrontPortalPVS_r( portal, p.areaNum );
+		}
+	}
+
+/*
+================
+idPVS::FrontPortalPVS
+================
+*/
+	FrontPortalPVS ( ): void {
+		var /*int */i: number, j: number, k: number, n: number, p: number, side1: number, side2: number, areaSide: number;
+		var p1: pvsPortal_t, p2: pvsPortal_t;
+		var area: pvsArea_t;
+
+		for ( i = 0; i < this.numPortals; i++ ) {
+			p1 = this.pvsPortals[i];
+
+			for ( j = 0; j < this.numAreas; j++ ) {
+
+				area = this.pvsAreas[j];
+
+				areaSide = side1 = area.bounds.PlaneSide( p1.plane );
+
+				// if the whole area is at the back side of the portal
+				if ( areaSide == PLANESIDE_BACK ) {
+					continue;
+				}
+
+				for ( p = 0; p < area.numPortals; p++ ) {
+
+					p2 = area.portals[p];
+
+					// if we the whole area is not at the front we need to check
+					if ( areaSide != PLANESIDE_FRONT ) {
+						// if the second portal is completely at the back side of the first portal
+						side1 = p2.bounds.PlaneSide( p1.plane );
+						if ( side1 == PLANESIDE_BACK ) {
+							continue;
+						}
+					}
+
+					// if the first portal is completely at the front of the second portal
+					side2 = p1.bounds.PlaneSide( p2.plane );
+					if ( side2 == PLANESIDE_FRONT ) {
+						continue;
+					}
+
+					// if the second portal is not completely at the front of the first portal
+					if ( side1 != PLANESIDE_FRONT ) {
+						// more accurate check
+						for ( k = 0; k < p2.w.GetNumPoints ( ); k++ ) {
+							// if more than an epsilon at the front side
+							if ( p1.plane.Side( ( p2.w )[k].ToVec3 ( ), ON_EPSILON ) == PLANESIDE_FRONT ) {
+								break;
+							}
+						}
+						if ( k >= p2.w.GetNumPoints ( ) ) {
+							continue; // second portal is at the back of the first portal
+						}
+					}
+
+					// if the first portal is not completely at the back side of the second portal
+					if ( side2 != PLANESIDE_BACK ) {
+						// more accurate check
+						for ( k = 0; k < p1.w.GetNumPoints ( ); k++ ) {
+							// if more than an epsilon at the back side
+							if ( p2.plane.Side( ( p1.w )[k].ToVec3 ( ), ON_EPSILON ) == PLANESIDE_BACK ) {
+								break;
+							}
+						}
+						if ( k >= p1.w.GetNumPoints ( ) ) {
+							continue; // first portal is at the front of the second portal
+						}
+					}
+
+					// the portal might be visible at the front
+					todoThrow("n = p2 - this.pvsPortals;")
+					p1.mightSee[n >> 3] |= 1 << ( n & 7 );
+				}
+			}
+		}
+
+		// flood the front portal pvs for all portals
+		for ( i = 0; i < this.numPortals; i++ ) {
+			p1 = this.pvsPortals[i];
+			this.FloodFrontPortalPVS_r( p1, p1.areaNum );
+		}
+	}
+
 /////*
 ////===============
 ////idPVS::FloodPassagePVS_r
@@ -515,44 +517,45 @@ idPVS::~idPVS
 ////
 ////	return stack;
 ////}
-////
-/////*
-////===============
-////idPVS::PassagePVS
-////===============
-////*/
-////void idPVS::PassagePVS( ) const {
-////	var/*int */i:number;
-////	pvsPortal_t *source;
-////	pvsStack_t *stack, *s;
-////
-////	// create the passages
-////	CreatePassages();
-////
-////	// allocate first stack entry
-////	stack = reinterpret_cast<pvsStack_t*>(new byte[sizeof(pvsStack_t) + this.portalVisBytes]);
-////	stack.mightSee = (reinterpret_cast<byte *>(stack)) + sizeof(pvsStack_t);
-////	stack.next = null;
-////
-////	// calculate portal PVS by flooding through the passages
-////	for ( i = 0; i < this.numPortals; i++ ) {
-////		source = &this.pvsPortals[i];
-////		memset( source.vis, 0, this.portalVisBytes );
-////		memcpy( stack.mightSee, source.mightSee, this.portalVisBytes );
-////		FloodPassagePVS_r( source, source, stack );
-////		source.done = true;
-////	}
-////
-////	// free the allocated stack
-////	for ( s = stack; s; s = stack ) {
-////		stack = stack.next;
-////		delete[] s;
-////	}
-////
-////	// destroy the passages
-////	DestroyPassages();
-////}
-////
+
+/*
+===============
+idPVS::PassagePVS
+===============
+*/
+PassagePVS( ) :void {
+	var/*int */i:number;
+	var source: pvsPortal_t ;
+	var stack: pvsStack_t, s: pvsStack_t ;
+	todoThrow ( );
+	//// create the passages
+	//this.CreatePassages();
+
+	//// allocate first stack entry
+	//stack = reinterpret_cast<pvsStack_t*>(new byte[sizeof(pvsStack_t) + this.portalVisBytes]);
+	//stack.mightSee = (reinterpret_cast<byte *>(stack)) + sizeof(pvsStack_t);
+	//stack.next = null;
+
+	//// calculate portal PVS by flooding through the passages
+	//for ( i = 0; i < this.numPortals; i++ ) {
+	//	source = &this.pvsPortals[i];
+	//	memset( source.vis, 0, this.portalVisBytes );
+	//	memcpy( stack.mightSee, source.mightSee, this.portalVisBytes );
+	//	FloodPassagePVS_r( source, source, stack );
+	//	source.done = true;
+	//}
+
+	//// free the allocated stack
+	//for ( s = stack; s; s = stack ) {
+	//	stack = stack.next;
+	//	$delete( s );
+	//	//delete[] s;
+	//}
+
+	//// destroy the passages
+	//DestroyPassages();
+}
+
 /////*
 ////===============
 ////idPVS::AddPassageBoundaries
@@ -817,86 +820,87 @@ idPVS::~idPVS
 ////		delete[] p.passages;
 ////	}
 ////}
-////
-/////*
-////================
-////idPVS::CopyPortalPVSToMightSee
-////================
-////*/
-////void idPVS::CopyPortalPVSToMightSee( ) const {
-////	var/*int */i:number;
-////	pvsPortal_t *p;
-////
-////	for ( i = 0; i < this.numPortals; i++ ) {
-////		p = &this.pvsPortals[i];
-////		memcpy( p.mightSee, p.vis, this.portalVisBytes );
-////	}
-////}
-////
-/////*
-////================
-////idPVS::AreaPVSFromPortalPVS
-////================
-////*/
-////int idPVS::AreaPVSFromPortalPVS( ) const {
-////	int i, j, k, areaNum, totalVisibleAreas;
-////	long *p1, *p2;
-////	byte *pvs, *portalPVS;
-////	pvsArea_t *area;
-////
-////	totalVisibleAreas = 0;
-////
-////	if ( !this.numPortals ) {
-////		return totalVisibleAreas;
-////	}
-////
-////	memset( this.areaPVS, 0, this.numAreas * this.areaVisBytes );
-////
-////	for ( i = 0; i < this.numAreas; i++ ) {
-////		area = &this.pvsAreas[i];
-////		pvs = this.areaPVS + i * this.areaVisBytes;
-////
-////		// the area is visible to itself
-////		pvs[ i >> 3 ] |= 1 << (i & 7);
-////
-////		if ( !area.numPortals ) {
-////			continue;
-////		}
-////
-////		// store the PVS of all portals in this area at the first portal
-////		for ( j = 1; j < area.numPortals; j++ ) {
-////			p1 = reinterpret_cast<long *>(area.portals[0].vis);
-////			p2 = reinterpret_cast<long *>(area.portals[j].vis);
-////			for ( k = 0; k < this.portalVisLongs; k++ ) {
-////				*p1++ |= *p2++;
-////			}
-////		}
-////
-////		// the portals of this area are always visible
-////		for ( j = 0; j < area.numPortals; j++ ) {
-////			k = area.portals[j] - this.pvsPortals;
-////			area.portals[0].vis[ k >> 3 ] |= 1 << (k & 7);
-////		}
-////
-////		// set all areas to visible that can be seen from the portals of this area
-////		portalPVS = area.portals[0].vis;
-////		for ( j = 0; j < this.numPortals; j++ ) {
-////			// if this portal is visible
-////			if ( portalPVS[j>>3] & (1 << (j&7)) ) {
-////				areaNum = this.pvsPortals[j].areaNum;
-////				pvs[ areaNum >> 3 ] |= 1 << (areaNum & 7);
-////			}
-////		}
-////
-////		// count the number of visible areas
-////		for ( j = 0; j < this.numAreas; j++ ) {
-////			if ( pvs[j>>3] & (1 << (j&7)) ) {
-////				totalVisibleAreas++;
-////			}
-////		}
-////	}
-////	return totalVisibleAreas;
-////}
+
+/*
+================
+idPVS::CopyPortalPVSToMightSee
+================
+*/
+	CopyPortalPVSToMightSee ( ): void {
+		var /*int */i: number;
+		var p: pvsPortal_t;
+
+		for ( i = 0; i < this.numPortals; i++ ) {
+			p = this.pvsPortals[i];
+			memcpy( p.mightSee, p.vis, this.portalVisBytes );
+		}
+	}
+
+/*
+================
+idPVS::AreaPVSFromPortalPVS
+================
+*/
+	AreaPVSFromPortalPVS ( ): number /*int*/ {
+		todoThrow ( );
+		var /*int */i: number, j: number, k: number, areaNum: number, totalVisibleAreas: number;
+		//var long *p1, *p2;
+		//byte *pvs, *portalPVS;
+		//pvsArea_t *area;
+
+		//totalVisibleAreas = 0;
+
+		//if ( !this.numPortals ) {
+		//	return totalVisibleAreas;
+		//}
+
+		//memset( this.areaPVS, 0, this.numAreas * this.areaVisBytes );
+
+		//for ( i = 0; i < this.numAreas; i++ ) {
+		//	area = &this.pvsAreas[i];
+		//	pvs = this.areaPVS + i * this.areaVisBytes;
+
+		//	// the area is visible to itself
+		//	pvs[ i >> 3 ] |= 1 << (i & 7);
+
+		//	if ( !area.numPortals ) {
+		//		continue;
+		//	}
+
+		//	// store the PVS of all portals in this area at the first portal
+		//	for ( j = 1; j < area.numPortals; j++ ) {
+		//		p1 = reinterpret_cast<long *>(area.portals[0].vis);
+		//		p2 = reinterpret_cast<long *>(area.portals[j].vis);
+		//		for ( k = 0; k < this.portalVisLongs; k++ ) {
+		//			*p1++ |= *p2++;
+		//		}
+		//	}
+
+		//	// the portals of this area are always visible
+		//	for ( j = 0; j < area.numPortals; j++ ) {
+		//		k = area.portals[j] - this.pvsPortals;
+		//		area.portals[0].vis[ k >> 3 ] |= 1 << (k & 7);
+		//	}
+
+		//	// set all areas to visible that can be seen from the portals of this area
+		//	portalPVS = area.portals[0].vis;
+		//	for ( j = 0; j < this.numPortals; j++ ) {
+		//		// if this portal is visible
+		//		if ( portalPVS[j>>3] & (1 << (j&7)) ) {
+		//			areaNum = this.pvsPortals[j].areaNum;
+		//			pvs[ areaNum >> 3 ] |= 1 << (areaNum & 7);
+		//		}
+		//	}
+
+		//	// count the number of visible areas
+		//	for ( j = 0; j < this.numAreas; j++ ) {
+		//		if ( pvs[j>>3] & (1 << (j&7)) ) {
+		//			totalVisibleAreas++;
+		//		}
+		//	}
+		//}
+		return totalVisibleAreas;
+	}
 
 /*
 ================

@@ -976,67 +976,68 @@ NULL's out it's entry in the world list
 NumAreas
 ===================
 */
-	NumAreas  ( ): Number /*int*/ {
+	NumAreas  ( ): number /*int*/ {
 		return this.numPortalAreas;
 	}
 
-///*
-//===================
-//NumPortalsInArea
-//===================
-//*/
-//int idRenderWorldLocal::NumPortalsInArea( int areaNum ) {
-//	portalArea_t	*area;
-//	int				count;
-//	portal_t		*portal;
-//
-//	if ( areaNum >= this.numPortalAreas || areaNum < 0 ) {
-//		common.Error( "idRenderWorld::NumPortalsInArea: bad areanum %i", areaNum );
-//	}
-//	area = &this.portalAreas[areaNum];
-//
-//	count = 0;
-//	for ( portal = area.portals ; portal ; portal = portal.next ) {
-//		count++;
-//	}
-//	return count;
-//}
-//
-///*
-//===================
-//GetPortal
-//===================
-//*/
-//exitPortal_t idRenderWorldLocal::GetPortal( int areaNum, int portalNum ) {
-//	portalArea_t	*area;
-//	int				count;
-//	portal_t		*portal;
-//	exitPortal_t	ret;
-//
-//	if ( areaNum > this.numPortalAreas ) {
-//		common.Error( "idRenderWorld::GetPortal: areaNum > numAreas" );
-//	}
-//	area = &this.portalAreas[areaNum];
-//
-//	count = 0;
-//	for ( portal = area.portals ; portal ; portal = portal.next ) {
-//		if ( count == portalNum ) {
-//			ret.areas[0] = areaNum;
-//			ret.areas[1] = portal.intoArea;
-//			ret.w = portal.w;
-//			ret.blockingBits = portal.doublePortal.blockingBits;
-//			ret.portalHandle = portal.doublePortal - this.doublePortals + 1;
-//			return ret;
-//		}
-//		count++;
-//	}
-//
-//	common.Error( "idRenderWorld::GetPortal: portalNum > numPortals" );
-//
-//	memset( &ret, 0, sizeof( ret ) );
-//	return ret;
-//}
-//
+/*
+===================
+NumPortalsInArea
+===================
+*/
+	NumPortalsInArea ( /*int */areaNum: number ): number {
+		var area: portalArea_t;
+		var /*int				*/count: number;
+		var portal: portal_t;
+
+		if ( areaNum >= this.numPortalAreas || areaNum < 0 ) {
+			common.Error( "idRenderWorld::NumPortalsInArea: bad areanum %i", areaNum );
+		}
+		area = this.portalAreas[areaNum];
+
+		count = 0;
+		for ( portal = area.portals; portal; portal = portal.next ) {
+			count++;
+		}
+		return count;
+	}
+
+/*
+===================
+GetPortal
+===================
+*/
+	GetPortal ( /*int */areaNum: number, /*int */portalNum: number ): exitPortal_t {
+		var area: portalArea_t;
+		var count: number /*int*/;
+		var portal: portal_t;
+		var ret = new exitPortal_t;
+
+		if ( areaNum > this.numPortalAreas ) {
+			common.Error( "idRenderWorld::GetPortal: areaNum > numAreas" );
+		}
+		area = this.portalAreas[areaNum];
+
+		count = 0;
+		for ( portal = area.portals; portal; portal = portal.next ) {
+			if ( count == portalNum ) {
+				ret.areas[0] = areaNum;
+				ret.areas[1] = portal.intoArea;
+				ret.w = portal.w;
+				todoThrow ( );
+				//ret.blockingBits = portal.doublePortal.blockingBits;
+				//ret.portalHandle = portal.doublePortal - this.doublePortals + 1;
+				return ret;
+			}
+			count++;
+		}
+
+		common.Error( "idRenderWorld::GetPortal: portalNum > numPortals" );
+
+		ret.memset0 ( );
+		return ret;
+	}
+
 ///*
 //===============
 //PointInAreaNum

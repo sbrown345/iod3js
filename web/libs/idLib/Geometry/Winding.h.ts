@@ -129,25 +129,19 @@ class idWinding {
 //	virtual bool	ReAllocate( int n, bool keep = false );
 //};
 //
-//ID_INLINE idWinding::idWinding( ) {
-//	this.numPoints = this.allocedSize = 0;
-//	this.p = NULL;
-//}
-//
-//ID_INLINE idWinding::idWinding( int n ) {
-//	this.numPoints = this.allocedSize = 0;
-//	this.p = NULL;
-//	this.EnsureAlloced( n );
-//}
-
 	constructor ( n: number=null ) {
 		this.numPoints = this.allocedSize = 0;
 		this.p = null;
-		if ( n ) {
+		if ( typeof n === "number" ) {
 			this.EnsureAlloced( n );
 		}
 	}
-//
+
+	memset0(): void {
+		this.numPoints = this.allocedSize = 0;
+		this.p = null;
+	}
+
 //ID_INLINE idWinding::idWinding( const idVec3 *verts, const int n ) {
 //	int i;
 //

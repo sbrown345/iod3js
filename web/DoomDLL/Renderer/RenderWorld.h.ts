@@ -283,17 +283,25 @@ class renderView_t {
 	}
 }
 
-//
-//
-//// exitPortal_t is returned by idRenderWorld::GetPortal()
-//typedef struct {
-//	int					areas[2];		// areas connected by this portal
-//	const idWinding	*	w;				// winding points have counter clockwise ordering seen from areas[0]
-//	int					blockingBits;	// PS_BLOCK_VIEW, PS_BLOCK_AIR, etc
-//	qhandle_t			portalHandle;
-//} exitPortal_t;
-//
-//
+
+
+// exitPortal_t is returned by idRenderWorld::GetPortal()
+class exitPortal_t {
+	areas = new Int32Array( 2 ); // areas connected by this portal
+	w: idWinding; // winding points have counter clockwise ordering seen from areas[0]
+	blockingBits: number /*int*/; // PS_BLOCK_VIEW, PS_BLOCK_AIR, etc
+	portalHandle: number /**/;
+
+	memset0 ( ): void {
+		this.areas[0] = 0;
+		this.areas[1] = 0;
+		this.w.memset0();
+		this.blockingBits = 0;
+		this.portalHandle = 0;
+	}
+}
+
+
 //// guiPoint_t is returned by idRenderWorld::GuiTrace()
 //typedef struct {
 //	float				x, y;			// 0.0 to 1.0 range if trace hit a gui, otherwise -1

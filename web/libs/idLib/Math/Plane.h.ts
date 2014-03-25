@@ -389,19 +389,17 @@ class idPlane {
 		return this.a * v.x + this.b * v.y + this.c * v.z + this.d;
 	}
 
-	//ID_INLINE int idPlane::Side( const idVec3 &v, const float epsilon ) const {
-	//	float dist = Distance( v );
-	//	if ( dist > epsilon ) {
-	//		return PLANESIDE_FRONT;
-	//	}
-	//	else if ( dist < -epsilon ) {
-	//		return PLANESIDE_BACK;
-	//	}
-	//	else {
-	//		return PLANESIDE_ON;
-	//	}
-	//}
-	//
+	Side ( v: idVec3, epsilon = 0.0 ): number /*int*/ {
+		var /*float */dist = this.Distance( v );
+		if ( dist > epsilon ) {
+			return PLANESIDE_FRONT;
+		} else if ( dist < -epsilon ) {
+			return PLANESIDE_BACK;
+		} else {
+			return PLANESIDE_ON;
+		}
+	}
+
 	//ID_INLINE bool idPlane::LineIntersection( start:idVec3, end:idVec3 ) const {
 	//	float d1, d2, fraction;
 	//

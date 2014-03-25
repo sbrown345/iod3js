@@ -234,7 +234,7 @@ Zero( ):void {
 }
 
 //ID_INLINE idVec3 idBounds::GetCenter( ) const {
-//	return idVec3( ( this.b[1][0] + this.b[0][0] ) * 0.5f, ( this.b[1][1] + this.b[0][1] ) * 0.5f, ( this.b[1][2] + this.b[0][2] ) * 0.5f );
+//	return idVec3( ( this.b[1][0] + this.b[0][0] ) * 0.5, ( this.b[1][1] + this.b[0][1] ) * 0.5, ( this.b[1][2] + this.b[0][2] ) * 0.5 );
 //}
 
 //ID_INLINE float idBounds::GetVolume( ) const {
@@ -393,7 +393,7 @@ Zero( ):void {
 
 //ID_INLINE idSphere idBounds::ToSphere( ) const {
 //	idSphere sphere;
-//	sphere.SetOrigin( ( this.b[0] + this.b[1] ) * 0.5f );
+//	sphere.SetOrigin( ( this.b[0] + this.b[1] ) * 0.5 );
 //	sphere.SetRadius( ( this.b[1] - sphere.GetOrigin() ).Length() );
 //	return sphere;
 //}
@@ -402,13 +402,13 @@ Zero( ):void {
 //	float d1, d2;
 //	idVec3 center, extents;
 
-//	center = ( this.b[0] + this.b[1] ) * 0.5f;
+//	center = ( this.b[0] + this.b[1] ) * 0.5;
 //	extents = this.b[1] - center;
 
 //	d1 = dir * center;
-//	d2 = idMath::Fabs( extents[0] * dir[0] ) +
-//			idMath::Fabs( extents[1] * dir[1] ) +
-//				idMath::Fabs( extents[2] * dir[2] );
+//	d2 = idMath.Fabs( extents[0] * dir[0] ) +
+//			idMath.Fabs( extents[1] * dir[1] ) +
+//				idMath.Fabs( extents[2] * dir[2] );
 
 //	min = d1 - d2;
 //	max = d1 + d2;
@@ -418,14 +418,14 @@ Zero( ):void {
 //	float d1, d2;
 //	idVec3 center, extents;
 
-//	center = ( this.b[0] + this.b[1] ) * 0.5f;
+//	center = ( this.b[0] + this.b[1] ) * 0.5;
 //	extents = this.b[1] - center;
 //	center = origin + center * axis;
 
 //	d1 = dir * center;
-//	d2 = idMath::Fabs( extents[0] * ( dir * axis[0] ) ) +
-//			idMath::Fabs( extents[1] * ( dir * axis[1] ) ) +
-//				idMath::Fabs( extents[2] * ( dir * axis[2] ) );
+//	d2 = idMath.Fabs( extents[0] * ( dir * axis[0] ) ) +
+//			idMath.Fabs( extents[1] * ( dir * axis[1] ) ) +
+//				idMath.Fabs( extents[2] * ( dir * axis[2] ) );
 
 //	min = d1 - d2;
 //	max = d1 + d2;
@@ -439,7 +439,7 @@ Zero( ):void {
 
 ////idBounds bounds_zero(vec3_zero, vec3_zero);
 
-	///*
+///*
 //============
 //idBounds::GetRadius
 //============
@@ -450,8 +450,8 @@ Zero( ):void {
 
 //	total = 0.0;
 //	for (i = 0; i < 3; i++) {
-//		b0 = (float)idMath::Fabs(b[0][i]);
-//		b1 = (float)idMath::Fabs(b[1][i]);
+//		b0 = (float)idMath.Fabs(this.b[0][i]);
+//		b1 = (float)idMath.Fabs(this.b[1][i]);
 //		if (b0 > b1) {
 //			total += b0 * b0;
 //		}
@@ -462,7 +462,7 @@ Zero( ):void {
 //	return idMath::Sqrt(total);
 //}
 
-	///*
+///*
 //============
 //idBounds::GetRadius
 //============
@@ -473,8 +473,8 @@ Zero( ):void {
 
 //	total = 0.0;
 //	for (i = 0; i < 3; i++) {
-//		b0 = (float)idMath::Fabs(center[i] - this.b[0][i]);
-//		b1 = (float)idMath::Fabs(b[1][i] - center[i]);
+//		b0 = (float)idMath.Fabs(center[i] - this.b[0][i]);
+//		b1 = (float)idMath.Fabs(this.b[1][i] - center[i]);
 //		if (b0 > b1) {
 //			total += b0 * b0;
 //		}
@@ -485,7 +485,7 @@ Zero( ):void {
 //	return idMath::Sqrt(total);
 //}
 
-	///*
+///*
 //================
 //idBounds::PlaneDistance
 //================
@@ -494,12 +494,12 @@ Zero( ):void {
 //	idVec3 center;
 //	float d1, d2;
 
-//	center = (b[0] + this.b[1]) * 0.5f;
+//	center = (this.b[0] + this.b[1]) * 0.5;
 
 //	d1 = plane.Distance(center);
-//	d2 = idMath::Fabs((b[1][0] - center[0]) * plane.Normal()[0]) +
-//		idMath::Fabs((b[1][1] - center[1]) * plane.Normal()[1]) +
-//		idMath::Fabs((b[1][2] - center[2]) * plane.Normal()[2]);
+//	d2 = idMath.Fabs((this.b[1][0] - center[0]) * plane.Normal()[0]) +
+//		idMath.Fabs((this.b[1][1] - center[1]) * plane.Normal()[1]) +
+//		idMath.Fabs((this.b[1][2] - center[2]) * plane.Normal()[2]);
 
 //	if (d1 - d2 > 0.0) {
 //		return d1 - d2;
@@ -510,32 +510,32 @@ Zero( ):void {
 //	return 0.0;
 //}
 
-	///*
-//================
-//idBounds::PlaneSide
-//================
-//*/
-//int idBounds::PlaneSide(const idPlane &plane, const float epsilon) const {
-//	idVec3 center;
-//	float d1, d2;
+/*
+================
+idBounds::PlaneSide
+================
+*/
+	PlaneSide ( plane: idPlane, /*float*/ epsilon = ON_EPSILON ): number /*int*/ {
+		var center = new idVec3;
+		var /*float */d1: number, d2: number;
 
-//	center = (b[0] + this.b[1]) * 0.5f;
+		center.equals( ( this.b[0].opAddition( this.b[1] ) ).timesFloat( 0.5 ) );
 
-//	d1 = plane.Distance(center);
-//	d2 = idMath::Fabs((b[1][0] - center[0]) * plane.Normal()[0]) +
-//		idMath::Fabs((b[1][1] - center[1]) * plane.Normal()[1]) +
-//		idMath::Fabs((b[1][2] - center[2]) * plane.Normal()[2]);
+		d1 = plane.Distance( center );
+		d2 = idMath.Fabs( ( this.b[1][0] - center[0] ) * plane.Normal ( )[0] ) +
+			idMath.Fabs( ( this.b[1][1] - center[1] ) * plane.Normal ( )[1] ) +
+			idMath.Fabs( ( this.b[1][2] - center[2] ) * plane.Normal ( )[2] );
 
-//	if (d1 - d2 > epsilon) {
-//		return PLANESIDE_FRONT;
-//	}
-//	if (d1 + d2 < -epsilon) {
-//		return PLANESIDE_BACK;
-//	}
-//	return PLANESIDE_CROSS;
-//}
+		if ( d1 - d2 > epsilon ) {
+			return PLANESIDE_FRONT;
+		}
+		if ( d1 + d2 < -epsilon ) {
+			return PLANESIDE_BACK;
+		}
+		return PLANESIDE_CROSS;
+	}
 
-	///*
+///*
 //============
 //idBounds::LineIntersection
 
@@ -544,45 +544,45 @@ Zero( ):void {
 //*/
 //bool idBounds::LineIntersection(start:idVec3, end:idVec3) const {
 //	float ld[3];
-//	idVec3 center = (b[0] + this.b[1]) * 0.5f;
+//	idVec3 center = (this.b[0] + this.b[1]) * 0.5;
 //	idVec3 extents = this.b[1] - center;
-//	idVec3 lineDir = 0.5f * (end - start);
+//	idVec3 lineDir = 0.5 * (end - start);
 //	idVec3 lineCenter = start + lineDir;
 //	idVec3 dir = lineCenter - center;
 
-//	ld[0] = idMath::Fabs(lineDir[0]);
-//	if (idMath::Fabs(dir[0]) > extents[0] + ld[0]) {
+//	ld[0] = idMath.Fabs(lineDir[0]);
+//	if (idMath.Fabs(dir[0]) > extents[0] + ld[0]) {
 //		return false;
 //	}
 
-//	ld[1] = idMath::Fabs(lineDir[1]);
-//	if (idMath::Fabs(dir[1]) > extents[1] + ld[1]) {
+//	ld[1] = idMath.Fabs(lineDir[1]);
+//	if (idMath.Fabs(dir[1]) > extents[1] + ld[1]) {
 //		return false;
 //	}
 
-//	ld[2] = idMath::Fabs(lineDir[2]);
-//	if (idMath::Fabs(dir[2]) > extents[2] + ld[2]) {
+//	ld[2] = idMath.Fabs(lineDir[2]);
+//	if (idMath.Fabs(dir[2]) > extents[2] + ld[2]) {
 //		return false;
 //	}
 
 //	idVec3 cross = lineDir.Cross(dir);
 
-//	if (idMath::Fabs(cross[0]) > extents[1] * ld[2] + extents[2] * ld[1]) {
+//	if (idMath.Fabs(cross[0]) > extents[1] * ld[2] + extents[2] * ld[1]) {
 //		return false;
 //	}
 
-//	if (idMath::Fabs(cross[1]) > extents[0] * ld[2] + extents[2] * ld[0]) {
+//	if (idMath.Fabs(cross[1]) > extents[0] * ld[2] + extents[2] * ld[0]) {
 //		return false;
 //	}
 
-//	if (idMath::Fabs(cross[2]) > extents[0] * ld[1] + extents[1] * ld[0]) {
+//	if (idMath.Fabs(cross[2]) > extents[0] * ld[1] + extents[1] * ld[0]) {
 //		return false;
 //	}
 
 //	return true;
 //}
 
-	///*
+///*
 //============
 //idBounds::RayIntersection
 
@@ -613,7 +613,7 @@ Zero( ):void {
 //			continue;
 //		}
 //		f = (start[i] - this.b[side][i]);
-//		if (ax0 < 0 || idMath::Fabs(f) > idMath::Fabs(scale * dir[i])) {
+//		if (ax0 < 0 || idMath.Fabs(f) > idMath.Fabs(scale * dir[i])) {
 //			scale = -(f / dir[i]);
 //			ax0 = i;
 //		}
@@ -634,7 +634,7 @@ Zero( ):void {
 //		hit[ax2] >= this.b[0][ax2] && hit[ax2] <= this.b[1][ax2]);
 //}
 
-	///*
+///*
 //============
 //idBounds::FromTransformedBounds
 //============
@@ -643,13 +643,13 @@ Zero( ):void {
 //	int i;
 //	idVec3 center, extents, rotatedExtents;
 
-//	center = (bounds[0] + bounds[1]) * 0.5f;
+//	center = (bounds[0] + bounds[1]) * 0.5;
 //	extents = bounds[1] - center;
 
 //	for (i = 0; i < 3; i++) {
-//		rotatedExtents[i] = idMath::Fabs(extents[0] * axis[0][i]) +
-//			idMath::Fabs(extents[1] * axis[1][i]) +
-//			idMath::Fabs(extents[2] * axis[2][i]);
+//		rotatedExtents[i] = idMath.Fabs(extents[0] * axis[0][i]) +
+//			idMath.Fabs(extents[1] * axis[1][i]) +
+//			idMath.Fabs(extents[2] * axis[2][i]);
 //	}
 
 //	center = origin + center * axis;
@@ -657,7 +657,7 @@ Zero( ):void {
 //	this.b[1] = center + rotatedExtents;
 //}
 
-	///*
+///*
 //============
 //idBounds::FromPoints
 
@@ -665,10 +665,10 @@ Zero( ):void {
 //============
 //*/
 //void idBounds::FromPoints(const idVec3 *points, const int numPoints) {
-//	SIMDProcessor.MinMax(b[0], this.b[1], points, numPoints);
+//	SIMDProcessor.MinMax(this.b[0], this.b[1], points, numPoints);
 //}
 
-	///*
+///*
 //============
 //idBounds::FromPointTranslation
 
@@ -690,7 +690,7 @@ Zero( ):void {
 //	}
 //}
 
-	///*
+///*
 //============
 //idBounds::FromBoundsTranslation
 
@@ -717,7 +717,7 @@ Zero( ):void {
 //	}
 //}
 
-	///*
+///*
 //================
 //BoundsForPointRotation
 
@@ -763,7 +763,7 @@ Zero( ):void {
 //	return bounds;
 //}
 
-	///*
+///*
 //============
 //idBounds::FromPointRotation
 
@@ -773,7 +773,7 @@ Zero( ):void {
 //void idBounds::FromPointRotation(const idVec3 &point, const idRotation &rotation) {
 //	float radius;
 
-//	if (idMath::Fabs(rotation.GetAngle()) < 180.0f) {
+//	if (idMath.Fabs(rotation.GetAngle()) < 180.0f) {
 //		(*this) = BoundsForPointRotation(point, rotation);
 //	}
 //	else {
@@ -786,7 +786,7 @@ Zero( ):void {
 //	}
 //}
 
-	///*
+///*
 //============
 //idBounds::FromBoundsRotation
 
@@ -799,7 +799,7 @@ Zero( ):void {
 //	idVec3 point;
 //	idBounds rBounds;
 
-//	if (idMath::Fabs(rotation.GetAngle()) < 180.0f) {
+//	if (idMath.Fabs(rotation.GetAngle()) < 180.0f) {
 
 //		(*this) = BoundsForPointRotation(bounds[0] * axis + origin, rotation);
 //		for (i = 1; i < 8; i++) {
@@ -811,7 +811,7 @@ Zero( ):void {
 //	}
 //	else {
 
-//		point = (bounds[1] - bounds[0]) * 0.5f;
+//		point = (bounds[1] - bounds[0]) * 0.5;
 //		radius = (bounds[1] - point).Length() + (point - rotation.GetOrigin()).Length();
 
 //		// FIXME: these bounds are usually way larger
@@ -820,7 +820,7 @@ Zero( ):void {
 //	}
 //}
 
-	///*
+///*
 //============
 //idBounds::ToPoints
 //============
