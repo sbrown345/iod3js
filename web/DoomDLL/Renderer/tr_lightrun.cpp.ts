@@ -150,66 +150,67 @@
 //	common.Printf( "modulated %i lights\n", count );
 //}
 //
-//
-//
-////======================================================================================
-//
-//
-///*
-//===============
-//R_CreateEntityRefs
-//
-//Creates all needed model references in portal areas,
-//chaining them to both the area and the entityDef.
-//
-//Bumps tr.viewCount.
-//===============
-//*/
-//void R_CreateEntityRefs( idRenderEntityLocal *def ) {
-//	int			i;
-//	idVec3		transformed[8];
-//	idVec3		v;
-//
-//	if ( !def.parms.hModel ) {
-//		def.parms.hModel = renderModelManager.DefaultModel();
-//	}
-//
-//	// if the entity hasn't been fully specified due to expensive animation calcs
-//	// for md5 and particles, use the provided conservative bounds.
-//	if ( def.parms.callback ) {
-//		def.referenceBounds = def.parms.bounds;
-//	} else {
-//		def.referenceBounds = def.parms.hModel.Bounds( &def.parms );
-//	}
-//
-//	// some models, like empty particles, may not need to be added at all
-//	if ( def.referenceBounds.IsCleared() ) {
-//		return;
-//	}
-//
-//	if ( r_showUpdates.GetBool() && 
-//		( def.referenceBounds[1][0] - def.referenceBounds[0][0] > 1024 ||
-//		def.referenceBounds[1][1] - def.referenceBounds[0][1] > 1024 )  ) {
-//		common.Printf( "big entityRef: %f,%f\n", def.referenceBounds[1][0] - def.referenceBounds[0][0],
-//						def.referenceBounds[1][1] - def.referenceBounds[0][1] );
-//	}
-//
-//	for (i = 0 ; i < 8 ; i++) {
-//		v[0] = def.referenceBounds[i&1][0];
-//		v[1] = def.referenceBounds[(i>>1)&1][1];
-//		v[2] = def.referenceBounds[(i>>2)&1][2];
-//
-//		R_LocalPointToGlobal( def.modelMatrix, v, transformed[i] ); 
-//	}
-//
-//	// bump the view count so we can tell if an
-//	// area already has a reference
-//	tr.viewCount++;
-//
-//	// push these points down the BSP tree into areas
-//	def.world.PushVolumeIntoTree( def, NULL, 8, transformed );
-//}
-//
+
+
+//======================================================================================
+
+
+/*
+===============
+R_CreateEntityRefs
+
+Creates all needed model references in portal areas,
+chaining them to both the area and the entityDef.
+
+Bumps tr.viewCount.
+===============
+*/
+function R_CreateEntityRefs ( def: idRenderEntityLocal ): void {
+	todoThrow ( );
+	//int			i;
+	//idVec3		transformed[8];
+	//idVec3		v;
+
+	//if ( !def.parms.hModel ) {
+	//	def.parms.hModel = renderModelManager.DefaultModel();
+	//}
+
+	//// if the entity hasn't been fully specified due to expensive animation calcs
+	//// for md5 and particles, use the provided conservative bounds.
+	//if ( def.parms.callback ) {
+	//	def.referenceBounds = def.parms.bounds;
+	//} else {
+	//	def.referenceBounds = def.parms.hModel.Bounds( &def.parms );
+	//}
+
+	//// some models, like empty particles, may not need to be added at all
+	//if ( def.referenceBounds.IsCleared() ) {
+	//	return;
+	//}
+
+	//if ( r_showUpdates.GetBool() && 
+	//	( def.referenceBounds[1][0] - def.referenceBounds[0][0] > 1024 ||
+	//	def.referenceBounds[1][1] - def.referenceBounds[0][1] > 1024 )  ) {
+	//	common.Printf( "big entityRef: %f,%f\n", def.referenceBounds[1][0] - def.referenceBounds[0][0],
+	//					def.referenceBounds[1][1] - def.referenceBounds[0][1] );
+	//}
+
+	//for (i = 0 ; i < 8 ; i++) {
+	//	v[0] = def.referenceBounds[i&1][0];
+	//	v[1] = def.referenceBounds[(i>>1)&1][1];
+	//	v[2] = def.referenceBounds[(i>>2)&1][2];
+
+	//	R_LocalPointToGlobal( def.modelMatrix, v, transformed[i] ); 
+	//}
+
+	//// bump the view count so we can tell if an
+	//// area already has a reference
+	//tr.viewCount++;
+
+	//// push these points down the BSP tree into areas
+	//def.world.PushVolumeIntoTree( def, NULL, 8, transformed );
+}
+
 //
 ///*
 //=================================================================================

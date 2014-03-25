@@ -44,7 +44,7 @@ class pvsPortal_t {
 	w:idWinding;			// winding goes counter clockwise seen from the area this portal is part of
 	bounds = new idBounds;		// winding bounds
 	plane = new idPlane;		// winding plane, normal points towards the area this portal leads to
-	passages:pvsPassage_t;	// passages to portals in the area this portal leads to
+	passages:pvsPassage_t[];	// passages to portals in the area this portal leads to
 	done:boolean;		// true if pvs is calculated for this portal
 	vis:Uint8Array /*byte * */;		// PVS for this portal
 	mightSee:Uint8Array/*byte **/;	// used during construction
@@ -55,6 +55,12 @@ class pvsArea_t {
 	numPortals: number /*int*/; // number of portals in this area
 	bounds = new idBounds; // bounds of the whole area
 	portals: pvsPortal_t[] /*pvsPortal_t ***/; // array with pointers to the portals of this area
+
+	memset0 ( ): void {
+		this.numPortals = 0;
+		this.bounds.memset0 ( );
+		this.portals = null;
+	}
 }
 
 
@@ -149,6 +155,7 @@ class idPVS {
 	// used to create PVS
 	portalVisBytes: number; ////	int					
 	portalVisLongs: number; ////	int					
+	portalVisInts: number; ////	int					
 	areaVisBytes: number; ////	int					
 	areaVisLongs: number; ////	int					
 	pvsPortals: pvsPortal_t[]; ////	struct pvsPortal_s *
@@ -240,8 +247,9 @@ idPVS::CreatePVSData
 
 		this.pvsPortals = newStructArray<pvsPortal_t>( pvsPortal_t, this.numPortals );
 		this.pvsAreas = newStructArray<pvsArea_t>( pvsArea_t, this.numAreas );
-		clearStructArray( this.pvsAreas ); //memset( this.pvsAreas, 0, this.numAreas * sizeof( *this.pvsAreas ) );
-		debugger;
+		clearStructArray(this.pvsAreas); //memset( this.pvsAreas, 0, this.numAreas * sizeof( *this.pvsAreas ) );
+
+		
 		cp = 0;
 		portalPtrs = newStructArray<pvsPortal_t>( pvsPortal_t, this.numPortals ); //new pvsPortal_t*[this.numPortals];
 
@@ -653,7 +661,7 @@ idPVS::AddPassageBoundaries
 
 				// check if the plane is already a passage boundary
 				for ( k = 0; k < numBounds.$; k++ ) {
-					if (plane.Compare_epsilon( bounds[k], 0.001, 0.01 ) ) {
+					if ( plane.Compare( bounds[k], 0.001, 0.01 ) ) {
 						break;
 					}
 				}
@@ -694,7 +702,7 @@ static MAX_PASSAGE_BOUNDS		=128;
 			source = this.pvsPortals[i];
 			area = this.pvsAreas[source.areaNum];
 
-			source.passages = new pvsPassage_t[area.numPortals];
+			source.passages = newStructArray<pvsPassage_t>( pvsPassage_t, area.numPortals );
 
 			for ( j = 0; j < area.numPortals; j++ ) {
 				target = area.portals[j];
@@ -758,7 +766,7 @@ static MAX_PASSAGE_BOUNDS		=128;
 						// if not at the front of all bounding planes and thus not completely inside the passage
 						if ( front != numBounds.$ ) {
 
-							winding = p.w;
+							winding.opEquals( p.w );
 
 							for ( l = 0; l < numBounds.$; l++ ) {
 								// only clip if the winding possibly crosses this plane
@@ -839,63 +847,65 @@ idPVS::AreaPVSFromPortalPVS
 ================
 */
 	AreaPVSFromPortalPVS ( ): number /*int*/ {
-		todoThrow ( );
 		var /*int */i: number, j: number, k: number, areaNum: number, totalVisibleAreas: number;
-		//var long *p1, *p2;
-		//byte *pvs, *portalPVS;
-		//pvsArea_t *area;
+		var /*long*/ p1: Int32Array, pIdx: number, p2: Int32Array;
+		var /*byte **/pvs: Uint8Array, portalPVS: Uint8Array;
+		var area: pvsArea_t;
 
-		//totalVisibleAreas = 0;
+		totalVisibleAreas = 0;
 
-		//if ( !this.numPortals ) {
-		//	return totalVisibleAreas;
-		//}
+		if ( !this.numPortals ) {
+			return totalVisibleAreas;
+		}
 
-		//memset( this.areaPVS, 0, this.numAreas * this.areaVisBytes );
+		memset( this.areaPVS, 0, this.numAreas * this.areaVisBytes );
 
-		//for ( i = 0; i < this.numAreas; i++ ) {
-		//	area = &this.pvsAreas[i];
-		//	pvs = this.areaPVS + i * this.areaVisBytes;
+		for ( i = 0; i < this.numAreas; i++ ) {
+			area = this.pvsAreas[i];
+			pvs = this.areaPVS.subarray( i * this.areaVisBytes );
 
-		//	// the area is visible to itself
-		//	pvs[ i >> 3 ] |= 1 << (i & 7);
+			// the area is visible to itself
+			pvs[ i >> 3 ] |= 1 << (i & 7);
 
-		//	if ( !area.numPortals ) {
-		//		continue;
-		//	}
+			if ( !area.numPortals ) {
+				continue;
+			}
 
-		//	// store the PVS of all portals in this area at the first portal
-		//	for ( j = 1; j < area.numPortals; j++ ) {
-		//		p1 = reinterpret_cast<long *>(area.portals[0].vis);
-		//		p2 = reinterpret_cast<long *>(area.portals[j].vis);
-		//		for ( k = 0; k < this.portalVisLongs; k++ ) {
-		//			*p1++ |= *p2++;
-		//		}
-		//	}
+			// store the PVS of all portals in this area at the first portal
+			for ( j = 1; j < area.numPortals; j++ ) {
+				p1 =  new Int32Array(area.portals[0].vis.buffer);
+				p2 = new Int32Array(area.portals[j].vis.buffer);
+				debugger;
+				for (k = 0; k < this.portalVisInts; k++ ) {
+					p1[pIdx] |= p2[pIdx];
+					pIdx++;
+				}
+			}
 
-		//	// the portals of this area are always visible
-		//	for ( j = 0; j < area.numPortals; j++ ) {
-		//		k = area.portals[j] - this.pvsPortals;
-		//		area.portals[0].vis[ k >> 3 ] |= 1 << (k & 7);
-		//	}
+			// the portals of this area are always visible
+			for (j = 0; j < area.numPortals; j++) {
+				debugger;
+				k = this.pvsPortals.indexOf( area.portals[j] ); //area.portals[j] - this.pvsPortals;
+				area.portals[0].vis[ k >> 3 ] |= 1 << (k & 7);
+			}
 
-		//	// set all areas to visible that can be seen from the portals of this area
-		//	portalPVS = area.portals[0].vis;
-		//	for ( j = 0; j < this.numPortals; j++ ) {
-		//		// if this portal is visible
-		//		if ( portalPVS[j>>3] & (1 << (j&7)) ) {
-		//			areaNum = this.pvsPortals[j].areaNum;
-		//			pvs[ areaNum >> 3 ] |= 1 << (areaNum & 7);
-		//		}
-		//	}
+			// set all areas to visible that can be seen from the portals of this area
+			portalPVS = area.portals[0].vis;
+			for ( j = 0; j < this.numPortals; j++ ) {
+				// if this portal is visible
+				if ( portalPVS[j>>3] & (1 << (j&7)) ) {
+					areaNum = this.pvsPortals[j].areaNum;
+					pvs[ areaNum >> 3 ] |= 1 << (areaNum & 7);
+				}
+			}
 
-		//	// count the number of visible areas
-		//	for ( j = 0; j < this.numAreas; j++ ) {
-		//		if ( pvs[j>>3] & (1 << (j&7)) ) {
-		//			totalVisibleAreas++;
-		//		}
-		//	}
-		//}
+			// count the number of visible areas
+			for ( j = 0; j < this.numAreas; j++ ) {
+				if ( pvs[j>>3] & (1 << (j&7)) ) {
+					totalVisibleAreas++;
+				}
+			}
+		}
 		return totalVisibleAreas;
 	}
 
@@ -927,6 +937,7 @@ idPVS::Init
 
 		this.portalVisBytes = ( ( ( this.numPortals + 31 ) & ~31 ) >> 3 );
 		this.portalVisLongs = this.portalVisBytes / sizeof( long );
+		this.portalVisInts = this.portalVisBytes / sizeof( int );
 
 		for ( var i = 0; i < MAX_CURRENT_PVS; i++ ) {
 			this.currentPVS[i].handle.i = -1;
@@ -961,6 +972,10 @@ idPVS::Init
 		} else {
 			gameLocal.Printf( "%5d KB PVS data\n", ( this.numAreas * this.areaVisBytes ) >> 10 );
 		}
+
+		assertMapSpecific( "demo_mars_city1", this.numAreas == 56 );
+		assertMapSpecific( "demo_mars_city1", this.numPortals == 110 );
+		assertMapSpecific( "demo_mars_city1", totalVisibleAreas == 523 );
 	}
 
 /*

@@ -1889,20 +1889,22 @@ idFixedWinding::Split
 //	int				Split( idFixedWinding *back, const idPlane &plane, const float epsilon = ON_EPSILON );
 //
 //protected:
-//	idVec5			data[MAX_POINTS_ON_WINDING];	// point data
+	data = newStructArray<idVec5>(idVec5, MAX_POINTS_ON_WINDING);// point data
 //
 //	virtual bool	ReAllocate( int n, bool keep = false );
 //};
-//
-//ID_INLINE idFixedWinding::idFixedWinding( ) {
-//	this.numPoints = 0;
-//	this.p = data;
-//	this.allocedSize = MAX_POINTS_ON_WINDING;
-//}
+
+	constructor() {
+		super ( );
+		this.numPoints = 0;
+		this.p = this.data;
+		this.allocedSize = MAX_POINTS_ON_WINDING;
+	}
+
 //
 //ID_INLINE idFixedWinding::idFixedWinding( int n ) {
 //	this.numPoints = 0;
-//	this.p = data;
+//	this.p = this.data;
 //	this.allocedSize = MAX_POINTS_ON_WINDING;
 //}
 //
@@ -1910,7 +1912,7 @@ idFixedWinding::Split
 //	int i;
 //
 //	this.numPoints = 0;
-//	this.p = data;
+//	this.p = this.data;
 //	this.allocedSize = MAX_POINTS_ON_WINDING;
 //	if ( !this.EnsureAlloced( n ) ) {
 //		this.numPoints = 0;
@@ -1925,14 +1927,14 @@ idFixedWinding::Split
 //
 //ID_INLINE idFixedWinding::idFixedWinding( const idVec3 &normal, const float dist ) {
 //	this.numPoints = 0;
-//	this.p = data;
+//	this.p = this.data;
 //	this.allocedSize = MAX_POINTS_ON_WINDING;
 //	BaseForPlane( normal, dist );
 //}
 //
 //ID_INLINE idFixedWinding::idFixedWinding( const idPlane &plane ) {
 //	this.numPoints = 0;
-//	this.p = data;
+//	this.p = this.data;
 //	this.allocedSize = MAX_POINTS_ON_WINDING;
 //	BaseForPlane( plane );
 //}
@@ -1940,7 +1942,7 @@ idFixedWinding::Split
 //ID_INLINE idFixedWinding::idFixedWinding( const idWinding &winding ) {
 //	int i;
 //
-//	this.p = data;
+//	this.p = this.data;
 //	this.allocedSize = MAX_POINTS_ON_WINDING;
 //	if ( !this.EnsureAlloced( winding.GetNumPoints() ) ) {
 //		this.numPoints = 0;
@@ -1955,7 +1957,7 @@ idFixedWinding::Split
 //ID_INLINE idFixedWinding::idFixedWinding( const idFixedWinding &winding ) {
 //	int i;
 //
-//	this.p = data;
+//	this.p = this.data;
 //	this.allocedSize = MAX_POINTS_ON_WINDING;
 //	if ( !this.EnsureAlloced( winding.GetNumPoints() ) ) {
 //		this.numPoints = 0;

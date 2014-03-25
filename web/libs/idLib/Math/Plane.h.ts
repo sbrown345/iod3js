@@ -269,7 +269,7 @@ class idPlane {
 		if ( idMath.Fabs( this.d - p.d ) > distEps ) {
 			return false;
 		}
-		if ( !this.Normal ( ).Compare( p.Normal ( ), normalEps ) ) {
+		if ( !this.Normal ( ).Compare_epsilon( p.Normal ( ), normalEps ) ) {
 			return false;
 		}
 		return true;

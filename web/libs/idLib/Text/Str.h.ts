@@ -788,7 +788,8 @@ class idStr implements ITrackedObject {
 ////}
 
 	Append ( text: string, l: number = null ): void {
-		if ( typeof text != "string" ) {
+		if (typeof text != "string") {
+			debugger;
 			throw "not a string";
 		}
 

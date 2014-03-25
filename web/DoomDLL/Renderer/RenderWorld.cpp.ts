@@ -345,134 +345,136 @@ idRenderWorldLocal::idRenderWorldLocal
 //	RB_ClearDebugText( 0 );
 //}
 //
-///*
-//===================
-//ResizeInteractionTable
-//===================
-//*/
-//void idRenderWorldLocal::ResizeInteractionTable() {
-//	// we overflowed the interaction table, so dump it
-//	// we may want to resize this in the future if it turns out to be common
-//	common.Printf( "idRenderWorldLocal::ResizeInteractionTable: overflowed interactionTableWidth, dumping\n" );
-//	R_StaticFree( this.interactionTable );
-//	this.interactionTable = null;
-//}
-//
-///*
-//===================
-//AddEntityDef
-//===================
-//*/
-//qhandle_t idRenderWorldLocal::AddEntityDef( const renderEntity_t *re ){
-//	// try and reuse a free spot
-//	int entityHandle = this.entityDefs.FindNull();
-//	if ( entityHandle == -1 ) {
-//		entityHandle = this.entityDefs.Append( NULL );
-//		if ( this.interactionTable && this.entityDefs.Num() > this.interactionTableWidth ) {
-//			ResizeInteractionTable();
-//		}
-//	}
-//
-//	UpdateEntityDef( entityHandle, re );
-//	
-//	return entityHandle;
-//}
-//
-///*
-//==============
-//UpdateEntityDef
-//
-//Does not write to the demo file, which will only be updated for
-//visible entities
-//==============
-//*/
-//int c_callbackUpdate;
-//
-//void idRenderWorldLocal::UpdateEntityDef( qhandle_t entityHandle, const renderEntity_t *re ) {
-//	if ( r_skipUpdates.GetBool() ) {
-//		return;
-//	}
-//
-//	tr.pc.c_entityUpdates++;
-//
-//	if ( !re.hModel && !re.callback ) {
-//		common.Error( "idRenderWorld::UpdateEntityDef: NULL hModel" );
-//	}
-//
-//	// create new slots if needed
-//	if ( entityHandle < 0 || entityHandle > LUDICROUS_INDEX ) {
-//		common.Error( "idRenderWorld::UpdateEntityDef: index = %i", entityHandle );
-//	}
-//	while ( entityHandle >= this.entityDefs.Num() ) {
-//		this.entityDefs.Append( NULL );
-//	}
-//
-//	idRenderEntityLocal	*def = this.entityDefs[entityHandle];
-//	if ( def ) {
-//
-//		if ( !re.forceUpdate ) {
-//
-//			// check for exact match (OPTIMIZE: check through pointers more)
-//			if ( !re.joints && !re.callbackData && !def.dynamicModel && !memcmp( re, &def.parms, sizeof( *re ) ) ) {
-//				return;
-//			}
-//
-//			// if the only thing that changed was shaderparms, we can just leave things as they are
-//			// after updating parms
-//
-//			// if we have a callback function and the bounds, origin, axis and model match,
-//			// then we can leave the references as they are
-//			if ( re.callback ) {
-//
-//				bool axisMatch = ( re.axis == def.parms.axis );
-//				bool originMatch = ( re.origin == def.parms.origin );
-//				bool boundsMatch = ( re.bounds == def.referenceBounds );
-//				bool modelMatch = ( re.hModel == def.parms.hModel );
-//
-//				if ( boundsMatch && originMatch && axisMatch && modelMatch ) {
-//					// only clear the dynamic model and interaction surfaces if they exist
-//					c_callbackUpdate++;
-//					R_ClearEntityDefDynamicModel( def );
-//					def.parms = *re;
-//					return;
-//				}
-//			}
-//		}
-//
-//		// save any decals if the model is the same, allowing marks to move with entities
-//		if ( def.parms.hModel == re.hModel ) {
-//			R_FreeEntityDefDerivedData( def, true, true );
-//		} else {
-//			R_FreeEntityDefDerivedData( def, false, false );
-//		}
-//	} else {
-//		// creating a new one
-//		def = new idRenderEntityLocal;
-//		this.entityDefs[entityHandle] = def;
-//
-//		def.world = this;
-//		def.index = entityHandle;
-//	}
-//
-//	def.parms = *re;
-//
-//	R_AxisToModelMatrix( def.parms.axis, def.parms.origin, def.modelMatrix );
-//
-//	def.lastModifiedFrameNum = tr.frameCount;
-//	if ( session.writeDemo && def.archived ) {
-//		WriteFreeEntity( entityHandle );
-//		def.archived = false;
-//	}
-//
-//	// optionally immediately issue any callbacks
-//	if ( !r_useEntityCallbacks.GetBool() && def.parms.callback ) {
-//		R_IssueEntityDefCallback( def );
-//	}
-//
-//	// based on the model bounds, add references in each area
-//	// that may contain the updated surface
-//	R_CreateEntityRefs( def );
-//}
+/*
+===================
+ResizeInteractionTable
+===================
+*/
+	ResizeInteractionTable ( ): void {
+		// we overflowed the interaction table, so dump it
+		// we may want to resize this in the future if it turns out to be common
+		common.Printf( "idRenderWorldLocal::ResizeInteractionTable: overflowed interactionTableWidth, dumping\n" );
+		R_StaticFree( this.interactionTable );
+		this.interactionTable = null;
+	}
+
+/*
+===================
+AddEntityDef
+===================
+*/
+	AddEntityDef ( re: renderEntity_t ): number {
+		// try and reuse a free spot
+		var entityHandle = this.entityDefs.FindNull ( );
+		if ( entityHandle == -1 ) {
+			entityHandle = this.entityDefs.Append( null );
+			if ( this.interactionTable && this.entityDefs.Num ( ) > this.interactionTableWidth ) {
+				this.ResizeInteractionTable ( );
+			}
+		}
+
+		this.UpdateEntityDef( entityHandle, re );
+
+		return entityHandle;
+	}
+
+/*
+==============
+UpdateEntityDef
+
+Does not write to the demo file, which will only be updated for
+visible entities
+==============
+*/
+static /*int */c_callbackUpdate:number;
+
+	UpdateEntityDef( /*qhandle_t */entityHandle: number, re: renderEntity_t ):void {
+	if ( r_skipUpdates.GetBool() ) {
+		return;
+	}
+
+	tr.pc.c_entityUpdates++;
+
+	if ( !re.hModel && !re.callback ) {
+		common.Error( "idRenderWorld::UpdateEntityDef: NULL hModel" );
+	}
+
+	// create new slots if needed
+	if ( entityHandle < 0 || entityHandle > LUDICROUS_INDEX ) {
+		common.Error( "idRenderWorld::UpdateEntityDef: index = %i", entityHandle );
+	}
+	while ( entityHandle >= this.entityDefs.Num() ) {
+		this.entityDefs.Append( null );
+	}
+
+	var	def = this.entityDefs[entityHandle];
+	if ( def ) {
+
+		if ( !re.forceUpdate ) {
+			todoThrow ( );
+			//// check for exact match (OPTIMIZE: check through pointers more)
+			//if ( !re.joints && !re.callbackData && !def.dynamicModel && !memcmp( re, &def.parms, sizeof( *re ) ) ) {
+			//	return;
+			//}
+
+			//// if the only thing that changed was shaderparms, we can just leave things as they are
+			//// after updating parms
+
+			//// if we have a callback function and the bounds, origin, axis and model match,
+			//// then we can leave the references as they are
+			//if ( re.callback ) {
+
+			//	var axisMatch = ( re.axis == def.parms.axis );
+			//	var originMatch = ( re.origin == def.parms.origin );
+			//	var boundsMatch = ( re.bounds == def.referenceBounds );
+			//	var modelMatch = ( re.hModel == def.parms.hModel );
+
+			//	if ( boundsMatch && originMatch && axisMatch && modelMatch ) {
+			//		// only clear the dynamic model and interaction surfaces if they exist
+			//		c_callbackUpdate++;
+			//		R_ClearEntityDefDynamicModel( def );
+			//		def.parms = *re;
+			//		return;
+			//	}
+			//}
+		}
+
+		// save any decals if the model is the same, allowing marks to move with entities
+		if ( def.parms.hModel == re.hModel ) {
+			R_FreeEntityDefDerivedData( def, true, true );
+		} else {
+			R_FreeEntityDefDerivedData( def, false, false );
+		}
+	} else {
+		// creating a new one
+		def = new idRenderEntityLocal;
+		this.entityDefs[entityHandle] = def;
+
+		def.world = this;
+		def.index = entityHandle;
+	}
+
+	def.parms.opEquals( re );// = *re;
+
+	R_AxisToModelMatrix( def.parms.axis, def.parms.origin, def.modelMatrix );
+
+	def.lastModifiedFrameNum = tr.frameCount;
+		if (session.writeDemo && def.archived) {
+			todoThrow ( );
+		//WriteFreeEntity( entityHandle );
+		//def.archived = false;
+	}
+
+	// optionally immediately issue any callbacks
+		if (!r_useEntityCallbacks.GetBool() && def.parms.callback) {
+			todoThrow ( );
+		//R_IssueEntityDefCallback( def );
+	}
+
+	// based on the model bounds, add references in each area
+	// that may contain the updated surface
+	R_CreateEntityRefs( def );
+}
 
 /*
 ===================

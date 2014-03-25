@@ -3193,18 +3193,18 @@ idCollisionModelManagerLocal::PrintModelInfo
 */
 idCollisionModelManagerLocal.prototype.PrintModelInfo = function (model: cm_model_t): void {
 	// js check for default demo assets
-	assert( model.numVertices == 30823 );
-	assert( model.numEdges == 54551 );
-	assert( model.numPolygons == 22257 );
-	assert( model.numBrushes == 4068 );
-	assert( model.numNodes == 12449 );
-	assert( model.numPolygonRefs == 43444 );
-	assert( model.numBrushRefs == 14219 );
-	assert( model.numInternalEdges == 18352 );
-	assert( model.numSharpEdges == 1461 );
-	assert( model.numRemovedPolys == 0 );
-	assert( model.numMergedPolys == 0 );
-	assert( model.usedMemory == 5685116 );
+	assertMapSpecific("demo_mars_city1", model.numVertices == 30823);
+	assertMapSpecific("demo_mars_city1", model.numEdges == 54551);
+	assertMapSpecific("demo_mars_city1", model.numPolygons == 22257);
+	assertMapSpecific("demo_mars_city1", model.numBrushes == 4068);
+	assertMapSpecific("demo_mars_city1", model.numNodes == 12449);
+	assertMapSpecific("demo_mars_city1", model.numPolygonRefs == 43444);
+	assertMapSpecific("demo_mars_city1", model.numBrushRefs == 14219);
+	assertMapSpecific("demo_mars_city1", model.numInternalEdges == 18352);
+	assertMapSpecific("demo_mars_city1", model.numSharpEdges == 1461);
+	assertMapSpecific("demo_mars_city1", model.numRemovedPolys == 0);
+	assertMapSpecific("demo_mars_city1", model.numMergedPolys == 0);
+	assertMapSpecific("demo_mars_city1", model.usedMemory == 5685116 );
 
 	common.Printf( "%6i vertices (%i KB)\n", model.numVertices, ( model.numVertices * sizeof( cm_vertex_t ) ) >> 10 );
 	common.Printf( "%6i edges (%i KB)\n", model.numEdges, ( model.numEdges * sizeof( cm_edge_t ) ) >> 10 );

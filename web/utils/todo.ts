@@ -48,3 +48,10 @@ interface Error {
 }
 
 var todoBindBuffersNull = false;
+
+function assertMapSpecific(map: string, condition: boolean) {
+	// todo: check map
+	if ( condition ) {
+		
+	}
+}

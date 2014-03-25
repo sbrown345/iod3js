@@ -124,6 +124,12 @@ function clearStructArray(array : Array<any>) : void {
     }
 }
 
+function clearPointerArray(array : Array<any>) : void {
+    for (var i = 0; i < array.length; i++) {
+	    array[i] = null;
+    }
+}
+
 function multiDimArray <T>(arrayClass: any, num: number, arrLength: number): T[] {
     var multiDimArray = new Array(num);
     for (var i = 0; i < num; i++) {

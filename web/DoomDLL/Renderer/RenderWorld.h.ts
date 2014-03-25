@@ -127,7 +127,7 @@ class renderEntity_t {
 	shaderParms = new Float32Array(MAX_ENTITY_SHADER_PARMS) // can be used in any way by shader or model generation			  //float					
 
 	// networking: see WriteGUIToSnapshot / ReadGUIFromSnapshot
-	gui:idUserInterface;//[MAX_RENDERENTITY_GUI];																	//class idUserInterface * 
+	gui = new Array<idUserInterface>(MAX_RENDERENTITY_GUI);
 	//
 	remoteRenderView:renderView_t;		// any remote camera surfaces will use this								//struct renderView_s	*	
 	//
@@ -176,7 +176,7 @@ class renderEntity_t {
 		for ( var i = 0; i < this.shaderParms.length; i++ ) {
 			this.shaderParms[i] = 0;
 		}
-		this.gui = null;
+		clearPointerArray( this.gui );
 		this.remoteRenderView = null;
 		this.numJoints = 0;
 		this.joints = null;
@@ -188,6 +188,42 @@ class renderEntity_t {
 		this.forceUpdate = 0;
 		this.timeGroup = 0;
 		this.xrayIndex = 0;
+	}
+
+	opEquals ( other: renderEntity_t ): renderEntity_t {
+		this.hModel = other.hModel;
+		this.entityNum = other.entityNum;
+		this.bodyId = other.bodyId;
+		this.bounds.opEquals( other.bounds );
+		this.callback = other.callback;
+		this.callbackData = other.callbackData;
+		this.suppressSurfaceInViewID = other.suppressSurfaceInViewID;
+		this.suppressShadowInViewID = other.suppressShadowInViewID;
+		this.suppressShadowInLightID = other.suppressShadowInLightID;
+		this.allowSurfaceInViewID = other.allowSurfaceInViewID;
+		this.origin.equals( other.origin );
+		this.axis.equals( other.axis );
+		this.customShader = other.customShader;
+		this.referenceShader = other.referenceShader;
+		this.customSkin = other.customSkin;
+		this.referenceSound = other.referenceSound;
+		memcpy( this.shaderParms, other.shaderParms, sizeof( this.shaderParms ) );
+		for ( var i = 0; i < this.gui.length; i++ ) {
+			this.gui[i] = other.gui[i];
+		}
+		this.remoteRenderView = other.remoteRenderView;
+		this.numJoints = other.numJoints;
+		this.joints = other.joints;
+		this.modelDepthHack = other.modelDepthHack;;
+		this.noSelfShadow = other.noSelfShadow;
+		this.noShadow = other.noShadow;
+		this.noDynamicInteractions = other.noDynamicInteractions;
+		this.weaponDepthHack = other.weaponDepthHack;
+		this.forceUpdate = other.forceUpdate;
+		this.timeGroup = other.timeGroup;
+		this.xrayIndex = other.xrayIndex;
+
+		return this;
 	}
 };																													   
 
