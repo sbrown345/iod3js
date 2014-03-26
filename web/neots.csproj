@@ -221,6 +221,9 @@
     <TypeScriptCompile Include="libs\idLib\Math\Interpolate.h.ts" />
     <TypeScriptCompile Include="libs\idLib\BitMsg.cpp.ts" />
     <TypeScriptCompile Include="libs\idLib\Geometry\TraceModel.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Tools\Compilers\AAS\AASFile.cpp.ts" />
+    <TypeScriptCompile Include="DoomDLL\Tools\Compilers\AAS\AASFile.h.ts" />
+    <TypeScriptCompile Include="DoomDLL\Tools\Compilers\AAS\AASFileManager.cpp.ts" />
     <Content Include="libs\idLib\Timer.h.ts" />
     <Content Include="log.aspx" />
     <Content Include="other\files.ts" />

@@ -114,6 +114,23 @@ $nameofclass$.Type = new idTypeInfo( "$nameofclass$", "$nameofsuperclass$",&#xD;
 	$nameofclass$.eventCallbacks, $nameofclass$.CreateInstance, $nameofclass$.prototype.Spawn,&#xD;
 	$nameofclass$.prototype.Save, $nameofclass$.prototype.Restore );&#xD;
 </s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=CF5C19FA6A51654F806140AF40B7E0AD/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=CF5C19FA6A51654F806140AF40B7E0AD/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=CF5C19FA6A51654F806140AF40B7E0AD/Description/@EntryValue">Big title</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=CF5C19FA6A51654F806140AF40B7E0AD/Field/=TEXT/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=CF5C19FA6A51654F806140AF40B7E0AD/Field/=TEXT/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=CF5C19FA6A51654F806140AF40B7E0AD/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=CF5C19FA6A51654F806140AF40B7E0AD/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=CF5C19FA6A51654F806140AF40B7E0AD/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=CF5C19FA6A51654F806140AF40B7E0AD/Shortcut/@EntryValue">title</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=CF5C19FA6A51654F806140AF40B7E0AD/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=CF5C19FA6A51654F806140AF40B7E0AD/Text/@EntryValue">/*&#xD;
+===============================================================================&#xD;
+&#xD;
+$TEXT$&#xD;
+&#xD;
+===============================================================================&#xD;
+*/</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DB4D0F71255A5B439A684F56668E63EA/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DB4D0F71255A5B439A684F56668E63EA/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=DB4D0F71255A5B439A684F56668E63EA/Reformat/@EntryValue">True</s:Boolean>

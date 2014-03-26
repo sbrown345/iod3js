@@ -483,15 +483,15 @@ idPVS::FrontPortalPVS
 			source.vis[n >> 3] |= ( 1 << ( n & 7 ) );
 
 			// get pointers to vis data
-			prevMightSee = new Int32Array( prevStack.mightSee.buffer ); //reinterpret_cast<long *>(prevStack.mightSee);
-			passageVis = new Int32Array( passage.canSee.buffer ); //reinterpret_cast<long *>(passage.canSee);
-			sourceVis = new Int32Array( source.vis.buffer ); // reinterpret_cast<long *>(source.vis);
-			mightSee = new Int32Array( stack.mightSee.buffer ); // reinterpret_cast<long *>(stack.mightSee);
+			prevMightSee = new Int32Array( prevStack.mightSee.buffer ), prevMightSeeIdx = 0; //reinterpret_cast<long *>(prevStack.mightSee);
+			passageVis = new Int32Array( passage.canSee.buffer ), passageVisIdx = 0; //reinterpret_cast<long *>(passage.canSee);
+			sourceVis = new Int32Array( source.vis.buffer ), sourceVisIdx = 0; // reinterpret_cast<long *>(source.vis);
+			mightSee = new Int32Array( stack.mightSee.buffer ), mightSeeIdx = 0; // reinterpret_cast<long *>(stack.mightSee);
 
 			more = 0;
 			// use the portal PVS if it has been calculated
 			if ( p.done ) {
-				portalVis = new Int32Array( p.vis.buffer ); //reinterpret_cast<long *>(p.vis);
+				portalVis = new Int32Array( p.vis.buffer ), portalVisIdx = 0; //reinterpret_cast<long *>(p.vis);
 				for ( j = 0; j < this.portalVisInts /*portalVisLongs*/; j++ ) {
 					// get new PVS which is decreased by going through this passage
 					m = prevMightSee[prevMightSeeIdx++] & passageVis[passageVisIdx++] & portalVis[portalVisIdx++];
@@ -502,7 +502,7 @@ idPVS::FrontPortalPVS
 				}
 			} else {
 				// the p.mightSee is implicitely stored in the passageVis
-				for ( j = 0; j < this.portalVisLongs; j++ ) {
+				for ( j = 0; j < this.portalVisInts /*portalVisLongs*/; j++ ) {
 					// get new PVS which is decreased by going through this passage
 					m = prevMightSee[prevMightSeeIdx++] & passageVis[passageVisIdx++];
 					// check if anything might be visible through this passage that wasn't yet visible

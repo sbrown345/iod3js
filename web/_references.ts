@@ -370,8 +370,9 @@
 //#include "../cm/CollisionModel.h"
 
 //// AAS files and manager
-//#include "../tools/compilers/aas/AASFile.h"
-//#include "../tools/compilers/aas/AASFileManager.h"
+/// <reference path="doomdll/tools/compilers/aas/aasfile.h.ts" />
+/// <reference path="doomdll/tools/compilers/aas/aasfile.cpp.ts" />
+/// <reference path="doomdll/tools/compilers/aas/aasfilemanager.cpp.ts" />
 
 //// game
 //#if defined(_D3XP)
