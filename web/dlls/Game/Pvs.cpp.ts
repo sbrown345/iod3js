@@ -436,93 +436,93 @@ idPVS::FrontPortalPVS
 		}
 	}
 
-/////*
-////===============
-////idPVS::FloodPassagePVS_r
-////===============
-////*/
-////pvsStack_t *idPVS::FloodPassagePVS_r( pvsPortal_t *source, const pvsPortal_t *portal, pvsStack_t *prevStack ) const {
-////	int i, j, n, m;
-////	pvsPortal_t *p;
-////	pvsArea_t *area;
-////	pvsStack_t *stack;
-////	pvsPassage_t *passage;
-////	long *sourceVis, *passageVis, *portalVis, *mightSee, *prevMightSee, more;
-////
-////	area = &this.pvsAreas[portal.areaNum];
-////
-////	stack = prevStack.next;
-////	// if no next stack entry allocated
-////	if ( !stack ) {
-////		stack = reinterpret_cast<pvsStack_t*>(new Uint8Array(sizeof(pvsStack_t) + this.portalVisBytes));
-////		stack.mightSee = (reinterpret_cast<byte *>(stack)) + sizeof(pvsStack_t);
-////		stack.next = null;
-////		prevStack.next = stack;
-////	}
-////
-////	// check all portals for flooding into other areas
-////	for ( i = 0; i < area.numPortals; i++ ) {
-////
-////		passage = &portal.passages[i];
-////
-////		// if this passage is completely empty
-////		if ( !passage.canSee ) {
-////			continue;
-////		}
-////
-////		p = area.portals[i];
-////		n = p - this.pvsPortals;
-////
-////		// if this portal cannot be seen through our current portal/passage stack
-////		if ( !( prevStack.mightSee[n >> 3] & (1 << (n & 7)) ) ) {
-////			continue;
-////		}
-////
-////		// mark the portal as visible
-////		source.vis[n >> 3] |= (1 << (n & 7));
-////
-////		// get pointers to vis data
-////		prevMightSee = reinterpret_cast<long *>(prevStack.mightSee);
-////		passageVis = reinterpret_cast<long *>(passage.canSee);
-////		sourceVis = reinterpret_cast<long *>(source.vis);
-////		mightSee = reinterpret_cast<long *>(stack.mightSee);
-////
-////		more = 0;
-////		// use the portal PVS if it has been calculated
-////		if ( p.done ) {
-////			portalVis = reinterpret_cast<long *>(p.vis);
-////			for ( j = 0; j < this.portalVisLongs; j++ ) {
-////				// get new PVS which is decreased by going through this passage
-////				m = *prevMightSee++ & *passageVis++ & *portalVis++;
-////				// check if anything might be visible through this passage that wasn't yet visible
-////				more |= (m & ~(*sourceVis++));
-////				// store new PVS
-////				*mightSee++ = m;
-////			}
-////		}
-////		else {
-////			// the p.mightSee is implicitely stored in the passageVis
-////			for ( j = 0; j < this.portalVisLongs; j++ ) {
-////				// get new PVS which is decreased by going through this passage
-////				m = *prevMightSee++ & *passageVis++;
-////				// check if anything might be visible through this passage that wasn't yet visible
-////				more |= (m & ~(*sourceVis++));
-////				// store new PVS
-////				*mightSee++ = m;
-////			}
-////		}
-////
-////		// if nothing more can be seen
-////		if ( !more ) {
-////			continue;
-////		}
-////
-////		// go through the portal
-////		stack.next = FloodPassagePVS_r( source, p, stack );
-////	}
-////
-////	return stack;
-////}
+	/*
+	===============
+	idPVS::FloodPassagePVS_r
+	===============
+	*/
+	FloodPassagePVS_r ( source: pvsPortal_t, portal: pvsPortal_t, prevStack: pvsStack_t ): pvsStack_t {
+		var /*int */i: number, j: number, n: number, m: number;
+		var p: pvsPortal_t;
+		var area: pvsArea_t;
+		var stack: pvsStack_t;
+		var passage: pvsPassage_t;
+		var sourceVis: Int32Array, passageVis: Int32Array, portalVis: Int32Array, mightSee: Int32Array, prevMightSee: Int32Array, more: number; //long
+		var sourceVisIdx: number, passageVisIdx: number, portalVisIdx: number, mightSeeIdx: number, prevMightSeeIdx: number;
+
+		area = this.pvsAreas[portal.areaNum];
+
+		stack = prevStack.next;
+		// if no next stack entry allocated
+		if ( !stack ) {
+			stack = new pvsStack_t; //stack = reinterpret_cast<pvsStack_t*>(new byte[sizeof(pvsStack_t) + portalVisBytes]);
+			stack.mightSee = new Uint8Array( this.portalVisBytes ); //stack->mightSee = (reinterpret_cast<byte *>(stack)) + sizeof(pvsStack_t);
+			stack.next = null;
+			prevStack.next = stack;
+		}
+
+		// check all portals for flooding into other areas
+		for ( i = 0; i < area.numPortals; i++ ) {
+
+			passage = portal.passages[i];
+
+			// if this passage is completely empty
+			if ( !passage.canSee ) {
+				continue;
+			}
+
+			p = area.portals[i];
+			n = this.pvsPortals.indexOf( p ); //n = p - this.pvsPortals;
+
+			// if this portal cannot be seen through our current portal/passage stack
+			if ( !( prevStack.mightSee[n >> 3] & ( 1 << ( n & 7 ) ) ) ) {
+				continue;
+			}
+
+			// mark the portal as visible
+			source.vis[n >> 3] |= ( 1 << ( n & 7 ) );
+
+			// get pointers to vis data
+			prevMightSee = new Int32Array( prevStack.mightSee.buffer ); //reinterpret_cast<long *>(prevStack.mightSee);
+			passageVis = new Int32Array( passage.canSee.buffer ); //reinterpret_cast<long *>(passage.canSee);
+			sourceVis = new Int32Array( source.vis.buffer ); // reinterpret_cast<long *>(source.vis);
+			mightSee = new Int32Array( stack.mightSee.buffer ); // reinterpret_cast<long *>(stack.mightSee);
+
+			more = 0;
+			// use the portal PVS if it has been calculated
+			if ( p.done ) {
+				portalVis = new Int32Array( p.vis.buffer ); //reinterpret_cast<long *>(p.vis);
+				for ( j = 0; j < this.portalVisInts /*portalVisLongs*/; j++ ) {
+					// get new PVS which is decreased by going through this passage
+					m = prevMightSee[prevMightSeeIdx++] & passageVis[passageVisIdx++] & portalVis[portalVisIdx++];
+					// check if anything might be visible through this passage that wasn't yet visible
+					more |= ( m & ~( sourceVis[sourceVisIdx++] ) );
+					// store new PVS
+					mightSee[mightSeeIdx++] = m;
+				}
+			} else {
+				// the p.mightSee is implicitely stored in the passageVis
+				for ( j = 0; j < this.portalVisLongs; j++ ) {
+					// get new PVS which is decreased by going through this passage
+					m = prevMightSee[prevMightSeeIdx++] & passageVis[passageVisIdx++];
+					// check if anything might be visible through this passage that wasn't yet visible
+					more |= ( m & ~( sourceVis[sourceVisIdx++] ) );
+					// store new PVS
+					mightSee[mightSeeIdx++] = m;
+				}
+			}
+
+			// if nothing more can be seen
+			if ( !more ) {
+				continue;
+			}
+
+			// go through the portal
+			stack.next = this.FloodPassagePVS_r( source, p, stack );
+		}
+
+		return stack;
+	}
 
 /*
 ===============
@@ -537,30 +537,30 @@ PassagePVS( ) :void {
 	// create the passages
 	this.CreatePassages();
 	debugger;
-	todoThrow ( );
-	//// allocate first stack entry
-	//stack = reinterpret_cast<pvsStack_t*>(new Uint8Array(sizeof(pvsStack_t) + this.portalVisBytes));
-	//stack.mightSee = (reinterpret_cast<byte *>(stack)) + sizeof(pvsStack_t);
-	//stack.next = null;
 
-	//// calculate portal PVS by flooding through the passages
-	//for ( i = 0; i < this.numPortals; i++ ) {
-	//	source = &this.pvsPortals[i];
-	//	memset( source.vis, 0, this.portalVisBytes );
-	//	memcpy( stack.mightSee, source.mightSee, this.portalVisBytes );
-	//	FloodPassagePVS_r( source, source, stack );
-	//	source.done = true;
-	//}
+	// allocate first stack entry
+	stack = new pvsStack_t; // reinterpret_cast<pvsStack_t*>(new byte[sizeof(pvsStack_t) + portalVisBytes]);
+	stack.mightSee = new Uint8Array( this.portalVisBytes ); // (reinterpret_cast<byte *>(stack)) + sizeof(pvsStack_t);
+	stack.next = null;
 
-	//// free the allocated stack
-	//for ( s = stack; s; s = stack ) {
-	//	stack = stack.next;
-	//	$delete( s );
-	//	//delete[] s;
-	//}
+	// calculate portal PVS by flooding through the passages
+	for ( i = 0; i < this.numPortals; i++ ) {
+		source = this.pvsPortals[i];
+		memset( source.vis, 0, this.portalVisBytes );
+		memcpy( stack.mightSee, source.mightSee, this.portalVisBytes );
+		this.FloodPassagePVS_r( source, source, stack );
+		source.done = true;
+	}
 
-	//// destroy the passages
-	//DestroyPassages();
+	// free the allocated stack
+	for ( s = stack; s; s = stack ) {
+		stack = stack.next;
+		$delete( s );
+		//delete[] s;
+	}
+
+	// destroy the passages
+	this.DestroyPassages();
 }
 
 /*
@@ -802,27 +802,27 @@ static MAX_PASSAGE_BOUNDS		=128;
 		}
 	}
 
-/////*
-////================
-////idPVS::DestroyPassages
-////================
-////*/
-////void idPVS::DestroyPassages( ) const {
-////	int i, j;
-////	pvsPortal_t *p;
-////	pvsArea_t *area;
-////
-////	for ( i = 0; i < this.numPortals; i++ ) {
-////		p = &this.pvsPortals[i];
-////		area = &this.pvsAreas[p.areaNum];
-////		for ( j = 0; j < area.numPortals; j++ ) {
-////			if ( p.passages[j].canSee ) {
-////				delete[] p.passages[j].canSee;
-////			}
-////		}
-////		delete[] p.passages;
-////	}
-////}
+/*
+================
+idPVS::DestroyPassages
+================
+*/
+	DestroyPassages ( ): void {
+		var /*int */i: number, j: number;
+		var p: pvsPortal_t;
+		var area: pvsArea_t;
+
+		for ( i = 0; i < this.numPortals; i++ ) {
+			p = this.pvsPortals[i];
+			area = this.pvsAreas[p.areaNum];
+			for ( j = 0; j < area.numPortals; j++ ) {
+				if ( p.passages[j].canSee ) {
+					delete p.passages[j].canSee;
+				}
+			}
+			delete p.passages;
+		}
+	}
 
 /*
 ================

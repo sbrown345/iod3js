@@ -392,7 +392,6 @@
 /// <reference path="dlls/game/actor.cpp.ts" />
 /// <reference path="dlls/game/ai/aas.h.ts" />
 /// <reference path="dlls/game/ai/aas_local.h.ts" />
-/// <reference path="dlls/game/ai/aas.cpp.ts" />
 /// <reference path="dlls/game/ai/aas_debug.cpp.ts" />
 /// <reference path="dlls/game/ai/aas_pathing.cpp.ts" />
 /// <reference path="dlls/game/ai/aas_routing.cpp.ts" />
