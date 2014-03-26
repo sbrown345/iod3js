@@ -253,7 +253,7 @@ idPVS::CreatePVSData
 		cp = 0;
 		portalPtrs = newStructArray<pvsPortal_t>( pvsPortal_t, this.numPortals ); //new pvsPortal_t*[this.numPortals];
 
-		debugger; // todo: is this slice right:?
+		//debugger; // todo: is this slice right:?
 		for ( i = 0; i < this.numAreas; i++ ) {
 
 			area = this.pvsAreas[i];
@@ -335,7 +335,6 @@ idPVS::FloodFrontPortalPVS_r
 
 		for ( i = 0; i < area.numPortals; i++ ) {
 			p = area.portals[i];
-			debugger;
 			n = this.pvsPortals.indexOf( p );
 			// don't flood through if this portal is not at the front
 			if ( !( portal.mightSee[n >> 3] & ( 1 << ( n & 7 ) ) ) ) {
@@ -424,7 +423,6 @@ idPVS::FrontPortalPVS
 					}
 
 					// the portal might be visible at the front
-					debugger;
 					n = this.pvsPortals.indexOf( p2 );
 					p1.mightSee[n >> 3] |= 1 << ( n & 7 );
 				}
@@ -875,7 +873,6 @@ idPVS::AreaPVSFromPortalPVS
 			for ( j = 1; j < area.numPortals; j++ ) {
 				p1 =  new Int32Array(area.portals[0].vis.buffer);
 				p2 = new Int32Array(area.portals[j].vis.buffer);
-				debugger;
 				for (k = 0; k < this.portalVisInts; k++ ) {
 					p1[pIdx] |= p2[pIdx];
 					pIdx++;
@@ -884,7 +881,6 @@ idPVS::AreaPVSFromPortalPVS
 
 			// the portals of this area are always visible
 			for (j = 0; j < area.numPortals; j++) {
-				debugger;
 				k = this.pvsPortals.indexOf( area.portals[j] ); //area.portals[j] - this.pvsPortals;
 				area.portals[0].vis[ k >> 3 ] |= 1 << (k & 7);
 			}

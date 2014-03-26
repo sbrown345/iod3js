@@ -926,7 +926,7 @@ idGameLocal.prototype.LoadMap = function ( mapName: string, /*int */randseed: nu
 
 	// load navigation system for all the different monster sizes
 	for ( i = 0; i < this.aasNames.Num ( ); i++ ) {
-		this.aasList[i].Init( new idStr( this.mapFileName ).SetFileExtension( this.aasNames[i] ).c_str ( ), this.mapFile.GetGeometryCRC ( ) );
+		this.aasList[i].Init( new idStr( this.mapFileName ).SetFileExtension( this.aasNames[i].data ).c_str ( ), this.mapFile.GetGeometryCRC ( ) );
 	}
 
 	// clear the smoke particle free list
