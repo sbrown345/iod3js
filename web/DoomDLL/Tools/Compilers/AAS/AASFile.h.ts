@@ -92,43 +92,58 @@ var MAX_AAS_BOUNDING_BOXES		=4
 // reachability to another area
 class idReachability {
 ////public:
-////	int							travelType;			// type of travel required to get to the area
-////	short						toAreaNum;			// number of the reachable area
-////	short						fromAreaNum;		// number of area the reachability starts
-////	idVec3						start;				// start point of inter area movement
-////	idVec3						end;				// end point of inter area movement
-////	int							edgeNum;			// edge crossed by this reachability
-////	unsigned short				travelTime;			// travel time of the inter area movement
-////	byte						number;				// reachability number within the fromAreaNum (must be < 256)
-////	byte						disableCount;		// number of times this reachability has been disabled
-////	idReachability *			next;				// next reachability in list
-////	idReachability *			rev_next;			// next reachability in reversed list
-////	unsigned short *			areaTravelTimes;	// travel times within the fromAreaNum from reachabilities that lead towards this area
+	travelType :number/*int*/;			// type of travel required to get to the area
+	toAreaNum:number/*short*/;			// number of the reachable area
+	fromAreaNum:number/*short*/;		// number of area the reachability starts
+	start = new idVec3;				// start point of inter area movement
+	end = new idVec3;				// end point of inter area movement
+	edgeNum :number/*int*/;			// edge crossed by this reachability
+	travelTime:number/*unsigned short*/;			// travel time of the inter area movement
+	number:number/*byte*/;				// reachability number within the fromAreaNum (must be < 256)
+	disableCount:number/*byte*/;		// number of times this reachability has been disabled
+	next:idReachability;				// next reachability in list
+	rev_next:idReachability;			// next reachability in reversed list
+	areaTravelTimes:Uint16Array;	// travel times within the fromAreaNum from reachabilities that lead towards this area
 ////public:
 ////	void						CopyBase( idReachability &reach );
-////};
-////
-////class idReachability_Walk : public idReachability {
-////};
-////
-////class idReachability_BarrierJump : public idReachability {
-////};
-////
-////class idReachability_WaterJump : public idReachability {
-////};
-////
-////class idReachability_WalkOffLedge : public idReachability {
-////};
-////
-////class idReachability_Swim : public idReachability {
-////};
-////
-////class idReachability_Fly : public idReachability {
-////};
-////
-////class idReachability_Special : public idReachability {
-////public:
-////	idDict						dict;
+
+/*
+================
+idReachability::CopyBase
+================
+*/
+	CopyBase ( reach: idReachability ): void {
+		this.travelType = reach.travelType;
+		this.toAreaNum = reach.toAreaNum;
+		this.start = reach.start;
+		this.end = reach.end;
+		this.edgeNum = reach.edgeNum;
+		this.travelTime = reach.travelTime;
+	}
+
+};
+
+class idReachability_Walk extends idReachability {
+};
+
+class idReachability_BarrierJump extends idReachability {
+};
+
+class idReachability_WaterJump extends idReachability {
+};
+
+class idReachability_WalkOffLedge extends idReachability {
+};
+
+class idReachability_Swim extends idReachability {
+};
+
+class idReachability_Fly extends idReachability {
+};
+
+class idReachability_Special extends idReachability {
+//public:
+	dict = new idDict;
 };
 ////
 ////// index
@@ -207,53 +222,17 @@ class aasTrace_t {
 	//aasTrace_s( ) { areas = NULL; points = NULL; getOutOfSolid = false; flags = travelFlags = maxAreas = 0; }
 };
 
- //settings
-class idAASSettings {
-//public:
-	// collision settings
-	numBoundingBoxes:number/*int*/;
-	boundingBoxes = newStructArray<idBounds>(idBounds,MAX_AAS_BOUNDING_BOXES);
-	usePatches:boolean;
-	writeBrushMap:boolean;
-	playerFlood:boolean;
-	noOptimize:boolean;
-	allowSwimReachabilities:boolean;
-	allowFlyReachabilities:boolean;
-	fileExtension=new idStr;
-	// physics settings
-	gravity=new idVec3;
-	gravityDir = new idVec3;
-	invGravityDir = new idVec3;
-	gravityValue:number/*float*/;
-	maxStepHeight:number/*float*/;
-	maxBarrierHeight:number/*float*/;
-	maxWaterJumpHeight:number/*float*/;
-	maxFallHeight:number/*float*/;
-	minFloorCos:number/*float*/;
-	// fixed travel times
-	tt_barrierJump:number/*int*/;
-	tt_startCrouching:number/*int*/;
-	tt_waterJump:number/*int*/;
-	tt_startWalkOffLedge:number/*int*/;
 
-//public:
-//								idAASSettings( );
 
-//	bool						FromFile( const idStr &fileName );
-//	bool						FromParser( idLexer &src );
-//	bool						FromDict( const char *name, const idDict *dict );
-//	bool						WriteToFile( idFile *fp ) const;
-//	bool						ValidForBounds( const idBounds &bounds ) const;
-//	bool						ValidEntity( const char *classname ) const;
+var TRACEPLANE_EPSILON = 0.125;
 
-//private:
-//	bool						ParseBool( idLexer &src, bool &b );
-//	bool						ParseInt( idLexer &src, int &i );
-//	bool						ParseFloat( idLexer &src, float &f );
-//	bool						ParseVector( idLexer &src, idVec3 &vec );
-//	bool						ParseBBoxes( idLexer &src );
+class aasTraceStack_t
+{
+	start = new idVec3;
+	end = new idVec3;
+	planeNum:number/*int*/;
+	nodeNum: number /*int*/;
 };
-
 
 /*
 
@@ -286,8 +265,8 @@ class idAASFile {
 	GetName ( ): string { return this.name.c_str ( ); }
 	GetCRC ( ): number { return this.crc; }
 ////
-////	int							GetNumPlanes( ) const { return planeList.Num(); }
-////	const idPlane &				GetPlane( int index ) const { return planeList[index]; }
+////	int							GetNumPlanes( ) const { return this.planeList.Num(); }
+////	const idPlane &				GetPlane( int index ) const { return this.planeList[index]; }
 ////	int							GetNumVertices( ) const { return this.vertices .Num(); }
 ////	const aasVertex_t &			GetVertex( int index ) const { return this.vertices [index]; }
 ////	int							GetNumEdges( ) const { return this.edges.Num(); }
@@ -300,18 +279,18 @@ class idAASFile {
 ////	const aasIndex_t &			GetFaceIndex( int index ) const { return this.faceIndex[index]; }
 ////	int							GetNumAreas( ) const { return areas.Num(); }
 ////	const aasArea_t &			GetArea( int index ) { return areas[index]; }
-////	int							GetNumNodes( ) const { return nodes.Num(); }
-////	const aasNode_t &			GetNode( int index ) const { return nodes[index]; }
-////	int							GetNumPortals( ) const { return portals.Num(); }
-////	const aasPortal_t &			GetPortal( int index ) { return portals[index]; }
+////	int							GetNumNodes( ) const { return this.nodes.Num(); }
+////	const aasNode_t &			GetNode( int index ) const { return this.nodes[index]; }
+////	int							GetNumPortals( ) const { return this.portals.Num(); }
+////	const aasPortal_t &			GetPortal( int index ) { return this.portals[index]; }
 ////	int							GetNumPortalIndexes( ) const { return portalIndex.Num(); }
 ////	const aasIndex_t &			GetPortalIndex( int index ) const { return portalIndex[index]; }
-////	int							GetNumClusters( ) const { return clusters.Num(); }
-////	const aasCluster_t &		GetCluster( int index ) const { return clusters[index]; }
+////	int							GetNumClusters( ) const { return this.clusters.Num(); }
+////	const aasCluster_t &		GetCluster( int index ) const { return this.clusters[index]; }
 ////
 ////	const idAASSettings &		GetSettings( ) const { return settings; }
 ////
-////	void						SetPortalMaxTravelTime( int index, int time ) { portals[index].maxAreaTravelTime = time; }
+////	void						SetPortalMaxTravelTime( int index, int time ) { this.portals[index].maxAreaTravelTime = time; }
 ////	void						SetAreaTravelFlag( int index, int flag ) { areas[index].travelFlags |= flag; }
 ////	void						RemoveAreaTravelFlag( int index, int flag ) { areas[index].travelFlags &= ~flag; }
 ////
@@ -334,7 +313,7 @@ class idAASFile {
 	name = new idStr;
 	crc: number /*unsigned int*/;
 
-	//planeList = new idPlaneSet;
+	planeList = new idPlaneSet;
 	vertices = new idList< /*aasVertex_t*/idVec3>( /*aasVertex_t*/idVec3 );
 	edges = new idList<aasEdge_t>( aasEdge_t );
 	edgeIndex =new idList< /*aasIndex_t*/number>( Number );
@@ -498,7 +477,7 @@ idAASFileLocal::Clear
 ////idAASFileLocal::Write
 ////================
 ////*/
-////bool idAASFileLocal::Write( const idStr &fileName, unsigned int mapFileCRC ) {
+////Write( const idStr &fileName, unsigned int mapFileCRC ):boolean {
 ////	int i, num;
 ////	idFile *aasFile;
 ////	idReachability *reach;
@@ -523,10 +502,10 @@ idAASFileLocal::Clear
 ////	this.settings.WriteToFile( aasFile );
 ////
 ////	// write out planes
-////	aasFile.WriteFloatString( "planes %d {\n", planeList.Num() );
-////	for ( i = 0; i < planeList.Num(); i++ ) {
+////	aasFile.WriteFloatString( "planes %d {\n", this.planeList.Num() );
+////	for ( i = 0; i < this.planeList.Num(); i++ ) {
 ////		aasFile.WriteFloatString( "\t%d ( %f %f %f %f )\n", i,
-////				planeList[i].Normal().x, planeList[i].Normal().y, planeList[i].Normal().z, planeList[i].Dist() );
+////				this.planeList[i].Normal().x, this.planeList[i].Normal().y, this.planeList[i].Normal().z, this.planeList[i].Dist() );
 ////	}
 ////	aasFile.WriteFloatString( "}\n" );
 ////
@@ -588,9 +567,9 @@ idAASFileLocal::Clear
 ////	aasFile.WriteFloatString( "}\n" );
 ////
 ////	// write out nodes
-////	aasFile.WriteFloatString( "nodes %d {\n", nodes.Num() );
-////	for ( i = 0; i < nodes.Num(); i++ ) {
-////		aasFile.WriteFloatString( "\t%d ( %d %d %d )\n", i, nodes[i].planeNum, nodes[i].children[0], nodes[i].children[1] );
+////	aasFile.WriteFloatString( "nodes %d {\n", this.nodes.Num() );
+////	for ( i = 0; i < this.nodes.Num(); i++ ) {
+////		aasFile.WriteFloatString( "\t%d ( %d %d %d )\n", i, this.nodes[i].planeNum, this.nodes[i].children[0], this.nodes[i].children[1] );
 ////	}
 ////	aasFile.WriteFloatString( "}\n" );
 ////
@@ -610,10 +589,10 @@ idAASFileLocal::Clear
 ////	aasFile.WriteFloatString( "}\n" );
 ////
 ////	// write out clusters
-////	aasFile.WriteFloatString( "clusters %d {\n", clusters.Num() );
-////	for ( i = 0; i < clusters.Num(); i++ ) {
-////		aasFile.WriteFloatString( "\t%d ( %d %d %d %d )\n", i, clusters[i].numAreas, clusters[i].numReachableAreas,
-////							clusters[i].firstPortal, clusters[i].numPortals );
+////	aasFile.WriteFloatString( "clusters %d {\n", this.clusters.Num() );
+////	for ( i = 0; i < this.clusters.Num(); i++ ) {
+////		aasFile.WriteFloatString( "\t%d ( %d %d %d %d )\n", i, this.clusters[i].numAreas, this.clusters[i].numReachableAreas,
+////							this.clusters[i].firstPortal, this.clusters[i].numPortals );
 ////	}
 ////	aasFile.WriteFloatString( "}\n" );
 ////
@@ -624,332 +603,332 @@ idAASFileLocal::Clear
 ////
 ////	return true;
 ////}
-////
-/////*
-////================
-////idAASFileLocal::ParseIndex
-////================
-////*/
-////bool idAASFileLocal::ParseIndex( idLexer &src, idList<aasIndex_t> &indexes ) {
-////	int numIndexes, i;
-////	aasIndex_t index;
-////
-////	numIndexes = src.ParseInt();
-////	indexes.Resize( numIndexes );
-////	if ( !src.ExpectTokenString( "{" ) ) {
-////		return false;
-////	}
-////	for ( i = 0; i < numIndexes; i++ ) {
-////		src.ParseInt();
-////		src.ExpectTokenString( "(" );
-////		index = src.ParseInt();
-////		src.ExpectTokenString( ")" );
-////		indexes.Append( index );
-////	}
-////	if ( !src.ExpectTokenString( "}" ) ) {
-////		return false;
-////	}
-////	return true;
-////}
-////
-/////*
-////================
-////idAASFileLocal::ParsePlanes
-////================
-////*/
-////bool idAASFileLocal::ParsePlanes( idLexer &src ) {
-////	int numPlanes, i;
-////	idPlane plane;
-////	idVec4 vec;
-////
-////	numPlanes = src.ParseInt();
-////	planeList.Resize( numPlanes );
-////	if ( !src.ExpectTokenString( "{" ) ) {
-////		return false;
-////	}
-////	for ( i = 0; i < numPlanes; i++ ) {
-////		src.ParseInt();
-////		if ( !src.Parse1DMatrix( 4, vec.ToFloatPtr() ) ) {
-////			return false;
-////		}
-////		plane.SetNormal( vec.ToVec3() );
-////		plane.SetDist( vec[3] );
-////		planeList.Append( plane );
-////	}
-////	if ( !src.ExpectTokenString( "}" ) ) {
-////		return false;
-////	}
-////	return true;
-////}
-////
-/////*
-////================
-////idAASFileLocal::ParseVertices
-////================
-////*/
-////bool idAASFileLocal::ParseVertices( idLexer &src ) {
-////	int numVertices, i;
-////	idVec3 vec;
-////
-////	numVertices = src.ParseInt();
-////	this.vertices .Resize( numVertices );
-////	if ( !src.ExpectTokenString( "{" ) ) {
-////		return false;
-////	}
-////	for ( i = 0; i < numVertices; i++ ) {
-////		src.ParseInt();
-////		if ( !src.Parse1DMatrix( 3, vec.ToFloatPtr() ) ) {
-////			return false;
-////		}
-////		this.vertices .Append( vec );
-////	}
-////	if ( !src.ExpectTokenString( "}" ) ) {
-////		return false;
-////	}
-////	return true;
-////}
-////
-/////*
-////================
-////idAASFileLocal::ParseEdges
-////================
-////*/
-////bool idAASFileLocal::ParseEdges( idLexer &src ) {
-////	int numEdges, i;
-////	aasEdge_t edge;
-////
-////	numEdges = src.ParseInt();
-////	edges.Resize( numEdges );
-////	if ( !src.ExpectTokenString( "{" ) ) {
-////		return false;
-////	}
-////	for ( i = 0; i < numEdges; i++ ) {
-////		src.ParseInt();
-////		src.ExpectTokenString( "(" );
-////		edge.vertexNum[0] = src.ParseInt();
-////		edge.vertexNum[1] = src.ParseInt();
-////		src.ExpectTokenString( ")" );
-////		edges.Append( edge );
-////	}
-////	if ( !src.ExpectTokenString( "}" ) ) {
-////		return false;
-////	}
-////	return true;
-////}
-////
-/////*
-////================
-////idAASFileLocal::ParseFaces
-////================
-////*/
-////bool idAASFileLocal::ParseFaces( idLexer &src ) {
-////	int numFaces, i;
-////	aasFace_t face;
-////
-////	numFaces = src.ParseInt();
-////	this.faces.Resize( numFaces );
-////	if ( !src.ExpectTokenString( "{" ) ) {
-////		return false;
-////	}
-////	for ( i = 0; i < numFaces; i++ ) {
-////		src.ParseInt();
-////		src.ExpectTokenString( "(" );
-////		face.planeNum = src.ParseInt();
-////		face.flags = src.ParseInt();
-////		face.areas[0] = src.ParseInt();
-////		face.areas[1] = src.ParseInt();
-////		face.firstEdge = src.ParseInt();
-////		face.numEdges = src.ParseInt();
-////		src.ExpectTokenString( ")" );
-////		this.faces.Append( face );
-////	}
-////	if ( !src.ExpectTokenString( "}" ) ) {
-////		return false;
-////	}
-////	return true;
-////}
-////
-/////*
-////================
-////idAASFileLocal::ParseReachabilities
-////================
-////*/
-////bool idAASFileLocal::ParseReachabilities( idLexer &src, int areaNum ) {
-////	int num, j;
-////	aasArea_t *area;
-////	idReachability reach, *newReach;
-////	idReachability_Special *special;
-////
-////	area = &areas[areaNum];
-////
-////	num = src.ParseInt();
-////	src.ExpectTokenString( "{" );
-////	area.reach = NULL;
-////	area.rev_reach = NULL;
-////	area.travelFlags = AreaContentsTravelFlags( areaNum );
-////	for ( j = 0; j < num; j++ ) {
-////		Reachability_Read( src, &reach );
-////		switch( reach.travelType ) {
-////			case TFL_SPECIAL:
-////				newReach = special = new idReachability_Special();
-////				Reachability_Special_Read( src, special );
-////				break;
-////			default:
-////				newReach = new idReachability();
-////				break;
-////		}
-////		newReach.CopyBase( reach );
-////		newReach.fromAreaNum = areaNum;
-////		newReach.next = area.reach;
-////		area.reach = newReach;
-////	}
-////	src.ExpectTokenString( "}" );
-////	return true;
-////}
-////
-/////*
-////================
-////idAASFileLocal::LinkReversedReachability
-////================
-////*/
-////void idAASFileLocal::LinkReversedReachability( ) {
-////	var/*int */i:number;
-////	idReachability *reach;
-////
-////	// link reversed reachabilities
-////	for ( i = 0; i < areas.Num(); i++ ) {
-////		for ( reach = areas[i].reach; reach; reach = reach.next ) {
-////			reach.rev_next = areas[reach.toAreaNum].rev_reach;
-////			areas[reach.toAreaNum].rev_reach = reach;
-////		}
-////	}
-////}
-////
-/////*
-////================
-////idAASFileLocal::ParseAreas
-////================
-////*/
-////bool idAASFileLocal::ParseAreas( idLexer &src ) {
-////	int numAreas, i;
-////	aasArea_t area;
-////
-////	numAreas = src.ParseInt();
-////	areas.Resize( numAreas );
-////	if ( !src.ExpectTokenString( "{" ) ) {
-////		return false;
-////	}
-////	for ( i = 0; i < numAreas; i++ ) {
-////		src.ParseInt();
-////		src.ExpectTokenString( "(" );
-////		area.flags = src.ParseInt();
-////		area.contents = src.ParseInt();
-////		area.firstFace = src.ParseInt();
-////		area.numFaces = src.ParseInt();
-////		area.cluster = src.ParseInt();
-////		area.clusterAreaNum = src.ParseInt();
-////		src.ExpectTokenString( ")" );
-////		areas.Append( area );
-////		ParseReachabilities( src, i );
-////	}
-////	if ( !src.ExpectTokenString( "}" ) ) {
-////		return false;
-////	}
-////
-////	LinkReversedReachability();
-////
-////	return true;
-////}
-////
-/////*
-////================
-////idAASFileLocal::ParseNodes
-////================
-////*/
-////bool idAASFileLocal::ParseNodes( idLexer &src ) {
-////	int numNodes, i;
-////	aasNode_t node;
-////
-////	numNodes = src.ParseInt();
-////	nodes.Resize( numNodes );
-////	if ( !src.ExpectTokenString( "{" ) ) {
-////		return false;
-////	}
-////	for ( i = 0; i < numNodes; i++ ) {
-////		src.ParseInt();
-////		src.ExpectTokenString( "(" );
-////		node.planeNum = src.ParseInt();
-////		node.children[0] = src.ParseInt();
-////		node.children[1] = src.ParseInt();
-////		src.ExpectTokenString( ")" );
-////		nodes.Append( node );
-////	}
-////	if ( !src.ExpectTokenString( "}" ) ) {
-////		return false;
-////	}
-////	return true;
-////}
-////
-/////*
-////================
-////idAASFileLocal::ParsePortals
-////================
-////*/
-////bool idAASFileLocal::ParsePortals( idLexer &src ) {
-////	int numPortals, i;
-////	aasPortal_t portal;
-////
-////	numPortals = src.ParseInt();
-////	portals.Resize( numPortals );
-////	if ( !src.ExpectTokenString( "{" ) ) {
-////		return false;
-////	}
-////	for ( i = 0; i < numPortals; i++ ) {
-////		src.ParseInt();
-////		src.ExpectTokenString( "(" );
-////		portal.areaNum = src.ParseInt();
-////		portal.clusters[0] = src.ParseInt();
-////		portal.clusters[1] = src.ParseInt();
-////		portal.clusterAreaNum[0] = src.ParseInt();
-////		portal.clusterAreaNum[1] = src.ParseInt();
-////		src.ExpectTokenString( ")" );
-////		portals.Append( portal );
-////	}
-////	if ( !src.ExpectTokenString( "}" ) ) {
-////		return false;
-////	}
-////	return true;
-////}
-////
-/////*
-////================
-////idAASFileLocal::ParseClusters
-////================
-////*/
-////bool idAASFileLocal::ParseClusters( idLexer &src ) {
-////	int numClusters, i;
-////	aasCluster_t cluster;
-////
-////	numClusters = src.ParseInt();
-////	clusters.Resize( numClusters );
-////	if ( !src.ExpectTokenString( "{" ) ) {
-////		return false;
-////	}
-////	for ( i = 0; i < numClusters; i++ ) {
-////		src.ParseInt();
-////		src.ExpectTokenString( "(" );
-////		cluster.numAreas = src.ParseInt();
-////		cluster.numReachableAreas = src.ParseInt();
-////		cluster.firstPortal = src.ParseInt();
-////		cluster.numPortals = src.ParseInt();
-////		src.ExpectTokenString( ")" );
-////		clusters.Append( cluster );
-////	}
-////	if ( !src.ExpectTokenString( "}" ) ) {
-////		return false;
-////	}
-////	return true;
-////}
+
+/*
+================
+idAASFileLocal::ParseIndex
+================
+*/
+	ParseIndex ( src: idLexer, indexes: idList< /*aasIndex_t*/number> ): boolean {
+		var /*int */numIndexes: number, i: number;
+		var index: number /*aasIndex_t*/;
+
+		numIndexes = src.ParseInt ( );
+		indexes.Resize( numIndexes );
+		if ( !src.ExpectTokenString( "{" ) ) {
+			return false;
+		}
+		for ( i = 0; i < numIndexes; i++ ) {
+			src.ParseInt ( );
+			src.ExpectTokenString( "(" );
+			index = src.ParseInt ( );
+			src.ExpectTokenString( ")" );
+			indexes.Append( index );
+		}
+		if ( !src.ExpectTokenString( "}" ) ) {
+			return false;
+		}
+		return true;
+	}
+
+/*
+================
+idAASFileLocal::ParsePlanes
+================
+*/
+	ParsePlanes ( src: idLexer ): boolean {
+		var /*int */numPlanes: number, i: number;
+		var plane = new idPlane;
+		var vec = new idVec4;
+
+		numPlanes = src.ParseInt ( );
+		this.planeList.Resize( numPlanes );
+		if ( !src.ExpectTokenString( "{" ) ) {
+			return false;
+		}
+		for ( i = 0; i < numPlanes; i++ ) {
+			src.ParseInt ( );
+			if ( !src.Parse1DMatrix( 4, vec.ToFloatPtr ( ) ) ) {
+				return false;
+			}
+			plane.SetNormal( vec.ToVec3 ( ) );
+			plane.SetDist( vec[3] );
+			this.planeList.Append( plane );
+		}
+		if ( !src.ExpectTokenString( "}" ) ) {
+			return false;
+		}
+		return true;
+	}
+
+/*
+================
+idAASFileLocal::ParseVertices
+================
+*/
+	ParseVertices ( src: idLexer ): boolean {
+		var /*int */numVertices: number, i: number;
+		var vec = new idVec3;
+
+		numVertices = src.ParseInt ( );
+		this.vertices.Resize( numVertices );
+		if ( !src.ExpectTokenString( "{" ) ) {
+			return false;
+		}
+		for ( i = 0; i < numVertices; i++ ) {
+			src.ParseInt ( );
+			if ( !src.Parse1DMatrix( 3, vec.ToFloatPtr ( ) ) ) {
+				return false;
+			}
+			this.vertices.Append( vec );
+		}
+		if ( !src.ExpectTokenString( "}" ) ) {
+			return false;
+		}
+		return true;
+	}
+
+/*
+================
+idAASFileLocal::ParseEdges
+================
+*/
+	ParseEdges ( src: idLexer ): boolean {
+		var /*int */numEdges: number, i: number;
+		var edge = new aasEdge_t;
+
+		numEdges = src.ParseInt ( );
+		this.edges.Resize( numEdges );
+		if ( !src.ExpectTokenString( "{" ) ) {
+			return false;
+		}
+		for ( i = 0; i < numEdges; i++ ) {
+			src.ParseInt ( );
+			src.ExpectTokenString( "(" );
+			edge.vertexNum[0] = src.ParseInt ( );
+			edge.vertexNum[1] = src.ParseInt ( );
+			src.ExpectTokenString( ")" );
+			this.edges.Append( edge );
+		}
+		if ( !src.ExpectTokenString( "}" ) ) {
+			return false;
+		}
+		return true;
+	}
+
+/*
+================
+idAASFileLocal::ParseFaces
+================
+*/
+	ParseFaces ( src: idLexer ): boolean {
+		var /*int */numFaces: number, i: number;
+		var face = new aasFace_t;
+
+		numFaces = src.ParseInt ( );
+		this.faces.Resize( numFaces );
+		if ( !src.ExpectTokenString( "{" ) ) {
+			return false;
+		}
+		for ( i = 0; i < numFaces; i++ ) {
+			src.ParseInt ( );
+			src.ExpectTokenString( "(" );
+			face.planeNum = src.ParseInt ( );
+			face.flags = src.ParseInt ( );
+			face.areas[0] = src.ParseInt ( );
+			face.areas[1] = src.ParseInt ( );
+			face.firstEdge = src.ParseInt ( );
+			face.numEdges = src.ParseInt ( );
+			src.ExpectTokenString( ")" );
+			this.faces.Append( face );
+		}
+		if ( !src.ExpectTokenString( "}" ) ) {
+			return false;
+		}
+		return true;
+	}
+
+/*
+================
+idAASFileLocal::ParseReachabilities
+================
+*/
+	ParseReachabilities ( src: idLexer, /*int*/ areaNum: number ): boolean {
+		var /*int */num: number, j: number;
+		var area: aasArea_t;
+		var reach: idReachability, newReach: idReachability;
+		var special: idReachability_Special;
+
+		area = this.areas[areaNum];
+
+		num = src.ParseInt ( );
+		src.ExpectTokenString( "{" );
+		area.reach = null;
+		area.rev_reach = null;
+		area.travelFlags = this.AreaContentsTravelFlags( areaNum );
+		for ( j = 0; j < num; j++ ) {
+			Reachability_Read( src, reach );
+			switch ( reach.travelType ) {
+			case TFL_SPECIAL:
+				newReach = special = new idReachability_Special ( );
+				Reachability_Special_Read( src, special );
+				break;
+			default:
+				newReach = new idReachability ( );
+				break;
+			}
+			newReach.CopyBase( reach );
+			newReach.fromAreaNum = areaNum;
+			newReach.next = area.reach;
+			area.reach = newReach;
+		}
+		src.ExpectTokenString( "}" );
+		return true;
+	}
+
+/*
+================
+idAASFileLocal::LinkReversedReachability
+================
+*/
+	LinkReversedReachability ( ): void {
+		var /*int */i: number;
+		var reach: idReachability;
+
+		// link reversed reachabilities
+		for ( i = 0; i < this.areas.Num ( ); i++ ) {
+			for ( reach = this.areas[i].reach; reach; reach = reach.next ) {
+				reach.rev_next = this.areas[reach.toAreaNum].rev_reach;
+				this.areas[reach.toAreaNum].rev_reach = reach;
+			}
+		}
+	}
+
+/*
+================
+idAASFileLocal::ParseAreas
+================
+*/
+	ParseAreas ( src: idLexer ): boolean {
+		var /*int */numAreas: number, i: number;
+		var area = new aasArea_t;
+
+		numAreas = src.ParseInt ( );
+		this.areas.Resize( numAreas );
+		if ( !src.ExpectTokenString( "{" ) ) {
+			return false;
+		}
+		for ( i = 0; i < numAreas; i++ ) {
+			src.ParseInt ( );
+			src.ExpectTokenString( "(" );
+			area.flags = src.ParseInt ( );
+			area.contents = src.ParseInt ( );
+			area.firstFace = src.ParseInt ( );
+			area.numFaces = src.ParseInt ( );
+			area.cluster = src.ParseInt ( );
+			area.clusterAreaNum = src.ParseInt ( );
+			src.ExpectTokenString( ")" );
+			this.areas.Append( area );
+			this.ParseReachabilities( src, i );
+		}
+		if ( !src.ExpectTokenString( "}" ) ) {
+			return false;
+		}
+
+		this.LinkReversedReachability ( );
+
+		return true;
+	}
+
+/*
+================
+idAASFileLocal::ParseNodes
+================
+*/
+	ParseNodes ( src: idLexer ): boolean {
+		var /*int */numNodes: number, i: number;
+		var node = new aasNode_t;
+
+		numNodes = src.ParseInt ( );
+		this.nodes.Resize( numNodes );
+		if ( !src.ExpectTokenString( "{" ) ) {
+			return false;
+		}
+		for ( i = 0; i < numNodes; i++ ) {
+			src.ParseInt ( );
+			src.ExpectTokenString( "(" );
+			node.planeNum = src.ParseInt ( );
+			node.children[0] = src.ParseInt ( );
+			node.children[1] = src.ParseInt ( );
+			src.ExpectTokenString( ")" );
+			this.nodes.Append( node );
+		}
+		if ( !src.ExpectTokenString( "}" ) ) {
+			return false;
+		}
+		return true;
+	}
+
+/*
+================
+idAASFileLocal::ParsePortals
+================
+*/
+	ParsePortals ( src: idLexer ): boolean {
+		var /*int */numPortals: number, i: number;
+		var portal = new aasPortal_t;
+
+		numPortals = src.ParseInt ( );
+		this.portals.Resize( numPortals );
+		if ( !src.ExpectTokenString( "{" ) ) {
+			return false;
+		}
+		for ( i = 0; i < numPortals; i++ ) {
+			src.ParseInt ( );
+			src.ExpectTokenString( "(" );
+			portal.areaNum = src.ParseInt ( );
+			portal.clusters[0] = src.ParseInt ( );
+			portal.clusters[1] = src.ParseInt ( );
+			portal.clusterAreaNum[0] = src.ParseInt ( );
+			portal.clusterAreaNum[1] = src.ParseInt ( );
+			src.ExpectTokenString( ")" );
+			this.portals.Append( portal );
+		}
+		if ( !src.ExpectTokenString( "}" ) ) {
+			return false;
+		}
+		return true;
+	}
+
+/*
+================
+idAASFileLocal::ParseClusters
+================
+*/
+	ParseClusters ( src: idLexer ): boolean {
+		var /*int */numClusters: number, i: number;
+		var cluster = new aasCluster_t;
+
+		numClusters = src.ParseInt ( );
+		this.clusters.Resize( numClusters );
+		if ( !src.ExpectTokenString( "{" ) ) {
+			return false;
+		}
+		for ( i = 0; i < numClusters; i++ ) {
+			src.ParseInt ( );
+			src.ExpectTokenString( "(" );
+			cluster.numAreas = src.ParseInt ( );
+			cluster.numReachableAreas = src.ParseInt ( );
+			cluster.firstPortal = src.ParseInt ( );
+			cluster.numPortals = src.ParseInt ( );
+			src.ExpectTokenString( ")" );
+			this.clusters.Append( cluster );
+		}
+		if ( !src.ExpectTokenString( "}" ) ) {
+			return false;
+		}
+		return true;
+	}
 
 /*
 ================
@@ -960,8 +939,8 @@ idAASFileLocal::FinishAreas
 		var /*int */i: number;
 
 		for ( i = 0; i < this.areas.Num ( ); i++ ) {
-			this.areas[i].center = this.AreaReachableGoal( i );
-			this.areas[i].bounds = this.AreaBounds( i );
+			this.areas[i].center.equals( this.AreaReachableGoal( i ) );
+			this.areas[i].bounds.opEquals( this.AreaBounds( i ) );
 		}
 	}
 
@@ -1090,14 +1069,14 @@ idAASFileLocal::Load
 ////int idAASFileLocal::MemorySize( ) const {
 ////	int size;
 ////
-////	size = planeList.Size();
+////	size = this.planeList.Size();
 ////	size += this.vertices .Size();
 ////	size += this.edges.Size();
 ////	size += edgeIndex.Size();
 ////	size += this.faces.Size();
 ////	size += this.faceIndex.Size();
 ////	size += this.areas.Size();
-////	size += nodes.Size();
+////	size += this.nodes.Size();
 ////	size += portals.Size();
 ////	size += portalIndex.Size();
 ////	size += clusters.Size();
@@ -1146,12 +1125,12 @@ idAASFileLocal::Load
 ////
 ////	numReachableAreas = 0;
 ////	total = 0;
-////	for ( i = 0; i < clusters.Num(); i++ ) {
-////		n = clusters[i].numReachableAreas;
+////	for ( i = 0; i < this.clusters.Num(); i++ ) {
+////		n = this.clusters[i].numReachableAreas;
 ////		numReachableAreas += n;
 ////		total += n * n;
 ////	}
-////	total += numReachableAreas * portals.Num();
+////	total += numReachableAreas * this.portals.Num();
 ////
 ////	common.Printf( "%6d reachable areas\n", numReachableAreas );
 ////	common.Printf( "%6d reachabilities\n", NumReachabilities() );
@@ -1186,17 +1165,17 @@ idAASFileLocal::Load
 ////	aasPortal_t portal;
 ////	aasCluster_t cluster;
 ////
-////	portals.Clear();
+////	this.portals.Clear();
 ////	portalIndex.Clear();
-////	clusters.Clear();
+////	this.clusters.Clear();
 ////
 ////	// first portal is a dummy
 ////	memset( &portal, 0, sizeof( portal ) );
-////	portals.Append( portal );
+////	this.portals.Append( portal );
 ////
 ////	// first cluster is a dummy
 ////	memset( &cluster, 0, sizeof( cluster ) );
-////	clusters.Append( cluster );
+////	this.clusters.Append( cluster );
 ////}
 
 
@@ -1228,11 +1207,11 @@ idAASFileLocal::Load
 ////	idList<aasIndex_t> newFaceIndex;
 
 ////	vertexRemap.AssureSize(this.vertices .Num(), -1);
-////	edgeRemap.AssureSize(edges.Num(), 0);
+////	edgeRemap.AssureSize(this.edges.Num(), 0);
 ////	faceRemap.AssureSize(this.faces.Num(), 0);
 
 ////	newVertices.Resize(this.vertices .Num());
-////	newEdges.Resize(edges.Num());
+////	newEdges.Resize(this.edges.Num());
 ////	newEdges.SetNum(1, false);
 ////	newEdgeIndex.Resize(this.edgeIndex.Num());
 ////	newFaces.Resize(this.faces.Num());
@@ -1240,7 +1219,7 @@ idAASFileLocal::Load
 ////	newFaceIndex.Resize(this.faceIndex.Num());
 
 ////	for (i = 0; i < this.areas.Num(); i++) {
-////		area = &this.areas[i];
+////		area = this.areas[i];
 
 ////		areaFirstFace = newFaceIndex.Num();
 ////		for (j = 0; j < area.numFaces; j++) {
@@ -1317,7 +1296,7 @@ idAASFileLocal::Load
 
 ////	// store new list
 ////	this.vertices  = newVertices;
-////	edges = newEdges;
+////	this.edges = newEdges;
 ////	this.edgeIndex = newEdgeIndex;
 ////	this.faces = newFaces;
 ////	this.faceIndex = newFaceIndex;
@@ -1348,88 +1327,88 @@ idAASFileLocal::Load
 idAASFileLocal::FaceCenter
 ================
 */
-FaceCenter(/*int */faceNum:number) :idVec3 {
-	var/*int */i: number, edgeNum: number;
-	var face: aasFace_t ;
-	var edge: aasEdge_t ;
-	var center = new idVec3;
+	FaceCenter ( /*int */faceNum: number ): idVec3 {
+		var /*int */i: number, edgeNum: number;
+		var face: aasFace_t;
+		var edge: aasEdge_t;
+		var center = new idVec3;
 
-	center.equals( vec3_origin );
+		center.equals( vec3_origin );
 
-	face = this.faces[faceNum];
-	if (face.numEdges > 0) {
-		for (i = 0; i < face.numEdges; i++) {
-			edgeNum = this.edgeIndex[face.firstEdge + i];
-			edge = this.edges[abs(edgeNum)];
-			center.opAdditionAssignment( this.vertices[edge.vertexNum[INTSIGNBITSET( edgeNum )]] );
+		face = this.faces[faceNum];
+		if ( face.numEdges > 0 ) {
+			for ( i = 0; i < face.numEdges; i++ ) {
+				edgeNum = this.edgeIndex[face.firstEdge + i];
+				edge = this.edges[abs( edgeNum )];
+				center.opAdditionAssignment( this.vertices[edge.vertexNum[INTSIGNBITSET( edgeNum )]] );
+			}
+			center.opDivisionAssignment_float( face.numEdges );
 		}
-		center.opDivisionAssignment_float( face.numEdges );
+		return center;
 	}
-	return center;
-}
 
 /*
 ================
 idAASFileLocal::AreaCenter
 ================
 */
-AreaCenter(/*int*/ areaNum:number) :idVec3 {
-	var/*int */i:number, faceNum:number;
-	var area: aasArea_t;
-	var center = new idVec3;
+	AreaCenter ( /*int*/ areaNum: number ): idVec3 {
+		var /*int */i: number, faceNum: number;
+		var area: aasArea_t;
+		var center = new idVec3;
 
-	center.equals(vec3_origin);
+		center.equals( vec3_origin );
 
-	area = this.areas[areaNum];
-	if (area.numFaces > 0) {
-		for (i = 0; i < area.numFaces; i++) {
-			faceNum = this.faceIndex[area.firstFace + i];
-			center.opAdditionAssignment( this.FaceCenter( abs( faceNum ) ) );
+		area = this.areas[areaNum];
+		if ( area.numFaces > 0 ) {
+			for ( i = 0; i < area.numFaces; i++ ) {
+				faceNum = this.faceIndex[area.firstFace + i];
+				center.opAdditionAssignment( this.FaceCenter( abs( faceNum ) ) );
+			}
+			center.opDivisionAssignment_float( area.numFaces );
 		}
-		center.opDivisionAssignment_float(area.numFaces);
+		return center;
 	}
-	return center;
-}
 
 /*
 ============
 idAASFileLocal::AreaReachableGoal
 ============
 */
-AreaReachableGoal(/*int*/ areaNum:number) :idVec3 {
-	var/*int */i: number, faceNum: number, numFaces: number;
-	var area: aasArea_t ;
-	var center = new idVec3;
-	var start = new idVec3, end = new idVec3;
-	var trace  new aasTrace_t ;
+	AreaReachableGoal ( /*int*/ areaNum: number ): idVec3 {
+		var /*int */i: number, faceNum: number, numFaces: number;
+		var area: aasArea_t;
+		var center = new idVec3;
+		var start = new idVec3, end = new idVec3;
+		var trace = new aasTrace_t;
 
-	area = this.areas[areaNum];
+		area = this.areas[areaNum];
 
-	if (!(area.flags & (AREA_REACHABLE_WALK | AREA_REACHABLE_FLY)) || (area.flags & AREA_LIQUID)) {
-		return this.AreaCenter(areaNum);
-	}
-
-	center.equals( vec3_origin );
-
-	numFaces = 0;
-	for (i = 0; i < area.numFaces; i++) {
-		faceNum = this.faceIndex[area.firstFace + i];
-		if (!(this.faces[abs(faceNum)].flags & FACE_FLOOR)) {
-			continue;
+		if ( !( area.flags & ( AREA_REACHABLE_WALK | AREA_REACHABLE_FLY ) ) || ( area.flags & AREA_LIQUID ) ) {
+			return this.AreaCenter( areaNum );
 		}
-		center.opAdditionAssignment(  this.FaceCenter(abs(faceNum)));
-		numFaces++;
-	}
-	if (numFaces > 0) {
-		center.opDivisionAssignment_float(numFaces);
-	}
-	center[2] += 1.0;
-	end = center;
-	end[2] -= 1024;
-	this.Trace(trace, center, end);
 
-	return trace.endpos;
-}
+		center.equals( vec3_origin );
+
+		numFaces = 0;
+		for ( i = 0; i < area.numFaces; i++ ) {
+			faceNum = this.faceIndex[area.firstFace + i];
+			if ( !( this.faces[abs( faceNum )].flags & FACE_FLOOR ) ) {
+				continue;
+			}
+			center.opAdditionAssignment( this.FaceCenter( abs( faceNum ) ) );
+			numFaces++;
+		}
+		if ( numFaces > 0 ) {
+			center.opDivisionAssignment_float( numFaces );
+		}
+		center[2] += 1.0;
+		end.equals( center );
+		end[2] -= 1024;
+		this.Trace( trace, center, end );
+
+		return trace.endpos;
+	}
 
 /////*
 ////================
@@ -1446,47 +1425,47 @@ AreaReachableGoal(/*int*/ areaNum:number) :idVec3 {
 ////	return bounds;
 ////}
 
-/////*
-////================
-////idAASFileLocal::FaceBounds
-////================
-////*/
-////idBounds idAASFileLocal::FaceBounds(/*int */faceNum:number) const {
-////	int i, edgeNum;
-////	const aasFace_t *face;
-////	const aasEdge_t *edge;
-////	idBounds bounds;
+/*
+================
+idAASFileLocal::FaceBounds
+================
+*/
+	FaceBounds ( /*int */faceNum: number ): idBounds {
+		var /*int */i: number, edgeNum: number;
+		var face: aasFace_t;
+		var edge: aasEdge_t;
+		var bounds = new idBounds;
 
-////	face = &this.faces[faceNum];
-////	bounds.Clear();
+		face = this.faces[faceNum];
+		bounds.Clear ( );
 
-////	for (i = 0; i < face.numEdges; i++) {
-////		edgeNum = this.edgeIndex[face.firstEdge + i];
-////		edge = this.edges[abs(edgeNum)];
-////		bounds.AddPoint(this.vertices [edge.vertexNum[INTSIGNBITSET(edgeNum)]]);
-////	}
-////	return bounds;
-////}
+		for ( i = 0; i < face.numEdges; i++ ) {
+			edgeNum = this.edgeIndex[face.firstEdge + i];
+			edge = this.edges[abs( edgeNum )];
+			bounds.AddPoint( this.vertices[edge.vertexNum[INTSIGNBITSET( edgeNum )]] );
+		}
+		return bounds;
+	}
 
-/////*
-////================
-////idAASFileLocal::AreaBounds
-////================
-////*/
-////idBounds idAASFileLocal::AreaBounds(/*int*/ areaNum:number) const {
-////	int i, faceNum;
-////	const aasArea_t *area;
-////	idBounds bounds;
+/*
+================
+idAASFileLocal::AreaBounds
+================
+*/
+	AreaBounds ( /*int*/ areaNum: number ): idBounds {
+		var /*int */i: number, faceNum: number;
+		var area: aasArea_t;
+		var bounds = new idBounds;
 
-////	area = &this.areas[areaNum];
-////	bounds.Clear();
+		area = this.areas[areaNum];
+		bounds.Clear ( );
 
-////	for (i = 0; i < area.numFaces; i++) {
-////		faceNum = this.faceIndex[area.firstFace + i];
-////		bounds += FaceBounds(abs(faceNum));
-////	}
-////	return bounds;
-////}
+		for ( i = 0; i < area.numFaces; i++ ) {
+			faceNum = this.faceIndex[area.firstFace + i];
+			bounds.opAdditionAssignment( this.FaceBounds( abs( faceNum ) ) );
+		}
+		return bounds;
+	}
 
 /////*
 ////============
@@ -1499,8 +1478,8 @@ AreaReachableGoal(/*int*/ areaNum:number) :idVec3 {
 
 ////	nodeNum = 1;
 ////	do {
-////		node = &nodes[nodeNum];
-////		if (planeList[node.planeNum].Side(origin) == PLANESIDE_BACK) {
+////		node = this.nodes[nodeNum];
+////		if (this.planeList[node.planeNum].Side(origin) == PLANESIDE_BACK) {
 ////			nodeNum = node.children[1];
 ////		}
 ////		else {
@@ -1542,20 +1521,20 @@ AreaReachableGoal(/*int*/ areaNum:number) :idVec3 {
 ////	else {
 ////		// trace up
 ////		end = start;
-////		end[2] += 32.0f;
+////		end[2] += 32.0;
 ////		this.Trace(trace, start, end);
 ////		if (trace.numAreas >= 1) {
 ////			if ((this.areas[0].flags & areaFlags) && ((this.areas[0].travelFlags & excludeTravelFlags) == 0)) {
 ////				return areaList[0];
 ////			}
 ////			start = pointList[0];
-////			start[2] += 1.0f;
+////			start[2] += 1.0;
 ////		}
 ////	}
 
 ////	// trace down
 ////	end = start;
-////	end[2] -= 32.0f;
+////	end[2] -= 32.0;
 ////	this.Trace(trace, start, end);
 ////	if (trace.lastAreaNum) {
 ////		if ((this.areas[trace.lastAreaNum].flags & areaFlags) && ((this.areas[trace.lastAreaNum].travelFlags & excludeTravelFlags) == 0)) {
@@ -1566,7 +1545,7 @@ AreaReachableGoal(/*int*/ areaNum:number) :idVec3 {
 
 ////	// expand bounds until an area is found
 ////	for (i = 1; i <= 12; i++) {
-////		frac = i * (1.0f / 12.0f);
+////		frac = i * (1.0 / 12.0);
 ////		bounds[0] = origin + searchBounds[0] * frac;
 ////		bounds[1] = origin + searchBounds[1] * frac;
 ////		areaNum = BoundsReachableAreaNum(bounds, areaFlags, excludeTravelFlags);
@@ -1593,8 +1572,8 @@ AreaReachableGoal(/*int*/ areaNum:number) :idVec3 {
 ////			}
 ////			return 0;
 ////		}
-////		node = &nodes[nodeNum];
-////		res = bounds.PlaneSide(planeList[node.planeNum]);
+////		node = this.nodes[nodeNum];
+////		res = bounds.PlaneSide(this.planeList[node.planeNum]);
 ////		if (res == PLANESIDE_BACK) {
 ////			nodeNum = node.children[1];
 ////		}
@@ -1640,230 +1619,216 @@ AreaReachableGoal(/*int*/ areaNum:number) :idVec3 {
 ////		faceNum = this.faceIndex[area.firstFace + i];
 ////		face = &this.faces[abs(faceNum)];
 
-////		const idPlane &plane = planeList[face.planeNum ^ INTSIGNBITSET(faceNum)];
+////		const idPlane &plane = this.planeList[face.planeNum ^ INTSIGNBITSET(faceNum)];
 ////		float dist = plane.Distance(point);
 
 ////		// project the point onto the face plane if it is on the wrong side
-////		if (dist < 0.0f) {
+////		if (dist < 0.0) {
 ////			point -= dist * plane.Normal();
 ////		}
 ////	}
 ////}
 
-/////*
-////============
-////idAASFileLocal::Trace
-////============
-////*/
-////#define TRACEPLANE_EPSILON		0.125f
+/*
+============
+idAASFileLocal::Trace
+============
+*/
 
-////typedef struct aasTraceStack_s
-////{
-////	idVec3			start;
-////	idVec3			end;
-////	int				planeNum;
-////	int				nodeNum;
-////} aasTraceStack_t;
 
-////bool idAASFileLocal::Trace(aasTrace_t &trace, const idVec3 &start, const idVec3 &end) const {
-////	int side, nodeNum, tmpPlaneNum;
-////	double front, back, frac;
-////	idVec3 cur_start, cur_end, cur_mid, v1, v2;
-////	aasTraceStack_t tracestack[MAX_AAS_TREE_DEPTH];
-////	aasTraceStack_t *tstack_p;
-////	const aasNode_t *node;
-////	const idPlane *plane;
+	Trace ( trace: aasTrace_t, start: idVec3, end: idVec3 ): boolean {
+		var /*int */side: number, nodeNum: number, tmpPlaneNum: number;
+		var /*double */front: number, back: number, frac: number;
+		var cur_start = new idVec3, cur_end = new idVec3, cur_mid = new idVec3, v1 = new idVec3, v2 = new idVec3;
+		var tracestack = newStructArray<aasTraceStack_t>( aasTraceStack_t, MAX_AAS_TREE_DEPTH );
+		var tstack_p: number;
+		var node: aasNode_t;
+		var plane: idPlane;
 
-////	trace.numAreas = 0;
-////	trace.lastAreaNum = 0;
-////	trace.blockingAreaNum = 0;
+		trace.numAreas = 0;
+		trace.lastAreaNum = 0;
+		trace.blockingAreaNum = 0;
 
-////	tstack_p = tracestack;
-////	tstack_p.start = start;
-////	tstack_p.end = end;
-////	tstack_p.planeNum = 0;
-////	tstack_p.nodeNum = 1;		//start with the root of the tree
-////	tstack_p++;
+		tstack_p = 0;
+		tracestack[tstack_p].start.equals( start );
+		tracestack[tstack_p].end.equals( end );
+		tracestack[tstack_p].planeNum = 0;
+		tracestack[tstack_p].nodeNum = 1; //start with the root of the tree
+		tstack_p++;
 
-////	while (1) {
+		while ( 1 ) {
 
-////		tstack_p--;
-////		// if the trace stack is empty
-////		if (tstack_p < tracestack) {
-////			if (!trace.lastAreaNum) {
-////				// completely in solid
-////				trace.fraction = 0.0f;
-////				trace.endpos = start;
-////			}
-////			else {
-////				// nothing was hit
-////				trace.fraction = 1.0f;
-////				trace.endpos = end;
-////			}
-////			trace.planeNum = 0;
-////			return false;
-////		}
+			tstack_p--;
+			// if the trace stack is empty
+			if ( tstack_p < 0 /*tracestack */ ) {
+				if ( !trace.lastAreaNum ) {
+					// completely in solid
+					trace.fraction = 0.0;
+					trace.endpos.equals( start );
+				} else {
+					// nothing was hit
+					trace.fraction = 1.0;
+					trace.endpos.equals( end );
+				}
+				trace.planeNum = 0;
+				return false;
+			}
 
-////		// number of the current node to test the line against
-////		nodeNum = tstack_p.nodeNum;
+			// number of the current node to test the line against
+			nodeNum = tracestack[tstack_p].nodeNum;
 
-////		// if it is an area
-////		if (nodeNum < 0) {
-////			// if can't enter the area
-////			if ((this.areas[-nodeNum].flags & trace.flags) || (this.areas[-nodeNum].travelFlags & trace.travelFlags)) {
-////				if (!trace.lastAreaNum) {
-////					trace.fraction = 0.0f;
-////					v1 = vec3_origin;
-////				}
-////				else {
-////					v1 = end - start;
-////					v2 = tstack_p.start - start;
-////					trace.fraction = v2.Length() / v1.Length();
-////				}
-////				trace.endpos = tstack_p.start;
-////				trace.blockingAreaNum = -nodeNum;
-////				trace.planeNum = tstack_p.planeNum;
-////				// always take the plane with normal facing towards the trace start
-////				plane = &planeList[trace.planeNum];
-////				if (v1 * plane.Normal() > 0.0f) {
-////					trace.planeNum ^= 1;
-////				}
-////				return true;
-////			}
-////			trace.lastAreaNum = -nodeNum;
-////			if (trace.numAreas < trace.maxAreas) {
-////				if (trace.areas) {
-////					trace.areas[trace.numAreas] = -nodeNum;
-////				}
-////				if (trace.points) {
-////					trace.points[trace.numAreas] = tstack_p.start;
-////				}
-////				trace.numAreas++;
-////			}
-////			continue;
-////		}
+			// if it is an area
+			if ( nodeNum < 0 ) {
+				// if can't enter the area
+				if ( ( this.areas[-nodeNum].flags & trace.flags ) || ( this.areas[-nodeNum].travelFlags & trace.travelFlags ) ) {
+					if ( !trace.lastAreaNum ) {
+						trace.fraction = 0.0;
+						v1.equals( vec3_origin );
+					} else {
+						v1.equals( end.opSubtraction( start ) );
+						v2.equals( tracestack[tstack_p].start.opSubtraction( start ) );
+						trace.fraction = v2.Length ( ) / v1.Length ( );
+					}
+					trace.endpos.equals( tracestack[tstack_p].start );
+					trace.blockingAreaNum = -nodeNum;
+					trace.planeNum = tracestack[tstack_p].planeNum;
+					// always take the plane with normal facing towards the trace start
+					plane = this.planeList[trace.planeNum];
+					if ( v1.timesVec( plane.Normal ( ) ) > 0.0 ) {
+						trace.planeNum ^= 1;
+					}
+					return true;
+				}
+				trace.lastAreaNum = -nodeNum;
+				if ( trace.numAreas < trace.maxAreas ) {
+					if ( trace.areas ) {
+						trace.areas[trace.numAreas] = -nodeNum;
+					}
+					if ( trace.points ) {
+						trace.points[trace.numAreas] = tracestack[tstack_p].start;
+					}
+					trace.numAreas++;
+				}
+				continue;
+			}
 
-////		// if it is a solid leaf
-////		if (!nodeNum) {
-////			if (!trace.lastAreaNum) {
-////				trace.fraction = 0.0f;
-////				v1 = vec3_origin;
-////			}
-////			else {
-////				v1 = end - start;
-////				v2 = tstack_p.start - start;
-////				trace.fraction = v2.Length() / v1.Length();
-////			}
-////			trace.endpos = tstack_p.start;
-////			trace.blockingAreaNum = 0;	// hit solid leaf
-////			trace.planeNum = tstack_p.planeNum;
-////			// always take the plane with normal facing towards the trace start
-////			plane = &planeList[trace.planeNum];
-////			if (v1 * plane.Normal() > 0.0f) {
-////				trace.planeNum ^= 1;
-////			}
-////			if (!trace.lastAreaNum && trace.getOutOfSolid) {
-////				continue;
-////			}
-////			else {
-////				return true;
-////			}
-////		}
+			// if it is a solid leaf
+			if ( !nodeNum ) {
+				if ( !trace.lastAreaNum ) {
+					trace.fraction = 0.0;
+					v1.equals( vec3_origin );
+				} else {
+					v1.equals( end.opSubtraction( start ) );
+					v2.equals( tracestack[tstack_p].start.opSubtraction( start ) );
+					trace.fraction = v2.Length ( ) / v1.Length ( );
+				}
+				trace.endpos.equals( tracestack[tstack_p].start );
+				trace.blockingAreaNum = 0; // hit solid leaf
+				trace.planeNum = tracestack[tstack_p].planeNum;
+				// always take the plane with normal facing towards the trace start
+				plane = this.planeList[trace.planeNum];
+				if ( v1.timesVec( plane.Normal ( ) ) > 0.0 ) {
+					trace.planeNum ^= 1;
+				}
+				if ( !trace.lastAreaNum && trace.getOutOfSolid ) {
+					continue;
+				} else {
+					return true;
+				}
+			}
 
-////		// the node to test against
-////		node = &nodes[nodeNum];
-////		// start point of current line to test against node
-////		cur_start = tstack_p.start;
-////		// end point of the current line to test against node
-////		cur_end = tstack_p.end;
-////		// the current node plane
-////		plane = &planeList[node.planeNum];
+			// the node to test against
+			node = this.nodes[nodeNum];
+			// start point of current line to test against node
+			cur_start.equals( tracestack[tstack_p].start );
+			// end point of the current line to test against node
+			cur_end.equals( tracestack[tstack_p].end );
+			// the current node plane
+			plane = this.planeList[node.planeNum];
 
-////		front = plane.Distance(cur_start);
-////		back = plane.Distance(cur_end);
+			front = plane.Distance( cur_start );
+			back = plane.Distance( cur_end );
 
-////		// if the whole to be traced line is totally at the front of this node
-////		// only go down the tree with the front child
-////		if (front >= -ON_EPSILON && back >= -ON_EPSILON) {
-////			// keep the current start and end point on the stack and go down the tree with the front child
-////			tstack_p.nodeNum = node.children[0];
-////			tstack_p++;
-////			if (tstack_p >= &tracestack[MAX_AAS_TREE_DEPTH]) {
-////				common.Error("idAASFileLocal::Trace: stack overflow\n");
-////				return false;
-////			}
-////		}
-////		// if the whole to be traced line is totally at the back of this node
-////		// only go down the tree with the back child
-////		else if (front < ON_EPSILON && back < ON_EPSILON) {
-////			// keep the current start and end point on the stack and go down the tree with the back child
-////			tstack_p.nodeNum = node.children[1];
-////			tstack_p++;
-////			if (tstack_p >= &tracestack[MAX_AAS_TREE_DEPTH]) {
-////				common.Error("idAASFileLocal::Trace: stack overflow\n");
-////				return false;
-////			}
-////		}
-////		// go down the tree both at the front and back of the node
-////		else {
-////			tmpPlaneNum = tstack_p.planeNum;
-////			// calculate the hit point with the node plane
-////			// put the cross point TRACEPLANE_EPSILON on the near side
-////			if (front < 0) {
-////				frac = (front + TRACEPLANE_EPSILON) / (front - back);
-////			}
-////			else {
-////				frac = (front - TRACEPLANE_EPSILON) / (front - back);
-////			}
+			// if the whole to be traced line is totally at the front of this node
+			// only go down the tree with the front child
+			if ( front >= -ON_EPSILON && back >= -ON_EPSILON ) {
+				// keep the current start and end point on the stack and go down the tree with the front child
+				tracestack[tstack_p].nodeNum = node.children[0];
+				tstack_p++;
+				if ( tstack_p >= MAX_AAS_TREE_DEPTH ) {
+					common.Error( "idAASFileLocal::Trace: stack overflow\n" );
+					return false;
+				}
+			}
+			// if the whole to be traced line is totally at the back of this node
+			// only go down the tree with the back child
+			else if ( front < ON_EPSILON && back < ON_EPSILON ) {
+				// keep the current start and end point on the stack and go down the tree with the back child
+				tracestack[tstack_p].nodeNum = node.children[1];
+				tstack_p++;
+				if ( tstack_p >= MAX_AAS_TREE_DEPTH ) {
+					common.Error( "idAASFileLocal::Trace: stack overflow\n" );
+					return false;
+				}
+			}
+			// go down the tree both at the front and back of the node
+			else {
+				tmpPlaneNum = tracestack[tstack_p].planeNum;
+				// calculate the hit point with the node plane
+				// put the cross point TRACEPLANE_EPSILON on the near side
+				if ( front < 0 ) {
+					frac = ( front + TRACEPLANE_EPSILON ) / ( front - back );
+				} else {
+					frac = ( front - TRACEPLANE_EPSILON ) / ( front - back );
+				}
 
-////			if (frac < 0) {
-////				frac = 0.001f; //0
-////			}
-////			else if (frac > 1) {
-////				frac = 0.999f; //1
-////			}
+				if ( frac < 0 ) {
+					frac = 0.001; //0
+				} else if ( frac > 1 ) {
+					frac = 0.999; //1
+				}
 
-////			cur_mid = cur_start + (cur_end - cur_start) * frac;
+				cur_mid.equals( cur_start.opAddition( cur_end.opSubtraction( cur_start ) ).timesFloat( frac ) );
 
-////			// side the front part of the line is on
-////			side = front < 0;
+				// side the front part of the line is on
+				side = front < 0 ? 1 : 0;
 
-////			// first put the end part of the line on the stack (back side)
-////			tstack_p.start = cur_mid;
-////			tstack_p.planeNum = node.planeNum;
-////			tstack_p.nodeNum = node.children[!side];
-////			tstack_p++;
-////			if (tstack_p >= &tracestack[MAX_AAS_TREE_DEPTH]) {
-////				common.Error("idAASFileLocal::Trace: stack overflow\n");
-////				return false;
-////			}
-////			// now put the part near the start of the line on the stack so we will
-////			// continue with that part first.
-////			tstack_p.start = cur_start;
-////			tstack_p.end = cur_mid;
-////			tstack_p.planeNum = tmpPlaneNum;
-////			tstack_p.nodeNum = node.children[side];
-////			tstack_p++;
-////			if (tstack_p >= &tracestack[MAX_AAS_TREE_DEPTH]) {
-////				common.Error("idAASFileLocal::Trace: stack overflow\n");
-////				return false;
-////			}
-////		}
-////	}
-////	return false;
-////}
+				// first put the end part of the line on the stack (back side)
+				tracestack[tstack_p].start.equals( cur_mid );
+				tracestack[tstack_p].planeNum = node.planeNum;
+				tracestack[tstack_p].nodeNum = node.children[( !side ) ? 1 : 0];
+				tstack_p++;
+				if ( tstack_p >= MAX_AAS_TREE_DEPTH ) {
+					common.Error( "idAASFileLocal::Trace: stack overflow\n" );
+					return false;
+				}
+				// now put the part near the start of the line on the stack so we will
+				// continue with that part first.
+				tracestack[tstack_p].start.equals( cur_start );
+				tracestack[tstack_p].end.equals( cur_mid );
+				tracestack[tstack_p].planeNum = tmpPlaneNum;
+				tracestack[tstack_p].nodeNum = node.children[side];
+				tstack_p++;
+				if ( tstack_p >= MAX_AAS_TREE_DEPTH ) {
+					common.Error( "idAASFileLocal::Trace: stack overflow\n" );
+					return false;
+				}
+			}
+		}
+		return false;
+	}
 
-/////*
-////============
-////idAASLocal::AreaContentsTravelFlags
-////============
-////*/
-////int idAASFileLocal::AreaContentsTravelFlags(/*int*/ areaNum:number) const {
-////	if (this.areas[areaNum].contents & AREACONTENTS_WATER) {
-////		return TFL_WATER;
-////	}
-////	return TFL_AIR;
-////}
+/*
+============
+idAASLocal::AreaContentsTravelFlags
+============
+*/
+	AreaContentsTravelFlags ( /*int*/ areaNum: number ): number {
+		if ( this.areas[areaNum].contents & AREACONTENTS_WATER ) {
+			return TFL_WATER;
+		}
+		return TFL_AIR;
+	}
 
 /*
 ============
@@ -1895,7 +1860,7 @@ idAASFileLocal::MaxTreeDepth
 ============
 */
 	MaxTreeDepth ( ): number {
-		var /*int */depth = new R <number> , maxDepth = new R<number> ( );
+		var /*int */depth = new R<number> ( ), maxDepth = new R<number> ( );
 
 		depth.$ = maxDepth.$ = 0;
 		this.MaxTreeDepth_r( 1, depth, maxDepth );

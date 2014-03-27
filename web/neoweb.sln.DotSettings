@@ -56,6 +56,15 @@ $nameofclass$.Type = new idTypeInfo( "$nameofclass$", "$nameofsuperclass$",&#xD;
 	$nameofclass$.eventCallbacks, $nameofclass$.CreateInstance, $nameofclass$.prototype.Spawn,&#xD;
 	$nameofclass$.prototype.Save, $nameofclass$.prototype.Restore );&#xD;
 </s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=9B06B6B93D2E064AA1030450F3F8E3B2/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=9B06B6B93D2E064AA1030450F3F8E3B2/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=9B06B6B93D2E064AA1030450F3F8E3B2/Description/@EntryValue">Number int</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=9B06B6B93D2E064AA1030450F3F8E3B2/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=9B06B6B93D2E064AA1030450F3F8E3B2/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=9B06B6B93D2E064AA1030450F3F8E3B2/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=9B06B6B93D2E064AA1030450F3F8E3B2/Shortcut/@EntryValue">ni</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=9B06B6B93D2E064AA1030450F3F8E3B2/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=9B06B6B93D2E064AA1030450F3F8E3B2/Text/@EntryValue">:number/*int*/</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=A2190E5D63134142B9D30855DCBC012B/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=A2190E5D63134142B9D30855DCBC012B/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=A2190E5D63134142B9D30855DCBC012B/Field/=event/@KeyIndexDefined">True</s:Boolean>

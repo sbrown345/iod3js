@@ -47,6 +47,10 @@ class idPlaneSet extends idList<idPlane> {
 	////
 	////private:
 	hash = new idHashIndex;
+
+	constructor ( ) {
+		super( idPlane );
+	}
 	////};
 	////
 	////ID_INLINE int idPlaneSet::FindPlane( const idPlane &plane, const float normalEps, const float distEps ) {

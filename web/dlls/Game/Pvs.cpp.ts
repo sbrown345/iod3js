@@ -498,7 +498,7 @@ idPVS::FrontPortalPVS
 					// check if anything might be visible through this passage that wasn't yet visible
 					more |= ( m & ~( sourceVis[sourceVisIdx++] ) );
 					// store new PVS
-					mightSee[mightSeeIdx++] = m;
+					mightSee[mightSeeIdx++] = m; ////////////////////////////////////////////////////////////////////////////////////todo: check/////////////////////////////////////
 				}
 			} else {
 				// the p.mightSee is implicitely stored in the passageVis
@@ -508,7 +508,7 @@ idPVS::FrontPortalPVS
 					// check if anything might be visible through this passage that wasn't yet visible
 					more |= ( m & ~( sourceVis[sourceVisIdx++] ) );
 					// store new PVS
-					mightSee[mightSeeIdx++] = m;
+					mightSee[mightSeeIdx++] = m;////////////////////////////////////////////////////////////////////////////////////todo: check/////////////////////////////////////
 				}
 			}
 

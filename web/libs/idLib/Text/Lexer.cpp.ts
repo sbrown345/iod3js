@@ -1312,20 +1312,20 @@ class idLexer {
 		return token.GetIntValue();
 	}
 
-	/////*
-	////================
-	////idLexer::ParseBool
-	////================
-	////*/
-	////bool idLexer::ParseBool( ) {
-	////	var token = new R(new idToken);
+	/*
+	================
+	idLexer::ParseBool
+	================
+	*/
+	ParseBool ( ): boolean {
+		var token = new idToken;
 
-	////	if ( !this.ExpectTokenType( TT_NUMBER, 0, &token ) ) {
-	////		this.Error( "couldn't read expected boolean" );
-	////		return false;
-	////	}
-	////	return ( token.GetIntValue() != 0 );
-	////}
+		if ( !this.ExpectTokenType( TT_NUMBER, 0, token ) ) {
+			this.Error( "couldn't read expected boolean" );
+			return false;
+		}
+		return ( token.GetIntValue ( ) != 0 );
+	}
 
 	/*
 	================
