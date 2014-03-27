@@ -41,7 +41,12 @@ class idPlaneSet extends idList<idPlane> {
 	
 	////public:
 	////
-	Clear( ) { super.Clear(); this.hash.Free(); }
+	Clear ( ) {
+		super.Clear ( );
+		if ( this.hash ) {
+			this.hash.Free ( );
+		}
+	}
 	////
 	////	int						FindPlane( const idPlane &plane, const float normalEps, const float distEps );
 	////
