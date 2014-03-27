@@ -632,14 +632,14 @@ class idVec3 {
 ////	return *this;
 ////}
 
-////ID_INLINE idVec3 &idVec3::operator/=( /*const float */a :number ) {
-////	float inva = 1.0 / a;
-////	this.x *= inva;
-////	this.y *= inva;
-////	this.z *= inva;
+	opDivisionAssignment_float ( /*const float */a: number ) {
+		var inva = 1.0 / a;
+		this.x *= inva;
+		this.y *= inva;
+		this.z *= inva;
 
-////	return *this;
-////}
+		return this;
+	}
 	/*-=*/
 	opSubtractionAssignment ( a: idVec3 ): idVec3 {
 		this.x -= a.x;

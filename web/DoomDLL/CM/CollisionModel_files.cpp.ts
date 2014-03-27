@@ -356,7 +356,7 @@ idCollisionModelManagerLocal.prototype.ParseEdges = function ( src: idLexer, mod
 		model.edges[i].sideSet = 0;
 		model.edges[i].internal = src.ParseInt ( );
 		model.edges[i].numUsers = src.ParseInt ( );
-		model.edges[i].normal = vec3_origin;
+		model.edges[i].normal.equals( vec3_origin );
 		model.edges[i].checkcount = 0;
 		model.numInternalEdges += model.edges[i].internal;
 	}

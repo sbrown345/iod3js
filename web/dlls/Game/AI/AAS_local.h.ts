@@ -120,8 +120,8 @@ class idAASLocal extends idAAS {
 ////	virtual bool				FindNearestGoal( aasGoal_t &goal, int areaNum, const idVec3 origin, const idVec3 &target, int travelFlags, aasObstacle_t *obstacles, int numObstacles, idAASCallback &callback ) const;
 ////
 ////private:
-	file:idAASFile;
-	name=new idStr;
+	file: idAASFile;
+	name = new idStr;
 ////
 ////private:	// routing data
 ////	idRoutingCache ***			areaCacheIndex:idRoutingCache;			// for each area in each cluster the travel times to all other areas in the cluster
@@ -372,7 +372,7 @@ idAASLocal::Shutdown
 ////*/
 ////bool idAASLocal::Trace( aasTrace_t &trace, start:idVec3, end:idVec3 ) const {
 ////	if ( !this.file ) {
-////		trace.fraction = 0.0f;
+////		trace.fraction = 0.0;
 ////		trace.lastAreaNum = 0;
 ////		trace.numAreas = 0;
 ////		return true;
@@ -445,13 +445,13 @@ AAS Routing
 ////	dist = ( end - start ).Length();
 ////
 ////	if ( file.GetArea( areaNum ).travelFlags & TFL_CROUCH ) {
-////		dist *= 100.0f / 100.0f;
+////		dist *= 100.0 / 100.0;
 ////	} else if ( file.GetArea( areaNum ).travelFlags & TFL_WATER ) {
-////		dist *= 100.0f / 150.0f;
+////		dist *= 100.0 / 150.0;
 ////	} else {
-////		dist *= 100.0f / 300.0f;
+////		dist *= 100.0 / 300.0;
 ////	}
-////	if ( dist < 1.0f ) {
+////	if ( dist < 1.0 ) {
 ////		return 1;
 ////	}
 ////	return (unsigned short) idMath.FtoiFast( dist );

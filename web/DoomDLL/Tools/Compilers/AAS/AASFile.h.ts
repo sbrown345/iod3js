@@ -29,68 +29,68 @@
 ////#ifndef __AASFILE_H__
 ////#define __AASFILE_H__
 ////
-/////*
-////===============================================================================
-////
-////	AAS File
-////
-////===============================================================================
-////*/
-////
-////#define AAS_FILEID					"DewmAAS"
-////#define AAS_FILEVERSION				"1.07"
-////
-////// travel flags
-////#define TFL_INVALID					BIT(0)		// not valid
-////#define TFL_WALK					BIT(1)		// walking
-////#define TFL_CROUCH					BIT(2)		// crouching
-////#define TFL_WALKOFFLEDGE			BIT(3)		// walking of a ledge
-////#define TFL_BARRIERJUMP				BIT(4)		// jumping onto a barrier
-////#define TFL_JUMP					BIT(5)		// jumping
-////#define TFL_LADDER					BIT(6)		// climbing a ladder
-////#define TFL_SWIM					BIT(7)		// swimming
-////#define TFL_WATERJUMP				BIT(8)		// jump out of the water
-////#define TFL_TELEPORT				BIT(9)		// teleportation
-////#define TFL_ELEVATOR				BIT(10)		// travel by elevator
-////#define TFL_FLY						BIT(11)		// fly
-////#define TFL_SPECIAL					BIT(12)		// special
-////#define TFL_WATER					BIT(21)		// travel through water
-////#define TFL_AIR						BIT(22)		// travel through air
-////
-////// face flags
-////#define FACE_SOLID					BIT(0)		// solid at the other side
-////#define FACE_LADDER					BIT(1)		// ladder surface
-////#define FACE_FLOOR					BIT(2)		// standing on floor when on this face
-////#define FACE_LIQUID					BIT(3)		// face seperating two areas with liquid
-////#define FACE_LIQUIDSURFACE			BIT(4)		// face seperating liquid and air
-////
-////// area flags
-////#define AREA_FLOOR					BIT(0)		// AI can stand on the floor in this area
-////#define AREA_GAP					BIT(1)		// area has a gap
-////#define AREA_LEDGE					BIT(2)		// if entered the AI bbox partly floats above a ledge
-////#define AREA_LADDER					BIT(3)		// area contains one or more ladder faces
-////#define AREA_LIQUID					BIT(4)		// area contains a liquid
-////#define AREA_CROUCH					BIT(5)		// AI cannot walk but can only crouch in this area
-////#define AREA_REACHABLE_WALK			BIT(6)		// area is reachable by walking or swimming
-////#define AREA_REACHABLE_FLY			BIT(7)		// area is reachable by flying
-////
-////// area contents flags
-////#define AREACONTENTS_SOLID			BIT(0)		// solid, not a valid area
-////#define AREACONTENTS_WATER			BIT(1)		// area contains water
-////#define AREACONTENTS_CLUSTERPORTAL	BIT(2)		// area is a cluster portal
-////#define AREACONTENTS_OBSTACLE		BIT(3)		// area contains (part of) a dynamic obstacle
-////#define AREACONTENTS_TELEPORTER		BIT(4)		// area contains (part of) a teleporter trigger
-////
-////// bits for different bboxes
-////#define AREACONTENTS_BBOX_BIT		24
-////
-////#define MAX_REACH_PER_AREA			256
-////#define MAX_AAS_TREE_DEPTH			128
-////
-////#define MAX_AAS_BOUNDING_BOXES		4
-////
-////// reachability to another area
-////class idReachability {
+/*
+===============================================================================
+
+	AAS File
+
+===============================================================================
+*/
+
+var AAS_FILEID				=	"DewmAAS"
+var AAS_FILEVERSION			=	"1.07"
+
+// travel flags
+var TFL_INVALID					=BIT(0)		// not valid
+var TFL_WALK					=BIT(1)		// walking
+var TFL_CROUCH					=BIT(2)		// crouching
+var TFL_WALKOFFLEDGE			=BIT(3)		// walking of a ledge
+var TFL_BARRIERJUMP				=BIT(4)		// jumping onto a barrier
+var TFL_JUMP					=BIT(5)		// jumping
+var TFL_LADDER					=BIT(6)		// climbing a ladder
+var TFL_SWIM					=BIT(7)		// swimming
+var TFL_WATERJUMP				=BIT(8)		// jump out of the water
+var TFL_TELEPORT				=BIT(9)		// teleportation
+var TFL_ELEVATOR				=BIT(10)		// travel by elevator
+var TFL_FLY						=BIT(11)		// fly
+var TFL_SPECIAL					=BIT(12)		// special
+var TFL_WATER					=BIT(21)		// travel through water
+var TFL_AIR						=BIT(22)		// travel through air
+
+// face flags
+var FACE_SOLID					=BIT(0)		// solid at the other side
+var FACE_LADDER					=BIT(1)		// ladder surface
+var FACE_FLOOR					=BIT(2)		// standing on floor when on this face
+var FACE_LIQUID					=BIT(3)		// face seperating two areas with liquid
+var FACE_LIQUIDSURFACE			=BIT(4)		// face seperating liquid and air
+
+// area flags
+var AREA_FLOOR					=BIT(0)		// AI can stand on the floor in this area
+var AREA_GAP					=BIT(1)		// area has a gap
+var AREA_LEDGE					=BIT(2)		// if entered the AI bbox partly floats above a ledge
+var AREA_LADDER					=BIT(3)		// area contains one or more ladder faces
+var AREA_LIQUID					=BIT(4)		// area contains a liquid
+var AREA_CROUCH					=BIT(5)		// AI cannot walk but can only crouch in this area
+var AREA_REACHABLE_WALK			=BIT(6)		// area is reachable by walking or swimming
+var AREA_REACHABLE_FLY			=BIT(7)		// area is reachable by flying
+
+// area contents flags
+var AREACONTENTS_SOLID			=BIT(0)		// solid, not a valid area
+var AREACONTENTS_WATER			=BIT(1)		// area contains water
+var AREACONTENTS_CLUSTERPORTAL	=BIT(2)		// area is a cluster portal
+var AREACONTENTS_OBSTACLE		=BIT(3)		// area contains (part of) a dynamic obstacle
+var AREACONTENTS_TELEPORTER		=BIT(4)		// area contains (part of) a teleporter trigger
+
+// bits for different bboxes
+var AREACONTENTS_BBOX_BIT		=24
+
+var MAX_REACH_PER_AREA			=256
+var MAX_AAS_TREE_DEPTH			=128
+
+var MAX_AAS_BOUNDING_BOXES		=4
+
+// reachability to another area
+class idReachability {
 ////public:
 ////	int							travelType;			// type of travel required to get to the area
 ////	short						toAreaNum;			// number of the reachable area
@@ -129,156 +129,156 @@
 ////class idReachability_Special : public idReachability {
 ////public:
 ////	idDict						dict;
-////};
+};
 ////
 ////// index
 ////typedef int aasIndex_t;
 ////
 // vertex
 //var aasVertex_t = idVec3;
-////
-////// edge
-////typedef struct aasEdge_s {
-////	int							vertexNum[2];		// numbers of the vertexes of this edge
-////} aasEdge_t;
-////
-////// area boundary face
-////typedef struct aasFace_s {
-////	unsigned short				planeNum;			// number of the plane this face is on
-////	unsigned short				flags;				// face flags
-////	int							numEdges;			// number of edges in the boundary of the face
-////	int							firstEdge;			// first edge in the edge index
-////	short						areas[2];			// area at the front and back of this face
-////} aasFace_t;
-////
-////// area with a boundary of faces
-////typedef struct aasArea_s {
-////	int							numFaces;			// number of faces used for the boundary of the area
-////	int							firstFace;			// first face in the face index used for the boundary of the area
-////	idBounds					bounds;				// bounds of the area
-////	idVec3						center;				// center of the area an AI can move towards
-////	unsigned short				flags;				// several area flags
-////	unsigned short				contents;			// contents of the area
-////	short						cluster;			// cluster the area belongs to, if negative it's a portal
-////	short						clusterAreaNum;		// number of the area in the cluster
-////	int							travelFlags;		// travel flags for traveling through this area
-////	idReachability *			reach;				// reachabilities that start from this area
-////	idReachability *			rev_reach;			// reachabilities that lead to this area
-////} aasArea_t;
-////
-////// nodes of the bsp tree
-////typedef struct aasNode_s {
-////	unsigned short				planeNum;			// number of the plane that splits the subspace at this node
-////	int							children[2];		// child nodes, zero is solid, negative is -(area number)
-////} aasNode_t;
-////
-////// cluster portal
-////typedef struct aasPortal_s {
-////	short						areaNum;			// number of the area that is the actual portal
-////	short						clusters[2];		// number of cluster at the front and back of the portal
-////	short						clusterAreaNum[2];	// number of this portal area in the front and back cluster
-////	unsigned short				maxAreaTravelTime;	// maximum travel time through the portal area
-////} aasPortal_t;
-////
-////// cluster
-////typedef struct aasCluster_s {
-////	int							numAreas;			// number of areas in the cluster
-////	int							numReachableAreas;	// number of areas with reachabilities
-////	int							numPortals;			// number of cluster portals
-////	int							firstPortal;		// first cluster portal in the index
-////} aasCluster_t;
-////
-////// trace through the world
-////typedef struct aasTrace_s {
-////								// parameters
-////	int							flags;				// areas with these flags block the trace
-////	int							travelFlags;		// areas with these travel flags block the trace
-////	int							maxAreas;			// size of the 'areas' array
-////	int							getOutOfSolid;		// trace out of solid if the trace starts in solid
-////								// output
-////	float						fraction;			// fraction of trace completed
-////	idVec3						endpos;				// end position of trace
-////	int							planeNum;			// plane hit
-////	int							lastAreaNum;		// number of last area the trace went through
-////	int							blockingAreaNum;	// area that could not be entered
-////	int							numAreas;			// number of areas the trace went through
-////	int *						areas;				// array to store areas the trace went through
-////	idVec3 *					points;				// points where the trace entered each new area
-////								aasTrace_s( ) { areas = NULL; points = NULL; getOutOfSolid = false; flags = travelFlags = maxAreas = 0; }
-////} aasTrace_t;
-////
-////// settings
-////class idAASSettings {
-////public:
-////								// collision settings
-////	int							numBoundingBoxes;
-////	idBounds					boundingBoxes[MAX_AAS_BOUNDING_BOXES];
-////	bool						usePatches;
-////	bool						writeBrushMap;
-////	bool						playerFlood;
-////	bool						noOptimize;
-////	bool						allowSwimReachabilities;
-////	bool						allowFlyReachabilities;
-////	idStr						fileExtension;
-////								// physics settings
-////	idVec3						gravity;
-////	idVec3						gravityDir;
-////	idVec3						invGravityDir;
-////	float						gravityValue;
-////	float						maxStepHeight;
-////	float						maxBarrierHeight;
-////	float						maxWaterJumpHeight;
-////	float						maxFallHeight;
-////	float						minFloorCos;
-////								// fixed travel times
-////	int							tt_barrierJump;
-////	int							tt_startCrouching;
-////	int							tt_waterJump;
-////	int							tt_startWalkOffLedge;
-////
-////public:
-////								idAASSettings( );
-////
-////	bool						FromFile( const idStr &fileName );
-////	bool						FromParser( idLexer &src );
-////	bool						FromDict( const char *name, const idDict *dict );
-////	bool						WriteToFile( idFile *fp ) const;
-////	bool						ValidForBounds( const idBounds &bounds ) const;
-////	bool						ValidEntity( const char *classname ) const;
-////
-////private:
-////	bool						ParseBool( idLexer &src, bool &b );
-////	bool						ParseInt( idLexer &src, int &i );
-////	bool						ParseFloat( idLexer &src, float &f );
-////	bool						ParseVector( idLexer &src, idVec3 &vec );
-////	bool						ParseBBoxes( idLexer &src );
-////};
-////
-////
-/////*
-////
-////-	when a node child is a solid leaf the node child number is zero
-////-	two adjacent areas (sharing a plane at opposite sides) share a face
-////	this face is a portal between the areas
-////-	when an area uses a face from the faceindex with a positive index
-////	then the face plane normal points into the area
-////-	the face edges are stored counter clockwise using the edgeindex
-////-	two adjacent convex areas (sharing a face) only share One face
-////	this is a simple result of the areas being convex
-////-	the areas can't have a mixture of ground and gap faces
-////	other mixtures of faces in one area are allowed
-////-	areas with the AREACONTENTS_CLUSTERPORTAL in the settings have
-////	the cluster number set to the negative portal number
-////-	edge zero is a dummy
-////-	face zero is a dummy
-////-	area zero is a dummy
-////-	node zero is a dummy
-////-	portal zero is a dummy
-////-	cluster zero is a dummy
-////
-////*/
-////
-////
+
+// edge
+class aasEdge_t {
+	vertexNum = new Int32Array(2);		// numbers of the vertexes of this edge
+} ;
+
+// area boundary face
+class aasFace_t {
+	planeNum: number/*unsigned short*/;			// number of the plane this face is on
+	flags: number/*unsigned short*/;				// face flags
+	numEdges:number/*int*/;			// number of edges in the boundary of the face
+	firstEdge:number/*int*/;			// first edge in the edge index
+	areas = new Int16Array(2);			// area at the front and back of this face
+} ;
+
+// area with a boundary of faces
+class aasArea_t{
+	numFaces:number/*int*/;			// number of faces used for the boundary of the area
+	firstFace:number/*int*/;			// first face in the face index used for the boundary of the area
+	bounds = new idBounds();				// bounds of the area
+	center = new idVec3();				// center of the area an AI can move towards
+	flags: number/*unsigned short*/;				// several area flags
+	contents: number/*unsigned short*/;			// contents of the area
+	cluster:number/*short*/;			// cluster the area belongs to, if negative it's a portal
+	clusterAreaNum:number/*short*/;		// number of the area in the cluster
+	travelFlags:number/*int*/;		// travel flags for traveling through this area
+	reach: idReachability;				// reachabilities that start from this area
+	rev_reach: idReachability;			// reachabilities that lead to this area
+} ;
+
+// nodes of the bsp tree
+class aasNode_t {
+	planeNum: number/*unsigned short*/;			// number of the plane that splits the subspace at this node
+	children = new Int32Array(2);		// child nodes, zero is solid, negative is -(area number)
+} ;
+
+// cluster portal
+class aasPortal_t {
+	areaNum:number/*short*/;			// number of the area that is the actual portal
+	clusters = new Int16Array(2);		// number of cluster at the front and back of the portal
+	clusterAreaNum = new Int16Array(2);	// number of this portal area in the front and back cluster
+	maxAreaTravelTime: number/*unsigned short*/;	// maximum travel time through the portal area
+} ;
+
+// cluster
+class aasCluster_t {
+	numAreas:number/*int*/;			// number of areas in the cluster
+	numReachableAreas:number/*int*/;	// number of areas with reachabilities
+	numPortals:number/*int*/;			// number of cluster portals
+	firstPortal:number/*int*/;		// first cluster portal in the index
+} ;
+
+ //trace through the world
+class aasTrace_t {
+	// parameters
+	flags:number/*int*/;				// areas with these flags block the trace
+	travelFlags:number/*int*/;		// areas with these travel flags block the trace
+	maxAreas:number/*int*/;			// size of the 'areas' array
+	getOutOfSolid:number/*int*/;		// trace out of solid if the trace starts in solid
+	// output
+	fraction:number/*float*/;			// fraction of trace completed
+	endpos = new idVec3();				// end position of trace
+	planeNum:number/*int*/;			// plane hit
+	lastAreaNum:number/*int*/;		// number of last area the trace went through
+	blockingAreaNum:number/*int*/;	// area that could not be entered
+	numAreas:number/*int*/;			// number of areas the trace went through
+	areas:Int32Array;				// array to store areas the trace went through
+	points:idVec3[];				// points where the trace entered each new area
+	//aasTrace_s( ) { areas = NULL; points = NULL; getOutOfSolid = false; flags = travelFlags = maxAreas = 0; }
+};
+
+ //settings
+class idAASSettings {
+//public:
+	// collision settings
+	numBoundingBoxes:number/*int*/;
+	boundingBoxes = newStructArray<idBounds>(idBounds,MAX_AAS_BOUNDING_BOXES);
+	usePatches:boolean;
+	writeBrushMap:boolean;
+	playerFlood:boolean;
+	noOptimize:boolean;
+	allowSwimReachabilities:boolean;
+	allowFlyReachabilities:boolean;
+	fileExtension=new idStr;
+	// physics settings
+	gravity=new idVec3;
+	gravityDir = new idVec3;
+	invGravityDir = new idVec3;
+	gravityValue:number/*float*/;
+	maxStepHeight:number/*float*/;
+	maxBarrierHeight:number/*float*/;
+	maxWaterJumpHeight:number/*float*/;
+	maxFallHeight:number/*float*/;
+	minFloorCos:number/*float*/;
+	// fixed travel times
+	tt_barrierJump:number/*int*/;
+	tt_startCrouching:number/*int*/;
+	tt_waterJump:number/*int*/;
+	tt_startWalkOffLedge:number/*int*/;
+
+//public:
+//								idAASSettings( );
+
+//	bool						FromFile( const idStr &fileName );
+//	bool						FromParser( idLexer &src );
+//	bool						FromDict( const char *name, const idDict *dict );
+//	bool						WriteToFile( idFile *fp ) const;
+//	bool						ValidForBounds( const idBounds &bounds ) const;
+//	bool						ValidEntity( const char *classname ) const;
+
+//private:
+//	bool						ParseBool( idLexer &src, bool &b );
+//	bool						ParseInt( idLexer &src, int &i );
+//	bool						ParseFloat( idLexer &src, float &f );
+//	bool						ParseVector( idLexer &src, idVec3 &vec );
+//	bool						ParseBBoxes( idLexer &src );
+};
+
+
+/*
+
+-	when a node child is a solid leaf the node child number is zero
+-	two adjacent areas (sharing a plane at opposite sides) share a face
+	this face is a portal between the areas
+-	when an area uses a face from the faceindex with a positive index
+	then the face plane normal points into the area
+-	the face edges are stored counter clockwise using the edgeindex
+-	two adjacent convex areas (sharing a face) only share One face
+	this is a simple result of the areas being convex
+-	the areas can't have a mixture of ground and gap faces
+	other mixtures of faces in one area are allowed
+-	areas with the AREACONTENTS_CLUSTERPORTAL in the settings have
+	the cluster number set to the negative portal number
+-	edge zero is a dummy
+-	face zero is a dummy
+-	area zero is a dummy
+-	node zero is a dummy
+-	portal zero is a dummy
+-	cluster zero is a dummy
+
+*/
+
+
 class idAASFile {
 ////public:
 ////	virtual 					~idAASFile( ) {}
@@ -288,16 +288,16 @@ class idAASFile {
 ////
 ////	int							GetNumPlanes( ) const { return planeList.Num(); }
 ////	const idPlane &				GetPlane( int index ) const { return planeList[index]; }
-////	int							GetNumVertices( ) const { return vertices.Num(); }
-////	const aasVertex_t &			GetVertex( int index ) const { return vertices[index]; }
-////	int							GetNumEdges( ) const { return edges.Num(); }
-////	const aasEdge_t &			GetEdge( int index ) const { return edges[index]; }
-////	int							GetNumEdgeIndexes( ) const { return edgeIndex.Num(); }
-////	const aasIndex_t &			GetEdgeIndex( int index ) const { return edgeIndex[index]; }
+////	int							GetNumVertices( ) const { return this.vertices .Num(); }
+////	const aasVertex_t &			GetVertex( int index ) const { return this.vertices [index]; }
+////	int							GetNumEdges( ) const { return this.edges.Num(); }
+////	const aasEdge_t &			GetEdge( int index ) const { return this.edges[index]; }
+////	int							GetNumEdgeIndexes( ) const { return this.edgeIndex.Num(); }
+////	const aasIndex_t &			GetEdgeIndex( int index ) const { return this.edgeIndex[index]; }
 ////	int							GetNumFaces( ) const { return faces.Num(); }
 ////	const aasFace_t &			GetFace( int index ) const { return faces[index]; }
-////	int							GetNumFaceIndexes( ) const { return faceIndex.Num(); }
-////	const aasIndex_t &			GetFaceIndex( int index ) const { return faceIndex[index]; }
+////	int							GetNumFaceIndexes( ) const { return this.faceIndex.Num(); }
+////	const aasIndex_t &			GetFaceIndex( int index ) const { return this.faceIndex[index]; }
 ////	int							GetNumAreas( ) const { return areas.Num(); }
 ////	const aasArea_t &			GetArea( int index ) { return areas[index]; }
 ////	int							GetNumNodes( ) const { return nodes.Num(); }
@@ -336,16 +336,16 @@ class idAASFile {
 
 	//planeList = new idPlaneSet;
 	vertices = new idList< /*aasVertex_t*/idVec3>( /*aasVertex_t*/idVec3 );
-////	idList<aasEdge_t>			edges		   =new idList<aasEdge_t>	();		
-////	idList<aasIndex_t>			edgeIndex	   =new idList</*aasIndex_t*/number>(Number);
-////	idList<aasFace_t>			faces		   =new idList<aasFace_t>		();
-////	idList<aasIndex_t>			faceIndex	   =new idList<aasIndex_t>		();
-////	idList<aasArea_t>			areas		   =new idList<aasArea_t>		();
-////	idList<aasNode_t>			nodes		   =new idList<aasNode_t>		();
-////	idList<aasPortal_t>			portals	   =new idList<aasPortal_t>			();
-////	idList<aasIndex_t>			portalIndex   =new idList<aasIndex_t>		();
-////	idList<aasCluster_t>		clusters	   =new idList<aasCluster_t>	();
-////	idAASSettings				settings	   =new idAASSettings			();
+	edges = new idList<aasEdge_t>( aasEdge_t );
+	edgeIndex =new idList< /*aasIndex_t*/number>( Number );
+	faces = new idList<aasFace_t>( aasFace_t );
+	faceIndex = new idList< /*aasIndex_t*/number>( Number );
+	areas = new idList<aasArea_t>( aasArea_t );
+	nodes = new idList<aasNode_t>( aasNode_t );
+	portals = new idList<aasPortal_t>( aasPortal_t );
+	portalIndex = new idList< /*aasIndex_t*/number>( Number );
+	clusters = new idList<aasCluster_t>( aasCluster_t );
+	settings =new idAASSettings;
 ////
 ////#endif /* !__AASFILE_H__ */
 }
@@ -371,8 +371,8 @@ class idAASFileLocal extends idAASFile {
 ////	friend class idAASReach;
 ////	friend class idAASCluster;
 ////public:
-////								idAASFileLocal( void );
-////	virtual 					~idAASFileLocal( void );
+////								idAASFileLocal( );
+////	virtual 					~idAASFileLocal( );
 
 ////public:
 ////	virtual idVec3				EdgeCenter( int edgeNum ) const;
@@ -388,21 +388,21 @@ class idAASFileLocal extends idAASFile {
 ////	virtual int					BoundsReachableAreaNum( const idBounds &bounds, const int areaFlags, const int excludeTravelFlags ) const;
 ////	virtual void				PushPointIntoAreaNum( int areaNum, idVec3 &point ) const;
 ////	virtual bool				Trace( aasTrace_t &trace, const idVec3 &start, const idVec3 &end ) const;
-////	virtual void				PrintInfo( void ) const;
+////	virtual void				PrintInfo( ) const;
 
 ////public:
 ////	bool						Load( const idStr &fileName, unsigned int mapFileCRC );
 ////	bool						Write( const idStr &fileName, unsigned int mapFileCRC );
 
-////	int							MemorySize( void ) const;
-////	void						ReportRoutingEfficiency( void ) const;
-////	void						Optimize( void );
-////	void						LinkReversedReachability( void );
-////	void						FinishAreas( void );
+////	int							MemorySize( ) const;
+////	void						ReportRoutingEfficiency( ) const;
+////	void						Optimize( );
+////	void						LinkReversedReachability( );
+////	void						FinishAreas( );
 
-////	void						Clear( void );
-////	void						DeleteReachabilities( void );
-////	void						DeleteClusters( void );
+////	void						Clear( );
+////	void						DeleteReachabilities( );
+////	void						DeleteClusters( );
 
 ////private:
 ////	bool						ParseIndex( idLexer &src, idList<aasIndex_t> &indexes );
@@ -419,53 +419,51 @@ class idAASFileLocal extends idAASFile {
 ////private:
 ////	int							BoundsReachableAreaNum_r( int nodeNum, const idBounds &bounds, const int areaFlags, const int excludeTravelFlags ) const;
 ////	void						MaxTreeDepth_r( int nodeNum, int &depth, int &maxDepth ) const;
-////	int							MaxTreeDepth( void ) const;
+////	int							MaxTreeDepth( ) const;
 ////	int							AreaContentsTravelFlags( int areaNum ) const;
 ////	idVec3						AreaReachableGoal( int areaNum ) const;
-////	int							NumReachabilities( void ) const;
+////	int							NumReachabilities( ) const;
 ////};
 
 ////#endif /* !__AASFILELOCAL_H__ */
 
 
-	
-////
-/////*
-////===============================================================================
-////
-////	idAASFileLocal
-////
-////===============================================================================
-////*/
-////
+/*
+===============================================================================
 
-////
-/////*
-////================
-////idAASFileLocal::idAASFileLocal
-////================
-////*/
-////idAASFileLocal::idAASFileLocal( void ) {
-////	planeList.SetGranularity( AAS_PLANE_GRANULARITY );
-////	vertices.SetGranularity( AAS_VERTEX_GRANULARITY );
-////	edges.SetGranularity( AAS_EDGE_GRANULARITY );
-////	edgeIndex.SetGranularity( AAS_INDEX_GRANULARITY );
-////	faces.SetGranularity( AAS_LIST_GRANULARITY );
-////	faceIndex.SetGranularity( AAS_INDEX_GRANULARITY );
-////	areas.SetGranularity( AAS_LIST_GRANULARITY );
-////	nodes.SetGranularity( AAS_LIST_GRANULARITY );
-////	portals.SetGranularity( AAS_LIST_GRANULARITY );
-////	portalIndex.SetGranularity( AAS_INDEX_GRANULARITY );
-////	clusters.SetGranularity( AAS_LIST_GRANULARITY );
-////}
-////
+	idAASFileLocal
+
+===============================================================================
+*/
+
+
+/*
+================
+idAASFileLocal::idAASFileLocal
+================
+*/
+	constructor ( ) {
+		super ( );
+		this.planeList.SetGranularity( AAS_PLANE_GRANULARITY );
+		this.vertices.SetGranularity( AAS_VERTEX_GRANULARITY );
+		this.edges.SetGranularity( AAS_EDGE_GRANULARITY );
+		this.edgeIndex.SetGranularity( AAS_INDEX_GRANULARITY );
+		this.faces.SetGranularity( AAS_LIST_GRANULARITY );
+		this.faceIndex.SetGranularity( AAS_INDEX_GRANULARITY );
+		this.areas.SetGranularity( AAS_LIST_GRANULARITY );
+		this.nodes.SetGranularity( AAS_LIST_GRANULARITY );
+		this.portals.SetGranularity( AAS_LIST_GRANULARITY );
+		this.portalIndex.SetGranularity( AAS_INDEX_GRANULARITY );
+		this.clusters.SetGranularity( AAS_LIST_GRANULARITY );
+	}
+
 /////*
 ////================
 ////idAASFileLocal::~idAASFileLocal
 ////================
 ////*/
-////idAASFileLocal::~idAASFileLocal( void ) {
-////	int i;
+////idAASFileLocal::~idAASFileLocal( ) {
+////	var/*int */i:number;
 ////	idReachability *reach, *next;
 ////
 ////	for ( i = 0; i < areas.Num(); i++ ) {
@@ -475,26 +473,26 @@ class idAASFileLocal extends idAASFile {
 ////		}
 ////	}
 ////}
-////
-/////*
-////================
-////idAASFileLocal::Clear
-////================
-////*/
-////void idAASFileLocal::Clear( void ) {
-////	planeList.Clear();
-////	vertices.Clear();
-////	edges.Clear();
-////	edgeIndex.Clear();
-////	faces.Clear();
-////	faceIndex.Clear();
-////	areas.Clear();
-////	nodes.Clear();
-////	portals.Clear();
-////	portalIndex.Clear();
-////	clusters.Clear();
-////}
-////
+
+/*
+================
+idAASFileLocal::Clear
+================
+*/
+	Clear ( ): void {
+		this.planeList.Clear ( );
+		this.vertices.Clear ( );
+		this.edges.Clear ( );
+		this.edgeIndex.Clear ( );
+		this.faces.Clear ( );
+		this.faceIndex.Clear ( );
+		this.areas.Clear ( );
+		this.nodes.Clear ( );
+		this.portals.Clear ( );
+		this.portalIndex.Clear ( );
+		this.clusters.Clear ( );
+	}
+
 /////*
 ////================
 ////idAASFileLocal::Write
@@ -508,8 +506,8 @@ class idAASFileLocal extends idAASFile {
 ////	common.Printf( "[Write AAS]\n" );
 ////	common.Printf( "writing %s\n", fileName.c_str() );
 ////
-////	name = fileName;
-////	crc = mapFileCRC;
+////	this.name = fileName;
+////	this.crc = mapFileCRC;
 ////
 ////	aasFile = fileSystem.OpenFileWrite( fileName, "fs_devpath" );
 ////	if ( !aasFile ) {
@@ -522,7 +520,7 @@ class idAASFileLocal extends idAASFile {
 ////
 ////	// write out the settings
 ////	aasFile.WriteFloatString( "settings\n" );
-////	settings.WriteToFile( aasFile );
+////	this.settings.WriteToFile( aasFile );
 ////
 ////	// write out planes
 ////	aasFile.WriteFloatString( "planes %d {\n", planeList.Num() );
@@ -533,38 +531,38 @@ class idAASFileLocal extends idAASFile {
 ////	aasFile.WriteFloatString( "}\n" );
 ////
 ////	// write out vertices
-////	aasFile.WriteFloatString( "vertices %d {\n", vertices.Num() );
-////	for ( i = 0; i < vertices.Num(); i++ ) {
-////		aasFile.WriteFloatString( "\t%d ( %f %f %f )\n", i, vertices[i].x, vertices[i].y, vertices[i].z );
+////	aasFile.WriteFloatString( "vertices %d {\n", this.vertices .Num() );
+////	for ( i = 0; i < this.vertices .Num(); i++ ) {
+////		aasFile.WriteFloatString( "\t%d ( %f %f %f )\n", i, this.vertices [i].x, this.vertices [i].y, this.vertices [i].z );
 ////	}
 ////	aasFile.WriteFloatString( "}\n" );
 ////
 ////	// write out edges
 ////	aasFile.WriteFloatString( "edges %d {\n", edges.Num() );
-////	for ( i = 0; i < edges.Num(); i++ ) {
-////		aasFile.WriteFloatString( "\t%d ( %d %d )\n", i, edges[i].vertexNum[0], edges[i].vertexNum[1] );
+////	for ( i = 0; i < this.edges.Num(); i++ ) {
+////		aasFile.WriteFloatString( "\t%d ( %d %d )\n", i, this.edges[i].vertexNum[0], this.edges[i].vertexNum[1] );
 ////	}
 ////	aasFile.WriteFloatString( "}\n" );
 ////
 ////	// write out edgeIndex
-////	aasFile.WriteFloatString( "edgeIndex %d {\n", edgeIndex.Num() );
-////	for ( i = 0; i < edgeIndex.Num(); i++ ) {
-////		aasFile.WriteFloatString( "\t%d ( %d )\n", i, edgeIndex[i] );
+////	aasFile.WriteFloatString( "edgeIndex %d {\n", this.edgeIndex.Num() );
+////	for ( i = 0; i < this.edgeIndex.Num(); i++ ) {
+////		aasFile.WriteFloatString( "\t%d ( %d )\n", i, this.edgeIndex[i] );
 ////	}
 ////	aasFile.WriteFloatString( "}\n" );
 ////
 ////	// write out faces
-////	aasFile.WriteFloatString( "faces %d {\n", faces.Num() );
-////	for ( i = 0; i < faces.Num(); i++ ) {
-////		aasFile.WriteFloatString( "\t%d ( %d %d %d %d %d %d )\n", i, faces[i].planeNum, faces[i].flags,
-////						faces[i].areas[0], faces[i].areas[1], faces[i].firstEdge, faces[i].numEdges );
+////	aasFile.WriteFloatString( "faces %d {\n", this.faces.Num() );
+////	for ( i = 0; i < this.faces.Num(); i++ ) {
+////		aasFile.WriteFloatString( "\t%d ( %d %d %d %d %d %d )\n", i, faces[i].planeNum, this.faces[i].flags,
+////						this.faces[i].areas[0], this.faces[i].areas[1], this.faces[i].firstEdge, this.faces[i].numEdges );
 ////	}
 ////	aasFile.WriteFloatString( "}\n" );
 ////
 ////	// write out faceIndex
-////	aasFile.WriteFloatString( "faceIndex %d {\n", faceIndex.Num() );
-////	for ( i = 0; i < faceIndex.Num(); i++ ) {
-////		aasFile.WriteFloatString( "\t%d ( %d )\n", i, faceIndex[i] );
+////	aasFile.WriteFloatString( "faceIndex %d {\n", this.faceIndex.Num() );
+////	for ( i = 0; i < this.faceIndex.Num(); i++ ) {
+////		aasFile.WriteFloatString( "\t%d ( %d )\n", i, this.faceIndex[i] );
 ////	}
 ////	aasFile.WriteFloatString( "}\n" );
 ////
@@ -694,7 +692,7 @@ class idAASFileLocal extends idAASFile {
 ////	idVec3 vec;
 ////
 ////	numVertices = src.ParseInt();
-////	vertices.Resize( numVertices );
+////	this.vertices .Resize( numVertices );
 ////	if ( !src.ExpectTokenString( "{" ) ) {
 ////		return false;
 ////	}
@@ -703,7 +701,7 @@ class idAASFileLocal extends idAASFile {
 ////		if ( !src.Parse1DMatrix( 3, vec.ToFloatPtr() ) ) {
 ////			return false;
 ////		}
-////		vertices.Append( vec );
+////		this.vertices .Append( vec );
 ////	}
 ////	if ( !src.ExpectTokenString( "}" ) ) {
 ////		return false;
@@ -749,7 +747,7 @@ class idAASFileLocal extends idAASFile {
 ////	aasFace_t face;
 ////
 ////	numFaces = src.ParseInt();
-////	faces.Resize( numFaces );
+////	this.faces.Resize( numFaces );
 ////	if ( !src.ExpectTokenString( "{" ) ) {
 ////		return false;
 ////	}
@@ -763,7 +761,7 @@ class idAASFileLocal extends idAASFile {
 ////		face.firstEdge = src.ParseInt();
 ////		face.numEdges = src.ParseInt();
 ////		src.ExpectTokenString( ")" );
-////		faces.Append( face );
+////		this.faces.Append( face );
 ////	}
 ////	if ( !src.ExpectTokenString( "}" ) ) {
 ////		return false;
@@ -814,8 +812,8 @@ class idAASFileLocal extends idAASFile {
 ////idAASFileLocal::LinkReversedReachability
 ////================
 ////*/
-////void idAASFileLocal::LinkReversedReachability( void ) {
-////	int i;
+////void idAASFileLocal::LinkReversedReachability( ) {
+////	var/*int */i:number;
 ////	idReachability *reach;
 ////
 ////	// link reversed reachabilities
@@ -952,20 +950,20 @@ class idAASFileLocal extends idAASFile {
 ////	}
 ////	return true;
 ////}
-////
-/////*
-////================
-////idAASFileLocal::FinishAreas
-////================
-////*/
-////void idAASFileLocal::FinishAreas( void ) {
-////	int i;
-////
-////	for ( i = 0; i < areas.Num(); i++ ) {
-////		areas[i].center = AreaReachableGoal( i );
-////		areas[i].bounds = AreaBounds( i );
-////	}
-////}
+
+/*
+================
+idAASFileLocal::FinishAreas
+================
+*/
+	FinishAreas ( ): void {
+		var /*int */i: number;
+
+		for ( i = 0; i < this.areas.Num ( ); i++ ) {
+			this.areas[i].center = this.AreaReachableGoal( i );
+			this.areas[i].bounds = this.AreaBounds( i );
+		}
+	}
 
 /*
 ================
@@ -973,102 +971,113 @@ idAASFileLocal::Load
 ================
 */
 	Load ( fileName: idStr, /*unsigned int */mapFileCRC: number ): boolean {
-		todoThrow ( );
-		//idLexer src( LEXFL_NOFATALERRORS | LEXFL_NOSTRINGESCAPECHARS | LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWPATHNAMES );
-		//idToken token;
-		//int depth;
-		//unsigned int c;
+		var src = new idLexer( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
+		var token = new idToken;
+		var /*int */depth: number;
+		var /*unsigned int */c: number;
 
-		//name = fileName;
-		//crc = mapFileCRC;
+		this.name.equals( fileName );
+		this.crc = mapFileCRC;
 
-		//common.Printf( "[Load AAS]\n" );
-		//common.Printf( "loading %s\n", name.c_str() );
+		common.Printf( "[Load AAS]\n" );
+		common.Printf( "loading %s\n", this.name.c_str ( ) );
 
-		//if ( !src.LoadFile( name ) ) {
-		//	return false;
-		//}
+		if ( !src.LoadFile( this.name.data ) ) {
+			return false;
+		}
 
-		//if ( !src.ExpectTokenString( AAS_FILEID ) ) {
-		//	common.Warning( "Not an AAS file: '%s'", name.c_str() );
-		//	return false;
-		//}
+		if ( !src.ExpectTokenString( AAS_FILEID ) ) {
+			common.Warning( "Not an AAS file: '%s'", this.name.c_str ( ) );
+			return false;
+		}
 
-		//if ( !src.ReadToken( &token ) || token != AAS_FILEVERSION ) {
-		//	common.Warning( "AAS file '%s' has version %s instead of %s", name.c_str(), token.c_str(), AAS_FILEVERSION );
-		//	return false;
-		//}
+		if ( !src.ReadToken( token ) || token.data != AAS_FILEVERSION ) {
+			common.Warning( "AAS file '%s' has version %s instead of %s", this.name.c_str ( ), token.c_str ( ), AAS_FILEVERSION );
+			return false;
+		}
 
-		//if ( !src.ExpectTokenType( TT_NUMBER, TT_INTEGER, &token ) ) {
-		//	common.Warning( "AAS file '%s' has no map file CRC", name.c_str() );
-		//	return false;
-		//}
+		if ( !src.ExpectTokenType( TT_NUMBER, TT_INTEGER, token ) ) {
+			common.Warning( "AAS file '%s' has no map file CRC", this.name.c_str ( ) );
+			return false;
+		}
 
-		//c = token.GetUnsignedLongValue();
-		//if ( mapFileCRC && c != mapFileCRC ) {
-		//	common.Warning( "AAS file '%s' is out of date", name.c_str() );
-		//	return false;
-		//}
+		c = token.GetUnsignedLongValue ( );
+		if ( mapFileCRC && c != mapFileCRC ) {
+			common.Warning( "AAS file '%s' is out of date", this.name.c_str ( ) );
+			return false;
+		}
 
-		//// clear the file in memory
-		//Clear();
+		// clear the file in memory
+		this.Clear ( );
 
-		//// parse the file
-		//while ( 1 ) {
-		//	if ( !src.ReadToken( &token ) ) {
-		//		break;
-		//	}
+		// parse the file
+		while ( 1 ) {
+			if ( !src.ReadToken( token ) ) {
+				break;
+			}
 
-		//	if ( token == "settings" ) {
-		//		if ( !settings.FromParser( src ) ) { return false; }
-		//	}
-		//	else if ( token == "planes" ) {
-		//		if ( !ParsePlanes( src ) ) { return false; }
-		//	}
-		//	else if ( token == "vertices" ) {
-		//		if ( !ParseVertices( src ) ) { return false; }
-		//	}
-		//	else if ( token == "edges" ) {
-		//		if ( !ParseEdges( src ) ) { return false; }
-		//	}
-		//	else if ( token == "edgeIndex" ) {
-		//		if ( !ParseIndex( src, edgeIndex ) ) { return false; }
-		//	}
-		//	else if ( token == "faces" ) {
-		//		if ( !ParseFaces( src ) ) { return false; }
-		//	}
-		//	else if ( token == "faceIndex" ) {
-		//		if ( !ParseIndex( src, faceIndex ) ) { return false; }
-		//	}
-		//	else if ( token == "areas" ) {
-		//		if ( !ParseAreas( src ) ) { return false; }
-		//	}
-		//	else if ( token == "nodes" ) {
-		//		if ( !ParseNodes( src ) ) { return false; }
-		//	}
-		//	else if ( token == "portals" ) {
-		//		if ( !ParsePortals( src ) ) { return false; }
-		//	}
-		//	else if ( token == "portalIndex" ) {
-		//		if ( !ParseIndex( src, portalIndex ) ) { return false; }
-		//	}
-		//	else if ( token == "clusters" ) {
-		//		if ( !ParseClusters( src ) ) { return false; }
-		//	}
-		//	else {
-		//		src.Error( "idAASFileLocal::Load: bad token \"%s\"", token.c_str() );
-		//		return false;
-		//	}
-		//}
+			if ( token.data == "settings" ) {
+				if ( !this.settings.FromParser( src ) ) {
+					return false;
+				}
+			} else if ( token.data == "planes" ) {
+				if ( !this.ParsePlanes( src ) ) {
+					return false;
+				}
+			} else if ( token.data == "vertices" ) {
+				if ( !this.ParseVertices( src ) ) {
+					return false;
+				}
+			} else if ( token.data == "edges" ) {
+				if ( !this.ParseEdges( src ) ) {
+					return false;
+				}
+			} else if ( token.data == "edgeIndex" ) {
+				if ( !this.ParseIndex( src, this.edgeIndex ) ) {
+					return false;
+				}
+			} else if ( token.data == "faces" ) {
+				if ( !this.ParseFaces( src ) ) {
+					return false;
+				}
+			} else if ( token.data == "faceIndex" ) {
+				if ( !this.ParseIndex( src, this.faceIndex ) ) {
+					return false;
+				}
+			} else if ( token.data == "areas" ) {
+				if ( !this.ParseAreas( src ) ) {
+					return false;
+				}
+			} else if ( token.data == "nodes" ) {
+				if ( !this.ParseNodes( src ) ) {
+					return false;
+				}
+			} else if ( token.data == "portals" ) {
+				if ( !this.ParsePortals( src ) ) {
+					return false;
+				}
+			} else if ( token.data == "portalIndex" ) {
+				if ( !this.ParseIndex( src, this.portalIndex ) ) {
+					return false;
+				}
+			} else if ( token.data == "clusters" ) {
+				if ( !this.ParseClusters( src ) ) {
+					return false;
+				}
+			} else {
+				src.Error( "idAASFileLocal::Load: bad token \"%s\"", token.c_str ( ) );
+				return false;
+			}
+		}
 
-		//FinishAreas();
+		this.FinishAreas ( );
 
-		//depth = MaxTreeDepth();
-		//if ( depth > MAX_AAS_TREE_DEPTH ) {
-		//	src.Error( "idAASFileLocal::Load: tree depth = %d", depth );
-		//}
+		depth = this.MaxTreeDepth ( );
+		if ( depth > MAX_AAS_TREE_DEPTH ) {
+			src.Error( "idAASFileLocal::Load: tree depth = %d", depth );
+		}
 
-		//common.Printf( "done.\n" );
+		common.Printf( "done.\n" );
 
 		return true;
 	}
@@ -1078,16 +1087,16 @@ idAASFileLocal::Load
 ////idAASFileLocal::MemorySize
 ////================
 ////*/
-////int idAASFileLocal::MemorySize( void ) const {
+////int idAASFileLocal::MemorySize( ) const {
 ////	int size;
 ////
 ////	size = planeList.Size();
-////	size += vertices.Size();
-////	size += edges.Size();
+////	size += this.vertices .Size();
+////	size += this.edges.Size();
 ////	size += edgeIndex.Size();
-////	size += faces.Size();
-////	size += faceIndex.Size();
-////	size += areas.Size();
+////	size += this.faces.Size();
+////	size += this.faceIndex.Size();
+////	size += this.areas.Size();
 ////	size += nodes.Size();
 ////	size += portals.Size();
 ////	size += portalIndex.Size();
@@ -1102,9 +1111,9 @@ idAASFileLocal::Load
 ////idAASFileLocal::PrintInfo
 ////================
 ////*/
-////void idAASFileLocal::PrintInfo( void ) const {
+////void idAASFileLocal::PrintInfo( ) const {
 ////	common.Printf( "%6d KB file size\n", MemorySize() >> 10 );
-////	common.Printf( "%6d areas\n", areas.Num() );
+////	common.Printf( "%6d areas\n", this.areas.Num() );
 ////	common.Printf( "%6d max tree depth\n", MaxTreeDepth() );
 ////	ReportRoutingEfficiency();
 ////}
@@ -1114,13 +1123,13 @@ idAASFileLocal::Load
 ////idAASFileLocal::NumReachabilities
 ////================
 ////*/
-////int idAASFileLocal::NumReachabilities( void ) const {
+////int idAASFileLocal::NumReachabilities( ) const {
 ////	int i, num;
 ////	idReachability *reach;
 ////
 ////	num = 0;
-////	for ( i = 0; i < areas.Num(); i++ ) {
-////		for ( reach = areas[i].reach; reach; reach = reach.next ) {
+////	for ( i = 0; i < this.areas.Num(); i++ ) {
+////		for ( reach = this.areas[i].reach; reach; reach = reach.next ) {
 ////			num++;
 ////		}
 ////	}
@@ -1132,7 +1141,7 @@ idAASFileLocal::Load
 ////idAASFileLocal::ReportRoutingEfficiency
 ////================
 ////*/
-////void idAASFileLocal::ReportRoutingEfficiency( void ) const {
+////void idAASFileLocal::ReportRoutingEfficiency( ) const {
 ////	int numReachableAreas, total, i, n;
 ////
 ////	numReachableAreas = 0;
@@ -1154,17 +1163,17 @@ idAASFileLocal::Load
 ////idAASFileLocal::DeleteReachabilities
 ////================
 ////*/
-////void idAASFileLocal::DeleteReachabilities( void ) {
-////	int i;
+////void idAASFileLocal::DeleteReachabilities( ) {
+////	var/*int */i:number;
 ////	idReachability *reach, *nextReach;
 ////
-////	for ( i = 0; i < areas.Num(); i++ ) {
-////		for ( reach = areas[i].reach; reach; reach = nextReach ) {
+////	for ( i = 0; i < this.areas.Num(); i++ ) {
+////		for ( reach = this.areas[i].reach; reach; reach = nextReach ) {
 ////			nextReach = reach.next;
 ////			delete reach;
 ////		}
-////		areas[i].reach = NULL;
-////		areas[i].rev_reach = NULL;
+////		this.areas[i].reach = NULL;
+////		this.areas[i].rev_reach = NULL;
 ////	}
 ////}
 ////
@@ -1173,7 +1182,7 @@ idAASFileLocal::Load
 ////idAASFileLocal::DeleteClusters
 ////================
 ////*/
-////void idAASFileLocal::DeleteClusters( void ) {
+////void idAASFileLocal::DeleteClusters( ) {
 ////	aasPortal_t portal;
 ////	aasCluster_t cluster;
 ////
@@ -1191,8 +1200,6 @@ idAASFileLocal::Load
 ////}
 
 
-
-
 //////AASFile_optimize.cpp
 //////===============================================================
 //////
@@ -1205,7 +1212,7 @@ idAASFileLocal::Load
 ////idAASFileLocal::Optimize
 ////================
 ////*/
-////void idAASFileLocal::Optimize(void) {
+////void idAASFileLocal::Optimize() {
 ////	int i, j, k, faceNum, edgeNum, areaFirstFace, faceFirstEdge;
 ////	aasArea_t *area;
 ////	aasFace_t *face;
@@ -1220,25 +1227,25 @@ idAASFileLocal::Load
 ////	idList<aasFace_t> newFaces;
 ////	idList<aasIndex_t> newFaceIndex;
 
-////	vertexRemap.AssureSize(vertices.Num(), -1);
+////	vertexRemap.AssureSize(this.vertices .Num(), -1);
 ////	edgeRemap.AssureSize(edges.Num(), 0);
-////	faceRemap.AssureSize(faces.Num(), 0);
+////	faceRemap.AssureSize(this.faces.Num(), 0);
 
-////	newVertices.Resize(vertices.Num());
+////	newVertices.Resize(this.vertices .Num());
 ////	newEdges.Resize(edges.Num());
 ////	newEdges.SetNum(1, false);
-////	newEdgeIndex.Resize(edgeIndex.Num());
-////	newFaces.Resize(faces.Num());
+////	newEdgeIndex.Resize(this.edgeIndex.Num());
+////	newFaces.Resize(this.faces.Num());
 ////	newFaces.SetNum(1, false);
-////	newFaceIndex.Resize(faceIndex.Num());
+////	newFaceIndex.Resize(this.faceIndex.Num());
 
-////	for (i = 0; i < areas.Num(); i++) {
-////		area = &areas[i];
+////	for (i = 0; i < this.areas.Num(); i++) {
+////		area = &this.areas[i];
 
 ////		areaFirstFace = newFaceIndex.Num();
 ////		for (j = 0; j < area.numFaces; j++) {
-////			faceNum = faceIndex[area.firstFace + j];
-////			face = &faces[abs(faceNum)];
+////			faceNum = this.faceIndex[area.firstFace + j];
+////			face = &this.faces[abs(faceNum)];
 
 ////			// store face
 ////			if (!faceRemap[abs(faceNum)]) {
@@ -1257,8 +1264,8 @@ idAASFileLocal::Load
 ////					// store edges
 ////					faceFirstEdge = newEdgeIndex.Num();
 ////					for (k = 0; k < face.numEdges; k++) {
-////						edgeNum = edgeIndex[face.firstEdge + k];
-////						edge = &edges[abs(edgeNum)];
+////						edgeNum = this.edgeIndex[face.firstEdge + k];
+////						edge = this.edges[abs(edgeNum)];
 
 ////						if (!edgeRemap[abs(edgeNum)]) {
 ////							if (edgeNum < 0) {
@@ -1271,11 +1278,11 @@ idAASFileLocal::Load
 ////							// remap vertices if not yet remapped
 ////							if (vertexRemap[edge.vertexNum[0]] == -1) {
 ////								vertexRemap[edge.vertexNum[0]] = newVertices.Num();
-////								newVertices.Append(vertices[edge.vertexNum[0]]);
+////								newVertices.Append(this.vertices [edge.vertexNum[0]]);
 ////							}
 ////							if (vertexRemap[edge.vertexNum[1]] == -1) {
 ////								vertexRemap[edge.vertexNum[1]] = newVertices.Num();
-////								newVertices.Append(vertices[edge.vertexNum[1]]);
+////								newVertices.Append(this.vertices [edge.vertexNum[1]]);
 ////							}
 
 ////							newEdges.Append(*edge);
@@ -1309,19 +1316,12 @@ idAASFileLocal::Load
 ////	}
 
 ////	// store new list
-////	vertices = newVertices;
+////	this.vertices  = newVertices;
 ////	edges = newEdges;
-////	edgeIndex = newEdgeIndex;
-////	faces = newFaces;
-////	faceIndex = newFaceIndex;
+////	this.edgeIndex = newEdgeIndex;
+////	this.faces = newFaces;
+////	this.faceIndex = newFaceIndex;
 ////}
-
-
-
-
-
-
-
 
 
 //////AASFile_sample.cpp
@@ -1339,97 +1339,97 @@ idAASFileLocal::Load
 ////*/
 ////idVec3 idAASFileLocal::EdgeCenter(int edgeNum) const {
 ////	const aasEdge_t *edge;
-////	edge = &edges[edgeNum];
-////	return (vertices[edge.vertexNum[0]] + vertices[edge.vertexNum[1]]) * 0.5f;
+////	edge = this.edges[edgeNum];
+////	return (this.vertices [edge.vertexNum[0]] + this.vertices [edge.vertexNum[1]]) * 0.5f;
 ////}
 
-/////*
-////================
-////idAASFileLocal::FaceCenter
-////================
-////*/
-////idVec3 idAASFileLocal::FaceCenter(int faceNum) const {
-////	int i, edgeNum;
-////	const aasFace_t *face;
-////	const aasEdge_t *edge;
-////	idVec3 center;
+/*
+================
+idAASFileLocal::FaceCenter
+================
+*/
+FaceCenter(/*int */faceNum:number) :idVec3 {
+	var/*int */i: number, edgeNum: number;
+	var face: aasFace_t ;
+	var edge: aasEdge_t ;
+	var center = new idVec3;
 
-////	center = vec3_origin;
+	center.equals( vec3_origin );
 
-////	face = &faces[faceNum];
-////	if (face.numEdges > 0) {
-////		for (i = 0; i < face.numEdges; i++) {
-////			edgeNum = edgeIndex[face.firstEdge + i];
-////			edge = &edges[abs(edgeNum)];
-////			center += vertices[edge.vertexNum[INTSIGNBITSET(edgeNum)]];
-////		}
-////		center /= face.numEdges;
-////	}
-////	return center;
-////}
+	face = this.faces[faceNum];
+	if (face.numEdges > 0) {
+		for (i = 0; i < face.numEdges; i++) {
+			edgeNum = this.edgeIndex[face.firstEdge + i];
+			edge = this.edges[abs(edgeNum)];
+			center.opAdditionAssignment( this.vertices[edge.vertexNum[INTSIGNBITSET( edgeNum )]] );
+		}
+		center.opDivisionAssignment_float( face.numEdges );
+	}
+	return center;
+}
 
-/////*
-////================
-////idAASFileLocal::AreaCenter
-////================
-////*/
-////idVec3 idAASFileLocal::AreaCenter(int areaNum) const {
-////	int i, faceNum;
-////	const aasArea_t *area;
-////	idVec3 center;
+/*
+================
+idAASFileLocal::AreaCenter
+================
+*/
+AreaCenter(/*int*/ areaNum:number) :idVec3 {
+	var/*int */i:number, faceNum:number;
+	var area: aasArea_t;
+	var center = new idVec3;
 
-////	center = vec3_origin;
+	center.equals(vec3_origin);
 
-////	area = &areas[areaNum];
-////	if (area.numFaces > 0) {
-////		for (i = 0; i < area.numFaces; i++) {
-////			faceNum = faceIndex[area.firstFace + i];
-////			center += FaceCenter(abs(faceNum));
-////		}
-////		center /= area.numFaces;
-////	}
-////	return center;
-////}
+	area = this.areas[areaNum];
+	if (area.numFaces > 0) {
+		for (i = 0; i < area.numFaces; i++) {
+			faceNum = this.faceIndex[area.firstFace + i];
+			center.opAdditionAssignment( this.FaceCenter( abs( faceNum ) ) );
+		}
+		center.opDivisionAssignment_float(area.numFaces);
+	}
+	return center;
+}
 
-/////*
-////============
-////idAASFileLocal::AreaReachableGoal
-////============
-////*/
-////idVec3 idAASFileLocal::AreaReachableGoal(int areaNum) const {
-////	int i, faceNum, numFaces;
-////	const aasArea_t *area;
-////	idVec3 center;
-////	idVec3 start, end;
-////	aasTrace_t trace;
+/*
+============
+idAASFileLocal::AreaReachableGoal
+============
+*/
+AreaReachableGoal(/*int*/ areaNum:number) :idVec3 {
+	var/*int */i: number, faceNum: number, numFaces: number;
+	var area: aasArea_t ;
+	var center = new idVec3;
+	var start = new idVec3, end = new idVec3;
+	var trace  new aasTrace_t ;
 
-////	area = &areas[areaNum];
+	area = this.areas[areaNum];
 
-////	if (!(area.flags & (AREA_REACHABLE_WALK | AREA_REACHABLE_FLY)) || (area.flags & AREA_LIQUID)) {
-////		return AreaCenter(areaNum);
-////	}
+	if (!(area.flags & (AREA_REACHABLE_WALK | AREA_REACHABLE_FLY)) || (area.flags & AREA_LIQUID)) {
+		return this.AreaCenter(areaNum);
+	}
 
-////	center = vec3_origin;
+	center.equals( vec3_origin );
 
-////	numFaces = 0;
-////	for (i = 0; i < area.numFaces; i++) {
-////		faceNum = faceIndex[area.firstFace + i];
-////		if (!(faces[abs(faceNum)].flags & FACE_FLOOR)) {
-////			continue;
-////		}
-////		center += FaceCenter(abs(faceNum));
-////		numFaces++;
-////	}
-////	if (numFaces > 0) {
-////		center /= numFaces;
-////	}
-////	center[2] += 1.0f;
-////	end = center;
-////	end[2] -= 1024;
-////	Trace(trace, center, end);
+	numFaces = 0;
+	for (i = 0; i < area.numFaces; i++) {
+		faceNum = this.faceIndex[area.firstFace + i];
+		if (!(this.faces[abs(faceNum)].flags & FACE_FLOOR)) {
+			continue;
+		}
+		center.opAdditionAssignment(  this.FaceCenter(abs(faceNum)));
+		numFaces++;
+	}
+	if (numFaces > 0) {
+		center.opDivisionAssignment_float(numFaces);
+	}
+	center[2] += 1.0;
+	end = center;
+	end[2] -= 1024;
+	this.Trace(trace, center, end);
 
-////	return trace.endpos;
-////}
+	return trace.endpos;
+}
 
 /////*
 ////================
@@ -1440,9 +1440,9 @@ idAASFileLocal::Load
 ////	const aasEdge_t *edge;
 ////	idBounds bounds;
 
-////	edge = &edges[abs(edgeNum)];
-////	bounds[0] = bounds[1] = vertices[edge.vertexNum[0]];
-////	bounds += vertices[edge.vertexNum[1]];
+////	edge = this.edges[abs(edgeNum)];
+////	bounds[0] = bounds[1] = this.vertices [edge.vertexNum[0]];
+////	bounds += this.vertices [edge.vertexNum[1]];
 ////	return bounds;
 ////}
 
@@ -1451,19 +1451,19 @@ idAASFileLocal::Load
 ////idAASFileLocal::FaceBounds
 ////================
 ////*/
-////idBounds idAASFileLocal::FaceBounds(int faceNum) const {
+////idBounds idAASFileLocal::FaceBounds(/*int */faceNum:number) const {
 ////	int i, edgeNum;
 ////	const aasFace_t *face;
 ////	const aasEdge_t *edge;
 ////	idBounds bounds;
 
-////	face = &faces[faceNum];
+////	face = &this.faces[faceNum];
 ////	bounds.Clear();
 
 ////	for (i = 0; i < face.numEdges; i++) {
-////		edgeNum = edgeIndex[face.firstEdge + i];
-////		edge = &edges[abs(edgeNum)];
-////		bounds.AddPoint(vertices[edge.vertexNum[INTSIGNBITSET(edgeNum)]]);
+////		edgeNum = this.edgeIndex[face.firstEdge + i];
+////		edge = this.edges[abs(edgeNum)];
+////		bounds.AddPoint(this.vertices [edge.vertexNum[INTSIGNBITSET(edgeNum)]]);
 ////	}
 ////	return bounds;
 ////}
@@ -1473,16 +1473,16 @@ idAASFileLocal::Load
 ////idAASFileLocal::AreaBounds
 ////================
 ////*/
-////idBounds idAASFileLocal::AreaBounds(int areaNum) const {
+////idBounds idAASFileLocal::AreaBounds(/*int*/ areaNum:number) const {
 ////	int i, faceNum;
 ////	const aasArea_t *area;
 ////	idBounds bounds;
 
-////	area = &areas[areaNum];
+////	area = &this.areas[areaNum];
 ////	bounds.Clear();
 
 ////	for (i = 0; i < area.numFaces; i++) {
-////		faceNum = faceIndex[area.firstFace + i];
+////		faceNum = this.faceIndex[area.firstFace + i];
 ////		bounds += FaceBounds(abs(faceNum));
 ////	}
 ////	return bounds;
@@ -1535,7 +1535,7 @@ idAASFileLocal::Load
 
 ////	areaNum = PointAreaNum(start);
 ////	if (areaNum) {
-////		if ((areas[areaNum].flags & areaFlags) && ((areas[areaNum].travelFlags & excludeTravelFlags) == 0)) {
+////		if ((this.areas[areaNum].flags & areaFlags) && ((this.areas[areaNum].travelFlags & excludeTravelFlags) == 0)) {
 ////			return areaNum;
 ////		}
 ////	}
@@ -1543,9 +1543,9 @@ idAASFileLocal::Load
 ////		// trace up
 ////		end = start;
 ////		end[2] += 32.0f;
-////		Trace(trace, start, end);
+////		this.Trace(trace, start, end);
 ////		if (trace.numAreas >= 1) {
-////			if ((areas[0].flags & areaFlags) && ((areas[0].travelFlags & excludeTravelFlags) == 0)) {
+////			if ((this.areas[0].flags & areaFlags) && ((this.areas[0].travelFlags & excludeTravelFlags) == 0)) {
 ////				return areaList[0];
 ////			}
 ////			start = pointList[0];
@@ -1556,9 +1556,9 @@ idAASFileLocal::Load
 ////	// trace down
 ////	end = start;
 ////	end[2] -= 32.0f;
-////	Trace(trace, start, end);
+////	this.Trace(trace, start, end);
 ////	if (trace.lastAreaNum) {
-////		if ((areas[trace.lastAreaNum].flags & areaFlags) && ((areas[trace.lastAreaNum].travelFlags & excludeTravelFlags) == 0)) {
+////		if ((this.areas[trace.lastAreaNum].flags & areaFlags) && ((this.areas[trace.lastAreaNum].travelFlags & excludeTravelFlags) == 0)) {
 ////			return trace.lastAreaNum;
 ////		}
 ////		start = trace.endpos;
@@ -1570,7 +1570,7 @@ idAASFileLocal::Load
 ////		bounds[0] = origin + searchBounds[0] * frac;
 ////		bounds[1] = origin + searchBounds[1] * frac;
 ////		areaNum = BoundsReachableAreaNum(bounds, areaFlags, excludeTravelFlags);
-////		if (areaNum && (areas[areaNum].flags & areaFlags) && ((areas[areaNum].travelFlags & excludeTravelFlags) == 0)) {
+////		if (areaNum && (this.areas[areaNum].flags & areaFlags) && ((this.areas[areaNum].travelFlags & excludeTravelFlags) == 0)) {
 ////			return areaNum;
 ////		}
 ////	}
@@ -1588,7 +1588,7 @@ idAASFileLocal::Load
 
 ////	while (nodeNum) {
 ////		if (nodeNum < 0) {
-////			if ((areas[-nodeNum].flags & areaFlags) && ((areas[-nodeNum].travelFlags & excludeTravelFlags) == 0)) {
+////			if ((this.areas[-nodeNum].flags & areaFlags) && ((this.areas[-nodeNum].travelFlags & excludeTravelFlags) == 0)) {
 ////				return -nodeNum;
 ////			}
 ////			return 0;
@@ -1633,12 +1633,12 @@ idAASFileLocal::Load
 ////	const aasArea_t *area;
 ////	const aasFace_t *face;
 
-////	area = &areas[areaNum];
+////	area = &this.areas[areaNum];
 
 ////	// push the point to the right side of all area face planes
 ////	for (i = 0; i < area.numFaces; i++) {
-////		faceNum = faceIndex[area.firstFace + i];
-////		face = &faces[abs(faceNum)];
+////		faceNum = this.faceIndex[area.firstFace + i];
+////		face = &this.faces[abs(faceNum)];
 
 ////		const idPlane &plane = planeList[face.planeNum ^ INTSIGNBITSET(faceNum)];
 ////		float dist = plane.Distance(point);
@@ -1710,7 +1710,7 @@ idAASFileLocal::Load
 ////		// if it is an area
 ////		if (nodeNum < 0) {
 ////			// if can't enter the area
-////			if ((areas[-nodeNum].flags & trace.flags) || (areas[-nodeNum].travelFlags & trace.travelFlags)) {
+////			if ((this.areas[-nodeNum].flags & trace.flags) || (this.areas[-nodeNum].travelFlags & trace.travelFlags)) {
 ////				if (!trace.lastAreaNum) {
 ////					trace.fraction = 0.0f;
 ////					v1 = vec3_origin;
@@ -1858,47 +1858,47 @@ idAASFileLocal::Load
 ////idAASLocal::AreaContentsTravelFlags
 ////============
 ////*/
-////int idAASFileLocal::AreaContentsTravelFlags(int areaNum) const {
-////	if (areas[areaNum].contents & AREACONTENTS_WATER) {
+////int idAASFileLocal::AreaContentsTravelFlags(/*int*/ areaNum:number) const {
+////	if (this.areas[areaNum].contents & AREACONTENTS_WATER) {
 ////		return TFL_WATER;
 ////	}
 ////	return TFL_AIR;
 ////}
 
-/////*
-////============
-////idAASFileLocal::MaxTreeDepth_r
-////============
-////*/
-////void idAASFileLocal::MaxTreeDepth_r(int nodeNum, int &depth, int &maxDepth) const {
-////	const aasNode_t *node;
+/*
+============
+idAASFileLocal::MaxTreeDepth_r
+============
+*/
+	MaxTreeDepth_r ( /*int */nodeNum: number, /*int */depth: R<number>, /*int */maxDepth: R<number> ): void {
+		var node: aasNode_t;
 
-////	if (nodeNum <= 0) {
-////		return;
-////	}
+		if ( nodeNum <= 0 ) {
+			return;
+		}
 
-////	depth++;
-////	if (depth > maxDepth) {
-////		maxDepth = depth;
-////	}
+		depth.$++;
+		if ( depth > maxDepth ) {
+			maxDepth = depth;
+		}
 
-////	node = &nodes[nodeNum];
-////	MaxTreeDepth_r(node.children[0], depth, maxDepth);
-////	MaxTreeDepth_r(node.children[1], depth, maxDepth);
+		node = this.nodes[nodeNum];
+		this.MaxTreeDepth_r( node.children[0], depth, maxDepth );
+		this.MaxTreeDepth_r( node.children[1], depth, maxDepth );
 
-////	depth--;
-////}
+		depth.$--;
+	}
 
-/////*
-////============
-////idAASFileLocal::MaxTreeDepth
-////============
-////*/
-////int idAASFileLocal::MaxTreeDepth(void) const {
-////	int depth, maxDepth;
+/*
+============
+idAASFileLocal::MaxTreeDepth
+============
+*/
+	MaxTreeDepth ( ): number {
+		var /*int */depth = new R <number> , maxDepth = new R<number> ( );
 
-////	depth = maxDepth = 0;
-////	MaxTreeDepth_r(1, depth, maxDepth);
-////	return maxDepth;
-////}
+		depth.$ = maxDepth.$ = 0;
+		this.MaxTreeDepth_r( 1, depth, maxDepth );
+		return maxDepth.$;
+	}
 }

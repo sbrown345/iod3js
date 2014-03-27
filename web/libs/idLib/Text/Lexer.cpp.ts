@@ -1659,7 +1659,7 @@ class idLexer {
 	idLexer::LoadFile
 	================
 	*/
-	/*int*/ LoadFile(filename: string, OSPath: boolean): number {
+	/*int*/ LoadFile(filename: string, OSPath: boolean = false): number {
 		//var fp: idFile;
 		//var pathname = new idStr;
 		//var/*int */length:number;
