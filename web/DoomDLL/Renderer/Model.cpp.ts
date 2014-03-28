@@ -57,7 +57,7 @@ idRenderModelStatic.prototype.destructor = function ( ) {
 ////==============
 ////*/
 ////void idRenderModelStatic::Print() const {
-////	common.Printf( "%s\n", name.c_str() );
+////	common.Printf( "%s\n", this.name.c_str() );
 ////	common.Printf( "Static model.\n" );
 ////	common.Printf( "bounds: (%f %f %f) to (%f %f %f)\n", 
 ////		this.bounds[0][0], this.bounds[0][1], this.bounds[0][2], 
@@ -93,7 +93,7 @@ idRenderModelStatic.prototype.destructor = function ( ) {
 ////	int	totalBytes = 0;
 
 ////	totalBytes += sizeof( *this );
-////	totalBytes += name.DynamicMemoryUsed();
+////	totalBytes += this.name.DynamicMemoryUsed();
 ////	totalBytes += this.surfaces.MemoryUsed();
 
 ////	if ( shadowHull ) {
@@ -244,55 +244,55 @@ idRenderModelStatic.prototype.MakeDefaultModel = function ( ): void {
 ////idRenderModelStatic::PartialInitFromFile
 ////================
 ////*/
-////void idRenderModelStatic::PartialInitFromFile( const char *fileName ) {
+////void idRenderModelStatic::PartialInitFromFile( fileName:string ) {
 ////	this.fastLoad = true;
 ////	InitFromFile( fileName );
 ////}
 
-/////*
-////================
-////idRenderModelStatic::InitFromFile
-////================
-////*/
-////void idRenderModelStatic::InitFromFile( const char *fileName ) {
-////	bool loaded;
-////	idStr extension;
+/*
+================
+idRenderModelStatic::InitFromFile
+================
+*/
+idRenderModelStatic.prototype.InitFromFile = function ( fileName: string ): void {
+	var loaded: boolean;
+	var extension = new idStr;
 
-////	this.InitEmpty( fileName );
+	this.InitEmpty( fileName );
 
-////	// FIXME: load new .proc map format
+	// FIXME: load new .proc map format
 
-////	name.ExtractFileExtension( extension );
+	this.name.ExtractFileExtension( extension );
 
-////	if ( extension.Icmp( "ase" ) == 0 ) {
-////		loaded		= LoadASE( name );
-////		reloadable	= true;
-////	} else if ( extension.Icmp( "lwo" ) == 0 ) {
-////		loaded		= LoadLWO( name );
-////		reloadable	= true;
-////	} else if ( extension.Icmp( "flt" ) == 0 ) {
-////		loaded		= LoadFLT( name );
-////		reloadable	= true;
-////	} else if ( extension.Icmp( "ma" ) == 0 ) {
-////		loaded		= LoadMA( name );
-////		reloadable	= true;
-////	} else {
-////		common.Warning( "idRenderModelStatic::InitFromFile: unknown type for model: \'%s\'", name.c_str() );
-////		loaded		= false;
-////	}
+	if ( extension.Icmp( "ase" ) == 0 ) {
+		loaded = this.LoadASE( this.name );
+		this.reloadable = true;
+	} else if ( extension.Icmp( "lwo" ) == 0 ) {
+		loaded = this.LoadLWO( this.name );
+		this.reloadable = true;
+	} else if ( extension.Icmp( "flt" ) == 0 ) {
+		loaded = this.LoadFLT( this.name );
+		this.reloadable = true;
+	} else if ( extension.Icmp( "ma" ) == 0 ) {
+		loaded = this.LoadMA( this.name );
+		this.reloadable = true;
+	} else {
+		common.Warning( "idRenderModelStatic::InitFromFile: unknown type for model: \'%s\'", this.name.c_str ( ) );
+		loaded = false;
+	}
 
-////	if ( !loaded ) {
-////		common.Warning( "Couldn't load model: '%s'", name.c_str() );
-////		MakeDefaultModel();
-////		return;
-////	}
+	if ( !loaded ) {
+		common.Warning( "Couldn't load model: '%s'", this.name.c_str ( ) );
+		this.MakeDefaultModel ( );
+		return;
+	}
 
-////	// it is now available for use
-////	this.purged = false;
+	// it is now available for use
+	this.purged = false;
 
-////	// create the bounds for culling and dynamic surface creation
-////	FinishSurfaces();
-////}
+	// create the bounds for culling and dynamic surface creation
+	this.FinishSurfaces ( );
+};
 
 /////*
 ////================
@@ -301,7 +301,7 @@ idRenderModelStatic.prototype.MakeDefaultModel = function ( ): void {
 ////*/
 ////void idRenderModelStatic::LoadModel() {
 ////	PurgeModel();
-////	InitFromFile( name );
+////	InitFromFile( this.name );
 ////}
 
 /*
@@ -320,7 +320,7 @@ idRenderModelStatic.prototype.InitEmpty = function ( fileName: string ): void {
         this.isStaticWorldModel = false;
     }
 
-    this.name = fileName;
+	this.name.equals( fileName );
     this.reloadable = false; // if it didn't come from a file, we can't reload it
     this.PurgeModel ( );
     this.purged = false;
@@ -363,7 +363,7 @@ idRenderModelStatic.prototype.Timestamp = function ( ): number {
 
 /*
 ================
-idRenderModelStatic.prototype.NumSurfaces
+idRenderModelStatic::NumSurfaces
 ================
 */
 idRenderModelStatic.prototype.NumSurfaces = function ( ): number /*int*/ {
@@ -372,7 +372,7 @@ idRenderModelStatic.prototype.NumSurfaces = function ( ): number /*int*/ {
 
 /*
 ================
-idRenderModelStatic.prototype.NumBaseSurfaces
+idRenderModelStatic::NumBaseSurfaces
 ================
 */
 idRenderModelStatic.prototype.NumBaseSurfaces = function ( ): number /*int*/ {
@@ -420,7 +420,7 @@ idRenderModelStatic.prototype.ShadowHull = function ( ): srfTriangles_t {
 
 /*
 ================
-idRenderModelStatic.prototype.IsStaticWorldModel
+idRenderModelStatic::IsStaticWorldModel
 ================
 */
 idRenderModelStatic.prototype.IsStaticWorldModel = function ( ): boolean {
@@ -429,7 +429,7 @@ idRenderModelStatic.prototype.IsStaticWorldModel = function ( ): boolean {
 
 /*
 ================
-idRenderModelStatic.prototype.IsDynamicModel
+idRenderModelStatic::IsDynamicModel
 ================
 */
 idRenderModelStatic.prototype.IsDynamicModel = function ( ): dynamicModel_t {
@@ -439,7 +439,7 @@ idRenderModelStatic.prototype.IsDynamicModel = function ( ): dynamicModel_t {
 
 /*
 ================
-idRenderModelStatic.prototype.IsReloadable
+idRenderModelStatic::IsReloadable
 ================
 */
 idRenderModelStatic.prototype.IsReloadable =  function ( ): boolean {
@@ -448,7 +448,7 @@ idRenderModelStatic.prototype.IsReloadable =  function ( ): boolean {
 
 /*
 ================
-idRenderModelStatic.prototype.Bounds
+idRenderModelStatic::Bounds
 ================
 */
 idRenderModelStatic.prototype.Bounds = function ( mdef: renderEntity_t = null): idBounds {
@@ -457,7 +457,7 @@ idRenderModelStatic.prototype.Bounds = function ( mdef: renderEntity_t = null): 
 
 /*
 ================
-idRenderModelStatic.prototype.DepthHack
+idRenderModelStatic::DepthHack
 ================
 */
 idRenderModelStatic.prototype.DepthHack = function ( ): number {
@@ -474,7 +474,7 @@ idRenderModelStatic.prototype.DepthHack = function ( ): number {
 ////		delete cachedModel;
 ////		cachedModel = NULL;
 ////	}
-////	common.Error( "InstantiateDynamicModel called on static model '%s'", name.c_str() );
+////	common.Error( "InstantiateDynamicModel called on static model '%s'", this.name.c_str() );
 ////	return NULL;
 ////}
 
@@ -501,7 +501,7 @@ idRenderModelStatic.prototype.DepthHack = function ( ): number {
 ////idRenderModelStatic::GetJointHandle
 ////================
 ////*/
-////jointHandle_t idRenderModelStatic::GetJointHandle( name:string ) const {
+////jointHandle_t idRenderModelStatic::GetJointHandle( this.name:string ) const {
 ////	return INVALID_JOINT;
 ////}
 
@@ -883,7 +883,7 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 ////				v = mesh.faces[j].vertexNum[k];
 
 ////				if ( v < 0 || v >= mesh.numVertexes ) {
-////					common.Error( "ConvertASEToModelSurfaces: bad vertex index in ASE file %s", name.c_str() );
+////					common.Error( "ConvertASEToModelSurfaces: bad vertex index in ASE file %s", this.name.c_str() );
 ////				}
 
 ////				// collapse the position if it was slightly offset 
@@ -893,7 +893,7 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 ////				if ( mesh.numTVFaces == mesh.numFaces && mesh.numTVertexes != 0 ) {
 ////					tv = mesh.faces[j].tVertexNum[k];
 ////					if ( tv < 0 || tv >= mesh.numTVertexes ) {
-////						common.Error( "ConvertASEToModelSurfaces: bad tex coord index in ASE file %s", name.c_str() );
+////						common.Error( "ConvertASEToModelSurfaces: bad tex coord index in ASE file %s", this.name.c_str() );
 ////					}
 ////					// collapse the tex coord if it was slightly offset
 ////					tv = tvRemap[tv];
@@ -949,10 +949,10 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 
 ////		// allocate space for the indexes and copy them
 ////		if ( tri.numIndexes > mesh.numFaces * 3 ) {
-////			common.FatalError( "ConvertASEToModelSurfaces: index miscount in ASE file %s", name.c_str() );
+////			common.FatalError( "ConvertASEToModelSurfaces: index miscount in ASE file %s", this.name.c_str() );
 ////		}
 ////		if ( tri.numVerts > mesh.numFaces * 3 ) {
-////			common.FatalError( "ConvertASEToModelSurfaces: vertex miscount in ASE file %s", name.c_str() );
+////			common.FatalError( "ConvertASEToModelSurfaces: vertex miscount in ASE file %s", this.name.c_str() );
 ////		}
 
 ////		// an ASE allows the texture coordinates to be scaled, translated, and rotated
@@ -1097,7 +1097,7 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 
 ////	// vertex positions
 ////	if ( layer.point.count <= 0 ) {
-////		common.Warning( "ConvertLWOToModelSurfaces: model \'%s\' has bad or missing vertex data", name.c_str() );
+////		common.Warning( "ConvertLWOToModelSurfaces: model \'%s\' has bad or missing vertex data", this.name.c_str() );
 ////		return false;
 ////	}
 
@@ -1133,7 +1133,7 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 ////			}
 ////		}
 ////	} else {
-////		common.Warning( "ConvertLWOToModelSurfaces: model \'%s\' has bad or missing uv data", name.c_str() );
+////		common.Warning( "ConvertLWOToModelSurfaces: model \'%s\' has bad or missing uv data", this.name.c_str() );
 ////	  	numTVertexes = 1;
 ////		tvList = (idVec2 *)Mem_ClearedAlloc( numTVertexes * sizeof( tvList[0] ) );
 ////	}
@@ -1229,7 +1229,7 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 ////			}
 
 ////			if ( poly.nverts != 3 ) {
-////				common.Warning( "ConvertLWOToModelSurfaces: model %s has too many verts for a poly! Make sure you triplet it down", name.c_str() );
+////				common.Warning( "ConvertLWOToModelSurfaces: model %s has too many verts for a poly! Make sure you triplet it down", this.name.c_str() );
 ////				continue;
 ////			}
 
@@ -1321,10 +1321,10 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 
 ////		// allocate space for the indexes and copy them
 ////		if ( tri.numIndexes > layer.polygon.count * 3 ) {
-////			common.FatalError( "ConvertLWOToModelSurfaces: index miscount in LWO file %s", name.c_str() );
+////			common.FatalError( "ConvertLWOToModelSurfaces: index miscount in LWO file %s", this.name.c_str() );
 ////		}
 ////		if ( tri.numVerts > layer.polygon.count * 3 ) {
-////			common.FatalError( "ConvertLWOToModelSurfaces: vertex miscount in LWO file %s", name.c_str() );
+////			common.FatalError( "ConvertLWOToModelSurfaces: vertex miscount in LWO file %s", this.name.c_str() );
 ////		}
 
 ////		// now allocate and generate the combined vertexes
@@ -1366,7 +1366,7 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 ////idRenderModelStatic::ConvertLWOToASE
 ////=================
 ////*/
-////struct aseModel_s *idRenderModelStatic::ConvertLWOToASE( const struct st_lwObject *obj, const char *fileName ) {
+////struct aseModel_s *idRenderModelStatic::ConvertLWOToASE( const struct st_lwObject *obj, fileName:string ) {
 ////	int j, k;
 ////	aseModel_t *ase;
 
@@ -1406,7 +1406,7 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 
 ////		// vertex positions
 ////		if ( layer.point.count <= 0 ) {
-////			common.Warning( "ConvertLWOToASE: model \'%s\' has bad or missing vertex data", name.c_str() );
+////			common.Warning( "ConvertLWOToASE: model \'%s\' has bad or missing vertex data", this.name.c_str() );
 ////		}
 
 ////		for ( j = 0; j < layer.point.count; j++ ) {
@@ -1728,7 +1728,7 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 ////				v = mesh.faces[j].vertexNum[k];
 
 ////				if ( v < 0 || v >= mesh.numVertexes ) {
-////					common.Error( "ConvertMAToModelSurfaces: bad vertex index in MA file %s", name.c_str() );
+////					common.Error( "ConvertMAToModelSurfaces: bad vertex index in MA file %s", this.name.c_str() );
 ////				}
 
 ////				// collapse the position if it was slightly offset 
@@ -1738,7 +1738,7 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 ////				if ( mesh.numTVertexes != 0 ) {
 ////					tv = mesh.faces[j].tVertexNum[k];
 ////					if ( tv < 0 || tv >= mesh.numTVertexes ) {
-////						common.Error( "ConvertMAToModelSurfaces: bad tex coord index in MA file %s", name.c_str() );
+////						common.Error( "ConvertMAToModelSurfaces: bad tex coord index in MA file %s", this.name.c_str() );
 ////					}
 ////					// collapse the tex coord if it was slightly offset
 ////					tv = tvRemap[tv];
@@ -1796,10 +1796,10 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 
 ////		// allocate space for the indexes and copy them
 ////		if ( tri.numIndexes > mesh.numFaces * 3 ) {
-////			common.FatalError( "ConvertMAToModelSurfaces: index miscount in MA file %s", name.c_str() );
+////			common.FatalError( "ConvertMAToModelSurfaces: index miscount in MA file %s", this.name.c_str() );
 ////		}
 ////		if ( tri.numVerts > mesh.numFaces * 3 ) {
-////			common.FatalError( "ConvertMAToModelSurfaces: vertex miscount in MA file %s", name.c_str() );
+////			common.FatalError( "ConvertMAToModelSurfaces: vertex miscount in MA file %s", this.name.c_str() );
 ////		}
 
 ////		// an MA allows the texture coordinates to be scaled, translated, and rotated
@@ -1856,32 +1856,32 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 ////	return true;
 ////}
 
-/////*
-////=================
-////idRenderModelStatic::LoadASE
-////=================
-////*/
-////bool idRenderModelStatic::LoadASE( const char *fileName ) {
-////	aseModel_t *ase;
+/*
+=================
+idRenderModelStatic::LoadASE
+=================
+*/
+idRenderModelStatic.prototype.LoadASE = function ( fileName: string ): boolean {
+	var ase: aseModel_t;
 
-////	ase = ASE_Load( fileName );
-////	if ( ase == NULL ) {
-////		return false;
-////	}
+	ase = ASE_Load( fileName );
+	if ( ase == null ) {
+		return false;
+	}
 
-////	ConvertASEToModelSurfaces( ase );
+	this.ConvertASEToModelSurfaces( ase );
 
-////	ASE_Free( ase );
+	this.ASE_Free( ase );
 
-////	return true;
-////}
+	return true;
+};
 
 /////*
 ////=================
 ////idRenderModelStatic::LoadLWO
 ////=================
 ////*/
-////bool idRenderModelStatic::LoadLWO( const char *fileName ) {
+////bool idRenderModelStatic::LoadLWO( fileName:string ) {
 ////	unsigned int failID;
 ////	int failPos;
 ////	lwObject *lwo;
@@ -1903,7 +1903,7 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 ////idRenderModelStatic::LoadMA
 ////=================
 ////*/
-////bool idRenderModelStatic::LoadMA( const char *fileName ) {
+////bool idRenderModelStatic::LoadMA( fileName:string ) {
 ////	maModel_t *ma;
 
 ////	ma = MA_Load( fileName );
@@ -1925,7 +1925,7 @@ idRenderModelStatic.prototype.FinishSurfaces = function ( ): void {
 ////USGS height map data for megaTexture experiments
 ////=================
 ////*/
-////bool idRenderModelStatic::LoadFLT( const char *fileName ) {
+////bool idRenderModelStatic::LoadFLT( fileName:string ) {
 ////	float	*data;
 ////	int		len;
 

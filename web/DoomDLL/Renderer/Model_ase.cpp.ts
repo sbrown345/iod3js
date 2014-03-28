@@ -42,221 +42,201 @@
 ////======================================================================
 ////*/
 ////	
-////
-////#define VERBOSE( x ) { if ( ase.verbose ) { common.Printf x ; } }
-////
-////// working variables used during parsing
-////typedef struct {
-////	const char	*buffer;
-////	const char	*curpos;
-////	int			len;
-////	char		token[1024];
-////
-////	bool	verbose;
-////
-////	aseModel_t	*model;
-////	aseObject_t	*currentObject;
-////	aseMesh_t	*currentMesh;
-////	aseMaterial_t	*currentMaterial;
-////	int			currentFace;
-////	int			currentVertex;
-////} ase_t;
-////
-////static ase_t ase;
-////
-////
-////static aseMesh_t *ASE_GetCurrentMesh( void )
+
+function VERBOSE( x:any ) { if ( ase.verbose ) { common.Printf (x) ; } }
+
+// working variables used during parsing
+class ase_t {
+	buffer: string; //const char	*buffer;
+	curpos: number; //const char	*curpos;
+	len: number /*int*/;
+	token = new Uint8Array(1024);
+
+	verbose: boolean;
+
+	model: aseModel_t;
+	currentObject: aseObject_t;
+	currentMesh: aseMesh_t;
+	currentMaterial: aseMaterial_t;
+	currentFace: number /*int*/;
+	currentVertex: number /*int*/;
+
+	memset0 ( ): void {
+		this.buffer = null;
+		this.curpos = 0; //const char	*curpos;
+		this.len = 0;
+		memset( this.token, 0, sizeof( this.token ) );
+
+		this.verbose = false;
+
+		this.model = null;
+		this.currentObject = null;
+		this.currentMesh = null;
+		this.currentMaterial = null;
+		this.currentFace = 0;
+		this.currentVertex = 0;
+	}
+}
+
+var ase = new ase_t;
+
+
+////static aseMesh_t *ASE_GetCurrentMesh( )
 ////{
 ////	return ase.currentMesh;
 ////}
 ////
-////static int CharIsTokenDelimiter( int ch )
-////{
-////	if ( ch <= 32 )
-////		return 1;
-////	return 0;
-////}
+function CharIsTokenDelimiter ( /*int */ch: number ): number /*int*/ {
+	if ( ch <= 32 )
+		return 1;
+	return 0;
+}
+
+function ASE_GetToken ( restOfLine: boolean ): number /*int*/ {
+	var /*int */i = 0;
+
+	if ( !ase.buffer /*== 0 */ )
+		return 0;
+
+	if ( ( ase.curpos /*- ase.buffer*/ ) == ase.len )
+		return 0;
+
+	// skip over crap
+	while ( ( ( ase.curpos /*- ase.buffer */ ) < ase.len ) &&
+	( ase.buffer.charCodeAt( ase.curpos ) <= 32 ) ) {
+		ase.curpos++;
+	}
+
+	while ( ( ase.curpos /*- ase.buffer */ ) < ase.len ) {
+		ase.token[i] = ase.buffer.charCodeAt( ase.curpos );
+
+		ase.curpos++;
+		i++;
+
+		if ( ( CharIsTokenDelimiter( ase.token[i - 1] ) && !restOfLine ) ||
+		( ( ase.token[i - 1] == '\n'.charCodeAt( 0 ) ) || ( ase.token[i - 1] == '\r'.charCodeAt( 0 ) ) ) ) {
+			ase.token[i - 1] = 0;
+			break;
+		}
+	}
+
+	ase.token[i] = 0;
+
+	return 1;
+}
+
+function ASE_ParseBracedBlock ( parser: ( idToken: string ) => void /*void (*parser)( token:string:string )*/ ): void {
+	var /*int */indent = 0;
+
+	while ( ASE_GetToken( false ) ) {
+		if ( !strcmp( ase.token.toString ( ), "{" ) ) {
+			indent++;
+		} else if ( !strcmp( ase.token.toString ( ), "}" ) ) {
+			--indent;
+			if ( indent == 0 )
+				break;
+			else if ( indent < 0 )
+				common.Error( "Unexpected '}'" );
+		} else {
+			if ( parser )
+				parser( ase.token.toString ( ) );
+		}
+	}
+}
+
+function ASE_SkipEnclosingBraces ( ): void {
+	var /*int */indent = 0;
+
+	while ( ASE_GetToken( false ) ) {
+		if ( !strcmp( ase.token.toString ( ), "{" ) ) {
+			indent++;
+		} else if ( !strcmp( ase.token.toString ( ), "}" ) ) {
+			indent--;
+			if ( indent == 0 )
+				break;
+			else if ( indent < 0 )
+				common.Error( "Unexpected '}'" );
+		}
+	}
+}
+
+function ASE_SkipRestOfLine ( ): void {
+	ASE_GetToken( true );
+}
+
+function ASE_KeyMAP_DIFFUSE ( token: string ): void {
+	var material: aseMaterial_t;
+
+	if ( !strcmp( token, "*BITMAP" ) ) {
+		var qpath = new idStr;
+		var matname = new idStr;
+
+		ASE_GetToken( false );
+		todoThrow ( );
+		//// remove the quotes
+		//var s = strstr( ase.token + 1, "\"" );
+		////if ( s ) {
+		////	*s = 0;
+		////}
+		//matname = ase.token + 1;
+
+		//// convert the 3DSMax material pathname to a qpath
+		//matname.BackSlashesToSlashes();
+		//qpath = fileSystem.OSPathToRelativePath( matname );
+		//idStr.Copynz( ase.currentMaterial.name, qpath, sizeof( ase.currentMaterial.name ) );
+	} else if ( !strcmp( token, "*UVW_U_OFFSET" ) ) {
+		material = ase.model.materials[ase.model.materials.Num ( ) - 1];
+		ASE_GetToken( false );
+		material.uOffset = atof( ase.token.toString ( ) );
+	} else if ( !strcmp( token, "*UVW_V_OFFSET" ) ) {
+		material = ase.model.materials[ase.model.materials.Num ( ) - 1];
+		ASE_GetToken( false );
+		material.vOffset = atof( ase.token.toString ( ) );
+	} else if ( !strcmp( token, "*UVW_U_TILING" ) ) {
+		material = ase.model.materials[ase.model.materials.Num ( ) - 1];
+		ASE_GetToken( false );
+		material.uTiling = atof( ase.token.toString ( ) );
+	} else if ( !strcmp( token, "*UVW_V_TILING" ) ) {
+		material = ase.model.materials[ase.model.materials.Num ( ) - 1];
+		ASE_GetToken( false );
+		material.vTiling = atof( ase.token.toString ( ) );
+	} else if ( !strcmp( token, "*UVW_ANGLE" ) ) {
+		material = ase.model.materials[ase.model.materials.Num ( ) - 1];
+		ASE_GetToken( false );
+		material.angle = atof( ase.token.toString ( ) );
+	} else {
+	}
+}
+
+function ASE_KeyMATERIAL ( token: string ): void {
+	if ( !strcmp( token, "*MAP_DIFFUSE" ) ) {
+		ASE_ParseBracedBlock( ASE_KeyMAP_DIFFUSE );
+	} else {
+	}
+}
+
+function ASE_KeyMATERIAL_LIST( token:string ):void
+{
+	if ( !strcmp( token, "*MATERIAL_COUNT" ) )
+	{
+		ASE_GetToken( false );
+		VERBOSE( ( "..num materials: %s\n", ase.token ) );
+	}
+	else if ( !strcmp( token, "*MATERIAL" ) )
+	{
+		VERBOSE( ( "..material %d\n", ase.model.materials.Num() ) );
+
+		ase.currentMaterial = new aseMaterial_t;//(aseMaterial_t *)Mem_Alloc( sizeof( aseMaterial_t ) );
+		ase.currentMaterial.memset0 ( );// memset( ase.currentMaterial, 0, sizeof( aseMaterial_t ) );
+		ase.currentMaterial.uTiling = 1;
+		ase.currentMaterial.vTiling = 1;
+		ase.model.materials.Append(ase.currentMaterial);
+
+		ASE_ParseBracedBlock( ASE_KeyMATERIAL );
+	}
+}
 ////
-////static int ASE_GetToken( bool restOfLine )
-////{
-////	int i = 0;
-////
-////	if ( ase.buffer == 0 )
-////		return 0;
-////
-////	if ( ( ase.curpos - ase.buffer ) == ase.len )
-////		return 0;
-////
-////	// skip over crap
-////	while ( ( ( ase.curpos - ase.buffer ) < ase.len ) &&
-////		    ( *ase.curpos <= 32 ) )
-////	{
-////		ase.curpos++;
-////	}
-////
-////	while ( ( ase.curpos - ase.buffer ) < ase.len )
-////	{
-////		ase.token[i] = *ase.curpos;
-////
-////		ase.curpos++;
-////		i++;
-////
-////		if ( ( CharIsTokenDelimiter( ase.token[i-1] ) && !restOfLine ) ||
-////			 ( ( ase.token[i-1] == '\n' ) || ( ase.token[i-1] == '\r' ) ) )
-////		{
-////			ase.token[i-1] = 0;
-////			break;
-////		}
-////	}
-////
-////	ase.token[i] = 0;
-////
-////	return 1;
-////}
-////
-////static void ASE_ParseBracedBlock( void (*parser)( const char *token ) )
-////{
-////	int indent = 0;
-////
-////	while ( ASE_GetToken( false ) )
-////	{
-////		if ( !strcmp( ase.token, "{" ) )
-////		{
-////			indent++;
-////		}
-////		else if ( !strcmp( ase.token, "}" ) )
-////		{
-////			--indent;
-////			if ( indent == 0 )
-////				break;
-////			else if ( indent < 0 )
-////				common.Error( "Unexpected '}'" );
-////		}
-////		else
-////		{
-////			if ( parser )
-////				parser( ase.token );
-////		}
-////	}
-////}
-////
-////static void ASE_SkipEnclosingBraces( void )
-////{
-////	int indent = 0;
-////
-////	while ( ASE_GetToken( false ) )
-////	{
-////		if ( !strcmp( ase.token, "{" ) )
-////		{
-////			indent++;
-////		}
-////		else if ( !strcmp( ase.token, "}" ) )
-////		{
-////			indent--;
-////			if ( indent == 0 )
-////				break;
-////			else if ( indent < 0 )
-////				common.Error( "Unexpected '}'" );
-////		}
-////	}
-////}
-////
-////static void ASE_SkipRestOfLine( void )
-////{
-////	ASE_GetToken( true );
-////}
-////
-////static void ASE_KeyMAP_DIFFUSE( const char *token )
-////{
-////	aseMaterial_t	*material;
-////
-////	if ( !strcmp( token, "*BITMAP" ) )
-////	{
-////		idStr	qpath;
-////		idStr	matname;
-////
-////		ASE_GetToken( false );
-////
-////		// remove the quotes
-////		char *s = strstr( ase.token + 1, "\"" );
-////		if ( s ) {
-////			*s = 0;
-////		}
-////		matname = ase.token + 1;
-////
-////		// convert the 3DSMax material pathname to a qpath
-////		matname.BackSlashesToSlashes();
-////		qpath = fileSystem.OSPathToRelativePath( matname );
-////		idStr.Copynz( ase.currentMaterial.name, qpath, sizeof( ase.currentMaterial.name ) );
-////	}
-////	else if ( !strcmp( token, "*UVW_U_OFFSET" ) )
-////	{
-////		material = ase.model.materials[ase.model.materials.Num() - 1];
-////		ASE_GetToken( false );
-////		material.uOffset = atof( ase.token );
-////	}
-////	else if ( !strcmp( token, "*UVW_V_OFFSET" ) )
-////	{
-////		material = ase.model.materials[ase.model.materials.Num() - 1];
-////		ASE_GetToken( false );
-////		material.vOffset = atof( ase.token );
-////	}
-////	else if ( !strcmp( token, "*UVW_U_TILING" ) )
-////	{
-////		material = ase.model.materials[ase.model.materials.Num() - 1];
-////		ASE_GetToken( false );
-////		material.uTiling = atof( ase.token );
-////	}
-////	else if ( !strcmp( token, "*UVW_V_TILING" ) )
-////	{
-////		material = ase.model.materials[ase.model.materials.Num() - 1];
-////		ASE_GetToken( false );
-////		material.vTiling = atof( ase.token );
-////	}
-////	else if ( !strcmp( token, "*UVW_ANGLE" ) )
-////	{
-////		material = ase.model.materials[ase.model.materials.Num() - 1];
-////		ASE_GetToken( false );
-////		material.angle = atof( ase.token );
-////	}
-////	else
-////	{
-////	}
-////}
-////
-////static void ASE_KeyMATERIAL( const char *token )
-////{
-////	if ( !strcmp( token, "*MAP_DIFFUSE" ) )
-////	{
-////		ASE_ParseBracedBlock( ASE_KeyMAP_DIFFUSE );
-////	}
-////	else
-////	{
-////	}
-////}
-////
-////static void ASE_KeyMATERIAL_LIST( const char *token )
-////{
-////	if ( !strcmp( token, "*MATERIAL_COUNT" ) )
-////	{
-////		ASE_GetToken( false );
-////		VERBOSE( ( "..num materials: %s\n", ase.token ) );
-////	}
-////	else if ( !strcmp( token, "*MATERIAL" ) )
-////	{
-////		VERBOSE( ( "..material %d\n", ase.model.materials.Num() ) );
-////
-////		ase.currentMaterial = (aseMaterial_t *)Mem_Alloc( sizeof( aseMaterial_t ) );
-////		memset( ase.currentMaterial, 0, sizeof( aseMaterial_t ) );
-////		ase.currentMaterial.uTiling = 1;
-////		ase.currentMaterial.vTiling = 1;
-////		ase.model.materials.Append(ase.currentMaterial);
-////
-////		ASE_ParseBracedBlock( ASE_KeyMATERIAL );
-////	}
-////}
-////
-////static void ASE_KeyNODE_TM( const char *token )
+////static void ASE_KeyNODE_TM( token:string )
 ////{
 ////	int		i;
 ////
@@ -283,7 +263,7 @@
 ////	}
 ////}
 ////
-////static void ASE_KeyMESH_VERTEX_LIST( const char *token )
+////static void ASE_KeyMESH_VERTEX_LIST( token:string )
 ////{
 ////	aseMesh_t *pMesh = ASE_GetCurrentMesh();
 ////
@@ -313,7 +293,7 @@
 ////	}
 ////}
 ////
-////static void ASE_KeyMESH_FACE_LIST( const char *token )
+////static void ASE_KeyMESH_FACE_LIST( token:string )
 ////{
 ////	aseMesh_t *pMesh = ASE_GetCurrentMesh();
 ////
@@ -358,7 +338,7 @@
 ////	}
 ////}
 ////
-////static void ASE_KeyTFACE_LIST( const char *token )
+////static void ASE_KeyTFACE_LIST( token:string )
 ////{
 ////	aseMesh_t *pMesh = ASE_GetCurrentMesh();
 ////
@@ -387,7 +367,7 @@
 ////	}
 ////}
 ////
-////static void ASE_KeyCFACE_LIST( const char *token )
+////static void ASE_KeyCFACE_LIST( token:string )
 ////{
 ////	aseMesh_t *pMesh = ASE_GetCurrentMesh();
 ////
@@ -414,7 +394,7 @@
 ////	}
 ////}
 ////
-////static void ASE_KeyMESH_TVERTLIST( const char *token )
+////static void ASE_KeyMESH_TVERTLIST( token:string )
 ////{
 ////	aseMesh_t *pMesh = ASE_GetCurrentMesh();
 ////
@@ -450,7 +430,7 @@
 ////	}
 ////}
 ////
-////static void ASE_KeyMESH_CVERTLIST( const char *token )
+////static void ASE_KeyMESH_CVERTLIST( token:string )
 ////{
 ////	aseMesh_t *pMesh = ASE_GetCurrentMesh();
 ////
@@ -481,7 +461,7 @@
 ////	}
 ////}
 ////
-////static void ASE_KeyMESH_NORMALS( const char *token )
+////static void ASE_KeyMESH_NORMALS( token:string )
 ////{
 ////	aseMesh_t *pMesh = ASE_GetCurrentMesh();
 ////	aseFace_t	*f;
@@ -559,7 +539,7 @@
 ////	}
 ////}
 ////
-////static void ASE_KeyMESH( const char *token )
+////static void ASE_KeyMESH( token:string )
 ////{
 ////	aseMesh_t *pMesh = ASE_GetCurrentMesh();
 ////
@@ -679,7 +659,7 @@
 ////	}
 ////}
 ////
-////static void ASE_KeyMESH_ANIMATION( const char *token )
+////static void ASE_KeyMESH_ANIMATION( token:string )
 ////{
 ////	aseMesh_t *mesh;
 ////
@@ -702,7 +682,7 @@
 ////	}
 ////}
 ////
-////static void ASE_KeyGEOMOBJECT( const char *token )
+////static void ASE_KeyGEOMOBJECT( token:string )
 ////{
 ////	aseObject_t	*object;
 ////
@@ -756,99 +736,99 @@
 ////
 ////}
 ////
-////void ASE_ParseGeomObject( void ) {
-////	aseObject_t	*object;
-////
-////	VERBOSE( ("GEOMOBJECT" ) );
-////
-////	object = (aseObject_t *)Mem_Alloc( sizeof( aseObject_t ) );
-////	memset( object, 0, sizeof( aseObject_t ) );
-////	ase.model.objects.Append( object );
-////	ase.currentObject = object;
-////
-////	object.frames.Resize(32, 32);
-////
-////	ASE_ParseBracedBlock( ASE_KeyGEOMOBJECT );
-////}
-////
-////static void ASE_KeyGROUP( const char *token )
-////{
-////	if ( !strcmp( token, "*GEOMOBJECT" ) ) {
-////		ASE_ParseGeomObject();
-////	}
-////}
-////
-/////*
-////=================
-////ASE_Parse
-////=================
-////*/
-////aseModel_t *ASE_Parse( const char *buffer, bool verbose ) {
-////	memset( &ase, 0, sizeof( ase ) );
-////
-////	ase.verbose = verbose;
-////
-////	ase.buffer = buffer;
-////	ase.len = strlen( buffer );
-////	ase.curpos = ase.buffer;
-////	ase.currentObject = NULL;
-////
-////	// NOTE: using new operator because aseModel_t contains idList class objects
-////	ase.model = new aseModel_t;
-////	memset( ase.model, 0, sizeof( aseModel_t ) );
-////	ase.model.objects.Resize( 32, 32 );
-////	ase.model.materials.Resize( 32, 32 );
-////
-////	while ( ASE_GetToken( false ) ) {
-////		if ( !strcmp( ase.token, "*3DSMAX_ASCIIEXPORT" ) ||
-////			 !strcmp( ase.token, "*COMMENT" ) ) {
-////			ASE_SkipRestOfLine();
-////		} else if ( !strcmp( ase.token, "*SCENE" ) ) {
-////			ASE_SkipEnclosingBraces();
-////		} else if ( !strcmp( ase.token, "*GROUP" ) ) {
-////			ASE_GetToken( false );		// group name
-////			ASE_ParseBracedBlock( ASE_KeyGROUP );
-////		} else if ( !strcmp( ase.token, "*SHAPEOBJECT" ) ) {
-////			ASE_SkipEnclosingBraces();
-////		} else if ( !strcmp( ase.token, "*CAMERAOBJECT" ) ) {
-////			ASE_SkipEnclosingBraces();
-////		} else if ( !strcmp( ase.token, "*MATERIAL_LIST" ) ) {
-////			VERBOSE( ("MATERIAL_LIST\n") );
-////
-////			ASE_ParseBracedBlock( ASE_KeyMATERIAL_LIST );
-////		} else if ( !strcmp( ase.token, "*GEOMOBJECT" ) ) {
-////			ASE_ParseGeomObject();
-////		} else if ( ase.token[0] ) {
-////			common.Printf( "Unknown token '%s'\n", ase.token );
-////		}
-////	}
-////
-////	return ase.model;
-////}
-////
-/////*
-////=================
-////ASE_Load
-////=================
-////*/
-////aseModel_t *ASE_Load( const char *fileName ) {
-////	char *buf;
-////	ID_TIME_T timeStamp;
-////	aseModel_t *ase;
-////
-////	fileSystem.ReadFile( fileName, (void **)&buf, &timeStamp );
-////	if ( !buf ) {
-////		return NULL;
-////	}
-////
-////	ase = ASE_Parse( buf, false );
-////	ase.timeStamp = timeStamp;
-////
-////	fileSystem.FreeFile( buf );
-////
-////	return ase;
-////}
-////
+function ASE_ParseGeomObject(): void {
+	todoThrow ( );
+	//aseObject_t	*object;
+
+	//VERBOSE( ("GEOMOBJECT" ) );
+
+	//object = (aseObject_t *)Mem_Alloc( sizeof( aseObject_t ) );
+	//memset( object, 0, sizeof( aseObject_t ) );
+	//ase.model.objects.Append( object );
+	//ase.currentObject = object;
+
+	//object.frames.Resize(32, 32);
+
+	//ASE_ParseBracedBlock( ASE_KeyGEOMOBJECT );
+}
+
+function ASE_KeyGROUP ( token: string ): void {
+	if ( !strcmp( token, "*GEOMOBJECT" ) ) {
+		ASE_ParseGeomObject ( );
+	}
+}
+
+/*
+=================
+ASE_Parse
+=================
+*/
+function ASE_Parse ( buffer: string, verbose: boolean ): aseModel_t {
+	ase.memset0 ( ); //memset( &ase, 0, sizeof( ase ) );
+
+	ase.verbose = verbose;
+
+	ase.buffer = buffer;
+	ase.len = strlen( buffer );
+	ase.curpos = 0; //ase.buffer;
+	ase.currentObject = null;
+
+	// NOTE: using new operator because aseModel_t contains idList class objects
+	ase.model = new aseModel_t;
+	ase.model.memset0 ( ); //memset( ase.model, 0, sizeof( aseModel_t ) );
+	ase.model.objects.Resize( 32, 32 );
+	ase.model.materials.Resize( 32, 32 );
+
+	while ( ASE_GetToken( false ) ) {
+		if ( !strcmp( ase.token.toString ( ), "*3DSMAX_ASCIIEXPORT" ) ||
+			!strcmp( ase.token.toString ( ), "*COMMENT" ) ) {
+			ASE_SkipRestOfLine ( );
+		} else if ( !strcmp( ase.token.toString ( ), "*SCENE" ) ) {
+			ASE_SkipEnclosingBraces ( );
+		} else if ( !strcmp( ase.token.toString ( ), "*GROUP" ) ) {
+			ASE_GetToken( false ); // group name
+			ASE_ParseBracedBlock( ASE_KeyGROUP );
+		} else if ( !strcmp( ase.token.toString ( ), "*SHAPEOBJECT" ) ) {
+			ASE_SkipEnclosingBraces ( );
+		} else if ( !strcmp( ase.token.toString ( ), "*CAMERAOBJECT" ) ) {
+			ASE_SkipEnclosingBraces ( );
+		} else if ( !strcmp( ase.token.toString ( ), "*MATERIAL_LIST" ) ) {
+			VERBOSE( ( "MATERIAL_LIST\n" ) );
+
+			ASE_ParseBracedBlock( ASE_KeyMATERIAL_LIST );
+		} else if ( !strcmp( ase.token.toString ( ), "*GEOMOBJECT" ) ) {
+			ASE_ParseGeomObject ( );
+		} else if ( ase.token[0] ) {
+			common.Printf( "Unknown token '%s'\n", ase.token );
+		}
+	}
+
+	return ase.model;
+}
+
+/*
+=================
+ASE_Load
+=================
+*/
+function ASE_Load ( fileName: string ): aseModel_t {
+	var buf = new R<Uint8Array> ( ); //char *buf;
+	var /*ID_TIME_T */timeStamp = new R<number> ( );
+	var ase: aseModel_t;
+
+	fileSystem.ReadFile( fileName, /*(void **)&*/buf, timeStamp );
+	if ( !buf.$ ) {
+		return null;
+	}
+
+	ase = ASE_Parse( buf.$.toString ( ), false );
+	ase.timeStamp = timeStamp.$;
+
+	fileSystem.FreeFile( buf.$ );
+
+	return ase;
+}
+
 /////*
 ////=================
 ////ASE_Free

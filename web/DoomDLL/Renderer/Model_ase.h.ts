@@ -28,66 +28,76 @@
 ////
 ////#ifndef __MODEL_ASE_H__
 ////#define __MODEL_ASE_H__
-////
-/////*
-////===============================================================================
-////
-////	ASE loader. (3D Studio Max ASCII Export)
-////
-////===============================================================================
-////*/
-////
-////typedef struct {
-////	int						vertexNum[3];
-////	int						tVertexNum[3];
-////	idVec3					faceNormal;
-////	idVec3					vertexNormals[3];
-////	byte					vertexColors[3][4];
-////} aseFace_t;
-////
-////typedef struct {
-////	int						timeValue;
-////
-////	int						numVertexes;
-////	int						numTVertexes;
-////	int						numCVertexes;
-////	int						numFaces;
-////	int						numTVFaces;
-////	int						numCVFaces;
-////
-////	idVec3					transform[4];			// applied to normals
-////
-////	bool					colorsParsed;
-////	bool					normalsParsed;
-////	idVec3 *				vertexes;
-////	idVec2 *				tvertexes;
-////	idVec3 *				cvertexes;
-////	aseFace_t *				faces;
-////} aseMesh_t;
-////
-////typedef struct {
-////	char					name[128];
-////	float					uOffset, vOffset;		// max lets you offset by material without changing texCoords
-////	float					uTiling, vTiling;		// multiply tex coords by this
-////	float					angle;					// in clockwise radians
-////} aseMaterial_t;
-////
-////typedef struct {
-////	char					name[128];
-////	int						materialRef;
-////
-////	aseMesh_t				mesh;
-////
-////	// frames are only present with animations
-////	idList<aseMesh_t*>		frames;			// aseMesh_t
-////} aseObject_t;
-////
-////typedef struct aseModel_s {
-////	ID_TIME_T					timeStamp;
-////	idList<aseMaterial_t *>	materials;
-////	idList<aseObject_t *>	objects;
-////} aseModel_t;
-////
+
+/*
+===============================================================================
+
+	ASE loader. (3D Studio Max ASCII Export)
+
+===============================================================================
+*/
+
+class aseFace_t {
+	vertexNum = new Int32Array(3);
+	tVertexNum = new Int32Array(3);
+	faceNormal = new idVec3();
+	vertexNormals = newStructArray<idVec3>(idVec3,3);
+	vertexColors = multiDimTypedArray(Uint8Array,3, 4);
+};
+
+class aseMesh_t {
+	timeValue: number /*int*/;
+
+	numVertexes: number /*int*/;
+	numTVertexes: number /*int*/;
+	numCVertexes: number /*int*/;
+	numFaces: number /*int*/;
+	numTVFaces: number /*int*/;
+	numCVFaces: number /*int*/;
+
+	transform = newStructArray<idVec3>( idVec3, 4 ); // applied to normals
+
+	colorsParsed: boolean;
+	normalsParsed: boolean;
+	vertexes: idVec3[];
+	tvertexes: idVec2[];
+	cvertexes: idVec3[];
+	faces: aseFace_t[];
+}
+
+class aseMaterial_t {
+	name: string;//char					name[128];
+	uOffset:number/*float*/; vOffset:number/*float*/;		// max lets you offset by material without changing texCoords
+	uTiling:number/*float*/; vTiling:number/*float*/;		// multiply tex coords by this
+	angle: number/*float*/;					// in clockwise radians
+
+	memset0(): void {
+		this.name = "";
+		this.uOffset = this.vOffset = this.uTiling = this.vTiling = this.angle = 0;
+	}
+}
+
+class aseObject_t {
+	name: string; //char					name[128];
+	materialRef: number /*int*/;
+
+	mesh = new aseMesh_t;
+
+	// frames are only present with animations
+	frames = new idList<aseMesh_t>( aseMesh_t, true ); // aseMesh_t
+}
+
+class aseModel_t {
+	timeStamp: number /*ID_TIME_T*/;
+	materials = new idList<aseMaterial_t>( aseMaterial_t, true );
+	objects = new idList<aseObject_t>(aseObject_t, true);
+	memset0 ( ): void {
+		this.timeStamp = 0;
+		this.materials.Clear ( );
+		this.objects.Clear ( );
+	}
+}
+
 ////
 ////aseModel_t *ASE_Load( const char *fileName );
 ////void		ASE_Free( aseModel_t *ase );

@@ -88,16 +88,16 @@ class idRenderModelStatic extends idRenderModel {
 
     MakeDefaultModel(): void { throw "placeholder"; }
 
-////	bool						LoadASE( const char *fileName );
-////	bool						LoadLWO( const char *fileName );
-////	bool						LoadFLT( const char *fileName );
-////	bool						LoadMA( const char *filename );
+	LoadASE( fileName:string ):boolean { throw "placeholder"; }
+	LoadLWO(fileName: string): boolean { throw "placeholder"; }
+	LoadFLT(fileName: string): boolean { throw "placeholder"; }
+	LoadMA ( filename: string ): boolean { throw "placeholder"; }
 
 ////	bool						ConvertASEToModelSurfaces( const struct aseModel_s *ase );
 ////	bool						ConvertLWOToModelSurfaces( const struct st_lwObject *lwo );
 ////	bool						ConvertMAToModelSurfaces (const struct maModel_s *ma );
 
-////	struct aseModel_s *			ConvertLWOToASE( const struct st_lwObject *obj, const char *fileName );
+////	struct aseModel_s *			ConvertLWOToASE( const struct st_lwObject *obj, fileName:string );
 
 ////	bool						DeleteSurfaceWithId( int id );
 ////	void						DeleteSurfacesWithNegativeId( void );
@@ -196,7 +196,7 @@ class idRenderModelMD5 extends idRenderModelStatic {
 		todoThrow()
 	}
 ////public:
-////	virtual void				InitFromFile( const char *fileName );
+////	virtual void				InitFromFile( fileName:string );
 ////	virtual IsDynamicModel() const;
 ////	virtual idBounds			Bounds( const struct renderEntity_s *ent ) const;
 ////	virtual void				Print() const;
@@ -241,7 +241,7 @@ class idRenderModelMD3 extends idRenderModelStatic {
 		todoThrow()
 	}
 ////public:
-////	virtual void				InitFromFile( const char *fileName );
+////	virtual void				InitFromFile( fileName:string );
 ////	virtual dynamicModel_t		IsDynamicModel() const;
 ////	virtual idRenderModel *		InstantiateDynamicModel( const struct renderEntity_s *ent, const struct viewDef_s *view, idRenderModel *cachedModel );
 ////	virtual idBounds			Bounds( const struct renderEntity_s *ent ) const;
@@ -271,7 +271,7 @@ class idRenderModelLiquid extends idRenderModelStatic {
 ////public:
 ////								idRenderModelLiquid();
 
-////	virtual void				InitFromFile( const char *fileName );
+////	virtual void				InitFromFile( fileName:string );
 ////	virtual dynamicModel_t		IsDynamicModel() const;
 ////	virtual idRenderModel *		InstantiateDynamicModel( const struct renderEntity_s *ent, const struct viewDef_s *view, idRenderModel *cachedModel );
 ////	virtual idBounds			Bounds( const struct renderEntity_s *ent ) const;
@@ -330,7 +330,7 @@ class idRenderModelPrt extends idRenderModelStatic {
 ////public:
 ////								idRenderModelPrt();
 
-////	virtual void				InitFromFile( const char *fileName );
+////	virtual void				InitFromFile( fileName:string );
 ////	virtual void				TouchData();
 ////	virtual dynamicModel_t		IsDynamicModel() const;
 ////	virtual idRenderModel *		InstantiateDynamicModel( const struct renderEntity_s *ent, const struct viewDef_s *view, idRenderModel *cachedModel );

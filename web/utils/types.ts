@@ -138,6 +138,22 @@ function multiDimArray <T>(arrayClass: any, num: number, arrLength: number): T[]
     return multiDimArray;
 }
 
+//class MultiDimTypedArray<T> implements Array<T> {
+//	[index: number]: T;
+//	baseArray: T
+//}
+
+function multiDimTypedArray<T>(arrayClass: any, num: number, arrLength: number): T[] {
+	var baseArray = new arrayClass(num * arrLength);
+	var multiDimArray = new Array(num);
+	for (var i = 0; i < num; i++) {
+		multiDimArray[i] = baseArray.subarray( i * arrLength, ( i * arrLength ) + arrLength );
+	}
+
+	multiDimArray["baseArray"] = baseArray;
+	return multiDimArray;
+}
+
 function multiDimEmptyArray <T>(dim1Len: number, dim2Len: number): T[][] {
     var multiDimArray = new Array(dim1Len);
     for (var i = 0; i < dim1Len; i++) {
