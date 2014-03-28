@@ -1193,18 +1193,18 @@ idMapFile::RemovePrimitiveData
 		this.hasPrimitiveData = false;
 	}
 
-/////*
-////===============
-////idMapFile::NeedsReload
-////===============
-////*/
-////bool idMapFile::NeedsReload() {
-////	if ( this.name.Length() ) {
-////		ID_TIME_T time = (ID_TIME_T)-1;
-////		if ( idLib::fileSystem.ReadFile( this.name, NULL, &time ) > 0 ) {
-////			return ( time > fileTime );
-////		}
-////	}
-////	return true;
-////}
+/*
+===============
+idMapFile::NeedsReload
+===============
+*/
+	NeedsReload ( ): boolean {
+		if ( this.name.Length ( ) ) {
+			var time = /*(ID_TIME_T)*/ new R( -1 );
+			if ( /*idLib::*/fileSystem.ReadFile( this.name.data, null, time ) > 0 ) {
+				return ( time.$ > this.fileTime );
+			}
+		}
+		return true;
+	}
 }
