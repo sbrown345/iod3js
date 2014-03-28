@@ -265,16 +265,16 @@ idRenderModelStatic.prototype.InitFromFile = function ( fileName: string ): void
 	this.name.ExtractFileExtension( extension );
 
 	if ( extension.Icmp( "ase" ) == 0 ) {
-		loaded = this.LoadASE( this.name );
+		loaded = this.LoadASE( this.name.data );
 		this.reloadable = true;
 	} else if ( extension.Icmp( "lwo" ) == 0 ) {
-		loaded = this.LoadLWO( this.name );
+		loaded = this.LoadLWO( this.name.data );
 		this.reloadable = true;
 	} else if ( extension.Icmp( "flt" ) == 0 ) {
-		loaded = this.LoadFLT( this.name );
+		loaded = this.LoadFLT( this.name.data );
 		this.reloadable = true;
 	} else if ( extension.Icmp( "ma" ) == 0 ) {
-		loaded = this.LoadMA( this.name );
+		loaded = this.LoadMA( this.name.data );
 		this.reloadable = true;
 	} else {
 		common.Warning( "idRenderModelStatic::InitFromFile: unknown type for model: \'%s\'", this.name.c_str ( ) );

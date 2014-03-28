@@ -94,7 +94,7 @@ function CharIsTokenDelimiter ( /*int */ch: number ): number /*int*/ {
 
 function ASE_GetToken ( restOfLine: boolean ): number /*int*/ {
 	var /*int */i = 0;
-
+	debugger
 	if ( !ase.buffer /*== 0 */ )
 		return 0;
 

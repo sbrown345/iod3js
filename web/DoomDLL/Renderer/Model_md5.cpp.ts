@@ -476,7 +476,7 @@
 ////====================
 ////*/
 ////void idRenderModelMD5::InitFromFile( const char *fileName ) {
-////	name = fileName;
+////	this.name = fileName;
 ////	LoadModel();
 ////}
 
@@ -504,7 +504,7 @@
 ////	}
 ////	purged = false;
 
-////	if ( !parser.LoadFile( name ) ) {
+////	if ( !parser.LoadFile( this.name ) ) {
 ////		MakeDefaultModel();
 ////		return;
 ////	}
@@ -570,7 +570,7 @@
 ////	CalculateBounds( poseMat3 );
 
 ////	// set the timestamp for reloadmodels
-////	fileSystem.ReadFile( name, NULL, &timeStamp );
+////	fileSystem.ReadFile( this.name, NULL, &timeStamp );
 ////}
 
 /////*
@@ -582,7 +582,7 @@
 ////	const idMD5Mesh	*mesh;
 ////	int			i;
 
-////	common.Printf( "%s\n", name.c_str() );
+////	common.Printf( "%s\n", this.name.c_str() );
 ////	common.Printf( "Dynamic model.\n" );
 ////	common.Printf( "Generated smooth normals.\n" );
 ////	common.Printf( "    verts  tris weights material\n" );
