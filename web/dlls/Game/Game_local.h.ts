@@ -1379,7 +1379,7 @@ Initializes all map variables common to both save games and spawned games.
 
 		// load navigation system for all the different monster sizes
 		for ( i = 0; i < this.aasNames.Num ( ); i++ ) {
-			this.aasList[i].Init( new idStr( this.mapFileName ).SetFileExtension( this.aasNames[i].data ), this.mapFile.GetGeometryCRC ( ) );
+			this.aasList[i].Init( new idStr( this.mapFileName.SetFileExtension( this.aasNames[i].data ) ), this.mapFile.GetGeometryCRC ( ) );
 		}
 
 		// clear the smoke particle free list

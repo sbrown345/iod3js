@@ -111,7 +111,7 @@ idDeclEntityDef::Parse
 		// never be parsed mroe than once
 
 		// find all of the dicts first, because copying inherited values will modify the dict
-		var defList = new idList<idDeclEntityDef>( idDeclEntityDef );
+		var defList = new idList<idDeclEntityDef>( idDeclEntityDef, true );
 
 		while ( 1 ) {
 			var kv: idKeyValue;

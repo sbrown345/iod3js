@@ -77,7 +77,7 @@ class idAAS {
 	//static Alloc ( ): idAAS { throw "placeholder"; }
 ////	virtual						~idAAS( ) = 0;
 ////								// Initialize for the given map.
-////	virtual bool				Init( const idStr &mapName, unsigned int mapFileCRC ) = 0;
+	Init (mapName: idStr, /*unsigned int */mapFileCRC: number): boolean { throw "placeholder"; }
 ////								// Print AAS stats.
 ////	virtual void				Stats( ) const = 0;
 ////								// Test from the given origin.
