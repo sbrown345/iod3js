@@ -540,15 +540,15 @@ idThread::~idThread
 //	}
 	}
 
-///*
-//================
-//idThread::ManualDelete
-//================
-//*/
-//ManualDelete( ):void {
-//	this.interpreter.terminateOnExit = false;
-//}
-//
+/*
+================
+idThread::ManualDelete
+================
+*/
+	ManualDelete ( ): void {
+		this.interpreter.terminateOnExit = false;
+	}
+
 ///*
 //================
 //idThread::Save

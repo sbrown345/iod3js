@@ -169,6 +169,8 @@
 /// <reference path="libs/idlib/hashing/md5.cpp.ts" />
 // Geometry
 /// <reference path="libs/idlib/geometry/drawvert.h.ts" />
+/// <reference path="libs/idlib/geometry/surface.cpp.ts" />
+/// <reference path="libs/idlib/geometry/surface_patch.cpp.ts" />
 /// <reference path="libs/idlib/geometry/tracemodel.cpp.ts" />
 /// <reference path="libs/idlib/geometry/winding.h.ts" />
 /// <reference path="libs/idlib/geometry/jointtransform.h.ts" />

@@ -3356,7 +3356,7 @@ idCollisionModelManagerLocal.prototype.LoadMap = function ( mapFile: idMapFile )
 	}
 
 	// check whether we can keep the current collision map based on the mapName and mapFileTime
-	if (	this.loaded ) {
+	if ( this.loaded ) {
 		if ( this.mapName.Icmp( mapFile.GetName ( ) ) == 0 ) {
 			if ( mapFile.GetFileTime ( ) == this.mapFileTime ) {
 				common.DPrintf( "Using loaded version\n" );

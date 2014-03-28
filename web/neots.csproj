@@ -225,6 +225,8 @@
     <TypeScriptCompile Include="DoomDLL\Tools\Compilers\AAS\AASFile.h.ts" />
     <TypeScriptCompile Include="DoomDLL\Tools\Compilers\AAS\AASFileManager.cpp.ts" />
     <TypeScriptCompile Include="libs\idLib\Containers\PlaneSet.h.ts" />
+    <TypeScriptCompile Include="libs\idLib\Geometry\Surface_Patch.cpp.ts" />
+    <TypeScriptCompile Include="libs\idLib\Geometry\Surface.cpp.ts" />
     <Content Include="libs\idLib\Timer.h.ts" />
     <Content Include="log.aspx" />
     <Content Include="other\files.ts" />

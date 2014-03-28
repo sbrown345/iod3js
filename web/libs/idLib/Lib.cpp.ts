@@ -65,7 +65,30 @@ var colorLtGrey: idVec4;
 var colorMdGrey: idVec4;
 var colorDkGrey: idVec4;
 
+/*
+===============================================================================
+
+	idLib contains stateless support classes and concrete types. Some classes
+	do have static variables, but such variables are initialized once and
+	read-only after initialization (they do not maintain a modifiable state).
+
+	The interface pointers idSys, idCommon, idCVarSystem and idFileSystem
+	should be set before using idLib. The pointers stored here should not
+	be used by any part of the engine except for idLib.
+
+	The frameNumber should be continuously set to the number of the current
+	frame if frame base memory logging is required.
+
+===============================================================================
+*/
+
 class idLib {
+	//public:
+	//static class idSys *		sys;
+	static common: idCommonLocal;//idCommon;
+	//static class idCVarSystem *	cvarSystem;
+	//static class idFileSystem *	fileSystem;
+	//static int					frameNumber;
 
 /*
 ================

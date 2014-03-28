@@ -55,9 +55,9 @@
 class idHeap {
 
 ////public:
-////					idHeap( void );
-////					~idHeap( void );				// frees all associated data
-////	void			Init( void );					// initialize
+////					idHeap( );
+////					~idHeap( );				// frees all associated data
+////	void			Init( );					// initialize
 ////	void *			Allocate( const dword bytes );	// allocate memory
 ////	void			Free( void *p );				// free memory
 ////	void *			Allocate16( const dword bytes );// allocate 16 byte aligned memory
@@ -65,7 +65,7 @@ class idHeap {
 ////	dword			Msize( void *p );				// return size of data block
 ////	void			Dump( void  );
 
-////	void 			AllocDefragBlock( void );		// hack for huge renderbumps
+////	void 			AllocDefragBlock( );		// hack for huge renderbumps
 
 ////private:
 
@@ -138,7 +138,7 @@ class idHeap {
 ////	void *			LargeAllocate( dword bytes );	// allocate large block from OS directly
 ////	void			LargeFree( void *ptr );			// free memory allocated by large heap manager
 
-////	void			ReleaseSwappedPages( void );
+////	void			ReleaseSwappedPages( );
 ////	void			FreePageReal( idHeap::page_s *p );
 
 
@@ -176,19 +176,20 @@ class idHeap {
 ////idHeap::idHeap
 ////================
 ////*/
-////idHeap::idHeap( void ) {
-////	Init();
-////}
+	constructor ( ) {
+		todoThrow ( );
+		//this.Init ( );
+	}
 
-/////*
-////================
-////idHeap::~idHeap
+/*
+================
+idHeap::~idHeap
 
-////  returns all allocated memory back to OS
-////================
-////*/
-////idHeap::~idHeap( void ) {
-
+  returns all allocated memory back to OS
+================
+*/
+	destructor ( ): void {
+		todoThrow ( );
 ////	idHeap::page_s	*p;
 
 ////	if ( smallCurPage ) {
@@ -229,14 +230,14 @@ class idHeap {
 ////	}
 
 ////	assert( pagesAllocated == 0 );
-////}
+	}
 
 /////*
 ////================
 ////idHeap::AllocDefragBlock
 ////================
 ////*/
-////void idHeap::AllocDefragBlock( void ) {
+////void idHeap::AllocDefragBlock( ) {
 ////	int		size = 0x40000000;
 
 ////	if ( defragBlock ) {
@@ -397,7 +398,7 @@ idHeap::Msize
 ////  dump contents of the heap
 ////================
 ////*/
-////void idHeap::Dump( void ) {
+////void idHeap::Dump( ) {
 ////	idHeap::page_s	*pg;
 
 ////	for ( pg = smallFirstUsedPage; pg; pg = pg.next ) {
@@ -995,7 +996,7 @@ var mem_frame_frees = new memoryStats_t;
 ////Mem_ClearFrameStats
 ////==================
 ////*/
-////void Mem_ClearFrameStats( void ) {
+////void Mem_ClearFrameStats( ) {
 ////	mem_frame_allocs.num = mem_frame_frees.num = 0;
 ////	mem_frame_allocs.minSize = mem_frame_frees.minSize = 0x0fffffff;
 ////	mem_frame_allocs.maxSize = mem_frame_frees.maxSize = -1;
@@ -1160,7 +1161,7 @@ function Mem_Free16 ( /*void **/ptr: any ): void {
 ////Mem_ClearedAlloc
 ////==================
 ////*/
-////void Mem_AllocDefragBlock( void ) {
+////void Mem_AllocDefragBlock( ) {
 ////	mem_heap.AllocDefragBlock();
 ////}
 
@@ -1199,7 +1200,7 @@ function Mem_CopyString( /*const char *in*/$in:string ):string {
 ////Mem_Init
 ////==================
 ////*/
-////void Mem_Init( void ) {
+////void Mem_Init( ) {
 ////	mem_heap = new idHeap;
 ////	Mem_ClearFrameStats();
 ////}
@@ -1209,7 +1210,7 @@ function Mem_CopyString( /*const char *in*/$in:string ):string {
 ////Mem_Shutdown
 ////==================
 ////*/
-////void Mem_Shutdown( void ) {
+////void Mem_Shutdown( ) {
 ////	idHeap *m = mem_heap;
 ////	mem_heap = NULL;
 ////	delete m;
@@ -1740,7 +1741,7 @@ function Mem_CopyString( /*const char *in*/$in:string ):string {
 ////Mem_Init
 ////==================
 ////*/
-////void Mem_Init( void ) {
+////void Mem_Init( ) {
 ////	mem_heap = new idHeap;
 ////}
 
@@ -1749,7 +1750,7 @@ function Mem_CopyString( /*const char *in*/$in:string ):string {
 ////Mem_Shutdown
 ////==================
 ////*/
-////void Mem_Shutdown( void ) {
+////void Mem_Shutdown( ) {
 
 ////	if ( mem_leakName[0] != '\0' ) {
 ////		Mem_DumpCompressed( va( "%s_leak_size.txt", mem_leakName ), MEMSORT_SIZE, 0, 0 );

@@ -29,33 +29,39 @@
 ////#include "precompiled.h"
 ////#pragma hdrstop
 ////
-////
-/////*
-////===============
-////FloatCRC
-////===============
-////*/
-////ID_INLINE unsigned int FloatCRC( float f ) {
-////	return *(unsigned int *)&f;
-////}
-////
-/////*
-////===============
-////StringCRC
-////===============
-////*/
-////ID_INLINE unsigned int StringCRC( const char *str ) {
-////	unsigned int i, crc;
-////	const unsigned char *ptr;
-////
-////	crc = 0;
-////	ptr = reinterpret_cast<const unsigned char*>(str);
-////	for ( i = 0; str[i]; i++ ) {
-////		crc ^= str[i] << (i & 3);
-////	}
-////	return crc;
-////}
-////
+
+/*
+===============
+FloatCRC
+===============
+*/
+
+var FloatCRC_float = new Float32Array( 1 );
+var FloatCRC_uint = new Uint32Array( FloatCRC_float.buffer );
+function FloatCRC( /*float */f: number): number/*unsigned int */ {
+	FloatCRC_float[0] = f;
+	return FloatCRC_uint[0]; //*(unsigned int *)&f;
+}
+
+/*
+===============
+StringCRC
+===============
+*/
+function StringCRC ( str: string ): number /*unsigned int */ {
+	var /*unsigned int */i: number, crc: number;
+	var ptr: Uint8Array; //const unsigned char *ptr;
+
+	crc = 0;
+	ptr = str.toUint8Array ( ); //reinterpret_cast<const unsigned char*>(str);
+	for ( i = 0; str[i]; i++ ) {
+		crc ^= str.charCodeAt( i ) << ( i & 3 );
+	}
+
+	crc = uint32( crc );
+	return crc;
+}
+
 /////*
 ////=================
 ////ComputeAxisBase
@@ -69,9 +75,9 @@
 ////	idVec3 n;
 ////
 ////	// do some cleaning
-////	n[0] = ( idMath::Fabs( normal[0] ) < 1e-6f ) ? 0.0f : normal[0];
-////	n[1] = ( idMath::Fabs( normal[1] ) < 1e-6f ) ? 0.0f : normal[1];
-////	n[2] = ( idMath::Fabs( normal[2] ) < 1e-6f ) ? 0.0f : normal[2];
+////	n[0] = ( idMath::Fabs( normal[0] ) < 1e-6f ) ? 0.0 : normal[0];
+////	n[1] = ( idMath::Fabs( normal[1] ) < 1e-6f ) ? 0.0 : normal[1];
+////	n[2] = ( idMath::Fabs( normal[2] ) < 1e-6f ) ? 0.0 : normal[2];
 ////
 ////	RotY = -atan2( n[2], idMath::Sqrt( n[1] * n[1] + n[0] * n[0]) );
 ////	RotZ = atan2( n[1], n[0] );
@@ -102,8 +108,24 @@ class idMapPrimitive {
 	type: number/*int*/;
 };
 
+// idMapPrimitive is very simple so simulate multiple inheritence by just copying it here
+class idMapPrimitive_idSurface_Patch extends idSurface_Patch {
+	epairs = new idDict;
+
+	constructor ( ) {
+		super ( );
+		this.type = idMapPrimitive.TYPE_INVALID;
+	}
+	////	virtual					~idMapPrimitive( ) { }
+	GetType(): number { return this.type; }
+
+	////protected:
+	type: number/*int*/;
+}
+
 // https://stackoverflow.com/questions/17865620/typescript-multiple-inheritance-workarounds
-class idMapPatch extends idMapPrimitive // todo: , public idSurface_Patch    
+//https://stackoverflow.com/questions/12719844/mixins-in-typescript
+class idMapPatch extends idMapPrimitive_idSurface_Patch //idMapPrimitive // todo: , public idSurface_Patch    
 {
 	////public:
 	////							idMapPatch( );
@@ -111,154 +133,156 @@ class idMapPatch extends idMapPrimitive // todo: , public idSurface_Patch
 	////							~idMapPatch( ) { }
 	////	static idMapPatch *		Parse( idLexer &src, const idVec3 &origin, bool patchDef3 = true, float version = CURRENT_MAP_VERSION );
 	////	bool					Write( idFile *fp, int primitiveNum, const idVec3 &origin ) const;
-	////	const char *			GetMaterial( ) const { return this.material; }
+	GetMaterial ( ): string { return this.material.data; }
 	SetMaterial ( p: string ): void { this.material.equals( p ); }
-	////	int						GetHorzSubdivisions( ) const { return horzSubdivisions; }
-	////	int						GetVertSubdivisions( ) const { return vertSubdivisions; }
-	////	bool					GetExplicitlySubdivided( ) const { return explicitSubdivisions; }
-	////	void					SetHorzSubdivisions( int n ) { horzSubdivisions = n; }
-	////	void					SetVertSubdivisions( int n ) { vertSubdivisions = n; }
-	////	void					SetExplicitlySubdivided( bool b ) { explicitSubdivisions = b; }
+	GetHorzSubdivisions ( ): number /*int*/ { return this.horzSubdivisions; }
+	GetVertSubdivisions ( ): number /*int*/ { return this.vertSubdivisions; }
+	GetExplicitlySubdivided ( ): boolean { return this.explicitSubdivisions; }
+	SetHorzSubdivisions ( /*int*/ n: number ) { this.horzSubdivisions = n; }
+	SetVertSubdivisions ( /*int*/ n: number ) { this.vertSubdivisions = n; }
+	SetExplicitlySubdivided ( b: boolean ) { this.explicitSubdivisions = b; }
 	////	unsigned int			GetGeometryCRC( ) const;
 	////
 	////protected:
 	material = new idStr;
-	horzSubdivisions:number/*int*/;
-	vertSubdivisions:number/*int*/;
-	explicitSubdivisions:boolean
+	horzSubdivisions: number /*int*/;
+	vertSubdivisions: number /*int*/;
+	explicitSubdivisions: boolean
 	////};
 	////
-	////ID_INLINE idMapPatch::idMapPatch( ) {
-	////	type = TYPE_PATCH;
-	////	horzSubdivisions = vertSubdivisions = 0;
-	////	explicitSubdivisions = false;
-	////	width = height = 0;
-	////	maxWidth = maxHeight = 0;
-	////	expanded = false;
-	////}
-	////
-	////ID_INLINE idMapPatch::idMapPatch( int maxPatchWidth, int maxPatchHeight ) {
-	////	type = TYPE_PATCH;
-	////	horzSubdivisions = vertSubdivisions = 0;
-	////	explicitSubdivisions = false;
-	////	width = height = 0;
-	////	maxWidth = maxPatchWidth;
-	////	maxHeight = maxPatchHeight;
-	////	verts.SetNum( maxWidth * maxHeight );
-	////	expanded = false;
-	////}
-	////
+	constructor ( )
+	constructor ( /*int*/ maxPatchWidth: number, /*int */maxPatchHeight: number )
+	constructor ( maxPatchWidth?: number, maxPatchHeight?: number ) {
+		super ( );
+		if ( arguments.length == 0 ) {
+			this.type = idMapPrimitive.TYPE_PATCH;
+			this.horzSubdivisions = this.vertSubdivisions = 0;
+			this.explicitSubdivisions = false;
+			this.width = this.height = 0;
+			this.maxWidth = this.maxHeight = 0;
+			this.expanded = false;
+		} else if ( arguments.length == 2 ) {
+			this.type = idMapPrimitive.TYPE_PATCH;
+			this.horzSubdivisions = this.vertSubdivisions = 0;
+			this.explicitSubdivisions = false;
+			this.width = this.height = 0;
+			this.maxWidth = maxPatchWidth;
+			this.maxHeight = maxPatchHeight;
+			this.verts.SetNum( this.maxWidth * this.maxHeight );
+			this.expanded = false;
+		}
+	}
 
-/////*
-////=================
-////idMapPatch::Parse
-////=================
-////*/
-////idMapPatch *idMapPatch::Parse( idLexer &src, const idVec3 &origin, bool patchDef3, float version ) {
-////	float		info[7];
-////	idDrawVert *vert;
-////	idToken		token;
-////	int			i, j;
-////
-////	if ( !src.ExpectTokenString( "{" ) ) {
-////		return NULL;
-////	}
-////
-////	// read the material (we had an implicit 'textures/' in the old format...)
-////	if ( !src.ReadToken( &token ) ) {
-////		src.Error( "idMapPatch::Parse: unexpected EOF" );
-////		return NULL;
-////	}
-////
-////	// Parse it
-////	if (patchDef3) {
-////		if ( !src.Parse1DMatrix( 7, info ) ) {
-////			src.Error( "idMapPatch::Parse: unable to Parse patchDef3 info" );
-////			return NULL;
-////		}
-////	} else {
-////		if ( !src.Parse1DMatrix( 5, info ) ) {
-////			src.Error( "idMapPatch::Parse: unable to parse patchDef2 info" );
-////			return NULL;
-////		}
-////	}
-////
-////	idMapPatch *patch = new idMapPatch( info[0], info[1] );
-////	patch.SetSize( info[0], info[1] );
-////	if ( version < 2.0f ) {
-////		patch.SetMaterial( "textures/" + token );
-////	} else {
-////		patch.SetMaterial( token );
-////	}
-////
-////	if ( patchDef3 ) {
-////		patch.SetHorzSubdivisions( info[2] );
-////		patch.SetVertSubdivisions( info[3] );
-////		patch.SetExplicitlySubdivided( true );
-////	}
-////
-////	if ( patch.GetWidth() < 0 || patch.GetHeight() < 0 ) {
-////		src.Error( "idMapPatch::Parse: bad size" );
-////		delete patch;
-////		return NULL;
-////	}
-////
-////	// these were written out in the wrong order, IMHO
-////	if ( !src.ExpectTokenString( "(" ) ) {
-////		src.Error( "idMapPatch::Parse: bad patch vertex data" );
-////		delete patch;
-////		return NULL;
-////	}
-////	for ( j = 0; j < patch.GetWidth(); j++ ) {
-////		if ( !src.ExpectTokenString( "(" ) ) {
-////			src.Error( "idMapPatch::Parse: bad vertex row data" );
-////			delete patch;
-////			return NULL;
-////		}
-////		for ( i = 0; i < patch.GetHeight(); i++ ) {
-////			float v[5];
-////
-////			if ( !src.Parse1DMatrix( 5, v ) ) {
-////				src.Error( "idMapPatch::Parse: bad vertex column data" );
-////				delete patch;
-////				return NULL;
-////			}
-////
-////			vert = &((*patch)[i * patch.GetWidth() + j]);
-////			vert.xyz[0] = v[0] - origin[0];
-////			vert.xyz[1] = v[1] - origin[1];
-////			vert.xyz[2] = v[2] - origin[2];
-////			vert.st[0] = v[3];
-////			vert.st[1] = v[4];
-////		}
-////		if ( !src.ExpectTokenString( ")" ) ) {
-////			delete patch;
-////			src.Error( "idMapPatch::Parse: unable to parse patch control points" );
-////			return NULL;
-////		}
-////	}
-////	if ( !src.ExpectTokenString( ")" ) ) {
-////		src.Error( "idMapPatch::Parse: unable to parse patch control points, no closure" );
-////		delete patch;
-////		return NULL;
-////	}
-////
-////	// read any key/value pairs
-////	while( src.ReadToken( &token ) ) {
-////		if ( token == "}" ) {
-////			src.ExpectTokenString( "}" );
-////			break;
-////		}
-////		if ( token.type == TT_STRING ) {
-////			idStr key = token;
-////			src.ExpectTokenType( TT_STRING, 0, &token );
-////			patch.epairs.Set( key, token );
-////		}
-////	}
-////
-////	return patch;
-////}
-////
+/*
+=================
+idMapPatch::Parse
+=================
+*/
+	static Parse ( src: idLexer, origin: idVec3, patchDef3: boolean, /*float */version: number ): idMapPatch {
+		var info = new Float32Array( 7 );
+		var vert: idDrawVert;
+		var token = new idToken;
+		var /*int*/i: number, j: number;
+
+		if ( !src.ExpectTokenString( "{" ) ) {
+			return null;
+		}
+
+		// read the material (we had an implicit 'textures/' in the old format...)
+		if ( !src.ReadToken( token ) ) {
+			src.Error( "idMapPatch::Parse: unexpected EOF" );
+			return null;
+		}
+
+		// Parse it
+		if ( patchDef3 ) {
+			if ( !src.Parse1DMatrix( 7, info ) ) {
+				src.Error( "idMapPatch::Parse: unable to Parse patchDef3 info" );
+				return null;
+			}
+		} else {
+			if ( !src.Parse1DMatrix( 5, info ) ) {
+				src.Error( "idMapPatch::Parse: unable to parse patchDef2 info" );
+				return null;
+			}
+		}
+
+		var patch = new idMapPatch( info[0], info[1] );
+		patch.SetSize( info[0], info[1] );
+		if ( version < 2.0 ) {
+			patch.SetMaterial( "textures/" + token.data );
+		} else {
+			patch.SetMaterial( token.data );
+		}
+
+		if ( patchDef3 ) {
+			patch.SetHorzSubdivisions( info[2] );
+			patch.SetVertSubdivisions( info[3] );
+			patch.SetExplicitlySubdivided( true );
+		}
+
+		if ( patch.GetWidth ( ) < 0 || patch.GetHeight ( ) < 0 ) {
+			src.Error( "idMapPatch::Parse: bad size" );
+			$delete( patch );
+			return null;
+		}
+
+		// these were written out in the wrong order, IMHO
+		if ( !src.ExpectTokenString( "(" ) ) {
+			src.Error( "idMapPatch::Parse: bad patch vertex data" );
+			$delete( patch );
+			return null;
+		}
+		for ( j = 0; j < patch.GetWidth ( ); j++ ) {
+			if ( !src.ExpectTokenString( "(" ) ) {
+				src.Error( "idMapPatch::Parse: bad vertex row data" );
+				$delete( patch );
+				return null;
+			}
+			for ( i = 0; i < patch.GetHeight ( ); i++ ) {
+				var v = new Float32Array( 5 );
+
+				if ( !src.Parse1DMatrix( 5, v ) ) {
+					src.Error( "idMapPatch::Parse: bad vertex column data" );
+					$delete( patch );
+					return null;
+				}
+
+				vert = ( ( patch.verts )[i * patch.GetWidth ( ) + j] ); //todo: this is from surface indexer ///////////////////////////////////////////////////////////////////////////////////////////
+				vert.xyz[0] = v[0] - origin[0];
+				vert.xyz[1] = v[1] - origin[1];
+				vert.xyz[2] = v[2] - origin[2];
+				vert.st[0] = v[3];
+				vert.st[1] = v[4];
+			}
+			if ( !src.ExpectTokenString( ")" ) ) {
+				$delete( patch );
+				src.Error( "idMapPatch::Parse: unable to parse patch control points" );
+				return null;
+			}
+		}
+		if ( !src.ExpectTokenString( ")" ) ) {
+			src.Error( "idMapPatch::Parse: unable to parse patch control points, no closure" );
+			$delete( patch );
+			return null;
+		}
+
+		// read any key/value pairs
+		while ( src.ReadToken( token ) ) {
+			if ( token.data == "}" ) {
+				src.ExpectTokenString( "}" );
+				break;
+			}
+			if ( token.type == TT_STRING ) {
+				var key = new idStr( token );
+				src.ExpectTokenType( TT_STRING, 0, token );
+				patch.epairs.Set( key.data, token.data );
+			}
+		}
+
+		return patch;
+	}
+
 /////*
 ////============
 ////idMapPatch::Write
@@ -270,17 +294,17 @@ class idMapPatch extends idMapPrimitive // todo: , public idSurface_Patch
 ////
 ////	if ( GetExplicitlySubdivided() ) {
 ////		fp.WriteFloatString( "// primitive %d\n{\n patchDef3\n {\n", primitiveNum );
-////		fp.WriteFloatString( "  \"%s\"\n  ( %d %d %d %d 0 0 0 )\n", GetMaterial(), GetWidth(), GetHeight(), GetHorzSubdivisions(), GetVertSubdivisions());
+////		fp.WriteFloatString( "  \"%s\"\n  ( %d %d %d %d 0 0 0 )\n", GetMaterial(), this.GetWidth(), this.GetHeight(), GetHorzSubdivisions(), GetVertSubdivisions());
 ////	} else {
 ////		fp.WriteFloatString( "// primitive %d\n{\n patchDef2\n {\n", primitiveNum );
-////		fp.WriteFloatString( "  \"%s\"\n  ( %d %d 0 0 0 )\n", GetMaterial(), GetWidth(), GetHeight());
+////		fp.WriteFloatString( "  \"%s\"\n  ( %d %d 0 0 0 )\n", GetMaterial(), this.GetWidth(), this.GetHeight());
 ////	}
 ////
 ////	fp.WriteFloatString( "  (\n" );
-////	for ( i = 0; i < GetWidth(); i++ ) {
+////	for ( i = 0; i < this.GetWidth(); i++ ) {
 ////		fp.WriteFloatString( "   ( " );
-////		for ( j = 0; j < GetHeight(); j++ ) {
-////			v = &verts[ j * GetWidth() + i ];
+////		for ( j = 0; j < this.GetHeight(); j++ ) {
+////			v = &this.verts[ j * this.GetWidth() + i ];
 ////			fp.WriteFloatString( " ( %f %f %f %f %f )", v.xyz[0] + origin[0],
 ////								v.xyz[1] + origin[1], v.xyz[2] + origin[2], v.st[0], v.st[1] );
 ////		}
@@ -290,29 +314,30 @@ class idMapPatch extends idMapPrimitive // todo: , public idSurface_Patch
 ////
 ////	return true;
 ////}
-////
-/////*
-////===============
-////idMapPatch::GetGeometryCRC
-////===============
-////*/
-////unsigned int idMapPatch::GetGeometryCRC( ) const {
-////	int i, j;
-////	unsigned int crc;
-////
-////	crc = GetHorzSubdivisions() ^ GetVertSubdivisions();
-////	for ( i = 0; i < GetWidth(); i++ ) {
-////		for ( j = 0; j < GetHeight(); j++ ) {
-////			crc ^= FloatCRC( verts[j * GetWidth() + i].xyz.x );
-////			crc ^= FloatCRC( verts[j * GetWidth() + i].xyz.y );
-////			crc ^= FloatCRC( verts[j * GetWidth() + i].xyz.z );
-////		}
-////	}
-////
-////	crc ^= StringCRC( GetMaterial() );
-////
-////	return crc;
-////}
+
+/*
+===============
+idMapPatch::GetGeometryCRC
+===============
+*/
+	GetGeometryCRC ( ): number /*unsigned int*/ {
+		var /*int */i: number, j: number;
+		var /*unsigned int */crc: number;
+
+		crc = this.GetHorzSubdivisions ( ) ^ this.GetVertSubdivisions ( );
+		for ( i = 0; i < this.GetWidth ( ); i++ ) {
+			for ( j = 0; j < this.GetHeight ( ); j++ ) {
+				crc ^= FloatCRC( this.verts[j * this.GetWidth ( ) + i].xyz.x );
+				crc ^= FloatCRC( this.verts[j * this.GetWidth ( ) + i].xyz.y );
+				crc ^= FloatCRC( this.verts[j * this.GetWidth ( ) + i].xyz.z );
+			}
+		}
+
+		crc ^= StringCRC( this.GetMaterial ( ) );
+		crc = uint32( crc );
+		dlog( DEBUG_MAP_FILE, "idMapPatch::GetGeometryCRC crc: %u\n", crc );
+		return crc;
+	}
 }
 
 class idMapBrush extends idMapPrimitive {
@@ -331,149 +356,149 @@ class idMapBrush extends idMapPrimitive {
 	numSides:number/*int*/;
 	sides = new idList<idMapBrushSide>(idMapBrushSide, true);
 
-/////*
-////=================
-////idMapBrush::Parse
-////=================
-////*/
-////idMapBrush *idMapBrush::Parse( idLexer &src, const idVec3 &origin, bool newFormat, float version ) {
-////	int i;
-////	idVec3 planepts[3];
-////	idToken token;
-////	idList<idMapBrushSide*> sides;
-////	idMapBrushSide	*side;
-////	idDict epairs;
-////
-////	if ( !src.ExpectTokenString( "{" ) ) {
-////		return NULL;
-////	}
-////
-////	do {
-////		if ( !src.ReadToken( &token ) ) {
-////			src.Error( "idMapBrush::Parse: unexpected EOF" );
-////			sides.DeleteContents( true );
-////			return NULL;
-////		}
-////		if ( token == "}" ) {
-////			break;
-////		}
-////
-////		// here we may have to jump over brush epairs ( only used in editor )
-////		do {
-////			// if token is a brace
-////			if ( token == "(" ) {
-////				break;
-////			}
-////			// the token should be a key string for a key/value pair
-////			if ( token.type != TT_STRING ) {
-////				src.Error( "idMapBrush::Parse: unexpected %s, expected ( or epair key string", token.c_str() );
-////				sides.DeleteContents( true );
-////				return NULL;
-////			}
-////
-////			idStr key = token;
-////
-////			if ( !src.ReadTokenOnLine( &token ) || token.type != TT_STRING ) {
-////				src.Error( "idMapBrush::Parse: expected epair value string not found" );
-////				sides.DeleteContents( true );
-////				return NULL;
-////			}
-////
-////			epairs.Set( key, token );
-////
-////			// try to read the next key
-////			if ( !src.ReadToken( &token ) ) {
-////				src.Error( "idMapBrush::Parse: unexpected EOF" );
-////				sides.DeleteContents( true );
-////				return NULL;
-////			}
-////		} while (1);
-////
-////		src.UnreadToken( &token );
-////
-////		side = new idMapBrushSide();
-////		sides.Append(side);
-////
-////		if ( newFormat ) {
-////			if ( !src.Parse1DMatrix( 4, side.plane.ToFloatPtr() ) ) {
-////				src.Error( "idMapBrush::Parse: unable to read brush side plane definition" );
-////				sides.DeleteContents( true );
-////				return NULL;
-////			}
-////		} else {
-////			// read the three point plane definition
-////			if (!src.Parse1DMatrix( 3, planepts[0].ToFloatPtr() ) ||
-////				!src.Parse1DMatrix( 3, planepts[1].ToFloatPtr() ) ||
-////				!src.Parse1DMatrix( 3, planepts[2].ToFloatPtr() ) ) {
-////				src.Error( "idMapBrush::Parse: unable to read brush side plane definition" );
-////				sides.DeleteContents( true );
-////				return NULL;
-////			}
-////
-////			planepts[0] -= origin;
-////			planepts[1] -= origin;
-////			planepts[2] -= origin;
-////
-////			side.plane.FromPoints( planepts[0], planepts[1], planepts[2] );
-////		}
-////
-////		// read the texture matrix
-////		// this is odd, because the texmat is 2D relative to default planar texture axis
-////		if ( !src.Parse2DMatrix( 2, 3, side.texMat[0].ToFloatPtr() ) ) {
-////			src.Error( "idMapBrush::Parse: unable to read brush side texture matrix" );
-////			sides.DeleteContents( true );
-////			return NULL;
-////		}
-////		side.origin = origin;
-////		
-////		// read the material
-////		if ( !src.ReadTokenOnLine( &token ) ) {
-////			src.Error( "idMapBrush::Parse: unable to read brush side material" );
-////			sides.DeleteContents( true );
-////			return NULL;
-////		}
-////
-////		// we had an implicit 'textures/' in the old format...
-////		if ( version < 2.0f ) {
-////			side.material = "textures/" + token;
-////		} else {
-////			side.material = token;
-////		}
-////
-////		// Q2 allowed override of default flags and values, but we don't any more
-////		if ( src.ReadTokenOnLine( &token ) ) {
-////			if ( src.ReadTokenOnLine( &token ) ) {
-////				if ( src.ReadTokenOnLine( &token ) ) {
-////				}
-////			}
-////		}
-////	} while( 1 );
-////
-////	if ( !src.ExpectTokenString( "}" ) ) {
-////		sides.DeleteContents( true );
-////		return NULL;
-////	}
-////
-////	idMapBrush *brush = new idMapBrush();
-////	for ( i = 0; i < sides.Num(); i++ ) {
-////		brush.AddSide( sides[i] );
-////	}
-////
-////	brush.epairs = epairs;
-////
-////	return brush;
-////}
+/*
+=================
+idMapBrush::Parse
+=================
+*/
+	static Parse ( src: idLexer, origin: idVec3, newFormat = true, /*float */version = CURRENT_MAP_VERSION ): idMapBrush {
+		var /*int */i: number;
+		var planepts = [new idVec3, new idVec3, new idVec3];
+		var token = new idToken;
+		var sides = new idList<idMapBrushSide>( idMapBrushSide, true );
+		var side: idMapBrushSide;
+		var epairs = new idDict;
+
+		if ( !src.ExpectTokenString( "{" ) ) {
+			return null;
+		}
+
+		do {
+			if ( !src.ReadToken( token ) ) {
+				src.Error( "idMapBrush::Parse: unexpected EOF" );
+				sides.DeleteContents( true );
+				return null;
+			}
+			if ( token.data == "}" ) {
+				break;
+			}
+
+			// here we may have to jump over brush epairs ( only used in editor )
+			do {
+				// if token is a brace
+				if ( token.data == "(" ) {
+					break;
+				}
+				// the token should be a key string for a key/value pair
+				if ( token.type != TT_STRING ) {
+					src.Error( "idMapBrush::Parse: unexpected %s, expected ( or epair key string", token.c_str ( ) );
+					sides.DeleteContents( true );
+					return null;
+				}
+
+				var key = new idStr( token );
+
+				if ( !src.ReadTokenOnLine( token ) || token.type != TT_STRING ) {
+					src.Error( "idMapBrush::Parse: expected epair value string not found" );
+					sides.DeleteContents( true );
+					return null;
+				}
+
+				epairs.Set( key.data, token.data );
+
+				// try to read the next key
+				if ( !src.ReadToken( token ) ) {
+					src.Error( "idMapBrush::Parse: unexpected EOF" );
+					sides.DeleteContents( true );
+					return null;
+				}
+			} while ( 1 );
+
+			src.UnreadToken( token );
+
+			side = new idMapBrushSide ( );
+			sides.Append( side );
+
+			if ( newFormat ) {
+				if ( !src.Parse1DMatrix( 4, side.plane.ToFloatPtr ( ) ) ) {
+					src.Error( "idMapBrush::Parse: unable to read brush side plane definition" );
+					sides.DeleteContents( true );
+					return null;
+				}
+			} else {
+				// read the three point plane definition
+				if ( !src.Parse1DMatrix( 3, planepts[0].ToFloatPtr ( ) ) ||
+					!src.Parse1DMatrix( 3, planepts[1].ToFloatPtr ( ) ) ||
+					!src.Parse1DMatrix( 3, planepts[2].ToFloatPtr ( ) ) ) {
+					src.Error( "idMapBrush::Parse: unable to read brush side plane definition" );
+					sides.DeleteContents( true );
+					return null;
+				}
+
+				planepts[0].opSubtractionAssignment( origin );
+				planepts[1].opSubtractionAssignment( origin );
+				planepts[2].opSubtractionAssignment( origin );
+
+				side.plane.FromPoints( planepts[0], planepts[1], planepts[2] );
+			}
+
+			// read the texture matrix
+			// this is odd, because the texmat is 2D relative to default planar texture axis
+			if ( !src.Parse2DMatrix( 2, 3, side.texMat[0].ToFloatPtr ( ) ) ) {
+				src.Error( "idMapBrush::Parse: unable to read brush side texture matrix" );
+				sides.DeleteContents( true );
+				return null;
+			}
+			side.origin.equals( origin );
+
+			// read the material
+			if ( !src.ReadTokenOnLine( token ) ) {
+				src.Error( "idMapBrush::Parse: unable to read brush side material" );
+				sides.DeleteContents( true );
+				return null;
+			}
+
+			// we had an implicit 'textures/' in the old format...
+			if ( version < 2.0 ) {
+				side.material.equals( "textures/" + token.data );
+			} else {
+				side.material.equals( token );
+			}
+
+			// Q2 allowed override of default flags and values, but we don't any more
+			if ( src.ReadTokenOnLine( token ) ) {
+				if ( src.ReadTokenOnLine( token ) ) {
+					if ( src.ReadTokenOnLine( token ) ) {
+					}
+				}
+			}
+		} while ( 1 );
+
+		if ( !src.ExpectTokenString( "}" ) ) {
+			sides.DeleteContents( true );
+			return null;
+		}
+
+		var brush = new idMapBrush ( );
+		for ( i = 0; i < sides.Num ( ); i++ ) {
+			brush.AddSide( sides[i] );
+		}
+
+		brush.epairs.equals( epairs );
+
+		return brush;
+	}
 ////
 /////*
 ////=================
 ////idMapBrush::ParseQ3
 ////=================
 ////*/
-////idMapBrush *idMapBrush::ParseQ3( idLexer &src, const idVec3 &origin ) {
+////idMapBrush *idMapBrush::ParseQ3( src:idLexer, const idVec3 &origin ) {
 ////	int i, shift[2], rotate;
 ////	float scale[2];
 ////	idVec3 planepts[3];
-////	idToken token;
+////	var token = new idToken;
 ////	idList<idMapBrushSide*> sides;
 ////	idMapBrushSide	*side;
 ////	idDict epairs;
@@ -492,7 +517,7 @@ class idMapBrush extends idMapPrimitive {
 ////			!src.Parse1DMatrix( 3, planepts[2].ToFloatPtr() ) ) {
 ////			src.Error( "idMapBrush::ParseQ3: unable to read brush side plane definition" );
 ////			sides.DeleteContents( true );
-////			return NULL;
+////			return null;
 ////		}
 ////
 ////		planepts[0] -= origin;
@@ -502,10 +527,10 @@ class idMapBrush extends idMapPrimitive {
 ////		side.plane.FromPoints( planepts[0], planepts[1], planepts[2] );
 ////
 ////		// read the material
-////		if ( !src.ReadTokenOnLine( &token ) ) {
+////		if ( !src.ReadTokenOnLine( token ) ) {
 ////			src.Error( "idMapBrush::ParseQ3: unable to read brush side material" );
 ////			sides.DeleteContents( true );
-////			return NULL;
+////			return null;
 ////		}
 ////
 ////		// we have an implicit 'textures/' in the old format
@@ -517,14 +542,14 @@ class idMapBrush extends idMapPrimitive {
 ////		rotate = src.ParseInt();
 ////		scale[0] = src.ParseFloat();
 ////		scale[1] = src.ParseFloat();
-////		side.texMat[0] = idVec3( 0.03125f, 0.0f, 0.0f );
-////		side.texMat[1] = idVec3( 0.0f, 0.03125f, 0.0f );
+////		side.texMat[0] = idVec3( 0.03125f, 0.0, 0.0 );
+////		side.texMat[1] = idVec3( 0.0, 0.03125f, 0.0 );
 ////		side.origin = origin;
 ////		
 ////		// Q2 allowed override of default flags and values, but we don't any more
-////		if ( src.ReadTokenOnLine( &token ) ) {
-////			if ( src.ReadTokenOnLine( &token ) ) {
-////				if ( src.ReadTokenOnLine( &token ) ) {
+////		if ( src.ReadTokenOnLine( token ) ) {
+////			if ( src.ReadTokenOnLine( token ) ) {
+////				if ( src.ReadTokenOnLine( token ) ) {
 ////				}
 ////			}
 ////		}
@@ -546,7 +571,7 @@ class idMapBrush extends idMapPrimitive {
 ////============
 ////*/
 ////bool idMapBrush::Write( idFile *fp, int primitiveNum, const idVec3 &origin ) const {
-////	int i;
+////	var/*int */i:number;
 ////	idMapBrushSide *side;
 ////
 ////	fp.WriteFloatString( "// primitive %d\n{\n brushDef3\n {\n", primitiveNum );
@@ -557,8 +582,8 @@ class idMapBrush extends idMapPrimitive {
 ////	}
 ////
 ////	// write brush sides
-////	for ( i = 0; i < GetNumSides(); i++ ) {
-////		side = GetSide( i );
+////	for ( i = 0; i < this.GetNumSides(); i++ ) {
+////		side = this.GetSide( i );
 ////		fp.WriteFloatString( "  ( %f %f %f %f ) ", side.plane[0], side.plane[1], side.plane[2], side.plane[3] );
 ////		fp.WriteFloatString( "( ( %f %f %f ) ( %f %f %f ) ) \"%s\" 0 0 0\n",
 ////							side.texMat[0][0], side.texMat[0][1], side.texMat[0][2],
@@ -571,27 +596,27 @@ class idMapBrush extends idMapPrimitive {
 ////	return true;
 ////}
 ////
-/////*
-////===============
-////idMapBrush::GetGeometryCRC
-////===============
-////*/
-////unsigned int idMapBrush::GetGeometryCRC( ) const {
-////	int i, j;
-////	idMapBrushSide *mapSide;
-////	unsigned int crc;
-////
-////	crc = 0;
-////	for ( i = 0; i < GetNumSides(); i++ ) {
-////		mapSide = GetSide(i);
-////		for ( j = 0; j < 4; j++ ) {
-////			crc ^= FloatCRC( mapSide.GetPlane()[j] );
-////		}
-////		crc ^= StringCRC( mapSide.GetMaterial() );
-////	}
-////
-////	return crc;
-////}
+/*
+===============
+idMapBrush::GetGeometryCRC
+===============
+*/
+	GetGeometryCRC ( ): number /*unsigned int */ {
+		var /*int */i: number, j: number;
+		var mapSide: idMapBrushSide;
+		var /*unsigned int */crc: number;
+
+		crc = 0;
+		for ( i = 0; i < this.GetNumSides ( ); i++ ) {
+			mapSide = this.GetSide( i );
+			for ( j = 0; j < 4; j++ ) {
+				crc ^= FloatCRC( mapSide.GetPlane ( )[j] );
+			}
+			crc ^= StringCRC( mapSide.GetMaterial ( ) );
+		}
+
+		return crc;
+	}
 }
 
 class idMapEntity {
@@ -607,7 +632,7 @@ class idMapEntity {
 ////	bool					Write( idFile *fp, int entityNum ) const;
 	GetNumPrimitives ( ): number { return this.primitives.Num ( ); }
 	GetPrimitive ( /*int */i: number ): idMapPrimitive { return this.primitives[i]; }
-////	void					AddPrimitive( idMapPrimitive *p ) { primitives.Append( p ); }
+	AddPrimitive ( p: idMapPrimitive ): void { this.primitives.Append( p ); }
 ////	unsigned int			GetGeometryCRC( ) const;
 ////	void					RemovePrimitiveData();
 ////
@@ -627,98 +652,98 @@ idMapEntity::Parse
 		var worldent: boolean;
 		var origin = new idVec3;
 		var /*double */v1: number, v2: number, v3: number;
-////
-////	if ( !src.ReadToken(&token) ) {
-////		return NULL;
-////	}
-////
-////	if ( token != "{" ) {
-////		src.Error( "idMapEntity::Parse: { not found, found %s", token.c_str() );
-////		return NULL;
-////	}
-////
-////	mapEnt = new idMapEntity();
-////
-////	if ( worldSpawn ) {
-////		mapEnt.primitives.Resize( 1024, 256 );
-////	}
-////
-////	origin.Zero();
-////	worldent = false;
-////	do {
-////		if ( !src.ReadToken(&token) ) {
-////			src.Error( "idMapEntity::Parse: EOF without closing brace" );
-////			return NULL;
-////		}
-////		if ( token == "}" ) {
-////			break;
-////		}
-////
-////		if ( token == "{" ) {
-////			// parse a brush or patch
-////			if ( !src.ReadToken( &token ) ) {
-////				src.Error( "idMapEntity::Parse: unexpected EOF" );
-////				return NULL;
-////			}
-////
-////			if ( worldent ) {
-////				origin.Zero();
-////			}
-////
-////			// if is it a brush: brush, brushDef, brushDef2, brushDef3
-////			if ( token.Icmpn( "brush", 5 ) == 0 ) {
-////				mapBrush = idMapBrush::Parse( src, origin, ( !token.Icmp( "brushDef2" ) || !token.Icmp( "brushDef3" ) ), version );
-////				if ( !mapBrush ) {
-////					return NULL;
-////				}
-////				mapEnt.AddPrimitive( mapBrush );
-////			}
-////			// if is it a patch: patchDef2, patchDef3
-////			else if ( token.Icmpn( "patch", 5 ) == 0 ) {
-////				mapPatch = idMapPatch::Parse( src, origin, !token.Icmp( "patchDef3" ), version );
-////				if ( !mapPatch ) {
-////					return NULL;
-////				}
-////				mapEnt.AddPrimitive( mapPatch );
-////			}
-////			// assume it's a brush in Q3 or older style
-////			else {
-////				src.UnreadToken( &token );
-////				mapBrush = idMapBrush::ParseQ3( src, origin );
-////				if ( !mapBrush ) {
-////					return NULL;
-////				}
-////				mapEnt.AddPrimitive( mapBrush );
-////			}
-////		} else {
-////			idStr key, value;
-////
-////			// parse a key / value pair
-////			key = token;
-////			src.ReadTokenOnLine( &token );
-////			value = token;
-////
-////			// strip trailing spaces that sometimes get accidentally
-////			// added in the editor
-////			value.StripTrailingWhitespace();
-////			key.StripTrailingWhitespace();
-////
-////			mapEnt.epairs.Set( key, value );
-////
-////			if ( !idStr.Icmp( key, "origin" ) ) {
-////				// scanf into doubles, then assign, so it is idVec size independent
-////				v1 = v2 = v3 = 0;
-////				sscanf( value, "%lf %lf %lf", &v1, &v2, &v3 );
-////				origin.x = v1;
-////				origin.y = v2;
-////				origin.z = v3;
-////			}
-////			else if ( !idStr.Icmp( key, "classname" ) && !idStr.Icmp( value, "worldspawn" ) ) {
-////				worldent = true;
-////			}
-////		}
-////	} while( 1 );
-////
+
+		if ( !src.ReadToken( token ) ) {
+			return null;
+		}
+
+		if ( token.data != "{" ) {
+			src.Error( "idMapEntity::Parse: { not found, found %s", token.c_str ( ) );
+			return null;
+		}
+
+		mapEnt = new idMapEntity ( );
+
+		if ( worldSpawn ) {
+			mapEnt.primitives.Resize( 1024, 256 );
+		}
+
+		origin.Zero ( );
+		worldent = false;
+		do {
+			if ( !src.ReadToken( token ) ) {
+				src.Error( "idMapEntity::Parse: EOF without closing brace" );
+				return null;
+			}
+			if ( token.data == "}" ) {
+				break;
+			}
+
+			if ( token.data == "{" ) {
+				// parse a brush or patch
+				if ( !src.ReadToken( token ) ) {
+					src.Error( "idMapEntity::Parse: unexpected EOF" );
+					return null;
+				}
+
+				if ( worldent ) {
+					origin.Zero ( );
+				}
+
+				// if is it a brush: brush, brushDef, brushDef2, brushDef3
+				if ( token.Icmpn( "brush", 5 ) == 0 ) {
+					mapBrush = idMapBrush.Parse( src, origin, ( !token.Icmp( "brushDef2" ) || !token.Icmp( "brushDef3" ) ), version );
+					if ( !mapBrush ) {
+						return null;
+					}
+					mapEnt.AddPrimitive( mapBrush );
+				}
+				// if is it a patch: patchDef2, patchDef3
+				else if ( token.Icmpn( "patch", 5 ) == 0 ) {
+					mapPatch = idMapPatch.Parse( src, origin, !token.Icmp( "patchDef3" ), version );
+					if ( !mapPatch ) {
+						return null;
+					}
+					mapEnt.AddPrimitive( mapPatch );
+				}
+				// assume it's a brush in Q3 or older style
+				else {
+					todoThrow ( );
+					//src.UnreadToken( token );
+					//mapBrush = idMapBrush.ParseQ3( src, origin );
+					//if ( !mapBrush ) {
+					//	return null;
+					//}
+					//mapEnt.AddPrimitive( mapBrush );
+				}
+			} else {
+				var key = new idStr, value = new idStr;
+
+				// parse a key / value pair
+				key.equals( token );
+				src.ReadTokenOnLine( token );
+				value.equals( token );
+
+				// strip trailing spaces that sometimes get accidentally
+				// added in the editor
+				value.StripTrailingWhitespace ( );
+				key.StripTrailingWhitespace ( );
+
+				mapEnt.epairs.Set( key.data, value.data );
+
+				if ( !idStr.Icmp( key, "origin" ) ) {
+					// scanf into doubles, then assign, so it is idVec size independent
+					var res = sscanf( value.data, "%lf %lf %lf" );
+					v1 = res[0], v2 = res[1], v3 = res[2];
+					origin.x = v1;
+					origin.y = v2;
+					origin.z = v3;
+				} else if ( !idStr.Icmp( key, "classname" ) && !idStr.Icmp( value, "worldspawn" ) ) {
+					worldent = true;
+				}
+			}
+		} while ( 1 );
+
 		return mapEnt;
 	}
 
@@ -728,7 +753,7 @@ idMapEntity::Parse
 ////============
 ////*/
 ////bool idMapEntity::Write( idFile *fp, int entityNum ) const {
-////	int i;
+////	var/*int */i:number;
 ////	idMapPrimitive *mapPrim;
 ////	idVec3 origin;
 ////
@@ -742,8 +767,8 @@ idMapEntity::Parse
 ////	epairs.GetVector( "origin", "0 0 0", origin );
 ////
 ////	// write pritimives
-////	for ( i = 0; i < GetNumPrimitives(); i++ ) {
-////		mapPrim = GetPrimitive( i );
+////	for ( i = 0; i < this.GetNumPrimitives(); i++ ) {
+////		mapPrim = this.GetPrimitive( i );
 ////
 ////		switch( mapPrim.GetType() ) {
 ////			case idMapPrimitive::TYPE_BRUSH:
@@ -760,14 +785,14 @@ idMapEntity::Parse
 ////	return true;
 ////}
 ////
-/////*
-////===============
-////idMapEntity::RemovePrimitiveData
-////===============
-////*/
-////void idMapEntity::RemovePrimitiveData() {
-////	primitives.DeleteContents(true);
-////}
+/*
+===============
+idMapEntity::RemovePrimitiveData
+===============
+*/
+	RemovePrimitiveData ( ): void {
+		this.primitives.DeleteContents( true );
+	}
 
 /*
 ===============
@@ -775,24 +800,23 @@ idMapEntity::GetGeometryCRC
 ===============
 */
 	GetGeometryCRC ( ): number /*idMapEntity::*/ {
-		todoThrow ( );
 		var /*int */i: number;
 		var /*unsigned int */crc: number;
 		var mapPrim: idMapPrimitive;
 
-		//crc = 0;
-		//for ( i = 0; i < GetNumPrimitives(); i++ ) {
-		//	mapPrim = GetPrimitive( i );
+		crc = 0;
+		for ( i = 0; i < this.GetNumPrimitives(); i++ ) {
+			mapPrim = this.GetPrimitive( i );
 
-		//	switch( mapPrim.GetType() ) {
-		//		case idMapPrimitive::TYPE_BRUSH:
-		//			crc ^= static_cast<idMapBrush*>(mapPrim).GetGeometryCRC();
-		//			break;
-		//		case idMapPrimitive::TYPE_PATCH:
-		//			crc ^= static_cast<idMapPatch*>(mapPrim).GetGeometryCRC();
-		//			break;
-		//	}
-		//}
+			switch( mapPrim.GetType() ) {
+				case idMapPrimitive.TYPE_BRUSH:
+					crc ^= static_cast<idMapBrush>(mapPrim).GetGeometryCRC();
+					break;
+				case idMapPrimitive.TYPE_PATCH:
+					crc ^= static_cast<idMapPatch>(mapPrim).GetGeometryCRC();
+					break;
+			}
+		}
 
 		return crc;
 	}
@@ -833,10 +857,10 @@ class idMapBrushSide {
 ////							~idMapBrushSide( ) { }
 	GetMaterial ( ): string { return this.material.data; }
 	SetMaterial ( p: string ): void { this.material.equals( p ); }
-////	const idPlane &			GetPlane( ) const { return plane; }
-////	void					SetPlane( const idPlane &p ) { plane = p; }
-////	void					SetTextureMatrix( const idVec3 mat[2] ) { texMat[0] = mat[0]; texMat[1] = mat[1]; }
-////	void					GetTextureMatrix( idVec3 &mat1, idVec3 &mat2 ) { mat1 = texMat[0]; mat2 = texMat[1]; }
+	GetPlane(): idPlane { return this.plane; }
+	SetPlane(p: idPlane ):void { this.plane.opEquals( p ); }
+	SetTextureMatrix(mat: idVec3[]/*[2]*/ ): void { this.texMat[0] = mat[0]; this. texMat[1] = mat[1]; }
+	GetTextureMatrix(mat1: idVec3, mat2: idVec3): void { mat1.equals( this.texMat[0]); mat2 .equals(this.texMat[1]); }
 ////	void					GetTextureVectors( idVec4 v[2] ) const;
 ////
 ////protected:
@@ -845,7 +869,7 @@ class idMapBrushSide {
 	texMat = newStructArray<idVec3>( idVec3, 2 );
 	origin = new idVec3;
 ////};
-////
+
 	constructor ( ) {
 		this.plane.Zero ( );
 		this.texMat[0].Zero ( );
@@ -859,7 +883,7 @@ class idMapBrushSide {
 ////=================
 ////*/
 ////void idMapBrushSide::GetTextureVectors( idVec4 v[2] ) const {
-////	int i;
+////	var/*int */i:number;
 ////	idVec3 texX, texY;
 ////
 ////	ComputeAxisBase( plane.Normal(), texX, texY );
@@ -1049,7 +1073,7 @@ class idMapFile {
 ////============
 ////*/
 ////bool idMapFile::Write( const char *fileName, const char *ext, bool fromBasePath ) {
-////	int i;
+////	var/*int */i:number;
 ////	idStr qpath;
 ////	idFile *fp;
 ////
@@ -1117,7 +1141,7 @@ idMapFile::SetGeometryCRC
 ////			return ent;
 ////		}
 ////	}
-////	return NULL;
+////	return null;
 ////}
 ////
 /////*
@@ -1156,19 +1180,19 @@ idMapFile::RemoveEntity
 ////	this.hasPrimitiveData = false;
 ////}
 ////
-/////*
-////===============
-////idMapFile::RemovePrimitiveData
-////===============
-////*/
-////void idMapFile::RemovePrimitiveData() {
-////	for ( int i = 0; i < this.entities.Num(); i++ ) {
-////		idMapEntity *ent = this.entities[i];
-////		ent.RemovePrimitiveData();
-////	}
-////	this.hasPrimitiveData = false;
-////}
-////
+/*
+===============
+idMapFile::RemovePrimitiveData
+===============
+*/
+	RemovePrimitiveData ( ): void {
+		for ( var i = 0; i < this.entities.Num ( ); i++ ) {
+			var ent = this.entities[i];
+			ent.RemovePrimitiveData ( );
+		}
+		this.hasPrimitiveData = false;
+	}
+
 /////*
 ////===============
 ////idMapFile::NeedsReload

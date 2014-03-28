@@ -1385,29 +1385,29 @@ class idLexer {
 		return /*true*/1;
 	}
 
-	/////*
-	////================
-	////idLexer::Parse2DMatrix
-	////================
-	////*/
-	////int idLexer::Parse2DMatrix( int y, int x, float *m ) {
-	////	var i:number;
+	/*
+	================
+	idLexer::Parse2DMatrix
+	================
+	*/
+	Parse2DMatrix ( /*int*/ y: number, /*int */x: number, /*float **/m: Float32Array ): number /*int*/ {
+		var i: number;
 
-	////	if ( !this.ExpectTokenString( "(" ) ) {
-	////		return /*false*/0;
-	////	}
+		if ( !this.ExpectTokenString( "(" ) ) {
+			return /*false*/0;
+		}
 
-	////	for ( i = 0; i < y; i++ ) {
-	////		if ( !idLexer::Parse1DMatrix( x, m + i * x ) ) {
-	////			return /*false*/0;
-	////		}
-	////	}
+		for ( i = 0; i < y; i++ ) {
+			if ( !this.Parse1DMatrix( x, m.subarray( i * x ) ) ) {
+				return /*false*/0;
+			}
+		}
 
-	////	if ( !this.ExpectTokenString( ")" ) ) {
-	////		return /*false*/0;
-	////	}
-	////	return /*true*/1;
-	////}
+		if ( !this.ExpectTokenString( ")" ) ) {
+			return /*false*/0;
+		}
+		return /*true*/1;
+	}
 
 	/////*
 	////================

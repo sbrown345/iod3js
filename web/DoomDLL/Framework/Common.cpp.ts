@@ -3123,3 +3123,4 @@ idCommonLocal::InitGame
 
 var commonLocal = new idCommonLocal();
 var common: idCommonLocal = commonLocal;
+idLib.common = common;
