@@ -170,6 +170,8 @@ class idMapPatch extends idMapPrimitive_idSurface_Patch //idMapPrimitive // todo
 			this.maxHeight = maxPatchHeight;
 			this.verts.SetNum( this.maxWidth * this.maxHeight );
 			this.expanded = false;
+		} else {
+			throw "No such ctor overload";
 		}
 	}
 
@@ -342,8 +344,12 @@ idMapPatch::GetGeometryCRC
 
 class idMapBrush extends idMapPrimitive {
 	////public:
-	////							idMapBrush( ) { type = TYPE_BRUSH; sides.Resize( 8, 4 ); }
-	////							~idMapBrush( ) { sides.DeleteContents( true ); }
+	constructor ( ) {
+		super ( );
+		this.type = idMapPrimitive.TYPE_BRUSH;
+		this.sides.Resize( 8, 4 );
+	}
+	destructor ( ): void { this.sides.DeleteContents( true ); }
 	////	static idMapBrush *		Parse( idLexer &src, const idVec3 &origin, bool newFormat = true, float version = CURRENT_MAP_VERSION );
 	////	static idMapBrush *		ParseQ3( idLexer &src, const idVec3 &origin );
 	////	bool					Write( idFile *fp, int primitiveNum, const idVec3 &origin ) const;
@@ -807,7 +813,6 @@ idMapEntity::GetGeometryCRC
 		crc = 0;
 		for ( i = 0; i < this.GetNumPrimitives(); i++ ) {
 			mapPrim = this.GetPrimitive( i );
-
 			switch( mapPrim.GetType() ) {
 				case idMapPrimitive.TYPE_BRUSH:
 					crc ^= static_cast<idMapBrush>(mapPrim).GetGeometryCRC();
@@ -815,6 +820,8 @@ idMapEntity::GetGeometryCRC
 				case idMapPrimitive.TYPE_PATCH:
 					crc ^= static_cast<idMapPatch>(mapPrim).GetGeometryCRC();
 					break;
+				default:
+					todoThrow( "type should be set" );
 			}
 		}
 

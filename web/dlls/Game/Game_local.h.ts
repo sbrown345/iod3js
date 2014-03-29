@@ -1284,7 +1284,7 @@ Initializes all map variables common to both save games and spawned games.
 */
 	LoadMap ( mapName: string, /*int */randseed: number ): void {
 		var /*int */i: number;
-		var sameMap = ( this.mapFile && idStr.Icmp( this.mapFileName, mapName ) == 0 );
+		var sameMap = !!( this.mapFile && idStr.Icmp( this.mapFileName, mapName ) == 0 );
 
 		// clear the sound system
 		gameSoundWorld.ClearAllSoundEmitters ( );
