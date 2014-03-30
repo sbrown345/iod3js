@@ -187,6 +187,13 @@ function short ( buf: Uint8Array, ptr: number ): number {
 	return buf[ptr] + ( buf[ptr + 1] << 8 );
 }
 
+
+var unsigned_short_arr = new Uint16Array( 1 );
+function unsigned_short ( val: number ): number {
+	unsigned_short_arr[0] = val;
+	return unsigned_short_arr[0];
+}
+
 function float ( v: number ): number {
 	return v;
 }
@@ -197,8 +204,11 @@ function sizeof ( obj: any ): number {
 		throw "cannot get size of number type";
 	}
 
-	if ( obj === byte) {
+	if ( obj === byte ) {
 		return 1;
+	}
+	if ( obj === short || obj === unsigned_short ) {
+		return 2;
 	}
 
 	if ( obj === int || obj === float ) {

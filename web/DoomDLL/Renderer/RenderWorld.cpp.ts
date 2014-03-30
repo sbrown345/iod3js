@@ -1211,7 +1211,7 @@ GetPortal
 //			continue;
 //		}
 //
-//		local = R_LocalTrace( localStart, localEnd, 0.0f, tri );
+//		local = R_LocalTrace( localStart, localEnd, 0.0, tri );
 //		if ( local.fraction < 1.0 ) {
 //			idVec3				origin, axis[3];
 //			idVec3				cursor;
@@ -1522,11 +1522,11 @@ GetPortal
 //	t1 = node.plane.Normal() * p1 + node.plane[3];
 //	t2 = node.plane.Normal() * p2 + node.plane[3];
 //
-//	if ( t1 >= 0.0f && t2 >= 0.0f ) {
+//	if ( t1 >= 0.0 && t2 >= 0.0 ) {
 //		RecurseProcBSP_r( results, nodeNum, node.children[0], p1f, p2f, p1, p2 );
 //		return;
 //	}
-//	if ( t1 < 0.0f && t2 < 0.0f ) {
+//	if ( t1 < 0.0 && t2 < 0.0 ) {
 //		RecurseProcBSP_r( results, nodeNum, node.children[1], p1f, p2f, p1, p2 );
 //		return;
 //	}
@@ -1549,7 +1549,7 @@ GetPortal
 //	memset( &results, 0, sizeof( modelTrace_t ) );
 //	results.fraction = 1.0f;
 //	if ( this.areaNodes != NULL ) {
-//		RecurseProcBSP_r( &results, -1, 0, 0.0f, 1.0f, start, end );
+//		RecurseProcBSP_r( &results, -1, 0, 0.0, 1.0f, start, end );
 //		return ( results.fraction < 1.0f );
 //	}
 //	return false;
@@ -1596,30 +1596,30 @@ for the world model references that are precalculated.
 		ref.areaPrev.areaNext = ref;
 	}
 
-///*
-//===================
-//AddLightRefToArea
-//
-//===================
-//*/
-//void idRenderWorldLocal::AddLightRefToArea( idRenderLightLocal *light, portalArea_t *area ) {
-//	areaReference_t	*lref;
-//
-//	// add a lightref to this area
-//	lref = this.areaReferenceAllocator.Alloc();
-//	lref.light = light;
-//	lref.area = area;
-//	lref.ownerNext = light.references;
-//	light.references = lref;
-//	tr.pc.c_lightReferences++;
-//
-//	// doubly linked list so we can free them easily later
-//	area.lightRefs.areaNext.areaPrev = lref;
-//	lref.areaNext = area.lightRefs.areaNext;
-//	lref.areaPrev = &area.lightRefs;
-//	area.lightRefs.areaNext = lref;
-//}
-//
+/*
+===================
+AddLightRefToArea
+
+===================
+*/
+	AddLightRefToArea ( light: idRenderLightLocal, area: portalArea_t ): void {
+		var lref: areaReference_t;
+
+		// add a lightref to this area
+		lref = this.areaReferenceAllocator.Alloc ( );
+		lref.light = light;
+		lref.area = area;	
+		lref.ownerNext = light.references;
+		light.references = lref;
+		tr.pc.c_lightReferences++;
+
+		// doubly linked list so we can free them easily later
+		area.lightRefs.areaNext.areaPrev = lref;
+		lref.areaNext = area.lightRefs.areaNext;
+		lref.areaPrev = area.lightRefs;
+		area.lightRefs.areaNext = lref;
+	}
+
 ///*
 //===================
 //GenerateAllInteractions
@@ -1714,111 +1714,110 @@ idRenderWorldLocal::FreeInteractions
 		}
 	}
 
-///*
-//==================
-//PushVolumeIntoTree
-//
-//Used for both light volumes and model volumes.
-//
-//This does not clip the points by the planes, so some slop
-//occurs.
-//
-//tr.viewCount should be bumped before calling, allowing it
-//to prevent double checking areas.
-//
-//We might alternatively choose to do this with an area flow.
-//==================
-//*/
-//void idRenderWorldLocal::PushVolumeIntoTree_r( idRenderEntityLocal *def, idRenderLightLocal *light, const idSphere *sphere, int numPoints, const idVec3 (*points), 
-//								 int nodeNum ) {
-//	int			i;
-//	areaNode_t	*node;
-//	bool	front, back;
-//
-//	if ( nodeNum < 0 ) {
-//		portalArea_t	*area;
-//		int		areaNum = -1 - nodeNum;
-//
-//		area = &this.portalAreas[ areaNum ];
-//		if ( area.viewCount == tr.viewCount ) {
-//			return;	// already added a reference here
-//		}
-//		area.viewCount = tr.viewCount;
-//
-//		if ( def ) {
-//			AddEntityRefToArea( def, area );
-//		}
-//		if ( light ) {
-//			AddLightRefToArea( light, area );
-//		}
-//
-//		return;
-//	}
-//
-//	node = this.areaNodes + nodeNum;
-//
-//	// if we know that all possible children nodes only touch an area
-//	// we have already marked, we can early out
-//	if ( r_useNodeCommonChildren.GetBool() &&
-//		node.commonChildrenArea != CHILDREN_HAVE_MULTIPLE_AREAS ) {
-//		// note that we do NOT try to set a reference in this area
-//		// yet, because the test volume may yet wind up being in the
-//		// solid part, which would cause bounds slightly poked into
-//		// a wall to show up in the next room
-//		if ( this.portalAreas[ node.commonChildrenArea ].viewCount == tr.viewCount ) {
-//			return;
-//		}
-//	}
-//
-//	// if the bounding sphere is completely on one side, don't
-//	// bother checking the individual points
-//	float sd = node.plane.Distance( sphere.GetOrigin() );
-//	if ( sd >= sphere.GetRadius() ) {
-//		nodeNum = node.children[0];
-//		if ( nodeNum ) {	// 0 = solid
-//			PushVolumeIntoTree_r( def, light, sphere, numPoints, points, nodeNum );
-//		}
-//		return;
-//	}
-//	if ( sd <= -sphere.GetRadius() ) {
-//		nodeNum = node.children[1];
-//		if ( nodeNum ) {	// 0 = solid
-//			PushVolumeIntoTree_r( def, light, sphere, numPoints, points, nodeNum );
-//		}
-//		return;
-//	}
-//
-//	// exact check all the points against the node plane
-//	front = back = false;
+/*
+==================
+PushVolumeIntoTree
+
+Used for both light volumes and model volumes.
+
+This does not clip the points by the planes, so some slop
+occurs.
+
+tr.viewCount should be bumped before calling, allowing it
+to prevent double checking areas.
+
+We might alternatively choose to do this with an area flow.
+==================
+*/
+	PushVolumeIntoTree_r ( def: idRenderEntityLocal, light: idRenderLightLocal, sphere: idSphere, /*int */numPoints: number, points: idVec3 [], /*int */nodeNum: number ): void {
+		var /*int			*/i: number;
+		var node: areaNode_t;
+		var front: boolean, back: boolean;
+
+		if ( nodeNum < 0 ) {
+			var area: portalArea_t;
+			var /*int		*/areaNum = -1 - nodeNum;
+
+			area = this.portalAreas[areaNum];
+			if ( area.viewCount == tr.viewCount ) {
+				return; // already added a reference here
+			}
+			area.viewCount = tr.viewCount;
+
+			if ( def ) {
+				this.AddEntityRefToArea( def, area );
+			}
+			if ( light ) {
+				this.AddLightRefToArea( light, area );
+			}
+
+			return;
+		}
+
+		node = this.areaNodes[nodeNum];
+
+		// if we know that all possible children nodes only touch an area
+		// we have already marked, we can early out
+		if ( r_useNodeCommonChildren.GetBool ( ) &&
+			node.commonChildrenArea != CHILDREN_HAVE_MULTIPLE_AREAS ) {
+			// note that we do NOT try to set a reference in this area
+			// yet, because the test volume may yet wind up being in the
+			// solid part, which would cause bounds slightly poked into
+			// a wall to show up in the next room
+			if ( this.portalAreas[node.commonChildrenArea].viewCount == tr.viewCount ) {
+				return;
+			}
+		}
+
+		// if the bounding sphere is completely on one side, don't
+		// bother checking the individual points
+		var /*float */sd = node.plane.Distance( sphere.GetOrigin ( ) );
+		if ( sd >= sphere.GetRadius ( ) ) {
+			nodeNum = node.children[0];
+			if ( nodeNum ) { // 0 = solid
+				this.PushVolumeIntoTree_r( def, light, sphere, numPoints, points, nodeNum );
+			}
+			return;
+		}
+		if ( sd <= -sphere.GetRadius ( ) ) {
+			nodeNum = node.children[1];
+			if ( nodeNum ) { // 0 = solid
+				this.PushVolumeIntoTree_r( def, light, sphere, numPoints, points, nodeNum );
+			}
+			return;
+		}
+
+		// exact check all the points against the node plane
+		front = back = false;
 //#ifdef MACOS_X	//loop unrolling & pre-fetching for performance
 //	const idVec3 norm = node.plane.Normal();
 //	const float plane3 = node.plane[3];
 //	float D0, D1, D2, D3;
-//
+
 //	for ( i = 0 ; i < numPoints - 4; i+=4 ) {
 //		D0 = points[i+0] * norm + plane3;
 //		D1 = points[i+1] * norm + plane3;
-//		if ( !front && D0 >= 0.0f ) {
+//		if ( !front && D0 >= 0.0 ) {
 //		    front = true;
-//		} else if ( !back && D0 <= 0.0f ) {
+//		} else if ( !back && D0 <= 0.0 ) {
 //		    back = true;
 //		}
 //		D2 = points[i+1] * norm + plane3;
-//		if ( !front && D1 >= 0.0f ) {
+//		if ( !front && D1 >= 0.0 ) {
 //		    front = true;
-//		} else if ( !back && D1 <= 0.0f ) {
+//		} else if ( !back && D1 <= 0.0 ) {
 //		    back = true;
 //		}
 //		D3 = points[i+1] * norm + plane3;
-//		if ( !front && D2 >= 0.0f ) {
+//		if ( !front && D2 >= 0.0 ) {
 //		    front = true;
-//		} else if ( !back && D2 <= 0.0f ) {
+//		} else if ( !back && D2 <= 0.0 ) {
 //		    back = true;
 //		}
-//		
-//		if ( !front && D3 >= 0.0f ) {
+
+//		if ( !front && D3 >= 0.0 ) {
 //		    front = true;
-//		} else if ( !back && D3 <= 0.0f ) {
+//		} else if ( !back && D3 <= 0.0 ) {
 //		    back = true;
 //		}
 //		if ( back && front ) {
@@ -1829,9 +1828,9 @@ idRenderWorldLocal::FreeInteractions
 //		for (; i < numPoints ; i++ ) {
 //			float d;
 //			d = points[i] * node.plane.Normal() + node.plane[3];
-//			if ( d >= 0.0f ) {
+//			if ( d >= 0.0 ) {
 //				front = true;
-//			} else if ( d <= 0.0f ) {
+//			} else if ( d <= 0.0 ) {
 //				back = true;
 //			}
 //			if ( back && front ) {
@@ -1840,33 +1839,33 @@ idRenderWorldLocal::FreeInteractions
 //		}	
 //	}
 //#else
-//	for ( i = 0 ; i < numPoints ; i++ ) {
-//		float d;
-//
-//		d = points[i] * node.plane.Normal() + node.plane[3];
-//		if ( d >= 0.0f ) {
-//		    front = true;
-//		} else if ( d <= 0.0f ) {
-//		    back = true;
-//		}
-//		if ( back && front ) {
-//		    break;
-//		}
-//	}
+		for ( i = 0; i < numPoints; i++ ) {
+			var /*float */d: number;
+
+			d = points[i].timesVec( node.plane.Normal ( ) ) + node.plane[3];
+			if ( d >= 0.0 ) {
+				front = true;
+			} else if ( d <= 0.0 ) {
+				back = true;
+			}
+			if ( back && front ) {
+				break;
+			}
+		}
 //#endif
-//	if ( front ) {
-//		nodeNum = node.children[0];
-//		if ( nodeNum ) {	// 0 = solid
-//			PushVolumeIntoTree_r( def, light, sphere, numPoints, points, nodeNum );
-//		}
-//	}
-//	if ( back ) {
-//		nodeNum = node.children[1];
-//		if ( nodeNum ) {	// 0 = solid
-//			PushVolumeIntoTree_r( def, light, sphere, numPoints, points, nodeNum );
-//		}
-//	}
-//}
+		if ( front ) {
+			nodeNum = node.children[0];
+			if ( nodeNum ) { // 0 = solid
+				this.PushVolumeIntoTree_r( def, light, sphere, numPoints, points, nodeNum );
+			}
+		}
+		if ( back ) {
+			nodeNum = node.children[1];
+			if ( nodeNum ) { // 0 = solid
+				this.PushVolumeIntoTree_r( def, light, sphere, numPoints, points, nodeNum );
+			}
+		}
+	}
 
 /*
 ==============
@@ -1901,7 +1900,7 @@ PushVolumeIntoTree
 
 		var sphere = new idSphere( mid, sqrt( radSquared ) );
 
-		PushVolumeIntoTree_r( def, light, sphere, numPoints, points, 0 );
+		this.PushVolumeIntoTree_r( def, light, sphere, numPoints, points, 0 );
 	}
 
 //===================================================================
@@ -2108,7 +2107,7 @@ idRenderWorldLocal::DebugClearLines
 //
 //	frustum.ToPoints( v );
 //
-//	if ( frustum.GetNearDistance() > 0.0f ) {
+//	if ( frustum.GetNearDistance() > 0.0 ) {
 //		for ( i = 0; i < 4; i++ ) {
 //			DebugLine( color, v[i], v[(i+1)&3], lifetime );
 //		}
@@ -2146,7 +2145,7 @@ idRenderWorldLocal::DebugClearLines
 //	top = apex + dir;
 //	lastp2 = top + radius2 * axis[1];
 //
-//	if ( radius1 == 0.0f ) {
+//	if ( radius1 == 0.0 ) {
 //		for ( i = 20; i <= 360; i += 20 ) {
 //			d = idMath::Sin16( DEG2RAD(i) ) * axis[0] + idMath::Cos16( DEG2RAD(i) ) * axis[1];
 //			p2 = top + d * radius2;
@@ -3418,7 +3417,7 @@ AddWorldModelEntities  (): void {
 //		}
 //
 //		// the frustum must cross the portal plane
-//		if ( frustum.PlaneSide( p.plane, 0.0f ) != PLANESIDE_CROSS ) {
+//		if ( frustum.PlaneSide( p.plane, 0.0 ) != PLANESIDE_CROSS ) {
 //			continue;
 //		}
 //
@@ -3620,7 +3619,7 @@ AddWorldModelEntities  (): void {
 //		for ( i = 0; i < ps.numPortalPlanes - 1; i++ ) {
 //			for ( j = 0; j < tri.numVerts; j++ ) {
 //				d = ps.portalPlanes[i].Distance( tri.verts[j].xyz );
-//				if ( d < 0.0f ) {
+//				if ( d < 0.0 ) {
 //					break;	// point is inside this plane
 //				}
 //			}

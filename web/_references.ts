@@ -141,10 +141,6 @@
 /// <reference path="libs/idlib/text/str.h.ts" />
 /// <reference path="libs/idlib/text/token.cpp.ts" />
 
-// BV
-/// <reference path="libs/idlib/bv/sphere.cpp.ts" />
-/// <reference path="libs/idlib/bv/frustum.cpp.ts" />
-/// <reference path="libs/idlib/bv/bounds.h.ts" />
 // Containers
 /// <reference path="libs/idlib/containers/hashindex.h.ts" />
 /// <reference path="libs/idlib/containers/hierarchy.h.ts" />
@@ -164,6 +160,10 @@
 /// <reference path="libs/idlib/math/plane.h.ts" />
 /// <reference path="libs/idlib/math/simd_generic.cpp.ts" />
 /// <reference path="libs/idlib/math/random.h.ts" />
+// BV
+/// <reference path="libs/idlib/bv/sphere.cpp.ts" />
+/// <reference path="libs/idlib/bv/frustum.cpp.ts" />
+/// <reference path="libs/idlib/bv/bounds.h.ts" />
 // Hashing
 /// <reference path="libs/idlib/hashing/crc32.cpp.ts" />
 /// <reference path="libs/idlib/hashing/md4.cpp.ts" />

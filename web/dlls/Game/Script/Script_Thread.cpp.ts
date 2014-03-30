@@ -430,6 +430,9 @@ idThread::GetThreadNum
 		super ( );
 
 		switch ( arguments.length ) {
+			case 0:
+				this.constructor_default ( );
+			break;
 			case 1:
 				this.constructor_func( <function_t>a1 );
 			break;
@@ -438,18 +441,18 @@ idThread::GetThreadNum
 		}
 	}
 
-///*
-//================
-//idThread::idThread
-//================
-//*/
-//idThread::idThread() {
-//	this.Init();
-//	this.SetThreadName( va( "thread_%d", idThread.threadIndex ) );
-//	if ( g_debugScript.GetBool() ) {
-//		gameLocal.Printf( "%d: create thread (%d) '%s'\n", gameLocal.time, this.threadNum, this.threadName.c_str() );
-//	}
-//}
+/*
+================
+idThread::idThread
+================
+*/
+	constructor_default ( ): void {
+		this.Init ( );
+		this.SetThreadName( va( "thread_%d", idThread.threadIndex ) );
+		if ( g_debugScript.GetBool ( ) ) {
+			gameLocal.Printf( "%d: create thread (%d) '%s'\n", gameLocal.time, this.threadNum, this.threadName.c_str ( ) );
+		}
+	}
 //
 ///*
 //================

@@ -351,7 +351,7 @@ class idRenderLightLocal extends idRenderLight {
 ////	int						viewCount;				// if == tr.viewCount, the light is on the viewDef.viewLights list
 ////	struct viewLight_s *	viewLight;
 
-////	areaReference_t *		references;				// each area the light is present in will have a lightRef
+	references:areaReference_t;				// each area the light is present in will have a lightRef
 ////	idInteraction *			firstInteraction;		// doubly linked list
 ////	idInteraction *			lastInteraction;
 

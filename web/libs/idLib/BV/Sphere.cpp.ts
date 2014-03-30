@@ -45,7 +45,7 @@ Sphere
 
 class idSphere {
 ////public:
-////	idSphere(void);
+////	idSphere( );
 ////	explicit idSphere(const idVec3 &point);
 ////	explicit idSphere(const idVec3 &point, const float r);
 ////
@@ -61,14 +61,14 @@ class idSphere {
 ////	bool			operator==(const idSphere &a) const;						// exact compare, no epsilon
 ////	bool			operator!=(const idSphere &a) const;						// exact compare, no epsilon
 ////
-////	void			Clear(void);									// inside out sphere
-////	void			Zero(void);									// single point at origin
+////	void			Clear( );									// inside out sphere
+////	void			Zero( );									// single point at origin
 ////	void			SetOrigin(const idVec3 &o);					// set origin of sphere
 ////	void			SetRadius(const float r);						// set square radius
 ////
-////	const idVec3 &	GetOrigin(void) const;						// returns origin of sphere
-////	float			GetRadius(void) const;						// returns sphere radius
-////	bool			IsCleared(void) const;						// returns true if sphere is inside out
+////	const idVec3 &	GetOrigin( ) const;						// returns origin of sphere
+////	float			GetRadius( ) const;						// returns sphere radius
+////	bool			IsCleared( ) const;						// returns true if sphere is inside out
 ////
 ////	bool			AddPoint(const idVec3 &p);					// add the point, returns true if the sphere expanded
 ////	bool			AddSphere(const idSphere &s);					// add the sphere, returns true if the sphere expanded
@@ -103,18 +103,7 @@ class idSphere {
 ////
 ////extern idSphere	sphere_zero;
 ////
-////ID_INLINE idSphere::idSphere(void) {
-////}
-////
-////ID_INLINE idSphere::idSphere(const idVec3 &point) {
-////	origin = point;
-////	radius = 0.0;
-////}
-////
-////ID_INLINE idSphere::idSphere(const idVec3 &point, const float r) {
-////	origin = point;
-////	radius = r;
-////}
+
 	constructor ( )
 	constructor ( point: idVec3 )
 	constructor ( point: idVec3, r: number /*float*/ )
@@ -136,20 +125,20 @@ class idSphere {
 ////}
 ////
 ////ID_INLINE idSphere idSphere::operator+(const idVec3 &t) const {
-////	return idSphere(origin + t, radius);
+////	return idSphere(this.origin + t, this.radius);
 ////}
 ////
 ////ID_INLINE idSphere &idSphere::operator+=(const idVec3 &t) {
-////	origin += t;
+////	this.origin += t;
 ////	return *this;
 ////}
 ////
 ////ID_INLINE bool idSphere::Compare(const idSphere &a) const {
-////	return (origin.Compare(a.origin) && radius == a.radius);
+////	return (this.origin.Compare(a.origin) && this.radius == a.radius);
 ////}
 ////
 ////ID_INLINE bool idSphere::Compare(const idSphere &a, const float epsilon) const {
-////	return (origin.Compare(a.origin, epsilon) && idMath::Fabs(radius - a.radius) <= epsilon);
+////	return (this.origin.Compare(a.origin, epsilon) && idMath::Fabs(this.radius - a.radius) <= epsilon);
 ////}
 ////
 ////ID_INLINE bool idSphere::operator==(const idSphere &a) const {
@@ -160,48 +149,48 @@ class idSphere {
 ////	return !Compare(a);
 ////}
 ////
-////ID_INLINE void idSphere::Clear(void) {
-////	origin.Zero();
-////	radius = -1.0f;
+////ID_INLINE void idSphere::Clear( ) {
+////	this.origin.Zero();
+////	this.radius = -1.0f;
 ////}
 ////
-////ID_INLINE void idSphere::Zero(void) {
-////	origin.Zero();
-////	radius = 0.0;
+////ID_INLINE void idSphere::Zero( ) {
+////	this.origin.Zero();
+////	this.radius = 0.0;
 ////}
 ////
 ////ID_INLINE void idSphere::SetOrigin(const idVec3 &o) {
-////	origin = o;
+////	this.origin = o;
 ////}
 ////
 ////ID_INLINE void idSphere::SetRadius(const float r) {
-////	radius = r;
+////	this.radius = r;
 ////}
 ////
-////ID_INLINE const idVec3 &idSphere::GetOrigin(void) const {
-////	return origin;
-////}
-////
-////ID_INLINE float idSphere::GetRadius(void) const {
-////	return radius;
-////}
-////
-////ID_INLINE bool idSphere::IsCleared(void) const {
-////	return (radius < 0.0);
+	GetOrigin ( ): idVec3 {
+		return this.origin;
+	}
+
+	GetRadius ( ): number {
+		return this.radius;
+	}
+
+////ID_INLINE bool idSphere::IsCleared( ) const {
+////	return (this.radius < 0.0);
 ////}
 ////
 ////ID_INLINE bool idSphere::AddPoint(const idVec3 &p) {
-////	if (radius < 0.0) {
-////		origin = p;
-////		radius = 0.0;
+////	if (this.radius < 0.0) {
+////		this.origin = p;
+////		this.radius = 0.0;
 ////		return true;
 ////	}
 ////	else {
-////		float r = (p - origin).LengthSqr();
-////		if (r > radius * radius) {
+////		float r = (p - this.origin).LengthSqr();
+////		if (r > this.radius * this.radius) {
 ////			r = idMath::Sqrt(r);
-////			origin += (p - origin) * 0.5f * (1.0f - radius / r);
-////			radius += 0.5f * (r - radius);
+////			this.origin += (p - this.origin) * 0.5f * (1.0f - this.radius / r);
+////			this.radius += 0.5f * (r - this.radius);
 ////			return true;
 ////		}
 ////		return false;
@@ -209,17 +198,17 @@ class idSphere {
 ////}
 ////
 ////ID_INLINE bool idSphere::AddSphere(const idSphere &s) {
-////	if (radius < 0.0) {
-////		origin = s.origin;
-////		radius = s.radius;
+////	if (this.radius < 0.0) {
+////		this.origin = s.origin;
+////		this.radius = s.radius;
 ////		return true;
 ////	}
 ////	else {
-////		float r = (s.origin - origin).LengthSqr();
-////		if (r >(radius + s.radius) * (radius + s.radius)) {
+////		float r = (s.origin - this.origin).LengthSqr();
+////		if (r >(this.radius + s.radius) * (this.radius + s.radius)) {
 ////			r = idMath::Sqrt(r);
-////			origin += (s.origin - origin) * 0.5f * (1.0f - radius / (r + s.radius));
-////			radius += 0.5f * ((r + s.radius) - radius);
+////			this.origin += (s.origin - this.origin) * 0.5f * (1.0f - this.radius / (r + s.radius));
+////			this.radius += 0.5f * ((r + s.radius) - this.radius);
 ////			return true;
 ////		}
 ////		return false;
@@ -227,65 +216,65 @@ class idSphere {
 ////}
 ////
 ////ID_INLINE idSphere idSphere::Expand(const float d) const {
-////	return idSphere(origin, radius + d);
+////	return idSphere(this.origin, this.radius + d);
 ////}
 ////
 ////ID_INLINE idSphere &idSphere::ExpandSelf(const float d) {
-////	radius += d;
+////	this.radius += d;
 ////	return *this;
 ////}
 ////
 ////ID_INLINE idSphere idSphere::Translate(const idVec3 &translation) const {
-////	return idSphere(origin + translation, radius);
+////	return idSphere(this.origin + translation, this.radius);
 ////}
 ////
 ////ID_INLINE idSphere &idSphere::TranslateSelf(const idVec3 &translation) {
-////	origin += translation;
+////	this.origin += translation;
 ////	return *this;
 ////}
 ////
 ////ID_INLINE bool idSphere::ContainsPoint(const idVec3 &p) const {
-////	if ((p - origin).LengthSqr() > radius * radius) {
+////	if ((p - this.origin).LengthSqr() > this.radius * this.radius) {
 ////		return false;
 ////	}
 ////	return true;
 ////}
 ////
 ////ID_INLINE bool idSphere::IntersectsSphere(const idSphere &s) const {
-////	float r = s.radius + radius;
-////	if ((s.origin - origin).LengthSqr() > r * r) {
+////	float r = s.radius + this.radius;
+////	if ((s.origin - this.origin).LengthSqr() > r * r) {
 ////		return false;
 ////	}
 ////	return true;
 ////}
 ////
 ////ID_INLINE void idSphere::FromPointTranslation(const idVec3 &point, const idVec3 &translation) {
-////	origin = point + 0.5f * translation;
-////	radius = idMath::Sqrt(0.5f * translation.LengthSqr());
+////	this.origin = point + 0.5f * translation;
+////	this.radius = idMath::Sqrt(0.5f * translation.LengthSqr());
 ////}
 ////
 ////ID_INLINE void idSphere::FromSphereTranslation(const idSphere &sphere, const idVec3 &start, const idVec3 &translation) {
-////	origin = start + sphere.origin + 0.5f * translation;
-////	radius = idMath::Sqrt(0.5f * translation.LengthSqr()) + sphere.radius;
+////	this.origin = start + sphere.origin + 0.5f * translation;
+////	this.radius = idMath::Sqrt(0.5f * translation.LengthSqr()) + sphere.radius;
 ////}
 ////
 ////ID_INLINE void idSphere::FromPointRotation(const idVec3 &point, const idRotation &rotation) {
 ////	idVec3 end = rotation * point;
-////	origin = (point + end) * 0.5f;
-////	radius = idMath::Sqrt(0.5f * (end - point).LengthSqr());
+////	this.origin = (point + end) * 0.5f;
+////	this.radius = idMath::Sqrt(0.5f * (end - point).LengthSqr());
 ////}
 ////
 ////ID_INLINE void idSphere::FromSphereRotation(const idSphere &sphere, const idVec3 &start, const idRotation &rotation) {
 ////	idVec3 end = rotation * sphere.origin;
-////	origin = start + (sphere.origin + end) * 0.5f;
-////	radius = idMath::Sqrt(0.5f * (end - sphere.origin).LengthSqr()) + sphere.radius;
+////	this.origin = start + (sphere.origin + end) * 0.5f;
+////	this.radius = idMath::Sqrt(0.5f * (end - sphere.origin).LengthSqr()) + sphere.radius;
 ////}
 ////
 ////ID_INLINE void idSphere::AxisProjection(const idVec3 &dir, float &min, float &max) const {
 ////	float d;
-////	d = dir * origin;
-////	min = d - radius;
-////	max = d + radius;
+////	d = dir * this.origin;
+////	min = d - this.radius;
+////	max = d + this.radius;
 ////}
 ////
 ////#endif /* !__BV_SPHERE_H__ */
@@ -300,12 +289,12 @@ class idSphere {
 ////float idSphere::PlaneDistance( const idPlane &plane ) const {
 ////	float d;
 ////
-////	d = plane.Distance( origin );
-////	if ( d > radius ) {
-////		return d - radius;
+////	d = plane.Distance( this.origin );
+////	if ( d > this.radius ) {
+////		return d - this.radius;
 ////	}
 ////	if ( d < -radius ) {
-////		return d + radius;
+////		return d + this.radius;
 ////	}
 ////	return 0.0;
 ////}
@@ -318,8 +307,8 @@ class idSphere {
 ////int idSphere::PlaneSide( const idPlane &plane, const float epsilon ) const {
 ////	float d;
 ////
-////	d = plane.Distance( origin );
-////	if ( d > radius + epsilon ) {
+////	d = plane.Distance( this.origin );
+////	if ( d > this.radius + epsilon ) {
 ////		return PLANESIDE_FRONT;
 ////	}
 ////	if ( d < -radius - epsilon ) {
@@ -339,19 +328,19 @@ class idSphere {
 ////	idVec3 r, s, e;
 ////	float a;
 ////
-////	s = start - origin;
-////	e = end - origin;
+////	s = start - this.origin;
+////	e = end - this.origin;
 ////	r = e - s;
 ////	a = -s * r;
 ////	if ( a <= 0 ) {
-////		return ( s * s < radius * radius );
+////		return ( s * s < this.radius * this.radius );
 ////	}
 ////	else if ( a >= r * r ) {
-////		return ( e * e < radius * radius );
+////		return ( e * e < this.radius * this.radius );
 ////	}
 ////	else {
 ////		r = s + ( a / ( r * r ) ) * r;
-////		return ( r * r < radius * radius );
+////		return ( r * r < this.radius * this.radius );
 ////	}
 ////}
 ////
@@ -368,10 +357,10 @@ class idSphere {
 ////	double a, b, c, d, sqrtd;
 ////	idVec3 p;
 ////
-////	p = start - origin;
+////	p = start - this.origin;
 ////	a = dir * dir;
 ////	b = dir * p;
-////	c = p * p - radius * radius;
+////	c = p * p - this.radius * this.radius;
 ////	d = b * b - c * a;
 ////
 ////	if ( d < 0.0 ) {
@@ -401,16 +390,16 @@ class idSphere {
 ////
 ////	SIMDProcessor->MinMax( mins, maxs, points, numPoints );
 ////
-////	origin = ( mins + maxs ) * 0.5f;
+////	this.origin = ( mins + maxs ) * 0.5f;
 ////
 ////	radiusSqr = 0.0;
 ////	for ( i = 0; i < numPoints; i++ ) {
-////		dist = ( points[i] - origin ).LengthSqr();
+////		dist = ( points[i] - this.origin ).LengthSqr();
 ////		if ( dist > radiusSqr ) {
 ////			radiusSqr = dist;
 ////		}
 ////	}
-////	radius = idMath::Sqrt( radiusSqr );
+////	this.radius = idMath::Sqrt( radiusSqr );
 ////}
 ////
 ////

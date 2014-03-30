@@ -33,7 +33,7 @@
 ////#include "../Pvs.h"
 ////
 ////
-////class idRoutingCache {
+class idRoutingCache {
 ////	friend class idAASLocal;
 ////
 ////public:
@@ -55,10 +55,10 @@
 ////	unsigned short				startTravelTime;		// travel time to start with
 ////	unsigned char *				reachabilities;			// reachabilities used for routing
 ////	unsigned short *			travelTimes;			// travel time for every area
-////};
-////
-////
-////class idRoutingUpdate {
+};
+
+
+class idRoutingUpdate {
 ////	friend class idAASLocal;
 ////
 ////private:
@@ -70,19 +70,19 @@
 ////	idRoutingUpdate *			next;					// next in list
 ////	idRoutingUpdate *			prev;					// prev in list
 ////	bool						isInList;				// true if the update is in the list
-////};
-////
-////
-////class idRoutingObstacle {
+}
+
+
+class idRoutingObstacle {
 ////	friend class idAASLocal;
 ////								idRoutingObstacle( ) { }
 ////
 ////private:
 ////	idBounds					bounds;					// obstacle bounds
 ////	idList<int>					areas;					// areas the bounds are in
-////};
-////
-////
+};
+
+
 class idAASLocal extends idAAS {
 ////public:
 ////								idAASLocal( );
@@ -124,19 +124,19 @@ class idAASLocal extends idAAS {
 	name = new idStr;
 ////
 ////private:	// routing data
-////	idRoutingCache ***			areaCacheIndex:idRoutingCache;			// for each area in each cluster the travel times to all other areas in the cluster
-////	int							areaCacheIndexSize:number/*int*/;		// number of area cache entries
-////	idRoutingCache **			portalCacheIndex;		// for each area in the world the travel times from each portal
-////	int							portalCacheIndexSize:number/*int*/;	// number of portal cache entries
-////	idRoutingUpdate *			areaUpdate:idRoutingUpdate;				// memory used to update the area routing cache
-////	idRoutingUpdate *			portalUpdate:idRoutingUpdate;			// memory used to update the portal routing cache
-////	unsigned short *			goalAreaTravelTimes:number/*unsigned short*/;	// travel times to goal areas
-////	unsigned short *			areaTravelTimes:number/*unsigned short*/;;		// travel times through the areas
-////	int							numAreaTravelTimes;		// number of area travel times
-////	mutable idRoutingCache *	cacheListStart:idRoutingCache/*mutable*/;			// start of list with cache sorted from oldest to newest
-////	mutable idRoutingCache *	cacheListEnd:idRoutingCache/*mutable*/;			// end of list with cache sorted from oldest to newest
-////	mutable int					totalCacheMemory:number/*utable int*/;		// total cache memory used
-////	idList<idRoutingObstacle *>	obstacleList = new idList<idRoutingObstacle>(idRoutingObstacle, true);			// list with obstacles
+	areaCacheIndex:idRoutingCache[][]; //idRoutingCache ***				// for each area in each cluster the travel times to all other areas in the cluster
+	areaCacheIndexSize:number/*int*/;		// number of area cache entries
+	portalCacheIndex:idRoutingCache[];	//idRoutingCache **	// for each area in the world the travel times from each portal
+	portalCacheIndexSize:number/*int*/;	// number of portal cache entries
+	areaUpdate:idRoutingUpdate[];				// memory used to update the area routing cache
+	portalUpdate:idRoutingUpdate[];			// memory used to update the portal routing cache
+	goalAreaTravelTimes:Uint16Array;	// travel times to goal areas
+	areaTravelTimes:Uint16Array;		// travel times through the areas
+	numAreaTravelTimes: number /*int*/;		// number of area travel times
+	cacheListStart:idRoutingCache/*mutable*/;			// start of list with cache sorted from oldest to newest
+	cacheListEnd:idRoutingCache/*mutable*/;			// end of list with cache sorted from oldest to newest
+	totalCacheMemory:number/*mutable int*/;		// total cache memory used
+	obstacleList = new idList<idRoutingObstacle>(idRoutingObstacle, true);			// list with obstacles
 ////
 ////private:	// routing
 ////	bool						SetupRouting( );
@@ -434,142 +434,142 @@ AAS Routing
 */
 
 	
-/////*
-////============
-////idAASLocal::AreaTravelTime
-////============
-////*/
-////unsigned short idAASLocal::AreaTravelTime( int areaNum, start:idVec3, end:idVec3 ) const {
-////	float dist;
-////
-////	dist = ( end - start ).Length();
-////
-////	if ( file.GetArea( areaNum ).travelFlags & TFL_CROUCH ) {
-////		dist *= 100.0 / 100.0;
-////	} else if ( file.GetArea( areaNum ).travelFlags & TFL_WATER ) {
-////		dist *= 100.0 / 150.0;
-////	} else {
-////		dist *= 100.0 / 300.0;
-////	}
-////	if ( dist < 1.0 ) {
-////		return 1;
-////	}
-////	return (unsigned short) idMath.FtoiFast( dist );
-////}
-////
-/////*
-////============
-////idAASLocal::CalculateAreaTravelTimes
-////============
-////*/
-////void idAASLocal::CalculateAreaTravelTimes(void) {
-////	int n, i, j, numReach, numRevReach, t, maxt;
-////	byte *bytePtr;
-////	idReachability *reach, *rev_reach;
-////
-////	// get total memory for all area travel times
-////	numAreaTravelTimes = 0;
-////	for ( n = 0; n < file.GetNumAreas(); n++ ) {
-////
-////		if ( !(file.GetArea( n ).flags & (AREA_REACHABLE_WALK|AREA_REACHABLE_FLY)) ) {
-////			continue;
-////		}
-////
-////		numReach = 0;
-////		for ( reach = file.GetArea( n ).reach; reach; reach = reach.next ) {
-////			numReach++;
-////		}
-////
-////		numRevReach = 0;
-////		for ( rev_reach = file.GetArea( n ).rev_reach; rev_reach; rev_reach = rev_reach.rev_next ) {
-////			numRevReach++;
-////		}
-////		numAreaTravelTimes += numReach * numRevReach;
-////	}
-////
-////	areaTravelTimes = (unsigned short *) Mem_Alloc( numAreaTravelTimes * sizeof( unsigned short ) );
-////	bytePtr = (byte *) areaTravelTimes;
-////
-////	for ( n = 0; n < file.GetNumAreas(); n++ ) {
-////
-////		if ( !(file.GetArea( n ).flags & (AREA_REACHABLE_WALK|AREA_REACHABLE_FLY)) ) {
-////			continue;
-////		}
-////
-////		// for each reachability that starts in this area calculate the travel time
-////		// towards all the reachabilities that lead towards this area
-////		for ( maxt = i = 0, reach = file.GetArea( n ).reach; reach; reach = reach.next, i++ ) {
-////			assert( i < MAX_REACH_PER_AREA );
-////			if ( i >= MAX_REACH_PER_AREA ) {
-////				gameLocal.Error( "i >= MAX_REACH_PER_AREA" );
-////			}
-////			reach.number = i;
-////			reach.disableCount = 0;
-////			reach.areaTravelTimes = (unsigned short *) bytePtr;
-////			for ( j = 0, rev_reach = file.GetArea( n ).rev_reach; rev_reach; rev_reach = rev_reach.rev_next, j++ ) {
-////				t = AreaTravelTime( n, reach.start, rev_reach.end );
-////				reach.areaTravelTimes[j] = t;
-////				if ( t > maxt ) {
-////					maxt = t;
-////				}
-////			}
-////			bytePtr += j * sizeof( unsigned short );
-////		}
-////
-////		// if this area is a portal
-////		if ( file.GetArea( n ).cluster < 0 ) {
-////			// set the maximum travel time through this portal
-////			file.SetPortalMaxTravelTime( -file.GetArea( n ).cluster, maxt );
-////		}
-////	}
-////
-////	assert( ( (unsigned int) bytePtr - (unsigned int) areaTravelTimes ) <= numAreaTravelTimes * sizeof( unsigned short ) );
-////}
-////
+/*
+============
+idAASLocal::AreaTravelTime
+============
+*/
+	AreaTravelTime ( /*int*/ areaNum: number, start: idVec3, end: idVec3 ): number /*unsigned short*/ {
+		var /*float */dist: number;
+
+		dist = ( end.opSubtraction( start ) ).Length ( );
+
+		if ( this.file.GetArea( areaNum ).travelFlags & TFL_CROUCH ) {
+			dist *= 100.0 / 100.0;
+		} else if ( this.file.GetArea( areaNum ).travelFlags & TFL_WATER ) {
+			dist *= 100.0 / 150.0;
+		} else {
+			dist *= 100.0 / 300.0;
+		}
+		if ( dist < 1.0 ) {
+			return 1;
+		}
+		return ( unsigned_short )( idMath.FtoiFast( dist ) );
+	}
+
+/*
+============
+idAASLocal::CalculateAreaTravelTimes
+============
+*/
+	CalculateAreaTravelTimes ( ): void {
+		var /*int */n: number, i: number, j: number, numReach: number, numRevReach: number, t: number, maxt: number;
+		var bytePtr: number; //byte *bytePtr;
+		var reach: idReachability, rev_reach: idReachability;
+
+		// get total memory for all area travel times
+		this.numAreaTravelTimes = 0;
+		for ( n = 0; n < this.file.GetNumAreas ( ); n++ ) {
+
+			if ( !( this.file.GetArea( n ).flags & ( AREA_REACHABLE_WALK | AREA_REACHABLE_FLY ) ) ) {
+				continue;
+			}
+
+			numReach = 0;
+			for ( reach = this.file.GetArea( n ).reach; reach; reach = reach.next ) {
+				numReach++;
+			}
+
+			numRevReach = 0;
+			for ( rev_reach = this.file.GetArea( n ).rev_reach; rev_reach; rev_reach = rev_reach.rev_next ) {
+				numRevReach++;
+			}
+			this.numAreaTravelTimes += numReach * numRevReach;
+		}
+
+		this.areaTravelTimes = new Int16Array( Mem_Alloc( this.numAreaTravelTimes * sizeof( unsigned_short ) ) );
+		bytePtr = 0; //(byte *) areaTravelTimes;
+
+		for ( n = 0; n < this.file.GetNumAreas ( ); n++ ) {
+
+			if ( !( this.file.GetArea( n ).flags & ( AREA_REACHABLE_WALK | AREA_REACHABLE_FLY ) ) ) {
+				continue;
+			}
+
+			// for each reachability that starts in this area calculate the travel time
+			// towards all the reachabilities that lead towards this area
+			for ( maxt = i = 0, reach = this.file.GetArea( n ).reach; reach; reach = reach.next, i++ ) {
+				assert( i < MAX_REACH_PER_AREA );
+				if ( i >= MAX_REACH_PER_AREA ) {
+					gameLocal.Error( "i >= MAX_REACH_PER_AREA" );
+				}
+				reach.number = i;
+				reach.disableCount = 0;
+				reach.areaTravelTimes = this.areaTravelTimes.subarray( bytePtr ); //(unsigned short *) bytePtr;
+				for ( j = 0, rev_reach = this.file.GetArea( n ).rev_reach; rev_reach; rev_reach = rev_reach.rev_next, j++ ) {
+					t = this.AreaTravelTime( n, reach.start, rev_reach.end );
+					reach.areaTravelTimes[j] = t;
+					if ( t > maxt ) {
+						maxt = t;
+					}
+				}
+				bytePtr += j * sizeof( unsigned_short );
+			}
+
+			// if this area is a portal
+			if ( this.file.GetArea( n ).cluster < 0 ) {
+				// set the maximum travel time through this portal
+				this.file.SetPortalMaxTravelTime( -this.file.GetArea( n ).cluster, maxt );
+			}
+		}
+
+		assert( ( /*(unsigned int)*/ bytePtr /*- (unsigned int) this.areaTravelTimes*/ ) <= this.numAreaTravelTimes * sizeof( unsigned_short ) );
+	}
+
 /////*
 ////============
 ////idAASLocal::DeleteAreaTravelTimes
 ////============
 ////*/
 ////void idAASLocal::DeleteAreaTravelTimes( ) {
-////	Mem_Free( areaTravelTimes );
-////	areaTravelTimes = NULL;
-////	numAreaTravelTimes = 0;
+////	Mem_Free( this.areaTravelTimes );
+////	this.areaTravelTimes = NULL;
+////	this.numAreaTravelTimes = 0;
 ////}
-////
-/////*
-////============
-////idAASLocal::SetupRoutingCache
-////============
-////*/
-////void idAASLocal::SetupRoutingCache( ) {
-////	int i;
-////	byte *bytePtr;
-////
-////	areaCacheIndexSize = 0;
-////	for ( i = 0; i < file.GetNumClusters(); i++ ) {
-////		areaCacheIndexSize += file.GetCluster( i ).numReachableAreas;
-////	}
-////	areaCacheIndex = (idRoutingCache ***) Mem_ClearedAlloc( file.GetNumClusters() * sizeof( idRoutingCache ** ) +
-////													areaCacheIndexSize * sizeof( idRoutingCache *) );
-////	bytePtr = ((byte *)areaCacheIndex) + file.GetNumClusters() * sizeof( idRoutingCache ** );
-////	for ( i = 0; i < file.GetNumClusters(); i++ ) {
-////		areaCacheIndex[i] = ( idRoutingCache ** ) bytePtr;
-////		bytePtr += file.GetCluster( i ).numReachableAreas * sizeof( idRoutingCache * );
-////	}
-////
-////	portalCacheIndexSize = file.GetNumAreas();
-////	portalCacheIndex = (idRoutingCache **) Mem_ClearedAlloc( portalCacheIndexSize * sizeof( idRoutingCache * ) );
-////
-////	areaUpdate = (idRoutingUpdate *) Mem_ClearedAlloc( file.GetNumAreas() * sizeof( idRoutingUpdate ) );
-////	portalUpdate = (idRoutingUpdate *) Mem_ClearedAlloc( (file.GetNumPortals()+1) * sizeof( idRoutingUpdate ) );
-////
-////	goalAreaTravelTimes = (unsigned short *) Mem_ClearedAlloc( file.GetNumAreas() * sizeof( unsigned short ) );
-////
-////	cacheListStart = cacheListEnd = NULL;
-////	totalCacheMemory = 0;
-////}
-////
+
+/*
+============
+idAASLocal::SetupRoutingCache
+============
+*/
+	SetupRoutingCache ( ): void {
+		var /*int */i: number;
+		//byte *bytePtr;
+
+		this.areaCacheIndexSize = 0;
+		for ( i = 0; i < this.file.GetNumClusters ( ); i++ ) {
+			this.areaCacheIndexSize += this.file.GetCluster( i ).numReachableAreas;
+		}
+		this.areaCacheIndex = new Array( this.file.GetNumClusters ( ) ); //(idRoutingCache ***) Mem_ClearedAlloc( this.file.GetNumClusters() * sizeof( idRoutingCache ** ) +
+		//	this.areaCacheIndexSize * sizeof( idRoutingCache *) );
+		//bytePtr = ((byte *)this.areaCacheIndex) + this.file.GetNumClusters() * sizeof( idRoutingCache ** );
+		for ( i = 0; i < this.file.GetNumClusters ( ); i++ ) {
+			this.areaCacheIndex[i] = newStructArray<idRoutingCache>( idRoutingCache, this.areaCacheIndexSize ); //( idRoutingCache ** ) bytePtr;
+			//bytePtr += this.file.GetCluster( i ).numReachableAreas * sizeof( idRoutingCache * );
+		}
+
+		this.portalCacheIndexSize = this.file.GetNumAreas ( );
+		this.portalCacheIndex = newStructArray<idRoutingCache>( idRoutingCache, this.portalCacheIndexSize ); // (idRoutingCache **) Mem_ClearedAlloc( this.portalCacheIndexSize * sizeof( idRoutingCache * ) );
+
+		this.areaUpdate = newStructArray<idRoutingUpdate>( idRoutingUpdate, this.file.GetNumAreas ( ) ); // (idRoutingUpdate *) Mem_ClearedAlloc( this.file.GetNumAreas() * sizeof( idRoutingUpdate ) );
+		this.portalUpdate = newStructArray<idRoutingUpdate>( idRoutingUpdate, this.file.GetNumPortals ( ) + 1 ); // (idRoutingUpdate *) Mem_ClearedAlloc( (this.file.GetNumPortals()+1) * sizeof( idRoutingUpdate ) );
+
+		this.goalAreaTravelTimes = new Uint16Array( this.file.GetNumAreas ( ) ); // // (unsigned short *) Mem_ClearedAlloc( this.file.GetNumAreas() * sizeof( unsigned short ) );
+
+		this.cacheListStart = this.cacheListEnd = null;
+		this.totalCacheMemory = 0;
+	}
+
 /////*
 ////============
 ////idAASLocal::DeleteClusterCache
@@ -579,9 +579,9 @@ AAS Routing
 ////	int i;
 ////	idRoutingCache *cache;
 ////
-////	for ( i = 0; i < file.GetCluster( clusterNum ).numReachableAreas; i++ ) {
-////		for ( cache = areaCacheIndex[clusterNum][i]; cache; cache = areaCacheIndex[clusterNum][i] ) {
-////			areaCacheIndex[clusterNum][i] = cache.next;
+////	for ( i = 0; i < this.file.GetCluster( clusterNum ).numReachableAreas; i++ ) {
+////		for ( cache = this.areaCacheIndex[clusterNum][i]; cache; cache = this.areaCacheIndex[clusterNum][i] ) {
+////			this.areaCacheIndex[clusterNum][i] = cache.next;
 ////			UnlinkCache( cache );
 ////			delete cache;
 ////		}
@@ -597,9 +597,9 @@ AAS Routing
 ////	int i;
 ////	idRoutingCache *cache;
 ////
-////	for ( i = 0; i < file.GetNumAreas(); i++ ) {
-////		for ( cache = portalCacheIndex[i]; cache; cache = portalCacheIndex[i] ) {
-////			portalCacheIndex[i] = cache.next;
+////	for ( i = 0; i < this.file.GetNumAreas(); i++ ) {
+////		for ( cache = this.portalCacheIndex[i]; cache; cache = this.portalCacheIndex[i] ) {
+////			this.portalCacheIndex[i] = cache.next;
 ////			UnlinkCache( cache );
 ////			delete cache;
 ////		}
@@ -614,27 +614,27 @@ AAS Routing
 ////void idAASLocal::ShutdownRoutingCache( ) {
 ////	int i;
 ////
-////	for ( i = 0; i < file.GetNumClusters(); i++ ) {
+////	for ( i = 0; i < this.file.GetNumClusters(); i++ ) {
 ////		DeleteClusterCache( i );
 ////	}
 ////
 ////	DeletePortalCache();
 ////
-////	Mem_Free( areaCacheIndex );
-////	areaCacheIndex = NULL;
-////	areaCacheIndexSize = 0;
-////	Mem_Free( portalCacheIndex );
-////	portalCacheIndex = NULL;
-////	portalCacheIndexSize = 0;
-////	Mem_Free( areaUpdate );
-////	areaUpdate = NULL;
-////	Mem_Free( portalUpdate );
-////	portalUpdate = NULL;
-////	Mem_Free( goalAreaTravelTimes );
-////	goalAreaTravelTimes = NULL;
+////	Mem_Free( this.areaCacheIndex );
+////	this.areaCacheIndex = NULL;
+////	this.areaCacheIndexSize = 0;
+////	Mem_Free( this.portalCacheIndex );
+////	this.portalCacheIndex = NULL;
+////	this.portalCacheIndexSize = 0;
+////	Mem_Free( this.areaUpdate );
+////	this.areaUpdate = NULL;
+////	Mem_Free( this.portalUpdate );
+////	this.portalUpdate = NULL;
+////	Mem_Free( this.goalAreaTravelTimes );
+////	this.goalAreaTravelTimes = NULL;
 ////
-////	cacheListStart = cacheListEnd = NULL;
-////	totalCacheMemory = 0;
+////	this.cacheListStart = this.cacheListEnd = NULL;
+////	this.totalCacheMemory = 0;
 ////}
 
 /*
@@ -643,9 +643,8 @@ idAASLocal::SetupRouting
 ============
 */
 	SetupRouting ( ): boolean {
-		todoThrow ( );
-		//CalculateAreaTravelTimes();
-		//SetupRoutingCache();
+		this.CalculateAreaTravelTimes();
+		this.SetupRoutingCache();
 		return true;
 	}
 
@@ -671,7 +670,7 @@ idAASLocal::SetupRouting
 ////
 ////	numAreaCache = numPortalCache = 0;
 ////	totalAreaCacheMemory = totalPortalCacheMemory = 0;
-////	for ( cache = cacheListStart; cache; cache = cache.time_next ) {
+////	for ( cache = this.cacheListStart; cache; cache = cache.time_next ) {
 ////		if ( cache.type == CACHETYPE_AREA ) {
 ////			numAreaCache++;
 ////			totalAreaCacheMemory += sizeof( idRoutingCache ) + cache.size * (sizeof( unsigned short ) + sizeof( byte ));
@@ -683,10 +682,10 @@ idAASLocal::SetupRouting
 ////
 ////	gameLocal.Printf( "%6d area cache (%d KB)\n", numAreaCache, totalAreaCacheMemory >> 10 );
 ////	gameLocal.Printf( "%6d portal cache (%d KB)\n", numPortalCache, totalPortalCacheMemory >> 10 );
-////	gameLocal.Printf( "%6d total cache (%d KB)\n", numAreaCache + numPortalCache, totalCacheMemory >> 10 );
-////	gameLocal.Printf( "%6d area travel times (%d KB)\n", numAreaTravelTimes, ( numAreaTravelTimes * sizeof( unsigned short ) ) >> 10 );
-////	gameLocal.Printf( "%6d area cache entries (%d KB)\n", areaCacheIndexSize, ( areaCacheIndexSize * sizeof( idRoutingCache * ) ) >> 10 );
-////	gameLocal.Printf( "%6d portal cache entries (%d KB)\n", portalCacheIndexSize, ( portalCacheIndexSize * sizeof( idRoutingCache * ) ) >> 10 );
+////	gameLocal.Printf( "%6d total cache (%d KB)\n", numAreaCache + numPortalCache, this.totalCacheMemory >> 10 );
+////	gameLocal.Printf( "%6d area travel times (%d KB)\n", this.numAreaTravelTimes, ( this.numAreaTravelTimes * sizeof( unsigned short ) ) >> 10 );
+////	gameLocal.Printf( "%6d area cache entries (%d KB)\n", this.areaCacheIndexSize, ( this.areaCacheIndexSize * sizeof( idRoutingCache * ) ) >> 10 );
+////	gameLocal.Printf( "%6d portal cache entries (%d KB)\n", this.portalCacheIndexSize, ( this.portalCacheIndexSize * sizeof( idRoutingCache * ) ) >> 10 );
 ////}
 ////
 /////*
@@ -697,15 +696,15 @@ idAASLocal::SetupRouting
 ////void idAASLocal::RemoveRoutingCacheUsingArea( int areaNum ) {
 ////	int clusterNum;
 ////
-////	clusterNum = file.GetArea( areaNum ).cluster;
+////	clusterNum = this.file.GetArea( areaNum ).cluster;
 ////	if ( clusterNum > 0 ) {
 ////		// remove all the cache in the cluster the area is in
 ////		DeleteClusterCache( clusterNum );
 ////	}
 ////	else {
 ////		// if this is a portal remove all cache in both the front and back cluster
-////		DeleteClusterCache( file.GetPortal( -clusterNum ).clusters[0] );
-////		DeleteClusterCache( file.GetPortal( -clusterNum ).clusters[1] );
+////		DeleteClusterCache( this.file.GetPortal( -clusterNum ).clusters[0] );
+////		DeleteClusterCache( this.file.GetPortal( -clusterNum ).clusters[1] );
 ////	}
 ////	DeletePortalCache();
 ////}
@@ -716,13 +715,13 @@ idAASLocal::SetupRouting
 ////============
 ////*/
 ////void idAASLocal::DisableArea( int areaNum ) {
-////	assert( areaNum > 0 && areaNum < file.GetNumAreas() );
+////	assert( areaNum > 0 && areaNum < this.file.GetNumAreas() );
 ////
-////	if ( file.GetArea( areaNum ).travelFlags & TFL_INVALID ) {
+////	if ( this.file.GetArea( areaNum ).travelFlags & TFL_INVALID ) {
 ////		return;
 ////	}
 ////
-////	file.SetAreaTravelFlag( areaNum, TFL_INVALID );
+////	this.file.SetAreaTravelFlag( areaNum, TFL_INVALID );
 ////
 ////	RemoveRoutingCacheUsingArea( areaNum );
 ////}
@@ -733,13 +732,13 @@ idAASLocal::SetupRouting
 ////============
 ////*/
 ////void idAASLocal::EnableArea( int areaNum ) {
-////	assert( areaNum > 0 && areaNum < file.GetNumAreas() );
+////	assert( areaNum > 0 && areaNum < this.file.GetNumAreas() );
 ////
-////	if ( !( file.GetArea( areaNum ).travelFlags & TFL_INVALID ) ) {
+////	if ( !( this.file.GetArea( areaNum ).travelFlags & TFL_INVALID ) ) {
 ////		return;
 ////	}
 ////
-////	file.RemoveAreaTravelFlag( areaNum, TFL_INVALID );
+////	this.file.RemoveAreaTravelFlag( areaNum, TFL_INVALID );
 ////
 ////	RemoveRoutingCacheUsingArea( areaNum );
 ////}
@@ -757,7 +756,7 @@ idAASLocal::SetupRouting
 ////	while( nodeNum != 0 ) {
 ////		if ( nodeNum < 0 ) {
 ////			// if this area is a cluster portal
-////			if ( file.GetArea( -nodeNum ).contents & areaContents ) {
+////			if ( this.file.GetArea( -nodeNum ).contents & areaContents ) {
 ////				if ( disabled ) {
 ////					DisableArea( -nodeNum );
 ////				} else {
@@ -767,8 +766,8 @@ idAASLocal::SetupRouting
 ////			}
 ////			break;
 ////		}
-////		node = &file.GetNode( nodeNum );
-////		res = bounds.PlaneSide( file.GetPlane( node.planeNum ) );
+////		node = &this.file.GetNode( nodeNum );
+////		res = bounds.PlaneSide( this.file.GetPlane( node.planeNum ) );
 ////		if ( res == PLANESIDE_BACK ) {
 ////			nodeNum = node.children[1];
 ////		}
@@ -792,12 +791,12 @@ idAASLocal::SetupRouting
 ////bool idAASLocal::SetAreaState( const idBounds &bounds, const int areaContents, bool disabled ) {
 ////	idBounds expBounds;
 ////
-////	if ( !file ) {
+////	if ( !this.file ) {
 ////		return false;
 ////	}
 ////
-////	expBounds[0] = bounds[0] - file.GetSettings().boundingBoxes[0][1];
-////	expBounds[1] = bounds[1] - file.GetSettings().boundingBoxes[0][0];
+////	expBounds[0] = bounds[0] - this.file.GetSettings().boundingBoxes[0][1];
+////	expBounds[1] = bounds[1] - this.file.GetSettings().boundingBoxes[0][0];
 ////
 ////	// find all areas within or touching the bounds with the given contents and disable/enable them for routing
 ////	return SetAreaState_r( 1, expBounds, areaContents, disabled );
@@ -817,8 +816,8 @@ idAASLocal::SetupRouting
 ////			areas.Append( -nodeNum );
 ////			break;
 ////		}
-////		node = &file.GetNode( nodeNum );
-////		res = bounds.PlaneSide( file.GetPlane( node.planeNum ) );
+////		node = &this.file.GetNode( nodeNum );
+////		res = bounds.PlaneSide( this.file.GetPlane( node.planeNum ) );
 ////		if ( res == PLANESIDE_BACK ) {
 ////			nodeNum = node.children[1];
 ////		}
@@ -847,7 +846,7 @@ idAASLocal::SetupRouting
 ////
 ////		RemoveRoutingCacheUsingArea( obstacle.areas[i] );
 ////
-////		area = &file.GetArea( obstacle.areas[i] );
+////		area = &this.file.GetArea( obstacle.areas[i] );
 ////
 ////		for ( rev_reach = area.rev_reach; rev_reach; rev_reach = rev_reach.rev_next ) {
 ////
@@ -894,13 +893,13 @@ idAASLocal::SetupRouting
 ////aasHandle_t idAASLocal::AddObstacle( const idBounds &bounds ) {
 ////	idRoutingObstacle *obstacle;
 ////
-////	if ( !file ) {
+////	if ( !this.file ) {
 ////		return -1;
 ////	}
 ////
 ////	obstacle = new idRoutingObstacle;
-////	obstacle.bounds[0] = bounds[0] - file.GetSettings().boundingBoxes[0][1];
-////	obstacle.bounds[1] = bounds[1] - file.GetSettings().boundingBoxes[0][0];
+////	obstacle.bounds[0] = bounds[0] - this.file.GetSettings().boundingBoxes[0][1];
+////	obstacle.bounds[1] = bounds[1] - this.file.GetSettings().boundingBoxes[0][0];
 ////	GetBoundsAreas_r( 1, obstacle.bounds, obstacle.areas );
 ////	SetObstacleState( obstacle, true );
 ////
@@ -914,7 +913,7 @@ idAASLocal::SetupRouting
 ////============
 ////*/
 ////void idAASLocal::RemoveObstacle( const aasHandle_t handle ) {
-////	if ( !file ) {
+////	if ( !this.file ) {
 ////		return;
 ////	}
 ////	if ( ( handle >= 0 ) && ( handle < obstacleList.Num() ) ) {
@@ -933,7 +932,7 @@ idAASLocal::SetupRouting
 ////void idAASLocal::RemoveAllObstacles( ) {
 ////	int i;
 ////
-////	if ( !file ) {
+////	if ( !this.file ) {
 ////		return;
 ////	}
 ////
@@ -954,21 +953,21 @@ idAASLocal::SetupRouting
 ////void idAASLocal::LinkCache( idRoutingCache *cache ) const {
 ////
 ////	// if the cache is already linked
-////	if ( cache.time_next || cache.time_prev || cacheListStart == cache ) {
+////	if ( cache.time_next || cache.time_prev || this.cacheListStart == cache ) {
 ////		UnlinkCache( cache );
 ////	}
 ////
-////	totalCacheMemory += cache.Size();
+////	this.totalCacheMemory += cache.Size();
 ////
 ////	// add cache to the end of the list
 ////	cache.time_next = NULL;
-////	cache.time_prev = cacheListEnd;
-////	if ( cacheListEnd ) {
-////		cacheListEnd.time_next = cache;
+////	cache.time_prev = this.cacheListEnd;
+////	if ( this.cacheListEnd ) {
+////		this.cacheListEnd.time_next = cache;
 ////	}
-////	cacheListEnd = cache;
-////	if ( !cacheListStart ) {
-////		cacheListStart = cache;
+////	this.cacheListEnd = cache;
+////	if ( !this.cacheListStart ) {
+////		this.cacheListStart = cache;
 ////	}
 ////}
 ////
@@ -979,18 +978,18 @@ idAASLocal::SetupRouting
 ////*/
 ////void idAASLocal::UnlinkCache( idRoutingCache *cache ) const {
 ////
-////	totalCacheMemory -= cache.Size();
+////	this.totalCacheMemory -= cache.Size();
 ////
 ////	// unlink the cache
 ////	if ( cache.time_next ) {
 ////		cache.time_next.time_prev = cache.time_prev;
 ////	} else {
-////		cacheListEnd = cache.time_prev;
+////		this.cacheListEnd = cache.time_prev;
 ////	}
 ////	if ( cache.time_prev ) {
 ////		cache.time_prev.time_next = cache.time_next;
 ////	} else {
-////		cacheListStart = cache.time_next;
+////		this.cacheListStart = cache.time_next;
 ////	}
 ////	cache.time_next = cache.time_prev = NULL;
 ////}
@@ -1003,10 +1002,10 @@ idAASLocal::SetupRouting
 ////void idAASLocal::DeleteOldestCache( ) const {
 ////	idRoutingCache *cache;
 ////
-////	assert( cacheListStart );
+////	assert( this.cacheListStart );
 ////
 ////	// unlink the oldest cache
-////	cache = cacheListStart;
+////	cache = this.cacheListStart;
 ////	UnlinkCache( cache );
 ////
 ////	// unlink the oldest cache from the area or portal cache index
@@ -1017,10 +1016,10 @@ idAASLocal::SetupRouting
 ////		cache.prev.next = cache.next;
 ////	}
 ////	else if ( cache.type == CACHETYPE_AREA ) {
-////		areaCacheIndex[cache.cluster][ClusterAreaNum( cache.cluster, cache.areaNum )] = cache.next;
+////		this.areaCacheIndex[cache.cluster][ClusterAreaNum( cache.cluster, cache.areaNum )] = cache.next;
 ////	}
 ////	else if ( cache.type == CACHETYPE_PORTAL ) {
-////		portalCacheIndex[cache.areaNum] = cache.next;
+////		this.portalCacheIndex[cache.areaNum] = cache.next;
 ////	}
 ////
 ////	delete cache;
@@ -1034,7 +1033,7 @@ idAASLocal::SetupRouting
 ////idReachability *idAASLocal::GetAreaReachability( int areaNum, int reachabilityNum ) const {
 ////	idReachability *reach;
 ////
-////	for ( reach = file.GetArea( areaNum ).reach; reach; reach = reach.next ) {
+////	for ( reach = this.file.GetArea( areaNum ).reach; reach; reach = reach.next ) {
 ////		if ( --reachabilityNum < 0 ) {
 ////			return reach;
 ////		}
@@ -1050,13 +1049,13 @@ idAASLocal::SetupRouting
 ////ID_INLINE int idAASLocal::ClusterAreaNum( int clusterNum, int areaNum ) const {
 ////	int side, areaCluster;
 ////
-////	areaCluster = file.GetArea( areaNum ).cluster;
+////	areaCluster = this.file.GetArea( areaNum ).cluster;
 ////	if ( areaCluster > 0 ) {
-////		return file.GetArea( areaNum ).clusterAreaNum;
+////		return this.file.GetArea( areaNum ).clusterAreaNum;
 ////	}
 ////	else {
-////		side = file.GetPortal( -areaCluster ).clusters[0] != clusterNum;
-////		return file.GetPortal( -areaCluster ).clusterAreaNum[side];
+////		side = this.file.GetPortal( -areaCluster ).clusters[0] != clusterNum;
+////		return this.file.GetPortal( -areaCluster ).clusterAreaNum[side];
 ////	}
 ////}
 ////
@@ -1073,7 +1072,7 @@ idAASLocal::SetupRouting
 ////	const aasArea_t *nextArea;
 ////
 ////	// number of reachability areas within this cluster
-////	numReachableAreas = file.GetCluster( areaCache.cluster ).numReachableAreas;
+////	numReachableAreas = this.file.GetCluster( areaCache.cluster ).numReachableAreas;
 ////
 ////	// number of the start area within the cluster
 ////	clusterAreaNum = ClusterAreaNum( areaCache.cluster, areaCache.areaNum );
@@ -1086,7 +1085,7 @@ idAASLocal::SetupRouting
 ////	memset( startAreaTravelTimes, 0, sizeof( startAreaTravelTimes ) );
 ////
 ////	// initialize first update
-////	curUpdate = &areaUpdate[clusterAreaNum];
+////	curUpdate = &this.areaUpdate[clusterAreaNum];
 ////	curUpdate.areaNum = areaCache.areaNum;
 ////	curUpdate.areaTravelTimes = startAreaTravelTimes;
 ////	curUpdate.tmpTravelTime = areaCache.startTravelTime;
@@ -1109,7 +1108,7 @@ idAASLocal::SetupRouting
 ////
 ////		curUpdate.isInList = false;
 ////
-////		for ( i = 0, reach = file.GetArea( curUpdate.areaNum ).rev_reach; reach; reach = reach.rev_next, i++ ) {
+////		for ( i = 0, reach = this.file.GetArea( curUpdate.areaNum ).rev_reach; reach; reach = reach.rev_next, i++ ) {
 ////
 ////			// if the reachability uses an undesired travel type
 ////			if ( reach.travelType & badTravelFlags ) {
@@ -1118,7 +1117,7 @@ idAASLocal::SetupRouting
 ////
 ////			// next area the reversed reachability leads to
 ////			nextAreaNum = reach.fromAreaNum;
-////			nextArea = &file.GetArea( nextAreaNum );
+////			nextArea = &this.file.GetArea( nextAreaNum );
 ////
 ////			// if traveling through the next area requires an undesired travel flag
 ////			if ( nextArea.travelFlags & badTravelFlags ) {
@@ -1148,7 +1147,7 @@ idAASLocal::SetupRouting
 ////
 ////				areaCache.travelTimes[clusterAreaNum] = t;
 ////				areaCache.reachabilities[clusterAreaNum] = reach.number; // reversed reachability used to get into this area
-////				nextUpdate = &areaUpdate[clusterAreaNum];
+////				nextUpdate = &this.areaUpdate[clusterAreaNum];
 ////				nextUpdate.areaNum = nextAreaNum;
 ////				nextUpdate.tmpTravelTime = t;
 ////				nextUpdate.areaTravelTimes = reach.areaTravelTimes;
@@ -1156,7 +1155,7 @@ idAASLocal::SetupRouting
 ////				// if we are not allowed to fly
 ////				if ( badTravelFlags & TFL_FLY ) {
 ////					// avoid areas near ledges
-////					if ( file.GetArea( nextAreaNum ).flags & AREA_LEDGE ) {
+////					if ( this.file.GetArea( nextAreaNum ).flags & AREA_LEDGE ) {
 ////						nextUpdate.tmpTravelTime += LEDGE_TRAVELTIME_PANALTY;
 ////					}
 ////				}
@@ -1190,7 +1189,7 @@ idAASLocal::SetupRouting
 ////	// number of the area in the cluster
 ////	clusterAreaNum = ClusterAreaNum( clusterNum, areaNum );
 ////	// pointer to the cache for the area in the cluster
-////	clusterCache = areaCacheIndex[clusterNum][clusterAreaNum];
+////	clusterCache = this.areaCacheIndex[clusterNum][clusterAreaNum];
 ////	// check if cache without undesired travel flags already exists
 ////	for ( cache = clusterCache; cache; cache = cache.next ) {
 ////		if ( cache.travelFlags == travelFlags ) {
@@ -1199,7 +1198,7 @@ idAASLocal::SetupRouting
 ////	}
 ////	// if no cache found
 ////	if ( !cache ) {
-////		cache = new idRoutingCache( file.GetCluster( clusterNum ).numReachableAreas );
+////		cache = new idRoutingCache( this.file.GetCluster( clusterNum ).numReachableAreas );
 ////		cache.type = CACHETYPE_AREA;
 ////		cache.cluster = clusterNum;
 ////		cache.areaNum = areaNum;
@@ -1210,7 +1209,7 @@ idAASLocal::SetupRouting
 ////		if ( clusterCache ) {
 ////			clusterCache.prev = cache;
 ////		}
-////		areaCacheIndex[clusterNum][clusterAreaNum] = cache;
+////		this.areaCacheIndex[clusterNum][clusterAreaNum] = cache;
 ////		UpdateAreaRoutingCache( cache );
 ////	}
 ////	LinkCache( cache );
@@ -1230,7 +1229,7 @@ idAASLocal::SetupRouting
 ////	idRoutingCache *cache;
 ////	idRoutingUpdate *updateListStart, *updateListEnd, *curUpdate, *nextUpdate;
 ////
-////	curUpdate = &portalUpdate[ file.GetNumPortals() ];
+////	curUpdate = &this.portalUpdate[ this.file.GetNumPortals() ];
 ////	curUpdate.cluster = portalCache.cluster;
 ////	curUpdate.areaNum = portalCache.areaNum;
 ////	curUpdate.tmpTravelTime = portalCache.startTravelTime;
@@ -1256,14 +1255,14 @@ idAASLocal::SetupRouting
 ////		// current update is removed from the list
 ////		curUpdate.isInList = false;
 ////
-////		cluster = &file.GetCluster( curUpdate.cluster );
+////		cluster = &this.file.GetCluster( curUpdate.cluster );
 ////		cache = GetAreaRoutingCache( curUpdate.cluster, curUpdate.areaNum, portalCache.travelFlags );
 ////
 ////		// take all portals of the cluster
 ////		for ( i = 0; i < cluster.numPortals; i++ ) {
-////			portalNum = file.GetPortalIndex( cluster.firstPortal + i );
+////			portalNum = this.file.GetPortalIndex( cluster.firstPortal + i );
 ////			assert( portalNum < portalCache.size );
-////			portal = &file.GetPortal( portalNum );
+////			portal = &this.file.GetPortal( portalNum );
 ////
 ////			clusterAreaNum = ClusterAreaNum( curUpdate.cluster, portal.areaNum );
 ////			if ( clusterAreaNum >= cluster.numReachableAreas ) {
@@ -1280,7 +1279,7 @@ idAASLocal::SetupRouting
 ////
 ////				portalCache.travelTimes[portalNum] = t;
 ////				portalCache.reachabilities[portalNum] = cache.reachabilities[clusterAreaNum];
-////				nextUpdate = &portalUpdate[portalNum];
+////				nextUpdate = &this.portalUpdate[portalNum];
 ////				if ( portal.clusters[0] == curUpdate.cluster ) {
 ////					nextUpdate.cluster = portal.clusters[1];
 ////				}
@@ -1318,25 +1317,25 @@ idAASLocal::SetupRouting
 ////	idRoutingCache *cache;
 ////
 ////	// check if cache without undesired travel flags already exists
-////	for ( cache = portalCacheIndex[areaNum]; cache; cache = cache.next ) {
+////	for ( cache = this.portalCacheIndex[areaNum]; cache; cache = cache.next ) {
 ////		if ( cache.travelFlags == travelFlags ) {
 ////			break;
 ////		}
 ////	}
 ////	// if no cache found
 ////	if ( !cache ) {
-////		cache = new idRoutingCache( file.GetNumPortals() );
+////		cache = new idRoutingCache( this.file.GetNumPortals() );
 ////		cache.type = CACHETYPE_PORTAL;
 ////		cache.cluster = clusterNum;
 ////		cache.areaNum = areaNum;
 ////		cache.startTravelTime = 1;
 ////		cache.travelFlags = travelFlags;
 ////		cache.prev = NULL;
-////		cache.next = portalCacheIndex[areaNum];
-////		if ( portalCacheIndex[areaNum] ) {
-////			portalCacheIndex[areaNum].prev = cache;
+////		cache.next = this.portalCacheIndex[areaNum];
+////		if ( this.portalCacheIndex[areaNum] ) {
+////			this.portalCacheIndex[areaNum].prev = cache;
 ////		}
-////		portalCacheIndex[areaNum] = cache;
+////		this.portalCacheIndex[areaNum] = cache;
 ////		UpdatePortalRoutingCache( cache );
 ////	}
 ////	LinkCache( cache );
@@ -1359,7 +1358,7 @@ idAASLocal::SetupRouting
 ////	travelTime = 0;
 ////	*reach = NULL;
 ////
-////	if ( !file ) {
+////	if ( !this.file ) {
 ////		return false;
 ////	}
 ////
@@ -1367,28 +1366,28 @@ idAASLocal::SetupRouting
 ////		return true;
 ////	}
 ////
-////	if ( areaNum <= 0 || areaNum >= file.GetNumAreas() ) {
+////	if ( areaNum <= 0 || areaNum >= this.file.GetNumAreas() ) {
 ////		gameLocal.Printf( "RouteToGoalArea: areaNum %d out of range\n", areaNum );
 ////		return false;
 ////	}
-////	if ( goalAreaNum <= 0 || goalAreaNum >= file.GetNumAreas() ) {
+////	if ( goalAreaNum <= 0 || goalAreaNum >= this.file.GetNumAreas() ) {
 ////		gameLocal.Printf( "RouteToGoalArea: goalAreaNum %d out of range\n", goalAreaNum );
 ////		return false;
 ////	}
 ////
-////	while( totalCacheMemory > MAX_ROUTING_CACHE_MEMORY ) {
+////	while( this.totalCacheMemory > MAX_ROUTING_CACHE_MEMORY ) {
 ////		DeleteOldestCache();
 ////	}
 ////
-////	clusterNum = file.GetArea( areaNum ).cluster;
-////	goalClusterNum = file.GetArea( goalAreaNum ).cluster;
+////	clusterNum = this.file.GetArea( areaNum ).cluster;
+////	goalClusterNum = this.file.GetArea( goalAreaNum ).cluster;
 ////
 ////	// if the source area is a cluster portal, read directly from the portal cache
 ////	if ( clusterNum < 0 ) {
 ////		// if the goal area is a portal
 ////		if ( goalClusterNum < 0 ) {
 ////			// just assume the goal area is part of the front cluster
-////			portal = &file.GetPortal( -goalClusterNum );
+////			portal = &this.file.GetPortal( -goalClusterNum );
 ////			goalClusterNum = portal.clusters[0];
 ////		}
 ////		// get the portal routing cache
@@ -1403,7 +1402,7 @@ idAASLocal::SetupRouting
 ////
 ////	// check if the goal area is a portal of the source area cluster
 ////	if ( goalClusterNum < 0 ) {
-////		portal = &file.GetPortal( -goalClusterNum );
+////		portal = &this.file.GetPortal( -goalClusterNum );
 ////		if ( portal.clusters[0] == clusterNum || portal.clusters[1] == clusterNum) {
 ////			goalClusterNum = clusterNum;
 ////		}
@@ -1425,20 +1424,20 @@ idAASLocal::SetupRouting
 ////		clusterCache = NULL;
 ////	}
 ////
-////	clusterNum = file.GetArea( areaNum ).cluster;
-////	goalClusterNum = file.GetArea( goalAreaNum ).cluster;
+////	clusterNum = this.file.GetArea( areaNum ).cluster;
+////	goalClusterNum = this.file.GetArea( goalAreaNum ).cluster;
 ////
 ////	// if the goal area is a portal
 ////	if ( goalClusterNum < 0 ) {
 ////		// just assume the goal area is part of the front cluster
-////		portal = &file.GetPortal( -goalClusterNum );
+////		portal = &this.file.GetPortal( -goalClusterNum );
 ////		goalClusterNum = portal.clusters[0];
 ////	}
 ////	// get the portal routing cache
 ////	portalCache = GetPortalRoutingCache( goalClusterNum, goalAreaNum, travelFlags );
 ////
 ////	// the cluster the area is in
-////	cluster = &file.GetCluster( clusterNum );
+////	cluster = &this.file.GetCluster( clusterNum );
 ////	// current area inside the current cluster
 ////	clusterAreaNum = ClusterAreaNum( clusterNum, areaNum );
 ////	// if the area is not a reachable area
@@ -1448,14 +1447,14 @@ idAASLocal::SetupRouting
 ////
 ////	// find the portal of the source area cluster leading towards the goal area
 ////	for ( i = 0; i < cluster.numPortals; i++ ) {
-////		portalNum = file.GetPortalIndex( cluster.firstPortal + i );
+////		portalNum = this.file.GetPortalIndex( cluster.firstPortal + i );
 ////
 ////		// if the goal area isn't reachable from the portal
 ////		if ( !portalCache.travelTimes[portalNum] ) {
 ////			continue;
 ////		}
 ////
-////		portal = &file.GetPortal( portalNum );
+////		portal = &this.file.GetPortal( portalNum );
 ////		// get the cache of the portal area
 ////		areaCache = GetAreaRoutingCache( clusterNum, portal.areaNum, travelFlags );
 ////		// if the portal is not reachable from this area
@@ -1468,7 +1467,7 @@ idAASLocal::SetupRouting
 ////		if ( clusterCache ) {
 ////			// if the next reachability from the portal leads back into the cluster
 ////			nextr = GetAreaReachability( portal.areaNum, portalCache.reachabilities[portalNum] );
-////			if ( file.GetArea( nextr.toAreaNum ).cluster < 0 || file.GetArea( nextr.toAreaNum ).cluster == clusterNum ) {
+////			if ( this.file.GetArea( nextr.toAreaNum ).cluster < 0 || this.file.GetArea( nextr.toAreaNum ).cluster == clusterNum ) {
 ////				continue;
 ////			}
 ////		}
@@ -1508,7 +1507,7 @@ idAASLocal::SetupRouting
 ////	int travelTime;
 ////	idReachability *reach;
 ////
-////	if ( !file ) {
+////	if ( !this.file ) {
 ////		return 0;
 ////	}
 ////
@@ -1532,7 +1531,7 @@ idAASLocal::SetupRouting
 ////	idVec3 v1, v2, p;
 ////	float targetDist, dist;
 ////
-////	if ( file == NULL || areaNum <= 0 ) {
+////	if ( this.file == NULL || areaNum <= 0 ) {
 ////		goal.areaNum = areaNum;
 ////		goal.origin = origin;
 ////		return false;
@@ -1547,17 +1546,17 @@ idAASLocal::SetupRouting
 ////
 ////	// setup obstacles
 ////	for ( k = 0; k < numObstacles; k++ ) {
-////		obstacles[k].expAbsBounds[0] = obstacles[k].absBounds[0] - file.GetSettings().boundingBoxes[0][1];
-////		obstacles[k].expAbsBounds[1] = obstacles[k].absBounds[1] - file.GetSettings().boundingBoxes[0][0];
+////		obstacles[k].expAbsBounds[0] = obstacles[k].absBounds[0] - this.file.GetSettings().boundingBoxes[0][1];
+////		obstacles[k].expAbsBounds[1] = obstacles[k].absBounds[1] - this.file.GetSettings().boundingBoxes[0][0];
 ////	}
 ////	
 ////	badTravelFlags = ~travelFlags;
-////	SIMDProcessor.Memset( goalAreaTravelTimes, 0, file.GetNumAreas() * sizeof( unsigned short ) );
+////	SIMDProcessor.Memset( this.goalAreaTravelTimes, 0, this.file.GetNumAreas() * sizeof( unsigned short ) );
 ////
 ////	targetDist = (target - origin).Length();
 ////
 ////	// initialize first update
-////	curUpdate = &areaUpdate[areaNum];
+////	curUpdate = &this.areaUpdate[areaNum];
 ////	curUpdate.areaNum = areaNum;
 ////	curUpdate.tmpTravelTime = 0;
 ////	curUpdate.start = origin;
@@ -1588,7 +1587,7 @@ idAASLocal::SetupRouting
 ////			continue;
 ////		}
 ////
-////		for ( i = 0, reach = file.GetArea( curUpdate.areaNum ).reach; reach; reach = reach.next, i++ ) {
+////		for ( i = 0, reach = this.file.GetArea( curUpdate.areaNum ).reach; reach; reach = reach.next, i++ ) {
 ////
 ////			// if the reachability uses an undesired travel type
 ////			if ( reach.travelType & badTravelFlags ) {
@@ -1597,7 +1596,7 @@ idAASLocal::SetupRouting
 ////
 ////			// next area the reversed reachability leads to
 ////			nextAreaNum = reach.toAreaNum;
-////			nextArea = &file.GetArea( nextAreaNum );
+////			nextArea = &this.file.GetArea( nextAreaNum );
 ////
 ////			// if traveling through the next area requires an undesired travel flag
 ////			if ( nextArea.travelFlags & badTravelFlags ) {
@@ -1638,7 +1637,7 @@ idAASLocal::SetupRouting
 ////			}
 ////
 ////			// if this is not the best path towards the next area
-////			if ( goalAreaTravelTimes[nextAreaNum] && t >= goalAreaTravelTimes[nextAreaNum] ) {
+////			if ( this.goalAreaTravelTimes[nextAreaNum] && t >= this.goalAreaTravelTimes[nextAreaNum] ) {
 ////				continue;
 ////			}
 ////
@@ -1653,8 +1652,8 @@ idAASLocal::SetupRouting
 ////				continue;
 ////			}
 ////
-////			goalAreaTravelTimes[nextAreaNum] = t;
-////			nextUpdate = &areaUpdate[nextAreaNum];
+////			this.goalAreaTravelTimes[nextAreaNum] = t;
+////			nextUpdate = &this.areaUpdate[nextAreaNum];
 ////			nextUpdate.areaNum = nextAreaNum;
 ////			nextUpdate.tmpTravelTime = t;
 ////			nextUpdate.start = reach.end;
@@ -1662,7 +1661,7 @@ idAASLocal::SetupRouting
 ////			// if we are not allowed to fly
 ////			if ( badTravelFlags & TFL_FLY ) {
 ////				// avoid areas near ledges
-////				if ( file.GetArea( nextAreaNum ).flags & AREA_LEDGE ) {
+////				if ( this.file.GetArea( nextAreaNum ).flags & AREA_LEDGE ) {
 ////					nextUpdate.tmpTravelTime += LEDGE_TRAVELTIME_PANALTY;
 ////				}
 ////			}

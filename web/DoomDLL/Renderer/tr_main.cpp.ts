@@ -385,7 +385,7 @@ function R_AxisToModelMatrix ( axis: idMat3, origin: idVec3, /*float */modelMatr
 
 // FIXME: these assume no skewing or scaling transforms
 
-function R_LocalPointToGlobal ( modelMatrix: Float32Array /*[16]*/, $in: idVec3, out: idVec3 ): def_void {
+function R_LocalPointToGlobal ( modelMatrix: Float32Array /*[16]*/, $in: idVec3, out: idVec3 ): void {
 //#if defined(MACOS_X) && defined(__i386__)
 //	__m128 m0, m1, m2, m3;
 //	__m128 in0, in1, in2;

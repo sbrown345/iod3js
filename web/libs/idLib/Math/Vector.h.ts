@@ -1235,7 +1235,6 @@ Object.defineProperty(idVec3.prototype, "2", {
 	configurable: false
 });
 
-var vec3_zero = vec3_origin;
 
 //===============================================================
 //
@@ -2734,3 +2733,10 @@ var vec5_origin = new idVec5(0.0, 0.0, 0.0, 0.0, 0.0);
 //var vec6_origin = new idVec6( 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 );
 //var vec6_infinity = new idVec6( idMath.INFINITY, idMath.INFINITY, idMath.INFINITY, idMath.INFINITY, idMath.INFINITY, idMath.INFINITY );
 
+
+
+var vec2_zero = vec2_origin;
+var vec3_zero = vec3_origin;
+var vec4_zero = vec4_origin;
+var vec5_zero = vec5_origin;
+//var vec6_zero = vec6_origin;

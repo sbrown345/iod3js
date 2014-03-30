@@ -328,33 +328,33 @@ class idAASFile {
 	GetCRC ( ): number { return this.crc; }
 ////
 ////	int							GetNumPlanes( ) const { return this.planeList.Num(); }
-////	const idPlane &				GetPlane( int index ) const { return this.planeList[index]; }
+////	const idPlane &				GetPlane( (index:number/*int*/ ) const { return this.planeList[index]; }
 ////	int							GetNumVertices( ) const { return this.vertices .Num(); }
-////	const aasVertex_t &			GetVertex( int index ) const { return this.vertices [index]; }
+////	const aasVertex_t &			GetVertex( (index:number/*int*/ ) const { return this.vertices [index]; }
 ////	int							GetNumEdges( ) const { return this.edges.Num(); }
-////	const aasEdge_t &			GetEdge( int index ) const { return this.edges[index]; }
+////	const aasEdge_t &			GetEdge( (index:number/*int*/ ) const { return this.edges[index]; }
 ////	int							GetNumEdgeIndexes( ) const { return this.edgeIndex.Num(); }
-////	const aasIndex_t &			GetEdgeIndex( int index ) const { return this.edgeIndex[index]; }
+////	const aasIndex_t &			GetEdgeIndex( (index:number/*int*/ ) const { return this.edgeIndex[index]; }
 ////	int							GetNumFaces( ) const { return faces.Num(); }
-////	const aasFace_t &			GetFace( int index ) const { return faces[index]; }
+////	const aasFace_t &			GetFace( (index:number/*int*/ ) const { return faces[index]; }
 ////	int							GetNumFaceIndexes( ) const { return this.faceIndex.Num(); }
-////	const aasIndex_t &			GetFaceIndex( int index ) const { return this.faceIndex[index]; }
-////	int							GetNumAreas( ) const { return areas.Num(); }
-////	const aasArea_t &			GetArea( int index ) { return areas[index]; }
+////	const aasIndex_t &			GetFaceIndex( (index:number/*int*/ ) const { return this.faceIndex[index]; }
+	GetNumAreas ( ): number /*int*/ { return this.areas.Num ( ); }
+	GetArea(index:number/*int*/): aasArea_t { return this.areas[index]; }
 ////	int							GetNumNodes( ) const { return this.nodes.Num(); }
-////	const aasNode_t &			GetNode( int index ) const { return this.nodes[index]; }
-////	int							GetNumPortals( ) const { return this.portals.Num(); }
-////	const aasPortal_t &			GetPortal( int index ) { return this.portals[index]; }
+////	const aasNode_t &			GetNode( (index:number/*int*/ ) const { return this.nodes[index]; }
+	GetNumPortals ( ): number { return this.portals.Num ( ); }
+////	const aasPortal_t &			GetPortal( (index:number/*int*/ ) { return this.portals[index]; }
 ////	int							GetNumPortalIndexes( ) const { return portalIndex.Num(); }
-////	const aasIndex_t &			GetPortalIndex( int index ) const { return portalIndex[index]; }
-////	int							GetNumClusters( ) const { return this.clusters.Num(); }
-////	const aasCluster_t &		GetCluster( int index ) const { return this.clusters[index]; }
+////	const aasIndex_t &			GetPortalIndex( (index:number/*int*/ ) const { return portalIndex[index]; }
+	GetNumClusters ( ): number { return this.clusters.Num ( ); }
+	GetCluster ( index: number /*int*/ ): aasCluster_t { return this.clusters[index]; }
 ////
 ////	const idAASSettings &		GetSettings( ) const { return settings; }
 ////
-////	void						SetPortalMaxTravelTime( int index, int time ) { this.portals[index].maxAreaTravelTime = time; }
-////	void						SetAreaTravelFlag( int index, int flag ) { areas[index].travelFlags |= flag; }
-////	void						RemoveAreaTravelFlag( int index, int flag ) { areas[index].travelFlags &= ~flag; }
+	SetPortalMaxTravelTime ( index: number /*int*/, /*int */time: number ) { this.portals[index].maxAreaTravelTime = time; }
+////	void						SetAreaTravelFlag( (index:number/*int*/, int flag ) { this.areas[index].travelFlags |= flag; }
+////	void						RemoveAreaTravelFlag( (index:number/*int*/, int flag ) { this.areas[index].travelFlags &= ~flag; }
 ////
 ////	virtual idVec3				EdgeCenter( int edgeNum ) const = 0;
 ////	virtual idVec3				FaceCenter( int faceNum ) const = 0;
