@@ -1505,7 +1505,7 @@ idStr::FloatArrayToString
 */
 
 	static index = 0;
-	static str = multiDimArray < Uint8Array>(Uint8Array, 4, 16384)
+	static str = multiDimArray <Uint8Array>(Uint8Array, 4, 16384);
 	static FloatArrayToString ( array: Float32Array, /*int */length: number, /*int */precision: number ): string {
 		var /*int */i: number, n: number;
 		var format = new Uint8Array( 16 ), s: Uint8Array; //char format[16], *s;

@@ -795,7 +795,7 @@ idInterpreter::SetThread
 //NOTE: If this is called from within a event called by this interpreter, the function arguments will be invalid after calling this function.
 //====================
 //*/
-	EnterFunction = function ( func: function_t, clearStack: boolean ): void {
+	EnterFunction ( func: function_t, clearStack: boolean ): void {
 		todoThrow ( );
 //	int 		c;
 //	prstack_t	*stack;
