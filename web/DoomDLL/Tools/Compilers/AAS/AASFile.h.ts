@@ -154,8 +154,15 @@ class idReachability_Special extends idReachability {
 
 // edge
 class aasEdge_t {
-	vertexNum = new Int32Array(2);		// numbers of the vertexes of this edge
-} ;
+	vertexNum = new Int32Array(2); // numbers of the vertexes of this edge
+
+	copy(dest: aasEdge_t = null): aasEdge_t {
+		dest = dest || new aasEdge_t;
+		dest.vertexNum[0] = this.vertexNum[0];
+		dest.vertexNum[1] = this.vertexNum[1];
+		return dest;
+	}
+}
 
 // area boundary face
 class aasFace_t {
@@ -164,28 +171,63 @@ class aasFace_t {
 	numEdges:number/*int*/;			// number of edges in the boundary of the face
 	firstEdge:number/*int*/;			// first edge in the edge index
 	areas = new Int16Array(2);			// area at the front and back of this face
-} ;
+
+	copy(dest: aasFace_t = null): aasFace_t {
+		dest = dest || new aasFace_t;
+		dest.planeNum = this.planeNum;
+		dest.flags = this.flags;
+		dest.numEdges = this.numEdges;
+		dest.firstEdge = this.firstEdge;
+		dest.areas[0] = this.areas[0];
+		dest.areas[1] = this.areas[1];
+		return dest;
+	}
+}
 
 // area with a boundary of faces
-class aasArea_t{
-	numFaces:number/*int*/;			// number of faces used for the boundary of the area
-	firstFace:number/*int*/;			// first face in the face index used for the boundary of the area
-	bounds = new idBounds();				// bounds of the area
-	center = new idVec3();				// center of the area an AI can move towards
-	flags: number/*unsigned short*/;				// several area flags
-	contents: number/*unsigned short*/;			// contents of the area
-	cluster:number/*short*/;			// cluster the area belongs to, if negative it's a portal
-	clusterAreaNum:number/*short*/;		// number of the area in the cluster
-	travelFlags:number/*int*/;		// travel flags for traveling through this area
-	reach: idReachability;				// reachabilities that start from this area
-	rev_reach: idReachability;			// reachabilities that lead to this area
-} ;
+class aasArea_t {
+	numFaces: number /*int*/; // number of faces used for the boundary of the area
+	firstFace: number /*int*/; // first face in the face index used for the boundary of the area
+	bounds = new idBounds ( ); // bounds of the area
+	center = new idVec3 ( ); // center of the area an AI can move towards
+	flags: number /*unsigned short*/; // several area flags
+	contents: number /*unsigned short*/; // contents of the area
+	cluster: number /*short*/; // cluster the area belongs to, if negative it's a portal
+	clusterAreaNum: number /*short*/; // number of the area in the cluster
+	travelFlags: number /*int*/; // travel flags for traveling through this area
+	reach: idReachability; // reachabilities that start from this area
+	rev_reach: idReachability; // reachabilities that lead to this area
+
+	copy ( dest: aasArea_t = null ): aasArea_t {
+		dest = dest || new aasArea_t;
+		dest.numFaces = this.numFaces;
+		dest.firstFace = this.firstFace;
+		dest.bounds.opEquals( this.bounds );
+		dest.center.equals( this.center );
+		dest.flags = this.flags;
+		dest.contents = this.contents;
+		dest.cluster = this.cluster;
+		dest.clusterAreaNum = this.clusterAreaNum;
+		dest.travelFlags = this.travelFlags;
+		dest.reach = this.reach;
+		dest.rev_reach = this.rev_reach;
+		return dest;
+	}
+}
 
 // nodes of the bsp tree
 class aasNode_t {
 	planeNum: number/*unsigned short*/;			// number of the plane that splits the subspace at this node
 	children = new Int32Array(2);		// child nodes, zero is solid, negative is -(area number)
-} ;
+
+	copy(dest: aasNode_t = null): aasNode_t {
+		dest = dest || new aasNode_t;
+		dest.planeNum = this.planeNum;
+		dest.children[0] = this.children[0];
+		dest.children[1] = this.children[1];
+		return dest;
+	}
+}
 
 // cluster portal
 class aasPortal_t {
@@ -193,15 +235,35 @@ class aasPortal_t {
 	clusters = new Int16Array(2);		// number of cluster at the front and back of the portal
 	clusterAreaNum = new Int16Array(2);	// number of this portal area in the front and back cluster
 	maxAreaTravelTime: number/*unsigned short*/;	// maximum travel time through the portal area
-} ;
+
+	copy(dest: aasPortal_t = null): aasPortal_t {
+		dest = dest || new aasPortal_t;
+		dest.areaNum = this.areaNum;
+		dest.clusters[0] = this.clusters[0];
+		dest.clusters[1] = this.clusters[1];
+		dest.clusterAreaNum[0] = this.clusterAreaNum[0];
+		dest.clusterAreaNum[1] = this.clusterAreaNum[1];
+		dest.maxAreaTravelTime = this.maxAreaTravelTime;
+		return dest;
+	}
+}
 
 // cluster
 class aasCluster_t {
 	numAreas:number/*int*/;			// number of areas in the cluster
 	numReachableAreas:number/*int*/;	// number of areas with reachabilities
 	numPortals:number/*int*/;			// number of cluster portals
-	firstPortal:number/*int*/;		// first cluster portal in the index
-} ;
+	firstPortal: number/*int*/;		// first cluster portal in the index
+
+	copy(dest: aasCluster_t = null): aasCluster_t {
+		dest = dest || new aasCluster_t;
+		dest.numAreas = this.numAreas;
+		dest.numReachableAreas = this.numReachableAreas;
+		dest.numPortals = this.numPortals;
+		dest.firstPortal = this.firstPortal;
+		return dest;
+	}
+}
 
  //trace through the world
 class aasTrace_t {
@@ -324,7 +386,7 @@ class idAASFile {
 	portals = new idList<aasPortal_t>( aasPortal_t );
 	portalIndex = new idList< /*aasIndex_t*/number>( Number );
 	clusters = new idList<aasCluster_t>( aasCluster_t );
-	settings =new idAASSettings;
+	settings = new idAASSettings;
 ////
 ////#endif /* !__AASFILE_H__ */
 }

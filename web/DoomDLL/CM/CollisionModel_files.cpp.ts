@@ -542,15 +542,16 @@ idCollisionModelManagerLocal.prototype.ParseCollisionModel = function ( src: idL
 		model.brushMemory +
 		model.numNodes * sizeof( cm_node_t ) +
 		model.numPolygonRefs * sizeof( cm_polygonRef_t ) +
-		model.numBrushRefs * sizeof( cm_brushRef_t );
+	model.numBrushRefs * sizeof(cm_brushRef_t);
 
-	assertMapSpecific( assertMapsList.demo_mars_city1, model.numVertices == 27659 );
-	assertMapSpecific( assertMapsList.demo_mars_city1, model.numEdges == 48948 );
-	assertMapSpecific( assertMapsList.demo_mars_city1, model.polygonMemory == 1431384 );
-	assertMapSpecific( assertMapsList.demo_mars_city1, model.brushMemory == 555476 );
-	assertMapSpecific( assertMapsList.demo_mars_city1, model.numNodes == 12029 );
-	assertMapSpecific( assertMapsList.demo_mars_city1, model.numPolygonRefs == 41078 );
-	assertMapSpecific( assertMapsList.demo_mars_city1, model.numBrushRefs == 14118 );
+	dlog( DEBUG_MAP_FILE, "idCollisionModelManagerLocal::ParseCollisionModel" );
+	dlog( DEBUG_MAP_FILE, "numVertices %i\n", model.numVertices );
+	dlog( DEBUG_MAP_FILE, "numEdges %i\n", model.numEdges );
+	dlog( DEBUG_MAP_FILE, "nolygonMemory %i\n", model.polygonMemory );
+	dlog( DEBUG_MAP_FILE, "nrushMemory %i\n", model.brushMemory );
+	dlog( DEBUG_MAP_FILE, "numNodes %i\n", model.numNodes );
+	dlog( DEBUG_MAP_FILE, "numPolygonRefs %i\n", model.numPolygonRefs );
+	dlog( DEBUG_MAP_FILE, "numBrushRefs %i\n", model.numBrushRefs );
 	return true;
 };
 

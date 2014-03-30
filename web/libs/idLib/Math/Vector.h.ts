@@ -1799,7 +1799,7 @@ class idVec5 {
 ////}
 
 	ToVec3 ( ): idVec3 {
-		return new idVec3( this.x, this.y, this.z ); //return *reinterpret_cast<idVec3 *>(this);
+		return new idVec3( this.values/*this.x, this.y, this.z */); //return *reinterpret_cast<idVec3 *>(this);
 	}
 
 ////ID_INLINE const float *idVec5::ToFloatPtr( ) const {

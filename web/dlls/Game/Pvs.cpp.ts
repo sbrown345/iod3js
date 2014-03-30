@@ -301,24 +301,24 @@ idPVS::DestroyPVSData
 		if ( !this.pvsAreas ) {
 			return;
 		}
-		todoThrow ( );
-		//// delete portal pointer array
-		//$deleteArray( this.pvsAreas[0].portals );
+		
+		// delete portal pointer array
+		$deleteArray( this.pvsAreas[0].portals );
 
-		//// delete all areas
-		//$deleteArray(this.pvsAreas);
-		//this.pvsAreas = null;
+		// delete all areas
+		$deleteArray(this.pvsAreas);
+		this.pvsAreas = null;
 
-		//// delete portal data
-		//for ( i = 0; i < this.numPortals; i++ ) {
-		//	delete[] this.pvsPortals[i].vis;
-		//	delete[] this.pvsPortals[i].mightSee;
-		//	delete this.pvsPortals[i].w;
-		//}
+		// delete portal data
+		for ( i = 0; i < this.numPortals; i++ ) {
+			delete this.pvsPortals[i].vis;
+			delete this.pvsPortals[i].mightSee;
+			delete this.pvsPortals[i].w;
+		}
 
-		//// delete portals
-		//delete[] this.pvsPortals;
-		//this.pvsPortals = null;
+		// delete portals
+		$deleteArray( this.pvsPortals );
+		this.pvsPortals = null;
 	}
 
 /*
@@ -498,7 +498,7 @@ idPVS::FrontPortalPVS
 					// check if anything might be visible through this passage that wasn't yet visible
 					more |= ( m & ~( sourceVis[sourceVisIdx++] ) );
 					// store new PVS
-					mightSee[mightSeeIdx++] = m; ////////////////////////////////////////////////////////////////////////////////////todo: check/////////////////////////////////////
+					mightSee[mightSeeIdx++] = m;
 				}
 			} else {
 				// the p.mightSee is implicitely stored in the passageVis
@@ -508,7 +508,7 @@ idPVS::FrontPortalPVS
 					// check if anything might be visible through this passage that wasn't yet visible
 					more |= ( m & ~( sourceVis[sourceVisIdx++] ) );
 					// store new PVS
-					mightSee[mightSeeIdx++] = m;////////////////////////////////////////////////////////////////////////////////////todo: check/////////////////////////////////////
+					mightSee[mightSeeIdx++] = m;
 				}
 			}
 
@@ -536,7 +536,6 @@ PassagePVS( ) :void {
 	
 	// create the passages
 	this.CreatePassages();
-	debugger;
 
 	// allocate first stack entry
 	stack = new pvsStack_t; // reinterpret_cast<pvsStack_t*>(new byte[sizeof(pvsStack_t) + portalVisBytes]);

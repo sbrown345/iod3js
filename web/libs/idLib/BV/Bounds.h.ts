@@ -120,11 +120,13 @@ class idBounds {
 		}
 
 		if ( arguments.length == 1 ) {
-			var point = a1;
+			var point: idVec3 = a1;
 			this.b[0].equals( point );
 			this.b[1].equals( point );
 		} else if ( arguments.length == 2 ) {
-			todoThrow ( );
+			var mins: idVec3 = a1, maxs: idVec3 = a1;
+			this.b[0].equals( mins );
+			this.b[1].equals( maxs );
 		} else {
 			todoThrow ( );
 		}

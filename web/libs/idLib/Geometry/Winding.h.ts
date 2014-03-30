@@ -594,118 +594,113 @@ idWinding::ReAllocate
 idWinding::ClipInPlace
 =============
 */
-	ClipInPlace(plane: idPlane, /*float */epsilon: number = ON_EPSILON, keepOn = false ): boolean {
-		todoThrow ( );
-		//float*		dists;
-//	byte *		sides;
-//	idVec5 *	newPoints;
-//	int			newNumPoints;
-//	int			counts[3];
-//	int			i, j;
-//	float		dot;
-//	idVec5 *	p1, *p2;
-//	idVec5		mid;
-//	int			maxpts;
-//
-//	assert(this);
-//
-//	dists = (float *)stack_alloc((numPoints + 4) * sizeof(float));
-//	sides = (byte *)stack_alloc((numPoints + 4) * sizeof(byte));
-//
-//	counts[SIDE_FRONT] = counts[SIDE_BACK] = counts[SIDE_ON] = 0;
-//
-//	// determine sides for each point
-//	for (i = 0; i < this.numPoints; i++) {
-//		dists[i] = dot = plane.Distance(this.p[i].ToVec3());
-//		if (dot > epsilon) {
-//			sides[i] = SIDE_FRONT;
-//		}
-//		else if (dot < -epsilon) {
-//			sides[i] = SIDE_BACK;
-//		}
-//		else {
-//			sides[i] = SIDE_ON;
-//		}
-//		counts[sides[i]]++;
-//	}
-//	sides[i] = sides[0];
-//	dists[i] = dists[0];
-//
-//	// if the winding is on the plane and we should keep it
-//	if (keepOn && !counts[SIDE_FRONT] && !counts[SIDE_BACK]) {
-//		return true;
-//	}
-//	// if nothing at the front of the clipping plane
-//	if (!counts[SIDE_FRONT]) {
-//		this.numPoints = 0;
-//		return false;
-//	}
-//	// if nothing at the back of the clipping plane
-//	if (!counts[SIDE_BACK]) {
-//		return true;
-//	}
-//
-//	maxpts = this.numPoints + 4;		// cant use counts[0]+2 because of fp grouping errors
-//
-//	newPoints = (idVec5 *)_alloca16(maxpts * sizeof(idVec5));
-//	newNumPoints = 0;
-//
-//	for (i = 0; i < this.numPoints; i++) {
-//		p1 = &p[i];
-//
-//		if (newNumPoints + 1 > maxpts) {
-//			return true;		// can't split -- fall back to original
-//		}
-//
-//		if (sides[i] == SIDE_ON) {
-//			newPoints[newNumPoints] = *p1;
-//			newNumPoints++;
-//			continue;
-//		}
-//
-//		if (sides[i] == SIDE_FRONT) {
-//			newPoints[newNumPoints] = *p1;
-//			newNumPoints++;
-//		}
-//
-//		if (sides[i + 1] == SIDE_ON || sides[i + 1] == sides[i]) {
-//			continue;
-//		}
-//
-//		if (newNumPoints + 1 > maxpts) {
-//			return true;		// can't split -- fall back to original
-//		}
-//
-//		// generate a split point
-//		p2 = &p[(i + 1) % this.numPoints];
-//
-//		dot = dists[i] / (dists[i] - dists[i + 1]);
-//		for (j = 0; j < 3; j++) {
-//			// avoid round off error when possible
-//			if (plane.Normal()[j] == 1.0) {
-//				mid[j] = plane.Dist();
-//			}
-//			else if (plane.Normal()[j] == -1.0) {
-//				mid[j] = -plane.Dist();
-//			}
-//			else {
-//				mid[j] = (*p1)[j] + dot * ((*p2)[j] - (*p1)[j]);
-//			}
-//		}
-//		mid.s = p1.s + dot * (p2.s - p1.s);
-//		mid.t = p1.t + dot * (p2.t - p1.t);
-//
-//		newPoints[newNumPoints] = mid;
-//		newNumPoints++;
-//	}
-//
-//	if (!this.EnsureAlloced(newNumPoints, false)) {
-//		return true;
-//	}
-//
-//	this.numPoints = newNumPoints;
-//	memcpy(p, newPoints, newNumPoints * sizeof(idVec5));
-//
+	ClipInPlace ( plane: idPlane, /*float */epsilon: number = ON_EPSILON, keepOn = false ): boolean {
+		var dists: Float32Array;
+		var sides: Uint8Array;
+		var newPoints: idVec5[];
+		var newNumPoints: number /*int*/;
+		var counts = new Int32Array( 3 );
+		var i: number /*int*/, j: number /*int*/;
+		var dot: number /*float*/;
+		var p1: idVec5, p2: idVec5;
+		var mid = new idVec5 ( );
+		var maxpts: number /*int*/;
+
+		assert( this );
+
+		dists = new Float32Array( stack_alloc( ( this.numPoints + 4 ) * sizeof( float ) ) );
+		sides = new Uint8Array( stack_alloc( ( this.numPoints + 4 ) * sizeof( byte ) ) );
+
+		counts[SIDE_FRONT] = counts[SIDE_BACK] = counts[SIDE_ON] = 0;
+
+		// determine sides for each point
+		for ( i = 0; i < this.numPoints; i++ ) {
+			dists[i] = dot = plane.Distance( this.p[i].ToVec3 ( ) );
+			if ( dot > epsilon ) {
+				sides[i] = SIDE_FRONT;
+			} else if ( dot < -epsilon ) {
+				sides[i] = SIDE_BACK;
+			} else {
+				sides[i] = SIDE_ON;
+			}
+			counts[sides[i]]++;
+		}
+		sides[i] = sides[0];
+		dists[i] = dists[0];
+
+		// if the winding is on the plane and we should keep it
+		if ( keepOn && !counts[SIDE_FRONT] && !counts[SIDE_BACK] ) {
+			return true;
+		}
+		// if nothing at the front of the clipping plane
+		if ( !counts[SIDE_FRONT] ) {
+			this.numPoints = 0;
+			return false;
+		}
+		// if nothing at the back of the clipping plane
+		if ( !counts[SIDE_BACK] ) {
+			return true;
+		}
+
+		maxpts = this.numPoints + 4; // cant use counts[0]+2 because of fp grouping errors
+
+		newPoints = newStructArray<idVec5>( idVec5, maxpts ); // //(idVec5 *)_alloca16(maxpts * sizeof(idVec5));
+		newNumPoints = 0;
+
+		for ( i = 0; i < this.numPoints; i++ ) {
+			p1 = this.p[i];
+
+			if ( newNumPoints + 1 > maxpts ) {
+				return true; // can't split -- fall back to original
+			}
+
+			if ( sides[i] == SIDE_ON ) {
+				newPoints[newNumPoints].equals( p1 );
+				newNumPoints++;
+				continue;
+			}
+
+			if ( sides[i] == SIDE_FRONT ) {
+				newPoints[newNumPoints].equals( p1 );
+				newNumPoints++;
+			}
+
+			if ( sides[i + 1] == SIDE_ON || sides[i + 1] == sides[i] ) {
+				continue;
+			}
+
+			if ( newNumPoints + 1 > maxpts ) {
+				return true; // can't split -- fall back to original
+			}
+
+			// generate a split point
+			p2 = this.p[( i + 1 ) % this.numPoints];
+
+			dot = dists[i] / ( dists[i] - dists[i + 1] );
+			for ( j = 0; j < 3; j++ ) {
+				// avoid round off error when possible
+				if ( plane.Normal ( )[j] == 1.0 ) {
+					mid[j] = plane.Dist ( );
+				} else if ( plane.Normal ( )[j] == -1.0 ) {
+					mid[j] = -plane.Dist ( );
+				} else {
+					mid[j] = ( p1 )[j] + dot * ( ( p2 )[j] - ( p1 )[j] );
+				}
+			}
+			mid.s = p1.s + dot * ( p2.s - p1.s );
+			mid.t = p1.t + dot * ( p2.t - p1.t );
+
+			newPoints[newNumPoints].equals( mid );
+			newNumPoints++;
+		}
+
+		if ( !this.EnsureAlloced( newNumPoints, false ) ) {
+			return true;
+		}
+
+		this.numPoints = newNumPoints;
+		memcpyStructs( this.p, newPoints, newNumPoints /* * sizeof(idVec5)*/ );
+
 		return true;
 	}
 
@@ -958,7 +953,7 @@ idWinding::GetBounds
 			return;
 		}
 
-		bounds[0] = bounds[1] = this.p[0].ToVec3 ( );
+		bounds[0].equals( bounds[1].equals( this.p[0].ToVec3 ( ) ) );
 		for ( i = 1; i < this.numPoints; i++ ) {
 			if ( this.p[i].x < bounds[0].x ) {
 				bounds[0].x = this.p[i].x;

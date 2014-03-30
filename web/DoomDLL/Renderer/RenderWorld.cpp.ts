@@ -1026,9 +1026,8 @@ GetPortal
 				ret.areas[0] = areaNum;
 				ret.areas[1] = portal.intoArea;
 				ret.w = portal.w;
-				todoThrow ( );
-				//ret.blockingBits = portal.doublePortal.blockingBits;
-				//ret.portalHandle = portal.doublePortal - this.doublePortals + 1;
+				ret.blockingBits = portal.doublePortal.blockingBits;
+				ret.portalHandle = this.doublePortals.indexOf( portal.doublePortal ) + 1;
 				return ret;
 			}
 			count++;

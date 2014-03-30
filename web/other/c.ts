@@ -95,7 +95,7 @@ function memcpy(destination: ArrayBufferView, source: ArrayBufferView, count: nu
 	if ( !destination ) {
 		return;
 	}
-
+	// todo: use uint32 arrays instead - less operations
 	var sourceArray = new Uint8Array(destination.buffer);
 	var destArray = new Uint8Array(source.buffer);
 	for (var i = 0; i < count; i++) {
@@ -103,7 +103,7 @@ function memcpy(destination: ArrayBufferView, source: ArrayBufferView, count: nu
 	}
 }
 
-// can use subarray
+// _can_ use subarray
 function memcpyUint8Array(destination: ArrayBufferView, source: Uint8Array, count: number): void {
 	for (var i = 0; i < count; i++) {
 		destination[i] = source[i];
@@ -197,6 +197,10 @@ function sizeof ( obj: any ): number {
 		throw "cannot get size of number type";
 	}
 
+	if ( obj === byte) {
+		return 1;
+	}
+
 	if ( obj === int || obj === float ) {
 		return 4;
 	}
@@ -220,6 +224,10 @@ function sizeof ( obj: any ): number {
 function sizeofSingleItem ( arr: Float64Array ): number; // works for all typed arrays
 function sizeofSingleItem ( arr: any ): number {
 	return arr.BYTES_PER_ELEMENT;
+}
+
+function stack_alloc ( size: number ): ArrayBuffer {
+	return new ArrayBuffer( size );
 }
 
 var min = Math.min;

@@ -54,7 +54,5 @@ enum assertMapsList{
 }
 function assertMapSpecific(map: assertMapsList, condition: boolean) {
 	// todo: check map
-	if ( condition ) {
-		
-	}
+	assert( condition );
 }

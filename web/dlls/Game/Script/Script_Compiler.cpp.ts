@@ -127,17 +127,6 @@ class idCompiler {
 		"=", "[", "]", ".", "<", ">", "&", "|", ":", null
 	];
 
-	static GetOpCodeIndex(op: opcode_t): number {
-		// todo: maybe just put an index number on each opcode
-		for (var i = 0; i < idCompiler.opcodes.length; i++) {
-			if (op == idCompiler.opcodes[i]) {
-				//statement.op = op - idCompiler.opcodes;
-				return i;
-			}
-		}
-		todoThrow( "Could not find opcode index" );
-	}
-
 	static opcodes = [
 		new opcode_t( "<RETURN>", "RETURN", -1, false, def_void, def_void, def_void ),
 		new opcode_t( "++", "UINC_F", 1, true, def_float, def_void, def_void ),
@@ -579,7 +568,7 @@ try to optimize when the operator works on constants only
 		var vec_c = new idVec3(c.vector); //idVec3 &vec_c = *reinterpret_cast<idVec3 *>( &c.vector[ 0 ] );
 
 		c.memset0 ( );//memset( &c, 0, sizeof( c ) );
-		switch (idCompiler.GetOpCodeIndex(op) ) {
+		switch ( idCompiler.opcodes.indexOf( op )) {
 			case opc.OP_ADD_F:		c._float = var_a.value.floatPtr + var_b.value.floatPtr; type = type_float; break;
 			case opc.OP_ADD_V:		todoThrow("vec_c = var_a.value.vectorPtr.plus(var_b.value.vectorPtr); type = type_vector;");	 break;
 			case opc.OP_SUB_F:		c._float = var_a.value.floatPtr - var_b.value.floatPtr; type = type_float; break;
@@ -682,7 +671,7 @@ Emits a primitive statement, returning the var it places it's value in
 			var_c.numUsers = 1;
 		}
 
-		statement.op = idCompiler.GetOpCodeIndex( op );
+		statement.op = idCompiler.opcodes.indexOf( op );
 		statement.a = var_a;
 		statement.b = var_b;
 		statement.c = var_c;

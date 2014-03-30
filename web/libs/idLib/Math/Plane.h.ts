@@ -199,6 +199,12 @@ class idPlane {
 
 	[n: number]: number;
 
+	copy(dest: idPlane = null): idPlane {
+		dest = dest || new idPlane();
+		dest.opEquals( this );
+		return dest;
+	}
+
 	//ID_INLINE float idPlane::operator[]( int index ) const {
 	//	return ( &a )[ index ];
 	//}
