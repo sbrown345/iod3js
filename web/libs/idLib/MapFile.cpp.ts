@@ -1131,7 +1131,7 @@ idMapFile::SetGeometryCRC
 			this.geometryCRC ^= this.entities[i].GetGeometryCRC ( );
 		}
 
-		assertMapSpecific(asserMapsList.demo_mars_city1, this.geometryCRC == 3487349886 );
+		assertMapSpecific(assertMapsList.demo_mars_city1, this.geometryCRC == 3487349886 );
 	}
 
 /////*

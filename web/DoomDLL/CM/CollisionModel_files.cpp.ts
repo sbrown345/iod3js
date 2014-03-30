@@ -544,6 +544,13 @@ idCollisionModelManagerLocal.prototype.ParseCollisionModel = function ( src: idL
 		model.numPolygonRefs * sizeof( cm_polygonRef_t ) +
 		model.numBrushRefs * sizeof( cm_brushRef_t );
 
+	assertMapSpecific( assertMapsList.demo_mars_city1, model.numVertices == 27659 );
+	assertMapSpecific( assertMapsList.demo_mars_city1, model.numEdges == 48948 );
+	assertMapSpecific( assertMapsList.demo_mars_city1, model.polygonMemory == 1431384 );
+	assertMapSpecific( assertMapsList.demo_mars_city1, model.brushMemory == 555476 );
+	assertMapSpecific( assertMapsList.demo_mars_city1, model.numNodes == 12029 );
+	assertMapSpecific( assertMapsList.demo_mars_city1, model.numPolygonRefs == 41078 );
+	assertMapSpecific( assertMapsList.demo_mars_city1, model.numBrushRefs == 14118 );
 	return true;
 };
 

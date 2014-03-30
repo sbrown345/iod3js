@@ -969,9 +969,9 @@ idPVS::Init
 			gameLocal.Printf( "%5d KB PVS data\n", ( this.numAreas * this.areaVisBytes ) >> 10 );
 		}
 
-		assertMapSpecific(asserMapsList.demo_mars_city1, this.numAreas == 56);
-		assertMapSpecific(asserMapsList.demo_mars_city1, this.numPortals == 110);
-		assertMapSpecific(asserMapsList.demo_mars_city1, totalVisibleAreas == 523 );
+		assertMapSpecific(assertMapsList.demo_mars_city1, this.numAreas == 56);
+		assertMapSpecific(assertMapsList.demo_mars_city1, this.numPortals == 110);
+		assertMapSpecific(assertMapsList.demo_mars_city1, totalVisibleAreas == 523 );
 	}
 
 /*

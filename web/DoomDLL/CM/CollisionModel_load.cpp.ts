@@ -3193,18 +3193,18 @@ idCollisionModelManagerLocal::PrintModelInfo
 */
 idCollisionModelManagerLocal.prototype.PrintModelInfo = function (model: cm_model_t): void {
 	// js check for default demo assets
-	assertMapSpecific(asserMapsList.demo_mars_city1, model.numVertices == 30823);
-	assertMapSpecific(asserMapsList.demo_mars_city1, model.numEdges == 54551);
-	assertMapSpecific(asserMapsList.demo_mars_city1, model.numPolygons == 22257);
-	assertMapSpecific(asserMapsList.demo_mars_city1, model.numBrushes == 4068);
-	assertMapSpecific(asserMapsList.demo_mars_city1, model.numNodes == 12449);
-	assertMapSpecific(asserMapsList.demo_mars_city1, model.numPolygonRefs == 43444);
-	assertMapSpecific(asserMapsList.demo_mars_city1, model.numBrushRefs == 14219);
-	assertMapSpecific(asserMapsList.demo_mars_city1, model.numInternalEdges == 18352);
-	assertMapSpecific(asserMapsList.demo_mars_city1, model.numSharpEdges == 1461);
-	assertMapSpecific(asserMapsList.demo_mars_city1, model.numRemovedPolys == 0);
-	assertMapSpecific(asserMapsList.demo_mars_city1, model.numMergedPolys == 0);
-	assertMapSpecific(asserMapsList.demo_mars_city1, model.usedMemory == 5685116 );
+	assertMapSpecific(assertMapsList.demo_mars_city1, model.numVertices == 30823);
+	assertMapSpecific(assertMapsList.demo_mars_city1, model.numEdges == 54551);
+	assertMapSpecific(assertMapsList.demo_mars_city1, model.numPolygons == 22257);
+	assertMapSpecific(assertMapsList.demo_mars_city1, model.numBrushes == 4068);
+	assertMapSpecific(assertMapsList.demo_mars_city1, model.numNodes == 12449);
+	assertMapSpecific(assertMapsList.demo_mars_city1, model.numPolygonRefs == 43444);
+	assertMapSpecific(assertMapsList.demo_mars_city1, model.numBrushRefs == 14219);
+	assertMapSpecific(assertMapsList.demo_mars_city1, model.numInternalEdges == 18352);
+	assertMapSpecific(assertMapsList.demo_mars_city1, model.numSharpEdges == 1461);
+	assertMapSpecific(assertMapsList.demo_mars_city1, model.numRemovedPolys == 0);
+	assertMapSpecific(assertMapsList.demo_mars_city1, model.numMergedPolys == 0);
+	assertMapSpecific(assertMapsList.demo_mars_city1, model.usedMemory == 5685116 );
 
 	common.Printf( "%6i vertices (%i KB)\n", model.numVertices, ( model.numVertices * sizeof( cm_vertex_t ) ) >> 10 );
 	common.Printf( "%6i edges (%i KB)\n", model.numEdges, ( model.numEdges * sizeof( cm_edge_t ) ) >> 10 );
