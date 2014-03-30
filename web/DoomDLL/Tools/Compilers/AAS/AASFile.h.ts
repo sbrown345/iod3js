@@ -818,7 +818,7 @@ idAASFileLocal::ParseReachabilities
 	ParseReachabilities ( src: idLexer, /*int*/ areaNum: number ): boolean {
 		var /*int */num: number, j: number;
 		var area: aasArea_t;
-		var reach: idReachability, newReach: idReachability;
+		var reach = new idReachability, newReach: idReachability;
 		var special: idReachability_Special;
 
 		area = this.areas[areaNum];
@@ -1905,8 +1905,8 @@ idAASFileLocal::MaxTreeDepth_r
 		}
 
 		depth.$++;
-		if ( depth > maxDepth ) {
-			maxDepth = depth;
+		if ( depth.$ > maxDepth.$ ) {
+			maxDepth.$ = depth.$;
 		}
 
 		node = this.nodes[nodeNum];

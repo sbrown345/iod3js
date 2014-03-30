@@ -68,6 +68,7 @@ idVec3 idAASFileLocal::FaceCenter( int faceNum ) const {
 		for ( i = 0; i < face->numEdges; i++ ) {
 			edgeNum = edgeIndex[ face->firstEdge + i ];
 			edge = &edges[ abs( edgeNum ) ];
+			int indexTest = (((const unsigned long)(edgeNum)) >> 31);
 			center += vertices[ edge->vertexNum[ INTSIGNBITSET(edgeNum) ] ];
 		}
 		center /= face->numEdges;

@@ -142,6 +142,7 @@
 /// <reference path="libs/idlib/text/token.cpp.ts" />
 
 // BV
+/// <reference path="libs/idlib/bv/sphere.cpp.ts" />
 /// <reference path="libs/idlib/bv/frustum.cpp.ts" />
 /// <reference path="libs/idlib/bv/bounds.h.ts" />
 // Containers

@@ -627,4 +627,4 @@ idRenderModelManagerLocal::BeginLevelLoad
 
 
 var localModelManager = new idRenderModelManagerLocal ( );
-var renderModelManager:idRenderModelManager = localModelManager;
+var renderModelManager/*:idRenderModelManager*/ = localModelManager;

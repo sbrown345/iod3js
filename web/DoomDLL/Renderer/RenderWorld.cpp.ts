@@ -1867,42 +1867,42 @@ idRenderWorldLocal::FreeInteractions
 //		}
 //	}
 //}
-//
-///*
-//==============
-//PushVolumeIntoTree
-//==============
-//*/
-//void idRenderWorldLocal::PushVolumeIntoTree( idRenderEntityLocal *def, idRenderLightLocal *light, int numPoints, const idVec3 (*points) ) {
-//	int i;
-//	float radSquared, lr;
-//	idVec3 mid, dir;
-//
-//	if ( this.areaNodes == NULL ) {
-//		return;
-//	}
-//
-//	// calculate a bounding sphere for the points
-//	mid.Zero();
-//	for ( i = 0; i < numPoints; i++ ) {
-//		mid += points[i];
-//	}
-//	mid *= ( 1.0f / numPoints );
-//
-//	radSquared = 0;
-//
-//	for ( i = 0; i < numPoints; i++ ) {
-//		dir = points[i] - mid;
-//		lr = dir * dir;
-//		if ( lr > radSquared ) {
-//			radSquared = lr;
-//		}
-//	}
-//
-//	idSphere sphere( mid, sqrt( radSquared ) );
-//
-//	PushVolumeIntoTree_r( def, light, &sphere, numPoints, points, 0 );
-//}
+
+/*
+==============
+PushVolumeIntoTree
+==============
+*/
+	PushVolumeIntoTree ( def: idRenderEntityLocal, light: idRenderLightLocal, /*int */numPoints: number, points: idVec3[] /*(*points) */ ): void {
+		var /*int */i: number;
+		var /*float */radSquared: number, lr: number;
+		var mid = new idVec3, dir = new idVec3;
+
+		if ( this.areaNodes == null ) {
+			return;
+		}
+
+		// calculate a bounding sphere for the points
+		mid.Zero ( );
+		for ( i = 0; i < numPoints; i++ ) {
+			mid.opAdditionAssignment( points[i] );
+		}
+		mid.opMultiplicationAssignment( ( 1.0 / numPoints ) );
+
+		radSquared = 0;
+
+		for ( i = 0; i < numPoints; i++ ) {
+			dir.equals( points[i].opSubtraction( mid ) );
+			lr = dir.timesVec( dir );
+			if ( lr > radSquared ) {
+				radSquared = lr;
+			}
+		}
+
+		var sphere = new idSphere( mid, sqrt( radSquared ) );
+
+		PushVolumeIntoTree_r( def, light, sphere, numPoints, points, 0 );
+	}
 
 //===================================================================
 

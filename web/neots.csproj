@@ -227,6 +227,7 @@
     <TypeScriptCompile Include="libs\idLib\Containers\PlaneSet.h.ts" />
     <TypeScriptCompile Include="libs\idLib\Geometry\Surface_Patch.cpp.ts" />
     <TypeScriptCompile Include="libs\idLib\Geometry\Surface.cpp.ts" />
+    <TypeScriptCompile Include="libs\idLib\BV\Sphere.cpp.ts" />
     <Content Include="libs\idLib\Timer.h.ts" />
     <Content Include="log.aspx" />
     <Content Include="other\files.ts" />

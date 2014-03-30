@@ -23,7 +23,9 @@ function todoThrow ( message: any = "" ): any {
 		console.log( idFileSystemLocal.tempFilesForWriting );
 		debugger;
 		console.error( "todoThrow \n", message );
-		throw "!";
+		if ( !LOGGING_WITH_VISUAL_STUDIO ) {
+			throw "!";
+		}
 	}
 }
 
@@ -54,5 +56,6 @@ enum assertMapsList{
 }
 function assertMapSpecific(map: assertMapsList, condition: boolean) {
 	// todo: check map
+	
 	assert( condition );
 }
