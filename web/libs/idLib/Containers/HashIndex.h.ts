@@ -338,7 +338,7 @@ idHashIndex::Clear
     private ClearNoArgs ( ): void {
         // only clear the hash table because clearing the this.indexChain is not really needed
         if ( this.hash != idHashIndex.INVALID_INDEX ) {
-            memset( this.hash, 0xff, this.hashSize * sizeof( this.hash ) );
+	        memset( this.hash, 0xff, this.hashSize * sizeofSingleItem( this.hash ) );
         }
     }
 

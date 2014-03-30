@@ -126,23 +126,40 @@ function zeroArray ( array: any ): void {
 	}
 }
 
-function memset ( arr: ArrayBufferView, value: number, num: number ): void {
+function memset ( arr: Uint8Array, value: number, num: number ): void
+function memset ( arr: Int8Array, value: number, num: number ): void
+function memset ( arr: Uint16Array, value: number, num: number ): void
+function memset ( arr: Int16Array, value: number, num: number ): void
+function memset ( arr: Uint32Array, value: number, num: number ): void
+function memset ( arr: Int32Array, value: number, num: number ): void
+function memset ( arr: Uint8Array /*any*/, value: number, num: number ): void {
 	var startIndex = 0;
+	var val: number;
 
-	// todo: check this
-	//if ( value === 0 ) {
-	//	var arrayLen = num / arr["BYTES_PER_ELEMENT"];
-	//	for ( var i = startIndex; i < arrayLen; i++ ) {
-	//		arr[i] = 0;
-	//	}
-	//	return;
-	//}
+	switch ( arr.BYTES_PER_ELEMENT ) {
+	case 1:
+		val = value;
+		break;
+	case 2:
+		todoThrow ( );
+		break;
+	case 4:
+		val = value << 24 | value << 16 | value << 8 | value;
+		break;
+	default:
+		todoThrow ( );
+	}
+
+	var arrayLen = num / arr.BYTES_PER_ELEMENT;
+	for ( var i = startIndex; i < arrayLen; i++ ) {
+		arr[i] = val;
+	}
 
 	//assert.uint8(value).int32(num);
-	var uint8Array = new Uint8Array(arr.buffer);
-	for (var i = startIndex; i < num; i++) {
-		uint8Array[i] = value;
-	}
+	//var uint8Array = new Uint8Array(arr.buffer);
+	//for (var i = startIndex; i < num; i++) {
+	//	uint8Array[i] = value;
+	//}
 }
 
 function memsetP ( ptr: P, value: number, num: number ): void {

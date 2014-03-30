@@ -49,7 +49,10 @@ interface Error {
 
 var todoBindBuffersNull = false;
 
-function assertMapSpecific(map: string, condition: boolean) {
+enum asserMapsList{
+	demo_mars_city1 = 1
+}
+function assertMapSpecific(map: asserMapsList, condition: boolean) {
 	// todo: check map
 	if ( condition ) {
 		

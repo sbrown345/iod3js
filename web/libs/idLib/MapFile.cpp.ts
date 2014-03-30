@@ -940,7 +940,13 @@ class idMapFile {
 	////protected:
 	version: number /*float*/;
 	fileTime: number /*ID_TIME_T*/;
-	geometryCRC: number /*unsigned int*/;
+	private _geometryCRC = new Uint32Array(1);
+	get geometryCRC(): number { return this._geometryCRC[0]; }
+	set geometryCRC ( value: number ) {
+		assert( value !== undefined );
+		this._geometryCRC[0] = value;
+	}
+
 	entities = new idList<idMapEntity>( idMapEntity, true );
 	name = new idStr;
 	hasPrimitiveData: boolean;
@@ -1124,6 +1130,8 @@ idMapFile::SetGeometryCRC
 		for ( i = 0; i < this.entities.Num ( ); i++ ) {
 			this.geometryCRC ^= this.entities[i].GetGeometryCRC ( );
 		}
+
+		assertMapSpecific(asserMapsList.demo_mars_city1, this.geometryCRC == 3487349886 );
 	}
 
 /////*

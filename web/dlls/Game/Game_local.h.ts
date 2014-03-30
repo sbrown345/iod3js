@@ -1613,39 +1613,39 @@ MapPopulate (): void {
 idGameLocal::InitFromNewMap
 ===================
 */
-InitFromNewMap (mapName: string, renderWorld: idRenderWorld, soundWorld: idSoundWorld, isServer: boolean, isClient: boolean, randseed: number /*int*/ ): void {
+	InitFromNewMap ( mapName: string, renderWorld: idRenderWorld, soundWorld: idSoundWorld, isServer: boolean, isClient: boolean, randseed: number /*int*/ ): void {
 
 		this.isServer = isServer;
 		this.isClient = isClient;
 		this.isMultiplayer = isServer || isClient;
 
-		if (this.mapFileName.Length()) {
-			this.MapShutdown();
+		if ( this.mapFileName.Length ( ) ) {
+			this.MapShutdown ( );
 		}
 
-		this.Printf("----------- Game Map Init ------------\n");
+		this.Printf( "----------- Game Map Init ------------\n" );
 
 		this.gamestate = gameState_t.GAMESTATE_STARTUP;
 
 		gameRenderWorld = <idRenderWorldLocal>renderWorld;
 		gameSoundWorld = soundWorld;
-		debugger;//todo: test LoadMap outcome
-		this.LoadMap(mapName, randseed);
+		debugger; //todo: test LoadMap outcome
+		this.LoadMap( mapName, randseed );
 
-		this.InitScriptForMap();
+		this.InitScriptForMap ( );
 
-		this.MapPopulate();
+		this.MapPopulate ( );
 
-		this.mpGame.Reset();
+		this.mpGame.Reset ( );
 
-		this.mpGame.Precache();
+		this.mpGame.Precache ( );
 
 		// free up any unused animations
-		animationLib.FlushUnusedAnims();
+		animationLib.FlushUnusedAnims ( );
 
 		this.gamestate = gameState_t.GAMESTATE_ACTIVE;
 
-		this.Printf("--------------------------------------\n");
+		this.Printf( "--------------------------------------\n" );
 	}
 
 /////*
