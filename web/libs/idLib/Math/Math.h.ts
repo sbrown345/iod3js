@@ -906,7 +906,6 @@ static Sqrt( /*float */x:number):number {
 		for ( i = 0; i < numFloats; i++ ) {
 			hash ^= ptr[i];
 		}
-		dlog( DEBUG_CM, "FloatHash: %i\n", hash );
 		return hash;
 	}
 

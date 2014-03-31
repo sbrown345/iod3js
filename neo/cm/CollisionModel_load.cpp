@@ -883,7 +883,7 @@ int idCollisionModelManagerLocal::R_ChoppedAwayByProcBSP( int nodeNum, idFixedWi
 	idFixedWinding back;
 	cm_procNode_t *node;
 	float dist;
-
+	dlog(DEBUG_CM, "R_ChoppedAwayByProcBSP %i\n", nodeNum);
 	do {
 		node = procNodes + nodeNum;
 		dist = node->plane.Normal() * origin + node->plane[3];

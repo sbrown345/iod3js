@@ -247,9 +247,9 @@ idPVS::CreatePVSData
 
 		this.pvsPortals = newStructArray<pvsPortal_t>( pvsPortal_t, this.numPortals );
 		this.pvsAreas = newStructArray<pvsArea_t>( pvsArea_t, this.numAreas );
-		clearStructArray(this.pvsAreas); //memset( this.pvsAreas, 0, this.numAreas * sizeof( *this.pvsAreas ) );
+		clearStructArray( this.pvsAreas ); //memset( this.pvsAreas, 0, this.numAreas * sizeof( *this.pvsAreas ) );
 
-		
+
 		cp = 0;
 		portalPtrs = newStructArray<pvsPortal_t>( pvsPortal_t, this.numPortals ); //new pvsPortal_t*[this.numPortals];
 
@@ -257,7 +257,7 @@ idPVS::CreatePVSData
 		for ( i = 0; i < this.numAreas; i++ ) {
 
 			area = this.pvsAreas[i];
-			area.bounds.Clear();
+			area.bounds.Clear ( );
 			area.portals = portalPtrs.slice( cp ); //portalPtrs + cp;
 
 			n = gameRenderWorld.NumPortalsInArea( i );
@@ -268,12 +268,12 @@ idPVS::CreatePVSData
 
 				p = this.pvsPortals[cp++];
 				// the winding goes counter clockwise seen from this area
-				p.w = portal.w.Copy();
-				p.areaNum = portal.areas[1];	// area[1] is always the area the portal leads to
+				p.w = portal.w.Copy ( );
+				p.areaNum = portal.areas[1]; // area[1] is always the area the portal leads to
 
-				p.vis = new Uint8Array(this.portalVisBytes);
+				p.vis = new Uint8Array( this.portalVisBytes );
 				memset( p.vis, 0, this.portalVisBytes );
-				p.mightSee = new Uint8Array(this.portalVisBytes);
+				p.mightSee = new Uint8Array( this.portalVisBytes );
 				memset( p.mightSee, 0, this.portalVisBytes );
 				p.w.GetBounds( p.bounds );
 				p.w.GetPlane( p.plane );
@@ -281,6 +281,9 @@ idPVS::CreatePVSData
 				p.plane.opEquals( p.plane.opUnaryMinus ( ) );
 				// no PVS calculated for this portal yet
 				p.done = false;
+
+				dlog( DEBUG_MAP_FILE, "CreatePVSData %i %s %s\n", i, p.bounds[0].ToString ( ), p.bounds[1].ToString ( ) );
+				dlog(DEBUG_MAP_FILE, "portalVisBytes: %i numPortals:\n", i, this.portalVisBytes, area.numPortals);
 
 				area.portals[area.numPortals] = p;
 				area.numPortals++;
@@ -327,6 +330,7 @@ idPVS::FloodFrontPortalPVS_r
 ================
 */
 	FloodFrontPortalPVS_r ( portal: pvsPortal_t, /*int */areaNum: number ): void {
+		dlog(DEBUG_MAP_FILE, "FloodFrontPortalPVS_r areaNum: %i\n", areaNum);
 		var /*int */i: number, n: number;
 		var area: pvsArea_t;
 		var p: pvsPortal_t;
@@ -361,6 +365,7 @@ idPVS::FrontPortalPVS
 		var p1: pvsPortal_t, p2: pvsPortal_t;
 		var area: pvsArea_t;
 
+		dlog( DEBUG_MAP_FILE, "FrontPortalPVS\n" );
 		for ( i = 0; i < this.numPortals; i++ ) {
 			p1 = this.pvsPortals[i];
 
@@ -374,16 +379,20 @@ idPVS::FrontPortalPVS
 				if ( areaSide == PLANESIDE_BACK ) {
 					continue;
 				}
+				dlog(DEBUG_MAP_FILE, "as %i\n", areaSide);
 
 				for ( p = 0; p < area.numPortals; p++ ) {
 
 					p2 = area.portals[p];
+					dlog(DEBUG_MAP_FILE, "p2 plane %s\n", p2.plane.ToString());
+					dlog(DEBUG_MAP_FILE, "p2 bounds %s %s\n", p2.bounds[0].ToString(), p2.bounds[0].ToString());
 
 					// if we the whole area is not at the front we need to check
 					if ( areaSide != PLANESIDE_FRONT ) {
 						// if the second portal is completely at the back side of the first portal
 						side1 = p2.bounds.PlaneSide( p1.plane );
 						if ( side1 == PLANESIDE_BACK ) {
+							dlog(DEBUG_MAP_FILE, "side1 == PLANESIDE_BACK\n");
 							continue;
 						}
 					}
@@ -391,6 +400,7 @@ idPVS::FrontPortalPVS
 					// if the first portal is completely at the front of the second portal
 					side2 = p1.bounds.PlaneSide( p2.plane );
 					if ( side2 == PLANESIDE_FRONT ) {
+						dlog(DEBUG_MAP_FILE, "side2 == PLANESIDE_FRONT\n");
 						continue;
 					}
 
@@ -404,6 +414,7 @@ idPVS::FrontPortalPVS
 							}
 						}
 						if ( k >= p2.w.GetNumPoints ( ) ) {
+							dlog(DEBUG_MAP_FILE, "2nd at back of 1st\n");
 							continue; // second portal is at the back of the first portal
 						}
 					}
@@ -418,6 +429,7 @@ idPVS::FrontPortalPVS
 							}
 						}
 						if ( k >= p1.w.GetNumPoints ( ) ) {
+							dlog(DEBUG_MAP_FILE, "1st at back of 2nd\n");
 							continue; // first portal is at the front of the second portal
 						}
 					}
@@ -425,6 +437,7 @@ idPVS::FrontPortalPVS
 					// the portal might be visible at the front
 					n = this.pvsPortals.indexOf( p2 );
 					p1.mightSee[n >> 3] |= 1 << ( n & 7 );
+					dlog(DEBUG_MAP_FILE, "n: %i\n", n);
 				}
 			}
 		}
@@ -442,6 +455,7 @@ idPVS::FrontPortalPVS
 	===============
 	*/
 	FloodPassagePVS_r ( source: pvsPortal_t, portal: pvsPortal_t, prevStack: pvsStack_t ): pvsStack_t {
+		dlog(DEBUG_MAP_FILE, "FloodPassagePVS_r %i\n", portal.areaNum);
 		var /*int */i: number, j: number, n: number, m: number;
 		var p: pvsPortal_t;
 		var area: pvsArea_t;
@@ -468,6 +482,7 @@ idPVS::FrontPortalPVS
 
 			// if this passage is completely empty
 			if ( !passage.canSee ) {
+				dlog(DEBUG_MAP_FILE, " !passage.canSee %i\n", i);
 				continue;
 			}
 
@@ -476,6 +491,7 @@ idPVS::FrontPortalPVS
 
 			// if this portal cannot be seen through our current portal/passage stack
 			if ( !( prevStack.mightSee[n >> 3] & ( 1 << ( n & 7 ) ) ) ) {
+				dlog(DEBUG_MAP_FILE, " if this portal cannot be seen through our current portal/passage stack %i\n", i);
 				continue;
 			}
 
@@ -574,6 +590,7 @@ idPVS::AddPassageBoundaries
 		var flipTest: boolean, front: boolean;
 		var plane = new idPlane;
 
+		dlog(DEBUG_MAP_FILE, "AddPassageBoundaries flipClip %i maxBounds %i:\n", flipClip ? 1 : 0, maxBounds);
 
 		// check all combinations	
 		for ( i = 0; i < source.GetNumPoints ( ); i++ ) {
@@ -588,7 +605,7 @@ idPVS::AddPassageBoundaries
 
 				v2.equals( pass[j].ToVec3 ( ).opSubtraction( source[i].ToVec3 ( ) ) );
 
-				normal = v1.Cross( v2 );
+				normal.equals( v1.Cross( v2 ) );
 				if ( normal.Normalize ( ) < 0.01 ) {
 					continue;
 				}
@@ -604,6 +621,7 @@ idPVS::AddPassageBoundaries
 						continue;
 					}
 					d = source[k].ToVec3 ( ).timesVec( normal ) - dist;
+					dlog(DEBUG_MAP_FILE, "d: %.2f\n", d);
 					if ( d < -ON_EPSILON ) {
 						// source is on the negative side, so we want all
 						// pass and target on the positive side
@@ -675,6 +693,7 @@ idPVS::AddPassageBoundaries
 				break;
 			}
 		}
+		dlog( DEBUG_MAP_FILE, "numBounds: %i\n", numBounds.$ );
 	}
 
 /*
@@ -682,7 +701,7 @@ idPVS::AddPassageBoundaries
 idPVS::CreatePassages
 ================
 */
-static MAX_PASSAGE_BOUNDS		=128;
+	static MAX_PASSAGE_BOUNDS = 128;
 
 	CreatePassages ( ): void {
 		var /*int */i: number, j: number, l: number, n: number, numBounds = new R<number> ( ), front: number, passageMemory: number, byteNum: number, bitNum: number;
@@ -694,6 +713,7 @@ static MAX_PASSAGE_BOUNDS		=128;
 		var winding = new idFixedWinding;
 		var /*byte */canSee: number, mightSee: number, bit: number;
 
+		dlog(DEBUG_MAP_FILE, "CreatePassages\n");
 		passageMemory = 0;
 		for ( i = 0; i < this.numPortals; i++ ) {
 			source = this.pvsPortals[i];
@@ -788,6 +808,7 @@ static MAX_PASSAGE_BOUNDS		=128;
 
 					// store results of all eight portals
 					passage.canSee[byteNum] = canSee;
+					dlog(DEBUG_MAP_FILE, "byteNum: %i\n", canSee);
 				}
 
 				// can always see the target portal
@@ -849,6 +870,7 @@ idPVS::AreaPVSFromPortalPVS
 		var /*byte **/pvs: Uint8Array, portalPVS: Uint8Array;
 		var area: pvsArea_t;
 
+		dlog(DEBUG_MAP_FILE, "AreaPVSFromPortalPVS\n");
 		totalVisibleAreas = 0;
 
 		if ( !this.numPortals ) {
@@ -881,6 +903,7 @@ idPVS::AreaPVSFromPortalPVS
 			// the portals of this area are always visible
 			for (j = 0; j < area.numPortals; j++) {
 				k = this.pvsPortals.indexOf( area.portals[j] ); //area.portals[j] - this.pvsPortals;
+				dlog(DEBUG_MAP_FILE, "k: %i\n", k);
 				area.portals[0].vis[ k >> 3 ] |= 1 << (k & 7);
 			}
 
@@ -891,6 +914,7 @@ idPVS::AreaPVSFromPortalPVS
 				if ( portalPVS[j>>3] & (1 << (j&7)) ) {
 					areaNum = this.pvsPortals[j].areaNum;
 					pvs[ areaNum >> 3 ] |= 1 << (areaNum & 7);
+					dlog(DEBUG_MAP_FILE, "j: %i, an: %i pvs[ areaNum >> 3 ] %i\n", j, areaNum, pvs[areaNum >> 3]);
 				}
 			}
 
@@ -898,6 +922,7 @@ idPVS::AreaPVSFromPortalPVS
 			for ( j = 0; j < this.numAreas; j++ ) {
 				if ( pvs[j>>3] & (1 << (j&7)) ) {
 					totalVisibleAreas++;
+					dlog(DEBUG_MAP_FILE, "totalVisibleAreas++ %i\n", totalVisibleAreas);
 				}
 			}
 		}
@@ -968,6 +993,9 @@ idPVS::Init
 			gameLocal.Printf( "%5d KB PVS data\n", ( this.numAreas * this.areaVisBytes ) >> 10 );
 		}
 
+		dlog(DEBUG_MAP_FILE, "%5d areas\n", this.numAreas );
+		dlog(DEBUG_MAP_FILE, "%5d portals\n", this.numPortals );
+		dlog(DEBUG_MAP_FILE, "%5d totalVisibleAreas\n", totalVisibleAreas );
 		assertMapSpecific(assertMapsList.demo_mars_city1, this.numAreas == 56);
 		assertMapSpecific(assertMapsList.demo_mars_city1, this.numPortals == 110);
 		assertMapSpecific(assertMapsList.demo_mars_city1, totalVisibleAreas == 523 );

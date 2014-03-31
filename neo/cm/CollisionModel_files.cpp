@@ -544,6 +544,15 @@ bool idCollisionModelManagerLocal::ParseCollisionModel( idLexer *src ) {
 						model->numPolygonRefs * sizeof(cm_polygonRef_t) +
 						model->numBrushRefs * sizeof(cm_brushRef_t);
 
+
+	dlog(DEBUG_CM, "idCollisionModelManagerLocal::ParseCollisionModel");
+	dlog(DEBUG_CM, "numVertices %i\n", model->numVertices);
+	dlog(DEBUG_CM, "numEdges %i\n", model->numEdges);
+	dlog(DEBUG_CM, "nolygonMemory %i\n", model->polygonMemory);
+	dlog(DEBUG_CM, "nrushMemory %i\n", model->brushMemory);
+	dlog(DEBUG_CM, "numNodes %i\n", model->numNodes);
+	dlog(DEBUG_CM, "numPolygonRefs %i\n", model->numPolygonRefs);
+	dlog(DEBUG_CM, "numBrushRefs %i\n", model->numBrushRefs);
 	return true;
 }
 

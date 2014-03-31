@@ -180,7 +180,9 @@ JavaScript Debug Helpers
 #define DEBUG_GUI 0//isd(0)
 #define DEBUG_HASHINDEX 0//isd(0)
 #define DEBUG_STRPOOL 0//isd(0)
-#define DEBUG_RENDERWORLD_LOAD 1//isd(0)
+#define DEBUG_RENDERWORLD_LOAD 0//isd(0)
+#define DEBUG_CM 1//isd(0)
+#define DEBUG_MAP_FILE 1//isd(0)
 
 void dlog(bool log, char *format, ...);
 

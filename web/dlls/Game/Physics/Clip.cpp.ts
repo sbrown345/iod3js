@@ -343,7 +343,8 @@ idClipModel::AllocTraceModel
 		var /*int */i: number, hashKey: number, traceModelIndex: number;
 		var entry: trmCache_t;
 
-		hashKey = this.GetTraceModelHashKey( trm );
+		hashKey = this.GetTraceModelHashKey(trm);
+		dlog(DEBUG_CM, "AllocTraceModel hashKey: %i\n", hashKey);
 		for ( i = traceModelHash.First( hashKey ); i >= 0; i = traceModelHash.Next( i ) ) {
 			if ( traceModelCache[i].trm == trm ) {
 				traceModelCache[i].refCount++;

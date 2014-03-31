@@ -889,7 +889,7 @@ idCollisionModelManagerLocal.prototype.R_ChoppedAwayByProcBSP = function ( /*int
 	var back = new idFixedWinding;
 	var node: cm_procNode_t;
 	var /*float */dist: number;
-
+	dlog( DEBUG_CM, "R_ChoppedAwayByProcBSP %i\n", nodeNum );
 	do {
 		node = this.procNodes[nodeNum];
 		dist = node.plane.Normal ( ).timesVec( origin ) + node.plane[3];

@@ -264,7 +264,7 @@ unsigned int idMapPatch::GetGeometryCRC( void ) const {
 	}
 
 	crc ^= StringCRC( GetMaterial() );
-
+	dlog(DEBUG_MAP_FILE, "idMapPatch::GetGeometryCRC crc: %u\n", crc);
 	return crc;
 }
 
@@ -527,6 +527,7 @@ unsigned int idMapBrush::GetGeometryCRC( void ) const {
 		crc ^= StringCRC( mapSide->GetMaterial() );
 	}
 
+	dlog(DEBUG_MAP_FILE, "idMapBrush::GetGeometryCRC crc: %u\n", crc);
 	return crc;
 }
 
@@ -709,6 +710,7 @@ unsigned int idMapEntity::GetGeometryCRC( void ) const {
 		}
 	}
 
+	dlog(DEBUG_MAP_FILE, "idMapEntity::GetGeometryCRC crc: %u\n", crc);
 	return crc;
 }
 

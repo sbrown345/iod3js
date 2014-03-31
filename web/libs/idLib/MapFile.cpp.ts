@@ -621,6 +621,8 @@ idMapBrush::GetGeometryCRC
 			crc ^= StringCRC( mapSide.GetMaterial ( ) );
 		}
 
+		crc = uint32(crc);
+		dlog(DEBUG_MAP_FILE, "idMapBrush::GetGeometryCRC crc: %u\n", crc);
 		return crc;
 	}
 }
@@ -824,7 +826,8 @@ idMapEntity::GetGeometryCRC
 					todoThrow( "type should be set" );
 			}
 		}
-
+		crc = uint32( crc );
+		dlog(DEBUG_MAP_FILE, "idMapEntity::GetGeometryCRC crc: %u\n", crc);
 		return crc;
 	}
 }

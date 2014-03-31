@@ -100,9 +100,9 @@ idClipModel::AllocTraceModel
 int idClipModel::AllocTraceModel( const idTraceModel &trm ) {
 	int i, hashKey, traceModelIndex;
 	trmCache_t *entry;
-
-	hashKey = GetTraceModelHashKey( trm );
-	for ( i = traceModelHash.First( hashKey ); i >= 0; i = traceModelHash.Next( i ) ) {
+	hashKey = GetTraceModelHashKey(trm);
+	dlog(DEBUG_CM, "AllocTraceModel hashKey: %i\n", hashKey);
+	for (i = traceModelHash.First(hashKey); i >= 0; i = traceModelHash.Next(i)) {
 		if ( traceModelCache[i]->trm == trm ) {
 			traceModelCache[i]->refCount++;
 			return i;

@@ -837,7 +837,7 @@ idBounds::PlaneSide
 }
 
 Object.defineProperty(idBounds.prototype, "0", {
-	get: function (): number {
+	get: function (): idVec3 {
 		return this.b[0];
 	},
 	set: function (value: number): void {
@@ -848,7 +848,7 @@ Object.defineProperty(idBounds.prototype, "0", {
 });
 
 Object.defineProperty(idBounds.prototype, "1", {
-	get: function (): number {
+	get: function (): idVec3 {
 		return this.b[1];
 	},
 	set: function (value: number): void {

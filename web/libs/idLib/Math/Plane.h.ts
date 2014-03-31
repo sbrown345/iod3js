@@ -436,10 +436,10 @@ class idPlane {
 	//	return true;
 	//}
 	//
-	//ID_INLINE int idPlane::GetDimension( ) const {
-	//	return 4;
-	//}
-	//
+	GetDimension ( ): number {
+		return 4;
+	}
+
 	//ID_INLINE const idVec4 &idPlane::ToVec4( ) const {
 	//	return *reinterpret_cast<const idVec4 *>(&a);
 	//}
@@ -599,7 +599,7 @@ class idPlane {
 	//		return false;
 	//	}
 	//
-	//	invDet = 1.0f / det;
+	//	invDet = 1.0 / det;
 	//	f0 = (n01 * plane.d - n11 * d) * invDet;
 	//	f1 = (n01 * d - n00 * plane.d) * invDet;
 	//
@@ -607,15 +607,15 @@ class idPlane {
 	//	start = f0 * this.Normal() + f1 * plane.this.Normal();
 	//	return true;
 	//}
-	//
-	///*
-	//=============
-	//idPlane::ToString
-	//=============
-	//*/
-	//const char *idPlane::ToString(int precision) const {
-	//	return idStr::FloatArrayToString(ToFloatPtr(), GetDimension(), precision);
-	//}
+	
+	/*
+	=============
+	idPlane::ToString
+	=============
+	*/
+	ToString ( /*int */precision = 2 ): string {
+		return idStr.FloatArrayToString( this.ToFloatPtr ( ), this.GetDimension ( ), precision );
+	}
 }
 
 Object.defineProperty(idPlane.prototype, "0", {
