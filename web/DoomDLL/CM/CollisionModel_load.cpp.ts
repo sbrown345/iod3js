@@ -706,6 +706,7 @@ idCollisionModelManagerLocal.prototype.AllocBrush = function ( model: cm_model_t
 idCollisionModelManagerLocal::AddPolygonToNode
 ================
 */
+var AddPolygonToNodeCount = 0;
 idCollisionModelManagerLocal.prototype.AddPolygonToNode = function ( model: cm_model_t, node: cm_node_t, p: cm_polygon_t ): void {
 	var pref: cm_polygonRef_t;
 
@@ -714,6 +715,9 @@ idCollisionModelManagerLocal.prototype.AddPolygonToNode = function ( model: cm_m
 	pref.next = node.polygons;
 	node.polygons = pref;
 	model.numPolygonRefs++;
+
+	AddPolygonToNodeCount++;
+	dlog( DEBUG_CM, "AddPolygonToNode %i\n", AddPolygonToNodeCount );
 };
 
 /*
@@ -721,6 +725,7 @@ idCollisionModelManagerLocal.prototype.AddPolygonToNode = function ( model: cm_m
 idCollisionModelManagerLocal::AddBrushToNode
 ================
 */
+var AddBrushToNodeCount = 0;
 idCollisionModelManagerLocal.prototype.AddBrushToNode = function ( model: cm_model_t, node: cm_node_t, b: cm_brush_t ): void {
 	var bref: cm_brushRef_t;
 
@@ -729,6 +734,9 @@ idCollisionModelManagerLocal.prototype.AddBrushToNode = function ( model: cm_mod
 	bref.next = node.brushes;
 	node.brushes = bref;
 	model.numBrushRefs++;
+
+	AddBrushToNodeCount++;
+	dlog(DEBUG_CM, "AddBrushToNode %i\n", AddBrushToNodeCount);
 };
 
 /*
@@ -1966,17 +1974,26 @@ idCollisionModelManagerLocal.prototype.R_FilterPolygonIntoTree = function ( mode
 	assert( node != null );
 	while ( node.planeType != -1 ) {
 		if ( CM_R_InsideAllChildren( node, p.bounds ) ) {
+			dlog(DEBUG_CM, "CM_R_InsideAllChildren true\n");
 			break;
 		}
 		if ( p.bounds[0][node.planeType] >= node.planeDist ) {
+			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 1\n");
 			node = node.children[0];
 		} else if ( p.bounds[1][node.planeType] <= node.planeDist ) {
+			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 2\n");
 			node = node.children[1];
 		} else {
 			this.R_FilterPolygonIntoTree( model, node.children[1], null, p );
 			node = node.children[0];
+			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 3\n");
 		}
 	}
+	if (!node)
+		alert("no node..")
+	dlog(DEBUG_CM, "R_FilterPolygonIntoTree planeDist %.2f node.parent.planeDist %.2f\n", node.planeDist);
+	if(node.parent)
+		dlog( DEBUG_CM, "R_FilterPolygonIntoTree node.parent.planeDist %.2f\n", node.parent.planeDist );
 	if ( pref ) {
 		pref.next = node.polygons;
 		node.polygons = pref;
@@ -3227,10 +3244,11 @@ idCollisionModelManagerLocal::AccumulateModelInfo
 */
 idCollisionModelManagerLocal.prototype.AccumulateModelInfo = function ( model: cm_model_t ): void {
 	var i: number;
-
 	model.memset0 ( ); //memset( model, 0, sizeof( *model ) );
 	// accumulate statistics of all loaded models
+	dlog(DEBUG_CM, "idCollisionModelManagerLocal::AccumulateModelInfo\n");
 	for ( i = 0; i < this.numModels; i++ ) {
+		dlog(DEBUG_CM, "i:%i,  numBrushRefs: %i, numPolygonRefs: %i\n", i, this.models[i].numBrushRefs, this.models[i].numPolygonRefs);
 		model.numVertices += this.models[i].numVertices;
 		model.numEdges += this.models[i].numEdges;
 		model.numPolygons += this.models[i].numPolygons;
