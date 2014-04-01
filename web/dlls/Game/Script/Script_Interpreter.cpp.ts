@@ -34,22 +34,22 @@
 //#ifndef __SCRIPT_INTERPRETER_H__
 //#define __SCRIPT_INTERPRETER_H__
 //
-//#define MAX_STACK_DEPTH 	64
-//#define LOCALSTACK_SIZE 	6144
-//
-//typedef struct prstack_s {
-//	int 				s;
-//	const function_t	*f;
-//	int 				stackbase;
-//} prstack_t;
-//
+var MAX_STACK_DEPTH = 64;
+var LOCALSTACK_SIZE = 6144;
+
+class prstack_t {
+	s: number /*int*/;
+	f: function_t;
+	stackbase: number /*int*/;
+}
+
 class idInterpreter {
 //private:
-//	prstack_t			callStack[ MAX_STACK_DEPTH ];
+	callStack = newStructArray<prstack_t>(prstack_t,MAX_STACK_DEPTH );
 	callStackDepth: number/*int*/;
 	maxStackDepth: number/*int*/;
 
-//	byte				localstack[ LOCALSTACK_SIZE ];
+	localstack = new Uint8Array(LOCALSTACK_SIZE );
 	localstackUsed: number/*int*/;
 	localstackBase: number/*int*/;
 	maxLocalstackUsed: number/*int*/;
@@ -121,31 +121,31 @@ class idInterpreter {
 //
 
 
-///*
-//====================
-//idInterpreter::PopParms
-//====================
-//*/
-//ID_INLINE void idInterpreter::PopParms( int numParms ) {
-//	// pop our parms off the stack
-//	if ( localstackUsed < numParms ) {
-//		Error( "locals stack underflow\n" );
-//	}
-//
-//	localstackUsed -= numParms;
-//}
-//
+/*
+====================
+idInterpreter::PopParms
+====================
+*/
+PopParms( /*int */numParms :number):void {
+	// pop our parms off the stack
+	if ( this.localstackUsed < numParms ) {
+		Error( "locals stack underflow\n" );
+	}
+
+	this.localstackUsed -= numParms;
+}
+
 ///*
 //====================
 //idInterpreter::Push
 //====================
 //*/
 //ID_INLINE void idInterpreter::Push( int value ) {
-//	if ( localstackUsed + sizeof( int ) > LOCALSTACK_SIZE ) {
+//	if ( this.localstackUsed + sizeof( int ) > LOCALSTACK_SIZE ) {
 //		Error( "Push: locals stack overflow\n" );
 //	}
-//	*( int * )&localstack[ localstackUsed ]	= value;
-//	localstackUsed += sizeof( int );
+//	*( int * )&this.localstack[ this.localstackUsed ]	= value;
+//	this.localstackUsed += sizeof( int );
 //}
 //
 ///*
@@ -154,11 +154,11 @@ class idInterpreter {
 //====================
 //*/
 //ID_INLINE void idInterpreter::PushString( const char *string ) {
-//	if ( localstackUsed + MAX_STRING_LEN > LOCALSTACK_SIZE ) {
+//	if ( this.localstackUsed + MAX_STRING_LEN > LOCALSTACK_SIZE ) {
 //		Error( "PushString: locals stack overflow\n" );
 //	}
-//	idStr.Copynz( ( char * )&localstack[ localstackUsed ], string, MAX_STRING_LEN );
-//	localstackUsed += MAX_STRING_LEN;
+//	idStr.Copynz( ( char * )&this.localstack[ this.localstackUsed ], string, MAX_STRING_LEN );
+//	this.localstackUsed += MAX_STRING_LEN;
 //}
 //
 ///*
@@ -184,7 +184,7 @@ class idInterpreter {
 //*/
 //ID_INLINE void idInterpreter::AppendString( idVarDef *def, const char *from ) {
 //	if ( def.initialized == idVarDef::stackVariable ) {
-//		idStr::Append( ( char * )&localstack[ localstackBase + def.value.stackOffset ], MAX_STRING_LEN, from );
+//		idStr::Append( ( char * )&this.localstack[ this.localstackBase + def.value.stackOffset ], MAX_STRING_LEN, from );
 //	} else {
 //		idStr::Append( def.value.stringPtr, MAX_STRING_LEN, from );
 //	}
@@ -197,7 +197,7 @@ class idInterpreter {
 //*/
 //ID_INLINE void idInterpreter::SetString( idVarDef *def, const char *from ) {
 //	if ( def.initialized == idVarDef::stackVariable ) {
-//		idStr.Copynz( ( char * )&localstack[ localstackBase + def.value.stackOffset ], from, MAX_STRING_LEN );
+//		idStr.Copynz( ( char * )&this.localstack[ this.localstackBase + def.value.stackOffset ], from, MAX_STRING_LEN );
 //	} else {
 //		idStr.Copynz( def.value.stringPtr, from, MAX_STRING_LEN );
 //	}
@@ -210,7 +210,7 @@ class idInterpreter {
 //*/
 //ID_INLINE const char *idInterpreter::GetString( idVarDef *def ) {
 //	if ( def.initialized == idVarDef::stackVariable ) {
-//		return ( char * )&localstack[ localstackBase + def.value.stackOffset ];
+//		return ( char * )&this.localstack[ this.localstackBase + def.value.stackOffset ];
 //	} else {
 //		return def.value.stringPtr;
 //	}
@@ -224,7 +224,7 @@ class idInterpreter {
 //ID_INLINE varEval_t idInterpreter::GetVariable( idVarDef *def ) {
 //	if ( def.initialized == idVarDef::stackVariable ) {
 //		varEval_t val;
-//		val.intPtr = ( int * )&localstack[ localstackBase + def.value.stackOffset ];
+//		val.intPtr = ( int * )&this.localstack[ this.localstackBase + def.value.stackOffset ];
 //		return val;
 //	} else {
 //		return def.value;
@@ -261,18 +261,18 @@ class idInterpreter {
 //	}
 //	return NULL;
 //}
-//
-///*
-//====================
-//idInterpreter::NextInstruction
-//====================
-//*/
-//ID_INLINE void idInterpreter::NextInstruction( int position ) {
-//	// Before we execute an instruction, we increment instructionPointer,
-//	// therefore we need to compensate for that here.
-//	instructionPointer = position - 1;
-//}
-//
+
+/*
+====================
+idInterpreter::NextInstruction
+====================
+*/
+	NextInstruction ( /*int */position: number ): void {
+		// Before we execute an instruction, we increment instructionPointer,
+		// therefore we need to compensate for that here.
+		this.instructionPointer = position - 1;
+	}
+
 //#endif /* !__SCRIPT_INTERPRETER_H__ */
 
 ///*
@@ -281,12 +281,12 @@ class idInterpreter {
 //================
 //*/
 //idInterpreter::idInterpreter() {
-//	localstackUsed = 0;
+//	this.localstackUsed = 0;
 //	this.terminateOnExit = true;
 //	this.debug = 0;
-//	memset( localstack, 0, sizeof( localstack ) );
-//	memset( callStack, 0, sizeof( callStack ) );
-//	Reset();
+//	memset( this.localstack, 0, sizeof( this.localstack ) );
+//	memset( this.callStack, 0, sizeof( this.callStack ) );
+//	this.Reset();
 //}
 //
 ///*
@@ -297,32 +297,32 @@ class idInterpreter {
 //void idInterpreter::Save( idSaveGame *savefile ) const {
 //	int i;
 //
-//	savefile.WriteInt( callStackDepth );
-//	for( i = 0; i < callStackDepth; i++ ) {
-//		savefile.WriteInt( callStack[i].s );
-//		if ( callStack[i].f ) {
-//			savefile.WriteInt( gameLocal.program.GetFunctionIndex( callStack[i].f ) );
+//	savefile.WriteInt( this.callStackDepth );
+//	for( i = 0; i < this.callStackDepth; i++ ) {
+//		savefile.WriteInt( this.callStack[i].s );
+//		if ( this.callStack[i].f ) {
+//			savefile.WriteInt( gameLocal.program.GetFunctionIndex( this.callStack[i].f ) );
 //		} else {
 //			savefile.WriteInt( -1 );
 //		}
-//		savefile.WriteInt( callStack[i].stackbase );
+//		savefile.WriteInt( this.callStack[i].stackbase );
 //	}
-//	savefile.WriteInt( maxStackDepth );
+//	savefile.WriteInt( this.maxStackDepth );
 //
-//	savefile.WriteInt( localstackUsed );
-//	savefile.Write( &localstack, localstackUsed );
+//	savefile.WriteInt( this.localstackUsed );
+//	savefile.Write( &this.localstack, this.localstackUsed );
 //
-//	savefile.WriteInt( localstackBase );
-//	savefile.WriteInt( maxLocalstackUsed );
+//	savefile.WriteInt( this.localstackBase );
+//	savefile.WriteInt( this.maxLocalstackUsed );
 //
-//	if ( currentFunction ) {
-//		savefile.WriteInt( gameLocal.program.GetFunctionIndex( currentFunction ) );
+//	if ( this.currentFunction ) {
+//		savefile.WriteInt( gameLocal.program.GetFunctionIndex( this.currentFunction ) );
 //	} else {
 //		savefile.WriteInt( -1 );
 //	}
-//	savefile.WriteInt( instructionPointer );
+//	savefile.WriteInt( this.instructionPointer );
 //
-//	savefile.WriteInt( popParms );
+//	savefile.WriteInt( this.popParms );
 //
 //	if ( this.multiFrameEvent ) {
 //		savefile.WriteString( this.multiFrameEvent.GetName() );
@@ -349,36 +349,36 @@ class idInterpreter {
 //	idStr funcname;
 //	int func_index;
 //
-//	savefile.ReadInt( callStackDepth );
-//	for( i = 0; i < callStackDepth; i++ ) {
-//		savefile.ReadInt( callStack[i].s );
+//	savefile.ReadInt( this.callStackDepth );
+//	for( i = 0; i < this.callStackDepth; i++ ) {
+//		savefile.ReadInt( this.callStack[i].s );
 //
 //		savefile.ReadInt( func_index );
 //		if ( func_index >= 0 ) {
-//			callStack[i].f = gameLocal.program.GetFunction( func_index );
+//			this.callStack[i].f = gameLocal.program.GetFunction( func_index );
 //		} else {
-//			callStack[i].f = NULL;
+//			this.callStack[i].f = NULL;
 //		}
 //
-//		savefile.ReadInt( callStack[i].stackbase );
+//		savefile.ReadInt( this.callStack[i].stackbase );
 //	}
-//	savefile.ReadInt( maxStackDepth );
+//	savefile.ReadInt( this.maxStackDepth );
 //
-//	savefile.ReadInt( localstackUsed );
-//	savefile.Read( &localstack, localstackUsed );
+//	savefile.ReadInt( this.localstackUsed );
+//	savefile.Read( &this.localstack, this.localstackUsed );
 //
-//	savefile.ReadInt( localstackBase );
-//	savefile.ReadInt( maxLocalstackUsed );
+//	savefile.ReadInt( this.localstackBase );
+//	savefile.ReadInt( this.maxLocalstackUsed );
 //
 //	savefile.ReadInt( func_index );
 //	if ( func_index >= 0 ) {
-//		currentFunction = gameLocal.program.GetFunction( func_index );
+//		this.currentFunction = gameLocal.program.GetFunction( func_index );
 //	} else {
-//		currentFunction = NULL;
+//		this.currentFunction = NULL;
 //	}
-//	savefile.ReadInt( instructionPointer );
+//	savefile.ReadInt( this.instructionPointer );
 //
-//	savefile.ReadInt( popParms );
+//	savefile.ReadInt( this.popParms );
 //
 //	savefile.ReadString( funcname );
 //	if ( funcname.Length() ) {
@@ -393,31 +393,31 @@ class idInterpreter {
 //	savefile.ReadBool( this.terminateOnExit );
 //	savefile.ReadBool( this.debug );
 //}
-//
-///*
-//================
-//idInterpreter::Reset
-//================
-//*/
-//void idInterpreter::Reset( ) {
-//	callStackDepth = 0;
-//	localstackUsed = 0;
-//	localstackBase = 0;
-//
-//	maxLocalstackUsed = 0;
-//	maxStackDepth = 0;
-//
-//	popParms = 0;
-//	this.multiFrameEvent = NULL;
-//	eventEntity = NULL;
-//
-//	currentFunction = 0;
-//	NextInstruction( 0 );
-//
-//	this.threadDying 	= false;
-//	this.doneProcessing	= true;
-//}
-//
+
+/*
+================
+idInterpreter::Reset
+================
+*/
+	Reset ( ): void {
+		this.callStackDepth = 0;
+		this.localstackUsed = 0;
+		this.localstackBase = 0;
+
+		this.maxLocalstackUsed = 0;
+		this.maxStackDepth = 0;
+
+		this.popParms = 0;
+		this.multiFrameEvent = null;
+		this.eventEntity = null;
+
+		this.currentFunction = null;
+		this.NextInstruction( 0 );
+
+		this.threadDying = false;
+		this.doneProcessing = true;
+	}
+
 ///*
 //================
 //idInterpreter::GetRegisterValue
@@ -441,13 +441,13 @@ class idInterpreter {
 //	out.Empty();
 //	
 //	if ( scopeDepth == -1 ) {
-//		scopeDepth = callStackDepth;
+//		scopeDepth = this.callStackDepth;
 //	}	
 //	
-//	if ( scopeDepth == callStackDepth ) {
-//		func = currentFunction;
+//	if ( scopeDepth == this.callStackDepth ) {
+//		func = this.currentFunction;
 //	} else {
-//		func = callStack[ scopeDepth ].f;
+//		func = this.callStack[ scopeDepth ].f;
 //	}
 //	if ( !func ) {
 //		return false;
@@ -522,7 +522,7 @@ class idInterpreter {
 //		}
 //
 //		field = scope.TypeDef().GetParmType( reg.ptrOffset ).FieldType();
-//		obj   = *reinterpret_cast<const idScriptObject **>( &localstack[ callStack[ callStackDepth ].stackbase ] );
+//		obj   = *reinterpret_cast<const idScriptObject **>( &this.localstack[ this.callStack[ this.callStackDepth ].stackbase ] );
 //		if ( !field || !obj ) {
 //			return false;
 //		}
@@ -562,7 +562,7 @@ class idInterpreter {
 //================
 //*/
 //int idInterpreter::GetCallstackDepth( ) const {
-//	return callStackDepth;
+//	return this.callStackDepth;
 //}
 //
 ///*
@@ -571,7 +571,7 @@ class idInterpreter {
 //================
 //*/
 //const prstack_t *idInterpreter::GetCallstack( ) const {
-//	return &callStack[ 0 ];
+//	return &this.callStack[ 0 ];
 //}
 //
 ///*
@@ -580,7 +580,7 @@ class idInterpreter {
 //================
 //*/
 //const function_t *idInterpreter::GetCurrentFunction( ) const {
-//	return currentFunction;
+//	return this.currentFunction;
 //}
 //
 ///*
@@ -608,10 +608,10 @@ idInterpreter::SetThread
 //================
 //*/
 //int idInterpreter::CurrentLine( ) const {
-//	if ( instructionPointer < 0 ) {
+//	if ( this.instructionPointer < 0 ) {
 //		return 0;
 //	}
-//	return gameLocal.program.GetLineNumberForStatement( instructionPointer );
+//	return gameLocal.program.GetLineNumberForStatement( this.instructionPointer );
 //}
 //
 ///*
@@ -620,10 +620,10 @@ idInterpreter::SetThread
 //================
 //*/
 //const char *idInterpreter::CurrentFile( ) const {
-//	if ( instructionPointer < 0 ) {
+//	if ( this.instructionPointer < 0 ) {
 //		return "";
 //	}
-//	return gameLocal.program.GetFilenameForStatement( instructionPointer );
+//	return gameLocal.program.GetFilenameForStatement( this.instructionPointer );
 //}
 //
 ///*
@@ -636,24 +636,24 @@ idInterpreter::SetThread
 //	int 				i;
 //	int					top;
 //
-//	if ( callStackDepth == 0 ) {
+//	if ( this.callStackDepth == 0 ) {
 //		gameLocal.Printf( "<NO STACK>\n" );
 //		return;
 //	}
 //
-//	top = callStackDepth;
+//	top = this.callStackDepth;
 //	if ( top >= MAX_STACK_DEPTH ) {
 //		top = MAX_STACK_DEPTH - 1;
 //	}
 //	
-//	if ( !currentFunction ) {
+//	if ( !this.currentFunction ) {
 //		gameLocal.Printf( "<NO FUNCTION>\n" );
 //	} else {
-//		gameLocal.Printf( "%12s : %s\n", gameLocal.program.GetFilename( currentFunction.filenum ), currentFunction.Name() );
+//		gameLocal.Printf( "%12s : %s\n", gameLocal.program.GetFilename( this.currentFunction.filenum ), this.currentFunction.Name() );
 //	}
 //
 //	for( i = top; i >= 0; i-- ) {
-//		f = callStack[ i ].f;
+//		f = this.callStack[ i ].f;
 //		if ( !f ) {
 //			gameLocal.Printf( "<NO FUNCTION>\n" );
 //		} else {
@@ -679,8 +679,8 @@ idInterpreter::SetThread
 //
 //	StackTrace();
 //
-//	if ( ( instructionPointer >= 0 ) && ( instructionPointer < gameLocal.program.NumStatements() ) ) {
-//		statement_t &line = gameLocal.program.GetStatement( instructionPointer );
+//	if ( ( this.instructionPointer >= 0 ) && ( this.instructionPointer < gameLocal.program.NumStatements() ) ) {
+//		statement_t &line = gameLocal.program.GetStatement( this.instructionPointer );
 //		common.Error( "%s(%d): Thread '%s': %s\n", gameLocal.program.GetFilename( line.file ), line.linenumber, thread.GetThreadName(), text );
 //	} else {
 //		common.Error( "Thread '%s': %s\n", thread.GetThreadName(), text );
@@ -702,8 +702,8 @@ idInterpreter::SetThread
 //	vsprintf( text, fmt, argptr );
 //	va_end( argptr );
 //
-//	if ( ( instructionPointer >= 0 ) && ( instructionPointer < gameLocal.program.NumStatements() ) ) {
-//		statement_t &line = gameLocal.program.GetStatement( instructionPointer );
+//	if ( ( this.instructionPointer >= 0 ) && ( this.instructionPointer < gameLocal.program.NumStatements() ) ) {
+//		statement_t &line = gameLocal.program.GetStatement( this.instructionPointer );
 //		common.Warning( "%s(%d): Thread '%s': %s", gameLocal.program.GetFilename( line.file ), line.linenumber, thread.GetThreadName(), text );
 //	} else {
 //		common.Warning( "Thread '%s' : %s", thread.GetThreadName(), text );
@@ -719,22 +719,22 @@ idInterpreter::SetThread
 //	const function_t *f;
 //	int i;
 //
-//	gameLocal.Printf( " Stack depth: %d bytes, %d max\n", localstackUsed, maxLocalstackUsed );
-//	gameLocal.Printf( "  Call depth: %d, %d max\n", callStackDepth, maxStackDepth );
+//	gameLocal.Printf( " Stack depth: %d bytes, %d max\n", this.localstackUsed, this.maxLocalstackUsed );
+//	gameLocal.Printf( "  Call depth: %d, %d max\n", this.callStackDepth, this.maxStackDepth );
 //	gameLocal.Printf( "  Call Stack: " );
 //
-//	if ( callStackDepth == 0 ) {
+//	if ( this.callStackDepth == 0 ) {
 //		gameLocal.Printf( "<NO STACK>\n" );
 //	} else {
-//		if ( !currentFunction ) {
+//		if ( !this.currentFunction ) {
 //			gameLocal.Printf( "<NO FUNCTION>\n" );
 //		} else {
-//			gameLocal.Printf( "%12s : %s\n", gameLocal.program.GetFilename( currentFunction.filenum ), currentFunction.Name() );
+//			gameLocal.Printf( "%12s : %s\n", gameLocal.program.GetFilename( this.currentFunction.filenum ), this.currentFunction.Name() );
 //		}
 //
-//		for( i = callStackDepth; i > 0; i-- ) {
+//		for( i = this.callStackDepth; i > 0; i-- ) {
 //			gameLocal.Printf( "              " );
-//			f = callStack[ i ].f;
+//			f = this.callStack[ i ].f;
 //			if ( !f ) {
 //				gameLocal.Printf( "<NO FUNCTION>\n" );
 //			} else {
@@ -754,15 +754,15 @@ idInterpreter::SetThread
 //void idInterpreter::ThreadCall( idInterpreter *source, const function_t *func, int args ) {
 //	Reset();
 //
-//	memcpy( localstack, &source.localstack[ source.localstackUsed - args ], args );
+//	memcpy( this.localstack, &source.localstack[ source.localstackUsed - args ], args );
 //
-//	localstackUsed = args;
-//	localstackBase = 0;
+//	this.localstackUsed = args;
+//	this.localstackBase = 0;
 //
-//	maxLocalstackUsed = localstackUsed;
+//	this.maxLocalstackUsed = this.localstackUsed;
 //	this.EnterFunction( func, false );
 //
-//	thread.SetThreadName( currentFunction.Name() );
+//	thread.SetThreadName( this.currentFunction.Name() );
 //}
 //
 ///*
@@ -778,9 +778,9 @@ idInterpreter::SetThread
 //	if ( clearStack ) {
 //		Reset();
 //	}
-//	if ( popParms ) {
-//		PopParms( popParms );
-//		popParms = 0;
+//	if ( this.popParms ) {
+//		PopParms( this.popParms );
+//		this.popParms = 0;
 //	}
 //	Push( self.entityNumber + 1 );
 //	this.EnterFunction( func, false );
@@ -796,68 +796,67 @@ idInterpreter::SetThread
 //====================
 //*/
 	EnterFunction ( func: function_t, clearStack: boolean ): void {
-		todoThrow ( );
-//	int 		c;
-//	prstack_t	*stack;
-//
-//	if ( clearStack ) {
-//		Reset();
-//	}
-//	if ( popParms ) {
-//		PopParms( popParms );
-//		popParms = 0;
-//	}
-//
-//	if ( callStackDepth >= MAX_STACK_DEPTH ) {
-//		Error( "call stack overflow" );
-//	}
-//
-//	stack = &callStack[ callStackDepth ];
-//
-//	stack.s			= instructionPointer + 1;	// point to the next instruction to execute
-//	stack.f			= currentFunction;
-//	stack.stackbase	= localstackBase;
-//
-//	callStackDepth++;
-//	if ( callStackDepth > maxStackDepth ) {
-//		maxStackDepth = callStackDepth;
-//	}
-//
-//	if ( !func ) {
-//		Error( "NULL function" );
-//	}
-//
-//	if ( this.debug ) {
-//		if ( currentFunction ) {
-//			gameLocal.Printf( "%d: call '%s' from '%s'(line %d)%s\n", gameLocal.time, func.Name(), currentFunction.Name(), 
-//				gameLocal.program.GetStatement( instructionPointer ).linenumber, clearStack ? " clear stack" : "" );
-//		} else {
-//            gameLocal.Printf( "%d: call '%s'%s\n", gameLocal.time, func.Name(), clearStack ? " clear stack" : "" );
-//		}
-//	}
-//
-//	currentFunction = func;
-//	assert( !func.eventdef );
-//	NextInstruction( func.firstStatement );
-//
-//	// allocate space on the stack for locals
-//	// parms are already on stack
-//	c = func.locals - func.parmTotal;
-//	assert( c >= 0 );
-//
-//	if ( localstackUsed + c > LOCALSTACK_SIZE ) {
-//		Error( "EnterFuncton: locals stack overflow\n" );
-//	}
-//
-//	// initialize local stack variables to zero
-//	memset( &localstack[ localstackUsed ], 0, c );
-//
-//	localstackUsed += c;
-//	localstackBase = localstackUsed - func.locals;
-//
-//	if ( localstackUsed > maxLocalstackUsed ) {
-//		maxLocalstackUsed = localstackUsed ;
-//	}
+		var /*int 		*/c: number;
+		var stack: prstack_t;
+
+		if ( clearStack ) {
+			this.Reset ( );
+		}
+		if ( this.popParms ) {
+			this.PopParms( this.popParms );
+			this.popParms = 0;
+		}
+
+		if ( this.callStackDepth >= MAX_STACK_DEPTH ) {
+			Error( "call stack overflow" );
+		}
+
+		stack = this.callStack[this.callStackDepth];
+
+		stack.s = this.instructionPointer + 1; // point to the next instruction to execute
+		stack.f = this.currentFunction;
+		stack.stackbase = this.localstackBase;
+
+		this.callStackDepth++;
+		if ( this.callStackDepth > this.maxStackDepth ) {
+			this.maxStackDepth = this.callStackDepth;
+		}
+
+		if ( !func ) {
+			Error( "NULL function" );
+		}
+
+		if ( this.debug ) {
+			if ( this.currentFunction ) {
+				gameLocal.Printf( "%d: call '%s' from '%s'(line %d)%s\n", gameLocal.time, func.Name ( ), this.currentFunction.Name ( ),
+					gameLocal.program.GetStatement( this.instructionPointer ).linenumber, clearStack ? " clear stack" : "" );
+			} else {
+				gameLocal.Printf( "%d: call '%s'%s\n", gameLocal.time, func.Name ( ), clearStack ? " clear stack" : "" );
+			}
+		}
+
+		this.currentFunction = func;
+		assert( !func.eventdef );
+		this.NextInstruction( func.firstStatement );
+
+		// allocate space on the stack for locals
+		// parms are already on stack
+		c = func.locals - func.parmTotal;
+		assert( c >= 0 );
+
+		if ( this.localstackUsed + c > LOCALSTACK_SIZE ) {
+			Error( "EnterFuncton: locals stack overflow\n" );
+		}
+
+		// initialize local stack variables to zero
+		memset( this.localstack.subarray( this.localstackUsed ), 0, c );
+
+		this.localstackUsed += c;
+		this.localstackBase = this.localstackUsed - func.locals;
+
+		if ( this.localstackUsed > this.maxLocalstackUsed ) {
+			this.maxLocalstackUsed = this.localstackUsed;
+		}
 	}
 //
 ///*
@@ -869,7 +868,7 @@ idInterpreter::SetThread
 //	prstack_t *stack;
 //	varEval_t ret;
 //	
-//	if ( callStackDepth <= 0 ) {
+//	if ( this.callStackDepth <= 0 ) {
 //		Error( "prog stack underflow" );
 //	}
 //
@@ -892,31 +891,31 @@ idInterpreter::SetThread
 //	}
 //
 //	// remove locals from the stack
-//	PopParms( currentFunction.locals );
-//	assert( localstackUsed == localstackBase );
+//	this.PopParms( this.currentFunction.locals );
+//	assert( this.localstackUsed == this.localstackBase );
 //
 //	if ( this.debug ) {
-//		statement_t &line = gameLocal.program.GetStatement( instructionPointer );
-//		gameLocal.Printf( "%d: %s(%d): exit %s", gameLocal.time, gameLocal.program.GetFilename( line.file ), line.linenumber, currentFunction.Name() );
-//		if ( callStackDepth > 1 ) {
-//			gameLocal.Printf( " return to %s(line %d)\n", callStack[ callStackDepth - 1 ].f.Name(), gameLocal.program.GetStatement( callStack[ callStackDepth - 1 ].s ).linenumber );
+//		statement_t &line = gameLocal.program.GetStatement( this.instructionPointer );
+//		gameLocal.Printf( "%d: %s(%d): exit %s", gameLocal.time, gameLocal.program.GetFilename( line.file ), line.linenumber, this.currentFunction.Name() );
+//		if ( this.callStackDepth > 1 ) {
+//			gameLocal.Printf( " return to %s(line %d)\n", this.callStack[ this.callStackDepth - 1 ].f.Name(), gameLocal.program.GetStatement( this.callStack[ this.callStackDepth - 1 ].s ).linenumber );
 //		} else {
 //			gameLocal.Printf( " done\n" );
 //		}
 //	}
 //
 //	// up stack
-//	callStackDepth--;
-//	stack = &callStack[ callStackDepth ]; 
-//	currentFunction = stack.f;
-//	localstackBase = stack.stackbase;
-//	NextInstruction( stack.s );
+//	this.callStackDepth--;
+//	stack = &this.callStack[ this.callStackDepth ]; 
+//	this.currentFunction = stack.f;
+//	this.localstackBase = stack.stackbase;
+//	this.NextInstruction( stack.s );
 //
-//	if ( !callStackDepth ) {
+//	if ( !this.callStackDepth ) {
 //		// all done
 //		this.doneProcessing = true;
 //		this.threadDying = true;
-//		currentFunction = 0;
+//		this.currentFunction = 0;
 //	}
 //}
 //
@@ -942,8 +941,8 @@ idInterpreter::SetThread
 //	assert( func.eventdef );
 //	evdef = func.eventdef;
 //
-//	start = localstackUsed - argsize;
-//	var.intPtr = ( int * )&localstack[ start ];
+//	start = this.localstackUsed - argsize;
+//	var.intPtr = ( int * )&this.localstack[ start ];
 //	eventEntity = GetEntity( *var.entityNumberPtr );
 //
 //	if ( !eventEntity || !eventEntity.RespondsTo( *evdef ) ) {
@@ -980,7 +979,7 @@ idInterpreter::SetThread
 //			break;
 //		}
 //
-//		PopParms( argsize );
+//		this.PopParms( argsize );
 //		eventEntity = NULL;
 //		return;
 //	}
@@ -989,37 +988,37 @@ idInterpreter::SetThread
 //	for( j = 0, i = 0, pos = type_object.Size(); ( pos < argsize ) || ( format[ i ] != 0 ); i++ ) {
 //		switch( format[ i ] ) {
 //		case D_EVENT_INTEGER :
-//			var.intPtr = ( int * )&localstack[ start + pos ];
+//			var.intPtr = ( int * )&this.localstack[ start + pos ];
 //			data[ i ] = int( *var.floatPtr );
 //			break;
 //
 //		case D_EVENT_FLOAT :
-//			var.intPtr = ( int * )&localstack[ start + pos ];
+//			var.intPtr = ( int * )&this.localstack[ start + pos ];
 //			( *( float * )&data[ i ] ) = *var.floatPtr;
 //			break;
 //
 //		case D_EVENT_VECTOR :
-//			var.intPtr = ( int * )&localstack[ start + pos ];
+//			var.intPtr = ( int * )&this.localstack[ start + pos ];
 //			( *( idVec3 ** )&data[ i ] ) = var.vectorPtr;
 //			break;
 //
 //		case D_EVENT_STRING :
-//			( *( const char ** )&data[ i ] ) = ( char * )&localstack[ start + pos ];
+//			( *( const char ** )&data[ i ] ) = ( char * )&this.localstack[ start + pos ];
 //			break;
 //
 //		case D_EVENT_ENTITY :
-//			var.intPtr = ( int * )&localstack[ start + pos ];
+//			var.intPtr = ( int * )&this.localstack[ start + pos ];
 //			( *( idEntity ** )&data[ i ] ) = GetEntity( *var.entityNumberPtr );
 //			if ( !( *( idEntity ** )&data[ i ] ) ) {
 //				Warning( "Entity not found for event '%s'. Terminating thread.", evdef.GetName() );
 //				this.threadDying = true;
-//				PopParms( argsize );
+//				this.PopParms( argsize );
 //				return;
 //			}
 //			break;
 //
 //		case D_EVENT_ENTITY_NULL :
-//			var.intPtr = ( int * )&localstack[ start + pos ];
+//			var.intPtr = ( int * )&this.localstack[ start + pos ];
 //			( *( idEntity ** )&data[ i ] ) = GetEntity( *var.entityNumberPtr );
 //			break;
 //
@@ -1035,18 +1034,18 @@ idInterpreter::SetThread
 //		pos += func.parmSize[ j++ ];
 //	}
 //
-//	popParms = argsize;
+//	this.popParms = argsize;
 //	eventEntity.ProcessEventArgPtr( evdef, data );
 //
 //	if ( !this.multiFrameEvent ) {
-//		if ( popParms ) {
-//			PopParms( popParms );
+//		if ( this.popParms ) {
+//			this.PopParms( this.popParms );
 //		}
 //		eventEntity = NULL;
 //	} else {
 //		this.doneProcessing = true;
 //	}
-//	popParms = 0;
+//	this.popParms = 0;
 //}
 //
 ///*
@@ -1113,43 +1112,43 @@ idInterpreter::MultiFrameEventInProgress
 //	assert( func.eventdef );
 //	evdef = func.eventdef;
 //
-//	start = localstackUsed - argsize;
+//	start = this.localstackUsed - argsize;
 //
 //	format = evdef.GetArgFormat();
 //	for( j = 0, i = 0, pos = 0; ( pos < argsize ) || ( format[ i ] != 0 ); i++ ) {
 //		switch( format[ i ] ) {
 //		case D_EVENT_INTEGER :
-//			source.intPtr = ( int * )&localstack[ start + pos ];
+//			source.intPtr = ( int * )&this.localstack[ start + pos ];
 //			*( int * )&data[ i ] = int( *source.floatPtr );
 //			break;
 //
 //		case D_EVENT_FLOAT :
-//			source.intPtr = ( int * )&localstack[ start + pos ];
+//			source.intPtr = ( int * )&this.localstack[ start + pos ];
 //			*( float * )&data[ i ] = *source.floatPtr;
 //			break;
 //
 //		case D_EVENT_VECTOR :
-//			source.intPtr = ( int * )&localstack[ start + pos ];
+//			source.intPtr = ( int * )&this.localstack[ start + pos ];
 //			*( idVec3 ** )&data[ i ] = source.vectorPtr;
 //			break;
 //
 //		case D_EVENT_STRING :
-//			*( const char ** )&data[ i ] = ( char * )&localstack[ start + pos ];
+//			*( const char ** )&data[ i ] = ( char * )&this.localstack[ start + pos ];
 //			break;
 //
 //		case D_EVENT_ENTITY :
-//			source.intPtr = ( int * )&localstack[ start + pos ];
+//			source.intPtr = ( int * )&this.localstack[ start + pos ];
 //			*( idEntity ** )&data[ i ] = GetEntity( *source.entityNumberPtr );
 //			if ( !*( idEntity ** )&data[ i ] ) {
 //				Warning( "Entity not found for event '%s'. Terminating thread.", evdef.GetName() );
 //				this.threadDying = true;
-//				PopParms( argsize );
+//				this.PopParms( argsize );
 //				return;
 //			}
 //			break;
 //
 //		case D_EVENT_ENTITY_NULL :
-//			source.intPtr = ( int * )&localstack[ start + pos ];
+//			source.intPtr = ( int * )&this.localstack[ start + pos ];
 //			*( idEntity ** )&data[ i ] = GetEntity( *source.entityNumberPtr );
 //			break;
 //
@@ -1165,12 +1164,12 @@ idInterpreter::MultiFrameEventInProgress
 //		pos += func.parmSize[ j++ ];
 //	}
 //
-//	popParms = argsize;
+//	this.popParms = argsize;
 //	thread.ProcessEventArgPtr( evdef, data );
-//	if ( popParms ) {
-//		PopParms( popParms );
+//	if ( this.popParms ) {
+//		this.PopParms( this.popParms );
 //	}
-//	popParms = 0;
+//	this.popParms = 0;
 //}
 //
 /*
@@ -1191,27 +1190,27 @@ idInterpreter::Execute
 //	idScriptObject *obj;
 //	const function_t *func;
 //
-//	if ( this.threadDying || !currentFunction ) {
+//	if ( this.threadDying || !this.currentFunction ) {
 //		return true;
 //	}
 //
 //	if ( this.multiFrameEvent ) {
 //		// move to previous instruction and call it again
-//		instructionPointer--;
+//		this.instructionPointer--;
 //	}
 //
 //	runaway = 5000000;
 //
 //	this.doneProcessing = false;
 //	while( !this.doneProcessing && !this.threadDying ) {
-//		instructionPointer++;
+//		this.instructionPointer++;
 //
 //		if ( !--runaway ) {
 //			Error( "runaway loop error" );
 //		}
 //
 //		// next statement
-//		st = &gameLocal.program.GetStatement( instructionPointer );
+//		st = &gameLocal.program.GetStatement( this.instructionPointer );
 //
 //		switch( st.op ) {
 //		case OP_RETURN:
@@ -1224,7 +1223,7 @@ idInterpreter::Execute
 //
 //			// return the thread number to the script
 //			gameLocal.program.ReturnFloat( newThread.GetThreadNum() );
-//			PopParms( st.b.value.argSize );
+//			this.PopParms( st.b.value.argSize );
 //			break;
 //
 //		case OP_OBJTHREAD:
@@ -1242,7 +1241,7 @@ idInterpreter::Execute
 //				// return a null thread to the script
 //				gameLocal.program.ReturnFloat( 0.0 );
 //			}
-//			PopParms( st.c.value.argSize );
+//			this.PopParms( st.c.value.argSize );
 //			break;
 //
 //		case OP_CALL:
@@ -1263,7 +1262,7 @@ idInterpreter::Execute
 //				// return a 'safe' value
 //				gameLocal.program.ReturnVector( vec3_zero );
 //				gameLocal.program.ReturnString( "" );
-//				PopParms( st.c.value.argSize );
+//				this.PopParms( st.c.value.argSize );
 //			}
 //			break;
 //
@@ -1274,19 +1273,19 @@ idInterpreter::Execute
 //		case OP_IFNOT:
 //			var_a = GetVariable( st.a );
 //			if ( *var_a.intPtr == 0 ) {
-//				NextInstruction( instructionPointer + st.b.value.jumpOffset );
+//				this.NextInstruction( this.instructionPointer + st.b.value.jumpOffset );
 //			}
 //			break;
 //
 //		case OP_IF:
 //			var_a = GetVariable( st.a );
 //			if ( *var_a.intPtr != 0 ) {
-//				NextInstruction( instructionPointer + st.b.value.jumpOffset );
+//				this.NextInstruction( this.instructionPointer + st.b.value.jumpOffset );
 //			}
 //			break;
 //
 //		case OP_GOTO:
-//			NextInstruction( instructionPointer + st.a.value.jumpOffset );
+//			this.NextInstruction( this.instructionPointer + st.a.value.jumpOffset );
 //			break;
 //
 //		case OP_ADD_F:

@@ -154,12 +154,6 @@ function memset ( arr: Uint8Array /*any*/, value: number, num: number ): void {
 	for ( var i = startIndex; i < arrayLen; i++ ) {
 		arr[i] = val;
 	}
-
-	//assert.uint8(value).int32(num);
-	//var uint8Array = new Uint8Array(arr.buffer);
-	//for (var i = startIndex; i < num; i++) {
-	//	uint8Array[i] = value;
-	//}
 }
 
 function memsetP ( ptr: P, value: number, num: number ): void {

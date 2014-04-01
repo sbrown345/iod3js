@@ -2260,19 +2260,19 @@ CacheDictionaryMedia (dict: idDict): void {
 idGameLocal::InitScriptForMap
 ============
 */
-InitScriptForMap (): void {
+	InitScriptForMap ( ): void {
 		// create a thread to run frame commands on
-		this.frameCommandThread = new idThread();
-		this.frameCommandThread.ManualDelete();
-		this.frameCommandThread.SetThreadName("frameCommands");
+		this.frameCommandThread = new idThread ( );
+		this.frameCommandThread.ManualDelete ( );
+		this.frameCommandThread.SetThreadName( "frameCommands" );
 
 		// run the main game script function (not the level specific main)
-		var /*function_t */func = this.program.FindFunction(SCRIPT_DEFAULTFUNC);
-		if (func != null) {
-			var thread = new idThread(func);
-			if (thread.Start()) {
+		var /*function_t */func = this.program.FindFunction( SCRIPT_DEFAULTFUNC );
+		if ( func != null ) {
+			var thread = new idThread( func );
+			if ( thread.Start ( ) ) {
 				// thread has finished executing, so delete it
-				$delete(thread);
+				$delete( thread );
 			}
 		}
 	}
@@ -3643,7 +3643,7 @@ idGameLocal::SpawnMapEntities
 Parses textual entity definitions out of an entstring and spawns gentities.
 ==============
 */
-SpawnMapEntities (): void {
+	SpawnMapEntities ( ): void {
 		var i: number /*int*/;
 		var num: number /*int*/;
 		var inhibit: number /*int*/;
@@ -3651,48 +3651,48 @@ SpawnMapEntities (): void {
 		var numEntities: number /*int*/;
 		var args = new idDict;
 
-		this.Printf("Spawning entities\n");
+		this.Printf( "Spawning entities\n" );
 
-		if (this.mapFile == null) {
-			this.Printf("No mapfile present\n");
+		if ( this.mapFile == null ) {
+			this.Printf( "No mapfile present\n" );
 			return;
 		}
 
-		this.SetSkill(g_skill.GetInteger());
+		this.SetSkill( g_skill.GetInteger ( ) );
 
-		numEntities = this.mapFile.GetNumEntities();
-		if (numEntities == 0) {
-			this.Error("...no entities");
+		numEntities = this.mapFile.GetNumEntities ( );
+		if ( numEntities == 0 ) {
+			this.Error( "...no entities" );
 		}
 
 		// the worldspawn is a special that performs any global setup
 		// needed by a level
-		mapEnt = this.mapFile.GetEntity(0);
-		args = mapEnt.epairs;
-		args.SetInt("spawn_entnum", ENTITYNUM_WORLD);
-		if (!this.SpawnEntityDef(args) || !this.entities[ENTITYNUM_WORLD] || !this.entities[ENTITYNUM_WORLD].IsType(idWorldspawn.Type)) {
-			this.Error("Problem spawning world entity");
+		mapEnt = this.mapFile.GetEntity( 0 );
+		args.equals( mapEnt.epairs );
+		args.SetInt( "spawn_entnum", ENTITYNUM_WORLD );
+		if ( !this.SpawnEntityDef( args ) || !this.entities[ENTITYNUM_WORLD] || !this.entities[ENTITYNUM_WORLD].IsType( idWorldspawn.Type ) ) {
+			this.Error( "Problem spawning world entity" );
 		}
 
 		num = 1;
 		inhibit = 0;
 
-		for (i = 1; i < numEntities; i++) {
-			mapEnt = this.mapFile.GetEntity(i);
-			args = mapEnt.epairs;
+		for ( i = 1; i < numEntities; i++ ) {
+			mapEnt = this.mapFile.GetEntity( i );
+			args.equals( mapEnt.epairs );
 
-			if (!this.InhibitEntitySpawn(args)) {
+			if ( !this.InhibitEntitySpawn( args ) ) {
 				// precache any media specified in the map entity
-				this.CacheDictionaryMedia(args);
+				this.CacheDictionaryMedia( args );
 
-				this.SpawnEntityDef(args);
+				this.SpawnEntityDef( args );
 				num++;
 			} else {
 				inhibit++;
 			}
 		}
 
-		this.Printf("...%i entities spawned, %i inhibited\n\n", num, inhibit);
+		this.Printf( "...%i entities spawned, %i inhibited\n\n", num, inhibit );
 	}
 
 /*
