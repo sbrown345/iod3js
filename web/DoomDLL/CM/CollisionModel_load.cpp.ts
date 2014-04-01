@@ -1977,22 +1977,23 @@ idCollisionModelManagerLocal.prototype.R_FilterPolygonIntoTree = function ( mode
 			dlog(DEBUG_CM, "CM_R_InsideAllChildren true\n");
 			break;
 		}
+		dlog( DEBUG_CM, "R_FilterPolygonIntoTree: node.pt: %i %s %s\n", node.planeType, p.bounds[0].ToString ( ), p.bounds[1].ToString ( ) );
 		if ( p.bounds[0][node.planeType] >= node.planeDist ) {
-			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 1\n");
+			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 1: %.2f >= %.2f\n", p.bounds[0][node.planeType] , node.planeDist);
 			node = node.children[0];
 		} else if ( p.bounds[1][node.planeType] <= node.planeDist ) {
-			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 2\n");
+			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 2: %.2f >= %.2f\n", p.bounds[1][node.planeType] , node.planeDist);
 			node = node.children[1];
 		} else {
 			this.R_FilterPolygonIntoTree( model, node.children[1], null, p );
 			node = node.children[0];
-			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 3\n");
+			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 3 pd: %.2f\n", node.planeDist);
 		}
 	}
-	if (!node)
-		alert("no node..")
-	dlog(DEBUG_CM, "R_FilterPolygonIntoTree planeDist %.2f node.parent.planeDist %.2f\n", node.planeDist);
-	if(node.parent)
+	if ( !node )
+		alert( "no node.." );
+	dlog( DEBUG_CM, "R_FilterPolygonIntoTree planeDist %.2f\n", node.planeDist );
+	if ( node.parent )
 		dlog( DEBUG_CM, "R_FilterPolygonIntoTree node.parent.planeDist %.2f\n", node.parent.planeDist );
 	if ( pref ) {
 		pref.next = node.polygons;
