@@ -1971,30 +1971,35 @@ idCollisionModelManagerLocal::R_FilterPolygonIntoTree
 ================
 */
 idCollisionModelManagerLocal.prototype.R_FilterPolygonIntoTree = function ( model: cm_model_t, node: cm_node_t, pref: cm_polygonRef_t, p: cm_polygon_t ): void {
-	assert( node != null );
+	assert(node != null);
+	var i = 0;
 	while ( node.planeType != -1 ) {
+		dlog(DEBUG_CM, "CM_R_InsideAllChildren while i: %i\n", i);
 		if ( CM_R_InsideAllChildren( node, p.bounds ) ) {
 			dlog(DEBUG_CM, "CM_R_InsideAllChildren true\n");
 			break;
 		}
-		dlog( DEBUG_CM, "R_FilterPolygonIntoTree: node.pt: %i %s %s\n", node.planeType, p.bounds[0].ToString ( ), p.bounds[1].ToString ( ) );
+		dlog(DEBUG_CM, "R_FilterPolygonIntoTree: node.pt: %i %s %s, dist: %.5f\n", node.planeType, p.bounds[0].ToString(), p.bounds[1].ToString(), node.planeDist);
 		if ( p.bounds[0][node.planeType] >= node.planeDist ) {
-			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 1: %.2f >= %.2f\n", p.bounds[0][node.planeType] , node.planeDist);
+			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 1: %.5f >= %.5f\n", p.bounds[0][node.planeType] , node.planeDist);
 			node = node.children[0];
 		} else if ( p.bounds[1][node.planeType] <= node.planeDist ) {
-			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 2: %.2f >= %.2f\n", p.bounds[1][node.planeType] , node.planeDist);
+			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 2: %.5f >= %.5f\n", p.bounds[1][node.planeType] , node.planeDist);
 			node = node.children[1];
 		} else {
+			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 3 pd: %.5f i:%i\n", node.planeDist, i);
 			this.R_FilterPolygonIntoTree( model, node.children[1], null, p );
 			node = node.children[0];
-			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 3 pd: %.2f\n", node.planeDist);
+			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 3 after pd: %.5f i:%i\n", node.planeDist, i);
 		}
+
+		i++;
 	}
 	if ( !node )
 		alert( "no node.." );
-	dlog( DEBUG_CM, "R_FilterPolygonIntoTree planeDist %.2f\n", node.planeDist );
+	dlog( DEBUG_CM, "R_FilterPolygonIntoTree planeDist %.5f\n", node.planeDist );
 	if ( node.parent )
-		dlog( DEBUG_CM, "R_FilterPolygonIntoTree node.parent.planeDist %.2f\n", node.parent.planeDist );
+		dlog( DEBUG_CM, "R_FilterPolygonIntoTree node.parent.planeDist %.5f\n", node.parent.planeDist );
 	if ( pref ) {
 		pref.next = node.polygons;
 		node.polygons = pref;
