@@ -231,11 +231,21 @@ class cm_brushRefBlock_t {
 class cm_node_t {
 	static size = 28;
 	planeType: number /*int*/; // node axial plane type
-	planeDist: number /*float*/; // node plane distance
+	//planeDist: number /*float*/; // node plane distance
+	_planeDist = new Float32Array(1);
 	polygons: cm_polygonRef_t; // polygons in node
 	brushes: cm_brushRef_t; // brushes in node
 	parent: cm_node_t; // parent of this nodecm_nodeBlock_t
-	children = new Array<cm_node_t>( 2 ); // node children
+	children = new Array<cm_node_t>(2); // node children
+
+	get planeDist ( ): number { return this._planeDist[0]; }
+
+	set planeDist ( value: number ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this._planeDist[0] = value;
+	}
 }
 
 class cm_nodeBlock_t {

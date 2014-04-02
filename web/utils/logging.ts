@@ -23,8 +23,8 @@ var DEBUG_GUI = isd(false );
 var DEBUG_HASHINDEX = isd( false );
 var DEBUG_STRPOOL = isd( false );
 var DEBUG_RENDERWORLD_LOAD = isd( false ); // todo: check output
-var DEBUG_CM = isd(false ); // todo: check output
-var DEBUG_MAP_FILE = isd( false ); // todo: check output
+var DEBUG_CM = isd(true ); // todo: check output
+var DEBUG_MAP_FILE = isd(true ); // todo: check output
 
 function dlog(log: boolean, format: string, ...args: any[]) {
 	if (!log || SKIP_ALL_LOGGING) return;
