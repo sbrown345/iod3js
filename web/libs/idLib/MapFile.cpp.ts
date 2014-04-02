@@ -306,7 +306,7 @@ idMapPatch::Parse
 ////	for ( i = 0; i < this.GetWidth(); i++ ) {
 ////		fp.WriteFloatString( "   ( " );
 ////		for ( j = 0; j < this.GetHeight(); j++ ) {
-////			v = &this.verts[ j * this.GetWidth() + i ];
+////			v = this.verts[ j * this.GetWidth() + i ];
 ////			fp.WriteFloatString( " ( %f %f %f %f %f )", v.xyz[0] + origin[0],
 ////								v.xyz[1] + origin[1], v.xyz[2] + origin[2], v.st[0], v.st[1] );
 ////		}

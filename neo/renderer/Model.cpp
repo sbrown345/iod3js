@@ -355,8 +355,10 @@ idRenderModelStatic::AddSurface
 void idRenderModelStatic::AddSurface( modelSurface_t surface ) {
 	surfaces.Append( surface );
 	dlog(DEBUG_RENDERWORLD_LOAD, "AddSurface\n");
-	for (int i = 0; i < surface.geometry->numIndexes; i++) {
-		dlog(DEBUG_RENDERWORLD_LOAD, "%i: %i\n", i, surface.geometry->indexes[i]);
+	if (surface.geometry != NULL) {
+		for (int i = 0; i < surface.geometry->numIndexes; i++) {
+			dlog(DEBUG_RENDERWORLD_LOAD, "%i: %i\n", i, surface.geometry->indexes[i]);
+		}
 	}
 	if ( surface.geometry ) {
 		bounds += surface.geometry->bounds;

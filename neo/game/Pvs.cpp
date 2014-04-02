@@ -33,7 +33,6 @@ If you have questions concerning this license or the applicable additional terms
 
 #define MAX_BOUNDS_AREAS	16
 
-
 typedef struct pvsPassage_s {
 	byte *				canSee;		// bit set for all portals that can be seen through this passage
 } pvsPassage_t;

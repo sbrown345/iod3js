@@ -335,8 +335,10 @@ idRenderModelStatic::AddSurface
 idRenderModelStatic.prototype.AddSurface = function ( surface: modelSurface_t ): void {
 	this.surfaces.Append(surface);
 	dlog(DEBUG_RENDERWORLD_LOAD, "AddSurface\n");
-	for (var i = 0; i < surface.geometry.numIndexes; i++) {
-		dlog(DEBUG_RENDERWORLD_LOAD, "%i: %i\n", i, surface.geometry.indexes[i]);
+	if ( surface.geometry != null ) {
+		for ( var i = 0; i < surface.geometry.numIndexes; i++ ) {
+			dlog( DEBUG_RENDERWORLD_LOAD, "%i: %i\n", i, surface.geometry.indexes[i] );
+		}
 	}
 	if ( surface.geometry ) {
 		this.bounds.opAdditionAssignment( surface.geometry.bounds );

@@ -700,7 +700,6 @@ cm_brush_t *idCollisionModelManagerLocal::AllocBrush( cm_model_t *model, int num
 idCollisionModelManagerLocal::AddPolygonToNode
 ================
 */
-static int AddPolygonToNodeCount = 0;
 void idCollisionModelManagerLocal::AddPolygonToNode(cm_model_t *model, cm_node_t *node, cm_polygon_t *p) {
 	cm_polygonRef_t *pref;
 
@@ -709,9 +708,6 @@ void idCollisionModelManagerLocal::AddPolygonToNode(cm_model_t *model, cm_node_t
 	pref->next = node->polygons;
 	node->polygons = pref;
 	model->numPolygonRefs++;
-
-	AddPolygonToNodeCount++;
-	dlog(DEBUG_CM, "AddPolygonToNode %i\n", AddPolygonToNodeCount);
 }
 
 /*
@@ -719,7 +715,6 @@ void idCollisionModelManagerLocal::AddPolygonToNode(cm_model_t *model, cm_node_t
 idCollisionModelManagerLocal::AddBrushToNode
 ================
 */
-static int AddBrushToNodeCount = 0;
 void idCollisionModelManagerLocal::AddBrushToNode(cm_model_t *model, cm_node_t *node, cm_brush_t *b) {
 	cm_brushRef_t *bref;
 
@@ -728,9 +723,6 @@ void idCollisionModelManagerLocal::AddBrushToNode(cm_model_t *model, cm_node_t *
 	bref->next = node->brushes;
 	node->brushes = bref;
 	model->numBrushRefs++;
-
-	AddBrushToNodeCount++;
-	dlog(DEBUG_CM, "AddBrushToNode %i\n", AddBrushToNodeCount);
 }
 
 /*
@@ -1971,32 +1963,33 @@ void idCollisionModelManagerLocal::R_FilterPolygonIntoTree( cm_model_t *model, c
 	assert(node != NULL);
 	int i = 0;
 	while (node->planeType != -1) {
-		dlog(DEBUG_CM, "CM_R_InsideAllChildren while i: %i\n", i);
+		//dlog(DEBUG_CM, "CM_R_InsideAllChildren while i: %i\n", i);
 		if (CM_R_InsideAllChildren(node, p->bounds)) {
-			dlog(DEBUG_CM, "CM_R_InsideAllChildren true\n");
+			//dlog(DEBUG_CM, "CM_R_InsideAllChildren true\n");
 			break;
 		}
-		dlog(DEBUG_CM, "R_FilterPolygonIntoTree: node.pt: %i %s %s, dist: %.5f\n", node->planeType, p->bounds[0].ToString(), p->bounds[1].ToString(), node->planeDist);
+		//dlog(DEBUG_CM, "R_FilterPolygonIntoTree: node.pt: %i %s %s, dist: %.5f\n", node->planeType, p->bounds[0].ToString(), p->bounds[1].ToString(), node->planeDist);
 		if (p->bounds[0][node->planeType] >= node->planeDist) {
-			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 1: %.5f >= %.5f\n", p->bounds[0][node->planeType], node->planeDist);
+			//dlog(DEBUG_CM, "R_FilterPolygonIntoTree 1: %.5f >= %.5f\n", p->bounds[0][node->planeType], node->planeDist);
 			node = node->children[0];
 		}
 		else if (p->bounds[1][node->planeType] <= node->planeDist) {
-			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 2: %.5f >= %.5f\n", p->bounds[1][node->planeType], node->planeDist);
+			//dlog(DEBUG_CM, "R_FilterPolygonIntoTree 2: %.5f >= %.5f\n", p->bounds[1][node->planeType], node->planeDist);
 			node = node->children[1];
 		}
 		else {
-			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 3 pd: %.5f i:%i\n", node->planeDist, i);
+			//dlog(DEBUG_CM, "R_FilterPolygonIntoTree 3 pd: %.5f i:%i\n", node->planeDist, i);
 			R_FilterPolygonIntoTree(model, node->children[1], NULL, p);
 			node = node->children[0];
-			dlog(DEBUG_CM, "R_FilterPolygonIntoTree 3 after pd: %.5f i:%i\n", node->planeDist, i);
+			//dlog(DEBUG_CM, "R_FilterPolygonIntoTree 3 after pd: %.5f i:%i\n", node->planeDist, i);
 		}
 
 		i++;
 	}
-	dlog(DEBUG_CM, "R_FilterPolygonIntoTree planeDist %.5f\n", node->planeDist);
-	if (node->parent)
-		dlog(DEBUG_CM, "R_FilterPolygonIntoTree node.parent.planeDist %.5f\n", node->parent->planeDist);
+	//dlog(DEBUG_CM, "R_FilterPolygonIntoTree planeDist %.5f\n", node->planeDist);
+	//if (node->parent) {
+	//	dlog(DEBUG_CM, "R_FilterPolygonIntoTree node.parent.planeDist %.5f\n", node->parent->planeDist);
+	//}
 	if (pref) {
 		pref->next = node->polygons;
 		node->polygons = pref;
@@ -3215,7 +3208,22 @@ cmHandle_t idCollisionModelManagerLocal::FindModel( const char *name ) {
 idCollisionModelManagerLocal::PrintModelInfo
 ==================
 */
-void idCollisionModelManagerLocal::PrintModelInfo( const cm_model_t *model ) {
+void idCollisionModelManagerLocal::PrintModelInfo(const cm_model_t *model) {
+	dlog(DEBUG_CM, "PrintModelInfo\n");
+	dlog(DEBUG_CM, "name = %s \n", model->name.c_str());
+	dlog(DEBUG_CM, "numVertices = %i \n", model->numVertices);
+	dlog(DEBUG_CM, "numEdges = %i \n", model->numEdges);
+	dlog(DEBUG_CM, "numPolygons = %i \n", model->numPolygons);
+	dlog(DEBUG_CM, "numBrushes = %i \n", model->numBrushes);
+	dlog(DEBUG_CM, "numNodes = %i \n", model->numNodes);
+	dlog(DEBUG_CM, "numPolygonRefs = %i \n", model->numPolygonRefs);
+	dlog(DEBUG_CM, "numBrushRefs = %i \n", model->numBrushRefs);
+	dlog(DEBUG_CM, "numInternalEdges = %i \n", model->numInternalEdges);
+	dlog(DEBUG_CM, "numSharpEdges = %i \n", model->numSharpEdges);
+	dlog(DEBUG_CM, "numRemovedPolys = %i \n", model->numRemovedPolys);
+	dlog(DEBUG_CM, "numMergedPolys = %i \n", model->numMergedPolys);
+	dlog(DEBUG_CM, "usedMemory = %i \n", model->usedMemory);
+
 	common->Printf( "%6i vertices (%i KB)\n", model->numVertices, (model->numVertices * sizeof(cm_vertex_t))>>10 );
 	common->Printf( "%6i edges (%i KB)\n", model->numEdges, (model->numEdges * sizeof(cm_edge_t))>>10 );
 	common->Printf( "%6i polygons (%i KB)\n", model->numPolygons, model->polygonMemory>>10 );
@@ -3240,9 +3248,7 @@ void idCollisionModelManagerLocal::AccumulateModelInfo( cm_model_t *model ) {
 
 	memset( model, 0, sizeof( *model ) );
 	// accumulate statistics of all loaded models
-	dlog(DEBUG_CM, "idCollisionModelManagerLocal::AccumulateModelInfo\n");
 	for (i = 0; i < numModels; i++) {
-		dlog(DEBUG_CM, "i:%i,  numBrushRefs: %i, numPolygonRefs: %i\n", i, models[i]->numBrushRefs, models[i]->numPolygonRefs);
 		model->numVertices += models[i]->numVertices;
 		model->numEdges += models[i]->numEdges;
 		model->numPolygons += models[i]->numPolygons;

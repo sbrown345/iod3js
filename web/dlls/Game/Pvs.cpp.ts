@@ -996,9 +996,6 @@ idPVS::Init
 		dlog(DEBUG_MAP_FILE, "%5d areas\n", this.numAreas );
 		dlog(DEBUG_MAP_FILE, "%5d portals\n", this.numPortals );
 		dlog(DEBUG_MAP_FILE, "%5d totalVisibleAreas\n", totalVisibleAreas );
-		assertMapSpecific(assertMapsList.demo_mars_city1, this.numAreas == 56);
-		assertMapSpecific(assertMapsList.demo_mars_city1, this.numPortals == 110);
-		assertMapSpecific(assertMapsList.demo_mars_city1, totalVisibleAreas == 523 );
 	}
 
 /*
