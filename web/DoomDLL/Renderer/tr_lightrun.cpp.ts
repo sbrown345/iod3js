@@ -173,7 +173,7 @@ function R_CreateEntityRefs ( def: idRenderEntityLocal ): void {
 	if (!def.parms.hModel) {
 		def.parms.hModel = renderModelManager.DefaultModel ( );
 	}
-
+	dlog( DEBUG_MAP_FILE, "R_CreateEntityRefs %i\n", def.index );
 	// if the entity hasn't been fully specified due to expensive animation calcs
 	// for md5 and particles, use the provided conservative bounds.
 	if ( def.parms.callback ) {

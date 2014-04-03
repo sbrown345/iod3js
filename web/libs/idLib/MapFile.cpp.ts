@@ -566,7 +566,7 @@ idMapBrush::Parse
 ////		brush.AddSide( sides[i] );
 ////	}
 ////
-////	brush.epairs = epairs;
+////	brush.epairs.equals( epairs );
 ////
 ////	return brush;
 ////}

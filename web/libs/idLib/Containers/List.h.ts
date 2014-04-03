@@ -346,7 +346,10 @@ Contents are copied using their = operator so that data is correnctly instantiat
 			this.num = this.size;
 		}
 
-		// init any new ones
+		this.initEmptyArray ( );
+	}
+
+	initEmptyArray ( ): void {
 		if ( this.listOfReferences ) {
 			for ( i = 0; i < this.size; i++ ) {
 				if ( !this[i] ) {
@@ -357,7 +360,7 @@ Contents are copied using their = operator so that data is correnctly instantiat
 			if ( this.type == Number ) {
 				for ( i = 0; i < this.size; i++ ) {
 					if ( !this[i] ) {
-						(<any>this)[i] = 0;
+						( <any>this )[i] = 0;
 					}
 				}
 			} else {
@@ -369,7 +372,6 @@ Contents are copied using their = operator so that data is correnctly instantiat
 			}
 		}
 	}
-
 
 /*
 ================
@@ -456,32 +458,33 @@ Makes sure the list has at least the given number of elements.
 //	this.num = newNum;
 //}
 
-///*
-//================
-//idList<type>::operator=
+/*
+================
+idList<type>::operator=
 
-//Copies the contents and size attributes of another list.
-//================
-//*/
+Copies the contents and size attributes of another list.
+================
+*/
 //template< class type >
-//ID_INLINE idList<type> &idList<type>::operator=( const idList<type> &other ) {
-//	int	i;
+	opEquals ( other: idList<type> ): idList<type> {
+		var i: number /*int*/;
 
-//	Clear();
+		this.Clear ( );
 
-//	this.num			= other.num;
-//	this.size		= other.size;
-//	this.granularity	= other.granularity;
+		this.num = other.num;
+		this.size = other.size;
+		this.granularity = other.granularity;
 
-//	if ( this.size ) {
-//		this.list = new type[ this.size ];
-//		for( i = 0; i < this.num; i++ ) {
-//			this.list[ i ] = other.list[ i ];
-//		}
-//	}
+		if ( this.size ) {
+			this.initEmptyArray ( ); //this.list = new type[this.size];
+			for ( i = 0; i < this.num; i++ ) {
+				//this.list[i] = other.list[i];
+				this.list[i] = this.Val( other.list[i], this.list[i] );
+			}
+		}
 
-//	return *this;
-//}
+		return this;
+	}
 
 ///*
 //================

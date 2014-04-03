@@ -1197,7 +1197,7 @@ SetUserInfo ( /*int */clientNum: number, userInfo: idDict, isClient: boolean, ca
 		this.isClient = isClient;
 
 		if (clientNum >= 0 && clientNum < MAX_CLIENTS) {
-			this.userInfo[clientNum] = userInfo;
+			this.userInfo[clientNum].equals( userInfo );
 
 			// server sanity
 			if (canModify) {

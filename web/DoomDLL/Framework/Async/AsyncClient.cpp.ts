@@ -723,7 +723,7 @@
 ////		sessLocal.mapSpawnData.userInfo[ i ].Clear();
 ////	}
 ////
-////	sessLocal.mapSpawnData.serverInfo = serverSI;
+////	sessLocal.mapSpawnData.serverInfo = /*equals()?*/ serverSI;
 ////}
 ////
 /////*

@@ -336,8 +336,8 @@ idDict::operator=
 
 		this.Clear ( );
 
-		this.args = other.args;
-		this.argHash = other.argHash;
+		this.args.opEquals( other.args );
+		this.argHash .opEquals( other.argHash)
 
 		for ( i = 0; i < this.args.Num ( ); i++ ) {
 			this.args[i].key = idDict.globalKeys.CopyString( this.args[i].key );
@@ -420,7 +420,7 @@ idDict::TransferKeyValues
 			this.args[i].key.equals( other.args[i].key );
 			this.args[i].value.equals( other.args[i].value );
 		}
-		this.argHash = other.argHash;
+		this.argHash.opEquals(other.argHash );
 
 		other.args.Clear ( );
 		other.argHash.Free ( );

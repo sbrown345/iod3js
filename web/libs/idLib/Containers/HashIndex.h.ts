@@ -145,42 +145,42 @@ idHashIndex::idHashIndex
 ////	return sizeof( *this ) + Allocated();
 ////}
 
-/////*
-////================
-////idHashIndex::operator=
-////================
-////*/
-////ID_INLINE idHashIndex &idHashIndex::operator=( const idHashIndex &other ) {
-////	this.granularity = other.granularity;
-////	this.hashMask = other.hashMask;
-////	this.lookupMask = other.lookupMask;
+/*
+================
+idHashIndex::operator=
+================
+*/
+	opEquals ( other: idHashIndex ): idHashIndex {
+		this.granularity = other.granularity;
+		this.hashMask = other.hashMask;
+		this.lookupMask = other.lookupMask;
 
-////	if ( other.lookupMask == 0 ) {
-////		this.hashSize = other.hashSize;
-////	 this.indexSize = other.indexSize;
-////		Free();
-////	}
-////	else {
-////		if ( other.hashSize != this.hashSize || this.hash == idHashIndex.INVALID_INDEX ) {
-////			if ( this.hash != idHashIndex.INVALID_INDEX ) {
-////				delete[] this.hash;
-////			}
-////			this.hashSize = other.hashSize;
-////			this.hash = new int[this.hashSize];
-////		}
-////		if ( other.indexSize != this.indexSize || this.indexChain == idHashIndex.INVALID_INDEX ) {
-////			if ( this.indexChain != idHashIndex.INVALID_INDEX ) {
-////				delete[] this.indexChain;
-////			}
-////		 this.indexSize = other.indexSize;
-////			this.indexChain = new int this.indexSize];
-////		}
-////		memcpy( this.hash, other.hash, this.hashSize * sizeof( this.hash[0] ) );
-////		memcpy( this.indexChain, other.indexChain, this.indexSize * sizeof( this.indexChain[0] ) );
-////	}
+		if ( other.lookupMask == 0 ) {
+			this.hashSize = other.hashSize;
+			this.indexSize = other.indexSize;
+			this.Free ( );
+		} else {
+			if ( other.hashSize != this.hashSize || this.hash == idHashIndex.INVALID_INDEX ) {
+				if ( this.hash != idHashIndex.INVALID_INDEX ) {
+					//delete []this.hash;
 
-////	return *this;
-////}
+				}
+				this.hashSize = other.hashSize;
+				this.hash = new int[this.hashSize];
+			}
+			if ( other.indexSize != this.indexSize || this.indexChain == idHashIndex.INVALID_INDEX ) {
+				if ( this.indexChain != idHashIndex.INVALID_INDEX ) {
+					//delete[] this.indexChain;
+				}
+				this.indexSize = other.indexSize;
+				this.indexChain = new Int32Array( this.indexSize );
+			}
+			memcpy( this.hash, other.hash, this.hashSize * sizeofSingleItem( this.hash ) );
+			memcpy( this.indexChain, other.indexChain, this.indexSize * sizeofSingleItem( this.indexChain ) );
+		}
+
+		return this;
+	}
 
 /*
 ================

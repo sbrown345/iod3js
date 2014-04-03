@@ -69,7 +69,7 @@ var PREVIEW_HEIGHT = 298;
 //=================
 //*/
 //void Session_RescanSI_f( args:idCmdArgs ) {
-//	sessLocal.mapSpawnData.serverInfo = *cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO );
+//	sessLocal.mapSpawnData.serverInfo .equals(cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO ));
 //	if ( game && idAsyncNetwork.server.IsActive() ) {
 //		game.SetServerInfo( sessLocal.mapSpawnData.serverInfo );
 //	}
@@ -2046,13 +2046,13 @@ idSessionLocal.prototype.SaveGame = function (saveName: string, autosave = false
 //		// Start loading map
 //		this.mapSpawnData.serverInfo.Clear();
 //
-//		this.mapSpawnData.serverInfo = *cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO );
+//		this.mapSpawnData.serverInfo .equals(cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO ));
 //		this.mapSpawnData.serverInfo.Set( "si_gameType", "singleplayer" );
 //
 //		this.mapSpawnData.serverInfo.Set( "si_map", saveMap );
 //
 //		this.mapSpawnData.syncedCVars.Clear();
-//		this.mapSpawnData.syncedCVars = *cvarSystem.MoveCVarsToDict( CVAR_NETWORKSYNC );
+//		this.mapSpawnData.syncedCVars .equals(cvarSystem.MoveCVarsToDict( CVAR_NETWORKSYNC ));
 //
 //		this.mapSpawnData.mapSpawnUsercmd[0] = usercmdGen.TicCmd( latchedTicNumber );
 //		// make sure no buttons are pressed

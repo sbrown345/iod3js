@@ -963,7 +963,7 @@ idClass::PostEventArgs
 ////	// we service events on the client to avoid any bad code filling up the event pool
 ////	// we don't want them processed usually, unless when the map is (re)loading.
 ////	// we allow threads to run fine, though.
-////	if ( gameLocal.isClient && ( gameLocal.GameState() != GAMESTATE_STARTUP ) && !IsType( idThread::Type ) ) {
+////	if ( gameLocal.isClient && ( gameLocal.GameState() != GAMESTATE_STARTUP ) && !this.IsType( idThread::Type ) ) {
 ////		return true;
 ////	}
 ////
@@ -1248,115 +1248,117 @@ idClass::PostEventMS
 ////bool idClass::ProcessEvent( ev: idEventDef, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 ): boolean  {
 ////	return ProcessEventArgs( ev, 8, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8 );
 ////}
-////
-/////*
-////================
-////idClass::ProcessEventArgPtr
-////================
-////*/
-////bool idClass::ProcessEventArgPtr( ev: idEventDef, int *data ): boolean  {
-////	idTypeInfo	*c;
-////	int			num;
-////	eventCallback_t	callback;
-////
-////	assert( ev );
-////	assert( idEvent::initialized );
-////
-////	if ( g_debugTriggers.GetBool() && ( ev == &EV_Activate ) && IsType( idEntity::Type ) ) {
-////		const var ent:idEntity = *reinterpret_cast<idEntity **>( data );
-////		gameLocal.Printf( "%d: '%s' activated by '%s'\n", gameLocal.framenum, static_cast<idEntity *>( this ).GetName(), ent ? ent.GetName() : "NULL" );
-////	}
-////
-////	c = GetType();
-////	num = ev.GetEventNum();
-////	if ( !c.eventMap[ num ] ) {
-////		// we don't respond to this event, so ignore it
-////		return false;
-////	}
-////
-////	callback = c.eventMap[ num ];
-////
-////#if !CPU_EASYARGS
-////
-/////*
-////on ppc architecture, floats are passed in a seperate set of registers
-////the function prototypes must have matching float declaration
-////
-////http://developer.apple.com/documentation/DeveloperTools/Conceptual/MachORuntime/2rt_powerpc_abi/chapter_9_section_5.html
-////*/
-////
-////	switch( ev.GetFormatspecIndex() ) {
-////	case 1 << D_EVENT_MAXARGS :
-////		( this.*callback )();
-////		break;
-////
-////// generated file - see CREATE_EVENT_CODE
-////#include "Callbacks.cpp"
-////
-////	default:
-////		gameLocal.Warning( "Invalid formatspec on event '%s'", ev.GetName() );
-////		break;
-////	}
-////
-////#else
-////
-////	assert( D_EVENT_MAXARGS == 8 );
-////
-////	switch( ev.GetNumArgs() ) {
-////	case 0 :
-////		( this.*callback )();
-////		break;
-////
-////	case 1 :
-////		typedef void ( idClass::*eventCallback_1_t )( const int );
-////		( this.*( eventCallback_1_t )callback )( data[ 0 ] );
-////		break;
-////
-////	case 2 :
-////		typedef void ( idClass::*eventCallback_2_t )( const int, const int );
-////		( this.*( eventCallback_2_t )callback )( data[ 0 ], data[ 1 ] );
-////		break;
-////
-////	case 3 :
-////		typedef void ( idClass::*eventCallback_3_t )( const int, const int, const int );
-////		( this.*( eventCallback_3_t )callback )( data[ 0 ], data[ 1 ], data[ 2 ] );
-////		break;
-////
-////	case 4 :
-////		typedef void ( idClass::*eventCallback_4_t )( const int, const int, const int, const int );
-////		( this.*( eventCallback_4_t )callback )( data[ 0 ], data[ 1 ], data[ 2 ], data[ 3 ] );
-////		break;
-////
-////	case 5 :
-////		typedef void ( idClass::*eventCallback_5_t )( const int, const int, const int, const int, const int );
-////		( this.*( eventCallback_5_t )callback )( data[ 0 ], data[ 1 ], data[ 2 ], data[ 3 ], data[ 4 ] );
-////		break;
-////
-////	case 6 :
-////		typedef void ( idClass::*eventCallback_6_t )( const int, const int, const int, const int, const int, const int );
-////		( this.*( eventCallback_6_t )callback )( data[ 0 ], data[ 1 ], data[ 2 ], data[ 3 ], data[ 4 ], data[ 5 ] );
-////		break;
-////
-////	case 7 :
-////		typedef void ( idClass::*eventCallback_7_t )( const int, const int, const int, const int, const int, const int, const int );
-////		( this.*( eventCallback_7_t )callback )( data[ 0 ], data[ 1 ], data[ 2 ], data[ 3 ], data[ 4 ], data[ 5 ], data[ 6 ] );
-////		break;
-////
-////	case 8 :
-////		typedef void ( idClass::*eventCallback_8_t )( const int, const int, const int, const int, const int, const int, const int, const int );
-////		( this.*( eventCallback_8_t )callback )( data[ 0 ], data[ 1 ], data[ 2 ], data[ 3 ], data[ 4 ], data[ 5 ], data[ 6 ], data[ 7 ] );
-////		break;
-////
-////	default:
-////		gameLocal.Warning( "Invalid formatspec on event '%s'", ev.GetName() );
-////		break;
-////	}
-////
-////#endif
-////
-////	return true;
-////}
-////
+
+/*
+================
+idClass::ProcessEventArgPtr
+================
+*/
+ProcessEventArgPtr( ev: idEventDef, data:Int32Array): boolean  {
+	var c: idTypeInfo;
+	var num: number /*int*/;
+	var callback: any/*eventCallback_t*/;
+
+	assert( ev );
+	assert( idEvent.initialized );
+
+	if ( g_debugTriggers.GetBool() && ( ev == EV_Activate ) && this.IsType( idEntity.Type ) ) {
+		var ent:idEntity = *reinterpret_cast<idEntity **>( data );
+		gameLocal.Printf( "%d: '%s' activated by '%s'\n", gameLocal.framenum, static_cast<idEntity *>( this ).GetName(), ent ? ent.GetName() : "NULL" );
+	}
+
+	c = this.GetType();
+	num = ev.GetEventNum();
+	if ( !c.eventMap[ num ] ) {
+		// we don't respond to this event, so ignore it
+		return false;
+	}
+
+	callback = c.eventMap[ num ];
+
+//#if !CPU_EASYARGS
+//
+///*
+//on ppc architecture, floats are passed in a seperate set of registers
+//the function prototypes must have matching float declaration
+//
+//http://developer.apple.com/documentation/DeveloperTools/Conceptual/MachORuntime/2rt_powerpc_abi/chapter_9_section_5.html
+//*/
+//
+//	switch( ev.GetFormatspecIndex() ) {
+//	case 1 << D_EVENT_MAXARGS :
+//		( this.*callback )();
+//		break;
+//
+//// generated file - see CREATE_EVENT_CODE
+//#include "Callbacks.cpp"
+//
+//	default:
+//		gameLocal.Warning( "Invalid formatspec on event '%s'", ev.GetName() );
+//		break;
+//	}
+//
+//#else
+
+	assert( D_EVENT_MAXARGS == 8 );
+
+	switch( ev.GetNumArgs() ) {
+	case 0 :
+		( callback )();
+		break;
+
+	//case 1 :
+	//	typedef void ( idClass::*eventCallback_1_t )( const int );
+	//	( this.*( eventCallback_1_t )callback )( data[ 0 ] );
+	//	break;
+
+	//case 2 :
+	//	typedef void ( idClass::*eventCallback_2_t )( const int, const int );
+	//	( this.*( eventCallback_2_t )callback )( data[ 0 ], data[ 1 ] );
+	//	break;
+
+	//case 3 :
+	//	typedef void ( idClass::*eventCallback_3_t )( const int, const int, const int );
+	//	( this.*( eventCallback_3_t )callback )( data[ 0 ], data[ 1 ], data[ 2 ] );
+	//	break;
+
+	//case 4 :
+	//	typedef void ( idClass::*eventCallback_4_t )( const int, const int, const int, const int );
+	//	( this.*( eventCallback_4_t )callback )( data[ 0 ], data[ 1 ], data[ 2 ], data[ 3 ] );
+	//	break;
+
+	//case 5 :
+	//	typedef void ( idClass::*eventCallback_5_t )( const int, const int, const int, const int, const int );
+	//	( this.*( eventCallback_5_t )callback )( data[ 0 ], data[ 1 ], data[ 2 ], data[ 3 ], data[ 4 ] );
+	//	break;
+
+	//case 6 :
+	//	typedef void ( idClass::*eventCallback_6_t )( const int, const int, const int, const int, const int, const int );
+	//	( this.*( eventCallback_6_t )callback )( data[ 0 ], data[ 1 ], data[ 2 ], data[ 3 ], data[ 4 ], data[ 5 ] );
+	//	break;
+
+	//case 7 :
+	//	typedef void ( idClass::*eventCallback_7_t )( const int, const int, const int, const int, const int, const int, const int );
+	//	( this.*( eventCallback_7_t )callback )( data[ 0 ], data[ 1 ], data[ 2 ], data[ 3 ], data[ 4 ], data[ 5 ], data[ 6 ] );
+	//	break;
+
+	//case 8 :
+	//	typedef void ( idClass::*eventCallback_8_t )( const int, const int, const int, const int, const int, const int, const int, const int );
+	//	( this.*( eventCallback_8_t )callback )( data[ 0 ], data[ 1 ], data[ 2 ], data[ 3 ], data[ 4 ], data[ 5 ], data[ 6 ], data[ 7 ] );
+	//	break;
+
+		default:
+			debugger;
+			todoThrow ( );
+		gameLocal.Warning( "Invalid formatspec on event '%s'", ev.GetName() );
+		break;
+	}
+
+//#endif
+
+	return true;
+}
+
 /*
 ================
 idClass::Event_Remove

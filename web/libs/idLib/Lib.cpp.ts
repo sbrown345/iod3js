@@ -273,8 +273,7 @@ idLib::Error
 ===============
 */
 	static Error ( fmt: string, ...args: any[] ): void {
-		todoThrow ( )
-		';'
+		todoThrow ( );
 		//va_list		argptr;
 		//char		text[MAX_STRING_CHARS];
 
