@@ -918,7 +918,7 @@ int idLexer::ReadToken( idToken *token ) {
 	//		__debugbreak();
 	//}
 	//dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", RTCount, line, token->data);
-	dlog(DEBUG_COMPILER || DEBUG_RENDERWORLD_LOAD, "RT: line:%i, %s\n", line, token->data);
+	dlog(DEBUG_COMPILER || DEBUG_RENDERWORLD_LOAD || DEBUG_CM, "RT l:%i %s\n", line, token->data);
 	RTCount++;
 	return 1;
 }

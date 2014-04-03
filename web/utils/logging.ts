@@ -6,7 +6,7 @@ JavaScript Debug Helpers
 ===============================================================================
 */
 var LOG_TO_CONSOLE = false;
-var SKIP_ALL_LOGGING = false;
+var SKIP_ALL_LOGGING = true;
 var LOGGING_WITH_VISUAL_STUDIO = !!(window["Debug"] && window["Debug"].debuggerEnabled);
 
 var DEBUG_LOG_MODE = true && !LOGGING_WITH_VISUAL_STUDIO;

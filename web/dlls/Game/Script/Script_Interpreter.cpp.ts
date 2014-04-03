@@ -41,6 +41,12 @@ class prstack_t {
 	s: number /*int*/;
 	f: function_t;
 	stackbase: number /*int*/;
+
+	memset0 ( ): void {
+		this.s = 0;
+		this.f = null;
+		this.stackbase = 0;
+	}
 }
 
 class idInterpreter {
@@ -275,20 +281,20 @@ idInterpreter::NextInstruction
 
 //#endif /* !__SCRIPT_INTERPRETER_H__ */
 
-///*
-//================
-//idInterpreter::idInterpreter()
-//================
-//*/
-//idInterpreter::idInterpreter() {
-//	this.localstackUsed = 0;
-//	this.terminateOnExit = true;
-//	this.debug = 0;
-//	memset( this.localstack, 0, sizeof( this.localstack ) );
-//	memset( this.callStack, 0, sizeof( this.callStack ) );
-//	this.Reset();
-//}
-//
+/*
+================
+idInterpreter::idInterpreter()
+================
+*/
+	constructor ( ) {
+		this.localstackUsed = 0;
+		this.terminateOnExit = true;
+		this.debug = false;
+		memset( this.localstack, 0, sizeof( this.localstack ) );
+		clearStructArray( this.callStack );
+		this.Reset ( );
+	}
+
 ///*
 //================
 //idInterpreter::Save
@@ -798,7 +804,7 @@ idInterpreter::SetThread
 	EnterFunction ( func: function_t, clearStack: boolean ): void {
 		var /*int 		*/c: number;
 		var stack: prstack_t;
-
+		//todoThrow();throw "todo";
 		if ( clearStack ) {
 			this.Reset ( );
 		}

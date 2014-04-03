@@ -282,8 +282,10 @@ idPVS::CreatePVSData
 				// no PVS calculated for this portal yet
 				p.done = false;
 
-				dlog( DEBUG_MAP_FILE, "CreatePVSData %i %s %s\n", i, p.bounds[0].ToString ( ), p.bounds[1].ToString ( ) );
-				dlog(DEBUG_MAP_FILE, "portalVisBytes: %i numPortals:\n", i, this.portalVisBytes, area.numPortals);
+				if ( DEBUG_MAP_FILE ) {
+					dlog( DEBUG_MAP_FILE, "CreatePVSData %i %s %s\n", i, p.bounds[0].ToString ( ), p.bounds[1].ToString ( ) );
+					dlog( DEBUG_MAP_FILE, "portalVisBytes: %i numPortals:\n", i, this.portalVisBytes, area.numPortals );
+				}
 
 				area.portals[area.numPortals] = p;
 				area.numPortals++;
@@ -384,8 +386,10 @@ idPVS::FrontPortalPVS
 				for ( p = 0; p < area.numPortals; p++ ) {
 
 					p2 = area.portals[p];
-					dlog(DEBUG_MAP_FILE, "p2 plane %s\n", p2.plane.ToString());
-					dlog(DEBUG_MAP_FILE, "p2 bounds %s %s\n", p2.bounds[0].ToString(), p2.bounds[0].ToString());
+					if ( DEBUG_MAP_FILE ) {
+						dlog( DEBUG_MAP_FILE, "p2 plane %s\n", p2.plane.ToString ( ) );
+						dlog( DEBUG_MAP_FILE, "p2 bounds %s %s\n", p2.bounds[0].ToString ( ), p2.bounds[0].ToString ( ) );
+					}
 
 					// if we the whole area is not at the front we need to check
 					if ( areaSide != PLANESIDE_FRONT ) {
