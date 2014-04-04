@@ -146,7 +146,7 @@ class idThread extends idClass {
 	//	void						Pause( );
 	//
 	Event_Execute(): void { throw "placeholder"; }
-	Event_SetThreadName(name: string): void { throw "placeholder"; }
+	//Event_SetThreadName(name: string): void { throw "placeholder"; }
 	
 	//
 	// script callable Events
@@ -310,16 +310,16 @@ class idThread extends idClass {
 	//	static void					ReturnVector( idVec3 const &vec );
 	//	static void					ReturnEntity( ent:idEntity );
 	//};
-//
-///*
-//================
-//idThread::WaitingOnThread
-//================
-//*/
-//ID_INLINE idThread *idThread::WaitingOnThread( ) {
-//	return this.waitingForThread;
-//}
-//
+
+/*
+================
+idThread::WaitingOnThread
+================
+*/
+	WaitingOnThread ( ): idThread {
+		return this.waitingForThread;
+	}
+
 ///*
 //================
 //idThread::SetThreadNum
@@ -520,27 +520,26 @@ idThread::idThread
 idThread::~idThread
 ================
 */
-	destructor(): void {
-		todoThrow ( );
-//	idThread	*thread;
-//	int			i;
-//	int			n;
-//
-//	if ( g_debugScript.GetBool() ) {
-//		gameLocal.Printf( "%d: end thread (%d) '%s'\n", gameLocal.time, this.threadNum, this.threadName.c_str() );
-//	}
-//	idThread.threadList.Remove( this );
-//	n = idThread.threadList.Num();
-//	for( i = 0; i < n; i++ ) {
-//		thread = idThread.threadList[ i ];
-//		if ( thread.WaitingOnThread() == this ) {
-//			thread.ThreadCallback( this );
-//		}
-//	}
-//
-//	if ( idThread.currentThread == this ) {
-//		idThread.currentThread = NULL;
-//	}
+	destructor ( ): void {
+		var thread: idThread;
+		var i: number /*int*/;
+		var n: number /*int*/;
+
+		if ( g_debugScript.GetBool ( ) ) {
+			gameLocal.Printf( "%d: end thread (%d) '%s'\n", gameLocal.time, this.threadNum, this.threadName.c_str ( ) );
+		}
+		idThread.threadList.Remove( this );
+		n = idThread.threadList.Num ( );
+		for ( i = 0; i < n; i++ ) {
+			thread = idThread.threadList[i];
+			if ( thread.WaitingOnThread ( ) == this ) {
+				thread.ThreadCallback( this );
+			}
+		}
+
+		if ( idThread.currentThread == this ) {
+			idThread.currentThread = null;
+		}
 	}
 
 /*
@@ -949,35 +948,35 @@ idThread::ClearWaitFor
 //
 //	if ( IsWaitingFor( obj ) ) {
 //		this.ClearWaitFor();
-//		DelayedStart( 0 );
+//		this.DelayedStart( 0 );
 //	}
 //}
-//
-///*
-//================
-//idThread::ThreadCallback
-//================
-//*/
-//ThreadCallback( idThread *thread ) :void{
-//	if ( this.interpreter.threadDying ) {
-//		return;
-//	}
-//
-//	if ( thread == this.waitingForThread ) {
-//		this.ClearWaitFor();
-//		DelayedStart( 0 );
-//	}
-//}
-//
-///*
-//================
-//idThread::Event_SetThreadName
-//================
-//*/
-//Event_SetThreadName( name:string ):void {
-//	this.SetThreadName( name );
-//}
-//
+
+/*
+================
+idThread::ThreadCallback
+================
+*/
+	ThreadCallback ( thread: idThread ): void {
+		if ( this.interpreter.threadDying ) {
+			return;
+		}
+
+		if ( thread == this.waitingForThread ) {
+			this.ClearWaitFor ( );
+			this.DelayedStart( 0 );
+		}
+	}
+
+/*
+================
+idThread::Event_SetThreadName
+================
+*/
+	Event_SetThreadName ( name: string ): void {
+		this.SetThreadName( name );
+	}
+
 ///*
 //================
 //idThread::Error

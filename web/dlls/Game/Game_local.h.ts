@@ -241,7 +241,60 @@ class idEntityPtr<type> {
 ////	int						GetEntityNum( ) const;
 
 ////private:
-////	int						spawnId;
+	spawnId :number/*int*/;
+
+	
+constructor() {
+	this.spawnId = 0;
+}
+
+////ID_INLINE void idEntityPtr<type>::Save( idSaveGame *savefile ) const {
+////	savefile.WriteInt( this.spawnId );
+////}
+
+////ID_INLINE void idEntityPtr<type>::Restore( idRestoreGame *savefile ) {
+////	savefile.ReadInt( this.spawnId );
+////}
+
+	opEquals ( ent: type ): idEntityPtr<type> {
+		if ( ent == null ) {
+			this.spawnId = 0;
+		} else {
+			todoThrow ( );
+			//this.spawnId = ( gameLocal.spawnIds[ent.entityNumber] << GENTITYNUM_BITS ) | ent.entityNumber;
+		}
+		return this;
+	}
+
+////ID_INLINE bool idEntityPtr<type>::SetSpawnId( int id ) {
+////	// the reason for this first check is unclear:
+////	// the function returning false may mean the spawnId is already set right, or the entity is missing
+////	if ( id == this.spawnId ) {
+////		return false;
+////	}
+////	if ( ( id >> GENTITYNUM_BITS ) == gameLocal.spawnIds[ id & ( ( 1 << GENTITYNUM_BITS ) - 1 ) ] ) {
+////		this.spawnId = id;
+////		return true;
+////	}
+////	return false;
+////}
+
+////ID_INLINE bool idEntityPtr<type>::IsValid( ) const {
+////	return ( gameLocal.spawnIds[ this.spawnId & ( ( 1 << GENTITYNUM_BITS ) - 1 ) ] == ( this.spawnId >> GENTITYNUM_BITS ) );
+////}
+
+GetEntity( ) :type {
+	var /*int */entityNum = this.spawnId & ( ( 1 << GENTITYNUM_BITS ) - 1 );
+	if ( ( gameLocal.spawnIds[ entityNum ] == ( this.spawnId >> GENTITYNUM_BITS ) ) ) {
+		return static_cast<type >( gameLocal.entities[ entityNum ] );
+	}
+	return null;
+}
+
+////ID_INLINE int idEntityPtr<type>::GetEntityNum( ) const {
+////	return ( this.spawnId & ( ( 1 << GENTITYNUM_BITS ) - 1 ) );
+////}
+
 };
 
 //============================================================================
@@ -611,41 +664,41 @@ class idGameLocal extends idGame {
 idGameLocal::Clear
 ============
 */
-Clear (): void {
+	Clear ( ): void {
 		var /*int */i: number;
 
-		this.serverInfo.Clear();
+		this.serverInfo.Clear ( );
 		this.numClients = 0;
-		for (i = 0; i < MAX_CLIENTS; i++) {
-			this.userInfo[i].Clear();
-			this.persistentPlayerInfo[i].Clear();
+		for ( i = 0; i < MAX_CLIENTS; i++ ) {
+			this.userInfo[i].Clear ( );
+			this.persistentPlayerInfo[i].Clear ( );
 		}
-		clearStructArray(this.usercmds);
-		for (var j = 0; j < this.entities.length; j++) {
+		clearStructArray( this.usercmds );
+		for ( var j = 0; j < this.entities.length; j++ ) {
 			this.entities[j] = null;
 		}
-		memset(this.spawnIds, -1, sizeof(this.spawnIds));
+		memset( this.spawnIds, -1, sizeof( this.spawnIds ) );
 		this.firstFreeIndex = 0;
 		this.num_entities = 0;
-		this.spawnedEntities.Clear();
-		this.activeEntities.Clear();
+		this.spawnedEntities.Clear ( );
+		this.activeEntities.Clear ( );
 		this.numEntitiesToDeactivate = 0;
 		this.sortPushers = false;
 		this.sortTeamMasters = false;
-		this.persistentLevelInfo.Clear();
-		memset(this.globalShaderParms, 0, sizeof(this.globalShaderParms));
-		this.random.SetSeed(0);
+		this.persistentLevelInfo.Clear ( );
+		memset( this.globalShaderParms, 0, sizeof( this.globalShaderParms ) );
+		this.random.SetSeed( 0 );
 		this.world = null;
 		this.frameCommandThread = null;
 		this.testmodel = null;
 		this.testFx = null;
-		this.clip.Shutdown();
-		this.pvs.Shutdown();
-		this.sessionCommand.Clear();
+		this.clip.Shutdown ( );
+		this.pvs.Shutdown ( );
+		this.sessionCommand.Clear ( );
 		this.locationEntities = null;
 		this.smokeParticles = null;
 		this.editEntities = null;
-		this.entityHash.Clear(1024, MAX_GENTITIES);
+		this.entityHash.Clear( 1024, MAX_GENTITIES );
 		this.inCinematic = false;
 		this.cinematicSkipTime = 0;
 		this.cinematicStopTime = 0;
@@ -654,17 +707,17 @@ Clear (): void {
 		this.previousTime = 0;
 		this.time = 0;
 		this.vacuumAreaNum = 0;
-		this.mapFileName.Clear();
+		this.mapFileName.Clear ( );
 		this.mapFile = null;
 		this.spawnCount = idGameLocal.INITIAL_SPAWN_COUNT;
 		this.mapSpawnCount = 0;
 		this.camera = null;
-		this.aasList.Clear();
-		this.aasNames.Clear();
-		this.lastAIAlertEntity = null;
+		this.aasList.Clear ( );
+		this.aasNames.Clear ( );
+		this.lastAIAlertEntity.opEquals( null );
 		this.lastAIAlertTime = 0;
-		this.spawnArgs.Clear();
-		this.gravity.Set(0, 0, -1);
+		this.spawnArgs.Clear ( );
+		this.gravity.Set( 0, 0, -1 );
 		this.playerPVS.h = -1 >>> 0;
 		this.playerConnectedAreas.h = -1 >>> 0;
 		this.gamestate = gameState_t.GAMESTATE_UNINITIALIZED;
@@ -682,28 +735,28 @@ Clear (): void {
 
 		this.nextGibTime = 0;
 		this.globalMaterial = null;
-		this.newInfo.Clear();
-		this.lastGUIEnt = null;
+		this.newInfo.Clear ( );
+		this.lastGUIEnt.opEquals( null );
 		this.lastGUI = 0;
 
 		//memset( this.clientEntityStates, 0, sizeof( this.clientEntityStates ) );
-		for (var k = 0; k < this.clientEntityStates.length; k++) {
-			for (var l = 0; l < this.clientEntityStates[k].length; l++) {
+		for ( var k = 0; k < this.clientEntityStates.length; k++ ) {
+			for ( var l = 0; l < this.clientEntityStates[k].length; l++ ) {
 				this.clientEntityStates[k][l] = null;
 			}
 		}
 
-		for (var m = 0; m < this.clientPVS.length; m++) {
-			memset(this.clientPVS[m], 0, this.clientPVS[m].byteLength);
+		for ( var m = 0; m < this.clientPVS.length; m++ ) {
+			memset( this.clientPVS[m], 0, this.clientPVS[m].byteLength );
 		}
-		for (var n = 0; n < this.clientSnapshots.length; n++) {
+		for ( var n = 0; n < this.clientSnapshots.length; n++ ) {
 			this.clientSnapshots[n] = null;
 		}
 
-		this.eventQueue.Init();
-		this.savedEventQueue.Init();
+		this.eventQueue.Init ( );
+		this.savedEventQueue.Init ( );
 
-		memset3DArray(this.lagometer, 0);
+		memset3DArray( this.lagometer, 0 );
 	}
 
 /*
@@ -713,7 +766,7 @@ idGameLocal::Init
   initialize the game object, only happens once at startup, not each level load
 ============
 */
-Init (): void {
+	Init ( ): void {
 		var dict: idDict;
 		var aas: idAAS;
 
@@ -727,62 +780,62 @@ Init (): void {
 		//idLib::Init();
 
 		// register static cvars declared in the game
-		todoMaybeGameDLL("idCVar::RegisterStaticVars();");
+		todoMaybeGameDLL( "idCVar::RegisterStaticVars();" );
 
 		// initialize processor specific SIMD
 		//idSIMD::InitProcessor( "game", com_forceGenericSIMD.GetBool() );
 
 		//#endif
 
-		this.Printf("--------- Initializing Game ----------\n");
-		this.Printf("gamename: %s\n", GAME_VERSION);
-		this.Printf("gamedate: %s\n", __DATE__);
+		this.Printf( "--------- Initializing Game ----------\n" );
+		this.Printf( "gamename: %s\n", GAME_VERSION );
+		this.Printf( "gamedate: %s\n", __DATE__ );
 
 		// register game specific decl types
-		declManager.RegisterDeclType("model", declType_t.DECL_MODELDEF, idDeclAllocator<idDeclModelDef>(idDeclModelDef));
-		declManager.RegisterDeclType("export", declType_t.DECL_MODELEXPORT, idDeclAllocator<idDecl>(idDecl));
+		declManager.RegisterDeclType( "model", declType_t.DECL_MODELDEF, idDeclAllocator<idDeclModelDef>( idDeclModelDef ) );
+		declManager.RegisterDeclType( "export", declType_t.DECL_MODELEXPORT, idDeclAllocator<idDecl>( idDecl ) );
 
 		// register game specific decl folders
-		declManager.RegisterDeclFolder("def", ".def", declType_t.DECL_ENTITYDEF);
-		declManager.RegisterDeclFolder("fx", ".fx", declType_t.DECL_FX);
-		declManager.RegisterDeclFolder("particles", ".prt", declType_t.DECL_PARTICLE);
-		declManager.RegisterDeclFolder("af", ".af", declType_t.DECL_AF);
-		declManager.RegisterDeclFolder("newpdas", ".pda", declType_t.DECL_PDA);
+		declManager.RegisterDeclFolder( "def", ".def", declType_t.DECL_ENTITYDEF );
+		declManager.RegisterDeclFolder( "fx", ".fx", declType_t.DECL_FX );
+		declManager.RegisterDeclFolder( "particles", ".prt", declType_t.DECL_PARTICLE );
+		declManager.RegisterDeclFolder( "af", ".af", declType_t.DECL_AF );
+		declManager.RegisterDeclFolder( "newpdas", ".pda", declType_t.DECL_PDA );
 
-		cmdSystem.AddCommand("listModelDefs", idListDecls_f(declType_t.DECL_MODELDEF), cmdFlags_t.CMD_FL_SYSTEM | cmdFlags_t.CMD_FL_GAME, "lists model defs");
-		cmdSystem.AddCommand("printModelDefs", idPrintDecls_f(declType_t.DECL_MODELDEF), cmdFlags_t.CMD_FL_SYSTEM | cmdFlags_t.CMD_FL_GAME, "prints a model def", ArgCompletion_Decl_Template(declType_t.DECL_MODELDEF) /*idCmdSystem::ArgCompletion_Decl<DECL_MODELDEF>*/ );
+		cmdSystem.AddCommand( "listModelDefs", idListDecls_f( declType_t.DECL_MODELDEF ), cmdFlags_t.CMD_FL_SYSTEM | cmdFlags_t.CMD_FL_GAME, "lists model defs" );
+		cmdSystem.AddCommand( "printModelDefs", idPrintDecls_f( declType_t.DECL_MODELDEF ), cmdFlags_t.CMD_FL_SYSTEM | cmdFlags_t.CMD_FL_GAME, "prints a model def", ArgCompletion_Decl_Template( declType_t.DECL_MODELDEF ) /*idCmdSystem::ArgCompletion_Decl<DECL_MODELDEF>*/ );
 		idLexer.RTCount = 0;
-		this.Clear();
+		this.Clear ( );
 
-		idEvent.Init();
-		idClass.Init();
-		this.InitConsoleCommands();
+		idEvent.Init ( );
+		idClass.Init ( );
+		this.InitConsoleCommands ( );
 
 		// load default scripts
-		this.program.Startup(SCRIPT_DEFAULT);
+		this.program.Startup( SCRIPT_DEFAULT );
 
 		this.smokeParticles = new idSmokeParticles;
 
 		// set up the aas
-		dict = this.FindEntityDefDict("aas_types");
-		if (!dict) {
-			this.Error("Unable to find entityDef for 'aas_types'");
+		dict = this.FindEntityDefDict( "aas_types" );
+		if ( !dict ) {
+			this.Error( "Unable to find entityDef for 'aas_types'" );
 		}
 
 		// allocate space for the aas
-		var kv = dict.MatchPrefix("type");
-		while (kv != null) {
-			aas = idAAS.Alloc();
-			this.aasList.Append(aas);
-			this.aasNames.Append(kv.GetValue());
-			kv = dict.MatchPrefix("type", kv);
+		var kv = dict.MatchPrefix( "type" );
+		while ( kv != null ) {
+			aas = idAAS.Alloc ( );
+			this.aasList.Append( aas );
+			this.aasNames.Append( kv.GetValue ( ) );
+			kv = dict.MatchPrefix( "type", kv );
 		}
 
 		this.gamestate = gameState_t.GAMESTATE_NOMAP;
 
-		this.Printf("...%d aas types\n", this.aasList.Num());
-		this.Printf("game initialized.\n");
-		this.Printf("--------------------------------------\n");
+		this.Printf( "...%d aas types\n", this.aasList.Num ( ) );
+		this.Printf( "game initialized.\n" );
+		this.Printf( "--------------------------------------\n" );
 	}
 
 /////*
@@ -3725,35 +3778,35 @@ RemoveEntityFromHash (name: string, ent: idEntity): boolean {
 		return false;
 	}
 
-/////*
-////================
-////idGameLocal::GetTargets
-////================
-////*/
-////int idGameLocal::GetTargets( const idDict &args, idList< idEntityPtr<idEntity> > &list, const char *ref ) const {
-////	int i, num, refLength;
-////	const idKeyValue *arg;
-////	var ent:idEntity
+/*
+================
+idGameLocal::GetTargets
+================
+*/
+	GetTargets ( args: idDict, list: idList<idEntityPtr<idEntity>>, ref: string ): number /*int*/ {
+		var /*int */i: number, num: number, refLength: number;
+		var arg: idKeyValue;
+		var ent: idEntity;
 
-////	list.Clear();
+		list.Clear ( );
 
-////	refLength = strlen( ref );
-////	num = args.GetNumKeyVals();
-////	for( i = 0; i < num; i++ ) {
+		refLength = strlen( ref );
+		num = args.GetNumKeyVals ( );
+		for ( i = 0; i < num; i++ ) {
 
-////		arg = args.GetKeyVal( i );
-////		if ( arg.GetKey().Icmpn( ref, refLength ) == 0 ) {
+			arg = args.GetKeyVal( i );
+			if ( arg.GetKey ( ).Icmpn( ref, refLength ) == 0 ) {
 
-////			ent = FindEntity( arg.GetValue() );
-////			if ( ent ) {
-////				idEntityPtr<idEntity> &entityPtr = list.Alloc();
-////                entityPtr = ent;
-////			}
-////		}
-////	}
+				ent = this.FindEntity( arg.GetValue ( ).data );
+				if ( ent ) {
+					var entityPtr: idEntityPtr<idEntity> = list.Alloc ( );
+					entityPtr.opEquals( ent );
+				}
+			}
+		}
 
-////	return list.Num();
-////}
+		return list.Num ( );
+	}
 
 /////*
 ////=============
@@ -4961,64 +5014,6 @@ so it can perform tab completion
 ////extern idAnimManager		animationLib;
 
 //////============================================================================
-
-////template< class type >
-////ID_INLINE idEntityPtr<type>::idEntityPtr() {
-////	spawnId = 0;
-////}
-
-////template< class type >
-////ID_INLINE void idEntityPtr<type>::Save( idSaveGame *savefile ) const {
-////	savefile->WriteInt( spawnId );
-////}
-
-////template< class type >
-////ID_INLINE void idEntityPtr<type>::Restore( idRestoreGame *savefile ) {
-////	savefile->ReadInt( spawnId );
-////}
-
-////template< class type >
-////ID_INLINE idEntityPtr<type> &idEntityPtr<type>::operator=( type *ent ) {
-////	if ( ent == NULL ) {
-////		spawnId = 0;
-////	} else {
-////		spawnId = ( gameLocal.spawnIds[ent->entityNumber] << GENTITYNUM_BITS ) | ent->entityNumber;
-////	}
-////	return *this;
-////}
-
-////template< class type >
-////ID_INLINE bool idEntityPtr<type>::SetSpawnId( int id ) {
-////	// the reason for this first check is unclear:
-////	// the function returning false may mean the spawnId is already set right, or the entity is missing
-////	if ( id == spawnId ) {
-////		return false;
-////	}
-////	if ( ( id >> GENTITYNUM_BITS ) == gameLocal.spawnIds[ id & ( ( 1 << GENTITYNUM_BITS ) - 1 ) ] ) {
-////		spawnId = id;
-////		return true;
-////	}
-////	return false;
-////}
-
-////template< class type >
-////ID_INLINE bool idEntityPtr<type>::IsValid( ) const {
-////	return ( gameLocal.spawnIds[ spawnId & ( ( 1 << GENTITYNUM_BITS ) - 1 ) ] == ( spawnId >> GENTITYNUM_BITS ) );
-////}
-
-////template< class type >
-////ID_INLINE type *idEntityPtr<type>::GetEntity( ) const {
-////	int entityNum = spawnId & ( ( 1 << GENTITYNUM_BITS ) - 1 );
-////	if ( ( gameLocal.spawnIds[ entityNum ] == ( spawnId >> GENTITYNUM_BITS ) ) ) {
-////		return static_cast<type *>( gameLocal.entities[ entityNum ] );
-////	}
-////	return NULL;
-////}
-
-////template< class type >
-////ID_INLINE int idEntityPtr<type>::GetEntityNum( ) const {
-////	return ( spawnId & ( ( 1 << GENTITYNUM_BITS ) - 1 ) );
-////}
 
 //////============================================================================
 

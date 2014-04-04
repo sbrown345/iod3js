@@ -587,8 +587,8 @@ idClass::CallSpawnFunc
 				return func;
 			}
 		}
-		todoThrow ( );
-		//( this.*cls.Spawn )();
+
+		( /*this->**/cls.Spawn ) ( );
 
 		return cls.Spawn;
 	}
