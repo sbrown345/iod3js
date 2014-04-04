@@ -101,10 +101,10 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////	}
 ////	BecomeInactive( TH_UPDATEVISUALS );
 ////
-////	const idVec3 &origin = GetPhysics()->GetOrigin();
-////	const idMat3 &axis = GetPhysics()->GetAxis();
-////	gameRenderWorld->DebugArrow( colorYellow, origin + axis[1] * -5.0f + axis[2] * 5.0f, origin, 2 );
-////	gameRenderWorld->DebugArrow( colorRed, origin, draggedPosition, 2 );
+////	const idVec3 &origin = GetPhysics().GetOrigin();
+////	const idMat3 &axis = GetPhysics().GetAxis();
+////	gameRenderWorld.DebugArrow( colorYellow, origin + axis[1] * -5.0f + axis[2] * 5.0f, origin, 2 );
+////	gameRenderWorld.DebugArrow( colorRed, origin, draggedPosition, 2 );
 ////}
 ////
 /////*
@@ -176,7 +176,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////void idDragEntity::StopDrag( void ) {
 ////	dragEnt = NULL;
 ////	if ( cursor ) {
-////		cursor->BecomeInactive( TH_THINK );
+////		cursor.BecomeInactive( TH_THINK );
 ////	}
 ////}
 ////
@@ -194,12 +194,12 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////	jointHandle_t newJoint = INVALID_JOINT;
 ////	idStr newBodyName;
 ////
-////	player->GetViewPos( viewPoint, viewAxis );
+////	player.GetViewPos( viewPoint, viewAxis );
 ////
 ////	// if no entity selected for dragging
 ////    if ( !dragEnt.GetEntity() ) {
 ////
-////		if ( player->usercmd.buttons & BUTTON_ATTACK ) {
+////		if ( player.usercmd.buttons & BUTTON_ATTACK ) {
 ////
 ////			gameLocal.clip.TracePoint( trace, viewPoint, viewPoint + viewAxis[0] * MAX_DRAG_TRACE_DISTANCE, (CONTENTS_SOLID|CONTENTS_RENDERMODEL|CONTENTS_BODY), player );
 ////			if ( trace.fraction < 1.0f ) {
@@ -207,26 +207,26 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////				newEnt = gameLocal.entities[ trace.c.entityNum ];
 ////				if ( newEnt ) {
 ////
-////					if ( newEnt->GetBindMaster() ) {
-////						if ( newEnt->GetBindJoint() ) {
-////							trace.c.id = JOINT_HANDLE_TO_CLIPMODEL_ID( newEnt->GetBindJoint() );
+////					if ( newEnt.GetBindMaster() ) {
+////						if ( newEnt.GetBindJoint() ) {
+////							trace.c.id = JOINT_HANDLE_TO_CLIPMODEL_ID( newEnt.GetBindJoint() );
 ////						} else {
-////							trace.c.id = newEnt->GetBindBody();
+////							trace.c.id = newEnt.GetBindBody();
 ////						}
-////						newEnt = newEnt->GetBindMaster();
+////						newEnt = newEnt.GetBindMaster();
 ////					}
 ////
-////					if ( newEnt->IsType( idAFEntity_Base::Type ) && static_cast<idAFEntity_Base *>(newEnt)->IsActiveAF() ) {
+////					if ( newEnt.IsType( idAFEntity_Base::Type ) && static_cast<idAFEntity_Base *>(newEnt).IsActiveAF() ) {
 ////						idAFEntity_Base *af = static_cast<idAFEntity_Base *>(newEnt);
 ////
 ////						// joint being dragged
 ////						newJoint = CLIPMODEL_ID_TO_JOINT_HANDLE( trace.c.id );
 ////						// get the body id from the trace model id which might be a joint handle
-////						trace.c.id = af->BodyForClipModelId( trace.c.id );
+////						trace.c.id = af.BodyForClipModelId( trace.c.id );
 ////						// get the name of the body being dragged
-////						newBodyName = af->GetAFPhysics()->GetBody( trace.c.id )->GetName();
+////						newBodyName = af.GetAFPhysics().GetBody( trace.c.id ).GetName();
 ////
-////					} else if ( !newEnt->IsType( idWorldspawn::Type ) ) {
+////					} else if ( !newEnt.IsType( idWorldspawn::Type ) ) {
 ////
 ////						if ( trace.c.id < 0 ) {
 ////							newJoint = CLIPMODEL_ID_TO_JOINT_HANDLE( trace.c.id );
@@ -252,20 +252,20 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////						cursor = ( idCursor3D * )gameLocal.SpawnEntityType( idCursor3D::Type );
 ////					}
 ////
-////					idPhysics *phys = dragEnt.GetEntity()->GetPhysics();
+////					idPhysics *phys = dragEnt.GetEntity().GetPhysics();
 ////					localPlayerPoint = ( trace.c.point - viewPoint ) * viewAxis.Transpose();
-////					origin = phys->GetOrigin( id );
-////					axis = phys->GetAxis( id );
+////					origin = phys.GetOrigin( id );
+////					axis = phys.GetAxis( id );
 ////					localEntityPoint = ( trace.c.point - origin ) * axis.Transpose();
 ////
-////					cursor->drag.Init( g_dragDamping.GetFloat() );
-////					cursor->drag.SetPhysics( phys, id, localEntityPoint );
-////					cursor->Show();
+////					cursor.drag.Init( g_dragDamping.GetFloat() );
+////					cursor.drag.SetPhysics( phys, id, localEntityPoint );
+////					cursor.Show();
 ////
-////					if ( phys->IsType( idPhysics_AF::Type ) ||
-////							phys->IsType( idPhysics_RigidBody::Type ) ||
-////								phys->IsType( idPhysics_Monster::Type ) ) {
-////						cursor->BecomeActive( TH_THINK );
+////					if ( phys.IsType( idPhysics_AF::Type ) ||
+////							phys.IsType( idPhysics_RigidBody::Type ) ||
+////								phys.IsType( idPhysics_Monster::Type ) ) {
+////						cursor.BecomeActive( TH_THINK );
 ////					}
 ////				}
 ////			}
@@ -276,35 +276,35 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////	idEntity *drag = dragEnt.GetEntity();
 ////	if ( drag ) {
 ////
-////		if ( !( player->usercmd.buttons & BUTTON_ATTACK ) ) {
+////		if ( !( player.usercmd.buttons & BUTTON_ATTACK ) ) {
 ////			StopDrag();
 ////			return;
 ////		}
 ////
-////		cursor->SetOrigin( viewPoint + localPlayerPoint * viewAxis );
-////		cursor->SetAxis( viewAxis );
+////		cursor.SetOrigin( viewPoint + localPlayerPoint * viewAxis );
+////		cursor.SetAxis( viewAxis );
 ////
-////		cursor->drag.SetDragPosition( cursor->GetPhysics()->GetOrigin() );
+////		cursor.drag.SetDragPosition( cursor.GetPhysics().GetOrigin() );
 ////
-////		renderEntity_t *renderEntity = drag->GetRenderEntity();
-////		idAnimator *dragAnimator = drag->GetAnimator();
+////		renderEntity_t *renderEntity = drag.GetRenderEntity();
+////		idAnimator *dragAnimator = drag.GetAnimator();
 ////
 ////		if ( joint != INVALID_JOINT && renderEntity && dragAnimator ) {
-////			dragAnimator->GetJointTransform( joint, gameLocal.time, cursor->draggedPosition, axis );
-////			cursor->draggedPosition = renderEntity->origin + cursor->draggedPosition * renderEntity->axis;
-////			gameRenderWorld->DrawText( va( "%s\n%s\n%s, %s", drag->GetName(), drag->GetType()->classname, dragAnimator->GetJointName( joint ), bodyName.c_str() ), cursor->GetPhysics()->GetOrigin(), 0.1f, colorWhite, viewAxis, 1 );
+////			dragAnimator.GetJointTransform( joint, gameLocal.time, cursor.draggedPosition, axis );
+////			cursor.draggedPosition = renderEntity.origin + cursor.draggedPosition * renderEntity.axis;
+////			gameRenderWorld.DrawText( va( "%s\n%s\n%s, %s", drag.GetName(), drag.GetType().classname, dragAnimator.GetJointName( joint ), bodyName.c_str() ), cursor.GetPhysics().GetOrigin(), 0.1f, colorWhite, viewAxis, 1 );
 ////		} else {
-////			cursor->draggedPosition = cursor->GetPhysics()->GetOrigin();
-////			gameRenderWorld->DrawText( va( "%s\n%s\n%s", drag->GetName(), drag->GetType()->classname, bodyName.c_str() ), cursor->GetPhysics()->GetOrigin(), 0.1f, colorWhite, viewAxis, 1 );
+////			cursor.draggedPosition = cursor.GetPhysics().GetOrigin();
+////			gameRenderWorld.DrawText( va( "%s\n%s\n%s", drag.GetName(), drag.GetType().classname, bodyName.c_str() ), cursor.GetPhysics().GetOrigin(), 0.1f, colorWhite, viewAxis, 1 );
 ////		}
 ////	}
 ////
 ////	// if there is a selected entity
 ////	if ( selected.GetEntity() && g_dragShowSelection.GetBool() ) {
 ////		// draw the bbox of the selected entity
-////		renderEntity_t *renderEntity = selected.GetEntity()->GetRenderEntity();
+////		renderEntity_t *renderEntity = selected.GetEntity().GetRenderEntity();
 ////		if ( renderEntity ) {
-////			gameRenderWorld->DebugBox( colorYellow, idBox( renderEntity->bounds, renderEntity->origin, renderEntity->axis ) );
+////			gameRenderWorld.DebugBox( colorYellow, idBox( renderEntity.bounds, renderEntity.origin, renderEntity.axis ) );
 ////		}
 ////	}
 ////}
@@ -345,17 +345,17 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////
 ////	af = static_cast<idAFEntity_Base *>(dragEnt.GetEntity());
 ////
-////	if ( !af || !af->IsType( idAFEntity_Base::Type ) || !af->IsActiveAF() ) {
+////	if ( !af || !af.IsType( idAFEntity_Base::Type ) || !af.IsActiveAF() ) {
 ////		return;
 ////	}
 ////
-////	bindBodyName = af->GetAFPhysics()->GetBody( id )->GetName();
+////	bindBodyName = af.GetAFPhysics().GetBody( id ).GetName();
 ////	largestNum = 1;
 ////
 ////	// parse all the bind constraints
-////	kv = af->spawnArgs.MatchPrefix( "bindConstraint ", NULL );
+////	kv = af.spawnArgs.MatchPrefix( "bindConstraint ", NULL );
 ////	while ( kv ) {
-////		key = kv->GetKey();
+////		key = kv.GetKey();
 ////		key.Strip( "bindConstraint " );
 ////		if ( sscanf( key, "bind%d", &num ) ) {
 ////			if ( num >= largestNum ) {
@@ -363,7 +363,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////			}
 ////		}
 ////
-////		lexer.LoadMemory( kv->GetValue(), kv->GetValue().Length(), kv->GetKey() );
+////		lexer.LoadMemory( kv.GetValue(), kv.GetValue().Length(), kv.GetKey() );
 ////		lexer.ReadToken( &type );
 ////		lexer.ReadToken( &bodyName );
 ////		lexer.FreeSource();
@@ -371,19 +371,19 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////		// if there already exists a bind constraint for this body
 ////		if ( bodyName.Icmp( bindBodyName ) == 0 ) {
 ////			// delete the bind constraint
-////			af->spawnArgs.Delete( kv->GetKey() );
+////			af.spawnArgs.Delete( kv.GetKey() );
 ////			kv = NULL;
 ////		}
 ////
-////		kv = af->spawnArgs.MatchPrefix( "bindConstraint ", kv );
+////		kv = af.spawnArgs.MatchPrefix( "bindConstraint ", kv );
 ////	}
 ////
 ////	sprintf( key, "bindConstraint bind%d", largestNum );
-////	sprintf( value, "ballAndSocket %s %s", bindBodyName.c_str(), af->GetAnimator()->GetJointName( joint ) );
+////	sprintf( value, "ballAndSocket %s %s", bindBodyName.c_str(), af.GetAnimator().GetJointName( joint ) );
 ////
-////	af->spawnArgs.Set( key, value );
-////	af->spawnArgs.Set( "bind", "worldspawn" );
-////	af->Bind( gameLocal.world, true );
+////	af.spawnArgs.Set( key, value );
+////	af.spawnArgs.Set( "bind", "worldspawn" );
+////	af.Bind( gameLocal.world, true );
 ////}
 ////
 /////*
@@ -397,24 +397,24 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////
 ////	af = static_cast<idAFEntity_Base *>(selected.GetEntity());
 ////
-////	if ( !af || !af->IsType( idAFEntity_Base::Type ) || !af->IsActiveAF() ) {
+////	if ( !af || !af.IsType( idAFEntity_Base::Type ) || !af.IsActiveAF() ) {
 ////		return;
 ////	}
 ////
 ////	// unbind the selected entity
-////	af->Unbind();
+////	af.Unbind();
 ////
 ////	// delete all the bind constraints
-////	kv = selected.GetEntity()->spawnArgs.MatchPrefix( "bindConstraint ", NULL );
+////	kv = selected.GetEntity().spawnArgs.MatchPrefix( "bindConstraint ", NULL );
 ////	while ( kv ) {
-////		selected.GetEntity()->spawnArgs.Delete( kv->GetKey() );
-////		kv = selected.GetEntity()->spawnArgs.MatchPrefix( "bindConstraint ", NULL );
+////		selected.GetEntity().spawnArgs.Delete( kv.GetKey() );
+////		kv = selected.GetEntity().spawnArgs.MatchPrefix( "bindConstraint ", NULL );
 ////	}
 ////
 ////	// delete any bind information
-////	af->spawnArgs.Delete( "bind" );
-////	af->spawnArgs.Delete( "bindToJoint" );
-////	af->spawnArgs.Delete( "bindToBody" );
+////	af.spawnArgs.Delete( "bind" );
+////	af.spawnArgs.Delete( "bindToJoint" );
+////	af.spawnArgs.Delete( "bindToBody" );
 ////}
 ////
 ////
@@ -467,8 +467,8 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////		ClearSelectedEntities();
 ////		if ( EntityIsSelectable( ent ) ) {
 ////			AddSelectedEntity( ent );
-////			gameLocal.Printf( "entity #%d: %s '%s'\n", ent->entityNumber, ent->GetClassname(), ent->name.c_str() );
-////			ent->ShowEditingDialog();
+////			gameLocal.Printf( "entity #%d: %s '%s'\n", ent.entityNumber, ent.GetClassname(), ent.name.c_str() );
+////			ent.ShowEditingDialog();
 ////			return true;
 ////		}
 ////	}
@@ -481,7 +481,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////=============
 ////*/
 ////void idEditEntities::AddSelectedEntity(ent:idEntity) {
-////	ent->fl.selected = true;
+////	ent.fl.selected = true;
 ////	selectedEntities.AddUnique(ent);
 ////}
 ////
@@ -506,7 +506,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////
 ////	count = selectedEntities.Num();
 ////	for ( i = 0; i < count; i++ ) {
-////		selectedEntities[i]->fl.selected = false;
+////		selectedEntities[i].fl.selected = false;
 ////	}
 ////	selectedEntities.Clear();
 ////}
@@ -519,12 +519,12 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////*/
 ////bool idEditEntities::EntityIsSelectable( ent:idEntity, idVec4 *color, idStr *text ) {
 ////	for ( int i = 0; i < selectableEntityClasses.Num(); i++ ) {
-////		if ( ent->GetType() == selectableEntityClasses[i].typeInfo ) {
+////		if ( ent.GetType() == selectableEntityClasses[i].typeInfo ) {
 ////			if ( text ) {
 ////				*text = selectableEntityClasses[i].textKey;
 ////			}
 ////			if ( color ) {
-////				if ( ent->fl.selected ) {
+////				if ( ent.fl.selected ) {
 ////					*color = colorRed;
 ////				} else {
 ////					switch( i ) {
@@ -603,16 +603,16 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////			return;
 ////	}
 ////
-////	idBounds viewBounds( gameLocal.GetLocalPlayer()->GetPhysics()->GetOrigin() );
-////	idBounds viewTextBounds( gameLocal.GetLocalPlayer()->GetPhysics()->GetOrigin() );
-////	idMat3 axis = gameLocal.GetLocalPlayer()->viewAngles.ToMat3();
+////	idBounds viewBounds( gameLocal.GetLocalPlayer().GetPhysics().GetOrigin() );
+////	idBounds viewTextBounds( gameLocal.GetLocalPlayer().GetPhysics().GetOrigin() );
+////	idMat3 axis = gameLocal.GetLocalPlayer().viewAngles.ToMat3();
 ////
 ////	viewBounds.ExpandSelf( 512 );
 ////	viewTextBounds.ExpandSelf( 128 );
 ////
 ////	idStr textKey;
 ////
-////	for( ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent->spawnNode.Next() ) {
+////	for( ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
 ////
 ////		idVec4 color;
 ////
@@ -622,73 +622,73 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////		}
 ////
 ////		bool drawArrows = false;
-////		if ( ent->GetType() == &idAFEntity_Base::Type ) {
-////			if ( !static_cast<idAFEntity_Base *>(ent)->IsActiveAF() ) {
+////		if ( ent.GetType() == &idAFEntity_Base::Type ) {
+////			if ( !static_cast<idAFEntity_Base *>(ent).IsActiveAF() ) {
 ////				continue;
 ////			}
-////		} else if ( ent->GetType() == &idSound::Type ) {
-////			if ( ent->fl.selected ) {
+////		} else if ( ent.GetType() == &idSound::Type ) {
+////			if ( ent.fl.selected ) {
 ////				drawArrows = true;
 ////			}
-////			const idSoundShader * ss = declManager->FindSound( ent->spawnArgs.GetString( textKey ) );
-////			if ( ss->HasDefaultSound() || ss->base->GetState() == DS_DEFAULTED ) {
+////			const idSoundShader * ss = declManager.FindSound( ent.spawnArgs.GetString( textKey ) );
+////			if ( ss.HasDefaultSound() || ss.base.GetState() == DS_DEFAULTED ) {
 ////				color.Set( 1.0f, 0.0f, 1.0f, 1.0f );
 ////			}
-////		} else if ( ent->GetType() == &idFuncEmitter::Type ) {
-////			if ( ent->fl.selected ) {
+////		} else if ( ent.GetType() == &idFuncEmitter::Type ) {
+////			if ( ent.fl.selected ) {
 ////				drawArrows = true;
 ////			}
 ////		}
 ////
-////		if ( !viewBounds.ContainsPoint( ent->GetPhysics()->GetOrigin() ) ) {
+////		if ( !viewBounds.ContainsPoint( ent.GetPhysics().GetOrigin() ) ) {
 ////			continue;
 ////		}
 ////
-////		gameRenderWorld->DebugBounds( color, idBounds( ent->GetPhysics()->GetOrigin() ).Expand( 8 ) );
+////		gameRenderWorld.DebugBounds( color, idBounds( ent.GetPhysics().GetOrigin() ).Expand( 8 ) );
 ////		if ( drawArrows ) {
-////			idVec3 start = ent->GetPhysics()->GetOrigin();
+////			idVec3 start = ent.GetPhysics().GetOrigin();
 ////			idVec3 end = start + idVec3( 1, 0, 0 ) * 20.0f;
-////			gameRenderWorld->DebugArrow( colorWhite, start, end, 2 );
-////			gameRenderWorld->DrawText( "x+", end + idVec3( 4, 0, 0 ), 0.15f, colorWhite, axis );
+////			gameRenderWorld.DebugArrow( colorWhite, start, end, 2 );
+////			gameRenderWorld.DrawText( "x+", end + idVec3( 4, 0, 0 ), 0.15f, colorWhite, axis );
 ////			end = start + idVec3( 1, 0, 0 ) * -20.0f;
-////			gameRenderWorld->DebugArrow( colorWhite, start, end, 2 );
-////			gameRenderWorld->DrawText( "x-", end + idVec3( -4, 0, 0 ), 0.15f, colorWhite, axis );
+////			gameRenderWorld.DebugArrow( colorWhite, start, end, 2 );
+////			gameRenderWorld.DrawText( "x-", end + idVec3( -4, 0, 0 ), 0.15f, colorWhite, axis );
 ////			end = start + idVec3( 0, 1, 0 ) * +20.0f;
-////			gameRenderWorld->DebugArrow( colorGreen, start, end, 2 );
-////			gameRenderWorld->DrawText( "y+", end + idVec3( 0, 4, 0 ), 0.15f, colorWhite, axis );
+////			gameRenderWorld.DebugArrow( colorGreen, start, end, 2 );
+////			gameRenderWorld.DrawText( "y+", end + idVec3( 0, 4, 0 ), 0.15f, colorWhite, axis );
 ////			end = start + idVec3( 0, 1, 0 ) * -20.0f;
-////			gameRenderWorld->DebugArrow( colorGreen, start, end, 2 );
-////			gameRenderWorld->DrawText( "y-", end + idVec3( 0, -4, 0 ), 0.15f, colorWhite, axis );
+////			gameRenderWorld.DebugArrow( colorGreen, start, end, 2 );
+////			gameRenderWorld.DrawText( "y-", end + idVec3( 0, -4, 0 ), 0.15f, colorWhite, axis );
 ////			end = start + idVec3( 0, 0, 1 ) * +20.0f;
-////			gameRenderWorld->DebugArrow( colorBlue, start, end, 2 );
-////			gameRenderWorld->DrawText( "z+", end + idVec3( 0, 0, 4 ), 0.15f, colorWhite, axis );
+////			gameRenderWorld.DebugArrow( colorBlue, start, end, 2 );
+////			gameRenderWorld.DrawText( "z+", end + idVec3( 0, 0, 4 ), 0.15f, colorWhite, axis );
 ////			end = start + idVec3( 0, 0, 1 ) * -20.0f;
-////			gameRenderWorld->DebugArrow( colorBlue, start, end, 2 );
-////			gameRenderWorld->DrawText( "z-", end + idVec3( 0, 0, -4 ), 0.15f, colorWhite, axis );
+////			gameRenderWorld.DebugArrow( colorBlue, start, end, 2 );
+////			gameRenderWorld.DrawText( "z-", end + idVec3( 0, 0, -4 ), 0.15f, colorWhite, axis );
 ////		}
 ////
 ////		if ( textKey.Length() ) {
-////			text:string = ent->spawnArgs.GetString( textKey );
-////			if ( viewTextBounds.ContainsPoint( ent->GetPhysics()->GetOrigin() ) ) {
-////				gameRenderWorld->DrawText( text, ent->GetPhysics()->GetOrigin() + idVec3(0, 0, 12), 0.25, colorWhite, axis, 1 );
+////			text:string = ent.spawnArgs.GetString( textKey );
+////			if ( viewTextBounds.ContainsPoint( ent.GetPhysics().GetOrigin() ) ) {
+////				gameRenderWorld.DrawText( text, ent.GetPhysics().GetOrigin() + idVec3(0, 0, 12), 0.25, colorWhite, axis, 1 );
 ////			}
 ////		}
 ////	}
 ////}
 ////
-////
-/////*
-////===============================================================================
-////
-////	idGameEdit
-////
-////===============================================================================
-////*/
-////
-////idGameEdit			gameEditLocal;
-////idGameEdit *		gameEdit = &gameEditLocal;
-////
-////
+
+/*
+===============================================================================
+
+	idGameEdit
+
+===============================================================================
+*/
+
+var gameEditLocal = new idGameEdit;
+var gameEdit/*:idGameEdit*/ = gameEditLocal;
+
+
 /////*
 ////=============
 ////idGameEdit::GetSelectedEntities
@@ -698,8 +698,8 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////	int num = 0;
 ////	var ent:idEntity
 ////
-////	for( ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent->spawnNode.Next() ) {
-////		if ( ent->fl.selected ) {
+////	for( ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
+////		if ( ent.fl.selected ) {
 ////			list[num++] = ent;
 ////			if ( num >= max ) {
 ////				break;
@@ -716,9 +716,9 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////*/
 ////void idGameEdit::TriggerSelected() {
 ////	var ent:idEntity
-////	for( ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent->spawnNode.Next() ) {
-////		if ( ent->fl.selected ) {
-////			ent->ProcessEvent( &EV_Activate, gameLocal.GetLocalPlayer() );
+////	for( ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
+////		if ( ent.fl.selected ) {
+////			ent.ProcessEvent( &EV_Activate, gameLocal.GetLocalPlayer() );
 ////		}
 ////	}
 ////}
@@ -731,10 +731,10 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////void idGameEdit::ClearEntitySelection() {
 ////	var ent:idEntity
 ////
-////	for( ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent->spawnNode.Next() ) {
-////		ent->fl.selected = false;
+////	for( ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
+////		ent.fl.selected = false;
 ////	}
-////	gameLocal.editEntities->ClearSelectedEntities();
+////	gameLocal.editEntities.ClearSelectedEntities();
 ////}
 ////
 /////*
@@ -744,7 +744,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////*/
 ////void idGameEdit::AddSelectedEntity( ent:idEntity ) {
 ////	if ( ent ) {
-////		gameLocal.editEntities->AddSelectedEntity( ent );
+////		gameLocal.editEntities.AddSelectedEntity( ent );
 ////	}
 ////}
 ////
@@ -806,7 +806,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////*/
 ////void  idGameEdit::EntityGetOrigin( ent:idEntity, idVec3 &org ) const {
 ////	if ( ent ) {
-////		org = ent->GetPhysics()->GetOrigin();
+////		org = ent.GetPhysics().GetOrigin();
 ////	}
 ////}
 ////
@@ -817,7 +817,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////*/
 ////void idGameEdit::EntityGetAxis( ent:idEntity, idMat3 &axis ) const {
 ////	if ( ent ) {
-////		axis = ent->GetPhysics()->GetAxis();
+////		axis = ent.GetPhysics().GetAxis();
 ////	}
 ////}
 ////
@@ -828,7 +828,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////*/
 ////void idGameEdit::EntitySetOrigin( ent:idEntity, const idVec3 &org ) {
 ////	if ( ent ) {
-////		ent->SetOrigin( org );
+////		ent.SetOrigin( org );
 ////	}
 ////}
 ////
@@ -839,7 +839,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////*/
 ////void idGameEdit::EntitySetAxis( ent:idEntity, const idMat3 &axis ) {
 ////	if ( ent ) {
-////		ent->SetAxis( axis );
+////		ent.SetAxis( axis );
 ////	}
 ////}
 ////
@@ -850,7 +850,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////*/
 ////void idGameEdit::EntitySetColor( ent:idEntity, const idVec3 color ) {
 ////	if ( ent ) {
-////		ent->SetColor( color );
+////		ent.SetColor( color );
 ////	}
 ////}
 ////
@@ -861,7 +861,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////*/
 ////void idGameEdit::EntityTranslate( ent:idEntity, const idVec3 &org ) {
 ////	if ( ent ) {
-////		ent->GetPhysics()->Translate( org );
+////		ent.GetPhysics().Translate( org );
 ////	}
 ////}
 ////
@@ -872,7 +872,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////*/
 ////const idDict *idGameEdit::EntityGetSpawnArgs( ent:idEntity ) const {
 ////	if ( ent ) {
-////		return &ent->spawnArgs;
+////		return &ent.spawnArgs;
 ////	}
 ////	return NULL;
 ////}
@@ -884,7 +884,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////*/
 ////void idGameEdit::EntityUpdateChangeableSpawnArgs( ent:idEntity, const idDict *dict ) {
 ////	if ( ent ) {
-////		ent->UpdateChangeableSpawnArgs( dict );
+////		ent.UpdateChangeableSpawnArgs( dict );
 ////	}
 ////}
 ////
@@ -895,13 +895,13 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////*/
 ////void idGameEdit::EntityChangeSpawnArgs( ent:idEntity, const idDict *newArgs ) {
 ////	if ( ent ) {
-////		for ( int i = 0 ; i < newArgs->GetNumKeyVals () ; i ++ ) {
-////			const idKeyValue *kv = newArgs->GetKeyVal( i );
+////		for ( int i = 0 ; i < newArgs.GetNumKeyVals () ; i ++ ) {
+////			const idKeyValue *kv = newArgs.GetKeyVal( i );
 ////	        
-////			if ( kv->GetValue().Length() > 0 ) {
-////				ent->spawnArgs.Set ( kv->GetKey() ,kv->GetValue() );
+////			if ( kv.GetValue().Length() > 0 ) {
+////				ent.spawnArgs.Set ( kv.GetKey() ,kv.GetValue() );
 ////			} else {
-////				ent->spawnArgs.Delete ( kv->GetKey() );
+////				ent.spawnArgs.Delete ( kv.GetKey() );
 ////			}
 ////		}
 ////	}
@@ -914,7 +914,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////*/
 ////void idGameEdit::EntityUpdateVisuals( ent:idEntity ) {
 ////	if ( ent ) {
-////		ent->UpdateVisuals();
+////		ent.UpdateVisuals();
 ////	}
 ////}
 ////
@@ -925,8 +925,8 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////*/
 ////void idGameEdit::EntitySetModel( ent:idEntity, const char *val ) {
 ////	if ( ent ) {
-////		ent->spawnArgs.Set( "model", val );
-////		ent->SetModel( val );
+////		ent.spawnArgs.Set( "model", val );
+////		ent.SetModel( val );
 ////	}
 ////}
 ////
@@ -937,7 +937,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////*/
 ////void idGameEdit::EntityStopSound( ent:idEntity ) {
 ////	if ( ent ) {
-////		ent->StopSound( SND_CHANNEL_ANY, false );
+////		ent.StopSound( SND_CHANNEL_ANY, false );
 ////	}
 ////}
 ////
@@ -965,7 +965,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////================
 ////*/
 ////void idGameEdit::PlayerGetOrigin( idVec3 &org ) const {
-////	org = gameLocal.GetLocalPlayer()->GetPhysics()->GetOrigin();
+////	org = gameLocal.GetLocalPlayer().GetPhysics().GetOrigin();
 ////}
 ////
 /////*
@@ -974,7 +974,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////================
 ////*/
 ////void idGameEdit::PlayerGetAxis( idMat3 &axis ) const {
-////	axis = gameLocal.GetLocalPlayer()->GetPhysics()->GetAxis();
+////	axis = gameLocal.GetLocalPlayer().GetPhysics().GetAxis();
 ////}
 ////
 /////*
@@ -983,7 +983,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////================
 ////*/
 ////void idGameEdit::PlayerGetViewAngles( angles:idAngles ) const {
-////	angles = gameLocal.GetLocalPlayer()->viewAngles;
+////	angles = gameLocal.GetLocalPlayer().viewAngles;
 ////}
 ////
 /////*
@@ -992,7 +992,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////================
 ////*/
 ////void idGameEdit::PlayerGetEyePosition( idVec3 &org ) const {
-////	org = gameLocal.GetLocalPlayer()->GetEyePosition();
+////	org = gameLocal.GetLocalPlayer().GetEyePosition();
 ////}
 ////
 ////
@@ -1004,9 +1004,9 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////const idDict *idGameEdit::MapGetEntityDict( name:string ) const {
 ////	idMapFile *mapFile = gameLocal.GetLevelMap();
 ////	if ( mapFile && name && *name ) {
-////		idMapEntity *mapent = mapFile->FindEntity( name );
+////		idMapEntity *mapent = mapFile.FindEntity( name );
 ////		if ( mapent ) {
-////			return &mapent->epairs;
+////			return &mapent.epairs;
 ////		}
 ////	}
 ////	return NULL;
@@ -1020,7 +1020,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////void idGameEdit::MapSave( const char *path ) const {
 ////	idMapFile *mapFile = gameLocal.GetLevelMap();
 ////	if (mapFile) {
-////		mapFile->Write( (path) ? path : mapFile->GetName(), ".map");
+////		mapFile.Write( (path) ? path : mapFile.GetName(), ".map");
 ////	}
 ////}
 ////
@@ -1032,9 +1032,9 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////void idGameEdit::MapSetEntityKeyVal( name:string, const char *key, const char *val ) const {
 ////	idMapFile *mapFile = gameLocal.GetLevelMap();
 ////	if ( mapFile && name && *name ) {
-////		idMapEntity *mapent = mapFile->FindEntity( name );
+////		idMapEntity *mapent = mapFile.FindEntity( name );
 ////		if ( mapent ) {
-////			mapent->epairs.Set( key, val );
+////			mapent.epairs.Set( key, val );
 ////		}
 ////	}
 ////}
@@ -1047,13 +1047,13 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////void idGameEdit::MapCopyDictToEntity( name:string, const idDict *dict ) const {
 ////	idMapFile *mapFile = gameLocal.GetLevelMap();
 ////	if ( mapFile && name && *name ) {
-////		idMapEntity *mapent = mapFile->FindEntity( name );
+////		idMapEntity *mapent = mapFile.FindEntity( name );
 ////		if ( mapent ) {
-////			for ( int i = 0; i < dict->GetNumKeyVals(); i++ ) {
-////				const idKeyValue *kv = dict->GetKeyVal( i );
-////				const char *key = kv->GetKey();
-////				const char *val = kv->GetValue();
-////				mapent->epairs.Set( key, val );
+////			for ( int i = 0; i < dict.GetNumKeyVals(); i++ ) {
+////				const idKeyValue *kv = dict.GetKeyVal( i );
+////				const char *key = kv.GetKey();
+////				const char *val = kv.GetValue();
+////				mapent.epairs.Set( key, val );
 ////			}
 ////		}
 ////	}
@@ -1070,10 +1070,10 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////	idMapFile *mapFile = gameLocal.GetLevelMap();
 ////	int count = 0;
 ////	if ( mapFile ) {
-////		for ( int i = 0; i < mapFile->GetNumEntities(); i++ ) {
-////			idMapEntity *ent = mapFile->GetEntity( i );
+////		for ( int i = 0; i < mapFile.GetNumEntities(); i++ ) {
+////			idMapEntity *ent = mapFile.GetEntity( i );
 ////			if ( ent ) {
-////				const char *k = ent->epairs.GetString( key );
+////				const char *k = ent.epairs.GetString( key );
 ////				if ( k && *k && count < max ) {
 ////					list[count++] = k;
 ////				}
@@ -1092,8 +1092,8 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////	idMapFile *mapFile = gameLocal.GetLevelMap();
 ////	if ( mapFile ) {
 ////		idMapEntity *ent = new idMapEntity();
-////		ent->epairs = *dict;
-////		mapFile->AddEntity( ent );
+////		ent.epairs = *dict;
+////		mapFile.AddEntity( ent );
 ////	}
 ////}
 ////
@@ -1105,9 +1105,9 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////void idGameEdit::MapRemoveEntity( name:string ) const {
 ////	idMapFile *mapFile = gameLocal.GetLevelMap();
 ////	if ( mapFile ) {
-////		idMapEntity *ent = mapFile->FindEntity( name );
+////		idMapEntity *ent = mapFile.FindEntity( name );
 ////		if ( ent ) {
-////			mapFile->RemoveEntity( ent );
+////			mapFile.RemoveEntity( ent );
 ////		}
 ////	}
 ////}
@@ -1122,19 +1122,19 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////	idMapFile *mapFile = gameLocal.GetLevelMap();
 ////	int count = 0;
 ////	if ( mapFile ) {
-////		int entCount = mapFile->GetNumEntities();
+////		int entCount = mapFile.GetNumEntities();
 ////		for ( int i = 0 ; i < entCount; i++ ) {
-////			idMapEntity *ent = mapFile->GetEntity(i);
+////			idMapEntity *ent = mapFile.GetEntity(i);
 ////			if (ent) {
-////				idStr work = ent->epairs.GetString("classname");
+////				idStr work = ent.epairs.GetString("classname");
 ////				if ( work.Icmp( classname ) == 0 ) {
 ////					if ( match && *match ) { 
-////						work = ent->epairs.GetString( "soundgroup" );
+////						work = ent.epairs.GetString( "soundgroup" );
 ////						if ( count < max && work.Icmp( match ) == 0 ) {
-////							list[count++] = ent->epairs.GetString( "name" );
+////							list[count++] = ent.epairs.GetString( "name" );
 ////						}
 ////					} else if ( count < max ) {
-////						list[count++] = ent->epairs.GetString( "name" );
+////						list[count++] = ent.epairs.GetString( "name" );
 ////					}
 ////				}
 ////			}
@@ -1152,12 +1152,12 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////void idGameEdit::MapEntityTranslate( name:string, const idVec3 &v ) const {
 ////	idMapFile *mapFile = gameLocal.GetLevelMap();
 ////	if ( mapFile && name && *name ) {
-////		idMapEntity *mapent = mapFile->FindEntity( name );
+////		idMapEntity *mapent = mapFile.FindEntity( name );
 ////		if ( mapent ) {
 ////			idVec3 origin;
-////			mapent->epairs.GetVector( "origin", "", origin );
+////			mapent.epairs.GetVector( "origin", "", origin );
 ////			origin += v;
-////			mapent->epairs.SetVector( "origin", origin );
+////			mapent.epairs.SetVector( "origin", origin );
 ////		}
 ////	}
 ////}

@@ -28,17 +28,17 @@
 ////
 ////#ifndef __GAME_ENTITY_H__
 ////#define __GAME_ENTITY_H__
-////
-/////*
-////===============================================================================
-////
-////	Game entity base class.
-////
-////===============================================================================
-////*/
-////
-////static const int DELAY_DORMANT_TIME = 3000;
-////
+
+/*
+===============================================================================
+
+	Game entity base class.
+
+===============================================================================
+*/
+
+var DELAY_DORMANT_TIME = 3000;
+
 ////extern const idEventDef EV_PostSpawn;
 ////extern const idEventDef EV_FindTargets;
 ////extern const idEventDef EV_Touch;
@@ -68,62 +68,83 @@
 ////	TH_UPDATEVISUALS		= 8,		// update renderEntity
 ////	TH_UPDATEPARTICLES		= 16
 ////};
-////
-//////
-////// Signals
-////// make sure to change script/doom_defs.script if you add any, or change their order
-//////
-////typedef enum {
-////	SIG_TOUCH,				// object was touched
-////	SIG_USE,				// object was used
-////	SIG_TRIGGER,			// object was activated
-////	SIG_REMOVED,			// object was removed from the game
-////	SIG_DAMAGE,				// object was damaged
-////	SIG_BLOCKED,			// object was blocked
-////
-////	SIG_MOVER_POS1,			// mover at position 1 (door closed)
-////	SIG_MOVER_POS2,			// mover at position 2 (door open)
-////	SIG_MOVER_1TO2,			// mover changing from position 1 to 2
-////	SIG_MOVER_2TO1,			// mover changing from position 2 to 1
-////
-////	NUM_SIGNALS
-////} signalNum_t;
-////
-////// FIXME: At some point we may want to just limit it to one thread per signal, but
-////// for now, I'm allowing multiple threads.  We should reevaluate this later in the project
-////#define MAX_SIGNAL_THREADS 16		// probably overkill, but idList uses a granularity of 16
-////
-////struct signal_t {
-////	int					threadnum;
-////	const function_t	*function;
-////};
-////
-////class signalList_t {
-////public:
-////	idList<signal_t> signal[ NUM_SIGNALS ];
-////};
-////
+
+//
+// Signals
+// make sure to change script/doom_defs.script if you add any, or change their order
+//
+enum signalNum_t{
+	SIG_TOUCH,				// object was touched
+	SIG_USE,				// object was used
+	SIG_TRIGGER,			// object was activated
+	SIG_REMOVED,			// object was removed from the game
+	SIG_DAMAGE,				// object was damaged
+	SIG_BLOCKED,			// object was blocked
+
+	SIG_MOVER_POS1,			// mover at position 1 (door closed)
+	SIG_MOVER_POS2,			// mover at position 2 (door open)
+	SIG_MOVER_1TO2,			// mover changing from position 1 to 2
+	SIG_MOVER_2TO1,			// mover changing from position 2 to 1
+
+	NUM_SIGNALS
+}
+
+// FIXME: At some point we may want to just limit it to one thread per signal, but
+// for now, I'm allowing multiple threads.  We should reevaluate this later in the project
+var MAX_SIGNAL_THREADS = 16		// probably overkill, but idList uses a granularity of 16
+
+class signal_t {
+	threadnum: number /*int*/;
+	$function: function_t;
+}
+
+class signalList_t {
+//public:
+	signal: idList<signal_t>[ /*NUM_SIGNALS */];
+	constructor ( ) {
+		this.signal = new Array<idList<signal_t>>( signalNum_t.NUM_SIGNALS );
+		for ( var i = 0; i < signalNum_t.NUM_SIGNALS; i++ ) {
+			this.signal[i] = new idList<signal_t>( signal_t );
+		}
+	}
+}
+
 
 class entityFlags_s {
 	// todo: bit fields
-	notarget			:boolean/*:1*/;	// if true never attack or target this entity
-	noknockback			:boolean/*:1*/;	// if true no knockback from hits
-	takedamage			:boolean/*:1*/;	// if true this entity can be damaged
-	hidden				:boolean/*:1*/;	// if true this entity is not visible
-	bindOrientated		:boolean/*:1*/;	// if true both the master orientation is used for binding
-	solidForTeam		:boolean/*:1*/;	// if true this entity is considered solid when a physics team mate pushes entities
-	forcePhysicsUpdate	:boolean/*:1*/;	// if true always update from the physics whether the object moved or not
-	selected			:boolean/*:1*/;	// if true the entity is selected for editing
-	neverDormant		:boolean/*:1*/;	// if true the entity never goes dormant
-	isDormant			:boolean/*:1*/;	// if true the entity is dormant
-	hasAwakened			:boolean/*:1*/;	// before a monster has been awakened the first time, use full PVS for dormant instead of area-connected
-	networkSync			:boolean/*:1*/; // if true the entity is synchronized over the network
-};
+	notarget: boolean /*:1*/; // if true never attack or target this entity
+	noknockback: boolean /*:1*/; // if true no knockback from hits
+	takedamage: boolean /*:1*/; // if true this entity can be damaged
+	hidden: boolean /*:1*/; // if true this entity is not visible
+	bindOrientated: boolean /*:1*/; // if true both the master orientation is used for binding
+	solidForTeam: boolean /*:1*/; // if true this entity is considered solid when a physics team mate pushes entities
+	forcePhysicsUpdate: boolean /*:1*/; // if true always update from the physics whether the object moved or not
+	selected: boolean /*:1*/; // if true the entity is selected for editing
+	neverDormant: boolean /*:1*/; // if true the entity never goes dormant
+	isDormant: boolean /*:1*/; // if true the entity is dormant
+	hasAwakened: boolean /*:1*/; // before a monster has been awakened the first time, use full PVS for dormant instead of area-connected
+	networkSync: boolean /*:1*/; // if true the entity is synchronized over the network
+
+	memset0 ( ): void {
+		this.notarget = false;
+		this.noknockback = false;
+		this.takedamage = false;
+		this.hidden = false;
+		this.bindOrientated = false;
+		this.solidForTeam = false;
+		this.forcePhysicsUpdate = false;
+		this.selected = false;
+		this.neverDormant = false;
+		this.isDormant = false;
+		this.hasAwakened = false;
+		this.networkSync = false;
+	}
+}
 
 class idEntity extends idClass {
 ////public:
-////	static const int		MAX_PVS_AREAS = 4;
-////
+	static MAX_PVS_AREAS = 4;
+
 	entityNumber: number;		// index into the entity list		//	int						
 	entityDefNumber:number;		// index into the entity def list	//	int						
 
@@ -161,7 +182,7 @@ class idEntity extends idClass {
 ////							idEntity();
 	//destructor ( ): void { throw "placeholder"; }
 ////
-	Spawn ( ): void { throw "placeholder"; }
+	//Spawn ( ): void { throw "placeholder"; }
 
 	Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 	Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -359,25 +380,25 @@ class idEntity extends idClass {
 ////	void					ClientSendEvent( int eventId, const idBitMsg *msg ) const;
 ////
 ////protected:
-////	renderEntity_t			renderEntity;						// used to present a model to the renderer
-////	int						modelDefHandle;						// handle to static renderer model
-////	refSound_t				refSound;							// used to present sound to the audio engine
+	renderEntity = new renderEntity_t;						// used to present a model to the renderer
+	modelDefHandle:number/*int*/;						// handle to static renderer model
+	refSound = new refSound_t;							// used to present sound to the audio engine
 ////
 ////private:
-////	idPhysics_Static		defaultPhysicsObj;					// default physics object
-////	idPhysics *				physics;							// physics used for this entity
-////	idEntity *				bindMaster;							// entity bound to if unequal NULL
-////	jointHandle_t			bindJoint;							// joint bound to if unequal INVALID_JOINT
-////	int						bindBody;							// body bound to if unequal -1
-////	idEntity *				teamMaster;							// master of the physics team
-////	idEntity *				teamChain;							// next entity in physics team
-////
-////	int						numPVSAreas;						// number of renderer areas the entity covers
-////	int						PVSAreas[MAX_PVS_AREAS];			// numbers of the renderer areas the entity covers
-////
-////	signalList_t *			signals;
-////
-////	int						mpGUIState;							// local cache to avoid systematic SetStateInt
+	defaultPhysicsObj = new idPhysics_Static;					// default physics object
+	physics:idPhysics;							// physics used for this entity
+	bindMaster:idEntity;							// entity bound to if unequal NULL
+	bindJoint: jointHandle_t;							// joint bound to if unequal INVALID_JOINT
+	bindBody :number/*int*/;							// body bound to if unequal -1
+	teamMaster:idEntity;							// master of the physics team
+	teamChain:idEntity;							// next entity in physics team
+
+	numPVSAreas :number/*int*/;						// number of renderer areas the entity covers
+	PVSAreas = new Int32Array(idEntity.MAX_PVS_AREAS);			// numbers of the renderer areas the entity covers
+
+	signals: signalList_t;
+
+	mpGUIState :number/*int*/;							// local cache to avoid systematic SetStateInt
 ////
 ////private:
 ////	void					FixupLocalizedStrings();
@@ -480,175 +501,176 @@ class idEntity extends idClass {
 ////	const char *target;
 ////
 ////	if ( !source ) {
-////		source = &spawnArgs;
+////		source = this.spawnArgs;
 ////	}
-////	cameraTarget = NULL;
+////	this.cameraTarget = NULL;
 ////	target = source.GetString( "cameraTarget" );
 ////	if ( target && target[0] ) {
 ////		// update the camera taget
-////		PostEventMS( &EV_UpdateCameraTarget, 0 );
+////		this.PostEventMS( &EV_UpdateCameraTarget, 0 );
 ////	}
 ////
 ////	for ( i = 0; i < MAX_RENDERENTITY_GUI; i++ ) {
-////		UpdateGuiParms( renderEntity.gui[ i ], source );
+////		this.UpdateGuiParms( this.renderEntity.gui[ i ], source );
 ////	}
 ////}
-////
-/////*
-////================
-////idEntity::idEntity
-////================
-////*/
-////idEntity::idEntity() {
-////
-////	entityNumber	= ENTITYNUM_NONE;
-////	entityDefNumber = -1;
-////
-////	spawnNode.SetOwner( this );
-////	activeNode.SetOwner( this );
-////
-////	snapshotNode.SetOwner( this );
-////	snapshotSequence = -1;
-////	snapshotBits = 0;
-////
-////	thinkFlags		= 0;
-////	dormantStart	= 0;
-////	cinematic		= false;
-////	renderView		= NULL;
-////	cameraTarget	= NULL;
-////	health			= 0;
-////
-////	physics			= NULL;
-////	bindMaster		= NULL;
-////	bindJoint		= INVALID_JOINT;
-////	bindBody		= -1;
-////	teamMaster		= NULL;
-////	teamChain		= NULL;
-////	signals			= NULL;
-////
-////	memset( PVSAreas, 0, sizeof( PVSAreas ) );
-////	numPVSAreas		= -1;
-////
-////	memset( &fl, 0, sizeof( fl ) );
-////	fl.neverDormant	= true;			// most entities never go dormant
-////
-////	memset( &renderEntity, 0, sizeof( renderEntity ) );
-////	modelDefHandle	= -1;
-////	memset( &refSound, 0, sizeof( refSound ) );
-////
-////	mpGUIState = -1;
-////}
-////
-/////*
-////================
-////idEntity::FixupLocalizedStrings
-////================
-////*/
-////idEntity.prototype.FixupLocalizedStrings() {
-////	for ( int i = 0; i < this.spawnArgs.GetNumKeyVals(); i++ ) {
-////		const idKeyValue *kv = this.spawnArgs.GetKeyVal( i );
-////		if ( idStr::Cmpn( kv.GetValue(), STRTABLE_ID, STRTABLE_ID_LENGTH ) == 0 ){
-////			this.spawnArgs.Set( kv.GetKey(), common.GetLanguageDict().GetString( kv.GetValue() ) );
-////		}
-////	}
-////}
+
+/*
+================
+idEntity::idEntity
+================
+*/
+	constructor() {
+		super ( );
+
+	this.entityNumber	= ENTITYNUM_NONE;
+	this.entityDefNumber = -1;
+
+	this.spawnNode.SetOwner( this );
+	this.activeNode.SetOwner( this );
+
+	this.snapshotNode.SetOwner( this );
+	this.snapshotSequence = -1;
+	this.snapshotBits = 0;
+
+	this.thinkFlags		= 0;
+	this.dormantStart	= 0;
+	this.cinematic		= false;
+	this.renderView		= null;
+	this.cameraTarget = null;
+	this.health			= 0;
+
+	this.physics = null;
+	this.bindMaster = null;
+	this.bindJoint = jointHandle_t.INVALID_JOINT;
+	this.bindBody		= -1;
+	this.teamMaster = null;
+	this.teamChain = null;
+	this.signals = null;
+
+	memset( this.PVSAreas, 0, sizeof( this.PVSAreas ) );
+	this.numPVSAreas		= -1;
+
+	this.fl.memset0 ( );//	memset( this.fl, 0, sizeof( this.fl ) );
+	this.fl.neverDormant	= true;			// most entities never go dormant
+
+	this.renderEntity.memset0();
+	this.modelDefHandle	= -1;
+	this.refSound.memset0 ( );
+
+	this.mpGUIState = -1;
+}
+
+/*
+================
+idEntity::FixupLocalizedStrings
+================
+*/
+	FixupLocalizedStrings ( ) {
+		for ( var i = 0; i < this.spawnArgs.GetNumKeyVals ( ); i++ ) {
+			var kv = this.spawnArgs.GetKeyVal( i );
+			if ( idStr.Cmpn( kv.GetValue ( ).data, STRTABLE_ID, STRTABLE_ID_LENGTH ) == 0 ) {
+				this.spawnArgs.Set( kv.GetKey ( ).data, common.GetLanguageDict ( ).GetString( kv.GetValue ( ).data ) );
+			}
+		}
+	}
 
 /*
 ================
 idEntity::Spawn
 ================
 */
-idEntity.prototype.Spawn( ):void {
-	int					i;
-	const char			*temp;
-	idVec3				origin;
-	idMat3				axis;
-	const idKeyValue	*networkSync;
-	const char			*classname;
-	const char			*scriptObjectName;
+	Spawn ( ): void {
+		var i: number /*int*/;
+		var temp: string;//const char*temp;
+		var origin = new idVec3;
+		var axis = new idMat3;
+		var networkSync: idKeyValue;
+		var classname: string;
+		var scriptObjectName: string;
 
 	gameLocal.RegisterEntity( this );
 
-	this.spawnArgs.GetString( "classname", NULL, &classname );
-	const idDeclEntityDef *def = gameLocal.FindEntityDef( classname, false );
+	this.spawnArgs.GetString( "classname", null, classname );
+	var def = gameLocal.FindEntityDef( classname, false );
 	if ( def ) {
-		entityDefNumber = def.Index();
+		this.entityDefNumber = def.Index();
 	}
 
-	FixupLocalizedStrings();
+	this.FixupLocalizedStrings();
 
 	// parse static models the same way the editor display does
-	gameEdit.ParseSpawnArgsToRenderEntity( &spawnArgs, &renderEntity );
+	gameEdit.ParseSpawnArgsToRenderEntity( this.spawnArgs, this.renderEntity );
 
-	renderEntity.entityNum = entityNumber;
-	
+	this.renderEntity.entityNum = this.entityNumber;
+
 	// go dormant within 5 frames so that when the map starts most monsters are dormant
-	dormantStart = gameLocal.time - DELAY_DORMANT_TIME + gameLocal.msec * 5;
+	this.dormantStart = gameLocal.time - DELAY_DORMANT_TIME + gameLocal.msec * 5;
 
-	origin = renderEntity.origin;
-	axis = renderEntity.axis;
+	origin = this.renderEntity.origin;
+	axis = this.renderEntity.axis;
 
 	// do the audio parsing the same way dmap and the editor do
-	gameEdit.ParseSpawnArgsToRefSound( &spawnArgs, &refSound );
+	gameEdit.ParseSpawnArgsToRefSound( this.spawnArgs, this.refSound );
 
 	// only play SCHANNEL_PRIVATE when sndworld.PlaceListener() is called with this listenerId
 	// don't spatialize sounds from the same entity
-	refSound.listenerId = entityNumber + 1;
+	this.refSound.listenerId = this.entityNumber + 1;
 
-	cameraTarget = NULL;
+	this.cameraTarget = null;
 	temp = this.spawnArgs.GetString( "cameraTarget" );
-	if ( temp && temp[0] ) {
+	if ( temp /*&& temp[0]*/ ) {
 		// update the camera taget
-		PostEventMS( &EV_UpdateCameraTarget, 0 );
+		this.PostEventMS( EV_UpdateCameraTarget, 0 );
 	}
 
 	for ( i = 0; i < MAX_RENDERENTITY_GUI; i++ ) {
-		UpdateGuiParms( renderEntity.gui[ i ], &spawnArgs );
+		this.UpdateGuiParms( this.renderEntity.gui[ i ], this.spawnArgs );
 	}
 
-	fl.solidForTeam = this.spawnArgs.GetBool( "solidForTeam", "0" );
-	fl.neverDormant = this.spawnArgs.GetBool( "neverDormant", "0" );
-	fl.hidden = this.spawnArgs.GetBool( "hide", "0" );
-	if ( fl.hidden ) {
+	this.fl.solidForTeam = this.spawnArgs.GetBool( "solidForTeam", "0" );
+	this.fl.neverDormant = this.spawnArgs.GetBool( "neverDormant", "0" );
+	this.fl.hidden = this.spawnArgs.GetBool( "hide", "0" );
+	if ( this.fl.hidden ) {
 		// make sure we're hidden, since a spawn function might not set it up right
-		PostEventMS( &EV_Hide, 0 );
+		this.PostEventMS( EV_Hide, 0 );
 	}
-	cinematic = this.spawnArgs.GetBool( "cinematic", "0" );
+	this.cinematic = this.spawnArgs.GetBool( "cinematic", "0" );
 
 	networkSync = this.spawnArgs.FindKey( "networkSync" );
 	if ( networkSync ) {
-		fl.networkSync = ( atoi( networkSync.GetValue() ) != 0 );
+		this.fl.networkSync = ( atoi( networkSync.GetValue() .data) != 0 );
 	}
 
-#if 0
-	if ( !gameLocal.isClient ) {
-		// common.DPrintf( "NET: DBG %s - %s is synced: %s\n", this.spawnArgs.GetString( "classname", "" ), GetType().classname, fl.networkSync ? "true" : "false" );
-		if ( this.spawnArgs.GetString( "classname", "" )[ 0 ] == '\0' && !fl.networkSync ) {
-			common.DPrintf( "NET: WRN %s entity, no classname, and no networkSync?\n", GetType().classname );
-		}
-	}
-#endif
+//#if 0
+//	if ( !gameLocal.isClient ) {
+//		// common.DPrintf( "NET: DBG %s - %s is synced: %s\n", this.spawnArgs.GetString( "classname", "" ), GetType().classname, this.fl.networkSync ? "true" : "false" );
+//		if ( this.spawnArgs.GetString( "classname", "" )[ 0 ] == '\0' && !this.fl.networkSync ) {
+//			common.DPrintf( "NET: WRN %s entity, no classname, and no networkSync?\n", GetType().classname );
+//		}
+//	}
+//#endif
 
 	// every object will have a unique name
-	temp = this.spawnArgs.GetString( "name", va( "%s_%s_%d", GetClassname(), this.spawnArgs.GetString( "classname" ), entityNumber ) );
-	SetName( temp );
+	temp = this.spawnArgs.GetString( "name", va( "%s_%s_%d", this.GetClassname(), this.spawnArgs.GetString( "classname" ), this.entityNumber ) );
+	this.SetName( temp );
 
 	// if we have targets, wait until all entities are spawned to get them
 	if ( this.spawnArgs.MatchPrefix( "target" ) || this.spawnArgs.MatchPrefix( "guiTarget" ) ) {
-		if ( gameLocal.GameState() == GAMESTATE_STARTUP ) {
-			PostEventMS( &EV_FindTargets, 0 );
+		if (gameLocal.GameState() == gameState_t.GAMESTATE_STARTUP ) {
+			this.PostEventMS( EV_FindTargets, 0 );
 		} else {
 			// not during spawn, so it's ok to get the targets
 			this.FindTargets();
 		}
 	}
 
-	health = this.spawnArgs.GetInt( "health" );
+	this.health = this.spawnArgs.GetInt( "health" );
 
-	InitDefaultPhysics( origin, axis );
+	this.InitDefaultPhysics( origin, axis );
 
-	SetOrigin( origin );
-	SetAxis( axis );
+	this.SetOrigin( origin );
+	this.SetAxis( axis );
 
 	temp = this.spawnArgs.GetString( "model" );
 	if ( temp && *temp ) {
@@ -656,23 +678,23 @@ idEntity.prototype.Spawn( ):void {
 	}
 
 	if ( this.spawnArgs.GetString( "bind", "", &temp ) ) {
-		PostEventMS( &EV_SpawnBind, 0 );
+		this.PostEventMS( EV_SpawnBind, 0 );
 	}
 
 	// auto-start a sound on the entity
-	if ( refSound.shader && !refSound.waitfortrigger ) {
-		StartSoundShader( refSound.shader, SND_CHANNEL_ANY, 0, false, NULL );
+	if ( this.refSound.shader && !this.refSound.waitfortrigger ) {
+		this.StartSoundShader( this.refSound.shader, SND_CHANNEL_ANY, 0, false, null );
 	}
 
 	// setup script object
-	if ( ShouldConstructScriptObjectAtSpawn() && this.spawnArgs.GetString( "scriptobject", NULL, &scriptObjectName ) ) {
+	if ( ShouldConstructScriptObjectAtSpawn() && this.spawnArgs.GetString( "scriptobject", NULL, scriptObjectName ) ) {
 		if ( !scriptObject.SetType( scriptObjectName ) ) {
 			gameLocal.Error( "Script object '%s' not found on entity '%s'.", scriptObjectName, this.name.c_str() );
 		}
 
-		ConstructScriptObject();
+		this.ConstructScriptObject();
 	}
-}
+	}
 
 /*
 ================
@@ -681,7 +703,7 @@ idEntity::~idEntity
 */
 	destructor ( ): void {
 		todoThrow ( );
-		////	if ( gameLocal.GameState() != GAMESTATE_SHUTDOWN && !gameLocal.isClient && fl.networkSync && entityNumber >= MAX_CLIENTS ) {
+		////	if ( gameLocal.GameState() != GAMESTATE_SHUTDOWN && !gameLocal.isClient && this.fl.networkSync && this.entityNumber >= MAX_CLIENTS ) {
 		////		idBitMsg	msg;
 		////		byte		msgBuf[ MAX_GAME_MESSAGE_SIZE ];
 		////
@@ -694,10 +716,10 @@ idEntity::~idEntity
 		////	DeconstructScriptObject();
 		////	scriptObject.Free();
 		////
-		////	if ( thinkFlags ) {
-		////		BecomeInactive( thinkFlags );
+		////	if ( this.thinkFlags ) {
+		////		BecomeInactive( this.thinkFlags );
 		////	}
-		////	activeNode.Remove();
+		////	this.activeNode.Remove();
 		////
 		////	Signal( SIG_REMOVED );
 		////
@@ -714,11 +736,11 @@ idEntity::~idEntity
 		////
 		////	gameLocal.RemoveEntityFromHash( this.name.c_str(), this );
 		////
-		////	delete renderView;
-		////	renderView = NULL;
+		////	delete this.renderView;
+		////	this.renderView = NULL;
 		////
-		////	delete signals;
-		////	signals = NULL;
+		////	delete this.signals;
+		////	this.signals = NULL;
 		////
 		////	FreeModelDef();
 		////	FreeSoundEmitter( false );
@@ -734,66 +756,66 @@ idEntity::~idEntity
 ////idEntity.prototype.Save( idSaveGame *savefile ) const {
 ////	int i, j;
 ////
-////	savefile.WriteInt( entityNumber );
-////	savefile.WriteInt( entityDefNumber );
+////	savefile.WriteInt( this.entityNumber );
+////	savefile.WriteInt( this.entityDefNumber );
 ////
 ////	// spawnNode and activeNode are restored by gameLocal
 ////
-////	savefile.WriteInt( snapshotSequence );
-////	savefile.WriteInt( snapshotBits );
+////	savefile.WriteInt( this.snapshotSequence );
+////	savefile.WriteInt( this.snapshotBits );
 ////
-////	savefile.WriteDict( &spawnArgs );
+////	savefile.WriteDict( this.spawnArgs );
 ////	savefile.WriteString( this.name );
 ////	scriptObject.Save( savefile );
 ////
-////	savefile.WriteInt( thinkFlags );
-////	savefile.WriteInt( dormantStart );
-////	savefile.WriteBool( cinematic );
+////	savefile.WriteInt( this.thinkFlags );
+////	savefile.WriteInt( this.dormantStart );
+////	savefile.WriteBool( this.cinematic );
 ////
-////	savefile.WriteObject( cameraTarget );
+////	savefile.WriteObject( this.cameraTarget );
 ////
-////	savefile.WriteInt( health );
+////	savefile.WriteInt( this.health );
 ////
 ////	savefile.WriteInt( targets.Num() );
 ////	for( i = 0; i < targets.Num(); i++ ) {
 ////		targets[ i ].Save( savefile );
 ////	}
 ////
-////	entityFlags_s flags = fl;
+////	entityFlags_s flags = this.fl;
 ////	LittleBitField( &flags, sizeof( flags ) );
 ////	savefile.Write( &flags, sizeof( flags ) );
 ////
-////	savefile.WriteRenderEntity( renderEntity );
-////	savefile.WriteInt( modelDefHandle );
-////	savefile.WriteRefSound( refSound );
+////	savefile.WriteRenderEntity( this.renderEntity );
+////	savefile.WriteInt( this.modelDefHandle );
+////	savefile.WriteRefSound( this.refSound );
 ////
-////	savefile.WriteObject( bindMaster );
-////	savefile.WriteJoint( bindJoint );
-////	savefile.WriteInt( bindBody );
-////	savefile.WriteObject( teamMaster );
-////	savefile.WriteObject( teamChain );
+////	savefile.WriteObject( this.bindMaster );
+////	savefile.WriteJoint( this.bindJoint );
+////	savefile.WriteInt( this.bindBody );
+////	savefile.WriteObject( this.teamMaster );
+////	savefile.WriteObject( this.teamChain );
 ////
 ////	savefile.WriteStaticObject( defaultPhysicsObj );
 ////
-////	savefile.WriteInt( numPVSAreas );
+////	savefile.WriteInt( this.numPVSAreas );
 ////	for( i = 0; i < MAX_PVS_AREAS; i++ ) {
-////		savefile.WriteInt( PVSAreas[ i ] );
+////		savefile.WriteInt( this.PVSAreas[ i ] );
 ////	}
 ////
-////	if ( !signals ) {
+////	if ( !this.signals ) {
 ////		savefile.WriteBool( false );
 ////	} else {
 ////		savefile.WriteBool( true );
 ////		for( i = 0; i < NUM_SIGNALS; i++ ) {
-////			savefile.WriteInt( signals.signal[ i ].Num() );
-////			for( j = 0; j < signals.signal[ i ].Num(); j++ ) {
-////				savefile.WriteInt( signals.signal[ i ][ j ].threadnum );
-////				savefile.WriteString( signals.signal[ i ][ j ].function.Name() );
+////			savefile.WriteInt( this.signals.signal[ i ].Num() );
+////			for( j = 0; j < this.signals.signal[ i ].Num(); j++ ) {
+////				savefile.WriteInt( this.signals.signal[ i ][ j ].threadnum );
+////				savefile.WriteString( this.signals.signal[ i ][ j ].function.Name() );
 ////			}
 ////		}
 ////	}
 ////
-////	savefile.WriteInt( mpGUIState );
+////	savefile.WriteInt( this.mpGUIState );
 ////}
 ////
 /////*
@@ -806,27 +828,27 @@ idEntity::~idEntity
 ////	int			num;
 ////	idStr		funcname;
 ////
-////	savefile.ReadInt( entityNumber );
-////	savefile.ReadInt( entityDefNumber );
+////	savefile.ReadInt( this.entityNumber );
+////	savefile.ReadInt( this.entityDefNumber );
 ////
 ////	// spawnNode and activeNode are restored by gameLocal
 ////
-////	savefile.ReadInt( snapshotSequence );
-////	savefile.ReadInt( snapshotBits );
+////	savefile.ReadInt( this.snapshotSequence );
+////	savefile.ReadInt( this.snapshotBits );
 ////
-////	savefile.ReadDict( &spawnArgs );
+////	savefile.ReadDict( this.spawnArgs );
 ////	savefile.ReadString( this.name );
-////	SetName( this.name );
+////	this.SetName( this.name );
 ////
 ////	scriptObject.Restore( savefile );
 ////
-////	savefile.ReadInt( thinkFlags );
-////	savefile.ReadInt( dormantStart );
-////	savefile.ReadBool( cinematic );
+////	savefile.ReadInt( this.thinkFlags );
+////	savefile.ReadInt( this.dormantStart );
+////	savefile.ReadBool( this.cinematic );
 ////
-////	savefile.ReadObject( reinterpret_cast<idClass *&>( cameraTarget ) );
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( this.cameraTarget ) );
 ////
-////	savefile.ReadInt( health );
+////	savefile.ReadInt( this.health );
 ////
 ////	targets.Clear();
 ////	savefile.ReadInt( num );
@@ -835,50 +857,50 @@ idEntity::~idEntity
 ////		targets[ i ].Restore( savefile );
 ////	}
 ////
-////	savefile.Read( &fl, sizeof( fl ) );
-////	LittleBitField( &fl, sizeof( fl ) );
+////	savefile.Read( &this.fl, sizeof( this.fl ) );
+////	LittleBitField( &this.fl, sizeof( this.fl ) );
 ////	
-////	savefile.ReadRenderEntity( renderEntity );
-////	savefile.ReadInt( modelDefHandle );
-////	savefile.ReadRefSound( refSound );
+////	savefile.ReadRenderEntity( this.renderEntity );
+////	savefile.ReadInt( this.modelDefHandle );
+////	savefile.ReadRefSound( this.refSound );
 ////
-////	savefile.ReadObject( reinterpret_cast<idClass *&>( bindMaster ) );
-////	savefile.ReadJoint( bindJoint );
-////	savefile.ReadInt( bindBody );
-////	savefile.ReadObject( reinterpret_cast<idClass *&>( teamMaster ) );
-////	savefile.ReadObject( reinterpret_cast<idClass *&>( teamChain ) );
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( this.bindMaster ) );
+////	savefile.ReadJoint( this.bindJoint );
+////	savefile.ReadInt( this.bindBody );
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( this.teamMaster ) );
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( this.teamChain ) );
 ////
 ////	savefile.ReadStaticObject( defaultPhysicsObj );
 ////	RestorePhysics( &defaultPhysicsObj );
 ////
-////	savefile.ReadInt( numPVSAreas );
+////	savefile.ReadInt( this.numPVSAreas );
 ////	for( i = 0; i < MAX_PVS_AREAS; i++ ) {
-////		savefile.ReadInt( PVSAreas[ i ] );
+////		savefile.ReadInt( this.PVSAreas[ i ] );
 ////	}
 ////
 ////	bool readsignals;
 ////	savefile.ReadBool( readsignals );
 ////	if ( readsignals ) {
-////		signals = new signalList_t;
+////		this.signals = new signalList_t;
 ////		for( i = 0; i < NUM_SIGNALS; i++ ) {
 ////			savefile.ReadInt( num );
-////			signals.signal[ i ].SetNum( num );
+////			this.signals.signal[ i ].SetNum( num );
 ////			for( j = 0; j < num; j++ ) {
-////				savefile.ReadInt( signals.signal[ i ][ j ].threadnum );
+////				savefile.ReadInt( this.signals.signal[ i ][ j ].threadnum );
 ////				savefile.ReadString( funcname );
-////				signals.signal[ i ][ j ].function = gameLocal.program.FindFunction( funcname );
-////				if ( !signals.signal[ i ][ j ].function ) {
+////				this.signals.signal[ i ][ j ].function = gameLocal.program.FindFunction( funcname );
+////				if ( !this.signals.signal[ i ][ j ].function ) {
 ////					savefile.Error( "Function '%s' not found", funcname.c_str() );
 ////				}
 ////			}
 ////		}
 ////	}
 ////
-////	savefile.ReadInt( mpGUIState );
+////	savefile.ReadInt( this.mpGUIState );
 ////
 ////	// restore must retrieve modelDefHandle from the renderer
-////	if ( modelDefHandle != -1 ) {
-////		modelDefHandle = gameRenderWorld.AddEntityDef( &renderEntity );
+////	if ( this.modelDefHandle != -1 ) {
+////		this.modelDefHandle = gameRenderWorld.AddEntityDef( &this.renderEntity );
 ////	}
 ////}
 ////
@@ -888,10 +910,10 @@ idEntity::~idEntity
 ////================
 ////*/
 ////const char * idEntity::GetEntityDefName( ):void const {
-////	if ( entityDefNumber < 0 ) {
+////	if ( this.entityDefNumber < 0 ) {
 ////		return "*unknown*";
 ////	}
-////	return declManager.DeclByIndex( DECL_ENTITYDEF, entityDefNumber, false ).GetName();
+////	return declManager.DeclByIndex( DECL_ENTITYDEF, this.entityDefNumber, false ).GetName();
 ////}
 ////
 /*
@@ -951,16 +973,16 @@ idEntity::SetName
 ////*/
 ////bool idEntity::DoDormantTests( ):void {
 ////
-////	if ( fl.neverDormant ) {
+////	if ( this.fl.neverDormant ) {
 ////		return false;
 ////	}
 ////
 ////	// if the monster area is not topologically connected to a player
 ////	if ( !gameLocal.InPlayerConnectedArea( this ) ) {
-////		if ( dormantStart == 0 ) {
-////			dormantStart = gameLocal.time;
+////		if ( this.dormantStart == 0 ) {
+////			this.dormantStart = gameLocal.time;
 ////		}
-////		if ( gameLocal.time - dormantStart < DELAY_DORMANT_TIME ) {
+////		if ( gameLocal.time - this.dormantStart < DELAY_DORMANT_TIME ) {
 ////			// just got closed off, don't go dormant yet
 ////			return false;
 ////		}
@@ -968,15 +990,15 @@ idEntity::SetName
 ////	} else {
 ////		// the monster area is topologically connected to a player, but if
 ////		// the monster hasn't been woken up before, do the more precise PVS check
-////		if ( !fl.hasAwakened ) {
+////		if ( !this.fl.hasAwakened ) {
 ////			if ( !gameLocal.InPlayerPVS( this ) ) {
 ////				return true;		// stay dormant
 ////			}
 ////		}
 ////
 ////		// wake up
-////		dormantStart = 0;
-////		fl.hasAwakened = true;		// only go dormant when area closed off now, not just out of PVS
+////		this.dormantStart = 0;
+////		this.fl.hasAwakened = true;		// only go dormant when area closed off now, not just out of PVS
 ////		return false;
 ////	}
 ////
@@ -995,11 +1017,11 @@ idEntity::SetName
 ////	bool dormant;
 ////	
 ////	dormant = DoDormantTests();
-////	if ( dormant && !fl.isDormant ) {
-////		fl.isDormant = true;
+////	if ( dormant && !this.fl.isDormant ) {
+////		this.fl.isDormant = true;
 ////		DormantBegin();
-////	} else if ( !dormant && fl.isDormant ) {
-////		fl.isDormant = false;
+////	} else if ( !dormant && this.fl.isDormant ) {
+////		this.fl.isDormant = false;
 ////		DormantEnd();
 ////	}
 ////
@@ -1032,7 +1054,7 @@ idEntity::SetName
 ////================
 ////*/
 ////bool idEntity::IsActive( ):void const {
-////	return activeNode.InList();
+////	return this.activeNode.InList();
 ////}
 ////
 /////*
@@ -1043,21 +1065,21 @@ idEntity::SetName
 ////idEntity.prototype.BecomeActive( int flags ) {
 ////	if ( ( flags & TH_PHYSICS ) ) {
 ////		// enable the team master if this entity is part of a physics team
-////		if ( teamMaster && teamMaster != this ) {
-////			teamMaster.BecomeActive( TH_PHYSICS );
-////		} else if ( !( thinkFlags & TH_PHYSICS ) ) {
+////		if ( this.teamMaster && this.teamMaster != this ) {
+////			this.teamMaster.BecomeActive( TH_PHYSICS );
+////		} else if ( !( this.thinkFlags & TH_PHYSICS ) ) {
 ////			// if this is a pusher
-////			if ( physics.IsType( idPhysics_Parametric::Type ) || physics.IsType( idPhysics_Actor::Type ) ) {
+////			if ( this.physics.IsType( idPhysics_Parametric::Type ) || this.physics.IsType( idPhysics_Actor::Type ) ) {
 ////				gameLocal.sortPushers = true;
 ////			}
 ////		}
 ////	}
 ////
-////	int oldFlags = thinkFlags;
-////	thinkFlags |= flags;
-////	if ( thinkFlags ) {
+////	int oldFlags = this.thinkFlags;
+////	this.thinkFlags |= flags;
+////	if ( this.thinkFlags ) {
 ////		if ( !IsActive() ) {
-////			activeNode.AddToEnd( gameLocal.activeEntities );
+////			this.activeNode.AddToEnd( gameLocal.activeEntities );
 ////		} else if ( !oldFlags ) {
 ////			// we became inactive this frame, so we have to decrease the count of entities to deactivate
 ////			gameLocal.numEntitiesToDeactivate--;
@@ -1073,8 +1095,8 @@ idEntity::SetName
 ////idEntity.prototype.BecomeInactive( int flags ) {
 ////	if ( ( flags & TH_PHYSICS ) ) {
 ////		// may only disable physics on a team master if no team members are running physics or bound to a joints
-////		if ( teamMaster == this ) {
-////			for ( var ent:idEntity = teamMaster.teamChain; ent; ent = ent.teamChain ) {
+////		if ( this.teamMaster == this ) {
+////			for ( var ent:idEntity = this.teamMaster.teamChain; ent; ent = ent.teamChain ) {
 ////				if ( ( ent.thinkFlags & TH_PHYSICS ) || ( ( ent.bindMaster == this ) && ( ent.bindJoint != INVALID_JOINT ) ) ) {
 ////					flags &= ~TH_PHYSICS;
 ////					break;
@@ -1083,19 +1105,19 @@ idEntity::SetName
 ////		}
 ////	}
 ////
-////	if ( thinkFlags ) {
-////		thinkFlags &= ~flags;
-////		if ( !thinkFlags && IsActive() ) {
+////	if ( this.thinkFlags ) {
+////		this.thinkFlags &= ~flags;
+////		if ( !this.thinkFlags && IsActive() ) {
 ////			gameLocal.numEntitiesToDeactivate++;
 ////		}
 ////	}
 ////
 ////	if ( ( flags & TH_PHYSICS ) ) {
 ////		// if this entity has a team master
-////		if ( teamMaster && teamMaster != this ) {
+////		if ( this.teamMaster && this.teamMaster != this ) {
 ////			// if the team master is at rest
-////			if ( teamMaster.IsAtRest() ) {
-////				teamMaster.BecomeInactive( TH_PHYSICS );
+////			if ( this.teamMaster.IsAtRest() ) {
+////				this.teamMaster.BecomeInactive( TH_PHYSICS );
 ////			}
 ////		}
 ////	}
@@ -1118,7 +1140,7 @@ idEntity::SetName
 ////		return;
 ////	}
 ////
-////	renderEntity.shaderParms[ parmnum ] = value;
+////	this.renderEntity.shaderParms[ parmnum ] = value;
 ////	UpdateVisuals();
 ////}
 ////
@@ -1128,9 +1150,9 @@ idEntity::SetName
 ////================
 ////*/
 ////idEntity.prototype.SetColor( float red, float green, float blue ) {
-////	renderEntity.shaderParms[ SHADERPARM_RED ]		= red;
-////	renderEntity.shaderParms[ SHADERPARM_GREEN ]	= green;
-////	renderEntity.shaderParms[ SHADERPARM_BLUE ]		= blue;
+////	this.renderEntity.shaderParms[ SHADERPARM_RED ]		= red;
+////	this.renderEntity.shaderParms[ SHADERPARM_GREEN ]	= green;
+////	this.renderEntity.shaderParms[ SHADERPARM_BLUE ]		= blue;
 ////	UpdateVisuals();
 ////}
 ////
@@ -1150,9 +1172,9 @@ idEntity::SetName
 ////================
 ////*/
 ////idEntity.prototype.GetColor( idVec3 &out ) const {
-////	out[ 0 ] = renderEntity.shaderParms[ SHADERPARM_RED ];
-////	out[ 1 ] = renderEntity.shaderParms[ SHADERPARM_GREEN ];
-////	out[ 2 ] = renderEntity.shaderParms[ SHADERPARM_BLUE ];
+////	out[ 0 ] = this.renderEntity.shaderParms[ SHADERPARM_RED ];
+////	out[ 1 ] = this.renderEntity.shaderParms[ SHADERPARM_GREEN ];
+////	out[ 2 ] = this.renderEntity.shaderParms[ SHADERPARM_BLUE ];
 ////}
 ////
 /////*
@@ -1161,10 +1183,10 @@ idEntity::SetName
 ////================
 ////*/
 ////idEntity.prototype.SetColor( const idVec4 &color ) {
-////	renderEntity.shaderParms[ SHADERPARM_RED ]		= color[ 0 ];
-////	renderEntity.shaderParms[ SHADERPARM_GREEN ]	= color[ 1 ];
-////	renderEntity.shaderParms[ SHADERPARM_BLUE ]		= color[ 2 ];
-////	renderEntity.shaderParms[ SHADERPARM_ALPHA ]	= color[ 3 ];
+////	this.renderEntity.shaderParms[ SHADERPARM_RED ]		= color[ 0 ];
+////	this.renderEntity.shaderParms[ SHADERPARM_GREEN ]	= color[ 1 ];
+////	this.renderEntity.shaderParms[ SHADERPARM_BLUE ]		= color[ 2 ];
+////	this.renderEntity.shaderParms[ SHADERPARM_ALPHA ]	= color[ 3 ];
 ////	UpdateVisuals();
 ////}
 ////
@@ -1174,10 +1196,10 @@ idEntity::SetName
 ////================
 ////*/
 ////idEntity.prototype.GetColor( idVec4 &out ) const {
-////	out[ 0 ] = renderEntity.shaderParms[ SHADERPARM_RED ];
-////	out[ 1 ] = renderEntity.shaderParms[ SHADERPARM_GREEN ];
-////	out[ 2 ] = renderEntity.shaderParms[ SHADERPARM_BLUE ];
-////	out[ 3 ] = renderEntity.shaderParms[ SHADERPARM_ALPHA ];
+////	out[ 0 ] = this.renderEntity.shaderParms[ SHADERPARM_RED ];
+////	out[ 1 ] = this.renderEntity.shaderParms[ SHADERPARM_GREEN ];
+////	out[ 2 ] = this.renderEntity.shaderParms[ SHADERPARM_BLUE ];
+////	out[ 3 ] = this.renderEntity.shaderParms[ SHADERPARM_ALPHA ];
 ////}
 ////
 /////*
@@ -1200,19 +1222,19 @@ idEntity::SetName
 ////
 ////	FreeModelDef();
 ////
-////	renderEntity.hModel = renderModelManager.FindModel( modelname );
+////	this.renderEntity.hModel = renderModelManager.FindModel( modelname );
 ////
-////	if ( renderEntity.hModel ) {
-////		renderEntity.hModel.Reset();
+////	if ( this.renderEntity.hModel ) {
+////		this.renderEntity.hModel.Reset();
 ////	}
 ////
-////	renderEntity.callback = NULL;
-////	renderEntity.numJoints = 0;
-////	renderEntity.joints = NULL;
-////	if ( renderEntity.hModel ) {
-////		renderEntity.bounds = renderEntity.hModel.Bounds( &renderEntity );
+////	this.renderEntity.callback = NULL;
+////	this.renderEntity.numJoints = 0;
+////	this.renderEntity.joints = NULL;
+////	if ( this.renderEntity.hModel ) {
+////		this.renderEntity.bounds = this.renderEntity.hModel.Bounds( &this.renderEntity );
 ////	} else {
-////		renderEntity.bounds.Zero();
+////		this.renderEntity.bounds.Zero();
 ////	}
 ////
 ////	UpdateVisuals();
@@ -1224,7 +1246,7 @@ idEntity::SetName
 ////================
 ////*/
 ////idEntity.prototype.SetSkin( const idDeclSkin *skin ) {
-////	renderEntity.customSkin = skin;
+////	this.renderEntity.customSkin = skin;
 ////	UpdateVisuals();
 ////}
 ////
@@ -1234,7 +1256,7 @@ idEntity::SetName
 ////================
 ////*/
 ////const idDeclSkin *idEntity::GetSkin( ):void const {
-////	return renderEntity.customSkin;
+////	return this.renderEntity.customSkin;
 ////}
 ////
 /////*
@@ -1243,9 +1265,9 @@ idEntity::SetName
 ////================
 ////*/
 ////idEntity.prototype.FreeModelDef( ):void {
-////	if ( modelDefHandle != -1 ) {
-////		gameRenderWorld.FreeEntityDef( modelDefHandle );
-////		modelDefHandle = -1;
+////	if ( this.modelDefHandle != -1 ) {
+////		gameRenderWorld.FreeEntityDef( this.modelDefHandle );
+////		this.modelDefHandle = -1;
 ////	}
 ////}
 ////
@@ -1263,7 +1285,7 @@ idEntity::SetName
 ////================
 ////*/
 ////bool idEntity::IsHidden( ):void const {
-////	return fl.hidden;
+////	return this.fl.hidden;
 ////}
 ////
 /////*
@@ -1273,7 +1295,7 @@ idEntity::SetName
 ////*/
 ////idEntity.prototype.Hide( ):void {
 ////	if ( !IsHidden() ) {
-////		fl.hidden = true;
+////		this.fl.hidden = true;
 ////		FreeModelDef();
 ////		UpdateVisuals();
 ////	}
@@ -1286,7 +1308,7 @@ idEntity::SetName
 ////*/
 ////idEntity.prototype.Show( ):void {
 ////	if ( IsHidden() ) {
-////		fl.hidden = false;
+////		this.fl.hidden = false;
 ////		UpdateVisuals();
 ////	}
 ////}
@@ -1301,11 +1323,11 @@ idEntity::SetName
 ////	idMat3 axis;
 ////
 ////	if ( GetPhysicsToVisualTransform( origin, axis ) ) {
-////		renderEntity.axis = axis * GetPhysics().GetAxis();
-////		renderEntity.origin = GetPhysics().GetOrigin() + origin * renderEntity.axis;
+////		this.renderEntity.axis = axis * GetPhysics().GetAxis();
+////		this.renderEntity.origin = GetPhysics().GetOrigin() + origin * this.renderEntity.axis;
 ////	} else {
-////		renderEntity.axis = GetPhysics().GetAxis();
-////		renderEntity.origin = GetPhysics().GetOrigin();
+////		this.renderEntity.axis = GetPhysics().GetAxis();
+////		this.renderEntity.origin = GetPhysics().GetOrigin();
 ////	}
 ////}
 ////
@@ -1321,7 +1343,7 @@ idEntity::SetName
 ////	idAnimator *animator = GetAnimator();
 ////	if ( animator && animator.ModelHandle() ) {
 ////		// set the callback to update the joints
-////		renderEntity.callback = idEntity::ModelCallback;
+////		this.renderEntity.callback = idEntity::ModelCallback;
 ////	}
 ////
 ////	// set to invalid number to force an update the next time the PVS areas are retrieved
@@ -1351,7 +1373,7 @@ idEntity::SetName
 ////	idBounds modelAbsBounds;
 ////	int i;
 ////
-////	modelAbsBounds.FromTransformedBounds( renderEntity.bounds, renderEntity.origin, renderEntity.axis );
+////	modelAbsBounds.FromTransformedBounds( this.renderEntity.bounds, this.renderEntity.origin, this.renderEntity.axis );
 ////	localNumPVSAreas = gameLocal.pvs.GetPVSAreas( modelAbsBounds, localPVSAreas, sizeof( localPVSAreas ) / sizeof( localPVSAreas[0] ) );
 ////
 ////	// FIXME: some particle systems may have huge bounds and end up in many PVS areas
@@ -1360,12 +1382,12 @@ idEntity::SetName
 ////		localNumPVSAreas = gameLocal.pvs.GetPVSAreas( idBounds( modelAbsBounds.GetCenter() ).Expand( 64.0f ), localPVSAreas, sizeof( localPVSAreas ) / sizeof( localPVSAreas[0] ) );
 ////	}
 ////
-////	for ( numPVSAreas = 0; numPVSAreas < MAX_PVS_AREAS && numPVSAreas < localNumPVSAreas; numPVSAreas++ ) {
-////		PVSAreas[numPVSAreas] = localPVSAreas[numPVSAreas];
+////	for ( this.numPVSAreas = 0; this.numPVSAreas < MAX_PVS_AREAS && this.numPVSAreas < localNumPVSAreas; this.numPVSAreas++ ) {
+////		this.PVSAreas[this.numPVSAreas] = localPVSAreas[this.numPVSAreas];
 ////	}
 ////
-////	for( i = numPVSAreas; i < MAX_PVS_AREAS; i++ ) {
-////		PVSAreas[ i ] = 0;
+////	for( i = this.numPVSAreas; i < MAX_PVS_AREAS; i++ ) {
+////		this.PVSAreas[ i ] = 0;
 ////	}
 ////}
 ////
@@ -1377,10 +1399,10 @@ idEntity::SetName
 ////idEntity.prototype.UpdatePVSAreas( pos:idVec3 ) {
 ////	int i;
 ////
-////	numPVSAreas = gameLocal.pvs.GetPVSAreas( idBounds( pos ), PVSAreas, MAX_PVS_AREAS );
-////	i = numPVSAreas;
+////	this.numPVSAreas = gameLocal.pvs.GetPVSAreas( idBounds( pos ), this.PVSAreas, MAX_PVS_AREAS );
+////	i = this.numPVSAreas;
 ////	while ( i < MAX_PVS_AREAS ) {
-////		PVSAreas[ i++ ] = 0;
+////		this.PVSAreas[ i++ ] = 0;
 ////	}
 ////}
 ////
@@ -1390,10 +1412,10 @@ idEntity::SetName
 ////================
 ////*/
 ////int idEntity::GetNumPVSAreas( ):void {
-////	if ( numPVSAreas < 0 ) {
+////	if ( this.numPVSAreas < 0 ) {
 ////		UpdatePVSAreas();
 ////	}
-////	return numPVSAreas;
+////	return this.numPVSAreas;
 ////}
 ////
 /////*
@@ -1402,10 +1424,10 @@ idEntity::SetName
 ////================
 ////*/
 ////const int *idEntity::GetPVSAreas( ):void {
-////	if ( numPVSAreas < 0 ) {
+////	if ( this.numPVSAreas < 0 ) {
 ////		UpdatePVSAreas();
 ////	}
-////	return PVSAreas;
+////	return this.PVSAreas;
 ////}
 ////
 /////*
@@ -1414,7 +1436,7 @@ idEntity::SetName
 ////================
 ////*/
 ////idEntity.prototype.ClearPVSAreas( ):void {
-////	numPVSAreas = -1;
+////	this.numPVSAreas = -1;
 ////}
 ////
 /////*
@@ -1427,8 +1449,8 @@ idEntity::SetName
 ////bool idEntity::PhysicsTeamInPVS( pvsHandle_t pvsHandle ) {
 ////	idEntity *part;
 ////
-////	if ( teamMaster ) {
-////		for ( part = teamMaster; part; part = part.teamChain ) {
+////	if ( this.teamMaster ) {
+////		for ( part = this.teamMaster; part; part = part.teamChain ) {
 ////			if ( gameLocal.pvs.InCurrentPVS( pvsHandle, part.GetPVSAreas(), part.GetNumPVSAreas() ) ) {
 ////				return true;
 ////			}
@@ -1451,12 +1473,12 @@ idEntity::SetName
 ////	idPlane localPlane[2];
 ////
 ////	// make sure the entity has a valid model handle
-////	if ( modelDefHandle < 0 ) {
+////	if ( this.modelDefHandle < 0 ) {
 ////		return;
 ////	}
 ////
 ////	// only do this on dynamic md5 models
-////	if ( renderEntity.hModel.IsDynamicModel() != DM_CACHED ) {
+////	if ( this.renderEntity.hModel.IsDynamicModel() != DM_CACHED ) {
 ////		return;
 ////	}
 ////
@@ -1467,9 +1489,9 @@ idEntity::SetName
 ////	axis[0] = axistemp[ 0 ] * c + axistemp[ 1 ] * -s;
 ////	axis[1] = axistemp[ 0 ] * -s + axistemp[ 1 ] * -c;
 ////
-////	renderEntity.axis.ProjectVector( origin - renderEntity.origin, localOrigin );
-////	renderEntity.axis.ProjectVector( axis[0], localAxis[0] );
-////	renderEntity.axis.ProjectVector( axis[1], localAxis[1] );
+////	this.renderEntity.axis.ProjectVector( origin - this.renderEntity.origin, localOrigin );
+////	this.renderEntity.axis.ProjectVector( axis[0], localAxis[0] );
+////	this.renderEntity.axis.ProjectVector( axis[1], localAxis[1] );
 ////
 ////	size = 1.0f / size;
 ////	localAxis[0] *= size;
@@ -1484,7 +1506,7 @@ idEntity::SetName
 ////	const idMaterial *mtr = declManager.FindMaterial( material );
 ////
 ////	// project an overlay onto the model
-////	gameRenderWorld.ProjectOverlay( modelDefHandle, localPlane, mtr );
+////	gameRenderWorld.ProjectOverlay( this.modelDefHandle, localPlane, mtr );
 ////
 ////	// make sure non-animating models update their overlay
 ////	UpdateVisuals();
@@ -1504,26 +1526,26 @@ idEntity::SetName
 ////	}
 ////
 ////	// don't present to the renderer if the entity hasn't changed
-////	if ( !( thinkFlags & TH_UPDATEVISUALS ) ) {
+////	if ( !( this.thinkFlags & TH_UPDATEVISUALS ) ) {
 ////		return;
 ////	}
 ////	BecomeInactive( TH_UPDATEVISUALS );
 ////
 ////	// camera target for remote render views
-////	if ( cameraTarget && gameLocal.InPlayerPVS( this ) ) {
-////		renderEntity.remoteRenderView = cameraTarget.GetRenderView();
+////	if ( this.cameraTarget && gameLocal.InPlayerPVS( this ) ) {
+////		this.renderEntity.remoteRenderView = this.cameraTarget.GetRenderView();
 ////	}
 ////
 ////	// if set to invisible, skip
-////	if ( !renderEntity.hModel || IsHidden() ) {
+////	if ( !this.renderEntity.hModel || IsHidden() ) {
 ////		return;
 ////	}
 ////
 ////	// add to refresh list
-////	if ( modelDefHandle == -1 ) {
-////		modelDefHandle = gameRenderWorld.AddEntityDef( &renderEntity );
+////	if ( this.modelDefHandle == -1 ) {
+////		this.modelDefHandle = gameRenderWorld.AddEntityDef( &this.renderEntity );
 ////	} else {
-////		gameRenderWorld.UpdateEntityDef( modelDefHandle, &renderEntity );
+////		gameRenderWorld.UpdateEntityDef( this.modelDefHandle, &this.renderEntity );
 ////	}
 ////}
 ////
@@ -1533,7 +1555,7 @@ idEntity::SetName
 ////================
 ////*/
 ////renderEntity_t *idEntity::GetRenderEntity( ):void {
-////	return &renderEntity;
+////	return &this.renderEntity;
 ////}
 ////
 /////*
@@ -1542,7 +1564,7 @@ idEntity::SetName
 ////================
 ////*/
 ////int idEntity::GetModelDefHandle( ):void {
-////	return modelDefHandle;
+////	return this.modelDefHandle;
 ////}
 ////
 /////*
@@ -1550,7 +1572,7 @@ idEntity::SetName
 ////idEntity::UpdateRenderEntity
 ////================
 ////*/
-////bool idEntity::UpdateRenderEntity( renderEntity_s *renderEntity, const renderView_t *renderView ) {
+////bool idEntity::UpdateRenderEntity( renderEntity_s *this.renderEntity, const renderView_t *renderView ) {
 ////	if ( gameLocal.inCinematic && gameLocal.skipCinematic ) {
 ////		return false;
 ////	}
@@ -1570,15 +1592,15 @@ idEntity::SetName
 ////	NOTE: may not change the game state whatsoever!
 ////================
 ////*/
-////bool idEntity::ModelCallback( renderEntity_s *renderEntity, const renderView_t *renderView ) {
+////bool idEntity::ModelCallback( renderEntity_s *this.renderEntity, const renderView_t *renderView ) {
 ////	var ent:idEntity
 ////
-////	ent = gameLocal.entities[ renderEntity.entityNum ];
+////	ent = gameLocal.entities[ this.renderEntity.entityNum ];
 ////	if ( !ent ) {
 ////		gameLocal.Error( "idEntity::ModelCallback: callback with NULL game entity" );
 ////	}
 ////
-////	return ent.UpdateRenderEntity( renderEntity, renderView );
+////	return ent.UpdateRenderEntity( this.renderEntity, this.renderView );
 ////}
 ////
 /////*
@@ -1600,26 +1622,26 @@ idEntity::SetName
 ////=============
 ////*/
 ////renderView_t *idEntity::GetRenderView( ):void {
-////	if ( !renderView ) {
-////		renderView = new renderView_t;
+////	if ( !this.renderView ) {
+////		this.renderView = new renderView_t;
 ////	}
-////	memset( renderView, 0, sizeof( *renderView ) );
+////	memset( this.renderView, 0, sizeof( *this.renderView ) );
 ////
-////	renderView.vieworg = GetPhysics().GetOrigin();
-////	renderView.fov_x = 120;
-////	renderView.fov_y = 120;
-////	renderView.viewaxis = GetPhysics().GetAxis();
+////	this.renderView.vieworg = GetPhysics().GetOrigin();
+////	this.renderView.fov_x = 120;
+////	this.renderView.fov_y = 120;
+////	this.renderView.viewaxis = GetPhysics().GetAxis();
 ////
 ////	// copy global shader parms
 ////	for( int i = 0; i < MAX_GLOBAL_SHADER_PARMS; i++ ) {
-////		renderView.shaderParms[ i ] = gameLocal.globalShaderParms[ i ];
+////		this.renderView.shaderParms[ i ] = gameLocal.globalShaderParms[ i ];
 ////	}
 ////
-////	renderView.globalMaterial = gameLocal.GetGlobalMaterial();
+////	this.renderView.globalMaterial = gameLocal.GetGlobalMaterial();
 ////
-////	renderView.time = gameLocal.time;
+////	this.renderView.time = gameLocal.time;
 ////
-////	return renderView;
+////	return this.renderView;
 ////}
 ////
 /////***********************************************************************
@@ -1670,7 +1692,7 @@ idEntity::SetName
 ////	}
 ////
 ////	shader = declManager.FindSound( sound );
-////	return StartSoundShader( shader, channel, soundShaderFlags, broadcast, length );
+////	return this.StartSoundShader( shader, channel, soundShaderFlags, broadcast, length );
 ////}
 ////
 /////*
@@ -1706,26 +1728,26 @@ idEntity::SetName
 ////	}
 ////
 ////	// set a random value for diversity unless one was parsed from the entity
-////	if ( refSound.diversity < 0.0f ) {
+////	if ( this.refSound.diversity < 0.0f ) {
 ////		diversity = gameLocal.random.RandomFloat();
 ////	} else {
-////		diversity = refSound.diversity;
+////		diversity = this.refSound.diversity;
 ////	}
 ////
 ////	// if we don't have a soundEmitter allocated yet, get one now
-////	if ( !refSound.referenceSound ) {
-////		refSound.referenceSound = gameSoundWorld.AllocSoundEmitter();
+////	if ( !this.refSound.referenceSound ) {
+////		this.refSound.referenceSound = gameSoundWorld.AllocSoundEmitter();
 ////	}
 ////
 ////	UpdateSound();
 ////
-////	len = refSound.referenceSound.StartSound( shader, channel, diversity, soundShaderFlags );
+////	len = this.refSound.referenceSound.StartSound( shader, channel, diversity, soundShaderFlags );
 ////	if ( length ) {
 ////		*length = len;
 ////	}
 ////
 ////	// set reference to the sound for shader synced effects
-////	renderEntity.referenceSound = refSound.referenceSound;
+////	this.renderEntity.referenceSound = this.refSound.referenceSound;
 ////
 ////	return true;
 ////}
@@ -1750,8 +1772,8 @@ idEntity::SetName
 ////		ServerSendEvent( EVENT_STOPSOUNDSHADER, &msg, false, -1 );
 ////	}
 ////
-////	if ( refSound.referenceSound ) {
-////		refSound.referenceSound.StopSound( channel );
+////	if ( this.refSound.referenceSound ) {
+////		this.refSound.referenceSound.StopSound( channel );
 ////	}
 ////}
 ////
@@ -1763,7 +1785,7 @@ idEntity::SetName
 ////================
 ////*/
 ////idEntity.prototype.SetSoundVolume( float volume ) {
-////	refSound.parms.volume = volume;
+////	this.refSound.parms.volume = volume;
 ////}
 ////
 /////*
@@ -1772,17 +1794,17 @@ idEntity::SetName
 ////================
 ////*/
 ////idEntity.prototype.UpdateSound( ):void {
-////	if ( refSound.referenceSound ) {
+////	if ( this.refSound.referenceSound ) {
 ////		idVec3 origin;
 ////		idMat3 axis;
 ////
 ////		if ( GetPhysicsToSoundTransform( origin, axis ) ) {
-////			refSound.origin = GetPhysics().GetOrigin() + origin * axis;
+////			this.refSound.origin = GetPhysics().GetOrigin() + origin * axis;
 ////		} else {
-////			refSound.origin = GetPhysics().GetOrigin();
+////			this.refSound.origin = GetPhysics().GetOrigin();
 ////		}
 ////
-////		refSound.referenceSound.UpdateEmitter( refSound.origin, refSound.listenerId, &refSound.parms );
+////		this.refSound.referenceSound.UpdateEmitter( this.refSound.origin, this.refSound.listenerId, &this.refSound.parms );
 ////	}
 ////}
 ////
@@ -1792,7 +1814,7 @@ idEntity::SetName
 ////================
 ////*/
 ////int idEntity::GetListenerId( ):void const {
-////	return refSound.listenerId;
+////	return this.refSound.listenerId;
 ////}
 ////
 /////*
@@ -1801,7 +1823,7 @@ idEntity::SetName
 ////================
 ////*/
 ////idSoundEmitter *idEntity::GetSoundEmitter( ):void const {
-////	return refSound.referenceSound;
+////	return this.refSound.referenceSound;
 ////}
 ////
 /////*
@@ -1810,9 +1832,9 @@ idEntity::SetName
 ////================
 ////*/
 ////idEntity.prototype.FreeSoundEmitter( bool immediate ) {
-////	if ( refSound.referenceSound ) {
-////		refSound.referenceSound.Free( immediate );
-////		refSound.referenceSound = NULL;
+////	if ( this.refSound.referenceSound ) {
+////		this.refSound.referenceSound.Free( immediate );
+////		this.refSound.referenceSound = NULL;
 ////	}
 ////}
 ////
@@ -1895,20 +1917,20 @@ idEntity::SetName
 ////idEntity.prototype.FinishBind( ):void {
 ////
 ////	// set the master on the physics object
-////	physics.SetMaster( bindMaster, fl.bindOrientated );
+////	this.physics.SetMaster( this.bindMaster, this.fl.bindOrientated );
 ////
 ////	// We are now separated from our previous team and are either
 ////	// an individual, or have a team of our own.  Now we can join
 ////	// the new bindMaster's team.  Bindmaster must be set before
 ////	// joining the team, or we will be placed in the wrong position
 ////	// on the team.
-////	JoinTeam( bindMaster );
+////	JoinTeam( this.bindMaster );
 ////
 ////	// if our bindMaster is enabled during a cinematic, we must be, too
-////	cinematic = bindMaster.cinematic;
+////	this.cinematic = this.bindMaster.cinematic;
 ////
 ////	// make sure the team master is active so that physics get run
-////	teamMaster.BecomeActive( TH_PHYSICS );
+////	this.teamMaster.BecomeActive( TH_PHYSICS );
 ////}
 ////
 /////*
@@ -1926,10 +1948,10 @@ idEntity::SetName
 ////
 ////	PreBind();
 ////
-////	bindJoint = INVALID_JOINT;
-////	bindBody = -1;
-////	bindMaster = master;
-////	fl.bindOrientated = orientated;
+////	this.bindJoint = INVALID_JOINT;
+////	this.bindBody = -1;
+////	this.bindMaster = master;
+////	this.fl.bindOrientated = orientated;
 ////
 ////	FinishBind();
 ////
@@ -1964,10 +1986,10 @@ idEntity::SetName
 ////
 ////	PreBind();
 ////
-////	bindJoint = jointnum;
-////	bindBody = -1;
-////	bindMaster = master;
-////	fl.bindOrientated = orientated;
+////	this.bindJoint = jointnum;
+////	this.bindBody = -1;
+////	this.bindMaster = master;
+////	this.fl.bindOrientated = orientated;
 ////
 ////	FinishBind();
 ////
@@ -1989,10 +2011,10 @@ idEntity::SetName
 ////
 ////	PreBind();
 ////
-////	bindJoint = jointnum;
-////	bindBody = -1;
-////	bindMaster = master;
-////	fl.bindOrientated = orientated;
+////	this.bindJoint = jointnum;
+////	this.bindBody = -1;
+////	this.bindMaster = master;
+////	this.fl.bindOrientated = orientated;
 ////
 ////	FinishBind();
 ////
@@ -2018,10 +2040,10 @@ idEntity::SetName
 ////
 ////	PreBind();
 ////
-////	bindJoint = INVALID_JOINT;
-////	bindBody = bodyId;
-////	bindMaster = master;
-////	fl.bindOrientated = orientated;
+////	this.bindJoint = INVALID_JOINT;
+////	this.bindBody = bodyId;
+////	this.bindMaster = master;
+////	this.fl.bindOrientated = orientated;
 ////
 ////	FinishBind();
 ////
@@ -2044,27 +2066,27 @@ idEntity::SetName
 ////		static_cast<idAFEntity_Base *>(this).RemoveBindConstraints();
 ////	}
 ////
-////	if ( !bindMaster ) {
+////	if ( !this.bindMaster ) {
 ////		return;
 ////	}
 ////
-////	if ( !teamMaster ) {
+////	if ( !this.teamMaster ) {
 ////		// Teammaster already has been freed
-////		bindMaster = NULL;
+////		this.bindMaster = NULL;
 ////		return;
 ////	}
 ////
 ////	PreUnbind();
 ////
-////	if ( physics ) {
-////		physics.SetMaster( NULL, fl.bindOrientated );
+////	if ( this.physics ) {
+////		this.physics.SetMaster( NULL, this.fl.bindOrientated );
 ////	}
 ////
 ////	// We're still part of a team, so that means I have to extricate myself
 ////	// and any entities that are bound to me from the old team.
 ////	// Find the node previous to me in the team
-////	prev = teamMaster;
-////	for( ent = teamMaster.teamChain; ent && ( ent != this ); ent = ent.teamChain ) {
+////	prev = this.teamMaster;
+////	for( ent = this.teamMaster.teamChain; ent && ( ent != this ); ent = ent.teamChain ) {
 ////		prev = ent;
 ////	}
 ////
@@ -2073,7 +2095,7 @@ idEntity::SetName
 ////	// Find the last node in my team that is bound to me.
 ////	// Also find the first node not bound to me, if one exists.
 ////	last = this;
-////	for( next = teamChain; next != NULL; next = next.teamChain ) {
+////	for( next = this.teamChain; next != NULL; next = next.teamChain ) {
 ////		if ( !next.IsBoundTo( this ) ) {
 ////			break;
 ////		}
@@ -2088,9 +2110,9 @@ idEntity::SetName
 ////
 ////	// connect up the previous member of the old team to the node that
 ////	// follow the last node bound to me (if one exists).
-////	if ( teamMaster != this ) {
+////	if ( this.teamMaster != this ) {
 ////		prev.teamChain = next;
-////		if ( !next && ( teamMaster == prev ) ) {
+////		if ( !next && ( this.teamMaster == prev ) ) {
 ////			prev.teamMaster = NULL;
 ////		}
 ////	} else if ( next ) {
@@ -2103,17 +2125,17 @@ idEntity::SetName
 ////	}
 ////
 ////	// If we don't have anyone on our team, then clear the team variables.
-////	if ( teamChain ) {
+////	if ( this.teamChain ) {
 ////		// make myself my own team
-////		teamMaster = this;
+////		this.teamMaster = this;
 ////	} else {
 ////		// no longer a team
-////		teamMaster = NULL;
+////		this.teamMaster = NULL;
 ////	}
 ////
-////	bindJoint = INVALID_JOINT;
-////	bindBody = -1;
-////	bindMaster = NULL;
+////	this.bindJoint = INVALID_JOINT;
+////	this.bindBody = -1;
+////	this.bindMaster = NULL;
 ////
 ////	PostUnbind();
 ////}
@@ -2127,12 +2149,12 @@ idEntity::SetName
 ////	var ent:idEntity
 ////	idEntity *next;
 ////
-////	for( ent = teamChain; ent != NULL; ent = next ) {
+////	for( ent = this.teamChain; ent != NULL; ent = next ) {
 ////		next = ent.teamChain;
 ////		if ( ent.bindMaster == this ) {
 ////			ent.Unbind();
 ////			ent.PostEventMS( &EV_Remove, 0 );
-////			next = teamChain;
+////			next = this.teamChain;
 ////		}
 ////	}
 ////}
@@ -2143,7 +2165,7 @@ idEntity::SetName
 ////================
 ////*/
 ////bool idEntity::IsBound( ):void const {
-////	if ( bindMaster ) {
+////	if ( this.bindMaster ) {
 ////		return true;
 ////	}
 ////	return false;
@@ -2157,11 +2179,11 @@ idEntity::SetName
 ////bool idEntity::IsBoundTo( idEntity *master ) const {
 ////	var ent:idEntity
 ////
-////	if ( !bindMaster ) {
+////	if ( !this.bindMaster ) {
 ////		return false;
 ////	}
 ////
-////	for ( ent = bindMaster; ent != NULL; ent = ent.bindMaster ) {
+////	for ( ent = this.bindMaster; ent != NULL; ent = ent.bindMaster ) {
 ////		if ( ent == master ) {
 ////			return true;
 ////		}
@@ -2176,7 +2198,7 @@ idEntity::SetName
 ////================
 ////*/
 ////idEntity *idEntity::GetBindMaster( ):void const {
-////	return bindMaster;
+////	return this.bindMaster;
 ////}
 ////
 /////*
@@ -2185,7 +2207,7 @@ idEntity::SetName
 ////================
 ////*/
 ////jointHandle_t idEntity::GetBindJoint( ):void const {
-////	return bindJoint;
+////	return this.bindJoint;
 ////}
 ////
 /////*
@@ -2194,7 +2216,7 @@ idEntity::SetName
 ////================
 ////*/
 ////int idEntity::GetBindBody( ):void const {
-////	return bindBody;
+////	return this.bindBody;
 ////}
 ////
 /////*
@@ -2203,7 +2225,7 @@ idEntity::SetName
 ////================
 ////*/
 ////idEntity *idEntity::GetTeamMaster( ):void const {
-////	return teamMaster;
+////	return this.teamMaster;
 ////}
 ////
 /////*
@@ -2212,7 +2234,7 @@ idEntity::SetName
 ////================
 ////*/
 ////idEntity *idEntity::GetNextTeamEntity( ):void const {
-////	return teamChain;
+////	return this.teamChain;
 ////}
 ////
 /////*
@@ -2223,8 +2245,8 @@ idEntity::SetName
 ////idEntity.prototype.ConvertLocalToWorldTransform( idVec3 &offset, idMat3 &axis ) {
 ////	UpdateModelTransform();
 ////
-////	offset = renderEntity.origin + offset * renderEntity.axis;
-////	axis *= renderEntity.axis;
+////	offset = this.renderEntity.origin + offset * this.renderEntity.axis;
+////	axis *= this.renderEntity.axis;
 ////}
 ////
 /////*
@@ -2241,7 +2263,7 @@ idEntity::SetName
 ////idVec3 idEntity::GetLocalVector( const vec:idVec3 ) const {
 ////	idVec3	pos;
 ////
-////	if ( !bindMaster ) {
+////	if ( !this.bindMaster ) {
 ////		return vec;
 ////	}
 ////
@@ -2265,7 +2287,7 @@ idEntity::SetName
 ////idVec3 idEntity::GetLocalCoordinates( vec:idVec3 ) const {
 ////	idVec3	pos;
 ////
-////	if ( !bindMaster ) {
+////	if ( !this.bindMaster ) {
 ////		return vec;
 ////	}
 ////
@@ -2292,7 +2314,7 @@ idEntity::SetName
 ////idVec3 idEntity::GetWorldVector( vec:idVec3 ) const {
 ////	idVec3	pos;
 ////
-////	if ( !bindMaster ) {
+////	if ( !this.bindMaster ) {
 ////		return vec;
 ////	}
 ////
@@ -2316,7 +2338,7 @@ idEntity::SetName
 ////idVec3 idEntity::GetWorldCoordinates( vec:idVec3 ) const {
 ////	idVec3	pos;
 ////
-////	if ( !bindMaster ) {
+////	if ( !this.bindMaster ) {
 ////		return vec;
 ////	}
 ////
@@ -2340,25 +2362,25 @@ idEntity::SetName
 ////	idMat3		localAxis;
 ////	idAnimator	*masterAnimator;
 ////
-////	if ( bindMaster ) {
+////	if ( this.bindMaster ) {
 ////		// if bound to a joint of an animated model
-////		if ( bindJoint != INVALID_JOINT ) {
-////			masterAnimator = bindMaster.GetAnimator();
+////		if ( this.bindJoint != INVALID_JOINT ) {
+////			masterAnimator = this.bindMaster.GetAnimator();
 ////			if ( !masterAnimator ) {
 ////				masterOrigin = vec3_origin;
 ////				masterAxis = mat3_identity;
 ////				return false;
 ////			} else {
-////				masterAnimator.GetJointTransform( bindJoint, gameLocal.time, masterOrigin, masterAxis );
-////				masterAxis *= bindMaster.renderEntity.axis;
-////				masterOrigin = bindMaster.renderEntity.origin + masterOrigin * bindMaster.renderEntity.axis;
+////				masterAnimator.GetJointTransform( this.bindJoint, gameLocal.time, masterOrigin, masterAxis );
+////				masterAxis *= this.bindMaster.renderEntity.axis;
+////				masterOrigin = this.bindMaster.renderEntity.origin + masterOrigin * this.bindMaster.renderEntity.axis;
 ////			}
-////		} else if ( bindBody >= 0 && bindMaster.GetPhysics() ) {
-////			masterOrigin = bindMaster.GetPhysics().GetOrigin( bindBody );
-////			masterAxis = bindMaster.GetPhysics().GetAxis( bindBody );
+////		} else if ( this.bindBody >= 0 && this.bindMaster.GetPhysics() ) {
+////			masterOrigin = this.bindMaster.GetPhysics().GetOrigin( this.bindBody );
+////			masterAxis = this.bindMaster.GetPhysics().GetAxis( this.bindBody );
 ////		} else {
-////			masterOrigin = bindMaster.renderEntity.origin;
-////			masterAxis = bindMaster.renderEntity.axis;
+////			masterOrigin = this.bindMaster.renderEntity.origin;
+////			masterAxis = this.bindMaster.renderEntity.axis;
 ////		}
 ////		return true;
 ////	} else {
@@ -2375,10 +2397,10 @@ idEntity::SetName
 ////*/
 ////idEntity.prototype.GetWorldVelocities( idVec3 &linearVelocity, idVec3 &angularVelocity ) const {
 ////
-////	linearVelocity = physics.GetLinearVelocity();
-////	angularVelocity = physics.GetAngularVelocity();
+////	linearVelocity = this.physics.GetLinearVelocity();
+////	angularVelocity = this.physics.GetAngularVelocity();
 ////
-////	if ( bindMaster ) {
+////	if ( this.bindMaster ) {
 ////		idVec3 masterOrigin, masterLinearVelocity, masterAngularVelocity;
 ////		idMat3 masterAxis;
 ////
@@ -2386,7 +2408,7 @@ idEntity::SetName
 ////		GetMasterPosition( masterOrigin, masterAxis );
 ////
 ////		// get master velocities
-////		bindMaster.GetWorldVelocities( masterLinearVelocity, masterAngularVelocity );
+////		this.bindMaster.GetWorldVelocities( masterLinearVelocity, masterAngularVelocity );
 ////
 ////		// linear velocity relative to master plus master linear and angular velocity
 ////		linearVelocity = linearVelocity * masterAxis + masterLinearVelocity +
@@ -2406,14 +2428,14 @@ idEntity::SetName
 ////	idEntity *next;
 ////
 ////	// if we're already on a team, quit it so we can join this one
-////	if ( teamMaster && ( teamMaster != this ) ) {
+////	if ( this.teamMaster && ( this.teamMaster != this ) ) {
 ////		QuitTeam();
 ////	}
 ////
 ////	assert( teammember );
 ////
 ////	if ( teammember == this ) {
-////		teamMaster = this;
+////		this.teamMaster = this;
 ////		return;
 ////	}
 ////
@@ -2426,14 +2448,14 @@ idEntity::SetName
 ////		teammember.teamChain = this;
 ////
 ////		// make anyone who's bound to me part of the new team
-////		for( ent = teamChain; ent != NULL; ent = ent.teamChain ) {
+////		for( ent = this.teamChain; ent != NULL; ent = ent.teamChain ) {
 ////			ent.teamMaster = master;
 ////		}
 ////	} else {
 ////		// skip past the chain members bound to the entity we're teaming up with
 ////		prev = teammember;
 ////		next = teammember.teamChain;
-////		if ( bindMaster ) {
+////		if ( this.bindMaster ) {
 ////			// if we have a bindMaster, join after any entities bound to the entity
 ////			// we're joining
 ////			while( next && next.IsBoundTo( teammember ) ) {
@@ -2458,7 +2480,7 @@ idEntity::SetName
 ////		ent.teamChain = next;
 ////	}
 ////
-////	teamMaster = master;
+////	this.teamMaster = master;
 ////
 ////	// reorder the active entity list 
 ////	gameLocal.sortTeamMasters = true;
@@ -2472,125 +2494,125 @@ idEntity::SetName
 ////idEntity.prototype.QuitTeam( ):void {
 ////	var ent:idEntity
 ////
-////	if ( !teamMaster ) {
+////	if ( !this.teamMaster ) {
 ////		return;
 ////	}
 ////
 ////	// check if I'm the teamMaster
-////	if ( teamMaster == this ) {
+////	if ( this.teamMaster == this ) {
 ////		// do we have more than one teammate?
 ////		if ( !teamChain.teamChain ) {
 ////			// no, break up the team
-////			teamChain.teamMaster = NULL;
+////			this.teamChain.teamMaster = NULL;
 ////		} else {
 ////			// yes, so make the first teammate the teamMaster
-////			for( ent = teamChain; ent; ent = ent.teamChain ) {
-////				ent.teamMaster = teamChain;
+////			for( ent = this.teamChain; ent; ent = ent.teamChain ) {
+////				ent.teamMaster = this.teamChain;
 ////			}
 ////		}
 ////	} else {
-////		assert( teamMaster );
-////		assert( teamMaster.teamChain );
+////		assert( this.teamMaster );
+////		assert( this.teamMaster.teamChain );
 ////
 ////		// find the previous member of the teamChain
-////		ent = teamMaster;
+////		ent = this.teamMaster;
 ////		while( ent.teamChain != this ) {
 ////			assert( ent.teamChain ); // this should never happen
 ////			ent = ent.teamChain;
 ////		}
 ////
 ////		// remove this from the teamChain
-////		ent.teamChain = teamChain;
+////		ent.teamChain = this.teamChain;
 ////
 ////		// if no one is left on the team, break it up
-////		if ( !teamMaster.teamChain ) {
-////			teamMaster.teamMaster = NULL;
+////		if ( !this.teamMaster.teamChain ) {
+////			this.teamMaster.teamMaster = NULL;
 ////		}
 ////	}
 ////
-////	teamMaster = NULL;
-////	teamChain = NULL;
+////	this.teamMaster = NULL;
+////	this.teamChain = NULL;
 ////}
-////
-/////***********************************************************************
-////
-////  Physics.
-////	
-////***********************************************************************/
-////
-/////*
-////================
-////idEntity::InitDefaultPhysics
-////================
-////*/
-////idEntity.prototype.InitDefaultPhysics( const idVec3 &origin, const idMat3 &axis ) {
-////	const char *temp;
-////	idClipModel *clipModel = NULL;
-////
-////	// check if a clipmodel key/value pair is set
-////	if ( this.spawnArgs.GetString( "clipmodel", "", &temp ) ) {
-////		if ( idClipModel::CheckModel( temp ) ) {
-////			clipModel = new idClipModel( temp );
-////		}
-////	}
-////
-////	if ( !spawnArgs.GetBool( "noclipmodel", "0" ) ) {
-////
-////		// check if mins/maxs or size key/value pairs are set
-////		if ( !clipModel ) {
-////			idVec3 size;
-////			idBounds bounds;
-////			bool setClipModel = false;
-////
-////			if ( this.spawnArgs.GetVector( "mins", NULL, bounds[0] ) &&
-////				this.spawnArgs.GetVector( "maxs", NULL, bounds[1] ) ) {
-////				setClipModel = true;
-////				if ( bounds[0][0] > bounds[1][0] || bounds[0][1] > bounds[1][1] || bounds[0][2] > bounds[1][2] ) {
-////					gameLocal.Error( "Invalid bounds '%s'-'%s' on entity '%s'", bounds[0].ToString(), bounds[1].ToString(), this.name.c_str() );
-////				}
-////			} else if ( this.spawnArgs.GetVector( "size", NULL, size ) ) {
-////				if ( ( size.x < 0.0f ) || ( size.y < 0.0f ) || ( size.z < 0.0f ) ) {
-////					gameLocal.Error( "Invalid size '%s' on entity '%s'", size.ToString(), this.name.c_str() );
-////				}
-////				bounds[0].Set( size.x * -0.5f, size.y * -0.5f, 0.0f );
-////				bounds[1].Set( size.x * 0.5f, size.y * 0.5f, size.z );
-////				setClipModel = true;
-////			}
-////
-////			if ( setClipModel ) {
-////				int numSides;
-////				idTraceModel trm;
-////
-////				if ( this.spawnArgs.GetInt( "cylinder", "0", numSides ) && numSides > 0 ) {
-////					trm.SetupCylinder( bounds, numSides < 3 ? 3 : numSides );
-////				} else if ( this.spawnArgs.GetInt( "cone", "0", numSides ) && numSides > 0 ) {
-////					trm.SetupCone( bounds, numSides < 3 ? 3 : numSides );
-////				} else {
-////					trm.SetupBox( bounds );
-////				}
-////				clipModel = new idClipModel( trm );
-////			}
-////		}
-////
-////		// check if the visual model can be used as collision model
-////		if ( !clipModel ) {
-////			temp = this.spawnArgs.GetString( "model" );
-////			if ( ( temp != NULL ) && ( *temp != 0 ) ) {
-////				if ( idClipModel::CheckModel( temp ) ) {
-////					clipModel = new idClipModel( temp );
-////				}
-////			}
-////		}
-////	}
-////
-////	defaultPhysicsObj.SetSelf( this );
-////	defaultPhysicsObj.SetClipModel( clipModel, 1.0f );
-////	defaultPhysicsObj.SetOrigin( origin );
-////	defaultPhysicsObj.SetAxis( axis );
-////
-////	physics = &defaultPhysicsObj;
-////}
-////
+
+/***********************************************************************
+
+  Physics.
+	
+***********************************************************************/
+
+/*
+================
+idEntity::InitDefaultPhysics
+================
+*/
+idEntity.prototype.InitDefaultPhysics( const idVec3 &origin, const idMat3 &axis ) {
+	const char *temp;
+	idClipModel *clipModel = NULL;
+
+	// check if a clipmodel key/value pair is set
+	if ( this.spawnArgs.GetString( "clipmodel", "", &temp ) ) {
+		if ( idClipModel::CheckModel( temp ) ) {
+			clipModel = new idClipModel( temp );
+		}
+	}
+
+	if ( !spawnArgs.GetBool( "noclipmodel", "0" ) ) {
+
+		// check if mins/maxs or size key/value pairs are set
+		if ( !clipModel ) {
+			idVec3 size;
+			idBounds bounds;
+			bool setClipModel = false;
+
+			if ( this.spawnArgs.GetVector( "mins", NULL, bounds[0] ) &&
+				this.spawnArgs.GetVector( "maxs", NULL, bounds[1] ) ) {
+				setClipModel = true;
+				if ( bounds[0][0] > bounds[1][0] || bounds[0][1] > bounds[1][1] || bounds[0][2] > bounds[1][2] ) {
+					gameLocal.Error( "Invalid bounds '%s'-'%s' on entity '%s'", bounds[0].ToString(), bounds[1].ToString(), this.name.c_str() );
+				}
+			} else if ( this.spawnArgs.GetVector( "size", NULL, size ) ) {
+				if ( ( size.x < 0.0f ) || ( size.y < 0.0f ) || ( size.z < 0.0f ) ) {
+					gameLocal.Error( "Invalid size '%s' on entity '%s'", size.ToString(), this.name.c_str() );
+				}
+				bounds[0].Set( size.x * -0.5f, size.y * -0.5f, 0.0f );
+				bounds[1].Set( size.x * 0.5f, size.y * 0.5f, size.z );
+				setClipModel = true;
+			}
+
+			if ( setClipModel ) {
+				int numSides;
+				idTraceModel trm;
+
+				if ( this.spawnArgs.GetInt( "cylinder", "0", numSides ) && numSides > 0 ) {
+					trm.SetupCylinder( bounds, numSides < 3 ? 3 : numSides );
+				} else if ( this.spawnArgs.GetInt( "cone", "0", numSides ) && numSides > 0 ) {
+					trm.SetupCone( bounds, numSides < 3 ? 3 : numSides );
+				} else {
+					trm.SetupBox( bounds );
+				}
+				clipModel = new idClipModel( trm );
+			}
+		}
+
+		// check if the visual model can be used as collision model
+		if ( !clipModel ) {
+			temp = this.spawnArgs.GetString( "model" );
+			if ( ( temp != NULL ) && ( *temp != 0 ) ) {
+				if ( idClipModel::CheckModel( temp ) ) {
+					clipModel = new idClipModel( temp );
+				}
+			}
+		}
+	}
+
+	defaultPhysicsObj.SetSelf( this );
+	defaultPhysicsObj.SetClipModel( clipModel, 1.0f );
+	defaultPhysicsObj.SetOrigin( origin );
+	defaultPhysicsObj.SetAxis( axis );
+
+	this.physics = defaultPhysicsObj;
+}
+
 /////*
 ////================
 ////idEntity::SetPhysics
@@ -2598,19 +2620,19 @@ idEntity::SetName
 ////*/
 ////idEntity.prototype.SetPhysics( idPhysics *phys ) {
 ////	// clear any contacts the current physics object has
-////	if ( physics ) {
-////		physics.ClearContacts();
+////	if ( this.physics ) {
+////		this.physics.ClearContacts();
 ////	}
 ////	// set new physics object or set the default physics if NULL
 ////	if ( phys != NULL ) {
 ////		defaultPhysicsObj.SetClipModel( NULL, 1.0f );
-////		physics = phys;
-////		physics.Activate();
+////		this.physics = phys;
+////		this.physics.Activate();
 ////	} else {
-////		physics = &defaultPhysicsObj;
+////		this.physics = &defaultPhysicsObj;
 ////	}
-////	physics.UpdateTime( gameLocal.time );
-////	physics.SetMaster( bindMaster, fl.bindOrientated );
+////	this.physics.UpdateTime( gameLocal.time );
+////	this.physics.SetMaster( this.bindMaster, this.fl.bindOrientated );
 ////}
 ////
 /////*
@@ -2621,7 +2643,7 @@ idEntity::SetName
 ////idEntity.prototype.RestorePhysics( idPhysics *phys ) {
 ////	assert( phys != NULL );
 ////	// restore physics pointer
-////	physics = phys;
+////	this.physics = phys;
 ////}
 ////
 /////*
@@ -2630,7 +2652,7 @@ idEntity::SetName
 ////================
 ////*/
 ////idPhysics *idEntity::GetPhysics( ):void const {
-////	return physics;
+////	return this.physics;
 ////}
 ////
 /////*
@@ -2645,7 +2667,7 @@ idEntity::SetName
 ////	bool		moved;
 ////
 ////	// don't run physics if not enabled
-////	if ( !( thinkFlags & TH_PHYSICS ) ) {
+////	if ( !( this.thinkFlags & TH_PHYSICS ) ) {
 ////		// however do update any animation controllers
 ////		if ( UpdateAnimationControllers() ) {
 ////			BecomeActive( TH_ANIMATE );
@@ -2654,7 +2676,7 @@ idEntity::SetName
 ////	}
 ////
 ////	// if this entity is a team slave don't do anything because the team master will handle everything
-////	if ( teamMaster && teamMaster != this ) {
+////	if ( this.teamMaster && this.teamMaster != this ) {
 ////		return false;
 ////	}
 ////
@@ -2790,9 +2812,9 @@ idEntity::SetName
 ////		if ( GetBindMaster() ) {
 ////			idAngles delta = actor.GetDeltaViewAngles();
 ////			if ( moveBack ) {
-////				delta.yaw -= static_cast<idPhysics_Actor *>(physics).GetMasterDeltaYaw();
+////				delta.yaw -= static_cast<idPhysics_Actor *>(this.physics).GetMasterDeltaYaw();
 ////			} else {
-////				delta.yaw += static_cast<idPhysics_Actor *>(physics).GetMasterDeltaYaw();
+////				delta.yaw += static_cast<idPhysics_Actor *>(this.physics).GetMasterDeltaYaw();
 ////			}
 ////			actor.SetDeltaViewAngles( delta );
 ////		}
@@ -2801,33 +2823,33 @@ idEntity::SetName
 ////	UpdateVisuals();
 ////}
 ////
-/////*
-////================
-////idEntity::SetOrigin
-////================
-////*/
-////idEntity.prototype.SetOrigin( const idVec3 &org ) {
-////
-////	GetPhysics().SetOrigin( org );
-////
-////	UpdateVisuals();
-////}
-////
-/////*
-////================
-////idEntity::SetAxis
-////================
-////*/
-////idEntity.prototype.SetAxis( const idMat3 &axis ) {
-////
-////	if ( GetPhysics().IsType( idPhysics_Actor::Type ) ) {
-////		static_cast<idActor *>(this).viewAxis = axis;
-////	} else {
-////		GetPhysics().SetAxis( axis );
-////	}
-////
-////	UpdateVisuals();
-////}
+/*
+================
+idEntity::SetOrigin
+================
+*/
+idEntity.prototype.SetOrigin( const idVec3 &org ) {
+
+	GetPhysics().SetOrigin( org );
+
+	UpdateVisuals();
+}
+
+/*
+================
+idEntity::SetAxis
+================
+*/
+idEntity.prototype.SetAxis( const idMat3 &axis ) {
+
+	if ( GetPhysics().IsType( idPhysics_Actor::Type ) ) {
+		static_cast<idActor *>(this).viewAxis = axis;
+	} else {
+		GetPhysics().SetAxis( axis );
+	}
+
+	UpdateVisuals();
+}
 ////
 /////*
 ////================
@@ -2835,7 +2857,7 @@ idEntity::SetName
 ////================
 ////*/
 ////idEntity.prototype.SetAngles( const ang:idAngles ) {
-////	SetAxis( ang.ToMat3() );
+////	this.SetAxis( ang.ToMat3() );
 ////}
 ////
 /////*
@@ -3108,10 +3130,10 @@ idEntity::SetName
 ////	attacker.DamageFeedback( this, inflictor, damage );
 ////	if ( damage ) {
 ////		// do the damage
-////		health -= damage;
-////		if ( health <= 0 ) {
-////			if ( health < -999 ) {
-////				health = -999;
+////		this.health -= damage;
+////		if ( this.health <= 0 ) {
+////			if ( this.health < -999 ) {
+////				this.health = -999;
 ////			}
 ////
 ////			Killed( inflictor, attacker, damage, dir, location );
@@ -3272,11 +3294,11 @@ idEntity::SetName
 ////================
 ////*/
 ////bool idEntity::HasSignal( signalNum_t signalnum ) const {
-////	if ( !signals ) {
+////	if ( !this.signals ) {
 ////		return false;
 ////	}
 ////	assert( ( signalnum >= 0 ) && ( signalnum < NUM_SIGNALS ) );
-////	return ( signals.signal[ signalnum ].Num() > 0 );
+////	return ( this.signals.signal[ signalnum ].Num() > 0 );
 ////}
 ////
 /////*
@@ -3292,17 +3314,17 @@ idEntity::SetName
 ////
 ////	assert( ( signalnum >= 0 ) && ( signalnum < NUM_SIGNALS ) );
 ////
-////	if ( !signals ) {
-////		signals = new signalList_t;
+////	if ( !this.signals ) {
+////		this.signals = new signalList_t;
 ////	}
 ////
 ////	assert( thread );
 ////	threadnum = thread.GetThreadNum();
 ////
-////	num = signals.signal[ signalnum ].Num();
+////	num = this.signals.signal[ signalnum ].Num();
 ////	for( i = 0; i < num; i++ ) {
-////		if ( signals.signal[ signalnum ][ i ].threadnum == threadnum ) {
-////			signals.signal[ signalnum ][ i ].function = function;
+////		if ( this.signals.signal[ signalnum ][ i ].threadnum == threadnum ) {
+////			this.signals.signal[ signalnum ][ i ].function = function;
 ////			return;
 ////		}
 ////	}
@@ -3313,7 +3335,7 @@ idEntity::SetName
 ////
 ////	sig.threadnum = threadnum;
 ////	sig.function = function;
-////	signals.signal[ signalnum ].Append( sig );
+////	this.signals.signal[ signalnum ].Append( sig );
 ////}
 ////
 /////*
@@ -3327,11 +3349,11 @@ idEntity::SetName
 ////		gameLocal.Error( "Signal out of range" );
 ////	}
 ////
-////	if ( !signals ) {
+////	if ( !this.signals ) {
 ////		return;
 ////	}
 ////
-////	signals.signal[ signalnum ].Clear();
+////	this.signals.signal[ signalnum ].Clear();
 ////}
 ////
 /////*
@@ -3350,16 +3372,16 @@ idEntity::SetName
 ////		gameLocal.Error( "Signal out of range" );
 ////	}
 ////
-////	if ( !signals ) {
+////	if ( !this.signals ) {
 ////		return;
 ////	}
 ////
 ////	threadnum = thread.GetThreadNum();
 ////
-////	num = signals.signal[ signalnum ].Num();
+////	num = this.signals.signal[ signalnum ].Num();
 ////	for( i = 0; i < num; i++ ) {
-////		if ( signals.signal[ signalnum ][ i ].threadnum == threadnum ) {
-////			signals.signal[ signalnum ].RemoveIndex( i );
+////		if ( this.signals.signal[ signalnum ][ i ].threadnum == threadnum ) {
+////			this.signals.signal[ signalnum ].RemoveIndex( i );
 ////			return;
 ////		}
 ////	}
@@ -3378,7 +3400,7 @@ idEntity::SetName
 ////
 ////	assert( ( signalnum >= 0 ) && ( signalnum < NUM_SIGNALS ) );
 ////
-////	if ( !signals ) {
+////	if ( !this.signals ) {
 ////		return;
 ////	}
 ////
@@ -3386,13 +3408,13 @@ idEntity::SetName
 ////	// to end any of the threads in the list.  By copying the list
 ////	// we don't have to worry about the list changing as we're
 ////	// processing it.
-////	num = signals.signal[ signalnum ].Num();
+////	num = this.signals.signal[ signalnum ].Num();
 ////	for( i = 0; i < num; i++ ) {
-////		sigs[ i ] = signals.signal[ signalnum ][ i ];
+////		sigs[ i ] = this.signals.signal[ signalnum ][ i ];
 ////	}
 ////
 ////	// clear out the signal list so that we don't get into an infinite loop
-////	signals.signal[ signalnum ].Clear();
+////	this.signals.signal[ signalnum ].Clear();
 ////
 ////	for( i = 0; i < num; i++ ) {
 ////		thread = idThread::GetThread( sigs[ i ].threadnum );
@@ -3413,7 +3435,7 @@ idEntity::SetName
 ////		gameLocal.Error( "Signal out of range" );
 ////	}
 ////
-////	if ( !signals ) {
+////	if ( !this.signals ) {
 ////		return;
 ////	}
 ////
@@ -3435,8 +3457,8 @@ idEntity::SetName
 ////idEntity.prototype.TriggerGuis( ):void {
 ////	int i;
 ////	for ( i = 0; i < MAX_RENDERENTITY_GUI; i++ ) {
-////		if ( renderEntity.gui[ i ] ) {
-////			renderEntity.gui[ i ].Trigger( gameLocal.time );
+////		if ( this.renderEntity.gui[ i ] ) {
+////			this.renderEntity.gui[ i ].Trigger( gameLocal.time );
 ////		}
 ////	}
 ////}
@@ -3565,7 +3587,7 @@ idEntity::SetName
 ////					}
 ////					msg += token2.c_str();
 ////				}
-////				common.Printf( "ent gui 0x%x '%s': %s\n", entityNumber, this.name.c_str(), msg.c_str() );
+////				common.Printf( "ent gui 0x%x '%s': %s\n", this.entityNumber, this.name.c_str(), msg.c_str() );
 ////				continue;
 ////			}
 ////
@@ -3746,7 +3768,7 @@ have been spawned when the entity is created at map load time, we have to wait
 ////		ent.Signal( SIG_TOUCH );
 ////		ent.ProcessEvent( &EV_Touch, this, &trace );
 ////
-////		if ( !gameLocal.entities[ entityNumber ] ) {
+////		if ( !gameLocal.entities[ this.entityNumber ] ) {
 ////			gameLocal.Printf( "entity was removed while touching triggers\n" );
 ////			return true;
 ////		}
@@ -4063,7 +4085,7 @@ idEntity::Event_FindTargets
 ////================
 ////*/
 ////idEntity.prototype.Event_SetSkin( const char *skinname ) {
-////	renderEntity.customSkin = declManager.FindSkin( skinname );
+////	this.renderEntity.customSkin = declManager.FindSkin( skinname );
 ////	UpdateVisuals();
 ////}
 ////
@@ -4077,7 +4099,7 @@ idEntity::Event_FindTargets
 ////		gameLocal.Error( "shader parm index (%d) out of range", parmnum );
 ////	}
 ////
-////	idThread::ReturnFloat( renderEntity.shaderParms[ parmnum ] );
+////	idThread::ReturnFloat( this.renderEntity.shaderParms[ parmnum ] );
 ////}
 ////
 /////*
@@ -4095,10 +4117,10 @@ idEntity::Event_FindTargets
 ////================
 ////*/
 ////idEntity.prototype.Event_SetShaderParms( float parm0, float parm1, float parm2, float parm3 ) {
-////	renderEntity.shaderParms[ SHADERPARM_RED ]		= parm0;
-////	renderEntity.shaderParms[ SHADERPARM_GREEN ]	= parm1;
-////	renderEntity.shaderParms[ SHADERPARM_BLUE ]		= parm2;
-////	renderEntity.shaderParms[ SHADERPARM_ALPHA ]	= parm3;
+////	this.renderEntity.shaderParms[ SHADERPARM_RED ]		= parm0;
+////	this.renderEntity.shaderParms[ SHADERPARM_GREEN ]	= parm1;
+////	this.renderEntity.shaderParms[ SHADERPARM_BLUE ]		= parm2;
+////	this.renderEntity.shaderParms[ SHADERPARM_ALPHA ]	= parm3;
 ////	UpdateVisuals();
 ////}
 ////
@@ -4130,7 +4152,7 @@ idEntity::Event_FindTargets
 ////================
 ////*/
 ////idEntity.prototype.Event_IsHidden( ):void {
-////	idThread::ReturnInt( fl.hidden );
+////	idThread::ReturnInt( this.fl.hidden );
 ////}
 ////
 /////*
@@ -4199,8 +4221,8 @@ idEntity::Event_FindTargets
 ////================
 ////*/
 ////idEntity.prototype.Event_FadeSound( int channel, float to, float over ) {
-////	if ( refSound.referenceSound ) {
-////		refSound.referenceSound.FadeSound( channel, to, over );
+////	if ( this.refSound.referenceSound ) {
+////		this.refSound.referenceSound.FadeSound( channel, to, over );
 ////	}
 ////}
 ////
@@ -4359,12 +4381,12 @@ idEntity::Event_FindTargets
 ////*/
 ////idEntity.prototype.Event_SetGuiParm( key:string, const char *val ) {
 ////	for ( int i = 0; i < MAX_RENDERENTITY_GUI; i++ ) {
-////		if ( renderEntity.gui[ i ] ) {
+////		if ( this.renderEntity.gui[ i ] ) {
 ////			if ( idStr::Icmpn( key, "gui_", 4 ) == 0 ) {
 ////				this.spawnArgs.Set( key, val );
 ////			}
-////			renderEntity.gui[ i ].SetStateString( key, val );
-////			renderEntity.gui[ i ].StateChanged( gameLocal.time );
+////			this.renderEntity.gui[ i ].SetStateString( key, val );
+////			this.renderEntity.gui[ i ].StateChanged( gameLocal.time );
 ////		}
 ////	}
 ////}
@@ -4376,9 +4398,9 @@ idEntity::Event_FindTargets
 ////*/
 ////idEntity.prototype.Event_SetGuiFloat( key:string, float f ) {
 ////	for ( int i = 0; i < MAX_RENDERENTITY_GUI; i++ ) {
-////		if ( renderEntity.gui[ i ] ) {
-////			renderEntity.gui[ i ].SetStateString( key, va( "%f", f ) );
-////			renderEntity.gui[ i ].StateChanged( gameLocal.time );
+////		if ( this.renderEntity.gui[ i ] ) {
+////			this.renderEntity.gui[ i ].SetStateString( key, va( "%f", f ) );
+////			this.renderEntity.gui[ i ].StateChanged( gameLocal.time );
 ////		}
 ////	}
 ////}
@@ -4511,7 +4533,7 @@ idEntity::Event_FindTargets
 ////
 ////	Teleport( org, angles, NULL );
 ////
-////	for ( part = teamChain; part != NULL; part = part.teamChain ) {
+////	for ( part = this.teamChain; part != NULL; part = part.teamChain ) {
 ////		if ( part.bindMaster != this ) {
 ////			continue;
 ////		}
@@ -4537,20 +4559,20 @@ idEntity::Event_FindTargets
 ////
 ////	target = this.spawnArgs.GetString( "cameraTarget" );
 ////
-////	cameraTarget = gameLocal.FindEntity( target );
+////	this.cameraTarget = gameLocal.FindEntity( target );
 ////
-////	if ( cameraTarget ) {
-////		kv = cameraTarget.spawnArgs.MatchPrefix( "target", NULL );
+////	if ( this.cameraTarget ) {
+////		kv = this.cameraTarget.spawnArgs.MatchPrefix( "target", NULL );
 ////		while( kv ) {
 ////			var ent:idEntity = gameLocal.FindEntity( kv.GetValue() );
 ////			if ( ent && idStr::Icmp( ent.GetEntityDefName(), "target_null" ) == 0) {
-////				dir = ent.GetPhysics().GetOrigin() - cameraTarget.GetPhysics().GetOrigin();
+////				dir = ent.GetPhysics().GetOrigin() - this.cameraTarget.GetPhysics().GetOrigin();
 ////				dir.Normalize();
-////				cameraTarget.SetAxis( dir.ToMat3() );
-////				SetAxis(dir.ToMat3());
+////				this.cameraTarget.SetAxis( dir.ToMat3() );
+////				this.SetAxis(dir.ToMat3());
 ////				break;						
 ////			}
-////			kv = cameraTarget.spawnArgs.MatchPrefix( "target", kv );
+////			kv = this.cameraTarget.spawnArgs.MatchPrefix( "target", kv );
 ////		}
 ////	}
 ////	UpdateVisuals();
@@ -4671,8 +4693,8 @@ idEntity::Event_FindTargets
 ////================
 ////*/
 ////idEntity.prototype.Event_SetNeverDormant( int enable ) {
-////	fl.neverDormant	= ( enable != 0 );
-////	dormantStart = 0;
+////	this.fl.neverDormant	= ( enable != 0 );
+////	this.dormantStart = 0;
 ////}
 ////
 /////***********************************************************************
@@ -4699,15 +4721,15 @@ idEntity::Event_FindTargets
 ////idEntity.prototype.WriteBindToSnapshot( idBitMsgDelta &msg ) const {
 ////	int bindInfo;
 ////
-////	if ( bindMaster ) {
-////		bindInfo = bindMaster.entityNumber;
-////		bindInfo |= ( fl.bindOrientated & 1 ) << GENTITYNUM_BITS;
-////		if ( bindJoint != INVALID_JOINT ) {
+////	if ( this.bindMaster ) {
+////		bindInfo = this.bindMaster.entityNumber;
+////		bindInfo |= ( this.fl.bindOrientated & 1 ) << GENTITYNUM_BITS;
+////		if ( this.bindJoint != INVALID_JOINT ) {
 ////			bindInfo |= 1 << ( GENTITYNUM_BITS + 1 );
-////			bindInfo |= bindJoint << ( 3 + GENTITYNUM_BITS );
-////		} else if ( bindBody != -1 ) {
+////			bindInfo |= this.bindJoint << ( 3 + GENTITYNUM_BITS );
+////		} else if ( this.bindBody != -1 ) {
 ////			bindInfo |= 2 << ( GENTITYNUM_BITS + 1 );
-////			bindInfo |= bindBody << ( 3 + GENTITYNUM_BITS );
+////			bindInfo |= this.bindBody << ( 3 + GENTITYNUM_BITS );
 ////		}
 ////	} else {
 ////		bindInfo = ENTITYNUM_NONE;
@@ -4747,7 +4769,7 @@ idEntity::Event_FindTargets
 ////				break;
 ////			}
 ////		}
-////	} else if ( bindMaster ) {
+////	} else if ( this.bindMaster ) {
 ////		Unbind();
 ////	}
 ////}
@@ -4760,10 +4782,10 @@ idEntity::Event_FindTargets
 ////idEntity.prototype.WriteColorToSnapshot( idBitMsgDelta &msg ) const {
 ////	idVec4 color;
 ////
-////	color[0] = renderEntity.shaderParms[ SHADERPARM_RED ];
-////	color[1] = renderEntity.shaderParms[ SHADERPARM_GREEN ];
-////	color[2] = renderEntity.shaderParms[ SHADERPARM_BLUE ];
-////	color[3] = renderEntity.shaderParms[ SHADERPARM_ALPHA ];
+////	color[0] = this.renderEntity.shaderParms[ SHADERPARM_RED ];
+////	color[1] = this.renderEntity.shaderParms[ SHADERPARM_GREEN ];
+////	color[2] = this.renderEntity.shaderParms[ SHADERPARM_BLUE ];
+////	color[3] = this.renderEntity.shaderParms[ SHADERPARM_ALPHA ];
 ////	msg.WriteLong( PackColor( color ) );
 ////}
 ////
@@ -4776,10 +4798,10 @@ idEntity::Event_FindTargets
 ////	idVec4 color;
 ////
 ////	UnpackColor( msg.ReadLong(), color );
-////	renderEntity.shaderParms[ SHADERPARM_RED ] = color[0];
-////	renderEntity.shaderParms[ SHADERPARM_GREEN ] = color[1];
-////	renderEntity.shaderParms[ SHADERPARM_BLUE ] = color[2];
-////	renderEntity.shaderParms[ SHADERPARM_ALPHA ] = color[3];
+////	this.renderEntity.shaderParms[ SHADERPARM_RED ] = color[0];
+////	this.renderEntity.shaderParms[ SHADERPARM_GREEN ] = color[1];
+////	this.renderEntity.shaderParms[ SHADERPARM_BLUE ] = color[2];
+////	this.renderEntity.shaderParms[ SHADERPARM_ALPHA ] = color[3];
 ////}
 ////
 /////*
@@ -4789,8 +4811,8 @@ idEntity::Event_FindTargets
 ////*/
 ////idEntity.prototype.WriteGUIToSnapshot( idBitMsgDelta &msg ) const {
 ////	// no need to loop over MAX_RENDERENTITY_GUI at this time
-////	if ( renderEntity.gui[ 0 ] ) {
-////		msg.WriteByte( renderEntity.gui[ 0 ].State().GetInt( "networkState" ) );
+////	if ( this.renderEntity.gui[ 0 ] ) {
+////		msg.WriteByte( this.renderEntity.gui[ 0 ].State().GetInt( "networkState" ) );
 ////	} else {
 ////		msg.WriteByte( 0 );
 ////	}
@@ -4805,9 +4827,9 @@ idEntity::Event_FindTargets
 ////	int state;
 ////	idUserInterface *gui;
 ////	state = msg.ReadByte( );
-////	gui = renderEntity.gui[ 0 ];
-////	if ( gui && state != mpGUIState ) {
-////		mpGUIState = state;
+////	gui = this.renderEntity.gui[ 0 ];
+////	if ( gui && state != this.mpGUIState ) {
+////		this.mpGUIState = state;
 ////		gui.SetStateInt( "networkState", state );
 ////		gui.HandleNamedEvent( "networkState" );
 ////	}
@@ -4939,7 +4961,7 @@ idEntity::Event_FindTargets
 ////			assert( gameLocal.isNewFrame );
 ////			if ( time < gameLocal.realClientTime - 1000 ) {
 ////				// too old, skip it ( reliable messages don't need to be parsed in full )
-////				common.DPrintf( "ent 0x%x: start sound shader too old (%d ms)\n", entityNumber, gameLocal.realClientTime - time );
+////				common.DPrintf( "ent 0x%x: start sound shader too old (%d ms)\n", this.entityNumber, gameLocal.realClientTime - time );
 ////				return true;
 ////			}
 ////			index = gameLocal.ClientRemapDecl( DECL_SOUND, msg.ReadLong() );

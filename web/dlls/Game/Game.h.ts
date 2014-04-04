@@ -193,29 +193,41 @@ class idGame {
 };
 //
 //extern idGame *					game;
-//
-//
-///*
-//===============================================================================
-//
-//	Public game interface with methods for in-game editing.
-//
-//===============================================================================
-//*/
-//
-//typedef struct {
-//	idSoundEmitter *			referenceSound;	// this is the interface to the sound system, created
-//												// with idSoundWorld::AllocSoundEmitter() when needed
-//	idVec3						origin;
-//	int							listenerId;		// SSF_PRIVATE_SOUND only plays if == listenerId from PlaceListener
-//												// no spatialization will be performed if == listenerID
-//	const idSoundShader *		shader;			// this really shouldn't be here, it is a holdover from single channel behavior
-//	float						diversity;		// 0.0 to 1.0 value used to select which
-//												// samples in a multi-sample list from the shader are used
-//	bool						waitfortrigger;	// don't start it at spawn time
-//	soundShaderParms_t			parms;			// override volume, flags, etc
-//} refSound_t;
-//
+
+
+/*
+===============================================================================
+
+	Public game interface with methods for in-game editing.
+
+===============================================================================
+*/
+
+class refSound_t {
+	referenceSound: idSoundEmitter; // this is the interface to the sound system, created
+	// with idSoundWorld::AllocSoundEmitter() when needed
+	origin = new idVec3;
+	listenerId: number /*int*/; // SSF_PRIVATE_SOUND only plays if == listenerId from PlaceListener
+	// no spatialization will be performed if == listenerID
+	shader: idSoundShader; // this really shouldn't be here, it is a holdover from single channel behavior
+	diversity: number /*float*/; // 0.0 to 1.0 value used to select which
+	// samples in a multi-sample list from the shader are used
+	waitfortrigger: boolean; // don't start it at spawn time
+	parms = new soundShaderParms_t; // override volume, flags, etc
+
+	memset0 ( ): void {
+		this.referenceSound = null;
+		this.origin.memset0 ( );
+		this.listenerId = 0;
+		this.shader = null;
+		this.diversity = 0;
+		this.waitfortrigger = false;
+		this.parms.memset0 ( );
+
+	}
+}
+
+
 //enum {
 //	TEST_PARTICLE_MODEL = 0,
 //	TEST_PARTICLE_IMPACT,
@@ -228,7 +240,7 @@ class idGame {
 //class idMD5Anim;
 //
 //// FIXME: this interface needs to be reworked but it properly separates code for the time being
-//class idGameEdit {
+class idGameEdit {
 //public:
 //	virtual						~idGameEdit( void ) {}
 //
@@ -305,7 +317,7 @@ class idGame {
 //	virtual void				MapRemoveEntity( name:string ) const;
 //	virtual void				MapEntityTranslate( name:string, const idVec3 &v ) const;
 //
-//};
+};
 //
 //extern idGameEdit *				gameEdit;
 //

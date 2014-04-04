@@ -606,8 +606,8 @@ idClass::FindUninitializedMemory
 //	size >>= 2;
 //	for ( int i = 0; i < size; i++ ) {
 //		if ( ptr[i] == 0xcdcdcdcd ) {
-//			const char *varName = GetTypeVariableName( GetClassname(), i << 2 );
-//			gameLocal.Warning( "type '%s' has uninitialized variable %s (offset %d)", GetClassname(), varName, i << 2 );
+//			const char *varName = GetTypeVariableName( this.GetClassname(), i << 2 );
+//			gameLocal.Warning( "type '%s' has uninitialized variable %s (offset %d)", this.GetClassname(), varName, i << 2 );
 //		}
 //	}
 //#endif
@@ -899,21 +899,21 @@ so it must be called as idClass::GetClass( classname )
 ////
 ////	return NULL;
 ////}
-////
-/////*
-////================
-////idClass::GetClassname
-////
-////Returns the text classname of the object.
-////================
-////*/
-////const char *idClass::GetClassname( ) const {
-////	idTypeInfo *type;
-////
-////	type = this.GetType();
-////	return type.classname;
-////}
-////
+
+/*
+================
+idClass::GetClassname
+
+Returns the text classname of the object.
+================
+*/
+	GetClassname ( ): string {
+		var type: idTypeInfo;
+
+		type = this.GetType ( );
+		return type.classname;
+	}
+
 /////*
 ////================
 ////idClass::GetSuperclass
