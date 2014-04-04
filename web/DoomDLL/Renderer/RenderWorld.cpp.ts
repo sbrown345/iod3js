@@ -1039,45 +1039,46 @@ GetPortal
 		return ret;
 	}
 
-///*
-//===============
-//PointInAreaNum
-//
-//Will return -1 if the point is not in an area, otherwise
-//it will return 0 <= value < tr.world.numPortalAreas
-//===============
-//*/
-//int idRenderWorldLocal::PointInArea( const idVec3 &point ) const {
-//	areaNode_t	*node;
-//	int			nodeNum;
-//	float		d;
-//	
-//	node = this.areaNodes;
-//	if ( !node ) {
-//		return -1;
-//	}
-//	while( 1 ) {
-//		d = point * node.plane.Normal() + node.plane[3];
-//		if (d > 0) {
-//			nodeNum = node.children[0];
-//		} else {
-//			nodeNum = node.children[1];
-//		}
-//		if ( nodeNum == 0 ) {
-//			return -1;		// in solid
-//		}
-//		if ( nodeNum < 0 ) {
-//			nodeNum = -1 - nodeNum;
-//			if ( nodeNum >= this.numPortalAreas ) {
-//				common.Error( "idRenderWorld::PointInArea: area out of range" );
-//			}
-//			return nodeNum;
-//		}
-//		node = this.areaNodes + nodeNum;
-//	}
-//	
-//	return -1;
-//}
+/*
+===============
+PointInAreaNum
+
+Will return -1 if the point is not in an area, otherwise
+it will return 0 <= value < tr.world.numPortalAreas
+===============
+*/
+	PointInArea ( point: idVec3 ): number /*int*/ {
+		var node: areaNode_t;
+		var nodeNum: number /*int*/;
+		var d: number /*float*/;
+
+		node = this.areaNodes[0];
+		if ( !node ) {
+			return -1;
+		}
+		while (1) {
+			todoThrow ( );
+			d = point.timesVec( node.plane.Normal ( ) ) + node.plane[3];
+			if ( d > 0 ) {
+				nodeNum = node.children[0];
+			} else {
+				nodeNum = node.children[1];
+			}
+			if ( nodeNum == 0 ) {
+				return -1; // in solid
+			}
+			if ( nodeNum < 0 ) {
+				nodeNum = -1 - nodeNum;
+				if ( nodeNum >= this.numPortalAreas ) {
+					common.Error( "idRenderWorld::PointInArea: area out of range" );
+				}
+				return nodeNum;
+			}
+			node = this.areaNodes[nodeNum];
+		}
+
+		return -1;
+	}
 //
 ///*
 //===================
@@ -3082,7 +3083,7 @@ AddWorldModelEntities  (): void {
 //	int				addPlanes;
 //	idFixedWinding	w;		// we won't overflow because MAX_PORTAL_PLANES = 20
 //
-//	area = &portalAreas[ areaNum ];
+//	area = &this.portalAreas[ areaNum ];
 //
 //	// cull models and lights to the current collection of planes
 //	AddAreaRefs( areaNum, ps );
@@ -3219,17 +3220,17 @@ AddWorldModelEntities  (): void {
 //
 //	if ( tr.viewDef.areaNum < 0 ){
 //
-//		for ( i = 0; i < numPortalAreas; i++ ) {
+//		for ( i = 0; i < this.numPortalAreas; i++ ) {
 //			areaScreenRect[i] = tr.viewDef.scissor;
 //		}
 //
 //		// if outside the world, mark everything
-//		for ( i = 0 ; i < numPortalAreas ; i++ ) {
+//		for ( i = 0 ; i < this.numPortalAreas ; i++ ) {
 //			AddAreaRefs( i, &ps );
 //		}
 //	} else {
 //
-//		for ( i = 0; i < numPortalAreas; i++ ) {
+//		for ( i = 0; i < this.numPortalAreas; i++ ) {
 //			areaScreenRect[i].Clear();
 //		}
 //
@@ -3258,7 +3259,7 @@ AddWorldModelEntities  (): void {
 //	int				addPlanes;
 //	idFixedWinding	w;		// we won't overflow because MAX_PORTAL_PLANES = 20
 //
-//	area = &portalAreas[ areaNum ];
+//	area = &this.portalAreas[ areaNum ];
 //
 //	// add an areaRef
 //	AddLightRefToArea( light, area );	
@@ -3396,7 +3397,7 @@ AddWorldModelEntities  (): void {
 //	idBounds newBounds;
 //	areaNumRef_t *a;
 //
-//	portalArea = &portalAreas[ areaNum ];
+//	portalArea = &this.portalAreas[ areaNum ];
 //
 //	// go through all the portals
 //	for ( p = portalArea.portals; p; p = p.next ) {
@@ -3516,7 +3517,7 @@ AddWorldModelEntities  (): void {
 //	viewEntity_t		*vEnt;
 //	idBounds			b;
 //
-//	area = &portalAreas[ areaNum ];
+//	area = &this.portalAreas[ areaNum ];
 //
 //	for ( ref = area.entityRefs.areaNext ; ref != &area.entityRefs ; ref = ref.areaNext ) {
 //		entity = ref.entity;
@@ -3647,7 +3648,7 @@ AddWorldModelEntities  (): void {
 //	idRenderLightLocal			*light;
 //	viewLight_t			*vLight;
 //
-//	area = &portalAreas[ areaNum ];
+//	area = &this.portalAreas[ areaNum ];
 //
 //	for ( lref = area.lightRefs.areaNext ; lref != &area.lightRefs ; lref = lref.areaNext ) {
 //		light = lref.light;
@@ -3690,7 +3691,7 @@ AddWorldModelEntities  (): void {
 //void idRenderWorldLocal::AddAreaRefs( int areaNum, const portalStack_t *ps ) {
 //	// mark the viewCount, so r_showPortals can display the
 //	// considered portals
-//	portalAreas[ areaNum ].viewCount = tr.viewCount;
+//	this.portalAreas[ areaNum ].viewCount = tr.viewCount;
 //
 //	// add the models and lights, using more precise culling to the planes
 //	AddAreaEntityRefs( areaNum, ps );
@@ -3713,7 +3714,7 @@ AddWorldModelEntities  (): void {
 //	tr.viewDef.connectedAreas[areaNum] = true;
 //
 //	// flood through all non-blocked portals
-//	area = &portalAreas[ areaNum ];
+//	area = &this.portalAreas[ areaNum ];
 //	for ( portal = area.portals ; portal ; portal = portal.next ) {
 //		if ( !(portal.doublePortal.blockingBits & PS_BLOCK_VIEW) ) {
 //			BuildConnectedAreas_r( portal.intoArea );
@@ -3731,19 +3732,19 @@ AddWorldModelEntities  (): void {
 //void idRenderWorldLocal::BuildConnectedAreas( void ) {
 //	int		i;
 //
-//	tr.viewDef.connectedAreas = (bool *)R_FrameAlloc( numPortalAreas
+//	tr.viewDef.connectedAreas = (bool *)R_FrameAlloc( this.numPortalAreas
 //		* sizeof( tr.viewDef.connectedAreas[0] ) );
 //
 //	// if we are outside the world, we can see all areas
 //	if ( tr.viewDef.areaNum == -1 ) {
-//		for ( i = 0 ; i < numPortalAreas ; i++ ) {
+//		for ( i = 0 ; i < this.numPortalAreas ; i++ ) {
 //			tr.viewDef.connectedAreas[i] = true;
 //		}
 //		return;
 //	}
 //
 //	// start with none visible, and flood fill from the current area
-//	memset( tr.viewDef.connectedAreas, 0, numPortalAreas * sizeof( tr.viewDef.connectedAreas[0] ) );
+//	memset( tr.viewDef.connectedAreas, 0, this.numPortalAreas * sizeof( tr.viewDef.connectedAreas[0] ) );
 //	BuildConnectedAreas_r( tr.viewDef.areaNum );
 //}
 //
@@ -3867,34 +3868,35 @@ FloodConnectedAreas
 	}
 
 /*
-//==============
-//AreasAreConnected
-//
-//==============
-//*/
-//bool	idRenderWorldLocal::AreasAreConnected( int areaNum1, int areaNum2, portalConnection_t connection ) {
-//	if ( areaNum1 == -1 || areaNum2 == -1 ) {
-//		return false;
-//	}
-//	if ( areaNum1 > numPortalAreas || areaNum2 > numPortalAreas || areaNum1 < 0 || areaNum2 < 0 ) {
-//		common.Error( "idRenderWorldLocal::AreAreasConnected: bad parms: %i, %i", areaNum1, areaNum2 );
-//	}
-//
-//	int	attribute = 0;
-//
-//	int	intConnection = (int)connection;
-//
-//	while ( intConnection > 1 ) {
-//		attribute++;
-//		intConnection >>= 1;
-//	}
-//	if ( attribute >= NUM_PORTAL_ATTRIBUTES || ( 1 << attribute ) != (int)connection ) {
-//		common.Error( "idRenderWorldLocal::AreasAreConnected: bad connection number: %i\n", (int)connection );
-//	}
-//
-//	return portalAreas[areaNum1].connectedAreaNum[attribute] == portalAreas[areaNum2].connectedAreaNum[attribute];
-//}
-//
+==============
+AreasAreConnected
+
+==============
+*/
+	AreasAreConnected ( /*int */areaNum1: number, /*int */areaNum2: number, connection: portalConnection_t ): boolean {
+		if ( areaNum1 == -1 || areaNum2 == -1 ) {
+			return false;
+		}
+
+		if ( areaNum1 > this.numPortalAreas || areaNum2 > this.numPortalAreas || areaNum1 < 0 || areaNum2 < 0 ) {
+			common.Error( "idRenderWorldLocal::AreAreasConnected: bad parms: %i, %i", areaNum1, areaNum2 );
+		}
+
+		var attribute = 0;
+
+		var intConnection = int( connection );
+
+		while ( intConnection > 1 ) {
+			attribute++;
+			intConnection >>= 1;
+		}
+		if ( attribute >= NUM_PORTAL_ATTRIBUTES || ( 1 << attribute ) != int( connection ) ) {
+			common.Error( "idRenderWorldLocal::AreasAreConnected: bad connection number: %i\n", int( connection ) );
+		}
+
+		return this.portalAreas[areaNum1].connectedAreaNum[attribute] == this.portalAreas[areaNum2].connectedAreaNum[attribute];
+	}
+
 //
 ///*
 //==============
@@ -3922,7 +3924,7 @@ FloodConnectedAreas
 //	for ( int i = 0 ; i < NUM_PORTAL_ATTRIBUTES ; i++ ) {
 //		if ( ( old ^ blockTypes ) & ( 1 << i ) ) {
 //			connectedAreaNum++;
-//			FloodConnectedAreas( &portalAreas[doublePortals[portal-1].portals[1].intoArea], i );
+//			FloodConnectedAreas( &this.portalAreas[doublePortals[portal-1].portals[1].intoArea], i );
 //		}
 //	}
 //
@@ -3966,8 +3968,8 @@ FloodConnectedAreas
 //	idWinding	*w;
 //
 //	// flood out through portals, setting area viewCount
-//	for ( i = 0 ; i < numPortalAreas ; i++ ) {
-//		area = &portalAreas[i];
+//	for ( i = 0 ; i < this.numPortalAreas ; i++ ) {
+//		area = &this.portalAreas[i];
 //		if ( area.viewCount != tr.viewCount ) {
 //			continue;
 //		}
@@ -3977,7 +3979,7 @@ FloodConnectedAreas
 //				continue;
 //			}
 //
-//			if ( portalAreas[ p.intoArea ].viewCount != tr.viewCount ) {
+//			if ( this.portalAreas[ p.intoArea ].viewCount != tr.viewCount ) {
 //				// red = can't see
 //				glColor3f( 1, 0, 0 );
 //			} else {

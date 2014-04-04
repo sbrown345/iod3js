@@ -602,7 +602,7 @@ idProgram::GetStatement
 //================
 //*/
 //ID_INLINE int idProgram::GetReturnedInteger( ) {
-//	return *returnDef.value.intPtr;
+//	return *this.returnDef.value.intPtr;
 //}
 //
 ///*
@@ -610,28 +610,28 @@ idProgram::GetStatement
 //idProgram::ReturnFloat
 //================
 //*/
-//ID_INLINE void idProgram::ReturnFloat( float value ) {
-//	*returnDef.value.floatPtr = value;
+//ID_INLINE void idProgram::ReturnFloat( float value ):void {
+//	*this.returnDef.value.floatPtr = value;
 //}
 //
-///*
-//================
-//idProgram::ReturnInteger
-//================
-//*/
-//ID_INLINE void idProgram::ReturnInteger( int value ) {
-//	*returnDef.value.intPtr = value;
-//}
-//
-///*
-//================
-//idProgram::ReturnVector
-//================
-//*/
-//ID_INLINE void idProgram::ReturnVector( idVec3 const &vec ) {
-//	*returnDef.value.vectorPtr = vec;
-//}
-//
+/*
+================
+idProgram::ReturnInteger
+================
+*/
+	ReturnInteger ( /*int*/ value: number ): void {
+		this.returnDef.value.intPtr = value;
+	}
+
+/*
+================
+idProgram::ReturnVector
+================
+*/
+	ReturnVector ( vec: idVec3 ): void {
+		this.returnDef.value.vectorPtr = vec;
+	}
+
 /*
 ================
 idProgram::ReturnString
@@ -1711,9 +1711,9 @@ GetFilenum( name: string):number
 //*/
 //void idProgram::ReturnEntity( ent:idEntity ) {
 //	if ( ent ) {
-//		*returnDef.value.entityNumberPtr = ent.entityNumber + 1;
+//		*this.returnDef.value.entityNumberPtr = ent.entityNumber + 1;
 //	} else {
-//		*returnDef.value.entityNumberPtr = 0;
+//		*this.returnDef.value.entityNumberPtr = 0;
 //	}
 //}
 }

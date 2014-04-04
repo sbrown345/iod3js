@@ -103,18 +103,18 @@ class idLinkList<type> {
 		this.Clear ( );
 	}
 
-	/////*
-	////================
-	////idLinkList<type>::IsListEmpty
-	////
-	////Returns true if the list is empty.
-	////================
-	////*/
-	//////template< class type >
-	////bool idLinkList<type>::IsListEmpty( ) const {
-	////	return this.head.next == this.head;
-	////}
-	////
+	/*
+	================
+	idLinkList<type>::IsListEmpty
+	
+	Returns true if the list is empty.
+	================
+	*/
+	//template< class type >
+	IsListEmpty ( ): boolean {
+		return this.head.next == this.head;
+	}
+
 	/////*
 	////================
 	////idLinkList<type>::InList

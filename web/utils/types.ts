@@ -397,7 +397,6 @@ interface String {
   endsWith(str:string):boolean;
 }
 
-// todo: faster way e.g. https://stackoverflow.com/questions/6965107/converting-between-strings-and-arraybuffers
 String.prototype.toUint8Array = function ( destination?: Uint8Array ): Uint8Array {
 	var array = destination || new Uint8Array( this.length );
 	var i = 0;
@@ -420,6 +419,7 @@ interface Uint8Array {
   toString: () => string;
 }
 
+// todo: http://jsperf.com/arraybuffer-to-string-apply-performance/2
 Uint8Array.prototype.toString = function () : string {
     var str = "";
     for (var i = 0; i < this.length; i++) {

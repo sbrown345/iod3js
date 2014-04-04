@@ -126,11 +126,11 @@ class idEntity extends idClass {
 ////
 	entityNumber: number;		// index into the entity list		//	int						
 	entityDefNumber:number;		// index into the entity def list	//	int						
-////
-////	idLinkList<idEntity>	spawnNode;				// for being linked into spawnedEntities list
-////	idLinkList<idEntity>	activeNode;				// for being linked into activeEntities list
-////
-////	idLinkList<idEntity>	snapshotNode;			// for being linked into snapshotEntities list
+
+	spawnNode = new idLinkList<idEntity>();				// for being linked into spawnedEntities list
+	activeNode = new idLinkList<idEntity>();				// for being linked into activeEntities list
+
+	snapshotNode = new idLinkList<idEntity>();			// for being linked into snapshotEntities list
 	snapshotSequence: number /*int*/;		// last snapshot this entity was in
 	snapshotBits: number /*int*/;			// number of bits this entity occupied in the last snapshot
 

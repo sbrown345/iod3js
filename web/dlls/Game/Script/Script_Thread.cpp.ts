@@ -157,12 +157,12 @@ class idThread extends idClass {
 	Event_WaitFrame( ):void{throw "placeholder";}
 	Event_WaitFor( ent:idEntity ):void{throw "placeholder";}
 	Event_WaitForThread( /*int*/num:number ):void{throw "placeholder";}
-	Event_Print( text:string ):void{throw "placeholder";}
-	Event_PrintLn( text:string ):void{throw "placeholder";}
-	Event_Say( text:string ):void{throw "placeholder";}
-	Event_Assert( /*float */value:number ):void{throw "placeholder";}
+	//Event_Print( text:string ):void{throw "placeholder";}
+	//Event_PrintLn( text:string ):void{throw "placeholder";}
+	//Event_Say( text:string ):void{throw "placeholder";}
+	//Event_Assert( /*float */value:number ):void{throw "placeholder";}
 	Event_Trigger( ent:idEntity ):void{throw "placeholder";}
-	Event_SetCvar(name: string, value: string): void { throw "placeholder"; }
+	//Event_SetCvar(name: string, value: string): void { throw "placeholder"; }
 	Event_GetCvar(name: string): void { throw "placeholder"; }
 	Event_Random( /*float*/ range:number): void { throw "placeholder"; }
 	Event_GetTime( ):void{throw "placeholder";}
@@ -1190,42 +1190,42 @@ idThread::Pause
 //	}
 //}
 //
-///*
-//================
-//idThread::Event_Print
-//================
-//*/
-//Event_Print( text:string ) :void{
-//	gameLocal.Printf( "%s", text );
-//}
-//
-///*
-//================
-//idThread::Event_PrintLn
-//================
-//*/
-//Event_PrintLn( text:string ) :void{
-//	gameLocal.Printf( "%s\n", text );
-//}
-//
-///*
-//================
-//idThread::Event_Say
-//================
-//*/
-//Event_Say( text:string ):void{
-//	cmdSystem.BufferCommandText( CMD_EXEC_NOW, va( "say \"%s\"", text ) );
-//}
-//
-///*
-//================
-//idThread::Event_Assert
-//================
-//*/
-//Event_Assert( float value ):void {
-//	assert( value );
-//}
-//
+/*
+================
+idThread::Event_Print
+================
+*/
+	Event_Print ( text: string ): void {
+		gameLocal.Printf( "%s", text );
+	}
+
+/*
+================
+idThread::Event_PrintLn
+================
+*/
+	Event_PrintLn ( text: string ): void {
+		gameLocal.Printf( "%s\n", text );
+	}
+
+/*
+================
+idThread::Event_Say
+================
+*/
+	Event_Say ( text: string ): void {
+		cmdSystem.BufferCommandText( cmdExecution_t.CMD_EXEC_NOW, va( "say \"%s\"", text ) );
+	}
+
+/*
+================
+idThread::Event_Assert
+================
+*/
+	Event_Assert ( /*float*/ value: number ): void {
+		assert( value );
+	}
+
 ///*
 //================
 //idThread::Event_Trigger
@@ -1239,16 +1239,16 @@ idThread::Pause
 //	}
 //}
 //
-///*
-//================
-//idThread::Event_SetCvar
-//================
-//*/
-//Event_SetCvar( name:string, value:string ) :void {
-//	cvarSystem.SetCVarString( name, value );
-//}
-//
-///*
+/*
+================
+idThread::Event_SetCvar
+================
+*/
+Event_SetCvar( name:string, value:string ) :void {
+	cvarSystem.SetCVarString( name, value );
+}
+
+/*
 //================
 //idThread::Event_GetCvar
 //================

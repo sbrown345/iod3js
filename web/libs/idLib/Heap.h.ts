@@ -371,13 +371,27 @@ class idDynamicAlloc<T> {
 		return newStructArray<T>( this.type, num ); //Mem_Alloc16( num * sizeof( type ) );
 	}
 
-	AllocInt16Array ( /*const int */num: number ): Int16Array {
+	AllocUint8Array ( /*const int */num: number ): Int16Array {
 		this.numAllocs++;
 		if ( num <= 0 ) {
 			return null;
 		}
 		this.numUsedBlocks++;
 		this.usedBlockMemory += num; //* sizeof( type );
+		if ( this["type"] !== window["Uint8Array"] ) {
+			throw "use Alloc() instead";
+		}
+
+		return <any>( new Uint8Array( num ) );
+	}
+
+	AllocInt16Array ( /*const int */num: number ): Int16Array {
+		this.numAllocs++;
+		if ( num <= 0 ) {
+			return null;
+		}
+		this.numUsedBlocks++;
+		this.usedBlockMemory += num * 2; //* sizeof( type );
 		if ( this["type"] !== window["Int16Array"] ) {
 			throw "use Alloc() instead";
 		}
@@ -391,7 +405,7 @@ class idDynamicAlloc<T> {
 			return null;
 		}
 		this.numUsedBlocks++;
-		this.usedBlockMemory += num; //* sizeof( type );
+		this.usedBlockMemory += num * 4; //* sizeof( type );
 		if (this["type"] !== window["Int32Array"] ) {
 			throw "use Alloc() instead";
 		}

@@ -166,7 +166,7 @@ idHashIndex::operator=
 
 				}
 				this.hashSize = other.hashSize;
-				this.hash = new int[this.hashSize];
+				this.hash = new Int32Array( this.hashSize );
 			}
 			if ( other.indexSize != this.indexSize || this.indexChain == idHashIndex.INVALID_INDEX ) {
 				if ( this.indexChain != idHashIndex.INVALID_INDEX ) {

@@ -223,21 +223,22 @@ idInterpreter::GetString
 		}
 	}
 
-///*
-//====================
-//idInterpreter::GetVariable
-//====================
-//*/
-//ID_INLINE varEval_t idInterpreter::GetVariable( idVarDef *def ) {
-//	if ( def.initialized == initialized_t.stackVariable ) {
-//		varEval_t val;
-//		val.intPtr = ( int * )&this.localstack[ this.localstackBase + def.value.stackOffset ];
-//		return val;
-//	} else {
-//		return def.value;
-//	}
-//}
-//
+/*
+====================
+idInterpreter::GetVariable
+====================
+*/
+	GetVariable(def: idVarDef ): varEval_t {
+	if ( def.initialized == initialized_t.stackVariable ) {
+		var val: varEval_t;
+		//val.intPtr = ( int *) & this.localstack[this.localstackBase + def.value.stackOffset];
+		val.intPtr = this.localstackBase + def.value.stackOffset;
+		return val;
+	} else {
+		return def.value;
+	}
+}
+
 ///*
 //================
 //idInterpreter::GetEntity
@@ -493,7 +494,7 @@ idInterpreter::Reset
 //		}
 //	}
 //		
-//	reg = GetVariable( d );
+//	reg = this.GetVariable( d );
 //	switch( d.Type() ) {
 //	case ev_float:
 //		if ( reg.floatPtr ) {
@@ -867,67 +868,67 @@ Aborts the currently executing function
 			this.maxLocalstackUsed = this.localstackUsed;
 		}
 	}
-//
-///*
-//====================
-//idInterpreter::LeaveFunction
-//====================
-//*/
-//void idInterpreter::LeaveFunction( idVarDef *returnDef ) {
-//	prstack_t *stack;
-//	varEval_t ret;
-//	
-//	if ( this.callStackDepth <= 0 ) {
-//		this.Error( "prog stack underflow" );
-//	}
-//
-//	// return value
-//	if ( returnDef ) {
-//		switch( returnDef.Type() ) {
-//		case ev_string :
-//			gameLocal.program.ReturnString( GetString( returnDef ) );
-//			break;
-//
-//		case ev_vector :
-//			ret = GetVariable( returnDef );
-//			gameLocal.program.ReturnVector( *ret.vectorPtr );
-//			break;
-//
-//		default :
-//			ret = GetVariable( returnDef );
-//			gameLocal.program.ReturnInteger( *ret.intPtr );
-//		}
-//	}
-//
-//	// remove locals from the stack
-//	this.PopParms( this.currentFunction.locals );
-//	assert( this.localstackUsed == this.localstackBase );
-//
-//	if ( this.debug ) {
-//		statement_t &line = gameLocal.program.GetStatement( this.instructionPointer );
-//		gameLocal.Printf( "%d: %s(%d): exit %s", gameLocal.time, gameLocal.program.GetFilename( line.file ), line.linenumber, this.currentFunction.Name() );
-//		if ( this.callStackDepth > 1 ) {
-//			gameLocal.Printf( " return to %s(line %d)\n", this.callStack[ this.callStackDepth - 1 ].f.Name(), gameLocal.program.GetStatement( this.callStack[ this.callStackDepth - 1 ].s ).linenumber );
-//		} else {
-//			gameLocal.Printf( " done\n" );
-//		}
-//	}
-//
-//	// up stack
-//	this.callStackDepth--;
-//	stack = &this.callStack[ this.callStackDepth ]; 
-//	this.currentFunction = stack.f;
-//	this.localstackBase = stack.stackbase;
-//	this.NextInstruction( stack.s );
-//
-//	if ( !this.callStackDepth ) {
-//		// all done
-//		this.doneProcessing = true;
-//		this.threadDying = true;
-//		this.currentFunction = 0;
-//	}
-//}
-//
+
+/*
+====================
+idInterpreter::LeaveFunction
+====================
+*/
+	LeaveFunction ( returnDef: idVarDef ): void {
+		var stack: prstack_t;
+		var ret = new varEval_t;
+
+		if ( this.callStackDepth <= 0 ) {
+			this.Error( "prog stack underflow" );
+		}
+
+		// return value
+		if ( returnDef ) {
+			switch ( returnDef.Type ( ) ) {
+			case etype_t.ev_string:
+				gameLocal.program.ReturnString( this.GetString( returnDef ) );
+				break;
+
+			case etype_t.ev_vector:
+				ret = this.GetVariable( returnDef );
+				gameLocal.program.ReturnVector( /* * */ret.vectorPtr );
+				break;
+
+			default:
+				ret = this.GetVariable( returnDef );
+				gameLocal.program.ReturnInteger( /* * */ret.intPtr );
+			}
+		}
+
+		// remove locals from the stack
+		this.PopParms( this.currentFunction.locals );
+		assert( this.localstackUsed == this.localstackBase );
+
+		if ( this.debug ) {
+			var line = gameLocal.program.GetStatement( this.instructionPointer );
+			gameLocal.Printf( "%d: %s(%d): exit %s", gameLocal.time, gameLocal.program.GetFilename( line.file ), line.linenumber, this.currentFunction.Name ( ) );
+			if ( this.callStackDepth > 1 ) {
+				gameLocal.Printf( " return to %s(line %d)\n", this.callStack[this.callStackDepth - 1].f.Name ( ), gameLocal.program.GetStatement( this.callStack[this.callStackDepth - 1].s ).linenumber );
+			} else {
+				gameLocal.Printf( " done\n" );
+			}
+		}
+
+		// up stack
+		this.callStackDepth--;
+		stack = this.callStack[this.callStackDepth];
+		this.currentFunction = stack.f;
+		this.localstackBase = stack.stackbase;
+		this.NextInstruction( stack.s );
+
+		if ( !this.callStackDepth ) {
+			// all done
+			this.doneProcessing = true;
+			this.threadDying = true;
+			this.currentFunction = null;
+		}
+	}
+
 ///*
 //================
 //idInterpreter::CallEvent
@@ -1122,7 +1123,7 @@ idInterpreter::CallSysEvent
 		evdef = func.eventdef;
 
 		start = this.localstackUsed - argsize;
-		todoThrow ( );
+		debugger;
 		format = evdef.GetArgFormat ( );
 		for ( j = 0, i = 0, pos = 0; ( pos < argsize ) || ( format[i] /*!= 0*/ ); i++ ) {
 			switch ( format[i] ) {
@@ -1226,9 +1227,9 @@ idInterpreter::Execute
 
 			dlog( DEBUG_SCRIPT, "idInterpreter::Execute while op: %i\n", st.op );
 			switch ( st.op ) {
-//		case opc.OP_RETURN:
-//			LeaveFunction( st.a );
-//			break;
+		case opc.OP_RETURN:
+			this.LeaveFunction( st.a );
+			break;
 //
 //		case opc.OP_THREAD:
 //			newThread = new idThread( this, st.a.value.functionPtr, st.b.value.argSize );
@@ -1240,7 +1241,7 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_OBJTHREAD:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
 //				func = obj.GetTypeDef().GetFunction( st.b.value.virtualFunction );
@@ -1266,7 +1267,7 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_OBJECTCALL:	
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
 //				func = obj.GetTypeDef().GetFunction( st.b.value.virtualFunction );
@@ -1284,14 +1285,14 @@ idInterpreter::Execute
 			break;
 //
 //		case opc.OP_IFNOT:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			if ( *var_a.intPtr == 0 ) {
 //				this.NextInstruction( this.instructionPointer + st.b.value.jumpOffset );
 //			}
 //			break;
 //
 //		case opc.OP_IF:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			if ( *var_a.intPtr != 0 ) {
 //				this.NextInstruction( this.instructionPointer + st.b.value.jumpOffset );
 //			}
@@ -1302,94 +1303,94 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_ADD_F:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = *var_a.floatPtr + *var_b.floatPtr;
 //			break;
 //
 //		case opc.OP_ADD_V:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.vectorPtr = *var_a.vectorPtr + *var_b.vectorPtr;
 //			break;
 //
 //		case opc.OP_ADD_S:
-//			SetString( st.c, GetString( st.a ) );
-//			AppendString( st.c, GetString( st.b ) );
+//			SetString( st.c, this.GetString( st.a ) );
+//			AppendString( st.c, this.GetString( st.b ) );
 //			break;
 //
 //		case opc.OP_ADD_FS:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			SetString( st.c, FloatToString( *var_a.floatPtr ) );
-//			AppendString( st.c, GetString( st.b ) );
+//			AppendString( st.c, this.GetString( st.b ) );
 //			break;
 //
 //		case opc.OP_ADD_SF:
-//			var_b = GetVariable( st.b );
-//			SetString( st.c, GetString( st.a ) );
+//			var_b = this.GetVariable( st.b );
+//			SetString( st.c, this.GetString( st.a ) );
 //			AppendString( st.c, FloatToString( *var_b.floatPtr ) );
 //			break;
 //
 //		case opc.OP_ADD_VS:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			SetString( st.c, var_a.vectorPtr.ToString() );
-//			AppendString( st.c, GetString( st.b ) );
+//			AppendString( st.c, this.GetString( st.b ) );
 //			break;
 //
 //		case opc.OP_ADD_SV:
-//			var_b = GetVariable( st.b );
-//			SetString( st.c, GetString( st.a ) );
+//			var_b = this.GetVariable( st.b );
+//			SetString( st.c, this.GetString( st.a ) );
 //			AppendString( st.c, var_b.vectorPtr.ToString() );
 //			break;
 //
 //		case opc.OP_SUB_F:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = *var_a.floatPtr - *var_b.floatPtr;
 //			break;
 //
 //		case opc.OP_SUB_V:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.vectorPtr = *var_a.vectorPtr - *var_b.vectorPtr;
 //			break;
 //
 //		case opc.OP_MUL_F:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = *var_a.floatPtr * *var_b.floatPtr;
 //			break;
 //
 //		case opc.OP_MUL_V:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = *var_a.vectorPtr * *var_b.vectorPtr;
 //			break;
 //
 //		case opc.OP_MUL_FV:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.vectorPtr = *var_a.floatPtr * *var_b.vectorPtr;
 //			break;
 //
 //		case opc.OP_MUL_VF:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.vectorPtr = *var_a.vectorPtr * *var_b.floatPtr;
 //			break;
 //
 //		case opc.OP_DIV_F:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //
 //			if ( *var_b.floatPtr == 0.0 ) {
 //				Warning( "Divide by zero" );
@@ -1400,9 +1401,9 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_MOD_F:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable ( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable ( st.c );
 //
 //			if ( *var_b.floatPtr == 0.0 ) {
 //				Warning( "Divide by zero" );
@@ -1413,249 +1414,249 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_BITAND:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = static_cast<int>( *var_a.floatPtr ) & static_cast<int>( *var_b.floatPtr );
 //			break;
 //
 //		case opc.OP_BITOR:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = static_cast<int>( *var_a.floatPtr ) | static_cast<int>( *var_b.floatPtr );
 //			break;
 //
 //		case opc.OP_GE:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr >= *var_b.floatPtr );
 //			break;
 //
 //		case opc.OP_LE:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr <= *var_b.floatPtr );
 //			break;
 //
 //		case opc.OP_GT:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr > *var_b.floatPtr );
 //			break;
 //
 //		case opc.OP_LT:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr < *var_b.floatPtr );
 //			break;
 //
 //		case opc.OP_AND:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr != 0.0 ) && ( *var_b.floatPtr != 0.0 );
 //			break;
 //
 //		case opc.OP_AND_BOOLF:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.intPtr != 0 ) && ( *var_b.floatPtr != 0.0 );
 //			break;
 //
 //		case opc.OP_AND_FBOOL:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr != 0.0 ) && ( *var_b.intPtr != 0 );
 //			break;
 //
 //		case opc.OP_AND_BOOLBOOL:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.intPtr != 0 ) && ( *var_b.intPtr != 0 );
 //			break;
 //
 //		case opc.OP_OR:	
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr != 0.0 ) || ( *var_b.floatPtr != 0.0 );
 //			break;
 //
 //		case opc.OP_OR_BOOLF:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.intPtr != 0 ) || ( *var_b.floatPtr != 0.0 );
 //			break;
 //
 //		case opc.OP_OR_FBOOL:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr != 0.0 ) || ( *var_b.intPtr != 0 );
 //			break;
 //			
 //		case opc.OP_OR_BOOLBOOL:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.intPtr != 0 ) || ( *var_b.intPtr != 0 );
 //			break;
 //			
 //		case opc.OP_NOT_BOOL:
-//			var_a = GetVariable( st.a );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.intPtr == 0 );
 //			break;
 //
 //		case opc.OP_NOT_F:
-//			var_a = GetVariable( st.a );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr == 0.0 );
 //			break;
 //
 //		case opc.OP_NOT_V:
-//			var_a = GetVariable( st.a );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.vectorPtr == vec3_zero );
 //			break;
 //
 //		case opc.OP_NOT_S:
-//			var_c = GetVariable( st.c );
-//			*var_c.floatPtr = ( strlen( GetString( st.a ) ) == 0 );
+//			var_c = this.GetVariable( st.c );
+//			*var_c.floatPtr = ( strlen( this.GetString( st.a ) ) == 0 );
 //			break;
 //
 //		case opc.OP_NOT_ENT:
-//			var_a = GetVariable( st.a );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( GetEntity( *var_a.entityNumberPtr ) == NULL );
 //			break;
 //
 //		case opc.OP_NEG_F:
-//			var_a = GetVariable( st.a );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = -*var_a.floatPtr;
 //			break;
 //
 //		case opc.OP_NEG_V:
-//			var_a = GetVariable( st.a );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.vectorPtr = -*var_a.vectorPtr;
 //			break;
 //
 //		case opc.OP_INT_F:
-//			var_a = GetVariable( st.a );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = static_cast<int>( *var_a.floatPtr );
 //			break;
 //
 //		case opc.OP_EQ_F:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr == *var_b.floatPtr );
 //			break;
 //
 //		case opc.OP_EQ_V:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.vectorPtr == *var_b.vectorPtr );
 //			break;
 //
 //		case opc.OP_EQ_S:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
-//			*var_c.floatPtr = ( idStr.Cmp( GetString( st.a ), GetString( st.b ) ) == 0 );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
+//			*var_c.floatPtr = ( idStr.Cmp( this.GetString( st.a ), this.GetString( st.b ) ) == 0 );
 //			break;
 //
 //		case opc.OP_EQ_E:
 //		case opc.OP_EQ_EO:
 //		case opc.OP_EQ_OE:
 //		case opc.OP_EQ_OO:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.entityNumberPtr == *var_b.entityNumberPtr );
 //			break;
 //
 //		case opc.OP_NE_F:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.floatPtr != *var_b.floatPtr );
 //			break;
 //
 //		case opc.OP_NE_V:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.vectorPtr != *var_b.vectorPtr );
 //			break;
 //
 //		case opc.OP_NE_S:
-//			var_c = GetVariable( st.c );
-//			*var_c.floatPtr = ( idStr.Cmp( GetString( st.a ), GetString( st.b ) ) != 0 );
+//			var_c = this.GetVariable( st.c );
+//			*var_c.floatPtr = ( idStr.Cmp( this.GetString( st.a ), this.GetString( st.b ) ) != 0 );
 //			break;
 //
 //		case opc.OP_NE_E:
 //		case opc.OP_NE_EO:
 //		case opc.OP_NE_OE:
 //		case opc.OP_NE_OO:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ( *var_a.entityNumberPtr != *var_b.entityNumberPtr );
 //			break;
 //
 //		case opc.OP_UADD_F:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //			*var_b.floatPtr += *var_a.floatPtr;
 //			break;
 //
 //		case opc.OP_UADD_V:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //			*var_b.vectorPtr += *var_a.vectorPtr;
 //			break;
 //
 //		case opc.OP_USUB_F:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //			*var_b.floatPtr -= *var_a.floatPtr;
 //			break;
 //
 //		case opc.OP_USUB_V:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //			*var_b.vectorPtr -= *var_a.vectorPtr;
 //			break;
 //
 //		case opc.OP_UMUL_F:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //			*var_b.floatPtr *= *var_a.floatPtr;
 //			break;
 //
 //		case opc.OP_UMUL_V:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //			*var_b.vectorPtr *= *var_a.floatPtr;
 //			break;
 //
 //		case opc.OP_UDIV_F:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //
 //			if ( *var_a.floatPtr == 0.0 ) {
 //				Warning( "Divide by zero" );
@@ -1666,8 +1667,8 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_UDIV_V:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //
 //			if ( *var_a.floatPtr == 0.0 ) {
 //				Warning( "Divide by zero" );
@@ -1678,8 +1679,8 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_UMOD_F:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //
 //			if ( *var_a.floatPtr == 0.0 ) {
 //				Warning( "Divide by zero" );
@@ -1690,24 +1691,24 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_UOR_F:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //			*var_b.floatPtr = static_cast<int>( *var_b.floatPtr ) | static_cast<int>( *var_a.floatPtr );
 //			break;
 //
 //		case opc.OP_UAND_F:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //			*var_b.floatPtr = static_cast<int>( *var_b.floatPtr ) & static_cast<int>( *var_a.floatPtr );
 //			break;
 //
 //		case opc.OP_UINC_F:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			( *var_a.floatPtr )++;
 //			break;
 //
 //		case opc.OP_UINCP_F:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
 //				$var.bytePtr = &obj.data[ st.b.value.ptrOffset ];
@@ -1716,12 +1717,12 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_UDEC_F:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			( *var_a.floatPtr )--;
 //			break;
 //
 //		case opc.OP_UDECP_F:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
 //				$var.bytePtr = &obj.data[ st.b.value.ptrOffset ];
@@ -1730,32 +1731,32 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_COMP_F:
-//			var_a = GetVariable( st.a );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_c = this.GetVariable( st.c );
 //			*var_c.floatPtr = ~static_cast<int>( *var_a.floatPtr );
 //			break;
 //
 //		case opc.OP_STORE_F:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //			*var_b.floatPtr = *var_a.floatPtr;
 //			break;
 //
 //		case opc.OP_STORE_ENT:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //			*var_b.entityNumberPtr = *var_a.entityNumberPtr;
 //			break;
 //
 //		case opc.OP_STORE_BOOL:	
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //			*var_b.intPtr = *var_a.intPtr;
 //			break;
 //
 //		case opc.OP_STORE_OBJENT:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( !obj ) {
 //				*var_b.entityNumberPtr = 0;
@@ -1769,39 +1770,39 @@ idInterpreter::Execute
 //
 //		case opc.OP_STORE_OBJ:
 //		case opc.OP_STORE_ENTOBJ:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //			*var_b.entityNumberPtr = *var_a.entityNumberPtr;
 //			break;
 //
 //		case opc.OP_STORE_S:
-//			SetString( st.b, GetString( st.a ) );
+//			SetString( st.b, this.GetString( st.a ) );
 //			break;
 //
 //		case opc.OP_STORE_V:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //			*var_b.vectorPtr = *var_a.vectorPtr;
 //			break;
 //
 //		case opc.OP_STORE_FTOS:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			SetString( st.b, FloatToString( *var_a.floatPtr ) );
 //			break;
 //
 //		case opc.OP_STORE_BTOS:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			SetString( st.b, *var_a.intPtr ? "true" : "false" );
 //			break;
 //
 //		case opc.OP_STORE_VTOS:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			SetString( st.b, var_a.vectorPtr.ToString() );
 //			break;
 //
 //		case opc.OP_STORE_FTOBOOL:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //			if ( *var_a.floatPtr != 0.0 ) {
 //				*var_b.intPtr = 1;
 //			} else {
@@ -1810,70 +1811,70 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_STORE_BOOLTOF:
-//			var_a = GetVariable( st.a );
-//			var_b = GetVariable( st.b );
+//			var_a = this.GetVariable( st.a );
+//			var_b = this.GetVariable( st.b );
 //			*var_b.floatPtr = static_cast<float>( *var_a.intPtr );
 //			break;
 //
 //		case opc.OP_STOREP_F:
-//			var_b = GetVariable( st.b );
+//			var_b = this.GetVariable( st.b );
 //			if ( var_b.evalPtr && var_b.evalPtr.floatPtr ) {
-//				var_a = GetVariable( st.a );
+//				var_a = this.GetVariable( st.a );
 //				*var_b.evalPtr.floatPtr = *var_a.floatPtr;
 //			}
 //			break;
 //
 //		case opc.OP_STOREP_ENT:
-//			var_b = GetVariable( st.b );
+//			var_b = this.GetVariable( st.b );
 //			if ( var_b.evalPtr && var_b.evalPtr.entityNumberPtr ) {
-//				var_a = GetVariable( st.a );
+//				var_a = this.GetVariable( st.a );
 //				*var_b.evalPtr.entityNumberPtr = *var_a.entityNumberPtr;
 //			}
 //			break;
 //
 //		case opc.OP_STOREP_FLD:
-//			var_b = GetVariable( st.b );
+//			var_b = this.GetVariable( st.b );
 //			if ( var_b.evalPtr && var_b.evalPtr.intPtr ) {
-//				var_a = GetVariable( st.a );
+//				var_a = this.GetVariable( st.a );
 //				*var_b.evalPtr.intPtr = *var_a.intPtr;
 //			}
 //			break;
 //
 //		case opc.OP_STOREP_BOOL:
-//			var_b = GetVariable( st.b );
+//			var_b = this.GetVariable( st.b );
 //			if ( var_b.evalPtr && var_b.evalPtr.intPtr ) {
-//				var_a = GetVariable( st.a );
+//				var_a = this.GetVariable( st.a );
 //				*var_b.evalPtr.intPtr = *var_a.intPtr;
 //			}
 //			break;
 //
 //		case opc.OP_STOREP_S:
-//			var_b = GetVariable( st.b );
+//			var_b = this.GetVariable( st.b );
 //			if ( var_b.evalPtr && var_b.evalPtr.stringPtr ) {
-//				idStr.Copynz( var_b.evalPtr.stringPtr, GetString( st.a ), MAX_STRING_LEN );
+//				idStr.Copynz( var_b.evalPtr.stringPtr, this.GetString( st.a ), MAX_STRING_LEN );
 //			}
 //			break;
 //
 //		case opc.OP_STOREP_V:
-//			var_b = GetVariable( st.b );
+//			var_b = this.GetVariable( st.b );
 //			if ( var_b.evalPtr && var_b.evalPtr.vectorPtr ) {
-//				var_a = GetVariable( st.a );
+//				var_a = this.GetVariable( st.a );
 //				*var_b.evalPtr.vectorPtr = *var_a.vectorPtr;
 //			}
 //			break;
 //		
 //		case opc.OP_STOREP_FTOS:
-//			var_b = GetVariable( st.b );
+//			var_b = this.GetVariable( st.b );
 //			if ( var_b.evalPtr && var_b.evalPtr.stringPtr ) {
-//				var_a = GetVariable( st.a );
+//				var_a = this.GetVariable( st.a );
 //				idStr.Copynz( var_b.evalPtr.stringPtr, FloatToString( *var_a.floatPtr ), MAX_STRING_LEN );
 //			}
 //			break;
 //
 //		case opc.OP_STOREP_BTOS:
-//			var_b = GetVariable( st.b );
+//			var_b = this.GetVariable( st.b );
 //			if ( var_b.evalPtr && var_b.evalPtr.stringPtr ) {
-//				var_a = GetVariable( st.a );
+//				var_a = this.GetVariable( st.a );
 //				if ( *var_a.floatPtr != 0.0 ) {
 //					idStr.Copynz( var_b.evalPtr.stringPtr, "true", MAX_STRING_LEN );
 //				} else {
@@ -1883,17 +1884,17 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_STOREP_VTOS:
-//			var_b = GetVariable( st.b );
+//			var_b = this.GetVariable( st.b );
 //			if ( var_b.evalPtr && var_b.evalPtr.stringPtr ) {
-//				var_a = GetVariable( st.a );
+//				var_a = this.GetVariable( st.a );
 //				idStr.Copynz( var_b.evalPtr.stringPtr, var_a.vectorPtr.ToString(), MAX_STRING_LEN );
 //			}
 //			break;
 //
 //		case opc.OP_STOREP_FTOBOOL:
-//			var_b = GetVariable( st.b );
+//			var_b = this.GetVariable( st.b );
 //			if ( var_b.evalPtr && var_b.evalPtr.intPtr ) {
-//				var_a = GetVariable( st.a );
+//				var_a = this.GetVariable( st.a );
 //				if ( *var_a.floatPtr != 0.0 ) {
 //					*var_b.evalPtr.intPtr = 1;
 //				} else {
@@ -1903,25 +1904,25 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_STOREP_BOOLTOF:
-//			var_b = GetVariable( st.b );
+//			var_b = this.GetVariable( st.b );
 //			if ( var_b.evalPtr && var_b.evalPtr.floatPtr ) {
-//				var_a = GetVariable( st.a );
+//				var_a = this.GetVariable( st.a );
 //				*var_b.evalPtr.floatPtr = static_cast<float>( *var_a.intPtr );
 //			}
 //			break;
 //
 //		case opc.OP_STOREP_OBJ:
-//			var_b = GetVariable( st.b );
+//			var_b = this.GetVariable( st.b );
 //			if ( var_b.evalPtr && var_b.evalPtr.entityNumberPtr ) {
-//				var_a = GetVariable( st.a );
+//				var_a = this.GetVariable( st.a );
 //				*var_b.evalPtr.entityNumberPtr = *var_a.entityNumberPtr;
 //			}
 //			break;
 //
 //		case opc.OP_STOREP_OBJENT:
-//			var_b = GetVariable( st.b );
+//			var_b = this.GetVariable( st.b );
 //			if ( var_b.evalPtr && var_b.evalPtr.entityNumberPtr ) {
-//				var_a = GetVariable( st.a );
+//				var_a = this.GetVariable( st.a );
 //				obj = GetScriptObject( *var_a.entityNumberPtr );
 //				if ( !obj ) {
 //					*var_b.evalPtr.entityNumberPtr = 0;
@@ -1939,8 +1940,8 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_ADDRESS:
-//			var_a = GetVariable( st.a );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_c = this.GetVariable( st.c );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
 //				var_c.evalPtr.bytePtr = &obj.data[ st.b.value.ptrOffset ];
@@ -1950,8 +1951,8 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_INDIRECT_F:
-//			var_a = GetVariable( st.a );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_c = this.GetVariable( st.c );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
 //				$var.bytePtr = &obj.data[ st.b.value.ptrOffset ];
@@ -1962,8 +1963,8 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_INDIRECT_ENT:
-//			var_a = GetVariable( st.a );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_c = this.GetVariable( st.c );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
 //				$var.bytePtr = &obj.data[ st.b.value.ptrOffset ];
@@ -1974,8 +1975,8 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_INDIRECT_BOOL:
-//			var_a = GetVariable( st.a );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_c = this.GetVariable( st.c );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
 //				$var.bytePtr = &obj.data[ st.b.value.ptrOffset ];
@@ -1986,7 +1987,7 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_INDIRECT_S:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
 //				$var.bytePtr = &obj.data[ st.b.value.ptrOffset ];
@@ -1997,8 +1998,8 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_INDIRECT_V:
-//			var_a = GetVariable( st.a );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_c = this.GetVariable( st.c );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( obj ) {
 //				$var.bytePtr = &obj.data[ st.b.value.ptrOffset ];
@@ -2009,8 +2010,8 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_INDIRECT_OBJ:
-//			var_a = GetVariable( st.a );
-//			var_c = GetVariable( st.c );
+//			var_a = this.GetVariable( st.a );
+//			var_c = this.GetVariable( st.c );
 //			obj = GetScriptObject( *var_a.entityNumberPtr );
 //			if ( !obj ) {
 //				*var_c.entityNumberPtr = 0;
@@ -2021,23 +2022,23 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_PUSH_F:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			Push( *var_a.intPtr );
 //			break;
 //
 //		case opc.OP_PUSH_FTOS:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			this.PushString( FloatToString( *var_a.floatPtr ) );
 //			break;
 //
 //		case opc.OP_PUSH_BTOF:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			floatVal = *var_a.intPtr;
 //			Push( *reinterpret_cast<int *>( &floatVal ) );
 //			break;
 //
 //		case opc.OP_PUSH_FTOB:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			if ( *var_a.floatPtr != 0.0 ) {
 //				Push( 1 );
 //			} else {
@@ -2046,17 +2047,17 @@ idInterpreter::Execute
 //			break;
 //
 //		case opc.OP_PUSH_VTOS:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			this.PushString( var_a.vectorPtr.ToString() );
 //			break;
 //
 //		case opc.OP_PUSH_BTOS:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			this.PushString( *var_a.intPtr ? "true" : "false" );
 //			break;
 //
 //		case opc.OP_PUSH_ENT:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			Push( *var_a.entityNumberPtr );
 //			break;
 
@@ -2065,19 +2066,19 @@ idInterpreter::Execute
 			break;
 
 //		case opc.OP_PUSH_V:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			Push( *reinterpret_cast<int *>( &var_a.vectorPtr.x ) );
 //			Push( *reinterpret_cast<int *>( &var_a.vectorPtr.y ) );
 //			Push( *reinterpret_cast<int *>( &var_a.vectorPtr.z ) );
 //			break;
 //
 //		case opc.OP_PUSH_OBJ:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			Push( *var_a.entityNumberPtr );
 //			break;
 //
 //		case opc.OP_PUSH_OBJENT:
-//			var_a = GetVariable( st.a );
+//			var_a = this.GetVariable( st.a );
 //			Push( *var_a.entityNumberPtr );
 //			break;
 //

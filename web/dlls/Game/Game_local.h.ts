@@ -4447,46 +4447,44 @@ Now that everything has been spawned, associate areas with location entities
 ======================
 */
 	SpreadLocations ( ): void {
+		var ent: idEntity;
 
-		todoThrow ( );
-////	var ent:idEntity
+		// allocate the area table
+		var numAreas = gameRenderWorld.NumAreas ( );
+		this.locationEntities = new Array<idLocationEntity>( numAreas ); //new idLocationEntity *[ numAreas ];
+		//memset( this.locationEntities, 0, numAreas * sizeof( *this.locationEntities ) );
 
-////	// allocate the area table
-////	int	numAreas = gameRenderWorld.NumAreas();
-////	this.locationEntities = new idLocationEntity *[ numAreas ];
-////	memset( this.locationEntities, 0, numAreas * sizeof( *this.locationEntities ) );
+		// for each location entity, make pointers from every area it touches
+		for ( ent = this.spawnedEntities.Next ( ); ent != null; ent = ent.spawnNode.Next ( ) ) {
+			if ( !ent.IsType( idLocationEntity.Type ) ) {
+				continue;
+			}
+			var point = ent.spawnArgs.GetVector( "origin" );
+			var areaNum = gameRenderWorld.PointInArea( point );
+			if ( areaNum < 0 ) {
+				this.Printf( "SpreadLocations: location '%s' is not in a valid area\n", ent.spawnArgs.GetString( "name" ) );
+				continue;
+			}
+			if ( areaNum >= numAreas ) {
+				Error( "idGameLocal::SpreadLocations: areaNum >= gameRenderWorld.NumAreas()" );
+			}
+			if ( this.locationEntities[areaNum] ) {
+				this.Warning( "location entity '%s' overlaps '%s'", ent.spawnArgs.GetString( "name" ),
+					this.locationEntities[areaNum].spawnArgs.GetString( "name" ) );
+				continue;
+			}
+			this.locationEntities[areaNum] = static_cast<idLocationEntity>( ent );
 
-////	// for each location entity, make pointers from every area it touches
-////	for( ent = this.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
-////		if ( !ent.IsType( idLocationEntity::Type ) ) {
-////			continue;
-////		}
-////		idVec3	point = ent.spawnArgs.GetVector( "origin" );
-////		int areaNum = gameRenderWorld.PointInArea( point );
-////		if ( areaNum < 0 ) {
-////			this.Printf( "SpreadLocations: location '%s' is not in a valid area\n", ent.spawnArgs.GetString( "name" ) );
-////			continue;
-////		}
-////		if ( areaNum >= numAreas ) {
-////			Error( "idGameLocal::SpreadLocations: areaNum >= gameRenderWorld.NumAreas()" );
-////		}
-////		if ( this.locationEntities[areaNum] ) {
-////			this.Warning( "location entity '%s' overlaps '%s'", ent.spawnArgs.GetString( "name" ),
-////				this.locationEntities[areaNum].spawnArgs.GetString( "name" ) );
-////			continue;
-////		}
-////		this.locationEntities[areaNum] = static_cast<idLocationEntity *>(ent);
-
-////		// spread to all other connected areas
-////		for ( int i = 0 ; i < numAreas ; i++ ) {
-////			if ( i == areaNum ) {
-////				continue;
-////			}
-////			if ( gameRenderWorld.AreasAreConnected( areaNum, i, PS_BLOCK_LOCATION ) ) {
-////				this.locationEntities[i] = static_cast<idLocationEntity *>(ent);
-////			}
-////		}
-////	}
+			// spread to all other connected areas
+			for ( var i = 0; i < numAreas; i++ ) {
+				if ( i == areaNum ) {
+					continue;
+				}
+				if ( gameRenderWorld.AreasAreConnected( areaNum, i, portalConnection_t.PS_BLOCK_LOCATION ) ) {
+					this.locationEntities[i] = static_cast<idLocationEntity>( ent );
+				}
+			}
+		}
 	}
 
 /////*

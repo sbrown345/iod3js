@@ -408,111 +408,112 @@ class idEvent {
 ////	return data;
 ////}
 ////
-/////*
-////================
-////idEvent::~idEvent()
-////================
-////*/
-////idEvent::~idEvent() {
-////	Free();
-////}
-////
-/////*
-////================
-////idEvent::Alloc
-////================
-////*/
-////idEvent *idEvent::Alloc( const idEventDef *evdef, int numargs, va_list args ) {
-////	idEvent		*ev;
-////	size_t		size;
-////	const char	*format;
-////	idEventArg	*arg;
-////	byte		*dataPtr;
-////	int			i;
-////	const char	*materialName;
-////
-////	if ( FreeEvents.IsListEmpty() ) {
-////		gameLocal.Error( "idEvent::Alloc : No more free events" );
-////	}
-////
-////	ev = FreeEvents.Next();
-////	ev.eventNode.Remove();
-////
-////	ev.eventdef = evdef;
-////
-////	if ( numargs != evdef.GetNumArgs() ) {
-////		gameLocal.Error( "idEvent::Alloc : Wrong number of args for '%s' event.", evdef.GetName() );
-////	}
-////
-////	size = evdef.GetArgSize();
-////	if ( size ) {
-////		ev.data = eventDataAllocator.Alloc( size );
-////		memset( ev.data, 0, size );
-////	} else {
-////		ev.data = NULL;
-////	}
-////
-////	format = evdef.GetArgFormat();
-////	for( i = 0; i < numargs; i++ ) {
-////		arg = va_arg( args, idEventArg * );
-////		if ( format[ i ] != arg.type ) {
-////			// when NULL is passed in for an entity, it gets cast as an integer 0, so don't give an error when it happens
-////			if ( !( ( ( format[ i ] == D_EVENT_TRACE ) || ( format[ i ] == D_EVENT_ENTITY ) ) && ( arg.type == 'd' ) && ( arg.value == 0 ) ) ) {
-////				gameLocal.Error( "idEvent::Alloc : Wrong type passed in for arg # %d on '%s' event.", i, evdef.GetName() );
-////			}
-////		}
-////
-////		dataPtr = &ev.data[ evdef.GetArgOffset( i ) ];
-////
-////		switch( format[ i ] ) {
-////		case D_EVENT_FLOAT :
-////		case D_EVENT_INTEGER :
-////			*reinterpret_cast<int *>( dataPtr ) = arg.value;
-////			break;
-////
-////		case D_EVENT_VECTOR :
-////			if ( arg.value ) {
-////				*reinterpret_cast<idVec3 *>( dataPtr ) = *reinterpret_cast<const idVec3 *>( arg.value );
-////			}
-////			break;
-////
-////		case D_EVENT_STRING :
-////			if ( arg.value ) {
-////				idStr::Copynz( reinterpret_cast<char *>( dataPtr ), reinterpret_cast<const char *>( arg.value ), MAX_STRING_LEN );
-////			}
-////			break;
-////
-////		case D_EVENT_ENTITY :
-////		case D_EVENT_ENTITY_NULL :
-////			*reinterpret_cast< idEntityPtr<idEntity> * >( dataPtr ) = reinterpret_cast<idEntity *>( arg.value );
-////			break;
-////
-////		case D_EVENT_TRACE :
-////			if ( arg.value ) {
-////				*reinterpret_cast<bool *>( dataPtr ) = true;
-////				*reinterpret_cast<trace_t *>( dataPtr + sizeof( bool ) ) = *reinterpret_cast<const trace_t *>( arg.value );
-////
-////				// save off the material as a string since the pointer won't be valid in save games.
-////				// since we save off the entire trace_t structure, if the material is NULL here,
-////				// it will be NULL when we process it, so we don't need to save off anything in that case.
-////				if ( reinterpret_cast<const trace_t *>( arg.value ).c.material ) {
-////					materialName = reinterpret_cast<const trace_t *>( arg.value ).c.material.GetName();
-////					idStr::Copynz( reinterpret_cast<char *>( dataPtr + sizeof( bool ) + sizeof( trace_t ) ), materialName, MAX_STRING_LEN );
-////				}
-////			} else {
-////				*reinterpret_cast<bool *>( dataPtr ) = false;
-////			}
-////			break;
-////
-////		default :
-////			gameLocal.Error( "idEvent::Alloc : Invalid arg format '%s' string for '%s' event.", format, evdef.GetName() );
-////			break;
-////		}
-////	}
-////
-////	return ev;
-////}
-////
+/*
+================
+idEvent::~idEvent()
+================
+*/
+	destructor ( ): void {
+		this.Free ( );
+	}
+
+/*
+================
+idEvent::Alloc
+================
+*/
+	static Alloc ( evdef: idEventDef, /*int */numargs: number, /*va_list*/ args: any[] ): idEvent {
+		var ev: idEvent;
+		var size: number /*size_t		*/;
+		var format: string; //const char	*format;
+		var arg: idEventArg;
+		//byte		*dataPtr;
+		var /*int*/i: number;
+		var materialName: string;
+
+		if ( FreeEvents.IsListEmpty ( ) ) {
+			gameLocal.Error( "idEvent::Alloc : No more free events" );
+		}
+
+		ev = FreeEvents.Next ( );
+		ev.eventNode.Remove ( );
+
+		ev.eventdef = evdef;
+
+		if ( numargs != evdef.GetNumArgs ( ) ) {
+			gameLocal.Error( "idEvent::Alloc : Wrong number of args for '%s' event.", evdef.GetName ( ) );
+		}
+
+		size = evdef.GetArgSize ( );
+		if ( size ) {
+			ev.data = eventDataAllocator.AllocUint8Array( size );
+			memset( ev.data, 0, size );
+		} else {
+			ev.data = null;
+		}
+
+		format = evdef.GetArgFormat ( );
+		for ( i = 0; i < numargs; i++ ) {
+			todoThrow ( );
+			//arg = va_arg( args, idEventArg * );
+			//if ( format[ i ] != arg.type ) {
+			//	// when NULL is passed in for an entity, it gets cast as an integer 0, so don't give an error when it happens
+			//	if ( !( ( ( format[ i ] == D_EVENT_TRACE ) || ( format[ i ] == D_EVENT_ENTITY ) ) && ( arg.type == 'd' ) && ( arg.value == 0 ) ) ) {
+			//		gameLocal.Error( "idEvent::Alloc : Wrong type passed in for arg # %d on '%s' event.", i, evdef.GetName() );
+			//	}
+			//}
+
+			//dataPtr = &ev.data[ evdef.GetArgOffset( i ) ];
+
+			//switch( format[ i ] ) {
+			//case D_EVENT_FLOAT :
+			//case D_EVENT_INTEGER :
+			//	*reinterpret_cast<int *>( dataPtr ) = arg.value;
+			//	break;
+
+			//case D_EVENT_VECTOR :
+			//	if ( arg.value ) {
+			//		*reinterpret_cast<idVec3 *>( dataPtr ) = *reinterpret_cast<const idVec3 *>( arg.value );
+			//	}
+			//	break;
+
+			//case D_EVENT_STRING :
+			//	if ( arg.value ) {
+			//		idStr::Copynz( reinterpret_cast<char *>( dataPtr ), reinterpret_cast<const char *>( arg.value ), MAX_STRING_LEN );
+			//	}
+			//	break;
+
+			//case D_EVENT_ENTITY :
+			//case D_EVENT_ENTITY_NULL :
+			//	*reinterpret_cast< idEntityPtr<idEntity> * >( dataPtr ) = reinterpret_cast<idEntity *>( arg.value );
+			//	break;
+
+			//case D_EVENT_TRACE :
+			//	if ( arg.value ) {
+			//		*reinterpret_cast<bool *>( dataPtr ) = true;
+			//		*reinterpret_cast<trace_t *>( dataPtr + sizeof( bool ) ) = *reinterpret_cast<const trace_t *>( arg.value );
+
+			//		// save off the material as a string since the pointer won't be valid in save games.
+			//		// since we save off the entire trace_t structure, if the material is NULL here,
+			//		// it will be NULL when we process it, so we don't need to save off anything in that case.
+			//		if ( reinterpret_cast<const trace_t *>( arg.value ).c.material ) {
+			//			materialName = reinterpret_cast<const trace_t *>( arg.value ).c.material.GetName();
+			//			idStr::Copynz( reinterpret_cast<char *>( dataPtr + sizeof( bool ) + sizeof( trace_t ) ), materialName, MAX_STRING_LEN );
+			//		}
+			//	} else {
+			//		*reinterpret_cast<bool *>( dataPtr ) = false;
+			//	}
+			//	break;
+
+			//default :
+			//	gameLocal.Error( "idEvent::Alloc : Invalid arg format '%s' string for '%s' event.", format, evdef.GetName() );
+			//	break;
+			//}
+		}
+
+		return ev;
+	}
+
 /////*
 ////================
 ////idEvent::CopyArgs
@@ -560,39 +561,39 @@ idEvent::Free
 		this.eventNode.SetOwner( this );
 		this.eventNode.AddToEnd( FreeEvents );
 	}
-////
-/////*
-////================
-////idEvent::Schedule
-////================
-////*/
-////void idEvent::Schedule( idClass *obj, const idTypeInfo *type, /*int*/time:number ) {
-////	idEvent *event;
-////
-////	assert( idEvent.initialized );
-////	if ( !idEvent.initialized ) {
-////		return;
-////	}
-////
-////	object = obj;
-////	typeinfo = type;
-////
-////	// wraps after 24 days...like I care. ;)
-////	this.time = gameLocal.time + time;
-////
-////	eventNode.Remove();
-////
-////	event = EventQueue.Next();
-////	while( ( event != NULL ) && ( this.time >= event.time ) ) {
-////		event = event.eventNode.Next();
-////	}
-////
-////	if ( event ) {
-////		eventNode.InsertBefore( event.eventNode );
-////	} else {
-////		eventNode.AddToEnd( EventQueue );
-////	}
-////}
+
+/*
+================
+idEvent::Schedule
+================
+*/
+	Schedule ( obj: idClass, type: idTypeInfo, /*int*/time: number ): void {
+		var event: idEvent;
+
+		assert( idEvent.initialized );
+		if ( !idEvent.initialized ) {
+			return;
+		}
+
+		this.object = obj;
+		this.typeinfo = type;
+
+		// wraps after 24 days...like I care. ;)
+		this.time = gameLocal.time + time;
+
+		this.eventNode.Remove ( );
+
+		event = EventQueue.Next ( );
+		while ( ( event != null ) && ( this.time >= event.time ) ) {
+			event = event.eventNode.Next ( );
+		}
+
+		if ( event ) {
+			this.eventNode.InsertBefore( event.eventNode );
+		} else {
+			this.eventNode.AddToEnd( EventQueue );
+		}
+	}
 
 /*
 ================
@@ -744,12 +745,12 @@ idEvent::ServiceEvents
 idEvent::Init
 ================
 */
-static Init( ):void {
-	gameLocal.Printf( "Initializing event system\n" );
+	static Init ( ): void {
+		gameLocal.Printf( "Initializing event system\n" );
 
-	if (eventError) {
-		gameLocal.Error( "%s", eventErrorMsg );
-	}
+		if ( eventError ) {
+			gameLocal.Error( "%s", eventErrorMsg );
+		}
 
 //#ifdef CREATE_EVENT_CODE
 //	void CreateEventCallbackHandler();
@@ -757,22 +758,22 @@ static Init( ):void {
 //	gameLocal.Error( "Wrote event callback handler" );
 //#endif
 
-	if ( idEvent.initialized ) {
-		gameLocal.Printf( "...already initialized\n" );
-		idEvent.ClearEventList();
-		return;
+		if ( idEvent.initialized ) {
+			gameLocal.Printf( "...already initialized\n" );
+			idEvent.ClearEventList ( );
+			return;
+		}
+
+		idEvent.ClearEventList ( );
+
+		eventDataAllocator.Init ( );
+
+		gameLocal.Printf( "...%i event definitions\n", idEventDef.NumEventCommands ( ) );
+
+		// the event system has started
+		idEvent.initialized = true;
 	}
 
-	idEvent.ClearEventList();
-
-	eventDataAllocator.Init();
-
-	gameLocal.Printf( "...%i event definitions\n", idEventDef.NumEventCommands() );
-
-	// the event system has started
-	idEvent.initialized = true;
-}
-////
 /////*
 ////================
 ////idEvent::Shutdown
