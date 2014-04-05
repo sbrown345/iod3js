@@ -710,40 +710,40 @@ idPhysics_Static::idPhysics_Static
 	////	}
 	////	return 0;
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_Static::DisableClip
-	////================
-	////*/
-	////void idPhysics_Static::DisableClip( ) {
-	////	if ( this.clipModel ) {
-	////		this.clipModel.Disable();
-	////	}
-	////}
-	////
-	/////*
-	////================
-	////idPhysics_Static::EnableClip
-	////================
-	////*/
-	////void idPhysics_Static::EnableClip( ) {
-	////	if ( this.clipModel ) {
-	////		this.clipModel.Enable();
-	////	}
-	////}
-	////
-	/////*
-	////================
-	////idPhysics_Static::UnlinkClip
-	////================
-	////*/
-	////void idPhysics_Static::UnlinkClip( ) {
-	////	if ( this.clipModel ) {
-	////		this.clipModel.Unlink();
-	////	}
-	////}
-	////
+	
+	/*
+	================
+	idPhysics_Static::DisableClip
+	================
+	*/
+	DisableClip( ):void {
+		if ( this.clipModel ) {
+			this.clipModel.Disable();
+		}
+	}
+	
+	/*
+	================
+	idPhysics_Static::EnableClip
+	================
+	*/
+	EnableClip( ):void {
+		if ( this.clipModel ) {
+			this.clipModel.Enable();
+		}
+	}
+	
+	/*
+	================
+	idPhysics_Static::UnlinkClip
+	================
+	*/
+	UnlinkClip( ):void {
+		if ( this.clipModel ) {
+			this.clipModel.Unlink();
+		}
+	}
+	
 	/////*
 	////================
 	////idPhysics_Static::LinkClip
@@ -889,43 +889,43 @@ idPhysics_Static::idPhysics_Static
 	////		}
 	////	}
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_Static::GetBlockingInfo
-	////================
-	////*/
-	////const trace_t *idPhysics_Static::GetBlockingInfo( ) const {
-	////	return NULL;
-	////}
-	////
-	/////*
-	////================
-	////idPhysics_Static::GetBlockingEntity
-	////================
-	////*/
-	////idEntity *idPhysics_Static::GetBlockingEntity( ) const {
-	////	return NULL;
-	////}
-	////
-	/////*
-	////================
-	////idPhysics_Static::GetLinearEndTime
-	////================
-	////*/
-	////int idPhysics_Static::GetLinearEndTime( ) const {
-	////	return 0;
-	////}
-	////
-	/////*
-	////================
-	////idPhysics_Static::GetAngularEndTime
-	////================
-	////*/
-	////int idPhysics_Static::GetAngularEndTime( ) const {
-	////	return 0;
-	////}
-	////
+	
+	/*
+	================
+	idPhysics_Static::GetBlockingInfo
+	================
+	*/
+	GetBlockingInfo(): trace_t {
+		return null;
+	}
+	
+	/*
+	================
+	idPhysics_Static::GetBlockingEntity
+	================
+	*/
+	GetBlockingEntity(): idEntity {
+		return null;
+	}
+	
+	/*
+	================
+	idPhysics_Static::GetLinearEndTime
+	================
+	*/
+	GetLinearEndTime ( ): number /*int*/ {
+		return 0;
+	}
+
+	/*
+	================
+	idPhysics_Static::GetAngularEndTime
+	================
+	*/
+	GetAngularEndTime ( ): number /*int*/ {
+		return 0;
+	}
+	
 	/////*
 	////================
 	////idPhysics_Static::WriteToSnapshot

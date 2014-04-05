@@ -1026,27 +1026,27 @@ idEntity::Think
 ////
 ////	return dormant;
 ////}
-////
-/////*
-////================
-////idEntity::DormantBegin
-////
-////called when entity becomes dormant
-////================
-////*/
-////DormantBegin( ):void {
-////}
-////
-/////*
-////================
-////idEntity::DormantEnd
-////
-////called when entity wakes from being dormant
-////================
-////*/
-////DormantEnd( ):void {
-////}
-////
+
+/*
+================
+idEntity::DormantBegin
+
+called when entity becomes dormant
+================
+*/
+	DormantBegin ( ): void {
+	}
+
+/*
+================
+idEntity::DormantEnd
+
+called when entity wakes from being dormant
+================
+*/
+	DormantEnd ( ): void {
+	}
+
 /*
 ================
 idEntity::IsActive
@@ -1056,35 +1056,35 @@ idEntity::IsActive
 		return this.activeNode.InList ( );
 	}
 
-/////*
-////================
-////idEntity::BecomeActive
-////================
-////*/
-////BecomeActive( int flags ) {
-////	if ( ( flags & TH_PHYSICS ) ) {
-////		// enable the team master if this entity is part of a physics team
-////		if ( this.teamMaster && this.teamMaster != this ) {
-////			this.teamMaster.BecomeActive( TH_PHYSICS );
-////		} else if ( !( this.thinkFlags & TH_PHYSICS ) ) {
-////			// if this is a pusher
-////			if ( this.physics.IsType( idPhysics_Parametric::Type ) || this.physics.IsType( idPhysics_Actor::Type ) ) {
-////				gameLocal.sortPushers = true;
-////			}
-////		}
-////	}
-////
-////	int oldFlags = this.thinkFlags;
-////	this.thinkFlags |= flags;
-////	if ( this.thinkFlags ) {
-////		if ( !this.IsActive() ) {
-////			this.activeNode.AddToEnd( gameLocal.activeEntities );
-////		} else if ( !oldFlags ) {
-////			// we became inactive this frame, so we have to decrease the count of entities to deactivate
-////			gameLocal.numEntitiesToDeactivate--;
-////		}
-////	}
-////}
+/*
+================
+idEntity::BecomeActive
+================
+*/
+	BecomeActive ( /*int*/ flags: number ): void {
+		if ( ( flags & TH_PHYSICS ) ) {
+			// enable the team master if this entity is part of a physics team
+			if ( this.teamMaster && this.teamMaster != this ) {
+				this.teamMaster.BecomeActive( TH_PHYSICS );
+			} else if ( !( this.thinkFlags & TH_PHYSICS ) ) {
+				// if this is a pusher
+				if ( this.physics.IsType( idPhysics_Parametric.Type ) || this.physics.IsType( idPhysics_Actor.Type ) ) {
+					gameLocal.sortPushers = true;
+				}
+			}
+		}
+
+		var /*int */oldFlags = this.thinkFlags;
+		this.thinkFlags |= flags;
+		if ( this.thinkFlags ) {
+			if ( !this.IsActive ( ) ) {
+				this.activeNode.AddToEnd( gameLocal.activeEntities );
+			} else if ( !oldFlags ) {
+				// we became inactive this frame, so we have to decrease the count of entities to deactivate
+				gameLocal.numEntitiesToDeactivate--;
+			}
+		}
+	}
 
 /*
 ================
@@ -1312,45 +1312,45 @@ idEntity::IsHidden
 ////	}
 ////}
 ////
-/////*
-////================
-////idEntity::UpdateModelTransform
-////================
-////*/
-////UpdateModelTransform( ):void {
-////	idVec3 origin;
-////	idMat3 axis;
-////
-////	if ( GetPhysicsToVisualTransform( origin, axis ) ) {
-////		this.renderEntity.axis = axis * this.GetPhysics().GetAxis();
-////		this.renderEntity.origin = this.GetPhysics().GetOrigin() + origin * this.renderEntity.axis;
-////	} else {
-////		this.renderEntity.axis = this.GetPhysics().GetAxis();
-////		this.renderEntity.origin = this.GetPhysics().GetOrigin();
-////	}
-////}
-////
+/*
+================
+idEntity::UpdateModelTransform
+================
+*/
+UpdateModelTransform( ):void {
+	var origin = new idVec3;
+	var axis = new idMat3;
+
+	if (this.GetPhysicsToVisualTransform(origin, axis)) {
+		todoThrow ( );
+		//this.renderEntity.axis = axis * this.GetPhysics().GetAxis();
+		//this.renderEntity.origin = this.GetPhysics().GetOrigin() + origin * this.renderEntity.axis;
+	} else {
+		this.renderEntity.axis.equals( this.GetPhysics ( ).GetAxis ( ) );
+		this.renderEntity.origin.equals( this.GetPhysics ( ).GetOrigin ( ) );
+	}
+}
+
 /*
 ================
 idEntity::UpdateModel
 ================
 */
 	UpdateModel ( ): void {
-		todoThrow ( );
-		//UpdateModelTransform();
+		this.UpdateModelTransform();
 
-		//// check if the entity has an MD5 model
-		//idAnimator *animator = GetAnimator();
-		//if ( animator && animator.ModelHandle() ) {
-		//	// set the callback to update the joints
-		//	this.renderEntity.callback = idEntity::ModelCallback;
-		//}
+		// check if the entity has an MD5 model
+		var animator = this.GetAnimator();
+		if ( animator && animator.ModelHandle() ) {
+			// set the callback to update the joints
+			this.renderEntity.callback = idEntity.ModelCallback;
+		}
 
-		//// set to invalid number to force an update the next time the PVS areas are retrieved
-		//ClearPVSAreas();
+		// set to invalid number to force an update the next time the PVS areas are retrieved
+		this.ClearPVSAreas();
 
-		//// ensure that we call Present this frame
-		//BecomeActive( TH_UPDATEVISUALS );
+		// ensure that we call Present this frame
+		this.BecomeActive( TH_UPDATEVISUALS );
 	}
 
 /*
@@ -1429,16 +1429,16 @@ idEntity::UpdateVisuals
 ////	}
 ////	return this.PVSAreas;
 ////}
-////
-/////*
-////================
-////idEntity::ClearPVSAreas
-////================
-////*/
-////ClearPVSAreas( ):void {
-////	this.numPVSAreas = -1;
-////}
-////
+
+/*
+================
+idEntity::ClearPVSAreas
+================
+*/
+	ClearPVSAreas ( ): void {
+		this.numPVSAreas = -1;
+	}
+
 /////*
 ////================
 ////idEntity::PhysicsTeamInPVS
@@ -1567,42 +1567,42 @@ idEntity::GetModelDefHandle
 		return this.modelDefHandle;
 	}
 
-/////*
-////================
-////idEntity::UpdateRenderEntity
-////================
-////*/
-////bool idEntity::UpdateRenderEntity( renderEntity_s *this.renderEntity, const renderView_t *renderView ) {
-////	if ( gameLocal.inCinematic && gameLocal.skipCinematic ) {
-////		return false;
-////	}
-////
-////	idAnimator *animator = GetAnimator();
-////	if ( animator ) {
-////		return animator.CreateFrame( gameLocal.time, false );
-////	}
-////
-////	return false;
-////}
-////
-/////*
-////================
-////idEntity::ModelCallback
-////
-////	NOTE: may not change the game state whatsoever!
-////================
-////*/
-////bool idEntity::ModelCallback( renderEntity_s *this.renderEntity, const renderView_t *renderView ) {
-////	var ent:idEntity
-////
-////	ent = gameLocal.entities[ this.renderEntity.entityNum ];
-////	if ( !ent ) {
-////		gameLocal.Error( "idEntity::ModelCallback: callback with NULL game entity" );
-////	}
-////
-////	return ent.UpdateRenderEntity( this.renderEntity, this.renderView );
-////}
-////
+/*
+================
+idEntity::UpdateRenderEntity
+================
+*/
+	UpdateRenderEntity ( renderEntity: renderEntity_t, renderView: renderView_t ): boolean {
+		if ( gameLocal.inCinematic && gameLocal.skipCinematic ) {
+			return false;
+		}
+
+		var animator = this.GetAnimator ( );
+		if ( animator ) {
+			return animator.CreateFrame( gameLocal.time, false );
+		}
+
+		return false;
+	}
+
+/*
+================
+idEntity::ModelCallback
+
+	NOTE: may not change the game state whatsoever!
+================
+*/
+	static ModelCallback ( renderEntity: renderEntity_t, renderView: renderView_t ): boolean {
+		var ent: idEntity;
+
+		ent = gameLocal.entities[renderEntity.entityNum];
+		if ( !ent ) {
+			gameLocal.Error( "idEntity::ModelCallback: callback with NULL game entity" );
+		}
+
+		return ent.UpdateRenderEntity( renderEntity, renderView );
+	}
+
 /*
 ================
 idEntity::GetAnimator
@@ -2245,7 +2245,7 @@ idEntity::FreeSoundEmitter
 ////=====================
 ////*/
 ////ConvertLocalToWorldTransform( idVec3 &offset, idMat3 &axis ) {
-////	UpdateModelTransform();
+////	this.UpdateModelTransform();
 ////
 ////	offset = this.renderEntity.origin + offset * this.renderEntity.axis;
 ////	axis *= this.renderEntity.axis;
@@ -2673,7 +2673,7 @@ idEntity::RunPhysics
 		//if ( !( this.thinkFlags & TH_PHYSICS ) ) {
 		//	// however do update any animation controllers
 		//	if ( UpdateAnimationControllers() ) {
-		//		BecomeActive( TH_ANIMATE );
+		//		this.BecomeActive( TH_ANIMATE );
 		//	}
 		//	return false;
 		//}
@@ -2885,16 +2885,16 @@ idEntity::SetAxis
 ////		return true;
 ////	}
 ////}
-////
-/////*
-////================
-////idEntity::GetPhysicsToVisualTransform
-////================
-////*/
-////bool idEntity::GetPhysicsToVisualTransform( idVec3 &origin, idMat3 &axis ) {
-////	return false;
-////}
-////
+
+/*
+================
+idEntity::GetPhysicsToVisualTransform
+================
+*/
+	GetPhysicsToVisualTransform ( origin: idVec3, axis: idMat3 ): boolean {
+		return false;
+	}
+
 /*
 ================
 idEntity::GetPhysicsToSoundTransform

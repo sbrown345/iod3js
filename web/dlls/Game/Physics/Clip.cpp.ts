@@ -162,22 +162,22 @@ class idClipModel {
 ////	static void				RestoreTraceModels( idRestoreGame *savefile );
 
 ////private:
-	enabled:boolean;				// true if this clip model is used for clipping
-	entity:idEntity;					// entity using this clip model
-	id:number/*int*/;						// id for entities that use multiple clip models
-	owner:idEntity;					// owner of the entity that owns this clip model
-	origin = new idVec3;					// origin of clip model
-	axis = new idMat3;					// orientation of clip model
-	bounds = new idBounds;					// bounds
-	absBounds = new idBounds;				// absolute bounds
-	material:idMaterial;				// material for trace models
-	contents:number/*contentsFlags_t - int*/;				// all contents ored together
-	collisionModelHandle:number /* cmHandle_t(int)*/;	// handle to collision model
-	traceModelIndex:number;		// trace model used for collision detection			////	int						
-	renderModelHandle:number;		// render model def handle							////	int						
+	enabled: boolean; // true if this clip model is used for clipping
+	entity: idEntity; // entity using this clip model
+	id: number /*int*/; // id for entities that use multiple clip models
+	owner: idEntity; // owner of the entity that owns this clip model
+	origin = new idVec3; // origin of clip model
+	axis = new idMat3; // orientation of clip model
+	bounds = new idBounds; // bounds
+	absBounds = new idBounds; // absolute bounds
+	material: idMaterial; // material for trace models
+	contents: number /*contentsFlags_t - int*/; // all contents ored together
+	collisionModelHandle: number /* cmHandle_t(int)*/; // handle to collision model
+	traceModelIndex: number; // trace model used for collision detection			////	int						
+	renderModelHandle: number; // render model def handle							////	int						
 
-	clipLinks:clipLink_t;				// links into sectors
-	touchCount: number/*int*/;
+	clipLinks: clipLink_t; // links into sectors
+	touchCount: number /*int*/;
 
 	memset0 ( ): void {
 		this.enabled = false;
@@ -209,112 +209,112 @@ class idClipModel {
 ////};
 ////
 ////
-////ID_INLINE void idClipModel::Translate( const idVec3 &translation ) {
+////Translate( const idVec3 &translation ):void {
 ////	this.Unlink();
 ////	origin += translation;
 ////}
 ////
-////ID_INLINE void idClipModel::Rotate( const idRotation &rotation ) {
+////Rotate( const idRotation &rotation ) :void{
 ////	this.Unlink();
 ////	origin *= rotation;
 ////	axis *= rotation.ToMat3();
 ////}
-////
-////ID_INLINE void idClipModel::Enable( ) {
-////	enabled = true;
-////}
-////
-////ID_INLINE void idClipModel::Disable( ) {
-////	enabled = false;
-////}
-////
-////ID_INLINE void idClipModel::SetMaterial( const idMaterial *m ) {
-////	material = m;
-////}
-////
-////ID_INLINE const idMaterial * idClipModel::GetMaterial( ) const {
-////	return material;
-////}
-////
-////ID_INLINE void idClipModel::SetContents( int newContents ) {
-////	contents = newContents;
-////}
-////
-////ID_INLINE int idClipModel::GetContents( ) const {
-////	return contents;
-////}
-////
-////ID_INLINE void idClipModel::SetEntity( idEntity *newEntity ) {
-////	entity = newEntity;
-////}
-////
-////ID_INLINE idEntity *idClipModel::GetEntity( ) const {
-////	return entity;
-////}
-////
-////ID_INLINE void idClipModel::SetId( int newId ) {
-////	id = newId;
-////}
-////
-////ID_INLINE int idClipModel::GetId( ) const {
-////	return id;
-////}
-////
-////ID_INLINE void idClipModel::SetOwner( idEntity *newOwner ) {
-////	owner = newOwner;
-////}
-////
-////ID_INLINE idEntity *idClipModel::GetOwner( ) const {
-////	return owner;
-////}
-////
-////ID_INLINE const idBounds &idClipModel::GetBounds( ) const {
-////	return bounds;
-////}
-////
-////ID_INLINE const idBounds &idClipModel::GetAbsBounds( ) const {
-////	return absBounds;
-////}
-////
-////ID_INLINE const idVec3 &idClipModel::GetOrigin( ) const {
-////	return origin;
-////}
-////
-////ID_INLINE const idMat3 &idClipModel::GetAxis( ) const {
-////	return axis;
-////}
-////
-////ID_INLINE bool idClipModel::IsRenderModel( ) const {
-////	return ( renderModelHandle != -1 );
-////}
-////
-////ID_INLINE bool idClipModel::IsTraceModel( ) const {
-////	return ( traceModelIndex != -1 );
-////}
-////
-////ID_INLINE bool idClipModel::IsLinked( ) const {
-////	return ( this.clipLinks != NULL );
-////}
-////
-////ID_INLINE bool idClipModel::IsEnabled( ) const {
-////	return enabled;
-////}
-////
-////ID_INLINE bool idClipModel::IsEqual( const idTraceModel &trm ) const {
-////	return ( traceModelIndex != -1 && *GetCachedTraceModel( traceModelIndex ) == trm );
-////}
-////
-////ID_INLINE const idTraceModel *idClipModel::GetTraceModel( ) const {
-////	if ( !IsTraceModel() ) {
-////		return NULL;
-////	}
-////	return idClipModel::GetCachedTraceModel( traceModelIndex );
-////}
-////
+
+	Enable ( ): void {
+		this.enabled = true;
+	}
+
+	Disable ( ): void {
+		this.enabled = false;
+	}
+
+	etMaterial ( m: idMaterial ): void {
+		this.material = m;
+	}
+
+	GetMaterial ( ): idMaterial {
+		return this.material;
+	}
+
+	SetContents ( /*int*/ newContents: number ): void {
+		this.contents = newContents;
+	}
+
+	GetContents ( ): number /*int*/ {
+		return this.contents;
+	}
+
+	SetEntity ( newEntity: idEntity ): void {
+		this.entity = newEntity;
+	}
+
+	GetEntity ( ): idEntity {
+		return this.entity;
+	}
+
+	SetId ( /*int*/ newId: number ): void {
+		this.id = newId;
+	}
+
+	GetId ( ): number /*int*/ {
+		return this.id;
+	}
+
+	SetOwner ( newOwner: idEntity ): void {
+		this.owner = newOwner;
+	}
+
+	GetOwner ( ): idEntity {
+		return this.owner;
+	}
+
+	GetBounds ( ): idBounds {
+		return this.bounds;
+	}
+
+	GetAbsBounds ( ): idBounds {
+		return this.absBounds;
+	}
+
+	GetOrigin ( ): idVec3 {
+		return this.origin;
+	}
+
+	GetAxis ( ): idMat3 {
+		return this.axis;
+	}
+
+	IsRenderModel ( ): boolean {
+		return ( this.renderModelHandle != -1 );
+	}
+
+	IsTraceModel ( ): boolean {
+		return ( this.traceModelIndex != -1 );
+	}
+
+	IsLinked ( ): boolean {
+		return ( this.clipLinks != null );
+	}
+
+	IsEnabled ( ): boolean {
+		return this.enabled;
+	}
+
+	IsEqual ( trm: idTraceModel ): boolean {
+		return ( this.traceModelIndex != -1 && this.GetCachedTraceModel( this.traceModelIndex ) == trm );
+	}
+
+	GetTraceModel ( ): idTraceModel {
+		if ( !this.IsTraceModel ( ) ) {
+			return null;
+		}
+		return this.GetCachedTraceModel( this.traceModelIndex );
+	}
+
 
 ////#endif /* !__CLIP_H__ */
 
-	
+
 /*
 ===============
 idClipModel::ClearTraceModelCache
@@ -343,8 +343,8 @@ idClipModel::AllocTraceModel
 		var /*int */i: number, hashKey: number, traceModelIndex: number;
 		var entry: trmCache_t;
 
-		hashKey = this.GetTraceModelHashKey(trm);
-		dlog(DEBUG_CM, "AllocTraceModel hashKey: %i\n", hashKey);
+		hashKey = this.GetTraceModelHashKey( trm );
+		dlog( DEBUG_CM, "AllocTraceModel hashKey: %i\n", hashKey );
 		for ( i = traceModelHash.First( hashKey ); i >= 0; i = traceModelHash.Next( i ) ) {
 			if ( traceModelCache[i].trm == trm ) {
 				traceModelCache[i].refCount++;
@@ -354,7 +354,7 @@ idClipModel::AllocTraceModel
 
 		entry = new trmCache_t;
 		entry.trm = trm;
-		var $entryVolume = new R(entry.volume );
+		var $entryVolume = new R( entry.volume );
 		entry.trm.GetMassProperties( 1.0, $entryVolume, entry.centerOfMass, entry.inertiaTensor );
 		entry.volume = $entryVolume.$;
 		entry.refCount = 1;
@@ -370,21 +370,21 @@ idClipModel::FreeTraceModel
 ===============
 */
 	static FreeTraceModel ( /*int */traceModelIndex: number ): void {
-		if (traceModelIndex < 0 || traceModelIndex >= traceModelCache.Num ( ) || traceModelCache[traceModelIndex].refCount <= 0 ) {
+		if ( traceModelIndex < 0 || traceModelIndex >= traceModelCache.Num ( ) || traceModelCache[traceModelIndex].refCount <= 0 ) {
 			gameLocal.Warning( "idClipModel::FreeTraceModel: tried to free uncached trace model" );
 			return;
 		}
 		traceModelCache[traceModelIndex].refCount--;
 	}
-////
-/////*
-////===============
-////idClipModel::GetCachedTraceModel
-////===============
-////*/
-////idTraceModel *idClipModel::GetCachedTraceModel( int traceModelIndex ) {
-////	return &traceModelCache[traceModelIndex].trm;
-////}
+
+/*
+===============
+idClipModel::GetCachedTraceModel
+===============
+*/
+	GetCachedTraceModel ( /*int */traceModelIndex: number ): idTraceModel {
+		return traceModelCache[traceModelIndex].trm;
+	}
 
 /*
 ===============
@@ -536,27 +536,27 @@ idClipModel::Init
 
 	constructor ( )
 	constructor ( name: string )
-	constructor(trm: idTraceModel )
-	constructor(a1?: any) {
+	constructor ( trm: idTraceModel )
+	constructor ( a1?: any ) {
 		if ( arguments.length === 0 ) {
-			this.constructor_default();
+			this.constructor_default ( );
 			return;
 		}
 
-		switch ( typeof a1) {
-			case "string":
-				var name: string = a1;
-				this.constructor_name( name );
-				break;
-
-			case "number":
-				todoThrow ( );
+		switch ( typeof a1 ) {
+		case "string":
+			var name: string = a1;
+			this.constructor_name( name );
 			break;
 
-			case "object":
-				var name: string = a1;
-				this.constructor_name(name);
-				break;
+		case "number":
+			todoThrow ( );
+			break;
+
+		case "object":
+			var name: string = a1;
+			this.constructor_name( name );
+			break;
 			break;
 
 		default:
@@ -587,10 +587,10 @@ idClipModel::idClipModel
 idClipModel::idClipModel
 ================
 */
-	private constructor_trace(trm: idTraceModel ):void {
-	this.Init();
-	this.LoadModel( trm );
-}
+	private constructor_trace ( trm: idTraceModel ): void {
+		this.Init ( );
+		this.LoadModel( trm );
+	}
 
 /////*
 ////================
@@ -609,15 +609,15 @@ idClipModel::idClipModel
 ////================
 ////*/
 ////idClipModel::idClipModel( const idClipModel *model ) {
-////	enabled = model.enabled;
-////	entity = model.entity;
-////	id = model.id;
-////	owner = model.owner;
-////	origin = model.origin;
-////	axis = model.axis;
+////	this.enabled = model.enabled;
+////	this.entity = model.entity;
+////	this.id = model.id;
+////	this.owner = model.owner;
+////	this.origin = model.origin;
+////	this.axis = model.axis;
 ////	this.bounds = model.bounds;
-////	absBounds = model.absBounds;
-////	material = model.material;
+////	this.absBounds = model.absBounds;
+////	this.material = model.material;
 ////	this.contents = model.contents;
 ////	this.collisionModelHandle = model.collisionModelHandle;
 ////	this.traceModelIndex = -1;
@@ -648,15 +648,15 @@ idClipModel::~idClipModel
 ////================
 ////*/
 ////void idClipModel::Save( idSaveGame *savefile ) const {
-////	savefile.WriteBool( enabled );
-////	savefile.WriteObject( entity );
-////	savefile.WriteInt( id );
-////	savefile.WriteObject( owner );
-////	savefile.WriteVec3( origin );
-////	savefile.WriteMat3( axis );
+////	savefile.WriteBool( this.enabled );
+////	savefile.WriteObject( this.entity );
+////	savefile.WriteInt( this.id );
+////	savefile.WriteObject( this.owner );
+////	savefile.WriteVec3( this.origin );
+////	savefile.WriteMat3( this.axis );
 ////	savefile.WriteBounds( this.bounds );
-////	savefile.WriteBounds( absBounds );
-////	savefile.WriteMaterial( material );
+////	savefile.WriteBounds( this.absBounds );
+////	savefile.WriteMaterial( this.material );
 ////	savefile.WriteInt( this.contents );
 ////	if ( this.collisionModelHandle >= 0 ) {
 ////		savefile.WriteString( collisionModelManager.GetModelName( this.collisionModelHandle ) );
@@ -678,15 +678,15 @@ idClipModel::~idClipModel
 ////	idStr collisionModelName;
 ////	bool linked;
 ////
-////	savefile.ReadBool( enabled );
-////	savefile.ReadObject( reinterpret_cast<idClass *&>( entity ) );
-////	savefile.ReadInt( id );
-////	savefile.ReadObject( reinterpret_cast<idClass *&>( owner ) );
-////	savefile.ReadVec3( origin );
-////	savefile.ReadMat3( axis );
+////	savefile.ReadBool( this.enabled );
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( this.entity ) );
+////	savefile.ReadInt( this.id );
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( this.owner ) );
+////	savefile.ReadVec3( this.origin );
+////	savefile.ReadMat3( this.axis );
 ////	savefile.ReadBounds( this.bounds );
-////	savefile.ReadBounds( absBounds );
-////	savefile.ReadMaterial( material );
+////	savefile.ReadBounds( this.absBounds );
+////	savefile.ReadMaterial( this.material );
 ////	savefile.ReadInt( this.contents );
 ////	savefile.ReadString( collisionModelName );
 ////	if ( collisionModelName.Length() ) {
@@ -708,7 +708,7 @@ idClipModel::~idClipModel
 ////	this.touchCount = -1;
 ////
 ////	if ( linked ) {
-////		Link( gameLocal.clip, entity, id, origin, axis, renderModelHandle );
+////		Link( gameLocal.clip, this.entity, this.id, this.origin, this.axis, renderModelHandle );
 ////	}
 ////}
 ////
@@ -721,8 +721,8 @@ idClipModel::~idClipModel
 ////	if ( this.clipLinks ) {
 ////		this.Unlink();	// unlink from old position
 ////	}
-////	origin = newOrigin;
-////	axis = newAxis;
+////	this.origin = newOrigin;
+////	this.axis = newAxis;
 ////}
 ////
 /////*
@@ -735,10 +735,10 @@ idClipModel::~idClipModel
 ////	if ( this.collisionModelHandle ) {
 ////		return this.collisionModelHandle;
 ////	} else if ( this.traceModelIndex != -1 ) {
-////		return collisionModelManager.SetupTrmModel( *GetCachedTraceModel( this.traceModelIndex ), material );
+////		return collisionModelManager.SetupTrmModel( *GetCachedTraceModel( this.traceModelIndex ), this.material );
 ////	} else {
 ////		// this happens in multiplayer on the combat models
-////		gameLocal.Warning( "idClipModel::Handle: clip model %d on '%s' (%x) is not a collision or trace model", id, entity.name.c_str(), entity.entityNumber );
+////		gameLocal.Warning( "idClipModel::Handle: clip model %d on '%s' (%x) is not a collision or trace model", this.id, entity.name.c_str(), entity.entityNumber );
 ////		return 0;
 ////	}
 ////}
@@ -750,7 +750,7 @@ idClipModel::~idClipModel
 ////*/
 ////void idClipModel::GetMassProperties( const float density, float &mass, idVec3 &centerOfMass, idMat3 &inertiaTensor ) const {
 ////	if ( this.traceModelIndex == -1 ) {
-////		gameLocal.Error( "idClipModel::GetMassProperties: clip model %d on '%s' is not a trace model\n", id, entity.name.c_str() );
+////		gameLocal.Error( "idClipModel::GetMassProperties: clip model %d on '%s' is not a trace model\n", this.id, entity.name.c_str() );
 ////	}
 ////
 ////	trmCache_t *entry = traceModelCache[this.traceModelIndex];
@@ -764,22 +764,22 @@ idClipModel::~idClipModel
 idClipModel::Unlink
 ===============
 */
-Unlink( ):void {
-	var link: clipLink_t;
+	Unlink ( ): void {
+		var link: clipLink_t;
 
-	for ( link = this.clipLinks; link; link = this.clipLinks ) {
-		this.clipLinks = link.nextLink;
-		if ( link.prevInSector ) {
-			link.prevInSector.nextInSector = link.nextInSector;
-		} else {
-			link.sector.clipLinks = link.nextInSector;
+		for ( link = this.clipLinks; link; link = this.clipLinks ) {
+			this.clipLinks = link.nextLink;
+			if ( link.prevInSector ) {
+				link.prevInSector.nextInSector = link.nextInSector;
+			} else {
+				link.sector.clipLinks = link.nextInSector;
+			}
+			if ( link.nextInSector ) {
+				link.nextInSector.prevInSector = link.prevInSector;
+			}
+			clipLinkAllocator.Free( link );
 		}
-		if ( link.nextInSector ) {
-			link.nextInSector.prevInSector = link.prevInSector;
-		}
-		clipLinkAllocator.Free( link );
 	}
-}
 
 /////*
 ////===============
@@ -789,10 +789,10 @@ Unlink( ):void {
 ////void idClipModel::Link_r( struct clipSector_s *node ) {
 ////	clipLink_t *link;
 ////
-////	while( node.axis != -1 ) {
-////		if ( absBounds[0][node.axis] > node.dist ) {
+////	while( node.this.axis != -1 ) {
+////		if ( this.absBounds[0][node.axis] > node.dist ) {
 ////			node = node.children[0];
-////		} else if ( absBounds[1][node.axis] < node.dist ) {
+////		} else if ( this.absBounds[1][node.axis] < node.dist ) {
 ////			node = node.children[1];
 ////		} else {
 ////			Link_r( node.children[0] );
@@ -834,19 +834,19 @@ idClipModel::Link
 		}
 		todoThrow ( );
 		//// set the abs box
-		//if ( axis.IsRotated() ) {
+		//if ( this.axis.IsRotated() ) {
 		//	// expand for rotation
-		//	absBounds.FromTransformedBounds( this.bounds, origin, axis );
+		//	this.absBounds.FromTransformedBounds( this.bounds, this.origin, this.axis );
 		//} else {
 		//	// normal
-		//	absBounds[0] = this.bounds[0] + origin;
-		//	absBounds[1] = this.bounds[1] + origin;
+		//	this.absBounds[0] = this.bounds[0] + this.origin;
+		//	this.absBounds[1] = this.bounds[1] + this.origin;
 		//}
 
 		//// because movement is clipped an epsilon away from an actual edge,
 		//// we must fully check even when bounding boxes don't quite touch
-		//absBounds[0] -= vec3_boxEpsilon;
-		//absBounds[1] += vec3_boxEpsilon;
+		//this.absBounds[0] -= vec3_boxEpsilon;
+		//this.absBounds[1] += vec3_boxEpsilon;
 
 		//Link_r( clp.clipSectors );
 	}
@@ -950,19 +950,19 @@ class idClip {
 	////	bool					DrawModelContactFeature( const contactInfo_t &contact, const idClipModel *clipModel, int lifetime ) const;
 	////
 	////private:
-	numClipSectors:number/*int*/;
+	numClipSectors: number /*int*/;
 	clipSectors: clipSector_t[];
 	worldBounds = new idBounds;
 	temporaryClipModel = new idClipModel;
 	defaultClipModel = new idClipModel;
-	touchCount:number/*int*/;
+	touchCount: number /*int*/;
 	// statistics
-	numTranslations:number/*int*/;
-	numRotations:number/*int*/;
-	numMotions:number/*int*/;
-	numRenderModelTraces:number/*int*/;
-	numContents:number/*int*/;
-	numContacts:number/*int*/;
+	numTranslations: number /*int*/;
+	numRotations: number /*int*/;
+	numMotions: number /*int*/;
+	numRenderModelTraces: number /*int*/;
+	numContents: number /*int*/;
+	numContacts: number /*int*/;
 	////
 	////private:
 	////	struct clipSector_s *	CreateClipSectors_r( const int depth, const bounds: idBounds, idVec3 &maxSector );
@@ -1002,14 +1002,14 @@ idClip::idClip
 		this.worldBounds.Zero ( );
 		this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;
 	}
-	
+
 	memset0 ( ): void {
 		this.numClipSectors = 0;
 		this.clipSectors = null;
-		this.worldBounds.Zero();
+		this.worldBounds.Zero ( );
 		this.temporaryClipModel.memset0 ( );
 		this.defaultClipModel.memset0 ( );
-		this.touchCount= 0;
+		this.touchCount = 0;
 		this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;
 	}
 
