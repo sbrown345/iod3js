@@ -175,7 +175,7 @@ idAASSettings::idAASSettings
 */
 	constructor ( ) {
 		this.numBoundingBoxes = 1;
-		this.boundingBoxes[0] = new idBounds( new idVec3( -16, -16, 0 ), new idVec3( 16, 16, 72 ) );
+		this.boundingBoxes[0].opEquals( new idBounds( new idVec3( -16, -16, 0 ), new idVec3( 16, 16, 72 ) ) );
 		this.usePatches = false;
 		this.writeBrushMap = false;
 		this.playerFlood = false;
@@ -184,7 +184,7 @@ idAASSettings::idAASSettings
 		this.allowFlyReachabilities = false;
 		this.fileExtension.equals( "aas48" );
 		// physics settings
-		this.gravity = new idVec3( 0, 0, -1066 );
+		this.gravity.equals( new idVec3( 0, 0, -1066 ) );
 		this.gravityDir.equals( this.gravity );
 		this.gravityValue = this.gravityDir.Normalize ( );
 		this.invGravityDir = this.gravityDir.opUnaryMinus ( );
@@ -343,7 +343,7 @@ idAASSettings::FromParser
 				this.fileExtension.equals( token );
 			} else if ( token.data == "gravity" ) {
 				this.ParseVector( src, this.gravity );
-				this.gravityDir = this.gravity;
+				this.gravityDir.equals( this.gravity );
 				this.gravityValue = this.gravityDir.Normalize ( );
 				this.invGravityDir.equals( this.gravityDir.opUnaryMinus ( ) );
 			} else if ( token.data == "maxStepHeight" ) {
@@ -390,7 +390,7 @@ idAASSettings::FromParser
 				this.tt_startCrouching = $tt_startCrouching.$;
 			} else if ( token.data == "tt_waterJump" ) {
 				var $tt_waterJump = new R( this.tt_waterJump );
-				if ( !( src, $tt_waterJump ) ) {
+				if ( !this.ParseInt( src, $tt_waterJump ) ) {
 					return false;
 				}
 				this.tt_waterJump = $tt_waterJump.$;
@@ -488,7 +488,7 @@ idAASSettings::FromParser
 ////	if ( !dict.GetVector( "gravity", "0 0 -1066", this.gravity ) ) {
 ////		common.Error( "Missing 'gravity' in entityDef '%s'", name );
 ////	}
-////	this.gravityDir = this.gravity;
+////	this.gravityDir.equals( this.gravity);
 ////	gravityValue = this.gravityDir.Normalize();
 ////	invGravityDir = -this.gravityDir;
 ////
