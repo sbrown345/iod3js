@@ -186,24 +186,24 @@ idEntity.Type = new idTypeInfo( "idEntity", "idClass",
 	idEntity.eventCallbacks, idEntity.CreateInstance, idEntity.prototype.Spawn,
 	idEntity.prototype.Save, idEntity.prototype.Restore );
 
-/////*
-////================
-////UpdateGuiParms
-////================
-////*/
-////void UpdateGuiParms( idUserInterface *gui, const idDict *args ) {
-////	if ( gui == NULL || args == NULL ) {
-////		return;
-////	}
-////	const idKeyValue *kv = args.MatchPrefix( "gui_parm", NULL );
-////	while( kv ) {
-////		gui.SetStateString( kv.GetKey(), kv.GetValue() );
-////		kv = args.MatchPrefix( "gui_parm", kv );
-////	}
-////	gui.SetStateBool( "noninteractive",  args.GetBool( "gui_noninteractive" ) ) ;
-////	gui.StateChanged( gameLocal.time );
-////}
-////
+/*
+================
+UpdateGuiParms
+================
+*/
+function UpdateGuiParms ( gui: idUserInterface, args: idDict ): void {
+	if ( gui == null || args == null ) {
+		return;
+	}
+	var kv = args.MatchPrefix( "gui_parm", null );
+	while ( kv ) {
+		gui.SetStateString(kv.GetKey().data, kv.GetValue ( ).data );
+		kv = args.MatchPrefix( "gui_parm", kv );
+	}
+	gui.SetStateBool( "noninteractive", args.GetBool( "gui_noninteractive" ) );
+	gui.StateChanged( gameLocal.time );
+}
+
 /////*
 ////================
 ////AddRenderGui
@@ -214,154 +214,7 @@ idEntity.Type = new idTypeInfo( "idEntity", "idClass",
 ////	*gui = uiManager.FindGui( name, true, ( kv != NULL ) );
 ////	UpdateGuiParms( *gui, args );
 ////}
-////
-/////*
-////================
-////idGameEdit::ParseSpawnArgsToRenderEntity
-////
-////parse the static model parameters
-////this is the canonical renderEntity parm parsing,
-////which should be used by dmap and the editor
-////================
-////*/
-////void idGameEdit::ParseSpawnArgsToRenderEntity( const idDict *args, renderEntity_t *renderEntity ) {
-////	int			i;
-////	const char	*temp;
-////	idVec3		color;
-////	float		angle;
-////	const idDeclModelDef *modelDef;
-////
-////	memset( renderEntity, 0, sizeof( *renderEntity ) );
-////
-////	temp = args.GetString( "model" );
-////
-////	modelDef = NULL;
-////	if ( temp[0] != '\0' ) {
-////		modelDef = static_cast<const idDeclModelDef *>( declManager.FindType( DECL_MODELDEF, temp, false ) );
-////		if ( modelDef ) {
-////			renderEntity.hModel = modelDef.ModelHandle();
-////		}
-////		if ( !renderEntity.hModel ) {
-////			renderEntity.hModel = renderModelManager.FindModel( temp );
-////		}
-////	}
-////	if ( renderEntity.hModel ) {
-////		renderEntity.bounds = renderEntity.hModel.Bounds( renderEntity );
-////	} else {
-////		renderEntity.bounds.Zero();
-////	}
-////
-////	temp = args.GetString( "skin" );
-////	if ( temp[0] != '\0' ) {
-////		renderEntity.customSkin = declManager.FindSkin( temp );
-////	} else if ( modelDef ) {
-////		renderEntity.customSkin = modelDef.GetDefaultSkin();
-////	}
-////
-////	temp = args.GetString( "shader" );
-////	if ( temp[0] != '\0' ) {
-////		renderEntity.customShader = declManager.FindMaterial( temp );
-////	}
-////
-////	args.GetVector( "origin", "0 0 0", renderEntity.origin );
-////
-////	// get the rotation matrix in either full form, or single angle form
-////	if ( !args.GetMatrix( "rotation", "1 0 0 0 1 0 0 0 1", renderEntity.axis ) ) {
-////		angle = args.GetFloat( "angle" );
-////		if ( angle != 0.0f ) {
-////			renderEntity.axis = idAngles( 0.0f, angle, 0.0f ).ToMat3();
-////		} else {
-////			renderEntity.axis.Identity();
-////		}
-////	}
-////
-////	renderEntity.referenceSound = NULL;
-////
-////	// get shader parms
-////	args.GetVector( "_color", "1 1 1", color );
-////	renderEntity.shaderParms[ SHADERPARM_RED ]		= color[0];
-////	renderEntity.shaderParms[ SHADERPARM_GREEN ]	= color[1];
-////	renderEntity.shaderParms[ SHADERPARM_BLUE ]	= color[2];
-////	renderEntity.shaderParms[ 3 ]					= args.GetFloat( "shaderParm3", "1" );
-////	renderEntity.shaderParms[ 4 ]					= args.GetFloat( "shaderParm4", "0" );
-////	renderEntity.shaderParms[ 5 ]					= args.GetFloat( "shaderParm5", "0" );
-////	renderEntity.shaderParms[ 6 ]					= args.GetFloat( "shaderParm6", "0" );
-////	renderEntity.shaderParms[ 7 ]					= args.GetFloat( "shaderParm7", "0" );
-////	renderEntity.shaderParms[ 8 ]					= args.GetFloat( "shaderParm8", "0" );
-////	renderEntity.shaderParms[ 9 ]					= args.GetFloat( "shaderParm9", "0" );
-////	renderEntity.shaderParms[ 10 ]					= args.GetFloat( "shaderParm10", "0" );
-////	renderEntity.shaderParms[ 11 ]					= args.GetFloat( "shaderParm11", "0" );
-////
-////	// check noDynamicInteractions flag
-////	renderEntity.noDynamicInteractions = args.GetBool( "noDynamicInteractions" );
-////
-////	// check noshadows flag
-////	renderEntity.noShadow = args.GetBool( "noshadows" );
-////
-////	// check noselfshadows flag
-////	renderEntity.noSelfShadow = args.GetBool( "noselfshadows" );
-////
-////	// init any guis, including entity-specific states
-////	for( i = 0; i < MAX_RENDERENTITY_GUI; i++ ) {
-////		temp = args.GetString( i == 0 ? "gui" : va( "gui%d", i + 1 ) );
-////		if ( temp[ 0 ] != '\0' ) {
-////			AddRenderGui( temp, &renderEntity.gui[ i ], args );
-////		}
-////	}
-////}
-////
-/////*
-////================
-////idGameEdit::ParseSpawnArgsToRefSound
-////
-////parse the sound parameters
-////this is the canonical refSound parm parsing,
-////which should be used by dmap and the editor
-////================
-////*/
-////void idGameEdit::ParseSpawnArgsToRefSound( const idDict *args, refSound_t *refSound ) {
-////	const char	*temp;
-////
-////	memset( refSound, 0, sizeof( *refSound ) );
-////
-////	refSound.parms.minDistance = args.GetFloat( "s_mindistance" );
-////	refSound.parms.maxDistance = args.GetFloat( "s_maxdistance" );
-////	refSound.parms.volume = args.GetFloat( "s_volume" );
-////	refSound.parms.shakes = args.GetFloat( "s_shakes" );
-////
-////	args.GetVector( "origin", "0 0 0", refSound.origin );
-////
-////	refSound.referenceSound  = NULL;
-////
-////	// if a diversity is not specified, every sound start will make
-////	// a random one.  Specifying diversity is usefull to make multiple
-////	// lights all share the same buzz sound offset, for instance.
-////	refSound.diversity = args.GetFloat( "s_diversity", "-1" );
-////	refSound.waitfortrigger = args.GetBool( "s_waitfortrigger" );
-////
-////	if ( args.GetBool( "s_omni" ) ) {
-////		refSound.parms.soundShaderFlags |= SSF_OMNIDIRECTIONAL;
-////	}
-////	if ( args.GetBool( "s_looping" ) ) {
-////		refSound.parms.soundShaderFlags |= SSF_LOOPING;
-////	}
-////	if ( args.GetBool( "s_occlusion" ) ) {
-////		refSound.parms.soundShaderFlags |= SSF_NO_OCCLUSION;
-////	}
-////	if ( args.GetBool( "s_global" ) ) {
-////		refSound.parms.soundShaderFlags |= SSF_GLOBAL;
-////	}
-////	if ( args.GetBool( "s_unclamped" ) ) {
-////		refSound.parms.soundShaderFlags |= SSF_UNCLAMPED;
-////	}
-////	refSound.parms.soundClass = args.GetInt( "s_soundClass" );
-////
-////	temp = args.GetString( "s_shader" );
-////	if ( temp[0] != '\0' ) {
-////		refSound.shader = declManager.FindSound( temp );
-////	}
-////}
-////
+
 /*
 ===============================================================================
 

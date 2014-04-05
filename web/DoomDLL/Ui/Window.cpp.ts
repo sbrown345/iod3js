@@ -816,37 +816,37 @@ idWindow::Activate
 ////	StateChanged( true );
 ////}
 ////
-/////*
-////================
-////idWindow::StateChanged
-////================
-////*/
-////StateChanged( bool redraw ):void {
-////
-////	UpdateWinVars();
-////
-////	if (this.expressionRegisters.Num() && this.ops.Num()) {
-////		this.EvalRegs();
-////	}
-////
-////	int c = this.drawWindows.Num();
-////	for ( var i = 0; i < c; i++ ) {
-////		if ( this.drawWindows[i].win ) {
-////			this.drawWindows[i].win.StateChanged( redraw );
-////		} else {
-////			this.drawWindows[i].simp.StateChanged( redraw );
-////		}
-////	}
-////
-////	if ( redraw ) {
-////		if ( this.flags & WIN_DESKTOP ) {
-////			Redraw( 0.0f, 0.0f );
-////		}
-////		if ( this.background && background.CinematicLength() ) {
-////			background.UpdateCinematic( this.gui.GetTime() );
-////		}
-////	}
-////}
+/*
+================
+idWindow::StateChanged
+================
+*/
+	StateChanged ( redraw: boolean ): void {
+
+		this.UpdateWinVars ( );
+
+		if ( this.expressionRegisters.Num ( ) && this.ops.Num ( ) ) {
+			this.EvalRegs ( );
+		}
+
+		var c = this.drawWindows.Num ( );
+		for ( var i = 0; i < c; i++ ) {
+			if ( this.drawWindows[i].win ) {
+				this.drawWindows[i].win.StateChanged( redraw );
+			} else {
+				this.drawWindows[i].simp.StateChanged( redraw );
+			}
+		}
+
+		if ( redraw ) {
+			if ( this.flags & WIN_DESKTOP ) {
+				this.Redraw( 0.0, 0.0 );
+			}
+			if ( this.background && this.background.CinematicLength ( ) ) {
+				this.background.UpdateCinematic( this.gui.GetTime ( ) );
+			}
+		}
+	}
 ////
 /////*
 ////================
@@ -882,18 +882,18 @@ idWindow::AddUpdateVar
 		this.updateVars.AddUnique( $var );
 	}
 
-/////*
-////================
-////idWindow::UpdateWinVars
-////================
-////*/
-////UpdateWinVars():void {
-////	int c = updateVars.Num();
-////	for (var i = 0; i < c; i++) {
-////		updateVars[i].Update();
-////	}
-////}
-////
+/*
+================
+idWindow::UpdateWinVars
+================
+*/
+	UpdateWinVars ( ): void {
+		var c = this.updateVars.Num ( );
+		for ( var i = 0; i < c; i++ ) {
+			this.updateVars[i].Update ( );
+		}
+	}
+
 /////*
 ////================
 ////idWindow::RunTimeEvents
@@ -1425,13 +1425,13 @@ idWindow::EvalRegs
 ////	if ( this.background && matColor.w() ) {
 ////		float scalex, scaley;
 ////		if ( this.flags & WIN_NATURALMAT ) {
-////			scalex = drawRect.w / background.GetImageWidth();
-////			scaley = drawRect.h / background.GetImageHeight();
+////			scalex = drawRect.w / this.background.GetImageWidth();
+////			scaley = drawRect.h / this.background.GetImageHeight();
 ////		} else {
 ////			scalex = this.matScalex;
 ////			scaley = this.matScaley;
 ////		}
-////		this.dc.DrawMaterial(drawRect.x, drawRect.y, drawRect.w, drawRect.h, background, matColor, scalex, scaley);
+////		this.dc.DrawMaterial(drawRect.x, drawRect.y, drawRect.w, drawRect.h, this.background, matColor, scalex, scaley);
 ////	}
 ////}
 ////
@@ -1499,18 +1499,18 @@ idWindow::CalcRects
 		this.clientRect.Offset( -x, -y );
 	}
 
-/////*
-////================
-////idWindow::Redraw
-////================
-////*/
-////Redraw(/*float */x:number, /*float */y:number):void {
-////	idStr str;
-////
-////	if (r_skipGuiShaders.GetInteger() == 1 || this.dc == NULL ) {
-////		return;
-////	}
-////	
+/*
+================
+idWindow::Redraw
+================
+*/
+	Redraw ( /*float */x: number, /*float */y: number ): void {
+		var str = new idStr;
+
+		if ( r_skipGuiShaders.GetInteger ( ) == 1 || this.dc == null ) {
+			return;
+		}
+		todoThrow ( );
 ////	int time = this.gui.GetTime();
 ////
 ////	if ( this.flags & WIN_DESKTOP && r_skipGuiShaders.GetInteger() != 3 ) {
@@ -1604,8 +1604,8 @@ idWindow::CalcRects
 ////	this.drawRect.Offset(-x, -y);
 ////	this.clientRect.Offset(-x, -y);
 ////	this.textRect.Offset(-x, -y);
-////}
-////
+	}
+
 /*
 ================
 idWindow::SetDC
@@ -2948,7 +2948,7 @@ idWindow::FindChildByName
 ////*/
 ////ResetCinematics():void {
 ////	if ( this.background ) {
-////		background.ResetCinematicTime( gui.GetTime() );
+////		this.background.ResetCinematicTime( gui.GetTime() );
 ////	}
 ////}
 ////
@@ -4238,7 +4238,7 @@ idWindow::IsSimple
 ////================
 ////*/
 ////bool idWindow::ContainsStateVars() {
-////	if ( updateVars.Num() ) {
+////	if ( this.updateVars.Num() ) {
 ////		return true;
 ////	}
 ////	var c = this.children.Num();
@@ -4476,8 +4476,8 @@ idWindow::ClientToScreen
 ////================
 ////*/
 ////SetDefaults ( void ):void {	
-////	this.forceAspectWidth = 640.0f;
-////	this.forceAspectHeight = 480.0f;
+////	this.forceAspectWidth = 640.0;
+////	this.forceAspectHeight = 480.0;
 ////	this.matScalex = 1;
 ////	this.matScaley = 1;
 ////	this.borderSize = 0;

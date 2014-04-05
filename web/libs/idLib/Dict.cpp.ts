@@ -598,21 +598,21 @@ Set( key:string, value:string ):void {
 ////	out = atof( s );
 ////	return found;
 ////}
-////
-/////*
-////================
-////idDict::GetInt
-////================
-////*/
-////bool idDict::GetInt( key:string, defaultString:string, int &out ) const {
-////	const char	*s;
-////	bool		found;
-////
-////	found = GetString( key, defaultString, &s );
-////	out = atoi( s );
-////	return found;
-////}
-////
+
+/*
+================
+idDict::GetInt
+================
+*/
+	GetInt_R ( key: string, defaultString: string, /*int &*/out: R<number> ): boolean {
+		var s = new R<string> ( );
+		var found: boolean;
+
+		found = this.GetString_Rstring( key, defaultString, s );
+		out.$ = atoi( s.$ );
+		return found;
+	}
+
 /*
 ================
 idDict::GetBool

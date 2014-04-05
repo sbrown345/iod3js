@@ -194,12 +194,12 @@ class idSimpleWindow {
 	////
 	////}
 	////
-	////void idSimpleWindow::StateChanged(bool redraw) {
-	////	if (redraw && this.background && this.background.CinematicLength()) {
-	////		this.background.UpdateCinematic(gui.GetTime());
-	////	}
-	////}
-	////
+	StateChanged ( redraw: boolean ) {
+		if ( redraw && this.background && this.background.CinematicLength ( ) ) {
+			this.background.UpdateCinematic( this.gui.GetTime ( ) );
+		}
+	}
+
 	////void idSimpleWindow::SetupTransforms(/*float */x:number, /*float */y:number) {
 	////	static idMat3 trans;
 	////	static idVec3 org;

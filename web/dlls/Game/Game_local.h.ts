@@ -3422,38 +3422,38 @@ idGameLocal::InitScriptForMap
 ////	return false;
 ////}
 
-/////*
-////===================
-////idGameLocal::RegisterEntity
-////===================
-////*/
-////RegisterEntity( ent: idEntity ):void  {
-////	int spawn_entnum;
+/*
+===================
+idGameLocal::RegisterEntity
+===================
+*/
+	RegisterEntity ( ent: idEntity ): void {
+		var /*int */spawn_entnum = new R<number> ( );
 
-////	if ( this.spawnCount >= ( 1 << ( 32 - GENTITYNUM_BITS ) ) ) {
-////		this.Error( "idGameLocal::RegisterEntity: spawn count overflow" );
-////	}
+		if ( this.spawnCount >= ( 1 << ( 32 - GENTITYNUM_BITS ) ) ) {
+			this.Error( "idGameLocal::RegisterEntity: spawn count overflow" );
+		}
 
-////	if ( !this.spawnArgs.GetInt( "spawn_entnum", "0", spawn_entnum ) ) {
-////		while( this.entities[this.firstFreeIndex] && this.firstFreeIndex < ENTITYNUM_MAX_NORMAL ) {
-////			this.firstFreeIndex++;
-////		}
-////		if ( this.firstFreeIndex >= ENTITYNUM_MAX_NORMAL ) {
-////			this.Error( "no free entities" );
-////		}
-////		spawn_entnum = this.firstFreeIndex++;
-////	}
+		if ( !this.spawnArgs.GetInt_R( "spawn_entnum", "0", spawn_entnum ) ) {
+			while ( this.entities[this.firstFreeIndex] && this.firstFreeIndex < ENTITYNUM_MAX_NORMAL ) {
+				this.firstFreeIndex++;
+			}
+			if ( this.firstFreeIndex >= ENTITYNUM_MAX_NORMAL ) {
+				this.Error( "no free entities" );
+			}
+			spawn_entnum.$ = this.firstFreeIndex++;
+		}
 
-////	this.entities[ spawn_entnum ] = ent;
-////	this.spawnIds[ spawn_entnum ] = this.spawnCount++;
-////	ent.entityNumber = spawn_entnum;
-////	ent.spawnNode.AddToEnd( this.spawnedEntities );
-////	ent.spawnArgs.TransferKeyValues( this.spawnArgs );
+		this.entities[spawn_entnum.$] = ent;
+		this.spawnIds[spawn_entnum.$] = this.spawnCount++;
+		ent.entityNumber = spawn_entnum.$;
+		ent.spawnNode.AddToEnd( this.spawnedEntities );
+		ent.spawnArgs.TransferKeyValues( this.spawnArgs );
 
-////	if ( spawn_entnum >= this.num_entities ) {
-////		this.num_entities++;
-////	}
-////}
+		if ( spawn_entnum.$ >= this.num_entities ) {
+			this.num_entities++;
+		}
+	}
 
 /////*
 ////===================
@@ -5025,28 +5025,28 @@ so it can perform tab completion
 //////============================================================================
 
 
-//////
-////// these defines work for all startsounds from all entity types
-////// make sure to change script/doom_defs.script if you add any channels, or change their order
-//////
-////typedef enum {
-////	SND_CHANNEL_ANY = SCHANNEL_ANY,
-////	SND_CHANNEL_VOICE = SCHANNEL_ONE,
-////	SND_CHANNEL_VOICE2,
-////	SND_CHANNEL_BODY,
-////	SND_CHANNEL_BODY2,
-////	SND_CHANNEL_BODY3,
-////	SND_CHANNEL_WEAPON,
-////	SND_CHANNEL_ITEM,
-////	SND_CHANNEL_HEART,
-////	SND_CHANNEL_PDA,
-////	SND_CHANNEL_DEMONIC,
-////	SND_CHANNEL_RADIO,
+//
+// these defines work for all startsounds from all entity types
+// make sure to change script/doom_defs.script if you add any channels, or change their order
+//
+enum gameSoundChannel_t{
+	SND_CHANNEL_ANY = SCHANNEL_ANY,
+	SND_CHANNEL_VOICE = SCHANNEL_ONE,
+	SND_CHANNEL_VOICE2,
+	SND_CHANNEL_BODY,
+	SND_CHANNEL_BODY2,
+	SND_CHANNEL_BODY3,
+	SND_CHANNEL_WEAPON,
+	SND_CHANNEL_ITEM,
+	SND_CHANNEL_HEART,
+	SND_CHANNEL_PDA,
+	SND_CHANNEL_DEMONIC,
+	SND_CHANNEL_RADIO,
 
-////	// internal use only.  not exposed to script or framecommands.
-////	SND_CHANNEL_AMBIENT,
-////	SND_CHANNEL_DAMAGE
-////} gameSoundChannel_t;
+	// internal use only.  not exposed to script or framecommands.
+	SND_CHANNEL_AMBIENT,
+	SND_CHANNEL_DAMAGE
+};
 
 ////// content masks
 ////#define	MASK_ALL					(-1)

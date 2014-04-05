@@ -66,46 +66,46 @@ var EV_Light_FadeIn = new idEventDef( "fadeInLight", "f" );
 ////
 ////	memset( renderLight, 0, sizeof( *renderLight ) );
 ////
-////	if (!args->GetVector("light_origin", "", renderLight->origin)) {
-////		args->GetVector( "origin", "", renderLight->origin );
+////	if (!args.GetVector("light_origin", "", renderLight.origin)) {
+////		args.GetVector( "origin", "", renderLight.origin );
 ////	}
 ////
-////	gotTarget = args->GetVector( "light_target", "", renderLight->target );
-////	gotUp = args->GetVector( "light_up", "", renderLight->up );
-////	gotRight = args->GetVector( "light_right", "", renderLight->right );
-////	args->GetVector( "light_start", "0 0 0", renderLight->start );
-////	if ( !args->GetVector( "light_end", "", renderLight->end ) ) {
-////		renderLight->end = renderLight->target;
+////	gotTarget = args.GetVector( "light_target", "", renderLight.target );
+////	gotUp = args.GetVector( "light_up", "", renderLight.up );
+////	gotRight = args.GetVector( "light_right", "", renderLight.right );
+////	args.GetVector( "light_start", "0 0 0", renderLight.start );
+////	if ( !args.GetVector( "light_end", "", renderLight.end ) ) {
+////		renderLight.end = renderLight.target;
 ////	}
 ////
 ////	// we should have all of the target/right/up or none of them
 ////	if ( ( gotTarget || gotUp || gotRight ) != ( gotTarget && gotUp && gotRight ) ) {
 ////		gameLocal.Printf( "Light at (%f,%f,%f) has bad target info\n",
-////			renderLight->origin[0], renderLight->origin[1], renderLight->origin[2] );
+////			renderLight.origin[0], renderLight.origin[1], renderLight.origin[2] );
 ////		return;
 ////	}
 ////
 ////	if ( !gotTarget ) {
-////		renderLight->pointLight = true;
+////		renderLight.pointLight = true;
 ////
 ////		// allow an optional relative center of light and shadow offset
-////		args->GetVector( "light_center", "0 0 0", renderLight->lightCenter );
+////		args.GetVector( "light_center", "0 0 0", renderLight.lightCenter );
 ////
 ////		// create a point light
-////		if (!args->GetVector( "light_radius", "300 300 300", renderLight->lightRadius ) ) {
+////		if (!args.GetVector( "light_radius", "300 300 300", renderLight.lightRadius ) ) {
 ////			float radius;
 ////
-////			args->GetFloat( "light", "300", radius );
-////			renderLight->lightRadius[0] = renderLight->lightRadius[1] = renderLight->lightRadius[2] = radius;
+////			args.GetFloat( "light", "300", radius );
+////			renderLight.lightRadius[0] = renderLight.lightRadius[1] = renderLight.lightRadius[2] = radius;
 ////		}
 ////	}
 ////
 ////	// get the rotation matrix in either full form, or single angle form
 ////	idAngles angles;
 ////	idMat3 mat;
-////	if ( !args->GetMatrix( "light_rotation", "1 0 0 0 1 0 0 0 1", mat ) ) {
-////		if ( !args->GetMatrix( "rotation", "1 0 0 0 1 0 0 0 1", mat ) ) {
-////	   		args->GetFloat( "angle", "0", angles[ 1 ] );
+////	if ( !args.GetMatrix( "light_rotation", "1 0 0 0 1 0 0 0 1", mat ) ) {
+////		if ( !args.GetMatrix( "rotation", "1 0 0 0 1 0 0 0 1", mat ) ) {
+////	   		args.GetFloat( "angle", "0", angles[ 1 ] );
 ////   			angles[ 0 ] = 0;
 ////			angles[ 1 ] = idMath::AngleNormalize360( angles[ 1 ] );
 ////	   		angles[ 2 ] = 0;
@@ -118,29 +118,29 @@ var EV_Light_FadeIn = new idEventDef( "fadeInLight", "f" );
 ////	mat[1].FixDegenerateNormal();
 ////	mat[2].FixDegenerateNormal();
 ////
-////	renderLight->axis = mat;
+////	renderLight.axis = mat;
 ////
 ////	// check for other attributes
-////	args->GetVector( "_color", "1 1 1", color );
-////	renderLight->shaderParms[ SHADERPARM_RED ]		= color[0];
-////	renderLight->shaderParms[ SHADERPARM_GREEN ]	= color[1];
-////	renderLight->shaderParms[ SHADERPARM_BLUE ]		= color[2];
-////	args->GetFloat( "shaderParm3", "1", renderLight->shaderParms[ SHADERPARM_TIMESCALE ] );
-////	if ( !args->GetFloat( "shaderParm4", "0", renderLight->shaderParms[ SHADERPARM_TIMEOFFSET ] ) ) {
+////	args.GetVector( "_color", "1 1 1", color );
+////	renderLight.shaderParms[ SHADERPARM_RED ]		= color[0];
+////	renderLight.shaderParms[ SHADERPARM_GREEN ]	= color[1];
+////	renderLight.shaderParms[ SHADERPARM_BLUE ]		= color[2];
+////	args.GetFloat( "shaderParm3", "1", renderLight.shaderParms[ SHADERPARM_TIMESCALE ] );
+////	if ( !args.GetFloat( "shaderParm4", "0", renderLight.shaderParms[ SHADERPARM_TIMEOFFSET ] ) ) {
 ////		// offset the start time of the shader to sync it to the game time
-////		renderLight->shaderParms[ SHADERPARM_TIMEOFFSET ] = -MS2SEC( gameLocal.time );
+////		renderLight.shaderParms[ SHADERPARM_TIMEOFFSET ] = -MS2SEC( gameLocal.time );
 ////	}
 ////
-////	args->GetFloat( "shaderParm5", "0", renderLight->shaderParms[5] );
-////	args->GetFloat( "shaderParm6", "0", renderLight->shaderParms[6] );
-////	args->GetFloat( "shaderParm7", "0", renderLight->shaderParms[ SHADERPARM_MODE ] );
-////	args->GetBool( "noshadows", "0", renderLight->noShadows );
-////	args->GetBool( "nospecular", "0", renderLight->noSpecular );
-////	args->GetBool( "parallel", "0", renderLight->parallel );
+////	args.GetFloat( "shaderParm5", "0", renderLight.shaderParms[5] );
+////	args.GetFloat( "shaderParm6", "0", renderLight.shaderParms[6] );
+////	args.GetFloat( "shaderParm7", "0", renderLight.shaderParms[ SHADERPARM_MODE ] );
+////	args.GetBool( "noshadows", "0", renderLight.noShadows );
+////	args.GetBool( "nospecular", "0", renderLight.noSpecular );
+////	args.GetBool( "parallel", "0", renderLight.parallel );
 ////
-////	args->GetString( "texture", "lights/squarelight1", &texture );
+////	args.GetString( "texture", "lights/squarelight1", &texture );
 ////	// allow this to be NULL
-////	renderLight->shader = declManager->FindMaterial( texture, false );
+////	renderLight.shader = declManager.FindMaterial( texture, false );
 ////}
 ////
 ////
@@ -309,15 +309,15 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////	idEntity::UpdateChangeableSpawnArgs( source );
 ////
 ////	if ( source ) {
-////		source->Print();
+////		source.Print();
 ////	}
 ////	FreeSoundEmitter( true );
-////	gameEdit->ParseSpawnArgsToRefSound( source ? source : &spawnArgs, &refSound );
+////	gameEdit.ParseSpawnArgsToRefSound( source ? source : &spawnArgs, &refSound );
 ////	if ( refSound.shader && !refSound.waitfortrigger ) {
 ////		StartSoundShader( refSound.shader, SND_CHANNEL_ANY, 0, false, NULL );
 ////	}
 ////
-////	gameEdit->ParseSpawnArgsToRenderLight( source ? source : &spawnArgs, &renderLight );
+////	gameEdit.ParseSpawnArgsToRenderLight( source ? source : &spawnArgs, &renderLight );
 ////
 ////	UpdateVisuals();
 ////}
@@ -353,7 +353,7 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////*/
 ////idLight::~idLight() {
 ////	if ( lightDefHandle != -1 ) {
-////		gameRenderWorld->FreeLightDef( lightDefHandle );
+////		gameRenderWorld.FreeLightDef( lightDefHandle );
 ////	}
 ////}
 ////
@@ -365,28 +365,28 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////================
 ////*/
 ////void idLight::Save( idSaveGame *savefile ) const {
-////	savefile->WriteRenderLight( renderLight );
+////	savefile.WriteRenderLight( renderLight );
 ////	
-////	savefile->WriteBool( renderLight.prelightModel != NULL );
+////	savefile.WriteBool( renderLight.prelightModel != NULL );
 ////
-////	savefile->WriteVec3( localLightOrigin );
-////	savefile->WriteMat3( localLightAxis );
+////	savefile.WriteVec3( localLightOrigin );
+////	savefile.WriteMat3( localLightAxis );
 ////
-////	savefile->WriteString( brokenModel );
-////	savefile->WriteInt( levels );
-////	savefile->WriteInt( currentLevel );
+////	savefile.WriteString( brokenModel );
+////	savefile.WriteInt( levels );
+////	savefile.WriteInt( currentLevel );
 ////
-////	savefile->WriteVec3( baseColor );
-////	savefile->WriteBool( breakOnTrigger );
-////	savefile->WriteInt( count );
-////	savefile->WriteInt( triggercount );
-////	savefile->WriteObject( lightParent );
+////	savefile.WriteVec3( baseColor );
+////	savefile.WriteBool( breakOnTrigger );
+////	savefile.WriteInt( count );
+////	savefile.WriteInt( triggercount );
+////	savefile.WriteObject( lightParent );
 ////
-////	savefile->WriteVec4( fadeFrom );
-////	savefile->WriteVec4( fadeTo );
-////	savefile->WriteInt( fadeStart );
-////	savefile->WriteInt( fadeEnd );
-////	savefile->WriteBool( soundWasPlaying );
+////	savefile.WriteVec4( fadeFrom );
+////	savefile.WriteVec4( fadeTo );
+////	savefile.WriteInt( fadeStart );
+////	savefile.WriteInt( fadeEnd );
+////	savefile.WriteBool( soundWasPlaying );
 ////}
 ////
 /////*
@@ -399,10 +399,10 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////void idLight::Restore( idRestoreGame *savefile ) {
 ////	bool hadPrelightModel;
 ////
-////	savefile->ReadRenderLight( renderLight );
+////	savefile.ReadRenderLight( renderLight );
 ////
-////	savefile->ReadBool( hadPrelightModel );
-////	renderLight.prelightModel = renderModelManager->CheckModel( va( "_prelight_%s", name.c_str() ) );
+////	savefile.ReadBool( hadPrelightModel );
+////	renderLight.prelightModel = renderModelManager.CheckModel( va( "_prelight_%s", name.c_str() ) );
 ////	if ( ( renderLight.prelightModel == NULL ) && hadPrelightModel ) {
 ////		assert( 0 );
 ////		if ( developer.GetBool() ) {
@@ -414,24 +414,24 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////		}
 ////	}
 ////
-////	savefile->ReadVec3( localLightOrigin );
-////	savefile->ReadMat3( localLightAxis );
+////	savefile.ReadVec3( localLightOrigin );
+////	savefile.ReadMat3( localLightAxis );
 ////
-////	savefile->ReadString( brokenModel );
-////	savefile->ReadInt( levels );
-////	savefile->ReadInt( currentLevel );
+////	savefile.ReadString( brokenModel );
+////	savefile.ReadInt( levels );
+////	savefile.ReadInt( currentLevel );
 ////
-////	savefile->ReadVec3( baseColor );
-////	savefile->ReadBool( breakOnTrigger );
-////	savefile->ReadInt( count );
-////	savefile->ReadInt( triggercount );
-////	savefile->ReadObject( reinterpret_cast<idClass *&>( lightParent ) );
+////	savefile.ReadVec3( baseColor );
+////	savefile.ReadBool( breakOnTrigger );
+////	savefile.ReadInt( count );
+////	savefile.ReadInt( triggercount );
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( lightParent ) );
 ////
-////	savefile->ReadVec4( fadeFrom );
-////	savefile->ReadVec4( fadeTo );
-////	savefile->ReadInt( fadeStart );
-////	savefile->ReadInt( fadeEnd );
-////	savefile->ReadBool( soundWasPlaying );
+////	savefile.ReadVec4( fadeFrom );
+////	savefile.ReadVec4( fadeTo );
+////	savefile.ReadInt( fadeStart );
+////	savefile.ReadInt( fadeEnd );
+////	savefile.ReadBool( soundWasPlaying );
 ////
 ////	lightDefHandle = -1;
 ////
@@ -449,11 +449,11 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////	const char *demonic_shader;
 ////
 ////	// do the parsing the same way dmap and the editor do
-////	gameEdit->ParseSpawnArgsToRenderLight( &spawnArgs, &renderLight );
+////	gameEdit.ParseSpawnArgsToRenderLight( &spawnArgs, &renderLight );
 ////
 ////	// we need the origin and axis relative to the physics origin/axis
-////	localLightOrigin = ( renderLight.origin - GetPhysics()->GetOrigin() ) * GetPhysics()->GetAxis().Transpose();
-////	localLightAxis = renderLight.axis * GetPhysics()->GetAxis().Transpose();
+////	localLightOrigin = ( renderLight.origin - GetPhysics().GetOrigin() ) * GetPhysics().GetAxis().Transpose();
+////	localLightAxis = renderLight.axis * GetPhysics().GetAxis().Transpose();
 ////
 ////	// set the base color from the shader parms
 ////	baseColor.Set( renderLight.shaderParms[ SHADERPARM_RED ], renderLight.shaderParms[ SHADERPARM_GREEN ], renderLight.shaderParms[ SHADERPARM_BLUE ] );
@@ -467,7 +467,7 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////
 ////	// make sure the demonic shader is cached
 ////	if ( spawnArgs.GetString( "mat_demonic", NULL, &demonic_shader ) ) {
-////		declManager->FindType( DECL_MATERIAL, demonic_shader );
+////		declManager.FindType( DECL_MATERIAL, demonic_shader );
 ////	}
 ////
 ////	// game specific functionality, not mirrored in
@@ -486,7 +486,7 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////	renderLight.prelightModel = 0;
 ////	if ( name[ 0 ] ) {
 ////		// this will return 0 if not found
-////		renderLight.prelightModel = renderModelManager->CheckModel( va( "_prelight_%s", name.c_str() ) );
+////		renderLight.prelightModel = renderModelManager.CheckModel( va( "_prelight_%s", name.c_str() ) );
 ////	}
 ////
 ////	spawnArgs.GetBool( "start_off", "0", start_off );
@@ -536,7 +536,7 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////		}
 ////	
 ////		// make sure the model gets cached
-////		if ( !renderModelManager->CheckModel( brokenModel ) ) {
+////		if ( !renderModelManager.CheckModel( brokenModel ) ) {
 ////			if ( needBroken ) {
 ////				gameLocal.Error( "Model '%s' not found for entity %d(%s)", brokenModel.c_str(), entityNumber, name.c_str() );
 ////			} else {
@@ -544,10 +544,10 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////			}
 ////		}
 ////
-////		GetPhysics()->SetContents( spawnArgs.GetBool( "nonsolid" ) ? 0 : CONTENTS_SOLID );
+////		GetPhysics().SetContents( spawnArgs.GetBool( "nonsolid" ) ? 0 : CONTENTS_SOLID );
 ////	
 ////		// make sure the collision model gets cached
-////		idClipModel::CheckModel( brokenModel );
+////		idClipModel.CheckModel( brokenModel );
 ////	}
 ////
 ////	PostEventMS( &EV_PostSpawn, 0 );
@@ -628,7 +628,7 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////*/
 ////void idLight::SetShader( const char *shadername ) {
 ////	// allow this to be NULL
-////	renderLight.shader = declManager->FindMaterial( shadername, false );
+////	renderLight.shader = declManager.FindMaterial( shadername, false );
 ////	PresentLightDefChange();
 ////}
 ////
@@ -711,7 +711,7 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////void idLight::Off( void ) {
 ////	currentLevel = 0;
 ////	// kill any sound it was making
-////	if ( refSound.referenceSound && refSound.referenceSound->CurrentlyPlaying() ) {
+////	if ( refSound.referenceSound && refSound.referenceSound.CurrentlyPlaying() ) {
 ////		StopSound( SND_CHANNEL_ANY, false );
 ////		soundWasPlaying = true;
 ////	}
@@ -779,12 +779,12 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////		SetModel( brokenModel );
 ////
 ////		if ( !spawnArgs.GetBool( "nonsolid" ) ) {
-////			GetPhysics()->SetClipModel( new idClipModel( brokenModel.c_str() ), 1.0f );
-////			GetPhysics()->SetContents( CONTENTS_SOLID );
+////			GetPhysics().SetClipModel( new idClipModel( brokenModel.c_str() ), 1.0f );
+////			GetPhysics().SetContents( CONTENTS_SOLID );
 ////		}
 ////	} else if ( spawnArgs.GetBool( "hideModelOnBreak" ) ) {
 ////		SetModel( "" );
-////		GetPhysics()->SetContents( 0 );
+////		GetPhysics().SetContents( 0 );
 ////	}
 ////
 ////	if ( gameLocal.isServer ) {
@@ -812,10 +812,10 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////	const char *parm = spawnArgs.GetString( "snd_broken" );
 ////	if ( refSound.shader || ( parm && *parm ) ) {
 ////		StopSound( SND_CHANNEL_ANY, false );
-////		const idSoundShader *alternate = refSound.shader ? refSound.shader->GetAltSound() : declManager->FindSound( parm );
+////		const idSoundShader *alternate = refSound.shader ? refSound.shader.GetAltSound() : declManager.FindSound( parm );
 ////		if ( alternate ) {
 ////			// start it with no diversity, so the leadin break sound plays
-////			refSound.referenceSound->StartSound( alternate, SND_CHANNEL_ANY, 0.0, 0 );
+////			refSound.referenceSound.StartSound( alternate, SND_CHANNEL_ANY, 0.0, 0 );
 ////		}
 ////	}
 ////
@@ -835,9 +835,9 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////void idLight::PresentLightDefChange( void ) {
 ////	// let the renderer apply it to the world
 ////	if ( ( lightDefHandle != -1 ) ) {
-////		gameRenderWorld->UpdateLightDef( lightDefHandle, &renderLight );
+////		gameRenderWorld.UpdateLightDef( lightDefHandle, &renderLight );
 ////	} else {
-////		lightDefHandle = gameRenderWorld->AddLightDef( &renderLight );
+////		lightDefHandle = gameRenderWorld.AddLightDef( &renderLight );
 ////	}
 ////}
 ////
@@ -854,9 +854,9 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////
 ////	// add to refresh list
 ////	if ( modelDefHandle == -1 ) {
-////		modelDefHandle = gameRenderWorld->AddEntityDef( &renderEntity );
+////		modelDefHandle = gameRenderWorld.AddEntityDef( &renderEntity );
 ////	} else {
-////		gameRenderWorld->UpdateEntityDef( modelDefHandle, &renderEntity );
+////		gameRenderWorld.UpdateEntityDef( modelDefHandle, &renderEntity );
 ////	}
 ////}
 ////
@@ -875,13 +875,13 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////	idEntity::Present();
 ////
 ////	// current transformation
-////	renderLight.axis	= localLightAxis * GetPhysics()->GetAxis();
-////	renderLight.origin  = GetPhysics()->GetOrigin() + GetPhysics()->GetAxis() * localLightOrigin;
+////	renderLight.axis	= localLightAxis * GetPhysics().GetAxis();
+////	renderLight.origin  = GetPhysics().GetOrigin() + GetPhysics().GetAxis() * localLightOrigin;
 ////
 ////	// reference the sound for shader synced effects
 ////	if ( lightParent ) {
-////		renderLight.referenceSound = lightParent->GetSoundEmitter();
-////		renderEntity.referenceSound = lightParent->GetSoundEmitter();
+////		renderLight.referenceSound = lightParent.GetSoundEmitter();
+////		renderEntity.referenceSound = lightParent.GetSoundEmitter();
 ////	}
 ////	else {
 ////		renderLight.referenceSound = refSound.referenceSound;
@@ -925,7 +925,7 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////*/
 ////bool idLight::GetPhysicsToSoundTransform( idVec3 &origin, idMat3 &axis ) {
 ////	origin = localLightOrigin + renderLight.lightCenter;
-////	axis = localLightAxis * GetPhysics()->GetAxis();
+////	axis = localLightAxis * GetPhysics().GetAxis();
 ////	return true;
 ////}
 ////
@@ -936,7 +936,7 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////*/
 ////void idLight::FreeLightDef( void ) {
 ////	if ( lightDefHandle != -1 ) {
-////		gameRenderWorld->FreeLightDef( lightDefHandle );
+////		gameRenderWorld.FreeLightDef( lightDefHandle );
 ////		lightDefHandle = -1;
 ////	}
 ////}
@@ -950,10 +950,10 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////	int i, c = spawnArgs.GetNumKeyVals();
 ////	for ( i = 0; i < c; i++ ) {
 ////		const idKeyValue *pv = spawnArgs.GetKeyVal(i);
-////		if ( pv->GetKey().Find( "editor_", false ) >= 0 || pv->GetKey().Find( "parse_", false ) >= 0 ) {
+////		if ( pv.GetKey().Find( "editor_", false ) >= 0 || pv.GetKey().Find( "parse_", false ) >= 0 ) {
 ////			continue;
 ////		}
-////		args->Set( pv->GetKey(), pv->GetValue() );
+////		args.Set( pv.GetKey(), pv.GetValue() );
 ////	}
 ////}
 ////
@@ -964,9 +964,9 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////*/
 ////void idLight::ShowEditingDialog( void ) {
 ////	if ( g_editEntityMode.GetInteger() == 1 ) {
-////		common->InitTool( EDITOR_LIGHT, &spawnArgs );
+////		common.InitTool( EDITOR_LIGHT, &spawnArgs );
 ////	} else {
-////		common->InitTool( EDITOR_SOUND, &spawnArgs );
+////		common.InitTool( EDITOR_SOUND, &spawnArgs );
 ////	}
 ////}
 ////
@@ -1119,18 +1119,18 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////
 ////	for ( i = 0; i < targets.Num(); i++ ) {
 ////		targetEnt = targets[ i ].GetEntity();
-////		if ( targetEnt && targetEnt->IsType( idLight::Type ) ) {
+////		if ( targetEnt && targetEnt.IsType( idLight::Type ) ) {
 ////			idLight	*light = static_cast<idLight*>(targetEnt);
-////			light->lightParent = this;
+////			light.lightParent = this;
 ////
 ////			// explicitly delete any sounds on the entity
-////			light->FreeSoundEmitter( true );
+////			light.FreeSoundEmitter( true );
 ////
 ////			// manually set the refSound to this light's refSound
-////			light->renderEntity.referenceSound = renderEntity.referenceSound;
+////			light.renderEntity.referenceSound = renderEntity.referenceSound;
 ////
 ////			// update the renderEntity to the renderer
-////			light->UpdateVisuals();
+////			light.UpdateVisuals();
 ////		}
 ////	}
 ////}
@@ -1169,7 +1169,7 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////*/
 ////void idLight::WriteToSnapshot( idBitMsgDelta &msg ) const {
 ////
-////	GetPhysics()->WriteToSnapshot( msg );
+////	GetPhysics().WriteToSnapshot( msg );
 ////	WriteBindToSnapshot( msg );
 ////
 ////	msg.WriteByte( currentLevel );
@@ -1211,7 +1211,7 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////	int		oldCurrentLevel = currentLevel;
 ////	idVec3	oldBaseColor = baseColor;
 ////
-////	GetPhysics()->ReadFromSnapshot( msg );
+////	GetPhysics().ReadFromSnapshot( msg );
 ////	ReadBindFromSnapshot( msg );
 ////
 ////	currentLevel = msg.ReadByte();

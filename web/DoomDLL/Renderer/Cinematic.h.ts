@@ -52,12 +52,18 @@ enum cinStatus_t{
 };
 
 // a cinematic stream generates an image buffer, which the caller will upload to a texture
-//typedef struct {
-//	int					imageWidth, imageHeight;	// will be a power of 2
-//	const byte *		image;						// RGBA format, alpha will be 255
-//	int					status;
-//} cinData_t;
-//
+class cinData_t {
+	imageWidth: number /*int*/; imageHeight: number /*int*/; // will be a power of 2
+	image: Uint8Array; // RGBA format, alpha will be 255
+	status: number /*int*/;
+
+	memset0 ( ): void {
+		this.imageWidth = this.imageHeight = 0;
+		this.image = null;
+		this.status = 0;
+	}
+}
+
 class idCinematic {
 //public:
 //	// initialize cinematic play back data
@@ -162,15 +168,15 @@ class idCinematic {
 		return false;
 	}
 
-///*
-//==============
-//idCinematicLocal::AnimationLength
-//==============
-//*/
-//int idCinematic::AnimationLength() {
-//	return 0;
-//}
-//
+/*
+==============
+idCinematicLocal::AnimationLength
+==============
+*/
+	AnimationLength ( ): number {
+		return 0;
+	}
+
 ///*
 //==============
 //idCinematicLocal::ResetTime
@@ -179,16 +185,16 @@ class idCinematic {
 //void idCinematic::ResetTime(int milliseconds) {
 //}
 //
-///*
-//==============
-//idCinematicLocal::ImageForTime
-//==============
-//*/
-//cinData_t idCinematic::ImageForTime( int milliseconds ) {
-//	cinData_t c;
-//	memset( &c, 0, sizeof( c ) );
-//	return c;
-//}
+/*
+==============
+idCinematicLocal::ImageForTime
+==============
+*/
+	ImageForTime ( /*int*/ milliseconds: number ): cinData_t {
+		var c = new cinData_t;
+		c.memset0 ( );
+		return c;
+	}
 //
 ///*
 //==============

@@ -2493,29 +2493,29 @@ idMaterial::GetImageHeight
 		return this.GetStage( 0 ).texture.image.uploadHeight;
 	}
 
-/////*
-////=============
-////idMaterial::CinematicLength
-////=============
-////*/
-////int	idMaterial::CinematicLength() const {
-////	if ( !this.stages || !this.stages[0].texture.cinematic ) {
-////		return 0;
-////	}
-////	return this.stages[0].texture.cinematic.AnimationLength();
-////}
+/*
+=============
+idMaterial::CinematicLength
+=============
+*/
+	CinematicLength ( ): number {
+		if ( !this.stages || !this.stages[0].texture.cinematic ) {
+			return 0;
+		}
+		return this.stages[0].texture.cinematic.AnimationLength ( );
+	}
 
-/////*
-////=============
-////idMaterial::UpdateCinematic
-////=============
-////*/
-////void idMaterial::UpdateCinematic( /*int*/time:number ) const {
-////	if ( !this.stages || !this.stages[0].texture.cinematic || !backEnd.viewDef ) {
-////		return;
-////	}
-////	this.stages[0].texture.cinematic.ImageForTime( tr.primaryRenderView.time );
-////}
+/*
+=============
+idMaterial::UpdateCinematic
+=============
+*/
+	UpdateCinematic ( /*int*/time: number ): void {
+		if ( !this.stages || !this.stages[0].texture.cinematic || !backEnd.viewDef ) {
+			return;
+		}
+		this.stages[0].texture.cinematic.ImageForTime( tr.primaryRenderView.time );
+	}
 
 /////*
 ////=============

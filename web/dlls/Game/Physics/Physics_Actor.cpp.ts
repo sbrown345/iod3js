@@ -129,7 +129,7 @@ class idPhysics_Actor extends idPhysics_Base {
 	//idPhysics_Actor::idPhysics_Actor
 	//================
 	//*/
-	//idPhysics_Actor::idPhysics_Actor( void ) {
+	//idPhysics_Actor::idPhysics_Actor( ) {
 	//	clipModel = NULL;
 	//	SetClipModelAxis();
 	//	mass = 100.0f;
@@ -145,7 +145,7 @@ class idPhysics_Actor extends idPhysics_Base {
 	//idPhysics_Actor::~idPhysics_Actor
 	//================
 	//*/
-	//idPhysics_Actor::~idPhysics_Actor( void ) {
+	//idPhysics_Actor::~idPhysics_Actor( ) {
 	//	if ( clipModel ) {
 	//		delete clipModel;
 	//		clipModel = NULL;
@@ -197,7 +197,7 @@ class idPhysics_Actor extends idPhysics_Base {
 	//idPhysics_Actor::SetClipModelAxis
 	//================
 	//*/
-	//void idPhysics_Actor::SetClipModelAxis( void ) {
+	//void idPhysics_Actor::SetClipModelAxis( ) {
 	//	// align clip model to gravity direction
 	//	if ( ( gravityNormal[2] == -1.0f ) || ( gravityNormal == vec3_zero ) ) {
 	//		clipModelAxis.Identity();
@@ -218,7 +218,7 @@ class idPhysics_Actor extends idPhysics_Base {
 	//idPhysics_Actor::GetGravityAxis
 	//================
 	//*/
-	//const idMat3 &idPhysics_Actor::GetGravityAxis( void ) const {
+	//const idMat3 &idPhysics_Actor::GetGravityAxis( ) const {
 	//	return clipModelAxis;
 	//}
 	//
@@ -227,7 +227,7 @@ class idPhysics_Actor extends idPhysics_Base {
 	//idPhysics_Actor::GetMasterDeltaYaw
 	//================
 	//*/
-	//float idPhysics_Actor::GetMasterDeltaYaw( void ) const {
+	//float idPhysics_Actor::GetMasterDeltaYaw( ) const {
 	//	return masterDeltaYaw;
 	//}
 	//
@@ -236,7 +236,7 @@ class idPhysics_Actor extends idPhysics_Base {
 	//idPhysics_Actor::GetGroundEntity
 	//================
 	//*/
-	//idEntity *idPhysics_Actor::GetGroundEntity( void ) const {
+	//idEntity *idPhysics_Actor::GetGroundEntity( ) const {
 	//	return groundEntityPtr.GetEntity();
 	//}
 	//
@@ -267,15 +267,15 @@ class idPhysics_Actor extends idPhysics_Base {
 	//	return clipModel;
 	//}
 	//
-	///*
-	//================
-	//idPhysics_Actor::GetNumClipModels
-	//================
-	//*/
-	//int idPhysics_Actor::GetNumClipModels( void ) const {
-	//	return 1;
-	//}
-	//
+	/*
+	================
+	idPhysics_Actor::GetNumClipModels
+	================
+	*/
+	GetNumClipModels ( ): number {
+		return 1;
+	}
+
 	///*
 	//================
 	//idPhysics_Actor::SetMass
@@ -337,7 +337,7 @@ class idPhysics_Actor extends idPhysics_Base {
 	//idPhysics_Actor::IsPushable
 	//================
 	//*/
-	//bool idPhysics_Actor::IsPushable( void ) const {
+	//bool idPhysics_Actor::IsPushable( ) const {
 	//	return ( masterEntity == NULL );
 	//}
 	//
@@ -425,7 +425,7 @@ class idPhysics_Actor extends idPhysics_Base {
 	//idPhysics_Actor::DisableClip
 	//================
 	//*/
-	//void idPhysics_Actor::DisableClip( void ) {
+	//void idPhysics_Actor::DisableClip( ) {
 	//	clipModel.Disable();
 	//}
 	//
@@ -434,7 +434,7 @@ class idPhysics_Actor extends idPhysics_Base {
 	//idPhysics_Actor::EnableClip
 	//================
 	//*/
-	//void idPhysics_Actor::EnableClip( void ) {
+	//void idPhysics_Actor::EnableClip( ) {
 	//	clipModel.Enable();
 	//}
 	//
@@ -443,7 +443,7 @@ class idPhysics_Actor extends idPhysics_Base {
 	//idPhysics_Actor::UnlinkClip
 	//================
 	//*/
-	//void idPhysics_Actor::UnlinkClip( void ) {
+	//void idPhysics_Actor::UnlinkClip( ) {
 	//	clipModel.Unlink();
 	//}
 	//
@@ -452,7 +452,7 @@ class idPhysics_Actor extends idPhysics_Base {
 	//idPhysics_Actor::LinkClip
 	//================
 	//*/
-	//void idPhysics_Actor::LinkClip( void ) {
+	//void idPhysics_Actor::LinkClip( ) {
 	//	clipModel.Link( gameLocal.clip, self, 0, clipModel.GetOrigin(), clipModel.GetAxis() );
 	//}
 	//
@@ -461,7 +461,7 @@ class idPhysics_Actor extends idPhysics_Base {
 	//idPhysics_Actor::EvaluateContacts
 	//================
 	//*/
-	//bool idPhysics_Actor::EvaluateContacts( void ) {
+	//bool idPhysics_Actor::EvaluateContacts( ) {
 	//
 	//	// get all the ground contacts
 	//	ClearContacts();

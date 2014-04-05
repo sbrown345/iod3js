@@ -110,13 +110,13 @@ class idClipModel {
 ////
 ////public:
 ////							idClipModel( );
-////							explicit idClipModel( const char *name );
+////							explicit idClipModel( name: string );
 ////							explicit idClipModel( const idTraceModel &trm );
 ////							explicit idClipModel( const int renderModelHandle );
 ////							explicit idClipModel( const idClipModel *model );
 ////							~idClipModel( );
 ////
-////	bool					LoadModel( const char *name );
+////	bool					LoadModel( name: string );
 ////	void					LoadModel( const idTraceModel &trm );
 ////	void					LoadModel( const int renderModelHandle );
 ////
@@ -154,7 +154,7 @@ class idClipModel {
 ////	const idTraceModel *	GetTraceModel( ) const;
 ////	void					GetMassProperties( const float density, float &mass, idVec3 &centerOfMass, idMat3 &inertiaTensor ) const;
 ////
-////	static cmHandle_t		CheckModel( const char *name );
+////	static cmHandle_t		CheckModel( name: string );
 ////	static void				ClearTraceModelCache( );
 ////	static int				TraceModelCacheSize( );
 ////
@@ -457,7 +457,7 @@ idClipModel::GetTraceModelHashKey
 ////idClipModel::LoadModel
 ////================
 ////*/
-////bool idClipModel::LoadModel( const char *name ) {
+////bool idClipModel::LoadModel( name: string ) {
 ////	renderModelHandle = -1;
 ////	if ( traceModelIndex != -1 ) {
 ////		idClipModel.FreeTraceModel( traceModelIndex );
@@ -546,7 +546,7 @@ idClipModel::idClipModel
 ////idClipModel::idClipModel
 ////================
 ////*/
-////idClipModel::idClipModel( const char *name ) {
+////idClipModel::idClipModel( name: string ) {
 ////	Init();
 ////	LoadModel( name );
 ////}
@@ -840,15 +840,15 @@ idClipModel::idClipModel
 ////	}
 ////	this.Link( clp );
 ////}
-////
-/////*
-////============
-////idClipModel::CheckModel
-////============
-////*/
-////cmHandle_t idClipModel::CheckModel( const char *name ) {
-////	return collisionModelManager.LoadModel( name, false );
-////}
+
+/*
+============
+idClipModel::CheckModel
+============
+*/
+	static CheckModel ( name: string ): number /*cmHandle_t*/ {
+		return collisionModelManager.LoadModel( name, false );
+	}
 }
 
 //===============================================================

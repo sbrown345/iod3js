@@ -440,26 +440,26 @@ class idUserInterfaceLocal extends idUserInterface {
 //float idUserInterfaceLocal::GetStateFloat( const char *varName, const char* defaultString ) const {
 //	return this.state.GetFloat(varName, defaultString);
 //}
-//
-//void idUserInterfaceLocal::StateChanged( int _time, bool redraw ) {
-//	time = _time;
-//	if (this.desktop) {
-//		this.desktop.StateChanged( redraw );
-//	}
-//	if ( this.state.GetBool( "noninteractive" ) ) {
-//		interactive = false;
-//	}
-//	else {
-//		if (this.desktop) {
-//			interactive = this.desktop.Interactive();
-//		} else {
-//			interactive = false;
-//		}
-//	}
-//}
-//
+
+StateChanged( /*int*/ _time:number, /*bool */redraw :boolean = false):void {
+	this.time = _time;
+	if (this.desktop) {
+		this.desktop.StateChanged( redraw );
+	}
+	if ( this.state.GetBool( "noninteractive" ) ) {
+		this.interactive = false;
+	}
+	else {
+		if (this.desktop) {
+			this.interactive = this.desktop.Interactive();
+		} else {
+			this.interactive = false;
+		}
+	}
+}
+
 //const char *idUserInterfaceLocal::Activate(bool activate, int _time) {
-//	time = _time;
+//	this.time = _time;
 //	this.active = activate;
 //	if ( this.desktop ) {
 //		activateStr = "";
@@ -470,7 +470,7 @@ class idUserInterfaceLocal extends idUserInterface {
 //}
 //
 //void idUserInterfaceLocal::Trigger(int _time) {
-//	time = _time;
+//	this.time = _time;
 //	if ( this.desktop ) {
 //		this.desktop.Trigger();
 //	}
@@ -542,9 +542,9 @@ class idUserInterfaceLocal extends idUserInterface {
 //	}
 //
 //	savefile.Write( &this.active, sizeof( active ) );
-//	savefile.Write( &interactive, sizeof( interactive ) );
+//	savefile.Write( &this.interactive, sizeof( this.interactive ) );
 //	savefile.Write( &uniqued, sizeof( uniqued ) );
-//	savefile.Write( &time, sizeof( time ) );
+//	savefile.Write( &this.time, sizeof( this.time ) );
 //	len = activateStr.Length();
 //	savefile.Write( &len, sizeof( len ) );
 //	savefile.Write( activateStr.c_str(), len );
@@ -585,9 +585,9 @@ class idUserInterfaceLocal extends idUserInterface {
 //	}
 //
 //	savefile.Read( &this.active, sizeof( active ) );
-//	savefile.Read( &interactive, sizeof( interactive ) );
+//	savefile.Read( &this.interactive, sizeof( this.interactive ) );
 //	savefile.Read( &uniqued, sizeof( uniqued ) );
-//	savefile.Read( &time, sizeof( time ) );
+//	savefile.Read( &this.time, sizeof( this.time ) );
 //
 //	savefile.Read( &len, sizeof( len ) );
 //	activateStr.Fill( ' ', len );
